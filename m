@@ -1,119 +1,224 @@
-Received: from mail-pz2-f38.google.com (mail-pz2-f38.google.com [74.125.228.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A39D3E44E7
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 18:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481E8484897;
+	Thu,  1 Oct 2026 18:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790879857; cv=none; b=GbdTpd1FTtbLXnSGk8fxUH2LfOjy3BuKBvGn6JcnphWPSjPNJ7tUi/bjMh6KrLePyTv6NAyu7JNU7YcuLC1XntHLGwX2P9HBC6tvdMgDgZRJPxJAd91A6huwbHjKeVSKOKVRl76Eq2bsJNu8tYks84ED7Bio23FTuDdL9TyS1+g=
+	t=1790880239; cv=none; b=OodkyPK+tDwfUCHQB35fHM8AfVaUQE9pgosvcr6HF8diPSvx3B3WLvb3bG6gLvLE5hGpXaEphjla0CH9CX7brzJgLW2BPh8JOH2IlnpUV9pVqZF/MUB6046UUutVXp8kq5kCJMvNW9PgA8F8jTtfyMZIFWgSGKfugYE+SgMTINE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790879857; c=relaxed/simple;
-	bh=YWun8H0YR2nw0WXj6WVMQy89qE6RkZv/6Uw7G0VTBPY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oD4ZYYEJYlCcRhBdQJx4Ch6c7NVBsmVnhhBr4T3BAwgl1kTllQJjNYCbw9EmwmqaMZoox46ynPHq6shZQluLya5aVydllth/OY120AV8DGfPxrcSoC1wRoqLGoG/FB41VTqFDEGjygv9IqI3pdpgEqInnoNabJ8UE4c//4qsEoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=TmqQFLg+; arc=none smtp.client-ip=74.125.228.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1790880239; c=relaxed/simple;
+	bh=8VGLOCH2vYmfhlNtKPfKjmKvEN4VvXKx5xWBGfyie9w=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=WlyZ2SqM5i51IHUtwfKTBxvohdP1lBJ78Wwp565X00JpysVwV+/IWDNFMF5gtdZ8WjXD2yw2dEqt4LVM6XZDjYf5+aE7PSxnUddfPf11wUcdciSgPcPK2YYw6KAyuBJ/GM9r5M9ghMhIIJsWcJTQN2+UUFHUjqIRNFooisTSWx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=QKOmOFga; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="TmqQFLg+"
-Received: by mail-pz2-f38.google.com with SMTP id d2e1a72fcca58-881a3a28e72so2756734b3a.2
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 11:37:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1790879855; x=1791484655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+a/r8qcYWYjYyyBDFMdHDcTb8pTohi1Wmi87SGaPW+Q=;
-        b=TmqQFLg+UIMDun0qsdewqMQvuo06K1mMwJ5X6vNZnrpeMOKeJD/y5BrZd3ptIgPNOP
-         HcFhwRoJlofwU7QVvuRuuC8AGUbHjA09gk9RjvhPQEnOSt0o7G3PUFT0Ciit0FHsJjgM
-         VmKIKcRgrC9wMRYzqwurAFKnnptn9DPxmjgNd2FetFPgyQaBomXBPg03nxdpBDxwGIDm
-         YwH0I9LAcmY9JV7eVHNakFsraheSTyWKk/BnA35OUM+xrbi2hEcz6MEM9bLTCZH3/vAN
-         9BZWNBWkGq5q7q3n8Oe3rEr+2n2zD/Vl3eZEbfJB75qFrZ3fvasCAStItSjG7VCYl/6g
-         P+dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790879855; x=1791484655;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+a/r8qcYWYjYyyBDFMdHDcTb8pTohi1Wmi87SGaPW+Q=;
-        b=VLght8qsrd7/1qkVuVtwbE1tvSZKDVJ1+F8v9pQARE6H1QElwa5ssoj3yvlH9pynKH
-         WE8VUSRDCSE68yd4PFC9LTyKxTlPorhdJCeolwmdF6mINcxPMCUxV4L/LoH12iEtPEVY
-         bHdrjx5hfVksul6BaBJSuPQwjG3UrxBu5M3frT94eeasa9KyX3vBTgrvF2HsOiASJlkL
-         x6Azo+rSjUzcpLITwrqIJr6aYxpayxs9XDk1dLiu/gb8k4x3mn4hT9O1/YtLOF1m8iqm
-         9SygX1wg9AhiZpObdcZYn54eWy/lxQtdGg53W78/JLcsxhKDgkVV8fRuTOAlABoIUT10
-         ijXw==
-X-Gm-Message-State: AFuF++k0zLd0bXpSajZ94KS0I8NGZhoBboWd5vyWA+HwdkMXO6K0TuFa
-	gCFjR3ad+Vlr8n70NdeOwMZ5Hr2oMDV/jzr8xp1SLuAj5HYN4v/yVtnlpusQJfpwPPR+9IBPB9+
-	IWapmnKg=
-X-Gm-Gg: AYBFou04r0E4SgsXyZGMk/KHxkQSbWKrMQLpA/O4zf8mYnsf9qJb6neVVvF/dfoLJS6
-	LactJHTp/5vRgUCF+9vJZ3I9fposRamTidV5tlMztY/527kfnfmqHiHg5M4T1fn8YviYTlrb4qO
-	0RcWZayliRSyAPruKLzTSWlLfexRw/+ORaeYo/z1dGliTwXNpOg3jYKJlyfOAe7cugTBZ/arf80
-	fSqZucr1o50N0CYDWurjgG63/lBL0bFaVbUvr7RRMQaqxVsEbIMP+u3QvygRPI2PfHSV7wzrDfN
-	W4NkhJxQPaNCnxmnopky8F7gH35ZiIc64H6r0cWKYUYHxAx0pOviTCFyAJlnBCNL/jmg760POnm
-	22Sqn/r5f23d/8akVH8LEVxiAJSk6FFuyzEoitFR68yrFNGK6yb2T9Sai2aa4lUQ/8fbOZSm0vm
-	0Fk44zM0wocbm6T0qvBB0yCoyeYWUHzD6lXMq/ynuMOTobz3C7U1UhmBY+87BqMhxin5qOuw5eI
-	5XA+pvnqCCixQHLTP8FDowrAe1lyeFMuX51AUE=
-X-Received: by 2002:a05:6a00:138c:b0:845:bda6:574b with SMTP id d2e1a72fcca58-88af258b861mr506813b3a.5.1790879855534;
-        Thu, 01 Oct 2026 11:37:35 -0700 (PDT)
-Received: from phoenix.lan (204-195-112-43.wavecable.com. [204.195.112.43])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0b8f5b20sm73839b3a.11.2026.10.01.11.37.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 11:37:35 -0700 (PDT)
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: netdev@vger.kernel.org
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Subject: [PATCH iproute] lib: fix leak on realloc() failure
-Date: Thu,  1 Oct 2026 11:37:31 -0700
-Message-ID: <20261001183731.2282758-1-stephen@networkplumber.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="QKOmOFga"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
+	To:From:Date:subject:date:message-id:reply-to;
+	bh=sPCX3mVMzNT4Z5RuBkG/Vg9y9XHCiUQQEev4rY+w3PU=; b=QKOmOFgaJLPFepX7acnZ3c1U+z
+	G1y/oRQJv2UI6RKBIpUkxLXW3fX54DHsr79QVeEihpJ0K0cgsaqV7i+KqA+KDCNoy7HOggERXPC2r
+	3YpdOQa+LRSDK2iKOJB2c5Z4OD02gSriJhJgfPDH0xvPpXUgyeMRvcHKcCE2vfyLL04Y=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168] helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.98.2)
+	(envelope-from <hugo@hugovil.com>)
+	id 1xCLku-0000000076j-3pDG;
+	Thu, 01 Oct 2026 14:43:45 -0400
+Date: Thu, 1 Oct 2026 14:43:44 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com, Stefano
+ Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, Joseph Guo
+ <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>, Ernest Van Hoecke
+ <ernest.vanhoecke@toradex.com>, Mehmet Fide
+ <mehmet.fide@screeningeagle.com>, Francesco Dolcini
+ <francesco.dolcini@toradex.com>, Markus Niebel
+ <Markus.Niebel@ew.tq-group.com>, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, Stefan Eichenberger <eichest@gmail.com>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v4 00/13] ARM: dts: imx6ul: Add Variscite VAR-SOM-6UL
+ and DART-6UL
+Message-Id: <20261001144344.2100854b8f5e2d81cf87b424@hugovil.com>
+In-Reply-To: <arv4MwHV4LntROkN@Lord-Beerus.station>
+References: <cover.1790693249.git.stefano.r@variscite.com>
+	<20260929121455.437291ea4b53130e3e19778c@hugovil.com>
+	<arv4MwHV4LntROkN@Lord-Beerus.station>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spam_score: -2.0
+X-Spam_bar: --
 
-If realloc in the getcommandline failed then the previous
-partial command line would leak.
+Hi Stefano,
 
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
----
- lib/utils.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+On Tue, 29 Sep 2026 19:41:07 +0200
+Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
 
-diff --git a/lib/utils.c b/lib/utils.c
-index 6388d981..c4cd3c3d 100644
---- a/lib/utils.c
-+++ b/lib/utils.c
-@@ -1368,6 +1368,8 @@ static ssize_t getcmdline(char **linep, size_t *lenp, FILE *in)
- 		char *line1 = NULL;
- 		size_t len1 = 0;
- 		ssize_t cc1;
-+		char *line2;
-+		size_t len2;
- 
- 		cc1 = getline(&line1, &len1, in);
- 		if (cc1 < 0) {
-@@ -1383,13 +1385,16 @@ static ssize_t getcmdline(char **linep, size_t *lenp, FILE *in)
- 		if (cp)
- 			*cp = '\0';
- 
--		*lenp = strlen(*linep) + strlen(line1) + 1;
--		*linep = realloc(*linep, *lenp);
--		if (!*linep) {
-+		len2 = strlen(*linep) + strlen(line1) + 1;
-+		line2 = realloc(*linep, len2);
-+		if (line2 == NULL) {
- 			fprintf(stderr, "Out of memory\n");
--			*lenp = 0;
-+			free(line1);
- 			return -1;
- 		}
-+		*linep = line2;
-+		*lenp = len2;
-+
- 		cc += cc1 - 2;
- 		strcat(*linep, line1);
- 		free(line1);
+> On Tue, Sep 29, 2026 at 12:14:55PM -0400, Hugo Villeneuve wrote:
+> > Hi Stefano,
+> > 
+> > Your title seems to imply that VAR-SOM-6UL support did not
+> > exist before your patch, but it did. Please rephrase that, and
+> > your description accordingly.
+> > 
+> 
+> Hi Hugo,
+> You’re right that VAR-SOM-6UL already has mainline support.
+> I’ll reword the title and description to distinguish the existing
+> support from the new variants and DART-6UL boards.
+
+Great to know Variscite is adding support for the DART-6UL.
+
+
+> > On Tue, 29 Sep 2026 17:17:27 +0200
+> > Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
+> > 
+> > > Add device trees for Variscite VAR-SOM-6UL and DART-6UL modules based on
+> > > i.MX6UL, i.MX6ULL and i.MX6ULZ. VAR-SOM-6UL is supported on the
+> > > Concerto-Board and Symphony-Board carriers, and DART-6UL on the
+> > > VAR-6ULCustomBoard. The 90 new DTBs cover the supported combinations of
+> > > storage, wireless and audio options.
+> > 
+> > Do they? You would need far more than 90 DTBs to support all options...
+> > 
+> > When I submitted the latest changes for the VAR-SOM-6UL, I did not
+> > create DTBs for every available options knowing that it would lead to
+> > an insane number of files. So I simply created a full DTB that
+> > incorporated most of the DTSI options. And my custom boards simply
+> > include only the required DTSI for their specific options.
+> > 
+> > Looking simply at the ENET phy level, you seem to have now removed
+> > the two individual DTSI to selectively add support for ENET1 and ENET2,
+> > but not all board use these, so that is why they
+> > were created as individual DTSI files in the first place to make it
+> > easier to create a DTB with only the required options. As an example,
+> > one of my custom boards do not have ethernet at all, so i don't want
+> > that support enabled by default.
+> > 
+> > Please keep the existing DTSI as distinct and individual files.
+> > 
+> > Maybe using DT overlays would be better suited if you really want to
+> > support every available combinations?
+> > 
+> 
+> Just to be clear about the 90 DTBs: They are the minimum set of prebuilt
+> DTBs for the Variscite-supported configurations that select between
+> mutually exclusive hardware alternatives. Selecting an alternative changes
+> the hardware described on a SoM interface and therefore requires changes
+> to Device Tree nodes, pin configuration or controller properties.
+> For example, the SD interface may connect to an SD card or an SDIO wireless
+> module; storage, wireless-module and codec choices similarly require
+> different descriptions.
+> 
+> These are not every possible combination of fitted and unfitted components.
+> We do not add another DTB merely because an optional peripheral is not
+> populated.
+> This follows the existing VAR-SOM-MX7 mainline approach: it provides
+> separate DTBs for hardware choices such as eMMC versus NAND and codec
+> variants, without enumerating every optional component’s presence or
+> absence.
+> 
+> > 
+> > > The descriptions use shared module, option and carrier DTSI files with
+> > > SoC-specific wrappers.
+
+Please work with the existing modular DTSI files, do not simply remove
+them and reimplement them into your own files.
+
+
+> > > In particular, the WM8904 and WM8731 codecs are
+> > > selected explicitly instead of keeping a codec in the module base.
+> > > The four existing Concerto DTBs are converted to this layout without
+> > > changing their DTB names or compatible strings. This also replaces the
+> > > non-working legacy LVDS panel description with the LCDIF configuration
+> > 
+> > Can you describe what exactly is not working? When I submitted these
+> > LVDS changes I tested the LVDS panel with the Variscite concerto EVK
+> > (VAR-SOM-6UL LD option) and it was working ok (also tested with two
+> > custom boards).
+> > 
+> > If a fix is needed for this bug, this should go in a separate patch.
+> > 
+> 
+> In an initial hardware test, the display timing behavior did not appear
+> to match what we observe with Variscite’s downstream configuration.
+> I will repeat the test and measure the output before proposing any display
+> change. If a fix is needed, I will send it as a separate patch.
+
+If I compare the original panel timings with the one in this patch
+series, they are 100% identical, so please be more specific
+and double-check this.
+
+
+
+> > > for the Variscite display. Wi-Fi and Bluetooth enable/reset sequencing
+> > > on these modules is handled by userspace, so the legacy kernel-managed
+> > > power-sequence and Bluetooth nodes are not carried forward.
+> > 
+> > That is not ok. I specifically implemented enable/reset sequencing in
+> > the kernel to finally get rid of the need for external
+> > proprietary userspace scripts, and it was tested ok. If somethings needs
+> > to be fixed or improved in this sequencing, fine if you submit a patch
+> > to do it, but certainly do not get rid of it.
+> > 
+> 
+> Calling these “external proprietary userspace scripts” misses their purpose.
+> First because they are not proprietary :D. Second, because they implement
+> the initialization procedure Variscite validates for the Broadcom
+> modules we ship (talking about the brcm, the existing one in your DTSs)
+> folowing the datasheet instructions.
+> 
+> This is not equivalent to the sequence in the existing Concerto DT.
+
+I tested it and it works. But like I said, if adjustments need to be
+made, they are welcome and can be done in a separate patch to fix it.
+This sequencing is something not very well documented in Variscite
+datasheets. I asked Variscite support to improve the documentation for
+that aspect but it was not accepted.
+
+
+> For the LWB5 option, the procedure enables WIFI_PWR, waits 10 ms,
+> enables WLAN_EN and BT_EN, waits 200 ms, then lowers BT_EN before
+> re-enumerating the SDIO device.
+> The other Broadcom option does not use the separate WIFI_PWR step.
+> The existing regulator and MMC power-sequence nodes do not express that
+> complete, module-dependent procedure, particularly the BT_EN step during
+> Wi-Fi initialization.
+> The scripts also select the Bluetooth firmware according to the detected
+> SDIO device.
+
+Firmware loading is handled properly by the kernel without external
+scripts (tested with Concerto EVK).
+
+
+> We use that procedure to avoid sequencing-related failures for our
+> customers.
+> This approach is not new to Variscite’s mainline DTS files.
+
+Yes, this is an old way of doing things, which may have been
+appropriate in the past when proper support in the kernel was missing
+to achieve the proper sequencing, but no longer true these days, unless
+I am mistaken.
+
+
 -- 
-2.53.0
-
+Hugo Villeneuve
