@@ -1,170 +1,68 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4CE33F5B6
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 00:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297AD36DA0D;
+	Thu,  1 Oct 2026 00:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790814674; cv=none; b=TBEpXsNwGLw1gZnODI5dKTcY2TXnZcCCJpDng3CSc+Cf3UT9VVUJ74Mvg2T7B/+Bs6YQlg9iF8hvwlTXxzrYkyB4cPTit34jg5H5AT1PClGM6EfLwXCQqnWouuQ3VR0+GlUf50Tm2ChlqWrq0R1F1OwB/euYkw1hVg31jQaAudA=
+	t=1790815190; cv=none; b=Jq11cNu2/kQ8E7qg8Sys3m7p+4aeW25X0oRVRA9RTs15cOM/mnJaQGQStiadp/1pxYg79WwbZ931hxMHDbu1GrCsz/G7gpPW7RLoY6yVW5IjEWqla74c6+dYZDVLHPTKUeJ6WoRhx5kYUtm8cYlRdOP6bWweiJBcVzCH6R99jO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790814674; c=relaxed/simple;
-	bh=dqTj0MZrFfOa+ZxXLtfnC/pe1AWktx7H3quZH0bdCRg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K+RvD14eW6KtcAOdYh0G00n/75kD1XRSKN/fFoZASU9M4jwFzEjMtKiOwvUdqZbk0c9zJwpFTN4b4lBgClcG4fmymua0sN3SP3JJnMPg7hQymOaSsNyPAUgDu9r9u/8LHSZOlWOUP88y6lJlvytthxH275bt2CPGPK3HUqK17yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RyePcqc3; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1790815190; c=relaxed/simple;
+	bh=Gd4lvvpt3X7bAlSfOOhoJQzERM4MwEphcAay3ppxJ7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GL8DqkD+KIjwp0SsE1HCh1eqE7FerTe11+S1MBuUSJSag+EHNBX+wUbnzvnxMszuaIIpiYymaT40SHI2c9cu+JtU5qumjRcFjH/w2xreEs/9p/drUE6atmcNWQg9yo0bLAnTQ6F9EoscsoarHJ4wmkoeLSc5KkjrMLhh0+wlyH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzO6BvEp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RyePcqc3"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so6507578a91.3
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 17:31:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790814664; x=1791419464; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Dqa8UEr3NfdZuGngCMvdc8mK3hbU/KTX0TorCz4toDA=;
-        b=RyePcqc3GrSN4wSvXDsNUKdd69HZjpC4PZtpCsH1crTMyaJeYwo/s2oo8PreCjCwrQ
-         aMlxx3uJVXsxKvYngovxiGZfGBDkYiOFjxPsTbT1HX1GQheQY/YBbYQVU/jUCGH2CJi/
-         SkwQN3sNWzFf8fPeuPS/YC0Ld4LNrQTiTOxrvlaih+s1j2Xao3vsU7mBKuIOy8ZL71oc
-         n2qI2/Ij2JdsdAKsIERrOfcU8dHY3zyxxEBbGaXDFeXodiPf7a41hEUf0iseNfiX7MNB
-         10pfX8Ptsc3/eT2a6jVc7W0aXCw+wiR2kytlhNuYFeIoNHYUdaUIuFOSO5BY5qMXOwB9
-         3kxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790814664; x=1791419464;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Dqa8UEr3NfdZuGngCMvdc8mK3hbU/KTX0TorCz4toDA=;
-        b=jDKS/gVM91+Kmxfd5rQ0fHPmf7K1YG9e3q73BsU5ZPyKQc6D65E8ormnZ51symaphc
-         BwDjUipnu7qTUlKA/rt+CHsYfqARKKyU2IUSR4Yj9yHwSdSgiXvqXwkU3hQVYfJ/6NM6
-         QqPfu/Q+Uhpl1DPfc6P0zrffpyh4R7nX4ScPVh/yFzWAyIMMX2zbZG3FzwI+5fFYwFGl
-         Uselj6H6Fbx6xVv0/WNCYacJ6d2omthSqddkzJn+Ev1/6yvZZI6Fz0QkRLUTLvL4SSSx
-         VZKVUDF9vXWYO6gLkSNRi2a5rEfoW0LbzJHcRom5YFOLcbM2rklJ0CTAOgZH5nq7YT58
-         PRDA==
-X-Forwarded-Encrypted: i=1; AKwUvBzhdbcatBwcVtKNtp4TbfdTaoHtEW8KIK3r+z8nMecoFcCE8h9Z33Z6wdrFx/NZMHTl9Yxqwo0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJavtjhZpXZI7zTHbGPEh88u5YH5rBBK/bh5RC3i21rdV426z/X
-	O9dwWQDKTafTvyZyFrLBk27/hWph1uUi9qq7KDhaXG3TSvNo5HB7QR5PlqA2Y/63zPnvOG/S3K7
-	NxV1eHQ==
-X-Received: from pjbng11.prod.google.com ([2002:a17:90b:1a8b:b0:3a4:8aa5:b794])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d2cf:b0:3a4:df8c:a4c1
- with SMTP id 98e67ed59e1d1-3a4f4ebce10mr441149a91.57.1790814663681; Wed, 30
- Sep 2026 17:31:03 -0700 (PDT)
-Date: Thu,  1 Oct 2026 00:30:13 +0000
-In-Reply-To: <43ad79b6-40e9-4704-bcd5-b67255105fae@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzO6BvEp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FEA1F000FF;
+	Thu,  1 Oct 2026 00:39:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790815181;
+	bh=041oBzfgI64A+tKnoH23DgkTlt/lOUEYReF21DM5gkQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=JzO6BvEpwbnQal/6Mc1BbUKxKQpPeH3wfpoLG5okliZGcC8cXIICLfBI6KDQ9S+Ok
+	 qDjKrNFKWxLDd12CFsN3SV6aO8aEJ429GaghloKFoZWh8PZoPUyd4soNFIheokbtwu
+	 sJrAERWH4woyvgxKwHWOQIdv8u1cvWFGDUPNC68ruKqlkqteaS0sPK/PO9tV2xidOV
+	 gnYea6KDDnlvZ0NJrHl4uoozxgzxFpo/ysF1p06lnO2147xw47pff9/prtg0L/Z64R
+	 FVk66XGiKuVa3FSPvGXbOlk9cRzlmt7Vkg52826tcDmiR4o45ADywLYiK8o0TWBNiy
+	 WOhDQyCbhn67g==
+Date: Wed, 30 Sep 2026 17:39:40 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Toke
+ Hoiland-Jorgensen <toke@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ bpf@vger.kernel.org
+Subject: Re: [PATCH net v4] net: mvneta: clear XDP pfmemalloc flag between
+ frames
+Message-ID: <20260930173940.1c5f55c0@kernel.org>
+In-Reply-To: <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
+References: <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <43ad79b6-40e9-4704-bcd5-b67255105fae@linux.dev>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001003103.987619-1-kuniyu@google.com>
-Subject: Re: [PATCH net 1/2] tcp: restore RACK list membership when undoing loss
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: jiayuan.chen@linux.dev
-Cc: edumazet@google.com, netdev@vger.kernel.org, nramaswamy@openai.com, 
-	edumazet@kernel.org, ncardwell@google.com, ycheng@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-Date: Wed, 30 Sep 2026 10:13:42 +0800
-> On 9/26/26 8:25 AM, nramaswamy@openai.com wrote:
-> > From: Neil Ramaswamy <nramaswamy@openai.com>
-> >
-> > Partial undo can clear the TCPCB_LOST flag on segments already removed from
-> > RACK's list, which prevents subsequent RACK loss detection and can lead to
-> > long retransmission delays. Restoring them to the RACK list allows them to
-> > be reconsidered for fast retransmission in the future. To do this, we first
-> > sort the segments whose lost flag is being cleared, and reinsert them into
-> > the RACK list (which is sorted by transmission time).
-> >
-> > Fixes: 043b87d7599e ("tcp: more efficient RACK loss detection")
-> > Signed-off-by: Neil Ramaswamy <nramaswamy@openai.com>
-> > Assisted-by: LLM sparse
-> > ---
-> >   net/ipv4/tcp_input.c | 33 +++++++++++++++++++++++++++++++++
-> >   1 file changed, 33 insertions(+)
-> >
-> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> > index 92bc60716f33..38ac07c8b38f 100644
-> > --- a/net/ipv4/tcp_input.c
-> > +++ b/net/ipv4/tcp_input.c
-> > @@ -69,6 +69,7 @@
-> >   #include <linux/module.h>
-> >   #include <linux/sysctl.h>
-> >   #include <linux/kernel.h>
-> > +#include <linux/list_sort.h>
-> >   #include <linux/prefetch.h>
-> >   #include <linux/bitops.h>
-> >   #include <net/dst.h>
-> > @@ -2840,16 +2841,48 @@ static void DBGUNDO(struct sock *sk, const char *msg)
-> >   #endif
-> >   }
-> >   
-> > +static int tcp_rack_skb_cmp(void *priv, const struct list_head *a,
-> > +			    const struct list_head *b)
-> > +{
-> > +	const struct sk_buff *skb_a = list_entry(a, struct sk_buff,
-> > +					       tcp_tsorted_anchor);
-> > +	const struct sk_buff *skb_b = list_entry(b, struct sk_buff,
-> > +					       tcp_tsorted_anchor);
-> > +
-> > +	return tcp_skb_sent_after(tcp_skb_timestamp_us(skb_a),
-> > +				  tcp_skb_timestamp_us(skb_b),
-> > +				  TCP_SKB_CB(skb_a)->end_seq,
-> > +				  TCP_SKB_CB(skb_b)->end_seq);
-> > +}
-> > +
-> >   static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss)
-> >   {
-> >   	struct tcp_sock *tp = tcp_sk(sk);
-> >   
-> >   	if (unmark_loss) {
-> > +		LIST_HEAD(restored);
-> >   		struct sk_buff *skb;
-> >   
-> >   		skb_rbtree_walk(skb, &sk->tcp_rtx_queue) {
-> > +			if ((TCP_SKB_CB(skb)->sacked & TCPCB_LOST) == TCPCB_LOST)
-
-nit: "== TCPCB_LOST" is redundant
-
-
-> > +				list_move_tail(&skb->tcp_tsorted_anchor, &restored);
+On Tue, 29 Sep 2026 15:43:03 +0200 Lorenzo Bianconi wrote:
+> mvneta_swbm_add_rx_fragment() sets XDP_FLAGS_FRAGS_PF_MEMALLOC on the
+> xdp_buff when a fragment page is a pfmemalloc one (page under memory
+> pressure). The xdp_buff is reused for the next frame, but only the
+> XDP_FLAGS_HAS_FRAGS bit was cleared at frame start, so the pfmemalloc
+> bit leaked from one frame into the following ones. mvneta_swbm_build_skb()
+> propagates the flag to skb->pfmemalloc through xdp_update_skb_frags_info(),
+> so the skb of a subsequent fragmented frame could be wrongly marked as
+> pfmemalloc even if none of its pages are under pressure.
 > 
-> 
-> I think the simplest way to solve the problems is just drop 
-> 'list_del_init(&skb->tcp_tsorted_anchor);' in tcp_rack_detect_loss(),
-> although it will reduce the efficiency of RACK loss detection ?
+> Clear all the xdp_buff flags in mvneta_swbm_rx_frame(), which is invoked
+> for each new frame, instead of just the XDP_FLAGS_HAS_FRAGS bit.
 
-It will almost revert the optimisation done by 043b87d7599e.
-
-One sort + merging sorted lists during undo seems better
-than reintroducing costs in the fast(er) path.
-
-
-> 
-> Leave it to maintainers.
-> 
-> 
-> >   			TCP_SKB_CB(skb)->sacked &= ~TCPCB_LOST;
-> >   		}
-> > +		if (!list_empty(&restored)) {
-> > +			struct list_head *pos = &tp->tsorted_sent_queue;
-> > +
-> > +			/* Ensure lost skbs are added in transmission order */
-> > +			list_sort(NULL, &restored, tcp_rack_skb_cmp);
-> > +			while (!list_empty(&restored)) {
-> > +				struct list_head *entry = restored.next;
-> > +
-> > +				while (pos->next != &tp->tsorted_sent_queue &&
-> > +				       !tcp_rack_skb_cmp(NULL, pos->next, entry))
-> > +					pos = pos->next;
-> > +				list_move(entry, pos);
-> > +				pos = entry;
-> > +			}
-> > +		}
-> >   		tp->lost_out = 0;
-> >   		tcp_clear_all_retrans_hints(tp);
-> >   	}
+Is there a reason you're not adding the info sinfo bot is asking for?
