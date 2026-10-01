@@ -1,88 +1,50 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A012F50EBFD
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 13:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC96317173;
+	Thu,  1 Oct 2026 13:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790859774; cv=none; b=qY2Ges+1YcuzW07mywJ4Fo2bp4U9UVjAhM2xia89FeEc57MRRTJc2pzZBvcAw5/Pon1nQL41KcvdA335FTo7u7tYsWpj2t9sOmtpprRV9VJqYbJ2mZagDJvhbnV/SYCwHT9glhZtNrWxlrYegXelwm3x5xHj+oGa5LmsKQUFEj8=
+	t=1790860026; cv=none; b=dgtzE+8pw9pAG41BfhyI10sQEc5g4UJ/KqDFudJhYFfMeV9jASzNPE1fBl9gwGJvdYCR7W2+wruL/lNQKM+aBAskcUX+Rg5e6wkEIRZVsMfB7mAIav/6ZMqYuEL5dCpY7QAnSrZgImVM4R8w98F3u0Hf39vKOCXkCSw6zJGG7gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790859774; c=relaxed/simple;
-	bh=1seQhCsG4zTNv0vt7jmouxLcXiY3KVURT6FwgrKhTWE=;
+	s=arc-20240116; t=1790860026; c=relaxed/simple;
+	bh=hV3l5aKp+inai970W/w7ZcfCEh+Y4NSyjMYaLLuFvac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQX+l2ChxEAL0XYDe6/xLXSe7Nd/ksWYcypDu3Hu8VEV6oKDMs48BKnmHnWr9kVwpgIg9IEj09AXjxVcqBq/Lz3K0zuyXad6gUj/37G/N+eixxLCYCI/JFvn7kVtGi3tmin80g/ruzfiMmKHbkQemMVwvNwHkNj4Bh9zWIsnHOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=Yi7pR69b; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	 MIME-Version; b=dNlLv/UxJNp43U+Ojtqlbrk/TdU8hRikd6ntGFCcn0nPRFu6a1c0BWM/sgOblJg9hGvassLY//sCgD0WJFGDIUbiK+7XRkuHJ3uBbvrIpRXSI6hxXZmwn9aYRuRwJhtpt7vucfpuIIyOQDm7z3m1MXoFjInh6dZu1Oe4LskzCTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNtpG/vF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="Yi7pR69b"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d822dso48147275e9.2
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 06:02:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1790859771; x=1791464571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1xKReKDjBhMU66Cilkw+V7uGPo4uWsfjAVCm4Sm3gd0=;
-        b=Yi7pR69bSHhaf7F+0ED3BLO8Obo+ScHZCSD2uiChDrRVwI8Umm7nvrRp5DRgE/TW79
-         eCzpBMe3SiPNkvJ1Anbbtb3B7wo8jWA+uOtogre1zjf94HImEFIzqSbhB5qmocNsi8uO
-         eaB4XowaGTDd2VcQS9YBoBgRx8AJH61v56qESzqPxrcTj/hznQyfaWHtH1dLcbn4gre3
-         IcHg2tyEhA0jmpusOVQQJYl59KJ877EPpP+v40/RXV6dRG2KLOVtFg00bN5Lz7UQTY6/
-         jVpnY2Imwp82N9GMg7djKRtcLXPXDrEl1tzI3G6Bs75epBgN/hcEVmwV7B1W6VjxSAEO
-         X5kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790859771; x=1791464571;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1xKReKDjBhMU66Cilkw+V7uGPo4uWsfjAVCm4Sm3gd0=;
-        b=Ryb600rDgk0FAQwdr+WurTAUc9ZpdTvCEUutPgTD8CpmMw2DtCrIS5zAMZkn3rxbg2
-         gy/yCUbjVprPds4bXUOGLK0Cn3uNcWkG6rf/vjq3de4LqJCWNKXTDsOJccl/6WDGlXto
-         MzkXE3Tb/HXj5lLzPaNoyFceeN7092dfL+CA1214Lxp8A3dctzLLGsJ2Z+NafVtCf9Dx
-         MbaNcKCshMs+9htqU9p7SbBO6wuugPxhhUpAOtvMz2ifge2lTTh8Zno6cdopzxYT7ZgB
-         TfCcoG22xQpBk/30KWwoBWRbH0tcNubesJTLU6llnYqf9rJ8tXMrP+EtBJs6S03QwQPM
-         AHtQ==
-X-Gm-Message-State: AFuF++lpnn90tlTA7NxMLjTzYUTjg25c0xIVIytdJBpt/5E0ECwY1D1I
-	JCJGGl0u1fst/P+mnVKvlR+ZEzsmxdQQEHHrp1EUC8huQfgKeyTDi6ShUEMyVBSzuXHhJSCDTeB
-	fBblHd3XLjwpzFGs=
-X-Gm-Gg: AYBFou33N4Yoj7Ws0X1/BvLOQTMjv67n1j6rtea6lke+zULbIPcQX47fAN4Fj039e5K
-	KY/Km1PQHYJiLNx3FxS2Kdhix3dewEIpjT5er64LI+sSJBwZPRgKe5iuXIwTbngWCi+tGrsOz76
-	U0hVyvq4jl+fLpGQtkTApmZhPtYGFvwjrt/6wk3uafZLh/DpBYrDoujoEVZKMMS44yeiGdbfwDc
-	Z1voNSCHFiupg85zA/JdG6naZRp21Sv/+pKOCK+0zlMw4/Nwg2JtdA+Zih/Fq0WoVumu9mxjhlE
-	KDo7UXgEPyuad0Hn1ZSc4sd2K5wvr84Aa6J4XnDFvhtR1S4TYDMwx2Z8HENRw8t3QQGjD5H/k40
-	RONzZuVTU3pqMGMLVsIZlqO0OHQ2OwpJMoA6sy2Sssgu/3CBDjRwqCDE5wtN1lCKA1VyafSI9Wf
-	HG5eNh5JIs5I8CH9hUYA+kakbDR/tK6NGnQ9JmPAZCXLIk4j9hCg==
-X-Received: by 2002:a05:600c:638d:b0:4a0:21b9:a55c with SMTP id 5b1f17b1804b1-4a021b9a5f4mr37206285e9.29.1790859769574;
-        Thu, 01 Oct 2026 06:02:49 -0700 (PDT)
-Received: from remote-01 ([84.17.55.224])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f913ecesm48051775e9.2.2026.10.01.06.02.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 06:02:48 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNtpG/vF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF23F1F000FF;
+	Thu,  1 Oct 2026 13:07:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790860025;
+	bh=AfSVUT+UhXA8LWZczVWVBm06UfetFfTzo7Ie9vpO6Y4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lNtpG/vFtFFjRXuH3iuqmrbjSGEH+tZfadODqGoJS0WCSFssmAisDwMV+oybIqYJ9
+	 Qsxqtcc7iz80+Noxd7hf81kyLEdMECtzvxJVugJyst26GtVGSWDt8PZaQ7UMKmBeZ3
+	 kSFhDOnvFzq0qhM94ySyL7kyr4MUZ2psQDpVbinIWzkuhoXT7WW6OS1OaDFe/v7kay
+	 DYefKdKNrW6ce94n7ojeXHNe9wc+otbvtaqukGIOv0mNMQQwnT+nBW7hKlzUtRvWFt
+	 paaNkALSsQREXcfe3IkoLsOnmlVp02uhP+OrW15NslvNzqdHy2FGUzGEvOv2RWcVLF
+	 Mbwj2atGyTHXw==
+From: Simon Horman <horms@kernel.org>
+To: han.junyang@zte.com.cn
+Cc: Simon Horman <horms@kernel.org>,
 	andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
 	davem@davemloft.net,
-	edumazet@kernel.org,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
-	olteanv@gmail.com,
-	Thangaraj.S@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	steve.glendinning@shawell.net,
-	f.fainelli@gmail.com,
-	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net v13 4/4] net: phy: restore the interrupt when the generic bind cycle fails
-Date: Thu,  1 Oct 2026 16:02:36 +0300
-Message-ID: <20261001130236.106059-5-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261001130236.106059-1-f@lex.la>
-References: <20261001130236.106059-1-f@lex.la>
+	netdev@vger.kernel.org,
+	ran.ming@zte.com.cn,
+	han.chengfei@zte.com.cn,
+	zhang.yanze@zte.com.cn
+Subject: Re: [PATCH net-next v4 1/3] dinghai: add firmware version check and RISC-V readiness polling
+Date: Thu,  1 Oct 2026 14:06:52 +0100
+Message-ID: <20261001130652.1038851-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <202609282024273579VUWteKdnnbvWlyjERLQ-@zte.com.cn>
+References: <202609282024273579VUWteKdnnbvWlyjERLQ-@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,61 +53,124 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When phy_attach_direct() binds the generic driver itself and the bind
-fails, the PHY is left with polling in place of its interrupt.
-phy_probe() has already replaced phydev->irq with PHY_POLL by then. The
-unwind does not go through phy_detach(), so the restore there does not
-run, and a later attach finds a PHY that can only be polled.
-
-Found on a Keenetic KN-1012 while adding the restore in phy_detach(),
-as the other way out of the same bind cycle.
-
-Save the interrupt number on entry and put it back on the error path.
-The bus table is not the right source here. The same label is reached
-when a second attach of a PHY already attached through the generic
-driver fails, and there the field is live. The table also misses a
-PHY_MAC_INTERRUPT that a MAC wrote into phydev->irq.
-
-Tested on the KN-1012 with a 6.18 distribution kernel and an injected
-failure of the generic probe: phydev->irq reads 15 afterwards, and -1
-with only the restore in phy_detach().
-
-Fixes: 6d9f66ac7fec ("net: phy: Fix PHY module checks and NULL deref in phy_attach_direct()")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/#/patchset/202609282024273579VUWteKdnnbvWlyjERLQ-@zte.com.cn?part=1
 ---
+dinghai: add firmware version check and RISC-V readiness polling
 
-Notes:
-    v13: the commit message says who binds the generic driver, and which
-    second attach reaches the label. No code change.
-    
-    The Fixes: tag differs from patch 3 because 6d9f66ac7fec split this
-    failure off the label that calls phy_detach(). The failure was injected
-    with a debug-only module parameter, once for one MDIO address.
+The commit adds firmware version checks and a polling mechanism for RISC-V
+readiness on DingHai devices. It maps a compatibility block and a health
+buffer in BAR 0 to verify driver and firmware compatibility and wait for
+power-on status.
 
- drivers/net/phy/phy_device.c | 2 ++
- 1 file changed, 2 insertions(+)
+> diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
+> --- a/drivers/net/ethernet/zte/dinghai/en_pf.c
+> +++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
+[ ... ]
+> @@ -369,6 +371,120 @@ int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev)
+[ ... ]
+> +static int zxdh_pf_fw_compat_check(struct zxdh_core_dev *zxdh_dev)
+> +{
+> +	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
+> +	struct zxdh_fw_compat __iomem *compat;
+> +	struct zxdh_fw_compat *fw_compat;
+> +	bool ready;
+> +	int err;
+> +
+> +	fw_compat = &pf_dev->fw_compat;
+> +	compat = pf_dev->pci_ioremap_addr[0] + ZXDH_FW_COMPAT_OFFSET;
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index a9c71a286118..8bfb154402ad 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1755,6 +1755,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 	struct mii_bus *bus = phydev->mdio.bus;
- 	struct device *d = &phydev->mdio.dev;
- 	struct module *ndev_owner = NULL;
-+	int irq = phydev->irq;
- 	int err;
- 
- 	/* For Ethernet device drivers that register their own MDIO bus, we
-@@ -1896,6 +1897,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 
- error_module_put:
- 	module_put(d->driver->owner);
-+	phydev->irq = irq;
- 	phydev->is_genphy_driven = 0;
- 	d->driver = NULL;
- error_put_device:
--- 
-2.53.0
+[Severity: High]
+Does this code verify the BAR length before calculating offsets into BAR 0?
 
+The driver computes fixed offsets into BAR 0 (ZXDH_FW_COMPAT_OFFSET at 0x5400,
+and later ZXDH_RISCV_HB_OFFSET at 0x5300) without validating that the reported
+BAR length is large enough.
+
+If a malformed PCI device, emulated device, or corrupt PCI configuration space
+presents a BAR smaller than 0x5400 plus the size of the structure, can this lead
+to an out-of-bounds MMIO read and page fault during probe?
+
+> +
+> +	/* The firmware publishes the block within 10 s of boot; wait twice
+> +	 * that to leave margin.
+> +	 */
+> +	err = readx_poll_timeout(zxdh_pf_fw_compat_ready, compat, ready,
+> +				 ready, USEC_PER_SEC,
+> +				 ZXDH_FW_COMPAT_TIMEOUT_SEC * USEC_PER_SEC);
+
+[Severity: High]
+Is there a performance regression here where this loop forces an unconditional
+20-second delay on legacy firmware?
+
+If the driver probes legacy hardware that predates the compatibility region,
+the region permanently contains the erased pattern (0xFF). Since legacy
+firmware never writes to this region, zxdh_pf_fw_compat_ready() will not see
+the fields lose their 0xFF values, meaning the loop waits for the entire
+timeout before proceeding.
+
+Could this delay severely degrade system boot or module load times?
+
+[Severity: Low]
+Are we passing 1,000,000 microseconds to usleep_range() in this macro?
+
+The readx_poll_timeout macro expands to use usleep_range() for its sleep
+intervals. Passing USEC_PER_SEC exceeds the recommended 20ms maximum for
+usleep_range(), exhausting hrtimers unnecessarily.
+
+Would it be better to use a smaller polling interval (e.g., 20ms) or a macro
+that utilizes msleep() to avoid this timer regression?
+
+> +	if (err)
+> +		dev_info(zxdh_dev->device,
+> +			 "compat region not populated, assuming legacy firmware\n");
+> +
+> +	/* Firmware predating the compatibility region keeps the erased
+> +	 * pattern, which fails the module id check below and defers the
+> +	 * decision to the readiness wait.
+> +	 */
+> +	fw_compat->module_id = ioread8(&compat->module_id);
+> +	fw_compat->major = ioread8(&compat->major);
+> +	fw_compat->fw_minor = ioread8(&compat->fw_minor);
+> +	fw_compat->drv_minor = ioread8(&compat->drv_minor);
+> +	fw_compat->patch = ioread16(&compat->patch);
+> +
+> +	if (fw_compat->module_id != ZXDH_MODULE_ID) {
+> +		dev_info(zxdh_dev->device,
+> +			 "unknown module id %u, skip fw compat check\n",
+> +			 fw_compat->module_id);
+> +		/* Unknown firmware is treated as predating the HPIRQ
+> +		 * patch, so that the readiness wait is skipped.
+> +		 */
+> +		fw_compat->patch = 0;
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+Could this logic incorrectly return success for a dead or physically removed
+PCI device?
+
+If a PCI device experiences a bus error or is disconnected, reading its MMIO
+registers typically returns an all-ones value (0xFF). Here, an all-ones read
+causes module_id to equal 255.
+
+Since the driver treats this as legacy firmware, it skips the compatibility
+check. Later, in zxdh_pf_wait_riscv_ready(), a health_version of 255 is also
+allowed to skip synchronization, leading to a successful probe.
+
+Does the driver need a check to distinguish between actual legacy firmware and
+a broken PCIe link?
+
+[ ... ]
+> +static int zxdh_pf_wait_riscv_ready(struct zxdh_core_dev *zxdh_dev)
+> +{
+[ ... ]
+> +	err = readx_poll_timeout(ioread8, &hb->riscv_power_on, power_on,
+> +				 power_on == 1, USEC_PER_SEC,
+> +				 ZXDH_RISCV_READY_TIMEOUT_SEC * USEC_PER_SEC);
+
+[Severity: Low]
+This is another instance of passing 1,000,000 microseconds to usleep_range()
+via readx_poll_timeout. Should this use a smaller sleep interval or an
+msleep()-backed polling macro?
