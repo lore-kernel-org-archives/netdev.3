@@ -1,65 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3A937757A;
-	Thu,  1 Oct 2026 23:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D233470EA8
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 23:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790896206; cv=none; b=X34QemwMKC4AwzNLhQAy9uIh9xcH8v+pY4r3866f+qRy0BhVh17Seuv4hVohDTe+xoKJoHo/PvqKi8Ic3y8LDdAg9UVUK3r+F/NtdkeswoXoMyCB74fZgW6W5yEvgaeTUAKVFDXOPbz1kUSn0QetmgJwIc+Trb/xrNEmwm6+en8=
+	t=1790896209; cv=none; b=LQD83vYzdr5DgQ5r7wYAzJaImyBH+50c951SA3peks7IQA9OnSo1HHvyrG35MdBNxcfCTSd/KQmVVwGbKdDksbRLI/rQ0cGclnkdbyFiipDbZ4+tQRZoXZgp2nLVESUreBilBQZ0wIcIXpCgywRZRoCjYfapMts4gxku+M1qvoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790896206; c=relaxed/simple;
-	bh=z87w8MoZ+Qn6OBvig5boJ6C9unMCjs36MFif1Xp4Kg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kBDUWHffmD4LRh7s4qZ7YmY9sWW/dRJ7vQWE2LVjfwBEH2fFephJmXBkQM6TUGsSq/V6bO4jDYf4gNEFEVk9/K52pljCMyyrx9pjmHEhRNVHK5Z0msCaza+9nC7wdTNpwa1OTOdCEtERHzyXOB2SXvuI0Hs+kTYBD820RNrFIv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOIGjTeO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790896209; c=relaxed/simple;
+	bh=bLsbL1XkVswQie1vxmmiYjTxSco6eYYDyrQ2drvERUE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EutfnM4THjDmHM0V0NbJkwWJI02glkBlqyecx5sh23m81JKGsMQELgRuIU9xJoOIefr5UE6h/T/cqYNgua5YOITceiGZq+AXBDFXEr1O2Op+E+Z6AdWaIp0gMd8xb4Sz0dSRTBY7W3P1HHBBmVtlApGCocW1mD2IPqu9d+UV804=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WgD5e6C3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOIGjTeO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405061F000FF;
-	Thu,  1 Oct 2026 23:09:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WgD5e6C3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080911F000FF;
+	Thu,  1 Oct 2026 23:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790896199;
-	bh=44WkaQv27G9pRjfZNgJv3aHgXLvLm0g/fnbEbxkv8nE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NOIGjTeOgvMbXXAfh1ffs10D9b52ZHW8fKCA9pYW2nLOIde6PpjaQhXEtAFCfQGS7
-	 OkH6fOnirrdG93bG+OZIi/CE4DOaiToMPh+QubVAri2bSXwPelcGTEpYPVJPgi1ArA
-	 oEsg2tigT3qVeEeZnAXaRfnKMYC14BYXwPx+jukxtykGg/4O2S6mVWHbUf2rQ4xxVK
-	 JMlP+KeXbL4QJt1TGVYuHzizkEJy8q8dFXqE1+jfonjO5U088B2OzTCuDJfI1VaywH
-	 c/YwoEHvDXPQuBN5o/rIqzqzTXYDQ18GYGpUtUscvw8uTLwR0pO2OZdkVcIivu/mqd
-	 +pSNEU0YF9+LA==
-Date: Thu, 1 Oct 2026 16:09:58 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- co+2cf741c3005abc20@bugs.sh, Xiang Mei <xmei5@asu.edu>
-Subject: Re: [PATCH net v2 0/2] net: team: fix transmit skb ownership
-Message-ID: <20261001160958.00a95918@kernel.org>
-In-Reply-To: <20261001182326.572045-1-bestswngs@gmail.com>
-References: <20260926090039.1714460-1-bestswngs@gmail.com>
-	<20261001182326.572045-1-bestswngs@gmail.com>
+	s=k20260515; t=1790896208;
+	bh=jYjG3jjmQl7MkXQdcDTd4nQc+AvoJ033O9MYPxZmAqE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=WgD5e6C37s5AOSTRNSwUPDg4UklkoJc5VFAGqPTsJchaspU3XnVi78uUvEE0XXwLb
+	 RUooSpv8ZS1bt4YW3B/G/q/sEISARU7MdpV5hNzzZmsdRSUZT8tAurhi5dyu6Lt4N4
+	 inH1GxzLq6yUZ9xRHHLCpzj8dGhEXmggaS0NX3wN0mnOJcOe8H80F5Awp7LEgmxg/t
+	 YZzJvTaLutMB579/LjNBh2dNo0n4+wT81Pp3z36LnLSHoojHhtujrzav1uO153HJ+O
+	 0yPE5G6WtqLw4kN+nzb45tXkvt1QZlm2MyfXnao8fMkOXRc0j1lYlnJnnrvcmFesU/
+	 jfuAYSZS1J3Tw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1619381197C;
+	Thu,  1 Oct 2026 23:10:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] ibmveth: fix open-fail unwind after LAN
+ registration
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179089620655.3133874.6118634077996472369.git-patchwork-notify@kernel.org>
+Date: Thu, 01 Oct 2026 23:10:06 +0000
+References: <cover.1790357373.git.mmc@linux.ibm.com>
+In-Reply-To: <cover.1790357373.git.mmc@linux.ibm.com>
+To: mingming cao <mmc@linux.ibm.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, davemarq@linux.ibm.com,
+ bjking1@linux.ibm.com, shaik.abdulla1@ibm.com
 
-On Fri,  2 Oct 2026 02:23:24 +0800 Weiming Shi wrote:
-> The queue override path can pass an skb to a lower device, see that
-> dev_queue_xmit() returned a drop, and then reuse the consumed skb. Fix
-> the handoff decision separately from the transmit result.
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 25 Sep 2026 11:05:28 -0700 you wrote:
+> Hi,
 > 
-> An AI-generated review of v1 forwarded by Jakub identified a separate
-> broadcast-mode leak: bc_transmit() returns without consuming the skb
-> when no port is txable. Fix that in the second patch.
+> ibmveth_open() has two independent unwind holes after the logical LAN
+> is set up. Neither needs the MQ RX series. This posting is against
+> current net.git.
+> 
+> Patch 1 issues h_free_logical_lan() on every post-register failure.
+> A pool allocation failure jumped to out_free_buffer_pools without
+> the hypercall, so PHYP still owned the buffer-list page when it was
+> unmapped. request_irq() failure already issued H_FREE before taking
+> the same label.
+> 
+> [...]
 
-Do not repost just for this but, please, DO NOT post new revisions in
-reply to old ones.
+Here is the summary with links:
+  - [net,1/2] ibmveth: h_free logical LAN on open-fail after register
+    https://git.kernel.org/netdev/net/c/af0524bf4ce1
+  - [net,2/2] ibmveth: fix TX LTB and filter unwind on open-fail
+    https://git.kernel.org/netdev/net/c/84bec0bf0352
 
-See https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
+You are awesome, thank you!
 -- 
-pv-bot: threaded
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
