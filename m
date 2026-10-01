@@ -1,146 +1,350 @@
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013022.outbound.protection.outlook.com [40.93.201.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D5737A831;
-	Thu,  1 Oct 2026 14:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.201.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790863814; cv=fail; b=LD0nuMGxpCLjF1tXb4w/h6tO40DnIx0qK5fjiWs90SW2oJxIvJcEJNnkowT7FaDjo0dnP1BzmjdmH+H++nR/WHoAMd1+Ay2kNUu/mq5kJOT940MZthgvPkE90aJCniLRL173Qw8J1/GF3ytCuVxXeHuyVlK4JFwwF0un6sCnuoE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790863814; c=relaxed/simple;
-	bh=ZhWyuPP1cQVlj4FKWkJ/K9LZmpYso2yl8et7lx71TTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kCWr0r6ZGzc2NkubhmflZ6QuQS3zSpcO/UBp2VU/vqgn5ddDBJ0UhjaebCqj9uGydSMNTpfb6F6I7P0X6MEmQUNUw0bgXe3Td2JK8E0tUNjKFwkNN+hvF/K/FCNWGfKxyYy8NSgcMJV3QKnUvSZupR0sgMoIXBEyaCN1OYS9aIQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KW1mICqF; arc=fail smtp.client-ip=40.93.201.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D5B50AC30
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 14:10:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790863841; cv=none; b=JRwRgeEi+SwdcLLr6h/r5TC8l9nW3L+N/J8ZV3VUIF/Z6B/mcIBs8MUU52JkPl0Qq8KtYjsEtuC9kVf7W9oT9AuWNj8f41dnYnTp896kGnTNWe0bcznWhzPCJsq+DIHfVDjCYJgmbvLSHG5GenVjujCEMjkWQSCKbIfC20lUOJs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790863841; c=relaxed/simple;
+	bh=oIjOCPTu2HtY4d7k3pXz8j9lOGASdj93oaTY7yym51s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bYrmOlyB9U8nj3kctxpnAEswpb9VKVEI7d9eDGGYp7e+UbkYJDp5zTpRZrdi610RsBbS8Nv6FOhdU1/OOYOe9XV3wndYMOzM0OTKDO6XhBpxThqQbn5Q16xdeTg4FOOFkfwfvgOFwDdLiFeokQzViAhZfuRcz6UwoGWLaSoW1jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kr/Ycv4X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KW1mICqF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uOJos4ionIQ0FXxo+e2qtS2TDljHRjnrP7D7V1z0KCuk2ddG/h155NDdP1zTm02nObaMlahTFDOCVJPwqDc+x8WLUPKy3sgEJ534G+kFAPi2uE5CTWd9mtgq49rjKAJF13HuBhSt9KdSSwGPVgKT3pQALTLlmaabG6jlgBW6q3UVmrrVG7CEUb4vOUggkvVVu3FhEUl0KLwaJM/dx7WiWeIIxJo9bvGp8ZEOtB0rC90DkJpU6kAM3FPM4ODyvKRplMtUKsI3dA5csTw9VcebwnwYeYV6ssxWEguW/ENB8hgmpWgIutwjKYgyxFpC8XObL50DO05doVNfPdZ089hPiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c+CdleMGgSJMIRIJZR1skoYx75Co74eOfctxV4n4E2U=;
- b=xU1YuZKqxS8UMMbfzpACCoLi5pEYNOjRoarFK28SFqJVxGuAI8nwVgDFKWVXW8UiMBd4W8/bLJb2td7DKCvMe9/PNmUDx1xqxTxjrVeYr7fRSbg3aEzjc+3ayJqr59xp85/a9DhODJXNBiNtAuhC6nj6hzMgIC9YdXwbWrDIz8acMEcW3Kef3opKE+MuwBSMC8AHfo/RZnq6Oa/9q5RJkVJX98N+905gZe188oadhJOcZIirhxQv9v4E+X3LdZBjxmEzBX3MAAjxrRUOKqeNV0ck4fGKjwjH0VdBBaXqMAcG+FT232pWcHz2oHjDsuHff/OLm2hzvuqfuWuQF5tRGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c+CdleMGgSJMIRIJZR1skoYx75Co74eOfctxV4n4E2U=;
- b=KW1mICqF44CQ048Dhgug54qXsw4jxLkTurBRbVnHQi8eRycD2GLhYqba5OjcoTEbZ6Ow1nrIWg0n25bU5/rUicIAJu+wMOgyUw4QqnmTlwQN94Z3B9ejNLLoGBFiK7bUyjR8WMvqdjgwC1QMvtC6kxYdnsvxDZR5ldix1h0u905O5zAV9DxGktlBTBERkVST1rj2FJMdGnPcwAc5PDj8ro05AfORzLwBxky2m5ct/ATEgaXjpPenzuHubGs0LCfv1j9h69mjHOT7vQX9wZloQuuYtAy6Z4nq9Uvathv7TDoNlTJOfIpEy1dM1TPPyXeY+OpnETqbtqbxjllJtJu4lA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by MW6PR12MB8866.namprd12.prod.outlook.com (2603:10b6:303:24c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Thu, 1 Oct
- 2026 14:10:07 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Thu, 1 Oct 2026
- 14:10:07 +0000
-Date: Thu, 1 Oct 2026 17:09:54 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net-next v3 1/6] net: lwtunnel: change encap fill order
-Message-ID: <20261001140954.GA1574391@shredder>
-References: <20260930-ynl_rt_encap-v3-0-4106c21b9ee7@kylinos.cn>
- <20260930-ynl_rt_encap-v3-1-4106c21b9ee7@kylinos.cn>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930-ynl_rt_encap-v3-1-4106c21b9ee7@kylinos.cn>
-X-ClientProxiedBy: FR4P281CA0095.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cb::6) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kr/Ycv4X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8C71F000FF;
+	Thu,  1 Oct 2026 14:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790863839;
+	bh=VyPfWY5hTRBT6abnFinLMCKDwK6KvouaYEQFXqFjvKc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kr/Ycv4Xlq0gfqn8v/8CctMcGaVpDU4SKoOsLd+lANyG5o0MUj7KsJtUwlgi5y5yZ
+	 fvYyd4ldG891dFQTuuHx4U376x+tgKu1nYfKVoH9RNedL19Ijbv5Uy2/b8JCc2nN8q
+	 HlrHOB2ZP3WiLYwheIRQ5BgXy5TwwS4XtpuAfd8wfuN3If4JhHGwy1VIe27xYD9Biw
+	 C5BI0HWgCOrWjuhmmd+DhOur0yCWrG0yhubv8GB3gXUcw+0FDjJMme576qCZlnqx9t
+	 6L8J5fh2q7HYA+/2k3gSs03Tkba2r6DwgI/Z4YaihGNF7mLOwrpCZcGdLlQVVQWAYl
+	 rBFbysJS+og0A==
+Subject:
+ Re: [PATCH net v3 1/3] tun: keep a kernel copy of the socket filter program
+From: netdev-bot+sashiko@kernel.org
+To: clementwei90@163.com
+Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
+ jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, weirongguang@kylinos.cn
+Date: Thu, 01 Oct 2026 14:10:39 +0000
+Message-ID: <179086383901.434549.6742700086527768803@kernel.org>
+In-Reply-To: <20260930080746.135017-2-clementwei90@163.com>
+References: <20260930080746.135017-2-clementwei90@163.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MW6PR12MB8866:EE_
-X-MS-Office365-Filtering-Correlation-Id: c95c3119-1c10-439b-2de3-08df1fc5b296
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|23010399003|366016|4143699003|56012099006|11063799006|3023799007|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	2OQnRm+/ErIiKgwQp5sQS60O/PF4cYybRxZTThSvr0znuUWRFR6h+125WPd3UZKLEX0dOoPuFABhsLnFq7nb1z+bbORFmIHMnx9bZe+nNEsiEDovyrvlv8UwN+xtJxtRRh4XIprEfmi3vODYEbx3lrtj6qJoBQHt5NXF8a08O95SygG1LN+Htreo6Z+7sr/ZUMYxtxhFh2ULOU/mAodjOmS9vPiS7v1Cj26UoZt4JoMtoHNQ3u+LWyZl9n7Z3z8g/Vz/3xJUkFqYOJFxNaQ32sXEn/a8mN20RnQ8MLwVSVNaxXT7i9OPswgUPtnn8g3HKSRLllskOD4Ff6ZinAWYR+ZRecP1z+qdE2wAe4YrWliFrptA0Pcx3+ZLjmYmVsFn4wCaWbtLX0Alf/sBIYomT0Bkk6ozkO3pW6rz+V+DJrrRd/rqcH4NuWLMuqDi8mCre6cqi7AyayC+IM//fy1foVVlpomPiGGrRvgpjBe6FPElU8ZdAvNBS4/ECdgUC1QsmAbuFv0IH4oICr/0vAe4gftViuk7jkTbTc0JSvD5E7msoaHx8yQoj1+hoB2pDOqP8eeVg1flNCC+lY/n4oUPoZ5lQh7FfNM6iyB//FlROsDLP9Il+uKuFSQQxmLfUDOTUicOMC9M9CqiZXGZCZY8oqt9twf93MegVil0X9JPabU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(23010399003)(366016)(4143699003)(56012099006)(11063799006)(3023799007)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?IX40ZVGNMi1JCoU4Kfq87SD4kS6ezsLhAhRLr2NO/OHr0d57ZVLsTm/pygJf?=
- =?us-ascii?Q?6xOzRUgAoMaRsW0bxQn1l/OX6xInzX2D9pqgfD1H1fT3ReHV9RoLOwcIYQG1?=
- =?us-ascii?Q?2AQilcGONOWqiQTyw1U3EpOW/om5eZXtS4xKItwBW7dS9/xmFF8B1YlZoKVX?=
- =?us-ascii?Q?ecgEmWR1IXmxaMjSctkTRvFJId7Sr7/aBRJlxFF1tp9znX1eNdpVrnySwLpW?=
- =?us-ascii?Q?kyOhRBOqpfEKHiqbSRg4fUIBEu6ErkzDwvK2oPW8+I0nshz+M74mGecSxlJZ?=
- =?us-ascii?Q?Y8K0zenErohROHvLCfUAzgAfUT+JfnLiIseETaoIv9GriY0T8Ln88r+8XV4v?=
- =?us-ascii?Q?Wg5GiFLv4Ez+SDUcOw4sywYCwR3P0fcq42eSFWu4KFPBszVPLleBWrE8AJAz?=
- =?us-ascii?Q?lFIAlA5eN1T9ibivyrDJCSIt1h3yxcSEkoqnuKPGceOzTiBuJfH46UKRFSGq?=
- =?us-ascii?Q?Twb69YHp/QWNKDyFUPF8HpGynLcDz8T2VW3EhjrV+mzaUpOesLpvO0qK47jy?=
- =?us-ascii?Q?sGXQTyQpbNFeHVWbdv6Bw7h9Yf5F4EJfkYpsj3LyMZRWTogQdypWUG4Svcx4?=
- =?us-ascii?Q?tdh0NRCOqUBjMJs1IntFricbU1nK+1HbIUtCs3JYawD8HKemZmN2ccmhFjOe?=
- =?us-ascii?Q?HbjA4xd3WAmIMNlyHAVa5C409hUL7tOa4VDRaZFM2NpY4YQGCMlKd969TM1v?=
- =?us-ascii?Q?ZwvTmU9J10UJOMsvT1YETZdb7ygwyGmLsLmrU9lTKTHUcxjeGyOCEwiAdJd5?=
- =?us-ascii?Q?GeORC8rKrhnb7BVC0cUbPm6s9YnFg800OjOFVUPi4WlGxzbZJK5Wxb5sxraS?=
- =?us-ascii?Q?8o0+8XnX9QungsED8fgvtEb7i4F8UWHt5Dj8gRIWjzhD7M8ktK6yPgRkyYQN?=
- =?us-ascii?Q?9jghbOJD6V+C6Y+87rWf0pctLqTiBKFYKolAIgeWKvCXs3zvMlRi4LOLyEYE?=
- =?us-ascii?Q?kRj4bCBdahgUQy39d6NkUhlr7eGNMljBCL0+bA5Xdk0oOfpctVLefq1Ym9W7?=
- =?us-ascii?Q?Ib1jhRBNwIABWf7aqdZ3tKEhdz1oYneRzUFtDaYYfoBFklf8ybjmujcvil/R?=
- =?us-ascii?Q?DLAXZ882WPY42uRaQWyDUm4kHlNz0L4V8DvwF6q/luyvammSHu/dQBH1HPqN?=
- =?us-ascii?Q?yXuWyyDHIsa8udhoX9OvAmh4czPvp0KHKMHbFnVjeh4k5cv7OCbNfZhhUXMD?=
- =?us-ascii?Q?IU6bQgpB3qCuzwmFpbcCMbdx9y5nI17cu+p/eICpE6/jQENu2IVOPWLhyuxm?=
- =?us-ascii?Q?1aV/cr/HfMwJH5kCK95dibByaoB2w92wKCh9PY77A+yBNvGbgOopZvjQbj3U?=
- =?us-ascii?Q?ETOrmpduMfejEhOLAgZczgIky3RTpSgrocSR6TKkkwqC3A+JKPzdW6bD/Xv0?=
- =?us-ascii?Q?2CJ/9fVLycMHySRgGtOU8u2zYQi6Hi8UIXu4jjOM/d5tZ5Ob4DHtXVscW7Y6?=
- =?us-ascii?Q?WeeGqrm0DV+rsksDpEhGT21QaTlejj1sP69FnteZFoaQGBANO0vGse3ilRCh?=
- =?us-ascii?Q?FFQ7rBbHuUaMKFf7WcuAUTgW4jEQKtuse8Oh4/OGLSs/cCDgkItOVyU3Qd2S?=
- =?us-ascii?Q?JT5a2OuGpiQfVTrn4Xb77YjeWqPup7m/5OOjYKD0DBRKy28YnmxryC58t5d/?=
- =?us-ascii?Q?1pdBLr3e4NGE78E1sCklaMeb0y5ZeUvAJdwjupdndykBiIOyr7vYKUlcNFrA?=
- =?us-ascii?Q?njc+Utz87Chmuk5nMDHr5Ss3jczp39BU9/9O71qgCmasthBuzF0RueNS1dFf?=
- =?us-ascii?Q?us3b0ytGPw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c95c3119-1c10-439b-2de3-08df1fc5b296
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 14:10:07.6225
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: isXl0h48ljhEKg3rMgOtSnoHqXfSzCm7VY4+slFNCapXpOaSCVmPPburph6SEB2+ts0Bcy4BkBABx1EhLjBXpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8866
 
-On Wed, Sep 30, 2026 at 09:50:52AM +0800, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> I plan to add lwtunnel encap attributes to the YNL rt-route.yaml spec.
-> When decoding submessages, YNL expects to read the "selector" (encap-type)
-> first. Currently lwtunnel writes the encap payload first, which makes YNL
-> fail to parse the lwtunnel encap message.
-> 
-> Fixing this within YNL itself would be complicated. Instead, reorder the
-> netlink attributes in the kernel to output encap_type first.
-> 
-> This is a preparatory change for the upcoming rt-route spec updates.
-> 
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Critical: 0 · High: 1 · Medium: 0 (2) · Low: 3 (1)
 
-In case the bots will complain: It's OK not to trim the type attribute
-upon fill_encap() failure given that the callers cancel the entire
-message.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] After this patch alone, tun_attach() in drivers/net/tun.c still
+  has the inverted check `if (!err) goto out;` right after `err =…
+- [Low] The commit message gets both the old failure mode and the new
+  helper's semantics wrong.
+- [Low] The new exported helper sk_attach_filter_kern()
+  (net/core/filter.c) builds the program with bpf_prog_create() and then…
+- [Low] The new comment above tun_copy_filter()
+  (drivers/net/tun.c:726-729) says the kernel copy lets the filter "be…
+
+Pre-existing issues:
+- [Medium] tun has no compat translation for the classic filter ioctls.
+- [Medium] If TUNATTACHFILTER replaces an attached filter and
+  sk_attach_filter_kern() fails on queue i (for example -ENOMEM from…
+- [Low] When TUNATTACHFILTER is issued while tun->numqueues == 0, the
+  classic BPF program is stored without ever being validated.
+
+--
+
+tun: keep a kernel copy of the socket filter program
+
+This patch changes TUNATTACHFILTER to copy the classic BPF instructions
+into tun->fprog_kern. Before, only the sock_fprog header was stored, and
+it pointed into the ioctl caller's address space. It also adds a new
+exported helper, sk_attach_filter_kern(), which builds and attaches a
+program from a kernel sock_fprog_kern, and tun_attach() and
+tun_attach_filter() now use it.
+
+Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
+
+> tun_attach() reads it again whenever a queue is attached to the
+> persistent device later on: unmapped there, the attach fails with -EFAULT;
+> mapped, whatever bytes it holds become the filter of the new queue.
+
+[Severity: Low]
+Is this an accurate description of the old behaviour? tun_attach() has an
+inverted "if (!err) goto out;", so an -EFAULT, or an -EINVAL caused by
+garbage bytes, falls through instead of failing the attach.
+
+For a new tfile, xdp_rxq_info_reg() and "err = 0" then overwrite err. So
+TUNSETIFF succeeds, the queue is attached, and no filter is installed.
+
+A successful read of mapped, valid bytes returns 0 without attaching the
+queue at all.
+
+The follow-up patch's message talks about "a re-attach that used to
+succeed without installing any filter". That seems to contradict this
+one.
+
+> sk_attach_filter_kern() reads no user buffer and attaches the program like
+> sk_attach_filter() does.
+
+Do the two really behave the same way? sk_attach_filter_kern() builds the
+program with bpf_prog_create(), which sets fp->orig_prog = NULL.
+sk_attach_filter() goes through __get_filter()->bpf_prog_store_orig_filter()
+instead. As a result, SO_GET_FILTER and sock_diag readback give different
+results depending on which helper attached the filter.
+
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 5a302709a68aa..22fb34e745bd9 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+
+[ ... ]
+
+> @@ -722,6 +723,34 @@ static void tun_force_wake_queue(struct tun_struct *tun,
+>  	spin_unlock_bh(&tfile->tx_ring.consumer_lock);
+>  }
+>  
+> +/* Copy the filter that @argp points at into the kernel, so that it can be
+> + * installed again later, from any context. tun->fprog and tun->fprog_kern
+> + * are updated only once the copy succeeded.
+> + */
+
+[Severity: Low]
+Is "from any context" accurate here? The only consumer,
+sk_attach_filter_kern(), needs sleepable process context and the socket
+lock:
+
+sk_attach_filter_kern()
+  bpf_prog_create()
+    bpf_prog_alloc()          <- GFP_KERNEL based allocation
+  __sk_attach_prog()
+    kmalloc_obj()             <- GFP_KERNEL
+    rcu_dereference_protected(..., lockdep_sock_is_held(sk))
+
+Was the intended meaning "from any process", or "independent of the ioctl
+caller's address space"?
+
+> +static int tun_copy_filter(struct tun_struct *tun, struct sock_fprog __user *argp)
+> +{
+> +	struct sock_fprog fprog;
+> +	struct sock_filter *insns;
+> +
+> +	if (copy_from_user(&fprog, argp, sizeof(fprog)))
+> +		return -EFAULT;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but tun has no compat handling
+for the classic filter ioctls. TUNATTACHFILTER, TUNDETACHFILTER and
+TUNGETFILTER encode sizeof(struct sock_fprog) in the command number. That
+size is 8 bytes for 32-bit userspace and 16 bytes natively, so the command
+numbers differ.
+
+tun_chr_compat_ioctl() only converts these:
+
+	case TUNSETIFF:
+	case TUNGETIFF:
+	case TUNSETTXFILTER:
+	case TUNGETSNDBUF:
+	case TUNSETSNDBUF:
+	case SIOCGIFHWADDR:
+	case SIOCSIFHWADDR:
+		arg = (unsigned long)compat_ptr(arg);
+		break;
+
+The compat filter commands therefore miss the native cases in
+__tun_chr_ioctl() and end up in tun_vnet_ioctl(), which returns -EINVAL.
+tun_copy_filter() is never reached with a compat layout. The result is
+that 32-bit userspace on a 64-bit kernel cannot use these ioctls.
+
+This copy is being rewritten anyway. Would it be worth adding compat
+command translation here, perhaps together with the compat-aware
+copy_bpf_fprog_from_user() that SO_ATTACH_FILTER uses?
+
+> +
+> +	if (!fprog.len || fprog.len > BPF_MAXINSNS)
+> +		return -EINVAL;
+
+[Severity: Low]
+This is a pre-existing issue, but only the length is checked before the
+program is committed to tun->fprog_kern. If TUNATTACHFILTER is issued
+while tun->numqueues == 0, does the program ever get validated?
+
+A multiqueue TAP reaches that state after TUNSETQUEUE(IFF_DETACH_QUEUE) on
+every queue. __tun_detach(tfile, false) lowers numqueues but keeps
+tfile->tun, so tun_get() still succeeds in __tun_chr_ioctl().
+
+In that case the loop in tun_attach_filter() runs zero times, and
+bpf_check_classic() (via bpf_prog_create()->bpf_prepare_filter()) never
+runs. filter_attached is still set to true and 0 is returned.
+
+After that, every tun_attach() fails in sk_attach_filter_kern() with
+-EINVAL until TUNDETACHFILTER. The old code had the same gap: it stored an
+unvalidated header when numqueues == 0.
+
+> +
+> +	insns = memdup_array_user(fprog.filter, fprog.len,
+> +				  sizeof(struct sock_filter));
+
+[ ... ]
+
+> @@ -752,7 +781,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>  	/* Re-attach the filter to persist device */
+>  	if (!skip_filter && (tun->filter_attached == true)) {
+>  		lock_sock(tfile->socket.sk);
+> -		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+> +		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+>  		release_sock(tfile->socket.sk);
+>  		if (!err)
+>  			goto out;
+
+[Severity: High]
+With only this patch applied, is the check after sk_attach_filter_kern()
+still inverted?
+
+The program is now built from a kernel copy, so the build succeeds for
+any valid program. On a persistent TAP with filter_attached set, TUNSETIFF
+without IFF_NOFILTER and TUNSETQUEUE(IFF_ATTACH_QUEUE) would then jump
+straight to out and return 0.
+
+That jump skips all of the following:
+
+  - ptr_ring_resize()
+  - the queue_index setup
+  - xdp_rxq registration
+  - sock_hold()/tun_napi_init() or tun_enable_queue()
+  - publishing tfile->tun and tun->tfiles[]
+  - the numqueues increment
+
+tun_set_iff() and tun_set_queue() report success, but the fd stays
+unattached, and later reads and writes fail with -EBADFD.
+
+The reverse also happens: when the build fails, the code falls through and
+attaches the queue with no filter.
+
+The next patch in the series, "tun: fix inverted error check when
+re-attaching the filter", changes this to "if (err) goto out;". It also
+adds a rollback_filter sk_detach_filter() on the later failure paths, so
+the code is correct at the end of the series.
+
+Could that fix be folded into this patch, or ordered before it? Otherwise
+a bisect can land on a kernel where re-attaching to a filtered persistent
+TAP silently does nothing.
+
+[ ... ]
+
+> @@ -3070,7 +3103,7 @@ static int tun_attach_filter(struct tun_struct *tun)
+>  	for (i = 0; i < tun->numqueues; i++) {
+>  		tfile = rtnl_dereference(tun->tfiles[i]);
+>  		lock_sock(tfile->socket.sk);
+> -		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+> +		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+>  		release_sock(tfile->socket.sk);
+>  		if (ret) {
+>  			tun_detach_filter(tun, i);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but what happens to the
+remaining queues in this case? TUNATTACHFILTER replaces an attached
+filter, and sk_attach_filter_kern() fails on queue i, for example with
+-ENOMEM from __sk_filter_charge() at the optmem limit.
+
+tun_detach_filter(tun, i) only detaches queues 0..i-1, then frees the new
+kernel copy and clears filter_attached. Queues i..numqueues-1 keep the
+previous sk_filter.
+
+The previous copy has already been freed in tun_copy_filter():
+
+	kfree(tun->fprog_kern.filter);
+	tun->fprog_kern.len = fprog.len;
+	tun->fprog_kern.filter = insns;
+	tun->fprog = fprog;
+
+So the old state can't be restored, and queues attached later get no
+filter. The device ends up with some queues unfiltered and others still
+using the old filter.
+
+The old code had the same prefix-only rollback, since it overwrote
+tun->fprog in place before attaching.
+
+[ ... ]
+
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 70dc621672f2e..64d6505a4ef23 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -1567,6 +1567,28 @@ int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk)
+>  }
+>  EXPORT_SYMBOL_GPL(sk_attach_filter);
+>  
+> +int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
+> +{
+> +	struct bpf_prog *prog;
+> +	int err;
+> +
+> +	if (sock_flag(sk, SOCK_FILTER_LOCKED))
+> +		return -EPERM;
+> +
+> +	err = bpf_prog_create(&prog, fprog);
+> +	if (err)
+> +		return err;
+> +
+> +	err = __sk_attach_prog(prog, sk);
+
+[Severity: Low]
+bpf_prog_create() is documented as creating an unattached filter, and it
+deliberately skips orig_prog:
+
+net/core/filter.c:bpf_prog_create() {
+	...
+	/* Since unattached filters are not copied back to user
+	 * space through sk_get_filter(), we do not need to hold
+	 * a copy here, and can spare us the work.
+	 */
+	fp->orig_prog = NULL;
+	...
+}
+
+This helper now attaches such a program to sk->sk_filter. Does
+sk_get_filter() then return -EACCES for these sockets?
+
+net/core/filter.c:sk_get_filter() {
+	...
+	ret = -EACCES;
+	fprog = filter->prog->orig_prog;
+	if (!fprog)
+		goto out;
+	...
+}
+
+sock_diag would also leave the filter out. sk_attach_filter() keeps
+orig_prog through bpf_prog_store_orig_filter().
+
+tun sockets can't reach SO_GET_FILTER today. However, this helper is
+exported and declared next to sk_attach_filter() in include/linux/filter.h.
+Should the difference be documented, or should orig_prog be stored here as
+well?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930080746.135017-1-clementwei90%40163.com
