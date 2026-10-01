@@ -1,270 +1,486 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E363264D2;
-	Thu,  1 Oct 2026 13:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC6828C009
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 13:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790860265; cv=none; b=duthJlSaVRu1FRvTkHrlBDru7gxPhuXgAhCcK9ZuUoZojzB3gxnk6Wqcb6pkvZEPOWxiHXCK6DNL+2DvIqfpELjXJPi7Rm1X7y2CXjWkZ2+7xQf7quOS+S+ZvUwwgOeKCIPtXVQhwwofbi5H7mGws56AcWCxav/rtVw50AI1OfE=
+	t=1790860397; cv=none; b=RU2CQiJoY1BP7jJZ5zX8F3AIuawQjAmO5Ct4M6l5qSsv9itjbLCehuSSQQLGYEL0g40Dl29sj991mdhpD3H4hE/QjB3HUQLvmF9MP+tTvnAJMdI9LUMaT7AHCerZCD38Ko+jBl1lI151fNv3ayJplD/olI1ynnYeZD9IrK8OGNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790860265; c=relaxed/simple;
-	bh=Pa6GRL5xb/2R4M/aLYve8miceUGft23vf5SDoLi9e8M=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=L+/8lqJVPRBAiHOUzQntaBxThNxraphBThmqcRVOljxJL07G9WgvxQBXSiOnZMwB2JMKRMG+p2Se96sUhjxNCbBhrks+Akh7vePcZyYiyTBaaAjVC9LRu2N7etU2xNO5Hxa270W2ROHH+ZROQkCRfPvzy8cDOrX2RcwAp/C+6Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=tXfNsmpq; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1790860397; c=relaxed/simple;
+	bh=l6PZ0EJfBfauKq10sqKgYTNawWRS3yi0MtxaDTxoQ3E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TIY7IO6Fxq/V+o2WVkeAEWLX4o3UrUMxOD3g2LXZAbXV0GqENPL+kjyrNpzBn9pJbvs8SaDcvN/sbdwsvO4Zh3UIhdaShTEYy/wQyxclxHnR5A02ttghkaXQQbZK1NtoR7aSpQ8h+6IsSNWo3jcctucivlmvsVDAuxUK82yhbaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OPamUyGz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="tXfNsmpq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=GL7ZDdP4Fbo0/jHz9SylqsQ2xSeu+fLePqrzmsWP+8c=; b=tXfNsmpq3wAAFO3JIipdwGPpZL
-	dFxygGX3Wi39Xv4x5dfPL0f604sc+4ipFIrwUQ3YxYj10MUzn1d9IHcqP520JRRXnkGoxCJwBROTl
-	jN5TjoR887SOhh6k17kEIktCwiJ35G1QUylKOIR7hno1/JUkNIpGZTvI1kNCER8nTLjTTY1kNTgUW
-	mYwddTkvlEzQW1AO9UFvapEY6Icir7zRPFkLZK+GvBfTNiKUR5LRpPWcXVDILTAT5VzC4mvO69N6a
-	dKbDs0ULhIMW+OdQN+M0+ezJNZCUe9cblXjGGP8iUgI8wVAt8fEW0MML5wHAzcXHgTEorUcVk+vcW
-	CcQhHc9Q==;
-Received: from [115.246.246.98] (port=38216 helo=zimbra.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <parvathi@couthit.com>)
-	id 1xCGYu-00000000upB-35wd;
-	Thu, 01 Oct 2026 09:11:00 -0400
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id BCE431A08960;
-	Thu,  1 Oct 2026 18:40:57 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
- with ESMTP id NCaKiwFU2_z3; Thu,  1 Oct 2026 18:40:55 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 9184F1A0895F;
-	Thu,  1 Oct 2026 18:40:55 +0530 (IST)
-X-Virus-Scanned: amavis at couthit.local
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
- with ESMTP id YqyNMpkImhzc; Thu,  1 Oct 2026 18:40:55 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 6A6231A08960;
-	Thu,  1 Oct 2026 18:40:55 +0530 (IST)
-Date: Thu, 1 Oct 2026 18:40:55 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: Simon Horman <horms@kernel.org>
-Cc: parvathi <parvathi@couthit.com>, andrew+netdev <andrew+netdev@lunn.ch>, 
-	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
-	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
-	danishanwar <danishanwar@ti.com>, rogerq <rogerq@kernel.org>, 
-	pmohan <pmohan@couthit.com>, afd <afd@ti.com>, 
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>, haokexin@gmail.com, 
-	basharath <basharath@couthit.com>, arnd <arnd@arndb.de>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
-	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	m-malladi <m-malladi@ti.com>, krishna <krishna@couthit.com>, 
-	mohan <mohan@couthit.com>
-Message-ID: <61177290.492777.1790860255343.JavaMail.zimbra@couthit.local>
-In-Reply-To: <20260925163944.721179-1-horms@kernel.org>
-References: <20260921134343.200426-4-parvathi@couthit.com> <20260925163944.721179-1-horms@kernel.org>
-Subject: Re: [PATCH net-next v4 3/3] net: ti: icssm-prueth: Support
- duplicate HW offload feature for HSR and PRP
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OPamUyGz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790860394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YCr1nSro9nXfhD/8wA5q9Mpjbs1FTJrQllg8NIyvStU=;
+	b=OPamUyGzHL1AeRSEQf1lRkWJYiRqAwTXaLQoiMqYQyBOy8vFB6e72FrFJ3Bd1yFVU3FlB7
+	OivQ36lhfQ65aykSvC14ZRq3prccvipd//HVrXRtw3ahTTRBpgAbPbvYprzKYx15V3cjmX
+	WeWgqYAF1DzYFAqno1ih2AqyT8INtdk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-4EhTjCYwNQC-xCv0Uxuiig-1; Thu,
+ 01 Oct 2026 09:13:10 -0400
+X-MC-Unique: 4EhTjCYwNQC-xCv0Uxuiig-1
+X-Mimecast-MFC-AGG-ID: 4EhTjCYwNQC-xCv0Uxuiig_1790860389
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CE99A180ACF4;
+	Thu,  1 Oct 2026 13:13:08 +0000 (UTC)
+Received: from pabeni-thinkpadp1gen8.rmtit.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E12ED1800361;
+	Thu,  1 Oct 2026 13:13:06 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: torvalds@linux-foundation.org
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Networking for v7.3-rc6
+Date: Thu,  1 Oct 2026 15:12:35 +0200
+Message-ID: <20261001131235.98504-1-pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC150 (Linux)/9.0.0_ZEXTRAS_20240927)
-Thread-Topic: icssm-prueth: Support duplicate HW offload feature for HSR and PRP
-Thread-Index: Li9uaJOhO8YSLEr4VnoTnJWJqE6+bw==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi,
+Hi Linus!
 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at:
-> https://sashiko.dev/#/patchset/20260921134343.200426-4-parvathi@couthit.com?part=3
-> ---
-> net: ti: icssm-prueth: Support duplicate HW offload feature for HSR and PRP
-> 
-> This commit introduces hardware duplication offloading for HSR and PRP in
-> the PRU Ethernet driver. It uses a shared queue to write frames into OCMC
-> RAM once, replicating transmission in firmware, and adds receive-side
-> handling for duplicate frames.
-> 
->> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
->> b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
->> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
->> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-> [ ... ]
->> @@ -656,6 +725,57 @@ static int icssm_prueth_tx_enqueue(struct prueth_emac
->> *emac,
->>  	if (PRUETH_IS_HSR(prueth))
->>  		wr_buf_desc |= BIT(PRUETH_BD_HSR_FRAME_SHIFT);
->>  
->> +	if (prueth_is_lre(prueth)) {
->> +		ethhdr = (struct ethhdr *)skb_mac_header(skb);
->> +		proto = ethhdr->h_proto;
->> +
->> +		if (proto == htons(ETH_P_8021Q)) {
->> +			vlan_hdr = (struct vlan_ethhdr *)ethhdr;
->> +			proto = vlan_hdr->h_vlan_encapsulated_proto;
->> +			is_vlan = true;
->> +		}
->> +
->> +		/* Check if the SKB has HSR tag */
->> +		if (PRUETH_IS_HSR(prueth) && proto == htons(ETH_P_HSR)) {
->> +			hdr = skb_mac_header(skb);
->> +
->> +			if (is_vlan) {
->> +				hsr_ethhdr =
->> +					(struct hsr_txopt_ethhdr *)(hdr +
->> +								    VLAN_HLEN);
->> +			} else {
->> +				hsr_ethhdr = (struct hsr_txopt_ethhdr *)hdr;
->> +			}
->> +
->> +			/* PTP frames (ETH_P_1588) carry no LAN ID
->> +			 * in the HSR tag
->> +			 */
->> +			if (hsr_ethhdr->hsr_tag.encap_proto !=
->> +			    htons(ETH_P_1588)) {
->> +				wr_buf_desc |= PRUETH_BD_LAN_INFO_MASK;
-> 
-> [Severity: Medium]
-> Is it expected to unconditionally duplicate the frame here?
-> 
-> The driver exposes NETIF_F_HW_HSR_DUP as a toggleable ethtool feature, but
-> this data path checks PRUETH_IS_HSR() and always performs duplication. If a
-> user disables hw-hsr-dup, the software HSR core will duplicate packets and
-> send two copies. The hardware will then duplicate them again, causing a
-> broadcast storm.
-> 
-> Should this check the active ndev features instead?
-> 
+The following changes since commit f2c53ea949c5048f96b3dbb5a5ee7131ce4ff2de:
 
-No. The HSR offload features can only be turned on or off together, and they cannot
-be changed while the port is an HSR slave or running. The firmware enters HSR mode
-only if these features are enabled when both ports join the HSR device. Otherwise the
-device stays in EMAC mode and this path is never taken. So PRUETH_IS_HSR() here always
-means hw-hsr-dup is enabled, and frames are never duplicated twice.
+  Merge tag 'net-7.3-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-09-24 11:45:33 -0700)
 
->> +			} else {
->> +				wr_buf_desc |= (txport <<
->> +						PRUETH_BD_LAN_A_SHIFT);
->> +			}
->> +			wr_buf_desc |= PRUETH_BD_RED_PKT_MASK;
->> +		} else if (PRUETH_IS_PRP(prueth)) {
->> +			/* Check if the SKB has PRP tag */
->> +			struct prp_txopt_rct *rct =
->> +				(struct prp_txopt_rct *)(skb_tail_pointer(skb) -
->> +							 ICSSM_LRE_TAG_SIZE);
->> +
->> +			if (rct->prp_suffix == htons(ETH_P_PRP)) {
-> 
-> [Severity: Medium]
-> Could this lead to unaligned memory accesses?
-> 
-> Since skb->len can be odd for arbitrary payloads like ICMP packets, the
-> tail pointer may be unaligned. The struct prp_txopt_rct contains __be16
-> fields and is not marked as __packed. Dereferencing rct->prp_suffix
-> directly from an unaligned address can cause unaligned access exceptions on
-> some ARM architectures.
-> 
+are available in the Git repository at:
 
-We will address this in the next version.
+  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc6
 
->> +				wr_buf_desc |= PRUETH_BD_LAN_INFO_MASK;
->> +				wr_buf_desc |= PRUETH_BD_RED_PKT_MASK;
->> +			} else {
->> +				wr_buf_desc |= (txport <<
->> +						PRUETH_BD_LAN_A_SHIFT);
->> +			}
->> +		} else {
->> +			wr_buf_desc |= (txport << PRUETH_BD_LAN_A_SHIFT);
->> +		}
->> +	}
-> [ ... ]
->> @@ -741,11 +871,36 @@ int icssm_emac_rx_packet(struct prueth_emac *emac, u16
->> *bd_rd_ptr,
-> [ ... ]
->> +	actual_pkt_len = pkt_info->length;
->> +
->> +	if (has_hsr_tag)
->> +		actual_pkt_len -= ICSSM_LRE_TAG_SIZE;
-> 
-> [Severity: Medium]
-> Does this unconditionally strip the HSR tag regardless of the netdev feature
-> configuration?
-> 
-> Similar to the duplication offload, NETIF_F_HW_HSR_TAG_RM is exposed via
-> ethtool but not checked in this data path. If a user disables tag removal in
-> hardware, the host stack might fail to parse the packet since the driver
-> still forcibly strips the tag.
-> 
+for you to fetch changes up to e23a64eb244356ee47c0620f0722d51bd88db522:
 
-No. The tag is stripped only when the device is in HSR mode, and HSR mode is entered
-only when both ports join the HSR device with the HSR offload features enabled. These
-features can only be turned on or off together, and cannot be changed while the port
-is an HSR slave or running. If they are disabled, the device stays in EMAC mode, this
-path is not taken, and the HSR core removes the tag in software.
+  Merge tag 'nf-26-09-30' of git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf (2026-10-01 12:00:40 +0200)
 
->>  
->>  	/* Allocate a socket buffer for this packet */
->>  	skb = netdev_alloc_skb_ip_align(ndev, actual_pkt_len);
-> [ ... ]
->> @@ -1309,17 +1473,31 @@ static enum netdev_tx icssm_emac_ndo_start_xmit(struct
->> sk_buff *skb,
->>  						struct net_device *ndev)
->>  {
->>  	struct prueth_emac *emac = netdev_priv(ndev);
->> +	/* Spinlock for Tx Queues */
->> +	spinlock_t *lock_queue;
->> +	unsigned long flags;
->>  	int ret;
->>  	u16 qid;
->>  
->>  	qid = icssm_prueth_get_tx_queue_id(emac->prueth, skb);
->> +	/* Select the TX queue spin lock for this queue ID */
->> +	if (prueth_is_lre(emac->prueth))
->> +		lock_queue = &emac->prueth->lre_host_queue_lock[qid - 2];
->> +	else
->> +		lock_queue = &emac->host_queue_lock[qid - 2];
->> +
-> 
-> [Severity: High]
-> Could a race condition occur here when the interface mode changes?
-> 
-> Because icssm_prueth_change_mode can modify the eth_type (which changes the
-> result of prueth_is_lre) and calls ndo_stop directly without waiting for
-> in-flight ndo_start_xmit calls to complete, there is a time-of-check to
-> time-of-use vulnerability.
-> 
-> If eth_type changes between this lock selection and the lock acquisition
-> below, one thread could acquire host_queue_lock while another acquires
-> lre_host_queue_lock. Both might then evaluate prueth_is_lre() as true inside
-> icssm_prueth_tx_enqueue, concurrently modifying the exact same shared LRE
-> queue descriptors and causing queue corruption.
-> 
+----------------------------------------------------------------
+Including fixes from Bluetooth, WiFi and netfilter.
 
-We will address this in the next version.
+We are actively retargeting several non-urgent fixes towards next, but
+the traffic on the ML looks ever-increasing, and propagating the
+push-back towards subsystems is not immediate.
 
-Thanks and Regards,
-Parvathi.
+No known outstanding regressions.
+
+Current release - regressions:
+
+  - netfilter: nft_set_rbtree: skip transaction elements during GC
+
+Previous releases - regressions:
+
+  - sched: cls_api: reclaim an empty proto on the error path
+
+  - core:
+    - fix checksum offsets in skb_splice_from_iter()
+    - cap skb->queue_mapping when the tx queue is picked
+
+  - page_pool: fix use-after-free in page_pool_recycle_ring_bulk()
+
+  - wifi:
+    - mac80211: fix slab-out-of-bounds read in ieee80211_monitor_select_queue()
+    - mac80211: drop oversized fragments to avoid extra_len overflow
+
+  - netfilter:
+    - flowtable: restore ieee80211 forward path
+
+  - bluetooth: hci_conn: Lock parent access during enhanced SCO setup
+
+  - eth: bcmgenet: allocate RX buffers as page fragments
+
+  - eth: stmmac: fix rx Scatter-Gather support
+
+  - eth: octeontx2-pf: fix aura BPID assignment when CONFIG_DCB is enabled
+
+  - eth: gve: DQO: accept TSO packets with non-protocol gso_type bits
+
+  - eth: r8169: disable EEE on RTL8168h/8111h
+
+Previous releases - always broken:
+
+  - tcp: refresh TS.Recent for accepted old ACKs
+
+  - wifi:
+    - ath11k: reset ar->num_stations on hardware start
+    - cfg80211: fix RTS threshold setting for single-radio PHY
+
+  - bluetooth: btintel_pcie: fix plen overflow in btintel_pcie_recv_frame()
+
+  - eth: bcmgenet: fix NULL dereference in set_coalesce before first open
+
+Misc:
+  - Eric is retiring from google and updating his contact info
+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+----------------------------------------------------------------
+Aamir Ahmed (1):
+      wifi: wfx: validate MIB read length before copying to caller
+
+Alireza Asgari (2):
+      net: fix checksum offsets in skb_splice_from_iter()
+      selftests: net: cover UDP splice checksum fragment alignment
+
+Andrea Mayer (1):
+      seg6: ensure packet data is writable before modifying SRH and IPv6 DA
+
+Anirudh Virdi (1):
+      net/mlx5: Fix slab-out-of-bounds when handling team device events
+
+Aohan Mei (1):
+      netfilter: nft_flow_offload: drop flowtable reference on init error path
+
+Baha Mesleh (1):
+      octeontx2-af: mcs: Fix SC resource cleanup loop
+
+Bartosz Golaszewski (1):
+      net: phy: aquantia: fix system interface type not updated in forced mode
+
+Binbin Deng (1):
+      net/mctp: publish the mctp_dev only after it is initialised
+
+Cen Zhang (Microsoft) (1):
+      wifi: mac80211: fix slab-out-of-bounds read in ieee80211_monitor_select_queue()
+
+Chandrashekar Devegowda (3):
+      Bluetooth: btintel: fix buffer over-read in btintel_hw_error()
+      Bluetooth: btintel_pcie: fix plen overflow in btintel_pcie_recv_frame()
+      Bluetooth: btintel_pcie: reject oversized TX packets in send_frame()
+
+Chengfeng Ye (7):
+      Bluetooth: hci_conn: Lock parent access during enhanced SCO setup
+      Bluetooth: hci_core: Serialize fragmented ISO packet queueing
+      Bluetooth: hci_sync: Fix inquiry cache use-after-free
+      Bluetooth: RFCOMM: Fix initial port reference race
+      Bluetooth: Serialize SMP remote OOB data access
+      Bluetooth: hci_core: Serialize ACL scheduling with channel deletion
+      Bluetooth: hci_core: Serialize SCO and ISO scheduling with teardown
+
+Christian Melendez (1):
+      MAINTAINERS: add missing entry for b53.rst
+
+David S. Miller (1):
+      Merge branch 'tcp-old-acks'
+
+Eric Dumazet (3):
+      MAINTAINERS: update Eric Dumazet's email address
+      net: restrict SO_RESERVE_MEM to TCP sockets and cap max value
+      ipv6: sr: use skb_get_hash_net() in seg6_make_flowlabel()
+
+Felix Fietkau (2):
+      wifi: mac80211: prevent AP VLAN tx from other interfaces
+      wifi: mac80211: set info->band for 802.3 encap offload frames
+
+Fernando Fernandez Mancera (1):
+      netfilter: bpf: reject invalid NAT manipulation types
+
+Florian Fainelli (2):
+      net: systemport: Fix buffer overflow in bcm_sysport_get_stats()
+      net: systemport: Fix RUNT MIB counter register offset calculation
+
+Florian Westphal (1):
+      netfilter: ipset: do not update comments from kernel-side adds
+
+Geetha sowjanya (1):
+      octeontx2-pf: Fix aura BPID assignment when CONFIG_DCB is enabled
+
+Georgios Karantzas (1):
+      wifi: ath9k_htc: bound TX aggregation to MAX_TX_BUF_SIZE
+
+Guangshuo Li (1):
+      wifi: iwlegacy: 3945: free EEPROM data on remove
+
+Hannu Varjoranta (1):
+      gve: DQO: accept TSO packets with non-protocol gso_type bits
+
+Harshit Mogalapalli (1):
+      net: microchip: vcap: stop scanning after deleting key field
+
+Heyang Tan (1):
+      wifi: p54: validate firmware record lengths
+
+Ilkka Lappeteläinen (1):
+      net/packet: prevent TX_RING byte count overflow
+
+Jakub Kicinski (5):
+      Merge branch 'net-systemport-collection-of-fixes'
+      Merge tag 'for-net-2026-09-28' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth
+      Merge branch 'octeontx2-misc-fixes-for-rvu-drivers'
+      Merge branch 'fix-udp-splice-checksum-alignment-across-fragments'
+      Merge tag 'wireless-2026-09-30' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless
+
+Jamal Hadi Salim (4):
+      net/sched: cls_api: reclaim an empty proto on the error path
+      net/sched: fq_codel: match the no-drop threshold to the packet size
+      net/sched: sch_codel: match the no-drop threshold to the packet size
+      net: cap skb->queue_mapping when the tx queue is picked
+
+Jari Seppälä (1):
+      octeontx2-pf: Fix RSS indirection table size
+
+Jeff Jo (2):
+      tcp: refresh TS.Recent for accepted old ACKs
+      selftests: net: check timestamp echo after an old ACK
+
+Johannes Berg (1):
+      Merge tag 'ath-current-20260921' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
+
+Julian Anastasov (3):
+      ipvs: fix missing counter decrement in lblc
+      ipvs: do not create invisible templates
+      ipvs: filter some flags received in the backup server
+
+Jun Yang (1):
+      sctp: check RCV_SHUTDOWN after the sendmsg connect wait
+
+Jérémy Jean (1):
+      tipc: prevent GCM nonce reuse on peer key changes
+
+Linmao Li (1):
+      Bluetooth: hci_core: Fix inquiry cache timestamps on 64-bit systems
+
+Lorenzo Bianconi (2):
+      net: stmmac: fix rx Scatter-Gather support
+      net: mvneta: clear XDP pfmemalloc flag between frames
+
+Mina Almasry (1):
+      net: page_pool: fix use-after-free in page_pool_recycle_ring_bulk()
+
+Nguyen Ngoc Thang (1):
+      Bluetooth: hci_sync: don't drain cmd_sync backlog on unregister
+
+Nicolai Buchwitz (3):
+      net: bcmgenet: allocate RX buffers as page fragments
+      net: ethtool: let tsconfig reach a PHY-only timestamp provider
+      net: bcmgenet: fix NULL dereference in set_coalesce before first open
+
+Nicolas Escande (1):
+      wifi: ath11k: reset ar->num_stations on hardware start
+
+Oleksij Rempel (1):
+      r8169: disable EEE on RTL8168h/8111h
+
+Pablo Neira Ayuso (2):
+      netfilter: flowtable: generalize pending status bit
+      netfilter: flowtable: restore ieee80211 forward path
+
+Paolo Abeni (1):
+      Merge tag 'nf-26-09-30' of git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf
+
+Pengpeng Hou (1):
+      wifi: ath9k: reject short WMI command responses
+
+Prathamesh Deshpande (1):
+      net/mlx5e: Fix AF_XDP TX timestamp teardown NULL dereference
+
+Qishuai Liu (1):
+      ipv6: fix prefix route expiry in modify_prefix_route()
+
+Quentin Freimanis (2):
+      net: sparx5: skip ptp deinit if init was skipped
+      net: sparx5: make ports inherit the switch base mac address type
+
+Reinhard Speyerer (1):
+      net: usb: qmi_wwan: add Rolling Wireless RN947R
+
+Ruide Cao (1):
+      wifi: mac80211: reject invalid 320 MHz CSA bandwidth
+
+Sagar Taunk (1):
+      rust: net: netlink: validate attribute length before casting to `c_int`
+
+Sai Teja Aluvala (1):
+      Bluetooth: btintel: validate DDC record lengths
+
+Sandeep Haemoon (1):
+      net: ethernet: mtk_eth_soc: allocate dummy netdev sooner
+
+Sang-Hoon Choi (1):
+      Bluetooth: hci_core: free the HCI ID if naming fails
+
+Stanislaw Gruszka (1):
+      wifi: cfg80211: fix RTS threshold setting for single-radio PHY
+
+Tianchu Chen (1):
+      wifi: cw1200: fix TX padding OOB read leaking heap data to device
+
+Toke Høiland-Jørgensen (1):
+      wifi: ath9k: Clean up device initialisation guards
+
+Weiming Shi (1):
+      netfilter: nft_set_rbtree: skip transaction elements during GC
+
+Wentao Liang (1):
+      wifi: wlcore: Fix runtime PM leak in wlcore_remove()
+
+Willem de Bruijn (1):
+      net: extend IPv6 exthdr detection of tunneled packets
+
+Xuanqiang Luo (1):
+      pfcp: fix socket lifetime on netdevice registration failure
+
+Yongzhao Chen (1):
+      net: phy: qcom: at803x: Fix IPQ5018 short-cable DAC values
+
+Yoshihisa Yamamoto (1):
+      net: pcs: rzn1-miic: Clear MIIC protection state before unprotect sequence
+
+Yuchao Zhang (1):
+      wifi: mac80211: drop oversized fragments to avoid extra_len overflow
+
+Yuqi Xu (3):
+      wifi: mac80211: minstrel_ht: validate fixed rate index
+      wifi: mac80211: handle empty FILS association request payload
+      wifi: mac80211: validate TX status rate metadata
+
+Zhao Li (6):
+      wifi: mac80211: release mesh path quota on failed additions
+      wifi: mac80211: account proxy paths against the mesh path limit
+      wifi: mac80211: drain PS delivery work during station teardown
+      wifi: mac80211: shut down RX BA session timer on teardown
+      wifi: mac80211: keep fallback association elements alive
+      wifi: cfg80211: preserve hidden-group beacon IE ownership
+
+Zhiling Zou (3):
+      wifi: mac80211: count only matching reservations in reserved switch
+      wifi: mac80211: keep paired old chanctx alive
+      ipvs: bound LBLCR and LBLC cache growth
+
+Zihan Xi (2):
+      wifi: mac80211: fix mesh fast xmit path deletion UAF
+      net: gso: limit recursive IP-in-IP segmentation
+
+ .mailmap                                           |   2 +
+ MAINTAINERS                                        |   9 +-
+ drivers/bluetooth/btintel.c                        |  15 +-
+ drivers/bluetooth/btintel_pcie.c                   |  12 +-
+ drivers/net/ethernet/broadcom/bcmsysport.c         |   8 +-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c     |  34 +-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h     |   2 +
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c       |  14 +-
+ drivers/net/ethernet/marvell/mvneta.c              |   2 +-
+ drivers/net/ethernet/marvell/octeontx2/af/mcs.c    |   4 +-
+ drivers/net/ethernet/marvell/octeontx2/nic/cn20k.c |  11 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_common.c   |  18 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_common.h   |   9 +
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c        |  38 ++-
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c   |   3 +
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c  |  10 +-
+ .../net/ethernet/microchip/sparx5/sparx5_main.c    |   1 +
+ .../net/ethernet/microchip/sparx5/sparx5_main.h    |   1 +
+ .../net/ethernet/microchip/sparx5/sparx5_netdev.c  |   1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c |   3 +
+ drivers/net/ethernet/microchip/vcap/vcap_api.c     |   2 +-
+ drivers/net/ethernet/realtek/r8169_main.c          |   6 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  83 +++--
+ drivers/net/pcs/pcs-rzn1-miic.c                    |   3 +
+ drivers/net/pfcp.c                                 |   3 +
+ drivers/net/phy/aquantia/aquantia_main.c           |   5 +-
+ drivers/net/phy/qcom/at803x.c                      |   8 +-
+ drivers/net/usb/qmi_wwan.c                         |   1 +
+ drivers/net/wireless/ath/ath11k/mac.c              |   1 +
+ drivers/net/wireless/ath/ath9k/hif_usb.c           |  19 +-
+ drivers/net/wireless/ath/ath9k/htc.h               |   1 -
+ drivers/net/wireless/ath/ath9k/htc_drv_init.c      |   7 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c      |   8 +-
+ drivers/net/wireless/ath/ath9k/wmi.c               |  28 +-
+ drivers/net/wireless/ath/ath9k/wmi.h               |   1 +
+ drivers/net/wireless/intel/iwlegacy/3945-mac.c     |   1 +
+ drivers/net/wireless/intersil/p54/fwio.c           |  42 ++-
+ drivers/net/wireless/silabs/wfx/hif_tx.c           |   4 +-
+ drivers/net/wireless/st/cw1200/bh.c                |   8 +-
+ drivers/net/wireless/st/cw1200/txrx.c              |  14 +
+ drivers/net/wireless/ti/wlcore/main.c              |   4 +-
+ include/linux/netdevice.h                          |   3 +
+ include/linux/netfilter_netdev.h                   |   2 +-
+ include/linux/rtnetlink.h                          |   7 +-
+ include/linux/skbuff.h                             |   2 +-
+ include/net/bluetooth/hci_core.h                   |   5 +-
+ include/net/gso.h                                  |   8 +
+ include/net/netfilter/nf_flow_table.h              |   2 +-
+ include/net/sch_generic.h                          |   9 +
+ include/net/xdp.h                                  |   5 +
+ net/bluetooth/hci_conn.c                           |  18 +-
+ net/bluetooth/hci_core.c                           |  54 ++-
+ net/bluetooth/hci_debugfs.c                        |   2 +-
+ net/bluetooth/hci_sync.c                           |  19 +-
+ net/bluetooth/rfcomm/tty.c                         |   7 +-
+ net/bluetooth/smp.c                                |   2 +
+ net/core/dev.c                                     |  80 +++--
+ net/core/dev_ioctl.c                               |   3 +-
+ net/core/gso.c                                     |   1 +
+ net/core/page_pool.c                               |   2 +-
+ net/core/skbuff.c                                  |   8 +-
+ net/core/sock.c                                    |   4 +-
+ net/ethtool/tsconfig.c                             |  24 +-
+ net/ipv4/af_inet.c                                 |   3 +
+ net/ipv4/tcp_input.c                               |   6 +
+ net/ipv6/addrconf.c                                |   2 +-
+ net/ipv6/ip6_offload.c                             |   4 +
+ net/ipv6/seg6_iptunnel.c                           |   2 +-
+ net/ipv6/seg6_local.c                              | 140 ++++++--
+ net/mac80211/agg-rx.c                              |   2 +-
+ net/mac80211/chan.c                                |  50 ++-
+ net/mac80211/drop.h                                |   1 +
+ net/mac80211/fils_aead.c                           |   8 +
+ net/mac80211/ieee80211_i.h                         |   2 +-
+ net/mac80211/iface.c                               |  11 +-
+ net/mac80211/mesh_pathtbl.c                        |  30 +-
+ net/mac80211/mlme.c                                |   4 +-
+ net/mac80211/rc80211_minstrel_ht.c                 |  89 ++++-
+ net/mac80211/rx.c                                  |   6 +
+ net/mac80211/spectmgmt.c                           |   4 +-
+ net/mac80211/sta_info.c                            |   6 +-
+ net/mac80211/status.c                              |  70 ++++
+ net/mac80211/tx.c                                  |  45 ++-
+ net/mctp/device.c                                  |   6 +-
+ net/netfilter/ipset/ip_set_bitmap_gen.h            |   2 +-
+ net/netfilter/ipvs/ip_vs_conn.c                    |   3 +
+ net/netfilter/ipvs/ip_vs_lblc.c                    |   4 +
+ net/netfilter/ipvs/ip_vs_lblcr.c                   |   3 +
+ net/netfilter/ipvs/ip_vs_sync.c                    |  33 +-
+ net/netfilter/nf_flow_table_core.c                 |   7 +-
+ net/netfilter/nf_flow_table_offload.c              |  14 +-
+ net/netfilter/nf_flow_table_path.c                 |   3 +
+ net/netfilter/nf_nat_bpf.c                         |   3 +
+ net/netfilter/nf_nat_core.c                        |   5 +-
+ net/netfilter/nft_flow_offload.c                   |   7 +-
+ net/netfilter/nft_set_rbtree.c                     |   2 +
+ net/packet/af_packet.c                             |   3 +
+ net/sched/act_ct.c                                 |   2 +-
+ net/sched/act_skbedit.c                            |   5 +-
+ net/sched/cls_api.c                                |  15 +-
+ net/sched/sch_codel.c                              |   2 +-
+ net/sched/sch_fq_codel.c                           |   4 +-
+ net/sctp/socket.c                                  |   2 +-
+ net/tipc/crypto.c                                  |  20 +-
+ net/wireless/nl80211.c                             |  11 +-
+ net/wireless/scan.c                                |  22 +-
+ rust/kernel/net/netlink.rs                         |   9 +
+ tools/testing/selftests/net/.gitignore             |   1 +
+ tools/testing/selftests/net/Makefile               |   1 +
+ .../selftests/net/packetdrill/tcp_old_ack_ts.pkt   |  22 ++
+ tools/testing/selftests/net/udp_splice_checksum.c  | 378 +++++++++++++++++++++
+ 111 files changed, 1442 insertions(+), 345 deletions(-)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_old_ack_ts.pkt
+ create mode 100644 tools/testing/selftests/net/udp_splice_checksum.c
+
