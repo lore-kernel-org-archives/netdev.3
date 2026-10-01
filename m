@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29803803CF
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 01:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F18F380FEC;
+	Thu,  1 Oct 2026 01:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790816408; cv=none; b=H56jMWlJEu77PjsGXzsqHPeZcYqxHYh+Q92KmcMPx0cwU2tKiqgAQaaZZ3ETG72NnLR3sUDSfurx45RVa4/tvc6Gg7iCtK4YWI2pFScWamIOPKFa2OfeJsWFSgbGONWwnoZAhPRjjf22en5GKF6aw145ieV5pK6mOakTdiRHB50=
+	t=1790816410; cv=none; b=QUf2EfoTRAPkV/DuQIhQ7ItOIMCX5mV0+M/0EcuCHYLWWKFZGzyCWPLJ+WZVkEdMqEjdNmmHkJ2sHDn1MF+7Tlcc4k7cz9rs1fZbwtq27iC2sq1MBZClXSg88QAMpTKQnz2crYX9WHsB0jeHkCsXRuLS12/lprtvELNC9j/7j/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790816408; c=relaxed/simple;
-	bh=FkkCQWSZdixRL3p3Vi+5w2Wuq1GgF6ARZW6cedgxH7Y=;
+	s=arc-20240116; t=1790816410; c=relaxed/simple;
+	bh=QjssFUNjMN3KBzmvOcgGs5iYtKlGXG4is9xQhbkfNKc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ebDkd3N6l6LnlG8M+aWc8xJGS9Zb7F6++lw9ExDoWe8e1lEx/4ZjOI4uHzKxgLuX5LxHZc3n408XXTx6siQgga0EdNp8jjiIVDSurvJfTI6TL/98kYdHk+c/JKeuxYJPZySAf1uA/2AjZT5Klw6CBDiKWu1FJwwA+iIzr/wdJ/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=URdNYC8t; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Kddm7vXsLf1Dac/1fYIzXUbluOznbWsYQnzKMekEpUTMPxeFRM8h2z21RXvX5oj5B23C+1QMtwMDv5dwWJnATNw3mFeRrKQVzK8Wmcg50JLZgMvZcTijG/Xd3TkZjKb2qvcx+K5npStQdocrDfYfu1rOIsqZRSS+5XqewARqYNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BRjCZHaf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="URdNYC8t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C6E1F000FF;
-	Thu,  1 Oct 2026 01:00:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BRjCZHaf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28D21F00898;
+	Thu,  1 Oct 2026 01:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790816407;
-	bh=GL/C1g3x3rRofqSvZ0gTEFIayCe6ZlEj8kyXI8jbZqY=;
+	s=k20260515; t=1790816408;
+	bh=2CogicdfEkwx200vrji5gm8Gm5bp6TU5jjflpxx3FBE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=URdNYC8tdKwO2S2zs9WuS6gbN1vbFcse7m/saQ52UThMd2VMrrX3kIlk3QdYo8KMV
-	 pq8u34tymyrZ+RSnQXmqxJfmgKuPjsOOeeFPoV64WwNqMvFA2428xL2xDk7UGU1Wdi
-	 6UC7iETqHPromsZx43AdtAAHJ5JqtqYXTnf1BVbFwE+agA603x7pBFhR64ylR/WViI
-	 LTv/EOC5z3jgXYTzmVmeJjYA+Xzl3GsM4PzdZPgb6dmkEfLZC2sMWYZzxAxrHHTnl1
-	 kWLa9IPmMPJkoAfYRLdAUw6JCsZgZNL472pljet8aQ1wmbTERZrXY/j93bi1QMe8Fe
-	 xzQQ+YrRxOTLw==
+	b=BRjCZHafzgG0wGwUiKYY0UiDDXDnV21PBqKIzjhgoCDqvauYWuOR+uI6UU5PtZ6IA
+	 1zSqdAaNziFx8ZBTPJic8jnbcZZdEgbWWzhstrxb4PqBcZ8mgCKxCyNXnlXptrgsem
+	 QUiJMmMqKWNhqwM5+luKQdT6Km4HjbvtXqP6zIAfkRiRj5SGqZd8umY4nXF3TbkVOv
+	 BpNAbtD1aB0gvmIxJmnArpEgjECCQRxvdxlpDVvV1fkJx+ybX3BLUd6Wd4WDpNC1Q3
+	 QOsGDWsemYsQdqFoixQzEhX9gwRKqo+nDFkMN0/nZpzDe53cc6oGNIqLsvLQqCSjLL
+	 69T53CZ4Wabfw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2693AA6A61;
-	Thu,  1 Oct 2026 01:00:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B42D23AA6A61;
+	Thu,  1 Oct 2026 01:00:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ipv6: sr: use skb_get_hash_net() in
- seg6_make_flowlabel()
+Subject: Re: [PATCH net v4] net: mvneta: clear XDP pfmemalloc flag between
+ frames
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179081640578.2197065.2659635598372933261.git-patchwork-notify@kernel.org>
-Date: Thu, 01 Oct 2026 01:00:05 +0000
-References: <20260928194524.3617299-1-edumazet@kernel.org>
-In-Reply-To: <20260928194524.3617299-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
- edumazet@google.com, syzbot+9408fbe0e6452a12e9ab@syzkaller.appspotmail.com
+ <179081640728.2197065.5595924340439650729.git-patchwork-notify@kernel.org>
+Date: Thu, 01 Oct 2026 01:00:07 +0000
+References: 
+ <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
+In-Reply-To: 
+ <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: marcin.s.wojtas@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, toke@redhat.com, lorenzo@kernel.org, horms@kernel.org,
+ netdev@vger.kernel.org, bpf@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 28 Sep 2026 19:45:24 +0000 you wrote:
-> Since commit d58e468b1112 ("flow_dissector: implements flow dissector
-> BPF hook") __skb_flow_dissect() needs a net pointer, either from
-> skb->dev, skb->sk, or since commit 3cbf4ffba5ee ("net: plumb network
-> namespace into __skb_flow_dissect") a caller provided pointer.
-> 
-> syzbot was able to reach seg6_make_flowlabel() with an skb having
-> neither skb->dev nor skb->sk set: a TIPC UDP bearer sends a discovery
-> message through an IPv4 route using seg6 encap, while
-> net.ipv6.seg6_flowlabel is set to 1.
+On Tue, 29 Sep 2026 15:43:03 +0200 you wrote:
+> mvneta_swbm_add_rx_fragment() sets XDP_FLAGS_FRAGS_PF_MEMALLOC on the
+> xdp_buff when a fragment page is a pfmemalloc one (page under memory
+> pressure). The xdp_buff is reused for the next frame, but only the
+> XDP_FLAGS_HAS_FRAGS bit was cleared at frame start, so the pfmemalloc
+> bit leaked from one frame into the following ones. mvneta_swbm_build_skb()
+> propagates the flag to skb->pfmemalloc through xdp_update_skb_frags_info(),
+> so the skb of a subsequent fragmented frame could be wrongly marked as
+> pfmemalloc even if none of its pages are under pressure.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] ipv6: sr: use skb_get_hash_net() in seg6_make_flowlabel()
-    https://git.kernel.org/netdev/net/c/8ec454dcd00c
+  - [net,v4] net: mvneta: clear XDP pfmemalloc flag between frames
+    https://git.kernel.org/netdev/net/c/8f1c2a10500a
 
 You are awesome, thank you!
 -- 
