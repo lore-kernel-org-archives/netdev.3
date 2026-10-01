@@ -1,97 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FA248989F
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 13:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D60A348C7F;
+	Thu,  1 Oct 2026 13:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790860479; cv=none; b=kNdHb3/7z5VTgPkpNPKhgjbOxic/F9bBBiTQKKtcK53GvfKoe5MNOWSxYAoLPXsha0MCjIqeZRju+rPdG1OYFY/goX29u51mAmL7eQ42ntpl+BE4AY0u2JLrXrB3Iu0DAlcjAyJfsvOucYtxDV+5BBsySZteQWflbGBT3Y7C0nE=
+	t=1790860502; cv=none; b=bGACriJ+tv3FjYCjnelmDx50BdjQJ88aO4ri8miLMvSP9wk7Ey3Rfs5PpOk4QxDKAOwQSFwBCE9W/YLziaJo+kxtEW+03Q4QgrDOLVHgLYoThH/ORoXjA1/1PhNqy56g66s9n41Nw9HlcwZqwBbIjSLiH6zOYnnA8eHZXvZqe6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790860479; c=relaxed/simple;
-	bh=WbXsDTClhqfMLu8a1Lzh7c7V3XCanQCwYxo8J+xQhmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+4oJBdZUhZEHSL2d6Y91RRXXXXT6mm9bHHN16ZmERgTmRwouRRcd3QkRtcMyF+kEaN1ZzlF2vRCl8iNSz8KC2Nevojpm4WJYxpSZBbDUCKHmHb7VoVQSpM//DiSiCMG2+K9LUvY4ZAYc15Xsr9dZqZz0bRfAkTdHzZox+75YiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EQtSwz8u; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790860502; c=relaxed/simple;
+	bh=d7jp7SdezEK8NivMzyH5BfcTyOZXvpr1Sv89whVK0Tk=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=omFA3hDK43sNRg/kN8E0EHmB2aw1j3AVa2yZKwZyOzC1GXdHnQgIm1e0g5/zjYOHXBhl8ydakKpT31k1uxwRY/Mkz6PS6InIbJEzT3EO1Wm+lOjirYs3T8K1FxmdvFgaoD8Jy3ZyjlhOFgAR6adX81evjEdlj2N9TdOSgdlhuBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=Pwd3UC7T; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EQtSwz8u"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790860477;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ETKozF7/+6XKKZfR7RUzUGQF2Hqo8nKZn7YFyCbamv4=;
-	b=EQtSwz8uZUqFCyREJMNJ2ga9o6Wh+NevUyaz7GTQJsl9kEn16J1m1gBYtgAdI92j96HbhI
-	QcvehQr3a6UMYii6qZDlgWB99Zgk8YdVOOTdIDT4MWB9r+oKGeF47GmWaV91IGtAJ30E9T
-	X/rf+VVRLtSXpkg2jp5UBjWXpBbuY6E=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-OsCdCX79OHiZKRpoMUejUQ-1; Thu,
- 01 Oct 2026 09:14:30 -0400
-X-MC-Unique: OsCdCX79OHiZKRpoMUejUQ-1
-X-Mimecast-MFC-AGG-ID: OsCdCX79OHiZKRpoMUejUQ_1790860468
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BB0F5195422C;
-	Thu,  1 Oct 2026 13:14:27 +0000 (UTC)
-Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8A351956086;
-	Thu,  1 Oct 2026 13:14:22 +0000 (UTC)
-Date: Thu, 1 Oct 2026 15:14:19 +0200
-From: Miroslav Lichvar <mlichvar@redhat.com>
-To: Rodolfo Giometti <giometti@enneenne.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
- pps_get_ts()
-Message-ID: <ar5cq0vslvQ00Pek@localhost>
-References: <20260829210041.40649-1-dwmw2@infradead.org>
- <20260829210041.40649-4-dwmw2@infradead.org>
- <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
- <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
- <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="Pwd3UC7T"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
+	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=E74n/a585dzmh+odW/Yv2yjCpqCIySDsqIox9AI675c=; b=Pwd3UC7TA9DGbEQrx/7md01VwS
+	S8hBT1gQhIO/g5YUHQuz6uVFvaahYNULmcLIJ6ItEUMgOJHVXqGVNMmh9MTt0EB2HYbJiKWSa/mHq
+	HAL2aDlWafyi1CDoycKBoq7k0HBF21HyOLIISyj7H3sdLbjQVKaR+LBywkAs5l8wb4UHUEQix0jLV
+	TTbSEIPzlf2D94iOorNi5+K+2z6+9ai4KXTQglHfk8OpgT08YBqXahgFP7ntOvqgE2bbVceYUqYIA
+	ZgT51kdH/YujqJ9Xp1MLab1q0nq2IrM6mcnmeraZmYf0uaMJ+6GGvmjMXCUlKeJ7Yo69BF4O1pR9x
+	5yhaYEvA==;
+Received: from [115.246.246.98] (port=22290 helo=zimbra.couthit.local)
+	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <parvathi@couthit.com>)
+	id 1xCGSs-00000000ueE-46Zm;
+	Thu, 01 Oct 2026 09:04:47 -0400
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id 67ACB1A088B7;
+	Thu,  1 Oct 2026 18:34:41 +0530 (IST)
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
+ with ESMTP id qMbZjH0l6Zkd; Thu,  1 Oct 2026 18:34:38 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.couthit.local (Postfix) with ESMTP id EA8E01A088B8;
+	Thu,  1 Oct 2026 18:34:37 +0530 (IST)
+X-Virus-Scanned: amavis at couthit.local
+Received: from zimbra.couthit.local ([127.0.0.1])
+ by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id Sy_dgeVU7mng; Thu,  1 Oct 2026 18:34:37 +0530 (IST)
+Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
+	by zimbra.couthit.local (Postfix) with ESMTP id C257F1A088B7;
+	Thu,  1 Oct 2026 18:34:37 +0530 (IST)
+Date: Thu, 1 Oct 2026 18:34:37 +0530 (IST)
+From: Parvathi Pudi <parvathi@couthit.com>
+To: Simon Horman <horms@kernel.org>
+Cc: parvathi <parvathi@couthit.com>, andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, edumazet <edumazet@google.com>, 
+	kuba <kuba@kernel.org>, pabeni <pabeni@redhat.com>, 
+	danishanwar <danishanwar@ti.com>, rogerq <rogerq@kernel.org>, 
+	pmohan <pmohan@couthit.com>, afd <afd@ti.com>, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, haokexin@gmail.com, 
+	basharath <basharath@couthit.com>, arnd <arnd@arndb.de>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	netdev <netdev@vger.kernel.org>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
+	Vignesh Raghavendra <vigneshr@ti.com>, praneeth <praneeth@ti.com>, 
+	srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
+	m-malladi <m-malladi@ti.com>, krishna <krishna@couthit.com>, 
+	mohan <mohan@couthit.com>
+Message-ID: <1915284322.492671.1790859877701.JavaMail.zimbra@couthit.local>
+In-Reply-To: <20260925163914.721071-1-horms@kernel.org>
+References: <20260921134343.200426-2-parvathi@couthit.com> <20260925163914.721071-1-horms@kernel.org>
+Subject: Re: [PATCH net-next v4 1/3] net: ti: icssm-prueth: Add HSR and PRP
+ HW offload mode support for AM57xx, AM437x and AM335x
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC150 (Linux)/9.0.0_ZEXTRAS_20240927)
+Thread-Topic: icssm-prueth: Add HSR and PRP HW offload mode support for AM57xx, AM437x and AM335x
+Thread-Index: BMmG18KeQ7ZcShIZhHAYI6SOGT3rpQ==
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
+X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Mon, Sep 28, 2026 at 09:58:02AM +0200, Rodolfo Giometti wrote:
-> On Sat, 2026-09-26 at 21:38 +0100, David Woodhouse wrote:
-> > So yes, the specific code path you're looking at *does* get slightly
-> > longer (50ns to the counter read instead of 30ns).
-> [...]
-> > However, they are *entirely* in the noise, as there's about 600 ns of
-> > hardware and 2-4 *microseconds* of software latency before we even get
-> > there.
+Hi,
+
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at:
+> https://sashiko.dev/#/patchset/20260921134343.200426-4-parvathi@couthit.com?part=1
+> ---
+> net: ti: icssm-prueth: Add HSR and PRP HW offload mode support for AM57xx,
+> AM437x and AM335x
 > 
-> Thanks for measuring it, and on real hardware with a real edge. That
-> answers my concern: ~20 ns of constant cost against microseconds of
-> latency upstream of the handler is not something PPS can see, and
-> trading it for the removal of a non-constant error is the right
-> trade.
+> This commit extends the ICSSM PRUETH driver to support HSR and PRP redundancy
+> protocols on compatible TI SoCs. It enables dynamically switching PRU ethernet
+> ports from dual-EMAC mode into HSR/PRP slave modes via firmware reconfiguration.
+> 
+>> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+>> b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+>> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+>> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
+> [ ... ]
+>> +static int icssm_prueth_hsr_port_link(struct net_device *ndev,
+>> +				      struct net_device *hsr_ndev)
+>> +{
+> [ ... ]
+>> +free_hsr:
+>> +	prueth->eth_type = prev_mode;
+>> +
+>> +	spin_lock_irqsave(&prueth->addr_lock, flags);
+>> +
+>> +	prueth->hsr_dev = NULL;
+>> +	prueth->hsr_members &= ~all_slaves;
+> 
+> [Severity: High]
+> Can this rollback improperly destroy the state for the already-linked first
+> port alongside the failing second port?
+> 
+> If the second port fails to transition to HSR/PRP mode, the free_hsr error
+> path clears the hsr_members mask for all ports by applying ~all_slaves.
+> 
+> Because the first port was successfully enrolled into the HSR bridge in a
+> previous invocation, it remains an active slave in the networking stack's
+> view. By wiping its membership state here, the driver drastically
+> desynchronizes its internal state from the kernel.
+> 
+> Would it be safer to only clear the bit for the specific port that is
+> failing to link?
+> 
 
-FWIW, there are some polling versions of the pps-gpio driver (out of
-tree), which provide much more stable measurements by trading
-interrupts for higher CPU use and where this additional delay might be
-visible.
+We will address this in the next version.
 
--- 
-Miroslav Lichvar
-
+Thanks and Regards,
+Parvathi.
