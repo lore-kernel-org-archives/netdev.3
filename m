@@ -1,65 +1,66 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAF652F298
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 15:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEA252E06C
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 15:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790869421; cv=none; b=Rr4prMgExdU/XYC8kPmrE6xFF5FajURs4luvZPULl/iYW1OgInjqPPPqfbueIW3vYx3+RLmOxqStN7ornZT0WA6LEA5Mp0A8tW0U1EQLNCTTY5Qv2manGraOsxiQ7st4vfycw8u5pomKG6cUuJYpwvqQE6NutZ54OlPvuAHzSfQ=
+	t=1790869423; cv=none; b=Kk7oe/oJHOehqmrhOWJfSb6StFEqemM/h6cj5T7a6psk6Xpf1ec1kwumAD43MbhBMYz5fpYaXtXGxhkVpd27WEQ2m9kKrlldanfq1Pj8H7NrbydkUkWfg4YqhtSpwW0aXBjvQbdHoeFUuvMpSApLkOw6hmA4GstkSu6l/D8hClo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790869421; c=relaxed/simple;
-	bh=nW+JMLHiFU9orVIthc91msKuW9PqT7A0A6/amJs74MQ=;
+	s=arc-20240116; t=1790869423; c=relaxed/simple;
+	bh=786heOVYaMb1rFh7lLcVgEf4OauBBj22Zz92FumkfwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrZQu6u5XS64nYt7g2r0BDpEfj3axqftlBSdmqYRiMoXQI+22oA1JzNi1ufb+A9NOy9XhCB0UBCaI1GU3XV8xXkIobzk0QxGUUnw3Oy9AaDn+j8xqXEvL/Qhrpxsx4MQtjauyGmbhCLis/TebNNqpEVEWOfK9lJ9KEcbqZta7H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EKr1txFp; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version:Content-Type; b=GoZjkZ+HXLSGFNJcuiiDPMypNLc4X68IFrg3dGZYz/76sfkVChrJPqa2Ns87srHTJEcOnlkZ8RdHm67rnQKpqnp556g3Yh9WAn0vX1U3Dsg76LeVDPXxQMcVvQRhLE2uoVP8ZNbCArwbzaWy3O96/DsHOhnwG35UbjRYZAuv+kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VL2v9AC4; arc=none smtp.client-ip=74.125.225.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EKr1txFp"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-4a024e16179so3267355e9.2
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 08:43:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VL2v9AC4"
+Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48affb828f1so2007104f8f.0
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 08:43:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790869416; x=1791474216; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=msLs90Jn+yH2RYcHq+7D9lQYssyMQJNyeueFs8OHBis=;
-        b=EKr1txFpzOgDdBug3c1haSKjZbOrt/NTMR+Duapj4W21Pb0RZPQQsj0wqBeGFBEF2f
-         xI7N4CmWo0zmauZeTZYF3w2mrvOttFh4l/sIncoQUhZCEZuBfN8Q6LHRh2xFRltGCOXK
-         wDGdaJIq99BFcskmhNtLEAtjXzYyhdYOAkA6q661p4Idq0+JyiulWmGFH/8uIwSPkV1a
-         noNTTw3fEtFbdTkY/8nWN0TVdmMFciLarnCvC6Qfib1uzE8PqvKREbWSfUSsP31QWz+F
-         93nK7LUoKfFrmEPeg4lGrMR3q+YWwioV252xYWqPCwHvGlReK0NII+zsKvUomBd17WMk
-         F3qQ==
+        d=gmail.com; s=20251104; t=1790869418; x=1791474218; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=V4LmRzbxM3Ic2+TqG4WYb8ERzK3nxO5TL05kC226JXY=;
+        b=VL2v9AC4lclZK4hmsSmhHMLNCa2NGWh/xl1+ZCvnDssrvRSqk3mzjU9YlcjByPjBM1
+         19VC+VTg9mhklW7jEBtS9O4A1XQs+KecdCr+EmF6F6aQ7EEMarTu6ezJcEyZ2hUXPYRn
+         pm7CWDN58p7TM3gIBTFo9p+hTlYRdYTtqXjsdJ93WKjNiyXIEjJ3AVh1DSTsRUBQcjv2
+         uO2ZPZWWM4i6DqNrSvSrE2z5ljHu9trUd3XGrTVkEE1EAS4Zy71egpcPro59yeemhYQ7
+         4ucv9/G/gWx+/F3qF7pAgqc0VJY+B6BD/klb6meMVoO0i6dG4sg3q5nDc04bt3AqDi3a
+         t3kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790869416; x=1791474216;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=msLs90Jn+yH2RYcHq+7D9lQYssyMQJNyeueFs8OHBis=;
-        b=Og1GuvlLh8VC6fns8vCRIO5Q2tSeh9hpBzcWtbkYy2zg0GNiv8ovuAEA9PnjE8gdEh
-         HC3ue24XqkCwIhacmpom0LNHXaDYfooWOFvqAxVNspr4as0zcdPOeWGjzarME3vjUd3S
-         4N8ZTOHi/JIDAUKxq2fdf3tzAfYew0Tq+cLHSPgNYo7erYN70Oms1wJZnRKbgdubngyT
-         fHPaBP5Y5Td0OHDyBb1k/Z2Agu1af+UKXhlQe9oX7I8ntw5bMj9wsFhFYQW1MIwcYvNJ
-         gUPAJWHrWwW+6fHM5H3WIoer1LpubXMxJgSYESDOQv6Q0l/SxP33kg/r9abBKO4mgTTo
-         6V0A==
-X-Forwarded-Encrypted: i=1; AKwUvBwZw1+TU15lCkZr6phvAR3k2oD48H+Hj+wSixH2cc2j+cYaQFmm3eoz+TsCRZzuiz9wc1hnifw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nWD418AzrRtS/ehM02TMrmVdMuuhUhag8e9PaORQxIhyDtDTmg
-	6Zfbg4tVfEeW8SwY4dlriFD8DImxIhIi2u9aZvLJisuPNuASlPteElzG
-X-Gm-Gg: AYBFou3vzCby3XOUOR4ZN8eBaxWNsjUPB9x/gq93m3+cFHod5QLcGDX0cMw/FfR6D70
-	06LnS3vYmDOHlTSb8A/UoEqxvSdvMryyFcDVfxtFDgKb4/QVwMpYrPnwk4Ka+5uazawevSl5ntZ
-	EdlIhQevvr/sHEoTs/JlPpHpY/1tqdhen+HDMWUkBi9AzhjCGZbaNbcWys69dwMdvO+ntnBkMzg
-	Yvgea9lZoz5XlobEA+IuwbzkM033hoD6AMVEjFqGp4m9QEGRZeYyJd5u2ny5qMqDOdvjJddSCgV
-	+mS7bFiOx8f5PdYjTfgpuWOHLYDcPs71rggO20M2VkS9ogUQhYx98ijMtgS7Rq+00294h2botrw
-	+fvKN4USSWeBNizKzUv5wr4yiYth0RRUZNtXiAnYLdQHchqfomr50FZrulzUv11N2F54bC5qUWo
-	X3lY5OJ7xh6EHtWoKzMr5Bvx5DnIVk39uH7vMswUQuHmR4BJWtPOgfQPuC7IBCKzC6frnrutbgh
-	xtXMur+sgATINngkGYcXw6pPFvFFL1sAn1DLtoOCeyan5ynWM5f7gogkho6pRXk0lLW8INZpl/7
-	IdEcKLTnsshJjhEre3k=
-X-Received: by 2002:a05:600c:4f81:b0:4a0:1ebb:bd0b with SMTP id 5b1f17b1804b1-4a02755f840mr444255e9.8.1790869416505;
-        Thu, 01 Oct 2026 08:43:36 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790869418; x=1791474218;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=V4LmRzbxM3Ic2+TqG4WYb8ERzK3nxO5TL05kC226JXY=;
+        b=KUDAmRruEU2Kde0jnLh8aVrvj5no16zHy0aAepySNDdY+nperCdve4rNUOvJxeZXjj
+         itqK4sG6dGghabEIKXEoLnK9txWvHABwhlDtQvW45+2LiLek9VjmytP6I+CYax/hq/+s
+         MBb/qAPYdDLPUIf9LRpkELRg/rZdzvuZVFj7z2ZOIrxJvWgRRIoHw5T8egn6ZW3EqMeI
+         Hcyv687NyGeVfGPfNwkgLGH4OnFknekLBUQ3ZhjtzxB6do8Goy/VkWwKomBqZyah6Xqm
+         jOJTLmeePX68wzq/fueFjJPjI/Bt93UnsF/Y512tQW+jjc16NpfmLnSlvlf6MdsrjLya
+         p7nQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz4baTPkfwyaQ9uD/eBwOqPxT4KIWjXw3gMR8pF1sxHIlJCBXy2DO4fijtI2+rshppGkIWTBXw=@vger.kernel.org
+X-Gm-Message-State: AFuF++k4BYbwGHsMxSGSCLcnviY/cFSJdbiPNKjASDiY4upq6evg65LY
+	3CeDNFqJPuhc0HUbcM3kKITKDh5u8buFiwzGn6nlBt8sNXgS5U4vo0ye
+X-Gm-Gg: AYBFou0XbDhLo1STceNvm+jgFvHnJYBRZW6hecH1TZ59fzjcKtXrVz3D0zkuXCyxwtO
+	p6EnCkI7uO9vUVfSBZqzO3LFRhypu6PVaeauMlh5i6BvZQhRZbqfLy5r2il4GhL2iiYu6JNUHZk
+	Rl8STaZvOjoPu26cxPWC9rsW2GENBQEgBaiijdWo8AeQKFi9qSPIJ3YYqkO+V1dtv0JOLoGxU+r
+	cqYlH7bc+9jLyWXZLOuHyNA1s8ha+ySB/f4hdO1VgctX7RTXW9WXOnUekoVSegtFKYsnzX+Itt3
+	OgVZ7Sj/nsxaLMSim81JrQpGHtMMp4okjCxtZxGBj8aihVhCIAd7KFVm8qKjhD5p18f9Z6XKN0O
+	KH4oebGBLqpVrtX+VzyyVabRLuxZYZcayUlVrV5cHOLhjvQ0QUIhYpK5dlYqXpW0oTC0t4H9Qi/
+	yfKSO8cwsQqMLg1K/pI9KHZ7n/v2pG4KicADqKHMYttK3C6kpddrOp8AjSNR1SS+m2x+Js+uh8d
+	2nF+hfFfXOqU1edFkyjXZCugauf4fm0UPVGUesz4vdKbNASzAoonRFUK4BSpNq/DYcb1Q1V3bgb
+	7SFFaYLboIvhOaBJ43c=
+X-Received: by 2002:a05:600c:c494:b0:49c:fe46:7219 with SMTP id 5b1f17b1804b1-4a027564de9mr381585e9.20.1790869417539;
+        Thu, 01 Oct 2026 08:43:37 -0700 (PDT)
 Received: from iku.Home ([2a06:5906:61b:2d00:1be5:ad57:d5e0:f854])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f6db98fsm65195615e9.0.2026.10.01.08.43.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f6db98fsm65195615e9.0.2026.10.01.08.43.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 08:43:35 -0700 (PDT)
+        Thu, 01 Oct 2026 08:43:37 -0700 (PDT)
 From: Prabhakar <prabhakar.csengg@gmail.com>
 X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
@@ -85,9 +86,9 @@ Cc: linux-renesas-soc@vger.kernel.org,
 	Biju Das <biju.das.jz@bp.renesas.com>,
 	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH net-next v2 03/12] net: dsa: Kconfig: Expand config description to cover RZ/T2H and RZ/N2H ETHSW
-Date: Thu,  1 Oct 2026 16:43:16 +0100
-Message-ID: <20261001154326.754314-4-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH net-next v2 04/12] dt-bindings: net: dsa: renesas,rzn1-a5psw: Add RZ/T2H and RZ/N2H ETHSW support
+Date: Thu,  1 Oct 2026 16:43:17 +0100
+Message-ID: <20261001154326.754314-5-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261001154326.754314-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <20261001154326.754314-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -97,43 +98,242 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Update the Kconfig entry for the RZN1 A5PSW tag driver to reflect that
-the same tagging format is also used by the ETHSW blocks found in Renesas
-RZ/T2H and RZ/N2H SoCs.
+Extend the A5PSW DSA binding to cover the ETHSW variant used on newer
+Renesas RZ/T2H and RZ/N2H SoCs. ETHSW is derived from the A5PSW switch
+found on RZ/N1 but differs in register layout, clocking and interrupt
+topology, and exposes four ports in total (including the CPU/management
+port) instead of five.
+
+Update the schema to describe these differences by adding dedicated
+compatible strings for RZ/T2H and RZ/N2H.
+
+Use the RZ/T2H compatible string as the fallback for RZ/N2H, reflecting
+that both SoCs integrate the same ETHSW IP.
+
+Add myself as a co-maintainer of the binding to support ongoing work on
+the ETHSW family across RZ/T2H and RZ/N2H devices.
 
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 ---
 v1->v2:
-- Updated description for Kconfig entry to cover RZ/T2H and RZ/N2H ETHSW
+- Added full names for SoCs
 ---
- net/dsa/Kconfig | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../bindings/net/dsa/renesas,rzn1-a5psw.yaml  | 154 +++++++++++++++---
+ 1 file changed, 130 insertions(+), 24 deletions(-)
 
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index 4f44bf3ede23..88e181ad4cc3 100644
---- a/net/dsa/Kconfig
-+++ b/net/dsa/Kconfig
-@@ -188,11 +188,12 @@ config NET_DSA_TAG_RTL8_4
- 	  switches with 8 byte protocol 4 tags, such as the Realtek RTL8365MB-VC.
+diff --git a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
+index fab6aa6237e9..863633185912 100644
+--- a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
+@@ -4,43 +4,108 @@
+ $id: http://devicetree.org/schemas/net/dsa/renesas,rzn1-a5psw.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
  
- config NET_DSA_TAG_RZN1_A5PSW
--	tristate "Tag driver for Renesas RZ/N1 A5PSW switch"
-+	tristate "Tag driver for Renesas RZ/N1 A5PSW and RZ/T2H, RZ/N2H ETHSW"
- 	help
--	  Say Y or M if you want to enable support for tagging frames for
--	  Renesas RZ/N1 embedded switch that uses an 8 byte tag located after
--	  destination MAC address.
-+	  Say Y or M if you want to enable frame tagging support for embedded
-+	  switches found on Renesas RZ/N1 (A5PSW) and RZ/T2H, RZ/N2H (ETHSW)
-+	  SoCs. These switches use an 8-byte tag located after the destination
-+	  MAC address.
+-title: Renesas RZ/N1 Advanced 5 ports ethernet switch
++title: Renesas RZ/N1 A5PSW and RZ/T2H, RZ/N2H ETHSW Ethernet Switch
  
- config NET_DSA_TAG_LAN9303
- 	tristate "Tag driver for SMSC/Microchip LAN9303 family of switches"
+ maintainers:
+   - Clément Léger <clement.leger@bootlin.com>
++  - Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+ 
+-description: |
+-  The advanced 5 ports switch is present on the Renesas RZ/N1 SoC family and
+-  handles 4 ports + 1 CPU management port.
++description: >
++  This binding describes the Ethernet switch IPs used on Renesas SoCs:
+ 
+-allOf:
+-  - $ref: dsa.yaml#/$defs/ethernet-ports
++  - The A5PSW (Advanced 5-Port Switch) found on the RZ/N1 family, which
++    provides 4 external ports and 1 CPU/management port.
++  - The ETHSW (Ethernet Switch) found on the RZ/T2H and RZ/N2H families,
++    which is derived from the A5PSW IP with some register layout
++    differences, additional timestamping support, and a total of 4 ports
++    including the CPU/management port.
+ 
+ properties:
+   compatible:
+-    items:
+-      - enum:
+-          - renesas,r9a06g032-a5psw
+-      - const: renesas,rzn1-a5psw
++    oneOf:
++      - items:
++          - enum:
++              - renesas,r9a06g032-a5psw
++          - const: renesas,rzn1-a5psw
++
++      - const: renesas,r9a09g077-ethsw
++
++      - items:
++          - const: renesas,r9a09g087-ethsw
++          - const: renesas,r9a09g077-ethsw
+ 
+   reg:
+     maxItems: 1
+ 
+   interrupts:
+-    items:
+-      - description: Device Level Ring (DLR) interrupt
+-      - description: Switch interrupt
+-      - description: Parallel Redundancy Protocol (PRP) interrupt
+-      - description: Integrated HUB module interrupt
+-      - description: Receive Pattern Match interrupt
++    oneOf:
++      - items:
++          - description: Device Level Ring (DLR) interrupt
++          - description: Switch interrupt
++          - description: Parallel Redundancy Protocol (PRP) interrupt
++          - description: Integrated HUB module interrupt
++          - description: Receive Pattern Match interrupt
++
++      - items:
++          - description: Switch interrupt
++          - description: Device Level Ring (DLR) interrupt
++          - description: Parallel Redundancy Protocol (PRP) interrupt
++          - description: Integrated HUB module interrupt
++          - description: Receive Pattern Match interrupt 0
++          - description: Receive Pattern Match interrupt 1
++          - description: Receive Pattern Match interrupt 2
++          - description: Receive Pattern Match interrupt 3
++          - description: Receive Pattern Match interrupt 4
++          - description: Receive Pattern Match interrupt 5
++          - description: Receive Pattern Match interrupt 6
++          - description: Receive Pattern Match interrupt 7
++          - description: Receive Pattern Match interrupt 8
++          - description: Receive Pattern Match interrupt 9
++          - description: Receive Pattern Match interrupt 10
++          - description: Receive Pattern Match interrupt 11
++          - description: Switch timer pulse output interrupt 0
++          - description: Switch timer pulse output interrupt 1
++          - description: Switch timer pulse output interrupt 2
++          - description: Switch timer pulse output interrupt 3
++          - description: Switch TDMA timer output interrupt 0
++          - description: Switch TDMA timer output interrupt 1
++          - description: Switch TDMA timer output interrupt 2
++          - description: Switch TDMA timer output interrupt 3
+ 
+   interrupt-names:
+-    items:
+-      - const: dlr
+-      - const: switch
+-      - const: prp
+-      - const: hub
+-      - const: ptrn
++    oneOf:
++      - items:
++          - const: dlr
++          - const: switch
++          - const: prp
++          - const: hub
++          - const: ptrn
++
++      - items:
++          - const: switch
++          - const: dlr
++          - const: prp
++          - const: hub
++          - const: ptrn0
++          - const: ptrn1
++          - const: ptrn2
++          - const: ptrn3
++          - const: ptrn4
++          - const: ptrn5
++          - const: ptrn6
++          - const: ptrn7
++          - const: ptrn8
++          - const: ptrn9
++          - const: ptrn10
++          - const: ptrn11
++          - const: tp0
++          - const: tp1
++          - const: tp2
++          - const: tp3
++          - const: tdma0
++          - const: tdma1
++          - const: tdma2
++          - const: tdma3
+ 
+   power-domains:
+     maxItems: 1
+@@ -50,14 +115,21 @@ properties:
+     unevaluatedProperties: false
+ 
+   clocks:
++    minItems: 2
+     items:
+       - description: AHB clock used for the switch register interface
+       - description: Switch system clock
++      - description: Timestamp clock
+ 
+   clock-names:
++    minItems: 2
+     items:
+       - const: hclk
+       - const: clk
++      - const: ts
++
++  resets:
++    maxItems: 1
+ 
+   ethernet-ports:
+     type: object
+@@ -73,14 +145,48 @@ properties:
+               phandle pointing to a PCS sub-node compatible with
+               renesas,rzn1-miic.yaml#
+ 
+-unevaluatedProperties: false
+-
+ required:
+   - compatible
+   - reg
+   - clocks
+   - clock-names
+   - power-domains
++  - interrupts
++  - interrupt-names
++
++allOf:
++  - $ref: dsa.yaml#/$defs/ethernet-ports
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: renesas,r9a09g077-ethsw
++    then:
++      properties:
++        interrupts:
++          minItems: 24
++        interrupt-names:
++          minItems: 24
++        clocks:
++          minItems: 3
++        clock-names:
++          minItems: 3
++      required:
++        - resets
++    else:
++      properties:
++        interrupts:
++          maxItems: 5
++        interrupt-names:
++          maxItems: 5
++        clocks:
++          maxItems: 2
++        clock-names:
++          maxItems: 2
++        resets: false
++
++unevaluatedProperties: false
+ 
+ examples:
+   - |
 -- 
 2.55.0
 
