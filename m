@@ -1,156 +1,124 @@
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6302EB5A6
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 01:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AE23803F1
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 01:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790816499; cv=none; b=D5FadsNVV6ru7fQLnZMbO5HVFJWeP6xJDN/szxeXe0jvKwG1RXqfU6JaJcETZrMMb0tRhpmg96yO4CwBPD69/Fx2WZGCxRZimjETyHMGvWGmiW4mvij82SXBpNj8+JjTVMZKSm3dl4IfHZyN3g4S3ZInsn0ghsc9x6P4exzv6uM=
+	t=1790816520; cv=none; b=BfjqDewbOXPDr6d+Zj4DXPBCVQuzKKGO9ItX8BTJmXWJFfLYZMS/eaElHsJNpl3Vhbm/cI8CsPhj1oU5GmDu7boQIx0oiMxw8VEXRTvP1x8ZeMtRKlWv7F7a4K+s8tYAPXmuCiumWtl7FMj21CqRqCFaMx9CN4mUoPmnWSRPeJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790816499; c=relaxed/simple;
-	bh=cINaHydl09cxBcvFqTlYGQ6MHKu1jghguZ6j16+ZxYc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=kBx72B80CMqRC9G0kffZ7bowPZKUvJciNMpTy+uAOdhIHa5Id4nLTkBS+EaNTSvgjiVXPnYH59c6kzllcZ1E63EjIfAVjYaIs9Y7He0MNoTulSUQoD1nHqrn6g3x/30s1bg0IU6jpRaAw5KqdM/9KWhkj95shJKv9Fs81EnhJrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i+a+7KSQ; arc=none smtp.client-ip=74.125.224.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790816520; c=relaxed/simple;
+	bh=whjCLcOCqqWgUZ+XNLoTHjG9IBeMZJxrU+4Ceck6VjA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Q9ZejxsKzXE+C2SomvkuzudvVBRobUDh62hsj2beEbitA0G8xa2oIy/AYYrqsp4lKaIIjfd2Be5HxdOezjvnizx2Z6ywkZH/nyMNbK3rlwgvqZ8qpG/2mQtIf/Nexd8atz19dvaR6bCZ2XxbSSr3QPrBCVyis8LfgbdtCwrupUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2dTSHiY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i+a+7KSQ"
-Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8acde36b0feso1888927b3.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 18:01:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790816494; x=1791421294; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=lnMNm9948egObF1IuNHPSJpwOljnWRz/GhZI4bv+aoM=;
-        b=i+a+7KSQfM0/AbTmT2zV5M93ONDfW7/4Hfi3ip39Z1qmW2PsgBvusUQxKzDDbXW8kB
-         Ip2DYTfbgu8eFHkXaj3xtYFySmZWngF7JgS1X/ft24WmJKq6HyhUhatnfire1YrwKlq0
-         uWKQynqc2gixBYwl5jTRFvaBQE1njTfN+fJ6z/zigCBD9gqTYkjmsr8QWKKbnuXmdM3u
-         VeIOBhY3lpFXYT9n2fDRF5qNmEIaP829R+jW0Hg+Ztub9datta7z4bFgj2wMh+EPe/XS
-         5CxealTmep0uQfAewQkP+mIi1Z/ADEThPWhT18g4RIjWURfiqCWwOnuPffUs9Z/1soSw
-         hLBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790816494; x=1791421294;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lnMNm9948egObF1IuNHPSJpwOljnWRz/GhZI4bv+aoM=;
-        b=lS9E5Yafnu19UPhun8paiG8M8cKhbIWmPujDwKPqW6TV63aZ8U4J5YB/mjIXc/JQ3O
-         /sLp4aSC4Vf5FKavXjvILEFut4H/zqe3yGi3DSbBsGAxB/GKqQ7OY4OaNcYTdrXyphHf
-         i/YpCQX346sHUw2uqyxt3FVwDYRwRex1PCguIhQSEaC9lxj6OXv0JY4LPSD2vanIrLbS
-         XcGLU6G8SRU4dnG2TYCvargRY86NSXnogB1bZqLWFdCUuhnGLPLaT5KoNatl/Xc8kAtU
-         MY9RP1GUi3Q7Sr1ootN6/s/jKq4YcoC2Sc9PuVnfnhwSt8wsCZZhMsAeQ6676tIiHK0u
-         zHgw==
-X-Forwarded-Encrypted: i=1; AKwUvBwq0XWnYQUhbCHflvsVnc2oYW6mQk83aRGcZNsFKJtha7OF9ZHgGdBGPLOwhkfvm0GGsujjypQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLXnaJv37vmA9WWnNdmFuQZNMZ792UiDfB9EPc6t4wqR6Xv+jGr
-	X8NeS3U8yLhI0p96wSnQn/zzkZ2adZupwQwQLzt1umnbTZyVsuwbI8uS
-X-Gm-Gg: AYBFou17FmdyE8n+RZwmYChCn57jUQk2fznXSAlOJaL5+LE0eXbglRNdcGgSpFlOApZ
-	x36Fo9q4h7JQSU5zeYye8z0Wv8qhzg3QNPXfKFLX2CnPW8Ykct8v9YGSF/sRQTA495D1Dmm8pNl
-	zhAJvOAgRvRCw1076Y8WK+SA/FBxzAVnuCJo04j8258QJ4flWRYP1TUMLJqdbBqO9I4ISqdMWPi
-	nV4gGXYF1lEjl6D0nx+NNqaPPr8OSjpfagBg8Quzq9gfT5QmP5b9jW85TZK8LEZpwJJamiXG+rI
-	FXjTBpB0EYD85mVJ8pbKpACmdMcQvtk0IxvnRq7EZPthHHPY2HP2Km5+N5j5LINfgI7r9QidRqb
-	hu4+LOg1qR/7fpahIaUyh0WyoJ+KufDq6YvjwkRXeMDLq8ureCh46oVRh2/e2JeMVBuLjL1ltxy
-	bERF8/lV4TOSrLeSFuIT7LqQooFu0u4V6cgxq2/9sYaem1RQTOg0Qngw2C+M/F5aEyfvaAUQwoQ
-	CsZyJ1pQUf5+RqJr4ahCWRqU7SXAWuDQFhnjzfATBoorfyc/Gwm1TViA9hQFX4=
-X-Received: by 2002:a05:690c:5703:b0:8ab:422f:a89e with SMTP id 00721157ae682-8ac93fea07amr12918507b3.53.1790816493908;
-        Wed, 30 Sep 2026 18:01:33 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8acdad9eaafsm5062287b3.46.2026.09.30.18.01.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Sep 2026 18:01:33 -0700 (PDT)
-Date: Wed, 30 Sep 2026 21:01:32 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev-bot+sashiko@kernel.org, 
- quchaosheng000406@163.com
-Cc: willemdebruijn.kernel@gmail.com, 
- davem@davemloft.net, 
- edumazet@google.com, 
- kuba@kernel.org, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- mkl@pengutronix.de, 
- socketcan@hartkopp.net, 
- stable@vger.kernel.org, 
- benquike@gmail.com
-Message-ID: <willemdebruijn.kernel.34fd899c50ed8@gmail.com>
-In-Reply-To: <179081112900.434549.3927636774761151103@kernel.org>
-References: <20260928113108.2127215-1-quchaosheng000406@163.com>
- <179081112900.434549.3927636774761151103@kernel.org>
-Subject: Re: [PATCH v3 net] net/packet: guard the ll header push in
- packet_rcv_spkt()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2dTSHiY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD781F000FF;
+	Thu,  1 Oct 2026 01:01:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790816516;
+	bh=hoCUzkaewFIrpdnn36R/oKIW101daRynkUqHEncGXwg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=R2dTSHiYvd5NAhSTaLppjxdI65R+04T9J6epaMIJ+uylcgQXAg1Abh9A1htghBtXT
+	 kP3AWx7Bcn4xWD99tSCF0mKOWzvqMlU8EYJtLMHhRWl4HhDEAPjVd6gg1/NoEHlY/p
+	 SA6dy3D+Oz7vqhN0yEreWLZxKFdvqp03uqluyqImn50kybPyJDrSttc6n+Cv7a09LC
+	 pHEhs2ozdmv+0X7xm7YsQ6xnQo0yALJNrNR+b6ZpDwMoSPZPtp5X5NQxE24FgpG4JK
+	 K2RkVTxP/C75K2CSaWT7G1rZ4NqkZnUWuo7q8ciUGDQbB6Ky9Ir4K7zCqfBk55EODt
+	 PTOhhlieJnYCw==
+Subject: Re: [PATCH net v2 1/9] bnxt_en: Clear bp->total_irqs in
+ bnxt_init_int_mode() during error
+From: netdev-bot+sashiko@kernel.org
+To: michael.chan@broadcom.com
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com, joe@dama.to,
+ kalesh-anakkur.purayil@broadcom.com, scott.branden@broadcom.com
+Date: Thu, 01 Oct 2026 01:01:55 +0000
+Message-ID: <179081651500.434549.2620264506226250515@kernel.org>
+In-Reply-To: <20260928041712.3467803-2-michael.chan@broadcom.com>
+References: <20260928041712.3467803-2-michael.chan@broadcom.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-netdev-bot+sashiko@ wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> =
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-> Critical: 0 =C2=B7 High: 0 (2) =C2=B7 Medium: 1 =C2=B7 Low: 0
-> =
+Low priority / nit picks for your consideration:
 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> (one such reply per series is enough).
-> =
+- [Low] The bnxt_io_resume() hunk (`if (!err && !bp->irq_tbl) err =
+  bnxt_init_int_mode(bp);`) fixes a defect introduced by c2d20a3814d1…
 
-> - [Medium] The history and Fixes attribution in the commit message are
->   inaccurate.
-> =
+--
 
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but the same CAN=
+bnxt_en: Clear bp->total_irqs in bnxt_init_int_mode() during error
 
->   RX skb with mac_header =3D=3D 0xFFFF (left that way by init_can_skb()=
-=E2=80=A6
-> - [High] This problem wasn't introduced by this patch, but the
->   SOCK_PACKET receive path this patch touches leaks stale skb->cb bytes=
-=E2=80=A6
-> =
+This patch clears bp->total_irqs when bnxt_init_int_mode() fails, so that
+bnxt_reserve_rings() and bnxt_check_rings() do not call
+bnxt_change_msix() with a NULL bp->irq_tbl. It adds bp->irq_tbl_size to
+bound dynamic MSI-X growth. It also skips the second bnxt_init_int_mode()
+call in bnxt_io_resume() when bnxt_reserve_rings() has already
+initialized MSI-X.
 
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index d7728d0c5b6e6..51557ee6c9ade 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 
-> [Severity: High]
-> This is a pre-existing issue, but further down, packet_rcv_spkt() build=
-s
-> the sockaddr_pkt in place in skb->cb:
-> =
+[ ... ]
 
->     spkt->spkt_family =3D dev->type;
->     strscpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
->     spkt->spkt_protocol =3D skb->protocol;
-> =
+> @@ -17692,7 +17702,7 @@ static void bnxt_io_resume(struct pci_dev *pdev)
+>  			err = bnxt_open(netdev);
+>  		} else {
+>  			err = bnxt_reserve_rings(bp, true);
+> -			if (!err)
+> +			if (!err && !bp->irq_tbl)
+>  				err = bnxt_init_int_mode(bp);
+>  		}
+>  	}
 
-> strscpy() writes strlen(name) + 1 bytes and doesn't pad, and nothing cl=
-ears
-> the rest of spkt_device. packet_recvmsg() then copies the full
-> sizeof(struct sockaddr_pkt) to userspace:
-> =
+[Severity: Low]
+This isn't a bug, but should the patch also carry a Fixes tag for
+c2d20a3814d1 ("bnxt_en: delay pci_alloc_irq_vectors() in the AER path")?
 
->     memcpy(msg->msg_name, &PACKET_SKB_CB(skb)->sa, copy_len);
-> =
+The patch only has:
 
-> Can this leak stale skb->cb bytes to userspace?
+    Fixes: e68256c8a73c ("bnxt_en: Support dynamic MSIX")
 
-This is being addressed in a separate fix that is in the review process:
+Commit c2d20a3814d1 added the unconditional bnxt_init_int_mode() call
+after bnxt_reserve_rings() in bnxt_io_resume(), and it is newer than
+e68256c8a73c.
 
-https://lore.kernel.org/netdev/20260919215237.3470987-1-benquike@gmail.co=
-m/
- =
+The double init can happen without dynamic MSI-X:
 
+bnxt_io_slot_reset()
+    bnxt_clear_int_mode()
 
+bnxt_io_resume()
+    bnxt_reserve_rings(bp, true)
+        /* BNXT_NEW_RM(bp) && irqs_required != bp->total_irqs */
+        bnxt_clear_int_mode()
+        bnxt_init_int_mode()      <-- MSI-X enabled here
+    bnxt_init_int_mode()
+        pci_alloc_irq_vectors()
+            __pci_enable_msix_range()
+                WARN_ON_ONCE(dev->msix_enabled) -> -EINVAL
 
+The second bnxt_init_int_mode() then goes to its error path. It frees
+bp->irq_tbl and the vectors and returns -ENODEV, so netif_device_attach()
+is never called and the device stays detached after AER recovery.
+
+Because e68256c8a73c is older, stable selection probably already covers
+every tree that has c2d20a3814d1. Trees that have e68256c8a73c but not
+c2d20a3814d1 would not need this hunk, though.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928041712.3467803-1-michael.chan%40broadcom.com
