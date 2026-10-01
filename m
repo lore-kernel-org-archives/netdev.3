@@ -1,273 +1,180 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-dl2-f43.google.com (mail-dl2-f43.google.com [74.125.229.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CAE4A207A
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790839745; cv=none; b=O6fVYlE/jbZL/b24n2XXcKpvFwaj4EGdSiJLUiLIxgs9nFYrVUKl+vXSdaAwawoUsQy6JCwMtsKBWMmia7Ml757W8pU0l/g6Ef77NevaIphFXB0WAtXAhLtuvue6PeLtgaa/VWoWCaPUaloCUpvn3t5cVLWHGxjJwtd0kC9ediY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790839745; c=relaxed/simple;
-	bh=tRluMRBXxJbh/k3JWn7GfDrnEwmGeDFeheI0LkBxX9A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QtNlZgJ3VL3SYg2vrTvu1PQfG7L+3WjXdSf+hS3z4N3tGtz4iPVVLgPNTBCh1cOWMv/b40cEmpaV4ON1uDH6d1VQ8eUIMWJpAPJBvHU2srLuitXei+CPIyyNZ7kU8rciQ26IyemRHug+74IElJKAaB4nD8NDtj0eGawGpgcMVw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=hhNXburx; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303048165E
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790839751; cv=pass; b=LGfIgINqXebEtzkPJTfEoVJrX4YKcXMxj+g2cmSr1ItYQSBu76kTqw3Z8sjqo3+u3VGla8VcetnXMu7lsjQzS4RrycSbDXtXsnhBW5wGZrUOd1Cuf3Ljt246xFayIV1RA34E2XmB6wY38Vz33hnLCJxxqgNamongWK/W9FUZHKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790839751; c=relaxed/simple;
+	bh=bSnKMPQZl5T2KfmiCD87MTWzFVfmb9E14C3WiZ0dnb4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eIsh4I+wGdHnAntLUmjDz1uS+5scvB97psyUUcLpqCW3ehEOvCpC4JmZPlRRecpm6vOsDZxG8LJdxOEXPHqD6/hSL1zVuAeY0JvDMSfFsJWSZkm3MS+qV+iaxuGPbMNFwU3CUsRK9YRUD1KC8VypUYMS77RthiQ57dd7QFndLeo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzPop5l7; arc=pass smtp.client-ip=74.125.229.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="hhNXburx"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48b0d19cf7eso75166f8f.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:28:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzPop5l7"
+Received: by mail-dl2-f43.google.com with SMTP id a92af1059eb24-1460bcc512eso3776050c88.1
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:29:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790839744; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qP9cUaQyVQ0iKInV9KuCj/sAOP+kX2PGc+CCuaTzccBbGWdHsUBim4mdXhwVEbUQHo
+         Vxuih+ASppyiaXYPw9bK7IheFDCBzoBJLz/hHmgw0rnPns4DOeykqc1+DHFirRLdp2Wl
+         2HkVOpUvNSCgLO4/L0Q+wmT1lVzRBaIHz3vF0OlNFF08e9WPHc1uDWJwKtUY/KDJZ4nQ
+         TwAalJwDXH2laBq4B575CWzbQ8yM53S1OiwUEgTNzXi5ybswCjTogSaos32GLcuI7bcO
+         jUiP1mfS/6TnogllYIQ+wZdB89PWM5rHm1B2EeqZT9ROlXR066r+468xBWhq/wqNxi2n
+         YOlw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MSkLrXkaOizj7D0wzYU4iL71lfarU60xcuW4v3wm00s=;
+        fh=V36TwnIsJKrhAo5safcFmGkyh2ecd6oV9skJ6FsrgsA=;
+        b=Up/N5ei8t5gPkCPaCBHZUAscUspZ6e0xJJUZyEuV2Mdpg5Xkxd0KPwvnzoyu1Sm+Ig
+         kbhPUh5QBeaR5ZsXT+U8Ls516UHTX1fwChrt04vN1BWxcGbakXVSAoWG1tDzgzvKth6Y
+         J0Tm8reKC02gi/4e8hlMfhuu/EGEIN3pK0oFhBznkCalTjsOUT2PMSr13agC8fwi3dc8
+         1ar+O511gc9/6cfWCsiWQzw6b7FDOciDqgkRTcNQB+tfYPU1RFMXqb8kmiJSWa37+3SO
+         QhWWJo/aFvPWl+IfIpRKAypU/ScZB04I31bV6R8iFruvO8Aca9AzQsTYROyeqDAnUIiD
+         fsLw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1790839731; x=1791444531; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RJYmC2LSrFG1TGV4Ig18y/TsY0buRGK6MkL+GzI3BWI=;
-        b=hhNXburxRCdooNz6RGqWq3+xgLUEBUg9HgvmrwnhJWa3IHIwxSliFOVx6Ek3qPeQ5h
-         ZWgKRXO0OyxNz/B20fQpMkYR5kyzhc/bL7aLS9P2n8SIB+ot5YJ0SR0kXYER916W9lIQ
-         Zbt4lOhK+li8DHD/Y6N+/QwvyBPdcJDsAbdt0wxQ2ftlVUq2AEdOKkq9NBgk4i3x1W9w
-         uC7ucS65+r/LjpDbRDVjxa9tLBiM4BogD/BOZBEIAk7ks22AtClrcn3A04u19EsLWe9a
-         +M9E166iPJJr3cCvbTdnP0vyfkDzKMPqG82If2Gn++Hhhj9Gj6sHoXUyOjL3BciJvW06
-         t6PQ==
+        d=gmail.com; s=20251104; t=1790839744; x=1791444544; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MSkLrXkaOizj7D0wzYU4iL71lfarU60xcuW4v3wm00s=;
+        b=PzPop5l7VsTr5Kt9koLdVHNlAltfhwrjfKcEgU66JErbDQRcCSRL4PmddSXjlDjQhX
+         z2x6HTkiUOhFyY071SO2dzu8n3xnTK3UiOFbw5L4/gk5SGLsUpJDU4IV4mYBXYHiI8LN
+         8EUyrK2hJ2iDAQxr9hGduuCnrQbjJCBQzzWvgGDbwo47P4JMyJYDChaHwgLrw71XQ55B
+         IhrFZQCFK6SXSux+cuytsuVARnxKImQxCLJk9BihcSNe40aXHdeIrtlzsDiEK+494H+V
+         8mIDfny+7GrDu5E2O76j1W9fCP1ur7o3LTVPsgcZXicMxlu8a7AFdkkWbGhAh5hZvnmF
+         8Juw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790839731; x=1791444531;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RJYmC2LSrFG1TGV4Ig18y/TsY0buRGK6MkL+GzI3BWI=;
-        b=UuvduKNZaXddVQanFe2viIO3EtJi7tIONzS249qBr7YDfdakB1gaiSCsK9Ykf7ZPAF
-         ryTmr2f4wk0jz75q4wSA4BXxC4UTAmOicjObx3yAwb1g/4em5uSx+JqodG6QEysr5r6y
-         NfNVsupNhchPHhXjGrb3dF5rdFTS3Wsl3SprJBXU9bo9hlY2PYW/RQ67P5mdVCArSj+v
-         aFiPKFTDXZZipQYIt0qOpNNJats4aYhkx1OlsG5++JA+sjVxY3B3y6TLyOofg2QOCBBm
-         66qbg4BnLtCpgQVnFvcRGaQ9NzLKkKUYloWesG/16+FC4Rl7AK6qNsPd3E5FprW0RWYj
-         FJ2g==
-X-Gm-Message-State: AFq9FYJeghmdBFJKdn1bo3hgtqBzUU/apKZ4+9D2z/oYz2+Aeg9Ct+Dm
-	Ht0Ivwopr3sfox446IJZ9BQo+7uUdMzDt0a1SgNGrN29+3x2JNPkQMvSz8qdWeXuZ5orvpgk9OT
-	yOoRy1V4=
-X-Gm-Gg: AYBFou2Kx2+Pl1jTybAChTOgo4MbA0q/kDQ357m4Ns7KutQJ2QVWxchoIQD6NEc2wxF
-	Ctlu1WugHzcBIP1EPCV+i9u+UEjO4vdZZusEA60Y9xFKYAqvC+rTOf0cljfX7ciCQz4sEcBs0Ji
-	XPavnATVN8ltfZnlk2tlC99LEmPnUTreRob4PiwI0ujeKl/Co4dIY+0aBrKt1A0Fr6/QhdQHyJD
-	P/XttUneXve+tB4O4E0+97zW/3CAD1PN6RZJrmlUFSyi4icEhgZhN1CfxAPymyo1IcpAhLpTGZt
-	oHCIJlexg3P5amF3R+egjFRoB79BgtJdyAJF7rgKDwzcmLYyGAI4sUMqck9hLvFOWpzlyCyAp0U
-	FPgKgyVw5Ho5RoPOjTVCmPUBSBUFqjxPteW+Oa5YspBkxMPwfcavYYE12S4ukEijU/7KYuJFVne
-	NOBVhQjGwN1WTOTqhWh8Fm8kzn25sO9qIA+vwQB11V/jOXMoO4RLNZI1raIvwaUifi2BhPg7ikK
-	U2eP68fsLKjcO+25dHgwBT/KULI
-X-Received: by 2002:a05:6000:3cd:b0:48b:a7:638f with SMTP id ffacd0b85a97d-48b067a77a4mr3969002f8f.7.1790839730392;
-        Thu, 01 Oct 2026 00:28:50 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b06a2fc98sm4380736f8f.35.2026.10.01.00.28.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 00:28:49 -0700 (PDT)
-Message-ID: <f1e507b7-94f5-4357-a437-aad7f8538146@blackwall.org>
-Date: Thu, 1 Oct 2026 10:28:48 +0300
+        d=1e100.net; s=20260707; t=1790839744; x=1791444544;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MSkLrXkaOizj7D0wzYU4iL71lfarU60xcuW4v3wm00s=;
+        b=2fQ4LIzHloq7nH3OQZuP2LwjM2vc2hc5cL+4+7B+ZTn3wQxAmiPwKful4NMnyS4PGR
+         RPmvq/rZhziGxlk7a6y39KwMGg/RLJcgjaIfLzID8Ew4wY6SBx73pdlJIS2hv3MIa/5M
+         uEtqmQifF7dKRFxPErudXypsxTrx/lnTwQqb1kyiPCGsBsxLmX8FmZtGfthMclOkd0lx
+         qMiI6bu0vAKjaoTqc1wLTdTcoMN46WNefpdiQB22z5TT+VyGsoZbL6nZew820XWhaScz
+         aEmT7hj4PqZP5RlFzTr1bdDHROmRDrUvUJB8m1nXu5hKOAdhKipaNxIUKHPw2KApz/l9
+         Nu8w==
+X-Forwarded-Encrypted: i=1; AKwUvByNw6HSAEoQPQNyINrs1p7WUBUp5M4ga5BBgSEE8CAaLfxopx0/k5xc8RI1wiCX5fcvLxZrMcY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lG8suqq7UgNgfhCE3sVho+T58/UscnbgSZrO64pw1s6c9TXLu8
+	U137z4r4NKF938q3qcM9/ZMO7vUQdxsDkk3CRrrX+wG0/q8vJINjlzQktSK82b74fE2AZH9jn9t
+	YGk/wzSPkUR9ZIuF9rhZG/3b27NZB8qU=
+X-Gm-Gg: AYBFou2JFBB4ez6NtDS87gUbJsrSIWpCrP/XsXI0+3pqqWfH5fxaKP39jcrVivIItmf
+	UdIaLleYXn14wqohC5KwHyi5rbdLbul/qpbdoWIGPN/Rk5e8fM048HaN1ibgnOcLYbUAsrshYw5
+	Gwn6/Yna09xX3MKIzYgNs5QEfBT3JBrzLM5hB6E6gQta1O5KglM8WHhxPfzIoj7FkFVq1zCk6Dh
+	kA2jN12BLdFLTdIcdH1CzZiyS5F9vktwZWiPgbkte++sUcZanzlNAtU+KuUI9Q4jYPEgpiD0v2J
+	zIoSs+e+coJKjf4a8DHwttLSYSqomroVH3XNxKryZx4rJU5P3zhyrgd97ziovkUHfjefrnmCtHu
+	TcL9BquHe1J8=
+X-Received: by 2002:a05:7022:ed02:b0:143:2701:9198 with SMTP id
+ a92af1059eb24-14d33491b4amr3415031c88.36.1790839744378; Thu, 01 Oct 2026
+ 00:29:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 08/12] net: bridge: vlan: quiesce readers before
- freeing port VLANs
-Content-Language: en-US, bg
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev
-References: <20260930071411.2786201-1-razor@blackwall.org>
- <20260930071411.2786201-9-razor@blackwall.org>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260930071411.2786201-9-razor@blackwall.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260930140400.2955466-1-4ncienth@gmail.com>
+In-Reply-To: <20260930140400.2955466-1-4ncienth@gmail.com>
+From: =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
+Date: Thu, 1 Oct 2026 09:28:52 +0200
+X-Gm-Features: AclHuK8NL8zF-fuO6CKIa2qv-pSt6H66vE25JFzy2CmX4sYI7l1OWuYhQRHBVmQ
+Message-ID: <CAAUqJDtoYAb30bEOhoRNGTR4KLP2fWJpmXqu7o096GHFJZKi-g@mail.gmail.com>
+Subject: Re: [PATCH net] cipso: adjust cached option offsets when removing CIPSO
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Paul Moore <paul@paul-moore.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 30/09/2026 10:14, Nikolay Aleksandrov wrote:
-> Later fdb entries will cache port-VLAN pointers so unpublish a VLAN, wait
-> for a grace period (existing readers) and then purge or rewrite fdb
-> references before releasing it. Cached destinations can continue forwarding
-> until they are cleaned, that is acceptable so add a comment to document it.
-> During port teardown unpublish the complete VLAN group first, clean the
-> port fdbs and then release the VLANs. This lets all VLANs share one grace
-> period.
-> 
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+On Wed, 30 Sept 2026 at 16:04, Daehyeon Ko <4ncienth@gmail.com> wrote:
+>
+> cipso_v4_skbuff_delattr() shifts every IPv4 option after CIPSO left by
+> cipso_len, but leaves the cached srr, rr, ts and router_alert offsets at
+> their old locations.
+>
+> With a valid eight-byte CIPSO option followed by a seven-byte RR option,
+> RR moves from offset 28 to 20 while opt->rr remains 28.  The stale offset
+> then points into packet payload, letting the sender control both the
+> length and bytes copied by __ip_options_echo().  Setting the length to
+> 255 produced this condensed KASAN result:
+>
+>   BUG: KASAN: stack-out-of-bounds in __ip_options_echo
+>   Write of size 255
+>   Call Trace:
+>    __ip_options_echo
+>    run_cipso_stale_offset [net_candidate_probe]
+>
+> The destination holds 40 bytes of option data.  In an existing
+> uninstrumented x86-64 v7.2 build, __icmp_send() places that buffer
+> immediately before its stack canary, and the 255-byte copy also crosses
+> the saved return address.  A canary mismatch unconditionally panics;
+> no canary disclosure or control-flow exploit was demonstrated.
+>
+> Mirror cipso_v4_delopt() and subtract cipso_len from each cached offset
+> that follows CIPSO.  cipso_len is the logical distance moved by the first
+> memmove(); hdr_len_delta includes padding, while the later header move an=
+d
+> network-header reset relocate the bytes and their base together.
+>
+> The adjusted input leaves rr at 20 with length 7 and completes without a
+> sanitizer report.  Natural remote reachability requires a configured
+> SELinux/NetLabel gateway and a later option consumer; the retained test
+> invokes the real mutation and echo consumer directly because the availabl=
+e
+> rootfs has no SELinux policy or netlabelctl.
+>
+> Fixes: 89aa3619d141 ("cipso: make cipso_v4_skbuff_delattr() fully remove =
+the CIPSO options")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 > ---
->   net/bridge/br_fdb.c     | 20 ++++++++++++++++----
->   net/bridge/br_if.c      |  7 +++++--
->   net/bridge/br_private.h | 12 ++++++++++--
->   net/bridge/br_vlan.c    | 21 +++++++++++++++------
->   4 files changed, 46 insertions(+), 14 deletions(-)
-> 
-> diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-> index 7c68b540b358..307f9c12914e 100644
-> --- a/net/bridge/br_fdb.c
-> +++ b/net/bridge/br_fdb.c
-> @@ -883,7 +883,9 @@ void br_fdb_cleanup_by_dst(struct net_bridge *br,
->   
->   	spin_lock_bh(&br->hash_lock);
->   	hlist_for_each_entry_safe(f, tmp, &br->fdb_list, fdb_node) {
-> -		if (br_fdb_dst_port(f) != p)
-> +		struct net_bridge_dst dst = br_fdb_dst_read(f);
-> +
-> +		if (br_dst_port(dst) != p)
->   			continue;
->   
->   		if (vlan && f->key.vlan_id == vlan->vid &&
-> @@ -894,12 +896,22 @@ void br_fdb_cleanup_by_dst(struct net_bridge *br,
->   			continue;
->   		}
->   
-> -		if (!do_all)
-> +		if (!do_all) {
-> +			if (vid && f->key.vlan_id != vid)
-> +				continue;
-> +
->   			if (test_bit(BR_FDB_STATIC, &f->flags) ||
->   			    (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &f->flags) &&
-> -			     !test_bit(BR_FDB_OFFLOADED, &f->flags)) ||
-> -			    (vid && f->key.vlan_id != vid))
-> +			     !test_bit(BR_FDB_OFFLOADED, &f->flags))) {
-> +				/* The entry outlives the VLAN, so it must fall
-> +				 * back to the raw port destination
-> +				 */
-> +				if (vlan && br_dst_vlan(dst) == vlan)
-> +					br_fdb_dst_write(f,
-> +							 br_port_to_dst(p));
->   				continue;
-> +			}
-> +		}
->   
->   		if (test_bit(BR_FDB_LOCAL, &f->flags))
->   			fdb_delete_local(br, p, f);
-> diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-> index d94558a5e3e9..2c05ebc1299d 100644
-> --- a/net/bridge/br_if.c
-> +++ b/net/bridge/br_if.c
-> @@ -333,8 +333,9 @@ static void update_headroom(struct net_bridge *br, int new_hr)
->    */
->   static void del_nbp(struct net_bridge_port *p)
->   {
-> -	struct net_bridge *br = p->br;
-> +	struct net_bridge_vlan_group *vg;
->   	struct net_device *dev = p->dev;
-> +	struct net_bridge *br = p->br;
->   
->   	sysfs_remove_link(br->ifobj, p->dev->name);
->   
-> @@ -354,8 +355,10 @@ static void del_nbp(struct net_bridge_port *p)
->   		update_headroom(br, get_max_headroom(br));
->   	netdev_reset_rx_headroom(dev);
->   
-> -	nbp_vlan_flush(p);
-> +	vg = nbp_vlan_group(p);
-> +	nbp_vlan_group_unpublish(p);
->   	br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1);
-> +	nbp_vlan_flush(p, vg);
->   	switchdev_deferred_process();
->   	nbp_backup_clear(p);
->   
-> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-> index a790368b69e9..951b6ac5f484 100644
-> --- a/net/bridge/br_private.h
-> +++ b/net/bridge/br_private.h
-> @@ -1735,7 +1735,9 @@ int __br_vlan_set_default_pvid(struct net_bridge *br, u16 pvid,
->   int nbp_vlan_add(struct net_bridge_port *port, u16 vid, u16 flags,
->   		 bool *changed, struct netlink_ext_ack *extack);
->   int nbp_vlan_delete(struct net_bridge_port *port, u16 vid);
-> -void nbp_vlan_flush(struct net_bridge_port *port);
-> +void nbp_vlan_group_unpublish(struct net_bridge_port *port);
-> +void nbp_vlan_flush(struct net_bridge_port *port,
-> +		    struct net_bridge_vlan_group *vg);
->   int nbp_vlan_init(struct net_bridge_port *port, struct netlink_ext_ack *extack);
->   int nbp_get_num_vlan_infos(struct net_bridge_port *p, u32 filter_mask);
->   void br_vlan_get_stats(const struct net_bridge_vlan *v,
-> @@ -1894,7 +1896,13 @@ static inline int nbp_vlan_delete(struct net_bridge_port *port, u16 vid)
->   	return -EOPNOTSUPP;
->   }
->   
-> -static inline void nbp_vlan_flush(struct net_bridge_port *port)
-> +static inline void nbp_vlan_group_unpublish(struct net_bridge_port *port)
-> +{
-> +}
-> +
-> +static inline void
-> +nbp_vlan_flush(struct net_bridge_port *port,
-> +	       struct net_bridge_vlan_group *vg)
->   {
->   }
->   
-> diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-> index 8a914e249767..0675f74cf1b9 100644
-> --- a/net/bridge/br_vlan.c
-> +++ b/net/bridge/br_vlan.c
-> @@ -1406,23 +1406,32 @@ int nbp_vlan_delete(struct net_bridge_port *port, u16 vid)
->   	v = br_vlan_find(vg, vid);
->   	if (!v)
->   		return -ENOENT;
-> -	br_fdb_cleanup_by_dst(port->br, br_vlan_to_dst(v), vid, 0);
->   	__vlan_unpublish(vg, v);
-> +	synchronize_net();
+>  net/ipv4/cipso_ipv4.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/net/ipv4/cipso_ipv4.c b/net/ipv4/cipso_ipv4.c
+> index a05aa075de1a5..135b57c2c4f9e 100644
+> --- a/net/ipv4/cipso_ipv4.c
+> +++ b/net/ipv4/cipso_ipv4.c
+> @@ -2272,6 +2272,14 @@ int cipso_v4_skbuff_delattr(struct sk_buff *skb)
+>         new_hdr_len_actual =3D hdr_len_actual - cipso_len;
+>         new_hdr_len =3D (new_hdr_len_actual + 3) & ~3;
+>         hdr_len_delta =3D (iph->ihl << 2) - new_hdr_len;
+> +       if (opt->srr > opt->cipso)
+> +               opt->srr -=3D cipso_len;
+> +       if (opt->rr > opt->cipso)
+> +               opt->rr -=3D cipso_len;
+> +       if (opt->ts > opt->cipso)
+> +               opt->ts -=3D cipso_len;
+> +       if (opt->router_alert > opt->cipso)
+> +               opt->router_alert -=3D cipso_len;
 
-Sashiko says:
-  Does this synchronize_net() call introduce an RTNL stall and IPI storm when
-  processing a large VLAN range?
-  When a user issues an RTM_DELLINK command specifying a large range of VLANs
-  (e.g., vid 1-4094), br_process_vlan_info() iterates over the range sequentially:
-  net/bridge/br_netlink.c:br_process_vlan_info() {
-      ...
-  		for (v = (*vinfo_last)->vid; v <= vinfo_curr->vid; v++) {
-  			bool curr_change = false;
-  			tmp_vinfo.vid = v;
-  			err = br_vlan_info(br, p, cmd, &tmp_vinfo, &curr_change,
-  					   extack);
-      ...
-  }
-  This loop calls into br_vlan_info(), which then calls nbp_vlan_delete() for
-  each VLAN. Because the global RTNL lock is held during this process,
-  synchronize_net() translates to synchronize_rcu_expedited().
-  Calling this iteratively up to 4094 times blocks the RTNL lock for several
-  seconds and spams all CPUs with IPIs, causing a severe system-wide network
-  configuration Denial of Service. This is reachable by any user with
-  CAP_NET_ADMIN in the network namespace, which can often be obtained by
-  unprivileged local users via user namespaces.
-  Could these grace periods be batched or deferred when deleting multiple VLANs?
+Minor nit: IMHO, it would be better to move the added bits to the
+block by the end of the function where the other opt->... metadata is
+updated.
 
-  - Yes, they can be batched and I had them batched initially but when I ran my tests I didn't
-    notice any problems deleting a full VLAN range. It took 79ms on my host to delete 4k VLANs.
-    As I've stated in my cover letter - the complexity is not worth it, so I dropped that patch.
+One way or the other:
+Reviewed-by: Ondrej Mosn=C3=A1=C4=8Dek <omosnacek@gmail.com>
 
-> +	/* Traffic may still use v through cached fdb dsts until they are
-> +	 * cleaned below. This is acceptable during vlan deletion. Above we
-> +	 * drain the readers that could republish the dst before cleaning it
-> +	 */
-> +	br_fdb_cleanup_by_dst(port->br, br_vlan_to_dst(v), vid, 0);
->   	__vlan_del(vg, v);
->   
->   	return 0;
->   }
->   
-> -void nbp_vlan_flush(struct net_bridge_port *port)
-> +void nbp_vlan_group_unpublish(struct net_bridge_port *port)
->   {
-> -	struct net_bridge_vlan_group *vg;
-> -
->   	ASSERT_RTNL();
->   
-> -	vg = nbp_vlan_group(port);
-> -	__vlan_flush(port->br, port, vg);
->   	RCU_INIT_POINTER(port->vlgrp, NULL);
->   	synchronize_net();
-> +}
-> +
-> +void nbp_vlan_flush(struct net_bridge_port *port,
-> +		    struct net_bridge_vlan_group *vg)
-> +{
-> +	ASSERT_RTNL();
-> +
-> +	__vlan_flush(port->br, port, vg);
->   	__vlan_group_free(vg);
->   }
->   
+Thank you for the fix!
 
+>
+>         /* 1. shift any options after CIPSO to the left */
+>         memmove(cipso_ptr, cipso_ptr + cipso_len,
+>
+> base-commit: 99b43ede9e355ba35244cc9470bf1819774ce39d
+> --
+> 2.55.0
+>
