@@ -1,224 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DD83C4167;
-	Thu,  1 Oct 2026 13:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A357850B43C
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 13:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790862146; cv=none; b=j3bMX3dRDNq5rTuD20x6Q6XCaocqVwk7XiH2GPyZdiKbLi5Ok7R/KWH03P83xvJKJv0ouIYD1zmTwfmO65XLpkOOAcFLhZF3H8Of2g0wHlu5jwH5a/aBdMRikgEGQNxg2k4uPc7MSQEy3vKQE8rECNrCz10/XCLlBOUsHTaidlY=
+	t=1790862160; cv=none; b=QU6BRb1urSJ0mrrFp7NJbRRJs0A/HKF/LzsI9yXGoJ/TgIXgv2QH854P/5Nag9TaTzbmJG0UUGBVE6Y0iAT9cvFmtjqpS14FTFJXD65VPrc+2btU0BMbPzss0E7L6CpCMAWjJcUVCnzdTLklB+LmDuWcGAxnslaP6JVmHwGbHGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790862146; c=relaxed/simple;
-	bh=m+PIYgpzATj6dMWTuMZqLnnGbUP6lmmFSgfStmPX9Wg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lGPk8iaSu6yDctRKDW3xzyjKkuwTdzG6Rc4qpOwc2J0KeXbHIDqCPuIrS9ZIPMbNUbUeoXOr6XOkhL6M7OHRWQALqhHMYYdxPQZtPeIudxUQJisMUBVhOg4PI11fOqThypVyBd+EG9go0gh/daf0y/LjTYTHNffFVI6azDj3v6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Td5zlE2q; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790862160; c=relaxed/simple;
+	bh=9/+tCd94iL8kXeGB2Qg2OUOvm2WiWKuY0gLzpz03J7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KLOCd4WytKPorP9pXpQ1zXBrtB37izEann6AuGId17phF5BYfklZcmYLW/YLFM3C69sbSY6ARr0Yvb+9Z6b5rErSa+hJ5Q/BA/yz8ZVm3kMjMK9OJPG+qQqcgKNEhBNkbjuLPsXjgKOQgJTJryIrVURZL+9Npx3d9Tb4HD3RqGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GKw7rqwJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=i/ur4ZQj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Td5zlE2q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25E31F00898;
-	Thu,  1 Oct 2026 13:42:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790862137;
-	bh=3jRt9Xf+0TeEf4XF1/71lJRzb1ZuaaAHPHCF5R0i77s=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Td5zlE2qQd7mRS5kOHJQrSNJq6FOHI9pqrFK9nyWhvwiE8tdtWV6yRh0XehvUE8LM
-	 I3IQKCHqE+txgbFNweXAq31oB62NgB+IbM4cxtjx4ghZSvUpYXHWG73tsYKyYKyWeg
-	 Yg8FtnN8WfYiDeE9JkO6+FF9NYA4f6fkPWHTeyt3tq/5v+CLHV/n0R/yLVGXsRcdMF
-	 op6fxkQzfEvXyHrmQLw+EV0koP+iF/TzOLgijdXrxEy5/qQ94isC/+66xtKgaGgF6m
-	 tUtGb2p46X4T1t8I2tSux9JpfK+Slu4nbOxOsGxHgZdL7OEMdkOznRN7ry8khKJUDt
-	 CDG0oCIpr/nLg==
-Subject:
- Re: [PATCH net] net: plip: quiesce private work when stopping the interface
-From: netdev-bot+sashiko@kernel.org
-To: getshell@seu.edu.cn
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
-Date: Thu, 01 Oct 2026 13:42:16 +0000
-Message-ID: <179086213620.434549.7621820175200159527@kernel.org>
-In-Reply-To: <20260928134136.1213-1-getshell@seu.edu.cn>
-References: <20260928134136.1213-1-getshell@seu.edu.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GKw7rqwJ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="i/ur4ZQj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790862148;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cu6OcuQYFoTCH5UaDqxha9ec8EBwkEwB9eRLNdJBaGY=;
+	b=GKw7rqwJYFQZ6/KlBkANRzkWBykGIxB8aDNoOiPf9HkXTeMq/lw69fFZleXAUF2B7hmKKk
+	Owr5t9bub1T9fAID07lNx98+2ipc19K8Qulj/EWK532jikSXBFuz3FE9muIfcUd6EqNT18
+	yMyx/fvZKMCNgc6M+ihnMMiAvUCRY3M=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-661-MSAb5tKmN0WD6OSKo-Cqng-1; Thu, 01 Oct 2026 09:42:26 -0400
+X-MC-Unique: MSAb5tKmN0WD6OSKo-Cqng-1
+X-Mimecast-MFC-AGG-ID: MSAb5tKmN0WD6OSKo-Cqng_1790862145
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01eb045feso10147085e9.1
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 06:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1790862145; x=1791466945; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=cu6OcuQYFoTCH5UaDqxha9ec8EBwkEwB9eRLNdJBaGY=;
+        b=i/ur4ZQj65xDkONUTm63ZH3iuOFIQSAz8NPNbrydMr6Mpxm+s8wh/tmZJe91DyTK80
+         d8OsnbqU6cauSnkT4sgkUW7a5sGpul5D6ir0chQrNgzWu2UusOHU2WVTpcyZ+YpRsPtg
+         qMqhcWR2PLzu7YTnRhYO9vYhLtTFYCbQFJOFw1e6L74JBr0WnoRIuzUKJC4c6BGMEjM3
+         g6PVZMMQ7zlx6y+7C6pD8Qq4GrZks8zQlFmpHUVYHpHQeAVmD8ckQkK+Sv8sPofBJAJU
+         iDUla7wmtIJJmv9oTNKx+qelyn5GmkH4vZGt3FiiN1CgB58caIt+a8SV00jgJUFE4OdZ
+         2OOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790862145; x=1791466945;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=cu6OcuQYFoTCH5UaDqxha9ec8EBwkEwB9eRLNdJBaGY=;
+        b=USXFVuWvxzA6UhbfuTCv+8sRRhStfnfL07nJs6edGaBa/ESrqnftnLiLYB8WvQH2p+
+         XpOOrLMxrR78QH0nVXZvZyZvRBkyBPBXyPoZgiYB+vb/KI2QiMCsp2vFZaZOl2LrFqmN
+         WHfQDvo8QPVYncVIQ992wNJ4msCFkCtINVO6q37Boe2AUpLA3owUHfZMufVY0CpVMMKA
+         v1u9Sz2l5GRlE9SEKPbB8tVrshcvYB1SiVwwiMnwh7ZqaIRH2mvfKrKgmg6xmKKOhq1W
+         v2DJdLO7NaZWAxCNmAsbay0kFaMaulAZ/5WZ58B02Q2Mcuc/ZAU0dj65lID5vZ1GeEPn
+         ReZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzHBtbYP+98bx5hZy4FDazw/hfr9ugaOpiPsXSCS2SAYQAgBXDnhXcK0eGPp1No7GlXiwFouiE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kyBy/1Dh17021kbfL9apnQJcXyofVyUIWJmQNQ+dG0DP43kVAL
+	CUr2JnjoxOg0Kfr55AqhpwYzp9Wq4sy4g9AHBry4aEuPieN2Yq3tzMVfqm5fhTrbRcfvO+trH8J
+	MhGF5CN7bLpdL225kSNoX/eN0EqiT7tbzFk4NrXEO+NDYzTZPEkhQqc3s0Q==
+X-Gm-Gg: AYBFou2kVxIYhCkiUHIlWgz50aIcrUZHN5ACTNE7OJEgO5fqSAl4pCNb8N1Kie00FzZ
+	iAyiGju4JhlMg8eP5uiPtebZsJPCOSxr5Mi8Zd+QnZgWptq6axDbZZuvsArjAEqwomjSTNH7T9p
+	tGm57XryD3jnbMgyiLGHYzdvYzoXPftasNV3NLE7vTl8zoWR3vh2RAKTjz8i56nc8tq6M/8Pgp2
+	N4w/TgZ340TSgQjF9Rb5DobOE7OEPOV2c4CGOKBXcq0gQepyQ48E7uEZuPNMn+FTs1Q+msEMHTU
+	8KHtZxa61MQHYtMHtpmUvoKcAqKPGeuK1yyVnsAIDRWxCmKCyB+Iuy5wT94+SJaohTMfGD7aIgy
+	3jXTeQK8AgTRiuS/lZgWKHI/iwJFU2uxVAVU=
+X-Received: by 2002:a05:600d:8652:10b0:4a0:25fe:a4f with SMTP id 5b1f17b1804b1-4a025fe0b7cmr6753415e9.26.1790862145174;
+        Thu, 01 Oct 2026 06:42:25 -0700 (PDT)
+X-Received: by 2002:a05:600d:8652:10b0:4a0:25fe:a4f with SMTP id 5b1f17b1804b1-4a025fe0b7cmr6753205e9.26.1790862144781;
+        Thu, 01 Oct 2026 06:42:24 -0700 (PDT)
+Received: from leonardi-redhat ([176.206.38.69])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f984d89sm81821335e9.7.2026.10.01.06.42.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 06:42:24 -0700 (PDT)
+Date: Thu, 1 Oct 2026 15:42:21 +0200
+From: Luigi Leonardi <leonardi@redhat.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, virtualization@lists.linux.dev, 
+	kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] vsock: account only unread bytes in read_skb()
+Message-ID: <ar5gU4DSSTUuGi8P@leonardi-redhat>
+References: <20261001121541.2983379-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261001121541.2983379-1-4ncienth@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0 (1)
+what about using `vsock/virtio` instead of `vsock`? We are changing
+just the virtio parts of vsock.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On Thu, Oct 01, 2026 at 09:15:41PM +0900, Daehyeon Ko wrote:
+>After a partial stream receive, rx_bytes tracks the unread suffix while
+>buf_used and peer credit still cover the whole packet.
+>virtio_transport_read_skb() dequeues that packet but passes pkt_len for
+>both counters, underflowing rx_bytes.
+>
+>On a connected CID_LOCAL stream with an SK_SKB verdict, a 40-byte read
+>from a 100-byte packet made SIOCINQ report -40, an empty recv return
+>ELOOP, and poll report the empty socket readable.  After verdict detach,
+>receiving 40 bytes wrapped the counter to zero and hid those queued bytes
+>until one more byte arrived.  The fixed run kept the counter balanced
+>and exposed all queued data immediately.
+>
+>Subtract only skb->len minus the VSOCK offset from rx_bytes.  Retain the
+>full packet length for buf_used and peer credit.
+>
+>Fixes: 45ca7e9f0730 ("vsock/virtio: fix `rx_bytes` accounting for stream sockets")
+>Cc: stable@vger.kernel.org
+>Assisted-by: LLM
+>Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+>---
+> net/vmw_vsock/virtio_transport_common.c | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index f225f53ed4bab..1e762a480df49 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1927,6 +1927,7 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+> 	struct sock *sk = sk_vsock(vsk);
+> 	struct virtio_vsock_hdr *hdr;
+> 	struct sk_buff *skb;
+>+	u32 bytes_read;
+> 	u32 pkt_len;
+> 	int off = 0;
+> 	int err;
+>@@ -1946,7 +1947,8 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+> 		vvs->msg_count--;
+>
+> 	pkt_len = le32_to_cpu(hdr->len);
+>-	virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
 
-- [Medium] The IRQ publisher is already live when plip_open() resets its
-  state, so a peer trigger can be lost and receive stays stuck.
+maybe it's worth adding a comment? not a strong opinion.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it defeats the
-  reopen support the commit message claims.
-- [Low] Parallel-port data lines can be left mid-handshake after close
-  (baseline: pre-existing, low impact).
+>+	bytes_read = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
+>+	virtio_transport_dec_rx_pkt(vvs, bytes_read, pkt_len);
+> 	spin_unlock_bh(&vvs->rx_lock);
+>
+> 	virtio_transport_send_credit_update(vsk);
+>
+>base-commit: e23a64eb244356ee47c0620f0722d51bd88db522
+>-- 
+>2.55.0
+>
 
---
+code LGTM!
 
-net: plip: quiesce private work when stopping the interface
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
 
-This patch initializes the immediate and deferred PLIP work items as
-disabled. plip_open() now resets the protocol state and then enables the
-work items. plip_close() disables and drains both work items before it
-releases the parport and any pending skbs.
+Thanks,
+Luigi
 
-> diff --git a/drivers/net/plip/plip.c b/drivers/net/plip/plip.c
-> index d81163bc910a..97bbac0b95da 100644
-> --- a/drivers/net/plip/plip.c
-> +++ b/drivers/net/plip/plip.c
-
-[ ... ]
-
-> @@ -1077,6 +1079,17 @@ plip_open(struct net_device *dev)
->  
->  	nl->should_relinquish = 0;
->  
-> +	/* Initialize the state machine. */
-> +	nl->rcv_data.state = PLIP_PK_DONE;
-> +	nl->snd_data.state = PLIP_PK_DONE;
-> +	nl->rcv_data.skb = NULL;
-> +	nl->snd_data.skb = NULL;
-> +	nl->connection = PLIP_CN_NONE;
-> +	nl->is_deferred = 0;
-> +
-> +	enable_work(&nl->immediate);
-> +	enable_work(&nl->deferred.work);
-
-[Severity: Medium]
-In IRQ mode, can a trigger interrupt from the peer get lost here?
-
-The commit message says open will "reset protocol state before enabling
-the work and its IRQ or polling publishers". However, the parport_claim()
-call at the top of plip_open() already makes plip_interrupt() reachable.
-
-parport_claim() sets port->cad to the PLIP pardev and calls
-restore_state(). For parport_pc, the saved CONTROL value already has
-ackIntEn set:
-
-drivers/parport/parport_pc.c:parport_pc_init_state() {
-    ...
-	if (dev->irq_func && dev->port->irq != PARPORT_IRQ_NONE)
-		/* Set ackIntEn */
-		s->u.pc.ctr |= 0x10;
-    ...
-}
-
-Suppose the interrupt lands after nl->connection = PLIP_CN_NONE but before
-enable_work(&nl->immediate) finishes. plip_interrupt() then does:
-
-	case PLIP_CN_NONE:
-	case PLIP_CN_SEND:
-		rcv->state = PLIP_PK_TRIGGER;
-		nl->connection = PLIP_CN_RECEIVE;
-		nl->timeout_count = 0;
-		schedule_work(&nl->immediate);
-		break;
-
-The work is still disabled from plip_init_netdev(), so this schedule_work()
-is silently dropped. enable_work() does not replay it.
-
-Every later trigger then hits:
-
-	case PLIP_CN_RECEIVE:
-		...
-		break;
-
-Receive stays stuck until a local transmit happens to queue plip_bh().
-Before this patch the work was always enabled, so this interrupt would
-always have queued plip_bh().
-
-Would it work to do the state reset and the enable_work() calls before
-parport_claim()? Another option is to keep the port interrupt masked, and
-do the reset under nl->lock, until the work is enabled.
-
-> +
->  	/* Clear the data port. */
->  	write_data (dev, 0x00);
->  
-
-[ ... ]
-
-> @@ -1141,6 +1148,9 @@ plip_close(struct net_device *dev)
->  		wait_for_completion(&nl->killed_timer_cmp);
->  	}
->  
-> +	disable_work_sync(&nl->immediate);
-> +	disable_delayed_work_sync(&nl->deferred);
-> +
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does reopen work in IRQ
-mode? The commit message says "The balanced enable and disable operations
-support later interface reopen". However, plip_close() does an
-unconditional, counted disable_irq() earlier in the function:
-
-	netif_stop_queue (dev);
-	DISABLE(dev->irq);
-	synchronize_irq(dev->irq);
-
-where:
-
-#define DISABLE(irq) if (irq != -1) disable_irq(irq)
-
-plip_open() never calls ENABLE(dev->irq). It only calls
-enable_parport_interrupts(), which for parport_pc ends up in
-parport_pc_enable_irq():
-
-	__parport_pc_frob_control (p, 0x10, 0x10);
-
-That sets the chip's IRQ enable bit, but it does not unmask the Linux IRQ
-line. The other DISABLE/ENABLE pairs in the transfer and recovery paths
-balance each other, and none of them undoes the disable in close.
-
-After an ifdown/ifup, the IRQ disable depth stays at one or more. As a
-result, plip_interrupt() is never delivered and the interface can't
-receive.
-
-dev->irq is the parport controller's IRQ (plip_attach() sets it from
-port->irq), and PCI parport cards request it with IRQF_SHARED. Doesn't
-this also leave the line masked for other parport clients and for any
-device sharing that IRQ?
-
->  #ifdef NOTDEF
->  	outb(0x00, PAR_DATA(dev));
->  #endif
-
-[Severity: Low]
-This is a pre-existing issue, but plip_close() never sets the data
-register back to idle before parport_release(). The only reset is the
-outb() above, which is compiled out.
-
-If the interface is closed mid-transfer, the last handshake value stays on
-the wire. Examples are the 0x08 trigger from plip_send_packet() or the ACK
-from plip_receive_packet():
-
-	write_data (dev, 0x01); /* send ACK */
-
-parport_pc_save_state() and parport_pc_restore_state() only handle CTR and
-ECR. The data value therefore stays in place until this side reopens and
-plip_open() writes 0x00. Until then the peer may stay in PLIP_CN_ERROR.
-
-This patch doesn't change that behaviour. Before it, any work still
-pending after close was already a no-op: close sets nl->is_deferred = 0
-and nl->connection = PLIP_CN_NONE. So plip_kick_bh() returned early and
-plip_bh() ran plip_none(), and neither of them writes the data register.
-
-Would a write_data(dev, 0x00) after the work is drained and before
-parport_release() be a reasonable cleanup here?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928134136.1213-1-getshell%40seu.edu.cn
