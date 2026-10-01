@@ -1,49 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0304316905;
-	Thu,  1 Oct 2026 04:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D95D2BE65B
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829946; cv=none; b=rn/nXo3t1x0GncEK4irNiKVm5sCA2siBHE3ntlcWQ6NamaNn+78L6ENFcAnlOVaO5NcsO7cE7Eu3VtX7HCdI59LWsrET7ZXYwp67M6GPZnMuGygFgwYfa04XJqVaJz2p+djSwGR/nyGMuV6ZSfd5RmzS+P5slsCyl05F4tGxiAA=
+	t=1790830138; cv=none; b=PYOUJzgFSLBITSs0ujnjHOXx3vOO8CJ8zQ5251aM1Xp9ZfXFW7zSFpHgH4IBcLY/f3eQLIkklY5880o4lpSPi+JjmpquJh3O10qAWoy1fPygZSWwgZgiVL7QtAAiSDo/TZGWgSrAw86vle1dFT/ZdFq1VUb3s0ANveZcbbnvZi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829946; c=relaxed/simple;
-	bh=xzlJmBZMCgRewTdna8Iqm3hSHbEoZorMa/5oFVYqMGw=;
+	s=arc-20240116; t=1790830138; c=relaxed/simple;
+	bh=e5MihVsVvFe4tw/eL2DZQE1XUPpMnp6e9llrzl9igiQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=csJO/hNOMijAlcVRRezX603giUh5SgTVZQOyKG/0skx+IwF4zQ/dd3sSNd9mkdY0wuAl7vE+cDwQNyi6MfoXtvnkGurKbtinDORBENOa4H3xn9PEkJuCdAn3OJwEViHE04SuQV9x0IwugBEPMvir+m6ihFzp5+JoLa3sdvyWe5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6G3Ft4l; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=m2dn1/FA03meZgIs+yuAcAXgI6GhwJW86aIoFAM2vUaX+6VLHSa1ifftyJjPeuoW5iBNkqdmk2o6ZY33D/zSPVKoYf7OiaV4vB+kDYiDULzeS6Zd5PaFGdAEfLqOz0UqCEBlQ3pft2kP8vPrOOHuiPVctjrun8FJAPw7NlJlNSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJa3fxBP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6G3Ft4l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740631F000FF;
-	Thu,  1 Oct 2026 04:45:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJa3fxBP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CCD1F000FF;
+	Thu,  1 Oct 2026 04:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790829942;
-	bh=79TsK9dY3fGdmIe6KeQfTAtgITha4aHe5TEAVmS517M=;
+	s=k20260515; t=1790830136;
+	bh=eMdFBuKhoKS1uaMwcf5rSALI4bUeBraeA2XPiEFBTBw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=H6G3Ft4l2huoXGCaM05XS8J77j4QL3pH6DwdtQU0+rd2je5FuvvRAn/mGkYbWtmsR
-	 WMqG4cw09dehd6HoUUT2ZChVx6TbGXkDqDSor8hmUZMmVjSyeFloXALGVMjhllHS3y
-	 JjCx+xRKbHMxLKJvID1LyTOBGh+cVjoGjPteJE6uj4dk+t4UTrJxmmc/sRsXjQojwJ
-	 H9hL8HF2NqBmwuKEPUTH2bBESa6f+TDaUd1r7J3CQh9DgtxcRFNhIFkXHPF8Jz4e1/
-	 9SqmKV6BByuGtUgKIpDxw89TFClKUUxcgPys8JsMoJUUwh/m6eOu3HwWHPh9K/Utg3
-	 iL5ZA4s705tlA==
-Subject: Re: [PATCH net-next v24 10/10] net: dsa: Add Airoha AN8855 5-Port
- Gigabit DSA Switch driver
+	b=GJa3fxBP6d4WKEbyGlU+rLzju1G7GcJnNTvorRwvPhb8d1Hwqwcp1pxaap2x1R+aC
+	 oT4qMmhooYppBcS9eEiNwosR2NgS+0/b9rSFy06JA3ZEc6Lrs4htLTEdOIKILKSfwI
+	 OT/r3iYFT7ApX/nj9Td1BtS3REmoSvUv7guqr1xwp/aIoGYfqailwOhKGC8WSzosk4
+	 Uh7J2Fboj8ELj/5U5FeYzeheA+2Be773Y7BjjBPrQiEJIlSFmphDZEeVedtXc6k8hd
+	 D3/LHJZvfbUU9vDEhN0qx0EWjDdi+P8PNuPu0IhqmxLAvUkVVv2tnSYalk2yCO8X/O
+	 Sw4Tsv/sniGlg==
+Subject: Re: [PATCH net-next v3 1/2] net: stmmac: add tc mqprio hw queue
+ priority offload
 From: netdev-bot+sashiko@kernel.org
-To: ansuelsmth@gmail.com
-Cc: lee@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, olteanv@gmail.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com,
- daniel@makrotopia.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
- horms@kernel.org, joey@tinyisr.com, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
- mfd@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- andrew@lunn.ch
-Date: Thu, 01 Oct 2026 04:45:39 +0000
-Message-ID: <179082993999.434549.10251161612952735193@kernel.org>
-In-Reply-To: <20260928194511.41878-11-ansuelsmth@gmail.com>
-References: <20260928194511.41878-11-ansuelsmth@gmail.com>
-X-sashiko-severity: High
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, olteanv@gmail.com,
+ 0x1207@gmail.com, daniel@riscstar.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Thu, 01 Oct 2026 04:48:55 +0000
+Message-ID: <179083013550.434549.16460704020189061203@kernel.org>
+In-Reply-To:
+ <20260928-stmmac-mqprio-prio-offload-v3-1-abbe181f5024@oss.qualcomm.com>
+References:
+ <20260928-stmmac-mqprio-prio-offload-v3-1-abbe181f5024@oss.qualcomm.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,10 +52,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 12 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 7 · Low: 3
+Critical: 0 · High: 0 · Medium: 2 (3) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -64,402 +63,276 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In the AN8855 driver, the shared VLAN read-modify-write path
-  reads the VLAN write-data register (AN8855_VAWD0) back, not the read-…
-- [High] an8855_port_enable() sets ports[port].enable and turns on PMCR
-  TX/RX, but it never writes the cached forwarding matrix…
-- [Medium] mt7530_lib_port_change_mtu() writes DIV_ROUND_UP(length, 1024)
-  into MT7530_GMACCR_MAX_RX_JUMBO.
-- [Medium] an8855_set_mac_eee() rejects any tx_lpi_timer > 0xFFF (4095
-  us).
-- [Medium] The new an8855_mib table exposes, as private ethtool -S
-  strings, counters that already have standard uAPI homes, and the…
-- [Medium] an8855_setup() clears the AN8855_UNIPMF (IP unknown-multicast
-  flood) bit for every user port, and nothing sets it again.
-- [Medium] an8855_pcs_config() updates AN8855_PLL_CTRL_2 with
-  AN8855_RG_DA_QP_PLL_SDM_HREN_INTF, a field an8855.h defines in…
-- [Medium] SGMII without in-band negotiation is always forced to 1000
-  Mb/s in the PCS.
-- [Medium] an8855_port_fdb_dump() declares 'u32 rsp;' without
-  initialising it and passes it to mt7530_lib_fdb_cmd().
-- [Low] NET_DSA_AN8855 can be enabled with COMPILE_TEST and
-  CONFIG_REGMAP=n.
-- [Low] an8855_pcs_config() changes several mode-specific SerDes/PCS bits
-  in one direction only.
-- [Low] an8855_rmon_ranges gives the top RMON histogram bucket as { 1519,
-  AN8855_MAX_MTU }.
+- [Medium] Stale shadow priorities in xmit_qdisc.prio[] get written back
+  to hardware.
+- [Medium] net: stmmac: state corruption when switching mqprio mode from
+  CHANNEL to DCB
+
+Pre-existing issues:
+- [Medium] Channel-mode shaper and rate requests are accepted but never
+  applied.
+- [Medium] DCB mappings with queue gaps quietly disable TC
+  classification.
+- [Medium] The mqprio path accesses MAC/MTL registers without a runtime-
+  PM reference.
 
 --
 
-net: dsa: Add Airoha AN8855 5-Port Gigabit DSA Switch driver
+net: stmmac: add tc mqprio hw queue priority offload
 
-This patch adds a DSA driver for the switch inside the Airoha AN8855. It
-reuses the shared mt7530-lib helpers through a per-chip regmap_field
-table, and it extends the lib with several AN8855-specific fields. It
-also adds a PCS for the SGMII/2500base-X CPU port and EEE support.
+This patch adds mqprio channel mode offload to stmmac. In that mode the
+MTL TX scheduler is switched to strict priority and the per-queue
+PSTQx/PSTC priority bitmasks are programmed from prio_tc_map. The patch
+also adds a shadow copy of the TX algorithm and the per-queue priorities
+in priv->xmit_qdisc, which is programmed into the hardware on open.
 
-> diff --git a/drivers/net/dsa/mediatek/Kconfig b/drivers/net/dsa/mediatek/Kconfig
-> index 7b48300dca0c5..2799e78a86517 100644
-> --- a/drivers/net/dsa/mediatek/Kconfig
-> +++ b/drivers/net/dsa/mediatek/Kconfig
-> @@ -1,4 +1,14 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> +config NET_DSA_AN8855
-> +	tristate "Airoha AN8855 Ethernet switch support"
-> +	depends on MFD_AIROHA_AN8855 || COMPILE_TEST
-> +	depends on NET_DSA
-> +	select NET_DSA_MT7530_LIB
-> +	select NET_DSA_TAG_AIROHA
-
-[Severity: Low]
-Can this fail to build with COMPILE_TEST=y, MFD_AIROHA_AN8855=n and
-CONFIG_REGMAP=n?
-
-REGMAP is only guaranteed through the select REGMAP in
-MFD_AIROHA_AN8855. Neither NET_DSA_MT7530_LIB nor NET_DSA selects it.
-
-In include/linux/regmap.h, struct reg_field and devm_regmap_field_alloc()
-only exist under CONFIG_REGMAP, and there are no stubs for them.
-struct mt7530_reg_field and an8855_setup_lib_priv() use both.
-
-Is a select REGMAP needed on NET_DSA_AN8855 or NET_DSA_MT7530_LIB?
-
-> diff --git a/drivers/net/dsa/mediatek/an8855.c b/drivers/net/dsa/mediatek/an8855.c
-> new file mode 100644
-> index 0000000000000..b4b02b7cb6eb8
-> --- /dev/null
-> +++ b/drivers/net/dsa/mediatek/an8855.c
-> @@ -0,0 +1,1741 @@
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> index 42a00446e9b4..07cf4582ed76 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
 
 [ ... ]
 
-> +	{ MT7530_VAWD_IVL_MAC, REG_FIELD(AN8855_VAWD0, 5, 5) },
-> +	{ MT7530_VAWD_EG_CON, REG_FIELD(AN8855_VAWD0, 11, 11) },
-> +	{ MT7530_VAWD_VTAG_EN, REG_FIELD(AN8855_VAWD0, 10, 10) },
-> +	{ MT7530_VAWD_PORT_MEM, REG_FIELD(AN8855_VAWD0, 26, 31) },
-> +	{ MT7530_VAWD_FID, REG_FIELD(AN8855_VAWD0, 1, 4) },
-> +	{ MT7530_VAWD_VLAN_VALID, REG_FIELD(AN8855_VAWD0, 0, 0) },
-> +	{ __MT7530_VAWD1, REG_FIELD(AN8855_VAWD0, 0, 31) },
+> @@ -1266,12 +1269,109 @@ static int stmmac_reset_tc_mqprio(struct net_device *ndev,
+>  {
+>  	struct stmmac_priv *priv = netdev_priv(ndev);
+>  
+> +	if (priv->xmit_qdisc.prio_offload) {
+> +		int i;
 > +
-> +	{ MT7530_VAWD_ETAG, REG_FIELD(AN8855_VAWD0, 12, 23) },
-> +	{ __MT7530_VAWD2, REG_FIELD(AN8855_VAWD1, 0, 31) },
+> +		for (i = 0; i < priv->plat->tx_queues_to_use; i++) {
+> +			u32 prio;
+> +
+> +			if (priv->plat->tx_queues_cfg[i].use_prio)
+> +				prio = priv->plat->tx_queues_cfg[i].prio;
+> +			else
+> +				prio = 0;
+> +
+> +			stmmac_tx_queue_prio(priv, priv->hw, prio, i);
+> +			priv->xmit_qdisc.prio[i] = prio;
+> +		}
 
-[Severity: High]
-On AN8855, do the VLAN read-modify-write paths in mt7530-lib.c read
-back the correct register?
+[Severity: Medium]
+Can stale entries in priv->xmit_qdisc.prio[] get written back to the
+hardware?
 
-After the VTCR read command, mt7530_hw_vlan_update() reads the entry
-through the VAWD fields:
+This loop, and the one in tc_mqprio_config_queue_prio(), only update
+prio[i] for i below the tx_queues_to_use value at that moment. With this
+patch, stmmac_mac_config_tx_queues_prio() programs PSTQx/PSTC from the
+shadow array on every open, where it used to read tx_queues_cfg[]:
 
-mt7530_hw_vlan_update() {
-    ...
-    mt7530_vlan_cmd(priv, MT7530_VTCR_RD_VID, vid);
-
-    regmap_field_read(priv->fields[MT7530_VAWD_PORT_MEM], &val);
-    entry->old_members = val;
-    ...
+stmmac_main.c:stmmac_mac_config_tx_queues_prio() {
+	for (i = 0; i < priv->plat->tx_queues_to_use; i++)
+		stmmac_tx_queue_prio(priv, priv->hw,
+				     priv->xmit_qdisc.prio[i], i);
 }
 
-mt7530_hw_vlan_del() also checks:
+With 8 TX queues from DT, each with snps,priority, this sequence looks
+possible:
 
-    regmap_field_read(priv->fields[MT7530_VAWD_VLAN_VALID], &val);
-    if (!val) {
+1) tc qdisc add ... mqprio num_tc 4 queues 1@0 1@1 1@2 1@3 hw 1 mode channel
+   tc_mqprio_config_queue_prio() sets prio[4..7] = 0
+2) ethtool -L <dev> tx 4
+   tx_queues_to_use becomes 4
+3) tc qdisc del ...
+   stmmac_reset_tc_mqprio() restores only prio[0..3]
+4) ethtool -L <dev> tx 8
+   stmmac_open()->stmmac_hw_setup()->stmmac_mtl_configuration()->
+   stmmac_mac_config_tx_queues_prio() writes 0 for queues 4..7
 
-In this table all of those fields map to AN8855_VAWD0, which is the
-write-data register. an8855.h defines a read-data register, but nothing
-uses it:
+After that, queues 4..7 keep a zero priority map in place of their DT
+values until the driver is re-probed.
 
-/* Same register field of VAWD0 */
-#define AN8855_VARD0			0x10200618
+The follow-up commit "net: stmmac: align real_num_tx_queues to mqprio
+configuration" makes stmmac_reinit_queues() reject tx_cnt below
+xmit_qdisc.num_tx_queues while mqprio is enabled. That covers shrinking
+below the TC queues. Shrinking to exactly num_tx_queues is still allowed,
+though, so step 2 still works at the end of the series.
 
-If the hardware puts the read result in VARD0, the fetched entry is
-whatever was last written to VAWD0. For example, an8855_setup() ends
-with mt7530_lib_setup_vlan0(), which leaves PORT_MEM set to all members
-and VALID=1. The first bridge VLAN add would then read old_members as
-all ports.
+Should the restore loop here cover all MTL_MAX_TX_QUEUES entries?
 
-Could this make ports members of VIDs they were never added to, or carry
-ETAG bits from one VID to another?
-
-Could it also let mt7530_hw_vlan_del() see a stale VALID=0, after which
-WR_VID writes stale data over a live VLAN?
-
-> +static const struct mt7530_mib_desc an8855_mib[] = {
-> +	MIB_DESC(MT7530_MIB_TX_DROP, -1, "TxDrop"),
-> +	MIB_DESC(MT7530_MIB_TX_CRC_ERR, -1, "TxCrcErr"),
-> +	MIB_DESC(MT7530_MIB_TX_COLLISION, -1, "TxCollision"),
+> +
+> +		stmmac_prog_mtl_tx_algorithms(priv, priv->hw,
+> +					      priv->plat->tx_sched_algorithm);
+> +		priv->xmit_qdisc.algo = priv->plat->tx_sched_algorithm;
+> +		priv->xmit_qdisc.prio_offload = false;
+> +	}
+> +
+>  	netdev_reset_tc(ndev);
+>  	netif_set_real_num_tx_queues(ndev, priv->plat->tx_queues_to_use);
+>  
+>  	return stmmac_fpe_map_preemption_class(priv, ndev, extack, 0);
+>  }
+>  
+> +static void tc_mqprio_config_queue_prio(struct stmmac_priv *priv,
+> +					struct tc_mqprio_qopt *qopt)
+> +{
 
 [ ... ]
 
-> +	MIB_DESC(MT7530_MIB_RX_DROP, -1, "RxDrop"),
-> +	MIB_DESC(MT7530_MIB_RX_FILTERING, -1, "RxFiltering"),
-> +	MIB_DESC(MT7530_MIB_RX_CRC_ERR, -1, "RxCrcErr"),
+> +		stmmac_tx_queue_prio(priv, priv->hw, prio, i);
+> +		priv->xmit_qdisc.prio[i] = prio;
+> +	}
+> +
+> +	stmmac_prog_mtl_tx_algorithms(priv, priv->hw, MTL_TX_ALGORITHM_SP);
+> +	priv->xmit_qdisc.algo = MTL_TX_ALGORITHM_SP;
+> +	priv->xmit_qdisc.prio_offload = true;
+> +}
 
 [Severity: Medium]
-Should some of these counters go through the standard interfaces rather
-than ethtool -S?
+This is a pre-existing issue, but is it safe to access the MTL registers
+here without a runtime PM reference?
 
-RxCrcErr matches the eth-mac FrameCheckSequenceErrors counter and
-rtnl_link_stats64.rx_crc_errors. TxCollision matches collisions, and
-RxDrop/TxDrop match rx_dropped/tx_dropped.
+stmmac_setup_tc() passes TC_SETUP_QDISC_MQPRIO to
+stmmac_tc_setup_mqprio() without calling pm_runtime_resume_and_get().
+While the interface is down, stmmac_runtime_suspend() can gate
+stmmac_clk and pclk through stmmac_bus_clks_config(priv, false).
 
-mt7530_lib_get_eth_mac_stats() never fills FrameCheckSequenceErrors.
-an8855_switch_ops also has no .get_stats64, while mt7530.c implements
-mt7530_get_stats64() from the same MIB.
+A tc qdisc add or del on a down interface would then reach
+stmmac_tx_queue_prio() and stmmac_prog_mtl_tx_algorithms() here, and in
+the prio_offload block of stmmac_reset_tc_mqprio(), with those clocks
+off.
 
-[ ... ]
+This path already did unguarded MMIO before this patch, through
+dwmac5_fpe_map_preemption_class():
 
-> +static int an8855_port_fdb_dump(struct dsa_switch *ds, int port,
-> +				dsa_fdb_dump_cb_t *cb, void *data)
+	val = readl(priv->ioaddr + GMAC5_MTL_FPE_CTRL_STS);
+
+Other register-touching ndos in this driver, such as set_mac_address and
+the VLAN add/kill ops, call pm_runtime_resume_and_get() first.
+
+The xmit_qdisc shadow is reapplied on open. Could the register writes be
+skipped when !netif_running(), or could a PM reference be taken around
+them?
+
+> +
+> +static int tc_mqprio_validate_chan_mode(struct stmmac_priv *priv,
+> +					struct tc_mqprio_qopt_offload *mqprio)
 > +{
-> +	struct an8855_priv *priv = ds->priv;
-> +	int banks, count = 0;
-> +	u32 rsp;
-> +	int ret;
+> +	struct plat_stmmacenet_data *pdata = priv->plat;
+> +	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
 > +	int i;
-
-[ ... ]
-
-> +	ret = mt7530_lib_fdb_cmd(&priv->lib_priv, MT7530_FDB_START,
-> +				 AN8855_FDB_MAT_MAC_PORT, &rsp);
-> +	if (ret < 0)
-> +		goto exit;
 > +
-> +	do {
-> +		/* From response get the number of banks to read, exit if 0 */
-> +		banks = FIELD_GET(AN8855_ATC_HIT, rsp);
-
-[Severity: Medium]
-Can rsp be used uninitialized here?
-
-mt7530_lib_fdb_cmd() ignores the result of its final read and returns 0
-anyway:
-
-    if (rsp)
-        regmap_field_read(priv->fields[__MT7530_ATC], rsp);
-
-    return 0;
-
-regmap_field_read() leaves *val untouched when it fails. If that read
-fails after FDB_START, FIELD_GET() runs on an uninitialized stack value.
-After FDB_NEXT it would run on a stale value.
-
-Should rsp be initialized, or should mt7530_lib_fdb_cmd() return the read
-error?
+> +	if (!priv->dma_cap.dcben) {
+> +		NL_SET_ERR_MSG_MOD(mqprio->extack,
+> +				   "hw DCB is required to offload mqprio");
+> +		return -EOPNOTSUPP;
+> +	}
 
 [ ... ]
 
-> +static int an8855_port_max_mtu(struct dsa_switch *ds, int port)
-> +{
-> +	return AN8855_MAX_MTU;
-> +}
-
-[Severity: Medium]
-Does mt7530_lib_port_change_mtu() program a valid jumbo value on AN8855?
-
-It writes the MT7530 linear encoding:
-
-    regmap_field_write(priv->fields[MT7530_GMACCR_MAX_RX_JUMBO],
-                       DIV_ROUND_UP(length, 1024));
-
-an8855.h documents a non-linear encoding for this field:
-
-#define   AN8855_MAX_RX_JUMBO_9K	FIELD_PREP_CONST(AN8855_MAX_RX_JUMBO, 0x9)
-#define   AN8855_MAX_RX_JUMBO_12K	FIELD_PREP_CONST(AN8855_MAX_RX_JUMBO, 0xa)
-#define   AN8855_MAX_RX_JUMBO_15K	FIELD_PREP_CONST(AN8855_MAX_RX_JUMBO, 0xb)
-#define   AN8855_MAX_RX_JUMBO_16K	FIELD_PREP_CONST(AN8855_MAX_RX_JUMBO, 0xc)
-
-At AN8855_MAX_MTU, length is 15338 + 14 + 4 + 4 = 15360, so 0xf gets
-written, and that value is not defined.
-
-More generally, frame lengths from 12289 to 15360 give 0xd-0xf. Lengths
-from 9217 to 12288 give 0xa-0xc, which the hardware would read as
-12K/15K/16K.
-
-[ ... ]
-
-> +static const struct ethtool_rmon_hist_range an8855_rmon_ranges[] = {
-
-[ ... ]
-
-> +	{ 1024, 1518 },
-> +	{ 1519, AN8855_MAX_MTU },
-> +	{}
-> +};
-
-[Severity: Low]
-Should the top bucket's upper bound be a frame length?
-
-The other buckets are frame lengths in octets. AN8855_MAX_MTU (15338) is
-an L3 MTU, while the PKT_SZ_1519_TO_MAX counter counts frames up to
-15360 bytes.
-
-[ ... ]
-
-> +static int an8855_port_enable(struct dsa_switch *ds, int port,
-> +			      struct phy_device *phy)
-> +{
-> +	struct an8855_priv *priv = ds->priv;
-> +	int ret;
-> +
-> +	mutex_lock(&priv->reg_mutex);
-> +	priv->ports[port].enable = true;
-> +	ret = regmap_set_bits(priv->regmap, AN8855_PMCR_P(port),
-> +			      AN8855_PMCR_TX_EN | AN8855_PMCR_RX_EN);
-> +	mutex_unlock(&priv->reg_mutex);
-> +
-> +	return ret;
-> +}
-
-[Severity: High]
-Should this also write the cached port matrix to hardware?
-
-mt7530_update_port_member() skips the hardware write for disabled ports:
-
-    if (priv->ports[port].enable)
-        regmap_fields_write(priv->fields[MT7530_PCR_MATRIX],
-                            port, port_bitmap);
-
-mt7530_port_enable() in mt7530.c then applies it when the port comes up:
-
-    regmap_update_bits(priv->regmap, MT7530_PCR_P(port), PCR_MATRIX_MASK,
-                       PCR_MATRIX(priv->ports[port].pm));
-
-an8855_setup() calls an8855_port_disable() for every user port, so every
-port starts with enable=false.
-
-If a port joins a bridge, or is marked isolated, while it is down, does
-that matrix ever reach AN8855_PORTMATRIX_P(port)?
-
-If not, bridged ports would not forward to each other in hardware, and an
-isolated port would still reach its peers.
-
-[ ... ]
-
-> +static int an8855_set_mac_eee(struct dsa_switch *ds, int port,
-> +			      struct ethtool_keee *e)
-> +{
-> +	if (e->tx_lpi_timer > 0xFFF)
-> +		return -EINVAL;
+> +	for (i = 0; i < qopt->num_tc; i++) {
+> +		/* The offload switches the MTL scheduler to strict
+> +		 * priority, which only supports a 1:1 TC to TX queue
+> +		 * mapping.
+> +		 */
+> +		if (qopt->count[i] > 1 || qopt->offset[i] != i) {
+> +			NL_SET_ERR_MSG_MOD(mqprio->extack,
+> +					   "SP requires 1:1 TXQ map");
+> +			return -EOPNOTSUPP;
+> +		}
+> +	}
 > +
 > +	return 0;
 > +}
 
 [Severity: Medium]
-Is the 0xFFF limit from MT7530 right for AN8855?
+This is a pre-existing issue, but should channel mode reject shaper and
+rate requests?
 
-an8855_phylink_get_caps() reports the default timer from the 18-bit
-AN8855_LPI_TXIDLE_THD_MASK field, in 2us units:
+In channel mode, mqprio_enable_offload() in net/sched/sch_mqprio.c
+copies the flags, shaper, min_rate[] and max_rate[] into struct
+tc_mqprio_qopt_offload. If the driver returns 0, it sets hw_offload and
+later dumps TCA_MQPRIO_SHAPER.
 
-    config->lpi_timer_default = FIELD_GET(AN8855_LPI_TXIDLE_THD_MASK, reg) *
-                                AN8855_TX_LPI_UNIT;
+tc_setup_dwmac510_mqprio() only checks TC_MQPRIO_F_MODE, and this
+validator does not check TC_MQPRIO_F_SHAPER, TC_MQPRIO_F_MIN_RATE or
+TC_MQPRIO_F_MAX_RATE.
 
-That comes to about 60000us, and phylink reports it via get_eee.
+So a request like "mqprio ... hw 1 mode channel shaper bw_rlimit
+max_rate ..." with a 1:1 mapping succeeds. Only SP and PSTQ get
+programmed, and the qdisc reports rate limiting the hardware isn't
+doing.
 
-ethtool set-eee does a get-modify-set. dsa_user_set_eee() therefore
-passes the unchanged 60000us timer to set_mac_eee(), and the request is
-aborted with -EINVAL.
-
-Wouldn't that make "ethtool --set-eee lanX eee off" fail unless tx-timer
-is also lowered to 4095 or less?
-
-an8855_phylink_mac_enable_tx_lpi() accepts timers up to the full 18-bit
-field and clamps them.
+The baseline handler ignored mode and flags entirely. Would this new
+validator be a good place to return -EOPNOTSUPP for those flags?
 
 [ ... ]
 
-> +		/* Disable Unknown Multicast Forward on user ports */
-> +		ret = regmap_clear_bits(priv->regmap, AN8855_UNMF, BIT(dp->index));
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = regmap_clear_bits(priv->regmap, AN8855_UNIPMF, BIT(dp->index));
-> +		if (ret)
-> +			return ret;
+> @@ -1306,6 +1405,22 @@ static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
+>  		num_tx_queues += qopt->count[i];
+>  	}
 
 [Severity: Medium]
-What sets a user port's AN8855_UNIPMF bit again after this?
+This is a pre-existing issue, but is num_tx_queues too small when the
+queue ranges have gaps?
 
-an8855_port_pre_bridge_flags() accepts BR_MCAST_FLOOD, but
-mt7530_lib_port_bridge_flags() only updates the UNMF mask:
+mqprio_validate_queue_counts() does not require the ranges to be
+contiguous from queue 0. Here num_tx_queues is the sum of the counts,
+not the highest offset + count.
 
-    if (flags.mask & BR_MCAST_FLOOD)
-        regmap_field_update_bits(priv->fields[MT7530_UNM_FFP],
+On a 4 queue device, a DCB request with a single TC at 1@2 passes both
+that check and the new offset + count check in this function. It then
+calls netif_set_real_num_tx_queues(ndev, 1), and netif_setup_tc() does:
 
-With this, is unknown IP multicast still not flooded between bridged user
-ports when mcast_flood is on, which is the bridge default?
+	/* If TC0 is invalidated disable TC mapping */
+	if (res.offset + res.count > txq) {
+		netdev_warn(dev, "Number of in use tx queues changed invalidating tc mappings. Priority traffic classification disabled!\n");
+		WRITE_ONCE(dev->num_tc, 0);
+		return;
+	}
 
-[ ... ]
+The driver still returns 0, so mqprio reports a working offload while
+the device runs on one queue with no TC mapping. With 1@0 1@2, the
+priorities for TC1 are quietly remapped to TC0 instead.
 
-> +	/* PLL - SDM */
-> +	ret = regmap_update_bits(priv->regmap, AN8855_PLL_CTRL_2,
-> +				 AN8855_RG_DA_QP_PLL_SDM_HREN_INTF,
-> +				 FIELD_PREP(AN8855_RG_DA_QP_PLL_SDM_HREN_INTF, 0x0));
-> +	if (ret)
-> +		return ret;
+The baseline code computed num_tx_queues the same way. Should this use
+the highest offset + count, or reject non-contiguous ranges?
 
-[Severity: Medium]
-Should this register be AN8855_PLL_CTRL_4?
-
-an8855.h defines the field under PLL_CTRL_4:
-
-#define AN8855_PLL_CTRL_4		0x1022e410
-#define   AN8855_RG_DA_QP_PLL_SDM_HREN_INTF GENMASK(4, 3)
-
-In PLL_CTRL_2, bits 4:2 hold AN8855_RG_DA_QP_PLL_BPA_INTF, which the
-"PLL - LPF" step just set to 0x5.
-
-Clearing bits 4:3 here changes BPA to 0x1, and SDM_HREN in PLL_CTRL_4 is
-never written.
-
-[ ... ]
-
-> +		} else {
-> +			ret = regmap_update_bits(priv->regmap, AN8855_RG_AN_SGMII_MODE_FORCE,
-> +						 AN8855_RG_FORCE_CUR_SGMII_MODE |
-> +						 AN8855_RG_FORCE_CUR_SGMII_SEL,
-> +						 AN8855_RG_FORCE_CUR_SGMII_SEL);
-> +			if (ret)
-> +				return ret;
-
-[Severity: Low]
-Several mode-specific bits in an8855_pcs_config() only ever change in
-one direction.
-
-These are only set: FORCE_TXC_SEL, FORCE_SPD_MODE_P0,
-FORCE_CUR_SGMII_SEL, P0_MII_MODE, P0_RA_AN_EN and FORCE_AN_DONE.
-
-These are only cleared: SGMII_MODE/SGMII_AN_EN, P0_DIS_MII_MODE and
-P0_MII_RA_*.
-
-For example, FORCE_SPD_MODE_P0 is set for forced SGMII but never cleared
-for in-band SGMII.
-
-Could moving between in-band SGMII, forced SGMII and 2500base-X, or
-starting from a PCS the bootloader configured, leave a mix of register
-state from two modes?
-
-[ ... ]
-
-> +	/* Force Speed with fixed-link or 2500base-x as doesn't support aneg */
-> +	if (interface == PHY_INTERFACE_MODE_2500BASEX ||
-> +	    neg_mode != PHYLINK_PCS_NEG_INBAND_ENABLED) {
-> +		if (interface == PHY_INTERFACE_MODE_2500BASEX)
-> +			val = AN8855_RG_LINK_MODE_P0_SPEED_2500;
-> +		else
-> +			val = AN8855_RG_LINK_MODE_P0_SPEED_1000;
+>  
+> +	mode = mqprio->flags & TC_MQPRIO_F_MODE ? mqprio->mode
+> +						: TC_MQPRIO_MODE_DCB;
+> +	if (mode == TC_MQPRIO_MODE_CHANNEL) {
+> +		err = tc_mqprio_validate_chan_mode(priv, mqprio);
+> +		if (err)
+> +			return err;
+> +	}
 
 [Severity: Medium]
-Does SGMII without in-band negotiation work at 10/100?
+Does a DCB mode request clean up after a previous channel mode
+offload?
 
-an8855_phylink_get_caps() advertises MAC_10 | MAC_100 along with SGMII
-on port 5, but this code always forces the PCS to 1000.
+The xmit_qdisc state is only restored in stmmac_reset_tc_mqprio(),
+which runs only when num_tc is 0. When tc_setup_dwmac510_mqprio() is
+called with num_tc > 0 and mode resolves to TC_MQPRIO_MODE_DCB, nothing
+touches priv->xmit_qdisc. A prior channel mode configuration therefore
+leaves three things behind: xmit_qdisc.algo stays at
+MTL_TX_ALGORITHM_SP, xmit_qdisc.prio_offload stays set, and the channel
+mode PSTQx/PSTC maps stay programmed in the hardware.
 
-an8855_phylink_mac_link_up() only updates PMCR, and an8855_pcs_ops has
-no .pcs_link_up to program the resolved speed into the PCS.
+One way to get here is replacing a channel mode mqprio with a DCB one
+under a new handle. qdisc_graft() runs mqprio_init() for the new qdisc,
+and so the driver offload, before mqprio_destroy() of the old qdisc
+calls back with num_tc 0.
 
-With a 10/100 fixed-link, or an out-of-band PHY that resolves to 10/100,
-would the PCS stay at 1000 while the MAC runs at the lower speed?
+With this patch, dwmac5_fpe_map_preemption_class() tests
+xmit_qdisc.algo instead of plat->tx_sched_algorithm. So on that path, a
+valid DCB request with a TC spanning more than one queue is rejected
+with ALG_ERR_MSG, even when DT selected a non-SP algorithm.
+
+Any DCB request that arrives without an intervening reset has the same
+problem. The MTL scheduler stays in SP with the old priority maps, and
+tc_setup_cbs() keeps refusing CBS because prio_offload is still true.
+That contradicts the commit message, which says DCB mode leaves the
+scheduler and per-queue priorities to the device-tree configuration.
+
+Could the prio_offload restore block in stmmac_reset_tc_mqprio() be
+moved into a helper and also called on the DCB path, before
+stmmac_fpe_map_preemption_class() runs? If so, the error unwind in
+tc_setup_dwmac510_mqprio() would need to put the channel mode state
+back when the FPE mapping fails. How would you prefer to handle that?
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928194511.41878-1-ansuelsmth%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-stmmac-mqprio-prio-offload-v3-0-abbe181f5024%40oss.qualcomm.com
