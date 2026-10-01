@@ -1,351 +1,286 @@
-Received: from mail-dl2-f41.google.com (mail-dl2-f41.google.com [74.125.229.169])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19AE439F77
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 05:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790832991; cv=pass; b=bUwa7lY5p6eeyGq6Os/RJqi0AYcZz59om56C8PqhMoPc8Xm+avWKFukyrCUbIAHcjik3W+yd5CjgB1JPgQVXbEErzl3f0/AxNnYFv1JnxMJEcOSE1c0d01tyf5VCLKB7+vKFqJticZMLFwvfNveM/s8Qt9UEmUtsBwjLep7yxHk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790832991; c=relaxed/simple;
-	bh=9LiEV+8DcFq1RTthoE/1hwsS1KF/RSgKiZupPkO0n6o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tjbxASSDVINTblAj1wlJo5eturG0Ckfi14HuXsuEwte05ZuBHQiAmtwuWdydbIsPs32BKRdV7lc/h742dM/2m4WL8Oz+X3SuHwwWREJnLYPprvytzKvnMlAQxRhuC0y0cDHCwp/QJORq2AZSm55zsWJMbdUjZlRLAQ/as8MrIEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PG/rTWEw; arc=pass smtp.client-ip=74.125.229.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8140143DEB8
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 05:36:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790832995; cv=none; b=Gj/UpTAQaJhdM8uqgjPn7HW2oqZwtxHwQu5KUiNG9gszSIRmaTRhAP8p32+LF+69Sz0ce6z72FUPpvFL/TeLKLT8F2xwEqfb02g+x+aTE/QKMuP1pEnhYMQrM4+xLCOmY/8BlGiDxuhx4faqvA+al6jUpNyE+3V013/ak5cMhfU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790832995; c=relaxed/simple;
+	bh=17IbOXgpu5qvWpe9DfmWVZGYpsQSD8J7hEMJ7OZBgJE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rnb+UR1CSfurrbhhs77iCsu3cA6GKkSt0rrX3A97z7hBxJTvTUWdJUazVkQmnr3gpcEBcSOc8c2FFnSIJQZkWB5RVxyF5L5e0X6/afP+SZzBOJa49eZs7c+7WsIh3G6IU/HSwr7LgxmLZOfV5iAHoWOyxpFX7QxVqw9BW3ODmmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ApodtGjW; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PG/rTWEw"
-Received: by mail-dl2-f41.google.com with SMTP id a92af1059eb24-148c3a4733fso2186667c88.0
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:36:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790832989; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ThQZQJ3panpOPgeUVgWtDGMQBJ8biAPIfHTK5akz6H2I93seQSdra5nyS8sVjm/mWJ
-         32uRWCwyMXnbf1nOZtNxdp3wgz+YcZLiYbNEkEjdRjMu6loKwA48oXqqWChXQEUsyysb
-         ICoKjmhREl6DphanbRxsLbMc8Sk6iwj2kFyLi8qVgbm0Mv9EDF3+CDe/5IUWH04+Duf1
-         wY5c3HFaQclx2Hl+gxGv4Y3Bdeo9+73ewFlH/0KrALdtpE6OAr4G6M6ejD51vWis2KoP
-         i6udjgPznj8HE9Wg/RRMr3vtL7mhHt5Etnjxj282zMoUeUd67fuiREbakdqeZW8+pBg3
-         NZQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KZ8/I0l3n9Xn6KlfGr5ohN9loKj5Pe6Re5WK9ivT2TQ=;
-        fh=QZe4FY9nlWZyKwgUygTysFnolJ3WPOebr2cpvqjZ/kI=;
-        b=PA9ClJYIn4+MYppnbULdVuIB7JkThDC0Y4WFxXIloNU0X4Nfwgp7PtZ8mMAUZdCTt3
-         e5Sz7XZb7FtTVnYnFY/MekW7omHW5y5q6BZVI5n7eKiqVFq0WZY3lqpaSWNCt/PdwXtu
-         h/F9fFzwpOSRxcJ3wlvstLv2HjIvaEzog0XYhfWaX5UgzCxfRJU2rv5UDU5cS4xz7EV0
-         QKMrU2Cs617ustgG0a7rKK/b7w9weQHRoQ9YpmheCFdjrDq5ZG4FP2i/vd+A56HmkM5T
-         eIcdfR5wR725nmj78TW0Zq2++H+F5umCT1aB50Ys7EPdE9YKgrbKMz65sH1QUfeg934Y
-         eKuA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ApodtGjW"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-8198a3a54d7so2318698a34.1
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:36:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790832989; x=1791437789; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KZ8/I0l3n9Xn6KlfGr5ohN9loKj5Pe6Re5WK9ivT2TQ=;
-        b=PG/rTWEw7tnKz51cZQb3pw6bbA0tOVfyOf7qEdHhw3umn0tsWy+uduHhboXLrQ2OHZ
-         1XE+44p//SsR0528HPm9f6AxaGYLTbZuZ1bkKIE659fjq+3Ss5N74j1Y2Z5Y6RgzaSpO
-         qME+MdkQscBuWr59543gLjjryrk+nY0MtbubnuIfAvmx+g0stmJKz4/WhY7WJ/pU2qLL
-         JrZSLuav9cwOeAYDfupZlciXIAeyHYkRiz0Zob5bD/x8IKE7HoumpegRgm0DEgsADmVV
-         gwbMVZnqgBxzenth7We0h55S/ttsCzovrsi5tzE7DMeqaC3UfN+uT2don5CqwsbI5Lpp
-         nPgg==
+        d=gmail.com; s=20251104; t=1790832992; x=1791437792; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ImG2NcKaeowgbT7GRdQdhpYB5WGVuiPpUhMg0VIHXxc=;
+        b=ApodtGjWVsBnPYbVbKbjqd0gc89wGHVHRySRWHW+kpkKA5TwpkT+In8/v2Rowq2AZb
+         GM1PuHgbUszsUz+WLSkJZAVyvZBL02Wug0v4XBl+o3gSydrEN7c2nVDxbde8irO9cskV
+         i7sX8Fvhn+yENNllGnkXHKHL44cFkyiHawhwNYuRU71QfCU1uL4cMEqB9iEqYpwt5GSS
+         51UlhmeTzfKF1pLn/oLy2r15iPd9vzaA9xXSxhzUjE46uN+xkYKWDrSUbRKx1izmNmIS
+         Bj7O8kDxvEg9YK9zFYRc3+Qyj7lOzrHoLZosgmytgqpllwiTxrgDY7f+vrtwxBJ2KZYR
+         J56g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790832989; x=1791437789;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KZ8/I0l3n9Xn6KlfGr5ohN9loKj5Pe6Re5WK9ivT2TQ=;
-        b=Ysoi6PyhVTuamcxJheULz8BuEqYSJ5Xey59Knp6DK8I/I4878vAXqdS856ITED8aJi
-         Aas/kkAlpZuT5wGRGJKi8XeKrYlb8Dktq562V9ZvzDPAWXu653h66WUc+KfPJEbby4Cn
-         blSCanK/zCuIjRsPPGDbomBLP7OaADwgVCMgU/RHTrTmb03z8iDiFOR0DVdkzgrZDt83
-         5M4I4zvPUsOLEwuVxcgcyZ4/u7WWIYMiKed+bGKhcqIq8SH2zEU1xol7FniEyGIhZv//
-         +NwOobf71rzYQHS0MyENV0N88w4zQrNSwRnUeYLnGQsjHb5ZaJv5FvE99b91VnJQ66uU
-         XVqg==
-X-Forwarded-Encrypted: i=1; AKwUvBzHKqRVY69go7sXc5SAmFVvA3sJq90KGoXzdnCAhGM1oDCN+4xgSJ7Fu7ZFzwVzhltASWYjetU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKoJ91ALeFIQi5v/fJl2H9gZCRp5m2k8skcH9RmyXLH+YiXsdEl
-	BLgLhsQZO3EO3eS69g9NGhWtxWEIinhiugarvw2EMVtfUrKx6SaHYiEpX6/rRt/58uctSl+Pcb9
-	mFiGIm2jPf8DwCWhGOr7wBl6qBU/GgNkBbtJ+TE0+
-X-Gm-Gg: AYBFou1cXUerBFxBPItVOtkV8PAH6Gg78YxhV84wZndWsSbzS7j1FZalJa3XVp56wHf
-	3Ct6XuIRMWEkG3dBbbmORCl0wDpHzBi5AQgNBdKkV0fj0XPSAYIFJhPsSSAZPluP7L2T+6K8UBJ
-	KxUZuNaRdP6k9+usUTXHWv7IPx1hWjL/iPiohGC/3JGqtRxj0t9/m6dtAxKzSSFjnDXTyJdm+P8
-	m08CNcqy4bqO9+75zfkHhUvGlta5wywGP9ZXAlvjdK+ztAA0gMP8PaOul181jQg/+KO6lo4q7jq
-	DAyP7VA5vYuD1b+PlgspiONRFIXzhOsU8k+Os3Cw+sIF3QOLfwZRbmRgJ5RVduZ/FZR1lJ9TpDp
-	yMkET9VFL44kmVvF3+XZOA4DipFIfyyDyuOuk018GzcNomPJxeUvT/eJQk6HG2AFXPg4=
-X-Received: by 2002:a05:701b:4194:20b0:143:2973:c08b with SMTP id
- a92af1059eb24-14d32bde0d2mr3563263c88.28.1790832987913; Wed, 30 Sep 2026
- 22:36:27 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790832992; x=1791437792;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ImG2NcKaeowgbT7GRdQdhpYB5WGVuiPpUhMg0VIHXxc=;
+        b=i+Jdb8sv9CLDWHHF6OpaKdtOCj7f6EKbz9s3H5o4n4g+uVyamI9bQmEkeOS8ogdgCM
+         aOmSMnMLcwzavSGXrv7ArN+sGVDsH5XwvMnfijUUwWIweOm5zX5LIn6fzwCgKm1YcYpm
+         fWQ+0S8QKfkk71A0w+IJndIl28IpHNRwOSLF6dXZsjlw7UuVQRUcwRuibevq9SlxNhwB
+         JSaB6N5HbVJ+RHvNrZ9zgCbUk7gsMBaxxoqfpUpqpPksbxJ2iWYZm8b9o17PI7xVR8tJ
+         DTDY96IYZna5hPpcKZ+9xVaqG+wmm1sXiNqlA7Xi6L+aotUc/fbD0zWShYH8proQkqDI
+         ilLw==
+X-Gm-Message-State: AFuF++nKfNjSBh5F1a+T4ZWAkqDWJhCVAP85Ea1MHf4YsiED/Ha8YCbn
+	m6H1L0eHoK1K4gq+v9zT0w6vwdBgTdHAnwLv1F7JCa/9MM44laVVtHmy
+X-Gm-Gg: AYBFou1TjHqenR7rDmjjYBPxH5mej7hYgqqB/vviwZTxI9CpBodjxw4ZAPKxvZWJBvH
+	YmoBvfHGAHaoHsVbV3azgTQ4RdNhve49oWzHbARONv0AdS0m3XPu6TGOcPPkOarVkqRiRWnQWA6
+	eDHGHegmb7jNWUC9iykUFBd2Iu1sB8vzYaLS1nr1Dc1yw+seTLOAr0UUriwk/gBH/+zr+rhe+oh
+	3B5TViCW6C1NzlwrttLIFhKFVtq878rHShIpfCygljUiu9QHcJMQcOzepNanRIh3W5aYBcqEzyp
+	ciODhxNSPSikc6O2kJfDmSGlo5PnnFDBK/FQrinWc0CGgjhKtG/aPSWwIUtsnNJ0+uoMaK7k94v
+	WCyy3KpmhOXTT+AoFMuMjcmBfKzWWqjBu+ToqCo7605u1JVOaoArOfdcn6mKLNk/QHZcbkOQAma
+	zJmO2c9KAEYftxrKb9lnZMoGfT/44VtKsXYJGnEElRgZMpAb0ic5U8ptyuYugs22sKvWn23pr7q
+	Z3bQPfCcjGQ2Oh/oYJXxEDarMKCPJVoxrlb4CSuXGJYPlWORY6IKlpNM2iho7QNwPGbT3b+OhAN
+	vZ0LvhPqabSV8ZcN8K8AIdvN0wZo7Vyhd1hlnRlgBWqdg3WDv+2JXIVg/k9/cIYLYzszLLkGbdN
+	A2ydiKVtlhLGxXGUxg2E7Bg==
+X-Received: by 2002:a05:6820:150b:b0:6d9:5232:1774 with SMTP id 006d021491bc7-6ddbb1b07cemr1677261eaf.28.1790832992092;
+        Wed, 30 Sep 2026 22:36:32 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8212a4139c7sm1860223a34.7.2026.09.30.22.36.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 22:36:31 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Wed, 30 Sep 2026 23:36:30 -0600
+Subject: [PATCH net] ptp: vclock: reject failed physical clock samples
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929201546.1533268-3-kuniyu@google.com> <179082091084.434549.1540561487678718082@kernel.org>
-In-Reply-To: <179082091084.434549.1540561487678718082@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 30 Sep 2026 22:36:16 -0700
-X-Gm-Features: AclHuK-6xP9C-b53cEwK_OOxxbu_JVv5bflDSJZkSV7-FsSF7BWI3PNBKh37weo
-Message-ID: <CAAVpQUDt2KX-3hsL1=ppgccGH5ZXNEMpFxVLTbQmwizKBg=1ng@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 2/2] ipv6: Batch rt6_uncached_list_flush_dev()
- in netdev_run_todo().
-To: netdev-bot+sashiko@kernel.org
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	carges@cloudflare.com, kuni1840@gmail.com, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260930-ptp-vclock-sampling-v1-1-c11bc16691ae@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2N2w7CIBBEf6XZZ0m2UKH4K6YPsC6V2AtCbUya/
+ ruN+nhmcmY2KJwjF7hUG2ReY4nzdEB9qoDubupZxNvBIFFqtApFWpJYaZjpIYob0xCnXliUwbY
+ NtmQVHGbKHOL7u3qFiRfofmHm5+t4WP6Nd4UFzeMYl0vljA/Ou6aVihXV+uy9RGzINByCIbRaG
+ +nJQLfvH4nkS1i2AAAA
+X-Change-ID: 20260930-ptp-vclock-sampling-902f98408c93
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Yangbo Lu <yangbo.lu@nxp.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-On Wed, Sep 30, 2026 at 7:15=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 2 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] Moving the IPv6 uncached-route flush into netdev_run_todo()
->   removes the RCU grace period that used to follow the device-pointer=E2=
-=80=A6
-> - [Medium] Build failure with CONFIG_IPV6=3Dn.
-> - [Medium] The batched flush reads dev->reg_state twice per route with no
->   consistent snapshot, and another unregister batch can change reg_state=
-=E2=80=A6
-> - [Low] The new initialization guard `if (unlikely(!ul->head.next))
->   return;` in rt6_uncached_list_flush_dev() (net/ipv6/route.c:172) is a=
-=E2=80=A6
->
-> --
->
-> ipv6: Batch rt6_uncached_list_flush_dev() in netdev_run_todo().
->
-> This patch moves the IPv6 uncached route flush out of the per-device
-> NETDEV_UNREGISTER path. It now runs once per batched unregistration from
-> netdev_run_todo(), without RTNL. With dev =3D=3D NULL, a route's device i=
-s
-> matched by reg_state =3D=3D NETREG_UNREGISTERED.
->
-> Closes: https://lore.kernel.org/netdev/20260917-hash-bucket-route-lists-v=
-3-0-30493a37b6eb@cloudflare.com/
->
-> > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index 9cedc17b5bdc2..0b3213ff56e70 100644
-> > --- a/net/core/dev.c
-> > +++ b/net/core/dev.c
-> > @@ -11838,8 +11838,10 @@ void netdev_run_todo(void)
-> >               linkwatch_sync_dev(dev);
-> >       }
-> >
-> > -     if (!list_empty(&list))
-> > +     if (!list_empty(&list)) {
-> >               rt_flush_dev(NULL);
-> > +             rt6_uncached_list_flush_dev(NULL);
->
-> [Severity: Medium]
-> With CONFIG_IPV6=3Dn, is the new stub for rt6_uncached_list_flush_dev()
-> visible here?
->
-> net/core/dev.c doesn't include <net/ip6_route.h> directly. The only path
-> seems to be net/udp_tunnel.h -> net/ip_tunnels.h, and that include is
-> compiled out when IPv6 is off:
->
-> include/net/ip_tunnels.h:
-> #if IS_ENABLED(CONFIG_IPV6)
-> #include <net/ipv6.h>
-> #include <net/ip6_fib.h>
-> #include <net/ip6_route.h>
-> #endif
->
-> So when IPv6 is disabled, dev.c would see neither the prototype nor the
-> static inline stub added to include/net/ip6_route.h. Would this call then
-> fail with -Werror=3Dimplicit-function-declaration? It would also fail to
-> link, since net/ipv6/route.c isn't built.
->
-> rt_flush_dev() doesn't hit this, because net/route.h always reaches
-> dev.c through net/ip.h.
->
-> Should dev.c include <net/ip6_route.h> directly, or should the
-> declaration and stub go in a header that dev.c always includes?
->
-> > +     }
-> >
-> >       cnt =3D 0;
-> >       while (!list_empty(&list)) {
-> > diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> > index a76869ff87cd6..38261775e7137 100644
-> > --- a/net/ipv6/route.c
-> > +++ b/net/ipv6/route.c
-> > @@ -158,14 +158,20 @@ void rt6_uncached_list_del(struct rt6_info *rt)
-> >       }
-> >  }
-> >
-> > -static void rt6_uncached_list_flush_dev(struct net_device *dev)
-> > +void rt6_uncached_list_flush_dev(struct net_device *dev)
-> >  {
-> >       int cpu;
-> >
-> > +     if (dev && dev->dismantle)
-> > +             return;
-> > +
-> >       for_each_possible_cpu(cpu) {
-> >               struct uncached_list *ul =3D per_cpu_ptr(&rt6_uncached_li=
-st, cpu);
-> >               struct rt6_info *rt, *safe;
-> >
-> > +             if (unlikely(!ul->head.next))
-> > +                     return;
->
-> [Severity: Low]
-> This isn't a functional bug, but ul->head.next is read here without
-> ul->lock. Other CPUs can update it concurrently under the lock:
-> list_add_tail() in rt6_uncached_list_add() when the list is empty, and
-> list_del_init() in rt6_uncached_list_del().
->
-> The list_empty() check just below already uses READ_ONCE(). Should this
-> be READ_ONCE(ul->head.next) so that KCSAN doesn't report it?
->
-> > +
-> >               if (list_empty(&ul->head))
-> >                       continue;
-> >
-> > @@ -175,19 +181,23 @@ static void rt6_uncached_list_flush_dev(struct ne=
-t_device *dev)
-> >                       struct net_device *rt_dev =3D rt->dst.dev;
-> >                       bool handled =3D false;
-> >
-> > -                     if (rt_idev && rt_idev->dev =3D=3D dev) {
-> > +                     if (rt_idev &&
-> > +                         (dev ? rt_idev->dev =3D=3D dev :
-> > +                          READ_ONCE(rt_idev->dev->reg_state) =3D=3D NE=
-TREG_UNREGISTERED)) {
-> >                               rt->rt6i_idev =3D in6_dev_get(blackhole_n=
-etdev);
-> >                               in6_dev_put(rt_idev);
-> >                               handled =3D true;
-> >                       }
-> >
-> > -                     if (rt_dev =3D=3D dev) {
-> > -                             rt->dst.dev =3D blackhole_netdev;
-> > +                     if (dev ? rt_dev =3D=3D dev :
-> > +                         READ_ONCE(rt_dev->reg_state) =3D=3D NETREG_UN=
-REGISTERED) {
->
-> [Severity: Medium]
-> If two netdev_run_todo() instances overlap, can these two reg_state reads
-> see different values for the same device?
->
-> netdev_run_todo() calls __rtnl_unlock() before it sets each device to
-> NETREG_UNREGISTERED, and that write is done under netdev_lock(), not
-> ul->lock. So batch A can be scanning while batch B updates a device D
-> that is on B's todo list. Take a route whose rt6i_idev->dev and dst.dev
-> are both D:
->
-> CPU1 (batch A, flush(NULL))          CPU2 (batch B, owns D)
-> READ_ONCE(rt_idev->dev->reg_state)
->   sees NETREG_UNREGISTERING,
->   rt6i_idev is not swapped
->                                      WRITE_ONCE(D->reg_state,
->                                                 NETREG_UNREGISTERED)
-> READ_ONCE(rt_dev->reg_state)
->   sees NETREG_UNREGISTERED,
->   dst.dev swapped, handled =3D true
-> list_del_init(&rt->dst.rt_uncached)
+The cyclecounter read callback cannot report errors. Passing an
+unsuccessful PHC read through it consumes an invalid sample, and a zero
+sample followed by the real counter can add an extra 32-bit wrap to
+virtual time.
 
-Good catch, I'll unlink it only when both devices point to
-blackhole_netdev.
+Read the parent clock before updating or initializing the timecounter,
+propagate failures from clock operations, and leave its state unchanged
+on failure. Cache only the successful sample for the infallible
+cyclecounter callback. Initialize this state before publishing a newly
+registered virtual clock.
 
-And I noticed a similar bug in the current code; if we move one
-of dev/idev to another netns, the route is unlinked, and removing
-the netns will get stuck until socket releases the uncached route.
+The initial sample can also fail partway through a sysfs request to create
+multiple virtual clocks. Unregister any clocks created by that request
+and clear their index entries, preserving the previously installed clocks
+and count. Otherwise the failed request leaves registered children that
+are not included in n_vclocks. This cleanup also handles existing
+allocation and registration failure paths.
 
+Fixes: 5d43f951b1ac ("ptp: add ptp virtual clock driver framework")
+Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ drivers/ptp/ptp_private.h |  1 +
+ drivers/ptp/ptp_sysfs.c   |  8 ++++++-
+ drivers/ptp/ptp_vclock.c  | 56 +++++++++++++++++++++++++++++++++++------------
+ 3 files changed, 50 insertions(+), 15 deletions(-)
 
+diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
+index db4039d642b4..4ff22adda652 100644
+--- a/drivers/ptp/ptp_private.h
++++ b/drivers/ptp/ptp_private.h
+@@ -75,6 +75,7 @@ struct ptp_clock {
+ #define dw_to_vclock(d) container_of((d), struct ptp_vclock, refresh_work)
+ 
+ struct ptp_vclock {
++	u64 cycles;
+ 	struct ptp_clock *pclock;
+ 	struct ptp_clock_info info;
+ 	struct ptp_clock *clock;
+diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
+index dc398c6b7528..9c25d897be19 100644
+--- a/drivers/ptp/ptp_sysfs.c
++++ b/drivers/ptp/ptp_sysfs.c
+@@ -225,7 +225,7 @@ static ssize_t n_vclocks_store(struct device *dev,
+ 		for (i = 0; i < num - ptp->n_vclocks; i++) {
+ 			vclock = ptp_vclock_register(ptp);
+ 			if (!vclock)
+-				goto out;
++				goto err_register;
+ 
+ 			*(ptp->vclock_index + ptp->n_vclocks + i) =
+ 				vclock->clock->index;
+@@ -257,6 +257,12 @@ static ssize_t n_vclocks_store(struct device *dev,
+ 	mutex_unlock(&ptp->n_vclocks_mux);
+ 
+ 	return count;
++err_register:
++	num = i;
++	if (num)
++		device_for_each_child_reverse(dev, &num, unregister_vclock);
++	for (num = 0; num < i; num++)
++		ptp->vclock_index[ptp->n_vclocks + num] = -1;
+ out:
+ 	mutex_unlock(&ptp->n_vclocks_mux);
+ 	return err;
+diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
+index 84cb527f59cc..6378e9a8cd80 100644
+--- a/drivers/ptp/ptp_vclock.c
++++ b/drivers/ptp/ptp_vclock.c
+@@ -42,21 +42,41 @@ static void ptp_vclock_hash_del(struct ptp_vclock *vclock)
+ 	synchronize_srcu(&vclock_srcu);
+ }
+ 
++/* Sample before changing the timecounter. Its read callback cannot return an
++ * error, so passing a failed PHC read through it would fabricate a wraparound.
++ * The caller holds vclock->lock, or has not published the clock yet.
++ */
++static int ptp_vclock_sample(struct ptp_vclock *vclock)
++{
++	struct ptp_clock *ptp = vclock->pclock;
++	struct timespec64 ts;
++	int err;
++
++	err = ptp->info->getcycles64(ptp->info, &ts);
++	if (!err)
++		vclock->cycles = timespec64_to_ns(&ts);
++	return err;
++}
++
+ static int ptp_vclock_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+ {
+ 	struct ptp_vclock *vclock = info_to_vclock(ptp);
+ 	s64 adj;
++	int err;
+ 
+ 	adj = (s64)scaled_ppm << PTP_VCLOCK_FADJ_SHIFT;
+ 	adj = div_s64(adj, PTP_VCLOCK_FADJ_DENOMINATOR);
+ 
+ 	if (mutex_lock_interruptible(&vclock->lock))
+ 		return -EINTR;
+-	timecounter_read(&vclock->tc);
+-	vclock->cc.mult = PTP_VCLOCK_CC_MULT + adj;
++	err = ptp_vclock_sample(vclock);
++	if (!err) {
++		timecounter_read(&vclock->tc);
++		vclock->cc.mult = PTP_VCLOCK_CC_MULT + adj;
++	}
+ 	mutex_unlock(&vclock->lock);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static int ptp_vclock_adjtime(struct ptp_clock_info *ptp, s64 delta)
+@@ -76,14 +96,18 @@ static int ptp_vclock_gettime(struct ptp_clock_info *ptp,
+ {
+ 	struct ptp_vclock *vclock = info_to_vclock(ptp);
+ 	u64 ns;
++	int err;
+ 
+ 	if (mutex_lock_interruptible(&vclock->lock))
+ 		return -EINTR;
+-	ns = timecounter_read(&vclock->tc);
++	err = ptp_vclock_sample(vclock);
++	if (!err) {
++		ns = timecounter_read(&vclock->tc);
++		*ts = ns_to_timespec64(ns);
++	}
+ 	mutex_unlock(&vclock->lock);
+-	*ts = ns_to_timespec64(ns);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static int ptp_vclock_gettimex(struct ptp_clock_info *ptp,
+@@ -115,13 +139,16 @@ static int ptp_vclock_settime(struct ptp_clock_info *ptp,
+ {
+ 	struct ptp_vclock *vclock = info_to_vclock(ptp);
+ 	u64 ns = timespec64_to_ns(ts);
++	int err;
+ 
+ 	if (mutex_lock_interruptible(&vclock->lock))
+ 		return -EINTR;
+-	timecounter_init(&vclock->tc, &vclock->cc, ns);
++	err = ptp_vclock_sample(vclock);
++	if (!err)
++		timecounter_init(&vclock->tc, &vclock->cc, ns);
+ 	mutex_unlock(&vclock->lock);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static int ptp_vclock_getcrosststamp(struct ptp_clock_info *ptp,
+@@ -174,12 +201,8 @@ static const struct ptp_clock_info ptp_vclock_info = {
+ static u64 ptp_vclock_read(struct cyclecounter *cc)
+ {
+ 	struct ptp_vclock *vclock = cc_to_vclock(cc);
+-	struct ptp_clock *ptp = vclock->pclock;
+-	struct timespec64 ts = {};
+-
+-	ptp->info->getcycles64(ptp->info, &ts);
+ 
+-	return timespec64_to_ns(&ts);
++	return vclock->cycles;
+ }
+ 
+ static const struct cyclecounter ptp_vclock_cc = {
+@@ -214,6 +237,12 @@ struct ptp_vclock *ptp_vclock_register(struct ptp_clock *pclock)
+ 
+ 	mutex_init(&vclock->lock);
+ 
++	if (ptp_vclock_sample(vclock)) {
++		kfree(vclock);
++		return NULL;
++	}
++	timecounter_init(&vclock->tc, &vclock->cc, 0);
++
+ 	vclock->clock = ptp_clock_register(&vclock->info, &pclock->dev);
+ 	if (IS_ERR_OR_NULL(vclock->clock)) {
+ 		kfree(vclock);
+@@ -222,7 +251,6 @@ struct ptp_vclock *ptp_vclock_register(struct ptp_clock *pclock)
+ 
+ 	ptp_vclock_set_subclass(vclock->clock);
+ 
+-	timecounter_init(&vclock->tc, &vclock->cc, 0);
+ 	ptp_schedule_worker(vclock->clock, PTP_VCLOCK_REFRESH_INTERVAL);
+ 
+ 	ptp_vclock_hash_add(vclock);
 
->
-> By the time batch B's own flush runs, the route is off the list. Its
-> rt6i_idev still points at D's inet6_dev, which holds a reference on D.
->
-> The NETDEV_UNREGISTER rebroadcasts can't fix this either.
-> rt6_disable_ip()->rt6_uncached_list_flush_dev(dev) now returns early on
-> dev->dismantle, and the route is no longer listed.
->
-> Could batch B then sit in netdev_wait_allrefs_any() printing "waiting for
-> D to become free" for as long as something holds the uncached route? The
-> window is narrow, but the old code compared pointers under RTNL, so it
-> could not race this way.
->
-> > +                             rcu_assign_pointer(rt->dst.dev_rcu, black=
-hole_netdev);
-> >                               netdev_ref_replace(rt_dev, blackhole_netd=
-ev,
-> >                                                  &rt->dst.dev_tracker,
-> >                                                  GFP_ATOMIC);
->
-> [Severity: High]
-> Is there still an RCU grace period between this pointer swap and the
-> old device being freed?
->
-> Before this patch, the flush ran from the NETDEV_UNREGISTER notifier in
-> unregister_netdevice_many_notify(). That is followed by synchronize_net()=
-,
-> and later by the rcu_barrier() at the top of netdev_run_todo().
->
-> Now the flush runs after that rcu_barrier():
->
-> netdev_run_todo()
->     __rtnl_unlock();
->     rcu_barrier();
->     ...
->     rt_flush_dev(NULL);
->     rt6_uncached_list_flush_dev(NULL);
->         rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
->         netdev_ref_replace(rt_dev, ...);  /* drops ref on old dev */
->     netdev_wait_allrefs_any(&list);       /* returns if refcnt =3D=3D 1 *=
-/
->     ...
->     free_netdev() / kobject_put()
->         -> netdev_release()
->             kvfree(dev);
->
-> netdev_release() frees the device without waiting for readers:
->
->         /* no need to wait for rcu grace period:
->          * device is dead and about to be freed.
->          */
->
-> ip6_output() is one reader of this pointer:
->
->         rcu_read_lock();
->         dev =3D dst_dev_rcu(dst);
->
-> It then passes dev on to NF_HOOK_COND(), ip6_finish_output() and
-> dev_queue_xmit(). Suppose a reader loads the old pointer after the
-> rcu_barrier() but before this swap. Can it still be using dev, and its
-> tx queues, after they are freed?
->
-> The in6_dev_put(rt_idev) branch above has the same problem.
-> in6_dev_finish_destroy() drops the netdev reference before its call_rcu()=
-.
->
-> The previous patch in this series, "ipv4: Batch rt_flush_dev() in
-> netdev_run_todo().", uses the same ordering for IPv4.
->
-> >                               handled =3D true;
-> >                       }
-> > +
-> >                       if (handled)
-> >                               list_del_init(&rt->dst.rt_uncached);
-> >               }
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260929201546.1533268-1-kuniyu%40google.com
+---
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+change-id: 20260930-ptp-vclock-sampling-902f98408c93
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
