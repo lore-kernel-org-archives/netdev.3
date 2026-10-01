@@ -1,86 +1,87 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33BA1F09A5
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489BB50AC16
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790852290; cv=none; b=EsNSOcrNTMyhy4mNeKmGgx5g3LDVpcK/Yx6pzeE7rMSD+T0+ry6s6CeWq1bnh4OxyJpBA2srBjzpTbwjygyWaZXJBnCu/ofTjvj4FvIpV4PlcvXdRo7BOpciWQ09Whh+jG+/vWncqZVR7eyzrMYMhocVf2jyYzY7vKwUpqnu2k4=
+	t=1790852840; cv=none; b=ieZ6CutBOombBn67k9E0g64V0ltXt5UOC2RTk74DXtr2DxEhTsSvNnwX7qO1MNLXa4dg1VpMgndkaA3ql87Wr7+PP7uXRdMwen70qAOWi1B7c2YFByK1fuEKrResvQvguLqQQs9swpB4XpjKm6D2vTcg+WDcjYn9caAfKcxFPNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790852290; c=relaxed/simple;
-	bh=0R0/gTRYYSmxRnH5ZVk7sblCpxH+EKsEaD3El+V8yes=;
+	s=arc-20240116; t=1790852840; c=relaxed/simple;
+	bh=eMsFAw52GsaIwv3mYwo6NM8p3v/Lw/GqgKOt6RvjOys=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rXUmjcQam5sMmJDI1pBw01lOHTQC86aYNaX6hjKhes9bR2m2n2HmVkhguj3kUd86R1ZaLdu5CzEFbo6Gs7thnhciV2Sa6bZ9XVNoXxcHu0QVNcoJN+KmwEnXtTN1eJmnt4n9mRFz5g1slVNy3NPvdB6LpLe02qzgBEj16aCtFzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KNjOkIQU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ry5H9keO; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=T4hM2GS6e6zDjMUc5fJTGFOE85m1WCEblCE1AVDih7nQ4DiNC789PACYHhBEL7btHe6i5Qhl9ezo2zLiu6bY4AeW5HruMjsmJ+NAtoilcuQl99sWbrNDMBJpQsHsgj2PNNdwv1IiZ0J5hjJTXL4cktAubGz3UY8LPXZ1f4MO+TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EavdcSNs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TzUvgG1F; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KNjOkIQU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ry5H9keO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EavdcSNs";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TzUvgG1F"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790852287;
+	s=mimecast20190719; t=1790852837;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tt5IAt6vMqsCLYkrQdskETSZXcKhulecCkm4FRkZlO8=;
-	b=KNjOkIQUUeHXGEyMPYPsMqfe15x4qfwoqcxaFj5kgkqcYWZwZY6oCbr2vediMKN/X7l8Ha
-	LqQuk5Ip499xjbvuo/4hOtiCGq/6nxcULmc1zU++Ru0hCH5NfBd0BVzAttY8kh6XD4SKVP
-	4guHq9uw4WOZJ6Ngpy5fUZ3moTkjung=
+	bh=SytabqJa4hnrYd8Ld5SFCWh0bYNMUzuXf4Di1RMQPxs=;
+	b=EavdcSNsX+ItPWOS7GogZhIR+jafeTjKr4ZQQRrQDeHPBsbKBTKDOITYWnp2nTRWOC5bSb
+	zkekXpxziHtmKqAe705wij8KOHtnRO0ee9YxUWw5sni9R1Mq4soOtmvc4hSBaXeMVDwZde
+	B8oP7Iy+vuB2fE14uNwv+2MDMWkFd2A=
 Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
  [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-644-lJ7IqYwmMXG7IELxzolDVA-1; Thu, 01 Oct 2026 06:58:06 -0400
-X-MC-Unique: lJ7IqYwmMXG7IELxzolDVA-1
-X-Mimecast-MFC-AGG-ID: lJ7IqYwmMXG7IELxzolDVA_1790852285
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a02085598fso5152075e9.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 03:58:06 -0700 (PDT)
+ us-mta-2-CKW7xiXNMiWOMhBc0m7gsA-1; Thu, 01 Oct 2026 07:07:11 -0400
+X-MC-Unique: CKW7xiXNMiWOMhBc0m7gsA-1
+X-Mimecast-MFC-AGG-ID: CKW7xiXNMiWOMhBc0m7gsA_1790852830
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e635a6002so72260495e9.0
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 04:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790852285; x=1791457085; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1790852830; x=1791457630; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Tt5IAt6vMqsCLYkrQdskETSZXcKhulecCkm4FRkZlO8=;
-        b=Ry5H9keOJaa9gb6/zQS+ujB4zAnrRddRxDcVAbUnnwoU7RovyQ6FM0M0j9V4Nx7xvQ
-         2NMAea/c1ctHpUSKhQszVYU7MuGo+e9yejIxfHm1n/p/e7HC0mfots5ukoIMhNrlUj+U
-         wVWh98CE3v21LbTCPemjzsaCmIKfGTw3EfUhjq3GYAAhrkWkQJQRTtmXwzdyfkFTp1nJ
-         SR5X4ruxpDVScYjVXEXBNzKFpIpgQO/ySxschNCi+9HJaml3cBLVkorPzKGcOjfLoROd
-         cHi870AXYw2kSUhQ99/eHp8j7HRdIfQocY75yA40OWxzCPajpnTOhFM4oU4qb7NmHtQ7
-         Ibbw==
+        bh=SytabqJa4hnrYd8Ld5SFCWh0bYNMUzuXf4Di1RMQPxs=;
+        b=TzUvgG1F6rulM9oNBMIl1JYH/iLAmzxvqpQnUznZbexaU7ikKUGN7CgRKBgowAYbkn
+         46tMjcSw4jZu+I+wQUAwgL3fuSMcqzdJlZr5SOMuHXoDEOY7d05Oettcqw3j3meQusVw
+         y/wQaTgeIKqLqW3gzGWHHeuHXSHZHRt9iHS/k2kNsom/RmTNSWYOuXExobP1m6zH51/x
+         KaLOcONh8qPlLtmpLDr3Iqk+0Wx9G4WM6Qg2Ezlwd+hYk3vNaL7zbgN3HWz65uEgDxc5
+         EHEGiSlSurXLaEw8zDKMvtsLPNw229UXMGBCjUkCBnTN+oCBXHlyx5pzN3VN5woTKyJw
+         ctEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790852285; x=1791457085;
+        d=1e100.net; s=20260707; t=1790852830; x=1791457630;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Tt5IAt6vMqsCLYkrQdskETSZXcKhulecCkm4FRkZlO8=;
-        b=JfdcHsaLiWJEvzq+u6+OSJL8mtWsxdBZjoAut+oap0drwY5L95J0mxbgsPik3i2q4t
-         Pj8ZoaPPo4KLiz+XGV0YopAqlHe0Dg4ZxRDT9Fgq1zBhxmrR8Vk9pW7VVkLD5WgzMD1T
-         t7zhhn+BEtzpU76kR4oGrvwcsYlBmDKptmiLo2LNOtEq2OsgBQdCzQq7n7B6IlmVUpas
-         /9IE8rdS5T4tm+H04+EVmRuebb4jEckzMioNz6X6SspgrvbBJYJaZuxDwxD6XLsCey26
-         jJvWJ1VidGywnL/6bt89zihuFb2zgqGTw7XYyOBljwt0TJKKv0YMIcaGZsB8eQ9JC4Rt
-         Kudg==
-X-Gm-Message-State: AFuF++lZFQB5KwThiOqRBfdkx6Sc87h9C4Z9xpd7vvuC+FOt40GmgXZW
-	hdcs4ZjCSPCR3X/gmgZlo13Eihtkzyb/Cv2Usvd3u1CuYmf7egEKFu5BWEOXYNbLk4R5cT5GmJs
-	/LaQoh03vvpOfhl9nIDBQapPAwjHrELqDn6Dq7UpzvlBsJPcenJSwWWL3Bg==
-X-Gm-Gg: AYBFou3U8Qf7kkAJ5q6i0W6d5KlFiSQp1ODLEEoPwHhuIJ0k+aDvp2u7sFqMMpNcbjQ
-	lwYvPWH1tADRRlbLSM6sUmcS8KgiljvlMXQRfiVtKEuZdYJ1IxeWCArDQy7KtnTFXAG4rq0vqXt
-	XW7YckZXmGRrUEGYY79UgTdSm7j+oUNPZp/izB0E6Ngr+naJjoOoFF4xhAo5+hmYZIWBe4pAtCX
-	l0swKdBJ4UJXzBrILyVuyHHZ9C9Pw3k5NPP/UanxVOreaorxoN9DpIuecDcpjQk3/mIuMa5GuxX
-	6/AF0FKBTz4D9RQqSt0f2OkpB4/IcI+8wTi0CjeHnOS1TSHIUCbF1veO8E9yPTTC76tAQEBqEFw
-	mpUdVt7aSqG5ap7idjMoGOwbdoFPHsps1dIXsRIlpdg8MNmXwnFc3DK/wpTvrQ4oiLWm/8ZvUQA
+        bh=SytabqJa4hnrYd8Ld5SFCWh0bYNMUzuXf4Di1RMQPxs=;
+        b=Qzir4RO+tcEPCxp8M1XbzW+CsqR1keNvP7ifFGUXZUo6Hljp+USUOWGStjhKWEYkCQ
+         3GRxSi+cKLSzIAOUNAcghDKJEdJe07kbldOA94jTjnOZa5jsTATJsQ443Qu5pE1WqgrE
+         IWevQ+LTQsLRVuUQ+FrNU8SiJ5yXINoPXWzKveWRh9CxZSy4vBIlIPFrNSWWkf17BBk0
+         SSinFsdo02GdCkf5yL3byc2VXten03MThvdK95NCgwCAECkS59KURrz4oIAoZvLnHESM
+         dkS5hd/5veVbBCGd9zgDXjUwYTEXWXcZqiQg2NtUxT7r521558aMEdHwZwxuJcTM9z3c
+         pxkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwMztfL9smbc770yFGFXecVfbdRSYDRK2YaDMiRNyuchZy0dUWw+dVJ2P7PmrkKhymHKZ75nDM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kysoLzm1lGynz8yIh5f3v9Vub3O619jaN1E+fxc3alQ4/nS3e5
+	BMZp/BeTW1vpQlFSWSIp+iDCpAC0wrpNdLKzkdUShJFUvydxMXibsqkHcesz3jRm7aL2wUvsi3A
+	igKIlDVbVYGMhMZG0fh1xRnw31ZGesO7qqvLd/bI7ttNHjJdWQAfT6Hgx9w==
+X-Gm-Gg: AYBFou0Vu9khoVuVAbtEZ5haJHOEREWrje13JloCyD7rOJaxuJrMDifWBBy00neKuOj
+	gf0m8B/ajbO3cet+yxB2cOw9kIYRE70v2Nf/DE46CTsFgAt8z4xtZ0guIuHbyY+1BdRgRLglaa/
+	lRffD5PitiBtFhcEvC94MOmd06MKEE0sOhQZnfP4AKnBgUKHfmIP2EfuaX031dVMoWnaQLqQ0NY
+	TNrcO4hKJqbvkiveADL1rpU5ggVsFItknY81uiCjp4fbmeg9TEH8CwkCY5OY1f4hTq3R1M4aAAs
+	lWzg5VbAmq/mT8RWSXx2GivZyx85521Ylu24i1Dmh90Khp4n+yFQM7yNWvbiF/I7KUpQFKihYPD
+	Hs6nxiBSSaVs5skrFIQy/SvTQPqb/2yOySm1veQq0IDsQFYyA2jvLAjh8dQsiqRZIJo640bHU7A
 	==
-X-Received: by 2002:a05:600c:4e56:b0:49e:8377:c880 with SMTP id 5b1f17b1804b1-4a01b00ef27mr80088155e9.33.1790852285144;
-        Thu, 01 Oct 2026 03:58:05 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e56:b0:49e:8377:c880 with SMTP id 5b1f17b1804b1-4a01b00ef27mr80087715e9.33.1790852284618;
-        Thu, 01 Oct 2026 03:58:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d0d:b0:49d:17d4:d6ad with SMTP id 5b1f17b1804b1-4a01b112cbemr68461475e9.23.1790852830009;
+        Thu, 01 Oct 2026 04:07:10 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d0d:b0:49d:17d4:d6ad with SMTP id 5b1f17b1804b1-4a01b112cbemr68461035e9.23.1790852829579;
+        Thu, 01 Oct 2026 04:07:09 -0700 (PDT)
 Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a023ebe694sm33186845e9.10.2026.10.01.03.58.03
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f99a332sm112071055e9.12.2026.10.01.04.07.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 03:58:04 -0700 (PDT)
-Message-ID: <83bba48e-7f0f-44b6-a7ff-b64c3ba96f70@redhat.com>
-Date: Thu, 1 Oct 2026 12:58:02 +0200
+        Thu, 01 Oct 2026 04:07:09 -0700 (PDT)
+Message-ID: <21ba1323-7619-4721-bd1f-9ccbae42761e@redhat.com>
+Date: Thu, 1 Oct 2026 13:07:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,63 +89,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] seg6: fix HMAC validation when an extension header
- precedes the SRH
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>,
- Andrea Mayer <andrea.mayer@uniroma2.it>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+Subject: Re: [PATCH net] amt: pull the AMT header behind the transport header
+ in amt_parse_type()
+To: Omar Ramadan <omar@blockcast.net>, netdev-bot+sinfo@kernel.org
+Cc: Taehee Yoo <ap420073@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
  Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- David Lebrun <david.lebrun@uclouvain.be>,
- Ahmed Abdelsalam <amsalam20@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260926-b4-seg6-hmac-transport-header-v2-1-8087b76f6375@gmail.com>
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260928181557.85796-1-omar@blockcast.net>
+ <179061960357.31693.937915571809434718@kernel.org>
+ <20260930222733.47563-1-omar@blockcast.net>
 Content-Language: en-US
 From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260926-b4-seg6-hmac-transport-header-v2-1-8087b76f6375@gmail.com>
+In-Reply-To: <20260930222733.47563-1-omar@blockcast.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 9/26/26 13:19, Yuya Kusakabe wrote:
-> seg6_hmac_validate_skb() derived the SRH from skb_transport_header().
-> That only holds while the two coincide, which is not true on the
-> seg6_local input path.
+On 10/1/26 00:27, Omar Ramadan wrote:
+> Found by code inspection: an LLM-assisted review of drivers/net/amt.c
+> while I was working on an IPv6 outer transport for amt, whose ICMPv6
+> errors would go through amt_err_lookup() the same way.
 > 
-> ip6_rcv_core() leaves the transport header just past the IPv6 header.
-> A Hop-by-Hop options header is consumed before the route lookup and
-> advances it, but a Destination Options header is not: the seg6_local
-> lwtunnel is entered through an input redirect from the route lookup,
-> which bypasses the extension header handlers. The transport header
-> then still points at the Destination Options header while
-> seg6_get_srh() has located the real SRH further down the chain.
+> It has not been triggered. I have no reproducer; it comes from reading
+> the code. It needs an ICMP error reaching a gateway's encapsulation
+> socket that quotes only the IP and UDP headers of a Request, so that
+> amt_parse_type() reads the AMT header past the data it pulled.
 > 
-> The HMAC is therefore computed over the Destination Options header,
-> and a packet carrying a valid HMAC TLV is dropped when
-> seg6_require_hmac is set. Such a packet is legitimate: RFC 8200 allows
-> Destination Options before a routing header, and get_srh() has walked
-> the header chain since commit 5829d70b0b6c ("ipv6: sr: fix get_srh() to
-> comply with IPv6 standard "RFC 8200"").
-> 
-> With a Fragment or an Authentication header in front of the SRH, the
-> same mistake also reads past the data pulled by seg6_get_srh(). This
-> happens before seg6_require_hmac is read, so the default configuration
-> is affected.
-> 
-> Reproduce by giving a node a seg6local End SID with
-> net.ipv6.conf.<dev>.seg6_require_hmac=1 and a key installed with
-> "ip sr hmac set <keyid> sha1", then sending
-> 
->    IPv6 -> Destination Options -> SRH (carrying a valid HMAC TLV) -> payload
-> 
-> to that SID: it is dropped, while the same packet without the
-> Destination Options header passes.
-> 
-> Fixes: 5829d70b0b6c ("ipv6: sr: fix get_srh() to comply with IPv6 standard "RFC 8200"")
-> Assisted-by: LLM
-> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-FTR applying this to net-next, as it looks really an always broken
-corner-case, and Linus is asking for really critical fixes only at
-this point of the cycle.
+> Testing: W=1 build with CONFIG_IPV6=y and =n, and
+> tools/testing/selftests/net/amt.sh passes with the patch applied, but
+> no test injects such an ICMP error, so nothing exercises the changed
+> path.
+
+Due to all the above, plus 'broken since the beginning' and Linus
+asking only for critical fixes at this point of the cycle, I'm diverting
+this one to net-next.
 
 /P
 
