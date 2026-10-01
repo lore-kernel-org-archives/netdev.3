@@ -1,63 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79FA2DE702;
-	Thu,  1 Oct 2026 16:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ACB3D47A0;
+	Thu,  1 Oct 2026 16:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790871904; cv=none; b=H6IMbKr3Vzj8HcNZ2FRzDzV9QVWP/3aVl1jH9K/C12ARorna61lpDoQisf1m5UctecPrzpILgi16P9xCF2d9Nq9KkiLjaoNdLgcR6UibjAE4Y/gr+Of8MURN6WQq2IhehBO6h58Lb2p2rovs6OAjd7xmMVrKakrtXyzGZKGKh3c=
+	t=1790871946; cv=none; b=XK6eaQkeVcsWYVh0E9TaHrODTv0frjOuMWuWys0PX6X1rQs/2wLHv6Kw7ZNN6qrLqZE6nd7nfCCQAjDj3i10mWfTFW6zeNI03MpcpV34Mm1teVkFOdu5MS5oAkqnxnLZ23zUCR1vdW/VNIiS5vaBlytUyi7n7KQc+atll/bPYJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790871904; c=relaxed/simple;
-	bh=jNhFF1FFcdZQRcc7LMRUzfc/AU7mnjlXteBOBViWAo8=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=YcmGoUGH4JA/44uC2C4q2M9qB1ClfMm2gWfDtK7PJxFSbjLc+Eb8tMlcVL0iRvEe0dq6+2haaUjy3l2aKq5lb2hJ/KR0DgvmQhjSwcKJ4r0iP7jVaWv+DMMhcWPX089jwbLFunRk/lc1PBbzrheKgJbK3Mqe0e2eRRPm9qSWxNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L585SP/u; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790871946; c=relaxed/simple;
+	bh=875grvOkdBGnvGuOme3BIQ08plA4Mzm8WzGn/8ixbXg=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=tGmr4lwqd4CBgXtUxOjxDeRXCm+8nPg4NJ9zUW+FT3uvc6X9QQDzt8AFe7XNbkQ+S/NZftGKlctpPKC/KuDTo1PCXmEZRw9ne6kzIdAZk7PyIHMs0L4uh8UvvtOnWDI79yjmBrjxz1Sx8hszCAuo4zXkfVWAp1mGIE6lb8tHPis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LM39+Epy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L585SP/u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D721F00898;
-	Thu,  1 Oct 2026 16:25:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LM39+Epy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37D91F000FF;
+	Thu,  1 Oct 2026 16:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790871903;
-	bh=AMAgKY4S+HX1BzWFw4AFQhIfukrsXa5LQUUUZV4C/hE=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=L585SP/uBkp1wQh0SkdKP3OyK5s1DG+3S2S3zJxh9+UnukWOWFlGN4QsX7Ekkh0am
-	 WmAXY9/aWGpYWrkp0Gum6ZrFx7LR/7/gcFVq1Eapjmwm6cYwdVCqLig9rpvaieOPJi
-	 Mj9r1eKeuDE3GYlZcRfeZbHo8Ep2IOKb1KpNGBib3dbS83uKe+RdC+gYBYSE9B0EAp
-	 0DHpfW9JBVjxf0ubFjGmGwvZvYA2YBxQvHdIOqx9JtbZVrH87cKoK2bY7HIUgAJUe6
-	 XSynpDbrV2V99c0v0xchc2r8FS/4oOB9SkKSbeKKMnG/RyBMl8s6iMJHkAJrKNx2ME
-	 rkn1F+kh/ZdTA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A65D3811960;
-	Thu,  1 Oct 2026 16:25:03 +0000 (UTC)
-Subject: Re: [GIT PULL] Networking for v7.3-rc6
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20261001131235.98504-1-pabeni@redhat.com>
-References: <20261001131235.98504-1-pabeni@redhat.com>
-X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20261001131235.98504-1-pabeni@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc6
-X-PR-Tracked-Commit-Id: e23a64eb244356ee47c0620f0722d51bd88db522
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: d24e8ac715de2e16a53c144005b1863660a5fbea
-Message-Id: <179087190171.2557118.834529597190153378.pr-tracker-bot@kernel.org>
-Date: Thu, 01 Oct 2026 16:25:01 +0000
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20260515; t=1790871945;
+	bh=3SyhMfDJvhnI48fc2ca/hNNMn/uco6vms8m7DHNBqZo=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject;
+	b=LM39+EpydfTwGmWZMYKdL6rbLKgPhF/Dtz7roU2+Y5nde4/0fn/XLZGTMMtCw+ts7
+	 Qg+fF+wcAnqRZgduMk9HTCKa2bvSkZodEZAP9rzBuzRulFGywfKAJ+WxCD4OvH9Bwz
+	 Iv6nTt6HU/fFi/923CXjiUM6VQWn4/n533y/gUEElrnltg2xgbZlJ4/KIgTcA4qi3r
+	 mV/3lfoAZj2F1ui1RTcSsXifWtj3qDECGLnVb3TODMxxQmk9MRv3Vm3C6xK7DDd2Qo
+	 SRsf2LZMDHJjIFvAo+yN9c1pEWE0dBqd4IQB/V3zFNpx7uNSId+SC/X4kWtGOr83Sc
+	 3cMYbzdZxoNAQ==
+Date: Thu, 01 Oct 2026 11:25:43 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: luka.perkov@sartura.hr, conor+dt@kernel.org, krzk+dt@kernel.org, 
+ hkallweit1@gmail.com, lxu@maxlinear.com, devicetree@vger.kernel.org, 
+ davem@davemloft.net, andrew+netdev@lunn.ch, michael@walle.cc, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, edumazet@kernel.org, 
+ pabeni@redhat.com, kuba@kernel.org
+To: Robert Marko <robert.marko@sartura.hr>
+In-Reply-To: <20260930122305.293686-4-robert.marko@sartura.hr>
+References: <20260930122305.293686-1-robert.marko@sartura.hr>
+ <20260930122305.293686-4-robert.marko@sartura.hr>
+Message-Id: <179087149240.849224.16132566481274113887.robh@kernel.org>
+Subject: Re: [PATCH 4/5] dt-bindings: net: maxlinear: add MxL86211C lane
+ mapping support
 
-The pull request you sent on Thu,  1 Oct 2026 15:12:35 +0200:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc6
+On Wed, 30 Sep 2026 14:22:16 +0200, Robert Marko wrote:
+> Describe the optional lane-to-ASP mapping for the MxL86211C PHY.
+> 
+> The mapping accounts for board-level swaps between its physical TPI
+> lanes and analog signal processing lanes.
+> 
+> MxL86211C supports per lane mapping.
+> 
+> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+> ---
+>  .../bindings/net/maxlinear,gpy2xx.yaml        | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/d24e8ac715de2e16a53c144005b1863660a5fbea
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Thank you!
+yamllint warnings/errors:
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/net/maxlinear,gpy2xx.example.dtb: ethernet-phy@0 (ethernet-phy-idc133.5400): maxlinear,lane-asp-map: b'\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x03\x00\x00\x00\x02' is not of type 'object', 'integer', 'array', 'boolean', 'null'
+	from schema $id: http://devicetree.org/schemas/dt-core.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20260930122305.293686-4-robert.marko@sartura.hr
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
