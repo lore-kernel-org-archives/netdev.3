@@ -1,153 +1,295 @@
-Received: from mail-dl2-f40.google.com (mail-dl2-f40.google.com [74.125.229.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AFE35C1AD
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 17:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.168
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790876748; cv=pass; b=jqeBaKsiqf8A6pGrdntmZHfguoLGRGp3nrDVTSYHJq9m8tmVFaGvb0W0rPek6MDkP7owbXB64FqmFW+vBl2HD+9mqb2yp5gxDqApMhOLhiHRb2PAMGt1WpRFl+pa49xSY30Dv8RozyMX0wfXOR3kdX7/14qU3uYkC5Au+lj9VDg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790876748; c=relaxed/simple;
-	bh=DVS+yU4MeXSTJA0MnoG2/WnDRMIiZcABsJSeQLqj3C8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SP+25KoEx9bPlJrxPwFfoLnPKLGTdHq5fk03SbhIpfoFLf1jGTpV/CPlmPN22jRDBov0myuSuliQf2z0DAP8xmPbRi8CsvxPR5YwkwGu0Uc3nc3ZS5Be5PifHEVX3GEz5GqWd9UAitxVO+K8uHLodeElnssnzz7poIxkhIEvvec=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ciqmt8S4; arc=pass smtp.client-ip=74.125.229.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF655522688
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 17:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790877130; cv=none; b=iYemMb8y2P4GOggRM9hTKIMPtQ4arb9nlMS27wf5WWbg03SbhKiaUBItYs0mkXa2Zl3n9H8gWR9zZ9LcmCT0TYGfNLPiynofk4Li+Xz8PkkhQN1U4BLjQYFC9OobpwdMAqGWyDLrKuioOCeO3pcPkZHOYA4OKLjxgJVZXqKPHyQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790877130; c=relaxed/simple;
+	bh=LdfKx1PeNI3yQqsUwxb4FpCO5WbcMU+A2E8daoPmSow=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=l22n2RIarNvilEXil71/Rup8h+g9O5CKnMUChWNOtvuoyQbvGkM+8Ul6lYy04j8AIpcyY/mXBu6qqshvZQPwI5CNm9b9h+y/AYhF2eKVVRBtCuDXzB4BMJZDyDc4KTTyuImYJJ0n+c1wEaouph+/5O1rxOr0XLL5PAHdJRbkBEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mhEtMZPN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ciqmt8S4"
-Received: by mail-dl2-f40.google.com with SMTP id a92af1059eb24-14e1fe551c3so911627c88.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 10:45:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790876738; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KKaDqSFPQqOHSDa8QsylILQg4Zu5NEMQKApGRW1YOmxlngkInIETUJ4w1rRCdK0wAS
-         Push/5GPoZ2SLaQPJyA3nepY093Uy6rspPQfCarErDReWIfxdBdBzYembwU4QIPz+owQ
-         Qfs6wgObbUcra8DGMzRG2As6oH6K3bl6n6Vts238AEmJtlHTWrHnFEF607LXPRnsiKvj
-         dPKA1SJGJurShyHV0tMJErWHC2Iq01hVmNPe7156VQ+eeICZwE8zTO4XTb92if7PVeof
-         NLchwPP6sGBZLO8OGGPNIIsYL9OYX2S0Rfd+GCkPqY9aOV9tm8YeFQn2wpeAii15jZXQ
-         +ppg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Kd+gDsb79tDRiS43i4aFe0o9+muNoh8xdfZbWxrNkr4=;
-        fh=rjNPBnFaUABckl+aDQiFztQ+BTeGjOgM61XY3OTTZZE=;
-        b=N/p/HbNNd4zX6EjqNI9+/sLOVoWVxgKk+WieTmi/nu2q9g76/EFoUGQN+aCmR2FBfn
-         vcqH0MmtsG0ZkQdXl9BBBeD5U1hEn0RyIHg8uaO0LRcAksgg3XESvBreIXUFbC3+eUDc
-         cb4gLWZJ4uJaSStx5jLcQuawCIm3fl8Jy2cJ6ZcW7cQjx7s7mG+0e6rcm3bGR7GuulzV
-         OcdNP+A2EcgMDimBdj0NPTWyPCbo/1eofA76/nEfGg8qQDuCRaJhSUZydd4M5VJXrjEp
-         lD4MOsMkNWZtrvB/fT3vj6om2g+R8dN+pBX9h7ZBpaupEicWZlXAgrNA5CwhYUugELAy
-         E/QQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790876738; x=1791481538; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Kd+gDsb79tDRiS43i4aFe0o9+muNoh8xdfZbWxrNkr4=;
-        b=ciqmt8S4Fpo3CZZhLA6ke2yHP927Xi3sw4jc1A8EQX7LF++Y+gano7z0pCcpqZsxAo
-         sNEx9QyaE1q0+rWD2NugcJ95OHAE/2/GyVEJYY/okfdw5FLcwLT0pQRWio59L5k1NT57
-         8cnzqyge7AG8UcWf1zH8PjEtkdRevERRuG3rt0xH/mPAyOv++dOIalBlUaToEq48/9F6
-         7Ry1wJNd+nXZaV/Ue3+feW8ppbuwtjTVkK2utfCfl8SE4wzGum4JVUbNi6EnXEUMocKp
-         nH3Hsh4MrcQXg/9gYLba/HL0zNccxmrqr9qFKHvqvOF0PAXmJnbO7xcYFj8RaGxbqHxB
-         dNtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790876738; x=1791481538;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Kd+gDsb79tDRiS43i4aFe0o9+muNoh8xdfZbWxrNkr4=;
-        b=NZoQGL5mg/Z54UXVeTeR4WDzMli1cgLp3Kd70i1lm+V4Qf8IltuMZc5k2Q035Lvd6M
-         qQhFPrvIfPlSYLYC/phktWbNvRAD/elEW/d7vKh3Gyt/qakdiw/b0d/WdHVXZUZvvNTW
-         zd8w5iZmynZDxV8rUPXFAuRK6dXH4worBs4VlanTWhTYoC89WHNA/HkE5ePXSOUvwdkW
-         /XlDoGbwcswU+6cni3YXMuROqN4oG+E1DRSdCSXZKmBfgLO6nPTMmD64qDo2TdM7Gn79
-         raYRimCtaCwJOd9RA0VEHiELzFs8oJsLkNMt29xjtsy+1hFz7ZQFB9ztm8Pp2UMnobXq
-         zENw==
-X-Forwarded-Encrypted: i=1; AKwUvByjvku9iM55yz5ESQPA+oA2Wqix1k1Qa3GcciNWPOqpo7nqKFAjnbcqW71/7PuGfY02RhE5w1s=@vger.kernel.org
-X-Gm-Message-State: AFuF++kcg9KGIaYY3BnylyS9Q5sDBPSgm3Lmz6ckfvl9YRZSz7I43FPw
-	+PhIgaJaDRkyB10M3v92c0D+FJ1WMe3+skl6SelbsMK3xD/vgQV94nAhZBEKI+vZNHZIY0YG1hT
-	FGTG6XRYDZeRXNwN8Khfy2Bb3cjL41Y2r7bc4Hqkg
-X-Gm-Gg: AYBFou37kGbtwsBK5e8Xf8fQPtmYDjd6jUWzKT3vigmxKh5fh8drxUXhm8ZzBXIQ4Rp
-	jhtqi1EivZ9RJKvY3KY1HrV86n9uXlkt8o2t26NXCqhkgBb0fPHrAetHGjknPi/4kCeCqLJ3iMK
-	mibOY/NFp6jGFKZjj6ApG5E3Ob8TBElo5aV7zdAsOg84nI6bp3HiRU3LxgHN7GO8ruE17x6ZCiH
-	pBvAvN1fST0Pmb9AbOFQi0ImJQRjBuRsmcmE5xwcjrs+jkeihiWQMEWjDC6Hh55M5/XknldPk75
-	qmGz6u4mA9X9t4xf+P58QAvkYWDc+h5koJVB3lZlodXnDNGiItZ9LXNbtJONXsfPr7+htxcpsvD
-	wBbou6CRD+iFOURid5YDIC3mQFCOiyXi+DUUbO9ARmKAZhGLrAjQu2OHwg+jAr/kAUqohMJKE9t
-	1/8W+kM0WNzOlem/REkAKNPoE8
-X-Received: by 2002:a05:7022:fe09:b0:144:eb46:be0 with SMTP id
- a92af1059eb24-14d31c6d959mr7036975c88.13.1790876735713; Thu, 01 Oct 2026
- 10:45:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mhEtMZPN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF701F000FF;
+	Thu,  1 Oct 2026 17:52:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790877123;
+	bh=c0n8hiMWdHPDoja+vR4Vf++YtPwach5g9ZwEevjKViA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=mhEtMZPNosxMLN3v3V3aoubWqGa5XaI0BCukAuQ58tRDAGmv2IApDm2OrmjtaLw4/
+	 iJqkrD/RHpDSD2BSG+ds927Tvfk7JgzvIv7/23QyWkkoT+j6tJw4K9IjJpNhkn8dcK
+	 9/6EBn5TzmPHyp50Wked7hXBvGxvpoBrZXEpnGddjp2FAo1R7p7xWd7KcUMqq8IJQ8
+	 YEzp8iECycV99UQvr8md8Fi8BLzw28SWvr7WBGfUH4sDdw7rZAcB2jQU77tL4JDc1E
+	 oqFq3K1v79u281vaO5nW23v1hfafagNCYnpLqY3vodPckwBrzXHA/CVHNinfI6b5gM
+	 isTaY0XdIO1jg==
+Subject: Re: [PATCH v2 net 1/2] net: always dissect GSO packets in
+ __virtio_net_hdr_to_skb()
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ willemb@google.com, mst@redhat.com, netdev@vger.kernel.org
+Date: Thu, 01 Oct 2026 17:52:02 +0000
+Message-ID: <179087712222.434549.10051297010561024620@kernel.org>
+In-Reply-To: <20260928144254.3361044-2-edumazet@kernel.org>
+References: <20260928144254.3361044-2-edumazet@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261001143040.28467-1-parri.andrea@gmail.com>
-In-Reply-To: <20261001143040.28467-1-parri.andrea@gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Thu, 1 Oct 2026 10:45:22 -0700
-X-Gm-Features: AclHuK_PRj6kNhTkNAge75mh0uRy0R-jClYZQl-fhXQ_Zc5OUMVS0wPKh2mqOHc
-Message-ID: <CAAVpQUCPBAoofDeDMdQii=5P6FyRnKOdN932fTuocHtb4H+m1g@mail.gmail.com>
-Subject: Re: [PATCH net v2] rtnetlink: wait for RCU readers in rtnl_link_unregister()
-To: Andrea Parri <parri.andrea@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 1, 2026 at 7:30=E2=80=AFAM Andrea Parri <parri.andrea@gmail.com=
-> wrote:
->
-> rtnl_link_ops_get() finds ops on link_ops under rcu_read_lock() and only
-> then takes ops->srcu. rtnl_link_unregister() unlinks ops, then calls
-> synchronize_srcu() and cleanup_srcu_struct() without first waiting for
-> RCU readers. A reader that found ops before list_del_rcu() and has not ye=
-t
-> taken ops->srcu is not waited for.
->
-> Such a reader then locks a cleaned-up srcu_struct and keeps using ops
-> after the module that owns it is gone. rtnl_newlink() and
-> rtnl_dump_ifinfo() both look up ops without RTNL, the latter for any
-> user that dumps links filtered by kind.
->
-> With delays added between the lookup and srcu_read_lock() in
-> rtnl_link_ops_get(), and before rtnl_link_ops_put() in
-> rtnl_dump_ifinfo(), running "ip link show type dummy" alongside
-> "rmmod dummy" on a KASAN kernel gives:
->
->   BUG: KASAN: vmalloc-out-of-bounds in __srcu_read_unlock+0x57/0x70
->   Read of size 8 at addr ffffffffc02ff318 by task ip/147
->   Call Trace:
->    __srcu_read_unlock+0x57/0x70
->    rtnl_dump_ifinfo.cold+0x30/0x3b
->    rtnl_dumpit+0x7a/0x1b0
->    netlink_dump+0x486/0x11b0
->    __netlink_dump_start+0x661/0x910
->    rtnetlink_rcv_msg+0x611/0x9e0
->    netlink_rcv_skb+0x126/0x380
->    netlink_unicast+0x605/0x830
->    netlink_sendmsg+0x6d0/0xbb0
->    __sys_sendto+0x335/0x3a0
->
-> Call synchronize_rcu() before synchronize_srcu(), as
-> rtnl_af_unregister() already does. This should be enough because
-> rtnl_link_ops_get() is the only RCU walker of link_ops, and it takes
-> ops->srcu before rcu_read_unlock(), so every reader that found ops is
-> covered by synchronize_srcu() once the RCU grace period ends. The extra
-> grace period only costs time at module unload.
->
-> Readers and the writer were serialized by RTNL until link_ops got its
-> own mutex, which is why the missing RCU wait did not matter before.
->
-> Fixes: 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-> Assisted-by: LLM
-> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0 (1)
 
-Thanks
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] `__skb_flow_dissect()` sets `key_control->thoff = min_t(u16,
+  nhoff, skb ?
+
+Pre-existing issues:
+- [Medium] In af_packet, `packet_parse_headers()` runs before
+  `virtio_net_hdr_to_skb()` (`packet_snd()` lines 3130/3133;…
+- [Low] In the UML vector driver, `prep_skb()` sets `skb->len` to the
+  full receive-buffer capacity (`skb_put(result, vp->max_packet)`, plus…
+
+--
+
+net: always dissect GSO packets in __virtio_net_hdr_to_skb()
+
+This patch drops the skb->network_header condition and the unvalidated
+fallback in __virtio_net_hdr_to_skb(). Every GSO packet without
+VIRTIO_NET_HDR_F_NEEDS_CSUM is now flow-dissected and gets a transport
+header. The tun, virtio_net and UML vector callers now set skb->dev and
+skb->network_header before the conversion, and the
+virtio_net_hdr_match_proto() check now runs after dissection.
+
+Closes: https://lore.kernel.org/netdev/20260927163117.746432-2-bestswngs@gmail.com/
+
+> diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/vector_transports.c
+> index ddd127ee9678..e1fb2a76fdff 100644
+> --- a/arch/um/drivers/vector_transports.c
+> +++ b/arch/um/drivers/vector_transports.c
+> @@ -209,6 +209,7 @@ static int raw_verify_header(
+>  	if ((vheader->flags & VIRTIO_NET_HDR_F_DATA_VALID) > 0)
+>  		return 1;
+>  
+> +	skb_set_network_header(skb, ETH_HLEN);
+>  	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but raw_verify_header() now
+takes the dissection path. At this point, isn't skb->len still the full
+receive buffer capacity rather than the length actually received?
+
+prep_skb() sizes the skb up front:
+
+arch/um/drivers/vector_kern.c:prep_skb() {
+    ...
+	skb_put(result, vp->max_packet);
+	result->data_len = len - vp->max_packet;
+    ...
+}
+
+Both vector_legacy_rx() and vector_mmsg_rx() call verify_header() before
+pskb_trim() cuts the skb down to the received length:
+
+vector_legacy_rx()
+    header_check = vp->verify_header(vp->header_rxbuffer, skb, vp);
+    ...
+    pskb_trim(skb, pkt_len - vp->rx_header_size);
+
+So the dissection, pskb_may_pull() of thoff + thlen and
+skb_set_transport_header() all work on stale buffer bytes past the
+received length.
+
+After the trim, can a short frame with a GSO vnet header end up with
+transport_header and GSO metadata beyond skb->tail?
+
+The reads stay inside the allocated linear head. Triggering this needs
+the host peer to send a GSO vnet header for a frame shorter than its
+headers. The verify-before-trim ordering predates this patch, and the
+old fallback also set gso_size/gso_type from the untrimmed length.
+
+>  	return 0;
+>  }
+
+[ ... ]
+
+> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+> index c381b916c1b5..d6466f96cdd0 100644
+> --- a/include/linux/virtio_net.h
+> +++ b/include/linux/virtio_net.h
+> @@ -111,48 +111,38 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
+>  		p_off = nh_min_len + thlen;
+>  		if (!pskb_may_pull(skb, p_off))
+>  			return -EINVAL;
+> -	} else {
+> +	} else if (gso_type) {
+>  		/* gso packets without NEEDS_CSUM do not set transport_offset.
+>  		 * probe and drop if does not match one of the above types.
+>  		 */
+
+[ ... ]
+
+> +		struct flow_keys_basic keys;
+> +
+> +		if (!skb->protocol) {
+> +			skb->protocol = dev_parse_header_protocol(skb);
+> +			if (!skb->protocol)
+> +				virtio_net_hdr_set_proto(skb, hdr);
+> +		}
+>  retry:
+
+[ ... ]
+
+> +		if (!skb_flow_dissect_flow_keys_basic(NULL, skb, &keys,
+> +						      NULL, 0, 0, 0,
+> +						      0)) {
+> +			/* UFO does not specify ipv4 or 6: try both */
+> +			if (gso_type & SKB_GSO_UDP &&
+> +			    skb->protocol == htons(ETH_P_IP)) {
+> +				skb->protocol = htons(ETH_P_IPV6);
+> +				goto retry;
+>  			}
+> +			return -EINVAL;
+> +		}
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch. The
+commit message mentions VLAN-tagged frames, though. For af_packet VLAN
+frames, does this dissector call get a protocol and a network offset
+that describe different headers?
+
+packet_snd() calls packet_parse_headers() before
+virtio_net_hdr_to_skb(). tpacket_snd() does the same through
+tpacket_fill_skb():
+
+net/packet/af_packet.c:packet_parse_headers() {
+    ...
+	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+		skb_set_network_header(skb, depth);
+}
+
+For VLAN-tagged frames this moves network_header past the tags, but
+skb->protocol stays ETH_P_8021Q or ETH_P_8021AD.
+
+The call here passes data == NULL, so the dissector uses
+proto = skb->protocol and nhoff = skb_network_offset(skb). It then
+reads the inner L3 header as a vlan_hdr:
+
+net/core/flow_dissector.c:__skb_flow_dissect() {
+    ...
+		proto = vlan->h_vlan_encapsulated_proto;
+    ...
+}
+
+That value would come from the IPv4 tot_len field or the IPv6 payload
+length bytes. Would VLAN GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM
+sent through AF_PACKET with PACKET_VNET_HDR then fail with -EINVAL? And
+could they be misparsed if those bytes happen to form a valid ethertype?
+
+tap_get_user() keeps network_header at ETH_HLEN while it calls
+tun_vnet_hdr_to_skb(), and only moves it for VLAN afterwards. That is
+the layout this helper expects.
+
+The af_packet network header adjustment comes from commit dfed913e8b55a
+("net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO"). These
+skbs already hit the same dissector call before this patch.
+
+>  
+> -			p_off = keys.control.thoff + thlen;
+> -			if (!pskb_may_pull(skb, p_off) ||
+> -			    keys.basic.ip_proto != ip_proto)
+> -				return -EINVAL;
+> +		p_off = keys.control.thoff + thlen;
+> +		if (!pskb_may_pull(skb, p_off) ||
+> +		    keys.basic.ip_proto != ip_proto ||
+> +		    !virtio_net_hdr_match_proto(keys.basic.n_proto,
+> +						hdr_gso_type))
+> +			return -EINVAL;
+>  
+> -			skb_set_transport_header(skb, keys.control.thoff);
+> -		} else if (gso_type) {
+> -			p_off = nh_min_len + thlen;
+> -			if (!pskb_may_pull(skb, p_off))
+> -				return -EINVAL;
+> -		}
+> +		skb_set_transport_header(skb, keys.control.thoff);
+
+[Severity: Medium]
+Can keys.control.thoff be truncated here for large skbs?
+__skb_flow_dissect() ends with:
+
+net/core/flow_dissector.c:__skb_flow_dissect() {
+    ...
+out:
+	key_control->thoff = min_t(u16, nhoff, skb ? skb->len : hlen);
+    ...
+}
+
+min_t(u16, ...) casts skb->len to 16 bits. When skb->len is in
+[65536, 65536 + nhoff), the result wraps to a small value.
+
+With this patch, tun_get_user() calls tun_vnet_hdr_tnl_to_skb() before
+eth_type_trans():
+
+	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
+	...
+	if ((tun->flags & TUN_TYPE_MASK) == IFF_TAP)
+		skb->protocol = eth_type_trans(skb, tun->dev);
+
+So skb->len still includes the 14-byte Ethernet header during
+dissection. Take an IFF_TAP frame with skb->len = 65540 and a plain
+IPv4/TCP header (real nhoff of 34). That gives
+thoff = (u16)65540 = 4.
+
+ip_proto and n_proto are still correct, so every check above passes.
+pskb_may_pull() pulls only 24 bytes, and skb_set_transport_header(skb, 4)
+points into the destination MAC. The later skb_probe_transport_header()
+in tun_get_user() does nothing, because the transport header is already
+set.
+
+Before this patch, tun got its transport header from
+skb_probe_transport_header() after eth_type_trans() had pulled 14
+bytes. Frames of 65536..65549 bytes were not affected.
+
+This does not look like an out-of-bounds read, since
+transport_header + 12 falls inside the pulled thoff + thlen bytes. But
+would tcp_hdrlen() in skb_gso_transport_seglen() and
+qdisc_pkt_len_init() then read the wrong bytes? That would give wrong
+qdisc pkt_len and gso_segs accounting, and a wrong tbf MAC length check.
+
+It also seems to contradict this part of the commit message:
+
+    so all GSO packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are
+    flow-dissected, have their transport header pulled into linear
+    data, and have skb->transport_header set.
+
+In this case the real TCP header at offset 34..54 can stay in page
+frags.
+
+This is reachable through IFF_TAP with IFF_VNET_HDR, from a vhost-net
+guest or an unprivileged tun owner in a user namespace. tun_alloc_skb()
+allows skb->len well above 64K. tun_xdp_one() does not look affected,
+since datasize is limited to one page.
+
+>  	}
+>  
+>  	if (hdr_gso_type != VIRTIO_NET_HDR_GSO_NONE) {
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928144254.3361044-1-edumazet%40kernel.org
