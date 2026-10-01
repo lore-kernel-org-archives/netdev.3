@@ -1,162 +1,66 @@
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436D04A483C
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 15:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632D552BE29;
+	Thu,  1 Oct 2026 15:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790868740; cv=none; b=ZSEzInH+J26S/lNNAol2T7FlegEykMLJYGohpdilyILTg+maPtTIjgIyYA4dH0MM3FYboun8NN4Id7SlRP8QQNjj7em3WCLZObSGFRINQPDpqHpCytmxtM1FUTJ1JQP3OpNx20gv8YA6338TPqqgpLykEt2dN24OATrfPxigP2w=
+	t=1790868799; cv=none; b=YdGW2PBZ/Myg4olwEzK61BmczbzR6XvpF0i/694PKEwN5ecWC5YgyDBmamaOQ9ItL1kpRrJ0A/F+zZCjEhb9WLTHn2GuOwwomh32vi43uitrpN93fs/yMYAcFZfl111dQDRionVoPSzTjL5tUAOZXrUmbP/Z6s5kybH82xo75pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790868740; c=relaxed/simple;
-	bh=0NgJKro7+ay3ell043opk96SgIkwp3rFoIESVDypmpQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNQ+225u+YZrb6uYnkpFlLkJkqNkO5JqVRK1wCQbe3StezH7AU+w9BO0NG89O9HTzm65ZVJq0YBN7jFcVfLyVPO8br9pd/r2bJM6tPqDYjJZsdgQHy3xtSHnCj0n9C+UDh5qKyRJvu1lrov7VfAwuIshjXwp4lJNdl5tJgsmW2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=tCbVGoZF; arc=none smtp.client-ip=74.125.224.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1790868799; c=relaxed/simple;
+	bh=7Co/PBM/QewhkyF95LSYXheo/HH1O8wv967j0uQZ+ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qwlhoUmXaoeyGnqXKFt+VoOj+nG4PjqJqW4Ou+mM89NeomkkCd6KmEF72MC2Gt/0olEgNV4IpMOzsBT/Y3vOkwQpOZnpGXSNX9bdcTkry+bRcAAW6/X+aUl3LDGwoUm6iO0GoXRfjdShIA6kk2Atw3IR/1LAiLVeElQ8YAjjBWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5n2S8RJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="tCbVGoZF"
-Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8ac8c533385so16914667b3.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 08:32:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1790868738; x=1791473538; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XBC9cR5YJ0lwccbst7C+J0UlZRe88Kg57VsGwd5ApQ0=;
-        b=tCbVGoZFhxw0i3BW11gScSjXACxmzEjHSGzL962muHULDreHtpAiSjZP1kDD3Y0Jpi
-         4pv3z5J79xla5/twCrHpMHHvr9Unb5mnGFeufM0qw6SBjWJpAIfBjjFCMkJSf7v9u8l5
-         vogOcFLmeL4R5u5dYkaLrX5fAHcgo0SjqABJE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790868738; x=1791473538;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XBC9cR5YJ0lwccbst7C+J0UlZRe88Kg57VsGwd5ApQ0=;
-        b=Iq9fwjP1JPiAAq87zSjt6NXz224f0dsuARtP+4tW5LxS2bfwTUCsC5xH1G1xEebQMZ
-         A2RSKD1ZNB+Fid5E4U1KdAyfvV7+qRYhjd0CF84N053yNesvSWcyL9zKJRmq5v68V3/k
-         O3fL1KWEJ1+Fry/OFvpJgiGrKxYTlp62FBJJGbsWtcPGZTfBfU/OzcP17POLfztFuYIx
-         kRhGvxdpWk9Bme0U4P60BdoxJR8vf/70HaSap6JbxnkvWmkadCfpyuXC+tn8wQp4iH/2
-         gMAplOiRw6wDwWG+JYRcLFlhZ7IJ2zxURsFLfmpu/yBEhuMJeJJNTVqAyvUSwdI8nubI
-         SXxA==
-X-Forwarded-Encrypted: i=1; AKwUvBxUUt98yQs+jFn+KhNLgoH1WB6yt92+q4wB0lobGBSqiouSTL0SAfdUhC+tHcuGb4DKAKdmr9g=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJzAifr9Nfm3ry8p5qRjBRZF8UyXXtABsKCAieWow7I+jo+9E6q
-	fh7yxRV/C8aIHo1jI9l9Vn4G5VI4vvNJK1GuqzqH4eKm3C7AsydLHuz/7l9qjFnIug==
-X-Gm-Gg: AYBFou3cf6BAEQTuwX6Zad57bzCn7HdEUfwqZrauUPWGd35bKY1nBzG6SiGoZHZulct
-	+pyEb75mxsxevY6NlzUnqZX+G9jI5/5/v2XqiCzLI5+ktYhmsgwSz4YFZUSFZwNOXxvPLK8iBls
-	rBrH6MXNN1/F1L7etUhKyD96lI68jIi2BOD/u1rxRXarFBxuEPmdjwor3pF+Hp9pYlx5vKjylHV
-	HsA04kUjjIFs5ATWRWo3D9OLNYBPDuat5NYoOESXilyaftkE+IFUYs+3oQc3MGw1kAQZk2m14EL
-	akmtHJC+udajNX8Md5lj4cKjhGJnocSPXmtbT608hOr+lH5VnzjRh2ElD57T5OjOjgteSWcoIfO
-	N+oBuIt+8hVZ7Jx8Zq6YBWqHIXi3wZ/SvofiUO0AqxLBh7Qh1qxhFvBHFGrJYtE9E1Ne6Tgu4C0
-	lwhsAM2GskVcBWipzYyxuKW4ND6BnWS3QXjxYIVSmxRg5vPUW62zT6a9mqgPekGhHUOWGssQdaM
-	AqwphTRq+WJBSA=
-X-Received: by 2002:a05:690c:d84:b0:884:c81e:f868 with SMTP id 00721157ae682-8ac9321e144mr28272647b3.13.1790868738199;
-        Thu, 01 Oct 2026 08:32:18 -0700 (PDT)
-Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67::2000])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8acdad046b1sm12059277b3.30.2026.10.01.08.32.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 08:32:17 -0700 (PDT)
-From: Victor Nogueira <victor@mojatatu.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	hybris <hybris@mojatatu.ai>,
-	Sashiko <sashiko-bot@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net 2/2] selftests: tc-testing: add cls_route no-routing-attribute change tests
-Date: Thu,  1 Oct 2026 12:32:01 -0300
-Message-ID: <QDISC-0JB3.v1.20260923100921@mojatatu.com.2>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <QDISC-0JB3.v1.20260929143022@mojatatu.com>
-References: <QDISC-0JB3.v1.20260929143022@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5n2S8RJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFB31F000FF;
+	Thu,  1 Oct 2026 15:33:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790868798;
+	bh=XzcSQutqoku+SocI7sZVUG5ang1FCLfZ6hHDRWBAfBA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=U5n2S8RJuUXRDmTV7eWcybRD3jwznhjvmjhSyT4SD5iz+1WDoneHnQXp5dWgkvhgq
+	 DTNpNi1AvFIgO51/CSNy1pHyFXE1q1Fcbo6Ib7qw8ZunAHr5TnPm5bLY6ghobPTW6s
+	 eaSY5juUvqEp5VUPmNKLwlaPfxwjHNHtZfgB8/Dnus4rFcyzt5xl8EeNHcNE+8gjVz
+	 +1cQcAeKt0O03XreljbIrBEaOEmdWHVzvrJoq3wIpxhYyVccwqQYUpCvM6vIYJPBpC
+	 3iklHd36hxrvtqNng6BbyzlHrvcf3m9cXX7u42st3hlr4ZIVZDGAV51cz7t7gXaNsi
+	 Nv4RjsQW/EkKg==
+Date: Thu, 1 Oct 2026 08:33:17 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com
+Subject: Re: [PATCH net-next v23 3/3] net: phy: Add driver for Motorcomm
+ Quad 2.5GbE phy
+Message-ID: <20261001083317.6b1aa87e@kernel.org>
+In-Reply-To: <20260930194513.663575-4-kyle.switch@motor-comm.com>
+References: <20260930194513.663575-1-kyle.switch@motor-comm.com>
+	<20260930194513.663575-4-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add a boundary pair for route4 change without a routing attribute:
+On Thu,  1 Oct 2026 03:45:13 +0800 Kyle Switch wrote:
+> +	/* 100M template amplitude */
+> +	ctrl = FIELD_PREP(YT8824_DAC_IMID_CH3_ORG, 0x45);
+> +	ctrl |= FIELD_PREP(YT8824_DAC_IMID_CH2_ORG, 0x45);
+> +	mask = YT8824_DAC_IMID_CH3_ORG | YT8824_DAC_IMID_CH3_ORG;
 
-- a classid-only change of a wildcard filter (handle 0xffff8000) is a
-  metadata-only update and must succeed;
-- the same change on a non-wildcard handle (0x10001) would rekey the
-  filter to the wildcard bucket, leaving the handle userspace stored stale,
-  and must be rejected with -EINVAL.
+cocci says:
 
-The change of a wildcard filter is the flow iproute2 uses by default
-("tc filter add ... route classid X:Y" gives handle 0xffff8000).
+drivers/net/phy/motorcomm.c:1372:8-31: duplicated argument to & or |
 
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
----
- .../tc-testing/tc-tests/filters/route.json    | 46 +++++++++++++++++++
- 1 file changed, 46 insertions(+)
-
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/route.json b/tools/testing/selftests/tc-testing/tc-tests/filters/route.json
-index 2d5843aebd72..c3b6ff157d3e 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/filters/route.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/filters/route.json
-@@ -412,5 +412,51 @@
-         "teardown": [
-             "$TC qdisc del dev $DEV1 ingress"
-         ]
-+    },
-+    {
-+        "id": "4000",
-+        "name": "Change a wildcard route filter classid only (no routing attribute)",
-+        "category": [
-+            "filter",
-+            "route"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DEV1 ingress",
-+            "$TC filter add dev $DEV1 parent ffff: protocol ip prio 100 route classid 1:1"
-+        ],
-+        "cmdUnderTest": "$TC filter change dev $DEV1 parent ffff: protocol ip prio 100 route classid 1:9",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC filter ls dev $DEV1 parent ffff:",
-+        "matchPattern": "fh 0xffff8000 flowid 1:9",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress"
-+        ]
-+    },
-+    {
-+        "id": "907a",
-+        "name": "Try to change a route filter with no routing attribute and a non-wildcard handle",
-+        "category": [
-+            "filter",
-+            "route"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DEV1 ingress",
-+            "$TC filter add dev $DEV1 parent ffff: protocol ip prio 100 route from 1 to 1 classid 1:1"
-+        ],
-+        "cmdUnderTest": "$TC filter change dev $DEV1 parent ffff: protocol ip prio 100 handle 0x10001 route classid 1:2",
-+        "expExitCode": "2",
-+        "verifyCmd": "$TC filter ls dev $DEV1 parent ffff:",
-+        "matchPattern": "fh 0x00010001 flowid 1:1 to 1 from 1",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress"
-+        ]
-     }
- ]
+Please also wait for the AI review to be published before reposting.
 -- 
-2.43.0
-
+pw-bot: cr
