@@ -1,109 +1,196 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3FA3BAD84;
-	Thu,  1 Oct 2026 19:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E6835950;
+	Thu,  1 Oct 2026 19:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790883246; cv=none; b=tHEg/1JBCJrEzxmeoH9lunTCMpkJ6Lc6a2KgJXYCh15rvFHzIYAgLGti3ioXRSSHnDzauCDTqoe1QmX3+ZdJAJcYPAAKUhj0+OOgythdazVwe3vnPvny5PxlRQqbXYUwEfCgGMPTh+rm/PBGUZ4vIzlRR/ih4QmFYH9eIlCTXgs=
+	t=1790884002; cv=none; b=QMbeJO8htJOQCn1dyN5GPfqbKpRKPQyv8O+xtosWz6F6+9ghE/oBbvnZD89aiDBCp1jDb2GiPneN/NdPzcnmCIC1nCEZz3upzl4cI6vCBf0nSrzFmhEH4gwRCIge9v/k6NEstRv1CWzil+qxEIOlPZhh0uJJ3LC6iFHXhgLomMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790883246; c=relaxed/simple;
-	bh=c81TYKhJAs9PBH7ZLrk/8t41TX7w3LQEEH+/TApgJpg=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=r1Dnch2lcignOD29YX7AJWeuykHtwGxUWrc0e0n8CzsvALooq7m0UsQsdO7K1Aoj/JaYseJwkKZB5ueZDAQne2qudpc2maXih0/6mjTAz62f+MZ19u9zrSxYRB3r5vXLaljO6NS7bTQYvfiz3DeIjPj9JITPKZPs7PsYgJqMjsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=orOkmQC0; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1790884002; c=relaxed/simple;
+	bh=EM+YI08YONldh+VwKkVYSEiJuGxa/EKkzSQ/29smG5k=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=f8AE77CKjhWMsp6e7/1V1Y1mm2QXxzEftLBhFYVqyqRAKrteypoBV1qjf22WbAAFoIQskowEL9CB1X7kpjkKFE+wU8a4w1u99G7DhevKe0CqoMx2fnRPGJKOY/nQAuwShvbcu/bviYvI36wr2xQ9v4mfpb2Za6bsVqFiu72YT64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aoBi8zVm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="orOkmQC0"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=8vWqiUcdt+XZtt7UPLn/tp6YO+2y60eUymFUZjfeYcM=; b=orOkmQC0vxnbJd6wc4hEsS9dqx
-	zkUbY0M4cXCPH33wjfJaZsleGRfTuJ7AsMuRy7L1XLpx2+yAEx4Pt9z+l9dHldElnjwYBu+WutzU6
-	ISZNIfps53N7PiPpP0jgSTWV0ntQxS1VFQIHBAxdBaZ9HSCDlqyiX2Ax12QaEcavoFuKN8wIro54k
-	LiHObo4UM3ftbZt4SicyKjbdFNcWKPKH0b6VPWQz/Gmaf40ZY49jbLBbp5tA/Ykc/V/ICtXZxKjmP
-	7MLzvwBrN2teCS8A4J6h++NRsUWRocnI9TWGug60g+O1XHcs38QWXXndT1iL28AESepss/8oRkR08
-	EnYlMfig==;
-Received: from [::1] (port=48406 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xCMXc-00000000Nej-2eer;
-	Thu, 01 Oct 2026 21:34:01 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aoBi8zVm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707561F000FF;
+	Thu,  1 Oct 2026 19:46:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790884000;
+	bh=elBcijJlMby3MFSG5Sal39aHLTt7LbcvX6xBM8gw/f8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aoBi8zVmdw0Pco9mFpGjeocjy+t96JNgTxsnQV3PqYycQIQuuGTurcVjr+2sfYQf8
+	 DW0e8agxFiA+64+BnoVFWQ2dOVubYdrTx5RuBjXt1tH3TZGgxnP6HDQBczrNYKYB5E
+	 1NKI7yd7JoGdEVXV1HX/GMCi1QIpwZZJLBXMwXxgTFpysF7EzVubzOiaquBzYJqswG
+	 4HMfrQdBEYcg/lT+qr//eV/u5A4CjNEuOgDzFv00p5HDMR+x9yKOMjF0PKlv7l3NQa
+	 yb6P+UjeOzrFr8FEWB9fI/e8DsrWroVKpFOhaBDSrFYoKJtg4CctepShHURU3PDLwX
+	 y47ueMPBMusTg==
+Subject: Re: [PATCH net v3] net: rds: fix uninitialized trans dereference in
+ CM event handler
+From: netdev-bot+sashiko@kernel.org
+To: achender@kernel.org
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ ljp1205831794@gmail.com, henrymei@tencent.com
+Date: Thu, 01 Oct 2026 19:46:40 +0000
+Message-ID: <179088400000.434549.12700549700443616732@kernel.org>
+In-Reply-To: <20260928044507.335883-1-achender@kernel.org>
+References: <20260928044507.335883-1-achender@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 01 Oct 2026 21:33:59 +0200
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
- Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq
- Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Boris Pismenny
- <borisp@nvidia.com>, netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH ipsec 5/7] net/mlx5e: Use the packet sequence number for
- the IPsec IV
-In-Reply-To: <ar5HLrGSiwbmr-pR@krikkit>
-References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <20260930144523.435271-7-Jeremy.Jean@oss.cyber.gouv.fr>
- <ar5HLrGSiwbmr-pR@krikkit>
-User-Agent: Roundcube Webmail/1.6.19
-Message-ID: <e0ac362442c0da923036075102dbe8f2@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-On 2026-10-01 13:42, Sabrina Dubroca wrote:
-> 2026-09-30, 14:45:22 +0000, Jérémy Jean wrote:
->> mlx5e_ipsec_set_iv_esn() may decrement xo->seq.hi for a GSO skb based
->> on the SA's current output counter. The metadata already contains the
-> 
-> And doing a check based on x->replay_esn->oseq, which may not match
-> the value for this packet, seems really weird.
-> 
-> 
->> -	if (unlikely(skb_is_gso(skb) && oseq < MLX5E_IPSEC_ESN_SCOPE_MID &&
->> -		     MLX5E_IPSEC_ESN_SCOPE_MID < (oseq - 
->> skb_shinfo(skb)->gso_segs))) {
->> -		seq_hi = xo->seq.hi - 1;
->> -	} else {
->> -		seq_hi = xo->seq.hi;
->> -	}
-> 
-> I guess this is trying to solve the same thing as 4b549ccce941 ("xfrm:
-> replay: Fix ESN wrap around for GSO")?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Yes, it seems so.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-FWIW, another related commit to this fix is c05c5e5aa163 ("xfrm: replay:
-Fix the update of replay_esn->oseq_hi for GSO").
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
->>  	/* Place the SN in the IV field */
->> -	seqno = cpu_to_be64(xo->seq.low + ((u64)seq_hi << 32));
->> +	seqno = cpu_to_be64(xo->seq.low + ((u64)xo->seq.hi << 32));
-> 
-> This is starting to feel like we should have a helper to compose the
-> 64b PN, and maybe give a name to the (low,hi) pair struct to pass it
-> to that helper.
+- [High] The fix only checks the device type on the passive side, and
+  only for RDMA_CM_EVENT_CONNECT_REQUEST.
 
-I don't have a strong opinion about this, but I'd say introducung a 
-helper
-to replace a oneliner is maybe not required?
+--
 
-Jérémy
+net: rds: fix uninitialized trans dereference in CM event handler
+
+This commit initializes trans to &rds_ib_transport in
+rds_rdma_cm_event_handler_cmn() and drops the conditional assignment on
+the node type. It also rejects RDMA_CM_EVENT_CONNECT_REQUEST when the
+request arrives on a non-IB device, so an RDS listener no longer crashes
+when an iWARP device gets a connect request.
+
+Link: https://lore.kernel.org/netdev/20260824111701.2979194-1-ljp1205831794@gmail.com/
+Link: https://lore.kernel.org/netdev/20260825021223.3483044-1-ljp1205831794@gmail.com/
+
+> diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
+> index b15cf316b23a2..164bd7cbe2083 100644
+> --- a/net/rds/rdma_transport.c
+> +++ b/net/rds/rdma_transport.c
+
+[ ... ]
+
+> @@ -82,6 +79,15 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma_cm_id *cm_id,
+>  
+>  	switch (event->event) {
+>  	case RDMA_CM_EVENT_CONNECT_REQUEST:
+> +		/* Only the IB transport is supported, but RDS listens on
+> +		 * every RDMA device: reject a request that arrived on any
+> +		 * other kind.  A non-zero return has rdma_cm destroy the
+> +		 * request's id, which is what we want here and only here.
+> +		 */
+> +		if (cm_id->device->node_type != RDMA_NODE_IB_CA) {
+> +			ret = 1;
+> +			break;
+> +		}
+
+[Severity: High]
+This check only covers the passive side, and only for
+RDMA_CM_EVENT_CONNECT_REQUEST. Can an outgoing RDS/IB connection still
+end up on an iWARP RNIC? If so, would it oops in the
+RDMA_CM_EVENT_ROUTE_RESOLVED case of this same handler?
+
+rds_ib_conn_path_connect() creates the id without restricting its node
+type:
+
+net/rds/ib_cm.c:rds_ib_conn_path_connect() {
+    ...
+	ic->i_cm_id = rdma_create_id(&init_net, handler, conn,
+				     RDMA_PS_TCP, IB_QPT_RC);
+    ...
+	ret = rdma_resolve_addr(ic->i_cm_id, (struct sockaddr *)&src,
+				(struct sockaddr *)&dest,
+				RDS_RDMA_RESOLVE_TIMEOUT_MS);
+    ...
+}
+
+restricted_node_type stays RDMA_NODE_UNSPECIFIED. That means
+cma_acquire_dev_by_src_ip() can pick any device that matches
+conn->c_laddr, including an RNIC:
+
+drivers/infiniband/core/cma.c:cma_acquire_dev_by_src_ip() {
+    ...
+		if (id_priv->restricted_node_type != RDMA_NODE_UNSPECIFIED &&
+		    id_priv->restricted_node_type != cma_dev->device->node_type)
+			continue;
+    ...
+}
+
+After ADDR_RESOLVED, rdma_resolve_route() on an iWARP port goes to
+cma_resolve_iw_route(). That function queues ROUTE_RESOLVED but never
+allocates cm_id->route.path_rec. The handler then runs:
+
+	case RDMA_CM_EVENT_ROUTE_RESOLVED:
+		...
+			if (ibic && ibic->i_cm_id == cm_id) {
+				cm_id->route.path_rec[0].sl =
+					TOS_TO_SL(conn->c_tos);
+				ret = trans->cm_initiate_connect(cm_id, isv6);
+
+Isn't that a write through a NULL path_rec in the cma_wq worker? It
+would happen with id_priv->handler_mutex and conn->c_cm_lock held. The
+write comes before trans is used, so initializing trans doesn't prevent
+it.
+
+There seem to be two ways to reach this.
+
+The first is remote. On a host with both an IB_CA device and an iWARP
+device, a peer sends an RDS REQ over the IB device, so the new check
+passes. In the private data, dp_daddr is the local iWARP interface
+address and dp_saddr is a neighbour on that subnet.
+
+rds_ib_cm_handle_connect() hands these addresses to rds_conn_create()
+without checking that laddr belongs to the device the request arrived
+on. The connection is hashed.
+
+After a disconnect or setup failure, the reconnect then uses the
+addresses the peer chose:
+
+rds_conn_shutdown()
+  rds_queue_reconnect()
+    rds_connect_worker()
+      rds_ib_conn_path_connect()
+
+The lowest-address rule in rds_queue_reconnect() only applies to TCP,
+so it doesn't stop this.
+
+The second is local. A socket bound to an address on an IB device
+passes rds_ib_laddr_check_cm() at bind time. If that address later
+moves to an iWARP netdev, rds_sendmsg() reuses rs->rs_transport and
+doesn't check the device again.
+
+The same crash was possible before this patch. However, the commit
+message lists ROUTE_RESOLVED among the cases that crash on non-IB
+devices, and says:
+
+  "IB is the only transport left, so make that explicit"
+
+while only incoming requests are rejected.
+
+Would it work to call rdma_restrict_node_type(id, RDMA_NODE_IB_CA) on
+the ids RDS creates, meaning the active id in
+rds_ib_conn_path_connect() and the listen ids? smbdirect already uses
+this helper. cma_acquire_dev_by_src_ip() and cma_listen_on_dev() both
+honour it, and it could replace the per-event check here.
+
+Another option is to check the device type on ADDR_RESOLVED or
+ROUTE_RESOLVED, then call rds_conn_drop() and return 0, so RDS keeps
+ownership of the id.
+
+>  		ret = trans->cm_handle_connect(cm_id, event, isv6);
+>  		break;
+>
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928044507.335883-1-achender%40kernel.org
