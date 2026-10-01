@@ -1,39 +1,50 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6704F35E956
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 22:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C46D314D13;
+	Thu,  1 Oct 2026 22:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790892657; cv=none; b=nP0DuFD2HkFGPUX09bt4/XFUZq4OTTsaeVQ8BvzB6uB/lld7XHtyG+tJFcvZxuaAA1So6yldHyrgjznjVgduCbImKSwN9y8enFhPnBqPPLi6mBxirPszPp/q9mV+Z63RHXs9J9RFq0qGXZFApetbNm7SCtCpBnZPIhn1hy3jSx8=
+	t=1790892688; cv=none; b=gaDGvndH/171B60k/ruwEGDu/055kARox2w+1FS6zIWZkcVtP9yemvpwj3rPRDTAmWs8+2tIeNwjbRfPnGZrsJY4kckXxcy+/7Gzsc4g279RAzzhPSsHVuG+OTEfUw0seXaLUjFV9hhioPcW10N9KCf6xL1i6rOa/gob0y2RwXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790892657; c=relaxed/simple;
-	bh=s9C5ZFy/v9VBagJOmh3Acr77qijacR0HUT1GKXMRod8=;
+	s=arc-20240116; t=1790892688; c=relaxed/simple;
+	bh=0koZ/OdakwdRQfNzYvVvdOX16dMsPnSTT45Brw5V45A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fraJrcZOyjPvksW3YVwC48Mtie8yriU9Au/EfRsbFilSVrH7akF8HpmpeMJI2A2JBHGrfKFi58vAdTiupiIxZ2gYiWgNXW1U0ofjBF1XZodlilpwTc1aqOpy1ywkKIDRsCnVGB5ohGRFAL+FTkZfs+3R8GgG0RtGUA5SqaEPt6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=i0EC/h+8; arc=none smtp.client-ip=121.127.44.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
+	 In-Reply-To:Content-Type; b=lnigXTnc10amzDFlaZNHL7R3lcr7VSdyuthiov9UCwH563V1sF/W5rTDnvJLCi/H4JSeN1nDiYI7P+w1awoL3MW5/Tqx4G/KCGBFq65CYdK5iNOYuWjlw1xmpfhlROfeIU4ocrL0YSC+QCBmaZd4vLXksdAy3Ogi1YMRzwE+Tt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TMU9xOra; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="i0EC/h+8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1790892654;
- bh=JeFDW19IqJxoE06Uj/RgszNUhVka4RIN9AgNOjCo5M8=;
- b=i0EC/h+8jUkrvg7Fm1gDgR9oGT+i0A4FYRGAHyDJ57DWN3rfqWDRNhTq99FpF8f2Z/WVkRKs2
- W4lxQVowNr/vhxmy0w1JO7RJALhqplXwVSvboCIeFYYV9saj5OJWRPbZyg5jg4spHwu1PKJ9n/p
- H2oCs8rBTdnwnnedRnnI2E4=
-X-Forward-Email-ID: 6abeda6bcbe288116c64724c
-X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 121.127.44.66
-X-Forward-Email-Version: 2.17.0
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org>
-Date: Fri, 2 Oct 2026 00:10:48 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TMU9xOra"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790892687; x=1822428687;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=0koZ/OdakwdRQfNzYvVvdOX16dMsPnSTT45Brw5V45A=;
+  b=TMU9xOraRdiBLYN+76fIT5DF3xDfL2Hu8nTE9r5DbB9hv7sDUHR9gPRC
+   +vVIRp7dihdjqHLMTySd25e6Tvej5pD6PiRWQdR/IIx+bshSWMJH55def
+   pxdAMAiWYeuNnrAPZfSgCAJJstNDESAwxNpMNDa2r4xj9hBlZiFxU0Lqw
+   f4/8LGMXQ+qkcwQN9Q3vay79rsqpJSBq0r3b1Iz2pY+7J9ifHpcvAAwhh
+   s14LphxS5C2MkuXALq4X/neRLLXzzlkuGd6zXDGzrtIBkPg8zva8PM5Y4
+   uMBqnXd8yIeS54nuFxp41aJCt13nwrJg4H2QxT24SnSxtFmcnhqRaZ4/u
+   Q==;
+X-CSE-ConnectionGUID: RJjM8IhXQ4uI2VcLkDdieA==
+X-CSE-MsgGUID: m0c6W5ggQlKMzuDmrH9kJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="94376131"
+X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
+   d="scan'208";a="94376131"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 15:11:26 -0700
+X-CSE-ConnectionGUID: Xx025VsMTPuPFglBA9dKJw==
+X-CSE-MsgGUID: fUT9oETlQ4KJusg7EZhykg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
+   d="scan'208";a="273927514"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.241]) ([10.125.111.241])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 15:11:25 -0700
+Message-ID: <13d92409-727b-43e7-a027-086c9a332f44@intel.com>
+Date: Thu, 1 Oct 2026 15:11:22 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,149 +52,190 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [ovs-dev] [PATCH net] net: openvswitch: validate transport header
- presence in set_ipv6_addr
-To: Fernando Fernandez Mancera <fmancera@suse.de>,
- Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org
-Cc: dev@openvswitch.org, horms@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, edumazet@kernel.org, davem@davemloft.net,
- echaudro@redhat.com, aconole@redhat.com,
- syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
-References: <20261001085205.3822-1-fmancera@suse.de>
- <50b0db80-7d42-44fc-81eb-d0fed8047871@ovn.org>
- <7590af05-e95a-4b34-9216-26e770bdfaaa@suse.de>
- <a9480ea8-314f-478f-ae9d-b8262600e2ad@ovn.org>
- <25e03da1-d25c-4206-97c9-6d0fee4e9758@suse.de>
+Subject: Re: [PATCH v2 3/4] cxl/memdev: Add support for multi PF devices
+To: alucerop@amd.com, linux-cxl@vger.kernel.org, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
+ rafael@kernel.org
+References: <20261001132023.17032-1-alucerop@amd.com>
+ <20261001132023.17032-4-alucerop@amd.com>
+From: Dave Jiang <dave.jiang@intel.com>
 Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <25e03da1-d25c-4206-97c9-6d0fee4e9758@suse.de>
+In-Reply-To: <20261001132023.17032-4-alucerop@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/1/26 3:29 PM, Fernando Fernandez Mancera wrote:
-> On 10/1/26 2:00 PM, Ilya Maximets wrote:
->> On 10/1/26 1:20 PM, Fernando Fernandez Mancera via dev wrote:
->>> On 10/1/26 1:15 PM, Ilya Maximets wrote:
->>>> On 10/1/26 10:52 AM, Fernando Fernandez Mancera wrote:
->>>>> When executing IPv6 address rewrite actions on IPv6 fragments,
->>>>> set_ipv6_addr() might attempt to recalculate the L4 header checksum
->>>>> calling skb_transport_header() with an uninitialized transport header.
->>>>> This can potentially lead to a OOB write.
->>>>
->>>> Not really.  later fragments have l4_proto set to NEXTHDR_FRAGMENT
->>>> and so no writes will be performed.  See parse_ipv6hdr().
->>>>
->>>
->>> Oh, I didn't notice that. In that case, this is harmless. I will update
->>> the commit message, thanks!
->>>
->>
->> [...]
->>
->>>>> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
->>>>> index dc5ff859f114..a14668565ec4 100644
->>>>> --- a/net/openvswitch/actions.c
->>>>> +++ b/net/openvswitch/actions.c
->>>>> @@ -395,7 +395,7 @@ static void set_ipv6_addr(struct sk_buff *skb, u8 l4_proto,
->>>>>    			  __be32 addr[4], const __be32 new_addr[4],
->>>>>    			  bool recalculate_csum)
->>>>>    {
->>>>> -	if (recalculate_csum)
->>>>> +	if (recalculate_csum && skb_transport_header_was_set(skb))
->>>>>    		update_ipv6_checksum(skb, l4_proto, addr, new_addr);
->>>> I'd suggest moving the check into update_ipv6_checksum() and maybe add
->>>> a small comment that the check is only to avoid warning on reading the
->>>> offset that wasn't set, offset must always be set for any l4_proto for
->>>> which the checksum is actually getting updated.
->>>>
->>>
->>> Will do that. Thanks Ilya.
->> Actually, it might be better to check for NEXTHDR_FRAGMENT and return
->> early only in this case.  This way if we ever have the offset missing
->> for any l4_ptoto that needs it, we'll still get a warning instead of
->> silently not updating the checksum.  This will be close to what the
->> update_ip_l4_checksum() is doing.
->>
->> At the same time, update_ip_l4_checksum() is able to get the transport
->> offset without a warning, so another alternative is to actually set the
->> transport offset in parse_ipv6hdr() to something like frag_off, which
->> would closer match the behavior of ipv4 where check_iphdr() sets the
->> transport header unconditionally to the next byte after the network header.
->> This is fine because transport headers are never accessed when they are
->> not set in the key.  The network checksum update cases are the only ones
->> where the actions are even allowed to execute and touch higher level
->> headers that may not be present in the packet.  At the same time the
->> frag_off is kind of an arbitrary value, so I'm not sure.
->>
->> WDYT?
+
+
+On 10/1/26 6:20 AM, alucerop@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
 > 
-> I noticed this but IMHO it is a worse pattern. In the sense that one 
-> persone in the future might use the transport header without noticing 
-> this and the warning won't show up because the transport header will be 
-> set incorrectly. This could cause an actual OOB.
-
-Yeah, that's true.  It's better to keep the transport header unset if
-there is actually no transport header.  We may also adjust the ipv4 path
-to avoid having it set for later fragments, but that's unrelated for the
-issue at hand.
-
-> I will trust your taste in this matter since I am not that familiar with 
-> the code.
-
-Let's just go with the check inside update_ipv6_checksum() before reading
-the value.  Seems like the best option.
-
-Best regards, Ilya Maximets.
-
+> A PCI device can present multiple Physical Functions(PFs) but the CXL
+> specs restrict to the first one, PF0, the discovery and management of
+> CXL capabilities accessed through a PF0 BAR. Other non-PF0 PFs need to
+> obtain the CXL.mem range to work with somehow.
 > 
-> Thanks,
-> Fernando.
+> Add a device link between the cxl region a PF0 memdev is attached to and
+> the non-PF0 wanting to use the CXL region. A CXL region release will
+> trigger such a PF to be released from its driver first.
 > 
->> Eelco, Aaron, do you maybe have a preference?
->>
->> Best regards, Ilya Maximets.
+> PF0 being unbound from its driver triggers memdev and region release
+> leading to non-PF0s being unbound first keeping the CXL memory use safe.
 > 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> ---
+>  drivers/cxl/core/memdev.c | 92 +++++++++++++++++++++++++++++++++++++++
+>  include/cxl/cxl.h         |  2 +
+>  2 files changed, 94 insertions(+)
+> 
+> diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
+> index b3419df586b9..799cb6e75639 100644
+> --- a/drivers/cxl/core/memdev.c
+> +++ b/drivers/cxl/core/memdev.c
+> @@ -802,6 +802,98 @@ static struct cxl_memdev *cxl_memdev_alloc(struct cxl_dev_state *cxlds,
+>  	return ERR_PTR(rc);
+>  }
+>  
+> +static int match_memdev_by_parent_device(struct device *dev, const void *data)
+> +{
+> +	const struct device *pf_dev = data;
+> +	struct cxl_memdev *cxlmd;
+> +
+> +	if (!is_cxl_memdev(dev))
+> +		return 0;
+> +
+> +	cxlmd = to_cxl_memdev(dev);
+> +	return (cxlmd->cxlds->dev == pf_dev);
+
+cxlmd->cxlds can be NULL? How about just do dev->parent == pf_dev instead?
+
+> +}
+> +
+> +static int __cxl_get_range_and_link(struct device *pf0, struct device *pfx,
+> +				    struct range *range)
+> +{
+> +	struct device *mem_dev __free(put_device) =
+> +		bus_find_device(&cxl_bus_type, NULL, pf0,
+> +				match_memdev_by_parent_device);
+> +	struct cxl_attach_region *attach;
+> +	struct cxl_memdev *cxlmd;
+> +
+> +	if (!mem_dev)
+> +		return -ENODEV;
+> +
+> +	cxlmd = to_cxl_memdev(mem_dev);
+> +	attach = container_of(cxlmd->attach, struct cxl_attach_region, attach);
+
+Probably not likely for a type2 device, but is there any possibility that attach == NULL?
+
+> +
+> +	/*
+> +	 * The cxlmd object does exist and it can be found in the cxl bus after
+> +	 * creation but before attach probe setting the proper HPA range. If so,
+> +	 * the caller will need to try later.
+> +	 */
+> +	if (attach->hpa_range.end == CXL_RESOURCE_NONE)
+> +		return -EPROBE_DEFER;
+
+
+Maybe you'll need something like this below to ensure that the region is valid still. And you can drop the above with the below code.
+
+      scoped_guard(rwsem_read, &cxl_rwsem.region) {
+              cxlr = READ_ONCE(attach->cxlr);
+              if (!cxlr)
+                      return -EPROBE_DEFER;
+              get_device(&cxlr->dev);
+      }
+      struct device *region_dev __free(put_device) = &cxlr->dev;
+
+      /*
+       * Region deletion holds regions_lock across xa_erase() and device_del().
+       * Being in the xarray under regions_lock means the region is still
+       * registered, and a link added now is torn down by its deletion. Drop
+       * cxl_rwsem.region above first: regions_lock nests outside it.
+       */
+      cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
+      guard(mutex)(&cxlrd->regions_lock);
+      if (xa_load(&cxlrd->regions, cxlr->id) != cxlr)
+              return -ENODEV;
+
+      /* A decommit releases the region driver after dropping the rwsem */
+      guard(rwsem_read)(&cxl_rwsem.region);
+      if (cxlr->params.state != CXL_CONFIG_COMMIT)
+              return -ENODEV;
+
+DJ
+
+> +
+> +	/*
+> +	 * Create the device link between the region and the consumer device.
+> +	 * AUTOREMOVE_CONSUMER means the link implicitly to be removed if the
+> +	 * consumer unbinds first with no consequences for the supplier.
+> +	 */
+> +	if (!device_link_add(pfx, &attach->cxlr->dev,
+> +			     DL_FLAG_AUTOREMOVE_CONSUMER)) {
+> +		dev_err(pfx, "device link creation failed\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	range->start = attach->hpa_range.start;
+> +	range->end = attach->hpa_range.end;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * cxl_get_range_and_link - register a device link with the region PF0 memdev
+> + * is attached to. The region release will imply the link consumer to be unbound
+> + * from its driver first. Return the cxl region range to work with related to
+> + * PF0 memdev initialization.
+> + *
+> + * @pf0: device to use for finding target memdev and supplier for the link
+> + * @pfx: device to link to PF0's memdev region, the link consumer.
+> + * @range: to be set with the PF0's memdev attach region range.
+> + *
+> + * Return: 0 or error.
+> + */
+> +int cxl_get_range_and_link(struct device *pf0, struct device *pfx,
+> +			   struct range *range)
+> +{
+> +	int rc;
+> +
+> +	if (!pf0 || !pfx)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * PF0 cxl memdev once created and region attached can only be removed
+> +	 * when PF0 unbinds from its driver which implies to obtain the device
+> +	 * lock before the unwinding starts. If this call from other PF races
+> +	 * with such unbinding:
+> +	 *
+> +	 * 1) if this next lock is obtained first, the device link is
+> +	 *    created and the later unwinding will trigger consumer (PF
+> +	 *    calling here) unbinding first.
+> +	 *
+> +	 *  2) if it is the unbinding the one getting the lock first, the
+> +	 *    memdev will not be there aymore.
+> +	 */
+> +	device_lock(pf0);
+> +	rc = __cxl_get_range_and_link(pf0, pfx, range);
+> +	device_unlock(pf0);
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_get_range_and_link, "CXL");
+> +
+>  static long __cxl_memdev_ioctl(struct cxl_memdev *cxlmd, unsigned int cmd,
+>  			       unsigned long arg)
+>  {
+> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
+> index 802b143de83d..b28dce1f6f76 100644
+> --- a/include/cxl/cxl.h
+> +++ b/include/cxl/cxl.h
+> @@ -228,4 +228,6 @@ struct cxl_memdev *devm_cxl_probe_mem(struct cxl_dev_state *cxlds,
+>  				      struct range *range);
+>  
+>  int cxl_set_capacity(struct cxl_dev_state *cxlds, u64 capacity);
+> +int cxl_get_range_and_link(struct device *pf0, struct device *pfx,
+> +			   struct range *range);
+>  #endif /* __CXL_CXL_H__ */
 
