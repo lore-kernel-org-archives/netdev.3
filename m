@@ -1,214 +1,149 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68F13B4E9E
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C4D370AE5;
+	Thu,  1 Oct 2026 10:19:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790849876; cv=none; b=b1Fu71zxT+Nwh2EDi1EqQ42f0+4yxS4+yWrY4QvqJ+gAIoewQXjmA7hphaedDDBSEqutZsXcPwYrQuq/0FLRFXXT14qetgVePrwH1RTSsiI83r8xsR0LQ66wZ72V08XVLUT2LNeMzgXImlAO6BAMx06CnKEA5Y/ha7PEQo1IDZU=
+	t=1790849998; cv=none; b=jQBPawXAZ5gzIml9cQ+uA6nSowUF94QAWM8S8XTVxt0iZYB0WzrW2AzfB87z8tdwCS2r3/pKkfhs3Jn9mcWPgEYPS6WcpeDk+5wUyOVrJixNbxbolZtdKHz/+VbTrX9mfAkiufYQqwA/8HYAzv3RHPVFusMT9A3stgiHUmS46yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790849876; c=relaxed/simple;
-	bh=dUdFDVqTzQDPNI8dPEkhLuVWoA942/H4IpUUxhUFDEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BXBxG68p56mpMhZleFUX4FSJpotsqPn7bQv12mfrXsc/40xFbul04DnyisBlj+qOrlXCAWMPiLTLGFx/nHcve1U+YMqAA2zX+gcwBM0T1UlG2+15dq+mK27pZXn5BE4sk0hLAtSnheviSX6PnOp2c2P5wlSlkjkHBrDn6palsOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FpJdj8BT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pkeXGRvO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790849998; c=relaxed/simple;
+	bh=nVFES05dJdPdNH4MvPtS3SfLoUIzWsT8FsNMooMXZRU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cem4oFlgAqy4mUnFbZTmAM9Rih8zc90QRlQBun34X5/puFTK50YOqHZ/pkBFFDE/BO7lhQSngNpUuFpZRUYRlz49Uo7tcn44ty/BAbfUlwyoCSUcQ0d0NiDbs0Oo/lJuJxtNK25rWbi5EpNNU342mepWl9S5FC1fSKUR7hryA3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EoApCBXv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FpJdj8BT";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pkeXGRvO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790849873;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
-	b=FpJdj8BTpgcLMKiQ6s9hUY3IRkV2A/hrOJIQ9NG72aInLkViwQws7sh5Dzrzsg7x7ODNKC
-	gghqzJ2UFQ379uQVKDpydcgf18xyql0g/H97a0kkMYsNIQ2G61yPZlV0mx8LVGWQg14+be
-	NpoGtBOCR9Gqdk18TmBS9iHxNZAcSWk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-_fDyJ5_zP5e85BMmNE8stg-1; Thu, 01 Oct 2026 06:17:52 -0400
-X-MC-Unique: _fDyJ5_zP5e85BMmNE8stg-1
-X-Mimecast-MFC-AGG-ID: _fDyJ5_zP5e85BMmNE8stg_1790849871
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a020cf06c3so2987465e9.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 03:17:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790849871; x=1791454671; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
-        b=pkeXGRvOJ/5Db9ngRqFP3f0baQ0cPIghCFQf8L6ioEwixv0BTrHQ5M/70OdpPuJ/LL
-         Vc3UeYN+NcupvuMXV9QODKr0IBCwj9k4khWWVufESQNie10HLVZlQheWNx8zHpVKW3Uq
-         Ep8ezQO3GwyTEUcQq+aDoXXIWXIiKZnVux2HG16wCrbo4P0sT352rUZXJVCRzQ3wPbUM
-         c/gd4jue60FMMOdJjiFwRqJyX1dww1pBTMGTIJTDpu7PxQajrPhO1141YYJHrGLXbj8M
-         pPo9551vcWtc1Rbs9sTD9ykuI1EMNxFtqLpNI6Lea6JuwpUArMFu5T98HkWu7DEioPDS
-         b71A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790849871; x=1791454671;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cOthZx3yTwvPTr4Ura6Gt3ofRbmBrIyhkJxXxQE8kK4=;
-        b=cgRUhw1mOyVrHDDRR831ktAd+ywtyFvuEbHPX8qimj9gUFZIxaYXAi9re8vYGzwykq
-         BrhQWXgHWSJ/LwZxnKYUrMgECsTj/oVrcwuigbkVp9oogKTftMWbA3ylUhQvmw3alpIz
-         Fi6KTp2RlswtZxiih07U7WMxNAOTnO12su3WNrDOuH3ShZqJesWnWaIbJVmzUf7RDvRo
-         cdfviTJs3CtYXPa5om2n/oWruf5qZEpfhsLnrBvuB6oWcsnE/eUJ6/EcKqi5YPFQ4QHp
-         oNlbS37pN0IY7xqgei51k8mywF4pPvV3RwHBVxWkkKK42PoKvsQ3N9xMeQnH7D/piyZf
-         /P5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwFF/1agwhF9waHH7bjh3PNKrhUjXPkuIu8FVPPdAYKQ5uj9m+tyNCDT1r+Gbr77tr/fsaqU04=@vger.kernel.org
-X-Gm-Message-State: AFuF++lknbdxFPLGVaF6E3BpXiRkMICmxTzqJhjwcOc7gbiexfoy9s0d
-	hOWMzr+SUupeohBxM+oPfYV60pz7H0oM310aon4PKIiznTtg/nnbYPpiHu7k59iqikfvJxYWBIe
-	rXn/4lLhlcSe3OnwJNIed2ps/7vNu7TTBCDuTNuMh8MOyvtdvESSVMgNr/g==
-X-Gm-Gg: AYBFou107IU6dA4w8ovMJsXlu/0/Oo/ZbA+4FVTTAuq5MXQGqXiv2acYA/T3Km1p6q7
-	92c/fw2gx5acurp5IbL3N33iaKke2EdIWQP1nuveoTIjMgtLOkfkS/ym9qxqw/j6zF7DGUFfujX
-	QyPtckSwd7xzomTitPy3i+/xOv6SgJGA7PJoiabs20uCp5LaaxLNtMBEPtJ70/frDDJpf1qE9Tz
-	wfBgt9QDYNDYfHyl8Xk9f09GezOEewTUWHqqY6EoehMoZkGpjkjpSzJEbw7ituaIrLWoHb6tp46
-	G7GWpLPxggrZtrs0gh691LSfDa9sfnepwY3jM7reOoj8HfF4qENg0M9f3UIWLq9AXwHnxMsVAcx
-	N
-X-Received: by 2002:a05:600c:a40a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a01b12384emr64730805e9.27.1790849871438;
-        Thu, 01 Oct 2026 03:17:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:a40a:b0:49f:fd2d:23c7 with SMTP id 5b1f17b1804b1-4a01b12384emr64730455e9.27.1790849870881;
-        Thu, 01 Oct 2026 03:17:50 -0700 (PDT)
-Received: from sgarzare-redhat ([5.77.112.40])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b0690e721sm5651491f8f.20.2026.10.01.03.17.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 03:17:50 -0700 (PDT)
-Date: Thu, 1 Oct 2026 12:17:45 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vhost/vsock: trim nonlinear SKBs to declared payload
- length
-Message-ID: <ar4xDQliGcCQEfSA@sgarzare-redhat>
-References: <20260930044147.3818241-1-4ncienth@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EoApCBXv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE781F000FF;
+	Thu,  1 Oct 2026 10:19:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790849996;
+	bh=KPrAr2tai6AeurnhqCq4tRsFxzEy/I/Zax5DtbQXaII=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=EoApCBXvxZoi7zVyJMA602KkcF+ZoaM4cJCUSc2VPSN3fQ6ixDJm99WEme7sMnzAg
+	 3J+ajeLXLeM2rUDT+acSsvGbhLvrOnlg/JVCiDI5aTCsAn+5MkODw8u+AK6pOZfmNC
+	 VA1eOx67thlTwrbwNlwZtY/2DAEHuimfxIJEaGFJmOD9pLd866dHdOEXfO0POV2Tjg
+	 kvwJXlzzbzm1MNPFQ08paN8oFZgO270js5dRWHSD1prNaGmfak4nK+gX0QENJ0+Qwz
+	 SLQGJvbkg2Zyrd1p0TGWZVmFFmyEq4f5I4Ph1nNKI3sC3mUN4WEBipms9PYcTP8OJU
+	 +i5MQSgCbk0hQ==
+Subject: Re: [PATCH nf] netfilter: br_netfilter: restore VLAN tag on
+ refragmented IPv6 packets
+From: netdev-bot+sashiko@kernel.org
+To: parri.andrea@gmail.com
+Cc: pablo@netfilter.org, fw@strlen.de, netfilter-devel@vger.kernel.org,
+ phil@nwl.cc, razor@blackwall.org, idosch@nvidia.com, coreteam@netfilter.org,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kuba@kernel.org
+Date: Thu, 01 Oct 2026 10:19:55 +0000
+Message-ID: <179084999520.434549.4764913674478855382@kernel.org>
+In-Reply-To: <20260928161830.351199-1-parri.andrea@gmail.com>
+References: <20260928161830.351199-1-parri.andrea@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260930044147.3818241-1-4ncienth@gmail.com>
 
-+Cc Will that touched this code recently
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-On Wed, Sep 30, 2026 at 01:41:45PM +0900, Daehyeon Ko wrote:
->vhost_vsock_alloc_skb() sizes its skb from the total guest descriptor
->length, while virtio_vsock_hdr.len independently declares the payload
->length.  Since commit ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs
->for handling large receive buffers"), large descriptors use skb fragments.
->
->virtio_vsock_skb_put() currently changes only skb->len for a nonlinear
->skb, leaving skb->data_len and all fragments attached.  The zero-payload
->fast path skips the helper entirely.  A guest can therefore retain the
->full descriptor allocation while receive credit accounts no payload.
->
->On Linux v7.2, 455 zero-payload skbs retained 30,255,680 bytes on a
->256 KiB receive buffer while rx_bytes and buf_used remained zero.  A
->full-payload control retained 265,984 bytes in four skbs.  The existing
->SKB_TRUESIZE(0) queue budget caps skb count but does not account for these
->descriptor-sized fragments.
->
->Set skb->len to the fragment length before calling pskb_trim(), then trim
->to the declared payload length.  This releases unused fragments and lets
->skb_condense() reduce truesize.  Move the zero-payload return after the
->helper so zero-length packets are trimmed too.
->
->These skbs are newly allocated, unique, and have no frag_list, so the trim
->does not enter an allocation-bearing path.  Keep a warning for a violated
->caller contract.
->
->The fixed v7.2 image left a one-byte skb with no fragments and reduced
->the zero-payload queue to one 960-byte skb.  The build had no compiler
->warnings, and the run had no sanitizer, WARN, oops, or panic findings.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-I think this is a requirement for every patch sent, no?
-Why putting in the commit message?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
->
->Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers")
->Cc: stable@vger.kernel.org
->Assisted-by: LLM
->Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
->---
->Required configuration is CONFIG_VSOCKETS, CONFIG_VIRTIO_VSOCKETS_COMMON,
->and CONFIG_VHOST_VSOCK.
->
->The source reproducer is available privately to maintainers and is
->omitted from this public AI-assisted report. It exercises the real
->allocation helper and VSOCK receive queue from an in-kernel module, not
->a live guest virtqueue. Guest control is source-confirmed, but live guest
->end-to-end validation and deliberate host OOM were not performed. No KASAN
->splat is expected or claimed; the oracle is retained truesize and receive
->credit state above.
->
-> drivers/vhost/vsock.c        | 6 ++----
-> include/linux/virtio_vsock.h | 9 ++++++---
-> 2 files changed, 8 insertions(+), 7 deletions(-)
->
->diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index abed1fbcf66c..fa59456abda9 100644
->--- a/drivers/vhost/vsock.c
->+++ b/drivers/vhost/vsock.c
->@@ -400,10 +400,6 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
->
-> 	payload_len = le32_to_cpu(hdr->len);
->
->-	/* No payload */
->-	if (!payload_len)
->-		return skb;
->-
-> 	/* The pkt is too big or the length in the header is invalid */
-> 	if (payload_len + sizeof(*hdr) > len) {
-> 		kfree_skb(skb);
->@@ -411,6 +407,8 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
-> 	}
->
-> 	virtio_vsock_skb_put(skb, payload_len);
->+	if (!payload_len)
->+		return skb;
->
-> 	if (skb_copy_datagram_from_iter(skb, 0, &iov_iter, payload_len)) {
-> 		vq_err(vq, "Failed to copy %zu byte payload\n", payload_len);
->diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->index f91704731057..31358683e23e 100644
->--- a/include/linux/virtio_vsock.h
->+++ b/include/linux/virtio_vsock.h
->@@ -51,10 +51,13 @@ static inline void virtio_vsock_skb_put(struct sk_buff *skb, u32 len)
-> {
-> 	DEBUG_NET_WARN_ON_ONCE(skb->len);
->
->-	if (skb_is_nonlinear(skb))
->-		skb->len = len;
->-	else
->+	if (skb_is_nonlinear(skb)) {
+- [High] The fix is incomplete.
 
-Would be nice to have a comment here to explain better the reason we are 
-doing this.
+--
 
-Thanks,
-Stefano
+netfilter: br_netfilter: restore VLAN tag on refragmented IPv6 packets
 
->+		skb->len = skb->data_len;
->+		if (WARN_ON_ONCE(pskb_trim(skb, len)))
->+			return;
->+	} else {
-> 		skb_put(skb, len);
->+	}
-> }
->
-> static inline struct sk_buff *
->
->base-commit: 54518e0e827f4ca9229ae657022c60bf60f5c1bf
->-- 
->2.55.0
->
+This commit moves saving the L2 header and VLAN tag into a new helper,
+br_nf_save_frag_data(). Both the IPv4 and IPv6 refragmentation branches of
+br_nf_dev_queue_xmit() now call it. Before this change, the IPv6 branch
+reused whatever VLAN tag the last IPv4 refragmentation on that CPU had left
+in per-CPU storage.
 
+> diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+> index 0a394e5f4391..ec69d6254e34 100644
+> --- a/net/bridge/br_netfilter_hooks.c
+> +++ b/net/bridge/br_netfilter_hooks.c
+> @@ -832,6 +832,25 @@ static unsigned int nf_bridge_mtu_reduction(const struct sk_buff *skb)
+>  	return 0;
+>  }
+>  
+> +/* Fragments may not inherit the MAC header or VLAN tag. */
+> +static void br_nf_save_frag_data(struct sk_buff *skb)
+> +{
+> +	struct brnf_frag_data *data = this_cpu_ptr(&brnf_frag_data_storage);
+> +
+> +	if (skb_vlan_tag_present(skb)) {
+> +		data->vlan_tci = skb->vlan_tci;
+> +		data->vlan_proto = skb->vlan_proto;
+> +	} else {
+> +		data->vlan_proto = 0;
+> +	}
+
+[Severity: High]
+What happens when the head skb goes out untagged but the fragments still
+carry a tag?
+
+For an untagged packet this helper saves vlan_proto = 0. The consumer only
+ever sets a tag and never clears one:
+
+net/bridge/br_netfilter_hooks.c:br_nf_push_frag_xmit() {
+    ...
+	if (data->vlan_proto)
+		__vlan_hwaccel_put_tag(skb, data->vlan_proto, data->vlan_tci);
+    ...
+}
+
+For IPv6, nf_ct_frag6_reasm() calls inet_frag_reasm_finish(..., false).
+Each original fragment stays as its own skb on the head's frag_list and
+keeps its own ingress vlan_all.
+
+On egress to an untagged VLAN (or a BR_VLAN_TUNNEL port), br_handle_vlan()
+clears the tag on the head skb only:
+
+	if (v->flags & BRIDGE_VLAN_INFO_UNTAGGED &&
+	    !br_switchdev_frame_uses_tx_fwd_offload(skb))
+		__vlan_hwaccel_clear_tag(skb);
+
+A unicast-forwarded reassembled skb normally takes the skb_has_frag_list()
+fast path in ip6_fragment(). On that path,
+ip6_fraglist_prepare()->ip6_copy_metadata() does not copy or reset vlan_all.
+
+So would fragments 2..N reach br_nf_push_frag_xmit()->br_dev_queue_push_xmit()
+with their ingress 802.1Q/802.1ad tag still set, while the first fragment
+goes out untagged?
+
+The conntrack bridge restore path handles this case:
+
+net/bridge/netfilter/nf_conntrack_bridge.c:nf_ct_bridge_frag_restore() {
+    ...
+	if (data->vlan_present)
+		__vlan_hwaccel_put_tag(skb, data->vlan_proto, data->vlan_tci);
+	else if (skb_vlan_tag_present(skb))
+		__vlan_hwaccel_clear_tag(skb);
+    ...
+}
+
+Without a similar else branch in br_nf_push_frag_xmit(), does the commit
+message's claim that IPv6 fragments now "use the current packet's VLAN
+information" still hold? The same branch would also cover the IPv4 path,
+since ip_copy_metadata() does not touch vlan_all either.
+
+Also, the comment "Fragments may not inherit the MAC header or VLAN tag"
+does not seem accurate for reused frag_list skbs, which keep their own tag.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928161830.351199-1-parri.andrea%40gmail.com
