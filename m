@@ -1,79 +1,79 @@
 Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EA94848AE
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F24346A0A
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790841476; cv=none; b=EHZO1eOQOwYLzka1sbN+bb1s/MPzscERfeEPE+8h4TVhh+Pg+8sJ4Xa6fyUrLgb95Qv/+R+k1s8XkalXdDa4tVtMGZfuNJ61x3pM64eL0DwbEYQ4R5IrcnEQPnWKZmjwtlG6IExUt/nuFmv6ZRE0byO2ZH1iedUuZj58e9s8oU8=
+	t=1790841479; cv=none; b=MzxAhBdb9Nvq5JOFt/0qX+6FC4oOcUn5dVICWg+9aKiSAHFPtLgtnyfZMSZdmB6rIQKGisHPN71tePsDMtnurkRhs+X3oJj6MtW/O+Z1nTZVM/tKnbv9BJP4QqQ5hwynt1/CNBDWcycZ0l/jMvOZdrR+Ym84v8Q1XXD6Cd+A1r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790841476; c=relaxed/simple;
-	bh=AidR3vbbltUZ3DJc9GSWhF/azxg+J9fGK6Nhgxww9Hc=;
+	s=arc-20240116; t=1790841479; c=relaxed/simple;
+	bh=gnB+Mgvb74TdrxITU3xvX+wEDeKwbtVF0k1GbUFXzVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJ+fsr8ZoKcrVbVO/dJYzSp6yvy6nWq9UDb9kQQL60fZzXV9d+N2DQzi7gtnbC33CAzSw+z6g5VRe5GLUfUx++KLp772XbdVwW4Jb/gUa0tcQNofPuTjYoEINMgtCTsayD3UEgxPARx/FO1Sfy2tYQCfuHv2ZbuOQP0MQe/O6Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=STS3eZPu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CvUPhgw5; arc=none smtp.client-ip=202.12.124.156
+	 MIME-Version; b=hOQJbFf8N+IK7hjaDtoEAb6gbfTzerO9OZuO8hjfA/Z1SL7nH5fegd0RuW0sum9r+T8+37H1msXXSOytYmSRw/gdh14TFOVwOSWohH7EOGvebP3B6NXJOoOhcE59Jx6NsK6oabwxWBQ5oZW5G/6C6Gg/E1eSEJcTuLRITC6Exb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=S2kkubxy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=n6lxgzoA; arc=none smtp.client-ip=202.12.124.156
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="STS3eZPu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CvUPhgw5"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 8BBD47A0010;
-	Thu,  1 Oct 2026 03:57:54 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 01 Oct 2026 03:57:54 -0400
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="S2kkubxy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="n6lxgzoA"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id A528A7A008A;
+	Thu,  1 Oct 2026 03:57:56 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 01 Oct 2026 03:57:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1790841474; x=
-	1790927874; bh=FnJRS+v3s6eAoJRK/LASHiIgUP+rBsrquVk8ULucyBk=; b=S
-	TS3eZPueeFk99d9NDmO8SshBI6/b915h965SRiH+ypYk+THiifa9zGVAmHUhKAS1
-	8GZRi1dHgpEuVn5EjjD3nB3hhjD9stKbEU6goY8b5zfxVtnVzAzFAJIyx+8iTGNw
-	2HSSSlVMUc4RUywMMpNlayJbypG5LjkdWtbRjN7s4mceQnkamnSrAM1wRtgRHwZn
-	NPsJiMRQ3FGl2BSBRcU7mw9E6Nspw6ZwDLwRfXiKdVQ5uK56Ow3qArsdKDHdVWk1
-	IZDEi0HH4KsFUizyoQZCTRin9dCGbVhhy56uaMBaiwUThgpINiIzboCgwRrb5xPd
-	MLG0FcqpTU/M00GCJ0c/A==
+	:reply-to:subject:subject:to:to; s=fm2; t=1790841476; x=
+	1790927876; bh=XaUThmLowpy0xIGVCViZj684mNeB+k1riRiYrIMnlUs=; b=S
+	2kkubxy7BGCjXH8el/ku9gl6geYCisSHhgiIhsdhlLJDRTokhP5XTh3XtilF/Ifm
+	28cGB3Vp2UUZQt3h5ZjMCnDuLc6W0LrCX0I6+jt+4NasPgxhNOO944fLvUeoqwLq
+	Y2tpzA4LZSkPDTEn/3/ZAiJ+FXXu1XFZMuL7a+oTTMOPVY8KV2QDwZ1G2VQRZbiq
+	/A14Sgr9im/cocQBRMxdHGpvxi3RWk+Qc50cvgbJjc2NEjKZcKEiXvJe1mXqJZ1L
+	4djGrVpqMcuRXkwZqPr69IFaNc0z8dTrzHiu3v2HyBkCsZK3AthkC8Wd7HnU0JOW
+	fBThNUuHudehdgTtgmycA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1790841474; x=1790927874; bh=F
-	nJRS+v3s6eAoJRK/LASHiIgUP+rBsrquVk8ULucyBk=; b=CvUPhgw5XhtqhUIJl
-	VpDjBCWa52o8Jp0FaoAZolWmPmO2ijcUwbD+BRlKk7Ag1lP7lF9w2vLDy7J6QnKk
-	Qbv+SEim2GId2S1WklTl3cEmvNCXgDwljCAM3ZsrVAoUK4oEHBrd2MFFjh+woaMX
-	tOfleUHqYxH+iqY02QcTfCxwkNfF1RL9J2ne0Q/MpXk58qVDVaRfPbRChVNfZgBW
-	H3K6hlGby/KyB3gwc+hpb1aHXV9rWfrNTOpSBtnbmL4P7sBi06bFqRNJ3/WoDeI9
-	dFh4o3/8zREoNLjc8ZWW4LOvANUTlOKN8sqCVJKCe42xOmb57uPT6DyHwdFxoh7V
-	R6Tdg==
-X-ME-Sender: <xms:ghK-akvxXubNKaeuqsn9ZVbof16dsxSAlip3wRlE3jlhU61G25YGvw>
-    <xme:ghK-ane-7bZMEb2sxkxhPWvDUbzeh91nSKKE2ra4bmgG1pV-HQEa9eik2x4d0yNt9
-    BWNcfg7RB39RwXwrKhso_jov22TToDg1FflVfocunox0cKeVL9U3oU>
-X-ME-Received: <xmr:ghK-atb4VXglvnOJEZqGFoU96la0HN4bBS1wwtbg2xWgMH_9UtpR6gxUh2ZR>
-X-ME-Proxy-Cause: dmFkZTGrlCWeHT+g+Zlf20e7uU3eZJyAipOOtczwBxzD7N3VyNOdxX/HBzbROOe5wu2/jR
-    Vw8dtcU/d3uOEsrzk+lFNWUrPvjFDLSiNivpRofFj2lF/LCgnEyhBSAP8cmPmNhT7V9t/q
-    uW/FhjwihsfkbcruXtDMaTObPhDJ49E9a187VcUVbXYYUyXOTpdxWKJr2aUcUIJ0JWsezP
-    y8EyxskdQyV2BcdK/O3U/kT2U7IItGK22qtPNXdsi9NIK0Cw+Z4I6Pd50W9VRJSgiB0mmZ
-    pnaL9JDhMXJ8gB8BhAaKhbV6vHiB2rGYhxSHLtOQw0X/dtY/TfpDYSqEUWJGc3FPV19zQP
-    JEbmKXWLNstKDsoVEsxk7Dat7owsfKuNoNfPfJLhPtP1m/pxMbWltnXDuPPeoPEbGwjM98
-    htp9t4yTX7L+9GKR0GABe4qAj56mO37mAPufh3Bq6YIe8YVi+2evSSQ0OjZZoGOYHKwsro
-    Z5aiHSg1XvtCbf3G1e6KUZome5fLTM7eGLG9z/UOgRVWAIuWEF4bb2ySmKE0iaAhjGDIbB
-    yCj8LOvs/flcZjmZQUwrzeBTMvkgiWZG5Q2yvqqG7DwTuFYouV3nu/keUDOtlHPUzmXV+T
-    DFWbNC7J0G7n6kka7O95VNw4qeBYoq3RY9/zGJAcjLd0ZbvXLhMWFAw1RQ0A
-X-ME-Proxy: <xmx:ghK-aiWATZvMAoBddbkVwN-6aPDeVqBuwIJ_s2JUX5Vyzc--U8Jd0A>
-    <xmx:ghK-anhLA-OlcR3TDk0KFdbm1vPrK21sAognYNgj0PgibgfXn_CywQ>
-    <xmx:ghK-aoXdbN50GQy4CFEtmsnERQqosRHmvWNTEQD9YBpE63AXz4EDQw>
-    <xmx:ghK-amOCkOvT66e5pDTjl5uFS7XlXxO9zg1Kz2FniRGfk748yUiarA>
-    <xmx:ghK-agGBdbf3KGkive1_XjffIbZ2-u-wTcxhpdwAI7m0R0gQ9IKHkgvk>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1790841476; x=1790927876; bh=X
+	aUThmLowpy0xIGVCViZj684mNeB+k1riRiYrIMnlUs=; b=n6lxgzoAlWA1RvVbr
+	svo8kRotUxQygYAuFgsJVtdYOHYCEkvh8nSRvcZMFly7GH/i6XCexM/p27tcBjtI
+	gaLfPN+dn5iJOl3a5lB1vT9XcJThp6qAS2uQdemDJYFrnejIBkncqPX39DEQqXjd
+	Q+f9zhDR8K38wIDYfUBJ6mMSP1ewZzU2TIua4QfdwAoNuJsAUi12i+VDK69XUEaX
+	82Oxqp9bzWH0rRM6VL1MfrDeak9xOIK3griRIstVkmxcPXaiVG/5YD7wugMfPP7c
+	yGKlHwf28TkdkTHYu4F0jojMKrqYHrZFzfWwUQLmyXHvQo3WPrgtXXuWL4k64IhQ
+	sY67w==
+X-ME-Sender: <xms:hBK-aj0C2np6y68oZ4W6slMJNx-TmNK8AyR8PZTfjiyZg73xBlCwEg>
+    <xme:hBK-aoFhpfu0P-OSfonWeyaGspZWfAhgPyHn7s7RhVGxICcbf2p7ZcOb3QCCetmEv
+    1wQQDYn1KFAHCkdfCsCg4zaNvfi2Nq67ihZwRVtQKjE_56B1LlV5n2G>
+X-ME-Received: <xmr:hBK-ahhgObADttpFgY9xckhwDVCwzPJbHlzqa0Z0Db8ujeqW9-HnZUtynjTe>
+X-ME-Proxy-Cause: dmFkZTEZ5RaHtCqQHiWZpzmkd36ADglsJsLfXv/Gf3eS1fmkO0zi+qChwTxKps4lBty6w0
+    zeqK7UGEXFVAvlORucbzh5SfhgbJCWwbSKEj/GjD34lnUlstUDP5OLpjeTdSABdRecfWYN
+    hYWl69ofa27WzcUxFh4Oq379+Eu9lzLDSGmiZXRNBL8/FLQQP4DN90Ry0cau9aQPumsyBs
+    JyxZoRcUhtJOR9TSF5CNXr4XmvEUoPVK9qzL9QErk3rMjn1+tcv18ZC1gzYoiK7cKoq/dt
+    TAKcfutQW5D7jHeKmE6cFb0+MMqdUz8YRiRzby/jOyHSFyX8U7uPfrCnFTVRoDMHJhw3UF
+    PkEy5KhwviBx0G/V5o7lzUK0cIItm8wz2Eo7WILdc0Um3dPjql2IQlzgen5lTQWSY2pNAh
+    MrRBsPX72UEXh4BTmHps9whT2p9BDvGyXFxHbveXRkLZ/UqnPeaf3uTqxhERc6wJ4ciwSF
+    Z3chUnhVlOUPrGB9mTeecZCpUWYRFgEQV49GTw5fe1JgPOi8JweFXeCar+C4Sb555pPec/
+    mJT/2EDaNBY0BS9MHYyDAMOuLcR94N1f4hHqCPaKNBhLmp9ZTKj8qJBF0Gf3fcBN0wjv2W
+    YLCzS00hPmW7noaKcnMBhYyEF7fRQUwkbneG0+43lVlzvPGrAx5Kh1gW5e+A
+X-ME-Proxy: <xmx:hBK-aj_DvSKusb2jpC3kRmWXIBL9xjq4bZtQrVsE9afFKxhwHiId_g>
+    <xmx:hBK-aoo5EdKvr7YTE0YEQzSNO7iDUXwlp8dx_83utouM_Hpr4hsI6Q>
+    <xmx:hBK-ai9n1z-kCyt2YxE1Kym68gzm46NF0YmVxVS1YmFmE6wYGobaMw>
+    <xmx:hBK-asXbU3JwOIZZ8xWiLLkaejVawOuC3jmJx69mL0LBM7a8P-rpfA>
+    <xmx:hBK-avPy1cp519X580RhmxourzloXsCdF57vyoWVhDQMtsifwUQNIyNb>
 Feedback-ID: i934648bf:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 03:57:53 -0400 (EDT)
+ 1 Oct 2026 03:57:56 -0400 (EDT)
 From: Sabrina Dubroca <sd@queasysnail.net>
 To: netdev@vger.kernel.org
 Cc: Sabrina Dubroca <sd@queasysnail.net>
-Subject: [PATCH net-next 2/5] net: strparser: remove strp->sk NULL checks
-Date: Thu,  1 Oct 2026 09:57:26 +0200
-Message-ID: <a823a8decf85b3586e50adf8c6d768f59538140a.1790702233.git.sd@queasysnail.net>
+Subject: [PATCH net-next 3/5] net: strparser: remove strp_process()
+Date: Thu,  1 Oct 2026 09:57:27 +0200
+Message-ID: <04c57c1e928ec2a94a71413b49b6bec68a71c39d.1790702233.git.sd@queasysnail.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1790702233.git.sd@queasysnail.net>
 References: <cover.1790702233.git.sd@queasysnail.net>
@@ -85,63 +85,86 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-strp_init makes sure strp->sk != NULL.
+It's unused. Then we can revert the changes that commit
+bbb03029a899 ("strparser: Generalize strparser") did to extract
+__strp_recv().
 
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 ---
- net/strparser/strparser.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ include/net/strparser.h   |  3 ---
+ net/strparser/strparser.c | 30 ++++--------------------------
+ 2 files changed, 4 insertions(+), 29 deletions(-)
 
+diff --git a/include/net/strparser.h b/include/net/strparser.h
+index 78e8e3e12ed3..a72dff8e6a3f 100644
+--- a/include/net/strparser.h
++++ b/include/net/strparser.h
+@@ -160,8 +160,5 @@ void strp_check_rcv(struct strparser *strp);
+ int strp_init(struct strparser *strp, struct sock *sk,
+ 	      const struct strp_callbacks *cb);
+ void strp_data_ready(struct strparser *strp);
+-int strp_process(struct strparser *strp, struct sk_buff *orig_skb,
+-		 unsigned int orig_offset, size_t orig_len,
+-		 size_t max_msg_size, long timeo);
+ 
+ #endif /* __NET_STRPARSER_H_ */
 diff --git a/net/strparser/strparser.c b/net/strparser/strparser.c
-index b5319ed56857..6cdbd12f41e0 100644
+index 6cdbd12f41e0..80f7555f9670 100644
 --- a/net/strparser/strparser.c
 +++ b/net/strparser/strparser.c
-@@ -36,6 +36,8 @@ static inline struct _strp_msg *_strp_msg(struct sk_buff *skb)
- /* Lower lock held */
- static void strp_abort_strp(struct strparser *strp, int err)
- {
-+	struct sock *sk = strp->sk;
-+
- 	/* Unrecoverable error in receive */
- 
- 	cancel_delayed_work(&strp->msg_timer_work);
-@@ -53,13 +55,9 @@ static void strp_abort_strp(struct strparser *strp, int err)
- 	strp->skb_nextp = NULL;
- 	strp->need_bytes = 0;
- 
--	if (strp->sk) {
--		struct sock *sk = strp->sk;
--
--		/* Report an error on the lower socket */
--		sk->sk_err = -err;
--		sk_error_report(sk);
--	}
-+	/* Report an error on the lower socket */
-+	sk->sk_err = -err;
-+	sk_error_report(sk);
- }
- 
- static void strp_start_timer(struct strparser *strp, long timeo)
-@@ -80,17 +78,9 @@ static void strp_parser_err(struct strparser *strp, int err,
- 
- static inline int strp_peek_len(struct strparser *strp)
- {
--	if (strp->sk) {
--		struct socket *sock = strp->sk->sk_socket;
--
--		return sock->ops->peek_len(sock);
--	}
--
--	/* If we don't have an associated socket there's nothing to peek.
--	 * Return int max to avoid stopping the strparser.
--	 */
-+	struct socket *sock = strp->sk->sk_socket;
- 
--	return INT_MAX;
-+	return sock->ops->peek_len(sock);
+@@ -84,11 +84,11 @@ static inline int strp_peek_len(struct strparser *strp)
  }
  
  /* Lower socket lock held */
+-static int __strp_recv(read_descriptor_t *desc, struct sk_buff *orig_skb,
+-		       unsigned int orig_offset, size_t orig_len,
+-		       size_t max_msg_size, long timeo)
++static int strp_recv(read_descriptor_t *desc, struct sk_buff *orig_skb,
++		     unsigned int orig_offset, size_t orig_len)
+ {
+ 	struct strparser *strp = (struct strparser *)desc->arg.data;
++	long timeo = READ_ONCE(strp->sk->sk_rcvtimeo);
+ 	struct _strp_msg *stm;
+ 	struct sk_buff *head, *skb;
+ 	size_t eaten = 0, cand_len;
+@@ -230,7 +230,7 @@ static int __strp_recv(read_descriptor_t *desc, struct sk_buff *orig_skb,
+ 				}
+ 				strp_parser_err(strp, len, desc);
+ 				break;
+-			} else if (len > max_msg_size) {
++			} else if (len > strp->sk->sk_rcvbuf) {
+ 				/* Message length exceeds maximum allowed */
+ 				STRP_STATS_INCR(strp->stats.msg_too_big);
+ 				strp_parser_err(strp, -EMSGSIZE, desc);
+@@ -312,28 +312,6 @@ static int __strp_recv(read_descriptor_t *desc, struct sk_buff *orig_skb,
+ 	return eaten;
+ }
+ 
+-int strp_process(struct strparser *strp, struct sk_buff *orig_skb,
+-		 unsigned int orig_offset, size_t orig_len,
+-		 size_t max_msg_size, long timeo)
+-{
+-	read_descriptor_t desc; /* Dummy arg to strp_recv */
+-
+-	desc.arg.data = strp;
+-
+-	return __strp_recv(&desc, orig_skb, orig_offset, orig_len,
+-			   max_msg_size, timeo);
+-}
+-EXPORT_SYMBOL_GPL(strp_process);
+-
+-static int strp_recv(read_descriptor_t *desc, struct sk_buff *orig_skb,
+-		     unsigned int orig_offset, size_t orig_len)
+-{
+-	struct strparser *strp = (struct strparser *)desc->arg.data;
+-
+-	return __strp_recv(desc, orig_skb, orig_offset, orig_len,
+-			   strp->sk->sk_rcvbuf, READ_ONCE(strp->sk->sk_rcvtimeo));
+-}
+-
+ static int default_read_sock_done(struct strparser *strp, int err)
+ {
+ 	return err;
 -- 
 2.55.0
 
