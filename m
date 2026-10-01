@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E964DDB5F
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927914848AE
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 10:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790849437; cv=none; b=GT4HmKw7PjZHaxLDkCQmRTo2IsBc/1p0TseGsPP3YJaGlwSql2njMKRK4B/U5zHQn3b8/pvL65AQIjCO2M5ksxCQv6l4Wt77PlqU5P6EUnIae+fDwz46NE+aCBOix7TE34LdINE/u1UhX2tw1b97Rohvk9RlP2kmwdUpdd59vaA=
+	t=1790849438; cv=none; b=Rd0BO/wou42cdoICMvpd/vl1gskM05UtnJ0Z0EETF9+LNN2U8Kr5ZKKM+yJXQT1V816vYUBIFlrp8+i5iA6mRNiRaIqmIW897BcAOvlgR0O9zzWpHXzXYwudWj363ULH3058PDuIqZ/GKYzYbiOAG9lvQR29HCut9AQXiAebDa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790849437; c=relaxed/simple;
-	bh=/ZUefTHFWUVOSvzO+XOZACKXxAm0Uou0sSLQIAzCx10=;
+	s=arc-20240116; t=1790849438; c=relaxed/simple;
+	bh=PNn+ifeJ9JG8nAUNl8P71GOM2JrM84XXQounsmfM4wM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CgPv45DZsXf7y9iKY91bJwJy0jhZWKVsTi/uK4YKtApP/inr8PEJ86GHB34ZJmPpAMPxuJpbB5CT9zhyD9fOc9qCgLAFKUcBGc8xZ5Vy5pV1Wo7gl89bbOHuxy1OKj7YKZ3jn7b/78BKx7oCxsFvPGaVZ1wcScrrinctVCU3hK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSfCFWiQ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=SBK6EA8r5q4OlRARQhY4IrbJ4WdGkb+NtyhhpKx7xedp1VBJBorHmzupA4+jV69Co+TT+ci4XePHBPVTypKPIftV1EsnHZo4NfWSlQ9t7ZCMZ485qbWK1Y6wOmliUzkPNJ0gzm0wSRLqHslJEPQWwNT7Q7OA9UJniiZC9vwuyP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AuMYN3fx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSfCFWiQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AC31F0089B;
-	Thu,  1 Oct 2026 10:10:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AuMYN3fx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A262E1F00898;
+	Thu,  1 Oct 2026 10:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790849431;
-	bh=mYCwVZ86pk4vf/57gZPBZ3UBch9DOIJqfwIhHYuihbY=;
+	s=k20260515; t=1790849428;
+	bh=oM3Rf/hJ1hs27M7cPIkP2fp3x5YoxK2XjVR3AlTbgGQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=eSfCFWiQ9shRsqAnZXXUua0xTEtxnAT6x+0Ue7Rj+F11RDVEJoDN15ZYWWwaVwME8
-	 SNkElTiHhGCmw3ishFw7zu4IldDTqYvQu/ja1mETLVsx6uBWpYA72K9N/1/giKGiKi
-	 tClfTNd//5BbG2HfSAwZZMwcs2H21jK7tjyV3GjY2x5G2oRNUbJSGw9E7h74BEcHPK
-	 t3S8nbr8/7EqpJrU3/snEy8oFdw/3ktybPBncDyEXCMJzQKuQqV58aoOcMuQGQNR36
-	 Sd17jnNlzPH2sfDfRNR5s1ar6BscuCzwmjob+/WcLFmm3cdPsuQlyKRat4n8LZV+37
-	 0CjMBk20hmILw==
-Subject: Re: [PATCH net-next 7/9] batman-adv: tt: queue local DEL event before
- marking entry as pending
+	b=AuMYN3fxDGxwyVTRDwT1qHo+WFsXeyEdiJRCCrZrjiyQJsv/A7V1lbeQgCsfs8K1s
+	 xtXLKCAkTeNFJWjD4e+WCg5LwGcZFohIRbipQ96OzBXGhCTpRGPkPklMqX4au5IfNx
+	 xLDFb0+BCTSJPFDzIyyVkw1rnaYvLLyozc4/KWSbzfJDSGOHyHkkIG5i542HvFaUmC
+	 cFcuVJhD6NGQxU4mbmmxqATfXMdOfQpyjuQhnsXOfsoRuZ82yCx8mwuIDf0SPU7mMQ
+	 L4nTmO1p9wheMHJlJdWr0OXgCNzTiiGrY+Waw0KHX85P15y44hdsu/YuJUTcff160t
+	 JxUm3bNJchYig==
+Subject: Re: [PATCH net-next 3/9] batman-adv: tt: clarify responsibility for
+ roam flag during removal
 From: netdev-bot+sashiko@kernel.org
 To: sw@simonwunderlich.de
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, sashiko-bot@kernel.org
-Date: Thu, 01 Oct 2026 10:10:30 +0000
-Message-ID: <179084943057.434549.7181634875043920373@kernel.org>
-In-Reply-To: <20260930094558.3723766-8-sw@simonwunderlich.de>
-References: <20260930094558.3723766-8-sw@simonwunderlich.de>
-X-sashiko-severity: High
+Date: Thu, 01 Oct 2026 10:10:27 +0000
+Message-ID: <179084942724.434549.1630601702570339695@kernel.org>
+In-Reply-To: <20260930094558.3723766-4-sw@simonwunderlich.de>
+References: <20260930094558.3723766-4-sw@simonwunderlich.de>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,175 +47,98 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix covers only one ordering of the set_pending vs. re-add
-  race.
-- [Low] Stale locking rationale in the new kernel-doc.
+- [Low] The comments rearranged by this patch don't fully match their
+  functions.
 
 --
 
-batman-adv: tt: queue local DEL event before marking entry as pending
+batman-adv: tt: clarify responsibility for roam flag during removal
 
-This patch restores the original order in batadv_tt_local_set_pending(),
-so the DEL change is queued before BATADV_TT_CLIENT_PENDING is set. It
-also moves the NEW check, the event queuing and the PENDING update into a
-single flags_lock critical section. The goal is to stop a concurrent
-batadv_tt_local_add_existing() from leaving the PENDING state and the
-queued changes out of sync, which corrupts the TT CRC on neighbour nodes.
+The comment about marking a local entry as "roamed" moves out of
+batadv_tt_local_remove() and into batadv_tt_local_mark_removed(). That
+helper is where BATADV_TT_CLIENT_ROAM is actually set on the entry.
+Building the DEL/ROAM event flags in batadv_tt_local_remove() now happens
+only inside the branch that queues the pending event.
+
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907081824.2474040-1-sw%40simonwunderlich.de?part=10
 
 > diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-> index c229c51cafa72..481dc6afaaba1 100644
+> index 6d8fa6d28fee8..78f032c9ad65c 100644
 > --- a/net/batman-adv/translation-table.c
 > +++ b/net/batman-adv/translation-table.c
-
-[ ... ]
-
-> @@ -1420,28 +1433,37 @@ int batadv_tt_local_dump(struct sk_buff *msg, struct netlink_callback *cb)
->  }
+> @@ -1461,7 +1461,10 @@ batadv_tt_local_mark_removed(struct batadv_tt_local_entry *tt_local_entry,
+>  	scoped_guard(spinlock_bh, &common->flags_lock) {
+>  		*curr_flags = common->flags;
 >  
->  /**
-> - * batadv_tt_local_set_pending_event() - trigger events for TT pending removal
-> + * batadv_tt_local_set_pending() - mark local TT entry as pending removal
->   * @bat_priv: the bat priv with all the mesh interface information
-> - * @tt_local_entry: local TT entry which was marked as BATADV_TT_CLIENT_PENDING
-> + * @tt_local_entry: local TT entry to mark as BATADV_TT_CLIENT_PENDING
->   * @flags: TT change flags to announce together with the pending removal
->   * @message: debug message describing the reason for the change
->   *
-> - * Schedule the TT change announcement for the entry. The caller must already
-> - * have added BATADV_TT_CLIENT_PENDING to the @tt_local_entry and must hold the
-> - * hash bucket list_lock of @tt_local_entry since setting the flag.
-> + * Schedule the TT change announcement and set BATADV_TT_CLIENT_PENDING on the
-> + * entry. The entry is kept in the local table until the next TTVN increment
-> + * so that a consistency-check response can still be answered.
-> + *
-> + * Next to the flags_lock of the entry, the caller must hold the hash bucket
-> + * list_lock of @tt_local_entry. Otherwise
-> + * batadv_tt_local_purge_pending_clients() could remove the entry before its
-> + * change was queued.
+> -		/* mark the local client as ROAMed */
+> +		/* if this global entry addition is due to a roaming, the node
+> +		 * has to mark the local entry as "roamed" in order to
+> +		 * correctly reroute packets later
+> +		 */
+>  		if (roaming)
+>  			common->flags |= BATADV_TT_CLIENT_ROAM;
+>  
+> @@ -1532,22 +1535,22 @@ u16 batadv_tt_local_remove(struct batadv_priv *bat_priv, const u8 *addr,
+>  	if (!tt_local_entry)
+>  		return BATADV_NO_FLAGS;
+>  
+> -	flags = BATADV_TT_CLIENT_DEL;
+> -	/* if this global entry addition is due to a roaming, the node has to
+> -	 * mark the local entry as "roamed" in order to correctly reroute
+> -	 * packets later
+> -	 */
+> -	if (roaming)
+> -		flags |= BATADV_TT_CLIENT_ROAM;
+> +	if (batadv_tt_local_mark_removed(tt_local_entry, roaming, &curr_flags)) {
+> +		/* queue (roamed) del event which was prepared by
+> +		 * batadv_tt_local_mark_removed()
+> +		 */
+> +		flags = BATADV_TT_CLIENT_DEL;
+> +		if (roaming)
+> +			flags |= BATADV_TT_CLIENT_ROAM;
 
 [Severity: Low]
-Is this rationale still accurate after the reordering?
 
-With this patch, batadv_tt_local_set_pending() queues the event and then
-sets BATADV_TT_CLIENT_PENDING, and both happen inside one
-common->flags_lock section:
+This isn't a bug, but is the "prepared by batadv_tt_local_mark_removed()"
+wording accurate at this commit?
 
-    __batadv_tt_local_event(bat_priv, common, common->flags | flags);
-    common->flags |= BATADV_TT_CLIENT_PENDING;
+In this commit, batadv_tt_local_mark_removed() doesn't build any event. It
+only saves *curr_flags and sets BATADV_TT_CLIENT_ROAM and
+BATADV_TT_CLIENT_PENDING on common->flags. The DEL and ROAM event flags are
+built right after this comment and then passed to
+batadv_tt_local_set_pending_event().
 
-batadv_tt_local_purge_pending_clients() only acts on PENDING after
-reading it under the same flags_lock:
+Two later patches in this series move the DEL event queuing into
+batadv_tt_local_mark_removed() and drop this comment. They are "batman-adv:
+tt: queue local DEL event under bucket lock" and "batman-adv: tt: queue
+local DEL event before marking entry as pending". So the mismatch only
+exists at this commit.
 
-    scoped_guard(spinlock_bh, &tt_common->flags_lock) {
-        if (!(tt_common->flags & BATADV_TT_CLIENT_PENDING)) {
+The other two points are small wording nits. Both come from code that was
+already there before this patch.
 
-So it looks like purge_pending_clients() cannot see PENDING before the
-change is queued, whether or not list_lock is held.
+The comment moved into batadv_tt_local_mark_removed() starts with "if this
+global entry addition is due to a roaming". The helper's kernel-doc
+describes @roaming as "true if the deletion is due to a roaming event".
 
-The updated batadv_tt_local_mark_removed() kernel-doc has the same
-problem. It still gives the old order ("marked as
-BATADV_TT_CLIENT_PENDING and the (roamed) DEL change is queued"). It also
-adds a claim that list_lock prevents batadv_tt_local_transition_new() from
-clearing BATADV_TT_CLIENT_NEW after it was checked. As far as I can tell,
-that protection comes from the NEW check and set_pending() sharing one
-flags_lock scoped_guard. The commit message says the same thing.
+The only caller passing roaming=true is batadv_tt_global_add(), so the
+wording is correct in context. Would it read more naturally in terms of
+the deletion, to match the kernel-doc?
 
-Could both comments name the single flags_lock section, together with the
-queue-then-mark order, as the invariant? A later change could otherwise
-move __batadv_tt_local_event() out of the flags_lock section while keeping
-list_lock, and bring back the ADD/DEL misordering this patch fixes.
+The ROAM bit added to flags here is already part of the emitted change.
+batadv_tt_local_event() does:
 
->   */
->  static void
-> -batadv_tt_local_set_pending_event(struct batadv_priv *bat_priv,
-> -				  struct batadv_tt_local_entry *tt_local_entry,
-> -				  u16 flags, const char *message)
-> +batadv_tt_local_set_pending(struct batadv_priv *bat_priv,
-> +			    struct batadv_tt_local_entry *tt_local_entry,
-> +			    u16 flags, const char *message)
-> +	__must_hold(&tt_local_entry->common.flags_lock)
->  {
-> +	struct batadv_tt_common_entry *common = &tt_local_entry->common;
->  	struct batadv_hashtable *hash = bat_priv->tt.local_hash;
->  	u32 i;
->  
-> -	i = batadv_choose_tt(&tt_local_entry->common, hash->size);
-> +	i = batadv_choose_tt(common, hash->size);
->  	lockdep_assert_held(&hash->list_locks[i]);
-> +	lockdep_assert_held(&common->flags_lock);
->  
-> -	batadv_tt_local_event(bat_priv, tt_local_entry, flags);
-> +	__batadv_tt_local_event(bat_priv, common, common->flags | flags);
-> +	common->flags |= BATADV_TT_CLIENT_PENDING;
+	flags = batadv_tt_flags_get(common) | event_flags;
 
-[Severity: High]
-Does this close only one ordering of the race with the re-add path?
-
-The add side still changes the flags and queues the ADD in two separate
-steps. batadv_tt_local_add_existing() clears PENDING inside a flags_lock
-scoped_guard and returns. batadv_tt_local_add() then queues the ADD after
-that lock is dropped:
-
-    if (added)
-        batadv_tt_local_event(bat_priv, tt_local, BATADV_NO_FLAGS);
-    ...
-    if (batadv_tt_local_update_flags(bat_priv, tt_local, iif_is_wifi, mark))
-        batadv_tt_local_event(bat_priv, tt_local, BATADV_NO_FLAGS);
-
-batadv_tt_local_set_pending() can run in that window from the RX path:
-
-batadv_tt_global_add()->batadv_tt_global_purge_local()->
-  batadv_tt_local_remove()->batadv_tt_local_mark_removed()->
-    batadv_tt_local_set_pending()
-
-Here is one interleaving, starting with DEL#1 already queued and PENDING
-set:
-
-  CPU1 (TX)                         CPU0 (RX)
-  batadv_tt_local_add()
-    batadv_tt_local_add_existing()
-      flags &= ~PENDING;
-                                    batadv_tt_local_mark_removed()
-                                      batadv_tt_local_set_pending()
-                                        DEL|ROAM merged into DEL#1
-                                        flags |= PENDING;
-    batadv_tt_local_event(NO_FLAGS)
-      ADD cancels DEL#1
-
-There is a similar case with no earlier DEL. batadv_tt_local_update_flags()
-returns true on CPU1, CPU0 queues a new DEL and sets PENDING, and then the
-ADD from CPU1 cancels that DEL through the DEL+ADD case in
-__batadv_tt_local_event().
-
-Either way, the entry would be left PENDING with no DEL queued. At the
-next commit, batadv_tt_local_purge_pending_clients() would remove it
-locally, but neighbours would never receive a DEL.
-
-Wouldn't that give the same CRC mismatch and full table request that the
-commit message describes? Would the ADD also need to be queued inside the
-flags_lock section that clears PENDING or updates the flags?
-
->  
->  	batadv_dbg(BATADV_DBG_TT, bat_priv,
->  		   "Local tt entry (%pM, vid: %d) pending to be removed: %s\n",
-> @@ -1460,7 +1482,8 @@ batadv_tt_local_set_pending_event(struct batadv_priv *bat_priv,
->   * An already announced entry is marked as BATADV_TT_CLIENT_PENDING and the
->   * (roamed) DEL change is queued. Both happen under the hash bucket list_lock
->   * of the entry to prevent concurrent batadv_tt_local_purge_pending_clients()
-> - * from removing the entry.
-> + * from removing the entry and batadv_tt_local_transition_new() from clearing
-> + * BATADV_TT_CLIENT_NEW after it was checked.
+and batadv_tt_local_mark_removed() has already set BATADV_TT_CLIENT_ROAM
+on common->flags. The commit message already says this ("The former will
+only create similar flags for the roaming event"), so this is just a note.
 
 [ ... ]
 
