@@ -1,313 +1,644 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD2E369990;
-	Thu,  1 Oct 2026 06:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0264C2E7378;
+	Thu,  1 Oct 2026 06:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790835877; cv=none; b=VaJJfV+de8JiynIR+6XG54Uhg5iMQEBoaGQ8iaqPAcKMR0qzVc279sERsTgIxO1o4EpwVYVATY+ntOAgE7ryQvrSv7fMQotszTn9WHRnMoGfXEBVp2Uwd85NBr4T82AEI/xrLdgR/zg/GE0p8XXjkz70FOr83AFDPcv/y1nBF94=
+	t=1790837051; cv=none; b=d3FYrTrhH/ufyYUW4tUvGdd/ieLDB2Vxxjawnq+9hPGiMp+lj5fUZ8PfdFfvzG7JKsmWbLS293n4QFiW+3ObhaoHB/UQWYXgW3nxiZIEe7gJ7ECb3g6uR1MIICzmXWEmrk9dri2qpF9Y8kqksOt96j4qk6e4hqRWpufpj9w8Gu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790835877; c=relaxed/simple;
-	bh=QhVaF7LpTRlzWHSFo28mgjy0Ulqvkfu+iqnD9A9Wx6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pULzDQR6L2PIsmRvJGUcu5thAORBRZA+oTxGDpxKYMmvtoL1ACQaMeQzmMnuHqJxb6HCwu7slzGZa8CqIrfHJhqPK2x/kW7EN2deT6ApoN7xLvmkIQ4Xs4ckvPS7TnxMmnpu6DiZbeFaZeJEq8fzB7HqfPTpgh30aqpFBQ7I840=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XCjojpSb; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790837051; c=relaxed/simple;
+	bh=LsnAAHvFDuQwyPRClA/c5MrD2tO6dRUppdgUbT7c60Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Xeix8jDSpgF78M1WKaklUF305fke52X3AuU8SXr7BCYdo+vN+lkWAaQ9M5oL4X3uxxr/N05xvhdxNJG/Ehwipvmr6UV876E49g+MzqzdJy8JOFONL1Baoou1cS57rWAUka23C37uIDg1G1ja/N1ARam3n0ruIx+qTs9eoddV20M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNTQImGB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XCjojpSb"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69145hGk756563;
-	Thu, 1 Oct 2026 06:24:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=M9AnNW
-	X9SR6RKj3kFz3OBbKEw6Xz0SoE6TMyY8Gpmxc=; b=XCjojpSbtCv6F9kbS6g7Va
-	xmPVjc7AuZoo3YrEZ4r4jbPONhzZ4ZTxZbIurD62UFfqVzrsDxLqNtmDWNg85hQz
-	DomD9yE1N50wvx++3IoZBJhjZBREtLeeAW02tpk295Zpx//7N7+tIUiRcKTkCCrJ
-	//tI5dyf3GJDUEDajRNRth6HBWXPd0EFLDZAeoN2S068B1/65y5dP8g3Q+jZamUO
-	jhOQ2Gpu9nMt8nYU6SbKAcR2qFQFprrjtCqABp8pT67pdI+fHNLELqxDOcmESd5Z
-	ezkw6OI2gZK4Edepsm80XITikxySJ8UHuE4Su7h49cccSXXYcVhluuBby7MHc3+g
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5j5hpe9-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 06:24:28 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6913lfes3245992;
-	Thu, 1 Oct 2026 06:24:28 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h0q4pe38s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 01 Oct 2026 06:24:28 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6916OQTR1639222
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 1 Oct 2026 06:24:26 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 146A258056;
-	Thu,  1 Oct 2026 06:24:26 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C64795805D;
-	Thu,  1 Oct 2026 06:24:20 +0000 (GMT)
-Received: from [9.123.9.27] (unknown [9.123.9.27])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  1 Oct 2026 06:24:20 +0000 (GMT)
-Message-ID: <9a7a893b-edd2-453b-b843-5b582a6f86a1@linux.ibm.com>
-Date: Thu, 1 Oct 2026 11:54:19 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNTQImGB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3871F000FF;
+	Thu,  1 Oct 2026 06:44:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790837049;
+	bh=uz52g7ev+vWjhN7bH8UE/Z6VdNF3LXi0sq1ISXrMIZw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=eNTQImGB7dN7wumknTTYXtn38v8RZZI0IG07xFHMK10vDB/Y70LhZ9V7rnfPlJiA0
+	 dhFK+PCEwVDQqfYznwA2OlDE38vWqZL3hG0E3fXOUJ8FKI6QqX9+dat62MP36rZZ8l
+	 tP1eZuzCR9hKAkbZuufId2OdpYY/yMZlbFhIRX6MvJvD8lvVuRD9PL3OJRKwLxt/Te
+	 ZOhPrNExYg9hAo051DJXKE006Y1rQwo+6kMFTGzDRLoX1or5i+0rg+lPT0Wc56CLcs
+	 0598Q7UcHloLQMYV5ufryUf+SRA8jYaedeliRBD8G5pzPneuaRcpZ4wZwTKQ24J0Ei
+	 CHanJ+5ckTc9A==
+Subject:
+ Re: [PATCH net v5] octeontx2-af: Fix rep link state sync and workqueue races
+From: netdev-bot+sashiko@kernel.org
+To: nshettyj@marvell.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, gakula@marvell.com,
+ sgoutham@marvell.com, rkannoth@marvell.com, sbhatta@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, bbhushan2@marvell.com, hkalra@marvell.com,
+ horms@kernel.org
+Date: Thu, 01 Oct 2026 06:44:08 +0000
+Message-ID: <179083704829.434549.18236369316402522728@kernel.org>
+In-Reply-To: <20260928034213.3173088-1-nshettyj@marvell.com>
+References: <20260928034213.3173088-1-nshettyj@marvell.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v7] net/smc: fix lgr/lnk lifetime vs diag reader race
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, stable@vger.kernel.org,
-        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-References: <20260930073029.1201202-1-mjambigi@linux.ibm.com>
-Content-Language: en-GB
-From: Hidayath Khan <hidayath@linux.ibm.com>
-In-Reply-To: <20260930073029.1201202-1-mjambigi@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAyNCBTYWx0ZWRfX0Q6H6pc2cd5v
- HuiONgiEI4m1/dLgguVmbsMk+crC1s1V8N1VRWAdvO5FEnEmklESVnXvEQZYEXqaZYExAf36xYc
- aah4I/H6Oc4euYK+apijGEAjx4GlS/A=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAyNCBTYWx0ZWRfX5Ekb0W2i06NF
- zM91Y0wuhf9LhjFf/nBOjM0yPzkU6vLs6sMqEPqZ3cJiUco0GyKzHvfMwZIzisE874dXO+Xi3S8
- WADptrm/qWI9abaLZ1WU+02uqgzy/0rFcs5AcSnMFyH2tOSMwMPyQ37jXl8NxF12425FI+4kxoX
- GhhgmsL3wbQhuZkHXiQyfggXH8SFTpDg3mc0P3VRqjinzylJB4RHzHRWarFxORbKBsDDLZK4+5J
- s6exEYhT7ZLVUyfX/ilqpsTlb7lPBUTnbgSpGBvDd6T9X9WCKiFPqysCf9dq9jnJuHF5El+1OgO
- Q7JJ88cjxQnXytVF+vWHpL8Kd9lWmb7pEiQ13Ti1SjQSeyQdP/8+iagK4krSMysdgv0+I3d4SV9
- nAy8TbU8OfCkQe6AuT0Kf9GLAv16p1s47z9lIpdLp3J8Q1HiZLKPN3Cny+FZzhfiJ2yD1n+QwNm
- XhH+X8KtNiMrNBf3yYQ==
-X-Proofpoint-GUID: rngLaTaz9dW3upSjG1PltudTfwBNfTBZ
-X-Authority-Analysis: v=2.4 cv=RKcmjIi+ c=1 sm=1 tr=0 ts=6abdfc9d cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=gVUiB03J6SsEFvwYRAQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 8zhA_zt4mgYfj9rSZ1kHg9e2LM0G5ZA_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-01_02,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610010024
 
+Thank you for your contribution! Sashiko AI review found 10 potential
+issue(s) to consider.
 
-On 30/09/26 1:00 pm, Mahanta Jambigi wrote:
-> The diag dump walks the socket hash table under a read_lock and dereferences
-> conn->lgr and conn->lnk. Three paths expose a window where a hashed socket has
-> freed or partially freed conn/lgr/lnk state.
+Critical: 0 · High: 1 (4) · Medium: 9 (1) · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] In the rvu_probe() err_irq/err_dl path, rep_evt_wq is destroyed
+  before the FLR workqueue is drained.
+- [Medium] One commit carries many independent fixes under a single
+  `Fixes: b8fea84a0468` (Nov 2024).
+- [Medium] The permanent commit message is one sentence.
+- [Medium] The new initial link-state replay (rvu_rep_notify_pfvf_state()
+  for PFs/VFs with NIXLF_INITIALIZED) runs only inside…
+- [Medium] rvu_switch_update_rules() now takes rswitch->switch_lock on
+  every non-rep call.
+- [Medium] rvu_probe() can still leak rep_evt_wq.
+- [Medium] The new switch_lock only covers the bookkeeping, not the
+  actions that depend on it.
+- [Medium] rvu_switch_enable() now sets used_entries only after
+  rvu_rep_install_mcam_rules()/rvu_switch_install_rules() finish, and…
+- [Medium] rvu_rep_install_mcam_rules() samples NIXLF_INITIALIZED into
+  lbk_enabled, installs several rules (mbox handler calls), and only…
+- [Medium] rvu_mbox_handler_get_rep_cnt() gives the representor role
+  permanently to the first PF that sends GET_REP_CNT.
+
+Pre-existing issues:
+- [High] rvu_rep_update_rules() passes the relative index `entry` into
+  entry2pcifunc[] straight to npc_enable_mcam_entry().
+- [High] Representor teardown can dereference a NULL (or stale) parent
+  netdev.
+- [High] rvu_rep_destroy() reads rep->flow_cfg after
+  free_netdev(rep->netdev).
+- [High] rvu_rep_get_stats64() schedules rep->stats_wrk (a delayed_work
+  inside rep_dev, which lives inside the netdev) on the system workqueue…
+- [Medium] rvu_devlink_eswitch_mode_set() sets rswitch->mode before
+  calling rvu_switch_enable(), which returns void.
+
+--
+
+octeontx2-af: Fix rep link state sync and workqueue races
+
+This patch moves the representor event workqueue setup from
+rvu_rep_install_mcam_rules() into rvu_mbox_handler_get_rep_cnt(), and adds
+teardown for it in rvu_probe() and rvu_remove(). It also adds bounds and
+ownership checks to the REP mailbox handlers, and serializes LBK link
+configuration and rswitch bookkeeping with rsrc_lock and switch_lock. On
+the NIC side it reworks representor teardown.
+
+> Move rep event workqueue init to rvu_mbox_handler_get_rep_cnt(),
+> fix use-after-free and race conditions in rep event handling,
+> add bounds checking, and serialize LBK link configuration.
 >
-> First, smc_conn_abort() calls smc_conn_free() during early handshake aborts
-> while the socket is still hashed in SMC_INIT. On the smc_lgr_cleanup_early()
-> path this frees the lgr synchronously without holding the hash write_lock. A
-> concurrent diag reader can therefore load a non-NULL conn->lgr and dereference
-> lgr->is_smcd after the kfree. Guard the conn->lgr->is_smcd load in
-> __smc_diag_dump() by skipping it when the socket is in SMC_INIT state. The same
-> guard also skips the CONNINFO/LGRINFO/DMBINFO blocks for SMC_CLOSED sockets,
-> which may briefly remain hashed after smc_conn_free() when the fd is still open;
-> smcss already suppresses those attributes for closed sockets, so there is no
-> observability regression.
->
-> Second, in smc_conn_kill() on SMC-D with dmb_nocopy, smcd_buf_detach() NULLs and
-> frees conn->sndbuf_desc before the socket is unhashed. A concurrent diag reader
-> entering the CONNINFO block can dereference the freed descriptor. Unhash the
-> socket at the top of smc_conn_kill(), before smcd_buf_detach().
->
-> Third, in the terminal teardown branches of smc_close_active_abort()
-> (PEERCLOSEWAIT and PROCESSABORT groups) and in smc_close_passive_work(),
-> smc_conn_free() drops lgr and lnk references while the socket is still hashed.
-> Unhash immediately before each smc_conn_free() call at those two sites.
->
-> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets")
-> Fixes: 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R connections")
-> Fixes: ae2be35cbed2 ("net/smc: {at|de}tach sndbuf to peer DMB if supported")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
-> ---
-> Changes in v7:
-> - no code changes; commit message only
-> - document the SMC_CLOSED leg of the early-exit guard and the rationale
->    that smcss already skips CLOSED sockets on the userspace side; add
->    Fixes: ae2be35cbed2 for the smc_conn_kill() hunk since
->    smcd_buf_detach() was introduced by that commit
->
-> Changes in v6:
-> - smc_diag.c: inline sk->sk_state != SMC_INIT into the else-if condition
->    so conn->lgr->is_smcd is never loaded for SMC_INIT sockets; retain the
->    SMC_INIT || SMC_CLOSED early-exit guard and out: label from v5 to
->    defensively skip the CONNINFO/LGRINFO/DMBINFO blocks for sockets with
->    no live connection
-> - smc_close.c: remove the unconditional unhash from the top of
->    smc_close_active_abort(); place it scoped immediately before each of
->    the two smc_conn_free() calls in the PEERCLOSEWAIT and PROCESSABORT
->    branches, and before smc_conn_free() in smc_close_passive_work();
->    this avoids prematurely hiding live SMC_ACTIVE/APPCLOSEWAIT sockets
->    from smcss
-> - smc_core.c: unhash at the top of smc_conn_kill(), before
->    smcd_buf_detach(), so the socket is off the hash table before
->    conn->sndbuf_desc is freed on the dmb_nocopy path
->
-> Changes in v5:
-> - guard conn/lgr/lnk blocks in __smc_diag_dump() with an
->    (SMC_INIT || SMC_CLOSED) state check placed after the
->    SMC_DIAG_FALLBACK nla_put; SMC_INIT can coexist with fallback
->    (smc_sendmsg() MSG_FASTOPEN path), so the guard must not suppress
->    the fallback reason
->
-> Changes in v4:
-> - dropped smc_conn_unhash() wrapper, conn->unhashed flag, and all
->    changes to af_smc.c, smc.h, smc_core.c and smc_core.h;
->    smc_unhash_sk() is already idempotent via sk_hashed(), so direct
->    calls at the two teardown sites in smc_close.c are sufficient
-> - dropped the __smc_release() hunk: it needs no change since the
->    subsequent unhash there is already a safe no-op
-> - fixed premature-unhash issue present in v3: smc_conn_free() must not
->    unhash because smc_conn_abort() calls it before
->    smc_switch_to_fallback() in both smc_listen_decline() and
->    smc_connect_rdma() error paths; unhashing there would make live
->    fallback sockets invisible to smcss
-> - likewise, the ISM/RDMA retry loops (smc_find_ism_v2_device_serv(),
->    smc_find_rdma_v2_device_serv()) call smc_conn_abort() on a failed
->    attempt and then smc_conn_create() on the next device; unhashing in
->    smc_conn_free() would permanently hide the established connection from
->    smc_diag since smc_conn_create() does not re-hash the socket
->
-> Changes in v3:
-> - redesigned as a single patch; dropped the lgr_lnk_lock spinlock
->    approach and the 2-patch split
-> - fix is now at the socket hash layer: introduce smc_conn_unhash() with
->    a per-connection unhashed flag; smc_conn_free() unhashes before
->    dropping lgr/lnk refs, so any socket visible to the diag reader under
->    the hash read_lock has valid conn->lgr and conn->lnk pointers
-> - __smc_release() updated to call smc_conn_unhash() for non-fallback
->    sockets so the flag is honoured when smc_conn_free() already ran first
-> - smc_diag.c needs no changes; the hash read_lock invariant is
->    sufficient without any per-connection lock in the dump path
-> - dropped the clcsock/mutex_trylock fix as that will be addressed
->    separately
->
-> Changes in v2:
-> - this is v2 of the 2-patch series; the earlier submission was
->    mislabelled [PATCH v3] but was in fact the first version sent to the
->    list
-> - split into a 2-patch series; patch 1/2 adds per-connection
->    lgr_lnk_lock infrastructure to smc_core, patch 2/2 fixes the diag
->    dump path using it
-> - dropped lock_sock()/release_sock() from __smc_diag_dump(); v1 held
->    the socket lock across all lgr/lnk dereferences, requiring the hash
->    read_lock to be dropped and re-acquired around each socket
-> - dropped the restart-from-head loop in smc_diag_dump_proto(); the new
->    design does not drop the hash read_lock mid-walk so the hlist
->    truncation concern no longer applies
-> - dropped refcount_inc_not_zero() socket pinning from the dump loop for
->    the same reason: the hash read_lock is now held for the full walk
-> - added per-connection lgr_lnk_lock spinlock to struct smc_connection;
->    conn->lgr and conn->lnk are NULLed under this lock in smc_conn_free()
->    before borrowed references are released, establishing the invariant: a
->    non-NULL conn->lgr seen under lgr_lnk_lock guarantees the lgr is alive
-> - added lgr_lnk_lock to smc_switch_link_and_count() to protect the
->    conn->lnk pointer swap from concurrent diag readers
-> - replaced mutex_lock() on clcsock_release_lock in
->    smc_diag_msg_common_fill() with mutex_trylock(); mutex_lock() was
->    valid in v1 because the hash spinlock had been dropped, but the new
->    design holds the hash read_lock throughout so only a non-sleeping
->    trylock is safe; a failed trylock leaves address fields zeroed, which
->    is acceptable for a monitoring tool
-> - all conn->lgr and conn->lnk accesses in __smc_diag_dump() use a
->    snapshot-then-use pattern: fields are copied into local stack
->    variables under lgr_lnk_lock and nla_put() is called after releasing
->    the lock, avoiding any sleeping operation under the spinlock
->
->   net/smc/smc_close.c | 3 +++
->   net/smc/smc_core.c  | 1 +
->   net/smc/smc_diag.c  | 7 ++++++-
->   3 files changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-> index bb0313ef5f7c..aa6363abdd74 100644
-> --- a/net/smc/smc_close.c
-> +++ b/net/smc/smc_close.c
-> @@ -154,6 +154,7 @@ void smc_close_active_abort(struct smc_sock *smc)
->   		if (sk->sk_state != SMC_PEERABORTWAIT)
->   			break;
->   		sk->sk_state = SMC_CLOSED;
-> +		sk->sk_prot->unhash(sk);
->   		smc_conn_free(&smc->conn);
->   		release_clcsock = true;
->   		sock_put(sk); /* passive closing */
-> @@ -165,6 +166,7 @@ void smc_close_active_abort(struct smc_sock *smc)
->   		if (sk->sk_state != SMC_PEERABORTWAIT)
->   			break;
->   		sk->sk_state = SMC_CLOSED;
-> +		sk->sk_prot->unhash(sk);
->   		smc_conn_free(&smc->conn);
->   		release_clcsock = true;
->   		break;
-> @@ -433,6 +435,7 @@ static void smc_close_passive_work(struct work_struct *work)
->   		sk->sk_state_change(sk);
->   		if ((sk->sk_state == SMC_CLOSED) &&
->   		    (sock_flag(sk, SOCK_DEAD) || !sk->sk_socket)) {
-> +			sk->sk_prot->unhash(sk);
->   			smc_conn_free(conn);
->   			if (smc->clcsock)
->   				release_clcsock = true;
-> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-> index 04aedd957543..d7bd6d7f428b 100644
-> --- a/net/smc/smc_core.c
-> +++ b/net/smc/smc_core.c
-> @@ -1517,6 +1517,7 @@ static void smc_conn_kill(struct smc_connection *conn, bool soft)
->   {
->   	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
->
-> +	smc->sk.sk_prot->unhash(&smc->sk);
->   	if (conn->lgr->is_smcd && conn->lgr->peer_shutdown)
->   		conn->local_tx_ctrl.conn_state_flags.peer_conn_abort = 1;
->   	else
-> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
-> index bf0beaa23bdb..b29bd34acf7b 100644
-> --- a/net/smc/smc_diag.c
-> +++ b/net/smc/smc_diag.c
-> @@ -90,7 +90,8 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->   	r->diag_state = sk->sk_state;
->   	if (smc->use_fallback)
->   		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
-> -	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
-> +	else if (sk->sk_state != SMC_INIT &&
-> +		 smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
->   		r->diag_mode = SMC_DIAG_MODE_SMCD;
->   	else
->   		r->diag_mode = SMC_DIAG_MODE_SMCR;
-> @@ -103,6 +104,9 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->   	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
->   		goto errout;
->
-> +	if (sk->sk_state == SMC_INIT || sk->sk_state == SMC_CLOSED)
-> +		goto out;
+> Fixes: b8fea84a0468 ("octeontx2-pf: Add support to sync link state between representor and VFs")
+
+[Severity: Medium]
+Is b8fea84a0468 the right target for every fix bundled here?
+
+Several of the rvu_switch.c changes fix code in the non-representor switch
+path. That code came from 23109f8dd06d ("octeontx2-af: Introduce internal
+packet switching"):
+
+  - rvu_switch_enable() publishing used_entries before entry2pcifunc[] is
+    populated
+  - unlocked used_entries/entry2pcifunc[] access in
+    rvu_switch_update_rules()
+  - the uninstall range derived from used_entries
+
+The rep_mode branch in rvu_switch_enable() came from 683645a2317e
+("octeontx2-af: Add packet path between representor and VF").
+
+With only the one Fixes tag, would stable trees that have 23109f8dd06d but
+not b8fea84a0468 miss the rvu_switch fixes? Would it help to split this
+into separate patches, each with its own Fixes tag?
+
+[Severity: Medium]
+The commit message is one sentence. Most of the behaviour changes are only
+in the per-version changelog below the --- line, and git am drops that.
+
+Could the commit message describe the mailbox contract changes that show up
+in the diff?
+
+  - rvu_rep_notify_pfvf_state() now goes through the async
+    REP_EVENT_NOTIFY queue. It silently drops the event when rep_mode is
+    off or there is no workqueue.
+  - GET_REP_CNT now binds rep_pcifunc permanently to the first PF that
+    calls it. VFs and later PFs get -EPERM, and more than RVU_MAX_REP
+    representors gets -EINVAL.
+  - Enabling switchdev now enables LBK links and sends initial
+    PFVF_STATE events for PFs/VFs that are already initialized.
+  - In rep mode, rvu_switch_disable() now disables the LBK link of every
+    CGX-mapped PF/VF.
+  - The workqueue changes from WQ_PERCPU to WQ_UNBOUND.
+  - REP_EVENT_NOTIFY from any caller other than rep_pcifunc is rejected.
+
+It might also help to name the original bugs being fixed:
+
+  - rep_evt_wq was leaked on every enable
+  - INIT_WORK() and INIT_LIST_HEAD() were re-run on live objects
+  - queue_work() could be passed a NULL workqueue
+  - the response map could overflow
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> index 937b085582b5f..baba564259436 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+
+[ ... ]
+
+> @@ -3686,7 +3703,18 @@ static int rvu_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  err_dl:
+>  	rvu_unregister_dl(rvu);
+>  err_irq:
+> +	/*
+> +	 * GET_REP_CNT may have allocated rep_evt_wq before this failure.
+> +	 * Drain it before unregistering interrupts.
+> +	 */
+> +	rep_wq = rvu_rep_evtq_disable(rvu);
 > +
->   	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
->   	    smc->conn.alert_token_local) {
->   		struct smc_connection *conn = &smc->conn;
-> @@ -185,6 +189,7 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->   			goto errout;
->   	}
->
-> +out:
->   	nlmsg_end(skb, nlh);
->   	return 0;
-Reviewed-by: Hidayath Khan <hidayath@linux.ibm.com>
->
+>  	rvu_unregister_interrupts(rvu);
+> +
+> +	if (rep_wq) {
+> +		flush_workqueue(rvu->afpf_wq_info.mbox_wq);
+> +		destroy_workqueue(rep_wq);
+> +	}
+>  err_flr:
+>  	rvu_flr_wq_destroy(rvu);
+>  err_mbox:
+
+[Severity: Medium]
+Can rep_evt_wq still leak when rvu_register_interrupts() itself fails?
+
+rvu_register_interrupts() calls rvu_enable_mbox_intr() early. After that
+it can still fail: PF FLR request_irq, AF-VF FLR0/FLR1, ME0/ME1, or
+rvu_cpt_register_interrupts(). In that case rvu_probe() jumps to err_flr,
+which is below this new block:
+
+rvu_probe()
+    err = rvu_register_interrupts(rvu);
+    if (err) {
+        ...
+        goto err_flr;
+    }
+
+rep_evt_teardown is never set on this path. While the mailbox was live,
+rvu_mbox_handler_get_rep_cnt() could have allocated and published
+rep_evt_wq. It could also do so while rvu_mbox_destroy() drains mbox_wq.
+
+Would that workqueue, and any queued rep_evtq_ent entries, be leaked when
+rvu is devm_kfree()d? The v5 changelog says this probe leak is fixed.
+
+[Severity: High]
+Is rep_wq destroyed here before the FLR workqueue has been drained?
+
+The FLR path produces representor events:
+
+__rvu_flr_handler()
+  rvu_blklf_teardown()
+    rvu_nix_lf_teardown()
+      rvu_rep_notify_pfvf_state()
+        rvu_mbox_handler_rep_event_notify()
+            wq = smp_load_acquire(&rvu->rep_evt_wq);
+            ...
+            queue_work(wq, &rvu->rep_evt_work);
+
+wq is loaded without rsrc_lock or RCU, and queue_work() only runs after
+the kmalloc and the spinlock section. __rvu_flr_handler() holds only
+flr_lock.
+
+On this error path the order is:
+
+  1. rvu_rep_evtq_disable()
+  2. rvu_unregister_interrupts()
+  3. flush of the AF-PF mbox_wq
+  4. destroy_workqueue(rep_wq)
+  5. rvu_flr_wq_destroy() at err_flr
+
+If an FLR work item loaded wq before it was cleared, can it call
+queue_work() on the destroyed workqueue? rvu_remove() calls
+rvu_flr_wq_destroy() before destroy_workqueue(rep_wq), so only the probe
+path seems to have this ordering.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+> index a2781e0f504e3..4c4171515d743 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+
+[ ... ]
+
+> @@ -334,29 +370,43 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
+>  			continue;
+>  
+>  		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
+> +		pfvf = rvu_get_pfvf(rvu, pcifunc);
+>  		rvu_get_nix_blkaddr(rvu, pcifunc);
+> +		lbk_enabled = test_bit(NIXLF_INITIALIZED, &pfvf->flags);
+> +		if (lbk_enabled)
+> +			rvu_switch_enable_lbk_link(rvu, pcifunc, true);
+>  		rep = true;
+>  		for (i = 0; i < 2; i++) {
+
+[ ... ]
+
+> +		/* Sync initial link state for a PF brought up before
+> +		 * switchdev mode was enabled.
+> +		 */
+> +		if (lbk_enabled)
+> +			rvu_rep_notify_pfvf_state(rvu, pcifunc, true);
+
+[Severity: Medium]
+Could this queue a stale up event?
+
+lbk_enabled is sampled before the four rule installs, and the true event
+is queued only after them. Nothing orders this against NIX_LF_STOP_RX.
+
+Suppose rvu_mbox_handler_nix_lf_stop_rx() clears NIXLF_INITIALIZED and
+queues rvu_rep_notify_pfvf_state(pcifunc, false) in that window. This code
+then queues true, and the FIFO worker delivers down, then up.
+
+Would the representor end up with RVU_REP_VF_INITIALIZED set for a stopped
+function? The VF loop further down has the same window.
+
+[ ... ]
+
+>  void rvu_rep_update_rules(struct rvu *rvu, u16 pcifunc, bool ena)
+>  {
+>  	struct rvu_switch *rswitch = &rvu->rswitch;
+>  	struct npc_mcam *mcam = &rvu->hw->mcam;
+> -	u32 max = rswitch->used_entries;
+>  	int blkaddr;
+>  	u16 entry;
+> +	u32 max;
+
+[ ... ]
+
+>  	rvu_switch_enable_lbk_link(rvu, pcifunc, ena);
+>  	mutex_lock(&mcam->lock);
+> @@ -415,6 +483,7 @@ void rvu_rep_update_rules(struct rvu *rvu, u16 pcifunc, bool ena)
+>  			npc_enable_mcam_entry(rvu, mcam, blkaddr, entry, ena);
+>  	}
+>  	mutex_unlock(&mcam->lock);
+> +	mutex_unlock(&rswitch->switch_lock);
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but should the index passed to
+npc_enable_mcam_entry() be rswitch->start_entry + entry?
+
+rvu_rep_install_mcam_rules() installs each rule at start + entry and
+records it in entry2pcifunc[entry]. rvu_switch_update_rules() also uses
+start_entry + entry. Here the relative index goes straight to
+npc_enable_mcam_entry(), which programs NPC_AF_MCAMEX_BANKX_CFG() from the
+index it is given.
+
+In rep mode, would every NIX_LF_START_RX/STOP_RX then enable or disable
+MCAM entries 0..used_entries-1? Those entries belong to other functions,
+and the representor rules would never be touched.
+
+This function is being rewritten anyway. Could the offset be fixed here
+too?
+
+> @@ -435,10 +504,31 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+>  	if (req->hdr.pcifunc != rvu->rep_pcifunc)
+>  		return 0;
+>  
+> -	rvu->rep_mode = req->ena;
+> +	if (req->ena) {
+> +		rvu->rep_mode = true;
+> +	} else {
+
+[Severity: Medium]
+When representor mode is re-enabled here, does anything replay the state
+of PFs/VFs that are already running?
+
+The new initial link-state replay only happens in
+rvu_rep_install_mcam_rules(). That is reached only from
+rvu_switch_enable(), and only when the AF devlink mode actually changes.
+
+Suppose only the representor PF is switched legacy -> switchdev while the
+AF stays in switchdev:
+
+otx2_devlink_eswitch_mode_set()
+    rvu_rep_destroy()
+    rvu_rep_create()
+
+ESW_CFG(ena=1) then only sets rep_mode here. rvu_devlink_eswitch_mode_set()
+also returns early:
+
+	if (rswitch->mode == mode)
+		return 0;
+
+The new reps start with RVU_REP_VF_INITIALIZED clear. For representees
+that are already up, would rvu_rep_open() skip carrier-on and
+rvu_rep_setup_tc_cb() return -EINVAL until their next state transition?
+
+[ ... ]
+
+> @@ -446,32 +536,96 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+>  int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
+>  				 struct get_rep_cnt_rsp *rsp)
+>  {
+
+[ ... ]
+
+> +	/* Only a PF can register as the representor, not a VF. */
+> +	if (req->hdr.pcifunc & RVU_PFVF_FUNC_MASK) {
+> +		ret = -EPERM;
+> +		goto unlock;
+> +	}
+
+[Severity: Medium]
+Is rejecting VFs enough to identify the representor PF?
+
+Any PF that sends GET_REP_CNT first becomes rvu->rep_pcifunc, including a
+CGX-mapped representee PF:
+
+	rvu->rep2pfvf_map = map;
+	rvu->rep_pcifunc = req->hdr.pcifunc;
+
+That PF then passes the ownership checks in REP_EVENT_NOTIFY and ESW_CFG,
+and gets the is_rep_dev() privileges in NIX/NPC. For example, it could use
+REP_EVENT_NOTIFY to rewrite other functions' pfvf->mac_addr.
+
+rep2pfvf_map is now cached, and rvu_rep_get_rep_map() returns -EPERM to
+everyone else. Would the real representor PF then be locked out until the
+AF is reloaded? Before this patch the role was overwritten on each call.
+
+Could the caller be checked against the representor device itself?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
+> index 49ce38685a7e6..0897598c6edea 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
+
+[ ... ]
+
+> @@ -188,7 +195,7 @@ void rvu_switch_enable(struct rvu *rvu)
+>  	if (!rswitch->entry2pcifunc)
+>  		goto free_entries;
+>  
+> -	rswitch->used_entries = alloc_rsp.count;
+> +	/* Publish used_entries only after entry2pcifunc[] is fully populated. */
+>  	rswitch->start_entry = alloc_rsp.entry;
+>  
+>  	if (rvu->rep_mode) {
+> @@ -200,13 +207,25 @@ void rvu_switch_enable(struct rvu *rvu)
+>  	if (ret)
+>  		goto uninstall_rules;
+>  
+> +	mutex_lock(&rswitch->switch_lock);
+> +	rswitch->used_entries = alloc_rsp.count;
+> +	mutex_unlock(&rswitch->switch_lock);
+
+[Severity: Medium]
+Can PF/VF state changes that happen during the install be lost now?
+
+The install loop does not hold switch_lock, and used_entries is published
+only after the loop finishes.
+
+Take a PF/VF whose NIXLF_INITIALIZED is clear when the loop samples it.
+Its LBK link is skipped, and in non-rep mode rvu_switch_install_tx_rule()
+returns early.
+
+If nix_lf_start_rx then sets the flag and calls rvu_switch_update_rules()
+before used_entries is published, it sees:
+
+	max = rswitch->used_entries;
+	if (!max) {
+		mutex_unlock(&rswitch->switch_lock);
+		return;
+	}
+
+Would that function's LBK link and TX rule then stay unprogrammed until it
+is restarted? Likewise, a stop_rx during the install would leave rules
+enabled for a stopped function.
+
+Before this patch the window covered one entry; now it covers the whole
+install.
+
+>  
+>  	return;
+>  
+>  uninstall_rules:
+> +	if (rvu->rep_mode && rvu->rep_pcifunc)
+> +		rvu_switch_enable_lbk_link(rvu, rvu->rep_pcifunc, false);
+> +
+>  	uninstall_req.start = rswitch->start_entry;
+> -	uninstall_req.end =  rswitch->start_entry + rswitch->used_entries - 1;
+> +	uninstall_req.end =  rswitch->start_entry + alloc_rsp.count - 1;
+>  	rvu_mbox_handler_npc_delete_flow(rvu, &uninstall_req, &uninstall_rsp);
+> +	mutex_lock(&rswitch->switch_lock);
+> +	rswitch->used_entries = 0;
+> +	rswitch->start_entry = 0;
+>  	kfree(rswitch->entry2pcifunc);
+> +	rswitch->entry2pcifunc = NULL;
+> +	mutex_unlock(&rswitch->switch_lock);
+
+[Severity: Medium]
+This is a pre-existing issue, but the caller never learns about this
+rollback. rvu_switch_enable() returns void, and
+rvu_devlink_eswitch_mode_set() has already committed the mode:
+
+	rswitch->mode = mode;
+	if (mode == DEVLINK_ESWITCH_MODE_SWITCHDEV)
+		rvu_switch_enable(rvu);
+
+If rule installation fails, devlink still returns 0 and mode stays
+SWITCHDEV with no rules installed. Would a later switchdev request hit the
+rswitch->mode == mode early return and never retry the install?
+
+[ ... ]
+
+> @@ -260,35 +294,46 @@ void rvu_switch_disable(struct rvu *rvu)
+>  	}
+>  
+>  free_ents:
+> +	mutex_lock(&rswitch->switch_lock);
+>  	uninstall_req.start = rswitch->start_entry;
+
+[ ... ]
+
+>  void rvu_switch_update_rules(struct rvu *rvu, u16 pcifunc, bool ena)
+>  {
+>  	struct rvu_switch *rswitch = &rvu->rswitch;
+> -	u32 max = rswitch->used_entries;
+> +	u16 start_entry;
+>  	u16 entry;
+> +	u32 max;
+>  
+>  	if (rvu->rep_mode)
+>  		return rvu_rep_update_rules(rvu, pcifunc, ena);
+>  
+> -	if (!rswitch->used_entries)
+> +	mutex_lock(&rswitch->switch_lock);
+> +	max = rswitch->used_entries;
+> +	if (!max) {
+> +		mutex_unlock(&rswitch->switch_lock);
+>  		return;
+> +	}
+
+[Severity: Medium]
+Can this take switch_lock before it has been initialized?
+
+Before this patch, the !used_entries case returned without touching the
+lock. Now every non-rep call takes it, and rvu_rep_update_rules() also
+takes it unconditionally.
+
+In rvu_probe(), the mailbox goes live in rvu_register_interrupts() via
+rvu_enable_mbox_intr(). The lock init only runs later, after
+rvu_register_dl(), rvu_enable_sriov() and rvu_dbg_init():
+
+	mutex_init(&rvu->rswitch.switch_lock);
+
+A NIX_LF_START_RX/STOP_RX handled in that window would go through
+rvu_mbox_handler_nix_lf_start_rx()->rvu_switch_update_rules() and lock an
+uninitialized mutex. The later mutex_init() could then reinitialize a
+mutex that is held.
+
+rvu_mbox_handler_npc_install_flow() already had this ordering problem, but
+this adds a new user on the start/stop RX path. Should the mutex_init()
+move before rvu_register_interrupts()?
+
+>  
+>  	for (entry = 0; entry < max; entry++) {
+>  		if (rswitch->entry2pcifunc[entry] == pcifunc)
+>  			break;
+>  	}
+> +	start_entry = rswitch->start_entry;
+> +	mutex_unlock(&rswitch->switch_lock);
+>  
+>  	if (entry >= max)
+>  		return;
+>  
+> -	rvu_switch_install_tx_rule(rvu, pcifunc, rswitch->start_entry + entry);
+> +	rvu_switch_install_tx_rule(rvu, pcifunc, start_entry + entry);
+>  	rvu_switch_install_rx_rule(rvu, pcifunc, 0x0);
+>  }
+
+[Severity: Medium]
+Does switch_lock need to cover the rule installs as well as the lookup?
+
+The lookup runs under the lock, but two calls run after it is dropped:
+
+  - rvu_switch_install_tx_rule(), which also enables the LBK link
+  - rvu_switch_install_rx_rule(..., 0x0)
+
+Meanwhile rvu_switch_disable() reverts the RX rules and disables the LBK
+links before it takes switch_lock at free_ents.
+
+Suppose a devlink disable completes between the lookup and these installs.
+Could the LBK link end up re-enabled, the RX channel mask reverted, and a
+rule written into a freed or reallocated MCAM entry?
+
+Rep mode has a similar window. rvu_rep_update_rules(ena=true) can run
+between the LBK-disable loop in rvu_switch_disable() and its locked reset,
+and turn the link back on.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+> index 0f5d5642d3f7a..21b5802cb9431 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+
+[ ... ]
+
+> @@ -628,20 +654,27 @@ static int rvu_rep_rsrc_init(struct otx2_nic *priv)
+>  
+>  void rvu_rep_destroy(struct otx2_nic *priv)
+>  {
+> +	struct rep_dev **reps = priv->reps;
+>  	struct rep_dev *rep;
+>  	int rep_id;
+>  
+>  	rvu_eswitch_config(priv, false);
+>  	priv->flags |= OTX2_FLAG_INTF_DOWN;
+>  	rvu_rep_free_cq_rsrc(priv);
+> +
+> +	priv->reps = NULL;
+> +	/* Wait for any in-flight rvu_rep_state_evt_handler() using the old
+> +	 * reps snapshot to finish before freeing the entries below.
+> +	 */
+> +	flush_work(&priv->mbox.mbox_up_wrk);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is rep->stats_wrk ever
+cancelled before the rep is freed?
+
+rvu_rep_get_stats64() does:
+
+	schedule_delayed_work(&rep->stats_wrk, msecs_to_jiffies(100));
+
+stats_wrk lives inside rep_dev, which lives inside the netdev, and only
+mbox_up_wrk is flushed here.
+
+If stats are read shortly before teardown, could rvu_rep_get_stats() run
+after free_netdev() and dereference rep->mdev and rep->stats in freed
+memory? Does this loop need a cancel_delayed_work_sync(&rep->stats_wrk)?
+
+>  	for (rep_id = 0; rep_id < priv->rep_cnt; rep_id++) {
+> -		rep = priv->reps[rep_id];
+> +		rep = reps[rep_id];
+>  		unregister_netdev(rep->netdev);
+>  		rvu_rep_devlink_port_unregister(rep);
+>  		free_netdev(rep->netdev);
+>  		kfree(rep->flow_cfg);
+
+[Severity: High]
+This is a pre-existing issue, but is rep still valid at this point?
+
+In rvu_rep_create(), rep comes from netdev_priv(ndev), so it is part of
+the net_device allocation. After free_netdev(rep->netdev), doesn't
+kfree(rep->flow_cfg) read the pointer out of freed memory?
+
+Since this loop is being changed, could kfree(rep->flow_cfg) move before
+free_netdev()? flow_cfg->flow_ent also doesn't seem to be freed anywhere.
+
+>  	}
+> -	kfree(priv->reps);
+> +	kfree(reps);
+>  	rvu_rep_rsrc_free(priv);
+>  }
+
+[Severity: High]
+This is also a pre-existing issue, but can rvu_rep_rsrc_free() dereference
+a NULL priv->netdev?
+
+rvu_rep_probe() allocates priv with devm_kzalloc(), and priv->netdev is
+only set in rvu_rep_setup_tc_cb(). rvu_rep_free_cq_rsrc() disabled NAPI,
+but the rep netdevs could still transmit until unregister_netdev(). Then:
+
+rvu_rep_rsrc_free()
+  otx2_free_hw_resources()
+    otx2_cleanup_tx_cqes()
+        txq = netdev_get_tx_queue(pfvf->netdev, qidx);
+
+With TX CQEs pending, tx_pkts > 0, so this dereferences a NULL
+priv->netdev. If TC setup ran earlier, it instead uses a rep netdev that
+has already been freed.
+
+otx2_tx_napi_handler() uses pfvf->reps[qidx]->netdev when
+OTX2_FLAG_REP_MODE_ENABLED is set, but the cleanup path doesn't.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928034213.3173088-1-nshettyj%40marvell.com
