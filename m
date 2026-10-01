@@ -1,593 +1,238 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f100.google.com (mail-qv1-f100.google.com [209.85.219.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED1F380FF4
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 19:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985821624D5
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 19:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790882505; cv=none; b=G3Nxpk3baw47adiNGVHCldl+LDfUoVAv0p7G7J9//eEYHRFPTlFzLOK380jK+DfkwOaXl7RrzvZa3RpjSiwWhQ1DW1/bffYq96FZlmYtfO2Pmw5z0nyPvnrKBEnoC4lzfQMSEvk/GnEaQeAMTl50SIDYWJouzDD7Xp1Yo4l3Hhw=
+	t=1790882576; cv=none; b=In2ZAZBHNcJ5Si2KNWGRJ5r8sGGAMve6EuKtU7Cn6eCWoWddAsDa/mjYzg0uZibtDo4wZ2T6tWg+JAODcd5UgU6S67eohGuJ57vGE/OsqoI/o++xeUpmTVg6QCc117dCvQpqD/zeJpt4skVHHT9p8XAtG4J4KxzzDkhYttKG+FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790882505; c=relaxed/simple;
-	bh=oLcUT0EnsxGEojThH/5a871va7gFkB+UhCnrwWKRQtA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbMXlpDdn79ChanjRp1ymWr9eBABzQQ/6iLz9AOfiUBEgp0khc3KeD/L5u+3ewFCHZG/DG/oWieE9v9DwgF35mqnvjyJraYdi1oidZdnEG7j/ryU2Y536sv3/Yhk35JQjWl5GgA1EkWhgVxjFm3rHaZJZEFzam8WRuYjU3a8MQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VD0i9Yv/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790882576; c=relaxed/simple;
+	bh=8C/WGs2z6JGJhoTDkqQfgJrGYEgIYUDMg8j/hC7lGzE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WYDIJuvA6N7UKwPQhtW4CcTyGKFhq1hkVVdT/WeRe8g2GuHOqrsO1shyJvvYhVkDd78NMZfq6QgTQJP7oJq6kFV0UNFu32+tXiIlwWpgE7YW6yCRmZjhlnUQQti76tWBsChEOsj9D/LBIx+p1ryQLEtzUfIkUfKueR7KyL6wZdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UIngOVEq; arc=none smtp.client-ip=209.85.219.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VD0i9Yv/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EF01F000FF;
-	Thu,  1 Oct 2026 19:21:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790882503;
-	bh=4aCZKUm6E4u3x3PvSra9oM99mmGYZftZdEMJH2Ov3sc=;
-	h=From:To:Cc:Subject:Date;
-	b=VD0i9Yv/1xg0j9mgaTdyi3Nl2J9QZ07MXzm4WcQ3HBJBX4xQVYwRp7AjcGkIZn5lg
-	 Qq0yYdWguoTcJ9lM9PZvNU51urPf2PJTJp0FDjmHXIqxuHqEp2+14HIl9jLshhwYvI
-	 JqoPDwq6i4ZhSFcpBPVtJNY0UpuTrpTPoVGJqBaeeBhOwwBWJmfukxuCnXd2bfRGQO
-	 doKj89wr2ppqqpCdVLMoLpT38vcnweYZBFzaaPwpvIxdUGzt5KVLgJHCF+cwbE0FzA
-	 b7o6ga4MJlIGD3Fieos/7IjebhwIZbI+GTpK2qQyPB7FZIgCdLlrVWDlFE+tOlaUep
-	 hKAMmFAlaFDgg==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Wei Wang <weiwan@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	edumazet@google.com,
-	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH v3 net-next] selftests/net: add SO_RESERVE_MEM test
-Date: Thu,  1 Oct 2026 21:21:37 +0200
-Message-ID: <20261001192137.309983-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UIngOVEq"
+Received: by mail-qv1-f100.google.com with SMTP id 6a1803df08f44-9178aabd30dso8007176d6.1
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 12:22:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790882573; x=1791487373;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vq5ouCg9UP2Id0BRmvdOIFtM/IIj+X8Edq5eKZ4V7sQ=;
+        b=w2e/xhlunoEezI5tJ0HaYmIUYvrf7OBzEGKdQTw++hcK1rj0Ty1ZmaorA+ju0raeKt
+         VCqBkK5u8ROA0udufEhV/bwUJHzVUHRxh+MzO4ig77S/oEthvYO8tY2UZF675fehCKSg
+         AGEhzhk9ma40VMbqw0QvzpceVv5rbB8z3jvEiDiwT3XJo5lAcyQg36hdwhscm4WrMbLA
+         ZhlF21TH0aJrP9koN6Rpg7KEPOXJxr21EFibHYx74F30Lza0j5qQnZcod8pBccPi2+tv
+         Zll0WxGrzgt3P3+Anha0WU4gcuz1E5ClaDGSIid6bLdfhmCmLtM+qhIE3gD64chKuXl4
+         6pMQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwXjfc9yk2fwP/1oH8EwycUyMqehY3vqDBb+SsdnodtT1nY6KZReplgqdUyntBiYQtIls4oiTw=@vger.kernel.org
+X-Gm-Message-State: AFuF++nSwjVPFdOkQCX0Ue8e75yEu0FqIS+Tjin8Bpwnz77qHl05p5l+
+	OsXSUPHibT+ytma8kjksvUBf/y/z4/NL9HrvNpYxvmb/0FsJiLxWwcMwcKAkr/X4rfnCm54bttG
+	4YX5FqP6ERVElpHn8sYsCsGNLKvUw89CXZ/DUmvGs09WfbgiDG1lQUchAvM5LFF7kpnKiABpZDS
+	jHE2yC8hcBvK5BR8b9I8n6TDQHE3DKVgi1RMxfY+8ccvZrEZ790ymQbDdr8mxtraXvayw4pDvWW
+	Oe4R88ttN4=
+X-Gm-Gg: AYBFou2752btV2lVaqsShjRqg7rh+/b0AEW3P/ifviqaUshWqHdvQWCZE8eb0M4XxLs
+	lmb29fFc04/BJvw0zg0DTHaZ2TrnvT8p2FccCJ8mWfTs2o8JbEswFjb8hsVUt2JREWf3MILU/ol
+	57jSyAy6226D9sX+c8Kp8jgCZSSGBML6feL67kYWOmyNjsDlSx0kWIHHVN17cGUMnB6vZ7KTjaX
+	UJmN6iyjlTU3oN8SzhUmcVDRk69anhX9sOuDL3xkcCtMn8r+IZ/GyyWQwTEcO1T1441M5DFT/Yd
+	+G7AGZB7A1yWfmAzAqx53X8wWrhFsVl9ckWiQRCLbfiUxLlcOlsYo+GIuOtu+tZTX/N1Al0esmk
+	OUgYZEjniImdZF5majxxt4idPJ08rKa+NuLFV2b2vGu+xunbfEPZW8r6zzu0nZPoTNgv7R8Hj7M
+	VHNlFVqNjG3B12plz4yTEYt1alZtf/gbgyqFw=
+X-Received: by 2002:a05:620a:19a2:b0:93c:8ad:4eee with SMTP id af79cd13be357-93cf19cab0dmr20147585a.59.1790882572989;
+        Thu, 01 Oct 2026 12:22:52 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-16.dlp.protect.broadcom.com. [144.49.247.16])
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-93cca049e94sm12246385a.2.2026.10.01.12.22.52
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 01 Oct 2026 12:22:52 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c29452ecadeso801347766b.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 12:22:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790882571; x=1791487371; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vq5ouCg9UP2Id0BRmvdOIFtM/IIj+X8Edq5eKZ4V7sQ=;
+        b=UIngOVEqcc2mDhhwMOzqny5juLugUu1N1W6ktT8B3LHeApnxjsQ7N2E/nnuX7pJfvI
+         eoS+XWFdTo8cww5gFN1fivr4uHUasfQA4kcKZFFtguSpC3MQs+wJ4waAe1Ntzz71LMoJ
+         0J0tdfycwBk6DfkUhq454lcYTc/kta0hcHRjo=
+X-Forwarded-Encrypted: i=1; AKwUvByI9vGAYi5zjuoRz8xlwMMFBcBBgV6Jd+bWUQNFkd7phhHpjLqTk5n4Gc+iaRvxh1buJY34YsM=@vger.kernel.org
+X-Received: by 2002:a17:907:7282:b0:c2d:fc0b:551c with SMTP id a640c23a62f3a-c2e4ad7caa6mr48936966b.16.1790882571369;
+        Thu, 01 Oct 2026 12:22:51 -0700 (PDT)
+X-Received: by 2002:a17:907:7282:b0:c2d:fc0b:551c with SMTP id
+ a640c23a62f3a-c2e4ad7caa6mr48935866b.16.1790882570914; Thu, 01 Oct 2026
+ 12:22:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260928041712.3467803-1-michael.chan@broadcom.com> <179056950861.31693.11019543022435274443@kernel.org>
+In-Reply-To: <179056950861.31693.11019543022435274443@kernel.org>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Thu, 1 Oct 2026 12:22:38 -0700
+X-Gm-Features: AclHuK9jTgSw-yFe6TVeRd0HvumijeAB4Dj2HjxbmS3B-R70BZNccTquA80PluI
+Message-ID: <CACKFLimaQ93kqXsKn=VhaByUfsi51HEqjVmteNyPA0z4uj-4Og@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/9] bnxt_en: Bug fixes
+To: netdev-bot+sinfo@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
+	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com, joe@dama.to
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000084836d065ccc5780"
 
-Add a kselftest suite covering SO_RESERVE_MEM behavior:
-- Reject unsupported socket types (UDP/SOCK_DGRAM, UNIX/SOCK_STREAM,
-  SOCK_RAW, MPTCP) with EOPNOTSUPP, for both zero and non-zero values.
-- Validate bounds (negative values and values > SZ_1G return EINVAL).
-- Verify reserve adjustments (increase, decrease, page rounding, and
-  reset to 0) and corresponding sk_meminfo[SK_MEMINFO_FWD_ALLOC] changes
-  via getsockopt(SO_MEMINFO).
-- Exercise cgroup v2 memory.max enforcement returning ENOMEM when the
-  requested reservation exceeds the cgroup limit.
-- Verify that a child socket returned by accept() starts with a 0
-  reserve even when its parent listener configured a non-zero
-  SO_RESERVE_MEM.
-- Verify reserve retention across TCP send/receive/ACK cycles.
+--00000000000084836d065ccc5780
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Each test runs in private mount and network namespaces. cgroup2 is
-mounted on a private tmpfs, so nothing is left behind in the host
-filesystem. The test process is moved to a dedicated leaf cgroup, and
-back to its original cgroup on teardown. The memory controller is
-enabled in the root of the hierarchy if needed, and left enabled like
-selftests/cgroup do, as disabling it could break other users.
+Sorry for the late reply.  This ended up in my spam folder.
 
-Also enable CONFIG_CGROUPS=y and CONFIG_MEMCG=y in
-tools/testing/selftests/net/config.
+On Sun, Sep 27, 2026 at 9:25=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
+:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
 
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-Assisted-by: LLM
----
-v3: (net-next submission)
- - run in a private netns, bring lo up
- - mount cgroup2 on a private tmpfs, check MS_PRIVATE remount
- - move back to the original cgroup instead of the hierarchy root (Sashiko)
- - never disable the memory controller (Sashiko)
- - accept EPERM/EACCES for SOCK_RAW creation (Sashiko)
- - also check val == 0 on non-TCP sockets (Wei)
- - wait for WMEM_QUEUED == 0 and FWD_ALLOC >= reserve in one snapshot (Sashiko)
-v2: https://lore.kernel.org/netdev/20260925135244.3715196-1-edumazet@google.com/
+The ring accounting bugs fixed by the 1st 6 patches were originally
+reported by Sashiko while posting the kTLS patches to net-next:
 
- tools/testing/selftests/net/.gitignore       |   1 +
- tools/testing/selftests/net/Makefile         |   1 +
- tools/testing/selftests/net/config           |   2 +
- tools/testing/selftests/net/so_reserve_mem.c | 448 +++++++++++++++++++
- 4 files changed, 452 insertions(+)
- create mode 100644 tools/testing/selftests/net/so_reserve_mem.c
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810051358.1244418-=
+7-michael.chan@broadcom.com
 
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index dacd36ed8455e38576ff3df27acdea02d7b78edf..21412510ac26b869f68b91bc5830b12bf3568518 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -41,6 +41,7 @@ skf_net_off
- socket
- so_incoming_cpu
- so_netns_cookie
-+so_reserve_mem
- so_rcv_listener
- stress_reuseport_listen
- tap
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index cab3f2c90039f691b40a3b977ba5ad0740661eb2..54beea2e348c45db56604e2e3c5027829d2f3e53 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -197,6 +197,7 @@ TEST_GEN_PROGS := \
- 	sk_connect_zero_addr \
- 	sk_so_peek_off \
- 	so_incoming_cpu \
-+	so_reserve_mem \
- 	tap \
- 	tcp_port_share \
- 	tls \
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 737e7e6327b3793984718eb518d3fb79b7870e4d..d355cf98059770bbcdcda1a33d8e84bc390eb26a 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -7,6 +7,7 @@ CONFIG_BRIDGE_VLAN_FILTERING=y
- CONFIG_CAN=m
- CONFIG_CAN_DEV=m
- CONFIG_CAN_VXCAN=m
-+CONFIG_CGROUPS=y
- CONFIG_CRYPTO_ARIA=y
- CONFIG_CRYPTO_CHACHA20POLY1305=m
- CONFIG_CRYPTO_SHA1=y
-@@ -61,6 +62,7 @@ CONFIG_L2TP_V3=y
- CONFIG_MACSEC=m
- CONFIG_MACVLAN=y
- CONFIG_MACVTAP=y
-+CONFIG_MEMCG=y
- CONFIG_MPLS=y
- CONFIG_MPLS_IPTUNNEL=m
- CONFIG_MPLS_ROUTING=m
-diff --git a/tools/testing/selftests/net/so_reserve_mem.c b/tools/testing/selftests/net/so_reserve_mem.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..aca5960ddff2544a7b5f1aec8d48332178a54a11
---- /dev/null
-+++ b/tools/testing/selftests/net/so_reserve_mem.c
-@@ -0,0 +1,448 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <linux/sock_diag.h>
-+#include <net/if.h>
-+#include <netinet/in.h>
-+#include <sched.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mount.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <unistd.h>
-+
-+#include "kselftest_harness.h"
-+
-+#ifndef IPPROTO_MPTCP
-+#define IPPROTO_MPTCP 262
-+#endif
-+
-+#define SO_RESERVE_MEM_MAX (1 << 30)
-+
-+/* cgroup2 is mounted here, on a tmpfs, in a private mount namespace. */
-+#define CG_TMP "/tmp"
-+#define CG_MNT CG_TMP "/cgroup2"
-+
-+static int cg_write(const char *dir, const char *file, const char *buf,
-+		    int flags)
-+{
-+	ssize_t len = strlen(buf);
-+	char path[PATH_MAX];
-+	int fd, ret;
-+
-+	snprintf(path, sizeof(path), "%s/%s", dir, file);
-+	fd = open(path, O_WRONLY | flags);
-+	if (fd < 0)
-+		return -1;
-+	ret = write(fd, buf, len) == len ? 0 : -1;
-+	close(fd);
-+	return ret;
-+}
-+
-+static int cg_read(const char *dir, const char *file, char *buf, size_t size)
-+{
-+	char path[PATH_MAX];
-+	ssize_t n;
-+	int fd;
-+
-+	snprintf(path, sizeof(path), "%s/%s", dir, file);
-+	fd = open(path, O_RDONLY);
-+	if (fd < 0)
-+		return -1;
-+	n = read(fd, buf, size - 1);
-+	close(fd);
-+	if (n < 0)
-+		return -1;
-+	buf[n] = '\0';
-+	return 0;
-+}
-+
-+static int cg_enter(const char *dir)
-+{
-+	char buf[32];
-+
-+	snprintf(buf, sizeof(buf), "%d\n", getpid());
-+	return cg_write(dir, "cgroup.procs", buf, 0);
-+}
-+
-+/* Path of the current cgroup, below CG_MNT. */
-+static int cg_get_current(char *buf, size_t size)
-+{
-+	char line[PATH_MAX];
-+	int ret = -1;
-+	FILE *f;
-+
-+	f = fopen("/proc/self/cgroup", "r");
-+	if (!f)
-+		return -1;
-+	while (fgets(line, sizeof(line), f)) {
-+		if (strncmp(line, "0::", 3))
-+			continue;
-+		line[strcspn(line, "\n")] = '\0';
-+		if (snprintf(buf, size, "%s%s", CG_MNT, line + 3) < (int)size)
-+			ret = 0;
-+		break;
-+	}
-+	fclose(f);
-+	return ret;
-+}
-+
-+static int get_reserve_mem(struct __test_metadata *_metadata, int fd)
-+{
-+	int val = -1;
-+	socklen_t len = sizeof(val);
-+
-+	EXPECT_EQ(getsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, &len), 0);
-+	return val;
-+}
-+
-+static __u32 get_fwd_alloc(struct __test_metadata *_metadata, int fd)
-+{
-+	__u32 meminfo[SK_MEMINFO_VARS] = {};
-+	socklen_t len = sizeof(meminfo);
-+
-+	EXPECT_EQ(getsockopt(fd, SOL_SOCKET, SO_MEMINFO, meminfo, &len), 0);
-+	return meminfo[SK_MEMINFO_FWD_ALLOC];
-+}
-+
-+/* Wait until a single SO_MEMINFO snapshot shows an empty write queue
-+ * and at least @min_fwd_alloc bytes of forward alloc: ACK processing
-+ * (possibly running on another CPU) first decrements sk_wmem_queued,
-+ * then uncharges sk_forward_alloc.
-+ */
-+static void wait_wmem_drained(struct __test_metadata *_metadata, int fd,
-+			      __u32 min_fwd_alloc)
-+{
-+	__u32 meminfo[SK_MEMINFO_VARS] = {};
-+	socklen_t len;
-+	int i;
-+
-+	for (i = 0; i < 5000; i++) {
-+		len = sizeof(meminfo);
-+		ASSERT_EQ(getsockopt(fd, SOL_SOCKET, SO_MEMINFO, meminfo, &len), 0);
-+		if (meminfo[SK_MEMINFO_WMEM_QUEUED] == 0 &&
-+		    meminfo[SK_MEMINFO_FWD_ALLOC] >= min_fwd_alloc)
-+			return;
-+		usleep(1000);
-+	}
-+	EXPECT_EQ(meminfo[SK_MEMINFO_WMEM_QUEUED], 0U);
-+	EXPECT_GE(meminfo[SK_MEMINFO_FWD_ALLOC], min_fwd_alloc);
-+}
-+
-+FIXTURE(so_reserve_mem)
-+{
-+	char cg_orig[PATH_MAX];	/* cgroup the test started in */
-+	char cg_test[PATH_MAX];	/* cgroup the test sockets are charged to */
-+	long page_size;
-+	bool cg_created;
-+};
-+
-+/* The cgroup2 mount lives in a private mount namespace which goes away
-+ * with the test process, no need to unmount it.
-+ */
-+FIXTURE_TEARDOWN(so_reserve_mem)
-+{
-+	if (!self->cg_created)
-+		return;
-+
-+	/* Leave cg_test so that it can be removed. */
-+	EXPECT_EQ(cg_enter(self->cg_orig), 0);
-+	EXPECT_EQ(rmdir(self->cg_test), 0);
-+	self->cg_created = false;
-+}
-+
-+FIXTURE_SETUP(so_reserve_mem)
-+{
-+	struct ifreq ifr = {
-+		.ifr_name = "lo",
-+		.ifr_flags = IFF_UP,
-+	};
-+	int fd, err, ret, val = 0;
-+	char buf[256];
-+
-+	self->page_size = sysconf(_SC_PAGESIZE);
-+	ASSERT_GT(self->page_size, 0);
-+
-+	if (unshare(CLONE_NEWNS | CLONE_NEWNET))
-+		SKIP(return, "Failed to unshare namespaces (need root)");
-+
-+	/* Make sure the mounts below do not propagate to the host. */
-+	ASSERT_EQ(mount(NULL, "/", NULL, MS_REC | MS_PRIVATE, NULL), 0);
-+
-+	if (mount("none", CG_TMP, "tmpfs", 0, NULL) ||
-+	    mkdir(CG_MNT, 0755) ||
-+	    mount("none", CG_MNT, "cgroup2", 0, NULL))
-+		SKIP(return, "Failed to mount cgroup2");
-+
-+	ASSERT_EQ(cg_get_current(self->cg_orig, sizeof(self->cg_orig)), 0);
-+
-+	/* cg_test needs the memory controller to be enabled in the root of
-+	 * the hierarchy (which is not necessarily the global root cgroup
-+	 * when running in a cgroup namespace). Like selftests/cgroup, leave
-+	 * it enabled on exit: disabling it could break other users of the
-+	 * hierarchy.
-+	 */
-+	ASSERT_EQ(cg_read(CG_MNT, "cgroup.subtree_control", buf, sizeof(buf)), 0);
-+	if (!strstr(buf, "memory") &&
-+	    cg_write(CG_MNT, "cgroup.subtree_control", "+memory", 0))
-+		SKIP(return, "cgroup2 memory controller not available");
-+
-+	/* cg_test is a leaf cgroup, it can always host the test process. */
-+	snprintf(self->cg_test, sizeof(self->cg_test),
-+		 "%s/ksft_so_reserve_mem_%d", CG_MNT, getpid());
-+	if (mkdir(self->cg_test, 0755))
-+		SKIP(return, "Failed to create test cgroup");
-+	self->cg_created = true;
-+
-+	ret = cg_enter(self->cg_test);
-+	if (ret)
-+		so_reserve_mem_teardown(_metadata, self, variant);
-+	ASSERT_EQ(ret, 0);
-+
-+	/* Bring up loopback and verify memcg socket accounting is enabled */
-+	fd = socket(AF_INET, SOCK_STREAM, 0);
-+	ret = fd < 0 ? -1 : ioctl(fd, SIOCSIFFLAGS, &ifr);
-+	if (ret) {
-+		if (fd >= 0)
-+			close(fd);
-+		so_reserve_mem_teardown(_metadata, self, variant);
-+	}
-+	ASSERT_EQ(ret, 0);
-+
-+	ret = setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val));
-+	err = errno;
-+	close(fd);
-+	if (ret) {
-+		so_reserve_mem_teardown(_metadata, self, variant);
-+		if (err == EOPNOTSUPP)
-+			SKIP(return, "memcg socket accounting not enabled");
-+	}
-+	ASSERT_EQ(ret, 0);
-+}
-+
-+static void check_non_tcp_rejected(struct __test_metadata *_metadata,
-+				   int domain, int type, int protocol,
-+				   int val)
-+{
-+	int fd = socket(domain, type, protocol);
-+	int zero = 0;
-+
-+	if (fd < 0) {
-+		/* Protocol not available, or no CAP_NET_RAW */
-+		EXPECT_TRUE(errno == EAFNOSUPPORT ||
-+			    errno == EPROTONOSUPPORT ||
-+			    errno == ENOPROTOOPT ||
-+			    errno == EPERM ||
-+			    errno == EACCES);
-+		TH_LOG("socket(%d, %d, %d): %s, skipped",
-+		       domain, type, protocol, strerror(errno));
-+		return;
-+	}
-+	EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &zero, sizeof(zero)), -1);
-+	EXPECT_EQ(errno, EOPNOTSUPP);
-+	EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), -1);
-+	EXPECT_EQ(errno, EOPNOTSUPP);
-+	close(fd);
-+}
-+
-+TEST_F(so_reserve_mem, non_tcp_rejected)
-+{
-+	int val = self->page_size * 4;
-+
-+	check_non_tcp_rejected(_metadata, AF_INET, SOCK_DGRAM, 0, val);
-+	check_non_tcp_rejected(_metadata, AF_UNIX, SOCK_STREAM, 0, val);
-+	check_non_tcp_rejected(_metadata, AF_INET, SOCK_RAW, IPPROTO_ICMP, val);
-+	check_non_tcp_rejected(_metadata, AF_INET, SOCK_STREAM, IPPROTO_MPTCP, val);
-+}
-+
-+TEST_F(so_reserve_mem, grow_shrink_and_rounding)
-+{
-+	int ps = self->page_size;
-+	int fd, val;
-+
-+	fd = socket(AF_INET, SOCK_STREAM, 0);
-+	ASSERT_GE(fd, 0);
-+
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), 0);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, fd), 0U);
-+
-+	/* Negative or > SO_RESERVE_MEM_MAX value -> EINVAL */
-+	val = -1;
-+	EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), -1);
-+	EXPECT_EQ(errno, EINVAL);
-+
-+	val = SO_RESERVE_MEM_MAX + 1;
-+	EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), -1);
-+	EXPECT_EQ(errno, EINVAL);
-+
-+	val = INT_MAX;
-+	EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), -1);
-+	EXPECT_EQ(errno, EINVAL);
-+
-+	/* 1 byte rounds up to 1 page */
-+	val = 1;
-+	ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), ps);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)ps);
-+
-+	/* Grow to 16 pages */
-+	val = 16 * ps;
-+	ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), 16 * ps);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)(16 * ps));
-+
-+	/* Shrink by 1 byte (rounds delta down to 0 -> stays 16 pages) */
-+	val = 16 * ps - 1;
-+	ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), 16 * ps);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)(16 * ps));
-+
-+	/* Shrink to 4 pages */
-+	val = 4 * ps;
-+	ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), 4 * ps);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, fd), (__u32)(4 * ps));
-+
-+	/* Release all */
-+	val = 0;
-+	ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), 0);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, fd), 0U);
-+
-+	close(fd);
-+}
-+
-+TEST_F(so_reserve_mem, cgroup_memory_max)
-+{
-+	int ps = self->page_size;
-+	char buf[32];
-+	int fd, val;
-+
-+	/* The socket is charged to cg_test */
-+	fd = socket(AF_INET, SOCK_STREAM, 0);
-+	ASSERT_GE(fd, 0);
-+
-+	/* Move the test process back to its original cgroup before lowering
-+	 * cg_test's memory.max, so that the limit only governs the socket's
-+	 * memcg charges and cannot trigger OOM on the test process itself.
-+	 */
-+	ASSERT_EQ(cg_enter(self->cg_orig), 0);
-+
-+	/* Limit cg_test memory to 8 pages and try to reserve 128 pages.
-+	 * O_NONBLOCK: do not try to reclaim cg_test usage above the new limit.
-+	 */
-+	snprintf(buf, sizeof(buf), "%d\n", 8 * ps);
-+	ASSERT_EQ(cg_write(self->cg_test, "memory.max", buf, O_NONBLOCK), 0);
-+
-+	val = 128 * ps;
-+	EXPECT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), -1);
-+	EXPECT_EQ(errno, ENOMEM);
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), 0);
-+
-+	/* Restore unlimited memory.max */
-+	ASSERT_EQ(cg_write(self->cg_test, "memory.max", "max\n", 0), 0);
-+
-+	val = 4 * ps;
-+	ASSERT_EQ(setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, fd), 4 * ps);
-+
-+	close(fd);
-+}
-+
-+TEST_F(so_reserve_mem, accept_child_zero_reserve)
-+{
-+	struct sockaddr_in addr = {
-+		.sin_family = AF_INET,
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+	};
-+	socklen_t alen = sizeof(addr);
-+	int ps = self->page_size;
-+	int lfd, cfd, sfd, val;
-+
-+	lfd = socket(AF_INET, SOCK_STREAM, 0);
-+	ASSERT_GE(lfd, 0);
-+
-+	/* Set SO_RESERVE_MEM on listener before listen() */
-+	val = 4 * ps;
-+	ASSERT_EQ(setsockopt(lfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	ASSERT_EQ(bind(lfd, (struct sockaddr *)&addr, sizeof(addr)), 0);
-+	ASSERT_EQ(listen(lfd, 2), 0);
-+	ASSERT_EQ(getsockname(lfd, (struct sockaddr *)&addr, &alen), 0);
-+
-+	/* Grow SO_RESERVE_MEM on listener after listen() */
-+	val = 8 * ps;
-+	ASSERT_EQ(setsockopt(lfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, lfd), 8 * ps);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, lfd), (__u32)(8 * ps));
-+
-+	cfd = socket(AF_INET, SOCK_STREAM, 0);
-+	ASSERT_GE(cfd, 0);
-+	ASSERT_EQ(connect(cfd, (struct sockaddr *)&addr, sizeof(addr)), 0);
-+
-+	sfd = accept(lfd, NULL, NULL);
-+	ASSERT_GE(sfd, 0);
-+
-+	/* Child after accept() must have 0 reserve while listener keeps 8 pages */
-+	EXPECT_EQ(get_reserve_mem(_metadata, sfd), 0);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, sfd), 0U);
-+	EXPECT_EQ(get_reserve_mem(_metadata, lfd), 8 * ps);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, lfd), (__u32)(8 * ps));
-+
-+	/* Child can still independently set its own SO_RESERVE_MEM */
-+	val = 6 * ps;
-+	ASSERT_EQ(setsockopt(sfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	EXPECT_EQ(get_reserve_mem(_metadata, sfd), 6 * ps);
-+	EXPECT_EQ(get_fwd_alloc(_metadata, sfd), (__u32)(6 * ps));
-+
-+	close(sfd);
-+	close(cfd);
-+	close(lfd);
-+}
-+
-+TEST_F(so_reserve_mem, preserved_after_traffic)
-+{
-+	struct sockaddr_in addr = {
-+		.sin_family = AF_INET,
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+	};
-+	socklen_t alen = sizeof(addr);
-+	int ps = self->page_size;
-+	int lfd, cfd, sfd, val;
-+	char buf[8192] = {};
-+
-+	lfd = socket(AF_INET, SOCK_STREAM, 0);
-+	ASSERT_GE(lfd, 0);
-+	ASSERT_EQ(bind(lfd, (struct sockaddr *)&addr, sizeof(addr)), 0);
-+	ASSERT_EQ(listen(lfd, 1), 0);
-+	ASSERT_EQ(getsockname(lfd, (struct sockaddr *)&addr, &alen), 0);
-+
-+	cfd = socket(AF_INET, SOCK_STREAM, 0);
-+	ASSERT_GE(cfd, 0);
-+	val = 16 * ps;
-+	ASSERT_EQ(setsockopt(cfd, SOL_SOCKET, SO_RESERVE_MEM, &val, sizeof(val)), 0);
-+	ASSERT_EQ(connect(cfd, (struct sockaddr *)&addr, sizeof(addr)), 0);
-+
-+	sfd = accept(lfd, NULL, NULL);
-+	ASSERT_GE(sfd, 0);
-+
-+	/* Send & drain traffic; cfd must retain its 16-page forward alloc,
-+	 * while sfd (0 reserve) reclaims its forward alloc back to 0.
-+	 */
-+	ASSERT_EQ(send(cfd, buf, sizeof(buf), 0), (ssize_t)sizeof(buf));
-+	ASSERT_EQ(recv(sfd, buf, sizeof(buf), MSG_WAITALL), (ssize_t)sizeof(buf));
-+	wait_wmem_drained(_metadata, cfd, 16 * ps);
-+
-+	EXPECT_EQ(get_fwd_alloc(_metadata, sfd), 0U);
-+
-+	close(sfd);
-+	close(cfd);
-+	close(lfd);
-+}
-+
-+TEST_HARNESS_MAIN
--- 
-2.53.0
+kTLS needs to use the new MPC rings, so the ring accounting logic is
+touched, exposing the issues to Sashiko.  These are pre-existing bugs
+that affect normal RX/TX rings when FW is running short on rings.  The
+issues are real, but not likely unless many VFs cause ring shortages.
+Patches 7, 8, 9 are real issues found in the lab or by partners.
 
+>
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
+>
+
+The changes were regression tested on the 5760X and 5750X chips (the 2
+latest chip generations) using production FW (237.x.x.x).
+
+--00000000000084836d065ccc5780
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCB6rCu4
+1jd8eS5klMEI6H9zPoUhsLAe5aVUdUr7YMO/ATAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjEwMDExOTIyNTFaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQB52o9DIc8eMCo2O3Ii/ZChFWC6lIdoQmYCBgPShj+W
+Of3vgvU8K+74IIw6C4fo1lg6FENmU5llTULcuM8lsayj/1soTri0qH1OeExTxfmrrXGpTRchkrV3
+VuZrCHacOycJf+mzpLBZrSXQPz7kdP87kKPMDJ4387BIB47HMH/047yzvyUzvX7MK1wwRmoEe02H
+NZqTNLORlJve8+seXtApRZOUyzd+OfAGKDSMNfB4+aYSzCF6i5pkLs/Ip0wKgQ09Ll6ZxOkaiRjf
+IJQRs28XvouSSd0/6zN0dFqk1NgSrgs/kcBjwnE2QqkiDhrwdyiP0GmQQGPYkMJ6CNn7giME
+--00000000000084836d065ccc5780--
