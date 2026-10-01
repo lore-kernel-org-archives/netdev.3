@@ -1,40 +1,40 @@
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B54823EAA6;
-	Thu,  1 Oct 2026 06:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CEC331ED0;
+	Thu,  1 Oct 2026 06:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790837483; cv=none; b=pGo7EzD3aqgx6TI1Nil2T8XiBpOBXRUU2iS5J9SNzMnJdJwkjlGZ6gLGljEWfDugPM9tuVHRZO2HBB+GLj0G4yIHXlweb9BoVF0b3joPBSckDflmaJfd4Zh0w1X4gvag8xi5CkFB2ZGFgdZkUh5pOgAbOAJfSMCa8JMZDqAEEP8=
+	t=1790837853; cv=none; b=QrFUeDJSSDayfWJ3dQPrQq/sF5LLljIh0htPJfdHCflwFNrKqtCHQx3HiJlMFXYCOpt1DsrZUIBlfc3tiFTVa4Ad06SAUkMo3hXFtELKeXWlIMpQf2uf9eJ1dbe2SORWf8qMiUgrTKTTb6uIQOzEV6AuVC7lupyNObS1BQgLrCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790837483; c=relaxed/simple;
-	bh=9y0LJ6Gb3mkDcBQ6rHidl0242MuXefQbLJzCSz5Y4/c=;
+	s=arc-20240116; t=1790837853; c=relaxed/simple;
+	bh=v2DNtaU4Ytuy/NTTd1GI+VTG8VXVYDvJxpo5g6xE6Po=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iKmcEHXnxLZPb4jnHagfCprJRpTy3Gq+ci5gQhPzo3pUklo82DR84TIxxwM08UyCR1Xa9H/cN4NRqR/4vKXuL24VaNx4lBJoYWLU8ysfC68PqUMgomt46QhWoHi1AYVj7zJYt3pPaWbA4xZqIETziBJt852eCb6WzFFRePe6Yjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1lh4buLj; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:Content-Type; b=AZg90JvPhSD5AnxY/GRBLf/WraMay8BSu1a0T4YVXKrROibg/lHSfP+g1Px0b+M07V3jyHaBVJWTm4jtxqwW4jPecYtcgjtvRNIvNGKfH5Fw8zlhUzdLh2rjJ5r0tqUq8CzCc4IIM9yUofVZOdO2BD7G57fB5pO730sS7PlH1Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=siqqtFYF; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1lh4buLj"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="siqqtFYF"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E2D0D1A1099;
-	Thu,  1 Oct 2026 06:51:19 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7C3D01A1099;
+	Thu,  1 Oct 2026 06:57:29 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AA55D60341;
-	Thu,  1 Oct 2026 06:51:19 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 31E5F10328334;
-	Thu,  1 Oct 2026 08:51:13 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 48E8F60341;
+	Thu,  1 Oct 2026 06:57:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E313B103290E8;
+	Thu,  1 Oct 2026 08:57:20 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1790837478; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1790837847; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=XdSazJlkUOjn1tB6G2mz0rNLggZYEJjIMTZxBezObaQ=;
-	b=1lh4buLjXbitsWh83sgdjBQ9sTEEvvTWlM+ocRMWSlab/oBckNLk2Bk9O9KKoGG03SWJfw
-	Sh+43E7zA6Jj9QLd015C0RVbLVLKdqAUeBzAIDC2i6/lx0zMhLD2wXril9Eo7h+hwqZSgK
-	SYUmRa2vf36WBCDh+miu+sIbVFNVA4sJQt9upuCJEftbbPD7j0n0yK7BBS1v6pWjzpmuUO
-	0/mQ+lmYfig1HcfVSh3bmkAFr92GA4ze1fUseRqwn/hU7bnnWTyFDQQFeK2cEbZjfan4lJ
-	AtCyMi0QBRCJfWdsIqNYqzE/aja8r9nPJpu0p5x+9LlofT6+ROlhXf6Tr+kd3g==
-Message-ID: <04e248e4-073a-4a98-bb46-d747169cde8f@bootlin.com>
-Date: Thu, 1 Oct 2026 08:51:13 +0200
+	bh=07N0PHQU4LwZUH80/tjJ8cgNHIHJP97XyXQaOg5pfN4=;
+	b=siqqtFYFl6CbtJ6Semf57D9diifiMZhx4tSlwfY93tG5GWuKsklnmnUELjOTZss+2tHvb5
+	h2UAjA9x+HOsE9kkhldzRX7e2eSW/nDq2yI4AIG/4qyBJCHiyLNYDcOJPm11efqjFN8hQ5
+	UjRQAY8DSt/nXli/hsZowN+wjJ+aDeSAhvG0hEXAD4dqz618SOoYK47/cb8WNKUvBWpOfi
+	z8+bfaUWFztlA/u2BNwvVUJoAalIZ7BaqXRGwF77dvZSsdbB+o/B44L4ZnQkdC9/1o4vco
+	CQH6PVTwCzhqpvVGp251CHCsEstcXb5y9EggAz0YSIb6dHc2Mzad3rELBiiNAw==
+Message-ID: <04bc6323-273a-4536-a862-9ba363bc444c@bootlin.com>
+Date: Thu, 1 Oct 2026 08:57:19 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,80 +42,58 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v18 09/10] net: ethtool: Introduce ethtool
- command to list ports
-To: Jakub Kicinski <kuba@kernel.org>, netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, andrew@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, christophe.leroy@csgroup.eu,
- herve.codina@bootlin.com, f.fainelli@gmail.com, vladimir.oltean@nxp.com,
- kory.maincent@bootlin.com, kabel@kernel.org, o.rempel@pengutronix.de,
- nicveronese@gmail.com, horms@kernel.org, mwojtas@chromium.org,
- romain.gantois@bootlin.com, daniel@makrotopia.org,
- dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it,
- f@lex.la
-References: <20260927133619.955236-10-maxime.chevallier@bootlin.com>
- <179064232552.3145.9027939570900472817@kernel.org>
- <20260930154019.63726960@kernel.org>
+Subject: Re: [PATCH net-next v18 00/10] net: phy_port: SFP modules
+ representation and phy_port listing
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
+ Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
+ Romain Gantois <romain.gantois@bootlin.com>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+ Frank Wunderlich <frank.wunderlich@linux.dev>,
+ Pietro Ameruoso <p.ameruoso@live.it>, Aleksei Sviridkin <f@lex.la>
+References: <20260927133619.955236-1-maxime.chevallier@bootlin.com>
+ <20260930155600.3b18c7c7@kernel.org>
 Content-Language: en-US
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260930154019.63726960@kernel.org>
+In-Reply-To: <20260930155600.3b18c7c7@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Jakub,
+Hi,
 
-On 10/1/26 00:40, Jakub Kicinski wrote:
-> On Tue, 29 Sep 2026 00:38:45 +0000 netdev-bot+sashiko@kernel.org wrote:
->> Thank you for your contribution! Sashiko AI review found 4 potential
->> issue(s) to consider.
->>
->> Critical: 0 · High: 0 · Medium: 3 · Low: 1
->>
->> If you believe none of the issues are legitimate, please reply to each
->> issue of Medium severity or higher and explain why the AI is wrong.
->> If any of them are legitimate and you plan to respin, please let patchwork
->> know by including "pw-bot: cr" as a separate line at the end of your reply
->> (one such reply per series is enough).
->>
->> - [Medium] ETHTOOL_A_PORT_SUPPORTED_INTERFACES is sent as an ethtool
->>   bitset.
+On 10/1/26 00:56, Jakub Kicinski wrote:
+> On Sun, 27 Sep 2026 15:36:09 +0200 Maxime Chevallier wrote:
+>> What this series doesn't do :
+>>  - We don't support selecting which port is active. This is the next step.
+>>  - We only support PHY-driven combo ports. The end-goal of this whole
+>>    journey that started with phy_link_topology is to get support for MII
+>>    muxes, such as the one we have on the Turris Omnia. This will eventually
+>>    be upstreamed as well.
 > 
-> sounds legit, why not expose it?
-> 
->> - [Medium] In the unfiltered PORT_GET dump, ctx->pos_portid is carried
->>   from one dumpit() call to the next without recording which device it…
-> 
-> Also right, we fixed it in other places. Off the top of my head fix
-> like this:
-> 
-> 	int start_ifindex = ctx->pos_ifindex;
-> 
-> 	...
-> 
-> 	for..dump(&ctx->pos_ifindex) {
-> 		...
-> 		if (start_ifindex != ctx->pos_ifindex)
-> 			ctx->the_other_pos = 0;
-> 		...
-> 	}
-> 
->> - [Medium] port_dump_one_dev() reads dev->link_topo twice (the NULL
->>   check, then &dev->link_topo->ports) and walks the ports xarray with no…
-> 
-> didn't look into this one but sounds legit-ish
-> 
->> - [Low] The ETHTOOL_MSG_PORT_GET genl_ops entry in net/ethtool/netlink.c
->>   uses ethnl_port_get_policy for both doit and dumpit.
-> 
-> That's right, please fix, IDK why AI thinks its low.
-> You can reject it in the code (start callback)
-> or have a separate policy.
+> Any plans for representing a few "complex but expected to work" cases
+> with netdevsim? Or are you thinking of trying to cover this with NIPA
+> HW tests?
 
-Ok I'll fix the above :)
+I have the PHY netdevsim series I can fairly easily rebase, and for port
+it would be IMO a good idea especially for muxes.
 
-Thanks for looking at this,
+Devices with a MII mux are not extremely common, I have a few of'em but
+having the switchover code in netdevsim would help a lot with the coverage.
+
+So I can add netdevsim yeah :)
 
 Maxime
