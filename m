@@ -1,259 +1,176 @@
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F99330D40D
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64963AFCF7
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790840166; cv=none; b=EnmZuh9LwkYbOLPALJKECs4vHHGvkqiwROyDZZEr33Oq/gcee9arTqtUwW1w7pg5/PCTh3HxMHghm8D4wcMkG2f9Jk8ZGrY9MjJy81co+/fQ53AKLRoIH7vBzuVejlwtnIooOik8W8EGfJqmt5JBfvO5mb39pRB+gobRhVXdAco=
+	t=1790840338; cv=none; b=MyDTbjH1wEwTRakux/kSdkGckBAAi97c9jm1IZWO4P0+Y73tyGw9r0mcehynC9sNRpaNDdTGR2uQ/vRLomOVjG5bO+fxyNKhf0Mqzpe/5UTy+B7XwrbeecbYVTVGc9kW0+12H0GaZWSs+BJAIZCUmEH3Yi4Wh2BYlewsda7AJe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790840166; c=relaxed/simple;
-	bh=PaaDyhPqimAK52iTpAw86CvffMIjxANW/bZ4t9wF0ZM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W3NnFvBCfDB0t1RJi8kl6Tjjn+kx/+EPSqjK6JS6gLhbVSnLfXqEVaz7glkfSpU6tVtG+kGHiA0e14BIDtYEgVFFBEA+f9GjXlMfDMEBDr9Tmk37KFwnxs7Jtw88LgFbIxEIZSEwbHkm1loCth9GhxfJqIad9bCMVtYltxAmcAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=nUtsxFSO; arc=none smtp.client-ip=74.125.228.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1790840338; c=relaxed/simple;
+	bh=YhTbhaT44QAyG0Cs+DvgfplU2GijMISZ0oYsDe7E7yI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gN+imVQLgjwVNNQJI0GJrMysT5v6B/jVVGZfm8BsabuLHpAr4YAOoZ5d2ZON+qmZPN3xhaL2Lk4tUPedYNmnsAA5E6ZLU8WqbUEv5bmsVduYLyomVBx/AnZ6JDMk37iQjlabePJ43i6BIi2u2NpO0yf0P8yxs8YfDT/iTbscmtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=W+Jpc+D0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PfdugEVC; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="nUtsxFSO"
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a1f611461so228286766b.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:36:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="W+Jpc+D0";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PfdugEVC"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6916xtWg1661232
+	for <netdev@vger.kernel.org>; Thu, 1 Oct 2026 07:38:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=YhTbhaT44QAyG0Cs+DvgfplU
+	2GijMISZ0oYsDe7E7yI=; b=W+Jpc+D08wXsaRPIiuiDDOQ9lgwTJWezDzT3BEXY
+	byIPIxxPXbkw1hVsm+wigLyH4Og6wIdG+jYQ7FAKyZPXao6aO0lKPjy0cVcvj24J
+	A8J7IINLiMGJOKQrNaqqQMs5bOhai1e3A2+JwOcQRYn0nvtFqrVHljJP3u93CygU
+	s1ke6zdVuAU/t6yI38cHgSYdwmdWscmDhLA9W6EjwNK2mWMbmBcVKyXzNKwJMtcH
+	Xzj8R7LzZ+JVQydCSJNUf4lJ79nwPH0GqR5LKTpcqupBjmDM3POI5zjXfXXBoRY8
+	yPwW6upKTpf/3HkoHBP3azN4+M9XN4OzPXZssB3Ygx9GrA==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h167pk3b5-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 07:38:56 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-530d206e2b4so138234691cf.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1790840162; x=1791444962; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v8creQGIzzLaelOSChMmnGW0N61aB5cBJPXK4wSK93s=;
-        b=nUtsxFSOMMKqOctViGY838gn392CNwRRC1lJQZe1pFL47pCIkHY/XLSOT9Udo7jvfp
-         hs3Xufxn0uN2M8aAzxotVoo6/sKQIUwnT/F6148UL2YhPUHRJTPLSNsCseTK1+NNY4Nz
-         w0aDLPJdDpI4hodHsQc7hU5JQ12GM/Ej8Ffkzf9q4rSDX2HCNoU260ZJt+t53luAViAm
-         3D6GKbcSLb83Y3QulFXAEHlbmNTXQcUJW/x98flXLNd0pNLKRm8CupeD5lQjpYpm0rAT
-         R104RaMucg042Elfmz+pbxX89zXIoUxzbAyIBRWQletA8jliiX04mrb6U5dEGZTiF4Gw
-         VhWw==
+        d=oss.qualcomm.com; s=google; t=1790840336; x=1791445136; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=YhTbhaT44QAyG0Cs+DvgfplU2GijMISZ0oYsDe7E7yI=;
+        b=PfdugEVConOSR0+9iDGLS5642uKrc4gbJfB5qRbkVOJ58SiHiHOBaKyu5IUIK26lCv
+         GJ7q0WcWkJXHjZijqyi3xi/VP/hemuEuvz9G2gqAaxrBaMSFHs9qEHVlap9Ut476yR3I
+         wHMYpcb6h0cvKgI4QTqzaGNJcgVfqOpp1VhzHVoga6KJ76cmI8aO1b4dYDYLpoNpe9/a
+         VeLiqwgqThSBikCzh6pnmWsXy1wIQZtviLWgl74WWZWFruTSy0Ev4IhaJlG+2K1W8egB
+         j8wTGA1I87cTJXxRrA/XD5Rqh9iL4ukt36gDEKA3PLo5n1aIyMxv3v00YSt6tDePV7ee
+         OOcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790840162; x=1791444962;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v8creQGIzzLaelOSChMmnGW0N61aB5cBJPXK4wSK93s=;
-        b=fjRRCyOjECdOvi3YGrP8fqTUh+6Ph/WkuzUSoLIHtEn3/Tn/U7DhBQ+m1eUZjAiYl2
-         rwaliTli3ZzjE33YGDEUR0wpZJ5uBK+aNaWFeBgqjCxT+OAmRtjtJqMruEivLCqUGe+w
-         fiL4MdI7qDN/GLi3de38LcEKWRb7JxkJxEL4UXVsv8XqaVI5LY+yxohW61iNApOZ3eSw
-         /9Aier1C2W8cds47x1QZqS+0kCb4kVfA+/mXJxM9XH6UTzV5jmeei/MIbJuGQaSVtzHf
-         M70DtKKyjkqUfKNI232rQ50Pgo3p9KyZuKmNsSY+ymCNRDgLpvp84i3zNBRZSRtX3UZ1
-         XWdA==
-X-Gm-Message-State: AFuF++lFibvz37815SPQhBp21by2hl1Qxheg2H0SViH97c7fPQPpH8Mz
-	lR333JWKPzW8ASN+nztyOYr2XtaEJjMzTyKCVh/MAD0CyhjD+wNimuEz4YebdvUxBZhWTF7qhk9
-	fJ30y1oY=
-X-Gm-Gg: AYBFou0nLPSQcRVJkAQjph2nzFnP2njoE5624IWI9EcEoGuW/8yPg0E1OpakivobBsl
-	ucv0Ani4/pMOxaYiPAeg4XpFzeQuphzRQwXVlqhSKWAAFJifEU3bSjPk/BH8f+FCh9ZWrEx4Er/
-	5AKns9AqXSr4j3tQJcm3u9JNqkwhcHdYOdbfkdL3hp8yGyXd2Fh8Q/UPijzx3XdzVHxFVmM87kt
-	MMGlXPKbgfdP0y5LDWExwHz4Mkmt/nU9Erb1hnQuM3Mq7HG2HCk1Jkr0qsJFg6ceCHpZjzfIWo1
-	zRI82sCz6CnLm2t36p8B9xu//JFU+L8En42+uwCH80k6B4J/kSrWGS0VWBK5ytt9Fo7nfE9bitW
-	aNKdOOxZJ11ysJd0kjQEHSe7n4Cg6JvaxSziincwTmRkWjxS5GtFsneO9Lw0oXG+MFOz7iq10x7
-	Aw1JfD1PiOHBl0EyQa1kNU72pa1x62ZsHXMG9P54d4hih/3nxvk5i/WUlR0B8oG7vPQctbP80DG
-	x/n/cue3dvTxXU2bbnORQUb31iS
-X-Received: by 2002:a17:907:8e0e:b0:c2d:ba74:b809 with SMTP id a640c23a62f3a-c2e33e02c9cmr189382666b.16.1790840162394;
-        Thu, 01 Oct 2026 00:36:02 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31c93c31sm98333366b.11.2026.10.01.00.36.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 00:36:01 -0700 (PDT)
-Message-ID: <9a9701d4-c304-4565-9544-a8c4df96e4a8@blackwall.org>
-Date: Thu, 1 Oct 2026 10:36:00 +0300
+        d=1e100.net; s=20260707; t=1790840336; x=1791445136;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YhTbhaT44QAyG0Cs+DvgfplU2GijMISZ0oYsDe7E7yI=;
+        b=WZqyi/Prd/l/U1EWa8585D8KHEH1lpNcPoftdgiC4oOjUIQaUeECH3JnbNonAH4edA
+         cmiGUMrhFG43hubGa4ijkPjYwxOKlq0E6+x2cdKhtSd0eDubcAPJ5bNx98vegTFcv5M0
+         c0TYI/DTbpGLAnHZ6MzBQVipt/fH24unEBlduZjTrh5uWR0xKKhN2C6yQw+IJbsE/kcS
+         CVw8yxVBktbGX2giAEGY43t5Yxq7yy3haop2kZ/9eesWZZoY/fzLgZLx+lXcToOzRTY/
+         6aTMWzWl0nXF1dg0X5G/G+M2R0LCfXnJTjPF4CK+cHXwLzeH4Udc3BBKYU9mhB61DslC
+         gmkg==
+X-Forwarded-Encrypted: i=1; AKwUvBz90P95AgimYEyAJb+9jGGMrz8g0pKQuPt1LzGGb5KpM9fdfGVzWbaMM4FPdPqgs1qHWvrtPic=@vger.kernel.org
+X-Gm-Message-State: AFuF++kSYu3prvAXTtudC6+RAkNYLcQRozlqnzLi4H6DGt3JDDGVVp2t
+	CeUlrufxMvAFGejkQw7k9fXXrwYoSy9OCns3HYV269LfNL3yhSTYeZUo3B/F79FH8+8l+8sPGQt
+	q1EGdAAPRIgi6OtDCw8iZRKOiRniQRvYClVo1J39a6VyArdtxEDOhzsJmFHU=
+X-Gm-Gg: AYBFou1X1j81h0KhYRZJl30qQvdEmQZw7dwrelE/g4PEW+fxwz70agJTkGx5f+cuR0t
+	ebZP2RywW4CihkrDJYzcsM21Uew5KS4+B+PGckrMrzw5aSHYVx3m1Dg+W96fl9LJOff8ZEPHXWz
+	y6ie2UkUEuwK2bfMiscRAuj2q2h/w+td2P8zW6Hmt38uNp8dyP2IKiwy1tEyj0i4nVYDXNpyf2B
+	5mlo5uNbr8TOxdeJnEHNVTQ/GnIuZaRVeJCGSBF9y1bjweBn0l5fQgsFsXpMR1XNWYcT299w+5o
+	jAjhz0kJNfEraIbwk+fBpjn/rwnd5qzcGiDGNqIrVwl8R8dCSJ2SzVhSc3EDBK74y/2uVWh9mRS
+	cBLUguTyXXFJGgw==
+X-Received: by 2002:a05:622a:e3ce:10b0:533:8e6b:260e with SMTP id d75a77b69052e-5338e6b28ffmr7739861cf.31.1790840335631;
+        Thu, 01 Oct 2026 00:38:55 -0700 (PDT)
+X-Received: by 2002:a05:622a:e3ce:10b0:533:8e6b:260e with SMTP id d75a77b69052e-5338e6b28ffmr7739681cf.31.1790840334995;
+        Thu, 01 Oct 2026 00:38:54 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01f98f72fsm43817135e9.11.2026.10.01.00.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 00:38:54 -0700 (PDT)
+Date: Thu, 1 Oct 2026 09:38:53 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Toke Hoiland-Jorgensen <toke@redhat.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>, Simon Horman <horms@kernel.org>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net v4] net: mvneta: clear XDP pfmemalloc flag between
+ frames
+Message-ID: <ar4ODcdhTW9YkZmD@lore-desk>
+References: <20260929-mvneta-xdp-clear-frag-fix-v4-1-1e63b25eeed8@oss.qualcomm.com>
+ <20260930173940.1c5f55c0@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 11/12] net: bridge: fdb: cache VLAN destinations
- in configured entries
-Content-Language: en-US, bg
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev
-References: <20260930071411.2786201-1-razor@blackwall.org>
- <20260930071411.2786201-12-razor@blackwall.org>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260930071411.2786201-12-razor@blackwall.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rodYHr3sibE3NhxX"
+Content-Disposition: inline
+In-Reply-To: <20260930173940.1c5f55c0@kernel.org>
+X-Proofpoint-ORIG-GUID: bvF5JPcG_AbuXEEIJz_vv-iY_H6zimWe
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAzMCBTYWx0ZWRfX1A1tMjfx87T8
+ jQHfft1mbmGV/7eEdXZlJVBE5TS48FWwRlLdXZXxM24Rg1SxNg40bnL1vQNIQuYQNLvO5bdGtMu
+ hfVc/1LNDOyxk80nFe9YT7WoDpSFQ+8=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAzMCBTYWx0ZWRfX4VxOvZQ580Ez
+ ZpBO/JHfLa36qLowXWGTqv2LHwKsNJCliuWntRIdEs6stNuLDzX+bJk1aVw/0T7Q0DWX1PR1AZk
+ UghmgygF8QcCEClwbJWN1mgmj8h2hX271nE0uSUMATjTAvjjuiZY/W+/DrsfZlfxGXhHLJQxVy/
+ t1zbg9+o7qeD+KROY+uIFGWNkZQIX3L8p095Qp1+55mLQsM95pDRumM/3V+GyYivMXaLLf+sMde
+ XpRvzLQ04GRY5XQQwo3fIq4tYP6I5y4TSgwKtyKE+WlSF3RHfGpH7Izc2sY8pPedpec7cjh1LsX
+ WXZX1YdGTxOH78udvE0f8cuyGFBVRwg3jPS2dQblX9lnKzgsiyDXKJYPF8arMWOxeC9w+7G5V+y
+ 70PXmiAxeeokxRkMZ6BrzqGLElGGHH40tIk6vwUh5OzhQywc9jvXXaUG4OhID0FxeDH9+gKayjq
+ mh9fjQzoMsrZU5bFmhw==
+X-Proofpoint-GUID: bvF5JPcG_AbuXEEIJz_vv-iY_H6zimWe
+X-Authority-Analysis: v=2.4 cv=WpC+otfv c=1 sm=1 tr=0 ts=6abe0e10 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=uF5hQ00_2t6gHad61HsA:9
+ a=CjuIK1q_8ugA:10 a=2r8B7bCDcRZpvO-uCnwA:9 a=uxP6HrT_eTzRwkO_Te1X:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-01_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 impostorscore=0 adultscore=0 clxscore=1015 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610010030
 
-On 30/09/2026 10:14, Nikolay Aleksandrov wrote:
-> Use the known port-VLAN destination for user-configured fdb entries and
-> resolve switchdev vids with an fdb helper. VLAN 0, bridge entries and
-> unconfigured switchdev vids retain raw port destinations. Keep the vid
-> alongside the destination because it remains part of the fdb key.
-> Use conditional replacement for same port destination upgrades so they
-> don't overwrite a concurrent packet-learned roam. Port changing updates
-> remain direct and report a forwarding change.
-> 
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-> ---
->   net/bridge/br_fdb.c | 61 +++++++++++++++++++++++++++++++++++++--------
->   1 file changed, 50 insertions(+), 11 deletions(-)
-> 
-> diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-> index 5664f3d649fa..730b178cf6c4 100644
-> --- a/net/bridge/br_fdb.c
-> +++ b/net/bridge/br_fdb.c
-> @@ -1192,10 +1192,11 @@ static bool fdb_handle_notify(struct net_bridge_fdb_entry *fdb, u8 notify)
->   }
->   
->   /* Update (create or replace) forwarding database entry */
-> -static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
-> +static int fdb_add_entry(struct net_bridge *br, struct net_bridge_dst dst,
->   			 const u8 *addr, struct ndmsg *ndm, u16 flags, u16 vid,
->   			 struct nlattr *nfea_tb[])
->   {
-> +	struct net_bridge_port *source = br_dst_port(dst);
->   	bool is_sticky = !!(ndm->ndm_flags & NTF_STICKY);
->   	bool refresh = !nfea_tb[NFEA_DONT_REFRESH];
->   	struct net_bridge_fdb_entry *fdb;
-> @@ -1230,19 +1231,26 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
->   		if (!(flags & NLM_F_CREATE))
->   			return -ENOENT;
->   
-> -		fdb = fdb_create(br, br_port_to_dst(source), addr, vid,
-> +		fdb = fdb_create(br, dst, addr, vid,
->   				 BIT(BR_FDB_ADDED_BY_USER));
->   		if (!fdb)
->   			return -ENOMEM;
->   
->   		modified = true;
->   	} else {
-> +		struct net_bridge_dst old_dst;
-> +
->   		if (flags & NLM_F_EXCL)
->   			return -EEXIST;
->   
-> -		if (br_fdb_dst_port(fdb) != source) {
-> -			br_fdb_dst_write(fdb, br_port_to_dst(source));
-> -			modified = true;
-> +		old_dst = br_fdb_dst_read(fdb);
-> +		if (!br_dst_equal(old_dst, dst)) {
-> +			if (br_dst_port(old_dst) != source) {
-> +				modified = true;
-> +				br_fdb_dst_write(fdb, dst);
-> +			} else {
-> +				br_fdb_dst_replace(fdb, old_dst, dst);
-> +			}
->   		}
->   
->   		set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+--rodYHr3sibE3NhxX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sashiko says:
-  If a concurrent packet learning roam occurs via __fdb_update() updating the
-  destination locklessly, could br_fdb_dst_replace() fail here?
-  If it fails, is it safe to ignore the failure and proceed to set
-  BR_FDB_ADDED_BY_USER and potentially other authoritative flags like
-  BR_FDB_STATIC below? It appears this might apply the flags to the concurrently
-  roamed destination rather than the requested one, potentially corrupting
-  hardware offload state and locking traffic to the wrong port.
+> On Tue, 29 Sep 2026 15:43:03 +0200 Lorenzo Bianconi wrote:
+> > mvneta_swbm_add_rx_fragment() sets XDP_FLAGS_FRAGS_PF_MEMALLOC on the
+> > xdp_buff when a fragment page is a pfmemalloc one (page under memory
+> > pressure). The xdp_buff is reused for the next frame, but only the
+> > XDP_FLAGS_HAS_FRAGS bit was cleared at frame start, so the pfmemalloc
+> > bit leaked from one frame into the following ones. mvneta_swbm_build_sk=
+b()
+> > propagates the flag to skb->pfmemalloc through xdp_update_skb_frags_inf=
+o(),
+> > so the skb of a subsequent fragmented frame could be wrongly marked as
+> > pfmemalloc even if none of its pages are under pressure.
+> >=20
+> > Clear all the xdp_buff flags in mvneta_swbm_rx_frame(), which is invoked
+> > for each new frame, instead of just the XDP_FLAGS_HAS_FRAGS bit.
+>=20
+> Is there a reason you're not adding the info sinfo bot is asking for?
 
-  - Yes, it is safe and intentional behaviour, it must fail if a roam to a different port
-    happened. The flags races are well-known and pre-existing behaviour.
+nope sorry :(. I have just forgot to reply. I will do next time.
 
-> @@ -1296,6 +1304,7 @@ static int __br_fdb_add(struct ndmsg *ndm, struct net_bridge *br,
->   			bool *notified, struct netlink_ext_ack *extack)
->   {
->   	u16 vid = vlan ? vlan->vid : 0;
-> +	struct net_bridge_dst dst;
->   	int err = 0;
->   
->   	if (ndm->ndm_flags & NTF_USE) {
-> @@ -1320,8 +1329,10 @@ static int __br_fdb_add(struct ndmsg *ndm, struct net_bridge *br,
->   		}
->   		err = br_fdb_external_learn_add(br, p, addr, vid, false, true);
->   	} else {
-> +		dst = p && vlan ? br_vlan_to_dst(vlan) : br_port_to_dst(p);
->   		spin_lock_bh(&br->hash_lock);
-> -		err = fdb_add_entry(br, p, addr, ndm, nlh_flags, vid, nfea_tb);
-> +		err = fdb_add_entry(br, dst, addr, ndm, nlh_flags, vid,
-> +				    nfea_tb);
->   		spin_unlock_bh(&br->hash_lock);
->   	}
->   
-> @@ -1553,10 +1564,31 @@ void br_fdb_unsync_static(struct net_bridge *br, struct net_bridge_port *p)
->   	rcu_read_unlock();
->   }
->   
-> +static struct net_bridge_dst br_fdb_resolve_dst(const struct net_bridge_port *p,
-> +						u16 vid)
-> +{
-> +	struct net_bridge_dst dst = br_port_to_dst(p);
-> +	struct net_bridge_vlan *v;
-> +
-> +	lockdep_assert(rcu_read_lock_held() || lockdep_rtnl_is_held());
-> +
-> +	if (!p || !vid)
-> +		return dst;
-> +
-> +	rcu_read_lock();
-> +	v = br_vlan_find(nbp_vlan_group_rcu(p), vid);
-> +	if (v)
-> +		dst = br_vlan_to_dst(v);
-> +	rcu_read_unlock();
-> +
-> +	return dst;
-> +}
-> +
->   int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
->   			      const unsigned char *addr, u16 vid, bool locked,
->   			      bool swdev_notify)
->   {
-> +	struct net_bridge_dst dst = br_fdb_resolve_dst(p, vid);
->   	struct net_bridge_fdb_entry *fdb;
->   	bool modified = false;
->   	int err = 0;
-> @@ -1581,25 +1613,32 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
->   		if (locked)
->   			flags |= BIT(BR_FDB_LOCKED);
->   
-> -		fdb = fdb_create(br, br_port_to_dst(p), addr, vid, flags);
-> +		fdb = fdb_create(br, dst, addr, vid, flags);
->   		if (!fdb) {
->   			err = -ENOMEM;
->   			goto err_unlock;
->   		}
->   		fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
->   	} else {
-> +		struct net_bridge_dst old_dst;
-> +
-> +		old_dst = br_fdb_dst_read(fdb);
->   		if (locked &&
->   		    (!test_bit(BR_FDB_LOCKED, &fdb->flags) ||
-> -		     br_fdb_dst_port(fdb) != p)) {
-> +		     br_dst_port(old_dst) != p)) {
->   			err = -EINVAL;
->   			goto err_unlock;
->   		}
->   
->   		WRITE_ONCE(fdb->updated, jiffies);
->   
-> -		if (br_fdb_dst_port(fdb) != p) {
-> -			br_fdb_dst_write(fdb, br_port_to_dst(p));
-> -			modified = true;
-> +		if (!br_dst_equal(old_dst, dst)) {
-> +			if (br_dst_port(old_dst) != p) {
-> +				modified = true;
-> +				br_fdb_dst_write(fdb, dst);
-> +			} else {
-> +				br_fdb_dst_replace(fdb, old_dst, dst);
-> +			}
->   		}
->   
->   		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
+Regards,
+Lorenzo
 
-Sashiko says:
-  Similarly, if br_fdb_dst_replace() fails here due to a concurrent destination
-  update in __fdb_update(), could hardware learning flags like
-  BR_FDB_ADDED_BY_EXT_LEARN be misapplied to the new roamed port?
+--rodYHr3sibE3NhxX
+Content-Type: application/pgp-signature; name=signature.asc
 
-  - Yes, again pre-existing and well-known behaviour. See my reply above.
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCar4ODQAKCRA6cBh0uS2t
+rJQAAQDg5ax7C/+1yFaZ+e2cR9P90DLOCk7ivKjVB04+eLBX3QD+OAvRTExhY5q9
+b3+WBnS2kKrC44PnWWBkKHqVLVoC1AM=
+=VXRl
+-----END PGP SIGNATURE-----
 
+--rodYHr3sibE3NhxX--
