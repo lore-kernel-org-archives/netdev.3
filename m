@@ -1,218 +1,112 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCB552F28A
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 20:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA337488D84
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 20:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790887683; cv=none; b=sEHSf2wNxxWlLgTy12eNPGrffOoiY6OBJEpne+78xzmkhThbjiqFgKdbJmH5MFzUseLvtanCl5xLnChzfu/tjfSRvmWc33YseXZd44Yi5yq8NCGbWZjfRXdcs2THTTP14OYAkuKJZxy+PHhMF61h7KQiWHIBRBfNktG435UnkDU=
+	t=1790887742; cv=none; b=UNAqqcwEtabIB5vV2KCXBmXiCHYnuz7YINaDZVEvPvYtpRtngE9AfcgNdzxCKMY7A3TLzZZAvCL8nGqFGog4RaqaORfxLoVZTiXqv8menj1fi3slOzwoekY3SffjoOLoDCNAWrmroRAybwifKjIpCRYxUC46LoMpTiydiLHqEmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790887683; c=relaxed/simple;
-	bh=NGXFPdmiChrdE5M6SWAs0iRQDUcZdzCb8S2NQm3+3To=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BVLZpvv0c0clZFLFXNSEPLkbL6pOZ99mOe6ehEln8CepD9nqmOvHS2rzTLb9o7Twhq4B+V9xPuK+9+CcIB22SfDeQyO/ZSxn7/zutDbLUsXalITmY7bG8tr1whtOKunK06ZchdAM1/KbbiWOeAkJM5LAdLi9w2tlpiif3sUx1wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Px7xVyDK; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1790887742; c=relaxed/simple;
+	bh=gK7i1R2R8y0ow3LubgXS6PxW5W+N8VcRjGkt+FYuZiE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cAllJmQShatR/A29ezTab6tYtCdeCNsuw0jW2+xUmWAoo7IqHbcaDESWqhRio/6vrkRWkLAyMcO0/CGbGL+GUj00wvUnplI+YQMkY3TAtBHYIf+nl/y2jNpsvChG8JP14G7xUCiSX9sQSNEqxbpBqHD0gmpXQZG97PUWAIUA0x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/7AtjGO; arc=none smtp.client-ip=74.125.227.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Px7xVyDK"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-868db1b2c64so5909450b3a.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 13:48:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/7AtjGO"
+Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a2adb9bc3cso3004432a91.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 13:49:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790887681; x=1791492481; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=u12zhQ1tGLgxlzTIA7n/qwZL64gU1GN/BcHRBiw/9vw=;
-        b=Px7xVyDKdhGIoZ/f1ZDWtuU5ulShsDm/VM1F9Z3Y10P0ACWQN/Q7X2pAUMmPVOfUAR
-         Uez4yoOumqRSAbtNgQqaOEAl1KFK8Yc3sTupSgtfWgl1sVuQVhES1MJddb5+JFofEIH8
-         Xm3IoXOP/DVcFCv70vTb+Onkv8J3cBSudWcYjEzTcGxi6aQWJr1hD57BW+TDcVIMFsRa
-         3jP++IVqAdYlHeQ3qEFGLOSowXUmDoS3WiqVPMXM813KAXOPB9LKfeCesiuZnh8YRqWB
-         Cm7fr3zhCYPGpoJ4qO2h+0OrY8yyk4ZRL8cK6cPphkcP19Wqb0Fwsw7XkaQBi9u3hk4I
-         JYPQ==
+        d=gmail.com; s=20251104; t=1790887741; x=1791492541; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GaNhy8Dh25vssvZWVoAJu0vGDz+eGpNkgK57kC+Sq5Y=;
+        b=k/7AtjGOIkNljKPEF7HjAf1Z/w50E3Y6Zgwir5V5Rr46DeQEZx2UI70he94pwNd3GB
+         6gW9SehNb05UHFKZFZtLQ6U7omPYs1jNwZjKmwk+FzEPdyvRP8JUTFCo8+wrPbOm5Igg
+         l3u4m7TMqKaFZuCN10H1J1S9biqAODXPJM8EpGpb9EXiLVR4FS0NX5R5iZZOf7P9tKoT
+         LDr1GUlAqZT7lhkPGllSqUEYuQBNLn96pxTY14EK2eCamMWJUZvr7hMY0Aejo+BEMnO1
+         eWKRnrkSDVxwjdXVfjSFySaB55/kbo1kRdCa6CYr5x4x6IaZLyN/U6NoRXKaZXDu1i/R
+         loxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790887681; x=1791492481;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1790887741; x=1791492541;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=u12zhQ1tGLgxlzTIA7n/qwZL64gU1GN/BcHRBiw/9vw=;
-        b=URlb8HCp4iEK7WYuOrbWQ58oKbSw+V90SU4HLbMo+YGzUw4s41VYJdPwSr6VO6zNWF
-         bLucCDd6PABG46Hnwtww+s9gMn/Z+0cKreulq3wd7xomemFuAG6sw4YuQUFLYPvDUqxD
-         ojcEmz8GuleYqixlRDlkuqy3/DJyEnM3IG1aQzoISWRit7e5VOHEPXl8u0ZRPeuvf4vU
-         XSmdGLPFeeh35FVJ6bqmkzpmVoo1p0fP+t6ba0EzUG1Knxn3/3BNV9m3qrBMG38YDz4l
-         QtikfGd1k9RhIDyrTroHM+psTk6KnxqSIsWeaIesAbbFX8lDyoK5tmjcctzli+uy+ZGd
-         anUA==
-X-Forwarded-Encrypted: i=1; AKwUvBzpdWVwPIhyFdvwEttMQDq5y32m99BJWF7KkiOXgmmiG0Er2W+Z7MGUOwv6fZJh9/Y59Wyz+QE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lVnTFNfiE6yANZ+djXYoe9gE4CL5W6qAiElvPgHZvYRuSErSyx
-	gJwCU4mc7qGPqf4qkEuB9rxGx+Or1Q1KHe5UAYU6GmU96dFzwqSX0ervXBB4lsBXOt5RE9lvZhR
-	Yc2hVBg==
-X-Received: from pfbdn5.prod.google.com ([2002:a05:6a00:4985:b0:87f:22a2:2139])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8d5:b0:873:5267:dfd0
- with SMTP id d2e1a72fcca58-88af3cc63ffmr666058b3a.5.1790887681040; Thu, 01
- Oct 2026 13:48:01 -0700 (PDT)
-Date: Thu,  1 Oct 2026 20:47:18 +0000
-In-Reply-To: <20261001204752.2572265-1-kuniyu@google.com>
+        bh=GaNhy8Dh25vssvZWVoAJu0vGDz+eGpNkgK57kC+Sq5Y=;
+        b=sBm4OStKaQ4twZOwnC0nYZtlZc1RKFykSkUa6K6oqXbnZcsQLLAG9N8RCalKl147Ly
+         VU84o17rSM74hxJsj4WF74xaIKyexNP5DMfMlk/YKNeHSqMaAoHeONC85hPbTkReFc4I
+         2qwzffVlocOmcZUMcHmSvIovKO8buyBy4RcCQ+Bv7HoYBKCPMETOfQlrGK5Mw44BCDN0
+         t50mIQqBQyf79VPXQ9vSXMkVjkd+eFBUO28w8aK/E9DQRlrYjTpS3dg0PGLGUD8h3m7K
+         7lPgNgTlm+KLvRH3GEM1Bkhv9DTtWHKGSBKEa/PX9Rac0GjXMavJaYRY0zboJItO+RhZ
+         hsDg==
+X-Gm-Message-State: AFq9FYLTZeAqtjgb6J1ppjyyPzPbTzfcVKpvAcPuJdtw+zIRBkFR6Zln
+	djViVR7dxCeTloM8tnqIm2fZCXSjVvCRjV7v0cDjgxcSQJ2iyU7h7F1Yq43AOw4s
+X-Gm-Gg: AYBFou2QK2F6GU40ibMT/nt8Gk/aLQSrU0/5QQiTGEGfHYa0Hlfnqv+LLqGOwzvU68R
+	NaidrEkArQA3UWqDXQRrR++HobyGDcqF/3fWzGH0PriMpFf/DJFx0sZ5+5ggqa0Us2/gWAUYqwj
+	7ALhSMe6LePmDqa3qZiAGgxOZ3Om/uglfINSSCf9FpVAToZjiR/uAiyIbu5lxJodwxpTbDEqVwL
+	yMupf6/DDL8gWhlnr7lCLpouMWBTLASLS1Imy/tznJiQMTxBEc02UZJVHDB042uMhGyF6D17PAF
+	pgdGHCT/LTUorp4UUeH76X877Z94tH5Z5zFfdIeO92kaYROEkniycHn0t7Fz+dV4GANqG6oJ6m+
+	WbZpLdzZRx/pVK/PwHoKUohHn0UyNQsXeIqHYtjoovqIwE+OXsKGDCeaKx5k8HpPmelfOfRcMO0
+	d5hjO/LNX39d/6y3535ClfbO435DaV9XOSSSt/kdRI4DyrrFouipV5WCvmuScF0dtV80mRf1wav
+	he8Fzko0OLil8l6zhjr1p5WTw==
+X-Received: by 2002:a17:90b:1b0a:b0:3a4:b911:e9f6 with SMTP id 98e67ed59e1d1-3a6ce95e913mr261740a91.56.1790887740754;
+        Thu, 01 Oct 2026 13:49:00 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661e:3050::4d0:26])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4f478e9c6sm5658797a91.14.2026.10.01.13.48.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 13:49:00 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/5] net: dsa: motorcomm: TC offload follow-ups
+Date: Fri,  2 Oct 2026 04:48:43 +0800
+Message-ID: <20261001204851.2576101-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261001204752.2572265-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261001204752.2572265-7-kuniyu@google.com>
-Subject: [PATCH v3 net-next 6/6] ipv6: Batch rt6_uncached_list_flush_dev() in netdev_run_todo().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Chris J Arges <carges@cloudflare.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-IPv6 uncached routes are linked to the global per-cpu lists,
-rt6_uncached_list.
+This series continues the traffic control work on the Motorcomm YT9215S
+DSA driver: it reorganizes the offload code and then adds ACL enablement
+on demand and flower priority mapping.
 
-When unregistering a netdev, rt6_uncached_list_flush_dev() iterates
-over the potentially long lists to find uncached routes tied to
-the device and swap it with blackhole_netdev.
+v2:
+  - move type casting helper into chip.h
+  - remove flow statistics and broadcast/multicast policers
+v1: https://lore.kernel.org/r/20260926211813.935723-1-mmyangfl@gmail.com
 
-Since it is called for every device in dying netns under RTNL,
-it adds O(N_dev x (N_cpu + N_route)) costs to any batched device
-unregistration.
+David Yang (5):
+  net: dsa: motorcomm: Hoist type casting helper into chip.h
+  net: dsa: motorcomm: Split TC module
+  net: dsa: motorcomm: Use NSEC_PER_SEC
+  net: dsa: motorcomm: Enable ACL on demand
+  net: dsa: motorcomm: Add TC prio support
 
-Let's call it once per batched device unregistration without RTNL.
+ drivers/net/dsa/motorcomm/Makefile   |    1 +
+ drivers/net/dsa/motorcomm/chip.c     | 1568 +-------------------------
+ drivers/net/dsa/motorcomm/chip.h     |  355 +-----
+ drivers/net/dsa/motorcomm/leds.c     |    7 +-
+ drivers/net/dsa/motorcomm/mdio_bus.c |   10 +-
+ drivers/net/dsa/motorcomm/pcs-921x.c |    8 +-
+ drivers/net/dsa/motorcomm/tc.c       | 1524 +++++++++++++++++++++++++
+ drivers/net/dsa/motorcomm/tc.h       |  379 +++++++
+ 8 files changed, 1982 insertions(+), 1870 deletions(-)
+ create mode 100644 drivers/net/dsa/motorcomm/tc.c
+ create mode 100644 drivers/net/dsa/motorcomm/tc.h
 
-Because it now runs without RTNL, rt->dst.dev and rt->rt6i_idev->dev
-may transition to NETREG_UNREGISTERED at different times.  Thus, we
-must check that both devices are blackhole_netdev before unlinking
-the route; otherwise, the remaining device reference would not be
-flushed when the other device is unregistered.
-
-In addition, since netdev_run_todo() runs even when IPv6 is disabled,
-rt6_uncached_list_flush_dev() must check ipv6_mod_enabled() before
-touching rt6_uncached_list.
-
-Note also that netdev_run_todo() cannot be called before
-rt6_uncached_list is initialised because:
-
-  1. unregister_netdevice_many_notify() panics when
-     dev_boot_phase == 1 (net_dev_init() is subsys_initcall()).
-
-  2. the only device registered before fs_initcall_sync() is
-     loopback and loopback_net_init() panics in case of failure.
-
-Reported-by: Chris J Arges <carges@cloudflare.com>
-Closes: https://lore.kernel.org/netdev/20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
-v3:
-  * Unlink only when both devices are blackhole_netdev
-  * Clarify netdev_run_todo() does not run before
-    rt6_uncached_list is initialised
-  * Fix CONFIG_IPV6=n build
----
- include/net/ip6_route.h |  7 +++++++
- net/core/dev.c          |  5 ++++-
- net/ipv6/route.c        | 24 ++++++++++++++++--------
- 3 files changed, 27 insertions(+), 9 deletions(-)
-
-diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
-index 0f9b7a260d25..b9de335b639a 100644
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -231,6 +231,13 @@ void rt6_multipath_rebalance(struct fib6_info *f6i);
- 
- void rt6_uncached_list_add(struct rt6_info *rt);
- void rt6_uncached_list_del(struct rt6_info *rt);
-+#ifdef CONFIG_IPV6
-+void rt6_uncached_list_flush_dev(struct net_device *dev);
-+#else
-+static inline void rt6_uncached_list_flush_dev(struct net_device *dev)
-+{
-+}
-+#endif
- 
- static inline const struct rt6_info *skb_rt6_info(const struct sk_buff *skb)
- {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 7dba0292f052..12a0e7d6567b 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -131,6 +131,7 @@
- #include <net/mpls.h>
- #include <net/route.h>
- #include <linux/ipv6.h>
-+#include <net/ip6_route.h>
- #include <linux/in.h>
- #include <linux/jhash.h>
- #include <linux/random.h>
-@@ -11839,8 +11840,10 @@ void netdev_run_todo(void)
- 		linkwatch_sync_dev(dev);
- 	}
- 
--	if (!list_empty(&list))
-+	if (!list_empty(&list)) {
- 		rt_flush_dev(NULL);
-+		rt6_uncached_list_flush_dev(NULL);
-+	}
- 
- 	cnt = 0;
- 	while (!list_empty(&list)) {
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index a76869ff87cd..b1dcb5e5da88 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -158,10 +158,16 @@ void rt6_uncached_list_del(struct rt6_info *rt)
- 	}
- }
- 
--static void rt6_uncached_list_flush_dev(struct net_device *dev)
-+void rt6_uncached_list_flush_dev(struct net_device *dev)
- {
- 	int cpu;
- 
-+	if (!ipv6_mod_enabled())
-+		return;
-+
-+	if (dev && dev->dismantle)
-+		return;
-+
- 	for_each_possible_cpu(cpu) {
- 		struct uncached_list *ul = per_cpu_ptr(&rt6_uncached_list, cpu);
- 		struct rt6_info *rt, *safe;
-@@ -173,22 +179,24 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
- 		list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_uncached) {
- 			struct inet6_dev *rt_idev = rt->rt6i_idev;
- 			struct net_device *rt_dev = rt->dst.dev;
--			bool handled = false;
- 
--			if (rt_idev && rt_idev->dev == dev) {
-+			if (rt_idev &&
-+			    (dev ? rt_idev->dev == dev :
-+			     READ_ONCE(rt_idev->dev->reg_state) == NETREG_UNREGISTERED)) {
- 				rt->rt6i_idev = in6_dev_get(blackhole_netdev);
- 				in6_dev_put(rt_idev);
--				handled = true;
- 			}
- 
--			if (rt_dev == dev) {
--				rt->dst.dev = blackhole_netdev;
-+			if (dev ? rt_dev == dev :
-+			    READ_ONCE(rt_dev->reg_state) == NETREG_UNREGISTERED) {
-+				rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
- 				netdev_ref_replace(rt_dev, blackhole_netdev,
- 						   &rt->dst.dev_tracker,
- 						   GFP_ATOMIC);
--				handled = true;
- 			}
--			if (handled)
-+
-+			if (rt->dst.dev == blackhole_netdev &&
-+			    (!rt->rt6i_idev || rt->rt6i_idev->dev == blackhole_netdev))
- 				list_del_init(&rt->dst.rt_uncached);
- 		}
- 		spin_unlock_bh(&ul->lock);
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+2.53.0
 
