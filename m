@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD7538889B;
-	Thu,  1 Oct 2026 04:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE163EEAC4;
+	Thu,  1 Oct 2026 04:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790829944; cv=none; b=Xm6z4tzK41VKeXJwFFC+C2uLzEUGdYaEkMiTcKk3/PQHEI3PjU9p3LJLJM9hgiwb1SwQ8/QKtK9qOiipSpOo79ZtOKcA/grroHp1nHclZ6cqkHKjdTbGYyNrC2AaLWZT+M6V/K1V5W+TQX1lC6AId+LfL8Gl6zd4guk83h6sGsk=
+	t=1790829945; cv=none; b=iZsgXjp5KtQjw8MW54Z/IlktFkS4s0krJqszgXk91AYvHLmSdpohyGQpCvwC02hYokwsOcJRy0vDl4BJUT25vtgkBLRccX/dt3iWX5m+1Zgl2+D4kIZL4F1Hms/Mkj+wIBTn92zMGGgF55pDdNz5pNRRaAg2NEZsJcSuISL7Xlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790829944; c=relaxed/simple;
-	bh=ODZS/Q2eQbrlK1+++1UGdiBIu66+ksfQZV0wIIoHERg=;
+	s=arc-20240116; t=1790829945; c=relaxed/simple;
+	bh=hiwg+n+AXTGYJbNrKgjBIHvuQgTU/lcY1Dzt3WBIgOU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YuZiHHBlWFZAZ83s0JJmfrXP5Fw5/5V/AiQ/OEbsDXZMsqcxQHnJESOqvZ4C5CgOVUEMAmc+wsH9v4Nesrn9U2hiCts40W+Holo9wCOBBTtsqPEgThrFU/gs8HUXaJlNFbDjxpOclNmclflf2eM+HDdP90RhE2OhDCr1YDckB70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AwETA3tA; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Ps5IelDeKa0h09npb+66i0ga1ARpAqkghgQTwE53rDCgOhspXLSlpKeb8Ea4nliUZ9+t8+D7ksRHCJWcdRFiSbtJYoCGKgDj1p5vr3bOGp8B8T5N2vzPBUz5lbMiB/1UN9M2EDjelZANxlztCiGfgCQN1+mzpwmsIbk+ZDfbS6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dk/+SbrK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AwETA3tA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3E81F00898;
-	Thu,  1 Oct 2026 04:45:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dk/+SbrK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2591F00899;
+	Thu,  1 Oct 2026 04:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790829935;
-	bh=jbBNnWauchjOMUzr+fC0Pnm39itZoZ+bc1SPcjlo84o=;
+	s=k20260515; t=1790829937;
+	bh=9G+kUmxLkeukcMBztETwUt4ngGNy3h2GvEBHr1Zj4Ss=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AwETA3tAgYYOeKTHo0JgTM2qr8F4OarIatCCcyTSqdMaSHzuYndHu07tgL5Ict10Q
-	 g6gvUfaJA557O7fpK9ls75MWnyT9bEGKVeqt3NS7CdOSAucwEb40wXSfPlxJF9LbTD
-	 OCqnDscTljap4skm33wvzyxHfK5OQLb3FIlm1RAT7GZCn4XDuBw+qjwyFQc9S8euBF
-	 pFVjAWaFjEU0jlSnZcwe0iX/0k7E1IpsuB1yczZcH3nn7HDuMgbEwVajAWiwAtzU/7
-	 r+XkUu6RugnL0SwJ/MMSz7/eio7W7+L4V9yIbVnIR3BL2aSwFCf0IZHpK7p2YNWlD2
-	 LawutL4BaZQHw==
-Subject: Re: [PATCH net-next v24 05/10] net: phy: Add Airoha AN8855 Internal
- Switch Gigabit PHY
+	b=dk/+SbrKttvo8bO83GzDzsnNpZCMC2SbwQ6foU7CV7/9dAORBOvpP1S1WNheTlNv1
+	 kKXEG+y3X/P31/oTpsuV1SzhZcJofs+hBxk+RKHKNy54MeF0GP2hIBfcHe+DDALfhZ
+	 nsCXzt4oYW/EDaFu4/fThUpbukE4o1qkYWXDNyeof1KfTnwmoyHlRDVPAGzXqsrFFe
+	 8TipYbwyY0VKNrx8Ugf6d6DPjtH76ebwUJyXBtK7QfrhyJS/uQs2XRrM8VtjSN4IP+
+	 w7MmGA1lAuk5RRoITMf3ZdXs+WTDLc7EPe7MzXHv7rONpdIcGIKp4SlZci6DIQKdBa
+	 3Gv2//WstlVRA==
+Subject: Re: [PATCH net-next v24 06/10] net: dsa: tag_mtk: add Airoha variant
+ usage of this TAG
 From: netdev-bot+sashiko@kernel.org
 To: ansuelsmth@gmail.com
 Cc: lee@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -39,10 +39,10 @@ Cc: lee@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
  mfd@lists.linux.dev, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  andrew@lunn.ch
-Date: Thu, 01 Oct 2026 04:45:33 +0000
-Message-ID: <179082993386.434549.17771239887397045153@kernel.org>
-In-Reply-To: <20260928194511.41878-6-ansuelsmth@gmail.com>
-References: <20260928194511.41878-6-ansuelsmth@gmail.com>
+Date: Thu, 01 Oct 2026 04:45:35 +0000
+Message-ID: <179082993591.434549.3461650830434233242@kernel.org>
+In-Reply-To: <20260928194511.41878-7-ansuelsmth@gmail.com>
+References: <20260928194511.41878-7-ansuelsmth@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,10 +53,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -64,250 +64,154 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] an8855_probe() (drivers/net/phy/air_an8855.c) reads the four
-  eFUSE NVMEM cells in .probe and returns any error as a probe failure.
-- [Medium] AIR_AN8855_PHY has 'depends on NVMEM || !NVMEM'
-  (drivers/net/phy/Kconfig:101), so CONFIG_NVMEM=n is an explicitly…
-- [Medium] The ETHTOOL_PHY_DOWNSHIFT tunable does not follow the retry-
-  count ABI.
-- [Low] The PHY binding added in the series (commit "dt-bindings: net:
-  Document support for AN8855 Switch Internal PHY",…
+- [Medium] This patch adds a new tag protocol, DSA_TAG_PROTO_AIROHA
+  ("airoha").
+- [Low] After this patch, tag_mtk.ko can register both the "mtk" and
+  "airoha" tag drivers through…
 
 --
 
-net: phy: Add Airoha AN8855 Internal Switch Gigabit PHY
+net: dsa: tag_mtk: add Airoha variant usage of this TAG
 
-This adds a phylib driver for the internal gigabit PHYs of the Airoha
-AN8855 switch. At probe time it reads per-pair R50 calibration values
-from eFUSE NVMEM cells. config_init then applies them, along with
-noise-reduction tuning and HW downshift enable, and the downshift tunable
-is exposed through ethtool.
+This commit adds a new DSA_TAG_PROTO_AIROHA tag protocol ("airoha") that
+reuses the existing MTK tag xmit/rcv handlers. It adds a comment noting
+that AN8855 lacks the SA_DIS and Leaky VLAN tag bits. It also reworks
+Kconfig and the Makefile so tag_mtk.o is built through a common
+NET_DSA_TAG_MTK_COMMON symbol and registers either or both taggers.
 
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index d3835597e3795..eca2ce135c86b 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -96,6 +96,12 @@ config AIR_AN8801_PHY
->  	help
->  	  Currently supports the Airoha AN8801R PHY.
+> diff --git a/net/dsa/tag_mtk.c b/net/dsa/tag_mtk.c
+> index c7dc7731675ec..f8087d768da6d 100644
+> --- a/net/dsa/tag_mtk.c
+> +++ b/net/dsa/tag_mtk.c
+
+[ ... ]
+
+> @@ -107,8 +112,33 @@ static const struct dsa_device_ops mtk_netdev_ops = {
+>  	.needed_headroom = MTK_HDR_LEN,
+>  };
 >  
-> +config AIR_AN8855_PHY
-> +	tristate "Airoha AN8855 Internal Gigabit PHY"
-> +	depends on NVMEM || !NVMEM
+> -MODULE_DESCRIPTION("DSA tag driver for Mediatek switches");
+> -MODULE_LICENSE("GPL");
+> +DSA_TAG_DRIVER(mtk_netdev_ops);
+>  MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_MTK, MTK_NAME);
+> +#endif
+>  
+> -module_dsa_tag_driver(mtk_netdev_ops);
+> +#if IS_ENABLED(CONFIG_NET_DSA_TAG_AIROHA)
+> +static const struct dsa_device_ops airoha_netdev_ops = {
+> +	.name		= AIROHA_NAME,
+> +	.proto		= DSA_TAG_PROTO_AIROHA,
+> +	.xmit		= mtk_tag_xmit,
+> +	.rcv		= mtk_tag_rcv,
+> +	.needed_headroom = MTK_HDR_LEN,
+> +};
 
 [Severity: Medium]
-This dependency allows a CONFIG_NVMEM=n build. In that build
-nvmem_cell_read_u32() is the inline stub:
+The wire format here is the same as DSA_TAG_PROTO_MTK. However, the
+conduit drivers that handle the MTK special tag in hardware check the
+protocol ID, not the format. Will they still handle a conduit that uses
+the "airoha" tagger correctly?
 
-include/linux/nvmem-consumer.h:
-static inline int nvmem_cell_read_u32(struct device *dev,
-				      const char *cell_id, u32 *val)
-{
-	return -EOPNOTSUPP;
-}
+Later in the series, an8855_get_tag_protocol() returns
+DSA_TAG_PROTO_AIROHA. No later patch updates these checks, which still
+only match DSA_TAG_PROTO_MTK:
 
-an8855_probe() still sets needs_calibration from
-of_property_present(dev->of_node, "nvmem-cells"). It then returns the
--EOPNOTSUPP from an8855_get_r50ohm_val() as a probe failure.
-
-nvmem-cells is optional in airoha,an8855-phy.yaml, and the MFD binding
-example puts nvmem-cells on every PHY. On an NVMEM=n kernel, would a
-DT that follows the binding leave every port bound to genphy instead of
-this driver?
-
-That would also drop the noise-reduction writes and the downshift setup
-in an8855_config_init(), and neither of those depends on NVMEM.
-
-Could probe treat -EOPNOTSUPP and -ENOENT as "no calibration" and
-continue? dp83867_of_init_io_impedance() does this:
-
-	if (ret != -ENOENT && ret != -EOPNOTSUPP)
-		return phydev_err_probe(phydev, ret, ...);
-
-> +	help
-> +	  Currently supports the internal Airoha AN8855 Switch PHY.
-
-[ ... ]
-
-> diff --git a/drivers/net/phy/air_an8855.c b/drivers/net/phy/air_an8855.c
-> new file mode 100644
-> index 0000000000000..bc22256fd5f95
-> --- /dev/null
-> +++ b/drivers/net/phy/air_an8855.c
-
-[ ... ]
-
-> +static int an8855_probe(struct phy_device *phydev)
-> +{
-> +	struct device *dev = &phydev->mdio.dev;
-> +	struct air_an8855_priv *priv;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	priv->needs_calibration = of_property_present(dev->of_node,
-> +						      "nvmem-cells");
-> +
-> +	if (priv->needs_calibration) {
-> +		int ret;
-> +
-> +		ret = an8855_get_r50ohm_val(dev, "tx_a", &priv->calibration_data[0]);
-> +		if (ret)
-> +			return ret;
-
-[Severity: Medium]
-Can this succeed on the first probe? an8855_core_probe() in
-drivers/mfd/airoha-an8855.c registers the PHYs before it creates the
-eFUSE provider cell:
-
-drivers/mfd/airoha-an8855.c:an8855_core_probe() {
-    ...
-	/* Register PHYs */
-	for (i = 0; i < num_phys; i++) {
-		ret = fwnode_mdiobus_register_phy(phy_bus_infos[i].bus,
-						  phy_bus_infos[i].node,
-						  phy_bus_infos[i].addr);
-    ...
-	return devm_mfd_add_devices(dev, PLATFORM_DEVID_AUTO, an8855_cells,
-				    ARRAY_SIZE(an8855_cells), NULL, 0,
-				    NULL);
-}
-
-So nvmem_cell_read_u32() here would return -EPROBE_DEFER on the first
-probe of every PHY node that has nvmem-cells.
-
-The DSA switch cell is added in the same devm_mfd_add_devices() call,
-and fw_devlink does not follow phy-handle. If the switch attaches the
-PHY while this driver is still deferred, phy_attach_direct() takes its
-fallback:
-
-	if (!d->driver) {
-		if (phydev->is_c45)
-			d->driver = &genphy_c45_driver.mdiodrv.driver;
-		else
-			d->driver = &genphy_driver.mdiodrv.driver;
-
-Would genphy then stay bound? If so, the R50 calibration, the
-noise-reduction writes and the downshift setup would all be skipped
-with no error.
-
-There is also a Kconfig problem. NVMEM_AN8855_EFUSE in
-drivers/nvmem/Kconfig currently has:
-
-config NVMEM_AN8855_EFUSE
-	tristate "Airoha AN8855 eFuse support"
-	depends on COMPILE_TEST
-
-On a non-COMPILE_TEST kernel with CONFIG_NVMEM=y the provider can never
-exist. Would a DT that follows the MFD binding example then defer here
-forever and always end up on genphy?
-
-Should a missing provider fall back to running uncalibrated? Or should
-AIR_AN8855_PHY be tied to the eFUSE provider in Kconfig?
-
-[ ... ]
-
-> +static int an8855_get_downshift(struct phy_device *phydev, u8 *data)
-> +{
-> +	int val;
-> +
-> +	val = phy_read_paged(phydev, AN8855_PHY_PAGE_EXTENDED_1, AN8855_PHY_EXT_REG_14);
-> +	if (val < 0)
-> +		return val;
-> +
-> +	*data = val & AN8855_PHY_EN_DOWN_SHIFT ? DOWNSHIFT_DEV_DEFAULT_COUNT :
-> +						 DOWNSHIFT_DEV_DISABLE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int an8855_set_downshift(struct phy_device *phydev, u8 cnt)
-> +{
-> +	u16 ds = cnt != DOWNSHIFT_DEV_DISABLE ? AN8855_PHY_EN_DOWN_SHIFT : 0;
-> +
-> +	return phy_modify_paged(phydev, AN8855_PHY_PAGE_EXTENDED_1,
-> +				AN8855_PHY_EXT_REG_14, AN8855_PHY_EN_DOWN_SHIFT,
-> +				ds);
-> +}
-
-[Severity: Medium]
-Do these follow the downshift retry-count ABI?
-
-an8855_set_downshift() accepts any count from 1 to 254 and reduces it
-to the single AN8855_PHY_EN_DOWN_SHIFT bit. It returns success even
-though the hardware keeps its own fixed retry threshold.
-ethtool_phy_tunable_valid() only checks length and type, so nothing
-else rejects the value.
-
-On the get side, an8855_get_downshift() reports
-DOWNSHIFT_DEV_DEFAULT_COUNT (0xff) whenever the bit is set. That value
-is a set-side sentinel, so ethtool would show "Downshift count: 255".
-A set of 3 followed by a get would not read back 3.
-
-Other drivers map the sentinel to a concrete count and reject counts
-they cannot program. For example, bcm54140_set_downshift() does:
-
-	if (cnt > BCM54140_MAX_DOWNSHIFT && cnt != DOWNSHIFT_DEV_DEFAULT_COUNT)
-		return -EINVAL;
+drivers/net/ethernet/mediatek/mtk_ppe_offload.c:mtk_flow_get_dsa_port() {
 	...
-	if (cnt == DOWNSHIFT_DEV_DEFAULT_COUNT)
-		cnt = BCM54140_DEFAULT_DOWNSHIFT;
+	if (dp->cpu_dp->tag_ops->proto != DSA_TAG_PROTO_MTK)
+		return -ENODEV;
+	...
+}
 
-microchip.c, mscc_main.c, qcom-phy-lib.c and marvell10g.c work the
-same way.
+drivers/net/ethernet/mediatek/mtk_ppe.c:__mtk_ppe_check_skb() {
+	...
+		if (!netdev_uses_dsa(skb->dev) ||
+		    skb->dev->dsa_ptr->tag_ops->proto != DSA_TAG_PROTO_MTK)
+			goto out;
+	...
+}
 
-Could this driver report the count the hardware actually uses, and
-return -EINVAL for counts it cannot honor?
+With an AN8855 behind a mtk_eth_soc conduit, it looks like PPE/flowtable
+offload to the switch user ports would be silently unavailable.
 
-A smaller point: an8855_config_init() runs on every phy_init_hw() call
-(attach and resume) and does:
+On netsys v1, mtk_uses_dsa() also compares only against
+DSA_TAG_PROTO_MTK:
 
-	/* Enable HW auto downshift */
-	ret = an8855_set_downshift(phydev, DOWNSHIFT_DEV_DEFAULT_COUNT);
+drivers/net/ethernet/mediatek/mtk_eth_soc.c:mtk_uses_dsa() {
+	return netdev_uses_dsa(dev) &&
+	       dev->dsa_ptr->tag_ops->proto == DSA_TAG_PROTO_MTK;
+}
 
-So a user's "downshift off" setting is re-enabled after resume. mtk-ge.c
-and marvell10g.c do the same, so this part may be acceptable.
+So mtk_open() skips the dsa_meta allocation and takes the else branch:
 
-[ ... ]
+	} else {
+		...
+		val &= ~MTK_CDMP_STAG_EN;
+		mtk_w32(eth, val, MTK_CDMP_IG_CTRL);
 
-> +static struct phy_driver an8855_driver[] = {
-> +{
-> +	PHY_ID_MATCH_EXACT(AN8855_PHY_ID),
-> +	.name			= "Airoha AN8855 internal PHY",
-> +	/* PHY_GBIT_FEATURES */
-> +	.flags			= PHY_IS_INTERNAL,
+		mtk_w32(eth, 0, MTK_CDMP_EG_CTRL);
+	}
 
-[ ... ]
+Meanwhile, mtk_gdm_config() still sets MTK_GDMA_SPECIAL_TAG and
+mtk_tx_set_dma_desc_v2() still sets TX_DMA_SPTAG_V3 for any DSA conduit.
+Does this leave the MAC only partly configured for the special tag?
 
-> +	.read_page		= an8855_read_page,
-> +	.write_page		= an8855_write_page,
-> +}, };
+On Airoha SoCs, airoha_get_dsa_tag() has the same kind of check:
+
+drivers/net/ethernet/airoha/airoha_eth.c:airoha_get_dsa_tag() {
+	...
+	if (dev->dsa_ptr->tag_ops->proto != DSA_TAG_PROTO_MTK)
+		return 0;
+	...
+	default:
+		/* PPE module requires untagged DSA packets to work properly,
+		 * so move DSA tag to DMA descriptor.
+		 */
+		memmove(skb->data + MTK_HDR_LEN, skb->data, 2 * ETH_ALEN);
+		__skb_pull(skb, MTK_HDR_LEN);
+		break;
+	...
+}
+
+With the new protocol, the in-band tag stays in the frame and 0 is
+written to QDMA_ETH_TXMSG_SP_TAG_MASK. airoha_dev_xmit() still requests
+TCO/UCO/ICO checksum offload and TSO for that frame.
+
+On RX, airoha_dev_open() sets GDM_STAG_EN_MASK for any DSA conduit, so
+RX and TX handling of the tag would not match. Whether this corrupts
+checksums or makes the hardware insert a second tag depends on hardware
+behaviour, and the code alone can't show which.
+
+The commit message says the change is about giving external tools like
+libpcap a dedicated name. Should these conduit checks also accept
+DSA_TAG_PROTO_AIROHA? One option is a helper that means "uses the MTK
+special tag format".
+
+> +
+> +DSA_TAG_DRIVER(airoha_netdev_ops);
+> +MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_AIROHA, AIROHA_NAME);
+> +#endif
+> +
+> +static struct dsa_tag_driver *dsa_tag_driver_array[] =	{
+> +#if IS_ENABLED(CONFIG_NET_DSA_TAG_MTK)
+> +	&DSA_TAG_DRIVER_NAME(mtk_netdev_ops),
+> +#endif
+> +#if IS_ENABLED(CONFIG_NET_DSA_TAG_AIROHA)
+> +	&DSA_TAG_DRIVER_NAME(airoha_netdev_ops),
+> +#endif
+> +};
+> +
+> +module_dsa_tag_drivers(dsa_tag_driver_array);
+> +
+> +MODULE_DESCRIPTION("DSA tag driver for Mediatek switches");
 
 [Severity: Low]
-This one is in another patch in the series, but it affects how this
-driver gets probed. The examples in the PHY binding
-(Documentation/devicetree/bindings/net/airoha,an8855-phy.yaml) use:
+This isn't a bug, but should the module description be updated here?
+The module can now register the "airoha" tagger too. With only
+CONFIG_NET_DSA_TAG_AIROHA enabled, it registers only the Airoha tagger,
+but modinfo still reports "DSA tag driver for Mediatek switches".
 
-    compatible = "ethernet-phy-idc0ff.0410",
-                 "ethernet-phy-ieee802.3-c45";
-
-mfd/airoha,an8855.yaml uses "ethernet-phy-ieee802.3-c22" for the same
-PHYs. The driver and the bus are both Clause 22 only, since
-devm_mdio_regmap_register() sets only mii->read and mii->write.
-
-If a DT copies the PHY binding example, fwnode_mdiobus_register_phy()
-sees the c45 compatible:
-
-	is_c45 = fwnode_device_is_compatible(child, "ethernet-phy-ieee802.3-c45");
-	if (is_c45 || fwnode_get_phy_id(child, &phy_id))
-		phy = get_phy_device(bus, addr, is_c45);
-
-Wouldn't get_phy_c45_ids() then fail with -EIO on this C22-only bus?
-That would make an8855_core_probe() fail for the whole MFD (switch,
-PHYs and eFUSE).
-
-Should the example use "ethernet-phy-ieee802.3-c22" instead?
+> +MODULE_LICENSE("GPL");
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928194511.41878-1-ansuelsmth%40gmail.com
