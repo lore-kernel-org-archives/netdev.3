@@ -1,123 +1,151 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-pz2-f36.google.com (mail-pz2-f36.google.com [74.125.228.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3F44A5C59
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 15:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B1652CCF7
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 15:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790867458; cv=none; b=dFj71Qqa/UcGudAqQ/37pMd/gIXg1HJ8G3BJpSF+t2TC2HH3UAcCINIyY0HiuW4TobTuH/FUp8+7lAMgJWEaholvVUqyfR9ROXnf0U/I0LPcUgoOfwHzEeKK5JjObtdzivDsT44lM787v+nVhfVvpjKQiOiIOJEs3BMvImWLJJw=
+	t=1790867607; cv=none; b=Q5oO2WPZbv1C7A7jGatcmVA4xWahumLkwssVf/TlFkZQ+gce95oLXxgIbn/srraj8QdKyNlw8tTRAeuxFwwdNid/ROeGNobnroK3qTDG2roIERVJgfi7LGxncdIomnmGtIfAW/6sXGf7m587jmMFDPEx75M2b/fkBnV790oEr7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790867458; c=relaxed/simple;
-	bh=v/g5V0DvX7DbXaWcxFQ+1tPtcUqZhm9i5DBwg6+5XvQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i1oHffcUlf1VJDqXhCcucVGwDzSCUYTt6jkSTMBzARbvRD4ObNi13d/MPDuvU6LKoHGxcK/wSZ4shH+j2rE/EPapbgCsxAXDYrCr/ng1MOoVxaKamjCyKYnM9+en4UJQIWGS5plMs3FsH969isJhD7fooy0whvdefYnzExMCCHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AiP95NAI; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1790867607; c=relaxed/simple;
+	bh=E3+ztsI9L8TnSfKfGghOBEwhvnL/Z5/eVhFzRSfVwfQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C3b+9+hlRugMlUdP8QjgCZzX7Gt4dl/n0oGL1R5N84qXkkBgZN1EGt4nzKZktpYJ/pJoCzzFzvmYdSLk0e6plH/DtQq0xTN1l4n96yo8J7Urd0B5jKvdm3rEs4CkWozp/MieQ4XCWln2IUW9m3lRahQOpBmczS465Y8dh59r5pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PoyMcaab; arc=none smtp.client-ip=74.125.228.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AiP95NAI"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a006bb267eso25609665e9.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 08:10:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PoyMcaab"
+Received: by mail-pz2-f36.google.com with SMTP id 41be03b00d2f7-cc7e7717675so622870a12.0
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 08:13:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1790867454; x=1791472254; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uEqFwwmiLgxzbUfdtxr/SjfsZs2IKekOzMd4LW1gk/0=;
-        b=AiP95NAIGlVILCdx2fiDa96u9dnETu0eV6g2YlJVBoBtvumBMglaWOXWFSV84t6/kz
-         BqOsphx4VuiYuLRPu99byiKeo8RE2xooIDYIHfbh86TZkkv/5UeVSnstEr8348Rz46hZ
-         fve2SenUs/pMePKaFO4+N1wd1ixb8hEaZN5poOv/ul25F2BJ8HpDB1gllxiD829mumCo
-         KwMqRHG1dPu5KZz2QJQ8Nw84T5h2jVBTdjFjfgHVSIpynmep6z56Mo6OL//CvuK2cJIR
-         lzjG/fg06VwwJIAAujnM6PMf0N+p3DPRGdZnLrjVb5AzeoHbOF6WDB6PB/4aecr4uK+l
-         Ck5g==
+        d=gmail.com; s=20251104; t=1790867605; x=1791472405; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BL1X3zbhdEDEFiVdKCvJlVwYpTEdcagn9KrGuz3r0JE=;
+        b=PoyMcaabx/gW0xFbl8Te+5Lz1Jyjm2pSvBuzu74WRekkfnYdcAIkWlqm11FyBlaDxG
+         /BMvhsjsSDSBnOTK3Lb3JyXDCCSSo+OWu6w42vWakqSULqEW43h7yUA0BP+n2QJXe3Lt
+         xn+W0hO0YgHil6WPbg/1+Xup9LIfnDDxFFbGQ38KuAq0ogsUgybZphaTWoTy1GwRXU2W
+         2YrCBi+NUq5z33Eo9aBF+fPLOA6eU7lJBsR/CuG21mGypc603Pwv7Q0jmmjv1m41kvuW
+         z6CMjV2cfwyQOh/Hzc1/YVjAtij7xT8leQkKE2uZ8tRYi4ITI8JXYQzFViTvf7sLZmZg
+         Eg6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790867454; x=1791472254;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1790867605; x=1791472405;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=uEqFwwmiLgxzbUfdtxr/SjfsZs2IKekOzMd4LW1gk/0=;
-        b=vYkCviBsypd8HKIQzFDizTgMW8xHsNbRlt8lZN/88yylMYQn9+z1gz5aEI8rO7fQeC
-         KiMpT8kQHmMI9KtMetihSdnr5Pu+RGG8ZutKD54hGXeOAArBqa4EoxAdsFjwi3Wd1mpr
-         qkDgs1K+uwXqpWUBdgFVRyt74PI6/FCf24YNa3AFxafL18Lk8Pb33StX5pAN9jQI/bYa
-         urYkyj6JcN5kLoKy8YVhDmin6yay+ymXwoGy74THt5bimX3hZy35ML9CQl2BsDh+lSnh
-         Jm2ox2tq3Zf/RT3kNSdKxeXTKMdwp8tJPkrfrQsYcQbk32oRoENPgbl4KEVIpF2Yj44e
-         M+sg==
-X-Forwarded-Encrypted: i=1; AKwUvBzzOfxezqIfsEkA8PXpx0+Tyi2GMA5pm7VfylW6+9Sw4Stk+++vCEz7z2YHSWSGKZ3mWoEghAM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lKmYp8RZF4xBZzDkuoRsJjKMCgbvOuWMInd0cs/pizU4ydNaIr
-	81N+oXC+kZJ93W8mhVd0fAwUO9y4E5TRrJoh4n1AqNQrxn0PmlX7koC7CrvLP+wU6b4=
-X-Gm-Gg: AYBFou2K59INPKh5dVkcZHzfUveL6uBpz6pns7O4s1ASOUW0JqtVNfJVVRCY5LI3dbH
-	qZ/Pm+xMHXxECBMkib//YTXGR6w8bl6q2EepnqqtH9XTRzowvBuEaE1WvExeZpx9RYfBZzbYYTi
-	LuNi172zm5UydALBOaGUaltQDAn1piJ2R+6+fydN8ldiGJ0XdoDJeQq/67yw9osBz+Ma2cFZBwE
-	u9BGgb8hcdtoWWBBZ+3tYkTqLUviMw+LvfqSfjCWytT+Ns9vxRcc5YGOnTWMdKhlbHh/3w57gBZ
-	hHwRzDUG+9DtvfMB6lYm78w2+Ag5E4cJbsUsuw/XR2dQfai3tBqATKLxcZBMTqi+kvzDnUXcm2C
-	iUkgBDTwvMuVHsGM3pjmFPlrS6gaKWYG6pxrTwlpbmlRcL94z3i5sm9P3f38hBFNzeJvnY8Xyhw
-	DjogbrV7KL03QWM/rldlLFvPyBDBoA1J09M05AogpjOtR1QYD+f/l2BOuX3jYRXLXtJoGDm0FAR
-	WXAL99zG4ShxAUBKjkzvUX4a3NHDRB23eo=
-X-Received: by 2002:a05:600d:8499:20b0:4a0:1e68:d27d with SMTP id 5b1f17b1804b1-4a01e68d354mr47259215e9.9.1790867454233;
-        Thu, 01 Oct 2026 08:10:54 -0700 (PDT)
-Received: from ?IPV6:2a07:de40:8100:0:89a9:fd0e:583d:4a53? ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b06a2fc98sm6247090f8f.35.2026.10.01.08.10.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Oct 2026 08:10:51 -0700 (PDT)
-Message-ID: <ca910292-5d3d-47b5-ae40-7ca1688f3c06@suse.com>
-Date: Thu, 1 Oct 2026 17:10:50 +0200
+        bh=BL1X3zbhdEDEFiVdKCvJlVwYpTEdcagn9KrGuz3r0JE=;
+        b=EuHS28F4RSwe4ESkjr5cyVJeFWMe+JKm7yeAusm0oOX/EVyFJ78l48t0VgMiVWEEbm
+         R6dLdvGslvz++9/jj9v7+frw30yc9Cn+ae0FtoC5QC5yutH9yfr/8ASjxE3E5RNScbOc
+         B85BPulKsq2b8a2GiXe03Miz9XRsft9E4WhkYcYR7DoNM6UqqFnHuCHJ0a/kwNCaN3bT
+         Z/Gi0Mi/G7MgiuxWo5fllltGiX6GM4x6UpWtTS1Mq7omhhjKeHawAGe2LKkb/nZOp388
+         NUpKxFHxkSVkPV0k+484ADxdye3FAHhX/zsmHdI51F9TCR7vKEHtvUnpaYcAt9CR/KVm
+         DAYw==
+X-Forwarded-Encrypted: i=1; AKwUvBw/tyuE4ZIIIgO3Yg5Ojf10aYJBVDzTZuhljYhcRIKnq9YiLOZQcaHHUP8JIbYkbiKRZYjDEH0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lstcXfctgMajU1XojGihUv6zDRElcvhe1bLkt2W1SOqOp9bAzp
+	fsPPX6lEBWebu/Y34MWDzKCW4LcdhiR7AuefC17HF0Y/HssAqVXdhQwJ
+X-Gm-Gg: AYBFou0uPzf+GP5PLtccXJIX4pMRcAE73EK6st31MK0rdsetT0dqNCaEWYPOozE3crH
+	2IVv+qe9zb0jTfDLtTTGq52MR836zNrpSakETKTWnQS/Ee40iyR8Q6BoOtkm3HG5YN1qM432Ein
+	xGpsDb7x6io7Ng/HRiqNp4EqN+ltR1V0sjiVPQWsRTOVgNfl0j7KGCqoXnaz7sFiqFkUxssEr3W
+	w4u6PCVx1A/AuhJBnsNRMplzu2H6ImjkiH/c6d0UlIsRCB6LxX7TVTjyrefHjyp6Gi9ln6O/Mte
+	QSDsMHR4nhc6lchRvFFAhigf4/vXQ2UnqEX+33fEJNtJcciGgez9MbKhH0ywbGhOydDmK2nRHw/
+	mtdPfl5jNsepXPRE7VK8G839ycIGRlmO7x3k0iPLwAct1YFnlIEc2WrZ6E9ex6e2obqVxe8EE9F
+	gmNH+oRjXruj6zts2jsr98qLvWMOOTVZ31vzN1t7IClVLhUWtCuGaTjof5c/giaAYTzIpIWSYZx
+	KsPRLEdC8s=
+X-Received: by 2002:a05:6a21:9216:b0:3de:72d5:281f with SMTP id adf61e73a8af0-3de9e79e727mr5170098637.34.1790867604744;
+        Thu, 01 Oct 2026 08:13:24 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8881589a0c3sm1290039b3a.7.2026.10.01.08.13.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 08:13:24 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: stefanha@redhat.com,
+	sgarzare@redhat.com
+Cc: leonardi@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] vsock/virtio: account only unread bytes in read_skb()
+Date: Fri,  2 Oct 2026 00:13:10 +0900
+Message-ID: <20261001151310.4101006-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] Remove the error-injection.h include from
- linux/module.h
-To: petr.pavlu@suse.com
-Cc: Jens Axboe <axboe@kernel.dk>, Jakub Kicinski <kuba@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Simon Horman <horms@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Francois Dugast
- <francois.dugast@intel.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, linux-block@vger.kernel.org,
- netdev@vger.kernel.org, linux-api@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260911-module-include-error_injection-v1-0-5da895d8c84d@suse.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20260911-module-include-error_injection-v1-0-5da895d8c84d@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/11/26 5:04 PM, Petr Pavlu wrote:
-> linux/module.h appears in roughly 15k #include directives across the
-> kernel. This makes it a "hot" header, so it should avoid pulling in
-> unnecessary definitions.
-> 
-> The header currently includes linux/error-injection.h to obtain the
-> definition of `struct error_injection_entry`. However, this is unnecessary
-> because the type is only referenced in the file as a pointer, for which an
-> incomplete type is sufficient.
-> 
-> Add explicit includes of linux/error-injection.h to files that use the
-> ALLOW_ERROR_INJECTION() macro and currently rely on it being provided
-> indirectly via linux/module.h. Then remove the linux/error-injection.h
-> include from linux/module.h.
-> 
-> The first five patches can go through their respective trees if preferred.
-> The final patch depends on the preceding cleanups.
+After a partial stream receive, rx_bytes tracks the unread suffix while
+buf_used and peer credit still cover the whole packet.
+virtio_transport_read_skb() dequeues that packet but passes pkt_len for
+both counters, underflowing rx_bytes.
 
-I've queued the series on modules-next for 7.4-rc1.
+On a connected CID_LOCAL stream with an SK_SKB verdict, a 40-byte read
+from a 100-byte packet made SIOCINQ report -40, an empty recv return
+ELOOP, and poll report the empty socket readable.  After verdict detach,
+receiving 40 bytes wrapped the counter to zero and hid those queued bytes
+until one more byte arrived.  The fixed run kept the counter balanced
+and exposed all queued data immediately.
 
+This was found during an LLM-assisted manual source audit of VSOCK
+receive accounting while re-evaluating virtio_transport_read_skb() after
+CVE-2024-50169.
+
+Subtract only skb->len minus the VSOCK offset from rx_bytes.  Retain the
+full packet length for buf_used and peer credit.
+
+Fixes: 45ca7e9f0730 ("vsock/virtio: fix `rx_bytes` accounting for stream sockets")
+Cc: stable@vger.kernel.org
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+Changes in v2:
+- Narrow the subject prefix to vsock/virtio as suggested by Luigi Leonardi.
+- State that the issue was found during an LLM-assisted manual source audit.
+- Add Luigi's Reviewed-by tag.
+- No code changes.
+
+Link: https://lore.kernel.org/r/20261001121541.2983379-1-4ncienth@gmail.com
+---
+ net/vmw_vsock/virtio_transport_common.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index f225f53ed4bab..1e762a480df49 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1927,6 +1927,7 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+ 	struct sock *sk = sk_vsock(vsk);
+ 	struct virtio_vsock_hdr *hdr;
+ 	struct sk_buff *skb;
++	u32 bytes_read;
+ 	u32 pkt_len;
+ 	int off = 0;
+ 	int err;
+@@ -1946,7 +1947,8 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+ 		vvs->msg_count--;
+ 
+ 	pkt_len = le32_to_cpu(hdr->len);
+-	virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
++	bytes_read = skb->len - VIRTIO_VSOCK_SKB_CB(skb)->offset;
++	virtio_transport_dec_rx_pkt(vvs, bytes_read, pkt_len);
+ 	spin_unlock_bh(&vvs->rx_lock);
+ 
+ 	virtio_transport_send_credit_update(vsk);
+
+base-commit: e23a64eb244356ee47c0620f0722d51bd88db522
 -- 
-Thanks,
-Petr
+2.55.0
