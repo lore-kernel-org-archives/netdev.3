@@ -1,77 +1,88 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2CB51E42C
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 14:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C92A3ADB97
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 14:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790865057; cv=none; b=ZWUutcoGwS9LiY9fj83cYhQ9w77/TQ4dTK4GlzvdoT5iDfufxluJndDzhDZ4OmLBWo1ZLvUBJuHTxRD9ePJzApHK7eY3R/1Nxs9KU5ajhkjs+pXLPO58UsdxCzEHqFaFtXxpPACYsD/UDu9YcJ9ip7qmZJCiaCdaFnHEODTWqJA=
+	t=1790865163; cv=none; b=soRO+R4qwBIEZWdFlN1jwtHRrHWFDn2mG+Bg+trUTp6h3sMZO4KdglpxefiBsLPaNvcGDur9m9ivXQzVdl/bpg6MgUa0Dh185BvVzEm/gQaTPABRkndQUd5pSyX1dQ0CxCyY+2SxMIb3iybN7dj5zQVmcCwy9/okP3nhhFzGId0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790865057; c=relaxed/simple;
-	bh=3RzvX1xwFMFMNAEqMuJeEGt+6r6CRUg6jWWr1XoulkA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fTe+3GtXFeXZjKbFJyQWwFCAd72b7J4P/bCgMxVa9wmGM5xoqRloVeEgqSSCPMoJGsA72RjG+3ZL66Z9W/XdQz8Gu8/XT+9ZkLwYO8eB5UfCrTtiGtNHklhABPLu8AEizEiap7nsL6uOGycoKViigMEH91IC2ryLl2szvrOP7Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qI+u7BWs; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1790865163; c=relaxed/simple;
+	bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gadYOk0wiW16XBm/sNniPGjQHTAbdacLewU76djYva/537fZsq+sVJ7lTE+N4g+7zmH+jeDxd5ubNMeg0X3E8LgO38ImHXcUAbOhCVZ3CHpBIbYuGljhIccGm6/WNf27aGo8tpYe0xIZJdBDFhQTNaw6elmFEdNjlOdLflRsMU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsZn1cOs; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qI+u7BWs"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a003bd18e5so25414855e9.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 07:30:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsZn1cOs"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396cccbba91so3206595a91.1
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 07:32:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790865050; x=1791469850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vQ/xYcU6XZ5xLlPB/q/5AjykoyECyGBCjj320diGJdI=;
-        b=qI+u7BWsEGJ2y8R5917LB6Ws+LRvDTkmWGROE2Zsn1eN2TLKlbZDyVBStYurxE9+lK
-         IA1tEACvGR+jHccnZnqmuFhg8qtzMwiPcslK06xd05ZVXSZezM2v3gqkwWUBbyOQ/Sf2
-         4j42pD+iHuC1/gYdmV3PkfEg9MEERpm5HO73GQ/gSKw/wZhGei6DqLL7xyibrPZ+GrFY
-         svscmlsBEUb9eK1G7vQo48eEH8LPWUMcPj0Fkf4kH+O19QB+y0fqt2NfX24x2ixyKRUp
-         kyHMckzwbFo03vITHChL/9b7hL7UjVhkYDs49WYAVE0NODEvCAqom80iMOd3tNaBn445
-         tcNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790865050; x=1791469850;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790865155; x=1791469955; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vQ/xYcU6XZ5xLlPB/q/5AjykoyECyGBCjj320diGJdI=;
-        b=DCvmYi3CkZySqCNMq44X2on0vG6uchyT1jihHZ8rr2+s6kCVZILtjBP1a9/YSojSLO
-         IrT9QI+Z2tShilt2+6I0DpaZfbwo+uc7DXKg0UVqLDSFzSv6lGXwLf5Knz+1V+XGz0jp
-         S4UwvtM/em9etSe4TBNgp45/oBNf9Ho+/u0pnRXzlDE+pPW+koZbVBSE2PUtLKT57v1/
-         VMUfiIg8OJr+aujVz6LtVrA/oLpWnXKh14/LOSHL6ojIFKl8VLF7v6JyMnRu7R8kieKq
-         9B/KuX8/pGVl57JFuJn7cXunvMiEOmOZfOuKX+uGusbZnYWVqyQq0XmJ7eOJccge+v8I
-         ORcw==
-X-Forwarded-Encrypted: i=1; AKwUvBzQVf/yid3L3T6lVmUhOVKxfZs3vbo74iot/7euuVj2thL+PN/rjuBQgJIQkj7UmYzU5hntqgA=@vger.kernel.org
-X-Gm-Message-State: AFuF++m7sDwCRUU1yuEslqet6K+I4uhISRVDJRHRSgXLqtx+pJvr1Oo8
-	ESox+EgBu66zoucTsr05cUFY17nstyXx2ILTUKXr3qL67tMaEtXlOvttcq7/F2Xh
-X-Gm-Gg: AYBFou0ejhSqw/jueHsYCIIUKM/hVLBA3RELemEBOW1WblxSyra3U75nY3J3YsvxVsK
-	WLr8hTmRrGv2uY4nObWl4LQZtot40trhvjh14MDInaZg8MIGXeZHmS1tUu2mV5hnSyarLiWCG9s
-	tC0jSuepvCmQchu4wNFQdgm7vo2IellNBiaKmVDzwrWosyIege/0KPVJIw9U4REXXjVf9sDLsVI
-	o0PsjEgikvI4UCPWccOZePO2EZvCJjI+Z4hLXyi9QO4/Sm1/yx2QNt3K2Lnt/R/nVFEJK1/zxUi
-	B2XEvssDvhqYLu+ZZ+0Q7Q2AiM0RRcCHqTgNT7MwalxKCdCdiMGGkGdkHZmTPwcrhjp1ijmWzPR
-	Tl982ip1r8pkqBU7B2bWmrHU6zuqYTWhvrk4cxgGmVwpBtmg4J7tSjrg9JhIlCCYKhkIVacYo4I
-	A8zY6MkFERJx3h6ZsCA3QaUpWkvHH4TieNapndF3dnpOGevCVVKt7+0RA7B2raVjngQRpVpEaR8
-	twPfir7Q42+AYmGA+jTMp/57gNVXE5tC47HsSZBWgo=
-X-Received: by 2002:a05:600c:46d0:b0:4a0:1a18:b742 with SMTP id 5b1f17b1804b1-4a01ad909e9mr86412115e9.2.1790865049941;
-        Thu, 01 Oct 2026 07:30:49 -0700 (PDT)
-Received: from andreayoga.wind3.hub ([31.189.27.30])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b06a360c2sm6035921f8f.36.2026.10.01.07.30.48
+        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
+        b=QsZn1cOsGW9gJSBEr3AUiFhi6dDv+lG34xs3Mef8LiBafeYJX+skrBT1NBhIXQBHYU
+         jj6xuMT2tnJjwDESvv86Uw/zRnqEpEafJoeH2K+xv1hper6uzTKGj1f4bL6FcCpfTGd0
+         EvmA2hfwBKytksucyYSD16iM6S8wtFJL25V5FkbDM+tHGtKJRt/slN7TnmiqxYxjtEwe
+         Aroktd7xX0WaeBpkrdLqQNtC1matuazrPpiMuSAnxk5rAWXCrHCszGKMOSI6IAY6ra5g
+         vwnLdPqafMdKVpNxDJ8dtR6+BvmPgvh1Gx/E7/CEG7/YHPzbVreCoEpLY9HVmGM1uoZb
+         z+dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790865155; x=1791469955;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wzzViGtuG6ont1dJ14oM1FNYXdtgFlMYQZlw7fnaS6o=;
+        b=OswAaF5oPAYUDm6FW8W9LVx97DdjAQ6X+FtGRggIzvsyYNa4X81MePtU54Qh/qvPJE
+         +3ARnMalcD+utI6L5FKQC1+dF6gtRcKxjBx/786+YviMv130YBQ67aqDtFBg41vk/+Dp
+         P5nObHTJdH3M/Ox07prJYegkC2+WpKPu2zS1WEagjNQEVYhzYE02da4pAFWeiuAN+37r
+         lPQKq+B3Lc8RbMwhfHwF4gXAQ6ZUMbBY8VyLFwJqqiQOQoMad1WxRnibPIulM4VH/gQ6
+         joFUvJWRUXL7c1UGb6yAFJTyIKjqW96v+6Rw0260WovGYkXkQ9+8cjqNr8GXG+UpmGsM
+         HmHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwLXg4YeKA9R9ta9wFbfLtosdKolSJFpWuhIP/+9KjJC8Cds93YP/9EqSAQIbnqnxDQJaTYDJ8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLre6P7gs91aaQdMRWzMUXaou4gusEk57c1wD7rX68J1f5ooXF6
+	hdz1TW1dRhVSXh6UbaNbOG09Wpfps8/VBC4ECkbjYek6kVE+p2jK6fi7
+X-Gm-Gg: AYBFou3P3hlz2SOV4fxxPP8bfYg1WA9LZVmrtuyRkBrcqOV6T/e/QybdSxQ0pSwxVMA
+	cxCmzq3sOBlWxBw0EOs3U2NWgtzYp2mG7M810pQCNZb3nswofjLia+rtoMhi7OAfKmnO6xsTP6b
+	OoQri304YcQwHUjP2JJbn41PEKbwHR9/wLovk/A5mkroPajH9rx1xCnOH+XCKD1RtU839q9Mp1D
+	UX4UweO9zyvSZjvPg7nURQsZ6qFeDozj+7WfPF1zLZEaUYhdq4DJ0nQMkVcNEdNW2fAA6ox7t9G
+	bXwPMT8YJ+0UexEA1LhW+Y5RhfnB+sgzafL57DJgGiryGfTJTzsrIz8doLwPDeGmCFsYFxIm64/
+	bLyJxkgmP/YgXHwI28XMW6oC8/cTbnFXf+3s1ro/u6Q4rNG2kNoad+s0vMuO+8CSpRUXpukGO/3
+	Zj19dblGGe/hprXiWrsGrQjG8+N4hJx5kGbso7e0QVKiBsjQsup0zVxZcQshAogX66X3P7tW7mf
+	ZfAezTW0HU=
+X-Received: by 2002:a17:90b:2b44:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-3a4d1509d61mr3979683a91.18.1790865155377;
+        Thu, 01 Oct 2026 07:32:35 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a4f478e750sm4964487a91.13.2026.10.01.07.32.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 07:30:49 -0700 (PDT)
-From: Andrea Parri <parri.andrea@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Andrea Parri <parri.andrea@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+        Thu, 01 Oct 2026 07:32:34 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: stefanha@redhat.com,
+	sgarzare@redhat.com,
+	mst@redhat.com,
+	jasowangio@gmail.com,
+	eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] rtnetlink: wait for RCU readers in rtnl_link_unregister()
-Date: Thu,  1 Oct 2026 16:30:39 +0200
-Message-ID: <20261001143040.28467-1-parri.andrea@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] vsock: account only unread bytes in read_skb()
+Date: Thu,  1 Oct 2026 23:32:21 +0900
+Message-ID: <20261001143221.3856511-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <179085716831.31693.13222203434770065965@kernel.org>
+References: <20261001121541.2983379-1-4ncienth@gmail.com> <179085716831.31693.13222203434770065965@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,78 +91,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rtnl_link_ops_get() finds ops on link_ops under rcu_read_lock() and only
-then takes ops->srcu. rtnl_link_unregister() unlinks ops, then calls
-synchronize_srcu() and cleanup_srcu_struct() without first waiting for
-RCU readers. A reader that found ops before list_del_rcu() and has not yet
-taken ops->srcu is not waited for.
+Thanks. I found this during an LLM-assisted manual source audit of VSOCK
+receive accounting while re-evaluating virtio_transport_read_skb() after
+CVE-2024-50169. I then confirmed it on vulnerable and fixed kernels using a
+connected CID_LOCAL stream and a real SK_SKB/SOCKMAP verdict path.
 
-Such a reader then locks a cleaned-up srcu_struct and keeps using ops
-after the module that owns it is gone. rtnl_newlink() and
-rtnl_dump_ifinfo() both look up ops without RTNL, the latter for any
-user that dumps links filtered by kind.
-
-With delays added between the lookup and srcu_read_lock() in
-rtnl_link_ops_get(), and before rtnl_link_ops_put() in
-rtnl_dump_ifinfo(), running "ip link show type dummy" alongside
-"rmmod dummy" on a KASAN kernel gives:
-
-  BUG: KASAN: vmalloc-out-of-bounds in __srcu_read_unlock+0x57/0x70
-  Read of size 8 at addr ffffffffc02ff318 by task ip/147
-  Call Trace:
-   __srcu_read_unlock+0x57/0x70
-   rtnl_dump_ifinfo.cold+0x30/0x3b
-   rtnl_dumpit+0x7a/0x1b0
-   netlink_dump+0x486/0x11b0
-   __netlink_dump_start+0x661/0x910
-   rtnetlink_rcv_msg+0x611/0x9e0
-   netlink_rcv_skb+0x126/0x380
-   netlink_unicast+0x605/0x830
-   netlink_sendmsg+0x6d0/0xbb0
-   __sys_sendto+0x335/0x3a0
-
-Call synchronize_rcu() before synchronize_srcu(), as
-rtnl_af_unregister() already does. This should be enough because
-rtnl_link_ops_get() is the only RCU walker of link_ops, and it takes
-ops->srcu before rcu_read_unlock(), so every reader that found ops is
-covered by synchronize_srcu() once the RCU grace period ends. The extra
-grace period only costs time at module unload.
-
-Readers and the writer were serialized by RTNL until link_ops got its
-own mutex, which is why the missing RCU wait did not matter before.
-
-Fixes: 6b57ff21a310 ("rtnetlink: Protect link_ops by mutex.")
-Cc: stable@vger.kernel.org
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
----
-v2:
-- Add a comment above synchronize_rcu() (Eric)
-- Add Eric's Reviewed-by
-
-v1: https://lore.kernel.org/netdev/20260929170444.218093-1-parri.andrea@gmail.com/
-
- net/core/rtnetlink.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index be9d1625bac31..580101b5ab585 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -707,6 +707,10 @@ void rtnl_link_unregister(struct rtnl_link_ops *ops)
- 	list_del_rcu(&ops->list);
- 	mutex_unlock(&link_ops_mutex);
- 
-+	/* Wait for rtnl_link_ops_get() readers that found ops but have
-+	 * not yet taken ops->srcu.
-+	 */
-+	synchronize_rcu();
- 	synchronize_srcu(&ops->srcu);
- 	cleanup_srcu_struct(&ops->srcu);
- 
-
-base-commit: 54518e0e827f4ca9229ae657022c60bf60f5c1bf
--- 
-2.53.0
-
+Thanks,
+Daehyeon
