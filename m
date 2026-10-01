@@ -1,86 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpcmd11117.aruba.it (smtpcmd11117.aruba.it [62.149.156.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80B847ACE8;
-	Thu,  1 Oct 2026 08:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00384AE8A0
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 08:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.156.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790842809; cv=none; b=VHqC83DxNJ8XuPV54yIoUOlqKPC5dSOx34nehwF8L3+h0QXnxCfurU183sWBfMngQqiT20jtdEjUaKA3XSAWZqFFezCfoKn1Qf0O9QP5YPqrs1j+uTlrQyJzjecWz5WWXQ60yZ+hSrDGGACGIiSx82wLNwCZ5ZrjhYJQfFeIaFo=
+	t=1790843029; cv=none; b=K2ABmb2FMBmiMbti35L+rGpBzaLwSgVLjioReF169NeE/15SH8FkGUfG62x3JxAZhmBEVIIQRg1xNTZ5Pj7qGPXJ83PiGLs9ownANe2YA6DVP0PNh8vuq791DRUCaad1h8OK0mho13MJluIww/Tbu9eEeEI3jve661Nkl8ZZQK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790842809; c=relaxed/simple;
-	bh=jKJ929piK79nIx5hZ5XE8MWpLA7cfM9ky+fPfR7foR8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CiIPkMX0IaEEz9Xybt0oeyAnOOxkLiPfsItjuqe5iDzpusyA4qTMfdx2JmmxUnM5o+r6MtMV8VrQ3+YCaDC8zXEP9XDP7jpSXIWBf9Al1Soi01RkSZdpoUvDaGazmu95FWjJBd4lLwMQUD2gvfPViyVufa8CyyyGE4M9ICHvRZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sx4aXXuH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790843029; c=relaxed/simple;
+	bh=5ii2wsmim5NNuQYKQidppV2R7J5iURxqkVb508DATbo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=h7GAyT8Ze69jOdXD62CqDLNTG76ugp4LeYPkVuLyQKAAF8bjfYVCZjdrZj+1lkFzu0X6sjw3hl7OuYV3H1WL8iz/o9xsXQzg4Cll4WcXCntMki3+M03WdvK2iRzGJSRXRyZ8CH52wQU0dYaj8tHGldq8r0Xd7whVx4Fp3+KJMFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=DcRHM2er; arc=none smtp.client-ip=62.149.156.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sx4aXXuH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453101F000FF;
-	Thu,  1 Oct 2026 08:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790842807;
-	bh=NCK/vtMOrbcVDdBrjZGfheC/3nQmLE7ZcgKVbsaagwQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Sx4aXXuH/WX2CXGTNwzCUz1k8RBAAoNyAjmxPyzAQGQ6kOefXj0TZjOVIuMHf8SqB
-	 Te2qarYcRLzyRdOgDxbGu6nX70XSKlMHHChJyiqqieEX1wbHxWyvZMag2THC+6w23L
-	 OSMoYcYc+S/KgvSSPyFREotnfCpPuzHlgrVNpa7t2+nFOvXouEcPM5k6BX9eM5ST0k
-	 /RWFdhchXCd/iLUJyNJpF9nWA88C7Cx6LX2Ym0ouGB7oAQAklixGbJhpC2BWGV9iFh
-	 3BxS005fRWRstnx/B7YsOmKHjTs+l48dD8+0eODmq664qARPSJCPM7oD1kZT1lVrfz
-	 Mijedxz0cb3iA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A42A380CFE4;
-	Thu,  1 Oct 2026 08:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="DcRHM2er"
+Received: from [192.168.0.186] ([101.57.122.26])
+	by Aruba SMTP with ESMTPSA
+	id CC1oxVAz8l4ytCC1oxmhmk; Thu, 01 Oct 2026 10:20:34 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1790842834; bh=5ii2wsmim5NNuQYKQidppV2R7J5iURxqkVb508DATbo=;
+	h=Date:MIME-Version:Subject:To:From:Content-Type;
+	b=DcRHM2erSauuABoy5m3lY34wozJdaHok7MToYxoY5xKC5xVxipZY/h8KV+BkNlBhI
+	 R5cZweUWjz9rWhrqwSbc9pep2lHEGwLjqdSlscqxvbHi0plmDFQM9s4AoWr3T36h9G
+	 UJBusN9ZhyfnhjJDsmlFKVSkxpVye4al8ocX6ZH4LqHS02+Mdwlwk18zi8x0vzYYdN
+	 0u/EuVhaH2kauIRM+NFmVgmZcWLiALpMqv9wEcrBSQ/tQ+bGocjvbMm9ffegHquWsT
+	 UdLRGaet8x0gHFDZYk4Z6TBR7+8ySTZg49JO2Rp1PtUFp029oHkNpfrfHhYaLjEKz9
+	 xm/6r6gOs0ECQ==
+Message-ID: <fbc06405-c7a0-441e-af5c-be7d55e732b5@enneenne.com>
+Date: Thu, 1 Oct 2026 10:20:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/3] net: move the type 2 sockets out of tree
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179084280603.2317625.14903596427850220915.git-patchwork-notify@kernel.org>
-Date: Thu, 01 Oct 2026 08:20:06 +0000
-References: <20260928190800.2521749-1-kuba@kernel.org>
-In-Reply-To: <20260928190800.2521749-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- kernel@xen0n.name, chenhuacai@kernel.org, tsbogend@alpha.franken.de,
- deller@gmx.de, razor@blackwall.org, idosch@nvidia.com, aconole@redhat.com,
- ardb@kernel.org, tim.bird@sony.com, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] pps: Drop the !NO_HZ_COMMON dependency from
+ NTP_PPS
+Content-Language: en-US
+To: David Woodhouse <dwmw2@infradead.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Stephen Boyd <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20260829210041.40649-1-dwmw2@infradead.org>
+ <20260829210041.40649-3-dwmw2@infradead.org>
+ <f6e90a49-8c68-42e6-bdff-ea9b3ecbaf7b@enneenne.com>
+ <fc1ec38dbc3723f7aed73ebf3413e1d81c161228.camel@infradead.org>
+ <7098f5d2-043d-464a-82d9-a105e4000c02@enneenne.com>
+ <cb992b22907085c4ced8d9a35cd1c8836aad20ad.camel@infradead.org>
+ <decd5d05-1373-4ddc-95bc-46b73d6f6b99@enneenne.com>
+ <7f98cef0918465e8d6bc9e76d26afb8b12471773.camel@infradead.org>
+ <a174957f-f414-42c9-80f9-5d60f448e044@enneenne.com>
+ <37ad7bb611c0e79840dfdb5c3706be3430c34bb4.camel@infradead.org>
+ <fc473eab-c72e-4641-b617-8f22389c8f68@enneenne.com>
+ <6a529b5fe8c5bbb664748b85be011f5cf2e6c44d.camel@infradead.org>
+ <14280dde8487260f4c590d49a0297777b690660d.camel@infradead.org>
+From: Rodolfo Giometti <giometti@enneenne.com>
+In-Reply-To: <14280dde8487260f4c590d49a0297777b690660d.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfP2FmQHNkKJ0TJLV9n1zHxyQ0nW5TVhkzauVFFpukSMWwqTh5S198FuvYZDzk+JnNYN9aR3n9hbo8jN1tZt/bWI3oAYJrWULkG7Uie38M0nNZIrcOHWf
+ Z8EzphhxTgBS2oD4BDB9jSpebexAOvFz59ZeLYDLiawRiAqE13ztPCtxTCy4vWg6/K+HeNJYCTBOZoQNwU2oW3ZiX2qxwSjH9IXboEcj53TT4CjPBADER7tH
+ K9rhTHvZCendM9l2utQ7m3Aa6a/2PpMv7id0xGdjSOAju1oaVstrlj/qo2mgkYq9r0iHAJoGUfgQ7gQPDW+skc2lFNiarYru7xw0a28iBFLz5C5hNPfEYJun
+ fkGmT+L7COC6z7XP7ffRMH+H/QvO6pEMRsMRYQ6g991S2d6uBbnWiBAuBlwx5n96u1Zh80TlmDMmGw84vGvJTanmu83momVo/xt0rxLKMwp0IxYOzRVEYkM2
+ iIessap1RDYqsm5SS2By4G90z/FrUkdtTQ2bxPvyTsAi9o6nKyH5xbFp+CkMUey2tDfhwLT3AjTvsF/CFmwdHUv2elgbdfqqnpAXtEmNdfdh6O+cfvFYhbNc
+ etsrLTV2mgrzypWDp25QNZFb
 
-Hello:
+Hi David,
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+On 30/09/2026 20:24, David Woodhouse wrote:
+> On Wed, 2026-09-30 at 15:05 +0100, David Woodhouse wrote:
+>> [...] But
+>> I don't think we're ever going to be allowed to do it that way in
+>> entry.S but the *hardware-captured* stamps will want the same handling,
+>> so I wanted to prototype it anyway.
 
-On Mon, 28 Sep 2026 12:07:57 -0700 you wrote:
-> LLC2 sockets are admin-only already. We have been getting a trickle
-> of LLM-driven fixes for these, even tho we don't know of any active
-> user. The code is so bad the LLM fixes just turn into a never ending
-> stream of revisions and follow ups as fixing one condition reveals
-> 5 more bugs. Let's move this code out of tree.
-> 
-> The series itself is LLM generated, the LLM was also nice enough
-> to generates some tests and validate that the OOT module actually
-> works.
-> 
-> [...]
+Hardware-captured stamps are something I'd really like to see in the PPS
+subsystem. When you get there, I think it should be its own series,
+discussed together with the raw counter export you mentioned on the
+28th, since both change what a PPS driver hands to the core and what
+userspace gets back. As I said for the export, I'd prefer to agree on
+the interface first.
 
-Here is the summary with links:
-  - [net-next,1/3] llc: move the type 2 sockets out of tree
-    https://git.kernel.org/netdev/net-next/c/003f21868b2b
-  - [net-next,2/3] llc: strip the leftovers of the llc2 removal
-    https://git.kernel.org/netdev/net-next/c/6c1f58d7d5df
-  - [net-next,3/3] net: drop unused LLC-related includes
-    https://git.kernel.org/netdev/net-next/c/0b934eb6b142
+> We don't actually do *any* filtering. Even pps_phase_filter_get() is
+> just using the first sample, with a comment:
+>
+> 	/* TODO: test various filters */
+>
+> Looking closer at the actual captures, even Mills's median-of-three
+> wouldn't save us here when two of the three pulses are outliers. We'd
+> want an ongoing frequency estimation.
+>
+> But that's definitely a problem for another day.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Agreed, but I'm interested in it too. Your setup, with the per-pulse
+captures, looks like a good way to evaluate a filter, so if you or
+anyone else picks it up, please Cc me and I'll be glad to review it.
 
+Ciao,
 
+Rodolfo
