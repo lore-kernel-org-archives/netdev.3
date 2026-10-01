@@ -1,126 +1,149 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9063ED5B9;
-	Thu,  1 Oct 2026 11:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790853881; cv=none; b=auhqen4pwvZCoW2wtmMYdDJ6yLSGwdmbh3X3rOKMxrc2WIQy44SFgLuVJYJytueGOaEom88Qd5EOhXd9R8EZAY5NGA56UpyZAQkM1ffhCI85kYSGwLnVuhkyYmvMFW45PERT+AmNgc+kiW6i9rXA2smWZOqK6VMG7iWKUF4gr24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790853881; c=relaxed/simple;
-	bh=1yeC2Ala8kjHqSeElIeGucZmTGwWWYHJvkN+sOD3Y/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W4BdjmC5szwECPad2M7aLpaxCmLO9nLrv0Ci27XUnR8PMvuqJUnDqUCrjdHl4uXRKQMA06Vbr4ZTy9zoF3eEXd91U8JaBLaFfK24/cx54JlELlxb9/EiidNH/659m+OMwQTjBrzuF+eBvOduTEhDik1sx1uTBU1SUS01rtJ+898=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=qfvndtrA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lKVy4BA9; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CB93D34B5
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 11:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.225.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790854113; cv=pass; b=WASK/vI6uUcdEK4tFQQg4XsednELJoVMrqbes/sOUhcFstqilqtn7wnp7W/xsyLrLsiKWzm/dgKbHPrnlV5SlW2sdnvchxXO2CQsazSZvglPS4d07Rqt8iSwg8TChbhtUJFlbkbpl4vDrGYXeCbOFs8Q7heakhuPwVxL0sp9uC0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790854113; c=relaxed/simple;
+	bh=AwszME0PVQXG1C2Shl+TVih5js5vNu61zvf1dP2CyC0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rrf6qHG9qxA5UDZRlBTTt+OBUUfPmDSxYNI1+zH/NOi6Gi+uS2u2kbyZ4Nv4Bi7+VlIoGC1c++/BymJMZDulcQmXpmXw2vm6SXAaiHRaLr2GigTwEjRWhK1RJXnS7k37pZ6XBeNKdS90yeYkZdSshzFPmA7bVIxcTiIPVbNNxgY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmRgA7XM; arc=pass smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="qfvndtrA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lKVy4BA9"
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id A6A641D000D2;
-	Thu,  1 Oct 2026 07:24:36 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Thu, 01 Oct 2026 07:24:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1790853876; x=1790940276; bh=sT6PG3mIfAw77vzZCaQEU7kdaHnu3XKc
-	Gm/VG+fYkSM=; b=qfvndtrAynukcgg3exeMCInvKXc4v+8Ch9vZskDNGZdNCQC1
-	1pPAHJUONn5z1A8k41LFkgZXgj6m+xObSUe7NSyocXJ36ef3FzhObdySsCKS1MC+
-	ofkP8kA04Sxutn4cYEUw3ZvJTvZanQXeG4U4JOUxpzRSC+VqDc1x7JMJ2/ORAOWH
-	5KWAsTawlxeXK8xjQvMmjV2c1Gj/xymlzIiJuEiSazddQdL0X5TisApwkRXKe1R2
-	JHUe83eT3TI54cCoMSukDHBaNOBOWDt54ctFQh/NLMs1PQ1lrLYWQ1qBbF+IoKZZ
-	T0oeVP2+inTAI9DrBYGa/sAraJ4IwtvXQsFULg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790853876; x=
-	1790940276; bh=sT6PG3mIfAw77vzZCaQEU7kdaHnu3XKcGm/VG+fYkSM=; b=l
-	KVy4BA9pRs8Vl0CmvkPVnQBn0Ee6KPekR6R1q4O8G3KEAj9XAAyx/fDYJHEXRuSK
-	1kNbqueaP8QhUxZZ/FZIdalblrfTsq72w6SIP3ilb+q3XEZIPhddRd6HvuiR8Qru
-	mG4pvH52c+HnhbrrCwdAUSuQ+nQb6T8pUi+f3TbC3mQJKpiK5VcsmotOFkH7pOMD
-	DuUqctxju2NXc4bYmV9RrwIZ5XQSwsSwoBPWa5+W6/i7dhBdHyBTBIem/nG8pP4X
-	EIoP4Mq2B5BKmORqeoaT2H5qAod31CS013aUb4QJjeRyg7dVysk0HAroxe8FOj2I
-	e+LIJ+q7sbQ10WiKdJwcQ==
-X-ME-Sender: <xms:8kK-aoz-gppFY91RIYjZ2hFrWXz7uNAUZrXRykeOzimRZ-mC52UGWg>
-    <xme:8kK-akb7hrZMkykPNBtdHRwojQAf-hoPzK55leMgER5xfg5_r-K70P7wgCLrbxWYQ
-    HHZU8k0BR-3faP3M8CaJT8hUIdaKw8yceYX9dd2i4m6uoOhGnJ9KZQ>
-X-ME-Received: <xmr:8kK-ap3uWh9ULnOOz5tN-5qF0pwGiCUl9M5VimlwgW-l6HupPuf1M5c_08CO>
-X-ME-Proxy-Cause: dmFkZTGU0fCkmRKIppoxiioC6Nb4u9iBBZn+1//42GW1UnOXuRIOBj09xlHXhCST6FTO/a
-    dSg7n9P2kfQqecOcIy3ucsTZMTr3nRW0ZsSzMCXKHkUhqIpdpj3HOT8AOh/lbZbFi4PRVX
-    eLY9DRpE734CL6DvfWNdk78sTXZJtLKT/roe5Uxw0ScvLRa/WZTzyEx6F2M1EzbqumYSU7
-    bdqa78HndzaODuYaplhVWokY1YShJSlmPo+cC5zMFvPibMi04a8rhlDNGMkMiEbb8YfIxw
-    c4tTkn8zsxYZ/nqkJ/oCPJjiNYL+1a8sks7Ewh7YRCkHWDR/5QD1t+J7NHDc1AHTsb4VEN
-    zaVGNfsGhbnMnXnf8hWsfZeARtJBtruBK66hfhDDQX7SJJ/njff8wOZ5VFUF7K1QMj8d1i
-    oD7Q9DguMmO6k+euntwsy10naUCd2m9Xilg0WifNCjZEkJ0h3YYDtEEFz1Jv8JnFBh1Q0H
-    5K5CzFLP9eS/JqCm3EyfEOGKytbf84qdAy6LZf93cJYFRcCRzF/Pu4TUq7Ah0q82V/ihuy
-    yCkcBm6heREo81e6DuYHKOt2yWMjATS9vHRSpijWDSNxe2cjDugbU5gPXexfeTpkSV/gTg
-    Abk0weWlaZhD/85O22JsqZjbYWUUELS9cLScLnL3jR5/iEF7ZYOpChxrAjHg
-X-ME-Proxy: <xmx:8kK-amclP30fykSNq1CD70bXO-sVzI5JI4ZIcfG4unfJcOTfGmcsGg>
-    <xmx:8kK-amKYYVlvrTvk_3x3MpRj6x3swvNn5Zf6GlFp9NCJSdUSNZtLjA>
-    <xmx:8kK-akqNO5nm-gjv_xOgUMA2FGcXTc7yFO4uFs80J6F7C259bBg2BA>
-    <xmx:8kK-akuvbcRVI4qdmhGTGCTa5wiX83ehWww94AVPdg5QZ-auzDyEOA>
-    <xmx:9EK-ajP6B5BxIa4WcTCDjdA6TjhlD-7QGADzZpBuoGugt-2O0s5OAZI8>
-Feedback-ID: i934648bf:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Oct 2026 07:24:34 -0400 (EDT)
-Date: Thu, 1 Oct 2026 13:24:32 +0200
-From: Sabrina Dubroca <sd@queasysnail.net>
-To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
-	netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH ipsec 7/7] xfrm: leave the sequence counter unchanged on
- ESN overflow
-Message-ID: <ar5C8DDMwWn-30iV@krikkit>
-References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <20260930144523.435271-9-Jeremy.Jean@oss.cyber.gouv.fr>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hmRgA7XM"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f89so3900261f8f.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 04:28:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790854104; cv=none;
+        d=google.com; s=arc-20260327;
+        b=reg9zSNLeiK3+mRCc876KyQyTN7Bj/xFe12zZTtKF7stu8yQsYqdxaxTFeFl9kBM7i
+         KnJD1c+D3quZ4rC2Tan1nTaxocDg22luMm7d9J+Ob6Nl+vtGoaBCGLZJ2uZeKrqST/Hw
+         jnxySVKJGn2Z81u3V+hZKflhdozYmIXh13r053KaqTHXegUCu36kix9s4qkJnwA6O2Xo
+         LJLU1WP0nevjN0zFbCtVhg0AOQgpKeWOXnFjTypfdBxR6ZdpAeApHO3R7nPk1NGKg6tM
+         3vHNiAfSgNkAk0boSj30utougCfZi5R7scuKT6FWouD03GNq7a3TwJh0fsQt4uWPwf9u
+         r9/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wlTXVZFyOCFbc+V/2yF4m7zDYgmRZl4N5AzvlwIj8Is=;
+        fh=TUkiMiUlKPh//BXE14kWm131hVHoZV5vwGOcNF/Nsi8=;
+        b=F1Q16sx8X00KZ8jrn+rBeTOOV1sn4kp3jymwwd0fcOewsbYunIgMYyRWjC3XtmdLuB
+         ibf6OJjPuGX7B/pWw+IGnL7wugrjDE/ctWH0chyplR0kxG+WvL8hnc8V0L7w2acl2dqr
+         0zE+upwYN24UzhSHm8DWa8KRldX5m4I7uHP8DA1b3u/0tvNgqLxQosUpYhXkxc2AhVF+
+         jtBZ+zvoh5fD1ckD6se8iar2oqeD7/0KPOuZPHURYXzMMBhspS6Zo8Gv2RQuUU20bLiB
+         1MjTOsikhw3T5uZqmB2K1VXMwaETfXuojtEmHyGMefv3RYEoPlIETuP6k3Td1NjSkj0S
+         19hA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790854104; x=1791458904; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wlTXVZFyOCFbc+V/2yF4m7zDYgmRZl4N5AzvlwIj8Is=;
+        b=hmRgA7XMkdEUl5NDDcgnxH6nPHV45XbFOLCGcbW6yI+zubzTerjygoc2LBiwsmEZMY
+         Z5sVoZc72Xc22ckzOZ2IJVDFOpxSGVn8Uw3mPLFJKbE6IX5hsi6ocKjWNa3VpPTIGEIw
+         vEz4TFynFiB+apqfoP18RiyMc/TgfInaxGvebKBiwx/xzcccAcMXPsAKMX1/UChjKbVw
+         jr47EM+HKDM9cvF29ONKb1phPGWuoZ2rawclhn93dovhH4dlbnsxXm/USeHV8OZpVdB5
+         1bwQkcTF7V8nOyXeX1NfHfGV+hJj3iYn74DPrTPbdZVYztIEKyDhoADHfLlDaIm2iS8Z
+         lE+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790854104; x=1791458904;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wlTXVZFyOCFbc+V/2yF4m7zDYgmRZl4N5AzvlwIj8Is=;
+        b=DoHtlR9maudjT4iqZL3zmvcBRtAip/fKCBWT/c6RepMzFlbQzhts5jGUt58ZA9u4kK
+         p7wuvZdLTgI1mnOEfkpraDjY0FB9dmoOVFeKkiUq+z99rcFQMmOl65mK6dTN9uSyXe/c
+         ULuMsBXs36c2cYzXiiYHLOpZoZ1Okr2AfS4HYkakrQYOu7qo7qg09rmqQ1JH2aaDYsPX
+         4jwX3uov/PtjGPpHErb08qxixZoB6nYRw04artApdg6I3XIOHJr5t96LIPiD4i4XhCSE
+         NiUnUJsY3RO3Wz9dtqagsFvkkUo8JzRB/i9X5jOT84Mjlr2Suw8gDH9skQjLetRmgJpc
+         uyMw==
+X-Forwarded-Encrypted: i=1; AKwUvBwobdSVWlpI54waVpX8pccL9u5NgQsUSMGvxIWOx0VtT5lglw9XOnvQLAU+0BMru/hlW9B0XvM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLicmWCmlptZ8vgk9N2xaUqOTqIMW6zcnTonpWaInQZDKjMov9S
+	BzvZNOfc9YDol2GPBIhxdg0j4q+cDY2wHdWDpwQfJCHi77PDDAghYv1+h4Yx5/KIivLhrStqgHo
+	GZUrCtDWkT/SYZUk5e56tx9pMKs2wZv8=
+X-Gm-Gg: AYBFou1DhCyt4Uua/HKnDNmfhe68kxabXEtEvJAhZn/BDnR0Hnig4rkCS5aOgHeivvc
+	MyIguXKr8A9tH4nOtG4E3PpOaTDgpDVoJOXFd2W7DkkQI6v4BJJRHVhU2C9HFdlH/T8ad9Ntv5Y
+	dMznfP4Ix5MBUl1B/aoahDiYF50JIXk6f/IDhG4eCr7LLEcnEKpWR5FTz8ugPmq1GSOCtAP7ewD
+	m+vKJpdtTnqfvEaOiKAsWQfcJDKWUj9hy+xGsHAb9lwViZjri4ro8dqG5VUSbjZAyFA9RvGULRp
+	guWz8XjJZoNvddZTjTaCfez99obPvA70TuWWVgFJ6HlKiDv2HOibiGdrMkZjoavv27z8lmlDlek
+	D3Zye64aFMo8EQQ12GJOr39xoDahxmaUyJjhEkUDo+4VJHeOq4I1sU5QRWfbSqv8JuCN/i4L2MA
+	==
+X-Received: by 2002:a05:6000:290c:b0:48a:fcf8:20d1 with SMTP id
+ ffacd0b85a97d-48b02550600mr8872303f8f.48.1790854103827; Thu, 01 Oct 2026
+ 04:28:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260930144523.435271-9-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com>
+ <20260928-miic-validate-dtb-v2-1-1ee3d33748e9@reliablecontrols.com>
+In-Reply-To: <20260928-miic-validate-dtb-v2-1-1ee3d33748e9@reliablecontrols.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Thu, 1 Oct 2026 12:27:56 +0100
+X-Gm-Features: AclHuK8F6U7l3QWG93hRCdan52bWlrmjNJx7o9EjG92O3k2nxmSLT0XW8-w3RDA
+Message-ID: <CA+V-a8uGauEQZD4dT7woBmg4b0dqgvWNQ7JCdCgpf4U=aZ0X-Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/3] net: pcs: rzn1-miic: Fix port numbering
+ on RZ/T2H
+To: khendry@reliablecontrols.com
+Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-2026-09-30, 14:45:24 +0000, Jérémy Jean wrote:
-> When the 64-bit ESN counter overflows, xfrm_replay_overflow_offload_esn()
-> rejects the packet and rolls back the stored counter. It decrements
-> replay_esn->oseq even though only the local oseq has advanced, which
-> can later induce a reuse of the last sequence number and the
-> corresponding AES-GCM nonce. Both IPv4 and IPv6 are affected, yet,
-> processing about 2^64 packets under a single key is required to
-> trigger this bug, which is highly unlikely in regular use cases.
-> 
-> Leave the stored low word unchanged on overflow. The high word still
-> needs to be restored because it was already incremented.
+Hi Kyle,
 
-nit: using "low word" and "high word" instead of the actual variable
-names doesn't help the readability of your commit messages
+Thank you for the patch.
 
-> Fixes: d7dbefc45cf5 ("xfrm: Add xfrm_replay_overflow functions for offloading")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+On Mon, Sep 28, 2026 at 10:19=E2=80=AFPM Kyle Hendry via B4 Relay
+<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
+>
+> From: Kyle Hendry <khendry@reliablecontrols.com>
+>
+> The port numbers on the RZ/T2H are documented as 0 to 3. Update the info
+> structure to reflect this.
+>
+> Fixes: 08f89e42121d421b ("net: pcs: rzn1-miic: Add RZ/T2H MIIC support")
+> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
 > ---
->  net/xfrm/xfrm_replay.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/net/pcs/pcs-rzn1-miic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-m=
+iic.c
+> index cb74861e823c..df70309c2d97 100644
+> --- a/drivers/net/pcs/pcs-rzn1-miic.c
+> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
+> @@ -838,7 +838,7 @@ static struct miic_of_data rzt2h_miic_of_data =3D {
+>         .index_to_string =3D rzt2h_index_to_string,
+>         .index_to_string_count =3D ARRAY_SIZE(rzt2h_index_to_string),
+>         .miic_port_start =3D 0,
+> -       .miic_port_max =3D 4,
+> +       .miic_port_max =3D 3,
+The description for miic_port_max in struct miic_of_data needs
+updating. I would suggest renaming this variable to miic_port_last.
 
-I ran into that one as well while I was reviewing your previous
-patches, but didn't get around to posting a patch.
+Cheers,
+Prabhakar
 
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-
--- 
-Sabrina
+>         .sw_mode_mask =3D GENMASK(2, 0),
+>         .reset_ids =3D rzt2h_reset_ids,
+>         .reset_count =3D ARRAY_SIZE(rzt2h_reset_ids),
+>
+> --
+> 2.43.0
+>
+>
+>
