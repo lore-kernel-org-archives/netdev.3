@@ -1,35 +1,52 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AFB2E0914;
-	Fri,  2 Oct 2026 00:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990163016E7;
+	Fri,  2 Oct 2026 00:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790901013; cv=none; b=bT9vKVw0HAlncPfkB+O5N/miFxnCW+CklNuIj0Px76MEKVIB0blZ/CVugp15MIrAaJka/t5lpntbWL8l234zU5Yl3DgLacuwvC3dd9Y/I9rfjCXRboKk27edTaCCiU7adDsi6Wpe/jqEAlX7FspUzy2FGAiDbTny56dpeGWKQys=
+	t=1790901032; cv=none; b=F2FnclTdMi9p6OKBvTV3yYxC8JACIdHg4ieCvv7qDKTrYag4zG2kFXjGfQ+Wghz1zQLUgPVB3c7NMdZct8K1I3wjbulz4sjZq+CYn8t1QpmvGQrZHwAtzTYyHtTnPDtVI+By9Wzf+E6siIEQevBbzpwkOOxzBUH+TijSyutADZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790901013; c=relaxed/simple;
-	bh=pI6o4VOS3YGxq7ywoeUfwv6pCSePYDn3T8LRbqDAN5A=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=krIyyXjpX8K6QLnfGvA9n3DxRaCazhVkeN3qXOof0GW4cyr8MLGonZGcrVCGbLxG8fvaBI8ELhEsRn+2hS92ebYWIc4rtH0E55zsrtd/FO3kwRfXZl9+esb6++ENJSJWRtfwU2ieQ5NJ0UABIHsolKCoaZsCYF4LRkXS/VDkkB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VybcHzic; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790901032; c=relaxed/simple;
+	bh=jyJVzlyW2dooO7w9bPUv9X0xL2HdUonoPiKRrbgTtkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z+3J8cKWI+G1lL2yMQp8B2JGr7WuYEuE6Zf1BsGeq49sJRamxRhHJQXLfEsyeK+D3iFYgTv/6zWcS8qQbQoLywBInLPL0SIbIhlxIKOT9/weNlepATXyoDbyRaYkBfZ9u3YVf2ziRhj7pXbl1Dzevq4/+DJP4zGuBSBSUp5hap0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=nUgJ+ECL; arc=none smtp.client-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VybcHzic"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F901F000FF;
-	Fri,  2 Oct 2026 00:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790901009;
-	bh=JwCvtX86Ucbr3R4a/HgZuNF3ZxFuBjiEpsEifY6gmhc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VybcHzicfjtPVwrfwbbg9hQTCE3b1butqlbiWSEeX8xeonh+TmYrGdEZEv6MkmyaC
-	 4BS/ETkHdjZmKyhM9ZB3gjEEBJa2Dpl2eQVFk85aFZsj2arbhnKSQQ7U6rMBDSssZ4
-	 O0A2+MgRytkZdTgyZIr5y6qpV1G+JbcXgIgYcAEPaLtcD4bsLPH0zi5733T3ajtrk6
-	 1MIfnJrxvkXXgibrLmdXLHzMHmldvPJ0KDdao2suVnx1S2LxoTqmK65SdeAzrLUC5I
-	 PtzaYtW16YwcXqh2Z7+5dK/YPLLBeg3ENxHUEZVbd92XVWN+icU3vQm/jfG0RcnZOI
-	 oYxKsS6t9w0fg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773F5381197C;
-	Fri,  2 Oct 2026 00:30:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="nUgJ+ECL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=nUgJ+ECLQcTTxFqF1ionhdywyfq1NPBL1lo0iiWpJSpPTIZa6tos94rt1V5z+8/DJBMw0mrM4U2vs
+	 o2t6sNwK7fI0n/7u3/9Go+HLP1eebGZFuM/DmZreLQV6oU4iErs6QoJ4JdW5Wew611AaRNl5vgeUhX
+	 /6BP+q8SZLApzyW4=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26abefb222be-d02b1;
+	Fri, 02 Oct 2026 08:30:27 +0800 (CST)
+X-RM-TRANSID:2ee26abefb222be-d02b1
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[112.22.250.209])
+	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96abefb1dfb1-30ad3;
+	Fri, 02 Oct 2026 08:30:27 +0800 (CST)
+X-RM-TRANSID:2ee96abefb1dfb1-30ad3
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alice Mikityanska <alice.kernel@fastmail.im>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	linux-kernel@vger.kernel.org,
+	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Subject: [PATCH net-next] bareudp: Enable BIG TCP packets
+Date: Thu,  1 Oct 2026 12:23:36 +0800
+Message-ID: <20261001042336.224343-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,43 +54,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: usb: asix: remove redundant PHY address
- short-read check
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179090100827.3156447.5003274645282264888.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 00:30:08 +0000
-References: <20260928192119.73351-1-xinsheng.zhu.ny@gmail.com>
-In-Reply-To: <20260928192119.73351-1-xinsheng.zhu.ny@gmail.com>
-To: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+Commit f3d0f753f066 ("vxlan: Enable BIG TCP packets") and commit
+03ebe91b0f61 ("geneve: Enable BIG TCP packets") allowed BIG TCP on vxlan
+and geneve, after the preceding patches of that series made the common
+UDP tunnel transmit path handle GSO packets larger than 64KB.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+bareudp transmits through the same helpers, udp_tunnel_handle_offloads()
+followed by udp_tunnel_xmit_skb() or udp_tunnel6_xmit_skb(), and does
+not fill in any length field itself. Bump tso_max_size up to
+GSO_MAX_SIZE so that the admin can use BIG TCP with bareudp too.
 
-On Mon, 28 Sep 2026 15:21:19 -0400 you wrote:
-> Short-read handling was added to asix_read_cmd() by commit
-> 920a9fa27e78 ("net: asix: add proper error handling of usb read errors").
-> The helper converts short reads to -ENODATA while preserving negative
-> errors from the underlying USB read operation.
-> 
-> Remove the redundant short-read check in asix_read_phy_addr()
-> and its unreachable -EIO assignment. The existing negative-return check
-> handles both short reads and underlying USB read errors.
-> 
-> [...]
+The default gso_max_size and gso_ipv4_max_size stay at 64KB, so nothing
+changes unless they are raised explicitly.
 
-Here is the summary with links:
-  - [net-next] net: usb: asix: remove redundant PHY address short-read check
-    https://git.kernel.org/netdev/net-next/c/264f8ac8ec51
+iperf3 TCP over bareudp (ethertype ipv4, IPv4 outer) between two netns
+connected by veth, MTU 1600 on veth, 3 runs of 20 seconds each. This
+was measured in a QEMU TCG guest, so only the relative numbers are
+meaningful:
 
-You are awesome, thank you!
+  gso_max_size/gso_ipv4_max_size 65536:
+    4380.6, 4404.2, 4354.5 Mbit/s, average 4379.8 Mbit/s
+
+  gso_max_size/gso_ipv4_max_size 196608:
+    5509.4, 5454.7, 5497.4 Mbit/s, average 5487.2 Mbit/s (+25%)
+
+With 196608, about 90k to 100k packets larger than 64KB were
+transmitted on the bareudp device per run, none with 65536. Without
+this patch, setting gso_max_size to 196608 is rejected.
+
+Assisted-by: LLM
+Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+---
+ drivers/net/bareudp.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index c3b5ed52d877..fcc33e302b9c 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -589,6 +589,7 @@ static void bareudp_setup(struct net_device *dev)
+ 	dev->max_mtu = IP_MAX_MTU - BAREUDP_BASE_HLEN;
+ 	dev->type = ARPHRD_NONE;
+ 	netif_keep_dst(dev);
++	netif_set_tso_max_size(dev, GSO_MAX_SIZE);
+ 	dev->priv_flags |= IFF_NO_QUEUE;
+ 	dev->lltx = true;
+ 	dev->flags = IFF_POINTOPOINT | IFF_NOARP | IFF_MULTICAST;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.43.0
+
 
 
