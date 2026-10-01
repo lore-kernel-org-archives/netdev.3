@@ -1,47 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799BA4DD3B7;
-	Thu,  1 Oct 2026 09:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2014E472531;
+	Thu,  1 Oct 2026 09:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790848477; cv=none; b=hDFgUki4IMhY0EPtsC5+J9z/Feb88KZcbqLWgEci2L11WJ7X9GRdBVtdvqoBCiqomF6N33koFLpEIr1f3q/s5p6OAUdrC8tDnmrJPE+7W1hcvBEVL9r+uT21uZnMF5Sq6H4kgeILKvNFGH7g3sGYmi/L9Cdwk2eQEnnL3CylhVg=
+	t=1790848662; cv=none; b=d4vpIyRbHwlGkrQMGdHA/uNQ7NpF0KaHvlLQA76AeYY9nAoIfFHAuROirTl06hiT3icougRNC9Nr5mrDFAyOVnooG8CZSbrLQ/DMUx57fB1W7yDs0acZTulSmXZn01xQ9V1IZcUlvapoY+8Q/FK/SACV0KG2FB15RKhkutVzdI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790848477; c=relaxed/simple;
-	bh=w4yov9Ff71ryWV5xJGvWEQTtp1KQopRMVXzLk06hrR8=;
+	s=arc-20240116; t=1790848662; c=relaxed/simple;
+	bh=EOfi+HY/I3WQGblEEur6uvnizEyEsPz9kNUWUC/OcPI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=h+UnWv8PWxugpZrNCmWTdkyUrayqJ/4BWN42obyxgCQxxjShCw9IcROh5uTk2HhxQuwuC5xKAd4Ux00rEE8BJ6X1AcvHymkJqwi0XW1OBjM5FqgBQ1XKCxUXwBWBxJ88WJpTh4V/RKvUkesTG+dSdGnsotYww+PATN1+F4s6EIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bY4beBLZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=H/RarfBO9N86JUkvk9He9VMbd9j1Q9jSRgLqIZh7io7efXMF3HUNhnuEMLDq4ccZppHq3+WZTlfS/hhkHChnrVAfer3wdvt+RSLCZKpe0Rx4nsWyh3CajniiD7ng7SaqcQr23Bjiw2NEkMcup1MuHwWMEGYnoqd1FQc3BsexHjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZOnftTJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bY4beBLZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134641F000FF;
-	Thu,  1 Oct 2026 09:54:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZOnftTJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CC11F000FF;
+	Thu,  1 Oct 2026 09:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790848475;
-	bh=KVXS9LbNYq3rlQ3b9dDNQPLyxSOXC6oYEzY48bSFdSc=;
+	s=k20260515; t=1790848660;
+	bh=UhpsLeycjK0VgnF8MAHhIKQDQjwWcqvckbnNrIcB6Sg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bY4beBLZRM0vRu+pPTh/230O6fC9SRk9Ry64PZe31OLX8dtBGrssA2VONaxkcCQzj
-	 FuTC/jj/u0Hm9wPzfNZ+neS8f/ETrjjW2F9FpjvdP5wpaAHq7qCtrlW7qLerrPNahD
-	 gQyQ04zFvAbgtCquuLu/7gMAFwDDIIrPOq4H1vKyBCfVlC0bhDbk9ffIumnQwZhXx/
-	 2Cl1LS4Ma3w50XJjdd1Iq/Dmye7nEndowjw8bn8DPnmP/ikVpD+ZLkaEGEo/MbeCE6
-	 LOnIoiOucoNMwbq+yo8VjeSOIjs2mTRT2QpGNAjUquQR+dVwhqeMVVJd4qhGxPnswM
-	 iuVI4B4zgI6oA==
-Subject: Re: [PATCH net-next v22 3/3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
+	b=GZOnftTJVNp6O0WxyvRdjRvXc20ru8txxJRstXJNwEy2JBPlORgN7MCwzpV4wwzMr
+	 418vBlX1pbScqN6K6VHjXK6KyR36+Fgtr3ejfzjGEFrY3MoK0CamQs8dzqCIgL7ABo
+	 V7+QN33ovFNxMHjyqAPEj0CHpj9rIpngti5ewFSq7Dio4Jjj2vkz7QqHKTRGS+WFwi
+	 +nSNZD4I/rXHAw60pBKsIUp1j2xoeC3LPAUJ98beOmE8Z1O72sonZZ+xbnRujYFp8Q
+	 blHEJvj4MHGymnri/HXgl8pTm+YCK5IPqZUisiiGGBpsuBs2a2onThH+jrJTIogy2L
+	 /68KNYmhbWSUA==
+Subject: Re: [PATCH net v3] octeontx2-af: Fix BPID leak in nix_bp_enable()
 From: netdev-bot+sashiko@kernel.org
-To: kyle.switch@motor-comm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, Frank.Sae@motor-comm.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com
-Date: Thu, 01 Oct 2026 09:54:33 +0000
-Message-ID: <179084847364.434549.6613353375292448395@kernel.org>
-In-Reply-To: <20260929095430.508657-4-kyle.switch@motor-comm.com>
-References: <20260929095430.508657-4-kyle.switch@motor-comm.com>
-X-sashiko-severity: Medium
+To: nshettyj@marvell.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rkudurumalla@marvell.com, sgoutham@marvell.com, rkannoth@marvell.com,
+ gakula@marvell.com, sbhatta@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org
+Date: Thu, 01 Oct 2026 09:57:39 +0000
+Message-ID: <179084865947.434549.9597991757798875277@kernel.org>
+In-Reply-To: <20260928065718.3378580-1-nshettyj@marvell.com>
+References: <20260928065718.3378580-1-nshettyj@marvell.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Critical: 0 · High: 3 (1) · Medium: 3 (3) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -62,276 +59,366 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In drivers/net/phy/motorcomm.c, yt8824_read_status_paged()
-  clears phydev->speed and phydev->duplex to UNKNOWN whenever the link…
-- [Medium] yt8824_read_status_paged() only calls genphy_c45_read_lpa()
-  when `phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete`.
-- [Low] yt8824_probe() calls phy_package_probe_once(), and
-  __phy_package_set_once() does `!test_and_set_bit()`, so the shared…
-- [Low] In yt8824_config_aneg(), the comment says ADV2_5G is advertised
-  'when 2.5G is explicitly forced', and the condition has a…
+- [High] BPIDs can still leak permanently after this patch, so the fix is
+  incomplete.
+- [High] After a BPID is freed, NIX_AF_RX_CHANX_CFG still holds it, so a
+  later disable can free it a second time.
+- [High] A malformed LBK request can now hang the AF mailbox worker
+  forever in the new nix_bp_enable_unwind().
+- [Medium] The commit message leaves out the most important fix in the
+  patch, plus two behaviour changes.
+- [Medium] nix_bp_enable_unwind() works out which BPIDs to release by
+  reading NIX_AF_RX_CHANX_CFG outside rvu->rsrc_lock, instead of…
+- [Medium] When an enable fails partway, the new nix_bp_enable_unwind()
+  turns backpressure off on channels that already had it before the…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is serious.
+- [Medium] For LBK, rvu_nix_get_bpid() allocates a new BPID from the free
+  pool on every call and ignores req->bpid_per_chan.
+- [Medium] The response encoding in nix_bp_enable() loses the top channel
+  bit.
+- [Medium] nix_bp_disable() frees the BPID found in the target channel's
+  CFG register without checking bp->fn_map[bpid - free_pool_base] ==…
 
 --
 
-net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+octeontx2-af: Fix BPID leak in nix_bp_enable()
 
-This adds support for the Motorcomm YT8824 quad-port 2.5G PHY to the
-existing motorcomm driver. It uses the phy_package helpers for the shared
-top extended register space, and a package-wide mutex to serialize UTP and
-SerDes register space switching. The package mode comes from the
-"motorcomm,package-mode" DT property.
+This patch moves the LBK BPID allocation in nix_bp_enable() into the
+per-channel loop, so no extra BPID is allocated after the last channel. It
+also rejects requests with chan_cnt == 0. It adds a range check before
+freeing in nix_bp_disable(), a new nix_bp_enable_unwind() helper for
+mid-loop failures, and reports each channel's programmed BPID in the
+mailbox response.
 
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index 90a4f86f2758b..11672fb25020b 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-
-[ ... ]
-
-> @@ -3104,6 +4230,461 @@ static int yt8821_resume(struct phy_device *phydev)
->  	return yt8821_modify_utp_fiber_bmcr(phydev, BMCR_PDOWN, 0);
->  }
->  
-
-[ ... ]
-
-> +static int yt8824_read_status_paged(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +	int val;
-> +
-> +	ret = phy8824_page_write_with_lock(phydev, YT8824_RSSR_UTP_SPACE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete) {
-> +		ret = genphy_c45_read_lpa(phydev);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
+> Move the allocation into the loop body so it runs exactly once per
+> channel actually programmed, and reject req->chan_cnt == 0 upfront.
 
 [Severity: Medium]
-Can ETHTOOL_LINK_MODE_2500baseT_Full_BIT stay set in
-phydev->lp_advertising after a 2.5G link partner goes away?
+The commit message only covers the extra rvu_nix_get_bpid() call and the
+chan_cnt == 0 check. Should it also describe the other three changes?
 
-If autoneg has not completed (link loss, or renegotiation in progress),
-genphy_read_status()->genphy_read_lpa() clears only the C22 and 1000BASE-T
-bits:
+The first is the new range check in nix_bp_disable(). Before this patch, a
+bpid below free_pool_base passed a negative id to rvu_free_rsrc(), and
+__clear_bit() wrote before the start of bp->bpids.bmap. On silicon with
+cpt_links this looks reachable on every open of an LBK VF. The never-armed
+CPT channel has a BPID field below free_pool_base, and the open path always
+sends the CPT disable:
 
-drivers/net/phy/phy_device.c:genphy_read_lpa() {
+otx2_init_hw_resources()
+    otx2_nix_cpt_config_bp(pf, false);
+
+The second is the new nix_bp_enable_unwind() rollback helper.
+
+The third is the change in what rsp->chan_bpid[] reports for LBK. Each
+channel now gets its own BPID instead of bpid_base.
+
+These changes appear only in the v3 changelog below the --- line, which is
+dropped when the patch is applied. The subject and the Fixes: tag say
+nothing about the out-of-bounds write. Could the commit message describe
+that fix so stable backporters can see it?
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> index 153eb57bad06..1ef505009c3a 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> @@ -631,6 +631,15 @@ static int nix_bp_disable(struct rvu *rvu,
+>  
+>  		if (type == NIX_INTF_TYPE_LBK) {
+>  			bpid = cfg & GENMASK(8, 0);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the channel loop around this
+code never checks req->chan_base or req->chan_cnt against the caller's
+pfvf->rx_chan_cnt:
+
+nix_bp_disable() {
     ...
-	if (phydev->autoneg == AUTONEG_ENABLE) {
-		if (!phydev->autoneg_complete) {
-			mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising,
-							0);
-			mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-			return 0;
+	chan_base = pfvf->rx_chan_base + req->chan_base;
+	for (chan = chan_base; chan < (chan_base + req->chan_cnt); chan++) {
+		chan_v = nix_get_channel(chan, cpt_link);
+		cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v));
+		rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v),
+			    cfg & ~BIT_ULL(16));
     ...
 }
 
-Only the !MDIO_AN_STAT1_COMPLETE branch of genphy_c45_read_lpa() clears
-the 2.5G link partner bit:
+req->chan_base comes from the VF, which leads to three problems.
 
-	if (!(val & MDIO_AN_STAT1_COMPLETE)) {
-		...
-		mii_10gbt_stat_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
+NIX_AF_RX_CHANX_CFG(a) is (0x1A30 | (a) << 15), and rvu_write64() uses
+(block << 28) | offset. For channels >= 8192 the offset reaches bit 28.
+Can the read-modify-write then land in NIX1, NPC or block 7 register
+space?
 
-The autoneg_complete gate here means that branch never runs. So ethtool
-would keep showing 2500baseT/Full in the link partner advertisement until
-the next negotiation completes. yt8821_read_status() has the same gate,
-and this code copies it.
+A caller can also disarm or reprogram channels that belong to other
+functions.
+
+chan is a u16, but chan_base + req->chan_cnt is an int. If the sum is above
+0xFFFF, chan wraps, and nothing in this loop can fail. Could a single
+NIX_BP_DISABLE or NIX_CPT_BP_DISABLE from a CGX-mapped PF/VF or an LBK VF
+spin the AF mailbox worker forever?
+
+The LBK path in nix_bp_enable() has the same gap. Unlike the CGX and SDP
+cases, the LBK case in rvu_nix_get_bpid() checks no range. This patch
+already changes both loops. Could it add channel range validation too?
+
+> +			/* Ignore channels that were never armed with an LBK
+> +			 * free-pool bpid (e.g. never enabled, or belonging
+> +			 * to a CGX/SDP range) - bpid - free_pool_base would
+> +			 * underflow and corrupt an unrelated bitmap word.
+> +			 */
+> +			if (bpid < bp->free_pool_base ||
+> +			    bpid >= bp->free_pool_base + bp->bpids.max)
+> +				continue;
+
+[Severity: High]
+The comment says this skips channels that were never armed. The check only
+tests the BPID range, though, and ignores BIT(16) and fn_map. Can a stale
+BPID that is still in range get freed a second time here?
+
+nix_bp_disable() and the new nix_bp_enable_unwind() both clear only
+BIT(16). CFG[8:0] still holds the BPID they just returned to the pool:
+
+	rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v),
+		    cfg & ~BIT_ULL(16));
+
+rvu_nix_flr_free_bpids() frees BPIDs without touching NIX_AF_RX_CHANX_CFG
+at all.
+
+This sequence looks possible:
+
+  VF A armed with BPID X
+  VF A disabled, unwound or FLRed, X returned to the pool
+  VF B allocates X
+  VF A sends NIX_BP_DISABLE or NIX_CPT_BP_DISABLE
+    (otx2_init_hw_resources() sends the CPT one on every open)
+  nix_bp_disable() reads stale X from A's channel, passes the range
+    check, and frees B's BPID
+  VF C allocates X
+
+B and C then share one hardware BPID, and B's fn_map/ref_cnt no longer
+match the bitmap. Clearing CFG[8:0] on release, or checking BIT(16) and
+fn_map ownership before freeing, would avoid this. Would either approach
+work here?
 
 > +
-> +	if (!phydev->link) {
-> +		phydev->speed = SPEED_UNKNOWN;
-> +		phydev->duplex = DUPLEX_UNKNOWN;
+>  			mutex_lock(&rvu->rsrc_lock);
+>  			rvu_free_rsrc(&bp->bpids, bpid - bp->free_pool_base);
 
 [Severity: Medium]
-Does this throw away the forced speed and duplex when autoneg is disabled?
+This is a pre-existing issue, but nix_bp_disable() frees whatever BPID it
+finds in the target channel's CFG register. It never checks that
+bp->fn_map[bpid - bp->free_pool_base] == pcifunc.
 
-With autoneg off, genphy_read_status()->genphy_read_status_fixed() has
-just loaded the forced speed and duplex from BMCR. Whenever the link is
-down, this block overwrites them with SPEED_UNKNOWN and DUPLEX_UNKNOWN.
+req->chan_base isn't validated, so could a VF name another function's
+channels, free that function's LBK BPID and clear its BP_ENA bit?
 
-On the next restart (ip link set down/up, or phy_start() on resume), the
-path looks like this:
-
-_phy_start_aneg()
-  phy_sanitize_settings()
-    phy_caps_lookup(SPEED_UNKNOWN, DUPLEX_UNKNOWN, supported, false)
-      /* no match, falls back to 'last', the slowest capability */
-  yt8824_config_aneg()
-    __genphy_config_aneg()
-      genphy_setup_forced()
-
-BMCR then gets the slowest supported mode, normally 10 Mb/s half duplex.
-It no longer matches what was requested with, for example,
-"ethtool -s ethX autoneg off speed 100 duplex full".
-
-The PHY_HALTED handling in _phy_state_machine() avoids this by resetting
-speed and duplex only when autoneg is enabled:
-
-	case PHY_HALTED:
-		if (phydev->link) {
-			if (phydev->autoneg == AUTONEG_ENABLE) {
-				phydev->speed = SPEED_UNKNOWN;
-				phydev->duplex = DUPLEX_UNKNOWN;
-			}
-
-Should this block be limited to AUTONEG_ENABLE as well?
-
-> +		if (phydev->autoneg == AUTONEG_ENABLE)
-> +			phy_resolve_aneg_pause(phydev);
-> +		return 0;
-> +	}
+The fn_map loop that follows clears only entries the caller owns. The
+victim's fn_map/ref_cnt stay set while its bitmap bit is cleared, and the
+next rvu_alloc_rsrc() hands the BPID out again. The new range check keeps
+the index in bounds, but it does not check ownership.
 
 [ ... ]
 
-> +static int yt8824_config_aneg(struct phy_device *phydev)
+> @@ -738,6 +747,35 @@ static int rvu_nix_get_bpid(struct rvu *rvu, struct nix_bp_cfg_req *req,
+>  	return bpid;
+>  }
+>  
+> +static void nix_bp_enable_unwind(struct rvu *rvu, struct nix_bp *bp,
+> +				 int blkaddr, u16 chan_base, int chan_cnt,
+> +				 int type, bool cpt_link)
 > +{
-> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
-> +	int phy_ctrl = 0;
-> +	int ret;
+> +	u16 chan, chan_v, bpid;
+> +	u64 cfg;
 > +
-> +	mutex_lock(&priv->shared_lock);
-> +	ret = phy8824_page_write_with_lock(phydev, YT8824_RSSR_UTP_SPACE);
-> +	if (ret < 0)
-> +		goto err;
+> +	for (chan = chan_base; chan < chan_base + chan_cnt; chan++) {
+
+[Severity: High]
+Can this loop run forever? chan is a u16, but chan_base + chan_cnt is an
+int. When chan_base + chan_cnt >= 0x10000, chan wraps to 0 before it
+reaches the limit.
+
+For LBK, rvu_nix_get_bpid() never checks req->chan_base or req->chan_cnt.
+A VF can therefore pick req->chan_base so that the u16 chan_base in
+nix_bp_enable() is 0xFFFF, and send chan_cnt >= 2. Then:
+
+nix_bp_enable()
+    for (chan = chan_base; ...) wraps chan past 0xFFFF
+        rvu_nix_get_bpid() allocates an LBK BPID on each pass
+    rvu_nix_get_bpid() fails once the pool is empty
+    nix_bp_enable_unwind(rvu, bp, blkaddr, chan_base, chan_id, ...)
+        chan <= 0xFFFF < 0xFFFF + chan_id, so the loop never exits
+
+Each pass does an MMIO read-modify-write on NIX_AF_RX_CHANX_CFG(chan_v),
+including addresses outside the NIX block. It also takes rsrc_lock, and
+there is no cond_resched(). Before this patch the same request returned
+-EINVAL.
+
+There is a related concern about the new response write in
+nix_bp_enable():
+
+	rsp->chan_bpid[chan_id] = ...
+
+chan_id is now bounded only by the number of successful allocations. The
+old response loop was bounded by req->chan_cnt. If bp->bpids.max is larger
+than NIX_MAX_BPID_CHAN, could the wrapping loop write past the end of
+rsp->chan_bpid[]?
+
+> +		chan_v = nix_get_channel(chan, cpt_link);
+> +		cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v));
+> +		rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v),
+> +			    cfg & ~BIT_ULL(16));
+
+[Severity: Medium]
+Does this turn off backpressure on channels that were already armed before
+the request? nix_bp_enable() doesn't check whether a channel already has
+BIT(16) set, and it doesn't save the original NIX_AF_RX_CHANX_CFG value. It
+simply overwrites CFG[8:0] with a new BPID.
+
+Suppose an LBK VF re-sends NIX_BP_ENABLE for channels that are already
+armed, and a later iteration fails. One example is a 2-channel request when
+only one BPID is free. The unwind then clears BIT(16) on every channel
+programmed so far.
+
+A channel that had working backpressure with BPID P ends up with
+backpressure off and a freed BPID in CFG. P stays allocated, and nothing
+refers to it.
+
+Before this patch, the same failure left the channel armed.
+
 > +
-> +	/*
-> +	 * Only advertise 2.5G when autoneg is enabled, or when 2.5G is
-> +	 * explicitly forced.  When a different speed is forced, clear
-> +	 * ADV2_5G so a 2.5G-capable link partner cannot negotiate 2.5G.
-> +	 * __genphy_config_aneg() only rewrites the
-> +	 * clause 22 registers on the forced-speed path, so it will not
-> +	 * clear this bit.
-> +	 */
-> +	if ((phydev->autoneg == AUTONEG_ENABLE ||
-> +	     phydev->speed == SPEED_2500) &&
-> +	    linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-> +			      phydev->advertising))
-> +		phy_ctrl = MDIO_AN_10GBT_CTRL_ADV2_5G;
-
-[Severity: Low]
-Is the phydev->speed == SPEED_2500 part of this condition reachable?
-
-phy_ethtool_ksettings_set() rejects AUTONEG_DISABLE for any speed other
-than 10, 100 or 1000:
-
-	if (autoneg == AUTONEG_DISABLE &&
-	    ((speed != SPEED_1000 &&
-	      speed != SPEED_100 &&
-	      speed != SPEED_10) ||
-
-phylink_ethtool_ksettings_set() goes through the same helper. The comment
-about 2.5G being "explicitly forced" therefore describes a case the driver
-cannot currently reach.
-
-If it were reachable, the C45 advertisement would come from
-phydev->advertising. The forced C22 advertisement in __genphy_config_aneg()
-comes from phy_caps_lookup(speed, duplex, supported) instead, so the two
-halves would use different sources.
-
-Could the condition and the comment cover only the autoneg case?
-
+> +		if (type != NIX_INTF_TYPE_LBK)
+> +			continue;
 > +
-> +	ret = phy_modify_mmd_changed(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_CTRL,
-> +				     MDIO_AN_10GBT_CTRL_ADV2_5G, phy_ctrl);
-
-[ ... ]
-
-> +static int yt8824_phy_package_probe_once(struct phy_device *phydev)
-> +{
-> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
-> +	struct device_node *np = phy_package_get_node(phydev);
-> +	const char *mode;
+> +		bpid = cfg & GENMASK_ULL(8, 0);
+> +		if (bpid < bp->free_pool_base ||
+> +		    bpid >= bp->free_pool_base + bp->bpids.max)
+> +			continue;
 > +
-> +	if (!priv || !np) {
-> +		phydev_err(phydev, "%s: missing shared priv or DT node\n",
-> +			   __func__);
-> +		return -EINVAL;
+> +		mutex_lock(&rvu->rsrc_lock);
+> +		rvu_free_rsrc(&bp->bpids, bpid - bp->free_pool_base);
+> +		bp->fn_map[bpid - bp->free_pool_base] = 0;
+> +		bp->ref_cnt[bpid - bp->free_pool_base] = 0;
+> +		mutex_unlock(&rvu->rsrc_lock);
+
+[Severity: Medium]
+The unwind reads NIX_AF_RX_CHANX_CFG outside rsrc_lock to decide which
+BPIDs to release. It then frees each one and zeroes fn_map/ref_cnt without
+checking that fn_map[idx] == pcifunc. Can this race with an FLR of the
+same VF?
+
+__rvu_flr_handler() takes only rvu->flr_lock before it calls
+rvu_nix_flr_free_bpids(). rvu_afvf_mbox_handler() takes no lock at all, so
+the two can run at the same time:
+
+  VF A: nix_bp_enable() iteration 0 allocates X and programs it
+  FLR of A: rvu_nix_flr_free_bpids() frees X, register still holds X
+  VF B: allocates X
+  VF A: iteration 1 fails, nix_bp_enable_unwind() reads X from A's
+        channel, frees it and zeroes fn_map[X]/ref_cnt[X]
+
+B's live BPID is back in the pool, and the next allocation gives it to a
+third function. Could the unwind free only the BPIDs this call allocated,
+instead of reading them back from hardware?
+
+nix_bp_disable() has the same pattern. It frees based only on the register
+value and the range check.
+
 > +	}
-> +	/* Initialise shared lock for YT8824 */
-> +	mutex_init(&priv->shared_lock);
-> +	priv->package_mode = PHY_INTERFACE_MODE_INTERNAL;
-> +	if (!of_property_read_string(np, "motorcomm,package-mode",
-> +				     &mode)) {
-
-[ ... ]
-
-> +	} else {
-> +		phydev_err(phydev, "missing package-mode in PHY package node.\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
 > +}
 
 [ ... ]
 
-> +static int yt8824_probe(struct phy_device *phydev)
-> +{
-> +	struct device *dev = &phydev->mdio.dev;
-> +	struct yt8824_shared_priv *shared_priv;
-> +	int ret;
-> +
-> +	ret = devm_of_phy_package_join(dev, phydev, sizeof(*shared_priv));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Ensure other PHY probes wait for shared mutex initialization. */
-> +	phy_package_lock(phydev);
-> +	if (phy_package_probe_once(phydev)) {
-> +		ret = yt8824_phy_package_probe_once(phydev);
-> +		if (ret) {
-> +			phy_package_unlock(phydev);
-> +			return ret;
-> +		}
-> +	}
-> +	phy_package_unlock(phydev);
+> @@ -764,16 +805,27 @@ static int nix_bp_enable(struct rvu *rvu,
 
-[Severity: Low]
-What happens to sibling PHYs in the package when
-yt8824_phy_package_probe_once() fails?
+[ ... ]
 
-phy_package_probe_once() ends up in __phy_package_set_once(), which does
-!test_and_set_bit(). The once-bit is therefore set before the DT property
-is validated. On -EINVAL the bit is not cleared, and the failure is not
-recorded in the shared priv.
+>  	for (chan = chan_base; chan < (chan_base + req->chan_cnt); chan++) {
+> +		bpid = rvu_nix_get_bpid(rvu, req, type, chan_id);
 
-devm_of_phy_package_join() runs outside the package lock. A sibling that
-joined earlier (async probing, or overlapping manual binds) keeps the
-shared object alive:
+[Severity: Medium]
+This isn't a bug introduced by this patch, but for LBK, rvu_nix_get_bpid()
+allocates a new BPID from the free pool on every call and ignores
+req->bpid_per_chan. mbox.h documents:
 
-PHY A                                 PHY B
-devm_of_phy_package_join()            devm_of_phy_package_join()
-phy_package_lock()
-phy_package_probe_once() -> true
-yt8824_phy_package_probe_once()
-  package_mode = INTERNAL
-  return -EINVAL
-phy_package_unlock()
-                                      phy_package_lock()
-                                      phy_package_probe_once() -> false
-                                      phy_package_unlock()
-                                      return 0
+	/* bpid_per_chan = 0 assigns single bp id for range of channels */
 
-PHY B then binds with the PHY_INTERFACE_MODE_INTERNAL default that was
-written before the property check. Its config_init runs the internal-mode
-sequence on a package whose DT was already rejected.
+With bpid_per_chan = 0 and chan_cnt > 1, shouldn't all the channels share
+one BPID? In non-PFC mode the NIC side uses only pfvf->bpid[0] for CQ/aura
+BPIDs. The BPIDs programmed on channels 1..n would then never be asserted,
+and they still use up pool entries.
 
-With the default synchronous probing, the failed probe's devres unwind
-drops the refcount to zero first. This only shows up with async probing.
+This patch keeps the allocation on every iteration and only changes the
+response to report the per-channel BPIDs. In-tree LBK VFs skip
+NIX_BP_ENABLE, so only other mailbox clients are affected.
 
-Could the first probe's result be stored in yt8824_shared_priv so that
-later joiners also fail?
+[ ... ]
 
-As a side note, the !priv || !np check can't trigger, because
-of_phy_package_join() always sets both.
+> @@ -783,16 +835,17 @@ static int nix_bp_enable(struct rvu *rvu,
+>  		cfg &= ~GENMASK_ULL(8, 0);
+>  		rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v),
+>  			    cfg | (bpid & GENMASK_ULL(8, 0)) | BIT_ULL(16));
+
+[Severity: High]
+Can BPIDs still leak permanently after this patch? For LBK, every enable
+allocates a fresh BPID and overwrites CFG[8:0], without checking whether
+the channel already holds one.
+
+nix_bp_disable() then frees only the BPID it reads from each channel's
+register. However, it clears ownership for every free-pool entry this
+pcifunc owns:
+
+nix_bp_disable() {
+    ...
+	rvu_free_rsrc(&bp->bpids, bpid - bp->free_pool_base);
+	for (bpid = 0; bpid < bp->bpids.max; bpid++) {
+		if (bp->fn_map[bpid] == pcifunc) {
+			bp->fn_map[bpid] = 0;
+			bp->ref_cnt[bpid] = 0;
+    ...
+}
+
+rvu_nix_flr_free_bpids() only reclaims entries where fn_map[idx] ==
+pcifunc. Any other BPID the function still holds keeps its bitmap bit set
+with fn_map == 0, and nothing ever frees it.
+
+Two sequences seem to hit this:
+
+  An LBK VF sends NIX_BP_ENABLE, NIX_BP_ENABLE, then NIX_BP_DISABLE. The
+  second enable overwrites the first BPID in CFG. The disable frees only
+  the second BPID but wipes fn_map for both, so the first BPID is lost
+  until the AF reloads.
+
+  A VF enables RX BP (BPID A) and CPT BP (BPID B), disables RX BP, and
+  then goes through FLR. The disable already wiped fn_map[B], so the FLR
+  skips B.
+
+Each round leaks one BPID from the shared LBK pool. Once the pool is
+empty, NIX_BP_ENABLE fails with NIX_AF_ERR_INVALID_BPID for every LBK VF.
+
+The new comment in nix_bp_enable() says "don't leak until an FLR". Doesn't
+this path prevent the FLR from reclaiming them?
+
+[ ... ]
+
+> +		rsp->chan_bpid[chan_id] = ((req->chan_base + chan_id) & 0x7F) << 10 |
+> +					  (bpid & 0x3FF);
+> +		chan_id++;
+
+[Severity: Medium]
+This is a pre-existing issue, but the rewritten line keeps the old encoding,
+which doesn't fit in a u16 chan_bpid[] element. 0x7F << 10 is 0x1FC00,
+which needs 17 bits, so bit 6 of the channel index is lost.
+
+mbox_handler_nix_bp_enable() on the NIC side decodes a 7-bit channel index:
+
+	chan_id = ((rsp->chan_bpid[chan] >> 10) & 0x7F);
+
+Won't channel indices >= 64 then alias onto lower pfvf->bpid[] entries?
+struct nix_bp_cfg_rsp is sized for NIX_MAX_BPID_CHAN (256) channels, which
+this encoding cannot represent. In-tree CGX requests stay well below 64
+channels, so only SDP or LBK requests with more than 64 channels hit this.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929095430.508657-1-kyle.switch%40motor-comm.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928065718.3378580-1-nshettyj%40marvell.com
