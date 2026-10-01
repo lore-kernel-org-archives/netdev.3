@@ -1,244 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380FC46A60A;
-	Thu,  1 Oct 2026 21:16:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BAF443E40;
+	Thu,  1 Oct 2026 21:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790889418; cv=none; b=IyUfz8RRA2wo1MnM2Tful4h2BfXwUpT2TnQViQ6nW5NghRBOmY3wT5E9cKfMr//4/eMbPkaR0aCTGY4OEDynOcxnZolMM73LuI4Xvco6CVoK7aP6/dYkSxHVd1+2PtPmtnmTFdk+hPmCHaMML5/5uFMsndpQwpIDlkKiz+u81sY=
+	t=1790890358; cv=none; b=nxEjtks0Hl6vZDXJJaui8R9QVF8NghuukRsprtHo+IV1HaGFASbtlWfYhDH4u7RaP/TilTnHy9fCdOe0k44JYXxh8O6L6xHvqhUzx1MCyXXO73p8jA+j3pNFyCjaqZwgliycugXQ9JaxlwP49jFN/PRvpa8O4EzD1f4J94yrL4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790889418; c=relaxed/simple;
-	bh=JOlqp6Cy2f7dgy9WstV9kdwykzFIe+8amE5T46/T7XY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nKRNnljQJXp1/ItN9bHeknzqvy3SsO5MX6BqDf9x1SxwPCA8gu5yM1CN8tZY5ED65QQHBWLfAkZAc4aTS9pBfVFNZ3iqA0lSwpdKtPqI/W9TY2TQlp9AKLTD68zsJa8lrKPieVdxPoG9ecZHof/vdrUcq6weUTNcysTY6cp+M1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nHdc2Zlr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1790890358; c=relaxed/simple;
+	bh=/9LOBQkjJjhxi1MW0jTUI3yyXsdYYTHaWTMbTxB8b3o=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EfKAjOyaTAm++uU4A/ruMWUTGBAJ99nEVb+q27nq2L7kwT+2wq/wIWF5TulV6d9pqlyyJdVwZWRyzIlgkqhLFJUt0wmiTCi4XoqolrVxsT+sSA53TfqJLrON5YbeyxVuCQ3/KCa1B3V6WNilwm8kuBbonNveauOoZqho90sYozY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjtJt3fz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nHdc2Zlr"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 11EDEC2BCC7;
-	Thu,  1 Oct 2026 21:16:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1790889416;
-	bh=JOlqp6Cy2f7dgy9WstV9kdwykzFIe+8amE5T46/T7XY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=nHdc2ZlrY8JXDXc2vRiTOYJZewIyVGBt6xj0s/nwFavr0BELRpSO0/Dw63GKtfIQi
-	 HoMNLo20T94Ys0yK/gXRPmM5FyXoTh3BdedUDAoHFLsgCTIBX8wdm/AX48r2kfPB+n
-	 ancSaTmC4nGCH4+Lu5aGn7kj/U75RTgtqSxdmJuISAGE1GbrT+wTCTyIP9hn/MxPC7
-	 Vd378KuUPaJAFWbM57nx/IpXbfS+ZuR7KygnGNW9CQ9IOV21327ZgV9EBDxipVbkgc
-	 wX5QMq9CalJTRFsM2fvmtz8i+oBCvTXGCx5QhSyosytbpV9xitBSUtP195j4PJng/c
-	 m3jw7KlR2wOWw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC0DCCA5FD2;
-	Thu,  1 Oct 2026 21:16:55 +0000 (UTC)
-From: Jerome Mohm via B4 Relay <devnull+jrmmhm.kernel.eldare.de@kernel.org>
-Date: Thu, 01 Oct 2026 23:16:31 +0200
-Subject: [PATCH net v2] vsock/bpf: release sock lock while waiting for data
- in recvmsg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjtJt3fz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E2B1F000FF;
+	Thu,  1 Oct 2026 21:32:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790890356;
+	bh=hsqiOjWJes5QL5Swg2qcGQK2F4DTo5Fcsb/ksOfHTzQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DjtJt3fzmgwQgbl8/G3ER3U5dGbT9g/aZWRWUgaqNcaZlCbBC+DvuSIgfxi7WfX9x
+	 mZChBUUkt3AaMf8RecXDUH43coF3d7eC5djHhPACrqk4qPEEKZ7vqWYcqkZ4s87prv
+	 HM9ZI1oyuS8Hi72nj22/KumMhk7H432NKEeYLu6iQZe3BA3DbzPxKpmg7pXNuSbhSN
+	 dbv7NQnOWmtfVjsf8Un5blXRry+69UpcIj0RqFWz85ghj39qo4kgEtSDryAxg+KRGS
+	 rPfykHckLOD/RmvmCElonxPEOLVOpgsIq8k//lAz4lfF2DY1bcgUaObFBVsWGFnnBs
+	 48kKLzYQ5K/YQ==
+Subject:
+ Re: [PATCH net] net/smc: prevent TCP from retaining freed address-family ops
+From: netdev-bot+sashiko@kernel.org
+To: kylebot@openai.com
+Cc: netdev@vger.kernel.org, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
+ tonylu@linux.alibaba.com, guwen@linux.alibaba.com, samsun1006219@gmail.com,
+ stable@vger.kernel.org, kuba@kernel.org
+Date: Thu, 01 Oct 2026 21:32:35 +0000
+Message-ID: <179089035510.434549.11808413703827521402@kernel.org>
+In-Reply-To: <20260928213153.36141-1-kylebot@openai.com>
+References: <20260928213153.36141-1-kylebot@openai.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261001-kbh3-1-022-fix-v2-v1-1-cfae958a1976@eldare.de>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCQBAEv7L02YGZSQjoV8RDEidmFFbZTRYh5
- O+ueqxuqjZkS24Zp7AhWfHsz1hBDgHj3MebkV8rQ1k7YRZ6DHNDQqxKk7+pKFkzSatH7lrpUb1
- Xsvr8mmdEW0JRXP57Xoe7jcs3iH3/AI5QqDF9AAAA
-X-Change-ID: 20261001-kbh3-1-022-fix-v2-e3f14290641a
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Bobby Eshleman <bobby.eshleman@bytedance.com>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Michal Luczaj <mhal@rbox.co>, stable@vger.kernel.org, 
- Jerome Mohm <jrmmhm.kernel@eldare.de>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790889414; l=6591;
- i=jrmmhm.kernel@eldare.de; s=20260928; h=from:subject:message-id;
- bh=YvTTC+RU/Ym1bKqgzQ3IfPdzTa169kmvcqEE9p94f/U=;
- b=CbqSqTZQSQB1j9Ic2qSu4ImstdiiTZ8FbKwO5N3DKsTQCUwDC6vjzO2uQ735OWUzjXlEDyY5b
- iVFVupzJPnuBXzJPBSX1rf9M02xPxsgmwnGLx4izONlMWJ9pY2WAiZ3
-X-Developer-Key: i=jrmmhm.kernel@eldare.de; a=ed25519;
- pk=xRCxNXbnNottaHpmvPDAOC9NuMJxqKo24abkehKRVlo=
-X-Endpoint-Received: by B4 Relay for jrmmhm.kernel@eldare.de/20260928 with
- auth_id=1075
-X-Original-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
-Reply-To: jrmmhm.kernel@eldare.de
 
-From: Jerome Mohm <jrmmhm.kernel@eldare.de>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-vsock_bpf_recvmsg() takes lock_sock(sk) and holds it across the receive
-loop, including vsock_msg_wait_data(), which slept in wait_woken() without
-dropping the lock. When data arrived the transport's delivery context (the
-vsock-loopback worker, or the virtio/vhost rx path) called
-virtio_transport_recv_pkt() -> lock_sock() on the same socket and blocked,
-so neither side made progress and a blocking recv() hung; the hung-task
-watchdog reported the delivery worker in D state.
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-Dropping the socket lock around the wait is necessary but not sufficient:
-vsock_msg_wait_data() also did not loop and checked too few conditions,
-which left three further problems in the same helper.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
- - It did not loop. Once the lock is dropped, a wakeup that is not for new
-   data (for example a credit update via sk_write_space()) made the helper
-   return with nothing queued, so a blocking recv() returned -EAGAIN
-   prematurely instead of waiting for data.
+- [High] smc_listen() still installs &smc->af_ops on a clcsock that is
+  already a live TCP listener, so an accepted child can keep the…
+- [High] The new MPTCP gate in subflow_ulp_init() rejects exposed sockets
+  only if it sees `sk->sk_socket->file != NULL`.
 
- - It checked only sk->sk_shutdown & RCV_SHUTDOWN, not sk->sk_err or
-   vsk->peer_shutdown & SEND_SHUTDOWN. Once the peer shut down for send or
-   the socket errored (for example a reset), recv() did not notice and kept
-   waiting instead of returning 0 or the error.
+Pre-existing issues:
+- [High] The problem wasn't introduced by this patch, but smc_listen()
+  publishes &smc->af_ops with WRITE_ONCE() after plain stores to…
 
- - vsock_bpf_recvmsg() had no "if (!len) return 0;" guard, so a
-   zero-length recv() with data queued never satisfied the loop's
-   copied == 0 exit and spun holding lock_sock(), which wedges the delivery
-   worker and stalls all rx on the transport.
+--
 
-Rewrite vsock_msg_wait_data() to loop: return the data when it is ready, 0
-on RCV_SHUTDOWN or peer SEND_SHUTDOWN, the negative socket error on sk_err,
--EAGAIN on timeout and the signal error on a pending signal, releasing the
-socket lock around the wait and re-acquiring it before re-checking. Add the
-len == 0 guard to vsock_bpf_recvmsg(), and route MSG_ERRQUEUE to the native
-path before that guard so a zero-length error-queue read is not swallowed,
-as tcp_bpf does. The exit conditions follow vsock_connectible_wait_data();
-dropping the lock across the wait matches unix_bpf (u->iolock) and tcp_bpf
-(sk_wait_event()).
+net/smc: prevent TCP from retaining freed address-family ops
 
-Testing: built a fuzz kernel (KASAN + lockdep) on the net tree
-(v7.3-rc4) and ran reproducers over the loopback transport on a private
-VM, each before and after the fix. Before: a blocking recv() on a
-sockmap socket deadlocks the vsock delivery worker (hung-task); and with
-only the lock dropped, a spurious credit-update wakeup returns -EAGAIN,
-a peer SEND_SHUTDOWN returns -EAGAIN instead of 0, a zero-length recv()
-with queued data never returns and wedges the delivery worker (hung-
-task), and a len == 0 MSG_ERRQUEUE read returns 0 instead of reaching
-the error queue. After: recv() returns the data, ignores the spurious
-wakeup and returns the real byte, returns 0 on peer shutdown, returns 0
-for len == 0, and routes MSG_ERRQUEUE to the error-queue handler; no
-KASAN or lockdep report.
+This patch restores the original icsk_af_ops when smc_listen() fails and
+in smc_clcsock_release(). Installing and restoring the ops is serialized
+with the clcsock lock, and SOCK_RCU_FREE is now set before the listener
+callbacks are published.
 
-Fixes: 634f1a7110b4 ("vsock: support sockmap")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Jerome Mohm <jrmmhm.kernel@eldare.de>
----
-Changes since v1 [1] (netdev review by the Sashiko bot):
-- v1 only released the socket lock around the wait. v2 additionally makes
-  vsock_msg_wait_data() loop (no premature -EAGAIN on a dataless wakeup),
-  checks sk_err and the peer SEND_SHUTDOWN as well as RCV_SHUTDOWN (correct
-  EOF/error on peer shutdown or reset), and adds the len == 0 guard to
-  vsock_bpf_recvmsg() plus an MSG_ERRQUEUE route ahead of it (no spin on a
-  zero-length recv; an error-queue read is not swallowed).
-- Garzarella's Acked-by on v1 is intentionally dropped: v2 is a materially
-  larger change and needs a fresh review.
+It also compares a child's ops against the embedded table in
+smc_tcp_syn_recv_sock(). The MPTCP ULP can no longer be attached to a
+kernel socket that has been exposed through a file.
 
-[1] https://lore.kernel.org/netdev/20260929-kbh3-1-022-fix-v1-1-cc97cc95d269@eldare.de/
----
- net/vmw_vsock/vsock_bpf.c | 59 ++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 45 insertions(+), 14 deletions(-)
+Closes: https://lore.kernel.org/netdev/20260713085238.16780-1-samsun1006219@gmail.com/
 
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index 9049d2648646..127a20429aa6 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -34,24 +34,46 @@ static bool vsock_has_data(struct sock *sk, struct sk_psock *psock)
- 	return vsock_sk_has_data(sk, psock);
- }
- 
--static bool vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
-+/* Returns 1 if data is ready, 0 on EOF/shutdown, or a negative error. */
-+static int vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
- {
--	bool ret;
-+	struct vsock_sock *vsk = vsock_sk(sk);
-+	int ret;
- 
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
- 
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
--		return true;
--
--	if (!timeo)
--		return false;
--
- 	add_wait_queue(sk_sleep(sk), &wait);
- 	sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
--	ret = vsock_has_data(sk, psock);
--	if (!ret) {
--		wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
--		ret = vsock_has_data(sk, psock);
-+	while (1) {
-+		if (vsock_has_data(sk, psock)) {
-+			ret = 1;
-+			break;
-+		}
-+
-+		if (sk->sk_err) {
-+			ret = -sk->sk_err;
-+			break;
-+		}
-+
-+		if ((sk->sk_shutdown & RCV_SHUTDOWN) ||
-+		    (vsk->peer_shutdown & SEND_SHUTDOWN)) {
-+			ret = 0;
-+			break;
-+		}
-+
-+		if (!timeo) {
-+			ret = -EAGAIN;
-+			break;
-+		}
-+
-+		release_sock(sk);
-+		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
-+		lock_sock(sk);
-+
-+		if (signal_pending(current)) {
-+			ret = sock_intr_errno(timeo);
-+			break;
-+		}
- 	}
- 	sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
- 	remove_wait_queue(sk_sleep(sk), &wait);
-@@ -80,6 +102,12 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	struct vsock_sock *vsk;
- 	int copied;
- 
-+	if (unlikely(flags & MSG_ERRQUEUE))
-+		return __vsock_recvmsg(sk, msg, len, flags);
-+
-+	if (!len)
-+		return 0;
-+
- 	psock = sk_psock_get(sk);
- 	if (unlikely(!psock))
- 		return __vsock_recvmsg(sk, msg, len, flags);
-@@ -101,11 +129,14 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
- 	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
- 	while (copied == 0) {
- 		long timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-+		int data = vsock_msg_wait_data(sk, psock, timeo);
- 
--		if (!vsock_msg_wait_data(sk, psock, timeo)) {
--			copied = -EAGAIN;
-+		if (data < 0) {
-+			copied = data;
- 			break;
- 		}
-+		if (!data)
-+			break;
- 
- 		if (sk_psock_queue_empty(psock)) {
- 			release_sock(sk);
+> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+> index f0a6725d2c37..da7ac71344a9 100644
+> --- a/net/mptcp/subflow.c
+> +++ b/net/mptcp/subflow.c
+> @@ -1984,10 +1984,11 @@ static int subflow_ulp_init(struct sock *sk)
+>  	struct tcp_sock *tp = tcp_sk(sk);
+>  	int err = 0;
+>  
+> -	/* disallow attaching ULP to a socket unless it has been
+> -	 * created with sock_create_kern()
+> +	/* Only attach to a kernel-created socket that has not been
+> +	 * exposed through a file.
+>  	 */
+> -	if (!sk->sk_kern_sock) {
+> +	if (!sk->sk_kern_sock ||
+> +	    (sk->sk_socket && READ_ONCE(sk->sk_socket->file))) {
 
----
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
-change-id: 20261001-kbh3-1-022-fix-v2-e3f14290641a
+[Severity: High]
 
-Best regards,
---  
-Jerome Mohm <jrmmhm.kernel@eldare.de>
+Does this check hold up against a concurrent smc_switch_to_fallback()?
 
+smc_switch_to_fallback() exposes the clcsock with two plain stores and no
+barrier between them:
 
+net/smc/af_smc.c:smc_switch_to_fallback() {
+    ...
+	if (smc->sk.sk_socket && smc->sk.sk_socket->file) {
+		smc->clcsock->file = smc->sk.sk_socket->file;
+		smc->clcsock->file->private_data = smc->clcsock;
+    ...
+}
+
+By then the file is already in the fd table. Another thread calling
+setsockopt(fd, SOL_TCP, TCP_ULP, "mptcp") finds the clcsock through
+sock_from_file(), which does a plain load of file->private_data. That
+thread holds neither clcsock_release_lock nor the SMC sock lock.
+
+The compiler may reorder those two stores, and so may arm64 or POWER. In
+that case, can the second thread see private_data == clcsock while
+clcsock->file still reads NULL?
+
+The clcsock came from sock_create_kern(), so sk_kern_sock is 1 and both
+checks would pass.
+
+The MPTCP ULP would then attach to a TCP socket that userspace can reach
+but that has no MPTCP parent, so ctx->conn is NULL. subflow_data_ready()
+starts with:
+
+	struct sock *parent = subflow->conn;
+
+and subflow_state_change() also uses the parent. ctx->icsk_af_ops could
+also capture the SMC-embedded table.
+
+The commit message says:
+
+    Reject attaching the MPTCP ULP to such a socket: otherwise userspace
+    can bypass smc_setsockopt() and MPTCP can retain the embedded table in
+    its subflow context.
+
+Is that path still reachable through this window?
+
+>  		err = -EOPNOTSUPP;
+>  		goto out;
+>  	}
+> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+> index e9f93b3ab435..dbbe7d6574e4 100644
+> --- a/net/smc/af_smc.c
+> +++ b/net/smc/af_smc.c
+
+[ ... ]
+
+> @@ -2682,18 +2684,25 @@ int smc_listen(struct socket *sock, int backlog)
+>  	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+>  
+>  	/* save original ops */
+> +	lock_sock(smc->clcsock->sk);
+>  	smc->ori_af_ops = inet_csk(smc->clcsock->sk)->icsk_af_ops;
+>  
+>  	smc->af_ops = *smc->ori_af_ops;
+>  	smc->af_ops.syn_recv_sock = smc_tcp_syn_recv_sock;
+>  
+> -	inet_csk(smc->clcsock->sk)->icsk_af_ops = &smc->af_ops;
+> +	WRITE_ONCE(inet_csk(smc->clcsock->sk)->icsk_af_ops, &smc->af_ops);
+> +	release_sock(smc->clcsock->sk);
+
+[Severity: High]
+
+Can this still install &smc->af_ops on a clcsock that is already a live
+TCP listener?
+
+Here is one possible interleaving. Three threads share an AF_SMC fd that
+is in SMC_INIT:
+
+T1: listen(fd)
+    smc_listen()
+        lock_sock(sk)            <- waits
+
+T2: setsockopt(fd, SOL_TCP, TCP_FASTOPEN, ...)
+    smc_setsockopt()
+        smc_switch_to_fallback()
+            file->private_data = clcsock
+    (sk_state stays SMC_INIT)
+
+T3: listen(fd)
+    inet_listen() on the clcsock, which is now a plain TCP listener
+
+T1 then resumes and passes the state checks in smc_listen(), then
+installs &smc->af_ops. kernel_listen() returns 0 because
+__inet_listen_sk() only adjusts the backlog when the socket is already in
+TCP_LISTEN.
+
+The listener receive path runs without the socket lock:
+
+tcp_v4_rcv()
+    tcp_v4_do_rcv()          (TCP_LISTEN)
+    tcp_check_req()          (TCP_NEW_SYN_RECV)
+        inet_csk(sk)->icsk_af_ops->syn_recv_sock()
+
+A softirq can load the original tcp_v4_syn_recv_sock() before the
+WRITE_ONCE() above. It can then clone the listener in
+tcp_create_openreq_child() after it.
+
+That child inherits &smc->af_ops but never goes through
+smc_tcp_syn_recv_sock(). So the new check there never runs for it:
+
+    if (inet_csk(child)->icsk_af_ops == &smc->af_ops)
+
+Suppose userspace then accepts that child from the clcsock and closes the
+SMC fd. smc_clcsock_release() restores only the listener's ops.
+
+Once the RCU grace period ends and the smc_sock is freed, would the child
+keep calling through the freed table (net_header_len, queue_xmit, and so
+on)?
+
+Taking lock_sock() on the clcsock serializes install against restore, but
+it doesn't seem to exclude lockless listener processing. Should the
+install be refused when the clcsock is already in TCP_LISTEN?
+
+[Severity: High]
+
+This problem wasn't introduced by this patch, but is the publication of
+&smc->af_ops ordered after the stores that initialize it?
+
+smc->ori_af_ops and the struct copy into smc->af_ops are plain stores.
+The WRITE_ONCE() that publishes &smc->af_ops has no release semantics.
+
+In the already-listening case above, the lockless reader is:
+
+tcp_v4_rcv()
+    tcp_check_req()
+        inet_csk(sk)->icsk_af_ops->syn_recv_sock(...)
+
+The compiler may reorder the plain stores, and so may arm64 or POWER.
+Could the reader then see the new pointer before the struct copy is
+visible?
+
+sk_alloc() zeroes smc->af_ops, so the softirq could call a NULL
+syn_recv_sock. It could also enter smc_tcp_syn_recv_sock() and
+dereference a NULL smc->ori_af_ops here:
+
+	child = smc->ori_af_ops->syn_recv_sock(sk, skb, req, dst, req_unhash,
+
+The added lock_sock() does not synchronize with this reader, which never
+takes sk_lock. Refusing to install on a socket that is already listening,
+or publishing with smp_store_release(), would avoid this.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928213153.36141-1-kylebot%40openai.com
