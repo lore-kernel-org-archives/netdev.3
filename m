@@ -1,284 +1,364 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705F533DEE9
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 23:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790897839; cv=none; b=GMqgz9hEUOuviq/Qg7BEKrypY+Q/6IY5Y3JNXwT3uwDvaQAxvWOh0v2f53U2EhN7AB8VXypNY/ETJiX9/tJiXSj5fTP0JraFoQdj101iEpzQh/pOicexALznLwaTEGpf30uohOYXnWt7QZyTIPgOVxkbj7mmP2DfGNhXJ2Km46M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790897839; c=relaxed/simple;
-	bh=mMJKmHhsdNBsXsA781hOliJbJz9k+ZVxaXfsbt5gogY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=KgwH7ii1AzAiuOoVpVHvGxO0ncCIrh3jK0VY4ERP7265n2Jy9ZglnbSsL9lZNa0aLaqXS/rJvp6AAPXXSikbQpE6fCaNJgfcsthVj1YUlssBOKNI5uMpTpdkne+bsWLPrQgshN0eXwJztSIB8sIYujUkNnNQQsvsHU/P1Xv0dbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pPEOSuNi; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AB02D12EE;
+	Thu,  1 Oct 2026 23:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790898053; cv=fail; b=o8ycbijXU1P9IJMgIoT6Sn1Hq51glnh2ixP5yOqi9/ifwrZlxlV81N62saAz5B3Z8EL1dumUYPJtuEmV+M++yTc0V4er85HT9RzTFVyXA1jy8H94laHsFHQF4A3WvIoRSzMU63chVuKIQfBdwCMOuu9foOfWIZz/s0sFz8hcfLs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790898053; c=relaxed/simple;
+	bh=Eq6+iMl2nR0glsJRajaEazdWJKXON9dFJhVBmM6NW2g=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=nsHlRM1VeR2BlL2OZksczl4Ow2ZJUyCSACJJ6AT67I1WQBxnUmnJiR+h3EWGMIXoaS4i8BycNDCrXbnr23RLPoitM7UWDXp37DKmQAnEsV2KTkFY5RKdiGNoPhdxo6bfOWDAhCi2ZZxfIcBawQzi5HiqdmlEGyw7SV479NE+tQY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=csJ1U3Uk; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pPEOSuNi"
-Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-895fd505832so66534837b3.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 16:37:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790897836; x=1791502636; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=EsUfczXOAqFC1GSojrpd6/FsnRGCEjTq53hjY2sgaYI=;
-        b=pPEOSuNiK26Yyp5RFsZhNeNqChUI+TU0nI+6d4iqrKRspBsY1Q5rzm6t4aDa58a08f
-         mxrBr/UmnhsG21ajObJWtfwXwkPJXA1KlDpuuSx3Pm/75eF7X4a8gGM9AWMEdqAicOLr
-         QhyuzwLrQ0oF4OwaloW2qMSpvaO+mEc1EgkyphGCdih/L+9X7aYJEj0tPoO0QTUGEsu9
-         6nZesjEpqh6PVIDKm/WEOt6cUmegbgt1LE3uFxEPY79s7YfIRO+/TcTjfE2QxWCr5IRM
-         AKWItnYJObwbO1mlgsz7SBR3vHjv56TM/TzNU3G2jbYBgOAv4iR5JoHHAcA1hDxvfjXk
-         nSNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790897836; x=1791502636;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EsUfczXOAqFC1GSojrpd6/FsnRGCEjTq53hjY2sgaYI=;
-        b=CNilfVARhv0JGHFx5XPjo0jV3c47fTsgKhRIjr4eZ3o61Z39nPJvoD8OfYM9WgjL1T
-         MK2b6VXjOIYF5ClG4BCavWHkDa+TgH6gSBaF5/qOzj7WebAh0CKS/aWXQCfi2mfYqiKI
-         UUFVdH9Kwd/r6WVf8wCMRaraLUPIhAb8hlHysWvoSzNCmnViotF+m/X5H/SFRSRo9/6h
-         FLTSCdqZHaDfRqQrgzLQXN3Zh46hOOSNoKjBGzUqFs4A2554w0hwpSNdDnRaxVHP/dHH
-         mCP45NlxltjGDDzAIjAxabcP3Hp90ZmkIM0HmQspzmKaH4R2Zt7bIolXEaWMqGaMiJD4
-         Zp8w==
-X-Forwarded-Encrypted: i=1; AKwUvBx06sDvQy4qt2Yi4c7Htk73/MOIDeX+T/vXqns5iEk2wX7dVpQNw3HRPYS3/w/ctk/cHWsROxE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJXmKBdCQFIizSkcWyvYW0Nj8b2IcWCL7S7eX4h+COyrNeJF4p5
-	4eDSY3xIRZp1nYELGrZwZ/cOljY1melP+IcUNnC4GMJIgX+HMwGUoX6N
-X-Gm-Gg: AYBFou37lHW7d/m4byilfQrXCSe7nZLbG8Xe5RYiANVesCREdGoeBwei6BI/PE1osom
-	fHI3GNa2HMUH/zducljciwN3Y1Lw6AS11DrrLnsH2FLw8XSJLS3k60hp2+VQKQHpP+2fP9Yr1ZA
-	jh9h/mLRwfwocPdSFdlKIeUvXPX73pwg4eic4atLPAtZF3+U5z0L91eYEqlUkrmHQ68pTIsH9Pg
-	4kNL5pF50d/fcnqmgreGQgPIoAniCvW9Pck3seyrix4k+zbnnfdZ9Z8Po/fxhVKiL28uWyzmXEL
-	Cazpp1cUeRLTIwPXNWjhenrIOUsNmKQlSC2gzSRzGrq2mA2JwQNF+BLuDn8ZB7JhO8nfQEwr36s
-	TOhFjEWs724qYp6Kqm3HeznqyvtWJlQC1yvy+HQTaZxXHhSGzwT0D522n/UNbR92oMBOZ//tj9V
-	A+OKu9R/KQF4dOczkV2tDksqpqjKLDEBSLzeGb93oj9vLyHGJTUlhfcjR5mDf/R974IfnhWkO9A
-	OhcFQe4cVlSsth5bCGQ2hYXZi8af7EyO8jSgK+X4t5O/WbO+NjN
-X-Received: by 2002:a05:690c:2782:b0:8a5:af04:fb1d with SMTP id 00721157ae682-8ae3b0d9321mr4241327b3.55.1790897836252;
-        Thu, 01 Oct 2026 16:37:16 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae3011f406sm3121897b3.5.2026.10.01.16.37.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 16:37:15 -0700 (PDT)
-Date: Thu, 01 Oct 2026 19:37:15 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, 
- edumazet@google.com, 
- Eric Dumazet <edumazet@kernel.org>
-Message-ID: <willemdebruijn.kernel.e759da52def9@gmail.com>
-In-Reply-To: <20261001191140.2818991-4-edumazet@kernel.org>
-References: <20261001191140.2818991-1-edumazet@kernel.org>
- <20261001191140.2818991-4-edumazet@kernel.org>
-Subject: Re: [PATCH v3 net 3/3] selftests: net: tun: add test for VLAN-tagged
- GSO without NEEDS_CSUM
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="csJ1U3Uk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790898052; x=1822434052;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Eq6+iMl2nR0glsJRajaEazdWJKXON9dFJhVBmM6NW2g=;
+  b=csJ1U3UkUxBhMjJHWC9iA7nmHFX9KHoAOrz9l8wmDxN9h/o3tjfJlfw3
+   fxDOSPsGjF9QcLZD25a5DrR5qaZfadNyL97dAcshUZH2g6KQQBAF3RnII
+   iNvmRmgIkizmhFHclYgFYYMw00flbNKm/m/mkZTUkTxl5PPjW3+XQqL/1
+   utQNh8SmkN/dD+iJJE8aCff3ViZZ2DEGHJ1ZJm0vdEsdgm+Xzz7smZBZR
+   aaqQ1zygE1Lbv3Ml63jy6hHtpkfDO+Yz721d7PNe6dPrQ2I9LGBvyNqoY
+   dZaxq0TtCdF4VnUV8hmhpe8/XyEpM0UtfD3I0DO0jRJipjpbqWJMW5gmO
+   g==;
+X-CSE-ConnectionGUID: z+Kjk9yDSVOIMJq3WC/Mgw==
+X-CSE-MsgGUID: zZaeghSCQ0CoOaSolQ7v9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="91532990"
+X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
+   d="scan'208";a="91532990"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 16:40:52 -0700
+X-CSE-ConnectionGUID: mmHeFxRaR1C2UBGKDyexJA==
+X-CSE-MsgGUID: bhme8oV1REGEt2Z9IkTibg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
+   d="scan'208";a="151240"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 16:40:52 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 1 Oct 2026 16:40:51 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Thu, 1 Oct 2026 16:40:51 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.31) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 1 Oct 2026 16:40:51 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vFX9rCzmMn59W1zR1EcEiO0zzLMx6GSbuxUcoMtHx2Y5Szu8DyJDXAJb7L/nb9rG8woN7tQF4LmJ1WqsN7L1dKyFfFPCZxBKIABMY1egXnxmqV4nC4WuQJVTqWOsRFiHJsL64CXhITCd2jl+gUXPecCIQMbGxVMBc2ow2tpMKjM2RiDdp4zV8U8kiNhHoyFbl3PAEYVpxIU+2QnmdLiEq1eNuE1skp7TVRfz1KPL2gL6751KkNp7Q/tr6cv+Jdav2rS/TW6DCzmh0+F2JpmHmdNcWAXCPoSwAFsxRowiEvhpl1P2CT41tA17PZy0gClVSSGnt8JDaKlyHUPIrofuTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OxEhOy9nocb7Xw2VMs6AdHATFra2eSM9OvIlH7Xdk/c=;
+ b=iDDLePxBRNvztFsafm23Tb+uM8fZEFvkKLU5WPMayiH7ZZbx1ZHNLHS2ovSvZddhA1+Hn6oNTpuoz19p5Ssriy4lyhnP3tZSIizvoYO9o7/mA5KSqvos1fC++lICuz9RUpl4fngHUsTbVWiF9S5bj2DtVEkHrsHhv5px6uFeOvZWbStcYvW8fHTMcuia6IE1FsZFvqGN2ex/jUYGDPcEvdVC+6KPOdRDmwJ4VaNrZDQv515b46006NP7RTZZUCW2Wz5q5ApFGIj6N5L7VUoPDJVNXHj4bAl1M4nNKcn3DH2RHJa7KAolrUCe8O1n8Gr0dg46/PKYy4Mccndl82vvwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA3PR11MB186312.namprd11.prod.outlook.com
+ (2603:10b6:806:595::5) by SA3PR11MB938431.namprd11.prod.outlook.com
+ (2603:10b6:806:531::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Thu, 1 Oct
+ 2026 23:40:49 +0000
+Received: from SA3PR11MB186312.namprd11.prod.outlook.com
+ ([fe80::fbe8:9ba6:fcd0:f0b]) by SA3PR11MB186312.namprd11.prod.outlook.com
+ ([fe80::fbe8:9ba6:fcd0:f0b%6]) with mapi id 15.21.0472.016; Thu, 1 Oct 2026
+ 23:40:49 +0000
+Message-ID: <e4f1eadf-2bcd-4a1c-b321-b4004ba0645d@intel.com>
+Date: Thu, 1 Oct 2026 16:40:46 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/6] idpf: fix possible race on remove during a reset
+To: <netdev-bot+sashiko@kernel.org>, <anthony.l.nguyen@intel.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	<david.butler@appgate.com>, <luoxuanqiang@kylinos.cn>,
+	<bryan.fraschetti@canonical.com>, <tristan@talencesecurity.com>,
+	<tomasz.lichwala@linux.intel.com>, <horms@kernel.org>,
+	<aleksander.lobakin@intel.com>, <stable@vger.kernel.org>,
+	<jacob.e.keller@intel.com>, <aleksandr.loktionov@intel.com>
+References: <20260928230429.495442-2-anthony.l.nguyen@intel.com>
+ <179072991189.434549.5989394906343796155@kernel.org>
+Content-Language: en-US
+From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
+In-Reply-To: <179072991189.434549.5989394906343796155@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4PR02CA0018.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::17) To SA3PR11MB186312.namprd11.prod.outlook.com
+ (2603:10b6:806:595::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR11MB186312:EE_|SA3PR11MB938431:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe9becab-6dc0-4418-5cad-08df20156c5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|23010399003|366016|7416014|376014|10067099003|56012099006|4143699003|6133799003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 5zqTsGl2CNsxSspHkcleB2mlw7qWzMNFUMuRCRsIQvMN4oxpDa2xo3G5T8pINUgx8xkLcNvUV8BGUckrr4hGf577y5/QuvaRKZsoT29HyCeNiaqlvd5F34WBgf3SioDvI+bZ8m/sgIY9rYHsIT3pXIEXUFtuggTRRQYw7Vub3Kg608jRMYq6Z+/0NmnDZDb3gNcQqG4aoNtxoElkdY8itj2jXrCSpDv8gYXa4dgznOfImXRRa0Ab3/+nfDeRG1GTbx7koexiKnzK72isCN37p5L+PQCmxNj6Ldg0e7iTjgP4bjaI7FbBBKKGsk14a9XAQGweLnaj5fdMmtdj6r9ylmtYxfY4veZ9ZtbDuuFzZ36wdCDVvpccGsLbHdTS+ALRM0bpf9IWQyWJkn9rTvCZs/mGWibDA0EBoiffhsOoshpsgld5rDDAvgXHOSiFkVI0rZzijmKCOVFyUa2vx03RSHxqRkEE+bJjziAhk9e5MaooTOIaLUJaC+8uTX9X7QW34XHtSOjuPZlG5etIEIWJVmh948azfZV0RY4YMgrZa/BHkHPxzXjhZar5Qbufk7pCroxolDZEBL4ZvBuE0hglYJiznTSNTXYH6sRX6npXtLZ7yHeM9lIJHi0bYwoe77GwLhXqqKpVqtOYqc3wURLiB8kMuGA0/7VxTFDnKggPKQk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB186312.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(7416014)(376014)(10067099003)(56012099006)(4143699003)(6133799003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDZqM2V4QkNWZVlheE1aZzZIY1UvSFAwTWxpdkRoNGpmcDJheHQ2TSsyZHNW?=
+ =?utf-8?B?Mk5KeElwbVRVUUNPeXBLTm94WlhUV1U0M0MreWZGcEx1NVNsWnk3OHJaYno5?=
+ =?utf-8?B?OXg5VlZidHc3d2NtT1EzL0lNZ1ZHUE1lZXJ3bjBjWTBRRjF5YUt6RzFVaFpJ?=
+ =?utf-8?B?dUtWV0FaalF4WUFFOUNTTmlqbHIwY2hwNHY4Wi9IZUFxV3VlYWlYM05RTFZv?=
+ =?utf-8?B?eUdhcUFXL29jM215cmk0N2ZBNkMzQWwxS3RqUTIwY3NZUzlZVGE0SXFXLzF5?=
+ =?utf-8?B?WmcxU2pKbTh6K3FhRGhaem5FbkdqQUlsYUkyblJVQ3NPVjVDYVlaWG05ZGNU?=
+ =?utf-8?B?MGtWaEJwbXNCdWRXUTg2d2d0dy9lUGlPNVJiUjRxQ3d4OHZwOHNhOEJBVjBr?=
+ =?utf-8?B?aUplbDBmKzlHQWNtMEpGeU9WdGhVdmdWUkh0UStNaStzV0xIdW5qSytSWThN?=
+ =?utf-8?B?eTlENUU2SFJ2TU1LOXFCMnBCdno5RXdxNGxRcnNOL3NKVFpOSFJ4SFgvMk84?=
+ =?utf-8?B?VDlVZmRoalJhQlFZc1drN20zWWQ0R1JQdGpRdXZESVRrRDZIY3VqVExJUXp4?=
+ =?utf-8?B?RDZ3WXdUMHdQRUs0RUNoWXF2NklBS044REQ0RG5GM1ppV0JPekpCdXh0WVJu?=
+ =?utf-8?B?QXFQWlU3NnpvakZmNzNXalQ1OWRvTlhhb1UzTm1VTStXNU5qOVYwRHJGa2tv?=
+ =?utf-8?B?T2ZmZEVQNldvRTN4SW1sV21odXhOc0xNR0JUWGlFNlZvV0xEWDhiWVhwanUz?=
+ =?utf-8?B?dmlaYTh0ZmRKMkFjODNhVitjMDg5cnFBUW12SGZKeHhrWXkvSkJibzAxdXkr?=
+ =?utf-8?B?TVFNOVlwY1d1ZHpCbkpvS0FucjA2NjNLNWdDUzBXQkpqdEV2WnN2bjZrY3FF?=
+ =?utf-8?B?THI1N0J6WHVFN2hUUGhub1BEY2Y0YldQbW1JQk10ZlFxYzFrdmEwR0F5aUM4?=
+ =?utf-8?B?TDh1NTVYNHdGOGF0Y2JpeFpadGp5SHpabE9ONzV3SHczVUY4c3ZlVGFIZHR1?=
+ =?utf-8?B?SHpTWURQNWsyOEVrV1BtNEhoSW5UbnNsQTFVclVTeHk1ckpYcE8xeXdhRWN5?=
+ =?utf-8?B?bThDc2RZYWpWY0dqY0VBTVkvTGZQRi9QUTdPWEY2cGdScEQwQ0lOK2VsajNT?=
+ =?utf-8?B?Z1pzU0luZEh1a05nc0JkcHZKODNOZ0o5V2lxWXNEVWxKeDNnazVGejVCZXdh?=
+ =?utf-8?B?R05Tb05ZUW9QSkFYYU0zK3h2dzRrd3k1eVk0b2JQcmN1U2s2TnNqTks3S2k5?=
+ =?utf-8?B?cXV3RkIwamlRbXhZNmZWZHAyL1JLaG5NWkhkdG55NlkxWllNY21DSXRxVy9E?=
+ =?utf-8?B?V1BsSW4rRFZvN1RQQ2JCbklWM09RM1ZYcUg4UXNRQ1ZLL0Q0SEVsODZ3VVFD?=
+ =?utf-8?B?UlNSRlg1M244QzQ0U3pCTkI5V29CZXpJYlJETjlRNVU1VkVmMjMxVmJlbjFq?=
+ =?utf-8?B?VVZIeXFqZ2FXcVE4N2U2UlV5NlkzRVZ3YXJvZWtwZnVEVUh4ZlB2SGcwcE1Y?=
+ =?utf-8?B?cTk3RVFJa0d5NEk5TGZGMHA0Qy8zVm9kLzhkL05OV2VWMkdpSUdJWThYSzkx?=
+ =?utf-8?B?NkJQSXNzSW0rV0E1ZndSaFRXK1NtU0t2WUI5SzBaQkN5VVlPL1hzYmJJRlhn?=
+ =?utf-8?B?ekY3amR0WnFVNW9KTmZVdDFzUlA1L2lTRDVZVmNCWnptSllQUHlRR0dlMXls?=
+ =?utf-8?B?R3dEdnNBOXVTaXZvRzNOWEVkTUZsS1RmRDF4bS95Mkd2a0tmamx3MkMxV2hw?=
+ =?utf-8?B?ajc3OVQ0UWVTeHlFTTdZaEVzMXI5ZkFjTWlGN0IxY0pFN0p4NG9RTEkyWEtv?=
+ =?utf-8?B?Qm81d3pjREZWOGFiYVFlaEVFbVVVWm1ZL3ZOUC83ZktIb1hkeWNFdjZJUHI1?=
+ =?utf-8?B?ZDBqZVlaZGEzOTIya0ZnMURla1RXZXcrdE1KS1lYdWpmS3Y0SURMOVo5dnBG?=
+ =?utf-8?B?bVBaTHdSMkRlK2dTeVFuNEUyREdEQzZWLzBIRXdjQVRYZVZhZFlNM29GUS9z?=
+ =?utf-8?B?NDdEN0QxeG1ROUdYRmh2VVpHaFg2eXA4dElGOFhxeHF2Wm9CL283UkJDS2Rx?=
+ =?utf-8?B?bkplNVR5Smd1dDY4UHNKeDFIMWZ4VHhiblhtVWppbGVDOU0vN2tIaVhaTW5T?=
+ =?utf-8?B?V3BYVzhCb05wWVZwRm4xWk1JQ1NLRlJLbVlBbmJ3V0M3cTV3Z1FVTks0NnRG?=
+ =?utf-8?B?RjEzRnJQWjVMcVdvYnNLbGQ4VlEwNDZLanUwMy9nbEZNWFp6Ylo4WVpqUHVk?=
+ =?utf-8?B?dG9rSTlMUUZZcStHWDk1OGMrVmx3dnh6RU05Z1R3ZVU3RUliNkliZDNlTGRu?=
+ =?utf-8?B?MS90dm1uSTJIS3g2d1dxYnl3MkUrVVAvY2Z6VktlMjVQWjlLaWg2cGc3RjFs?=
+ =?utf-8?Q?u87iUpAL6m9CNokk=3D?=
+X-Exchange-RoutingPolicyChecked: ceeE2BKWQZmFQTObBBPgP8gXlVtPaOq/nGrArO4r8LWRcq7CgE0arOPRWhR7c/ui9JbuTthfMYd2FjbMDl4Gt2sSWVvq9UsKZh7X9Qu3nO89J3Ma9SSuypZrk1+AoLYfCpUJ9NMRHJD81NLoPUCe+1z1nBXDChLXHLUMKR0bHcQpyQhUksjNQiW+RlhXu2DxwhAjGjwpn4w/RfW7g1a4Ov9DL53TvaikQXBvlLvTEuoBGmBBUBD5+KRWbwUzUXiiQPJcx0vDuQv32bIXM4lgjigtyNDaXhgjuNjmKKzwUfCQrZUWBxpHIwr6Q2zPOuemZbWAABNo5xSvVoxANH6Alw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe9becab-6dc0-4418-5cad-08df20156c5f
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB186312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 23:40:49.5785
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +Sa51bJOJnANQAg+zXyu8SJ1j7CV94et06g/wC6vJQ+4BC0HoDQJxFpYHnpU9RA3ElstYKEAqx1TZW6PmO+l4Ax9n3I1G59IomPHFKFZrgI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB938431
+X-OriginatorOrg: intel.com
 
-Eric Dumazet wrote:
-> Add selftests in tun.c verifying that a VLAN-tagged (802.1Q) TCPv4 GSO
-> packet without VIRTIO_NET_HDR_F_NEEDS_CSUM (both flags = 0 and
-> flags = VIRTIO_NET_HDR_F_DATA_VALID) is accepted when written to a TAP
-> device (/dev/net/tun with IFF_TAP | IFF_NO_PI | IFF_VNET_HDR).
+
+
+On 9/29/2026 5:58 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 > 
-> Also verify that the following are rejected with -EINVAL:
-> - a mismatched GSO type (VIRTIO_NET_HDR_GSO_TCPV6 on a VLAN-tagged IPv4
->   packet).
-> - a frame whose TCP header is truncated after 10 bytes. Pulling only
->   sizeof(struct iphdr) + sizeof(struct tcphdr) bytes would accept it,
->   so this requires the transport offset found by flow dissection.
+> Critical: 0 · High: 1 (2) · Medium: 0 · Low: 0
 > 
-> Finally, verify that a 65540-byte frame is accepted. Its skb->len is
-> above U16_MAX while it is flow-dissected, before eth_type_trans() pulls
-> the Ethernet header.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
 > 
-> Based on a reproducer by Michael S. Tsirkin <mst@redhat.com>.
+> - [High] The patch removes the IDPF_REMOVE_IN_PROG early return from
+>    idpf_stop(), which opens a double-teardown race between a userspace…
 > 
-> Assisted-by: LLM
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-
-> ---
->  tools/testing/selftests/net/tun.c | 136 ++++++++++++++++++++++++++++++
->  1 file changed, 136 insertions(+)
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but the patch
+>    relies on the loop that contains it.
+> - [High] This problem wasn't introduced by this patch, but the patch now
+>    sends the remove-racing-reset case through it.
 > 
-> diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
-> index abe488bac50bb3b05df5c446836c1c3dfa9ea604..afaa81c9bac5311944c9a70a20de05bffb683f26 100644
-> --- a/tools/testing/selftests/net/tun.c
-> +++ b/tools/testing/selftests/net/tun.c
-> @@ -9,6 +9,7 @@
->  #include <string.h>
->  #include <unistd.h>
->  #include <linux/if_tun.h>
-> +#include <netinet/tcp.h>
->  #include <sys/ioctl.h>
->  #include <sys/socket.h>
->  
-> @@ -542,6 +543,141 @@ TEST_F(tun, reattach_close_delete)
->  	EXPECT_EQ(tun_delete(self->ifname), 0);
->  }
->  
-> +FIXTURE(tun_vnet_gso)
-> +{
-> +	char ifname[IFNAMSIZ];
-> +	int fd;
-> +};
-> +
-> +FIXTURE_SETUP(tun_vnet_gso)
-> +{
-> +	int flags = IFF_TAP | IFF_NO_PI | IFF_VNET_HDR;
-> +
-> +	memset(self->ifname, 0, sizeof(self->ifname));
-> +	self->fd = tun_open(self->ifname, flags, 0, 0, NULL);
-> +	ASSERT_GE(self->fd, 0);
-> +}
-> +
-> +FIXTURE_TEARDOWN(tun_vnet_gso)
-> +{
-> +	if (self->fd >= 0)
-> +		close(self->fd);
-> +}
-> +
-> +static int build_vlan_tcpv4_gso_packet(uint8_t *buf, int payload_len)
-> +{
-> +	uint16_t vlan_tag[2] = { htons(100), htons(ETH_P_IP) };
-> +	uint8_t *cur = buf + sizeof(struct virtio_net_hdr);
-> +	struct virtio_net_hdr vh = { 0 };
-> +	struct tcphdr tcph = { 0 };
-> +	uint32_t sum;
-> +
-> +	cur += build_eth(cur, ETH_P_8021Q, param_hwaddr_outer_src,
-> +			 param_hwaddr_outer_dst);
-> +
-> +	/* 802.1Q tag: VID=100, inner protocol=ETH_P_IP */
-> +	memcpy(cur, vlan_tag, sizeof(vlan_tag));
-> +	cur += sizeof(vlan_tag);
-> +
-> +	cur += build_ipv4_header(cur, IPPROTO_TCP,
-> +				 sizeof(tcph) + payload_len,
-> +				 &param_ipaddr4_outer_src,
-> +				 &param_ipaddr4_outer_dst);
-> +
-> +	tcph.source = htons(12345);
-> +	tcph.dest = htons(80);
-> +	tcph.seq = htonl(1);
-> +	tcph.doff = sizeof(tcph) / 4;
-> +	tcph.ack = 1;
-> +	tcph.window = htons(65535);
-> +	memcpy(cur, &tcph, sizeof(tcph));
-> +	memset(cur + sizeof(tcph), PKT_DATA, payload_len);
-> +
-> +	sum = add_csum((const uint8_t *)&param_ipaddr4_outer_src,
-> +		       sizeof(param_ipaddr4_outer_src));
-> +	sum += add_csum((const uint8_t *)&param_ipaddr4_outer_dst,
-> +			sizeof(param_ipaddr4_outer_dst));
-> +	sum += htons(IPPROTO_TCP) + htons(sizeof(tcph) + payload_len);
-> +	sum += add_csum(cur, sizeof(tcph) + payload_len);
-> +	tcph.check = finish_ip_csum(sum);
-> +	memcpy(cur, &tcph, sizeof(tcph));
-> +	cur += sizeof(tcph) + payload_len;
-> +
-> +	vh.gso_type = VIRTIO_NET_HDR_GSO_TCPV4;
-> +	vh.gso_size = 1400;
-> +	vh.hdr_len = (cur - buf) - sizeof(vh) - payload_len;
-> +	memcpy(buf, &vh, sizeof(vh));
-> +
-> +	return cur - buf;
-> +}
-> +
-> +TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum)
-> +{
-> +	struct virtio_net_hdr vh;
-> +	uint8_t pkt[4096] = { 0 };
-> +	int len, ret;
-> +
-> +	len = build_vlan_tcpv4_gso_packet(pkt, 2800);
-> +	memcpy(&vh, pkt, sizeof(vh));
-> +
-> +	/* Valid VLAN-tagged TCPv4 GSO with flags = 0 (no NEEDS_CSUM) */
-
-iff respinning and not relevant for this fix, which targets the
-!VIRTIO_NET_HDR_F_NEEDS_CSUM branch.
-
-But would it be worthwhile to also run this test with
-VIRTIO_NET_HDR_F_NEEDS_CSUM? Adds coverage of the other branch.
-
-> +	vh.flags = 0;
-> +	memcpy(pkt, &vh, sizeof(vh));
-> +	ret = write(self->fd, pkt, len);
-> +	ASSERT_EQ(ret, len);
-> +
-> +	/* Valid VLAN-tagged TCPv4 GSO with flags = DATA_VALID */
-> +	vh.flags = VIRTIO_NET_HDR_F_DATA_VALID;
-> +	memcpy(pkt, &vh, sizeof(vh));
-> +	ret = write(self->fd, pkt, len);
-> +	ASSERT_EQ(ret, len);
-> +
-> +	/* Mismatched GSO type (TCPV6 on VLAN-tagged IPv4 packet) */
-> +	vh.flags = 0;
-> +	vh.gso_type = VIRTIO_NET_HDR_GSO_TCPV6;
-> +	memcpy(pkt, &vh, sizeof(vh));
-> +	ret = write(self->fd, pkt, len);
-> +	ASSERT_EQ(ret, -1);
-> +	ASSERT_EQ(errno, EINVAL);
-> +
-> +	/* TCP header truncated after 10 bytes, without NEEDS_CSUM.
-> +	 * Requires the transport header offset found by flow dissection:
-> +	 * pulling only sizeof(struct iphdr) + sizeof(struct tcphdr) bytes
-> +	 * from the mac header would accept this frame.
-> +	 */
-> +	vh.gso_type = VIRTIO_NET_HDR_GSO_TCPV4;
-> +	vh.hdr_len = ETH_HLEN + 4 + sizeof(struct iphdr) + 10;
-> +	memcpy(pkt, &vh, sizeof(vh));
-> +	ret = write(self->fd, pkt, sizeof(vh) + vh.hdr_len);
-> +	ASSERT_EQ(ret, -1);
-> +	ASSERT_EQ(errno, EINVAL);
-> +}
-> +
-> +TEST_F(tun_vnet_gso, vlan_tcpv4_gso_no_csum_64k)
-> +{
-> +	/* Ethernet frame of 65540 bytes: skb->len is above U16_MAX when the
-> +	 * frame is flow-dissected, before eth_type_trans() pulls ETH_HLEN.
-> +	 */
-> +	const int payload_len = 65540 - ETH_HLEN - 4 -
-> +				sizeof(struct iphdr) - sizeof(struct tcphdr);
-> +	struct virtio_net_hdr vh;
-> +	uint8_t *pkt;
-> +	int len, ret;
-> +
-> +	pkt = calloc(1, sizeof(vh) + 65540);
-> +	ASSERT_NE(pkt, NULL);
-> +
-> +	len = build_vlan_tcpv4_gso_packet(pkt, payload_len);
-> +	ASSERT_EQ(len, sizeof(vh) + 65540);
-> +	memcpy(&vh, pkt, sizeof(vh));
-> +
-> +	vh.flags = 0;
-> +	memcpy(pkt, &vh, sizeof(vh));
-> +	ret = write(self->fd, pkt, len);
-> +	free(pkt);
-> +	ASSERT_EQ(ret, len);
-> +}
-> +
->  FIXTURE(tun_vnet_udptnl)
->  {
->  	char ifname[IFNAMSIZ];
-> -- 
-> 2.56.0.rc1.315.gc6ed9934b7-goog
+> --
 > 
+> idpf: fix possible race on remove during a reset
+> 
+> This patch drops the IDPF_REMOVE_IN_PROG early return from idpf_stop(),
+> so idpf_vport_stop() always runs on close. The goal is to let a reset
+> that races with remove tear down NAPI in idpf_detach_and_close(), which
+> runs under RTNL.
+> 
+>> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+>> index 827c795afcb62..2c148377540cd 100644
+>> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+>> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+>> @@ -1033,12 +1033,8 @@ static void idpf_vport_stop(struct idpf_vport *vport, bool rtnl)
+>>    */
+>>   static int idpf_stop(struct net_device *netdev)
+>>   {
+>> -	struct idpf_netdev_priv *np = netdev_priv(netdev);
+>>   	struct idpf_vport *vport;
+>>   
+>> -	if (test_bit(IDPF_REMOVE_IN_PROG, np->adapter->flags))
+>> -		return 0;
+>> -
+> 
+> [Severity: High]
+> Without this check, can a userspace close that runs during idpf_remove()
+> tear down the vport a second time?
+> 
+> The remove path is idpf_remove() -> idpf_vc_core_deinit() ->
+> idpf_deinit_task() -> idpf_vport_dealloc() -> idpf_vport_stop(vport, true).
+> It holds neither vport_ctrl_lock nor RTNL on entry. idpf_vport_stop() tests
+> the UP bit before it takes RTNL and does not test it again afterwards:
+> 
+> idpf_vport_stop() {
+> 	if (!test_bit(IDPF_VPORT_UP, np->state))
+> 		return;
+> 
+> 	if (rtnl)
+> 		rtnl_lock();
+>      ...
+> }
+> 
+> This is the interleaving in question:
+> 
+> CPU1 (rmmod)                         CPU2 (ip link set dev down)
+>                                       __dev_close_many() holds RTNL
+> idpf_vport_stop(vport, true)
+>    IDPF_VPORT_UP is set
+>    rtnl_lock() blocks
+>                                       idpf_stop()
+>                                         idpf_vport_stop(vport, false)
+>                                           queues/vectors released
+>                                           IDPF_VPORT_UP cleared
+>                                       rtnl_unlock()
+>    teardown continues on released state
+> 
+> idpf_vport_intr_rel() sets q_vectors to NULL but does not change
+> num_q_vectors:
+> 
+> 	kfree(rsrc->q_vectors);
+> 	rsrc->q_vectors = NULL;
+> 
+> On the second pass, idpf_vport_intr_dis_irq_all() does:
+> 
+> 	struct idpf_q_vector *q_vector = rsrc->q_vectors;
+> 	...
+> 	for (u16 q_idx = 0; q_idx < rsrc->num_q_vectors; q_idx++)
+> 		writel(0, q_vector[q_idx].intr_reg.dyn_ctl);
+> 
+> Won't that dereference a NULL q_vector? The virtchnl message builders
+> that walk the NULLed rsrc->txq_grps/rxq_grps may also crash before that
+> point.
+> 
+> Before this patch, a close that reached idpf_stop() after remove had set
+> IDPF_REMOVE_IN_PROG returned 0, so only one teardown ran.
+> 
+> Would it help to re-check IDPF_VPORT_UP in idpf_vport_stop() after
+> rtnl_lock() is taken, or to hold vport_ctrl_lock around the stop in the
+> remove path?
+> 
+>>   	idpf_vport_ctrl_lock(netdev);
+>>   	vport = idpf_netdev_to_vport(netdev);
+>>
 
+This is a valid hit. I will post v2 to address it. For the pre-existing 
+below, I will review and post fixes as needed.
+
+Thanks,
+Emil
+
+> 
+> [Severity: High]
+> This is a pre-existing issue and was not introduced by this patch. It
+> matters here because this fix now depends on the loop in
+> idpf_detach_and_close():
+> 
+> 	for (int i = 0; i < max_vports; i++) {
+> 		struct net_device *netdev = adapter->netdevs[i];
+> 		...
+> 		if (!netif_device_present(netdev))
+> 			continue;
+> 
+> idpf_vc_core_init() sizes adapter->netdevs by caps.max_vports. However,
+> idpf_init_task() only creates netdevs up to default_num_vports. If the
+> device reports max_vports > default_num_vports, can the first hard reset
+> pass a NULL netdev to netif_device_present()?
+> 
+> idpf_vc_event_task() -> idpf_init_hard_reset() -> idpf_detach_and_close()
+>    -> netif_device_present(NULL)
+> 
+> The other max_vports-bounded loops in the driver check for empty slots.
+> idpf_remove() does "if (!adapter->netdevs[i]) continue;", idpf_init_task()
+> checks !netdev, and idpf_decfg_netdev() stores NULL into the slot on
+> purpose.
+> 
+> It is not clear which shipping firmware reports max_vports larger than
+> default_num_vports. virtchnl2 defines them as separate fields, though.
+> This has been present since 2e281e1155fc, the commit named in Fixes:.
+> 
+> [Severity: High]
+> This is also a pre-existing issue and was not introduced by this patch.
+> However, the remove-racing-reset case now goes through it as well.
+> 
+> On a software-initiated function reset, the transaction manager is shut
+> down before the close path runs:
+> 
+> idpf_vc_event_task() {
+>      ...
+> func_reset:
+> 	if (adapter->xnm)
+> 		libie_ctlq_xn_shutdown(adapter->xnm);
+> drv_load:
+> 	set_bit(IDPF_HR_RESET_IN_PROG, adapter->flags);
+> 	idpf_init_hard_reset(adapter);
+>      ...
+> }
+> 
+> After that, libie_ctlq_xn_pop_free() refuses new transactions:
+> 
+> 	if (unlikely(xnm->shutdown))
+> 		return NULL;
+> 
+> The call chain is idpf_init_hard_reset() -> idpf_detach_and_close() ->
+> dev_close() -> idpf_stop() -> idpf_vport_stop(). The DISABLE_VPORT and
+> DISABLE_QUEUES messages fail silently because their return values are
+> ignored. Then the rings and buffers are freed:
+> 
+> 	idpf_vport_intr_deinit(vport, rsrc);
+> 	idpf_xdp_rxq_info_deinit_all(rsrc);
+> 	idpf_vport_queues_rel(vport, rsrc);
+> 	idpf_vport_intr_rel(rsrc);
+> 
+> reg_ops->trigger_reset() is only called later, after
+> idpf_vc_core_deinit(). Can the still-enabled Rx queues DMA into the freed
+> descriptor rings or buffers during that window?
+> 
+> On a VF, idpf_vf_trigger_reset() skips the reset entirely during remove:
+> 
+> 	if (trig_cause == IDPF_HR_FUNC_RESET &&
+> 	    !test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
+> 		idpf_send_vf_reset_msg(adapter);
+> 
+> In that case, no device reset follows the free at all.
+> 
+> Before this patch, the remove-racing-reset case skipped idpf_vport_stop()
+> in idpf_stop(). The rings leaked, but they were not freed while still in
+> use.
+> 
+> Would it help to shut down the transaction manager only after
+> idpf_detach_and_close() has disabled the queues? Another option is to
+> keep the DMA memory until the device has been reset.
+> 
 
