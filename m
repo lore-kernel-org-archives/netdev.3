@@ -1,95 +1,96 @@
-Received: from mail-dl2-f42.google.com (mail-dl2-f42.google.com [74.125.229.170])
+Received: from mail-dl2-f41.google.com (mail-dl2-f41.google.com [74.125.229.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759803F6C3D
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 05:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19AE439F77
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 05:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790832491; cv=pass; b=dNgbCmS39XdNuF8Ii5TfR3fV0uLfGVe8Ogc43RMANBJkJevbVg5DpE8nqu+UPPXHZ9pqBDSMgfTelLgrrFrG030yv04JoA2c68hIC/gUpcvAmtkQmLAdO3dpSijNEc3P+lvRxyUXuxBdgT/8QBwHyEvHd6fsEvKCiA8gVfdje08=
+	t=1790832991; cv=pass; b=bUwa7lY5p6eeyGq6Os/RJqi0AYcZz59om56C8PqhMoPc8Xm+avWKFukyrCUbIAHcjik3W+yd5CjgB1JPgQVXbEErzl3f0/AxNnYFv1JnxMJEcOSE1c0d01tyf5VCLKB7+vKFqJticZMLFwvfNveM/s8Qt9UEmUtsBwjLep7yxHk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790832491; c=relaxed/simple;
-	bh=iKYphCbjE82uDmdtrcScGjDpuV23mQifdrEPrZrRZMI=;
+	s=arc-20240116; t=1790832991; c=relaxed/simple;
+	bh=9LiEV+8DcFq1RTthoE/1hwsS1KF/RSgKiZupPkO0n6o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=blI9dybMMja9mhWtkQtL09d7X42++Qg3UC9qXqhs6E76Yu3G+ViCWijyoJ5v+GZdSXEN3oVvONucG++MEhjJwKTR85+gmDe6PZbieJ3AZhXruWt9p+fZC9R1bYP7zOIYBVhLKT/UCJ7AteOn7waqrOETyNilLzA+GrsuIInsH8Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nszgrSGJ; arc=pass smtp.client-ip=74.125.229.170
+	 To:Cc:Content-Type; b=tjbxASSDVINTblAj1wlJo5eturG0Ckfi14HuXsuEwte05ZuBHQiAmtwuWdydbIsPs32BKRdV7lc/h742dM/2m4WL8Oz+X3SuHwwWREJnLYPprvytzKvnMlAQxRhuC0y0cDHCwp/QJORq2AZSm55zsWJMbdUjZlRLAQ/as8MrIEg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PG/rTWEw; arc=pass smtp.client-ip=74.125.229.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nszgrSGJ"
-Received: by mail-dl2-f42.google.com with SMTP id a92af1059eb24-144f47a9b57so5697860c88.2
-        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:28:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790832488; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PG/rTWEw"
+Received: by mail-dl2-f41.google.com with SMTP id a92af1059eb24-148c3a4733fso2186667c88.0
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 22:36:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790832989; cv=none;
         d=google.com; s=arc-20260327;
-        b=PrxwZ8KlAA8zHnV7xjJ6eyfZFMK++jRutK/JaE8lIVnNxahcbP7ly5xPfjJ7dSeOH2
-         wl0dtlg0lKGWwrnzZA2E6XqhZgEw3aX+vba51iRmUdr9vHeMRS0HFAm2HnUaVoR0r1UA
-         LT+O16NQYpAJJht9XLkSDFFnm+ZT+qmcZT+YyVx2jjAPNGOI5Y9GiAEfBpdfpRz8zO6c
-         5mkGOq/4mFqkmgJpr3ugPFn7NkoFGsPWfuZ70I2Va5Nyh2o+Rpdv5Vk23FWSTu0PP89C
-         xPn8u5SoetN4RHq+nm3neZ6ZQ6HsZQvWgf5AC11c4gJzRoCiLQIV5cfDi2UGWJ3izgqj
-         RlaQ==
+        b=ThQZQJ3panpOPgeUVgWtDGMQBJ8biAPIfHTK5akz6H2I93seQSdra5nyS8sVjm/mWJ
+         32uRWCwyMXnbf1nOZtNxdp3wgz+YcZLiYbNEkEjdRjMu6loKwA48oXqqWChXQEUsyysb
+         ICoKjmhREl6DphanbRxsLbMc8Sk6iwj2kFyLi8qVgbm0Mv9EDF3+CDe/5IUWH04+Duf1
+         wY5c3HFaQclx2Hl+gxGv4Y3Bdeo9+73ewFlH/0KrALdtpE6OAr4G6M6ejD51vWis2KoP
+         i6udjgPznj8HE9Wg/RRMr3vtL7mhHt5Etnjxj282zMoUeUd67fuiREbakdqeZW8+pBg3
+         NZQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=p0pc8KPVapGRIrMA5ZVJiSi4kz9fPrnUycd9DfjW4n4=;
-        fh=IRP1UiJmtUP59Ug0wZPbSbZswzFyN1uStMStoJHW2j8=;
-        b=jRHw1+5sycaCo665nrAOfwqLbKwXsqDQllOJVbgpuGM1h718NrymLBB8bCbDKuN1YV
-         AnMPjeU6shmyuXpGVorQHIOq5IbKmhuCS0SvvOIqCXT6qIIVUR5GDXdeY/tnFytkd9dj
-         /I5pVK8O3i8+3KSVYmhnIEXckes+8tv0DcCEbtME5nsVP4tppvwCrlKt+AZ6hmPT1FJr
-         zAZdXFrRI4KaGCB7+Xmc3hyVXx7b0NkQlEZdl+2gzD3YpUJ1A+T9N8XZutZQ6b1KY+V2
-         pjwjHjXunRpDUMAXq/1nBXj04Soowz9uJLqmcuI5YMAhGFvlItaPh+wrp/mlFdo1+8dI
-         7KlA==;
+        bh=KZ8/I0l3n9Xn6KlfGr5ohN9loKj5Pe6Re5WK9ivT2TQ=;
+        fh=QZe4FY9nlWZyKwgUygTysFnolJ3WPOebr2cpvqjZ/kI=;
+        b=PA9ClJYIn4+MYppnbULdVuIB7JkThDC0Y4WFxXIloNU0X4Nfwgp7PtZ8mMAUZdCTt3
+         e5Sz7XZb7FtTVnYnFY/MekW7omHW5y5q6BZVI5n7eKiqVFq0WZY3lqpaSWNCt/PdwXtu
+         h/F9fFzwpOSRxcJ3wlvstLv2HjIvaEzog0XYhfWaX5UgzCxfRJU2rv5UDU5cS4xz7EV0
+         QKMrU2Cs617ustgG0a7rKK/b7w9weQHRoQ9YpmheCFdjrDq5ZG4FP2i/vd+A56HmkM5T
+         eIcdfR5wR725nmj78TW0Zq2++H+F5umCT1aB50Ys7EPdE9YKgrbKMz65sH1QUfeg934Y
+         eKuA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790832488; x=1791437288; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1790832989; x=1791437789; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=p0pc8KPVapGRIrMA5ZVJiSi4kz9fPrnUycd9DfjW4n4=;
-        b=nszgrSGJgRXHFiwcqEDRstflxxysyURAdoRETpH3/EP2NLrIidrHadMsBxo1fCmYtS
-         4OITzZRqzZ+oQHoIZf/Z+wt7HtewVJBgr3ubBSaOWAfLjM1H2XT+QvIU2jT2qwiW4pDy
-         clWIelCqmX4HPitfyllsJlXlEJnpjyIDizXFn6PJx6PlbfsIx8DHWxektv/T0nJTrUCd
-         Cb7yeYkiNzunyCVdbv8GktnDvuMeEKIolb+WAuB7yi/xoFlV2akmKPd5b7p87k62bDLn
-         EDzOnbdXoL5BRa4N8xQlTIZGGeKspz1MIsoBLqtLHChvXc5JBjCMHksdWJHo+XCIK2KU
-         +k/Q==
+        bh=KZ8/I0l3n9Xn6KlfGr5ohN9loKj5Pe6Re5WK9ivT2TQ=;
+        b=PG/rTWEw7tnKz51cZQb3pw6bbA0tOVfyOf7qEdHhw3umn0tsWy+uduHhboXLrQ2OHZ
+         1XE+44p//SsR0528HPm9f6AxaGYLTbZuZ1bkKIE659fjq+3Ss5N74j1Y2Z5Y6RgzaSpO
+         qME+MdkQscBuWr59543gLjjryrk+nY0MtbubnuIfAvmx+g0stmJKz4/WhY7WJ/pU2qLL
+         JrZSLuav9cwOeAYDfupZlciXIAeyHYkRiz0Zob5bD/x8IKE7HoumpegRgm0DEgsADmVV
+         gwbMVZnqgBxzenth7We0h55S/ttsCzovrsi5tzE7DMeqaC3UfN+uT2don5CqwsbI5Lpp
+         nPgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790832488; x=1791437288;
+        d=1e100.net; s=20260707; t=1790832989; x=1791437789;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=p0pc8KPVapGRIrMA5ZVJiSi4kz9fPrnUycd9DfjW4n4=;
-        b=ZsSOUUvRmOVlYGQsO6znq+UJ2geafXUYZwqENCua5VBRD6si9yu/rZ2VUkD12l6IM9
-         EZyfA2eWcIkh9Ez8Sig+ii0ALSk8ztZzXnSQcZ7soNG0m9R2OJEmp68EnjoZ7w6NRWf2
-         IyqNAW8QVmTW+7e9nomfyGIdLjfCfjcWSjMYOAplKtKWygQcosc76He3n8R9c/AiirTV
-         zbZ4mvTg8BYQf2cclDjzFpwVdkMoB08hzB87fxjnacyjJ4VV2aFwbrWsFbCLhsRkyyA+
-         jbggGkLXGRrY4X3nIl/kAKCZpiacPNFKQyrGwEkZXIyWNDN56L8GUyMZj8lNv001YkAo
-         Rz7A==
-X-Forwarded-Encrypted: i=1; AKwUvBxvGdyMYmEHOiPqYKtCflkA+UoJlO9IME0S8bx3o9JEXBlILy9ASBrYYEFjPaeYoqGALvJZAVs=@vger.kernel.org
-X-Gm-Message-State: AFuF++mBRkYw91I+k9oCnkSERFxBEc2hH9KLx1Qo5njaZadKHVBiSNp5
-	p6GXh1qfpNwsGtHbhyV/OBp1MvTTeuyogYmIA4fkAa3BHF7S215jeq63PGUUKYFW6j3hMVNoyoa
-	fJ9Vy4iw4X6Ie5i+XWDsEPWAahkwEoj6gGUtIBad6
-X-Gm-Gg: AYBFou0KId8/3EidBQf2d/Tvu2xPV6jV6Vufjsaw6nIMs1ajlJ/0KS9Jt27ZPjGQwZt
-	tZhbmr3ftyFLQ8KLkH3E9z03Hrw0p6PpwitxoTGy4L+bo3Ubj0NsWD45/QLVnypZe6EVNWRZ25k
-	41A3mr0nSy2mW5QqIMv15YUVuNYQ9GqQuv/keFi5Zwxmwwt0G0IxP2ezJ5Z1puXlrD0LR5rD2e3
-	kP/Sjrv9Lf1e/DF/zwLfBBKuR/m8WqrkmPezM8dmozQyHnrOQnril/fd13nrXBBqXTZkI8adWaV
-	15ToiHs9yLe3eq7VCt3hXl+KdG4SHxUwNvX4767+lJL6QlYUWgsfNeJBy8Of+/K2M/yhSeLXrGU
-	3iUOgrFGl3ircYiRCMXpFX5kpUaxyFWF3lYgESzFLzeuLUEulFjlHhFxu5/em7oUIc9w=
-X-Received: by 2002:a05:701b:2096:10b0:143:3617:c595 with SMTP id
- a92af1059eb24-14d2f7e628cmr3394600c88.1.1790832487459; Wed, 30 Sep 2026
- 22:28:07 -0700 (PDT)
+        bh=KZ8/I0l3n9Xn6KlfGr5ohN9loKj5Pe6Re5WK9ivT2TQ=;
+        b=Ysoi6PyhVTuamcxJheULz8BuEqYSJ5Xey59Knp6DK8I/I4878vAXqdS856ITED8aJi
+         Aas/kkAlpZuT5wGRGJKi8XeKrYlb8Dktq562V9ZvzDPAWXu653h66WUc+KfPJEbby4Cn
+         blSCanK/zCuIjRsPPGDbomBLP7OaADwgVCMgU/RHTrTmb03z8iDiFOR0DVdkzgrZDt83
+         5M4I4zvPUsOLEwuVxcgcyZ4/u7WWIYMiKed+bGKhcqIq8SH2zEU1xol7FniEyGIhZv//
+         +NwOobf71rzYQHS0MyENV0N88w4zQrNSwRnUeYLnGQsjHb5ZaJv5FvE99b91VnJQ66uU
+         XVqg==
+X-Forwarded-Encrypted: i=1; AKwUvBzHKqRVY69go7sXc5SAmFVvA3sJq90KGoXzdnCAhGM1oDCN+4xgSJ7Fu7ZFzwVzhltASWYjetU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKoJ91ALeFIQi5v/fJl2H9gZCRp5m2k8skcH9RmyXLH+YiXsdEl
+	BLgLhsQZO3EO3eS69g9NGhWtxWEIinhiugarvw2EMVtfUrKx6SaHYiEpX6/rRt/58uctSl+Pcb9
+	mFiGIm2jPf8DwCWhGOr7wBl6qBU/GgNkBbtJ+TE0+
+X-Gm-Gg: AYBFou1cXUerBFxBPItVOtkV8PAH6Gg78YxhV84wZndWsSbzS7j1FZalJa3XVp56wHf
+	3Ct6XuIRMWEkG3dBbbmORCl0wDpHzBi5AQgNBdKkV0fj0XPSAYIFJhPsSSAZPluP7L2T+6K8UBJ
+	KxUZuNaRdP6k9+usUTXHWv7IPx1hWjL/iPiohGC/3JGqtRxj0t9/m6dtAxKzSSFjnDXTyJdm+P8
+	m08CNcqy4bqO9+75zfkHhUvGlta5wywGP9ZXAlvjdK+ztAA0gMP8PaOul181jQg/+KO6lo4q7jq
+	DAyP7VA5vYuD1b+PlgspiONRFIXzhOsU8k+Os3Cw+sIF3QOLfwZRbmRgJ5RVduZ/FZR1lJ9TpDp
+	yMkET9VFL44kmVvF3+XZOA4DipFIfyyDyuOuk018GzcNomPJxeUvT/eJQk6HG2AFXPg4=
+X-Received: by 2002:a05:701b:4194:20b0:143:2973:c08b with SMTP id
+ a92af1059eb24-14d32bde0d2mr3563263c88.28.1790832987913; Wed, 30 Sep 2026
+ 22:36:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929201546.1533268-2-kuniyu@google.com> <179082090950.434549.10665389618210861393@kernel.org>
-In-Reply-To: <179082090950.434549.10665389618210861393@kernel.org>
+References: <20260929201546.1533268-3-kuniyu@google.com> <179082091084.434549.1540561487678718082@kernel.org>
+In-Reply-To: <179082091084.434549.1540561487678718082@kernel.org>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 30 Sep 2026 22:27:55 -0700
-X-Gm-Features: AclHuK_xlyqaXc92H4h85yhIC9CqsnZZWgkmNr_MPHHjLCjqGibOWv9YXU9a7EQ
-Message-ID: <CAAVpQUBjMQVgr7ozNfqEJAcfCaf8YwJb+Vi1wqkBWaWQXFdsnQ@mail.gmail.com>
-Subject: Re: [PATCH v2 net-next 1/2] ipv4: Batch rt_flush_dev() in netdev_run_todo().
+Date: Wed, 30 Sep 2026 22:36:16 -0700
+X-Gm-Features: AclHuK-6xP9C-b53cEwK_OOxxbu_JVv5bflDSJZkSV7-FsSF7BWI3PNBKh37weo
+Message-ID: <CAAVpQUDt2KX-3hsL1=ppgccGH5ZXNEMpFxVLTbQmwizKBg=1ng@mail.gmail.com>
+Subject: Re: [PATCH v2 net-next 2/2] ipv6: Batch rt6_uncached_list_flush_dev()
+ in netdev_run_todo().
 To: netdev-bot+sashiko@kernel.org
 Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net, 
 	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
@@ -100,10 +101,10 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Sep 30, 2026 at 7:15=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
 te:
 >
-> Thank you for your contribution! Sashiko AI review found 3 potential
+> Thank you for your contribution! Sashiko AI review found 4 potential
 > issue(s) to consider.
 >
-> Critical: 0 =C2=B7 High: 3 =C2=B7 Medium: 0 =C2=B7 Low: 0
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 2 =C2=B7 Low: 1
 >
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -113,176 +114,238 @@ k
 y
 > (one such reply per series is enough).
 >
-> - [High] Retrying the NETDEV_UNREGISTER broadcast no longer flushes IPv4
->   uncached routes.
-> - [High] Moving the IPv4 uncached-route device swap from the
->   NETDEV_UNREGISTER notifier into `netdev_run_todo()` removes the RCU=E2=
+> - [High] Moving the IPv6 uncached-route flush into netdev_run_todo()
+>   removes the RCU grace period that used to follow the device-pointer=E2=
 =80=A6
-> - [High] ipv4: NULL pointer dereference in rt_flush_dev() with
->   uninitialized list
+> - [Medium] Build failure with CONFIG_IPV6=3Dn.
+> - [Medium] The batched flush reads dev->reg_state twice per route with no
+>   consistent snapshot, and another unregister batch can change reg_state=
+=E2=80=A6
+> - [Low] The new initialization guard `if (unlikely(!ul->head.next))
+>   return;` in rt6_uncached_list_flush_dev() (net/ipv6/route.c:172) is a=
+=E2=80=A6
 >
 > --
 >
-> ipv4: Batch rt_flush_dev() in netdev_run_todo().
+> ipv6: Batch rt6_uncached_list_flush_dev() in netdev_run_todo().
 >
-> This commit takes the IPv4 uncached route flush out of the per-device
-> NETDEV_UNREGISTER path. It now calls rt_flush_dev(NULL) once per batched
-> unregistration in netdev_run_todo(), without holding RTNL. rt_flush_dev()
-> returns early for dismantling devices. When passed NULL, it moves every
-> route whose device is NETREG_UNREGISTERED over to blackhole_netdev.
+> This patch moves the IPv6 uncached route flush out of the per-device
+> NETDEV_UNREGISTER path. It now runs once per batched unregistration from
+> netdev_run_todo(), without RTNL. With dev =3D=3D NULL, a route's device i=
+s
+> matched by reg_state =3D=3D NETREG_UNREGISTERED.
+>
+> Closes: https://lore.kernel.org/netdev/20260917-hash-bucket-route-lists-v=
+3-0-30493a37b6eb@cloudflare.com/
 >
 > > diff --git a/net/core/dev.c b/net/core/dev.c
-> > index a8eb382f40caf..9cedc17b5bdc2 100644
+> > index 9cedc17b5bdc2..0b3213ff56e70 100644
 > > --- a/net/core/dev.c
 > > +++ b/net/core/dev.c
-> > @@ -11838,6 +11838,9 @@ void netdev_run_todo(void)
+> > @@ -11838,8 +11838,10 @@ void netdev_run_todo(void)
 > >               linkwatch_sync_dev(dev);
 > >       }
 > >
-> > +     if (!list_empty(&list))
-> > +             rt_flush_dev(NULL);
-> > +
+> > -     if (!list_empty(&list))
+> > +     if (!list_empty(&list)) {
+> >               rt_flush_dev(NULL);
+> > +             rt6_uncached_list_flush_dev(NULL);
+>
+> [Severity: Medium]
+> With CONFIG_IPV6=3Dn, is the new stub for rt6_uncached_list_flush_dev()
+> visible here?
+>
+> net/core/dev.c doesn't include <net/ip6_route.h> directly. The only path
+> seems to be net/udp_tunnel.h -> net/ip_tunnels.h, and that include is
+> compiled out when IPv6 is off:
+>
+> include/net/ip_tunnels.h:
+> #if IS_ENABLED(CONFIG_IPV6)
+> #include <net/ipv6.h>
+> #include <net/ip6_fib.h>
+> #include <net/ip6_route.h>
+> #endif
+>
+> So when IPv6 is disabled, dev.c would see neither the prototype nor the
+> static inline stub added to include/net/ip6_route.h. Would this call then
+> fail with -Werror=3Dimplicit-function-declaration? It would also fail to
+> link, since net/ipv6/route.c isn't built.
+>
+> rt_flush_dev() doesn't hit this, because net/route.h always reaches
+> dev.c through net/ip.h.
+>
+> Should dev.c include <net/ip6_route.h> directly, or should the
+> declaration and stub go in a header that dev.c always includes?
+>
+> > +     }
+> >
 > >       cnt =3D 0;
 > >       while (!list_empty(&list)) {
-> >               dev =3D netdev_wait_allrefs_any(&list);
-> > diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-> > index d7da2f1acbb59..1b641901f10dc 100644
-> > --- a/net/ipv4/route.c
-> > +++ b/net/ipv4/route.c
-> > @@ -1587,6 +1587,9 @@ void rt_flush_dev(struct net_device *dev)
-> >       struct rtable *rt, *safe;
+> > diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> > index a76869ff87cd6..38261775e7137 100644
+> > --- a/net/ipv6/route.c
+> > +++ b/net/ipv6/route.c
+> > @@ -158,14 +158,20 @@ void rt6_uncached_list_del(struct rt6_info *rt)
+> >       }
+> >  }
+> >
+> > -static void rt6_uncached_list_flush_dev(struct net_device *dev)
+> > +void rt6_uncached_list_flush_dev(struct net_device *dev)
+> >  {
 > >       int cpu;
 > >
 > > +     if (dev && dev->dismantle)
 > > +             return;
 > > +
->
-> [Severity: High]
-> Can this call reach rt_flush_dev() before ip_rt_init() has set up
-> rt_uncached_list?
-
-This is false positive, and IPv6 checks !&ul->head.next
-just because the IPv6 init level is wrong.
-
-Sashiko pointed out a similar one for neighbour changes, and
-considering IPv4 modulise effort, I guess I should add a new init
-level for IPv6.
-
-
->
-> The per-cpu rt_uncached_list entries are only initialised in
-> ip_rt_init(), which does INIT_LIST_HEAD() and spin_lock_init() for
-> each possible CPU. That runs from inet_init(), an fs_initcall. Until
-> then ul->head.next is still NULL.
->
-> Before this patch, rt_flush_dev() was only reached through
-> fib_netdev_event(). That notifier is registered from ip_fib_init(),
-> which ip_rt_init() calls after it initialises the lists, so the
-> ordering was implicitly safe.
->
-> netdev_run_todo() has no such dependency. It runs from rtnl_unlock()
-> whenever net_todo_list is non-empty. Any netdev unregistration before
-> fs_initcall time would now call rt_flush_dev(NULL) on zeroed lists.
-> One example is an earlier initcall that registers a device and then
-> unregisters it on a later failure.
->
-> In that case list_empty(&ul->head) returns false, because head->next
-> is NULL rather than &ul->head. The loop then takes the uninitialised
-> ul->lock and enters list_for_each_entry_safe(). That derives pos from
-> the NULL head->next and immediately loads pos->dst.rt_uncached.next,
-> which is address 0. The result is a NULL pointer dereference during
-> boot.
->
-> The IPv6 patch later in the series seems to handle the same case in
-> rt6_uncached_list_flush_dev() by skipping a list whose head.next is
-> still NULL. Should rt_flush_dev() get a similar guard? Or should
-> netdev_run_todo() skip the call until IPv4 routing is initialised?
->
-> [Severity: High]
-> With this early return, does the NETDEV_UNREGISTER that
-> netdev_wait_allrefs_any() resends still flush any IPv4 uncached routes?
->
-> netdev_wait_allrefs_any() resends NETDEV_UNREGISTER about once a second s=
-o
-> protocols can drop late references. That reaches
-> fib_netdev_event()->rt_flush_dev(dev). dev->dismantle is already set, so
-> the first notifier call and every retry now return straight away.
->
-> The only flush left for a dying device is the single rt_flush_dev(NULL) i=
-n
-> netdev_run_todo(). It runs once, before the wait loop, and no grace perio=
-d
-> follows it.
->
-> Can an uncached route with the dying device be added after that pass? One
-> possible path goes through xfrm_bundle_create():
->
-> xfrm_bundle_create()
->     rcu_read_lock();
->     dev =3D dst_dev_rcu(dst);
->     ...
->     xfrm_fill_dst(xdst_prev, dev, fl)
->         xfrm4_fill_dst()
-
-It seems this happens only for IPv4 since xfrm6_fill_dst() uses
-in6_dev_get(), which returns after the last in6_dev_put().
-
-I'll add dev_isalive() check after dst_dev_rcu() in xfrm_bundle_create()
-and xfrm_create_dummy_bundle(), then they must finish before
-synchronize_rcu() or fail to add a new entry.
-
-
-
->             netdev_hold(dev, &xdst->u.dst.dev_tracker, GFP_ATOMIC);
->             ...
->             rt_add_uncached_list(&xdst->u.rt);
->
-> Say the sweep moves dst_orig to blackhole_netdev after dev is read but
-> before the new xdst is linked. The xdst then goes onto rt_uncached_list
-> after the sweep has already passed that CPU's list, and it still holds a
-> reference on the dying device.
->
-> Before this patch, synchronize_net() in unregister_netdevice_many_notify(=
-)
-> ran after the notifier flush, and each retry ran rt_flush_dev(dev) again.
-> Nothing now seems to come back to such an entry.
->
-> Could unregister_netdevice then loop on "waiting for %s to become free" f=
-or
-> as long as the xdst lives? For a bundle cached on an idle connected socke=
-t,
-> that could be forever.
->
 > >       for_each_possible_cpu(cpu) {
-> >               struct uncached_list *ul =3D &per_cpu(rt_uncached_list, c=
-pu);
+> >               struct uncached_list *ul =3D per_cpu_ptr(&rt6_uncached_li=
+st, cpu);
+> >               struct rt6_info *rt, *safe;
 > >
-> > @@ -1595,10 +1598,14 @@ void rt_flush_dev(struct net_device *dev)
+> > +             if (unlikely(!ul->head.next))
+> > +                     return;
+>
+> [Severity: Low]
+> This isn't a functional bug, but ul->head.next is read here without
+> ul->lock. Other CPUs can update it concurrently under the lock:
+> list_add_tail() in rt6_uncached_list_add() when the list is empty, and
+> list_del_init() in rt6_uncached_list_del().
+>
+> The list_empty() check just below already uses READ_ONCE(). Should this
+> be READ_ONCE(ul->head.next) so that KCSAN doesn't report it?
+>
+> > +
+> >               if (list_empty(&ul->head))
+> >                       continue;
 > >
-> >               spin_lock_bh(&ul->lock);
-> >               list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_unca=
-ched) {
-> > -                     if (rt->dst.dev !=3D dev)
-> > +                     struct net_device *rt_dev =3D rt->dst.dev;
-> > +
-> > +                     if (dev ? rt_dev !=3D dev :
-> > +                         READ_ONCE(rt_dev->reg_state) !=3D NETREG_UNRE=
-GISTERED)
-> >                               continue;
-> > +
-> >                       rcu_assign_pointer(rt->dst.dev_rcu, blackhole_net=
-dev);
-> > -                     netdev_ref_replace(dev, blackhole_netdev,
-> > +                     netdev_ref_replace(rt_dev, blackhole_netdev,
-> >                                          &rt->dst.dev_tracker, GFP_ATOM=
-IC);
+> > @@ -175,19 +181,23 @@ static void rt6_uncached_list_flush_dev(struct ne=
+t_device *dev)
+> >                       struct net_device *rt_dev =3D rt->dst.dev;
+> >                       bool handled =3D false;
+> >
+> > -                     if (rt_idev && rt_idev->dev =3D=3D dev) {
+> > +                     if (rt_idev &&
+> > +                         (dev ? rt_idev->dev =3D=3D dev :
+> > +                          READ_ONCE(rt_idev->dev->reg_state) =3D=3D NE=
+TREG_UNREGISTERED)) {
+> >                               rt->rt6i_idev =3D in6_dev_get(blackhole_n=
+etdev);
+> >                               in6_dev_put(rt_idev);
+> >                               handled =3D true;
+> >                       }
+> >
+> > -                     if (rt_dev =3D=3D dev) {
+> > -                             rt->dst.dev =3D blackhole_netdev;
+> > +                     if (dev ? rt_dev =3D=3D dev :
+> > +                         READ_ONCE(rt_dev->reg_state) =3D=3D NETREG_UN=
+REGISTERED) {
+>
+> [Severity: Medium]
+> If two netdev_run_todo() instances overlap, can these two reg_state reads
+> see different values for the same device?
+>
+> netdev_run_todo() calls __rtnl_unlock() before it sets each device to
+> NETREG_UNREGISTERED, and that write is done under netdev_lock(), not
+> ul->lock. So batch A can be scanning while batch B updates a device D
+> that is on B's todo list. Take a route whose rt6i_idev->dev and dst.dev
+> are both D:
+>
+> CPU1 (batch A, flush(NULL))          CPU2 (batch B, owns D)
+> READ_ONCE(rt_idev->dev->reg_state)
+>   sees NETREG_UNREGISTERING,
+>   rt6i_idev is not swapped
+>                                      WRITE_ONCE(D->reg_state,
+>                                                 NETREG_UNREGISTERED)
+> READ_ONCE(rt_dev->reg_state)
+>   sees NETREG_UNREGISTERED,
+>   dst.dev swapped, handled =3D true
+> list_del_init(&rt->dst.rt_uncached)
+
+Good catch, I'll unlink it only when both devices point to
+blackhole_netdev.
+
+And I noticed a similar bug in the current code; if we move one
+of dev/idev to another netns, the route is unlinked, and removing
+the netns will get stuck until socket releases the uncached route.
+
+
+
+>
+> By the time batch B's own flush runs, the route is off the list. Its
+> rt6i_idev still points at D's inet6_dev, which holds a reference on D.
+>
+> The NETDEV_UNREGISTER rebroadcasts can't fix this either.
+> rt6_disable_ip()->rt6_uncached_list_flush_dev(dev) now returns early on
+> dev->dismantle, and the route is no longer listed.
+>
+> Could batch B then sit in netdev_wait_allrefs_any() printing "waiting for
+> D to become free" for as long as something holds the uncached route? The
+> window is narrow, but the old code compared pointers under RTNL, so it
+> could not race this way.
+>
+> > +                             rcu_assign_pointer(rt->dst.dev_rcu, black=
+hole_netdev);
+> >                               netdev_ref_replace(rt_dev, blackhole_netd=
+ev,
+> >                                                  &rt->dst.dev_tracker,
+> >                                                  GFP_ATOMIC);
 >
 > [Severity: High]
-> Does moving the swap here remove the RCU grace period between publishing
-> blackhole_netdev and freeing the old net_device?
-
-This is false positive, also free_nh_exceptions() already does the
-same thing.
-
----
-pw-bot: cr
+> Is there still an RCU grace period between this pointer swap and the
+> old device being freed?
+>
+> Before this patch, the flush ran from the NETDEV_UNREGISTER notifier in
+> unregister_netdevice_many_notify(). That is followed by synchronize_net()=
+,
+> and later by the rcu_barrier() at the top of netdev_run_todo().
+>
+> Now the flush runs after that rcu_barrier():
+>
+> netdev_run_todo()
+>     __rtnl_unlock();
+>     rcu_barrier();
+>     ...
+>     rt_flush_dev(NULL);
+>     rt6_uncached_list_flush_dev(NULL);
+>         rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
+>         netdev_ref_replace(rt_dev, ...);  /* drops ref on old dev */
+>     netdev_wait_allrefs_any(&list);       /* returns if refcnt =3D=3D 1 *=
+/
+>     ...
+>     free_netdev() / kobject_put()
+>         -> netdev_release()
+>             kvfree(dev);
+>
+> netdev_release() frees the device without waiting for readers:
+>
+>         /* no need to wait for rcu grace period:
+>          * device is dead and about to be freed.
+>          */
+>
+> ip6_output() is one reader of this pointer:
+>
+>         rcu_read_lock();
+>         dev =3D dst_dev_rcu(dst);
+>
+> It then passes dev on to NF_HOOK_COND(), ip6_finish_output() and
+> dev_queue_xmit(). Suppose a reader loads the old pointer after the
+> rcu_barrier() but before this swap. Can it still be using dev, and its
+> tx queues, after they are freed?
+>
+> The in6_dev_put(rt_idev) branch above has the same problem.
+> in6_dev_finish_destroy() drops the netdev reference before its call_rcu()=
+.
+>
+> The previous patch in this series, "ipv4: Batch rt_flush_dev() in
+> netdev_run_todo().", uses the same ordering for IPv4.
+>
+> >                               handled =3D true;
+> >                       }
+> > +
+> >                       if (handled)
+> >                               list_del_init(&rt->dst.rt_uncached);
+> >               }
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260929201546.1533268-1-kuniyu%40google.com
