@@ -1,235 +1,167 @@
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00C03E5A14;
-	Thu,  1 Oct 2026 08:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BB73EB81B;
+	Thu,  1 Oct 2026 09:00:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790845023; cv=none; b=O76QDv+cuY4EueuDyFBwozsJE5KInJJi7HI7E48pSVaiqTP2R0XR464/pM24Tnzb4H6TXVIXRr/46Q25YVS9eyPcW+8eBnR78FGppKdergXIz+COvX2ip8zOIeF8Zqc9ZZWG1yR8hyerUZsi+c0Q7JaToxuSTjrq8XQH1CxX+2U=
+	t=1790845257; cv=none; b=EOSUYKHKMS7LFmz1GHRa7NoFYucAwsv9u8HCZGuISPF9mwH1o8EpC5nTFHn/IS4yYc9alq4ktEZNBZHS2Gi/ZU0ytYrUyXZxnPlY+cbIBkm1WMXXamb42hs5dGzwIMGi3ulnsbuRu+/qZWvHLe03YLyFvWqN1mHMM4jT/AJ+rGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790845023; c=relaxed/simple;
-	bh=JoFew057PuzU0ph8FIr5DsGDwT4pUJr0cpME1e+zYP8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WTjIpB4RjS4lfHwDfGnVDGGG1zc8kOsCwqgnhaXODigfmtbNNMOc7wjzLfdnGIzNEvPjZcq+nqlyo9vm7kdRtsCMl8Jlsq6uR8tYMEdWnNggVEmf574Be5kPzFgn52L65mzY/kGSEDNu2ZY2dkfqKdazNyuVq4qvLfEF4zhQ3pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpsz11t1790844949te404f0d5
-X-QQ-Originating-IP: Ur+qcImwGIaLUaNXdnVX1kHlW8PJN4Dd7ndD7hyfDPQ=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 01 Oct 2026 16:55:46 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11498237876710437392
-EX-QQ-RecipientCnt: 11
-Date: Thu, 1 Oct 2026 16:55:46 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
-	u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yaojun@mucse.com
-Subject: Re: [PATCH net-next v14 4/5] net: rnpgbe: Add receive mode support
-Message-ID: <DF32907A86CC02AB+20261001085546.GA53018@nic-Precision-5820-Tower>
-References: <6E780505C6AAB4EB+20260928033859.1033428-1-dong100@mucse.com>
- <179082598968.434549.661297948869820884@kernel.org>
+	s=arc-20240116; t=1790845257; c=relaxed/simple;
+	bh=hUhPUJte1ZSwzAyT4Y1MkM9QOSL5TLUyYCuDiTv2ArI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=n8XSU3FhRkLQuY3EhkExZsoBaljXAFCvCT30SVgRvVNwlB6ToWsDm3EH7gmBFJFiE3yRY2rPxAlVwIz3PDqHvPQygqGHgndyZVTb7/+e9AkHyOCJ9/7K9mSXL+tR346eIDsCPS69MktiyvLvzcHqSfKqe4sLK/Zb/LchQkKzpd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dVqACOK0; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dVqACOK0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709361F000FF;
+	Thu,  1 Oct 2026 09:00:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790845256;
+	bh=7FpohZnEJYDgmU3T2u3ttgjSXvyGDDs6PkImJs9o6pU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dVqACOK07bbhAenRNC/oZaTcIg1CxR80jNHldj9FJJFYr0nAHd2CqzO4w4177AUWj
+	 FhteCpg08Peo+nKHXdmDm/y0ydmiJ7A12mAN1DYlOR5KKvzXeGaFyc8uxQWLav5zjE
+	 HstOpX/9YSvxynP2n5Ey1HVCH5zFZV2mX+dv2JCyR0wi4jE5gu5urW8uJw7gK8V7tE
+	 eYrHlzIlS4uxeT91hn5NvilyNzcshMjU8vFho+6JH5NJZ27guds0JW4buDjNzQSNNr
+	 YLToY5CUKEV39bJevHoYb41RxL2goThzv7f+zZAaKHf7lV/lYzE5AZlGLI6ZXcxPDf
+	 87ncap2Ix/DeQ==
+Subject: Re: [PATCH net-next 3/4] netconsole: avoid printing partially updated
+ target attributes
+From: netdev-bot+sashiko@kernel.org
+To: gustavold@gmail.com
+Cc: leitao@debian.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, mpm@selenic.com,
+ bonbons@linux-vserver.org, stephen@networkplumber.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 01 Oct 2026 09:00:54 +0000
+Message-ID: <179084525499.434549.454029290243818186@kernel.org>
+In-Reply-To: <20260928-netcons-fixes-v1-3-bb5ffe5e698a@gmail.com>
+References: <20260928-netcons-fixes-v1-3-bb5ffe5e698a@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179082598968.434549.661297948869820884@kernel.org>
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: OD8m5i3ZB26dIgQqxgwh0j3oKGA/PR6DjYwMz4g8QkO4myW8wrUEAsoP
-	zgRZ0V2jfU/KbMcRu/D2awTQGwTtQzn8VoWq7OHWmn0B0PfmqjgzCjNwTLrWRx/cQNicm7D
-	26pHa+RSLNdCxKgEEq05yLxgjSK4Uq9pvj7l7qAPrWzoM33y43hN9QFNf2v3S9Civp6DBlo
-	lxjlxjmLVuSaIZW2RCBF63hqUnAg85+AmEW8P1DQeBkedFIJkNj1ToLDA5NoziCkKNXI+Gg
-	L684AzqRfIAlWBxLqBEx09ITqifXmnGrlkuL6C+EHvYESfP6EF0nEIz48EBEbMlO/0M1jqV
-	u93bRKiysv4n7U/37lX8HykBeXcTYWnOkIZXXTjgFpCwfLSvCNijaG9shkwLHEfM5SfKvUz
-	GhTTcae+UjDrUqdwvtZXW+WXE3WwnYXf15UY2I0i0PWw1xsKknxbPa9oOAr8jUlT8JHSpjF
-	19xpeHyw+tiZD1fv5UzhsnphF3rglT7l1kK5DeH5roYv86XgeckfSlntHSVim2fOSiQ7XlQ
-	xsysU9/rHzKfCG+ZWWswhGDT5DRp/Sf5QQA0WGIadFErFIObpGjXxxZwJy+rhL27GAvd6K3
-	KJ4VTdbui/A7tP9avBo4AEoYjuvCa51+6Yijt7uaixqfyVuH5MYocjxpHaQ82clgjq8msrg
-	tbxz+zHQ45g7651syQBs6MAiy91zTNQF9Yd/8IE/AlWndKxMqMXDQ1O+uJcfMIUfQD+UDTD
-	jNc968MbZBluDsiPmYbmFjEw8KwF17cONdh4klQHPwJd5kKUhraqNSOBPlumCQ6xcj7kO0c
-	SRmvegu9+y5FegxaNywES93rCFNbP/yQJhzzckBhsfqFOuC83148x75TvXGmbd42cVguSVw
-	neYc+YuuSLCQUpHXE7vOBs4jqRZP7NHiHdJ61YR/2Ii9knuOG1j/eQjeIz6kdlvPmdkulym
-	cB0mo8OXYM8LY77mXZzECiWwJSlDtyOoSP8kYwLyEQzGrMN04zS5ZlM2WwS+AXglRnJBD4X
-	1ONBbnldA3+EAAqXrfR/hjvwsCcMLt4VF4txch4GmA5W3vkqCys48DnkOD4TMOKgygJaf6i
-	vZvXoV2AanrX8GN/g6z54TqTo9P9XPQCmjtsTTkyFIH
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
-X-QQ-RECHKSPAM: 0
 
-On Thu, Oct 01, 2026 at 03:39:49AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] Every call to `rnpgbe_set_rx_mode()` in
->   `drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c` briefly disables the…
-> - [Low] This new driver adds its receive filtering on `.ndo_set_rx_mode`,
->   which the in-tree API docs mark as deprecated.
-> 
-> --
-> 
-> net: rnpgbe: Add receive mode support
-> 
-> This adds chip-level receive filtering for rnpgbe through ndo_set_rx_mode.
-> Unicast addresses go into RAR entries and multicast addresses into a
-> 4096-bit hash table. IFF_UNICAST_FLT is advertised, with a fallback to
-> accept-all unicast when the RAR table is full, and IFF_PROMISC and
-> IFF_ALLMULTI are handled through the filter control register.
-> 
-> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
-> > index 291e77d573fe6..4e2835b71f322 100644
-> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
-> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
-> > @@ -149,3 +149,78 @@ int rnpgbe_init_hw(struct mucse_hw *hw, int board_type)
-> >  
-> >  	return 0;
-> >  }
-> > +
-> > +static void rnpgbe_set_rar(struct mucse_hw *hw, u32 index, const u8 *addr)
-> > +{
-> > +	u32 rar_low, rar_high;
-> > +
-> > +	/* The RAR stores the Ethernet address in reverse byte order. */
-> > +	rar_low = (u32)addr[5] | ((u32)addr[4] << 8) |
-> > +		  ((u32)addr[3] << 16) | ((u32)addr[2] << 24);
-> > +	rar_high = (u32)addr[1] | ((u32)addr[0] << 8) |
-> > +		   RNPGBE_RX_RAR_VALID;
-> > +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_HIGH(index),
-> > +		      rar_high & ~RNPGBE_RX_RAR_VALID);
-> > +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_LOW(index), rar_low);
-> > +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_HIGH(index), rar_high);
-> > +}
-> 
-> [ ... ]
-> 
-> > +void rnpgbe_set_rx_mode(struct net_device *netdev)
-> > +{
-> 
-> [ ... ]
-> 
-> > +	/* RAR 0 always holds the interface's primary unicast address. */
-> > +	rnpgbe_set_rar(hw, 0, netdev->dev_addr);
-> 
-> [Severity: Medium]
-> Can this drop unicast frames sent to the station's own MAC on every
-> rx_mode update?
-> 
-> rnpgbe_set_rx_mode() always calls rnpgbe_set_rar() for RAR 0, and
-> rnpgbe_set_rar() writes RAR_HIGH with RNPGBE_RX_RAR_VALID cleared before it
-> rewrites the entry. RNPGBE_RX_UCAST_TABLE_EN is set in mcast_ctrl, and
-> filter_ctrl normally does not have RNPGBE_RX_FILTER_UCAST_ALL. So a frame
-> that is filtered while RAR 0 is invalid would not match. The same applies
-> to each secondary unicast entry in the netdev_for_each_uc_addr() loop.
-> 
-> This runs for every rx_mode change, including multicast join and leave,
-> which don't change the unicast table. IP_ADD_MEMBERSHIP and
-> IP_DROP_MEMBERSHIP need no capability and get here through:
-> 
->   dev_mc_add() / dev_mc_del()
->     -> __dev_set_rx_mode()
->       -> rnpgbe_set_rx_mode()
->         -> rnpgbe_set_rar(hw, 0, ...)
-> 
-> So an unprivileged user can open this window over and over. Could entries
-> whose contents have not changed be skipped, or updated without clearing the
-> valid bit first?
-> 
-> There also seems to be a similar window when the device enters
-> IFF_ALLMULTI or IFF_PROMISC. The end of the function does:
-> 
-> 	for (i = 0; i < RNPGBE_RX_MCAST_HASH_ENTRIES; i++)
-> 		mucse_hw_wr32(hw, RNPGBE_RX_MCAST_HASH(i), mcast_hash[i]);
-> 
-> 	mucse_hw_wr32(hw, RNPGBE_RX_MCAST_CTRL, mcast_ctrl);
-> 	mucse_hw_wr32(hw, RNPGBE_RX_FILTER_CTRL, filter_ctrl);
-> 
-> All 128 hash words are zeroed, and RNPGBE_RX_MCAST_HASH_EN is cleared,
-> before FILTER_CTRL gets RNPGBE_RX_FILTER_MCAST_ALL. Can traffic for
-> multicast groups that are already subscribed be dropped during those
-> writes? Writing FILTER_CTRL first for this transition might avoid that.
-> 
-A short transition window is expected when an address actually changes,
-but I agree that the current code unnecessarily invalidates unchanged RAR
-entries even for multicast-only updates. I will keep the invalidate-before-update
-ordering for genuinely changed entries, while skipping entries whose current
-contents already match the requested address.
-I will also enable multicast accept-all before clearing the hash table when
-entering IFF_ALLMULTI or IFF_PROMISC, and program the hash table before disabling
-accept-all when leaving those modes.
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> > index 21fa78c59e5b0..73ee81f8b516b 100644
-> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
-> > @@ -43,6 +43,10 @@ static int rnpgbe_configure(struct mucse *mucse)
-> >  	if (err)
-> >  		return err;
-> >  
-> > +	netif_addr_lock_bh(mucse->netdev);
-> > +	rnpgbe_set_rx_mode(mucse->netdev);
-> > +	netif_addr_unlock_bh(mucse->netdev);
-> > +
-> >  	return rnpgbe_configure_rx(mucse);
-> >  }
-> >  
-> > @@ -140,9 +144,10 @@ static netdev_tx_t rnpgbe_xmit_frame(struct sk_buff *skb,
-> >  }
-> >  
-> >  static const struct net_device_ops rnpgbe_netdev_ops = {
-> > -	.ndo_open       = rnpgbe_open,
-> > -	.ndo_stop       = rnpgbe_close,
-> > -	.ndo_start_xmit = rnpgbe_xmit_frame,
-> > +	.ndo_open        = rnpgbe_open,
-> > +	.ndo_stop        = rnpgbe_close,
-> > +	.ndo_start_xmit  = rnpgbe_xmit_frame,
-> > +	.ndo_set_rx_mode = rnpgbe_set_rx_mode,
-> 
-> [Severity: Low]
-> This isn't a bug, but the ndo_set_rx_mode documentation in
-> include/linux/netdevice.h marks this callback as deprecated:
-> 
->  *	Cannot sleep, called with netif_addr_lock_bh held.
->  *	Deprecated in favor of ndo_set_rx_mode_async.
-> 
-> Should a new driver use ndo_set_rx_mode_async instead? Several drivers
-> already use it, for example bnxt, mlx5, fbnic and iavf.
-> 
-> Nothing breaks today. rnpgbe is not ops-locked, so __dev_set_rx_mode()
-> still takes the legacy path, and the check in register_netdevice() for
-> ops-locked drivers that lack ndo_set_rx_mode_async does not warn.
-> 
-> Converting later would take more than a one-line change, though (for
-> example, if request_ops_lock or queue_mgmt_ops is added):
-> 
-> - rnpgbe_set_rx_mode() returns void and walks the live dev->uc and dev->mc
->   lists instead of the lists passed to the async callback.
-> - rnpgbe_configure() calls it directly under netif_addr_lock_bh().
-> 
-> The commit message only says it adds "the ndo_set_rx_mode callback" and
-> does not mention the deprecation. The later patch in this series, "net:
-> rnpgbe: Add link status handling support", keeps this design.
-> 
-Agreed. I will switch the driver to ndo_set_rx_mode_async.
-> [ ... ]
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0A4D45AD9F6A0F14%2B20260928033701.1033196-1-dong100%40mucse.com
-> 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
+
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The fix is incomplete for dev_name.
+- [Low] The commit 'netconsole: avoid printing partially updated target
+  attributes' fixes a user-visible race: configfs *_show() callbacks can…
+
+--
+
+netconsole: avoid printing partially updated target attributes
+
+This patch takes dynamic_netconsole_mutex in the configfs show callbacks
+for dev_name, local_ip, remote_ip, remote_mac and the userdatum value.
+Readers are then serialized against the store callbacks and should no
+longer see partially updated values.
+
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com
+
+> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+
+[Severity: Low]
+Should this have a Fixes: tag?
+
+These show callbacks have read the fields without dynamic_netconsole_mutex
+for a long time. dev_name_show() and local_ip_show() date back to
+0bcc1816188e ("[NET] netconsole: Support dynamic reconfiguration using
+configfs").
+
+The IPv6 rework (for example 56ddc8d48e75f, 46b3f9e7e761d, f6e96d72f64a8)
+made the window larger by adding the separate family field.
+
+The other two fixes in this series, "netconsole: finish enabling the
+target before releasing RTNL" and "netconsole: read np.dev under the RTNL
+in local_mac_show()", both carry Fixes: tags.
+
+> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> index 5f4311726d11..627475f16383 100644
+> --- a/drivers/net/netconsole.c
+> +++ b/drivers/net/netconsole.c
+> @@ -861,7 +861,14 @@ static ssize_t release_show(struct config_item *item, char *buf)
+>  
+>  static ssize_t dev_name_show(struct config_item *item, char *buf)
+>  {
+> -	return sysfs_emit(buf, "%s\n", to_target(item)->np.dev_name);
+> +	struct netconsole_target *nt = to_target(item);
+> +	int ret;
+> +
+> +	dynamic_netconsole_mutex_lock();
+> +	ret = sysfs_emit(buf, "%s\n", nt->np.dev_name);
+> +	dynamic_netconsole_mutex_unlock();
+
+[Severity: High]
+Does this fully close the torn read for dev_name?
+
+dynamic_netconsole_mutex only excludes dev_name_store(). The netdev
+notifier path has two other writers of np.dev_name, and neither of them
+takes this mutex.
+
+For an enabled target, the NETDEV_CHANGENAME case rewrites the name in
+place. It holds RTNL, target_cleanup_list_lock and target_list_lock:
+
+drivers/net/netconsole.c:netconsole_netdev_event() {
+    ...
+		if (nt->np.dev == dev) {
+			switch (event) {
+			case NETDEV_CHANGENAME:
+				strscpy(nt->np.dev_name, dev->name, IFNAMSIZ);
+				break;
+    ...
+}
+
+For MAC-bound targets on unregister, release or join, the notifier calls
+netconsole_process_cleanups_core()->netcons_release_dev(). That zeroes the
+name with only RTNL and target_cleanup_list_lock held:
+
+drivers/net/netconsole.c:netcons_release_dev() {
+	do_netpoll_cleanup(&nt->np);
+	if (bound_by_mac(nt))
+		memset(&nt->np.dev_name, 0, IFNAMSIZ);
+}
+
+dev_name_store() refuses to write while the target is enabled, so it
+never overlaps these writers. dev_name_show() has no such state check.
+
+So a read of /sys/kernel/config/netconsole/<target>/dev_name can still
+race with "ip link set eth0 name ..." or with deleting the device. The
+read could return a mix of old and new bytes, or a partly zeroed name.
+The buffer stays NUL terminated within IFNAMSIZ, so the result is wrong
+output, not an out of bounds read.
+
+This looks the same at the tip of the series. The other fields this patch
+touches (local_ip, remote_ip, remote_mac and the userdatum value) have no
+writers outside the mutex, so the gap only affects dev_name.
+
+local_mac_show() in this same series already takes rtnl_lock() to
+serialize with this notifier. Could dev_name_show() also take RTNL inside
+the mutex? That would follow the existing dynamic_netconsole_mutex -> RTNL
+order used by enabled_store().
+
+> +
+> +	return ret;
+>  }
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-netcons-fixes-v1-0-bb5ffe5e698a%40gmail.com
