@@ -1,255 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97BAF443E40;
-	Thu,  1 Oct 2026 21:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA32848A8C6;
+	Thu,  1 Oct 2026 21:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790890358; cv=none; b=nxEjtks0Hl6vZDXJJaui8R9QVF8NghuukRsprtHo+IV1HaGFASbtlWfYhDH4u7RaP/TilTnHy9fCdOe0k44JYXxh8O6L6xHvqhUzx1MCyXXO73p8jA+j3pNFyCjaqZwgliycugXQ9JaxlwP49jFN/PRvpa8O4EzD1f4J94yrL4E=
+	t=1790890701; cv=none; b=LgrDPIc+zRDuDsXo3YHIWdl6z5UkWORABWK3Ni63W3qhsjn5QGvwy4fGyfgLpX/tLrB2MxWrGGWLUBAOaeRBOFSqSECYbTLbCm/Vhay7rbGIEBK/ogZtmgq5cFHTN+0W/uJOCsZnaHJaAuVP0lBGlDpeREGRW9GczjhwA/Mkv+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790890358; c=relaxed/simple;
-	bh=/9LOBQkjJjhxi1MW0jTUI3yyXsdYYTHaWTMbTxB8b3o=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EfKAjOyaTAm++uU4A/ruMWUTGBAJ99nEVb+q27nq2L7kwT+2wq/wIWF5TulV6d9pqlyyJdVwZWRyzIlgkqhLFJUt0wmiTCi4XoqolrVxsT+sSA53TfqJLrON5YbeyxVuCQ3/KCa1B3V6WNilwm8kuBbonNveauOoZqho90sYozY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjtJt3fz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790890701; c=relaxed/simple;
+	bh=IxzlKcoKGQ4Xb2LDKANBq4GEy1hhinMRNIOBfmJSr1k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fwrSg4dRoBz8/hdr3pI08RrzUjMgNDylEylu+JLxBtTUXklrP0joRUca7n4ERkja97OSDpIYFrxBgTV0HwJbsFVknMUdGUHOY0QE9pgMcplS4Phdv8Jj1SfIVUBz+No+mr3vfL1DZ7xvlV0+PpOtwXsjAzLqvuNYk/xhYxZ79/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ftf0DABQ; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjtJt3fz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E2B1F000FF;
-	Thu,  1 Oct 2026 21:32:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790890356;
-	bh=hsqiOjWJes5QL5Swg2qcGQK2F4DTo5Fcsb/ksOfHTzQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DjtJt3fzmgwQgbl8/G3ER3U5dGbT9g/aZWRWUgaqNcaZlCbBC+DvuSIgfxi7WfX9x
-	 mZChBUUkt3AaMf8RecXDUH43coF3d7eC5djHhPACrqk4qPEEKZ7vqWYcqkZ4s87prv
-	 HM9ZI1oyuS8Hi72nj22/KumMhk7H432NKEeYLu6iQZe3BA3DbzPxKpmg7pXNuSbhSN
-	 dbv7NQnOWmtfVjsf8Un5blXRry+69UpcIj0RqFWz85ghj39qo4kgEtSDryAxg+KRGS
-	 rPfykHckLOD/RmvmCElonxPEOLVOpgsIq8k//lAz4lfF2DY1bcgUaObFBVsWGFnnBs
-	 48kKLzYQ5K/YQ==
-Subject:
- Re: [PATCH net] net/smc: prevent TCP from retaining freed address-family ops
-From: netdev-bot+sashiko@kernel.org
-To: kylebot@openai.com
-Cc: netdev@vger.kernel.org, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
- tonylu@linux.alibaba.com, guwen@linux.alibaba.com, samsun1006219@gmail.com,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Thu, 01 Oct 2026 21:32:35 +0000
-Message-ID: <179089035510.434549.11808413703827521402@kernel.org>
-In-Reply-To: <20260928213153.36141-1-kylebot@openai.com>
-References: <20260928213153.36141-1-kylebot@openai.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ftf0DABQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790890699; x=1822426699;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=IxzlKcoKGQ4Xb2LDKANBq4GEy1hhinMRNIOBfmJSr1k=;
+  b=Ftf0DABQf2+k8qLa2rrIsX/e3Vf1hZ3M+ggzkR/yr2Z+T00TB2avUhdQ
+   j/Ry+ygEQfXvjhMe9qO+ldlwKzyksbXd3Z4gMyQ9B6xAzrOrNyhbWd8Tf
+   FJtkr2if8PpOxupoeieGVrWCYjrZnnnartT2ymJDdtDxjD6g6Ovmg5bWg
+   2uHVKmzbk+LYWt7yGeW5KXC+Ep3Al3QHG2H+62Hr6bK2ulgWfpwZPYjE6
+   CTSL2JAOmTU8Nseo2yBLMQl/uo3MlO47J/6ijRXTlNBV/Oyghvvd/j3r5
+   ETTlZKBxkv28lHxTAab6GuPP6QSCUSzbC8L6qun9ZvdicCmiqDqfbdfqd
+   g==;
+X-CSE-ConnectionGUID: 1VMXLGcxQl6qyJGu06HUgg==
+X-CSE-MsgGUID: u3MDnS4MTaeUDojWX/xxiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="101825227"
+X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
+   d="scan'208";a="101825227"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 14:38:18 -0700
+X-CSE-ConnectionGUID: b2PT1CwEQWWIQnI5tKt5QQ==
+X-CSE-MsgGUID: s/vFgvorQIi+tMJXn9iv3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,135,1787036400"; 
+   d="scan'208";a="275648264"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.241]) ([10.125.111.241])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 14:38:17 -0700
+Message-ID: <6bc33514-8bfb-44d6-8fde-28f45dff5eb9@intel.com>
+Date: Thu, 1 Oct 2026 14:38:16 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] cxl/region: Add region reference in memdev attach
+To: alucerop@amd.com, linux-cxl@vger.kernel.org, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
+ rafael@kernel.org
+References: <20261001132023.17032-1-alucerop@amd.com>
+ <20261001132023.17032-3-alucerop@amd.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <20261001132023.17032-3-alucerop@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
 
-Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] smc_listen() still installs &smc->af_ops on a clcsock that is
-  already a live TCP listener, so an accepted child can keep the…
-- [High] The new MPTCP gate in subflow_ulp_init() rejects exposed sockets
-  only if it sees `sk->sk_socket->file != NULL`.
-
-Pre-existing issues:
-- [High] The problem wasn't introduced by this patch, but smc_listen()
-  publishes &smc->af_ops with WRITE_ONCE() after plain stores to…
-
---
-
-net/smc: prevent TCP from retaining freed address-family ops
-
-This patch restores the original icsk_af_ops when smc_listen() fails and
-in smc_clcsock_release(). Installing and restoring the ops is serialized
-with the clcsock lock, and SOCK_RCU_FREE is now set before the listener
-callbacks are published.
-
-It also compares a child's ops against the embedded table in
-smc_tcp_syn_recv_sock(). The MPTCP ULP can no longer be attached to a
-kernel socket that has been exposed through a file.
-
-Closes: https://lore.kernel.org/netdev/20260713085238.16780-1-samsun1006219@gmail.com/
-
-> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-> index f0a6725d2c37..da7ac71344a9 100644
-> --- a/net/mptcp/subflow.c
-> +++ b/net/mptcp/subflow.c
-> @@ -1984,10 +1984,11 @@ static int subflow_ulp_init(struct sock *sk)
->  	struct tcp_sock *tp = tcp_sk(sk);
->  	int err = 0;
+On 10/1/26 6:20 AM, alucerop@amd.com wrote:
+> From: Alejandro Lucero <alucerop@amd.com>
+> 
+> Use a new field in cxl_attach_region struct for easily link it with the
+> region the memdev is attached to.
+> 
+> This facilitates device links creation where such a region is the supplier
+> with non-PF0 physical functions wanting to use the CXL region being the
+> consumers.
+> 
+> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+> ---
+>  drivers/cxl/core/region.c | 1 +
+>  drivers/cxl/cxlmem.h      | 2 ++
+>  2 files changed, 3 insertions(+)
+> 
+> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+> index 27e63e6dab7c..78ca7ebc3e55 100644
+> --- a/drivers/cxl/core/region.c
+> +++ b/drivers/cxl/core/region.c
+> @@ -4132,6 +4132,7 @@ int cxl_memdev_attach_region(struct cxl_memdev *cxlmd)
+>  	if (rc)
+>  		return rc;
 >  
-> -	/* disallow attaching ULP to a socket unless it has been
-> -	 * created with sock_create_kern()
-> +	/* Only attach to a kernel-created socket that has not been
-> +	 * exposed through a file.
->  	 */
-> -	if (!sk->sk_kern_sock) {
-> +	if (!sk->sk_kern_sock ||
-> +	    (sk->sk_socket && READ_ONCE(sk->sk_socket->file))) {
-
-[Severity: High]
-
-Does this check hold up against a concurrent smc_switch_to_fallback()?
-
-smc_switch_to_fallback() exposes the clcsock with two plain stores and no
-barrier between them:
-
-net/smc/af_smc.c:smc_switch_to_fallback() {
-    ...
-	if (smc->sk.sk_socket && smc->sk.sk_socket->file) {
-		smc->clcsock->file = smc->sk.sk_socket->file;
-		smc->clcsock->file->private_data = smc->clcsock;
-    ...
-}
-
-By then the file is already in the fd table. Another thread calling
-setsockopt(fd, SOL_TCP, TCP_ULP, "mptcp") finds the clcsock through
-sock_from_file(), which does a plain load of file->private_data. That
-thread holds neither clcsock_release_lock nor the SMC sock lock.
-
-The compiler may reorder those two stores, and so may arm64 or POWER. In
-that case, can the second thread see private_data == clcsock while
-clcsock->file still reads NULL?
-
-The clcsock came from sock_create_kern(), so sk_kern_sock is 1 and both
-checks would pass.
-
-The MPTCP ULP would then attach to a TCP socket that userspace can reach
-but that has no MPTCP parent, so ctx->conn is NULL. subflow_data_ready()
-starts with:
-
-	struct sock *parent = subflow->conn;
-
-and subflow_state_change() also uses the parent. ctx->icsk_af_ops could
-also capture the SMC-embedded table.
-
-The commit message says:
-
-    Reject attaching the MPTCP ULP to such a socket: otherwise userspace
-    can bypass smc_setsockopt() and MPTCP can retain the embedded table in
-    its subflow context.
-
-Is that path still reachable through this window?
-
->  		err = -EOPNOTSUPP;
->  		goto out;
->  	}
-> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-> index e9f93b3ab435..dbbe7d6574e4 100644
-> --- a/net/smc/af_smc.c
-> +++ b/net/smc/af_smc.c
-
-[ ... ]
-
-> @@ -2682,18 +2684,25 @@ int smc_listen(struct socket *sock, int backlog)
->  	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+> +	attach->cxlr = cxlr;
+>  	attach->hpa_range = (struct range) {
+>  		.start = cxlr->params.res->start,
+>  		.end = cxlr->params.res->end,
+> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+> index c401e3a1af06..c598561b8e5f 100644
+> --- a/drivers/cxl/cxlmem.h
+> +++ b/drivers/cxl/cxlmem.h
+> @@ -104,6 +104,7 @@ struct cxl_memdev_attach {
+>  /**
+>   * struct cxl_attach_region - coordinate mapping a region at memdev registration
+>   * @attach: common core attachment descriptor
+> + * @cxlr: cxl region the memdev is attached to.
+>   * @hpa_range: physical address range of the region
+>   *
+>   * For the common simple case of a CXL device with private (non-general purpose
+> @@ -112,6 +113,7 @@ struct cxl_memdev_attach {
+>   */
+>  struct cxl_attach_region {
+>  	struct cxl_memdev_attach attach;
+> +	struct cxl_region *cxlr;
+>  	struct range hpa_range;
+>  };
 >  
->  	/* save original ops */
-> +	lock_sock(smc->clcsock->sk);
->  	smc->ori_af_ops = inet_csk(smc->clcsock->sk)->icsk_af_ops;
->  
->  	smc->af_ops = *smc->ori_af_ops;
->  	smc->af_ops.syn_recv_sock = smc_tcp_syn_recv_sock;
->  
-> -	inet_csk(smc->clcsock->sk)->icsk_af_ops = &smc->af_ops;
-> +	WRITE_ONCE(inet_csk(smc->clcsock->sk)->icsk_af_ops, &smc->af_ops);
-> +	release_sock(smc->clcsock->sk);
 
-[Severity: High]
+attach->cxlr is never cleared when the region goes away. Unbinding the endpoint port runs endpoint_unregister_region(), which unregisters the region and drops its reference. PF0 stays bound until the detach work runs.
 
-Can this still install &smc->af_ops on a clcsock that is already a live
-TCP listener?
+A non-PF0 probe in that window still finds the memdev and calls device_link_add() on the freed region.
 
-Here is one possible interleaving. Three threads share an AF_SMC fd that
-is in SMC_INIT:
+How about something like this?
 
-T1: listen(fd)
-    smc_listen()
-        lock_sock(sk)            <- waits
-
-T2: setsockopt(fd, SOL_TCP, TCP_FASTOPEN, ...)
-    smc_setsockopt()
-        smc_switch_to_fallback()
-            file->private_data = clcsock
-    (sk_state stays SMC_INIT)
-
-T3: listen(fd)
-    inet_listen() on the clcsock, which is now a plain TCP listener
-
-T1 then resumes and passes the state checks in smc_listen(), then
-installs &smc->af_ops. kernel_listen() returns 0 because
-__inet_listen_sk() only adjusts the backlog when the socket is already in
-TCP_LISTEN.
-
-The listener receive path runs without the socket lock:
-
-tcp_v4_rcv()
-    tcp_v4_do_rcv()          (TCP_LISTEN)
-    tcp_check_req()          (TCP_NEW_SYN_RECV)
-        inet_csk(sk)->icsk_af_ops->syn_recv_sock()
-
-A softirq can load the original tcp_v4_syn_recv_sock() before the
-WRITE_ONCE() above. It can then clone the listener in
-tcp_create_openreq_child() after it.
-
-That child inherits &smc->af_ops but never goes through
-smc_tcp_syn_recv_sock(). So the new check there never runs for it:
-
-    if (inet_csk(child)->icsk_af_ops == &smc->af_ops)
-
-Suppose userspace then accepts that child from the clcsock and closes the
-SMC fd. smc_clcsock_release() restores only the listener's ops.
-
-Once the RCU grace period ends and the smc_sock is freed, would the child
-keep calling through the freed table (net_header_len, queue_xmit, and so
-on)?
-
-Taking lock_sock() on the clcsock serializes install against restore, but
-it doesn't seem to exclude lockless listener processing. Should the
-install be refused when the clcsock is already in TCP_LISTEN?
-
-[Severity: High]
-
-This problem wasn't introduced by this patch, but is the publication of
-&smc->af_ops ordered after the stores that initialize it?
-
-smc->ori_af_ops and the struct copy into smc->af_ops are plain stores.
-The WRITE_ONCE() that publishes &smc->af_ops has no release semantics.
-
-In the already-listening case above, the lockless reader is:
-
-tcp_v4_rcv()
-    tcp_check_req()
-        inet_csk(sk)->icsk_af_ops->syn_recv_sock(...)
-
-The compiler may reorder the plain stores, and so may arm64 or POWER.
-Could the reader then see the new pointer before the struct copy is
-visible?
-
-sk_alloc() zeroes smc->af_ops, so the softirq could call a NULL
-syn_recv_sock. It could also enter smc_tcp_syn_recv_sock() and
-dereference a NULL smc->ori_af_ops here:
-
-	child = smc->ori_af_ops->syn_recv_sock(sk, skb, req, dst, req_unhash,
-
-The added lock_sock() does not synchronize with this reader, which never
-takes sk_lock. Refusing to install on a socket that is already listening,
-or publishing with smp_store_release(), would avoid this.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928213153.36141-1-kylebot%40openai.com
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 27e63e6dab7c..38ca73f12b84 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -4076,6 +4076,23 @@ static int first_mapped_decoder(struct device *dev, const void *data)
+ 	return 0;
+ }
+ 
++/*
++ * Invalidate @attach before the region goes away so that
++ * cxl_get_range_and_link() can not pick up a stale region.
++ */
++static void endpoint_detach_attach_region(void *_attach)
++{
++	struct cxl_attach_region *attach = _attach;
++	struct cxl_region *cxlr;
++
++	scoped_guard(rwsem_write, &cxl_rwsem.region) {
++		cxlr = attach->cxlr;
++		WRITE_ONCE(attach->cxlr, NULL);
++		attach->hpa_range = DEFINE_RANGE(0, -1);
++	}
++	endpoint_unregister_region(cxlr);
++}
++
+ /*
+  * Runs in cxl_mem_probe context after successful endpoint probe, assumes the
+  * simple case of single mapped decoder per memdev.
+@@ -4127,15 +4144,23 @@ int cxl_memdev_attach_region(struct cxl_memdev *cxlmd)
+ 
+ 	/* Only teardown regions that pass validation, ignore the rest */
+ 	get_device(&cxlr->dev);
+-	rc = devm_add_action_or_reset(&endpoint->dev,
+-				      endpoint_unregister_region, cxlr);
+-	if (rc)
++	/*
++	 * Not devm_add_action_or_reset(): the reset path would take
++	 * cxl_rwsem.region for write while it is held for read here. The
++	 * endpoint lock keeps the action from running before @attach is set.
++	 */
++	rc = devm_add_action(&endpoint->dev, endpoint_detach_attach_region,
++			     attach);
++	if (rc) {
++		put_device(&cxlr->dev);
+ 		return rc;
++	}
+ 
+ 	attach->hpa_range = (struct range) {
+ 		.start = cxlr->params.res->start,
+ 		.end = cxlr->params.res->end,
+ 	};
++	WRITE_ONCE(attach->cxlr, cxlr);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_FOR_MODULES(cxl_memdev_attach_region, "cxl_mem");
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index c401e3a1af06..7cd3a69cd5f5 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -104,6 +104,8 @@ struct cxl_memdev_attach {
+ /**
+  * struct cxl_attach_region - coordinate mapping a region at memdev registration
+  * @attach: common core attachment descriptor
++ * @cxlr: cxl region the memdev is attached to, cleared under cxl_rwsem.region
++ *	before the region is unregistered
+  * @hpa_range: physical address range of the region
+  *
+  * For the common simple case of a CXL device with private (non-general purpose
+@@ -112,6 +114,7 @@ struct cxl_memdev_attach {
+  */
+ struct cxl_attach_region {
+ 	struct cxl_memdev_attach attach;
++	struct cxl_region *cxlr;
+ 	struct range hpa_range;
+ };
+ 
