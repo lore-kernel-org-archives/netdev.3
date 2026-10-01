@@ -1,197 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3B3366541;
-	Thu,  1 Oct 2026 04:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF68367F4A
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 04:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790828797; cv=none; b=I1PJWDHfrD4EW8gfLPXZFV6klCGDJHApOTcO8ZUPydOZOzYgtW//mZG2KLUjzMeRr6kFauGgNhwUVc9UFl+wG0YafcAu33PMlPN7eEvV3hqtXr/4IzNIsUkBZ078LwbFCfNNudxLT07zFc1xC4VwIgriz44qTNOXg0BCybsBwuQ=
+	t=1790829099; cv=none; b=jhq8vg6d/rMPIwDIsMIKb5uEb9VaT6SUwo96Ler+ukH7/I70PD3usCIueqstXnL2jf+293cVNLM9oa2EsiLN/23SZLy5gl59nZnUeHBFbG/twt6VIo6Mjy4/ltbyUUMNOL056GSibsqGWCgvX3VD/LxMbKNlj3y2fB/qZ5RciUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790828797; c=relaxed/simple;
-	bh=HCtHMn3sP0zmtH7BCqMfztyo2pkSkoESg26yLA/LcyI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VkrWwYsXnNsJYEPj4cuZsTSCFA4jzg7ixikUt8MP2/z7r6dVfmOtkGoSIJcRZZjXD+BjPH9pGTqRNTzz1b2HrnQm0T9Tk+mL+x8/rHyuyNaKSvRaG8IRkFdvUpOwL3g0Wq9AfEJ6B/mDV6Q1QbKoxUZKRVm36zp8sPFO92DAGyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MC8wgXa/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790829099; c=relaxed/simple;
+	bh=+bggdvOODFl71zz1ONn5aE0m04Kzv+BjknZIOAjQHTI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=an+QE56ClCQ5bHYFMiM+0fsa/HQOA8bTU0EEskr8ALG7fReDGjFd7jkUOzUNVDvYBwZhb/is+pNDFzYbcJ59p1Q9S6IhQfzyTUpaMxwaz2+xXB77uAq7zxYcXCTVZVdKyK9S+4liUfwMDF8q3PfUiwSE4Ve8DXBpu/e4rqnX4nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DSdVn9hT; arc=none smtp.client-ip=74.125.231.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MC8wgXa/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC6D1F00898;
-	Thu,  1 Oct 2026 04:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790828795;
-	bh=UV95aU7paKdEgSXgO/aM9gvLom7AApvSRNV4BUsbQVU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MC8wgXa/k3cpKParEU0z+W1jDI7/3zel8MWerEEDTLOSD9osOtv+BS0Y89kwjnzTB
-	 zIUfdEhQPI7pfdf66qBIrkKKl6pCGMgr2uvR7MYoOhKDibRKsYVKeAKIMYV09VVeC3
-	 R8pqAuT+Uwv8+uHS0bKSCfblRB1i8YdfXu1cFhAurlDRitx4MmfxT2uBafSCGQzbgD
-	 KfUN56dWQSXEKpv8jXHQVCnyDHw/R9rPaplf+xfjHwqb2evElGiFSyy0aCQrqMWeFi
-	 bFOZ5owpkxHeQUNR0ZfMy5qTwzs65Mpu0QhtKzhN4tBqpQwjCEFZfQ588wjXDY4HsH
-	 CRoEJpdgWrijQ==
-Subject: Re: [PATCH net v4 2/2] net/sched: sch_cake: validate transport header
- offset in cake_overhead()
-From: netdev-bot+sashiko@kernel.org
-To: ndaugoing@gmail.com
-Cc: toke@toke.dk, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- cake@lists.bufferbloat.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 01 Oct 2026 04:26:34 +0000
-Message-ID: <179082879490.434549.12719144237659185288@kernel.org>
-In-Reply-To: <20260928132452.59996-3-ndaugoing@gmail.com>
-References: <20260928132452.59996-3-ndaugoing@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DSdVn9hT"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c4bf3defecso5051691b6e.3
+        for <netdev@vger.kernel.org>; Wed, 30 Sep 2026 21:31:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790829096; x=1791433896; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Q4Vf2DmeXuIICczMLsgHOQylq088gF7uO3L3in1vUSo=;
+        b=DSdVn9hTZ74PjhBxFpULihkXy/rWfVyIhGvP0dLWU3dp0IqO5F0NBoBanaF+lx7u3B
+         Uafo3r8kCHybs/KnrQwCfHNeU7ikvmRHyOBaRl0GA9ZoOj9rtB06eUp3ODJPUpUSM++L
+         nMKqSOeUQRiUsbIQVBr/4YQNrHDDzLtyjjLyYcpoUg/F5Igc93Xav/OtvUe8yAb1qET+
+         Gv5j95I5ECQFSR1iqu0Rk+Cjtm9NGXqhkyD6j77xG1W5CcfxRATWENSBbeMneQZ9ufRg
+         aiR7T4fq8z1BS1DpLPvMPRx5138/5KBYQPt0KXwJp4K/6ovZDLZgq/TImON86bFOAo8h
+         KH8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790829096; x=1791433896;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Q4Vf2DmeXuIICczMLsgHOQylq088gF7uO3L3in1vUSo=;
+        b=Gb/atmV+3w/0YLbVG0lxbWFKdAE0Y8vdBOdZThsvJ55CMf8meRIG00/1hX0mnJTdYQ
+         dc9N+pew4e7LNg8EEx8tpm3qziQCU+DZkB8MhJ0S2YpupaTDXmwOBP1PaGxKmua72+JK
+         3saOOlJ4TeY7XZ6lcu5bCO9IEaHjceJylGiCD4KDWSdOGcHJ7Nyy6gjU30qfobj5ImDe
+         Wma0pzCc3S9TjfLqTjF8zfOSw1Fwq5mBEAUaFgmwZzIYtDLKSGWPbI/XhFtxg70x08G1
+         TFQe/dxmnp6mcv5Wdju5lBxWxx+8qBHNTUAEOy78SNFj5cVRryg7pIUzOu8azDQKkwqA
+         sinA==
+X-Gm-Message-State: AFuF++nWtqOQ4SljoXCMdAE3PlNU+goP3Ku7jPYkHMWrrAY5AIAj+LD0
+	zka8hjNQlpk9zp98pB+KxGguZKlgxNsNEjm7bWQOJXXA1virCFAfj02ldueQ/Q==
+X-Gm-Gg: AYBFou0KPk826WdXa6e6DYXkZX8sRYbQlTq9n+Ty1RU//qJ2ChpqTS+gqBzoyPCYMPy
+	2pRoEuNnGyM70Yajhc12e6DtqtZIj+1rXTs3GtN7J9ngTRy7Hjc2lq+HmqX6X9qvqvvuUp6/+df
+	oZ1z3ifkpPJSmcanYypm57506ChSBYeADX+6Yv+0tUolzZuqWBnl9Upfsju9Y7ipLpZnqnDdrK1
+	/KykEZqUSR8jPECfikLGW/efsWg4d20oYrY5LmnJdTZcv2tAnnqxtjpGR1dIaR2TuSCzJy/RrAg
+	kc8rvVxAoOq2jdvvgdGnp34m/WACVrPK+4SzvzUS9f3WJVbWlIxklSA6c2dPkfGZAQ2bcnBeTQi
+	UqbFmSl6S0iRSHJ0UjhaiTQZUsCumIy9sOuuSTXhwzt/jGkTZYQ0tykHih4fq7F0UR3hjcLnS01
+	WtA70SEAQrFpsOEkmZHn7g6bYY5uV12BOz8bsUWZc2BmhI6bSVOlNFtbl1B33vx+n1YfoAEUhD4
+	atn8PBq5z7cgG0dFzlCY/QgqTLr2Brncchr1/Sop1KOJUSXvSiFulQGyaroFGLhwfGroOJ6zyPg
+	5EsZGos5iITNHh7VUFoxUFP2QQAKDYsI7cTA7Ck7RGWcOrm9Ko/cgss5N2/tp70ZZxPXenrL5mX
+	Vy4AYVXCPxRQ2tDEop84d5A==
+X-Received: by 2002:a05:6808:10ce:b0:4c3:db9b:3eae with SMTP id 5614622812f47-4f1b76329a7mr4055713b6e.15.1790829095989;
+        Wed, 30 Sep 2026 21:31:35 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4f349a4d20bsm1378430b6e.5.2026.09.30.21.31.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 21:31:35 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Wed, 30 Sep 2026 22:31:32 -0600
+Subject: [PATCH net] net: stmmac: unwind the WoL IRQ after a safety IRQ
+ request failure
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260930-stmmac-irq-unwind-v1-1-0c8a053761c7@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2MQQ7CIBBFr9LMWpIpVGh7FdMF0EFnUapA1aTp3
+ SXq8v2f93bIlJgyjM0OiZ6ceY0V2lMD/mbjlQTPlUGi1DgoFLksi/WC00Ns8cVxFuio1wO2WvU
+ zVO+eKPD727xApALTb0z02Gq//B9nMwm/LguXsbHGBets10tFyrf67JxE7LzpKATjcdDaSOcNT
+ MfxAWAG42q0AAAA
+X-Change-ID: 20260930-stmmac-irq-unwind-0be86901638d
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Serge Semin <fancer.lancer@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+The safety IRQ is requested after the MAC and optional WoL IRQs. If its
+request fails, stmmac_free_irq() frees the unregistered safety IRQ and
+leaks the WoL handler. This can warn about an already-free IRQ and make
+the next open fail.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0 (1)
+Move the safety and WoL cleanup labels into reverse acquisition order.
+This also fixes unwind after later per-queue IRQ request failures.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: 5c2215167d12 ("net: stmmac: Add driver support for common safety IRQ")
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-- [High] The patch is incomplete.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 3f34d491c959..4f3d452c3503 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3797,13 +3797,13 @@ static void stmmac_free_irq(struct net_device *dev,
+ 			free_irq(msi->sfty_ce_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_CE:
+-		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
+-			free_irq(priv->wol_irq, dev);
+-		fallthrough;
+-	case REQ_IRQ_ERR_SFTY:
+ 		if (priv->sfty_irq > 0 && priv->sfty_irq != dev->irq)
+ 			free_irq(priv->sfty_irq, dev);
+ 		fallthrough;
++	case REQ_IRQ_ERR_SFTY:
++		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
++			free_irq(priv->wol_irq, dev);
++		fallthrough;
+ 	case REQ_IRQ_ERR_WOL:
+ 		free_irq(dev->irq, dev);
+ 		fallthrough;
 
-Pre-existing issues:
-- [Low] [Baseline: discarded as pre-existing, low] This problem wasn't
-  introduced by this patch, but the cake_overhead() block commented…
+---
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
+change-id: 20260930-stmmac-irq-unwind-0be86901638d
 
---
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
-net/sched: sch_cake: validate transport header offset in cake_overhead()
-
-This patch makes cake_overhead() fall back to the plain
-cake_calc_overhead() path in two cases: when the transport header was
-never set on a non-encapsulated skb, and when the computed transport
-offset is negative. hdr_len changes from unsigned int to int so the
-negative case can be detected, and all fallback paths now go through a
-single err label.
-
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index b0d604a7052a..f8deb8083f16 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-> @@ -1413,21 +1413,28 @@ static u32 cake_calc_overhead(struct cake_sched_data *qd, u32 len, u32 off)
->  static u32 cake_overhead(struct cake_sched_data *q, const struct sk_buff *skb)
->  {
-
-[ ... ]
-
->  	/* borrowed from qdisc_pkt_len_segs_init() */
-> -	if (!skb->encapsulation)
-> +	if (!skb->encapsulation) {
-> +		if (unlikely(!skb_transport_header_was_set(skb)))
-> +			goto err;
->  		hdr_len = skb_transport_offset(skb);
-> -	else
-> +	} else {
->  		hdr_len = skb_inner_transport_offset(skb);
-> +	}
-> +
-> +	if (unlikely(hdr_len < 0))
-> +		goto err;
-
-[Severity: High]
-Does this fully remove the ~66 KB per-segment charge the commit message
-describes? Two paths still seem to reach it.
-
-First, the encapsulated branch has no check for the unset sentinel.
-bpf_skb_net_grow() is reached through bpf_skb_adjust_room() with
-BPF_F_ADJ_ROOM_ENCAP_L3_*. It copies transport_header into
-inner_transport_header without checking whether it was set:
-
-net/core/filter.c:bpf_skb_net_grow() {
-    ...
-		inner_trans = skb->transport_header;
-    ...
-		skb->inner_transport_header = inner_trans;
-    ...
-}
-
-It also sets skb->encapsulation = 1.
-
-qdisc_pkt_len_segs_init() stores pkt_segs before its !was_set early
-return:
-
-	qdisc_skb_cb(skb)->pkt_segs = gso_segs = shinfo->gso_segs;
-	...
-	if (!skb->encapsulation) {
-		if (unlikely(!skb_transport_header_was_set(skb)))
-			return SKB_NOT_DROPPED_YET;
-
-So a GSO skb with an unset transport header keeps pkt_segs > 1. A tc
-egress program in sch_handle_egress(), or act_bpf run from
-cake_classify(), can then encapsulate that skb.
-
-cake_overhead() then takes the else branch and computes
-hdr_len = 0xFFFF - (skb->data - skb->head). That value is large and
-positive, so the hdr_len < 0 test does not catch it.
-
-Second, both the TCP and UDP branches ignore a NULL return from
-skb_header_pointer() and keep the offset:
-
-		th = skb_header_pointer(skb, hdr_len,
-					sizeof(_tcphdr), &_tcphdr);
-		if (likely(th))
-			hdr_len += __tcp_hdrlen(th);
-	...
-	len = shinfo->gso_size + hdr_len;
-
-The unreadable hdr_len goes into len, which is then multiplied by
-(segs - 1). In cake_enqueue() the result becomes
-get_cobalt_cb(skb)->adjusted_len. That pushes the shaper clock far ahead,
-stalls dequeue, and corrupts max_netlen/max_adjlen.
-
-qdisc_pkt_len_segs_init() returns SKB_DROP_REASON_SKB_BAD_GSO whenever
-pskb_may_pull() of the transport header fails, which covers both cases.
-
-Would adding goto err when skb_header_pointer() returns NULL, or checking
-hdr_len against skb->len, cover the remaining cases on top of the new
-checks?
-
->  
->  	/* + transport layer */
->  	if (likely(shinfo->gso_type & (SKB_GSO_TCPV4 |
-
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch. The
-block labelled "borrowed from qdisc_pkt_len_segs_init()" differs from its
-source.
-
-It adds __tcp_hdrlen(th) without the tlen check that
-qdisc_pkt_len_segs_init() does:
-
-		tlen = __tcp_hdrlen(th);
-		if (tlen < sizeof(*th))
-			return SKB_DROP_REASON_SKB_BAD_GSO;
-
-It also adds sizeof(struct udphdr) in a bare else for every non-TCP GSO
-type:
-
-	} else {
-		struct udphdr _udphdr;
-
-		if (skb_header_pointer(skb, hdr_len,
-				       sizeof(_udphdr), &_udphdr))
-			hdr_len += sizeof(struct udphdr);
-	}
-
-The reference only does this for SKB_GSO_UDP_L4. As a result, SCTP, ESP
-or GRE GSO traffic is charged 8 extra bytes per segment. A garbage doff
-after header mangling can cause an error of up to about 60 bytes per
-segment.
-
-Should this block also apply the SKB_GSO_UDP_L4 and tlen checks that
-qdisc_pkt_len_segs_init() uses?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928132452.59996-1-ndaugoing%40gmail.com
