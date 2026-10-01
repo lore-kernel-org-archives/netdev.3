@@ -1,246 +1,273 @@
-Received: from mail-oo2-f42.google.com (mail-oo2-f42.google.com [74.125.231.170])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1549249BD8E
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CAE4A207A
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 07:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790839513; cv=none; b=D6uOe3BhIS+sz50NdvspMnBkLaENqq1b2HbIo1/ViBXaHBzYq08xIlorvGs41OyjvOsZQYcLNsXgAJH/nMVYXA2P4H2zvQXqzHiCUtU/EuLGJbUlKOZmyn7Xyb7Fb1U/SgPEQs34hTFXmZDmXqWR9wbFP6LJziVvFgyCaW38BoU=
+	t=1790839745; cv=none; b=O6fVYlE/jbZL/b24n2XXcKpvFwaj4EGdSiJLUiLIxgs9nFYrVUKl+vXSdaAwawoUsQy6JCwMtsKBWMmia7Ml757W8pU0l/g6Ef77NevaIphFXB0WAtXAhLtuvue6PeLtgaa/VWoWCaPUaloCUpvn3t5cVLWHGxjJwtd0kC9ediY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790839513; c=relaxed/simple;
-	bh=JfBkkHgZiIkkSz4rA7SyKB1ygthlO/1JZwHYjPy8It0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bkD4V3gNjji+Nti0cW4OdidqijJ0QUDP7trFDXlH/gWw4Ehbuckg189FEj6q5Ke9P0aglSqOozvcnROx76Gn6eGJBgipJZ4/OyryS06HqEZG6Ats5DLxLz4xdeSbdS3RcWdNbcoPtSIWDCiJr2w+DgR6UaJEbObvii3Ip1Z3uuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IA9zIMur; arc=none smtp.client-ip=74.125.231.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790839745; c=relaxed/simple;
+	bh=tRluMRBXxJbh/k3JWn7GfDrnEwmGeDFeheI0LkBxX9A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QtNlZgJ3VL3SYg2vrTvu1PQfG7L+3WjXdSf+hS3z4N3tGtz4iPVVLgPNTBCh1cOWMv/b40cEmpaV4ON1uDH6d1VQ8eUIMWJpAPJBvHU2srLuitXei+CPIyyNZ7kU8rciQ26IyemRHug+74IElJKAaB4nD8NDtj0eGawGpgcMVw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=hhNXburx; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IA9zIMur"
-Received: by mail-oo2-f42.google.com with SMTP id 46e09a7af769-81adacb0f81so1099441a34.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:25:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="hhNXburx"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48b0d19cf7eso75166f8f.1
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 00:28:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790839504; x=1791444304; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=kaT9y/FLNptdflfoU99H0BfFB3r6Sc/0PbsEzk52HW8=;
-        b=IA9zIMurPQEqUp8O44T+Vbu/3yliKz9Ck6Egl/Y1aJY8/L4kiPfwytiySBd2seFmS3
-         g5YNjN6y9XZhs2AHBY/ExJHdJrkj6CzoPjaVnj4JVSp+8u3j8ePfj7ApB3Y44IxyoMYV
-         iLkDWR6SqkLEEY1umpnyRZnATgcQGgc5971ZQpfjkSjLcJkG0NH8dciG8n/ji3LET+v8
-         jvjEDG3+RQcm5pOv81SrVCi0Aq9kX6EeXaVR//OA3Ia0WGkbzJqWhZoWcX6Jm7UpvoYS
-         c2GemxEmA8DWLm3WKyK/+ClcEQkVpGFQHZkWXPgQoNKGm+4Qmh/jAG3AwHk31daN83rj
-         Z8vg==
+        d=blackwall.org; s=google; t=1790839731; x=1791444531; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RJYmC2LSrFG1TGV4Ig18y/TsY0buRGK6MkL+GzI3BWI=;
+        b=hhNXburxRCdooNz6RGqWq3+xgLUEBUg9HgvmrwnhJWa3IHIwxSliFOVx6Ek3qPeQ5h
+         ZWgKRXO0OyxNz/B20fQpMkYR5kyzhc/bL7aLS9P2n8SIB+ot5YJ0SR0kXYER916W9lIQ
+         Zbt4lOhK+li8DHD/Y6N+/QwvyBPdcJDsAbdt0wxQ2ftlVUq2AEdOKkq9NBgk4i3x1W9w
+         uC7ucS65+r/LjpDbRDVjxa9tLBiM4BogD/BOZBEIAk7ks22AtClrcn3A04u19EsLWe9a
+         +M9E166iPJJr3cCvbTdnP0vyfkDzKMPqG82If2Gn++Hhhj9Gj6sHoXUyOjL3BciJvW06
+         t6PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790839504; x=1791444304;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=kaT9y/FLNptdflfoU99H0BfFB3r6Sc/0PbsEzk52HW8=;
-        b=bz0zdO9qQReZG+b2PvPodnSxxJ49oLqQtWm55HfVE4sXYsZ4LxXRCk8JjgxlXGkrU5
-         +E3halFn7z7NVDj3IFwpFpyrYSqlsptND512A3ihOszvcFUR/4v+ETJUJQsx9qviBK/M
-         h/zyMGbeIbLjhRHBo/DaU3k7kD1F3ZTkJKTBNDkhKH14hGKoRoLtNru2A8mHrFomtfqV
-         gCP2nO5SJF0ah89ytDFYgO60kBWmS4GCiFklFf0n3oQ0qrKaHo/srwsKmkQBFtDxWfqN
-         mtsPOh7ftEp/dCLYlu/DpwYhYX/eXatOF6XGwutkc6xu+15I6M+rnRT/jgytgMxey+ca
-         Zs/Q==
-X-Gm-Message-State: AFuF++k6Yq86SW9qps/HFJGeIgOinjfmyKp9ySS93x4q85oqIMpWUESQ
-	t0enGgfLTm2W8nhQnXD0n+E1WfbHfbew8XQMZq0xUXs0YfgeKft1S6shSw7fNB5Z
-X-Gm-Gg: AYBFou3qROL4sYvIw+EzhHQxB4f7tC8ehYj/3NGTiQWQ0FtzYsQ47CqiqRx8X65TF0h
-	L2haCgV1C10HBZqd2LZIxjqVYgXUdoh23Na0NYY83vrltAzW88an0+ZEcjReLWeNGu8xyaoLx9j
-	uslfA1u3yLH6LdW+EOA6+lYv4vU86Zpla2em5+99yio4se+WAiWQszVG36L8EE05qk/zmDE/3sJ
-	cBpQV07WJKI2s4xyvuMgshEearjsRuyS3SrJrsiOie1g3EEA7rqGs4YV3S83vouBcTMdKICahdA
-	NUw1bEhs/UcRN4t0YZWAgu3xK+jpOWR3Wbr9D0ZMa1Mvymo/dfm6LezLtbmd997ylMImcdqBmz5
-	8K/2DYtUnaPVXNVmbi9JgoQLTFjcAv+FYRb3wPt4GOoBufe6WpDLOI25VtmUGdhNGapzl/A8cnP
-	5nH3jji8wliA6wN4cGqi+JHX/4Xg33vwnIx8Z085FI4OWvqd0LvzOZC/VqMqUlFay1e/T3AgVMa
-	15YCi68FGcU0Xx6lkHwL1zZZt7CK4OjU78eEaBE/Kqtzdq1L9mE+JWbpfbKpYwU1qKbKPojzOsV
-	92Y1VIhRKOZklT5kPQO1yVP9X61FEgcOKKNJxkisqQUeajZ5UtuY7cwLeA+moIHK/yvAvPJxJMD
-	VW99HKYqEm6bN3UKT4ExJHw==
-X-Received: by 2002:a05:6830:4388:b0:804:e0e8:1a86 with SMTP id 46e09a7af769-82120255097mr2048474a34.1.1790839503856;
-        Thu, 01 Oct 2026 00:25:03 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8212af3bd3fsm1966448a34.20.2026.10.01.00.25.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 00:25:02 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Thu, 01 Oct 2026 01:24:53 -0600
-Subject: [PATCH net] net: phylink: allow stopping a suspended instance
+        d=1e100.net; s=20260707; t=1790839731; x=1791444531;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RJYmC2LSrFG1TGV4Ig18y/TsY0buRGK6MkL+GzI3BWI=;
+        b=UuvduKNZaXddVQanFe2viIO3EtJi7tIONzS249qBr7YDfdakB1gaiSCsK9Ykf7ZPAF
+         ryTmr2f4wk0jz75q4wSA4BXxC4UTAmOicjObx3yAwb1g/4em5uSx+JqodG6QEysr5r6y
+         NfNVsupNhchPHhXjGrb3dF5rdFTS3Wsl3SprJBXU9bo9hlY2PYW/RQ67P5mdVCArSj+v
+         aFiPKFTDXZZipQYIt0qOpNNJats4aYhkx1OlsG5++JA+sjVxY3B3y6TLyOofg2QOCBBm
+         66qbg4BnLtCpgQVnFvcRGaQ9NzLKkKUYloWesG/16+FC4Rl7AK6qNsPd3E5FprW0RWYj
+         FJ2g==
+X-Gm-Message-State: AFq9FYJeghmdBFJKdn1bo3hgtqBzUU/apKZ4+9D2z/oYz2+Aeg9Ct+Dm
+	Ht0Ivwopr3sfox446IJZ9BQo+7uUdMzDt0a1SgNGrN29+3x2JNPkQMvSz8qdWeXuZ5orvpgk9OT
+	yOoRy1V4=
+X-Gm-Gg: AYBFou2Kx2+Pl1jTybAChTOgo4MbA0q/kDQ357m4Ns7KutQJ2QVWxchoIQD6NEc2wxF
+	Ctlu1WugHzcBIP1EPCV+i9u+UEjO4vdZZusEA60Y9xFKYAqvC+rTOf0cljfX7ciCQz4sEcBs0Ji
+	XPavnATVN8ltfZnlk2tlC99LEmPnUTreRob4PiwI0ujeKl/Co4dIY+0aBrKt1A0Fr6/QhdQHyJD
+	P/XttUneXve+tB4O4E0+97zW/3CAD1PN6RZJrmlUFSyi4icEhgZhN1CfxAPymyo1IcpAhLpTGZt
+	oHCIJlexg3P5amF3R+egjFRoB79BgtJdyAJF7rgKDwzcmLYyGAI4sUMqck9hLvFOWpzlyCyAp0U
+	FPgKgyVw5Ho5RoPOjTVCmPUBSBUFqjxPteW+Oa5YspBkxMPwfcavYYE12S4ukEijU/7KYuJFVne
+	NOBVhQjGwN1WTOTqhWh8Fm8kzn25sO9qIA+vwQB11V/jOXMoO4RLNZI1raIvwaUifi2BhPg7ikK
+	U2eP68fsLKjcO+25dHgwBT/KULI
+X-Received: by 2002:a05:6000:3cd:b0:48b:a7:638f with SMTP id ffacd0b85a97d-48b067a77a4mr3969002f8f.7.1790839730392;
+        Thu, 01 Oct 2026 00:28:50 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b06a2fc98sm4380736f8f.35.2026.10.01.00.28.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Oct 2026 00:28:49 -0700 (PDT)
+Message-ID: <f1e507b7-94f5-4357-a437-aad7f8538146@blackwall.org>
+Date: Thu, 1 Oct 2026 10:28:48 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 08/12] net: bridge: vlan: quiesce readers before
+ freeing port VLANs
+Content-Language: en-US, bg
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bridge@lists.linux.dev
+References: <20260930071411.2786201-1-razor@blackwall.org>
+ <20260930071411.2786201-9-razor@blackwall.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260930071411.2786201-9-razor@blackwall.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261001-submit-phylink-suspended-stop-v1-v1-1-0669fdb4a93b@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2Oyw6CMBBFf4XM2iaUYnn8imHRx1SqUmpbiIbw7
- 1ZleSYn584GEYPFCH2xQcDVRju7DPRUgBqFuyKxOjNUZcVpWVISFznZRPz4flh3zxg9Oo2axDR
- 7slJSdqaTnCE3NYOc8QGNff0mLuAwwfA/5tANVfrGDy3gc8kPpMOVIiJR85Tn+qJhzVmzlvFad
- EJwbiSjDeVSoUHDWoFK6Gy0MOz7B2Q0BsbVAAAA
-X-Change-ID: 20261001-submit-phylink-suspended-stop-v1-09f9b63e6f43
-To: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: linux-kernel@vger.kernel.org, 
- James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
 
-After a failed MAC resume, a driver must be able to stop phylink without
-resuming it and reconfiguring the failed MAC.
+On 30/09/2026 10:14, Nikolay Aleksandrov wrote:
+> Later fdb entries will cache port-VLAN pointers so unpublish a VLAN, wait
+> for a grace period (existing readers) and then purge or rewrite fdb
+> references before releasing it. Cached destinations can continue forwarding
+> until they are cleaned, that is acceptable so add a comment to document it.
+> During port teardown unpublish the complete VLAN group first, clean the
+> port fdbs and then release the VLANs. This lets all VLANs share one grace
+> period.
+> 
+> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+> ---
+>   net/bridge/br_fdb.c     | 20 ++++++++++++++++----
+>   net/bridge/br_if.c      |  7 +++++--
+>   net/bridge/br_private.h | 12 ++++++++++--
+>   net/bridge/br_vlan.c    | 21 +++++++++++++++------
+>   4 files changed, 46 insertions(+), 14 deletions(-)
+> 
+> diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+> index 7c68b540b358..307f9c12914e 100644
+> --- a/net/bridge/br_fdb.c
+> +++ b/net/bridge/br_fdb.c
+> @@ -883,7 +883,9 @@ void br_fdb_cleanup_by_dst(struct net_bridge *br,
+>   
+>   	spin_lock_bh(&br->hash_lock);
+>   	hlist_for_each_entry_safe(f, tmp, &br->fdb_list, fdb_node) {
+> -		if (br_fdb_dst_port(f) != p)
+> +		struct net_bridge_dst dst = br_fdb_dst_read(f);
+> +
+> +		if (br_dst_port(dst) != p)
+>   			continue;
+>   
+>   		if (vlan && f->key.vlan_id == vlan->vid &&
+> @@ -894,12 +896,22 @@ void br_fdb_cleanup_by_dst(struct net_bridge *br,
+>   			continue;
+>   		}
+>   
+> -		if (!do_all)
+> +		if (!do_all) {
+> +			if (vid && f->key.vlan_id != vid)
+> +				continue;
+> +
+>   			if (test_bit(BR_FDB_STATIC, &f->flags) ||
+>   			    (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &f->flags) &&
+> -			     !test_bit(BR_FDB_OFFLOADED, &f->flags)) ||
+> -			    (vid && f->key.vlan_id != vid))
+> +			     !test_bit(BR_FDB_OFFLOADED, &f->flags))) {
+> +				/* The entry outlives the VLAN, so it must fall
+> +				 * back to the raw port destination
+> +				 */
+> +				if (vlan && br_dst_vlan(dst) == vlan)
+> +					br_fdb_dst_write(f,
+> +							 br_port_to_dst(p));
+>   				continue;
+> +			}
+> +		}
+>   
+>   		if (test_bit(BR_FDB_LOCAL, &f->flags))
+>   			fdb_delete_local(br, p, f);
+> diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
+> index d94558a5e3e9..2c05ebc1299d 100644
+> --- a/net/bridge/br_if.c
+> +++ b/net/bridge/br_if.c
+> @@ -333,8 +333,9 @@ static void update_headroom(struct net_bridge *br, int new_hr)
+>    */
+>   static void del_nbp(struct net_bridge_port *p)
+>   {
+> -	struct net_bridge *br = p->br;
+> +	struct net_bridge_vlan_group *vg;
+>   	struct net_device *dev = p->dev;
+> +	struct net_bridge *br = p->br;
+>   
+>   	sysfs_remove_link(br->ifobj, p->dev->name);
+>   
+> @@ -354,8 +355,10 @@ static void del_nbp(struct net_bridge_port *p)
+>   		update_headroom(br, get_max_headroom(br));
+>   	netdev_reset_rx_headroom(dev);
+>   
+> -	nbp_vlan_flush(p);
+> +	vg = nbp_vlan_group(p);
+> +	nbp_vlan_group_unpublish(p);
+>   	br_fdb_cleanup_by_dst(br, br_port_to_dst(p), 0, 1);
+> +	nbp_vlan_flush(p, vg);
+>   	switchdev_deferred_process();
+>   	nbp_backup_clear(p);
+>   
+> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+> index a790368b69e9..951b6ac5f484 100644
+> --- a/net/bridge/br_private.h
+> +++ b/net/bridge/br_private.h
+> @@ -1735,7 +1735,9 @@ int __br_vlan_set_default_pvid(struct net_bridge *br, u16 pvid,
+>   int nbp_vlan_add(struct net_bridge_port *port, u16 vid, u16 flags,
+>   		 bool *changed, struct netlink_ext_ack *extack);
+>   int nbp_vlan_delete(struct net_bridge_port *port, u16 vid);
+> -void nbp_vlan_flush(struct net_bridge_port *port);
+> +void nbp_vlan_group_unpublish(struct net_bridge_port *port);
+> +void nbp_vlan_flush(struct net_bridge_port *port,
+> +		    struct net_bridge_vlan_group *vg);
+>   int nbp_vlan_init(struct net_bridge_port *port, struct netlink_ext_ack *extack);
+>   int nbp_get_num_vlan_infos(struct net_bridge_port *p, u32 filter_mask);
+>   void br_vlan_get_stats(const struct net_bridge_vlan *v,
+> @@ -1894,7 +1896,13 @@ static inline int nbp_vlan_delete(struct net_bridge_port *port, u16 vid)
+>   	return -EOPNOTSUPP;
+>   }
+>   
+> -static inline void nbp_vlan_flush(struct net_bridge_port *port)
+> +static inline void nbp_vlan_group_unpublish(struct net_bridge_port *port)
+> +{
+> +}
+> +
+> +static inline void
+> +nbp_vlan_flush(struct net_bridge_port *port,
+> +	       struct net_bridge_vlan_group *vg)
+>   {
+>   }
+>   
+> diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+> index 8a914e249767..0675f74cf1b9 100644
+> --- a/net/bridge/br_vlan.c
+> +++ b/net/bridge/br_vlan.c
+> @@ -1406,23 +1406,32 @@ int nbp_vlan_delete(struct net_bridge_port *port, u16 vid)
+>   	v = br_vlan_find(vg, vid);
+>   	if (!v)
+>   		return -ENOENT;
+> -	br_fdb_cleanup_by_dst(port->br, br_vlan_to_dst(v), vid, 0);
+>   	__vlan_unpublish(vg, v);
+> +	synchronize_net();
 
-For MAC WoL, finish the deferred link-down and clear the WoL disable bit.
-Otherwise, avoid repeating PHY, SFP and PCS shutdown, but suspend a PHY
-that prepare_resume() powered up for the MAC reset clock.
+Sashiko says:
+  Does this synchronize_net() call introduce an RTNL stall and IPI storm when
+  processing a large VLAN range?
+  When a user issues an RTM_DELLINK command specifying a large range of VLANs
+  (e.g., vid 1-4094), br_process_vlan_info() iterates over the range sequentially:
+  net/bridge/br_netlink.c:br_process_vlan_info() {
+      ...
+  		for (v = (*vinfo_last)->vid; v <= vinfo_curr->vid; v++) {
+  			bool curr_change = false;
+  			tmp_vinfo.vid = v;
+  			err = br_vlan_info(br, p, cmd, &tmp_vinfo, &curr_change,
+  					   extack);
+      ...
+  }
+  This loop calls into br_vlan_info(), which then calls nbp_vlan_delete() for
+  each VLAN. Because the global RTNL lock is held during this process,
+  synchronize_net() translates to synchronize_rcu_expedited().
+  Calling this iteratively up to 4094 times blocks the RTNL lock for several
+  seconds and spams all CPUs with IPIs, causing a severe system-wide network
+  configuration Denial of Service. This is reachable by any user with
+  CAP_NET_ADMIN in the network namespace, which can often be obtained by
+  unprivileged local users via user namespaces.
+  Could these grace periods be batched or deferred when deleting multiple VLANs?
 
-Retain the saved link state if MAC WoL is suspended again after a failed
-resume. For example, fbnic can fail to allocate IRQs on resume and call
-phylink_suspend() again on the next system suspend. The carrier is already
-off, so taking another snapshot loses the deferred mac_link_down(). Keep
-the original snapshot until resume or stop completes, allowing the next
-suspend cycle to capture the new link state.
+  - Yes, they can be batched and I had them batched initially but when I ran my tests I didn't
+    notice any problems deleting a full VLAN range. It took 79ms on my host to delete 4k VLANs.
+    As I've stated in my cover letter - the complexity is not worth it, so I dropped that patch.
 
-Restore any PHY advertisement reduced by suspend. Track that reduction
-separately from explicit driver speed-down requests, so stopping a
-suspended instance does not undo a driver's close-time power saving.
-
-Fixes: f97493657c63 ("net: phylink: add suspend/resume support")
-Fixes: 4c8925cb9db1 ("net: phylink: fix suspend/resume with WoL enabled and link down")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/phy/phylink.c | 56 +++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 52 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 1bbcf46c8356..08f06ae5213f 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -78,6 +78,7 @@ struct phylink {
- 
- 	bool link_failed;
- 	bool suspend_link_up;
-+	bool suspend_speed_down;
- 	bool force_major_config;
- 	bool major_config_failed;
- 	bool mac_supports_eee_ops;
-@@ -2498,6 +2499,14 @@ void phylink_start(struct phylink *pl)
- }
- EXPORT_SYMBOL_GPL(phylink_start);
- 
-+static void phylink_restore_suspend_speed(struct phylink *pl)
-+{
-+	if (pl->suspend_speed_down) {
-+		phylink_speed_up(pl);
-+		pl->suspend_speed_down = false;
-+	}
-+}
-+
- /**
-  * phylink_stop() - stop a phylink instance
-  * @pl: a pointer to a &struct phylink returned from phylink_create()
-@@ -2509,11 +2518,30 @@ EXPORT_SYMBOL_GPL(phylink_start);
-  *
-  * This will synchronously bring down the link if the link is not already
-  * down (in other words, it will trigger a mac_link_down() method call.)
-+ * A suspended instance may be stopped without first calling phylink_resume().
-+ * In particular, closing a device after a failed resume must not restart the
-+ * link or reconfigure the MAC just to finish shutting it down.
-+ * Any PHY advertisement reduced by phylink_suspend() is restored as part
-+ * of this transition.
-+ * If phylink_prepare_resume() powered up an already stopped PHY, suspend
-+ * it again when Wake-on-LAN permits.
-  */
- void phylink_stop(struct phylink *pl)
- {
- 	ASSERT_RTNL();
- 
-+	/* Also undo PHY speed control when terminating a suspended instance. */
-+	phylink_restore_suspend_speed(pl);
-+
-+	if (test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state)) {
-+		/* A failed MAC resume may have called phylink_prepare_resume()
-+		 * and powered the stopped PHY back up to supply its RX clock.
-+		 */
-+		if (pl->phydev)
-+			phy_suspend(pl->phydev);
-+		return;
-+	}
-+
- 	if (pl->sfp_bus)
- 		sfp_upstream_stop(pl->sfp_bus);
- 	if (pl->phydev)
-@@ -2526,6 +2554,16 @@ void phylink_stop(struct phylink *pl)
- 
- 	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
- 
-+	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
-+		/* Finish the link-down deferred by MAC WoL, without restarting. */
-+		flush_work(&pl->resolve);
-+		mutex_lock(&pl->state_mutex);
-+		if (pl->suspend_link_up)
-+			phylink_link_down(pl);
-+		__clear_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
-+		mutex_unlock(&pl->state_mutex);
-+	}
-+
- 	pl->pcs_state = PCS_STATE_DOWN;
- 
- 	phylink_pcs_disable(pl->pcs);
-@@ -2635,10 +2673,13 @@ void phylink_suspend(struct phylink *pl, bool mac_wol)
- 		/* Wake-on-Lan enabled, MAC handling */
- 		mutex_lock(&pl->state_mutex);
- 
-+		/* Preserve the pending link-down if a previous resume failed. */
-+		if (!test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state))
-+			pl->suspend_link_up = phylink_link_is_up(pl);
-+
- 		/* Stop the resolver bringing the link up */
- 		__set_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
- 
--		pl->suspend_link_up = phylink_link_is_up(pl);
- 		if (pl->suspend_link_up) {
- 			/* Disable the carrier, to prevent transmit timeouts,
- 			 * but one would hope all packets have been sent. This
-@@ -2657,8 +2698,10 @@ void phylink_suspend(struct phylink *pl, bool mac_wol)
- 		phylink_stop(pl);
- 	}
- 
--	if (phylink_phy_pm_speed_ctrl(pl))
-+	if (phylink_phy_pm_speed_ctrl(pl)) {
- 		phylink_speed_down(pl, false);
-+		pl->suspend_speed_down = true;
-+	}
- }
- EXPORT_SYMBOL_GPL(phylink_suspend);
- 
-@@ -2698,8 +2741,7 @@ void phylink_resume(struct phylink *pl)
- {
- 	ASSERT_RTNL();
- 
--	if (phylink_phy_pm_speed_ctrl(pl))
--		phylink_speed_up(pl);
-+	phylink_restore_suspend_speed(pl);
- 
- 	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
- 		/* Wake-on-Lan enabled, MAC handling */
-@@ -3616,6 +3658,12 @@ int phylink_speed_down(struct phylink *pl, bool sync)
- 
- 	ASSERT_RTNL();
- 
-+	/* An explicit request takes over from suspend-time speed control.
-+	 * Restore the original advertisement before saving it again, so a
-+	 * repeated speed-down cannot replace it with the reduced advertisement.
-+	 */
-+	phylink_restore_suspend_speed(pl);
-+
- 	if (!pl->sfp_bus && pl->phydev)
- 		ret = phy_speed_down(pl->phydev, sync);
- 
-
----
-base-commit: 7375d38364a9aa66fb31716bcefef38aecad75d8
-change-id: 20261001-submit-phylink-suspended-stop-v1-09f9b63e6f43
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
+> +	/* Traffic may still use v through cached fdb dsts until they are
+> +	 * cleaned below. This is acceptable during vlan deletion. Above we
+> +	 * drain the readers that could republish the dst before cleaning it
+> +	 */
+> +	br_fdb_cleanup_by_dst(port->br, br_vlan_to_dst(v), vid, 0);
+>   	__vlan_del(vg, v);
+>   
+>   	return 0;
+>   }
+>   
+> -void nbp_vlan_flush(struct net_bridge_port *port)
+> +void nbp_vlan_group_unpublish(struct net_bridge_port *port)
+>   {
+> -	struct net_bridge_vlan_group *vg;
+> -
+>   	ASSERT_RTNL();
+>   
+> -	vg = nbp_vlan_group(port);
+> -	__vlan_flush(port->br, port, vg);
+>   	RCU_INIT_POINTER(port->vlgrp, NULL);
+>   	synchronize_net();
+> +}
+> +
+> +void nbp_vlan_flush(struct net_bridge_port *port,
+> +		    struct net_bridge_vlan_group *vg)
+> +{
+> +	ASSERT_RTNL();
+> +
+> +	__vlan_flush(port->br, port, vg);
+>   	__vlan_group_free(vg);
+>   }
+>   
 
