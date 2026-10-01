@@ -1,126 +1,132 @@
-Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBEA395AD3
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 23:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607923D3337
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 23:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790897444; cv=none; b=GGVtCxmGZNfryEUSuotbLynaX17oCJccxaaMlwJ6WrxUX/pEGnmt4YaDlkkMPKLHXk5Xc8ZFtNseDzgt//hsIMnlEz9URrEirFi1GM1ChCmIAZMZJa3P92vaH3dY4dcI+Mxyd63Q079DwaMY+jRyRbpxjpA24SrtbyX4+tnEh6E=
+	t=1790897452; cv=none; b=trGET1568vqPELFE9n+00gHqhCSgHEoGfKDKfOlSYJwLCF0JDNafK7TBMJkGwW2JctPZJNZD07qYcUkOIP+xjonC2HsyDc1Nj8FW3753GLecqkH5h/JXPrrJp1oj16xT8L4KV2W3LGwJYR7t6pLYG1APnp1jV+Zcw7mcKRHi+QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790897444; c=relaxed/simple;
-	bh=WLTB+sZZf2wNRSIM+S6/SLdIn2Dkw8XFfu5Iy5GOmMA=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=u5TriexY428H1MKL7OlvNkMjvU+dCCXqRRA8OrEOUcJFfPP6uhUljU6Y7v/z04Cr0vr8ysQIOMdkdhVOqfRgXnVG4NNOxqk7289XvmP6qPOa8wuqTxSWfTyWcqUjNbVZOQiqbcaFDFUXgJja6xafKXYJLusvW314wl+xJyFksgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7jMDS7m; arc=none smtp.client-ip=74.125.224.166
+	s=arc-20240116; t=1790897452; c=relaxed/simple;
+	bh=WQqvvD/sQatAVKeDt7OzSCnSoyrrtfFbAK2i7nM2NgM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HK4CsRjHbrYJ62XXSoAlV0Xm9sqZUPyID6dZsxHF9SmA0YkAZApwzqwLGwk9/uUsUcuyJUW8JRF1mb6oMwctokuOXz9iQkjbSmqv1ZJuHC7pss1JjD5X7xks92mwSnk3DP5xpUxagtkXF4MdUCa7Udf8xp9AgH7KHVKE9C2Hqzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U+RKq1TF; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7jMDS7m"
-Received: by mail-yx2-f38.google.com with SMTP id 956f58d0204a3-6768033d654so2474218d50.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 16:30:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U+RKq1TF"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e69b9e16aso72592065e9.1
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 16:30:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790897442; x=1791502242; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FN4DLb9s8h7PnriBnjldQ6rFsgm/l6KqXxxzeKqYvwk=;
-        b=k7jMDS7meSzKUYgG6IFXwfPG3pNUIXqBkN4JRdFlnF5xLU5vVmK1FWhIn6+YYMDeRJ
-         8Y8/O++q5LzIHWHi5/u0LvvfqC/AW3NozMGY55XL/W8pciyRdmsGvpWy5HbNMDWiihXE
-         TGPJMTi39nJXufyYKz+eE5E+heMc89JUsxNU/QFWvcVF5dSdY2UMnlMJvuh8dHVxYKAn
-         xIjCLzKJA/xoK6zngNhWE8YSDUArFGyDa/MSPzxvLukk7w3MFsy+OJqK39wdFRIAJGaV
-         tWxJqEYQqCtMJ8XsnC3LqJeIlOxhwpMvvwEkEMe/DplJpSQlE7hVZBp7H112K/ymcpGV
-         Y1DQ==
+        d=gmail.com; s=20251104; t=1790897449; x=1791502249; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DMTt9X+tMN/0URvJisKt8BWrlZlLlxVbSwTrZVovw7s=;
+        b=U+RKq1TFEccUu2VyRUAOyCu9xPrXC0uBIhgO5ZIiSiQ/MSF2z6VmUP5SRw2gstarWz
+         1NI83Qkz9tDXHEDTk67oOUFp5bCASW4QsllcMAnvhjEgMppYrJqMx1pZ+ltRe3bzV2qh
+         TKN4bGbf2LiAiwWiyeeNwPuJ32OP7QQsFvegOOLqPWg2oWtGkAS8ideA0NDTeTFAAJvZ
+         jeHavgpurXxyPkaZD3fpbgcnlYTmpmm93G0AOmT44pIdPPxB3aK7+wPtGj7c03Nk1oiV
+         2wcsePHywtb+63SXWHtQKtslB06SKmxcO85WNn1yPxWer3hCXSyUQ0zI44XOu8ncGjGb
+         YXRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790897442; x=1791502242;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1790897449; x=1791502249;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FN4DLb9s8h7PnriBnjldQ6rFsgm/l6KqXxxzeKqYvwk=;
-        b=cPi4sb2xAFxDkvxjcN4jOfrAuzYzxMCSGN0681G6geqIIG9YduJ1sMFCcTPH9dxId0
-         6vVZnDMUKTneeblHuaejI0etkjAfSAlQVyqyIiOfYX36+k7CiMe7XO9rp0CQq4IqT6IZ
-         +8iD1NqthUdCUU7BIwuUIIZaWa3UIB26cLEKYa5+4PwGBRkoTWSpj+3wet+3CHPIkbK3
-         1jo+NqhCnQ/NYXwJJqWBSzUsoYdq+W2apOxom+j5wNlBGBaRSEe/d8A3yuURV/SaKmMd
-         vTq9w+ts7N7GlR4E7Skop626Rl0nJmk1Y0eiu4A7e2NENKSiR+Z9vOb5VQGwD+dHgi06
-         Zp8A==
-X-Forwarded-Encrypted: i=1; AKwUvByVWb7nOEGywf83rq8grlnz+17CQlI+sEZ1FRw9SD9M6C4BKOBUyQod0D9mhhjRjorLSaXmIS4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJJGyVYk5596B7t9YgTSE30auolGq90F9dTZvWFhSeSEU0wCmFy
-	9BbkDq7j+xi/ksJHWK3ZFDWaIJEuqTZ/E5tyYDG7iPNK2M++rRtj0/4B
-X-Gm-Gg: AYBFou0UN7EHnPMQjmztIunDXlBsv/vvxZlX7ysDlPGqeoM659oLspAdxvYoDUvl8dK
-	2M0uUyJ9+EYFipEyktUqFQsqRndqWVCO8DROhsJUsMnr3sx/ImevbArZxQCPWcDIZqfa8pnKduf
-	1nJQpOjbyQS5DrcdrvgKeryPt7kBR9caAd1WN6Xf/EenSolk1f1nt187LeuGDbjJR50iSzU/BJ+
-	ltD8qrw+oTMthJ9W8Z/dO+fMuPa+pG86vCPbOGEtcAF/Z8SOkjjHa4yPQh0WSXI/I4ETAcgsO5G
-	bDDl1lhTSdLNr8gvnzBcf90PYjtFjqddZpPQ/5t6OLCE4/Ai0sWpjlNql5dfnZO2B/NLU7lxDTV
-	8bHq5ggc7fDff4PO6BTy1wZVsSKB52fWxGlnTFS9wiRt4D0b0H4dvodRq0tK49asohodfA/rhV7
-	2CDtNBKqfKhSXhGuZytxsUaSvOr9NhFdOc1yhj77gLGfHJ6z5UvNS0uWjC6anclfVtHJIIgcQ41
-	hVJ2N/Cp3HXVKLcuJOysxFVPR1gCDZbgXwxGKdjcNYrxAYhLEm+
-X-Received: by 2002:a05:690e:43cc:10b0:672:a055:f994 with SMTP id 956f58d0204a3-677ac0d91e1mr350168d50.55.1790897441671;
-        Thu, 01 Oct 2026 16:30:41 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae33fe81fdsm2974547b3.47.2026.10.01.16.30.41
+        bh=DMTt9X+tMN/0URvJisKt8BWrlZlLlxVbSwTrZVovw7s=;
+        b=RFjY8/ahNHU2hNVcRTwoPu6h+1AJCv9IbbWBgRpa0GsLT17CPcOqQZ5jAaT+8HChMj
+         tLVkQ0ddOXbhPz5BJ/ygPCJdniVuhHXKBxqYRbgGKC7koT+y+zXlrt6fQfTSoaDFA2C+
+         vrRR5P89/h6iY5p2DU450WKVd0wOyVjLxdIaRTX4k3RnU9epuYxT8rWZkM6AbsfHxrMa
+         ZutP7nJCV0CBsjvrNZr4jR5qvfYV0LAeqYvQ/f05ibyM1TEFrJJjjQaZbi/zAx4lURn/
+         MtLmlV3B2K9y6Y+HcEdkvldP9uKgP+VuJGn/cPZQWAAxCp6BkmD8P/fRxxWGVUT7y+iu
+         XlEg==
+X-Gm-Message-State: AFuF++mL5R541DelqejuzVrquDzt1TxRfWf/+1qZk6eMgjd/nZVSg80p
+	/lT7t0CZy/9oISETFdOydXrX0hlE08I9Sr3EcEms7yvaebIr/3zMw20w
+X-Gm-Gg: AYBFou25ro3yZwQGhelgEWZZEkWHBzSuC7KgOfWNslHyys024LtqlETl1DZq9SNXn2F
+	okdyxVS6UcdRzteDxapMz4njrzDj7VPmCrKtw2wmzsyqM90GTs2yKqyHonTCO/BzhTA4lyDcz6J
+	RAYKbweuEAeCTvzxkUUsHHENZD2HvDqN05j6ahiau7SZHMURjBkpKvgEuisJSwTvJ3Hdl6PG4XN
+	kXwuFTPoInzmLL6XFBsABPka6Z69ZxDhiQgpQEBLPY9xBj0YuKJ/pEeqxqmP565tfPD/R3BzrD6
+	i30lr9wMKvTezn2+FeCVsiY1UiNzCn3dh37c8nRTJPYqVB7S8MEdrQaOW6KUmaWupKYFyQ3eVWe
+	VFKycyIW29JYJIvDZQDWunYgquyDlIzb4q3ZPecL+cy6MawBrky22iB65Be0suSR1hT5kQ0ZbVK
+	vUksMEuQ+oF8ESCiH64SYVN4+4qdvY0CYZLEpKqfV446gDAvxe8nAsKxvzrK/LLXZRadeOUju8q
+	DOlTlaYkl+9EM5uaS4KK4o8iCAOZ/R8ytci3JYtYuHoZMYQr0JaafXQcbnKgygcPEU5Tg9NlWky
+	IXRnGuLN5BPzSQz7zzIgFhoFCBZ+quLmcm7dR9i6Zi6zUDQFjrEsO0He2e5qymT9BHaetQImC4B
+	QQT3+cwbMSNQ=
+X-Received: by 2002:a05:600c:3501:b0:49d:2562:d670 with SMTP id 5b1f17b1804b1-4a02757ab71mr17738425e9.14.1790897448522;
+        Thu, 01 Oct 2026 16:30:48 -0700 (PDT)
+Received: from MBP-von-Karl.localdomain (dynamic-2a02-3100-b3ca-3a01-3deb-81e4-0dc4-fbe8.310.pool.telefonica.de. [2a02:3100:b3ca:3a01:3deb:81e4:dc4:fbe8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a03feed16bsm11717875e9.4.2026.10.01.16.30.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 16:30:41 -0700 (PDT)
-Date: Thu, 01 Oct 2026 19:30:40 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- netdev@vger.kernel.org, 
- edumazet@google.com, 
- Eric Dumazet <edumazet@kernel.org>
-Message-ID: <willemdebruijn.kernel.2a4826c889744@gmail.com>
-In-Reply-To: <20261001191140.2818991-2-edumazet@kernel.org>
-References: <20261001191140.2818991-1-edumazet@kernel.org>
- <20261001191140.2818991-2-edumazet@kernel.org>
-Subject: Re: [PATCH v3 net 1/3] flow_dissector: avoid u16 truncation of
- skb->len when computing thoff
+        Thu, 01 Oct 2026 16:30:47 -0700 (PDT)
+Date: Fri, 2 Oct 2026 01:30:45 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Stephen Hemminger <stephen@networkplumber.org>, Arend van Spriel <arend.vanspriel@broadcom.com>, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] netpoll: use a raw lock for the deferred
+ transmit queue
+Message-ID: <ar7sTVun7mF-4nl6@gmail.com>
+References: <20260928064239.32456-1-kmehltretter@gmail.com>
+ <20260930192103.62973-2-kmehltretter@gmail.com>
+ <20261001074819.gQ3w8q6P@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261001074819.gQ3w8q6P@linutronix.de>
 
-Eric Dumazet wrote:
-> __skb_flow_dissect() computes key_control->thoff using:
+On Thu, Oct 01, 2026 at 09:48:19AM +0100, Sebastian Andrzej Siewior wrote:
+> On 2026-09-30 21:21:02 [+0200], Karl Mehltretter wrote:
+> > netpoll_send_skb() calls __netpoll_send_skb() with hard interrupts
+> > disabled. When direct transmission cannot complete, the latter queues
+> > the skb with skb_queue_tail(). The sk_buff_head lock may sleep on
+> > PREEMPT_RT:
+> > 
+> >   BUG: sleeping function called from invalid context
+> >   in_atomic(): 0, irqs_disabled(): 1, non_block: 0
+> >   rt_spin_lock
+> >   skb_queue_tail
+> >   netpoll_send_skb
 > 
->   key_control->thoff = min_t(u16, nhoff, skb ? skb->len : hlen);
+> How is this possible? netpoll is only used by netconsole right? And this
+> is CON_NBCON so it only prints threaded. What is the missing piece?
 > 
-> min_t(u16, ...) casts both arguments to u16 before comparing them.
-> Whenever skb->len (or hlen) modulo 65536 is smaller than nhoff, the
-> truncated length wins and thoff is set to a bogus small value, even
-> when the dissection succeeded. For example, an IPv4/TCP frame with
-> skb->len == 65540 and nhoff == 34 gets thoff == 4, so callers such as
-> skb_probe_transport_header() point the transport header inside the
-> Ethernet header.
-> 
-> Such skbs are not exotic:
-> - At the time of commit d0c081b49137 ("flow_dissector: properly cap
->   thoff field"), AF_PACKET with PACKET_VNET_HDR could already build GSO
->   skbs larger than 64KB (MTU checks are skipped for GSO, and
->   alloc_skb_with_frags() accepted up to MAX_SKB_FRAGS (17) order-0
->   pages on top of the linear part).
-> - BIG TCP now makes skbs larger than 64KB common.
-> - The following patch makes tun_get_user() dissect IFF_TAP frames
->   before eth_type_trans() pulls the Ethernet header, so a GSO frame
->   carrying a 65522..65535 byte L3 packet will be dissected with
->   skb->len in [65536, 65549].
-> 
-> Compare as u32 instead. If the resulting offset cannot be represented
-> in the u16 key_control->thoff, cap it to U16_MAX and report the
-> dissection as failed rather than silently returning a wrong transport
-> offset. thoff is still set on failure, as some callers (such as
-> eth_get_headlen()) use it regardless of the return value.
-> 
-> Fixes: d0c081b49137 ("flow_dissector: properly cap thoff field")
-> Assisted-by: LLM
-> Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+The call is from the NBCON printer thread, but netpoll_send_skb()
+explicitly disables hard interrupts around __netpoll_send_skb():
+
+        local_irq_save(flags);
+        ret = __netpoll_send_skb(np, skb);
+        local_irq_restore(flags);
+
+When direct transmission cannot complete, __netpoll_send_skb() calls
+skb_queue_tail() before interrupts are restored. Its spinlock can sleep
+on PREEMPT_RT despite the caller being a thread.
+
+The deferred skb is later handled by queue_process(), a workqueue
+callback. Its requeue path has the same IRQ-disabled locking:
+
+        local_irq_save(flags);
+        [...]
+        HARD_TX_LOCK(dev, txq, smp_processor_id());
+        if (netif_xmit_frozen_or_stopped(txq) ||
+            !dev_xmit_complete(netpoll_start_xmit(skb, dev, txq))) {
+                skb_queue_head(&npinfo->txq, skb);
+                HARD_TX_UNLOCK(dev, txq);
+                local_irq_restore(flags);
+                [...]
+        }
+
+Thanks,
+Karl
