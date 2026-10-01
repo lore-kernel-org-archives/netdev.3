@@ -1,165 +1,177 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF0E4F93D0;
-	Thu,  1 Oct 2026 09:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.164
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790846616; cv=pass; b=cIW4w6CC1XjJYikGwSQi65/PEt+6x3RfL1AjobDO8FwCQEWky+8Uf1nushQzdKUJn7b5tlBgpPtG7oQoqFsH8LDXpohdac92sl2g0C3+PL4aYBConfIEYEIyL/LRQOqHpeNbZP1wmYTDCgpgOEUjmtJWauTnFxtXswgFF6gIixc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790846616; c=relaxed/simple;
-	bh=uXz06xG8AGFlhl8QdbP6ubMQBsrBTy82UncVvrfZ/Sc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Myz7qfQBUNpKW4reTe8XLhSKTDntmQNOX2vVTT5JrRFn81K7+1zFkXNPO8hSthEz12AuScUL8QjqZInaQMt3kt8ci+upXH/lCkzbwAXQwJPLrNR9JhDomxX8FN3OyfV1aaAgG6tWmPvDOkC872620Yahe9Dhm0Y3B/Q9b67oDMM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=RXpzIR5N; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=P0A+ThxM; arc=pass smtp.client-ip=81.169.146.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2064D4CEE47
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 09:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790846801; cv=none; b=dOetpKdb1VU4AfLxNhCbYXOwv/9vuIURqjchDgh9YoVnLLnpo6a7s2LjCXdKhRAOuoWhU770Pc75hgc1pS3MxAYKCEFg5XQ/YQsS/FkSDZjHV7Z9w5NM5G19eSbKNx9vnwhTD63rXsiM97M4x4V5OwIvNPKR55qQITJkfVkGpNk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790846801; c=relaxed/simple;
+	bh=NkYY+1DeiRh9z+KuLD2c3bCcQ3Wpe85neE0KaprW3qo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=l/p9VHawC+91w9YejXXpmA3uef818i01UCDptCFvv2QEaDd+6OzybPFOtwqSW8kpWYCF4dBlyntCtHPbwkx8kkagqAEE/vdI/udT+lrg42ZKAFYTR+g0qV1X0H5bx63eyM0SC3+fNQ5tOxSI7hpnkCriPYSm5kTaK/XxfsvedQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=e9a/9ElT; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ez1OgUjw; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="RXpzIR5N";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="P0A+ThxM"
-ARC-Seal: i=1; a=rsa-sha256; t=1790846592; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=VU7naCXCb5pyJcB6TM2YeJLZw7uG9n6IjXxivy22LuSy/pXjz3ekCsNXYtZK/FMosZ
-    bLT+imdlAVoAh41xL+9VNXPM4sY6e1PjG0KZD0ueTIzIQXhb9NYOe9IyuLmib33ROPCe
-    zvzkx6bSp3YYxcHbpZx+nh5o5mFhBSW1WdPvGkCHeKeMS0XZQJYMVoSzPoUVhn42FVd2
-    pafUeAu5A1E024ee7G58dCYycG/lWS1bv4le5pGtuzD2C9H7cZ78yuyLlvulGT6RmDuy
-    yvooUi9OeoUJCgaJvYi6hmuaW+7qRJVxi4oOLWkj/smMXhZyg5a4yEAE2BzzdZnPK+WW
-    rFNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1790846592;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=YrNRnCjkjXbRg1JmZz7Nqw66nkRndh2mIE9HFNpd+N8=;
-    b=nLwkonWqFWSLi2M/fzQwFNwgomfOU/u615Ac+jefyywOYDlyPwMM6NJCrI+hEYrsyj
-    gFIGtSOkvMG3YHz7a0nd7H3LyKKr6SzUB1mbCIY11Sslu4gjf5fAnp1dXaFduBR1UQrF
-    saNLb6/aipV1tYRycHSdAqeq4/NtHMvtPGbu8UcGkfJ179dHmtfVy3fioW2d9R0xWnsH
-    iUeTvabKdcSbROtF8rkBKhLgBbpH90Z6ll8sn5HapMcgviVDIDAdq/7dpL5RF9kqxfKJ
-    TntPyM9hUthwe0xNAC7waOf1qKtenoUlE152VnJUleQcPTy2BQ9hIIjb2i8lcyOabYZs
-    5ncQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1790846592;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=YrNRnCjkjXbRg1JmZz7Nqw66nkRndh2mIE9HFNpd+N8=;
-    b=RXpzIR5NVpLLORDG4vYHRndB6ZO+pRXlscFRKP6khIBxVqVGZEFM4lVkQrl5Gtyymp
-    Q5OIz1mdpiAcxhp7X1xmFZxbksSuNd+913hg6YZ5YAd5Uxkcdhsleup2ph0R6Gi2hWGq
-    yFznQhYJJYl3ApEIQ2PMq0lBH2dHPGrLMMKt2d6JsD8LdGp6dOYNhz+5W1VcSrrLOhUF
-    ZTlIGdOYP0Y4hXMW5XURNgP1j/oAymK/e+Fa3YMuZcBTAUs4bOFDH9VE7plGNhTLA0+H
-    /tAS5aJ3zYZ8CQlAx/oa0FToNJztfZyNAojZsOrkgDY0mnnNuK6o9vl8AaV10Q+PV677
-    RJIQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1790846592;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=YrNRnCjkjXbRg1JmZz7Nqw66nkRndh2mIE9HFNpd+N8=;
-    b=P0A+ThxMDn17eRy3H8Suw81Cjovp6VPF2XmLBw9c27m6ydxLpoRoMZfHk8MY3oRcrm
-    Q16moYgn5E8RNSO4SvCg==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tRkI16oOSW1Ti/f4Kp38="
-Received: from [192.168.20.217]
-    by smtp.strato.de (RZmta 55.6.2 SBL|AUTH)
-    with ESMTPSA id K04b9a2919NBfMg
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 1 Oct 2026 11:23:11 +0200 (CEST)
-Message-ID: <cb83d0dc-58a4-4262-99a0-1e4478630ba0@hartkopp.net>
-Date: Thu, 1 Oct 2026 11:23:07 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="e9a/9ElT";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ez1OgUjw"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6916xa31962445
+	for <netdev@vger.kernel.org>; Thu, 1 Oct 2026 09:26:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=vL+NGGHGnOqAqDpLAA9zVX
+	rhPezAzpq3G+BHPNIYUq8=; b=e9a/9ElTdJXAvPYX0PFefR/z5Lmp4i7RozxKNY
+	GXfzWLUPTVDTXh5wEPdyuYJTfb0mFDb6nkAjtnkKo155rPEWADOCTBiGx8+p90EQ
+	vqPzx9O1a0JFzSh3h8VeDazroXPj0b6lMfzTOZ30sYV2Mxu9BLXE7HmpoT6mNPc8
+	g+4G/NGQkSw0dbgZbHq6mHaj8MqzDeLRiZJHCpI493dq86ZDVy0L1fPKVt+cbeUo
+	Al6ARetcA2L41uqH4r9kpNFrp8aJ2rzIJmKh7jVmZ/ttRtuz3y63Z6Td9fNx9Tam
+	0/4SHcCGWhKGUyfqEahYCIcT0mW49tTj7ly1DMjQyed6feZw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h16wcub79-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 09:26:31 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9308eafb465so1573778485a.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 02:26:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1790846791; x=1791451591; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vL+NGGHGnOqAqDpLAA9zVXrhPezAzpq3G+BHPNIYUq8=;
+        b=Ez1OgUjwsKgH05dlbcdAyuNtnlKq8Tbts582ML4WaJ5wNoXWmNQSuSGjBwZfkU1b0B
+         rYSGs4bNWF8uv8eebFzptivMbe3FCrCQAcs9j4WuxO/XrGBQa5Fv8mmle78jAhBvnsQX
+         V4GuODHTNUgYdIn85MopFuVxstOLWZq8YAJOJTxj3ag+5F8On49GTU6gTLeygVocnAhA
+         OwrY8djvaB9qYT0u4G7OHU+4QCCEmEjcQEk61uKGPK3dxkL8aammiBHasxLtErj3iJG0
+         ANerY76gSJ0YTlYF7vtpIlVysUUdrss8GThYNurwcsZ5Tr7h1Mbk3t1dqd5Ehc18A1er
+         s+Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790846791; x=1791451591;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vL+NGGHGnOqAqDpLAA9zVXrhPezAzpq3G+BHPNIYUq8=;
+        b=ymqgAM3pZGzYd2n1pXSeD086UfdepoaJXBCMHswi7+4uZpl78vnqMClvcowvzyNaWm
+         PwlhLV46bSV5KokIlVCKKrau1GaojN0cYfySz5yksJDgKaxvzrQVmhAIGCiTZBjzrn+u
+         myH/8lmq9L9RFW3cHk9UgE33BbgRpI6x4JaYVonDzIVMRPNAqYQOR7Vvx4J/LMGz3xyK
+         BxWGsbMscMJaZp0WPHyEkpEEpEwJXydVQYvwq21IWlzFNxaRX4HIUC2bPkdMbrB39ZQV
+         ixyCL6bnZIaXBgSD6X/+k0h/jYzwEgcrJxkdlDUIqEnrozbuvJfuL/7C3Hm0p/fdZ/qn
+         i3jw==
+X-Gm-Message-State: AFuF++kPPUPVg33ETPVuEJDNJqWms3AhMM9oWRBJnlkr1Tf++8BAc02k
+	CxARTyoobxtuZGoPAb/oTvtEShaMmbdBqDH7K6p0BjMWjvM0//Sn00TdAQwEV7SQ9fGyy+85Ca/
+	z7yYfGQS0qwvZQ/cCdjoPPEJ840c3mk9Ub3RDLGakfp9eUPWD+pqW2xuU3Iw=
+X-Gm-Gg: AYBFou22rpsmFF1HYQAi0zp6lL83ol/PCXx4fA8p6o95Vl8ONeuqpGJsF5xXIesK8w5
+	Z0kcz80/4Ga6DDJ76Lf9AWch+3wRdvniUaKuSp+rZkxJn3iJ0ex02WWYfC0f9ceucebc7dUkmzw
+	sGRaCpRqyh14bhqqNix/rjFaYctbXKGFepeNW+RlaTA08rgYIf5GAShSkqHi2J8+lORSNuhFyUL
+	6a1ZW/zh0V2nDJ1+up6bqblyKFChcunIFc++rkNgF38q+g8PsLZYy7AqBsT2FSPFNmBYTZVHOMt
+	/xf5VU2hjnxHKN7rVWSXHdhMOIU3k88SeoCJH2Cp8MLRRUFGsYmYjM/aUtiEjLJCYG8NIbnuek9
+	+4agBy5J2Vv1S3g==
+X-Received: by 2002:a05:620a:4504:b0:93c:6b90:1d18 with SMTP id af79cd13be357-93ca97b9304mr702908885a.62.1790846791122;
+        Thu, 01 Oct 2026 02:26:31 -0700 (PDT)
+X-Received: by 2002:a05:620a:4504:b0:93c:6b90:1d18 with SMTP id af79cd13be357-93ca97b9304mr702904385a.62.1790846790543;
+        Thu, 01 Oct 2026 02:26:30 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31dc751dsm119255166b.67.2026.10.01.02.26.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 02:26:28 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Subject: [PATCH net-next v4 0/2] net: stmmac: introduce XDP multi-buff
+ support for TX path
+Date: Thu, 01 Oct 2026 11:26:11 +0200
+Message-Id: <20261001-b4-stmmac-xmit-mb-v4-0-664e0c3eb289@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/16] pull-request: can 2026-09-29
-To: Paolo Abeni <pabeni@redhat.com>, Marc Kleine-Budde <mkl@pengutronix.de>,
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
- kernel@pengutronix.de
-References: <20260929210700.1183036-1-mkl@pengutronix.de>
- <9956662e-6001-413d-864d-d8d048a93819@redhat.com>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <9956662e-6001-413d-864d-d8d048a93819@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XNTQrCMBAF4KtI1k5JJumfK+8hLpI4tQHTahNLp
+ fTuhuKii7oZeDzeNzMLNDgK7HSY2UCjC67vUlDHA7Ot7u4E7pYyQ44FrxHBKAjRe21h8i6CN2B
+ MWREvKmUbxdLuOVDjptW8sI4idDRFdk1N60Lsh8/6bBRr/3PljjsKEKBLoYXNEYXCcx9C9nrrh
+ +29z9JZ0RG3kNqDMEGcS6lKUxqL+R9IbqF8D5IJsppXDceaKmF3oGVZvh6ow6ZVAQAA
+X-Change-ID: 20260922-b4-stmmac-xmit-mb-bb78e0684cf4
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Ong Boon Leong <boon.leong.ong@intel.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAxMDAzNyBTYWx0ZWRfX/uQ7/wK92umG
+ Vo3brtS5f/NAgbsdL2uRVPsNyZQa83WtPxgFn5zO59S6aTode/KHXrs4XpbYur+YM5fYobqToHP
+ 7Fl2ZgQsAhsZnXZwQ4T/6lcBZdbMViFeXdwQxwgB6yLXXCZ/xfXf1y0F3x/w/tR0yFelpYpqt6p
+ UyKmmsZSW+6sya6Sdhrk0G1PQLMxrzD/B6Kwfre4y+Q4YnaIGxN8sQje/4JGxbAugIdAwoYdXbd
+ I0SNQIaTQ4YII7asqcOJFcD9p55ejOXpplU8YpY7dMYbMG7nhT1ymGByDw9iYKbjc060craAScP
+ th6YGp7zjvFZhAGgigAXuQvUZKl7v2RRqgbFOEgKW3aoVrIjMfoaGXR4/UPbcz+QJu/QLvanG+k
+ cv9fzWtZjg8m9uL9yKStzwWrrhwHH/8F/l85QWZx41JhH4JeN9vk1ZOBTl5uU6Jv59pTTqUOy62
+ nVGc881aVXqxtnb0YZw==
+X-Proofpoint-GUID: Lfo7lg22HHj2O9yBiMOEWoZiwFpZEj1e
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAxMDAzNyBTYWx0ZWRfX5a8+VNu+maFN
+ 8BM+mR+8k/OLXqnzfeSApY8h6GTPIlmMoRrHKeITUlsOVAWRH2lfWQkajo8WttvCDEV5mwUcC+q
+ gZV50jKulkMwjLvxPHNvI8n1hq7klxY=
+X-Authority-Analysis: v=2.4 cv=S51MU4sP c=1 sm=1 tr=0 ts=6abe2747 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=VKprxIfjjedsZqdkuwoA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-ORIG-GUID: Lfo7lg22HHj2O9yBiMOEWoZiwFpZEj1e
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-01_03,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 priorityscore=1501 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 bulkscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610010037
 
+Extend stmmac_xdp_xmit_xdpf() to transmit XDP frames with fragments.
+Fix TX coalesce race and div-by-zero in XDP/legacy path
 
+---
+Changes in v4:
+- Add patch 1/2 to fix theoretical division by zero issue in xdp/legacy
+  tx path.
+- Link to v3: https://lore.kernel.org/r/20260925-b4-stmmac-xmit-mb-v3-1-ca08f029e81c@oss.qualcomm.com
 
-On 01.10.26 10:40, Paolo Abeni wrote:
-> Hi,
-> 
-> On 9/29/26 22:43, Marc Kleine-Budde wrote:
->> this is a pull request of 16 patches for net/main.
->>
->> The first patch is by Vincent Mailhol and drops CAN-XL frames on non
->> CAN-XL devices.
->>
->> A patch by zjamg restores the skb header initialization lost during
->> the v7.0 release cycle.
->>
->> Oliver Hartkopp contributes 3 patches for the CAN net layer, the first
->> one fixes the net namespace integration for BCM, ISOTP and the CAN RAW
->> protocols. The second one converts the unreliable ARPHRD_CAN type
->> check to the robust can_get_ml_priv(). The third one fixes the unique
->> skb identifier regression under RPS, introduced in the v7.0 release
->> cycle, which causes lost packets.
->>
->> A patch by Joshua Crofts adds a missing
->> pm_runtime_dont_use_autosuspend() to the m_can_pci driver.
->>
->> Maximilian Zimmermann's patch for the xilinx CAN driver adds the
->> setting the ESI and BSR flags in the receive path if they are active.
->>
->> Jiale Yao's patch for the mcp251xfd driver rejects devices without
->> match data.
->>
->> Ji-Ze Hong fixes a struct size mismatch in the f81604 CAN driver.
->>
->> The next patch is by me, targets the gs_usb driver and adds
->> workarounds for the HScanT USB to CAN adapter.
->>
->> Cen Zhang fixes a slab-out-of-bounds read access in the kvaser_usb
->> driver.
->>
->> A patch by Stefan Günther targets the peak_usb driver and fixes the
->> CAN-ID when reporting CAN errors.
->>
->> Chris Strong contributes 2 patches, to fix an out of memory and packet
->> loss problem in the mcp251xfd CAN driver under sustained receive
->> traffic.
-> Linus has started pushing back on the ever-increasing net RC PRs:
-> 
-> https://lore.kernel.org/netdev/CAHk- 
-> =wiSnTE9vBZ=5_v+3EEkdazCCbBM5YABRzRHUAeRdyd4Xw@mail.gmail.com/
-> 
-> We are trying to defer things to 'next', especially this late
-> in the cycle.
-> 
-> I think there are a few patches here eligible for that. i.e.
-> 
-> can: gs_usb: add workarounds for HScanT USB to CAN adapter
+Changes in v3:
+- Advertise NETDEV_XDP_ACT_NDO_XMIT_SG capability.
+- Add missing dma_wmb() before setting OWN bit of the first descriptor.
+- Link to v2: https://lore.kernel.org/r/20260924-b4-stmmac-xmit-mb-v2-1-003347b7bc25@oss.qualcomm.com
 
+Changes in v2:
+- Fix Tx coalescing logic in stmmac_xdp_xmit_xdpf()
+- Consider the max between STMMAC_TX_THRESH() and num_frames as
+  threshold in stmmac_xdp_xmit_xdpf().
+- Link to v1: https://lore.kernel.org/r/20260923-b4-stmmac-xmit-mb-v1-1-a71a1c522142@oss.qualcomm.com
 
-> can: remove CAN filters independent from namespace
-> can: convert unreliable ARPHRD_CAN type checks to robust can_get_ml_priv()
+---
+Lorenzo Bianconi (2):
+      net: stmmac: fix TX coalesce race and div-by-zero in XDP/legacy path
+      net: stmmac: add XDP multi-buff support for TX side
 
-I would be fine with those two patches.
-There was unfortunately some new(!) feedback by sashiko-bot on the 
-namespace patch and the ml_priv patch is not that urgent.
-
-> 
-> WDYT? How much a pain would be shrinking this PR?
-> 
-> Thanks,
-> 
-> Paolo
-> 
-> 
+ .../net/ethernet/stmicro/stmmac/stmmac_ethtool.c   |  11 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  | 160 +++++++++++++--------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c   |   2 +-
+ 3 files changed, 107 insertions(+), 66 deletions(-)
+---
+base-commit: ea3b2f0356c2f33022c10dc7ad3fd02bf4aa517c
+change-id: 20260922-b4-stmmac-xmit-mb-bb78e0684cf4
 
 Best regards,
-Oliver
+-- 
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
