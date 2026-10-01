@@ -1,127 +1,180 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+Received: from mail-yx2-f40.google.com (mail-yx2-f40.google.com [74.125.224.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F91E3B0AE1
-	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 18:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790880795; cv=pass; b=moVmzXsvRwtNfjac8nJZIlco0OhZAQbAt9TiscsiATNF55WZtf/c0g0Ge2Pfsw3lBreYZPjVVRWgVAZiYUUjuhdNhUnY57/xiizWSYHA3uQRl7wFGSNvm7WQy3CfeKoevbXhhm4zWF+/+Nm9zyw3ejYyFtzFD0FZGaAveGIX+0o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790880795; c=relaxed/simple;
-	bh=Y+2Ni7PMqrXeJ+Ib9G+7B54AUw9Jq7EWt/AyyHD6kBU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U7yGZro2pJUyfc+EIVGuH2jxaRL+zyQ+WHHjopuksRH9UQK1UcKA7Uhu0gc2HsIGo24Y3ihTV2PvTjU1jtS3ZKhKihAsJ62rFEhGnPCwWruBaTc8/mo7/brEvwl46N+VY1rmP3IAs3RWq0QwRRRXo4pl7ZT/tTz3Ruom1ifNej4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QaHrE+hC; arc=pass smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFE052FE35
+	for <netdev@vger.kernel.org>; Thu,  1 Oct 2026 19:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.168
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790881270; cv=none; b=io2OUYuz5j21eNddcU4H+DjR0kqBc8tW9+QqVTuPsm7vKTZBrtUJRrSjKPUYjZCPk7S0j5PlN/BHJU7/hpmhV6VXTyv5jX2o8vEnPQoXL7ex9gF1Q7nRxvIjY4lGjzBjrsdbg+9M1I8zzzWym6gSiakfXQoHeQaRh25V2I8nRHc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790881270; c=relaxed/simple;
+	bh=dVYFsDiGy+3gXhXE6Oi5XSFviQl/MmRq/efm2Mg/2k4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=qs3uMfbaIyS7R10uPONeaRKnSd9BbyP+UxLE7TPnqSiV2ekbSixxIYCK8z4nVmKSOL2yBrhebcOf7JO1/JOdd1vpnaAr2RXPszrcIis9IvZxx9I6zfmPlLyrrtRmDIi2XsQJ6ikm0URg5sWB/ESstjLN0Trb2oOqlMGBUwwi9U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G/h1BIUa; arc=none smtp.client-ip=74.125.224.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QaHrE+hC"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85f0fc1fd8eso3470931b3a.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 11:53:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790880794; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XOz8gr/x8k/IOAsPSGLpXE6VORUtMqhGP/rfIGJ2jVe+/hQBwi4iKqOxsSwfcnh5EP
-         g9Jgs7NXSwNEH/YA9mWta4ZxT5jqsTHaADujxdL8BrjoxihBFFAs50nU3ZhpWEsUeLI1
-         Do1aEvsEtmW8u/woUEackdP5Iruk8qjDrhjjq+KJDV/PTJB2r9mjp66LqAo1abaFJgM3
-         5OYOv71qyUJHVyByPa6SOsi1d71/Li3ermpAnMr00DDO2f9V6fZ9I9/44EH0faKUlMzm
-         kOmymTjJaWMoYJ+7WZ32jJElU5Hwt2k8w9VtFOAzGgCCUPAZAZu3pRn1Nde/lmexpvxB
-         LcRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Y+2Ni7PMqrXeJ+Ib9G+7B54AUw9Jq7EWt/AyyHD6kBU=;
-        fh=N2mYRG6J2rHrhgq9O0+4rWCoM+T5a6U3xEw4zXPooko=;
-        b=CmtUZ6++3QelpVdpQghBwsHMnOI+JxCrkbBjJNxx9YZkiGucRGyuxQKWcPKOFFA0hM
-         smXLzyWRX7G9HFcHILNz5b309ePkW4uOZ4so0JE4U7O79gyZ4xOqAxR7DWanIR/QxTYj
-         Glw5rOUh//TpETDl5RgQwcpDnA9Wt+2x5MSCm3R83CGK3hgEENIMQWN4RfdxcbAVltOu
-         v4xDswR9wa2TyTldW7C20sfYiLDe/NFNbhxgSXhiUxBCIe66zSLNQTci5Luoe9jQ+hDh
-         ekoZ1HAoY87tea2m+H3dn0ntI0P4S1M/rM3mfpkNEW4k1KitxvEFmyY5ErwfxvEC4fhv
-         pu+g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G/h1BIUa"
+Received: by mail-yx2-f40.google.com with SMTP id 00721157ae682-8a87fe69060so60308757b3.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 12:00:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790880794; x=1791485594; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Y+2Ni7PMqrXeJ+Ib9G+7B54AUw9Jq7EWt/AyyHD6kBU=;
-        b=QaHrE+hCNs8GieY6eP5AQgY/PyRFHQ780LwDdjfXqNcIG4Z/WD9011G9Vl3+sk7UgR
-         qc5vstTNGaTFMYvm0bzKAkJb6Xr4+SF6gJsP1gyJH5GbwchYAA7+HuqbwqBnlUI/NBX5
-         mCb/R2mNEPrqiTubYL4A6e19MS0lmlQ16GU2X0E142W81oJipUKhSIvoly4YOyXJB6LD
-         gfDT+g+XNpMENzsv3QR3R7Yu0Lsd7tUkUMHAYNriZpDQt9KeLE55AvyaklTIp7QXfJAD
-         GbhN6rhsnYXTx7AfS78BNXfbXCrvWuZ3B78UrsT9iey+glF2ANw2rZynvzsN45pIvM45
-         vuCA==
+        d=gmail.com; s=20251104; t=1790881240; x=1791486040; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=C0CoS0O2CGYig/LC2vlHKGOR/9P+oir4qg+Xp46PI3w=;
+        b=G/h1BIUabtQ68mzlSC7rCxsXDgrlXXMC+DvXNWZCsqYhz7lLDXeKX9dFnb/TWptPhG
+         X16y47M5aqvlfOMXohEPfsK+TEHpWGKuHh1e2s0i3u7Ke62+JdbiNx9QJOOm8fWVUi8x
+         Z85pyv1y0t2hrWBuaTMRnLvBYvEK7S0LI0/XzAc0pSsPxGnl6WYoGYWpQMv7bGDYRDAQ
+         ffjufqJvzYoF+OJHbZd2nQc5tm9BlV2AGJSut1mueWUHmPASEkgR7gD/lgCFaRyZ7qO1
+         ZlQSZAL2Y9i25JHjSsEzhG2QwNsajqCkO4kP5YKWpVbXjQjoQPePM1kg3nFGA0nKdDSB
+         fVUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790880794; x=1791485594;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790881240; x=1791486040;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y+2Ni7PMqrXeJ+Ib9G+7B54AUw9Jq7EWt/AyyHD6kBU=;
-        b=ZoF7NSMtV5rijdXMzMrWxGmnKsYrOgeq+2ZTUB+/DkwF8XO3s44DGuc5PEZRva5oYm
-         M+DJUJd0S3BhrcQLbLjfZYNtxNXXtIWyYaE7HueHm9l+dz4X091wPOcADX//wVT2ONHi
-         WE7yiavRvWX1MzrqJcd80srNjnpOBth/0xLWsUuolBbCjkusdV2rG8o/fc1yj1FjBZWw
-         /y/sgK3nNwG7svmeOlvfwzdPcZYtjcZK/4eZiilX3bRsmX6DV5hZQuRdcifYr3h7cRXA
-         +bTA2SbWvbn8oHzp6A1l9wWc4idGU2WJBtSD+g4rL9CQ/OK+Y8L9G/Dbm/i/03KyUenj
-         YG9Q==
-X-Forwarded-Encrypted: i=1; AKwUvBy4SZZDm14i30s+LkD2fx6lgqhX39d3U8i1VKsEFgbCIydGuUNsVu/gNBdplWlDFQpG6diNiYQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ngNe5KL1W/NXHkqP6G14nt+b5IXITS/MqEaT3h+LsrJBXR5Bit
-	2wED150+0o6gspvENa2ZB1+d3Aia8RIXgMG3oPlidocB97vsjEeHbefSqjJB4NikCOJ7ZhBWzMQ
-	2QhZLcbMbFthac4/TWJT5ogslBApjpdI=
-X-Gm-Gg: AYBFou0DvVDv/8JJtCT/c+N+/IMViEuFUYMZk1vNBhuocX/TbHrDbelJiYnbWwFL0mW
-	xGLXswPA3ZB/fNZpdAm2sLVW9CjSrQU3vXQ8Nh4IAi4+MtK7Cz9J+XE0W0KbH5D0A2SrI3CevQ9
-	v187UWf/hgHgQPpMMGkkFO9TEJZMxtGStUrwMd6SxngLTL5mv/n/QG0a27HXcMY3uNaBYCW8VlR
-	00z+Taaz819+jL5/RC9gRWKea7YlWVC30jrJZ96v4DJ+KNNgYW66sVqaTJkHDgzPNM9RaZ9u2kU
-	PMb1X1q9gVXU+7IkmLCXl6asLlznxSsGUcitTHw8RWQErjwlokuNXNtJzRtJ+6yveRbkBIIkBld
-	N9ZrdcxP5IHQAOptaPQQ2Bmr30bvoPZ2eozk6tM++sBPMA7dkG+WSz74zBQ==
-X-Received: by 2002:a05:6a21:8289:b0:3dd:a197:736e with SMTP id
- adf61e73a8af0-3e0bd24822amr308001637.71.1790880793837; Thu, 01 Oct 2026
- 11:53:13 -0700 (PDT)
+        bh=C0CoS0O2CGYig/LC2vlHKGOR/9P+oir4qg+Xp46PI3w=;
+        b=GaJssSsICHoXkG42HBkcnKe+bhxn4w2pMSfJO1YEzyIJWBafGerf110rNKrQNvv4Hv
+         dRmHVpFTxhXn9LNTQb/MRAYUmuxmCQjhT+35DleO72yIP6ybMgaFsj2rF8kiVAoXfB0q
+         9mFDQMvyMhP4clh6x8Q3MN7i0UYb/OEVRi8wywc9aXkR9lPpx82EiaMMZmoNaA5c4yq4
+         eluxSGrEjS51gStrcjI5pnHUXhtZzljELGTzUp8vu3yY9DjLNt02ap6y/s7DKaNb0oft
+         C3gHCgBKcRjUq+J3qSQjTY7wW3cOtsEuvfIOAmMBMGAJyEa467pUnDi7BhS71+SueJab
+         axpQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw8hui9Ks3hCHEXHxqE5qHishlg+EDpG4I9nCjcqjF7zIfbMkjRE+5mgqle7v4BJ8n9ARd0Yyc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKU0dGtZnKBctWVrQltpSPDCDzn6S33xV8draqNHJCT4AagNdfs
+	TkmkewZTpuxkQ36lRGqlNHCd9XSxeCyB+DaxBgBn504VH4leKoRcOwrW
+X-Gm-Gg: AYBFou3jM6E/PME0flwiFk3oU+L/Ozc39x9+5plEgr6ldq93e+TsqBi9J2VQX5wZChQ
+	a6IFUhkTqCRBewy5RF2vfDNp3wwq9VYJc6dtL3/hVTBTtzJ+KR1fQquso0AMg/JsODdX+OCxnj2
+	LeeburN3GcOImDz0VVnAsibgtXd6mQYWtYZ9wKp2FpGAkH0IYE80vHYB5jtO9WfLYpnEcshly5D
+	p0Q7KkSVJJKKZwmB417im08yRpG/Gv1lDrG1fzV+qnMy8dp6j3QQCB5e3/luMSqwVTNeuZHhmIC
+	4EhlOR2WCj9QXY04V3uFFYEaNjpXptanrk5wnRsQqSPxLlfvuCC7KYZz9mO9Df8oYyZVNSCpsup
+	vDvqIh+0gsP87PKOYN3R3J3uxBczy4D95jPaWj9lZn2wQx5EtjxyLlQeFuM4p9gmODveyVClhpq
+	Ed1P20RjWmddH/4WfBbI0pFQZDUWY+gWIn/blG1WLalojQYqDkW24d9UwQw5wd5A61BKanEyPD8
+	zf6ew1+6zpnM+zqitH0i1SGyO8Qe4QcxjIHAO85k7vLaoo0CmLK6Q==
+X-Received: by 2002:a05:690c:571b:b0:8ac:4b34:60af with SMTP id 00721157ae682-8ae39bde7damr1127967b3.40.1790881239791;
+        Thu, 01 Oct 2026 12:00:39 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae321fa488sm1079097b3.16.2026.10.01.12.00.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 12:00:38 -0700 (PDT)
+Date: Thu, 01 Oct 2026 15:00:37 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Anton Danilov <littlesmilingcloud@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S . Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.3b99b3605b4c1@gmail.com>
+In-Reply-To: <20261001093925.3529772-1-littlesmilingcloud@gmail.com>
+References: <20261001093925.3529772-1-littlesmilingcloud@gmail.com>
+Subject: Re: [PATCH net-next] tun: use pskb_may_pull_reason() and remove
+ SKB_DROP_REASON_HDR_TRUNC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928152132.3705137-1-guncraft2000@naver.com>
-In-Reply-To: <20260928152132.3705137-1-guncraft2000@naver.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 1 Oct 2026 14:53:02 -0400
-X-Gm-Features: AclHuK8d7NtbaPQb6Cfc9lQW_joRcJ6ZbSCH6q966PeL3ZPj33mszk9mvkCU-9o
-Message-ID: <CADvbK_eJTrNFyPRSwCtUXqQRe7=_KnbDjsNEK97J4sYp+YpSxw@mail.gmail.com>
-Subject: Re: [PATCH] sctp: hold transport reference across connect wait
-To: Seung Min Shin <guncraft2000@naver.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 28, 2026 at 11:21=E2=80=AFAM Seung Min Shin <guncraft2000@naver=
-.com> wrote:
->
-> sctp_sendmsg_to_asoc() selects a transport before waiting for a new
-> interleaved association to become established. sctp_wait_for_connect()
-> drops the socket lock while sleeping.
->
-> While the lock is dropped, backlog processing can handle a COOKIE ACK and
-> an ASCONF DEL-IP that removes the selected transport. sctp_assoc_rm_peer(=
-)
-> then marks the transport dead and drops its association-owned reference.
-> The transport can be freed through RCU before the send path resumes.
->
-> After the wait, the stale pointer is assigned to newly created DATA or
-> I-DATA chunks and later dereferenced by sctp_outq_select_transport().
->
-> Hold a reference to the selected transport across
-> sctp_wait_for_connect(). After the socket lock is reacquired, abort the
-> send if the transport was marked dead. Callers without a selected
-> transport pass NULL and retain their existing behavior.
->
-> Cc: stable@kernel.org
-> Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_inter=
-leave")
+Anton Danilov wrote:
+> tun_get_user() is the only user of SKB_DROP_REASON_HDR_TRUNC. It sets
+> it when pskb_may_pull() fails to pull the Ethernet header of a frame
+> written to a TAP device.
+> 
+> pskb_may_pull_reason() reports why the pull failed: PKT_TOO_SMALL if
+> the packet is shorter than requested, NOMEM if pulling the data into
+> the linear area fails. Use it for the Ethernet header pull in
+> tun_get_user() and remove the now unused SKB_DROP_REASON_HDR_TRUNC.
+> 
+> After a successful pull drop_reason is SKB_NOT_DROPPED_YET. The path
+> that later finds the queue detached has no reason of its own and relied
+> on the SKB_DROP_REASON_NOT_SPECIFIED initializer. Fall back to
+> SKB_DROP_REASON_NOT_SPECIFIED at the free_skb label, as vxlan_rcv()
+> does, so that this path, and any later one without a reason of its own,
+> keeps reporting it.
+> 
+> The error returned to user space does not change.
+> 
+> Suggested-by: Ido Schimmel <idosch@nvidia.com>
+> Link: https://lore.kernel.org/netdev/20260923145931.GA2859441@shredder/
 > Assisted-by: LLM
-> Signed-off-by: Seung Min Shin <guncraft2000@naver.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
+> Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
+
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+
+> 
+> ---
+>  drivers/net/tun.c             | 5 +++--
+>  include/net/dropreason-core.h | 7 -------
+>  2 files changed, 3 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 5a302709a68a..758956f93979 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -1932,9 +1932,9 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  		skb->dev = tun->dev;
+>  		break;
+>  	case IFF_TAP:
+> -		if (!pskb_may_pull(skb, ETH_HLEN)) {
+> +		drop_reason = pskb_may_pull_reason(skb, ETH_HLEN);
+
+Should we update the skb_may_pull in the above IFF_TUN similarly?
+
+> +		if (drop_reason) {
+>  			err = -ENOMEM;
+> -			drop_reason = SKB_DROP_REASON_HDR_TRUNC;
+>  			goto drop;
+>  		}
+>  		skb->protocol = eth_type_trans(skb, tun->dev);
+> @@ -2062,6 +2062,7 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  		dev_core_stats_rx_dropped_inc(tun->dev);
+>  
+>  free_skb:
+> +	drop_reason = drop_reason ?: SKB_DROP_REASON_NOT_SPECIFIED;
+>  	if (!IS_ERR_OR_NULL(skb))
+>  		kfree_skb_reason(skb, drop_reason);
+>  
+> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+> index 12f909651591..47b44a29daab 100644
+> --- a/include/net/dropreason-core.h
+> +++ b/include/net/dropreason-core.h
+> @@ -82,7 +82,6 @@
+>  	FN(DEV_READY)			\
+>  	FN(FULL_RING)			\
+>  	FN(NOMEM)			\
+> -	FN(HDR_TRUNC)			\
+>  	FN(TAP_FILTER)			\
+>  	FN(TAP_TXFILTER)		\
+>  	FN(ICMP_CSUM)			\
+> @@ -427,12 +426,6 @@ enum skb_drop_reason {
+>  	SKB_DROP_REASON_FULL_RING,
+>  	/** @SKB_DROP_REASON_NOMEM: error due to OOM */
+>  	SKB_DROP_REASON_NOMEM,
+> -	/**
+> -	 * @SKB_DROP_REASON_HDR_TRUNC: failed to trunc/extract the header from
+> -	 * networking data, e.g., failed to pull the protocol header from
+> -	 * frags via pskb_may_pull()
+> -	 */
+> -	SKB_DROP_REASON_HDR_TRUNC,
+>  	/**
+>  	 * @SKB_DROP_REASON_TAP_FILTER: dropped by (ebpf) filter directly attached
+>  	 * to tun/tap, e.g., via TUNSETFILTEREBPF
+> -- 
+> 2.47.3
+> 
+
+
