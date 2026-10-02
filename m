@@ -1,76 +1,148 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93468463B62
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 21:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CA4368D76
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 22:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790978058; cv=none; b=lVWRrVvAgQSsIXm/MOPNc1NPTw/2AQ3aUHcyIPPr5VC3CiGzFsg2v7jMWx2zgWgNRSaoXF1utdNKqgUOU9M5AJzCzQHAeFJ3aEsu5mH4+4mEH5iaUkLBjhh0d/L3IsJFNSijcsUoEo5zcOujuu9y4cNL5gehLeKjDIJukI/gRPM=
+	t=1790978720; cv=none; b=MurjW4a/vJxVShmyWjdAODRhlPUI+0vS0Z2zUwlFMF4hy/vKL/dqNO5eIBx6Pve0T7C04AqsbrCAxZdaCxY18TdR57BpNNI8qM8A4OnHybdKx5rx/uatAhJnC+TRCjaxNNIU6Z3qF38sJvaphbQni3K8VkKxv7C4SjSy/+xYrZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790978058; c=relaxed/simple;
-	bh=/zn06wt5whvMHZjgDBvZfLc4hMOido8Tkmdk0Z14s/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ilbK0WhdSB2mGhTJ/8JMd86uzBv28q7KHHCCLlCRjAH1Npfe8P9efWwwv7h6jyw1ut+D+wJNsJC8ht7bSCuwBdFuI3sLVWrUgwMekRAgzl1x6fKnF4dQgagZUdO9woZXo+rUvHHXLgHrSPjlRWuOzinwA155ZSEs/uudV4dAUEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=V1Zg0f2a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sTo5iCqo; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1790978720; c=relaxed/simple;
+	bh=Op2VE/mM0zGOShfaFW/0BW0KlBnu8F+VO2ttkd98TKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kx6RDIwCq45WQtPHAoFjsjFaDcefyj878p17vRpug9vyACrsNOSeM429G5btAYlXsMG3+3RnhWJFW0MGCifJp6ShTyT57YcstxXXFqt01zB+tKJyPexfJsZCn3uNCBM0yHhmf2iZONi03oAgECkZAXd0DfgyDD2pii7ABvs1LZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=uExVwByN; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="V1Zg0f2a";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sTo5iCqo"
-Date: Fri, 2 Oct 2026 23:54:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1790978054;
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="uExVwByN"
+Received: by dvalin.narfation.org (Postfix) id 696382046C;
+	Fri, 02 Oct 2026 22:05:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1790978716;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w+D7DxGAU7JYy5hIt3woWGy4190o/Tc2Pglh2vrdhz4=;
-	b=V1Zg0f2a7pm2pFAipBTtlLBEVdJWvHuyUKfxRmuHKMdMKuRtx1zRyBYLcAYYs37hFZgx6G
-	bK8GzBc0iCzdAg6UvTud7IfW3xUxA1Ql/Hkpn6riP17QBbzXupbnBewuPn1/M0R2PXvX9D
-	vzdZa47ThK+b5HVZ3gAUCoNnqogJ95ZB27A3X6imsShY9On9WAvv2fHfIwAeNDzWy+so8r
-	7t4uGyY/JtFcfj5OWUFod4P5Ic2gp4RRMwV1oAkVvFWxOF5E5koZqGbptBbZlYyZQhIdh2
-	DTx5iLGmqqLkf4qy5LYgjb6f/K23HVpu2gVMiq6eDRm1I8BWwHJFF+AhcVAC6Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1790978054;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w+D7DxGAU7JYy5hIt3woWGy4190o/Tc2Pglh2vrdhz4=;
-	b=sTo5iCqoxr5SLVCs1SmuPwz63hCWdbe3YnUbFhWn7uqbpqPJI3VsSeqbqPqk+klu0WZERA
-	SCthXSWOrMLh2vCA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next v5] af_unix: Do not wait for garbage collector
- in sendmsg()
-Message-ID: <20261002215412.lUoSB2XU@linutronix.de>
-References: <20260930162457.4ajVJ-Qa@linutronix.de>
- <20261002125357.200a5aeb@kernel.org>
+	bh=GNvw00UCUW/0bO/7q1Yy7pulx8K0aP4KiltkrXhApqY=;
+	b=uExVwByNcR78Kw5tcPlA8m5DnlP3A9/4PbXahxAGHjeX0LglxYH/UDOWCI3Fx0t2MxAuVX
+	QZGu4lCd65HRBfSMLKL+VJMWr57Ub3IVmY8tEO2BbxJf0FmnAUAe/niF3kRFNCHJP4rv1x
+	lVj1u83dSX9a/1zeRbZsq+5GPEoPPO4=
+From: Sven Eckelmann <sven@narfation.org>
+To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sashiko-bot@kernel.org
+Subject:
+ Re: [PATCH net-next 8/9] batman-adv: tt: reject VLAN/TT entries before
+ reaching size limit
+Date: Sat, 03 Oct 2026 00:05:13 +0200
+Message-ID: <2653823.Sgy9Pd6rRy@sven-desktop>
+In-Reply-To: <179084943174.434549.11209044496055868169@kernel.org>
+References:
+ <20260930094558.3723766-9-sw@simonwunderlich.de>
+ <179084943174.434549.11209044496055868169@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261002125357.200a5aeb@kernel.org>
+Content-Type: multipart/signed; boundary="nextPart3881024.RUnXabflUD";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-On 2026-10-02 12:53:57 [-0700], Jakub Kicinski wrote:
-> On Wed, 30 Sep 2026 18:24:57 +0200 Sebastian Andrzej Siewior wrote:
-> > From: Nam Cao <namcao@linutronix.de>
+--nextPart3881024.RUnXabflUD
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
+Date: Sat, 03 Oct 2026 00:05:13 +0200
+Message-ID: <2653823.Sgy9Pd6rRy@sven-desktop>
+In-Reply-To: <179084943174.434549.11209044496055868169@kernel.org>
+MIME-Version: 1.0
+
+On Thursday, 1 October 2026 12:10:31 CEST netdev-bot+sashiko@kernel.org wrote:
+[...]
+> > Signed-off-by: Sven Eckelmann <sven@narfation.org>
+> > Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 > 
-> This looks effectively identical to v4. I'll put it into 'Needs ACK'.
-> If Kuniyuki is unconvinced please do not repost this again.
+> [Severity: Low]
+> Should this have a Fixes: tag, and maybe a Cc to stable?
 
-basically the same, yes. I did try to explain why that flush does not
-improve things. Also I added my notes (as a reply to the patch) where
-the bad boy consumes a lot of memory and the GC+flush do not help. This
-looks like current limits are too high. I am also not sure if the memory
-account for sockets in this case works as expected.
+No, the change is not suitable for stable backports. And since it is submitted 
+for net-next, I am not allowed to add Fixes: (for old kernels) or Cc: stable@ tags.
 
-Sebastian
+[...]
+> > diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
+> > index 481dc6afaaba1..3349376a9087d 100644
+> > --- a/net/batman-adv/translation-table.c
+> > +++ b/net/batman-adv/translation-table.c
+> > @@ -234,6 +234,162 @@ batadv_tt_global_hash_find(struct batadv_priv *bat_priv, const u8 *addr,
+> 
+> [ ... ]
+> 
+> > +static bool batadv_tt_local_reserve(struct batadv_priv *bat_priv, u16 num_vlan,
+> > +				    u16 num_entries, int *table_size)
+> > +{
+> > +	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
+> > +
+> > +	scoped_guard(spinlock_bh, &bat_priv->tt.reserve_lock) {
+> > +		bat_priv->tt.reserved_vlans += num_vlan;
+> > +		bat_priv->tt.reserved_entries += num_entries;
+> > +
+> > +		*table_size = batadv_tt_local_transmit_size(bat_priv->tt.reserved_vlans,
+> > +							    bat_priv->tt.reserved_entries);
+> > +		if (*table_size <= packet_size_max)
+> > +			return true;
+> 
+> [Severity: Medium]
+> Can bat_priv->tt.reserved_entries wrap here?
+>
+> The new counters in struct batadv_priv_tt are u16. The only bound on them
+> is packet_size_max, and nothing caps packet_size_max at what a single TT
+> TVLV can hold. When fragmentation is disabled, batadv_hardif_min_mtu()
+> skips the clamp:
+
+This is actually a good point. I didn't think about the case of an extremely 
+large MTU and used a 9000/64K MTU in my head as reason for using only u16. I 
+still consider it as a corner case and will submit a follow up patch for it.
+
+
+> If packet_size_max is above roughly 65535, the table can still grow past
+> what batadv_tt_prepare_tvlv_local_data() can build, because tvlv_len is a
+> u16:
+> 
+> 	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
+> 		tvlv_len = 0;
+> 		*tt_len = 0;
+> 		goto out;
+> 	}
+
+Correct, so widening over u16 doesn't make any sense. It seems to be better to 
+just limit the size of the packet against which it is checked:
+
+Will be submitted later to netdev as follow up check because it is not a 
+regression but just a limitation in the supported packet_size_max limits (for 
+non-standard setups).
+
+https://lore.kernel.org/r/20261003-tvlv-limited-tt-response-reservation-v1-1-82fbca929cd9@narfation.org
+
+Regards,
+	Sven
+
+--nextPart3881024.RUnXabflUD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCasAqmQAKCRBND3cr0xT1
+yzWBAP0WNBEmBd8u8mbzWIsGBUe2DLQV3yZCvFe/k5tsK1/hSgD9FW9xaMmfG1CI
+Qx/yW8Lbr+K6Jlns4DDpSs+KUR0SGgU=
+=ByNZ
+-----END PGP SIGNATURE-----
+
+--nextPart3881024.RUnXabflUD--
+
+
+
