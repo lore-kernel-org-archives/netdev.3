@@ -1,108 +1,108 @@
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F123E49EB
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC57396D09
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790973342; cv=none; b=nZ7zziFswcLA2TELiEKGVuaN04igZuxa8go0By+jqbLZIct5XjKpib+2q3JoDIQ5PEecRWdG+n7Lmolslnc6yyNz4TBZtmoBf9xut5Gmt2zuMXt+PhhlTk61YCTNnWnbZfV0vp4Eif2qpdzve+6jRnVfmDYYEmzI+F1WIAzf5Oc=
+	t=1790973457; cv=none; b=TxeLPbIzAfoppN4LOY0TjgNoYe+FiTTxNgbYgJcflDGLrMptv6Ej+R/g9SN6HbEUWtM4C8YJKtxVGvrLrkCHv+MPZsuWootp6ddeu/ozjUIMWbLxTa/q2g87V/2fFN2Kn+i//uHMr0HKW179FckH7/FbZ+/YF0pb3N5RfyE6wSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790973342; c=relaxed/simple;
-	bh=sIj1ezOBqpeeSAMqVw7HYdm1cxc9CSBD5YyTXljllaQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yz/xePTVQ5fV4zQNC9HbrsHSyLOn65lSbM1/SsSXJk7tIc7sgJ5YUnpTbGYU31VHL0cJQs0zu3Iqx4gdL+MBZOLxL/1JGyk//ToHG1l+8USRGxOXmWA/QUbP72iMgZNN3ARUiywShXY+/rE+hdDhG4YYiVOugIaRkSHgetpeJfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cl53dz4t; arc=none smtp.client-ip=74.125.228.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790973457; c=relaxed/simple;
+	bh=piBmNj5rI0lM/5KZNljbCn4piFmadLH1W4LnMRaT9oQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M+1SO1KJeovZ36TGs8PschN6+4tLj+vJXUZHrpUwWizqHUoie1Cr1XKiclrD6xq7XMmiDbAbHyCTSYHj9yuzdr/wDmzKR0fTiwoKNCY47yLCd8lbssYKXwOlhhi3H3Or4bfur7pGpwEdgEI6XV6Vrakmd30aveip+j3e9XfIwCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=JJvJTmfw; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cl53dz4t"
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2e227422e3so40885466b.3
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 13:35:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="JJvJTmfw"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccafb751so206022a91.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 13:37:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790973336; x=1791578136; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sIj1ezOBqpeeSAMqVw7HYdm1cxc9CSBD5YyTXljllaQ=;
-        b=cl53dz4tNptD+9Wr73P9EY4rRMOunUmiyTLAdAj1jgAs2km/eYeKI6GoB79AzDSFjW
-         /KAH/Ninya/7trsAJrYApMSlSdZszCgxs2hVHN+qfqp0jzTSVw7CX/6iu7lkO6XFiCFh
-         CLvBuSg4sDXjkzITcb1WRlF7YUdlFJd5/UGywJhbtzzOzgkxlXd8Z55xmO4N/aaKP1w+
-         kEoQ37FpCYV+HcqFB924T4zSE8R1CeEipbs0NLaKSS+CnObtOCVVDf3gADQhBojXyNcu
-         5eWGo5wRZlYlqFeMi/alKPrYelB4YdTN+BCgqiRbuHtCcP7d9Lh2jKQPsPeeR1B0BDgY
-         UJSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790973336; x=1791578136;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790973453; x=1791578253; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sIj1ezOBqpeeSAMqVw7HYdm1cxc9CSBD5YyTXljllaQ=;
-        b=Nabcaj89sGLG85kzCuAwUrrmmCubaaL9JDNqJqsnb1wuhOw5Wh7YxuSZFxO7bPF27O
-         IkM2fForsBXhMNTn83DdA6XsYhnJcd4F6iLUnA6VP53SMGyzE0qvoqh/i3PoH569x6kZ
-         GbRlxMnZa/jqGh10+vQuKccOYhYJ60DHoYA7A98m6AvqviiKxKZsvsZKr2uRN0T29ZSF
-         LmBYr6Gli7LIEiTcq3YvZ5X+W6WoSCxezm0Xe6n4kuHAq/GkLH6itUpA40PPy+JoPGHc
-         tX/t9yy+vAukOumAg8xxs4TpMNZeK4ZotU6agO2Zgw5NBNNIRiO7PrhQAC6e0LNb9PKp
-         5+tQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxhYRAaqNzMx3wKmPljvlkVUY/bsVZBHqRRa2apwhWW8BYTIr+Ux4OjrYTOcYeLDWH5DOO8cEs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kNMn0OXcveur7RLjqmW1BXKJI8xmg+I0qq9cN4hRlG0yVmYj3K
-	HWwGdntwdph79YONHrbi0t9Q6POVvZInviWYbpAP2PZ1A1PlmGkVM29o
-X-Gm-Gg: AYBFou0fAQBjw6ruGSvFRJTDyibuMlSjUf44zpE/b+yyVZhLGope/Z8wubcjAkzBmhu
-	08PZolucCScLxl9Ld/fL1UBa/uad6EdQ7QGd/juJvCd4DTxEYRF7AWb/6RCxzGz671hG58q4SMf
-	CiZMoVE4ff36O5C1qwqLH4e3bRw5xFPmDVdf5Ny8eCwIZI1bjAHb1AqOkIilK7CH4REQpMJUay2
-	yBiw3cFNog5vfMNtgxiYpIPAl7xsSgBIEQmlilI6hVPu5Ql23EeVdAUEXE/SV0eIuPHinJaM3EX
-	QcHSfnSMLITL2UK6tRQ2gNMXADwXa+/rw7+6MHQ1GBetmCxWsnfoW8yxOR2VlF5a5Pu3t/Y55gs
-	fMV8UTJQifmE3Mv0aDuHJhaC80FZd7EIDmbbfotaY/9q2P+SsEmg0tTmEOoPejQu2jG1wVG2uHa
-	GdJ1KsnIHC5nOKUjErYXjjvae3oxJ2KNfRVJ/WR+BnE5Q10T6i/yMhF5xYPHyGFBjJ0xSmFDvMH
-	9V1dKMAVD7KJgEjumfb3CRcWJG/zdT/qHqdM+EcJWUXXQOeXFQ4xf7l76M+0OeIKaLHfjbLoCwX
-	dxetBDazgbbRziSeFuH1DA+0tvIo2JRq8w==
-X-Received: by 2002:a17:907:6d0f:b0:c2e:4196:b167 with SMTP id a640c23a62f3a-c2e4af2bd94mr289331866b.18.1790973335924;
-        Fri, 02 Oct 2026 13:35:35 -0700 (PDT)
-Received: from localhost.localdomain (83-233-130-206.cust.bredband2.com. [83.233.130.206])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4da9dfc2sm127854166b.5.2026.10.02.13.35.34
+        bh=ZWyIbgtdG1xO//+PcoG5gcw5NnsZw/9pPTdZ/soZ+kY=;
+        b=JJvJTmfwCOBoROLaOoVmvtNI4bL5OqXBzjEP/wTV7iqquU2SdUYy6Fe3kDvViOnUk0
+         NpdBoT3f9FsPp56h7YhOyPqUW7U65jgtjvL5h0AKdlXrAn66gFGML8Lu9IkEUYneMK1+
+         LZFv4wuY1PZNdOhM3Ni8ohiGWjJQP3Oe5F803+2LWyX1MYzJH+5Xy0cNx2fF33aOY2zk
+         qKJTM75W0TgLw2xAjbWgpYjwQyjIfiU/jIsH9QlBg8MF/vcQkZxbRnw3TBXgUQQIsp69
+         a77wY9gmaJdU/Lboed42W6GFYxfYHv3fSzFDBIR/N93YPltVAn8TXnK5s3tbwRMLUK1v
+         3/LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790973453; x=1791578253;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ZWyIbgtdG1xO//+PcoG5gcw5NnsZw/9pPTdZ/soZ+kY=;
+        b=WJ2FMvwLtc1pGorNwREgOSFsnT+8n/Qmljt7f+a3U3/N5jR8jHRSkZyhVeL5A3Z7lF
+         vZsSuUwhKA3H+eqzvIMkoKjVmNjJ4+IlCvqW5dxSxztxy9YwtE00YRFxja2AP4YWt6Zk
+         Zk60vVOG6uhdjX9cL29HK4Nht9b9rSGrNidVWbXbIzNQn2+p20oZlJ/7HkZKDTU7Lgdm
+         0M8uDCXbNeOyz60mpxJ5ieAAtUqltkXoQ/VTHnvZD0osdP7PAiAb0PfX9AgbwWQfJ4MB
+         Wn/HEF08zwS1EjtMhVN9ltND1sz1HWzMq3bKls2T5ArAfg0QhzydldPJoCLOyq4BVoT/
+         N0rQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwjZ77ktR6HF/ACOJ6U1LD3l47vv86Kzfbj2mfFYTRBWn3xXK3K03Kz+nZiwYaTjTSesmUsB5k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKm38/opLprEDyXNGRs5GFHkRWfFBGHJbuULJSxuHsklYPkCxk2
+	/IgAgPJ0biWtihtrvOXCxzKSP0CG0TMzkMhXrQd2edzqmwSbamS8BzznXkIz+ah8dlc=
+X-Gm-Gg: AYBFou2H/1LJaCn69X3PlupFTNwIEC3d1bnza3P2brSDeanUKQthBTHL3ha6Sj7b9uW
+	R14ECZ1kX8fQl0irq84U6qWHoQ47rM9a2n0MmQPOTLlloclbHvmCXve0cYv3p66p9bPw+Vtrj0f
+	VgBgktob9YVTsVOM0ShkgvysQP1/9yrSeKnQovf6ql3ZdF1fLjs3+u2S7zvS2YrjsEI0oumlo6D
+	+VJEv3n4SmrrqwQftWFZSsBt+o19HQeoUOVXGwTR6m2GI2KbonvxhXTTBeK1+ALdR7mjhkojaWe
+	y6lwLCPMfMpgte6MTIUdxgrCpBs7nNE1QOE/zwLf5uah/9OBmjNtS3eTW386LQWSaIgCJtQfENE
+	HsxmLimtez/ct3NZXEsOqFnkfJNhjbVzLzGmA4DkLmv4/JTePJMBbAKxcEs9PrHj8ibzG/UUhnR
+	HiAWjPDreug9NMg9yjB1kpsCwwRhLmxAezN6eUypNdkZmcl2KujiKxTcalIg1ZLl81fbve9Ti9q
+	4ZOAEmpCS4t
+X-Received: by 2002:a17:90b:1346:b0:3a0:ace4:d2b4 with SMTP id 98e67ed59e1d1-3a6ceaf84a3mr1664206a91.23.1790973453013;
+        Fri, 02 Oct 2026 13:37:33 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:43::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78d183206sm51091a91.0.2026.10.02.13.37.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 13:35:35 -0700 (PDT)
-From: Yongzhao Chen <yongzhao.derek@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Christian Marangi <ansuelsmth@gmail.com>,
-	netdev@vger.kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+        Fri, 02 Oct 2026 13:37:32 -0700 (PDT)
+Date: Fri, 2 Oct 2026 13:37:31 -0700
+From: Joe Damato <joe@dama.to>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: qca83xx: read resolved QCA8337 link status
-Date: Fri,  2 Oct 2026 22:35:22 +0200
-Message-ID: <20261002203522.1219-1-yongzhao.derek@gmail.com>
-X-Mailer: git-send-email 2.45.2.windows.1
-In-Reply-To: <7eed302b-d455-447f-9ce9-f15468b9792b@lunn.ch>
-References: <20260928220749.857-1-yongzhao.derek@gmail.com> <01a62e77-6c4e-4665-ba46-26d12b1c77b4@lunn.ch> <20260930212348.1919-1-yongzhao.derek@gmail.com> <2ea832eb-33f4-4bf3-bdba-5d983038d012@lunn.ch> <20261001181634.1508-1-yongzhao.derek@gmail.com> <7eed302b-d455-447f-9ce9-f15468b9792b@lunn.ch>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2 3/5] eea: Refactor error handling in
+ eea_adminq_config_host_info()
+Message-ID: <asAWC3KzE9rzIYNp@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20261002100035.863275-1-andriy.shevchenko@linux.intel.com>
+ <20261002100035.863275-4-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261002100035.863275-4-andriy.shevchenko@linux.intel.com>
 
-Hi Andrew,
+On Fri, Oct 02, 2026 at 11:59:21AM +0200, Andy Shevchenko wrote:
+> Use traditional pattern to check for error first in
+> eea_adminq_config_host_info().
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/net/ethernet/alibaba/eea/eea_adminq.c | 17 +++++++++--------
+>  1 file changed, 9 insertions(+), 8 deletions(-)
 
-> The traffic failure was however because of the error with setting the
-> DACs?
-
-No, sorry, my last mail was not clear about this. The failure was on
-a QCA8337 user port connected to a NAS, not on the IPQ5018 CPU link
-from the DAC investigation. With the same OpenWrt 6.18.52 diagnostic
-image and unchanged DAC settings, switching only that user PHY's
-read_status changed the MAC speed from an incorrect 1000 Mb/s to the
-actual 100 Mb/s and restored ping in both directions.
-
-> Reporting the correct downshift has nothing to do with that, as far as
-> i understand. Correctly reporting downshift i would put to net-next.
-
-If net-next is still your preference with that in mind, I will send
-v2 there.
-
-Thanks,
-Yongzhao Chen
+Reviewed-by: Joe Damato <joe@dama.to>
