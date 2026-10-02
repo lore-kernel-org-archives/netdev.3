@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D0C49B447
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CDA495AE5
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790946533; cv=none; b=NEuYvl7rGS69ia8NH1k1QHqAhvd/101GQcYpdLo0EFwuWTKqk5wl1JHRVMOLJpXffGvTp9pDQtXshQG24N+N1jQxHdhOVoBhnclz23dj8xUUUJwHIiqEenoKUFzjzvnqatCGEz9ocmV5uRoGJwwberiOvSsIWoawumuGujZuVxY=
+	t=1790946544; cv=none; b=JLYXEi6moZDlIpr74aLQAfbifH155wPmlXw3cdvBswZ4fLuj8etbOhsTuLmsda/A84f1/Zrlg3piefb2PZkVzQrLPS/0QorC3wy3kp+HQzBUAkfqpb3UOej9oq9hFjt7YcIy7Q2JpSWO0wWwfTKAVmR/vw+9kvX5TsWKfPt3h5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790946533; c=relaxed/simple;
-	bh=AYSBucpVLMJSSeh/qGfbTNQGoN6rCWTOBYR7pNP9scQ=;
+	s=arc-20240116; t=1790946544; c=relaxed/simple;
+	bh=0RS4bXmexIbmcn/QJxQGhC1U0Yffzr5KxteV+uXWSoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTK84fIr0xqXCil6m2Bp4V8Mw24s2Z9JTzFoQ3tpqnSUnRHt1A7Slcr7wlGZFIFZ1wofkG+7nJ0cLM5UOjSjPg2ibfWXzBXr10RxDhybqAsPmhEYIhlMhwiVmukNhywGFhZhUbKd6gd6DAJ8oKOA/625MzYzB5XSvQtU72iunJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZaOV/2qW; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=qyxL1bfXHnPDyImWjuJnssHfhh5n7QE3Kc6sSlGP2fK4h4Tk/XGg3pjnGXcic8SAgOMYlH5pCArgzsSQYKp3y687/Pm2mV+PbR5clPVkGCghSIVMWXxWskn5sR/XLd9V2PanIpVSTzTda35QoHBf0we8N0E+eH/Un5OzCXdHkH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DLEIINpN; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZaOV/2qW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DLEIINpN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790946525;
+	s=mimecast20190719; t=1790946536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eN97Wzb1hwaGIFrjsjx3HavMNO3OT/k+Ap5QlKepMp4=;
-	b=ZaOV/2qW3/yIFefD50wP283rOYNld0ibxsr201aYgoXrqIDDAsI5HUUi4sgEmtMpYCbtv4
-	JiS1V4VrcUgbdWtwjEoe+DSqWXJXyuNyHyAAkhN/5mtSRvH+Oks6J5xeugYufcRxLGN7z7
-	jF6Fiy7Xvx1CBgSjL7o0giqE+pOcpWs=
+	bh=RM9N9byrk/K2mhYiTQy1Gjh5yftd80iFuZlc/Uf09mM=;
+	b=DLEIINpNRxIrim57MzDZ/farVw6mQVyhJEQgM1C98nMghy5tlai74QfYrL7NNckM0okx1x
+	A+lNWcSDrYpKKB/UZT0f4Zc9K/T+6LHYi6aPl3Y9qnc0mg6a1J35S39UAI7VxgxUst7qIT
+	PDTXztGdzbgRuQ/Xjt4leqnoUZRuLS4=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-361-zxc_ipEqP0ychNpcLssyoA-1; Fri,
- 02 Oct 2026 09:08:41 -0400
-X-MC-Unique: zxc_ipEqP0ychNpcLssyoA-1
-X-Mimecast-MFC-AGG-ID: zxc_ipEqP0ychNpcLssyoA_1790946517
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-QYC0D381NGqY5jFs4IjyXQ-1; Fri,
+ 02 Oct 2026 09:08:55 -0400
+X-MC-Unique: QYC0D381NGqY5jFs4IjyXQ-1
+X-Mimecast-MFC-AGG-ID: QYC0D381NGqY5jFs4IjyXQ_1790946531
 Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AC6801954219;
-	Fri,  2 Oct 2026 13:08:37 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 331AD19560B9;
+	Fri,  2 Oct 2026 13:08:51 +0000 (UTC)
 Received: from ShadowPeak.redhat.com (unknown [10.44.32.39])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AC7F2754;
-	Fri,  2 Oct 2026 13:08:31 +0000 (UTC)
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 105C7214;
+	Fri,  2 Oct 2026 13:08:44 +0000 (UTC)
 From: Petr Oros <poros@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
@@ -69,9 +69,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [PATCH iwl-net 05/10] ice: report VF tx_dropped with tx_errors instead of tx_discards
-Date: Fri,  2 Oct 2026 15:07:47 +0200
-Message-ID: <20261002130752.2597259-6-poros@redhat.com>
+Subject: [PATCH iwl-net 07/10] ice: take the switch rule AQ error from the response descriptor
+Date: Fri,  2 Oct 2026 15:07:49 +0200
+Message-ID: <20261002130752.2597259-8-poros@redhat.com>
 In-Reply-To: <20261002130752.2597259-1-poros@redhat.com>
 References: <20261002130752.2597259-1-poros@redhat.com>
 Precedence: bulk
@@ -83,46 +83,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-ice_get_vf_stats() fills tx_dropped from eth_stats.tx_discards, which
-ice_update_eth_stats() never updates because the GLV_TDPC register it
-would come from is not implemented in E810 hardware. The Tx drops of a
-VF, such as switch drops on an anti spoof violation, malicious driver
-drops or TTL expiry, are counted by GLV_TEPC into eth_stats.tx_errors
-instead, so the VF always reports zero dropped packets.
+ice_aq_sw_rules() decides whether a rule removal failed with ENOENT by
+reading hw->adminq.sq_last_status after ice_aq_send_cmd() returned. That
+field is shared by every admin queue user and is only stable while the
+send queue lock is held. Another AQ command completing in between can
+overwrite it, so a failed removal is reported as a generic error, and a
+successful one can even be turned into -ENOENT, because the check is
+not limited to the failure case. A caller that sees -ENOENT keeps its
+rule bookkeeping while the rule is gone from the hardware.
 
-With spoof checking on, a VF sending 60 valid frames and 30 frames with
-a forged source MAC shows:
+ice_vsi_sync_fltr() has the same problem with ENOSPC. It checks
+sq_last_status only after it has freed the list of filters it tried to
+add. Every entry is a separate devres allocation, so freeing a list of
+thousands of entries takes seconds, and by then the value usually
+belongs to a different command, so the MAC filter overflow handling is
+never entered. With debug prints of the error and sq_last_status added
+to both places:
 
-  vf 0 ... spoof checking on, link-state auto, trust off
-    TX: bytes  packets   dropped
-          3600       60        0
+  ice_aq_sw_rules: opc 0x2a0 status -5 aq 16
+  ice 0000:04:00.0 enp4s0f0np0: Failed to add MAC filters err -5 aq 0
 
-Report tx_errors as tx_dropped, the VF stats have no separate error
-field. With the change the same test reports 30 dropped packets.
+Use the retval of the descriptor that ice_aq_send_cmd() copies back,
+only when the command failed, translate ENOSPC on add to -ENOSPC and
+let ice_vsi_sync_fltr() check the return code instead of
+sq_last_status.
 
-i40e fixed the same issue in commit 50b2af451597 ("i40e: report VF
-tx_dropped with tx_errors instead of tx_discards").
+i40e fixed the same kind of race in commit 53a9e346e159 ("i40e: Fix race
+condition while adding/deleting MAC/VLAN filters").
 
-Fixes: 730fdea40bef ("ice: implement VF stats NDO")
+Fixes: ca1fdb885e5f ("ice: return correct error code from ice_aq_sw_rules")
 Assisted-by: LLM
 Signed-off-by: Petr Oros <poros@redhat.com>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c   |  4 +---
+ drivers/net/ethernet/intel/ice/ice_switch.c | 13 ++++++++++---
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index b21279f0f5f1e1..8faddf8ba0d523 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -1640,7 +1640,7 @@ int ice_get_vf_stats(struct net_device *netdev, int vf_id,
- 	vf_stats->broadcast  = stats->rx_broadcast;
- 	vf_stats->multicast  = stats->rx_multicast;
- 	vf_stats->rx_dropped = stats->rx_discards;
--	vf_stats->tx_dropped = stats->tx_discards;
-+	vf_stats->tx_dropped = stats->tx_errors;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 8a21f87eb6ca21..ceb9fec2af21e7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -396,8 +396,6 @@ static int ice_vsi_sync_fltr(struct ice_vsi *vsi)
+ 	struct device *dev = ice_pf_to_dev(vsi->back);
+ 	struct net_device *netdev = vsi->netdev;
+ 	bool promisc_forced_on = false;
+-	struct ice_pf *pf = vsi->back;
+-	struct ice_hw *hw = &pf->hw;
+ 	u32 changed_flags = 0;
+ 	int err;
  
- out_put_vf:
- 	ice_put_vf(vf);
+@@ -450,7 +448,7 @@ static int ice_vsi_sync_fltr(struct ice_vsi *vsi)
+ 		 * should go into promiscuous mode. There should be some
+ 		 * space reserved for promiscuous filters.
+ 		 */
+-		if (hw->adminq.sq_last_status == LIBIE_AQ_RC_ENOSPC &&
++		if (err == -ENOSPC &&
+ 		    !test_and_set_bit(ICE_FLTR_OVERFLOW_PROMISC,
+ 				      vsi->state)) {
+ 			promisc_forced_on = true;
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 239d4d9633baa6..ae96a2003d5c5e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -1959,9 +1959,16 @@ ice_aq_sw_rules(struct ice_hw *hw, void *rule_list, u16 rule_list_sz,
+ 	desc.flags |= cpu_to_le16(LIBIE_AQ_FLAG_RD);
+ 	cmd->num_rules_fltr_entry_index = cpu_to_le16(num_rules);
+ 	status = ice_aq_send_cmd(hw, &desc, rule_list, rule_list_sz, cd);
+-	if (opc != ice_aqc_opc_add_sw_rules &&
+-	    hw->adminq.sq_last_status == LIBIE_AQ_RC_ENOENT)
+-		status = -ENOENT;
++	if (status) {
++		enum libie_aq_err aq_err = le16_to_cpu(desc.retval) & 0xff;
++
++		if (opc != ice_aqc_opc_add_sw_rules &&
++		    aq_err == LIBIE_AQ_RC_ENOENT)
++			status = -ENOENT;
++		else if (opc == ice_aqc_opc_add_sw_rules &&
++			 aq_err == LIBIE_AQ_RC_ENOSPC)
++			status = -ENOSPC;
++	}
+ 
+ 	if (!status) {
+ 		if (opc == ice_aqc_opc_add_sw_rules)
 -- 
 2.55.0
 
