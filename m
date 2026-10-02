@@ -1,187 +1,366 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A07C415F00
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231D634F24E;
+	Fri,  2 Oct 2026 20:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790974258; cv=none; b=UG9I7JMHJlIjoi1dQ5bCIRbyuNkA2Gmy350klzSUekf54MYjDsXmupJO5yH8vlvJvFACyY/1G9sJuA2KQXN43Sxii0ww0+jcIKChRpFnlu/SZIezPA9xOgiLsiOjJf6vl33V6cMTFM9Fv4IKjfh1deMoJjeTuvApEzqaOyJNRxI=
+	t=1790974618; cv=none; b=mE2Q+5NdBJb6l0PMYWrCOM8hH+/vbzRv2OP4qooui7rFt+8YahcFZJ8dZU0iUUUYhamfk8MAHDdyhNwKp/y50+EnQfcUqr3Y9hBLvU9AlfxcqCtDKkZjbeQw1sX/SsFCHXnuvB8FnAXb4cpyNzfLkptzQ7XbSQhbMamRac63hxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790974258; c=relaxed/simple;
-	bh=qFWyQDH0VtbKHscCgf440WYlDfCIFNxrpuwtwkGoZLY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FzzTA6+hZi4BEoCotMtH93Maw9tcvg7ZebtGJ1XMzPzUS2hhx7ZHCcUn8Pe7vN/CJIhiPUvq+BbipA4SOB3yoEnN6Du0LNKk85kEquDXm6h3d+aMRi3oy2frltqJWXtwFFoYlKOR/GJmmUkYvup6fE1GesSPBBFllK6f0luW/1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=dQWZXryl; arc=none smtp.client-ip=121.127.44.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
+	s=arc-20240116; t=1790974618; c=relaxed/simple;
+	bh=0Y3r+DbGExKM3bexsbSnnoGZNoSSnLdMRyNwX47/JWY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WXfwsKiTnKCXveo5liCtviIo1iDGBfZxBE3gHZXVe2zeaKZzWvALojTAOsDkUAtVucZn5NjFtcqQAOrokOYyZkU9e3tGs2Xnq9InQ3ViGJpoT6PKp4w+9oHCj708iP0G9WfZAvcKsYoaU7HN4TbliwlVdWGo6lPcS2Uw4Um2Ogg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=l2MzhLkc; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="dQWZXryl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1790974246;
- bh=NedELFyFHThkKe78viH0+VGGS5ACbfyJUUh1kMXANdU=;
- b=dQWZXryl3pn7kBvuN2g0xz6GYM4QD56oBER/VIIjmS0c5eD87SKUV1zw3DKBuXptdGs1lVsn1
- YQFKQXvKq1zEfPUxZzulhIKJh4GUXeae3KYuCjGJbyGqVxRga0o6Wv/MuGnRocfwUrwd1p4zi5m
- 5MjoCwutFCAvsIWOM5/ofdY=
-X-Forward-Email-ID: 6ac0192625f3c91ad3779f81
-X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 121.127.44.73
-X-Forward-Email-Version: 2.17.0
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <892a3d9c-65f7-4216-95c2-e55938254e96@ovn.org>
-Date: Fri, 2 Oct 2026 22:50:42 +0200
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="l2MzhLkc"
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 692EbaN33287676;
+	Fri, 2 Oct 2026 20:56:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=kCOP7hnhDnbrGAKGQRVXGUMhHn5lk
+	WLK0A+/3W8iGT8=; b=l2MzhLkcy/Erzyvvm3kQSWYYAMw/nCsxtZA9+3Gis1/lR
+	dnf+4XhlHduws1MkJZGzZYb1IjdT0AQhJhn9tOV75TcyQXKVrXCxVbcykzPvraV3
+	ntYY1JJeggP8Kfy/2yWJuiKlMAF2NKXqZdZz19sS2ZZCWqAGS0IpG3lEoBNU7RMG
+	pAqP+aDJ9Vr2q79IoqlHE2yXOHxX5Bc/kdapa516Lq5Ks0LAX7srtv2cRY3sXZkT
+	bLWioI3A+ytRk+9tRBbSBx5+vJCeZkSCU8NtPUjZ6L2SgbTjDsXAiinBTqhVLhMr
+	WstlNNwS3gsfJMpBo7bvgV47xNlSYbFZuGVGizFyA==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4gx5ns4kkb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 02 Oct 2026 20:56:52 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 692Ko1lY036940;
+	Fri, 2 Oct 2026 20:56:51 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4gx4gg6duv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 02 Oct 2026 20:56:51 +0000 (GMT)
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 692Kuodd012238;
+	Fri, 2 Oct 2026 20:56:51 GMT
+Received: from mbpatil-ws.osdevelopmeniad.oraclevcn.com (mbpatil-ws.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.248.176])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4gx4gg6dud-1;
+	Fri, 02 Oct 2026 20:56:50 +0000 (GMT)
+From: Manjunath Patil <manjunath.b.patil@oracle.com>
+To: saeedm@nvidia.com
+Cc: leonro@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Manjunath Patil <manjunath.b.patil@oracle.com>
+Subject: [PATCH net] net/mlx5: retain command mailboxes after timeout
+Date: Fri,  2 Oct 2026 20:56:49 +0000
+Message-ID: <20261002205649.2029588-1-manjunath.b.patil@oracle.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] openvswitch: fix soft lockup in the netlink flow
- dump
-To: "Denis V. Lunev" <den@openvz.org>, netdev@vger.kernel.org
-Cc: dev@openvswitch.org, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, stable@vger.kernel.org
-References: <20260929072519.2803304-1-den@openvz.org>
- <20260929072519.2803304-2-den@openvz.org>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260929072519.2803304-2-den@openvz.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-02_06,2026-10-02_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ adultscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2609040000 definitions=main-2610020083
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAyMDA4MyBTYWx0ZWRfXw9udXpwPApbF
+ HVH/Vnnj/KPSwHT3PbF/dsvryZUb7ABSuqefREn28BbDIzM6AriIcNFCUvmLp1o0XjsB/21HYfL
+ CRzjETpFISfYZZkGOj8seHAYo8oOxXKgL3zmBe9la/APLdn5X3GYzz/V7oE84iadgsj3CpOgUo+
+ Z3Kd4VLwRrRdWChx6QU8JGhYaroGd+9W3iI7QS6ff32qSvPZTSyy3WZyXHNEqh7gVr1BTzGf24E
+ V/FLKVeWyuNZv3UwqYkmvRgAI4Od+oW+27gDSjIbJI0pVwlhFhzc19wqlwB7NUQ8Y88cTJxmOCX
+ +lRoHSNbIQ+ElU9yeTNG1GFWPmgXwIFpnDeMg2czgL6Tl5ebp5mgAVMkk0axywiaZ/O+RjTSx9l
+ 8umRS4QUD25QKozxGdcRv0klmNrSps/9JeW9e9fqssyr4VEPjr1aovrXixJdjTFiwr8D5GPLOs1
+ JFaMhT0G9ycWCGX/ovg==
+X-Proofpoint-GUID: EQU8pirZfaHEbbeATr4QCc3IvklSGYCE
+X-Authority-Analysis: v=2.4 cv=T8QZ3PKQ c=1 sm=1 tr=0 ts=6ac01a94 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=3I1J8UUJPc9JN9BFgKH3:22 a=yPCof4ZbAAAA:8 a=UclNb3vuK5x6yrke_OMA:9
+ a=O8hF6Hzn-FEA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAyMDA4MyBTYWx0ZWRfX0cVAMziyrejb
+ aTCqDn9zlpgKAiLoOqimXK3zd+KL92p3uSICCMCZSSCaA1eorB4Ms4gRZp0chaNK/frZAb3OGtj
+ 7Z8MZPhjZp04Q+mynww31Hrfer9VtMKRd2AJtG01h5RQOOR2xkgw
+X-Proofpoint-ORIG-GUID: EQU8pirZfaHEbbeATr4QCc3IvklSGYCE
 
-On 9/29/26 9:25 AM, Denis V. Lunev wrote:
-> From: Denis V. Lunev <den@openvz.org>
-> 
-> A production compute node carrying a few thousand datapath flows hit a
-> soft lockup inside a single netlink flow dump and panicked.
-> 
-> ovs_flow_cmd_dump() calls ovs_flow_stats_get() for every flow it
-> emits, and that releases stats->lock with spin_unlock_bh() once per
-> CPU that has touched the flow. Every release is a local_bh_enable(),
-> and each one runs the pending softirq backlog in the dumping thread's
-> own context.
-> 
-> The skb bounds the flows one callback emits, but not the softirq work
-> it absorbs. On a CPU that carries the box's packet load the backlog
-> refills as fast as it drains, so the dumping thread becomes that CPU's
-> softirq engine. It never sleeps and it has no reschedule point, so
-> under voluntary preemption nothing can take the CPU away from it:
-> neither the ksoftirqd the kernel woke to take the work over, nor the
-> stopper thread the softlockup detector dispatches to refresh its
-> timestamp.
-> 
-> Hold BH off across the whole callback instead, the way
-> ctnetlink_dump_table() does, so the nested spin_unlock_bh() stop
-> draining softirqs. The loop already runs under rcu_read_lock() and
-> cannot sleep. What it gives up is preemption under CONFIG_PREEMPT,
-> since a BH-off region is not preemptible outside PREEMPT_RT. The
-> region stays short: the skb caps the flows one callback emits, and
-> empty buckets cost no skb space but are each visited once per dump, as
-> the cursor only moves forward. The table grows on insert and shrinks
-> only on flush, so the walk is bounded by the largest flow count the
-> datapath has held. The softirq backlog the callback used to absorb has
-> no bound at all.
-> 
-> Fixes: 63e7959c4b9b ("openvswitch: Per NUMA node flow stats.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Denis V. Lunev <den@openvz.org>
-> ---
-> v3:
-> - add the net prefix, Fixes tag and Cc stable
-> - explain why the BH-off walk stays bounded: the cursor visits each
->   empty bucket once per dump and the table shrinks only on flush
-> - drop "here" from the comment, add blank lines around the
->   local_bh_disable()/local_bh_enable() pair
-> v2: https://lore.kernel.org/netdev/20260915122401.3910188-1-den@openvz.org/
-> - leave ovs_vport_cmd_dump() alone: nsid_lock has not been BH-safe
->   since commit aed4969f2bdf ("net: net->nsid_lock does not need BH
->   safety"), so the vport dump never drained softirqs
-> - disable BH before the table dereference and say in a comment that
->   the region is not there for safety
-> - drop the ovs_flow_stats_get() history, note the empty-bucket walk
->   and the lost CONFIG_PREEMPT preemption in the message
-> - move the Cc list out of the commit message
-> v1: https://lore.kernel.org/netdev/20260909171920.1001074-1-den@openvz.org/
-> 
->  net/openvswitch/datapath.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-> index 631a03136fa1..4fc5d0bebd85 100644
-> --- a/net/openvswitch/datapath.c
-> +++ b/net/openvswitch/datapath.c
-> @@ -1532,6 +1532,12 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
->  		return -ENODEV;
->  	}
->  
-> +	/*
-> +	 * Not needed for safety. Stops every spin_unlock_bh() in
-> +	 * ovs_flow_stats_get() from running the softirq backlog.
-> +	 */
-> +	local_bh_disable();
-> +
->  	ti = rcu_dereference(dp->table.ti);
->  	for (;;) {
->  		struct sw_flow *flow;
-> @@ -1552,6 +1558,8 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
->  		cb->args[0] = bucket;
->  		cb->args[1] = obj;
->  	}
-> +
-> +	local_bh_enable();
->  	rcu_read_unlock();
->  	return skb->len;
->  }
+Firmware can access command DMA mailboxes after the driver times out.
+The command entry already keeps a reference for a possible firmware
+completion, which keeps its slot allocated, but the blocking caller
+and async callback can still free their input and output mailboxes on
+timeout. A late firmware access can therefore hit reallocated DMA
+pool memory.
 
-Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+Give the entry ownership of the mailboxes on timeout and free them when
+its final reference is dropped. If timeout claims PENDING_COMP first,
+retain the firmware-event reference while a real completion remains
+possible; a late completion drops it.
+
+The real EQ handler may instead claim PENDING_COMP before the blocking
+timeout handler runs and still be reading the mailboxes. Set
+RETAIN_MSGS before forcing timeout completion in the blocking path.
+The EQ handler holds its entry reference through its last mailbox
+access and done notification, so the caller can return on timeout
+without freeing memory beneath it.
+
+Serialize completion claims and firmware-reference handoffs under
+alloc_lock. The existing reset/error flush marks synthetic
+completions with MLX5_TRIGGERED_CMD_COMP and treats them as terminal
+for firmware ownership; only such a triggered completion drops a
+reference retained by an earlier timeout. Normal command EQ teardown
+and its slot-drain policy are unchanged.
+
+Fixes: e126ba97dba9 ("mlx5: Add driver for Mellanox Connect-IB adapters")
+Assisted-by: Codex:gpt-5
+Signed-off-by: Manjunath Patil <manjunath.b.patil@oracle.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 127 ++++++++++++++----
+ include/linux/mlx5/driver.h                   |   1 +
+ 2 files changed, 103 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 84583dc5eb1c..22508b26972d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -142,8 +142,19 @@ cmd_alloc_ent(struct mlx5_cmd *cmd, struct mlx5_cmd_msg *in,
+ 	return ent;
+ }
+ 
++static void free_msg(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *msg);
++static void mlx5_free_cmd_msg(struct mlx5_core_dev *dev,
++			      struct mlx5_cmd_msg *msg);
++
+ static void cmd_free_ent(struct mlx5_cmd_work_ent *ent)
+ {
++	if (test_bit(MLX5_CMD_ENT_STATE_RETAIN_MSGS, &ent->state)) {
++		struct mlx5_core_dev *dev = container_of(ent->cmd,
++							  struct mlx5_core_dev, cmd);
++
++		mlx5_free_cmd_msg(dev, ent->out);
++		free_msg(dev, ent->in);
++	}
+ 	kfree(ent);
+ }
+ 
+@@ -958,10 +969,6 @@ static void cb_timeout_handler(struct work_struct *work)
+ 	cmd_ent_put(ent); /* for the cmd_ent_get() took on schedule delayed work */
+ }
+ 
+-static void free_msg(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *msg);
+-static void mlx5_free_cmd_msg(struct mlx5_core_dev *dev,
+-			      struct mlx5_cmd_msg *msg);
+-
+ static bool opcode_allowed(struct mlx5_cmd *cmd, u16 opcode)
+ {
+ 	if (cmd->allowed_opcode == CMD_ALLOWED_OPCODE_ALL)
+@@ -1163,6 +1170,10 @@ static void wait_func_handle_exec_timeout(struct mlx5_core_dev *dev,
+ 		       mlx5_command_str(ent->op), ent->op);
+ 
+ 	ent->ret = -ETIMEDOUT;
++	/* The real handler may have claimed the completion but still be using
++	 * the mailboxes. Keep them with the entry until its last reference.
++	 */
++	set_bit(MLX5_CMD_ENT_STATE_RETAIN_MSGS, &ent->state);
+ 	mlx5_cmd_comp_handler(dev, 1ULL << ent->idx, true);
+ }
+ 
+@@ -1260,7 +1271,7 @@ static int mlx5_cmd_invoke(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *in,
+ 			   struct mlx5_cmd_msg *out, void *uout, int uout_size,
+ 			   mlx5_cmd_cbk_t callback,
+ 			   void *context, int page_queue,
+-			   u8 token, bool force_polling)
++			   u8 token, bool force_polling, bool *retain_msgs)
+ {
+ 	struct mlx5_cmd *cmd = &dev->cmd;
+ 	struct mlx5_cmd_work_ent *ent;
+@@ -1313,6 +1324,7 @@ static int mlx5_cmd_invoke(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *in,
+ 		return 0; /* mlx5_cmd_comp_handler() will put(ent) */
+ 
+ 	err = wait_func(dev, ent);
++	*retain_msgs = test_bit(MLX5_CMD_ENT_STATE_RETAIN_MSGS, &ent->state);
+ 	if (err == -ETIMEDOUT || err == -ECANCELED || err == -EBUSY)
+ 		goto out_free;
+ 
+@@ -1732,6 +1744,66 @@ static void free_msg(struct mlx5_core_dev *dev, struct mlx5_cmd_msg *msg)
+ 	}
+ }
+ 
++/*
++ * cmd_work_handler() takes an entry reference for the firmware event and
++ * sets PENDING_COMP before ringing the command doorbell. Firmware can still
++ * use the input and output DMA mailboxes after the caller times out.
++ *
++ * Claim PENDING_COMP under alloc_lock so exactly one handler makes the
++ * mailbox and firmware-reference decisions:
++ *
++ * - A timeout that wins retains the mailboxes in the entry. If the command
++ *   interface is still up and the opcode is allowed, firmware can still
++ *   generate a real completion, so TIMEDOUT retains the firmware-event ref.
++ * - A real completion that wins consumes its firmware-event ref normally.
++ * - A real completion that loses is the late event after a timeout. It drops
++ *   the ref retained by TIMEDOUT; RETAIN_MSGS stays set until entry teardown.
++ * - A reset completion cannot be followed by a real firmware event. It drops
++ *   a ref only when TIMEDOUT says the timeout retained one.
++ *
++ * A blocking timeout retains the mailboxes even when a real completion has
++ * claimed PENDING_COMP. That handler keeps its firmware-event reference until
++ * it finishes using the mailboxes. Keeping the reference transitions under
++ * alloc_lock prevents timeout, firmware, and reset from consuming the same
++ * reference.
++ */
++static bool mlx5_cmd_claim_completion(struct mlx5_core_dev *dev,
++				      struct mlx5_cmd_work_ent *ent, u64 vec,
++				      bool forced, bool *drop_fw_ref)
++{
++	struct mlx5_cmd *cmd = &dev->cmd;
++	unsigned long flags;
++	bool timed_out = forced && ent->ret == -ETIMEDOUT;
++	bool pending;
++
++	*drop_fw_ref = false;
++	spin_lock_irqsave(&cmd->alloc_lock, flags);
++	pending = test_and_clear_bit(MLX5_CMD_ENT_STATE_PENDING_COMP,
++				     &ent->state);
++	if (pending) {
++		if (timed_out)
++			set_bit(MLX5_CMD_ENT_STATE_RETAIN_MSGS, &ent->state);
++
++		if (timed_out && !mlx5_cmd_is_down(dev) &&
++		    opcode_allowed(cmd, ent->op)) {
++			set_bit(MLX5_CMD_ENT_STATE_TIMEDOUT, &ent->state);
++		} else {
++			clear_bit(MLX5_CMD_ENT_STATE_TIMEDOUT, &ent->state);
++			*drop_fw_ref = true;
++		}
++	} else if (!forced) {
++		clear_bit(MLX5_CMD_ENT_STATE_TIMEDOUT, &ent->state);
++		*drop_fw_ref = true;
++	} else if (vec & MLX5_TRIGGERED_CMD_COMP) {
++		/* Reset cannot receive a late firmware completion. */
++		*drop_fw_ref = test_and_clear_bit(MLX5_CMD_ENT_STATE_TIMEDOUT,
++						  &ent->state);
++	}
++	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
++
++	return pending;
++}
++
+ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool forced)
+ {
+ 	struct mlx5_cmd *cmd = &dev->cmd;
+@@ -1744,38 +1816,33 @@ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool force
+ 	struct mlx5_cmd_stats *stats;
+ 	unsigned long flags;
+ 	unsigned long vector;
++	bool pending;
++	bool drop_fw_ref;
+ 
+ 	/* there can be at most 32 command queues */
+ 	vector = vec & 0xffffffff;
+ 	for (i = 0; i < (1 << cmd->vars.log_sz); i++) {
+ 		if (test_bit(i, &vector)) {
+ 			ent = cmd->ent_arr[i];
+-
+-			if (forced && ent->ret == -ETIMEDOUT)
+-				set_bit(MLX5_CMD_ENT_STATE_TIMEDOUT,
+-					&ent->state);
+-			else if (!forced) /* real FW completion */
+-				clear_bit(MLX5_CMD_ENT_STATE_TIMEDOUT,
+-					  &ent->state);
++			pending = mlx5_cmd_claim_completion(dev, ent, vec, forced,
++							    &drop_fw_ref);
+ 
+ 			/* if we already completed the command, ignore it */
+-			if (!test_and_clear_bit(MLX5_CMD_ENT_STATE_PENDING_COMP,
+-						&ent->state)) {
+-				/* only real completion can free the cmd slot */
++			if (!pending) {
+ 				if (!forced) {
+-					mlx5_core_err(dev, "Command completion arrived after timeout (entry idx = %d).\n",
++					mlx5_core_err(dev,
++						      "Command completion arrived after timeout (entry idx = %d).\n",
+ 						      ent->idx);
+-					cmd_ent_put(ent);
+ 				}
++				if (drop_fw_ref)
++					cmd_ent_put(ent);
+ 				continue;
+ 			}
+ 
+ 			if (ent->callback && cancel_delayed_work(&ent->cb_timeout_work))
+ 				cmd_ent_put(ent); /* timeout work was canceled */
+ 
+-			if (!forced || /* Real FW completion */
+-			     mlx5_cmd_is_down(dev) || /* No real FW completion is expected */
+-			     !opcode_allowed(cmd, ent->op))
++			if (drop_fw_ref && ent->callback)
+ 				cmd_ent_put(ent);
+ 
+ 			ent->ts2 = ktime_get_ns();
+@@ -1816,17 +1883,23 @@ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool force
+ 								 ent->out,
+ 								 ent->uout_size);
+ 
+-				mlx5_free_cmd_msg(dev, ent->out);
+-				free_msg(dev, ent->in);
++				if (!test_bit(MLX5_CMD_ENT_STATE_RETAIN_MSGS,
++					      &ent->state)) {
++					mlx5_free_cmd_msg(dev, ent->out);
++					free_msg(dev, ent->in);
++				}
+ 
+ 				/* final consumer is done, release ent */
+ 				cmd_ent_put(ent);
+ 				callback(err, context);
+ 			} else {
+-				/* release wait_func() so mlx5_cmd_invoke()
+-				 * can make the final ent_put()
++				/* No mailbox accesses after done. If the caller timed out,
++				 * the firmware reference keeps ent and its mailboxes alive
++				 * until this handler has finished.
+ 				 */
+ 				complete(&ent->done);
++				if (drop_fw_ref)
++					cmd_ent_put(ent);
+ 			}
+ 		}
+ 	}
+@@ -1965,6 +2038,7 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+ 	gfp_t gfp;
+ 	u8 token;
+ 	int err;
++	bool retain_msgs = false;
+ 
+ 	if (mlx5_cmd_is_down(dev) || !opcode_allowed(&dev->cmd, opcode))
+ 		return -ENXIO;
+@@ -2008,9 +2082,12 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+ 	}
+ 
+ 	err = mlx5_cmd_invoke(dev, inb, outb, out, out_size, callback, context,
+-			      pages_queue, token, force_polling);
++			      pages_queue, token, force_polling, &retain_msgs);
+ 	if (callback && !err)
+ 		return 0;
++	/* The entry releases retained DMA mailboxes with its final reference. */
++	if (retain_msgs)
++		goto out_up;
+ 
+ 	if (err > 0) /* Failed in FW, command didn't execute */
+ 		err = deliv_status_to_err(err);
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 83d0a83bbfbc..99cabe13e6c1 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -829,6 +829,7 @@ typedef void (*mlx5_cmd_cbk_t)(int status, void *context);
+ enum {
+ 	MLX5_CMD_ENT_STATE_PENDING_COMP,
+ 	MLX5_CMD_ENT_STATE_TIMEDOUT,
++	MLX5_CMD_ENT_STATE_RETAIN_MSGS,
+ };
+ 
+ struct mlx5_cmd_work_ent {
+-- 
+2.52.0
+
