@@ -1,230 +1,193 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36770408026
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 06:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519551624D5
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 06:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790922970; cv=none; b=pg+TV2EOK9MXnjX7CbzEHYWRmYKWlXimZZIMljZorLCeVav2boT/z9/lt64NMJgu3admGJ4KahEe8kiJX8oYVXtL7TFT+3Tf77J0e3h4Sy/VUMWlHBj1OzXVn60noHlcHWtRbEEWfrLrElSfQs7ZZPcZOoBTlRXUCf793mNiqKA=
+	t=1790923150; cv=none; b=uzXHNtfgyIRTRIXkMnN04hX6QVvW0N+v3q531j+ZyFkFFCMLtfgX86wI2F4mO1InINfGpDkyUAfczIbauDtMVvVW/DIags4N+H/jYXnumN3gO1wxMBT/OAFiWd7oP0xvaKGU1PQbMayvZltnxlZe2+tMlMLj+AN75WkidkIVLC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790922970; c=relaxed/simple;
-	bh=5F5hhOivMCy5muv9AU0zy1sYFS48yMF+CCjicodz2i8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lxaaECQ4BBpRVKAjvsiNV3/Ay7MRBWu0IZBwNfdJpdoo8cbFa+/nZt6MQEf9eZBkqL3Co/pHTCA/woYGlrU1TPHcmp3lFcBJYL4jOD8K4C/smX6tjhwcTPKfXnFctSJ/A7skRP6RMVZe19h5VXrqYZTVvFXFiegeLXvD9rIdAQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XJfQseez; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=a2pUHVmC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=JSP1CHiP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DBRZT6Kq; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1790923150; c=relaxed/simple;
+	bh=iLEqvKcSD3Svhe3b0q71tWXNB/+IDXKY0F0REHJuUEc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tMADv3mkovPexETUVOSDizxj+eYPJzBbSyP8GNEiGSBEcwl7SHH7eWDYKnkLj80JpNuWhKehoOFd2K8EkflVwQM/nHu70RPgALQErCSiyvzzRc+pmdM67KLayUweU/35i0DWZ30NhR03ImyPfohr5YO2RBvz1xgdFCxfxF9tbow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ou0WAZdO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XJfQseez";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="a2pUHVmC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="JSP1CHiP";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DBRZT6Kq"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8DB661FE49;
-	Fri,  2 Oct 2026 06:35:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790922962; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uN7fBX8MkQ1Pf8LNatrxfAhvfomqDYU0DiWqn+s7Jik=;
-	b=XJfQseezvPuGlh0uPii2wgh4kEB1e0mKmCmSju3h0YDoMm3TYK1/8ym+86NwcJz0DMGj5O
-	S5ZIYcfbE0FvxxK6/RmC6pkx5V1fL8j3cI13U9vDbZQqJV+Zs9q89jZYnrXc9U9LF/u9Kk
-	OVP2CS4UJsca4wlbexsehOcM4OTpVes=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790922962;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uN7fBX8MkQ1Pf8LNatrxfAhvfomqDYU0DiWqn+s7Jik=;
-	b=a2pUHVmCNbXjNUdHgczAaNR+in56+NMdhH7+ZmhcdFhoqTOhnyGpQOkr2MkgxdrdXcQzHr
-	3BodREMr7g89eTCw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=JSP1CHiP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=DBRZT6Kq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790922958; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uN7fBX8MkQ1Pf8LNatrxfAhvfomqDYU0DiWqn+s7Jik=;
-	b=JSP1CHiPbCWHR6Y3FlG7sG7HgFz5konXukjSqK9IOR3oU2stvOoVtVvPuESJxH+nqQYsP6
-	vhSEDvIAlQZFsS6L+tvqo4kLgq5JQy1YeJ+IYUJIq4+f75kYd/VW1y5k4j2FKzowyDmBqA
-	1VviWDZoyfhUeNE3qzpTsiQUlvSftN4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790922958;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uN7fBX8MkQ1Pf8LNatrxfAhvfomqDYU0DiWqn+s7Jik=;
-	b=DBRZT6KqkEqRizmbcqt/IHKaSUe3gCix77csYR7tJNWePSkIK8YRHjml8XFV7QUn+TyTNi
-	6GN2KIS9yzOdwQAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC31213688;
-	Fri,  2 Oct 2026 06:35:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Gz2qIM1Qv2pBRwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Fri, 02 Oct 2026 06:35:57 +0000
-Message-ID: <bd0810d4-4e7c-4c40-8ae8-89a3f531356b@suse.de>
-Date: Fri, 2 Oct 2026 08:34:45 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ou0WAZdO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF4F1F000FF;
+	Fri,  2 Oct 2026 06:39:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790923149;
+	bh=owjfKeoR7JTehK9a/Q/bK6ekQxZLR1ycFylzwJ1PvC4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ou0WAZdOU/sgFGOKt//Aj0QxRSyLC87BKZce/eT1ZGMt63pdAbmjchkdWV8y6FoR5
+	 Qut6mZu2+Z6sXBe+vRU6Q5+CYb3SJ6B0hlgIssH5KkY/kJ90YUbw21oZf3zzrQq5yM
+	 /DCQVD6Vqrq5hQO3BN9qcDgDgjlcJFs/0PC8i6+C5uzhHmK/MAZnA9wP6G+mE8Ufjh
+	 wDIEPpXHfqp0Vp9pnMBJqfxcCI/VE6lPrSIBpfG/OCvk9SKPNT29ZJhjTYArpoOHp1
+	 0T1vv6sUtmPaRklNZN7MbNTdKd+1wKII2ZweeLO6Wfy8hqjt5W96E36ApSaMJO3uVF
+	 QMds2CjbS7eVQ==
+Subject: Re: [PATCH net 1/2] ieee802154: 6lowpan: look up the neighbour short
+ address in lowpan_xmit()
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ alex.aring@gmail.com, falemi@asu.edu, netdev@vger.kernel.org
+Date: Fri, 02 Oct 2026 06:39:08 +0000
+Message-ID: <179092314828.434549.12977909355456421653@kernel.org>
+In-Reply-To: <20260928183753.3550210-2-edumazet@kernel.org>
+References: <20260928183753.3550210-2-edumazet@kernel.org>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [ovs-dev] [PATCH net] net: openvswitch: validate transport header
- presence in set_ipv6_addr
-To: Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org
-Cc: dev@openvswitch.org, horms@kernel.org, pabeni@redhat.com,
- kuba@kernel.org, edumazet@kernel.org, davem@davemloft.net,
- echaudro@redhat.com, aconole@redhat.com,
- syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
-References: <20261001085205.3822-1-fmancera@suse.de>
- <50b0db80-7d42-44fc-81eb-d0fed8047871@ovn.org>
- <7590af05-e95a-4b34-9216-26e770bdfaaa@suse.de>
- <a9480ea8-314f-478f-ae9d-b8262600e2ad@ovn.org>
- <25e03da1-d25c-4206-97c9-6d0fee4e9758@suse.de>
- <59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[4cc63fcfb3845e149969];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid]
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 8DB661FE49
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
 
-On 10/2/26 12:10 AM, Ilya Maximets wrote:
-> On 10/1/26 3:29 PM, Fernando Fernandez Mancera wrote:
->> On 10/1/26 2:00 PM, Ilya Maximets wrote:
->>> On 10/1/26 1:20 PM, Fernando Fernandez Mancera via dev wrote:
->>>> On 10/1/26 1:15 PM, Ilya Maximets wrote:
->>>>> On 10/1/26 10:52 AM, Fernando Fernandez Mancera wrote:
->>>>>> When executing IPv6 address rewrite actions on IPv6 fragments,
->>>>>> set_ipv6_addr() might attempt to recalculate the L4 header checksum
->>>>>> calling skb_transport_header() with an uninitialized transport header.
->>>>>> This can potentially lead to a OOB write.
->>>>>
->>>>> Not really.  later fragments have l4_proto set to NEXTHDR_FRAGMENT
->>>>> and so no writes will be performed.  See parse_ipv6hdr().
->>>>>
->>>>
->>>> Oh, I didn't notice that. In that case, this is harmless. I will update
->>>> the commit message, thanks!
->>>>
->>>
->>> [...]
->>>
->>>>>> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
->>>>>> index dc5ff859f114..a14668565ec4 100644
->>>>>> --- a/net/openvswitch/actions.c
->>>>>> +++ b/net/openvswitch/actions.c
->>>>>> @@ -395,7 +395,7 @@ static void set_ipv6_addr(struct sk_buff *skb, u8 l4_proto,
->>>>>>     			  __be32 addr[4], const __be32 new_addr[4],
->>>>>>     			  bool recalculate_csum)
->>>>>>     {
->>>>>> -	if (recalculate_csum)
->>>>>> +	if (recalculate_csum && skb_transport_header_was_set(skb))
->>>>>>     		update_ipv6_checksum(skb, l4_proto, addr, new_addr);
->>>>> I'd suggest moving the check into update_ipv6_checksum() and maybe add
->>>>> a small comment that the check is only to avoid warning on reading the
->>>>> offset that wasn't set, offset must always be set for any l4_proto for
->>>>> which the checksum is actually getting updated.
->>>>>
->>>>
->>>> Will do that. Thanks Ilya.
->>> Actually, it might be better to check for NEXTHDR_FRAGMENT and return
->>> early only in this case.  This way if we ever have the offset missing
->>> for any l4_ptoto that needs it, we'll still get a warning instead of
->>> silently not updating the checksum.  This will be close to what the
->>> update_ip_l4_checksum() is doing.
->>>
->>> At the same time, update_ip_l4_checksum() is able to get the transport
->>> offset without a warning, so another alternative is to actually set the
->>> transport offset in parse_ipv6hdr() to something like frag_off, which
->>> would closer match the behavior of ipv4 where check_iphdr() sets the
->>> transport header unconditionally to the next byte after the network header.
->>> This is fine because transport headers are never accessed when they are
->>> not set in the key.  The network checksum update cases are the only ones
->>> where the actions are even allowed to execute and touch higher level
->>> headers that may not be present in the packet.  At the same time the
->>> frag_off is kind of an arbitrary value, so I'm not sure.
->>>
->>> WDYT?
->>
->> I noticed this but IMHO it is a worse pattern. In the sense that one
->> persone in the future might use the transport header without noticing
->> this and the warning won't show up because the transport header will be
->> set incorrectly. This could cause an actual OOB.
-> 
-> Yeah, that's true.  It's better to keep the transport header unset if
-> there is actually no transport header.  We may also adjust the ipv4 path
-> to avoid having it set for later fragments, but that's unrelated for the
-> issue at hand.
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-I do not mind giving a try to that in net-next. Good, so I will send the 
-v2 with the proper check and commit message.
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
 
-Thanks,
-Fernando.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
->> I will trust your taste in this matter since I am not that familiar with
->> the code.
-> 
-> Let's just go with the check inside update_ipv6_checksum() before reading
-> the value.  Seems like the best option.
-> 
-> Best regards, Ilya Maximets.
-> 
->>
->> Thanks,
->> Fernando.
->>
->>> Eelco, Aaron, do you maybe have a preference?
->>>
->>> Best regards, Ilya Maximets.
->>
-> 
+- [High] At this commit, lowpan_xmit() (net/ieee802154/6lowpan/tx.c:272)
+  resets skb->network_header to skb->data but leaves…
 
+Pre-existing issues:
+- [Medium] At this commit, AF_PACKET SOCK_RAW senders reach lowpan_xmit()
+  without dev_hard_header() ever being called.
+
+--
+
+ieee802154: 6lowpan: look up the neighbour short address in lowpan_xmit()
+
+This commit moves the neighbour short address lookup from
+lowpan_header_create() to lowpan_header(). The lookup then runs after the
+IPv6 header has been copied into the skb. lowpan_xmit() now pulls the IPv6
+header into the linear area and resets the network header to skb->data.
+
+> diff --git a/net/ieee802154/6lowpan/tx.c b/net/ieee802154/6lowpan/tx.c
+> index 4df76ff50699..2d83a810e610 100644
+> --- a/net/ieee802154/6lowpan/tx.c
+> +++ b/net/ieee802154/6lowpan/tx.c
+
+[ ... ]
+
+> @@ -230,6 +236,9 @@ static int lowpan_header(struct sk_buff *skb, struct net_device *ldev,
+>  
+>  	memcpy(&info, lowpan_skb_priv(skb), sizeof(info));
+>  
+> +	if (info.daddr.mode == IEEE802154_ADDR_LONG)
+> +		lowpan_neigh_short_addr(skb, ldev, &info.daddr);
+
+[Severity: Medium]
+This issue was not introduced by this patch, but is info.daddr.mode ever
+initialized here for AF_PACKET SOCK_RAW senders?
+
+packet_snd() and tpacket_fill_skb() only call dev_hard_header() for
+SOCK_DGRAM:
+
+net/packet/af_packet.c:packet_snd() {
+    ...
+	if (sock->type == SOCK_DGRAM) {
+		offset = dev_hard_header(skb, dev, ntohs(proto), addr, NULL, len);
+    ...
+}
+
+So for SOCK_RAW, lowpan_header_create() never writes the struct
+lowpan_addr_info at lowpan_skb_priv(skb). That headroom is memory from
+sock_alloc_send_pskb() that has not been zeroed.
+
+The memcpy() above copies it into info, and the new check branches on the
+uninitialized daddr.mode. As before this patch, the rest of the
+uninitialized daddr/saddr still reaches lowpan_header_compress(), the
+ackreq decision and wpan_dev_hard_header().
+
+The next patch in the series, "6lowpan: fix warning in
+lowpan_compress_addr_64()", appears to fix this. It removes
+lowpan_skb_priv() and builds daddr/saddr from the pushed pseudo header and
+wpan_dev.
+
+[ ... ]
+
+> @@ -255,10 +264,12 @@ netdev_tx_t lowpan_xmit(struct sk_buff *skb, struct net_device *ldev)
+>  
+>  	pr_debug("package xmit\n");
+>  
+> -	if (skb->protocol != htons(ETH_P_IPV6)) {
+> +	if (skb->protocol != htons(ETH_P_IPV6) ||
+> +	    !pskb_may_pull(skb, sizeof(struct ipv6hdr))) {
+>  		kfree_skb(skb);
+>  		return NET_XMIT_DROP;
+>  	}
+> +	skb_reset_network_header(skb);
+
+[Severity: High]
+This resets only the network header. Can skb->transport_header go stale
+for AF_PACKET SOCK_RAW senders as a result?
+
+At this commit ldev->hard_header_len is sizeof(struct ipv6hdr). For
+SOCK_RAW with len >= 80, packet_snd() therefore leaves the network header
+at data + 40:
+
+	} else if (reserve) {
+		skb_reserve(skb, -reserve);
+		if (len < reserve + sizeof(struct ipv6hdr) &&
+		    dev->min_header_len != hard_header_len)
+			skb_reset_network_header(skb);
+	}
+
+packet_parse_headers()->skb_probe_transport_header() then parses bytes
+40..79 as the IPv6 header. transport_header ends up around data + 80, or
+stays unset (0xffff) if parsing fails. tpacket_fill_skb() on the TX ring
+path also places the network header hard_header_len bytes after skb->data.
+
+After this reset the network header is at data + 0. If byte 6 (nexthdr) is
+IPPROTO_UDP, lowpan_header_compress()->lowpan_nhc_do_compression() only
+fixes the transport header when the two offsets are equal:
+
+net/6lowpan/nhc.c:lowpan_nhc_do_compression() {
+    ...
+	if (skb->transport_header == skb->network_header)
+		skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+    ...
+}
+
+That check no longer holds, so udp_compress() does:
+
+	const struct udphdr *uh = udp_hdr(skb);
+
+at the stale offset. That is bytes 80..87, or skb->head + 0xffff if the
+transport header was never set.
+
+Can this read out of bounds, and can the bytes it reads go into the
+transmitted 802.15.4 frame as the UDP ports and checksum?
+
+Only this intermediate commit seems to be affected. The next patch in the
+series, "6lowpan: fix warning in lowpan_compress_addr_64()", sets
+hard_header_len to LOWPAN_PSEUDO_HDR_LEN. It also calls __skb_pull() on the
+pseudo header before skb_reset_network_header(). The reset network header
+then matches where AF_PACKET put it.
+
+Could the two changes be reordered or combined so that this commit is safe
+to bisect?
+
+A separate part of this was not introduced by this patch and is still
+present at the end of the series. pskb_may_pull() only guarantees the IPv6
+header in the linear area (8 + 40 bytes after the next patch). If nexthdr
+is UDP and the payload is shorter than 8 bytes, can udp_compress() read up
+to 8 bytes past skb->tail?
+
+>  
+>  	WARN_ON_ONCE(skb->len > IPV6_MIN_MTU);
+>
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928183753.3550210-1-edumazet%40kernel.org
