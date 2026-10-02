@@ -1,118 +1,242 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6740D46E007
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D9E4AF169;
+	Fri,  2 Oct 2026 13:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790948413; cv=none; b=fkqkWFxWW8MWnMBdH5TmJCdB9Q+2msg9qgiM+ir+kJzpBtgGGxHJM2zmLvEb95svGWKnZD2UzT9OwwEpGBcd1UUSbgV14VV/3DFHldy7ZwiHnPL0jF6ta8bjbHJR0GaE0wJ+O9p55tFG6fBVA7MYkPVBUtu88mPmKHBBDT75ek0=
+	t=1790948696; cv=none; b=HHJW7l2HeDyBllsPX7XBVfrGPiqwdwOJa87rJCx9hS9olAMxmg9WSvzmbCREoQkBAdDarRbPsj5AtKrESc0MPakyh3391gilF6aT5jD1d3T1o6TEXHtlYwY4EEvEfTRIyz8ORnYkzcKDhUE7V0+XRnsR66jXLZUfyAOHi5OltcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790948413; c=relaxed/simple;
-	bh=Zxrx0jSSfnYnESeX6T3cR1BVsOxDyhirOyg0LdtndX8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=koQmJ0MBo/ccohdmf5VrSiacTpnvvL8fELMMZBXpPobsB5bXB0uK9WvKnKaUM8m+zRmHBUuWY2wQ9Z6s/d4XVDGvacXn0yhi0nPXYnYkRmVBlkIxk71J/FMjXZeR9Iei5LuL5/lpT3SjueyuwNyy5OmQQvJwDJ2Rj5rZqec3sCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=exDgv7nK; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790948696; c=relaxed/simple;
+	bh=53yRw5kXy5pBkj0i+gM0xmDSLaAI2yOdC60XwgsitMI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LGjedEVPSB61brnkaGujGiuvWZt8/9TnH3znaMKbneLUyTPIlJW0RVyhDvmM3bWHLauPWEgy12jg8q77EgV7Avltjn9+632Iz/6MecXYWivn/QkZ0dMZkRdah7U7TiWlzB8PsSpubanZsaR7t5Wo113qZqpUR3WsaapAz2hX4fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=oJBtpe6P; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="exDgv7nK"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-346c612c7a8so4015293eec.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 06:40:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790948409; x=1791553209; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YiMhDvbsoBufNngs4Gaz/wiJMDRb8Qxn1k3zbEz6U1s=;
-        b=exDgv7nKrMgkusrvG6jay4ufDaN6tx61SNFAirRYTlkxRY7QISEvNZ/6RzyoVWFZxW
-         EhCByXtZjr0r8rpLEL+BHUqM1Xju6qqjFsJ7PDOGRrVcgUvNbtv4LqX77Bc6aQHfd+6m
-         6yTmnhtiMhGigqkgZ2cHK6J9lD28p9T4QAlacz0Y0pYGHmhh8YgtgL4cUUBPNlJp8J8h
-         1vqiipHgFlXabRpgMCme8e1vTYzRpcIBfNZ6xvJkuJt5VpgGLdrKKpExTCtn3tA0AIDK
-         rKy9zacvC7yRD99x53KY9jvquIFVmz0fqyQJjYtRgdgtDsqIjhviW7wXTefTi8TbSpOL
-         PTCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790948409; x=1791553209;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YiMhDvbsoBufNngs4Gaz/wiJMDRb8Qxn1k3zbEz6U1s=;
-        b=HLZp2vR9LGseI6kKL5y+I5yx0T2UsOXvZ6pu/rtNW4HAVb69ilSKntrmTKemtccPTL
-         XWP0VcE31oa81qcCZMqrW9Y0ZJFzFdu2zc7TfVvYdZPpU1BPSGQEE+ztez0yvB3u5V48
-         BenujWQ/XrZWvO5izMmcpoWRf6pQj9ToHrqeFW1uVG7b6dyOTE50zdMIyhgPEPNaNIVA
-         VssvTiEWmXTnIvHIhNKaiZ91MEZjKHUr66TKZX7TMe8iX2fPVTReOPWhKpItSpXm3kWV
-         WRH8j5kABbW9pWxQ2X1T9QIppdkf3kPqcSVe02xW7uzTqHhyCaQUFAa2wHJ5jocKp7WT
-         /Jkw==
-X-Forwarded-Encrypted: i=1; AKwUvByZdUTaTlWHISF+/m8w5Y2l3pBk98kvrqgiE4Q6CgsJq1GCG1lzEioFnRsPoE+9+Gn/bkbZZwg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIklmPjcF78Cpx5Geb9B70QrrXO4x047Tiqfvvej8O6b8sQ1ugv
-	VSFeAO+kt/3+R5AjoyXDvxsQRXvp8+hUBwJJbEKB/du8Xet3CBSonG5OwgRFKA==
-X-Gm-Gg: AYBFou3LnmwGQKaIgRQRJBWduYEpKFTzIHsvbOa2wl8hyVKijfLyysL4syPYI7e/Tji
-	euKkpICpw4zQTCVg+eOI1aus2Ir5a52c3dIEBbQrwokgzoHsudJYIjZv9/+jPaS46hB7J5e0sPD
-	LsDiP0joUuBNr7eHqcj32traDKO5/1mamOvzvC4d9ydzcSK/6TH+uuZGCRR3pqxnX43FOlUfUz3
-	Qe6vM1MhDIpuSYZkwRTI7zfRYuoxjffaNUEL8lviOAjbO3+lAAmLtRdtryEpsPvK//J852f1luG
-	8nIZEfF+ufi5tpmrxUELzf3QhfTrjUkjUMK1heGxdEVBbNBKfndx9q4kXCk4xfLn7F0N0ZhEIbp
-	mn8FyaJeD7ZWcAb+ZIYv5KDCVK5aI15Kp5QQGezNgRtTXrV5TgAMjSCS0EQVbPOlpRV0LJpAhJ3
-	+j0SDu6CmYECiiXjopfp90ZR4l6nvNWGjjHMlzgL23JnmtTicI9b5lWqSeh/bDp5M37svL2VlIH
-	fl5ncgXYFmAtIxTO6n1UCBorvldlEmmnGwT2DqcLTCFTvbar3qBMx09kKxbsQaritfk59SEJbK5
-	TEGPHzviN9gTUtZkpgVNrf01cOULmc1clGJzZAU2mgQ=
-X-Received: by 2002:a05:693c:4154:20b0:351:853:54a4 with SMTP id 5a478bee46e88-35108535aa9mr1233654eec.33.1790948408810;
-        Fri, 02 Oct 2026 06:40:08 -0700 (PDT)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f0672c2d1sm9177866eec.4.2026.10.02.06.40.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 06:40:08 -0700 (PDT)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Harald Welte <laforge@gnumonks.org>
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	osmocom-net-gprs@lists.osmocom.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [RFC] gtp: add 5G PDU Session Container (QFI) support?
-Date: Fri,  2 Oct 2026 13:40:02 +0000
-Message-Id: <20261002134002.3529706-1-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="oJBtpe6P"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=53yRw5kXy5pBkj0i+gM0xmDSLaAI2yOdC60XwgsitMI=; b=oJBtpe6P74Q/xB4zP9qUt0khX+
+	BUgelSUosTz744akKt9HqHC8l31S2+LXEIiswWfag4dvYTLHtmUv90EnxqGi91il71PqgMnr+ZUhi
+	gFFm/SJvE3xBwifiutnWTbwhwipDxcgNVkzgrg0hYHcvT/CewBXa2lYbKhWMt8gl97lXlq5lSFx2I
+	j5v0L8yVDQgRqmUl7+64j4VeqqMgJL6a82JTR/nNJk5JYuMu2jHQi4IZ4pcGfESgEaddCR8vFQsrk
+	qKjQzyR9mpAxDe39UiWlbpImQmAFoEEr2mThkn87x39wJO9ySF44AHGVHF9EnslmnjW5X+51Vglp4
+	+BbqF71g==;
+Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-m2-r2-139.e-iad50.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xCdZ5-00000000gkw-1Bce;
+	Fri, 02 Oct 2026 13:44:43 +0000
+Message-ID: <dd7a873caecab6c912e2c0f910d1e46818ea455d.camel@infradead.org>
+Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
+ pps_get_ts()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Rodolfo Giometti <giometti@enneenne.com>, Miroslav Lichvar
+	 <mlichvar@redhat.com>
+Cc: Richard Cochran <richardcochran@gmail.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni	 <pabeni@redhat.com>, John Stultz <jstultz@google.com>, Thomas
+ Gleixner	 <tglx@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Alexander Gordeev	
+ <agordeev@linux.ibm.com>
+Date: Fri, 02 Oct 2026 14:44:41 +0100
+In-Reply-To: <777d19602ed1868abbd3d3ef3a4e78a8688d4a17.camel@infradead.org>
+References: <20260829210041.40649-1-dwmw2@infradead.org>
+			 <20260829210041.40649-4-dwmw2@infradead.org>
+			 <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
+			 <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
+			 <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
+			 <ar5cq0vslvQ00Pek@localhost>
+			 <b567acf8-c3e3-4b51-99a8-058ab42f3026@enneenne.com>
+		 <24e8134b35cc8be26606d7472295cdb43ea6b38a.camel@infradead.org>
+	 <777d19602ed1868abbd3d3ef3a4e78a8688d4a17.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-0D8CVb6vfTL5n9vdcvE9"
+User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Hi Pablo, Harald,
 
-The in-tree GTP driver supports GTPv0 and GTPv1-U, but has no handling
-for the 5G N3 PDU Session Container (PSC) extension header (type 0x85,
-3GPP TS 29.281 / TS 38.415) that carries the QoS Flow Identifier (QFI).
-drivers/net/gtp.c also still has the "TODO: Support for extension
-header, sequence number and N-PDU" on the xmit path.
+--=-0D8CVb6vfTL5n9vdcvE9
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-I'd like to add PSC/QFI support, but before writing the datapath code I
-wanted to check two things with you.
+T24gRnJpLCAyMDI2LTEwLTAyIGF0IDEzOjI5ICswMTAwLCBEYXZpZCBXb29kaG91c2Ugd3JvdGU6
+Cj4gCj4gSSB0aGluayB0aGUgcmVtYWluaW5nIGppdHRlciBpcyBsYXJnZWx5IGR1ZSB0byB0aGUg
+dGltZSBpdCB0YWtlcywgaW4KPiB0aGUgInRpZ2h0IiBwb2xsaW5nIGxvb3AsIHRvIGNhbGwgZ3Bp
+b19yZWFkKCkuIFRoYXQncyB0d2ljZSB3aGF0IEkKPiBlc3RpbWF0ZWQg4oCUIGl0J3MgNjAwbnMu
+IEknbSBydW5uaW5nIGEgcXVpY2sgdGVzdCBvZiByZWFkaW5nIHRoZSBNTUlPCj4gZGlyZWN0bHkg
+aW4gdGhlIGxvb3AuLi4gZXZlbiB0aGF0IGlzIHN0aWxsIGFib3V0IDQwMG5zIG9uIHRoaXMKPiBo
+YXJkd2FyZSwgd2hpY2ggaXNuJ3QgZ29pbmcgdG8gbW92ZSB0aGUgbmVlZGxlIHZlcnkgbXVjaCBl
+aXRoZXIuCgpIYWgsIEkgc2hvdWxkIHN0b3AgcHJlZGljdGluZyByZXN1bHRzIGJlZm9yZSBJIGhh
+dmUgdGhlbS4gSSdtIGNsZWFybHkKbm90IHZlcnkgcHJlc2NpZW50LiBTcGlubmluZyBvbiB0aGUg
+TU1JTyAodGhlIEdQSU8gd2FpdF9mb3JfZWRnZSgpCm1ldGhvZCBpZGVhKSBtYWtlcyBtb3JlIG9m
+IGEgZGlmZmVyZW5jZSB0aGFuIEkgdGhvdWdodCAofjMwJSBvZmYgZXZlcnkKY29sdW1uIGJyaW5n
+cyB1cyBkb3duIHRvIG9ubHkgM8OXIHRoZSBlbnRyeS5TIGNhcHR1cmUpOgoKICDilIzilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilKzilIDilIDilIDi
+lIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilKzilIDi
+lIDilIDilIDilIDilJAKICDilIIgY2FwdHVyZSBtZXRob2QgICAgICAgICAgICAgICDilIIgcDUw
+IOKUgiAgcDk1IOKUgiAgcDk5IOKUgiAgbWF4IOKUgiAgIM+DIOKUggogIOKUnOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKU
+gOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKU
+gOKUgOKUgOKUpAogIOKUgiBwcHMtZ3BpbyAoSVJRKSAgICAgICAgICAgICAgIOKUgiAgODQg4pSC
+IDEyMDYg4pSCIDQwMTMg4pSCIDQ4ODkg4pSCIDY4OCDilIIKICDilIIgcG9sbGluZywgc3RhbXAg
+YWZ0ZXIgZWRnZSAgICDilIIgMjA2IOKUgiAgNTM2IOKUgiAgNjY1IOKUgiAxMTA2IOKUgiAyODYg
+4pSCCiAg4pSCIHBvbGxpbmcsIGJyYWNrZXRlZCBjb3VudGVyICAg4pSCIDIwNiDilIIgIDU0NSDi
+lIIgIDY0NyDilIIgIDgxMSDilIIgMjg2IOKUggogIOKUgiBwb2xsaW5nLCBicmFja2V0ZWQsIHJh
+dyBNTUlPIOKUgiAxMzUg4pSCICAzNTkg4pSCICA0MzQg4pSCICA1NjQg4pSCIDE4OCDilIIKICDi
+lIIgZW50cnkuUyBjb3VudGVyIGNhcHR1cmUgICAgICDilIIgIDQ2IOKUgiAgMTA5IOKUgiAgMTM1
+IOKUgiAgMjA2IOKUgiAgNTgg4pSCCiAg4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pS04pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA
+4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSYCgooTkI6IFdl
+IHNob3VsZCBiZSBjYXJlZnVsIG5vdCB0byBmb3JnZXQgdGhlIGNvbW1vbi1tb2RlIGhhcmR3YXJl
+CmxhdGVuY3kgd2hpY2ggY291bGQgYmUgZGlmZmVyZW50IGZvciB0aGUgSVJRIHBhdGhzIHZzLiB0
+aGUgcG9sbGluZwpwYXRocy4gT24gbXkgbGlzdCBpcyBhIHRlc3Qgd2hlcmUgb25lIENQVSBwb2xs
+cyB3aGlsZSB0aGUgb3RoZXIgdGFrZXMKdGhlIGludGVycnVwdCwgc28gd2UgY2FuIGNvbXBhcmUg
+b24gdGhlICpzYW1lKiBwdWxzZS4pCgpJbiB0aGUgc2FtZSBvcmRlciAobmV3IG9uZSBpcyAnc3Bp
+bjInKToKCiDigKIgaHR0cHM6Ly9kYXZpZC53b29kaG91LnNlL250cHRlc3QtcjY0L3RpY2tmdWwt
+MWh6Lwog4oCiIGh0dHBzOi8vZGF2aWQud29vZGhvdS5zZS9udHB0ZXN0LXI2NC9zcGluMC10aWNr
+ZnVsLTFoei8KIOKAoiBodHRwczovL2RhdmlkLndvb2Rob3Uuc2UvbnRwdGVzdC1yNjQvc3BpbjEt
+dGlja2xlc3MtMWh6Lwog4oCiIGh0dHBzOi8vZGF2aWQud29vZGhvdS5zZS9udHB0ZXN0LXI2NC9z
+cGluMi10aWNrbGVzcy0xaHovCiDigKIgaHR0cHM6Ly9kYXZpZC53b29kaG91LnNlL250cHRlc3Qt
+cjY0L2JhY2tkYXRlLXRpY2tmdWwtMWh6LwoKVGhlIHRoaW5nIEkgbWVudGlvbmVkIGFib3V0IHRo
+cm93aW5nIGF3YXkgc2FtcGxlcyB3aXRoIHRoZSB3aWRlcgpicmFja2V0cyBkaWRuJ3Qgc3Vydml2
+ZSB0aGUgbG9uZ2VyIHRlc3Q7IHRoZSBidWNrZXRzIGVuZCB1cCBmYWlybHkgbXVjaAppZGVudGlj
+YWw6CiAgYnJhY2tldD0yIChuPTQ2OCk6ICAgcDUwIDEzNCAgcDk1IDM1MCAgcDk5IDQ3MiAgcDEw
+MCA1NjQgCiAgYnJhY2tldD0zIChuPTEzNTIpOiAgcDUwIDEzNyAgcDk1IDM2MyAgcDk5IDQzMCAg
+cDEwMCA0ODggCgpJIG9ubHkgbGV0ICdzcGluMicgcnVuIGZvciA5MCBtaW51dGVzLCB3aGljaCBp
+cyBsZXNzIHRoYW4gc29tZSBvZiB0aGUKb3RoZXIgb3Zlcm5pZ2h0IHJ1bnMgYnV0IHNob3VsZCBi
+ZSBzdWZmaWNpZW50LiBUaGUgYm9hcmQgaXMgbm93IGRvaW5nCnRoZSB0ZXN0IHJlcXVlc3RlZCBp
+bgpodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvNzI3NGY0ZWYtZWRlYy00MjgyLTljOTItYjZm
+NzkxOGI4MzIwQGVubmVlbm5lLmNvbS8K
 
-1) Is this something you'd welcome in mainline gtp.c?  I'm aware a lot of
-   5G user-plane work lives in out-of-tree datapaths (gtp5g, the eBPF
-   eUPF), so I don't want to add datapath complexity you'd rather not
-   carry here.
 
-2) If yes: on RX, once the QFI has been parsed out of the PSC, what would
-   you like the driver to do with it?  The options I see are:
-     - stash it in skb->mark, so tc/nftables can classify uplink traffic
-       by QoS flow;
-     - attach it as skb metadata (tc_skb_ext / metadata_dst); or
-     - just validate it and otherwise ignore it.
-   The shape of the RX patch depends on this, so I'd rather ask than
-   guess.
+--=-0D8CVb6vfTL5n9vdcvE9
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-The plan would be a small incremental series:
-  1. add a GTPA_QFI (u8) netlink attribute + ynl spec, stored per PDP
-     context (control-plane plumbing only);
-  2. RX: parse the PSC extension header and extract the QFI;
-  3. TX: build the PSC from the per-PDP QFI on the downlink path (the
-     existing extension-header TODO).
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
+ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
+MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
+AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
+DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
+q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
+S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
+Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
+72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
+CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
+mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
+h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
+CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
+GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
+v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
+CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
+b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
+Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
+A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
+vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
+0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
+jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
+FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
+HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
+IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
+MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
+MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
+sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
+tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
+EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
+6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
+ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
+bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
+Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
+02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
+sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
+ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
+JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
+LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
+LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
+hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
+SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
+c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
+RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
+AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
+EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
+ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
++3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
++icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
+McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
+LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
+nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
+gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
+Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
+CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
+QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
+Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
+SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
+YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
+kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
+pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
+v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
+vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
+PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
+REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
+lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
+aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
+D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
+bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
+MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
+oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
+TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
+bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
+BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
+MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
+NDA5NlNIQTM4NDIwMjRDQTEuY3J0MA0GCSqGSIb3DQEBCwUAA4ICAQChxpuuHVw93mze9jmueUFV
+BJNzvOzZlazrt0AiW1H7TlYQutgKVXPNSEyz8s4k+WsRSjjlQMOiZerfwPEV6lo9336I0uNd+ffc
+Rf8gbjiPTiVT+gX9GD1V5AguRgtsJn/H3A6M0dlzhI3J1jsOG9/+xPloHPzy7sPn5rNkntB/VTnv
+Bix4IfUy3ScOu2vnLX0gnwP3EknfdEUvq9+kdkEEBDz7dGqQo3EuhXZoW9CHF2GM0sOpO/cuNQh2
+JzA+to3smTES7sJXYuRrt5GomCRYvtIrRiYGMalFp+z6Jw/843lEIIpNNvpWVfx5Mbawkl+wWG8k
+0IK3rF7FtbNa0it8/s288G/AEHvfsDIQYFmRLlo2LNMxxREkZO/1Qq8GHUsX/602Fi0u88I3uh5w
+bOEIeG32NzBKTKBOjdjpiUrdCA676dyaIFt967CUtnUvFti8bqGA2pe/u7pjIANthqMBAlcnY5B6
+ff2mbdD8BBLItgb4HyUOCVawzy1hc+UR2tglySwYroWeohfoG6afjesGigsl2JmnhaZ9Z0vanF74
+vFEOOmuaq7VamuLEPFQtJM4olmipOW6CzrLcFz6J/6yAecEG3P1ZDoy08eSHvM40MAUgpwGa/w6o
+9ALHQXda/c4TJvAylfHQ6wqArzAuV1pfWldwy7IOBMtKqzQBXQ4dSDGCBCAwggQcAgEBMHYwYjEL
+MAkGA1UEBhMCVVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTowOAYDVQQDEzFEaWdpQ2VydCBB
+c3N1cmVkIEcyIFNNSU1FIFJTQTQwOTYgU0hBMzg0IDIwMjQgQ0ExAhADNSi2uzJskfEdOMo4hV0g
+MA0GCWCGSAFlAwQCAQUAoIIBezAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNjEwMDIxMzQ0NDFaMC8GCSqGSIb3DQEJBDEiBCAkUf0qd/VdvCFaHnRkKyEdDdHEQ6yG
+4cr0msh6HfVnzTCBhQYJKwYBBAGCNxAEMXgwdjBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGln
+aUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBT
+SEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAwgYcGCyqGSIb3DQEJEAILMXigdjBiMQsw
+CQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFz
+c3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQgMjAyNCBDQTECEAM1KLa7MmyR8R04yjiFXSAw
+DQYJKoZIhvcNAQEBBQAEggIAsIYbvv9ZgUMgPj/ElDIXSH3Q+SrKzlBhT2jr82idTokD+imxymYz
+XRE+4BzLrwpu8qtO2W15Or2jn6uBhlDKQH62444bspx3wbX67MiTPPDsufqjxvVH1inwNejLJ3jM
+Ympg7G8jei8ngwSxX6IUeAO8OsXVQyg8/QRConz5VfehoJO0w9Hlf3v2K1dMkMp6VwXIFqgLk8E6
+R4RWOr2+mx8AqQv8rvnUy9gQJlxrX4RZTmhZBW0Nim47tpyIgDspAGHi0C37ZuNgkrgZ5kRG8hd1
+NaA3Ygt/q2TmyPLFDck08mtZPW3ST6rYai3DaMPumP7+qC4P2Wkw3+c/advI5ckRlpbVmpe49twz
+WIYsRG5uY/PfQ8JQTjhd3a7L7wBXl3cr15h2/igQzTfFZzY/Dh6mPZ+5z5rsmeJ+Q1oOdkgK0qFz
+ka4iogXBrxVNbDoffyiukDca0LCXS6UjKkkroTWT2gaJ1Q0hby/OtoxEWVOEwkehQ6bELmgj57Mp
+/vi66/2PP+L5wVfp/0ZloWpUhv/j4mAUOuGuGiJjuR2PhX57x2YRo6F3d+t5PUHEYGb+5QVmayDA
+la0OhiLxDAJK5TdDin65DjJn2RRR8F9AfqMR5iAC7jhsrEubxtRJyA0++mo27zEx3kR+F5HkNxBU
+SNEPct79zXtc9/PdVBgFHngAAAAAAAA=
 
-Patch 1 is already written and builds; I'll post the series once I know
-whether you want it in mainline and how you'd prefer the RX QFI to be
-surfaced.  Happy to adjust the approach.
 
-Thanks,
-Anil
+--=-0D8CVb6vfTL5n9vdcvE9--
