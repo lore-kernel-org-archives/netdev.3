@@ -1,33 +1,32 @@
 Received: from smtpcmd01-g.aruba.it (smtpcmd01-g.aruba.it [62.149.158.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2434BB28B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB594BB5D4
 	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790949467; cv=none; b=ZkK43icy+aR6H4xzsEdCMuK9EQAAU2FLvvtPEsKvXYvwgXatorvHcBAv0y8jBfkKzRLhIJdXzSNPzNhylSMy5D0PTpvaLZ19deac5lCPFcjVqvH+21HANgz4SPfc2xeAK2Gc/7Arv/HPA4gPvrjgB9bRTMQqfCQ7/ZFGnpLETLQ=
+	t=1790949467; cv=none; b=pVzskjQ7ckcBYDsf8BJbSsXuCTY0x8ZnIhYmd+KdmlPhJ2ivNqqk38iIuWsX6dRkcqnrZxRQGZvQzPieAY22gJz9mDYmaSqA9SUDx6dNBM+zfEbxzwGI4qOiw9COJwzyB+aYUsoZvtnfIJToBaSsb8u1Rvg3Md/dMUUAJcS9Fck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790949467; c=relaxed/simple;
-	bh=Tfqex6erqwfS0ioS8ha09i46USaaivXCq2v8B7oNWqg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VV7l2ymhgcPKT+H2GbDxe+oudgy2o9S3CFS+unfQJTYgPl7+dh7TTE1yOOQIyafehJcRfdaOFHxcKn2a3iDLnG/22468bcZPwMyakpcb1lGGwP/mjYY0CSQupNQ52CWCGf08xL9LcQABTWI6plURWS08X1wcB6Jb+WO7wm8lddg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=jKw0qo2I; arc=none smtp.client-ip=62.149.158.217
+	bh=+i6VElqpiAm4ADwgZ3RXMCVldfiQiiZgh6SfyG7dy0c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sXaOx0WAXVKBgt3wy+ZXx+GYv/qxZk1FMrn66wavAlo4eTYH31okBegWmICzXCI3zbtgfgQQFWYa9+zDVHtbng8WQ6Tn1Nsy5p6eFRg5aX0cP2tIlU+J1BwOnRsETRlkP29cKc0eTbwUWtYW58cMZeoYY2lulGYLBU2iYlUxU7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=lATSuIK7; arc=none smtp.client-ip=62.149.158.217
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="jKw0qo2I"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="lATSuIK7"
 Received: from polimar.tail4f75e6.ts.net ([101.57.122.26])
 	by Aruba SMTP with ESMTPSA
-	id CdlZxDen1LUMUCdlbxwrDw; Fri, 02 Oct 2026 15:57:39 +0200
+	id CdlZxDen1LUMUCdlaxwrBy; Fri, 02 Oct 2026 15:57:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1790949459; bh=Tfqex6erqwfS0ioS8ha09i46USaaivXCq2v8B7oNWqg=;
+	t=1790949459; bh=+i6VElqpiAm4ADwgZ3RXMCVldfiQiiZgh6SfyG7dy0c=;
 	h=From:To:Subject:Date:MIME-Version;
-	b=jKw0qo2IPGreWCEnQq1DoN/JFi/+iq93qP7BdJJc1T++RvsYAWibAVqX2RIpLD+MF
-	 ieeZyMljSlNIjy4OOf9W8K3NHZH9NkBfDYxVBci5Mkx1ncnCLgaOLfQM6EnP8YpdoY
-	 JmZ2hR+DK8jmFrAdtAz/BXpBL3iXFT4xR2JWvMk76Gd5s1X0LfmEuJ9Otd41RVUClf
-	 Zrvw2TzF/UhMQIL5mKF351FZk1SRw4VT+d4fKGKFQ7jyClZMcDVH8HUPCWriYreVy9
-	 yHDk0lC932TBCMuz0N21Tjm1xcxkYbu3C0HTK5PG24328ocICTEoJNfdhx6G84kU9o
-	 ZiLJzfrishxRg==
+	b=lATSuIK76+Vm5XjGsTqVMbCKXpn2OFH8TdMrkaj1rNeeMIRv8r0B49X2ll6tSU9AX
+	 vQlrk21KRMlLym4YYLSjHgqB8BUzK2ZFn6TpF76U+vFEutDMZu9TT6O+uZmDLrgkym
+	 nNHHxbZZoHT0SpdfMVMGf2l5RoXZykFLtqFraUsMvaK3OmEcXB2aILz3hs9qOAuxXA
+	 du7Da9PeBlTw7cN1vQ5hAhlFpBwWK+FHKU+Mc5F9N4qxvGyAsOOwxhyPxAzJAks0uo
+	 7Ni3j554M8mRs8KMwyc/0oEvRYsolaRWUy+8bfp2OpGISQCQiIiarnG9bQPfWjYR41
+	 Wrv3dAJPQRgHg==
 From: Rodolfo Giometti <giometti@enneenne.com>
 To: Woojung Huh <woojung.huh@microchip.com>,
 	UNGLinuxDriver@microchip.com,
@@ -45,12 +44,10 @@ Cc: Marek Vasut <marex@denx.de>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Rodolfo Giometti <giometti@enneenne.com>
-Subject: [PATCH net-next 1/2] dt-bindings: net: dsa: microchip: add reset timing properties
-Date: Fri,  2 Oct 2026 15:55:41 +0200
-Message-ID: <20261002135542.359756-2-giometti@enneenne.com>
+Subject: [PATCH net-next 0/2] net: dsa: microchip: let the board state its reset timing
+Date: Fri,  2 Oct 2026 15:55:40 +0200
+Message-ID: <20261002135542.359756-1-giometti@enneenne.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261002135542.359756-1-giometti@enneenne.com>
-References: <20261002135542.359756-1-giometti@enneenne.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,43 +62,60 @@ X-CMAE-Envelope: MS4xfEW1Yj8i3zhIjVzqiH5/fOMLH9cxuuPtIsrqzceN+Lma+S/NNovw7sZ/lCU
  6EY2+A/BY3OuQtB1sc0a2NfMJJzmaAR5PcQ7cZXbYvCYgn46CcbbjgVWkYTzqdXiw160inXLxhPT7iTGxg2xhvljXueFka/c93us7mXGSCZBYNgMjADUNyhJ
  CQmv6+ELlVkX77e1ou+32T5vdM1+mM5d4mSCRkj6hmRtdXB4fyET29724ysva01N0Y3BuulliFFQohhN+7oo09K+
 
-How long a KSZ switch needs before it answers on its management bus
-after the reset line is released depends on the board it sits on, and a
-board that needs longer than the driver waits has no way to say so.
+ksz_switch_register() waits a fixed 100ms after releasing the reset
+line before it reads the chip ID. That figure comes from commit
+1c45ba93d34c ("net: dsa: microchip: Adjust reset release timing to match
+reference reset circuit"), which derives it from the reset circuit the
+datasheet recommends: about 95ms for a 10k pull-up and a 10uF
+capacitor. It is the timing of a reference board, and on one of our
+boards it turns out to be too short.
 
-Document reset-assert-us and reset-deassert-us with the meaning they
-already have for MDIO devices, and record the timings the driver has
-been using so far as their defaults.
+The board is an i.MX93 with a KSZ9897 on LPSPI6 at 500kHz. Every boot
+ended with
 
-Assisted-by: LLM
-Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
----
- .../devicetree/bindings/net/dsa/microchip,ksz.yaml   | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+  ksz-switch spi0.0: unsupported switch detected ffffff00)
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-index 4ed13870ed3a..5a99d79ea982 100644
---- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-@@ -48,6 +48,18 @@ properties:
-       Should be a gpio specifier for a reset line.
-     maxItems: 1
- 
-+  reset-assert-us:
-+    description:
-+      How long the reset line is held asserted, in microseconds.
-+    default: 10000
-+
-+  reset-deassert-us:
-+    description:
-+      How long to wait after the reset line is released before the switch is
-+      accessed, in microseconds. Boards whose switch needs longer than the
-+      default to answer on the management bus state their own value here.
-+    default: 100000
-+
-   wakeup-source: true
- 
-   microchip,synclko-125:
+and no user ports, while a second board of the same family running the
+very same image came up fine.
+
+The bus is not at fault. With the switch already out of reset, reading
+the chip ID through spidev on the failing board returns the expected
+0x00989700, at the same speed and mode the driver uses. What differs is
+how soon the part is ready. Driving the reset line by hand and polling
+the chip ID every 11ms gives, on the failing board:
+
+  reset asserted for 10ms  ->  answers 95-120ms after the rising edge
+  reset asserted for  1s   ->  answers    ~160ms after the rising edge
+
+So a probe that reads at 100ms is at best a coin flip there, and never
+succeeds when the part comes out of a long reset. The board that works
+is simply on the right side of the same margin, which is why one image
+behaves differently on two boards.
+
+Since this is a property of the board rather than of the driver, take
+the delays from the device tree instead of hardcoding them, reusing
+reset-assert-us and reset-deassert-us, which already carry exactly this
+meaning for MDIO devices. The defaults keep the current behaviour, so
+boards that do not set them are unaffected.
+
+Tested on both boards with a 6.18-based NXP kernel, powered up from
+cold, with the failing one given reset-deassert-us = <250000>. It now
+detects the switch at every boot, and the one that already worked is
+unchanged: same detection, no SPI errors or timeouts. On both, the
+probe lands ~150ms later than before, which is the added wait showing
+up where it should. On net-next the series was built, not run on
+hardware.
+
+Rodolfo Giometti (2):
+  dt-bindings: net: dsa: microchip: add reset timing properties
+  net: dsa: microchip: take the reset timings from the device tree
+
+ .../bindings/net/dsa/microchip,ksz.yaml       | 12 +++++++++++
+ drivers/net/dsa/microchip/ksz_common.c        | 20 +++++++++++++++++--
+ 2 files changed, 30 insertions(+), 2 deletions(-)
+
+
+base-commit: 071876fd50482a68603a9460d80dd6dd58827ee1
 -- 
 2.43.0
 
