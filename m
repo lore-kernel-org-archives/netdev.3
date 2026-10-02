@@ -1,154 +1,248 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0D039D6DD
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 18:40:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA24D34D916
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 18:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790966425; cv=none; b=tUptxRVcO38BL7EBA+2tvw9QPGJCEJtbFJkHDsUsRJEOVmEXCESFcuPkwQ6d2mFPegSHWlAfoqp23fe3J0cPPFkay5T1czC+qxAosx84xsaTswmwPcJvrAw5y+90ZU5DM4+5sX2odlqkLWmYi0gFxizuf6Roz8BtYi9Bb09Hjrw=
+	t=1790967112; cv=none; b=LbyVcBHbCjhMoPHTYPVPr8UkBf/W124bmKRRQr9O5cQb0O0oDUEERE4J3UIRRCL/pAAt6ibROmdPJdkK8fI31luGT8FNKHGxV4mYd2u+JXex+TPyyUzzpngryuSX19YGmBNo0qpPQoWX3jQgNLWwkgcFjQZMs4RVv8XnZQoZuPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790966425; c=relaxed/simple;
-	bh=B4QCi8SM1E6HBMBo4DshVMCnb6Z/I0iVnzwIIrgKkHQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jzYR6y1U8sWNnLWkEcZwMFOI2Ne2A0tzpM5cdMKk3P+rIPcFgpoVDnJvtX57MWrwjFFCEXNryK+zhNKAwgRP8bvsAKvHIzDG55ew/f/uDkOk4WuSODcPo9wvWrOTmT6TTVkKwrE3YptAnXxegiQ/7Fv1bmyuIce6s0JJc/gQzxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pcEZEJ2s; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=hHMuiGXF; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790967112; c=relaxed/simple;
+	bh=QDX7lQ1hmHgJ9y3o5Z/Hm00xEaK1qYts6FM/BQ1Nm/Q=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=b0NUNlBb3F7HemmEuaU2ZYFgLyG7fc7XYnlAFqcrELvpWf4tb2xH2VFoZQfzzKJ2j1JzlF2tq51CSYDAnz+8ZvQUoAibpcYCch8NZ7XAZDIwFqly7Z50CNwXyHhPyZ4dgQle+joSbNytF3n2l29ocoRlKOJs4Hx8R/dMQWPhwao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bDKDP0zP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jj7ZH8NY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pcEZEJ2s";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="hHMuiGXF"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 692H6ZM02357676
-	for <netdev@vger.kernel.org>; Fri, 2 Oct 2026 18:40:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	B4QCi8SM1E6HBMBo4DshVMCnb6Z/I0iVnzwIIrgKkHQ=; b=pcEZEJ2sS9XR/64T
-	1gmJDPOBtXhzhujZYM+wZI8eoM9W7Y7KijDKiCanKNgI8flWiL1u1y9971QMhXgE
-	Vm51JcX6b6wWXmVsmweoP4+f9UWAQqDwN3TQQ8RZC0GI7JdbrYFiAGerUFo4BMNu
-	W5oAkn4Wp8+fD77+d93QWE4k0LvEZdhw6Q0tKuVrtBi68JTVGYt0jdk0GhyaXz36
-	Kvi7LbFiLDpocsAaPpQQj0q/fp985ol2y4YVi7+2T8XVpAhPafqnDEsZPTevgfOv
-	v245w7rNPDXpa3y72ifOEetTU+UiRXzJkGWlkjrnzTB6lkr6tgMT9UUGb2oDFObP
-	bi62iw==
-Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h20sh3ry3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 18:40:22 +0000 (GMT)
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1438719cc1eso9452123c88.0
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 11:40:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bDKDP0zP";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jj7ZH8NY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790967109;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jwzsAXBdR1BkVlkk6NnC6X5ecf++oyv9cFOEdcbokxc=;
+	b=bDKDP0zPwtdjL53ZY8i6molV1ZjpTRdxU8fTgvecw34Fa0baQ6LlPXh+w3EC+H65ttIIgy
+	3lmDoEWhY4vZ/RjeCSFZUj4Oz9ccbuKda1ISHiG4cN0irOLHeRtkVeijqnoqe9juqr/9hb
+	FKqW8kNLaAShHqi74RZaSbmAxRN8kTU=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-260-HeTHA6pzMp2Xs9QyR7Re9A-1; Fri, 02 Oct 2026 14:51:47 -0400
+X-MC-Unique: HeTHA6pzMp2Xs9QyR7Re9A-1
+X-Mimecast-MFC-AGG-ID: HeTHA6pzMp2Xs9QyR7Re9A_1790967107
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-92e82060977so371960685a.1
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 11:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790966422; x=1791571222; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B4QCi8SM1E6HBMBo4DshVMCnb6Z/I0iVnzwIIrgKkHQ=;
-        b=hHMuiGXFGBdBk8ZmUWO2NORZC6+JSv8L1J7MZX0YbahBgQ7N/ONNhKe/SuwfnWD4Vj
-         k8kY3Q3b5EB68ukir2eevQzjJas4a7Dd7rutwvIgLK9RoIPZYgLStl5iMIoB9RVAwPDR
-         H5QMGcy8e3uWPd+JDHYZPL61+iIzPymyfyoRswpDN5YrSzckqUPZ9wdK58MoocxnC7Nu
-         xUu341NpK9oybuJ8zGIXuEVc+0axVZPzW4zakfoThlqBmevXX0G9SaZUWB070/Bb9mX2
-         kFp0rowXo71iN7nv9vbnzz+C3ISB4sPM9aCkdKfKwkowEDivb4uFluRWone7a3R/61FT
-         dEcw==
+        d=redhat.com; s=google; t=1790967107; x=1791571907; darn=vger.kernel.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jwzsAXBdR1BkVlkk6NnC6X5ecf++oyv9cFOEdcbokxc=;
+        b=jj7ZH8NYVEdrxdyXvrrUVICgkUNovrKhQx+jcTeFBx5OkC9wtNxlui6CAFLwIhpTXH
+         Q4WMOn2oN8HgJpJOQ31tQLG+DuZW0PeBib1ixm18GMht/xVFQH4+IFh+ZrmEgFWTqbt9
+         yd0RVLz5XVElEu+zZTC+52DGvV6pHZhGuZazaZ9zyrgMjcYkt/yE6lWJyf8gsiLpfya0
+         J7JBbMOEpCXcweTfK49rA5pMYf/EqecurRHOphKhFxafpGxewjKX2YhTKBOeIAGyGDqy
+         OguFx7j0Fqtjscv1zFRp2HurZb1GLlp3zayaiFVAaRSftMJt/zOY84pIUNKhJGsMwpbB
+         4JJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790966422; x=1791571222;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=B4QCi8SM1E6HBMBo4DshVMCnb6Z/I0iVnzwIIrgKkHQ=;
-        b=mTxAcFrrXac6YF+KIFqbE8Ib5c1C5vfd2g1beunbgeGXCV/yf/7TgkSzV0I2kGw4A2
-         eR6A/NkNkwGlDIKD7QiJqL86r9TA6Lnuv3nE4eK9Ww0xaTL/KoXgaS5oOJk5YDKGrtyC
-         c/LffCwuLv0tE5ZtXvYJuX4O0NJRIai9OT+we5Y1OOXbGI8k1rk/azBnAeTwIvjmWR1Q
-         ZfGkYrBOGIDRjoGVUeeTc7/IWu4DP+2cJ4xiHd00Co3lMfsc/1txJ9kUC/73Y33au9y+
-         1NBuQUS7hRaXQv8XT8dVQSBcFw3gIyWQGVtWegTBwC8rpOfY9mKtH8dX9/KMejr5pO9h
-         Xwxw==
-X-Forwarded-Encrypted: i=1; AKwUvBwq4g8QQD08eBNwJdycspbsRh1xXGgG37BmQvV/DCFMKlWk5RogrWFtwLTX4B0xDj/6aXqMf6I=@vger.kernel.org
-X-Gm-Message-State: AFuF++mYxdsay2CQFPCKIdrcW43ejuTpsZr8cFN5T5zzVhasNlfBzPjR
-	/dtZnxn1+3ceMrnxhgHo2uvkLBkweX3hzL566i/xA0uTUjkvvcRYmfwrObSyOya/3vDx9p4OQMC
-	3B/a6F/U8mgDrjaLbHixupxwAOvkZHAvNHJSm/kDp0urJAmoYH03frzLfM8w=
-X-Gm-Gg: AYBFou3RH7QP2sBqH323MDVyFR4EyHHnunQQH0xyIdJjoqLq/m5lCDMx4hgtqQaWRz3
-	fTYMYHA6AaSd2iLRnpJEknMTIsDSOxqWPzVMIIddoMuSBAOt/eZkEuRD94minhrwGicZ6X3lSkA
-	wXIIfyGEhNTpPAqf8Gcoobny178RDRPGq1B69vbtsuxhDoQKyLdwgC+wiHdJvUFsfTvBvS7rqz/
-	IZysjtOSKKqpawjsxsfoPN+Mp1h2iKy714W3JAp11lKoSb+OzZH2toOoRiQG13Ty8tED0bhzjFo
-	ctGBrTSQVeVB47UD4R2tg2DkSDGLyMkHs1ntmqX/HAawzWKmPi6iTCi6XqnWG7wIgbjhefNRRRR
-	BQl3DCDwI0/u+HHcHFlLsfYToZAJjA6O9Z6tqeRUuyVRBW5DVvfjVOwKpW8tUGxwA
-X-Received: by 2002:a05:701b:458e:20b0:147:5149:d12d with SMTP id a92af1059eb24-151c32d9a9fmr334590c88.18.1790966421513;
-        Fri, 02 Oct 2026 11:40:21 -0700 (PDT)
-X-Received: by 2002:a05:701b:458e:20b0:147:5149:d12d with SMTP id a92af1059eb24-151c32d9a9fmr334554c88.18.1790966420900;
-        Fri, 02 Oct 2026 11:40:20 -0700 (PDT)
-Received: from [10.71.40.138] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14f46da52aesm6468818c88.10.2026.10.02.11.40.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2026 11:40:20 -0700 (PDT)
-Message-ID: <1d814431-c01d-4730-ac22-c41f47f93b0e@oss.qualcomm.com>
-Date: Fri, 2 Oct 2026 11:40:19 -0700
+        d=1e100.net; s=20260707; t=1790967107; x=1791571907;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jwzsAXBdR1BkVlkk6NnC6X5ecf++oyv9cFOEdcbokxc=;
+        b=PxqQs5gh6C545xiAB5eN+DzlQQ7HNY3AUu9wj+xjhBAyWHyike0A9ow5RDp6qOMzW+
+         8XmwidBI+j5Rss4GHCygQkMUPlJtxNKkwaL6p23uiNo3+RcQbXjbCSI+D+pSCzysEUYR
+         veOx5DYiKELzkE5dZpwtnfNlHFn0VKK0bjU0gOyS9aFoJiGLeDiHJyLHFsIPnp3cfJg/
+         KWmBc9lTnfZJE6aNdQXkOtXnpPPUknfD+rTckkkb+nQ7w8P/YASHjPAYVU+JCUyBIqYB
+         ZayJtsINSpMgyJ8phFCJPvBZAiyFBypv2IZt2528VpZN7ikfiGIs5NpQGgTEM/MA62iJ
+         4WKA==
+X-Forwarded-Encrypted: i=1; AKwUvBywPjVmK84DGEwrgNyfuQ4oHdpQLGYad3ccJWI7F5bOnfueu8A3xN8DXvN3p1nvofd3RHoeE+A=@vger.kernel.org
+X-Gm-Message-State: AFuF++mwqS33i/tyvBmGF3IhudXzvCLp9HsRh1SsBCE5LtqNfkrr5usy
+	MHxPnmDblZsvnPvpBef8zCXShAZ4uvEcZYGF1ohtAGRVsG/MTuyvFnxW9VPnqUqU6ChLvfLs2Gx
+	T8gXgQ3zTdCL8WDvr2dHiem0XuOLjnTgf19N66qv/ZccZqrxnMrfFihBR0g==
+X-Gm-Gg: AYBFou0YuUOzzwglQL4tQVYMd5xpsFdkN5JJmtsclE30t59fATjLP1gfaHcS8JUfeg5
+	B/YI5Y+TWRTNe+BGrO4G7u737CxWXQk0R0jFUSnyuappVVgxvpDbYyrVKPq/ZIO4fm1s/pDl0Hd
+	jxTQrVbtxaijrjCuRF418PVMcuJpYEYDVcIWxlvSrnzdWYr3SBlPpzomkw8y4PTHcQOrDRpbjDR
+	tWvGKs4ob7Z0tpUTUu/pz/wnmNCDBBjSVnMaJlwFdu5yh1KOrB7B5UfGjWsV9sD8zB0/xjFEtsO
+	x5d8lyc2DfYFDmknwk8M7pHvBRx8LcywD0mugQamdHLpabvrXvS4zBR1HAYQe55+Rk3sEtB1REa
+	o3muo8R7rXCPw6w==
+X-Received: by 2002:a05:620a:172b:b0:93a:32e7:bbe with SMTP id af79cd13be357-93cf177ead7mr639037785a.21.1790967107015;
+        Fri, 02 Oct 2026 11:51:47 -0700 (PDT)
+X-Received: by 2002:a05:620a:172b:b0:93a:32e7:bbe with SMTP id af79cd13be357-93cf177ead7mr639030785a.21.1790967106284;
+        Fri, 02 Oct 2026 11:51:46 -0700 (PDT)
+Received: from bmasney-x1.rmtuswv.csb ([2600:382:7723:4eba:66b1:961f:1a2d:af55])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93cca03a1bbsm290352485a.1.2026.10.02.11.51.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 11:51:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/3] net/stmmac/dwxgmac: Extend MTL/DMA
- support to 16 queues
-To: Jakub Raczynski <j.raczynski@samsung.com>, netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
-        k.domagalski@samsung.com, k.tegowski@samsung.com,
-        cs0617.lee@samsung.com,
-        Abhishek Chauhan <abhishek.chauhan@oss.qualcomm.com>
-References: <20260601162537.553512-1-j.raczynski@samsung.com>
- <CGME20260601162618eucas1p14be36902c4948647448160da08aaebc5@eucas1p1.samsung.com>
- <20260601162537.553512-3-j.raczynski@samsung.com>
-Content-Language: en-US
-From: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-In-Reply-To: <20260601162537.553512-3-j.raczynski@samsung.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAyMDA3NCBTYWx0ZWRfX49yJaZuzOUTR
- r0dXD8AyYj1dpyuhyRo8ywSNV2PrroA5iEwseWcUi1WnNO6HM4+FReQAf1oIoKU7D75dYzOv6Mp
- e2aPt7SJndwn9x+/Mrnge4KZ5GPNVCE=
-X-Authority-Analysis: v=2.4 cv=IpmL47/g c=1 sm=1 tr=0 ts=6abffa96 cx=c_pps
- a=kVLUcbK0zfr7ocalXnG1qA==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=o24aB88WmS8rWKrxVysA:9 a=QEXdDO2ut3YA:10 a=vr4QvYf-bLy2KjpDp97w:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAyMDA3NCBTYWx0ZWRfX8/NXLcTug693
- fSum9hp9bhGwYQqOBCcJSknxL3F1O6KKoMZLUc31i65BmS8Y23AbJ8ehRRFH6k3wvJyyTEAKcIS
- ElVH1FfsK51OYaqzpxh9u0XS+wMdflKazb4pXYlM4Zc+QNYQ1PMGoImL5/D1dP5XKZvA4oB6yFi
- V1ZleA9F+LzYP4N+BiYaXMaXpOKssqnnhET7huxpv3NkDy0+gnehXqYpEimbXhXBktXNKCaX4qR
- jFhVj7PZ8geetcZnhLEzYjs/6EH0kEgLBC28FTqzRTuFdb3xDBm0BafjlAp7ziH4ASPR8aukaQf
- qJgUycYFqUdhSuLOYp8gQKvHFoqg91mjx68jVHeSLJksT89yMR+eZosQKWIJup32ryueOPzk81r
- BKbF/v6bkFuZ/iGIjoKWj7nXICJuK+lVx21rLE3mDUv6xVfwkj0o44MjuC2KcErOA9vE72tYb/L
- NUUX8e1OjxyBHIM+A6w==
-X-Proofpoint-GUID: pQJu-t-8RJIV2ofupEu4QDFGulmGfPrM
-X-Proofpoint-ORIG-GUID: pQJu-t-8RJIV2ofupEu4QDFGulmGfPrM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-02_05,2026-10-02_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 suspectscore=0 impostorscore=0 spamscore=0
- phishscore=0 malwarescore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610020074
+Subject: Re: [PATCH v5 04/23] clk: starfive: jh71x0: Add generic CRG probe
+ helper
+From: Brian Masney <bmasney@redhat.com>
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Brian Masney <bmasney@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Emil Renner Berthing <kernel@esmil.dk>, 
+ Kees Cook <kees@kernel.org>, 
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-hardening@vger.kernel.org, netdev@vger.kernel.org, 
+ Hal Feng <hal.feng@starfivetech.com>, 
+ Changhuang Liang <changhuang.liang@starfivetech.com>
+In-Reply-To: <20260930124317.5648-5-changhuang.liang@starfivetech.com>
+References: <20260930124317.5648-1-changhuang.liang@starfivetech.com>
+ <20260930124317.5648-5-changhuang.liang@starfivetech.com>
+Date: Fri, 02 Oct 2026 14:51:13 -0400
+Message-Id: <179096707363.821688.2728247121300145722.b4-review@b4>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4235; i=bmasney@redhat.com;
+ s=20250903; h=from:subject:message-id;
+ bh=QDX7lQ1hmHgJ9y3o5Z/Hm00xEaK1qYts6FM/BQ1Nm/Q=;
+ b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLL2/zV1zvtv7+SlXtHBUHFGbF2avMt2pk/9ujcLTCxi3
+ ln8f/y5o5SFQYyLQVZMkWVJrlFBROoq23t3NFlg5rAygQxh4OIUgIlkT2L477RhtiqP0LV1IWGM
+ ZU1dt/UfT9fN8wuQLvAMmf5nqsZPDYb/SZGX7zI8PTwx9kJQFcftAndb56ryh2camk4sv/s3O1S
+ VGQA=
+X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
+ fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
 
+Hi Changhuang,
 
-On 6/1/2026 9:25 AM, Jakub Raczynski wrote:
-> New datasheets for XGMAC (3.20a and 3.40a, depending on product) support up to
-> 16 MTL/DMA queues. Before we increase max amount through macro,
-> prepare dwxgmac functions to handle that.
+> The StarFive JHB100 SoC has several clock and reset generators (CRGs)
+> which share the same probe flow: map the registers, register all the
+> clocks described by a table, add the clock provider and register the
+> auxiliary reset device.
+> 
+> Add jh71x0_crg_probe() together with struct jh71x0_crg_domain_info so
+> that each CRG driver only needs to provide its clock table, external
+> clock names and reset auxiliary device name. The reset auxiliary device
+> is registered with jh71x0_reset_controller_register().
+> 
+> The clock index space of these CRGs is sparse, so also make
+> jh71x0_clk_get() reject indexes that were never registered when the
+> domain info is available.
+> 
+> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+>
+> diff --git a/drivers/clk/starfive/clk-starfive-jh71x0.c b/drivers/clk/starfive/clk-starfive-jh71x0.c
+> index 2cc71f49ddee..bb7706ede1a6 100644
+> --- a/drivers/clk/starfive/clk-starfive-jh71x0.c
+> +++ b/drivers/clk/starfive/clk-starfive-jh71x0.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/debugfs.h>
+>  #include <linux/device.h>
+>  #include <linux/io.h>
+> +#include <linux/pm_runtime.h>
 
-Hi Jakub,
+Add #include <linux/property.h> for device_get_match_data()
 
-We are interested in this change as well. We carry an equivalent
-change downstream for a Qualcomm XGMAC-based controller that
-implements 12 MTL/DMA queues (MAP0..MAP2), and would be glad to see
-this land upstream.
+>  #include <linux/slab.h>
+>  #include <soc/starfive/reset-starfive-jh71x0.h>
+>  
+> @@ -334,10 +335,14 @@ struct clk_hw *jh71x0_clk_get(struct of_phandle_args *clkspec, void *data)
+>  	struct jh71x0_clk_priv *priv = data;
+>  	unsigned int idx = clkspec->args[0];
+>  
+> -	if (idx < priv->num_reg)
+> -		return &priv->reg[idx].hw;
+> +	if (idx >= priv->num_reg)
+> +		return ERR_PTR(-EINVAL);
+>  
+> -	return ERR_PTR(-EINVAL);
+> +	/* Index space is sparse: reject holes that were never registered. */
+> +	if (priv->info && !priv->info->clk_data[idx].name)
+> +		return ERR_PTR(-ENOENT);
+> +
+> +	return &priv->reg[idx].hw;
+>  }
+>  EXPORT_SYMBOL_GPL(jh71x0_clk_get);
+>  
+> @@ -391,3 +396,87 @@ int jh71x0_reset_controller_register(struct jh71x0_clk_priv *priv,
+>  					jh71x0_reset_unregister_adev, adev);
+>  }
+>  EXPORT_SYMBOL_GPL(jh71x0_reset_controller_register);
+> +
+> +int jh71x0_crg_probe(struct platform_device *pdev)
+> +{
+> +	const struct jh71x0_crg_domain_info *info;
+> +	struct jh71x0_clk_priv *priv;
+> +	unsigned int idx;
+> +	int ret;
+> +
+> +	info = device_get_match_data(&pdev->dev);
+> +	if (!info)
+> +		return -ENODEV;
+> +
+> +	priv = devm_kzalloc(&pdev->dev, struct_size(priv, reg, info->num_clk),
+> +			    GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	spin_lock_init(&priv->rmw_lock);
+> +	priv->info = info;
+> +	priv->num_reg = info->num_clk;
+> +	priv->dev = &pdev->dev;
+> +	priv->base = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(priv->base))
+> +		return PTR_ERR(priv->base);
+> +
+> +	if (info->power_domain) {
+> +		ret = devm_pm_runtime_enable(priv->dev);
+> +		if (ret)
+> +			return dev_err_probe(priv->dev, ret,
+> +					     "failed to enable runtime PM\n");
+> +	}
+> +
+> +	for (idx = 0; idx < info->num_clk; idx++) {
+> +		u32 max = info->clk_data[idx].max;
+> +		struct clk_parent_data parents[4] = {};
+> +		struct clk_init_data init = {
+> +			.name = info->clk_data[idx].name,
+> +			.ops = starfive_jh71x0_clk_ops(max),
+> +			.parent_data = parents,
+> +			.num_parents =
+> +				((max & JH71X0_CLK_MUX_MASK) >> JH71X0_CLK_MUX_SHIFT) + 1,
+> +			.flags = info->clk_data[idx].flags,
+> +		};
+> +		struct jh71x0_clk *clk = &priv->reg[idx];
+> +		unsigned int i;
+> +
+> +		if (!init.name)
+> +			continue;
+> +
+> +		if (init.num_parents > ARRAY_SIZE(parents))
+> +			return dev_err_probe(priv->dev, -EINVAL,
+> +					     "clock %s: too many parents (%u > %zu)\n",
+> +					     init.name, init.num_parents, ARRAY_SIZE(parents));
+> +
+> +		for (i = 0; i < init.num_parents; i++) {
+> +			unsigned int pidx = info->clk_data[idx].parents[i];
+> +
+> +			if (pidx < info->num_clk) {
+> +				parents[i].hw = &priv->reg[pidx].hw;
+> +			} else {
+> +				if (pidx - info->num_clk >= info->num_ext_clk)
+> +					return -EINVAL;
 
-Could you share what the next steps are for this series? Is a v3
-planned?
+What do you think about adding a dev_err_probe() here as well to make it
+easier to troubleshoot any failures here?
 
-Thanks,
-Sagar
+Brian
+
+-- 
+Brian Masney <bmasney@redhat.com>
 
