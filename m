@@ -1,343 +1,303 @@
-Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC98233944
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 17:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790960479; cv=pass; b=kW6JpH3BAr6bpyOuh+woA1uNl6WI/C1oohguh1UB7NTLbiKfve52YT0NDMlTR+7oOlZ9MqWClWfbC90d0cFD8/JHVNVBRh/+wMX53z8iBeRrCUKMaRHEU0iOSx47tUruIi/dRbtaw6XDV8e/u7IUA0q9OpPK4D/Z7xqv9qQSIn4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790960479; c=relaxed/simple;
-	bh=FMJTfEik2REb5jKiCuc2p2wkDbrN+dxaRGA6A9oElSc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XTyrvrGFWpMA8TAEQ4kPO/JdEoDEfjDHs1iEDtumZyC8yLB/dAmzyPF2alFrkSaRkRtLFLR2LYWCzZUOGSznRMIN3UYkFmjqc2rJaYiZO5ls6mV5WDux/qoOoz3rGPF4JOMaHfcfzB+BEqNrkOp/Q2DsUlZwGS7ZgSeYmGKihd0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DXTNAgTz; arc=pass smtp.client-ip=74.125.229.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DXTNAgTz"
-Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd025d06so5635998c88.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 10:01:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790960477; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XCjU3ITlZXaPdaIfVd4PZ03xRvOmyZwJRzBSp+wMYtaZcspCIk+FJTzV5a2j30ynFf
-         XvjF1Gx6uN6Zkobja6fC3YQaTa8uOYv1rNe+upxASxCGdyWaN0mhRiCwHyCZP3XYNkEW
-         mb0YPlU5e61jFiscteoaoTxOijiXNc67NJh+gHMzaDGE7DXk2YkC/xP6HqX6mSe6rzQr
-         01cCqUnaSIZSeGr+uEnwlEsFOHvddw5DMX8f3j3+wmjuenWLvXBEg1Xb64O3SB9N9Kc2
-         XMHtx9/xuCeiNh3QPtjXfjj146KK2Rwz5IqqIzgj3QifqF2IFT+Bf9w08d2Hhw1n+6qq
-         szQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ElcmOj1vl6IaJkiuKibMtGEuaaI3eP7kPxb3/uSsoc4=;
-        fh=FekqWI1sw3vHpgHq8+kSbcr0Tpu2Cc+aDbnGDCVZXAk=;
-        b=XWDs8mQXVTCnmJ8GrrHEMjhV2a9qFjngt2ES4H9ktWxohu3wfCUPle4PoBQ9MBfgvd
-         WZjoVLW6psg9Gx636FjOQ8Ae/h217Dej7sVQBQDmW2IW2uirYWj5beoHqrp6UE0eQtG9
-         i000uNQZT5RiWLXbRV34s1N4XExYbRzxxpHBDX//n7PWDJzEAp6atQS7mRTowPyqobc7
-         LpLGQvs7MWy/9S37gGfrCTOuYGjZLjx4Q6QJF9qUx3wkOViXUMM9euw7uYYurXliFof5
-         aSuzTrr2x7K+pcH5hg94lHBAC+NsoOF58QxWQiiyDlxNhnA5dv0YaKpW+7Chwg5byStU
-         KBUA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790960477; x=1791565277; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ElcmOj1vl6IaJkiuKibMtGEuaaI3eP7kPxb3/uSsoc4=;
-        b=DXTNAgTztFvWjju4+YnnwpGANILvn+LEuqhpaFg+6G70cMXEizq2e9fUZn6U3Fj7HE
-         MBp1CauIEjvxpJZc7kKYhNL3aWYLYGdjjRNxwGBv5pzTze70uk3jM0zv/iOQLl5tCgb2
-         oG8xTorigN2NMv7+tZWzUzoMj22hU5msQI9MAvPVttnXCnbTsbOIR/DGx8gMPc6e9Mia
-         zHUXY3FBZDQmarjPI8ceJLavq3hI6r0MTPvQhq++YITATI7ugMqGcp3+TpSxFESE3pKL
-         IAE/WxWVXvlDxQRK0aZDNKAf0ur0EYp9fpJWL54d8Q/gNyY4Xn686og91x6XLALhirdb
-         n1Gw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4101C4FDE69
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 17:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790961280; cv=none; b=lJLNRt4pLmgruXFR7Pa0nC/xEfFmUq3WSIZ86q2BJjepJod3CSnDLljnip2qHIUDJFY/4a1IsCjToJZrUd8IY+jwSfRlyIvvKmie9SGuK6MBhizVmHBRozUYI+M8ad9/CX9hIYs5ZvQgAn2+5FNfRhQFloP9Mxiu/YSdx2P6x3c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790961280; c=relaxed/simple;
+	bh=LQviPCUkIMDgb1CvVrYpCDK4oVU1cFTpcqAWZv6kBVg=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ZJsLic1sgTcvXabcvtRaLJY9gl1GqhOuF30dAjBF3iCpsgjQZwNte3JQGJeITmAQO3lFyQ1oKO33xhjeCSBc6ibVkNtVSKp5jCNAQ7SAfeSypBOcv4ibqRhNlD3Niu88auFq8W3oPVKmK+LNrPVsBUQU4mY5cXACtlcH/q3jgpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b28deb7ee3so190278b6e.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 10:14:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790960477; x=1791565277;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ElcmOj1vl6IaJkiuKibMtGEuaaI3eP7kPxb3/uSsoc4=;
-        b=jynqk54dreT3RtUDN5YYp8WaKbGpaTCTN5mRODhbLr0VhTo4+TCeymZLpzLT89MTAf
-         R7nBAd+Z/Th6us1gNV1o6svbSf7y36zLAsoGLlI6XihJHvx3bHnKpO01vFTGWRkKaFOO
-         BXdSma6PGDH+Gkf4Py4knzUxxg73QXuzWcqJE5xzwLFSf1+M941boQ6JdjPge1ETnFNT
-         jkhHd5gkgm3h3pmPjBJbKbNFSqiLFFF8y8M/lmhntZEk7mTaqcGQEejcYEZ9rr4AJVJQ
-         msPjZC97V41Q7XoOhEDT707ulaSjJYMszHmQr+GxS8BGg9QzzvO7iKfxORejRew2T54p
-         NrSg==
-X-Forwarded-Encrypted: i=1; AKwUvBxkZ/RuC6VXN1oLP5X/7Y4HbsjTvHCxaKVymEHyRHc4Ut2oLkpecFHW0oC+FFmgtv+3CEEL0fs=@vger.kernel.org
-X-Gm-Message-State: AFuF++ldMAv1ft+J91cHPpUDFbjp3nI4r4P43d+cgr7o70k6Zy9lblkU
-	arq4CPBwUnS9RjemWcTqh0tR8yhpxR1B8D1E0JC2ikJd1Is9HNgOpv/sEJwYcwqYxHBG/dqyyuP
-	dagnpNtQpUDJ78aTa5YG6rEmtnioSuQTVwiIwrdvQ
-X-Gm-Gg: AYBFou1E8b2ufcZ4+pe44JYtZIUlqIdgqLVxqJYBp6NoZi+efV9TBX0F31TXHDrNUnY
-	uEjYshQrdXXc9lb1Lg+40lxvprsit0wS+O3oRnJMuN/jlBDjIyGp6uzmMfmCNnHcIqhaxsKqHKm
-	Dx9t+HRD/rNUgxjGQZHRnP/6D/oP4p0H4lBfF8uEsg3KoGXxEtJzE5lx8IGZqyL6j95m1iAuU4F
-	Sq1xfDAewHCr3pQwfXFa6F2kNbjMlo8q+i/IZbPVUM539P1nvHGLn2CEDBjE+afFC0vSvrl8Pah
-	zCxhySEb45Y0GaG+I5xeSNWIfFqpY80EMoZO1y3D30haH1F70vJFfIr+WYGvniAV/xMSTp5SUhZ
-	5FuEKKeaQZa2gNwNnBFbtiBm8J08PtGEMsYhZVStkkcHv6/AP+j7+XbjRl5rZwaEDfIpzhrKwm5
-	A3uVcnkbcMxT/cQgiHY6+tRO+GGg==
-X-Received: by 2002:a05:7023:a46:b0:147:94bd:18f8 with SMTP id
- a92af1059eb24-14f5cada007mr3953502c88.42.1790960475823; Fri, 02 Oct 2026
- 10:01:15 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790961273; x=1791566073;
+        h=content-transfer-encoding:content-type:to:from:subject:message-id
+         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=o9Xlp9Azblr48PFkRqlcT77alqRJxb8wFI04dtg1bnE=;
+        b=Hi0d0CfsVaKQ3yVfB4m7V13fUqpxEcagoYODaJQiv3eQyAWHdVXj6N22fWJQakh+zt
+         92InMJAOuxT97/F6+HUaebHQDRPyMjqL4jemolcK7nKS5Urm/D9UoEXB7faiydEpZn3W
+         wb+PzetubnPsFBFWLe9rf3Wv/2sPvI8QaPnTV/uhYQWpYXTbkWiMHGJCrRBR79ADX1t3
+         DLycMvgTzSnUU2e4t66wvnaitN77Ww3bbJbLAYqGn18H3RcwI/p+PQvS6SBbi4GYG/Fu
+         FHbRzT2WZw8QilMEI1mRRA+OeWUcEsGQmBU0mStd6ywS6UJSNNv+O+l3AwTxOu7qWgKf
+         qGgA==
+X-Forwarded-Encrypted: i=1; AKwUvBzpYzGIJknRHPb9uG2ELyLP/whsDU4AKCfnA+ZP9FI8VAmbSPeGo13PLu8cSwxaO5ZQPk5TJ64=@vger.kernel.org
+X-Gm-Message-State: AFuF++mwXZ1AkeuWUfsOB56nRHD73WhZzjFLWUWgCIlxgn4C1ISdtbP6
+	SCN1wObPxBjUb8UfE4NsLNhauyqRn2gKUmWs8eZzBOPEaAzbL27hevKaS84E0hnAhLfndHTMWX1
+	3cWCavY9gqyaAk8fLg9j74rB03dzTsSrwq7mUAewfzB6RJOKdSt4HGV9xe3I=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930200326.718459-7-kuniyu@google.com> <179090663305.434549.17214258093385242325@kernel.org>
-In-Reply-To: <179090663305.434549.17214258093385242325@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 2 Oct 2026 10:01:04 -0700
-X-Gm-Features: AclHuK86vCseCzCWMQ8KYF3B8pPNm3e4esHlLnNCetpYxQFyB4qq8KNqDsxunYw
-Message-ID: <CAAVpQUBuN+J6Yt_+BKMiGTUNBwcthT2zQHckFhYyCVM3sR79kg@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 6/8] ipv6: Use ipv6_neigh_lookup() and friends.
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, 
-	horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org, 
-	enachman@marvell.com, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, 
-	mbloch@nvidia.com, borisp@nvidia.com, petrm@nvidia.com, jiri@resnulli.us, 
-	ecree.xilinx@gmail.com, razor@blackwall.org
+X-Received: by 2002:a05:6808:bc6:b0:490:315d:e0d5 with SMTP id
+ 5614622812f47-4f529d201b4mr2601825b6e.16.1790961273269; Fri, 02 Oct 2026
+ 10:14:33 -0700 (PDT)
+Date: Fri, 02 Oct 2026 10:14:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6abfe679.b50370da.302ea9.000d.GAE@google.com>
+Subject: [syzbot] [wireless?] KASAN: slab-use-after-free Read in tasklet_action_common
+From: syzbot <syzbot+e91dc13b1b37759b3d9f@syzkaller.appspotmail.com>
+To: jeff.johnson@oss.qualcomm.com, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, peterz@infradead.org, 
+	syzkaller-bugs@googlegroups.com, tglx@kernel.org, toke@redhat.com, 
+	toke@toke.dk
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 1, 2026 at 7:03=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The patch's bug class is still reachable through sch_teql.
-> - [Medium] ipv6_neigh_lookup(), ipv6_neigh_create() and
->   ipv6_neigh_create_noref() choose the table with an unsynchronized=E2=80=
-=A6
-> - [Low] In mlxsw_sp_router_neigh_ent_ipv6_process() the dev comes from
->   mlxsw_sp_rif_dev(rifs[rif]) and is passed to ipv6_neigh_lookup(dev,=E2=
-=80=A6
->
-> --
->
-> ipv6: Use ipv6_neigh_lookup() and friends.
->
-> This commit replaces neigh_lookup(), neigh_create() and __neigh_lookup()
-> callers that pass nd_table(net) with IPv6 helpers. The helpers take the
-> neighbour table from dev_net(dev). It fixes a syzbot lockdep splat in
-> neigh_mark_dead(): ip6_finish_output2() used the caller's net (for exampl=
-e
-> under xfrm), so a neighbour was inserted into another netns's table.
->
-> Closes: https://lore.kernel.org/netdev/6abd69a9.80e1c6cc.22483f.0005.GAE@=
-google.com/
->
-> > This only happens when a neigh_table accidentally has a
-> > neighbour from a different netns.
->
-> [ ... ]
->
-> > It is error-prone to require callers to fetch netns and
-> > neigh_table and pass it with dev to neigh_lookup(), etc.
->
-> [Severity: High]
-> Can a neighbour from a different netns still end up in a table through
-> sch_teql? This patch does not touch net/sched/sch_teql.c, and
-> __teql_resolve() still pairs the master's table with the slave device:
->
-> net/sched/sch_teql.c:__teql_resolve() {
->     ...
->         n =3D dst_neigh_lookup_skb(dst, skb);
->         if (!n)
->                 return -ENOENT;
->
->         if (dst->dev !=3D dev) {
->                 struct neighbour *mn;
->
->                 mn =3D __neigh_lookup_errno(n->tbl, n->primary_key, dev);
->     ...
-> }
->
-> dst->dev is the teql master, so n->tbl is the table of the master's netns=
-,
-> while dev is the slave.
->
-> Nothing seems to require the two to share a netns. teql_qdisc_init()
-> checks only hard_header_len, m->dev =3D=3D dev and TC_H_ROOT. The teql Qd=
-isc_ops
-> are registered globally. teql_master_setup() also does not make the maste=
-r
-> netns-immutable.
->
-> With the master and slave in different netns, ___neigh_create() links the
-> new neighbour into the master-netns table's hash. It also adds it to the
-> slave's dev->neighbours[] through neigh_get_dev_table(). For IPv6,
-> ndisc_constructor() takes n->parms from the slave's in6_dev, so the
-> parms->dead check passes.
->
-> When the slave later goes down in its own netns, this path runs:
->
-> neigh_ifdown(nd_table(dev_net(slave)), slave)
->   neigh_flush_dev()
->     neigh_flush_one()
->       hlist_del_rcu(&n->hash)
->       neigh_mark_dead()
->         lockdep_assert_held(&n->tbl->lock)
->
-> Only the slave-netns tbl->lock is held there. Would that give the same
-> splat as the syzbot report, along with unlocked changes to the other
-> netns's hash and gc lists?
->
-> The later commit "neighbour: Remove __neigh_lookup() and
-> __neigh_lookup_errno()." in this series appears to keep
-> neigh_lookup(n->tbl, ..., dev) and neigh_create(n->tbl, ..., dev) here.
->
-> Three possible directions:
->
->   - resolve the table from dev_net(dev) by family
->   - reject cross-netns slaves in teql_qdisc_init() with
->     net_eq(dev_net(dev), dev_net(m->dev)) and make the master
->     netns-immutable
->   - reject n->parms->tbl !=3D tbl under tbl->lock in ___neigh_create()
->
-> > diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/dr=
-ivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-> > index ba8a7a44ce9ed..1f4753213b9cb 100644
-> > --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-> > +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
->
-> [ ... ]
->
-> > @@ -2464,9 +2462,8 @@ static void mlxsw_sp_router_neigh_ent_ipv6_proces=
-s(struct mlxsw_sp *mlxsw_sp,
-> >               return;
-> >       }
-> >
-> > -     tbl =3D nd_table(net);
-> >       dev =3D mlxsw_sp_rif_dev(mlxsw_sp->router->rifs[rif]);
-> > -     n =3D neigh_lookup(tbl, &dip, dev);
-> > +     n =3D ipv6_neigh_lookup(dev, &dip);
->
-> [Severity: Low]
-> Is dev guaranteed to be non-NULL here? mlxsw_sp_rif_dev() can return NULL=
-:
->
->         if (!rif->crif)
->                 return NULL;
->         return rif->crif->key.dev;
->
-> The loopback RIF's crif is allocated with mlxsw_sp_crif_alloc(NULL), so i=
-ts
-> key.dev is NULL.
->
-> Before this change, neigh_lookup(tbl, &dip, NULL) only hashed and compare=
-d
-> the dev pointer. ipv6_neigh_lookup() evaluates nd_table(dev_net(dev)), so=
- a
-> NULL dev would now be dereferenced.
->
-> In practice, host entries are only programmed on RIFs found by
-> mlxsw_sp_rif_find_by_dev() from n->dev. __mlxsw_sp_router_neighs_update_r=
-auhtd()
-> also holds router->lock for the whole dump. So this looks reachable only =
-if
-> firmware returns a record the driver never programmed.
->
-> Would a NULL check on dev before the lookup be worth adding for robustnes=
-s?
-> The IPv4 counterpart in "ipv4: Use ipv4_neigh_lookup() and friends." appe=
-ars
-> to follow the same pattern.
->
-> >       if (!n)
-> >               return;
-> >
->
-> [ ... ]
->
-> > diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> > index 8baac4d852518..ea9f0a4c34f97 100644
-> > --- a/net/ipv6/route.c
-> > +++ b/net/ipv6/route.c
-> > @@ -218,7 +218,7 @@ struct neighbour *__ip6_dst_neigh_lookup(const stru=
-ct in6_addr *gw,
-> >       if (n)
-> >               return n;
-> >
-> > -     n =3D neigh_create(nd_table(dev_net(dev)), daddr, dev);
-> > +     n =3D ipv6_neigh_create(dev, daddr);
->
-> [Severity: Medium]
-> Can the table chosen inside ipv6_neigh_create() go stale before the
-> neighbour is inserted? The helper reads dev_net(dev) without
-> synchronization:
->
->         struct neigh_table *tbl =3D nd_table(dev_net(dev));
->
->         return neigh_create(tbl, pkey, dev);
->
-> Under tbl->lock, ___neigh_create() only checks the following. It does not
-> check that dev is still in tbl's netns or that n->parms belongs to tbl:
->
->         if (n->parms->dead) {
->                 rc =3D ERR_PTR(-EINVAL);
->                 goto out_tbl_unlock;
->         }
->
-> Consider a preemptible process-context creator, such as a dst_neigh_looku=
-p()
-> caller that reaches __ip6_dst_neigh_lookup() outside RCU:
->
-> creator
->   ipv6_neigh_create(dev, ...)
->     tbl =3D nd_table(dev_net(dev))   <- old netns
->     <preempted>
->
-> __dev_change_net_namespace()
->   NETDEV_UNREGISTER
->   rcu_barrier()
->   dev_net_set(dev, new_net)
->   NETDEV_REGISTER                  <- new in6_dev
->
-> creator resumes
->   neigh_create(old_tbl, ...)
->     ndisc_constructor()
->       in6_dev_get(dev)             <- new in6_dev, live parms
->
-> The new parms are live, so the dead check passes. The neighbour is then
-> linked into the old netns's table and onto dev->neighbours[]. A later
-> neigh_ifdown(new_tbl, dev) would change old_tbl's hash and gc lists witho=
-ut
-> old_tbl->lock. That is the same state described in the commit message.
->
-> The rcu_barrier() in __dev_change_net_namespace() does not exclude a
-> non-RCU process-context reader like this. The window is narrow and there =
-is
-> no reproducer.
->
-> Would a check under tbl->lock in ___neigh_create(), for example rejecting
-> n->parms->tbl !=3D tbl with -EINVAL, close this window? It would also cov=
-er
-> the sch_teql case above.
+Hello,
 
-Good point, will update v2.
+syzbot found the following issue on:
+
+HEAD commit:    d24e8ac715de Merge tag 'net-7.3-rc6' of git://git.kernel.o.=
+.
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=3D14361b15580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3D9d4242cb1c54cdf=
+7
+dashboard link: https://syzkaller.appspot.com/bug?extid=3De91dc13b1b37759b3=
+d9f
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-=
+1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D12361b1558000=
+0
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D155bc725580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/4ccd4fb94f0b/disk-=
+d24e8ac7.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/701ac3e3f73b/vmlinux-=
+d24e8ac7.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/976b7d839ef2/bzI=
+mage-d24e8ac7.xz
+
+The issue was bisected to:
+
+commit 1af8dc9ca726cf53767f9c0661171396f95c146a
+Author: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+Date:   Tue Sep 8 17:05:18 2026 +0000
+
+    wifi: ath9k: Clean up device initialisation guards
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=3D145e5b155800=
+00
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=3D165e5b155800=
+00
+console output: https://syzkaller.appspot.com/x/log.txt?x=3D125e5b15580000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit=
+:
+Reported-by: syzbot+e91dc13b1b37759b3d9f@syzkaller.appspotmail.com
+Fixes: 1af8dc9ca726 ("wifi: ath9k: Clean up device initialisation guards")
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+BUG: KASAN: slab-use-after-free in tasklet_action_common+0x103/0x490 kernel=
+/softirq.c:954
+Read of size 8 at addr ffff888035947158 by task syz-executor/5756
+
+CPU: 0 UID: 0 PID: 5756 Comm: syz-executor Not tainted syzkaller #0 PREEMPT=
+(full)=20
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Goo=
+gle 07/24/2026
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_address_description+0x55/0x1e0 mm/kasan/report.c:378
+ print_report+0x58/0x70 mm/kasan/report.c:482
+ kasan_report+0x117/0x150 mm/kasan/report.c:595
+ tasklet_action_common+0x103/0x490 kernel/softirq.c:954
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ do_softirq+0x77/0xd0 kernel/softirq.c:546
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0x100/0x140 kernel/softirq.c:473
+ spin_unlock_bh include/linux/spinlock.h:407 [inline]
+ tun_flow_delete_by_queue drivers/net/tun.c:379 [inline]
+ __tun_detach+0xccc/0x1900 drivers/net/tun.c:614
+ tun_detach drivers/net/tun.c:653 [inline]
+ tun_chr_close+0x10a/0x1c0 drivers/net/tun.c:3587
+ __fput+0x418/0xa50 fs/file_table.c:512
+ task_work_run+0x1d9/0x270 kernel/task_work.c:233
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0x73a/0x2360 kernel/exit.c:986
+ do_group_exit+0x22d/0x2f0 kernel/exit.c:1129
+ __do_sys_exit_group kernel/exit.c:1140 [inline]
+ __se_sys_exit_group kernel/exit.c:1138 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1138
+ x64_sys_call+0x18c6/0x18d0 arch/x86/include/generated/asm/syscalls_64.h:23=
+2
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f558db9e159
+Code: Unable to access opcode bytes at 0x7f558db9e12f.
+RSP: 002b:00007ffc01d96c68 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 00007f558dc35fb3 RCX: 00007f558db9e159
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000043
+RBP: 00007f558dc35fc5 R08: 0000000000000000 R09: 00000000000927c0
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000006
+R13: 00000000000927c0 R14: 0000000000015771 R15: 00007ffc01d96e10
+ </TASK>
+
+Allocated by task 9:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ poison_kmalloc_redzone mm/kasan/common.c:409 [inline]
+ __kasan_kmalloc+0x93/0xb0 mm/kasan/common.c:426
+ kasan_kmalloc include/linux/kasan.h:263 [inline]
+ __kmalloc_cache_noprof+0x321/0x600 mm/slub.c:5563
+ _kmalloc_noprof include/linux/slab.h:991 [inline]
+ _kzalloc_noprof include/linux/slab.h:1312 [inline]
+ ath9k_init_wmi+0x4f/0x2b0 drivers/net/wireless/ath/ath9k/wmi.c:95
+ ath9k_htc_probe_device+0x1e5/0x2370 drivers/net/wireless/ath/ath9k/htc_drv=
+_init.c:956
+ ath9k_htc_hw_init+0x32/0x70 drivers/net/wireless/ath/ath9k/htc_hst.c:532
+ ath9k_hif_usb_firmware_cb+0x214/0x4b0 drivers/net/wireless/ath/ath9k/hif_u=
+sb.c:1255
+ request_firmware_work_func+0xf7/0x2d0 drivers/base/firmware_loader/main.c:=
+1164
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Freed by task 9:
+ kasan_save_stack mm/kasan/common.c:57 [inline]
+ kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:264 [inline]
+ __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:296
+ kasan_slab_free include/linux/kasan.h:235 [inline]
+ slab_free_hook mm/slub.c:2748 [inline]
+ slab_free mm/slub.c:6508 [inline]
+ kfree+0x1c5/0x650 mm/slub.c:6801
+ ath9k_htc_probe_device+0x11a9/0x2370 drivers/net/wireless/ath/ath9k/htc_dr=
+v_init.c:978
+ ath9k_htc_hw_init+0x32/0x70 drivers/net/wireless/ath/ath9k/htc_hst.c:532
+ ath9k_hif_usb_firmware_cb+0x214/0x4b0 drivers/net/wireless/ath/ath9k/hif_u=
+sb.c:1255
+ request_firmware_work_func+0xf7/0x2d0 drivers/base/firmware_loader/main.c:=
+1164
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+The buggy address belongs to the object at ffff888035947000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 344 bytes inside of
+ freed 2048-byte region [ffff888035947000, ffff888035947800)
+
+The buggy address belongs to the physical page:
+page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x35940
+head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0xfff00000000040(head|node=3D0|zone=3D1|lastcpupid=3D0x7ff)
+page_type: f5(slab)
+raw: 00fff00000000040 ffff88801b042000 dead000000000100 dead000000000122
+raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 00fff00000000040 ffff88801b042000 dead000000000100 dead000000000122
+head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
+head: 00fff00000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
+head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd20c0(__=
+GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pi=
+d 1225, tgid 1225 (kworker/0:2), ts 87487181723
+ set_page_owner include/linux/page_owner.h:33 [inline]
+ post_alloc_hook+0x1f9/0x250 mm/page_alloc.c:1871
+ prep_new_page mm/page_alloc.c:1879 [inline]
+ get_page_from_freelist+0x2209/0x2280 mm/page_alloc.c:3943
+ __alloc_frozen_pages_noprof+0x217/0x5a0 mm/page_alloc.c:5436
+ alloc_slab_page mm/slub.c:3347 [inline]
+ allocate_slab+0x7d/0x620 mm/slub.c:3462
+ new_slab mm/slub.c:3513 [inline]
+ refill_objects+0x2d5/0x350 mm/slub.c:7417
+ refill_sheaf mm/slub.c:2885 [inline]
+ __pcs_replace_empty_main+0x2c8/0x6c0 mm/slub.c:4774
+ alloc_from_pcs mm/slub.c:4850 [inline]
+ slab_alloc_node mm/slub.c:4984 [inline]
+ __do_kmalloc_node mm/slub.c:5413 [inline]
+ __kmalloc_node_track_caller_noprof+0x548/0x720 mm/slub.c:5545
+ kmalloc_reserve net/core/skbuff.c:637 [inline]
+ __alloc_skb+0x2c1/0x7a0 net/core/skbuff.c:715
+ alloc_skb include/linux/skbuff.h:1384 [inline]
+ mld_newpack+0x165/0xcb0 net/ipv6/mcast.c:1810
+ add_grhead net/ipv6/mcast.c:1921 [inline]
+ add_grec+0x119f/0x19d0 net/ipv6/mcast.c:2060
+ mld_send_initial_cr+0x288/0x550 net/ipv6/mcast.c:2305
+ mld_dad_work+0x3d/0x480 net/ipv6/mcast.c:2331
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+page last free pid 5650 tgid 5650 ts 85122206691 stack trace:
+ reset_page_owner include/linux/page_owner.h:26 [inline]
+ __free_pages_prepare mm/page_alloc.c:1418 [inline]
+ free_pages_prepare+0x9eb/0xaf0 mm/page_alloc.c:1463
+ __free_contig_range_common+0x174/0x340 mm/page_alloc.c:7072
+ __free_contig_range mm/page_alloc.c:7117 [inline]
+ free_pages_bulk+0x48/0x120 mm/page_alloc.c:5322
+ vm_area_free_pages mm/vmalloc.c:3461 [inline]
+ vfree+0x231/0x490 mm/vmalloc.c:3510
+ delayed_vfree_work+0x55/0x80 mm/vmalloc.c:3414
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+Memory state around the buggy address:
+ ffff888035947000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888035947080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff888035947100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                    ^
+ ffff888035947180: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888035947200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
 
 ---
-pw-bot: cr
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisectio=
+n
 
->
-> >       return IS_ERR(n) ? NULL : n;
-> >  }
-> >
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260930200326.718459-1-kuniyu%40google.com
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
