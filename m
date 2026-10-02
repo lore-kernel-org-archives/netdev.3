@@ -1,113 +1,136 @@
-Received: from mail-lr2-f35.google.com (mail-lr2-f35.google.com [74.125.230.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C4F47F2E3
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 10:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790935608; cv=pass; b=oC9y+XkiqYYwKle2HHcPJmtOw0uUBDFtjYA54JfW7Anx738Gn02mOLRjA/MzeuUuaNbufTCy/G0QQYgtQnrbg+HQzSj6ep9q5vwwoMkvLQPB9ey+Wjp4OD+EO7uE2UXghHk/aBWwFmOS2N80hRmgcyLcnfcbSFufxzBN84QsCXQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790935608; c=relaxed/simple;
-	bh=hEO0vwKwrqlXZ4TAvYBOxFpw+P9Ek/EqQqPC11dV1ZA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f7NoXyDmfv8ToD4xT0juWd6om1T7sH55KyvUOITnnXtIRo94qyT4jjQT/06bZpgzImivD1+H6q0zN2PKYVDStkyJTK7ng44PwwhkBEHa7agfJAz6r3q059tGR1DaypyNQZvlcobTWDSrgTtJkjZztzjDfrsoKbC+QdpPau9xoSo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kV/PN54K; arc=pass smtp.client-ip=74.125.230.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B341B87C0;
+	Fri,  2 Oct 2026 10:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790935820; cv=none; b=P+Qqg8o2ASY4l8Pp87WcufThvGSe1CQ8uWs5IX8copA58022outzo9B9dBApeEKyQ5JeyZvel3+/6Bvrb02K/UpBe1SkdFljDQdGORKgP+DVF6ER7zjb8uoXbmi0BeHN/a4uhx8RzhlgwSYpFiTUsq3c1sh9396yUut6IpmPpWI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790935820; c=relaxed/simple;
+	bh=ZXTEuJkN+jyGhP+NASBflSms8faUWwcyD/4mTMboVj4=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=Hx8LZUJ9ZDXM/uSPdZpHe709LX5N0CR23BxBNRWSAwDWx9Aqx1j1/Ny0hrDgGhgDNJJs0sMwsArVR2sk00ecmybxUXOqlBamLX7nHIUAgl8TsIkGXTejCea+fMZRzMRGUU1z0A3qkqEiSHnvlxea5T/rhUqjSFgdxPYJqu1BEgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=I1SHgeMI; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kV/PN54K"
-Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a779b23f05so21259181fa.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 03:06:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790935605; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QXImSyg9PUOF6+dadZuPapA/iRPdFPDIlphNJEi1acFNrJeoyAjmzuj5MNLqVAF34l
-         xoO2MJbawR0uCKyF5CcnNdIPMgw+b74PcRsyA+5aegrb4dtVSvYGuo/Fo4Xon6mbToEf
-         FmYiyTTSkcHyEtv/0/samopgx27DtKq0oup/CnD7F7H6IX+fIXDtpAr0dcYBD7CsJs4B
-         M89mHehElSQf/6qzklfe6q3cjhZDoislqC9kpLksyvixHCkhe0lCKw28P6EA8hDuP0F3
-         i3y0PYdMmyTL2+5nliDm6aHDPNyM8ajy6eByjyFgPtM72WkOPbfE6/ZL7WnAYDOnLM7c
-         8nyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=56xOfDITZcNEcJrgSxRUY3B7nxPxHMei30QaJ72H4oQ=;
-        fh=QvhyS/xvXmOpURrM84bqZNzF5vg188LSxfNUKr2oyBk=;
-        b=iztnG7qx6vIqFFDyCj1IvSIlUrch/7lLxAykEMFHQu7M35uA91v9iOslVLAapiMehz
-         d3InK66xw8nWwekNeWjj15Tv1brbxHQNjCtD10Q1EoE/hUwd0AHZRkHt5ySJQ/XoCi8L
-         lSvW5UVts8HgIj2LPzdpgVrOf3TjLJYsgnNcQxzGYsEfQBAnq9KSTqdXuVGeJ5Jp8I+I
-         vac+34f9gG7i8IScbBRnOeLI+eeSxCp0P6pggfbyNG8UPGbU+WQHD+6leoeOE8117Yc2
-         qmLP2NkgUgszSHdGpxRpc/QkULoSa8gkfqyLE1ftLgX9u7GKrSrITVvqKnFJ9UMVLsmw
-         WMtg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790935605; x=1791540405; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=56xOfDITZcNEcJrgSxRUY3B7nxPxHMei30QaJ72H4oQ=;
-        b=kV/PN54Kt/CFgtZWInPcN0fNRdr+/B5yZCGiB43z6g9Dpi+TG6/aCQCtph85JBw2d0
-         BUoehj10Rpq6MXZ23tvdT6SucBtASmv7dx1IptvNnvXaVx6MZuaUVYul7L3xjKbuiSEv
-         WSJFu30GVBculKOIHI1lSX8BUd+H34ET0bjxiaV1vl7hMv5ZbrDIL3yWl8iW3nINyeRW
-         QLOP1ZRudK6pnft41ccPtQi7aAJQUUmP7Uwbvmlz+sP9gVEmOr3ANNdrC+ikZvwcMnWL
-         +SMDj5BNxLo8cH/Ca1oMCXAxorlE91Epnl+Mkz3BUpd67npHl2kCrQH7N0bbNeiQ5wZT
-         zwoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790935605; x=1791540405;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=56xOfDITZcNEcJrgSxRUY3B7nxPxHMei30QaJ72H4oQ=;
-        b=s58eeBitpVP/F4VRfDSaij/UKQuYyWqSrI+pnrpq4MCBg9SnV0+vi9ylSMv+/5RVE3
-         myHwZTdm8BGbKCIB+Bxfchrf1BgfiT/ZBA3yuWaZ4HfTkmwCSCcgdIwOxl+0XBB7hJZ6
-         FRc3IU0jS1s5Tzu5kiQlJeiv+pysqdAqykCafSucVao8ajippRkB09o0Mfg4auUnnjx+
-         Df03XW7ob862nNZeOKdEMXn8MUmiJqwsACCVArCzej4nsynYqYUxq0oDNoZGX2ZiVGHr
-         m9iOW85EPLtE4HoMu8yud8n6IAzQm1V0eUaB/4DgIKBr7OJvv5cGbb+P/G8znCvWK3Tz
-         Py3A==
-X-Forwarded-Encrypted: i=1; AKwUvByJ5Jifp/j3TGvoCh+Bei/JpLu/5H1A+ae1yTFN6jEEb79HlCCcB6GAaaNsS3WNzGwr3wwf84s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYImBN8SqtGC7uDDxX/rzkZBBR/GUxP/g9miPdZhaqIPrxpD/aCf
-	E50CFX0GfwNekZZqFogVb6o724rDCP34nEE4yAsEphjRRuO0u9bOE1cMOLu0xfB1jW7Gg0sQg0r
-	4XFUrH82VDOrB2GuXmv0WoXc6GitMpF0=
-X-Gm-Gg: AYBFou1WIA4lnfWlZbgfQnS5rBwEQYFCeJyFSVm5yiDcsDHwc2sE5kzeFQheVLbUkLP
-	3THVqznJA6XemaWvn5hVzEnRyRQDh3FTV1EJyjk61XucM1aX6TwRebPm8kuenjYXoy+AO0C8O27
-	dN4s2Az3KMv+j9GQ64Qy9DqRlm2pfdEtRumNxTmF2TgHGPyd/3+lCA9EzpStsCJjQaPpaB5phhp
-	T/Ru+WnTct3/vzuyEFdQTmL1grgdqRTrtwqzdh/NZPwJlskF3cb3Bm03sGnnm0NQJXCQolXTskg
-	j2gXNh778IH3vmlLGyFeYTuSZnCE3k8fJD02a+UqzOGfXGkwPdDcGxQBlPgl/Tcgdrk5/bRe6h0
-	+cBQHTuSFBrn03ef2xnn3/Q==
-X-Received: by 2002:a05:651c:31ce:b0:3a6:4e4d:9d1d with SMTP id
- 38308e7fff4ca-3a87ec366b4mr5542271fa.0.1790935604459; Fri, 02 Oct 2026
- 03:06:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="I1SHgeMI"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4D02EA02DB;
+	Fri,  2 Oct 2026 12:10:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790935814; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=BfL6SKTLkWrhN/wsJ7rNqoRO9lvotlnH5Ssl/GHYpKE=;
+	b=I1SHgeMI2oUSvOtZ8BoNQV1vxsvRVddvcmtNwTeKiaFtt/w+CBgmp8Tdefs2bs38sXLrwK
+	pYmCENY6TbiXBfFqRZKYmUzso1autjg+eUkr1STTsj5UmFyh1uPPPUjKoHjzMVFgSxCRWV
+	qegcshsOAgi4tC5eZWHLq2JZdp6OcdZXURvwB3pQqfvdeT7IAXy79S1gc9xOazAWRrtdC5
+	D5HPuGMSQNQcAseZ0NWZJyt+9vrNUQkq2ZO05DCEoOtKhfLwf4I11Ml/2tcdEqE70j3B41
+	r6J9tysrfF4YKFD/7aFA//TuET79LynJH3wllc/QQmQFEvEgld0+FScBfGLjvw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930112842.21323-3-sigefriedhyy@gmail.com> <179089747937.434549.16341143363097629528@kernel.org>
-In-Reply-To: <179089747937.434549.16341143363097629528@kernel.org>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Fri, 2 Oct 2026 19:06:34 +0900
-X-Gm-Features: AclHuK8Nz_2jnmVTxCDn7TReanMq4quK1jlp8YMQzgl3WrXJWrYulmhcHHN9ymU
-Message-ID: <CA+7S2vKBrjAMW5h_Dkpuy+TYum7m2=8GL1etaDx369ZSMRhHRA@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 2/6] net: change netdev_hw_addr_list count
- through helpers
-To: netdev-bot+sashiko@kernel.org
-Cc: ajay.kathat@microchip.com, aleksandr.loktionov@intel.com, 
-	andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev, davem@davemloft.net, 
-	dsahern@kernel.org, donald.hunter@gmail.com, edumazet@google.com, 
-	idosch@nvidia.com, jacob.e.keller@intel.com, kuba@kernel.org, 
-	johannes@sipsolutions.net, kees@kernel.org, kory.maincent@bootlin.com, 
-	kuniyu@google.com, nicolas.dichtel@6wind.com, nickgarlis@gmail.com, 
-	pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, 
-	sdf.kernel@gmail.com, vadim.fedorenko@linux.dev, willemb@google.com, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Fri, 02 Oct 2026 12:10:03 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: taozj888@163.com
+Cc: theo.lebrun@bootlin.com, stable@vger.kernel.org, Conor Dooley
+ <conor.dooley@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Haavard
+ Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: macb: rate limit netdev error info print in
+ the data path
+In-Reply-To: <20260930113520.392025-1-taozj888@163.com>
+References: <20260930113520.392025-1-taozj888@163.com>
+Message-ID: <b06cb02d9b26ceff272d7e34927a7eac@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> - [Low] In the commit "net: change netdev_hw_addr_list count through
->   helpers", a new comment on struct netdev_hw_addr_list::_count in=E2=80=
-=A6
+Hi Zijin
 
-Agreed, but they are nit, will fold them into v10 if another version is nee=
-ded.
+On 30.9.2026 13:35, taozj888@163.com wrote:
+> From: taozijin <taozj888@163.com>
+> 
+> Now the MACB ethernet driver print the netdev error information
+> directly by netdev_err(), which would lead to a large number of
+> error information print if there was a significant number of
+> error or just jumbo packets exceeding the MTU received when booting.
+> For example, it would print a large number of:
+> 
+> macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+> macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+> ...
+
+Out of interest: Is this a Phytium vendor kernel?
+
+> 
+> in gem_rx() by received a large number of packets without
+> RX_EOF flag set, especially with unknown packet
+> type that would penetrate the hardware offload for the IP packets.
+> 
+> The unlimited prints here would greatly bother and delay
+> the system booting process unless the source stop sending
+> packets since they occupy the console output bandwidth and
+> other processes have to wait for the completion of printing those
+> messages.
+> 
+> So rate limit the netdev error information print in the receive
+> and transmit data path.
+> 
+> Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+
+IMHO the correct tag is 4df95131ea80 ("net/macb: change RX path for 
+GEM")?
+At least the gem_rx() messages were introduced here.
+
+> Cc: stable@vger.kernel.org
+> 
+
+Drop the blank line as otherwise tooling might get confused and doesn't
+get all tags correctly.
+
+> Signed-off-by: Zijin Tao <taozj888@163.com>
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
+> b/drivers/net/ethernet/cadence/macb_main.c
+> index 8e5c034dc3a4..ca60960bec36 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, 
+> struct napi_struct *napi,
+>  		count++;
+> 
+>  		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
+> -			netdev_err(bp->netdev,
+> -				   "not whole frame pointed by descriptor\n");
+> +			if (net_ratelimit())
+> +				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
+
+This will just hide the error message, but the split/drop is still 
+present.
+How about limiting JML in macb_init_hw() properly?
+
+         if ((bp->caps & MACB_CAPS_JUMBO) && bp->jumbo_max_len) {
+                 u32 jml = bp->rx_buffer_size - NET_IP_ALIGN + 
+ETH_FCS_LEN;
+                 gem_writel(bp, JML, min(jml, bp->jumbo_max_len));
+         }
+
+The code above is untested, so probably needs further tweaking. An 
+alternative could
+be to handle the split frames in gem_rx() correctly.
+
+> [...]
+
+Thanks,
+Nicolai
