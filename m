@@ -1,127 +1,155 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE1530EF92
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 03:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD504450F2
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 03:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790911539; cv=none; b=Jpfl0ZtF9ptoCwXsJ+wFjSZmbfWBtQchirhyjVKVCypWQJtYg/xDu66uof9X+nbzw+fbOAyKqqSXd97H8ku56acj/CLm01oi+ypqYD0RT17+m/SDiVlIjbIBFLa69aH/t6BnaiqbPdYWhXSx4n/ZIkBAymLx77SpJSgfN11UhCQ=
+	t=1790911874; cv=none; b=YTdUZZwM8IiQyRDUH48AFlTiwIrzE0i3GhX+/yNuIAHRgbFOAuc/rl3y8rSDF5V63imsHY6e5DbJJS4Vd3wAFjmh0IpuEEhaGhnq9joOdWHUleqvNqjJ+FP7dycMvRetzZ0SWiszYNkaLGwNrQ7nCzBTdNY7MxqJegIkQseCKnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790911539; c=relaxed/simple;
-	bh=AgFBgXo3FFud9szMZeQbkyDEeIGFoZHlNIvwWuazSpQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sLC+r4fIyNfEDh+CPYBbHqQB5gnCZG1Lf5Uwv8HxLnglRJiO0LEw39ozf0NfOuCVNByIrGS0Nakj1uSpNR4+k8tBhj2rXEFsKrbr5MhjQxjOXvEaXXLFm//vBb5Qlo0bwSUV9CfdiKTIAVaq6uOux5PtgOqgXwNXHjjrFBU4MhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=amwxirsF; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1790911874; c=relaxed/simple;
+	bh=Z5XICVQkK8PkEDSYSOVPpWHExm730Y+JfBRpcMT+97o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kfqKmYlATGnXjDtK1GtyYec3AKu/rzk7owy606V4ElyLYTxEYxy9lzBeI6iaZzm3iC40j5/rs6nO17+uppXFZZ28JlnBzi+3NeiVlpihqftzALQcQ6YKTed++SmPCRYrp2WxGFD5RAtM2+UH0En7+av7aYosity/DGXGyIzq6N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jABcM3xe; arc=none smtp.client-ip=74.125.228.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="amwxirsF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=VNsdlLDvpEw1fi9ofKxacfSsiQv9DfsfH36Fs761It8=;
-	b=amwxirsFaPfPtZBJdgXGDo8Btwdvn2w4rX6Pe/OSW2AMvxAE9qJqEK67NjCqVt
-	RJuepONt/VYRtNyqOeHWmPic9azoudxpIGppZnqPi8iG9fcPdWz+3PTGTzvySJWP
-	ZOSVQIZlMLvHazGPDIwXSQD1YQrTf3Du9dBrZ30Qtu488=
-Message-ID: <1d0e6066-f6ca-48cf-8665-848167f3dea7@163.com>
-Date: Fri, 2 Oct 2026 11:25:08 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jABcM3xe"
+Received: by mail-pz2-f37.google.com with SMTP id d2e1a72fcca58-886a5cb66beso1516642b3a.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 20:31:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790911872; x=1791516672; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zTDVtCpSCQztoPn6GzuaugDMD22vGbC4OeaYo8JZgPg=;
+        b=jABcM3xeIr05QnT+dC2nVrCkvtWXT7rhVqSDWryW2nZ/rbucSDamUQmbly1Ic7XDD4
+         j9SU0tnDiTwMWqisAszd0NPxDHZR6zUoRB4MLQSoxuGltofLhubR5e9vlVcdflzN1+72
+         9850qTI7HOF36joAQRgLGbiIgj9uY05UMAQeStwHuwYqb/HHBIIXD3vh9Tom2sunNVEB
+         oHS77DoWB6RVQISUJzjNrQ1TjgC6M+C3andRLzzHXllJ8gRyq2lTH+vDjM58uU3KDQkZ
+         BKMKGylhqEYPFMRSJhSdZm9VlKZXwK7n6AIg1IJwZImhE+zDGNrXVyhlY6RQYDFbqTxj
+         9NXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790911872; x=1791516672;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zTDVtCpSCQztoPn6GzuaugDMD22vGbC4OeaYo8JZgPg=;
+        b=xloS0BEyp931CwI8D4G0ShVNKd6hW8vCRPxUdlaChfRJdrgzNu5WuMx/kYqBzwMyNk
+         p3hC3GP3PQZ18XswRMd7rwtH+8baX0snbx50oTS+6K9yTM/gSvPhr6Z1wUOklPlviRGa
+         +HsGZOlXJ6wtT/8nAw7lJuREuvyn/+gFbKgZizpuwlkRG+kgqMLkQAz9J1poqZGL40Tq
+         YR1bcjP0I6UGDIynbUUZOLuwm5LQz3tuP3gIx9IIWC+lteT3F68TW0OV7vEsDwaPIkr4
+         oa12ONK3F+fLEFv4ikYjYUwh3NUpPN8MhdfCbM93dkFjSAf41Q4XT5S+OVhPg5i6hExX
+         GFUw==
+X-Forwarded-Encrypted: i=1; AKwUvBy+CA/D1ohCYXEa9trpjZU5ZPOoTk3Z4x2DKcDxmTX8PomQtpDlEtgOjHEQmU/yupxsbT8yYBU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nNEsHPwOQyxDx2DZjLPWMbgUXW5W3d3DWEs1icJKXdmFVA55vl
+	/cLjNwTd4N//h1gnnSAEBM4vWluX2qzzxGDuv+uz4in6JfIa0cf4blFd
+X-Gm-Gg: AYBFou3tHvBzBuj9ZMxYj2PR+keXsvTGq5iBKj2/I/yq4E+CcOEvK63XHmqE/xNVl05
+	+nLQacMiuFMas72cMXhwtvtBSWVKdrZWiCotciLcOBuFDBq1+DgAV+BO52eKgdJMlSTywvuMrhN
+	ETON49GWQyQJ9xOxqPXMbI7obXpCggW/Lcr6RTjh9ti15tRI04w+s0gZvxtVryLwigBgHBIsQ5O
+	DoPX8i4oNOkoR/jlfdumTn55deokDJgbGnGDYhcB8P1QNnUD7cOFJwI4T70kxglWlE0zKLBKctz
+	zYCcE1sk4KUEXirKRa6ORx66/6QH9ItFFQIjbLd0L4L3kZyQDMWnC0yvNXVCMA2XJ9Rqbshpthu
+	wZ0aGSSIRpfJKG/csTaK13WzvqwyFXbLJhLjubScSW/lATvEfzz26aFmaELXYJmP0wHRsJEjn1q
+	7Gu+H9Nvhts5esbYEGO1QaGKStcwkb22HMm56p81l/MTfQ2CkkNyYdFK4gdamXPjIBrkDal6CVU
+	9idwtWZG0c=
+X-Received: by 2002:a05:6a00:418d:b0:886:7d7d:cfb0 with SMTP id d2e1a72fcca58-88af54f74b8mr1302693b3a.9.1790911871974;
+        Thu, 01 Oct 2026 20:31:11 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0d247dbcsm369865b3a.55.2026.10.01.20.31.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 20:31:11 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	William Tu <u9012063@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daehyeon Ko <4ncienth@gmail.com>
+Subject: [PATCH net v2] ip6_gre: remove obsolete ERSPAN PMTU update
+Date: Fri,  2 Oct 2026 12:30:58 +0900
+Message-ID: <20261002033058.358137-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/3] tun: keep a kernel copy of the socket filter
- program
-Content-Language: en-US
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, Rongguang Wei <weirongguang@kylinos.cn>
-References: <20260930080746.135017-1-clementwei90@163.com>
- <20260930080746.135017-2-clementwei90@163.com>
- <willemdebruijn.kernel.3adc274631629@gmail.com>
-From: Rongguang Wei <clementwei90@163.com>
-In-Reply-To: <willemdebruijn.kernel.3adc274631629@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:PCgvCgAX5xcUJL9qXV1fCA--.55566S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uF15Cr15Xr47Kw4UGw4fuFg_yoW5JrWrpF
-	Z0gayjyr1DWry8Ww1vqr48Aa4Sqwn3Wr13ur1vkrn5uFn0gr48K342gr4a93sxAr1rKw4I
-	vr1j93ZxWw1DWaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ufb1nUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-RaYBGq-JBZ01AAA3w
+Content-Transfer-Encoding: 8bit
 
+A tc tunnel_key action can attach a METADATA_IP_TUNNEL dst to an skb,
+and mirred can redirect it to a native ip6erspan device. The legacy PMTU
+update in ip6erspan_tunnel_xmit() treats that metadata dst as a route.
+Since it has no output device, dst_dev(dst)->mtu dereferences NULL.
 
+On v7.2 with KASAN, an initial UID/GID 65534 process with CapEff 0 used
+self-created user and network namespaces to trigger:
 
-on 2026/10/1 02:33, Willem de Bruijn wrote:
-> Rongguang Wei wrote:
->> From: Rongguang Wei <weirongguang@kylinos.cn>
->>
->> TUNATTACHFILTER copies only the sock_fprog header, so tun->fprog.filter
->> stays a pointer into the address space of the process that issued the
->> ioctl. tun_attach() reads it again whenever a queue is attached to the
->> persistent device later on: unmapped there, the attach fails with -EFAULT;
->> mapped, whatever bytes it holds become the filter of the new queue.
->>
->> Keep the program in the kernel instead. tun->fprog_kern holds the
->> instructions and each queue gets its own program, built with
->> sk_attach_filter_kern().
->>
->> sk_attach_filter_kern() reads no user buffer and attaches the program like
->> sk_attach_filter() does. The caller must hold the socket lock. Failing the
->> attach releases it; so does the socket when the filter is replaced,
->> detached or the socket goes away.
->>
->> The copy is freed when the filter is detached or replaced and with the
->> device, and tun->fprog is left untouched so TUNGETFILTER keeps its uapi
->> behaviour.
->>
->> Fixes: 54f968d6efdb ("tuntap: move socket to tun_file")
->> Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
->> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
-> 
-> Reviewed-by: Willem de Bruijn <willemb@google.com>
-> 
->> +int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
->> +{
->> +	struct bpf_prog *prog;
->> +	int err;
->> +
->> +	if (sock_flag(sk, SOCK_FILTER_LOCKED))
->> +		return -EPERM;
->> +
->> +	err = bpf_prog_create(&prog, fprog);
-> 
-> Interesting small issue, not new with this patch:
-> 
-> The BPF program is not validated on copy_from_user, but on attach,
-> possibly after the system call has already returned with success.
-> Which results in a dev without filter, rather than a failed syscall.
-> 
-Got it, a device with no queues still returns success. I will look at it separately.
-Thanks for the review.
->> +	if (err)
->> +		return err;
->> +
->> +	err = __sk_attach_prog(prog, sk);
->> +	if (err < 0) {
->> +		__bpf_prog_release(prog);
->> +		return err;
->> +	}
->> +
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(sk_attach_filter_kern);
->> +
->>  int sk_reuseport_attach_filter(struct sock_fprog *fprog, struct sock *sk)
->>  {
->>  	struct bpf_prog *prog = __get_filter(fprog, sk);
->> -- 
->> 2.25.1
->>
->>
->> No virus found
->> 		Checked by Hillstone Network AntiVirus
->>
-> 
+  KASAN: null-ptr-deref
+  RIP: ip6erspan_tunnel_xmit+0x10fc/0x2cc0
+  Kernel panic - not syncing: Fatal exception in interrupt
+
+The update is obsolete. Commit fe1a4ca0a2b7 ("ip6_gre: process toobig
+in a better way") changed IPv6 GRE Too Big handling to update the
+underlay route and removed the equivalent block from __gre6_xmit().
+ip6_tnl_xmit() then propagates the underlay PMTU to the overlay route.
+
+Remove the stale ERSPAN copy and its now-unused dst variable. This
+eliminates the metadata-dst dereference and keeps ERSPAN aligned with
+IPv6 GRE PMTU handling.
+
+Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
+Cc: stable@vger.kernel.org
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+v2:
+  - Remove the complete obsolete PMTU block and unused dst variable, per
+    Ido Schimmel.
+  - Drop Eric Dumazet's Reviewed-by because the hunk changed.
+  - Use the generic Assisted-by label.
+v1: https://lore.kernel.org/netdev/20260930075320.760328-1-4ncienth@gmail.com/
+
+No new build or VM run was performed for v2. The retained v1 runtime
+tested the same metadata-dst trigger while skipping this block; v2 deletes
+the block as requested in review.
+
+The reproducer is available privately on request and is omitted from this
+public AI-assisted report.
+---
+ net/ipv6/ip6_gre.c | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index e61cb10b50dc9..04f7c70b7320e 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -923,7 +923,6 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ {
+ 	struct ip_tunnel_info *tun_info = NULL;
+ 	struct ip6_tnl *t = netdev_priv(dev);
+-	struct dst_entry *dst = skb_dst(skb);
+ 	IP_TUNNEL_DECLARE_FLAGS(flags) = { };
+ 	bool truncate = false;
+ 	int encap_limit = -1;
+@@ -1058,12 +1057,6 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 	gre_build_header(skb, 8, flags, proto, 0,
+ 			 htonl(atomic_fetch_inc(&t->o_seqno)));
+ 
+-	/* TooBig packet may have updated dst->dev's mtu */
+-	if (!t->parms.collect_md && dst) {
+-		mtu = READ_ONCE(dst_dev(dst)->mtu);
+-		if (dst_mtu(dst) > mtu)
+-			dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
+-	}
+ 	err = ip6_tnl_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
+ 			   NEXTHDR_GRE);
+ 	if (err != 0) {
+-- 
+2.55.0
 
