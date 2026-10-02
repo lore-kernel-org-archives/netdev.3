@@ -1,35 +1,48 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A2E47A0B0
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 09:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7217347254D;
+	Fri,  2 Oct 2026 09:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790934008; cv=none; b=cKFY6ZQxPcrYeOvefjenthtdF1Ryho2zEAEvOA42epR83rpzRuHJGCyHUHKy/H2IOI7HPm0LBs7MytncmBP9erI2bhatuZ4XmK1oqqVqSVYmjAUFthOUBe6r+Fqz1+le5uSPU76fd/TIMKpQTAKlf/nknEZgswpsinPMAxZVUxo=
+	t=1790934156; cv=none; b=PDfMgm+o2Ofj+FrWVzqhmXGsSGt0cnjmPKCF42dHcoGz8b6BOcycagPQBt4uQ7mcA9tfAxO0fA+0vzNiqa8b0W7qeKm8kZad+fQVpj2vGw4f1yJoTwMwPz9EErMGLYwDBpik6NJ8gQQKU8DDgSg/nh8PL5KQih8n0zJLQcjfwA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790934008; c=relaxed/simple;
-	bh=aZj426x5fFn3XyW6LrhVHbk2vsmptX1L2w0Yhyd0PXk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=q07fMknwNU8mPhgDlJpWG3YQy8uYNJsJvL/ZRknW7vCqotVGKo73QSBT1asC7qtJAki7hO/ZSGGbQFVIIOAoyCa1/1Bcdj59BlaeHs/Jg5W87VO5vdyxfiFlGFbAAhqR56e47yJiP4aTfYXPC6NQ1mGj+HYxuVVPqZRQN5OrXQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJMTCRpO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790934156; c=relaxed/simple;
+	bh=D4n/jC9B4OsZIowMwYOinvRQqK6TBicIReKZ6v0d2dI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=a7rcSXTq9SQZs2unG6vn4Ev8wFvYxQKWBZQTucvjZ6hOoZDX7OQFwvgx5sOrQksJ9uT7gZZjE9uVFYzYf4fG9jDTMQzchU19X287HaVzi5RsQVpHpEJ815R0ALT/V6XgBc2CpnAZ+6dVVnBwYosoItM7C1FMr29O/NCixqs93NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Ygrsbo+z; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJMTCRpO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822F81F0089E;
-	Fri,  2 Oct 2026 09:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790934006;
-	bh=f59O9B08QCHTGNeuypp2tZ1+0HGrGXSxHAzKegE8o18=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kJMTCRpOOxsGv4lHIB7Vh6uHdcqO+b+Umva4UYt5Be6sMuaTwoHlFLTWEhiuDY2Tw
-	 x+VX6+p4l0nEAhoWWn1JahMeO3cdePphcjbSxPdfYlYbdlLdDFEfPiFs/dbShwq0Sw
-	 EduUby5vXKpTOxKe1uHQ9YRn8TKU/5umgEUzdHdYWj6xG/HCpSJHSKxxTc44ssjCRB
-	 h7OrDnJVWjxc6YVG6m8Tn5rsdI0UuVRM71eePoay/hIfHOvkpqeWP7LqAtKZhUz2oC
-	 dLd141LPpSnrRfpDnEn8xsvmcqoDjtn9w6/aPj7+aTflZK6A5w9wagTXZH2XLQwdkS
-	 4w8LBq+QVmdeA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 772D038119DE;
-	Fri,  2 Oct 2026 09:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Ygrsbo+z"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A47D1A4AA7;
+	Fri,  2 Oct 2026 11:42:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790934145; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=mKPcFRIiin34kpiS50/ng8xqh2E/9ekM3WAmWy3OGwA=;
+	b=Ygrsbo+zZExjC1bnbnYzn1zg3SEWIIfYiW4nfNo16vUrrRDeiGtVUJbAZjKZiUsrjW8zbL
+	V+f3+7LZAkUpKYap51Oisnf8pKBXG1b2VcvX0XgMvYVGQApCq3IXqZ8AjDNDkISuM1VXfj
+	Kh6OLfATkd5q0LWWm8+tdtvKvIPq2D0+MENBNpQFi3/Yz/NFUg2javyWA2yI0GN1Os3x38
+	cxpduNLAX+VbsGM3tpnTigvZHVHYRXSvJE/fA9oQ6KfmwFKbcRspZm8/v6qsGucvfV/rHh
+	TGY2akVcPUntsT8+3iz5INQ5/V+0gus3e+Cx2p50QN8Plq+ZgLriMI9hbs9m5A==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 2/3] net: reject ops-locked drivers without ndo_set_rx_mode_async
+Date: Fri,  2 Oct 2026 11:42:08 +0200
+Message-ID: <20261002094211.2350702-3-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261002094211.2350702-1-nb@tipi-net.de>
+References: <20261002094211.2350702-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,49 +50,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: stmmac: propagate PTP addend and system time
- programming errors
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179093400503.3321157.8480086535803997023.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 09:40:05 +0000
-References: 
- <20260929-stmmac-ptp-added-systime-error-v3-1-ddd6afe936b4@oss.qualcomm.com>
-In-Reply-To: 
- <20260929-stmmac-ptp-added-systime-error-v3-1-ddd6afe936b4@oss.qualcomm.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- richardcochran@gmail.com, Jose.Abreu@synopsys.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+ndo_set_rx_mode cannot sleep and runs with netif_addr_lock_bh held, so an
+ops-locked driver cannot take the instance lock from it.
+ndo_set_rx_mode_async is the replacement and runs in process context.
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+Registration has only warned about this since v7.1, long enough to find
+the offenders. Make it an error.
 
-On Tue, 29 Sep 2026 15:10:11 +0200 you wrote:
-> stmmac_update_subsecond_increment() ignores the error returned by
-> stmmac_config_addend(), and stmmac_init_tstamp_counter() discards the
-> addend and system time programming errors, always returning success. A
-> failure to program the addend (PTP_TCR_TSADDREG) or to initialize the
-> system time counter (PTP_TCR_TSINIT) is therefore silently swallowed,
-> leaving the hardware timestamp counter in a non-running or partially
-> configured state while the driver keeps operating as if timestamping
-> were up. This matters for TAPRIO/EST offloading, which derives the gate
-> base time from the hardware timestamp counter.
-> 
-> [...]
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+I grepped for potential offenders in the tree using
 
-Here is the summary with links:
-  - [net,v3] net: stmmac: propagate PTP addend and system time programming errors
-    https://git.kernel.org/netdev/net/c/232d49dd4b40
+  for f in $(git grep -lE 'request_ops_lock|queue_mgmt_ops|net_shaper_ops' \
+                          -- drivers/net); do
+          d=$(dirname $f)
+          git grep -q '\.ndo_set_rx_mode\s*=' -- $d &&
+          ! git grep -q 'ndo_set_rx_mode_async' -- $d && echo "$d"
+  done
 
-You are awesome, thank you!
+but haven't found any. net-next testing will show if I missed something.
+
+ net/core/dev.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index a44bcfc29d54..ca7f4844cc40 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11463,8 +11463,10 @@ static int netdev_check_ops(struct net_device *dev)
+ 	}
+ 
+ 	if (netdev_need_ops_lock(dev) && ops->ndo_set_rx_mode &&
+-	    !ops->ndo_set_rx_mode_async)
++	    !ops->ndo_set_rx_mode_async) {
+ 		netdev_WARN(dev, "ops-locked drivers should use ndo_set_rx_mode_async\n");
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
