@@ -1,64 +1,64 @@
-Received: from mail-pj2-f14.google.com (mail-pj2-f14.google.com [74.125.227.142])
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E6436826B
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 04:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EE236F8E1
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 04:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790916684; cv=none; b=YanVgPT5SX8znJGqz763S6NKKF6/asiz3kjPyFPk8PQthbesr4OsnbD0dNdSoRz4NbeR9cN7C3oQ6LRQCBc0hThJkR4OEfox11cGBIQvTNTgzQJ1E4Euj+JmW7ojd7KAHwuSR1ToSd2C/ii/DboMVqTnNPllhSDM8PhWTFz8ggU=
+	t=1790916688; cv=none; b=azGwHu1Lxv9kvEgWcim0wH9NGIcu7Lsce2PUH0STf1lukjKhMIf3yoklsEr32e4kw7XqKsf5ynYi3fyZpfSEnILUtzXzBEpHlHzg/9RhuQ6UmGn7QmOyVZtVIA5FB3w8Jy08CTvBRDBlrh6FQnNfdmwAnX46SmCPzmAg/uqoRaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790916684; c=relaxed/simple;
-	bh=EGguTxu+yiR4KwL1wKGNSQg0HqiyBt2K1DUYSLPw5F8=;
+	s=arc-20240116; t=1790916688; c=relaxed/simple;
+	bh=NWTciQTPQGFxRl8e5NBASdT1gbmDf6XBJprffVSqZLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1R0Hzpp9HYT3e8ulTDQk1qkGY8wcRNiIsf1cIZZL3H8SiyJEdK48PPPp28veO/cWpEFc6YMTumYDZPMzJtMcsAKaqtN4Y2wsWJmGw0quaFzRDFJdFuhyiSCfHL9gUjcRckha7eNpCHAuuVu++0rL7aOszrkN9PSowml641ZYXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pqSoiytw; arc=none smtp.client-ip=74.125.227.142
+	 MIME-Version; b=W6xZ+UURZfJ9QDc9X/IvMOFaV8o9uc8IBNZuNJ3qmx46rVZADKeM7QTYF56raI0uYjcGym9iJgv7wx4XLcYljaty1TaCowm+tnDgFc30hFoaZcmPuWnqFRtwFgBpRFmn2thpGUKpBUFixJUOOG730KSrB9uESPYiMl52LpvTXEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m2xrXilc; arc=none smtp.client-ip=74.125.228.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pqSoiytw"
-Received: by mail-pj2-f14.google.com with SMTP id d9443c01a7336-2d747f05ffcso34653195ad.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 21:51:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m2xrXilc"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e69so2602399a12.0
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 21:51:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790916682; x=1791521482; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790916686; x=1791521486; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZFYDOqsBqKsmqK8JD9bXDjgEMMt1l5X2G9myljwvLmU=;
-        b=pqSoiytwOV79ViU1elSejbgGBkcNMAskEzMq401Kx4d7dUhfuvHewAnjf8Zq54vauq
-         veu9TWfbv1FaossOguPAii++wGK5Nw7xnaXFrDgVI32n+dIOX+uPj3puZww5uADbbqEf
-         Yd53W7/OA6xGTwkk1MikccdQzNbY4ncKdgeWCDBSA71HijTwRji73T1BRrvAx3rijgek
-         68uV+/MsB6RPtBgiCW+k/mO/oFhQtJK2vugCY9wQ5atIbEPTpmdpvqIU/o1wtMh6j+JP
-         v4KdijnQ6Vkmk2+0ggg5HtOaAyv+EZJTvoaVeL7G9H6YBZvW2Apdx48qvgQ+x8/20xr4
-         1ktA==
+        bh=acJBQIXpi9PcvXHZyXDn71ZRsavqRs7vpb0bJgNaqtw=;
+        b=m2xrXilcb3k4jn60JkCRh7MCGKDcBSnva/PljWY32PouUGp6DHQne0z9iVbDw0XXuK
+         lLCgl0L0pTgoS9ZD2MVMrH9fir8FKjAXTEv6OP+YZLrGbE3d7kHdk5CVSIxTw3E272xE
+         YZmYypBMbu8sTKCaPin9Rau/Cty+nydFIg4+BVU5we5UKDjibn0vHjKjrnjGF2tTihgP
+         xXhewDyDTYQeX40vLqwDLyx5MU/WGBH1tWTX0P0h45KyBOcHdNmjfDkaBR+Iw7ZAt9+R
+         3KVYilAmLlas6HFrhPf4murGq5vH2ZWtxgL29GRuDHcVDOR9gx4OgDX9gPUMn3pCzaD+
+         tgfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790916682; x=1791521482;
+        d=1e100.net; s=20260707; t=1790916686; x=1791521486;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZFYDOqsBqKsmqK8JD9bXDjgEMMt1l5X2G9myljwvLmU=;
-        b=ripvm8/0qQ9nY2arcTTaYJ3Qgt0wkzUWfhQPt2Q+kwtUrZmt4/kpfB3uPt+KQdKTEd
-         qCSwurvS6RqXzDKVELC57Jk0HgM4abh2Q+4hUZyo2wH87E7YfBGI+Z37S3Esie9y7zHD
-         qXm4tebvcjdGLBmS6pLfIwP3fbElvQs2ST8Q20er88PQoyVkgoPoA1Wcylof6PS7jJYX
-         kW/EEEzV/wGG/u3qvb0srzWAlx9VgJGTROz9MsUxYqpQumP+G25S1U0bYWREf9j09cM0
-         prtOTpjhFTL1oKljTAEQYetItwjxY7cgYb/TN+HRRtkOFeqmqWmZ7OPvsH06+j3+awE5
-         8EMA==
-X-Forwarded-Encrypted: i=1; AKwUvBytSrWpJuowHorzlxn8fsbRSpvrScojuazLNbgHbQbIzuyPVfzKA6mR/Xe8WGnzdXLxA/bOZ+U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIqaizVazvVJNw+ifhqGBkSsDk8JZua/bu19EOUCnrslc5LBXYT
-	l8h7ysX7Qzotv0WLa9OBQPbVOAyRxh6w27bn4VhPdkyWWqDzWJ7SpDy4
-X-Gm-Gg: AYBFou2Jm2b6TXuPYF6XjkGc7iO1VZiW2pIOycXBfVcw4c3kqOyNmLtdD/s2sjxjBag
-	FEMe1VSfdIM/hmjEd9xmSd+CSEphpThO5MUukIHH8mRk3fdaY5M3R5krK9jImk7u+4I4AuQgRl5
-	N5LWpt16ryVBmISIc2RSiOpfhQoMB9/EjqWXn2LR+sc7XyaAxRnhJ88eZNWSwaeU/6oOl0Mn1KP
-	BLA7YQ6sMVpo/syn1fEo6lvKg2tgK7YfJO/7xkmo+3QyHHGVVZOkhwq5XrOnb5Ocp8bmq9FsUFN
-	zn4yy0O7EC+/GFrIqVe+RSfBJKkMHyWwulJwg7fpjrTFoZqTGvhydddlIY9rscHsKJR03D1ajha
-	hnab75dLD4H+VbSxUGiyhdePnTW8AEvqeLbIIbMDipIdxl57S1z0iuMzVpcx2z8cf6wzHViWU08
-	aVcLm68XnQhR3xSohaPwGXdfFyeyvyCWPUhnMx08y6cgmf3rnsZsTIlUhIeuFSKMPkj8GQAxrml
-	qrxTOcYhpU=
-X-Received: by 2002:a17:90b:35c3:b0:3a0:4668:4cb0 with SMTP id 98e67ed59e1d1-3a6cead5baemr1466604a91.47.1790916682376;
-        Thu, 01 Oct 2026 21:51:22 -0700 (PDT)
+        bh=acJBQIXpi9PcvXHZyXDn71ZRsavqRs7vpb0bJgNaqtw=;
+        b=R4cKrQX3+6AqwNIMWP+pxblM8dzIeZaYoMEKtfJ8G69wsxfMyPkaseTE7+9Cg2RYwi
+         YUJyZas0QUJKJt57Gu5g3u2Qh0eOUk5/QwAV9Ye3Tho0G36frtUsSkjdvtp8ffu0BGji
+         SmjvWRj7PfoKBLNZs7lkVKku1YuMZAueliEBY1ZShpU/GK2r2Br3FivLjPD2s/vZcpm/
+         i+HHT/KmX40mOUC9W7o9cC3qnZ0j3F0UICsrXH0xZVm2yrO/S6MUkyS2MC844aWMWDw5
+         +3I4TgozTZSs/P5SqWTBTdXlBUqhHivafskF/R99uzabMpRr2HqwNNAaaAJ6EIFDRLrt
+         HK7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwtgWtHW3LsrksK8ZuGObfEHEteh32OQfrmq73+Dwz1C/uSmpyW70GIfHYjjmXqo4D/lr/6Rz4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJqoOxwL+4hagvP+6EqJh8KXhokaULrXjKP23exo1PbYOWwOOb5
+	Xd45J0a92jdRPCNJfTvySKED4JPWDdVc7oBayL6t5Yq9/FUYKrH1yMKl
+X-Gm-Gg: AYBFou2CcIdc2HPIgOODI6Bjdt4gWc11Op9CMXmK3h2mrXgfOhuSZY8cAOfxYpNs9Kv
+	3EQnr8Adyqzf8oZ2Qt5VvENkz+hc1CsCjswg32ysggBWFrni4Zvt5kEIttxxdxh1Dq4eojQ23sp
+	45kocZ10PVB3Kxeo0y66Z7rH9pleMX4Gmmbbl1O3IqvaFXnsKfTzStipbMGGdhf5iqBUOBMGWBt
+	tg1ctlqCU0zv05rr31fjjbALFAuNa67slk11sQnyNL0RwVMJixUUvJ7oQhheNBRtO8/IosMma7g
+	DiUqyp4ScbVNZlqywY33Hh200o1SnfQvHeq913Xr6Cxz5w4Q3151QgErDRYbWsdC7h6lakpNuni
+	4yNuStmCwFWXNzRXoP/WCninIZwyaveAeoaXqGqbf1ExNp2Fwu3OCrVpJ0t6PQrcCjMpP3gex6O
+	LqONiUzs0syXTu9mhcNJPFKWUFhCRILPK0kwsf4rWZm9r8HjznZOY7p8aV9RSO1JSiHKZo5Y78V
+	SjENBezDgk=
+X-Received: by 2002:a17:90b:56c7:b0:3a4:c895:562 with SMTP id 98e67ed59e1d1-3a6cec1fdc7mr1563842a91.62.1790916685941;
+        Thu, 01 Oct 2026 21:51:25 -0700 (PDT)
 Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd3962f0sm642682a91.3.2026.10.01.21.51.19
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd3962f0sm642682a91.3.2026.10.01.21.51.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 21:51:21 -0700 (PDT)
+        Thu, 01 Oct 2026 21:51:25 -0700 (PDT)
 From: Daehyeon Ko <4ncienth@gmail.com>
 To: David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>
@@ -74,9 +74,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Daehyeon Ko <4ncienth@gmail.com>
-Subject: [PATCH net v2 2/3] ipv4: stop exception dump when nexthop group shrinks
-Date: Fri,  2 Oct 2026 13:50:59 +0900
-Message-ID: <5bb7bd97411eb9db454464bf449107395e760f26.1790915964.git.4ncienth@gmail.com>
+Subject: [PATCH net v2 3/3] ipv4: stop route notification sizing when nexthop group shrinks
+Date: Fri,  2 Oct 2026 13:51:00 +0900
+Message-ID: <1054fa46165bba1b473782fa41367804aa908e86.1790915964.git.4ncienth@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1790915964.git.4ncienth@gmail.com>
 References: <cover.1790915964.git.4ncienth@gmail.com>
@@ -88,43 +88,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 4ce5dc9316de ("inet: switch inet_dump_fib() to RCU
-protection") allowed IPv4 FIB dumps to run concurrently with nexthop
-replacement.
+Commit 680aea08e78c ("net: ipv4: Emit notification when fib
+hardware flags are changed") added an RCU-only fib_nlmsg_size() call
+for asynchronous hardware flag notifications.
 
-fib_dump_info_fnhe() uses fib_info_num_path() as the loop bound,
+fib_nlmsg_size() checks fib_info_num_path() before each iteration,
 then fib_info_nhc() independently reloads nh->nh_grp. If
 RTM_NEWNEXTHOP replaces a group with fewer paths between those loads,
-fib_info_nhc() returns NULL and the dump dereferences it through
-nhc_flags.
+fib_info_nhc() returns NULL and fib_nexthop_nlmsg_size() dereferences
+it.
 
-Stop the walk when the indexed path is absent. Nexthop groups are
+Stop sizing when the indexed path is absent. Nexthop groups are
 dense, so the current snapshot has no later path.
 
-Fixes: 4ce5dc9316de ("inet: switch inet_dump_fib() to RCU protection")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/netdev/20261001170513.GA1657889@shredder/
+Fixes: 680aea08e78c ("net: ipv4: Emit notification when fib hardware flags are changed")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 ---
- net/ipv4/route.c | 3 +++
+ net/ipv4/fib_semantics.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 5f2197874bebc..268d8821f7e09 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -3170,6 +3170,9 @@ int fib_dump_info_fnhe(struct sk_buff *skb, struct netlink_callback *cb,
- 		struct fnhe_hash_bucket *bucket;
- 		int err;
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 5c9021ea3a799..47469b7758082 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -542,6 +542,9 @@ size_t fib_nlmsg_size(struct fib_info *fi)
+ 			struct fib_nh_common *nhc = fib_info_nhc(fi, i);
+ 			size_t nhsize;
  
-+		if (!nhc)
-+			break;
++			if (!nhc)
++				break;
 +
- 		if (nhc->nhc_flags & RTNH_F_DEAD)
- 			continue;
+ 			nhsize = fib_nexthop_nlmsg_size(nhc, nhs != 1);
  
+ 			if (nhs != 1)
 -- 
 2.55.0
 
