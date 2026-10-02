@@ -1,63 +1,64 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C774D9550
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 14:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF734DBD70
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 14:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790951765; cv=none; b=PulEgiw4kVsvCPV8OOSevwLcTX5efcwd4VGkyTXUOB850gxAwW2fMWy21ditcloWpUAQEwGKqxcaCWlACqdautlDrowNE68E3az/qupBghUP5UQbVn48kG99jQfSBkiiVZb45uzNdK2vPiwQl9VDRoV3bceD4P9S6f/Ywtg1Je0=
+	t=1790951769; cv=none; b=didVjQJ73ZXxuHIJqjW0mHZ73zwp3f4+qzTXicTD0OI3xnG69llmru37lRlmo2uLhaJCBX1zxOdGCtRW7sP6CHfuiWNFOZGrhe9lrXhu2Dgy+psCM7S9mNSbvdCCwVrwPWIf/gfGL50y05iIhFr1nUvn2+NaSrGFSotEvVdNwi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790951765; c=relaxed/simple;
-	bh=BCGicS7Y6bDVCOIyWVuqM71qCFRkkaCxCz33ZwbKG3Y=;
+	s=arc-20240116; t=1790951769; c=relaxed/simple;
+	bh=eQRCEWeuQenLohMAayQ/7Eqy93mhz2DxGt9MaVpnEkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J4ZwSVuIIeDZSYKNMbJULqsuOAYFArlbBhcNRR7Ppf2A1xbVJT5yzKZWNLTjs2bTM4VVKDCRhVVfieaWp8yP347FYyZxS+eFx+I04LBU9wk0pXLG2oUIqcGrf4GCcaUh3URGQAOvKxb28/UaZeZ3d/ScQOgcFjbbt4PxD/MAYzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citymesh.com; spf=pass smtp.mailfrom=citymesh.com; dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b=NiuC9VWt; arc=none smtp.client-ip=74.125.225.140
+	 MIME-Version; b=uv02dsrxrf1w63yJK2ynho/dSoN7uQ7a/aCV9KBVPGfCL2nlJjTW0x3GHXbhWj7nIzv4JtKTZPUNeXxsjmmenFlJzmpA0AskLCtB2EamlJKmrOQkC+M5qgSoE3vaMhOxPzYcFaSUKC6m6ol7xQIsskRe3UtB+ZwsResS3V3N24Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citymesh.com; spf=pass smtp.mailfrom=citymesh.com; dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b=Vp3GObUu; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citymesh.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citymesh.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b="NiuC9VWt"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49fff72474fso782945e9.3
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 07:36:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b="Vp3GObUu"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e6c0fce17so42917565e9.1
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 07:36:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citymesh.com; s=google; t=1790951762; x=1791556562; darn=vger.kernel.org;
+        d=citymesh.com; s=google; t=1790951766; x=1791556566; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=veTkOzmo6163gdZSR/5amkh40A+qHj9V4VaoR7YYeV8=;
-        b=NiuC9VWt5xHXMXqzn9CY9HVJW9IPUVLAY5WMt0v4yw3ZNrFmW53HTmIftq5LE0OE/v
-         Ggpo6zN08OeMUtxBBT0S4uUy0ChsmN0gdf7kQnQlOcRF+NmhbkNAqJSjKm+SqFtxA4Lp
-         hvuXO5RSCzjh/ho0+N57SBIcY9F7lvyoSyIHpDAY9kzxgMiv27oTEh1bmeDDR+7Y9slA
-         edxUYMc/gHnOqgQoa4P1VMYXsBarVD2vLMYOgm4ZkSBTfN9UpGhDObGJdmeGTZK5VOxJ
-         B4ySDK69dO+u3DL4xqJd861LZWu39i0hxk0cauTPcTvDEHGUDIB2tYAp87MbuhRcY0+a
-         pPlQ==
+        bh=WBwjMAy6b17UOR1h36UJ07paZoIuGQbP8cI4le6OJ04=;
+        b=Vp3GObUuUkcQiFIYDMR6c1eDDnAuMAPf2LysZ/6xKgG3GLj0+gLXKD/R6dsWIZWt+k
+         KO+iraLCYIXyEoo/x/I3UMuw7r3DooFLNfJ+JKIwzOshYlRSRsmxucURDz8lK6fzBH6Z
+         5W5WMSyedWZu2raUquEdDI+G4a7nf0K9geLxqzkyBvLZw8gdNEOndOT53ZHTTzqFr7GH
+         xarBO0/iUWXBFM3KS8/TSpv1RuWNPjLwEHaWx2v+7y+wSG0Q627eYj6OE0jBy+orVwpH
+         YE64rV5jdAuM8Lwq4KeKVFwiqXlPUwvaiwjOAqarCCsPqCnvT6v9VhcrFILDyLZuLVbU
+         DHCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790951762; x=1791556562;
+        d=1e100.net; s=20260707; t=1790951766; x=1791556566;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=veTkOzmo6163gdZSR/5amkh40A+qHj9V4VaoR7YYeV8=;
-        b=YEX309p8P7ShYDlDEEN9+XK92NiIHIW6DLA+lSrealJyNT3KVTCVKQq+4asGpGUPH5
-         laQlVZ4Jz2k/MDP5E26Ouxh7cjSrILeSbnBW1jseeuEqlYL4e+LvdpFhBY+ZD2ckkCMz
-         zUDtggGnIwDSnjMeiUWbByxvaH2Hm62Enai1RMOS+2rGvgjk/z3EWhhUH/Snr3GVTxpR
-         GFdR06hOieDwlVaQmLkIJiXT2Uzq5BvyosQQXLYKG9Dg2Z/ueAeSdlBR5c2xY2TDnOIX
-         xhaTUqoGGXE/XYa6uARwO4JX0uDnplurwD/fCOhrPeG9P/Q3Dj6nuejMDZ8nZPdKjyJB
-         LF1w==
-X-Gm-Message-State: AFuF++nAPaV86J/p20IOCiT+4ZN3BQIIdM6GG8GHlem9X3Yt99NNLrMR
-	u7VPyMC6mGW0k4U6fAThEfrW5y+ZTV7pbXi3t/JXelooTZyEteeY7aaf60zDzomghnrbUpmjDlN
-	JsdQ99Fhrog==
-X-Gm-Gg: AYBFou2E0R0PSGGAAG4WiVJUmbMFSGUb/A27meTjDN5F+w8eBdnPhJJu+twPcXAuYTm
-	hYy69dnUvd8SsrZ1Hft46T8wjphySB0IzahR+4xLnl0E14o84fQix2uH5Z+QZaeNe6ETBqUTHRh
-	DWmBa1v7ZW8p2xVpnuoNhcm113jkmXe30n9g1I6KNoNMbRPlPtuEOX/k9SOaxiGc3k3SL78idNt
-	PN8cRkdSybGGtlCeO1/TErYxvT0211J8YkdNm0jxJYEzbcruyoCpNZ1/tG0dO1RXG5wHhNt/ZhC
-	lQIKWMoBtPqZppoNZpktDi1jL6gb2edXO9nvZIrH1ii7BVARgVuo+WrKM833qgIwyKycqT1Z1eE
-	/v5ru85GMbhyWZgFBjGdHp889qnj83zymovMiIe4jqjCE+HbivRfZoecuPdU124JvpcPdwFIuQR
-	5xzxWFvdCDnaO1tMPt6OF591vb6yo4HndRH6L9hnaNFi7nGPboLTM9g8ChFOGu2xtQCgg=
-X-Received: by 2002:a05:600c:1387:b0:49f:ffd0:9a9a with SMTP id 5b1f17b1804b1-4a02769cc07mr51779325e9.25.1790951762007;
-        Fri, 02 Oct 2026 07:36:02 -0700 (PDT)
+        bh=WBwjMAy6b17UOR1h36UJ07paZoIuGQbP8cI4le6OJ04=;
+        b=TWEfI01TPlRYN9S5gMPuShoVnajg5Sd0KdwnecluZQVAb24n9yZoFSKWkfLK5TFXKw
+         iSos+grNNVjj+XwQyB6Qea60376A9p46KFUvd6Ed8JMkrH5qjKDGUalHWucuYlNLZ/FA
+         9zJCFt/A8qendKMZLaQvN9hpjc9PatoF6Mzpkd4AKS1BWm0QNer5OvWide58GVWY8iWc
+         Qx3VyLwCBUZZ2T/PSth3vkxwE10NwNUTZlAHHH/reEsXwnKHbORvzUVdt6V+D0hwvgnl
+         y164z1frRxlXNv84X33oks1V4LjmXGhLMMAA3trUToBCx+uqucBnp6ydhpLaZ6dGX8So
+         IpQQ==
+X-Gm-Message-State: AFuF++nKR2FdjV5ec8vz3pUtePB9DOVuJ+SiHdcD+NqCNhydG4JJPg/J
+	7sMujTN1+6g6sZYpwKUKQAeuWfbQ9pTOgyDAQLl0xmiBycMVo5NZDJArsui091+6UrdQzDzHwoU
+	HIXg+50uGsQ==
+X-Gm-Gg: AYBFou33xfYRcquYU3rJSLQiWo+0k39+jE5KO+LHRIHgvKC4oHqCPmPZBiV3ARtdISX
+	Q9XKN+x9N0rr7mzikLnv7VgwwB1wcLh3M1sHorSuO88Ej1Ys51I5U5v/AQ+WJZbtOtIRXDTqj2+
+	PlOL4AUB+oV32VZ5GKOITGf5OtLeroq/65z2MOq5Ah8ivFNvmJ0UXYgdo3CvJdT7N81qKfYKjHr
+	rGNzpPkBUT7Hb9h7NPoMU4QkE3A2yYwrZuKonMZWP43C8SWZiEy/RDEclKPazbEs1H0pRtJUfaG
+	FUdhhiJaUfttrZ1x8FKYDtpzI3YENnwL+UDn/XO9A7xLDnzyKY6INVLVB6hGXw8aYR+bNhGyI0q
+	GHx/2tRNuvVOoDXCP+0nwtrYZGqn1MJ3S92B0qruNPC1u5u80wHbh4z/4piPdzb3JPNMHdy+PWV
+	MCteCI8rGyFzCOT+U41/ypqa26WVtt6uJqHFNhGOT9CBGRH+8Cdi9TrONomCe6Il1B/gzLg/whu
+	Hv3wQ==
+X-Received: by 2002:a05:600c:4f88:b0:49f:fed0:fc47 with SMTP id 5b1f17b1804b1-4a027523050mr51473955e9.1.1790951766149;
+        Fri, 02 Oct 2026 07:36:06 -0700 (PDT)
 Received: from koen-nuc11.. ([2a09:bac0:1000:2ef::4e:6c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f67cbfesm8715315ad.28.2026.10.02.07.35.58
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f67cbfesm8715315ad.28.2026.10.02.07.36.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 07:36:01 -0700 (PDT)
+        Fri, 02 Oct 2026 07:36:05 -0700 (PDT)
 From: Koen Vandeputte <koen.vandeputte@citymesh.com>
 To: netdev@vger.kernel.org
 Cc: quic_subashab@quicinc.com,
@@ -70,9 +71,9 @@ Cc: quic_subashab@quicinc.com,
 	dnlplm@gmail.com,
 	linux-kernel@vger.kernel.org,
 	Koen Vandeputte <koen.vandeputte@citymesh.com>
-Subject: [PATCH net-next 2/4] net: rmnet: optimize rx deaggregation memory allocation
-Date: Fri,  2 Oct 2026 16:35:27 +0200
-Message-ID: <20261002143529.3217189-3-koen.vandeputte@citymesh.com>
+Subject: [PATCH net-next 3/4] net: rmnet: conditionally expand skb headroom in ingress handler
+Date: Fri,  2 Oct 2026 16:35:28 +0200
+Message-ID: <20261002143529.3217189-4-koen.vandeputte@citymesh.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261002143529.3217189-1-koen.vandeputte@citymesh.com>
 References: <20261002143529.3217189-1-koen.vandeputte@citymesh.com>
@@ -84,42 +85,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently, rmnet_map_deaggregate() uses alloc_skb() with GFP_ATOMIC to
-allocate new socket buffers for individual packets extracted from an
-aggregated frame. Under high-speed receive workloads, such as processing
-large 16KB frames from a USB modem, repeatedly hitting the generic
-kernel slab allocator introduces unnecessary lock contention and high
-CPU overhead.
+Currently, when the rmnet driver processes ingress packets for an Ethernet
+device (ARPHRD_ETHER), it unconditionally calls pskb_expand_head() to
+ensure there is enough room to push the MAC header. This forces a costly
+memory reallocation and payload copy for every single packet on the RX
+hotpath, severely degrading throughput and increasing CPU overhead.
 
-Replace alloc_skb() with netdev_alloc_skb() on the deaggregation path.
-netdev_alloc_skb() is specifically designed for the network receive hot
-path, utilizing a fast, lockless per-CPU NAPI cache. Furthermore, it
-automatically provisions standard network padding (NET_SKB_PAD), ensuring
-that the newly extracted IP headers are optimally cache-aligned for
-efficient processing by the upper networking stack.
+In many modern architectures, the underlying physical driver (e.g., USB)
+can be configured to pre-allocate this extra ETH_HLEN headroom when
+minting the initial SKB.
 
-This change significantly reduces memory allocation overhead, prevents
-slab allocator contention, and improves overall throughput when receiving
-large bursts of aggregated traffic.
+Optimize the ingress path by checking if skb_headroom(skb) < ETH_HLEN
+before triggering the expansion. If the packet arrives with sufficient
+headroom, the driver now skips the reallocation entirely and safely pushes
+the header. The expensive pskb_expand_head() operation is now strictly a
+fallback, allowing properly configured hardware to achieve zero-copy MAC
+header insertion.
+
+Testing this using a temporary print in the new condition showed that
+the expansion is not triggered as enough space is already available.
 
 Signed-off-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
 ---
- drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
-index 2eafb1d969c1..ccdfde3711db 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
-@@ -390,7 +390,7 @@ struct sk_buff *rmnet_map_deaggregate(struct sk_buff *skb,
- 	if (!packet_len)
- 		return NULL;
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
+index aa5523f4618e..95c3e3934fd3 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
+@@ -114,9 +114,11 @@ rmnet_map_ingress_handler(struct sk_buff *skb,
+ 	u32 data_format;
  
--	skbn = alloc_skb(packet_len + RMNET_MAP_DEAGGR_SPACING, GFP_ATOMIC);
-+	skbn = netdev_alloc_skb(skb->dev, packet_len + RMNET_MAP_DEAGGR_SPACING);
- 	if (!skbn)
- 		return NULL;
+ 	if (skb->dev->type == ARPHRD_ETHER) {
+-		if (pskb_expand_head(skb, ETH_HLEN, 0, GFP_ATOMIC)) {
+-			kfree_skb(skb);
+-			return;
++		if (skb_headroom(skb) < ETH_HLEN) {
++			if (pskb_expand_head(skb, ETH_HLEN, 0, GFP_ATOMIC)) {
++				kfree_skb(skb);
++				return;
++			}
+ 		}
  
+ 		skb_push(skb, ETH_HLEN);
 -- 
 2.43.0
 
