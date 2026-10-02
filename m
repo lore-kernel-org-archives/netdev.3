@@ -1,122 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5534F85CB
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 16:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227D94F7CD4
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 16:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790958320; cv=none; b=sm6UNIm36md+b2FtfKt+flWAMrrKkMMt8Z6NIJ+2xqYZePs0oIe78i6nDowSEie7UoLd/Roh8i9yTCx5y4/+OCOegPmMOfjcnkTKtfgxDiy0GFIPFlt7jCzSAFGD2797Mx/RkXbUd7N5rGlbPsuuOrB/SI/RZEKVh1e6l2JwVxg=
+	t=1790958927; cv=none; b=Tf2JIr8yHFr203nnKcI9EUx1nxOyCOzpRGs922Hs1Dmi21unsp3rVSnFVfsJI/0BKS81NpbfRopyTW5PmWdijStoVG9tAY4SADj7m77CCdXR2CYgtQeogGOz0VoLp0vHJZI1yN2WFB8jqHeR5na6Sch4rIkDjbhRfda71CobUh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790958320; c=relaxed/simple;
-	bh=YI1DY6zOpr9f9O1s3BaqU615QQd3nKT/nbVlbT0EWmo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VcUYjZcMB4rEBzYTtF/sY7lorkfv3sqEpws/qywYd1Mh+yMXGZ8i+U+MoHqQsmDRg+A8WaT1csq7Cwhj8ZVQyi1z94vMomSG3MS771PxWT7C+dTs7efdxxPYuKmM7DePQnH0Gjn5Prx/sme7gDALiGrZdEp57Nkf4SjjjwKfLso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fM2fQ0RB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790958927; c=relaxed/simple;
+	bh=RwYE0SCzBqSuticJXTfDtb6eLegaZL+KrtElqlewFR0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dd/VouYOFJfYUeVx0ke6WZmhUUkCa2XvE5AtSYi2by0pcLWKh9C6LZDnTtGuA6+CdYlzufNGyixWt0yXB+C5a4RQnOtrBFEZr0qziPozfFWYKr2RsFQqf3Y3EhvS1Ag+hW7QOx90mfT3+c+3rLsE3DXJUaO4JycUrB93+AGB9BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=nYgs5PCe; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fM2fQ0RB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626FB1F000FF;
-	Fri,  2 Oct 2026 16:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790958319;
-	bh=Y549ZYlIDwfKblfqNz9/8+ubXHsjjVE7dhLZ8PVsaBs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=fM2fQ0RBI5mTa8aPF22BlFYr3+DrOH/YpU6tbVUw8xVzJYon2sgd+jjn6lalpBmK+
-	 4I8g2VQug7wcJ3HccQAE4da/9+o04NEMb64dGiEEVXOVsHPFs7D5T1mQWOeUNoBOTD
-	 DRP9sm9qDdqFqj6/YWZak9jY7BbpTENV6A0rm3ciCmpWWO49zzRX1oPm36M6e7sHPB
-	 RANa4Ug1FXUFq7Or00aq992kM9arnhcYUd8IsHg+3N/Y0t7povl+UwyJHGvwR1EoOB
-	 eYcqWKYhvL3yMNLvXr3DbBxihdNpaOad7XIEQlaJtf2IhNTJ1fVmQQBclI58W4T7jL
-	 BRYsQFlmSkKow==
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 02 Oct 2026 18:24:51 +0200
-Subject: [PATCH net-next v3 12/12] net: ethernet: cortina: Scale Gemini RX
- queues to system memory
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="nYgs5PCe"
+Received: by dvalin.narfation.org (Postfix) id 370EB20292;
+	Fri, 02 Oct 2026 16:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1790958922;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6y85JcSQIdsP9psZ4BHpBLy4jt82ixcCTEhhUoi1EaE=;
+	b=nYgs5PCeh1BpwoLaOP2A+qjQtpLCf6uxZHun+h7ZL+cylw2A9YHjFKxO7LiznpmmuiVqdl
+	kKe96veQfknjtNh0DulsmWcpaepoKqrIy/0rjvsXN6vC1SgBGj4CNIHQ7cFk7wTQa4jgBh
+	ma2Ke3qvz7mM67xwLWerGGcw5sSGY+Y=
+From: Sven Eckelmann <sven@narfation.org>
+To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, sashiko-bot@kernel.org
+Subject:
+ Re: [PATCH net-next 5/9] batman-adv: tt: only queue local del event after
+ successful unlink
+Date: Fri, 02 Oct 2026 18:35:19 +0200
+Message-ID: <1871974.VLH7GnMWUR@sven-desktop>
+In-Reply-To: <179084942832.434549.10138352246210429649@kernel.org>
+References:
+ <20260930094558.3723766-6-sw@simonwunderlich.de>
+ <179084942832.434549.10138352246210429649@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261002-gemini-ethernet-fixes-3-v3-12-3e1f25890ae8@kernel.org>
-References: <20261002-gemini-ethernet-fixes-3-v3-0-3e1f25890ae8@kernel.org>
-In-Reply-To: <20261002-gemini-ethernet-fixes-3-v3-0-3e1f25890ae8@kernel.org>
-To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
- Myeonghun Pak <mhun512@gmail.com>, Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.16.0
+Content-Type: multipart/signed; boundary="nextPart8783657.NyiUUSuA9g";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-The default RX queues contain 512 descriptors per port. The shared
-software free queue is sized at twice their combined capacity, requiring
-4 MiB of page fragments even on Gemini systems with only 32 or 64 MiB of
-RAM.
+--nextPart8783657.NyiUUSuA9g
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
+Date: Fri, 02 Oct 2026 18:35:19 +0200
+Message-ID: <1871974.VLH7GnMWUR@sven-desktop>
+In-Reply-To: <179084942832.434549.10138352246210429649@kernel.org>
+MIME-Version: 1.0
 
-Choose smaller default RX queues on memory-constrained systems. Use 256
-descriptors per port and a 2 MiB free queue with at most 64 MiB of RAM,
-and 128 descriptors per port with a 1 MiB free queue with at most 32 MiB.
-Keep the existing defaults on systems with more memory.
+On Thursday, 1 October 2026 12:10:28 CEST netdev-bot+sashiko@kernel.org wrote:
+[...]
+> [Severity: Low]
+> 
+> This isn't a runtime bug, but should this have a Fixes: tag?
+> 
+> The problem seems to come from bbfb0d2cf035 ("batman-adv: tt: remove only
+> the entry which was looked up from the hash"). That commit changed the
+> unlink in batadv_tt_local_remove() from batadv_compare_tt to
+> batadv_compare_tt_entry. It kept the unconditional delete event in front
+> of the unlink.
 
-This preserves the existing relationship between RX descriptor capacity
-and the free queue. Users can still override the defaults with ethtool.
+No, this is not causing the "problem" and was there since a very long time. 
+And the change is not suitable for stable backports. And since it is submitted 
+for net-next, I am not allowed to add Fixes: or Cc: stable@ tags.
 
-Assisted-by: LLM
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
- drivers/net/ethernet/cortina/gemini.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+[...] 
+> [Severity: High]
+> 
+> Does this reordering open a new window in which a replacement entry's add
+> event gets dropped?
+[...]
+> 
+> Could the delete event instead be queued inside the same bucket list_lock
+> critical section as the unlink, and only when this exact object was
+> found? batadv_tt_local_set_pending() in "batman-adv: tt: queue local DEL
+> event under bucket lock" already takes list_lock and then
+> changes_list_lock in that order.
+> 
+> [ ... ]
+> 
+> 
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 2ebfbbe84eba..437f36b1738c 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -16,6 +16,7 @@
- #include <linux/kernel.h>
- #include <linux/bitmap.h>
- #include <linux/init.h>
-+#include <linux/mm.h>
- #include <linux/module.h>
- #include <linux/net.h>
- #include <linux/platform_device.h>
-@@ -35,6 +36,7 @@
- #include <linux/skbuff.h>
- #include <linux/phy.h>
- #include <linux/crc32.h>
-+#include <linux/sizes.h>
- #include <linux/ethtool.h>
- #include <linux/tcp.h>
- #include <linux/u64_stats_sync.h>
-@@ -471,6 +473,17 @@ static int gmac_pick_rx_max_len(unsigned int max_l3_len)
- 	return -1;
- }
- 
-+static unsigned int gmac_pick_rxq_order(void)
-+{
-+	if (totalram_pages() <= (SZ_32M >> PAGE_SHIFT))
-+		return DEFAULT_GMAC_RXQ_ORDER - 2;
-+
-+	if (totalram_pages() <= (SZ_64M >> PAGE_SHIFT))
-+		return DEFAULT_GMAC_RXQ_ORDER - 1;
-+
-+	return DEFAULT_GMAC_RXQ_ORDER;
-+}
-+
- static int gmac_init(struct net_device *netdev)
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
-@@ -539,7 +552,7 @@ static int gmac_init(struct net_device *netdev)
- 	writel(sw_weigh.bits32,
- 	       port->dma_base + GMAC_TX_WEIGHTING_CTRL_1_REG);
- 
--	port->rxq_order = DEFAULT_GMAC_RXQ_ORDER;
-+	port->rxq_order = gmac_pick_rxq_order();
- 	port->txq_order = DEFAULT_GMAC_TXQ_ORDER;
- 	port->rx_coalesce_nsecs = DEFAULT_RX_COALESCE_NSECS;
- 
+Noted in https://www.open-mesh.org/issues/475 as potential further work to 
+harden the code path further.
 
--- 
-2.55.0
+Regards,
+	Sven
+--nextPart8783657.NyiUUSuA9g
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCar/dRwAKCRBND3cr0xT1
+y2EzAQDmXdo+RAxmJzrMeTdH6auDbcFHkjbSGBnXQo4/y9ggqgD/ZHwBzUqI7/zX
+mQc7ULoMCUvdgpueMxEdNM1CI4vyNwc=
+=OUCj
+-----END PGP SIGNATURE-----
+
+--nextPart8783657.NyiUUSuA9g--
+
+
 
