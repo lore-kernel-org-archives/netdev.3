@@ -1,256 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f23.google.com (mail-wr2-f23.google.com [74.125.225.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65E04FDA7E;
-	Fri,  2 Oct 2026 21:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0D7440658
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 21:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975670; cv=none; b=HBKZUsIiQiT4ppAtsdDnwOJ9Yms50vcI0UArlYlDIClyNEBLrv+2mqIFycVVf0WrFeU/qSd/vU6XhhvGSMesBp8b3PhFXu+kWI1Y9ecl99nTMcb/9dxYex/78QxYNmEL+Un8SUa/7c5EUqf3jlHiWJEp6Wq8ZXLjPCEgBNKBfEM=
+	t=1790976073; cv=none; b=p4O8NFFmHOcTH0Q5wJe+r0ENHBdcIgehsKgUVyS7yOSEU/9H63xa+oLq9H8Pg7ojP9MZ+NqCdl9CQxWNTTk2bbDNL0FpzANEY34CdIvHL4LBM9x9+R89IMdBcH+cq5TPw/2Lo1p0plEnnJJb8K7syyK8AVWItkT/5UAz4EaVdCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975670; c=relaxed/simple;
-	bh=+jv31ccIhOb8FrXhXWahI2VF/WjBW/tpQ4MtIQMg45M=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CQA6BTaKfGbQ1gqkzsWxfsbOgEI+aK2XUSb7Vmxh5XNa8G2KQmgBA3/Bz0C767Vt2kNgdCFdRT7jmGltRalWFSl6mY5O362wb81rpKnfPU0TCyoSk9stXDtPkbpurWiGWysX923WfLRKq0EmD7vwvWhWlUBRmAqYeXMNsrsW2f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ul9T1K0M; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790976073; c=relaxed/simple;
+	bh=t5wWBrGsG33k1BbhMasdkPiERxAa2b8DhvgK5I4BLnc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BIQG4J4KozyJ+4SARGM+g/V4nxEbd5X3e+oVuc8nI+G5rjasEmIy8Y7/JI/lXkLN3oIdqPofls0BZXiUKtX/WQ30Z29h5WhHWQjKXZSFsSbVT1x6nz74fsGqtzrfasYrEAfDfAcNMUHGJ9sizSDP4tH+dClP8HiFe38ACEXTUQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XN8Cb6Tk; arc=none smtp.client-ip=74.125.225.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ul9T1K0M"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1713A1F00899;
-	Fri,  2 Oct 2026 21:14:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790975668;
-	bh=DC/qKm6b/6853KuyCaBbJha6FdHLb8zcxHwijeIilGc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ul9T1K0MoAoeWKYm1iO9f4SqGWmP01CeCq7Gpz38tKQmczSQRH0qEYyNKdOP/6yU9
-	 DbQnbzbqzDMn2jWehKB8VTtS5GQoN6j1iFkndLDjzB4l3G+f8qteHlFIFaOU7szpyQ
-	 MCrSRbNzaxijbpgzPwZQkZkgLRvaTpMqxCNlWKQTm9c2Ms+SWna/JlGCstGP23PQnt
-	 eVEz3V6HN4cUrpwCbVbK5JcEi2j5yJW/I+2JQ/4sIR9YZJa1A1vkzCqkDpkLlujV7G
-	 8iKroEQXm9jjqcA+wa3KEdDNCGvuy+M3dl8S5K/aE1p4gZ3FaiS8suESzAFhX5Iqgp
-	 fszcM0+lkLzvw==
-Subject: Re: [PATCH net-next v13 9/9] net: dsa: lan9645x: add port statistics
-From: netdev-bot+sashiko@kernel.org
-To: jensemil.schulzostergaard@microchip.com
-Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- woojung.huh@microchip.com, linux@armlinux.org.uk,
- Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
- geert+renesas@glider.be, magnus.damm@gmail.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org
-Date: Fri, 02 Oct 2026 21:14:26 +0000
-Message-ID: <179097566660.434549.17651613804901292493@kernel.org>
-In-Reply-To:
- <20260929-dsa_lan9645x_switch_driver_base-v13-9-827c2d3617f2@microchip.com>
-References:
- <20260929-dsa_lan9645x_switch_driver_base-v13-9-827c2d3617f2@microchip.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XN8Cb6Tk"
+Received: by mail-wr2-f23.google.com with SMTP id ffacd0b85a97d-48b0622cc90so150270f8f.1
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 14:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790976069; x=1791580869; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ysJfmU2nfXZTtv2veyVxAaXsizKh3WhPhhl4gdeIEl8=;
+        b=XN8Cb6TkH/Is+iiqkQ3xv4bkD7rFfFE+OrplKO6bvz1T4vQF7iyfGSFIpJObRLVukz
+         V9J9Uo8mQev43w6WLASe6dAt5NMWGHRtg9++8pkrXC3C1+NAnGRiV88KTDi/sSiaO/43
+         DeadgRqPf22qp5wlgGjECpDU7Rif8BrEzrFQ8AR0xiTGVV5IUkIJ6OI0fTdFg8XuTbGw
+         saPdx+P7r+KwSf+tz/1oJJrXOCAqh/uEXxt/SDCBTeiI6es69CEJP0iCNkuAh8vfb3WC
+         yjZTOkbHrCSO0F7Js8NKYFEhK90mhG8w4z6oodLa9IR0EgugrtOZf+ahz/EX0XugHU9k
+         WlJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790976069; x=1791580869;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ysJfmU2nfXZTtv2veyVxAaXsizKh3WhPhhl4gdeIEl8=;
+        b=eTg1oDT6zt3xbJpxJea4haH9eVns63yvg1u0mhA2mo1DiXMVIBPh008kUutX4YJCcu
+         Td/i4kUHmRCDV8MTBpfUoAzRuRzh0xissYav95+qCjId6N0RCwKQpjc2ROhdNAQrEeLk
+         vE+ywO/PBIFxi37LMLKde1t9GmpbWFjv2e2IbPdkeVzc8JDd5S92BUj1kwdkUMfGfo7E
+         oR8ZgnrSj/9QwkTkxryVk4gXzCBaeXEesUBpRwIpEyvsxnq6dOMECKfOH9wfn2W7zu0m
+         Xt0Ao+9KcRo3EIzHYiwVUjneO7GGOzpCgJURk6suX5uRj0qt27Ij/4evzLuOAykqj1p5
+         U7XA==
+X-Forwarded-Encrypted: i=1; AKwUvBzWLGQUx/kGeWKz2qhZpUAW/5Kd03qNh39OtX3/XKNoUCAKO5dReY0TueteExall8+d2iP87RI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nulDlQFFcaTPHm42y4H1OVqTNgoFDbqtd/24ubjK8UK6HQXG+U
+	ayX3IuIt96tP/IE2GM1v9EbM9mopyYOcHimEvuk+JfYFiQpdklyWbEzH
+X-Gm-Gg: AYBFou2m0MBCchorjpb+NkpDEXeJYe3CFlkf0J7rlGZNp89YCyGZ1XQtXYisD1MZVry
+	YBW14ROYGt1Z0vDpngehAVKCdS92blanZwIj17q11VcPiyL57zxPNDRKcO5DKPty9BYxlSjGElB
+	AacKFE9EhDmvrFNgWp2gHpU/CXmjSLFTdlgEfYpUUec+mg/H3LGIUI31cryux4cHgs09ERYTKaj
+	Z2pa9lnoZxKze0PZcSSEC7aff92eXiwhIXtBLbK2XJP6U0rgWl6WQn2GGy9vpbC2xk7Jf4Qv/hN
+	2AuSJY/fP3JOq4aCf4dJbMGvTQ1sfzpu3Bzkh6wqR8pwVwVAvLl55r3Zm+tGXwIUd24ZzguUdyR
+	OpVNKvkps2IB3U6nKuFsUZD5DfNxwRlQOCTcg3LuqRE8HqCRfyRdLbZY0mrAJ/1gCbRNzUyYuq6
+	ip2uncMe/JN2ZfM7PHWtPwCmt0I2M7U3sEG1PLjJ/tY2xEed8Hd0pJgdBOlDRnRzhTkviVr37Qj
+	LXiUXdv6ZNJfH5ffkOahG5mlON7ggyBm0xzRzK84GZsGBZ5Ark6bBTJ+XZMdGQFk7hqkPepKL85
+	zGxrea4IzGLXfAL65+QTMhfLvrsayIIs3LtWMbIqmbFO2UxK+tszXyXjW72RG9DbqnqZgn8YJKV
+	pGI7qaTU=
+X-Received: by 2002:a05:600c:3490:b0:4a0:1b14:e845 with SMTP id 5b1f17b1804b1-4a0274d1600mr67284215e9.2.1790976068456;
+        Fri, 02 Oct 2026 14:21:08 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-af35-1901-81da-eee8-c2d0-ee3b.310.pool.telefonica.de. [2a02:3100:af35:1901:81da:eee8:c2d0:ee3b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a027698f13sm111894055e9.1.2026.10.02.14.21.07
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 02 Oct 2026 14:21:07 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Jeremy Kerr <jk@codeconstruct.com.au>,
+	Matt Johnston <matt@codeconstruct.com.au>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>,
+	Rae Moar <raemoar63@gmail.com>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3] net: mctp: Make flow KUnit coverage an explicit opt-in
+Date: Fri,  2 Oct 2026 23:20:58 +0200
+Message-Id: <20261002212058.25117-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+MCTP_TEST selects MCTP_FLOWS, so KUNIT_ALL_TESTS builds flow support and
+SKB_EXTENSIONS even when no transport needs them. KUnit's style guide
+says tests should not select otherwise unused functionality. The CRC
+and crypto library tests use explicit ENABLE_ALL_FOR_KUNIT options for
+full coverage.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Remove the selection from MCTP_TEST. The core suite remains available
+without flows; its two flow cases use their existing skip paths. Add
+MCTP_ENABLE_ALL_FOR_KUNIT to opt into full coverage, and enable it in
+all_tests.config and a dedicated net/mctp/.kunitconfig. Both profiles
+run the flow cases without a hardware transport.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+A plain MCTP_TEST=y configuration without the opt-in now skips those
+two cases. This is the coverage cost of leaving otherwise unused flow
+support disabled.
 
-- [Medium] lan9645x_stats_get_sset_count() returns -EOPNOTSUPP (-95) for
-  every string set other than ETH_SS_STATS.
-- [Medium] lan9645x_stats_get_stats64() counts bad frames in rx_packets.
-- [Medium] The eMAC and pMAC FRAG counters are handled inconsistently.
-- [Low] The commit message says 'The eMAC and pMAC counter sources are
-  decoded, but only the aggregate source is reachable for now'.
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+Changes in v3:
+- Keep the core suite available without MCTP_FLOWS; a plain MCTP_TEST=y
+  configuration now skips only the two flow cases.
+- Add MCTP_ENABLE_ALL_FOR_KUNIT to retain full coverage in
+  all_tests.config and a focused net/mctp/.kunitconfig.
+- Drop the Fixes tag because this changes test configuration rather
+  than fixing a runtime MCTP bug.
 
---
+v2: https://lore.kernel.org/r/20260928205352.30502-1-kmehltretter@gmail.com/
+v1: https://lore.kernel.org/r/20260925192510.93840-1-kmehltretter@gmail.com/
 
-net: dsa: lan9645x: add port statistics
+Validation: The MCTP KUnit suites were built with GCC 15.2 and booted
+under QEMU 10.2.1 on an isolated source export from net-next
+014d795c7383, with the changed Kconfig files copied from 071876fd5048.
+Without the opt-in, mctp-sock passed 5/5 tests and mctp-route passed
+21/23 tests with two expected flow-case skips. With the opt-in, both
+suites passed all 5 and 23 tests, respectively. On the full
+071876fd5048 tree, the new net/mctp/.kunitconfig resolves all requested
+symbols and selects MCTP_FLOWS and SKB_EXTENSIONS.
 
-This adds port counter support to the lan9645x DSA driver. The 32 bit
-hardware counters are copied into 64 bit software counters by a poller
-that runs every three seconds. They are reported through ethtool -S, the
-standard ethtool statistics groups and ndo_get_stats64.
+ net/mctp/.kunitconfig                        |  5 +++++
+ net/mctp/Kconfig                             | 16 +++++++++++++++-
+ tools/testing/kunit/configs/all_tests.config |  2 +-
+ 3 files changed, 21 insertions(+), 2 deletions(-)
+ create mode 100644 net/mctp/.kunitconfig
 
-> The eMAC and pMAC counter sources are decoded, but only the aggregate
-> source is reachable for now, until MAC merge support is added.
+diff --git a/net/mctp/.kunitconfig b/net/mctp/.kunitconfig
+new file mode 100644
+index 000000000..4b2969e42
+--- /dev/null
++++ b/net/mctp/.kunitconfig
+@@ -0,0 +1,5 @@
++CONFIG_KUNIT=y
++CONFIG_NET=y
++CONFIG_MCTP=y
++CONFIG_MCTP_TEST=y
++CONFIG_MCTP_ENABLE_ALL_FOR_KUNIT=y
+diff --git a/net/mctp/Kconfig b/net/mctp/Kconfig
+index d8d3413a3..a89678428 100644
+--- a/net/mctp/Kconfig
++++ b/net/mctp/Kconfig
+@@ -12,9 +12,23 @@ menuconfig MCTP
+ 	  devices, you'll want to enable a driver for a specific hardware
+ 	  channel.
+ 
++config MCTP_ENABLE_ALL_FOR_KUNIT
++	bool "Enable all optional MCTP features for KUnit tests"
++	depends on MCTP=y && KUNIT=y
++	select MCTP_FLOWS
++	help
++	  Enable all optional MCTP features covered by KUnit tests, even
++	  when no transport needs them. Currently this selects MCTP_FLOWS
++	  so the two flow cases can run.
++
++	  Without this option, the core suite remains available; the flow
++	  cases skip unless a transport enables flow support.
++
++	  You still need to enable MCTP_TEST, either individually or through
++	  KUNIT_ALL_TESTS.
++
+ config MCTP_TEST
+         bool "MCTP core tests" if !KUNIT_ALL_TESTS
+-        select MCTP_FLOWS
+         depends on MCTP=y && KUNIT=y
+         default KUNIT_ALL_TESTS
+ 
+diff --git a/tools/testing/kunit/configs/all_tests.config b/tools/testing/kunit/configs/all_tests.config
+index 31e930a0f..b3ea56f4e 100644
+--- a/tools/testing/kunit/configs/all_tests.config
++++ b/tools/testing/kunit/configs/all_tests.config
+@@ -26,7 +26,7 @@ CONFIG_GPIOLIB=y
+ 
+ CONFIG_NET=y
+ CONFIG_MCTP=y
+-CONFIG_MCTP_FLOWS=y
++CONFIG_MCTP_ENABLE_ALL_FOR_KUNIT=y
+ 
+ CONFIG_INET=y
+ CONFIG_MPTCP=y
 
-[Severity: Low]
-Is this sentence still accurate? None of these read the ->src field of the
-structure they fill in:
-
-  lan9645x_stats_get_eth_mac_stats()
-  lan9645x_stats_get_rmon_stats()
-  lan9645x_stats_get_pause_stats()
-  lan9645x_stats_get_eth_phy_stats()
-  lan9645x_stats_get_eth_ctrl_stats()
-
-All of them always return the eMAC plus pMAC sum.
-
-The v12 changelog says "Drop the unreachable mac merge related code", so
-the per-source decoding seems to have been removed. This has no runtime
-effect today, because without .get_mm ethtool only allows the aggregate
-source.
-
-Could the message say instead that the pMAC counters are summed into the
-aggregate, and that per-source reporting is not implemented yet?
-
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-> new file mode 100644
-> index 0000000000000..1253f77489931
-> --- /dev/null
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-> @@ -0,0 +1,856 @@
-
-[ ... ]
-
-> +int lan9645x_stats_get_sset_count(struct lan9645x *lan9645x, int port, int sset)
-> +{
-> +	if (sset != ETH_SS_STATS)
-> +		return -EOPNOTSUPP;
-
-[Severity: Medium]
-Can this negative return value corrupt the sset counts that the conduit
-netdev reports? DSA replaces the conduit's get_sset_count with
-dsa_conduit_get_sset_count(). For every sset, that function calls:
-
-net/dsa/conduit.c:dsa_conduit_append_port_sset_count() {
-	if (ds->ops->get_sset_count)
-		*count += ds->ops->get_sset_count(ds, port, sset);
-}
-
-Nothing checks for a negative value. For ETH_SS_TEST, ETH_SS_PRIV_FLAGS
-and ETH_SS_PHY_STATS, the conduit therefore reports its own count minus
-95.
-
-If the conduit has fewer than 95 entries, the count is negative. Then
-ethtool -t, the netlink priv-flags path and ETHTOOL_GSTRINGS on the
-conduit fail with a bogus errno. The conduit's self-tests and private
-flags also drop out of ethtool -i and the netlink strset reply.
-
-If the conduit has 95 or more entries, the result is zero or a smaller
-positive value. ethtool_self_test(), ethtool_get_phy_stats_ethtool() and
-strset_prepare_set() size their buffers from that value, but the
-conduit's own callbacks still write their full number of entries. No real
-NIC has that many entries, so this part is theoretical.
-
-Most other DSA drivers (hellcreek, lan9303, gswip, mt7530, qca8k, a5psw,
-vsc73xx, and others) return 0 for unsupported ssets. Should this return 0
-as well?
-
-> +
-> +	return ARRAY_SIZE(lan9645x_port_ethtool_stats);
-> +}
-
-[ ... ]
-
-> +	r->undersize_pkts = c[SCNT_RX_SHORT] +
-> +			    c[SCNT_RX_PMAC_SHORT];
-> +	r->oversize_pkts = c[SCNT_RX_LONG] +
-> +			   c[SCNT_RX_PMAC_LONG];
-> +	/* SCNT_RX_FRAG counts frames received after the port is paused, and
-> +	 * increments when pause frames arrive from the link partner.
-> +	 * It counts neither undersize frames nor errors, so it is left out here
-> +	 * and out of rx_packets, unlike lan966x which adds it to rx_errors.
-> +	 * SCNT_RX_PMAC_FRAG does count number of runt frames with invalid CRC.
-> +	 */
-> +	r->fragments = c[SCNT_RX_PMAC_FRAG];
-
-[Severity: Medium]
-Can fragments be non-zero without MAC merge support? The pMAC receives no
-traffic until MAC merge is supported, so RMON fragments always reads 0 in
-lan9645x_stats_get_rmon_stats(). That includes the case where runts with
-a bad CRC arrive on the eMAC.
-
-Documentation/networking/statistics.rst says drivers should leave fields
-they do not report at ETHTOOL_STAT_NOT_SET, not overwrite them with 0. If
-no accurate eMAC fragment count exists, would it be better to leave
-fragments unset?
-
-The two MACs are also treated differently in lan9645x_stats_get_stats64().
-rx_packets includes c[SCNT_RX_PMAC_FRAG] but not c[SCNT_RX_FRAG]. As a
-result, a bad-CRC runt is counted in rx_packets only when the pMAC
-receives it.
-
-Does the hardware really use different meanings for the counters at
-offset 0x5 and offset 0x35, which is the same position in the pMAC block?
-If not, could both MACs be handled the same way?
-
-[ ... ]
-
-> +void lan9645x_stats_get_stats64(struct lan9645x *lan9645x, int port,
-> +				struct rtnl_link_stats64 *stats)
-> +{
-
-[ ... ]
-
-> +	stats->rx_packets = c[SCNT_RX_SHORT] +
-> +			    c[SCNT_RX_JABBER] +
-> +			    c[SCNT_RX_SZ_64] +
-> +			    c[SCNT_RX_SZ_65_127] +
-> +			    c[SCNT_RX_SZ_128_255] +
-> +			    c[SCNT_RX_SZ_256_511] +
-> +			    c[SCNT_RX_SZ_512_1023] +
-> +			    c[SCNT_RX_SZ_1024_1526] +
-> +			    c[SCNT_RX_SZ_JUMBO] +
-> +			    c[SCNT_RX_LONG] +
-
-[Severity: Medium]
-Should rx_packets include SCNT_RX_SHORT, SCNT_RX_JABBER and SCNT_RX_LONG,
-and their pMAC equivalents? The same function counts all of them in
-rx_errors below, and counts JABBER and LONG in rx_length_errors too.
-
-include/uapi/linux/if_link.h describes rx_packets as "Number of good
-packets received by the interface".
-
-The SZ_* buckets also include frames with a bad FCS. The v5 changelog
-says: "remove rx_crc, rx_symbol_err from rx_packets, as they are already
-counted in SZ_* buckets".
-
-So when a link partner sends a runt, jabber, oversized or bad-FCS frame,
-it shows up in both rx_packets and rx_errors. ocelot and lan966x use a
-similar formula.
-
-Would the RX_UC, RX_MC and RX_BC good frame counters, which already feed
-FramesReceivedOK, be a better source here?
-
-> +			    c[SCNT_RX_PMAC_SHORT] +
-> +			    c[SCNT_RX_PMAC_FRAG] +
-> +			    c[SCNT_RX_PMAC_JABBER] +
-> +			    c[SCNT_RX_PMAC_SZ_64] +
-> +			    c[SCNT_RX_PMAC_SZ_65_127] +
-> +			    c[SCNT_RX_PMAC_SZ_128_255] +
-> +			    c[SCNT_RX_PMAC_SZ_256_511] +
-> +			    c[SCNT_RX_PMAC_SZ_512_1023] +
-> +			    c[SCNT_RX_PMAC_SZ_1024_1526] +
-> +			    c[SCNT_RX_PMAC_SZ_JUMBO] +
-> +			    c[SCNT_RX_PMAC_LONG];
-> +
-> +	stats->multicast = c[SCNT_RX_MC] + c[SCNT_RX_PMAC_MC];
-> +
-> +	stats->rx_errors = c[SCNT_RX_SHORT] +
-> +			   c[SCNT_RX_JABBER] +
-> +			   c[SCNT_RX_CRC] +
-> +			   c[SCNT_RX_LONG] +
-> +			   c[SCNT_RX_PMAC_SHORT] +
-> +			   c[SCNT_RX_PMAC_JABBER] +
-> +			   c[SCNT_RX_PMAC_CRC] +
-> +			   c[SCNT_RX_PMAC_LONG];
-> +
-> +	stats->rx_length_errors = c[SCNT_RX_JABBER] +
-> +				  c[SCNT_RX_LONG] +
-> +				  c[SCNT_RX_PMAC_JABBER] +
-> +				  c[SCNT_RX_PMAC_LONG];
-
-[ ... ]
-
+base-commit: 071876fd50482a68603a9460d80dd6dd58827ee1
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929-dsa_lan9645x_switch_driver_base-v13-0-827c2d3617f2%40microchip.com
+2.39.5 (Apple Git-154)
+
