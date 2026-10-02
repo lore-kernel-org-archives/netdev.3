@@ -1,289 +1,179 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4826A4E020E;
-	Fri,  2 Oct 2026 15:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BECE339390;
+	Fri,  2 Oct 2026 15:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790953417; cv=none; b=ScJie+Md9EN6ljJFyOnHL46HYdb3ZV1VP/YZlug3eJVZR8dO5zCpH2Cj/DPC045r4j9BFJU/PLxkdRq3imlU5VXYL1y14X/QhZDaol2kKPX06s4/GJ1Xn5ybZaXb3nS6CjYxtlvqqD6GPUeUTSCgtXdoS5uBBh3aPKvRI/HfinU=
+	t=1790954252; cv=none; b=bQjdes1DurVUKZJcX/m7v2fyUcX0rTd4CD+qJigpMh3synpzfHWl+w1H/BgOWsx8ARFl3UssQNIMlviaoW7GclszC+JJZip1ImgU9bEe/PiklmxNkIdgKvkoxtvbJIarN8VNG5fyXuotIuh3Zb/by8zbxCdyx52gmy3D5/e70Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790953417; c=relaxed/simple;
-	bh=wnA0M22/GX0WizOZo9w/ezgfQQrpBDCaxhsabrfnoVw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZFdnmtc3yPOUPDh8hw3bCx77tVADrNdZVe3IE/Xq34xiHCnRLPU/vCBEnk4rCs1MCMqnqo14QsQBKnRz7vlR1QgQkUkeV5Dga21uq7RwFSuRYuhiWI3tlO2gqG54GYlpo4q8DbNZvZLwcWif2q/2BZJn6EJBu2pdLNTT0V1zljc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=TEb9t7Sj; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790954252; c=relaxed/simple;
+	bh=OWrRY1L0lr5L241yI1W1zoC7MC22LmDGJClsebq1+OM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=kvzKGuwcYpx0qT0Tm2zTiCdLqvsKUVIVDUjcc2BF6o1DU3oGjXJ61kF8Pc4fAoemQGbH7ZZfIbGYJ/RCMI0Af9pmA2Kd+vBJe87rXbhXLVWwInn0JFRjHvEtUpivyWriuAVVCX8QGjERVZ9i1RHV5KEqkmAB+px4Ai/6LkcZwd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=SMCF/6DT; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="TEb9t7Sj"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8CA3EA4ACC;
-	Fri,  2 Oct 2026 17:03:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790953413; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=OA1zuQMX8MOAkmDkySKV7HyXCjTrRDe3qUtWftBwxQg=;
-	b=TEb9t7SjZdVG6KhsIidNrvCapo0od2OUiY4a1swNINBJ0eBkZvxoveoNUQeSxJ7vNDkr6x
-	FXJs9axqYUmV5CbH90w+IF9b9VZrkFQQ3/cRt7SfsSGBmAC57IpwY58wlRWY7TbUgKcXw+
-	F6ngX2DWBO9usaUMWSA1BXXLiz2gUdmefFpgT6EbGsSw4fQgcc/racGmDyfzbfIjY+4eN1
-	o3QJz1QzfozfU72vxn9F8e6AVn4erEq56//UsWVUhpe8WxseUqbC5z9D3O4i4YEY013izp
-	+3E1HIPOLNg3MOHK+MbHbA0SO5UvpP1mNxjOgRuYdIwPkjiVTdcma6BgomOeSA==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Fri, 02 Oct 2026 17:03:25 +0200
-Subject: [PATCH net-next 7/7] net: bcmgenet: reassemble jumbo frames from
- status block fragments
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="SMCF/6DT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=default; h=Content-Transfer-Encoding:Mime-Version:Message-Id:Subject:Cc:
+	To:From:Date:subject:date:message-id:reply-to;
+	bh=wE3U7Byhrw/Kpcm8Ly1rmNIVci2f+5xG9aFcXfipmYw=; b=SMCF/6DTq0glMoooo/iQqxm/tX
+	sg7VCwD1qirlhknp4EwkW5M42uM+MoJd9oS3digNacbkJgC2yN030yIeoNl4o+GpPv8SlgXJTQNjy
+	SSOBuFI8nphakfUvWg5xBYzJ91sQ3iG4V8b6DAbC1wAgZKQWCiOPCUQl9CT4+qptf0LA=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168] helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.98.2)
+	(envelope-from <hugo@hugovil.com>)
+	id 1xCf0k-000000007gc-07t4;
+	Fri, 02 Oct 2026 11:17:23 -0400
+Date: Fri, 2 Oct 2026 11:17:22 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, pierluigi.p@variscite.com, Stefano
+ Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, Joseph Guo
+ <qijian.guo@nxp.com>, Josua Mayer <josua@solid-run.com>, Ernest Van Hoecke
+ <ernest.vanhoecke@toradex.com>, Mehmet Fide
+ <mehmet.fide@screeningeagle.com>, Francesco Dolcini
+ <francesco.dolcini@toradex.com>, Markus Niebel
+ <Markus.Niebel@ew.tq-group.com>, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, Stefan Eichenberger <eichest@gmail.com>,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v4 00/13] ARM: dts: imx6ul: Add Variscite VAR-SOM-6UL
+ and DART-6UL
+Message-Id: <20261002111722.a09e76b8e19fdfe3dc857b4e@hugovil.com>
+In-Reply-To: <ar-cgeR8U0dmOTvI@Lord-Beerus.station>
+References: <cover.1790693249.git.stefano.r@variscite.com>
+	<20260929121455.437291ea4b53130e3e19778c@hugovil.com>
+	<arv4MwHV4LntROkN@Lord-Beerus.station>
+	<20261001144344.2100854b8f5e2d81cf87b424@hugovil.com>
+	<ar-cgeR8U0dmOTvI@Lord-Beerus.station>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261002-nb-genet-mtu-nn-v2-v1-7-96dc6d54cbee@tipi-net.de>
-References: <20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee@tipi-net.de>
-In-Reply-To: <20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee@tipi-net.de>
-To: Doug Berger <opendmb@gmail.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- Justin Chen <justin.chen@broadcom.com>, 
- Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam_score: -2.0
+X-Spam_bar: --
 
-The hardware does not truncate a frame longer than the packet ready
-threshold. It splits the frame across descriptors and writes a status block
-at the start of each one. The first fragment then arrives with SOP and no
-EOP and is dropped as fragmented. This caps the MTU.
+Hi Stefano,
 
-Strip the status blocks and reassemble the fragments. Only the last block
-holds the checksum of the whole frame. Broadcom confirmed from the RTL that
-every GENET revision splits long frames this way, not just the v5 this was
-tested on.
+On Fri, 2 Oct 2026 13:58:57 +0200
+Stefano Radaelli <stefano.radaelli21@gmail.com> wrote:
 
-The MAC only checksums a frame it holds in full, so anything longer than
-the threshold falls back to software. At jumbo sizes the larger frame saves
-more per packet overhead than the checksum costs.
+> On Thu, Oct 01, 2026 at 02:43:44PM -0400, Hugo Villeneuve wrote:
+> 
+> Hi Hugo,
+> 
+> > 
+> > Great to know Variscite is adding support for the DART-6UL.
+> > 
+> 
+> Thank you Hugo :)
+> Over the past year, we have been prioritizing security and consistency
+> by adopting a mainline-first approach.
+> We have added support for almost all of our SOMs and configurations,
+> as well as several driver changes and additions:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?h=master&qt=author&q=Stefano+Radaelli
+> And now it's time for the immortal i.MX6UL!
+> 
+> > 
+> > Please work with the existing modular DTSI files, do not simply remove
+> > them and reimplement them into your own files.
+> > 
+> 
+> Agreed. Where possible, I’ll reuse the modular files you added and
+> propose fix commits wherever changes are needed.
+> 
+> > 
+> > I tested it and it works. But like I said, if adjustments need to be
+> > made, they are welcome and can be done in a separate patch to fix it.
+> > This sequencing is something not very well documented in Variscite
+> > datasheets. I asked Variscite support to improve the documentation for
+> > that aspect but it was not accepted.
+> > 
+> > 
+> > > For the LWB5 option, the procedure enables WIFI_PWR, waits 10 ms,
+> > > enables WLAN_EN and BT_EN, waits 200 ms, then lowers BT_EN before
+> > > re-enumerating the SDIO device.
+> > > The other Broadcom option does not use the separate WIFI_PWR step.
+> > > The existing regulator and MMC power-sequence nodes do not express that
+> > > complete, module-dependent procedure, particularly the BT_EN step during
+> > > Wi-Fi initialization.
+> > > The scripts also select the Bluetooth firmware according to the detected
+> > > SDIO device.
+> > 
+> > Firmware loading is handled properly by the kernel without external
+> > scripts (tested with Concerto EVK).
+> > 
+> > 
+> > > We use that procedure to avoid sequencing-related failures for our
+> > > customers.
+> > > This approach is not new to Variscite’s mainline DTS files.
+> > 
+> > Yes, this is an old way of doing things, which may have been
+> > appropriate in the past when proper support in the kernel was missing
+> > to achieve the proper sequencing, but no longer true these days, unless
+> > I am mistaken.
+> > 
+> 
+> We are glad the kernel-managed sequence works on your Concerto EVK.
+> However, it is wrong for the LWB5 module configuration we support:
+> it does not follow the required power-up order and timing validated
+> by Variscite.
 
-UMAC_MAX_FRAME_LEN is 14 bit and counts the FCS. That puts the maximum MTU
-at 16347.
+Please detail exactly what is wrong so that it can be fixed. Better,
+create a patch to fix/improve it.
 
-Suggested-by: Justin Chen <justin.chen@broadcom.com>
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Tested-by: Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
----
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 106 ++++++++++++++++++++++---
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |   2 +
- 2 files changed, 98 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 0cd56ec1c5cc..62edbe51fe07 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -82,11 +82,8 @@
- 				      ENET_THLD_MAX * ENET_THLD_UNIT, \
- 				      ENET_THLD_PAGE_LEN)
- 
--/* Largest MTU that fits one descriptor, with room for a VLAN tag so a VLAN
-- * interface can use the parent MTU.
-- */
--#define ENET_MAX_MTU		(ENET_THLD_MAX_LEN - GENET_RBUF_ALIGN - \
--				 ETH_HLEN - VLAN_HLEN)
-+/* UMAC_MAX_FRAME_LEN is 14 bits wide and counts the FCS */
-+#define ENET_MAX_JUMBO_MTU	(GENMASK(13, 0) - ENET_FRAME_OVERHEAD)
- 
- /* Tx/Rx DMA register offset, skip 256 descriptors */
- #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
-@@ -2176,6 +2173,19 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 		goto out;
- 	}
- 
-+	/* The MAC holds a frame to insert its checksum, but only as much as
-+	 * its FIFO takes. Longer frames are dropped silently.
-+	 */
-+	if (unlikely(skb->len > priv->tx_thld_len) &&
-+	    skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (skb_checksum_help(skb)) {
-+			BCMGENET_STATS64_INC((&ring->stats64), dropped);
-+			dev_kfree_skb_any(skb);
-+			ret = NETDEV_TX_OK;
-+			goto out;
-+		}
-+	}
-+
- 	/* Keep the frame out of the window just past the threshold */
- 	if (unlikely(skb->len > priv->tx_thld_len &&
- 		     skb->len < priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
-@@ -2318,6 +2328,54 @@ static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
- 	return 0;
- }
- 
-+/* Drop the frame being collected. Its remaining descriptors carry no SOP,
-+ * so they are dropped quietly until the next one does.
-+ */
-+static void bcmgenet_discard_frags(struct bcmgenet_rx_ring *ring)
-+{
-+	ring->frag_drop = true;
-+
-+	if (!ring->frag_head)
-+		return;
-+
-+	dev_kfree_skb_any(ring->frag_head);
-+	ring->frag_head = NULL;
-+}
-+
-+/* A frame longer than the threshold arrives in several descriptors, each with
-+ * its own status block. Only the first one carries a header, so hand the page
-+ * of every later one to the frame already being collected. Returns the frame
-+ * once EOP is in, NULL while more descriptors are expected or once the frame
-+ * had to be dropped.
-+ */
-+static struct sk_buff *bcmgenet_add_frag(struct bcmgenet_rx_ring *ring,
-+					 struct page *page,
-+					 unsigned int offset,
-+					 unsigned int size,
-+					 unsigned int dma_flag,
-+					 unsigned int len)
-+{
-+	struct sk_buff *head = ring->frag_head;
-+
-+	if (unlikely(skb_shinfo(head)->nr_frags >= MAX_SKB_FRAGS)) {
-+		BCMGENET_STATS64_INC((&ring->stats64), fragmented_errors);
-+		bcmgenet_discard_frags(ring);
-+		page_pool_put_full_page(ring->page_pool, page, true);
-+		return NULL;
-+	}
-+
-+	skb_add_rx_frag(head, skb_shinfo(head)->nr_frags, page,
-+			offset + sizeof(struct status_64),
-+			len - sizeof(struct status_64), size);
-+
-+	if (!(dma_flag & DMA_EOP))
-+		return NULL;
-+
-+	ring->frag_head = NULL;
-+
-+	return head;
-+}
-+
- /* bcmgenet_desc_rx - descriptor based rx process.
-  * this could be called from bottom half, or from NAPI polling method.
-  */
-@@ -2382,6 +2440,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 
- 		if (bcmgenet_rx_refill(ring, cb)) {
- 			BCMGENET_STATS64_INC(stats, dropped);
-+			bcmgenet_discard_frags(ring);
- 			goto next;
- 		}
- 
-@@ -2415,15 +2474,23 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 			netif_err(priv, rx_status, dev,
- 				  "invalid packet length %d\n", len);
- 			BCMGENET_STATS64_INC(stats, length_errors);
-+			bcmgenet_discard_frags(ring);
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
- 		}
- 
--		if (unlikely(!(dma_flag & DMA_EOP) || !(dma_flag & DMA_SOP))) {
--			netif_err(priv, rx_status, dev,
--				  "dropping fragmented packet!\n");
--			BCMGENET_STATS64_INC(stats, fragmented_errors);
-+		/* A new SOP resynchronizes after an incomplete frame */
-+		if (dma_flag & DMA_SOP) {
-+			if (ring->frag_head) {
-+				BCMGENET_STATS64_INC(stats, fragmented_errors);
-+				bcmgenet_discard_frags(ring);
-+			}
-+			ring->frag_drop = false;
-+		} else if (unlikely(!ring->frag_head)) {
-+			/* Rest of a dropped frame, or no SOP seen yet */
-+			if (!ring->frag_drop)
-+				BCMGENET_STATS64_INC(stats, fragmented_errors);
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
-@@ -2453,17 +2520,27 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 						DMA_RX_RXER)) == DMA_RX_RXER)
- 				u64_stats_inc(&stats->errors);
- 			u64_stats_update_end(&stats->syncp);
-+			bcmgenet_discard_frags(ring);
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
- 		} /* error packet */
- 
-+		if (!(dma_flag & DMA_SOP)) {
-+			skb = bcmgenet_add_frag(ring, rx_page, rx_offset,
-+						rx_size, dma_flag, len);
-+			if (!skb)
-+				goto next;
-+			goto deliver;
-+		}
-+
- 		/* Build SKB from the page - data starts at hard_start,
- 		 * frame begins after RSB(64) + pad(2) = 66 bytes.
- 		 */
- 		skb = napi_build_skb(hard_start, rx_size);
- 		if (unlikely(!skb)) {
- 			BCMGENET_STATS64_INC(stats, dropped);
-+			bcmgenet_discard_frags(ring);
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
-@@ -2475,6 +2552,13 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		skb_reserve(skb, GENET_RSB_PAD);
- 		__skb_put(skb, len - GENET_RSB_PAD);
- 
-+		if (unlikely(!(dma_flag & DMA_EOP))) {
-+			ring->frag_head = skb;
-+			goto next;
-+		}
-+
-+deliver:
-+
- 		if (priv->crc_fwd_en) {
- 			skb_trim(skb, skb->len - ETH_FCS_LEN);
- 		}
-@@ -2593,6 +2677,8 @@ static void bcmgenet_free_rx_buffers(struct bcmgenet_priv *priv)
- 			cb = ring->cbs + i;
- 			bcmgenet_free_rx_cb(cb, ring->page_pool);
- 		}
-+		/* a partial frame still holds pages of this pool */
-+		bcmgenet_discard_frags(ring);
- 	}
- }
- 
-@@ -4272,7 +4358,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	/* v1 cannot program the thresholds, so it stays at the default MTU */
- 	priv->rx_buf_len = bcmgenet_rx_buf_len(dev->mtu);
- 	if (!GENET_IS_V1(priv))
--		dev->max_mtu = ENET_MAX_MTU;
-+		dev->max_mtu = ENET_MAX_JUMBO_MTU;
- 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
- 
- 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index eb00cff0e732..0f31ad2f280d 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -579,6 +579,8 @@ struct bcmgenet_rx_ring {
- 	unsigned int	cb_ptr;		/* Rx ring initial CB ptr */
- 	unsigned int	end_ptr;	/* Rx ring end CB ptr */
- 	unsigned int	old_discards;
-+	struct sk_buff	*frag_head;	/* frame being reassembled */
-+	bool		frag_drop;	/* discarding until the next SOP */
- 	struct bcmgenet_net_dim dim;
- 	u32		rx_max_coalesced_frames;
- 	u32		rx_coalesce_usecs;
+> The sequence is based on the module requirements and has been tested
+> in our labs and across customer configurations over many years.
+> A successful test on your EVK does not show that it is correct for all
+> the modules and configurations we ship.
+
+Again, like I said before, if things are not optimal they can be
+fixed/improved, not completely wiped out.
+
+I can help you with this (test/implementation) if you explain the
+problems properly.
+
+
+> The GPL-2.0-only userspace scripts implement this required sequence.
+> This is not a matter of preference or an old approach we kept by habit;
+> replacing it with the sequence in the current DTS would risk breaking
+> supported Variscite configurations.
+
+Please be more specific.
+
+
+> If a future kernel implementation can reproduce the complete,
+> module-specific sequence, Variscite will be happy to update all affected
+> DTS files to use it, after completing the necessary lab testing across
+> the supported module variants and configurations.
+
+You need to work with the existing kernel implementation, not delete it.
+
+> If you need any additional material, datasheets, or other information
+> from Variscite, please let me know at stefano.r@variscite.com.
+> I’ll be happy to provide whatever is needed!
+
+As mentioned before, please add the required timing
+sequencing info to your datasheets, it will help everyone.
+
 
 -- 
-2.53.0
-
+Hugo Villeneuve
