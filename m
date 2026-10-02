@@ -1,79 +1,35 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5BCCA6B
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 01:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDA528726E;
+	Fri,  2 Oct 2026 01:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790903102; cv=none; b=uBa1es9K3uUcJW9GzCX6vdzGKuCf7PVdQlAt0fsVlydy2vufIVLXEjlqU/azPxyd+ymCTZ3jmunjNDZJnhnFMRMdflqcFOsfmHAv+9XpqVZ3D2aosta8Lsw7Scsc+mM7zKzx7tTMz2M2a00EOv9ze//4egbkpCV+nvzdaQvFtto=
+	t=1790903408; cv=none; b=Opoi01Fqolcjz6fBhb3Y3q+EWBKmdxV0xbY5/j4BLMzrp2GAdi9SzehWI6sPmphkusc53dbluILQwlDYxjWtprvIZ1BnNjSPTN0+4hlG5ibBGAmW295RkBWBdDSw3/ij9KYSWjuWu0u79fd0qoxTsiLMQJN+u4TUNekX9XKIktQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790903102; c=relaxed/simple;
-	bh=70E4JEwJRhITrayTFGxFr/Ka+e6/XGMShGQ5vKZGBZc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lwpgXMbo76vQ7VX2y/xt6XqSSWy/ZDtR8CDvTp7fZVotsIUkXpS1+YWjrXAc/TWjQ198+fQbx5ygNsIgKlrxnoNz8eMC8Y3mreA9KxkIT3m1WzPTHpIdgV7IYDjod7K+BFlsbxkUY8wbO7lKl/bBJM/anl/W/rk+MdiTl035m/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fv/gSVkw; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790903408; c=relaxed/simple;
+	bh=a3x8Yq3wnH61BhsMbKMX8/B+zVbPj6bZ2RWisp36igc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=G927aN3zCIHIGD51GwaheFr/KQvpdsbWwhzPKWW59nHLRzcktu1I1PhD+jQgXmrFBWxLKdsJICv9fQzQV9MAN0AV1GLTqoTPOUvLzs1bdBCK3hEjplbjydjUXIOkJLiGA38EbKnPyO+6eIWAP+BfkFlJPr4G2nrnk3UEjIcYOAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jwO/UpC8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fv/gSVkw"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4c3304784so3078112a12.3
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 18:05:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790903101; x=1791507901; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cGNX4KL8GRa1VIINdGkPoVIRrpUVCsPABrTMa/jeOp8=;
-        b=Fv/gSVkwZLBzjHeKivXsZKpxWt+zzMFQ2md9GZKSnGlD49HEDu738K9QCRd+H2G2Q1
-         lz/OV/Lq5EXTpJYM02vxisOfzEIHB0IUNoetE1h75dIuAZNRwN/uYvVkhs+1VN30+Ltg
-         we2m7WNHUquY3N6LpHBZP2DSqmTxi246x2W+H+ZKoSlb2taTk0bXfCR3oRFt1gTur22x
-         ueRmmbuCAFtwsBq4yNTO76Cw0bwMv7dgX6AEX18F7S339+W1FOvWaLy2DQC6OfCUTZQC
-         +r/h+fLNoYz8t2UjRtRg2LdzfgtzdA2c3/E9nZ4/3uDN4THJTBu/9pM0hUxnOdRRbkQa
-         XJ5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790903101; x=1791507901;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cGNX4KL8GRa1VIINdGkPoVIRrpUVCsPABrTMa/jeOp8=;
-        b=MlsDWSObqD4GJJsRyvORjW8fCr38foT2D1sgnidZauj3daLd3lQioA4K9Btkn57hvC
-         OeHBG2AkkEBU7zN95+SbaEEJBE8r3rVfM81On+5ZGPNQBhyAilYJAquF70KjQglbpk2Q
-         mBErQkrs8ceDgmQb1p0IAg4vsyGtX/nXPPPpBYcszUCe71BBimXg0wwbtfXpZjugm7J1
-         p0O7QZtkwo1cQaKfUh4R2PjlkyK6x1Z+BhzGtKulJksMks9k87clx5iS47+nZTke7aBh
-         TrYUP9JyzCoNcdrlK9bxDFzVCQWTeGvEutT/zzyNPoNamFC1T7ePLcGpgwot1yIFNuRR
-         bBCA==
-X-Forwarded-Encrypted: i=1; AKwUvBzwdTD2lT24uBeZPdABKrUJIPhD4CjYiQDWUfj8vq2ddym/3l5Y7/h4OUn+hGjEB5mCYoPZtO8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI5ynLtLwPP0uQkmTBGiM6MsrEaThAHRxEMSuGh1yqnr+MR075+
-	CEgFn4wN/aE0i5QlkP4AdsMVvzVUTW9wAxFfvUig7dixvHzqnbGFarXT
-X-Gm-Gg: AYBFou3q1O9EVJZJUj/GwCw+IjB+OBE3bXK+Cy+O7SGm/eWJXd+LVydHOv9MHQM+1oR
-	/eaT5wwR8kDAuFrPwU/FeEuAKUyccAty5vPtF9XOwJzGpH7hoX1ha71SYxECKNsHA4gpfKbZsI0
-	OhK5NU90aqGuzCh/YPZeKxpCToO6646MMufU3X9l/iRPnTRlWI0o8pk0Sb3rzDw8aI3XTBQEfSG
-	f0dWQSS3G/KPeSsn3ZrS6NI/HiY5IaztC6I5SD4rMRVT+YMcqaTc/mRy8PUbvUnuXBJlG24ATp7
-	6Vl9FvPpunMzQVG+DvNZSQ8YHh+iskA7OPQVyHB63BIZDRUXBKvfMuunvkXFY5LR96zNUEO9avh
-	CVuskJ0uzY63u3U+I3cQkwdjbVANVeZdSHMV8BTnUDPdkv8O58wiRE9BNxCt3Rsd2UpPhD9O2/u
-	MtvG2ZzL2qLtkdFUuWuXIEyfl/YV1iOFWFm/bSYfIIdTKO6xVq9A66caVnXzWhxR7hWPaZGqdWg
-	GCQqRbxRuw=
-X-Received: by 2002:a17:90b:1e53:b0:3a0:a055:1741 with SMTP id 98e67ed59e1d1-3a6ceaff95dmr666070a91.27.1790903100692;
-        Thu, 01 Oct 2026 18:05:00 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6cd44c23esm1587388a91.4.2026.10.01.18.04.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 18:05:00 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: marcelo.leitner@gmail.com,
-	lucien.xin@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	nhorman@tuxdriver.com,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: [PATCH net] sctp: revalidate output stream after association connect wait
-Date: Fri,  2 Oct 2026 10:04:49 +0900
-Message-ID: <20261002010449.3689454-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jwO/UpC8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803BD1F000FF;
+	Fri,  2 Oct 2026 01:10:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790903406;
+	bh=tEOB8pWLZ3+eNozcZcTVvW43IJq9VdtE+IsbwtiHpjM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=jwO/UpC8qvC8MtshSGoXckZrgoQ/4okj/eNQRee/8FsdeHbqGY1dYRySk0vreWc66
+	 RGkIqgZ96tA87M0AMRIGDkE25YV6iorzywpqtdaM3k3qptjlV/vrfiyUOV0+DM7T6C
+	 Y6FJ5MCZVyPL9coCRJavW7JYIZxyq8GpQz7zenmlvYvWrA6c0HBH0kRPlMfKnuVcz4
+	 XZNI0udv4kliyp5/Fis9yXvnmMoeT6MK2j+HYmufC67zQUO2nDC5GIuJGRwIqOQrTk
+	 tiZ3CmWmYU0Bw5CCkzw6tiW8WST3ILXsaOI11toDF0+f9Z1vD68KaS2/pGuBcs/Zcq
+	 WdpQH/WM7ZLng==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 77336381197C;
+	Fri,  2 Oct 2026 01:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,49 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net/sched: em_text: reject unterminated algo before
+ autoload
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179090340503.3165918.7074749420466888679.git-patchwork-notify@kernel.org>
+Date: Fri, 02 Oct 2026 01:10:05 +0000
+References: <QDISC-2DIU.v1.20260929183844@mojatatu.com>
+In-Reply-To: <QDISC-2DIU.v1.20260929183844@mojatatu.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, tgraf@suug.ch, hybris@mojatatu.ai,
+ sashiko-bot@kernel.org, stable@vger.kernel.org
 
-When message interleaving is enabled, the first send waits for association
-establishment before building its data chunks.  The wait drops the socket
-lock, and handshake processing can reduce the output stream count to the
-peer-advertised inbound stream count.  sctp_stream_init() then frees the
-extension of every removed stream.
+Hello:
 
-The sender currently resumes with the stream that it checked before the
-wait.  If the peer removed that stream, sctp_outq_tail() later dereferences
-its NULL extension.  Fatal-oops policies then panic the host.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-KASAN: null-ptr-deref in range [0x38-0x3f]
-RIP: sctp_outq_tail+0x49e/0xaa0
-Call Trace:
- sctp_primitive_SEND
- sctp_sendmsg_to_asoc
- sctp_sendmsg
+On Wed, 30 Sep 2026 03:31:02 -0400 you wrote:
+> This is a follow-up to commit 9c572a83037a ("net/sched: fix potential
+> stack infoleak in em_text_dump()"), which zero-initialised the dump-side
+> struct. Sashiko pointed at a pre-existing bug that exposed the change-side
+> input-validation gap open.
+> 
+> em_text_change() casts the raw netlink attribute payload to struct
+> tcf_em_text and passes conf->algo, a 16-byte array with no enforced NUL
+> terminator, to textsearch_prepare().  On the TS_AUTOLOAD retry
+> textsearch_prepare() calls request_module("ts_%s", algo); vsnprintf()
+> walks %s until it finds a NUL, so an algo[] with no NUL reads past the
+> array into the adjacent struct fields and payload and feeds those bytes
+> to the usermode helper command line.  This is an out-of-bounds read and
+> a kernel memory disclosure.
+> 
+> [...]
 
-Revalidate the output stream after the association connect wait.  Return
-EINVAL if it falls outside the negotiated range.  This matches the pre-wait
-check.
+Here is the summary with links:
+  - [net] net/sched: em_text: reject unterminated algo before autoload
+    https://git.kernel.org/netdev/net/c/c9728fcf2e7f
 
-Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
- net/sctp/socket.c | 5 +++++
- 1 file changed, 5 insertions(+)
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 4652fd90d9a6c..394d31cb698e0 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -1848,6 +1848,11 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
- 				err = -ESRCH;
- 				goto err;
- 			}
-+			if (unlikely(sinfo->sinfo_stream >=
-+				     asoc->stream.outcnt)) {
-+				err = -EINVAL;
-+				goto err;
-+			}
- 		} else {
- 			wait_connect = true;
- 		}
+
