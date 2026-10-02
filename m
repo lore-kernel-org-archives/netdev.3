@@ -1,113 +1,112 @@
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6719130F52B
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 14:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790950987; cv=pass; b=gyQwgYQLbIi9fj3aHyDR8logWPds33jSQhHD3twqdgtEzgyT5UJ360Uy3VgJLQZAKboQccq99Mwj9ABt86skxI36zh0HrEBKy+WyRy+P0/YFLdmPMuIKkXvD7zwT3stRtMGirELee+5HIF6rzAxgMaWhrvvQq4y4hKS+w5jY2EM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790950987; c=relaxed/simple;
-	bh=fbdJgvOiLac+N7V2H/t2voYvdk8syWy7cBDstC4esp4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tEMOaEQHJD9agqVoN7kwmpHxrBbsbseSB54hZ6p7dOpzEu5PtqOrgKi1YDxkwnDJrGY31XHfCBoZOHRMOY0Zuro/gQ8vCZVCR406MXldmp50Stx27bJGO2vOGvIKCS79aSz8gIa8E7d0lc6STjzzVRalhMos2l7gvH3EeM9aT5g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K727ZcLa; arc=pass smtp.client-ip=74.125.228.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6456F32B115
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 14:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790951306; cv=none; b=gRq3j1xxkYBlwq4T2ITYmX8NFqAnLVQskmrvehWs8XbW9J7vwh0bIvYjvvQxeeQ4IRbZgT0wtUO0JeFjgxuqcGN0qOjgMNe1Jizq9hgwNN4BaBSOZRfBGFRMOFjWVZ0Itzu4MdAVBvUdTMMUx6le/KHTP9pyk6NULsYE2CGvxlo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790951306; c=relaxed/simple;
+	bh=L7ol1ikwj5z7l/6pBy/4SyKPZTjf7kJTdt00bJ1idkg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OROX9sBdXuImxqZ+W9zfQCB6TCyNf7aYqmEmhlrlsxgrKQwXrry974BPIR1C5thb8pZEAGLc4gJ6vpzNyYMTU31GpsrnZddVTf5rUehV5ny9B7KZvl4YHtLqUfapR+WbDzTm8FAeYjCtfmXdlTKZwXzLokvXIxdbM6YkZnV6Ck4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Jlmd7t0K; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K727ZcLa"
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2e227422e3so11855666b.3
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 07:23:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790950983; cv=none;
-        d=google.com; s=arc-20260327;
-        b=hjwjV0f7mT7zWXa5aNN6rBd5fZZcTa8EgJJryj/lBUVQ25GJqWEqLjD4+Iwoe3c58Q
-         if+236KWGPpwDgLbEp9wIrryeTsj1Nwcc4zbRBLsCPNS+C9m3THtsiq/WbJrnHauA2Jy
-         EZsanUxwUbti0+NQtkOIKDW2sLDGWxq/Jk+q9J7s7QdgySIQtuKysVzDudUz55zHmEsy
-         ryshsqUPhY3w9etkR8NzHWAi4nzrZ4UKM+2KAQWgvEE7m7Rga6JR85XmYBRbxAqMoUUw
-         cXPi3y1D+aABdLUUyX8hp2GQzbBDPAN2kiFFll+Y/AYC6olvoqimfcbjVTbthYhivjNS
-         7Q+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=fbdJgvOiLac+N7V2H/t2voYvdk8syWy7cBDstC4esp4=;
-        fh=Bx6JFarna8Nn8IJ9iMXp6LXKQ8Qg3TXS1W+z5YflHPE=;
-        b=caBr+8MdWXoj8j6BRSHcKgtPkxt8t6Z4mgUM4oMQooWLpEhWmTzXIaA27TsT0vIKv0
-         74Y/n9Rzgni6lJcRPUA7a+HcHjbswDTxB6XWHbgXUeycG1q15BqjFgVqr2lbptdci98O
-         gOnkJkLKaIWDBtYOM0adCKBgDnfZLboN8kMfVjWqzIkaVWvpBy1lCYJ91Idv6XnLExkv
-         e7/JldXlvrnh6Sygg+LM1wNXdjsARpHYdZdQCUGRrpojRrDY2o1IeSTEt9ojnKM1OFKk
-         65g/hIiWHugGKKiYEO+GskSq/2k9A36qRyiVeNsQ7EhqBb/CiUAwwpYG/UqbsZKOCdxD
-         sNVA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790950983; x=1791555783; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fbdJgvOiLac+N7V2H/t2voYvdk8syWy7cBDstC4esp4=;
-        b=K727ZcLahsiXFl9ljhTq9839N8JRutZSUCZIeOKiAJ4VhyxuSke4Vqgv0UiVr6CKKs
-         3lAxmlq2XILzDUCadpUdFoml6yUWjz5r1uwgE7c44Q5Rm9QKD2d2hDcF2uvJxAY8D2FR
-         vXHbOBPEf4t3JyBFpdeGcVDbaVqttUD6f5rVNANjLYx3GYNZqH6BeZFUeKXect43l0nC
-         x6i8X/ICnCUBbuI3nmQVuTBZHUEsVyyzk6vu2xHswwIYHbAoQ3kZF40+OaCaHoX1dIDf
-         jvb8vAw0u8FSUlij0DLaZ2ytHTPNruaNIz0G7MhMh9kd9g+smGpalIw1vgkTQZi++c0u
-         t64Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790950983; x=1791555783;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fbdJgvOiLac+N7V2H/t2voYvdk8syWy7cBDstC4esp4=;
-        b=FS5NpTeEDdMQ2DVgJSx8rov9aU+sgYJ48qJqSTug4xkK7MD5V5VEsRH5n3EJu+0OSY
-         7yFnA9reERGljqLLG1n/rDEtdnBhimjTWtmuYEUFlmr+oeVt2cGsD9MFMnNeCrsjmVVd
-         B+Rc0erc6OCFa/3HaoZekd3/t++blG2sjyOJ4pn64ldLMSXn9ckAWzd+F/LNmK9OFhmF
-         cM/S1tb1IRaCtJ1avbuZ0Jqifhd/p1ZtTjcg9J0Ip7G7KJiDkSLecmkETa6ckG8GZBqN
-         nZkZqyWVumt1er4EiH8oRWOEt3lHNr7ut4qPugJY/7WvzRJNa/PMgRz92zVyV6ue8Yf8
-         cCPw==
-X-Forwarded-Encrypted: i=1; AKwUvBwT7p6dXDbBRbCX2lQwwZiNY5VAXdO4laDKAsmqo6t+hvjO58JGohY3K5gj4/Tsn7VeFQn6skM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kwnoPgf6+tWgF7wJGaUBK2aE0flmEkRSXxIyg/GPS82TuEgYk6
-	0u8YB7wTy8S84yeduLjoYx6+XgfJNitXpqKgBkkJDrN/LRdqrSuqKDkvzxGWPomUPekT1NO8Wf6
-	j/mXuH3Sdgg54ymv7leX0zyaGxRMGzbI=
-X-Gm-Gg: AYBFou1386Aih52uGgpqloJm223KEfvawvItn6AovYehYLbe2GZlXWj16AD0IGpfPa4
-	lbm/7iPHl74+34emDAOb353g7v/v6tOAbwQytoj65zU3UlKmWfJ3cPNKkKgTroAM+HonQkrNQDp
-	D4FnmNglKroFBksBb8c6Rbk/sKnfxCO7DIZpAw0qMbD/wzfhaOMu4udOL6mCNZkgB/+yjqwuTT1
-	Sifi6Pm3oe4kXaITSp7DHM0yyFd4qiTGczeFP8UQ+MgwmtImrZ2pC5EHo1P35zZqmixH6ni0OIg
-	aobEoOEJODwznTPz5G518anoJtK8IxvQ/yOTpBj5kuqzJWUdoVJcAA==
-X-Received: by 2002:a17:906:dc92:b0:c29:37d7:75c0 with SMTP id
- a640c23a62f3a-c2e4a9b3933mr229815766b.1.1790950983438; Fri, 02 Oct 2026
- 07:23:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Jlmd7t0K"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9A8814E41105;
+	Fri,  2 Oct 2026 14:28:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 690BC603DC;
+	Fri,  2 Oct 2026 14:28:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C157F103281DB;
+	Fri,  2 Oct 2026 16:28:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790951300; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=cMgf3Fui9Ix2ajtwXUt15vsAOgVEpm/AVvj+X+LKiz8=;
+	b=Jlmd7t0Ksr8v1Qb0dLbT7iFrN4AKKOWXIWqi32LAo4iTjEQOQkZY/3JVUTAJP/t2i/uUuk
+	EoVQ9ipfm85i0zt38mUyUnBwpdg9xN8xHzdgl5na8J8ciaLCpiyqHZuTASsaa+aXFEu0E9
+	K2mZlHYUhw6omq0RaX0kZMDjZxCGAd6O3gTLk5LtEyKUPWDeo5qBsuTYtI3eSmqF8QjrxC
+	/Q2nASK8YpoS/59jgV5Vtvbj/bZoPd9Ty0FUwkGgdn7J3WEO9jd8vfCW0Frthp8pjSU6pW
+	Qfe87rRqfmfP2JzQzLX5ieK5f1ZSs0SkifFY45Wi7itJiqiNKwmbSLCIxLssPA==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Jitendra Vegiraju <jitendra.vegiraju@broadcom.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	thomas.petazzoni@bootlin.com,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Joe Damato <joe@dama.to>
+Subject: [PATCH net-next v3 0/3] net: rss: Consider RSS not supported when key and indir sizes are 0
+Date: Fri,  2 Oct 2026 16:28:00 +0200
+Message-ID: <20261002142806.1299041-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002115850.962676-1-o.rempel@pengutronix.de> <20261002115850.962676-2-o.rempel@pengutronix.de>
-In-Reply-To: <20261002115850.962676-2-o.rempel@pengutronix.de>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Fri, 2 Oct 2026 11:22:50 -0300
-X-Gm-Features: AclHuK8FwquojjJt6tk83Vx2IuLXihfbekw0Fk_thDrubBdKP_mNo6oPAfZ5sBo
-Message-ID: <CAJq09z6FNA8a8Si_z3-JG7=aqBjsJkgNypW6UcftDOV2WCiKbQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 1/8] net: ieee8021q: print traffic type and
- queue count with %u
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
-	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
-	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> Switch the out-of-range diagnostic in ieee8021q_tt_to_tc() from %d to
-> %u. The traffic class count num_queues is an unsigned int and the
-> traffic type is an enumeration, so printing them as unsigned matches
-> their types. The print sits on the range-check error path, which still
-> rejects a negative traffic type; %u only changes how an out-of-range
-> value is rendered, not which values are rejected.
->
-> Preparation for the inverse helper added next, which follows the same
-> convention.
->
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Hi,
 
-Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+This series follows what used to be an stmmac-only series to handle
+devices that don't support RSS but still provice the associated ethtool
+ops.
+
+There are a few drivers out there that populate the RSS ethtool ops, but
+don't always support RSS. stmmac and mvpp2 are such examples.
+
+Following discussions with Jakub on V2, patch 1 makes so that returning
+a 0-length key and a 0-size indirection table means "we don't do RSS".
+
+Patch 2 introduces a helper to check for RSS support in stmmac, and
+Patch 3 uses it. Patch 3 has been reworked so I haven't applied the
+review tags, sorry about that Joe, Lorenzo and Nicolai :( I've drop the
+-EOPNOTSUPP return from the rxfh ops as we return 0 on the sizes.
+
+V3:
+ - Add patch 1,
+ - No changes on patch 2
+ - Removed the -EOPNOTSUPP returns on patch 3
+
+V2:
+https://lore.kernel.org/r/20260928145043.1228968-1-maxime.chevallier@bootlin.com
+ - target net-next
+ - Add a dedicated helper, following Nicolai's review.
+
+V1: https://lore.kernel.org/netdev/20260926093343.292181-1-maxime.chevallier@bootlin.com/#t
+
+Maxime Chevallier (3):
+  net: rss: Require indir table size or hash key size to support RSS
+  net: stmmac: Introduce a helper to check RSS support
+  net: stmmac: Don't set or get RSS parameters when not supported
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h         | 5 +++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 6 ++++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    | 4 ++--
+ net/ethtool/ioctl.c                                  | 6 ++++++
+ net/ethtool/rss.c                                    | 7 +++++--
+ 5 files changed, 24 insertions(+), 4 deletions(-)
+
+-- 
+2.55.0
+
