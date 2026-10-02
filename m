@@ -1,83 +1,83 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57799361DCB
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 18:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B64138E135
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 18:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790967115; cv=none; b=iQjiBUbv77ZXN+gNVRCGfiE7OcLWRYQzQlAEeBb1Az4sN0nyosuQh00nI89gyGHT5+8G77MwM9QT6AumYzcm1KwtpHnm5jdqrhexYvL5T9YPcDOH+Yf9llEsf7IT1ou0AbUqF+M4UtDuQiGz3l9JSqBkfXLYosYKjUMJtmlYoS8=
+	t=1790967120; cv=none; b=NZvm1u8m2//LOneVvqu0nSlMQTGbuXaZRjcghtQpi9DjZVzdQwPXt3V8oGD6u/XAWeQT7N/8fQ4AKo6yVm9vS0xgthjXqBsgoPbfebfHFJ7GKaLIgLtQuYnzbmdqxh7oYljD+0WR1I0C59Dz8CWf2389EjcmcaZvE2WXvN6TQ9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790967115; c=relaxed/simple;
-	bh=SvlLnlt6KHX1Jrj2D3pJtCaILFR/9gRc9iadqwmEB5E=;
+	s=arc-20240116; t=1790967120; c=relaxed/simple;
+	bh=z5nIZYok1fhLZRQ7QC3TZVSMxWJtY/Swhyul/D70q5M=;
 	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=FUWv5/WwyMpRsipyoOEjZfxORPHTzCayo3HqQ5T9bxmx4Onbn7CXmhATgAVmwR2Svc+cYY6JdW4CugjtJud/BRPwnx33WJx0Fo3OH9rZkxoiMO8MhklgvVC+pfvymSThA5wsLVpKxT4JO3ADtbtPSuBi2unMU1BynmlNhwIan74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AWpa7z0u; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=s56Ve+PI; arc=none smtp.client-ip=170.10.133.124
+	 References:Date:Message-Id; b=eQX82WAf5MhHDY5exOpKyd/rwo7MxNx4f/9Aa31wLikGn6K0Fsv1sm9HEpxSsF5ZW5256tjnsADF3tejDffTVSnyCt92iRJLX4oFpoB0PxpgjwW2IdxAwzUWc9OVpCn9Om2vY7ja7vBLMryZgIEIVMxZPYL2jY1QYolsY+9EUo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hpvjLq9y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bRsLXnoX; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AWpa7z0u";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="s56Ve+PI"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hpvjLq9y";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bRsLXnoX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790967112;
+	s=mimecast20190719; t=1790967117;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lViRkD+J4l6mElusP3QWY+NSQ6ORF7js4Y4aeDT+mp0=;
-	b=AWpa7z0ukoQgwGG9HhZrs2nPndVK12Rd5Ui+rTSjt0jyKJH7ley3EWQz2nE44bMfUtGbeH
-	Qa0chSRyMFYh6QSIlCyY4lVMW+Q7sQDcSO4T0nS84t/hK1/ZMbhK9XFy+pKkVL9pG0O3MH
-	j5yhN19XM1qjqyubEgTJbS862jq4Y2k=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=sFsvLQiLKfq21A28GjN0uk1v82NHBHz0YcGin5ZMxfw=;
+	b=hpvjLq9ygg80g19rbCrxhZjHqgEQrWNNJPf0Z9RDZmu6d2q1lv74CdIIZs3Ylq14r5wTMW
+	djawX43iI1lrPkDHPxV9dr6A3tBIX4Gpf695wysthnHGYi+thRiy938o48Na7ijPDZiE1l
+	XLDbk1GdKBlblw1Ft7R91u0KAQXCJNY=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-190-dyCNv3J5PriQF6T2Oet1eA-1; Fri, 02 Oct 2026 14:51:51 -0400
-X-MC-Unique: dyCNv3J5PriQF6T2Oet1eA-1
-X-Mimecast-MFC-AGG-ID: dyCNv3J5PriQF6T2Oet1eA_1790967111
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93e4c03d1d9so64657985a.0
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 11:51:51 -0700 (PDT)
+ us-mta-548-WholQ8NKODKg8WIzqJAi3Q-1; Fri, 02 Oct 2026 14:51:54 -0400
+X-MC-Unique: WholQ8NKODKg8WIzqJAi3Q-1
+X-Mimecast-MFC-AGG-ID: WholQ8NKODKg8WIzqJAi3Q_1790967114
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93cb7f9bb86so445556585a.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 11:51:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790967111; x=1791571911; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1790967114; x=1791571914; darn=vger.kernel.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=lViRkD+J4l6mElusP3QWY+NSQ6ORF7js4Y4aeDT+mp0=;
-        b=s56Ve+PIQ+T44wD55tOeH2I5rXg0vNFHi8Mr+UOqF/+/1SaAZ9DGsiDSCIF5JHwv7D
-         b+uAlMTzhi2pfJj/6yyozZ3N5wFnW/R5ZRl0tfEqQ00nOPcQE+iyOsAg3CcoenBbhxtP
-         Y138PAwwY8icO90xoCzRmhaNq58D++D6R+f7KHG9qCqCIU8gzTmAg6jaCxtu0l3CzIho
-         /xOLx/EJBAY0w4QLXGgzZYp9U/IhFg7DrAJ91/KSaiRdGNDVNJhKeCGzdikSCPph1YOA
-         TOY3jT8WXrmldDrAD4nG8REgeg4loZY4lTaaH4KIMaqdB5zriF90I5nPfrfm01ur6+p8
-         mSIg==
+        bh=sFsvLQiLKfq21A28GjN0uk1v82NHBHz0YcGin5ZMxfw=;
+        b=bRsLXnoXBKPCyJwxxEnqrSSjZm2QelfBAGAUuBHjhBkvr5pHkFtrXQreUVfINzorMr
+         ZMPSjwzNmZc+zTq8uNrnFFz7qWuZaY1CDUA8ktBE9qFcK+RrmV+8Ojt/1qWmW7RbMjKP
+         nKdy+q63ROZXHuUt/bl5ZZ3dEvi/hKPeqcLALwawmRND8FbY4jrghhRGKHEfJVEww1IT
+         Z7tR+SO0DkxdWXn7W1hsRMLTclGMCdqTLn0+YOro84ejib5CKkzBc9Y/fQqKV9gGlr8f
+         BKFVAMlt/NYC8+8cFus342bmpCI+M2VzPgSmO3JLJhpwlrzVlBxbYUparIo1puEWVvI7
+         Yv5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790967111; x=1791571911;
+        d=1e100.net; s=20260707; t=1790967114; x=1791571914;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:content-type:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=lViRkD+J4l6mElusP3QWY+NSQ6ORF7js4Y4aeDT+mp0=;
-        b=okB/1/FMBUx4y1R9UUogj+JIiEfY13JRiOqX0trH0HxWM83h3C4wfL7Y5ADLJzaBNI
-         31iSm8//hLFjKzZRdlXLL7TLfnUhUv071At8QbBXMn13Mq6fdtkHTkrdWImmOQ8DO+xt
-         s8yYcsA0ppQPryLI+6a1lvkGXcAGmF+UZvb9nViKBZ0Ct1ctSxO2LcMjauljCjMRl+3Z
-         0bA5O/guaB6BYJtNFpv4TZ7L8UcIXMc79d4Mvv58IUdugnQ+A8lbD8yLOzpjjO2msVO3
-         l+AiOatb9/j9hKgwBbEaBudK0Ff9GmTyqPDUtHZ877pXE3H8UsAV09pvE5XeS/fl64sw
-         A9iw==
-X-Forwarded-Encrypted: i=1; AKwUvByVOgcpu/8HQfJC1SyA5AgMStZPGk0060jbRkVM960DryVPPr83VfiZO1xfzsP8aJPCpnjFN7w=@vger.kernel.org
-X-Gm-Message-State: AFuF++kUxU5umqwzb4dP4J/oJL2nc7fJSeUsW2yT8hMgoJZP0bB/jJtP
-	H7xE4egvtHgv4QBlpA6NMZhgt7z2596Ya41Ni/54FJF374uTlUccBbi04Agf3SEtMaGU2+oYwQS
-	hxrWeR6N1/MW7ziK7xIGt5lyXbFP1cGdvFaXzYc2QVhdEj7C9T33jZDIpew==
-X-Gm-Gg: AYBFou2OVAveyvDtSBMRfYJ4PQ5+w+OkpKpART5QNI2uNZVE8RZowRJ6+JiIkMduEsP
-	thjUcdfg78f8olm7brYJVxPV1C2zI6tC+Wd2wMNiw7+F9TeVShz3sjTjOyITTmnU95AAw+1D6Ug
-	GWIvyCWl+DptPyqEwMSR4h62CO9HZTMo/GNykbgu4wKGBLYf2J4XfvD+fN2ZHJhM0lAuipUrpil
-	yBc0vKCYMZh0baSSX7to2D8N5+Qd09dOoKuiKEuzpqyY7bovJ+cJ8awJXkkH2NGozBq2OGwxaSt
-	1s+sy/Z1lmRsDiqodGZ3sKzzboUJVDxmw91KWRpU8/4DR41iAveyw4P5VVgsfb3IkuCsUPhelsb
-	tOpXdKVnBU56rFg==
-X-Received: by 2002:a05:620a:bd4:b0:93b:c58c:d3be with SMTP id af79cd13be357-93cf17664b4mr670122685a.37.1790967110525;
-        Fri, 02 Oct 2026 11:51:50 -0700 (PDT)
-X-Received: by 2002:a05:620a:bd4:b0:93b:c58c:d3be with SMTP id af79cd13be357-93cf17664b4mr670117885a.37.1790967109968;
-        Fri, 02 Oct 2026 11:51:49 -0700 (PDT)
+        bh=sFsvLQiLKfq21A28GjN0uk1v82NHBHz0YcGin5ZMxfw=;
+        b=Sk08YaegNVKB6EH8k6bGOjjxozCo+r8U9GX0v3GHw+zO4ne39ZUOoRbPoJssWAAxhV
+         WbDB9Ex19NdCwoUTMj4SLGAG/ChFeEA36W3aBe5zZPO1lzxp3OwiVIb9KLUr9NjKowCU
+         A9yEdAWleS/QL15Ov+acoLpMXGXIrXze9WcMQjf8RjpXUJn8S55aR0o82rRfO1oq4uXV
+         brQglMUPgwKcddqWnNYvGgoHA6IaSOBh1k75XNSQyEs5kFH9MAbO/NyrTifZ0IHE0au/
+         AoniA9yDuXbLfwXZhygPbJ8UbVHdUJKHLYbxiT5OTr2jqqTI7oS5PatvhRxZddJ8uG3F
+         C4Qg==
+X-Forwarded-Encrypted: i=1; AKwUvByFK3PJQHMSc1UjBmK7VBVsRCg+O2VLTamEcXG5DClGK/QnJp941aBPg597DfuaELapJC/ZjL0=@vger.kernel.org
+X-Gm-Message-State: AFuF++nhsvB3jsPE5iYynFnJVDkgnncCG9SakR3KVyWYpH3Evnn53E7T
+	TYSCwO5cowI7m7w388yfrotdmpI4Is/yvDarGd6wJ/oMbU8U0VK3UUg6j8Gim9/MhmAOXpk0Gdw
+	eC5M+ge3wnGrz8/UIVDEcg7rGUGrw51gncr139GTps97cPMh6sC21rV23Og==
+X-Gm-Gg: AYBFou0jH4+8T8xIq+qlQMp+12of86pUOqjBiGENYpq1RsTDxi2EtgOmExCyKcU1xAt
+	n8w7iflwon53VCn0KCAKU5R9Q8ppkmEOsWiQxeeYaCHK2OHJK6/bj4S68IsqZe1dVDU+lJUAK2n
+	EY5vDJvJ7u25rYhykmFiUDb5Rlqz41RcLoUqwrulhuyAHSyiI0ZiZrPzwity01IcSD7HRv6g32H
+	ao5aWRiJLxTFXd1Z84Rx7Y5CDXjyz7SV3Or/mZ1y3He3uSd6HfDxsIHsx7unCJNqQS9AakHabiQ
+	F1cO6X/+mIpaBwmIc0Onn5GGB8LgXMmnRscOJMuyEjQDsCQuo68BByQn40CbRMOagV6Dr1u7Shs
+	Qr027UlKEA7HPKQ==
+X-Received: by 2002:a05:620a:1984:b0:93b:d7a0:d9dc with SMTP id af79cd13be357-93cf189c270mr681523185a.54.1790967113576;
+        Fri, 02 Oct 2026 11:51:53 -0700 (PDT)
+X-Received: by 2002:a05:620a:1984:b0:93b:d7a0:d9dc with SMTP id af79cd13be357-93cf189c270mr681517785a.54.1790967112966;
+        Fri, 02 Oct 2026 11:51:52 -0700 (PDT)
 Received: from bmasney-x1.rmtuswv.csb ([2600:382:7723:4eba:66b1:961f:1a2d:af55])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93cca03a1bbsm290352485a.1.2026.10.02.11.51.46
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93cca03a1bbsm290352485a.1.2026.10.02.11.51.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 11:51:48 -0700 (PDT)
+        Fri, 02 Oct 2026 11:51:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,7 +86,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 06/23] clk: starfive: Add JHB100 System-0 clock
+Subject: Re: [PATCH v5 10/23] clk: starfive: Add JHB100 System-2 clock
  generator driver
 From: Brian Masney <bmasney@redhat.com>
 To: Changhuang Liang <changhuang.liang@starfivetech.com>
@@ -103,45 +103,105 @@ Cc: Michael Turquette <mturquette@baylibre.com>,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-riscv@lists.infradead.org, linux-hardening@vger.kernel.org, 
  netdev@vger.kernel.org, Hal Feng <hal.feng@starfivetech.com>
-In-Reply-To: <20260930124317.5648-7-changhuang.liang@starfivetech.com>
+In-Reply-To: <20260930124317.5648-11-changhuang.liang@starfivetech.com>
 References: <20260930124317.5648-1-changhuang.liang@starfivetech.com>
- <20260930124317.5648-7-changhuang.liang@starfivetech.com>
+ <20260930124317.5648-11-changhuang.liang@starfivetech.com>
 Date: Fri, 02 Oct 2026 14:51:13 -0400
-Message-Id: <179096707364.821688.18177370718453496156.b4-review@b4>
+Message-Id: <179096707365.821688.712584426844385414.b4-review@b4>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=922; i=bmasney@redhat.com;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3217; i=bmasney@redhat.com;
  s=20250903; h=from:subject:message-id;
- bh=SvlLnlt6KHX1Jrj2D3pJtCaILFR/9gRc9iadqwmEB5E=;
- b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLL2/7X6vESXVZZr6Wxj3c4lz4Xy5qcm7nt4+OjFy0fUf
- A+ZPjGe2lHKwiDGxSArpsiyJNeoICJ1le29O5osMHNYmUCGMHBxCsBEEhsZ/ue2hf3l4ON+PnHv
- SvOQsrfpJYHf/Bvm7VBe9Kfo56vsPbqMDKs+HVC7yjLx7g35VuZFnkG3JLSO37uqbflrXT1jv6R
- dLzcA
+ bh=z5nIZYok1fhLZRQ7QC3TZVSMxWJtY/Swhyul/D70q5M=;
+ b=owGbwMvMwCW2/dJd9di6A+2Mp9WSGLL2/7XmcHX65ip36MSC8m+bH/Q2KG5etNSV+ef2F7bvy
+ u7EOFlP7ShlYRDjYpAVU2RZkmtUEJG6yvbeHU0WmDmsTCBDGLg4BWAiWvEM/wuePzdyPLAh2H83
+ d0Jandj25LP1dgoer/dF3uqZr6C9axojw2meCs535p3fj//U/hfPvWHpVNPKItOIU/u3X/rCZ6D
+ myQ0A
 X-Developer-Key: i=bmasney@redhat.com; a=openpgp;
  fpr=A46D32705865AA3DDEDC2904B7D2DD275D7EC087
 
 Hi Changhuang,
 
-> Add support for JHB100 System-0 clock generator (SYS0CRG).
+> Add support for JHB100 System-2 clock generator (SYS2CRG).
 > 
 > Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 4f72b4ac27ee..a0e5b4df96aa 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -26097,6 +26097,13 @@ S:	Supported
->  F:	Documentation/devicetree/bindings/phy/starfive,jh7110-dphy-rx.yaml
->  F:	drivers/phy/starfive/phy-jh7110-dphy-rx.c
+> diff --git a/drivers/clk/starfive/Kconfig b/drivers/clk/starfive/Kconfig
+> index 11da8bcc4046..cfaac934a8e0 100644
+> --- a/drivers/clk/starfive/Kconfig
+> +++ b/drivers/clk/starfive/Kconfig
+> @@ -92,3 +92,13 @@ config CLK_STARFIVE_JHB100_SYS1
+>  	help
+>  	  Say yes here to support the system-1 clock controller on the
+>  	  StarFive JHB100 SoC.
+> +
+> +config CLK_STARFIVE_JHB100_SYS2
+> +	bool "StarFive JHB100 system-2 clock support"
+> +	depends on ARCH_STARFIVE || COMPILE_TEST
+> +	select CLK_STARFIVE_JH71X0
+> +	select RESET_STARFIVE_JHB100 if RESET_CONTROLLER
+> +	default ARCH_STARFIVE
+> +	help
+> +	  Say yes here to support the system-2 clock controller on the
+> +	  StarFive JHB100 SoC.
+> diff --git a/drivers/clk/starfive/Makefile b/drivers/clk/starfive/Makefile
+> index 0061550e0f7e..29cdef20575e 100644
+> --- a/drivers/clk/starfive/Makefile
+> +++ b/drivers/clk/starfive/Makefile
+> @@ -13,3 +13,4 @@ obj-$(CONFIG_CLK_STARFIVE_JH7110_VOUT)	+= clk-starfive-jh7110-vout.o
 >  
-> +STARFIVE JHB100 CLOCK DRIVERS
-> +M:     Changhuang Liang <changhuang.liang@starfivetech.com>
-> +S:     Supported
-> +F:     Documentation/devicetree/bindings/clock/starfive,jhb1*.yaml
-> +F:     drivers/clk/starfive/clk-starfive-jhb1*
-> +F:     include/dt-bindings/clock/starfive,jhb1*.h
+>  obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS0)		+= clk-starfive-jhb100-sys0.o
+>  obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS1)		+= clk-starfive-jhb100-sys1.o
+> +obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS2)		+= clk-starfive-jhb100-sys2.o
+> diff --git a/drivers/clk/starfive/clk-starfive-jhb100-sys2.c b/drivers/clk/starfive/clk-starfive-jhb100-sys2.c
+> new file mode 100644
+> index 000000000000..a2c7e8eba9b6
+> --- /dev/null
+> +++ b/drivers/clk/starfive/clk-starfive-jhb100-sys2.c
+> @@ -0,0 +1,129 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * StarFive JHB100 System-2 Clock Driver
+> + *
+> + * Copyright (C) 2024 StarFive Technology Co., Ltd.
+> + *
+> + * Author: Changhuang Liang <changhuang.liang@starfivetech.com>
+> + *
+> + */
+> +
+> +#include <dt-bindings/clock/starfive,jhb100-crg.h>
+> +#include <linux/init.h>
+> +#include <linux/platform_device.h>
+> +
+> +#include "clk-starfive-jh71x0.h"
+> +
+> +#define JHB100_SYS2CLK_NUM_CLKS			(JHB100_SYS2CLK_MAIN_ICG_EN_JTAG1 + 1)
+> +
+> +/* external clocks */
+> +#define JHB100_SYS2CLK_OSC			(JHB100_SYS2CLK_NUM_CLKS + 0)
+> +#define JHB100_SYS2CLK_PLL1			(JHB100_SYS2CLK_NUM_CLKS + 1)
+> +#define JHB100_SYS2CLK_GPU0_NCNOC_INIT		(JHB100_SYS2CLK_NUM_CLKS + 2)
+> +#define JHB100_SYS2CLK_GPU1_NCNOC_INIT		(JHB100_SYS2CLK_NUM_CLKS + 3)
+> +
+> +static const char * const jhb100_sys2_ext_clk[] = {
+> +	"osc",
+> +	"pll1",
+> +	"gpu0_ncnoc_init",
+> +	"gpu1_ncnoc_init",
+> +};
+> +
+> +static const struct jh71x0_clk_data jhb100_sys2crg_clk_data[] = {
+> +	/* jtag mst*/
+> +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM0_HCLK, "jtagm0_hclk", 6,
+> +		    JHB100_SYS2CLK_PLL1),
+> +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM1_HCLK, "jtagm1_hclk", 6,
+> +		    JHB100_SYS2CLK_PLL1),
+> +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM0_ATPG, "jtagm0_ATPG", 12,
+> +		    JHB100_SYS2CLK_PLL1),
+> +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM1_ATPG, "jtagm1_ATPG", 12,
+> +		    JHB100_SYS2CLK_PLL1),
 
-The spacing after the : doesn't line up with the other sections. It
-looks like this is using spaces instead of a tab.
+The ATPG portion of the clock name is uppercase. Can this be lowercase
+for consistency?
 
 Brian
 
