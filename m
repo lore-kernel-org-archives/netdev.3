@@ -1,121 +1,155 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mvsmtppost23.nm.naver.com (mvsmtppost23.nm.naver.com [61.247.196.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C512443A83
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 07:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB756419FD2
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.247.196.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790927767; cv=none; b=U7vfLboPdVAn3A16PaaRqxmLnVgSscx4MoyIS1VWRI9S42uji0FWs+ejvsg17Y+Ezcsp0MCxDxJAfijt1HsAhOTtd3w7cQ5+FFnuc1rigjDaTLVc2dSwWAuqHYlCO3PIcI2q+IWhhdnoUhRXd5yk+6R7J64rcYoOYFXM4OaIUpY=
+	t=1790928165; cv=none; b=jH7zQbGfj9jF3/qHHfBmjE4pweffXNT8JhvMyK63CU7hHkaJfRhy6sqwYbTqN4el2FBSrF8cmUaYv+DC3mFzFOylAhRAkTvD0jbWKwCNHhSh3uNtCnofdmiq605CvjeBUoo0nHDbbpUDzvXLZnD5smISaEs/o+RHSWBHJRwZnFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790927767; c=relaxed/simple;
-	bh=HJAV1pZ9lXgDKLEOxd4tNuiZSy+JrfvBzEnvT0zKL/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=awRZogEahVWpU9R3uye82gonas9yd8/pMhavH56rgIpxmDNm4hNGz17dvAHO62+ka4UHi/LHQofe6obXqlAtEZxOOEyUwpS6b6W9tcIm6cwkbGI8spXJnWBpJnoLCaGaPiEm0xqHWfsO7ONASF3I70bVzVsWCPOPo22v2CM/Rn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=byYlx+2z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=q2pldzC0; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1790928165; c=relaxed/simple;
+	bh=JUFspoQNePCu3sx+33YwcWSfxBGfUaqgfYRMvB92U5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YMjav7+2KOwgQk4NnoxoL6FjOgtkS0KggxJo1YocU5135vBwW3d4LkhWdXjUo4mGeMO3lK686Nm0Pphk/6JFNfp8fuCt73DI8uktfuEKe6p/stLcGkHpfaD8z7KlenICOEDyurH4TJezBnUCknF4DhGA/Bs7NgCO66qMXd1wwb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=M/SAF4ZV; arc=none smtp.client-ip=61.247.196.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="byYlx+2z";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="q2pldzC0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790927764;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YvzMj0FWXdEre8JeFTQAy8sUSU4Rxxd4Ot38DPzLz1w=;
-	b=byYlx+2zSkE/Xrg7nKuoSwGot+Xs/dPNmPHp4Modpv/V44H6KOk90Tyb9uTS5xduNgc3hz
-	DrvwRYoC8NUN8AkJQa1tzx5dXU/fDQISBN5TvW0ykZ1pG0Y9tyli19OahS8Vw+xGUVWZZ1
-	jnDUuaDjz6t+A/X5/ob6Rr8Qyizz2vw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-1p0cXrgcNbO23_XkPuIMKw-1; Fri, 02 Oct 2026 03:56:02 -0400
-X-MC-Unique: 1p0cXrgcNbO23_XkPuIMKw-1
-X-Mimecast-MFC-AGG-ID: 1p0cXrgcNbO23_XkPuIMKw_1790927762
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-487041c4c82so2398519f8f.2
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 00:56:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1790927761; x=1791532561; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YvzMj0FWXdEre8JeFTQAy8sUSU4Rxxd4Ot38DPzLz1w=;
-        b=q2pldzC0W8jNsdVUSv18rMGndoBhoeWTbyF0wql1eMChMMYnfdsIKrbIExWP3YxOGd
-         MAjsf/Gb1ay8mM6P1XEcoG2eJXQAIvP9TM4c9XC/2Lr4DEtTaq9DmpnzIiGflugOZs4v
-         69tBhdL5EoSxrEiwbPwtk4ISuMa6gtGWGFvwHWYEpR+m9Z7salJMfCGn+1p841rPud32
-         nrTe1K3dwxskG3720DHq+p7qr70PBEW4fkqqCHGqItlbLSIBrjXovGfVZxBQQBXz/DkM
-         nN4aJAgjwzVr7QNKOq+x60xQf5QHNC0W41HndAtlfbWTEFzkT1hgbj0WjC5M/AqmiCnY
-         7g8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790927761; x=1791532561;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YvzMj0FWXdEre8JeFTQAy8sUSU4Rxxd4Ot38DPzLz1w=;
-        b=D+5vQySiHeNh9Y8BQcc9Dzove6iXEPYmOQSW0Rvl4Jahy/HPKYV8qI4rl4QmD0WC2z
-         f/fbVKLvdy/+7ZG06Cm4uZ7d+MbNgqyFBB+fInUUCjt1xMWRhGKPMSNKqaKaWKB2JbcF
-         PEPlxH0wzu+q57Y8W82Y+p/X3aj6jgHl5snWUOVRUDKCvvaBH3pOV32Hdzh37ubrVyA/
-         An+TlHm/cy7aI1sAOp/sb72Pcx1XdNGg3Srtk4A/dfv8Cir7pnjsSStc0cyOGFGzcYC4
-         bgjQWUFA6H38LwIcIRHZFXWC0TCm/i0MI8qgKry5W60Dhn/gCKddS95AGaISCtwi82/j
-         ZEHg==
-X-Forwarded-Encrypted: i=1; AKwUvBwszdkHasx7OVlkeakbmep9M5dZlNTjSJODcbg0kNDQOC8xp5/8VEIjay8SWRL4fd62uPUxADU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nBfm5oicqm3Wo39EbuGYahI4A8iZHDWlIGJRmfU+ubNhcDmJQP
-	csJhaga3YzZQrawIBd/FVVoR7B7pz/00hgGdE7rQe/QTgWglIql5IM/aspgDUPKkUML3I6udJnS
-	5MOhpCYr1SXNAAR2WQIgREeThTAkt1sO4e/r2NsItOz8FGNvEe7hYcIPxow==
-X-Gm-Gg: AYBFou2YmqHkfqayyR1fGmtQoBE3SdYEgrD3WfgvWEqXN2+UqW6H6njceqn0pI3j4Y9
-	TUqfw5Vbdqdfhcnloj5QHXJY898BxY4AwGPXdZJBajd9/R7gcSqzAhJ/l4DuEYuNO3qsilz54lJ
-	KvVmvgg2ey/rJKARZz6Mhf/i+QpJgMY8G/Hdv6MJvgmzI2UvCokj0bQ7GiLE9Tk/0rTuRQZINmo
-	ZpzUBLgM2pxbJ68UUk0kM1p1XjhttbBYMHUYNzEILmEHcu/bzwkfvHOkufH+ajxTv6+As0eXRpI
-	Ez7wI5D1IR1ZiD2zwrhZ3+tx+yjYSt5/uk0T5S9SCuEU4+yP0XyywEeHkVSxNx1UIhlbr5WTHiR
-	dz2qN2p6D+anUuWEpcAdzpXezLVz/RRLDqHVjdeW8cC2NUZMu6QRXAmkK6mDYBmvTvcjOJgmMug
-	==
-X-Received: by 2002:a05:600c:34d1:b0:4a0:1cfd:321 with SMTP id 5b1f17b1804b1-4a027579e86mr36781445e9.12.1790927761524;
-        Fri, 02 Oct 2026 00:56:01 -0700 (PDT)
-X-Received: by 2002:a05:600c:34d1:b0:4a0:1cfd:321 with SMTP id 5b1f17b1804b1-4a027579e86mr36781205e9.12.1790927761148;
-        Fri, 02 Oct 2026 00:56:01 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a02752aeb3sm62108685e9.0.2026.10.02.00.56.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2026 00:56:00 -0700 (PDT)
-Message-ID: <5e6b5fce-b941-4442-a8d8-3064eb4b9d45@redhat.com>
-Date: Fri, 2 Oct 2026 09:55:59 +0200
+	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="M/SAF4ZV"
+Received: from cvsendbo022.nm ([10.112.20.47])
+  by mvsmtppost23.nm.naver.com with ESMTP id +iywWdesQrerfydhEKhKiQ
+  for <netdev@vger.kernel.org>;
+  Fri, 02 Oct 2026 07:42:26 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1790926946; bh=JUFspoQNePCu3sx+33YwcWSfxBGfUaqgfYRMvB92U5s=;
+	h=From:To:Subject:Date:Message-ID:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=M/SAF4ZVfrGwM2YufxsBhUbE8wYrHQUZPGKLmWapRtSQoOdPdVFMrq4HhZbh5oZ8Y
+	 EQmrcqugBmNoDvU7P/fN+o04+PIxb5lW/1/qE1mLaS8QMGId1PAr4X5tZrA0keOynH
+	 n9W/WdZSxtJeWqFIgpZYAQuAhxrJBIwi8CnxAK1/9SGlAGY8jZNw5tq+HYhdLdS1ZD
+	 bKNcDoHjp8QMNek7ke6bHBdu02pYHzt0Q6VEvdstVirwXllVadVVSTzZFtrAVzBJSn
+	 cqkfvvTi22XoEIJY1bafL3q2oQ9Vc3jNWXOPdIjWheMKQYDdPQnWljKXxswSnTacYt
+	 /MslqwQ/DxlqQ==
+X-Session-ID: yBsmHpcKQJ2JXoj+LyXm0A
+X-Works-Send-Opt: OsFwpzGdjHmdKHFOMr39Ko3YKHm/jAudFqM9KqMqFxIYkEljxBmwjAg=
+X-Works-Smtp-Source: VqYlaAglFqJZ+HmrFAEd+6E=
+Received: from localhost.localdomain ([115.136.205.4])
+  by cvnsmtp003.nm.naver.com with ESMTP id yBsmHpcKQJ2JXoj+LyXm0A
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Fri, 02 Oct 2026 07:42:26 -0000
+From: tjdqudcks0424@naver.com
+To: netdev-bot+sashiko@kernel.org
+Cc: netfilter-devel@vger.kernel.org,
+	pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	kuba@kernel.org
+Subject: Re: [PATCH net] netfilter: nf_conntrack_reasm: avoid truncating header offset
+Date: Fri,  2 Oct 2026 16:42:10 +0900
+Message-ID: <20261002074210.140795-1-tjdqudcks0424@naver.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179089937913.434549.5874493628033954656@kernel.org>
+References: <20260929090027.200041-1-tjdqudcks0424@naver.com> <179089937913.434549.5874493628033954656@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/3] pull-request: can 2026-10-01
-To: Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
- kernel@pengutronix.de
-References: <20261001151905.1556270-1-mkl@pengutronix.de>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261001151905.1556270-1-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 10/1/26 17:14, Marc Kleine-Budde wrote:
-> this is a pull request of 3 patches for net/main.
-> 
-> The first patch is by zjamg and restores the skb header initialization
-> lost during the v7.0 release cycle.
-> 
-> Oliver Hartkopp contributes a patch for the CAN net layer to fix the
-> unique skb identifier regression under RPS, introduced in the v7.0
-> release cycle, which causes lost packets.
-> 
-> The last patch is by Ji-Ze Hong and fixes a struct size mismatch in
-> the f81604 CAN driver, which results in a TX starvation.
-FTR, I appreciated a lot the effort in keeping this to the bare
-minimum.
+From: Sung Byeongchan <tjdqudcks0424@naver.com>
 
-Many thanks,
+Hi,
 
-Paolo
+Resending in plain text because my previous webmail reply was rejected by
+the mailing lists for containing an HTML part.
 
+I independently tested the 16-bit header-offset concern raised in this
+review. The concern is valid and can cause a local kernel panic.
+
+This is separate from the existing prev_nhoff u8 truncation issue. To
+isolate the two issues, I tested a current-mainline-based kernel at:
+
+  ce1e0223d8ad4211275c82a17ed6d43ab81e13d9
+
+with only the already-public u8-to-int prev_nhoff fix applied.
+
+The reproducer sends a 65536-byte IPV6_HDRINCL packet to ::1 with the
+real Fragment Header at fhoff=65528. The loopback raw-output path
+reserves 16 bytes of headroom, so:
+
+  headroom + fhoff = 16 + 65528 = 65544
+
+This value is stored in the u16 skb->transport_header field and wraps
+to 8.
+
+With init_on_alloc=1, the wrapped pointer reads the zeroed headroom as
+a Fragment Header with offset 0 and MF clear. Reassembly completes,
+advances network_header from 16 to 24 while skb->data remains at 16,
+and inet_frag_reasm_finish() passes -8 as the unsigned length to
+skb_push().
+
+The resulting diagnostic is:
+
+  skbuff: skb_under_panic: ... len:65520 put:-8 ...
+  kernel BUG at net/core/skbuff.c
+  skb_push
+  inet_frag_reasm_finish
+  nf_ct_frag6_gather
+  ipv6_defrag
+  rawv6_sendmsg
+  Kernel panic - not syncing: Fatal exception in interrupt
+
+I reproduced the panic in three isolated QEMU runs:
+
+  1. Linux v7.2.8 as root
+  2. The mainline-based u8-fixed baseline as root
+  3. The same mainline-based baseline from outer UID 65534 after
+     entering a new user and network namespace
+
+In the third case, the process had CAP_NET_RAW only inside its new
+user and network namespace. No loopback MTU change was required.
+
+The crash runs used nf_conntrack.enable_hooks=1 to activate IPv6
+conntrack defragmentation. I confirmed from the source that an nftables
+ct expression can also acquire the IPv6 defrag hook in the caller's
+network namespace, but I did not perform an additional crash run using
+only that activation method.
+
+I tested the following minimal guard on top of the public u8 fix:
+
+  if (nhoff != (u16)nhoff ||
+      !skb_set_transport_header_careful(skb, fhoff))
+          return -EINVAL;
+
+With an otherwise identical KASAN configuration:
+
+  - the exact crash packet was safely rejected in 3/3 runs;
+  - short fragmented packets passed in 3/3 runs;
+  - the previous offset-248 and offset-256 cases passed in 3/3 runs;
+  - ordinary IPv6 UDP and TCP passed in 3/3 runs;
+  - no KASAN, WARNING, BUG, Oops, or panic was observed.
+
+I searched current mainline history, lore, Patchwork, and
+linux-cve-announce. I found the existing prev_nhoff u8 fix, but did not
+find an existing patch or commit that checks the u16 nhoff storage or
+uses skb_set_transport_header_careful() in this path.
+
+The demonstrated impact is a local kernel-wide denial of service when
+IPv6 conntrack defragmentation is active. The panic occurs before
+packet delivery, so I found no evidence of information disclosure,
+privilege escalation, arbitrary memory corruption, or remote
+reachability.
+
+Would you prefer this check to be folded into the existing prev_nhoff
+patch, or should I submit it as a separate follow-up patch on top of
+that change? I have the reproducer, serial logs, A/B results, and an
+applyable follow-up patch ready.
+
+Regards,
+Sung Byeongchan
