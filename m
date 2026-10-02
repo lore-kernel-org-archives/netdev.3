@@ -1,97 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D598847F79C
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 10:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFA13A6EEC;
+	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790937596; cv=none; b=M8remA1ZNS2rOw6/Nvf1SULs8QAL/zM86G5rqEgWxGTdY1wdKKrC/pDtakOOHh1v1uB5GIuRkDt/UD2fUX6dHaHUO9LrGYK8DT2L5vpWqm0I7YqGHulDFcx4bIiRbS6F9fE+OVz46pCh6wbA2lNAqflF9f2+84i9Rshj3jGmyoM=
+	t=1790937608; cv=none; b=L3L0BMD8Ybnlx8z8Xn/ZiJQuVhRtjoxJyPwSmCNladnM7T2f8ip6Co/RzSjndChZ/l9Jn35LVx5vSKead2XSPFp0PHvSAPKO8Tq3bKAxkup5HJu8+hUp/X01NfsXsSenVBBDHaFjY4pQq8kENHBwqeJBM6e7JlR2w4gjpO/RXxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790937596; c=relaxed/simple;
-	bh=tTO+7+ZgzFEwuxwpdIZgFN1E1eYqvPQIZEf5tpjIkME=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G6dXGCjJPUqZFbn64HYaBxXsWDbf9CCtEhjm2QnOvSco1eHRGRnB1GAJU7lBiaWMQMofO4SfFokHOsjsEb92Zp/8nWzH+iEnjHwz9iOpAxClKn1m3IgPAuAh5SkpYWCX2lI68M6eFwDACxHfiVYLF5jJtJUasb0pMO+lqu3rKOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/mZsWZd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790937608; c=relaxed/simple;
+	bh=KQ1HOpFFK/1H/Cdbs2aDLG+TrVClcAEG+HQZxLwdj6s=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=F7oX4NnDRxUEpTYhl4xiGJ+PrZnKjWSXo4ckeLvxq9seBk/0Qd8DVvj/MhdvEft0S2schvB2nZa3OkdUH2rGRsRbz+fo+vD+TorekrG2YiieNODUyRJzyNnXAX8meA4joaKRwdkoWhtAziNtFrCI0YW72HYbmOy8SscKCR3cm0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyCuXvLv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/mZsWZd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611281F00893
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 10:39:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyCuXvLv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C041A1F000FF;
+	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790937594;
-	bh=tTO+7+ZgzFEwuxwpdIZgFN1E1eYqvPQIZEf5tpjIkME=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=b/mZsWZddQJ/lQmYug2Wvt7BcP/a9sy1Y5HnCF8Xp259t+Rcl8VHhlt3ApYPUV96H
-	 uK3SfHVEDEm8I0mk9lrc6AFAenk0QEDw8uCoBztrr3eYutxx/N+VT2RNyHf6AfxAZx
-	 2zUFEsobl1evSXPPxUAKjEhPAgCt8DVpys1xVoKq0xNJN1tvEVr7sfMyUlE5tgLo4q
-	 cHzn6NjCAKuZvH4/A5QCUS/Eskj6IL13OoM/2G7Ov9zR8n2D/vIMBKkCkTZDEjAfmd
-	 v/CmISRG6eb4MHeveLJEsphVLcFWygiz8exeTGNP5jxDkWD1T5e9Oa2mNZmjyP09Qb
-	 0s9dLTj/zpasg==
-Received: by mail-oa2-f35.google.com with SMTP id 586e51a60fabf-48f0056ef38so7033384fac.0
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 03:39:54 -0700 (PDT)
-X-Gm-Message-State: AFuF++l3XcZhf5pyD6AXPZHjaIG3glcp6Fb6e/vh+OTuZZZ/tRYckoND
-	wnvLndGI2Jkdiqyph5DQZ+6xra+v2XTKbt58/68sMOr99twVydQf2wXuXEgxXupJizBIVNlCJA2
-	7ILCJROVf4YPj1bLTC4mqmkZUQLOtJ/8=
-X-Received: by 2002:a05:6870:d1c1:b0:48f:e0f6:bd65 with SMTP id
- 586e51a60fabf-49e15e8b5cfmr2201401fac.54.1790937593711; Fri, 02 Oct 2026
- 03:39:53 -0700 (PDT)
+	s=k20260515; t=1790937606;
+	bh=r4INfRqpxT7YhPd+W06NysuXddY9wGvptiUPCAUf84Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=lyCuXvLvrukBpLA5Oi0fuVfgDeW7EReHHvoKZu6zcpIWq/1NDdNVlVB11rBiizCn7
+	 ULtta7vJTQso8vCLmTCzRS+obSLOuhGqjYEI2V+SXCV7vkIWWN7Rq3YtdzhcUYSPJh
+	 8d2mJlulPkrCQCG1TaesS9XxTloiQ9iL4b3PWTTgZzMn7JAj3Zcs3FvzxycawVB1lj
+	 brOGbKH8dvgzsZGDa2SemNmROVp+X1U8YPbzRDc0n3fj1DrHYhpKuF+flS9nXmzFCS
+	 A0TpJHnOHU6a6+oE1c2RhRnnJWnQNh8Oj+Sve7hRxLGqT7CS8Q6O2UbmFtFksdRlrP
+	 yW8ECfZto62Wg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B448C38119E9;
+	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1790850176.git.petalzu987@gmail.com> <5c396b7011168cd98b9812df4d6bbd00a96048e7.1790850176.git.petalzu987@gmail.com>
-In-Reply-To: <5c396b7011168cd98b9812df4d6bbd00a96048e7.1790850176.git.petalzu987@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 2 Oct 2026 12:39:42 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiraPM45Sc40gfVjrY2caV1b-1ORV2wSXRz9mCAyF8RWTw@mail.gmail.com>
-X-Gm-Features: AclHuK_KzuaoxAaxooJQgOEV52rWy5JlXa4Dt-2pqaZymTfVEsyhqo48AuRTiqw
-Message-ID: <CAL4WiiraPM45Sc40gfVjrY2caV1b-1ORV2wSXRz9mCAyF8RWTw@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/1] ipv6: defrag: orphan skb before queuing
-To: Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, dsahern@kernel.org, 
-	idosch@nvidia.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, joe@wand.net.nz, ast@kernel.org, kafai@fb.com, 
-	vega@nebusec.ai, petalzu987@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/1] net: allwinner: remove dmaengine_desc_free()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179093760553.3349832.499337152312400934.git-patchwork-notify@kernel.org>
+Date: Fri, 02 Oct 2026 10:40:05 +0000
+References: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
+In-Reply-To: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
+To: Frank Li <Frank.Li@oss.nxp.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, wens@kernel.org,
+ jernej.skrabec@gmail.com, samuel@sholland.org,
+ bartosz.golaszewski@oss.qualcomm.com, andre.przywara@arm.com,
+ phucduc.bui@gmail.com, arnd@arndb.de, kees@kernel.org, liyouhong@kylinos.cn,
+ Frank.Li@nxp.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, vkoul@kernel.org, imx@lists.linux.dev
 
-On Fri, Oct 2, 2026 at 11:25=E2=80=AFAM Ren Wei <weir@nebusec.ai> wrote:
->
-> From: Zixuan Chai <petalzu987@gmail.com>
->
-> IPv4 and nf_conntrack fragment queues orphan skbs before returning
-> -EINPROGRESS, but ip6_frag_queue() leaves the socket association intact.
->
-> A socket installed by bpf_sk_assign() may use SOCK_RCU_FREE and be releas=
-ed
-> while its fragment remains queued. The skb destructor can then dereferenc=
-e
-> a stale socket pointer.
->
-> Orphan the skb before returning -EINPROGRESS so the queued fragment no
-> longer retains the socket association.
->
-> Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: LLM
-> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
-> ---
+Hello:
 
-Thanks for the v2.
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-The changelog should describe the crash you actually hit:
-inet_frag_reasm_finish() clears fp->sk on frag_list skbs but leaves
-fp->destructor set to sock_pfree, so freeing the reassembled skb calls
-sock_pfree() with a NULL sk.
-Please include a trimmed stack trace.
-The SOCK_RCU_FREE stale pointer is a second consequence of the same
-missing orphan.
+On Tue, 29 Sep 2026 15:06:36 -0400 you wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> dmaengine_desc_free() is designed for DMA_CTRL_REUSE. If DMA_CTRL_REUSE
+> is not set, dmaengine_desc_free() will return -EPERM.
+> 
+> 	if (!dmaengine_desc_test_reuse(desc))
+> 		return -EPERM;
+> 
+> [...]
 
-Please also mention 18685451fc4e ("inet: inet_defrag: prevent sk
-release while still in use"), which moved skb_orphan() into
-ip_frag_queue() and nf_ct_frag6_queue() but missed ip6_frag_queue().
+Here is the summary with links:
+  - [1/1] net: allwinner: remove dmaengine_desc_free()
+    https://git.kernel.org/netdev/net/c/71a77ab76e74
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
