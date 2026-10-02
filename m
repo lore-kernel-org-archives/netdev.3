@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC11395AD8;
-	Fri,  2 Oct 2026 08:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7658344C4FE;
+	Fri,  2 Oct 2026 08:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790930263; cv=none; b=jIbyHKmfRH20fuazU1/VGEOg1V9aKaDJXdWtD+uiwkzo5XgTmfoRKELo0867v33RWbG03g8S1KmcRls3GnNjWUJ6K+MefU/ayL+XKHtBsMmTz1mzIU5O8Qi8+3APIQ6sucKu4a0K2yyz7WpZrZUeXkCx/tOagLED4dTWwzURZz0=
+	t=1790930264; cv=none; b=m8pTSqkXZiUc76oP8EjBtZyghmHOuRlaqw4gRf9Tg58QO/n2Xi1jtv1AIUXxUrOdiQRUTb8Zp/duAWu680vO/4eyKAPV6EBByBkUbPpm4q/bkqyF4NZl/3I5+6kDJdseu5oqpfFuDW40BndU1YWB/m2DKBLpRO8C363F/Xh7ctU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790930263; c=relaxed/simple;
-	bh=zwKxJ8BSNXk5YFNwJAEDcLQadUSsizPm6GsvyXwruIY=;
+	s=arc-20240116; t=1790930264; c=relaxed/simple;
+	bh=VZvy7b8gg8LxwDcWP30VQpZf+d1pkZHMpIdfMQtzQgw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iy12B5UGqrrgJoYx7ufTmVdky+TQn2y93vSH1VD83XMRrBgXXJQSUrM821W6tgiIIkSQDlbnKtibpCyb9n/G/xCqxLsHasamoqbhwceqP9GZ7h5nCHGCK1HbdLMUxJ5BzTmL4sRkJwxgoP/pCJ84CFATx+Gj6HPnmo3mXeMoZl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9DOctvi; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pEEnxC5lTroMp8ke9p/1DFn2kUTul9tDPXt8rW94Fzfq6xGzGgp9HwEvyq+JFj6Ps/pkwm5WMH4XJJA+Dg76ddx715yBVxxspMQ3BA3Yh77RiUDKl/zowNdDT+nzTJbwUuJYNLmpc+aBacsHxK9zZan0sr4VtXy5b41BhVdBVf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L7cxux2w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9DOctvi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09C71F000FF;
-	Fri,  2 Oct 2026 08:37:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L7cxux2w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CFD1F00893;
+	Fri,  2 Oct 2026 08:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790930261;
-	bh=oiFPi2Kqx80dkvEl/4oayuyKZoKEikHs2ABs0LVDYKw=;
+	s=k20260515; t=1790930263;
+	bh=Ca3NJmloy5CY1dK3ZsDSlMX2KFBwCZJbczLgVJy9Vb0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=B9DOctviWFC46yM2NNuWsM7SNkc8a6QW0Oztuax4CKi1qhdy+uEsW1Vxa4WCd/pes
-	 9bg2mu/BOTRXgisfelFo+e6n53Oz26Sic7CqoUXLRb2d17FXLIjGabuBgVfOOJCsrb
-	 HhQSS0cHoF79MMr6fIOxkdn3aPHn//qGEwymCHXXb/EgQAsmON1JB8gF4hCccwUuxs
-	 TmO03WBuuN4UGVkZPxww9K/iqJ5FDjA9rCQi0ftgqjKBlfp3JdkMUckBtI5UG1SHdC
-	 Td/BJnMdekzVoxoVaeNX09tdplBMuUYPJEOlmEl9Z1aOIqwfkZlJy/Hux58PiWV/fo
-	 8ywT+2mVmn72w==
-Subject:
- Re: [PATCH net v6 1/5] net: stmmac: Remove VLAN perfect matching dead code
+	b=L7cxux2wcZaU+JAQJJPDtAo8C0VkdEHKSchMkRJnTtk4w3U5vo2jHZOzknN+bek/d
+	 V4EYVx8MKy7sEmc3HoI94Ii+CCaPj5o2ATsQ3d+8kDvH59YKj9ZA8zrSGC4Zs4SD5J
+	 D9N4gwy6y1TV2XIpvNb81HlhViWTPh6tG/3vTKV6IVlplEn7hEXrIX8nJfs6SXuly+
+	 8XErtRchny2PAnkNkUFwHOdK37BaShRi2SKrs4B88IEqpXtjT/LWuWhJrBDotEmZgO
+	 dSzWSbZU3q+iotfoC7+/f92e9sv24mn2t4t5cPVADj/GQbASM3xDtCYePtFgLG0QhE
+	 MjCpdLbBteK0Q==
+Subject: Re: [PATCH net v6 2/5] net: stmmac: Stop toggling the EDVLP bit
 From: netdev-bot+sashiko@kernel.org
 To: ovidiu.panait.rb@renesas.com
 Cc: maxime.chevallier@bootlin.com, recv.jo@gmail.com, andrew+netdev@lunn.ch,
@@ -36,11 +35,11 @@ Cc: maxime.chevallier@bootlin.com, recv.jo@gmail.com, andrew+netdev@lunn.ch,
  jun.ann.lai@intel.com, yi.fang.gan@intel.com, netdev@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Fri, 02 Oct 2026 08:37:40 +0000
-Message-ID: <179093026044.434549.8453700533744395096@kernel.org>
-In-Reply-To: <20260928203441.34876-2-ovidiu.panait.rb@renesas.com>
-References: <20260928203441.34876-2-ovidiu.panait.rb@renesas.com>
-X-sashiko-severity: Low
+Date: Fri, 02 Oct 2026 08:37:41 +0000
+Message-ID: <179093026198.434549.6427889648540734554@kernel.org>
+In-Reply-To: <20260928203441.34876-3-ovidiu.panait.rb@renesas.com>
+References: <20260928203441.34876-3-ovidiu.panait.rb@renesas.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,131 +49,150 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
-- [Low] This patch removes the only code that ever read
-  priv->dma_cap.vlhash inside stmmac_vlan_update().
-- [Low] The commit message's second reason for removal is wrong for
-  XLGMAC.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The COE benefit that the commit message gives as its reason
+  for this change never shows up in this tree.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is still
+  there at the end of the series for XGMAC 2.10.
 
 --
 
-net: stmmac: Remove VLAN perfect matching dead code
+net: stmmac: Stop toggling the EDVLP bit
 
-This commit removes the perfect-matching fallback in stmmac_vlan_update().
-That fallback was used when the VLAN hash filter is unavailable
-(!priv->dma_cap.vlhash). The commit also drops the perfect_match argument
-from the update_vlan_hash() callbacks, together with the matching branches
-in vlan_update_hash() and dwxgmac2_update_vlan_hash().
+The EDVLP bit is no longer set and cleared in the VLAN hash update paths
+when an 802.1ad VLAN is registered. It is now always set from
+vlan_set_hw_mode(), and a new dwxlgmac2_set_hw_vlan_mode() callback sets it
+on dwxlgmac2 as well.
 
-> The fallback is also duplicating the code in vlan_add_hw_rx_fltr(), which
-> is always available since stmmac_get_num_vlan() returns at least 1.
-
-[Severity: Low]
-Does this hold for XLGMAC? hwif.c maps XLGMAC cores to dwxlgmac2_vlan_ops,
-which has no add, del or restore filter callbacks:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c:
-const struct stmmac_vlan_ops dwxlgmac2_vlan_ops = {
-	.update_vlan_hash = dwxgmac2_update_vlan_hash,
-	.enable_vlan = vlan_enable,
-};
-
-dwxlgmac2_setup() also never calls stmmac_get_num_vlan(). Only
-dwmac4_setup() and dwxgmac2_setup() do. mac_device_info is zero-allocated,
-so hw->num_vlan stays 0 on XLGMAC, and stmmac_vlan_rx_add_vid() skips the
-num_vlan block.
-
-On XLGMAC, the perfect_match branch removed from
-dwxgmac2_update_vlan_hash() seems to be the only non-hash VLAN filter code.
-It is not a duplicate of vlan_add_hw_rx_fltr().
-
-The removal itself still looks safe. The first reason in the commit message
-holds, since the filter features are only advertised when
-dma_cap.vlhash is set. Also, the removed "pmatch = vid" ran after the
-for_each_set_bit() loop, so it only ever programmed VID 4096.
-
-Could this paragraph be corrected? Otherwise reviewers and backporters may
-assume XLGMAC keeps a perfect-filter path.
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+> index 983a90cb9767..200b34588c7f 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index ec62fa7418f4..bdb856291340 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -6853,29 +6853,18 @@ static u32 stmmac_vid_crc32_le(__le16 vid_le)
->  static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
->  {
->  	u32 crc, hash = 0;
-> -	u16 pmatch = 0;
-> -	int count = 0;
->  	u16 vid = 0;
+> @@ -222,6 +219,7 @@ static void vlan_set_hw_mode(struct mac_device_info *hw)
+>  	void __iomem *ioaddr = hw->pcsr;
+>  	u32 value = readl(ioaddr + VLAN_TAG);
 >  
->  	for_each_set_bit(vid, priv->active_vlans, VLAN_N_VID) {
->  		__le16 vid_le = cpu_to_le16(vid);
->  		crc = bitrev32(~stmmac_vid_crc32_le(vid_le)) >> 28;
->  		hash |= (1 << crc);
-> -		count++;
-> -	}
-> -
-> -	if (!priv->dma_cap.vlhash) {
-> -		if (count > 2) /* VID = 0 always passes filter */
-> -			return -EOPNOTSUPP;
-> -
-> -		pmatch = vid;
-> -		hash = 0;
->  	}
+> +	value |= VLAN_EDVLP;
+>  	value &= ~VLAN_TAG_CTRL_EVLS_MASK;
 >  
->  	if (!netif_running(priv->dev))
->  		return 0;
->  
-> -	return stmmac_update_vlan_hash(priv, priv->hw, hash, pmatch, is_double);
-> +	return stmmac_update_vlan_hash(priv, priv->hw, hash, is_double);
->  }
+>  	if (hw->hw_vlan_en)
 
-[Severity: Low]
-This removes the only check of priv->dma_cap.vlhash in
-stmmac_vlan_update(). Do the "(perf)" ethtool selftests still test anything
-different from the hash tests now?
+[Severity: Medium]
+The commit message says EDVLP is kept always enabled "so that COE can work
+for packets with an inner VLAN header". Does the driver actually use the
+checksum offload result for those packets?
 
-stmmac_test_vlanfilt_perfect() and stmmac_test_dvlanfilt_perfect() in
-stmmac_selftests.c still toggle that capability to force the perfect-match
-path:
+stmmac_has_ip_ethertype() in stmmac_main.c rejects any frame that still has
+a VLAN header in the payload:
 
-drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c:stmmac_test_vlanfilt_perfect() {
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_has_ip_ethertype() {
     ...
-	priv->dma_cap.vlhash = 0;
-	ret = __stmmac_test_vlanfilt(priv);
-	priv->dma_cap.vlhash = prev_cap;
-    ...
+	proto = __vlan_get_protocol(skb, eth_header_parse_protocol(skb),
+				    &depth);
+
+	return (depth <= ETH_HLEN) &&
+		(proto == htons(ETH_P_IP) || proto == htons(ETH_P_IPV6));
 }
 
-With this patch, adding VID 0x123 makes stmmac_vlan_update() compute a
-non-zero hash and always pass it to update_vlan_hash(). As a result,
-vlan_update_hash() and dwxgmac2_update_vlan_hash() set
-VLAN_VTHM | VLAN_ETV (and XGMAC_FILTER_VTFE on XGMAC), whatever the vlhash
-toggle says.
+On RX, EVLS=STRIP_ALL strips only the outer tag and EIVLS is never
+programmed, so the inner 802.1Q header stays in-band. Both stmmac_rx() and
+stmmac_dispatch_skb_zc() then drop the hardware result:
 
-Before this patch, the fallback forced hash = 0 and cleared VTHM. That left
-only the perfect filters programmed by vlan_add_hw_rx_fltr() active.
+	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb) ||
+	    (status & csum_none))
+		skb_checksum_none_assert(skb);
 
-The "VLAN Filtering (perf)" and "Double VLAN Filter (perf)" entries are
-still registered in stmmac_selftests[]. They now pass on the hash filter
-alone, because the test VIDs 0x124..0x126 fall into different hash bins. On
-XLGMAC (num_vlan == 0, no add_hw_vlan_rx_fltr), they don't exercise perfect
-filtering at all.
+On TX, stmmac_features_check() clears the checksum features for the same
+skbs. STAG_TX is not advertised, so a QinQ frame always has at least one
+in-band tag:
 
-These selftests also seem to stay as they are later in the series. The
-later rename only changes the dvlanfilt names to svlanfilt.
+	if (priv->plat->tx_queues_cfg[queue].coe_unsupported ||
+	    !stmmac_has_ip_ethertype(skb))
+		features &= ~(NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM);
 
-Should these two selftests be removed or reworked as part of this change?
-Otherwise ethtool -t reports PASS for perfect filtering that is no longer
-tested on its own.
+This holds whether or not EDVLP is set. No later patch in the series changes
+stmmac_has_ip_ethertype(). The later patch "net: stmmac: Rename double VLAN
+references to svlan" also says "the networking core does not support
+offloads for the inner tag anyway".
+
+This patch changes VLAN_TAG programming on all DWMAC4/5, XGMAC and XLGMAC
+cores. Could the COE rationale be dropped or corrected in the commit
+message? If COE for inner-VLAN frames is the goal, does
+stmmac_has_ip_ethertype() also need updating, along with a Fixes: tag?
+
+> @@ -254,11 +252,9 @@ static void dwxgmac2_update_vlan_hash(struct mac_device_info *hw, u32 hash,
+>  
+>  		value |= VLAN_VTHM | VLAN_ETV;
+>  		if (is_double) {
+> -			value |= VLAN_EDVLP;
+>  			value |= VLAN_ESVL;
+>  			value |= VLAN_DOVLTC;
+>  		} else {
+> -			value &= ~VLAN_EDVLP;
+>  			value &= ~VLAN_ESVL;
+>  			value &= ~VLAN_DOVLTC;
+>  		}
+
+[Severity: High]
+This problem was not introduced by this patch. It is still present on
+XGMAC 2.10 cores at the end of the series, though.
+
+Registering an 802.1ad VID follows this call chain, with is_double set:
+
+stmmac_vlan_rx_add_vid()->stmmac_vlan_update()->dwxgmac2_update_vlan_hash()
+
+That sets ESVL and DOVLTC. With hw_vlan_en, which is the default on XGMAC,
+vlan_set_hw_mode() also programs EVLS=STRIP_ALL and EVLRXS. The MAC then
+strips 0x88A8 outer tags and writes the TCI into RDES0.
+
+dwxgmac2_wrback_get_rx_vlan_valid() accepts the S-tag packet types:
+
+	return et_lt >= XGMAC_ET_LT_VLAN_STAG &&
+	       et_lt <= XGMAC_ET_LT_DVLAN_STAG_CTAG;
+
+However, vlan_rx_hw() always reports the stripped tag as a C-tag:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c:vlan_rx_hw() {
+	if (hw->desc->get_rx_vlan_valid(rx_desc)) {
+		u16 vid = hw->desc->get_rx_vlan_tci(rx_desc);
+
+		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vid);
+	}
+}
+
+Won't S-tagged frames then go to an 802.1Q upper device with the same VID,
+or be dropped, and never reach the 802.1ad upper device? The software path
+in stmmac_rx_vlan() does tell ETH_P_8021AD apart, so the two paths disagree.
+
+The last patch in the series, "net: stmmac: Disable S-Tag processing on
+dwmac4", stops advertising STAG_RX/STAG_FILTER only on dwmac4. Its commit
+message says the XGMAC tag type can be derived from ET_LT. Yet vlan_rx_hw()
+is unchanged, and XGMAC still advertises the S-tag features in
+__stmmac_dvr_probe():
+
+	if (priv->plat->core_type == DWMAC_CORE_XGMAC)
+		ndev->features |= NETIF_F_HW_VLAN_STAG_RX;
+
+On XGMAC, should vlan_rx_hw() use ET_LT to report ETH_P_8021AD, or should
+XGMAC also stop advertising the S-tag features?
+
+S-tag recognition appears to be controlled by ESVL/DOVLTC, not EDVLP.
+Setting EDVLP unconditionally here does not seem to make this worse.
 
 [ ... ]
 
