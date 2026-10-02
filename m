@@ -1,310 +1,486 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011064.outbound.protection.outlook.com [40.107.208.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f33.google.com (mail-dy2-f33.google.com [74.125.229.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10E0385D90;
-	Fri,  2 Oct 2026 05:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790919241; cv=fail; b=NXSiNwAJGY3eRuoPLlelpYy7Nm3qjCjU+QXcHhviDUJIc6TQqlGVk56zE+XeeoFZCnuasOBkw81yleVp1Dj38QfvV+1ySSVSqqgUkI6L2AhsJ//GvKmcYBe32a8qppffZA25EzmT4XLWQeouqGHScFto4jmvtnPCEElrHON/v5Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790919241; c=relaxed/simple;
-	bh=Y0sHUyIM77be/vp4pU/0rsGMGPpc0KAQilB+BTH1nmc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=j3Gti5uUmLP3wSFjkablMnm3et86Ji4EgP81evCzUX+xlLrpKQuXEZ7XuMrr9oUk57ECOD1wmcvKxO68auWKRP5aAjrnofPzGoj7LK2xowdnoPRk9tEJuXoen8lAR1eHT2+XbQHbC6XQmOxtRdeGCJU/OMQggwjYP8p4cgCCQyo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Cbyz+Gt7; arc=fail smtp.client-ip=40.107.208.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E38370D79
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 05:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.33
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790919529; cv=none; b=XneqDCT6op0kdSulaVMS1CBNlJ5qJsTSpHRjb5g+9A5gwNOxzbxGcOw6wjSpaoIj4VdG038Y3eQmIvLI4xvkrkv33Lk+qAo6KV577h9Wm4ancmt0ocGdH3Vy2S0UrfPpHhnG13/HWS+gpV1HdRocavUuU0h4uMrM+75hxaJYogE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790919529; c=relaxed/simple;
+	bh=w1vTCwqCmyqKDX1WddgRMs5U/S2CLxsTCVfYt3Dp6Tk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tHanYCRXJpiJoDr5iUEGwA6TMU7+wcYf6vXzp0I6qtLm/5rEQIyJfC2cX4GlMkP+tR853j49x5P9ZRqfDB9yDreAbuiL9RLVWkqzEwMCYCcy9ng973JCGojmb50tc9kN6AF6xNKxMpQsbjD3hoPrPHVYQnZJpM93nEfrAvSHLPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4f6Tcjq; arc=none smtp.client-ip=74.125.229.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Cbyz+Gt7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qx/DHZCS1XRMz4T71WMI1K7xJ0nRAUWWYMbNmeQBRU/Fcst9bLYeZ34buqMLn5Ls8T3iRCdnkfMrLt/V+IEikAtRvDFukTh1ntd9kr0bHoHKNjoGGqgNQAJq5nL+kuazxRmacoNGj6SSlWNk65porRpjm20ipQ2aWdx0FEPciS0m6gOe5n/GVt964GhPUaXWJmfdTLleQRqWUqw9zQMHCHIQhfPzujJZerkkfRQhRxCzcH/5zlGCm/wwVIxjBzzV3YwK4yzdV7HjFeVG8Yuzdv63saQ+sQ5YEOzFJiTx25QRszde1x+M+5BCw/1BAKeKTvlT8yxAQFLSnxp/GdQ5yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a6PnmGx1B5Jvs2n9jY1BARUtVpEfPo5BR4gGuVFe9o8=;
- b=tHcUDCjJu335ysF5ykoxOhGWsWObZWeFDa1Wg6PfTsXscgvncGFn1OSo2ApQpK/j/IDGkIpcXE47IqOeH2TsELabDGC5aN4bbiy4EtU5cPNdzwBa+BXInsEYj+NTy4+8SM5+472aBNfht5IXzTQucGCsQgJZ/Z2xec1PNjTl6RyvRvrXDMOwSM9tH0wh32ucyiBNEdFpex8iTMD5Ud4hIZUdckknKbhp5fz2goEfi4Z3qquB+JszwQKXPLOldaNvB19/L2wWhCImA59lgGX9QVRFQdz81aV3OE2xH2v6J+GXU2gx2z6HG4x4F71vOUqEyMzi1GgoFNdGUY4R27uHGQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a6PnmGx1B5Jvs2n9jY1BARUtVpEfPo5BR4gGuVFe9o8=;
- b=Cbyz+Gt7NRLvlQzawDvuvuKd1otKy0LdoTysx89KeqNSLseW1nQ0JsPPnmdV6br46hdGsQoe0gsP8eN0amy964dXmOYZQQe5BA3i2HhkgHFTTGNzUA/bPCj4mfsoSN4V3ENQN0sPKir26LzxBZn+R50NF5F776MHT0l9nnVvibQ=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
- MN0PR12MB5836.namprd12.prod.outlook.com (2603:10b6:208:37b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Fri, 2 Oct
- 2026 05:33:53 +0000
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1%4]) with mapi id 15.21.0451.022; Fri, 2 Oct 2026
- 05:33:53 +0000
-Message-ID: <dcfb10e7-d07e-452b-974a-7e949c809465@amd.com>
-Date: Fri, 2 Oct 2026 06:33:48 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] sfc: add multipf support
-To: Dave Jiang <dave.jiang@intel.com>, alucerop@amd.com,
- linux-cxl@vger.kernel.org, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
- rafael@kernel.org
-References: <20261001132023.17032-1-alucerop@amd.com>
- <20261001132023.17032-5-alucerop@amd.com>
- <57254762-04e8-4a98-9265-5376f75a6f3c@intel.com>
-Content-Language: en-GB
-From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
-In-Reply-To: <57254762-04e8-4a98-9265-5376f75a6f3c@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0116.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:bb::16) To DM4PR12MB6254.namprd12.prod.outlook.com
- (2603:10b6:8:a5::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4f6Tcjq"
+Received: by mail-dy2-f33.google.com with SMTP id 5a478bee46e88-347866278b6so2737797eec.2
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 22:38:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790919526; x=1791524326; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yyDqLLqFV/rqc17tkYdS3jusC5HzkW230guq0WC+SSc=;
+        b=b4f6TcjqAKfRgw5/f9aVpsBzlK+vf8uwA/nA629F8xcuRm0vGdNDw3/WEp00m2aw7c
+         VFnL6VR/pFoA+md3i9iLFlWLNHFNAd6Ux5bInkuLAVHjgoY7O/X8ZqQJ9Pc17wtzztCf
+         J9UT+nOJz/3jcVnALUzU2IIBN46dTp5atYlNa1Hgv9Yd5i7i9Sxl4ErDbXZ09R+QWzgi
+         qfI++Nzhat+8lPPwBiDjCIFuGNeJvVusgxHlg9u1+auMDJL2+dCz49+xZd21XzhVftCr
+         aK2berMbRCuHF/ivRxlMS5hQ5RTDqjUjwNXA3IlpfDTq0oMNoh4bR9Kb9DelsK4kP8lM
+         P1sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790919526; x=1791524326;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yyDqLLqFV/rqc17tkYdS3jusC5HzkW230guq0WC+SSc=;
+        b=PcmAGBCyAHt3ifn6qnLEoHIkIopiePNpfVx40GR0ZxeBhkU7FMukyF9CfrOILqs9vr
+         MdsPMCT/dmbdzIEUcesJzznEkgCZaiRsitDzwLwU7emVA8d3kQ0e5OgnD3lWq7ruI7Nb
+         VX1kbcCtx8Yq4381CpXnLsiacMks4cduzbQ/Pgr8PTPRZqjcyP8/yDjLmUvV7Cr6DobV
+         zK2NsZSQM/dHUKW8ABV5s+CMRevcHTUgMrQYbZAl/lpA0qzkf5yHzw6vzaOFapxUpE8h
+         ojo44uuyYTB2IaOOv0i/H3Iw0muGnCn414zMJsjNuO+N0MNDBeSm7BQrfkHdKpNbGLLr
+         h1tQ==
+X-Forwarded-Encrypted: i=1; AKwUvBySDBDIwzfczOcR/DOEp2AvkIRmLfoWNI7Cdj43Y4n19zLwS04Y41cDGoR64h9nG+/7eUJ+4sg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8gLIq2yymvlI6m4dJV9ifpvOKbxPDEpzGYPHrbh2B8p4F0+4z
+	mqcRs2QoKsII9aB2XanVvMgc2YepvlTlEOx6zWihcVBhUg8qNZhqsmwB
+X-Gm-Gg: AYBFou2vTwlBcxRq+R2647luZ9Sl/N4fH3VwSOXN5I+9iDSItDWTR9c7n4fYV5j/on7
+	BxXSnE7JPiWgm4rqDQsHQ1oLkosAyAK2MxEmP3QYL3u2Gp8+3yI+dzn1HDX8J4ix5RQCaD/yTOy
+	Mu/DaTqL6xdoHhLDYJLTyBE9/cgGSqZ9feDoIzAFHhN6xnQq/FAEV2oKLAVIsCoiBCdw+CPiRmA
+	Sd/e+dMqOAoO/KWkCOpot7rDpaaucLS2VqeTuNdaQSa+FZ7qWAI+cYU06jfk+z6NSmTb1RUudLf
+	8498UIyqsuP+CTfBUiY2s5gtNMaFSGfvQ0PQf188xSggmLBOoitM4jyhUCzUjuF4srApbYGylZ7
+	oVhQDnWoET9tyQKu29jo8XFV0SNRtj+ucegyKkwmTx1Q41HR5JSwZBoox3E/WhxBpLR4iwlfLVM
+	bLF9bi0ChEdb+++I/zXCrP6hhgZY783FXUaPaXlsBJ1SCwxorMLrZPf8augnbGhYE8o+Baphg/b
+	LG5S621YHiNn3NT9b4mjHJYIcdiqc9bZaOw6bxpwwqgaXpeaka5wVF/wqV/LI9Paq2jnqVJBoW8
+	kC2ZFoT16KX0o6/5/hTnMlAN1fNU5KqlIXUsB6Jg3DU=
+X-Received: by 2002:a05:7300:fb91:b0:34d:4a08:5ec7 with SMTP id 5a478bee46e88-34f14488744mr3174901eec.1.1790919526098;
+        Thu, 01 Oct 2026 22:38:46 -0700 (PDT)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34ef98d925csm3536041eec.0.2026.10.01.22.38.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 22:38:45 -0700 (PDT)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	shuah@kernel.org
+Cc: sdf@fomichev.me,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Anil Kaushik <anilkaushikwireless@gmail.com>
+Subject: [PATCH bpf-next v3] selftests/bpf: add XDP test for per-flow LRU_HASH window updates
+Date: Fri,  2 Oct 2026 05:38:37 +0000
+Message-Id: <20261002053837.3494918-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|MN0PR12MB5836:EE_
-X-MS-Office365-Filtering-Correlation-Id: e74c0ecf-1d38-4d6f-970b-08df2046bef8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|23010399003|366016|1800799024|376014|22082099003|18002099003|56012099006|11063799006|4143699003|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	4J2dqCfnGYsxfXez+FpvHDBlHbc4GiWyIViLGxRCB/hw0fIjfYrgWXoS9rDzFdREeDcmPnERnuVacre4nUI/PGv/+JvGs9uEXjYCMPzn2qL1+BFsyqrkKrEYirjKJ7Upu6Z66l8hWAcsiMmuH5sSTmYcnyhZJyds2yNapHK2q6AHkrF0AhIKxvLr1GQyt2f/OnHPCe99W3dlkkqcCCcN13R/LErpvZjyNPmnzfm+9tdH5oBdf8ihYPt5QW2DAxK3ZTDm+6x96E4Hto2z0djtGnLVD3es3NwveaCC41mJC334tSRGHmZttqBjbiRkahqpg3yXiwRkIAD0+HjWD6QQTOHQ2DkPTMdMq4roYk/HcP73QfzC9aWLb+RuAm79R56pIjpr2SO0ylW3nZr8qiV3bj/YaFx6/+FfIvvNLDmH7kgFnVuNqQYbQEre/MV0xC6VyTe9EVmhFC4IMLZlvKCVUElTzeEoUAyVIlk9nrUUUSHQ1Ld00JmGqbghI9X4XqycagVCAVfvuawb5Ppexgx7/bSAwwUFD4QKOFDKdnP2tK4a9gnoeZ7rr09WDUfYYMc00Q7VMaQRpOzoySq4PKCHh5pRuUe1JAPOKJHYX3ViFL1ID4T8AsogwmJKeruxMLTBqgBwOUjv6rYC4ZebqiukMcfaeHr2AtKGzlcpFDQgx9Y=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(6133799003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dkVuMlZuLzNaVjhsYkMzS255SFJGNzVYT0kxYU9OSnFlaXRZYTdybUZ1RVdU?=
- =?utf-8?B?dXlNS0NObmt0MEZCSE5YQ3JkeXg4dy9OLy9rVitMcXc2SWpvUy9uaGZNbnJa?=
- =?utf-8?B?OGtWc1hzQUx3dHdhaUt1Ny8zTDZ1Y0w0bTdvZ2ZJNTdtOEgyRGF5QVJuay9s?=
- =?utf-8?B?T0MwZGZIZTc0U0VXUUtvazhDUVlwNUVOdGRkTnpnYjY1V1RxUXhJQXlLSTk3?=
- =?utf-8?B?c1BsY0RqTUxpMmdoakZVODIvZXpLa3Z4bkxmMVlUREQ1U0VmSjJLM0hieFRH?=
- =?utf-8?B?SURmQmVXa2Ftd0wreXZ3cW5WWnVNaVNwZ0Fmem11RVZ2ZzltTHRMamJ2WVBh?=
- =?utf-8?B?Z0tXRXNYbWVmRlJ2SnRQa3NJVEQwS1JsU29pT1F2RjBEZktsdGRtbEdWTm5k?=
- =?utf-8?B?UGNEaTJzanR0RzVvdUhEMTlxSHpOd01XVEU2WHVqbUxCRURjRHlzYjBEME5X?=
- =?utf-8?B?OWwwdnhNUkxDNUVvTHhpYTFJU3RGc2lHUlJSaEtwREgxMG5md28xN2tzTHlJ?=
- =?utf-8?B?bjU5elcreFV1SE44YTFaSHdSZGppanp4Qi8vMkw0c0ZsOHBZY1FpYW1ESFQx?=
- =?utf-8?B?ZFcrVk8zWUxvNU13TlBlMk9DdkUzT0RCZ1BhNU1yUTFwdGlzWm9INW1Bdldy?=
- =?utf-8?B?bHVERTBUVEpMUExjbjBsbEl0YVBsaVJTM2d5WDBXSWc4eVI2UU1aUmkvc1Yw?=
- =?utf-8?B?bWhMbEt3WTc2ZFpnQnF4QTVHbXVOdFdGYldra3ZPT0xTZTh2YmRtL0Y0UTNL?=
- =?utf-8?B?VjNRUzgzRm9FY05sYWtlZEpoa0o5cFhTckx2dGpCdmgxNzFlUGsrYnBkcmZZ?=
- =?utf-8?B?bnhOZlovTTBucFltVWwwYWxlQ2MvVE5SYjJJTTdVMXJYY0ZpTm9qblpsVHJC?=
- =?utf-8?B?MVQyTTdGUlVuTWdCaWx5UFB2c1FjeUw4WnBCMlE5aDhmOGlNd0llNExwR2pi?=
- =?utf-8?B?RDB0SG5HdEJxbU9lTkpVUzdBL29LZWZpSUFidWc1QVJTYTBWOUpHckdBQlhz?=
- =?utf-8?B?ZSs2RHFyb0tqM3Y1a3ZXUGViM291UVczdC9EL2wzcktFMjhvQkdxRUhmblQw?=
- =?utf-8?B?OWN1UUxBRzlRS0FuZWNpTzhwbjNSZkFWUVExU1JhTnBJM3RLeTUvclh2ZFBl?=
- =?utf-8?B?eVhXb2RrSXZsY2lDNjBRQm9yWjZVb2liazRlNmw5eVJ6VS8wbG10R2ZZaGMx?=
- =?utf-8?B?NW9OSlR0dW15enowa2dKZ0JUOHdURDhCWXJnMlBqeW1ZVDdLZ1JNTHZXWlpw?=
- =?utf-8?B?c0FMN0JYUHZjdkxTVmVJbWgvWmg2TkgzbG9KdENmNURDTVRHVHVmbERndzB1?=
- =?utf-8?B?NFB3U2xsRWVrdkJDZDd3dWZPWHNNTjFJcTZiUUZSMDFxaHh6cElaT3FQcUJ3?=
- =?utf-8?B?Ymh6RnROZjdRTDJkR3U3Nndhb0JWK3pOYkNoUmQrQVpMQk5pTkpvZmIybWY5?=
- =?utf-8?B?SXA2OGpmZUhhVmJrQUF1R0orOFhJVXU5NFJsNVA3Z01waFdxYUp0amtXamZY?=
- =?utf-8?B?cGhJbkFuZ0M2eFNzYTZzbHNlc2EyYWRHRVh5bStoTXRIbytDek94MWN3Zlo0?=
- =?utf-8?B?MzIyVS9MN3lseGxNbHRJNkg5V2ZzamEwUFJLeVhBMlFrV1kzT1ZYdjhkVkJI?=
- =?utf-8?B?Q1RpMHA4RU1LZVdwVzIrcnl0UWRIbEtvUm1yTkFCcC80U0Q4d09DbnhsLy9a?=
- =?utf-8?B?QTVEZkdyQS9kN3pBRGt6SEJNMUxsYkZzQjF1QjNuQ3JsbjJlUWErcHBMT0ho?=
- =?utf-8?B?R3pVL1BNTlV1WUZGZGVKVmtnL0UvRVVIN211bkVLQWZobkNqR2dFaHgxazk5?=
- =?utf-8?B?L20rY0xjTzQxVjM5OTlJR0hWYzJFbjVxWSs0cWdxbitvUU9lSFBad3U0Nmp0?=
- =?utf-8?B?MVJNRlNZM2VxTWxRd3V0ZjdDU3lmMUVNbWNNaHp5QXNlT2dpbkhQVTBDWUQ5?=
- =?utf-8?B?S1pGWUVhRnVRRTljc3BBMEppSmFVSnRqNStHckFTVFhocXR2cjJqWTFrdDFF?=
- =?utf-8?B?N0xsUG9qdWtDWXRuUkhoZGhNZCsvTGRmem9vL01WMEp2VG9mWDhkT0k5anFm?=
- =?utf-8?B?dk5PNDRhMWl2VnZ4ZjB2bjlTbkdKTTVaVGU4eHlkdkhtbnB6OUY2aVFZc21x?=
- =?utf-8?B?bkdzYjk5Sk5UVWxtRVRxRVMwN0ozWUR3SDcwWjlwckpNYmFtMWRSWVlENG80?=
- =?utf-8?B?M0xYQldLbzZDc1llcXArWjFJdlQzT1BaNkcxbFFndUtTbHZrNXVXc0tmVlRl?=
- =?utf-8?B?VW5IMHFJbGhWRDlWUnhpK0JJQ3U0dlJ2QkJneTc1YytFN1hXZkZvSDQ4Y3Q4?=
- =?utf-8?Q?rx3da+Q+Zohirbbh0R?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e74c0ecf-1d38-4d6f-970b-08df2046bef8
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 05:33:53.5041
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ffHoe4ZtYjYbqr2rURYuh+VN+IIl18+WJcwE7RTghxMgJdupZkKSv1j2e0ldGndshuJahMrG86acTU/ucnTOig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5836
+Content-Transfer-Encoding: 8bit
 
+The LRU_HASH selftests (test_lru_map) exercise BPF_MAP_TYPE_LRU_HASH
+only from the syscall side. There is no coverage of an XDP program
+updating an LRU_HASH map on the data path: inserting an entry with
+BPF_NOEXIST on first sight of a flow, then updating a bounded array
+inside the map value using a runtime (modulo) index.
 
-On 01/10/2026 23:32, Dave Jiang wrote:
->
-> On 10/1/26 6:20 AM, alucerop@amd.com wrote:
->> From: Alejandro Lucero <alucerop@amd.com>
->>
->> Use CXL core accelerator API for linking a non-PF0 PF to the CXL region
->> its related PF0 CXL memdev is attached to, allowing non-PF0 PF release if
->> such a CXL region is released itself. This can occur in different
->> scenarios like PF0 release or CXL memdev release.
->>
->> Obtain the CXL HPA region to work with and the ioremap based on such
->> HPA and an offset based on the PF index.
->>
->> Refactor CXL initialization with different code paths for PF0 and non
->> PF0 PFs.
->>
->> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->> ---
->>   drivers/net/ethernet/sfc/efx_cxl.c | 100 ++++++++++++++++++++++++++---
->>   1 file changed, 91 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
->> index 348d7404cd7a..f884580cb528 100644
->> --- a/drivers/net/ethernet/sfc/efx_cxl.c
->> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
->> @@ -13,8 +13,69 @@
->>   #include "efx_cxl.h"
->>   
->>   #define EFX_CTPIO_BUFFER_SIZE	SZ_256M
->> +#define EFX_CTPIO_BUFFER_PER_PF_SIZE	SZ_8M
->>   
->> -int efx_cxl_init(struct efx_probe_data *probe_data)
->> +static int cxl_map(struct efx_probe_data *probe_data, struct efx_cxl *cxl,
->> +		   u64 devfn, struct range cxl_pio_range)
->> +{
->> +	struct efx_nic *efx = &probe_data->efx;
->> +	struct pci_dev *pci_dev = efx->pci_dev;
->> +	u64 cxl_pio_pf_start;
->> +
->> +	cxl_pio_pf_start = cxl_pio_range.start +
->> +			   devfn * EFX_CTPIO_BUFFER_PER_PF_SIZE;
->> +
->> +	cxl->ctpio_cxl = ioremap_wc(cxl_pio_pf_start,
->> +				    EFX_CTPIO_BUFFER_PER_PF_SIZE);
->> +	if (!cxl->ctpio_cxl) {
->> +		pci_err(pci_dev, "CXL ioremap region (%pra) failed\n",
->> +			&cxl_pio_range);
->> +		return -ENOMEM;
->> +	}
->> +	return 0;
->> +}
->> +
->> +static int efx_cxl_non_pf0_init(struct efx_probe_data *probe_data)
->> +{
->> +	struct efx_nic *efx = &probe_data->efx;
->> +	struct pci_dev *pci_dev = efx->pci_dev;
->> +	struct range cxl_pio_range;
->> +	struct efx_cxl *cxl;
->> +	u64 devfn;
->> +
->> +	devfn = PCI_FUNC(pci_dev->devfn);
-> I think you will want to use pci_dev->devfn directly. If you do this, devfn is 2:0 and PCI_SLOT() will evaluate to 0.
+That pattern is common in XDP flow-tracking programs and stresses two
+things worth testing together: the verifier's bounds checking of a
+value-internal array indexed by a runtime value, and per-flow key
+isolation in an LRU map driven from XDP.
 
+Add an XDP program that keys an LRU_HASH by the TCP/IPv4 5-tuple and
+records packet lengths into value->pkt_len[seq % AGGREGATION_WINDOW],
+plus a test_progs case driven by bpf_prog_test_run that checks:
 
-Uhmmm, I think with the refactoring I'm not using devfn properly here. 
-Let me study this further.
+ - wrap:    seq advances and the bounded array wraps, with the runtime
+            index accepted by the verifier;
+ - trunc:   a short (parse-failing) packet neither inserts a new entry
+            nor mutates an existing one;
+ - isolate: two distinct 5-tuples get independent entries.
 
+Selftest only; no kernel change.
 
-> Also, does this device need to handle ARI?
+Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
+---
+v3:
+ - wrap: send the post-wrap packets with a different length and verify
+   only the wrapped slots change, so a wrong but in-range post-wrap
+   index is caught (BPF CI review).
+ - trunc: send well-formed but short frames to actually exercise the
+   IPv4 and TCP length checks, instead of a non-IPv4 frame that bailed
+   at the ethertype test (BPF CI review).
+ - No change to the BPF program, uapi or header.
 
+v2: https://lore.kernel.org/netdev/20261002042201.3483076-1-anilkaushikwireless@gmail.com/
+v1: https://lore.kernel.org/netdev/20260917135433.2260048-1-anilkaushikwireless@gmail.com/
 
-Not for sfc devices.
+ .../selftests/bpf/prog_tests/xdp_lru_window.c | 216 ++++++++++++++++++
+ .../selftests/bpf/progs/xdp_lru_window.c      |  81 +++++++
+ tools/testing/selftests/bpf/xdp_lru_window.h  |  28 +++
+ 3 files changed, 325 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c
+ create mode 100644 tools/testing/selftests/bpf/progs/xdp_lru_window.c
+ create mode 100644 tools/testing/selftests/bpf/xdp_lru_window.h
 
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c b/tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c
+new file mode 100644
+index 000000000..5e353fb14
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <test_progs.h>
++#include <network_helpers.h>
++#include "xdp_lru_window.h"
++#include "xdp_lru_window.skel.h"
++
++#define SRC_IP		0x0a000001
++#define DST_IP		0x0a000002
++#define SRC_PORT	12345
++#define DST_PORT	80
++#define ALT_DST_PORT	81
++
++static struct xdp_lru_window *skel;
++static int prog_fd, map_fd;
++
++static void fill_pkt(struct ipv4_packet *pkt, __u16 dport)
++{
++	*pkt = pkt_v4;
++	pkt->iph.saddr = htonl(SRC_IP);
++	pkt->iph.daddr = htonl(DST_IP);
++	pkt->tcp.source = htons(SRC_PORT);
++	pkt->tcp.dest = htons(dport);
++}
++
++static void fill_key(struct xdp_lru_window_key *key, __u16 dport)
++{
++	memset(key, 0, sizeof(*key));
++	key->saddr = htonl(SRC_IP);
++	key->daddr = htonl(DST_IP);
++	key->sport = htons(SRC_PORT);
++	key->dport = htons(dport);
++	key->proto = IPPROTO_TCP;
++}
++
++static int run_pkt(const void *data, __u32 len, int *retval)
++{
++	LIBBPF_OPTS(bpf_test_run_opts, opts,
++		    .data_in = data,
++		    .data_size_in = len,
++		    .repeat = 1,
++	);
++	int err;
++
++	err = bpf_prog_test_run_opts(prog_fd, &opts);
++	if (!ASSERT_OK(err, "test_run"))
++		return err;
++	if (retval)
++		*retval = opts.retval;
++	return 0;
++}
++
++static int inject(int n, __u16 dport)
++{
++	struct ipv4_packet pkt;
++	int i, retval;
++
++	fill_pkt(&pkt, dport);
++	for (i = 0; i < n; i++) {
++		if (run_pkt(&pkt, sizeof(pkt), &retval))
++			return -1;
++		if (!ASSERT_EQ(retval, XDP_PASS, "retval"))
++			return -1;
++	}
++	return 0;
++}
++
++/* Like inject(), but sends frames of a chosen on-wire length (>= the
++ * TCP/IPv4 headers) so the recorded pkt_len differs from the default.
++ */
++static int inject_len(int n, __u16 dport, __u32 len)
++{
++	unsigned char buf[sizeof(struct ipv4_packet) + 64] = {};
++	struct ipv4_packet pkt;
++	int i, retval;
++
++	fill_pkt(&pkt, dport);
++	memcpy(buf, &pkt, sizeof(pkt));
++	if (len > sizeof(buf))
++		len = sizeof(buf);
++	for (i = 0; i < n; i++) {
++		if (run_pkt(buf, len, &retval))
++			return -1;
++		if (!ASSERT_EQ(retval, XDP_PASS, "retval"))
++			return -1;
++	}
++	return 0;
++}
++
++static void reset_map(void)
++{
++	struct xdp_lru_window_key key, next;
++	int err;
++
++	err = bpf_map_get_next_key(map_fd, NULL, &next);
++	while (!err) {
++		key = next;
++		err = bpf_map_get_next_key(map_fd, &key, &next);
++		bpf_map_delete_elem(map_fd, &key);
++	}
++}
++
++static void test_one_and_wrap(void)
++{
++	struct xdp_lru_window_state st;
++	struct xdp_lru_window_key key;
++	__u32 base_len = sizeof(struct ipv4_packet);
++	__u32 new_len = base_len + 20;
++	int i;
++
++	reset_map();
++	if (inject(1, DST_PORT))
++		return;
++	fill_key(&key, DST_PORT);
++	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &st), "lookup"))
++		return;
++	ASSERT_EQ(st.seq, 1, "seq");
++	ASSERT_EQ(st.pkt_len[0], base_len, "len0");
++
++	/* Fill the whole window with base-length packets (slots 0..W-1),
++	 * then send 5 more of a different length so they wrap into slots
++	 * 0..4. Distinct lengths let the checks below catch a wrong, but
++	 * still in-range, post-wrap index.
++	 */
++	if (inject(AGGREGATION_WINDOW - 1, DST_PORT))
++		return;
++	if (inject_len(5, DST_PORT, new_len))
++		return;
++	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &st), "lookup wrap"))
++		return;
++	ASSERT_EQ(st.seq, AGGREGATION_WINDOW + 5, "seq wrap");
++	for (i = 0; i < 5; i++)
++		ASSERT_EQ(st.pkt_len[i], new_len, "wrapped slot");
++	for (i = 5; i < AGGREGATION_WINDOW; i++)
++		ASSERT_EQ(st.pkt_len[i], base_len, "kept slot");
++}
++
++static void test_trunc(void)
++{
++	struct xdp_lru_window_state before, after;
++	struct xdp_lru_window_key key, next;
++	struct ipv4_packet pkt;
++	__u32 ip_trunc = sizeof(pkt_v4.eth);
++	__u32 tcp_trunc = sizeof(pkt_v4.eth) + sizeof(pkt_v4.iph);
++	int err, retval;
++
++	fill_pkt(&pkt, DST_PORT);
++	reset_map();
++
++	/* Valid Ethernet/IP ethertype, but the IPv4 header is cut off:
++	 * exercises the program's IPv4 length check.
++	 */
++	if (run_pkt(&pkt, ip_trunc, &retval))
++		return;
++	ASSERT_EQ(retval, XDP_PASS, "ip trunc retval");
++	err = bpf_map_get_next_key(map_fd, NULL, &next);
++	ASSERT_EQ(err, -ENOENT, "ip trunc no insert");
++
++	/* Full Ethernet + IPv4 header, but the TCP header is cut off:
++	 * exercises the program's TCP length check.
++	 */
++	if (run_pkt(&pkt, tcp_trunc, &retval))
++		return;
++	ASSERT_EQ(retval, XDP_PASS, "tcp trunc retval");
++	err = bpf_map_get_next_key(map_fd, NULL, &next);
++	ASSERT_EQ(err, -ENOENT, "tcp trunc no insert");
++
++	/* A truncated packet must not mutate an already-tracked flow. */
++	if (inject(1, DST_PORT))
++		return;
++	fill_key(&key, DST_PORT);
++	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &before), "setup"))
++		return;
++	if (run_pkt(&pkt, tcp_trunc, &retval))
++		return;
++	ASSERT_EQ(retval, XDP_PASS, "trunc2 retval");
++	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &after), "after"))
++		return;
++	ASSERT_EQ(after.seq, before.seq, "trunc no mutate");
++}
++
++static void test_isolate(void)
++{
++	struct xdp_lru_window_state a, b;
++	struct xdp_lru_window_key key;
++
++	reset_map();
++	if (inject(2, DST_PORT) || inject(1, ALT_DST_PORT))
++		return;
++	fill_key(&key, DST_PORT);
++	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &a), "flow a"))
++		return;
++	fill_key(&key, ALT_DST_PORT);
++	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &b), "flow b"))
++		return;
++	ASSERT_EQ(a.seq, 2, "seq a");
++	ASSERT_EQ(b.seq, 1, "seq b");
++}
++
++void test_xdp_lru_window(void)
++{
++	skel = xdp_lru_window__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++		return;
++
++	prog_fd = bpf_program__fd(skel->progs.xdp_lru_window);
++	map_fd = bpf_map__fd(skel->maps.flow_table);
++
++	if (test__start_subtest("wrap"))
++		test_one_and_wrap();
++	if (test__start_subtest("trunc"))
++		test_trunc();
++	if (test__start_subtest("isolate"))
++		test_isolate();
++
++	xdp_lru_window__destroy(skel);
++}
+diff --git a/tools/testing/selftests/bpf/progs/xdp_lru_window.c b/tools/testing/selftests/bpf/progs/xdp_lru_window.c
+new file mode 100644
+index 000000000..27aa1509e
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/xdp_lru_window.c
+@@ -0,0 +1,81 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <vmlinux.h>
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_endian.h>
++#include "xdp_lru_window.h"
++
++#ifndef ETH_P_IP
++#define ETH_P_IP	0x0800
++#endif
++
++#ifndef EEXIST
++#define EEXIST		17
++#endif
++
++struct {
++	__uint(type, BPF_MAP_TYPE_LRU_HASH);
++	__uint(max_entries, XDP_LRU_WINDOW_FLOWS);
++	__type(key, struct xdp_lru_window_key);
++	__type(value, struct xdp_lru_window_state);
++} flow_table SEC(".maps");
++
++SEC("xdp")
++int xdp_lru_window(struct xdp_md *ctx)
++{
++	void *data_end = (void *)(long)ctx->data_end;
++	void *data = (void *)(long)ctx->data;
++	struct xdp_lru_window_state init, *st;
++	struct xdp_lru_window_key key;
++	struct ethhdr *eth;
++	struct iphdr *iph;
++	struct tcphdr *th;
++	__u32 idx, pkt_len;
++	int err;
++
++	eth = data;
++	if ((void *)(eth + 1) > data_end)
++		return XDP_PASS;
++	if (eth->h_proto != bpf_htons(ETH_P_IP))
++		return XDP_PASS;
++
++	iph = (void *)(eth + 1);
++	if ((void *)(iph + 1) > data_end)
++		return XDP_PASS;
++	if (iph->protocol != IPPROTO_TCP)
++		return XDP_PASS;
++
++	th = (void *)(iph + 1);
++	if ((void *)(th + 1) > data_end)
++		return XDP_PASS;
++
++	__builtin_memset(&key, 0, sizeof(key));
++	key.saddr = iph->saddr;
++	key.daddr = iph->daddr;
++	key.sport = th->source;
++	key.dport = th->dest;
++	key.proto = iph->protocol;
++	pkt_len = data_end - data;
++
++	st = bpf_map_lookup_elem(&flow_table, &key);
++	if (!st) {
++		__builtin_memset(&init, 0, sizeof(init));
++		err = bpf_map_update_elem(&flow_table, &key, &init,
++					  BPF_NOEXIST);
++		if (err && err != -EEXIST)
++			return XDP_PASS;
++		st = bpf_map_lookup_elem(&flow_table, &key);
++		if (!st)
++			return XDP_PASS;
++	}
++
++	idx = st->seq % AGGREGATION_WINDOW;
++	barrier_var(idx);
++	if (idx >= AGGREGATION_WINDOW)
++		return XDP_PASS;
++
++	st->pkt_len[idx] = pkt_len;
++	st->seq++;
++	return XDP_PASS;
++}
++
++char _license[] SEC("license") = "GPL";
+diff --git a/tools/testing/selftests/bpf/xdp_lru_window.h b/tools/testing/selftests/bpf/xdp_lru_window.h
+new file mode 100644
+index 000000000..78434045c
+--- /dev/null
++++ b/tools/testing/selftests/bpf/xdp_lru_window.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __XDP_LRU_WINDOW_H
++#define __XDP_LRU_WINDOW_H
++
++/*
++ * ABI for the XDP LRU rolling-window selftest. Existing test_lru_map
++ * coverage never enters XDP; XDP parse tests do not store a modulo
++ * index into an LRU map value.
++ */
++
++#define AGGREGATION_WINDOW	50
++#define XDP_LRU_WINDOW_FLOWS	64
++
++struct xdp_lru_window_key {
++	__be32	saddr;
++	__be32	daddr;
++	__be16	sport;
++	__be16	dport;
++	__u8	proto;
++	__u8	pad[3];
++};
++
++struct xdp_lru_window_state {
++	__u32	seq;
++	__u32	pkt_len[AGGREGATION_WINDOW];
++};
++
++#endif /* __XDP_LRU_WINDOW_H */
+-- 
+2.25.1
 
->> +
->> +	struct pci_dev *pf0_pci_dev __free(pci_dev_put) =
->> +		pci_get_slot(pci_dev->bus, PCI_DEVFN(PCI_SLOT(devfn), 0));
->> +
->> +	/* This should not happen! */
->> +	if (!pf0_pci_dev)
->> +		return 0;
->> +
->> +	/* Is the PF0 device configured with and using CXL? */
->> +	if (!pcie_is_cxl(pf0_pci_dev))
->> +		return 0;
->> +
->> +	if (!cxl_get_range_and_link(&pf0_pci_dev->dev, &pci_dev->dev,
->> +				    &cxl_pio_range))
-> Is this error check inverted?
-
-
-Yes. I'll fix it.
-
-
-Thanks!
-
-
-> DJ
->
->> +		return  -EPROBE_DEFER;
->> +
->> +	cxl = kzalloc_obj(*cxl, GFP_KERNEL);
->> +	if (!cxl)
->> +		return -ENOMEM;
->> +
->> +	if (cxl_map(probe_data, cxl, (u64)devfn, cxl_pio_range)) {
->> +		kfree(cxl);
->> +		return -ENOMEM;
->> +	}
->> +
->> +	probe_data->cxl = cxl;
->> +	probe_data->cxl_pio_initialised = true;
->> +
->> +	return 0;
->> +}
->> +
->> +static int efx_cxl_pf0_init(struct efx_probe_data *probe_data)
->>   {
->>   	struct efx_nic *efx = &probe_data->efx;
->>   	struct pci_dev *pci_dev = efx->pci_dev;
->> @@ -80,26 +141,47 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
->>   		return PTR_ERR(cxl->cxlmd);
->>   	}
->>   
->> -	cxl->ctpio_cxl = ioremap_wc(cxl_pio_range.start,
->> -				    range_len(&cxl_pio_range));
->> -	if (!cxl->ctpio_cxl) {
->> -		pci_err(pci_dev, "CXL ioremap region (%pra) failed\n",
->> -			&cxl_pio_range);
->> +	if (cxl_map(probe_data, cxl, 0, cxl_pio_range))
->>   		return -ENOMEM;
->> -	}
->>   
->> -	probe_data->cxl_pio_initialised = true;
->>   	probe_data->cxl = cxl;
->> -
->> +	probe_data->cxl_pio_initialised = true;
->>   	return 0;
->>   }
->>   
->> +int efx_cxl_init(struct efx_probe_data *probe_data)
->> +{
->> +	struct efx_nic *efx = &probe_data->efx;
->> +	struct pci_dev *pci_dev = efx->pci_dev;
->> +	u8 devfn;
->> +
->> +	if (efx->type->is_vf)
->> +		return 0;
->> +
->> +	/* are we PF0? */
->> +	devfn = PCI_FUNC(pci_dev->devfn);
->> +	if (devfn == 0)
->> +		return efx_cxl_pf0_init(probe_data);
->> +	else
->> +		return efx_cxl_non_pf0_init(probe_data);
->> +}
->> +
->>   void efx_cxl_exit(struct efx_probe_data *probe_data)
->>   {
->> +	struct efx_nic *efx = &probe_data->efx;
->> +	struct pci_dev *pci_dev = efx->pci_dev;
->> +	u8 devfn;
->> +
->>   	if (!probe_data->cxl)
->>   		return;
->>   
->>   	iounmap(probe_data->cxl->ctpio_cxl);
->> +
->> +	devfn = PCI_FUNC(pci_dev->devfn);
->> +	if (devfn == 0)
->> +		return;
->> +
->> +	kfree(probe_data->cxl);
->>   }
->>   
->>   MODULE_IMPORT_NS("CXL");
