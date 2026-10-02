@@ -1,76 +1,46 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-169.mail.aliyun.com (out28-169.mail.aliyun.com [115.124.28.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD08E4BEE36
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 17:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAC050EBFE;
+	Fri,  2 Oct 2026 17:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790962749; cv=none; b=g2HzKPDK1Cltib7+37c9D5Cuo6VVS5mps4XFt/S7cdAO8vliIvNi/kwFvX9PbFteD7mCHJk3AsO90jL+X3B0yOXSxyI8YIxWMKUHyJtoUoYSC/AcVu31K6Rze2tIieSkfCWt27kOVABjl+LE+ZR8IhTwiGMPN4YZ6qujlMzDDkU=
+	t=1790962970; cv=none; b=kNYCYQ5Ypxhizl2SL1n9JdL0cf4uHTIWCt6HT6xtMtjXXR/+dU+/WEGG7BENPBGOmKd6FLkc4HApten8lG5Z7MyhRt4XY79lvRTe9b/zFUrAxZbVOaQK8bdztyKZtXUlprzQ8rv91uJSwc/AoOLw862SbG6hf88qmqph2p3Sl8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790962749; c=relaxed/simple;
-	bh=lxYzkpriaDekB2b+vETaWpNqnj81kUfQDNd2Cv8ukZw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KM0WKa2fiNGnPdxrXmK2kth4ulu34srN1v3yx78awMHR625KBQl0f5Z8DD8BDgpVz5pqQltikeMQQ8mlqPjnkjO3OlUoOc+3Mc2Atb002GaYqcxpSxARihKPXYiXMAIbV/QlBQ3c9LaLf4xjI/dIUo8G6bYkjeg4YJGfXhDQk+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K7eLYoE8; arc=none smtp.client-ip=74.125.229.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K7eLYoE8"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-33bc6ff6cadso1198941eec.0
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 10:38:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790962732; x=1791567532; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LrYrWMHbMhPiTpFi2/y0IXJsNMi1j3IUwWpiDmuGlWY=;
-        b=K7eLYoE8vvpA2vqp2PmPHc05B7+DZxhovayfmdKbEy+ClmdktNEZ3ysg5bOPepPBGE
-         X+VG8r8TKJexvPpjPoN7JewKeem1SXIV5ffZ1YCQRK8Lcppvdju1MwEw+OWZDcyDhkBU
-         rKisABe/VUVAvHkXtlK7wCvPq4P8UgOrhkNIsX6cNKKGbcTWBozhwuEapG9isvfmVvrg
-         Cv+nEYOH1LlDx63ifQUtoJ+zWQ9IhS92eXTSmvoGEr6wWHYHybRLSsoobDvBrZb+0l6o
-         9jmjub8tVQUoYUBkv/e56l9cLhxDzeBwhVZdrZF+26rasVLs+MYx1uEwsJ959WatUT4s
-         Q2AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790962732; x=1791567532;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LrYrWMHbMhPiTpFi2/y0IXJsNMi1j3IUwWpiDmuGlWY=;
-        b=AfECF47rTNWcZc1hh8mFW3i+ArbAxaAC5R9ZZNiTnpIXeiPRkjxq5dmpd9j8cgqIUJ
-         g4j+jBFBxmibYB5/JQ9GwSyGDmeSnc++Cn10zhBQ/SfuImPd+GMeWxH3dOqg7cGFNVbY
-         Ej+vrIFr9mQvmHi/K1LOLLCfPVknnVzxlXDEJ6u8nmTcA6cBhS4sz6ZtgK8nZjAcgOQF
-         FgJayxqQgeRGgVVj96lOG3Y46ykC4ldq1f7ebuslZdacQ7PMbbV5k4wnhSHdzq0rC/Hq
-         bmwnTRghAxWERIjr7tQYJVowS0VHzFz5Zxj4B+2eA7vrLeG2nNIVI7GmEadqIvy9RcLg
-         w8cA==
-X-Forwarded-Encrypted: i=1; AKwUvBzoSsdKuJBz49D8hWMmxZTPnLit3oqFGIszPY5tSdDmVXtT0YuRHTLQK3cEXLzJTsS4TWLBPz8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLI2/9RhhFO67ZMPRYr2bCYQKkdEMlPRX/BCi3/BMY/89asUDTn
-	6qNaHZ/pHim74NBxPGv1+1NWrYdl4YoekJsg1idUK5FD4UM5kPZLWU3sY3FuJiSP7VzXe4/x
-X-Gm-Gg: AYBFou1JQPrRFaIZiBNTLc4/aVMdtIbbIk1oBQPFOrJAqUQwn3+Ow2yzYv1WyyX155w
-	Y9TmQDR4cCSiz43HCXc3uZQMsfXiaK6A6iU73JVFRr24BXgIQ0UxkQrDWBsKjIJg6UvUEmghq4l
-	1V1ftSWQ7vT73CmZoUiVFheTCUa27+BIaCfO7J9BbSlyLTjuKeDkflZyxac4vJV+WQ1UUyEJe25
-	O0E37kLK2qjwrdDGtftg68G23+p1OfMMvlTyjr3NpDPluchLnYOcbqFccdPTipPceto2GPoobNL
-	zbKUMYKZbje5ckjN/SrXvOVohx4kkZ3OxBk4aE/0f4t91FhbPBa9ZBVVVetit9JLgkyXSuiq5/9
-	rM+pMEVr/AxrxaG8Yzmpm/9SY5bgsVSkRkHAWF2WVsmjLkq7eGKKZV/rHTaS/YBEyR9/uXg9MvN
-	ullCI+gdwfHO+QfDsH62TvCBemW9rP6DskbtrAJk3k1iUz2YWJO7w8hW6eChh+QxrhMsRaIRecw
-	PT+935kfEfvFoLe+giNq00KdEkgvFkrcAD3ZouTSTtARmb7/mOVG7eLKzGpx4DQEGW8Sg==
-X-Received: by 2002:a05:693c:864b:10b0:33e:4e49:d08d with SMTP id 5a478bee46e88-3510d2815f3mr1841393eec.1.1790962732069;
-        Fri, 02 Oct 2026 10:38:52 -0700 (PDT)
-Received: from localhost.localdomain (95.169.12.199.16clouds.com. [95.169.12.199])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f14f2dfbbsm7844370eec.10.2026.10.02.10.38.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 10:38:51 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: davem@davemloft.net,
-	edumazet@kernel.org,
+	s=arc-20240116; t=1790962970; c=relaxed/simple;
+	bh=OzVedd07akaAmAmmalEsohxJy7bGhL5JQ4JNZdAgjMA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EtN0ZAYj6WUWgImOPviFeBZlNICUOaeq59wgnsfR9/5o4hus4j0Cq0SyS39fJe2dbz9PABHzYw/qpzDNWC1Mkz0r5jmUXI9vv9xW6cwx1YEXGSMDRVW/jqskHIlsCjSE04bVH7jo97LrtByYOK60LHIPkHAMkCWsThWr1X6PvpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436758|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0208765-0.00028719-0.978836;FP=10617128616479989265|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032023038;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jTk7nUd_1790962637;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jTk7nUd_1790962637 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sat, 03 Oct 2026 01:37:18 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
+	pabeni@redhat.com,
+	mmyangfl@gmail.com,
+	horms@kernel.org,
+	linux@armlinux.org.uk,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v4] net: pin protocol module before inet socket allocation
-Date: Sat,  3 Oct 2026 01:38:44 +0800
-Message-ID: <20261002173844.3537111-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com,
+	wei.zhang@gl-inet.com,
+	sijia.huang@gl-inet.com
+Subject: [PATCH net-next v11 6/7] net: dsa: tag_yt922x: add support for Motorcomm YT922x tags
+Date: Sat,  3 Oct 2026 01:37:05 +0800
+Message-Id: <20261002173706.1225502-7-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261002173706.1225502-1-kyle.switch@motor-comm.com>
+References: <20261002173706.1225502-1-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,184 +49,199 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-inet_create() and inet6_create() look up the protocol under RCU, then drop
-RCU before using the resulting proto. A concurrent module unload can
-unregister the protosw, wait for the RCU readers, and destroy the proto's
-slab before sk_alloc() uses it. sk_alloc() may sleep, so the RCU read-side
-critical section cannot simply be extended across the allocation.
+Add support for Motorcomm YT922x tags with 8bytes. which includes
+ethertype field (default to 0x9988).
 
-The reported failure occurred during concurrent L2TP socket creation and
-module unload:
-
-  Oops: general protection fault, probably for non-canonical address
-        0xffff1108974182a0
-  KASAN: maybe wild-memory-access in range
-         [0xfff8a844ba0c1500-0xfff8a844ba0c1507]
-  RIP: kmem_cache_alloc_noprof+0x63/0x370
-  Call Trace:
-   sk_prot_alloc+0x74/0x2c0
-   sk_alloc+0x2b/0x6c0
-   inet_create+0x2cd/0xd40
-   __sock_create+0x1c3/0x430
-   __sys_socket+0x116/0x1d0
-
-Cache the proto and its owner under RCU and acquire a temporary module
-reference before dropping RCU. This prevents normal module unload while
-the proto is in use. sk_prot_alloc() takes the socket's own reference;
-drop the temporary reference on every exit after allocation. Use the
-cached proto for the IPv6 backlog callback as well.
-
-Use try_module_get() with its existing initialization semantics. SCTP
-creates its kernel control socket during module initialization, so
-rejecting MODULE_STATE_COMING would prevent modular SCTP from loading.
-Failed module initialization can still unwind published protocols despite
-module references; that separate publication/unwind lifetime issue is not
-fixed here.
-
-Fixes: a79af59efd20 ("[NET]: Fix module reference counts for loadable protocol modules")
-Cc: stable@vger.kernel.org
-Assisted-by: GPT-6-Astra
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 ---
-Changes in v4:
-- Remove the MODULE_STATE_COMING rejection. SCTP creates its kernel control
-  socket from module init and must be allowed to use the published protosw.
-- Keep the owner cached under RCU and use the cached proto for IPv6 backlog
-  setup, retaining those v3 changes.
-- Scope the module-reference guarantee to normal module unload. The earlier
-  review's initialization-failure unwind concern remains a separate issue;
-  rejecting all initializing modules is not a compatible solution.
-- Rebase onto net/main at a7bfaba4823e.
+ MAINTAINERS          |   2 +
+ include/net/dsa.h    |   2 +
+ net/dsa/Kconfig      |   6 +++
+ net/dsa/Makefile     |   1 +
+ net/dsa/tag_yt922x.c | 109 +++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 120 insertions(+)
+ create mode 100644 net/dsa/tag_yt922x.c
 
-v3: https://lore.kernel.org/r/20260904111514.584264-1-nicoyip.dev@gmail.com/
-Review: https://lore.kernel.org/r/178887699602.219967.13594894510710999619@kernel.org/
-v2: https://lore.kernel.org/r/20260825172349.232794-1-nicoyip.dev@gmail.com/
-v1: https://lore.kernel.org/r/20260823171311.3857087-1-nicoyip.dev@gmail.com/
-
- net/ipv4/af_inet.c  | 14 +++++++++++---
- net/ipv6/af_inet6.c | 16 ++++++++++++----
- 2 files changed, 23 insertions(+), 7 deletions(-)
-
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 32d006c1a8ee..c956afa65ec4 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -263,6 +263,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 	struct inet_protosw *answer;
- 	struct inet_sock *inet;
- 	struct proto *answer_prot;
-+	struct module *answer_owner;
- 	unsigned char answer_flags;
- 	int try_loading_module = 0;
- 	int err;
-@@ -322,9 +323,14 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 	    !ns_capable(net->user_ns, CAP_NET_RAW))
- 		goto out_rcu_unlock;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3011f995437f..1a48e4570c69 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18433,11 +18433,13 @@ F:	drivers/net/phy/motorcomm.c
  
--	sock->ops = answer->ops;
- 	answer_prot = answer->prot;
-+	answer_owner = answer_prot->owner;
- 	answer_flags = answer->flags;
-+	if (!try_module_get(answer_owner)) {
-+		err = -EPROTONOSUPPORT;
-+		goto out_rcu_unlock;
+ MOTORCOMM YT921X ETHERNET SWITCH DRIVER
+ M:	David Yang <mmyangfl@gmail.com>
++M:	Kyle Switch <kyle.switch@motor-comm.com>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
+ F:	drivers/net/dsa/motorcomm/
+ F:	net/dsa/tag_yt921x.c
++F:	net/dsa/tag_yt922x.c
+ 
+ MOXA SMARTIO/INDUSTIO/INTELLIO SERIAL CARD
+ M:	Jiri Slaby <jirislaby@kernel.org>
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 5d12191b6f6f..5a173fe2bb87 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -62,6 +62,7 @@ struct tc_action;
+ #define DSA_TAG_PROTO_KSZ8463_VALUE		34
+ #define DSA_TAG_PROTO_MT7628_VALUE		35
+ #define DSA_TAG_PROTO_KS8995_VALUE		36
++#define DSA_TAG_PROTO_YT922X_VALUE		37
+ 
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
+@@ -101,6 +102,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
+ 	DSA_TAG_PROTO_MT7628		= DSA_TAG_PROTO_MT7628_VALUE,
+ 	DSA_TAG_PROTO_KS8995		= DSA_TAG_PROTO_KS8995_VALUE,
++	DSA_TAG_PROTO_YT922X		= DSA_TAG_PROTO_YT922X_VALUE,
+ };
+ 
+ struct dsa_switch;
+diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+index 4f44bf3ede23..86802058678c 100644
+--- a/net/dsa/Kconfig
++++ b/net/dsa/Kconfig
+@@ -233,4 +233,10 @@ config NET_DSA_TAG_YT921X
+ 	  Say Y or M if you want to enable support for tagging frames for
+ 	  Motorcomm YT921x switches.
+ 
++config NET_DSA_TAG_YT922X
++  tristate "Tag driver for Motorcomm YT922x switches"
++  help
++    Say Y or M if you want to enable support for tagging frames for
++    Motorcomm YT922x switches.
++
+ endif
+diff --git a/net/dsa/Makefile b/net/dsa/Makefile
+index 1f9cc30e9988..0ef6dfce3b92 100644
+--- a/net/dsa/Makefile
++++ b/net/dsa/Makefile
+@@ -45,6 +45,7 @@ obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
+ obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
+ obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
+ obj-$(CONFIG_NET_DSA_TAG_YT921X) += tag_yt921x.o
++obj-$(CONFIG_NET_DSA_TAG_YT922X) += tag_yt922x.o
+ 
+ # for tracing framework to find trace.h
+ CFLAGS_trace.o := -I$(src)
+diff --git a/net/dsa/tag_yt922x.c b/net/dsa/tag_yt922x.c
+new file mode 100644
+index 000000000000..3c9fef651cf5
+--- /dev/null
++++ b/net/dsa/tag_yt922x.c
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Motorcomm YT922x Switch Extended CPU Port Tagging
++ *
++ * Copyright (c) 2026 Kyle switch <kyle.switch@motor-comm.com>
++ *
++ */
++
++#include <linux/etherdevice.h>
++
++#include "tag.h"
++
++#define YT922X_TAG_LEN 8
++
++/*
++ * To define the from cpu tag format 8 bytes.
++ */
++#define YT922X_TAG_NAME		"yt922x"
++#define YT922X_TAG_PORTMASK_0	BIT(15)
++#define YT922X_TAG_PORTMASK_M	GENMASK(8, 0)
++#define  YT922X_TAG_PORTS(x)		FIELD_PREP(YT922X_TAG_PORTMASK_M, (x))
++#define YT922X_TAG_FORCE_DST	BIT(9)
++#define YT922X_TAG_PRIO_M	GENMASK(12, 10)
++#define YT922X_TAG_PRIO_EN	BIT(13)
++#define  YT922X_TAG_PRIO(x)	(FIELD_PREP(YT922X_TAG_PRIO_M, (x)) | YT922X_TAG_PRIO_EN)
++#define YT922X_TAG_RX_PORT_M	GENMASK(5, 2)
++
++static struct sk_buff *
++yt922x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
++{
++	unsigned long ports;
++	__be16 *tag;
++	u16 ctrl;
++
++	skb_push(skb, YT922X_TAG_LEN);
++	dsa_alloc_etype_header(skb, YT922X_TAG_LEN);
++	tag = dsa_etype_header_pos_tx(skb);
++
++	tag[0] = htons(ETH_P_YT921X);
++	ports = dsa_xmit_port_mask(skb, netdev);
++	/*To fill in the case where the port index is not 0 */
++	ctrl = YT922X_TAG_PRIO(skb->priority) | YT922X_TAG_FORCE_DST |
++	       YT922X_TAG_PORTS(ports >> 1);
++	tag[1] = htons(ctrl);
++	if (ports & BIT(0)) {
++		/* To fill in the case where the port index is 0 */
++		ctrl = YT922X_TAG_PORTMASK_0;
++		tag[2] = htons(ctrl);
++	} else {
++		tag[2] = 0;
 +	}
-+	sock->ops = answer->ops;
- 	rcu_read_unlock();
- 
- 	WARN_ON(!answer_prot->slab);
-@@ -332,7 +338,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 	err = -ENOMEM;
- 	sk = sk_alloc(net, PF_INET, GFP_KERNEL, answer_prot, kern);
- 	if (!sk)
--		goto out;
-+		goto out_module_put;
- 
- 	err = 0;
- 	if (INET_PROTOSW_REUSE & answer_flags)
-@@ -398,6 +404,8 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 		if (err)
- 			goto out_sk_release;
- 	}
-+out_module_put:
-+	module_put(answer_owner);
- out:
- 	return err;
- out_rcu_unlock:
-@@ -406,7 +414,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- out_sk_release:
- 	sk_common_release(sk);
- 	sock->sk = NULL;
--	goto out;
-+	goto out_module_put;
- }
- 
- 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 282912a11999..9db60af6f38d 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -110,6 +110,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 	struct sock *sk;
- 	struct inet_protosw *answer;
- 	struct proto *answer_prot;
-+	struct module *answer_owner;
- 	unsigned char answer_flags;
- 	int try_loading_module = 0;
- 	int err;
-@@ -167,9 +168,14 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 	    !ns_capable(net->user_ns, CAP_NET_RAW))
- 		goto out_rcu_unlock;
- 
--	sock->ops = answer->ops;
- 	answer_prot = answer->prot;
-+	answer_owner = answer_prot->owner;
- 	answer_flags = answer->flags;
-+	if (!try_module_get(answer_owner)) {
-+		err = -EPROTONOSUPPORT;
-+		goto out_rcu_unlock;
++	tag[3] = 0;
++
++	return skb;
++}
++
++static struct sk_buff *
++yt922x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
++{
++	unsigned int port;
++	__be16 *tag;
++	u16 rx;
++
++	if (unlikely(!pskb_may_pull(skb, YT922X_TAG_LEN))) {
++		kfree_skb(skb);
++		return NULL;
 +	}
-+	sock->ops = answer->ops;
- 	rcu_read_unlock();
- 
- 	WARN_ON(!answer_prot->slab);
-@@ -177,7 +183,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 	err = -ENOBUFS;
- 	sk = sk_alloc(net, PF_INET6, GFP_KERNEL, answer_prot, kern);
- 	if (!sk)
--		goto out;
-+		goto out_module_put;
- 
- 	sock_init_data(sock, sk);
- 
-@@ -201,7 +207,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 	sk->sk_family		= PF_INET6;
- 	sk->sk_protocol		= protocol;
- 
--	sk->sk_backlog_rcv	= answer->prot->backlog_rcv;
-+	sk->sk_backlog_rcv	= answer_prot->backlog_rcv;
- 
- 	inet_sk(sk)->pinet6 = np = inet6_sk_generic(sk);
- 	np->hop_limit	= -1;
-@@ -251,6 +257,8 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 		if (err)
- 			goto out_sk_release;
- 	}
-+out_module_put:
-+	module_put(answer_owner);
- out:
- 	return err;
- out_rcu_unlock:
-@@ -259,7 +267,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- out_sk_release:
- 	sk_common_release(sk);
- 	sock->sk = NULL;
--	goto out;
-+	goto out_module_put;
- }
- 
- int __inet6_bind(struct sock *sk, struct sockaddr_unsized *uaddr, int addr_len,
-
-base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
++
++	tag = dsa_etype_header_pos_rx(skb);
++
++	if (unlikely(tag[0] != htons(ETH_P_YT921X))) {
++		dev_warn_ratelimited(&netdev->dev,
++				     "Unexpected EtherType 0x%04x\n",
++				     ntohs(tag[0]));
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	/* Locate which port this is coming from */
++	rx = ntohs(tag[2]);
++	port = FIELD_GET(YT922X_TAG_RX_PORT_M, rx);
++	skb->dev = dsa_conduit_find_user(netdev, 0, port);
++	if (unlikely(!skb->dev)) {
++		dev_warn_ratelimited(&netdev->dev,
++				     "Couldn't decode source port %u\n", port);
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	/* Remove tag and update checksum */
++	skb_pull_rcsum(skb, YT922X_TAG_LEN);
++	dsa_strip_etype_header(skb, YT922X_TAG_LEN);
++
++	return skb;
++}
++
++static const struct dsa_device_ops yt922x_netdev_ops = {
++	.name = YT922X_TAG_NAME,
++	.proto = DSA_TAG_PROTO_YT922X,
++	.xmit = yt922x_tag_xmit,
++	.rcv = yt922x_tag_rcv,
++	.needed_headroom = YT922X_TAG_LEN,
++};
++
++MODULE_DESCRIPTION("DSA tag driver for Motorcomm YT922x switches");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_YT922X, YT922X_TAG_NAME);
++
++module_dsa_tag_driver(yt922x_netdev_ops);
 -- 
-2.43.0
+2.25.1
+
