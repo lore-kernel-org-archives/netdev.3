@@ -1,41 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A003F7AB4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088A4370D47
 	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790946083; cv=none; b=UsoIEzioxn0XslyqoBK1EIg3srooWtGOmA47D7BxELulhACZxAXGhOPLvwul2nhCh/t3E5Aw0lgpquyKtlYa13kiOchTon2x8n4A94/YcSHZpmLDWs0kmzt3b0JtdF3eeAkLsuYeaVDNuGM1KBtmYrSQr4jDNxLM81yg/8WUgpY=
+	t=1790946083; cv=none; b=RmIXKZxTz7NSZk+isj7JQRfzJ2RvAM2Vm4MTNnfGBK3JoDQYJBqmLE4H9ualV4IjosFRuUi+IfxlSRnJmU9XarSqPs15Ye4HTaL26XSwn0i3FTIzKqVea29oBBmjWeAwKXDV7i9HZH0ZNlpg2g+r0vDQ3xTkiwvGVkrE6c6Baz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790946083; c=relaxed/simple;
-	bh=VNuM/9Yw3thYNLJ/NAMHlhzB9TyZ6WBBrqBl6e+IofM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FpqUYkg1yM8Xtl8XZ9dYn3k6+NLS0BwCgC2ySgZqcFMXEF2DnU9MkYRGSrmUrt6iByCZV4OSDBLTxpbLIX1unpzFt5HlQltB6167zW8I2mzi9MuxWtpL7jcYCBWTydNfOEGdbfdO58wZIKwqUPqbjHgWk54gUnvEA9wv+J4iK9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mc0jCBdO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f2qsLQdF; arc=none smtp.client-ip=193.142.43.55
+	bh=c6o52qQJs9QcOYJ0G8+o+ceydWkwkaK19RRs8ZrDRW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AxoMylULGfOl6iPkusAuRJHgi1LSQBEEwfayP+mIlf+5p7a/pR6tZH0X/B1gX3Gynv8raDLut2ChnnWX+ivMhQbp487cWetRvt+poVWAs/WmEiSOAnQHvn1ECJ+KX+bkqiRlTQv/0CDPXnId6eSqEvjEOzXMqDlnXw2ZjFmyXRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2GjsFExw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RmrppJjG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mc0jCBdO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f2qsLQdF"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2GjsFExw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RmrppJjG"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1790946078;
+	s=2020; t=1790946079;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xTokKJZiL8SGgx8BVLaqZEyMfKS+KQg8BsuFSbLqgBw=;
-	b=Mc0jCBdOzVCfy7uLQ2GoxnuVxegas+g0yDD9BlDi+6IM+bBOrY5PpKbFHhWikKJ/9LFy+Q
-	DQqA884KQ4XBbyqwsq+yW2GV2647yEtgZScrzEOsULQDnH2E91TKnMx/4nT4ot945pOclC
-	psNE//RL8r6i4MLzGz6ryVjt3XHqlxXSnui5q/yOEJk2xe0uQO7HTtu6wCTYh/GHIbSwXF
-	CDv0625pq+ULNKcTHyv0AZPyrr3KPkcaDYycJyikUkn4hm+rD8S07FskGY8z/sVbA4mkzb
-	tWrRC8oMtmvsC3tgjnum2F5w63Jnu+3b7bbpq2cZI9XoJVtJ3H5sBPGJvNMkSw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gaolA8HyCxFnnwhWRTG00R+dZvmZnieOtCIRyueIrP0=;
+	b=2GjsFExwDZS2myMZnRR5kgsubzGPzHP828qebH/Ja5Dw0FJawfVN77IhEmQ09/NL5lfrcP
+	9rOsFDZwK/YvBxtoIHz/cvtU6F3XkDC3ga4vLca/K3FRrpZnEB6HHMmwlXd0eAj14aFlIQ
+	qjvxlwBpq4I2uvXiMdNgIIHtDiJLvQC6OGnx4us7oXcZx3p4XVejVClr0Y+hzIkGICE84P
+	NM0HXau9VIomUXw4iAeHbX71UEZ33h+JC3uKQnexULpoboza1IedPY6JzBvTXwOvzyrwb9
+	hvUwmoBoK3hdiEtPM5DNLEPsNyeEv6m7dUnzMpyQRA0PytgiIvmOr1wid37CQQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1790946078;
+	s=2020e; t=1790946079;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xTokKJZiL8SGgx8BVLaqZEyMfKS+KQg8BsuFSbLqgBw=;
-	b=f2qsLQdFggShrTL0vPdY9f0Rxd7mYz3x62i+rA+yTHaaFQIBOw6HccJMAsRnxs9LjWo6O+
-	PpGRCyaZGL/KoRCw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gaolA8HyCxFnnwhWRTG00R+dZvmZnieOtCIRyueIrP0=;
+	b=RmrppJjGVD5k2zqgPtb2sj81Le4HDr41q8RhrPdsHVy8R56WEbiTMU0XIvuRV+OFSV7sXl
+	gaD961nF/b8AgWBg==
 To: netdev@vger.kernel.org
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	"(JC), Jayachandran" <j-rameshbabu@ti.com>,
@@ -55,9 +58,11 @@ Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Simon Horman <horms@kernel.org>,
 	Vignesh Raghavendra <vigneshr@ti.com>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: [PATCH net-next v8 0/8] hsr: Add additional info to send/ receive skbs
-Date: Fri,  2 Oct 2026 15:01:06 +0200
-Message-ID: <20261002-hsr_ptp-v8-0-60dabc07e554@linutronix.de>
+Subject: [PATCH net-next v8 1/8] hsr: Add header_ops::parse_protocol
+Date: Fri,  2 Oct 2026 15:01:07 +0200
+Message-ID: <20261002-hsr_ptp-v8-1-60dabc07e554@linutronix.de>
+In-Reply-To: <20261002-hsr_ptp-v8-0-60dabc07e554@linutronix.de>
+References: <20261002-hsr_ptp-v8-0-60dabc07e554@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,156 +70,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20260204-hsr_ptp-1f6380f1d35f
 Content-Transfer-Encoding: quoted-printable
 
-I am trying to extend linuxptp to support PTP over a HSR network.
+af_packet uses dev_parse_header_protocol() to assign skb::protocol.
+The hsr stack does not assign a callback so the field is assigned to 0.
 
-This is the kernel side of the changes. In short PTP over HSR sends its
-packets to a multicast address and every node needs to forward the PTP
-packet (SYNC and FOLLOW-UP for instance) within the HSR ring.
-In order to achieve this, the HSR stack must not duplicate and forward
-the PTP packets as it would do with other packets. The delay caused by
-the duplication and forwarding adds overhead which in turn makes the
-timing information within the PTP packet inaccurate.
+The header used by the hsr stack corresponds to the ethernet header for
+the "first" part so the protocol member is at the same position.
 
-My current approach is to open the slave devices (eth0/ eth1) from
-userland in order to receive the PTP packets. Sending happens from the
-hsr0 device. The actual packet has an inline header prepended of type
-struct hsr_inline_header. The size of the header is equivalent to
-ethhdr. The header has a type (h_proto) at the same position as ethhdr
-and expects it to be ETH_P_1588 as this extra meta information is only
-relevant for PTP packets. It makes no sense to send PTP packets via the
-HSR interface because it gets duplicated and the timestamp information
-is lost so this should not break anything. As an additional safe guard
-there is a magic value at h_source position. The value has '0xaf' at the
-most significant byte which makes the address a locally administered
-multicast address.
+Use eth_header_parse_protocol() for the hsr_header_ops's parse_protocol
+callback.
 
-The header passes two information from userland: On which slave port
-the packet has to be sent and does the HSR stack need to prepend a
-header or not.
-The header is skipped so that the remaining stack sees the actual data
-and can send it as requested.
-
-The PRP packets are sent directly via the SLAVE interface. The standard
-mandates not add a PRP trailer (PRP, redundancy control trailer) to PTP
-packets. There is not really a reason to use hsr interface.
-
-HSR hardware offloading is optional. The driver needs to know if the
-operating mode is HSR or PRP. In PRP mode it needs to check the ether
-type and for ETH_P_1588 it must not perform any offloading.
-In HSR mode, for ether-type ETH_P_1588 there must be no offloading. If
-the ether-type is ETH_P_HSR there must be no offloading if the
-encapsulated protocol is ETH_P_1588.
-
-This has been tested in a pure software environment and in an HW-assisted
-environment where the HW is able to duplicate and duplicate packets
-but does not do it for PTP packets.
-It has not been tested within an environment where the HW is able to
-forward the PTP packet and correctly update the timing information.
-
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
-v7=E2=80=A6v8: https://patch.msgid.link/20260928-hsr_ptp-v7-0-d55d304d9a7e@=
-linutronix.de
-- Use __u8 instead of uint8_t, add header file for in hsr_ptp.h
-- Add header file to if_hsr.h for struct ethhdr
-- Remove the inline keyword from hsr_ptp_test.c=20
+ net/hsr/hsr_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-v6=E2=80=A6v7: https://patch.msgid.link/20260923-hsr_ptp-v6-0-6ea07b3fb8a8@=
-linutronix.de
-- Change the logic in hsr_create_tagged_frame():
-  - Don't update ->csum_start (the cloning takes care of this)
-  - pskb_may_pull() does not need to include HSR_HLEN (it only copies
-    'movelen')
-  - Set network header to 'movelen' which takes VLAN into account
-- Drop also PTP packets which were received on HSR_PT_INTERLINK (not
-  just HSR A/B).
-- Move include HSR header to include/uapi/linux/hsr_ptp.h, so it is also
-  available in userland.
-- selftests:
-  - Add hsr_ptp.sh alphabetically ordered to the Makefile
-  - Use "$0" in hsr_ptp.sh
-  - Drop unnused arguments in open_socket()
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index d14de44e14b7a..6d96bc4a12446 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -247,6 +247,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, st=
+ruct net_device *dev)
+ static const struct header_ops hsr_header_ops =3D {
+ 	.create	 =3D eth_header,
+ 	.parse	 =3D eth_header_parse,
++	.parse_protocol =3D eth_header_parse_protocol,
+ };
+=20
+ static struct sk_buff *hsr_init_skb(struct hsr_port *master, int extra)
 
-v5=E2=80=A6v6: https://lore.kernel.org/r/20260527-hsr_ptp-v5-0-158a7633eac0=
-@linutronix.de
-- hsr_ptp_test: Let it wait up to 100ms for a packet. Otherwise it will
-  complain if the recevied packet is not already in socket.
-- Use TEST_GEN_PROGS instead TEST_GEN_FILES, the test can not run
-  without additional arguments.
-- Make the inline header mandatory for sending ETH_P_1588 packets via
-  the HSR device.
-- Use kfree_skb() instead kfree() for the skb.
-- Rephrase the commit message saying that skb_clone() shares
-  skb_shared_info and does not copy it.
-
-v4=E2=80=A6v5: https://lore.kernel.org/r/20260508-hsr_ptp-v4-1-aa19aa7c6a71=
-@linutronix.de
-- Split the patch into smaller pieces
-- Added a test for the added inline header (which signals the port while
-  sending packets).
-- Replaced __pskb_copy() with skb_clone() + skb_cow_head() in
-  hsr_create_tagged_frame() to preserve timestamp request.
-
-v3=E2=80=A6v4: https://lore.kernel.org/r/20260429-hsr_ptp-v3-1-afbf8f200f48=
-@linutronix.de
-- Removed skb extention. The information within HSR is passed via
-  struct hsr_frame_info. Driver with HSR-offloading capabilities need to
-  know the HSR mode (HSR or PRP) and parse the skb to decide what needs
-  to be done (whether to send on both ports and if adding a header is
-  needed).
-
-v2=E2=80=A6v3: https://patch.msgid.link/20260309-hsr_ptp-v2-0-798262aad3a4@=
-linutronix.de
-- Remove af_packet changes entirely.
-- Add an internal header to pass additional information for HSR-PTP
-  packets.
-- Remove PRP, userland will use slave devices directly.
-- Drop all received PTP packets. Userland needs to use the slave device
-  for RX.
-
-v1=E2=80=A6v2: https://patch.msgid.link/20260204-hsr_ptp-v1-0-b421c69a77da@=
-linutronix.de
-- Added PRP support
-- skb extention is used instead of extending struct skb_shared_info
-- in af_packet
-  - packet_sendmsg_spkt() is no longer extended
-  - jump labels are used to avoid the overhead if there no socket that
-    is using this HSR extension.
-
----
-Sebastian Andrzej Siewior (8):
-      hsr: Add header_ops::parse_protocol
-      hsr: Use skb_clone() while adding the HSR header
-      hsr: Add a magic header for sending PTP packets
-      hsr: Drop received PTP packets
-      hsr: Use the port and header information in hsr_forward_skb()
-      hsr: Assign a socket for cloned skbs
-      hsr: Move struct hsr_ethhdr to a global header
-      selftests: hsr: Add test for the inline PTP header on HSR
-
- MAINTAINERS                                    |   1 +
- include/linux/if_hsr.h                         |   7 +
- include/uapi/linux/hsr_ptp.h                   |  20 +
- net/hsr/hsr_device.c                           |  67 +++-
- net/hsr/hsr_forward.c                          |  78 +++-
- net/hsr/hsr_forward.h                          |   3 +-
- net/hsr/hsr_framereg.h                         |   2 +
- net/hsr/hsr_main.h                             |   5 -
- net/hsr/hsr_slave.c                            |  34 +-
- tools/include/uapi/linux/hsr_ptp.h             |  20 +
- tools/testing/selftests/net/hsr/.gitignore     |   1 +
- tools/testing/selftests/net/hsr/Makefile       |   5 +
- tools/testing/selftests/net/hsr/hsr_ptp.sh     | 109 ++++++
- tools/testing/selftests/net/hsr/hsr_ptp_test.c | 482 +++++++++++++++++++++=
-++++
- 14 files changed, 789 insertions(+), 45 deletions(-)
----
-base-commit: 5a956dde5526a634dca7ccad27c051ebcc306089
-change-id: 20260204-hsr_ptp-1f6380f1d35f
-
-Best regards,
---=20=20
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+--=20
+2.55.0
 
