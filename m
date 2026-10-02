@@ -1,55 +1,56 @@
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4831C495531;
-	Fri,  2 Oct 2026 13:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
+Received: from smtpcmd01-g.aruba.it (smtpcmd01-g.aruba.it [62.149.158.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E744BB5DE
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790948917; cv=none; b=qjUzdK/A4nnpSoOVj+iNxoGa8LAcjQBmeB2zcaugboaq13Lkj3vJwslNy0KjThYBtlRzI4UDeEcsIxzGAuugY5YvDcojhCs8EyQ85/sXQw8P6PBlf9AeAw3IoC0EjyaPgEMUeL10IERM6KVWf7iqH4gUa9RX9xIwoZxtkSCjR1A=
+	t=1790949465; cv=none; b=IYUv0SoqVnkl7rsnCQIXspwypiUvp7BHX5KPJyMS4/4HSPFY8+HhEJJND7v0cnHM0C7DM0Yh9sQb4h/UNJEkmglUVdgDK8njFN0vw4LCgjDz03xTGykPi6Eva88cgdGvSq8B+4uTTHd8UgC8iHEmrE0QQw5r/xRI30qGr0dyEI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790948917; c=relaxed/simple;
-	bh=AeaX8rRa1HQ8lZ1H1p05fCG1MX8TmQxVKVAFGDUqo8Q=;
+	s=arc-20240116; t=1790949465; c=relaxed/simple;
+	bh=7xam+ZyB49q2ZEKs5JCzAXEruXTclx3T1bG4VT0LcNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jt7kv6p3Z6LDgSzO5t1+IO1AF4ECvCZNZBKCFwKiUoXLTY3wRfdmJmOVOof54KeDKdQgOzIOROHEYvCvD1Bb6FPdAONSnbI154Reh2VsXCT1jF+nk9isM0ykL/Gdl8/MZ+GN7obgTopU/4c8y7UgMzn8Tn4Xrk+bg5HwJHPuD2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=YfnVQ6vv; arc=none smtp.client-ip=111.22.67.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	 MIME-Version; b=aUA31sNYfMy08Y8uKRo1nhu2RejAvCEoMgyLJLru/F0aewxuv1Yh0w9H6ETo3yJU0i6uBx0BXHea98elXywhECWTdyTmPBopuTWdA5D+mtLinxYZAO+aLGArHzAxqs3s4IjRWlnjBErmfkv5hA8QaK8IX/HiftUx1cxSJgfewiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=YPKNKSVC; arc=none smtp.client-ip=62.149.158.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="YfnVQ6vv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=YfnVQ6vvht5Wv3NX0PSroEEzG2Rqo4VMJeQfkYG4+wd2lHGeUCvc0zdH9J4nZ/OYO8RhY5cqdmGhw
-	 9H1SGuFaMZ9kl6G/LSkbQ9QuBIvph2bcrd19y3E7CyKzviEXjxvV5oxj6CaOCub0tsW/LJrF9zuC1Y
-	 T5WrM6N4XnetayBQ=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56abfb569fa8-958ba;
-	Fri, 02 Oct 2026 21:45:15 +0800 (CST)
-X-RM-TRANSID:2ee56abfb569fa8-958ba
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[112.22.250.209])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16abfb566e96-20939;
-	Fri, 02 Oct 2026 21:45:15 +0800 (CST)
-X-RM-TRANSID:2ee16abfb566e96-20939
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="YPKNKSVC"
+Received: from polimar.tail4f75e6.ts.net ([101.57.122.26])
+	by Aruba SMTP with ESMTPSA
+	id CdlZxDen1LUMUCdlbxwrEY; Fri, 02 Oct 2026 15:57:40 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1790949460; bh=7xam+ZyB49q2ZEKs5JCzAXEruXTclx3T1bG4VT0LcNA=;
+	h=From:To:Subject:Date:MIME-Version;
+	b=YPKNKSVC4wBuBGh3cEbeOS7twAU7LMLkncP7AZh92IbDE4yFzElqpbSEJEClLkyDr
+	 8L6Q0x11+kzLHJCcPTUwutLV1stDnwCugbdcu3/J5FkS0tTgqFVxqdAxqmgqytBvmB
+	 70ufG9jO+BGUYywSr5ooGctmIdPO7CCe40QDa4PxTQ/k/hN4fhevm19LVKjGReyohX
+	 ijNLtsGXccZK2G+KRbrwiwddaL+xXmkDojjbFSxirop6YkJfk6+lnGeyuN4RYLDyei
+	 8sj99Bvjlb47vMvjK9gRvwpsUcUMBhtM+7yQm4eRoq6ozFHmgNAfhp4S4+rqBEg6PQ
+	 pDYcVcvzCw1IA==
+From: Rodolfo Giometti <giometti@enneenne.com>
+To: Woojung Huh <woojung.huh@microchip.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Guillaume Nault <gnault@redhat.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: fix NULL dereference in skb realloc fault injection devname filter
-Date: Fri,  2 Oct 2026 02:44:32 +0800
-Message-ID: <20261001184432.357108-1-yanhaishuang@cmss.chinamobile.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Marek Vasut <marex@denx.de>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Rodolfo Giometti <giometti@enneenne.com>
+Subject: [PATCH net-next 2/2] net: dsa: microchip: take the reset timings from the device tree
+Date: Fri,  2 Oct 2026 15:55:42 +0200
+Message-ID: <20261002135542.359756-3-giometti@enneenne.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ar-Hj5DhKuZeUisY@gmail.com>
-References: <ar-Hj5DhKuZeUisY@gmail.com>
+In-Reply-To: <20261002135542.359756-1-giometti@enneenne.com>
+References: <20261002135542.359756-1-giometti@enneenne.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,21 +58,89 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfEP3+bGNc7b0EvyYV8HWkMncoBcil0sHjzeMjnsG8mWjjTi3V7YyLEGei6sth5ymYfP42Z2iKcGj6U1sfnIku8HtkoTy0y+MjrrbZcBcADTtqfOi52hY
+ mvzzumtP2lat4j0ZaSCRX7W2xHvpgDskHPJjtRXNUOXtpfAhIAWvFRau17DeiiL0B6zH5Cx5GmJMNFQICENSLiWCbLVwHNBXQWqkigz2g4YPf3vefL1RBsjm
+ +vrx2WW7mn+YhdMRhbIIF1XbwUVlU1LQX9ganzVnf+kyeAJB6FbtddnFlg0EoevMcCEHmedIr3V4OsruEAbjmlqYLJscI5w+UQO3Jbw8oh9fh/oCytpPh2ka
+ uWlUNPNuPwFQ3M3CDoqTHJDYREbWR+h7YRK0pzuGxOshjHD7jcjtStx3xpPpfdKyTaz8LPs3t/hkr3DQrjZJL30AXnoLBzK4aJfxHXmSzQVpYzVqKjDe2Qoj
+ /FnRssQ3/NArZKYon7Iv3YrohcH0Pp32UiFQkrb+Tem5tqCOzWT+5OsJTH3DOsKn37jzg/N9GRy5484O0Z8Zl4Z3h7/bEOuk5c9uN6UpdbX8gyzcyD3mris/
+ 2XVGDu/v36w/GUHQ/a613EB9xtgO17ANLgp9Un96yRQSVSgxWxrNhe3CtXeqReKG0TXfEI731XkF9Xt/QetBoSLU
 
-On Thu, Oct 01, 2026 at 10:30, Breno Leitao wrote:
-> I think something like this untested approach reads better:
->
-> +	if (!net)
-> +		return false;
-> +
+ksz_switch_register() holds the reset line asserted for 10ms and then
+waits a fixed 100ms before reading the chip ID. On an i.MX93 board
+fitted with a KSZ9897 the switch starts answering 95-120ms after a
+10ms reset pulse, and about 160ms after a 1s one, so the read can
+return all ones, and the probe then gives up:
 
-Thanks for the review, Breno. Agreed, this reads better, and the fault
-is meant for skbs on a network device anyway.
+  ksz-switch spi0.0: unsupported switch detected ffffff00)
 
-I sent v2 with your suggestion and added aV Suggested-by tag:
-https://lore.kernel.org/netdev/20261001182813.353004-1-yanhaishuang@cmss.chinamobile.com
+The same part on another board of the same family answers well within
+the 100ms, which makes the wait a property of the board rather than of
+the driver.
 
-Thanks,
-Haishuang
+Take reset-assert-us and reset-deassert-us from the device tree, keeping
+the current timings as the defaults so nothing changes for the boards
+that do not set them. The delays are now free to span the ranges of the
+different sleep helpers, so let fsleep() pick.
 
+Assisted-by: LLM
+Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+---
+ drivers/net/dsa/microchip/ksz_common.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
+index 767c8fe8e819..365a804eee31 100644
+--- a/drivers/net/dsa/microchip/ksz_common.c
++++ b/drivers/net/dsa/microchip/ksz_common.c
+@@ -23,6 +23,7 @@
+ #include <linux/of_net.h>
+ #include <linux/micrel_phy.h>
+ #include <linux/pinctrl/consumer.h>
++#include <linux/property.h>
+ #include <net/dsa.h>
+ #include <net/ieee8021q.h>
+ #include <net/pkt_cls.h>
+@@ -3990,6 +3991,8 @@ int ksz_switch_register(struct ksz_device *dev)
+ 	const struct ksz_chip_data *info;
+ 	struct device_node *ports;
+ 	phy_interface_t interface;
++	u32 deassert_us = 100000;
++	u32 assert_us = 10000;
+ 	unsigned int port_num;
+ 	u32 lookup_chip_id;
+ 	int ret;
+@@ -4001,6 +4004,19 @@ int ksz_switch_register(struct ksz_device *dev)
+ 		return PTR_ERR(dev->reset_gpio);
+ 
+ 	if (dev->reset_gpio) {
++		/*
++		 * How long the switch takes to answer on the management bus
++		 * after the reset is released is a property of the board, not
++		 * of the driver: about 160ms has been measured on one of
++		 * them. The values above are only the historical default,
++		 * so a board that needs more states its own timing with the
++		 * properties MDIO devices already use for the same purpose.
++		 */
++		device_property_read_u32(dev->dev, "reset-assert-us",
++					 &assert_us);
++		device_property_read_u32(dev->dev, "reset-deassert-us",
++					 &deassert_us);
++
+ 		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
+ 			ret = ksz8463_configure_straps_spi(dev);
+ 			if (ret)
+@@ -4008,9 +4024,9 @@ int ksz_switch_register(struct ksz_device *dev)
+ 		}
+ 
+ 		gpiod_set_value_cansleep(dev->reset_gpio, 1);
+-		usleep_range(10000, 12000);
++		fsleep(assert_us);
+ 		gpiod_set_value_cansleep(dev->reset_gpio, 0);
+-		msleep(100);
++		fsleep(deassert_us);
+ 
+ 		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
+ 			ret = ksz8463_release_straps_spi(dev);
+-- 
+2.43.0
 
