@@ -1,251 +1,1052 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E22233D9E;
-	Fri,  2 Oct 2026 12:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E3134750B
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 12:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790944199; cv=none; b=j5Wrg+syOTzHVB0+5Y5TeJZHpulJlyHC/Ph0pB7yC+JGPeEWPrdZmXIxFqa5+u9aEy6FMSjwvVJX15yTQ5/RFOOttwUp1WloBn0KSCV1rtscNCr0udBuF9XLazUVY7G9diymcDMIY4R756h23N7n33uIO3iuna+JM2xhWIlCPHk=
+	t=1790944287; cv=none; b=cqIknCW4cwUkG23HPwq0dEn3RWRDokYkM7TCom6d/XXBqIH5CV+UqyVHK0ctuqQW/sd3GFrpJqdfuC0gvTMUJfjDn3bJKDax6/TWka+ctDVnff0vhdg1+mK1kuv1mYQ7FqV8hW4OZEuK89WCGouNRHJLiUsmK1fXkrolYq2mcmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790944199; c=relaxed/simple;
-	bh=TqahgS16WLcf5gXr7qzQOiR9le2GBa5eLY4vNVsmWJY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fA5f2qQGFHoZn9dCVvV0xEAz57dVhbqEYWKtkXUGDfUro/2fXxsi1iybA/t1aKmoKldbPkv5nz4pPSt0ZyduIUdWHXtGxJ5BfxKSvWdyD9iCtpmo7XCIKL6K7NqIhfE4JBpIhgD7pfgwp/FZyXSzN2sljEMTgxPvR+xJuC3jj28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kbaecQsI; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1790944287; c=relaxed/simple;
+	bh=yEKSdvYiUQnk2OPWfSThF5HFZhlH1p49IlTTEPxIgxs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KqaxzJx2XboicFrXkO046VgQ2WfkHTCsUrxNKp3wKRdxL64Uj5nmymMpUMDqNJ7KB42byTkYXzwMKv4wTbD3BboALDmMtubcbnqCqUpDYqWJxnxwV5y0l51bVR21aPwwAIC65YgbJGNhefVui4lBOMtyMJIA7s/DbUq/oHgj6rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OowCOqPu; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kbaecQsI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=TqahgS16WLcf5gXr7qzQOiR9le2GBa5eLY4vNVsmWJY=; b=kbaecQsI2HFYdS5BgNSrU8uxGJ
-	Ok/LW32UfwlMuvotBt8vUIvTxx4nx4djoRe42ZanaWdlk6blt6KtuxuZJMl0Lc3QDMQuwVn5Vkqqx
-	Vjy+u5Ka8FE35ZZjMzyXgumdsfJRA6eo8XcPYhxNlKKCTHmzyBjgFlkUQ6dIvdKkT35v6WcwmYbSk
-	3vT4Wghu5Gm78tOAdNx7W/i8LIH7G22GcNjvGD68GwMOESMIAghKwsFD4FuYaKmluozh42ZD8NQoi
-	fCQnZ2ZGRuMn93knT/MsqiFOiZHYzKI+DR2nQLrjsPIqc6kf5yDTSNxi6ahQz1pwWuyqjCgqH1zX/
-	7MWw092Q==;
-Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-m2-r2-139.e-iad50.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCcOY-00000000LKq-3Vgy;
-	Fri, 02 Oct 2026 12:29:46 +0000
-Message-ID: <777d19602ed1868abbd3d3ef3a4e78a8688d4a17.camel@infradead.org>
-Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
- pps_get_ts()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Rodolfo Giometti <giometti@enneenne.com>, Miroslav Lichvar
-	 <mlichvar@redhat.com>
-Cc: Richard Cochran <richardcochran@gmail.com>, Andrew Lunn	
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni	 <pabeni@redhat.com>, John Stultz <jstultz@google.com>, Thomas
- Gleixner	 <tglx@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Alexander Gordeev	
- <agordeev@linux.ibm.com>
-Date: Fri, 02 Oct 2026 13:29:45 +0100
-In-Reply-To: <24e8134b35cc8be26606d7472295cdb43ea6b38a.camel@infradead.org>
-References: <20260829210041.40649-1-dwmw2@infradead.org>
-		 <20260829210041.40649-4-dwmw2@infradead.org>
-		 <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
-		 <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
-		 <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
-		 <ar5cq0vslvQ00Pek@localhost>
-		 <b567acf8-c3e3-4b51-99a8-058ab42f3026@enneenne.com>
-	 <24e8134b35cc8be26606d7472295cdb43ea6b38a.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-pDjSuWBIWRvvMtVgtHWG"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OowCOqPu"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ee1f38so34286605ad.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 05:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790944285; x=1791549085; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9v5ii6TfP9FO3+IPzpTmqGqHl9/teaNXkGBFJeS5lsU=;
+        b=OowCOqPuFuc6kSGycRmCtSGdavj100/qgADyvUXRL/gAzOJHUPAy8cAjueOSJx6rH0
+         spWvCkvyCoPvSnYOevXpg/ZO31pEDXjlS5fvpMt9r9G6I0GPP+N/Ov7feKXneSf9EFdQ
+         u+PTL7AP4yWEnId0fpl73Wt+AG41x+hVkjT9B6P+153PGP+G9QqUTS9OLvzSYdjFqlui
+         TFE3Eis+BsTN3noLMixE9MgjLKNHUlC2zQ1NZTFiY0ixJw5mhDawC+CdLu0KwoZF2luy
+         Zc7Q+TvXZ1qmcvirsAIaoqQFfRKIANedjC+FGw60sXSHDC7XvyHhyqBJWanIIv6jurzi
+         DSNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790944285; x=1791549085;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9v5ii6TfP9FO3+IPzpTmqGqHl9/teaNXkGBFJeS5lsU=;
+        b=CAS9NaCUnxaDk9nBEGpj19SF2rw1cYSpFLyaHZNVphaeY5giuGi7Fl8iuPR+o0Vm3w
+         xsmYNkJtuJHxLrpGRJgDak/mGfKPfeQOZvSzpiD5SqzqPo6W/DmPEGR2n3oo5t22wlRM
+         MSV4YSaQ1gLg8F4hNFaXLg1joT3YNSUOqSwj7AqJOQycg8f8pGWTYf2/nNKCuNiEKBM0
+         s6ibEkbofMMvBUGYtaOvrO8sYKSZ/Yx/wIgn1IHcf0BL8kUHlwBbHNxvsZQ112ajwylP
+         Z599HkMfvDy3wfALmN8xfWG1QZ4fJLsn2/0M3UnPqppYgRDn6eJUJ/lSLBIZyWwP4kTL
+         Ie6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxAxwx+Jt7asNLgYvqq7Jz8m3w+eayXeNkMaAnCIGdAcIw7tGvyiRuRF9EWrV7WYSenBIQgzjw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJQEFt8UFnMl+qTULbb015AenUsSIgBAxE4hJh5eCdl7Shs0RwT
+	jxLqquI1VSFl4L4NkcK3BiMAUJz+5mYQCmPyM7GX6H3kQTOzYGG9JqY5+CxyRiTK
+X-Gm-Gg: AYBFou2ak+XvjpMogfJFyo5i7/idfWIKMbCgCINAmmJd6uP/ZnKVgs8zPy2Phyb9+Ku
+	qiRCCoU7n8wosF1Q8t2hGGJ0gP18lb3HdlGr8oHPVZF8sPHSF89tXc+x0dFJqXtaYiMNqJDgd4i
+	W1O7ovNSzeYy9Bt39Np7wZbz4qH2ZL7afvpua3N6PqMiuI+dvQCEnvpttY9Cj9AdgsDipfiupVn
+	oTw+zCIlvWIBOyx0WhCVjZad/HmnKuzsU9oJBhlPMClAd5tz9J+DAiL1J7UzsALCTgGHevHF0kY
+	c3deME084H85T4TMdnK3O8LCO02WnmhrIbv+FD4UUivb5B2Av/4gjQKzEn4q/eP3ax+xE1uJhDu
+	+U4xlS/9B1J+iFTs6erl0M42PoZeirqB7yO/upuBX1nnKXobv/BcaCy19c9JgeyEmz6KoTjtv8T
+	hhGAOg5PZh2HPh6cNao7L0EKDQ0c96urz/lD5BYjlIsHEEc6a8o76hk9q2EGYpd95vkgHBvPY8l
+	souERsG
+X-Received: by 2002:a17:903:1b06:b0:2e2:de8e:7315 with SMTP id d9443c01a7336-2e49b6a0c59mr23651015ad.38.1790944284835;
+        Fri, 02 Oct 2026 05:31:24 -0700 (PDT)
+Received: from [163.43.103.131] ([163.43.103.131])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f705f37sm6938125ad.64.2026.10.02.05.31.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 05:31:24 -0700 (PDT)
+From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Date: Fri, 02 Oct 2026 21:31:17 +0900
+Subject: [PATCH RFC net-next v5 1/2] seg6: add support for the SRv6 End.MAP
+ behavior
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261002-seg6-mobile-end-map-v5-1-30eec37563a8@gmail.com>
+References: <20261002-seg6-mobile-end-map-v5-0-30eec37563a8@gmail.com>
+In-Reply-To: <20261002-seg6-mobile-end-map-v5-0-30eec37563a8@gmail.com>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
+ Andrea Mayer <andrea@common-net.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>, Shuah Khan <shuah@kernel.org>
+Cc: Justin Iurman <justin.iurman@gmail.com>, 
+ Florian Westphal <fw@strlen.de>, 
+ Fernando Fernandez Mancera <fmancera@suse.de>, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Yuya Kusakabe <yuya.kusakabe@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=27295;
+ i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
+ bh=yEKSdvYiUQnk2OPWfSThF5HFZhlH1p49IlTTEPxIgxs=;
+ b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqv6QWPM8tq7/FmOFHVermLqE6t1NcXELUQDP2y
+ SHBCZep8QOJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCar+kFgAKCRAq19F1Kl0b
+ TQ+OEADG+ypG4zUACi8cv3Qk91F2HArEYb77Q7mJxDUXUb/sRlkXQvNqSInR4o9QU82oTZv3BGy
+ ccEmp2hF0+2qabSps8YfhGlwbyjdQQAnZknA4N+YoXRer3bWbcnhjh1wnHQO3pLoNiJCvIgo6Kk
+ 5zCmuuDZCQS8M/ISj7SnfaAz99AsTR4R5ErtqhFH7KGTeYiWqoLdYk80HAZTUiT9+kCrQCmppXK
+ EJ0bbJl1BXdtxpRKIsZe367iu3EH0BrrasG4VUfGvQu6+suUB1vO13GjSnmIaDmYWWRqkBt+DxI
+ MutFWo9EH2KriN5FZfEu+ty0mwZlUSY00/oMi4EAzMfkzGwGGGwpvMuXV4a9Bkj19Msq3UriXEr
+ iTnxEfyNnUw2+6tjKGBrOmVkzziVwzEz15C7QlmXCixtMxzLacomMSVgD9rAQ1p0vZCzr+RLj+b
+ hSlRlr9Ykq2YxRZvO6kL5wxObiXbkSQYf7S+juxV1d3CDEYZRipTPV12CwNGylteetFLHwsF1A8
+ JMhwKBw9NWvA8tbZFgUu3H4eJzmIrQinl0RLRoT0JlWnV4+lLj4azxUbE6HsvTHhbjU0xFjoQaj
+ BW19ll7LikfJkDgFY1aax5/TkCnO6ByOeZHvttvGb1T6msx0OU52d2TRw/Sd6o1A4ZEr05yMId3
+ bJVaoQE9y2U9+Qw==
+X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
+ fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
+SRv6 End.MAP is defined in RFC 9433 [1].
 
---=-pDjSuWBIWRvvMtVgtHWG
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+The SRv6 End.MAP is an SRv6 endpoint that replaces the IPv6
+destination address with the configured mapped SID and forwards the
+packet via the IPv6 FIB without consuming the SRH.
 
-T24gRnJpLCAyMDI2LTEwLTAyIGF0IDEwOjA3ICswMTAwLCBEYXZpZCBXb29kaG91c2Ugd3JvdGU6
-Cj4gCj4gSSd2ZSBtb2RpZmllZCB0aGUgc3BpbiBjb2RlIHRvIHRha2UgdGhlIHNoYXBlIEkgb3V0
-bGluZWQgaW4gZW1haWwgbGFzdAo+IG5pZ2h0LCBqdXN0IGNhcHR1cmluZyB0aGUgKmNvdW50ZXIq
-IGJyYWNrZXRpbmcgdGhlIEdQSU8gcmVhZCBhbmQgdGhlbgo+IGNvbnZlcnRpbmcgaXQgdG8gJ3Rp
-bWUnIGxhdGVyLiBJJ2xsIGhhdmUgcmVzdWx0cyBpbiBhIGZldyBob3Vycy4KClRoYXQgb25lIGdv
-dCB0byA1IGhvdXJzIHNvIEkgaGFydmVzdGVkIGl0LiBJIGFjY2lkZW50YWxseSByYW4gaXQKdGlj
-a2xlc3MgYnV0IHRoYXQgZG9lc24ndCByZWFsbHkgbWF0dGVyIGJlY2F1c2UgYWxsIG9mIHRoZSB0
-aWNrbGVzcwphY2NvdW50aW5nIGlzc3VlcyBhcmUgYmFzaWNhbGx5IHJlc29sdmVkIGFueXdheSAq
-YW5kKiB0aGUgcG9sbCBpbnZvbHZlcwp3YWtpbmcgdXAganVzdCBiZWZvcmUgdGhlIHRvcCBvZiBl
-dmVyeSBzZWNvbmQgdG8gc3BpbiBhbnl3YXksIHNvIGl0Cippc24ndCogaWRsZSB3aGVuIHRoZSBw
-dWxzZXMgY29tZSBpbi4KCiDigKIgaHR0cHM6Ly9kYXZpZC53b29kaG91LnNlL250cHRlc3QtcjY0
-L3NwaW4xLXRpY2tsZXNzLTFoei8KCkl0IGRvZXNuJ3QgbWFrZSBhIGxvdCBvZiBkaWZmZXJlbmNl
-IHRvIHRoZSBvdmVyYWxsIHN0YXRpc3RpY3MuIFRoZQpvdXRsaWVycyBhcmUgZG93biwgZnJvbSDC
-sTExMDAgdG8gwrE4MDAgbnMgKG5lZ2F0aXZlIGJlY2F1c2UgaWYgd2Ugc3luYwp0byBhIGxhdGUg
-b25lLCB0aGVuIGEgc3Vic2VxdWVudCBwdWxzZSBhcHBlYXJzICJlYXJseSIpLiBJIHRoaW5rIHRo
-YXQKaW1wcm92ZW1lbnQgaXMgYmVjYXVzZSBvZiB0aGUgdGltZWtlZXBlciBzZXFjb3VudCByZXRy
-eSB3aGljaCB3aWxsIGJpdGUKKmVpdGhlcioga3RpbWVfZ2V0X3JlYWxfbnMoKSBvciBrdGltZV9n
-ZXRfc25hcHNob3RfaWQoKSwgYW5kIHdoaWNoIGlzCmdvbmUgaW4gbXkgJ3NwaW4xJyB2ZXJzaW9u
-IHdoaWNoIHRha2VzIGl0IGFsbCBvdXQgb2YgdGhlIGNyaXRpY2FsIHBhdGguCgogICAg4pSM4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA
-4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA
-4pSA4pSA4pSA4pSQCiAgICDilIIgY2FwdHVyZSBtZXRob2QgICAgICAgICAgICAg4pSCIHA1MCDi
-lIIgIHA5NSDilIIgIHA5OSDilIIgIG1heCDilIIgICDPgyDilIIKICAgIOKUnOKUgOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKU
-vOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKUgOKUgOKUvOKUgOKUgOKUgOKUgOKU
-gOKUpAogICAg4pSCIHBwcy1ncGlvIChJUlEpICAgICAgICAgICAgIOKUgiAgODQg4pSCIDEyMDYg
-4pSCIDQwMTMg4pSCIDQ4ODkg4pSCIDY4OCDilIIKICAgIOKUgiBwb2xsaW5nLCBzdGFtcCBhZnRl
-ciBlZGdlICDilIIgMjA2IOKUgiAgNTM2IOKUgiAgNjY1IOKUgiAxMTA2IOKUgiAyODYg4pSCCiAg
-ICDilIIgcG9sbGluZywgYnJhY2tldGVkIGNvdW50ZXIg4pSCIDIwNiDilIIgIDU0NSDilIIgIDY0
-NyDilIIgIDgxMSDilIIgMjg2IOKUggogICAg4pSCIGVudHJ5LlMgY291bnRlciBjYXB0dXJlICAg
-IOKUgiAgNDYg4pSCICAxMDkg4pSCICAxMzUg4pSCICAyMDYg4pSCICA1OCDilIIKICAgIOKUlOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUtOKUgOKUgOKUgOKUgOKUgOKUtOKUgOKUgOKUgOKU
-gOKUgOKUgOKUtOKUgOKUgOKUgOKUgOKUgOKUgOKUtOKUgOKUgOKUgOKUgOKUgOKUgOKUtOKUgOKU
-gOKUgOKUgOKUgOKUmAoKSSB0aGluayB0aGUgcmVtYWluaW5nIGppdHRlciBpcyBsYXJnZWx5IGR1
-ZSB0byB0aGUgdGltZSBpdCB0YWtlcywgaW4KdGhlICJ0aWdodCIgcG9sbGluZyBsb29wLCB0byBj
-YWxsIGdwaW9fcmVhZCgpLiBUaGF0J3MgdHdpY2Ugd2hhdCBJCmVzdGltYXRlZCDigJQgaXQncyA2
-MDBucy4gSSdtIHJ1bm5pbmcgYSBxdWljayB0ZXN0IG9mIHJlYWRpbmcgdGhlIE1NSU8KZGlyZWN0
-bHkgaW4gdGhlIGxvb3AuLi4gZXZlbiB0aGF0IGlzIHN0aWxsIGFib3V0IDQwMG5zIG9uIHRoaXMK
-aGFyZHdhcmUsIHdoaWNoIGlzbid0IGdvaW5nIHRvIG1vdmUgdGhlIG5lZWRsZSB2ZXJ5IG11Y2gg
-ZWl0aGVyLgoKVGhlIGludGVycnVwdCBwYXRoIOKAlCBhbmQgY2FwdHVyaW5nIHRoZSBjb3VudGVy
-IGluIGVudHJ5LlMg4oCUIHJlbWFpbnMgdGhlCndpbm5lciBieSBmYXIuIEknbSBnb2luZyB0byBk
-byBhIHJ1biBvZiB0aGF0IGluIGEgKmxpdmUqIHN5c3RlbS4gTXkKZXhpc3RpbmcgdGVzdCBydW5z
-IHdlcmUgdGFyZ2V0aW5nIHRoZSB0aWNrbGVzcyBiZWhhdmlvdXIgYW5kCmRlbGliZXJhdGVseSB3
-YW50ZWQgdGhlIHN5c3RlbSB0byBiZSBhcyBpZGxlIGFzIHBvc3NpYmxlLCBidXQgYWN0aXZpdHkK
-d2hpY2ggY2F1c2VzIGludGVycnVwdHMgdG8gYmUgZGlzYWJsZWQgY291bGQgcHVzaCB0aGUgZW50
-cnkuUyBoYWNrIGJhY2sKZG93biB0aGUgbGVhZGVyYm9hcmQuCgpCdXQgdGhhdCBlbmRzIHVwIGJl
-aW5nIGFsbCBhYm91dCB0aGUgKm91dGxpZXJzKiwgYW5kIHdlIGFscmVhZHkgc2FpZCB3ZQpuZWVk
-IHRvIGRvIGEgYmV0dGVyIGpvYiBvZiBmaWx0ZXJpbmcgdGhvc2UuIFdpdGggcHJvcGVyIGZpbHRl
-cmluZywgdGhlCm9jY2FzaW9uYWwgcHVsc2UgYmVpbmcgcmVqZWN0ZWQgYmVjYXVzZSB3ZSBoYWQg
-aW50ZXJydXB0cyBkaXNhYmxlZApzaG91bGRuJ3QgKm1hdHRlciouCgpGV0lXIG15IGdwaW8tc3Bp
-bi1vbi1NTUlPIHJ1bm5pbmcgbm93IGFsc28gc2VlbXMgdG8gc2hvdyBhIHNpZ25pZmljYW50CmNv
-cnJlbGF0aW9uIG9uIG91dGxpZXJzLiBGb3IgdGhvc2Ugc2FtcGxlcyB3aGVyZSB0aGUgaGFsZi1k
-ZWx0YSBiZXR3ZWVuCnRoZSBjb3VudGVyIGJlZm9yZSBhbmQgYWZ0ZXIgdGhlIHJlYWQgaXMgdHdv
-IGN5Y2xlcywgdGhlIHA1MCBwaGFzZQpvZmZzZXQgaXMgODBucywgd2hpbGUgd2hlbiBpdCdzIHRo
-cmVlIGN5Y2xlcywgdGhlIHA1MCBpcyAxNzVucy4gV2UKY291bGQganVzdCB0aHJvdyAqYWxsKiBv
-ZiB0aGUgc2FtcGxlcyB3aXRoIGEgd2lkZXIgYnJhY2tldCBhd2F5ICg3MiBvZgoxMTIgc2FtcGxl
-cywgaW4gdGhlIGFib3J0aXZlIDItbWludXRlIHJ1biBiZWZvcmUgSSBmaXhlZCBzb21ldGhpbmcg
-YW5kCnJlc3RhcnRlZCBpdCkuIFdlJ3JlIGJldHRlciBvZmYgd2l0aG91dCB0aGVtLgoK
+The SRv6 End.MAP Linux implementation is the first behavior of the
+SRv6 Mobile User Plane and introduces a dedicated
+LWTUNNEL_ENCAP_SEG6_MOBILE encap type, a CONFIG_IPV6_SEG6_MOBILE
+build option and a net/ipv6/seg6_mobile.c file that hosts the
+action dispatch table.  The user-space ABI lives in
+include/uapi/linux/seg6_mobile.h under a SEG6_MOBILE_* namespace,
+kept separate from SEG6_LOCAL_* so that attributes whose semantics
+differ between behaviors do not overload the same UAPI table.
 
+The SRv6 End.MAP behavior can be instantiated using a command
+similar to the following:
 
---=-pDjSuWBIWRvvMtVgtHWG
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+ $ ip -6 route add 2001:db8:f::/64 encap seg6mobile action End.MAP \
+     mapped_sid 2001:db8:2::e dev eth0
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-YI1HE9eFMfswTn9rHU9yX0UAAAAAAAA=
+We introduce the "seg6mobile" extension in iproute2 in a following
+patch.
 
+[1] https://www.rfc-editor.org/rfc/rfc9433.html
 
---=-pDjSuWBIWRvvMtVgtHWG--
+Assisted-by: LLM
+Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+---
+ include/net/seg6.h               |   8 +
+ include/uapi/linux/lwtunnel.h    |   1 +
+ include/uapi/linux/seg6_mobile.h |  61 ++++
+ net/core/lwtunnel.c              |   2 +
+ net/ipv6/Kconfig                 |  10 +
+ net/ipv6/Makefile                |   1 +
+ net/ipv6/seg6.c                  |   7 +
+ net/ipv6/seg6_mobile.c           | 723 +++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 813 insertions(+)
+
+diff --git a/include/net/seg6.h b/include/net/seg6.h
+index 82b3fbbcbb93..789e9bcc4773 100644
+--- a/include/net/seg6.h
++++ b/include/net/seg6.h
+@@ -64,6 +64,14 @@ static inline int seg6_local_init(void) { return 0; }
+ static inline void seg6_local_exit(void) {}
+ #endif
+ 
++#ifdef CONFIG_IPV6_SEG6_MOBILE
++extern int seg6_mobile_init(void);
++extern void seg6_mobile_exit(void);
++#else
++static inline int seg6_mobile_init(void) { return 0; }
++static inline void seg6_mobile_exit(void) {}
++#endif
++
+ extern bool seg6_validate_srh(struct ipv6_sr_hdr *srh, int len, bool reduced);
+ extern struct ipv6_sr_hdr *seg6_get_srh(struct sk_buff *skb, int flags);
+ extern void seg6_icmp_srh(struct sk_buff *skb, struct inet6_skb_parm *opt);
+diff --git a/include/uapi/linux/lwtunnel.h b/include/uapi/linux/lwtunnel.h
+index 229655ef792f..6e48f79c548e 100644
+--- a/include/uapi/linux/lwtunnel.h
++++ b/include/uapi/linux/lwtunnel.h
+@@ -16,6 +16,7 @@ enum lwtunnel_encap_types {
+ 	LWTUNNEL_ENCAP_RPL,
+ 	LWTUNNEL_ENCAP_IOAM6,
+ 	LWTUNNEL_ENCAP_XFRM,
++	LWTUNNEL_ENCAP_SEG6_MOBILE,
+ 	__LWTUNNEL_ENCAP_MAX,
+ };
+ 
+diff --git a/include/uapi/linux/seg6_mobile.h b/include/uapi/linux/seg6_mobile.h
+new file mode 100644
+index 000000000000..068ab91b2873
+--- /dev/null
++++ b/include/uapi/linux/seg6_mobile.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++/*
++ *  SRv6 Mobile User Plane implementation
++ *
++ *  Author:
++ *  Yuya Kusakabe <yuya.kusakabe@gmail.com>
++ */
++#ifndef _UAPI_LINUX_SEG6_MOBILE_H
++#define _UAPI_LINUX_SEG6_MOBILE_H
++
++enum {
++	SEG6_MOBILE_UNSPEC,
++	SEG6_MOBILE_ACTION,
++	SEG6_MOBILE_MAPPED_SID,
++	SEG6_MOBILE_COUNTERS,
++	__SEG6_MOBILE_MAX,
++};
++
++#define SEG6_MOBILE_MAX	(__SEG6_MOBILE_MAX - 1)
++
++enum {
++	SEG6_MOBILE_ACTION_UNSPEC	= 0,
++	/* swap IPv6 DA with the mapped SID, leave SRH untouched */
++	SEG6_MOBILE_ACTION_END_MAP	= 1,
++
++	__SEG6_MOBILE_ACTION_MAX,
++};
++
++#define SEG6_MOBILE_ACTION_MAX	(__SEG6_MOBILE_ACTION_MAX - 1)
++
++/* SRv6 Mobile Behavior counters are encoded as netlink attributes
++ * guaranteeing the correct alignment.
++ * Each counter is identified by a different attribute type (i.e.
++ * SEG6_MOBILE_CNT_PACKETS).
++ *
++ * - SEG6_MOBILE_CNT_PACKETS: identifies a counter that counts the number
++ *   of packets that have been CORRECTLY processed by an SRv6 Behavior
++ *   instance (i.e., packets that generate errors or are dropped are NOT
++ *   counted).
++ *
++ * - SEG6_MOBILE_CNT_BYTES: identifies a counter that counts the total
++ *   amount of traffic in bytes of all packets that have been CORRECTLY
++ *   processed by an SRv6 Behavior instance (i.e., packets that generate
++ *   errors or are dropped are NOT counted).
++ *
++ * - SEG6_MOBILE_CNT_ERRORS: identifies a counter that counts the number
++ *   of packets that have NOT been properly processed by an SRv6 Behavior
++ *   instance (i.e., packets that generate errors or are dropped).
++ */
++enum {
++	SEG6_MOBILE_CNT_UNSPEC,
++	SEG6_MOBILE_CNT_PACKETS,
++	SEG6_MOBILE_CNT_BYTES,
++	SEG6_MOBILE_CNT_ERRORS,
++	SEG6_MOBILE_CNT_PAD,		/* pad for 64 bits values */
++	__SEG6_MOBILE_CNT_MAX,
++};
++
++#define SEG6_MOBILE_CNT_MAX	(__SEG6_MOBILE_CNT_MAX - 1)
++
++#endif /* _UAPI_LINUX_SEG6_MOBILE_H */
+diff --git a/net/core/lwtunnel.c b/net/core/lwtunnel.c
+index b01a395d9a96..4476293ccb37 100644
+--- a/net/core/lwtunnel.c
++++ b/net/core/lwtunnel.c
+@@ -53,6 +53,8 @@ static const char *lwtunnel_encap_str(enum lwtunnel_encap_types encap_type)
+ 	case LWTUNNEL_ENCAP_XFRM:
+ 		/* module autoload not supported for encap type */
+ 		return NULL;
++	case LWTUNNEL_ENCAP_SEG6_MOBILE:
++		return "SEG6MOBILE";
+ 	case LWTUNNEL_ENCAP_IP6:
+ 	case LWTUNNEL_ENCAP_IP:
+ 	case LWTUNNEL_ENCAP_NONE:
+diff --git a/net/ipv6/Kconfig b/net/ipv6/Kconfig
+index c3806c6ac96f..e094b835a118 100644
+--- a/net/ipv6/Kconfig
++++ b/net/ipv6/Kconfig
+@@ -314,6 +314,16 @@ config IPV6_SEG6_BPF
+ 	depends on IPV6_SEG6_LWTUNNEL
+ 	depends on IPV6 = y
+ 
++config IPV6_SEG6_MOBILE
++	bool "IPv6: SRv6 Mobile User Plane (RFC 9433) behaviors"
++	depends on IPV6_SEG6_LWTUNNEL
++	help
++	  Support for the SRv6 Mobile User Plane behaviors defined by
++	  RFC 9433, exposed via the LWTUNNEL_ENCAP_SEG6_MOBILE lightweight
++	  tunnel encapsulation.
++
++	  If unsure, say N.
++
+ config IPV6_RPL_LWTUNNEL
+ 	bool "IPv6: RPL Source Routing Header support"
+ 	depends on IPV6
+diff --git a/net/ipv6/Makefile b/net/ipv6/Makefile
+index cf5e01f83ce3..95961f180439 100644
+--- a/net/ipv6/Makefile
++++ b/net/ipv6/Makefile
+@@ -24,6 +24,7 @@ ipv6-$(CONFIG_SYN_COOKIES) += syncookies.o
+ ipv6-$(CONFIG_NETLABEL) += calipso.o
+ ipv6-$(CONFIG_IPV6_SEG6_LWTUNNEL) += seg6_iptunnel.o seg6_local.o
+ ipv6-$(CONFIG_IPV6_SEG6_HMAC) += seg6_hmac.o
++ipv6-$(CONFIG_IPV6_SEG6_MOBILE) += seg6_mobile.o
+ ipv6-$(CONFIG_IPV6_RPL_LWTUNNEL) += rpl_iptunnel.o
+ ipv6-$(CONFIG_IPV6_IOAM6_LWTUNNEL) += ioam6_iptunnel.o
+ 
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 8c2b156c227a..c7f71174b6d0 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -525,10 +525,16 @@ int __init seg6_init(void)
+ 	if (err)
+ 		goto out_unregister_iptun;
+ 
++	err = seg6_mobile_init();
++	if (err)
++		goto out_unregister_local;
++
+ 	pr_info("Segment Routing with IPv6\n");
+ 
+ out:
+ 	return err;
++out_unregister_local:
++	seg6_local_exit();
+ out_unregister_iptun:
+ 	seg6_iptunnel_exit();
+ out_unregister_genl:
+@@ -540,6 +546,7 @@ int __init seg6_init(void)
+ 
+ void seg6_exit(void)
+ {
++	seg6_mobile_exit();
+ 	seg6_local_exit();
+ 	seg6_iptunnel_exit();
+ 	genl_unregister_family(&seg6_genl_family);
+diff --git a/net/ipv6/seg6_mobile.c b/net/ipv6/seg6_mobile.c
+new file mode 100644
+index 000000000000..8a228f44d1e2
+--- /dev/null
++++ b/net/ipv6/seg6_mobile.c
+@@ -0,0 +1,723 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ *  SRv6 Mobile User Plane implementation
++ *
++ *  Author:
++ *  Yuya Kusakabe <yuya.kusakabe@gmail.com>
++ */
++
++#include <linux/icmpv6.h>
++#include <linux/in6.h>
++#include <linux/ipv6.h>
++#include <linux/module.h>
++#include <linux/skbuff.h>
++#include <linux/tcp.h>
++#include <linux/types.h>
++#include <linux/udp.h>
++#include <net/checksum.h>
++#include <net/ipv6.h>
++#include <net/lwtunnel.h>
++#include <net/seg6.h>
++#ifdef CONFIG_IPV6_SEG6_HMAC
++#include <net/seg6_hmac.h>
++#endif
++#include <uapi/linux/seg6_mobile.h>
++
++#define SEG6_MOBILE_F_ATTR(i)		BIT(i)
++#define SEG6_F_MOBILE_COUNTERS		SEG6_MOBILE_F_ATTR(SEG6_MOBILE_COUNTERS)
++
++struct seg6_mobile_lwt;
++
++struct seg6_mobile_action_desc {
++	int action;
++	unsigned long attrs;
++	unsigned long optattrs;
++	int (*input)(struct sk_buff *skb, struct seg6_mobile_lwt *slwt);
++};
++
++struct seg6_mobile_action_param {
++	int (*parse)(struct nlattr **attrs, struct seg6_mobile_lwt *slwt,
++		     struct netlink_ext_ack *extack);
++	int (*put)(struct sk_buff *skb, struct seg6_mobile_lwt *slwt);
++	int (*cmp)(struct seg6_mobile_lwt *a, struct seg6_mobile_lwt *b);
++
++	/* optional destroy() callback to release resources acquired in
++	 * the corresponding parse() function.
++	 */
++	void (*destroy)(struct seg6_mobile_lwt *slwt);
++};
++
++struct pcpu_seg6_mobile_counters {
++	u64_stats_t packets;
++	u64_stats_t bytes;
++	u64_stats_t errors;
++
++	struct u64_stats_sync syncp;
++};
++
++/* User-space aggregate format for the per-CPU counters.  Kept private
++ * to the kernel; userspace receives the values through SEG6_MOBILE_CNT_*
++ * nested netlink attributes.
++ */
++struct seg6_mobile_counters {
++	__u64 packets;
++	__u64 bytes;
++	__u64 errors;
++};
++
++#define seg6_mobile_alloc_pcpu_counters(__gfp)				\
++	__netdev_alloc_pcpu_stats(struct pcpu_seg6_mobile_counters,	\
++				  ((__gfp) | __GFP_ZERO))
++
++struct seg6_mobile_lwt {
++	int action;
++	struct in6_addr mapped_sid;
++	const struct seg6_mobile_action_desc *desc;
++	struct pcpu_seg6_mobile_counters __percpu *pcpu_counters;
++
++	/* required attrs are tracked by desc->attrs; optional attrs that
++	 * the user actually configured are tracked here so that fill_encap
++	 * / cmp / destroy can iterate only over what was parsed.
++	 */
++	unsigned long parsed_optattrs;
++};
++
++static struct seg6_mobile_lwt *seg6_mobile_lwtunnel(struct lwtunnel_state *lwt)
++{
++	return (struct seg6_mobile_lwt *)lwt->data;
++}
++
++/* ABSENT is told apart from MALFORMED so that a behavior which accepts
++ * SRH-less packets still drops a malformed SRH
++ */
++enum seg6_mobile_srh_state {
++	SEG6_MOBILE_SRH_ABSENT,
++	SEG6_MOBILE_SRH_PRESENT,
++	SEG6_MOBILE_SRH_MALFORMED,
++};
++
++static struct ipv6_sr_hdr *
++seg6_mobile_get_and_validate_srh(struct sk_buff *skb,
++				 enum seg6_mobile_srh_state *state)
++{
++	struct ipv6_rt_hdr _rh, *rh;
++	struct ipv6_sr_hdr *srh;
++	unsigned int srhoff = 0;
++	int hdr_proto;
++	int flags = 0;
++
++	srh = seg6_get_srh(skb, 0);
++	if (srh) {
++#ifdef CONFIG_IPV6_SEG6_HMAC
++		if (!seg6_hmac_validate_skb(skb, srh)) {
++			*state = SEG6_MOBILE_SRH_MALFORMED;
++			return NULL;
++		}
++#endif
++		*state = SEG6_MOBILE_SRH_PRESENT;
++		return srh;
++	}
++
++	hdr_proto = ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, &flags);
++	if (hdr_proto == -ENOENT) {
++		*state = SEG6_MOBILE_SRH_ABSENT;
++		return NULL;
++	}
++
++	/* RFC 8200 Section 4.4: an unrecognized Routing Type with Segments
++	 * Left 0 is ignored
++	 */
++	rh = hdr_proto == IPPROTO_ROUTING ?
++	     skb_header_pointer(skb, srhoff, sizeof(_rh), &_rh) : NULL;
++	if (rh && rh->type != IPV6_SRCRT_TYPE_4 && !rh->segments_left)
++		*state = SEG6_MOBILE_SRH_ABSENT;
++	else
++		*state = SEG6_MOBILE_SRH_MALFORMED;
++	return NULL;
++}
++
++static int seg6_mobile_l4_csum_hlen(u8 nexthdr)
++{
++	switch (nexthdr) {
++	case IPPROTO_TCP:
++		return sizeof(struct tcphdr);
++	case IPPROTO_UDP:
++		return sizeof(struct udphdr);
++	case IPPROTO_ICMPV6:
++		return sizeof(struct icmp6hdr);
++	}
++	return 0;
++}
++
++static __sum16 *seg6_mobile_l4_csum(struct sk_buff *skb, int l4_off,
++				    u8 nexthdr)
++{
++	switch (nexthdr) {
++	case IPPROTO_TCP:
++		return &((struct tcphdr *)(skb->data + l4_off))->check;
++	case IPPROTO_UDP: {
++		struct udphdr *uh = (struct udphdr *)(skb->data + l4_off);
++
++		/* zero UDPv6 checksum on a non-offloaded skb means "none" */
++		if (!uh->check && skb->ip_summed != CHECKSUM_PARTIAL)
++			return NULL;
++		return &uh->check;
++	}
++	case IPPROTO_ICMPV6:
++		return &((struct icmp6hdr *)(skb->data + l4_off))->icmp6_cksum;
++	}
++	return NULL;
++}
++
++/* rewrite DA; the L4 checksum follows only when the receiver will verify
++ * it against the new DA, i.e. no SRH is left for it to process
++ */
++static enum skb_drop_reason
++seg6_mobile_advance_da(struct sk_buff *skb, const struct in6_addr *nh,
++		       bool srh_present)
++{
++	int l4_off = 0, l4_hlen = 0;
++	unsigned int nonext_off = 0;
++	struct in6_addr old_da;
++	struct ipv6hdr *ip6h;
++	__be16 frag_off;
++	u8 nexthdr = 0;
++	__sum16 *csum;
++	int write_len;
++
++	if (!pskb_may_pull(skb, sizeof(*ip6h)))
++		return SKB_DROP_REASON_NOT_SPECIFIED;
++
++	ip6h = ipv6_hdr(skb);
++	write_len = sizeof(*ip6h);
++
++	if (!srh_present) {
++		nexthdr = ip6h->nexthdr;
++		l4_off = ipv6_skip_exthdr(skb, sizeof(*ip6h), &nexthdr,
++					  &frag_off);
++		/* a chain ending in No Next Header has no L4 checksum */
++		if (l4_off < 0 &&
++		    ipv6_find_hdr(skb, &nonext_off, NEXTHDR_NONE, NULL,
++				  NULL) != NEXTHDR_NONE)
++			return SKB_DROP_REASON_NOT_SPECIFIED;
++
++		/* only the first fragment carries the L4 header; frag_off
++		 * is the raw field, M flag included
++		 */
++		if (l4_off >= 0 && !(frag_off & htons(IP6_OFFSET)))
++			l4_hlen = seg6_mobile_l4_csum_hlen(nexthdr);
++		if (l4_hlen)
++			write_len = l4_off + l4_hlen;
++	}
++
++	if (skb_ensure_writable(skb, write_len))
++		return SKB_DROP_REASON_NOMEM;
++
++	/* skb_ensure_writable() may change skb pointers; evaluate ip6h again */
++	ip6h = ipv6_hdr(skb);
++	old_da = ip6h->daddr;
++
++	csum = l4_hlen ? seg6_mobile_l4_csum(skb, l4_off, nexthdr) : NULL;
++	if (csum) {
++		inet_proto_csum_replace16(csum, skb, old_da.s6_addr32,
++					  nh->s6_addr32, true);
++		if (nexthdr == IPPROTO_UDP && !*csum)
++			*csum = CSUM_MANGLED_0;
++	} else if (skb->ip_summed == CHECKSUM_COMPLETE) {
++		/* no L4 patch, so skb->csum must track the DA change itself */
++		update_csum_diff16(skb, old_da.s6_addr32, (__be32 *)nh);
++	}
++
++	ip6h->daddr = *nh;
++	skb_clear_hash(skb);
++
++	return SKB_NOT_DROPPED_YET;
++}
++
++static int seg6_mobile_forward(struct sk_buff *skb)
++{
++	seg6_lookup_nexthop(skb, NULL, 0);
++	return dst_input(skb);
++}
++
++/* replace DA with the mapped SID and forward, leaving the SRH untouched */
++static int input_action_end_map(struct sk_buff *skb,
++				struct seg6_mobile_lwt *slwt)
++{
++	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
++	enum seg6_mobile_srh_state srh_state;
++	struct ipv6_sr_hdr *srh;
++
++	srh = seg6_mobile_get_and_validate_srh(skb, &srh_state);
++	if (srh_state == SEG6_MOBILE_SRH_MALFORMED)
++		goto drop;
++
++	/* SL == 0: SRH spent, L4 is verified against the new DA */
++	reason = seg6_mobile_advance_da(skb, &slwt->mapped_sid,
++					srh && srh->segments_left);
++	if (reason)
++		goto drop;
++
++	return seg6_mobile_forward(skb);
++
++drop:
++	kfree_skb_reason(skb, reason);
++	return -EINVAL;
++}
++
++static int parse_nla_mapped_sid(struct nlattr **attrs,
++				struct seg6_mobile_lwt *slwt,
++				struct netlink_ext_ack *extack)
++{
++	memcpy(&slwt->mapped_sid, nla_data(attrs[SEG6_MOBILE_MAPPED_SID]),
++	       sizeof(struct in6_addr));
++
++	return 0;
++}
++
++static int put_nla_mapped_sid(struct sk_buff *skb, struct seg6_mobile_lwt *slwt)
++{
++	if (nla_put_in6_addr(skb, SEG6_MOBILE_MAPPED_SID, &slwt->mapped_sid))
++		return -EMSGSIZE;
++
++	return 0;
++}
++
++static int cmp_nla_mapped_sid(struct seg6_mobile_lwt *a,
++			      struct seg6_mobile_lwt *b)
++{
++	return memcmp(&a->mapped_sid, &b->mapped_sid, sizeof(struct in6_addr));
++}
++
++static const struct
++nla_policy seg6_mobile_counters_policy[SEG6_MOBILE_CNT_MAX + 1] = {
++	[SEG6_MOBILE_CNT_PACKETS]	= { .type = NLA_U64 },
++	[SEG6_MOBILE_CNT_BYTES]		= { .type = NLA_U64 },
++	[SEG6_MOBILE_CNT_ERRORS]	= { .type = NLA_U64 },
++};
++
++static int parse_nla_counters(struct nlattr **attrs,
++			      struct seg6_mobile_lwt *slwt,
++			      struct netlink_ext_ack *extack)
++{
++	struct pcpu_seg6_mobile_counters __percpu *pcounters;
++	struct nlattr *tb[SEG6_MOBILE_CNT_MAX + 1];
++	int ret;
++
++	ret = nla_parse_nested(tb, SEG6_MOBILE_CNT_MAX,
++			       attrs[SEG6_MOBILE_COUNTERS],
++			       seg6_mobile_counters_policy, extack);
++	if (ret < 0)
++		return ret;
++
++	/* basic support for SRv6 Behavior counters requires at least:
++	 * packets, bytes and errors.
++	 */
++	if (!tb[SEG6_MOBILE_CNT_PACKETS] || !tb[SEG6_MOBILE_CNT_BYTES] ||
++	    !tb[SEG6_MOBILE_CNT_ERRORS])
++		return -EINVAL;
++
++	/* counters are always zero initialized */
++	pcounters = seg6_mobile_alloc_pcpu_counters(GFP_KERNEL);
++	if (!pcounters)
++		return -ENOMEM;
++
++	slwt->pcpu_counters = pcounters;
++
++	return 0;
++}
++
++static int seg6_mobile_fill_nla_counters(struct sk_buff *skb,
++					 struct seg6_mobile_counters *counters)
++{
++	if (nla_put_u64_64bit(skb, SEG6_MOBILE_CNT_PACKETS, counters->packets,
++			      SEG6_MOBILE_CNT_PAD))
++		return -EMSGSIZE;
++
++	if (nla_put_u64_64bit(skb, SEG6_MOBILE_CNT_BYTES, counters->bytes,
++			      SEG6_MOBILE_CNT_PAD))
++		return -EMSGSIZE;
++
++	if (nla_put_u64_64bit(skb, SEG6_MOBILE_CNT_ERRORS, counters->errors,
++			      SEG6_MOBILE_CNT_PAD))
++		return -EMSGSIZE;
++
++	return 0;
++}
++
++static int put_nla_counters(struct sk_buff *skb, struct seg6_mobile_lwt *slwt)
++{
++	struct seg6_mobile_counters counters = { 0, 0, 0 };
++	struct nlattr *nest;
++	int rc, i;
++
++	nest = nla_nest_start(skb, SEG6_MOBILE_COUNTERS);
++	if (!nest)
++		return -EMSGSIZE;
++
++	for_each_possible_cpu(i) {
++		struct pcpu_seg6_mobile_counters *pcounters;
++		u64 packets, bytes, errors;
++		unsigned int start;
++
++		pcounters = per_cpu_ptr(slwt->pcpu_counters, i);
++		do {
++			start = u64_stats_fetch_begin(&pcounters->syncp);
++
++			packets = u64_stats_read(&pcounters->packets);
++			bytes = u64_stats_read(&pcounters->bytes);
++			errors = u64_stats_read(&pcounters->errors);
++
++		} while (u64_stats_fetch_retry(&pcounters->syncp, start));
++
++		counters.packets += packets;
++		counters.bytes += bytes;
++		counters.errors += errors;
++	}
++
++	rc = seg6_mobile_fill_nla_counters(skb, &counters);
++	if (rc < 0) {
++		nla_nest_cancel(skb, nest);
++		return rc;
++	}
++
++	return nla_nest_end(skb, nest);
++}
++
++static int cmp_nla_counters(struct seg6_mobile_lwt *a,
++			    struct seg6_mobile_lwt *b)
++{
++	/* tunnels with counters enabled and disabled are different. */
++	return (!!((unsigned long)a->pcpu_counters)) ^
++		(!!((unsigned long)b->pcpu_counters));
++}
++
++static void destroy_attr_counters(struct seg6_mobile_lwt *slwt)
++{
++	free_percpu(slwt->pcpu_counters);
++}
++
++static const struct seg6_mobile_action_desc seg6_mobile_action_table[] = {
++	{
++		.action		= SEG6_MOBILE_ACTION_END_MAP,
++		.attrs		= SEG6_MOBILE_F_ATTR(SEG6_MOBILE_MAPPED_SID),
++		.optattrs	= SEG6_F_MOBILE_COUNTERS,
++		.input		= input_action_end_map,
++	},
++};
++
++static const struct seg6_mobile_action_param
++seg6_mobile_action_params[SEG6_MOBILE_MAX + 1] = {
++	[SEG6_MOBILE_MAPPED_SID] = {
++		.parse	= parse_nla_mapped_sid,
++		.put	= put_nla_mapped_sid,
++		.cmp	= cmp_nla_mapped_sid,
++	},
++	[SEG6_MOBILE_COUNTERS] = {
++		.parse		= parse_nla_counters,
++		.put		= put_nla_counters,
++		.cmp		= cmp_nla_counters,
++		.destroy	= destroy_attr_counters,
++	},
++};
++
++static const struct nla_policy
++seg6_mobile_policy[SEG6_MOBILE_MAX + 1] = {
++	[SEG6_MOBILE_ACTION]	= { .type = NLA_U32 },
++	[SEG6_MOBILE_MAPPED_SID]	=
++		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
++	[SEG6_MOBILE_COUNTERS]	= { .type = NLA_NESTED },
++};
++
++static const struct seg6_mobile_action_desc *
++seg6_mobile_get_action_desc(int action)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(seg6_mobile_action_table); i++) {
++		if (seg6_mobile_action_table[i].action == action)
++			return &seg6_mobile_action_table[i];
++	}
++
++	return NULL;
++}
++
++/* call the destroy() callback (if available) for each set attribute in
++ * @parsed_attrs, starting from the first attribute up to the @max_parsed
++ * (excluded) attribute.
++ */
++static void __destroy_attrs(unsigned long parsed_attrs, int max_parsed,
++			    struct seg6_mobile_lwt *slwt)
++{
++	const struct seg6_mobile_action_param *param;
++	int i;
++
++	for (i = SEG6_MOBILE_ACTION + 1; i < max_parsed; i++) {
++		if (!(parsed_attrs & SEG6_MOBILE_F_ATTR(i)))
++			continue;
++
++		param = &seg6_mobile_action_params[i];
++		if (param->destroy)
++			param->destroy(slwt);
++	}
++}
++
++static void destroy_attrs(struct seg6_mobile_lwt *slwt)
++{
++	unsigned long attrs = slwt->desc->attrs | slwt->parsed_optattrs;
++
++	__destroy_attrs(attrs, SEG6_MOBILE_MAX + 1, slwt);
++}
++
++static int seg6_mobile_parse_attrs(struct nlattr **attrs,
++				   struct seg6_mobile_lwt *slwt,
++				   struct netlink_ext_ack *extack)
++{
++	const struct seg6_mobile_action_param *param;
++	const struct seg6_mobile_action_desc *desc;
++	unsigned long parsed_optattrs = 0;
++	int i, err;
++
++	desc = slwt->desc;
++
++	if (WARN_ON_ONCE(desc->attrs & desc->optattrs))
++		return -EINVAL;
++
++	for (i = SEG6_MOBILE_ACTION + 1; i <= SEG6_MOBILE_MAX; i++) {
++		bool required = desc->attrs & SEG6_MOBILE_F_ATTR(i);
++		bool optional = desc->optattrs & SEG6_MOBILE_F_ATTR(i);
++
++		if (!required && !optional)
++			continue;
++
++		if (required && !attrs[i]) {
++			NL_SET_ERR_MSG_MOD(extack,
++					   "missing required attribute");
++			err = -EINVAL;
++			goto err;
++		}
++
++		if (!attrs[i])
++			continue;
++
++		param = &seg6_mobile_action_params[i];
++		err = param->parse(attrs, slwt, extack);
++		if (err < 0)
++			goto err;
++
++		if (optional)
++			parsed_optattrs |= SEG6_MOBILE_F_ATTR(i);
++	}
++
++	slwt->parsed_optattrs = parsed_optattrs;
++
++	return 0;
++
++err:
++	__destroy_attrs(desc->attrs | parsed_optattrs, i, slwt);
++	return err;
++}
++
++static bool seg6_mobile_counters_enabled(struct seg6_mobile_lwt *slwt)
++{
++	return slwt->parsed_optattrs & SEG6_F_MOBILE_COUNTERS;
++}
++
++static void seg6_mobile_update_counters(struct seg6_mobile_lwt *slwt,
++					unsigned int len, int err)
++{
++	struct pcpu_seg6_mobile_counters *pcounters;
++
++	pcounters = this_cpu_ptr(slwt->pcpu_counters);
++	u64_stats_update_begin(&pcounters->syncp);
++
++	if (likely(!err)) {
++		u64_stats_inc(&pcounters->packets);
++		u64_stats_add(&pcounters->bytes, len);
++	} else {
++		u64_stats_inc(&pcounters->errors);
++	}
++
++	u64_stats_update_end(&pcounters->syncp);
++}
++
++static int seg6_mobile_input(struct sk_buff *skb)
++{
++	struct dst_entry *orig_dst = skb_dst(skb);
++	struct seg6_mobile_lwt *slwt;
++	unsigned int len = skb->len;
++	int rc;
++
++	if (skb->protocol != htons(ETH_P_IPV6)) {
++		kfree_skb(skb);
++		return -EINVAL;
++	}
++
++	slwt = seg6_mobile_lwtunnel(orig_dst->lwtstate);
++
++	rc = slwt->desc->input(skb, slwt);
++
++	if (seg6_mobile_counters_enabled(slwt))
++		seg6_mobile_update_counters(slwt, len, rc);
++
++	return rc;
++}
++
++static int seg6_mobile_build_state(struct net *net, struct nlattr *nla,
++				   unsigned int family, const void *cfg,
++				   struct lwtunnel_state **ts,
++				   struct netlink_ext_ack *extack)
++{
++	const struct seg6_mobile_action_desc *desc;
++	struct nlattr *tb[SEG6_MOBILE_MAX + 1];
++	struct lwtunnel_state *newts;
++	struct seg6_mobile_lwt *slwt;
++	int err;
++
++	if (family != AF_INET6)
++		return -EINVAL;
++
++	err = nla_parse_nested(tb, SEG6_MOBILE_MAX, nla,
++			       seg6_mobile_policy, extack);
++	if (err < 0)
++		return err;
++
++	if (!tb[SEG6_MOBILE_ACTION]) {
++		NL_SET_ERR_MSG_MOD(extack, "missing SEG6_MOBILE_ACTION");
++		return -EINVAL;
++	}
++
++	desc = seg6_mobile_get_action_desc(nla_get_u32(tb[SEG6_MOBILE_ACTION]));
++	if (!desc) {
++		NL_SET_ERR_MSG_MOD(extack, "unknown SRv6 Mobile action");
++		return -EOPNOTSUPP;
++	}
++
++	newts = lwtunnel_state_alloc(sizeof(*slwt));
++	if (!newts)
++		return -ENOMEM;
++
++	slwt = seg6_mobile_lwtunnel(newts);
++	slwt->action = desc->action;
++	slwt->desc = desc;
++
++	err = seg6_mobile_parse_attrs(tb, slwt, extack);
++	if (err < 0) {
++		kfree(newts);
++		return err;
++	}
++
++	newts->type = LWTUNNEL_ENCAP_SEG6_MOBILE;
++	newts->flags = LWTUNNEL_STATE_INPUT_REDIRECT;
++
++	*ts = newts;
++
++	return 0;
++}
++
++static void seg6_mobile_destroy_state(struct lwtunnel_state *lwt)
++{
++	destroy_attrs(seg6_mobile_lwtunnel(lwt));
++}
++
++static int seg6_mobile_fill_encap(struct sk_buff *skb,
++				  struct lwtunnel_state *lwt)
++{
++	struct seg6_mobile_lwt *slwt = seg6_mobile_lwtunnel(lwt);
++	const struct seg6_mobile_action_param *param;
++	unsigned long attrs;
++	int i, err;
++
++	if (nla_put_u32(skb, SEG6_MOBILE_ACTION, slwt->action))
++		return -EMSGSIZE;
++
++	attrs = slwt->desc->attrs | slwt->parsed_optattrs;
++	for (i = SEG6_MOBILE_ACTION + 1; i <= SEG6_MOBILE_MAX; i++) {
++		if (!(attrs & SEG6_MOBILE_F_ATTR(i)))
++			continue;
++
++		param = &seg6_mobile_action_params[i];
++		err = param->put(skb, slwt);
++		if (err < 0)
++			return err;
++	}
++
++	return 0;
++}
++
++static int seg6_mobile_get_encap_size(struct lwtunnel_state *lwt)
++{
++	struct seg6_mobile_lwt *slwt = seg6_mobile_lwtunnel(lwt);
++	unsigned long attrs;
++	int nlsize;
++
++	nlsize = nla_total_size(sizeof(u32)); /* SEG6_MOBILE_ACTION */
++
++	attrs = slwt->desc->attrs | slwt->parsed_optattrs;
++	if (attrs & SEG6_MOBILE_F_ATTR(SEG6_MOBILE_MAPPED_SID))
++		nlsize += nla_total_size(sizeof(struct in6_addr));
++
++	if (attrs & SEG6_F_MOBILE_COUNTERS)
++		nlsize += nla_total_size(0) + /* nest SEG6_MOBILE_COUNTERS */
++			  /* SEG6_MOBILE_CNT_PACKETS */
++			  nla_total_size_64bit(sizeof(__u64)) +
++			  /* SEG6_MOBILE_CNT_BYTES */
++			  nla_total_size_64bit(sizeof(__u64)) +
++			  /* SEG6_MOBILE_CNT_ERRORS */
++			  nla_total_size_64bit(sizeof(__u64));
++
++	return nlsize;
++}
++
++static int seg6_mobile_cmp_encap(struct lwtunnel_state *a,
++				 struct lwtunnel_state *b)
++{
++	struct seg6_mobile_lwt *slwt_a = seg6_mobile_lwtunnel(a);
++	struct seg6_mobile_lwt *slwt_b = seg6_mobile_lwtunnel(b);
++	const struct seg6_mobile_action_param *param;
++	unsigned long attrs_a, attrs_b;
++	int i;
++
++	if (slwt_a->action != slwt_b->action)
++		return 1;
++
++	attrs_a = slwt_a->desc->attrs | slwt_a->parsed_optattrs;
++	attrs_b = slwt_b->desc->attrs | slwt_b->parsed_optattrs;
++
++	if (attrs_a != attrs_b)
++		return 1;
++
++	for (i = SEG6_MOBILE_ACTION + 1; i <= SEG6_MOBILE_MAX; i++) {
++		if (!(attrs_a & SEG6_MOBILE_F_ATTR(i)))
++			continue;
++
++		param = &seg6_mobile_action_params[i];
++		if (param->cmp(slwt_a, slwt_b))
++			return 1;
++	}
++
++	return 0;
++}
++
++static const struct lwtunnel_encap_ops seg6_mobile_ops = {
++	.build_state	= seg6_mobile_build_state,
++	.destroy_state	= seg6_mobile_destroy_state,
++	.input		= seg6_mobile_input,
++	.fill_encap	= seg6_mobile_fill_encap,
++	.get_encap_size	= seg6_mobile_get_encap_size,
++	.cmp_encap	= seg6_mobile_cmp_encap,
++	.owner		= THIS_MODULE,
++};
++
++int __init seg6_mobile_init(void)
++{
++	BUILD_BUG_ON(SEG6_MOBILE_MAX + 1 > BITS_PER_TYPE(unsigned long));
++
++	return lwtunnel_encap_add_ops(&seg6_mobile_ops,
++				      LWTUNNEL_ENCAP_SEG6_MOBILE);
++}
++
++void seg6_mobile_exit(void)
++{
++	lwtunnel_encap_del_ops(&seg6_mobile_ops, LWTUNNEL_ENCAP_SEG6_MOBILE);
++}
+
+-- 
+2.50.1
+
