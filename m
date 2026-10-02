@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8BD1A682C
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 02:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFFD305687
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 02:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790906636; cv=none; b=lQm3ff/VZYQj7gIVUqsUhyPpFx/Sid4RhOv+RtssBrXowNy6kjVtSJIUbGk3/3msE6tCViBwH5wsrzj8bhxaw3w97RmVq1AORjZrdkiRREHUnPPPB9ATRiUOWlVmW4wYneswcBgB2RUZiuNSYOxz3l4BOdaTLUuOv6iO/PD8w0c=
+	t=1790906638; cv=none; b=XYd6cKX53yQgqWfzjWen74C6/1Zp1yT/wV1grt6X9uJJGwSZYa/7bXBGPXzC3qn2fNaeXG25lA95FuOoXE11m4SEvsGvbCrCyXb4cqYIMrAnAuIgl/zJwN57AG/ou6rR2TnoYCp98iXt8O2pW306vt4etpMJnuYrd0DatyTsViA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790906636; c=relaxed/simple;
-	bh=GdQuWsyP/nXYtOcQaarvVJQbuo95P2OcYJsl3xfYJ90=;
+	s=arc-20240116; t=1790906638; c=relaxed/simple;
+	bh=mFAkqi7/1VJgfiYGbUUVe2iBvBd7ekIWpOXqOfIGv2E=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=piGAaYODFhILfpMRYpCmwmq+I0249AJfoTGSxJHVESkxMQCim4qR3WreqvqIfZ6x4cFy1l6nUw6Eyba1Y3pbyDm5IxwIsB4HzdLmm9akNy2JgzNSfzBHUJaffvhzhm2pAjEo2frJ+XYSTL9D++6l4zFxioCfUgkVMhPFJvLJAkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBoYOjLu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=GMIEPIp2BFbgpJIodUyOYLw9TH/m7pTGOjZ3EsZt9wE8knxiPUw02Q+wbekoFBq3QMgYSW+XLRlNuMzLibh2QWLKh4BiuHfAE79Dtjxn9VdU8OAREnbqiMNd4EBvccwKAX0qkPKyu1VUw979xxGO2JaPzJF5/RCyXtzOH/eiYLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eo4HRir+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBoYOjLu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFCF1F000FF;
-	Fri,  2 Oct 2026 02:03:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eo4HRir+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514061F00893;
+	Fri,  2 Oct 2026 02:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790906634;
-	bh=pQyv7XMIMlhn632FBowD4PhHd6PFsUIONCH1xvCwTmA=;
+	s=k20260515; t=1790906636;
+	bh=PmHersQfmvypzXYJvVEiorluUNsk5lrE+6PhS6EdC4A=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dBoYOjLuVF2kEkdds0645w900iSNNNQO5gqUAa0ovVYSlE3DHPmmGyzGjc/+A7kEX
-	 i9Xd74hvNv9kIKj26jnUJracvLjxqxQC46+pxwveHANQS6ideukzvMUhOrDLCO3Mvc
-	 hAUqHODJSS5t6tNaxQh1yvqze8kIEeuPLa9XRnuePd31HQKuWDGbbmSSnWfPqzsGFT
-	 mPiDzsv55G3otxa23W3UJL5M+AAx/KedHJOQiUDEyEYiQjpbiyrd0ua+hnxnjd3rkM
-	 4UvjhqXbDS6+ESSDuso/EI+IIbp6a95LgYeh6MtXPaCh7RN5behcCFdJOFaCMGE+x1
-	 n7W76YmZzVUoA==
+	b=eo4HRir+3RiSsPZvfzuZtVX/D/zvK6990r4DMLvQUtBzP4+GIbC95clYTk4v+l+6g
+	 lPwQDFUALHq2sXC5Xii57q4dphse68ivk+HLmrNxfSUvriUqobJkEVlOEu328O6wFM
+	 DagnIUINluvW7NNYWcsqRKYvLcOXBC/qBwLgRG5MvvZ6lousYt3Sh1WD8+KPKDjwQj
+	 fvLTZi9Eki5mUdjIw1/4P+PNsoe8HZm4lLm3FgeaQRoMnnGvqrAPHDbn5S4WDbDK9W
+	 UnHl7TXeVZ5z7lIypGCJe1zwzePwdrgmGEAuvcWt9y0wsEfA2m7XfLPhwm+SjNFhr1
+	 xYiEnXhB06jGQ==
 Subject:
- Re: [PATCH v1 net-next 6/8] ipv6: Use ipv6_neigh_lookup() and friends.
+ Re: [PATCH v1 net-next 7/8] ipv4: Use ipv4_neigh_lookup() and friends.
 From: netdev-bot+sashiko@kernel.org
 To: kuniyu@google.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -36,10 +36,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  enachman@marvell.com, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
  mbloch@nvidia.com, borisp@nvidia.com, petrm@nvidia.com, jiri@resnulli.us,
  ecree.xilinx@gmail.com, razor@blackwall.org
-Date: Fri, 02 Oct 2026 02:03:53 +0000
-Message-ID: <179090663305.434549.17214258093385242325@kernel.org>
-In-Reply-To: <20260930200326.718459-7-kuniyu@google.com>
-References: <20260930200326.718459-7-kuniyu@google.com>
+Date: Fri, 02 Oct 2026 02:03:54 +0000
+Message-ID: <179090663487.434549.12882875094494506353@kernel.org>
+In-Reply-To: <20260930200326.718459-8-kuniyu@google.com>
+References: <20260930200326.718459-8-kuniyu@google.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,197 +61,124 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch's bug class is still reachable through sch_teql.
-- [Medium] ipv6_neigh_lookup(), ipv6_neigh_create() and
-  ipv6_neigh_create_noref() choose the table with an unsynchronized…
-- [Low] In mlxsw_sp_router_neigh_ent_ipv6_process() the dev comes from
-  mlxsw_sp_rif_dev(rifs[rif]) and is passed to ipv6_neigh_lookup(dev,…
+- [High] mlxsw: kernel panic via NULL pointer dereference in hw neighbour
+  events
+
+Pre-existing issues:
+- [Medium] In mlx5e_ipsec_init_macs()
+  (drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c), the…
 
 --
 
-ipv6: Use ipv6_neigh_lookup() and friends.
+ipv4: Use ipv4_neigh_lookup() and friends.
 
-This commit replaces neigh_lookup(), neigh_create() and __neigh_lookup()
-callers that pass nd_table(net) with IPv6 helpers. The helpers take the
-neighbour table from dev_net(dev). It fixes a syzbot lockdep splat in
-neigh_mark_dead(): ip6_finish_output2() used the caller's net (for example
-under xfrm), so a neighbour was inserted into another netns's table.
+This commit replaces open-coded neigh_lookup(), neigh_create(),
+__neigh_lookup() and __neigh_lookup_errno() calls on the ARP table with
+the ipv4_neigh_lookup() and ipv4_neigh_create() helpers. Callers no
+longer need to fetch the netns and neigh_table themselves. It touches
+several drivers as well as net/ipv4 and the bridge.
 
-Closes: https://lore.kernel.org/netdev/6abd69a9.80e1c6cc.22483f.0005.GAE@google.com/
-
-> This only happens when a neigh_table accidentally has a
-> neighbour from a different netns.
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+> index 37a8ddee3ea1e..16edd3263aedf 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
 
 [ ... ]
 
-> It is error-prone to require callers to fetch netns and
-> neigh_table and pass it with dev to neigh_lookup(), etc.
+> @@ -365,10 +364,9 @@ static void mlx5e_ipsec_init_macs(struct mlx5e_ipsec_sa_entry *sa_entry,
+>  	return;
+>  
+>  neigh:
+> -	tbl = arp_table(dev_net(netdev));
+> -	n = neigh_lookup(tbl, pkey, netdev);
+> +	n = ipv4_neigh_lookup(netdev, pkey);
+>  	if (!n) {
+> -		n = neigh_create(tbl, pkey, netdev);
+> +		n = ipv4_neigh_create(netdev, pkey);
 
-[Severity: High]
-Can a neighbour from a different netns still end up in a table through
-sch_teql? This patch does not touch net/sched/sch_teql.c, and
-__teql_resolve() still pairs the master's table with the slave device:
+[Severity: Medium]
+This patch didn't introduce this issue, but the new helper names make
+it easier to see. Can this fallback put IPv6 keys into the ARP table?
 
-net/sched/sch_teql.c:__teql_resolve() {
-    ...
-	n = dst_neigh_lookup_skb(dst, skb);
-	if (!n)
-		return -ENOENT;
+For AF_INET6 SAs, pkey points at the 16-byte addrs->saddr.a6 or
+addrs->daddr.a6. Earlier in mlx5e_ipsec_init_macs(), the IPv6 case
+jumps here when CONFIG_IPV6 is disabled or the route lookup fails:
 
-	if (dst->dev != dev) {
-		struct neighbour *mn;
+	case AF_INET6:
+		if (!IS_ENABLED(CONFIG_IPV6) ||
+		    ip6_dst_lookup(dev_net(netdev), NULL, &rt_dst_entry, &fl6))
+			goto neigh;
 
-		mn = __neigh_lookup_errno(n->tbl, n->primary_key, dev);
-    ...
-}
+The shared path also jumps here when dst_neigh_lookup() returns NULL.
 
-dst->dev is the teql master, so n->tbl is the table of the master's netns,
-while dev is the slave.
+ipv4_neigh_lookup() and ipv4_neigh_create() always use
+arp_table(dev_net(dev)), and its key length is 4. That means the first
+32 bits of the IPv6 address are treated as an IPv4 address:
 
-Nothing seems to require the two to share a netns. teql_qdisc_init()
-checks only hard_header_len, m->dev == dev and TC_H_ROOT. The teql Qdisc_ops
-are registered globally. teql_master_setup() also does not make the master
-netns-immutable.
+- On a miss, an ARP entry for an unrelated IPv4 address is created on
+  netdev, neigh_event_send() sends an ARP request for it, and
+  attrs->drop is set.
 
-With the master and slave in different netns, ___neigh_create() links the
-new neighbour into the master-netns table's hash. It also adds it to the
-slave's dev->neighbours[] through neigh_get_dev_table(). For IPv6,
-ndisc_constructor() takes n->parms from the slave's in6_dev, so the
-parms->dead check passes.
+- On a hit, neigh_ha_snapshot() copies the MAC of an unrelated IPv4
+  neighbour into the IPv6 SA's dmac.
 
-When the slave later goes down in its own netns, this path runs:
+The old code used the ARP table here too. The patch only changes how
+the table is obtained.
 
-neigh_ifdown(nd_table(dev_net(slave)), slave)
-  neigh_flush_dev()
-    neigh_flush_one()
-      hlist_del_rcu(&n->hash)
-      neigh_mark_dead()
-        lockdep_assert_held(&n->tbl->lock)
+Should this fallback check addrs->family and use ipv6_neigh_lookup()
+and ipv6_neigh_create() for AF_INET6, or skip the neighbour fallback
+for IPv6?
 
-Only the slave-netns tbl->lock is held there. Would that give the same
-splat as the syzbot report, along with unlocked changes to the other
-netns's hash and gc lists?
+>  		if (IS_ERR(n))
+>  			return;
+>  		neigh_event_send(n, NULL);
 
-The later commit "neighbour: Remove __neigh_lookup() and
-__neigh_lookup_errno()." in this series appears to keep
-neigh_lookup(n->tbl, ..., dev) and neigh_create(n->tbl, ..., dev) here.
-
-Three possible directions:
-
-  - resolve the table from dev_net(dev) by family
-  - reject cross-netns slaves in teql_qdisc_init() with
-    net_eq(dev_net(dev), dev_net(m->dev)) and make the master
-    netns-immutable
-  - reject n->parms->tbl != tbl under tbl->lock in ___neigh_create()
+[ ... ]
 
 > diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-> index ba8a7a44ce9ed..1f4753213b9cb 100644
 > --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
 > +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-
-[ ... ]
-
-> @@ -2464,9 +2462,8 @@ static void mlxsw_sp_router_neigh_ent_ipv6_process(struct mlxsw_sp *mlxsw_sp,
+> @@ -2432,10 +2430,9 @@ static void mlxsw_sp_router_neigh_ent_ipv4_process(struct mlxsw_sp *mlxsw_sp,
 >  		return;
 >  	}
 >  
-> -	tbl = nd_table(net);
+> -	tbl = arp_table(net);
+>  	dipn = htonl(dip);
 >  	dev = mlxsw_sp_rif_dev(mlxsw_sp->router->rifs[rif]);
-> -	n = neigh_lookup(tbl, &dip, dev);
-> +	n = ipv6_neigh_lookup(dev, &dip);
-
-[Severity: Low]
-Is dev guaranteed to be non-NULL here? mlxsw_sp_rif_dev() can return NULL:
-
-	if (!rif->crif)
-		return NULL;
-	return rif->crif->key.dev;
-
-The loopback RIF's crif is allocated with mlxsw_sp_crif_alloc(NULL), so its
-key.dev is NULL.
-
-Before this change, neigh_lookup(tbl, &dip, NULL) only hashed and compared
-the dev pointer. ipv6_neigh_lookup() evaluates nd_table(dev_net(dev)), so a
-NULL dev would now be dereferenced.
-
-In practice, host entries are only programmed on RIFs found by
-mlxsw_sp_rif_find_by_dev() from n->dev. __mlxsw_sp_router_neighs_update_rauhtd()
-also holds router->lock for the whole dump. So this looks reachable only if
-firmware returns a record the driver never programmed.
-
-Would a NULL check on dev before the lookup be worth adding for robustness?
-The IPv4 counterpart in "ipv4: Use ipv4_neigh_lookup() and friends." appears
-to follow the same pattern.
-
+> -	n = neigh_lookup(tbl, &dipn, dev);
+> +	n = ipv4_neigh_lookup(dev, &dipn);
 >  	if (!n)
 >  		return;
 >  
 
-[ ... ]
+[Severity: High]
+Can dev be NULL here?
 
-> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-> index 8baac4d852518..ea9f0a4c34f97 100644
-> --- a/net/ipv6/route.c
-> +++ b/net/ipv6/route.c
-> @@ -218,7 +218,7 @@ struct neighbour *__ip6_dst_neigh_lookup(const struct in6_addr *gw,
->  	if (n)
->  		return n;
->  
-> -	n = neigh_create(nd_table(dev_net(dev)), daddr, dev);
-> +	n = ipv6_neigh_create(dev, daddr);
+mlxsw_sp_rif_dev() returns NULL when the RIF has no crif. That is the
+case for the IP-in-IP underlay RIFs, which mlxsw_sp_ul_rif_create()
+allocates without a crif. The only check above is that
+mlxsw_sp->router->rifs[rif] is non-NULL. If the device reports
+neighbour activity on such a RIF through RAUHTD, the delayed neighbour
+update work reaches this point with dev == NULL.
 
-[Severity: Medium]
-Can the table chosen inside ipv6_neigh_create() go stale before the
-neighbour is inserted? The helper reads dev_net(dev) without
-synchronization:
+Before this patch that case was harmless. The netns came from
+mlxsw_sp_net(mlxsw_sp), not from dev, and neigh_lookup() with a NULL
+dev simply matched nothing and returned NULL.
 
-	struct neigh_table *tbl = nd_table(dev_net(dev));
+ipv4_neigh_lookup() now derives the table itself via
+arp_table(dev_net(dev)). That dereferences the NULL dev, so the kernel
+oopses in the router's periodic neighbour work instead of skipping the
+entry. Routed IP-in-IP setups on Spectrum would hit this during
+normal traffic.
 
-	return neigh_create(tbl, pkey, dev);
+The IPv6 counterpart, mlxsw_sp_router_neigh_ent_ipv6_process(),
+passes the same possibly-NULL dev to ipv6_neigh_lookup(). It looks
+like it has the same problem.
 
-Under tbl->lock, ___neigh_create() only checks the following. It does not
-check that dev is still in tbl's netns or that n->parms belongs to tbl:
-
-	if (n->parms->dead) {
-		rc = ERR_PTR(-EINVAL);
-		goto out_tbl_unlock;
-	}
-
-Consider a preemptible process-context creator, such as a dst_neigh_lookup()
-caller that reaches __ip6_dst_neigh_lookup() outside RCU:
-
-creator
-  ipv6_neigh_create(dev, ...)
-    tbl = nd_table(dev_net(dev))   <- old netns
-    <preempted>
-
-__dev_change_net_namespace()
-  NETDEV_UNREGISTER
-  rcu_barrier()
-  dev_net_set(dev, new_net)
-  NETDEV_REGISTER                  <- new in6_dev
-
-creator resumes
-  neigh_create(old_tbl, ...)
-    ndisc_constructor()
-      in6_dev_get(dev)             <- new in6_dev, live parms
-
-The new parms are live, so the dead check passes. The neighbour is then
-linked into the old netns's table and onto dev->neighbours[]. A later
-neigh_ifdown(new_tbl, dev) would change old_tbl's hash and gc lists without
-old_tbl->lock. That is the same state described in the commit message.
-
-The rcu_barrier() in __dev_change_net_namespace() does not exclude a
-non-RCU process-context reader like this. The window is narrow and there is
-no reproducer.
-
-Would a check under tbl->lock in ___neigh_create(), for example rejecting
-n->parms->tbl != tbl with -EINVAL, close this window? It would also cover
-the sch_teql case above.
-
->  	return IS_ERR(n) ? NULL : n;
->  }
->
+Should both functions return early when dev is NULL, before the
+lookup? Or should the new helpers tolerate a NULL dev the way
+neigh_lookup() effectively did? Checking in the callers seems simpler
+and keeps the helpers strict.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930200326.718459-1-kuniyu%40google.com
