@@ -1,49 +1,49 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6BB470E8C;
-	Fri,  2 Oct 2026 09:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AC9474262;
+	Fri,  2 Oct 2026 09:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790932286; cv=none; b=tTDYUx4PPB3A8CH7DCKeTU9qY4CNmL+imjStVWHDToJrJnglV5t7BcwmYX9ufAl2CXVCCnI2YeOOPqA94DBEE9jkqARcXJos0NdWxMmYtDpJGgOGDrZqpSCQ/FARvGHkUqosrKucwrAvnLMOM6XKAonuptfavLas4n7/RG0U7ns=
+	t=1790932614; cv=none; b=BSSh1DIpKJrkYCr4Ya/GNps9P2U3SH8WV5b/5kM1AVyJrX3Z+qeAjaxuz3wuQ2d4MQwF7WrTf0R5miqQOEr904qBWe17sqDVxN6L7WcjaHZub9odZmY5v3/AyWlpZBD4QK+ISUGkPFOoprSek1IIriRPa3dBNi7F0hIr2QbyBf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790932286; c=relaxed/simple;
-	bh=QyiqJbVNVVWpOjOeWDvCPx4TpBrd1c2J6poMC4kMREk=;
+	s=arc-20240116; t=1790932614; c=relaxed/simple;
+	bh=GfB4AangzbGer9ZinOHaC9/Iw6vF2BIgUKhcXiugwjs=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o4j4OVdyN4lXnGni9Pc8vQYBsSFfMDAJBo8HjXXUxBwHS3Z5VhrXDqqLObZLzZuuAFHm5b31qm65ACOeky4cbHkuKljqamoM1c9jzUB95GeYp3FZ0ErgmuCczOHQgMFpS862CR/1zq7qAb92+14suLRvL7IDw3IBlt39pFJOrH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=wM3uMVOw; arc=none smtp.client-ip=68.232.154.123
+	 Content-Type:Content-Disposition:In-Reply-To; b=qdw1pqRSHK8sA5sPP+ZaHVgHL4HBu3DjZgIB/jZ2iHWX++L7IwqqnJ7GRC8ejzU8Hv4cRDLJzCE9sD8ErtQ9vp9dYtUYjURFIP/gcKmZ69Nl/hCD5W9xqjyLyBesMBPYH8V3u1kSCOubCfwPOGuw5/dJYF1okmjxS7v8/FDOUXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=gLkgmP8q; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="wM3uMVOw"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="gLkgmP8q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790932284; x=1822468284;
+  t=1790932612; x=1822468612;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=QyiqJbVNVVWpOjOeWDvCPx4TpBrd1c2J6poMC4kMREk=;
-  b=wM3uMVOwtjXsxw3/gr8jcpB1KsSx3heks6O3PpJmnybtD9Cg4IchOVcu
-   4T20z7+tH24+8Nuh47qvttaSzhrwjg4d7k91f6AM32CV77ifzrD3dbLTE
-   6PIhZ50a4Fgu8I6oXhsB7pRwB3X8jWoD+wyNM8dyTIacVy+p3NbF3QQ3N
-   a49WkMKABoGwykRhIniPmOf8tMky8MQrsFfGcUf9kAgvEXD8hhqKm2saf
-   ndQ+hHdkNJzF8NLA1WiYLU7HAnWIMx6r07VKJV8sUQ1GvB1VmTERNdgf4
-   0xtD+yoACF6CLpykkY4f+3NVzPrpmgo3W86ivwYuwpy+K2M/Gtq2W3aRP
-   g==;
-X-CSE-ConnectionGUID: K6kcmqTgQBOroRaveL+Z0A==
-X-CSE-MsgGUID: DyHNEIi1RiWBs0+eM9r5zA==
+  bh=GfB4AangzbGer9ZinOHaC9/Iw6vF2BIgUKhcXiugwjs=;
+  b=gLkgmP8qYKsFBrB8tz1TcFbpWIVoPt6zUKqM37SYlZ4x2OtNVptdcQ+F
+   MkxkotswdlBDkH08VwGO115nN5FjEKHja9Msw+1TsPzXqhD53VRtwBGDg
+   Y/YOg/QKA0VJaUGF+3u9cRIPR14CrKzYftCLNlIlBQ1oxMvW/+ew8EzB4
+   +R/7b3Nvu2zTNWig7UwBOCc489HE9RbF6cAQiEHbHzIjAfqQpnRcIDyY9
+   HcDj4lczp2u81/dvFSmY1duTwVfaQItD2Y9oUkyXZufcaLezn6owk4VrS
+   rlc1dVY6yGl5LdA8MLRVtoMcILbaJ5QS2QApooi+56It5VQrE5cRxt+1F
+   A==;
+X-CSE-ConnectionGUID: 1B6BoPspRIaa6wrCNHZR3Q==
+X-CSE-MsgGUID: ZvhM4zZUR1OcZNmWWtJ1aA==
 X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="63547435"
+   d="scan'208";a="63547603"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 02 Oct 2026 02:11:23 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 02:16:50 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 2 Oct 2026 02:11:23 -0700
+ 15.2.2562.49; Fri, 2 Oct 2026 02:16:50 -0700
 Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
  (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 2 Oct 2026 02:11:19 -0700
-Date: Fri, 2 Oct 2026 11:11:18 +0200
+ Transport; Fri, 2 Oct 2026 02:16:46 -0700
+Date: Fri, 2 Oct 2026 11:16:45 +0200
 From: Daniel Machon <daniel.machon@microchip.com>
 To: <netdev-bot+sashiko@kernel.org>
 CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
@@ -55,10 +55,11 @@ CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<horms@kernel.org>, <richardcochran@gmail.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
 	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v9 13/15] net: lan966x: add PCIe FDMA XDP support
-Message-ID: <20261002091118.dnavfb3whz5enjcd@DEN-DL-M70577>
-References: <20260928-lan966x-pci-fdma-v9-13-a17caf60f89a@microchip.com>
- <179092642155.434549.4173203120024624969@kernel.org>
+Subject: Re: [PATCH net-next v9 15/15] misc: lan966x-pci: dts: add fdma
+ interrupt to overlay
+Message-ID: <20261002091645.tbhmk64qsf5wllni@DEN-DL-M70577>
+References: <20260928-lan966x-pci-fdma-v9-15-a17caf60f89a@microchip.com>
+ <179092642540.434549.1993526526960644611@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,12 +69,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179092642155.434549.4173203120024624969@kernel.org>
+In-Reply-To: <179092642540.434549.1993526526960644611@kernel.org>
 
-> Thank you for your contribution! Sashiko AI review found 2 potential
+> Thank you for your contribution! Sashiko AI review found 1 potential
 > issue(s) to consider.
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
 > 
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -81,152 +82,122 @@ In-Reply-To: <179092642155.434549.4173203120024624969@kernel.org>
 > know by including "pw-bot: cr" as a separate line at the end of your reply
 > (one such reply per series is enough).
 > 
-> - [Medium] This patch removes the PCIe rejection from lan966x_xdp_setup()
->   (drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c), so a bond can…
-> - [Low] In lan966x_xdp_pci_run(), xdp_init_buff() is called with frame_sz
->   = fdma->db_size, and hard_start is the slot start (virt_addr -…
+> - [Medium] Once this overlay adds the "fdma" interrupt, PCIe instances
+>   use lan966x_fdma_pci_ops, and a teardown ordering bug in that backend…
 > 
 > --
 > 
-> net: lan966x: add PCIe FDMA XDP support
+> misc: lan966x-pci: dts: add fdma interrupt to overlay
 > 
-> This commit adds XDP support to the lan966x PCIe FDMA path. The IFH and
-> FCS are stripped before the program runs, and XDP_TX is done by copying
-> the frame into a TX slot behind a newly built IFH. lan966x_xdp_setup()
-> no longer rejects PCIe and skips the page_pool reload on that path.
+> This commit adds the fdma interrupt (OIC interrupt 14) to the lan966x PCI
+> device tree overlay. This turns on FDMA-based frame injection and extraction
+> when the switch is connected over PCIe.
 > 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > index 758554c951c52..949994874ed96 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> 
-> [ ... ]
-> 
-> > @@ -139,7 +140,123 @@ static bool lan966x_fdma_pci_rx_size_fits(struct fdma *fdma, u32 blockl)
-> >  	       blockl <= fdma->db_size - XDP_PACKET_HEADROOM;
-> >  }
+> > diff --git a/drivers/misc/lan966x_pci.dtso b/drivers/misc/lan966x_pci.dtso
+> > index 7bb726550cafd..5bb12dbc08431 100644
+> > --- a/drivers/misc/lan966x_pci.dtso
+> > +++ b/drivers/misc/lan966x_pci.dtso
+> > @@ -141,8 +141,9 @@ switch: switch@e0000000 {
 > >  
-> 
-> [ ... ]
-> 
-> > +static int lan966x_xdp_pci_run(struct lan966x_port *port, void *data,
-> > +			       u32 data_len, void **xdp_data, u32 *xdp_len)
-> > +{
-> 
-> [ ... ]
-> 
-> > +	xdp_init_buff(&xdp, fdma->db_size, &port->xdp_rxq);
-> > +
-> > +	/* hard_start is set to slot start (virt_addr is XDP_PACKET_HEADROOM
-> > +	 * into the slot). Headroom includes the IFH; BPF may grow into it
-> > +	 * via adjust_head. IFH is rebuilt on XDP_TX and unread on XDP_PASS.
-> > +	 */
-> > +	xdp_prepare_buff(&xdp,
-> > +			 data - XDP_PACKET_HEADROOM,
-> > +			 XDP_PACKET_HEADROOM + IFH_LEN_BYTES,
-> > +			 data_len,
-> > +			 false);
-> 
-> [Severity: Low]
-> Can data_end end up past xdp_data_hard_end() here?
-> 
-> frame_sz is the full db_size and hard_start is the start of the slot, so
-> the XDP core computes the data limit as:
-> 
-> include/net/xdp.h:xdp_data_hard_end()
->     ((xdp)->data_hard_start + (xdp)->frame_sz -
->      SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-> 
-> The upper bound in lan966x_fdma_pci_rx_size_fits(), shown in the context
-> above, only reserves the headroom:
-> 
->     blockl <= fdma->db_size - XDP_PACKET_HEADROOM;
-> 
-> lan966x_fdma_pci_rx_check_frame() sets data to slot + XDP_PACKET_HEADROOM
-> + IFH_LEN_BYTES and data_len to blockl - IFH_LEN_BYTES - ETH_FCS_LEN. At
-> the largest accepted blockl, data_end is then slot + db_size -
-> ETH_FCS_LEN, roughly 316 bytes past xdp_data_hard_end().
-> 
-> For such a buffer, bpf_xdp_adjust_tail() returns -EINVAL for any offset,
-> shrinks included, because it checks this first:
-> 
->     if (unlikely(data_end > data_hard_end))
->         return -EINVAL;
-> 
-> Reaching this needs a blockl that eats into the shinfo reserve, for
-> example a malformed BLOCKL. It could also be an oversized frame truncated
-> to DATAL while lan966x_port_change_mtu() has raised MAXLEN but
-> fdma_resize() has not yet reallocated the rings.
-> 
-> Memory safety is not affected, since data_end stays inside the slot the
-> driver owns.
-> 
-> Should lan966x_fdma_pci_rx_size_fits() also reserve
-> SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) so it matches the frame_sz
-> given to xdp_init_buff()?
-> 
-> > +
-> > +	act = bpf_prog_run_xdp(xdp_prog, &xdp);
-> > +
-> > +	*xdp_data = xdp.data;
-> > +	*xdp_len = xdp.data_end - xdp.data;
-> > +
-> > +	switch (act) {
-> > +	case XDP_PASS:
-> > +		return FDMA_PASS;
-> > +	case XDP_TX:
-> > +		return lan966x_fdma_pci_xmit_xdpf(port, *xdp_data, *xdp_len) ?
-> > +		       FDMA_DROP : FDMA_TX;
-> > +	default:
-> > +		bpf_warn_invalid_xdp_action(port->dev, xdp_prog, act);
-> > +		fallthrough;
-> > +	case XDP_ABORTED:
-> > +		trace_xdp_exception(port->dev, xdp_prog, act);
-> > +		fallthrough;
-> > +	case XDP_DROP:
-> > +		return FDMA_DROP;
-> > +	}
-> > +}
+> >  					interrupt-parent = <&oic>;
+> >  					interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
+> > +						     <14 IRQ_TYPE_LEVEL_HIGH>,
+> >  						     <9 IRQ_TYPE_LEVEL_HIGH>;
+> > -					interrupt-names = "xtr", "fdma", "ana";
+> > +					interrupt-names = "xtr", "fdma", "ana";
 > 
 > [Severity: Medium]
-> Now that lan966x_xdp_setup() no longer rejects PCIe, can a bond attach a
-> program to lan966x PCIe ports and then have its XDP_TX frames silently
-> dropped here?
+> Once the "fdma" interrupt is present, PCIe instances use
+> lan966x_fdma_pci_ops. Does that make a teardown ordering problem in the PCIe
+> FDMA backend reachable?
 > 
-> The ports share lan966x_port_netdev_ops, which provides both .ndo_bpf and
-> .ndo_xdp_xmit. That is all bond_xdp_set() checks, so it accepts these
-> ports. It then pushes the program down:
+> lan966x_remove() tears down the FDMA before it unregisters the netdevs:
 > 
-> bond_xdp_set()
->     dev_xdp_propagate()
->         lan966x_xdp_setup()    <- now succeeds on PCIe
+> lan966x_main.c:lan966x_remove() {
+>     ...
+> 	lan966x->ops->fdma_deinit(lan966x);
+> 	lan966x_cleanup_ports(lan966x);
+>     ...
+> }
 > 
-> bond_xdp_set() also calls
-> static_branch_inc(&bpf_master_redirect_enabled_key). After that,
-> bpf_prog_run_xdp() rewrites XDP_TX on a bond slave:
+> lan966x_fdma_pci_deinit() disables NAPI and frees both rings. It does not
+> clear lan966x->rx.lan966x, it does not detach the netdevs, and rtnl is not
+> held at this point:
 > 
->     if (act == XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
->         act = xdp_master_redirect(xdp);
+> lan966x_fdma_pci.c:lan966x_fdma_pci_deinit() {
+> 	if (lan966x->fdma_ndev)
+> 		napi_disable(&lan966x->napi);
+>     ...
+> 	fdma_free_coherent_and_unmap(lan966x->dma_dev, &lan966x->rx.fdma);
+> 	fdma_free_coherent_and_unmap(lan966x->dma_dev, &lan966x->tx.fdma);
+> }
 > 
-> In round-robin, XOR and 802.3ad modes, xdp_master_redirect() returns
-> XDP_REDIRECT whenever the bond picks a transmit slave other than the
-> receiving port. That action falls into the default case above:
+> fdma_free_coherent_and_unmap() only clears atu_region, so dcbs and dma
+> still hold their old values.
 > 
-> bpf_warn_invalid_xdp_action() -> trace_xdp_exception() -> FDMA_DROP
+> netif_set_mtu_ext() only checks netif_device_present(). That means an MTU
+> change that alters the max frame size can still run during this window:
 > 
-> A bond program that only returns XDP_TX attaches without error, but a
-> hash- or round-robin-dependent share of its packets is dropped. With two
-> slaves in round-robin, that is about half. Before this patch the attach
-> failed with -EOPNOTSUPP.
+> lan966x_port_change_mtu()
+>   lan966x_fdma_pci_resize()
+>     __lan966x_fdma_pci_reload()
+>       lan966x_fdma_pci_reload()
+>         napi_disable(&lan966x->napi)
 > 
-> Should the PCIe path handle XDP_REDIRECT, or keep refusing the attach
-> when the port is a bond slave?
-
-Re-raise of issue dismissed in v7. xdp_features doesn't advertise REDIRECT on
-PCIe, and the warning path is the intended fallback
-
+> The resize guard is only this check:
 > 
-> [ ... ]
+> 	if (!lan966x->rx.lan966x)
+> 		return 0;
+> 
+> rx.lan966x is still non-NULL after deinit. Would the second napi_disable()
+> on an already disabled NAPI spin forever while holding rtnl? That would also
+> block the unregister_netdev() that lan966x_remove() calls next.
+> 
+> The probe error path in lan966x_fdma_pci_init() looks like it has a similar
+> gap:
+> 
+> 	err = lan966x_fdma_pci_tx_alloc(&lan966x->tx);
+> 	if (err) {
+> 		fdma_free_coherent_and_unmap(lan966x->dma_dev, rx_fdma);
+> 		return err;
+> 	}
+> 
+> rx.lan966x has already been set earlier in lan966x_fdma_pci_init(). The
+> netdevs registered by lan966x_probe_port() stay live until the cleanup_ports
+> label.
+> 
+> If an MTU change arrives in that window, NAPI is still enabled from
+> lan966x_port_init(). lan966x_fdma_pci_reload() then allocates new rings and
+> does:
+> 
+> 	fdma_free_coherent_and_unmap(lan966x->dma_dev, &rx_fdma_old);
+> 
+> Is this a second dma_free_coherent() of the RX ring that the error path
+> already freed?
+> 
+> After that, reload re-arms the FDMA on the new rings. The probe error path
+> never calls fdma_deinit for them. Would the coherent memory for the new rings
+> leak, with the outbound ATU windows still mapped and DMA active after probe
+> fails?
+> 
+> The resize guard added in "net: lan966x: add PCIe FDMA MTU change support"
+> is meant to skip the resize until lan966x_fdma_pci_init() has built the
+> rings. It doesn't seem to cover rings that were torn down or only partly
+> built.
+> 
+> The shutdown callback from "net: lan966x: add shutdown callback to stop the
+> FDMA on reboot" avoids this by taking rtnl and calling netif_device_detach()
+> so that ndo_open and ndo_change_mtu can't re-enter the FDMA. Should the
+> remove and probe error paths get the same protection?
+> 
+> The platform backend already has the same remove ordering. The PCIe deinit,
+> resize and reload code is new in this series, though, and this overlay change
+> is what first makes it reachable.
 > 
 > -- 
 > Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-lan966x-pci-fdma-v9-0-a17caf60f89a%40microchip.com
+
+Pre-existing. Lan966x_remove() is a platform function. It's a re-raise of v7
+11/14 / v8 15/15, the probe/remove ordering. The issue is real, but out-of-scope
+for this series.
+
