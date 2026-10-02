@@ -1,236 +1,366 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B7A29346F;
-	Fri,  2 Oct 2026 02:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B9C1B142D
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 03:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790909843; cv=none; b=sapKY0qf/Pa3P8+CLz1rLwLeHBn6RyHFjD0/TrYRpcJEpH+OTUq9GaUIP+Gy3UydpEsyhRVAQh2H0Gfx8xOQL5Ul1EP2j0OTOlUjJmmPlcBLxUwqo+lD4qrL2xKQfPOVPOrLWFEEhJVPYp3G7mrs3tBgWagKmYNuVKr4IrosR6s=
+	t=1790910841; cv=none; b=tHIzVQvs8dqJLJINokMJonBR7nJJMewdPe1JL6etP0i7z58iuF9ODMnAx5pe0NhwFUQk9fzheGhjMvBW1hABCEL2kR01uCJiVziQR5CAkatPACdic7oIcH2iitTjsaZBWlB+01YwJJF7oJWAWbKSmm92NUsa8mvTyG6iUtI2s+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790909843; c=relaxed/simple;
-	bh=OVO4czZn0m3ji8Pr0MNvmKCDP2HovUJgnLurH241Hzw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SNqDT+jItdIEcAGYmuKOyuSRMi1pO9AbvauqTlyld4+td2s5UYXEPpTd++rIdRficDk5jFhgEdKuXkRBdiRoedRv2uJ2+sP7URUL3WZtQolv2qiXVOA3Y0svIX3pgtaP09iFbrJcQiXyPKJTH8m8EJPN/ygSEza6Ftybbq6zMzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtCXfKD6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790910841; c=relaxed/simple;
+	bh=Y0htw6YNvVHWb43BfQ6VX1I7U+F/8o70bpscG908mtA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vF4Cv4RSeTtwUctPUnxZJuMAhVTuBKytRjLP/4p0zNuLKRFEicYRZ2kRVw+k7YpZlErKMtjZvhjS8K7gZpJgUrdx1HHahXthTU3M+KM5aMScEvX8cwoIrfWYvRrKDoCdAVvKwapwQy28ySA433Ssnl0OVboYyMl2MDVBA51Ngwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=RQhzlYtV; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtCXfKD6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6021F000FF;
-	Fri,  2 Oct 2026 02:57:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790909842;
-	bh=7OnHaYO4YfHoZJtlJrBk6mUFl4QSkni2NDxgVKqLcX0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mtCXfKD6CdiKUHpPKXcNqZpD3qMbnN58/QdsQ33Im3gCnysW/LwUj3HaX5vEO8Kdg
-	 GNEEo1UysfksxEh+wkmUyqv/LbkDGt5Rl5FoTUIIkfGVXMy4eDa9xdOO/Y2xBhKUKz
-	 /eIFM4MPwAPoAT+yF7bQfBKWPL3u2HiyxoHLVimPBVUvtWbnmIlxca+vEToCc7S470
-	 Sz1at6cadqsnUrIEGyt5U9wfUajwAut7/zgTUCTdHbhG/czL5EUE0eRp9O6gCwQl6F
-	 gxMl00P2549rCKjtTJEk04wPb51KcJpAQCuZtSLOW+saBpcK4lxdujPe1bfEiH2QiM
-	 SAnK5SNegR6Ow==
-Subject: Re: [PATCH net] tipc: protect received keys from concurrent flush
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: jmaloy@redhat.com, tung.quang.nguyen@est.tech, netdev@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Fri, 02 Oct 2026 02:57:21 +0000
-Message-ID: <179090984112.434549.12939052372850275600@kernel.org>
-In-Reply-To: <20260930115708.349540-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20260930115708.349540-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RQhzlYtV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=02eG+voo7vZU+dMYkskTJmdmvoMiseYAUMgdAJhgQlk=;
+	b=RQhzlYtVQ4PKnkIT3FtvWov4nYV4NRrYisCT//fcAXZkHQiXBWGPD7nfGoSTDa
+	OSJaUYwXcWHUk8BWkUHS6yWSAJDSvpk6kox+SgG5rrq4WDPDfL2YLaOCBSm3RAvl
+	djjyuohEZElRCSt/Is2DJiqkwDd6gtnWOZrASB/OQmZCM=
+Message-ID: <d726539c-1919-41b3-b74e-3f40693b1f32@163.com>
+Date: Fri, 2 Oct 2026 11:13:26 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/3] tun: keep a kernel copy of the socket filter
+ program
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, willemdebruijn.kernel@gmail.com,
+ jasowangio@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, weirongguang@kylinos.cn
+References: <20260930080746.135017-2-clementwei90@163.com>
+ <179086383901.434549.6742700086527768803@kernel.org>
+Content-Language: en-US
+From: Rongguang Wei <clementwei90@163.com>
+In-Reply-To: <179086383901.434549.6742700086527768803@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXvfNWIb9qXb_1Bw--.64513S2
+X-Coremail-Antispam: 1Uf129KBjvAXoW3CF1kCF18uFy5JFWxZF15twb_yoW8Jr13Ko
+	WfX39xA3WUtrWfG34qkas7G3W3WryDKr47JFWjgws8XFW2q3yUWFZ5ZrWrXayqyF15GF4D
+	Gas7J3yqyrWDtF93n29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU0mhwUUUUU
+X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4hroVGq-IVpLUwAA3y
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+on 2026/10/1 22:10, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 0 (2) · Low: 3 (1)
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] After this patch alone, tun_attach() in drivers/net/tun.c still
+>   has the inverted check `if (!err) goto out;` right after `err =
+Make the check first is not an option either (it would turn an attach 
+that used to succeed without a filter into a failure). It seems the only
+way is that the fix be folded into this patch, so no step of the series
+takes goto out with err == 0.
+> - [Low] The commit message gets both the old failure mode and the new
+>   helper's semantics wrong.
+> - [Low] The new exported helper sk_attach_filter_kern()
+>   (net/core/filter.c) builds the program with bpf_prog_create() and then…
+> - [Low] The new comment above tun_copy_filter()
+>   (drivers/net/tun.c:726-729) says the kernel copy lets the filter "be…
+I will reword it.
+> 
+> Pre-existing issues:
+> - [Medium] tun has no compat translation for the classic filter ioctls.
+I can send the compat translation as a separate patch.
+> - [Medium] If TUNATTACHFILTER replaces an attached filter and
+>   sk_attach_filter_kern() fails on queue i (for example -ENOMEM from…
+The old code also overwrote tun->fprog before attaching, and the prefix-only
+rollback is unchanged. A proper fix is to install the new copy on every queue 
+and only then replace the saved one. Separate patch.
+> - [Low] When TUNATTACHFILTER is issued while tun->numqueues == 0, the
+>   classic BPF program is stored without ever being validated.The old code stored an unvalidated header in the same situation. 
+Validating the program at copy time can be a separate change.
+> 
+> --
+> 
+> tun: keep a kernel copy of the socket filter program
+> 
+> This patch changes TUNATTACHFILTER to copy the classic BPF instructions
+> into tun->fprog_kern. Before, only the sock_fprog header was stored, and
+> it pointed into the ioctl caller's address space. It also adds a new
+> exported helper, sk_attach_filter_kern(), which builds and attaches a
+> program from a kernel sock_fprog_kern, and tun_attach() and
+> tun_attach_filter() now use it.
+> 
+> Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
+> 
+>> tun_attach() reads it again whenever a queue is attached to the
+>> persistent device later on: unmapped there, the attach fails with -EFAULT;
+>> mapped, whatever bytes it holds become the filter of the new queue.
+> 
+> [Severity: Low]
+> Is this an accurate description of the old behaviour? tun_attach() has an
+> inverted "if (!err) goto out;", so an -EFAULT, or an -EINVAL caused by
+> garbage bytes, falls through instead of failing the attach.
+> 
+> For a new tfile, xdp_rxq_info_reg() and "err = 0" then overwrite err. So
+> TUNSETIFF succeeds, the queue is attached, and no filter is installed.
+> 
+> A successful read of mapped, valid bytes returns 0 without attaching the
+> queue at all.
+> 
+> The follow-up patch's message talks about "a re-attach that used to
+> succeed without installing any filter". That seems to contradict this
+> one.
+> 
+>> sk_attach_filter_kern() reads no user buffer and attaches the program like
+>> sk_attach_filter() does.
+> 
+> Do the two really behave the same way? sk_attach_filter_kern() builds the
+> program with bpf_prog_create(), which sets fp->orig_prog = NULL.
+> sk_attach_filter() goes through __get_filter()->bpf_prog_store_orig_filter()
+> instead. As a result, SO_GET_FILTER and sock_diag readback give different
+> results depending on which helper attached the filter.
+> 
+>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>> index 5a302709a68aa..22fb34e745bd9 100644
+>> --- a/drivers/net/tun.c
+>> +++ b/drivers/net/tun.c
+> 
+> [ ... ]
+> 
+>> @@ -722,6 +723,34 @@ static void tun_force_wake_queue(struct tun_struct *tun,
+>>  	spin_unlock_bh(&tfile->tx_ring.consumer_lock);
+>>  }
+>>  
+>> +/* Copy the filter that @argp points at into the kernel, so that it can be
+>> + * installed again later, from any context. tun->fprog and tun->fprog_kern
+>> + * are updated only once the copy succeeded.
+>> + */
+> 
+> [Severity: Low]
+> Is "from any context" accurate here? The only consumer,
+> sk_attach_filter_kern(), needs sleepable process context and the socket
+> lock:
+> 
+> sk_attach_filter_kern()
+>   bpf_prog_create()
+>     bpf_prog_alloc()          <- GFP_KERNEL based allocation
+>   __sk_attach_prog()
+>     kmalloc_obj()             <- GFP_KERNEL
+>     rcu_dereference_protected(..., lockdep_sock_is_held(sk))
+> 
+> Was the intended meaning "from any process", or "independent of the ioctl
+> caller's address space"?
+> 
+>> +static int tun_copy_filter(struct tun_struct *tun, struct sock_fprog __user *argp)
+>> +{
+>> +	struct sock_fprog fprog;
+>> +	struct sock_filter *insns;
+>> +
+>> +	if (copy_from_user(&fprog, argp, sizeof(fprog)))
+>> +		return -EFAULT;
+> 
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but tun has no compat handling
+> for the classic filter ioctls. TUNATTACHFILTER, TUNDETACHFILTER and
+> TUNGETFILTER encode sizeof(struct sock_fprog) in the command number. That
+> size is 8 bytes for 32-bit userspace and 16 bytes natively, so the command
+> numbers differ.
+> 
+> tun_chr_compat_ioctl() only converts these:
+> 
+> 	case TUNSETIFF:
+> 	case TUNGETIFF:
+> 	case TUNSETTXFILTER:
+> 	case TUNGETSNDBUF:
+> 	case TUNSETSNDBUF:
+> 	case SIOCGIFHWADDR:
+> 	case SIOCSIFHWADDR:
+> 		arg = (unsigned long)compat_ptr(arg);
+> 		break;
+> 
+> The compat filter commands therefore miss the native cases in
+> __tun_chr_ioctl() and end up in tun_vnet_ioctl(), which returns -EINVAL.
+> tun_copy_filter() is never reached with a compat layout. The result is
+> that 32-bit userspace on a 64-bit kernel cannot use these ioctls.
+> 
+> This copy is being rewritten anyway. Would it be worth adding compat
+> command translation here, perhaps together with the compat-aware
+> copy_bpf_fprog_from_user() that SO_ATTACH_FILTER uses?
+> 
+>> +
+>> +	if (!fprog.len || fprog.len > BPF_MAXINSNS)
+>> +		return -EINVAL;
+> 
+> [Severity: Low]
+> This is a pre-existing issue, but only the length is checked before the
+> program is committed to tun->fprog_kern. If TUNATTACHFILTER is issued
+> while tun->numqueues == 0, does the program ever get validated?
+> 
+> A multiqueue TAP reaches that state after TUNSETQUEUE(IFF_DETACH_QUEUE) on
+> every queue. __tun_detach(tfile, false) lowers numqueues but keeps
+> tfile->tun, so tun_get() still succeeds in __tun_chr_ioctl().
+> 
+> In that case the loop in tun_attach_filter() runs zero times, and
+> bpf_check_classic() (via bpf_prog_create()->bpf_prepare_filter()) never
+> runs. filter_attached is still set to true and 0 is returned.
+> 
+> After that, every tun_attach() fails in sk_attach_filter_kern() with
+> -EINVAL until TUNDETACHFILTER. The old code had the same gap: it stored an
+> unvalidated header when numqueues == 0.
+> 
+>> +
+>> +	insns = memdup_array_user(fprog.filter, fprog.len,
+>> +				  sizeof(struct sock_filter));
+> 
+> [ ... ]
+> 
+>> @@ -752,7 +781,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>>  	/* Re-attach the filter to persist device */
+>>  	if (!skip_filter && (tun->filter_attached == true)) {
+>>  		lock_sock(tfile->socket.sk);
+>> -		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+>> +		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+>>  		release_sock(tfile->socket.sk);
+>>  		if (!err)
+>>  			goto out;
+> 
+> [Severity: High]
+> With only this patch applied, is the check after sk_attach_filter_kern()
+> still inverted?
+> 
+> The program is now built from a kernel copy, so the build succeeds for
+> any valid program. On a persistent TAP with filter_attached set, TUNSETIFF
+> without IFF_NOFILTER and TUNSETQUEUE(IFF_ATTACH_QUEUE) would then jump
+> straight to out and return 0.
+> 
+> That jump skips all of the following:
+> 
+>   - ptr_ring_resize()
+>   - the queue_index setup
+>   - xdp_rxq registration
+>   - sock_hold()/tun_napi_init() or tun_enable_queue()
+>   - publishing tfile->tun and tun->tfiles[]
+>   - the numqueues increment
+> 
+> tun_set_iff() and tun_set_queue() report success, but the fd stays
+> unattached, and later reads and writes fail with -EBADFD.
+> 
+> The reverse also happens: when the build fails, the code falls through and
+> attaches the queue with no filter.
+> 
+> The next patch in the series, "tun: fix inverted error check when
+> re-attaching the filter", changes this to "if (err) goto out;". It also
+> adds a rollback_filter sk_detach_filter() on the later failure paths, so
+> the code is correct at the end of the series.
+> 
+> Could that fix be folded into this patch, or ordered before it? Otherwise
+> a bisect can land on a kernel where re-attaching to a filtered persistent
+> TAP silently does nothing.
+> > [ ... ]
+> 
+>> @@ -3070,7 +3103,7 @@ static int tun_attach_filter(struct tun_struct *tun)
+>>  	for (i = 0; i < tun->numqueues; i++) {
+>>  		tfile = rtnl_dereference(tun->tfiles[i]);
+>>  		lock_sock(tfile->socket.sk);
+>> -		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
+>> +		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
+>>  		release_sock(tfile->socket.sk);
+>>  		if (ret) {
+>>  			tun_detach_filter(tun, i);
+> 
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but what happens to the
+> remaining queues in this case? TUNATTACHFILTER replaces an attached
+> filter, and sk_attach_filter_kern() fails on queue i, for example with
+> -ENOMEM from __sk_filter_charge() at the optmem limit.
+> 
+> tun_detach_filter(tun, i) only detaches queues 0..i-1, then frees the new
+> kernel copy and clears filter_attached. Queues i..numqueues-1 keep the
+> previous sk_filter.
+> 
+> The previous copy has already been freed in tun_copy_filter():
+> 
+> 	kfree(tun->fprog_kern.filter);
+> 	tun->fprog_kern.len = fprog.len;
+> 	tun->fprog_kern.filter = insns;
+> 	tun->fprog = fprog;
+> 
+> So the old state can't be restored, and queues attached later get no
+> filter. The device ends up with some queues unfiltered and others still
+> using the old filter.
+> 
+> The old code had the same prefix-only rollback, since it overwrote
+> tun->fprog in place before attaching.
+> 
+> [ ... ]
+> 
+>> diff --git a/net/core/filter.c b/net/core/filter.c
+>> index 70dc621672f2e..64d6505a4ef23 100644
+>> --- a/net/core/filter.c
+>> +++ b/net/core/filter.c
+>> @@ -1567,6 +1567,28 @@ int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk)
+>>  }
+>>  EXPORT_SYMBOL_GPL(sk_attach_filter);
+>>  
+>> +int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
+>> +{
+>> +	struct bpf_prog *prog;
+>> +	int err;
+>> +
+>> +	if (sock_flag(sk, SOCK_FILTER_LOCKED))
+>> +		return -EPERM;
+>> +
+>> +	err = bpf_prog_create(&prog, fprog);
+>> +	if (err)
+>> +		return err;
+>> +
+>> +	err = __sk_attach_prog(prog, sk);
+> 
+> [Severity: Low]
+> bpf_prog_create() is documented as creating an unattached filter, and it
+> deliberately skips orig_prog:
+> 
+> net/core/filter.c:bpf_prog_create() {
+> 	...
+> 	/* Since unattached filters are not copied back to user
+> 	 * space through sk_get_filter(), we do not need to hold
+> 	 * a copy here, and can spare us the work.
+> 	 */
+> 	fp->orig_prog = NULL;
+> 	...
+> }
+> 
+> This helper now attaches such a program to sk->sk_filter. Does
+> sk_get_filter() then return -EACCES for these sockets?
+> 
+> net/core/filter.c:sk_get_filter() {
+> 	...
+> 	ret = -EACCES;
+> 	fprog = filter->prog->orig_prog;
+> 	if (!fprog)
+> 		goto out;
+> 	...
+> }
+> 
+> sock_diag would also leave the filter out. sk_attach_filter() keeps
+> orig_prog through bpf_prog_store_orig_filter().
+> 
+> tun sockets can't reach SO_GET_FILTER today. However, this helper is
+> exported and declared next to sk_attach_filter() in include/linux/filter.h.
+> Should the difference be documented, or should orig_prog be stored here as
+> well?
+> 
+pw-bot: cr
 
-- [Medium] The patch fixes the rx->skey UAF/double-free, but the flush it
-  protects can now be silently undone.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but an RX delayed
-  work can re-arm after netns teardown has flushed it and then fire on a…
-
---
-
-tipc: protect received keys from concurrent flush
-
-This patch adds an skey_in_use flag to struct tipc_crypto. The RX worker
-sets it under rx->lock while it attaches rx->skey, and
-tipc_crypto_key_flush() skips freeing the key while the flag is set. The
-goal is to close a KASAN-reported use-after-free and double-free that
-happens when key exchange races with key flush.
-
-> diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-> index 4409bdb70fe98..eab2a66e22333 100644
-> --- a/net/tipc/crypto.c
-> +++ b/net/tipc/crypto.c
-
-[ ... ]
-
-> @@ -1214,8 +1216,11 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
->  		rx = c;
->  		tx = tipc_net(rx->net)->crypto_tx;
->  		if (cancel_delayed_work(&rx->work)) {
-> -			kfree_sensitive(rx->skey);
-> -			rx->skey = NULL;
-> +			/* A previous invocation may still be using the key. */
-> +			if (!rx->skey_in_use) {
-> +				kfree_sensitive(rx->skey);
-> +				rx->skey = NULL;
-> +			}
->  			atomic_xchg(&rx->key_distr, 0);
->  			tipc_node_put(rx->node);
->  		}
-
-[Severity: Medium]
-With this skip, can the still-running worker undo the flush after it
-returns?
-
-Nothing tells the in-flight tipc_crypto_work_rx() that a flush happened,
-so this sequence looks possible:
-
-CPU1 (tipc_crypto_work_rx)            CPU2
-spin_lock_bh(&rx->lock);
-rx->skey_in_use = true;
-spin_unlock_bh(&rx->lock);
-                                      tipc_crypto_key_synch()
-                                        re-queues rx->work
-                                      tipc_crypto_key_flush()
-                                        cancel_delayed_work() == true
-                                        skips kfree, rx->skey stays set
-                                        c->flags = 0;
-                                        tipc_crypto_key_set_state(c, 0, 0, 0);
-                                        tipc_crypto_key_detach() on all keys
-                                        spin_unlock_bh(&c->lock);
-tipc_crypto_key_init(rx, rx->skey, ...)
-  tipc_crypto_key_attach()
-    tipc_aead_rcu_replace(c->aead[new_key], aead, &c->lock);
-    c->working = 1;
-    c->nokey = 0;
-
-In this case the TIPC_NL_KEY_FLUSH handler (__tipc_nl_node_flush_key())
-returns 0. The peer's AEAD is still installed at key_next(0) and the RX
-crypto is re-enabled.
-
-There is also the retry path. Suppose tipc_crypto_key_attach() had already
-returned -EBUSY, or tipc_aead_init() had returned -ENOMEM, before the
-flush. The worker then keeps rx->skey, clears skey_in_use and re-queues
-itself. queue_delayed_work() succeeds because the flush cancelled the
-pending instance, so the pre-flush key gets attached about 5 seconds
-later.
-
-Until that happens, tipc_crypto_key_rcv() rejects new keys from the peer
-because the stale rx->skey is still non-NULL:
-
-	if (unlikely(rx->skey || (key_gen == rx->key_gen && rx->key.keys))) {
-		pr_err("%s: key existed <%p>, gen %d vs %d\n", rx->name,
-
-tipc_crypto_rcv() also counts the stale rx->skey when it computes
-rx->nokey:
-
-	rx->nokey = !(rx->skey ||
-
-Before this patch, the cancel_delayed_work() == true case freed and
-cleared rx->skey (with the use-after-free), so the retry had nothing to
-attach. With this patch, that case behaves like the existing
-cancel_delayed_work() == false case: the flush does not revoke the key
-that is in flight. The commit message doesn't mention this.
-
-Would a flushed or generation marker help? The worker would re-check it
-under rx->lock before attaching or re-queueing, and free the key if a
-flush had happened. That keeps the use-after-free fix and still honours
-the flush.
-
-> @@ -2371,7 +2376,10 @@ static void tipc_crypto_work_rx(struct work_struct *work)
->  	}
->  
->  	/* Case 2: Attach a pending received session key from peer if any */
-> +	spin_lock_bh(&rx->lock);
->  	if (rx->skey) {
-> +		rx->skey_in_use = true;
-> +		spin_unlock_bh(&rx->lock);
->  		rc = tipc_crypto_key_init(rx, rx->skey, rx->skey_mode, false);
->  		if (unlikely(rc < 0))
->  			pr_warn("%s: unable to attach received skey, err %d\n",
-> @@ -2381,14 +2389,18 @@ static void tipc_crypto_work_rx(struct work_struct *work)
->  		case -ENOMEM:
->  			/* Resched the key attaching */
->  			resched = true;
-> +			spin_lock_bh(&rx->lock);
->  			break;
->  		default:
->  			synchronize_rcu();
-> +			spin_lock_bh(&rx->lock);
->  			kfree_sensitive(rx->skey);
->  			rx->skey = NULL;
->  			break;
->  		}
-> +		rx->skey_in_use = false;
->  	}
-> +	spin_unlock_bh(&rx->lock);
->  
->  	if (resched && queue_delayed_work(tx->wq, &rx->work, delay))
->  		return;
-
-[Severity: High]
-This is a pre-existing issue and wasn't introduced by this patch. Since
-the new skey_in_use skip hands the key to this running worker, can this
-re-queue happen after netns teardown and then fire on a destroyed
-workqueue?
-
-The netns exit path flushes the RX crypto like this:
-
-tipc_exit_net()
-  tipc_net_stop()
-    tipc_node_stop()
-      tipc_node_delete()
-        tipc_node_delete_from_list()
-          tipc_crypto_key_flush(node->crypto_rx)
-
-tipc_crypto_key_flush() holds c->lock, so it can only use the non-sync
-cancel_delayed_work(). That does nothing to a tipc_crypto_work_rx() that
-is already running.
-
-That worker always sets resched = true after Case 1 key distribution. It
-also sets it on the Case 2 -EBUSY/-ENOMEM path. Because the work is not
-pending, queue_delayed_work(tx->wq, &rx->work, delay) then succeeds, and
-the worker returns still holding its tipc_node reference.
-
-After that, tipc_exit_net() calls tipc_crypto_stop() on the TX crypto,
-which only sync-cancels the TX work:
-
-	if (is_tx(c)) {
-		c->rekeying_intv = 0;
-		cancel_delayed_work_sync(&c->work);
-		destroy_workqueue(c->wq);
-	}
-
-The destroy_workqueue() documentation says delayed work must be cancelled
-before calling it. When the re-armed RX timer fires,
-delayed_work_timer_fn()->__queue_work() would use the freed tx->wq. Then
-tipc_crypto_work_rx() would dereference tipc_net(rx->net)->crypto_tx of
-the torn-down netns.
-
-The node reference held by the re-armed work is also never dropped. Would
-that leak the tipc_node, its crypto_rx, and any rx->skey that the
-skey_in_use skip left for the worker?
-
-A remote peer can drive Case 1 by sending rx_nokey, which reaches
-tipc_crypto_key_synch().
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930115708.349540-2-Jeremy.Jean%40oss.cyber.gouv.fr
