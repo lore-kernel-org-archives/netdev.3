@@ -1,69 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D90647DD6E;
-	Fri,  2 Oct 2026 10:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D58457E64;
+	Fri,  2 Oct 2026 10:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790936987; cv=none; b=aoIo1k3+08mkpW1GP3H+cOX13t1kO8AUs4iNlJ+qQIqTgcPlrYGerOmZo1pSD3211G+LZhsyE0q1Txlv4ImQ3jOWWJakHxPbhgvChYimhkik/90UEjCrQRD2OIJfE9/bTS6CNS5e++oIReucNzSDxuE9qENpcq5ADNKXILVdVjc=
+	t=1790937029; cv=none; b=o6suYB6vi8bXnu/72gp/roxXnv1IaAPP9qcwhIV4qbS+zgXAgKQs9ytLzPDRcqOR2obeny1VslOs1de5bCCTHvXSDunm+RR1w0IGmhUNz1dj9kSILTXuITyb/R1aEijDVcTD3LOtm4oF/cgom3cp/GAnJjJUukOemZyVbFAF4yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790936987; c=relaxed/simple;
-	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jZuxw3F00u4VSwWG1AWBhzF1bKUwbRAV973GbzSgQZk2ZJI3dAqU9WBu68vYcLNfZ2ve9ALcLJs2yXfLU34BBg3Drj6PG2E5XxPprEfoiftJveG8b0yggcPu/r45VtRm2alpPIvuNimtkZceq5mf/ZxN1XyjwYgAGmu6AIcywK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mx89kAHY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790937029; c=relaxed/simple;
+	bh=NmRTtrX3c0NVyjxrY1zGG1uYeTrlOqEaLry9eP5TkwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LTR0WEIfWAydx3rXNpxgM+X2nrG3+VvtEcyn4nlDpC32BcpR142MsuVfszzCTmBgLLU270XCvyGin1PJ8fY4NnXBFuB559t2ttH3GrCnK3zHQD3O2dxz978HWimFM9Zm87nQzKss7jYMLK75v3R1S9hhQaTXcz7UYCRz6Ct5p88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=KRm5pRr0; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mx89kAHY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D165C1F00893;
-	Fri,  2 Oct 2026 10:29:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790936986;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Mx89kAHYOXUrkPtgi4Ej7cRU/Yd+coe/JBpFI08aJ1xFJTAXdqOfAn5oh/y4jvqEK
-	 GjlS2X2SvA5AzVukDbw6aVVdNyuZg6Qu+JQlL9FoiFFen58scOsTKEbRaBgaO17llV
-	 8ZM8f7oiVeYdg7jIMfYSt08IC1q5zdEuKKyHUe8phau2n9t9iA5YspQarzO+p4TE91
-	 9SWQJ1+OTmT2VPOH18+A4uEo15HpeTNZPOAMgbHx+jsc7jqo3Vk2ZpG+fx2JSI9Ffx
-	 Br1RfUncDt3AJjrHe+bmrAv+SzoaCkFOQVu1TF+cQc3XPPiapAeFkcfX5qEXiRh4RO
-	 s3Gsxq0T1QNsg==
-From: netdev-bot+sinfo@kernel.org
-To: Bruno Produit <bruno.produit@trailofbits.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
- Kyle Zeng <kylebot@openai.com>, linux-kernel@vger.kernel.org,
- Dominik Czarnota <dominik.czarnota@trailofbits.com>,
- Sabrina Dubroca <sd@queasysnail.net>, stable@vger.kernel.org
-Subject: 
- Re: [PATCH net v2] xfrm: espintcp: reserve partial message during allocation
-Date: Fri, 02 Oct 2026 10:29:45 +0000
-Message-ID: <179093698536.1402591.16703491801413392699@kernel.org>
-In-Reply-To: <20261002102447.148835-1-bruno.produit@trailofbits.com>
-References: <20261002102447.148835-1-bruno.produit@trailofbits.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="KRm5pRr0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=goidX4y0mXKn7jrXINEO2VnJ7ujOWyUtvQ6PGsR2fRs=; b=KRm5pRr0xAfpjjTpTUizNLBVto
+	68ilqaVhaODJ4P6Fej8unx3O+FJDoDvP0w0GbP0biha0NUx5dOZufRHYHFz0DpVZTFvcT/1moXtkv
+	wRNIBvJ32+ghE5lLOMYraSemamc09pQOyIcTFhFXa48KLUx+FJjIzEK+gRLSfVCFsTuEtC5CRFl8o
+	T1VwEKD3lbu1Q+FrHIAPUFxerMCOilwsF+afToegbmEM31Vhh8ql3ervpdMyrI6oEj7D4MGOH7KEl
+	67yuizx9D6pv6lltOBMNsIKgn+nzWz1GhkzvjJdChjPD2oqjb9qBH5PZXAIcrw3GWwVLDRV2GVL1Y
+	a/ynZZvg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xCaX0-000nsr-2k;
+	Fri, 02 Oct 2026 10:30:23 +0000
+Date: Fri, 2 Oct 2026 03:30:18 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Guillaume Nault <gnault@redhat.com>, Akinobu Mita <akinobu.mita@gmail.com>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: fix NULL dereference in skb realloc fault
+ injection devname filter
+Message-ID: <ar-Hj5DhKuZeUisY@gmail.com>
+References: <20260930122013.110284-1-yanhaishuang@cmss.chinamobile.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260930122013.110284-1-yanhaishuang@cmss.chinamobile.com>
+X-Debian-User: leitao
 
-Hi!
+> --- a/net/core/skb_fault_injection.c
+> +++ b/net/core/skb_fault_injection.c
+> @@ -19,8 +19,8 @@ static bool should_fail_net_realloc_skb(struct sk_buff *skb)
+>  	struct net_device *net = skb->dev;
+>  
+>  	if (skb_realloc.filtered &&
+> -	    strncmp(net->name, skb_realloc.devname, IFNAMSIZ))
+> -		/* device name filter set, but names do not match */
+> +	    (!net || strncmp(net->name, skb_realloc.devname, IFNAMSIZ)))
+> +		/* device name filter set, but no device or names do not match */
+>  		return false;
+>  
+>  	if (!should_fail(&skb_realloc.attr, 1))
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I think something like this untested approach reads better:
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+diff --git a/net/core/skb_fault_injection.c b/net/core/skb_fault_injection.c
+index 4235db6bdfad55..63a397f761133c 100644
+--- a/net/core/skb_fault_injection.c
++++ b/net/core/skb_fault_injection.c
+@@ -18,6 +18,9 @@ static bool should_fail_net_realloc_skb(struct sk_buff *skb)
+ {
+        struct net_device *net = skb->dev;
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
++       if (!net)
++               return false;
++
+        if (skb_realloc.filtered &&
+            strncmp(net->name, skb_realloc.devname, IFNAMSIZ))
+                /* device name filter set, but names do not match */
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+
