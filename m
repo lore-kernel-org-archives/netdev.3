@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBA5514770;
-	Fri,  2 Oct 2026 20:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B6751599F;
+	Fri,  2 Oct 2026 20:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790971809; cv=none; b=OL99+xNjxKCanGuLkSCXEW94Dq+Cb9J4LiWQdw+R3hiGt3ZrQjeCQKG/UQddlJrRdnBovnSNv21V+XR5jSySm7cUQe7tDCO/Ymyuv5QOzVy8XMXHnsA3+Z42JAznlTqKl649kv/q2RmY88H55LM6zG9xiXOkbmsWUXmqaVGxUEo=
+	t=1790971813; cv=none; b=aDxVne/ZEUtHbVG/4mqbG+0iSlNPm2F1d1c7DQ64PV/cl2WoAMBotPH4EsjB8tjB2FC3FCwn5vDJINze2ifeefXXrReNJe3CF+6yglVtQbPFI8voie6DzqU4JFGNXV6a9qC6BuV1QGjpmjkkW4GWhfWpwT578JONdCaYJaeJ38c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790971809; c=relaxed/simple;
-	bh=AnexBTqckTGgnVZSbd9fIKKXIdiXvyqa+jK1d05HILg=;
+	s=arc-20240116; t=1790971813; c=relaxed/simple;
+	bh=hmVLROLewCpFa2mqL5M6eEVkfFD0AxOmmbwMQ+rTQ14=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PjD39MK1FOELTJR3ssxcarq4emQ/3s1hqXMztXBr0S12w3EZOfzqJOfXn+h/hfRCdA97DVstQPIRv2yjZnRBZ7l19WwS+dLfzstXPk6jl3IgjpVqefZsCI30fIrlozn6B4ti/by8CbbLMLyry+KMek0kTkFbx3YlPo+XSv7Juvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hjuwagk9; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=fao5XotKfLG8g3Ny/tcj1H5DZ2yv3iJ0kmkZUiQB4JmnqVgvn+oktubv4TfvXAx84ZxDLURg4w4bnTBSutQ2eCbdugutg0oG8eIap5SE6YjNQmro86RNd4o0Lz4E6ijPZsgVT1M6wv35jwtxj61+XDWcsdYjPw7n7SjDZyyUKGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apOCBILJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hjuwagk9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442651F00893;
-	Fri,  2 Oct 2026 20:10:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apOCBILJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810201F000FF;
+	Fri,  2 Oct 2026 20:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790971808;
-	bh=jxjwPiIKbDU6MasNt4osX21VBe+cd6oHzOjlTu73SmI=;
+	s=k20260515; t=1790971811;
+	bh=2ESefGPY0PLs8kprDTGDaka1qxHCM4PoqX1pvQTnQpA=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Hjuwagk9La0PlJpyZlFaaLG/EPnfiL5Om9kQFRXuOpENKWtvlydE+l54pbq1e8tAr
-	 m5T4DYAkPWbNsihZdAnQifeDv30oDgqgYPfOFQOBhnYr2NuOX8jbI43RKcFF4DZ1kU
-	 e45gv0Z1tzsDmAAjvHs+POd4VDgrr9bJ/P8+ROSs3WiKUe/+oia367/AIGSE0bLJGa
-	 +7jHzRgH5/SfWSam0ky2sK6uGXU/k6I/5jnWGH8xIPNsm10vHUB4gdVv1EqZ924bsU
-	 l6sVvwJffF0zf/CtSH7l5QEJO27ouGPSe688DYesO9gLVHuEcaIXb9W9QFd0/3mCVn
-	 9bzb+L9pMcxBg==
+	b=apOCBILJh32CYf7rftHJsx4DUqeV+2wRFilnC6f7RFWcDwpVqOBmzgPIDX6Qb/+Wj
+	 oTdIgyIAFqEF484aQ8AsbODcyeSUBzhPs2qhYg5/1ZarQ+HN7Mj/tOphD3EJwhKyZM
+	 Q1POw+vfU4TvCMk24kUmQJFZ4D/8BoMkwA2pNnAwjN8wUsBlKZZpm9lnbsKL0WTVBr
+	 +u6tKS99oX1XLfSKA4+8DxgU97Y8ZXDRufcOZhpq6hLZwSDyF3CrkrxQcpXqqSWPNi
+	 tjlW78E2HUr0q4c1qUJRnW+HdIcl2Mh0NDT6ooS7t8Juqc+/iDHlhojAOplTT2hh0O
+	 Pd7AZIpjikZvA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3AF3811A72;
-	Fri,  2 Oct 2026 20:10:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 77B003811A72;
+	Fri,  2 Oct 2026 20:10:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4] net: xilinx: axienet: Free outstanding DMA buffers
- on
- dmaengine stop
+Subject: Re: [PATCH net-next v2] selftests: fib_tests: use per-test return
+ value in subtests
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179097180677.3568371.6111049801339254960.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 20:10:06 +0000
-References: <20260928184207.2361931-1-suraj.gupta2@amd.com>
-In-Reply-To: <20260928184207.2361931-1-suraj.gupta2@amd.com>
-To: Gupta@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org,
-	Suraj <suraj.gupta2@amd.com>
-Cc: radhey.shyam.pandey@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- michal.simek@amd.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+ <179097181003.3568371.7327249691788681314.git-patchwork-notify@kernel.org>
+Date: Fri, 02 Oct 2026 20:10:10 +0000
+References: <20260930-self_fib_tests-v2-1-3053e649d341@kylinos.cn>
+In-Reply-To: <20260930-self_fib_tests-v2-1-3053e649d341@kylinos.cn>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ shuah@kernel.org, idosch@mellanox.com, dsahern@gmail.com,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, liuhangbin@kylinos.cn
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 29 Sep 2026 00:12:07 +0530 you wrote:
-> In the dmaengine path the driver pre-submits RX buffers and holds
-> in-flight TX buffers whose SKBs are DMA-mapped by the driver and freed
-> only in the completion callbacks. On ndo_stop() dmaengine_terminate_sync()
-> aborts these descriptors without running their callbacks, and the driver
-> then frees only the ring shells, leaking every SKB still owned by the
-> engine and its DMA mapping on each ifdown. With 128 RX buffers pre-posted
-> per channel, the mapping leak can eventually exhaust a limited IOMMU
-> aperture.
+On Wed, 30 Sep 2026 10:06:24 +0800 you wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> fib_tests mixes use of $ret for both per-test return value and global exit
+> code. If an earlier subtest fails and a later function sets ret=0, the
+> script will exit with status 0 even though [FAIL] lines were printed.
+> 
+> Use RET as the per-test return value, as already defined in lib.sh. The
+> exit code ret will only be set in log_test().
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v4] net: xilinx: axienet: Free outstanding DMA buffers on dmaengine stop
-    https://git.kernel.org/netdev/net/c/bcf2573a68a8
+  - [net-next,v2] selftests: fib_tests: use per-test return value in subtests
+    https://git.kernel.org/netdev/net-next/c/4841fb8f557d
 
 You are awesome, thank you!
 -- 
