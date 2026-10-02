@@ -1,56 +1,75 @@
-Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35474AA3FE;
-	Fri,  2 Oct 2026 13:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.137
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6740D46E007
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790947831; cv=none; b=eilUT5WmlQFmppnfd70B9ELg1WiiqlfQQCMeyGbf5mPnWU0X6Ncyp9PjqUwsFCH1cyUL5F/SAaJxxw7CT1CdcalU/9fkjKeQS2ZdpjKtWSP96C3Ro5IOdyXBoj7EPuiN8NUdP5zN9+4QITBp6O3MFErgR/sTZrKpQT1tbbv1Wjo=
+	t=1790948413; cv=none; b=fkqkWFxWW8MWnMBdH5TmJCdB9Q+2msg9qgiM+ir+kJzpBtgGGxHJM2zmLvEb95svGWKnZD2UzT9OwwEpGBcd1UUSbgV14VV/3DFHldy7ZwiHnPL0jF6ta8bjbHJR0GaE0wJ+O9p55tFG6fBVA7MYkPVBUtu88mPmKHBBDT75ek0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790947831; c=relaxed/simple;
-	bh=c5D8ahxJuHlgqYPFxBJNJekTZzhzRWeS0tCwIs12B0M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjKukhKejJeYkR6s/b5h9oTD3UoIyInMQocYKo02XUw9jJ0K8DTn6q2H74hj4UcRWon/UkANZru728H/SD1ms6gXrD1RMMe5yD/c7avA8OOhQhxsi42RrIRS6njd5UfZ3vUtMqo7Hp6IDHmKSeaEniFf3SP/hC9lFL96vOlI4hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=Lem1lidI; arc=none smtp.client-ip=111.22.67.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	s=arc-20240116; t=1790948413; c=relaxed/simple;
+	bh=Zxrx0jSSfnYnESeX6T3cR1BVsOxDyhirOyg0LdtndX8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=koQmJ0MBo/ccohdmf5VrSiacTpnvvL8fELMMZBXpPobsB5bXB0uK9WvKnKaUM8m+zRmHBUuWY2wQ9Z6s/d4XVDGvacXn0yhi0nPXYnYkRmVBlkIxk71J/FMjXZeR9Iei5LuL5/lpT3SjueyuwNyy5OmQQvJwDJ2Rj5rZqec3sCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=exDgv7nK; arc=none smtp.client-ip=74.125.229.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="Lem1lidI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="exDgv7nK"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-346c612c7a8so4015293eec.1
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 06:40:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Lem1lidIl5QqwUUSGx5dVcZZvvd+XJ95WFcE3e6QZpeyhJnV3sI0icIci5Xa1RuMSPUVLTkc6NcHZ
-	 0DSSjLZX7omcaWmIokWrLS8hxJHrYsU272XgO60HeSHaGQ8EXRaLHrbXhOAMyswD5Pnif0U336P1Bm
-	 JNBj0du0Co98aPrQ=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app08-12008 (RichMail) with SMTP id 2ee86abfb1e79c5-36b05;
-	Fri, 02 Oct 2026 21:30:15 +0800 (CST)
-X-RM-TRANSID:2ee86abfb1e79c5-36b05
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[112.22.250.209])
-	by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee46abfb1dc1a8-43057;
-	Fri, 02 Oct 2026 21:30:14 +0800 (CST)
-X-RM-TRANSID:2ee46abfb1dc1a8-43057
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
+        d=gmail.com; s=20251104; t=1790948409; x=1791553209; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YiMhDvbsoBufNngs4Gaz/wiJMDRb8Qxn1k3zbEz6U1s=;
+        b=exDgv7nKrMgkusrvG6jay4ufDaN6tx61SNFAirRYTlkxRY7QISEvNZ/6RzyoVWFZxW
+         EhCByXtZjr0r8rpLEL+BHUqM1Xju6qqjFsJ7PDOGRrVcgUvNbtv4LqX77Bc6aQHfd+6m
+         6yTmnhtiMhGigqkgZ2cHK6J9lD28p9T4QAlacz0Y0pYGHmhh8YgtgL4cUUBPNlJp8J8h
+         1vqiipHgFlXabRpgMCme8e1vTYzRpcIBfNZ6xvJkuJt5VpgGLdrKKpExTCtn3tA0AIDK
+         rKy9zacvC7yRD99x53KY9jvquIFVmz0fqyQJjYtRgdgtDsqIjhviW7wXTefTi8TbSpOL
+         PTCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790948409; x=1791553209;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YiMhDvbsoBufNngs4Gaz/wiJMDRb8Qxn1k3zbEz6U1s=;
+        b=HLZp2vR9LGseI6kKL5y+I5yx0T2UsOXvZ6pu/rtNW4HAVb69ilSKntrmTKemtccPTL
+         XWP0VcE31oa81qcCZMqrW9Y0ZJFzFdu2zc7TfVvYdZPpU1BPSGQEE+ztez0yvB3u5V48
+         BenujWQ/XrZWvO5izMmcpoWRf6pQj9ToHrqeFW1uVG7b6dyOTE50zdMIyhgPEPNaNIVA
+         VssvTiEWmXTnIvHIhNKaiZ91MEZjKHUr66TKZX7TMe8iX2fPVTReOPWhKpItSpXm3kWV
+         WRH8j5kABbW9pWxQ2X1T9QIppdkf3kPqcSVe02xW7uzTqHhyCaQUFAa2wHJ5jocKp7WT
+         /Jkw==
+X-Forwarded-Encrypted: i=1; AKwUvByZdUTaTlWHISF+/m8w5Y2l3pBk98kvrqgiE4Q6CgsJq1GCG1lzEioFnRsPoE+9+Gn/bkbZZwg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIklmPjcF78Cpx5Geb9B70QrrXO4x047Tiqfvvej8O6b8sQ1ugv
+	VSFeAO+kt/3+R5AjoyXDvxsQRXvp8+hUBwJJbEKB/du8Xet3CBSonG5OwgRFKA==
+X-Gm-Gg: AYBFou3LnmwGQKaIgRQRJBWduYEpKFTzIHsvbOa2wl8hyVKijfLyysL4syPYI7e/Tji
+	euKkpICpw4zQTCVg+eOI1aus2Ir5a52c3dIEBbQrwokgzoHsudJYIjZv9/+jPaS46hB7J5e0sPD
+	LsDiP0joUuBNr7eHqcj32traDKO5/1mamOvzvC4d9ydzcSK/6TH+uuZGCRR3pqxnX43FOlUfUz3
+	Qe6vM1MhDIpuSYZkwRTI7zfRYuoxjffaNUEL8lviOAjbO3+lAAmLtRdtryEpsPvK//J852f1luG
+	8nIZEfF+ufi5tpmrxUELzf3QhfTrjUkjUMK1heGxdEVBbNBKfndx9q4kXCk4xfLn7F0N0ZhEIbp
+	mn8FyaJeD7ZWcAb+ZIYv5KDCVK5aI15Kp5QQGezNgRtTXrV5TgAMjSCS0EQVbPOlpRV0LJpAhJ3
+	+j0SDu6CmYECiiXjopfp90ZR4l6nvNWGjjHMlzgL23JnmtTicI9b5lWqSeh/bDp5M37svL2VlIH
+	fl5ncgXYFmAtIxTO6n1UCBorvldlEmmnGwT2DqcLTCFTvbar3qBMx09kKxbsQaritfk59SEJbK5
+	TEGPHzviN9gTUtZkpgVNrf01cOULmc1clGJzZAU2mgQ=
+X-Received: by 2002:a05:693c:4154:20b0:351:853:54a4 with SMTP id 5a478bee46e88-35108535aa9mr1233654eec.33.1790948408810;
+        Fri, 02 Oct 2026 06:40:08 -0700 (PDT)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f0672c2d1sm9177866eec.4.2026.10.02.06.40.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 06:40:08 -0700 (PDT)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Guillaume Nault <gnault@redhat.com>,
-	Akinobu Mita <akinobu.mita@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Subject: [PATCH net v2] net: fix NULL dereference in skb realloc fault injection devname filter
-Date: Fri,  2 Oct 2026 02:28:13 +0800
-Message-ID: <20261001182813.353004-1-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260930122013.110284-1-yanhaishuang@cmss.chinamobile.com>
-References: <20260930122013.110284-1-yanhaishuang@cmss.chinamobile.com>
+	netdev@vger.kernel.org,
+	osmocom-net-gprs@lists.osmocom.org,
+	Anil Kaushik <anilkaushikwireless@gmail.com>
+Subject: [RFC] gtp: add 5G PDU Session Container (QFI) support?
+Date: Fri,  2 Oct 2026 13:40:02 +0000
+Message-Id: <20261002134002.3529706-1-anilkaushikwireless@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,65 +78,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When a device name filter is set in
-/sys/kernel/debug/fail_skb_realloc/devname, should_fail_net_realloc_skb()
-compares it with skb->dev->name without checking skb->dev first.
+Hi Pablo, Harald,
 
-skb_might_realloc() is called from pskb_may_pull(), __skb_cow() and
-pskb_trim(), which also run on skbs that are not associated with a
-device. One example is a netlink broadcast to a listener with a socket
-filter attached, which goes through sk_filter_trim_cap(). With the
-filter set, such an skb makes the kernel oops:
+The in-tree GTP driver supports GTPv0 and GTPv1-U, but has no handling
+for the 5G N3 PDU Session Container (PSC) extension header (type 0x85,
+3GPP TS 29.281 / TS 38.415) that carries the QoS Flow Identifier (QFI).
+drivers/net/gtp.c also still has the "TODO: Support for extension
+header, sequence number and N-PDU" on the xmit path.
 
-  KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
-  pc : strncmp+0x50/0xf0
-  lr : skb_might_realloc+0x58/0xa0
-  Call trace:
-   strncmp+0x50/0xf0 (P)
-   skb_might_realloc+0x58/0xa0
-   sk_filter_trim_cap+0x6a0/0x928
-   do_one_broadcast+0x35c/0xb20
-   netlink_broadcast_filtered+0x1a4/0x328
-   netlink_sendmsg+0x724/0xa58
+I'd like to add PSC/QFI support, but before writing the datapath code I
+wanted to check two things with you.
 
-The fault is meant to be injected on network interfaces, so skip skbs
-that are not associated with a device. Without a device name filter,
-such skbs are no longer reallocated either.
+1) Is this something you'd welcome in mainline gtp.c?  I'm aware a lot of
+   5G user-plane work lives in out-of-tree datapaths (gtp5g, the eBPF
+   eUPF), so I don't want to add datapath complexity you'd rather not
+   carry here.
 
-Fixes: 12079a59ce52 ("net: Implement fault injection forcing skb reallocation")
-Suggested-by: Breno Leitao <leitao@debian.org>
-Assisted-by: LLM
-Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
----
-v2:
-- Return early for skbs without a device, as suggested by Breno. Such
-  skbs are now skipped whether or not a device name filter is set.
-- Tested on arm64 (QEMU) with KASAN: the netlink broadcast reproducer no
-  longer oopses with devname set, the devname filter still injects on
-  the selected device, and without a filter skbs without a device are
-  skipped while skbs on a device are still reallocated.
+2) If yes: on RX, once the QFI has been parsed out of the PSC, what would
+   you like the driver to do with it?  The options I see are:
+     - stash it in skb->mark, so tc/nftables can classify uplink traffic
+       by QoS flow;
+     - attach it as skb metadata (tc_skb_ext / metadata_dst); or
+     - just validate it and otherwise ignore it.
+   The shape of the RX patch depends on this, so I'd rather ask than
+   guess.
 
-v1: https://lore.kernel.org/netdev/20260930122013.110284-1-yanhaishuang@cmss.chinamobile.com/
+The plan would be a small incremental series:
+  1. add a GTPA_QFI (u8) netlink attribute + ynl spec, stored per PDP
+     context (control-plane plumbing only);
+  2. RX: parse the PSC extension header and extract the QFI;
+  3. TX: build the PSC from the per-PDP QFI on the downlink path (the
+     existing extension-header TODO).
 
- net/core/skb_fault_injection.c | 3 +++
- 1 file changed, 3 insertions(+)
+Patch 1 is already written and builds; I'll post the series once I know
+whether you want it in mainline and how you'd prefer the RX QFI to be
+surfaced.  Happy to adjust the approach.
 
-diff --git a/net/core/skb_fault_injection.c b/net/core/skb_fault_injection.c
-index 4235db6bdfad..63a397f76113 100644
---- a/net/core/skb_fault_injection.c
-+++ b/net/core/skb_fault_injection.c
-@@ -18,6 +18,9 @@ static bool should_fail_net_realloc_skb(struct sk_buff *skb)
- {
- 	struct net_device *net = skb->dev;
- 
-+	if (!net)
-+		return false;
-+
- 	if (skb_realloc.filtered &&
- 	    strncmp(net->name, skb_realloc.devname, IFNAMSIZ))
- 		/* device name filter set, but names do not match */
--- 
-2.43.0
-
-
-
+Thanks,
+Anil
