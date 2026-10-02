@@ -1,70 +1,70 @@
-Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15823233E8
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 19:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5FB3233E8
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 19:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790971166; cv=none; b=o4bpgvdHAf88BLmuNCiZulNT5iOV6yPmUY2E3ioMmmAB0AhLyCgrTXSABMumgK6wkAVO+6MpYTPyeTzcco/Dro84O9xiEJqyMLEjgqnTAqxK4oO1msTP/myRiMLlABK10t2qACU16vQkBMKlftatCmtC4qM5YySMBG5G/EjY1gY=
+	t=1790971173; cv=none; b=nDkBb43rfzP33ERL26k4u3fFSJArSAqfERVuvviQdN/om1QWNrf9Je9Zj9pKF9mbOhaLEm+hl/LpqRyw8L53BXqWMkuS6BCQ6kSTvBP3Gq7xR10V6dLE52AZWcohC1jKQ8GLKIK3lKL0yWYCqkChmjfof+xWtDaAO/SqqTSmXFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790971166; c=relaxed/simple;
-	bh=2QuSqEoUZ44c+kvFpeJB9CUba/9zuKKEIRcvW88uZXg=;
-	h=From:Subject:Date:To:Cc:Message-ID:MIME-Version:Content-Type; b=PyljNZVfeNXVyo7LkRBTTnBW0tobs3DPre7YJG3jlT6sBo0UlQIUbX3SE7y21YjDU7HdOvYXppgGvyiPnWAXyCz6SJnJ3K3Ja6hlvPAJm3O/GcfoeDDZNnoi4B+fIKFoVFkUKsnE2+cR9mYC9g5zZNlxNepBSqSp5waC3cOva/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A1FfakCb; arc=none smtp.client-ip=74.125.228.39
+	s=arc-20240116; t=1790971173; c=relaxed/simple;
+	bh=3OdEVxScpHrllIIN/EguMsc7RNdnqp1suwKOPgxjqA8=;
+	h=From:Subject:Date:To:Cc:Message-ID:MIME-Version:Content-Type; b=lYKyFxfwaog3+NDNQg9i+HNgaD9dspOsZm59qynkRuvmI2CGQkNs8w28K0aEn2CRULYf0JTl+gAB9azd7m7SJ2FTMfPw8E+2HOLRWLAPAe/xz0f9HYZytADrboxIeWOC6HLkZXH1+0n4jefB/bFQej+PHK66Mv5X09+BRaflysE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RVbiC5zG; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A1FfakCb"
-Received: by mail-pz2-f39.google.com with SMTP id 41be03b00d2f7-cc78dd54610so3009373a12.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 12:59:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RVbiC5zG"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccafb751so195397a91.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 12:59:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790971165; x=1791575965; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790971171; x=1791575971; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:cc
          :to:date:subject:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EQWwIMtmoZQ7CScJ9dS5e16+cQV3keu5noBHD+EyPXw=;
-        b=A1FfakCbrM7XwJQG/eXOf2dYl4W0DS77NMmN6M0hDgnJtSaTUwZpaAxq4pBDVihg9J
-         gWkdGml0s+o4hqSu9YTquoz8XxAINLaTnxaKjAuopCKXhIVNnxGIOZNqvNnSjfvWc/Lb
-         dl3JMiYP+lq0w1mGp239XVN7XZsbg0vFVzVpBJMdtinIEBJJlZ2z0EQ13lUSq2MqEFXY
-         PzUTzd0cJDqGA2qfAAKje5KR6a4goMyGqYVt8Av+HrhUOWqXpaXzvuEd9vPGf9vx82bL
-         uApEA7povIsLVevfUK4ERvi/aFbAXyK/9ksUVmlDx4maPi+dJ+2s4n8afOIY7TMIaMem
-         J5SQ==
+        bh=LH0ugp3V+u5HMdILbaX9AjuCwaWC/yOAmbTdaJkJgPM=;
+        b=RVbiC5zGC02rk3LGbH/Dgox+1rZ3x26TFbEbefRosSIM7V3vsp/5Yad73RFhfnPjHK
+         /Js+RtxN5fB/KUSVQYj09L91OEquEWyd4HQe9M0FbU4spZRY8Tn9ZpthIZo41sqQgFHG
+         y+D24koi0F8X1kAi8PaTcCUcI+aes++7ogre7jzlx45SyyYS2MGthcZDddiuSJ4MOWja
+         raYhCKVW8SCx/q0bWr3UVt+PWgfbYMwp9es+/RLqXrf86UU3D9ChnPGhPr2SM5j1fh9x
+         A7/+U2T4Tko9m8ndLdqnWiuR4h9UimAesfnBCBXAC46ejDYOMh5yf7vLTwyx4OCrYTC3
+         5XAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790971165; x=1791575965;
+        d=1e100.net; s=20260707; t=1790971171; x=1791575971;
         h=content-transfer-encoding:content-type:mime-version:message-id:cc
          :to:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=EQWwIMtmoZQ7CScJ9dS5e16+cQV3keu5noBHD+EyPXw=;
-        b=Vzbphtf+VNrKn6be8LhwdJxGbcsJY7Ccss/BvJcLb2MCQeUy+f1/x16f9TwbHdP4Yt
-         xyUHnPmlNCW4iTR3AT/uMa7pfffHEs1VLfxAc4NGFzYnK1MsV/JlQhga0A3KhjsPTpZo
-         afsQ0OJduqyxk0fcBOwNsIU2USSk7PC6MMLWlNuw5Xf9Mdut9Ii6l0WUumD/t+ZoiPOa
-         egPJcD64xN2FwPVWoNwX0EtQc+NMvl6yRvuKzN/jLTs8fDo7nTNLgfl/4e10BgGgcTCZ
-         q3wSejx8DZNi50HKk1+MObnr9GGH3247H7Vt8hzdSjbotmYPfIjwgFUn4svFY6rlh+WD
-         ihTQ==
-X-Gm-Message-State: AFq9FYIMY99YXfK7aaahcRtKTzZbmLcXYN5t0JxDS/1/4DqZaemdWU+m
-	lLlFKGYc/2Qw/K7or+QvaMdzdQ1obdguw6F0IShQtHpkAwvBU9vhNp9e
-X-Gm-Gg: AYBFou3GR+g+RpDNm5+oGJ1CTR0kjdI+aq1vDNlGcZySAB1o0RDygZnLb0wWZCSiyjT
-	OCzcs2LsAiIAnRX54U70w9prDocP2/p3yjjzux57eGNf3W2c3M1hTXO3NEjTjf7SOPcDRUb0IZP
-	mOkXITmDGloLSrJPMLcoYeCBhg6//IGtocBBCsS1xGWjnRKjr7HhBDJViYX9RWUSKZlrUVTTBO0
-	96kbfPrL6HVk5IC6YzvMgRu01XuDzRhCmAq/SjA50VxjKEgs8z9pKI7og4WohKxWoUXvFpR6gd2
-	v4u9dbDa+RxWZ7yebZUFwUqOhVlLJVZSDM8zY0YAO/PYG60tS8Rt6RsBqYBgou+Os1RHS7JfUUq
-	26nJejgA9Op1ctiivsRkyDor8tH7ieknHeFQsTysBlWKRfL5VXVK/zhD4VT+j8MCxZvgXLyLewk
-	Vdvq7kWQj2wYgbL7JdjjBF8KhtHXV+1Pstt3F/EeQKcznCpMJi2gZeSDhoi4Pi6/Trgz+XY8Fmh
-	9qjg3RKPLWAAp3RR2ORDxeSz8Tj6BzvlA==
-X-Received: by 2002:a17:90b:2782:b0:3a4:adf9:5d38 with SMTP id 98e67ed59e1d1-3a6ce356a43mr1386542a91.4.1790971164727;
-        Fri, 02 Oct 2026 12:59:24 -0700 (PDT)
+        bh=LH0ugp3V+u5HMdILbaX9AjuCwaWC/yOAmbTdaJkJgPM=;
+        b=CzdFYRE7vxUIvLubsAWOsEK3mR/9qfFxbW/ZaAP0rI55Q0DoX+kEVds/692fLvUys2
+         x5d/FLSJJ+ObO31KRgZBguBsWSXcfGobwYky/cgXlwHpbvJ1W639mbDtk5poon2y2Ldb
+         2o3ATKewC/3IA8Q9iMXMNPk8glkRWrNzEso5ikubDOD90m6NCnh+E3of3h4YXgnJvotO
+         s7EHLuhdiVrCp/5A220842u4sceZsXCCN2elHJAsMcuZp1WvPPcUsYL1NJrmVnBs2r4W
+         7Y4ggFv6coLa6gNRQDDXeuZA3rUcEy0xy/rcFRsJim8qThiOCozLE1Jt6qkADmccFGKm
+         uKqw==
+X-Gm-Message-State: AFq9FYJ4SZMf2qFt2lbW25UHXbxUD9GKXT1cpKfRZAfRusEI/XKsABM/
+	Hz+UYwQB5btiwu0nOe8pidab7YuGQKlf7rmYtQ59XeNiVpPrauY0P7qhLgoU0sk85XI=
+X-Gm-Gg: AYBFou3JE9/+GcN6OVQ/My8Dg5yQOvFA14yVrIBd0/NoLeuaqzQZaxUAgk1FwjpV3NE
+	+h7GBFanD/ogr0Wgb4FZDagdhXfpANnmV86Vo2aJDLiHJpue4fgqdEtflHZxHGBCbB/IBK9hdXe
+	U188FvGdiIk2Y8dSQIE1qJxC8Xm5Ml32i03h0x3Y0n5Nhn6BkXNVVynnsTlJHbO+OrJ0YA1e7rk
+	zYF8oEzfO/29e+VdfmXoiGB5jCTN42vq6x601H0hJo91FTk8Tdd5I/m8gROOnVJP66lfgEw+RV6
+	Z7yMVzDI9rcgeWHucNN5n/TQXnJshwXD30i4//82YcUEZQXsdgZZI8SA3Si4yso1bgDGRYuGEx7
+	RZz5HXX3U51rLYlqkf1oYxqc+VAkVLB8cxsw3/Lbw/pG8+i0TC1QSc9EONWjrbY53QQdqdP7wsz
+	gs/N+4L93tk6fS/maTIbCEY6mHBvSklmcN/27Hm/MzKmjeM0TL7tsOP/dKenB8jqKQp/+ryj7t9
+	/Db9LGSlF7MC6U83u19yuk=
+X-Received: by 2002:a17:90b:4c05:b0:3a2:b036:ed64 with SMTP id 98e67ed59e1d1-3a6cec6fc0cmr1917135a91.39.1790971171314;
+        Fri, 02 Oct 2026 12:59:31 -0700 (PDT)
 Received: from SANGHOON. ([1.220.132.212])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6c8421fe4sm5419796a91.12.2026.10.02.12.59.22
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6c8421fe4sm5419796a91.12.2026.10.02.12.59.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 12:59:24 -0700 (PDT)
+        Fri, 02 Oct 2026 12:59:30 -0700 (PDT)
 From: Sang-Hoon Choi <csh0052@gmail.com>
-Subject: [PATCH net] mlxsw: spectrum_router: destroy FIB hash table on bind
- failure
+Subject: [PATCH net] nfp: flower: remove merge entry when conntrack offload
+ fails
 Date: Fri, 02 Oct 2026 19:47:40 +0000
-To: Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
- Changyul Lee <lcy8047@gmail.com>
-Message-ID: <20261003.final104.6f67a6ed1c4476b7@gmail.com>
+To: oss-drivers@corigine.com, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Wentao Jia <wentao.jia@corigine.com>, Changyul Lee <lcy8047@gmail.com>
+Message-ID: <20261003.final049.214b9988b1e1f0a7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,13 +74,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-mlxsw_sp_fib_create() initializes fib->ht before binding the LPM tree.
-If the bind fails, the error path releases the tree and frees fib without
-destroying the initialized hash table, leaking its bucket allocation.
+nfp_ct_do_nft_merge() inserts nft_m_entry into nft_merge_tb and
+increments nft_merge_count before calling nfp_fl_ct_add_offload(). If
+that call fails, the error path removes the entry from its lists and
+frees it, but leaves the hash entry and count behind.
 
-Destroy fib->ht on the post-initialization failure path.
+Remove the hash entry and undo the count increment before freeing
+nft_m_entry.
 
-Fixes: 2b52ce02e1d1 ("mlxsw: spectrum_router: Remove unnecessary prefix lengths from LPM tree")
+Fixes: a87ceb3d42af ("nfp: flower: offload tc flows of multiple conntrack zones")
 Reported-by: Changyul Lee <lcy8047@gmail.com>
 Assisted-by: LLM
 Signed-off-by: Sang-Hoon Choi <csh0052@gmail.com>
@@ -89,18 +91,21 @@ Compile-tested the affected object with x86_64 allmodconfig
 and W=1 (GCC 13.3.0). Base: mainline 3b7cab693ba2bab63774bf5b988e8a61b2ef0f32.
 No hardware testing or runtime failure reproduction was performed.
 
- drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/netronome/nfp/flower/conntrack.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 3d6fdbab05e0..456c60b9be17 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -556,6 +556,7 @@ static struct mlxsw_sp_fib *mlxsw_sp_fib_create(struct mlxsw_sp *mlxsw_sp,
- 
- err_lpm_tree_bind:
- 	mlxsw_sp_lpm_tree_put(mlxsw_sp, lpm_tree);
-+	rhashtable_destroy(&fib->ht);
- err_rhashtable_init:
- 	kfree(fib);
- 	return ERR_PTR(err);
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
+index c983e8b1799d..522ad555e8ec 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
+@@ -1260,6 +1260,10 @@ static int nfp_ct_do_nft_merge(struct nfp_fl_ct_zone_entry *zt,
+ err_nft_ct_offload:
+ 	nfp_fl_ct_del_offload(zt->priv->app, nft_m_entry->tc_flower_cookie,
+ 			      nft_m_entry->netdev);
++	WARN_ON_ONCE(rhashtable_remove_fast(&zt->nft_merge_tb,
++					    &nft_m_entry->hash_node,
++					    nfp_nft_ct_merge_params));
++	zt->nft_merge_count--;
+ err_nft_ct_merge_insert:
+ 	list_del(&nft_m_entry->tc_merge_list);
+ 	list_del(&nft_m_entry->nft_flow_list);
