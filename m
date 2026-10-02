@@ -1,413 +1,310 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011064.outbound.protection.outlook.com [40.107.208.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0BD377A81;
-	Fri,  2 Oct 2026 05:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790919181; cv=none; b=M5WeCaamHnG7x3TMiwf+5oRzcQdwH3pPOTRSTiIsxeVsjoqtlzVCAR3NLeX3i/AU0ByTkcjClrvNW2XEKN93znAvIJFPHyaqZxSun9YpWrbYukCJaoE98xQEpnclvaRLoerhwYAU4883FHyNHgkotZI4p1xx8fQEp76NWvQ2hck=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790919181; c=relaxed/simple;
-	bh=5fR8XI1ZEmNG6weXpXbU4sW5t5o3ly+HoLt8cA2Q8yk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UyqG5bc9E6cZPMhaZb9uuFt6MJjiUZyMfA9IiQX504lff05Zb6xIezWE9eypEvwpolCeaUoDjy1bRILRkIbTXIqVr7Or/Y5cgljU/9/gtDUh1eABK1K0NMkXpbHqzndg3Gt35vVhPUJMr1XvwKN3VNM/isy8Q2tlgh5JZMG7gV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSNYpFOw; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10E0385D90;
+	Fri,  2 Oct 2026 05:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790919241; cv=fail; b=NXSiNwAJGY3eRuoPLlelpYy7Nm3qjCjU+QXcHhviDUJIc6TQqlGVk56zE+XeeoFZCnuasOBkw81yleVp1Dj38QfvV+1ySSVSqqgUkI6L2AhsJ//GvKmcYBe32a8qppffZA25EzmT4XLWQeouqGHScFto4jmvtnPCEElrHON/v5Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790919241; c=relaxed/simple;
+	bh=Y0sHUyIM77be/vp4pU/0rsGMGPpc0KAQilB+BTH1nmc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=j3Gti5uUmLP3wSFjkablMnm3et86Ji4EgP81evCzUX+xlLrpKQuXEZ7XuMrr9oUk57ECOD1wmcvKxO68auWKRP5aAjrnofPzGoj7LK2xowdnoPRk9tEJuXoen8lAR1eHT2+XbQHbC6XQmOxtRdeGCJU/OMQggwjYP8p4cgCCQyo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Cbyz+Gt7; arc=fail smtp.client-ip=40.107.208.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSNYpFOw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B2B1F000FF;
-	Fri,  2 Oct 2026 05:32:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790919170;
-	bh=CoVWSZX+Xvv1m88OSTsqz9MZ+Eh+7jD5+KQpJAhjTUM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gSNYpFOw/GnO06tibC2WpN6YUhPr/PETOG0bqZw5j1bDlqvc3OPAEILZTC7ANcHp3
-	 S0IUUEWt7Dglt+q5LJq2MgfcuV1D0ij+H5LPdB+jEZerEoOgclFOcqmZrki0Z96ZzD
-	 FdTlyH2Jxq+2eTcf9hPQTED7HTAQBxtN8WzEx+NjkdDvQ4jtI0wTLepPs5JtMVvHzh
-	 itBhSnz3G9CfRWte7G7uqCUmnM6DQPQ9zzdIALmNlvU2p+PmZezHg2QrHtEoTKERI2
-	 h5vZffAFrQQJES99DYrCZ2KYMSJhDWMcK8lhdw8uIxcdeE68TAO04APmdXUTvB6eth
-	 RPMuI68wQ4knw==
-Subject: Re: [PATCH net v5] net: mana: fix reset work race with device removal
-From: netdev-bot+sashiko@kernel.org
-To: fanwu01@zju.edu.cn
-Cc: netdev@vger.kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, songl@zju.edu.cn
-Date: Fri, 02 Oct 2026 05:32:49 +0000
-Message-ID: <179091916908.434549.1012399591583356885@kernel.org>
-In-Reply-To: <20260927105243.592348-1-fanwu01@zju.edu.cn>
-References: <20260927105243.592348-1-fanwu01@zju.edu.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Cbyz+Gt7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qx/DHZCS1XRMz4T71WMI1K7xJ0nRAUWWYMbNmeQBRU/Fcst9bLYeZ34buqMLn5Ls8T3iRCdnkfMrLt/V+IEikAtRvDFukTh1ntd9kr0bHoHKNjoGGqgNQAJq5nL+kuazxRmacoNGj6SSlWNk65porRpjm20ipQ2aWdx0FEPciS0m6gOe5n/GVt964GhPUaXWJmfdTLleQRqWUqw9zQMHCHIQhfPzujJZerkkfRQhRxCzcH/5zlGCm/wwVIxjBzzV3YwK4yzdV7HjFeVG8Yuzdv63saQ+sQ5YEOzFJiTx25QRszde1x+M+5BCw/1BAKeKTvlT8yxAQFLSnxp/GdQ5yA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=a6PnmGx1B5Jvs2n9jY1BARUtVpEfPo5BR4gGuVFe9o8=;
+ b=tHcUDCjJu335ysF5ykoxOhGWsWObZWeFDa1Wg6PfTsXscgvncGFn1OSo2ApQpK/j/IDGkIpcXE47IqOeH2TsELabDGC5aN4bbiy4EtU5cPNdzwBa+BXInsEYj+NTy4+8SM5+472aBNfht5IXzTQucGCsQgJZ/Z2xec1PNjTl6RyvRvrXDMOwSM9tH0wh32ucyiBNEdFpex8iTMD5Ud4hIZUdckknKbhp5fz2goEfi4Z3qquB+JszwQKXPLOldaNvB19/L2wWhCImA59lgGX9QVRFQdz81aV3OE2xH2v6J+GXU2gx2z6HG4x4F71vOUqEyMzi1GgoFNdGUY4R27uHGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=a6PnmGx1B5Jvs2n9jY1BARUtVpEfPo5BR4gGuVFe9o8=;
+ b=Cbyz+Gt7NRLvlQzawDvuvuKd1otKy0LdoTysx89KeqNSLseW1nQ0JsPPnmdV6br46hdGsQoe0gsP8eN0amy964dXmOYZQQe5BA3i2HhkgHFTTGNzUA/bPCj4mfsoSN4V3ENQN0sPKir26LzxBZn+R50NF5F776MHT0l9nnVvibQ=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
+ MN0PR12MB5836.namprd12.prod.outlook.com (2603:10b6:208:37b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Fri, 2 Oct
+ 2026 05:33:53 +0000
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1%4]) with mapi id 15.21.0451.022; Fri, 2 Oct 2026
+ 05:33:53 +0000
+Message-ID: <dcfb10e7-d07e-452b-974a-7e949c809465@amd.com>
+Date: Fri, 2 Oct 2026 06:33:48 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] sfc: add multipf support
+To: Dave Jiang <dave.jiang@intel.com>, alucerop@amd.com,
+ linux-cxl@vger.kernel.org, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
+ rafael@kernel.org
+References: <20261001132023.17032-1-alucerop@amd.com>
+ <20261001132023.17032-5-alucerop@amd.com>
+ <57254762-04e8-4a98-9265-5376f75a6f3c@intel.com>
+Content-Language: en-GB
+From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
+In-Reply-To: <57254762-04e8-4a98-9265-5376f75a6f3c@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0116.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:bb::16) To DM4PR12MB6254.namprd12.prod.outlook.com
+ (2603:10b6:8:a5::17)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|MN0PR12MB5836:EE_
+X-MS-Office365-Filtering-Correlation-Id: e74c0ecf-1d38-4d6f-970b-08df2046bef8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|23010399003|366016|1800799024|376014|22082099003|18002099003|56012099006|11063799006|4143699003|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	4J2dqCfnGYsxfXez+FpvHDBlHbc4GiWyIViLGxRCB/hw0fIjfYrgWXoS9rDzFdREeDcmPnERnuVacre4nUI/PGv/+JvGs9uEXjYCMPzn2qL1+BFsyqrkKrEYirjKJ7Upu6Z66l8hWAcsiMmuH5sSTmYcnyhZJyds2yNapHK2q6AHkrF0AhIKxvLr1GQyt2f/OnHPCe99W3dlkkqcCCcN13R/LErpvZjyNPmnzfm+9tdH5oBdf8ihYPt5QW2DAxK3ZTDm+6x96E4Hto2z0djtGnLVD3es3NwveaCC41mJC334tSRGHmZttqBjbiRkahqpg3yXiwRkIAD0+HjWD6QQTOHQ2DkPTMdMq4roYk/HcP73QfzC9aWLb+RuAm79R56pIjpr2SO0ylW3nZr8qiV3bj/YaFx6/+FfIvvNLDmH7kgFnVuNqQYbQEre/MV0xC6VyTe9EVmhFC4IMLZlvKCVUElTzeEoUAyVIlk9nrUUUSHQ1Ld00JmGqbghI9X4XqycagVCAVfvuawb5Ppexgx7/bSAwwUFD4QKOFDKdnP2tK4a9gnoeZ7rr09WDUfYYMc00Q7VMaQRpOzoySq4PKCHh5pRuUe1JAPOKJHYX3ViFL1ID4T8AsogwmJKeruxMLTBqgBwOUjv6rYC4ZebqiukMcfaeHr2AtKGzlcpFDQgx9Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(23010399003)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dkVuMlZuLzNaVjhsYkMzS255SFJGNzVYT0kxYU9OSnFlaXRZYTdybUZ1RVdU?=
+ =?utf-8?B?dXlNS0NObmt0MEZCSE5YQ3JkeXg4dy9OLy9rVitMcXc2SWpvUy9uaGZNbnJa?=
+ =?utf-8?B?OGtWc1hzQUx3dHdhaUt1Ny8zTDZ1Y0w0bTdvZ2ZJNTdtOEgyRGF5QVJuay9s?=
+ =?utf-8?B?T0MwZGZIZTc0U0VXUUtvazhDUVlwNUVOdGRkTnpnYjY1V1RxUXhJQXlLSTk3?=
+ =?utf-8?B?c1BsY0RqTUxpMmdoakZVODIvZXpLa3Z4bkxmMVlUREQ1U0VmSjJLM0hieFRH?=
+ =?utf-8?B?SURmQmVXa2Ftd0wreXZ3cW5WWnVNaVNwZ0Fmem11RVZ2ZzltTHRMamJ2WVBh?=
+ =?utf-8?B?Z0tXRXNYbWVmRlJ2SnRQa3NJVEQwS1JsU29pT1F2RjBEZktsdGRtbEdWTm5k?=
+ =?utf-8?B?UGNEaTJzanR0RzVvdUhEMTlxSHpOd01XVEU2WHVqbUxCRURjRHlzYjBEME5X?=
+ =?utf-8?B?OWwwdnhNUkxDNUVvTHhpYTFJU3RGc2lHUlJSaEtwREgxMG5md28xN2tzTHlJ?=
+ =?utf-8?B?bjU5elcreFV1SE44YTFaSHdSZGppanp4Qi8vMkw0c0ZsOHBZY1FpYW1ESFQx?=
+ =?utf-8?B?ZFcrVk8zWUxvNU13TlBlMk9DdkUzT0RCZ1BhNU1yUTFwdGlzWm9INW1Bdldy?=
+ =?utf-8?B?bHVERTBUVEpMUExjbjBsbEl0YVBsaVJTM2d5WDBXSWc4eVI2UU1aUmkvc1Yw?=
+ =?utf-8?B?bWhMbEt3WTc2ZFpnQnF4QTVHbXVOdFdGYldra3ZPT0xTZTh2YmRtL0Y0UTNL?=
+ =?utf-8?B?VjNRUzgzRm9FY05sYWtlZEpoa0o5cFhTckx2dGpCdmgxNzFlUGsrYnBkcmZZ?=
+ =?utf-8?B?bnhOZlovTTBucFltVWwwYWxlQ2MvVE5SYjJJTTdVMXJYY0ZpTm9qblpsVHJC?=
+ =?utf-8?B?MVQyTTdGUlVuTWdCaWx5UFB2c1FjeUw4WnBCMlE5aDhmOGlNd0llNExwR2pi?=
+ =?utf-8?B?RDB0SG5HdEJxbU9lTkpVUzdBL29LZWZpSUFidWc1QVJTYTBWOUpHckdBQlhz?=
+ =?utf-8?B?ZSs2RHFyb0tqM3Y1a3ZXUGViM291UVczdC9EL2wzcktFMjhvQkdxRUhmblQw?=
+ =?utf-8?B?OWN1UUxBRzlRS0FuZWNpTzhwbjNSZkFWUVExU1JhTnBJM3RLeTUvclh2ZFBl?=
+ =?utf-8?B?eVhXb2RrSXZsY2lDNjBRQm9yWjZVb2liazRlNmw5eVJ6VS8wbG10R2ZZaGMx?=
+ =?utf-8?B?NW9OSlR0dW15enowa2dKZ0JUOHdURDhCWXJnMlBqeW1ZVDdLZ1JNTHZXWlpw?=
+ =?utf-8?B?c0FMN0JYUHZjdkxTVmVJbWgvWmg2TkgzbG9KdENmNURDTVRHVHVmbERndzB1?=
+ =?utf-8?B?NFB3U2xsRWVrdkJDZDd3dWZPWHNNTjFJcTZiUUZSMDFxaHh6cElaT3FQcUJ3?=
+ =?utf-8?B?Ymh6RnROZjdRTDJkR3U3Nndhb0JWK3pOYkNoUmQrQVpMQk5pTkpvZmIybWY5?=
+ =?utf-8?B?SXA2OGpmZUhhVmJrQUF1R0orOFhJVXU5NFJsNVA3Z01waFdxYUp0amtXamZY?=
+ =?utf-8?B?cGhJbkFuZ0M2eFNzYTZzbHNlc2EyYWRHRVh5bStoTXRIbytDek94MWN3Zlo0?=
+ =?utf-8?B?MzIyVS9MN3lseGxNbHRJNkg5V2ZzamEwUFJLeVhBMlFrV1kzT1ZYdjhkVkJI?=
+ =?utf-8?B?Q1RpMHA4RU1LZVdwVzIrcnl0UWRIbEtvUm1yTkFCcC80U0Q4d09DbnhsLy9a?=
+ =?utf-8?B?QTVEZkdyQS9kN3pBRGt6SEJNMUxsYkZzQjF1QjNuQ3JsbjJlUWErcHBMT0ho?=
+ =?utf-8?B?R3pVL1BNTlV1WUZGZGVKVmtnL0UvRVVIN211bkVLQWZobkNqR2dFaHgxazk5?=
+ =?utf-8?B?L20rY0xjTzQxVjM5OTlJR0hWYzJFbjVxWSs0cWdxbitvUU9lSFBad3U0Nmp0?=
+ =?utf-8?B?MVJNRlNZM2VxTWxRd3V0ZjdDU3lmMUVNbWNNaHp5QXNlT2dpbkhQVTBDWUQ5?=
+ =?utf-8?B?S1pGWUVhRnVRRTljc3BBMEppSmFVSnRqNStHckFTVFhocXR2cjJqWTFrdDFF?=
+ =?utf-8?B?N0xsUG9qdWtDWXRuUkhoZGhNZCsvTGRmem9vL01WMEp2VG9mWDhkT0k5anFm?=
+ =?utf-8?B?dk5PNDRhMWl2VnZ4ZjB2bjlTbkdKTTVaVGU4eHlkdkhtbnB6OUY2aVFZc21x?=
+ =?utf-8?B?bkdzYjk5Sk5UVWxtRVRxRVMwN0ozWUR3SDcwWjlwckpNYmFtMWRSWVlENG80?=
+ =?utf-8?B?M0xYQldLbzZDc1llcXArWjFJdlQzT1BaNkcxbFFndUtTbHZrNXVXc0tmVlRl?=
+ =?utf-8?B?VW5IMHFJbGhWRDlWUnhpK0JJQ3U0dlJ2QkJneTc1YytFN1hXZkZvSDQ4Y3Q4?=
+ =?utf-8?Q?rx3da+Q+Zohirbbh0R?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e74c0ecf-1d38-4d6f-970b-08df2046bef8
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 05:33:53.5041
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ffHoe4ZtYjYbqr2rURYuh+VN+IIl18+WJcwE7RTghxMgJdupZkKSv1j2e0ldGndshuJahMrG86acTU/ucnTOig==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5836
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 2 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The rescan exits signal 'idle' to remove/shutdown before the PCI
-  manipulation they still have to do.
-- [Medium] Probe rollback leaves admission open.
-- [Medium] Embedding serv_work in gc allows a workqueue self-deadlock
-  through a recycled work address.
-- [Low] Comments in mana_gf_stats_work_handler() (mana_en.c) contradict
-  the code.
-
-Pre-existing issues:
-- [High] This bug predates the patch, but the patch leaves it in place.
-
---
-
-net: mana: fix reset work race with device removal
-
-This patch embeds the MANA service work in gdma_context and adds a
-serv_lock and waitqueue to control when a service cycle may be admitted
-and when it retires. Removal, shutdown and the probe unwind close
-admission and wait for any in-flight cycle before freeing gc. Reset
-events seen during probe are latched and left to the probe rollback path.
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index 8e9bfc1d6a2ae..4ebe595971a4f 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -659,63 +659,149 @@ EXPORT_SYMBOL_NS(mana_gd_ring_dim, "NET_MANA");
-
-[ ... ]
-
-> +static void mana_serv_rescan(struct pci_dev *pdev, struct gdma_context *gc)
-> +{
-> +	struct pci_bus *parent;
+On 01/10/2026 23:32, Dave Jiang wrote:
 >
->  	parent = pdev->bus;
->  	if (!parent) {
->  		dev_err(&pdev->dev, "MANA service: no parent bus\n");
-> -		goto out;
-> +		/* Still bound: keep admission open for later events. */
-> +		if (gc)
-> +			mana_service_retire(gc);
-> +		return;
->  	}
+> On 10/1/26 6:20 AM, alucerop@amd.com wrote:
+>> From: Alejandro Lucero <alucerop@amd.com>
+>>
+>> Use CXL core accelerator API for linking a non-PF0 PF to the CXL region
+>> its related PF0 CXL memdev is attached to, allowing non-PF0 PF release if
+>> such a CXL region is released itself. This can occur in different
+>> scenarios like PF0 release or CXL memdev release.
+>>
+>> Obtain the CXL HPA region to work with and the ioremap based on such
+>> HPA and an offset based on the PF index.
+>>
+>> Refactor CXL initialization with different code paths for PF0 and non
+>> PF0 PFs.
+>>
+>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>> ---
+>>   drivers/net/ethernet/sfc/efx_cxl.c | 100 ++++++++++++++++++++++++++---
+>>   1 file changed, 91 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/sfc/efx_cxl.c b/drivers/net/ethernet/sfc/efx_cxl.c
+>> index 348d7404cd7a..f884580cb528 100644
+>> --- a/drivers/net/ethernet/sfc/efx_cxl.c
+>> +++ b/drivers/net/ethernet/sfc/efx_cxl.c
+>> @@ -13,8 +13,69 @@
+>>   #include "efx_cxl.h"
+>>   
+>>   #define EFX_CTPIO_BUFFER_SIZE	SZ_256M
+>> +#define EFX_CTPIO_BUFFER_PER_PF_SIZE	SZ_8M
+>>   
+>> -int efx_cxl_init(struct efx_probe_data *probe_data)
+>> +static int cxl_map(struct efx_probe_data *probe_data, struct efx_cxl *cxl,
+>> +		   u64 devfn, struct range cxl_pio_range)
+>> +{
+>> +	struct efx_nic *efx = &probe_data->efx;
+>> +	struct pci_dev *pci_dev = efx->pci_dev;
+>> +	u64 cxl_pio_pf_start;
+>> +
+>> +	cxl_pio_pf_start = cxl_pio_range.start +
+>> +			   devfn * EFX_CTPIO_BUFFER_PER_PF_SIZE;
+>> +
+>> +	cxl->ctpio_cxl = ioremap_wc(cxl_pio_pf_start,
+>> +				    EFX_CTPIO_BUFFER_PER_PF_SIZE);
+>> +	if (!cxl->ctpio_cxl) {
+>> +		pci_err(pci_dev, "CXL ioremap region (%pra) failed\n",
+>> +			&cxl_pio_range);
+>> +		return -ENOMEM;
+>> +	}
+>> +	return 0;
+>> +}
+>> +
+>> +static int efx_cxl_non_pf0_init(struct efx_probe_data *probe_data)
+>> +{
+>> +	struct efx_nic *efx = &probe_data->efx;
+>> +	struct pci_dev *pci_dev = efx->pci_dev;
+>> +	struct range cxl_pio_range;
+>> +	struct efx_cxl *cxl;
+>> +	u64 devfn;
+>> +
+>> +	devfn = PCI_FUNC(pci_dev->devfn);
+> I think you will want to use pci_dev->devfn directly. If you do this, devfn is 2:0 and PCI_SLOT() will evaluate to 0.
+
+
+Uhmmm, I think with the refactoring I'm not using devfn properly here. 
+Let me study this further.
+
+
+> Also, does this device need to handle ARI?
+
+
+Not for sfc devices.
+
+
+>> +
+>> +	struct pci_dev *pf0_pci_dev __free(pci_dev_put) =
+>> +		pci_get_slot(pci_dev->bus, PCI_DEVFN(PCI_SLOT(devfn), 0));
+>> +
+>> +	/* This should not happen! */
+>> +	if (!pf0_pci_dev)
+>> +		return 0;
+>> +
+>> +	/* Is the PF0 device configured with and using CXL? */
+>> +	if (!pcie_is_cxl(pf0_pci_dev))
+>> +		return 0;
+>> +
+>> +	if (!cxl_get_range_and_link(&pf0_pci_dev->dev, &pci_dev->dev,
+>> +				    &cxl_pio_range))
+> Is this error check inverted?
+
+
+Yes. I'll fix it.
+
+
+Thanks!
+
+
+> DJ
 >
-> +	if (gc)
-> +		mana_service_retire_removing(gc);
-> +
-> +	pci_lock_rescan_remove();
-> +
->  	pci_stop_and_remove_bus_device(pdev);
->  	pci_rescan_bus(parent);
-
-[Severity: High]
-Can mana_gd_remove() or mana_gd_shutdown() finish while this cycle still
-has PCI work left to do?
-
-mana_service_retire_removing() clears serv_in_flight and wakes
-serv_waitq. That lets mana_service_quiesce() return, and the teardown
-owner carries on.
-
-The cycle then takes pci_lock_rescan_remove() and still runs
-pci_stop_and_remove_bus_device(pdev) and pci_rescan_bus(parent). Both act
-on a topology captured before the lock was taken, and nothing checks
-again whether teardown already happened. mana_serv_fpga() has the same
-ordering.
-
-Shutdown: mana_gd_shutdown() gets past quiesce and runs mana_rdma_remove(),
-mana_remove(&gc->mana, true), mana_gd_cleanup_device() and
-pci_disable_device(), but the driver stays bound. The cycle then removes
-the device, so device_release_driver() runs mana_gd_remove() a second
-time through the leftover ac. The second pci_disable_device() then hits:
-
-    dev_WARN_ONCE(&dev->dev, atomic_read(&dev->enable_cnt) <= 0,
-                  "disabling already-disabled device");
-
-After that, pci_rescan_bus() re-enumerates the function during
-reboot/kexec.
-
-Unbind or sysfs remove: after gc is freed, the cycle still removes and
-rescans. Could an unbound or removed device come back and rebind?
-
-Hyper-V VF hot-remove: a removed VF makes mana_gd_resume() return
--ETIMEDOUT, so this rescan exit is the expected branch.
-hv_pci_remove() calls mana_gd_remove() under pci_rescan_remove_lock and
-quiesce returns. hv_pci_remove() then continues:
-
-    pci_remove_root_bus(hbus->bridge->bus);
-    pci_unlock_rescan_remove();
-    ...
-    hv_pci_bus_exit(hdev, false);
-    ...
-    kfree(hbus);
-
-The waiting cycle then runs pci_rescan_bus() on the removed root bus.
-pci_bus_get() in pci_alloc_dev() keeps the pci_bus struct alive, so
-config reads still reach hv_pcifront_read_config():
-
-    struct hv_pcibus_device *hbus =
-        container_of(bus->sysdata, struct hv_pcibus_device, sysdata);
-
-Does that use hbus after it has been freed?
-
-Could the cycle recheck under the rescan/remove lock whether teardown has
-already taken over? Or could it hold off signalling idle until the
-remove/rescan is done?
-
-[ ... ]
-
-> @@ -738,7 +824,7 @@ static void mana_serv_reset(struct pci_dev *pdev)
->  	if (ret == -ETIMEDOUT || ret == -EPROTO) {
->  		/* Perform PCI rescan on device if we failed on HWC */
->  		dev_err(&pdev->dev, "MANA service: resume failed, rescanning\n");
-> -		mana_serv_rescan(pdev);
-> +		mana_serv_rescan(pdev, gc);
->  		return;
->  	}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the PCI PM callbacks are
-still outside the new serv_lock admission/drain protocol. mana_driver
-registers:
-
-    .suspend	= mana_gd_suspend,
-    .resume		= mana_gd_resume,
-
-mana_serv_reset() calls the same functions directly from the system
-workqueue:
-
-    mana_gd_suspend(pdev, PMSG_SUSPEND);
-    msleep(MANA_SERVICE_PERIOD * 1000);
-    ret = mana_gd_resume(pdev);
-
-system_percpu_wq is not freezable, and the worker does not take
-device_lock. So can a system suspend or hibernate run
-pci_legacy_suspend()->mana_gd_suspend() while an admitted cycle is in its
-suspend/sleep/resume window?
-
-If so, both threads run mana_rdma_remove(), mana_remove(&gc->mana, true)
-and mana_gd_cleanup_device() on the same gc. For example,
-mana_hwc_destroy_channel() does:
-
-    struct hw_channel_context *hwc = gc->hwc.driver_data;
-
-    if (!hwc)
-        return;
-
-Both callers can see hwc as non-NULL and free it. The
-destroy_workqueue(gc->service_wq) call behind the NULL check in
-mana_gd_cleanup_device() can also run twice.
-
-The changelog below the fold says the PM path was left out. Could the
-commit message itself say that this sibling teardown path is still
-unprotected?
-
-[ ... ]
-
-> @@ -796,51 +899,94 @@ static void mana_recovery_delayed_func(struct work_struct *w)
->
->  static void mana_serv_func(struct work_struct *w)
->  {
-> -	struct mana_serv_work *mns_wk;
-> -	struct pci_dev *pdev;
-> -
-> -	mns_wk = container_of(w, struct mana_serv_work, serv_work);
-> -	pdev = mns_wk->pdev;
-> +	struct gdma_context *gc = container_of(w, struct gdma_context, serv_work);
-> +	struct pci_dev *pdev = to_pci_dev(gc->dev);
->
-> -	if (pdev)
-> -		mana_do_service(mns_wk->type, pdev);
-> +	mana_do_service(gc->serv_type, pdev, gc);
->
-> +	/* The rescan exits of mana_do_service() remove the device, which
-> +	 * frees gc before returning.  Only touch the pdev and the module
-> +	 * reference from here on; both are held until this point drops them.
-> +	 */
->  	pci_dev_put(pdev);
-> -	kfree(mns_wk);
->  	module_put(THIS_MODULE);
->  }
-
-[Severity: Medium]
-Can embedding serv_work in gc cause a workqueue self-deadlock through a
-recycled work address?
-
-On the rescan exit, mana_serv_func() is still running when the gc that
-holds its work_struct is freed and a new gc is allocated:
-
-mana_serv_func()
-  mana_do_service()
-    mana_serv_reset()
-      mana_serv_rescan()
-        pci_stop_and_remove_bus_device()
-          mana_gd_remove()
-            vfree(gc)
-        pci_rescan_bus()
-          mana_gd_probe()
-            gc = vzalloc(sizeof(*gc))
-
-vzalloc() might return the same address. In that case the new
-gc->serv_work has the same address and the same func as the work this
-worker is executing.
-
-Suppose the new probe then latches a reset event, and a second event or
-a gf_stats timeout is admitted in the rollback window. That window is
-covered in the comment on the mana_gd_probe() rollback below. The new
-work is queued with schedule_work(). If it lands on the same pool,
-find_worker_executing_work() matches:
-
-    if (worker->current_work == work &&
-        worker->current_func == work->func)
-        return worker;
-
-and assign_work() moves it onto this worker's scheduled list.
-
-This worker, however, is the one blocked in mana_service_quiesce() in the
-probe rollback, waiting for serv_in_flight to clear. So the queued work
-never runs, and the worker would hang forever holding the new pdev's
-device_lock and pci_rescan_remove_lock.
-
-Before this patch, mns_wk was only freed after the rescan returned, so
-its address could not be reused while it was still running. Closing
-admission in the same serv_lock section on rollback in
-mana_service_probe_complete() would also avoid this.
-
-[ ... ]
-
-> +static bool mana_service_probe_complete(struct gdma_context *gc)
-> +{
-> +	unsigned long flags;
-> +	bool rollback;
-> +
-> +	spin_lock_irqsave(&gc->serv_lock, flags);
-> +	gc->serv_probe_done = true;
-> +	rollback = gc->serv_during_probe;
-> +	spin_unlock_irqrestore(&gc->serv_lock, flags);
-> +	return rollback;
-> +}
-
-[ ... ]
-
-> @@ -2558,22 +2697,26 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-
-[ ... ]
-
-> -	if (test_and_set_bit(GC_PROBE_SUCCEEDED, &gc->flags)) {
-> +	rollback = mana_service_probe_complete(gc);
-> +	if (rollback) {
->  		err = -EPROTO;
-> -		goto cleanup_mana_rdma;
-> +		goto service_quiesce;
->  	}
->
->  	return 0;
->
-> -cleanup_mana_rdma:
-> +service_quiesce:
-> +	/* Only a rollback can have admitted a cycle: it ran
-> +	 * mana_service_probe_complete() before jumping here.
-> +	 */
-> +	mana_service_quiesce(gc);
-
-[Severity: Medium]
-Is admission left open between mana_service_probe_complete() and this
-mana_service_quiesce()?
-
-When mana_service_probe_complete() returns rollback == true, it has
-already set serv_probe_done = true. serv_removing is not set until
-mana_service_quiesce() runs here.
-
-In that window, a hard IRQ reset or FPGA EQE goes through
-mana_service_event():
-
-    admit = gc->serv_probe_done;
-    ...
-    if (admit)
-        mana_schedule_serv_work(gc, type);
-
-This patch keeps mana_gf_stats_work_handler() re-arming during probe. In
-the same window it sees mana_service_probe_done(gc) return true and calls
-mana_schedule_serv_work() too.
-
-If a cycle is admitted here, the probe sleeps in mana_service_quiesce()
-under device_lock through the whole reset cycle. When the probe runs from
-a service rescan, it may also hold pci_rescan_remove_lock. The cycle runs
-mana_gd_suspend(), msleep(MANA_SERVICE_PERIOD * 1000) and
-mana_gd_resume().
-
-The probe then unwinds with mana_rdma_remove(), mana_remove() and
-mana_gd_cleanup_device() on state the cycle just rebuilt, and queues the
--EPROTO recovery rescan. If the cycle's resume fails, the cycle also takes
-its own rescan exit, so the device is serviced twice.
-
-The commit message says:
-
-    Do not admit service work while probe is still constructing or
-    unwinding the device.
-
-The label comment above also admits that a rollback can have let a cycle
-in.
-
-Could mana_service_probe_complete() set serv_removing in the same
-serv_lock section when rollback is true? Or could it leave
-serv_probe_done unset on rollback?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 591fb4191d90d..c9ac982925224 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-
-[ ... ]
-
-> @@ -4060,10 +4060,20 @@ static void mana_gf_stats_work_handler(struct work_struct *work)
->  		memset(&ac->hc_stats, 0, sizeof(ac->hc_stats));
->  		dev_warn(gc->dev,
->  			 "Gf stats wk handler: gf stats query timed out.\n");
-> -		/* As HWC timed out, indicating a faulty HW state and needs a
-> -		 * reset.
-> +		/* As HWC timed out, indicating a faulty HW state and
-> +		 * needs a reset.  Never admit service work before the probe
-> +		 * has completed: a probe that is failing unwinds netdevs and
-> +		 * the HWC channel itself and cannot drain a cycle.
->  		 */
-> -		mana_schedule_serv_work(gc, GDMA_EQE_HWC_RESET_REQUEST);
-> +		if (mana_service_probe_done(gc)) {
-> +			mana_schedule_serv_work(gc, GDMA_EQE_HWC_RESET_REQUEST);
-> +		} else {
-> +			/* Retry once the probe completes: dropping the
-> +			 * request would leave the stats work disarmed.
-> +			 */
-> +			schedule_delayed_work(&ac->gf_stats_work,
-> +					      MANA_GF_STATS_PERIOD);
-> +		}
-
-[Severity: Low]
-This isn't a bug, but the comments here don't match the code.
-
-The new comment says a failing probe "cannot drain a cycle". However,
-mana_gd_probe() now drains one with mana_service_quiesce(), both at the
-service_quiesce label and again before vfree() at free_gc.
-
-The existing comment just above this block also still says:
-
-    /* HWC timeout detected - reset stats and stop rescheduling */
-
-But the new else branch reschedules gf_stats_work.
-
-Should both comments be updated?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927105243.592348-1-fanwu01%40zju.edu.cn
+>> +		return  -EPROBE_DEFER;
+>> +
+>> +	cxl = kzalloc_obj(*cxl, GFP_KERNEL);
+>> +	if (!cxl)
+>> +		return -ENOMEM;
+>> +
+>> +	if (cxl_map(probe_data, cxl, (u64)devfn, cxl_pio_range)) {
+>> +		kfree(cxl);
+>> +		return -ENOMEM;
+>> +	}
+>> +
+>> +	probe_data->cxl = cxl;
+>> +	probe_data->cxl_pio_initialised = true;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int efx_cxl_pf0_init(struct efx_probe_data *probe_data)
+>>   {
+>>   	struct efx_nic *efx = &probe_data->efx;
+>>   	struct pci_dev *pci_dev = efx->pci_dev;
+>> @@ -80,26 +141,47 @@ int efx_cxl_init(struct efx_probe_data *probe_data)
+>>   		return PTR_ERR(cxl->cxlmd);
+>>   	}
+>>   
+>> -	cxl->ctpio_cxl = ioremap_wc(cxl_pio_range.start,
+>> -				    range_len(&cxl_pio_range));
+>> -	if (!cxl->ctpio_cxl) {
+>> -		pci_err(pci_dev, "CXL ioremap region (%pra) failed\n",
+>> -			&cxl_pio_range);
+>> +	if (cxl_map(probe_data, cxl, 0, cxl_pio_range))
+>>   		return -ENOMEM;
+>> -	}
+>>   
+>> -	probe_data->cxl_pio_initialised = true;
+>>   	probe_data->cxl = cxl;
+>> -
+>> +	probe_data->cxl_pio_initialised = true;
+>>   	return 0;
+>>   }
+>>   
+>> +int efx_cxl_init(struct efx_probe_data *probe_data)
+>> +{
+>> +	struct efx_nic *efx = &probe_data->efx;
+>> +	struct pci_dev *pci_dev = efx->pci_dev;
+>> +	u8 devfn;
+>> +
+>> +	if (efx->type->is_vf)
+>> +		return 0;
+>> +
+>> +	/* are we PF0? */
+>> +	devfn = PCI_FUNC(pci_dev->devfn);
+>> +	if (devfn == 0)
+>> +		return efx_cxl_pf0_init(probe_data);
+>> +	else
+>> +		return efx_cxl_non_pf0_init(probe_data);
+>> +}
+>> +
+>>   void efx_cxl_exit(struct efx_probe_data *probe_data)
+>>   {
+>> +	struct efx_nic *efx = &probe_data->efx;
+>> +	struct pci_dev *pci_dev = efx->pci_dev;
+>> +	u8 devfn;
+>> +
+>>   	if (!probe_data->cxl)
+>>   		return;
+>>   
+>>   	iounmap(probe_data->cxl->ctpio_cxl);
+>> +
+>> +	devfn = PCI_FUNC(pci_dev->devfn);
+>> +	if (devfn == 0)
+>> +		return;
+>> +
+>> +	kfree(probe_data->cxl);
+>>   }
+>>   
+>>   MODULE_IMPORT_NS("CXL");
