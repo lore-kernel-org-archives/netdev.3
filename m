@@ -1,166 +1,139 @@
-Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EFE34AB1D
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 16:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84824E3259
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 16:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790957747; cv=none; b=fELo/95g+77cgIZ0q42etRNn6xeXaMUs64+ohqn0PqThvLXAz0dwu53rAjzai5NIkwR5dr9yUb02fQeMbd0Y9sCVQ6Z1rWo6etFU0Fh//dsC+e4iigtG3C8nM75KVbnvpaiGoOJMp2HAeDnHmJMqWB8HV3d+IRrZRlWrFIeL/k4=
+	t=1790957782; cv=none; b=mAE42TniJKSPoK2cRIJtUU8DrodM+63lcPBKSN4N4SbY+f0a1f8dboH+MPz0AVjeqIZEHY8ABkdt6qO4ldAm3JLS97+QsyOi8dgFp6KwEm1dMMV4zdDQsIqQ+Eb1C3ewhf/11ezFP3kOrAl3c6WrMLXSmt70oKF4s4mpm49mZYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790957747; c=relaxed/simple;
-	bh=FmrZsCQCkfPKkxLhyxsxGqqblu2KJkJgk/mbNbXoYKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ufCo3u3voRjWTfWSfet/77F/jCnDkmksa1OELGVPDGt+ysbGO0BJVpncAleTz8LlMviUl2EgRqNRjnUj0QNVq0raN8QZK2uP5wjNYEAk4lD1QFNtwXDPzk/ZrTjGnNLnrVQ7qoanzLKPei4lqofMWEsPysObQN2NWvXmlJAgiN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BK6zvlOO; arc=none smtp.client-ip=74.125.228.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790957782; c=relaxed/simple;
+	bh=6nGKnyBrzzJL9LigkABHfP7kULW7RYBcQouHxJie/c4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r7jrPCGz8xWtztHBWZTJ5KnxoRfMOThUT3KfgZNj0EWUcpudBsv5fFwTyB3Vrkk2y8I7vOlNSUf2CcC13oAbDQPOA8YN+ZqOZ/qx6MQOLXFicY8SDcxrUfcMfn+YoAyojN1K2L2kRcjUb7wrQ18hDe+2Ze6aygMIqg+1ASJmE0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=d508VeH0; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BK6zvlOO"
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2e6892b3faso9094766b.0
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 09:15:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790957743; x=1791562543; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=o4niJFCL1Tg94S7QXfdYdCSyAdIrBTgV96rmAV/L4ak=;
-        b=BK6zvlOOIHHPYSUmG5dtBBpjWV29MW+dCV3vMstfvQVWPSyeA5JTJ7/yQU6JDepizy
-         x7JHPDvuXoxqVr+wgiv4RYjWQ+9bU6838sUHQ56ZffC3leslBVXbzLiwbiiuYzGOxR2K
-         2taTy0wxdZOqf/MYgDhIa5S4dnAoPHb2w7Jy6rwEl8SSMUzhTRmiVonVFrDmvIOu7pWa
-         CRUhsLEAlQ2F/r360zfafWqcHXi/VSJI13+LINd7ahRoOufT7poXKASTk1oz1YY0uu4N
-         ePobZBr6XEhX0nDqO++YcV5yFS+NoR8rMcBEJzrVnKgged5TPl52d+ycQ4x0a3B2DEoo
-         uyww==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="d508VeH0"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3a706146559so17224a91.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 09:16:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790957743; x=1791562543;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=o4niJFCL1Tg94S7QXfdYdCSyAdIrBTgV96rmAV/L4ak=;
-        b=wJQfeAq5uWXfrCXwgsnaeFXUE2Gptebkyeo644bDtyGdePAl1KZ9zJ8jYw+jjPOa3i
-         tnysKV3pLw/ckBX59O00cPv6yu8KimA+OrCySHt/2KGT7uKl3mRrphSsviiQz0YUkZAQ
-         TAbTPlgt+msRkruP7jnJXHloYDCM5wzTuzYx8rvcNe3wAFSzAeOpAu/KhCk5VA77FbuV
-         sZZ8IFNuNiwTTZ35cc5tl8EjQjQTyH/FjuLeLtGE3PbWG4fDULbBa1kMAHrTjhuNoOse
-         2RQMPuwInarrAL43rMEkkf9JpV0PtvBlC9iW2/qgGNAC4DLcjNbXdZJYxR6aAzWYU9IF
-         uvVw==
-X-Forwarded-Encrypted: i=1; AKwUvBxbcatSeNXsyKZmi9skSpPhFFYyOnQU0xMib5RFrsTlyBXDVTiC+wEMtRIjaxSpnPFJhk55Es4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nIqPRSSi6G6oqysnsimbwk9guTsU3gDPVkA73HGF1wf6t3cSzv
-	eP9cN9Nrn1d1xvu0xz14fLQh00N7mIbm4kQ7u6rc8mwB+5oawtgCchFFSXoAMZRG
-X-Gm-Gg: AYBFou0Arquw4QbOYWtHOsipH93RKLLDEhMHIPjPrFZ9XWISihsD1Ff40mG8pwQ7l8a
-	oTJKCHGInKEmYYZCTcQ32wyzXcWzt3oHU//q2GbgQOazYLVliuqHUsjb0XMnPZQL9NMo7JLB/rb
-	MNyRNvnrSc6M8olYvJN3RMM6Vy4IxYN6M3SFVlu4lEN6cOQu7Yv75LtZs/BHm9v3tqBJD5RITXP
-	K9rcncZvc7Bl7oPF6zbsxv2f/8jHsehVFNT6Un8ob+Qvno4xqOu8tixJP39I6w8U0XhDj8gNnyU
-	nxJLWRPUkzAoMmtqMCpNb+OfW4x4w5miq9svsyR6zFeIAevf4IDd+8PEjzxLpCtb0bg/0cyP3NH
-	3my+dFuLqt6YGE95ZoYeyyBRlihDUwcsiJhi8k9+J7MgHcfcPDTnY6FDiUnt/a0ZQaIrQMR8F0P
-	pRCuAxVgARfXt5+9dwxTzxPUXxm2a63neXnvgZK38Q3QbYr3iqSUW7ddLckSjzgIs5SNYtAZrZu
-	chcqmVo9lNIrELnOzaBh/OY8plW89rLsduqf0mR5F4JuDq6V9s=
-X-Received: by 2002:a17:906:6a02:b0:c2a:fcf5:c6bb with SMTP id a640c23a62f3a-c2e4af6ee00mr264468966b.23.1790957742743;
-        Fri, 02 Oct 2026 09:15:42 -0700 (PDT)
-Received: from buildhost.darklands.se ([2001:9b1:ff:d701:51eb:176f:63d9:53f8])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4cf5f4e4sm106437166b.42.2026.10.02.09.15.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 09:15:40 -0700 (PDT)
-From: Magnus Lindholm <linmag7@gmail.com>
-To: sparclinux@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>
-Cc: linux-kernel@vger.kernel.org,
-	Magnus Lindholm <linmag7@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-serial@vger.kernel.org
-Subject: [PATCH 0/7] sparc64: add Fujitsu M3000 support
-Date: Fri,  2 Oct 2026 18:14:22 +0200
-Message-ID: <20261002161515.932316-1-linmag7@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20260707; t=1790957780; x=1791562580;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=fbFbwJWSRdXCauruDvE+JJbqjrPsHa6vNYR+DZY726g=;
+        b=uRkebFdgF1Sw5vuwAygShD+g+sumDM9k57EZmH46uIhbyR3Vgp2tmh4pcZYlYintm0
+         ETTZxbH52fNhFtAh1fg+eFxKohI7bOqrm/O2ijXL6N1rKd4VuobdshHI3kmz3wWe3L51
+         A5Sjz6Z4StOZayU+feH3GDk+WDCfZQbLN74hLFLC4ecj9E0JsLz/0X6R5crn2PGUB0Xn
+         gPOsNV1u2m9kriOoS535pttW4biitK9QS6RpVt465pSOdaCybX4LDggZSuGre/ark17N
+         H0h60Al2Rt4d6krVGGHvdKmWSQLPHzU6FhsBtakOpza+6dwM3HPWWHSI9fbgqtfSKMuM
+         SHIA==
+X-Gm-Message-State: AFq9FYJTz2jQg7KrZdivi8ol+4FCl6OFV2TVGcZDH/dKhbvrMap155Pm
+	2Ro0m+E+98thiCNRnEa1xuCdxPS/c8qG5DzqAwSVc05PrgO4YibW2c1GmFpy41YJySQ5pSOUXa0
+	OyXrmp5l7i0X221xHaraq1S3Dq8NTBJuMpGavoCQfDZMeftQ2qsUwH5vbV/qa/EtBCWGZ3YwfzY
+	O2UNtaqUmc5ElPjUt0NEh3XMJlPCjQz4R+r8AmMZPZ6mqv2epkXp4lQu4QtzCLXK5Knbq6aZOmR
+	iY2FPw9bQ==
+X-Gm-Gg: AYBFou0A0yRdpmjn7m2kxahR8TOCcIST/b2qw7MYJ1OfTaovkIto042cJgG8d5vKjSH
+	J3772k4ed3EAwej/mFYw5y0szSX8UR0zgA/8IwZ1PlAgJ0ds8w4Npu4kwMuE5ItGNuFVUX7XN4k
+	C3AupOc/SMpygk0lxWo1bM0/IYd/DeEIy+cKqTdjLxQBY6pnMKQK6h9OUVWiL8R8MMEwd4vI1GS
+	Jhuy3eo1UksEU1gUKL45wkKVmCyhaEl+TejT8a4jh22vUqByrWN6zMIkb7GThnxJItbDzskht1j
+	xGZ6PArByKn0TP8EZ2YN8FKdRzlypcYGOFOEqEFVtDb1BftZuOEfz7OpN23Y4jx/OajmR+9qLgN
+	p//qJNelVmVPoJVpIeiscREGZ8BXceb6ew50TboDpYAUFoeqRs17ycPGtoynwHyITysUZTCHPC8
+	M9NHnHBtikn2oMznoPtFhnKj+E7uGynEsiveJd
+X-Received: by 2002:a17:90b:1cce:b0:3a4:c946:9f4e with SMTP id 98e67ed59e1d1-3a6ce9833f3mr2937610a91.58.1790957779988;
+        Fri, 02 Oct 2026 09:16:19 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a6fec001dbsm594956a91.4.2026.10.02.09.16.19
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 02 Oct 2026 09:16:19 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-675d5613a31so220696d50.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 09:16:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1790957779; x=1791562579; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fbFbwJWSRdXCauruDvE+JJbqjrPsHa6vNYR+DZY726g=;
+        b=d508VeH08crBsFeJcM/vkxX50pCfQMD5mbU2Rv6qOTH3pnVYxDobdqtvF1vtjZ5mwe
+         ZmmHGZRQt9pb4u8XUxeTQLl3tXAC6cvjcW2SlcQSNnu7bKAYOL6AM0Fw6O+UOY05Rwhn
+         +ein8SM/T7wFQxSQmampf1Ocb/vQvLZbr7KtI=
+X-Received: by 2002:a05:690e:4cc:b0:675:43e1:45a1 with SMTP id 956f58d0204a3-677abdeef34mr808522d50.4.1790957778452;
+        Fri, 02 Oct 2026 09:16:18 -0700 (PDT)
+X-Received: by 2002:a05:690e:4cc:b0:675:43e1:45a1 with SMTP id 956f58d0204a3-677abdeef34mr808507d50.4.1790957777854;
+        Fri, 02 Oct 2026 09:16:17 -0700 (PDT)
+Received: from ?IPV6:2600:1700:3f50:2990:5d86:62f0:dca0:5297? ([2600:1700:3f50:2990:5d86:62f0:dca0:5297])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677ac56dac6sm1135050d50.9.2026.10.02.09.16.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Oct 2026 09:16:17 -0700 (PDT)
+Message-ID: <897ffc5a-48ad-4516-89f2-0cdac082d7a8@broadcom.com>
+Date: Fri, 2 Oct 2026 09:16:15 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-Several years ago I salvaged an M3000 SPARC Enterprise box being
-decommissioned at work. The box has been sitting ever since, it did
-not run Linux. It did not seem impossible to get Linux running but
-my earlier attempts failed. I recently found some documentation;
-"SPARC JPS2: Common Specification" and the "Fujitsu SPARC64 II
-Extensions", which gave me some of the missingpieces.
-Getting this up and running required extensive testing, some
-kernel instrumentation, debug printouts and many reboot iterations.
-For thisi, Codex proved very helpful. Along the way, I stumbled upon
-some generic sparc and driver bugs that this series addresses as well.
-
-This series adds support for the Fujitsu SPARC Enterprise M3000, with
-SPARC64 VII+, Oberon PCIe, BCM5718 networking and a firmware hvc console.
-It applies to Linux v7.3-rc1, base cee9395acd8043be0644b25c34bfa86623f2b935.
-
-Patches 1-3 fix existing sparc64 defects in generic clear_page, secondary
-queued-spinlock acquisition and sun4u kernel huge-PUD mappings. Each has
-a Fixes tag. Patches 4-7 add the CPU/MMU/SMP path, PCIe bridge, narrowly
-matched tg3 firmware-state correction and console. They form one series
-so the complete port can be built without collecting prerequisites.
-
-VII context-write and demap synchronization follows the cited JPS2 and
-SPARC64 VII manual sections. Existing Cheetah routines are unchanged:
-similar assembly does not establish the same hardware requirement there.
-
-The final tree includes the demap-all instruction synchronization in the
-CPU/MMU patch. All seven cumulative prefixes build. The exact final image
-boots Gentoo/OpenRC and SSH with eight threads; kernel taint is zero.
-
-HugeTLB/THP, CPU offlining, Oberon MSI and complete RAS recovery remain
-unsupported. Firmware console calls cannot be bounded if firmware stalls.
-
-SPARC64 VII/VII+ support is currently opt-in through Kconfig while the new
-CPU/MMU/SMP paths receive broader testing. The option also excludes HugeTLB
-and THP configurations, which this implementation does not yet support.
-The longer-term aim is to rely on runtime CPU detection once unsupported
-huge-page configurations can be handled safely.
-
-Magnus Lindholm (7):
-  sparc64: return from the generic clear_page implementation
-  sparc64: honor queued spinlock layout in secondary startup
-  sparc64: avoid huge kernel PUD mappings on sun4u
-  sparc64: add SPARC64 VII CPU, MMU and SMP support
-  sparc64: add M3000 Oberon PCIe support
-  tg3: normalize inherited M3000 register byte order
-  hvc: add an M3000 firmware console backend
-
- MAINTAINERS                         |   6 +
- arch/sparc/Kconfig                  |  19 +++
- arch/sparc/include/asm/head_64.h    |  15 ++
- arch/sparc/include/asm/iommu_64.h   |   1 +
- arch/sparc/include/asm/irq_64.h     |   1 +
- arch/sparc/include/asm/setup.h      |   5 +
- arch/sparc/include/asm/smp_64.h     |   4 +
- arch/sparc/include/asm/spitfire.h   |   1 +
- arch/sparc/include/asm/trap_block.h |   6 +
- arch/sparc/kernel/cpu.c             |   3 +
- arch/sparc/kernel/entry.h           |   2 +
- arch/sparc/kernel/head_64.S         |  18 +++
- arch/sparc/kernel/helpers.S         |  41 +++++
- arch/sparc/kernel/iommu.c           |  44 ++++++
- arch/sparc/kernel/irq_64.c          |  50 ++++--
- arch/sparc/kernel/pci_fire.c        |  31 +++-
- arch/sparc/kernel/pci_impl.h        |   1 +
- arch/sparc/kernel/prom_64.c         |   6 +
- arch/sparc/kernel/prom_irqtrans.c   |   7 +
- arch/sparc/kernel/ptrace_64.c       |   7 +
- arch/sparc/kernel/setup_64.c        |  55 +++++++
- arch/sparc/kernel/smp_64.c          |  82 +++++++++-
- arch/sparc/kernel/trampoline_64.S   |  53 ++++++-
- arch/sparc/kernel/traps_64.c        |  27 ++++
- arch/sparc/lib/GENpage.S            |   3 +
- arch/sparc/mm/init_64.c             | 110 ++++++++++++-
- arch/sparc/mm/tsb.c                 |  19 ++-
- arch/sparc/mm/ultra.S               | 236 ++++++++++++++++++++++++++++
- drivers/net/ethernet/broadcom/tg3.c |  91 ++++++++++-
- drivers/tty/hvc/Kconfig             |  10 ++
- drivers/tty/hvc/Makefile            |   2 +
- drivers/tty/hvc/hvc_m3000.c         | 167 ++++++++++++++++++++
- 32 files changed, 1088 insertions(+), 35 deletions(-)
- create mode 100644 drivers/tty/hvc/hvc_m3000.c
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in SW_RESET,
+ restore it to SW_RESET
+To: Jakub Kicinski <kuba@kernel.org>, netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@kernel.org,
+ davem@davemloft.net, andrew+netdev@lunn.ch,
+ bcm-kernel-feedback-list@broadcom.com, nb@tipi-net.de,
+ florian.fainelli@broadcom.com, opendmb@gmail.com
+References: <20260930230634.3132729-1-justin.chen@broadcom.com>
+ <179080972360.31693.266631430009737406@kernel.org>
+ <20261001184130.2b7ab18a@kernel.org>
+Content-Language: en-US
+From: Justin Chen <justin.chen@broadcom.com>
+In-Reply-To: <20261001184130.2b7ab18a@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
--- 
-2.43.0
 
+On 10/1/2026 6:41 PM, Jakub Kicinski wrote:
+> On Wed, 30 Sep 2026 23:08:43 +0000 netdev-bot+sinfo@kernel.org wrote:
+>> Hi!
+>>
+>> This is an automated message. This series looks like a fix, but its
+>> commit messages seem to be missing some information:
+>>
+>>   - How the issue was discovered, e.g. hit in production, hit during
+>>     development, syzbot report, manual code inspection, LLM or static
+>>     analysis tool scan.
+>>
+>>   - Whether the issue was actually triggered, or is only theoretical
+>>     (e.g. found by code inspection). If it was triggered please include
+>>     the symptoms, like the stack trace or error messages.
+>>
+>>   - What hardware the change was tested on. For driver fixes please
+>>     mention the device (and if relevant firmware version) used for
+>>     testing, or say that the change was not tested on real hardware.
+>>
+>> Please do not repost the series just to address the above. Instead,
+>> reply to this email with the missing information, so that reviewers
+>> can take it into account. If the series needs another revision for
+>> other reasons, please include the information in the commit messages
+>> then.
+>>
+>> The evaluation is done by an LLM so it may be wrong, if you think
+>> that is the case please reply and explain.
+> 
+> please respond to this
+
+The issue was hit in production and I verified the sequence keeps the TX 
+disabled in my standalone test. I tested on an internal development 
+board with bcm77122, but should be reproducible on any genet HW that 
+supports power management.
+
+Thanks,
+Justin
