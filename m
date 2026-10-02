@@ -1,430 +1,215 @@
-Received: from mail-ua2-f43.google.com (mail-ua2-f43.google.com [74.125.226.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEFE49AA34
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 14:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.235
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790950518; cv=none; b=PaK9IeuaiMi+ldeReMUZCHZpz2Z1KsXQAcjOLWx5zm1klvk8q7WMbKSXV38mmc/aYRzLLhgEdst2OVAknkDAoe0C9xi86inSW5B1NHe9xiOYh3x0onk0XasnR1o+ibsJczRD8KadQaFq+JPRJPJuDEgmTqnWN7KwHPrQe7lw8i8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790950518; c=relaxed/simple;
-	bh=AqJmCi2YsY1ob22ZjpZjFyG+KYuMJSmhjQsCajXetDs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=o79aYFqfQyv5cchCQyWjAHzDTLswVa6uybJg/5/YptClGjFvhSn8+Ck4YsK0lf5xhG+655VmEtnmXIlYC0q6E8KOoyrqkcV29ZDO4eyNF8mVihGU1k+4h8d6yW3mcDxnjwz0DQXAMGUq/+UbSutdrqCTl2o4gzxQsVgqGk7yU7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kaVbaSVK; arc=none smtp.client-ip=74.125.226.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCE4457E58;
+	Fri,  2 Oct 2026 14:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790950718; cv=fail; b=A+4p3C9LzoLit8VrXR+kVPQrKvxLYARTzbxefeAx7V2QIdZaallwul1UuX81OISBP+7hagUh2C9cmrZH6//chNsm4x4/+E67KuiYsDJheSFRKF2pnzeyUJC5AUCDnHSCFubbrt4jNikXxg/o88fkdstnTEA2RBu7iDH2La3xv9E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790950718; c=relaxed/simple;
+	bh=RTGwjnze7gyceR1iwRkB7d5gTuw3Ycyy/m5lBLAVD8c=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Y92E5/4tnkLn7Wkj5UUdYiIHI66fqg2tCpgdlKMpAc+0qqZVE7/Dg3u38wqkJAorIjvSgetF9qW95tIh8+B0sCwV+I0Ag+NQkcdPJHqnbwGZ8IGMw9fFbUV2N/9iboKxKij3TNYQBBplDyD95igsP+FEt93G6wKRxD7nifmmFlM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MvrdXu9X; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kaVbaSVK"
-Received: by mail-ua2-f43.google.com with SMTP id a1e0cc1a2514c-98514b4115eso5078096241.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 07:15:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790950511; x=1791555311; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=rkxAo9oG/0ZbXJycD1LiahxFQlljdG0HMtDwWXkYjP0=;
-        b=kaVbaSVKWI7um4AhFcrEy3JycABdiubwC8UwJa44/wo7AKfJBUF5ZZpHgHrtL6z+2/
-         SHmbrTsCF7utSefkJOk9fUDu245VDTz/rV7+vxlvN2e0MkqvBRheSDh44gZVlhwH48fF
-         YefEGaf0cHOg/5EgN9DnirY2A9PrpbVngbpMEJGAytdBwJNeFGUPrDwvsIEadAYx3P+4
-         0Fv7XJqH7EwmxqWU8Fo15FoydIDfmI5j0nG1hTO7cuEUJmz+1Y7PTHYboU26h9aw7TjK
-         tCbIPbqQeW+rWlCOmIQKLJVpMUA4099ZGe3oHJPD7/Yg5i1Raf27XbZ7RTzDQx4geYHP
-         AH8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790950511; x=1791555311;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=rkxAo9oG/0ZbXJycD1LiahxFQlljdG0HMtDwWXkYjP0=;
-        b=bgNWgHEH7xidbTOdo+NjdFl85h2uT4sVKdiPX8zkXEnyVET3DvtrOHxMgCcgYyeBhY
-         Crvvw/vYBlkqIMOvFm1DnXYraPhdd4RqxOCE56JYuDNw8cwRWsdNgv3oS5gSLEedIey3
-         cTiX9gRv9KQ9O+Zp1CuNY4ZJz+OypovaEX484tdVhmbMXx61gredSvoRblVeD7XcXL/i
-         ArEmR27ex6jB1tF6gRDQPjj3kY02TSBxf/3hjTjNZifGDvb8Me70mlO09emhvOlSiGdN
-         mA8fb7dXrf0dFh/6clphnfqa02oRYpPE+/w5i2MMiM2we2u635Qeq2PUh5DqYd9cqNoM
-         eE7w==
-X-Gm-Message-State: AFq9FYLWjND7hStG5q3jgsYSvyaeh0eoVB8F8BnNxVM9tW3VjadLyQ2b
-	Z9IXXzXgUv4T1a7QgGC/AwS3Vi4fCTTvFUe/PcfeEFL9yi1UehReuHgd
-X-Gm-Gg: AYBFou1Bz17eUHx3AlVdXFhg4DepYisv8/lZlilmvA+2q6xAxgDWOuKWBZ2h4MJV5kq
-	U3gsbqvHC8QR2QddxsBBHt6Y5OS9cH694WLNMNzW4umC9tsYEbmalO3H1sYPLxZ0u139Ozl48sL
-	PjuUukAA+1+KRIHGsokWRdFkFEdAU/jJnDhdeKUZmvGiWDhQ6TBlVzMdSPLOvE869oo2HrkCWYZ
-	/mD3FoCNOkru1Cprf4dTjT1v/+7vJY1zTHgvDj1xB0TnVOiiH9pDig0c+5xgcGfgxXgKwwYGa+w
-	+QU/Iozw5gDiiI3D7aC6aqN8eMRLQ9HXTNONY3GrrX89EJxyJBZFXo9SxuKeCWb11of5NAiG/0c
-	BcdeEnK9mZH666uWAS+W0YyuOh9sypemFQzNo+a/AjsYgFZHC9YHAnLqQYOmhVcu3dFnYvI7JG6
-	grTci+jNMqA9JAgoqm+yA+SdZBR3sbtngs6a0wQYIFmYedD4Dm/ulCmZQEMy6PTFJKKjJEjv9Pb
-	pzYevx1UQk=
-X-Received: by 2002:a05:6102:334d:b0:7a7:198a:c2bc with SMTP id ada2fe7eead31-7c0f59ae4e7mr840164137.36.1790950510945;
-        Fri, 02 Oct 2026 07:15:10 -0700 (PDT)
-Received: from tresc054937.tre-sc.gov.br ([189.37.57.96])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7c0fdc62625sm2529395137.1.2026.10.02.07.15.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 07:15:10 -0700 (PDT)
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Fri, 02 Oct 2026 11:14:57 -0300
-Subject: [PATCH net-next] net: dsa: realtek: rtl8365mb: define masks using
- BIT() and GENMASK()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MvrdXu9X"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790950717; x=1822486717;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=RTGwjnze7gyceR1iwRkB7d5gTuw3Ycyy/m5lBLAVD8c=;
+  b=MvrdXu9X3+VgdjoBS9wCqGfGNPxS2VPT9/LgYnlh5RsQI/8yWhCgU/Qu
+   AjwLLU04a0wsTM1gFXL0owjswSrbFSgoB0xmXO3EFhRq6mOHo4KpO/dvw
+   Yki4qW2govZ5Zigo4ahSlOlzjpP489diiyKgWaAlEHXtttTRC/8SWhlRy
+   o5z55WUFau3VysH07SlaYj/FcvdSsb7fxy2vCvte2m9DEgu1ml+ypj5Jj
+   Hlz3yD4IhpkXqAN7ga8X2SMXx+ZgW6B2S3tVZV0lPrpe5kFaQTb4gEo2v
+   xbmurXTStsaaabKJJq8OBN3Q5iDbT+kKK79pgvUDhKmex5gFY6GKWoCQj
+   Q==;
+X-CSE-ConnectionGUID: H4mV6hYEQS+NnD8bHnjEKA==
+X-CSE-MsgGUID: uwHiBo7YSPWhtkccZ+58UA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11923"; a="91736836"
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
+   d="scan'208";a="91736836"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 07:18:36 -0700
+X-CSE-ConnectionGUID: 6rFh5vyjSBWAorQ1S5gk/w==
+X-CSE-MsgGUID: zjYw10FSRjGuwO0CoQSNog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
+   d="scan'208";a="275796633"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 07:18:35 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 2 Oct 2026 07:18:35 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Fri, 2 Oct 2026 07:18:35 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.6) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 2 Oct 2026 07:18:35 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tZfZ/rgw2f4ZGzn3lsEAOz4t1o0RYEa6fmZRrRqqFZ9PtEEFeMTLEpQtNG0eEuAuHQqP6Q36KB6uqhktQ2G1kiYFstX0QTHpIrIw2BWX7Gn6esbgTSeWprWP0kJ5lB3VzdG0Ptx8kLvrRjPtDfs+lJT4zgzvhlkf+dq5jY7+iQVwIGeoGOkSYVxhbg6NDLGqIgGBnreq6eYgIpXtviNGGPCSLyK1C9zqSnrRdjlzDn7oYlLdjrrE01yGHN4sDRAlFmXbS43tw+HuAEQ6D3Kil+CQO7mCNTVFPM0r7dBU7VHz5zOZBMPiryn/GewHYMSVFCI/5o8F0h9awI7ULPtKYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RTGwjnze7gyceR1iwRkB7d5gTuw3Ycyy/m5lBLAVD8c=;
+ b=eUtLr6hT+xdVvVNLuKLkIJs3GkBu6HsOQ/neWdhU1sMWmOBXH7RU2b1eYbD4mJsuD/7NS+jeL1m9u5FWLvS+p0JFjgF174CYfqW8rVe6rmI3vq8sVoXHeST8KI2cT5eS5qXk7krvmc6u+5HkMBzBLfq0xDLPK+zWi9N5bqgcyVOO1Q21i9kuO9FR1L4MjOKw6xy8uVYQomUbCDcGowJwaLDoerPF0hVe28fXb384L21120+ZwA2uZZhH/tsOm+DhPakb5WAtsGTaLsIiDm6mJMlhsURyppq+F36ZDVxgxViErLs7p5MaOgEZ1jeuaZhN8izb10bKIwrMeb6fYpETvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by SA1PR11MB5946.namprd11.prod.outlook.com (2603:10b6:806:23a::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Fri, 2 Oct
+ 2026 14:18:32 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0472.016; Fri, 2 Oct 2026
+ 14:18:32 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: =?utf-8?B?0JbQsNC80LHQsNC60LjQtdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00Lg=?=
+ =?utf-8?B?0L3QvtCy0LjRhw==?= <r.zhambakiev@prosoftsystems.ru>, Andrew Lunn
+	<andrew+netdev@lunn.ch>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Michael Grzeschik <mgr@kernel.org>, Jijie Shao
+	<shaojijie@huawei.com>, Denis Benato <benato.denis96@gmail.com>,
+	=?utf-8?B?VXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1Yik=?=
+	<u.kleine-koenig@baylibre.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH net v2 1/3] net: fealnx: fix teardown order in remove
+Thread-Topic: [PATCH net v2 1/3] net: fealnx: fix teardown order in remove
+Thread-Index: AQHdUnfRvKa0pR6FzEGasc/BsufUObbqTKqA
+Date: Fri, 2 Oct 2026 14:18:32 +0000
+Message-ID: <IA3PR11MB8986E19271B0742E2EDBA0CFE5892@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20261002140954.261779-1-r.zhambakiev@prosoftsystems.ru>
+ <20261002140954.261779-2-r.zhambakiev@prosoftsystems.ru>
+In-Reply-To: <20261002140954.261779-2-r.zhambakiev@prosoftsystems.ru>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SA1PR11MB5946:EE_
+x-ms-office365-filtering-correlation-id: ff67e573-782b-44a1-56b7-08df209009e1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|23010399003|22082099003|18002099003|38070700021|56012099006|10067099003|11063799006|5023799004|4143699003;
+x-microsoft-antispam-message-info: +MRN78wZEp5Y+CCen6To1vlqSbhWcyuILWyFrfDiI+tbBo7zqSuLfpodg2ZEMXEP0DuQtyMl6RlQYY0dxUNHRxJ9jC5t/7In2o/lLFlZeCfZCz4gRX0h5tyO9g4hxy4fAOF32GBqSf6iVz8ZCaMN5+EXp5pNlLnotV8SppME970v0CYE1rk3syLuZzgPEP5smndYTEjh3TXWh+qJ/BVR0Xty8UkQjJJed7PWUwDy06UnQYt5IqacvWdr5PfLoNzFLEEGB9IPPFnnFtlbgnjrHpqFrFxzDSzagiV0XLRm6fV2P4oIZVS1wV/dpYvwrvcE/t8IpNKGd7hjTTm8s82VFiS4KJRPR1Q7rf+2J+6FfnUAkJopdL7RyLzOgevf4GuKxu078UMk04BeByvfnNgtytQE6ya1YqUcNJM1OQSJZ4ER4NRaONFCQn6mCzKYmej2Osmy+imzY2IS7V/r6pkzgCHdbcyLGzg5AjfKhGHemGhJjI6vqCbRgnPC4/q+c3y5lH6zGbCaLNcQig4+ddo14m26yLpJB8L74ii6M1m9BtFnnUm5T/fZ7oNyUzGe9ZyxfI2QuFIh1Bt23Pxn93k+NAcZz7vOn+b9PdeV59F6aDTOtrMhN+KMlwQatglamD7ZyxtXSi8l4zit5bulyZlFoFIA4mNhErRIxwteNjmIL5qdtgZmciysT8brXRLKLWEGoTwnN0hI9aAu6vGYLuA9gSQ6KhpvpOzGGgIk3dXmDHw=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(23010399003)(22082099003)(18002099003)(38070700021)(56012099006)(10067099003)(11063799006)(5023799004)(4143699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NDh5NUpzTnZuNDZkcDVLeUwvdzZtZ1hjeGN3U3B5T2xRL2JRMXVGWENOSzVH?=
+ =?utf-8?B?M205ajF2MW83Wkk3YTNZOGV3U0s5KzNneWlnb1ZEUlNidStqd016OEhwek94?=
+ =?utf-8?B?SFNjUWVOR2laNUs3aG1jdkthVWdPbzIxVHZPNkhvd2hlN1QvRFdzVEJHaGhB?=
+ =?utf-8?B?Z1ZXR1dEUFFDYlpjMTh5R0R4MGdjVG9ta3RqUnMyaTc4N3d0YWt2MDNFRk1x?=
+ =?utf-8?B?MjdESWRtYVd4Q25vdmxyRkJTV0hLZHdhUjliZXVNQ2VvT0ZNZjlGaFUyV2xI?=
+ =?utf-8?B?bGxmZjVkWVRlN2I5OHR3TDFIQXNxK29hbndsd0cydGxDbXNWc3k2dE5qQUt0?=
+ =?utf-8?B?S2tQTXdzSEhGeVU5TWhvaUozU0J0NTFVZzhpdkpTcEFSYmtOZnB5S0JMMFJr?=
+ =?utf-8?B?eGhsa0NCeTFzd0VkSUQ0S040ZENaZEN0Q1Y2YS9mU211eDdoOHc0U3FIZUNr?=
+ =?utf-8?B?Zy8wYm8xaFBRU3N3ek1vTXVGbjl2SWFFUUpERmVaRnExenBXWFk0U28vdGRm?=
+ =?utf-8?B?RXFSbEJ6d2loWWVZT1dVVGpWZUhmUlU1RE0vNGhzM1JLUXlsTWk1U1YrdlMr?=
+ =?utf-8?B?V1JnamRzR3JBT09haHAzYkw1blhUOTBZQzZZaFVUcTJ4aG5MS3pSSmo2MTJK?=
+ =?utf-8?B?ajl4ZE1HdjdoU2RCYTc2eWV3MGdkQTRMeExBNG90SWF1WjBMMUFoTGVHVmdu?=
+ =?utf-8?B?akpvak1SV2RTRlhpRnZ1Y3k4ODR5OE01ejhzL003L2UrUUQ5WStZRWxBS0JU?=
+ =?utf-8?B?enJva1o2MFZtN1Y3bks4V1hyWWs3ZFp2K2JxQ29Kd0hqTldmOTVhT2JneWEr?=
+ =?utf-8?B?RUVId25HR3dYdEt4cUpOSElZd3k1bmtva3QvOXM4RUQxWlErT1gzYXB3ckxD?=
+ =?utf-8?B?ZSttVDVjSkZmNzFkd0pVcEovamF5eDV2bDd2SzVGbXRhVW8wdjBmMUxGSmVs?=
+ =?utf-8?B?RkR1Y0dQVUIxVUVPWHptQVZBVVVCeWhTbkZ3bGwzWWg1MWxHdER2K3VRMXNZ?=
+ =?utf-8?B?OUdUQysvK1hQQVh1U21zSkVJalBvSTU3d014ck9JQkU1RXEyVEhuSmNTd3l6?=
+ =?utf-8?B?bVdqTGpGbFJBY3dPbEl1V1I2WFU5TXJ2ODk3OTdacC8yT3d1L2M4WlBaR1Nq?=
+ =?utf-8?B?eVQ5Ly80VWZTekIxa1pja3VIK2JaQnlGYWp2VjhHM0FKSlArK3J4WDBHMVVZ?=
+ =?utf-8?B?Z3l1cUtNQ2RTbVNMQWhQU3FoQy91azg5bVdpaHdjNzhpZm93WVVVTUJ0TWtt?=
+ =?utf-8?B?b0h2N2M3bXBoK0V6dytNMVprQjFKV2puWVd6ajJ3d3hDRFFEbHJKcXJScmxl?=
+ =?utf-8?B?WFZtd0FPSjZsajRTQ1EwWHBheHh3S0ZvV2FhRkZXdnVKYWpKbzVqSVB4Y3BK?=
+ =?utf-8?B?OGI0a2FjQUJmQm9sNSt6VFdrc21PcExEN0lDeU1IRlVWZTVneEFJUDMxZXVB?=
+ =?utf-8?B?OVVWTlI0K3dwK1I3cHpUSEFjK2t4TXZwZTI2eUV2amtlR3M1VGp4UFZqd0NS?=
+ =?utf-8?B?UWdXMGdNTlNJN3RaTFNVWlJTbFIrSkdKeU10N2xKQmVHWUpxbENhQ1ljcUF4?=
+ =?utf-8?B?Kyt2MUFPN0c5ZzVja1pta2RZcW1TYkZXZDBUVDdGMzByditFcnQxMnpvWWNC?=
+ =?utf-8?B?ME0rRG9nemxBay8vcjhmODVhbXRnTXpxZk1BQ1FyL2w4SG1BU2FFRE5mMENj?=
+ =?utf-8?B?eTFieTQwZnF2NXA2RENYYUMxanVMekNjSkd0SnNmQm9TWDBQUXNxS2FkZHVi?=
+ =?utf-8?B?QlRXSk9ocDhtcnM3eTNzTU1YQ2g1dDBuemlJTUtYRVRweTZsRWN4K3M5OU9S?=
+ =?utf-8?B?c0RDeUdTMUNHbW0wVzd4N0RYYmdERExpZlpNTXFPOEJ0ZVJ6WEdLRGtROFgv?=
+ =?utf-8?B?TWYxUXBqU2Q5VjhjREVlQ1kyQWdkcm9rN1FYQWh3cFRPMEdvN1FvTzhpakxJ?=
+ =?utf-8?B?RWVUaitsOWFveGdxa3Q1UFFSLzB4RDMvb0F4dVhhdEVuUmduK3hZV21JZnNo?=
+ =?utf-8?B?Nmo2RnBBbDNILytDZXFpT3lqelBpTTRpSFdoVzVkMGNaTU9aVHpVQUZORm5M?=
+ =?utf-8?B?cm5FT2Z6dHVVVWIvL09tSVU2UWFFWjFEbERwcFpoT1ByaHRjNUlZUWF5a1p4?=
+ =?utf-8?B?Q0F2QjNPTCtuVlZlZThtUWw5U1J2bVZIeEpuVTdWcTVNNnk0RGhsdjZBaWFj?=
+ =?utf-8?B?ZGZoa0EwaWp3RXN4dzBQbmlpekQ1YzFtTFRkU21vc1FLb080UXhxbXcwaTZE?=
+ =?utf-8?B?TVRteG53QzFWVHVMS3A0c1p3V3dJVmlsUDBmamtXaEx0SHR3OUpudDE2WTM0?=
+ =?utf-8?B?d2ZZT2FiMkxUQ2dqTjR0ZjN4WW5tZzhhSmlZdXhCbW1YZ3Z1Zm1LZz09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261002-realtek_bit-v1-1-771fb0e39083@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAGC8v2oC/yWMQQrCMBQFr1Le2kAaaaFeRUSS9FW/SpTkK4XSu
- 5vqchhmFhRmYcGhWZD5kSLPVKHdNYhXny40MlaGs65vrXUm0z+U93MQNWHg0E2934+MqMUrc5L
- 5dzsiUU3irDj9TXmHG6NuM6zrF8nh0BV5AAAA
-X-Change-ID: 20261002-realtek_bit-b9e95f6a3dec
-To: Linus Walleij <linusw@kernel.org>, 
- =?utf-8?q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luiz Angelo Daros de Luca <luizluca@gmail.com>
-X-Mailer: b4 0.16.0
+X-Exchange-RoutingPolicyChecked: JnmLmQKNThnL0/oZhi7RYTPrV5CbZVzgKig3jKM2uzvtMTv+wVogWzzQSdB8J7f2w+Wpym5Z66QgVPcsdLtdJ3pbVqXR5rWxiqRDiPNeENpMhpQ5DHUUL1jHQjpvd4zm5C8MHZTiFv4/HaPnUJpd9OPXvzq1l8y96EMSmX/Wua2bnRWghKc7FsVw6jDtWlZMwUT4Oh0NXmjww/o/amSg7SSFr8qUpdgHkLSBVWnnizUApQtS3m3tRoCcGyTQ/FFPUItETS/HYRIi8BV6H15zoXGsRuGpe5MwAEpsx7cPaoyY1JbV1jpwU6jYBvaRFWwgkAfSQtlNBxx+R3sce5/Caw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff67e573-782b-44a1-56b7-08df209009e1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2026 14:18:32.2928
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: kN0OI7+Hzqe1HE/jKZaRnPOZcDgwIjCrmHaq94T9Fao+30zsTGCKcPmveZvurVlYnfH8YF0nshL1RO3J8DmTSBiRivI8bFOCxJVUYFBpsh4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5946
+X-OriginatorOrg: intel.com
 
-Refactor register bitmask definitions to use the standard BIT() and
-GENMASK() macros instead of hardcoded hexadecimal values. This improves
-code readability, reducing the chance of errors such as unintentional
-gaps or overlaps.
-
-Introduce RTL8365MB_PORT_MASK as an alias for GENMASK(10, 0) to replace
-the repetitive 0x07FF values used across various port-related bitfields.
-
-This is a pure refactoring patch; no functional changes are introduced.
-
-Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
----
- drivers/net/dsa/realtek/rtl8365mb_main.c | 168 ++++++++++++++++---------------
- drivers/net/dsa/realtek/rtl8365mb_vlan.c |   4 +-
- 2 files changed, 87 insertions(+), 85 deletions(-)
-
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index 87ec924a0611..da06f952a053 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -132,32 +132,32 @@
- #define   RTL8365MB_MAGIC_VALUE		0x0249
- 
- /* Chip reset register */
--#define RTL8365MB_CHIP_RESET_REG	0x1322
--#define RTL8365MB_CHIP_RESET_DW8051_MASK	0x0010
--#define RTL8365MB_CHIP_RESET_SW_MASK	0x0002
--#define RTL8365MB_CHIP_RESET_HW_MASK	0x0001
-+#define RTL8365MB_CHIP_RESET_REG		0x1322
-+#define RTL8365MB_CHIP_RESET_DW8051_MASK	BIT(4)
-+#define RTL8365MB_CHIP_RESET_SW_MASK		BIT(1)
-+#define RTL8365MB_CHIP_RESET_HW_MASK		BIT(0)
- 
- /* Interrupt polarity register */
- #define RTL8365MB_INTR_POLARITY_REG	0x1100
--#define   RTL8365MB_INTR_POLARITY_MASK	0x0001
-+#define   RTL8365MB_INTR_POLARITY_MASK	BIT(0)
- #define   RTL8365MB_INTR_POLARITY_HIGH	0
- #define   RTL8365MB_INTR_POLARITY_LOW	1
- 
- /* Interrupt control/status register - enable/check specific interrupt types */
- #define RTL8365MB_INTR_CTRL_REG			0x1101
--#define RTL8365MB_INTR_STATUS_REG		0x1102
--#define   RTL8365MB_INTR_SLIENT_START_2_MASK	0x1000
--#define   RTL8365MB_INTR_SLIENT_START_MASK	0x0800
--#define   RTL8365MB_INTR_ACL_ACTION_MASK	0x0200
--#define   RTL8365MB_INTR_CABLE_DIAG_FIN_MASK	0x0100
--#define   RTL8365MB_INTR_INTERRUPT_8051_MASK	0x0080
--#define   RTL8365MB_INTR_LOOP_DETECTION_MASK	0x0040
--#define   RTL8365MB_INTR_GREEN_TIMER_MASK	0x0020
--#define   RTL8365MB_INTR_SPECIAL_CONGEST_MASK	0x0010
--#define   RTL8365MB_INTR_SPEED_CHANGE_MASK	0x0008
--#define   RTL8365MB_INTR_LEARN_OVER_MASK	0x0004
--#define   RTL8365MB_INTR_METER_EXCEEDED_MASK	0x0002
--#define   RTL8365MB_INTR_LINK_CHANGE_MASK	0x0001
-+#define   RTL8365MB_INTR_STATUS_REG		0x1102
-+#define   RTL8365MB_INTR_SLIENT_START_2_MASK	BIT(12)
-+#define   RTL8365MB_INTR_SLIENT_START_MASK	BIT(11)
-+#define   RTL8365MB_INTR_ACL_ACTION_MASK	BIT(9)
-+#define   RTL8365MB_INTR_CABLE_DIAG_FIN_MASK	BIT(8)
-+#define   RTL8365MB_INTR_INTERRUPT_8051_MASK	BIT(7)
-+#define   RTL8365MB_INTR_LOOP_DETECTION_MASK	BIT(6)
-+#define   RTL8365MB_INTR_GREEN_TIMER_MASK	BIT(5)
-+#define   RTL8365MB_INTR_SPECIAL_CONGEST_MASK	BIT(4)
-+#define   RTL8365MB_INTR_SPEED_CHANGE_MASK	BIT(3)
-+#define   RTL8365MB_INTR_LEARN_OVER_MASK	BIT(2)
-+#define   RTL8365MB_INTR_METER_EXCEEDED_MASK	BIT(1)
-+#define   RTL8365MB_INTR_LINK_CHANGE_MASK	BIT(0)
- #define   RTL8365MB_INTR_ALL_MASK                      \
- 		(RTL8365MB_INTR_SLIENT_START_2_MASK |  \
- 		 RTL8365MB_INTR_SLIENT_START_MASK |    \
-@@ -172,20 +172,22 @@
- 		 RTL8365MB_INTR_METER_EXCEEDED_MASK |  \
- 		 RTL8365MB_INTR_LINK_CHANGE_MASK)
- 
-+#define RTL8365MB_PORT_MASK			GENMASK(10, 0)
-+
- /* Per-port interrupt type status registers */
- #define RTL8365MB_PORT_LINKDOWN_IND_REG		0x1106
--#define   RTL8365MB_PORT_LINKDOWN_IND_MASK	0x07FF
-+#define   RTL8365MB_PORT_LINKDOWN_IND_MASK	RTL8365MB_PORT_MASK
- 
- #define RTL8365MB_PORT_LINKUP_IND_REG		0x1107
--#define   RTL8365MB_PORT_LINKUP_IND_MASK	0x07FF
-+#define   RTL8365MB_PORT_LINKUP_IND_MASK	RTL8365MB_PORT_MASK
- 
- /* PHY indirect access registers */
- #define RTL8365MB_INDIRECT_ACCESS_CTRL_REG			0x1F00
--#define   RTL8365MB_INDIRECT_ACCESS_CTRL_RW_MASK		0x0002
--#define   RTL8365MB_INDIRECT_ACCESS_CTRL_RW_READ		0
--#define   RTL8365MB_INDIRECT_ACCESS_CTRL_RW_WRITE		1
--#define   RTL8365MB_INDIRECT_ACCESS_CTRL_CMD_MASK		0x0001
--#define   RTL8365MB_INDIRECT_ACCESS_CTRL_CMD_VALUE		1
-+#define   RTL8365MB_INDIRECT_ACCESS_CTRL_RW_MASK		BIT(1)
-+#define     RTL8365MB_INDIRECT_ACCESS_CTRL_RW_READ		0
-+#define     RTL8365MB_INDIRECT_ACCESS_CTRL_RW_WRITE		1
-+#define   RTL8365MB_INDIRECT_ACCESS_CTRL_CMD_MASK		BIT(0)
-+#define     RTL8365MB_INDIRECT_ACCESS_CTRL_CMD_VALUE		1
- #define RTL8365MB_INDIRECT_ACCESS_STATUS_REG			0x1F01
- #define RTL8365MB_INDIRECT_ACCESS_ADDRESS_REG			0x1F02
- #define   RTL8365MB_INDIRECT_ACCESS_ADDRESS_OCPADR_5_1_MASK	GENMASK(4, 0)
-@@ -197,8 +199,8 @@
- 
- /* PHY OCP address prefix register */
- #define RTL8365MB_GPHY_OCP_MSB_0_REG			0x1D15
--#define   RTL8365MB_GPHY_OCP_MSB_0_CFG_CPU_OCPADR_MASK	0x0FC0
--#define RTL8365MB_PHY_OCP_ADDR_PREFIX_MASK		0xFC00
-+#define   RTL8365MB_GPHY_OCP_MSB_0_CFG_CPU_OCPADR_MASK	GENMASK(11, 6)
-+#define RTL8365MB_PHY_OCP_ADDR_PREFIX_MASK		GENMASK(15, 10)
- 
- /* The full 16-bit OCP address is split across two registers: bits [15:10] are
-  * the prefix (RTL8365MB_PHY_OCP_ADDR_PREFIX_MASK above), and bits [9:1] go into
-@@ -252,8 +254,8 @@
- 		 (_extint) == 1 ? RTL8365MB_EXT_RGMXF_REG1 : \
- 		 (_extint) == 2 ? RTL8365MB_EXT_RGMXF_REG2 : \
- 		 0x0)
--#define   RTL8365MB_EXT_RGMXF_RXDELAY_MASK	0x0007
--#define   RTL8365MB_EXT_RGMXF_TXDELAY_MASK	0x0008
-+#define   RTL8365MB_EXT_RGMXF_RXDELAY_MASK	GENMASK(2, 0)
-+#define   RTL8365MB_EXT_RGMXF_TXDELAY_MASK	BIT(3)
- 
- /* External interface line rate bypass register - one bit per external
-  * interface, indexed by the external port number with port 5 (the first
-@@ -271,28 +273,28 @@
-  */
- #define RTL8365MB_INGRESSBW_PORT6_RATE_CTRL0_REG	0x00CF
- #define RTL8365MB_INGRESSBW_PORT6_RATE_CTRL1_REG	0x00D0
--#define   RTL8365MB_INGRESSBW_PORT6_RATE_CTRL1_MASK	0x0007
-+#define   RTL8365MB_INGRESSBW_PORT6_RATE_CTRL1_MASK	GENMASK(2, 0)
- #define RTL8365MB_PORT6_EGRESSBW_CTRL0_REG		0x0398
- #define RTL8365MB_PORT6_EGRESSBW_CTRL1_REG		0x0399
--#define   RTL8365MB_PORT6_EGRESSBW_CTRL1_MASK		0x0007
-+#define   RTL8365MB_PORT6_EGRESSBW_CTRL1_MASK		GENMASK(2, 0)
- 
- /* SerDes indirect access registers */
- #define RTL8365MB_SDS_INDACS_CMD_REG		0x6600
--#define   RTL8365MB_SDS_INDACS_CMD_BUSY_MASK	0x0100
--#define   RTL8365MB_SDS_INDACS_CMD_RUN_MASK	0x0080
--#define   RTL8365MB_SDS_INDACS_CMD_WR_MASK	0x0040
-+#define   RTL8365MB_SDS_INDACS_CMD_BUSY_MASK	BIT(8)
-+#define   RTL8365MB_SDS_INDACS_CMD_RUN_MASK	BIT(7)
-+#define   RTL8365MB_SDS_INDACS_CMD_WR_MASK	BIT(6)
- #define RTL8365MB_SDS_INDACS_ADR_REG		0x6601
- #define RTL8365MB_SDS_INDACS_DATA_REG		0x6602
- 
- /* SerDes miscellaneous configuration register */
- #define RTL8365MB_SDS_MISC_REG				0x1D11
--#define   RTL8365MB_SDS_MISC_SGMII_RXFC_MASK		0x4000
--#define   RTL8365MB_SDS_MISC_SGMII_TXFC_MASK		0x2000
--#define   RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK	0x0800
--#define   RTL8365MB_SDS_MISC_SGMII_FDUP_MASK		0x0400
--#define   RTL8365MB_SDS_MISC_SGMII_LINK_MASK		0x0200
--#define   RTL8365MB_SDS_MISC_SGMII_SPD_MASK		0x0180
--#define   RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK	0x0040
-+#define   RTL8365MB_SDS_MISC_SGMII_RXFC_MASK		BIT(14)
-+#define   RTL8365MB_SDS_MISC_SGMII_TXFC_MASK		BIT(13)
-+#define   RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK	BIT(11)
-+#define   RTL8365MB_SDS_MISC_SGMII_FDUP_MASK		BIT(10)
-+#define   RTL8365MB_SDS_MISC_SGMII_LINK_MASK		BIT(9)
-+#define   RTL8365MB_SDS_MISC_SGMII_SPD_MASK		GENMASK(8, 7)
-+#define   RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK	BIT(6)
- 
- /* SerDes internal registers, accessed via the SDS_INDACS registers. The BMCR
-  * data path reset holds BMCR_ANENABLE | BMCR_ISOLATE while toggling the
-@@ -303,12 +305,12 @@
- #define   RTL8365MB_SDS_BMCR_DPRST_PHASE1	(BMCR_ANENABLE | BMCR_ISOLATE | 0x1)
- #define   RTL8365MB_SDS_BMCR_DPRST_PHASE2	(BMCR_ANENABLE | BMCR_ISOLATE | 0x3)
- #define RTL8365MB_SDS_REG_NWAY			0x0002
--#define   RTL8365MB_SDS_NWAY_EN_MASK		0x0200
--#define   RTL8365MB_SDS_NWAY_RESTART_MASK	0x0100
-+#define   RTL8365MB_SDS_NWAY_EN_MASK		BIT(9)
-+#define   RTL8365MB_SDS_NWAY_RESTART_MASK	BIT(8)
- #define RTL8365MB_SDS_REG_RESET			0x0003
- #define   RTL8365MB_SDS_RESET_DEASSERT		0x7106
- #define RTL8365MB_SDS_REG_LINK_STATUS		0x003d
--#define   RTL8365MB_SDS_LINK_STATUS_LINK_MASK	0x0010
-+#define   RTL8365MB_SDS_LINK_STATUS_LINK_MASK	BIT(4)
- 
- /* The embedded SerDes can only be muxed to external interface 1 (MAC8),
-  * which is port 6.
-@@ -335,7 +337,7 @@
-  * the firmware would otherwise do.
-  */
- #define RTL8365MB_MISC_CFG0_REG			0x130C
--#define   RTL8365MB_MISC_CFG0_DW8051_EN_MASK	0x0020
-+#define   RTL8365MB_MISC_CFG0_DW8051_EN_MASK	BIT(5)
- 
- /* External interface port speed values - used in DIGITAL_INTERFACE_FORCE */
- #define RTL8365MB_PORT_SPEED_10M	0
-@@ -351,31 +353,31 @@
- 		 (_extint) == 1 ? RTL8365MB_DIGITAL_INTERFACE_FORCE_REG1 : \
- 		 (_extint) == 2 ? RTL8365MB_DIGITAL_INTERFACE_FORCE_REG2 : \
- 		 0x0)
--#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_EN_MASK		0x1000
--#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_NWAY_MASK		0x0080
--#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_TXPAUSE_MASK	0x0040
--#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_RXPAUSE_MASK	0x0020
--#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK		0x0010
--#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK		0x0004
--#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK		0x0003
-+#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_EN_MASK		BIT(12)
-+#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_NWAY_MASK		BIT(7)
-+#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_TXPAUSE_MASK	BIT(6)
-+#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_RXPAUSE_MASK	BIT(5)
-+#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_LINK_MASK		BIT(4)
-+#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_DUPLEX_MASK		BIT(2)
-+#define   RTL8365MB_DIGITAL_INTERFACE_FORCE_SPEED_MASK		GENMASK(1, 0)
- 
- /* CPU port mask register - controls which ports are treated as CPU ports */
- #define RTL8365MB_CPU_PORT_MASK_REG	0x1219
--#define   RTL8365MB_CPU_PORT_MASK_MASK	0x07FF
-+#define   RTL8365MB_CPU_PORT_MASK_MASK	RTL8365MB_PORT_MASK
- 
- /* CPU control register */
- #define RTL8365MB_CPU_CTRL_REG			0x121A
--#define   RTL8365MB_CPU_CTRL_TRAP_PORT_EXT_MASK	0x0400
--#define   RTL8365MB_CPU_CTRL_TAG_FORMAT_MASK	0x0200
--#define   RTL8365MB_CPU_CTRL_RXBYTECOUNT_MASK	0x0080
--#define   RTL8365MB_CPU_CTRL_TAG_POSITION_MASK	0x0040
--#define   RTL8365MB_CPU_CTRL_TRAP_PORT_MASK	0x0038
--#define   RTL8365MB_CPU_CTRL_INSERTMODE_MASK	0x0006
--#define   RTL8365MB_CPU_CTRL_EN_MASK		0x0001
-+#define   RTL8365MB_CPU_CTRL_TRAP_PORT_EXT_MASK	BIT(10)
-+#define   RTL8365MB_CPU_CTRL_TAG_FORMAT_MASK	BIT(9)
-+#define   RTL8365MB_CPU_CTRL_RXBYTECOUNT_MASK	BIT(7)
-+#define   RTL8365MB_CPU_CTRL_TAG_POSITION_MASK	BIT(6)
-+#define   RTL8365MB_CPU_CTRL_TRAP_PORT_MASK	GENMASK(5, 3)
-+#define   RTL8365MB_CPU_CTRL_INSERTMODE_MASK	GENMASK(2, 1)
-+#define   RTL8365MB_CPU_CTRL_EN_MASK		BIT(0)
- 
- /* Maximum packet length register */
- #define RTL8365MB_CFG0_MAX_LEN_REG	0x088C
--#define   RTL8365MB_CFG0_MAX_LEN_MASK	0x3FFF
-+#define   RTL8365MB_CFG0_MAX_LEN_MASK	GENMASK(13, 0)
- #define RTL8365MB_CFG0_MAX_LEN_MAX	0x3FFF
- 
- /* Port learning limit registers */
-@@ -387,7 +389,7 @@
- #define RTL8365MB_PORT_ISOLATION_REG_BASE		0x08A2
- #define RTL8365MB_PORT_ISOLATION_REG(_physport) \
- 		(RTL8365MB_PORT_ISOLATION_REG_BASE + (_physport))
--#define   RTL8365MB_PORT_ISOLATION_MASK			0x07FF
-+#define   RTL8365MB_PORT_ISOLATION_MASK			RTL8365MB_PORT_MASK
- 
- /* Extended filter ID registers - used to key forwarding database with IVL */
- #define RTL8365MB_EFID_MASK			GENMASK(2, 0)
-@@ -407,16 +409,16 @@
- 		(0x3 << RTL8365MB_MSTI_CTRL_PORT_STATE_OFFSET((_physport)))
- 
- /* Unknown unicast DA flooding port mask */
--#define RTL8365MB_UNKNOWN_UNICAST_FLOODING_PMASK_REG		0x0890
--#define   RTL8365MB_UNKNOWN_UNICAST_FLOODING_PMASK_MASK		0x07FF
-+#define RTL8365MB_UNKNOWN_UNICAST_FLOODING_PMASK_REG	0x0890
-+#define   RTL8365MB_UNKNOWN_UNICAST_FLOODING_PMASK_MASK	RTL8365MB_PORT_MASK
- 
- /* Unknown multicast DA flooding port mask */
--#define RTL8365MB_UNKNOWN_MULTICAST_FLOODING_PMASK_REG		0x0891
--#define   RTL8365MB_UNKNOWN_MULTICAST_FLOODING_PMASK_MASK	0x07FF
-+#define RTL8365MB_UNKNOWN_MULTICAST_FLOODING_PMASK_REG	  0x0891
-+#define   RTL8365MB_UNKNOWN_MULTICAST_FLOODING_PMASK_MASK RTL8365MB_PORT_MASK
- 
- /* Broadcast flooding port mask */
--#define RTL8365MB_UNKNOWN_BROADCAST_FLOODING_PMASK_REG		0x0892
--#define   RTL8365MB_UNKNOWN_BROADCAST_FLOODING_PMASK_MASK	0x07FF
-+#define RTL8365MB_UNKNOWN_BROADCAST_FLOODING_PMASK_REG	  0x0892
-+#define   RTL8365MB_UNKNOWN_BROADCAST_FLOODING_PMASK_MASK RTL8365MB_PORT_MASK
- 
- #define RTL8365MB_SUPPORTED_BRIDGE_FLAGS \
- 	    (BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD)
-@@ -425,19 +427,19 @@
- #define RTL8365MB_PORT_MISC_CFG_REG_BASE			0x000E
- #define RTL8365MB_PORT_MISC_CFG_REG(_p) \
- 		(RTL8365MB_PORT_MISC_CFG_REG_BASE + ((_p) << 5))
--#define   RTL8365MB_PORT_MISC_CFG_SMALL_TAG_IPG_MASK		0x8000
--#define   RTL8365MB_PORT_MISC_CFG_TX_ITFSP_MODE_MASK		0x4000
--#define   RTL8365MB_PORT_MISC_CFG_FLOWCTRL_INDEP_MASK		0x2000
--#define   RTL8365MB_PORT_MISC_CFG_DOT1Q_REMARK_ENABLE_MASK	0x1000
--#define   RTL8365MB_PORT_MISC_CFG_INGRESSBW_FLOWCTRL_MASK	0x0800
--#define   RTL8365MB_PORT_MISC_CFG_INGRESSBW_IFG_MASK		0x0400
--#define   RTL8365MB_PORT_MISC_CFG_RX_SPC_MASK			0x0200
--#define   RTL8365MB_PORT_MISC_CFG_CRC_SKIP_MASK			0x0100
--#define   RTL8365MB_PORT_MISC_CFG_PKTGEN_TX_FIRST_MASK		0x0080
--#define   RTL8365MB_PORT_MISC_CFG_MAC_LOOPBACK_MASK		0x0040
-+#define   RTL8365MB_PORT_MISC_CFG_SMALL_TAG_IPG_MASK		BIT(15)
-+#define   RTL8365MB_PORT_MISC_CFG_TX_ITFSP_MODE_MASK		BIT(14)
-+#define   RTL8365MB_PORT_MISC_CFG_FLOWCTRL_INDEP_MASK		BIT(13)
-+#define   RTL8365MB_PORT_MISC_CFG_DOT1Q_REMARK_ENABLE_MASK	BIT(12)
-+#define   RTL8365MB_PORT_MISC_CFG_INGRESSBW_FLOWCTRL_MASK	BIT(11)
-+#define   RTL8365MB_PORT_MISC_CFG_INGRESSBW_IFG_MASK		BIT(10)
-+#define   RTL8365MB_PORT_MISC_CFG_RX_SPC_MASK			BIT(9)
-+#define   RTL8365MB_PORT_MISC_CFG_CRC_SKIP_MASK			BIT(8)
-+#define   RTL8365MB_PORT_MISC_CFG_PKTGEN_TX_FIRST_MASK		BIT(7)
-+#define   RTL8365MB_PORT_MISC_CFG_MAC_LOOPBACK_MASK		BIT(6)
- /* See &rtl8365mb_vlan_egress_mode */
--#define   RTL8365MB_PORT_MISC_CFG_VLAN_EGRESS_MODE_MASK		0x0030
--#define   RTL8365MB_PORT_MISC_CFG_CONGESTION_SUSTAIN_TIME_MASK	0x000F
-+#define   RTL8365MB_PORT_MISC_CFG_VLAN_EGRESS_MODE_MASK		GENMASK(5, 4)
-+#define   RTL8365MB_PORT_MISC_CFG_CONGESTION_SUSTAIN_TIME_MASK	GENMASK(3, 0)
- 
- /**
-  * enum rtl8365mb_vlan_egress_mode - port VLAN egress mode
-@@ -459,7 +461,7 @@ enum rtl8365mb_vlan_egress_mode {
- 
- /* VLAN control register */
- #define RTL8365MB_VLAN_CTRL_REG			0x07A8
--#define   RTL8365MB_VLAN_CTRL_EN_MASK		0x0001
-+#define   RTL8365MB_VLAN_CTRL_EN_MASK		BIT(0)
- 
- /* VLAN ingress filter register */
- #define RTL8365MB_VLAN_INGRESS_REG				0x07A9
-@@ -483,8 +485,8 @@ enum rtl8365mb_vlan_egress_mode {
- 		(((RTL8365MB_MIB_ADDRESS_PORT_OFFSET) * (_p) + (_x)) >> 2)
- 
- #define RTL8365MB_MIB_CTRL0_REG			0x1005
--#define   RTL8365MB_MIB_CTRL0_RESET_MASK	0x0002
--#define   RTL8365MB_MIB_CTRL0_BUSY_MASK		0x0001
-+#define   RTL8365MB_MIB_CTRL0_RESET_MASK	BIT(1)
-+#define   RTL8365MB_MIB_CTRL0_BUSY_MASK		BIT(0)
- 
- /* The DSA callback .get_stats64 runs in atomic context, so we are not allowed
-  * to block. On the other hand, accessing MIB counters absolutely requires us to
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-index 64dd8d90a5ee..8d49ffadce92 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-@@ -106,8 +106,8 @@
- #define RTL8365MB_VLAN_PVID_CTRL_BASE			0x0700
- #define RTL8365MB_VLAN_PVID_CTRL_REG(_p) \
- 		(RTL8365MB_VLAN_PVID_CTRL_BASE + ((_p) >> 1))
--#define   RTL8365MB_VLAN_PVID_CTRL_PORT0_MCIDX_MASK	0x001F
--#define   RTL8365MB_VLAN_PVID_CTRL_PORT1_MCIDX_MASK	0x1F00
-+#define   RTL8365MB_VLAN_PVID_CTRL_PORT0_MCIDX_MASK	GENMASK(4, 0)
-+#define   RTL8365MB_VLAN_PVID_CTRL_PORT1_MCIDX_MASK	GENMASK(12, 8)
- #define   RTL8365MB_VLAN_PVID_CTRL_PORT_MCIDX_OFFSET(_p) \
- 		(((_p) & 1) << 3)
- #define   RTL8365MB_VLAN_PVID_CTRL_PORT_MCIDX_MASK(_p) \
-
----
-base-commit: 071876fd50482a68603a9460d80dd6dd58827ee1
-change-id: 20261002-realtek_bit-b9e95f6a3dec
-
-Best regards,
---  
-Luiz Angelo Daros de Luca <luizluca@gmail.com>
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTog0JbQsNC80LHQsNC60LjQ
+tdCyINCg0LDQtNC40Lkg0KDQuNC60LDRgNC00LjQvdC+0LLQuNGHIDxyLnpoYW1iYWtpZXZAcHJv
+c29mdHN5c3RlbXMucnU+DQo+IFNlbnQ6IEZyaWRheSwgT2N0b2JlciAyLCAyMDI2IDQ6MTAgUE0N
+Cj4gVG86IEFuZHJldyBMdW5uIDxhbmRyZXcrbmV0ZGV2QGx1bm4uY2g+DQo+IENjOiDQltCw0LzQ
+sdCw0LrQuNC10LIg0KDQsNC00LjQuSDQoNC40LrQsNGA0LTQuNC90L7QstC40YcgPHIuemhhbWJh
+a2lldkBwcm9zb2Z0c3lzdGVtcy5ydT47DQo+IERhdmlkIFMuIE1pbGxlciA8ZGF2ZW1AZGF2ZW1s
+b2Z0Lm5ldD47IEVyaWMgRHVtYXpldA0KPiA8ZWR1bWF6ZXRAZ29vZ2xlLmNvbT47IEpha3ViIEtp
+Y2luc2tpIDxrdWJhQGtlcm5lbC5vcmc+OyBQYW9sbyBBYmVuaQ0KPiA8cGFiZW5pQHJlZGhhdC5j
+b20+OyBNaWNoYWVsIEdyemVzY2hpayA8bWdyQGtlcm5lbC5vcmc+OyBKaWppZSBTaGFvDQo+IDxz
+aGFvamlqaWVAaHVhd2VpLmNvbT47IExva3Rpb25vdiwgQWxla3NhbmRyDQo+IDxhbGVrc2FuZHIu
+bG9rdGlvbm92QGludGVsLmNvbT47IERlbmlzIEJlbmF0bw0KPiA8YmVuYXRvLmRlbmlzOTZAZ21h
+aWwuY29tPjsgVXdlIEtsZWluZS1Lw7ZuaWcgKFRoZSBDYXBhYmxlIEh1YikNCj4gPHUua2xlaW5l
+LWtvZW5pZ0BiYXlsaWJyZS5jb20+OyBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC0NCj4g
+a2VybmVsQHZnZXIua2VybmVsLm9yZzsgbHZjLXByb2plY3RAbGludXh0ZXN0aW5nLm9yZzsNCj4g
+c3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbUEFUQ0ggbmV0IHYyIDEvM10gbmV0
+OiBmZWFsbng6IGZpeCB0ZWFyZG93biBvcmRlciBpbiByZW1vdmUNCj4gDQo+IEZyb206IFJhZGl5
+IFpoYW1iYWtpZXYgPHIuemhhbWJha2lldkBwcm9zb2Z0c3lzdGVtcy5ydT4NCj4gDQo+IGZlYWxu
+eF9yZW1vdmVfb25lKCkgZnJlZXMgdGhlIERNQSByaW5ncyBiZWZvcmUgdW5yZWdpc3RlcmluZyB0
+aGUNCj4gbmV0ZGV2LCB3aGlsZSB0aGUgaW50ZXJmYWNlIG1heSBzdGlsbCBiZSB1cCwgd2hpY2gg
+bGVhdmVzIGEgd2luZG93DQo+IHdoZXJlIGZyZWVkIG1lbW9yeSBjYW4gYmUgYWNjZXNzZWQuDQo+
+IA0KPiBDYWxsIHVucmVnaXN0ZXJfbmV0ZGV2KCkgZmlyc3Qgc28gZGV2X2Nsb3NlKCkgc3RvcHMg
+dGhlIFR4L1J4IGVuZ2luZXMsDQo+IGRlbGV0ZXMgdGhlIHRpbWVycywgYW5kIGZyZWVzIHRoZSBJ
+UlEgYmVmb3JlIHRoZSByaW5ncyBhcmUgZnJlZWQuDQo+IA0KPiBGb3VuZCBieSBMaW51eCBWZXJp
+ZmljYXRpb24gQ2VudGVyIChsaW51eHRlc3Rpbmcub3JnKQ0KPiANCj4gRml4ZXM6IDFkYTE3N2U0
+YzNmNCAoIkxpbnV4LTIuNi4xMi1yYzIiKQ0KPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0K
+PiBTaWduZWQtb2ZmLWJ5OiBSYWRpeSBaaGFtYmFraWV2IDxyLnpoYW1iYWtpZXZAcHJvc29mdHN5
+c3RlbXMucnU+DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvZXRoZXJuZXQvZmVhbG54LmMgfCAyICst
+DQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbnguYw0KPiBiL2RyaXZlcnMv
+bmV0L2V0aGVybmV0L2ZlYWxueC5jIGluZGV4IGJkYzM4YWFjNTg1MC4uNjgxOTRjOWVmMzMyDQo+
+IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbnguYw0KPiArKysgYi9k
+cml2ZXJzL25ldC9ldGhlcm5ldC9mZWFsbnguYw0KPiBAQCAtNjgyLDExICs2ODIsMTEgQEAgc3Rh
+dGljIHZvaWQgZmVhbG54X3JlbW92ZV9vbmUoc3RydWN0IHBjaV9kZXYNCj4gKnBkZXYpDQo+ICAJ
+aWYgKGRldikgew0KPiAgCQlzdHJ1Y3QgbmV0ZGV2X3ByaXZhdGUgKm5wID0gbmV0ZGV2X3ByaXYo
+ZGV2KTsNCj4gDQo+ICsJCXVucmVnaXN0ZXJfbmV0ZGV2KGRldik7DQo+ICAJCWRtYV9mcmVlX2Nv
+aGVyZW50KCZwZGV2LT5kZXYsIFRYX1RPVEFMX1NJWkUsIG5wLQ0KPiA+dHhfcmluZywNCj4gIAkJ
+CQkgIG5wLT50eF9yaW5nX2RtYSk7DQo+ICAJCWRtYV9mcmVlX2NvaGVyZW50KCZwZGV2LT5kZXYs
+IFJYX1RPVEFMX1NJWkUsIG5wLQ0KPiA+cnhfcmluZywNCj4gIAkJCQkgIG5wLT5yeF9yaW5nX2Rt
+YSk7DQo+IC0JCXVucmVnaXN0ZXJfbmV0ZGV2KGRldik7DQo+ICAJCXBjaV9pb3VubWFwKHBkZXYs
+IG5wLT5tZW0pOw0KPiAgCQlmcmVlX25ldGRldihkZXYpOw0KPiAgCQlwY2lfcmVsZWFzZV9yZWdp
+b25zKHBkZXYpOw0KPiAtLQ0KPiAyLjUzLjANCg0KW1BBVENIIG5ldCB2MiAxLzNdIG5ldDogZmVh
+bG54OiBmaXggdGVhcmRvd24gb3JkZXIgaW4gcmVtb3ZlDQo=
