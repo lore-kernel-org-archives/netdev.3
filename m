@@ -1,35 +1,36 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441224E2F09;
-	Fri,  2 Oct 2026 15:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0374E36E6;
+	Fri,  2 Oct 2026 15:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790953415; cv=none; b=fH9XB4+4ZhOZATxdxTqNEBoBw88fdZCgPjwWx0OsxhbgJlTqFhHsCBlMsjh8KDTKnGj/nc3RY27R5tERSlq90FKQ3egLGE9zXQV8swExFSYq/Pd1OhCfwGr6S8ON4wxkJj+xBoV0x7kN/nwboM1oBcevolFw8/V9MLsMepJtC3s=
+	t=1790953416; cv=none; b=HOC67ufLxd9Cx6SJbOtGKYsrn6fefFg6BMCL17aJ/0KcfXRwV0hAP/I17rZGSNxR8phw6pcrOsYqxbDCWwoy2vOOSVgkEqZAvSIhe6xh0Ej9Ztho1JZjyMbkc+Rnk13i33Y2QkTjV/U+b7Ox4umPue6mqTEyDOgFKPSJ1SgNbRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790953415; c=relaxed/simple;
-	bh=xviz4MzmukKAq9SOXG8gI5q12as1RjdbiiBxoMPv/Ow=;
+	s=arc-20240116; t=1790953416; c=relaxed/simple;
+	bh=ZRoZbnHfq6/EXTO+Gb48aX090aGg+3JLtr6hgVGiulo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nkaYpgdeEJrmcMAbVnIZLPaOaiwlUtp/VUwS4sX1RJMwaaiPfoLpxCjJn1tt8mfU4qHiNbURXvq4RAtaWYjHc7Ib+JU1fF4o8TxPjGLu01ST8t+z25QykEBDJKXBnDcHQa8UQM4qhpdwgAu/orF0u9GczB6OO836AZgt62LfAYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=xy+oeXZq; arc=none smtp.client-ip=194.13.80.246
+	 In-Reply-To:To:Cc; b=WJvl920ID0EWnLwS+8aWmpR+htkUmVZwPMzpdT5AViZRNkNMSQsCuY2BCbN/3kbzJcpbgJpwoRK18jZYmfYO+lZWQeL+HB2LBnzXhVtl+VI7DHn2o82ghL5RY9M3L7TSWjBs/VTk3x872mLVJJ3LB/MSt0sUXVrT5PczkmgCHL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=dni4ts8O; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="xy+oeXZq"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E5854A4B5A;
-	Fri,  2 Oct 2026 17:03:30 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="dni4ts8O"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ADC38A4AC9;
+	Fri,  2 Oct 2026 17:03:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790953411; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1790953412; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=rZhg4NlJRp3qiYzJMFaD7Oo8ikgmw8uxMBdSSVEt9Fo=;
-	b=xy+oeXZq97PiaXGVcezfQL0oRh82fux8dCLU6i5WgG3xIpZNmzY4SgLnq8UVEqc7X4PLYZ
-	yo1SMKowUs7XJg7dYgeLuvA1i6Gk0MXV5xD0O8TzTUy2Isv4v3X7gDy18+6ROGHwUpw1bI
-	/m7Om/2hg+M3cY0S3/vc5aOUwxZDpQ1hy3hQP+uGjGItqBXPZu4qlHvJJ21OOWR8u66DZd
-	GSlV/0yvUz9ksKei2cg0jFkTuHD1xsaWQ07lk+eYAy387jjRjL0rB2OIOn3kvTMdIMQ6C1
-	tNRefuhvsKN0L/wFwt+p1eSeUjEqcNB/IO5cd6B0qd4dr40AsrQ1pKBTtIpGPw==
+	bh=Lcp/bad4iGTvWpUWfC/svreJIkGD4jsCNk2o3jygtZ0=;
+	b=dni4ts8OZtj56RSgW9fmoLpq8GBWLnAWWRE6eejnBA7SPIzstckpjAoe4oADAwqbvlFanp
+	cozlooXfChWyEV2J0N/fcrADTL/6jpXIey9iQ9Fjho1hBHS4O038D6Ce5Wf5kbx9wXU+sR
+	qj5iTf8IkLHZ4GG1KgkeGLW6cVQogfyCly3O4FMJI9mzo3QoALIheyVIOLDWBLkjcsBjkp
+	SJKGNoOqAMb18G8LcC4iujY7qeotI52HDPiHu7I7kk6gH/KWA5I+Jt+fqjZHKQour/XGVq
+	I8mWG0k43HUnxkV147qKMRIqMKU6lbDEL1askdbGitkR6iDufRmjxcP2ofC2jw==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Fri, 02 Oct 2026 17:03:23 +0200
-Subject: [PATCH net-next 5/7] net: bcmgenet: allow the MTU to be changed
+Date: Fri, 02 Oct 2026 17:03:24 +0200
+Subject: [PATCH net-next 6/7] net: bcmgenet: pad transmit frames out of the
+ packet ready window
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +39,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261002-nb-genet-mtu-nn-v2-v1-5-96dc6d54cbee@tipi-net.de>
+Message-Id: <20261002-nb-genet-mtu-nn-v2-v1-6-96dc6d54cbee@tipi-net.de>
 References: <20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee@tipi-net.de>
 In-Reply-To: <20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>, 
@@ -55,200 +56,122 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-The driver never sets dev->max_mtu, so the MTU is stuck at ETH_DATA_LEN.
+A frame that ends a few bytes past the transmit packet ready threshold
+stops the transmitter as soon as a shorter frame follows. Tx DMA then
+refuses to halt, so every later bcmgenet_init_dma() fails and the interface
+cannot be opened again. IP fragmentation generates that pattern on every
+datagram, full frames and a short tail.
 
-One descriptor reaches as far as the packet ready threshold, so derive the
-maximum from it. The threshold registers are 8 bit in units of 16 bytes and
-want a multiple of the 256 byte burst size. A descriptor is one page and
-also holds skb_shared_info behind the frame. On 4K pages the page is the
-tighter limit and leaves 3564 bytes. That includes room for a VLAN tag so a
-VLAN interface can run at the parent MTU.
+The window starts one byte past the threshold and widens with it. On a CM4
+it ends 28, 32 and 46 bytes past thresholds of 2560, 3584 and 3840. Link
+speed makes no difference. Pad frames landing in it to 64 bytes past the
+threshold.
 
-Resize the buffers and rewrite the registers in place. The PHY keeps
-running and the link stays up.
+Padding must not push a frame past what the peer accepts. Linux does not
+bound how many VLAN tags a frame carries, so measure against the longest
+frame the MAC has to accept rather than a tag count. For the MTUs where
+such a frame would land in the window, lower the threshold instead. All
+other MTUs keep the register maximum.
 
-A failed allocation retries at the previous size. If that fails too, take
-the interface down. Running on rings that were never allocated is worse.
-
-Suggested-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Link: https://github.com/raspberrypi/linux/issues/5561
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 Tested-by: Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 82 +++++++++++++++++++++++++-
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |  9 ++-
- 2 files changed, 85 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 39 ++++++++++++++++++++++++--
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h |  1 +
+ 2 files changed, 38 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index bf889558f6ad..4634b6521ab8 100644
+index 4634b6521ab8..0cd56ec1c5cc 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -77,6 +77,12 @@
- 				      ENET_THLD_MAX * ENET_THLD_UNIT, \
- 				      ENET_THLD_PAGE_LEN)
+@@ -59,6 +59,11 @@
+ #define ENET_THLD_DEFAULT	0x80
+ #define ENET_THLD_MAX		0xf0
  
-+/* Largest MTU that fits one descriptor, with room for a VLAN tag so a VLAN
-+ * interface can use the parent MTU.
++/* A frame ending just past the transmit threshold stops the transmitter once
++ * a shorter frame follows, so pad frames that land there this far past it.
 + */
-+#define ENET_MAX_MTU		(ENET_THLD_MAX_LEN - GENET_RBUF_ALIGN - \
-+				 ETH_HLEN - VLAN_HLEN)
++#define ENET_TX_SAFE_MARGIN	64
 +
- /* Tx/Rx DMA register offset, skip 256 descriptors */
- #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
- #define DMA_DESC_SIZE		(WORDS_PER_BD(priv) * sizeof(u32))
-@@ -2665,7 +2671,7 @@ static void bcmgenet_set_mtu_regs(struct bcmgenet_priv *priv, unsigned int mtu)
- {
- 	u32 thld = bcmgenet_pkt_rdy_thld(mtu);
+ /* Page pool RX buffer layout:
+  * RSB(64) + pad(2) | frame data | skb_shared_info
+  * The HW writes the 64B RSB + 2B alignment padding before the frame.
+@@ -2171,6 +2176,18 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		goto out;
+ 	}
  
--	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN, UMAC_MAX_FRAME_LEN);
-+	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN(mtu), UMAC_MAX_FRAME_LEN);
- 
- 	/* GENET v1 maps other registers at these offsets */
- 	if (GENET_IS_V1(priv))
-@@ -2799,7 +2805,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
- 
- 	/* Set flow period for ring != 0 */
- 	if (index)
--		flow_period_val = ENET_MAX_FRAME_LEN << 16;
-+		flow_period_val = ENET_MAX_FRAME_LEN(priv->dev->mtu) << 16;
- 
- 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
- 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
-@@ -3491,6 +3497,7 @@ static int bcmgenet_open(struct net_device *dev)
- 
- 	bcmgenet_netif_start(dev, true);
- 
-+	priv->datapath_up = true;
- 	netif_tx_start_all_queues(dev);
- 
- 	return 0;
-@@ -3549,7 +3556,11 @@ static int bcmgenet_close(struct net_device *dev)
- 
- 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
- 
--	bcmgenet_netif_stop(dev, false);
-+	/* A failed MTU change can have torn the datapath down already */
-+	if (priv->datapath_up) {
-+		bcmgenet_netif_stop(dev, false);
-+		priv->datapath_up = false;
-+	}
- 
- 	/* Really kill the PHY state machine and disconnect from it */
- 	phy_disconnect(dev->phydev);
-@@ -3797,6 +3808,66 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
- 	return 0;
- }
- 
-+static int bcmgenet_change_mtu(struct net_device *dev, int new_mtu)
-+{
-+	struct bcmgenet_priv *priv = netdev_priv(dev);
-+	unsigned int old_mtu = dev->mtu;
-+	int ret;
-+
-+	if (!netif_running(dev)) {
-+		WRITE_ONCE(dev->mtu, new_mtu);
-+		priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
-+		return 0;
-+	}
-+
-+	/* The watchdog trips on an idle queue once the rings are gone */
-+	netif_device_detach(dev);
-+
-+	/* Only the buffers and the MTU registers change, leave the PHY up */
-+	bcmgenet_netif_stop(dev, false);
-+	priv->datapath_up = false;
-+
-+	WRITE_ONCE(dev->mtu, new_mtu);
-+	priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
-+	bcmgenet_set_mtu_regs(priv, new_mtu);
-+
-+	ret = bcmgenet_init_dma(priv, true);
-+	if (ret) {
-+		/* Retry the size that was allocated a moment ago */
-+		WRITE_ONCE(dev->mtu, old_mtu);
-+		priv->rx_buf_len = bcmgenet_rx_buf_len(old_mtu);
-+		bcmgenet_set_mtu_regs(priv, old_mtu);
-+		if (bcmgenet_init_dma(priv, true)) {
-+			/* Nothing left to run on. Take the interface down so
-+			 * that close and suspend do not tear it down twice.
-+			 */
-+			netdev_err(dev, "failed to restore MTU %u, closing\n",
-+				   old_mtu);
-+			netif_close(dev);
-+
-+			/* Mark the device present again, __dev_open()
-+			 * refuses a detached one. The queues stay stopped
-+			 * because the interface is down by now.
-+			 */
-+			netif_device_attach(dev);
-+			return ret;
++	/* Keep the frame out of the window just past the threshold */
++	if (unlikely(skb->len > priv->tx_thld_len &&
++		     skb->len < priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
++		if (skb_put_padto(skb, priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
++			BCMGENET_STATS64_INC((&ring->stats64), dropped);
++			ret = NETDEV_TX_OK;
++			goto out;
 +		}
 +	}
 +
-+	bcmgenet_hfb_restore(priv);
-+	bcmgenet_netif_start(dev, false);
++	nr_frags = skb_shinfo(skb)->nr_frags;
 +
-+	/* bcmgenet_netif_start() only restores the link interrupt */
-+	if (bcmgenet_has_mdio_intr(priv))
-+		bcmgenet_intrl2_0_writel(priv, UMAC_IRQ_MDIO_EVENT,
-+					 INTRL2_CPU_MASK_CLEAR);
+ 	/* Retain how many bytes will be sent on the wire, without TSB inserted
+ 	 * by transmit checksum offload
+ 	 */
+@@ -2659,6 +2676,23 @@ static unsigned int bcmgenet_pkt_rdy_thld(unsigned int mtu)
+ 		       ENET_THLD_MAX_LEN / ENET_THLD_UNIT);
+ }
+ 
++/* Transmit threshold in register units. Frames landing in the window just
++ * past it are padded clear of it, so pick a threshold that leaves room for
++ * that padding inside the frame the MTU allows. Size the window against the
++ * longest frame the MAC has to accept, since the tag count is not bounded.
++ */
++static unsigned int bcmgenet_tx_pkt_rdy_thld(unsigned int mtu)
++{
++	unsigned int thld = ENET_THLD_MAX;
 +
-+	priv->datapath_up = true;
-+	netif_device_attach(dev);
++	while (thld > ENET_THLD_DEFAULT &&
++	       ENET_MAX_FRAME_LEN(mtu) - ETH_FCS_LEN > thld * ENET_THLD_UNIT &&
++	       thld * ENET_THLD_UNIT + ENET_TX_SAFE_MARGIN > mtu + ETH_HLEN)
++		thld -= ENET_THLD_BURST / ENET_THLD_UNIT;
 +
-+	return ret;
++	return thld;
 +}
 +
- static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_open		= bcmgenet_open,
- 	.ndo_stop		= bcmgenet_close,
-@@ -3808,6 +3879,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
- 	.ndo_set_features	= bcmgenet_set_features,
- 	.ndo_get_stats64	= bcmgenet_get_stats64,
- 	.ndo_change_carrier	= bcmgenet_change_carrier,
-+	.ndo_change_mtu		= bcmgenet_change_mtu,
- };
+ /* A buffer has to hold everything the threshold lets the hardware deliver */
+ static unsigned int bcmgenet_rx_buf_len(unsigned int mtu)
+ {
+@@ -2669,8 +2703,10 @@ static unsigned int bcmgenet_rx_buf_len(unsigned int mtu)
+ /* Program the MTU dependent registers. Call with the MAC disabled. */
+ static void bcmgenet_set_mtu_regs(struct bcmgenet_priv *priv, unsigned int mtu)
+ {
++	u32 tx_thld = bcmgenet_tx_pkt_rdy_thld(mtu);
+ 	u32 thld = bcmgenet_pkt_rdy_thld(mtu);
  
- /* GENET hardware parameters/characteristics */
-@@ -4161,7 +4233,11 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	/* Mii wait queue */
- 	init_waitqueue_head(&priv->wq);
- 	bcmgenet_hfb_init(priv);
-+
-+	/* v1 cannot program the thresholds, so it stays at the default MTU */
- 	priv->rx_buf_len = bcmgenet_rx_buf_len(dev->mtu);
-+	if (!GENET_IS_V1(priv))
-+		dev->max_mtu = ENET_MAX_MTU;
- 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
++	priv->tx_thld_len = tx_thld * ENET_THLD_UNIT;
+ 	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN(mtu), UMAC_MAX_FRAME_LEN);
  
- 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
+ 	/* GENET v1 maps other registers at these offsets */
+@@ -2678,8 +2714,7 @@ static void bcmgenet_set_mtu_regs(struct bcmgenet_priv *priv, unsigned int mtu)
+ 		return;
+ 
+ 	bcmgenet_rbuf_writel(priv, thld, RBUF_PKT_RDY_THLD);
+-	bcmgenet_writel(ENET_THLD_MAX,
+-			priv->base + priv->hw_params->tbuf_offset +
++	bcmgenet_writel(tx_thld, priv->base + priv->hw_params->tbuf_offset +
+ 			TBUF_PKT_RDY_THLD);
+ }
+ 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 6444bac168c3..f535490547cf 100644
+index f535490547cf..eb00cff0e732 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -31,9 +31,11 @@
- #define ENET_BRCM_TAG_LEN	6
- #define ENET_PAD		8
+@@ -618,6 +618,7 @@ struct bcmgenet_priv {
+ 	struct enet_cb *rx_cbs;
+ 	unsigned int num_rx_bds;
+ 	unsigned int rx_buf_len;
++	unsigned int tx_thld_len;
+ 	struct bcmgenet_rxnfc_rule rxnfc_rules[MAX_NUM_OF_FS_RULES];
+ 	struct list_head rxnfc_list;
  
--/* Longest frame the MAC must accept for the default MTU */
--#define ENET_MAX_FRAME_LEN	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
--				 ENET_BRCM_TAG_LEN + ETH_FCS_LEN + ENET_PAD)
-+/* Longest frame the MAC must accept for a given MTU */
-+#define ENET_FRAME_OVERHEAD	(ETH_HLEN + VLAN_HLEN + ENET_BRCM_TAG_LEN + \
-+				 ETH_FCS_LEN + ENET_PAD)
-+#define ENET_MAX_FRAME_LEN(mtu)	((mtu) + ENET_FRAME_OVERHEAD)
-+
- #define DMA_MAX_BURST_LENGTH    0x10
- 
- /* misc. configuration */
-@@ -627,6 +629,7 @@ struct bcmgenet_priv {
- 	unsigned autoneg_pause:1;
- 	unsigned tx_pause:1;
- 	unsigned rx_pause:1;
-+	unsigned datapath_up:1;
- 
- 	/* MDIO bus variables */
- 	wait_queue_head_t wq;
 
 -- 
 2.53.0
