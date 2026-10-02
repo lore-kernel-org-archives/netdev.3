@@ -1,272 +1,250 @@
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A4331E847
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 03:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BCCC29BD91;
+	Fri,  2 Oct 2026 04:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790912428; cv=none; b=ZS6FglIrMGULzBAsVuoJqHYOJfrT5GUd5dbNKMFGCQWfWXDTDWVMlNiNvrgdoVxuxh0AZRFGqa6veUQoFd+pfl9ygZyyOhpKrhk78swN8pXNdbrKyRilULVDXzefq22lTGDqjgED7gCzy5/Igo4dZHinfwVIJwZ9TuHMoNW/TSI=
+	t=1790914247; cv=none; b=K4/uo8NvM7nyhxe+NRcTm7GV07RH55HETLHZ68+gFJz42MjYGwnbbcdFngxNRxycM2sZ3ZenhX1gWKijN3vLn8P7axf8633c1GfrFda3cyiFP+4tWwJk93GagOOYgTJzw1fS3UiHDIhKHhLrD7C/KnYV5FYlbtaGpkMCoutWzb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790912428; c=relaxed/simple;
-	bh=7DEnIPBCCKwg3iRZ58S7DgxGVdPCoT4ozRQnpe3AmZc=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=FPMWTYOLNCg4dNKbzjhMOj0eo7H0/C5sOvUU9hkM6NtCOTH41BwJsxnb4oSxFzKu1ZNqxURUYNzkbDhbXZEPSDgckt6UVC1rrDuE1W1Cyw1kmxea5irr1RHg3qgMlBEdsKYzmL6FdH54OS1wZi1PAP0FONjhDAt46uoQgq+8gTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-815f2b1ecc3so2997542a34.2
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 20:40:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790912425; x=1791517225;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=kMwz3JG6cUfXRqV2RJX7PZeX+DHxAQ564iCLriDAmU0=;
-        b=jexsEfAGstbZlQVRmlUSvxHw6AZ2L1ic5w5PIHjf6fdmgMwikd7BhRp1BhOGn8Kwd+
-         mABAYEe3TkuSjC8Ldn0JcnLtyvvG7jLQjH64hl4dGcftUlg9rboeTCSG55JOIAcJDQIE
-         oKC38Ky4tBRnsfjr2B4PKBnLF4yoVXjnzd7wasMv5mLmXvcj+SqwzJkEU6peaEHEJybn
-         TkR6KGJ1rqqF56rNO0Xm83P+oVMaP7u9qt/JdEvNyhnQrK93EZ/ZJkH1Pc3zNiMxv8Mx
-         O+U63OvDSvOKKBnmhGzmXgDw04EUSfEw9Mlk0znvQnH5JGOJlZ7zRTAm1HLbYDhTlpVJ
-         8jQw==
-X-Forwarded-Encrypted: i=1; AKwUvBwgRSSYgSohHWZgi/Yex6gyLhJIeWAblvmzn9RcehT9srZ/ba9PL6xDuzOmB1pfPV0Bdg05hso=@vger.kernel.org
-X-Gm-Message-State: AFuF++ndGYo7eO7DeRxyybGIBPlc2eE9QbW3nRJyIeFBEfT2UUk3qFsB
-	9pV5QVVSlR3r9kLlO7V51xg+8xlQBaZi11aylBgGQE5yJw7Ki5i4h1KkmSqzkuiH3tRAC4GeYwM
-	81ZItayOoL+OJnAOsSLQ1/Ko18xSO/ThBzc7Rpef8fGLb9WgRJrKslaCgzYk=
+	s=arc-20240116; t=1790914247; c=relaxed/simple;
+	bh=EIJOChoEaEBYESXE80s9ndb/MUmkNCdLxI8pLXZEk0Y=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=taKhVnwXYXu+jdbM3uhpUTOMOXf1l6sr5rD7Z1IKdZXxVCHWCHR/h5q+nqR6s0/FhezeN8dQ1R/j3P2GR3lPWMKoNHs2eDpTtlbbLkB1yj7wIDIItYzHkcfnsmGgjpBY7rwrw0W9bDKckxfgvl7YL2VHx5dUuIC0r8xdlTEU3K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UQ1mi4za; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UQ1mi4za"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1204F1F000FF;
+	Fri,  2 Oct 2026 04:10:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790914245;
+	bh=7EiCnC+fxZoU5zU0lqX0ZAzpiXyCq5Hiv/8TdrXYdFg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UQ1mi4zaJBmJbf4oVKRHX52ReKdm2jPrqU44Zls9vs1lPUFR4wBVyOjJZcZMEvIRL
+	 85DhJV66p279niy7hV3uNFAMoe/i79/9IjSXzkG1zbalJVucMtpBbrr2xFmvg9BpAg
+	 i32O28p6CMEbD+PV40xKufOBe9/ocI/HdwwuIcDSiM15D9M/N8S3VkVP4rsJM4/kQt
+	 ppqv9uRffeDpklY3j7/hWP5eE/e2Km4XSvQGtoD8Oq21hi+ddtfNB6zuzvgZQ4O+6W
+	 OU1bGDzJUpEY5guhbMo4RWomYJrXNA9um8eCR9IVR3UcApfHIS4WKki710KPoXby4x
+	 UzIIWdzfnP1xA==
+Subject: Re: [PATCH net-next v4 2/3] net: dsa: qca8k: serialize CPU MAC pause
+ during MTU changes
+From: netdev-bot+sashiko@kernel.org
+To: yongzhao.derek@gmail.com
+Cc: netdev@vger.kernel.org, hzyitc@outlook.com, ansuelsmth@gmail.com,
+ andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, florian.fainelli@broadcom.com,
+ linux-kernel@vger.kernel.org
+Date: Fri, 02 Oct 2026 04:10:44 +0000
+Message-ID: <179091424456.434549.5853243408552872110@kernel.org>
+In-Reply-To: <20260928220811.1880-3-yongzhao.derek@gmail.com>
+References: <20260928220811.1880-3-yongzhao.derek@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c161:b0:4c4:a240:9c3a with SMTP id
- 5614622812f47-4f526a4f2eamr1151205b6e.4.1790912425656; Thu, 01 Oct 2026
- 20:40:25 -0700 (PDT)
-Date: Thu, 01 Oct 2026 20:40:25 -0700
-In-Reply-To: <6a74a7ae.01d0871a.3a0d52.001f.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6abf27a9.b50370da.302ea9.0008.GAE@google.com>
-Subject: Re: [syzbot] [nvme?] possible deadlock in __sock_release (2)
-From: syzbot <syzbot+2398b0f6924a70b7de12@syzkaller.appspotmail.com>
-To: hch@lst.de, johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, sagi@grimberg.me, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-syzbot has found a reproducer for the following issue on:
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-HEAD commit:    d24e8ac715de Merge tag 'net-7.3-rc6' of git://git.kernel.o..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=161b2725580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=7d012d9c67977ee4
-dashboard link: https://syzkaller.appspot.com/bug?extid=2398b0f6924a70b7de12
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1443cbf5580000
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2398b0f6924a70b7de12@syzkaller.appspotmail.com
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-nvme nvme0: failed to connect socket: -512
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz-executor294/6008 is trying to acquire lock:
-ffff888028dcf540 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}, at: inode_lock include/linux/fs.h:1024 [inline]
-ffff888028dcf540 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}, at: __sock_release+0x86/0x260 net/socket.c:734
+- [Medium] The commit message says the new error handling works: it will
+  "abort before updating the frame size if ... pausing the MAC fails"…
+- [Medium] For internal-PHY CPU ports (1-5), which this patch adds to the
+  pause set, qca8k_port_change_mtu() clears only TXMAC|RXMAC (`mask`,…
+- [Low] The concern: the commit message treats a CPU port on internal-PHY
+  ports 1-5 as a live configuration, though the driver in this tree only…
 
-but task is already holding lock:
-ffffffff8ff50aa0 (nvmf_dev_mutex){+.+.}-{4:4}, at: nvmf_dev_write+0xa6/0xb60 drivers/nvme/host/fabrics.c:1402
+--
 
-which lock already depends on the new lock.
+net: dsa: qca8k: serialize CPU MAC pause during MTU changes
 
+This commit adds internal PHY CPU ports 1-5 to the pause sequence that
+runs in qca8k_port_change_mtu() before QCA8K_MAX_FRAME_SIZE is written.
+It takes reg_mutex to serialize that sequence against port enable, port
+disable and phylink link transitions. It also saves each port's
+TXMAC/RXMAC bits and restores them afterwards, with new error handling
+that aborts and restores on failure.
 
-the existing dependency chain (in reverse order) is:
+> diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+> index 60f2a615a5cc2..dfe18b6e936bf 100644
+> --- a/drivers/net/dsa/qca/qca8k-8xxx.c
+> +++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+> @@ -1483,7 +1483,9 @@ qca8k_phylink_mac_link_up(struct phylink_config *config,
+>  
+>  	reg |= QCA8K_PORT_STATUS_TXMAC | QCA8K_PORT_STATUS_RXMAC;
+>  
+> +	mutex_lock(&priv->reg_mutex);
+>  	qca8k_write(priv, QCA8K_REG_PORT_STATUS(port), reg);
+> +	mutex_unlock(&priv->reg_mutex);
+>  }
 
--> #4 (nvmf_dev_mutex){+.+.}-{4:4}:
-       lock_acquire kernel/locking/lockdep.c:5942 [inline]
-       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x1a4/0x1bd0 kernel/locking/mutex.c:821
-       nvmf_dev_show+0x26/0x210 drivers/nvme/host/fabrics.c:1446
-       seq_read_iter+0x32f/0x1270 fs/seq_file.c:231
-       seq_read+0x344/0x4d0 fs/seq_file.c:163
-       vfs_read+0x1e4/0xb40 fs/read_write.c:572
-       ksys_read+0x12a/0x250 fs/read_write.c:716
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[Severity: Low]
+This isn't a bug, but should part of this change carry a Fixes: tag?
 
--> #3 (&p->lock){+.+.}-{4:4}:
-       lock_acquire kernel/locking/lockdep.c:5942 [inline]
-       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x1a4/0x1bd0 kernel/locking/mutex.c:821
-       seq_read_iter+0xe1/0x1270 fs/seq_file.c:183
-       kernfs_fop_read_iter+0x46c/0x610 fs/kernfs/file.c:290
-       __kernel_read+0x397/0xad0 fs/read_write.c:532
-       integrity_kernel_read+0x7e/0xb0 security/integrity/iint.c:28
-       ima_calc_file_hash_tfm+0x25e/0x350 security/integrity/ima/ima_crypto.c:222
-       ima_calc_file_hash+0x1e3/0x380 security/integrity/ima/ima_crypto.c:280
-       ima_collect_measurement+0x94f/0xb30 security/integrity/ima/ima_api.c:300
-       process_measurement+0xdfe/0x2350 security/integrity/ima/ima_main.c:425
-       ima_file_check+0xc3/0x110 security/integrity/ima/ima_main.c:685
-       security_file_post_open+0xc4/0x210 security/security.c:2755
-       do_open fs/namei.c:4839 [inline]
-       path_openat+0x5cd/0x2440 fs/namei.c:5000
-       do_file_open+0x20e/0x430 fs/namei.c:5029
-       do_sys_openat2+0x10f/0x1e0 fs/open.c:1417
-       do_sys_open fs/open.c:1423 [inline]
-       __do_sys_openat fs/open.c:1439 [inline]
-       __se_sys_openat fs/open.c:1434 [inline]
-       __x64_sys_openat+0x12d/0x210 fs/open.c:1434
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+qca8k_phylink_mac_link_up() and the link-down callback run from the
+phylink resolve work without rtnl. qca8k_port_change_mtu() runs under
+rtnl.
 
--> #2 (&ima_iint_mutex_key[depth]){+.+.}-{4:4}:
-       lock_acquire kernel/locking/lockdep.c:5942 [inline]
-       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x1a4/0x1bd0 kernel/locking/mutex.c:821
-       process_measurement+0x5ab/0x2350 security/integrity/ima/ima_main.c:319
-       ima_file_check+0xc3/0x110 security/integrity/ima/ima_main.c:685
-       security_file_post_open+0xc4/0x210 security/security.c:2755
-       do_open fs/namei.c:4839 [inline]
-       path_openat+0x5cd/0x2440 fs/namei.c:5000
-       do_file_open+0x20e/0x430 fs/namei.c:5029
-       file_open_name+0x1c3/0x3e0 fs/open.c:1375
-       filp_open+0x2e/0x50 fs/open.c:1392
-       kernel_read_file_from_path_initns+0xec/0x240 fs/kernel_read_file.c:159
-       fw_get_filesystem_firmware drivers/base/firmware_loader/main.c:549 [inline]
-       _request_firmware+0x733/0x13c0 drivers/base/firmware_loader/main.c:873
-       request_firmware+0x35/0x50 drivers/base/firmware_loader/main.c:948
-       reg_reload_regdb+0x85/0x460 net/wireless/reg.c:1067
-       genl_family_rcv_msg_doit+0x214/0x300 net/netlink/genetlink.c:1114
-       genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
-       genl_rcv_msg+0x560/0x800 net/netlink/genetlink.c:1209
-       netlink_rcv_skb+0x159/0x420 net/netlink/af_netlink.c:2575
-       genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
-       netlink_unicast_kernel net/netlink/af_netlink.c:1338 [inline]
-       netlink_unicast+0x585/0x850 net/netlink/af_netlink.c:1364
-       netlink_sendmsg+0x8b0/0xda0 net/netlink/af_netlink.c:1919
-       sock_sendmsg_nosec net/socket.c:800 [inline]
-       __sock_sendmsg net/socket.c:815 [inline]
-       __sys_sendto+0x48b/0x4e0 net/socket.c:2281
-       __do_sys_sendto net/socket.c:2288 [inline]
-       __se_sys_sendto net/socket.c:2284 [inline]
-       __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2284
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Before this patch, a concurrent link-up could set TXMAC/RXMAC on port 0
+or 6 after the pause but before the QCA8K_MAX_FRAME_SIZE write. The same
+goes for restoring ports 0 and 6 to their previous state instead of
+always turning them back on. Both look like fixes for existing behavior.
 
--> #1 (cb_lock){++++}-{4:4}:
-       lock_acquire kernel/locking/lockdep.c:5942 [inline]
-       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
-       down_read+0x99/0x4c0 kernel/locking/rwsem.c:1574
-       genl_release+0x7e/0x1d0 net/netlink/genetlink.c:697
-       netlink_release+0x105e/0x2000 net/netlink/af_netlink.c:735
-       __sock_release+0xb3/0x260 net/socket.c:735
-       sock_close+0x1c/0x30 net/socket.c:1526
-       __fput+0x3ff/0xb50 fs/file_table.c:512
-       fput_close_sync+0x118/0x250 fs/file_table.c:617
-       __do_sys_close fs/open.c:1560 [inline]
-       __se_sys_close fs/open.c:1545 [inline]
-       __x64_sys_close+0x8b/0x120 fs/open.c:1545
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+The commit message also treats a CPU port on internal PHY ports 1-5 as a
+configuration that exists today. In this tree, qca8k_find_cpu_port()
+only accepts ports 0 or 6. That support arrives later in the series in
+"net: dsa: qca8k: support QCA8337 internal PHY CPU links". Could the
+message say this part is preparation for that commit?
 
--> #0 (&sb->s_type->i_mutex_key#13){+.+.}-{4:4}:
-       check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3209
-       check_prevs_add kernel/locking/lockdep.c:3328 [inline]
-       validate_chain kernel/locking/lockdep.c:3952 [inline]
-       __lock_acquire+0x1528/0x1f40 kernel/locking/lockdep.c:5288
-       lock_acquire kernel/locking/lockdep.c:5942 [inline]
-       lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
-       down_write+0x8b/0x1f0 kernel/locking/rwsem.c:1631
-       inode_lock include/linux/fs.h:1024 [inline]
-       __sock_release+0x86/0x260 net/socket.c:734
-       sock_close+0x1c/0x30 net/socket.c:1526
-       __fput+0x3ff/0xb50 fs/file_table.c:512
-       __fput_sync+0xd7/0x100 fs/file_table.c:604
-       nvme_tcp_alloc_queue.isra.0+0xd6d/0x1770 drivers/nvme/host/tcp.c:1985
-       nvme_tcp_alloc_admin_queue drivers/nvme/host/tcp.c:2171 [inline]
-       nvme_tcp_configure_admin_queue+0x26/0x530 drivers/nvme/host/tcp.c:2325
-       nvme_tcp_setup_ctrl+0xa4/0xa20 drivers/nvme/host/tcp.c:2455
-       nvme_tcp_create_ctrl+0x970/0xd90 drivers/nvme/host/tcp.c:3083
-       nvmf_create_ctrl drivers/nvme/host/fabrics.c:1361 [inline]
-       nvmf_dev_write+0x4ee/0xb60 drivers/nvme/host/fabrics.c:1408
-       vfs_write+0x2aa/0x1050 fs/read_write.c:685
-       ksys_write+0x12a/0x250 fs/read_write.c:739
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> diff --git a/drivers/net/dsa/qca/qca8k-common.c b/drivers/net/dsa/qca/qca8k-common.c
+> index 13005f10edb7d..6b32bdd75eabe 100644
+> --- a/drivers/net/dsa/qca/qca8k-common.c
+> +++ b/drivers/net/dsa/qca/qca8k-common.c
 
-other info that might help us debug this:
+[ ... ]
 
-Chain exists of:
-  &sb->s_type->i_mutex_key#13 --> &p->lock --> nvmf_dev_mutex
+> @@ -764,14 +774,20 @@ void qca8k_port_disable(struct dsa_switch *ds, int port)
 
- Possible unsafe locking scenario:
+[ ... ]
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(nvmf_dev_mutex);
-                               lock(&p->lock);
-                               lock(nvmf_dev_mutex);
-  lock(&sb->s_type->i_mutex_key#13);
+>  int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+>  {
+> +	u32 mask = QCA8K_PORT_STATUS_TXMAC | QCA8K_PORT_STATUS_RXMAC;
+>  	struct qca8k_priv *priv = ds->priv;
 
- *** DEADLOCK ***
+[ ... ]
 
-locks held by syz-executor294/6008: 1, last CPU#2:
- #0: ffffffff8ff50aa0 (nvmf_dev_mutex){+.+.}-{4:4}, at: nvmf_dev_write+0xa6/0xb60 drivers/nvme/host/fabrics.c:1402
+> @@ -784,25 +800,58 @@ int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+>  
+>  	/* To change the MAX_FRAME_SIZE the cpu ports must be off or
+>  	 * the switch panics.
+> -	 * Turn off both cpu ports before applying the new value to prevent
+> -	 * this.
+> +	 * Include internal PHY CPU ports as well as the two MAC-only ports.
+> +	 * Toggle only MAC enables, preserving the phylink link-control mode.
+>  	 */
+> -	if (priv->port_enabled_map & BIT(0))
+> -		qca8k_port_set_status(priv, 0, 0);
+> +	ports = BIT(0) | BIT(6);
+> +	for (i = 1; i < 6; i++)
+> +		if (dsa_is_cpu_port(ds, i))
+> +			ports |= BIT(i);
 
-stack backtrace:
-CPU: 2 UID: 0 PID: 6008 Comm: syz-executor294 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
- print_circular_bug.cold+0x178/0x1be kernel/locking/lockdep.c:2087
- check_noncircular+0x146/0x160 kernel/locking/lockdep.c:2219
- check_prev_add+0xeb/0xe60 kernel/locking/lockdep.c:3209
- check_prevs_add kernel/locking/lockdep.c:3328 [inline]
- validate_chain kernel/locking/lockdep.c:3952 [inline]
- __lock_acquire+0x1528/0x1f40 kernel/locking/lockdep.c:5288
- lock_acquire kernel/locking/lockdep.c:5942 [inline]
- lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
- down_write+0x8b/0x1f0 kernel/locking/rwsem.c:1631
- inode_lock include/linux/fs.h:1024 [inline]
- __sock_release+0x86/0x260 net/socket.c:734
- sock_close+0x1c/0x30 net/socket.c:1526
- __fput+0x3ff/0xb50 fs/file_table.c:512
- __fput_sync+0xd7/0x100 fs/file_table.c:604
- nvme_tcp_alloc_queue.isra.0+0xd6d/0x1770 drivers/nvme/host/tcp.c:1985
- nvme_tcp_alloc_admin_queue drivers/nvme/host/tcp.c:2171 [inline]
- nvme_tcp_configure_admin_queue+0x26/0x530 drivers/nvme/host/tcp.c:2325
- nvme_tcp_setup_ctrl+0xa4/0xa20 drivers/nvme/host/tcp.c:2455
- nvme_tcp_create_ctrl+0x970/0xd90 drivers/nvme/host/tcp.c:3083
- nvmf_create_ctrl drivers/nvme/host/fabrics.c:1361 [inline]
- nvmf_dev_write+0x4ee/0xb60 drivers/nvme/host/fabrics.c:1408
- vfs_write+0x2aa/0x1050 fs/read_write.c:685
- ksys_write+0x12a/0x250 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb8f5809ede
-Code: 08 0f 85 f5 e1 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 90 41 57 41 56 4d 89 c6 41 55 4d 89 cd 41 54 55 53 48 83 ec 08
-RSP: 002b:00007fb8f57b21a8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fb8f57b26c0 RCX: 00007fb8f5809ede
-RDX: 0000000000000037 RSI: 00007fb8f5859618 RDI: 0000000000000003
-RBP: 0000000000000021 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: ffffffffffffffd0
-R13: 0000000000000002 R14: 00007ffdf198cb10 R15: 00007ffdf198cbf8
- </TASK>
+[Severity: Medium]
+For internal PHY CPU ports 1-5, which are now in the pause set, does
+clearing only TXMAC and RXMAC actually stop the MAC?
 
+The driver's existing disable path also clears LINK_AUTO for those
+ports:
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+qca8k_port_set_status_locked() {
+	...
+	/* Port 0 and 6 have no internal PHY */
+	if (port > 0 && port < 6)
+		mask |= QCA8K_PORT_STATUS_LINK_AUTO;
+	...
+}
+
+If LINK_AUTO (LINK_EN) stays set, the MAC may keep following the
+internal PHY's link state. It could then keep passing traffic while
+QCA8K_MAX_FRAME_SIZE is rewritten.
+
+One case: qca8k_port_enable() sets TXMAC|RXMAC|LINK_AUTO on the CPU port
+during setup. Then the MTU is changed while the user port is created,
+possibly before phylink's mac_link_up has rewritten the register:
+
+dsa_user_create()
+  dsa_user_change_mtu(user_dev, ETH_DATA_LEN)
+    dsa_port_mtu_change(cpu_dp)
+      qca8k_port_change_mtu()
+
+qca8k_phylink_mac_link_up() also writes LINK_AUTO in in-band mode and in
+the default branch for unknown speeds.
+
+Whether LINK_EN overrides cleared TXMAC/RXMAC is hardware behavior that
+can't be confirmed from the code. Since status[] already saves the
+original bits, could LINK_AUTO be added to the pause mask for ports 1-5
+and restored afterwards?
+
+[ ... ]
+
+> +	for (i = 0; i < QCA8K_NUM_PORTS; i++) {
+> +		if (!(ports & BIT(i)) || !(status[i] & mask))
+> +			continue;
+> +
+> +		stopped |= BIT(i);
+> +		ret = regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(i),
+> +					mask);
+> +		if (ret)
+> +			goto restore;
+> +	}
+
+[Severity: Medium]
+The commit message says:
+
+  Abort before updating the frame size if reading port status or pausing
+  the MAC fails. Attempt to restore all ports already modified, and report
+  any restoration failures even if an earlier error occurred.
+
+Can this goto restore fire on the MDIO register path?
+qca8k_mii_write32() in qca8k-8xxx.c returns void:
+
+static void
+qca8k_mii_write32(struct mii_bus *bus, int phy_id, u32 regnum, u32 val)
+{
+	if (qca8k_mii_write_lo(bus, phy_id, regnum, val) < 0)
+		return;
+
+	qca8k_mii_write_hi(bus, phy_id, regnum + 1, val);
+}
+
+qca8k_regmap_update_bits_mii() returns the read result and ignores the
+write:
+
+	val &= ~mask;
+	val |= write_val;
+	qca8k_mii_write32(bus, 0x10 | r2, r1, val);
+
+exit:
+	mutex_unlock(&bus->mdio_lock);
+
+	return ret;
+
+qca8k_write_mii() only returns the qca8k_set_page() result.
+
+Without mgmt_conduit, or when the Ethernet management path falls back to
+MDIO, three calls report success even if the bus write fails:
+regmap_clear_bits() here, qca8k_write() of QCA8K_MAX_FRAME_SIZE, and
+regmap_update_bits() in the restore loop.
+
+Wouldn't that let MAX_FRAME_SIZE be written while a CPU MAC is still
+enabled? It would also mean the "failed to restore MAC state" message
+never prints for a failed MDIO write.
+
+The commit message also says:
+
+  The standalone qca8k MDIO error-propagation fix is a prerequisite for
+  this series; that error-handling bug predates this locking change.
+
+That fix is not in the tree or in this series. The MDIO write helpers
+are still unchanged at the end of the series.
+
+Could the message name the prerequisite commit or link to it, so
+maintainers and stable backporters know what must be applied first?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928220811.1880-1-yongzhao.derek%40gmail.com
