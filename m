@@ -1,155 +1,134 @@
-Received: from mvsmtppost23.nm.naver.com (mvsmtppost23.nm.naver.com [61.247.196.165])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB756419FD2
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.247.196.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1623E3D9020
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790928165; cv=none; b=jH7zQbGfj9jF3/qHHfBmjE4pweffXNT8JhvMyK63CU7hHkaJfRhy6sqwYbTqN4el2FBSrF8cmUaYv+DC3mFzFOylAhRAkTvD0jbWKwCNHhSh3uNtCnofdmiq605CvjeBUoo0nHDbbpUDzvXLZnD5smISaEs/o+RHSWBHJRwZnFg=
+	t=1790929225; cv=none; b=r9Ju7369VyHrbszZh4PIz8vFEzdJIkiug/Lm+NRQo7SaDnNTyF54S5qcZ0oYCYHQCQ7AoRqU0d5/phsAoGZBog9DDbYJ2zzaKmfGDx19aP2lOtbHv6WjEWfI4mNixrc3Sz8crwSnLprUDRYmWJ6zLJuCPElqzCt943sCDTKtN74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790928165; c=relaxed/simple;
-	bh=JUFspoQNePCu3sx+33YwcWSfxBGfUaqgfYRMvB92U5s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YMjav7+2KOwgQk4NnoxoL6FjOgtkS0KggxJo1YocU5135vBwW3d4LkhWdXjUo4mGeMO3lK686Nm0Pphk/6JFNfp8fuCt73DI8uktfuEKe6p/stLcGkHpfaD8z7KlenICOEDyurH4TJezBnUCknF4DhGA/Bs7NgCO66qMXd1wwb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=M/SAF4ZV; arc=none smtp.client-ip=61.247.196.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
+	s=arc-20240116; t=1790929225; c=relaxed/simple;
+	bh=gWnu78lsDu7M9l275KxounQcaaczKCQS6knv8WFYAA8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y8vZw2Tpu35IvbuKr8JnVEA3JSHMfMbzB0TFVtcHpQZp1P6bqhGF+cBO364FE/tvjzfZNaHJNHlPBoBAAp616WlMqMK0+8QTk3dkJ4/0nTpOwKW5lX8CNU2XWO56Cd/v0Or7VeYNc/RmFhZaovFkjhFcPRF6nfSysxsdjRYiv0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCk0j/Bo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="M/SAF4ZV"
-Received: from cvsendbo022.nm ([10.112.20.47])
-  by mvsmtppost23.nm.naver.com with ESMTP id +iywWdesQrerfydhEKhKiQ
-  for <netdev@vger.kernel.org>;
-  Fri, 02 Oct 2026 07:42:26 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
-	t=1790926946; bh=JUFspoQNePCu3sx+33YwcWSfxBGfUaqgfYRMvB92U5s=;
-	h=From:To:Subject:Date:Message-ID:From:Subject:Feedback-ID:
-	 X-Works-Security;
-	b=M/SAF4ZVfrGwM2YufxsBhUbE8wYrHQUZPGKLmWapRtSQoOdPdVFMrq4HhZbh5oZ8Y
-	 EQmrcqugBmNoDvU7P/fN+o04+PIxb5lW/1/qE1mLaS8QMGId1PAr4X5tZrA0keOynH
-	 n9W/WdZSxtJeWqFIgpZYAQuAhxrJBIwi8CnxAK1/9SGlAGY8jZNw5tq+HYhdLdS1ZD
-	 bKNcDoHjp8QMNek7ke6bHBdu02pYHzt0Q6VEvdstVirwXllVadVVSTzZFtrAVzBJSn
-	 cqkfvvTi22XoEIJY1bafL3q2oQ9Vc3jNWXOPdIjWheMKQYDdPQnWljKXxswSnTacYt
-	 /MslqwQ/DxlqQ==
-X-Session-ID: yBsmHpcKQJ2JXoj+LyXm0A
-X-Works-Send-Opt: OsFwpzGdjHmdKHFOMr39Ko3YKHm/jAudFqM9KqMqFxIYkEljxBmwjAg=
-X-Works-Smtp-Source: VqYlaAglFqJZ+HmrFAEd+6E=
-Received: from localhost.localdomain ([115.136.205.4])
-  by cvnsmtp003.nm.naver.com with ESMTP id yBsmHpcKQJ2JXoj+LyXm0A
-  for <multiple recipients>
-  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-  Fri, 02 Oct 2026 07:42:26 -0000
-From: tjdqudcks0424@naver.com
-To: netdev-bot+sashiko@kernel.org
-Cc: netfilter-devel@vger.kernel.org,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	kuba@kernel.org
-Subject: Re: [PATCH net] netfilter: nf_conntrack_reasm: avoid truncating header offset
-Date: Fri,  2 Oct 2026 16:42:10 +0900
-Message-ID: <20261002074210.140795-1-tjdqudcks0424@naver.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179089937913.434549.5874493628033954656@kernel.org>
-References: <20260929090027.200041-1-tjdqudcks0424@naver.com> <179089937913.434549.5874493628033954656@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCk0j/Bo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA60B1F0089A
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790929223;
+	bh=DiolHbL656M0rMTOtyq984nHU4fBgKa0w8p0YS9RAcU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=YCk0j/BoUGwGZ85uD6036Vl+y9uydYOx1Y2QVDOV01rVxfUI9sDlJc8+9u4Bw37CG
+	 CH81HQ+fCEthIu6UvKSY5q52cvrRxYg2OPURZ749HYJopKF6BgQ6x5JmDO0rSOz9n2
+	 okB+/hh/2zldjaNm1o6Lgwu0ROH94BVWZoI03WdAqJ1crOx9JUvZYr3mgDn/2s/Qy9
+	 KkN44CoGo5HS14wgOLX54L7BOn42sEODD9PWarSsxyUEe9cZsOXAAIaXR00Pg8E+Fv
+	 UqGWTHDo2lJZD3EerK2JFMt5uZOqOsr5l48J9kon3yYESSkJUG66cy/uYBKIivyGSK
+	 ABWAdP9UeihHg==
+Received: by mail-oo2-f37.google.com with SMTP id 46e09a7af769-8137b129131so5060751a34.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 01:20:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwgoAUutAKcsPyBA/srafo80CsDQcVu6CDtkdVVjrpBaFBUHNfPdJMnGltkIg51kldjcBfb0Ko=@vger.kernel.org
+X-Gm-Message-State: AFuF++nVeQXlck9h+5l3AlMCXwQAoQ/LBn44bIGJfbffwxqSDe4Sk6i1
+	lmjQByo2rl5rN9hcV8Dt3ef4FEma/ibV2/TedL58t/cm+3q4uo1B8tC/uDqJd1er5kNkCoIPdzz
+	LMLGVCpwIvIdUptuaZ7dBazgqkBBFVrM=
+X-Received: by 2002:a05:6820:55d6:10b0:6d7:5343:b5fd with SMTP id
+ 006d021491bc7-6df34091446mr1013040eaf.44.1790929223082; Fri, 02 Oct 2026
+ 01:20:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <cover.1790917676.git.zcliangcn@gmail.com> <62774f8c6cbad549d1a95f88df99ab7745d7f6b8.1790917676.git.zcliangcn@gmail.com>
+In-Reply-To: <62774f8c6cbad549d1a95f88df99ab7745d7f6b8.1790917676.git.zcliangcn@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Fri, 2 Oct 2026 10:20:10 +0200
+X-Gmail-Original-Message-ID: <CAL4WiiqWwV+8JaYjsHrWDvoSt8Ng01xs9Orv4xhRpFAvhMnD6w@mail.gmail.com>
+X-Gm-Features: AclHuK_GE1sAsvNuKlOLRAERpbySEcCE-snYtHgM_PZqpiuw-6uNdwPQVickwR0
+Message-ID: <CAL4WiiqWwV+8JaYjsHrWDvoSt8Ng01xs9Orv4xhRpFAvhMnD6w@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] net: use random salt for netdev name hash to
+ prevent text base leak
+To: Zhengchuan Liang <zcliangcn@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sung Byeongchan <tjdqudcks0424@naver.com>
+On Fri, Oct 2, 2026 at 8:52=E2=80=AFAM Zhengchuan Liang <zcliangcn@gmail.co=
+m> wrote:
+>
+> dev_name_hash() uses the network namespace pointer as the salt for the
+> network device name hash table. Unprivileged users can use SIOCGIFINDEX
+> to look up attacker-chosen nonexistent names. Timing these lookups
+> reveals which names share a bucket with an existing name, allowing the
+> salt to be recovered. For init_net, recovering the salt reveals the
+> kernel text base and defeats KASLR.
+>
+> Use the per-network namespace random value from net_hash_mix() as the
+> salt instead. The value remains stable for the lifetime of the namespace.
+> Since all name insertions and lookups use dev_name_hash(), this only
+> changes bucket placement.
+>
+> Fixes: 8387ff2577eb ("vfs: make the string hashes salt the hash")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+> ---
+>  net/core/dev.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 18dc88990510..f3eca7fa2481 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -98,6 +98,7 @@
+>  #include <linux/bpf.h>
+>  #include <linux/bpf_trace.h>
+>  #include <net/net_namespace.h>
+> +#include <net/netns/hash.h>
+>  #include <net/sock.h>
+>  #include <net/busy_poll.h>
+>  #include <linux/rtnetlink.h>
+> @@ -193,7 +194,10 @@ static inline void dev_base_seq_inc(struct net *net)
+>
+>  static inline struct hlist_head *dev_name_hash(struct net *net, const ch=
+ar *name)
+>  {
+> -       unsigned int hash =3D full_name_hash(net, name, strnlen(name, IFN=
+AMSIZ));
+> +       unsigned long salt =3D net_hash_mix(net);
+> +       unsigned int hash;
+> +
+> +       hash =3D full_name_hash((void *)salt, name, strnlen(name, IFNAMSI=
+Z));
+>
+>         return &net->dev_name_head[hash_32(hash, NETDEV_HASHBITS)];
 
-Hi,
+Thanks for your patch.
 
-Resending in plain text because my previous webmail reply was rejected by
-the mailing lists for containing an HTML part.
+CC Linus.
 
-I independently tested the 16-bit header-offset concern raised in this
-review. The concern is valid and can cause a local kernel panic.
+It seems this patch should target net-next, local KASLR attacks are
+not a serious concern.
 
-This is separate from the existing prev_nhoff u8 truncation issue. To
-isolate the two issues, I tested a current-mainline-based kernel at:
+Your patch would allow an attacker to disclose net_hash_mix.
+Leaking net->hash_mix compromises other per-netns hash tables.
 
-  ce1e0223d8ad4211275c82a17ed6d43ab81e13d9
+u32 hash_mix is too weak for full_name_hash()
 
-with only the already-public u8-to-int prev_nhoff fix applied.
+1) What about passing NULL salt instead?
 
-The reproducer sends a 65536-byte IPV6_HDRINCL packet to ::1 with the
-real Fragment Header at fhoff=65528. The loopback raw-output path
-reserves 16 bytes of headroom, so:
+net->dev_name_head is already a per-netns hash table,
+and only CAP_NET_ADMIN inside that netns can add/rename devices in it.
 
-  headroom + fhoff = 16 + 65528 = 65544
+2) I thought about widening net->hash_mix to unsigned long (get_random_long=
+())
+(but not change net_hash_mix() u32 return type to avoid side effects)
 
-This value is stored in the u16 skb->transport_header field and wraps
-to 8.
+But full_name_hash() skips HASH_MIX for len < 8, any 64-bit salt passed to
+full_name_hash() can be recovered quite easily.
 
-With init_on_alloc=1, the wrapped pointer reads the zeroed headroom as
-a Fragment Header with offset 0 and MF clear. Reassembly completes,
-advances network_header from 16 to 24 while skb->data remains at 16,
-and inet_frag_reasm_finish() passes -8 as the unsigned length to
-skb_push().
-
-The resulting diagnostic is:
-
-  skbuff: skb_under_panic: ... len:65520 put:-8 ...
-  kernel BUG at net/core/skbuff.c
-  skb_push
-  inet_frag_reasm_finish
-  nf_ct_frag6_gather
-  ipv6_defrag
-  rawv6_sendmsg
-  Kernel panic - not syncing: Fatal exception in interrupt
-
-I reproduced the panic in three isolated QEMU runs:
-
-  1. Linux v7.2.8 as root
-  2. The mainline-based u8-fixed baseline as root
-  3. The same mainline-based baseline from outer UID 65534 after
-     entering a new user and network namespace
-
-In the third case, the process had CAP_NET_RAW only inside its new
-user and network namespace. No loopback MTU change was required.
-
-The crash runs used nf_conntrack.enable_hooks=1 to activate IPv6
-conntrack defragmentation. I confirmed from the source that an nftables
-ct expression can also acquire the IPv6 defrag hook in the caller's
-network namespace, but I did not perform an additional crash run using
-only that activation method.
-
-I tested the following minimal guard on top of the public u8 fix:
-
-  if (nhoff != (u16)nhoff ||
-      !skb_set_transport_header_careful(skb, fhoff))
-          return -EINVAL;
-
-With an otherwise identical KASAN configuration:
-
-  - the exact crash packet was safely rejected in 3/3 runs;
-  - short fragmented packets passed in 3/3 runs;
-  - the previous offset-248 and offset-256 cases passed in 3/3 runs;
-  - ordinary IPv6 UDP and TCP passed in 3/3 runs;
-  - no KASAN, WARNING, BUG, Oops, or panic was observed.
-
-I searched current mainline history, lore, Patchwork, and
-linux-cve-announce. I found the existing prev_nhoff u8 fix, but did not
-find an existing patch or commit that checks the u16 nhoff storage or
-uses skb_set_transport_header_careful() in this path.
-
-The demonstrated impact is a local kernel-wide denial of service when
-IPv6 conntrack defragmentation is active. The panic occurs before
-packet delivery, so I found no evidence of information disclosure,
-privilege escalation, arbitrary memory corruption, or remote
-reachability.
-
-Would you prefer this check to be folded into the existing prev_nhoff
-patch, or should I submit it as a separate follow-up patch on top of
-that change? I have the reproducer, serial logs, A/B results, and an
-applyable follow-up patch ready.
-
-Regards,
-Sung Byeongchan
+pw-bot: cr
