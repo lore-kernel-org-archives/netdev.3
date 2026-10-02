@@ -1,85 +1,84 @@
-Received: from mail-dl2-f39.google.com (mail-dl2-f39.google.com [74.125.229.167])
+Received: from mail-dy2-f34.google.com (mail-dy2-f34.google.com [74.125.229.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA5E3B059F
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:44:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2161D3C3F40
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790973886; cv=none; b=ne9mv2uNK+NL1RAMu8NHCbVrcUfFGVhIXhi4DAZypG/qrFeXxXoNuWZmpxZCCTye/2sl04w7IxprAyWiSKtfWHeEY3pbhUS1++uf4WfAeAxJ/eYXOYtJWRaq0NMYO6CIY05OKPJTYueF9eCFnSUAtEl0j8Tc2BeM4dk4NXj7FtQ=
+	t=1790973945; cv=none; b=R88/eCfHso/L6uEKAdFZKo/jgmRgz/EkbetvKPwqXWcFWzBqK6zmcNyd/+uuZqa/VaOhdogulNUYF4BcjpTBmjlS7H4mJwS7HCvZGuEvjxsH3Z8QJ5Ybx7xv2qJD1x5zpdOiGWv4ta80MvK7/irlIchkYNTiAL3PnwFBEMbe1LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790973886; c=relaxed/simple;
-	bh=hSIz4fihW3br2vB9KwOROSdJNfpPnljc28909L6iTQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q8CJShNcb8NzvISJrlmxMRhAR67gX6Sz7FnCe5Z7O/NRFmtVEaz7wSXWT/31zoBfg15YLMhKQ66iPGRnbmyik6aZ4eHRQrvz4YQKbHm7VP3L85sU3bc9KqCqM1gIsJg/RwVCKTlF3Wwj1XnPA8lfQyX6+YTe1cLTXd5WBwzMD5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=jQsVdQsV; arc=none smtp.client-ip=74.125.229.167
+	s=arc-20240116; t=1790973945; c=relaxed/simple;
+	bh=hrKzZ43cJvocqLxV9DmG9Sqd8Bel7/0VvNw3HPWvWl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t4KUtaMSRk7ojKMmxBaRuStH903eILjIPBDKvesBzJ/sl9+LtRbnIZgfLYFVzopC5LAOlTfGwQX+4wpQd2iM/UzyF2x0LZtKQy9xozoMD3gZXzyNYhoQrPhyw839ELad5b/TnOdvUlptxHFwG/MMLEEeEWIR1mgptiWxYtxNVD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=WZOd3/my; arc=none smtp.client-ip=74.125.229.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="jQsVdQsV"
-Received: by mail-dl2-f39.google.com with SMTP id a92af1059eb24-1438cb9b3a3so4768c88.2
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 13:44:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="WZOd3/my"
+Received: by mail-dy2-f34.google.com with SMTP id 5a478bee46e88-33be7dfcfc1so13983eec.1
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 13:45:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1790973884; x=1791578684; darn=vger.kernel.org;
+        d=trailofbits.com; s=google; t=1790973939; x=1791578739; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OEUMUqkSZXNw7bjqr2r2LczcRXo92A7RQr8KDcVvERk=;
-        b=jQsVdQsVWc3c8yE2thqgmluoZvBX2TrWNc3UO05+/MpwQXaOvTRttMWO8ZMPg974qM
-         9rOnxQDlZvHaGyO55KM60gMyQdBe8zEoQ3H1Qd0iEnK//WFts6Jd1AIqpcL0hy/QP0ol
-         2TSuJBbivop5R90MX5n09dsmqjC4t+OhdjN3U6P6jTyCnSQdUJZDU4WdEejFLLJsbZpE
-         ArxDrkgAgjVVfvc2ZTsUsObJNfgV5Bba90gcm4/JpTI0GrGc9G12QxyM4u80CpcrxJ6W
-         nIBp/OAb3M9hU9+SEuGmcY+O/wO6QJwoTkRKXX/HbarQ77WaiyzBGt/GXK2bE4UCaD8E
-         LpIg==
+        bh=sgvZhgmjrftKT8E5vS9CrFzO9ANsKTScS9cgLRZmapE=;
+        b=WZOd3/myVZqIyBJUs+Us+pqPYI9Jg04o3Ta6P6Qo+DrbW7Z9NMTr6VNswoArMON1gt
+         BeyyvbDVerQ/a2OjX2Sxq8nBTNdVLxvv4Ob1wC6Kt03o0cuxXZ/yhqF7fvokkG6FBipw
+         pf4cmb0DH39zqebzCGyTDWFmF3gdyrr9jxVEGFe0audy1mOhOFuEt0r0iCoUN7mJQ2r7
+         ZiBABw+7jWtQKL7W+4sK5aZDzyTkn4gHG8zwSRSVakBoA5UhBLmxHmSXZLvcrKsL4vyU
+         3DdHP3koxK4SSk8OrHbvB86XLReIJOzkn3uoFz1WGkdKhJVbLGIWt4iQUR9qXp4XFr7a
+         6HgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790973884; x=1791578684;
+        d=1e100.net; s=20260707; t=1790973939; x=1791578739;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=OEUMUqkSZXNw7bjqr2r2LczcRXo92A7RQr8KDcVvERk=;
-        b=yXthaXiXU/Vsr8E1PoFN46Dups7hYT7BID+yqbz1hdv8EGKfnPsELqfQ1bB6TC5k57
-         iAcccbw3nMRkbT2hrXlIBRPPCi5XwxNUOQBLBZ2K5nLjxAfLYv1OqBA+4lPHkonGXCJv
-         7KgFtw/WHYL4VyWvbzFUzzXGzUyf9+LGFBcs9HM2bUvMAMXd2rw1IAzyR1FVNCEm8u4f
-         p97e6L3jDTb/ODgR9RBxr23ko1D1MWuKM84TcbbGf3SJe47xcJ7ft1SisBuKLMkctAWs
-         4Aj2U61amtP6Tzyvs/DdCY2HUZ9oIsHxR0ZfB304tGfp0QdyLusFvgXk2HydQjHhwPnb
-         6tfw==
-X-Forwarded-Encrypted: i=1; AKwUvBxojKXxedWeLNoQt58o7uCal/6m7egk92YD5vZomk0Aohz8SQlV+uWWWrSweS/FjVbkhhegeKc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKQSjKRBPMGoofe5L7nUCu1afiPr1wq6lCtZH5odZHwm1uZkCdZ
-	iMD2xwxtGCq04dL9cICPfcEHFO87rn2ebrmZjXX3kxhdsR0aWQY7NAiQo3Wl39VOOxQ=
-X-Gm-Gg: AYBFou0irJylBoS2rFgLbTRO5QeVQKYy+gwSnjn/31VQKLhZr8YGrTgV3ZuBvV0N5IN
-	LjqJe5P952NKWsPucEwPUtT/w33s9zh9MkzIuY4p/vRrmGHqPogshNZoGV+UKXsCnL4ZWRf7+k1
-	RI/3Ro5m2mP45urpcr4+08ThGyQKDvUz85oQMLSIpibaAaD0XkOGiXXu3cQon4Gdm09knTVerWx
-	2u8WlawHeuXSFYyqyl62mE9uoEcf2SFZuoRWeHuVstkfNB85m3p4yBL3Cjvpqkdkfp+4//94eoN
-	/fYoMBXGb5RZ0neO1IpWWoj1XRlXKfn+YoXtyALiaVNILvRJOzWo9HOkR/gDZoGrc/Ppx8ifJlq
-	2pFBR1KOtSp/bISxbr/h2fYoximnIiLj/M0Zo0IOOEvAhnooCNAaaU5nQLmbnoa1p8RIG+Y1elJ
-	h4/i0wKaHOwK17MtxL05pzxU/9tOzOIqT37Rn0Eh3qQWVEWWun/51hiT0ir4LSHuDABM/yT0UO6
-	JaneX85mycxKGQSbyMtRq5qj9FKatbfcgDL5OgI3NYp1xmBlvrLvpRWzqO9wVxK+Q8eMzg=
-X-Received: by 2002:a05:701b:4190:10b0:148:dfc9:425d with SMTP id a92af1059eb24-14f5d1b9c76mr4478202c88.46.1790973883634;
-        Fri, 02 Oct 2026 13:44:43 -0700 (PDT)
+        bh=sgvZhgmjrftKT8E5vS9CrFzO9ANsKTScS9cgLRZmapE=;
+        b=qbzch6FlsEpPL37JvVOFETqu5WIrrhbgAZhiA1Yb9UZ1kx3W0Gb1zdWrapj8TXxGid
+         WRhJAxaC+KE43xFJLt39JOk9aroMtqFpZnuk+NbeqPeQn5Ek7r/QaQy/0V0JTxKJ99FP
+         WhyK3hK8XgvaYe7VCoMWeQeeRlRxNGfMezEgWjm8KAZC9/lnig3qWmLGMJdS8WXzlnwg
+         f2G1zAWa/g90a2ao2CcHBhqhmWNYWf5cyxj7Wgcaq6aRo1CSp8mdDi2Hy+ARKxsee4fq
+         IwttvtbpLHXuwSWNFVU1RBdSGow7mUVnC7O+F4rcDn6GGTixEB3GJfBQmdKIaXYL3Oza
+         TEAw==
+X-Forwarded-Encrypted: i=1; AKwUvBxEVs+b9K2TBmNW/iC+ROfw+kwutze5/vWuiubOSixR52nEWFBUsoTwqQ+MDMb8vSUH4UikWjU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKL2nmmGQ+tBLdUgQ6jWnOoe3lsXaXn4WdBcqW+Xeey1suBVNgl
+	+UUokUosFzJ/aUbXiJirv5Nvc9BzIgKDlKWmi/XvFSnZ8DFBIRF5iWOY+LXiaSTzXiA=
+X-Gm-Gg: AYBFou1X9zhmN9RnyQal216SfcZQV2n17wrVV9hpiBromiPXcIqrZ/i+BwG9v9SwZgM
+	8Ye1QPawR0uRDKWIJb/pGUOPRzcH9mw87hf7TkIik2dY3AHrdbvzyB02N1z+wIwVHaYCYq3tLXg
+	EbLVuNWT++uLNLG1uuy3lIO7IaXD7GDjV7QqviUUsLxmGahGVyfLxmbmxfddDliTnCEuqu5LyVF
+	tYBt0i2V93FFDauO2MWJrWBvZMToQLXxPEp0MR6+688JCOS9yI2LjflLZRskxQla4vlrBQkUVWS
+	60dfEpDZ8B6sny3m6u0aMKIE79eWFadOb8I7ghnaNM0QqkCeliIrWTQbg/jUT0jvRz/iMS7OuxY
+	aHB8OG+ZIpcdkznVqbLAlS2y0GGyyXI4JjiE5bdxZMqc6loUkX+da/nFnOA80Roa8d1unGU/jgh
+	8EtHbCp5i2RmTs9PNj8/ZehDEVvE71b9oQnlaaXZlIih5b157fTp11/gKAAVBIWCVO7sCnb6bpf
+	wLmJ1FC/IibJMMmkjURaFzVPzgA2cu8blrsrKuXXhwR3zgi3uWUdXgJ7OS+veiDIDWeXfku
+X-Received: by 2002:a05:7301:1709:b0:34d:f38d:4302 with SMTP id 5a478bee46e88-34f150d1b0bmr4216038eec.17.1790973939173;
+        Fri, 02 Oct 2026 13:45:39 -0700 (PDT)
 Received: from localhost.localdomain ([2603:8001:5f01:8bab:a1e3:ffe2:b35a:69a4])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-151fa74fa1csm23201c88.1.2026.10.02.13.44.42
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351143b577bsm62111eec.15.2026.10.02.13.45.37
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 02 Oct 2026 13:44:43 -0700 (PDT)
+        Fri, 02 Oct 2026 13:45:38 -0700 (PDT)
 From: Artem Dinaburg <artem@trailofbits.com>
 To: stable@vger.kernel.org
 Cc: Artem Dinaburg <artem@trailofbits.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Shay Drory <shayd@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Shahar Itzko <itzko@amazon.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Shay Agroskin <shayagr@amazon.com>,
+	Arthur Kiyanovski <akiyano@amazon.com>,
+	Noam Dagan <ndagan@amazon.com>,
+	Saeed Bishara <saeedb@amazon.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: [PATCH 6.1.y] net/mlx5e: Fix netif state handling
-Date: Fri,  2 Oct 2026 16:44:37 -0400
-Message-ID: <20261002204438.26168-1-artem@trailofbits.com>
+Subject: [PATCH 6.1.y] net: ena: Add validation for completion descriptors consistency
+Date: Fri,  2 Oct 2026 16:45:33 -0400
+Message-ID: <20261002204534.26297-1-artem@trailofbits.com>
 X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -89,100 +88,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Shay Drory <shayd@nvidia.com>
+From: David Arinzon <darinzon@amazon.com>
 
-[ Upstream commit 3d5918477f94e4c2f064567875c475468e264644 ]
+[ Upstream commit b37b98a3a0c1198bafe8c2d9ce0bc845b4e7a9a7 ]
 
-mlx5e_suspend cleans resources only if netif_device_present() returns
-true. However, mlx5e_resume changes the state of netif, via
-mlx5e_nic_enable, only if reg_state == NETREG_REGISTERED.
-In the below case, the above leads to NULL-ptr Oops[1] and memory
-leaks:
+Validate that `first` flag is set only for the first
+descriptor in multi-buffer packets.
+In case of an invalid descriptor, a reset will occur.
+A new reset reason for RX data corruption has been added.
 
-mlx5e_probe
- _mlx5e_resume
-  mlx5e_attach_netdev
-   mlx5e_nic_enable  <-- netdev not reg, not calling netif_device_attach()
-  register_netdev <-- failed for some reason.
-ERROR_FLOW:
- _mlx5e_suspend <-- netif_device_present return false, resources aren't freed :(
-
-Hence, clean resources in this case as well.
-
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-PGD 0 P4D 0
-Oops: 0010 [#1] SMP
-CPU: 2 PID: 9345 Comm: test-ovs-ct-gen Not tainted 6.5.0_for_upstream_min_debug_2023_09_05_16_01 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:0x0
-Code: Unable to access opcode bytes at0xffffffffffffffd6.
-RSP: 0018:ffff888178aaf758 EFLAGS: 00010246
-Call Trace:
- <TASK>
- ? __die+0x20/0x60
- ? page_fault_oops+0x14c/0x3c0
- ? exc_page_fault+0x75/0x140
- ? asm_exc_page_fault+0x22/0x30
- notifier_call_chain+0x35/0xb0
- blocking_notifier_call_chain+0x3d/0x60
- mlx5_blocking_notifier_call_chain+0x22/0x30 [mlx5_core]
- mlx5_core_uplink_netdev_event_replay+0x3e/0x60 [mlx5_core]
- mlx5_mdev_netdev_track+0x53/0x60 [mlx5_ib]
- mlx5_ib_roce_init+0xc3/0x340 [mlx5_ib]
- __mlx5_ib_add+0x34/0xd0 [mlx5_ib]
- mlx5r_probe+0xe1/0x210 [mlx5_ib]
- ? auxiliary_match_id+0x6a/0x90
- auxiliary_bus_probe+0x38/0x80
- ? driver_sysfs_add+0x51/0x80
- really_probe+0xc9/0x3e0
- ? driver_probe_device+0x90/0x90
- __driver_probe_device+0x80/0x160
- driver_probe_device+0x1e/0x90
- __device_attach_driver+0x7d/0x100
- bus_for_each_drv+0x80/0xd0
- __device_attach+0xbc/0x1f0
- bus_probe_device+0x86/0xa0
- device_add+0x637/0x840
- __auxiliary_device_add+0x3b/0xa0
- add_adev+0xc9/0x140 [mlx5_core]
- mlx5_rescan_drivers_locked+0x22a/0x310 [mlx5_core]
- mlx5_register_device+0x53/0xa0 [mlx5_core]
- mlx5_init_one_devl_locked+0x5c4/0x9c0 [mlx5_core]
- mlx5_init_one+0x3b/0x60 [mlx5_core]
- probe_one+0x44c/0x730 [mlx5_core]
- local_pci_probe+0x3e/0x90
- pci_device_probe+0xbf/0x210
- ? kernfs_create_link+0x5d/0xa0
- ? sysfs_do_create_link_sd+0x60/0xc0
- really_probe+0xc9/0x3e0
- ? driver_probe_device+0x90/0x90
- __driver_probe_device+0x80/0x160
- driver_probe_device+0x1e/0x90
- __device_attach_driver+0x7d/0x100
- bus_for_each_drv+0x80/0xd0
- __device_attach+0xbc/0x1f0
- pci_bus_add_device+0x54/0x80
- pci_iov_add_virtfn+0x2e6/0x320
- sriov_enable+0x208/0x420
- mlx5_core_sriov_configure+0x9e/0x200 [mlx5_core]
- sriov_numvfs_store+0xae/0x1a0
- kernfs_fop_write_iter+0x10c/0x1a0
- vfs_write+0x291/0x3c0
- ksys_write+0x5f/0xe0
- do_syscall_64+0x3d/0x90
- entry_SYSCALL_64_after_hwframe+0x46/0xb0
- CR2: 0000000000000000
- ---[ end trace 0000000000000000  ]---
-
-[ Backport to 6.1.y: added an internal suspend helper so probe unwind
-  cleans resources without changing the registered-device suspend path. ]
-
-Fixes: 2c3b5beec46a ("net/mlx5e: More generic netdev management API")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Shahar Itzko <itzko@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240509112951.590184-2-tariqt@nvidia.com
+Link: https://lore.kernel.org/r/20240512134637.25299-4-darinzon@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Assisted-by: LLM
 Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
@@ -190,18 +108,18 @@ Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
 Hi Greg, Sasha, and net maintainers,
 
 I am working through the small CVE backports still missing from 6.1.y.
-This one addresses CVE-2024-38608. It releases probe resources even when
-register_netdev() failed before device-present state.
+This one addresses CVE-2024-40999. It detects inconsistent ENA completion
+descriptors and resets instead of consuming them.
 
 The corresponding 6.6.y backport is already in the 6.6.y stable queue.
 The fix is already present in 6.12.y, 6.18.y, and 7.2.y, but not
 in 6.1.y.
-The target-specific adjustment is recorded in the bracketed note above.
+The code change is identical to upstream.
 
 Could you please queue it for 6.1.y?
 
-CVE: CVE-2024-38608
-Upstream: 3d5918477f94e4c2f064567875c475468e264644
+CVE: CVE-2024-40999
+Upstream: b37b98a3a0c1198bafe8c2d9ce0bc845b4e7a9a7
 
 AI assistance: An LLM helped identify, adapt, and validate this backport; I
 reviewed the resulting code and validation evidence.
@@ -209,59 +127,121 @@ reviewed the resulting code and validation evidence.
 Thanks,
 Artem Dinaburg
 
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/amazon/ena/ena_eth_com.c | 37 ++++++++++++++-----
+ drivers/net/ethernet/amazon/ena/ena_netdev.c  |  2 +
+ .../net/ethernet/amazon/ena/ena_regs_defs.h   |  1 +
+ 3 files changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 2d0b57583ea35c..d26c36479ee915 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5896,13 +5896,14 @@ static int mlx5e_resume(struct auxiliary_device *adev)
- 	return 0;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_eth_com.c b/drivers/net/ethernet/amazon/ena/ena_eth_com.c
+index 933e619b3a3134..4c6e07aa4bbb55 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_eth_com.c
++++ b/drivers/net/ethernet/amazon/ena/ena_eth_com.c
+@@ -229,30 +229,43 @@ static struct ena_eth_io_rx_cdesc_base *
+ 		idx * io_cq->cdesc_entry_size_in_bytes);
  }
  
--static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
-+static int mlx5e_suspend_common(struct auxiliary_device *adev,
-+				bool pre_netdev_reg)
+-static u16 ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
+-					   u16 *first_cdesc_idx)
++static int ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
++				    u16 *first_cdesc_idx,
++				    u16 *num_descs)
  {
- 	struct mlx5e_priv *priv = auxiliary_get_drvdata(adev);
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
++	u16 count = io_cq->cur_rx_pkt_cdesc_count, head_masked;
+ 	struct ena_eth_io_rx_cdesc_base *cdesc;
+-	u16 count = 0, head_masked;
+ 	u32 last = 0;
  
--	if (!netif_device_present(netdev)) {
-+	if (!pre_netdev_reg && !netif_device_present(netdev)) {
- 		if (test_bit(MLX5E_STATE_DESTROYING, &priv->state))
- 			mlx5e_destroy_mdev_resources(mdev);
- 		return -ENODEV;
-@@ -5913,6 +5914,11 @@ static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
- 	return 0;
- }
- 
-+static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
-+{
-+	return mlx5e_suspend_common(adev, false);
-+}
+ 	do {
++		u32 status;
 +
- static int mlx5e_probe(struct auxiliary_device *adev,
- 		       const struct auxiliary_device_id *id)
- {
-@@ -5920,7 +5926,6 @@ static int mlx5e_probe(struct auxiliary_device *adev,
- 	const struct mlx5e_profile *profile = &mlx5e_nic_profile;
- 	struct mlx5_core_dev *mdev = edev->mdev;
- 	struct net_device *netdev;
--	pm_message_t state = {};
- 	struct mlx5e_priv *priv;
- 	int err;
+ 		cdesc = ena_com_get_next_rx_cdesc(io_cq);
+ 		if (!cdesc)
+ 			break;
++		status = READ_ONCE(cdesc->status);
  
-@@ -5969,7 +5974,7 @@ static int mlx5e_probe(struct auxiliary_device *adev,
- 	return 0;
+ 		ena_com_cq_inc_head(io_cq);
++		if (unlikely((status & ENA_ETH_IO_RX_CDESC_BASE_FIRST_MASK) >>
++		    ENA_ETH_IO_RX_CDESC_BASE_FIRST_SHIFT && count != 0)) {
++			struct ena_com_dev *dev = ena_com_io_cq_to_ena_dev(io_cq);
++
++			netdev_err(dev->net_device,
++				   "First bit is on in descriptor #%d on q_id: %d, req_id: %u\n",
++				   count, io_cq->qid, cdesc->req_id);
++			return -EFAULT;
++		}
+ 		count++;
+-		last = (READ_ONCE(cdesc->status) & ENA_ETH_IO_RX_CDESC_BASE_LAST_MASK) >>
+-		       ENA_ETH_IO_RX_CDESC_BASE_LAST_SHIFT;
++		last = (status & ENA_ETH_IO_RX_CDESC_BASE_LAST_MASK) >>
++			ENA_ETH_IO_RX_CDESC_BASE_LAST_SHIFT;
+ 	} while (!last);
  
- err_resume:
--	mlx5e_suspend(adev, state);
-+	mlx5e_suspend_common(adev, true);
- err_profile_cleanup:
- 	profile->cleanup(priv);
- err_devlink_cleanup:
+ 	if (last) {
+ 		*first_cdesc_idx = io_cq->cur_rx_pkt_cdesc_start_idx;
+-		count += io_cq->cur_rx_pkt_cdesc_count;
+ 
+ 		head_masked = io_cq->head & (io_cq->q_depth - 1);
+ 
++		*num_descs = count;
+ 		io_cq->cur_rx_pkt_cdesc_count = 0;
+ 		io_cq->cur_rx_pkt_cdesc_start_idx = head_masked;
+ 
+@@ -260,11 +273,11 @@ static u16 ena_com_cdesc_rx_pkt_get(struct ena_com_io_cq *io_cq,
+ 			   "ENA q_id: %d packets were completed. first desc idx %u descs# %d\n",
+ 			   io_cq->qid, *first_cdesc_idx, count);
+ 	} else {
+-		io_cq->cur_rx_pkt_cdesc_count += count;
+-		count = 0;
++		io_cq->cur_rx_pkt_cdesc_count = count;
++		*num_descs = 0;
+ 	}
+ 
+-	return count;
++	return 0;
+ }
+ 
+ static int ena_com_create_meta(struct ena_com_io_sq *io_sq,
+@@ -539,10 +552,14 @@ int ena_com_rx_pkt(struct ena_com_io_cq *io_cq,
+ 	u16 cdesc_idx = 0;
+ 	u16 nb_hw_desc;
+ 	u16 i = 0;
++	int rc;
+ 
+ 	WARN(io_cq->direction != ENA_COM_IO_QUEUE_DIRECTION_RX, "wrong Q type");
+ 
+-	nb_hw_desc = ena_com_cdesc_rx_pkt_get(io_cq, &cdesc_idx);
++	rc = ena_com_cdesc_rx_pkt_get(io_cq, &cdesc_idx, &nb_hw_desc);
++	if (unlikely(rc != 0))
++		return -EFAULT;
++
+ 	if (nb_hw_desc == 0) {
+ 		ena_rx_ctx->descs = nb_hw_desc;
+ 		return 0;
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index 5159fb9fbe66fd..11f47f24917eb3 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -1853,6 +1853,8 @@ static int ena_clean_rx_irq(struct ena_ring *rx_ring, struct napi_struct *napi,
+ 	if (rc == -ENOSPC) {
+ 		ena_increase_stat(&rx_ring->rx_stats.bad_desc_num, 1, &rx_ring->syncp);
+ 		ena_reset_device(adapter, ENA_REGS_RESET_TOO_MANY_RX_DESCS);
++	} else if (rc == -EFAULT) {
++		ena_reset_device(adapter, ENA_REGS_RESET_RX_DESCRIPTOR_MALFORMED);
+ 	} else {
+ 		ena_increase_stat(&rx_ring->rx_stats.bad_req_id, 1,
+ 				  &rx_ring->syncp);
+diff --git a/drivers/net/ethernet/amazon/ena/ena_regs_defs.h b/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
+index 1e007a41a52564..23466d62fbc5c5 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
++++ b/drivers/net/ethernet/amazon/ena/ena_regs_defs.h
+@@ -21,6 +21,7 @@ enum ena_regs_reset_reason_types {
+ 	ENA_REGS_RESET_USER_TRIGGER                 = 12,
+ 	ENA_REGS_RESET_GENERIC                      = 13,
+ 	ENA_REGS_RESET_MISS_INTERRUPT               = 14,
++	ENA_REGS_RESET_RX_DESCRIPTOR_MALFORMED	    = 16,
+ };
+ 
+ /* ena_registers offsets */
 -- 
 2.39.5
 
