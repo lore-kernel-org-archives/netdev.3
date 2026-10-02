@@ -1,54 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF90418A2D
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F77C32B112
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790931072; cv=none; b=lGO+XOWEkeEdR1cbmbjbV5Y6GKXMbMaWvvh1b8iqC26dTTtGGpUGWgmjfxpD8yZhdJ36sahbeoZofblsQ5Zzrabb+ObLNR7ut8HGSyV08HDwxZN8Fs4CMGDtRh4DNSTzd+UoFBK0/sI0MCuKUCohs7MnqncK+EcC9xgRHij1wms=
+	t=1790931176; cv=none; b=Ly1clYfTVmU1UUzWzrO6vvMneT4OSu0aPNR2VkJK+E+Aa1ZFkRQ1amtAeybbznuJt5z5cgEsPbNXqRMMQvv5kGu68dbDJK4LDvQ5T3rMWhAw9UD5iojsxCdZnxemTaSc6c3hQdkTKknAyGbOQ1xEoACWktxPqDIyLT+FaGqjRD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790931072; c=relaxed/simple;
-	bh=xoWZSIEv7HOInPUI8RIa16dxBru7TiEIR0PQ+44/t6c=;
+	s=arc-20240116; t=1790931176; c=relaxed/simple;
+	bh=1HRuClBs+9wcnXTCDpjs1Go7ysobHRZWvHIHP9aB3II=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UYrNs//v1JpvzbSuUdmSzVlCP+UcAy4lcld7RSywsVmwNHinvsLQF/ZdaQ/EBGBlGUdwBiz2tIlFWJJvJCTAmaEuXKioMV+sVVUAqj1P2L1dXrDV94RX8KNuKiYCqMPbXSfHRH87ZWYQ7iuInLqoqhJ6W8AB7zPhK941VB6Abe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E6CwfXrq; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=Wd7l7EHjUSbZc+8Hf1oaytuci06FYVjoam7cyk3S3uxrRAIHXkA498TzjZMHgZDBzj3lpO5Hst56cSucuygFlGvO/fvLU3YTC02bZEpl/FWhKx9WmS8xBsmSwoGx4hYKkFLSFeoc7hhnW/AvnLaFmIOLN1vx2ES6nyYUMt2EmqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWs1Nk6Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E6CwfXrq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203921F00899
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:51:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWs1Nk6Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DC01F000FF
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790931070;
-	bh=xoWZSIEv7HOInPUI8RIa16dxBru7TiEIR0PQ+44/t6c=;
+	s=k20260515; t=1790931174;
+	bh=II2i7KXaSjS5yiJDHC8RNg96Czr9lF05UVBVD37FVSg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=E6CwfXrqQb0ca/jAvz7YROY5bHpJF4gr3nFeN1YRgDr/ljfULSibjnxFBWQkfvaHP
-	 R+VUR0S4iVpoAO+HOtldmgN+zffqbTW5ibz53LX+y79Xdqfn/hdFnLI747Cet6YvrG
-	 NYuDprSPlzK8u65zcenVZp/zBCR0aGRjwAChWe9Djeca+a3joQP4VU2yXPfxrCObpf
-	 db0cgA8PwjafAgK7jTcmMubgwBVSyrU5tjCNtRdEoYG+7Cq4CfF6LuordswqhMHiI9
-	 Jv1msMShx4yIvkbsOIm5aShMcOBhJIfQt4sAu+UB6zM0M7uvyBqUdYp3oK/I1rJCra
-	 l3Uaid2P4ZJOA==
-Received: by mail-oo2-f35.google.com with SMTP id 46e09a7af769-821ab84c100so900438a34.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 01:51:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzL8yYHquW1cValJqogD3l71ZVuSn6HHUvIDWP/ToI/fIna8UF2+WcgiJSdfLURERSOHhMB5Tw=@vger.kernel.org
-X-Gm-Message-State: AFuF++kZItsYNIuzsy4pXEjaHptmJXDJmSjQyPaqL8iuy5n4iRh77h9o
-	bVh07FtMJgb8xFcNm7BI/5+Dve9p1kiJ0DGlYSIlbS8Dbme/NYbkqvRpk1khyMwZ0KflJOKG8Vc
-	/eqFPMZ0NdwZrLsBEq2kphZcHntQPOC0=
-X-Received: by 2002:a05:6808:169e:b0:4f4:ad3:3ce5 with SMTP id
- 5614622812f47-4f529d36462mr1470621b6e.17.1790931069475; Fri, 02 Oct 2026
- 01:51:09 -0700 (PDT)
+	b=kWs1Nk6QkbpFIqApAlg9PdNinUPVcMF5EX68nOHiOvEJoEzywc17J3RRIga90CL/d
+	 Z042lxfzSkzbDC33veTk4QMuDJChC/RsgIYubTF3Dbu68bj5vr0ucf+YGm1oz4jR9v
+	 p3HyKZisGUSwpSxrpDRLgij1B4YS1fx/XjVlcFbZbpdn2/VTBx+BFTVsXW23miVXWC
+	 rxQ24M2uj+akTw+3dDhVJs28KRBAE8D6DOFDvCSNzsebnPOKa7I09OGqOx0iYE+w9U
+	 NCWg2f7OivApouHlIoPZXxBu2f3NliUJh5wBhj6sgCK6Ipa8mKhuuuWboN0kthDZyo
+	 k8OjSa8DmhtUQ==
+Received: by mail-oo2-f43.google.com with SMTP id 46e09a7af769-81b15bca7dfso4493958a34.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 01:52:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzDx8ELL2UXWB73fJAi2CEI4TzN0Cc6fpMvkRt8q/z7Q3Dw5mxybQQKevpyoBgYPbb9HNI7iH0=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0H67ZOb1wK8TznV2tWYSi6sD15Wj3r9Mq4w3K/+5pxiBLmO2s
+	io/ITtcyVGrWlJUH1lUJF/5ereBBR7l7g52X/5ijmBkOiO0pYVEk4Usc5oAddphmJas1nE+Dykz
+	bbGE9sksDVJdWu9yTsKP31Sz6FTgBtHo=
+X-Received: by 2002:a05:6820:221c:b0:6de:ba4f:aef7 with SMTP id
+ 006d021491bc7-6df35746daamr1487310eaf.74.1790931174179; Fri, 02 Oct 2026
+ 01:52:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002-tls-fix-sk-kcsan-err-v1-0-baa0ba056323@proton.me> <20261002-tls-fix-sk-kcsan-err-v1-2-baa0ba056323@proton.me>
-In-Reply-To: <20261002-tls-fix-sk-kcsan-err-v1-2-baa0ba056323@proton.me>
+References: <20261002-tls-fix-sk-kcsan-err-v1-0-baa0ba056323@proton.me> <20261002-tls-fix-sk-kcsan-err-v1-1-baa0ba056323@proton.me>
+In-Reply-To: <20261002-tls-fix-sk-kcsan-err-v1-1-baa0ba056323@proton.me>
 From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 2 Oct 2026 10:50:57 +0200
-X-Gmail-Original-Message-ID: <CAL4WiioVeB1Hj9p5t2iO6r_Nhon-n3ooDC3hwOuOX+JVVpMz4A@mail.gmail.com>
-X-Gm-Features: AclHuK8ma2xr2S7Nd2mIXaqvV1AfESX8_NNCLGgVpsMCRSopQdfu6BquIF1bhJw
-Message-ID: <CAL4WiioVeB1Hj9p5t2iO6r_Nhon-n3ooDC3hwOuOX+JVVpMz4A@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/2] net: annotate lockless writes to sk->sk_err
+Date: Fri, 2 Oct 2026 10:52:42 +0200
+X-Gmail-Original-Message-ID: <CAL4WiirRTTzrAu6vqA6KWU5z3mK6_GTPzJY_tsR0M-nbPeiMxg@mail.gmail.com>
+X-Gm-Features: AclHuK9Jv6gTNJU_9I5u2gA0R-3jGf7ZShcueDTlOKFlchkVBn6m45fEhIemxxs
+Message-ID: <CAL4WiirRTTzrAu6vqA6KWU5z3mK6_GTPzJY_tsR0M-nbPeiMxg@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/2] tls: annotate lockless access to sk->sk_err
 To: quanyeyang@proton.me
 Cc: John Fastabend <john.fastabend@gmail.com>, Jakub Kicinski <kuba@kernel.org>, 
 	Sabrina Dubroca <sd@queasysnail.net>, "David S. Miller" <davem@davemloft.net>, 
@@ -63,22 +63,50 @@ On Fri, Oct 2, 2026 at 9:29=E2=80=AFAM Quanye Yang via B4 Relay
 >
 > From: Quanye Yang <quanyeyang@proton.me>
 >
-> do_recvmmsg() and getsockopt(SO_ERROR) clear sk_err with xchg()
-> without the socket lock. TCP, MPTCP and kTLS already peek the same
-> field with READ_ONCE() or consume it via sock_error().
+> kTLS sits on the same struct sock as TCP. do_recvmmsg() and
+> getsockopt(SO_ERROR) still call sock_error() without the socket lock
+> and clear sk_err with xchg().
 >
-> sock_dequeue_err_skb() still uses plain stores. tcp_recvmsg() can
-> call it via MSG_ERRQUEUE before lock_sock(), so those writes race
-> with the annotated readers and with sock_error(). The same unmarked
-> stores exist in strp_abort_strp() and sk_psock_report_error(), which
-> run on the TCP/TLS socket.
+> tls_rx_rec_wait() already peeks when data has been copied and consumes
+> otherwise, but the outer if (sk_err) is an unmarked load. On the
+> no-data path that check-then-sock_error() window can return 0 after
+> another thread consumes the error. Call sock_error() once and only
+> return when it is non-zero; keep READ_ONCE() on the peek path.
 >
-> Annotate those writers with WRITE_ONCE(). No extra ordering is
-> needed; this does not change who wins when ICMP error-queue entries
-> overwrite sk_err.
+> tls_sw_sendmsg_locked(), tls_push_data() and bpf_exec_tx_verdict()
+> read sk_err twice. Fold those unmarked loads into one READ_ONCE()
+> and use that value as the returned errno. The field is still not
+> consumed there.
 >
 > Link: https://lore.kernel.org/netdev/3d9d442f-f168-43da-87b0-010ad5a78365=
 @redhat.com/
 > Signed-off-by: Quanye Yang <quanyeyang@proton.me>
+> ---
+>  net/tls/tls_device.c |  5 +++--
+>  net/tls/tls_sw.c     | 45 ++++++++++++++++++++++++++++++---------------
+>  2 files changed, 33 insertions(+), 17 deletions(-)
+>
+> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> index f11d0528fc43..03ce83a9d4e9 100644
+> --- a/net/tls/tls_device.c
+> +++ b/net/tls/tls_device.c
+> @@ -444,8 +444,9 @@ static int tls_push_data(struct sock *sk,
+>         if ((flags & (MSG_MORE | MSG_EOR)) =3D=3D (MSG_MORE | MSG_EOR))
+>                 return -EINVAL;
+>
+> -       if (unlikely(sk->sk_err))
+> -               return -sk->sk_err;
+> +       rc =3D -READ_ONCE(sk->sk_err);
+> +       if (unlikely(rc))
+> +               return rc;
+>
+>         flags |=3D MSG_SENDPAGE_DECRYPTED;
+>         tls_push_record_flags =3D flags | MSG_MORE;
+> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> index d1ad31986cf2..12e4458b44bb 100644
+> --- a/net/tls/tls_sw.c
+> +++ b/net/tls/tls_sw.c
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+It seems you missed tls_encrypt_done() ?
+
+Thanks!
