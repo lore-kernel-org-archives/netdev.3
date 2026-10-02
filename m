@@ -1,24 +1,24 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF7235DA55;
-	Fri,  2 Oct 2026 11:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4058648989E;
+	Fri,  2 Oct 2026 11:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790942337; cv=pass; b=BmmAkCbxKNeUmMkRRw4vgqNkqnEzl9jDhqaArSE25yvoId/x1hizV6E71ju9Su+jo4nYLAIpC3bv3m2al+K2C3oa3CgosSgmgCWvrOJwgi58Py3+/rLkMB3FdsCEtpfsCu9c5UIiLQViU3qVOgylLKRYdv0rJaJ5yi0fR+3PK1M=
+	t=1790942337; cv=pass; b=jLUotjEEnJDQFc9WScUw3cQ8LlE+vQghUfRyTO4KE/SiPIwissA3RldAtdBky0kiqCbXwjhTMvFDse1p9rit9KknSnydbrqMxTd6b+2MRD7UWFcrRLSc4nF7zw4Oqzw9aWDOyWIgOF4nOCDjTLPnz88/cT7Cm6ZpJv099/sNGts=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790942337; c=relaxed/simple;
-	bh=isEkkmEhhZWGcISQwMWbkY9GhAyFJ+oMWqIa8B6KPLQ=;
+	bh=IHa+irAt0l7Du5+/UjCkYiuo6a4l2fcDi5D93OYvJ38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbsh/V5dm1vmFC6H2oArAUWWfGLxJJSOArKoi4F4AGSOvI8PrUMD2yqTFyBm/myOspv3OtaCeX0/ffvgVu/T7E8Zc5lU1D/RGP+6TUo3KaWL7JHT/HM9Z7+ZPM0ewd9kOlQKITtEZacmtKdb8f2EFmi1YBxgGZmMYIgG++Q6Tsw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=KEadrkj8; arc=pass smtp.client-ip=185.203.200.13
+	 MIME-Version; b=ZFqT0bxcdkuI4Tsk3fqJoILwY3jT41IPmkLD3oddl1vVMmhUz2fE/ZRMwnYK6qd6SYh7sWhWKZMt/YWdOxWHUBf1NnLiFDcn3hZrSaMgmE2VL6cpi7ybp3yfTqpPeOGii1TgeIwvy+p8ACw9P+sIRIY4p+aUdT1qlms3l/Ga2JY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=damftuDy; arc=pass smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="KEadrkj8"
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="damftuDy"
 Received: from dude04.red.stw.pengutronix.de (dude04.red.stw.4.pengutronix.de [10.17.1.12])
 	(Authenticated sender: relay-from-dude04.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 11A5D201991;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2BF09202303;
 	Fri, 02 Oct 2026 13:58:52 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790942332;
@@ -26,19 +26,19 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NxMUlhdo6FcVj3iOS57D0hS5pjXPefQJXgYpuNUOJqo=;
-	b=KEadrkj81c+D6M6X2shywJMadGjeEcOAkXh4scNid6lqBjIL8orCMHs7q9PQ1moa7xdXvW
-	V4P3h0g48opNHjZY147ibT6l7og6dlo9TJKqZRTpAhSSBgoygjG3rqFOjyWwN1vJK9RiTk
-	eRsUKCR3OzBqQgKEW4yONJgRYG4Z6SMLnmtoZkUI1LV7vfaCMl80r5P4v4ROp6Y9PmD4s2
-	XBymn+F6RiIkNibSKzoqRh8A6bMKpPz62zLeB1y5zYziKdHJzC4JoNMpriEE9OLTLaR1l5
-	+ZcFxW1RheKxNgigU8n5oA9yM9B8KLAFz3DpBIcogvQZwtgpEpmRAUwC8W6k+A==
+	bh=igQkPN7qzA9MnAOLO1Ekwv97arHGTBfWOp1Ff7YJQ9s=;
+	b=damftuDyDkMff/gLQK5C20x0ikdcAGPFbFUJnoyaFhW5xwCOWz8YiC9DAd0TcpWKfq33KA
+	OHL0sj/NUk0xQN7RtsCFhnP8qq5ajhi6LUB6k8fvltGSwMElQRfK+YyiMRZgaIoOYoQvsT
+	4qEWhS/fNMziK9mhwpxiTO/skee93U8YjY2HxhVMdATW0PkUJoq7SAV08cshPZx7nSkop4
+	8DZCd104Yf2RJsUlGkCA0oA0LgjHWGqAEEN9Vp2146X+i9Fen4WIh0FN60DnTIlN1j2pkQ
+	7RgmM8sF0W9kP8BNNfOQF0gk1wDa6IF5lHsYoBjtX+7INMXIboByEY6V/yBx0Q==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790942332; a=rsa-sha256;
 	cv=none;
-	b=UKKaZ6SxZ2DTj6Eu4MGEO4OwvGg/ABhRdWay3SHZ2E3seGkflCxsQRfTXll6XqLTZbQnVZ
-	mY8YUhrk3LNvMq1BOvwrtXUsbD0pRz31VJD5HEhk9uqWOaQFp+Wh1YwWBYRXxoQhTctl6m
-	fXW6p4yeWEpIok8kISwphmyZrqxcReSr4gQ4LdPi5rEW5PHecffNwUYC0i8wTrZn2t0Baz
-	ButnrHe73UvswkSjU/jMqQCCzMeyJtAxZKUZcb2UqdD6vVx6BFIAZdoYrt3FjM1B2xdVA9
-	3GtVD4BDMqPNmx8BAQo5OVPT7T3Di4JpNrxxnIGwC5h+WyqVzPL/j/P6ZJpEAg==
+	b=Mt0Ztxj2pExby1iL8Vrb6QxzjEAkBYOlUAzfMgbx8ECLV19HtacCkf7GSXej/Whq5myMzi
+	h5jgK7OCjVCFDsgjx+9IHoIZYIytSZPdB4HvwNq4AwbBcmGN6l3LygoZjZpDNK4Rg9orQ+
+	kMzVMt0ScP39T7D01ffao01/VVQ5C9xIGpFZzExa3pAdqhiUO5Sq4quRw+2ziU6j82pn2g
+	QGyjQSoIDxvHhRQnnoG+LMS+XYhfehkHxMOGD0hKsc8odPU64vC9/IEiRx6mBZkCLuuUub
+	3OMbnFNAJNtGZYj5YDjS3P+f8nteLjA/1ISd2tRHbdP6Y8vKm27N3munoOG47Q==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude04.red.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
@@ -48,14 +48,14 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NxMUlhdo6FcVj3iOS57D0hS5pjXPefQJXgYpuNUOJqo=;
-	b=a9hro336T6sp+213yKkhahG/2YGR6S55QvNVeX+haOiGksuES2AM8hnC2PBM9nMmPbcGzQ
-	l5Cb3bTot72cyfAKJl119MYPYpyakZW+RCTZLewiUcwpew+mHEbB2rEXTrPM5LyhSX13Ri
-	RoysfC9vI0IfHm8qhrTfXK/HM5OWUuMT8oBzF7P/dN2Zp++MK+YzFA1kjTRnU/Uv3FRUKA
-	Ymg5yJWvWsgjFrG9Np50XAGKY9wd+yG24JsiSf52zJIt6XADk1kquNrFEUDVchdc2AnXC/
-	tVKriAxu5CM08aY7RjWFo/0DxlxXFSPPZyXV0wl6pnbEgQ65gYqqCgyFkMU61A==
+	bh=igQkPN7qzA9MnAOLO1Ekwv97arHGTBfWOp1Ff7YJQ9s=;
+	b=Jqyk1ELjniYbpVoaBTsKbmeQttrvZ5M+dK6XV7S+E5u0379beXnWTuEjRiWEfX8FbyJNSW
+	TKe4Uqx5o9p9nD2UiUnSMZlbGnTqWgFLygc4H+3wOD5j6xUxSRVE1OO4ZdZ7FO0sr+ngd/
+	OBZMgzr3PbbXGWLDMvIisnjl8YqwvTf/tki00y/0EBZNQjSj/GioByup2tZtGQ217f0mO3
+	WkDbWCll93H5j03AjVZf+hednq9JCPp0jA1kEDEDISPL1kS6RKRAQq7ybCXCB496b5ShOQ
+	G+qjvi9zA6TjuEK4xuuuSBwaoltZqlZUsb5pzre+MubllIMoOdVuOWKP8UBCag==
 Received: by dude04.red.stw.pengutronix.de (Postfix, from userid 1058)
-	id EC2AD380DD7; Fri, 02 Oct 2026 13:58:51 +0200 (CEST)
+	id 1B4A6381110; Fri, 02 Oct 2026 13:58:52 +0200 (CEST)
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Linus Walleij <linusw@kernel.org>,
 	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
@@ -71,9 +71,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
 	netdev@vger.kernel.org,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next v1 1/8] net: ieee8021q: print traffic type and queue count with %u
-Date: Fri,  2 Oct 2026 13:58:43 +0200
-Message-ID: <20261002115850.962676-2-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v1 4/8] net: ieee8021q: add tt_to_pcp()
+Date: Fri,  2 Oct 2026 13:58:46 +0200
+Message-ID: <20261002115850.962676-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261002115850.962676-1-o.rempel@pengutronix.de>
 References: <20261002115850.962676-1-o.rempel@pengutronix.de>
@@ -85,43 +85,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Switch the out-of-range diagnostic in ieee8021q_tt_to_tc() from %d to
-%u. The traffic class count num_queues is an unsigned int and the
-traffic type is an enumeration, so printing them as unsigned matches
-their types. The print sits on the range-check error path, which still
-rejects a negative traffic type; %u only changes how an out-of-range
-value is rendered, not which values are rejected.
+Add ieee8021q_tt_to_pcp(), the inverse of ieee8021q_pcp_to_tt(): it
+encodes an 802.1Q traffic type back to its Priority Code Point, and
+completes the pcp/tt helper family.
 
-Preparation for the inverse helper added next, which follows the same
-convention.
+A driver that reseeds its PCP classifier through ieee8021q_pcp_to_tt()
+stores traffic types in the hardware tables, while the dcbnl priority
+ops exchange 802.1p priorities across the DSA boundary. Reading such a
+table back therefore needs the reverse mapping to restore the 802.1p
+value, which no existing helper provides. Because pcp_to_tt only
+transposes Best Effort and Background and is the identity elsewhere the
+two directions are numerically equal; provide tt_to_pcp as its own named
+function so the read path does not decode a traffic type as if it were a
+PCP.
+
+The first user is the Realtek rtl8365mb DSA driver, whose dcbnl
+get_default_prio and get_dscp_prio paths read back traffic types and
+must return 802.1p priorities.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- net/core/ieee8021q_helpers.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/ieee8021q.h      |  6 ++++++
+ net/core/ieee8021q_helpers.c | 40 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
+diff --git a/include/net/ieee8021q.h b/include/net/ieee8021q.h
+index d24e4036577b..b09572da0289 100644
+--- a/include/net/ieee8021q.h
++++ b/include/net/ieee8021q.h
+@@ -39,6 +39,7 @@ enum ieee8021q_traffic_type {
+ 
+ int ietf_dscp_to_ieee8021q_tt(u8 dscp);
+ int ieee8021q_pcp_to_tt(u8 pcp);
++int ieee8021q_tt_to_pcp(enum ieee8021q_traffic_type tt);
+ int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues);
+ 
+ #else
+@@ -53,6 +54,11 @@ static inline int ieee8021q_pcp_to_tt(u8 pcp)
+ 	return -EOPNOTSUPP;
+ }
+ 
++static inline int ieee8021q_tt_to_pcp(enum ieee8021q_traffic_type tt)
++{
++	return -EOPNOTSUPP;
++}
++
+ static inline int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt,
+ 				     unsigned int num_queues)
+ {
 diff --git a/net/core/ieee8021q_helpers.c b/net/core/ieee8021q_helpers.c
-index 669b357b73b2..bbacdfff9b4c 100644
+index 520d86d592eb..205c11793473 100644
 --- a/net/core/ieee8021q_helpers.c
 +++ b/net/core/ieee8021q_helpers.c
-@@ -99,7 +99,7 @@ static const u8 ieee8021q_1queue_tt_tc_map[] = {
- int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues)
- {
- 	if (tt < 0 || tt >= IEEE8021Q_TT_MAX) {
--		pr_err("Requested Traffic Type (%d) is out of range (%d)\n", tt,
-+		pr_err("Requested Traffic Type (%u) is out of range (%u)\n", tt,
- 		       IEEE8021Q_TT_MAX);
- 		return -EINVAL;
- 	}
-@@ -131,7 +131,7 @@ int ieee8021q_tt_to_tc(enum ieee8021q_traffic_type tt, unsigned int num_queues)
- 		return ieee8021q_1queue_tt_tc_map[tt];
- 	}
- 
--	pr_err("Invalid number of queues %d\n", num_queues);
-+	pr_err("Invalid number of queues %u\n", num_queues);
- 
+@@ -267,3 +267,43 @@ int ieee8021q_pcp_to_tt(u8 pcp)
  	return -EINVAL;
  }
+ EXPORT_SYMBOL_GPL(ieee8021q_pcp_to_tt);
++
++/**
++ * ieee8021q_tt_to_pcp - Map an IEEE 802.1Q traffic type to a PCP
++ * @tt: IEEE 802.1Q traffic type
++ *
++ * Encode @tt back to its IEEE 802.1Q Priority Code Point per Table I-7
++ * ("Priority Code Point decoding") for the 8P0D encoding, the inverse of
++ * ieee8021q_pcp_to_tt(). It is nearly the identity, except traffic types Best
++ * Effort and Background map to swapped PCP values: Best Effort is the default
++ * (PCP 0) despite being higher priority than Background (PCP 1) (Table I-2:
++ * BE = priority 0, BK = priority 1).
++ *
++ * Return: the PCP value, or a negative value on error.
++ */
++int ieee8021q_tt_to_pcp(enum ieee8021q_traffic_type tt)
++{
++	switch (tt) {
++	case IEEE8021Q_TT_BK:
++		return 1;
++	case IEEE8021Q_TT_BE:
++		return 0;
++	case IEEE8021Q_TT_EE:
++		return 2;
++	case IEEE8021Q_TT_CA:
++		return 3;
++	case IEEE8021Q_TT_VI:
++		return 4;
++	case IEEE8021Q_TT_VO:
++		return 5;
++	case IEEE8021Q_TT_IC:
++		return 6;
++	case IEEE8021Q_TT_NC:
++		return 7;
++	case IEEE8021Q_TT_MAX:
++		break;
++	}
++
++	return -EINVAL;
++}
++EXPORT_SYMBOL_GPL(ieee8021q_tt_to_pcp);
 -- 
 2.47.3
 
