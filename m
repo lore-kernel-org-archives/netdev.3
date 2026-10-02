@@ -1,82 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFA13A6EEC;
-	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E893C09EF;
+	Fri,  2 Oct 2026 10:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790937608; cv=none; b=L3L0BMD8Ybnlx8z8Xn/ZiJQuVhRtjoxJyPwSmCNladnM7T2f8ip6Co/RzSjndChZ/l9Jn35LVx5vSKead2XSPFp0PHvSAPKO8Tq3bKAxkup5HJu8+hUp/X01NfsXsSenVBBDHaFjY4pQq8kENHBwqeJBM6e7JlR2w4gjpO/RXxg=
+	t=1790937763; cv=none; b=OlvOgo//AzRUuMBlbbjuJEb+N7KabsXeY3V1rGSJWFWhHnx1JAYkoXBlaXyrSqiyEzpqZ446Ni3P+sa+psMTvMk/iDXDiWXuipHmDye+50j4soScJ2Vx6TZdBtkcOhedFroZT40FBclVXqhK04YvwOaEQy4y/UsjRp90s6wCX4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790937608; c=relaxed/simple;
-	bh=KQ1HOpFFK/1H/Cdbs2aDLG+TrVClcAEG+HQZxLwdj6s=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=F7oX4NnDRxUEpTYhl4xiGJ+PrZnKjWSXo4ckeLvxq9seBk/0Qd8DVvj/MhdvEft0S2schvB2nZa3OkdUH2rGRsRbz+fo+vD+TorekrG2YiieNODUyRJzyNnXAX8meA4joaKRwdkoWhtAziNtFrCI0YW72HYbmOy8SscKCR3cm0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lyCuXvLv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790937763; c=relaxed/simple;
+	bh=MOf5ttjotxFZUcXLkswkUs5bKxaUAAx4fQEpPTn0ewg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ckX+Z4bNgqeVJVonvRKAnEYKtEdeVv/1Jrq+nTGcxH7wziqWUamoi7O+tMu9hJWCDrUJbhQIdYunoB2iCmgrRhxeCC5aNJG6gs+DSITDPO8Cf9Lp8VgZEO9xck69NzMiBESrKULGokY/obW9VOp8IKGDx/oc/kmPHg2isHoS4JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MNONvmo/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9zEiGyfp; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MaNnL5uU; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DHzA805q; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lyCuXvLv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C041A1F000FF;
-	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790937606;
-	bh=r4INfRqpxT7YhPd+W06NysuXddY9wGvptiUPCAUf84Q=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lyCuXvLvrukBpLA5Oi0fuVfgDeW7EReHHvoKZu6zcpIWq/1NDdNVlVB11rBiizCn7
-	 ULtta7vJTQso8vCLmTCzRS+obSLOuhGqjYEI2V+SXCV7vkIWWN7Rq3YtdzhcUYSPJh
-	 8d2mJlulPkrCQCG1TaesS9XxTloiQ9iL4b3PWTTgZzMn7JAj3Zcs3FvzxycawVB1lj
-	 brOGbKH8dvgzsZGDa2SemNmROVp+X1U8YPbzRDc0n3fj1DrHYhpKuF+flS9nXmzFCS
-	 A0TpJHnOHU6a6+oE1c2RhRnnJWnQNh8Oj+Sve7hRxLGqT7CS8Q6O2UbmFtFksdRlrP
-	 yW8ECfZto62Wg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B448C38119E9;
-	Fri,  2 Oct 2026 10:40:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MNONvmo/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9zEiGyfp";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MaNnL5uU";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DHzA805q"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CCBC621E88;
+	Fri,  2 Oct 2026 10:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790937756; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L8d0wskOPC8bqaDMsD74WV8L3K7R9l1OBqGDLyy6rFI=;
+	b=MNONvmo//Yui5lLij2JFZGxeNAnB9rIMs9p+xKn/d9FcumjDxYR2dIDTsNJol/FdbkF10T
+	NsUX09BxDDxTq4jn201X/D+Sp022nQ391nMcG7CrMaFC4/N78JEp/8yA8ROCIF4qlFMVJL
+	5tMDfJPaBzV2/GQkFEbV4C2rf9xhG0A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790937756;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L8d0wskOPC8bqaDMsD74WV8L3K7R9l1OBqGDLyy6rFI=;
+	b=9zEiGyfpW94K7GMQ5eYv5E+JxVY8cT83DV1HGonG77sFtBnm46sA5SknvAKy6z4i5YgapF
+	MAtM7MV/Nap+6uDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790937751; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L8d0wskOPC8bqaDMsD74WV8L3K7R9l1OBqGDLyy6rFI=;
+	b=MaNnL5uUY89T6FfQLEp67gFSDGbEgAwD90I3KQ4IpCWP+gqcufgYDJ6FjecDZt4s9Pf1EV
+	x728kNuF5ys+eti2jTcZfs7U1P0Xu94Zpiwa0b5w2RaC7cmSd9CNGY9qAKK3DCvdNj2Za0
+	/gLsM3KpvKBVmACjwPajDQcDIKsj1iQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790937751;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L8d0wskOPC8bqaDMsD74WV8L3K7R9l1OBqGDLyy6rFI=;
+	b=DHzA805qo4cW/RLPXGcI8/LD8xddn1CcYn8RXvcM9Uymh7RyMSig6NyXOcrbLOYrV8K3cr
+	Hf/EmOjJK4s64pCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D60CF13C24;
+	Fri,  2 Oct 2026 10:42:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qo8WK5aKv2qySwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 02 Oct 2026 10:42:30 +0000
+Message-ID: <816f2ae9-e436-4b0b-ad1e-5f6067f69d70@suse.de>
+Date: Fri, 2 Oct 2026 12:41:24 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/1] net: allwinner: remove dmaengine_desc_free()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179093760553.3349832.499337152312400934.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 10:40:05 +0000
-References: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
-In-Reply-To: <20260929190640.3516766-1-Frank.Li@oss.nxp.com>
-To: Frank Li <Frank.Li@oss.nxp.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, wens@kernel.org,
- jernej.skrabec@gmail.com, samuel@sholland.org,
- bartosz.golaszewski@oss.qualcomm.com, andre.przywara@arm.com,
- phucduc.bui@gmail.com, arnd@arndb.de, kees@kernel.org, liyouhong@kylinos.cn,
- Frank.Li@nxp.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, vkoul@kernel.org, imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/1] ipv6: defrag: orphan skb before queuing
+To: Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ edumazet@kernel.org
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, joe@wand.net.nz,
+ ast@kernel.org, kafai@fb.com, vega@nebusec.ai, petalzu987@gmail.com
+References: <cover.1790850176.git.petalzu987@gmail.com>
+ <5c396b7011168cd98b9812df4d6bbd00a96048e7.1790850176.git.petalzu987@gmail.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <5c396b7011168cd98b9812df4d6bbd00a96048e7.1790850176.git.petalzu987@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,davemloft.net,redhat.com,wand.net.nz,fb.com,nebusec.ai,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,nebusec.ai:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Tue, 29 Sep 2026 15:06:36 -0400 you wrote:
-> From: Frank Li <Frank.Li@nxp.com>
+On 10/2/26 11:25 AM, Ren Wei wrote:
+> From: Zixuan Chai <petalzu987@gmail.com>
 > 
-> dmaengine_desc_free() is designed for DMA_CTRL_REUSE. If DMA_CTRL_REUSE
-> is not set, dmaengine_desc_free() will return -EPERM.
+> IPv4 and nf_conntrack fragment queues orphan skbs before returning
+> -EINPROGRESS, but ip6_frag_queue() leaves the socket association intact.
 > 
-> 	if (!dmaengine_desc_test_reuse(desc))
-> 		return -EPERM;
+> A socket installed by bpf_sk_assign() may use SOCK_RCU_FREE and be released
+> while its fragment remains queued. The skb destructor can then dereference
+> a stale socket pointer.
 > 
-> [...]
+> Orphan the skb before returning -EINPROGRESS so the queued fragment no
+> longer retains the socket association.
+> 
+> Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> ---
+>   net/ipv6/reassembly.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
+> index 05c51f669754..a7964125c764 100644
+> --- a/net/ipv6/reassembly.c
+> +++ b/net/ipv6/reassembly.c
+> @@ -232,6 +232,7 @@ static int ip6_frag_queue(struct net *net,
+>   	}
+>   
+>   	skb_dst_drop(skb);
+> +	skb_orphan(skb);
+>   	return -EINPROGRESS;
+>   
+>   insert_error:
 
-Here is the summary with links:
-  - [1/1] net: allwinner: remove dmaengine_desc_free()
-    https://git.kernel.org/netdev/net/c/71a77ab76e74
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Thanks,
+Fernando.
 
