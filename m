@@ -1,121 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out198-30.us.a.mail.aliyun.com (out198-30.us.a.mail.aliyun.com [47.90.198.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC6C4E0201;
-	Fri,  2 Oct 2026 15:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790955063; cv=none; b=DTxzFpQvdjOlBcV3g4VXyCEvi79Swir7dmImLBxzLguWcSgiuh405SGVb23iX0hcpH4ljOlwCn7spjyjqLQsDlBQo7hCl868gJyqQbPncQP6L21sGZyJNxiwmRDSY06rpcn+f4+iGlKmn367dWLzuJhZJhiR8pGWYpVJT6ReJi0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790955063; c=relaxed/simple;
-	bh=Pb13iu/ycKWAkdRHfpejdosZI4tN8vnTY/uxCyS27bM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=pyU0hl8VsRwhVzNRyIoAeq0PTuGhcMCdvkiocOSA19NBuh53SSvLdW/fKibQ+MvmCFGuBW2fTcI7j3PbKetnRx4hBwBg3lvpCWfCeI8c/mTQSfuiuTbXHtmab8tYK2emjrEyQueZBkaVS4sKpEL6fBh0ee/MHDbWAcd6AEjGm0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LisVuhUS; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LisVuhUS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB561F0089B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B524D487C;
 	Fri,  2 Oct 2026 15:31:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790955061;
-	bh=FM46s7EZHf9rjPe3C/H2Iwd5auI7xyJp3MB2IECp0ho=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=LisVuhUSLhz+urRjxHr6NsNKYrx87ScEV34+0VLtsW3wJqHSdB6ACvJ095H5VeWry
-	 JrqJW2nNSYuz0ZPWKQ2cor1eBHR7SjeUxy4DN40hqe1D74XwkBi0JLqvHRJD7T6ShI
-	 UTlDX4XZNWSESc1lgBsC9iQt8QEqNeje2CD3g2Nx9PZiHW4ynmgcVvANjSfSnzfW5J
-	 C8M3bCv3si8TdhEjpwsDq9gaL4ID5pn19TREKKzgi07nP2kMSpL8BhA9LdJ5u4pUQS
-	 DT7IbrEytq9aWUchh0PPHroIfIrs21bIKc5Vkb21/iCGUwigfO+LK1MNnYFWGyLokp
-	 w07gD7XYFmSiw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AB9B8F40070;
-	Fri,  2 Oct 2026 11:31:00 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Fri, 02 Oct 2026 11:31:00 -0400
-X-ME-Sender: <xms:NM6_atytbD83DGgfaD1Q1CcslokR6Pj-n_h5dzYAicQqa9-MI1Hirw>
-    <xme:NM6_aoGC2I9kIMsc61zs8wFxMbGHErGGUz-hb0nZFCrmpzYVRto6ygxddgkc8PpeH
-    esULfrXmtFRbYSL1UkSH5ccdOhxqYXXUKzx8KFeNN25VAzOcynppEGl>
-X-ME-Proxy-Cause: dmFkZTE9FKj1pbOY3LhbPOpFELVXU2Q3bWSI+vpgSj73A5PqvFGYZmhx6HM+L8S0/FjHKy
-    6E9V1Qzzw9j/iNff7ngpCgWfCRydKj8okCMsXVoRZjuPwiN79HE6Kppi8VQgHz9R7eCHys
-    +QgfT1HOZ1zEqMA8LKKAWBRdWgIdxGphpBf4JgiKxglT9PdntcZeAl3M7yw6H1/uYi2uJB
-    auB18R2j+K5UnQ1+inIlQfyRW0vcQF5TeoW89Xq8KhfJGeiDW5xxa9WyqxMjaoZ0mWx78B
-    2/r9PwsOEwHCtV9FVfaCWqPnyBhuFaCc0L8YGbgWcWlMX/ol0m0FzJz12rs8w9RDwATgM4
-    jPO3b71m6Gd8HRGdY9xzn+j7pAJkdrOD2uOcT02B1TL0x6mJ4ZFMgvbcPxhUYvK90Fl+Kl
-    L8XVKUPriWt82AafO2LoWp805/FQYoLGoS9WvU+lbNnstliORvWFcO8ry2MFZefaqNIfyT
-    p1N1kO8CXhKhsRKrQ8SuhJb3Rdr3aZwWR335p386nb/+VfgVyyhnP+R76ld6+BbtWzRFII
-    iTwRwxVltxyT0//18HlgpkdN3+7sTQcsHwAN6KJDOm/PD8+ZKtw3ZAAIrCa2yaj1om3hzp
-    +pqoVHbCF+CXGNovMhMLwClyijiW/bL9RvWpfKIUC6y74ntgq0hJLB+pr7JA
-X-ME-Proxy: <xmx:NM6_aqlEWlwAHtMGTPNR2tu_aT-yyWN8ATYYC0ew8ZBh8NubED8Glg>
-    <xmx:NM6_auhdlVMMdYUSWJfTuu1oK2tPiJvTybpI8nMp4KDgpZ4Dj8iszw>
-    <xmx:NM6_ashOxQQSQ39-Ie802JcsXOxgZTbixs7l-RMVCV4NXxI5Vov4fg>
-    <xmx:NM6_aosu8Prmr86xuNRpK_LCoEsEdy37deXrNZgRhC9R5xLJ1CPi0Q>
-    <xmx:NM6_assAsNu0s0ho9NHJRUfnp1VK_W0ynvu1U-u-E_7o71n-jTe8dUwT>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 86938780070; Fri,  2 Oct 2026 11:31:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.30
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790955065; cv=none; b=ABxpNnlWFO7QD33FUf018S1zhqOgerlfAlLCzRi4eXwvn1jQiaN7marjnMmmk9cXadE3wHkiV6Wyrl0LHu6QBZHOEBAwUjC7eacmBqoXDj1U2JS6zri33wuqPIR5yAPl7nIhE+Q5py/Ysk8MQybks1YiBa8LRfNmO882YM8cUbU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790955065; c=relaxed/simple;
+	bh=HP+XkyMi6V+nfah9Q3XU6k4C82hRhLAewzKKyWuoF/c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=l+9TKtIsRjOCfbtcjON6Sfi5/bOIRp8cj0xdM1VRcwIDsjFIUDESwAMuo3TGAed+GbNci/BHcXCfw6+W3qG49qzVuY0JgAUOvaV8IWfqVqmAPIDUQeT4efnLQgPnX2z41+M5jx0LSi9eOhcRu0qFvkDE/xYsYarqO6yL1OFfuAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06737349|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.316453-0.0542113-0.629336;FP=13581216796948058038|14|2|17|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jTkAIaN_1790955040;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jTkAIaN_1790955040 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 02 Oct 2026 23:30:41 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	Frank.Sae@motor-comm.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com
+Subject: [PATCH net-next v24 2/3] net: phy: Add support for Template Control register for PMA
+Date: Fri,  2 Oct 2026 23:30:33 +0800
+Message-Id: <20261002153034.934814-3-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261002153034.934814-1-kyle.switch@motor-comm.com>
+References: <20261002153034.934814-1-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A7lo7qchVSwF
-Date: Fri, 02 Oct 2026 08:30:40 -0700
-From: "Chuck Lever" <cel@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: "John Fastabend" <john.fastabend@gmail.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Sabrina Dubroca" <sd@queasysnail.net>,
- "David S. Miller" <davem@davemloft.net>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Dave Watson" <davejwatson@fb.com>,
- "Shuah Khan" <shuah@kernel.org>, "Qingfang Deng" <qingfang.deng@linux.dev>,
- "Eric Dumazet" <edumazet@kernel.org>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Message-Id: <7109b48e-992f-4f67-a036-cbebf74cedcf@slotpi15m67>
-In-Reply-To: <179089471115.1402591.14877215785916752547@kernel.org>
-References: <20261001-tls-follow-on-v2-0-2dd1947bb642@kernel.org>
- <179089471115.1402591.14877215785916752547@kernel.org>
-Subject: Re: [PATCH net-next v2 0/8] net/tls: Receive-path fixes for zero-length data
- records
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+Add support for the 10GBASE-T PMA Template Test Mode register
+field, which allows selecting one of eight test modes (Normal and
+TestMode1..TestMode7) used for PHY validation.
 
-Sabrina reported the splice(2) false EOF fixed in patch 3 while
-reviewing commit 3be28e2c9cd0 ("net/tls: Consume empty data records
-in tls_sw_read_sock()"):
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+---
+ drivers/net/phy/phy-c45.c | 23 +++++++++++++++++++++++
+ include/linux/phy.h       |  1 +
+ include/uapi/linux/mdio.h | 12 ++++++++++++
+ 3 files changed, 36 insertions(+)
 
-https://lore.kernel.org/netdev/akaoXcfamBp8_mYe@krikkit/
-
-Sashiko's review of that patch flagged the same defect, and also
-the rx_list growth under MSG_PEEK fixed in patch 5. Its review of
-the read_sock series I posted on July 20 flagged the missing signal
-check in tls_sw_recvmsg() fixed in patch 2.
-
-The defects fixed in patches 1 and 4 were found by an LLM audit and
-review of the TLS read code paths.
-
-
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-
-None of these was hit in production, so there is no stack trace or
-error message to include.
-
-The selftests in this series reproduce these two: On an unfixed
-kernel, splice(2) returns zero when it reaches a zero-length record
-(patches 3 and 6); and a splice from a nonblocking socket without
-SPLICE_F_NONBLOCK sleeps until the harness timeout (patches 4 and 8).
-
-The fixes in patches 1, 2, and 5 have not been reproduced because
-these need a peer that streams zero-length records without pause.
-
-I'll update the commit messages I'm carrying locally so subsequent
-postings will carry this information.
-
-
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 870920311f9a..c5f5753f7194 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -1408,6 +1408,29 @@ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable)
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_fast_retrain);
+ 
++/**
++ * genphy_c45_template_testmode - configure template testmode registers
++ * @phydev: target phy_device struct
++ * @test_mode: testmode includes Normal to Test mode 7
++ *
++ * Description: Set template testmode include Normal to Test mode 7
++ *
++ * Return: 0 on success, or a negative error code on failure (e.g. register
++ * read/write error).
++ */
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode)
++{
++	u16 ctrl;
++
++	if (test_mode > MDIO_PMA_10GBT_TESTMODE_7)
++		return -EOPNOTSUPP;
++
++	ctrl = FIELD_PREP(MDIO_PMA_10GBT_TESTMODE_MASK, test_mode);
++	return phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_10GBT_TESTMODE,
++			      MDIO_PMA_10GBT_TESTMODE_MASK, ctrl);
++}
++EXPORT_SYMBOL_GPL(genphy_c45_template_testmode);
++
+ /**
+  * genphy_c45_plca_get_cfg - get PLCA configuration from standard registers
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 7c5098a0dd6c..b9dee2655e6b 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2357,6 +2357,7 @@ int genphy_c45_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_c45_pma_resume(struct phy_device *phydev);
+ int genphy_c45_pma_suspend(struct phy_device *phydev);
+ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable);
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode);
+ int genphy_c45_plca_get_cfg(struct phy_device *phydev,
+ 			    struct phy_plca_cfg *plca_cfg);
+ int genphy_c45_plca_set_cfg(struct phy_device *phydev,
+diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+index 06f4bc3c20c7..353ca13c64fc 100644
+--- a/include/uapi/linux/mdio.h
++++ b/include/uapi/linux/mdio.h
+@@ -63,6 +63,7 @@
+ /* Media-dependent registers. */
+ #define MDIO_PMA_10GBT_SWAPPOL	130	/* 10GBASE-T pair swap & polarity */
+ #define MDIO_PMA_10GBT_TXPWR	131	/* 10GBASE-T TX power control */
++#define MDIO_PMA_10GBT_TESTMODE 132 /* Test mode control */
+ #define MDIO_PMA_10GBT_SNR	133	/* 10GBASE-T SNR margin, lane A.
+ 					 * Lanes B-D are numbered 134-136. */
+ #define MDIO_PMA_10GBR_FSRT_CSR	147	/* 10GBASE-R fast retrain status and control */
+@@ -320,6 +321,17 @@
+ /* PMA 10GBASE-R Fast Retrain status and control register. */
+ #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
+ 
++/* PMA 10GBASE-T Template Test Mode Register*/
++#define MDIO_PMA_10GBT_TESTMODE_MASK GENMASK(15, 13) /* Template test mode */
++#define MDIO_PMA_10GBT_TESTMODE_NORMAL 0x0 /* Template Normal */
++#define MDIO_PMA_10GBT_TESTMODE_1 0x1 /* Template TestMode1 */
++#define MDIO_PMA_10GBT_TESTMODE_2 0x2 /* Template TestMode2 */
++#define MDIO_PMA_10GBT_TESTMODE_3 0x3 /* Template TestMode3 */
++#define MDIO_PMA_10GBT_TESTMODE_4 0x4 /* Template TestMode4 */
++#define MDIO_PMA_10GBT_TESTMODE_5 0x5 /* Template TestMode5 */
++#define MDIO_PMA_10GBT_TESTMODE_6 0x6 /* Template TestMode6 */
++#define MDIO_PMA_10GBT_TESTMODE_7 0x7 /* Template TestMode7 */
++
+ /* PCS 10GBASE-R/-T status register 1. */
+ #define MDIO_PCS_10GBRT_STAT1_BLKLK	0x0001	/* Block lock attained */
+ 
 -- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+2.25.1
+
