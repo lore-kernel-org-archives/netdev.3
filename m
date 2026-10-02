@@ -1,86 +1,100 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-10.mta0.migadu.com [91.218.175.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E883B101C;
-	Fri,  2 Oct 2026 09:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE804570F2
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 09:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790934157; cv=none; b=q+/JaYz6XL56x+6MCPX87GCc/15C/rF8u/rH1yFsF3lhu+EOyOz7PC/LGR/E910Zk1h791LXpySQKzfKUWJOiTthgXCQXAnHSfSYhlGpsDYCHkIpSbrG7Ht0cUbSPLYFLzsOrmLZLcslAMJ79ZRz1AaIuVWD7QAecuzEhRXb7ic=
+	t=1790934213; cv=none; b=H3v7UBo746QklkzGc1fpeOUyOmlX57fwigMUpY1Q6GxWR6BPS7CcIcNxXLsyIYDyRKfcMvx20vFj/w7DMwau3x5X3up0AAmqauPJD0OrLkoD7rMGqqR2JriDmxrXRNR0ZPD2mN8oDODbtNEWnem44b+v22yOhc0ul0j+wDKi21Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790934157; c=relaxed/simple;
-	bh=sSy+NWMa33/tkN4TpsNgNIHAGb7MtKxz/ue/3WmYi9U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTJaHO1FHahiu9M7Pd3mwOV/okgw+pnydCfjX9wN/5MBm+haw8ST2tLqpprjLums/UDQqHk7WQ5Mq+WG9OVvK/LwgdMJq0RjDR55IgGwtKZIDN7+J9Xqi0GriOzPasFTfcxhdGxemKqctimaQkBJ7ethuCaQ9Q0i2E+5g/yfivg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=QumN7Hpk; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790934213; c=relaxed/simple;
+	bh=AT8e4OPs8AP8eH9/vaaRnPiQgn3UARZ4uOtGA3NPFKY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e5Q5VXMtDnrBJ+i0VBBwf605phC6kAfRZMpYVijCvqb/c4bpkj/CUCvxFJ3elEfc3Hj38iPs0ffDbBm+9JhHouSjIdKU31ZzSq0Qh7SZ0NleiCqSlZGH1k6ZpeuKRahhdssgis5Wr9ian3qsy9rTIFRB9PZdGQaHbs2YwMplP1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Oj2YGiRa; arc=none smtp.client-ip=91.218.175.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="QumN7Hpk"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7C93DA4ACF;
-	Fri,  2 Oct 2026 11:42:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790934145; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=zJhTWYUd1CV02Xl4Ex7AtiljOq50ZWSv6rMaaYTIlH4=;
-	b=QumN7HpkqjGQzfzr5ZRoMHk21tJ1JmwBRilzh39A4Rc4vTiq5G3t+gsxNCaf0H1tDVakjY
-	Y8hv/VBlWmo9b2JkcIzBg54k61Wn3jArMR4+4USUxPqUpBXURjGoOY8xGX4w2VdywzEUut
-	NyGi55VwlnwyXEl7NGtc6I85nIXVdRRyArhPntuJN/MyYMGnsAfECow1wlVwqvovnFYV5U
-	AlERhfaMm5G0cjI61HClQa/ntSsOrZIb7IbimjMbfmIb48JcvBsVO73wTdLceQdv8GkIzr
-	WQEvr7jqApjWehPuVHgHarFuS/Ae1vfkppapc3GObOds7C2LDMkPBLYQKHrJCw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 3/3] net: reject a netdev that implements only one hwtstamp NDO
-Date: Fri,  2 Oct 2026 11:42:09 +0200
-Message-ID: <20261002094211.2350702-4-nb@tipi-net.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261002094211.2350702-1-nb@tipi-net.de>
-References: <20261002094211.2350702-1-nb@tipi-net.de>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Oj2YGiRa"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=AT8e4OPs8AP8eH9/vaaRnPiQgn3UARZ4uOtGA3NPFKY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790934209; v=1; x=1791539009;
+ b=Oj2YGiRa0Dc2VxB6jOX5U0ThSOS/pi6PCCkLIH1XEuHcaRw4ihvpYvwQe0yn6oqjA/cipsOI
+ h9mEMV43/asNEetODV7cXppsn3FeYB6Ftkcao23/KrL9RLIFXaVVm3VendplOu1xMtF8PESvfaW
+ 0XEyMW8vOAv9xY89jI48uKm0=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 87803f23de601c48;
+	Fri, 02 Oct 2026 09:43:28 +0000
+X-Mizu-Trace-ID: 87803f23de601c48
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <83eeeff9-5271-471f-89ed-2644da69d923@linux.dev>
+Date: Fri, 2 Oct 2026 17:43:44 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] net: phy: make the hwtstamp provider lifetime
+ symmetric with the PHY
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
+References: <20260923071132.908826-1-chenguang.zhao@linux.dev>
+ <20260929170300.39a8cb63@kernel.org>
+Content-Language: en-US
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+In-Reply-To: <20260929170300.39a8cb63@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-ndo_hwtstamp_get and ndo_hwtstamp_set only make sense as a pair. A
-driver providing just one gets no complaint today, and the mismatch
-turns up in user space, where a set can succeed while the matching get
-fails.
 
-Catch it at registration instead.
+在 2026/9/30 08:03, Jakub Kicinski 写道:
+> On Wed, 23 Sep 2026 15:11:32 +0800 Chenguang Zhao wrote:
+>> phy_detach() removes dev->hwprov when it points at the PHY being
+>> detached, but phy_attach() does not install anything: the setup and
+>> teardown are not symmetric. The teardown path is also reached from
+>> the probe error path with no RTNL and an unregistered netdev, making
+>> rtnl_dereference() of dev->hwprov trigger a lockdep splat.
+>>
+>> Track the provider with the PHY instead: dev_attach_hwtstamp_phylib()
+>> installs a default provider in phy_attach_direct(), and
+>> dev_clear_hwtstamp_phylib() removes it in phy_detach(). Both sit
+>> next to dev_set_hwtstamp_phylib() so the locking is obviously the
+>> same, relaxed for unregistered netdevs via
+>> netdev_ops_lock_dereference_or_invisible(). No driver callback is
+>> invoked; installation is skipped when the PHY is not the default
+>> hwtstamp provider or when ethtool already set one.
+> This is pure slop, you added this incredibly ugly
+> netdev_ops_lock_dereference_or_invisible()
+> instead of just taking the RCU lock.
+>
+> Please don't send send any patches to networking for the next 2 months
+> and use this time to learn kernel programming basics.
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- net/core/dev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Hi Jakub
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index ca7f4844cc40..db765cb5811e 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11462,6 +11462,11 @@ static int netdev_check_ops(struct net_device *dev)
- 		return -EINVAL;
- 	}
- 
-+	if (!ops->ndo_hwtstamp_get != !ops->ndo_hwtstamp_set) {
-+		netdev_WARN(dev, "driver implements only one hwtstamp NDO\n");
-+		return -EINVAL;
-+	}
-+
- 	if (netdev_need_ops_lock(dev) && ops->ndo_set_rx_mode &&
- 	    !ops->ndo_set_rx_mode_async) {
- 		netdev_WARN(dev, "ops-locked drivers should use ndo_set_rx_mode_async\n");
--- 
-2.53.0
+You are right. dev->hwprov is an RCU pointer. The probe error path does not hold RTNL, 
+
+and I silenced the lockdep splat by teaching the ops-lock helper that an unregistered netdev 
+
+needs no lock. That was the wrong fix. The access should use rcu_read_lock() with rcu_dereference().
+
+
+I was trapped in a misleading mindset: I overly focused on making the phy_attach() and phy_detach() 
+
+paths fully symmetric and tried to avoid RTNL lockdep warnings in the error path, which led me to 
+
+invent an inappropriate workaround instead of using the proper RCU pattern.
+
+I will not send networking patches for the next two months. Thank you for pointing this out.
+
+
+Thanks
+
+Chenguang
 
