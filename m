@@ -1,139 +1,112 @@
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF05F3438A0;
-	Fri,  2 Oct 2026 22:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40AE3BD246;
+	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790981580; cv=none; b=Wn1QcaiUatxGoGW8qCqrDwsYC2ga2MopjHxqmbKe2AeXeaWOZGGm5183pRRoOAGfFzlI2e1nTBgmjPUw7PoVl265DzlH4NaIEl7uKTglmDhsrKcGTgldIvFhVND040lrj0s0kdHplKKpprccmNJWj9NbjC1GW7NEvE7QT8KCcoM=
+	t=1790981977; cv=none; b=hJnUdV36lVNB8N7XSznnCxWqo+k6x5J3EQ1r3mKPUxiYwtXwycjHA4JKtrwySJ4WVKTg3uUMsgH9ugQ3pCVt6l3HOfGqOOY9DVbZGc4vzolLMy5wwteEoYyzd2wrgQUKcLlyH9Cc+L23gqmqZfkDvJEHNAXd6HQuxLttovCnu4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790981580; c=relaxed/simple;
-	bh=x2GGwuEyPxoeE58a4f+VomP2LJxuHLO2xxByMZSioNo=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=t5rb3XkRyInqb0qwfdkSWG7vRhEEZaX+cYwNV8OTkTQE28c0QZ7XlY7072m4vICpo2z0K/8QDtQAykdm+sy8CZXTWHdt6DWxi4ixjE+K+R/r3vAk2CkugX7qd5xVH7BYcciqqsL1NKAu1Guba3x3cJnHolgWMAzrnX5vblvwi9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=5XSmGmxD; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=iuQKT63R; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1790981977; c=relaxed/simple;
+	bh=bE7Zl9IWk+uckl2YZcLFCtuyK3VF7pTM6/ugeaNjLv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EnxRQDhvldRkOuEZ0z8dCCl2ItvjJsyb3LQSFxRLeX8KlvadJD7wVORwNfpy8ZtAm9/QihYzH6leQTDVKuatu6BYLKuCY2UmVU44kOcOb0mTp4GS1V9C9P8gDJDjlz0KGcVX3V71heer1YHu5ssLZeo0WVrd11E0yvTykA/V2EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNfHSg1U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="5XSmGmxD";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="iuQKT63R"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 692MqFA3024022;
-	Sat, 3 Oct 2026 00:52:21 +0200
-Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 362F11208F0;
-	Sat,  3 Oct 2026 00:52:11 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1790981531; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wuX6sXxsGm+xKYyKZxk/IWod2kEm36bV4CD9CG7o2fs=;
-	b=5XSmGmxDGQuSBiN/gLwzqqamFNgYkg1pAbjayp4KIxYJXN97eDsi/WuqcUcKPJV/GWennH
-	Zk2W7j9zUbSjOcAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1790981531; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wuX6sXxsGm+xKYyKZxk/IWod2kEm36bV4CD9CG7o2fs=;
-	b=iuQKT63RKuHHE/8H2qrZynkbiox7Y7W3sBrBqhLtRFipF2X9t+rbjvCCRLUINHLRIRBecn
-	DzX7Of9q/bdrYqPy1PoGm/1hh5GVqqL+zghKqi5cxiCq+dn83ZyGDx1xG/Dix+whgdkkuD
-	6O8dQ1FrVSdbaC/PfPiyYunUTVUCa4xtyRpN6CAzGf8P/Bkl9fGt58qVEyNdpjGtlb53Go
-	NjUKhi26yGm9kMDoWOyReEH32aRvetwhgqQbfEckqdkfXuFj3HhmU5XNCj63YyjVcieVsc
-	3eMrb0fuklf7xNY6QDsHhevzw9qn/eiEJE6yUeKYK4JslKr9tGlInmQCIQ2xBA==
-Date: Sat, 3 Oct 2026 00:52:10 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: netdev-bot+sinfo@kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
-        Ido Schimmel
- <idosch@nvidia.com>, Simon Horman <horms@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Kuniyuki Iwashima
- <kuniyu@google.com>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Hui
- Peng <benquike@gmail.com>, Sashiko <sashiko-bot@kernel.org>,
-        Andrea Mayer
- <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net] ipv6: rpl: unclone the skb before modifying the
- packet
-Message-Id: <20261003005210.d9b3b56c46144fd990259e7f@uniroma2.it>
-In-Reply-To: <179087934758.1402591.6992807182585473895@kernel.org>
-References: <20261001182136.33-1-andrea.mayer@uniroma2.it>
-	<179087934758.1402591.6992807182585473895@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNfHSg1U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662DD1F000FF;
+	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790981975;
+	bh=JJBZoitWEBQrTY8FcV1qjmfA5wNk/u7NZng6rYh3IJw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HNfHSg1Uf8VJletd/R2fu339SQf15SzodVIk+PgQjnibCGWW0FKaGqCJtTB9CsNHH
+	 6ZUjgPXjwhCfn0EGwOSXZnhmp45GPc+8mBA4KIzr/toF9NifDgEMbBmB4wpIm6Wuoy
+	 PGDxN8NS97pBFrWQT9d7hKP5mkCXJblmyL+hkEVaPn1KH1+pekc/czSzjfNxTn5i4w
+	 2Iq0tz+X5nmVOxpuWhDIPmemZAOT9ihSSeBT885X0ojH1LJGqvnzh7JC6JlgbypVQl
+	 HfjwRzYoVzwUGjpamhY/kQ/PSG3PTNTaVZ5goiedFc9jkBzMgkMLorUjrNGTzbdTns
+	 xrxKXyue6TwAw==
+Date: Fri, 2 Oct 2026 15:59:35 -0700
+From: Kees Cook <kees@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>, netdev@vger.kernel.org,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-hardening@vger.kernel.org, Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 7/7] net: skb: isolate skb data area allocations into
+ a separate bucket
+Message-ID: <202610021554.58F5CBB8@keescook>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-7-kees@kernel.org>
+ <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
 
-On Thu, 01 Oct 2026 18:29:07 +0000
-netdev-bot+sinfo@kernel.org wrote:
-
-> Hi!
+On Sun, Sep 27, 2026 at 10:24:16AM +0200, Paolo Abeni wrote:
+> On 9/21/26 09:58, Kees Cook wrote:
+> > From: Pedro Falcato <pfalcato@suse.de>
+> > 
+> > SKB data area allocations (as done from alloc_skb()) use kmalloc().
+> > These allocations can be variably sized and their contents can be more
+> > or less controlled from userspace, which makes them useful for attackers
+> > that want to overwrite a use-after-free'd object from the same kmalloc slab
+> > (which often just requires the sizes to roughly match into the same kmalloc
+> > bucket). [0] is an easy example of an exploit that uses netlink skb
+> > allocation to target another similarly-sized accidentally freed object.
+> > 
+> > While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
+> > probabilistic. Use the existing kmem buckets API to further isolate these
+> > allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
+> > 
+> > Ask for the accounted kmalloc type as well as the normal one. AF_UNIX
+> > sets sk_allocation to GFP_KERNEL_ACCOUNT, so without it every AF_UNIX
+> > skb data area would fall back to the general caches, and those are the
+> > ones most worth isolating. GFP_DMA is left to fall back, being passed to
+> > an skb allocator only by rare devices.
+> > 
+> > Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
+> > Reviewed-by: Kees Cook <kees@kernel.org>
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> I would be curious to learn how about the memory usage delta.
+> However I see buckets are protected by their own kconfig, small
+> systems can unselect them.
+
+Correct. But here's the delta for a 1 node NUMA with memcg, which is
+dominated by sysfs. 26 caches (13 normal and 13 memcg):
+
+  sysfs, 26 caches                                          113,152
+  struct kmem_cache, 26                                       6,656
+  kmem_cache_node, 26                                         1,664
+  node_barn, 26                                               1,664
+  names, 26                                                   1,248
+  the set itself, 2 rows × 14 pointers in kmalloc_buckets       224
+  per-CPU sheaf structs                                 CPUSx x 832
+
+> For the networking bits:
 > 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-> 
-> [snip]
+> Acked-by: Paolo Abeni <pabeni@redhat.com>
 
-Hi,
+Thanks!
 
-Yes, I triggered it. I reproduced it in a VM.
-
-One namespace sends pings to fc00:2::1 through the RPL segment
-fc00::2, which belongs to a second namespace with rpl_seg_enabled=1.
-Each ping arrives with destination address fc00::2 and a routing header
-with Segments Left 1 that carries fc00:2::1. In the second namespace, a
-Python program opens an AF_PACKET socket and reads the queued frames
-only after the pings were processed. For each frame with a routing
-header, it prints the destination address and Segments Left.
-
-Without the fix, all these frames showed:
-
-  daddr fc00:2::1 segments_left 0
-
-These are the values written by ipv6_rpl_srh_rcv(), not the received
-ones. With the fix, all the frames with a routing header showed the
-received values:
-
-  daddr fc00::2 segments_left 1
-
-To reproduce it, I did not modify the kernel or use error injection.
-
-This is how the packet reaches ipv6_rpl_srh_rcv(), with some calls
-left out:
-
-__netif_receive_skb_one_core
-  __netif_receive_skb_core
-    deliver_skb               [orig: users=2]
-      packet_rcv
-        skb_clone             clone queued to the AF_PACKET socket
-        consume_skb(orig)     [orig: users=1, cloned=1]
-  ipv6_rcv
-    ip6_rcv_core              skb_share_check: no-op [orig: users=1]
-    [...]
-      ip6_protocol_deliver_rcu
-        ipv6_rthdr_rcv
-          ipv6_rpl_srh_rcv    writes into the data shared with the clone
-
-The reproducer is a shell script and a Python program.
-I can post it if it helps.
-
-Thanks,
-Andrea
+-- 
+Kees Cook
