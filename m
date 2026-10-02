@@ -1,120 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39FC3DCD96;
-	Fri,  2 Oct 2026 20:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864EE517BAE;
+	Fri,  2 Oct 2026 20:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790972413; cv=none; b=USxQQnOKa7tFTVr4SJPbaLdMU6N9qVCQbDt/D0LWy/yBK34NKuEQmMyHmXQwjfBMKbKSFkJrqHsJW6QWTXAtUk+RQDfUWEBp9tB79A9drMapD8MNnuQmtpabUHbm/dfO8ZMzewfxokxA5yZz9ZqpHgKX9sORLdH4XLRzv59ekz8=
+	t=1790972704; cv=none; b=S0Ty8Zt52jpWmvxE7z1wARqB0Vz8Jfwcmu0D83aLAiqXgeJaK1IWW8KIP/TNcEaaITnAwpdZhxhSJt+6nqeHdV3Xt0mjEh+mBI150nYjcLWviNfUF3ElGJvSP0oepVU6m2QAsi2+Ulz16abjVZdcNKSsd4azxBWcfeZYhJrncRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790972413; c=relaxed/simple;
-	bh=I8shtDam7DT9yJWs3mI+dEQiwN7fV7an4VXs36EI+jA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IP74mNHFLE9tm21z3oDDwEt/W40ZAPKGuOOia6gnzSC4uqk0KO9Zt9pxtvNJQmhIqaYr0XbAViTASFnZ9jeebP1f8Y9bTlpN/scRpWup8kagROsC8hJTe0LMFK0JXK76V4dGwRsjOPSJgPUeFho7d+HRl5NPDlbqQRgDSTZ7adU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDu9VcR4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790972704; c=relaxed/simple;
+	bh=uaZ5ZUpxnAJZSq0y7WbXPyHu8ZspWDAP/NwiHSAWu7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F1RrH9yINlH73+bU8OCDQ5d1y6GS8txALv0lz6+v0otkqPsLGmoeMJUo24SeE8htTeP1fraQtTz0DTIAgaIabWHfGQeYWrXQZ4idGdJc8pHcPk7tyWXEwIfYKRBFkoCXFaHugBFCeBJUehbQ1ZF8FE7N4V5R5IBHUbl9uhzFPwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkJmwzKX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDu9VcR4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C361F000FF;
-	Fri,  2 Oct 2026 20:20:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkJmwzKX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110FE1F000FF;
+	Fri,  2 Oct 2026 20:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790972411;
-	bh=IE4LsdhNU5SfiDmJkZ9zOXEwMWjWebrgy9SOZRKi4+U=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PDu9VcR41G9L0rhokPRNyVmGcmPd0vzXeiJCulTtzuiGUx2cc3sO8Y+Nr4zy9Rn+w
-	 ShmTvCulR8dFx0vsqLCFquaONxm0OxYGGSdrwpzR007qoqEUrGe70PlI0eeL+F2LK5
-	 X2QqW+n7TgDLWxdKs2zieGKAztRUZEGftBVthjf/BML+zl13wPctKnkr1QvXT0jKhG
-	 98Q8WRic6c/q6fonVa8n2t30Uq04dy36RXnU3E+Vy7Rdttp4juWVdg15crSZLB3z2Z
-	 ImBKD3z42cXPY8kytws8H4iP4jCWGKgUmI1+8+YnU+ATbKiu8k9T0QJcbEOV7Kz3So
-	 udcb+OZruFtqA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7747F3811A72;
-	Fri,  2 Oct 2026 20:20:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790972701;
+	bh=kn+bD+5n0SAyF2Hhug0xwF3x4YLIO8j2A2QJrUJy27w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UkJmwzKX8bs4tztewSsT1dX7+nuLMUaC1Pp49gjvJ+kJS6+opKLWlvXohmk2kd8Dw
+	 qy/bGBS2u8W3T5y/N1AblOIkviKM+Y42mYdddFTRRKzQom57j/MQAMitTEFNJScK97
+	 1DWOWledPPsmUOOFyqdaHgA3lq+y0Ty+8GspRg/W+7TgXAAiILbq/IkVCGwrYx3bdZ
+	 YRajHZMgEkFQorhunc7DJ7sy6HxrM+wyVJdF2PHDlrjACyQnyGWV5ezgLnEYKEgOS4
+	 xRFlkJ9L/ZOFsqf/rRH1ljMlYWukf94PFsJyK9qRkOVm1I1+wfCoStrjTIrQ1X9vnu
+	 1pxLLHJD8+IaA==
+Date: Fri, 2 Oct 2026 13:25:00 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>, "David S. Miller" 
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni 
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Donald Hunter 
+ <donald.hunter@gmail.com>, "open list:NETWORKING [GENERAL]" 
+ <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v3] wifi: nl80211: document sta-info nested
+ attribute
+Message-ID: <20261002132500.0b71889b@kernel.org>
+In-Reply-To: <7fc3e2730ebea674abf750a39c53d6ee307a907e.camel@sipsolutions.net>
+References: <20260816101216.20947-1-hilalrahmatullah11@gmail.com>
+	<20260817084713.7a7694d6@kernel.org>
+	<6ae7fd5e4d24bdeb0f0df057f767107e08567640.camel@sipsolutions.net>
+	<7fc3e2730ebea674abf750a39c53d6ee307a907e.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v9 00/15] net: lan966x: add support for PCIe FDMA
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179097241009.3571263.7855609924848232097.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 20:20:10 +0000
-References: <20260928-lan966x-pci-fdma-v9-0-a17caf60f89a@microchip.com>
-In-Reply-To: <20260928-lan966x-pci-fdma-v9-0-a17caf60f89a@microchip.com>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horatiu.vultur@microchip.com,
- steen.hegelund@microchip.com, UNGLinuxDriver@microchip.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, herve.codina@bootlin.com, arnd@arndb.de,
- gregkh@linuxfoundation.org, mohsin.bashr@gmail.com, horms@kernel.org,
- richardcochran@gmail.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 28 Sep 2026 21:32:48 +0200 you wrote:
-> When lan966x operates as a PCIe endpoint, the driver currently uses
-> register-based I/O for frame injection and extraction. This approach is
-> functional but slow, topping out at around 33 Mbps on an Intel x86 host
-> with a lan966x PCIe card.
+On Fri, 02 Oct 2026 19:34:19 +0200 Johannes Berg wrote:
+> On Sat, 2026-09-05 at 09:46 +0200, Johannes Berg wrote:
+> > On Mon, 2026-08-17 at 08:47 -0700, Jakub Kicinski wrote:  
+>  [...]  
+> > > 
+> > > Hi Johannes! Should we add this file to wireless in MAINTAINERS?
+> > > Or do you prefer for us to handle the YAML stuff directly?  
+> > 
+> > Not sure, we don't really seem to be using it for all I know, and so
+> > it's just been getting some random updates like this, I guess.
+> > 
+> > I think I tend to prefer the status quo, but I guess I could also just
+> > apply patches to it if you prefer.  
 > 
-> This series adds FDMA (Frame DMA) support for the PCIe path. When
-> operating as a PCIe endpoint, the internal FDMA engine on lan966x cannot
-> directly access host memory, so DMA buffers are allocated as contiguous
-> coherent memory and mapped through the PCIe Address Translation Unit
-> (ATU). The ATU provides outbound windows that translate internal FDMA
-> addresses to PCIe bus addresses, allowing the FDMA engine to read and
-> write host memory. Because the ATU requires contiguous address regions,
-> page_pool and normal per-page DMA mappings cannot be used. Instead,
-> frames are transferred using memcpy between the ATU-mapped buffers and
-> the network stack. With this, throughput increases from ~33 Mbps to
-> ~620 Mbps for default MTU.
+> So that's what I said a month ago, but because Jouni prodded me about
+> our inconsistent documentation today, I actually looked at converting
+> *all* of nl80211.h and our hand-rolled policies to be generated.
 > 
-> [...]
+> It ... takes some work, and ends up being 12k (!) lines of yaml, vs.
+> today's 7.2k of nl80211.h and ~1k policy in nl80211.c.
+> 
+> It also requires a bunch of changes to the tooling:
+> 
+>  - kdoc comments for attribute-set enums
+>  - exact-len-warn check
+>  - validate-fn check support and creating their prototypes
+>  - combining min-len/max-len for binary attributes
+>  - strict-start-type support
+>  - flag to generate the whole attrs without linking them from ops
+>    (otherwise we get even many many more lines of yaml)
+>  - NLA_NESTED/indexed arrays support
+>  - allow nesting the global policy into itself (yeah ... I want some of
+>    what we were smoking ;-) )
+>  - allowing inheriting different members for kernel policy side
+>  - drop nesting when subset overrides type ... not even sure how to
+>    explain this right now
+>  - option to define only policy, not ops
+>  - allow taking ops IDs from an enum, because our ops don't match the
+>    ynl ops too well
+>  - enum-max-name for definitions to adjust naming
+> 
+> There's a license issue - we have ISC license on nl80211.h now, but
+> Donald and Hilal picked GPL/syscall/BSD-3 for the yaml and of course
 
-Here is the summary with links:
-  - [net-next,v9,01/15] MAINTAINERS: add FDMA library to Sparx5 SoC entry
-    https://git.kernel.org/netdev/net-next/c/91ad754f3c14
-  - [net-next,v9,02/15] net: microchip: fdma: rename contiguous dataptr helpers
-    https://git.kernel.org/netdev/net-next/c/27470b22eca3
-  - [net-next,v9,03/15] net: microchip: fdma: add PCIe ATU support
-    https://git.kernel.org/netdev/net-next/c/3318a794bb15
-  - [net-next,v9,04/15] net: microchip: fdma: use little-endian types for descriptor fields
-    https://git.kernel.org/netdev/net-next/c/9786c387b299
-  - [net-next,v9,05/15] net: lan966x: add FDMA LLP register write helper
-    https://git.kernel.org/netdev/net-next/c/2e52284420bd
-  - [net-next,v9,06/15] net: lan966x: export FDMA helpers for reuse
-    https://git.kernel.org/netdev/net-next/c/eac4b8882a03
-  - [net-next,v9,07/15] net: lan966x: use a dedicated device for DMA operations
-    https://git.kernel.org/netdev/net-next/c/f83ac2d94a2a
-  - [net-next,v9,08/15] net: lan966x: add FDMA ops dispatch for PCIe support
-    https://git.kernel.org/netdev/net-next/c/5a97c2c00b8e
-  - [net-next,v9,09/15] net: lan966x: clear FDMA interrupt stickies after switch reset
-    https://git.kernel.org/netdev/net-next/c/58e73ef6a1e5
-  - [net-next,v9,10/15] net: lan966x: add shutdown callback to stop the FDMA on reboot
-    https://git.kernel.org/netdev/net-next/c/ab6268b958f0
-  - [net-next,v9,11/15] net: lan966x: add PCIe FDMA support
-    https://git.kernel.org/netdev/net-next/c/e013b82ed3b2
-  - [net-next,v9,12/15] net: lan966x: add PCIe FDMA MTU change support
-    https://git.kernel.org/netdev/net-next/c/1709aa382db7
-  - [net-next,v9,13/15] net: lan966x: add PCIe FDMA XDP support
-    https://git.kernel.org/netdev/net-next/c/fbb46fde6965
-  - [net-next,v9,14/15] misc: lan966x-pci: dts: extend cpu reg to cover PCIE DBI space
-    https://git.kernel.org/netdev/net-next/c/100eead96ed6
-  - [net-next,v9,15/15] misc: lan966x-pci: dts: add fdma interrupt to overlay
-    https://git.kernel.org/netdev/net-next/c/14b9ac2f189d
+That license is required for all netlink specs, FWIW
+It's totally my fault if it's wrong, I just didn't want it to be
+_just_ GPL since that would propagate to use space code which
+we want to be permissive about. The spec is effectively a uAPI
+description it should be public domain in my non-layer mind.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> that carries over to the generated .h file, not sure if that's an issue
+> for downstream projects but might be with advertising clause? Could we
+> change it if I'm adding >10k new lines from nl80211.h? :)
+> 
+> I can post it but ... is it worth it? Not even sure it would
+> significantly simplify our lives, although the generated header file
+> with documentation is much more regular in that it always has the type,
+> etc. (which is what Jouni was asking about)
 
-
+Well, I certainly don't care so my choice would be not to have to review
+the code gen changes (:
