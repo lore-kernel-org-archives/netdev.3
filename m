@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0CE2F361E;
-	Fri,  2 Oct 2026 00:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F5A62809;
+	Fri,  2 Oct 2026 00:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790901621; cv=none; b=nWB17z5VqWBefli5M/5Q4PDwxIoOdsGRLSDxM15Ri1uBbEYwMB6o/WGa9/NNuVOoARHvSVwtnNd4PFGvR4wJKj4/Ak5x2C+IMvdELLjslTklPh55O4dV9n8O5F8WNfIOiC+H71hG9GiL8WeWSo59dIYlmXMBf5GiKaJ52Dpkr0g=
+	t=1790902207; cv=none; b=h3Dr9IdsmgvFogM3b803+tzJJQYEjZCzImtrJTwawHZlXRr+qU+hNVNp+g5AM2uSUvzL4O4qCAbfKec+aWaAaHJPA0C9hy+WRxgSv8Ndxu8ENhlX5R3Z8tj4Kcs6Xx5Oy2E0atRL886x3RzE8p0Pv3NSfJr3LFV0aWRRdvtJgr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790901621; c=relaxed/simple;
-	bh=bvxSfzJ1Do6DP2fV4Uv3RtwyxARHGg3VSfADEHsFvPA=;
+	s=arc-20240116; t=1790902207; c=relaxed/simple;
+	bh=0el18PbQy0dWcfUZZZWoiwo0LtFtA8CD26TEIKwFuMM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=eyIY7OVdJQAKCAaOHYPBHu6E0hQt6z5mOx1oOKklTploxlIV4YmayZBnozPbA/cOCCgb2MlXcr76vlAw/R0O3SDuZyfFeM8YN2lH+tOpG6W5rnRp54pzMhJhixQm9a5TeEWcEMQbP/gyxR22f8SjPg7d6LLB7D4OfGTahVINZfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7jxFMqc; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=T2eqi8NzIiwwICJZpkZ4QZ6TjC+wouGA883wR+IvH9wc63pqPoBS5WNLzqIyZ1vhmPPY2+l44T9W73/SM46CjPR4ZAfDCkjy4clKzZ7cZsJPHEWC6hLT5HUfylLINtsa7I1HkiscCMNJ/8NN24wAVmXMNQ/JlHPCKx+aoO12FUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvzxnuKy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7jxFMqc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0629D1F000FF;
-	Fri,  2 Oct 2026 00:40:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvzxnuKy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295241F000FF;
+	Fri,  2 Oct 2026 00:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790901610;
-	bh=TRPS9y/D6Tp/goluC2H5KUikxeiVKybRcoa8yCPc+B0=;
+	s=k20260515; t=1790902206;
+	bh=vhBEnvQsyfC0h+1h1yPjT+rFPAZoF7o3I3ZKMbE2YS4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=k7jxFMqcFHZmUEe3kfk6CwtkjRCtDc8aTTsqIvAdUeK0AGdOXEzsZVRInQdsxYe0u
-	 yoKVrFrie6e7M+1/hcKBM2lv9X2wiZEdOaiIx+fx74vaXBSI4keQ6fJwkA55qZIP8H
-	 3Jd93XyU+G9t2Eo0OZ5flkGv4AH2oYIpx2L8ve0c/eZ4CZDwTwzu/4vHzGXL0a8sZV
-	 xkpVmyFNylWqrbDbqKdyFRFBYK/l4uoPanvWA4+srQS7lYkSysKOqgBLStTBv/gqNs
-	 W1brKcmSrwcas+WlUfjYFZ7MA/MYSbGN1Id7sonVg1m7a4cPSuOxoh+TkLqLhTlxpc
-	 hEHyBgocAss1Q==
+	b=jvzxnuKykuPPj6wM+3ifU28bUu0urm3B38iPsHz8QXXxIVteElcCS+v0h93CfTbVp
+	 qKE9PyiHMpXHIusTDAUsx6At1J7R480m+Os9q+aK+MH/FieSGnLorlZ5SSy4vYVCyv
+	 Hs9tC2vY6vh8D+X88kt1S1mJyy0XSAqcroiPD5uxpFVP6bHKajRp2UQkkbrcmWHQ49
+	 KdBxIQGAtLMOY2IFSnqRwW5S47jrKQ/7RnN5/PF2Slg24L6dL7BcgGxT8Q7him2xu0
+	 NagSzxSpwAUcX0PeyqGPK6myTOuAPBcLY3yTAK1lxocPJk9W0zap2mx6+5oDAAINnA
+	 bQ1yOHbTCIv6A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F152E381197C;
-	Fri,  2 Oct 2026 00:40:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 20E06381197C;
+	Fri,  2 Oct 2026 00:50:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v6] selftests: net: move log_test to lib file and
- remove duplicate code
+Subject: Re: [PATCH net] net: octeon_mgmt: kill TX tasklet before freeing
+ rings
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179090160852.3158777.16183907324374057117.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 00:40:08 +0000
-References: <20260929-self_log_test-v6-1-41199262e50b@kylinos.cn>
-In-Reply-To: <20260929-self_log_test-v6-1-41199262e50b@kylinos.cn>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, andrea.mayer@uniroma2.it, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- liuhangbin@kylinos.cn
+ <179090220503.3161824.2688708785190122158.git-patchwork-notify@kernel.org>
+Date: Fri, 02 Oct 2026 00:50:05 +0000
+References: <20260928134125.2003-1-getshell@seu.edu.cn>
+In-Reply-To: <20260928134125.2003-1-getshell@seu.edu.cn>
+To: Hongyan Xu <getshell@seu.edu.cn>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+ kory.maincent@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 29 Sep 2026 10:06:40 +0800 you wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
+On Mon, 28 Sep 2026 21:41:25 +0800 you wrote:
+> The interrupt handler schedules tx_clean_tasklet, which dereferences the
+> private state and TX ring. free_irq() prevents new scheduling but does
+> not wait for a tasklet that was already queued.
 > 
-> Many test scripts under tools/testing/selftests/net/ each define their
-> own log_test() function with near-identical logic for comparing a return
-> code against an expected value and printing OK/FAIL. Add a shared
-> log_test_expected() to lib.sh so we can replace each local definitions.
+> Kill the tasklet after freeing the interrupt and before purging and
+> freeing the DMA rings.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v6] selftests: net: move log_test to lib file and remove duplicate code
-    https://git.kernel.org/netdev/net-next/c/ffa16b43078a
+  - [net] net: octeon_mgmt: kill TX tasklet before freeing rings
+    https://git.kernel.org/netdev/net-next/c/c47befeabc33
 
 You are awesome, thank you!
 -- 
