@@ -1,107 +1,244 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042C93D9020
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54B943B3C4
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790973612; cv=none; b=krjdMO6N2LHVlxT+U2Xfuu0bjiOTKzMApaaTJgW5UrU0WX+xFqsBtbklmqwGL16q1v/UciYrQx8vnHTdbNJ4Gw5XFj+Ck8zlb1n8BGfDMRcAlN1vppYhUemPRLsa70ATlZ5QNS1tgphpERL4WwQmP+ySiEYc52IAU00dLZKDZEY=
+	t=1790973702; cv=none; b=qu9RtFXffQoxN37kljtoFB9pXlJ8jca/jWFZyViU+nGxzkKKb5fW2I+TZ5j7v8iUn3KL6zSo0skRmx+Jxpz39Wa55ws7x9w1w4UW9TKm2Qdf0giibO6tPcsnNT7WO7765BH/1DwXEsQX1eUmAc1RUP9EWpgpH5VhujuZts/cNOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790973612; c=relaxed/simple;
-	bh=NavU9oD7boZye7A4i5QSk8+AfXIDy/22rXB6+09Jnyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=onBW8RghJKQg4LDoschg5qe9J7KXAAurMrNyv9u5k8irwK/IeKDLmubJpvtava3E9WKz49agitQuZsW5yGpJwGQU9E/6Om1cd64v8YsDnF43oX/E5cbOROJK59YYXoRWX2tWO6TiXY8ciRrYkFQ7ezIbzkffrhC0iGZhjAIwV8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=rRyFqmQh; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1790973702; c=relaxed/simple;
+	bh=gSGkLWy9yvY7tZZ4ZKWB713JOMXWirdgzdfFvkBGukY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b2j5vPeG8b6w388q2GHMALyuURVRRoSKXcVRjNKmJURN0Lp1M+Kteq1E49z4hGfCmxBMKyuQuv+tYSTXVK5nqdd/zkhQOxU61CplaSHcwa1oirLrN1Wty2D5LAHesxAqVvgCvDKIK9lrsaHOohcKYYv1GMWUBUJEq2qGnOqEBmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=feJPdnhU; arc=none smtp.client-ip=121.127.44.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="rRyFqmQh"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b2ad83dc6so296052a91.0
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 13:40:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790973604; x=1791578404; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GBk5NF+csDO854jJyGJ+AcXtXH9ziwL4Hlvi0Ps7aIY=;
-        b=rRyFqmQhlt+bfWV9H75Tc2409iwlcAaJ6OSqzrChT59BS+iUl0zlanQ6S/A6Wc9FJ0
-         1XAdalZEY5tAtdkzoU3ZkcPiqmswNhInbgNGpK445GX9Ipf9L0clH1j0xq4tMzVdhmfm
-         XuReTN264z5U/bkXHDc0+oprioB/X69gI2HiOX8exNAndWXaiH5201ycwjw5fRBp0ndq
-         QL0jRUGMuxSSc5oWiEsBYcsaCLAYafp/VowTDw4L4P+Fz4UjnoIJCDiYZV1FixjbUVYn
-         C9gqzo03rXPfYJFC5o1cDSv7HNnZQ6Pxclu7MiapaYWWzNq0aDG4+DMpx+RT3VDXsaWb
-         5k6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790973604; x=1791578404;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=GBk5NF+csDO854jJyGJ+AcXtXH9ziwL4Hlvi0Ps7aIY=;
-        b=A8Budsuu22i3bLZIFQyjx/Ux3vUr9rQphri3/MSerJCeEiF57GUvsaBuISPo+CkPmK
-         OeWNEzvkGcQmCh70yDnvHkLbMlCZB2Hprr8YIVtstsMxGR+PTvUfx+doW434jBucQG8P
-         G/UbJsh8RrPxDcldAZnsf45/nYllop1SNle/swDevm5VK6Xqt9NgkJKKeHuoUFfE7P5h
-         uA9vNNUWwZYlZ58VEYQFDZtR/x3T6M/0o9rkRdFA1hLqGwZbseEqkwuyqaYWsJct+pHD
-         Lb/l9vIJXmBOfEutnpusqf3IZW/ztwYBYBj/qqNsBHOhAlHvuQVlWWAyOICq75ulioN+
-         VnaA==
-X-Forwarded-Encrypted: i=1; AKwUvBw8jALLS09cCqR2iYjICTzIOXOKtP2wyzK8HvFNgcMFWVdM6DM3xi34Jc/cS6Sj2Y0JVMzn9JE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIDdVCo9vm7NzAGtMv8e1s4RKKiW2dYTXRu77IOfZHbQjwQMaXW
-	oqKolTbUch6cuzmOM0F6z5aLGNIuNIC3l8WEKlnHzcq+FH3qQSxB2N1JbsAj2TBkeQ0=
-X-Gm-Gg: AYBFou3kl3zIsmst6tLOP2M5wF+WAt+PcXcFPLtZC1R3DabeWAjgrDMfNqRrXpwBeyE
-	wvsOMTDl+c+9KZbOXXGHUL3PiHVdEH/ez4SlbBRZjsHceMdPW+UV9Td+RsCfv9F8Z3mS/BDgUYP
-	ImsIIRZhqSgaNdQO08TsuN/2Bk1zpjfRTXtdX+7OkEX3mlpW2pXcyJKf5Kb1qANtd4zyZ2vhn1q
-	gbgDu8EnzSJt8HW5iYUmBnFYVU8HBX8BpnJOT7NSyEx/0nPhzhmXsILkulbj5DDpg3EixjnuOCe
-	l7VsXkaXnl4aabV2iGiOcnVRychpAIPZT+Gx2lMdFGfjJYgjOgBibT+5LFgwcruwBNNCTnRxmZc
-	ps8cuMMfDpliUk6Rghl9P5g3s4rDazbqXmAteBBpm+yXT1y0pJC1Wq+WMmkRCNLHAPc4wR2lb6E
-	nB9eqCm1B5qjNQ91fNzliK42tOJHoX6ebHMhOkFJ8Z3csu3Q3uZndCmyK9rvp1X8UNq1w6r2Rwk
-	cdpD8MjX7s4Ig==
-X-Received: by 2002:a17:90b:2f45:b0:3a4:f146:5440 with SMTP id 98e67ed59e1d1-3a6ce98e12emr4072581a91.60.1790973604642;
-        Fri, 02 Oct 2026 13:40:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:57::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd135d8asm2467823a91.3.2026.10.02.13.40.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 13:40:04 -0700 (PDT)
-Date: Fri, 2 Oct 2026 13:40:03 -0700
-From: Joe Damato <joe@dama.to>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v2 4/5] eea: unify return code variable name
-Message-ID: <asAWox4qWre236ie@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20261002100035.863275-1-andriy.shevchenko@linux.intel.com>
- <20261002100035.863275-5-andriy.shevchenko@linux.intel.com>
+	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="feJPdnhU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-13eddc7e57; t=1790973697;
+ bh=EWYXAp/W3+HiwhItKO7V9bOzZcPqAHsPQdSF1JKL+iU=;
+ b=feJPdnhU4/qgxK5A9db1tjowioua/R02qeFHra67jrNJdfD9r8BqJTeyznAXtWWQu92Ys4ac0
+ GZZk6LRJLgBHw87VWljF/8sDKPnO0mjQHnFwVyuioMMjhe5DZaQCx+m1iXMesA0RJQY7hyFrlaY
+ ZtfoWm1/1usl0TUjnSPs86g=
+X-Forward-Email-ID: 6ac01700fd5a2680fad29990
+X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
+ 121.127.44.66
+X-Forward-Email-Version: 2.17.0
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <f7b2f1d5-4332-4187-89f8-dbd00ff11e1b@ovn.org>
+Date: Fri, 2 Oct 2026 22:41:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261002100035.863275-5-andriy.shevchenko@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] openvswitch: fix soft lockup in the netlink flow
+ dump
+To: netdev-bot+sashiko@kernel.org, den@openvz.org
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
+ echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ stable@vger.kernel.org
+References: <20260929072519.2803304-2-den@openvz.org>
+ <179089366251.434549.18021554028626523205@kernel.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <179089366251.434549.18021554028626523205@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 02, 2026 at 11:59:22AM +0200, Andy Shevchenko wrote:
-> In one case 'rc' is used in the other 'ret', the most use 'err'.
-> Make the latter use the former, id est 'err'.
+On 10/2/26 12:27 AM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/net/ethernet/alibaba/eea/eea_adminq.c | 34 +++++++++----------
->  1 file changed, 17 insertions(+), 17 deletions(-)
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] ovs_flow_cmd_dump() (net/openvswitch/datapath.c) now holds BH
+>   disabled across the whole dump callback.
+> 
+> --
+> 
+> openvswitch: fix soft lockup in the netlink flow dump
+> 
+> This patch disables BH across the whole table walk in ovs_flow_cmd_dump().
+> The goal is to stop the per-CPU spin_unlock_bh() calls in
+> ovs_flow_stats_get() from running the softirq backlog in the dumping
+> thread's context. That backlog processing led to a soft lockup on a
+> heavily loaded compute node.
+> 
+>> diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+>> index 631a03136fa14..4fc5d0bebd85e 100644
+>> --- a/net/openvswitch/datapath.c
+>> +++ b/net/openvswitch/datapath.c
+>> @@ -1532,6 +1532,12 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+>>  		return -ENODEV;
+>>  	}
+>>  
+>> +	/*
+>> +	 * Not needed for safety. Stops every spin_unlock_bh() in
+>> +	 * ovs_flow_stats_get() from running the softirq backlog.
+>> +	 */
+>> +	local_bh_disable();
+>> +
+>>  	ti = rcu_dereference(dp->table.ti);
+>>  	for (;;) {
+>>  		struct sw_flow *flow;
+> 
+> [ ... ]
+> 
+>> @@ -1552,6 +1558,8 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+>>  		cb->args[0] = bucket;
+>>  		cb->args[1] = obj;
+>>  	}
+>> +
+>> +	local_bh_enable();
+>>  	rcu_read_unlock();
+>>  	return skb->len;
+>>  }
+> 
+> [Severity: Medium]
+> Can a namespace user control how long this BH-off region lasts?
+> 
+> The region now covers the whole walk in ovs_flow_tbl_dump_next(). When
+> buckets are empty, that loop has no exit that depends on skb space:
+> 
+> net/openvswitch/flow_table.c:ovs_flow_tbl_dump_next() {
+>     ...
+> 	while (*bucket < ti->n_buckets) {
+> 		i = 0;
+> 		head = &ti->buckets[*bucket];
+> 		hlist_for_each_entry_rcu(flow, head, flow_table.node[ver]) {
+> 		...
+> 		}
+> 		(*bucket)++;
+> 		*last = 0;
+> 	}
+>     ...
+> }
+> 
+> This means one callback can scan the entire bucket array with softirqs held
+> off.
+> 
+> The only cap on n_buckets is the kvmalloc limit, which allows about 2^27
+> buckets:
+> 
+> net/openvswitch/flow_table.c:flow_key_insert() {
+>     ...
+> 	if (table->count > ti->n_buckets)
+> 		new_ti = table_instance_expand(ti, false);
+> 	else if (time_after(jiffies, table->last_rehash + REHASH_INTERVAL))
+> 		new_ti = table_instance_rehash(ti, ti->n_buckets, false);
+>     ...
+> }
+> 
+> The table never gets smaller in normal use:
+> 
+>   - ovs_flow_tbl_remove() never shrinks it.
+>   - The periodic rehash keeps the same size.
+>   - Only ovs_flow_tbl_flush() goes back to TBL_MIN_BUCKETS.
+> 
+> OVS_DP_CMD_NEW and OVS_FLOW_CMD_NEW/DEL only need GENL_UNS_ADMIN_PERM. The
+> dump needs no privilege at all:
+> 
+> net/openvswitch/datapath.c:dp_flow_genl_ops[] {
+>     ...
+> 	{ .cmd = OVS_FLOW_CMD_GET,
+> 	  .validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+> 	  .flags = 0,		    /* OK for unprivileged users. */
+> 	  .doit = ovs_flow_cmd_get,
+> 	  .dumpit = ovs_flow_cmd_dump
+> 	},
+>     ...
+> }
+> 
+> Root in an unprivileged user+net namespace could do the following:
+> 
+>   1. Create a datapath.
+>   2. Insert N flows so that n_buckets grows to between N and 2N.
+>   3. Delete every flow except one in a high bucket.
+>   4. Run the dump repeatedly from threads pinned to each CPU.
+> 
+> Each dump could then walk up to 1 GB of hlist_heads.
 
-Reviewed-by: Joe Damato <joe@dama.to>
+I don't think this is a concern, as the user will have to allocate
+hundreds of GBs of flows in the first place before freeing them,
+which is likely a larger problem.
+
+> During that walk,
+> NET_RX, timers, tasklets and RCU callbacks are all deferred on that CPU. On
+> CONFIG_PREEMPT (non-RT) kernels, the walk also can't be preempted.
+> 
+> Before this patch, softirqs could still run on hardirq exit during the walk,
+> and PREEMPT_RCU kernels could preempt it. On PREEMPT_NONE/VOLUNTARY kernels
+> the walk was already non-preemptible under rcu_read_lock(), so the only new
+> cost there is the softirq deferral.
+> 
+> Container memcg limits don't cap how far the table can grow:
+> 
+>   - The sw_flow kmem_cache is created in ovs_flow_init() without
+>     SLAB_ACCOUNT.
+>   - The bucket array from table_instance_alloc() comes from unaccounted
+>     kvmalloc memory.
+I have a patch set in works to properly account memory towards the memcg
+of the user.  That will cover this case.  However, it's likely a net-next
+material as it changes how users need to manage their memory.
+
+Best regards, Ilya Maximets.
