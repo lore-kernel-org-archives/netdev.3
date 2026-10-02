@@ -1,183 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5832D0C75;
-	Fri,  2 Oct 2026 01:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295FB2D9EFB;
+	Fri,  2 Oct 2026 01:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790903968; cv=none; b=hb13If0pGA+1guB+ZWXOGSp8/Op/6ijm+itcp7FUteol3dXkFWT9u01q6N8ZthfNcKwZvZn9vQxrUoMJykXJ+KOsxB4JHqs/gE9O3ixKNkhDdB2HjroGEOzNXs6mLqbOe+IGpCBC9XxA+LnuCGiWp0UH5DX/3hnCO7spNKFQUyc=
+	t=1790904009; cv=none; b=WTVvDBfiD8nB1aPCsX0dDDRA2BZE0Wfdw9VcHjhT+ZD3n9s7PgVwnNSjOoKfBHlahSG9//jvcAX3LMytQ5eG1dqzIDigATBuzgbYEDFgFTft0usP5+lGe7NK4U4ckDXJteM/cskhKirVlA2T/529xQHFoRV55BX9RcsFZQWwHSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790903968; c=relaxed/simple;
-	bh=OKNrQMhyXEDpqmEu+exjq6q8XBhoZP//xXVKI16ebvI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pW5RFAyWbz6PcqRZ5mDmAEXYjoxivF8kJAPD17UxTqCxa2wmLqASKjNWzcXnzqQRCGJYaRlQi+TQN+ch/mVDbU9XmMe/mpqoNMJt4wpI4Ll8SxfmRJFAtG2LdHnsNkWg1GVlUlLFZrn3VanKsJA5MyMNfPzOobNHXyR6lbc2vF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErJrQb9S; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790904009; c=relaxed/simple;
+	bh=pA6Lj/PnlNf1kqnfb10VlKbsQncX4piLaeFr8vXL78Q=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EpKutmsGB26v+8WV9q/W/hxyv3ZKHhq/jkOu91k6wJXumWKkz22YThSvSnWn43iOPFWO59Ci2sAr1z+U/cdbjwShPYYAhcgu3BecaRuR6X9bdPG7AtGuIcGOfis9Am4sYaFrE/fIhHh1ycDw8id79eFjsHiWju/T08/6/03FBfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I44WG0pN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErJrQb9S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC231F00893;
-	Fri,  2 Oct 2026 01:19:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I44WG0pN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE27A1F00893;
+	Fri,  2 Oct 2026 01:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790903967;
-	bh=5ZaH7kjR91t+LbbdbOtI4sfeLxRZza0chRAHxNS1iZ0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ErJrQb9S6f1R8SuFuhRXDxtU8WylahNE8JFxYAKJbzR2Ra+k4EfG9s0Q2jOzgBvXC
-	 qz1D8sPUNaERGcuTc2onmU+T5EW1cBavf0efZzDUNJwqPa+eFpDt1A9dDVSDV2Vspg
-	 2pPjPRUpaDdfmGgV0q6bldA+XzCTotbFizw2N8tHRFy8V2aflQMbR2Uxut34s+NAoj
-	 dD5sGlmReE2yU3ptLwk926hWAJZjV2esT9gPoVquL/vAVgd7Ms1DfSTvVV/cYym95D
-	 s6ujsM2cjFMa4em+WkhnJ6AZT/XUOn961ImH+2/owsLkh0DAxyVXs61S/yRVcrG8t6
-	 fIr88V2mvqjdA==
-Subject: Re: [PATCH v3 net-next 9/9] tcp: add tp->tcp_nospace
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, edumazet@google.com,
- netdev@vger.kernel.org, aahringo@redhat.com, teigland@redhat.com,
- gfs2@lists.linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com,
- sd@queasysnail.net, jiayuan.chen@linux.dev, matttbe@kernel.org,
- martineau@kernel.org, geliang@kernel.org, mptcp@lists.linux.dev,
- guwen@linux.alibaba.com, dust.li@linux.alibaba.com, alibuda@linux.alibaba.com,
- cel@kernel.org, jlayton@kernel.org, neil@brown.name, okorniev@redhat.com,
- Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org, anna@kernel.org,
- linux-nfs@vger.kernel.org, achender@kernel.org, rds-devel@oss.oracle.com,
- philipp.reisner@linbit.com, lars.ellenberg@linbit.com,
- christoph.boehmwalder@linbit.com, axboe@kernel.dk, drbd-dev@lists.linux.dev,
- kbusch@kernel.org, hch@lst.de, sagi@grimberg.me, kch@nvidia.com,
- linux-nvme@lists.infradead.org, idryomov@gmail.com, amarkuze@redhat.com,
- slava@dubeyko.com, ceph-devel@vger.kernel.org
-Date: Fri, 02 Oct 2026 01:19:24 +0000
-Message-ID: <179090396455.434549.14548496564842351902@kernel.org>
-In-Reply-To: <20260929071743.23624-10-edumazet@kernel.org>
-References: <20260929071743.23624-10-edumazet@kernel.org>
-X-sashiko-severity: Low
+	s=k20260515; t=1790904007;
+	bh=UPqKbSIAC9atYzCZEnw24JepnGDdsd7RY2VNRLHZUj0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=I44WG0pNCMKq2EqpZrhq41A7QTGcTAegA54qCD1/063z3Oi+6qVbXpBMeL6eXLSHD
+	 ZNTf1lF9BMcUwQ3FIsN62PkWMRS5MRPz+PR2LJlrCZy5YHEk4Zzj5KdFe17brlXFSu
+	 Tk6OQTdrQg1QoPsvvrc+vXESwx7tK/T2dsFLymZwgfAryeHAaUyEcAbWl5Ou1SLPiB
+	 Ev6r13u7LUxPH7alF7adJ7Stw5644GSq3tnedBehy+imJLDiDiR+TXYiUWxrG7fd+r
+	 BWCL++1z3o7d1ZibhbAM/h8MUPEL4kZFM1yI0taXZYhhzOG/EEX3YtjzZLYfYHC3u+
+	 yGHu9+vvShhrw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B45C2381197C;
+	Fri,  2 Oct 2026 01:20:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4 0/2] amt: send the relay's General Query directly
+ from
+ the receive path
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179090400653.3168550.15976743708132455802.git-patchwork-notify@kernel.org>
+Date: Fri, 02 Oct 2026 01:20:06 +0000
+References: <20260928202312.74574-1-omar@blockcast.net>
+In-Reply-To: <20260928202312.74574-1-omar@blockcast.net>
+To: Omar Ramadan <omar@blockcast.net>
+Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ shuah@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
+ xmei5@asu.edu, tgopinath@linux.microsoft.com, kys@microsoft.com,
+ cenzhang@linux.microsoft.com
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Hello:
 
-Low priority / nit picks for your consideration:
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-- [Low] The commit message says struct socket lives in a cache line
-  "which the TCP fast paths do not otherwise touch".
-- [Low] A child socket inherits the listener's tp->tcp_nospace and
-  nothing resets it.
+On Mon, 28 Sep 2026 23:23:10 +0300 you wrote:
+> The relay queues its General Query on the amt device with a raw tunnel
+> pointer in skb->cb, and a query that waits in a qdisc can outlive its
+> tunnel: a use-after-free in amt_dev_xmit(), reported by Microsoft with
+> a KASAN reproducer. Patch 1 sends the query directly from
+> amt_request_handler(), inside the RCU section that found or created
+> the tunnel, so it never waits in a qdisc and nothing is stored in
+> skb->cb.
+> 
+> [...]
 
---
+Here is the summary with links:
+  - [net,v4,1/2] amt: send the relay's General Query directly from the receive path
+    https://git.kernel.org/netdev/net/c/afae89de73dd
+  - [net,v4,2/2] selftests: net: amt: check that the relay's queries bypass the amt device
+    https://git.kernel.org/netdev/net/c/c41817fcaf39
 
-tcp: add tp->tcp_nospace
-
-This commit adds tp->tcp_nospace, a copy of SOCK_NOSPACE that lives in the
-tcp_sock_write_tx cache line group. With it, tcp_check_space() no longer
-has to read sk->sk_socket->flags on every ACK and every transmit.
-sk_set_nospace() and sk_clear_nospace() keep the rule that SOCK_NOSPACE
-set implies tp->tcp_nospace set. MPTCP subflows pin tp->tcp_nospace to 1
-in subflow_ulp_init().
-
-> struct socket lives in its own cache line, which the TCP fast paths do
-> not otherwise touch, so testing sk->sk_socket->flags pulls in an extra
-> cache line that is cold when the working set is large.
-
-[Severity: Low]
-Is this still accurate after this patch? Only tcp_check_space() was
-converted to use the new field.
-
-tcp_write_xmit() calls tcp_cwnd_validate() whenever it has sent packets.
-If the flow is not cwnd limited and the write queue is empty,
-tcp_cwnd_validate() still reads sk->sk_socket->flags:
-
-net/ipv4/tcp_output.c:tcp_cwnd_validate() {
-    ...
-		if (tcp_write_queue_empty(sk) && sk->sk_socket &&
-		    test_bit(SOCK_NOSPACE, &sk->sk_socket->flags) &&
-		    (1 << sk->sk_state) & (TCPF_ESTABLISHED | TCPF_CLOSE_WAIT))
-			tcp_chrono_start(sk, TCP_CHRONO_SNDBUF_LIMITED);
-    ...
-}
-
-tcp_cwnd_application_limited() also reads it on the
-slow_start_after_idle path:
-
-net/ipv4/tcp_output.c:tcp_cwnd_application_limited() {
-    ...
-	if (inet_csk(sk)->icsk_ca_state == TCP_CA_Open &&
-	    sk->sk_socket && !test_bit(SOCK_NOSPACE, &sk->sk_socket->flags)) {
-    ...
-}
-
-Request/response senders limited by the application empty the write
-queue on every transmit. Their transmits would still pull in the struct
-socket cache line. The microbenchmark only times tcp_check_space(), so it
-would not show this.
-
-The new rule (SOCK_NOSPACE set => tp->tcp_nospace set) means both sites
-could check READ_ONCE(tp->tcp_nospace) first without changing behavior.
-Would that be worth doing? If not, could the commit message avoid saying
-the fast paths no longer touch struct socket?
-
-[ ... ]
-
-> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-> index f0a6725d2c376..e297c88be503b 100644
-> --- a/net/mptcp/subflow.c
-> +++ b/net/mptcp/subflow.c
-> @@ -2001,6 +2001,11 @@ static int subflow_ulp_init(struct sock *sk)
->  	pr_debug("subflow=%p, family=%d\n", ctx, sk->sk_family);
->  
->  	tp->is_mptcp = 1;
-> +	/* Subflows share the MPTCP socket, and thus its SOCK_NOSPACE bit,
-> +	 * which tcp_check_space() can not mirror. Pin the mirror so that
-> +	 * __tcp_check_space() always tests the shared bit.
-> +	 */
-> +	tp->tcp_nospace = 1;
-
-[Severity: Low]
-Do passive children of an MPTCP listener inherit this pinned value, even
-when they fall back to plain TCP?
-
-The listener subflow gets tcp_nospace = 1 here through
-mptcp_subflow_create_socket()->tcp_set_ulp()->subflow_ulp_init(). Its
-is_mptcp stays 1, so tcp_clear_nospace() never clears it.
-
-tcp_create_openreq_child()->inet_csk_clone_lock()->sk_clone_lock() then
-copies the tcp_sock, and nothing resets tcp_nospace.
-
-When the SYN comes from a peer without MPTCP,
-subflow_ulp_clone()->subflow_ulp_fallback() makes the child plain TCP:
-
-	tcp_sk(sk)->is_mptcp = 0;
-
-mptcp_stream_accept() then grafts it as a plain TCP socket. Its new
-struct socket has SOCK_NOSPACE clear. This new early return in
-__tcp_check_space() then applies:
-
-	if (!sock || !test_bit(SOCK_NOSPACE, &sock->flags))
-		return;
-
-So tcp_new_space()->sk_stream_write_space()->sk_clear_nospace() is never
-reached, and that is the only place the hint gets cleared. It stays set
-until the application first fills its send buffer.
-
-Until then, every ACK and every transmit calls __tcp_check_space() out of
-line and reads sk->sk_socket->flags. These connections would not get the
-optimization.
-
-The rule still holds, so no EPOLLOUT is lost. Could tcp_nospace be reset
-for the child, for example in tcp_create_openreq_child() or in
-subflow_ulp_fallback()?
-
-The same can happen with a plain TCP listener. If a socket was connected,
-ended up with tcp_nospace = 1, was disconnected and then put into
-listen(), its children inherit the stale value too. tcp_disconnect() does
-not reset it either.
-
-[ ... ]
-
+You are awesome, thank you!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929071743.23624-1-edumazet%40kernel.org
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
