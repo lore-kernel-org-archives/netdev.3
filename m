@@ -1,118 +1,290 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643C8233944;
-	Fri,  2 Oct 2026 17:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790961442; cv=none; b=shfmtpVrUF/LQEfamisVevHf28Si4sIdnp1FHBmqcR3bnCvbV4yjk+p7iY8QxgPtaX3DSQbnMxrmDzqha3UFG+1CIaSL2J5luGqaL31NTiZjgjCUZKj4KCJ1+GUxB9UFfPhi8VnqMINFTl15fLxFUgfy3nAFeDFKH4qcsC9OY/k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790961442; c=relaxed/simple;
-	bh=0BQrA6cGRVgn5Q0h1ymYVtH9JB80FTDxnzz0Tt4mKBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yy/aWcuXrN2evYlD1kOJH0VcKoIdSp4J3nUFBWsvV8/o+S4irKupaM/H2bApRCyWwJ6fJPoyJNqtKlp3BP8NXQXYvme+PQCgQ52CCc3SFFnCcj1SHJYgHbC5Xc52xTXbasCQ+K6atlY3VJPMG1HNDAw2sTCUe1gbrKVDCEwH+7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TaMVPMRj; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A1B4F6480
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 17:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790961459; cv=pass; b=J/MxQmkCtODz3wzn86WvG4+ag/BBVwYCNFdid/D2jwfXOSIB3eAzBY3vzGHRrUZe3/H7ah2ir/eYUxNu0S8rnr5AqB6Ywirus2qduQ52BjYTKRruTL9sUUnxcS+6S2TAxuIUMxW1gRM+MZbNTc2T09TLG046jKShD1CEG2Yff6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790961459; c=relaxed/simple;
+	bh=n5D2qlyDzMHZj5m2y0QbEBL1DRTWhDy15nyyKnkV0Zw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dilGtV9NhuFviEwbZ1YIrQpEL/bBHhZkKAeXYTyXF7itg9vdbdF5esetAwacFMVBroB2XTPCniazPKjM4ykIi7gsfy7tHDmuWYr9GlEbymab+z6SQnAVbeIXFrnbtJz1kLFAMW1yfnnVzJ4KSrRlzkt+1Euf+ZDdJ5vXuRE4a1A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RdQr8fSL; arc=pass smtp.client-ip=74.125.228.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TaMVPMRj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FA61F000FF;
-	Fri,  2 Oct 2026 17:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790961437;
-	bh=Yzk55Y+Q7QB7A9bgtfVqi/SIgCigyGqIZC+IFnFhhTE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TaMVPMRjtDthJjauw1G04/SU3fDEjFyXRe7wsTxeQWfhs8CuDjoybovXM7RrKDZUl
-	 FbszEqF56f9y+87FOl6W1Noaylboj0l5VhLMlvzqicg1CcVJm4QUzpylh9uvotG7y8
-	 yWs1/Yb/+oLboHLveYYr1GNJUyHiPoHLVotryWmiM6q+Z1QOu36aZ9yAZ4weWTCcS9
-	 IEyECUzef6/N0AKcjbc1hT56jfs1HKHCukJnhlRcV0tqONnVpuWzdDaVPDvWWg4oS+
-	 2CH/u8k60jGvuXYU4RNe4/VL4k81I0senT27z3rFYmAakorV6B3Oryd1rV2hzOtaEf
-	 0i6PWsc7vR43Q==
-Date: Fri, 2 Oct 2026 18:17:12 +0100
-From: Simon Horman <horms@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Carolina Jubran <cjubran@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>
-Subject: Re: [PATCH net-next 0/5] net/mlx5: Introduce mlx5_nodnic, a driver
- for DRAM-less NVIDIA Mellanox NIC functions
-Message-ID: <20261002171712.GN13925@horms.kernel.org>
-References: <20260930125708.144767-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RdQr8fSL"
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2e1b09e0c7so16265966b.1
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 10:17:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790961452; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iwIgpUHht9wXdMUgtzgJMLVrsQKNHi5vL2U0lc+EB3gsC3hd7PaA+7PzOp4VZdSC38
+         xbfzh8eIyUXLjkNX312eWDoZNUr66DR2bce16FBzbmPAKQeFLc453VkJGF1em8qdbIoz
+         qm98qK5E5BiR9Y7iRFC0hXfU0JVUikjlEjnhMu9TTcVRxweHY4/773kQLta/kMURcJAG
+         cw28jwOpg0oGHMX210rMzBADEPHKgc/DmQp69iz3w0QFmjOn8NajSKvH4Dz/qRZoGYui
+         18uxPExqeSAAlsKCn/JczgotFy58uOQkzkwJVlYFMznamTDAhzSZOp3Q/sBKFt4FwdpK
+         FQdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aADe7OTnnLJ+BldvnfgmjEHwTQr8EjDevVArWJMRlrQ=;
+        fh=X6pbdfJass06jjZuA/fRA+SLOQVAp4AxGjgZzGhiYHU=;
+        b=UTlib6iVRAB9ZKgutwX/0qmUTYPNSAsZZb09M+ro7HJYEyum4oXWdCmWoYDsWjr5UP
+         KvJ8SAu6cQk+sYg1MeDVkKVqiWRQ9QjeXZzsQHFwDOi9F1fQv0ER9YwgklndKGiyMVjS
+         sOUGhaMKPpxtmNURmbvc5H/K43gEv/3uE4Ut/GfUXKEWt0eQNYlBO41noO9nLzng+7B+
+         4oZjeeCTH9TwLHKkfMNIpH57JskeBZkmTPXTqVmSgSmHxWma1htjjEaBESZXgEgROnQi
+         LsI0OLYiBGqjnCCppm1Zf9c40j92GMxdQdA0DBZbCqwom+Ow2U8XpICgkdq4ZFFrJUF5
+         PObQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790961452; x=1791566252; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aADe7OTnnLJ+BldvnfgmjEHwTQr8EjDevVArWJMRlrQ=;
+        b=RdQr8fSL3Jdb9SEmESXIIejOOgUCMGRwB7wHCAiaE5fH7/wqfWvw2t7l8ITENo6YTR
+         Vvo+obLgyey2UYijSi19VUp0EDJ4OAHSgWsDAS28OjX42rTC+rpv9zYlPu9snamZcLMj
+         7LNtccD7e7xGlHVT+IV0JiIvIuvTwPQOyyJcpxeN+ksgPN8BD+tHtMmdQlNy+QmVwLem
+         cB3M0kloTtcL3NcE9bed7vF4ytfHKPXdYQIkqTkv6C1S8tr+QEiye/5h1HaKiWFr82rn
+         RlN35nmzU1RIxhAQm8I5Z40STeHR6AKowS4kzwj5d9tIUQauA+LpDgmYbBb0mewYz3SS
+         G4jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790961452; x=1791566252;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aADe7OTnnLJ+BldvnfgmjEHwTQr8EjDevVArWJMRlrQ=;
+        b=ErGgd1AsZRzItZ+f6QyK97tCDTdGakW256Sw9pJfXi8zjLwAKygJ3k3QMtG8njxtCy
+         KS51pOxyWp9GDovhd84tKfcLjzlKjkedS1qQtXdqynesRGlJ/RkWpa9jakLsDv43HzmW
+         nvnoIoVzOaOnRHmtNaRhkJcLPfUq1EOJNTB0xTT6spLZw55XZrMOw74Fdx5sH8UOa0H7
+         BJC3PLMNtlnDuOXjKIsZSj9vGxn536OhJvHk3MhA1LXYvA3oYtMXdiGrg3N7RVs9j55G
+         Cje0h03XIJMTpmPabq0ceV0YR5KV5ZJXg6px6TeHFGFskLu0DS6Mm4NLl9nptX7EfdCY
+         yZoA==
+X-Forwarded-Encrypted: i=1; AKwUvBw992sr7+F6Og7ZbXjHCB0YqSP6/33eL1JM75w8NppQqWGlRus0aTH9MXVnX89JypjxxDip/Ns=@vger.kernel.org
+X-Gm-Message-State: AFuF++mA+BMMhtPXPfFosR7gQLhIdz0+M6GobBc8y7pqYEKIokNCm8wW
+	muBQkXHJ95dEQuc8t9YLyYVNSAz/dBdiKrAqsWP3nfGWjv5ZbQjCn4mw00v1bevMqNC/T1dkIaq
+	vtORTgMz9SZDJW0yE/ufNfscPIULl56E=
+X-Gm-Gg: AYBFou0kGiBqWT23ox6nPDXEna2TZmnB8WHKYHxzgXYcECCCv2g8pmDUzmQLIti76Oz
+	UPpCmQpnKORNy+Pmkg4mJwmL2CEB7JU+AsgioPAwq4XWwE9FGE7K9VlS/vZhr6FHNyXL7dEQBkD
+	KH1QG58rHhabZy/2njF0ue1f5+PHzitdkTVco7ZiFRGqvDn2I+dCGkZVyei9kTOmbbuMfH83+B+
+	I7/cn1qJlGqFNu8uPMIrIemVGePlik70W+DVYf4tS9cgAfcuVrM62WLjVo79fNEXlM2XETD2P5N
+	Wz3iK3Der5+RfqnhdcfrGVGueYATifEENyv9AGLuxEAH52wJSxN1Ucv1
+X-Received: by 2002:a17:907:807:b0:c2d:cd1a:d5b4 with SMTP id
+ a640c23a62f3a-c2e4ad79a59mr254697166b.11.1790961452112; Fri, 02 Oct 2026
+ 10:17:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930125708.144767-1-tariqt@nvidia.com>
+References: <20260929092007.1184843-1-o.rempel@pengutronix.de> <179085726415.434549.9532496066289384267@kernel.org>
+In-Reply-To: <179085726415.434549.9532496066289384267@kernel.org>
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Date: Fri, 2 Oct 2026 14:17:20 -0300
+X-Gm-Features: AclHuK8NZ5uQBj7n9NZ_Yv6VXKadyF4TKLxzCFdA2RLurxUCYYwPqDYt8w7wMRs
+Message-ID: <CAJq09z6YL-sgRHYe=VCJ3awDM66PH5Bo0q34DynGoVt9+XZyEQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 1/1] net: phy: realtek: add MDI-X support for RTL8365MB-VC
+To: netdev-bot+sashiko@kernel.org
+Cc: o.rempel@pengutronix.de, linusw@kernel.org, andrew@lunn.ch, 
+	hkallweit1@gmail.com, davem@davemloft.net, edumazet@kernel.org, 
+	kuba@kernel.org, pabeni@redhat.com, kernel@pengutronix.de, 
+	linux-kernel@vger.kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org, 
+	alvin.sipraga@analog.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 03:57:03PM +0300, Tariq Toukan wrote:
-> Hi,
-> 
-> This series by Shahar introduces mlx5_nodnic, a Linux driver for the
-> NODNIC (No-DRAM NIC) hardware interface present in Mellanox/NVIDIA
-> ConnectX-family ASICs since 2015.
-> 
-> NODNIC is a first-class hardware capability.
-> It defines a lightweight NIC function intended for contexts where local
-> DRAM is unavailable or too costly: embedded controllers, management
-> planes, pre-boot environments, or any resource-constrained instantiation
-> of a ConnectX NIC. The hardware sends and receives ordinary Ethernet
-> frames via SQs, RQs and CQs. There is no encapsulation, no private
-> protocol, and no FW interposition: packets are forwarded as standard
-> Ethernet between whatever peers are connected to the function. The
-> interface is documented in the HW spec and has been in production in
-> non-Linux OS drivers for over a decade.
-> 
-> Where it is used today:
-> - Embedded management controllers on ConnectX-class ASICs that need a
->   network path to the host without consuming a data-path PF.
-> - Resource-constrained SoC integrations (no local DRAM) where a
->   minimal-footprint driver is required.
-> - Pre-boot / early-OS environments (PXE, iSCSI boot) that need a NIC
->   without a full mlx5e stack.
-> - BF4 management PFs (one concrete deployment): on BlueField-4 the
->   firmware exposes a NODNIC PF on the host side and a peer PF on the ARM
->   side, using standard vport forwarding to connect them. This provides
->   in-band Ethernet connectivity between the host and the DPU OS - SSH,
->   PXE, and any standard networking application work over it without any
->   special handling.
-> 
-> Design notes:
-> - The driver is separate from mlx5e rather than a mode within it.
->   NODNIC uses PCI Vendor Specific Capability (VSC) for command
->   operations - reads and writes over PCI config space - instead of the
->   DMA-based command interface used by mlx5_core. This is what makes
->   NODNIC usable in environments without reliable DMA access, and it
->   makes the two command paths fundamentally incompatible. Folding this
->   into mlx5e would mean carrying a second command transport and a second
->   resource model through code that is already dense.
-> - A single SQ, RQ and shared CQ are exposed per function, with two MSI-X
->   vectors: the data vector fires on CQEs and drives both TX and RX
->   completions, and the event vector notifies on port state changes.
->   This is the hardware's model, not a driver simplification.
-> - The driver exposes a plain netdev with no private uAPI, no ioctls and
->   no vendor-specific configuration surface. Everything is driven through
->   standard netdev, ethtool and devlink interfaces.
-> - The code lives under drivers/net/ethernet/mellanox/mlx5/nodnic/ and
->   shares no paths with mlx5e, keeping the footprint small and the blast
->   radius of changes contained.
+Thanks Oleksij for your patch.
 
-Thanks for the above. I agree that this is a valid use-case.
-And that the design approach taken is appropriate.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [Medium] Changing MDI/MDI-X on a port that is forced to 10 or 100 Mb/s
+>   does not restart the link, so the new setting is not applied.
+>
+> --
+>
+> net: phy: realtek: add MDI-X support for RTL8365MB-VC
+>
+> This commit adds config_aneg and read_status hooks for the RTL8365MB-VC
+> internal PHY. They let the MDI/MDI-X crossover mode be forced through a
+> chip-specific control register and report the resolved MDI-X state to
+> ethtool.
+>
+> > diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/r=
+ealtek/realtek_main.c
+> > index 3b3352e2cdc6a..e14960192e791 100644
+> > --- a/drivers/net/phy/realtek/realtek_main.c
+> > +++ b/drivers/net/phy/realtek/realtek_main.c
+>
+> [ ... ]
+>
+> > @@ -3058,6 +3068,74 @@ static irqreturn_t rtl8221b_handle_interrupt(str=
+uct phy_device *phydev)
+> >       return IRQ_HANDLED;
+> >  }
+> >
+> > +static int rtl8365mb_config_mdix(struct phy_device *phydev)
+> > +{
+>
+> [ ... ]
+>
+> > +     return phy_modify_changed(phydev, RTL8365MB_VC_PHYCR1,
+> > +                               RTL8365MB_VC_PHYCR1_MDIX_FORCE |
+> > +                               RTL8365MB_VC_PHYCR1_MDI, val);
+> > +}
+> > +
+> > +static int rtl8365mb_config_aneg(struct phy_device *phydev)
+> > +{
+> > +     int ret;
+> > +
+> > +     ret =3D rtl8365mb_config_mdix(phydev);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+> > +     /* The pair assignment is only evaluated while the link is brough=
+t up,
+> > +      * so renegotiate if the crossover configuration changed.
+> > +      */
+> > +     return __genphy_config_aneg(phydev, ret);
+>
+> [Severity: Medium]
+> Does this renegotiate when the port is forced to 10 or 100 Mb/s?
+>
+> When autoneg is disabled and the speed is below SPEED_1000,
+> __genphy_config_aneg() returns early and drops the changed argument:
+>
+> drivers/net/phy/phy_device.c:__genphy_config_aneg() {
+>     ...
+>         } else if (phydev->speed < SPEED_1000) {
+>                 return genphy_setup_forced(phydev);
+>         } else {
+>     ...
+>         return genphy_check_and_restart_aneg(phydev, changed);
+> }
+>
+> genphy_setup_forced() only calls phy_modify() on MII_BMCR. If speed and
+> duplex are unchanged, __mdiobus_modify_changed() skips the write. Nothing
+> then restarts the link: there is no ANRESTART, no soft reset and no power
+> cycle.
+>
+> For example, take a link that is up at a forced 100/full:
+>
+>   ethtool -s <dev> autoneg off speed 100 duplex full
+>   ethtool -s <dev> mdix on
+>
+> This goes through:
+>
+> phy_ethtool_ksettings_set()->phy_start_aneg()->rtl8365mb_config_aneg()->
+>     __genphy_config_aneg()->genphy_setup_forced()
+>
+> PHYCR1 bits 9:8 get updated. According to the comment above, though, the
+> pair assignment is not re-evaluated until the link drops for some other
+> reason. This part depends on the hardware behaviour that comment describe=
+s.
+>
+> In the meantime, rtl8365mb_read_status() reads the new mode back from
+> PHYCR1 and reports it as mdix_ctrl. That no longer matches the pair
+> assignment actually in use.
+>
+> The eth_tp_mdix_ctrl description in include/uapi/linux/ethtool.h says:
+> "When written successfully, the link should be renegotiated if necessary.=
+"
+>
+> Would it help to handle the forced case the way marvell.c does? That
+> driver calls genphy_soft_reset() when "phydev->autoneg !=3D AUTONEG_ENABL=
+E ||
+> changed".
+>
+> > +}
+> > +
+> > +static int rtl8365mb_read_status(struct phy_device *phydev)
+> > +{
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260929092007.1184843-1-o.rempel%40pengutronix.de
 
-One minor nit: the above mentions devlink, but that doesn't seem to
-appear in the driver. Not a big deal. But something I noticed.
+I tested this patch and tried to reproduce the corner case Sashiko pointed =
+out.
+My device has a RTL8367S switch, using a straight-through cable
+directly connecting lan1 and lan3.
 
-Also, I do note that the first two patches are rather large.
-But it's a new driver, and that is hard to avoid.
+# 1. Force speed to 100/full and disable autoneg on both ports
+ethtool -s lan1 autoneg off speed 100 duplex full
+ethtool -s lan3 autoneg off speed 100 duplex full
+# 2. Establish a working link by setting MDI-X on lan1 and MDI on lan3
+ethtool -s lan1 mdix on
+ethtool -s lan3 mdix off
+# (At this point, the link is UP)
+# 3. Force MDI off on lan1
+ethtool -s lan1 mdix off
+# 4. The link goes down as expected
+# ethtool lan1
+Settings for lan1:
+        Supported ports: [ TP MII ]
+        Supported link modes:   10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+                                1000baseT/Full
+        Supported pause frame use: Symmetric Receive-only
+        Supports auto-negotiation: Yes
+        Supported FEC modes: Not reported
+        Advertised link modes:  100baseT/Full
+        Advertised pause frame use: Symmetric Receive-only
+        Advertised auto-negotiation: No
+        Advertised FEC modes: Not reported
+        Speed: 100Mb/s
+        Duplex: Full
+        Port: Twisted Pair
+        PHYAD: 3
+        Transceiver: external
+        Auto-negotiation: off
+        MDI-X: off (forced)
+        Supports Wake-on: d
+        Wake-on: d
+        Link detected: no
+# ethtool -s lan1 mdix on
+# 5. and it is back up
+# ethtool lan1
+Settings for lan1:
+        Supported ports: [ TP MII ]
+        Supported link modes:   10baseT/Half 10baseT/Full
+                                100baseT/Half 100baseT/Full
+                                1000baseT/Full
+        Supported pause frame use: Symmetric Receive-only
+        Supports auto-negotiation: Yes
+        Supported FEC modes: Not reported
+        Advertised link modes:  100baseT/Full
+        Advertised pause frame use: Symmetric Receive-only
+        Advertised auto-negotiation: No
+        Advertised FEC modes: Not reported
+        Speed: 100Mb/s
+        Duplex: Full
+        Port: Twisted Pair
+        PHYAD: 3
+        Transceiver: external
+        Auto-negotiation: off
+        MDI-X: on (forced)
+        Supports Wake-on: d
+        Wake-on: d
+        Link detected: yes
 
-...
+At least for me, I couldn't reproduce any issue.
+
+Tested-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
