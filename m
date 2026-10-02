@@ -1,44 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE37547048
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 01:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643AC229B38
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 01:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790905292; cv=none; b=cO34rH2Umynco25s7mYjN+9Yjz3gYW5stKsky+oln1lGirJsvIltEdIAJzgP8rFM0gbjsyjtGgMkxphNsPOTeWkuHKHdBqA1ipXaj0q+PqzGwRDgAuCnEAalq9gPsADbi4cxWg64yXu6lrHaSPhSwG/Ei7F11mZL+sAfpaju75I=
+	t=1790905470; cv=none; b=YTuBg52Es1s3KhKJubWOCjKKML0JoErNb6EdEWiEIYC2d4/DPaQmc0PflYRjSaPkVGU+HpeukDqRBGxyKrn9slxpf7MLLQAC4y0JjH5ZTzrH/JS7K1KFvCBL37kof1zz9N6XO/2BdNM3xyp7A0t33DSWAta2X/FgczVwO+J1z2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790905292; c=relaxed/simple;
-	bh=j248eSLYf+df8/TkTVb1pbcKGkDo9cpOKJ48FuK2QbA=;
+	s=arc-20240116; t=1790905470; c=relaxed/simple;
+	bh=wrvl+qgxuJuhv8ghG8yha8nJ1jMPGwC+/GIWppoFQ4E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HWu/TA9ijo+jev7atN6FImnnw1M6hMpnRsqdkGcuGWq3tAFfrt6TLpnIfhYTT3iGbqwSSe9lNck8OWgKRBMDuAKnN0MJeK6uJrO5sD7FkARtDxZQWCNLeIBFRt894t/ZJN8G/eZSCYyCsbIGLq7Sc4OR4zX3jX8cU8CZcWNgN40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxgTQWFp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=uKM1WwI+rMiV5YZT6FzzirvjPxRdpLYvOjWFpWLmTPdgzB4lWfWNan3SpBr9917izK+YfGncaqwEEXsxJnOq1KfMGB1QJQ10dzWw7iihv/Xc5EKid+7Tl1nVTQ8DNx4buyGLvKT9xY7G5HUy/vLjPrjiRt7KxH+uNopBjBbf+sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpsjJ/uJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxgTQWFp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064C81F000FF;
-	Fri,  2 Oct 2026 01:41:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpsjJ/uJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5141F000FF;
+	Fri,  2 Oct 2026 01:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790905291;
-	bh=0DOZBDNt17kgkOTMRnLHfv+tYwiptncJ0XUdWNzF7f8=;
+	s=k20260515; t=1790905469;
+	bh=6CZg0NIaw6TyqOrcwIooSuI//dsc82GM6p5KZQLeZ+g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=lxgTQWFp1yLsw74RGAcNB2gJ+PSy19/aUNB6TFQDfK7X6IZUST9rkFh0TCXZGNBGY
-	 6RZZys1aBXAc++LCet7vMAQlOEbXGvD0yT1VwavqS7zAZolKwkO1b8R1ai8jSbcFdi
-	 9sG23kz+P/aML4NKhmXVcYmiFo4WPAp1nNHon1XBKNt9Ytu2pSbHk2+CilZ0UnqhXW
-	 SX4DQGCy8bmHcbonitpBVINpvfBg6yj/hc+Qgb2dE+CI9HEJG0cccR+WlgaFJILcgW
-	 hADAXn3uKQbTLYDI/QuRR1Ez8kjJ4yUCdBAg/kgvwTzL+pl/2f/YouQUuMOjVvfHTS
-	 Pm8/Q0hAmmgsw==
-Date: Thu, 1 Oct 2026 18:41:30 -0700
+	b=MpsjJ/uJmPrrPrleuY+4z95AtPlLRjHSC78pgkcFhFyyT4hwxhCPbQFKUkllAtLyY
+	 J2b8jxULjpH20uRcuNUJgCb93M5jaARTMUQf4rBojBnDZDRKtgh7GSTTt+2cNos7pg
+	 mUGEkP4zZ2IyKWDFQWfVSThaYvM6I3cokwB4aBsqd/igWrM6+5rvHwfS3caz4nitdD
+	 uhNqlxL9ldrRgOuTTcnFc0HGTWl/xUvKmOwtTqFluO0Jv1PoSuMAMWBR7SA/9gNHyF
+	 ujMire6iW2tSCHMe3RF+Q+vuDfsxtazOuVA/9pkbne1/+9bijvynqQETazeWM7Jyc5
+	 NNPMqSi5lUmGA==
+Date: Thu, 1 Oct 2026 18:44:27 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: Justin Chen <justin.chen@broadcom.com>, netdev@vger.kernel.org,
- pabeni@redhat.com, edumazet@kernel.org, davem@davemloft.net,
- andrew+netdev@lunn.ch, bcm-kernel-feedback-list@broadcom.com,
- nb@tipi-net.de, florian.fainelli@broadcom.com, opendmb@gmail.com
-Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in
- SW_RESET, restore it to SW_RESET
-Message-ID: <20261001184130.2b7ab18a@kernel.org>
-In-Reply-To: <179080972360.31693.266631430009737406@kernel.org>
-References: <20260930230634.3132729-1-justin.chen@broadcom.com>
-	<179080972360.31693.266631430009737406@kernel.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Chintan Vankar <c-vankar@ti.com>,
+ Danish Anwar <danishanwar@ti.com>, Daolin Qiu <d-qiu@ti.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Felix
+ Maurer <fmaurer@redhat.com>, Neelima Muralidharan <neelima@ti.com>, Paolo
+ Abeni <pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>, Pratheesh
+ Gangadhar TK <pratheesh@ti.com>, Richard Cochran
+ <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>, Vignesh
+ Raghavendra <vigneshr@ti.com>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next v7 3/8] hsr: Add a magic header for sending PTP
+ packets
+Message-ID: <20261001184427.4060c29e@kernel.org>
+In-Reply-To: <20260928-hsr_ptp-v7-3-d55d304d9a7e@linutronix.de>
+References: <20260928-hsr_ptp-v7-0-d55d304d9a7e@linutronix.de>
+	<20260928-hsr_ptp-v7-3-d55d304d9a7e@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,31 +54,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 30 Sep 2026 23:08:43 +0000 netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+On Mon, 28 Sep 2026 14:39:37 +0200 Sebastian Andrzej Siewior wrote:
+> Sending PTP packets (ETH_P_1588) via the HSR stack is pointless in its
+> current shape because the requested PTP timestamp is not routed to the
+> sender. It also needs to be distinguished on which port the message
+> should be sent and whether or not a HSR header should be attached.
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> To pass this information, a custom header (struct hsr_inline_header) is
+> introduced. This header is expected and mandatory if the ether type is
+> ETH_P_1588. To avoid any wrong usage, there is a magic field to ensure
+> it really is the header.
 > 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+> The inline header is just prepended containing the port and header
+> parameter. After the header, a regular packet follows. It is ensured that
+> the inline header and the following ethernet or HSR header is linear
+> and can be accessed.
 > 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+> The two retrieved parameters are passed to hsr_forward_skb() and will be
+> used later.
 > 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-please respond to this
+breaks build (admittedly in a weird way, some header check thing?):
+
+In file included from <built-in>:1:
+./usr/include/linux/hsr_ptp.h:10:2: error: unknown type name 'uint8_t'
+   10 |         uint8_t tx_port;
+      |         ^
+./usr/include/linux/hsr_ptp.h:11:2: error: unknown type name 'uint8_t'
+   11 |         uint8_t hsr_hdr;
+      |         ^
+./usr/include/linux/hsr_ptp.h:12:2: error: unknown type name 'uint8_t'
+   12 |         uint8_t __pad0[4];
+      |         ^
+./usr/include/linux/hsr_ptp.h:13:2: error: unknown type name '__be32'
+   13 |         __be32 magic;
+      |         ^
+./usr/include/linux/hsr_ptp.h:14:2: error: unknown type name 'uint8_t'
+   14 |         uint8_t __pad1[2];
+      |         ^
+./usr/include/linux/hsr_ptp.h:15:2: error: unknown type name '__be16'
+   15 |         __be16 eth_type;
+      |         ^
+-- 
+pw-bot: cr
