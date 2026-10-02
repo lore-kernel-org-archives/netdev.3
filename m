@@ -1,90 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CB53BB138
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A07331200
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790974211; cv=none; b=CQ0c3gq5eegBl6VaXw8Ia9JgRWvoJVi2QpnhKcbwTp0mVUx0LEyDcsvgKf6J0NfMqnkuYVe4eFuQD3DwXpbhKb9PFoXCvoQUEu2m4I3b33z6DbtUpTHBEDeky/ISW0wof1MNaNS8TOyw/5ljUbXaHK5C+R0KVmkwQ/J6yW/41i0=
+	t=1790974236; cv=none; b=W+wNT0jp9KoVeRwkhK2askn1+XfWsOjIKEuPcnU+wLfPEBs5yl8HaEw97a1amoxzhPD73s7SfQZEueCrHU67mTS9gKARAQyFtlMQMldP6+94YPepyHdGnw8HtDC/rWOAyB3rmLftqDAahEVDdfbblMrqV1kJIW7Z8DK7h5rkqwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790974211; c=relaxed/simple;
-	bh=DtALHrOTZzLRlqARmgmh78RLeENSU1spIR+3iFUa+K4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Fmeb0XAdAotjlfqjlcBtlSVHWRxNuMroyTgiMtg0H2FjwWOleO/7so8rN7jEtxouHEmgYVSEbZ/0PNm6c9qptTk+lQNaBfUJAbrsK4XRac20WXjsO7bOrQU5rmMEYQizh5HlXYzumRifj8xD4GlGhYNu07RoPJjQLR+V+fU15Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UToqDrr1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790974236; c=relaxed/simple;
+	bh=r0wAsCW09uYJLGw/k9Eanv0esNYUb2MmEuteA4NS4xY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WP46PN8t8YtGOHdjVUwS9O5XjgloH+zpSYb35P9AmtP1fi/OsiIjmC2RiXpB3A40Gul0BmTkvPbydH18TQOZtWrn3GW2Z3XoakTaWhS7dq3qRKn0wce3wo8RqXingwighkcM7F42GNb7FIbjHRm5K1ffZkWmt92LqMnEdFnv3gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=X1UUwx/S; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UToqDrr1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C7A1F000FF;
-	Fri,  2 Oct 2026 20:50:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790974207;
-	bh=ygeFSV2yPNqNjZcRTELHGXDCxbPcwP+b3h0z2VpB/JI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UToqDrr10VIoM9TxWTm+62wiTFI8pGqY+FwpgJfGt4E0likKVWG0WjYKgZATob0U8
-	 6ZivSRA9DHwhfKHCaiCXgzx1lhMhn5/PfqA6IZ2piXD00PNhDSJOBz1/KxUClzKZo+
-	 3jemWVbRnG9vveoaWzFDOTLDFmpYKmWoEXIYaeRmtN0LPWDUzz9zB8GKkhTkfWr7nR
-	 tJ8WzQCnaQIopRQMfhoBAkKKtzedQtnSPQw9u12jlI47u0ce4eiXQG/yyhHF3I46lA
-	 UdQu6eZVB7vPgAXIU1IDUbRfLrVw7EiYA1At9IJW5wTAVBkkGTHtp6NQNUUNnbNYJe
-	 3cKvF/ys3Zr2g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2F33811A72;
-	Fri,  2 Oct 2026 20:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="X1UUwx/S"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso2583448a91.3
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 13:50:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1790974234; x=1791579034; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aPjEZZ9EpGI2YyupaPWjnZ3uGj54v5irCmpCUt3ENzE=;
+        b=X1UUwx/StpRGBM3DXE758FkAphrL0xKzpMwyKedC7rBEnd3nfN1DjBMxvX/YzIj13f
+         Mk5F54yAL9m+viVNnmI3AxVisxDYLphDUhBzbMkBdZZUfuajG3DdSkwFVKLmOlLQbRmu
+         3jQnN6MYv/7RWkli2HKH/yW0+8Z1vEP5n9i88kywQ65+tgYMqrP1dJ3mj8O1DMW3kFsQ
+         2FXGIPAJ1VUXz/FNlFMdsi0oaF/d2qXJqNPO9w0WGyADbvhXiNPefn2JoFfswFb4Pl92
+         A6J0HXkgN1h1ksYXAegw8LP3IvRLYDDn39jDDqYr2Jl/2zFo5LY/Mu/Y4jftqP9QBDLS
+         YnlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790974234; x=1791579034;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=aPjEZZ9EpGI2YyupaPWjnZ3uGj54v5irCmpCUt3ENzE=;
+        b=HU6tBKW2nqBkv9MygjLr8VTDWt7e7RosTqYunv0tqgJA1dqPpiNLVM+51eVF2foZxJ
+         DTRBum65K3uvKKCvaceN44BhGfmQTvtqtbBPRqtMsm/CROOku3+ZSSNHzWz5IfXtpNpO
+         MqQsRcluEb2OEyjU0H4mTTeH5xDUKOyZC5XpWuUBjpRt3vAlfzxJoeVQ8wOgk7MmaFm3
+         h0tw2AqxKLY+ZJ/P47uCYdO5bLR2U6LV2tdrIgDrPvpOv8/5ZEYNieNd5bxQdUk6+5vf
+         s9XtjTjko6fDZMAyIU6DB22pB360hG/W9iZoV5MAA555Y2tI1Ji1KXY2rzxEsZ4/5RAt
+         hspQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxlLrIIw1eZxO/37FwrWNg7PbMU3QrCKtuXfyzkP54rF+OCAQo/sJck2Df5qJRMa4Ep+xFXqYg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIs4wBgkiVRrsaNMt1TMmKCA3b7sjA0lGFBvhattmkQgquEptBT
+	K67c01taeNqYsC5LFxNZ0v6dfESTN/9wBgVrq3UnuUKNkl+ROPs6goxnsF9Sridu7QE=
+X-Gm-Gg: AYBFou1iIAnkr5U2D4DgFT8SN2joil18vR3YY1fDEF1FlMlHg6RsGWrXe6cDkPmEZO2
+	/Qd0oig8/2fwKhXofY6orAynJhDrQsJVJKreziWUJ8IaYyUq2YwH+i3I1gKSRNhshkc0zvqA/eC
+	TOyfQYTcItz6Ssss4B7Y0096orUhqow8doC/KyXrW791HtsfJ3qTzxu42bVSJa26vSei+JEyQKi
+	mu9LU+9NsEmFYUgj5J1nLLZ/CzNW+drui853DcDwXRTjKW40nh49GR9spGu5BChUj843AuEVLl1
+	DU87mVvLCrHRtvjVXFZFSthRiEcQaFGDQVDUkCTylFkXz+k0wopfyr3KFl2tmPMtifFMJaRUPu+
+	yARRWz0R1r67H6r2H9Ob3gsz+PtKPKs0pDas/RoyU3bHraaD3kXDuPZnxu3zR2XvojL1IqgdRP7
+	WfDlWFyvlDEHGoNQk9loIk8XNNFZeV03Xf7HgwZbh/5bWqWluOSRwpZb4561PF6/4A8FgqB+P6D
+	FbWmCn7Umrq
+X-Received: by 2002:a17:90b:1d43:b0:39e:1633:d29e with SMTP id 98e67ed59e1d1-3a786736686mr353131a91.5.1790974234324;
+        Fri, 02 Oct 2026 13:50:34 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4e::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78d4f7316sm60634a91.9.2026.10.02.13.50.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 13:50:32 -0700 (PDT)
+Date: Fri, 2 Oct 2026 13:50:31 -0700
+From: Joe Damato <joe@dama.to>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2 1/5] eea: Drop temporary buffer by using
+ %*pEhp directly
+Message-ID: <asAZF53tsdq/QAYv@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20261002100035.863275-1-andriy.shevchenko@linux.intel.com>
+ <20261002100035.863275-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates
- 2026-09-28 (idpf, ice, iavf)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179097420603.3580978.13126376721297449645.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 20:50:06 +0000
-References: <20260928230429.495442-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20260928230429.495442-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- emil.s.tantilov@intel.com, luoxuanqiang@kylinos.cn,
- bryan.fraschetti@canonical.com, tristan@talencesecurity.com,
- tomasz.lichwala@linux.intel.com, david.butler@appgate.com, horms@kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261002100035.863275-2-andriy.shevchenko@linux.intel.com>
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 28 Sep 2026 16:04:21 -0700 you wrote:
-> For idpf:
-> Emil fixes a remove/reset race by always stopping the vport during
-> idpf_stop() so NAPI is properly torn down.
+On Fri, Oct 02, 2026 at 11:59:19AM +0200, Andy Shevchenko wrote:
+> Instead of calling string_escape_str() followed by %s specifier,
+> use %*pEhp specifier directly. With this being done, drop temporary
+> buffer.
 > 
-> For ice:
-> Xuanqiang Luo resolves a use-after-free issue by changing order of
-> operations so index is used before being freed.
+> Note, as Sashiko pointed out in [1] the %*pEp, which is the direct
+> substitution of the original call to string_escape_str() with ESCAPE_NP
+> flag set, makes the whole thing like "no escape". To add some sanity
+> to this the used specifier also includes ESCAPE_HEX.
 > 
-> [...]
+> Link: https://lore.kernel.org/r/179089728102.434549.12368098081790653201@kernel.org [1]
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/net/ethernet/alibaba/eea/eea_adminq.c | 11 ++---------
+>  1 file changed, 2 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/alibaba/eea/eea_adminq.c b/drivers/net/ethernet/alibaba/eea/eea_adminq.c
+> index 73d0caf25700..f2284fc885c3 100644
+> --- a/drivers/net/ethernet/alibaba/eea/eea_adminq.c
+> +++ b/drivers/net/ethernet/alibaba/eea/eea_adminq.c
+> @@ -522,16 +522,9 @@ void eea_adminq_config_host_info(struct eea_net *enet)
+>  			dev_warn(dev, "The hardware-driven state validation may be abnormal.\n");
+>  
+>  		if (rep->has_reply) {
+> -			char buf[EEA_HINFO_MAX_REP_LEN] = {0};
+> -
+>  			rep->reply_str[EEA_HINFO_MAX_REP_LEN - 1] = '\0';
+> -
+> -			string_escape_str(rep->reply_str, buf, sizeof(buf),
+> -					  ESCAPE_NP, NULL);
+> -
+> -			buf[EEA_HINFO_MAX_REP_LEN - 1] = '\0';
+> -
+> -			dev_warn(dev, "Device replied: %s\n", buf);
+> +			dev_warn(dev, "Device replied: %*pEhp\n",
+> +				 (int)strlen(rep->reply_str), rep->reply_str);
 
-Here is the summary with links:
-  - [net,1/6] idpf: fix possible race on remove during a reset
-    (no matching commit)
-  - [net,2/6] ice: fix use-after-free in dynamic port cleanup
-    https://git.kernel.org/netdev/net/c/1402fc67d2f4
-  - [net,3/6] ice: Restore Ordered MMIO Writes for Tx Doorbells
-    https://git.kernel.org/netdev/net/c/7a579dec8423
-  - [net,4/6] ice: fix metadata_dst refcount handling on representor teardown
-    https://git.kernel.org/netdev/net/c/58858b8f1480
-  - [net,5/6] iavf: fix VF stats not updating due to PTP command preemption
-    (no matching commit)
-  - [net,6/6] iavf: cap advertised max_pkt_size at the single-buffer HW limit
-    (no matching commit)
+i have no idea what this otuput could be but i suppose if you wanted to remove
+the terminator write above, you could do:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+   strnlen(rep->reply_str, ....)
 
+instead, but that feels like a fairly useless nit so:
 
+Reviewed-by: Joe Damato <joe@dama.to>
