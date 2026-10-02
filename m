@@ -1,106 +1,82 @@
-Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41FE1C2324
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 00:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392568632B;
+	Fri,  2 Oct 2026 00:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790900378; cv=none; b=X3UuiCDQ6/ThofyCuwVhlyA0V27MeTfo5dYG8Iax4NxFdhO+OIsFYyEUd4q4yeHWqg+5ufZ6StAj0+gQQtVr0dNIErVNXPx6fZ4NYiCwFeYkzARLvF9NVRSLNzyld+Ou8XQ4QmGYSGArccIwu8gGaAGqjpqvuE8784EQdXnIBfs=
+	t=1790900411; cv=none; b=cs/NOdYQIjtAJDCxhUghUMQ7ch3Fxv4JYEMrmL/cGp/muToxFBlSNVhiH4kN6F2VcnaxIKdiTpQCXgNR9FH4aEA71OYkQ2j4H4Ppeyn7Vo8w/rF1PJNEzBG/5TZSkq9TmkNx68WEYg6XmiZyQM8qA5SF4DI9WRXXXayBzqatz8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790900378; c=relaxed/simple;
-	bh=ico0QIpUZP4Uo+snrQt7aZKGkSDXP3zOPooGnsV5Ok8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=VJZQpEhKfieTl/qUz01UQfKtASQitr+gi8T/1jQiUSzwPD8x9N7pHw2pJXKXXKbav28BicVc1iBk35KvtzT6M53A76rNE+YotM1004W0s/5QqwUOruj61EwQNYvmcjq7SlSaq36CgV+m5HoRAc3NDsZjv49uat8HVJ/buHY6n0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qQSdpbdn; arc=none smtp.client-ip=74.125.224.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790900411; c=relaxed/simple;
+	bh=q/Y7bsOAyiZ5iTLS3p0NB8eFnp0RSW/9B1jMWgpGRfU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=YRkysfniC0ZYvZ0eBEIRe7wMT8GQweLKHvnw5uEDuBG+YQOcOMF8LxVQAiG2I4wrO4z3I9VA22JUisbkTa26u0yX8W1Ms1j1Jke0p7IY7WSjToRRBA6pD0kIqx9jxfOfi4sAzY9ejoRLQB9BH3ZXuyGYEn6Z45tZY38k3eujH1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSxK2H+6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qQSdpbdn"
-Received: by mail-yx2-f38.google.com with SMTP id 00721157ae682-8ac4deda6d5so28840067b3.2
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 17:19:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790900376; x=1791505176; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fSp4W/DJKok2SYpqEMEDGmT6PuCTnIyUmJTFaN2P0J4=;
-        b=qQSdpbdnXIGhrFYKT/farfeth9LZBj1CVxcUBnacPK0ddTNYG6SUIXJQIpnmBTlVSh
-         0DrAhVsdqtX0YgGdQ1n5YqI/F6nEHgmO9lMAEIYM4GUKfcHbDfwL52nN+ixuSTA+sMDi
-         8J6nqOXI/BNxMvEbxRdTr1Yfbm/25GlhYIu0IkQan3plO+knpwkMxnxLv/kDNYn4XGW0
-         GyVtxvj8THKLEKUPN5OmfQCnMKy7KnDIQKBW/IzLFNVaZTpvvODMCEdfX33mw2R7VRun
-         sa+/KFIHUkh7m3tpETMsvWWPoZtNC5WK+YYJ1X9aH+t8FNGs5t/9keVRKgnAOKv2UPag
-         EqVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790900376; x=1791505176;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fSp4W/DJKok2SYpqEMEDGmT6PuCTnIyUmJTFaN2P0J4=;
-        b=VJx0YqC/GXh2IEWcxlB7YzGggj6mPmkFiZ+A5jUzI8UiDc/WmlKuXaTkzNE1/uLmt7
-         T/00+GAOv38doqZ5s9k0B0cU86SboCoWJrns4VfD0iEEGSh9P32xMOMnttpLlP/Xn4+r
-         JbkjNCpx3qyGSnrgi+el1Lp7JItweDZSs9GiZoev7vM6+d9xxXGme+xhitKO7D7uymmp
-         5yf5a2b0w7635x4dHCazFXFBW+MxdDBpQPbO87t28acDjhfN9Pqszv6T3S29x5Q2XH+y
-         naUGLm0UQC/hgmVJKkEDK7wEl5tCDfN9ER+Y5rNT/PczRY286cwLMgSzwwV/03jQg1oM
-         QpBg==
-X-Gm-Message-State: AFq9FYLi0KST+330imU88AVGIN/d8JfkfEkV46TYkeX30czACV1Gj+aO
-	VYrLVrSN9jEPASslYdRZL/RLvpKo5GMr9BFxMLLHRU2K47mma/vdJaJc
-X-Gm-Gg: AYBFou0dKelzET8x1ZDDvSpYcd5Q9OmN3y6vSEwnRPBsQmDB9MIrmQJ3g1gSu5ETstq
-	juJkiJbAhRLBXOfy50H70wrVf+NOkUgX7zODl6W1VmwcKj1PX4N7EuOMxpVfno3zQegSP/gUT7Q
-	KLK7aW0eoE3Ddv3jvtmysBWkezTM2ABto4buLIp2pJbSItycGiVFeM0i3sd1CV/U1vkMk7cNCgV
-	EAxHI7+e5kDeYcwQnxerO0SClbV5rFaQeTbxIbQH8VepbmlOlropazQHnxsVlPVEKF25b2Fil+o
-	t6WYDBgA62Qla3RbxiVPrNuE/GZtmRoCKmtbYWhYhDjFfBGBcFoz+qjEuX5TR/EAfzTu1Sd3v4S
-	EtuRWylRcyCDpK4lS5Ru2M2x2Le7OA6Xo9wlGqIbzCmLrVSCjE5O0GqRd50ikTKo4GrHWNISZfT
-	znxZB5/74e82fDdYHUXG47FzccYknihunvdjjwmgwBIIq//H+V+4ZeZ4EvxSgKMAfKs21TuA8jw
-	JlnBFHzZsZatTDqMPxepeFCNP+jc5wbHU3tC6VXlc/9xkvhmHlQTyBkn8cf0S19
-X-Received: by 2002:a05:690e:804:10b0:66f:9d03:fa07 with SMTP id 956f58d0204a3-677abdee8bamr306667d50.2.1790900375518;
-        Thu, 01 Oct 2026 17:19:35 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae333e9a0bsm3205377b3.36.2026.10.01.17.19.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 17:19:34 -0700 (PDT)
-Date: Thu, 01 Oct 2026 20:19:34 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Daniel Zahka <daniel.zahka@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>
-Cc: netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.233d2609b86d9@gmail.com>
-In-Reply-To: <20260930-psp-defeat-v2-4-f266e7447129@gmail.com>
-References: <20260930-psp-defeat-v2-0-f266e7447129@gmail.com>
- <20260930-psp-defeat-v2-4-f266e7447129@gmail.com>
-Subject: Re: [PATCH net-next v2 4/4] selftests: drv-net: psp: test that
- rx-assoc fails on closed and listen socks
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSxK2H+6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828011F000FF;
+	Fri,  2 Oct 2026 00:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790900409;
+	bh=uB56XxneOWmJ5Yj57p8lWjnR5tlD06ZBMPCtC4mp7Mo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=TSxK2H+6ov33TVNg+bEtSoKL2gx503M5IRLrHsnAjUaSzBw5iype1JRhFf+CGV80U
+	 BKtzEYRz6JlJiqwdaCJMm1xPMz9eYgmKtSng53MBycXJAHRspbEMM3X9I+Zp9hQqja
+	 XCBOVHegjWBSW+Uix8Scg2mgm1FrI3Uh8wWlFBmNG+FOdwnkF5M+yaeaQydzNkqlLK
+	 Y0emI1c2AcVM1kz5Dj361TAqY+umZN4/N2FndYz7L2x9ns8n/g41iUjp6OZLzFZOnF
+	 /cIS7kCaMbIBg4GrTMMpTYpZAKC6atUH5D7TxklXHlOCS86G8cK5e5okamc/btzvIL
+	 bfum165s9XBKA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774F6381197C;
+	Fri,  2 Oct 2026 00:20:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v4 0/2] net/rds: restrict the rdma_cm ids to IB
+ devices
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179090040828.3154315.2324104902480212536.git-patchwork-notify@kernel.org>
+Date: Fri, 02 Oct 2026 00:20:08 +0000
+References: <20260927063058.170273-1-achender@kernel.org>
+In-Reply-To: <20260927063058.170273-1-achender@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org
 
-Daniel Zahka wrote:
-> Cover two of the basic psp assoc states that have been defeatured. Do
-> not include tests with shutdown(), connect(..., AF_UNSPEC), etc. I don't
-> think the coverage is worth the complexity. That should be done with
-> packetdrill.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Sat, 26 Sep 2026 23:30:56 -0700 you wrote:
+> Hi all,
 > 
-> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+> This is v4 of the rdma_cm id restriction (v1 at [1], v2 at [2], v3 at
+> [3]).  Patch 1 is the restriction itself; patch 2 is a small follow-on
+> the v3 review turned up in the function patch 1 touches.
+> 
+>   Patch 1 restricts the listener, the per-connection id and the probe
+>   id to RDMA_NODE_IB_CA with rdma_restrict_node_type(), so the rdma_cm
+>   never installs the RDS listener on, or binds an RDS id to, a device
+>   RDS has no transport for.
+> 
+> [...]
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Here is the summary with links:
+  - [net-next,v4,1/2] net/rds: restrict the rdma_cm ids to IB devices
+    https://git.kernel.org/netdev/net-next/c/c7fca8aae6fe
+  - [net-next,v4,2/2] net/rds: log the port a listener actually bound
+    https://git.kernel.org/netdev/net-next/c/00d77b181866
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
