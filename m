@@ -1,33 +1,33 @@
 Received: from smtpcmd01-g.aruba.it (smtpcmd01-g.aruba.it [62.149.158.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E744BB5DE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2434BB28B
 	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790949465; cv=none; b=IYUv0SoqVnkl7rsnCQIXspwypiUvp7BHX5KPJyMS4/4HSPFY8+HhEJJND7v0cnHM0C7DM0Yh9sQb4h/UNJEkmglUVdgDK8njFN0vw4LCgjDz03xTGykPi6Eva88cgdGvSq8B+4uTTHd8UgC8iHEmrE0QQw5r/xRI30qGr0dyEI0=
+	t=1790949467; cv=none; b=ZkK43icy+aR6H4xzsEdCMuK9EQAAU2FLvvtPEsKvXYvwgXatorvHcBAv0y8jBfkKzRLhIJdXzSNPzNhylSMy5D0PTpvaLZ19deac5lCPFcjVqvH+21HANgz4SPfc2xeAK2Gc/7Arv/HPA4gPvrjgB9bRTMQqfCQ7/ZFGnpLETLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790949465; c=relaxed/simple;
-	bh=7xam+ZyB49q2ZEKs5JCzAXEruXTclx3T1bG4VT0LcNA=;
+	s=arc-20240116; t=1790949467; c=relaxed/simple;
+	bh=Tfqex6erqwfS0ioS8ha09i46USaaivXCq2v8B7oNWqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUA31sNYfMy08Y8uKRo1nhu2RejAvCEoMgyLJLru/F0aewxuv1Yh0w9H6ETo3yJU0i6uBx0BXHea98elXywhECWTdyTmPBopuTWdA5D+mtLinxYZAO+aLGArHzAxqs3s4IjRWlnjBErmfkv5hA8QaK8IX/HiftUx1cxSJgfewiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=YPKNKSVC; arc=none smtp.client-ip=62.149.158.217
+	 MIME-Version; b=VV7l2ymhgcPKT+H2GbDxe+oudgy2o9S3CFS+unfQJTYgPl7+dh7TTE1yOOQIyafehJcRfdaOFHxcKn2a3iDLnG/22468bcZPwMyakpcb1lGGwP/mjYY0CSQupNQ52CWCGf08xL9LcQABTWI6plURWS08X1wcB6Jb+WO7wm8lddg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=jKw0qo2I; arc=none smtp.client-ip=62.149.158.217
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="YPKNKSVC"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="jKw0qo2I"
 Received: from polimar.tail4f75e6.ts.net ([101.57.122.26])
 	by Aruba SMTP with ESMTPSA
-	id CdlZxDen1LUMUCdlbxwrEY; Fri, 02 Oct 2026 15:57:40 +0200
+	id CdlZxDen1LUMUCdlbxwrDw; Fri, 02 Oct 2026 15:57:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1790949460; bh=7xam+ZyB49q2ZEKs5JCzAXEruXTclx3T1bG4VT0LcNA=;
+	t=1790949459; bh=Tfqex6erqwfS0ioS8ha09i46USaaivXCq2v8B7oNWqg=;
 	h=From:To:Subject:Date:MIME-Version;
-	b=YPKNKSVC4wBuBGh3cEbeOS7twAU7LMLkncP7AZh92IbDE4yFzElqpbSEJEClLkyDr
-	 8L6Q0x11+kzLHJCcPTUwutLV1stDnwCugbdcu3/J5FkS0tTgqFVxqdAxqmgqytBvmB
-	 70ufG9jO+BGUYywSr5ooGctmIdPO7CCe40QDa4PxTQ/k/hN4fhevm19LVKjGReyohX
-	 ijNLtsGXccZK2G+KRbrwiwddaL+xXmkDojjbFSxirop6YkJfk6+lnGeyuN4RYLDyei
-	 8sj99Bvjlb47vMvjK9gRvwpsUcUMBhtM+7yQm4eRoq6ozFHmgNAfhp4S4+rqBEg6PQ
-	 pDYcVcvzCw1IA==
+	b=jKw0qo2IPGreWCEnQq1DoN/JFi/+iq93qP7BdJJc1T++RvsYAWibAVqX2RIpLD+MF
+	 ieeZyMljSlNIjy4OOf9W8K3NHZH9NkBfDYxVBci5Mkx1ncnCLgaOLfQM6EnP8YpdoY
+	 JmZ2hR+DK8jmFrAdtAz/BXpBL3iXFT4xR2JWvMk76Gd5s1X0LfmEuJ9Otd41RVUClf
+	 Zrvw2TzF/UhMQIL5mKF351FZk1SRw4VT+d4fKGKFQ7jyClZMcDVH8HUPCWriYreVy9
+	 yHDk0lC932TBCMuz0N21Tjm1xcxkYbu3C0HTK5PG24328ocICTEoJNfdhx6G84kU9o
+	 ZiLJzfrishxRg==
 From: Rodolfo Giometti <giometti@enneenne.com>
 To: Woojung Huh <woojung.huh@microchip.com>,
 	UNGLinuxDriver@microchip.com,
@@ -45,9 +45,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Rodolfo Giometti <giometti@enneenne.com>
-Subject: [PATCH net-next 2/2] net: dsa: microchip: take the reset timings from the device tree
-Date: Fri,  2 Oct 2026 15:55:42 +0200
-Message-ID: <20261002135542.359756-3-giometti@enneenne.com>
+Subject: [PATCH net-next 1/2] dt-bindings: net: dsa: microchip: add reset timing properties
+Date: Fri,  2 Oct 2026 15:55:41 +0200
+Message-ID: <20261002135542.359756-2-giometti@enneenne.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261002135542.359756-1-giometti@enneenne.com>
 References: <20261002135542.359756-1-giometti@enneenne.com>
@@ -58,89 +58,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfEP3+bGNc7b0EvyYV8HWkMncoBcil0sHjzeMjnsG8mWjjTi3V7YyLEGei6sth5ymYfP42Z2iKcGj6U1sfnIku8HtkoTy0y+MjrrbZcBcADTtqfOi52hY
- mvzzumtP2lat4j0ZaSCRX7W2xHvpgDskHPJjtRXNUOXtpfAhIAWvFRau17DeiiL0B6zH5Cx5GmJMNFQICENSLiWCbLVwHNBXQWqkigz2g4YPf3vefL1RBsjm
- +vrx2WW7mn+YhdMRhbIIF1XbwUVlU1LQX9ganzVnf+kyeAJB6FbtddnFlg0EoevMcCEHmedIr3V4OsruEAbjmlqYLJscI5w+UQO3Jbw8oh9fh/oCytpPh2ka
- uWlUNPNuPwFQ3M3CDoqTHJDYREbWR+h7YRK0pzuGxOshjHD7jcjtStx3xpPpfdKyTaz8LPs3t/hkr3DQrjZJL30AXnoLBzK4aJfxHXmSzQVpYzVqKjDe2Qoj
- /FnRssQ3/NArZKYon7Iv3YrohcH0Pp32UiFQkrb+Tem5tqCOzWT+5OsJTH3DOsKn37jzg/N9GRy5484O0Z8Zl4Z3h7/bEOuk5c9uN6UpdbX8gyzcyD3mris/
- 2XVGDu/v36w/GUHQ/a613EB9xtgO17ANLgp9Un96yRQSVSgxWxrNhe3CtXeqReKG0TXfEI731XkF9Xt/QetBoSLU
+X-CMAE-Envelope: MS4xfEW1Yj8i3zhIjVzqiH5/fOMLH9cxuuPtIsrqzceN+Lma+S/NNovw7sZ/lCUX6xoepm5qAAjwIauvAlYtPtJlp5Lyafpje5W49a5rUlrdIa8LQkLe483K
+ e6uqJ6If8ScgsNigVHFG19S6N5PnboyDEECtS4dXsyjgeE0QblHTYdJ65IsOtaYdBi/I47MdDMb9udSwqnOGHyN9pz6xqnuaZY+o/DnG9kGLMGWZK8EOeWka
+ HIOBmx2E5/WjBwRqz3KmhS0NYL1P2mmg8nEns6pCC0TEONywr/HCaXgAalzJgLwrT4E+tgu6TCUAk8XsVUfAxKQoi0RD8D3yLfa4LPaHoOuzTORiEZO0Wyst
+ hd68Z/2b6QtWbhq7HFmnRJljrVcfCzNYywePMX8+xQjQA2ns+BhUQqQuonYoTWV5K2+WfuzuCPrRBz+D4Y0gVEZ5+k2w6R1mQUuoqKTehbxoPS1bn1xv5gK2
+ 6EY2+A/BY3OuQtB1sc0a2NfMJJzmaAR5PcQ7cZXbYvCYgn46CcbbjgVWkYTzqdXiw160inXLxhPT7iTGxg2xhvljXueFka/c93us7mXGSCZBYNgMjADUNyhJ
+ CQmv6+ELlVkX77e1ou+32T5vdM1+mM5d4mSCRkj6hmRtdXB4fyET29724ysva01N0Y3BuulliFFQohhN+7oo09K+
 
-ksz_switch_register() holds the reset line asserted for 10ms and then
-waits a fixed 100ms before reading the chip ID. On an i.MX93 board
-fitted with a KSZ9897 the switch starts answering 95-120ms after a
-10ms reset pulse, and about 160ms after a 1s one, so the read can
-return all ones, and the probe then gives up:
+How long a KSZ switch needs before it answers on its management bus
+after the reset line is released depends on the board it sits on, and a
+board that needs longer than the driver waits has no way to say so.
 
-  ksz-switch spi0.0: unsupported switch detected ffffff00)
-
-The same part on another board of the same family answers well within
-the 100ms, which makes the wait a property of the board rather than of
-the driver.
-
-Take reset-assert-us and reset-deassert-us from the device tree, keeping
-the current timings as the defaults so nothing changes for the boards
-that do not set them. The delays are now free to span the ranges of the
-different sleep helpers, so let fsleep() pick.
+Document reset-assert-us and reset-deassert-us with the meaning they
+already have for MDIO devices, and record the timings the driver has
+been using so far as their defaults.
 
 Assisted-by: LLM
 Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ .../devicetree/bindings/net/dsa/microchip,ksz.yaml   | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 767c8fe8e819..365a804eee31 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -23,6 +23,7 @@
- #include <linux/of_net.h>
- #include <linux/micrel_phy.h>
- #include <linux/pinctrl/consumer.h>
-+#include <linux/property.h>
- #include <net/dsa.h>
- #include <net/ieee8021q.h>
- #include <net/pkt_cls.h>
-@@ -3990,6 +3991,8 @@ int ksz_switch_register(struct ksz_device *dev)
- 	const struct ksz_chip_data *info;
- 	struct device_node *ports;
- 	phy_interface_t interface;
-+	u32 deassert_us = 100000;
-+	u32 assert_us = 10000;
- 	unsigned int port_num;
- 	u32 lookup_chip_id;
- 	int ret;
-@@ -4001,6 +4004,19 @@ int ksz_switch_register(struct ksz_device *dev)
- 		return PTR_ERR(dev->reset_gpio);
+diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+index 4ed13870ed3a..5a99d79ea982 100644
+--- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+@@ -48,6 +48,18 @@ properties:
+       Should be a gpio specifier for a reset line.
+     maxItems: 1
  
- 	if (dev->reset_gpio) {
-+		/*
-+		 * How long the switch takes to answer on the management bus
-+		 * after the reset is released is a property of the board, not
-+		 * of the driver: about 160ms has been measured on one of
-+		 * them. The values above are only the historical default,
-+		 * so a board that needs more states its own timing with the
-+		 * properties MDIO devices already use for the same purpose.
-+		 */
-+		device_property_read_u32(dev->dev, "reset-assert-us",
-+					 &assert_us);
-+		device_property_read_u32(dev->dev, "reset-deassert-us",
-+					 &deassert_us);
++  reset-assert-us:
++    description:
++      How long the reset line is held asserted, in microseconds.
++    default: 10000
 +
- 		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
- 			ret = ksz8463_configure_straps_spi(dev);
- 			if (ret)
-@@ -4008,9 +4024,9 @@ int ksz_switch_register(struct ksz_device *dev)
- 		}
++  reset-deassert-us:
++    description:
++      How long to wait after the reset line is released before the switch is
++      accessed, in microseconds. Boards whose switch needs longer than the
++      default to answer on the management bus state their own value here.
++    default: 100000
++
+   wakeup-source: true
  
- 		gpiod_set_value_cansleep(dev->reset_gpio, 1);
--		usleep_range(10000, 12000);
-+		fsleep(assert_us);
- 		gpiod_set_value_cansleep(dev->reset_gpio, 0);
--		msleep(100);
-+		fsleep(deassert_us);
- 
- 		if (of_device_is_compatible(dev->dev->of_node, "microchip,ksz8463")) {
- 			ret = ksz8463_release_straps_spi(dev);
+   microchip,synclko-125:
 -- 
 2.43.0
 
