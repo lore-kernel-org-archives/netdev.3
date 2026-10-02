@@ -1,127 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76DF25F7B9;
-	Fri,  2 Oct 2026 23:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB5E42B301;
+	Fri,  2 Oct 2026 23:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790982400; cv=none; b=KfALSFy1f1H1VISnY+TxNtxseoeNSDRJXulsueiyuz388LjUPS5PojC8R10yzhvNICCGpWk+6JcC9EIhdYH2jI7lkK/NYRiUWz6otHWBmhhb6IExoqTJo0S+Jy55heiSOwHQORcIBOK31dy4ZsWxIlZ/FTPGgZ0smkZTCJwRMlg=
+	t=1790982694; cv=none; b=tP9v+bPHs+LeUp70BMQ5SoVNl1+SZD+D+2hGoFDWsnoH1Su2wyJy3CYO3pujdHGj+VcpAoJldxmUqOQQDj/oSmLMNMGd13wxps07zjO+vellnBg9t4i8KCwZTEPn29kNQy10mJr1maEigi8xQPsIefQsiVVWb/gR8wJV9bddZAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790982400; c=relaxed/simple;
-	bh=G0ehjrQTHNkoIUtvOrhLgjOSaa2sUAG6/htLVsm0ySs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rkzahUHNMm7NjsirXa0gFfVexuprdGF/VUE1lCYHTz4UUvM+IN9mnzoqpkeeGnUuxs/rek0uZX7WhtvupqIEiM8b4pTfAhNzgEJO3PodB9qzt3Cf9/g9J3YUxwlIHDxQIvRtqWxrHWZdA+VGqd4YmVi1ebd5u2TZZaHNp9R+/TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GiXSF2C/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790982694; c=relaxed/simple;
+	bh=AuGTrggSMMdoLaFPyZC7inBFjquZSoja7nsY11s+2D0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NSMJg2nBzkOmv7Ax/RgcnGxT8X0ysWLanSk6QPnqOWuDH0ArsZciWi4/7nJetAYmp2vlD198ieGjwoKJeLylNthSZ/SQp+gCvQJn3jXEM4CUCcq5dMyEVIbOAhEmY/+QQwfaA2yOFYFTgSmKJsfNPt94LXWzMuwU/ZmWV53gHqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JlKtFw36; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GiXSF2C/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B441F000FF;
-	Fri,  2 Oct 2026 23:06:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JlKtFw36"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262921F00893;
+	Fri,  2 Oct 2026 23:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790982398;
-	bh=/L5zJYgpln1RMs+685EXIcz9wmgL0JHHpmJGUTsDh+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GiXSF2C/tcsnNKP9r/fJrFmV9qRWCCNsxaWC1Areuy5RVdQnis5UNY+q2TVeNsSdi
-	 2Lj4XGOP53fPB7i3LWP4yJ4rzuJXkqIEGcjTpFXFumqjd++rijV9Y0RpvAn1WXDZB/
-	 XosfrWYk7XSOx/hdyFQvI7WbPyfj6MjNPpRC9SskoOV4IOAJU9ClKhln1Z73B85ZXX
-	 5XpEhWdnsvEyfvMoTSq2VaD3QKATvGYu0q7wiNJN2NgQ9XcCyvknyhrcRPS1R7HE0b
-	 VBZpcQdUDQdMvlPDr1Og2dIIctclLDa0rr9ifF6vCT6BcGF5DUa6Hw77Z6GLwKg9Y2
-	 8RmAtMcAoYAfw==
-Date: Sat, 3 Oct 2026 01:06:32 +0200
-From: Nathan Chancellor <nathan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Networking <netdev@vger.kernel.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	KBuild Mailing List <linux-kbuild@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Nicolas Schier <nsc@kernel.org>
-Subject: Re: linux-next: manual merge of the bpf-next tree with the kbuild
- tree
-Message-ID: <20261002230632.GA314599@ax162>
-References: <asAzcgDsbNEFIfKV@sirena.co.uk>
+	s=k20260515; t=1790982693;
+	bh=il8A1RVRfAP3LmRZEt7D66Nfnu4TVGi121lkczSMSiQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JlKtFw36eMlMokCbuuuhmSgbjFdvD0tBMPp4BfTVPh4znMWqlOezpIfvnGghA7Lt9
+	 1/ulIEAd9JSdiW2+8S9+59b7c1R5f1loUnQMEet6ohlEp9rT80vC6BxYfkihNGWSHH
+	 GhTejv/kjnALRVLtt7jKiCmLct37U6U78GlulMI4tRTIl3ioPWHlYZdpD39ONoDZjC
+	 wGGtCMaf+yyp1cYUQzEsBgJOJUUtK5Z9hqmKDhrtNSomzwyGtE+YMUoz3AVBWmfhOz
+	 jF0zD+5Jkk4eP3lU5K+TtK4ZF/29zAaLrA+ODnU+QiQXToxOyBESzh7HW6OflkMYDL
+	 OhYhb6szA80uw==
+From: Kees Cook <kees@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+Cc: Kees Cook <kees@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-mm@kvack.org,
+	Pedro Falcato <pfalcato@suse.de>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-hardening@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v5 1/7] mm/slab: Mark the kmem_buckets_create() context as a Context: section
+Date: Fri,  2 Oct 2026 16:11:21 -0700
+Message-Id: <20261002231132.1646573-1-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261002231120.late.500-kees@kernel.org>
+References: <20261002231120.late.500-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asAzcgDsbNEFIfKV@sirena.co.uk>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1768; i=kees@kernel.org; h=from:subject; bh=AuGTrggSMMdoLaFPyZC7inBFjquZSoja7nsY11s+2D0=; b=owGbwMvMwCVmps19z/KJym7G02pJDFkHrGSLN2YfELwjaF+9xSuq945av3Z70zMbxZzA3XpLR C84B2/oKGVhEONikBVTZAmyc49z8XjbHu4+VxFmDisTyBAGLk4BmMj/3wz/y/i2W0Ve4VA4uefW tHu/j8hE5eiVPDzOc8TywXvtMDvLFYwM0/k2L172aIVZ9fylfqsrn0V4f+0p/2MleMr164qMbzG F/AA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-Hi Mark,
+kmem_buckets_create() had the same sentence about calling context as
+kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
+rendered in the body instead of as a "context" section.
 
-On Sat, Oct 03, 2026 at 12:42:58AM +0200, Mark Brown wrote:
-> Today's linux-next merge of the bpf-next tree got a conflict in:
-> 
->   init/Kconfig
-> 
-> between commit:
-> 
->   f85147b291e35 ("kbuild: move the toolchain checks into scripts/Kconfig.toolchain")
-> 
-> from the kbuild tree and commit:
-> 
->   eb13a1ff271b0 ("random: vDSO: avoid call to memset() when zeroing reserved parameter")
-> 
-> from the bpf-next tree.
+Give it the missing prefix. Additionally fix the "a interrupt" typo
+__kmem_cache_create_args() had.
 
-For the record, this change is from Linus's tree, as it was merged in
+Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+Assisted-by: LLM
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Hao Li <hao.li@linux.dev>
+Signed-off-by: Kees Cook <kees@kernel.org>
+---
+ mm/slab_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  ac7445c28e7a ("Merge tag 'random-7.3-rc6-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/crng/random")
-
-but presumably your stable base does not have that merge depending on
-whan you started -next so it comes in from the bpf-next merge of Linus's
-tree in
-
-  2b5440b31caf ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf 7.3-rc5")
-
-I just wanted to make sure the bpf folks didn't think they were on the
-hook for this conflict, it is only on me with the Kbuild tree now.
-
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
-
-Thanks, the 'source' line looks correct to me now. Did you also shuffle
-CC_OPT_INLINE_MEMSET into scripts/Kconfig.toolchain like below? You had
-it right in
-
-  https://lore.kernel.org/ar5-4Yq3wtmXTWnD@sirena.org.uk/
-
-but the patch changed slightly since that resolution ('4294967295' to
-'4294967294') due to a problem I reported
-
-  https://lore.kernel.org/20261002094932.GA3435055@ax162/
-
-before the patch was sent upstream, so I wanted to make sure that you
-did not reuse the old resolution (and I didn't see a mention of it in
-this email).
-
-diff --git a/scripts/Kconfig.toolchain b/scripts/Kconfig.toolchain
-index d708a175fe48..c9d2aef4e355 100644
---- a/scripts/Kconfig.toolchain
-+++ b/scripts/Kconfig.toolchain
-@@ -247,6 +247,11 @@ config CC_HAS_ALLOC_TOKEN
- config CC_HAS_MULTIDIMENSIONAL_NONSTRING
- 	def_bool $(success,echo 'char tag[][4] __attribute__((__nonstring__)) = { };' | $(CC) $(CLANG_FLAGS) -x c - -c -o /dev/null -Werror)
- 
-+config CC_OPT_INLINE_MEMSET
-+	string
-+	default "-finline-stringops=memset" if $(cc-option,-finline-stringops=memset)
-+	default "-mllvm -max-store-memset=4294967294" if $(cc-option,-mllvm -max-store-memset=4294967294)
-+
- config LD_CAN_USE_KEEP_IN_OVERLAY
- 	# ld.lld prior to 21.0.0 did not support KEEP within an overlay description
- 	# https://github.com/llvm/llvm-project/pull/130661
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index b19ba1b31484..270408ce5a9d 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -311,7 +311,7 @@ __kmem_cache_alias(const char *name, unsigned int size, slab_flags_t flags,
+  * &SLAB_TYPESAFE_BY_RCU - Slab page (not individual objects) freeing delayed
+  * by a grace period - see the full description before using.
+  *
+- * Context: Cannot be called within a interrupt, but can be interrupted.
++ * Context: Cannot be called within an interrupt, but can be interrupted.
+  *
+  * Return: a pointer to the cache on success, NULL on failure.
+  */
+@@ -422,7 +422,7 @@ static struct kmem_cache *kmem_buckets_cache __ro_after_init;
+  *		to/from userspace.
+  * @ctor: A constructor for the objects, run when new allocations are made.
+  *
+- * Cannot be called within an interrupt, but can be interrupted.
++ * Context: Cannot be called within an interrupt, but can be interrupted.
+  *
+  * Return: a pointer to the cache on success, NULL on failure. When
+  * CONFIG_SLAB_BUCKETS is not enabled, ZERO_SIZE_PTR is returned, and
 -- 
-Cheers,
-Nathan
+2.34.1
+
