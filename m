@@ -1,244 +1,204 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from out28-173.mail.aliyun.com (out28-173.mail.aliyun.com [115.124.28.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA004E535F;
-	Fri,  2 Oct 2026 15:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D5130D406;
+	Fri,  2 Oct 2026 15:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790955098; cv=none; b=rdNUH9F9XkeAMjou1IwwqpXjDxtBC8uDWVHYQrJEkHRPv+N5jdle7De39FfqcNNA7aZZ10cu+NNxHfkuv0omvUH+VqAfllV8KyuiWP/84Yoa5tXRXNYpO5tI7/YMPDY76aH5U5FGoowVTDcNwoD1F3b/WYU57vwUyPBcbL35uVg=
+	t=1790955372; cv=none; b=rYaeFpQgsfR1J2sVXckRZsNeiBD0Lsh5MUXfVZmGPFa4d02d+exWghnA6wWC2+rJDFGdbIM+ggbEBfGRb+a7qxKjPxdJ0OvaRAPLeqY5Jz0V7CIi3X3wwvRQSkMa/ZrQR5Fze3OR9CM1df0H95lbthc6FUUCj3EVwcJH0zavcjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790955098; c=relaxed/simple;
-	bh=0pHH0aNoIlIQ7IdWKO+2+w8hQu4Wo22MtctOvE4EaqI=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=hY3IjKI2I87hi9ptcWGsXQet35GYRclEuidKmIEgORGBqYAA7tTCOoyr51bdKxzhdzKC9oz3c/6PQzM0rkMqT1QoH7p7qaEzi3ksaHyFENgl2/TjSjEsI5jFJ0mVf/DNh1m+JohH4W0ISYHZO78Xzu+P5StDA1CfC4rL7lO9yvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IrNQ70Zl; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IrNQ70Zl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790955096; x=1822491096;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to;
-  bh=0pHH0aNoIlIQ7IdWKO+2+w8hQu4Wo22MtctOvE4EaqI=;
-  b=IrNQ70ZldJO81GDMPyyTy38urKiX0FHn+G1YnoX7HVNnlytrPyhta8Pg
-   3MwV19kERO8FiTBt7urUw7GLn50IeXXyI1CZfDjXtT08k3ZWfCxiP/R8S
-   kKU12bByd5nviU31FS5KThsm4gV2yOapyxP0JSQyW3BRJVnq3CpKgxOMy
-   RSnY6BdGLaNK2+3sgqluER/hUK1MM9Hg1vJEXFfUo6n2GenNnI5xHkFq1
-   QKUPPpv+ZxQbI40gW5QKjwYpffK5zaYhLVCVjWrJ91D2xy6NE54GvQ3Um
-   n7e29rX/tTCNQW2BRTOblbPPtM9NWSGM7yTErVVK2K89HCPECVIfmcPk0
-   g==;
-X-CSE-ConnectionGUID: YmyLRcfySOKXHmxednbCYQ==
-X-CSE-MsgGUID: chlYX61CS0COndR8ZCI7jw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11923"; a="102297628"
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="102297628"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 08:31:35 -0700
-X-CSE-ConnectionGUID: pIhOdqZ7R862mltKoOWSAA==
-X-CSE-MsgGUID: vlcae5+bTGG/d4dykkSO9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="280016054"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.125.108.45]) ([10.125.108.45])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 08:31:34 -0700
-Content-Type: multipart/mixed; boundary="------------lW9kp0c0SlE0q00cmPWrJACh"
-Message-ID: <86f1bc50-65ef-4894-a2f0-211ccd394fdc@intel.com>
-Date: Fri, 2 Oct 2026 08:31:33 -0700
+	s=arc-20240116; t=1790955372; c=relaxed/simple;
+	bh=iMsPJk4DUMkPq2TRuY+sGfv1QCWE56zGUzD9qzF3LNs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dKX5E77pqfFX2n5lgvQzBQ0Wfjdt+BiO3CQHop+ZmcXyA9iQMBAdRo6uNIrDuDbsj5BTfDbHOyMN29dpiaQIazBKWkBrXRHsiAETPsjC9HKWcYb5yxoWUDKkEkAlk74h4iuibWosGyfSywSpxDAtFwtt2N7pEEJ9Kpp0oI4OK7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06714133|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0162146-0.000265364-0.98352;FP=16929337455097240818|13|2|16|0|-1|-1|-1;HT=maildocker-contentspam033037071049;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jTkAIV-_1790955034;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jTkAIV-_1790955034 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 02 Oct 2026 23:30:38 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	Frank.Sae@motor-comm.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com
+Subject: [PATCH net-next v24 0/3] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+Date: Fri,  2 Oct 2026 23:30:31 +0800
+Message-Id: <20261002153034.934814-1-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] driver core: Check for supplier requiring PM at
- link creation
-To: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>,
- alucerop@amd.com, linux-cxl@vger.kernel.org, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
- rafael@kernel.org
-References: <20261001132023.17032-1-alucerop@amd.com>
- <20261001132023.17032-2-alucerop@amd.com>
- <9e8a45df-1755-495f-8e80-52c65b832dc9@intel.com>
- <b7fd6cc3-1aca-440f-a87d-d0d94ae9eed3@amd.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Content-Language: en-US
-In-Reply-To: <b7fd6cc3-1aca-440f-a87d-d0d94ae9eed3@amd.com>
-
-This is a multi-part message in MIME format.
---------------lW9kp0c0SlE0q00cmPWrJACh
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+This patchset mainly implements the phy8824 driver. The phy8824 is
+an Ethernet PHY that provides one 10G SerDes output to four 2.5G ports.
+The driver mainly covers two application scenarios:
+ 1. external PHY8824
+ 2. PHY8824 embedded in a switch.
+The patchset mainly consists of three parts:
+ 1. the DTS for the phy8824
+ 2. a generic template testmode configuration api.
+ 3. the phy8824 functional functions.
+
+changes in v24:
+1) Fix the typo during sds init.
+2) Add priv->sds_initialized to indicate whether the SDS extended
+registers shared by the four channels have been initialized.
+
+changes in v23:
+1) Remove meaningless comments in driver.
+2) Using #define to replace magic numbers during PHY8824 init.
+
+changes in v22:
+1) Using motorcomm,package-mode to replace phy-mode in DTS.
+2) The corresponding parsing has also been updated, using
+   "motorcomm,package-mode".
+
+changes in v21:
+patch 1: 1) Add maintainer for motorcomm,yt8824.yaml.
+    2) Using 10g-qxgmii instead of usxgmii.
+patch 3: 1) Change the usxgmii space to serdes space.
+         2) Add lock operation during phy-package init in probe()
+         3) Add check for whether auto-negotiation is enabled
+         when updating the link status in read_status().
+
+changes in v20:
+patch 1: Add phy-mode description in properties in motorcomm,yt8824.yaml
+
+changes in v19:
+patch 2: Replace the int type with the u16 type for test_mode.
+patch 3: 1) Merge yt8824_utp_normal_test_mode_paged() and
+         yt8824_utp_invalid_test_mode_paged() into 
+         yt8824_utp_set_template_test_mode().
+  2) Add a fatal error return when phy-mode is missing in
+         the DTS.
+
+changes in v18:
+1. Split the template_testmode() into a small patch 
+   and optimize the implementation.
+2. Optimize the definition and initialization of 
+   interface_mode by adopting the existing approach.
+
+changes in v17:
+patch 1: Remove redundant description.
+         Use phy-mode instead of motorcomm,interface to describe the
+         interface.
+         Add the required checks.
+patch 2: Use phy-mode to get interface mode.
+         Need return after init configuration is done to avoid falling
+         into the error path.
+
+changes in v16:
+1. Add DTS documentation.
+2. Fix redundant initialization.
+
+changes in v14:
+1. Refactor the error return path to preserve and return the initial error,
+   rather than letting later errors mask it.
+
+changes in v13:
+1. Fix the lock release issue on the error path to prevent potential
+   deadlock or resource leak.
+2. Add a func yt8824_restore_defaults() to restore configuration on
+   the error path,ensuring the hardware/device is left in a known
+   good state upon failure.
+
+changes in v12:
+1. Refactor the yt8824_read_status() function to ensure proper state
+   synchronization between hardware registers and the phy_device structure.
+
+changes in v11:
+1. Clean build_clang warning.
+
+changes in v10:
+1. Within the interface that swaps to the USXGMII reg space,the lock
+   include shared_lock and mdio mutex must remain held throughout 
+   the entire operation and should only be released after all steps
+   have completed.
+2. Improve the template interface in phy-c45.c
+3. Fix the handling of some failure paths.
+
+changes in v9:
+1. Add shared_lock mutex prevents UTPs from interfering with each other 
+   due to swapping reg space.
+
+change in v8:
+1. Clean up format warning.
+2. Fix exception handling code logic based on Sashiko/Gemini.
+3. Remove interrupt/handle function
+
+changes in v7:
+1. Refactor the using of mdio lock
+  In all cases of swapping to the USXGMII side interface, lock the MDIO bus
+  at the beginning, switch to the UTP address space after the operation is
+  completed, and then release the lock.The purpose of doing this is to
+  ensure that it will not affect other UTPs operating in the UTP address
+  space.
+2. Rename YT8824_RSSR_FIBER_SPACE to YT8824_RSSR_USXGMII_SPACE.
+
+changes in v6:
+1. Add  test mode helper in phy-c45.c
+2. Refactor the using of swapping paged for utp and fiber
+
+changes in v5:
+1. Fix diffs issue which caused by unexpected whitespace.
+2. Fix "exceeding 80 columns" warning.
+
+changes in v4:
+1. Remove motorcomm,yt8xxx.yaml, will update in other patch thread
+2. Fix locking issue. Since every interface requires switching of space, 
+   the bus is already locked during the space switching process in
+   phy_select_page(), other operations within the interface cannot 
+   be locked again before unlock in phy_restore_page().
+3. Fix warning log identified during the inspection process using
+   checkpatch.pl.
+4. Fix the way of using common api in phy_package.c
 
 
-On 10/1/26 9:32 PM, Lucero Palau, Alejandro wrote:
-> 
-> On 01/10/2026 21:31, Dave Jiang wrote:
->>
->> On 10/1/26 6:20 AM, alucerop@amd.com wrote:
->>> From: Alejandro Lucero <alucerop@amd.com>
->>>
->>> PM initialization could not be necessary for some devices.
->>>
->>> Avoid checking for supplier PM initialization if so.
->>>
->>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->>> ---
->>>   drivers/base/core.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/base/core.c b/drivers/base/core.c
->>> index 4c0c373998a1..bf0513beafad 100644
->>> --- a/drivers/base/core.c
->>> +++ b/drivers/base/core.c
->>> @@ -840,7 +840,7 @@ struct device_link *device_link_add(struct device *consumer,
->>>        * SYNC_STATE_ONLY link, we don't check for reverse dependencies
->>>        * because it only affects sync_state() callbacks.
->>>        */
->>> -    if (!device_pm_initialized(supplier)
->>> +    if ((!device_pm_not_required(supplier) && !device_pm_initialized(supplier))
->>>           || (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
->>>             device_is_dependent(consumer, supplier))) {
->>>           link = NULL;
->> A no PM supplier can now be linked at any point: before device_add(), while it fails, or after device_del(). Maybe replace with a helper like this?
-> 
-> 
-> I would say you can not use a device as supplier before device_add() happens for such a supplier, and if it does happen after device_del(), something is wrong with the caller.
+changes in v3:
+1. Using common apis defined in phy_package.c to handle shared top
+extend register space.
+2. Add dts demo in motorcomm,yt8xxx.yaml.
+3. Fix unnecessary redundant judgments.
+4. Fix BMCR registers operation using magic number.
+5. Rename function based on its approximate functionality.
 
-Yes that would be a bug, and device_link_add() is suppose to catch it. For PM devices, the device_pm_initialized() test is the gate. The change you made skips that test for no PM device case. I had LLM created a test module for verification, attached.
+changes in v2:
+1. Remove duplicate code and replace it with existing api.
 
-Essentially the logic in this patch removed the check for 2 states that the original code used to block.
-1. before device_add(supplier)
-2. after device_del(supplier) 
+Kyle Switch (3):
+  dt-bindings: net: Document Motorcomm YT8824 PHY package
+  net: phy: Add support for Template Control register for PMA
+  net: phy: Add driver for Motorcomm Quad 2.5GbE phy
 
-> 
-> 
-> Your suggestion is likely making the code more legible, but it does not change the functionality I added. Does it? Not saying it would not help, but I can not understand your comment for suggesting it which seems to point to potential problems I did not see.
-> 
+ .../bindings/net/motorcomm,yt8824.yaml        |   78 +
+ MAINTAINERS                                   |    2 +
+ drivers/net/phy/Kconfig                       |    3 +-
+ drivers/net/phy/motorcomm.c                   | 1926 ++++++++++++++++-
+ drivers/net/phy/phy-c45.c                     |   23 +
+ include/linux/phy.h                           |    1 +
+ include/uapi/linux/mdio.h                     |   12 +
+ 7 files changed, 2042 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
 
-It does.
-- before device_add(supplier): this patch creates the link, and the helper refuses it.
-- after device_add(supplier): both create it.
-- after device_del(supplier), before last put_device: this patch creates the link, and the helper refuses it.
+-- 
+2.25.1
 
-delete_region() or root decoder teardown can unregister the region while the endpoint is still bound. cxl_get_range_and_link() can still be called on a region that has already been through device_del().
-
-Without the helper, it's possible where the PFx driver can device_link_add() a deleted region that is still around due to endpoint still holds a reference.
-
-DJ
-
-
-> 
->> static bool device_link_supplier_ready(struct device *supplier)
->> {
->>        /* no PM devices never enter dpm_list, so check registration directly */
->>        if (device_pm_not_required(supplier))
->>                return device_is_registered(supplier);
->>
->>        return device_pm_initialized(supplier);
->> }
->>
->> ...
->>
->>        if (!device_link_supplier_ready(supplier) ||
->>            (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
->>             device_is_dependent(consumer, supplier))) {
->>                link = NULL;
->>                goto out;
->>        }
-
---------------lW9kp0c0SlE0q00cmPWrJACh
-Content-Type: text/x-patch; charset=UTF-8; name="mock-pfx.patch"
-Content-Disposition: attachment; filename="mock-pfx.patch"
-Content-Transfer-Encoding: base64
-
-Y29tbWl0IDA1NTFlOTFlNjNjNjAwOWI3MTc5MjEzM2UwZWYwY2ZmMWMwYWY2ZGQKQXV0aG9y
-OiBEYXZlIEppYW5nIDxkYXZlLmppYW5nQGludGVsLmNvbT4KRGF0ZTogICBUaHUgT2N0IDEg
-MTQ6MTM6MTkgMjAyNiAtMDcwMAoKICAgIFRFU1QgT05MWTogY3hsL3Rlc3Q6IG1vY2sgbm9u
-LVBGMCBjb25zdW1lciBmb3IgY3hsX2dldF9yYW5nZV9hbmRfbGluaygpCiAgICAKICAgIE5v
-dCBmb3Igc3VibWlzc2lvbi4gRXhlcmNpc2VzIHRoZSBtdWx0aS1QRiBkZXZpY2UtbGluayBw
-YXRoIGFnYWluc3QgdGhlCiAgICBjeGxfdGVzdCB0eXBlLTIgYWNjZWxlcmF0b3IsIGFuZCBz
-ZWxmLXRlc3RzIGRldmljZV9saW5rX2FkZCgpIG9uIGEgbm9fcG0KICAgIHN1cHBsaWVyIGFj
-cm9zcyByZWdpc3RyYXRpb24uCgpkaWZmIC0tZ2l0IGEvdG9vbHMvdGVzdGluZy9jeGwvdGVz
-dC9LYnVpbGQgYi90b29scy90ZXN0aW5nL2N4bC90ZXN0L0tidWlsZAppbmRleCA5YTI0ZGRj
-Mjg0ODguLjI3OWQ4OWJlNGE0ZCAxMDA2NDQKLS0tIGEvdG9vbHMvdGVzdGluZy9jeGwvdGVz
-dC9LYnVpbGQKKysrIGIvdG9vbHMvdGVzdGluZy9jeGwvdGVzdC9LYnVpbGQKQEAgLTYsMTEg
-KzYsMTMgQEAgb2JqLW0gKz0gY3hsX21vY2subwogb2JqLW0gKz0gY3hsX21vY2tfbWVtLm8K
-IG9iai1tICs9IGN4bF90cmFuc2xhdGUubwogb2JqLW0gKz0gY3hsX21vY2tfYWNjZWwubwor
-b2JqLW0gKz0gY3hsX21vY2tfcGZ4Lm8KIAogY3hsX3Rlc3QteSA6PSBjeGwubwogY3hsX3Rl
-c3QteSArPSBobWVtX3Rlc3QubwogY3hsX21vY2steSA6PSBtb2NrLm8KIGN4bF9tb2NrX21l
-bS15IDo9IG1lbS5vCiBjeGxfbW9ja19hY2NlbC15IDo9IGFjY2VsLm8KK2N4bF9tb2NrX3Bm
-eC15IDo9IHBmeC5vCiAKIEtCVUlMRF9DRkxBR1MgOj0gJChmaWx0ZXItb3V0IC1XbWlzc2lu
-Zy1wcm90b3R5cGVzIC1XbWlzc2luZy1kZWNsYXJhdGlvbnMsICQoS0JVSUxEX0NGTEFHUykp
-CmRpZmYgLS1naXQgYS90b29scy90ZXN0aW5nL2N4bC90ZXN0L3BmeC5jIGIvdG9vbHMvdGVz
-dGluZy9jeGwvdGVzdC9wZnguYwpuZXcgZmlsZSBtb2RlIDEwMDY0NAppbmRleCAwMDAwMDAw
-MDAwMDAuLjU1Yjc1MmViZTljYQotLS0gL2Rldi9udWxsCisrKyBiL3Rvb2xzL3Rlc3Rpbmcv
-Y3hsL3Rlc3QvcGZ4LmMKQEAgLTAsMCArMSwxMzQgQEAKKy8vIFNQRFgtTGljZW5zZS1JZGVu
-dGlmaWVyOiBHUEwtMi4wLW9ubHkKKy8qCisgKiBURVNUIE9OTFk6IG1vY2sgbm9uLVBGMCBj
-b25zdW1lci4gSXRzIHByb2JlIGxpbmtzIHRvIHRoZSByZWdpb24gYXR0YWNoZWQKKyAqIHRv
-IHRoZSBjeGxfdGVzdCB0eXBlLTIgYWNjZWxlcmF0b3IgdmlhIGN4bF9nZXRfcmFuZ2VfYW5k
-X2xpbmsoKS4KKyAqLworCisjaW5jbHVkZSA8bGludXgvcGxhdGZvcm1fZGV2aWNlLmg+Cisj
-aW5jbHVkZSA8bGludXgvbW9kdWxlLmg+CisjaW5jbHVkZSA8bGludXgvc2xhYi5oPgorI2lu
-Y2x1ZGUgPGN4bC9jeGwuaD4KKworc3RhdGljIGNoYXIgKnBmMF9uYW1lID0gImN4bF90eXBl
-Ml9hY2NlbC4wIjsKK21vZHVsZV9wYXJhbShwZjBfbmFtZSwgY2hhcnAsIDA0NDQpOworCitz
-dGF0aWMgc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGZ4X3BkZXY7CisKK3N0YXRpYyBpbnQg
-Y3hsX21vY2tfcGZ4X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCit7CisJ
-c3RydWN0IGRldmljZSAqcGYwOworCXN0cnVjdCByYW5nZSByYW5nZTsKKwlpbnQgcmM7CisK
-KwlwZjAgPSBidXNfZmluZF9kZXZpY2VfYnlfbmFtZSgmcGxhdGZvcm1fYnVzX3R5cGUsIE5V
-TEwsIHBmMF9uYW1lKTsKKwlpZiAoIXBmMCkgeworCQlkZXZfaW5mbygmcGRldi0+ZGV2LCAi
-cGZ4X3Rlc3Q6ICVzIG5vdCBmb3VuZFxuIiwgcGYwX25hbWUpOworCQlyZXR1cm4gLUVOT0RF
-VjsKKwl9CisKKwlyYyA9IGN4bF9nZXRfcmFuZ2VfYW5kX2xpbmsocGYwLCAmcGRldi0+ZGV2
-LCAmcmFuZ2UpOworCXB1dF9kZXZpY2UocGYwKTsKKwlpZiAocmMpIHsKKwkJZGV2X2luZm8o
-JnBkZXYtPmRldiwgInBmeF90ZXN0OiBsaW5rIHJjPSVkXG4iLCByYyk7CisJCS8qIGRvbid0
-IGxldCAtRVBST0JFX0RFRkVSIHJlcXVldWUgdXMgYmVoaW5kIHRoZSB0ZXN0J3MgYmFjayAq
-LworCQlyZXR1cm4gcmMgPT0gLUVQUk9CRV9ERUZFUiA/IC1FQUdBSU4gOiByYzsKKwl9CisK
-KwlkZXZfaW5mbygmcGRldi0+ZGV2LCAicGZ4X3Rlc3Q6IGxpbmsgcmM9MCByYW5nZT0lcHJh
-XG4iLCAmcmFuZ2UpOworCXJldHVybiAwOworfQorCitzdGF0aWMgdm9pZCBjeGxfbW9ja19w
-ZnhfcmVtb3ZlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCit7CisJZGV2X2luZm8o
-JnBkZXYtPmRldiwgInBmeF90ZXN0OiByZW1vdmVkXG4iKTsKK30KKworc3RhdGljIHN0cnVj
-dCBwbGF0Zm9ybV9kcml2ZXIgY3hsX21vY2tfcGZ4X2RyaXZlciA9IHsKKwkucHJvYmUgPSBj
-eGxfbW9ja19wZnhfcHJvYmUsCisJLnJlbW92ZSA9IGN4bF9tb2NrX3BmeF9yZW1vdmUsCisJ
-LmRyaXZlciA9IHsKKwkJLm5hbWUgPSAiY3hsX21vY2tfcGZ4IiwKKwl9LAorfTsKKworc3Rh
-dGljIHZvaWQgZGV2X3JlbGVhc2Uoc3RydWN0IGRldmljZSAqZGV2KQoreworCWtmcmVlKGRl
-dik7Cit9CisKKy8qIGRldmljZV9saW5rX2FkZCgpIG11c3QgcmVmdXNlIGEgbm9fcG0gc3Vw
-cGxpZXIgdGhhdCBpcyBub3QgcmVnaXN0ZXJlZCAqLworc3RhdGljIHZvaWQgZGV2bGlua19u
-b19wbV9zZWxmdGVzdChzdHJ1Y3QgZGV2aWNlICpjb25zdW1lcikKK3sKKwlzdHJ1Y3QgZGV2
-aWNlX2xpbmsgKmxpbms7CisJc3RydWN0IGRldmljZSAqc3VwOworCWludCBwYXNzID0gMDsK
-KworCXN1cCA9IGt6YWxsb2Nfb2JqKCpzdXApOworCWlmICghc3VwKQorCQlyZXR1cm47CisJ
-ZGV2aWNlX2luaXRpYWxpemUoc3VwKTsKKwlzdXAtPnJlbGVhc2UgPSBkZXZfcmVsZWFzZTsK
-KwlkZXZpY2Vfc2V0X3BtX25vdF9yZXF1aXJlZChzdXApOworCWRldl9zZXRfbmFtZShzdXAs
-ICJwZnhfdGVzdF9zdXBwbGllciIpOworCisJbGluayA9IGRldmljZV9saW5rX2FkZChjb25z
-dW1lciwgc3VwLCBETF9GTEFHX1NUQVRFTEVTUyk7CisJcHJfaW5mbygicGZ4X3Rlc3Q6IG5v
-X3BtIGJlZm9yZSBkZXZpY2VfYWRkOiBsaW5rICVzXG4iLAorCQlsaW5rID8gIkNSRUFURUQg
-KEZBSUwpIiA6ICJyZWZ1c2VkIChQQVNTKSIpOworCWlmIChsaW5rKQorCQlkZXZpY2VfbGlu
-a19kZWwobGluayk7CisJZWxzZQorCQlwYXNzKys7CisKKwlpZiAoZGV2aWNlX2FkZChzdXAp
-KSB7CisJCXB1dF9kZXZpY2Uoc3VwKTsKKwkJcmV0dXJuOworCX0KKworCWxpbmsgPSBkZXZp
-Y2VfbGlua19hZGQoY29uc3VtZXIsIHN1cCwgRExfRkxBR19TVEFURUxFU1MpOworCXByX2lu
-Zm8oInBmeF90ZXN0OiBub19wbSBhZnRlciBkZXZpY2VfYWRkOiBsaW5rICVzXG4iLAorCQls
-aW5rID8gImNyZWF0ZWQgKFBBU1MpIiA6ICJSRUZVU0VEIChGQUlMKSIpOworCWlmIChsaW5r
-KSB7CisJCWRldmljZV9saW5rX2RlbChsaW5rKTsKKwkJcGFzcysrOworCX0KKworCWRldmlj
-ZV9kZWwoc3VwKTsKKwlsaW5rID0gZGV2aWNlX2xpbmtfYWRkKGNvbnN1bWVyLCBzdXAsIERM
-X0ZMQUdfU1RBVEVMRVNTKTsKKwlwcl9pbmZvKCJwZnhfdGVzdDogbm9fcG0gYWZ0ZXIgZGV2
-aWNlX2RlbDogbGluayAlc1xuIiwKKwkJbGluayA/ICJDUkVBVEVEIChGQUlMKSIgOiAicmVm
-dXNlZCAoUEFTUykiKTsKKwlpZiAobGluaykKKwkJZGV2aWNlX2xpbmtfZGVsKGxpbmspOwor
-CWVsc2UKKwkJcGFzcysrOworCisJcHV0X2RldmljZShzdXApOworCXByX2luZm8oInBmeF90
-ZXN0OiBub19wbSBzZWxmdGVzdCAlZC8zIHBhc3NlZFxuIiwgcGFzcyk7Cit9CisKK3N0YXRp
-YyBpbnQgX19pbml0IGN4bF9tb2NrX3BmeF9pbml0KHZvaWQpCit7CisJaW50IHJjOworCisJ
-cGZ4X3BkZXYgPSBwbGF0Zm9ybV9kZXZpY2VfcmVnaXN0ZXJfc2ltcGxlKCJjeGxfbW9ja19w
-ZngiLCAxLCBOVUxMLCAwKTsKKwlpZiAoSVNfRVJSKHBmeF9wZGV2KSkKKwkJcmV0dXJuIFBU
-Ul9FUlIocGZ4X3BkZXYpOworCisJZGV2bGlua19ub19wbV9zZWxmdGVzdCgmcGZ4X3BkZXYt
-PmRldik7CisKKwlyYyA9IHBsYXRmb3JtX2RyaXZlcl9yZWdpc3RlcigmY3hsX21vY2tfcGZ4
-X2RyaXZlcik7CisJaWYgKHJjKQorCQlwbGF0Zm9ybV9kZXZpY2VfdW5yZWdpc3RlcihwZnhf
-cGRldik7CisJcmV0dXJuIHJjOworfQorbW9kdWxlX2luaXQoY3hsX21vY2tfcGZ4X2luaXQp
-OworCitzdGF0aWMgdm9pZCBfX2V4aXQgY3hsX21vY2tfcGZ4X2V4aXQodm9pZCkKK3sKKwlw
-bGF0Zm9ybV9kcml2ZXJfdW5yZWdpc3RlcigmY3hsX21vY2tfcGZ4X2RyaXZlcik7CisJcGxh
-dGZvcm1fZGV2aWNlX3VucmVnaXN0ZXIocGZ4X3BkZXYpOworfQorbW9kdWxlX2V4aXQoY3hs
-X21vY2tfcGZ4X2V4aXQpOworCitNT0RVTEVfTElDRU5TRSgiR1BMIik7CitNT0RVTEVfREVT
-Q1JJUFRJT04oImN4bF90ZXN0OiBURVNUIE9OTFkgbW9jayBub24tUEYwIGNvbnN1bWVyIik7
-CitNT0RVTEVfSU1QT1JUX05TKCJDWEwiKTsK
-
---------------lW9kp0c0SlE0q00cmPWrJACh--
