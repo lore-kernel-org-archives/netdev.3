@@ -1,82 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A5825B0BE;
-	Fri,  2 Oct 2026 00:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0891A2DB788
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 00:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790902208; cv=none; b=RJ9xnzreGIVd36EEMUBnMNCpFr91hVorACssIFyhHMkeISTgUNyQ2uMNm/yJCj/LH1aC/ZzpgcM6905rsrUM2qYKkcv24nSYPRw+8/PtvIOrpk1nYuFEqP8VRuRkO3aq8ylEcl84qC21aVa/mx0d2QBrJCBVc+5eFI2W3bqKmCs=
+	t=1790902252; cv=none; b=ZzuUZvhDzJhnkLPKtw+l0X0pDmAxfEU8ixMrwN/0zx0+m4yNkTrH+StpLBZo5zq1PPSj6Ub3QAsIoapTJ5Bp6Ts3PzqAwMNxTSfwrNhsw+YB/NjzOQwz7W/dfJ0PLzN4fhBBwfM0Ii+FRnAncQLUy8QSOcP9qFmjEIENBYpWCfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790902208; c=relaxed/simple;
-	bh=9xs3qkGea8qURLkJk9KUYWiVNtITyCBNoxjUQEJGdu8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=a9bFzbfJNHlbe9ekARwNkPFy1tNCQT+qRiFZ2g7U8V/nmIIPSlD76tLnknpmeKahPuPjH+uujmhY7VtaiWYjOc9Xy+F9J6kxgF3/t+3QkBzCOhTARChGOCQrJdoTtbJzRcY5ZgaIuq+71+QV54SNJ9nKvQlCqIxE48U/Ap/Mvkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLe2Sw2e; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790902252; c=relaxed/simple;
+	bh=+Owkm29q/2YMglS8KaoH988fxptgi7KNs9wseSGRAys=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ch5Ly/zj8DLlmkEJm2cB+eI9Zk0+ia1+ND2eEZqx9Kc85nLQVyWC5JejtqtYu6wO5Gqb7N841y31Pfl2WjFjw6AjKe5KakugxFye3F3l9g3AvsMd1j00weXnGhiVmxjFEFldnnxMNDGwEiZutEO64Vq6F4ykl+Rlnkl0vrO9x8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCGmYDtk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLe2Sw2e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817671F00893;
-	Fri,  2 Oct 2026 00:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCGmYDtk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523701F000FF;
+	Fri,  2 Oct 2026 00:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790902207;
-	bh=r2xlnrCag4DQX7J0+zPzOWChOgZMLUFMsCfYWdRoU90=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XLe2Sw2eSl2uLDueQVOZAMvsc2NddsUPh4KkDUsm8Dh+dSbuGF0f8fXRWZtw+iPIB
-	 WPZ2E2wVj2Il7+fdFGywVsS8Rbth7Hm12rDxFnhJlX+KqYhdNrCwhDSuDEHB6X4Q+m
-	 WjaNe/J2daZ7LJ1d7mIxx+Sg1Z/m//4E/9FVpwovtNiD9AdojEYjtrb61c3nHI8WeO
-	 LJpAFqlTjjMBeL962cr3N8bpKNfyVrYPDRuTtIPgOGspyA/YzRP4aawPQKzEQgPjdL
-	 UM+4Lo9Rv/NXK3em6AKYcm8LjfZTVYKePsndSTlsSsONRhwuOJPM3YEuV86hGPFL1z
-	 7cuRf88ScPZtA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 772B9381197C;
-	Fri,  2 Oct 2026 00:50:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1790902250;
+	bh=YflJ4aikgZ46Gz+HouBU0ClKajGwdVl4FQszISMveAQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=SCGmYDtkBaVzPbxy7DJNyIVy3OX0rEQkJ3KWwryEVzccyuK5bzx3ZKqnXd/hz6MCC
+	 X/nZgxxD9bFpx8N64F58hCG9355zWxpCDXZiFdIUZCFmNv2Z76Ppk6eC43ClAL8I3K
+	 FxpTC0q5ft8LDeK8ujgC+eEvl0Xpyw0odUhCoz1KmYNa6MDVzXUk0ibY6GMy75OXQ7
+	 HZX54p4JHJ22cjsnS1rXcZZUWHzBk6hJ0130yfSrxFSRrMKbWlcuVTHABXQ9GDm48C
+	 G41Z0moE+PrMDS/XEHkjMCXZgN53wfdjzVwCLjz2pYg+ehI3FjA58iMuHuaxhb2TrZ
+	 WapcaKTa07U0Q==
+Date: Thu, 1 Oct 2026 17:50:49 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Victor Nogueira
+ <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>, Toke =?UTF-8?B?SMO4?=
+ =?UTF-8?B?aWxhbmQtSsO4cmdlbnNlbg==?= <toke@toke.dk>, moeller0@gmx.de,
+ cake@lists.bufferbloat.net, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net-next v3] net/sched: cap the accounted backlog before
+ it can wrap
+Message-ID: <20261001175049.05faa751@kernel.org>
+In-Reply-To: <QDISC-BA27.v3.20260929142417@mojatatu.com>
+References: <QDISC-BA27.v3.20260929142417@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: octeontx2-af: quiesce devlink health work on
- teardown
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179090220617.3161824.3912138082480407859.git-patchwork-notify@kernel.org>
-Date: Fri, 02 Oct 2026 00:50:06 +0000
-References: <20260928134129.145-1-getshell@seu.edu.cn>
-In-Reply-To: <20260928134129.145-1-getshell@seu.edu.cn>
-To: Hongyan Xu <getshell@seu.edu.cn>
-Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, jianhao.xu@seu.edu.cn
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 29 Sep 2026 14:33:32 -0400 Jamal Hadi Salim wrote:
+> A crafted tc size table (TC_STAB) inflates qdisc_pkt_len() up to
+> QDISC_PKT_LEN_MAX (1 MiB),
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 28 Sep 2026 21:41:29 +0800 you wrote:
-> NPA and NIX interrupt handlers queue health-reporting work whose
-> containers are freed by rvu_health_reporters_destroy(). Interrupt
-> unregistration does not drain queued work. In addition, each reporter
-> setup creates a workqueue in the same field, leaking the NPA queue and
-> leaving no teardown handle for work queued on it.
-> 
-> Initialize work before later allocations can fail, share one workqueue,
-> unregister each set of interrupts, and cancel its work before freeing
-> the reporters. Destroy the shared workqueue once both reporter sets are
-> gone.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] net: octeontx2-af: quiesce devlink health work on teardown
-    https://git.kernel.org/netdev/net-next/c/1b7bc043cd1b
-
-You are awesome, thank you!
+IIRC Eric was pushing back on this as silly, which I'd agree with.
+Not sure where the conversation ended. But anyway, AI found some bugs,
+so..
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
