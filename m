@@ -1,112 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40AE3BD246;
-	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67804457BB;
+	Fri,  2 Oct 2026 23:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790981977; cv=none; b=hJnUdV36lVNB8N7XSznnCxWqo+k6x5J3EQ1r3mKPUxiYwtXwycjHA4JKtrwySJ4WVKTg3uUMsgH9ugQ3pCVt6l3HOfGqOOY9DVbZGc4vzolLMy5wwteEoYyzd2wrgQUKcLlyH9Cc+L23gqmqZfkDvJEHNAXd6HQuxLttovCnu4c=
+	t=1790982320; cv=none; b=LredPuasNGR+2d2rc2UUgnX9nMHuvpH69YcYAPKgSXoSllrHkFa+9cjtQbjb4ozVCmhxQioj8zcPqb48hcRWVRgLq77N76WVrrMGAsHWpG90eX+NTwH/IgVPPL81ErW4cOaMomnfR2NipKNC9O+VQVzh7lj4whma/VWOAKb98ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790981977; c=relaxed/simple;
-	bh=bE7Zl9IWk+uckl2YZcLFCtuyK3VF7pTM6/ugeaNjLv4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EnxRQDhvldRkOuEZ0z8dCCl2ItvjJsyb3LQSFxRLeX8KlvadJD7wVORwNfpy8ZtAm9/QihYzH6leQTDVKuatu6BYLKuCY2UmVU44kOcOb0mTp4GS1V9C9P8gDJDjlz0KGcVX3V71heer1YHu5ssLZeo0WVrd11E0yvTykA/V2EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNfHSg1U; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790982320; c=relaxed/simple;
+	bh=i5oaNHGAdkb0zqCN6vN8AE/+biKxEA0YIbi3B89FKZI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=h/LpAfnhxC5yhJHrIuDgLJEQikEpuKSIXfm2GKaKXznxo0KJDciiI5itGo10g4IFQSJFODeaf382/SQt3LcMK036KIhAoBSOzPAuvEclaxlsbm+gsOfJ+eU/pNvz18ypfp1T/Xci9B+Y4gvcQS0HmZxJXxFNh8MgOnBo0+YMns4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=Cxr4xlH9; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNfHSg1U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662DD1F000FF;
-	Fri,  2 Oct 2026 22:59:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790981975;
-	bh=JJBZoitWEBQrTY8FcV1qjmfA5wNk/u7NZng6rYh3IJw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HNfHSg1Uf8VJletd/R2fu339SQf15SzodVIk+PgQjnibCGWW0FKaGqCJtTB9CsNHH
-	 6ZUjgPXjwhCfn0EGwOSXZnhmp45GPc+8mBA4KIzr/toF9NifDgEMbBmB4wpIm6Wuoy
-	 PGDxN8NS97pBFrWQT9d7hKP5mkCXJblmyL+hkEVaPn1KH1+pekc/czSzjfNxTn5i4w
-	 2Iq0tz+X5nmVOxpuWhDIPmemZAOT9ihSSeBT885X0ojH1LJGqvnzh7JC6JlgbypVQl
-	 HfjwRzYoVzwUGjpamhY/kQ/PSG3PTNTaVZ5goiedFc9jkBzMgkMLorUjrNGTzbdTns
-	 xrxKXyue6TwAw==
-Date: Fri, 2 Oct 2026 15:59:35 -0700
-From: Kees Cook <kees@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>, netdev@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org, Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 7/7] net: skb: isolate skb data area allocations into
- a separate bucket
-Message-ID: <202610021554.58F5CBB8@keescook>
-References: <20260921075811.too.775-kees@kernel.org>
- <20260921075820.1718334-7-kees@kernel.org>
- <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="Cxr4xlH9"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 4903922277;
+	Sat, 03 Oct 2026 02:05:05 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=0M1881/c6mUJyC89j1F2p8RwIeN5doM9DJaf/EAF91o=; b=Cxr4xlH9glGc
+	7AtghnLdMSJAUxvhED7oIuGpxbjmHizc8esUgqXtWdxXzCE44/ag8zTNBXW9Q4jD
+	XtHCYDbQjA+JE3Xg8j9B28DscyBSD/LLdqkptZYVkON8bvffc/WvWSY3Awrf8NKz
+	ZanXMH16aWN5U68da/ylCugs7BjkowtJvP/Pwd27y7n4F+oNc9n/rDaNkKn9l9fF
+	uhUa/7VRTdIwMpgRO89RSDDbUFgcdVNp8k0f47e4JOEiK9l457twwKA8B0AJXEC+
+	RBocqm08ynO/HCRe78IKNy8nKvtZwE7lFv1/R59iAlQdgXGn1Jb89DRYgzt0cIQv
+	Zqzx5fI2rGdJOTa7yUxpRAxAKN+QAeX3FyuJxLKfJ0RJ08gP5PgbkzaUM8IXn41B
+	ZWnE3RwIdDy6KHCg45ZINMafhIilzMB5Y/4gC8H0PQNhaJgjs9BxVIBY5WmRqfmF
+	10glUhQGm7bX9Viw9fOpyStU8GQsRD2uixPGn8EfsaeiI4m38/bzCpPtgcBW/h05
+	9xsR4sSynTmI3uRtnPo+oqhFL7P6HwQWRL1AxgBwJwM26j/4UileVm/FSAw7Kole
+	Vo0ZR/unPw2zDCHU8gZBZh+hYhuWzx2p4Ch1qouMu3pXF3AShLiVhPv6qd685yh0
+	py0jE8dV3jIhvS4EAAf04HibO32G+2c=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Sat, 03 Oct 2026 02:05:05 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id BFD8F60B9C;
+	Sat,  3 Oct 2026 02:05:05 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 692N4pow088259;
+	Sat, 3 Oct 2026 02:04:52 +0300
+Date: Sat, 3 Oct 2026 02:04:51 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Axel Mierczuk <axel.mierczuk@1password.com>
+cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+        netfilter-devel@vger.kernel.org, lvs-devel@vger.kernel.org,
+        coreteam@netfilter.org, netdev@vger.kernel.org,
+        Willy Tarreau <w@1wt.eu>, Keith Hoodlet <keith.hoodlet@1password.com>
+Subject: Re: [PATCH nf 0/2] ipvs: keep templates and cport 0 conns away from
+ packet lookups
+In-Reply-To: <CALb1hrnMJGj5ePZSB89ZW0Uv_oNpepeqgAmGcZxRsLyv64HOYA@mail.gmail.com>
+Message-ID: <f87eab0c-253a-2d5d-d2e6-f4fb691c9813@ssi.bg>
+References: <20260925141115.16126-1-axel.mierczuk@1password.com> <002e2c69-ae17-4321-ba3d-74cca0e57123@ssi.bg> <CALb1hrnMJGj5ePZSB89ZW0Uv_oNpepeqgAmGcZxRsLyv64HOYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8862b9ed-6f96-48c6-a134-6e8635c38987@redhat.com>
+Content-Type: multipart/mixed; boundary="-1463811672-247436806-1790982298=:44495"
 
-On Sun, Sep 27, 2026 at 10:24:16AM +0200, Paolo Abeni wrote:
-> On 9/21/26 09:58, Kees Cook wrote:
-> > From: Pedro Falcato <pfalcato@suse.de>
-> > 
-> > SKB data area allocations (as done from alloc_skb()) use kmalloc().
-> > These allocations can be variably sized and their contents can be more
-> > or less controlled from userspace, which makes them useful for attackers
-> > that want to overwrite a use-after-free'd object from the same kmalloc slab
-> > (which often just requires the sizes to roughly match into the same kmalloc
-> > bucket). [0] is an easy example of an exploit that uses netlink skb
-> > allocation to target another similarly-sized accidentally freed object.
-> > 
-> > While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
-> > probabilistic. Use the existing kmem buckets API to further isolate these
-> > allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
-> > 
-> > Ask for the accounted kmalloc type as well as the normal one. AF_UNIX
-> > sets sk_allocation to GFP_KERNEL_ACCOUNT, so without it every AF_UNIX
-> > skb data area would fall back to the general caches, and those are the
-> > ones most worth isolating. GFP_DMA is left to fall back, being passed to
-> > an skb allocator only by rare devices.
-> > 
-> > Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
-> > Reviewed-by: Kees Cook <kees@kernel.org>
-> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+---1463811672-247436806-1790982298=:44495
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+
+	Hi Axel,
+
+On Wed, 30 Sep 2026, Axel Mierczuk wrote:
+
+> Hi Julian,
 > 
-> I would be curious to learn how about the memory usage delta.
-> However I see buckets are protected by their own kconfig, small
-> systems can unselect them.
-
-Correct. But here's the delta for a 1 node NUMA with memcg, which is
-dominated by sysfs. 26 caches (13 normal and 13 memcg):
-
-  sysfs, 26 caches                                          113,152
-  struct kmem_cache, 26                                       6,656
-  kmem_cache_node, 26                                         1,664
-  node_barn, 26                                               1,664
-  names, 26                                                   1,248
-  the set itself, 2 rows � 14 pointers in kmalloc_buckets       224
-  per-CPU sheaf structs                                 CPUSx x 832
-
-> For the networking bits:
+> Sounds good. I will take a look as well and get back to you.
 > 
-> Acked-by: Paolo Abeni <pabeni@redhat.com>
+> On Tue, Sep 29, 2026 at 2:29 PM Julian Anastasov <ja@ssi.bg> wrote:
+> 
+>               Hello,
+> 
+>       On Fri, 25 Sep 2026, Axel Mierczuk wrote:
+> 
+>       > A template received over the unauthenticated sync protocol with a
+>       > nonzero cport is matched by data packets in ip_vs_conn_in_get() and
+>       > the protocol state machine runs on it. Patch 1 rejects sync records
+>       > with inconsistent cport and IP_VS_CONN_F_NO_CPORT combinations on
+>       > the backup.
+>       >
+>       > Patch 2 requires a nonzero cp->cport in ip_vs_conn_out_get() so that
+>       > templates and connections still waiting for their cport cannot be
+>       > matched through the out hook.
+>       >
+>       > The companion patch "ipvs: filter some flags received in the backup
+>       > server" rejects template records carrying IP_VS_CONN_F_NO_CPORT.
+>       >
+>       > Axel Mierczuk (2):
+>       >   ipvs: validate cport in received sync records
+>       >   ipvs: skip cport 0 connections in ip_vs_conn_out_get()
+>       >
+>       >  net/netfilter/ipvs/ip_vs_conn.c |  3 ++-
+>       >  net/netfilter/ipvs/ip_vs_sync.c | 19 +++++++++++++++++++
+>       >  2 files changed, 21 insertions(+), 1 deletion(-)
+> 
+>               Axel, this Sashiko review is shattering:
+> 
+>       https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925141115.16126-1-axel.mierczuk%401password.com
+> 
+>               I'll be back with analyze how should we fix the
+>       problems...
 
-Thanks!
+	Here is what we have for the Sashiko review:
 
--- 
-Kees Cook
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260925141115.16126-1-axel.mierczuk%401password.com
+
+Patch 1:
+
+Q. Should the template branch also reject IP_VS_CONN_F_NO_CPORT?
+A. Fixed by "ipvs: filter some flags received in the backup server"
+which is already in the trees
+
+Q. Can the master itself briefly send a record with a nonzero cport and
+IP_VS_CONN_F_NO_CPORT still set?
+A. Harmless
+
+	So, nothing that needs to change the patch.
+
+Patch 2:
+
+Q1. Does this make the "update or create" lookup in ip_vs_ftp_out() in
+net/netfilter/ipvs/ip_vs_ftp.c unreachable?
+A. Looks like we need the same check in ip_vs_conn_out_get:
+
+We should use:
+	(!p->vport ^ (!(cp->flags & IP_VS_CONN_F_NO_CPORT)))
+
+instead of the wrong cp->cport check.
+
+	Using p->vport and not re-reading cp->cport above due to
+tricks in ip_vs_conn_fill_cport(), see Q4 below.
+
+Q2. Can this lead to a new connection being created for every packet of a
+flow started by a real server towards client port 0?
+A. I can provide patch to ignore packets with port 0.
+
+Q3. The commit message assumes that only templates and NO_CPORT entries have
+cport 0. Does that hold for ordinary MASQ connections scheduled for a
+client that uses source port 0?
+A. I can provide patch to ignore packets with port 0.
+
+Q4. Can the two separate plain reads of cp->cport in ip_vs_conn_out_get()
+see different values?
+A. We can check p->vport, see Q1
+
+Q5. TEMPLATE and NO_CPORT
+A. Fixed by "ipvs: filter some flags received in the backup server"
+which is already in the trees
+
+	There is the option to create 3th patch "validate vport and dport 
+in received sync records" in your patchset, so that such change can be 
+propagated together:
+
+	} else if (!param->vport) {
+		...
+	} else if (!dport &&
+		   (flags & IP_VS_CONN_F_FWD_MASK) == IP_VS_CONN_F_MASQ) {
+		...
+	}
+
+	Because it depends on your "ipvs: validate cport in received sync 
+records" patch. Such change will prevent sync messages to create
+connections with port 0 that can be later hit by packets with
+port 0. But may be such change is not needed.
+
+	I can provide a separate patch that will disallow connections
+with 0 in cp->cport/vport created from packets. It will not conflict
+with your changes.
+
+	After correcting the check in ip_vs_conn_out_get() lookup misses
+caused by client port 0 can lead to scheduling for every packet and 
+creating duplicate connections. The main thing is to isolate cport 0
+which for the backup server is already in your patch. The remaining part 
+is to filter it in the scheduler. OTOH, the vport/dport checks are
+just nice to have. The rule here is, if we do not match cport 0 when 
+NO_CPORT is not set, we should also not create connections with cport 0.
+As for the zero vport/dport, I'm not sure, they look harmless.
+What do you think?
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
+---1463811672-247436806-1790982298=:44495--
+
