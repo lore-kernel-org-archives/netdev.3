@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FF435E1B8;
-	Fri,  2 Oct 2026 03:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9A1360EC9;
+	Fri,  2 Oct 2026 03:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790912121; cv=none; b=OPJLBOc3KqYV+s5468Ikf4jHwFQeIP5pI3WB9JcR6qAsfqUbl4tRxWG7vw94mkh2G1kvxMr3nScg6FfGJ5RdNTcK/TXkrmeiu7C1gqSbmW6q2FCwTldISsgGLt0HlwudQ0h/TJgd7bG4W09g8VwjsKdCAnuccU3oNo8pMjWXZSU=
+	t=1790912121; cv=none; b=aq0zQpLWele35x9vfhYgE1nDXtu0NScaDnBbWYEs02CfYA46AM1xAeE8QFLnZzt39gvaujjOH5JTEetXgw7zLwdAh7LjwuvVenf2Wa0vuliYiBFo/kvLqfpa4pwXGAx+W9kZPLIEBFbBHfFRxjRrJsEyzd+U1gDQBAwmLHazfno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1790912121; c=relaxed/simple;
-	bh=k/Cd56kkgyKRtT4domImJUr3YG7zWaNV3L6l8q3Wpaw=;
+	bh=kQxEPa5E07gqsb1mmi3Jm2st33+zyWCpmb40UhuMGno=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mgCnYEFpjXHxNFiwAGIlEh5uojLsB33nGv5wY6eA67TVV/fKNu2XrGoDZVJN1Wz97EvIs/GeW/GHOHczlY+KNK/ing3ygj6gagyOqAguGdKRndQ5qMw+4B818BeSGzoFeq1iMkPtFIUUGthARJX3Zk0JBPeCL3Tn5sxMqesdAck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5HdzWfL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=CD+O3dyg2zKoCUlYp/eUsIFIZuEfZAOYLywtTkDBk1pC//ZZhhcbIQXweq3MOuS/GIb166ky7xK25nChgs/Y0GB9aZqgbp/Qf2dbkbeXsndoCJdNvW6IZCkcsEl6B6/MrLH75LfPbq1lxEq9/IWY+Ljn+HRjg2JGIgG8OmgCEmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeLJs+bd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5HdzWfL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC0B1F00898;
-	Fri,  2 Oct 2026 03:35:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeLJs+bd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B716B1F000FF;
+	Fri,  2 Oct 2026 03:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790912119;
-	bh=S5KwbT+y3NwsgzKkidZiQ9OGGHQzYVf8mBfHsrV6byM=;
+	s=k20260515; t=1790912120;
+	bh=Nnx5VwBBVGIAap/fKt1dWv7S2bkE64d1PQfmyTpSLk8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=g5HdzWfLyzCEvvy/4xFboWfn1i1E05isUteyrga3ZiICrd1neLlA0ruz5l50YLLAW
-	 EXosHuaPf8vTM+Cm6OHkvNOV3xKBw3VSbPdoqYQDro9kfyPJpmd033d7Oe6Th7/HcV
-	 c5LGvireoXX9+FA+V6ZaHAidaKpqhwEGLhxUXLNX5RTZqhDV08p4kSOgCD2cVYRFCb
-	 eBuRB0GToKZvq2L/r43Y7mwZeZaY3Syir4o9druJBv7fvwOGbQebFF4JX3FEmws9ID
-	 foAniKt5AIAOJH8LcTMcQSDAe6NNKQOmWw5bUuy4LjWw8A7rSrtaRtw8lPjWS5uz14
-	 Zdq4NTPmr9sdg==
-Subject: Re: [PATCH v30 net-next 6/8] net/nebula-matrix: dispatch: implement
- channel RPC framework and serialize hardware ops
+	b=GeLJs+bdP20AwUFouDiNbwWgfh2fFHEhYYbrsl3YLkno9PBMPENauf3yv3DXRLq/D
+	 SWlXTsY1AH5qZKul5KCei6I6FQ9T/wPYIV1TILntbXnQjBLK+blmx9617TkNg3zQol
+	 kp6Xv1I1bI2j9onN2k+2UxgqFsMcqk29BYoqOoYaFRNVo2dtrBvjjGf9pfP288jsOp
+	 eRty86wM4kJ5SlY8jC622oYoLXtaEkf3LzFBWeEknSZQ67+K73kGCBnWrlZMWAAcEI
+	 ZCrk2enxxuEm7VsdyX2bIVrqnkvG7DAH/PBPlaJLuWtnjZEWWHAkIrL63oebM+X+V5
+	 /8jFb/1frQ0Nw==
+Subject: Re: [PATCH v30 net-next 7/8] net/nebula-matrix: add common/ctrl dev
+ init/remove operation
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
  edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 02 Oct 2026 03:35:18 +0000
-Message-ID: <179091211823.434549.12932765831147789319@kernel.org>
-In-Reply-To: <20260928123237.88994-7-illusion.wang@nebula-matrix.com>
-References: <20260928123237.88994-7-illusion.wang@nebula-matrix.com>
+Date: Fri, 02 Oct 2026 03:35:19 +0000
+Message-ID: <179091211925.434549.7123730162166302836@kernel.org>
+In-Reply-To: <20260928123237.88994-8-illusion.wang@nebula-matrix.com>
+References: <20260928123237.88994-8-illusion.wang@nebula-matrix.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 4
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,242 +58,226 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message describes three changes that are not in
-  this patch.
-- [Low] The commit message contradicts the error codes the patch actually
-  returns.
-- [Low] Concern (baseline: not a valid finding at end of series):
-  nbl_disp_remove()'s new comment describes a teardown sequence that…
-- [Low] The new disp_mgt->ops_mutex_lock is redundant with the resource
-  layer's own locking, which contradicts the commit message's claim that…
-- [Low] Concern (baseline: not a valid finding):
-  nbl_disp_chan_cfg_msix_map_resp() passes the peer's num_net_msix and…
+- [Medium] The control-PF teardown and init added here rely on
+  nbl_probe_chip_deps() to guarantee that no sibling PF probes unless…
+- [Low] The commit message says 'The firmware handles global hardware
+  cleanup and QINFO routing state reclamation asynchronously after…
+- [Low] The new callers disagree with how nbl_chan_teardown_queue()
+  actually behaves.
+- [Low] Two comments on the same control-PF remove sequence contradict
+  each other.
 
 --
 
-net/nebula-matrix: dispatch: implement channel RPC framework and serialize hardware ops
+net/nebula-matrix: add common/ctrl dev init/remove operation
 
-This patch adds mailbox RPC request and response handlers for five
-dispatch operations: cfg_msix_map, destroy_msix_map, set_mailbox_irq,
-get_vsi_id and get_eth_id. The management PF calls the resource ops
-directly, and net-capable non-management PFs forward them to the
-management PF over the channel. It also adds a per-dispatch mutex around
-the MSI-X and mailbox IRQ operations, which change hardware state.
+This commit adds nbl_dev.c with nbl_dev_init() and nbl_dev_remove(). They
+set up the mailbox channel queue and cleanup work, program mailbox QINFO
+routing on the control PF, and call chip-level init_module/deinit_module.
+Teardown destroys the mailbox queue before notifying firmware through
+deinit_module.
 
-> Fix error propagation by forwarding native Linux errnos from remote
-> resource operations instead of unconditionally returning -EREMOTEIO.
-> Only truncated ACK responses return -EREMOTEIO to distinguish protocol
-> errors from legitimate operation failures. Transport layer errors are
-> passed through unchanged from channel send routines.
-
-[Severity: Low]
-Does this paragraph match the code? Both new ACK length checks, in
-nbl_disp_chan_get_vsi_id_req() and nbl_disp_chan_get_eth_id_req(),
-return -EBADMSG, not -EREMOTEIO:
-
-    if (chan_send.ack_len != sizeof(result)) {
-        ...
-        return -EBADMSG;
-    }
-
-The only -EREMOTEIO in the driver appears to be in
-nbl_chan_recv_ack_msg() in nbl_channel/nbl_channel.c. There it replaces
-an out-of-range remote errno, so it has nothing to do with a truncated
-ACK:
-
-    if (raw_err > 0 || raw_err < -MAX_ERRNO)
-        raw_err = -EREMOTEIO;
-
-The parent commit also has no RPC request or response code. So there is
-no earlier "unconditionally returning -EREMOTEIO" behaviour for this
-patch to fix.
-
-Was this paragraph left over from an earlier revision?
-
-> - Other functions: all dispatch ops are null and return -EOPNOTSUPP.
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> new file mode 100644
+> index 000000000000..e094b97acdfb
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> @@ -0,0 +1,253 @@
 
 [ ... ]
 
-> For MSIX map reconfiguration, pre-allocate DMA buffers and vector indices
-> prior to tearing down old configurations to prevent interrupt loss.
-> Destroy path clears mailbox MSIX routing entries upfront to avoid stale
-> interrupt triggers from recycled hardware vectors.
-
-[ ... ]
-
-> Narrow kernel-doc warning to clarify new ops are PF-capability bounded,
-> not available for VF functions.
-
-[Severity: Medium]
-Several parts of the commit message describe changes that this patch
-does not contain.
-
-For a function with neither the MGT bit nor the NET bit set,
-nbl_disp_refresh_ctrl_ops() memsets disp_ops and assigns nothing, so the
-pointers stay NULL. Calling one of those ops is a NULL function pointer
-call, not an -EOPNOTSUPP return. The kernel-doc in nbl_def_dispatch.h
-already says callers must not invoke them, which matches the code.
-
-The MSI-X pre-allocation, and the clearing of the mailbox routing at the
-start of destroy, live in nbl_res_intr_cfg_msix_map() and
-__nbl_res_intr_prepare_destroy_msix_map() in nbl_hw/nbl_interrupt.c. The
-earlier commit "net/nebula-matrix: add intr resource implementation"
-added that code, and this patch does not touch nbl_hw/.
-
-The "Warning:" paragraph in the struct nbl_dispatch_ops kernel-doc is
-identical in the parent commit, which already listed the five ops and
-the VF restriction. This patch only adds the @member lines.
-
-Could the commit message describe only what this patch changes?
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> index 966fee2dec8b..e6a5e53e9d2d 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-
-[ ... ]
-
-> @@ -25,6 +194,357 @@ static int nbl_disp_init_module(struct nbl_dispatch_mgt *disp_mgt)
->  	return -EOPNOTSUPP;
->  }
->  
-> +static int nbl_disp_cfg_msix_map(struct nbl_dispatch_mgt *disp_mgt,
-> +				 u16 num_net_msix, u16 num_others_msix,
-> +				 bool net_msix_mask_en)
+> +/* ----------  Dev init process  ---------- */
+> +static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
 > +{
-> +	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
-> +	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
-> +	struct nbl_common_info *common = disp_mgt->common;
-> +	int ret;
-> +
-> +	if (!res_ops->cfg_msix_map)
-> +		return -EOPNOTSUPP;
-> +	mutex_lock(&disp_mgt->ops_mutex_lock);
-> +	ret = res_ops->cfg_msix_map(p, common->mgt_pf, num_net_msix,
-> +					  num_others_msix, net_msix_mask_en);
-> +	mutex_unlock(&disp_mgt->ops_mutex_lock);
+
+[ ... ]
+
+> +	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
+> +	if (ret)
+> +		goto err_cleanup;
+
+[ ... ]
+
+> +	return 0;
+> +err_cleanup:
+> +	cancel_work_sync(&common_dev->clean_mbx_task);
+> +	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
+> +	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
 > +	return ret;
 > +}
-
-[Severity: Low]
-Is ops_mutex_lock needed here? The resource ops already serialize
-themselves under intr_mgt->lock. The documentation of
-nbl_res_intr_cfg_msix_map() says:
-
- * Serialization: this function takes intr_mgt->lock internally to
- * protect the global vector bitmaps and per-function state against
- * concurrent callers.
-
-nbl_res_intr_set_mailbox_irq() also takes intr_mgt->lock internally.
-nbl_res_intr_destroy_msix_map() takes it around
-__nbl_res_intr_destroy_msix_map(). The "add intr resource
-implementation" commit also says callers need no upper-layer locking.
-
-This wrapper makes a single resource call. So do
-nbl_disp_destroy_msix_map(), nbl_disp_set_mailbox_irq() and the three
-matching *_resp handlers. None of them has a multi-step sequence that
-needs an outer lock.
-
-The field comment in nbl_dispatch.h, "use for the caller not in
-interrupt", does not say what the mutex protects. That makes the commit
-message's claim that the mutex eliminates concurrent modification races
-hard to square with the code.
-
-Could the mutex be dropped? If it covers state that intr_mgt->lock does
-not, could that state be documented?
-
-[ ... ]
-
-> +static void nbl_disp_chan_cfg_msix_map_resp(void *priv, u16 src_id, u16 msg_id,
-> +					    void *data, u32 data_len)
+> +
+> +static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
 > +{
-
-[ ... ]
-
-> +	if (res_ops->cfg_msix_map) {
-> +		mutex_lock(&disp_mgt->ops_mutex_lock);
-> +		ret = res_ops->cfg_msix_map(p, src_id,
-> +					    le16_to_cpu(param.num_net_msix),
-> +					    le16_to_cpu(param.num_others_msix),
-> +					    !!le16_to_cpu(param.msix_mask_en));
-> +		mutex_unlock(&disp_mgt->ops_mutex_lock);
-
-[Severity: Low]
-num_net_msix and num_others_msix come straight from the peer PF and go
-to nbl_res_intr_cfg_msix_map(). The only bound there appears to be the
-table size:
-
-    if (num_net_msix > NBL_MSIX_MAP_TABLE_MAX_ENTRIES ||
-        num_others_msix > NBL_MSIX_MAP_TABLE_MAX_ENTRIES) {
-
-NBL_MSIX_MAP_TABLE_MAX_ENTRIES (1024) equals the size of the other
-interrupt pool (NBL_MAX_OTHER_INTERRUPT). Could one PF request nearly
-all of the other vectors and leave the remaining PFs with -EAGAIN?
-
-This probably can't be reached in practice:
-
-- The rel_pf_id < max_pf check rejects VFs.
-- nbl_get_func_param() in nbl_main.c says the hardware and firmware
-  forbid PF passthrough to guests. Every peer PF therefore runs this
-  same host driver.
-- The in-tree requester nbl_dev_cfg_msix_map() only asks for the counts
-  from nbl_dev_init_msix_cnt(): one mailbox vector and no net vectors.
-
-Is a per-function limit worth adding anyway, or is a peer PF always
-treated as trusted?
-
-[ ... ]
-
-> @@ -104,14 +641,40 @@ int nbl_disp_init(struct nbl_adapter *adapter)
-
-[ ... ]
-
->  void nbl_disp_remove(struct nbl_adapter *adapter)
->  {
-> -	/* Dispatch structures are allocated via devm */
-> +	/*
-> +	 * Dispatch structures are devm-allocated and freed at detach.
-> +	 *
-> +	 * The five responders registered by nbl_disp_setup_msg() are
-> +	 * owned by the channel layer (xarray of handlers) and are never
-> +	 * unregistered here. This is safe because the teardown order
-> +	 * guarantees no responder can run after this point:
-> +	 *
-> +	 *   mailbox teardown
-> +	 *     -> cancel_work_sync(clean_mbx_task)   // drain RX work
-> +	 *     -> nbl_chan_teardown_queue()          // stop HW queue,
-> +	 *                                                 // join clean task,
-> +	 *                                                 // active=false
-> +	 *     -> nbl_chan_remove_common()
-> +	 *          -> destroy_wq()                       // no new work
-> +	 *          -> nbl_chan_remove_msg_handler()      // free handler nodes
-> +	 *
-> +	 * By the time devres frees disp_mgt, the mailbox queue is stopped
-> +	 * and the handler xarray is empty, so no responder can touch
-> +	 * res_mgt->intr_mgt after nbl_intr_mgt_stop() has cleared it.
-> +	 */
->  }
+> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
+> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
+> +	int ret;
+> +
+> +	if (!common_dev)
+> +		return;
+> +	cancel_work_sync(&common_dev->clean_mbx_task);
+> +	ret = nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
+> +	if (ret)
+> +		dev_warn(&adapter->pdev->dev, "mailbox queue teardown failed, inflight DMA may exist: %d\n",
+> +			 ret);
 
 [Severity: Low]
-Does this teardown sequence exist at this commit? clean_mbx_task is not
-defined yet, and nothing calls the channel setup_queue or teardown_queue
-ops. So the "cancel_work_sync(clean_mbx_task) ->
-nbl_chan_teardown_queue()" chain refers to code that doesn't exist yet
-at this point in the series.
+Can nbl_dev_remove_chan_queue() return non-zero here? Both exits of
+nbl_chan_teardown_queue() return 0: the early return when the channel is
+not active, and the normal path after draining. That makes this dev_warn()
+unreachable.
 
-This is not a reachable race here, because the mailbox queue is never
-set up and the responders can't run.
+The message also suggests teardown can fail with DMA still in flight. If
+it could, nbl_dev_remove() would still go on to call deinit_module, and
+nbl_hw_deinit_module() assumes no mailbox DMA is left at that point. Does
+this warning cover a real failure mode, or can it be dropped?
 
-The next patch, "net/nebula-matrix: add common/ctrl dev init/remove
-operation", makes the comment accurate. It adds nbl_dev_remove() ahead
-of nbl_disp_remove() in nbl_core_remove(). Its
-nbl_dev_remove_common_dev() calls
-cancel_work_sync(&common_dev->clean_mbx_task) and then
-nbl_chan_teardown_queue(), both before nbl_res_remove_leonis() calls
-nbl_intr_mgt_stop().
+There is a related issue on the err_cleanup path of
+nbl_dev_setup_common_dev() above. That path only runs when setup_queue
+failed, and chan_info->active is only set to true when setup succeeds. So
+the teardown lands here:
 
-Would it make sense to move this comment into that patch, so the comment
-matches the code at each point in the series?
+nbl_chan_teardown_queue() {
+	if (!READ_ONCE(chan_info->active)) {
+		dev_warn(chan_mgt->common->dev, "channel not active, skip duplicate teardown\n");
+		return 0;
+	}
+	...
+}
+
+Won't this log "skip duplicate teardown" on the first cleanup after a
+failed setup, when no duplicate teardown has happened?
+
+[ ... ]
+
+> +/*
+> + * Tear down control device: deinit_module sets driver_status=false
+> + * to notify firmware to clean all per-PF hardware state (including
+> + * qinfo registers).  The qinfo map programmed in nbl_dev_init() via
+> + * nbl_dev_setup_chan_qinfo() is not explicitly cleared; firmware
+> + * handles it on driver_status change.
+> + *
+> + * Teardown ordering guarantee: every non-management PF creates a
+> + * consumer->control PF device link in its probe path, so the driver
+> + * core always unbinds all siblings before allowing the control PF to
+> + * be detached (sysfs unbind, driver unregister and hot-unplug alike).
+
+[Severity: Low]
+This comment conflicts with the one in nbl_res_remove_leonis(), which
+nbl_core_remove() calls right after nbl_dev_remove():
+
+nbl_res_remove_leonis() {
+	...
+	/*
+	 * Tear down all MSI-X maps before destroying coherent tables.
+	 * This is critical on the control PF, which may hold
+	 * maps for remote PFs that are still bound.
+	 */
+	...
+}
+
+If the driver core always unbinds all siblings before the control PF, no
+remote PF can still be bound at that point. Which of these does the
+teardown actually rely on? One of the two comments probably needs
+updating.
+
+This patch relies on the stronger claim to justify calling deinit_module
+unconditionally. The next comment describes a case where it does not
+fully hold.
+
+> + * nbl_probe_chip_deps() defers a sibling's probe until the control PF
+> + * is fully bound (DL_DEV_DRIVER_BOUND), so no sibling can race its
+> + * mailbox setup against this deinit.
+
+[Severity: Medium]
+Is this exclusion guaranteed? nbl_probe_chip_deps() in nbl_main.c checks
+the supplier state without a lock, then creates the link, and rejects only
+one link state:
+
+	if (READ_ONCE(mgt->dev.links.status) != DL_DEV_DRIVER_BOUND) {
+		pci_dev_put(mgt);
+		return -EPROBE_DEFER;
+	}
+
+	link = device_link_add(&pdev->dev, &mgt->dev,
+			       DL_FLAG_AUTOREMOVE_CONSUMER);
+	...
+	if (READ_ONCE(link->status) == DL_STATE_SUPPLIER_UNBIND)
+		return -EPROBE_DEFER;
+
+device_link_init_status() in drivers/base/core.c sets
+DL_STATE_SUPPLIER_UNBIND only while the supplier is DL_DEV_UNBINDING:
+
+	case DL_DEV_UNBINDING:
+		link->status = DL_STATE_SUPPLIER_UNBIND;
+		break;
+	default:
+		link->status = DL_STATE_DORMANT;
+
+Two cases seem to get past the check:
+
+(a) The control PF finishes unbinding, including nbl_dev_remove() ->
+deinit_module, between the check and device_link_add(). It is then
+DL_DEV_NO_DRIVER, so the link starts as DL_STATE_DORMANT and passes.
+
+(b) The control PF has started re-probing (DL_DEV_PROBING) while the
+sibling is probing. The link starts as DL_STATE_CONSUMER_PROBE and also
+passes.
+
+In both cases the sibling goes on to nbl_core_init() -> nbl_dev_init()
+and sets up its mailbox queue. In (a) this happens right after the
+control PF set driver_status=false, while the firmware's asynchronous
+per-PF cleanup may still be running. In (b) it races the control PF's
+nbl_dev_setup_chan_qinfo() and init_module programming.
+
+The sibling and the control PF hold separate device_lock()s, so the
+driver core does not serialize these paths.
+
+The commit message makes the same claim:
+
+  Device link dependency established during non-control PF probe ensures
+  sibling PFs are unbound before the control PF is removed.
+
+Should nbl_probe_chip_deps() re-check the supplier state after
+device_link_add() and also reject DORMANT links and links to a supplier
+that is still probing?
+
+[ ... ]
+
+> +/*
+> + * Teardown order: Stop mailbox channel and drain all inflight DMA first,
+> + * then invoke deinit_module to notify firmware.
+> + *
+> + * This intentionally breaks strict init/teardown mirror symmetry due to
+> + * hardware constraint: firmware may perform asynchronous global hardware
+> + * cleanup once driver_status=false is set. We must guarantee no ongoing
+> + * mailbox DMA before deinit_module to avoid invalid DMA write.
+
+[Severity: Low]
+The commit message says:
+
+  The firmware handles global hardware cleanup and QINFO routing state
+  reclamation asynchronously after driver status is marked inactive.
+
+This comment likewise refers to "asynchronous global hardware cleanup".
+Is that accurate? This path reaches nbl_hw_deinit_module() in
+nbl_hw_leonis.c through deinit_module, and that function documents a
+narrower contract:
+
+ * Setting driver status to false notifies firmware to clean up per-PF
+ * hardware state such as qinfo registers.
+ *
+ * Note: firmware does NOT automatically revert chip-wide registers
+ * configured in this init flow. Those chip-wide settings remain valid
+ * until chip reset or explicitly overwritten by driver.
+
+The earlier "add chip-wide hardware init/deinit implementation" commit
+also says that firmware does not restore chip-wide datapath registers on
+deinit.
+
+So after the control PF is removed, the registers programmed by
+nbl_dp_init() and nbl_intf_init() stay in place until chip reset. Could
+the commit message and this comment say per-PF cleanup instead of global
+cleanup?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928123237.88994-1-illusion.wang%40nebula-matrix.com
