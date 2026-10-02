@@ -1,193 +1,177 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010027.outbound.protection.outlook.com [52.101.85.27])
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF5F2E3FE;
-	Fri,  2 Oct 2026 04:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAFF35CBD7;
+	Fri,  2 Oct 2026 04:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790915567; cv=fail; b=GTE0sklrgbcastS3zgWfVL5/Yb7UwKj5tl4+gw/g7sFSc1kpSwMv8jge/6sxjel3Q/j1gQUzg4YS0J+STlelu6BjtEmuDPaef7KTFxA4izrky+DBZvpru9ytBkC6yVPH5CiEKg5C0prxFJzrQLkFI4PZekJ0NnY1JtBZtyNJM88=
+	t=1790915790; cv=pass; b=Zx+C4uh1GIM1PQutk1L1dykOwUlsu89tDjlcBaz5u0Eddwai0F+8ILx2ZzELWoY5rKc6n03N6VFdjb1PRa9JhOWcu/zbxaAH/fPU57zuEHuLsNLbPTGNSWiSW8nBQ4iDlnfbObJFgPev7nyMm108/fHeHmzo86mJ7pYw5fqDD/k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790915567; c=relaxed/simple;
-	bh=cDqZhmt0FeRP523MNgR/0781+YQ+bqRbFVj0epfbKoY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=WcUzsOmwYwrCVGKxw0h9kCYBrB9MGa016l4Y58mWqEH/KGsgejt82x5zkihyYoXcxz7AN4GB6/k8yZJiB7mZVCMy2GKnNiWV8BKWiqLxS1uncPvqNBKh7zwfyPQ/pe4ywebSs5oJrw2ORJ/vmBwcGerWkh8+/uFbh63+RBSrwJM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=100+Kqjg; arc=fail smtp.client-ip=52.101.85.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1790915790; c=relaxed/simple;
+	bh=uN8BDeLpJRg0nGxltAi+o1OXX8JiZTRr6tmpFxqIUGA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZZcpuf9FWjrJiAU4phL3vwh77JVm8IaOuzhx2JU5hVPZodCxCtEpHfwKqVf3YrBAsDvK1eiIluRkjNa9CCLjRGjquO5Uj48QpGb1ikEz2ncVEqoiEb5e01pEeJ5ZE3pATeyrCoIrFbRtJ/s+g9nWrSbnwBNUn5y4HVKLoMIvonA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv; spf=pass smtp.mailfrom=iav.lv; dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b=BALetECD; arc=pass smtp.client-ip=136.143.169.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="100+Kqjg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FpBZs/I8wNc/DIo5CAj96sMN4HO7LIdsBF6mDz4JM4uEqDIbUjx/EgwOKrZfA0VPTxevwcab1Mmi6l2QjuS+dH2TYHN6EcAus44g5Jz7XiWvv8QiSkXSLWPvaJWjymwxI79Y/4HRcRABe+zvOPNm6ffENlXYwm5Xc+YPh4GBdfAOPzaj9P5jhM5LagVfTmlWDZtUet/QmCoXbxwyD6AccGSdVqvfv1vJ1gZp/+mYFjdCn//PBOulmqQ0SdsS4vZ75dvbmWAPs5K6Aof717vtb/hQY9Lv9zkN+u31hqauMV1XxtrGROcRUaGJRSVNn43248yD4scb9lz4FNnLvua3Mg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G1xao8ztuKFwAcsb4aYNd+QXRAjOTnmrbn39DJS/Stg=;
- b=MO/tlk/VwLvyKhQOMykB49DnA7evZGpi0QS2IcuvngNuIGWN9KsDYEltaO+1FK5BSZ05+gPu5ru4a/SQNfB4ydrIyNl5PmyoFhugftIqhq7r/s+IOoMtmfa574MU2eWRQNaL+3dgBfZYvaWHetwVTAezzj9+TVXlHZlIPKoLIKlA9Bp3P6kxtuvPyUJyvYwmBprYf+tpcbCyixqJkE7fabKn2VBVN2hn4aeDWLg+elkJQUQKiHvlmyxDhMw7UCOv7wafL7uBgJasGj3+Ouv+h53l+/HVFVPZ77rkzlg92s1Wv79lMLYUl7B4dzDaJmNt2ZBwbwa/zg/MNWxkyPj3wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G1xao8ztuKFwAcsb4aYNd+QXRAjOTnmrbn39DJS/Stg=;
- b=100+Kqjg6vXFsGn1S8w7M2JR0ZVfJtpjJyynLJNxPHTYSwwGnlAuEB4SUO1pZnHYdGz8KLO3jeUdZJPfvivPtZvablNyAuiQ1NLDu5pWepjIOZ+NRqJvFAsI6RpI6sxw/YVEj/t9yJgjzMXBs5Bs1C2wgO0Oq3/9Bchk64E54XM=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
- SAWPR12MB999269.namprd12.prod.outlook.com (2603:10b6:806:55e::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Fri, 2 Oct
- 2026 04:32:42 +0000
-Received: from DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
- ([fe80::8211:9b5a:99d2:ffa1%4]) with mapi id 15.21.0451.022; Fri, 2 Oct 2026
- 04:32:42 +0000
-Message-ID: <b7fd6cc3-1aca-440f-a87d-d0d94ae9eed3@amd.com>
-Date: Fri, 2 Oct 2026 05:32:36 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] driver core: Check for supplier requiring PM at
- link creation
-To: Dave Jiang <dave.jiang@intel.com>, alucerop@amd.com,
- linux-cxl@vger.kernel.org, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
- rafael@kernel.org
-References: <20261001132023.17032-1-alucerop@amd.com>
- <20261001132023.17032-2-alucerop@amd.com>
- <9e8a45df-1755-495f-8e80-52c65b832dc9@intel.com>
-Content-Language: en-GB
-From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
-In-Reply-To: <9e8a45df-1755-495f-8e80-52c65b832dc9@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0350.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f4::12) To DM4PR12MB6254.namprd12.prod.outlook.com
- (2603:10b6:8:a5::17)
+	dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b="BALetECD"
+ARC-Seal: i=1; a=rsa-sha256; t=1790915761; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=f81BEgl5SbZFYoaATwIEpgVq+9LH4WN5p5RspyYPN38d4JgAhtvbpfWDnnYm1E0W5LRVVR+6EL6zPGflDebusABSTOcG2U92MEhfjJ05V4GKFd9Vdr+S7QjFA375LgyXEAWzoYcQ5bEp9YJVyvl9hm159tnXPEQ/25NbwrO+OSE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1790915761; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=PUfIzwWDOAbo53jI5D67aCx7a69oUCJygXJtMbNr/jA=; 
+	b=i+lyTCND9l9vomJGH0pQz6BfG5rGUh6ri2GnIHWhD0290a8bA0+Y0QaWLbnRQDLDLi4elsVWxImjgINa4WJO8UjG/FHFU/kxSpd3V4H4XIf8ZcJhYDe/49fs4J3aXV9qb9losz4tmcELmWdjDR00Ucvwm1hLsiiddw9XEiMS7GU=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iav.lv;
+	spf=pass  smtp.mailfrom=iav@iav.lv;
+	dmarc=pass header.from=<iav@iav.lv>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790915761;
+	s=zoho; d=iav.lv; i=iav@iav.lv;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=PUfIzwWDOAbo53jI5D67aCx7a69oUCJygXJtMbNr/jA=;
+	b=BALetECD+Kcv7vxOPtv99Y/bt1hMxfuGXADJX2pUxsyMfuSYTFVuz2tLcI4wgkRL
+	Zmle7XRRewXgbBxwFBby5S6F++LGoVeiehwjLLPixC7rUfTaxrtM9y+ZR0Skksp44vD
+	Tz7rAz0BerJ09Dcy7MjvoDK88QpdAL+xDDTFw1vA=
+Received: by smtp.zoho.eu with SMTPS id 1790915759373340.0396654276939;
+	Fri, 2 Oct 2026 06:35:59 +0200 (CEST)
+From: Igor Velkov <iav@iav.lv>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] net: stmmac: mask the MAC interrupt while resume resets the MAC
+Date: Fri,  2 Oct 2026 07:35:57 +0300
+Message-ID: <20261002043558.1302590-1-iav@iav.lv>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|SAWPR12MB999269:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a41f920-4362-48a4-41bb-08df203e32c2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|22082099003|18002099003|6133799003|10067099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	u6SuJlcC7Lzj3g6nshxpckpvS/TxlM4bwDUqsMDdWbsIbSDxqr/4VP8LXdNSbRJ2acy6++DVp9nlsZL3lSs8AByiTxcVLYJ5S2Uu/Md1coAv9d3Y4YfvmQaI4ebSZ/d+VEeb/tkyXnDPTPRvHzxn5GlfPl7j964g+vztFnZ2tcZlWSLM1O/28TXEht76mhLKF8vyU1x7ajEJ4xZtIrpDfeJo2MtOnNd12z4fkegf1tHLFIz+pL3/v+HOn0DxvW80hs3xSXF+MS5Ya829x4rVNZ9qRDRjbWZyhHicFdbpiLwHbXh/OPtJh3OO+Rc3Td05rZrUXS3poPHP3vFgAQrqMdrgQ2XmKB0UOw0mMxcDRIJu9wjPG1s4s75LXXwwi9PWyqhWnMumhRN/FszkjFjayW6BifDyX/qVeXOTERxof+LC4DqaTbETUe9Irye4U3KnTzvFpl7TrBvk8mk0qbdOiaovIBt0LA9sjfpekCaxxNjDe0YDacnrP19YC8tyMDyUjSB1B7EiTuMTAftRqQrStVJd0CjMfRfnKlq3cUQrl1ybJ5C/MX+IuIKJSyHhHOgZ3hGsT/Bt1CeOEz6bXJ+pTQdczEavapiaNho7yiiEhJmJdZo2z6zbacfg7nsgd+QZ74IocjRctsLvP/8M9safUg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VzlOVEtQU0tMaDVwRHdKaUFqVXNNRkh3VTBneU52TUlrZSt3R3d3UmdNSFpS?=
- =?utf-8?B?OFQyNERHRXp0LzFUTGo5cjBnSUp0L2JjbkdGb3M3N0ZwT3Q2NzVCZ3RjenVE?=
- =?utf-8?B?OTZHSWpBK3UzN1pacVkvTG5RYmZ3ZUVDN2tpRUJaSjBrQjNPakxsNlpRbGJ2?=
- =?utf-8?B?cGpSWWdrbFRjbmYzME9TU3UvRU9BaGFrSUY1cTFERSszTmY5ZDJqUjlrQkVt?=
- =?utf-8?B?RE9jZkJ6SDRzY2x0ME5jUThPNGZCOWJRdEJrbmpYWUk2SW9FWUd2UndRMk01?=
- =?utf-8?B?a0d3enJoYlZSREFNRmxTOGpsKy9EYmY5SVMvdkx0YWZOV0VBeThHdVd3eTN0?=
- =?utf-8?B?SGtMYm5VOVo2Zi8xb1V2VVZKUWwwcFM5K3dxbDBBK3BxWnNVMFFWdFdBeEgv?=
- =?utf-8?B?S2FQQktSZFZPcjJSRUJZRFVmWGJSTzg3OUhiZnhiWVlKUys0QU4xczMzelhS?=
- =?utf-8?B?MjYyamdEaHBXR2pTVmxaa2x2OVpLaHJDejV0eitYOFZXaTA2ME1pdW1qRmlC?=
- =?utf-8?B?bFRaWUVLYS9LTDc4K1VEMGJ5ckhEeVoxY1hPTVMzVlFza2p6c0VicE9WeXAx?=
- =?utf-8?B?VXVjMFFsQUZFNHdwbVV0ZG4zN0NBTGhoRDBiTk40NHl6WFQ2bWo2ZmZrTnlW?=
- =?utf-8?B?SWpjR1pkNUxVVW5vK2ZhRXJhVytUQlVNWC9XTjVMUW42UCtHWDloUWZ6SzRi?=
- =?utf-8?B?WTY0b0hkdGNLNUs5M092cys4TUxQQkw5cU5sczRaSzJSajJ4MXlMNTRnS1My?=
- =?utf-8?B?UVpPSjN1Z1VMU3Nhbkg2Z1NmNFRGd21ZWVp0SERFMnlOM3BSb2p6OHJMZUcx?=
- =?utf-8?B?aVJRUnpxT0xEbWpaZFpidGQvdlNhaG1hczlMdytJM1RBT2Z0aFVOY3NpK3dl?=
- =?utf-8?B?NlNZNzV5NGdNOTZuK0diSlNNUnhJcUtqcDN2Tk02NXdZUTVIc1ZWNzkvcGo0?=
- =?utf-8?B?em9RWEVFQkhEUnVvWjhIQ0lITEtFSExubSthREU0eUcxb1lpcVZGYytYakxh?=
- =?utf-8?B?SFJCMG1jeXcya292Szg4TGMyMGtTMG5ON2c1b29QelZwL05xaXpBRnNGc3ha?=
- =?utf-8?B?Zmp0S2s4KzAyQjNHR2k1a28reXhMcmU3RmpmRmdXM3NHdW9YV2tzcktOV3Y1?=
- =?utf-8?B?RVZPSFBNSS9JNXVacVo2b0U4b3duRTAyZVV3NEZpYnJhdDRYVmpMYXc4RXFX?=
- =?utf-8?B?TVc4QjBnQjBjWi9JMHlYUWpCZHU2R1R5Um5US3ZKOU9DUXNQZWwxWWE3anEx?=
- =?utf-8?B?b1U1aDhtSzhrUi9aL096WHVPb1dHSjB1Y01oaXBxeVA0YlRFYWU0bXhIaDVz?=
- =?utf-8?B?YllwdG5xRExiNkZJYThPaUt5WTlnVUphaThrQ285dTZhSTVtSDRwY2REN1A1?=
- =?utf-8?B?K24rSFlaVXBzL2FaQ1FZVUtHK2k0RnFkSStvbjdPVzAvOW0xbnBzU05ibDc0?=
- =?utf-8?B?UzUvWjlXSlY4NFo4VzNXVk9oQkoyY2xwazFpRHVUSCs4ZlVCM1FCb1NoNUJM?=
- =?utf-8?B?eFJXMHZBQUpLV2lBVnJQdXcyWnV0czVNVDk0Y29aWFk5TWJwZG9laUZxSlRV?=
- =?utf-8?B?MzgvTDRWaXpobWRNMWl4ekZldEtjTSsrSEkrZHBTbk5SSXcrOGFHeVM1VC9H?=
- =?utf-8?B?NElXTHQ5NzRDUjkyNnBEOXpFWUw0Vm5pY0JJVnhxcS9IcFJlY2diTndJdGt0?=
- =?utf-8?B?SHd3MU8rSm9ibXJqNEsxNWNUSUMzVFFySlVmbGl2b1RNRVd2UU5LT3RXcnhF?=
- =?utf-8?B?M205dE1Jb2F4YXZ2NDhtNmk0VmVyaElPWHZSWUpkZnFySDRlekxpdWRHSHYr?=
- =?utf-8?B?aTliYVBlcm1uSkRhd2UyaXFmWnh0Zno1RnUxQ2YweThERGV4NVl4dWwxdExB?=
- =?utf-8?B?OC85Rk52YlE5UStBYWpZSXdhTjUrRkRrUGRnVFpscE5OYW1hZk1BNjBMYU01?=
- =?utf-8?B?WUhoQ0pmZWhFM3E2NTM3QkxvZm1hZ01ZN2pZZjZSdForM2VXekh5aVlKRWVy?=
- =?utf-8?B?VUFUcXI0aWpIWCtXdUU2cW9tL1luR0tzWTJwM2U2MmYvblZpdDJwclBNZ2g1?=
- =?utf-8?B?Q216bWpWRmh2YmdiaDF6UmxtdW55Y0w5Vyt5S3hrVGlvL0NBM1IzUCtTZmFV?=
- =?utf-8?B?Q2ZRNWpSV1NMdzhKQWhORW1ibkZLYUJmQ3ZpS1RqNEY0RUJKQjRvdWRrUE16?=
- =?utf-8?B?SEpMT21XZlV6cWJWblhwVk1JL0lDSG5ISjh1cUlkRkszRmlxU3NUbHpyK0Ri?=
- =?utf-8?B?N1BzMVdKQnpKQXprUGlXWEVqSXhyZlhTZkNkR2g1RXEyN1BZbUpyeUNLd2Ns?=
- =?utf-8?Q?WfVOq8yGQf4zzFLVKM?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a41f920-4362-48a4-41bb-08df203e32c2
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 04:32:42.2956
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UTVI1Bl9gp9hNrpVzO+13vso8TsYUY8VLjC9ebF0vmA7l80m5TP7eArNhn8+VisB9O39pTHZqV76+rsugjoxtA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999269
+Content-Transfer-Encoding: 8bit
 
+stmmac_resume() resets the MAC in stmmac_hw_setup(). On dwmac1000 the
+reset sets GMAC_INT_MASK to 0, which unmasks every core interrupt, until
+dwmac1000_core_init() writes the mask again. Since commit 2e2c878a3141
+("net: stmmac: remove SGMII/RGMII/SMII interrupt handling") nothing on
+the RGMII path reads GMAC_RGSMIIIS (only the PCS code does), so RGSMIIIS
+stays pending behind the mask from the first link change on, and the
+reset lets it through. The line storms:
 
-On 01/10/2026 21:31, Dave Jiang wrote:
->
-> On 10/1/26 6:20 AM, alucerop@amd.com wrote:
->> From: Alejandro Lucero <alucerop@amd.com>
->>
->> PM initialization could not be necessary for some devices.
->>
->> Avoid checking for supplier PM initialization if so.
->>
->> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
->> ---
->>   drivers/base/core.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/base/core.c b/drivers/base/core.c
->> index 4c0c373998a1..bf0513beafad 100644
->> --- a/drivers/base/core.c
->> +++ b/drivers/base/core.c
->> @@ -840,7 +840,7 @@ struct device_link *device_link_add(struct device *consumer,
->>   	 * SYNC_STATE_ONLY link, we don't check for reverse dependencies
->>   	 * because it only affects sync_state() callbacks.
->>   	 */
->> -	if (!device_pm_initialized(supplier)
->> +	if ((!device_pm_not_required(supplier) && !device_pm_initialized(supplier))
->>   	    || (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
->>   		  device_is_dependent(consumer, supplier))) {
->>   		link = NULL;
-> A no PM supplier can now be linked at any point: before device_add(), while it fails, or after device_del(). Maybe replace with a helper like this?
+  dwmac_dma_interrupt: unexpected status 04000000
 
+A register dump at the first message on ODROID-HC4 showed it:
 
-I would say you can not use a device as supplier before device_add() 
-happens for such a supplier, and if it does happen after device_del(), 
-something is wrong with the caller.
+  core int_status 00000001 int_mask 00000000 pmt 00000000 rgsmiiis 0000000d
 
+The mask is written by the resume thread itself. When that thread runs
+on the CPU that takes the MAC interrupt, the storm starves it and the
+board hangs until a watchdog reset or a soft-lockup panic; on another
+CPU the storm ends after a few interrupts.
 
-Your suggestion is likely making the code more legible, but it does not 
-change the functionality I added. Does it? Not saying it would not help, 
-but I can not understand your comment for suggesting it which seems to 
-point to potential problems I did not see.
+Disable the interrupt line for the whole resume and enable it again on
+every exit path. This matches open(), which resets the MAC before it
+requests the interrupt; resume resets it with the line live. The line
+is IRQF_SHARED, so leave it enabled during suspend, where another user
+of the line may wake the system.
 
+Wake-on-LAN resume with the resume thread on the CPU that takes the MAC
+interrupt, 7.3-rc5: without this patch the storm hit the first resume
+on Helios64 (dwmac-rk) twice, ROCK Pi 4A (dwmac-rk) once and ODROID-HC4
+(dwmac-meson8b) twice; with it, no storm in 10 resumes on Helios64 and
+10 on ODROID-HC4. With the thread on another CPU and no patch, the
+storm printed at most 3 messages per resume in 30 resumes.
 
-> static bool device_link_supplier_ready(struct device *supplier)
-> {
->        /* no PM devices never enter dpm_list, so check registration directly */
->        if (device_pm_not_required(supplier))
->                return device_is_registered(supplier);
->
->        return device_pm_initialized(supplier);
-> }
->
-> ...
->
->        if (!device_link_supplier_ready(supplier) ||
->            (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
->             device_is_dependent(consumer, supplier))) {
->                link = NULL;
->                goto out;
->        }
+Fixes: 2e2c878a3141 ("net: stmmac: remove SGMII/RGMII/SMII interrupt handling")
+Assisted-by: LLM
+Signed-off-by: Igor Velkov <iav@iav.lv>
+---
+v2:
+- target net with a Fixes tag; v1 was posted for net-next
+- describe the RGSMIIIS bit pending since link-up and the resume thread
+  on the interrupt CPU instead of a link change in the reset window;
+  the code comment is fixed the same way
+- results on Helios64, ROCK Pi 4A and ODROID-HC4
+v1: https://lore.kernel.org/r/20260930-stmmac-irq-shut-v1-1-104d1a1dcb28@iav.lv
+
+Build-tested on net: allmodconfig and allyesconfig with W=1, no new
+warnings.
+
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 27 ++++++++++++++-----
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index ec62fa7418f4..b275b6234b55 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -8313,15 +8313,25 @@ int stmmac_resume(struct device *dev)
+ 	struct net_device *ndev = dev_get_drvdata(dev);
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+ 	int ret;
++	bool irq_off;
++
++	/* Resume resets the MAC, leaving every core interrupt unmasked until
++	 * the mask is written again: a status bit already pending would storm.
++	 */
++	irq_off = netif_running(ndev);
++	if (irq_off)
++		disable_irq(ndev->irq);
+ 
+ 	if (priv->plat->resume) {
+ 		ret = priv->plat->resume(dev, priv->plat->bsp_priv);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 	}
+ 
+-	if (!netif_running(ndev))
+-		return 0;
++	if (!netif_running(ndev)) {
++		ret = 0;
++		goto out;
++	}
+ 
+ 	/* Power Down bit, into the PM register, is cleared
+ 	 * automatically as soon as a magic packet or a Wake-up frame
+@@ -8344,7 +8354,7 @@ int stmmac_resume(struct device *dev)
+ 	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
+ 		ret = stmmac_legacy_serdes_power_up(priv);
+ 		if (ret < 0)
+-			return ret;
++			goto out;
+ 	}
+ 
+ 	rtnl_lock();
+@@ -8367,7 +8377,7 @@ int stmmac_resume(struct device *dev)
+ 		stmmac_legacy_serdes_power_down(priv);
+ 		mutex_unlock(&priv->lock);
+ 		rtnl_unlock();
+-		return ret;
++		goto out;
+ 	}
+ 
+ 	stmmac_init_timestamping(priv);
+@@ -8393,7 +8403,12 @@ int stmmac_resume(struct device *dev)
+ 
+ 	netif_device_attach(ndev);
+ 
+-	return 0;
++	ret = 0;
++out:
++	if (irq_off)
++		enable_irq(ndev->irq);
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(stmmac_resume);
+ 
+-- 
+2.43.0
+
