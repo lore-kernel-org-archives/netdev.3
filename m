@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEA8486620;
-	Fri,  2 Oct 2026 10:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367F0488D82;
+	Fri,  2 Oct 2026 10:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790937145; cv=none; b=lSUY8AoegF2kXHpImLDm6KNHgfZ7UW7/14vLmk1FiFC+2B+bm2eYATiKGvr0BuT7nk+bUItIdB9SjrNSuD0F0waFZm6N5PwOgfqx8/lzS+jJOINzpTJ/8qQGGbnadI38GIOf6WEyP5jHVK5geY19hSOP9Widfp6HMPsmrkqLWnE=
+	t=1790937146; cv=none; b=Xa1Ek7LLqXsMPSgDELTT8aOJaSxFoEC5+Ui2WdSwIa5G1bQbOiMfQx8JaR1v1cJ1jPWpON9Jfdqj4XPZoDdWbfWi48JabbDyi+HYRsymgLTPcSb8y98BuN5WhJibIInAhUvlM61+gkyHFTdgjf0J9rPVHYLDS81dIGo5VIBq9Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790937145; c=relaxed/simple;
-	bh=Dn1/Tk35X//9iO2VSaYQl9fQIDxaDJc3uK7hc6TiHmM=;
+	s=arc-20240116; t=1790937146; c=relaxed/simple;
+	bh=A8gz5qz9N1UX6bWTK8QHr5k+qRdRd0cSQ3jFGMwLcRU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=P/aC4Qnm0Ow/lymTQoruEp6QBkde8dv4N5fAAvJPKvsT2/T8jN5smsPBQSeK/zCpN2EzM35VPDZ/BxmQJZW6N1XBWdnGrEHMzeepeF5qtE8iTUwa9kg/CbtZ6zZfz9MlKdzIHqSg5wMZhz1+ns4319SbIP31IB7dty/aZoDg878=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ONPhBqOu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=F6y8bA/P07mI5IdbHb7dw3lpBEosXaoZhiLJIyP472D/tta0enMtzhRHNEh4/lQKLtmpvbEv5qkll2ljlgYEOZ75pSWMoKy5W4EU2uwrkvNixXyvGxgKhB1bAWmy6i8XlQihjO7nDgovOsDLskXTHCSWjiqhREgfVbW0U0C19lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRyHZXi2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ONPhBqOu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C8D1F00898;
-	Fri,  2 Oct 2026 10:32:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRyHZXi2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F5B1F0089A;
+	Fri,  2 Oct 2026 10:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790937143;
-	bh=iPblK5MVDpqG2uE0q1oYrBT7Aythrfowz9n/YDj2r9U=;
+	s=k20260515; t=1790937145;
+	bh=/cX837TM+ZFRxm0LpqTSE8XEPQ+LWDUMln75gopRunI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ONPhBqOuhMwmq2agOX7W9U4xPvcuWygg7V3ipXyP6lzssmWiIpSJN1ObXgSciRqN6
-	 g7EhExO5ZaGV6t++n692Jy9VVArS5YL5v5oP9nrzxyZMwCfx3FdbXgy9+FX5cYvuID
-	 f+9MIA+vU702WGnCZr6PSktU88zBHiqYwJdeOi3MY6MYM+YlF5EL7Vp0eKi3Z+YUU7
-	 OZMx99yVEpq31fonTWscwMNAa6BHDzuXjTRxMvkWy4nsQJxBCyV0k+VWA8MgNzieBn
-	 GzoaPgluu+WSzJFozVdTDjuCiYV9+dAZvomZ0B0kRuk8Q7pthXtaCzRt0cSeMKbBem
-	 1kQuMY3xjGjSw==
-Subject: Re: [PATCH 06/16 net-next v2] ipv4: udp: split IPv4 specific logic
- into udp_ipv4.c
+	b=hRyHZXi24HNmmEVBMKEPnSBi04ze4B2Bzi9gaNlaGR4KPktjKceiix4QMAKUedK/f
+	 VdyB+8YAl79mhp+jxtKRVfDiNas1A4C6YxsKEoZESX/OGH4NpwxXWHkaLrnrANCeic
+	 gZh013ISzVjL/bZKeWQw+/1HuKcVKJXktwDQailBumJyLHuwkPpp8pZhyU8HFQD0bW
+	 e181J7+R7aItIO22oXXAZm+aLDvvjxaFQGAw0nxowTBU0qyN5zpYhkMZy9jIr4JTxW
+	 37iA1rplTGbQBVDO6fjkS4iJCJFyFtBuV69VvTN8qXDyfsO/ouubKqUsiHajhLI3tJ
+	 Bu1/rORDAlDGA==
+Subject: Re: [PATCH 07/16 net-next v2] ipv4: icmp: split IPv4 specific logic
+ into icmp_ipv4.c
 From: netdev-bot+sashiko@kernel.org
 To: fmancera@suse.de
 Cc: netdev@vger.kernel.org, horms@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, edumazet@kernel.org, davem@davemloft.net,
  edumazet@google.com, ebiggers@kernel.org, ardb@kernel.org, krzk@kernel.org,
  linux-kernel@vger.kernel.org
-Date: Fri, 02 Oct 2026 10:32:22 +0000
-Message-ID: <179093714260.434549.7181479065811703026@kernel.org>
-In-Reply-To: <20260928193046.6698-7-fmancera@suse.de>
-References: <20260928193046.6698-7-fmancera@suse.de>
-X-sashiko-severity: High
+Date: Fri, 02 Oct 2026 10:32:23 +0000
+Message-ID: <179093714377.434549.5306640210578239341@kernel.org>
+In-Reply-To: <20260928193046.6698-8-fmancera@suse.de>
+References: <20260928193046.6698-8-fmancera@suse.de>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,157 +48,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch moves udp_rcv() from net/ipv4/udp.c into the new
-  net/ipv4/udp_ipv4.c, but the moved copy is stale and undoes commit…
+- [Low] The patch moves the per-CPU ICMP control socket setup (a
+  for_each_possible_cpu() loop calling inet_ctl_sock_create()) out of…
 
 --
 
-ipv4: udp: split IPv4 specific logic into udp_ipv4.c
+ipv4: icmp: split IPv4 specific logic into icmp_ipv4.c
 
-This patch moves the IPv4 specific UDP code (lookup, input/output, error
-handling, multicast and the AF_INET udp_prot) out of net/ipv4/udp.c and
-into a new net/ipv4/udp_ipv4.c. The new file is built only when
-CONFIG_IPV4 is enabled, which is a step toward building INET without IPv4.
+This commit moves the IPv4 specific ICMP code (packet processing, error
+handling, the icmp_pointers[] table and the per-CPU control socket setup)
+out of net/ipv4/icmp.c into a new file, net/ipv4/icmp_ipv4.c. The new file
+is built only when CONFIG_IPV4 is enabled, and icmp.c is moved to obj-y.
 
-> diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-> index b534b85bc623c..0f2ff5a9d4ae4 100644
-> --- a/net/ipv4/udp.c
-> +++ b/net/ipv4/udp.c
-
-[ ... ]
-
-> -int udp_rcv(struct sk_buff *skb)
-> -{
-> -	struct rtable *rt = skb_rtable(skb);
-> -	struct net *net = dev_net(skb->dev);
-> -	struct sock *sk = NULL;
-> -	__be32 saddr, daddr;
-> -	unsigned int ulen;
-> -	struct udphdr *uh;
-> -	bool refcounted;
-> -	int drop_reason;
-> -
-> -	drop_reason = SKB_DROP_REASON_NOT_SPECIFIED;
-> -
-> -	/*
-> -	 *  Validate the packet.
-> -	 */
-> -	if (!pskb_may_pull(skb, sizeof(struct udphdr)))
-> -		goto drop;		/* No space for header. */
-> -
-> -	uh   = udp_hdr(skb);
-> -	ulen = udp_get_len(skb, uh, 0);
+> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+> index 90c0e22c29bea..5e8dcf71d135f 100644
+> --- a/net/ipv4/icmp.c
+> +++ b/net/ipv4/icmp.c
 
 [ ... ]
 
-> diff --git a/net/ipv4/udp_ipv4.c b/net/ipv4/udp_ipv4.c
+> @@ -1757,28 +366,11 @@ static struct pernet_operations __net_initdata icmp_sk_ops = {
+>  
+>  int __init icmp_init(void)
+>  {
+> -	int err, i;
+> -
+> -	for_each_possible_cpu(i) {
+> -		struct sock *sk;
+> +	if (IS_ENABLED(CONFIG_IPV4)) {
+> +		int err = icmp_init_ipv4();
+>  
+> -		err = inet_ctl_sock_create(&sk, PF_INET,
+> -					   SOCK_RAW, IPPROTO_ICMP, &init_net);
+> -		if (err < 0)
+> +		if (err)
+>  			return err;
+
+[ ... ]
+
+> diff --git a/net/ipv4/icmp_ipv4.c b/net/ipv4/icmp_ipv4.c
 > new file mode 100644
-> index 0000000000000..466008c218df4
+> index 0000000000000..24a1fb497cf6f
 > --- /dev/null
-> +++ b/net/ipv4/udp_ipv4.c
+> +++ b/net/ipv4/icmp_ipv4.c
 
 [ ... ]
 
-> +int udp_rcv(struct sk_buff *skb)
+> +int icmp_init_ipv4(void)
 > +{
-> +	struct rtable *rt = skb_rtable(skb);
-> +	struct net *net = dev_net(skb->dev);
-> +	struct sock *sk = NULL;
-> +	unsigned short ulen;
-> +	__be32 saddr, daddr;
-> +	struct udphdr *uh;
-> +	bool refcounted;
-> +	int drop_reason;
+> +	int err, i;
 > +
-> +	drop_reason = SKB_DROP_REASON_NOT_SPECIFIED;
+> +	for_each_possible_cpu(i) {
+> +		struct sock *sk;
 > +
-> +	/*
-> +	 *  Validate the packet.
-> +	 */
-> +	if (!pskb_may_pull(skb, sizeof(struct udphdr)))
-> +		goto drop;		/* No space for header. */
+> +		err = inet_ctl_sock_create(&sk, PF_INET,
+> +					   SOCK_RAW, IPPROTO_ICMP, &init_net);
+
+[Severity: Low]
+Should icmp_init_ipv4() be marked __init?
+
+The per-CPU control socket loop used to live directly in icmp_init(),
+which is __init, so it was freed with init memory after boot. It now sits
+in icmp_init_ipv4(), which has no annotation.
+
+The only caller is still icmp_init(), which runs once at boot, so this
+code can never run again. It now stays in resident .text instead of being
+discarded. The commit message describes this as a plain move and doesn't
+mention the change.
+
+Would it make sense to use int __init icmp_init_ipv4(void) here, and
+maybe put __init on the prototype in include/net/icmp.h as well?
+
+> +		if (err < 0)
+> +			return err;
 > +
-> +	uh   = udp_hdr(skb);
-> +	ulen = ntohs(uh->len);
-> +	saddr = ip_hdr(skb)->saddr;
-> +	daddr = ip_hdr(skb)->daddr;
-> +
-> +	if (ulen > skb->len)
-> +		goto short_packet;
-> +
-> +	if (ulen < sizeof(*uh))
-> +		goto short_packet;
-
-[Severity: High]
-The moved copy of udp_rcv() doesn't match the one being removed from
-net/ipv4/udp.c. Was this copied from a tree older than commit
-efbc1aa8ed54 ("udp: Support gro_ipv4_max_size > 65536")?
-
-The removed version has:
-
-	unsigned int ulen;
-	...
-	ulen = udp_get_len(skb, uh, 0);
-
-The new version has:
-
-	unsigned short ulen;
-	...
-	ulen = ntohs(uh->len);
-
-Those are the two lines efbc1aa8ed54 replaced.
-
-The GRO completion side still relies on the newer rule. Both
-udp_gro_complete() and the fraglist branch of udp4_gro_complete() call
-udp_set_len(), which writes a zero length for large aggregates:
-
-include/linux/udp.h:udp_set_len() {
-	uh->len = len < GRO_LEGACY_MAX_SIZE ? htons(len) : 0;
-}
-
-udp_get_len() is the helper that reads this marker back:
-
-include/linux/udp.h:udp_get_len() {
-	if (uh->len)
-		return ntohs(uh->len);
-	if (skb_is_gso(skb)) /* BIG TCP */
-		return skb->len - dataoff;
-	return 0;
-}
-
-Take gro_ipv4_max_size or gro_max_size set above 65536, with BIG TCP
-running over VXLAN or GENEVE. When a 64KB or larger aggregate reaches
-udp_rcv(), won't ulen be 0 here? The "ulen < sizeof(*uh)" check would
-then send it to short_packet, and the packet would be dropped with
-SKB_DROP_REASON_PKT_TOO_SMALL and counted in UDP_MIB_INERRORS.
-
-__udp6_lib_rcv() in net/ipv6/udp.c still uses udp_get_len(), so IPv4
-and IPv6 would now read the same header field differently.
-
-Restoring only the udp_get_len() call would not be enough. With
-ulen still declared unsigned short, lengths above 65535 would be
-truncated. Could both the unsigned int declaration and the
-udp_get_len() call be carried over, so this stays a pure code move as
-the commit message describes?
-
-> +
-> +	if (ulen < skb->len) {
-> +		if (pskb_trim_rcsum(skb, ulen))
-> +			goto short_packet;
-> +
-> +		uh = udp_hdr(skb);
-> +	}
+> +		per_cpu(ipv4_icmp_sk, i) = sk;
 
 [ ... ]
 
