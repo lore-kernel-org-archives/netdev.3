@@ -1,80 +1,133 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AC9474262;
-	Fri,  2 Oct 2026 09:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A0F475357
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 09:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790932614; cv=none; b=BSSh1DIpKJrkYCr4Ya/GNps9P2U3SH8WV5b/5kM1AVyJrX3Z+qeAjaxuz3wuQ2d4MQwF7WrTf0R5miqQOEr904qBWe17sqDVxN6L7WcjaHZub9odZmY5v3/AyWlpZBD4QK+ISUGkPFOoprSek1IIriRPa3dBNi7F0hIr2QbyBf0=
+	t=1790932622; cv=none; b=ueckCnvLoZk9Nx2VYlptxaatKf2PX0qCYQ9dWoXUovG4wZyeTHxuL19uJGa13vFvgR58ZUU+RqIa1xLA3mi3+enFpSrIRDpkVzrflZkasBMx1IsmwhVNZpHhIUatOswTSsbI/Bz2iZIagHR6UPpUQbAMsFZCPfY9KkkJc48J8Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790932614; c=relaxed/simple;
-	bh=GfB4AangzbGer9ZinOHaC9/Iw6vF2BIgUKhcXiugwjs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qdw1pqRSHK8sA5sPP+ZaHVgHL4HBu3DjZgIB/jZ2iHWX++L7IwqqnJ7GRC8ejzU8Hv4cRDLJzCE9sD8ErtQ9vp9dYtUYjURFIP/gcKmZ69Nl/hCD5W9xqjyLyBesMBPYH8V3u1kSCOubCfwPOGuw5/dJYF1okmjxS7v8/FDOUXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=gLkgmP8q; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1790932622; c=relaxed/simple;
+	bh=O9N+9R8uU7QsHt0Onbh4nEptde/Q8bHqysBonV1VsXA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UISD3yhTZ7u+8e2y0YVR7qVTnAP3MKDOyWhdyY8x9SPrRidLdmDaqATWQc8VCcGuS43ugkJix7+WT5r/fdpJAuWYJVeWHRP5f0LZVMVEiXMcSQ1ouF44jeRDEgpNpgy+8LpA3gDS9FJ3R9yhSAP1bE1jF2qyRE7NBKhvXFSfZ8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=dZ9HcI85; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="gLkgmP8q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1790932612; x=1822468612;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=GfB4AangzbGer9ZinOHaC9/Iw6vF2BIgUKhcXiugwjs=;
-  b=gLkgmP8qYKsFBrB8tz1TcFbpWIVoPt6zUKqM37SYlZ4x2OtNVptdcQ+F
-   MkxkotswdlBDkH08VwGO115nN5FjEKHja9Msw+1TsPzXqhD53VRtwBGDg
-   Y/YOg/QKA0VJaUGF+3u9cRIPR14CrKzYftCLNlIlBQ1oxMvW/+ew8EzB4
-   +R/7b3Nvu2zTNWig7UwBOCc489HE9RbF6cAQiEHbHzIjAfqQpnRcIDyY9
-   HcDj4lczp2u81/dvFSmY1duTwVfaQItD2Y9oUkyXZufcaLezn6owk4VrS
-   rlc1dVY6yGl5LdA8MLRVtoMcILbaJ5QS2QApooi+56It5VQrE5cRxt+1F
-   A==;
-X-CSE-ConnectionGUID: 1B6BoPspRIaa6wrCNHZR3Q==
-X-CSE-MsgGUID: ZvhM4zZUR1OcZNmWWtJ1aA==
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="63547603"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 02:16:50 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Fri, 2 Oct 2026 02:16:50 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 2 Oct 2026 02:16:46 -0700
-Date: Fri, 2 Oct 2026 11:16:45 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
-	<horms@kernel.org>, <richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v9 15/15] misc: lan966x-pci: dts: add fdma
- interrupt to overlay
-Message-ID: <20261002091645.tbhmk64qsf5wllni@DEN-DL-M70577>
-References: <20260928-lan966x-pci-fdma-v9-15-a17caf60f89a@microchip.com>
- <179092642540.434549.1993526526960644611@kernel.org>
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="dZ9HcI85"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so50053165e9.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 02:16:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1790932618; x=1791537418; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/vrBD0CT1MR07gxIR6j67mOmP/4T+zAG5j0e2ov3zjU=;
+        b=dZ9HcI85Qr8kB1UCbVqqMZ2nJIiu+ZeuzpKZkTNz0G5XpNIAxvNeVbrRLw1/6OwL1n
+         lkFwkEwm85Y0Pc1vyvQ5s3TXHG43Tn2m48YtENu9SPk20Ntixg7fhRdflDTluWNwJeAT
+         r3z19ottC3skEk/Z2aAtlUVa5IQXzG+CR6SPgPBTEySVcG/gWRN/kDT9XMFZOsRQGEE6
+         fpiAvEYD4UY3CkxdJpXPRbWPu/3ABPqEQpAa24L96fokxigJeJxCg7dyojr0Z5dNIBVc
+         McOn1VRq7usDSzukKl9LGgCp9l1LnzrONDB8g/S2BBWxzFn99o9K0brrQx9E7OfA8Rzg
+         PuDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790932618; x=1791537418;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/vrBD0CT1MR07gxIR6j67mOmP/4T+zAG5j0e2ov3zjU=;
+        b=gzOrotPzhQMPKonFsrRR5u8V6GwJb5dX3iCtEF1wh3A1nbG5L7Ra9WjVA2g9SS9NA9
+         JunJfbk18VDjxk3zlXZV84OU/CBTA6kuelm3BUWkjg/N2PUEKdPg+A/kz/M9d9cwI8+L
+         jGVvGoGwQ276PVhJd7DWhtDIskWgXYkVOExKuKfTv23Sv8ZgH65GQKpsYNLs8mTmu/Dm
+         AGtNoOMO3EBoTK+qZyfqKfvugrURmIcJPaJzgqxzj8A4dp6miYm+mHyF3Xh53b8wuCGC
+         DVJRhg9nxrY6g8+RiMEOIgeJaeZxClqlViln0a7IZmj5FzSImMxBmXKl76adkmAl9lKN
+         FPUg==
+X-Gm-Message-State: AFuF++nNuDwHjyRh/XmoMXuQxooNKELYgzsePnxG7axe7GVvryQ1+jym
+	SCgyct8TAdisAI3eOFCn28HYcdW1lhTQyG4bWEvEeHfoPT52Ln86wFhXoW9S7RyCFvsk+te+R5h
+	bMoKuNVwNxWzYsEOzA76+SEFZprAxKdU05/dbLwFlawuQ7rW7PW8=
+X-Gm-Gg: AYBFou1GEOds17bi7xN3OvKVfzkzV47KCJITW3UekyFNdHpLxKbkVTO8Mk2e7i83mVi
+	j2N3+ymI479eRzTlquo/ngZmXWadEKgSAb5pCZpZcoZ5JjFocV+UcHAIvVKMycBu40pBRtddtsZ
+	eD0FxYa2lWuUNlBCKaUROTCuk5QrXSK6O+NccqZ9YuOxsnfHBMnMwJgWFOV2OM33u1PFiqUgox4
+	Gzok0x2QpvGhigZCc0A5ijbxU4dy4FESC/PvDCYi7UH5svWwe2v8JcPx717+BsI8qWzT6m9Kg42
+	VnE+EAORtdUghEpLZP+uJ4kCdcFRjQwDaYl6k9RFxwDF1tx2/WCbMVdMaM/z0z6bVLsF3XX2OcW
+	zufFmH0LGHjXUvXKFxHlksSJKK6lrzoaf7OuZpnLyAAfN097Fc9Bx4BojkEqha36HQ8UMmnsfrV
+	SqSKyImhUxIlVImx0c7Rhb7JbszA7IMeuosnJmZNCnF+EPUHlCPZ0adckaDRl3eVuC+KsQshI8E
+	KWl2Q==
+X-Received: by 2002:a05:600c:34cc:b0:49f:bd3c:bc28 with SMTP id 5b1f17b1804b1-4a0276afdb4mr42129595e9.35.1790932618211;
+        Fri, 02 Oct 2026 02:16:58 -0700 (PDT)
+Received: from [192.168.182.19] ([185.242.181.115])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b38307190sm4028330f8f.45.2026.10.02.02.16.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Oct 2026 02:16:57 -0700 (PDT)
+Message-ID: <db73f9dc-ea84-48ef-98c4-d5220402d741@openvpn.net>
+Date: Fri, 2 Oct 2026 11:16:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 5/7] selftests: ovpn: wait for the TCP server key
+ setup before traffic
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, ralf@mandelbit.com, sd@queasysnail.net,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com
+References: <20260930222542.3839327-6-antonio@openvpn.net>
+ <179089367106.434549.3098615866508622379@kernel.org>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+ ifS0+hzvnPVD9wXa9kdjO+0H
+Organization: OpenVPN Inc.
+In-Reply-To: <179089367106.434549.3098615866508622379@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179092642540.434549.1993526526960644611@kernel.org>
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
+Hi,
+
+On 02/10/2026 00:27, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
 > issue(s) to consider.
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
 > 
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -82,122 +135,16 @@ In-Reply-To: <179092642540.434549.1993526526960644611@kernel.org>
 > know by including "pw-bot: cr" as a separate line at the end of your reply
 > (one such reply per series is enough).
 > 
-> - [Medium] Once this overlay adds the "fdma" interrupt, PCIe instances
->   use lan966x_fdma_pci_ops, and a teardown ordering bug in that backend…
-> 
-> --
-> 
-> misc: lan966x-pci: dts: add fdma interrupt to overlay
-> 
-> This commit adds the fdma interrupt (OIC interrupt 14) to the lan966x PCI
-> device tree overlay. This turns on FDMA-based frame injection and extraction
-> when the switch is connected over PCIe.
-> 
-> > diff --git a/drivers/misc/lan966x_pci.dtso b/drivers/misc/lan966x_pci.dtso
-> > index 7bb726550cafd..5bb12dbc08431 100644
-> > --- a/drivers/misc/lan966x_pci.dtso
-> > +++ b/drivers/misc/lan966x_pci.dtso
-> > @@ -141,8 +141,9 @@ switch: switch@e0000000 {
-> >  
-> >  					interrupt-parent = <&oic>;
-> >  					interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
-> > +						     <14 IRQ_TYPE_LEVEL_HIGH>,
-> >  						     <9 IRQ_TYPE_LEVEL_HIGH>;
-> > -					interrupt-names = "xtr", "fdma", "ana";
-> > +					interrupt-names = "xtr", "fdma", "ana";
-> 
-> [Severity: Medium]
-> Once the "fdma" interrupt is present, PCIe instances use
-> lan966x_fdma_pci_ops. Does that make a teardown ordering problem in the PCIe
-> FDMA backend reachable?
-> 
-> lan966x_remove() tears down the FDMA before it unregisters the netdevs:
-> 
-> lan966x_main.c:lan966x_remove() {
->     ...
-> 	lan966x->ops->fdma_deinit(lan966x);
-> 	lan966x_cleanup_ports(lan966x);
->     ...
-> }
-> 
-> lan966x_fdma_pci_deinit() disables NAPI and frees both rings. It does not
-> clear lan966x->rx.lan966x, it does not detach the netdevs, and rtnl is not
-> held at this point:
-> 
-> lan966x_fdma_pci.c:lan966x_fdma_pci_deinit() {
-> 	if (lan966x->fdma_ndev)
-> 		napi_disable(&lan966x->napi);
->     ...
-> 	fdma_free_coherent_and_unmap(lan966x->dma_dev, &lan966x->rx.fdma);
-> 	fdma_free_coherent_and_unmap(lan966x->dma_dev, &lan966x->tx.fdma);
-> }
-> 
-> fdma_free_coherent_and_unmap() only clears atu_region, so dcbs and dma
-> still hold their old values.
-> 
-> netif_set_mtu_ext() only checks netif_device_present(). That means an MTU
-> change that alters the max frame size can still run during this window:
-> 
-> lan966x_port_change_mtu()
->   lan966x_fdma_pci_resize()
->     __lan966x_fdma_pci_reload()
->       lan966x_fdma_pci_reload()
->         napi_disable(&lan966x->napi)
-> 
-> The resize guard is only this check:
-> 
-> 	if (!lan966x->rx.lan966x)
-> 		return 0;
-> 
-> rx.lan966x is still non-NULL after deinit. Would the second napi_disable()
-> on an already disabled NAPI spin forever while holding rtnl? That would also
-> block the unregister_netdev() that lan966x_remove() calls next.
-> 
-> The probe error path in lan966x_fdma_pci_init() looks like it has a similar
-> gap:
-> 
-> 	err = lan966x_fdma_pci_tx_alloc(&lan966x->tx);
-> 	if (err) {
-> 		fdma_free_coherent_and_unmap(lan966x->dma_dev, rx_fdma);
-> 		return err;
-> 	}
-> 
-> rx.lan966x has already been set earlier in lan966x_fdma_pci_init(). The
-> netdevs registered by lan966x_probe_port() stay live until the cleanup_ports
-> label.
-> 
-> If an MTU change arrives in that window, NAPI is still enabled from
-> lan966x_port_init(). lan966x_fdma_pci_reload() then allocates new rings and
-> does:
-> 
-> 	fdma_free_coherent_and_unmap(lan966x->dma_dev, &rx_fdma_old);
-> 
-> Is this a second dma_free_coherent() of the RX ring that the error path
-> already freed?
-> 
-> After that, reload re-arms the FDMA on the new rings. The probe error path
-> never calls fdma_deinit for them. Would the coherent memory for the new rings
-> leak, with the outbound ATU windows still mapped and DMA active after probe
-> fails?
-> 
-> The resize guard added in "net: lan966x: add PCIe FDMA MTU change support"
-> is meant to skip the resize until lan966x_fdma_pci_init() has built the
-> rings. It doesn't seem to cover rings that were torn down or only partly
-> built.
-> 
-> The shutdown callback from "net: lan966x: add shutdown callback to stop the
-> FDMA on reboot" avoids this by taking rtnl and calling netif_device_detach()
-> so that ndo_open and ndo_change_mtu can't re-enter the FDMA. Should the
-> remove and probe error paths get the same protection?
-> 
-> The platform backend already has the same remove ordering. The PCIe deinit,
-> resize and reload code is new in this series, though, and this overlay change
-> is what first makes it reachable.
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-lan966x-pci-fdma-v9-0-a17caf60f89a%40microchip.com
+> - [Medium] ovpn_wait_tcp_keys() (common.sh) runs a bare `wait
+>    "${OVPN_TCP_KEYS_PID}"` with no timeout.
 
-Pre-existing. Lan966x_remove() is a platform function. It's a re-raise of v7
-11/14 / v8 15/15, the probe/remove ordering. The issue is real, but out-of-scope
-for this series.
+It makes sense to fix this.
+
+pw-bot: cr
+
+Regards,
+
+-- 
+Antonio Quartulli
+OpenVPN Inc.
 
