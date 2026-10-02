@@ -1,220 +1,244 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender-op-o11.zoho.eu (sender-op-o11.zoho.eu [136.143.169.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5627361DA6;
-	Fri,  2 Oct 2026 20:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790971926; cv=none; b=lJWaprs4044zaAjX8LaOhQqhp0UlRtXxMlvrB8kUrmKhF9+u0s83156DJSakGlXJW7HSkfhp7tYZgQNYye96tcvuUTHTIfNZCsdKbKlKGoyvCvxlWWIwnU0NyhGIkU38gSnhK3soANVUNTffAGnuK1G8SAX5EwKhtArc3xysAm4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790971926; c=relaxed/simple;
-	bh=u1VUi7i2eo1s5ZkFz17C9mIWmLAfAeA9kAw6eY65CJo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ImDYqs6kGyp6eywtffGaRAaibinDbYwPdwe0s+Ypk105AQ7c+X9keZuxtsdw8xz9rWNbsKQUEFcHqm0q6t5iLgDYba+NVzFAhGiwxQF/NDWx+Q/zc2ZZzxXMOuOes7VSLvMxLFlBI3t72XwjspUsb+IxduLc8anpc/27tAXZJa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hb3i9PEx; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5C35172D2
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790971962; cv=pass; b=kQZDOGa6KGfcRKOB8H9j781/erDwKbbC2xOMRmOm+J/VQEgWzkb39nXi5VVMlbZerpHum/OuDS1H5n+oGa1y78YDa4uaPLsZqpIgoOJyBRWe9Jm5DVVxaB0Qyqa0uWveoWGbC8j3/eX+qt+wtL1lmxX2Nx2y3/hnE0UyhO75pKw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790971962; c=relaxed/simple;
+	bh=JXrnqN5b7b5VPl2cUpvt51GalgUDyhSMgLaVePYKUoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=autAMcW0Ae9UQorE/DxFGvqXPmA18gIxnUU82v4aYuPK3DFv9CEsMRIkUR5wQGrAhh1OqEyCqR6OXugtr3VZU6d+eSe/Fd/fgV7VlIMkKw6A3wK3D6YV/U+gceTiWkDKptWpsfbvUJSnPRcMviQw7h3qpfuIWJ398C5mKY3erYY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=carlosgrillet.me; spf=pass smtp.mailfrom=carlosgrillet.me; dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b=Lkv/BI5U; arc=pass smtp.client-ip=136.143.169.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=carlosgrillet.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=carlosgrillet.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hb3i9PEx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7D51F000FF;
-	Fri,  2 Oct 2026 20:11:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790971910;
-	bh=8mB+2FAvudWlhy7JU6hqu2muO7sjzdIMHRZOCMN4uzU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hb3i9PExZcl0SqoaXhsoR4RTEv8vEPBtocVnHEBD1WEqU/XSl8fegU3INkq/61sRS
-	 6yvoZhls/RBwtpcIdEHb2Rg1nQHF87CcjLjFgfsr0vqlPBK5aSkToUeIvCX2F8QXyD
-	 Wk0qIOIR2kM9eOAF8LJfPSRlQzWOQr6ZEdI3BMNe3Rwi/3VhkfMH2A9DvSXAcmMWAL
-	 ZJvg0/KZ7oaIGOGoJPLGw7ZBxUj5DBmPtMtFMFHmCycrkG825/FFlqzQkxtK5mAplv
-	 nnBqa1Pj99oYZpmpUQqeSob1nGpXmKU2W3l8mB1IaGSLT++uHuBCHk7m8ufvKLXJks
-	 l2xD+uv+P9Yyg==
-Date: Fri, 2 Oct 2026 21:11:44 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Brian Masney <bmasney@redhat.com>
-Cc: Changhuang Liang <changhuang.liang@starfivetech.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Jerome Brunet <jbrunet+clk@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Emil Renner Berthing <kernel@esmil.dk>, Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-hardening@vger.kernel.org, netdev@vger.kernel.org,
-	Hal Feng <hal.feng@starfivetech.com>
-Subject: Re: [PATCH v5 00/23] Add basic clocks and resets for JHB100 SoC
-Message-ID: <20261002-amigo-joyfully-6894bdfa17e3@spud>
-References: <20260930124317.5648-1-changhuang.liang@starfivetech.com>
- <20260930-grafting-undertake-ff3e01060284@spud>
- <ar_4NBLHrq2W7_vc@redhat.com>
+	dkim=pass (1024-bit key) header.d=carlosgrillet.me header.i=carlos@carlosgrillet.me header.b="Lkv/BI5U"
+ARC-Seal: i=1; a=rsa-sha256; t=1790971864; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=Btv9wJug5hY0neMPmKB+asRaXkXSxcZ4KKYUjHsyncRpozQLqgyKAb4wI5Rt73kSt4HJu92pLQzzDheV9UGWhTADvpmsr9XThdTyBPgIQDIbuhf4RcD1JlCp6M6LzCqwdXko/v1I5/4i4KD9PZLmh1brhNNuADdO+LAf/Qkoyf4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1790971864; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/4GO7aD7n+aCVqq1i3jpJpGmN5SXdv/c+vAs199Kl2E=; 
+	b=eHuSGmTK5TmSdxa5/7NVVHCilSgSjbnwpSsMALqPLPlxVJjLul6/zVniF4Tdg7cMoA0AFB0C+tV1AEL1zC6dKTUPWuYYj3o41yW+IzfsIv/9PQfIEAcIvzB+JI4Pe7P9P/WBhtKMXU2mCQxohtx7Tf62Sbxr51DISTl9cmAv5O8=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=carlosgrillet.me;
+	spf=pass  smtp.mailfrom=carlos@carlosgrillet.me;
+	dmarc=pass header.from=<carlos@carlosgrillet.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790971864;
+	s=zmail; d=carlosgrillet.me; i=carlos@carlosgrillet.me;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=/4GO7aD7n+aCVqq1i3jpJpGmN5SXdv/c+vAs199Kl2E=;
+	b=Lkv/BI5Ugjc+j+59Ll+5Yyl4YGLIOCJepwNUngff+W0/5TCVAdlz8ctaQBd+ZfLP
+	PVRrztkKdg7XFJy17i7iDyfB1Auq7Z1EmeFLhaKiDIZ20n184MTUTsHOtaF5iOMg5dD
+	czb99BbnP1Yr4KH5ngclBEDfy1Wle/+Kz2WWM+7I=
+Received: by smtp.zoho.eu with SMTPS id 1790971862347592.8629566628938;
+	Fri, 2 Oct 2026 22:11:02 +0200 (CEST)
+From: Carlos Grillet <carlos@carlosgrillet.me>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH nf-next] netfilter: nf_nat: replace u_int16_t with u16
+Date: Fri,  2 Oct 2026 22:10:55 +0200
+Message-ID: <20261002201057.132466-1-carlos@carlosgrillet.me>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zlg7mmY8Da63fSnW"
-Content-Disposition: inline
-In-Reply-To: <ar_4NBLHrq2W7_vc@redhat.com>
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
---zlg7mmY8Da63fSnW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Use the preferred kernel type u16 instead of the POSIX u_int16_t
+variant across the NAT helpers.
 
-On Fri, Oct 02, 2026 at 02:30:12PM -0400, Brian Masney wrote:
-> Hi Conor,
->=20
-> On Wed, Sep 30, 2026 at 11:43:22PM +0100, Conor Dooley wrote:
-> > FYI clock folks,
-> >=20
-> > On Wed, Sep 30, 2026 at 05:42:54AM -0700, Changhuang Liang wrote:
-> > > The JHB100 SoC includes CRG (Clock and Reset Generator) for multiple
-> > > subsystems:
-> > >=20
-> > > The JHB100 SoC is divided into multiple subsystems, and basically
-> > > each subsystem includes a CRG(Clock and Reset Generator):
-> > >  - sys0crg/sys1crg/sys2crg/
-> > >  - per0crg/per1crg/per2crg/per3crg/
-> > >  - voutcrg
-> > >  - vcecrg
-> > >  - gpu0crg/gpu1crg
-> > >  - cpucrg
-> > >  - usbcrg
-> > >  - host0crg/host1crg
-> > >  - pcierpcrg
-> > >  - husb0crg/husb1crg
-> > >  - husbcmncrg
-> > >  - husbd0crg/husbd1crg
-> > >  - npucrg
-> > >=20
-> > > In the current series, we will only add the following CRG:
-> > >  - sys0crg/sys1crg/sys2crg/
-> > >  - per0crg/per1crg/per2crg/per3crg/
-> > >=20
-> > > The remaining CRG will be implemented in future series.
-> > >=20
-> > > This series depends on the series:
-> > > https://lore.kernel.org/all/20260806122553.182449-1-changhuang.liang@=
-starfivetech.com/
-> > > and it has been tested on the StarFive JHB100 EVB-1.
-> >=20
-> > If this revision of the series is acceptable, I'd (although I'm not a
-> > listed driver maintainer) like to send you a PR as I've done in the past
-> > for Starfive stuff so that I can get some of these binding patches that
-> > contain headers as part of a shared tag to be able to unblock a bunch of
-> > the soc tree stuff. With conferences next week I understand that, with =
-it
-> > being -rc5, it's probably this doesn't make v7.4 but I figured it was
-> > worth getting my intentions out there!
->=20
-> I am going through this series now, and I have a few minor changes to
-> the clk drivers themselves.
->=20
-> Feel free to send a pull for the bindings and headers though.
+No functional change.
 
-Okay, PR below.
+Signed-off-by: Carlos Grillet <carlos@carlosgrillet.me>
+---
+This supersedes the nf_nat_amanda one-liner from batch 3, which was
+dropped in favour of a larger changeset:
 
-I won't put this tag into my linux-next branch until the drivers are in
-the clock tree, but it'll let me get my ducks in a row, particularly
-beneficial given next week I'll be somewhat AFK! Duck alignment is
-currently ongoing in the "jhb100" branch in my repo..
+  https://lore.kernel.org/netfilter-devel/ak5lH1UnFth6oreP@strlen.de/
 
-Thanks Brian, Conor.
+nf_nat is now converted in one patch, as suggested. The remaining
+families (nfnetlink, nf_log, x_tables, ...) will follow the same way.
 
-btw, will you be at LPC or OSSEU?
+ include/linux/netfilter/nf_conntrack_sip.h |  2 +-
+ net/ipv4/netfilter/nf_nat_h323.c           | 10 +++++-----
+ net/ipv4/netfilter/nf_nat_pptp.c           |  4 ++--
+ net/netfilter/nf_nat_amanda.c              |  2 +-
+ net/netfilter/nf_nat_ftp.c                 |  2 +-
+ net/netfilter/nf_nat_irc.c                 |  2 +-
+ net/netfilter/nf_nat_sip.c                 |  6 +++---
+ 7 files changed, 14 insertions(+), 14 deletions(-)
 
-The following changes since commit cee9395acd8043be0644b25c34bfa86623f2b935:
+diff --git a/include/linux/netfilter/nf_conntrack_sip.h b/include/linux/netfilter/nf_conntrack_sip.h
+index aafa0c04f917..3b66ec4b20c8 100644
+--- a/include/linux/netfilter/nf_conntrack_sip.h
++++ b/include/linux/netfilter/nf_conntrack_sip.h
+@@ -143,7 +143,7 @@ struct nf_nat_sip_hooks {
+ 				 unsigned int *datalen,
+ 				 unsigned int matchoff,
+ 				 unsigned int matchlen,
+-				 u_int16_t port);
++				 u16 port);
+ 
+ 	unsigned int (*sdp_session)(struct sk_buff *skb,
+ 				    unsigned int protoff,
+diff --git a/net/ipv4/netfilter/nf_nat_h323.c b/net/ipv4/netfilter/nf_nat_h323.c
+index 6bcd6734769b..265c1ba5b348 100644
+--- a/net/ipv4/netfilter/nf_nat_h323.c
++++ b/net/ipv4/netfilter/nf_nat_h323.c
+@@ -186,7 +186,7 @@ static int nat_rtp_rtcp(struct sk_buff *skb, struct nf_conn *ct,
+ 	struct nf_ct_h323_master *info = nfct_help_data(ct);
+ 	int dir = CTINFO2DIR(ctinfo);
+ 	int i;
+-	u_int16_t nated_port;
++	u16 nated_port;
+ 
+ 	if (!info)
+ 		return -1;
+@@ -282,7 +282,7 @@ static int nat_t120(struct sk_buff *skb, struct nf_conn *ct,
+ 		    struct nf_conntrack_expect *exp)
+ {
+ 	int dir = CTINFO2DIR(ctinfo);
+-	u_int16_t nated_port = ntohs(port);
++	u16 nated_port = ntohs(port);
+ 
+ 	/* Set expectations for NAT */
+ 	exp->saved_proto.tcp.port = exp->tuple.dst.u.tcp.port;
+@@ -321,7 +321,7 @@ static int nat_h245(struct sk_buff *skb, struct nf_conn *ct,
+ {
+ 	struct nf_ct_h323_master *info = nfct_help_data(ct);
+ 	int dir = CTINFO2DIR(ctinfo);
+-	u_int16_t nated_port = ntohs(port);
++	u16 nated_port = ntohs(port);
+ 
+ 	if (!info)
+ 		return -1;
+@@ -402,7 +402,7 @@ static int nat_q931(struct sk_buff *skb, struct nf_conn *ct,
+ {
+ 	struct nf_ct_h323_master *info = nfct_help_data(ct);
+ 	int dir = CTINFO2DIR(ctinfo);
+-	u_int16_t nated_port = ntohs(port);
++	u16 nated_port = ntohs(port);
+ 	union nf_inet_addr addr;
+ 
+ 	if (!info)
+@@ -488,7 +488,7 @@ static int nat_callforwarding(struct sk_buff *skb, struct nf_conn *ct,
+ 			      struct nf_conntrack_expect *exp)
+ {
+ 	int dir = CTINFO2DIR(ctinfo);
+-	u_int16_t nated_port;
++	u16 nated_port;
+ 
+ 	/* Set expectations for NAT */
+ 	exp->saved_addr = exp->tuple.dst.u3;
+diff --git a/net/ipv4/netfilter/nf_nat_pptp.c b/net/ipv4/netfilter/nf_nat_pptp.c
+index fed5249001a4..5387c288c348 100644
+--- a/net/ipv4/netfilter/nf_nat_pptp.c
++++ b/net/ipv4/netfilter/nf_nat_pptp.c
+@@ -130,7 +130,7 @@ pptp_outbound_pkt(struct sk_buff *skb,
+ 	struct nf_ct_pptp_master *ct_pptp_info;
+ 	struct nf_conn_nat *nat = nfct_nat(ct);
+ 	struct nf_nat_pptp *nat_pptp_info;
+-	u_int16_t msg;
++	u16 msg;
+ 	__be16 new_callid;
+ 	unsigned int cid_off;
+ 
+@@ -243,7 +243,7 @@ pptp_inbound_pkt(struct sk_buff *skb,
+ {
+ 	const struct nf_nat_pptp *nat_pptp_info;
+ 	struct nf_conn_nat *nat = nfct_nat(ct);
+-	u_int16_t msg;
++	u16 msg;
+ 	__be16 new_pcid;
+ 	unsigned int pcid_off;
+ 
+diff --git a/net/netfilter/nf_nat_amanda.c b/net/netfilter/nf_nat_amanda.c
+index 330415809425..17b0c1c8d4e1 100644
+--- a/net/netfilter/nf_nat_amanda.c
++++ b/net/netfilter/nf_nat_amanda.c
+@@ -34,7 +34,7 @@ static unsigned int help(struct sk_buff *skb,
+ 			 struct nf_conntrack_expect *exp)
+ {
+ 	char buffer[sizeof("65535")];
+-	u_int16_t port;
++	u16 port;
+ 
+ 	/* Connection comes from client. */
+ 	exp->saved_proto.tcp.port = exp->tuple.dst.u.tcp.port;
+diff --git a/net/netfilter/nf_nat_ftp.c b/net/netfilter/nf_nat_ftp.c
+index 25d20e2970ae..0c90165040e0 100644
+--- a/net/netfilter/nf_nat_ftp.c
++++ b/net/netfilter/nf_nat_ftp.c
+@@ -70,7 +70,7 @@ static unsigned int nf_nat_ftp(struct sk_buff *skb,
+ 			       struct nf_conntrack_expect *exp)
+ {
+ 	union nf_inet_addr newaddr;
+-	u_int16_t port;
++	u16 port;
+ 	int dir = CTINFO2DIR(ctinfo);
+ 	char buffer[sizeof("|1||65535|") + INET6_ADDRSTRLEN];
+ 	unsigned int buflen;
+diff --git a/net/netfilter/nf_nat_irc.c b/net/netfilter/nf_nat_irc.c
+index 89b31fe932ba..140b7d99a887 100644
+--- a/net/netfilter/nf_nat_irc.c
++++ b/net/netfilter/nf_nat_irc.c
+@@ -39,7 +39,7 @@ static unsigned int help(struct sk_buff *skb,
+ {
+ 	char buffer[sizeof("4294967296 65635")];
+ 	union nf_inet_addr newaddr;
+-	u_int16_t port;
++	u16 port;
+ 
+ 	/* Reply comes from server. */
+ 	newaddr = ct->tuplehash[IP_CT_DIR_REPLY].tuple.dst.u3;
+diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
+index 8c412bcf6cff..e27c9744054e 100644
+--- a/net/netfilter/nf_nat_sip.c
++++ b/net/netfilter/nf_nat_sip.c
+@@ -410,7 +410,7 @@ static unsigned int nf_nat_sip_expect(struct sk_buff *skb, unsigned int protoff,
+ 	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
+ 	struct nf_ct_sip_master *ct_sip_info = nfct_help_data(ct);
+ 	union nf_inet_addr newaddr;
+-	u_int16_t port;
++	u16 port;
+ 	__be16 srcport;
+ 	char buffer[INET6_ADDRSTRLEN + sizeof("[]:nnnnn")];
+ 	unsigned int buflen;
+@@ -536,7 +536,7 @@ static unsigned int nf_nat_sdp_port(struct sk_buff *skb, unsigned int protoff,
+ 				    const char **dptr, unsigned int *datalen,
+ 				    unsigned int matchoff,
+ 				    unsigned int matchlen,
+-				    u_int16_t port)
++				    u16 port)
+ {
+ 	char buffer[sizeof("nnnnn")];
+ 	unsigned int buflen;
+@@ -601,7 +601,7 @@ static unsigned int nf_nat_sdp_media(struct sk_buff *skb, unsigned int protoff,
+ 	enum ip_conntrack_info ctinfo;
+ 	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
+ 	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
+-	u_int16_t port;
++	u16 port;
+ 
+ 	/* Connection will come from reply */
+ 	if (nf_inet_addr_cmp(&ct->tuplehash[dir].tuple.src.u3,
+-- 
+2.55.0
 
-  Linux 7.3-rc1 (2026-08-30 13:34:40 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/conor/linux.git/ tags/clk=
--starfive-jhb100
-
-for you to fetch changes up to 17986e31f3b6142c302c8f9af16540422787daf9:
-
-  dt-bindings: clock: Add StarFive JHB100 Peripheral-3 clock and reset gene=
-rator (2026-10-02 20:58:09 +0100)
-
-----------------------------------------------------------------
-jhb100 clock binding shared tag
-
-This is a shared tag for the Starfive jhb100 clock bindings, between the
-riscv soc tree and clock tree.
-
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-
-----------------------------------------------------------------
-Changhuang Liang (7):
-      dt-bindings: clock: Add StarFive JHB100 System-0 clock and reset gene=
-rator
-      dt-bindings: clock: Add StarFive JHB100 System-1 clock and reset gene=
-rator
-      dt-bindings: clock: Add StarFive JHB100 System-2 clock and reset gene=
-rator
-      dt-bindings: clock: Add StarFive JHB100 Peripheral-0 clock and reset =
-generator
-      dt-bindings: clock: Add StarFive JHB100 Peripheral-1 clock and reset =
-generator
-      dt-bindings: clock: Add StarFive JHB100 Peripheral-2 clock and reset =
-generator
-      dt-bindings: clock: Add StarFive JHB100 Peripheral-3 clock and reset =
-generator
-
- Documentation/devicetree/bindings/clock/starfive,jhb100-per0crg.yaml |  70=
- +++++++++++++++++++++++++++
- Documentation/devicetree/bindings/clock/starfive,jhb100-per1crg.yaml |  70=
- +++++++++++++++++++++++++++
- Documentation/devicetree/bindings/clock/starfive,jhb100-per2crg.yaml |  76=
- +++++++++++++++++++++++++++++
- Documentation/devicetree/bindings/clock/starfive,jhb100-per3crg.yaml |  76=
- +++++++++++++++++++++++++++++
- Documentation/devicetree/bindings/clock/starfive,jhb100-sys0crg.yaml |  63=
- ++++++++++++++++++++++++
- Documentation/devicetree/bindings/clock/starfive,jhb100-sys1crg.yaml |  71=
- +++++++++++++++++++++++++++
- Documentation/devicetree/bindings/clock/starfive,jhb100-sys2crg.yaml |  64=
- +++++++++++++++++++++++++
- include/dt-bindings/clock/starfive,jhb100-crg.h                      | 542=
- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/dt-bindings/reset/starfive,jhb100-crg.h                      | 186=
- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 9 files changed, 1218 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100=
--per0crg.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100=
--per1crg.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100=
--per2crg.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100=
--per3crg.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100=
--sys0crg.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100=
--sys1crg.yaml
- create mode 100644 Documentation/devicetree/bindings/clock/starfive,jhb100=
--sys2crg.yaml
- create mode 100644 include/dt-bindings/clock/starfive,jhb100-crg.h
- create mode 100644 include/dt-bindings/reset/starfive,jhb100-crg.h
-
---zlg7mmY8Da63fSnW
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasAQAAAKCRB4tDGHoIJi
-0qA6AP9gOlhBMLDM29gtUuUG2e3rfHqov1UQArl3qZThyTLh/wD+Lh811Lj+bq83
-7y5mCm3kd+fKHBmjMt4/TQBCvC9ZaQA=
-=zqex
------END PGP SIGNATURE-----
-
---zlg7mmY8Da63fSnW--
