@@ -1,98 +1,108 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f31.google.com (mail-ed2-f31.google.com [74.125.228.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A5B3C3F5B;
-	Fri,  2 Oct 2026 12:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D560244C66C
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 12:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790944946; cv=none; b=E8xFO39+0YByShWPsaeuShoC+AUNjFy21ZdDI/TFY5p6Lbx0b49e1wBRp8cRccokJV+mN5c9LCXRH4x78SLuwLoQ9kHBpulU1ZuCzKNUXPwOpt/oSeGl10TqidIVsLRUf4KoQsqCpE8jfzG84z+RgQAKzAr9hiFmc7XKZEzVr5k=
+	t=1790945248; cv=none; b=KkO2l7XM4XsGmUNkAeib0xfgRQkrmDA3WvX9Clf4zouTB/JHAnpF1oQlN436zXqUQUApvX66rqGHVvPVJhega2oX7mjN/M5xDbHfwPfsAbAJkHk0YJpqBVqziXCF33x+YOMqhOyHB4fgIX1mukKslP6fAqMUSf2YnN4sljxmF68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790944946; c=relaxed/simple;
-	bh=BUvGnO8eWtouUwHbHDEFYxG26lLSXXH2AiXVXDmuLOg=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=WB9MYHpJVjR7b4wNW1N7sabXXm9S5Hf4cKLvjbONLozI0r3euQ9yw440Odaxan7ev9NLCnMVReip/BpGpo1t0w0liiNX49l9fCjN5KBjpXJbJSbi3R4B8wYIpKzXWOMxDKKtoaxkhc5DW2Tg9bW/Glzckc7FK3ryBFc53fyMI2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=CxJCeGeU; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1790945248; c=relaxed/simple;
+	bh=4Jz56/laT433P4anh/93rQteerAAdqQQpM12fT6LsNs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=q020mJS/kIOUACeD1S4zhNMxyeMZ5VherRSWbtYyeCVtkCiQyB5APMtH7HCu+Yv9qDuAmBD4KxiHTNysSgFcjZoXLNxUWLrG6L2b0TQXzVBH9ZqLoGY4igby1JkB+0jjSd/+rQhtUzk1bqL3YRky6Ug7FkpNZwKUG47NvTWo6lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=SXYYgXgZ; arc=none smtp.client-ip=74.125.228.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="CxJCeGeU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=KEVK9YQmzSm9E/MrvY2/8/mh6jtCC21hZIG9NdLI7oU=; b=CxJCeGeUNSKcJh8spXxf7e4Epj
-	m5l0QawMToo/N8qImBuCKL36bTXYG8v54dzCbs0/zK2zrH3PWdvHBdoiUcWb8cJErepcx0BaT2fSH
-	1aoQaG75gqBxNYQGXMPeM2iJhf/dgB9nCPZpPM1pxKxaZ3vb8hvsLq41DzK17v2s3VWlyi5tdnx6m
-	1o5sfKaqSoqIvZjSqLh1uzbzXRs4Tq9NYyZ0HNTZE6m2Te8MqR7w/MEEWB1eGCKh5sMuslFGFw1Vf
-	AxacBwv1SQxkpESPx33UsCa9cxRZjUb6ddUwdSsEfp+BBIhFgbWvp8RlOiHfaeP4qMjm+z0Cwvbhr
-	Uij9QR5w==;
-Received: from [::1] (port=55916 helo=pf-012.whm.fr-par.scw.cloud)
-	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
-	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
-	id 1xCcao-00000000Mnc-2bwt;
-	Fri, 02 Oct 2026 14:42:23 +0200
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="SXYYgXgZ"
+Received: by mail-ed2-f31.google.com with SMTP id 4fb4d7f45d1cf-6afa5b9150eso578081a12.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 05:47:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1790945245; x=1791550045; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4Jz56/laT433P4anh/93rQteerAAdqQQpM12fT6LsNs=;
+        b=SXYYgXgZECpp2wEM2gWOg8sX39egbNDCv0pBYGhKknAzmfznT5H73nDyGm6bhtYTNQ
+         HYKH4YoQhRKhxOY/HmPbIxPy+CpVSsnymj3ARAwtyRUDvPo8kiQr8f5iKqJMkmtzno5b
+         cuHtRn/PG1j3PEQIqymgfnkyOEYioSNt/pM4FxusHeSnaduKupj2f76qtWE6mBXAIRZ9
+         6AX2wdUHkC8alaeeAzMlaY5BySdLwvdEiUH230vsBMN5LOaW085Z5FuC3xb/+xqCG3ez
+         7ZxRZofAjuJ1Tle9C3Gjqx1CPcS7zbZ7JfbRarqA0ZXnUS0FkErvJL2tom29pIfszmbB
+         1KdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790945245; x=1791550045;
+        h=content-type:mime-version:message-id:date:user-agent:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=4Jz56/laT433P4anh/93rQteerAAdqQQpM12fT6LsNs=;
+        b=HXuATQlLiqLw435jDxJA7M5tGPpNrOeZuVFF5ZkyLRmxud6P1eMQU2XBdvOKnjwhCJ
+         5qQxpceSxAa9896q/Q/y57wbv5s1MQFz2hy4AHhFtyfurkh0W2TtyLJ+ptL5EnSnnMrR
+         ztla1L7nr8USmISMRLJXZTl1P19jdmMJgTgQge14RFHr+pfAASiIgNOxvgFc1ROU4Lx9
+         5HuMaNgn4lgWJ5vzh+n7ztZqtiZtWBoGAF/nuUb0Bkfpb/6UPvC0tkyf1bhSUNoHsFGv
+         PkdaJfJqKHW8eIUydyeFRuH4klpbbL6U5O50CJxwaUWMehkpg3fnz86IN17lMdTCH+qw
+         5oGQ==
+X-Gm-Message-State: AFq9FYI+SOuR+VohFVfqri/mhiTFXnqLZf7aUA4gGCsVKsjlUvh4sD7/
+	VB+z4aQNGgk0LLu47h2lFiNYq+j22U584XnkH+ge3HyqUQ67fN44H9mZLJtDG+jmefM=
+X-Gm-Gg: AYBFou041+Dp0/FA5rsttzXdwn2fxFoKlcQzpmIX4j/t0BCCdOiG6MdFdtjC5h8FVoB
+	6npTLCtTGr+Eg/W/vo/mr9F26/hS/RdrdnO2r9MVePSHYnROBtJ/7gikryk6o95BNQ2skOpWJQU
+	dpS+Y/zZ1+mkDP495UEpiHsZ3UkNqNMbBj7GVbZMWNqBQebWYq4ro4Rfck085rG4ewrAgaxmoGo
+	7xDO5pWVYBv2RY/e/af2UyFQrS2f90ye6ljggAKiBVc5BQ4pKUOE5STUU5P78sYAe4HmsOR1UDh
+	Kvww+gZPNs7f/0qP9J+sOShklR+oy56a2YyCT18ZffuXniaC9n3MhWTwuX86edxTz3A9DCiTSRv
+	Wb8+hd5/rXfIstsVwwPRfL0QZZ/I7O7LNJqeC61aP6AS7lOASkf9SUBJkY4E5NrsfTBkAai2LdT
+	NEtTKIyrkrEOFnMuu92ilWtxBd6cKQ3jlVYoVS6MawISny2nZgkgW2x9g2/eEw3ycYv8HDDyUK
+X-Received: by 2002:a05:6402:4559:b0:6ac:7868:b690 with SMTP id 4fb4d7f45d1cf-6af9e2db806mr1359841a12.8.1790945245011;
+        Fri, 02 Oct 2026 05:47:25 -0700 (PDT)
+Received: from cloudflare.com ([104.28.21.182])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6af9dac29b8sm856349a12.36.2026.10.02.05.47.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 05:47:23 -0700 (PDT)
+From: Jakub Sitnicki <jakub@cloudflare.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,  Kuniyuki
+ Iwashima <kuniyu@google.com>,  Paolo Abeni <pabeni@redhat.com>,  Stanislav
+ Fomichev <sdf@fomichev.me>,  bpf@vger.kernel.org,
+  kernel-team@cloudflare.com,  Daniel Borkmann <daniel@iogearbox.net>,
+  John Fastabend <john.fastabend@gmail.com>,  Andrii Nakryiko
+ <andrii@kernel.org>,  Eduard Zingerman <eddyz87@gmail.com>,  Kumar
+ Kartikeya Dwivedi <memxor@gmail.com>,  Martin KaFai Lau
+ <martin.lau@linux.dev>,  Song Liu <song@kernel.org>,  Yonghong Song
+ <yonghong.song@linux.dev>,  Jiri Olsa <jolsa@kernel.org>,  Emil Tsalapatis
+ <emil@etsalapatis.com>,  "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Simon Horman <horms@kernel.org>,  Jesper
+ Dangaard Brouer <hawk@kernel.org>,  Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next 00/15] Gated tracepoints for skb lifecycle
+ (free+clone)
+In-Reply-To: <20261001184551.314c7a0e@kernel.org> (Jakub Kicinski's message of
+	"Thu, 1 Oct 2026 18:45:51 -0700")
+References: <20260928-bpf-meta-gated-tracepoints-v1-0-844dbf3e1edf@cloudflare.com>
+	<20261001184551.314c7a0e@kernel.org>
+User-Agent: mu4e 1.14.1; emacs 30.2
+Date: Fri, 02 Oct 2026 14:47:22 +0200
+Message-ID: <87cxtsl15x.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 02 Oct 2026 14:42:22 +0200
-From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-Cc: netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jon Maloy
- <jmaloy@redhat.com>
-Subject: Re: [PATCH net] tipc: protect received keys from concurrent flush
-In-Reply-To: <DU4P189MB37502D602C60A78B58AFDDA1C6892@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
-References: <20260930115708.349540-2-Jeremy.Jean@oss.cyber.gouv.fr>
- <DU4P189MB37502D602C60A78B58AFDDA1C6892@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
-User-Agent: Roundcube Webmail/1.6.19
-Message-ID: <df6d6c550f8e7ed7bad690ae9c581645@oss.cyber.gouv.fr>
-X-Sender: jeremy.jean@oss.cyber.gouv.fr
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain
 
-On 2026-10-02 14:09, Tung Quang Nguyen wrote:
->> Subject: [PATCH net] tipc: protect received keys from concurrent flush
->> 
->> tipc_crypto_key_synch() can queue the RX worker again while it is 
->> still using rx-
->>> skey. If tipc_crypto_key_flush() cancels that queued work, it frees 
->>> the key
->> without waiting for the running worker. The worker can then read freed
->> memory or free the key a second time. Racing key exchange with key 
->> flush
->> triggers KASAN:
->> 
->>  [   12.986077] BUG: KASAN: double-free in
->> tipc_crypto_key_flush+0x401/0x530
->>  [   12.987937] Free of addr ff11000002268080 by task peer/112
->>  ...
->>  [   12.991938]  kfree+0x163/0x430
->>  ...
->>  [   12.991983]  tipc_crypto_key_flush+0x401/0x530
->>  ...
->>  [   12.992152]  tipc_nl_node_flush_key+0x174/0x210
->> 
-> Please update your changelog with decoded stack trace.
+On Thu, Oct 01, 2026 at 06:45 PM -07, Jakub Kicinski wrote:
+> On Mon, 28 Sep 2026 13:40:17 +0200 Jakub Sitnicki wrote:
+>> Subject: [PATCH net-next 00/15] Gated tracepoints for skb lifecycle (free+clone)
+>
+> is this expected not to build on top of net-next?
 
-You mean the full trace including the parts I snipped?
+No, it should build cleanly. Base was 42a9fb3382fc ("Merge
+git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net") [1].
 
-> Do you have a reproducer ?
+But you can ignore v1. I will be rebasing & respinning it to address
+your feedback [2]. Likely during Plumbers.
 
-Yes, I have.
+Cover letter also needs an update since benchmarks got fixed [3].
 
-Jérémy
+[1] https://github.com/jsitnicki/linux/commits/sent/20260924-bpf-meta-gated-tracepoints-4a731fd0ef64-v1
+[2] https://lore.kernel.org/all/20260925132004.171b751e@kernel.org/
+[3] http://msgid.link/87ik3kl1lr.fsf@cloudflare.com
