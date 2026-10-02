@@ -1,190 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C8146C4B7;
-	Fri,  2 Oct 2026 08:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E61D44A3E8
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:44:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790930267; cv=none; b=Hwm5QHM2Josr/SUoTbCDZsbg4bGqjn7XbwVllXzHIxbcizlVn4sPDr2OIxNcpApM84lfYrEz5A0GP2Jnn/3Fd5jDdXGgxt1w816I4Jg70W7loiBoWlf4XrLIPA3NUY5bCcVxsoBIponyQ4Bjop16j7U+QUah1f/7dhe1k+dihBw=
+	t=1790930643; cv=none; b=JwzbfmTf8YZQGEDidvfep7AcWZ9rX/R+cQwCeDdSW1YBTsSASL63TwIr67gEZwDn0xHxRyqWiDCdRc+VbADYmp4RhWX16EhttbsXMADGb1bamfoeif9N4gXiBRHD00QrPDE5Q/LoB/CJja5QUOTxkyXrc6t0DL/oYZ0UQ2ldFoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790930267; c=relaxed/simple;
-	bh=5rv+ThxWhaMmWN7HGMOapUO47tt4FgjT8Cs2MTGAaoU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ufs0tKsIsipEAvtpUPyODGrCrMeSGu3arP41q2HWJFL0w/6p/AtnTBts6YURQR/v+I5qrQLBwNIrLghAcdNx+n7ZN7Id5MIu1IWi9SrhVAvMxVf3RP/BlQ7GoxDem6qtqeDtv25nH4jfXrPc3H/46NDxOAKE5DT5yND+pxDXLuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NctdkWW1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790930643; c=relaxed/simple;
+	bh=VkyfvI4JFYrHbohS/9ZHexkHJcpRb70LNq8ohC/ZJd8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DBaFxoFitM4fGbDZGxemm/dh24fqgQXUBpYHcnw/WiPTTk3nlImQd9cj7ALXqWihg/9lN/oEFodeOMYNok2btVwDbIRqXl9aSTS/d5k0dWhgtZKZr/Btpz+CeqAYIIvCbzlvWyihMhbmRuULEZMa/bQZoRqoWHM41H0NbAisojM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cJMgg6z1; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NctdkWW1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF221F00899;
-	Fri,  2 Oct 2026 08:37:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790930266;
-	bh=5o5SCapI3L7DNXmYYpH7Sbi3qiAsf3UPAxYLk7A7sww=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NctdkWW1+qSd+dRUCUKjhAt5OizSNKimhmetDLIjHCAmCpfMQkTOO/Cefx29IaCud
-	 iaPBpkDjB6QicTB6wSyJopOtDqhD1syU18M+wtC9Ksq6/yujZUli5Fjy66cjLGZT26
-	 CVgoQiD7qQwfibc24C4lt/3TFr1LYgZ+LcF/BUQzDHcfWk6TEf8Uubv/CqzKVsPzWc
-	 ceyBGvu84TJcrAXyRhZeJ95QUWlbrZYeueL2TdB6O1WwIvmVLJ6yjzaRoczL33buNU
-	 q5yjLnR2CFxtu6tV+Vo9qmeZaLES7jRbvlVng3JaMjBEBzqzfAm5HRxEWxEJTSAo1l
-	 OR1oiwsy3nFRQ==
-Subject:
- Re: [PATCH net v6 5/5] net: stmmac: Disable S-Tag processing on dwmac4
-From: netdev-bot+sashiko@kernel.org
-To: ovidiu.panait.rb@renesas.com
-Cc: maxime.chevallier@bootlin.com, recv.jo@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, joabreu@synopsys.com,
- jun.ann.lai@intel.com, yi.fang.gan@intel.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Fri, 02 Oct 2026 08:37:44 +0000
-Message-ID: <179093026479.434549.5508672622389418714@kernel.org>
-In-Reply-To: <20260928203441.34876-6-ovidiu.panait.rb@renesas.com>
-References: <20260928203441.34876-6-ovidiu.panait.rb@renesas.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cJMgg6z1"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a003bd18e5so29378255e9.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 01:44:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790930640; x=1791535440; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6dhi0KckrbogHHoZX7wC0NbCcVaNRSNuFfvNHe9W2GM=;
+        b=cJMgg6z11PTs1OBryr/rjuGqZpLyP7YtWohyCOP3Buecw5gv3TocVhEGosUGJoYkBC
+         z8NJbsInfV8leY04lT4i4bTu0+SpaW6qHNJz526RhnjxShbUUHCj0i5aVHm9HTBZ0xoz
+         FBCD7Qg91ua7YIqFh2p2MDAcrIcapfdQG/7Qn9zkeappQ8qVqafSeM0LHd58NvysTg8w
+         dGBmcI136PQnyJ//drwfreIbu/wAcpEu6zZZcWiP/8UHxUFdPFS4tCNRvbC6xP+W2jkP
+         b3lUtkKzYtqXmR1CiU42Lr62cevbmTmFQKydhpubO09gf4opqq3B8GFpxWeJYkZFLrNz
+         KDMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790930640; x=1791535440;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6dhi0KckrbogHHoZX7wC0NbCcVaNRSNuFfvNHe9W2GM=;
+        b=uFYApYtwWW13FJ0YfX/JKQaOZGmJ6BaPwjo/l2eD3tgFKOVSl6SJPXEJarA/dG/cb4
+         O3B+KTsdHzX7VnyCaHLjop/boBv5M1w6TQGFgRoZkPHfVXwKCNcdG9Z/ekoDoVGemOX/
+         xj6CnNTYHYRGrJvcHrzzKIshS5MHaWZRt/Pms5gaDzT6uls4JBEbUoWT6hIvkT6WmI2p
+         Xxj7/Udu+fS6RyQqfhsisYOCKWu0CIrgEFwUjaJ5Q3z6H6A8KgSF41hVAIFAeKW2JrHw
+         rz2yJiPlFNbsNKJK0/LiRlu7lJPm3S+fRvQBoF/D7dp60saylQh2C2+/ZZAuNdwAKS8z
+         TysA==
+X-Forwarded-Encrypted: i=1; AKwUvBwpD0mK11q4aN4Ruibvxw/X/kQQGv4PfbPnlwYuVweYYZV+X5nIMsA0Rui/TzW/JeXoJP3W3Q4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lQkkKwZAhfC9AxpyNJjW7WktAp6d7nOyGoo6ZFqhoO9y/UPFHr
+	UHDLf4IM1+Utp+L3W5yuuqDLfKTh25c34l7nt5JrIOEmM0W9jOLGv8Bx
+X-Gm-Gg: AYBFou1ghFJX40Jim0UIc3OEbsQckVdI8ZwQz20syfSCsNDT0cnFAISD6jhocSDZnOu
+	iXglV16z32EzlO2XT9jkjFtz6fb7sg4M07JYaH1b4oU+Zp0s9b7FQRhT1gcDHpOEi/QQ1pW0F62
+	XP0S2DC6Xz5YBzlNbYupxP31iyIYmWZCeBkK9lP4pamNzxF48zbajh9juVBKMPdWv//S/CjVxDJ
+	A4kgsFD/WS/4r7z0dXajEIHcjRI3uANv2uxhybcWyuZ9psjXwaTa2g0W/+pj7rcSLgUG48lUhfq
+	fVQKDUCNCB4FwuYHiyPoFBVXx2uxp/NVOqGNCmTtamRKzuoRv4Fp1EGmwYVmxKMM1/LYcK/v9Ge
+	pI2KqPrSD3OhoxmOGGqhXNxVGeHEQOLbFEybYPzTqkcRSgnGHt1Y6UNBUvf9j0VV23nobSN/26t
+	R8464hrbGFU7sjc7OCubxquajlw1vR2ctpR/LBbJWyKv7f6etdPT/v60eA+Wejhw6YH4IksJ0h/
+	V7Gg3hl8VxA6wR5lqhl
+X-Received: by 2002:a05:600c:3501:b0:49f:fd40:80fa with SMTP id 5b1f17b1804b1-4a0276b78f7mr35135585e9.34.1790930639550;
+        Fri, 02 Oct 2026 01:43:59 -0700 (PDT)
+Received: from foxbook (bfj133.neoplus.adsl.tpnet.pl. [83.28.47.133])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0394e6c5asm43917315e9.2.2026.10.02.01.43.58
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Fri, 02 Oct 2026 01:43:59 -0700 (PDT)
+Date: Fri, 2 Oct 2026 10:43:55 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Dane Linssen <linssendane@gmail.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, Mathias Nyman
+ <mathias.nyman@intel.com>, Alan Stern <stern@rowland.harvard.edu>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: r8152: RX stops until rebind after -EPROTO on the bulk-in
+ endpoint
+Message-ID: <20261002104355.698eaf00.michal.pecio@gmail.com>
+In-Reply-To: <CAM6_QD-CbYSsmic5LhpMi-aMXuC_VaniELBzaBeWO8SWm4UONA@mail.gmail.com>
+References: <CAM6_QD_PoTdwdM7DvzzgHRs-G5EvQu-c5oNGve=GuKV4wFYAvQ@mail.gmail.com>
+	<CAM6_QD_xAyTFVvYKvCrrZmS+fV5DBBje9V=VdkDMMSpt2ussRg@mail.gmail.com>
+	<20260928120343.49e02c07.michal.pecio@gmail.com>
+	<CAM6_QD-CbYSsmic5LhpMi-aMXuC_VaniELBzaBeWO8SWm4UONA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Mon, 28 Sep 2026 14:48:05 +0200, Dane Linssen wrote:
+> Andrew:
+> As far as I can tell it isn't a regression. The adapter is new
+> (2026-09-17) and has only run 7.2.5 and 7.2.6, which don't differ in
+> r8152 or xhci. e765ab012f73 ("usb: xhci: Improve Soft Retries after
+> short transfers", v7.1) should make it rarer, not more common.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+IDK if it's a regression or not, but the symptoms seem consistent
+with a know problem which exists since forever.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> Michal:
+> > Out of curiosity, what's your xHCI chip?  
+> 
+> Intel Sunrise Point-LP, 8086:9d2f (i5-8250U), so not ASMedia. The
+> other host with the same adapter, which hasn't stalled, has an Intel
+> Comet Lake-LP, 8086:02ed.
 
-- [High] The fix is incomplete: XGMAC still passes hardware-stripped
-  802.1ad tags up the stack as 802.1Q.
-- [Low] After this patch, the two S-VLAN selftests check for different
-  things.
+OK, thanks.
 
---
+> > As a bandaid, you could try increasing MAX_SOFT_RETRY or this:
+> > https://lore.kernel.org/linux-usb/20260905101837.4b7849c5.michal.pecio@gmail.com/  
+> 
+> Thank you. Would you like me to try this to gather more data? If not,
+> I already have a userspace watchdog that rebinds r8152 when the LAN is
+> unreachable and the bulk-in endpoint shows virt_state 0x40.
 
-net: stmmac: Disable S-Tag processing on dwmac4
+You could try it. We may consider increasing retries in mainline if
+this turns out to solve real world problems. Though so far, in the only
+reported case of 3 retries not working, 10 retries over a span of 100ms
+weren't helping either...
 
-This commit limits NETIF_F_HW_VLAN_STAG_RX and NETIF_F_HW_VLAN_STAG_FILTER
-to DWMAC_CORE_XGMAC. The reason given is that dwmac4 cannot report which
-tag type was stripped, and vlan_rx_hw() hardcodes ETH_P_8021Q. On dwmac4,
-802.1ad tags are then left in the packet for the software VLAN path.
+> I only enabled it after the two stalls I reported. In the 19 hours
+> since, including 71 minutes above 5k rx packets/s (peak about 29k),
+> there hasn't been a single "Transfer error" message, and no stall. So
+> nothing random so far. The next stall will show whether it's a burst.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 2ce6e2724bcb..b837e8e27a35 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+Any results yet?
 
-[ ... ]
-
-> @@ -8005,14 +8005,18 @@ static int __stmmac_dvr_probe(struct device *device,
->  	ndev->watchdog_timeo = msecs_to_jiffies(watchdog);
->  #ifdef STMMAC_VLAN_TAG_USED
->  	/* Both mac100 and gmac support receive VLAN tag detection */
-> -	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
-> +	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX;
-> +	if (priv->plat->core_type == DWMAC_CORE_XGMAC)
-> +		ndev->features |= NETIF_F_HW_VLAN_STAG_RX;
-> +
->  	if (dwmac_is_xmac(priv->plat->core_type)) {
->  		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
->  		priv->hw->hw_vlan_en = true;
->  	}
-
-[Severity: High]
-Won't XGMAC still pass hardware-stripped 802.1ad tags up the stack as
-802.1Q after this change?
-
-The commit message says that on dwxgmac2 "the outer tag type can be
-determined based on that info". However, nothing in this patch or the rest
-of the series actually does that.
-
-dwxgmac210_vlan_ops still uses vlan_rx_hw() as .rx_hw_vlan, and that
-function is unchanged:
-
-drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c:vlan_rx_hw() {
-	if (hw->desc->get_rx_vlan_valid(rx_desc)) {
-		u16 vid = hw->desc->get_rx_vlan_tci(rx_desc);
-
-		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vid);
-	}
-}
-
-dwxgmac2_wrback_get_rx_vlan_valid() accepts the ET_LT values with an S-tag
-outer tag, but it returns only a bool, so the tag type is lost:
-
-	return et_lt >= XGMAC_ET_LT_VLAN_STAG &&
-	       et_lt <= XGMAC_ET_LT_DVLAN_STAG_CTAG;
-
-On XGMAC, hw_vlan_en is still set and STAG_RX/STAG_FILTER are still
-advertised. stmmac_fix_features() also still ties STAG_RX to CTAG_RX.
-Creating an 802.1ad VLAN on an XGMAC with vlhash then leads to:
-
-stmmac_vlan_rx_add_vid(is_svlan = true)
-  dwxgmac2_update_vlan_hash()    /* sets VLAN_ESVL */
-
-and on receive:
-
-stmmac_rx()
-  stmmac_rx_hw_vlan()
-    vlan_rx_hw()                 /* tags the skb as ETH_P_8021Q */
-
-vlan_do_receive() then looks up (ETH_P_8021Q, vid), so the 802.1ad VLAN
-device never gets the frame. Isn't this the same QinQ ping failure the
-commit message describes?
-
-Also, if an 802.1Q VLAN with the same VID exists, would S-tagged frames
-from the wire be delivered to that interface instead?
-
-Should vlan_rx_hw() take the protocol from ET_LT on XGMAC? Or should S-tag
-offload be turned off on XGMAC as well?
-
->  	if (priv->dma_cap.vlhash) {
->  		ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
-> -		ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
-> +		if (priv->plat->core_type == DWMAC_CORE_XGMAC)
-> +			ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
->  	}
-
-[Severity: Low]
-On dwmac4, vlhash no longer implies NETIF_F_HW_VLAN_STAG_FILTER. Should
-stmmac_test_svlanfilt() in stmmac_selftests.c be updated to match? It
-still checks only:
-
-	if (!priv->dma_cap.vlhash)
-		return -EOPNOTSUPP;
-
-Its sibling, stmmac_test_svlanfilt_perfect(), checks the feature flag:
-
-	if (!(priv->dev->features & NETIF_F_HW_VLAN_STAG_FILTER))
-		return -EOPNOTSUPP;
-
-On a dwmac4 with vlhash, __stmmac_test_svlanfilt() calls
-vlan_vid_add(priv->dev, htons(ETH_P_8021AD), tpriv->vlan_id). Without
-STAG_FILTER, vlan_hw_filter_capable() returns false for 802.1ad. As a
-result, stmmac_vlan_rx_add_vid() is never called and no S-VLAN filter is
-programmed.
-
-The test still runs, and for i > 0 the loop treats a missing tpriv->ok as
-success:
-
-		ret = tpriv->ok ? 0 : -ETIMEDOUT;
-		if (ret && !i) {
-			goto vlan_del;
-		} else if (!ret && i) {
-			ret = -EINVAL;
-			goto vlan_del;
-		} else {
-			ret = 0;
-		}
-
-Can "SVLAN Filtering" then report a pass on hardware that no longer uses
-S-VLAN filtering, while the perfect variant is skipped?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928203441.34876-1-ovidiu.panait.rb%40renesas.com
+Regards,
+Michal
