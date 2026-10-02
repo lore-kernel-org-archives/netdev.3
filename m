@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E9B466B66;
-	Fri,  2 Oct 2026 12:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B316247ACC4;
+	Fri,  2 Oct 2026 12:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790945786; cv=none; b=e2YtqYaAmHjXSLJtFrmgaPr/4XCcE8LL3OiiDZkDQfzN02D2SVN4TowxEyH+DauxXBhBTEZ+S3P0tVJz6IqW86hc5X4FqMOTphfVQYvy1kab5YZGKjrwjQLHkImrp3cJSm1TNwAfh67OIVUH+pabYRdQcHva/XQ5wvaPTFlLfzs=
+	t=1790945788; cv=none; b=esxfLON2isFTAIm4VRjAMuaHcY3xukp6XNca8I/QmGNpez9WtNlDyM/mMu9AFJDtOOwgZfCRiKsqir8TnLOpKFs0HTPHaaLs2ekxEIge8oQ/pKkBn9FH7rqTaAwqOU01J8uoTtLfByN9EHPRiXrJTP1Ya0EdSGCaKd8+zdPNoUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790945786; c=relaxed/simple;
-	bh=JSaGC6D2aEiZZ3unlrXNp9uBN0sRn/bRihi+jjKpA3w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NhKeZGNxAN8Z0IeDrK26L8iQPq9lxhn+5ypkY45nbEeyI8985h6kbC6I/tLUkfuVv9QYJiES61T1AXjxJIzGARVvxyuO1CQ/n7iWRHsCn5fS+r9gCWBiiNFtbo/4/9cs5WlIV0SF9KCQObnnBxuqYsJvdHhx1o2uNhF1CbInbgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S59jwEf3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790945788; c=relaxed/simple;
+	bh=JjIBXYtG3twgn9les2QpRRnZOUpHc6H++tKDNPUZFso=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d+BA0iDi9zyVnFnDzYUscQi7MBEPm1OKeXwAPJJtKlOHaH781C+3pwI6eBPwFvEwPS/7gKs7uvSabBCOmy53c4iBTIa1ffE4DZuX2w2ow4w6YUEIyE3tPH5hngu/f6B+w9WquXAPLZEnp8cvUC9wS5xaila3sqwo0pmnsVZTDYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ml+F3eRL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S59jwEf3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000C91F000FF;
-	Fri,  2 Oct 2026 12:56:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ml+F3eRL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F001F00893;
+	Fri,  2 Oct 2026 12:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790945784;
-	bh=+/Nk7usIdpaU9Rho8UOq02EsWGAHz4ioL5GfUEnCfwY=;
-	h=From:To:Cc:Subject:Date;
-	b=S59jwEf3fC5XrSOD/8WzV2QA7dvwovNSh3xhFFg0Zczg9X8i6YMubkEnoR2N9s+W3
-	 i3AmfZNnOFZRT4yCVEvlNQ8k+APRyz9yRdfPGGtoyziZP7ADXNAvO/Td9WihZcyPOy
-	 e0YFjVfFVyWLHEyZajaS4nuPgwzk6VIX27Wh8Mb/l5gjHl4fcdjxVBbO4fzE1gh0/I
-	 VmrZkMsEIn01X3OzfShtE0jWT1iD4wt1YmdL4kDmSHwHWVo6HUhOyXJpKfcRVgS1Ai
-	 JlidNTGGw6vLatxoG0kS0ddl0drl/IRt0Tbx0J2EtqM6zddQQUpyCZeo4KP+ooWgly
-	 mJnzH5zsXQR2Q==
+	s=k20260515; t=1790945787;
+	bh=H6CbJk56XJn2rB65nnlreCSIwAnOQ3pSIcdlMg6BQKw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ml+F3eRL14E5GOLWpXTHpo0yYnZOU4p9ZXwyBBWsfpFr53tY37nXjkK17cyDGHU1Z
+	 e6YbZUHklqUTk+U9n7IOeQgQhLCze1rB4t7447bwgNjgDFvgDOpDI29gdeXvfqLWNZ
+	 HRranwUd9+lzHshha+FV6qy6Svz8vu0g2z+BvxD+IMDNq5ToSGi8gCls+VfuIsHMsw
+	 lragDF1Sfk+TzqiTKf699ujv7PWYKzqC+MZ1P1Hlih6hXAGSQnbGtRVvXigVFyXc/t
+	 23wtTsAxwK6PCM26vkV1l73jyDOAFnmn3aBEvZ5Ph3oAxq3KKJ8+Prk9tWgu4KBtIP
+	 c7dEZv5oKDu7Q==
 From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
 To: Alexander Duyck <alexanderduyck@fb.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -39,10 +40,12 @@ To: Alexander Duyck <alexanderduyck@fb.com>,
 Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>,
 	Mina Almasry <almasrymina@google.com>
-Subject: [PATCH net v3 0/2] eth: fbnic: Queue and channel count fixes
-Date: Fri,  2 Oct 2026 14:56:13 +0200
-Message-ID: <20261002125617.409447-1-bjorn@kernel.org>
+Subject: [PATCH net v3 1/2] eth: fbnic: Preserve channels across resume
+Date: Fri,  2 Oct 2026 14:56:14 +0200
+Message-ID: <20261002125617.409447-2-bjorn@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261002125617.409447-1-bjorn@kernel.org>
+References: <20261002125617.409447-1-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,54 +55,109 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Two fixes for what fbnic tells the core about its queues.
+Suspend clears the configured NAPI count. Resume then reconstructs the
+channel layout from queue counts, changing standalone channels into
+combined ones or dropping combined queues despite unchanged IRQs.
 
-Patch 1 keeps the channel layout across suspend. Resume rebuilt it
-from the queue counts, turning standalone channels into combined ones
-or dropping combined queues, even with an unchanged IRQ count.
+Keep the selected NAPI count across suspend and reuse the layout on
+resume. A failed recovery leaves no live NAPI vectors, so skip a
+redundant stop rather than dereferencing them.
 
-Patch 2 publishes the real queue counts at probe and on "ethtool -L"
-while down, instead of at the next open.
+If fewer IRQs return, reopening still fails. Handle that separately.
 
-Resume with fewer IRQs than the layout needs now fails instead of
-shrinking the layout. That case is left for a separate change.
+Found by code inspection while reviewing the queue-count fix. The
+layout change has not been reproduced on fbnic hardware.
 
-Changes in v3:
-- Split into two patches, one per bug, each blaming the commit that
-  introduced it.
-- Keep num_napi across suspend instead of a separate num_napi_cfg.
-- Drop the -ENOSPC check on resume, so an interface that is down no
-  longer fails resume. (Breno, Sashiko)
-- Skip ndo_stop when no NAPI vectors are allocated.
-- Drop Breno's Reviewed-by, since the resume path changed.
+Fixes: 3a481cc72673 ("eth: fbnic: support ring channel get and set while down")
+Signed-off-by: Björn Töpel <bjorn@kernel.org>
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_netdev.c | 11 +++++++++--
+ drivers/net/ethernet/meta/fbnic/fbnic_netdev.h |  3 ---
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c    |  9 ---------
+ 3 files changed, 9 insertions(+), 14 deletions(-)
 
-Changes in v2:
-- Keep the configured NAPI count and restore it on resume. v1
-  recomputed it from the queue counts, which changed dedicated rx and
-  tx layouts even when the vector count was unchanged. (Breno,
-  Sashiko)
-- Fail resume with -ENOSPC when fewer vectors come back than the
-  configured layout needs. (Sashiko)
-- Fix the comment and commit message that did not match the code.
-  (Breno, Sashiko)
-- Keep the RSS indirection reset in fbnic_netdev_alloc().
-- Drop Breno's Reviewed-by, since the resume path changed.
-
-v2: https://lore.kernel.org/netdev/20260924191817.1843726-1-bjorn@kernel.org/
-v1: https://lore.kernel.org/netdev/20260915180859.4157646-1-bjorn@kernel.org/
-
-Björn Töpel (2):
-  eth: fbnic: Preserve channels across resume
-  eth: fbnic: Publish real queue counts
-
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  7 ++++
- .../net/ethernet/meta/fbnic/fbnic_netdev.c    | 36 ++++++++++++++-----
- .../net/ethernet/meta/fbnic/fbnic_netdev.h    |  3 --
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |  9 -----
- 4 files changed, 34 insertions(+), 21 deletions(-)
-
-
-base-commit: 71a77ab76e74131a101f4d2d2afb0dcbf81b4e3c
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+index 10bf99be3f24..d1ed29312d54 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.c
+@@ -86,6 +86,13 @@ static int fbnic_stop(struct net_device *netdev)
+ {
+ 	struct fbnic_net *fbn = netdev_priv(netdev);
+ 
++	/* Suspend frees NAPI vectors but keeps num_napi for resume.
++	 * If recovery fails, netif_running() remains set; a later stop
++	 * must not walk the freed vectors again.
++	 */
++	if (!fbn->napi[0])
++		return 0;
++
+ 	fbnic_mac_free_irq(fbn->fbd);
+ 	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
+ 
+@@ -702,8 +709,8 @@ static const struct netdev_stat_ops fbnic_stat_ops = {
+ 	.get_base_stats		= fbnic_get_base_stats,
+ };
+ 
+-void fbnic_reset_queues(struct fbnic_net *fbn,
+-			unsigned int tx, unsigned int rx)
++static void fbnic_reset_queues(struct fbnic_net *fbn,
++			       unsigned int tx, unsigned int rx)
+ {
+ 	struct fbnic_dev *fbd = fbn->fbd;
+ 	unsigned int max_napis;
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+index eded20b0e9e4..ddf1b674737a 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_netdev.h
+@@ -86,9 +86,6 @@ struct net_device *fbnic_netdev_alloc(struct fbnic_dev *fbd);
+ void fbnic_netdev_free(struct fbnic_dev *fbd);
+ int fbnic_netdev_register(struct net_device *netdev);
+ void fbnic_netdev_unregister(struct net_device *netdev);
+-void fbnic_reset_queues(struct fbnic_net *fbn,
+-			unsigned int tx, unsigned int rx);
+-
+ void fbnic_set_ethtool_ops(struct net_device *dev);
+ 
+ int fbnic_ptp_setup(struct fbnic_dev *fbd);
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index c6698e3002a1..ec916c9f7faa 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -434,7 +434,6 @@ static int fbnic_pm_suspend(struct device *dev)
+ {
+ 	struct fbnic_dev *fbd = dev_get_drvdata(dev);
+ 	struct net_device *netdev = fbd->netdev;
+-	struct fbnic_net *fbn;
+ 
+ 	if (fbnic_init_failure(fbd))
+ 		goto null_uc_addr;
+@@ -442,16 +441,11 @@ static int fbnic_pm_suspend(struct device *dev)
+ 	rtnl_lock();
+ 	netdev_lock(netdev);
+ 
+-	fbn = netdev_priv(netdev);
+-
+ 	netif_device_detach(netdev);
+ 
+ 	if (netif_running(netdev))
+ 		netdev->netdev_ops->ndo_stop(netdev);
+ 
+-	/* The IRQs are about to be freed, so drop the napi vector count */
+-	fbn->num_napi = 0;
+-
+ 	netdev_unlock(netdev);
+ 	rtnl_unlock();
+ 
+@@ -519,9 +513,6 @@ static int __fbnic_pm_resume(struct device *dev)
+ 
+ 	fbn = netdev_priv(netdev);
+ 
+-	/* Reset the queues if needed */
+-	fbnic_reset_queues(fbn, fbn->num_tx_queues, fbn->num_rx_queues);
+-
+ 	if (netif_running(netdev)) {
+ 		err = __fbnic_open(fbn);
+ 		/* On failure the vectors are freed, so drop the count */
 -- 
 2.55.0
 
