@@ -1,148 +1,112 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CA4368D76
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 22:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF34239DBC5;
+	Fri,  2 Oct 2026 22:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790978720; cv=none; b=MurjW4a/vJxVShmyWjdAODRhlPUI+0vS0Z2zUwlFMF4hy/vKL/dqNO5eIBx6Pve0T7C04AqsbrCAxZdaCxY18TdR57BpNNI8qM8A4OnHybdKx5rx/uatAhJnC+TRCjaxNNIU6Z3qF38sJvaphbQni3K8VkKxv7C4SjSy/+xYrZg=
+	t=1790979523; cv=none; b=AAHmVVVRDbP8VoBRhljZMrqVazzCZYpxF/Y2lvPC/8l1H15WB3rFvfj2iWRvbjnoErbZR6gB99jjnTZjiU5P0PgTrHbyaBMe81YytohF+lFFyK1Sdb1C9VGMlvGjjdGqpVkl1o8TJq2M0ntooc9GCxCowQ5kfvypRQKebIYHBPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790978720; c=relaxed/simple;
-	bh=Op2VE/mM0zGOShfaFW/0BW0KlBnu8F+VO2ttkd98TKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kx6RDIwCq45WQtPHAoFjsjFaDcefyj878p17vRpug9vyACrsNOSeM429G5btAYlXsMG3+3RnhWJFW0MGCifJp6ShTyT57YcstxXXFqt01zB+tKJyPexfJsZCn3uNCBM0yHhmf2iZONi03oAgECkZAXd0DfgyDD2pii7ABvs1LZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=uExVwByN; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1790979523; c=relaxed/simple;
+	bh=Rwsnfu6SxJy9nM+qcdf+GkHl8h7AZX7YrJ2UU+iHvqY=;
+	h=MIME-Version:Content-Type:Subject:From:To:CC:In-Reply-To:
+	 References:Date:Message-ID; b=Haa0SwBJDaDPHUYok0OLmFd6l3m4j14wshfqb0TEm4ju7ZjQI8GBMmkDQ96nUtb8vgtI3gCmg+j2+Htd9GGQXqyFYAccyBO7l4Iy7cuYeTNoRxEYs+rLcZ3AbsKMd2Wf63k1nthmdQOtnlqg9XGeMhMXmAazZng3+jiiokyOmrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=rPMpDSms; arc=none smtp.client-ip=52.35.192.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="uExVwByN"
-Received: by dvalin.narfation.org (Postfix) id 696382046C;
-	Fri, 02 Oct 2026 22:05:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1790978716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GNvw00UCUW/0bO/7q1Yy7pulx8K0aP4KiltkrXhApqY=;
-	b=uExVwByNcR78Kw5tcPlA8m5DnlP3A9/4PbXahxAGHjeX0LglxYH/UDOWCI3Fx0t2MxAuVX
-	QZGu4lCd65HRBfSMLKL+VJMWr57Ub3IVmY8tEO2BbxJf0FmnAUAe/niF3kRFNCHJP4rv1x
-	lVj1u83dSX9a/1zeRbZsq+5GPEoPPO4=
-From: Sven Eckelmann <sven@narfation.org>
-To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, sashiko-bot@kernel.org
-Subject:
- Re: [PATCH net-next 8/9] batman-adv: tt: reject VLAN/TT entries before
- reaching size limit
-Date: Sat, 03 Oct 2026 00:05:13 +0200
-Message-ID: <2653823.Sgy9Pd6rRy@sven-desktop>
-In-Reply-To: <179084943174.434549.11209044496055868169@kernel.org>
-References:
- <20260930094558.3723766-9-sw@simonwunderlich.de>
- <179084943174.434549.11209044496055868169@kernel.org>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="rPMpDSms"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1790979522; x=1822515522;
+  h=mime-version:content-transfer-encoding:subject:from:to:
+   cc:in-reply-to:references:date:message-id;
+  bh=QRc2jsoiNRA0qmzpUyGoXZATx6Osp3I40yobfvG2LLs=;
+  b=rPMpDSmsktmtu1VSlmoPPbCjk1CeB0bewyAtidO8ZclSKPezZGEMfuPh
+   FYZ2qP8nwHE9ps6azrn8ON3C5Hg1Ar0Xs2GrVsM2/vUxbY0H5BAqvUvsX
+   giVZPqQVbf2Eh+bhfGggpM/87pzMs03INbpY5FMFlnJcQRF5/k4mL2k/1
+   5LyrqCjj3uk01CTsVk3tszcK0Xwy5UNo+s9Ti+QB0JzEBx3WGqMNVPzJl
+   iNKOO+OEOeslYqNe5iHAHBw6aa8Dpf/uBRy4+oEMJvhx1dT90k7E3r4SN
+   Fquih2tZlNftpMx/zkV21Si8RvljThycSjbpArPLO9UQuJHc5/Mlzw0Zt
+   g==;
+X-CSE-ConnectionGUID: T65rDK6LQqSViilanIomMQ==
+X-CSE-MsgGUID: rSlqISRuTuaoFFJzE8BwLw==
+X-IronPort-AV: E=Sophos;i="6.27,136,1787011200"; 
+   d="scan'208";a="30032284"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 22:18:38 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:17484]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.9.224:2525] with esmtp (Farcaster)
+ id 3a741ae7-f0fc-4e92-9463-49bbefdf02d0; Fri, 2 Oct 2026 22:18:38 +0000 (UTC)
+X-Farcaster-Flow-ID: 3a741ae7-f0fc-4e92-9463-49bbefdf02d0
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Fri, 2 Oct 2026 22:18:38 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Fri, 2 Oct 2026 22:18:35 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3881024.RUnXabflUD";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 6.1.y] net: ena: Add validation for completion
+ descriptors consistency
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: <netdev-bot+sinfo@kernel.org>
+CC: Artem Dinaburg <artem@trailofbits.com>, <stable@vger.kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+	David Arinzon <darinzon@amazon.com>, Shahar Itzko <itzko@amazon.com>, "Simon
+ Horman" <horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Shay Agroskin
+	<shayagr@amazon.com>, Arthur Kiyanovski <akiyano@amazon.com>, Noam Dagan
+	<ndagan@amazon.com>, Saeed Bishara <saeedb@amazon.com>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>
+In-Reply-To: <179097411333.1402591.9823193935815787447@kernel.org>
+References: <20261002204534.26297-1-artem@trailofbits.com>
+ <179097411333.1402591.9823193935815787447@kernel.org>
+Date: Fri, 2 Oct 2026 22:18:21 +0000
+Message-ID: <179097950193.1335.4142870959256103753.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: EX19D033UWC001.ant.amazon.com (10.13.139.218) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
---nextPart3881024.RUnXabflUD
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: sw@simonwunderlich.de, netdev-bot+sashiko@kernel.org
-Date: Sat, 03 Oct 2026 00:05:13 +0200
-Message-ID: <2653823.Sgy9Pd6rRy@sven-desktop>
-In-Reply-To: <179084943174.434549.11209044496055868169@kernel.org>
-MIME-Version: 1.0
-
-On Thursday, 1 October 2026 12:10:31 CEST netdev-bot+sashiko@kernel.org wrote:
-[...]
-> > Signed-off-by: Sven Eckelmann <sven@narfation.org>
-> > Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+On 2026-10-02 20:48:33+00:00, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
 > 
-> [Severity: Low]
-> Should this have a Fixes: tag, and maybe a Cc to stable?
-
-No, the change is not suitable for stable backports. And since it is submitted 
-for net-next, I am not allowed to add Fixes: (for old kernels) or Cc: stable@ tags.
-
-[...]
-> > diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-> > index 481dc6afaaba1..3349376a9087d 100644
-> > --- a/net/batman-adv/translation-table.c
-> > +++ b/net/batman-adv/translation-table.c
-> > @@ -234,6 +234,162 @@ batadv_tt_global_hash_find(struct batadv_priv *bat_priv, const u8 *addr,
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
 > 
-> [ ... ]
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 > 
-> > +static bool batadv_tt_local_reserve(struct batadv_priv *bat_priv, u16 num_vlan,
-> > +				    u16 num_entries, int *table_size)
-> > +{
-> > +	int packet_size_max = READ_ONCE(bat_priv->packet_size_max);
-> > +
-> > +	scoped_guard(spinlock_bh, &bat_priv->tt.reserve_lock) {
-> > +		bat_priv->tt.reserved_vlans += num_vlan;
-> > +		bat_priv->tt.reserved_entries += num_entries;
-> > +
-> > +		*table_size = batadv_tt_local_transmit_size(bat_priv->tt.reserved_vlans,
-> > +							    bat_priv->tt.reserved_entries);
-> > +		if (*table_size <= packet_size_max)
-> > +			return true;
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
 > 
-> [Severity: Medium]
-> Can bat_priv->tt.reserved_entries wrap here?
->
-> The new counters in struct batadv_priv_tt are u16. The only bound on them
-> is packet_size_max, and nothing caps packet_size_max at what a single TT
-> TVLV can hold. When fragmentation is disabled, batadv_hardif_min_mtu()
-> skips the clamp:
-
-This is actually a good point. I didn't think about the case of an extremely 
-large MTU and used a 9000/64K MTU in my head as reason for using only u16. I 
-still consider it as a corner case and will submit a follow up patch for it.
-
-
-> If packet_size_max is above roughly 65535, the table can still grow past
-> what batadv_tt_prepare_tvlv_local_data() can build, because tvlv_len is a
-> u16:
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
 > 
-> 	if (check_add_overflow(*tt_len, change_offset, &tvlv_len)) {
-> 		tvlv_len = 0;
-> 		*tt_len = 0;
-> 		goto out;
-> 	}
-
-Correct, so widening over u16 doesn't make any sense. It seems to be better to 
-just limit the size of the packet against which it is checked:
-
-Will be submitted later to netdev as follow up check because it is not a 
-regression but just a limitation in the supported packet_size_max limits (for 
-non-standard setups).
-
-https://lore.kernel.org/r/20261003-tvlv-limited-tt-response-reservation-v1-1-82fbca929cd9@narfation.org
-
-Regards,
-	Sven
-
---nextPart3881024.RUnXabflUD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCasAqmQAKCRBND3cr0xT1
-yzWBAP0WNBEmBd8u8mbzWIsGBUe2DLQV3yZCvFe/k5tsK1/hSgD9FW9xaMmfG1CI
-Qx/yW8Lbr+K6Jlns4DDpSs+KUR0SGgU=
-=ByNZ
------END PGP SIGNATURE-----
-
---nextPart3881024.RUnXabflUD--
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
 
+Issue was real, and was hit in production. When a faulty device creates
+corrupted descriptors this commit stops the corruption from propagating
+further, and reset to driver either fixes the issue, or if it continues,
+helps AWS detect it and replace faulty devices.
 
