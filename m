@@ -1,243 +1,84 @@
-Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24001484255
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 13:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.232
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790947375; cv=pass; b=kW2whdykOxtlYYjqE6/ZGUMJS3GDZDSEp5y5tB0ZSWpu9iFErhotOYVdtwTHZExNBd8JiAYUDlT7Ee7jk7WYxJeAbUY7OtBt9CZBXSpX7m2gqZxhL4Ms8PIsFSPJHFvdrhpIf8P1EuBP1prfUUOzH6NgB7jgcynnVun2Wfmpax0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790947375; c=relaxed/simple;
-	bh=bXv+OzGfGyUqcNVSEAB3EcnVmtZJQIIB5GyxKlXPwB4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d9Kni7W+WXXrhN0AHptnAh1JGcTTiJ8HY+1kdb0cSy7CoCsOlu/mt3fD2USF9M9kSKOyLOwuCui6pZKiLvT/v4V4X9tWYzzadZFgjWTjFc5aebcftJ14Y1I8MCkT07Tm4i1tVVdSK8p4cgmnM5cJSPUTb/gOGxQsoAKLvJ7ncCw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFStWn1V; arc=pass smtp.client-ip=74.125.230.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEFF489FA6;
+	Fri,  2 Oct 2026 13:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790947556; cv=none; b=dzYJyXgpM/6q7dulzOY2mX3O7HEHkAXtmCV4ftY4AGfRzTtrHERgX7zyNLSIo9L4Bcto/lzBJbJIhX7xzFq/2rDkgzP0HomqZZUtcmRhJGqJoQFzqoJiQjYV+zLEfG1nLbM2RDGaF75mBmBeTDhbGS3hCsDe7EysITWr8CxR/as=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790947556; c=relaxed/simple;
+	bh=la4Slf1QHZA1G1NveHjiQUPOcv5H2yRVoCeezxnImrM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DEqHbD5XzF8UgCPzwm8+BmI88d1V4Ran9bfbE30ORyb1qodqBHiVYNayzJDGYCkbWOfuULgSEks9aC8CV4wS8PjjoLriHv/7g1jU8jwlbczt64iYyMq6rV6hRmFm7d6Yp8qwOCZ22k+RA1O9SFWir+lgVcHdSoEBEkgfrjR23Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmHxuDya; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFStWn1V"
-Received: by mail-qk2-f40.google.com with SMTP id af79cd13be357-93cc48a2aeaso138721385a.2
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 06:22:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790947372; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fv3mBnysp39SUchGqdxAkGuvcix90IX5YG+rmT4Fqo9ZeQcW5YiN1Ds8Mxex2nAPHF
-         R+p3BBqiomhN1/6VKI5WHErUyG8fnuYzZm3uJX99StQP/y3/8BoNL47a+B45Nma3HP+N
-         9bgv2UAbTA7NUTbcOBwKFaa+SKB/DYqaC0hcqaGdMVDkAcW5qXpYs9+zQTE9MfIGsN6B
-         2JgnFWOLEH8qFbdm8ndchqBoBgiNTDmUuv7MciT8q3LslwCraAT5zUOLGZFocbA37yEF
-         PbCa3A0Q1VrUA25NQk6CsBOjIyuVUxCUJ6QttNG8mdRJ0cnT25ZLjBhbO5huPr/rbOPR
-         j0og==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=6snyJBSj8ioMJc468jkCyOEuW/eCFo/MXP5mA8YOdC8=;
-        fh=TApLHQhpl7/ISLt6zolAItt7JuD7EArqKbe1c06Xuzg=;
-        b=PLnstfhDulFynkksGnTTKdHCizbRSp8joxiBCKug5lq8GdHq2hjAL2K1BHv9I6IpWB
-         BZlbWZFo9jCDqq4h+hwd+EOFXNrWVF1hYyZE+lV2BLDTqnvlTHLqiZ6aDkHlXOLLgel8
-         imutasRH3yWt9VmTgRFDiZXnFY+PFj7HfRLGJZQ/wMPsXckwd9AjKFYYkRlIenKH2J6g
-         Ndat9qLZ7pa/M6aj1fMT9SfVlF+kHzcganSSH7tNFvBhU+lJOJV/R+dvRPTN0FV7ekV4
-         uE9G1j0m4h6gpLR1vl+rLkIDBPUiEBL2C3c7tk09Ke2rGR9CnDKsrsPq/bC3H+K7q+GU
-         WnOQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790947372; x=1791552172; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6snyJBSj8ioMJc468jkCyOEuW/eCFo/MXP5mA8YOdC8=;
-        b=gFStWn1VLcvpWAQpW83UyCxHNj+LvtuwL998MB1foy7k4mFwWGl0sLAkL0EoJcJgdk
-         nNGEYHdnlte9z6S2s15CYSYG07dTSTNXDYi/ks86sPH4N/N7zB7wHrjDActcVIygkobU
-         Klltkv99Uq5IcFV/o5ZqrLlTDDC3X8qQkGp/PL5Lu6xkSWh1IwtIT6cbEoDJ9SqCaMbS
-         kaB4RwHrWMKVINg4vfbozGCvsaafWi2yqsra8c39N2jn793CCL/8etV/Dpy+jTxMhgTb
-         H4reUASzc2a1Ijoe8MZQ7LASwiYYMccseJ/S2c5fRzbQnHQD9WGnkKBbEaOAdvr3d/Ya
-         Kd8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790947372; x=1791552172;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=6snyJBSj8ioMJc468jkCyOEuW/eCFo/MXP5mA8YOdC8=;
-        b=CnFJamDjsCfhF+KEpZKv2JEqMc26MaxdWaH7Lop2o8alD0GNHz0zh12dUZAnEMJSZm
-         qc/qMrc8GPNzzqRL/58eZw2dvAXAAh81BOWjuehfilDMeLE6JFFeHmguALthtL+tpO2A
-         ShlcLJbESJtyJXfdYadDOkKxuXifJzJTmsSylVm6OUjyy4i0o1W8r6BZ/LWkQsnAFGzD
-         fspLNtnblf3UlRbixZtx1Fck5xou7nigMLD1nX8fR8SYs89+TyBYSrdCAY3LEXPLh2B4
-         cisVKY+ch8VrDe84FdnbRZ7Qh8EWD4UUmzsWEgbTXH8X0SEO528CsjxV8/oCe0q/wFtI
-         XNJw==
-X-Forwarded-Encrypted: i=1; AKwUvBwxiGiTJGH2IvrbTJIh9gcVWr7DNgkMSe9cBpmhdvkK9AXyu0S4htQJ6RKSKP9vRXJjDr/VwzY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mOgpuQ0JeGlReC6OFATMLV9OFKYT5ZW/2KEZFHzFr3bluKOglm
-	N6hqfOBJKS0iMe5AgzSwyGyKeza7ARmoXLifn+YyUohAuR2sHEKYdSKTvCVvsniwRObXas2mJWJ
-	/iAUsSkJhb2+1WghCXIUtaMzMvEMnp3E=
-X-Gm-Gg: AYBFou1rB1T8hPVQyc5/19+qgZHe0nxK9L2XRaJmuCc0XUckHGXmQdN7gVG7B8QiZEE
-	UvAphPHN3HkmD/tbmp2/knLe3borGppXFvMNFoprB+1zQM7Ojdv1ex3BL6cH8ZzyIHzQ2OKnYc7
-	pczdlO3sLVfKE2UMDzd0CIPzw0gbL4VSql6tN+P0IJwLHcjma94SVsRtVxu/mVEluoH6grJVozu
-	Kq0m+NgAcgNWkVE7qJhd8ceOSNJiPGVu+DmDy1ppjfokoqJmrj/majfQhKqoRCFFV/SVaBDoLJz
-	OaKA4N0ojEyG4NQ7oqgFNJumx5THWM3Wwuzzvac5LAX517+5+BMjlbE=
-X-Received: by 2002:a05:620a:4493:b0:939:ede4:a499 with SMTP id
- af79cd13be357-93ce7ab3ab2mr434910385a.5.1790947371465; Fri, 02 Oct 2026
- 06:22:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmHxuDya"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85371F000FF;
+	Fri,  2 Oct 2026 13:25:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790947554;
+	bh=PbYSzylms7o12wuCPlSjyl59qP4qkoDF5kmaNChmMWU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JmHxuDyafXnH6yN6mdvkdJmGGHhTaFZoYT4ccKchi2fE4Z+4PokAD8XIcNBYlMYvV
+	 RSIZAUNlwRIPbZYcANRZUpqIKFhchZAkAusigMIXZutGLqGpXEmHfj7C9XXIesU0z3
+	 Sh1/onvDtHA06k2nWqnerjLTR/tu4og1uik5eKrqpCsSe74TLF9kIX87Id3e7WiOrK
+	 JZLWej9ZmCt10qyfJRfGIT5YPa4wysnkcucxRzDtgw5WzUwy8/+7Oq9GfQxWFv8edI
+	 8Zxnl8k5KWF6GDUOPX6UgoXS8MHY7XJjbDhUVETVhU2qLcR2pgVxDYmAjIeh02OvBY
+	 dYHjGwkxACS4Q==
+Date: Fri, 2 Oct 2026 14:25:48 +0100
+From: Simon Horman <horms@kernel.org>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	UNGLinuxDriver@microchip.com, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v9 04/15] net: microchip: fdma: use
+ little-endian types for descriptor fields
+Message-ID: <20261002132548.GH13925@horms.kernel.org>
+References: <20260928-lan966x-pci-fdma-v9-0-a17caf60f89a@microchip.com>
+ <20260928-lan966x-pci-fdma-v9-4-a17caf60f89a@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002074551.318789-1-physicalmtea@gmail.com> <ar95red76pmfQwvF@sgarzare-redhat>
-In-Reply-To: <ar95red76pmfQwvF@sgarzare-redhat>
-From: Jia Jia <physicalmtea@gmail.com>
-Date: Fri, 2 Oct 2026 21:22:15 +0800
-X-Gm-Features: AclHuK8I62AZnyoE6xfS86fnLkS54v7RxBiMcJlNIxeI4Z6FP8O_7gPM89wJ3jY
-Message-ID: <CAJwVaM+uA0TSZuJFXyeK1-1HUAiqs0zOpK2rJ1mBGa8380_=yA@mail.gmail.com>
-Subject: Re: [PATCH 0/5] vsock: reduce RX per-packet socket overhead
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: stefanha@redhat.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260928-lan966x-pci-fdma-v9-4-a17caf60f89a@microchip.com>
 
->
-> On Fri, Oct 02, 2026 at 07:45:46AM +0000, physicalmtea@gmail.com wrote:
-> >From: Jia Jia <physicalmtea@gmail.com>
-> >
-> >This series reduces per-packet socket overhead in the virtio-vsock RX
-> >worker.
->
-> I did a quick look but IMO this is hard to review, please try to keep
-> patches as small as possible, e.g. where you are introducing ctx, store
-> ctx->net in a net variable, so you don't need to touch the entire
-> function, etc.
+On Mon, Sep 28, 2026 at 09:32:52PM +0200, Daniel Machon wrote:
+> The FDMA engine reads and writes the DCB and DB descriptors in
+> little-endian byte order. So far the descriptors have only been produced
+> by the little-endian SoC itself, so plain u64 fields were fine. With the
+> PCIe FDMA path, the descriptors live in host memory and are written by
+> the host CPU, which may be big-endian.
+> 
+> Change the descriptor fields to __le64 and convert at the library
+> boundary: in __fdma_db_add() and __fdma_dcb_add() on write, and in the
+> fdma_db_*() accessors on read. The dataptr and nextptr callbacks keep
+> their u64 signatures, so their implementations are unchanged. Add
+> fdma_db_dataptr_get(), and convert the lan966x sites that read the
+> descriptor fields directly to use the accessors.
+> 
+> No functional change on little-endian hosts.
+> 
+> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 
-Thanks for the review and suggestions.
-Will do. I will unpack ctx into local variables to minimize the diff.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
->
-> Please check https://docs.kernel.org/process/coding-assistants.html
-> and also https://docs.kernel.org/process/submitting-patches.html
-> ans also https://docs.kernel.org/process/maintainer-netdev.html#git-trees-and-patch-flow
-> (I guess this is net-next material).
->
-
-Thanks, I'll reread them. Targeting net-next for v2.
-
-> I don't think this series was sent properly, I tried
-> `b4 am 20261002074551.318789-1-physicalmtea@gmail.com` without success
-> and also looking at
-> https://lore.kernel.org/virtualization/20261002074551.318789-1-physicalmtea@gmail.com/
-> I can't see the full series, please check your workflow.
->
-
-Sorry for the broken thread. I will fix the git-send-email setup for v2.
-
-> Also, is this for vsock core or just virtio-vsock? if it's just
-> virtio-vsock transports, please use "vsock/virtio" prefix.
->
->
-
-It is for virtio-vsock. Will use the "vsock/virtio:" prefix.
-
-> >
-> >Patch 1: separate socket lookup from locked packet processing.
-> >
-> >Patch 2: keep one socket lock across a bounded run of established
-> >STREAM/RW packets for the same native socket.
-> >
-> >Patch 3: reuse the locked socket for later packets with the same
-> >address tuple.
-> >
-> >Patch 4: coalesce default write-space notifications while that
-> >lock is held.
-> >
-> >Patch 5: defer the default readable callback until after the batch
-> >unlocks. Custom callbacks retain per-packet notification behavior.
-> >
-> >Performance:
-> >
-> >Tested on single-stream AF_VSOCK (1 reader on Guest CPU0, virtio-vsock IRQ
-> >on Guest CPU1, fresh QEMU guest per state, 16 balanced AB/BA pairs per
-> >payload).
->
-> What the host is using? vhost-vsock?
->
-
-Yes, vhost-vsock.
-
-> >
-> >End-to-end RX throughput (64K receiver buffer, SO_RCVLOWAT=1):
-> >
-> >  payload  baseline RX (G/s)  PATCH RX (G/s)  throughput change (95% CI)
->
-> What G is? Gbit? Gbytes?
->
-
-Gbit/s. Will fix the table headers.
-
-> >  256B     0.5722             1.0286          +79.76% [+75.40%, +84.23%]
-> >  512B     1.1464             1.9779          +72.53% [+69.50%, +75.63%]
-> >  1K       2.2714             3.6368          +60.12% [+56.92%, +63.37%]
-> >  4K       3.9095             7.7160          +97.37% [+92.09%, +102.79%]
->
-> Why stop to 4k?
->
-
-Stopped at 4K because the throughput gains were steadily increasing.
-Will test up to 64K and include the results in v2.
-
-> >
-> >Fixed-syscall stress test (receiver buffer = sender write size; RX in G/s):
-> >
-> >  payload baseline RX PATCH RX throughput change (95% CI) recv() base/patch
-> >  256B     0.2885       0.6737    +133.50% [+123.58%, +143.86%]  1048577/1048577
-> >  512B     0.5631       1.2091    +114.71% [+104.97%, +124.92%]  1048577/1048577
-> >  1K       1.5361       2.9678    +93.20% [+80.15%, +107.20%]     1048577/1048577
-> >  4K       2.8378       6.1878    +118.05% [+109.15%, +127.33%]  538802/525645
-> >
-> >Request-response latency (Ping-Pong RTT, 10,000 requests):
->
-> What tool did you used for both throughput and latency?
->
-
-Throughput: tools/testing/vsock/vsock_perf
-Latency: custom userspace ping-pong RTT tool (CLOCK_MONOTONIC).
-Will document both in the cover letter.
-
-> >
-> >  payload  baseline mean RTT (us)  PATCH mean RTT (us)  change (95% CI)
-> >  256B     126.968                124.541              -1.91% [-3.35%, -0.45%]
-> >  4K       130.362                126.664              -2.84% [-5.12%, -0.50%]
->
-> Whys only this payload cases? For latency we should use even try small
-> payloads IMO like 64 bytes.
->
-
-Thanks for the suggestion. I'll add a 64B payload test for latency in v2.
-
-> Thanks,
-> Stefano
->
-> >
-> >Diagnostic Guest CPU1 system-wide cycles (fixed-64K receiver, with perf):
-> >
-> >  Buffer size  baseline cycles/B  PATCH cycles/B  cycles change (95% CI)
-> >  256B     15.287            13.630          -10.84% [-12.51%, -9.14%]
-> >  512B      7.306             6.611           -9.51% [-10.92%, -8.08%]
-> >  1K        3.811             3.458           -9.25% [-10.96%, -7.50%]
-> >  4K        1.850             1.669           -9.75% [-11.78%, -7.67%]
-> >
-> >Jia Jia (5):
-> >  vsock: split socket lookup from locked RX processing
-> >  vsock: amortize RX socket locking for stream packets
-> >  vsock: reuse same-flow socket lookup in RX batches
-> >  vsock: coalesce RX write-space notifications in lock batches
-> >  vsock: defer RX readable notifications until batch unlock
-> >
-> > include/linux/virtio_vsock.h            |  14 ++
-> > include/net/af_vsock.h                  |   3 +
-> > net/vmw_vsock/af_vsock.c                |   2 +
-> > net/vmw_vsock/virtio_transport.c        |  48 ++++-
-> > net/vmw_vsock/virtio_transport_common.c | 341 +++++++++++++++++++++++++++-----
-> > 5 files changed, 357 insertions(+), 51 deletions(-)
-> >
-> >base-commit: f5f84daefcd92d7a630066635ecea1433ed5eac7
-> >--
-> >2.53.0
-> >
->
