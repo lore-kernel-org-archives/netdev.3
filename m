@@ -1,119 +1,128 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72021DF98F;
-	Fri,  2 Oct 2026 09:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11F51DF98F;
+	Fri,  2 Oct 2026 09:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790934791; cv=none; b=HyU4no6QW3oouUkRSQ1M7WkPD/koos+OUfK2vGXrL3mWYGsiNATj4n9MFCpPZJvHkBtfc7D/I9s0HsMp3oakMcIHRg90KGJW756zaV/Stjcd8PTk+Irr5zD4EV3nVK4oL4iIbi4jL19CxqJ33qYEFB7Kfv6i/xKk4a0x2+EnQhM=
+	t=1790934939; cv=none; b=cubOAdhgDNGs+E4SDKUUzZnimx2LT49OYtKJI4wOld66QjCKKmh2iFrKHd8ND3EcGjjuzmx/nPPUe+1bgoX9ucmOCOqg1p1hJ8Tk3Ilzm880yLZ9fzYq9QwdUeLyXxB9OZvtf2k76koaOyc/KBF/yFFuz+fTlMm24VzVlkp6qqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790934791; c=relaxed/simple;
-	bh=j6ufI30XP0VX3ADFXEvx2M44Ybov1qKKga0vR8vUHbA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Ygq1XuhaLyEydB5sMEuF1xHjgBzbL/O6FSKjqsBowt8/PoifIs9nlwrLMtDd9Io8r8mJs4VOZVtmo/8lwDCmDOoapv8aZdACmCj58SAYGvOUafi9GWWJQlV5uWzPYRDD7qk0zPZC7aXxx73KaE7T3DI5B8sIGxE9DUIW6Lw/fgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=SYsHTNE8; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1790934939; c=relaxed/simple;
+	bh=NvFJmMpVkWwdWLqUID9EtsNEdV8N1zArI5mT3nmiQuk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C76eopQQicQ9hTz5P1ad92Dv/rv+LNKXWSMc/Z1Hzbp8HaEA7VdN8W+Bhhpg2fT7tgQwND42sActbc/npqjADyasyrK8IgMY3Uso5DfgUo8O/XQNCFkoHrqi6nPweqJTtjNP3Oonxw/9XEqZgIl4lxuIZ6ahQ0ekwCaZ7XZ+NHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=d5Ulbqbp; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="SYsHTNE8"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4DD44A4A3E;
-	Fri,  2 Oct 2026 11:53:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790934783; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=d8dVxb/4SjaiiBhdK3qGSBfU3WzGwhFu3UnFjFCUSlY=;
-	b=SYsHTNE8bBR9uAbWt2qtMnw5Z9IYDzoODh6vRysAfaQO1hhdcwSHVWFtQWE+/Dy2bk4RLv
-	JKlPhSSNSLOagQbUGaNJF+VW5ns2xzPciezwItX6Gatw47/4LFLwQ09puS8VkKRc9U/coQ
-	4emwAIrLaQxWFcc0njJnZPN/sznlo5wPNpTp3OtzcQjo7mc6MLasuohP9gDy2lj5zSQxwQ
-	zamEUMbjlicF4MzDDTud8dHkf4NfhHhEktBrxlsxwjObXUXYh5Cu6uQgHgwH5/bZYxWwv8
-	wiRdPfboqztCwTGrnaspDg6eBFio5UI6OwWk/1+Obyeo9DZBAE6m8vj3BI7BGw==
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="d5Ulbqbp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1790934927;
+	bh=F2JP1gIQQWSa5U3EZYQzsofRPJ5Dbb0Cl5yBaKpzQL8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d5UlbqbpUQzOR51ptWfsIi53zr2Km9xVgMwrpL5lWGtyqso5eXSYKVJKIQQttZNEU
+	 jebPlYckFnrV9vCp1bTPiyesXMb6gXLTUiM/NBTXpl4ONPno1uSW2WGIKDIAVgI7AN
+	 cMKcmRmcmPz4JtDk58QpfbEc2cadNYGsFnspBtr9S3/vFpZWtf18i19j5pQP708JJc
+	 DEwio656H7dt6ab80orY5sZC0hoC4SZ9q8t0UoFXrdt1ftsFJ0Cvno04T+wtR97Dzi
+	 MA7DcV7qH8/xeDQn3qwUP+lQ+kcRVtLxXOFr64zC/1kFwy099qcT+XYLOk1SpKR4cY
+	 MCZpNOH7zae6Q==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 7DCE06069D;
+	Fri,  2 Oct 2026 11:55:27 +0200 (CEST)
+Date: Fri, 2 Oct 2026 11:55:25 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: fw@strlen.de, phil@nwl.cc, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] netfilter: conntrack: avoid recursive master
+ destruction
+Message-ID: <ar9_jXzMPf1zh-gi@chamomile>
+References: <20261001180224.1018290-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 02 Oct 2026 11:53:01 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH net-next] net: macb: move printk() calls out of bp->lock
- critical section
-In-Reply-To: <20260930-macb-irq-v1-1-8994a4c8f3bb@bootlin.com>
-References: <20260930-macb-irq-v1-1-8994a4c8f3bb@bootlin.com>
-Message-ID: <c5df780e33d1b642a138070f5ff0c300@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261001180224.1018290-1-4ncienth@gmail.com>
 
-Hi Théo
+On Fri, Oct 02, 2026 at 03:02:24AM +0900, Daehyeon Ko wrote:
+> Conntrack entries created through ctnetlink can reference another
+> confirmed entry as their master.  There is no limit on the resulting
+> chain depth.
 
-On 30.9.2026 20:35, Théo Lebrun wrote:
-> printk() call while bp->lock is acquired might be a bad idea:
+Then, just limit ctnetlink because this makes no sense.
+
+> When the last external reference to such a chain is dropped,
+> nf_ct_destroy() puts the master reference.  If that is the master's last
+> reference, nf_ct_put() invokes nf_ct_destroy() recursively.  A sufficiently
+> long chain therefore exhausts the task stack.
 > 
->  - It grows the spinlock atomic section.
+> Release the master reference directly.  When it was the final reference,
+> continue destroying it in the current invocation.  This keeps the existing
+> refcount and lifetime rules while bounding stack use.
 > 
->  - If netconsole is active on the same interface (and we run on the
->    queue's CPU), we risk a deadlock because macb_poll_controller()
->    calls macb_interrupt() which grab bp->lock if an IRQ is pending.
-> 
-> Three messages are changed:
-> 
->  - In macb_tx_error_task(), defer netdev_err("halt tx timed out") call
->    to after the critical section. Update the message to highlight it
->    occurred in the past. Inherit the buffer exhaustion boolean variable
->    name from the old code comment.
-> 
->  - In macb_tx_error_task(), defer the netdev_err("TX buffers exhausted
->    mid-frame") call out of the loop. This also means it goes from
->    1-per-error to 1-per-task-invocation.
-> 
->  - In IRQ handling, move HRESP error printing out of
->    macb_interrupt_misc() into macb_interrupt(). Again, it means we
->    dedup error reporting if status is read multiple times in a row with
->    HRESP bit set. This is fine as from past instances I've seen, this
->    message spams our log if it occurs.
-> 
-> Notice we *ignore* debug printks; if you are debugging MACB maybe don't
-> use netconsole...
-> 
-> The netconsole deadlock is theoretical & never reproduced.
-> 
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> Fixes: 5faa1f4cb5a1 ("[NETFILTER]: nf_conntrack_netlink: add support to related connections")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 > ---
-> This patch used to be part of context swapping V9.
-> It got moved out as there aren't any dependency or relationship.
+> Tested on net e23a64eb244356ee47c0620f0722d51bd88db522 and exact
+> v6.12.105. A source reproducer and userns launcher are available privately
+> on request and are intentionally omitted from this public posting.
 > 
-> Technically it is a fix, in practice I'm happy for it to go through
-> net-next/main for more testing and it is a theoretical bugfix (as usual
-> nowadays). Decided after seeing Jakub taking a similar patch into
-> net-next this morning:
+> The trigger needs CONFIG_USER_NS, CONFIG_NET_NS, CONFIG_NF_CONNTRACK and
+> CONFIG_NF_CT_NETLINK. Host UID 65534 used only namespace-local
+> CAP_NET_ADMIN. The essential vulnerable trace is:
 > 
->> Since Linus is pushing back on our number of Fixes let's go for
->> net-next with similar fixes until the merge window
-> https://lore.kernel.org/netdev/20260929184531.36ac3dc3@kernel.org/
+>   BUG: TASK stack guard page was hit at ffffc90001197ff8
+>   CPU: 1 UID: 65534 PID: 178 Comm: conntrack-maste
+>   nf_ct_destroy+0x1ac/0x5f0 (repeated)
 > 
-> Changes since context swapping v9:
-> - Rebase onto latest net-next/main (47a144672573).
-> - Send patch standalone.
-> - Simplify the commit message (it was a long and partially wrong
->   rambling before). Also mention that it is a theoretical bugfix.
-> - Link to v9: 
-> https://patch.msgid.link/20260812-macb-context-v9-0-7ddbf5f715e0@bootlin.com
-> ---
-
-> [...]
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
-Thanks,
-Nicolai
+> Fixed current and LTS 6,000-entry runs ended with nf_conntrack_count=0 and
+> no crash marker. The netdev allyesconfig and allmodconfig W=1 full builds
+> were not run.
+> 
+>  net/netfilter/nf_conntrack_core.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+> index d0d9e5ea84a09..0ce6141b3dfd7 100644
+> --- a/net/netfilter/nf_conntrack_core.c
+> +++ b/net/netfilter/nf_conntrack_core.c
+> @@ -592,6 +592,10 @@ static void warn_on_keymap_list_leak(const struct net *net)
+>  void nf_ct_destroy(struct nf_conntrack *nfct)
+>  {
+>  	struct nf_conn *ct = (struct nf_conn *)nfct;
+> +	struct nf_conn *master;
+> +	bool destroy_master;
+> +
+> +again:
+>  
+>  	WARN_ON(refcount_read(&nfct->use) != 0);
+>  
+> @@ -610,10 +614,17 @@ void nf_ct_destroy(struct nf_conntrack *nfct)
+>  	 */
+>  	nf_ct_remove_expectations(ct);
+>  
+> -	if (ct->master)
+> -		nf_ct_put(ct->master);
+> +	master = ct->master;
+> +	destroy_master = master &&
+> +		refcount_dec_and_test(&master->ct_general.use);
+>  
+>  	nf_conntrack_free(ct);
+> +
+> +	if (destroy_master) {
+> +		ct = master;
+> +		nfct = &ct->ct_general;
+> +		goto again;
+> +	}
+>  }
+>  EXPORT_SYMBOL(nf_ct_destroy);
+>  
+> -- 
+> 2.55.0
