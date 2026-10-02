@@ -1,179 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421E31ADC97
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 01:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5BCCA6B
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 01:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790903015; cv=none; b=ZMkI03MGmPdjvFytinYhJpdKzvX4xcxFx1zrDrHYL7YuXQ+VJyUF8ZrvaolaFY3z3Mn7aTC0q1zcXPM7xIG8oCFixlF/p8cUtS+oBl0p90lbLebhakZjSbMlUJdwMuwhnPdj5YMe9xNx5draSHfXUQ4PKFT9dja7UsppTM6Q+tw=
+	t=1790903102; cv=none; b=uBa1es9K3uUcJW9GzCX6vdzGKuCf7PVdQlAt0fsVlydy2vufIVLXEjlqU/azPxyd+ymCTZ3jmunjNDZJnhnFMRMdflqcFOsfmHAv+9XpqVZ3D2aosta8Lsw7Scsc+mM7zKzx7tTMz2M2a00EOv9ze//4egbkpCV+nvzdaQvFtto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790903015; c=relaxed/simple;
-	bh=Iqq0tKidyUkGhhJSnWgZ63+wnDZZICq58JRViehFr1A=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ecip0kMu2kYBlWMFcIejel/Rp/joPcPSsS8zBvtW4mWsmPEG7SX8X/ross2uigVATVkXQYtaLvjxvieqqEHctpQUr4TesNRC8BefXChPig5PX8Q2Qb3SlEbd7ClEaSR2G02GEc1af7U4m+h4872QuU9V+sOT0aGChHU/uqk5QDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNyEy9kW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790903102; c=relaxed/simple;
+	bh=70E4JEwJRhITrayTFGxFr/Ka+e6/XGMShGQ5vKZGBZc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lwpgXMbo76vQ7VX2y/xt6XqSSWy/ZDtR8CDvTp7fZVotsIUkXpS1+YWjrXAc/TWjQ198+fQbx5ygNsIgKlrxnoNz8eMC8Y3mreA9KxkIT3m1WzPTHpIdgV7IYDjod7K+BFlsbxkUY8wbO7lKl/bBJM/anl/W/rk+MdiTl035m/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fv/gSVkw; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNyEy9kW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6D41F000FF;
-	Fri,  2 Oct 2026 01:03:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790903013;
-	bh=GK+6c8EdGIwDSL0JtDEGBhF++I5Jr9kpdR2MKMvbDa4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PNyEy9kWqm8QTGm5QjAJuByWKNOFuRKSLsHCf2onj1mQrx+sZfFuU0ZzP3hHy6kdK
-	 rc2m9mEE0HI6WQ3kQMSPtsruS9+qWDBHLt1eMgjSP5i4/9DWRHfs3n8aRP1ZhPCrgK
-	 5iG7gWRTsr+hjFrjVOdXuu+2MksuVDI0h6iVFr2TKE0lgZMIevQzOD4qA2fRmjpcn5
-	 6rICH9nhGf4ylCsr2MUyp4NqVvdfudVXHtIZ3etUBPrcHnU7ufnzWO7SSRhHrZu42t
-	 7E8g91E2RgxdodfeaVYLhz8qiq43ar7yIORUBNFZOXjhXFaOkVDejoodZDolmtafaD
-	 qXcSTry4uekAQ==
-Subject: Re: [PATCH net v2] net: gro_cells: prevent enabling threaded NAPI on
- gro_cells
-From: netdev-bot+sashiko@kernel.org
-To: namangulati@google.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de,
- kuniyu@google.com, syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com
-Date: Fri, 02 Oct 2026 01:03:32 +0000
-Message-ID: <179090301201.434549.1629224862256105592@kernel.org>
-In-Reply-To: <20260929010058.4063305-1-namangulati@google.com>
-References: <20260929010058.4063305-1-namangulati@google.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fv/gSVkw"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4c3304784so3078112a12.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 18:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790903101; x=1791507901; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cGNX4KL8GRa1VIINdGkPoVIRrpUVCsPABrTMa/jeOp8=;
+        b=Fv/gSVkwZLBzjHeKivXsZKpxWt+zzMFQ2md9GZKSnGlD49HEDu738K9QCRd+H2G2Q1
+         lz/OV/Lq5EXTpJYM02vxisOfzEIHB0IUNoetE1h75dIuAZNRwN/uYvVkhs+1VN30+Ltg
+         we2m7WNHUquY3N6LpHBZP2DSqmTxi246x2W+H+ZKoSlb2taTk0bXfCR3oRFt1gTur22x
+         ueRmmbuCAFtwsBq4yNTO76Cw0bwMv7dgX6AEX18F7S339+W1FOvWaLy2DQC6OfCUTZQC
+         +r/h+fLNoYz8t2UjRtRg2LdzfgtzdA2c3/E9nZ4/3uDN4THJTBu/9pM0hUxnOdRRbkQa
+         XJ5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790903101; x=1791507901;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cGNX4KL8GRa1VIINdGkPoVIRrpUVCsPABrTMa/jeOp8=;
+        b=MlsDWSObqD4GJJsRyvORjW8fCr38foT2D1sgnidZauj3daLd3lQioA4K9Btkn57hvC
+         OeHBG2AkkEBU7zN95+SbaEEJBE8r3rVfM81On+5ZGPNQBhyAilYJAquF70KjQglbpk2Q
+         mBErQkrs8ceDgmQb1p0IAg4vsyGtX/nXPPPpBYcszUCe71BBimXg0wwbtfXpZjugm7J1
+         p0O7QZtkwo1cQaKfUh4R2PjlkyK6x1Z+BhzGtKulJksMks9k87clx5iS47+nZTke7aBh
+         TrYUP9JyzCoNcdrlK9bxDFzVCQWTeGvEutT/zzyNPoNamFC1T7ePLcGpgwot1yIFNuRR
+         bBCA==
+X-Forwarded-Encrypted: i=1; AKwUvBzwdTD2lT24uBeZPdABKrUJIPhD4CjYiQDWUfj8vq2ddym/3l5Y7/h4OUn+hGjEB5mCYoPZtO8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI5ynLtLwPP0uQkmTBGiM6MsrEaThAHRxEMSuGh1yqnr+MR075+
+	CEgFn4wN/aE0i5QlkP4AdsMVvzVUTW9wAxFfvUig7dixvHzqnbGFarXT
+X-Gm-Gg: AYBFou3q1O9EVJZJUj/GwCw+IjB+OBE3bXK+Cy+O7SGm/eWJXd+LVydHOv9MHQM+1oR
+	/eaT5wwR8kDAuFrPwU/FeEuAKUyccAty5vPtF9XOwJzGpH7hoX1ha71SYxECKNsHA4gpfKbZsI0
+	OhK5NU90aqGuzCh/YPZeKxpCToO6646MMufU3X9l/iRPnTRlWI0o8pk0Sb3rzDw8aI3XTBQEfSG
+	f0dWQSS3G/KPeSsn3ZrS6NI/HiY5IaztC6I5SD4rMRVT+YMcqaTc/mRy8PUbvUnuXBJlG24ATp7
+	6Vl9FvPpunMzQVG+DvNZSQ8YHh+iskA7OPQVyHB63BIZDRUXBKvfMuunvkXFY5LR96zNUEO9avh
+	CVuskJ0uzY63u3U+I3cQkwdjbVANVeZdSHMV8BTnUDPdkv8O58wiRE9BNxCt3Rsd2UpPhD9O2/u
+	MtvG2ZzL2qLtkdFUuWuXIEyfl/YV1iOFWFm/bSYfIIdTKO6xVq9A66caVnXzWhxR7hWPaZGqdWg
+	GCQqRbxRuw=
+X-Received: by 2002:a17:90b:1e53:b0:3a0:a055:1741 with SMTP id 98e67ed59e1d1-3a6ceaff95dmr666070a91.27.1790903100692;
+        Thu, 01 Oct 2026 18:05:00 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6cd44c23esm1587388a91.4.2026.10.01.18.04.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Oct 2026 18:05:00 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	nhorman@tuxdriver.com,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daehyeon Ko <4ncienth@gmail.com>
+Subject: [PATCH net] sctp: revalidate output stream after association connect wait
+Date: Fri,  2 Oct 2026 10:04:49 +0900
+Message-ID: <20261002010449.3689454-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+When message interleaving is enabled, the first send waits for association
+establishment before building its data chunks.  The wait drops the socket
+lock, and handshake processing can reduce the output stream count to the
+peer-advertised inbound stream count.  sctp_stream_init() then frees the
+extension of every removed stream.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+The sender currently resumes with the stream that it checked before the
+wait.  If the peer removed that stream, sctp_outq_tail() later dereferences
+its NULL extension.  Fatal-oops policies then panic the host.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+KASAN: null-ptr-deref in range [0x38-0x3f]
+RIP: sctp_outq_tail+0x49e/0xaa0
+Call Trace:
+ sctp_primitive_SEND
+ sctp_sendmsg_to_asoc
+ sctp_sendmsg
 
-- [High] The rewritten modify_napi_threaded() (net/core/net-sysfs.c) uses
-  NAPI_STATE_NO_BUSY_POLL to mean "this NAPI cannot be threaded".
-- [Medium] The commit message says the patch makes the write fail with
-  -EOPNOTSUPP "when trying to enable threaded NAPI via sysfs" on netdevs…
+Revalidate the output stream after the association connect wait.  Return
+EINVAL if it falls outside the negotiated range.  This matches the pre-wait
+check.
 
---
+Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+ net/sctp/socket.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-net: gro_cells: prevent enabling threaded NAPI on gro_cells
-
-This patch changes modify_napi_threaded() in net/core/net-sysfs.c.
-A write to /sys/class/net/<dev>/threaded now reaches netif_set_threaded()
-only if at least one NAPI on the device lacks NAPI_STATE_NO_BUSY_POLL.
-The goal is to stop threaded NAPI from being enabled on per-CPU gro_cells
-NAPIs, where the local_lock does not provide cross-CPU exclusion.
-
-Closes: https://lore.kernel.org/netdev/6aad6d7b.0c43d342.320d00.0001.GAE@google.com
-
-> diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-> index 352173df75785..286c7b4139df1 100644
-> --- a/net/core/net-sysfs.c
-> +++ b/net/core/net-sysfs.c
-> @@ -743,17 +743,17 @@ static ssize_t threaded_show(struct device *dev,
->  
->  static int modify_napi_threaded(struct net_device *dev, unsigned long val)
->  {
-> -	int ret;
-> -
-> -	if (list_empty(&dev->napi_list))
-> -		return -EOPNOTSUPP;
-> +	struct napi_struct *napi;
->  
->  	if (val != 0 && val != 1)
->  		return -EOPNOTSUPP;
->  
-> -	ret = netif_set_threaded(dev, val);
-> +	list_for_each_entry(napi, &dev->napi_list, dev_list) {
-> +		if (!test_bit(NAPI_STATE_NO_BUSY_POLL, &napi->state))
-> +			return netif_set_threaded(dev, val);
-> +	}
->  
-> -	return ret;
-> +	return -EOPNOTSUPP;
->  }
-
-[Severity: High]
-Does this break the threaded control on WireGuard devices?
-
-WireGuard sets NAPI_STATE_NO_BUSY_POLL on every per-peer NAPI. It also
-runs those NAPIs threaded by default:
-
-drivers/net/wireguard/peer.c:wg_peer_create() {
-    ...
-	set_bit(NAPI_STATE_NO_BUSY_POLL, &peer->napi.state);
-	netif_napi_add(wg->dev, &peer->napi, wg_packet_rx_poll);
-	napi_enable(&peer->napi);
-    ...
-}
-
-drivers/net/wireguard/device.c:wg_newlink() {
-    ...
-	netif_threaded_enable(dev);
-	ret = register_netdevice(dev);
-    ...
-}
-
-Once a peer has been added, the new loop never finds a NAPI without
-NO_BUSY_POLL. Writing either 0 or 1 to /sys/class/net/wg0/threaded then
-returns -EOPNOTSUPP:
-
-threaded_store()->netdev_lock_store()->modify_napi_threaded()
-
-Before this patch, a non-empty napi_list reached netif_set_threaded().
-A call to netif_set_threaded(dev, 0) succeeded and stopped the kthreads.
-
-Netlink does not offer another way to change this. napi_hash_add() skips
-NO_BUSY_POLL NAPIs, so WireGuard NAPIs never get a NAPI ID. netdev-genl
-exposes threaded only per NAPI, through napi-set.
-
-As a result, threaded_show() still reports 1 on WireGuard, but users can
-no longer turn threaded mode off. The ABI document for this file says:
-
-    User could set this value to enable/disable threaded mode for all
-    napi belonging to this device
-
-The gro_cells problem comes from per-CPU cells protected by a local_lock,
-not from NO_BUSY_POLL itself. Would a dedicated marker for NAPIs that
-cannot be threaded work better here, similar to the NAPI_STATE_NO_THREADED
-approach in v1? The patch carries Fixes: tags, so this change would also
-reach stable kernels.
-
-[Severity: Medium]
-Should the NO_BUSY_POLL check apply only when val is 1?
-
-The commit message says:
-
-    Check NAPI_STATE_NO_BUSY_POLL in modify_napi_threaded(), and fail early
-    with -EOPNOTSUPP when trying to enable threaded NAPI via sysfs on
-    netdevs where all NAPIs have NAPI_STATE_NO_BUSY_POLL set.
-
-The loop also runs when val == 0, though. gro_cells_init() sets the flag
-on every cell NAPI:
-
-net/core/gro_cells.c:gro_cells_init() {
-    ...
-		set_bit(NAPI_STATE_NO_BUSY_POLL, &cell->napi.state);
-    ...
-}
-
-On gre, vxlan, geneve and other devices backed only by gro_cells, writing
-0 to threaded used to reach netif_set_threaded(dev, 0) and succeed as a
-no-op. It now returns -EOPNOTSUPP.
-
-The commit message avoids napi_id_valid() because it "can potentially
-break userspace". Could this change also break scripts that write 0 to
-threaded on every interface? If the change is intended, could the commit
-message mention it?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929010058.4063305-1-namangulati%40google.com
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 4652fd90d9a6c..394d31cb698e0 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -1848,6 +1848,11 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+ 				err = -ESRCH;
+ 				goto err;
+ 			}
++			if (unlikely(sinfo->sinfo_stream >=
++				     asoc->stream.outcnt)) {
++				err = -EINVAL;
++				goto err;
++			}
+ 		} else {
+ 			wait_connect = true;
+ 		}
