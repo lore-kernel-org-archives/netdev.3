@@ -1,99 +1,113 @@
-Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93334E3259;
-	Fri,  2 Oct 2026 17:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790961928; cv=pass; b=qYdyiLfLYRMiZ+zKbN1NUchpOG98K+F18ry/DxldO/Mc7+S+oGaOOtv0VGLx7KTBCzLKVsF9AhGzxOsE6d/p3XwAz4bo/o7p3rdgSe/e0Q7YI/JnREtlswQC1iLkLfzl+cRdp3OUMbwNTEDLgNV+qTe+kRFErXOGE2mvoGw3Lgc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790961928; c=relaxed/simple;
-	bh=S/V6mHmp95Pew1JPsVwzbDdGIlnmgUUSr8a4ChnIOFw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJQ+eMEa//OONOHUC3jObsgojTxGj8mmd61Czp0Ujs0u27LNte3OZ4fWxhiU1cNoJh13s9ePOjsN6fgbuNp5GXF6epf8BbzIoN6UtMfNK/jpajug8xj+zyi06GDe0FhHoDTyXIW4Yxujy2vJhR44i6Ea7C0ql2wk3Vk8bmklvtk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv; spf=pass smtp.mailfrom=iav.lv; dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b=Fk/Ox3Oh; arc=pass smtp.client-ip=136.143.169.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217B93314C3;
+	Fri,  2 Oct 2026 17:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790962471; cv=none; b=X7w+RGlPNlvnDYK13jlIVptZcG58I0uv7Y0ysIhLUgA5Tbzia1z4Pkx2BqoHRxoM1HoFmTyJ9ytBXc6Af5ds639sdzDAdkLAi3o/jhVOB/RnlEoGJibLK7p2D+3MFCIFHDBdi2GqYEV/DOAaPh4QzHZerfFx5RHmuiLPKh+eU2E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790962471; c=relaxed/simple;
+	bh=uBKkkvXcqWP1HdrlFH+/Kt+o0tVbOLeIX1KBoTYvCFw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pNVhSGgBMNECZnTMNu+hnVcNXGjcPXXIryVL82KhqtuAKzbAvwYjfZ72k9L0dZfDmmWrdsyyU88a8VRZlVNbPoRi1MRFwiBDnwLzVUTbyStE9MKwBY3wlZURVoyfVJmNEGwZzHdfU9APGsF1hnVBv4UaeLZduTGIj0c2t03CeBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ndGxOaP+; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b="Fk/Ox3Oh"
-ARC-Seal: i=1; a=rsa-sha256; t=1790961901; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=Y2xcMUfPg3sgY5z6IGZd6olrC0iznrzDNv7C1536rA1QoP/4bkx7wbEWUNdytdYtxAGkpmQk8zmUtkgvi7r3ytryqfyPkthUPrRx3/+VzwRrajoR91WMMvlOUJtv7hsdjnEfxNFRzKFfigfdWmgslXTTGZCvlH6DAgF2C0BYoJM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1790961901; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ZvFYpHruR5l36T2T4B3+C6Dn0tBYh7BsYEg7s8cKIek=; 
-	b=cnxXqhmDABd8+Cd/xKpTHOWM5BMnrKYxC26HX9W49SJKIus3UsEHGI9VMn2QrzEtiO6Q1WtBtHHRuweSSUQyGYmuCNgTu3su+9o4jqN+VKragDtm1n+dwt+5ve/EsnsiRBC5NVgLlTz9T55SgFsH/xEBRGL5/Q2XKgLngmL5RT0=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=iav.lv;
-	spf=pass  smtp.mailfrom=iav@iav.lv;
-	dmarc=pass header.from=<iav@iav.lv>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790961901;
-	s=zoho; d=iav.lv; i=iav@iav.lv;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=ZvFYpHruR5l36T2T4B3+C6Dn0tBYh7BsYEg7s8cKIek=;
-	b=Fk/Ox3OhH88+tRnQLkAiYvatM5qB0Z57tnhSstGJX3X/1ir3kWwgy0rnNsIWyakE
-	nkCfnfMKujnwjvpq6pKoJTbOPtuChjm5G3DQdG39dkHYCwDfHJ9GzenfjfOnDFsjEli
-	2s3tJZXMyDx9D/DTj4NfmeiUd+fHMSyooqc30dDw=
-Received: by smtp.zoho.eu with SMTPS id 1790961899502973.5896102991785;
-	Fri, 2 Oct 2026 19:24:59 +0200 (CEST)
-From: Igor Velkov <iav@iav.lv>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: stmmac: mask the MAC interrupt while resume resets the MAC
-Date: Fri,  2 Oct 2026 20:24:57 +0300
-Message-ID: <20261002172457.1717818-1-iav@iav.lv>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261002043558.1302590-1-iav@iav.lv>
-References: <20261002043558.1302590-1-iav@iav.lv>
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ndGxOaP+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ve2dMC9PSdOrVvkkkeWzs54ySdoNlOjzWjR1ldamK+g=;
+	t=1790962468; x=1792172068; b=ndGxOaP+/xiwWyYtxgmBfxQ3gLZJwqSUb3BLFGn9gsOGFyO
+	09UpjrR044DrwuDqVwGDnbXdxmtn/nho9HoMqgkp9W3ha0auEbGoHsu878ne6HfTGBNB3lxfdjrQD
+	v9jvgOLz0JURqx6DoQ7uwbjSlCdVD0TnmYUyq5cMSVmKSTH+u2KJDw4jwQC5vbMkLJHJ1oopkJMVP
+	WDr5ncJC9PWUrS+yFaagzkyybjpDc+2/Q7X6XFtqCbQ9j+QMC0yVc25COVvbMfKb4chhkTY4xoyek
+	waX4hkcmwoKq3yQ7milbC3M4n+ckPGY3okrJO2o0AhStgGClquPLBt0MGyTR8OsA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xCh9J-00000001gCK-0oB3;
+	Fri, 02 Oct 2026 19:34:21 +0200
+Message-ID: <7fc3e2730ebea674abf750a39c53d6ee307a907e.camel@sipsolutions.net>
+Subject: Re: [PATCH net v3] wifi: nl80211: document sta-info nested attribute
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>, "David S. Miller"
+	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Donald Hunter
+	 <donald.hunter@gmail.com>, "open list:NETWORKING [GENERAL]"
+	 <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+Date: Fri, 02 Oct 2026 19:34:19 +0200
+In-Reply-To: <6ae7fd5e4d24bdeb0f0df057f767107e08567640.camel@sipsolutions.net>
+References: <20260816101216.20947-1-hilalrahmatullah11@gmail.com>
+		 <20260817084713.7a7694d6@kernel.org>
+	 <6ae7fd5e4d24bdeb0f0df057f767107e08567640.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-This conflicts with net-next commit 8181678a92f0 ("net: stmmac:
-propagate PTP init failures in __stmmac_open() and stmmac_resume()").
-The success path has to jump to out:, or the MAC IRQ stays disabled
-after every resume and the build does not catch it. Resolution, built
-with W=1 on net-next 071876fd5048:
+On Sat, 2026-09-05 at 09:46 +0200, Johannes Berg wrote:
+> On Mon, 2026-08-17 at 08:47 -0700, Jakub Kicinski wrote:
+> > >=20
+> > > ---
+> > >  Documentation/netlink/specs/nl80211.yaml | 351 +++++++++++++++++++++=
++-
+> >=20
+> > Hi Johannes! Should we add this file to wireless in MAINTAINERS?
+> > Or do you prefer for us to handle the YAML stuff directly?
+>=20
+> Not sure, we don't really seem to be using it for all I know, and so
+> it's just been getting some random updates like this, I guess.
+>=20
+> I think I tend to prefer the status quo, but I guess I could also just
+> apply patches to it if you prefer.
 
-diff --cc drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 0c381ae0d0ff,b275b6234b55..000000000000
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@@ -8467,15 -8403,10 +8477,19 @@@ init_coalesce
-  
-  	netif_device_attach(ndev);
-  
-- 	return 0;
-+ 	ret = 0;
-++	goto out;
- +
- +error_stop_dma:
- +	stmmac_stop_all_dma(priv);
- +	stmmac_mac_set(priv, priv->ioaddr, false);
- +error_unlock:
- +	stmmac_legacy_serdes_power_down(priv);
- +	mutex_unlock(&priv->lock);
- +	rtnl_unlock();
-+ out:
-+ 	if (irq_off)
-+ 		enable_irq(ndev->irq);
-  
-  	return ret;
-  }
+So that's what I said a month ago, but because Jouni prodded me about
+our inconsistent documentation today, I actually looked at converting
+*all* of nl80211.h and our hand-rolled policies to be generated.
 
-+Cc Lorenzo.
+It ... takes some work, and ends up being 12k (!) lines of yaml, vs.
+today's 7.2k of nl80211.h and ~1k policy in nl80211.c.
 
---
-Igor Velkov
+It also requires a bunch of changes to the tooling:
+
+ - kdoc comments for attribute-set enums
+ - exact-len-warn check
+ - validate-fn check support and creating their prototypes
+ - combining min-len/max-len for binary attributes
+ - strict-start-type support
+ - flag to generate the whole attrs without linking them from ops
+   (otherwise we get even many many more lines of yaml)
+ - NLA_NESTED/indexed arrays support
+ - allow nesting the global policy into itself (yeah ... I want some of
+   what we were smoking ;-) )
+ - allowing inheriting different members for kernel policy side
+ - drop nesting when subset overrides type ... not even sure how to
+   explain this right now
+ - option to define only policy, not ops
+ - allow taking ops IDs from an enum, because our ops don't match the
+   ynl ops too well
+ - enum-max-name for definitions to adjust naming
+
+There's a license issue - we have ISC license on nl80211.h now, but
+Donald and Hilal picked GPL/syscall/BSD-3 for the yaml and of course
+that carries over to the generated .h file, not sure if that's an issue
+for downstream projects but might be with advertising clause? Could we
+change it if I'm adding >10k new lines from nl80211.h? :)
+
+I can post it but ... is it worth it? Not even sure it would
+significantly simplify our lives, although the generated header file
+with documentation is much more regular in that it always has the type,
+etc. (which is what Jouni was asking about)
+
+johannes
