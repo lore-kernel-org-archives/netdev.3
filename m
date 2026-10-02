@@ -1,136 +1,127 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B341B87C0;
-	Fri,  2 Oct 2026 10:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790935820; cv=none; b=P+Qqg8o2ASY4l8Pp87WcufThvGSe1CQ8uWs5IX8copA58022outzo9B9dBApeEKyQ5JeyZvel3+/6Bvrb02K/UpBe1SkdFljDQdGORKgP+DVF6ER7zjb8uoXbmi0BeHN/a4uhx8RzhlgwSYpFiTUsq3c1sh9396yUut6IpmPpWI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790935820; c=relaxed/simple;
-	bh=ZXTEuJkN+jyGhP+NASBflSms8faUWwcyD/4mTMboVj4=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Hx8LZUJ9ZDXM/uSPdZpHe709LX5N0CR23BxBNRWSAwDWx9Aqx1j1/Ny0hrDgGhgDNJJs0sMwsArVR2sk00ecmybxUXOqlBamLX7nHIUAgl8TsIkGXTejCea+fMZRzMRGUU1z0A3qkqEiSHnvlxea5T/rhUqjSFgdxPYJqu1BEgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=I1SHgeMI; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349FE36EA88
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 10:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790935963; cv=pass; b=Ak0NNcwmKXNAu8thsOIl9n7orRf0lggr5YiNZBS2geGEddxua2iQE7FJ4ypILiav10gKaCoguD8kWoOGliUKHAKeC/oE+Z5dMXut6R6m9GtfM0RgqKR/FzgyRWtTQDOm/QhyCeDKmvE+I8bpFDN8BDlItvTcw6MTcWnIm3gZpnI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790935963; c=relaxed/simple;
+	bh=KfWkAC7ciIkbo6PDaSl0uLznVmfVh3leTBBxkpyFSjY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tvb6rjVrOxkHM6FJF4eBKVvme12ApisnSwE96zjcgnj8yDWJ35En78LHAfR6yEb4CGC3GaIJgvsL0G0zWGCFEHLFs1yt4bvSxmP/F3EY1mqTAtIQEK1EmRxHVvnsW2cf6zws4Jv7oOTilRLpcdzekstcghvvqz5Rrz8o4m7RDl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hCzZsjB8; arc=pass smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="I1SHgeMI"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4D02EA02DB;
-	Fri,  2 Oct 2026 12:10:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1790935814; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=BfL6SKTLkWrhN/wsJ7rNqoRO9lvotlnH5Ssl/GHYpKE=;
-	b=I1SHgeMI2oUSvOtZ8BoNQV1vxsvRVddvcmtNwTeKiaFtt/w+CBgmp8Tdefs2bs38sXLrwK
-	pYmCENY6TbiXBfFqRZKYmUzso1autjg+eUkr1STTsj5UmFyh1uPPPUjKoHjzMVFgSxCRWV
-	qegcshsOAgi4tC5eZWHLq2JZdp6OcdZXURvwB3pQqfvdeT7IAXy79S1gc9xOazAWRrtdC5
-	D5HPuGMSQNQcAseZ0NWZJyt+9vrNUQkq2ZO05DCEoOtKhfLwf4I11Ml/2tcdEqE70j3B41
-	r6J9tysrfF4YKFD/7aFA//TuET79LynJH3wllc/QQmQFEvEgld0+FScBfGLjvw==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hCzZsjB8"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5ba379d8804so3510120e87.3
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 03:12:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790935959; cv=none;
+        d=google.com; s=arc-20260327;
+        b=H6a+Ow47Bw1zHP1O5363fK4dLA3/MO+fxa3W4XQzxiGJwgLijqsAVr1cCO+HgRzOEF
+         7nIbDseN4Ewsvov3+CsWpJ/tKV5SIeFWU5WZaYh8TH+ocT9zp2t6EnuToK7Br//XnfiT
+         90az7PIqrGt1ewiUycEp3afZUQWDwm6cG+OtyiMtHFXd9DbeO/O7y6f5umG1Ei4COl4b
+         B9tCqvMBIDB8a/GSRXZj19opaSm6t502NXaquBFSABiwygryQJErTghAmpxxPR/DnnPl
+         voftAm0qfHiRv64ne6zK+D0FyRsK/3ADXW53Dljx63bjhMMRVPcX9SJbOPQJeTI0RyY6
+         /U5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Nul3VjPP6p4uv61w9bRbyY3s7TwhdtmKvGkMiKjUI8c=;
+        fh=psvyPpVR3ByOb9Z/UBc65JBny+uansuexn5PChnDhNU=;
+        b=BDQ4hjIma6bP3DbfNqZzmPBgNYVjbcIPYax6ei135d26y0xb+WAfY6hFDR6AIvbCoj
+         WUj55pvOzQ2knj4Sxh41SncgAlt0tHPhiGvr3pGQ5xNdJKgB6zvcFlmrBFg127ax3QyZ
+         dAYld5o37MsitqY3TJBqjMHBtK7ikH0CUwm0GayBdey30LPsIRJzR78QIdWMvGGi/phx
+         wKJlftDQegRLYAHqFmLjpWlosCDlCkfq8nqNmgQbTBsHydhrrvcz9ip8B1/FQPZ2M5Kg
+         anD/CzoMaYmW4DDkgK3ISVbD6VL6bq7hui7b2V/8yMuF3hC3XxrXRkxufuaTEcgyHk6Z
+         y3Zw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790935959; x=1791540759; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Nul3VjPP6p4uv61w9bRbyY3s7TwhdtmKvGkMiKjUI8c=;
+        b=hCzZsjB8PgyB5anSul08lit+C1jRucuP28QGt8obp7RKjLP8LTCmMQN7N8uYA6LyGP
+         rHcOew3mJhljYm+OMCgcahnkIEwcg1w0QTn8UmVlLhTpYFYJFjDXkYc/s0lbmdrrZ+AH
+         MEXwLHnbm2mh1+AaNIjvnuCoLRGsMC2mLt2ECGOU6PpnyjTspPYC4+PQh5IKjCrydNoV
+         0jhYE57svlhfk5jVj0gipUf672VTSgB1hUeso49UWBxeaOEUX3d5yZ4Tn4RBFl45mC2l
+         zTI0OzHvT5fiX3XeurrHIqGBJifGxJTRUjg34XfOJwOy3Adg3c/t+20j7euNiDNq+ads
+         sQ+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790935959; x=1791540759;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Nul3VjPP6p4uv61w9bRbyY3s7TwhdtmKvGkMiKjUI8c=;
+        b=oWqSRacKWjSHhg3wrPJcWhXk0O4UzPUY+PrXkb6G6OXbf3R4tuOZ3BbgxQzfyXGbsX
+         JRi5dm9Jg4oy/rcANTzhBwBtGqVLY8rU4bcfBWuwaPRI/RDgTkQJ7os+PjTqkBN1vTO/
+         nJiQFKm0fM9Wxzm+mcc6gZpVsmfBRfUIpXtASbHkNu2apdeJs1DONrTclW++RczysMHa
+         av5iUJQyH/eAX442Zo/S/90nrll+fWlVJ/6j1/QY2cSE6aHuR4SmjvVlxqvLidM2pUeh
+         7sdogLmR86+NxPwXWhHnG8TLFsZZmI/4cWd7Dhd1KYvZrs2gtH8Cek0fvUpE/1i8VgdQ
+         gfNQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxYVqk6BEfhHK9nOkl51GqU4/EZsiWcIF5W/VM5OdwxtuefLHOhd23JehxbPHt4g8oL0FnbVrU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKsji8MOGQQom9LbwiC7KJhjdOoTTPjfMzsLl7tB0qdImLlNB5t
+	LOr4u9bhTnQs2cirnuGhbpw1LTt6HDHJy1KQN18xg/RHvF8u6aI02o6E3cQ5Kyj5wlc7AM8kPCF
+	yr5mbB1Fu9ILAMVDo/I8KVgGkvDAEr/E=
+X-Gm-Gg: AYBFou1oQiHv7XJteMsvEInxCUmdWBhWIxi+ovkprT6hJJFhH8Gmo0OLbUKZu3ZMnkU
+	OmRdX7Z3lYk0UTfEm0LND4vaHwqSpBTL4Jc7llr4pMk2bcIYSBtmk1NJCNV54ddLw+L3F/zuFP4
+	Th0H7TvgsO6avxLa6TlBJRlab6dlNNbc1MK/E3c4XzqjmnkdLNwftdrI7tXoIck0gvnsnpVvKgI
+	k7yWIay8bj5C/eRZaA3Jhvwnro+9hkIti8tk/QJDzb2IkZRAq8YrK7C6L1/WOf8pM34mgnuAx9S
+	D3hfw6G7LWadn9Q6wNGbkr888pVMDeP/rQdFHaKSC5ydWJwGe53/DU4z0gCVZw/KFzkf42GLBW1
+	zteZwKUri8QWZI92vTBwnQA==
+X-Received: by 2002:a05:6512:a93:b0:5b6:1a7c:aa12 with SMTP id
+ 2adb3069b0e04-5bb9bb1da91mr722330e87.42.1790935958794; Fri, 02 Oct 2026
+ 03:12:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 02 Oct 2026 12:10:03 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: taozj888@163.com
-Cc: theo.lebrun@bootlin.com, stable@vger.kernel.org, Conor Dooley
- <conor.dooley@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Haavard
- Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: macb: rate limit netdev error info print in
- the data path
-In-Reply-To: <20260930113520.392025-1-taozj888@163.com>
-References: <20260930113520.392025-1-taozj888@163.com>
-Message-ID: <b06cb02d9b26ceff272d7e34927a7eac@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260930112842.21323-5-sigefriedhyy@gmail.com> <179089748154.434549.15968186317991628500@kernel.org>
+In-Reply-To: <179089748154.434549.15968186317991628500@kernel.org>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Fri, 2 Oct 2026 19:12:28 +0900
+X-Gm-Features: AclHuK85FbqNwq-ELq8SKnyUcRuKjUZjdyqLDZaraiuSRJzWpMMsnKZCTynBQIc
+Message-ID: <CA+7S2vKEVD5HUnotmTZ764iJXEWbPXY6bDp9i6p3uzm7ZFJkCQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 4/6] net: add AF_PACKET multicast dumps
+To: netdev-bot+sashiko@kernel.org
+Cc: ajay.kathat@microchip.com, aleksandr.loktionov@intel.com, 
+	andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev, davem@davemloft.net, 
+	dsahern@kernel.org, donald.hunter@gmail.com, edumazet@google.com, 
+	idosch@nvidia.com, jacob.e.keller@intel.com, kuba@kernel.org, 
+	johannes@sipsolutions.net, kees@kernel.org, kory.maincent@bootlin.com, 
+	kuniyu@google.com, nicolas.dichtel@6wind.com, nickgarlis@gmail.com, 
+	pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, 
+	sdf.kernel@gmail.com, vadim.fedorenko@linux.dev, willemb@google.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Zijin
+> - [Medium] Concurrent device removal can end an unfiltered AF_PACKET
+>   RTM_GETMULTICAST dump early without setting NLM_F_DUMP_INTR.
 
-On 30.9.2026 13:35, taozj888@163.com wrote:
-> From: taozijin <taozj888@163.com>
-> 
-> Now the MACB ethernet driver print the netdev error information
-> directly by netdev_err(), which would lead to a large number of
-> error information print if there was a significant number of
-> error or just jumbo packets exceeding the MTU received when booting.
-> For example, it would print a large number of:
-> 
-> macb PHYT0036:00 eth0: not whole frame pointed by descriptor
-> macb PHYT0036:00 eth0: not whole frame pointed by descriptor
-> ...
+This window is in unlist_netdevice(), the device leaves the index
+before dev_base_seq is bumped. Moreover, it seems it affects the IPv4
+and IPv6 address
+dumps the same way. If it should be fixed, it seems it needs to be
+fixed seapartely, not a new issue introduced in this patchset.
 
-Out of interest: Is this a Phytium vendor kernel?
+> - [Low] The commit message gives a false reason for not extending the FDB
+>   dump.
+> - [Low] dev_mc_genid is only bumped through the __hw_addr_count_*
+>   helpers, i.e. when a dev->mc entry is added or removed.
 
-> 
-> in gem_rx() by received a large number of packets without
-> RX_EOF flag set, especially with unknown packet
-> type that would penetrate the hardware offload for the IP packets.
-> 
-> The unlimited prints here would greatly bother and delay
-> the system booting process unless the source stop sending
-> packets since they occupy the console output bandwidth and
-> other processes have to wait for the completion of printing those
-> messages.
-> 
-> So rate limit the netdev error information print in the receive
-> and transmit data path.
-> 
-> Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Agreed on both, but they are nits, will adjust if there is a v10.
 
-IMHO the correct tag is 4df95131ea80 ("net/macb: change RX path for 
-GEM")?
-At least the gem_rx() messages were introduced here.
+> - [Low] At this commit, Documentation/netlink/specs/rt-addr.yaml does not
+>   describe the new AF_PACKET multicast dump: - The ifa-flags enum stops=
+=E2=80=A6
 
-> Cc: stable@vger.kernel.org
-> 
-
-Drop the blank line as otherwise tooling might get confused and doesn't
-get all tags correctly.
-
-> Signed-off-by: Zijin Tao <taozj888@163.com>
-> ---
->  drivers/net/ethernet/cadence/macb_main.c | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
-> b/drivers/net/ethernet/cadence/macb_main.c
-> index 8e5c034dc3a4..ca60960bec36 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, 
-> struct napi_struct *napi,
->  		count++;
-> 
->  		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
-> -			netdev_err(bp->netdev,
-> -				   "not whole frame pointed by descriptor\n");
-> +			if (net_ratelimit())
-> +				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
-
-This will just hide the error message, but the split/drop is still 
-present.
-How about limiting JML in macb_init_hw() properly?
-
-         if ((bp->caps & MACB_CAPS_JUMBO) && bp->jumbo_max_len) {
-                 u32 jml = bp->rx_buffer_size - NET_IP_ALIGN + 
-ETH_FCS_LEN;
-                 gem_writel(bp, JML, min(jml, bp->jumbo_max_len));
-         }
-
-The code above is untested, so probably needs further tweaking. An 
-alternative could
-be to handle the split frames in gem_rx() correctly.
-
-> [...]
-
-Thanks,
-Nicolai
+The spec update is the next patch.
