@@ -1,69 +1,69 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00243A1E81
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 12:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B792E39E9DD
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 12:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790944377; cv=none; b=AytARHilATHrTChUsvenWMMizGSP0oJkWWtJnwGkgRrMbMRm/zzXueYaKj44vxnAUyb/Avwk9BP3srtSiqqJS1loR2mjJ2ohVVMFqBIbZSkwIxxEtode8WLmaJo3YJjcxgt8h//b81DJa72KVePofKbg0TDw5CFadP7/Oh+PElY=
+	t=1790944379; cv=none; b=Wp2cVKwXcc8cAc8BZ7ov69P26O4hNThHp9lPSFV3qI0Xxm/AlNauMZgubTobX2PvPP5YlRj2NsHWbo2KKZPCz+M0Rea7eCClKKDchqnss18ga1KmcADOsufSaCmUS+h+tP8B+lLTkmoFgwJmK+IFzYggxFsHE8jMdEkRFKYEDZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790944377; c=relaxed/simple;
-	bh=27LQRrgZZ98xFLBbkLQoOsXFbW4PK97TbdQkCpI6mOs=;
+	s=arc-20240116; t=1790944379; c=relaxed/simple;
+	bh=YyQOSsXRXIYUmAs6yTJgxjxjN3JHc2ZYOP21lOxR84I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QLbgWwFBloQUxkl1DxR8jL4OxY2oeVUjuPQ+f+vbXJb7S9lYIo9AePIO+P0my6y96majkHRtvikaXeelfwx2VdlRdJV2rYuDfdDZLS0tUDnUzWwZ2Y/gPlqpjl9Xy9cmULjSWXNYSB2x06ug4BT0MHKR3LXdj1SYT+s2n9ECl/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PKB1j/4g; arc=none smtp.client-ip=74.125.228.42
+	 In-Reply-To:To:Cc; b=Nd4t/tSvCyFgYaehAka7E+pKCZG990M7NEfPjitSE9bJW20N5PNIm1SyX7xI6voqJ/hco634Vc5gPee+abmUInzQzGYFMwWOHSZI7E82EfJjJYoWvTtJ9aQBGN5LJbQQeH3PkLbk9/fSG4iiaPIdyjOmGh0uQLpXcRg2xdEjE5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pFt8u2VL; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PKB1j/4g"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e5eso3983361a12.3
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 05:32:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pFt8u2VL"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccafb751so3680060a91.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 05:32:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790944373; x=1791549173; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790944375; x=1791549175; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KMnT9tnKIr4z3v4TIEVF9/oB1jlp4P1gDc0jXZXLL1c=;
-        b=PKB1j/4gc9gMSCxC1Txv1vyjCg+N0Ji3ngyvmOX/vqYUAoYBGk00rxTYxAx93vtJVI
-         USjUhwEmBS5y8lUmqkPZjZzwYpEBUsf23tALLLWGKJNeNXliaAyp8HNi7kycMZGfpQ/D
-         HlHLyenRnyUM5MjPXhTW3S0fjU5SpPzqOeakrTpefmy6msJtr3UxsSfIHWS3to22QGxj
-         99hnnyASezalbAb6uWathQtgGU3rp+n28MmW24AOkbR/9QWgVqdoo1/a/paeZeqSJn/5
-         J6vdA69j5njvEQmo9SGnpFitQxLzlQ3sQmORWk0l6l6/+6kJmnwRs3H7V3K3kDsbR+IU
-         KEQQ==
+        bh=Fi8LCfhOEjWTjTI9cmO2Knqm1v5fbATScScQCdyRYuE=;
+        b=pFt8u2VLp7uUakWBVACLoUDxcPnA3z5LcQ6wKFWTIlSJXDdC28lV3bicBuNNqSdFaa
+         k4XgSQvDYwZOLYLAJ7kmaCCAABfzv3ZyR+Eu9LGBNisVFXd7m6EiPwBL8EjNPH5yGIbY
+         hrYjK6W9jxypvhpVT5Q0PXohodMkJvKZHMGPZ3IApqs4emIjveoKbmzMvy6qZMWy9gXj
+         GjWpaMnu5PNUKsZSx+QQm3p4cDmJlm0RXyqGgjeXEHNi6N8M23KeOuyaxo59+O/0qW4t
+         5Z86k3NTM3Cqhe59hJrUSF2WCBv7iZUywULmqi/Sc1V+nCwXkloYoMiOYBP20IUrbXct
+         KmDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790944373; x=1791549173;
+        d=1e100.net; s=20260707; t=1790944375; x=1791549175;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KMnT9tnKIr4z3v4TIEVF9/oB1jlp4P1gDc0jXZXLL1c=;
-        b=h7fXz5+1tss+lkEnQEcN/jFU1udlkaXhJkARbJkKaFpQcASEomZh3A8okexaLRArGh
-         2nv8mq+G0XUGAQ6VWrR5Q5uez6jKTK7VHs3z3Ohjvy5kakLZcei4/0CsudlU82epHPY2
-         2yRJUYBe6q60Ol5wW7UqinCjm0ylWwLwqjpvcX9Pvaf3Sai0bgr8YlKMLRC+T99jgJPT
-         K0Xlaglmrw4mXwfs9ez9YRXnI1hgmK/sBS5JkeSCZXG420iAENXPpHOfsaj5Ta6C2AHx
-         w5d5sQFngg9B7mUSpgdli8o7Tjc57P6dwOLdbjvFMkLwdqTZMUXS4G9YPee67E4v2Tlq
-         qtMw==
-X-Forwarded-Encrypted: i=1; AKwUvBxoIi0one+MfB8m6tjHpUUt6BktKF4WrrCIYfM67WJFTpGYU/Sw/UFm2b9eW7c7hqAcZRhvEno=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKEaz5Oc8mLvcRgCSwVTGKIm/r+7nRkjfKMJsc+dWRl/FUfYZmq
-	a1GQFzg3TpUSRTKIaWsdpOi4vhWI2cdRpQLn/3CH81YeKfAh9eEsbD/IIG4lNwN7
-X-Gm-Gg: AYBFou3An8ECZzhExP7bs04CZe3b7peF86eEIjT397vKvD3/R9X9mG51nkKyq/U/awD
-	QWyfwyrK2WCKt1Sd7+D4y6Wf0d5VVBC7AjFYnF614/dk829TFnNsGj2EwWs1ddP2kd+epcPefG8
-	zvwe+wj4JA7FvzA5QEZu8jKa+yntw74iDRaw0e1FUP3AO21tHilI1D+mVVwbuKd9QLa9tQsfe2S
-	YiGtLUDgIUhYvCvn9nxMxReneAV+YYYmQSHzChMsjO0Oq0tvQVuDUBek8WOzJDWUWuNKpRmuJaB
-	dulPQ1vK61TdkN6vuLJxk2hTRDHNd3L+VkksYIWOvmejhAUvp9TtrvktMDhpoi1rClfkkv02mPM
-	BMP2VORh9POcgtSJf8Uclw37YKo0xcjmWC3oCWXCBudqslOgbNpAuuAJ/3by46WXFfQBi3742y5
-	vh98QmasJ/YR4GIx3CDBimYK6HW1gtU8vhoshVAkBppZRlWLSj8Rh2eXNC1kXQmxMuKiewgMEFD
-	qhEGdtn
-X-Received: by 2002:a17:90b:4acb:b0:3a0:9640:803a with SMTP id 98e67ed59e1d1-3a6ce3a97camr2815467a91.5.1790944373031;
-        Fri, 02 Oct 2026 05:32:53 -0700 (PDT)
+        bh=Fi8LCfhOEjWTjTI9cmO2Knqm1v5fbATScScQCdyRYuE=;
+        b=LUaFA2xZP9YjILpP4qVn1dobYU0dyMxDfDnwIEZ3nD3gWAkEJEJpA+svmRP6hvHBlL
+         46sLkKdblKF6+cd6Y45EvLRJRSws0A9UgvitvtW7vIFRKda2YAP+2HMHKziPbr8w7T1b
+         yD8HCA2w4LWusGnmkEOAFZso9UFYnPfjkblOT8PvTxPS7LFrzh/JINAAXBHduPmSikAr
+         xRzcGUcW6e1RajemqpWRsxawJbqajEbW5I4/Rzjv6pZz5qEmBDfvNS7tm6DJiiV3KtUU
+         DbRAKSg2DUsp6GsmxIQxBnILnf+bHsXAIvPyidqEVIRgo1oa5YVGvmaY6FT/aPzgr5bV
+         0lRA==
+X-Forwarded-Encrypted: i=1; AKwUvBxjImI7OaCtkSgx8iFdF2LJtapYZoI2ZeNBnXuLLF9V7QUXaoVAd+S+LhmsYgpFEDMDCaqFmzg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJwWv1uIQLaV2jkJW9OQowu6/4iRdQUJfpC/CcNSCzNzlULKXXx
+	23YVqyhLcb+0nA06AKnNvp1nywYhyxcpH8VdHWv5n2F6jTfJAc+DB1MOO1tbAH7E
+X-Gm-Gg: AYBFou1ypVQIBaneqQUUlBCnKZ/uD4CbuJTPV2B0HLZbUh2nWjb7blPRxL4YoamDXWg
+	AfWAyQBdWxIcxlVzEkMb6SYak1HhK0qHQ/DZ8fax/noEOkqE8YPUxgYwdcaFhmMgpXoy2r18wuR
+	egDuEicz8IiKuKDD38qCY9abz6/5HZHtRay/FYiyreML7kWvd3JhP5sGr7kk3uD4GQj3gc7DDQ6
+	yAsb3IBCggm4QW46vab+X/qSUzL3sRd+UOpOg3cdo2gHIgAewi0pJ55J2kdrla6luylaneD44Ct
+	cg5dSc9N8kxIUUntjOQ0ZnXUociw4VXSzeTUGZszmbBEn1SFp6me/Y6Ftq8ZxiYX2sMx7KOOjXs
+	Rom/0Xxgsp0FePR1xPdAR9GodKEy7o6mU7oKLRCB8JD/oifnB0oikg55UQKaz/e7nKis9ZqED7L
+	0BzhG1YJVudhGiu83UbJQqwKjD7LxlSP28A/1SHQ4CE++0Z8hG/Fq288KGZiJmp7SQZMhKMfWFp
+	GaDgEI4
+X-Received: by 2002:a17:90b:28ce:b0:3a0:b40d:827 with SMTP id 98e67ed59e1d1-3a6f321f4b9mr668202a91.0.1790944374650;
+        Fri, 02 Oct 2026 05:32:54 -0700 (PDT)
 Received: from [163.43.103.131] ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd1a0c1esm1523877a91.4.2026.10.02.05.32.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd1a0c1esm1523877a91.4.2026.10.02.05.32.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 05:32:52 -0700 (PDT)
+        Fri, 02 Oct 2026 05:32:54 -0700 (PDT)
 From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Date: Fri, 02 Oct 2026 21:32:48 +0900
-Subject: [PATCH RFC iproute2-next v5 1/2] uapi: sync lwtunnel.h and add
- seg6_mobile.h
+Date: Fri, 02 Oct 2026 21:32:49 +0900
+Subject: [PATCH RFC iproute2-next v5 2/2] seg6: add support for the End.MAP
+ behavior under seg6mobile encap
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261002-seg6-mobile-end-map-v5-1-92ac9b315d23@gmail.com>
+Message-Id: <20261002-seg6-mobile-end-map-v5-2-92ac9b315d23@gmail.com>
 References: <20261002-seg6-mobile-end-map-v5-0-92ac9b315d23@gmail.com>
 In-Reply-To: <20261002-seg6-mobile-end-map-v5-0-92ac9b315d23@gmail.com>
 To: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org
@@ -81,110 +81,365 @@ Cc: Andrea Mayer <andrea.mayer@uniroma2.it>,
  Stephen Hemminger <stephen@networkplumber.org>, 
  Yuya Kusakabe <yuya.kusakabe@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2790;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10712;
  i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
- bh=27LQRrgZZ98xFLBbkLQoOsXFbW4PK97TbdQkCpI6mOs=;
- b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqv6Rx6B96UF8ZPDNl1zpgCP7ftSBmhH6ZOiOY+
- bmPJZ9r4I6JAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCar+kcQAKCRAq19F1Kl0b
- TVpcEADBLxZde0Dje9DlzH7iSBi4yAzuKyz4xABtgJWke1bUoV4vQf0lHuMo/KYmtMULZG1zGwb
- 7iXPxGQRz6vZOPljt9/k53GjkF+IhjjLmf5oI8zGI1yvsFfpfo3zDChZ/d2fmKuI6SsbgXFaljp
- NYjI4xPGT0JJo8/GF+UaLJwkip3EFzbeXeQOqLSt43U70Sf/VdEj0l1E1hD4SrdxKLsKyutMJP0
- DPYcNHE7LwadjHe+JMuraY2vCjbcfiZwUCMz43xEZFexaXmM9IjdNnRznJavjVnut+d4OO0AFoi
- 45MV9j9zpAd7jjV7k/+buhAEwHeNpkXxW2sYLwUvEuAm/MfqEMZQFHhmMNDU4VmNqH+20SvP5Re
- 7NI2QQQVB3cCMCiQJLh1Z0CPTQnj/PoaNIM9+hVFlon0Lh4C/A2/bV8U57oLLpeup8+MC4KCd3B
- gNQ6hTj/K7lFU2w0xTOkTVEjycWqL2OcjPtDVNrhKPYwUBmCUYiJIHNCy95MY1dP9JF3aRonrN8
- x0DB40K2Msw8cqTAJD5dOv/5WkVByuHXOwxV4wvz8FHhOiyfmD9M9rSsedJJTL6Y5XELXosfGcJ
- 9SdRFgIdvIbOzIwKmBKqc6G7uA9bZ/g1jDfpRI+DD4QNXNWkoMvTDL2PKNUiTW9ICuyhtsxGJu2
- eYTuv9Fmr5Q2BsA==
+ bh=YyQOSsXRXIYUmAs6yTJgxjxjN3JHc2ZYOP21lOxR84I=;
+ b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqv6RxdoxqeSK9ZDU5NplG30Qd0q+RhYEiA/KmP
+ HpeYB/3uk2JAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCar+kcQAKCRAq19F1Kl0b
+ Tb0tEACynDEU7DnBxblUCFCNRiCmt/aHkJrbOCUDwtYOsCioCvoA/Q+RHZ6QytaL8tIdqUQuhos
+ JEE+LduiiPYPd8j1yqxwOpnVzaAZrjazjEMuKz5gP/p8hMyvx+JJOTNzLBZxqlSQewVnJJQX6As
+ bV4sQoVqTdIr4IgDCHAUbwinv4Z8QSp1sBv96YBHmf8xXuD7YcC5pl9IRNNTsuebXeyS0TOB2gS
+ o/Qg55wnVU0Q4yjLN84JPPKwpEfqrxyxR6iseBNVtXZ2pqRO7zlH1dNvyeh1V3fS8D2ZAgEYA/V
+ cykDpB+xn4weMsVVHTRpNC7OBkAEqTT0fqfEGGzZvY4ifmREUjhIaWoFthw4cyDa6ebVh5WsiFT
+ zyNocMdH040PF9r8ckpMtIx5UM3Z9FYhwDjZCakMndYfyOxIInaOHZ0pS1A7tptIOi4ESmkkdUe
+ S9Q5qZyP4vRkeqbdLs1uIzcWElASQQz+YrxpeaCu5SVqJGSTPytbtHsmNkLwEEZvHk5Q4Z2/Z1C
+ DpkiytUlYjEQfKQJSlSjpdFD42WSnB8rgiq6QVJ4OWJ5Ijv2bDGpw6cdDUJJyVTvlIRWZnt54Ng
+ azWYxjFVbMVOPjzJbH0B0nVIkz7r3wjTeUBPZwDc96jsOKJl3SqWzk652FOLkpxtL/ELWXbL2cj
+ 9JlY+kdZahRfXIw==
 X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
  fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
+
+Wire up a new "seg6mobile" lightweight tunnel encap type that mirrors
+the kernel's LWTUNNEL_ENCAP_SEG6_MOBILE namespace, and add parse and
+print support for the first RFC 9433 behavior it carries: End.MAP.
+
+End.MAP swaps the IPv6 destination address with the configured mapped SID
+and forwards the packet via the IPv6 FIB without consuming the SRH:
+
+    ip -6 route add 2001:db8:f::/64 \
+        encap seg6mobile action End.MAP mapped_sid 2001:db8:2::e \
+        dev <dev>
+
+Help text and the ip-route(8) man page get the corresponding ENCAPTYPE
+and SEG6MOBILE entries.
 
 Assisted-by: LLM
 Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
 ---
- include/uapi/linux/lwtunnel.h    |  1 +
- include/uapi/linux/seg6_mobile.h | 61 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 62 insertions(+)
+ ip/iproute.c           |   6 +-
+ ip/iproute_lwtunnel.c  | 178 +++++++++++++++++++++++++++++++++++++++++++++++++
+ man/man8/ip-route.8.in |  32 ++++++++-
+ 3 files changed, 213 insertions(+), 3 deletions(-)
 
-diff --git a/include/uapi/linux/lwtunnel.h b/include/uapi/linux/lwtunnel.h
-index 9d22961be619..b5adca10a9f1 100644
---- a/include/uapi/linux/lwtunnel.h
-+++ b/include/uapi/linux/lwtunnel.h
-@@ -16,6 +16,7 @@ enum lwtunnel_encap_types {
- 	LWTUNNEL_ENCAP_RPL,
- 	LWTUNNEL_ENCAP_IOAM6,
- 	LWTUNNEL_ENCAP_XFRM,
-+	LWTUNNEL_ENCAP_SEG6_MOBILE,
- 	__LWTUNNEL_ENCAP_MAX,
- };
+diff --git a/ip/iproute.c b/ip/iproute.c
+index 1ce71f78e064..27def3b7e346 100644
+--- a/ip/iproute.c
++++ b/ip/iproute.c
+@@ -98,8 +98,8 @@ static void usage(void)
+ 		"TIME := NUMBER[s|ms]\n"
+ 		"BOOL := [1|0]\n"
+ 		"FEATURES := ecn\n"
+-		"ENCAPTYPE := [ mpls | ip | ip6 | seg6 | seg6local | rpl | ioam6 | xfrm ]\n"
+-		"ENCAPHDR := [ MPLSLABEL | SEG6HDR | SEG6LOCAL | IOAM6HDR | XFRMINFO ]\n"
++		"ENCAPTYPE := [ mpls | ip | ip6 | seg6 | seg6local | seg6mobile | rpl | ioam6 | xfrm ]\n"
++		"ENCAPHDR := [ MPLSLABEL | SEG6HDR | SEG6LOCAL | SEG6MOBILE | IOAM6HDR | XFRMINFO ]\n"
+ 		"SEG6HDR := [ mode SEGMODE ] segs ADDR1,ADDRi,ADDRn [hmac HMACKEYID] [cleanup]\n"
+ 		"           [ lookup TABLEID ]\n"
+ 		"SEGMODE := [ encap | encap.red | inline | l2encap | l2encap.red ]\n"
+@@ -112,6 +112,8 @@ static void usage(void)
+ 		"            table TABLEID | vrftable TABLEID | endpoint PROGNAME }\n"
+ 		"FLAVORS := { FLAVOR[,FLAVOR] }\n"
+ 		"FLAVOR := { psp | usp | usd | next-csid }\n"
++		"SEG6MOBILE := action MOBILE_ACTION mapped_sid ADDR [ count ]\n"
++		"MOBILE_ACTION := { End.MAP }\n"
+ 		"IOAM6HDR := trace prealloc type IOAM6_TRACE_TYPE ns IOAM6_NAMESPACE size IOAM6_TRACE_SIZE\n"
+ 		"XFRMINFO := if_id IF_ID [ link_dev LINK ]\n"
+ 		"ROUTE_GET_FLAGS := ROUTE_GET_FLAG [ ROUTE_GET_FLAGS ]\n"
+diff --git a/ip/iproute_lwtunnel.c b/ip/iproute_lwtunnel.c
+index 9a1e747c6951..51c051fbe5cb 100644
+--- a/ip/iproute_lwtunnel.c
++++ b/ip/iproute_lwtunnel.c
+@@ -28,6 +28,7 @@
+ #include <linux/rpl_iptunnel.h>
+ #include <linux/seg6_hmac.h>
+ #include <linux/seg6_local.h>
++#include <linux/seg6_mobile.h>
+ #include <linux/if_tunnel.h>
+ #include <linux/ioam6.h>
+ #include <linux/ioam6_iptunnel.h>
+@@ -55,6 +56,8 @@ static const char *format_encap_type(uint16_t type)
+ 		return "ioam6";
+ 	case LWTUNNEL_ENCAP_XFRM:
+ 		return "xfrm";
++	case LWTUNNEL_ENCAP_SEG6_MOBILE:
++		return "seg6mobile";
+ 	default:
+ 		return "unknown";
+ 	}
+@@ -95,6 +98,8 @@ static uint16_t read_encap_type(const char *name)
+ 		return LWTUNNEL_ENCAP_IOAM6;
+ 	else if (strcmp(name, "xfrm") == 0)
+ 		return LWTUNNEL_ENCAP_XFRM;
++	else if (strcmp(name, "seg6mobile") == 0)
++		return LWTUNNEL_ENCAP_SEG6_MOBILE;
+ 	else if (strcmp(name, "help") == 0)
+ 		encap_type_usage();
  
-diff --git a/include/uapi/linux/seg6_mobile.h b/include/uapi/linux/seg6_mobile.h
-new file mode 100644
-index 000000000000..551ec8e94884
---- /dev/null
-+++ b/include/uapi/linux/seg6_mobile.h
-@@ -0,0 +1,61 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+/*
-+ *  SRv6 Mobile User Plane implementation
-+ *
-+ *  Author:
-+ *  Yuya Kusakabe <yuya.kusakabe@gmail.com>
+@@ -585,6 +590,91 @@ static void print_encap_seg6local(FILE *fp, struct rtattr *encap)
+ 		print_seg6_local_flavors(fp, tb[SEG6_LOCAL_FLAVORS]);
+ }
+ 
++static const char *seg6_mobile_action_names[SEG6_MOBILE_ACTION_MAX + 1] = {
++	[SEG6_MOBILE_ACTION_END_MAP]	= "End.MAP",
++};
++
++static const char *format_seg6_mobile_action(int action)
++{
++	if (action < 0 || action > SEG6_MOBILE_ACTION_MAX)
++		return "<invalid>";
++
++	return seg6_mobile_action_names[action] ?: "<unknown>";
++}
++
++static int read_seg6_mobile_action(const char *name)
++{
++	int i;
++
++	for (i = 0; i < SEG6_MOBILE_ACTION_MAX + 1; i++) {
++		if (!seg6_mobile_action_names[i])
++			continue;
++
++		if (strcmp(seg6_mobile_action_names[i], name) == 0)
++			return i;
++	}
++
++	return SEG6_MOBILE_ACTION_UNSPEC;
++}
++
++static void print_seg6_mobile_counters(FILE *fp, struct rtattr *encap)
++{
++	struct rtattr *tb[SEG6_MOBILE_CNT_MAX + 1];
++	__u64 packets = 0, bytes = 0, errors = 0;
++
++	parse_rtattr_nested(tb, SEG6_MOBILE_CNT_MAX, encap);
++
++	if (tb[SEG6_MOBILE_CNT_PACKETS])
++		packets = rta_getattr_u64(tb[SEG6_MOBILE_CNT_PACKETS]);
++
++	if (tb[SEG6_MOBILE_CNT_BYTES])
++		bytes = rta_getattr_u64(tb[SEG6_MOBILE_CNT_BYTES]);
++
++	if (tb[SEG6_MOBILE_CNT_ERRORS])
++		errors = rta_getattr_u64(tb[SEG6_MOBILE_CNT_ERRORS]);
++
++	if (is_json_context()) {
++		open_json_object("stats64");
++
++		print_u64(PRINT_JSON, "packets", NULL, packets);
++		print_u64(PRINT_JSON, "bytes", NULL, bytes);
++		print_u64(PRINT_JSON, "errors", NULL, errors);
++
++		close_json_object();
++	} else {
++		print_string(PRINT_FP, NULL, "%s ", "packets");
++		print_num(fp, 1, packets);
++
++		print_string(PRINT_FP, NULL, "%s ", "bytes");
++		print_num(fp, 1, bytes);
++
++		print_string(PRINT_FP, NULL, "%s ", "errors");
++		print_num(fp, 1, errors);
++	}
++}
++
++static void print_encap_seg6mobile(FILE *fp, struct rtattr *encap)
++{
++	struct rtattr *tb[SEG6_MOBILE_MAX + 1];
++	int action;
++
++	parse_rtattr_nested(tb, SEG6_MOBILE_MAX, encap);
++
++	if (!tb[SEG6_MOBILE_ACTION])
++		return;
++
++	action = rta_getattr_u32(tb[SEG6_MOBILE_ACTION]);
++	print_string(PRINT_ANY, "action",
++		     "action %s ", format_seg6_mobile_action(action));
++
++	if (tb[SEG6_MOBILE_MAPPED_SID])
++		print_string(PRINT_ANY, "mapped_sid", "mapped_sid %s ",
++			     rt_addr_n2a_rta(AF_INET6, tb[SEG6_MOBILE_MAPPED_SID]));
++
++	if (tb[SEG6_MOBILE_COUNTERS] && show_stats)
++		print_seg6_mobile_counters(fp, tb[SEG6_MOBILE_COUNTERS]);
++}
++
+ static void print_encap_mpls(FILE *fp, struct rtattr *encap)
+ {
+ 	struct rtattr *tb[MPLS_IPTUNNEL_MAX+1];
+@@ -900,6 +990,9 @@ void lwt_print_encap(FILE *fp, struct rtattr *encap_type,
+ 	case LWTUNNEL_ENCAP_XFRM:
+ 		print_encap_xfrm(fp, encap);
+ 		break;
++	case LWTUNNEL_ENCAP_SEG6_MOBILE:
++		print_encap_seg6mobile(fp, encap);
++		break;
+ 	}
+ 	close_json_object();
+ }
+@@ -1607,6 +1700,88 @@ static int parse_encap_seg6local(struct rtattr *rta, size_t len, int *argcp,
+ 	return ret;
+ }
+ 
++/* for the moment, counters are always initialized to zero by the kernel; so we
++ * do not expect to parse any argument here.
 + */
-+#ifndef _LINUX_SEG6_MOBILE_H
-+#define _LINUX_SEG6_MOBILE_H
++static int seg6mobile_fill_counters(struct rtattr *rta, size_t len, int attr)
++{
++	struct rtattr *nest;
++	int ret;
 +
-+enum {
-+	SEG6_MOBILE_UNSPEC,
-+	SEG6_MOBILE_ACTION,
-+	SEG6_MOBILE_MAPPED_SID,
-+	SEG6_MOBILE_COUNTERS,
-+	__SEG6_MOBILE_MAX,
-+};
++	nest = rta_nest(rta, len, attr);
 +
-+#define SEG6_MOBILE_MAX	(__SEG6_MOBILE_MAX - 1)
++	ret = rta_addattr64(rta, len, SEG6_MOBILE_CNT_PACKETS, 0);
++	if (ret < 0)
++		return ret;
 +
-+enum {
-+	SEG6_MOBILE_ACTION_UNSPEC	= 0,
-+	/* swap IPv6 DA with the mapped SID, leave SRH untouched */
-+	SEG6_MOBILE_ACTION_END_MAP	= 1,
++	ret = rta_addattr64(rta, len, SEG6_MOBILE_CNT_BYTES, 0);
++	if (ret < 0)
++		return ret;
 +
-+	__SEG6_MOBILE_ACTION_MAX,
-+};
++	ret = rta_addattr64(rta, len, SEG6_MOBILE_CNT_ERRORS, 0);
++	if (ret < 0)
++		return ret;
 +
-+#define SEG6_MOBILE_ACTION_MAX	(__SEG6_MOBILE_ACTION_MAX - 1)
++	rta_nest_end(rta, nest);
++	return 0;
++}
 +
-+/* SRv6 Mobile Behavior counters are encoded as netlink attributes
-+ * guaranteeing the correct alignment.
-+ * Each counter is identified by a different attribute type (i.e.
-+ * SEG6_MOBILE_CNT_PACKETS).
-+ *
-+ * - SEG6_MOBILE_CNT_PACKETS: identifies a counter that counts the number
-+ *   of packets that have been CORRECTLY processed by an SRv6 Behavior
-+ *   instance (i.e., packets that generate errors or are dropped are NOT
-+ *   counted).
-+ *
-+ * - SEG6_MOBILE_CNT_BYTES: identifies a counter that counts the total
-+ *   amount of traffic in bytes of all packets that have been CORRECTLY
-+ *   processed by an SRv6 Behavior instance (i.e., packets that generate
-+ *   errors or are dropped are NOT counted).
-+ *
-+ * - SEG6_MOBILE_CNT_ERRORS: identifies a counter that counts the number
-+ *   of packets that have NOT been properly processed by an SRv6 Behavior
-+ *   instance (i.e., packets that generate errors or are dropped).
-+ */
-+enum {
-+	SEG6_MOBILE_CNT_UNSPEC,
-+	SEG6_MOBILE_CNT_PACKETS,
-+	SEG6_MOBILE_CNT_BYTES,
-+	SEG6_MOBILE_CNT_ERRORS,
-+	SEG6_MOBILE_CNT_PAD,		/* pad for 64 bits values */
-+	__SEG6_MOBILE_CNT_MAX,
-+};
++static int parse_encap_seg6mobile(struct rtattr *rta, size_t len, int *argcp,
++				  char ***argvp)
++{
++	int action_ok = 0, mapped_sid_ok = 0, counters_ok = 0;
++	char **argv = *argvp;
++	int argc = *argcp;
++	inet_prefix addr;
++	__u32 action = 0;
++	int ret = 0;
 +
-+#define SEG6_MOBILE_CNT_MAX	(__SEG6_MOBILE_CNT_MAX - 1)
++	while (argc > 0) {
++		if (strcmp(*argv, "action") == 0) {
++			NEXT_ARG();
++			if (action_ok++)
++				duparg2("action", *argv);
++			action = read_seg6_mobile_action(*argv);
++			if (!action)
++				invarg("\"action\" value is invalid\n", *argv);
++			ret = rta_addattr32(rta, len, SEG6_MOBILE_ACTION,
++					    action);
++		} else if (strcmp(*argv, "mapped_sid") == 0) {
++			NEXT_ARG();
++			if (mapped_sid_ok++)
++				duparg2("mapped_sid", *argv);
++			get_addr(&addr, *argv, AF_INET6);
++			ret = rta_addattr_l(rta, len, SEG6_MOBILE_MAPPED_SID,
++					    &addr.data, addr.bytelen);
++		} else if (strcmp(*argv, "count") == 0) {
++			if (counters_ok++)
++				duparg2("count", *argv);
++			ret = seg6mobile_fill_counters(rta, len,
++						       SEG6_MOBILE_COUNTERS);
++		} else {
++			break;
++		}
++		if (ret)
++			return ret;
++		argc--; argv++;
++	}
 +
-+#endif /* _LINUX_SEG6_MOBILE_H */
++	if (!action) {
++		fprintf(stderr, "Missing action type\n");
++		exit(-1);
++	}
++
++	if (action == SEG6_MOBILE_ACTION_END_MAP && !mapped_sid_ok) {
++		fprintf(stderr, "Missing mapped_sid for End.MAP\n");
++		exit(-1);
++	}
++
++	*argcp = argc + 1;
++	*argvp = argv - 1;
++
++	return ret;
++}
++
+ static int parse_encap_mpls(struct rtattr *rta, size_t len,
+ 			    int *argcp, char ***argvp)
+ {
+@@ -2346,6 +2521,9 @@ int lwt_parse_encap(struct rtattr *rta, size_t len, int *argcp, char ***argvp,
+ 	case LWTUNNEL_ENCAP_XFRM:
+ 		ret = parse_encap_xfrm(rta, len, &argc, &argv);
+ 		break;
++	case LWTUNNEL_ENCAP_SEG6_MOBILE:
++		ret = parse_encap_seg6mobile(rta, len, &argc, &argv);
++		break;
+ 	default:
+ 		fprintf(stderr, "Error: unsupported encap type\n");
+ 		break;
+diff --git a/man/man8/ip-route.8.in b/man/man8/ip-route.8.in
+index 1e6042c427ff..97aa91ea2e85 100644
+--- a/man/man8/ip-route.8.in
++++ b/man/man8/ip-route.8.in
+@@ -197,7 +197,8 @@ throw " | " unreachable " | " prohibit " | " blackhole " | " nat " ]"
+ .ti -8
+ .IR ENCAP " := [ "
+ .IR ENCAP_MPLS " | " ENCAP_IP " | " ENCAP_BPF " | "
+-.IR ENCAP_SEG6 " | " ENCAP_SEG6LOCAL " | " ENCAP_IOAM6 " ] "
++.IR ENCAP_SEG6 " | " ENCAP_SEG6LOCAL " | " ENCAP_SEG6MOBILE " | "
++.IR ENCAP_IOAM6 " ] "
+ 
+ .ti -8
+ .IR ENCAP_MPLS " := "
+@@ -260,6 +261,13 @@ throw " | " unreachable " | " prohibit " | " blackhole " | " nat " ]"
+ .IR SEG6_ACTION_PARAM " ] [ "
+ .BR count " ] "
+ 
++.ti -8
++.IR ENCAP_SEG6MOBILE " := "
++.B seg6mobile
++.BR action
++.IR SEG6_MOBILE_ACTION " [ "
++.BR count " ] "
++
+ .ti -8
+ .IR ENCAP_IOAM6 " := "
+ .BR ioam6 " ["
+@@ -776,6 +784,9 @@ is a string specifying the supported encapsulation type. Namely:
+ .BI seg6local
+ - local SRv6 segment processing
+ .sp
++.BI seg6mobile
++- SRv6 Mobile User Plane processing (RFC 9433)
++.sp
+ .BI ioam6
+ - encapsulation type IPv6 IOAM
+ .sp
+@@ -1109,6 +1120,25 @@ flavors. The Locator-Node Function length must be greater than 0 and evenly
+ divisible by 8. This attribute can be used only with NEXT-C-SID flavor.
+ .in -4
+ 
++.B seg6mobile
++.in +2
++.IR SEG6_MOBILE_ACTION " [ "
++.BR count " ]"
++- SRv6 Mobile User Plane operation (RFC 9433) to perform on matching
++packets. The optional \fBcount\fR attribute enables per-CPU packet, byte
++and error counters for this route; the aggregated values are printed by
++the \fB-s\fR flag in the \fBshow\fR command. The following actions are
++currently supported.
++.in +2
++
++.B End.MAP mapped_sid
++.I ADDRESS
++- Replace the IPv6 destination address with the configured mapped SID
++.RI ( ADDRESS )
++and forward via the IPv6 FIB; an SRH, if present, is not modified
++(neither the SID list nor the Segments Left value).
++.in -4
++
+ .B ioam6
+ .in +2
+ .B freq K/N
 
 -- 
 2.50.1
