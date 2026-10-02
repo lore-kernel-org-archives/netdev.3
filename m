@@ -1,81 +1,89 @@
-Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC70E443A88
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 07:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E308044163B
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 07:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790927215; cv=none; b=EE8isEFCd/J+8yq4fmSa03yhB+1YT4HAeSb1q9B5R1aieMxX1mew0yEYQORkpGk8BNWKL3s30Xyr9kymbrW14QOs4bWtkJI6e9DE8f5PWQjWjxbZVz0t6FJ/wY2O3EqdEdS1YqEyhywMnPBJXQHOpy3Eml9xehF87IxQJxc6dMo=
+	t=1790927612; cv=none; b=WE3cCpZGSpQHtELj6KyzeifdU4V9QLbG2ZY9/2go555H/YZdQnszcXAjXChxns1TPzw8Z0vaRCZx02G+ZlrcSqmKl0v1O/NsSDH0YE0zr+JJGAL229+sR0+v77EVkHLT7KDxRToEgEXPJ5MweAyT9kRZO4V02IpFZRxQQILvvRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790927215; c=relaxed/simple;
-	bh=Iph8cQPjQlzJvVdwLAMxAEBkHSEKgnnbrMaq0iNc5dc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l9I8Eckhhmrty9ZTUBdmqmvK+/BEJ5L16TUkDXfRPZB7XgJw5UtYKOUaGJPEwycXsbdYAegWiMdM13jZ8xfZJl9FzMAijCy+cXeXkgBDTHzPP5gSquroFZF85CPubhK+CAAJ+4t0+NGWwLfo7iZ2aiXYX7MunI/ocMmFd94XqdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hm6Z0LbE; arc=none smtp.client-ip=74.125.229.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1790927612; c=relaxed/simple;
+	bh=4NIXq87sQz4gbvko4UfvHyJc8FXTe24Eu3SMSTwArvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J2SQE8mka5K3y+ys3ot0XS+U5+OFdnDrPHViJepQNAGkGGkZiGgkq0jmcYgDpuXSc55PmO/ny41db4FR9fE/2PZzHHS5imlVf9oAISNoZxEXH1CwlsWebewVApwTKpaBtqmAPoo25gAlWtq4y0uJXNrVMtlrdnVE1zxUbEWBZDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=OWmW20rB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=IpCZhjOm; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cp/BpM5y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5r20iau4; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hm6Z0LbE"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-346c612c7a8so3835867eec.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 00:46:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790927212; x=1791532012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pjJGZHeSlYSt0da6L8tYDnIpMtDpUH2iAs8gzn1WvfI=;
-        b=Hm6Z0LbEMQSgcamMhN/vBIDwiCReIU5C9eVZJDOPMkXvYq5u5otrVCKRvFLbgVKSYJ
-         nX63hikum8ie5Q4eHUweRKZAsOzwkgYm4AQvlHM4/CWp3Q7meLD2nYVFbuIeaiCYr7Tf
-         CT9ig8NZH0cFqGxGDH7/w+IvpRT+h5cHb6aSekBTFpVYHLgenQc3PRiwnJh9YWJMdlcx
-         ik3kTbTCj9zusS1x8Mx/xz8kBlR3IwTo1+fOhnltenzJnJV4HzecVxkGFqfLyu/hwKPx
-         AbG5Br0ycitVJi5j9IRz0D4GUBTGb2RJyHViTfFwo5Q1urATiHRoQufxLtHwNXHmQAe9
-         txlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790927212; x=1791532012;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pjJGZHeSlYSt0da6L8tYDnIpMtDpUH2iAs8gzn1WvfI=;
-        b=TEb0DNI2k0P1vFupTTeygLf/UGexZTfEP/+BnupL9NMT/qdeomsu5Pqe942hQemltB
-         BvjVX3jSdDzXgBSR/wOjORi/rpMjqkcjvDcFTgNXHDIPYHDFqhc48zkbyBGRDSGRrHI/
-         OuAjKPbySMJTEwn5TOENlsVemSvxVYFEcOVVpp2zbtEoNXeVKrJMLvuuDnbKVIMrvGyM
-         xLF6xiUvxFycsWTKUviYyDEnP3BCNBELkhhkOX6h++EyobdJ4r1F1byBKmzu27dtNKaB
-         7cyvLjIrZcUpdIIGoN1NL9+zq93Zs2JD/oWpz/zbbVQec+YpfR2wL7fLk32J/TwZnASO
-         E3Xw==
-X-Forwarded-Encrypted: i=1; AKwUvBwJmA5ABuMF0Kp7pmuhAwdoy8Dnq18hJ86vZ5L7GJsPPEA62wVVszn4Ob5AE9CybxltMbuKnY8=@vger.kernel.org
-X-Gm-Message-State: AFuF++lgBSwlNfSSym87yvL3tLp3Zf5x9UcO3iM5KK6Gun+/bvS9K//W
-	huqr7Vqavz5GG6ROI0w2rPEKd7mxl9gJS9FnhVgKY/tiW/hZWEee9waU
-X-Gm-Gg: AYBFou1M4480xZDPvDkXqkAZrqmsbVq4bjpKSDdi66eU3bSlshvd4F/3p4cYKQd/0Fp
-	iqP/ZuC1XYruzPR4LlEd9eao0NVsdxDhWdDiKAMucRdU107ADa0OHJOBodubKP5ZADOF1WaImXC
-	it0s6sYSRaLJAt8aRvEcMnwH3dbIVQhH3F1ZfYEtACgOdV9QkxaK0mJcLKBhe2P+sXIC95sUQk0
-	fbnwerz1VSeXziTuO2wYEkZWq9G0OjZnRnoW8Yu24Axn2TX7yyyhl88j1ngPi+LMts/id3dczOl
-	CvGH3wgNqkYtyiCVLThc8/km3tDgB3p6o1rQj2l4WWHj3jPzQ1WN0tmANt0IikT79tMDTJReXrn
-	DVTf7AW5wqzbKC6pqViNH4cc2A6+uy9Js7jDvuBqZnQ1xhVHKMXqUlJWlsEdTkz1PoZtbNPi2Zv
-	dboz5EeO2Oz3DfgLx1riKY/F8L/GX933So7lSDfmv8tFaMoXncA2zdd+zfJeONN6nsfepv
-X-Received: by 2002:a05:7301:df43:b0:340:7202:d7fc with SMTP id 5a478bee46e88-34f150d9568mr2038092eec.17.1790927211285;
-        Fri, 02 Oct 2026 00:46:51 -0700 (PDT)
-Received: from dbg-srv ([123.118.75.63])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f0672c2d1sm5871618eec.4.2026.10.02.00.46.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 00:46:50 -0700 (PDT)
-From: physicalmtea@gmail.com
-To: stefanha@redhat.com,
-	sgarzare@redhat.com,
-	mst@redhat.com
-Cc: jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OWmW20rB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="IpCZhjOm";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cp/BpM5y";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5r20iau4"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 651081FE47;
+	Fri,  2 Oct 2026 07:53:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790927604; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=VwsVNyxNevp4dfeKi//n4bjszHYZju0LCPRBCNL6q3Y=;
+	b=OWmW20rBTNFGoBV4geOYtTxXrY6cVDRB4ZsLlTp9ifqzHbYtAe44wSsrXiyZBS3Jgk4ucW
+	7bZ8ffaARQudkO40ntpzGqTAhuKehEloW8Pk4jpLwAZRirai5Pwv5oVhEIqdNcsV4pZXcY
+	F7Yn3u5C99dH9JRiMh+i6/tbR6UgL4w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790927604;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=VwsVNyxNevp4dfeKi//n4bjszHYZju0LCPRBCNL6q3Y=;
+	b=IpCZhjOmXOlps4BLNef7/eLrlxrVlHFKXnwfLLTdrS7wm3/MqevTahzPCICpBjRCWO0iQ4
+	pAvMtrtB5pu1yMDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="cp/BpM5y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5r20iau4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790927600; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=VwsVNyxNevp4dfeKi//n4bjszHYZju0LCPRBCNL6q3Y=;
+	b=cp/BpM5yi2QMBZmsgGy0ekQ5UJdX5HTbWRfU++JdxgzPAO9qGU9V9neIsD5lt4kD+geejy
+	x91y2t/2KZlEPJzqlKa2wcVDBuoPyjhehYV3FuWVTbr9EiQdNIY7yRxpXxBXco8l9N3DYZ
+	oPBsCEdsjwLgOoKB8z6tT/D0VgirT8Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790927600;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=VwsVNyxNevp4dfeKi//n4bjszHYZju0LCPRBCNL6q3Y=;
+	b=5r20iau43HJ4ul5UCUp4PY/rPiHBqYXRVc2ru4uMRuZY7XBr6fGIoXTcK8HG5e0t39nonA
+	A4gHPQMwuXKuJWDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7936113691;
+	Fri,  2 Oct 2026 07:53:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zE2QEu9iv2pjFwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 02 Oct 2026 07:53:19 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: dev@openvswitch.org,
+	aatteka@nicira.com,
+	jesse@nicira.com,
 	horms@kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] vsock: defer RX readable notifications until batch unlock
-Date: Fri,  2 Oct 2026 07:45:51 +0000
-Message-ID: <20261002074551.318789-6-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@kernel.org,
+	davem@davemloft.net,
+	i.maximets@ovn.org,
+	echaudro@redhat.com,
+	aconole@redhat.com,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
+Subject: [PATCH net v2] net: openvswitch: validate transport header presence in set_ipv6_addr
+Date: Fri,  2 Oct 2026 09:52:55 +0200
+Message-ID: <20261002075255.5015-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,230 +91,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 651081FE47
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TAGGED_RCPT(0.00)[4cc63fcfb3845e149969];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:email,suse.de:dkim];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Score: -1.51
+X-Spam-Level: 
 
-From: Jia Jia <physicalmtea@gmail.com>
+When executing IPv6 address rewrite actions on IPv6 fragments,
+set_ipv6_addr() calls update_ipv6_checksum(). If parse_ipv6hdr()
+processes a non-first IPv6 fragment, it sets key->ip.proto to
+NEXTHDR_FRAGMENT and returns early without calling
+skb_set_transport_header().
 
-An RX batch can make a socket readable while the worker still owns its
-socket lock. Waking a reader at that point can make it immediately wait
-for the same lock.
+update_ipv6_checksum() unconditionally evaluates skb_transport_offset()
+on entry before checking l4_proto.  Because skb->transport_header is
+uninitialized, this triggers a warning under CONFIG_DEBUG_NET=y although
+it is completely harmless.
 
-For the callback installed by sock_init_data(), record when the existing
-low-watermark condition is met and issue one notification after the batch
-releases the lock. Save the initial sock_def_readable() callback when the
-AF_VSOCK socket is created. virtio_transport_common can be built as a
-module and cannot refer to that unexported symbol directly.
+Fix this by returning early in update_ipv6_checksum() if l4_proto is
+NEXTHDR_FRAGMENT. This avoids reading the uninitialized transport offset
+for fragments while preserving the debug warning for any other protocol
+where the transport header is unexpectedly missing.
 
-Custom data-ready callbacks retain per-packet notification behavior. If
-the callback changes while a default notification is pending, finish the
-batch before returning to the per-packet path.
+See the syzbot trace:
 
-Keep the socket reference until the deferred callback completes. A sockmap
-attachment takes the socket lock, so data queued before the attachment is
-reported through the saved default callback.
+!skb_transport_header_was_set(skb)
+WARNING: ./include/linux/skbuff.h:3075 at skb_transport_header include/linux/skbuff.h:3075 [inline], CPU#1: syz-executor463/5635
+WARNING: ./include/linux/skbuff.h:3075 at skb_transport_offset include/linux/skbuff.h:3250 [inline], CPU#1: syz-executor463/5635
+WARNING: ./include/linux/skbuff.h:3075 at update_ipv6_checksum net/openvswitch/actions.c:361 [inline], CPU#1: syz-executor463/5635
+WARNING: ./include/linux/skbuff.h:3075 at set_ipv6_addr+0x462/0x660 net/openvswitch/actions.c:399, CPU#1: syz-executor463/5635
+[...]
+RIP: 0010:skb_transport_header include/linux/skbuff.h:3075 [inline]
+RIP: 0010:skb_transport_offset include/linux/skbuff.h:3250 [inline]
+RIP: 0010:update_ipv6_checksum net/openvswitch/actions.c:361 [inline]
+RIP: 0010:set_ipv6_addr+0x462/0x660 net/openvswitch/actions.c:399
+[...]
+Call Trace:
+ <TASK>
+ set_ipv6 net/openvswitch/actions.c:531 [inline]
+ do_execute_actions+0x557e/0x8600 net/openvswitch/actions.c:1366
+ ovs_execute_actions+0xde/0x520 net/openvswitch/actions.c:1592
+ ovs_packet_cmd_execute+0xb4f/0xf10 net/openvswitch/datapath.c:705
+ genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
+ genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2572
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1916
+ sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
 
-Control packets, state transitions, transport changes and non-batched
-sockets retain their existing behavior.
-
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+Reported-by: syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4cc63fcfb3845e149969
+Fixes: 3fdbd1ce11e5 ("openvswitch: add ipv6 'set' action")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 ---
- include/linux/virtio_vsock.h            |  1 +
- include/net/af_vsock.h                  |  3 +-
- net/vmw_vsock/af_vsock.c                |  1 +
- net/vmw_vsock/virtio_transport_common.c | 53 ++++++++++++++++++++++++++-----
- 4 files changed, 49 insertions(+), 9 deletions(-)
+ net/openvswitch/actions.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index f67fa99ec..d69c09d5c 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -289,6 +289,7 @@ struct virtio_transport_rx_batch {
- 	struct sockaddr_vm src;
- 	struct sockaddr_vm dst;
- 	bool write_space_pending;
-+	bool data_ready_pending;
- };
- 
- void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 9d8ae6220..a799f0855 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -63,7 +63,8 @@ struct vsock_sock {
- 	u32 peer_shutdown;
- 	bool sent_request;
- 	bool ignore_connecting_rst;
--	/* Initial callback, used to identify replacements. */
-+	/* Initial callbacks, used to identify replacements. */
-+	void (*default_data_ready)(struct sock *sk);
- 	void (*default_write_space)(struct sock *sk);
- 
- 	/* Protected by lock_sock(sk) */
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index e5290a3bb..1a25b5393 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
- 		sk->sk_type = type;
- 
- 	vsk = vsock_sk(sk);
-+	vsk->default_data_ready = sk->sk_data_ready;
- 	vsk->default_write_space = sk->sk_write_space;
- 	vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
- 	vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 78c4e2f9e..e337a7aaf 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1583,7 +1583,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 
- static int
- virtio_transport_recv_connected(struct sock *sk,
--				struct sk_buff *skb)
-+				struct sk_buff *skb,
-+				bool *data_ready_pending)
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index dc5ff859f114..68b42e900c73 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -358,7 +358,15 @@ static void set_ip_addr(struct sk_buff *skb, struct iphdr *nh,
+ static void update_ipv6_checksum(struct sk_buff *skb, u8 l4_proto,
+ 				 __be32 addr[4], const __be32 new_addr[4])
  {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1602,7 +1603,14 @@ virtio_transport_recv_connected(struct sock *sk,
- 			vsock_remove_sock(vsk);
- 			break;
- 		}
--		vsock_data_ready(sk);
-+		if (!data_ready_pending ||
-+		    READ_ONCE(sk->sk_data_ready) != vsk->default_data_ready) {
-+			vsock_data_ready(sk);
-+		} else if (!*data_ready_pending &&
-+			   (vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
-+			    sock_flag(sk, SOCK_DONE))) {
-+			*data_ready_pending = true;
-+		}
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
- 		virtio_transport_send_credit_update(vsk);
-@@ -1836,6 +1844,7 @@ struct virtio_transport_rx_pkt_ctx {
- 	const struct sockaddr_vm *dst;
- 	bool *batchable;
- 	struct virtio_transport_rx_batch *batch;
-+	bool defer_data_ready;
- };
- 
- static bool
-@@ -1852,9 +1861,11 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
- }
- 
- /*
-- * The caller holds sk's socket lock.  Set @batchable if the socket can remain
-- * locked for another ordinary STREAM/RW packet.  Return true if the caller
-- * must free @skb.
-+ * The caller holds sk's socket lock. The packet context optionally records
-+ * callbacks to deliver when the batch finishes. If defer_data_ready is true,
-+ * defer the default data-ready callback in the batch. Set batchable if the
-+ * socket can remain locked for another ordinary STREAM/RW packet. Return
-+ * true if the caller must free skb.
-  */
- static bool
- virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-@@ -1902,7 +1913,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 		kfree_skb(skb);
- 		break;
- 	case TCP_ESTABLISHED:
--		virtio_transport_recv_connected(sk, skb);
-+		virtio_transport_recv_connected(sk, skb,
-+						ctx->defer_data_ready && ctx->batch ?
-+						&ctx->batch->data_ready_pending : NULL);
- 		break;
- 	case TCP_CLOSING:
- 		virtio_transport_recv_disconnecting(sk, skb);
-@@ -1971,10 +1984,12 @@ void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
- {
- 	struct sock *sk = batch->sk;
- 	bool write_space_pending = batch->write_space_pending;
-+	bool data_ready_pending = batch->data_ready_pending;
- 
- 	batch->sk = NULL;
- 	batch->net = NULL;
- 	batch->write_space_pending = false;
-+	batch->data_ready_pending = false;
- 
- 	if (!sk)
- 		return;
-@@ -1983,6 +1998,16 @@ void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
- 	if (write_space_pending)
- 		vsock_sk(sk)->default_write_space(sk);
+-	int transport_len = skb->len - skb_transport_offset(skb);
++	int transport_len;
 +
- 	release_sock(sk);
-+
-+	/*
-+	 * This event covers data queued while the default callback was installed.
-+	 * A sockmap attachment takes the socket lock, so it is ordered after that
-+	 * enqueue even if it replaces the callback before this call.
++	/* avoid reading the transport header offset if it isn't set,
++	 * as it triggers a warning
 +	 */
-+	if (data_ready_pending)
-+		vsock_sk(sk)->default_data_ready(sk);
++	if (l4_proto == NEXTHDR_FRAGMENT)
++		return;
 +
- 	sock_put(sk);
- }
- EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
-@@ -1995,7 +2017,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 	struct sockaddr_vm src, dst;
- 	struct sock *sk;
- 	struct virtio_transport_rx_pkt_ctx ctx;
--	bool batchable, start_batch;
-+	bool batchable, defer_data_ready, start_batch;
- 	bool free_pkt;
++	transport_len = skb->len - skb_transport_offset(skb);
  
- 	/* Only STREAM/RW packets can share a socket lock. */
-@@ -2015,6 +2037,13 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 		    vsock_addr_equals_addr(&batch->dst, &dst) &&
- 		    virtio_transport_recv_pkt_batchable(t, batch->sk)) {
- 			sk = batch->sk;
-+			defer_data_ready = READ_ONCE(sk->sk_data_ready) ==
-+					   vsock_sk(sk)->default_data_ready;
-+			if (batch->data_ready_pending && !defer_data_ready) {
-+				virtio_transport_rx_batch_finish(batch);
-+				goto lookup;
-+			}
-+
- 			if (!skb_set_owner_sk_safe(skb, sk)) {
- 				WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
- 				virtio_transport_rx_batch_finish(batch);
-@@ -2028,6 +2057,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 				.dst = &dst,
- 				.batchable = &batchable,
- 				.batch = batch,
-+				.defer_data_ready = defer_data_ready,
- 			};
- 			free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
- 			if (!batchable)
-@@ -2040,6 +2070,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 		virtio_transport_rx_batch_finish(batch);
- 	}
- 
-+lookup:
- 	sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
- 	if (!sk) {
- 		(void)virtio_transport_reset_no_sock(t, skb, net);
-@@ -2060,6 +2091,8 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 	 */
- 	read_lock_bh(&sk->sk_callback_lock);
- 	start_batch = virtio_transport_recv_pkt_batchable(t, sk);
-+	defer_data_ready = start_batch &&
-+		READ_ONCE(sk->sk_data_ready) == vsock_sk(sk)->default_data_ready;
- 	read_unlock_bh(&sk->sk_callback_lock);
- 
- 	if (start_batch)
-@@ -2070,10 +2103,11 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 		.dst = &dst,
- 		.batchable = start_batch ? &batchable : NULL,
- 		.batch = start_batch ? batch : NULL,
-+		.defer_data_ready = defer_data_ready,
- 	};
- 	free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
- 	if (start_batch && batchable) {
--		/* Keep the lookup reference until the batch is released. */
-+		/* Keep the lookup reference until the batch finishes. */
- 		batch->net = net;
- 		batch->src = src;
- 		batch->dst = dst;
+ 	if (l4_proto == NEXTHDR_TCP) {
+ 		if (likely(transport_len >= sizeof(struct tcphdr)))
 -- 
-2.53.0
+2.55.0
+
