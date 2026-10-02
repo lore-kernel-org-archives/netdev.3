@@ -1,64 +1,64 @@
-Received: from mail-pj2-f39.google.com (mail-pj2-f39.google.com [74.125.227.167])
+Received: from mail-pj2-f14.google.com (mail-pj2-f14.google.com [74.125.227.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01CF3655EA
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 04:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E6436826B
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 04:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790916681; cv=none; b=m2G+xuT5ZZ407fWGcq+mtwrlV+kyI47jdE+EuY5fUDDt/hUF9n964weJwRA8qyCEhrtT3P2lOJPNrkEBEP/lHQKTHTpWs1hMpcgmZ2pRbQP0jy4x7brKqIXpS2kLWy7DtWQhpUiEjuO8anW+IgHk1DuY5xOah3EgRW3BOXw0/IA=
+	t=1790916684; cv=none; b=YanVgPT5SX8znJGqz763S6NKKF6/asiz3kjPyFPk8PQthbesr4OsnbD0dNdSoRz4NbeR9cN7C3oQ6LRQCBc0hThJkR4OEfox11cGBIQvTNTgzQJ1E4Euj+JmW7ojd7KAHwuSR1ToSd2C/ii/DboMVqTnNPllhSDM8PhWTFz8ggU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790916681; c=relaxed/simple;
-	bh=EteBqRwOLnXN3M0J+gAk+oFidGRofjnyUkuhc8Yj/b0=;
+	s=arc-20240116; t=1790916684; c=relaxed/simple;
+	bh=EGguTxu+yiR4KwL1wKGNSQg0HqiyBt2K1DUYSLPw5F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zy10aFlZ23GcD82LhLYgICxO5tUqq6jlzrZlmt1O1oKqzVRqc0+b/bwKvAz0c2sno4JNrDa68EWbJBr0JDUbtIGLQTBRhcxzpmkK4vCynFig67gooHcTW44NnEam6hELuKasD9vM1+5j3v8+oZMhJDVmvaEhNEVNNU4mnr/Jbk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pGnbTb3Z; arc=none smtp.client-ip=74.125.227.167
+	 MIME-Version; b=I1R0Hzpp9HYT3e8ulTDQk1qkGY8wcRNiIsf1cIZZL3H8SiyJEdK48PPPp28veO/cWpEFc6YMTumYDZPMzJtMcsAKaqtN4Y2wsWJmGw0quaFzRDFJdFuhyiSCfHL9gUjcRckha7eNpCHAuuVu++0rL7aOszrkN9PSowml641ZYXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pqSoiytw; arc=none smtp.client-ip=74.125.227.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pGnbTb3Z"
-Received: by mail-pj2-f39.google.com with SMTP id 98e67ed59e1d1-3a4805e15cfso2773049a91.0
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 21:51:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pqSoiytw"
+Received: by mail-pj2-f14.google.com with SMTP id d9443c01a7336-2d747f05ffcso34653195ad.0
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 21:51:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790916679; x=1791521479; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790916682; x=1791521482; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cTsDoHWNhTSL7kUFc6o5v5Gkxn0GUpcR2BsXzWRaXlU=;
-        b=pGnbTb3ZDweKliMva6oEL3jqZIp2+UbsL+t6DWW6bNpGIQ5QKYrjpBTxkuGQ9B3nFZ
-         yjCbCPRh8k1i84kdgJ3WQ7/IrBXEL5XbcP0odQFJzP9Lkmmhisml/3ydcNnKJEMiNHer
-         0pTZwSw/j6aLPM3Dpy/l6YYqjs46DLhD6nx6MqJwRPEbkLQcs3GBVtuRg9/8/KkLW6Qb
-         N8gqckLAJa9qknACM5B9HkgT8HqlqeGSpW58L37dNoChSPiOeJDIZfmCQpQpgrnDKryN
-         1FK6cVfJd2Ii0GpPkihfYJdm4PKahkaoYhJHcD77ZVuk06wkodmCSAy86zP+4dqDiILJ
-         zJ0Q==
+        bh=ZFYDOqsBqKsmqK8JD9bXDjgEMMt1l5X2G9myljwvLmU=;
+        b=pqSoiytwOV79ViU1elSejbgGBkcNMAskEzMq401Kx4d7dUhfuvHewAnjf8Zq54vauq
+         veu9TWfbv1FaossOguPAii++wGK5Nw7xnaXFrDgVI32n+dIOX+uPj3puZww5uADbbqEf
+         Yd53W7/OA6xGTwkk1MikccdQzNbY4ncKdgeWCDBSA71HijTwRji73T1BRrvAx3rijgek
+         68uV+/MsB6RPtBgiCW+k/mO/oFhQtJK2vugCY9wQ5atIbEPTpmdpvqIU/o1wtMh6j+JP
+         v4KdijnQ6Vkmk2+0ggg5HtOaAyv+EZJTvoaVeL7G9H6YBZvW2Apdx48qvgQ+x8/20xr4
+         1ktA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790916679; x=1791521479;
+        d=1e100.net; s=20260707; t=1790916682; x=1791521482;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cTsDoHWNhTSL7kUFc6o5v5Gkxn0GUpcR2BsXzWRaXlU=;
-        b=cDXWtSC6xXhPGzngvbFkwN7E5BU/f5PBfL37uaK/y0xKdl3GnVyRBJugvUfsHIujgW
-         RMPS5NpiVPn8YqJ/t1SJBx+4eAaBh1pQDqWR9AkTSKq6ValbY13IX3QsT2lQpYTNF2AR
-         0fdZdH2caGszC9FKuGTP5vB8n7gTdlxkzXB6kSp+9JJZjpwZykudb1wH6H5S85K6UBDg
-         Vo2W3QLUYkC4SWFE++7xvvY0ePk340dD4YEujgPmuaAW83vLCcDzBBmlH0kvI2QW1rVD
-         MX1rCWNdKqqlgDrk0qOSAW/sfkgloXNEDO2/xzGGuX9ffXiVppS2uAqd2Vo1ysa02J8z
-         kFPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxfezwQzG27kM83dVOIyWryIb6ScEAW4BaClisoYaQY0k9h9ZnTLWiYkGoTN0W5Acm5bfylHIU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLJoVoESAsoI6B90IIE5ZGH8dZUFskfdttF1RZiGkb2LExntyN5
-	cTB1ZewgnkKrDXSYe439FwfFHIiQbk3fKQWSc4d8rPWI2TgKzz5CKJ0r
-X-Gm-Gg: AYBFou3vGKDOaBpntjdgHDgpk8s51sk147ZCQsNwuBiSRv3Bl5ODQlcMP/XsbIAZNJQ
-	TUA+S/gOOJ858O0y2AFRlxLLNwSESatovgRQkwagm4UPrvPvyoqg4qRC0PN1hw5oYKE7YAnnlAx
-	eODKisOsARCpNlkp5kRqefKpmAImwyudwvhnou/caT3znKHpUjihScsg6MhXesGLwMSTMD6x0jP
-	vScRFsFabcV70ZjMC2hov0DYX6Y1YY2Wk+GcWBoHHWeCyQf40wpWsqBE70C1keq7X3oEno8evPz
-	UzYsuur1MpOqg8dIBzO/XR5q6VWn3m/IWtt4wDTlmXAWeqf69GrucPcLYDNTXyMpUP8frZmkS2G
-	mIgTr3UPCeePleP65HTC6DbONexc2Q8chL7LC7ajl9rDIFcTK32gyZI7pdWnEUjTqez6ZKP4I83
-	b6V4TBIV7SJLgpjgkEPUo7ag94XEWPM4ikg7Cawvz4lf4cptn5ookN+3D0IMfX+rYwaCgof2QcS
-	uCRpKKYhb4=
-X-Received: by 2002:a17:90b:3e85:b0:3a5:3f7:27f with SMTP id 98e67ed59e1d1-3a6cecaf8c5mr1436229a91.66.1790916678778;
-        Thu, 01 Oct 2026 21:51:18 -0700 (PDT)
+        bh=ZFYDOqsBqKsmqK8JD9bXDjgEMMt1l5X2G9myljwvLmU=;
+        b=ripvm8/0qQ9nY2arcTTaYJ3Qgt0wkzUWfhQPt2Q+kwtUrZmt4/kpfB3uPt+KQdKTEd
+         qCSwurvS6RqXzDKVELC57Jk0HgM4abh2Q+4hUZyo2wH87E7YfBGI+Z37S3Esie9y7zHD
+         qXm4tebvcjdGLBmS6pLfIwP3fbElvQs2ST8Q20er88PQoyVkgoPoA1Wcylof6PS7jJYX
+         kW/EEEzV/wGG/u3qvb0srzWAlx9VgJGTROz9MsUxYqpQumP+G25S1U0bYWREf9j09cM0
+         prtOTpjhFTL1oKljTAEQYetItwjxY7cgYb/TN+HRRtkOFeqmqWmZ7OPvsH06+j3+awE5
+         8EMA==
+X-Forwarded-Encrypted: i=1; AKwUvBytSrWpJuowHorzlxn8fsbRSpvrScojuazLNbgHbQbIzuyPVfzKA6mR/Xe8WGnzdXLxA/bOZ+U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIqaizVazvVJNw+ifhqGBkSsDk8JZua/bu19EOUCnrslc5LBXYT
+	l8h7ysX7Qzotv0WLa9OBQPbVOAyRxh6w27bn4VhPdkyWWqDzWJ7SpDy4
+X-Gm-Gg: AYBFou2Jm2b6TXuPYF6XjkGc7iO1VZiW2pIOycXBfVcw4c3kqOyNmLtdD/s2sjxjBag
+	FEMe1VSfdIM/hmjEd9xmSd+CSEphpThO5MUukIHH8mRk3fdaY5M3R5krK9jImk7u+4I4AuQgRl5
+	N5LWpt16ryVBmISIc2RSiOpfhQoMB9/EjqWXn2LR+sc7XyaAxRnhJ88eZNWSwaeU/6oOl0Mn1KP
+	BLA7YQ6sMVpo/syn1fEo6lvKg2tgK7YfJO/7xkmo+3QyHHGVVZOkhwq5XrOnb5Ocp8bmq9FsUFN
+	zn4yy0O7EC+/GFrIqVe+RSfBJKkMHyWwulJwg7fpjrTFoZqTGvhydddlIY9rscHsKJR03D1ajha
+	hnab75dLD4H+VbSxUGiyhdePnTW8AEvqeLbIIbMDipIdxl57S1z0iuMzVpcx2z8cf6wzHViWU08
+	aVcLm68XnQhR3xSohaPwGXdfFyeyvyCWPUhnMx08y6cgmf3rnsZsTIlUhIeuFSKMPkj8GQAxrml
+	qrxTOcYhpU=
+X-Received: by 2002:a17:90b:35c3:b0:3a0:4668:4cb0 with SMTP id 98e67ed59e1d1-3a6cead5baemr1466604a91.47.1790916682376;
+        Thu, 01 Oct 2026 21:51:22 -0700 (PDT)
 Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd3962f0sm642682a91.3.2026.10.01.21.51.15
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd3962f0sm642682a91.3.2026.10.01.21.51.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 21:51:18 -0700 (PDT)
+        Thu, 01 Oct 2026 21:51:21 -0700 (PDT)
 From: Daehyeon Ko <4ncienth@gmail.com>
 To: David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>
@@ -74,9 +74,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Daehyeon Ko <4ncienth@gmail.com>
-Subject: [PATCH net v2 1/3] ipv4: stop PMTU walk when nexthop group shrinks
-Date: Fri,  2 Oct 2026 13:50:58 +0900
-Message-ID: <4fb87ed994dfc067178fc845cdd8bc9b5446b039.1790915964.git.4ncienth@gmail.com>
+Subject: [PATCH net v2 2/3] ipv4: stop exception dump when nexthop group shrinks
+Date: Fri,  2 Oct 2026 13:50:59 +0900
+Message-ID: <5bb7bd97411eb9db454464bf449107395e760f26.1790915964.git.4ncienth@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1790915964.git.4ncienth@gmail.com>
 References: <cover.1790915964.git.4ncienth@gmail.com>
@@ -88,54 +88,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 7d3f3b4367f3 ("net: ipv4: Cache pmtu for all packet paths if
-multipath enabled") made __ip_rt_update_pmtu() update every path.
+Commit 4ce5dc9316de ("inet: switch inet_dump_fib() to RCU
+protection") allowed IPv4 FIB dumps to run concurrently with nexthop
+replacement.
 
-For nexthop objects, fib_info_num_path() and fib_info_nhc()
-independently load nh->nh_grp.  RCU protects each group's lifetime but
-does not make the loads observe the same group.  If replacement shrinks
-the group after the loop accepts an index, fib_info_nhc() returns NULL
-and update_or_create_fnhe() dereferences it.
+fib_dump_info_fnhe() uses fib_info_num_path() as the loop bound,
+then fib_info_nhc() independently reloads nh->nh_grp. If
+RTM_NEWNEXTHOP replaces a group with fewer paths between those loads,
+fib_info_nhc() returns NULL and the dump dereferences it through
+nhc_flags.
 
-A deterministic probe only widened the existing window between the real
-operations.  On v7.2, an RTM_NEWNEXTHOP replacement published a
-one-member group after the PMTU reader accepted index 1 from a two-member
-group, producing:
+Stop the walk when the indexed path is absent. Nexthop groups are
+dense, so the current snapshot has no later path.
 
-  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-  RIP: update_or_create_fnhe+0x45/0x15b0
-
-Stop when the indexed path is absent.  Groups are dense, so no later
-index exists in that snapshot.  The same real-writer window completed
-114,423 PMTU iterations without an oops with this check.  A reproducer
-is available on request.
-
-Replacement requires CAP_NET_ADMIN in the network namespace.  Where
-unprivileged user namespaces are permitted, a local user can obtain it
-in a new user and network namespace.
-
-Fixes: 7d3f3b4367f3 ("net: ipv4: Cache pmtu for all packet paths if multipath enabled")
+Fixes: 4ce5dc9316de ("inet: switch inet_dump_fib() to RCU protection")
+Reported-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/netdev/20261001170513.GA1657889@shredder/
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 ---
- net/ipv4/route.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/route.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 37674d76f90f0..5f2197874bebc 100644
+index 5f2197874bebc..268d8821f7e09 100644
 --- a/net/ipv4/route.c
 +++ b/net/ipv4/route.c
-@@ -1082,6 +1082,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+@@ -3170,6 +3170,9 @@ int fib_dump_info_fnhe(struct sk_buff *skb, struct netlink_callback *cb,
+ 		struct fnhe_hash_bucket *bucket;
+ 		int err;
  
- 			for (nhsel = 0; nhsel < fib_info_num_path(res.fi); nhsel++) {
- 				nhc = fib_info_nhc(res.fi, nhsel);
-+				if (!nhc)
-+					break;
- 				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
- 						      jiffies + net->ipv4.ip_rt_mtu_expires);
- 			}
++		if (!nhc)
++			break;
++
+ 		if (nhc->nhc_flags & RTNH_F_DEAD)
+ 			continue;
+ 
 -- 
 2.55.0
 
