@@ -1,189 +1,151 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37EE2D9796
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 11:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D901448551E
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 11:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790938922; cv=none; b=Moouormv08kHvEEMFx1OEC0hCyp9EDOLQxAsJG5Q5CmTMfppkezoFIUf3oejoi/oZdDhs/dHAt6SvJM8c9DQQJJACSqYfOm+ENxOr1yYJbHxygwAdhvfbMnxBPGHd6qkmol9YMd+WgpEiFA/13yCvNbedelKvxq5WojNg+40Co8=
+	t=1790939804; cv=none; b=nJpjy+BJQq45FhD79sN2bBdLCCAdsKgzyrX/eKgtgVWT6NdkkmD2CTAIl6zOHFmJkVTPsk+dxHxrAzAomgIxfbrzyST/kdSPzUAPyj3R3fhIfNri0kSbHqkLmFIYdjYb7ewdLlhnewXbRmhVo3+lUpOcOLywmq6Bs5Q0bVoSeKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790938922; c=relaxed/simple;
-	bh=AOvio/hvg1XCkLTMxFpL/kZRvqG9clRp5/3P2UuuPxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UuzcpOaK5hu1SUgQP9tDmM2KHRZYF2cI2oJ+KBxknnspeq0pkDMYSKm6Gq5ngzkjoA5k6Ey2qREKWrp6WXKsHBEUmkJDIODfUMfFPxrgqzCGesQk1x26zwklz1DoTV9yua+vV78GL5EU5j7MZ02KiIoPXjsYJaPeW+Syp/DAMvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=J+Vn3VsZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WGQYAmN+; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1790939804; c=relaxed/simple;
+	bh=fKBXgJ84Wfgr1Vc/MjywO6FH3BjD2YUyj+imU22BUUc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ppV3WA1LFK7oB7t/WutcpTzcpJYwg26nuTvNptcurQXJJi87nDt5aAt8xRsGpmU3Y22G4Pbc+tPrOyd9GsZsP3PeGg3tKwrzswEq8dHmui6xFW8X+EmT9v773OCLu/zB00MieSyvyDgE9wSZgxcSYq9VPJ50g1FjUschAAHDSds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRvFjstl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="J+Vn3VsZ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WGQYAmN+"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6929nabc1190355
-	for <netdev@vger.kernel.org>; Fri, 2 Oct 2026 11:02:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=CKdIJ/v0JRCkX2ewj0d9dXQZ
-	qyPU31WRE6qg+Xr8wXY=; b=J+Vn3VsZwEkg65qq1oQ9Hc8AVj5ctExNmtQfHLbi
-	ROYntezQe8j5uEhHmz+TG7f3LzhfPO/frh6c5fKi6A41rPzuh/ErRXmOKt/MnTbH
-	zdwBcg0PHcDstwMOBdhtHnaSRQxwM1M/wpiUoSvUZmYK/NVRTuJftK2owEsYm7cm
-	c10CTC7J6Kp0Ou0jR5AQ7O0w+skxMD5lZ7HZtk5eQIsCYxKqBKPzMnxDMq6AsheC
-	ZGIHHb+wkC68hiFvA4Qk5zknCV41Ol0AMpaai638j0+jo5kDcyZk9mq09snnKKkC
-	eTz8TTrTztFoSkwkkoB+31c6B29AT8+zf+xp8pMHj6A2fg==
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com [209.85.222.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h1w8tjr4t-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 11:01:59 +0000 (GMT)
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-988c7363ee1so2838636241.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 04:01:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1790938919; x=1791543719; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CKdIJ/v0JRCkX2ewj0d9dXQZqyPU31WRE6qg+Xr8wXY=;
-        b=WGQYAmN+0M+2klcoiqqBaQ6n8VpeSdhsk8uVJfoNKnrHACl/wNxq0kVJ3x6Q6pyaah
-         YlJ1xYXvuYPebNQfTBT0g6JxoURua26YrJY2pWiBxl8R+UquzfAkBqiGhVnrjvCwfd5K
-         ZWZmqhbybtZj04l1/em7eOoeG5zt6zjOcqosP/Eu2iHJ1f+nr/uzreFAyrJ+l26jtUih
-         Wqp/jCV4JmqaA9P7zO6RSI2k3PkjFTqwzss5gIT8dRm2uri2ZK5S+1b2sgG+xIFjbSLt
-         nu0dvLVoQ33mabvrhJK0qH9qfcyhJwAgdCgOVBC32DoVTmZegushJF9DbDwgGiQwFzac
-         W3mA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790938919; x=1791543719;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CKdIJ/v0JRCkX2ewj0d9dXQZqyPU31WRE6qg+Xr8wXY=;
-        b=Os70KRuskPTlamzt1Z3t7zZIrRs4Ga8+z6fshq7gGnFn+naZd98e1dYPJs/MUgNIf7
-         xsLWqTMymXzZjqXGgFIXwsAV8bHSwDceYFMKjA8HQ9khxQS4sTJWmLHmXSpBWsHKlNZ2
-         P6enU6PqlfdYtN8KIFygaZzW43GVpeqtUr0lV0RVtiH3fdD7Epnz+gYq+tzOABZzN/xm
-         rQfBcDQtRLp2hhPDDXS5cVd80STYK6XO8MmQKzPAwuF9OIcbqtb+L01LnJt0W1V9v4wR
-         VH94rXB7vKEoiIrTv60xbe92drg5jP9nYQN+vCTngMy6y0O42C4HXcD4BswiGekpYCJU
-         FYEQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw9amKSE2GSAEk8X/7mZ8IwQvKoPpjqRdZ0eoRt7tG2SpQvcXSI06QW6wrR9lLEczJPnsO1vOM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKfSNo2nTY39t3haSyR5HCA80DobIxnw+7yE6KE/X46yN4dWx7X
-	m0ibNDTsusBcKdSlXszZEuRKrpSjFqn3PIY5+4vX/sQkzqsorvpCEY4hlEQyO3RJtx8gXUPS+SE
-	kw7OCiR2qdr2v1GTghs/SiU5iLLVPLFxPHQVUj0LdbapzPuI7siMOAI95AAc=
-X-Gm-Gg: AYBFou1ghIR9SpxmcyCPvKdRnF48SLHq4JdoE3VhtCiLFk0obpd9qfJ3ZC6ndC7N6Gd
-	akKF2Va2lIkv4mOprokKHhn7IOoIgXUlITEUSRCmu1MsgHOeJeLhnqmJAF1G67EuES1wuDiI6GS
-	4xtSbALW8YCsBWSQlQ2Gi2l+mntprbSkEGNHoZHfuKOBqZXlSCj5MVAhoxkczzJ+oCcPV+64Lci
-	Ccw36C0kx/VM4Z4u1Yln1uXDO6bKaQXlmUp1GJML/ii9vuYW9gcq09WyMGpWiluLWXkULwGNOwO
-	AD3xsh8YdY+PUQGJ51dsLwvoDfI4udtS/5nU+htwGNQcyYs8tXRSlSs5Ar8BG5Fr+PPBOitKO2r
-	lNyhMkhbpEwrc+Q==
-X-Received: by 2002:a05:6102:54a7:b0:7bc:dd88:add with SMTP id ada2fe7eead31-7c0f4d9aa1dmr646936137.14.1790938918580;
-        Fri, 02 Oct 2026 04:01:58 -0700 (PDT)
-X-Received: by 2002:a05:6102:54a7:b0:7bc:dd88:add with SMTP id ada2fe7eead31-7c0f4d9aa1dmr646929137.14.1790938917927;
-        Fri, 02 Oct 2026 04:01:57 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0280d1e38sm59659315e9.13.2026.10.02.04.01.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 04:01:56 -0700 (PDT)
-Date: Fri, 2 Oct 2026 13:01:56 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net] net: stmmac: serialize PTP timestamping
- configuration with priv->lock
-Message-ID: <ar-PJPMxGGZ0-jl8@lore-desk>
-References: <20261002-stmmac-hwtstamp-missing-lock-v1-1-189ce151a624@oss.qualcomm.com>
- <179093783778.1402591.4305443516462782245@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRvFjstl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C2C1F000FF;
+	Fri,  2 Oct 2026 11:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790939802;
+	bh=7t66XtqJjNzl4/UqzlSDgJmFr02nZ458oYRE94WIK3U=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=nRvFjstljW8Fwlwt5htf+o98IPTH0OlcMs47GeV9hsgQXHZp8slL2WkXNEsU187Rx
+	 mzfDGhUU3u6WJRVtNAQY7J3q5sYynSm2nbkHe0rGDehxzKDNBRyrbzVMv7DGSG3TYE
+	 1nwiyvWkxs+oajEusb/WMIP1gwzsXyZxLJ6CGfIDzfBF4h55TJHQW5hjlzFEjOoZ/T
+	 +nA4kuGcSyTKGhQmFU/Rvl+Du2wzxwx21y9b42tP6IO7jMiCXSDMTAf+cvr1aj7VBe
+	 cI9jr33MbG91MwExLNi9DWjMbhMQI3/6Odo7kyeQ5m1Di7Ne4ArvAc/KSQFgbcPKxj
+	 gZfDX14oRiRGQ==
+Subject:
+ Re: [PATCH net-next v4 3/5] net: gso: support re-segmentation of TCP GSO skbs
+From: netdev-bot+sashiko@kernel.org
+To: wang.zhan@smartx.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com,
+ willemdebruijn.kernel@gmail.com, jasowangio@gmail.com, andrew+netdev@lunn.ch,
+ aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+ dev@openvswitch.org, daniel@iogearbox.net, ncardwell@google.com,
+ kuniyu@google.com, alice@isovalent.com, david.laight.linux@gmail.com
+Date: Fri, 02 Oct 2026 11:16:41 +0000
+Message-ID: <179093980103.434549.13718251538882727671@kernel.org>
+In-Reply-To: <20260930111526.2183107-4-wang.zhan@smartx.com>
+References: <20260930111526.2183107-4-wang.zhan@smartx.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PPH0o41flN+L76U/"
-Content-Disposition: inline
-In-Reply-To: <179093783778.1402591.4305443516462782245@kernel.org>
-X-Proofpoint-GUID: TvTUwy5uhCm12gRwAxnHG2MaQ7ApgWxO
-X-Authority-Analysis: v=2.4 cv=ML/1C8Zl c=1 sm=1 tr=0 ts=6abf8f27 cx=c_pps
- a=KB4UBwrhAZV1kjiGHFQexw==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=jeKYxtEjmYGD5WCmXysA:9
- a=CjuIK1q_8ugA:10 a=5rDVVPiX1ZP2Va_hm84A:9 a=o1xkdb1NAhiiM49bd1HK:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAyMDA0MyBTYWx0ZWRfX5Cd/CiFwyslJ
- +Jflrk5d/zyPXA8SD+VKQMiHD4CMaM4v5TARK9gxvdM94s1icXkXMvFviZTtpJCpReKRa0ObUtR
- 4AnaJJGopK2cbr08YggqQah+sQf0bUzGbTWK2VJF0YXdCfshUJhPjLQnbqqZRHw4kXKj4me7ghK
- EUBOD+z7LCkv+lOqJz8qnR/3NkOUK3FFwQpPB9V8LXu68VnOI+F0s5HRLyqBD5ujPQgJpHGTQN3
- xjE8Wn2Ghc0cWTggrMdl7/ab2SUzeKMPiG/Vlqgxnt4MmHkz3gyEKXOzO/NTNcuTAcnwMNPsBHo
- Cgr9T+pUhp8Wxc18O4VeJUi16d+GPdoXeh702+lKu5GINt1JzZ0sJtcmQzakW8aV7Td9J47S3Wm
- dk81AyO4yrT+LQcFWQ4Q7eSusc+k7aSLB1pDzGuZVKfe/iKiXcFoU/X1r5ilTcyaPm6uuF4kTzD
- TP/VrIl4q0r5rdAk67A==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAyMDA0MyBTYWx0ZWRfXyGwFdgjrQraF
- 68d11rZdZ3mtvC936VfLXWcDLRTrXSPlk6CUjXw7KTsOqd8XuvWO0d8g3OI/B+p/l/rhNwpYyXE
- iJ/1XDdPlbtOLlzokLP9q1gFWCNH8iM=
-X-Proofpoint-ORIG-GUID: TvTUwy5uhCm12gRwAxnHG2MaQ7ApgWxO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-02_03,2026-10-01_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 impostorscore=0 phishscore=0 spamscore=0
- bulkscore=0 suspectscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610020043
 
---PPH0o41flN+L76U/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-> Hi!
->=20
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->=20
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+Low priority / nit picks for your consideration:
 
-The issue has been reported by sashiko
+- [Low] Possible truncation of the 16-bit IP length for grouped outputs
+  larger than 64 KiB (fixed by the next patch in the series).
 
->=20
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+--
 
-This is a theoretical issue
+net: gso: support re-segmentation of TCP GSO skbs
 
->=20
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
+This commit adds a max_segs argument to __skb_gso_segment() and stores it
+in the skb_gso_cb scratch area. When max_segs is non-zero, skb_segment()
+skips the partial/frag_list decision block and groups up to max_segs MSS
+segments into each output GSO skb. Existing callers pass zero to keep
+their current behaviour.
 
-I tested it on a Qualcomm Rb3-gen2 board.
+> diff --git a/net/core/gso.c b/net/core/gso.c
+> index bcd156372f4df..21a259ca392f4 100644
+> --- a/net/core/gso.c
+> +++ b/net/core/gso.c
 
-Regards,
-Lorenzo
+[ ... ]
 
->=20
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->=20
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> @@ -117,6 +120,7 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
+>
+>  	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
+>  	SKB_GSO_CB(skb)->encap_level = 0;
+> +	SKB_GSO_CB(skb)->max_segs = min(max_segs, GSO_MAX_SEGS);
+>
+>  	skb_reset_mac_header(skb);
+>  	skb_reset_mac_len(skb);
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 8912a66cd9097..fd10a7cdc1883 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
 
---PPH0o41flN+L76U/
-Content-Type: application/pgp-signature; name=signature.asc
+[ ... ]
 
------BEGIN PGP SIGNATURE-----
+> @@ -4874,7 +4875,10 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  		 * now.
+>  		 */
+>  		DEBUG_NET_WARN_ON_ONCE(len / mss > GSO_MAX_SEGS);
+> -		partial_segs = min(len / mss, GSO_MAX_SEGS);
+> +		if (max_segs)
+> +			partial_segs = min(len / mss, max_segs);
+> +		else
+> +			partial_segs = min(len / mss, GSO_MAX_SEGS);
+>  		if (partial_segs > 1)
+>  			mss *= partial_segs;
+>  		else
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCar+PJAAKCRA6cBh0uS2t
-rB2pAQC9fLgohVoDohP4ZFqOu35UI6l3+z7mlsf0z/4QHjm37QD/dubaG71YJkpH
-To/1ZEezcU3wwLqk6fIEPnW8Vz7UjwQ=
-=Sd12
------END PGP SIGNATURE-----
+[Severity: Low]
+When max_segs is non-zero, the grouped outputs are not SKB_GSO_PARTIAL
+skbs. Their size is bounded only by max_segs * gso_size. The only clamp in
+__skb_gso_segment() is on the segment count (GSO_MAX_SEGS), and nothing
+limits the number of bytes.
 
---PPH0o41flN+L76U/--
+For non-partial GSO outputs, the L3 length is taken from the whole output
+skb and stored in a 16-bit field:
+
+net/ipv4/af_inet.c:inet_gso_segment() {
+    ...
+			else
+				tot_len = skb->len - nhoff;
+    ...
+		iph->tot_len = htons(tot_len);
+		ip_send_check(iph);
+    ...
+}
+
+net/ipv6/ip6_offload.c:ipv6_gso_segment() {
+    ...
+		else
+			payload_len = skb->len - nhoff - sizeof(*ipv6h);
+		ipv6h->payload_len = htons(payload_len);
+    ...
+}
+
+If a caller passed a max_segs where max_segs * gso_size plus headers is
+more than 65535, would tot_len and payload_len be truncated, and would the
+IPv4 header checksum then be computed over the wrong length?
+
+No caller in this patch passes a non-zero value. The only non-zero caller
+in the series is skb_gso_output_max_segs(), added by the next patch ("net:
+core: re-segment oversized TCP GSO skbs"). It caps gso_max_size at
+GSO_LEGACY_MAX_SIZE before it computes max_segs, so this cannot be hit
+anywhere in the series. What is left is the API contract of
+__skb_gso_segment().
+
+Should the kernel-doc for max_segs say that the caller must keep
+max_segs * gso_size plus headers within 64KB? Alternatively, could
+__skb_gso_segment() or skb_segment() enforce a byte limit, so a future
+caller cannot produce outputs with a truncated IP length?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930111526.2183107-1-wang.zhan%40smartx.com
