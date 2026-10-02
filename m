@@ -1,208 +1,355 @@
-Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE9F3C81B9
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 21:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790975412; cv=pass; b=PxSJ1O/ETJ6tVAKjo3RaTWgJjQ/sXBG2zLH0TouH218ThEJ3OKG7eVotE9/mfIjHK6r7lhNToZPM+XaeFgWH9wq+JLpZW5P4ZAytOyKcqbwIYIbO9QliWkmvzHAeunXj6r9b5h5A6iDlWqS7GDrQOPKg+KXVDJtjYF7uXu4x8IE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790975412; c=relaxed/simple;
-	bh=8ZJ3SbY5N++QU5F2Cm2usCkS6tIxaMnMadqvnXYF9+c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hb3G7lB7DtvNbdsCllctul1Ams14ybVaKAyCGZVPxJmOvHyI6b3UwyN7HIjHUr1PDcjEeB8UXJoDwwxaLEXIH81cn/mzv70E9R1QHrN8jQvuewOFlHwEMGy7xAmsv2zrfAjHfth7Yw4xwUIYh3+1ofKljZWFV4MJ5kB722f2ZYs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m8eRKSxe; arc=pass smtp.client-ip=74.125.228.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92657385D61;
+	Fri,  2 Oct 2026 21:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790975658; cv=none; b=Yr7YJ1PqJ2M4zCNz/WMU9+hNGWlbEpWsSmrH85a74D+e3Llyk8DufmICGL8g5PkdKQ0Bl8vLLRm7+S1JzYaUYAWAocPf51JTujPVeM4Kkhm4tfd9yV2AZ+WtaZH8Ai0J/aQJ7AUOMYlUtxVoeX2r78fR9/tZobpNYcqRb8bH2hs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790975658; c=relaxed/simple;
+	bh=gxOxPe1i1bf2CvZNxQXlXOmrmGNHtLm4zYGZ70H3rK0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WwH4qWsgsMPZ5nOtOHnUhXwNrBlGbJjcPkj4MJ/ow5Woksv+2pgPeStaz3ezBxlfQ8MIX7DU72zw6hG4a53rA+TDmCeraVHwI8vpAz6ACu1O7wsoJ2Ifxd2S1rUip6yRwkoj/w1tmCwlUmO7shBCXHz88gRO7wLa9XzTlixOfSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTkjFZVU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m8eRKSxe"
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2e028ed54dso48304566b.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 14:10:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790975408; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PPzkAdD15h7AYsmYx6WRNoDg0mnL5DVb5QJRITjXHOo66T1S2KzjgK6zDijyP0az2b
-         uJl51BSnfLvLmj8qrDo9ZwR9divzAmfd5oH0wS1+VWzl91S+8joftekv//FmMKri5XLd
-         uco7rN3EQDbnXD6HHp4+ld5Xud3a9vAB65cH+rnBaz262MiyyU2oR1+MhXfA+bA40bke
-         RGIhTGMgQxyOt9gDMK6pGyzvAwbxRgy2HnSiT5sx9KC5lKrEjdSQB2UIcPXPOA5HDtN4
-         zQrNzm76DtqgttcIKFN5sUxo8HwfqiYdOKFDnGpWj0n72J79rk44rrzeL6JzirdnzjcB
-         SVVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Eg586wb4d7KXht4zgOReRAU6drq3nZvO7SFyjkfsBLY=;
-        fh=nZ2SiP2mhWEGSyJ7PORKEE9gjs7j8s1Y5GyAXhFI5hg=;
-        b=orUI6sZrCEEnzlvVITTpLSLxWcr2wGtKlgKIyDMw7qQeIMZuUx9wzh6wVTyhHhDtjW
-         0nogWVLnfMUd1Dr4CgNiUdp+QYNBsdpRt+S0Uo2c8TXg4mUCevlgsSXO4ZIxW7/sv77T
-         COS850toR7SV1g05BWokA34j2pyqjR57+89LgShR8/zAuCPICga3PJigBCI0yeXeMbzX
-         qGV03w5O5kBFENc69jjHfEZzDto/hvhDG9QJ9sxUrNzxQyGYjQb/bxIunmjoQBo2M0Xo
-         mrKdEIN7nROmOevAF26UOk1wKK2DVuUdldvz5w1Q44/ipQKWPKG6hG1rN8DlcBwzLWJe
-         OySg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790975408; x=1791580208; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Eg586wb4d7KXht4zgOReRAU6drq3nZvO7SFyjkfsBLY=;
-        b=m8eRKSxeDpAbljmEcPcnGBnfZRsqfAQzLLjoBR0P6IBb/iwuJiLZ2Pfv1xxQCGzOqC
-         j7Eh8o4pyBDWYamR0wuIVqqVS7jfecp/z49qreSg/YEKB6KTGfoNUHDneeRpXwUeWdxL
-         g9vIGXpdnlOiyQmNzhaA8Aa8eX1EbvmoEbLs3nDH4GIrsUqzdJ6zukGn9nfiMGXuIlKj
-         jS8Bta17GY1gr0Vti6wVXyW0DgXpe2bg/S4GyL3cAM+E8YUo67R+yfOjy2niRW8fiicG
-         wXBrLGW52UBWg2eBzVlm8/ygbmeFlhUQ3CG7uch0REdx+NDL4+T37bwgNEoK4hOrDKXz
-         WlEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790975408; x=1791580208;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Eg586wb4d7KXht4zgOReRAU6drq3nZvO7SFyjkfsBLY=;
-        b=OFpzBNnNd74Gjb9n4ymkWIuWM8RWzrwscztAfD2GYJzWGgqc61m47vo2MrJ95GWtY9
-         m9QTJw2hVgA8LRo0GJoLORE5XkZW7HW6yaKDYihVXKYDaC3d4s9fWRqbWLtfCCqWJL8y
-         XGQyqqMCBIErPc4PHN2pTNf1otjSfcaOTT1q34gdTkthl9pyANW/RfDiX7JaImGr6hth
-         JbpFuxw4dpI2OguAhHZVoYRalt2u3jI9QWOpbNYONniAeHHllDeiMg2sz9X9qbeZgrkI
-         aynKzOry0pUiAtxEfgKsoh2QhVOk2xmEM5xOBaW+XH+BnbuTgkSx5/coatLrTHlrqAhw
-         an6A==
-X-Forwarded-Encrypted: i=1; AKwUvBzSSpJ+HWDuepxoHk8K85ctYaB/w88GDXRIyPgGjb/KmkcPvV1JdO3YFbPnOOKeRSb15jjqtIM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nY4D/7OGMSKHoj3ALG9IpkumiPgetzY+tiGGuTmhkOIcOwkJ67
-	uAiVflRNanGBX/8aZWRf8/nnrdWH78splH4Qjg8/b5G+Pph5L5UkZp7/txdCPe5CaXJwi3fTcZa
-	qDd4MnnJ1SEulcVdS7zcXzdDiN7oGSPI=
-X-Gm-Gg: AYBFou0EmyQj8Tycb7RKaVDTNHNx385anMePMh6a/xeI8tm1SAxaYexrB0fwqIU050M
-	HdhqlmX/Je9AoUL4awLpouZ03VPhHi8rxv4V51B7PUdk9TUuJyiq6I13HHri/RykYVtPn7MDyA0
-	ewSEjYTaS5Pt15NqYyU4t2wV/+kbdx76Kkb/1skVSk76SGwIwxMrhBu2GDrnH352gQ3/0RvSf0Q
-	mDiud+OQAnV+GfX+GbNzV0K0w1XmkmdWsZc2o10jTmXNfUV5XZPAQNevUI7g5B9BoxrnB1wtyQr
-	kpLyE6/z5BhP2olf0S17lQX7FWDd2hTJen5q8cMtC1mZl5mloZFPpBTkHBPeCgsQcg==
-X-Received: by 2002:a17:907:d0f:b0:c2a:c799:d068 with SMTP id
- a640c23a62f3a-c2e4adb732dmr329725966b.28.1790975407894; Fri, 02 Oct 2026
- 14:10:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTkjFZVU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A9B1F000FF;
+	Fri,  2 Oct 2026 21:14:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790975656;
+	bh=3pSEFKHHA11fkddNRPHdVL9Of6KrGfueFlWk5ShnrYY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dTkjFZVUhvsy0U3ZUVhcf30ce/SJU0hkuouBJkfoDpjJO7XaNAUk0Loz8r2+TdMma
+	 sHn8OMuj/1mDqzZnmdtYBO/Pj9euPwchj38q27qcgcDWRTDE9sa2Fh5oOqDkvvwAJr
+	 undkcncvkEWErZDr4+63fYQoceDxs1XQHPfNjWAxy2wOG41beHp7oIf1GdDSVRlb9q
+	 /2tb2l9Zviv2TTBSJ74wh2dknCz1uyzwckwTThts1ZJtrJwI7uKdmuB6yGSPTuwBww
+	 mASRPm3FEYOx54V/SRpPOaxch4KVxBdlKuxzwYkbZ7Awvi/iaixHQY+EiVTeZdGBdu
+	 9cbOG8Of9+nHA==
+Subject: Re: [PATCH net-next v13 1/9] net: dsa: add tag driver for LAN9645X
+From: netdev-bot+sashiko@kernel.org
+To: jensemil.schulzostergaard@microchip.com
+Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ woojung.huh@microchip.com, linux@armlinux.org.uk,
+ Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
+ geert+renesas@glider.be, magnus.damm@gmail.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org
+Date: Fri, 02 Oct 2026 21:14:14 +0000
+Message-ID: <179097565449.434549.6566178471820291955@kernel.org>
+In-Reply-To:
+ <20260929-dsa_lan9645x_switch_driver_base-v13-1-827c2d3617f2@microchip.com>
+References:
+ <20260929-dsa_lan9645x_switch_driver_base-v13-1-827c2d3617f2@microchip.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260928230429.495442-7-anthony.l.nguyen@intel.com>
- <179072991678.434549.17815320009417499641@kernel.org> <DS7PR05MB73208F63C4605A1D0CBA79268B8B2@DS7PR05MB7320.namprd05.prod.outlook.com>
- <IA3PR05MB22078430E404FAD12912A706298B892@IA3PR05MB220784.namprd05.prod.outlook.com>
- <CANm61jc37jivo=XmRwN8ic8PNJFXZK+6Gsw5VRy=b-oZKpMsMA@mail.gmail.com>
-In-Reply-To: <CANm61jc37jivo=XmRwN8ic8PNJFXZK+6Gsw5VRy=b-oZKpMsMA@mail.gmail.com>
-From: David Butler <croepha@gmail.com>
-Date: Fri, 2 Oct 2026 16:09:56 -0500
-X-Gm-Features: AclHuK8DMhH1rcb9yT24q2Red7NG7Tvx2B8cCjG77jHRgbZ29f6RNVpLfBQulAY
-Message-ID: <CANm61jf=OTipCihF1JOeCfMePGSJzu5+Y4_KnPZG3k8m1RETmg@mail.gmail.com>
-Subject: Re: Fw: [PATCH net 6/6] iavf: cap advertised max_pkt_size at the
- single-buffer HW limit
-To: netdev-bot+sashiko@kernel.org, anthony.l.nguyen@intel.com, kuba@kernel.org
-Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@kernel.org, 
-	andrew+netdev@lunn.ch, netdev@vger.kernel.org, emil.s.tantilov@intel.com, 
-	luoxuanqiang@kylinos.cn, bryan.fraschetti@canonical.com, 
-	tristan@talencesecurity.com, tomasz.lichwala@linux.intel.com, 
-	horms@kernel.org, aleksander.lobakin@intel.com, stable@vger.kernel.org, 
-	jacob.e.keller@intel.com, aleksandr.loktionov@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-> [Severity: Medium]
-> Should netdev->max_mtu be clamped to match?
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
 
-Yes, the review feedback is valid.  The bug outlined by the review is
-where the user sets an MTU
-in the 9728 to ~16356 range and frames above 9728 are silently dropped
-instead of the MTU set failing.
+Critical: 0 · High: 1 (1) · Medium: 2 · Low: 3
 
-We should still move forward with this patch but reword the commit
-message.  It will likely be at
-least several weeks before I will be able to acquire and setup a lab
-environment for reproduction
-and testing for a new patch revision.  This patch as-is does not
-introduce any code regressions.
-In every case the behavior is unchanged or strictly better.
-Practically speaking, most users would
-not be impacted by the frame drop.  Standard jumbo (=E2=89=A49728, e.g. 900=
-0)
-is entirely unaffected.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Since 5fa4caff59f2, E810 + ESXi icen + SR-IOV has been unusable: the
-VF never finishes
- CONFIG_VSI_QUEUES, regardless of MTU.  The effects are not contained
-to the guest
-that triggers it. Under pass-through the mis-programmed queue can
-raise an IOMMU fault that
- wedges the PF/VF on the ESXi host.  This usually takes out that
-interface for subsequent
-guests too (even if they have this patch).  Recovery requires a host reboot=
-.
+- [High] In lan9645x_xmit_get_vlan_info() (net/dsa/tag_lan9645x.c), any
+  frame with no in-band tag matching the bridge protocol gets IFH_TCI…
+- [Medium] lan9645x_netdev_ops sets no .flow_dissect, so
+  __skb_flow_dissect() (net/core/flow_dissector.c:1083-1098) falls back…
+- [Medium] When the IFH-classified VID equals the port pvid,
+  lan9645x_rcv() skips restoring the tag (tag_lan9645x.c:451-453).
+- [Low] In lan9645x_xmit_get_vlan_info(), the condition `skb_headlen(skb)
+  >= VLAN_ETH_HLEN && ntohs(hdr->h_vlan_proto) == proto` treats a VLAN…
+- [Low] In lan9645x_xmit_get_vlan_info(), the guard `skb_headlen(skb) >=
+  VLAN_ETH_HLEN` in front of vlan_remove_tag() does not cover every byte…
+- [Low] lan9645x_rcv() always restores the classified VLAN as
+  ETH_P_8021Q.
 
-A follow-up to adopt the reviewer's fix is warranted.  I can provide
-the patch if someone else
-thinks they can test it sooner than I can.
+Pre-existing issues:
+- [High] lan9645x_xmit() calls dsa_port_bridge_dev_get(dp)
+  (include/net/dsa.h:774-778, `dp->bridge ?
 
-A revised commit message follows:
+--
 
-iavf: cap advertised max_pkt_size at the single-buffer HW limit
+net: dsa: add tag driver for LAN9645X
 
-Since commit 5fa4caff59f2 ("iavf: switch to Page Pool")
-iavf_configure_queues() advertises max_pkt_size to the PF as:
+This adds a DSA tag driver for the Microchip LAN9645x switch, which uses a
+front port as the NPI CPU port. On extraction, frames carry a 16 byte long
+prefix plus a 28 byte IFH. On injection, frames carry only the IFH. On
+receive, the classified VLAN is restored as a hwaccel C-tag unless it
+equals the port pvid.
 
-        max_frame =3D LIBIE_MAX_RX_FRM_LEN(adapter->rx_rings->pp->p.offset)=
-;
-        max_frame =3D min_not_zero(adapter->vf_res->max_mtu, max_frame);
+> diff --git a/net/dsa/tag_lan9645x.c b/net/dsa/tag_lan9645x.c
+> new file mode 100644
+> index 0000000000000..f54646d4b3947
+> --- /dev/null
+> +++ b/net/dsa/tag_lan9645x.c
+> @@ -0,0 +1,474 @@
 
-LIBIE_MAX_RX_FRM_LEN (16382) is the multi-descriptor scatter/gather frame
-ceiling, not a single-queue value, and it exceeds the E810 MAC frame size
-maximum of 9728. Per the E810 datasheet (613875-009 section 13.2.2.17.1)
-the Tx frame-size register PRTDCB_TDPUC.MAX_TXFRAME has a maximum of
-0x2600 (9728); larger frames are discarded. The in-tree ice driver encodes
-the same value as ICE_AQ_SET_MAC_FRAME_SIZE_MAX (=3D=3D LIBIE_MAX_RX_BUF_LE=
-N =3D=3D
-9728), and the VF clamped max_frame to IAVF_MAX_RXBUFFER (9728) before this
-commit.
+[ ... ]
 
-When the PF advertises vf_res->max_mtu as 0, min_not_zero() leaves
-max_frame at 16382. The Linux ice PF advertises max_mtu =3D port MAC frame
-size (<=3D 9728), so a VF behind ice never sends more than that. The ESXi
-"icen" PF on E810 advertises max_mtu as 0, so the VF sends
-max_pkt_size =3D 16382, which icen rejects while programming the queue
-context for VIRTCHNL_OP_CONFIG_VSI_QUEUES (opcode 6):
+> +static struct sk_buff *lan9645x_xmit_get_vlan_info(struct sk_buff *skb,
+> +						   struct net_device *br,
+> +						   u32 *vlan_tci,
+> +						   u32 *tag_type)
+> +{
 
-        icen_ConfigureTxQueue: VSI 8: Failed to set LAN Tx queue context fo=
-r
-                               absolute Tx queue 64, Error: ICE_ERR_PARAM
-        indrv_SendMsgToVf: VF 0: Failed opcode 6, Error -5
+[ ... ]
 
-        iavf 0000:03:00.0: PF returned error -5 (IAVF_ERR_PARAM) to
-our request 6
-        iavf 0000:03:00.0 ethX: NETDEV WATCHDOG: transmit queue N timed out
+> +	hdr = skb_vlan_eth_hdr(skb);
+> +	br_vlan_get_proto(br, &proto);
+> +
+> +	if (skb_headlen(skb) >= VLAN_ETH_HLEN &&
+> +	    ntohs(hdr->h_vlan_proto) == proto) {
+> +		vlan_remove_tag(skb, &tci);
 
-The VF's queues never come up; under SR-IOV passthrough the mis-programmed
-queue can also trigger a fatal IOMMU fault in the guest. Forcing only
-max_pkt_size back to 9728 (and leaving the Page Pool rx_buf_len/
-databuffer_size untouched) makes the VF come up; databuffer_size is not
-involved. This was confirmed on two E810 NVM versions (3.00 and 4.51) under
-icen, so the trigger is the icen PF, not the firmware revision. Reported by
-several users on E810 + ESXi icen with v6.10+ guests:
+[Severity: Low]
+What happens when the VLAN header is not fully in the linear area?
 
-Link: https://community.intel.com/t5/Ethernet-Products/E810-C-iavf-driver-i=
-ssue-on-Linux-6-12/m-p/1737490
-Link: https://access.redhat.com/solutions/6973766
-Link: https://knowledge.broadcom.com/external/article/404315/sriov-enabled-=
-vms-network-adaptor-goes-d.html
+Because of the skb_headlen() check, a tagged frame with a short linear head
+goes to the else branch. The original 802.1Q tag then stays in the payload,
+and IFH_TCI is set to br0's pvid.
 
-Cap max_frame at the single-buffer HW limit (LIBIE_MAX_RX_BUF_LEN, 9728) so
-the VF advertises a max_pkt_size the PF can program into the Rx queue
-context. This is the value the VF used before 5fa4caff59f2 (IAVF_MAX_RXBUFF=
-ER).
+dsa_user_xmit() does not linearize the skb here. The user netdev inherits
+NETIF_F_SG from conduit->vlan_features in dsa_user_setup_tagger(). The
+AF_PACKET PACKET_TX_RING path, tpacket_snd()->tpacket_fill_skb(), copies
+only hard_header_len (14) bytes into the linear area.
 
-Note this only caps the advertised max_pkt_size. 5fa4caff59f2 also raised
-netdev->max_mtu to LIBIE_MAX_MTU (derived from the same 16382 ceiling); whe=
-n
-the PF advertises max_mtu =3D=3D 0 that leaves max_mtu above 9728, so an MT=
-U in
-the 9728 < mtu <=3D LIBIE_MAX_MTU range can still be set while frames above
-9728 are dropped by the queue context. Clamping netdev->max_mtu to match is
-left to a follow-up.
+Could the rewriter then push a second tag, so the frame goes out
+double-tagged or in the wrong VLAN? Would a pskb_may_pull() of
+VLAN_ETH_HLEN before this check avoid that?
 
-Fixes: 5fa4caff59f2 ("iavf: switch to Page Pool")
-Signed-off-by: Dave Butler <david.butler@appgate.com>
-Cc: stable@vger.kernel.org # v6.10+
+[Severity: Low]
+Is the VLAN_ETH_HLEN check enough for vlan_remove_tag()?
+
+When h_vlan_encapsulated_proto is an 802.3 length, vlan_set_encap_proto()
+also reads the two bytes after the VLAN header:
+
+include/linux/if_vlan.h:vlan_set_encap_proto() {
+	...
+	rawp = (unsigned short *)(vhdr + 1);
+	if (*rawp == 0xFFFF)
+	...
+}
+
+lan9645x has no needed_tailroom, so dsa_user_xmit() does not pad the frame.
+skb_put_padto() in lan9645x_xmit() only runs after this function returns.
+
+Take an 18 or 19 byte frame such as DA SA 8100 TCI <len>. Can this read
+uninitialized tailroom past skb_tail_pointer()? The only effect is whether
+skb->protocol becomes ETH_P_802_3 or ETH_P_802_2, but KMSAN would likely
+report an uninit-value.
+
+> +		*vlan_tci = tci;
+> +	} else {
+> +		rcu_read_lock();
+> +		br_vlan_get_pvid_rcu(br, &tci);
+> +		rcu_read_unlock();
+
+[Severity: High]
+Is br_vlan_get_pvid_rcu() being passed the right device here?
+
+br comes from dsa_port_bridge_dev_get(), so it is the bridge master. This
+call returns the pvid of br0's own VLAN group. That VID is unrelated to the
+egress port and to the VLAN the bridge forwarded the frame in, because
+br_handle_vlan() already cleared the tag for an egress-untagged VLAN.
+
+lan9645x_xmit() then writes that VID into IFH_TCI with IFH_BYPASS set, so
+the rewriter uses it as the classified VID:
+
+	lan9645x_ifh_set(ifh, 1, IFH_BYPASS, IFH_BYPASS_SZ);
+	...
+	lan9645x_ifh_set(ifh, vlan_tci, IFH_TCI, IFH_TCI_SZ);
+
+The later "net: dsa: lan9645x: add vlan support" patch changes
+lan9645x_vlan_port_apply_egress(). It programs a hybrid port (one untagged
+VLAN plus tagged VLANs) as LAN9645X_TAG_NO_PVID_NO_UNAWARE, with PORT_VID
+set to the untagged VID. In that mode every frame is tagged unless
+VID == PORT_VID or VID == 0.
+
+For example, say br0 has pvid 1 (the default), and swp1 has VLAN 10 as
+pvid/untagged plus VLAN 20 tagged. A frame sent by the host in VLAN 10 (from
+br0.10, or ARP flooded by the bridge) reaches this code untagged and gets
+VID 1. So does a frame forwarded in software in VLAN 10.
+
+Would the switch then send it on the wire tagged with VLAN 1 instead of
+untagged in VLAN 10?
+
+> +		*vlan_tci = tci;
+> +	}
+
+[ ... ]
+
+> +static struct sk_buff *lan9645x_xmit(struct sk_buff *skb,
+> +				     struct net_device *ndev)
+> +{
+> +	struct dsa_port *dp = dsa_user_to_port(ndev);
+> +	u32 vlan_tci, tag_type;
+> +	u32 qos_class;
+> +	void *ifh;
+> +
+> +	skb = lan9645x_xmit_get_vlan_info(skb, dsa_port_bridge_dev_get(dp),
+> +					  &vlan_tci, &tag_type);
+
+[Severity: High]
+This isn't a bug introduced by this patch. The racy pattern is in the DSA
+core and is already used by tag_ocelot, tag_sja1105, tag_dsa and others;
+this tagger adds another user of it.
+
+dsa_port_bridge_dev_get() reads dp->bridge twice on the TX path. It holds
+no lock and uses neither READ_ONCE() nor RCU:
+
+	return dp->bridge ? dp->bridge->dev : NULL;
+
+The following path runs under rtnl:
+
+del_nbp()
+  netdev_upper_dev_unlink()
+    dsa_port_bridge_leave()
+      dsa_port_bridge_destroy()
+
+It clears dp->bridge and, on the last reference, frees the dsa_bridge
+without waiting for a grace period:
+
+net/dsa/port.c:dsa_port_bridge_destroy() {
+	...
+	dp->bridge = NULL;
+
+	if (!refcount_dec_and_test(&bridge->refcount))
+		return;
+	...
+	kfree(bridge);
+}
+
+TX on the user port (AF_PACKET or locally generated traffic) is not
+quiesced at that point.
+
+Can a concurrent lan9645x_xmit() read ->dev from freed memory, or reload
+dp->bridge after it became NULL? The result is then passed to
+br_vlan_enabled(), br_vlan_get_proto() and br_vlan_get_pvid_rcu().
+
+[ ... ]
+
+> +static struct sk_buff *lan9645x_rcv(struct sk_buff *skb,
+> +				    struct net_device *ndev)
+> +{
+
+[ ... ]
+
+> +	dp = dsa_user_to_port(skb->dev);
+> +
+> +	if (dsa_port_is_vlan_filtering(dp) && vlan_tci) {
+> +		u16 port_pvid = 0;
+> +
+> +		br_vlan_get_pvid_rcu(skb->dev, &port_pvid);
+> +
+> +		/* The tag is restored as a C-tag, not as the TAG_TYPE the IFH
+> +		 * reports. The classifier recognizes both TPIDs as VLAN tags,
+> +		 * so an S-tag has already been used for classification by the
+> +		 * time we get here. Restoring it as 802.1AD would make the
+> +		 * bridge push it back into the payload and reclassify the frame
+> +		 * to the port pvid, on a different VID than the one the
+> +		 * hardware forwarded it on.
+> +		 */
+> +		if ((vlan_tci & VLAN_VID_MASK) != port_pvid)
+> +			__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
+> +					       vlan_tci);
+
+[Severity: Medium]
+What happens to a double-tagged frame whose outer VID equals the pvid?
+
+The later "net: dsa: lan9645x: add vlan support" patch sets
+ANA_VLAN_CFG_VLAN_POP_CNT=1 without VLAN_INNER_TAG_ENA, so VLAN-aware ports
+pop exactly one tag.
+
+Take outer VID 100 (the pvid) with an inner C-tag 200. The frame is
+extracted with popcnt == 3, the inner tag is still in the payload, and
+IFH_TCI reports VID 100.
+
+No tag is restored here in that case. eth_type_trans() in dsa_switch_rcv()
+then sets skb->protocol to 0x8100, and __netif_receive_skb_core() turns the
+inner tag into hwaccel VID 200 via skb_vlan_untag().
+
+Would the software bridge then classify the frame to VLAN 200, while the
+hardware forwarded it in VLAN 100?
+
+[Severity: Low]
+The commit message says this assumes an 802.1Q bridge:
+
+    This assumes a bridge vlan_protocol of 802.1Q, which is the only
+    protocol the driver offloads.
+
+The later "net: dsa: lan9645x: add vlan support" patch documents the same
+limitation. Is anything enforcing it?
+
+DSA does not handle SWITCHDEV_ATTR_ID_BRIDGE_VLAN_PROTOCOL, and
+__br_vlan_set_proto() sends it with SWITCHDEV_F_SKIP_EOPNOTSUPP. So an
+802.1ad bridge cannot be refused that way.
+
+On such a bridge, __allowed_ingress() sees skb->vlan_proto !=
+br->vlan_proto. It pushes the tag back into the payload and classifies the
+frame to the pvid. Terminated frames on non-pvid VLANs would then land on
+the pvid, or be dropped if the port has no pvid.
+
+lan9645x_xmit_get_vlan_info(), on the other hand, handles 802.1ad
+explicitly:
+
+	*tag_type = (proto != ETH_P_8021Q) ? LAN9645X_IFH_TAG_TYPE_S :
+					     LAN9645X_IFH_TAG_TYPE_C;
+
+Should 802.1ad bridges be refused in port_bridge_join? Should xmit and rcv
+also handle an 802.1ad bridge the same way?
+
+> +	}
+> +
+> +	return skb;
+> +}
+> +
+> +static const struct dsa_device_ops lan9645x_netdev_ops = {
+> +	.name			= LAN9645X_NAME,
+> +	.proto			= DSA_TAG_PROTO_LAN9645X,
+> +	.xmit			= lan9645x_xmit,
+> +	.rcv			= lan9645x_rcv,
+> +	/* Covers the extraction prefix too, since dsa_tag_protocol_overhead()
+> +	 * sizes the conduit MTU from this.
+> +	 */
+> +	.needed_headroom	= LAN9645X_TOTAL_TAG_LEN,
+> +};
+
+[Severity: Medium]
+There is no .flow_dissect callback here, so __skb_flow_dissect() falls back
+to dsa_tag_generic_flow_dissect(). That helper assumes the tag overhead is
+exactly needed_headroom:
+
+include/net/dsa.h:dsa_tag_generic_flow_dissect() {
+	...
+	*offset = tag_len;
+	*proto = ((__be16 *)skb->data)[(tag_len / 2) - 1];
+}
+
+Does that hold for this tagger? Whenever the rewriter popped tags,
+lan9645x_rcv() skips a 4 or 8 byte ifh_gap_len between the IFH and the
+real DMAC.
+
+The later "net: dsa: lan9645x: add vlan support" patch sets
+ANA_VLAN_CFG_VLAN_POP_CNT=1 on VLAN-aware ports. So every tagged frame
+received on those ports has a 4 byte gap.
+
+For those frames, would the generic dissector take SMAC or gap bytes as the
+EtherType and use the wrong network header offset? That would misdirect RPS
+and skb_get_hash() on the conduit.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929-dsa_lan9645x_switch_driver_base-v13-0-827c2d3617f2%40microchip.com
