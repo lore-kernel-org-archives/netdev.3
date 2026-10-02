@@ -1,97 +1,89 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C4D424655;
-	Fri,  2 Oct 2026 20:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B4C1E260C
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790973058; cv=none; b=cIDl4QDDjBNm5sgHWmSFU03F5wFNajZQ1hUjWjca11EQ+zQcI3wCioETCeGQUFqV7dMsbILiGlJqMbF/IO7pGfp2NaEQRKyDTF7Pr2HYRUk4RpqHzZOnNQR4Ph/Np7hlR7EfzROjytYG0uXZ9yJ3RxA3omiMgF2zqQaUDLSQLSE=
+	t=1790973216; cv=none; b=nMsmfDjt4P0cBAsYc3/NWu9fBZBxZ/t5jNMYgtE+D2JPnCmWxHd/xPbLmluYL5jJbpUbqS/vzvD3WRmV1Z0t+gCp9QIPVEvDCQio36T3u6aNR/MVsJvRt2D7fo+FmOQsvvDW2MhqppUPYSB5c2jHBkujeEPx1hxXlMMj37V/2Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790973058; c=relaxed/simple;
-	bh=Uyo2TrSeXDlUHQS1CGR0Bgo59RRrDPOcyOuuDynewT8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OwIr8G1Pr/YyImOiBpsldySV/W7HzUfwv85IrIctW0xcNNRCV6LAj7KNgjlmPPD7hNPXvsTXOfVXyJtqNz7IcEDAnn6j+6NkFKj1j/295lTjljGjcVhNyrjGrICQMVP62Le5a4Hho0sLAj2BN2fmWU/RBW3RIukiCyjy7acX6lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fSaQ5SB2; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fSaQ5SB2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Uyo2TrSeXDlUHQS1CGR0Bgo59RRrDPOcyOuuDynewT8=;
-	t=1790973048; x=1792182648; b=fSaQ5SB2xIMCrMGGJ6Sg5T60qWP1d5UgRJdUCvcxWY+M/4B
-	TzDz/1HWXGlhZDRUA0UjFV6uKH/BoD1/42aE6aLB7KckBCAt3Z7ca9zzjGoaLhHK65AJ9sMQgaZ27
-	2jEG1M4bsntJMYnlJAZrwzXV1Fm5K4EFRoTRF4RHbJxDaWm9oR0y0X9XJk18lqzjFzRV3gaWOZYTW
-	hWwdtdMwh28d3authh3tT/BYQC/+Z21t8RI2bcYgz2owOioQ3wn29tYZI2mp2udMTDygxH99ZLFp6
-	+Xy/Ie1ofOaBXjydlfsd7OhjOUnvZWixCKVcByh5JsiYiHmjTIGsHMg17NMJdJBg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1xCjtt-00000001nXW-1sZC;
-	Fri, 02 Oct 2026 22:30:37 +0200
-Message-ID: <649cc93941ed71c60d08151d8d13570f5e5319ef.camel@sipsolutions.net>
-Subject: Re: [PATCH net v3] wifi: nl80211: document sta-info nested attribute
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Hilal Rahmatullah <hilalrahmatullah11@gmail.com>, "David S. Miller"
-	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Donald Hunter
-	 <donald.hunter@gmail.com>, "open list:NETWORKING [GENERAL]"
-	 <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Date: Fri, 02 Oct 2026 22:30:36 +0200
-In-Reply-To: <20261002132500.0b71889b@kernel.org>
-References: <20260816101216.20947-1-hilalrahmatullah11@gmail.com>
-		<20260817084713.7a7694d6@kernel.org>
-		<6ae7fd5e4d24bdeb0f0df057f767107e08567640.camel@sipsolutions.net>
-		<7fc3e2730ebea674abf750a39c53d6ee307a907e.camel@sipsolutions.net>
-	 <20261002132500.0b71889b@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	s=arc-20240116; t=1790973216; c=relaxed/simple;
+	bh=mkjv//+y7zh6wyp51u7RnjK0x5syo2h1ZKUZdwBTUt0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=bP7YmNk9s1D9BkGig/KHZLhtRCaP7UiYmLfWW6F8i5684btTNJNCFp+IC8hfK+71sIGzAfKXPlSnGss1PvKeD6rJkFFA9HHR4FZNoK1Ed/AuyNi5YQo1wurfm7abc1s9M7bW6vuwNXmIE/D9p059UJ4DZYDoIMxGFMrAwHuc6YQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4a7de733fa9so436185b6e.3
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 13:33:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790973213; x=1791578013;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kW7axytshc47DovEV4O1GtbDR6sHYpDI18xoyUEZ+g8=;
+        b=ifdlPKV+1fHEPQbddFtJP4eLG3MWc+9xo1SbB9+OykrNzIGlJ8LKp62ldghkeYBdGP
+         15BzpzWYHmDai73LgU7moia1chgQKZ1CKdvhc+FpxWmMTtJM8RtYgniQetRgzbz8fski
+         tRHzXp/vmpYpX63luYV9lpA2hjzukfZH3RhUPcK/wjzZoo2WbDyuXZQDyGUtarIidOLI
+         gP4BgJraaN8rmAh65EzLbVrNNFy+TyM0jfgnSqb6pwmrxE5jBPNZkAL8OMiimapckeWN
+         KlyMm/xHlVhaSUhU6Pytd+Ff5m7GelURCzHDyOoF/vqSdr5LlmFkHoML/mE4CG+fNioQ
+         EZ0Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxDGxbvFRgiFkG2V042OoSkZvpIMkVjTBHcQcuWLcsbO5/6QGjGNHvXUovIHhJdp9fHaFDMZCI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lkfpD1xiwiU7Uq+1zi/21xLlmW+2lEWH2Vr2bJUo7CuL2CY3cV
+	3rk13JXK9yre7zfiVycNCZBEj9QOrJghKzkKX6m8ikqnpo73awNrgI/z0upf3M5hBG4JVkziht7
+	H1kHFEzUJDpYuxCFudi9hFSqMuUqWbFwZzoP/6ZUyHWpk+TNAaS11A1MmUAU=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+X-Received: by 2002:a05:6809:245:10b0:4f5:5dbd:1328 with SMTP id
+ 5614622812f47-4f55dbd1397mr1809095b6e.42.1790973213378; Fri, 02 Oct 2026
+ 13:33:33 -0700 (PDT)
+Date: Fri, 02 Oct 2026 13:33:33 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ac0151d.34119e79.2f92f3.0006.GAE@google.com>
+Subject: [syzbot] Monthly netfilter report (Oct 2026)
+From: syzbot <syzbot+list0253702bfe7b2098992c@syzkaller.appspotmail.com>
+To: fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 2026-10-02 at 13:25 -0700, Jakub Kicinski wrote:
-> >=20
-> > There's a license issue - we have ISC license on nl80211.h now, but
-> > Donald and Hilal picked GPL/syscall/BSD-3 for the yaml and of course
->=20
-> That license is required for all netlink specs, FWIW
-> It's totally my fault if it's wrong, I just didn't want it to be
-> _just_ GPL since that would propagate to use space code which
-> we want to be permissive about. The spec is effectively a uAPI
-> description it should be public domain in my non-layer mind.
+Hello netfilter maintainers/developers,
 
-Oh, sure. But BSD-3 isn't (advertising clause), and people copy at least
-the nl80211.h file around to other projects. And the syscall exception
-doesn't really talk about distributing that code. So presumably going
-from ISC to this would require people to update even their binary
-distribution's docs (where it's built in) ...
+This is a 31-day syzbot report for the netfilter subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/netfilter
 
-> > that carries over to the generated .h file, not sure if that's an issue
-> > for downstream projects but might be with advertising clause? Could we
-> > change it if I'm adding >10k new lines from nl80211.h? :)
-> >=20
-> > I can post it but ... is it worth it? Not even sure it would
-> > significantly simplify our lives, although the generated header file
-> > with documentation is much more regular in that it always has the type,
-> > etc. (which is what Jouni was asking about)
->=20
-> Well, I certainly don't care so my choice would be not to have to review
-> the code gen changes (:
+During the period, 4 new issues were detected and 1 were fixed.
+In total, 12 issues are still open and 201 have already been fixed.
+There is also 1 low-priority issue.
 
-Fair :)
+Some of the still happening issues:
 
-I'm not really sure it gives _that_ much benefit ... I guess I'll mull
-it over and maybe run it by some wifi people.
+Ref Crashes Repro Title
+<1> 140     Yes   INFO: rcu detected stall in rescuer_thread (2)
+                  https://syzkaller.appspot.com/bug?extid=d5f7a5097c24c7c2dbbb
+<2> 15      No    BUG: workqueue lockup in batadv_tt_purge
+                  https://syzkaller.appspot.com/bug?extid=61b202fdc410840f0198
+<3> 10      Yes   WARNING in nf_ct_bridge_post
+                  https://syzkaller.appspot.com/bug?extid=a8ba738fe2db6b4bb27f
+<4> 4       No    WARNING in nf_flow_table_extend_ct_timeout
+                  https://syzkaller.appspot.com/bug?extid=521f7e7e2b974abde99a
+<5> 108     Yes   INFO: task hung in nfnetlink_rcv_msg (5)
+                  https://syzkaller.appspot.com/bug?extid=c4b20b80ee6a7a2f5012
 
-Thanks :)
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-johannes
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
