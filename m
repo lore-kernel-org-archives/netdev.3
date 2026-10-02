@@ -1,118 +1,118 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lr2-f33.google.com (mail-lr2-f33.google.com [74.125.230.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CA647F3AE;
-	Fri,  2 Oct 2026 10:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790935247; cv=none; b=rFzrIo8xrQCNzIz5xOlX5ux1/+KE9FXjhy0/fJoAw9YrYEQRzDXdqoCeb8BE+H4OEoX8etLjGuhZky2PcSO8G0MeiOCL2bcp7+EGkG5RJa8AhH54rElqMymUfCKKn3a7nWL1SMW5GVYkqoMO4bJLAq7xr02/0yY7kv2aghe2/UQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790935247; c=relaxed/simple;
-	bh=E/aONn2SlVFmx520yzRdIWKAL2vHgqm+IjN3aDrSRAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kv3FtVSEqxbZV3oHtx9J4+TNwMHGT5hxSvYtnIykZd4Xfnbsm2hLARMKHmEYM14b+DaHxVjGTvCpupSpNJ9pK0Yzgsoa2MetwKohtJ0rrlXtF3brLikBWICw/ngJaCVXmmrkxAb9FnY/WcKXsXA036y20ISb2N93aMbhKXTCbBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ep0a1yXV; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5F847532A
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 10:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.97
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790935534; cv=pass; b=Yz0jQ5WPDkKSGTDCGFeEKmZ+lcC0/DCiT1h7kjXRbLlnn7oCbMVQlmAG/eqA70lBIfzzsNoolOB6gbqbV63ITVyyAUccgQ6/iYl18SkYeTBQ6wSoVkr8z5HiLznkn/HpAy/8+5fl1KaNa0s1xdERS0lBpkPa+yzOSyoD4bkavaw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790935534; c=relaxed/simple;
+	bh=KpRkC7nlG1sV7SwjB4i6DmP6K82SrvV9/kz1iBtQzrM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LLs4LZS9DAwDHOmoBBFjK6NvU1Ey07Qu9Bl26TVAAeBOC1IebVOAw/eU72LroND5LVjbgx0qnomXxnXmMir1fPOlChpP+ZTi0TNZMmwqTwHmJsTSgNElt2212N5XN3j3swBBSTrWXKKkiQy4QVSQjqgNubPSa+EzJQB5c3jqLA4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NwW9ak6U; arc=pass smtp.client-ip=74.125.230.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ep0a1yXV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790935246; x=1822471246;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=E/aONn2SlVFmx520yzRdIWKAL2vHgqm+IjN3aDrSRAs=;
-  b=Ep0a1yXVCSMrRQFwXxifuRHehgs2vrNy1KNgY6g6B/cdG0QkEiNVwa57
-   1OTOLzw9dzPkMyiiTuh2h0I3nl3A0rlr5mP4fHPRLxfKkEuMC1TqWBLt7
-   F9sa2gvMYgeX5Q4i4D149fRIkpOMY3bhtr22pkZi+oP8y32SmxaPHVtkf
-   gVhL3g/KF0SeIfgpi5mWCOo+CKtBqUajgWMkJhs4r42HvulIptWnZWOIj
-   TSP7gLEVJsTL+kDU39XwZnPpFZWYwf3PT7ui9cxQlBn/q5wGlaz0DjbdW
-   hxfYIdsxfWTddBH4zJ4DWol/sXyDk6VusxqCR6Ti+fj1+/m2/u6JI8MZp
-   g==;
-X-CSE-ConnectionGUID: rWayf470RSS+6DDEVgxk+w==
-X-CSE-MsgGUID: cmXrPHHJT8qBAew7rrRciw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="113484712"
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="113484712"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2026 03:00:43 -0700
-X-CSE-ConnectionGUID: nqny98MISRyeURU7ttyxBg==
-X-CSE-MsgGUID: uJpgmZvJQ0yOelQGcZnb6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="279959905"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa005.jf.intel.com with ESMTP; 02 Oct 2026 03:00:41 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 5CDA6A2; Fri, 02 Oct 2026 12:00:36 +0200 (CEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Wen Gu <guwen@linux.alibaba.com>,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH net-next v2 5/5] eea: Use 2-argument strscpy()
-Date: Fri,  2 Oct 2026 11:59:23 +0200
-Message-ID: <20261002100035.863275-6-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261002100035.863275-1-andriy.shevchenko@linux.intel.com>
-References: <20261002100035.863275-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NwW9ak6U"
+Received: by mail-lr2-f33.google.com with SMTP id 38308e7fff4ca-3a87e95a73fso5239621fa.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 03:05:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790935530; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fzgVgVZrNH+1AQP8jl8zhdGyCA/mjCc1z+Xk3BhqFleratidhFxgUlecfG9RQE28oA
+         MhH/vxLCYVy1PAn22SY9K0p0+oK/91aVjesHce8lZLd7lG40v6r5XpGMBiCCHqSNaZld
+         Shdn7q1YjttF/WmYL/pv4TQDEYO5Fi0VWWj378WZAqBqrD2lj/9dxsNtd/sGXUGWWx3w
+         TarCh/Y3LXBTf+xrxK8FQ4RDA5pTnq/luBlYaD5KhHd/vpFa9IOS3UBm72226qXLikzH
+         u5m0+UFvJlqg/Vway5H9HaRmw6zBgwGxQHbgTuHjArJt6wUiYTk/m9NrPSa7079DSVkG
+         v+4Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hrEmBqIQ5U75wKjWXMmdbPNpi9eyodu4H+Zn5/tv004=;
+        fh=T7cBV5RR1Z0I9aiv8xu4h1Qxs09lDOtIOkRsBF3CCDE=;
+        b=FT5hB9XP9AbCxDh+PZnjgdByebMXvAG9xP/riP9H/Kilhxb7zLCG4et5Jac+ivsB6p
+         ThAXhe0LH0ONNI6WY8z1JeJP6Iz5Y4zV8OadMbxADBBfzYvBR6RhGB1BBXnJRRF8Dt6S
+         QMktBGHe5VqjaGDjtcbylAbMG9+98bh84C/4zbQHOfbsbnKZlvPKTCugdPOXbiTH+ALS
+         /LgyLw2Devu2UPCxUfNWzUmdleW5qYeqrvwizY0VIoVxQ3f+LVxh72lODpgSjoQIwdJX
+         Zv37dmVENqYrx+Fyf+lPVPyY7Dqae+V2kiEIhI1Z9/56yi6p9HSnX7q2KyQpP72PTk+6
+         qP0g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790935530; x=1791540330; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hrEmBqIQ5U75wKjWXMmdbPNpi9eyodu4H+Zn5/tv004=;
+        b=NwW9ak6UOQPxpFv/FmQerM5MLjLv+Ncp8wyBfFhNHr7Frmo3D5usdQAcvL/0rroVNY
+         k8YRj8mu96jsANBiMFziP+PGFl3rkflsa2oymXeweFfVPAqQRx5ZOzgRo4FOeP433MZb
+         2u8noZ13OVp2e1qYqAHlH3EOsvLAw0vGyINgYv9XzZp6b6p8cnAFA5Uqirb4MXUhrGhr
+         GaZWoE0JwWsLRbsNKwi9pPN9b47YBDzXIxAhKCOeixsdJ+MgXTFgzAobrZ4MZlnbYlO/
+         VsDZg5awe7FQliyPFAyZnpXLZEnmJvKNubOSTzu1ulwni3p9z9gq8GUgBqYXfu1pbv7/
+         1XoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790935530; x=1791540330;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hrEmBqIQ5U75wKjWXMmdbPNpi9eyodu4H+Zn5/tv004=;
+        b=pyyk2EyPIrRNyl3p4bAqFSOVJZj1KeAIAX+d1Rok+6COQOFx/st1TVbv3IOsyKNo+y
+         rQnqBjUQz4Z1lkv/v56iLav0Pv1b7D3zgdfv12U5ygv2cY+pcvV59hQJKgAYr/Xerijq
+         dP6DnolxcCqbITKnG03o1vugh4VnY1iDJ56zsdtFrKqsh3Cvs/Zgv6q9LT2vEPUPyN2Q
+         bvutykX70zGzEAgQR0/kSDkLcasfxWoSpHzV+uBsrx68aG9jPmZjdiMw+kMa1uoU3s13
+         B6kvu1GJRfbdiJjR/G+Lyw51imcJLn0cgAeHvIYW8tBkipN8IhmW3ABlpfUWNw3Tu2DC
+         yiAA==
+X-Forwarded-Encrypted: i=1; AKwUvBx73QCbhowTqQkd1VffR9PGvYR2Bu5xCW4D4da9InJmbOBSHWKdeBB6Rm8tUPQoRn2cGHM+v6s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKPn4OMhgroe3bLqSQf+0ys85+3jn5MbhS71GmkJ5iukGxbSwf0
+	opdWjtuJRBrzG8YkbWmC7Lw5Zvndp72btaXNIIE+2x90p+pPALjCnSQHAh3bm33YoMSfz+pdWP6
+	PP0yIl3wVe7S9N+UhFJy6IWYjwP1Tv0Q=
+X-Gm-Gg: AYBFou14Pkxt70CuBeFvLWniVESvumwKiR5AF71Ng3erKIs6vbHr6x0PqsnhJkWl737
+	VOcC29quuNGnjTbdDaADjCvH1JJrk3AQ6NMx3XphdmrmJexsPRP7sg8jJqpPkaJKTqUp7PknOje
+	vEM2sHbs5Rs/MMyyEJdoo4PJ80IQmk3lKhr2+PawzaosiZuSvy1LT4u3JGrItXHcBJKQEHG9siS
+	TxYXZIGKGNTP5N7bgmUPgIIUCRUYKYGBkLjsWM7K3g6jfKdJx7guhDXtfxy9nrBGYzIGN4Y/ZzF
+	3HQZPqiwdIS/4KXoJJFm55qIQKQ2otjUhCm+SIfX03VfTZHMtklbwEVkzrmh6jVn7pdVfwhHmXE
+	K1vlNNNxzDt4=
+X-Received: by 2002:a05:651c:1442:b0:3a3:42cf:c014 with SMTP id
+ 38308e7fff4ca-3a88765a8afmr6175741fa.7.1790935530006; Fri, 02 Oct 2026
+ 03:05:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260930112842.21323-2-sigefriedhyy@gmail.com> <179089747717.434549.10025971158678601177@kernel.org>
+In-Reply-To: <179089747717.434549.10025971158678601177@kernel.org>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Fri, 2 Oct 2026 19:05:20 +0900
+X-Gm-Features: AclHuK835RXya2QRfyWHcfAV1rz2yv5rXyfDJb6TRXTUTekf2P7RB2gM9v6I-4Y
+Message-ID: <CA+7S2vK-rJ7oJ89onostQbPeNq8A7rLgsd_=_D2AZ27Bg3Dizg@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 1/6] netlink: specs: rt-addr: fix the type of target-netnsid
+To: netdev-bot+sashiko@kernel.org
+Cc: ajay.kathat@microchip.com, aleksandr.loktionov@intel.com, 
+	andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev, davem@davemloft.net, 
+	dsahern@kernel.org, donald.hunter@gmail.com, edumazet@google.com, 
+	idosch@nvidia.com, jacob.e.keller@intel.com, kuba@kernel.org, 
+	johannes@sipsolutions.net, kees@kernel.org, kory.maincent@bootlin.com, 
+	kuniyu@google.com, nicolas.dichtel@6wind.com, nickgarlis@gmail.com, 
+	pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, 
+	sdf.kernel@gmail.com, vadim.fedorenko@linux.dev, willemb@google.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
+> - [Low] The commit "netlink: specs: rt-addr: fix the type of target-
+>   netnsid" fixes a bug in one specific earlier commit, but its message=E2=
+=80=A6
 
-Use 2-argument strscpy(), which is not only shorter but also provides
-an additional check that destination buffer is an array.
+The Fixes tag was dropped in v4 on purpose, this is a spec fix for
+net-next, not stable material.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/net/ethernet/alibaba/eea/eea_adminq.c  | 4 ++--
- drivers/net/ethernet/alibaba/eea/eea_ethtool.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+> - [Low] This problem wasn't introduced by this patch, but after this
+>   commit rt-addr.yaml still lists target-netnsid in no operation's=E2=80=
+=A6
 
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_adminq.c b/drivers/net/ethernet/alibaba/eea/eea_adminq.c
-index f493afbcc41b..942f1f1911af 100644
---- a/drivers/net/ethernet/alibaba/eea/eea_adminq.c
-+++ b/drivers/net/ethernet/alibaba/eea/eea_adminq.c
-@@ -512,8 +512,8 @@ void eea_adminq_config_host_info(struct eea_net *enet)
- 	cfg->pci_bdf            = cpu_to_le16(eea_pci_bdf(enet->edev));
- 	cfg->pci_domain         = cpu_to_le32(eea_pci_domain_nr(enet->edev));
- 
--	strscpy(cfg->os_ver_str, utsname()->release, sizeof(cfg->os_ver_str));
--	strscpy(cfg->isa_str, utsname()->machine, sizeof(cfg->isa_str));
-+	strscpy(cfg->os_ver_str, utsname()->release);
-+	strscpy(cfg->isa_str, utsname()->machine);
- 
- 	err = eea_adminq_exec(enet, EEA_AQ_CMD_HOST_INFO,
- 			      cfg, sizeof(*cfg), rep, sizeof(*rep), NULL);
-diff --git a/drivers/net/ethernet/alibaba/eea/eea_ethtool.c b/drivers/net/ethernet/alibaba/eea/eea_ethtool.c
-index 479779aa2dd8..15f4c7b2d898 100644
---- a/drivers/net/ethernet/alibaba/eea/eea_ethtool.c
-+++ b/drivers/net/ethernet/alibaba/eea/eea_ethtool.c
-@@ -40,8 +40,8 @@ static void eea_get_drvinfo(struct net_device *netdev,
- 	struct eea_net *enet = netdev_priv(netdev);
- 	struct eea_device *edev = enet->edev;
- 
--	strscpy(info->driver,   KBUILD_MODNAME,     sizeof(info->driver));
--	strscpy(info->bus_info, eea_pci_name(edev), sizeof(info->bus_info));
-+	strscpy(info->driver, KBUILD_MODNAME);
-+	strscpy(info->bus_info, eea_pci_name(edev));
- }
- 
- static void eea_get_ringparam(struct net_device *netdev,
--- 
-2.50.1
-
+Pre-existing and unrelated to multicast dumps, can be fixed separately.
