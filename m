@@ -1,134 +1,197 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1623E3D9020
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5338B41930F
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790929225; cv=none; b=r9Ju7369VyHrbszZh4PIz8vFEzdJIkiug/Lm+NRQo7SaDnNTyF54S5qcZ0oYCYHQCQ7AoRqU0d5/phsAoGZBog9DDbYJ2zzaKmfGDx19aP2lOtbHv6WjEWfI4mNixrc3Sz8crwSnLprUDRYmWJ6zLJuCPElqzCt943sCDTKtN74=
+	t=1790929424; cv=none; b=UYg5E/IxNXO3WJp/3CY30MzRzKc0hNMvQj2ZoxCCdyI9uRieywky8DdYVEMAMkzn11AXdOwtIWd2BjrPVVJByhl19nNxHHF/cp6bJbHpQAMoKrz3Ctuniy9fanGmIuS7At1Rzb2OOKjYLuu0qM7I0EvSf45NC5XhRqsj09DmU+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790929225; c=relaxed/simple;
-	bh=gWnu78lsDu7M9l275KxounQcaaczKCQS6knv8WFYAA8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y8vZw2Tpu35IvbuKr8JnVEA3JSHMfMbzB0TFVtcHpQZp1P6bqhGF+cBO364FE/tvjzfZNaHJNHlPBoBAAp616WlMqMK0+8QTk3dkJ4/0nTpOwKW5lX8CNU2XWO56Cd/v0Or7VeYNc/RmFhZaovFkjhFcPRF6nfSysxsdjRYiv0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCk0j/Bo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790929424; c=relaxed/simple;
+	bh=fJ3u01aHHcgk6IPnVawD1Y/lFZZj9DoX4Zon6NUmFag=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qxxiJN79DiBmmQkvXJEjXbVxvVPoHf58Jm7S5VBCiM7PhyK7QM4pWRKsTW3Q+a5YBqXGAV6xzC597bmSsNLKcOZ6pRK/9QtgBoh6YDGioF8YUuo+rztup3TEOfsILRXtbRfsbPnp5z5IaizoyyllY+k2XM1HcmGmwTz38Xk14GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--starchang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C1MPRG27; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--starchang.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCk0j/Bo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA60B1F0089A
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 08:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790929223;
-	bh=DiolHbL656M0rMTOtyq984nHU4fBgKa0w8p0YS9RAcU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=YCk0j/BoUGwGZ85uD6036Vl+y9uydYOx1Y2QVDOV01rVxfUI9sDlJc8+9u4Bw37CG
-	 CH81HQ+fCEthIu6UvKSY5q52cvrRxYg2OPURZ749HYJopKF6BgQ6x5JmDO0rSOz9n2
-	 okB+/hh/2zldjaNm1o6Lgwu0ROH94BVWZoI03WdAqJ1crOx9JUvZYr3mgDn/2s/Qy9
-	 KkN44CoGo5HS14wgOLX54L7BOn42sEODD9PWarSsxyUEe9cZsOXAAIaXR00Pg8E+Fv
-	 UqGWTHDo2lJZD3EerK2JFMt5uZOqOsr5l48J9kon3yYESSkJUG66cy/uYBKIivyGSK
-	 ABWAdP9UeihHg==
-Received: by mail-oo2-f37.google.com with SMTP id 46e09a7af769-8137b129131so5060751a34.2
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 01:20:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwgoAUutAKcsPyBA/srafo80CsDQcVu6CDtkdVVjrpBaFBUHNfPdJMnGltkIg51kldjcBfb0Ko=@vger.kernel.org
-X-Gm-Message-State: AFuF++nVeQXlck9h+5l3AlMCXwQAoQ/LBn44bIGJfbffwxqSDe4Sk6i1
-	lmjQByo2rl5rN9hcV8Dt3ef4FEma/ibV2/TedL58t/cm+3q4uo1B8tC/uDqJd1er5kNkCoIPdzz
-	LMLGVCpwIvIdUptuaZ7dBazgqkBBFVrM=
-X-Received: by 2002:a05:6820:55d6:10b0:6d7:5343:b5fd with SMTP id
- 006d021491bc7-6df34091446mr1013040eaf.44.1790929223082; Fri, 02 Oct 2026
- 01:20:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C1MPRG27"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc42a07d04aso5163179a12.1
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 01:23:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790929423; x=1791534223; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pFjbU9pSZseB8ygpaiaapqJgIpAPCinx+umBz2pZzas=;
+        b=C1MPRG27RVpzZBSK7Jr/3+k0Rim67FzHemFZAqyIqOyHktJESpV+7N5rOyj0zrqADU
+         7SjjfSC553hHXInhxhWkjZ/TfmpsMR3soQ5oM1qr3hgTqcAfwJ2lNFGXzFs146XoOwEE
+         rpftkD/mYacNB98FQXuIV/hWzGY4qx/SNTdAtLp+qhkZnzMMh+BaF/qKGj8Do1vsEONj
+         TDHUmUoH77RKnG6a0gYjEI+YfNgVC/ktx3Og72Kpue61rgz9QDcx962T8ssYdcUeMQYc
+         7+ereJDJ01i2yJb9fG32BW3706w2KB+B1bEmbsUJf1sFfdHsA83hhfFOOOjD5krfkGTD
+         T/Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790929423; x=1791534223;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pFjbU9pSZseB8ygpaiaapqJgIpAPCinx+umBz2pZzas=;
+        b=f+E+P0O9gUofoe33Olmph/NrNyaiFMXdznOuTeenLXD52V3IfJ/b4RAqbNVfQqx5n5
+         FtO8Uwfd/QbTZfa4jc0b0fNIfuB/9L8Tj+9r3p6hM4GWwUxrIZBXSUl1JeTNT5G7QGxo
+         hreh1P/UnAFTDmM1pu52jnvPHUZ11hlJ3UZ+tIb52m5MZxSOPBi9l+6OIWDkPTACjuCP
+         FB/x7l1DQRrom18RVUyRn+O7sV5U3Zr9U6tRr7kWbssBpbdinv7Sf4IoiVd+mJ2FRlq8
+         ZgrKrEfz7IWaAYNguBuUZ00oUW1Md4XmQ5eQjvfbpHPdYD64CpW1renodutJW5prpGMC
+         b2nQ==
+X-Gm-Message-State: AFuF++lpbbuGjMOZzpcCLIBq4M0IMfHFTLGJj+aucbXapJ0LoEA67XpF
+	8b7Is4XWCzitVz38y8BwB4If6ZaZRM90xkCoaqvDbGj9orQEMxBjLqPxyu89WcqBXwOeK4zn11j
+	kKBF/Yc+puln2PKu+FsUXvVrQpoSP/POWuAO+xot9Ge6WA45ymBCR+M+aaFAeZeKYSzLVom8kCc
+	I6ZGn9se0xg4J+fejKw6Ms78kzpkW9NFMi6bGdeb7pNNva6o+kpmR3
+X-Received: from pgbco13.prod.google.com ([2002:a05:6a02:34d:b0:cc9:f746:40bb])
+ (user=starchang job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:4327:b0:3d7:dfbf:7435 with SMTP id adf61e73a8af0-3e0bcef9a61mr2333431637.25.1790929422228;
+ Fri, 02 Oct 2026 01:23:42 -0700 (PDT)
+Date: Fri,  2 Oct 2026 08:23:36 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1790917676.git.zcliangcn@gmail.com> <62774f8c6cbad549d1a95f88df99ab7745d7f6b8.1790917676.git.zcliangcn@gmail.com>
-In-Reply-To: <62774f8c6cbad549d1a95f88df99ab7745d7f6b8.1790917676.git.zcliangcn@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 2 Oct 2026 10:20:10 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqWwV+8JaYjsHrWDvoSt8Ng01xs9Orv4xhRpFAvhMnD6w@mail.gmail.com>
-X-Gm-Features: AclHuK_GE1sAsvNuKlOLRAERpbySEcCE-snYtHgM_PZqpiuw-6uNdwPQVickwR0
-Message-ID: <CAL4WiiqWwV+8JaYjsHrWDvoSt8Ng01xs9Orv4xhRpFAvhMnD6w@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net: use random salt for netdev name hash to
- prevent text base leak
-To: Zhengchuan Liang <zcliangcn@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20261002082336.608201-1-starchang@google.com>
+Subject: [PATCH net] net: Fix Hole-196 vulnerability by dropping unicast
+ ARP/IP in L2 BMC
+From: Star Chang <starchang@google.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, davem@davemloft.net, linux-kernel@vger.kernel.org, 
+	wangroger@google.com, Star Chang <starchang@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 2, 2026 at 8:52=E2=80=AFAM Zhengchuan Liang <zcliangcn@gmail.co=
-m> wrote:
->
-> dev_name_hash() uses the network namespace pointer as the salt for the
-> network device name hash table. Unprivileged users can use SIOCGIFINDEX
-> to look up attacker-chosen nonexistent names. Timing these lookups
-> reveals which names share a bucket with an existing name, allowing the
-> salt to be recovered. For init_net, recovering the salt reveals the
-> kernel text base and defeats KASLR.
->
-> Use the per-network namespace random value from net_hash_mix() as the
-> salt instead. The value remains stable for the lifetime of the namespace.
-> Since all name insertions and lookups use dev_name_hash(), this only
-> changes bucket placement.
->
-> Fixes: 8387ff2577eb ("vfs: make the string hashes salt the hash")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-> ---
->  net/core/dev.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 18dc88990510..f3eca7fa2481 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -98,6 +98,7 @@
->  #include <linux/bpf.h>
->  #include <linux/bpf_trace.h>
->  #include <net/net_namespace.h>
-> +#include <net/netns/hash.h>
->  #include <net/sock.h>
->  #include <net/busy_poll.h>
->  #include <linux/rtnetlink.h>
-> @@ -193,7 +194,10 @@ static inline void dev_base_seq_inc(struct net *net)
->
->  static inline struct hlist_head *dev_name_hash(struct net *net, const ch=
-ar *name)
->  {
-> -       unsigned int hash =3D full_name_hash(net, name, strnlen(name, IFN=
-AMSIZ));
-> +       unsigned long salt =3D net_hash_mix(net);
-> +       unsigned int hash;
-> +
-> +       hash =3D full_name_hash((void *)salt, name, strnlen(name, IFNAMSI=
-Z));
->
->         return &net->dev_name_head[hash_32(hash, NETDEV_HASHBITS)];
+Wi-Fi 802.11 to 802.3 frame translation allows attackers to inject
+unicast L3 packets or ARP payloads inside GTK-encrypted L2 broadcast
+and multicast (BMC) frames (the "Hole-196" vulnerability).
 
-Thanks for your patch.
+While the `drop_unicast_in_l2_multicast` sysctl was introduced to drop
+unicast IPv4/IPv6 packets received over L2 BMC, it had several gaps:
 
-CC Linus.
+1. ARP packets were not checked in `net/ipv4/arp.c`, allowing attackers
+   to perform ARP poisoning via L2 BMC frames (`group-arp-unicast`).
+2. Enforcement lacked DHCP client (UDP port 68) exemption, which could
+   discard legitimate DHCP server responses sent via L2 broadcast.
+3. Dropped packets were silently discarded without warnings or MIB stats.
 
-It seems this patch should target net-next, local KASLR attacks are
-not a serious concern.
+Enhance `drop_unicast_in_l2_multicast` sysctl enforcement:
+- Extend sysctl checks to `net/ipv4/arp.c` (`arp_process()`) to drop
+  unsolicited ARP Replies and ARP Requests with a non-zero unicast
+  Target Hardware Address (tha) received over L2 BMC.
+- Exempt Gratuitous ARP (GARP) and RFC 5227 Address Announcements
+  (`sip == tip`) from L2 BMC unicast drop logic so they defer to the
+  `DROP_GRATUITOUS_ARP` sysctl, preserving VRRP/HSRP router failover.
+- Exempt non-fragmented DHCP client traffic (UDP dest port 68) in
+  `net/ipv4/ip_input.c` and safely reload `ip_hdr(skb)` after
+  `pskb_may_pull()` to prevent dangling pointer access.
+- Log rate-limited warnings (`pr_warn_ratelimited`) and increment MIB
+  error counters (`IPSTATS_MIB_INHDRERRORS`) for dropped frames.
 
-Your patch would allow an attacker to disclose net_hash_mix.
-Leaking net->hash_mix compromises other per-netns hash tables.
+Signed-off-by: Star Chang <starchang@google.com>
+---
+ net/ipv4/arp.c       | 29 +++++++++++++++++++++++++++++
+ net/ipv4/ip_input.c  | 27 +++++++++++++++++++++++++--
+ net/ipv6/ip6_input.c |  2 ++
+ 3 files changed, 56 insertions(+), 2 deletions(-)
 
-u32 hash_mix is too weak for full_name_hash()
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index d409f606aec0..ad23db2e2f59 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -791,6 +791,35 @@ static int arp_process(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	    (!IN_DEV_ROUTE_LOCALNET(in_dev) && ipv4_is_loopback(tip)))
+ 		goto out_free_skb;
+ 
++/*
++ * Hole-196 defense for ARP:
++ * If drop_unicast_in_l2_multicast sysctl is enabled on this interface,
++ * drop ARP Replies in L2 BMC frames, and ARP Requests in L2 BMC frames
++ * that specify a non-zero unicast Target Hardware Address (tha).
++ *
++ * Legitimate Gratuitous ARP (GARP) and RFC 5227 Address Announcements
++ * require (sip == tip) and tha matching sha (tha == sha). Only valid
++ * GARP frames are exempted so they defer to DROP_GRATUITOUS_ARP below.
++ */
++	if ((skb->pkt_type == PACKET_BROADCAST ||
++	     skb->pkt_type == PACKET_MULTICAST) &&
++	    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
++		bool is_valid_garp = (sip == tip) && tha &&
++				     !memcmp(tha, sha, dev->addr_len);
++
++		if (arp->ar_op == htons(ARPOP_REPLY) && !is_valid_garp) {
++			net_warn_ratelimited("Drop ARP Reply in L2 BMC on %s\n",
++					     dev->name);
++			goto out_free_skb;
++		}
++		if (dev->addr_len == ETH_ALEN && tha &&
++		    is_valid_ether_addr(tha) && !is_valid_garp) {
++			net_warn_ratelimited("Drop unicast THA ARP Req in L2 BMC on %s\n",
++					     dev->name);
++			goto out_free_skb;
++		}
++	}
++
+  /*
+   *	For some 802.11 wireless deployments (and possibly other networks),
+   *	there will be an ARP proxy and gratuitous ARP frames are attacks
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index 9860178752b8..f863aa293020 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -456,10 +456,33 @@ static int ip_rcv_finish_core(struct net *net,
+ 		 * this is 802.11 protecting against cross-station spoofing (the
+ 		 * so-called "hole-196" attack) so do it for both.
+ 		 */
++		/* Hole-196 defense:
++		 * Drop unicast IP packets received over L2 BMC frames.
++		 * Exempt DHCP client responses (UDP port 68).
++		 */
+ 		if (in_dev &&
+ 		    IN_DEV_ORCONF(in_dev, DROP_UNICAST_IN_L2_MULTICAST)) {
+-			drop_reason = SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST;
+-			goto drop;
++			bool is_dhcp_resp = false;
++
++			iph = ip_hdr(skb);
++			if (iph->protocol == IPPROTO_UDP && !ip_is_fragment(iph) &&
++			    pskb_may_pull(skb, iph->ihl * 4 + sizeof(struct udphdr))) {
++				const struct udphdr *uh;
++
++				iph = ip_hdr(skb);
++				uh = (const struct udphdr *)(skb_network_header(skb) +
++							    iph->ihl * 4);
++				if (uh->dest == htons(68))
++					is_dhcp_resp = true;
++			}
++
++			if (!is_dhcp_resp) {
++				net_warn_ratelimited("Drop unicast IP %pI4 in L2 BMC on %s\n",
++						     &iph->daddr, dev->name);
++				__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
++				drop_reason = SKB_DROP_REASON_UNICAST_IN_L2_MULTICAST;
++				goto drop;
++			}
+ 		}
+ 	}
+ 
+diff --git a/net/ipv6/ip6_input.c b/net/ipv6/ip6_input.c
+index 8972863c93ee..caf9811f6352 100644
+--- a/net/ipv6/ip6_input.c
++++ b/net/ipv6/ip6_input.c
+@@ -278,6 +278,8 @@ static struct sk_buff *ip6_rcv_core(struct sk_buff *skb, struct net_device *dev,
+ 	    (skb->pkt_type == PACKET_BROADCAST ||
+ 	     skb->pkt_type == PACKET_MULTICAST) &&
+ 	    READ_ONCE(idev->cnf.drop_unicast_in_l2_multicast)) {
++		net_warn_ratelimited("IPv6: Drop unicast IP %pI6c in L2 BMC on %s\n",
++				     &hdr->daddr, dev->name);
+ 		SKB_DR_SET(reason, UNICAST_IN_L2_MULTICAST);
+ 		goto err;
+ 	}
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
 
-1) What about passing NULL salt instead?
-
-net->dev_name_head is already a per-netns hash table,
-and only CAP_NET_ADMIN inside that netns can add/rename devices in it.
-
-2) I thought about widening net->hash_mix to unsigned long (get_random_long=
-())
-(but not change net_hash_mix() u32 return type to avoid side effects)
-
-But full_name_hash() skips HASH_MIX for len < 8, any 64-bit salt passed to
-full_name_hash() can be recovered quite easily.
-
-pw-bot: cr
