@@ -1,434 +1,193 @@
-Received: from mail-dy2-f12.google.com (mail-dy2-f12.google.com [74.125.229.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010027.outbound.protection.outlook.com [52.101.85.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B442730E821
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 04:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790914933; cv=none; b=f3NPoagkvvPc9y/FaxD7YfJ/X+MxrKIEtAQTy1T+6a/Txt3DbGs5Nkh0awNYCiIMAgzX/N1ANm0n2Sd0rvywd6ggwRGuZF5u4zlzMfzNv/mxua4CAC2ra4ocvq8YiQiueTAgWDYkGG6mYk9e+WD/w8Lhn252ngD7cVNo8RQv5KE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790914933; c=relaxed/simple;
-	bh=cCGtKzRan8BWBEBX1JfJ3AgQYo8AGQ9XZRDmtPnG1yY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bKfL3AEwSqMMvswdab1XUdca9sUtgLHP5I86lQRD83xI00ZbKwqZVG8CIkEVAlm/ajsJUmnlEtgg3c9JOTKeo2PJCQLTx+THzGbWrA11/oiOxV7vHffYAkKiK83itDOLUxP2Du41YQVoBbdLCWztXmow0iVzmKceAefqN/Uo2Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNMiMFIL; arc=none smtp.client-ip=74.125.229.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF5F2E3FE;
+	Fri,  2 Oct 2026 04:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790915567; cv=fail; b=GTE0sklrgbcastS3zgWfVL5/Yb7UwKj5tl4+gw/g7sFSc1kpSwMv8jge/6sxjel3Q/j1gQUzg4YS0J+STlelu6BjtEmuDPaef7KTFxA4izrky+DBZvpru9ytBkC6yVPH5CiEKg5C0prxFJzrQLkFI4PZekJ0NnY1JtBZtyNJM88=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790915567; c=relaxed/simple;
+	bh=cDqZhmt0FeRP523MNgR/0781+YQ+bqRbFVj0epfbKoY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=WcUzsOmwYwrCVGKxw0h9kCYBrB9MGa016l4Y58mWqEH/KGsgejt82x5zkihyYoXcxz7AN4GB6/k8yZJiB7mZVCMy2GKnNiWV8BKWiqLxS1uncPvqNBKh7zwfyPQ/pe4ywebSs5oJrw2ORJ/vmBwcGerWkh8+/uFbh63+RBSrwJM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=100+Kqjg; arc=fail smtp.client-ip=52.101.85.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNMiMFIL"
-Received: by mail-dy2-f12.google.com with SMTP id 5a478bee46e88-328664c2da6so6148853eec.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 21:22:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790914931; x=1791519731; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Xq7JBmYQfpiyGGj6KWk3jb5GoLIoazeQmys5Q46VZRg=;
-        b=eNMiMFILS9TRLeBm94BHfOP2/9/SyW0OJPDkYOtazkMtdYGufwgE6/O0VSWD0vBApq
-         bh7jv4TTRYkEsQNuvtMDg/Vjuyngw5sW4nR3LtJmIXYuviBvkM9GGBdE/AV8VyPyZMrJ
-         rGelIaGIoXka+wVa2mJr6J/iH2qkOGs4yY6cHzIKsf1NRfDP8cZd6cQwsF/zeD6dJxSk
-         rCiX0zvkeMy2HpNq6dBGRZ+Lf3fRw+5DSh7emeTNC49Wux86NDocQwBzaxquevPpp8P2
-         RvR8CymX+rt+M024v5lLa2z3OFHE2oucZxUmgVRXAHKsXG4jGQCfdTNB2F48JCumqkvR
-         FhoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790914931; x=1791519731;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Xq7JBmYQfpiyGGj6KWk3jb5GoLIoazeQmys5Q46VZRg=;
-        b=y2DjpjnbbzlhfMBpHJiR0z6hgQrRYLDxAQXeHits+RDRt0tCMDiRV9mwgXtTwHI21p
-         dCHxL+EXVVN/RFvh/7fCdBuyl2WTE73kWh+3GzSI6LlfM+PXkzArnvM0jHZLAovS1/+K
-         VYNnL9Wnrr9h67/oYFnDf18O3RYD4u3koLIn3v1++komuSuvzLCEgycHkblkd7XAbovk
-         8TxiZqzalaFOMOpcBsml+rYa08KX53QIr+RusoCK8T+3KJdIA2uJLIALlLe3UfSOz+Lp
-         G28dmEBno/SfBTxBqG1shVD+Up4pW8mJabz7gWVW+XArEwGBr1j8NK6he9dR5ZNe/myp
-         tKDg==
-X-Forwarded-Encrypted: i=1; AKwUvBw4bdfPH/DQDB7VcqBF294rUwyjT2Ev3Yycpj7mY1uw8LZYVUAFWpU+EswsNXrXrk960gNQZZs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK1sJeLUJl3iOQBplbn0VE0chxE6u3uzBMDgiWxF0phghM1OVlk
-	yeIIj6XQbMztCo+C0Pn9DEfPO1GmAxPl/GP9sEAehRx/4IYCZreIyNVV
-X-Gm-Gg: AYBFou0CGA1FDYI6CPW7iBUM2rtjr7t6xl7IsAMBUxxTGJae3rY8xTNLloVjRq9giik
-	9p75OPFYt3Vot0h7Nh08iMPmapbGKK3mhpn34W27tEmT1MCOfMyw5byh4O1+kEVAHqqzaAz0R4I
-	6ZM+7qu39UDC/VJE9LXlLbdJteuL0fsGkIM7D/K26gTLxlSzCa5YmPGMs45aWiNkqnOIx02OilO
-	AUtIAu+86uMCHTE9L4HdVfgDhmBYuo4f/25xQc7lZSq6AZOlPmXcaT68tgIq5LA1AsF5QBy1r45
-	8HtmgAOuOCasNoPfJZe2YjRH8PrA0djJpQY3gl+g7/2FIdhCcvYWt412oRGyWkGkAzjyYii2y6d
-	omfgH0uDZeBeVIXbB1DL5psCKkRF/nDQ0x56jQfxP/QfkotqzkeI0wedlFDvqSFH2REFDF3oWPO
-	0WE3fby0X/RXVYzyae3rueHCWwL8wqlvR6//czHOiqj0krwX2z6JG4LqUr79L836rb04ROLcWk/
-	pnKeAjXr3BZ4yvNNf+5yW73qyOZHvayro/BPpuu2uU4oGhaxerXSXfr3ODFCR8qK5GdJaeu98Kb
-	o6AzU+DDLQEIPaN4feXZe1rXIWL/19YgYGVDrZrZx/Y=
-X-Received: by 2002:a05:7300:7fa8:b0:34e:f967:8cfa with SMTP id 5a478bee46e88-34f21990e24mr2294841eec.32.1790914930420;
-        Thu, 01 Oct 2026 21:22:10 -0700 (PDT)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f15019999sm2526734eec.29.2026.10.01.21.22.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 21:22:09 -0700 (PDT)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	shuah@kernel.org
-Cc: sdf@fomichev.me,
-	ihor.solodrai@linux.dev,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH bpf-next v2] selftests/bpf: add XDP test for per-flow LRU_HASH window updates
-Date: Fri,  2 Oct 2026 04:22:01 +0000
-Message-Id: <20261002042201.3483076-1-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="100+Kqjg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FpBZs/I8wNc/DIo5CAj96sMN4HO7LIdsBF6mDz4JM4uEqDIbUjx/EgwOKrZfA0VPTxevwcab1Mmi6l2QjuS+dH2TYHN6EcAus44g5Jz7XiWvv8QiSkXSLWPvaJWjymwxI79Y/4HRcRABe+zvOPNm6ffENlXYwm5Xc+YPh4GBdfAOPzaj9P5jhM5LagVfTmlWDZtUet/QmCoXbxwyD6AccGSdVqvfv1vJ1gZp/+mYFjdCn//PBOulmqQ0SdsS4vZ75dvbmWAPs5K6Aof717vtb/hQY9Lv9zkN+u31hqauMV1XxtrGROcRUaGJRSVNn43248yD4scb9lz4FNnLvua3Mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G1xao8ztuKFwAcsb4aYNd+QXRAjOTnmrbn39DJS/Stg=;
+ b=MO/tlk/VwLvyKhQOMykB49DnA7evZGpi0QS2IcuvngNuIGWN9KsDYEltaO+1FK5BSZ05+gPu5ru4a/SQNfB4ydrIyNl5PmyoFhugftIqhq7r/s+IOoMtmfa574MU2eWRQNaL+3dgBfZYvaWHetwVTAezzj9+TVXlHZlIPKoLIKlA9Bp3P6kxtuvPyUJyvYwmBprYf+tpcbCyixqJkE7fabKn2VBVN2hn4aeDWLg+elkJQUQKiHvlmyxDhMw7UCOv7wafL7uBgJasGj3+Ouv+h53l+/HVFVPZ77rkzlg92s1Wv79lMLYUl7B4dzDaJmNt2ZBwbwa/zg/MNWxkyPj3wA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G1xao8ztuKFwAcsb4aYNd+QXRAjOTnmrbn39DJS/Stg=;
+ b=100+Kqjg6vXFsGn1S8w7M2JR0ZVfJtpjJyynLJNxPHTYSwwGnlAuEB4SUO1pZnHYdGz8KLO3jeUdZJPfvivPtZvablNyAuiQ1NLDu5pWepjIOZ+NRqJvFAsI6RpI6sxw/YVEj/t9yJgjzMXBs5Bs1C2wgO0Oq3/9Bchk64E54XM=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) by
+ SAWPR12MB999269.namprd12.prod.outlook.com (2603:10b6:806:55e::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Fri, 2 Oct
+ 2026 04:32:42 +0000
+Received: from DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1]) by DM4PR12MB6254.namprd12.prod.outlook.com
+ ([fe80::8211:9b5a:99d2:ffa1%4]) with mapi id 15.21.0451.022; Fri, 2 Oct 2026
+ 04:32:42 +0000
+Message-ID: <b7fd6cc3-1aca-440f-a87d-d0d94ae9eed3@amd.com>
+Date: Fri, 2 Oct 2026 05:32:36 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] driver core: Check for supplier requiring PM at
+ link creation
+To: Dave Jiang <dave.jiang@intel.com>, alucerop@amd.com,
+ linux-cxl@vger.kernel.org, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
+ rafael@kernel.org
+References: <20261001132023.17032-1-alucerop@amd.com>
+ <20261001132023.17032-2-alucerop@amd.com>
+ <9e8a45df-1755-495f-8e80-52c65b832dc9@intel.com>
+Content-Language: en-GB
+From: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>
+In-Reply-To: <9e8a45df-1755-495f-8e80-52c65b832dc9@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0350.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f4::12) To DM4PR12MB6254.namprd12.prod.outlook.com
+ (2603:10b6:8:a5::17)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6254:EE_|SAWPR12MB999269:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a41f920-4362-48a4-41bb-08df203e32c2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|22082099003|18002099003|6133799003|10067099003|56012099006|11063799006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	u6SuJlcC7Lzj3g6nshxpckpvS/TxlM4bwDUqsMDdWbsIbSDxqr/4VP8LXdNSbRJ2acy6++DVp9nlsZL3lSs8AByiTxcVLYJ5S2Uu/Md1coAv9d3Y4YfvmQaI4ebSZ/d+VEeb/tkyXnDPTPRvHzxn5GlfPl7j964g+vztFnZ2tcZlWSLM1O/28TXEht76mhLKF8vyU1x7ajEJ4xZtIrpDfeJo2MtOnNd12z4fkegf1tHLFIz+pL3/v+HOn0DxvW80hs3xSXF+MS5Ya829x4rVNZ9qRDRjbWZyhHicFdbpiLwHbXh/OPtJh3OO+Rc3Td05rZrUXS3poPHP3vFgAQrqMdrgQ2XmKB0UOw0mMxcDRIJu9wjPG1s4s75LXXwwi9PWyqhWnMumhRN/FszkjFjayW6BifDyX/qVeXOTERxof+LC4DqaTbETUe9Irye4U3KnTzvFpl7TrBvk8mk0qbdOiaovIBt0LA9sjfpekCaxxNjDe0YDacnrP19YC8tyMDyUjSB1B7EiTuMTAftRqQrStVJd0CjMfRfnKlq3cUQrl1ybJ5C/MX+IuIKJSyHhHOgZ3hGsT/Bt1CeOEz6bXJ+pTQdczEavapiaNho7yiiEhJmJdZo2z6zbacfg7nsgd+QZ74IocjRctsLvP/8M9safUg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6254.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(22082099003)(18002099003)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VzlOVEtQU0tMaDVwRHdKaUFqVXNNRkh3VTBneU52TUlrZSt3R3d3UmdNSFpS?=
+ =?utf-8?B?OFQyNERHRXp0LzFUTGo5cjBnSUp0L2JjbkdGb3M3N0ZwT3Q2NzVCZ3RjenVE?=
+ =?utf-8?B?OTZHSWpBK3UzN1pacVkvTG5RYmZ3ZUVDN2tpRUJaSjBrQjNPakxsNlpRbGJ2?=
+ =?utf-8?B?cGpSWWdrbFRjbmYzME9TU3UvRU9BaGFrSUY1cTFERSszTmY5ZDJqUjlrQkVt?=
+ =?utf-8?B?RE9jZkJ6SDRzY2x0ME5jUThPNGZCOWJRdEJrbmpYWUk2SW9FWUd2UndRMk01?=
+ =?utf-8?B?a0d3enJoYlZSREFNRmxTOGpsKy9EYmY5SVMvdkx0YWZOV0VBeThHdVd3eTN0?=
+ =?utf-8?B?SGtMYm5VOVo2Zi8xb1V2VVZKUWwwcFM5K3dxbDBBK3BxWnNVMFFWdFdBeEgv?=
+ =?utf-8?B?S2FQQktSZFZPcjJSRUJZRFVmWGJSTzg3OUhiZnhiWVlKUys0QU4xczMzelhS?=
+ =?utf-8?B?MjYyamdEaHBXR2pTVmxaa2x2OVpLaHJDejV0eitYOFZXaTA2ME1pdW1qRmlC?=
+ =?utf-8?B?bFRaWUVLYS9LTDc4K1VEMGJ5ckhEeVoxY1hPTVMzVlFza2p6c0VicE9WeXAx?=
+ =?utf-8?B?VXVjMFFsQUZFNHdwbVV0ZG4zN0NBTGhoRDBiTk40NHl6WFQ2bWo2ZmZrTnlW?=
+ =?utf-8?B?SWpjR1pkNUxVVW5vK2ZhRXJhVytUQlVNWC9XTjVMUW42UCtHWDloUWZ6SzRi?=
+ =?utf-8?B?WTY0b0hkdGNLNUs5M092cys4TUxQQkw5cU5sczRaSzJSajJ4MXlMNTRnS1My?=
+ =?utf-8?B?UVpPSjN1Z1VMU3Nhbkg2Z1NmNFRGd21ZWVp0SERFMnlOM3BSb2p6OHJMZUcx?=
+ =?utf-8?B?aVJRUnpxT0xEbWpaZFpidGQvdlNhaG1hczlMdytJM1RBT2Z0aFVOY3NpK3dl?=
+ =?utf-8?B?NlNZNzV5NGdNOTZuK0diSlNNUnhJcUtqcDN2Tk02NXdZUTVIc1ZWNzkvcGo0?=
+ =?utf-8?B?em9RWEVFQkhEUnVvWjhIQ0lITEtFSExubSthREU0eUcxb1lpcVZGYytYakxh?=
+ =?utf-8?B?SFJCMG1jeXcya292Szg4TGMyMGtTMG5ON2c1b29QelZwL05xaXpBRnNGc3ha?=
+ =?utf-8?B?Zmp0S2s4KzAyQjNHR2k1a28reXhMcmU3RmpmRmdXM3NHdW9YV2tzcktOV3Y1?=
+ =?utf-8?B?RVZPSFBNSS9JNXVacVo2b0U4b3duRTAyZVV3NEZpYnJhdDRYVmpMYXc4RXFX?=
+ =?utf-8?B?TVc4QjBnQjBjWi9JMHlYUWpCZHU2R1R5Um5US3ZKOU9DUXNQZWwxWWE3anEx?=
+ =?utf-8?B?b1U1aDhtSzhrUi9aL096WHVPb1dHSjB1Y01oaXBxeVA0YlRFYWU0bXhIaDVz?=
+ =?utf-8?B?YllwdG5xRExiNkZJYThPaUt5WTlnVUphaThrQ285dTZhSTVtSDRwY2REN1A1?=
+ =?utf-8?B?K24rSFlaVXBzL2FaQ1FZVUtHK2k0RnFkSStvbjdPVzAvOW0xbnBzU05ibDc0?=
+ =?utf-8?B?UzUvWjlXSlY4NFo4VzNXVk9oQkoyY2xwazFpRHVUSCs4ZlVCM1FCb1NoNUJM?=
+ =?utf-8?B?eFJXMHZBQUpLV2lBVnJQdXcyWnV0czVNVDk0Y29aWFk5TWJwZG9laUZxSlRV?=
+ =?utf-8?B?MzgvTDRWaXpobWRNMWl4ekZldEtjTSsrSEkrZHBTbk5SSXcrOGFHeVM1VC9H?=
+ =?utf-8?B?NElXTHQ5NzRDUjkyNnBEOXpFWUw0Vm5pY0JJVnhxcS9IcFJlY2diTndJdGt0?=
+ =?utf-8?B?SHd3MU8rSm9ibXJqNEsxNWNUSUMzVFFySlVmbGl2b1RNRVd2UU5LT3RXcnhF?=
+ =?utf-8?B?M205dE1Jb2F4YXZ2NDhtNmk0VmVyaElPWHZSWUpkZnFySDRlekxpdWRHSHYr?=
+ =?utf-8?B?aTliYVBlcm1uSkRhd2UyaXFmWnh0Zno1RnUxQ2YweThERGV4NVl4dWwxdExB?=
+ =?utf-8?B?OC85Rk52YlE5UStBYWpZSXdhTjUrRkRrUGRnVFpscE5OYW1hZk1BNjBMYU01?=
+ =?utf-8?B?WUhoQ0pmZWhFM3E2NTM3QkxvZm1hZ01ZN2pZZjZSdForM2VXekh5aVlKRWVy?=
+ =?utf-8?B?VUFUcXI0aWpIWCtXdUU2cW9tL1luR0tzWTJwM2U2MmYvblZpdDJwclBNZ2g1?=
+ =?utf-8?B?Q216bWpWRmh2YmdiaDF6UmxtdW55Y0w5Vyt5S3hrVGlvL0NBM1IzUCtTZmFV?=
+ =?utf-8?B?Q2ZRNWpSV1NMdzhKQWhORW1ibkZLYUJmQ3ZpS1RqNEY0RUJKQjRvdWRrUE16?=
+ =?utf-8?B?SEpMT21XZlV6cWJWblhwVk1JL0lDSG5ISjh1cUlkRkszRmlxU3NUbHpyK0Ri?=
+ =?utf-8?B?N1BzMVdKQnpKQXprUGlXWEVqSXhyZlhTZkNkR2g1RXEyN1BZbUpyeUNLd2Ns?=
+ =?utf-8?Q?WfVOq8yGQf4zzFLVKM?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a41f920-4362-48a4-41bb-08df203e32c2
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6254.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 04:32:42.2956
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UTVI1Bl9gp9hNrpVzO+13vso8TsYUY8VLjC9ebF0vmA7l80m5TP7eArNhn8+VisB9O39pTHZqV76+rsugjoxtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999269
 
-The LRU_HASH selftests (test_lru_map) exercise BPF_MAP_TYPE_LRU_HASH
-only from the syscall side. There is no coverage of an XDP program
-updating an LRU_HASH map on the data path: inserting an entry with
-BPF_NOEXIST on first sight of a flow, then updating a bounded array
-inside the map value using a runtime (modulo) index.
 
-That pattern is common in XDP flow-tracking programs and stresses two
-things worth testing together: the verifier's bounds checking of a
-value-internal array indexed by a runtime value, and per-flow key
-isolation in an LRU map driven from XDP.
+On 01/10/2026 21:31, Dave Jiang wrote:
+>
+> On 10/1/26 6:20 AM, alucerop@amd.com wrote:
+>> From: Alejandro Lucero <alucerop@amd.com>
+>>
+>> PM initialization could not be necessary for some devices.
+>>
+>> Avoid checking for supplier PM initialization if so.
+>>
+>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>> ---
+>>   drivers/base/core.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/base/core.c b/drivers/base/core.c
+>> index 4c0c373998a1..bf0513beafad 100644
+>> --- a/drivers/base/core.c
+>> +++ b/drivers/base/core.c
+>> @@ -840,7 +840,7 @@ struct device_link *device_link_add(struct device *consumer,
+>>   	 * SYNC_STATE_ONLY link, we don't check for reverse dependencies
+>>   	 * because it only affects sync_state() callbacks.
+>>   	 */
+>> -	if (!device_pm_initialized(supplier)
+>> +	if ((!device_pm_not_required(supplier) && !device_pm_initialized(supplier))
+>>   	    || (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
+>>   		  device_is_dependent(consumer, supplier))) {
+>>   		link = NULL;
+> A no PM supplier can now be linked at any point: before device_add(), while it fails, or after device_del(). Maybe replace with a helper like this?
 
-Add an XDP program that keys an LRU_HASH by the TCP/IPv4 5-tuple and
-records packet lengths into value->pkt_len[seq % AGGREGATION_WINDOW],
-plus a test_progs case driven by bpf_prog_test_run that checks:
 
- - wrap:    seq advances and the bounded array wraps, with the runtime
-            index accepted by the verifier;
- - trunc:   a short (parse-failing) packet neither inserts a new entry
-            nor mutates an existing one;
- - isolate: two distinct 5-tuples get independent entries.
+I would say you can not use a device as supplier before device_add() 
+happens for such a supplier, and if it does happen after device_del(), 
+something is wrong with the caller.
 
-Selftest only; no kernel change.
 
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
----
-v2:
- - CC the XDP / BPF-selftests maintainers and reviewers; v1 was sent to
-   the lists only and received no review.
- - Rewrite the commit message to explain the coverage gap and intent.
- - No change to the test code.
+Your suggestion is likely making the code more legible, but it does not 
+change the functionality I added. Does it? Not saying it would not help, 
+but I can not understand your comment for suggesting it which seems to 
+point to potential problems I did not see.
 
-v1: https://lore.kernel.org/netdev/20260917135433.2260048-1-anilkaushikwireless@gmail.com/
 
- .../selftests/bpf/prog_tests/xdp_lru_window.c | 168 ++++++++++++++++++
- .../selftests/bpf/progs/xdp_lru_window.c      |  81 +++++++++
- tools/testing/selftests/bpf/xdp_lru_window.h  |  28 +++
- 3 files changed, 277 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c
- create mode 100644 tools/testing/selftests/bpf/progs/xdp_lru_window.c
- create mode 100644 tools/testing/selftests/bpf/xdp_lru_window.h
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c b/tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c
-new file mode 100644
-index 000000000..55175c216
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_lru_window.c
-@@ -0,0 +1,168 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <network_helpers.h>
-+#include "xdp_lru_window.h"
-+#include "xdp_lru_window.skel.h"
-+
-+#define SRC_IP		0x0a000001
-+#define DST_IP		0x0a000002
-+#define SRC_PORT	12345
-+#define DST_PORT	80
-+#define ALT_DST_PORT	81
-+
-+static struct xdp_lru_window *skel;
-+static int prog_fd, map_fd;
-+
-+static void fill_pkt(struct ipv4_packet *pkt, __u16 dport)
-+{
-+	*pkt = pkt_v4;
-+	pkt->iph.saddr = htonl(SRC_IP);
-+	pkt->iph.daddr = htonl(DST_IP);
-+	pkt->tcp.source = htons(SRC_PORT);
-+	pkt->tcp.dest = htons(dport);
-+}
-+
-+static void fill_key(struct xdp_lru_window_key *key, __u16 dport)
-+{
-+	memset(key, 0, sizeof(*key));
-+	key->saddr = htonl(SRC_IP);
-+	key->daddr = htonl(DST_IP);
-+	key->sport = htons(SRC_PORT);
-+	key->dport = htons(dport);
-+	key->proto = IPPROTO_TCP;
-+}
-+
-+static int run_pkt(const void *data, __u32 len, int *retval)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, opts,
-+		    .data_in = data,
-+		    .data_size_in = len,
-+		    .repeat = 1,
-+	);
-+	int err;
-+
-+	err = bpf_prog_test_run_opts(prog_fd, &opts);
-+	if (!ASSERT_OK(err, "test_run"))
-+		return err;
-+	if (retval)
-+		*retval = opts.retval;
-+	return 0;
-+}
-+
-+static int inject(int n, __u16 dport)
-+{
-+	struct ipv4_packet pkt;
-+	int i, retval;
-+
-+	fill_pkt(&pkt, dport);
-+	for (i = 0; i < n; i++) {
-+		if (run_pkt(&pkt, sizeof(pkt), &retval))
-+			return -1;
-+		if (!ASSERT_EQ(retval, XDP_PASS, "retval"))
-+			return -1;
-+	}
-+	return 0;
-+}
-+
-+static void reset_map(void)
-+{
-+	struct xdp_lru_window_key key, next;
-+	int err;
-+
-+	err = bpf_map_get_next_key(map_fd, NULL, &next);
-+	while (!err) {
-+		key = next;
-+		err = bpf_map_get_next_key(map_fd, &key, &next);
-+		bpf_map_delete_elem(map_fd, &key);
-+	}
-+}
-+
-+static void test_one_and_wrap(void)
-+{
-+	struct xdp_lru_window_state st;
-+	struct xdp_lru_window_key key;
-+	int i, n;
-+
-+	reset_map();
-+	if (inject(1, DST_PORT))
-+		return;
-+	fill_key(&key, DST_PORT);
-+	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &st), "lookup"))
-+		return;
-+	ASSERT_EQ(st.seq, 1, "seq");
-+	ASSERT_EQ(st.pkt_len[0], sizeof(struct ipv4_packet), "len0");
-+
-+	n = AGGREGATION_WINDOW + 5;
-+	if (inject(n - 1, DST_PORT))
-+		return;
-+	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &st), "lookup wrap"))
-+		return;
-+	ASSERT_EQ(st.seq, n, "seq wrap");
-+	for (i = 0; i < AGGREGATION_WINDOW; i++)
-+		ASSERT_EQ(st.pkt_len[i], sizeof(struct ipv4_packet), "slot");
-+}
-+
-+static void test_trunc(void)
-+{
-+	struct xdp_lru_window_state before, after;
-+	struct xdp_lru_window_key key, next;
-+	unsigned char short_pkt[sizeof(struct ethhdr)] = {};
-+	int err, retval;
-+
-+	reset_map();
-+	err = run_pkt(short_pkt, sizeof(short_pkt), &retval);
-+	if (err)
-+		return;
-+	ASSERT_EQ(retval, XDP_PASS, "trunc retval");
-+	err = bpf_map_get_next_key(map_fd, NULL, &next);
-+	ASSERT_EQ(err, -ENOENT, "trunc no insert");
-+
-+	if (inject(1, DST_PORT))
-+		return;
-+	fill_key(&key, DST_PORT);
-+	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &before), "setup"))
-+		return;
-+	if (run_pkt(short_pkt, sizeof(short_pkt), &retval))
-+		return;
-+	ASSERT_EQ(retval, XDP_PASS, "trunc2 retval");
-+	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &after), "after"))
-+		return;
-+	ASSERT_EQ(after.seq, before.seq, "trunc no mutate");
-+}
-+
-+static void test_isolate(void)
-+{
-+	struct xdp_lru_window_state a, b;
-+	struct xdp_lru_window_key key;
-+
-+	reset_map();
-+	if (inject(2, DST_PORT) || inject(1, ALT_DST_PORT))
-+		return;
-+	fill_key(&key, DST_PORT);
-+	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &a), "flow a"))
-+		return;
-+	fill_key(&key, ALT_DST_PORT);
-+	if (!ASSERT_OK(bpf_map_lookup_elem(map_fd, &key, &b), "flow b"))
-+		return;
-+	ASSERT_EQ(a.seq, 2, "seq a");
-+	ASSERT_EQ(b.seq, 1, "seq b");
-+}
-+
-+void test_xdp_lru_window(void)
-+{
-+	skel = xdp_lru_window__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	prog_fd = bpf_program__fd(skel->progs.xdp_lru_window);
-+	map_fd = bpf_map__fd(skel->maps.flow_table);
-+
-+	if (test__start_subtest("wrap"))
-+		test_one_and_wrap();
-+	if (test__start_subtest("trunc"))
-+		test_trunc();
-+	if (test__start_subtest("isolate"))
-+		test_isolate();
-+
-+	xdp_lru_window__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/xdp_lru_window.c b/tools/testing/selftests/bpf/progs/xdp_lru_window.c
-new file mode 100644
-index 000000000..27aa1509e
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/xdp_lru_window.c
-@@ -0,0 +1,81 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <vmlinux.h>
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_endian.h>
-+#include "xdp_lru_window.h"
-+
-+#ifndef ETH_P_IP
-+#define ETH_P_IP	0x0800
-+#endif
-+
-+#ifndef EEXIST
-+#define EEXIST		17
-+#endif
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_LRU_HASH);
-+	__uint(max_entries, XDP_LRU_WINDOW_FLOWS);
-+	__type(key, struct xdp_lru_window_key);
-+	__type(value, struct xdp_lru_window_state);
-+} flow_table SEC(".maps");
-+
-+SEC("xdp")
-+int xdp_lru_window(struct xdp_md *ctx)
-+{
-+	void *data_end = (void *)(long)ctx->data_end;
-+	void *data = (void *)(long)ctx->data;
-+	struct xdp_lru_window_state init, *st;
-+	struct xdp_lru_window_key key;
-+	struct ethhdr *eth;
-+	struct iphdr *iph;
-+	struct tcphdr *th;
-+	__u32 idx, pkt_len;
-+	int err;
-+
-+	eth = data;
-+	if ((void *)(eth + 1) > data_end)
-+		return XDP_PASS;
-+	if (eth->h_proto != bpf_htons(ETH_P_IP))
-+		return XDP_PASS;
-+
-+	iph = (void *)(eth + 1);
-+	if ((void *)(iph + 1) > data_end)
-+		return XDP_PASS;
-+	if (iph->protocol != IPPROTO_TCP)
-+		return XDP_PASS;
-+
-+	th = (void *)(iph + 1);
-+	if ((void *)(th + 1) > data_end)
-+		return XDP_PASS;
-+
-+	__builtin_memset(&key, 0, sizeof(key));
-+	key.saddr = iph->saddr;
-+	key.daddr = iph->daddr;
-+	key.sport = th->source;
-+	key.dport = th->dest;
-+	key.proto = iph->protocol;
-+	pkt_len = data_end - data;
-+
-+	st = bpf_map_lookup_elem(&flow_table, &key);
-+	if (!st) {
-+		__builtin_memset(&init, 0, sizeof(init));
-+		err = bpf_map_update_elem(&flow_table, &key, &init,
-+					  BPF_NOEXIST);
-+		if (err && err != -EEXIST)
-+			return XDP_PASS;
-+		st = bpf_map_lookup_elem(&flow_table, &key);
-+		if (!st)
-+			return XDP_PASS;
-+	}
-+
-+	idx = st->seq % AGGREGATION_WINDOW;
-+	barrier_var(idx);
-+	if (idx >= AGGREGATION_WINDOW)
-+		return XDP_PASS;
-+
-+	st->pkt_len[idx] = pkt_len;
-+	st->seq++;
-+	return XDP_PASS;
-+}
-+
-+char _license[] SEC("license") = "GPL";
-diff --git a/tools/testing/selftests/bpf/xdp_lru_window.h b/tools/testing/selftests/bpf/xdp_lru_window.h
-new file mode 100644
-index 000000000..78434045c
---- /dev/null
-+++ b/tools/testing/selftests/bpf/xdp_lru_window.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __XDP_LRU_WINDOW_H
-+#define __XDP_LRU_WINDOW_H
-+
-+/*
-+ * ABI for the XDP LRU rolling-window selftest. Existing test_lru_map
-+ * coverage never enters XDP; XDP parse tests do not store a modulo
-+ * index into an LRU map value.
-+ */
-+
-+#define AGGREGATION_WINDOW	50
-+#define XDP_LRU_WINDOW_FLOWS	64
-+
-+struct xdp_lru_window_key {
-+	__be32	saddr;
-+	__be32	daddr;
-+	__be16	sport;
-+	__be16	dport;
-+	__u8	proto;
-+	__u8	pad[3];
-+};
-+
-+struct xdp_lru_window_state {
-+	__u32	seq;
-+	__u32	pkt_len[AGGREGATION_WINDOW];
-+};
-+
-+#endif /* __XDP_LRU_WINDOW_H */
--- 
-2.25.1
-
+> static bool device_link_supplier_ready(struct device *supplier)
+> {
+>        /* no PM devices never enter dpm_list, so check registration directly */
+>        if (device_pm_not_required(supplier))
+>                return device_is_registered(supplier);
+>
+>        return device_pm_initialized(supplier);
+> }
+>
+> ...
+>
+>        if (!device_link_supplier_ready(supplier) ||
+>            (!(flags & DL_FLAG_SYNC_STATE_ONLY) &&
+>             device_is_dependent(consumer, supplier))) {
+>                link = NULL;
+>                goto out;
+>        }
