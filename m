@@ -1,63 +1,63 @@
-Received: from mail-pj2-f23.google.com (mail-pj2-f23.google.com [74.125.227.151])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBAD33A9E9
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 01:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A43633E34E
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 01:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790905629; cv=none; b=RFTJgk6ZrFNC27BPr4X79oWD8t281xn7s4tU1mWMecLAAUC1D+0nIojNqeljNmjKlMYrDJgxcrXAv18OdIpw38qRc72qkFI8xpSITRw2JCXZgfzNPWC2PhbztijVSX2ZI+MyOyTvqewEU4gN15nbppIIGVvPbaDYxdfymKV8aEo=
+	t=1790905634; cv=none; b=KpK4xfbqBX9EuzDs/9iP8iMyikw7D4RpNlJsA+WZE1XFPZsEGdmbBnuOZqMqDf2ieGMCVK1mpUSEDz2ZVad5stX6GGwsqLx69VwpEDILuxCRlfschu7y7dVvV0Uwnr898LTEiE43btLJTmEBcv5bNEAuW3+H4MijeK7yU2cq1QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790905629; c=relaxed/simple;
-	bh=GaMLwgtTFGLtqk2INYorMZnw3K0LXBvesYtvWm+jlFo=;
+	s=arc-20240116; t=1790905634; c=relaxed/simple;
+	bh=Si+F8QwszeOIn9X/7uuoUtNeu6jhOSRpc0dSuUMJZi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEf583d5akSIKUGPS0dVSXg5uOPkGyMFoVbbmCFNEaXprKA+qeiuB7UBq84fuMizu26YwCoZ6WzvfFDHwlNC5A28kFHHA9B3xXX7n+8veqOYPm5MKgwiqeBOmvhgCu1kQjEj1Qt7yrVS2dIGD2s2PlyxxTne+IaP8slUAWEpnIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gyo+IOSD; arc=none smtp.client-ip=74.125.227.151
+	 MIME-Version; b=m882mA3becolRxVvdA4RISeHEjb2VScEbzSZUvHkRvCFY94Ak2MDoEiuSMoQvKsBCCVGyisvYIPyb7CtDRlXV5dFxEKhPHuYYsf5WMLjXSMzl5f6kWLZfjkp8KqxcxOP0q8D2HSPvfsHC9Q4Jqv7403gziO22uGe58rrkV2LArM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rMuc1mJW; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gyo+IOSD"
-Received: by mail-pj2-f23.google.com with SMTP id d9443c01a7336-2d747f066d8so19279465ad.1
-        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 18:47:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rMuc1mJW"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d90ba1d807so57056895ad.3
+        for <netdev@vger.kernel.org>; Thu, 01 Oct 2026 18:47:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790905627; x=1791510427; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1790905633; x=1791510433; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qInUu6Q5elqtREvYKCSrshjaCoLFeFsWCB8TcWcUQpc=;
-        b=gyo+IOSDY0dHQPuouILhmzkptlU48AgVR8NRuyaKasiWVVUeFtq1jc4vJsD8PSXT1x
-         bgf43DrKCibuMGK5FInvbW2l983UUFlYwGGFzR4TXY7XArEqfiD/+B3Pu7FCoqV/NX0Q
-         M0cosAJOEY1wrD6mw4o+A5fDIdbXhJMaCH9etrvgDiN9+WqfxCeXOpiaAvo9A748Nt2t
-         8FmMMLh6LFL+kVz+ZHJG9ac+s0Wpzq0o2DVhsUf6GVVhIB67U1rRDj6888HfI99en/N/
-         aSrmfzG+0iGpUa8lofIO8D5NUMQXAnvyQhmCNVSnq7wfSM8OtGO7nH1ZtEUhzMaQXGvY
-         TYtw==
+        bh=5knTdO8QKiMk4hOKzMIwvsIoTWuR8tgoTbzdeallV4I=;
+        b=rMuc1mJWjnssnNP31zfm2Dz3fYcWmOHJjohEhaOZuZBd1WzyGtN4FUVvz7vnSgWFsr
+         FQhdtKYu4urb2lnEqY4Kx/64oP2X7R6KKGzRKm1dkd3AkVjGeGNDKt8I67Cy3ZlTg6l5
+         hocGUzG61/3VnPSv6a2SXOKaMPzXnKaaTo9RWGFsQDN7zKck1duRXXIIJaDWQTha1LQy
+         hC7/MEbfF47qUOvqv4sQ0yWzgHBZtHVsjnswvdzeC5CbhR69FwkrT9S1YQ1jilcb0Ykn
+         LUAFEmXuQ9dB6cJlrgmlf25M5Bn/wTZcsbh1KopXvYNjbNU2vVuyni5fOYhN4xuz4s+M
+         n0jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790905627; x=1791510427;
+        d=1e100.net; s=20260707; t=1790905633; x=1791510433;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qInUu6Q5elqtREvYKCSrshjaCoLFeFsWCB8TcWcUQpc=;
-        b=xVaDIDj8MD8ea4+E1xeevwSzhkKibVsRfoSYAS+D1ayCyWy7EP/UpYUUREbRnMd7sj
-         BCRCrnPJcpOfatgCk1KYlKjWFaiv7kjxDQsVjxFYHlbZzPvpGh2w8isdAd83bQskrFXW
-         c0Gd5aTYnCTp9N9CMW63pA+wrU9/FQJxKNR56W2nOYVEpCqa+5EL2WyS65vOL5v5OrVh
-         ZoXDx+34fnTb/LVWIaOC6tftCb0ih571pojGZF29LjX0IFpkKBO4eQIvD2AM0tkzPefD
-         P3uxn1+eWonY2XHgxeCE4KCQBh9M9rC9yTo1xrWrDeESMgAAkDbDWh+Jgz4fG6AmDx2D
-         DcKg==
-X-Gm-Message-State: AFq9FYIr6GKFK9PYcJEjHtOjh2t+Orfe2Oq8+bcCAI2WTkpanT5Nlyhe
-	IecZEeKDhHqfNg1WVmzZfHvWPQp8n/XnJXV+CbCF5AYzMDInqPJwxGNIgrLHWbd+
-X-Gm-Gg: AYBFou07a40HOPDqW1+wMjXPKZSKp8wazSr75HL6QHT3IUhEhKYCi2XOVArhlp0xiRE
-	GpU2JxhU6PwEh1lStbRp84TTwaUkYgLFex6MbCVKJnveWsVlRQTCLyLEUv3X0hOmaXkiJWzafeB
-	MWLAyuvbi0Wn3PYiu7a1Ef3F2nfKifjaCGL9SNDEGFr8x3qCTsEOBUbcKxs3KWai6KIOPhUZzDL
-	pvLF1FEG8/pO4JKp21C50n3LMRvu+0Rs/OLtl+NG+PxPhIePQfSRfY8TnLeTbczlShSetX2gGkR
-	8hfVkz0sQq7BZ/7iRzM3WQ7CF3uZvZA1NFZv0UIy90Dd5UtmE3NXyFPN9OzxlnooDLxeTSu6wHX
-	pPiWlRLj3mCqqtgP/FRGvDVLgbwFXfdMESOcQw78woVOdUOEgpwe28Q8cNBeg4Psh6A/o0K6Qjp
-	rsg23/Hz46M3jq6bQXk2a9trpXE1BkHIb1Nfyh2sOpt/Xvpj6VfNs2TYTi0+ucu/s1Uo5q7laCj
-	rJPVTwcVdAzu7nvM1MG
-X-Received: by 2002:a17:903:41c9:b0:2da:fa62:4aee with SMTP id d9443c01a7336-2e499f09e2fmr8049475ad.1.1790905626983;
-        Thu, 01 Oct 2026 18:47:06 -0700 (PDT)
+        bh=5knTdO8QKiMk4hOKzMIwvsIoTWuR8tgoTbzdeallV4I=;
+        b=flMDtII6slfG/kUpH9FLw5rnov6+Tr+KacfwdNydoQvkRIIBoAleS/bdC9gFBA0qRz
+         AqYwOZY9tDbmbctv8IBuddg+5cU+IFO1tovsxY7QygcxwwuACNFRErloyMn5/Ck+VNGD
+         qsJP1zXGaxuNN4jFRpt/yGW7bTvveGHIZ4TKfSXvXkqIjAS4+rUH8mDb9xdKhVsi8t76
+         gAP/qnF30aYIBpelCtuqTYcIb0OLiRj2SLB7PVjdxaKps7sFH5vSb6oI/akvsfp/CilI
+         jFUQ1TbkjiNfP7n1huiMz2vSz4ibClp+bHScVAVtplVxbWg2mu4GAuRJ9QtgsjBEwBzc
+         YOog==
+X-Gm-Message-State: AFq9FYJkujybZY1XmkvPoXBzsIGWD9KtlmBtiO4vcYPWMzF+rLtzSybW
+	DmjB68PLckZXbGOrDD/Nnk3jC37ioIMOfNnPu2VQa2aImQh+X0FUUhYCVNi8bdCr
+X-Gm-Gg: AYBFou24nlBpZzh0z8o6DCLamxfT6Qs0n2Uhdv6PNsHmV0pFghBiGf9/Tt7rc4HKr2/
+	JaqKt8+0T5x6pJ2HqFp6EvB9R1LT/a76fsMM5gEKxMwVhMZYAT2Ney5VQTE+xxF1fVkvSa+VF3M
+	2kNoTaEr7hzGOOxnteJH1c9cZmduFCaNn9Ywh5M1K4cYlROCL1eacoweDcaKnTdhakHelT28lAH
+	QEOWSDzyOH7gdMrZQgJULyaUWecWY1S9YevR+26ArcwAVoDbWuUFDSd26vl+X1HynbydTOGeBuX
+	JW//3hFdfh4KaPNHIdcytEkE2x9Fkl8Gg6ikjd7xeZYIVqwS0AedQlNe2bnXsOpmyEVdbf6T9/e
+	5Mh26fYrQtK797qlTO8GGy55jsNsWCR7NUIseIlWx2oTDvNJG97u3OdvhBBN9d+qki/wEmWc6sl
+	3oeBeYWpWnqIJ9ml+/GI15JLc07HJaQhp8/i8fhLvReBVURebFkKQsZDgR60MDbCCEJN3x2ygQw
+	wsLFs0GQNSOLuDYr31pWA==
+X-Received: by 2002:a17:903:41c8:b0:2dd:9b53:f9ba with SMTP id d9443c01a7336-2e499f0d051mr11523125ad.1.1790905632439;
+        Thu, 01 Oct 2026 18:47:12 -0700 (PDT)
 Received: from u.. (61-222-64-201.hinet-ip.hinet.net. [61.222.64.201])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f6ceaedsm2675645ad.49.2026.10.01.18.47.02
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f6ceaedsm2675645ad.49.2026.10.01.18.47.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Oct 2026 18:47:06 -0700 (PDT)
+        Thu, 01 Oct 2026 18:47:11 -0700 (PDT)
 From: Tim JH Chen <tim770802@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -77,9 +77,9 @@ Cc: davem@davemloft.net,
 	tim.jh.chen@wnc.com.tw,
 	Chih.Hung.Huang@wnc.com.tw,
 	Tim JH Chen <tim770802@gmail.com>
-Subject: [PATCH net v6 3/4] net: wwan: t7xx: fix race between TX/RX data path and system PM suspend
-Date: Fri,  2 Oct 2026 09:46:37 +0800
-Message-ID: <20261002014638.47981-4-tim770802@gmail.com>
+Subject: [PATCH net v6 4/4] net: wwan: t7xx: complete NAPI on the not-started RX poll early return
+Date: Fri,  2 Oct 2026 09:46:38 +0800
+Message-ID: <20261002014638.47981-5-tim770802@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261002014638.47981-1-tim770802@gmail.com>
 References: <20261002014638.47981-1-tim770802@gmail.com>
@@ -91,168 +91,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Several DPMAIF data-plane contexts call pm_runtime_resume_and_get() and
-then access hardware registers. System suspend ignores the runtime PM
-reference they hold, so with ASPM L1 enabled and repeated suspend/resume
-cycles they can touch the device while the suspend callback tears it
-down, ending in a CPU soft lockup:
+t7xx_dpmaif_napi_rx_poll() has an early return taken when the RX queue is
+no longer started:
 
-  watchdog: BUG: soft lockup - CPU#N stuck for 26s! [dpmaif_tx_hw_pu]
-    __pm_runtime_resume+0x5b/0x80
-    t7xx_dpmaif_tx_hw_push_thread+0xc4 [mtk_t7xx]
+	if (!rxq->que_started) {
+		atomic_set(&rxq->rx_processing, 0);
+		pm_runtime_put_autosuspend(rxq->dpmaif_ctrl->dev);
+		dev_err(..., "Work RXQ: %d has not been started\n", rxq->index);
+		return work_done;
+	}
 
-Runtime suspend is already safe: while any of these contexts holds its PM
-reference the runtime suspend callback cannot run. Only system suspend,
-which ignores that reference, is exposed.
+work_done is 0 here, so the poll returns less than the budget without
+calling napi_complete_done(). Per __napi_poll() (net/core/dev.c) a poll
+that returns less than the budget is assumed to have completed the NAPI
+itself, so the core does not reschedule it. NAPI_STATE_SCHED is therefore
+left set and the NAPI is never polled again.
 
-Quiesce the DPMAIF data-plane contexts across system suspend:
+t7xx_dpmaif_rx_stop() clears que_started without completing the NAPI, on
+the MD_STATE_EXCEPTION teardown path as well as on system suspend, so the
+next poll takes this early return and strands NAPI_STATE_SCHED. A later
+netdev close then hangs:
 
- - Make the TX push kthread freezable (set_freezable(),
-   wait_event_freezable(), kthread_freezable_should_stop()) so the PM
-   freezer parks it before dpm_suspend() runs the device suspend
-   callbacks. kthread_freezable_should_stop() also lets a concurrent
-   kthread_stop() proceed while the thread is frozen, and a
-   freezing(current) bail-out in the DRB-ring-full retry loop keeps the
-   thread from looping there under sustained TX.
+	t7xx_ccmni_close()
+	  t7xx_ccmni_disable_napi()
+	    napi_synchronize()	<- spins on NAPI_STATE_SCHED forever
 
- - The suspend callback masks interrupts and drains the TX-done workers
-   (cancel_work_sync(); their producer irq_tx_done is masked and
-   cancel_work_sync() also blocks a self-requeue). It then calls
-   t7xx_dpmaif_rx_stop(), which clears que_started and waits for the
-   in-flight NAPI RX poll to finish, so that poll -- which writes
-   registers via t7xx_dpmaif_clr_ip_busy_sts() /
-   t7xx_dpmaif_dlq_unmask_rx_done() -- cannot run after the hardware is
-   torn down. bat_release_work is cancelled only after rx_stop(), since
-   its sole producer is that NAPI poll.
+napi_synchronize() runs with rtnl_lock held, so every subsequent rtnl
+operation blocks and the network stack wedges (a hung task, not a soft
+lockup).
 
-The data-plane workqueues are intentionally left non-freezable: marking
-them WQ_FREEZABLE would let a flush_work()/cancel_work_sync() from a
-context the freezer does not freeze (the FSM kthread, or an unbind
-holding device_lock) block until thaw_workqueues(), which can hang the
-suspend. Draining them from the suspend callback avoids that.
+Complete the NAPI on this early return so NAPI_STATE_SCHED is cleared and
+napi_synchronize() can make progress. The sleep-lock retry branch just
+below already calls napi_complete_done() before rescheduling, so only the
+not-started branch needs the fix.
 
-This covers the DPMAIF data path that produces the observed soft lockup;
-the CLDMA control path uses a different mechanism and is out of scope.
+This is a pre-existing bug, independent of the TX/RX data path vs system
+PM suspend race fixed earlier in this series. It was only reached once
+that race stopped soft-locking the CPU before the teardown could run.
 
-Tested with 500+ suspend/resume cycles, SIM registered and ASPM L1
-enabled.
-
-Fixes: 46e8f49ed7b3 ("net: wwan: t7xx: Introduce power management")
+Fixes: d642b012df70 ("net: wwan: t7xx: Add data path interface")
 Signed-off-by: Tim JH Chen <tim770802@gmail.com>
 ---
- drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c    | 24 +++++++++++++++--
- drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c | 30 ++++++++++++++++++----
- 2 files changed, 47 insertions(+), 7 deletions(-)
+ drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c
-index 7ff33c1d6ac7..b5a857e940b7 100644
---- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif.c
-@@ -410,12 +410,32 @@ static int t7xx_dpmaif_stop(struct dpmaif_ctrl *dpmaif_ctrl)
- static int t7xx_dpmaif_suspend(struct t7xx_pci_dev *t7xx_dev, void *param)
- {
- 	struct dpmaif_ctrl *dpmaif_ctrl = param;
-+	unsigned int i;
- 
-+	/* Stop new TX and mask interrupts first, so nothing re-arms the
-+	 * contexts drained below.
-+	 */
- 	t7xx_dpmaif_tx_stop(dpmaif_ctrl);
--	t7xx_dpmaif_hw_stop_all_txq(&dpmaif_ctrl->hw_info);
--	t7xx_dpmaif_hw_stop_all_rxq(&dpmaif_ctrl->hw_info);
- 	t7xx_dpmaif_disable_irq(dpmaif_ctrl);
-+
-+	/* irq_tx_done is masked now and cancel_work_sync() also blocks a
-+	 * self-requeue, so the TX-done workers can be drained here.
-+	 */
-+	for (i = 0; i < DPMAIF_TXQ_NUM; i++)
-+		cancel_work_sync(&dpmaif_ctrl->txq[i].dpmaif_tx_work);
-+
-+	/* t7xx_dpmaif_rx_stop() clears que_started and waits for the
-+	 * in-flight NAPI poll (rx_processing) to finish, so no poll issues
-+	 * MMIO after this point. It is also the sole producer of
-+	 * bat_release_work, so cancel that work only after rx_stop();
-+	 * otherwise a residual poll re-queues it and it runs against
-+	 * torn-down hardware.
-+	 */
- 	t7xx_dpmaif_rx_stop(dpmaif_ctrl);
-+	cancel_work_sync(&dpmaif_ctrl->bat_release_work);
-+
-+	t7xx_dpmaif_hw_stop_all_txq(&dpmaif_ctrl->hw_info);
-+	t7xx_dpmaif_hw_stop_all_rxq(&dpmaif_ctrl->hw_info);
- 	return 0;
- }
- 
-diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c
-index 2a405bc74312..450e030fc696 100644
---- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c
-+++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_tx.c
-@@ -22,6 +22,7 @@
- #include <linux/dma-direction.h>
- #include <linux/dma-mapping.h>
- #include <linux/err.h>
-+#include <linux/freezer.h>
- #include <linux/gfp.h>
- #include <linux/kernel.h>
- #include <linux/kthread.h>
-@@ -426,6 +427,12 @@ static void t7xx_do_tx_hw_push(struct dpmaif_ctrl *dpmaif_ctrl)
- 
- 		drb_send_cnt = t7xx_txq_burst_send_skb(txq);
- 		if (drb_send_cnt <= 0) {
-+			/* Bail out promptly on a pending freeze so the caller can
-+			 * drop its runtime-PM reference and this thread can reach
-+			 * the freeze point instead of looping here under load.
-+			 */
-+			if (freezing(current))
-+				return;
- 			usleep_range(10, 20);
- 			cond_resched();
- 			continue;
-@@ -457,19 +464,30 @@ static int t7xx_dpmaif_tx_hw_push_thread(void *arg)
- 	struct dpmaif_ctrl *dpmaif_ctrl = arg;
- 	int ret;
- 
-+	set_freezable();
-+
- 	while (!kthread_should_stop()) {
- 		if (t7xx_tx_lists_are_all_empty(dpmaif_ctrl) ||
- 		    dpmaif_ctrl->state != DPMAIF_STATE_PWRON) {
--			if (wait_event_interruptible(dpmaif_ctrl->tx_wq,
--						     (!t7xx_tx_lists_are_all_empty(dpmaif_ctrl) &&
--						     dpmaif_ctrl->state == DPMAIF_STATE_PWRON) ||
--						     kthread_should_stop()))
-+			if (wait_event_freezable(dpmaif_ctrl->tx_wq,
-+						 (!t7xx_tx_lists_are_all_empty(dpmaif_ctrl) &&
-+						  dpmaif_ctrl->state == DPMAIF_STATE_PWRON) ||
-+						 kthread_should_stop()))
- 				continue;
- 
- 			if (kthread_should_stop())
- 				break;
- 		}
- 
-+		/* Park on a pending freeze here, outside the runtime-PM and MMIO
-+		 * section below, so the PM freezer quiesces this thread before
-+		 * dpm_suspend() runs the device suspend callbacks.
-+		 * kthread_freezable_should_stop() also honours a concurrent
-+		 * kthread_stop() while the thread is frozen.
+diff --git a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+index 0e1174ee611d..6272956fe053 100644
+--- a/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
++++ b/drivers/net/wwan/t7xx/t7xx_hif_dpmaif_rx.c
+@@ -848,6 +848,12 @@ int t7xx_dpmaif_napi_rx_poll(struct napi_struct *napi, const int budget)
+ 		atomic_set(&rxq->rx_processing, 0);
+ 		pm_runtime_put_autosuspend(rxq->dpmaif_ctrl->dev);
+ 		dev_err(rxq->dpmaif_ctrl->dev, "Work RXQ: %d has not been started\n", rxq->index);
++		/* Returning work_done < budget without completing the NAPI would
++		 * leave NAPI_STATE_SCHED set, hanging a later napi_synchronize()
++		 * in t7xx_ccmni_disable_napi() (which holds rtnl_lock). Complete
++		 * it here so the queue is cleanly unscheduled after rx_stop().
 +		 */
-+		if (kthread_freezable_should_stop(NULL))
-+			break;
-+
- 		ret = pm_runtime_resume_and_get(dpmaif_ctrl->dev);
- 		if (ret < 0 && ret != -EACCES) {
- 			/* Do not exit the thread: dpmaif_ctrl->tx_thread still
-@@ -478,7 +496,9 @@ static int t7xx_dpmaif_tx_hw_push_thread(void *arg)
- 			 */
- 			dev_err_ratelimited(dpmaif_ctrl->dev,
- 					    "Failed to resume for TX push: %d\n", ret);
--			msleep_interruptible(DPMAIF_TX_RESUME_RETRY_MS);
-+			wait_event_freezable_timeout(dpmaif_ctrl->tx_wq,
-+						     kthread_should_stop(),
-+						     msecs_to_jiffies(DPMAIF_TX_RESUME_RETRY_MS));
- 			continue;
- 		}
++		napi_complete_done(napi, work_done);
+ 		return work_done;
+ 	}
  
 -- 
 2.43.0
