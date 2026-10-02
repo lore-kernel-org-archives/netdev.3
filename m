@@ -1,131 +1,148 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889544E06F4
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 14:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114BB2D0C92;
+	Fri,  2 Oct 2026 14:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790951774; cv=none; b=U9Lklno/j9CzSbSsf6EWbpgCAtbOHQ2h0xnAHkgGD5Ro7VT0QpuLQ9Pln8ZDGbrYgmDPhz6UIDgnT7N9JPy0OT60rWCwsoBq0R1PrlWiGsqaQC82zPmVGdhUdmzrRc/jyFN8BSaxm7xNZGWfQgjcd2bjbTx9Mmh7jp1exMaqU4E=
+	t=1790953202; cv=none; b=az0kzXrLst7bzUAcMB0mOA5sy8KWtOEjo3Wi4NBg7Dj99gByGvV43pph3fqUDunA1GToJ+KCuTIREwdnG1XJrKB24baa7PjG8KsGNtXial7kVCkrA442G0pX7TChBWn9YwIdu9phvxdR3MyIEY0SLTMd20s/9As4DHiZYS6KD8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790951774; c=relaxed/simple;
-	bh=zQ91ICwZjqU5P6aGDiyYlfRLUyuW9YOMBnxwHcCrIWw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHfMJEMQB8ZQvjJ6f4+v3IYYoZnkTHyK91fbuZxpNp6aHOFVlhoZSeU40nJufJSoQKHCLxP879RGHoeMKmSvz+2RYC99wYJdROCQZvdc3jlYulo3rm2LIqxNAMaatJzVhOnKhdisZv4w7akyA23rIMcY2nu6vulvGcsir/JfgLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citymesh.com; spf=pass smtp.mailfrom=citymesh.com; dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b=csMiBWrf; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citymesh.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citymesh.com
+	s=arc-20240116; t=1790953202; c=relaxed/simple;
+	bh=gPpfEYoQDXiKMurcBkxxhaoyk9+LOrizdBTSMV0u32s=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=Cig+PE8fLnrYc8Bm1ddkhGAXFPvlr9kb8bqfSp+V5NBB0cZ7Mul6r7hrGlT76YngGS54GYD71V2mI8Djp7qLkOykCTKycHc8NxemClkMitP/YIjDtflaQdhuJBfi2GeIXqtdc3H+ViRQbyssbQG9N8rWW+SO7GBGGSS0bnGN7Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=hiYO379a; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b="csMiBWrf"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7bcb94d3so58854785e9.2
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 07:36:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citymesh.com; s=google; t=1790951770; x=1791556570; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vRr2guhba+ML772UP06zlXanMDzKKDE9ikuGJMi6gS4=;
-        b=csMiBWrfJny0At18LFc/FsnrAKIvY5f82ci08BhQOWdj2bZLahhcwP/ayVPkj3i0Xe
-         iA+L9ZQjfnS+3AmhIAd9Ns+dOpzKO0Ea9/mPo/eMzo8iA3Oua/jJM3Dmr0B77aWQPny4
-         absRgQqzM9wZZ/BztWu7ndeoKg8lRyD0Ap+ulKI8ZkqTaRZ+1xmXZh2rnia4pMM39XKJ
-         9cHhDULWouL7lcPd1az60Y9kxW7Jqb/YuPChEElxKMB3uk9odGKqaMoGtpQAbWfxt7dP
-         UI5mTMPPe7wUmSMuJa04Zr+Rivo98cIOezntsVGRjOFUxs2WdRGCUdZwhQmaC0Fvfpb1
-         TRoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790951770; x=1791556570;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vRr2guhba+ML772UP06zlXanMDzKKDE9ikuGJMi6gS4=;
-        b=0fndIeEVxBkdi7ADsHwDrIB050x3zlVn0VvQqMweWVEbQ18wNu9MmAUdo4Qn4eW8f3
-         bRGMkd0sJO2SfYaN0Lz98iUaybgdC5f7NQ1fnERrS4z5qJ6+xN1tBJ7mNeF1RFwqVdGz
-         tyl4+HtDaSHkqU4DJoYtcqO7Dmsa8/mxmDmV2hwF3JQq2Vtg873bWrT+VpRRDo49nUaG
-         ygiEz87WDFGVWr+epUFKgWvEpeD4xde+gKufDy3UC+UG+RmIu/7GAC4PLwUQJIiO9rTO
-         cCnSoUi6hX+9xobsFHPkDkHd53v13wkBoWgH3nX58xh/7XMkejp3/FEykVjWXWuFicex
-         segA==
-X-Gm-Message-State: AFuF++nbXy0GHsz2Kxp/gZVCx511xOYpvBTj9k7Rq7AwfZETXt4R97Cq
-	v/hHk6rbuiYSSmP6vPwafFarfdivAO4N+jWauh44xU0BX42CXxDxjy5P/EBA1RN2S/x/QK0G1c2
-	bKw5H5Sc1hA==
-X-Gm-Gg: AYBFou0WhqyS86p1adCHqiQFYZW/5oFQk6qDUl8E0Gdnsj39gYiB6lw6pvA15xOIvJq
-	IsWBl3qMxVaH33gT202sza7ev3jD2goNwKxMO5VcvqvXiWQfN54lmV89GfmRcfc9zTDEN06KL6r
-	Q7yshSQDS2VWAVlFpZodIFkiF+GG6f6tMJelJX0WQ379WiNXtlTYbvWOjx1ZQNv29zwFUQQemxm
-	GsTZXgcf4k9pWUnftTqvxczG/WHJrojQy6Z2HiFyXOoP1fGrGqGWQIYaW7aXnH2XIRycSEDXF/K
-	sAOKWNSQHG6RflzzgLHmS+7soN/CjXsns+e41TxoseKH8sWAJ0YttQ5qFabNR7nOQmwmhEIFpek
-	x4x99sebSXnmZibA/rJXcjehD1WMClbjzvjmdZjtf1Kb7BkVp8L7oybRWkma5Fw1hn1OtD6ypdU
-	yf8lZFIolx/tuGtHr2xW8xVON5fbEiTQq4hRYnTvhX9xrmSD1nDpwU1acEeGcSlgLuok0=
-X-Received: by 2002:a05:600c:1911:b0:49c:ffab:551f with SMTP id 5b1f17b1804b1-4a0275657a1mr50439615e9.22.1790951770536;
-        Fri, 02 Oct 2026 07:36:10 -0700 (PDT)
-Received: from koen-nuc11.. ([2a09:bac0:1000:2ef::4e:6c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f67cbfesm8715315ad.28.2026.10.02.07.36.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Oct 2026 07:36:09 -0700 (PDT)
-From: Koen Vandeputte <koen.vandeputte@citymesh.com>
-To: netdev@vger.kernel.org
-Cc: quic_subashab@quicinc.com,
-	quic_stranche@quicinc.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dnlplm@gmail.com,
-	linux-kernel@vger.kernel.org,
-	Koen Vandeputte <koen.vandeputte@citymesh.com>
-Subject: [PATCH net-next 4/4] net: rmnet: optimize rx handler by replacing skb_linearize with pskb_may_pull
-Date: Fri,  2 Oct 2026 16:35:29 +0200
-Message-ID: <20261002143529.3217189-5-koen.vandeputte@citymesh.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261002143529.3217189-1-koen.vandeputte@citymesh.com>
-References: <20261002143529.3217189-1-koen.vandeputte@citymesh.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="hiYO379a"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19413A4AB8;
+	Fri,  2 Oct 2026 16:59:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1790953193; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pXn703aOIjISemvjW7SqSYgESFNqSmJXUCU165M1Fr8=;
+	b=hiYO379a2JrVAMN12K+8M4nzv4aoMDawt/E/KmtAWiumBOaJXZ39gvhfuXkRj4zeZBnmdt
+	u2P9So1KX+/VmAyvQzURenGsqL+NFRrj9JNGUsmKjx/WSGCh15gvHFnCIRKwA0GNC8tkxq
+	796xpxuzYZcJWmjnafK0pynf5N4P/+5f1HkB9s01q4APJwN+IjCSCcVyy3qhkL7uKzTc95
+	TQr9NJBdDF9BS4laG+WJiQPNqRlfHcrWluflKz528lsRy+hgCnGzSOJTTvWYsBEJ4tdmf+
+	daeBNC1XcB1+Ob0IppU2HipznxklPjF3JQYoEzMgtrzxrhCLUdRxN8TSRraZyA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Fri, 02 Oct 2026 16:59:46 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ davem@davemloft.net, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Russell King <linux@armlinux.org.uk>,
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, Jitendra Vegiraju
+ <jitendra.vegiraju@broadcom.com>, thomas.petazzoni@bootlin.com,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, Peter Robinson
+ <pbrobinson@gmail.com>, Joe Damato <joe@dama.to>
+Subject: Re: [PATCH net-next v3 1/3] net: rss: Require indir table size or
+ hash key size to support RSS
+In-Reply-To: <20261002142806.1299041-2-maxime.chevallier@bootlin.com>
+References: <20261002142806.1299041-1-maxime.chevallier@bootlin.com>
+ <20261002142806.1299041-2-maxime.chevallier@bootlin.com>
+Message-ID: <da1589545fdaf4f3c7ed3b0059366bcf@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The rmnet RX handler currently calls skb_linearize() unconditionally
-on every incoming packet.
+Hi Maxime
 
-When receiving large, hardware-aggregated frames
-(e.g., 16KB or 32KB from USB modems via qmi_wwan),
-this forces the network stack to allocate a massive
-contiguous buffer and memcpy the entire scattered payload
-out of paged memory.
+On 2.10.2026 16:28, Maxime Chevallier wrote:
+> A point can be made that devices that report a 0-size indirection table
+> and 0-length key size don't really support RSS. Let's return 
+> -EOPNOTSUPP
+> in that case, and skip these devices during DUMP requests.
+> 
+> This however also reports -ENOTSUPP for devices that only supports flow
+> hash fields ops now.
 
-This severe performance bottleneck is completely unnecessary
-because the RX handler only needs to inspect the initial
-4-byte MAP header to determine the logical endpoint
-and route the packet.
+nit: -EOPNOTSUPP
 
-Replace skb_linearize() with pskb_may_pull().
-This targeted check ensures the MAP header is safely accessible
-in the linear data area while allowing the bulky payload to
-remain untouched in paged memory fragments.
-This preserves the zero-copy architecture for aggregated frames,
-drastically reducing CPU overhead, cache thrashing,
-and memory allocations on the RX hotpath.
+> 
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  net/ethtool/ioctl.c | 6 ++++++
+>  net/ethtool/rss.c   | 7 +++++--
+>  2 files changed, 11 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+> index 27b0e2e275dc..d32b403c8d3a 100644
+> --- a/net/ethtool/ioctl.c
+> +++ b/net/ethtool/ioctl.c
+> @@ -1444,6 +1444,9 @@ static noinline_for_stack int 
+> ethtool_get_rxfh(struct net_device *dev,
+>  	if (ops->get_rxfh_key_size)
+>  		rxfh_dev.key_size = ops->get_rxfh_key_size(dev);
+> 
+> +	if (!rxfh_dev.indir_size && !rxfh_dev.key_size)
+> +		return -EOPNOTSUPP;
+> +
+>  	if (copy_from_user(&rxfh, useraddr, sizeof(rxfh)))
+>  		return -EFAULT;
+>  	user_indir_size = rxfh.indir_size;
+> @@ -1554,6 +1557,9 @@ static noinline_for_stack int 
+> ethtool_set_rxfh(struct net_device *dev,
+>  	if (ops->get_rxfh_key_size)
+>  		dev_key_size = ops->get_rxfh_key_size(dev);
+> 
+> +	if (!dev_indir_size && !dev_key_size)
+> +		return -EOPNOTSUPP;
+> +
+>  	if (copy_from_user(&rxfh, useraddr, sizeof(rxfh)))
+>  		return -EFAULT;
+> 
+> diff --git a/net/ethtool/rss.c b/net/ethtool/rss.c
+> index d4a1a4724b67..cb9bead0cedd 100644
+> --- a/net/ethtool/rss.c
+> +++ b/net/ethtool/rss.c
+> @@ -129,6 +129,9 @@ rss_get_data_alloc(struct net_device *dev, struct 
+> rss_reply_data *data)
+>  	if (ops->get_rxfh_key_size)
+>  		data->hkey_size = ops->get_rxfh_key_size(dev);
+> 
+> +	if (!data->indir_size && !data->hkey_size)
+> +		return -EOPNOTSUPP;
+> +
+>  	indir_bytes = data->indir_size * sizeof(u32);
+>  	total_size = indir_bytes + data->hkey_size;
+>  	rss_config = kzalloc(total_size, GFP_KERNEL);
+> @@ -449,7 +452,7 @@ rss_dump_one_dev(struct sk_buff *skb, struct 
+> netlink_callback *cb,
+> 
+>  	if (!ctx->ctx_idx) {
+>  		ret = rss_dump_one_ctx(skb, cb, dev, 0);
+> -		if (ret)
+> +		if (ret && ret != -EOPNOTSUPP)
+>  			return ret;
+>  		ctx->ctx_idx++;
+>  	}
+> @@ -457,7 +460,7 @@ rss_dump_one_dev(struct sk_buff *skb, struct 
+> netlink_callback *cb,
+>  	for (; xa_find(&dev->ethtool->rss_ctx, &ctx->ctx_idx,
+>  		       ULONG_MAX, XA_PRESENT); ctx->ctx_idx++) {
+>  		ret = rss_dump_one_ctx(skb, cb, dev, ctx->ctx_idx);
+> -		if (ret)
+> +		if (ret && ret != -EOPNOTSUPP)
+>  			return ret;
+>  	}
+>  	ctx->ctx_idx = ctx->start_ctx;
 
-On a slower embedded board, this improves throughput by ~10%.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-Signed-off-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
----
- drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
-index 95c3e3934fd3..a2379df69a6d 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
-@@ -217,7 +217,7 @@ rx_handler_result_t rmnet_rx_handler(struct sk_buff **pskb)
- 	if (!skb)
- 		goto done;
- 
--	if (skb_linearize(skb)) {
-+	if (!pskb_may_pull(skb, sizeof(struct rmnet_map_header))) {
- 		kfree_skb(skb);
- 		goto done;
- 	}
--- 
-2.43.0
-
+Thanks,
+Nicolai
