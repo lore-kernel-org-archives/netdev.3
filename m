@@ -1,66 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpcmd01-sp1.aruba.it (smtpcmd01-sp1.aruba.it [62.149.158.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBC61624D5;
-	Fri,  2 Oct 2026 06:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECE134D382
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 07:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790924373; cv=none; b=YoSMK+DKg7yLJlOLFnrCjcjJU6K6Dym8hLp2udPmoqwzc6Tty+DCpAZNUlT2EK3SeNBEfxReGKVIDmFSTWVwfFXNfeUcj2o7qrtqV/SSuvEkWM44NYrvqvlxPdBLsyzQ7P5ktt1Az6n4z6MF7ID13DMqpaSWmi0b2+64RjNXO+U=
+	t=1790924836; cv=none; b=LxUk9kGi5hPbcS9eySEs6Ip0XdAxdDTaCRD1sbide2i96sIWYVvBHKnpc83Rw5vVZtJ1XFYmPopl6m3D7EI4iFK8P57rB7QHotkfWQROxipSneOqOyD6pzcGAbearrVYeXkYFXRa3ZJJjwDfH829QLe+lBkPEQx4suplu/CXgkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790924373; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=r/OWe5v0IMvzEi4nhTSh464hBo2T00v8mKkhG2Ic0Mc3DF/tT7xaxHMZVbnSfQKnvYZvknIyTNTsmJtyBHBMtcYiu7WHOtgyNuYdmQjM5qeu3tg/LZGwljjDC4rSFa7vliEftKrfPsy4y8KWz/HS3WW8NzBMenUP7grgg3MQeMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jzVSydex; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790924836; c=relaxed/simple;
+	bh=8Kq1JLz5JD+AYs8jTUJp1zVK8kB22uq7gMAKi38hWdg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PqM/ZhZyL17APiP9gJ+xUSm35EGcnhT4pKyIzgjn34ehEWMQZrWUY5K5TV2Cu0Ji7V/6bAAgtZe/WD+qLU3RUd4sjXa9MS/x0n8ijjfEpmcxFIaIdSRH7YLcirZQYSCos2nYZX0uHUTH6sa+YScf7lhZ/coHEEVNSdZGJKTzOBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=V5dV7XCD; arc=none smtp.client-ip=62.149.158.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jzVSydex"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE3D1F000FF;
-	Fri,  2 Oct 2026 06:59:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790924372;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jzVSydexYw512Ot8QZYmZKAqI+l40yeJlmwSGSSnP/qMrLa7AwwVLql9bNmFpZn3o
-	 2eg2qGb0Tq8wbKnqLfzPy/nocmutm5GcEwKiqAJkxpCbBXyy3XrsIMrBD0X+lacIvm
-	 DWOL4bi5ppA0qfeJOeohO603cMAZNhEvnlQXuFI1nXyP20jbeKG/h8PiTB/44Hffl0
-	 +bzzX3DilEmuZ/AVHPMHX2cdt+1PQpbhhT/UYl3l3JTBsdX0MXkHoKYQK7+B0v+4eS
-	 vAd7pvUQKD+EhN0Dj9dOSoGk0cO47hJzpIfxUCDosgXaa/1gKIZmv0FpUumibI0VF5
-	 K0VLO8IfFvJ5Q==
-From: netdev-bot+sinfo@kernel.org
-To: Zhengchuan Liang <zcliangcn@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 0/1] net: netdev name hash leaks kernel text base
-Date: Fri, 02 Oct 2026 06:59:31 +0000
-Message-ID: <179092437135.1402591.17012333474783660749@kernel.org>
-In-Reply-To: <cover.1790917676.git.zcliangcn@gmail.com>
-References: <cover.1790917676.git.zcliangcn@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="V5dV7XCD"
+Received: from [192.168.0.186] ([101.57.122.26])
+	by Aruba SMTP with ESMTPSA
+	id CXJLxfVaxXmotCXJMx3D2Z; Fri, 02 Oct 2026 09:04:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1790924645; bh=8Kq1JLz5JD+AYs8jTUJp1zVK8kB22uq7gMAKi38hWdg=;
+	h=Date:MIME-Version:Subject:To:From:Content-Type;
+	b=V5dV7XCDlkFhDc6EhQHPfuVyMH/Jtda4rLCustGjSPtW/O/jTrpav1Hj9t6AHU/5p
+	 YxVeHkZOrh72hei1m2ZDayMOjZhCtwwmQ4crjCA0Zd9wj+GOx7YVuCp5mTXukU/Ikb
+	 T89iBjQMpxO1F6gckuME/qbBGFt+pcdzsXiTYRNDI+jwMbrAcH9gApxU7DezA77J9E
+	 AmhwjnR1W2IxNctTxZjiXaSxVdc/v19jiFUqGATsouduNCxvvVNeJGgi5HyKYCvXzg
+	 dOSVpKuy9QWcyLzOLOkZs8nlH/G33Pnr/EwmcFyn1syvAqayCxGwECMwU17SYWosMu
+	 BzY4rxLIQ9qMA==
+Message-ID: <b567acf8-c3e3-4b51-99a8-058ab42f3026@enneenne.com>
+Date: Fri, 2 Oct 2026 09:04:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
+ pps_get_ts()
+Content-Language: en-US
+To: Miroslav Lichvar <mlichvar@redhat.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20260829210041.40649-1-dwmw2@infradead.org>
+ <20260829210041.40649-4-dwmw2@infradead.org>
+ <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
+ <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
+ <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
+ <ar5cq0vslvQ00Pek@localhost>
+From: Rodolfo Giometti <giometti@enneenne.com>
+In-Reply-To: <ar5cq0vslvQ00Pek@localhost>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfLVksAyqsJ4qsACPeEYUOoad1jqeDXmmCGhR1HeGvNfx1iqpK02OcibkwQHzfCBiX4QCOVUiKf7OAv9OHCBxU9zLOEOqAB0ALM+4zLJ6cqgMQDC11Z9J
+ 7sw8tLQ/Yt+F2w8CsZZqVrxIFW+N4X0bfuqPzF7iHRHlaJKGsEdG83hmqw/P+8PAa6onzIWHvaVIaZ+HHN4e08SgN5aNIS6HdQnAZE3jarAb4JcKJYblt9e6
+ XgoB2bTkxu0389WWxo+zYojBXAWmp+hLYUZinba9OZ5XqJS5G0ciaixwJlSCiPqkTH89xqjGdP1sClP+ke7mNCFyRKYQz0d4WxXyuFLdF8WJg80YfxfgJlzJ
+ w2knqCeHPqIPZ+mnlAnmk2H6UmH+DtBICEAFvEHDHheBFFBz1i+rWjtCVtWG9Lje1zS2xre+CoiG9TL8Ec/jw1JlW7Xg4G/q6fgAfbSN0P2SeYT4R/hHmVWb
+ tJwoPkPdMGj/odu2lGJjrjI1m1KAzWq4NIUNzaHtgw5Q8iZX8Wscn58dG0Af5jlcC9FXpixJXcY3vd6Vc6Ar5ekI5r9zIOPFrodBIfP4QJ0Iv9h539RWwdNt
+ 6C2Qrvuom0I8WJFG3sybSLFp
 
-Hi!
+On 01/10/2026 15:14, Miroslav Lichvar wrote:
+> On Mon, Sep 28, 2026 at 09:58:02AM +0200, Rodolfo Giometti wrote:
+>> On Sat, 2026-09-26 at 21:38 +0100, David Woodhouse wrote:
+>>> So yes, the specific code path you're looking at *does* get slightly
+>>> longer (50ns to the counter read instead of 30ns).
+>> [...]
+>>> However, they are *entirely* in the noise, as there's about 600 ns of
+>>> hardware and 2-4 *microseconds* of software latency before we even get
+>>> there.
+>>
+>> Thanks for measuring it, and on real hardware with a real edge. That
+>> answers my concern: ~20 ns of constant cost against microseconds of
+>> latency upstream of the handler is not something PPS can see, and
+>> trading it for the removal of a non-constant error is the right
+>> trade.
+> 
+> FWIW, there are some polling versions of the pps-gpio driver (out of
+> tree), which provide much more stable measurements by trading
+> interrupts for higher CPU use and where this additional delay might be
+> visible.
+>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+If polling gives that much better stability, I'd be glad to have it in
+drivers/pps/clients, as a mode of pps-gpio or as a client of its own.
+Its timestamping needs would then be part of the discussion about the
+timestamping interface started in the 2/4 thread.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Do you see the extra delay there as a shift of the offset or as more
+jitter?
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Ciao,
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Rodolfo
+
+-- 
+GNU/Linux Solutions                  e-mail: giometti@enneenne.com
+Linux Device Driver                          giometti@linux.it
+Embedded Systems                     phone:  +39 349 2432127
+UNIX programming
