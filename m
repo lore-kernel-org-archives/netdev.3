@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0715041B8C7
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EEA3F58C1
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 20:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790971403; cv=none; b=ehE/Mc3iAItg6Qx7bGrNMmKfV6m7nyeaBullctFtej3kKSNEOx7b7KwBAflBRwIZqB8BLJwwYTOB+U/cV72jJbFZmrHLR7f2IS2Ef08Fuzpdk6VBrUS5Atft374x07e+gq1yr9DE1JuE4+4nSMmKHXyR5Vq/HAOtDVJGaM6zmTo=
+	t=1790971404; cv=none; b=FrRtFGRiioWnIxbbnw2iBOmlkH9EpqB1dAY3lynNrk57GpVHSqle1+Wf8/XMapK+fjeEMboeR9CF65A8qYHycJnjJuHrFMgZpGf7o2lyDvmH8v1asUGNfcsaMjmjq1LXHj2PcLTtcr//9ZijQ6IwzVFQsmNRT523j9LfMZlhIRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790971403; c=relaxed/simple;
-	bh=9N4uXc55oTSBP7+m3XEcdVOf6NU801rZ0252eEcQPX8=;
+	s=arc-20240116; t=1790971404; c=relaxed/simple;
+	bh=Z6tK4dNj1gKeRySmC3kmEtZcZDJ9ZK8kHuCVEEmIqAM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZHiOJtL7lbCLbNxoy0wz/8LiyC6w9lpduu22M+0Uhmgs4Ahe0N1v2fnDnagijcnpcBlqY+u9gDkajT66LlWY9867KPxKRDe+dX1JoYHYa1CfJIJdmFhXlSo1VEESQkxGEQKaKY58QdWkEPcZK8tgxAPakl9J01PuoQ4UHwoO06Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X76LODGm; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=NDj2Q8N+EYCr+T5V8ZVDX2pSAzpKkkETy7zWFnn+/NvbydECU8wUCRmpaRtDtRFY7aW504DhDaZB7kI0d8pFJmKhugfyI6gd0aBLMcvKx6yx167vDgPzNr7HDl7zJ0pvcVNpVjH0c2cAvif20QiahDueYOSRg9B0emR0mm+P+C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZauZx9AC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X76LODGm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C371F00893;
-	Fri,  2 Oct 2026 20:03:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZauZx9AC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9171F000FF;
+	Fri,  2 Oct 2026 20:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790971401;
-	bh=c8dMNb0DeIZJ2iZVnGzCJALVllV+FqyDskqryk4KDe0=;
+	s=k20260515; t=1790971403;
+	bh=LEhmULMl6hpe915xI8ExlF5rYbX1B5bbLPpaL2b4dKE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=X76LODGmfPLCM1sz2FShE6Va2rnxprIsKfwdaND6iowHceaNSmRfN/f9xHQ+aMBnz
-	 bJ0GkDq8fmWcRKo/VybMkHNEvtMx+fDDlBCTWpv2s9PH9BX50zfUvrxIYFp/jusa7Q
-	 Zc3hqdJ2vbB2XmMlLH0Se0/ofHgLkDuu5haIJaVkOwI3MF+Fgk5ve58yWpNbozwmO8
-	 cXaFFDFXHz4huLjfcKb+5b50BPtJSUu0p1nLbz1Rmil+Fx0iX3oHtqK4CkAGjv5UDX
-	 /X1lrYmlwr9sx684gXc7R5ntf5VeRKQf5pMeqRA+BRREBl3PeUjCAwhRY7DWgZQmOw
-	 kw2zpE7a4x7EQ==
-Subject: Re: [PATCH net-next 04/10] ice: increase OICR interrupt moderation
- rate to 20K interrupts/sec
+	b=ZauZx9ACtqEbUZGF5nizG1NUj2mtxakILOnohRaFjVuw0fgTL7OYK54CQb1XyNWzY
+	 P/lvWrQjEDe7GpduDXX94sCsfd2lKH6psPD8iPILFZ+ooELa10EXmRcGCQy7b8WOBW
+	 qQ/Mrz/UVtJ3zI3kZqiuqEyhb5dQSr56o8lTy0yI/ILeRgnpXcItDjmfkZIwGRzd5W
+	 TwIKkI6ieOaHEM6zWvtxYVY4Zn76QNRQ02dksCv82LhB2YgTE/AOIqHtThZMAl1uCm
+	 4Wdo/bRJAsQrEf0KADN7V2KkJzGSsn8WzRvKss88tvq7UPuSykqOSKoPgZ75Am8hUr
+	 zMpDYS0UeHE4g==
+Subject: Re: [PATCH net-next 05/10] ice: use inline helpers instead of
+ memcmp() for IPv6 mask checks in ice_ethtool_fdir
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -36,10 +36,10 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  aleksandr.loktionov@intel.com, marcin.szycik@intel.com,
  jacob.e.keller@intel.com, przemyslaw.korba@intel.com, xiongwm2026@163.com,
  ynorov@nvidia.com, horms@kernel.org
-Date: Fri, 02 Oct 2026 20:03:20 +0000
-Message-ID: <179097140029.434549.3609808182599344490@kernel.org>
-In-Reply-To: <20260929224153.1455466-5-anthony.l.nguyen@intel.com>
-References: <20260929224153.1455466-5-anthony.l.nguyen@intel.com>
+Date: Fri, 02 Oct 2026 20:03:21 +0000
+Message-ID: <179097140192.434549.13219476450847741438@kernel.org>
+In-Reply-To: <20260929224153.1455466-6-anthony.l.nguyen@intel.com>
+References: <20260929224153.1455466-6-anthony.l.nguyen@intel.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,44 +56,39 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] This patch removes the only user of ICE_ITR_8K (the OICR ITR
-  write in ice_req_irq_msix_misc(),…
+- [Low] The commit message does not match the code.
 
 --
 
-ice: increase OICR interrupt moderation rate to 20K interrupts/sec
+ice: use inline helpers instead of memcmp() for IPv6 mask checks in ice_ethtool_fdir
 
-This commit raises the OICR interrupt throttle rate in
-ice_req_irq_msix_misc() from 8K interrupts per second to 20K.
-The goal is lower latency for VF mailbox messages and Tx timestamp
-handling.
+This commit removes the static full_ipv6_addr_mask and zero_ipv6_addr_mask
+structs and the memcmp() calls that used them. They are replaced by
+ipv6_addr_any() and a new ice_ipv6_mask_full() helper. The mask checks in
+ice_set_fdir_ip6_seg() and ice_set_fdir_ip6_usr_seg() are converted.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index 707c7431b91a6..73f69d453542b 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -3428,7 +3428,7 @@ static int ice_req_irq_msix_misc(struct ice_pf *pf)
->  		     ((pf->ll_ts_irq.index + pf_intr_start_offset) &
->  		      PFINT_SB_CTL_MSIX_INDX_M) | PFINT_SB_CTL_CAUSE_ENA_M);
->  	wr32(hw, GLINT_ITR(ICE_RX_ITR, pf->oicr_irq.index),
-> -	     ITR_REG_ALIGN(ICE_ITR_8K) >> ICE_ITR_GRAN_S);
-> +	     ITR_REG_ALIGN(ICE_ITR_20K) >> ICE_ITR_GRAN_S);
+> ice: use inline helpers instead of memcmp() for IPv6 mask checks in ice_ethtool_fdir
+
+[ ... ]
+
+> Replace static full_ipv6_addr_mask / zero_ipv6_addr_mask structs
+> and the associated memcmp() calls in ice_ethtool_fdir.c with the
+> kernel-provided ipv6_addr_any() helper and a new ice_ipv6_mask_full()
+> inline, reducing boilerplate and making intent clearer.
 
 [Severity: Low]
-This isn't a bug, but this change removes the last user of ICE_ITR_8K.
-After this patch the only remaining match for it under
-drivers/net/ethernet/intel/ is the definition in
-drivers/net/ethernet/intel/ice/ice_txrx.h:
+Should the subject and body say ice_ethtool_ntuple instead of
+ice_ethtool_fdir? There is no ice_ethtool_fdir.c in
+drivers/net/ethernet/intel/ice/, either before or after this patch. The file
+this patch changes is ice_ethtool_ntuple.c.
 
-#define ICE_ITR_8K	124
-#define ICE_ITR_20K	50
+The body also calls ice_ipv6_mask_full() an inline, but the patch declares
+it without the inline keyword:
 
-Should the now unused ICE_ITR_8K define be removed, either in this patch
-or in a follow-up?
+    +static bool ice_ipv6_mask_full(const __be32 *a)
 
->  
->  	ice_flush(hw);
->  	ice_irq_dynamic_ena(hw, NULL, NULL);
+Could the description drop the word "inline", or could the helper be marked
+static inline?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929224153.1455466-1-anthony.l.nguyen%40intel.com
