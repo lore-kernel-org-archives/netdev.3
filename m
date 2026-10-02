@@ -1,175 +1,230 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B831D3E1686
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 18:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EE6223328;
+	Fri,  2 Oct 2026 19:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790967315; cv=none; b=EwoN5VnA3vRJQethgrvZvAJu15LdwgZRwjfzks1eWJutASff1pafbACPMcT3V9k79BAcrPGsRIIQCFgyiy6xMFnxTxSMDQwqxyi0HTO/WTw1uTUObUUAUHCZxq3lNlB2xikrUHBX7EnIYonB5LE007p5d2mxf2PquTPVNBnKnG4=
+	t=1790967634; cv=none; b=j8wrQ2B2Qr8rDztEHn+RPxt01QwHSTDB4JCkRBnCutA2rsadIt7px0iwOJs0F39M9Fa13cmRKOLKguFHfJOEZXdEIztqSQDASDg87TTBmJ5GfcM9+rkScUb7QTWNdB5kR1D0I/nUB+Z6+c/cL59G4RlTI5oliyiF3F/Kj9vUxAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790967315; c=relaxed/simple;
-	bh=mPs5qxkCHg3wiz/pK9msxPHT0NqxNwXOAvTH/bRnWiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=arWBnEDpvL6Q7cZgWkTE/lNQtg3F2PhpMaeCIvhpJC0Y6JkpDaduuz9b4t7joJEU5HSI9Fmw0TDTPj6fs0AzvqPAm+IauHG/5MGRkQ9MQwyXKZU1J5NLgnRI1W0aVtnFc3bsFpIPO2FH7DnAUTTT+VF75m6jkdbGVQkYKnZodAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3mtGJVY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1790967634; c=relaxed/simple;
+	bh=PEbJLvy7CrYN1hf9iYQ+ysoXfJ8bNcfDcQxuv4rB2lg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yz3XI57f7p8zsGrD+Xu4G9CxjXyrvCkOeyrZL3yffQBSQqQD2zsOStEepnsC/KE8m2fM4Ivneilp5vs1+n3PvnfaQeBrKogXLc/3wng2f9ygHHTkXlQyolhGuazbENL29u44eD9Krwnge99krZb+autawRW+aTil1dqJw6ppxkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxZ782g1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3mtGJVY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 278A41F000FF;
-	Fri,  2 Oct 2026 18:55:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxZ782g1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01321F000FF;
+	Fri,  2 Oct 2026 19:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790967313;
-	bh=F4vxVglJlKjH+MXBSBhFsnNx99sDGCECEmQFJK1/XwY=;
+	s=k20260515; t=1790967633;
+	bh=Gcl/f7moFApWo3jqJXdkRteP30YDcjxwYvzQVuzmbj4=;
 	h=From:To:Cc:Subject:Date;
-	b=l3mtGJVYgT6XvlVEemtx6GVj7U1OCZqpkmwxCYhhbVijABNxsA7q5e3Rd0C0nUeAQ
-	 0M5tvLPQMAX84V8SQm1bDUQ+5H3rBZ2EEJKh1IE8GQujY9tS2EnXH9REz3Lecw7LEI
-	 j8UOUFwCKjZ8dtZHOGYjskHeh/vh//kBBTHqLej88yr+23n1FD8Y1mtHlLPK+GjMsU
-	 WKVr2ZtxHvn2rqKo6JUHKz4jddWjJ8SW52+h3i7sGKeMjDQDo4AJZPLdUOIaj1qbBz
-	 HBs5DYfxjTAu+ewg9cAoOMkcU6Ge4l/MKpTr9iqwZs9z5ZXUPN/iioJSv9HTvneOA0
-	 2VQ3X7SaboEOw==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
+	b=YxZ782g1CNQTsuUl9y3aigokBAb+oTzvb60oKfr9yAjE4mX7SFOmKq4MYxZOh4e9W
+	 XVf9EzYxllCIsiSKqGctvl7kBgkFuey+xsOpzy8vcO2ibO5m32HmdT1M7R35jJR37e
+	 w/Oba24+G+rSeVoESdLh8XsIgozwQGiTYb7a3E7XHNcrgDK5cylrWnpTOecgeJwP/P
+	 DwgeQ/q6eTHXaXu5LJ+NHeeDtRtY8ub0BgB9Y099dw80D7KyPUdlslLBl8D+wsedPa
+	 g1Kl5Y0wZrVCd9VkUdwRQibtxtJty4wK/t+s1I2SthgksK+ehtF+s2OquVE/eaOM9k
+	 Zt4/aq5PlJlIw==
+From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
+To: Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
 	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net-next] net: remove IPX raw 802.3 detection from eth_type_trans()
-Date: Fri,  2 Oct 2026 20:55:09 +0200
-Message-ID: <20261002185509.17226-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	bpf@vger.kernel.org,
+	io-uring@vger.kernel.org
+Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	David Wei <dw@davidwei.uk>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mina Almasry <almasrymina@google.com>
+Subject: [RFC net-next 00/15] xsk: Zero copy through page-pool memory providers
+Date: Fri,  2 Oct 2026 21:00:01 +0200
+Message-ID: <20261002190018.696925-1-bjorn@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-eth_type_trans() and vlan_set_encap_proto() still carry a "magic hack"
-to spot Novell raw 802.3 frames (IPX directly over 802.3, without
-an 802.2 LLC header) by looking for 0xFFFF in the first two bytes
-of the payload, and report them as ETH_P_802_3.
+Hi!
 
-IPX was removed in commit 7a2e838d28cf ("staging: ipx: delete it
-from the tree") and there is no in-kernel packet handler for
-ETH_P_802_3 on the Ethernet receive path anymore.
+Here's an RFC for you all to enjoy with your favorite Friday
+$BEVERAGE.
 
-Simply classify all frames using a length field as ETH_P_802_2,
-which is what the remaining LLC users (STP, GARP, SNAP) register for.
+AF_XDP zero copy needs a second receive allocator in every driver.
+The driver takes xdp_buff_xsk objects from the XSK buffer pool beside
+its page_pool path and owns their lifetime. Drivers built around
+page_pool and the queue management API, which already support devmem
+and io_uring zero-copy receive, have to duplicate their receive path.
 
-This removes a skb_header_pointer() call (and the skb->dev scratch
-trick used to avoid a stack canary) from eth_type_trans(), and lets
-skb_vlan_untag() only pull VLAN_HLEN bytes, as the extra two bytes
-were only needed for this check since commit 55eff0eb7460
-("net: Fix potential wrong skb->protocol in skb_vlan_untag()").
+This series makes UMEM a page-pool memory provider instead. Each
+aligned 4 KiB chunk is a NET_IOV_XSK net_iov. Binding a zero-copy
+socket installs the provider on the queue through the queue
+management API. The driver keeps its page_pool allocation, DMA sync,
+recycling and refill code. The provider consumes FILL, drops invalid
+and repeated addresses, and owns RX need-wakeup.
 
-Note that such frames are now reported to AF_PACKET, tc, BPF and
-nftables with skb->protocol == ETH_P_802_2 instead of ETH_P_802_3.
+An XSKMAP redirect publishes the UMEM address when every buffer of the
+frame belongs to the socket's provider. XDP_PASS and other redirect
+targets copy into page-backed memory first. TX is unchanged; drivers
+read socket TX descriptors directly.
 
-$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-add/remove: 0/0 grow/shrink: 2/5 up/down: 33/-187 (-154)
-Function                                     old     new   delta
-skb_shift                                   1736    1768     +32
-eth_type_trans.cold                           45      46      +1
-skb_vlan_untag                               690     678     -12
-__skb_vlan_pop                               489     477     -12
-nf_flow_encap_pop                            462     449     -13
-eth_type_trans                               354     220    -134
-Total: Before=31212910, After=31212756, chg -0.00%
+Core changes:
 
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
- include/linux/if_vlan.h | 18 ++----------------
- net/core/skbuff.c       |  3 +--
- net/ethernet/eth.c      | 18 ++----------------
- 3 files changed, 5 insertions(+), 34 deletions(-)
+ - MP_CAP_READABLE and MP_CAP_FRAG. A readable provider may back
+   header and regular pools, and XDP may run on its buffers. devmem
+   and io_uring set MP_CAP_FRAG and keep their behavior.
+ - Providers request RX headroom through the queue configuration.
+ - Readable net_iov areas. netmem_address() resolves provider memory
+   with a load and a shift, without an indirect call.
+ - A refill-completion callback. The XSK provider keeps NAPI scheduled
+   while FILL has entries, and sets NEED_WAKEUP when FILL is empty.
+ - Batched page-pool release for objects handed to userspace.
+ - xdp_buff carries the netmem and a pointer to kernel-owned shared
+   info, so fragment metadata never lives in user-writable UMEM. It
+   grows from 56 to 64 bytes on 64-bit.
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index 4846032bf4ffc80e55a8aafd1814bbcc27233599..97589236713668179dee21da6b3572edffe51404 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -698,7 +698,6 @@ static inline void vlan_set_encap_proto(struct sk_buff *skb,
- 					struct vlan_hdr *vhdr)
- {
- 	__be16 proto;
--	unsigned short *rawp;
- 
- 	/*
- 	 * Was a VLAN packet, grab the encapsulated protocol, which the layer
-@@ -711,21 +710,8 @@ static inline void vlan_set_encap_proto(struct sk_buff *skb,
- 		return;
- 	}
- 
--	rawp = (unsigned short *)(vhdr + 1);
--	if (*rawp == 0xFFFF)
--		/*
--		 * This is a magic hack to spot IPX packets. Older Novell
--		 * breaks the protocol design and runs IPX over 802.3 without
--		 * an 802.2 LLC layer. We look for FFFF which isn't a used
--		 * 802.2 SSAP/DSAP. This won't work for fault tolerant netware
--		 * but does for the rest.
--		 */
--		skb->protocol = htons(ETH_P_802_3);
--	else
--		/*
--		 * Real 802.2 LLC
--		 */
--		skb->protocol = htons(ETH_P_802_2);
-+	/* No ethertype: this is an 802.2 LLC frame (length field). */
-+	skb->protocol = htons(ETH_P_802_2);
- }
- 
- /**
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 5c4024a03e10550d22dd926410c4fada35f69641..43ebe61c7fc481e91cf560f7e21b5a9dd02bbbc5 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6355,8 +6355,7 @@ struct sk_buff *skb_vlan_untag(struct sk_buff *skb)
- 	skb = skb_share_check(skb, GFP_ATOMIC);
- 	if (unlikely(!skb))
- 		goto err_free;
--	/* We may access the two bytes after vlan_hdr in vlan_set_encap_proto(). */
--	if (unlikely(!pskb_may_pull(skb, VLAN_HLEN + sizeof(unsigned short))))
-+	if (unlikely(!pskb_may_pull(skb, VLAN_HLEN)))
- 		goto err_free;
- 
- 	vhdr = (struct vlan_hdr *)skb->data;
-diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-index d9faadbe9b6c86a746cace6d7a7cfffdb84e4519..39aab0f8035ad9fc99a7dd81b397050a719ecc25 100644
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -154,9 +154,7 @@ EXPORT_SYMBOL(eth_get_headlen);
-  */
- __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
- {
--	const unsigned short *sap;
- 	const struct ethhdr *eth;
--	__be16 res;
- 
- 	skb->dev = dev;
- 	skb_reset_mac_header(skb);
-@@ -176,20 +174,8 @@ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
- 	if (likely(eth_proto_is_802_3(eth->h_proto)))
- 		return eth->h_proto;
- 
--	/*
--	 *      This is a magic hack to spot IPX packets. Older Novell breaks
--	 *      the protocol design and runs IPX over 802.3 without an 802.2 LLC
--	 *      layer. We look for FFFF which isn't a used 802.2 SSAP/DSAP. This
--	 *      won't work for fault tolerant netware but does for the rest.
--	 *	We use skb->dev as temporary storage to not hit
--	 *	CONFIG_STACKPROTECTOR_STRONG=y costs on some platforms.
--	 */
--	sap = skb_header_pointer(skb, 0, sizeof(*sap), &skb->dev);
--	res = (sap && *sap == 0xFFFF) ? htons(ETH_P_802_3) : htons(ETH_P_802_2);
--
--	/* restore skb->dev in case it was mangled by skb_header_pointer(). */
--	skb->dev = dev;
--	return res;
-+	/* No ethertype: this is an 802.2 LLC frame (length field). */
-+	return htons(ETH_P_802_2);
- }
- EXPORT_SYMBOL(eth_type_trans);
- 
+Differences from classic zero copy:
+
+ - 4 KiB pages and aligned 4 KiB chunks only. Other layouts fail to
+   bind with -EOPNOTSUPP, but can be supported in the future.
+ - Generic XDP and CPUMAP cannot deliver to a provider-backed socket.
+
+Classic zero copy is unchanged. This does not propose converting
+existing drivers; it is for page_pool drivers without zero copy.
+
+fbnic is the only driver user, +640/-122 for RX and TX. I have bnxt
+working with AF_XDP, plus some performance patches/fixes for the
+AF_XDP core on top of this -- but let's start with these patches.
+
+Patches 1-2 fix bugs in net-next that the series hits. They are
+carried here so the series can be tested on its own.
+
+ 1. "xdp: Size zero-copy skb heads by their contents". XDP_PASS of a
+    zero-copy buffer copies it into an skb whose head is sized by the
+    XSK frame size, which leaves no room for skb_shared_info. A frame
+    that fills its buffer overwrites skb_shared_info. Provider
+    buffers take this path on XDP_PASS, which the usual AF_XDP
+    program returns when no socket is bound to the queue. Reproduced
+    on fbnic in QEMU.
+
+ 2. "eth: fbnic: Report the logical XDP RX queue". fbnic reports
+    queue 0 in rx_queue_index for every queue. AF_XDP drops frames
+    whose queue differs from the socket's, and the usual program
+    looks up its socket by that index, so zero copy works on queue 0
+    only.
+
+Feedback wanted on:
+
+ 0. General thoughts on extending the page pool provider.
+ 1. Does refill_done belong in page_pool, or should finite providers
+    keep NAPI scheduled some other way?
+ 2. PP_FLAG_ALLOW_UNREADABLE_NETMEM is how a pool picks up any
+    provider, readable or not. A driver that only wants AF_XDP must
+    set it, and then passes the core checks for devmem and io_uring
+    too if it supports header split. Drivers that set the flag today
+    may also split buffers, for example mlx5 through
+    page_pool_fragment_netmem(). Only QCFG_RX_HEADROOM keeps the
+    unsplittable XSK provider away from them. Split the flag, or let
+    drivers declare support for unsplittable providers?
+ 3. Is growing xdp_buff by 8 bytes acceptable?
+ 4. How should userspace learn the chunk constraints before bind?
+
+This is a way to move code from the drivers to the core, reducing the
+work for driver developers.
+
+I hope to see you at LPC next week! Particular the netdev and bpf MC,
+and the AF_XDP BoF on Monday.
+
+
+Björn
+
+Björn Töpel (15):
+  xdp: Size zero-copy skb heads by their contents
+  eth: fbnic: Report the logical XDP RX queue
+  net: Add memory provider capabilities
+  net: Let memory providers set RX buffer headroom
+  page_pool: Extend memory provider operations
+  xdp: Track non-page netmem in receive buffers
+  xsk: Keep the DMA mapping in the buffer pool
+  xsk: Handle a detached FILL ring in RX wakeup
+  xsk: Add a page-pool memory provider for UMEM
+  xsk: Add RX helpers for page-pool drivers
+  xdp: Copy provider buffers on pass and redirect
+  xsk: Receive provider UMEM without copying
+  eth: fbnic: Support AF_XDP zero-copy receive
+  eth: fbnic: Support AF_XDP zero-copy transmit
+  Documentation: xsk: Document page-pool zero copy
+
+ Documentation/networking/af_xdp.rst           |  65 ++
+ Documentation/networking/netmem.rst           |   7 +-
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |   5 +
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    | 164 ++++-
+ .../net/ethernet/meta/fbnic/fbnic_netdev.h    |   4 +
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  | 561 ++++++++++++---
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.h  |  24 +
+ include/net/netdev_queues.h                   |   6 +
+ include/net/netmem.h                          |  32 +-
+ include/net/page_pool/helpers.h               |  62 +-
+ include/net/page_pool/memory_provider.h       |  39 +-
+ include/net/page_pool/types.h                 |   8 +-
+ include/net/xdp.h                             |  64 +-
+ include/net/xdp_sock.h                        |  10 +
+ include/net/xdp_sock_drv.h                    |  58 +-
+ include/net/xsk_buff_pool.h                   |   7 +-
+ io_uring/zcrx.c                               |   4 +-
+ net/core/dev.c                                |   4 +-
+ net/core/dev.h                                |   5 +
+ net/core/devmem.c                             |   7 +-
+ net/core/filter.c                             |  28 +-
+ net/core/netdev_config.c                      |   2 +
+ net/core/netdev_rx_queue.c                    |  61 +-
+ net/core/page_pool.c                          |  72 +-
+ net/core/xdp.c                                | 112 ++-
+ net/ethtool/rings.c                           |  18 +-
+ net/xdp/Kconfig                               |   1 +
+ net/xdp/xsk.c                                 | 253 ++++++-
+ net/xdp/xsk.h                                 |  58 ++
+ net/xdp/xsk_buff_pool.c                       | 667 +++++++++++++++++-
+ 30 files changed, 2164 insertions(+), 244 deletions(-)
+
+
+base-commit: 071876fd50482a68603a9460d80dd6dd58827ee1
 -- 
-2.53.0
+2.55.0
 
