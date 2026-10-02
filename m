@@ -1,139 +1,224 @@
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84824E3259
-	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 16:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435024E01E9
+	for <netdev@vger.kernel.org>; Fri,  2 Oct 2026 16:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790957782; cv=none; b=mAE42TniJKSPoK2cRIJtUU8DrodM+63lcPBKSN4N4SbY+f0a1f8dboH+MPz0AVjeqIZEHY8ABkdt6qO4ldAm3JLS97+QsyOi8dgFp6KwEm1dMMV4zdDQsIqQ+Eb1C3ewhf/11ezFP3kOrAl3c6WrMLXSmt70oKF4s4mpm49mZYo=
+	t=1790957841; cv=none; b=MjGij5PdMfrKxfm1G+Py9pyRN63v0qGDSfhfqP3XgYWnl0KmbZH7eKlCNXGWG4lIgfl0/C5pFbRmmyY33DZLAQOg7YKVd0Y5n/Zeow2RiWMAmHBACjPwuwvhkwQcmTiYgos5PkmIjinXw+iIPt2UYr3kd7eLHGVN9iAGO8XCwCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790957782; c=relaxed/simple;
-	bh=6nGKnyBrzzJL9LigkABHfP7kULW7RYBcQouHxJie/c4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r7jrPCGz8xWtztHBWZTJ5KnxoRfMOThUT3KfgZNj0EWUcpudBsv5fFwTyB3Vrkk2y8I7vOlNSUf2CcC13oAbDQPOA8YN+ZqOZ/qx6MQOLXFicY8SDcxrUfcMfn+YoAyojN1K2L2kRcjUb7wrQ18hDe+2Ze6aygMIqg+1ASJmE0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=d508VeH0; arc=none smtp.client-ip=209.85.216.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1790957841; c=relaxed/simple;
+	bh=MyBN7nnBw3QNPXaan5Cq3lLqlU0H/yPFUpqJdz0cWdU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jdeHf/RgMeb3Kdkuvoo/qrtgg1fk+tGXNpVpqSDg+fmTpHP8kIbgZc3+dhVsduk4cKUCbjKjMHH5z00gzRGI9DSNt8aVjMZaHNpBMfmaVQAxPTqKzw1F0j0OLXqBMPbLzowpMfR/E2fB7/P2ogZX8GptBSAs3A8NQdck9ijDZ+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PIZmf2lG; arc=none smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="d508VeH0"
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3a706146559so17224a91.2
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 09:16:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790957780; x=1791562580;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=fbFbwJWSRdXCauruDvE+JJbqjrPsHa6vNYR+DZY726g=;
-        b=uRkebFdgF1Sw5vuwAygShD+g+sumDM9k57EZmH46uIhbyR3Vgp2tmh4pcZYlYintm0
-         ETTZxbH52fNhFtAh1fg+eFxKohI7bOqrm/O2ijXL6N1rKd4VuobdshHI3kmz3wWe3L51
-         A5Sjz6Z4StOZayU+feH3GDk+WDCfZQbLN74hLFLC4ecj9E0JsLz/0X6R5crn2PGUB0Xn
-         gPOsNV1u2m9kriOoS535pttW4biitK9QS6RpVt465pSOdaCybX4LDggZSuGre/ark17N
-         H0h60Al2Rt4d6krVGGHvdKmWSQLPHzU6FhsBtakOpza+6dwM3HPWWHSI9fbgqtfSKMuM
-         SHIA==
-X-Gm-Message-State: AFq9FYJTz2jQg7KrZdivi8ol+4FCl6OFV2TVGcZDH/dKhbvrMap155Pm
-	2Ro0m+E+98thiCNRnEa1xuCdxPS/c8qG5DzqAwSVc05PrgO4YibW2c1GmFpy41YJySQ5pSOUXa0
-	OyXrmp5l7i0X221xHaraq1S3Dq8NTBJuMpGavoCQfDZMeftQ2qsUwH5vbV/qa/EtBCWGZ3YwfzY
-	O2UNtaqUmc5ElPjUt0NEh3XMJlPCjQz4R+r8AmMZPZ6mqv2epkXp4lQu4QtzCLXK5Knbq6aZOmR
-	iY2FPw9bQ==
-X-Gm-Gg: AYBFou0A0yRdpmjn7m2kxahR8TOCcIST/b2qw7MYJ1OfTaovkIto042cJgG8d5vKjSH
-	J3772k4ed3EAwej/mFYw5y0szSX8UR0zgA/8IwZ1PlAgJ0ds8w4Npu4kwMuE5ItGNuFVUX7XN4k
-	C3AupOc/SMpygk0lxWo1bM0/IYd/DeEIy+cKqTdjLxQBY6pnMKQK6h9OUVWiL8R8MMEwd4vI1GS
-	Jhuy3eo1UksEU1gUKL45wkKVmCyhaEl+TejT8a4jh22vUqByrWN6zMIkb7GThnxJItbDzskht1j
-	xGZ6PArByKn0TP8EZ2YN8FKdRzlypcYGOFOEqEFVtDb1BftZuOEfz7OpN23Y4jx/OajmR+9qLgN
-	p//qJNelVmVPoJVpIeiscREGZ8BXceb6ew50TboDpYAUFoeqRs17ycPGtoynwHyITysUZTCHPC8
-	M9NHnHBtikn2oMznoPtFhnKj+E7uGynEsiveJd
-X-Received: by 2002:a17:90b:1cce:b0:3a4:c946:9f4e with SMTP id 98e67ed59e1d1-3a6ce9833f3mr2937610a91.58.1790957779988;
-        Fri, 02 Oct 2026 09:16:19 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a6fec001dbsm594956a91.4.2026.10.02.09.16.19
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 02 Oct 2026 09:16:19 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-675d5613a31so220696d50.0
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 09:16:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PIZmf2lG"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6056ac81fso12112570a12.2
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 09:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790957779; x=1791562579; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fbFbwJWSRdXCauruDvE+JJbqjrPsHa6vNYR+DZY726g=;
-        b=d508VeH08crBsFeJcM/vkxX50pCfQMD5mbU2Rv6qOTH3pnVYxDobdqtvF1vtjZ5mwe
-         ZmmHGZRQt9pb4u8XUxeTQLl3tXAC6cvjcW2SlcQSNnu7bKAYOL6AM0Fw6O+UOY05Rwhn
-         +ein8SM/T7wFQxSQmampf1Ocb/vQvLZbr7KtI=
-X-Received: by 2002:a05:690e:4cc:b0:675:43e1:45a1 with SMTP id 956f58d0204a3-677abdeef34mr808522d50.4.1790957778452;
-        Fri, 02 Oct 2026 09:16:18 -0700 (PDT)
-X-Received: by 2002:a05:690e:4cc:b0:675:43e1:45a1 with SMTP id 956f58d0204a3-677abdeef34mr808507d50.4.1790957777854;
-        Fri, 02 Oct 2026 09:16:17 -0700 (PDT)
-Received: from ?IPV6:2600:1700:3f50:2990:5d86:62f0:dca0:5297? ([2600:1700:3f50:2990:5d86:62f0:dca0:5297])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677ac56dac6sm1135050d50.9.2026.10.02.09.16.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Oct 2026 09:16:17 -0700 (PDT)
-Message-ID: <897ffc5a-48ad-4516-89f2-0cdac082d7a8@broadcom.com>
-Date: Fri, 2 Oct 2026 09:16:15 -0700
+        d=gmail.com; s=20251104; t=1790957838; x=1791562638; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/WnmIAjuSEnHEbu2FskxY54VtxWjUv46LMUAmUQRpBk=;
+        b=PIZmf2lGRmxOScwuaRvB3PEAbt1nnUTKXz6leG3cIOT3b8NgPFUax4wk4Ihyjq5Qji
+         NiIsv3GRkm3/XcvW925tPM4t7AJUwiXmazcFOv2uSul+L8JtLYg1OvK7V05TTat+QhZh
+         mrS3GJuL9SnzopetrVT5LuwplO1TnH6d9jOi3erswD0RXB4CBj7eyaD/K8OZXR9sISNL
+         5VzV9A2Yb7czt3bLMy4rmlKMoofR2TiCtcKLSxjLpm2FMPwPy8YoOjhED05G/mDJypP/
+         rwm4b2nqJ9/Nauq0xwMSYyixXoDQmQMy+8FZqDjz4LZivpKGNlh8a5sTc8XSA7M3qkHY
+         Ov6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790957838; x=1791562638;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/WnmIAjuSEnHEbu2FskxY54VtxWjUv46LMUAmUQRpBk=;
+        b=i+29cQFV2BTAL5HntroZGLMb/o70gReCjbD8VukmLG/uHPERkWa0Cy4PSJp+VH5c4V
+         mEqGYeimLsLKsWVlBmiCVBq+8CmI/qewa4b5Y2ryaPcvE7FmZn4W9GruejtmREVv39UI
+         64eUbz62c8GRH3qk7zv+McZhEc/W+qundZEyP+qmA8d2dy8atPPEcO+8dsbijg9J7FL4
+         PbZsOYyU1Vqzg2P0N1+i06qMZm3Ha9i/XokWEJYmY/q2Dg/e9LW3ssOvz5gxYIcmaecY
+         7v1tipxeTIVMiLnPDibI4+K8XVwrUzUjfN+cm0i4SFUB9p6kEH9B+FwZ7EUQm4ABLOzy
+         bkGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzlknAuSdDX9Nzk2PCokEcjQIv21am0GNHf80MyvV2FUb9SMNcYGvydOZQjNvOVxXy6rM6LKqk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kmIW3g1aWntUPg8LFfwtoiCOxlHGuSME1zspPkBEts3i5RU5io
+	SMjinqGhzBv7MyaaXXc8UYOP1BYpJXhlyTuuF7oKkgN3sVZnOBbGo6tL
+X-Gm-Gg: AYBFou0TmnKz9j81WgtE0/zNV4GWHHSHRqNFi3It/epJ2yUuZGiMFVqGZ5FXl9OpcQ6
+	bz/DvWeMhikKV5HwIv/A0YFS9SasUzICOJM7CqcVejGfTYnaJnRfBLsmymVJ1mdB/gF0adFSMIr
+	maGqxvNjnMhv34LTtShTYXTtBZfbjnPBKZTxNM+rnuz2tDaAK3qtXME+P1WUIgxcL/SwwfcwNWE
+	kiQdmTHXIIHaLV0+Wf+rm/cSPhZu8J1fWrvu6ZuS1sdnR46nKVgjawjuk3aomF8hbgIITBXAKvH
+	wLo2EaMdu4xKXupk9DN9e3cSeuXHL6c90QQNjD9Wm9IuPnh3lg6QPP3QMVePYP7hdGmd98SjBU+
+	BrX/lo2PM/1PBmK2JBN4caYsFafk+C8YAZgYn6JyF3dr+9oyebHe4foCkdfBYirX0cw5DBE+0k5
+	9fdbCIZQveKmxJkZ0hP9xYDfTarp3dSHGp5LvhtvlW2pv97fnsS2lioOVpm5vuNM4g0pY8X2Ehq
+	FMCM35bZUFdeAX6yxRC0R0CHiGTcNpFQzM+/cg6W3No01f89DA=
+X-Received: by 2002:a17:907:9693:b0:c29:3c97:c994 with SMTP id a640c23a62f3a-c2e4ae1e30emr252668166b.35.1790957838142;
+        Fri, 02 Oct 2026 09:17:18 -0700 (PDT)
+Received: from buildhost.darklands.se ([2001:9b1:ff:d701:51eb:176f:63d9:53f8])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4cf5f4e4sm106437166b.42.2026.10.02.09.17.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 09:17:16 -0700 (PDT)
+From: Magnus Lindholm <linmag7@gmail.com>
+To: sparclinux@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>
+Cc: linux-kernel@vger.kernel.org,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <mchan@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH 6/7] tg3: normalize inherited M3000 register byte order
+Date: Fri,  2 Oct 2026 18:14:28 +0200
+Message-ID: <20261002161515.932316-7-linmag7@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261002161515.932316-1-linmag7@gmail.com>
+References: <20261002161515.932316-1-linmag7@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in SW_RESET,
- restore it to SW_RESET
-To: Jakub Kicinski <kuba@kernel.org>, netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@kernel.org,
- davem@davemloft.net, andrew+netdev@lunn.ch,
- bcm-kernel-feedback-list@broadcom.com, nb@tipi-net.de,
- florian.fainelli@broadcom.com, opendmb@gmail.com
-References: <20260930230634.3132729-1-justin.chen@broadcom.com>
- <179080972360.31693.266631430009737406@kernel.org>
- <20261001184130.2b7ab18a@kernel.org>
-Content-Language: en-US
-From: Justin Chen <justin.chen@broadcom.com>
-In-Reply-To: <20261001184130.2b7ab18a@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Transfer-Encoding: 8bit
 
+M3000 firmware can leave BCM5718 vendor registers byte-swapped while
+standard PCI fields retain normal byte order. Match the Fujitsu 10cf:165a
+subsystem, IKKAKU model and swapped revision/product signature before
+restoring host control; reject failed PCI accesses or register readbacks.
 
+Keep this in probe so failures can abort initialization; SPARC firmware
+enumeration skips PCI_FIXUP_EARLY. Normal rebinds and other platforms
+retain their existing path.
 
-On 10/1/2026 6:41 PM, Jakub Kicinski wrote:
-> On Wed, 30 Sep 2026 23:08:43 +0000 netdev-bot+sinfo@kernel.org wrote:
->> Hi!
->>
->> This is an automated message. This series looks like a fix, but its
->> commit messages seem to be missing some information:
->>
->>   - How the issue was discovered, e.g. hit in production, hit during
->>     development, syzbot report, manual code inspection, LLM or static
->>     analysis tool scan.
->>
->>   - Whether the issue was actually triggered, or is only theoretical
->>     (e.g. found by code inspection). If it was triggered please include
->>     the symptoms, like the stack trace or error messages.
->>
->>   - What hardware the change was tested on. For driver fixes please
->>     mention the device (and if relevant firmware version) used for
->>     testing, or say that the change was not tested on real hardware.
->>
->> Please do not repost the series just to address the above. Instead,
->> reply to this email with the missing information, so that reviewers
->> can take it into account. If the series needs another revision for
->> other reasons, please include the information in the commit messages
->> then.
->>
->> The evaluation is done by an LLM so it may be wrong, if you think
->> that is the case please reply and explain.
-> 
-> please respond to this
+Use tg3.h's MISC_HOST_CTRL_BYTE_SWAP and TG3PCI_GEN2_PRODID_ASICREV;
+the inherited state was observed on M3000 hardware.
 
-The issue was hit in production and I verified the sequence keeps the TX 
-disabled in my standalone test. I tested on an internal development 
-board with bcm77122, but should be reproducible on any genet HW that 
-supports power management.
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+---
+ drivers/net/ethernet/broadcom/tg3.c | 91 ++++++++++++++++++++++++++++-
+ 1 file changed, 89 insertions(+), 2 deletions(-)
 
-Thanks,
-Justin
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 73a4b569b03e..9335bcc0d8d3 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -56,6 +56,7 @@
+ #include <linux/hwmon-sysfs.h>
+ #include <linux/crc32.h>
+ #include <linux/dmi.h>
++#include <linux/of.h>
+ 
+ #include <net/checksum.h>
+ #include <net/gso.h>
+@@ -16248,6 +16249,83 @@ static bool tg3_10_100_only_device(struct tg3 *tp,
+ 	return false;
+ }
+ 
++/* M3000 firmware can leave the on-board BCM5718 registers byte-swapped. */
++static bool tg3_is_m3000(struct pci_dev *pdev)
++{
++	struct device_node *root;
++	const char *model;
++	bool match;
++
++	if (pdev->vendor != PCI_VENDOR_ID_BROADCOM ||
++	    pdev->device != TG3PCI_DEVICE_TIGON3_5718 ||
++	    pdev->subsystem_vendor != 0x10cf ||
++	    pdev->subsystem_device != 0x165a)
++		return false;
++
++	root = of_find_node_by_path("/");
++	match = !of_property_read_string(root, "model", &model) &&
++		!strcmp(model, "IKKAKU");
++	of_node_put(root);
++	return match;
++}
++
++static int tg3_m3000_fw_byteorder(struct tg3 *tp, u32 *misc_ctrl_reg)
++{
++	struct pci_dev *pdev = tp->pdev;
++	u32 prodid, expected_prodid, normalized, readback;
++	int reg, err;
++
++	if (!tg3_is_m3000(pdev) ||
++	    (swab32(*misc_ctrl_reg) >> 28) != ASIC_REV_USE_PROD_ID_REG ||
++	    !(swab32(*misc_ctrl_reg) & MISC_HOST_CTRL_BYTE_SWAP))
++		return 0;
++
++	/* Standard PCI fields are normal; verify the swapped vendor registers. */
++	reg = TG3PCI_GEN2_PRODID_ASICREV;
++	err = pci_read_config_dword(pdev, reg, &prodid);
++	if (err)
++		goto config_error;
++	expected_prodid = swab32(prodid);
++	if ((expected_prodid >> 12) != ASIC_REV_5717) {
++		dev_err(&pdev->dev, "M3000: unexpected swapped product ID %08x\n",
++			prodid);
++		return -ENODEV;
++	}
++
++	normalized = (swab32(*misc_ctrl_reg) & MISC_HOST_CTRL_CHIPREV) |
++		     tp->misc_host_ctrl;
++	reg = TG3PCI_MISC_HOST_CTRL;
++	err = pci_write_config_dword(pdev, reg, swab32(normalized));
++	if (err)
++		goto config_error;
++	err = pci_read_config_dword(pdev, reg, &readback);
++	if (err)
++		goto config_error;
++	if (readback != normalized) {
++		dev_err(&pdev->dev, "M3000: host-control readback mismatch %08x\n",
++			readback);
++		return -EIO;
++	}
++
++	reg = TG3PCI_GEN2_PRODID_ASICREV;
++	err = pci_read_config_dword(pdev, reg, &prodid);
++	if (err)
++		goto config_error;
++	if (prodid != expected_prodid) {
++		dev_err(&pdev->dev, "M3000: product-ID readback mismatch %08x\n",
++			prodid);
++		return -EIO;
++	}
++	*misc_ctrl_reg = readback;
++	dev_info(&pdev->dev, "M3000: normalized firmware register byte order\n");
++	return 0;
++
++config_error:
++	dev_err(&pdev->dev, "M3000: PCI config access at %#x failed (%d)\n",
++		reg, err);
++	return pcibios_err_to_errno(err);
++}
++
+ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
+ {
+ 	u32 misc_ctrl_reg;
+@@ -16272,8 +16350,17 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
+ 	 * sure that indirect register accesses are enabled before
+ 	 * the first operation.
+ 	 */
+-	pci_read_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
+-			      &misc_ctrl_reg);
++	err = pci_read_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
++				    &misc_ctrl_reg);
++	if (err && tg3_is_m3000(tp->pdev)) {
++		dev_err(&tp->pdev->dev, "PCI host-control read failed (%d)\n",
++			err);
++		return pcibios_err_to_errno(err);
++	}
++	err = tg3_m3000_fw_byteorder(tp, &misc_ctrl_reg);
++	if (err)
++		return err;
++
+ 	tp->misc_host_ctrl |= (misc_ctrl_reg &
+ 			       MISC_HOST_CTRL_CHIPREV);
+ 	pci_write_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
+-- 
+2.43.0
+
