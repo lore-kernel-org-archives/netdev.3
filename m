@@ -1,125 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B22385D79
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 17:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA69381E96
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 17:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791047360; cv=none; b=YJhYgPGuEw7LDXhJ9V8D/7q6d0YW/J7WOlV5I8/e6HSiMV4ITEvrKqlVK/wg4DEIhMxu/JK0mDj3ug1MX4VK1kgdkhhrfwoY11izEc0fZhZSAT2/fLzo2R0uHX/jKdj9zpU1y94u6NrXNG8p2d38CsexqqrHyHMxnR2ex/id6GQ=
+	t=1791048265; cv=none; b=L9pzY4+680u7vitzn/B3Kan4xsNzig67KoPA7aX7GWaYEB+tA038X/Tqobi8m2qSLx+Q+68u1uDE0lU5xWeO1hOnGoMtqngKpttpAFFh+G4ZP8x+kr7hUbLxowNO2wlKa65wFFSTiX4FGvu9XyM2qZRBiXmrPdoxM4wk93gN864=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791047360; c=relaxed/simple;
-	bh=bb9Xq74XszcTVaiev3mlqz1llwDU4cUF2AWD+8Xix9Q=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=s7klZEoqlPFcwDuFhQFzD1HK/9hchNZl+sch1BlgGQEErO6fchnIU61wVf6KceCAHCW4yU0Pudhc5EoYhrfkhy4Hoe07dYIO9TMqm1ytSpcn2+LeIT54+fCiW2vVJ9QjaThaFB9of/Rmfqi6G6NWbvhUEJIv3vMkfY/btH3kffY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXlQiq4D; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791048265; c=relaxed/simple;
+	bh=s2Ss/x948Y93uzsFgTiimFn4QGTk+GR3g2Spav0zjfw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NQDa8ykhcG5GmtndmTb/CFejGI3QJefvKHPTCZTQ0TZqaBRWcgZovoRM/RtkCBy1aSXciEPDU8TGTYrWBMsc0lz53Dyx4jzA7rLrHHezYq/3wDbfq/wIff+vnj1Sp3l8dhRqhMB4mYVjWTJW5zNLsCwsW4EUMhfDofenj5GmOvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IE4+Hv85; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXlQiq4D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E7D1F0089B;
-	Sat,  3 Oct 2026 17:09:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791047358;
-	bh=uzZ/taEmxi+2HXzCFw2SEgL8M7EYrzX0npnubvZzz7Y=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=PXlQiq4DCjck4LydjrPuwSRqYFTTAS8b3BCanfuaR/7scYtt759OCm6CT08Q1Lq0d
-	 +tSaJWXjWqQ9vbR0hvDOT3OxbzJkqY0t6K0cMK3o5A7jLynlftJPhPM6KJDujgsSbW
-	 7Gpk6pRZVigQxRLgmLtowNK/dSwtI9CFbnJ2kfmj1ugxoDsGsJXujNH8evwqDC8ecw
-	 wQu/ZFhFwy+ylD5g5ER8incp4JsRKH9PAyBFjHxMky4YaH9ILYAvPJviK+G1ZcsbWc
-	 KNZijPL6uU2b2rGV0ahRG4rr7V4YwyB/h8NLAL+NAmSoGmqCPyqC8fRs+s1Gn8fEwN
-	 vn5WBOCTHCmLQ==
-Message-ID: <701a85ad-2403-41ff-8ef2-a5a71a7f068b@kernel.org>
-Date: Sat, 3 Oct 2026 19:09:14 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IE4+Hv85"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c2e62319cfaso55972666b.2
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 10:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791048262; x=1791653062; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5aEM4qdj9p9V8Y8pWjk1UcQVcLLXmG3YTCLxCb/8ly4=;
+        b=IE4+Hv85flgTsL+AOLqNM6KSX18Mp9PfSJb3ZM532dOhAuOsmbw0g9Jwfqy5qa7jY2
+         S8Cn8fuXqPe5hwaVp8oXgcofGo9vQBGoMUCTnta/ST+UjqHWBviWJ5Lc4EGuSMhrOy5L
+         sxLrjrfz0OoX+AMs8eCpYD1MSSEoCazzAZtW7wqR4VpB8tj9rnAQMWUuTYNAeHK+Hb2V
+         TL3zbHjwM7xCJE4EOn10LP+d4jxB7eyb4G+AkAYtZhHifuGodhSDpJHIMNmSK4jXwbyv
+         BPPOCBpJOgcG1xaCOvt4Re7JIYMpvC/LO11p+zP5jCR0ClXNQi+6haTLQnk3LUicmvKm
+         JLWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791048262; x=1791653062;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5aEM4qdj9p9V8Y8pWjk1UcQVcLLXmG3YTCLxCb/8ly4=;
+        b=N//5yJKuGoqOvv4KD2VYarhU3/9e2hEUuUXxlyu5LYPgXszDNRwusA1LcttaI9JaPB
+         KW1JXWH/Ilt+a9W88E6yEQXfA1Xi2ZO/QOvS51nFYAZy2/j4IdcYS6gcDtN0z6mTxwJr
+         LzvdX9D5YpUTBGYpQOjg+R2lhGctJ3+/aFxr+SMNKPq0eh2mAhF+R2XLh+EIQ8BszZpo
+         xTl4mf3TPqPKaMc5D0hJk48FN6i7kS5kkWxEWXHpXSY/MzNukSSTVNfBc8QRaEwYj05l
+         LmPUS92pmpqMLfZ48jUv0c0sdje05gc6JDGrY4E40YRDZV9Blrg2EdLq36YI9B05O2Y4
+         P4ig==
+X-Gm-Message-State: AFq9FYLBO5R66flH1gigWd0ms4f6O/ilI3bkhvcm1I0eebgClpMGbJKm
+	6L/3Wx1+mvanXbXB9Lp70eMkp+zAObUeGuqG4MoW5kQ61JNy1VMG26pqE94F61RjPrd9lw==
+X-Gm-Gg: AYBFou3uksgrc6jiNQ+Ve+SwNZ1ZJcIQkRqcSFHlSxbuOm6MyjUHCNpK8ANI7ew18Lk
+	GOPytbZplG5daFEBVsZPmWNBfHTRW9z/jgUTkAydmd4M2l3VN3GED6azhIf9InOnVvKwR6o3Dak
+	yHFlZI9hEirUkho7TQDU59alwikCwUryF7rSwvoRbGkH5sf4Avz8HblLkTtoZp9GBy3dB2mzkn9
+	mMJP3Ly1GYa9sJ4XF+03JXOXGddIK2NjzTyrAF9b/PJLVeYx7Sya2rzQ0POGTV6o2Zmmba1CBpz
+	F6V1Ou9GcT7OMATcQzmXJYb0lrRZhsPD5AfoHFe4nEPu+Wx05RX0HtnlsjgOrpSQAyqRRYbMosu
+	6SvdtwrhRt2niFd6wsg+YyRm10Mow8/6Jvv75RXcXQxBRFlOuhewhWt6w3fSvAhkXbq2FVvR6rg
+	L+4ID9MlVhP6q2MJ3ZW6K2mimOHUuV4SsLPWFYZ+OHnfXa4QumlJsQUZMkyMXQu9u2s1n7ecp2Q
+	9PfusnS26uOsR1QceackR7W8tomdomCFXj8Q2NOgY+V63tcI9XBo6pt
+X-Received: by 2002:a17:907:97d3:b0:c29:45f6:6a0b with SMTP id a640c23a62f3a-c2e6edba366mr222307866b.34.1791048261810;
+        Sat, 03 Oct 2026 10:24:21 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:801:793:68fd:7995:7ccd:ec2b:6712])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4cf87430sm211407666b.64.2026.10.03.10.24.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 10:24:21 -0700 (PDT)
+From: Yongzhao Chen <yongzhao.derek@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	John Crispin <john@phrozen.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 0/3] net: dsa: qca8k: fix MDIO error handling
+Date: Sat,  3 Oct 2026 19:24:01 +0200
+Message-ID: <20261003172405.342-1-yongzhao.derek@gmail.com>
+X-Mailer: git-send-email 2.45.2.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tcp: ignore locked zero CWND route metric
-From: Eric Dumazet <edumazet@kernel.org>
-To: bestswngs@gmail.com, ncardwell@google.com, netdev@vger.kernel.org
-Cc: kuniyu@google.com, davem@davemloft.net, horms@kernel.org, xmei5@asu.edu,
- co+71b6509cb791e531@bugs.sh
-References: <20261003153224.2683219-2-bestswngs@gmail.com>
- <cec4b256-da83-40df-99d5-44710ab8ea63@kernel.org>
-Content-Language: en-US
-In-Reply-To: <cec4b256-da83-40df-99d5-44710ab8ea63@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+This series fixes qca8k MDIO error-handling bugs found by code
+inspection and the Sashiko review of v1 [1]. I am not aware of reports
+of actual MDIO failures, so v3 targets net-next without Fixes tags, as
+Andrew requested [2].
+
+The patches propagate register and PHY access errors, skip MASTER_EN
+cleanup after a failed page select, invalidate the uncertain page cache,
+and return management Ethernet busy-wait errors so MDIO fallback can run.
+They apply directly to net-next; the separate qca8k MTU series depends on
+the write-error propagation provided here.
+
+Testing: the base and each patch build with W=1 for arm64
+(drivers/net/dsa/qca, net/dsa, drivers/net/phy/qcom). A userspace model
+compiles the driver's own MDIO functions against a simulated paged
+switch and a scripted management Ethernet responder, with phylib's
+read-modify-write helper as a consumer. Fault injection leaves 15 failing
+cases on the base, 10 after patch 1, seven after patch 2, and none after
+patch 3. These are model tests, not kernel selftests or hardware error
+injection.
+
+A Redmi AX5400 (RA74, IPQ5018 + QCA8337) passed connectivity checks
+with a 6.18.52 OpenWrt backport of v2 after boot, reboot, one cold boot,
+link re-initialization and MTU changes. Its switch PHYs are on the SoC
+MDIO bus and it has no CPU port 0. This covers normal register access
+through page selection; the internal MDIO master and management
+Ethernet paths remain tested only in the model.
+
+v3:
+- Target net-next and drop the Fixes: tags as requested [2]. Historical
+  commits are identified in the commit messages instead.
+- Order local variable declarations in reverse Christmas tree order in
+  the functions the series touches [3]. No other code change.
+
+Previous versions:
+v2 [4], v1 [5].
+
+[1] https://lore.kernel.org/netdev/179054715863.3145.10179961093285192493@kernel.org/
+[2] https://lore.kernel.org/netdev/12875133-1659-4507-a007-c3cfa425ec76@lunn.ch/
+[3] https://lore.kernel.org/netdev/f7889e9e-8ca8-47b1-b902-c31e7c016858@lunn.ch/
+[4] https://lore.kernel.org/netdev/20260928220629.238-1-yongzhao.derek@gmail.com/
+[5] https://lore.kernel.org/netdev/20260923215748.1336-1-yongzhao.derek@gmail.com/
+
+Yongzhao Chen (3):
+  net: dsa: qca8k: propagate MDIO errors
+  net: dsa: qca8k: do not clear MASTER_EN after a failed page select
+  net: dsa: qca8k: fail mgmt Ethernet MDIO access on busy wait errors
+
+ drivers/net/dsa/qca/qca8k-8xxx.c | 68 +++++++++++++++++++-------------
+ 1 file changed, 40 insertions(+), 28 deletions(-)
 
 
-On 10/3/26 18:10, Eric Dumazet wrote:
-> 
-> 
-> On 10/3/26 17:32, bestswngs@gmail.com wrote:
->> From: Weiming Shi <bestswngs@gmail.com>
->>
->> A locked RTAX_CWND route metric of zero is copied into the TCP metrics
->> cache and then into snd_cwnd_clamp. This sets the initial cwnd to zero.
->> With a cached SSTHRESH metric, a later Reno ACK can reach a divide by
->> zero in tcp_cong_avoid_ai(). A user with CAP_NET_ADMIN in a user-created
->> network namespace can trigger the oops.
->>
->> Ignore a zero cached CWND metric when applying the locked clamp, leaving
->> the socket's initialized nonzero clamp in place.
->>
->>    Oops: divide error: 0000 [#1] SMP KASAN NOPTI
->>    RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
->>    Call Trace:
->>    tcp_ack (net/ipv4/tcp_input.c:4440)
->>    tcp_rcv_established (net/ipv4/tcp_input.c:6678)
->>    tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
->>    tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
->>    Kernel panic - not syncing: Fatal exception in interrupt
->>
->  > Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local 
-> cache.")> Reported-by: <co+71b6509cb791e531@bugs.sh>
->> Assisted-by: LLM
->> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
->> ---
->>   net/ipv4/tcp_metrics.c | 7 +++++--
->>   1 file changed, 5 insertions(+), 2 deletions(-)
->>
->> diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
->> index dc0c081fc1f3..ff41804ad086 100644
->> --- a/net/ipv4/tcp_metrics.c
->> +++ b/net/ipv4/tcp_metrics.c
->> @@ -484,8 +484,11 @@ void tcp_init_metrics(struct sock *sk)
->>           goto reset;
->>       }
->> -    if (tcp_metric_locked(tm, TCP_METRIC_CWND))
->> -        tp->snd_cwnd_clamp = tcp_metric_get(tm, TCP_METRIC_CWND);
->> +    if (tcp_metric_locked(tm, TCP_METRIC_CWND)) {
->> +        val = tcp_metric_get(tm, TCP_METRIC_CWND);
-> 
-> Please explain how we can come to this situation?
-> 
-> cwnd can never be zero, so how a save metric could contain zero?
-
-That is to say :
-
-The right fix is in ip_metrics_convert(), one time instead of at each 
-TCP session init.
-
-diff --git a/net/ipv4/metrics.c b/net/ipv4/metrics.c
-index 
-ad40762a8b38379e4ccdc505e3885adb8dfff763..50a08e592b207e85ccc2bb6f917379de61af4579 
-100644
---- a/net/ipv4/metrics.c
-+++ b/net/ipv4/metrics.c
-@@ -54,6 +54,10 @@ static int ip_metrics_convert(struct nlattr *fc_mx,
-                         NL_SET_ERR_MSG(extack, "Unknown flag set in 
-feature mask in metrics attribute");
-                         return -EINVAL;
-                 }
-+               if ((type == RTAX_CWND || type == RTAX_INITCWND) && !val) {
-+                       NL_SET_ERR_MSG(extack, "CWND metric must be 
-greater than zero");
-+                       return -EINVAL;
-+               }
-                 metrics[type - 1] = val;
-         }
-
-pw-bot: cr
-
+base-commit: cfb7793d1bc0f7d90571611979654cf1b3886b29
+-- 
+2.43.0
