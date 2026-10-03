@@ -1,64 +1,67 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8F32F260C
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 21:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C4939B949
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 21:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791062626; cv=none; b=u0BNiESYnhQf7WQpSS04IEKtyfhjHJ4T5Zu7iagjFVnzmfdYppaulPhkpWxLEObU+UYbCNsLHk5IP3Q4zV4EKuioNizUUQSABrIPRr0QfnOhNWveoMC0/bgbQFVnHiepcPlhnuvDPLhM4aDmr5biZ1b/QAiQWUGAm0sT2KaPyGU=
+	t=1791062626; cv=none; b=IWYsfb7Pq6jPOPTmMbWFc1vn7dTT6pfiAKjeqoJw/ee2opvy+C9aDz22SID84kkOfpcFdb7eQ3CH3+jpWKqCeWRIS42qDAI5FPAdE8EXluQnY8okZUETlBM7r24WvVX9wIzyV4gSeAGI7uK4AuMNVJbXPsq1dzbCr+lki/cxhf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791062626; c=relaxed/simple;
-	bh=UOOtjxLD+ePAkCTZNapMKB1ITRJtok8U01FbNQ6kIzg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Row0+GRpRPktzML719xSGUdkujsxzigeu44Mf/dGoYFPu2azWJok17ZAO0MLLq0wUrHnGanUBPNhjhF+85txtHOBhIqPP/iS2zgxGQyFCdbLmob1WmjjJXtGHFNl5mQU6UdSONLWpZfiQi2uH0T8UBoGoOuI81H98UUs/jp0dGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KBAZSV4K; arc=none smtp.client-ip=209.85.210.197
+	bh=ThoT7cXfDyyrpjdI4GGUDFw/EtThazkBFBTRFFAW/OI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZTqDu7MqMvacbmBuL7W1u/TEb1oF5EpzqTNt65k7IzMhY72i0wfapnhqoljm4zN1qnF3jSZF1RMzjlQuLcsQscT5wnZTNyyFzDItJtDv+InaQBEdydhFKQ20wNBsZ8uMjRwyCM22Hs7E+9DcuTnv/2laEAljf54PBn70SoT6X9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KDFc14oz; arc=none smtp.client-ip=209.85.210.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KBAZSV4K"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-88a46301d92so431457b3a.3
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 14:23:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KDFc14oz"
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-88a2c5d7ef1so804099b3a.3
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 14:23:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791062624; x=1791667424; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X8DO8ihXYXfYY6jTG3+QcjiDXU0NSONJOIPatyzetS4=;
-        b=KBAZSV4K4gj/YYWTvtyjNIyLJYzpW0eWAdNBbUXDZXhGnEk+Mi2jjuUb2Mmkbp9H6E
-         ZZQpm26aei0k8eyUGzd8qHTmQ296qJNh1giD+g2wlK9I6ifGcBNa4lLjD/VUwN8zzuNY
-         pJKgiLcZ2NL39NVPFl9sWzCsZu5oeEy6A+XJmys/30ERc7DAAIh02JmxKwQII5vCkhzu
-         DE6Fv7GafbUaMw8k/uyl0HLgVzp2aIaR9zhZiw3q6sy6nkgfH4Hxk0hihx7iIh/S/pwl
-         yL1/OIBVx9zRz7udB7p/Pgt2bohdyiunoFq4zwMJBxkoSepR89wI62YWxGCIy5/VmXeM
-         ePLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791062624; x=1791667424;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1791062625; x=1791667425; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=X8DO8ihXYXfYY6jTG3+QcjiDXU0NSONJOIPatyzetS4=;
-        b=GYyBZuDjB+ZPpB+sWyS/FV2bM+XJ0/xYIlzdqF9BR6nC0WaP56qcXUjSXIpQkmmDpV
-         3jyt1pI9rQScaw1DIiPUbonhB08sKHd0VgAEMDBkMbSefnOLqB999A5vK8o+m/Wm9Y1B
-         U/nsebnNciCR3YC5y77z82bj5+FC9EtTzGT08pB7Vb21VqFykUDyxlwqqwb/fRY2AuRJ
-         1L+4R3pKyraUB/tZKxmvgJVtrEuZgNyIo8WZZoJaawoStTPObYLcb7ZoIIjXD5nycZT/
-         EoKtkLIeYd5C1RamUOPgZZSULBowEby6CVpEL/JXMGxcZakBZEWOApad/yLyONyDC0xm
-         d0nw==
-X-Forwarded-Encrypted: i=1; AKwUvBwNkZIO41USDbxChcwJJujXK8gmtRL/O9I/hxHRMCexHUF802gzfAq5D1lnYqxS+aS6jlA1xKE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kS4RO3SVefJxfLEi4Ybv4BvWKChPMjJlfX/2NAOA0aOTRTnPnD
-	freuTa2YKMG07kE83JYJtTZAnU6jvHOEfwxzIcevl8px5muiME25NtT7hD5HHvBDLWIBWrsUBFo
-	XSe1AYQ==
-X-Received: from pghf23.prod.google.com ([2002:a63:e317:0:b0:cc7:dec6:f88b])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:e083:b0:3dd:a197:7359
- with SMTP id adf61e73a8af0-3e0d6d3f54fmr3033328637.50.1791062623594; Sat, 03
- Oct 2026 14:23:43 -0700 (PDT)
-Date: Sat,  3 Oct 2026 21:23:13 +0000
+        bh=c0OjECR4PbKu7DNQWWCoLM1tH92ztwNdu/t4kIPA7nQ=;
+        b=KDFc14ozYF7q03c5BSg8Q+bgyIqXXeggfHl64L68pMX0f/+h8GsUn+53UaPmKTq0NP
+         5iZ03ZhN6hO8QMERZ2MaUxz0WK8FSx6M8NcPvAA1KDVtoml0oSf2eR02erWkEjybal5d
+         fBZK//j4rPeE4vMrsaPIJD+AotMDzY4DvIWwS6/TWQ6KYVxj5gpI0fh37qO/EoE2iM5G
+         3RkUs6Z7mr7ZwvQQgyfn9PeHzzkFx7OMPp4wgzXDTmW511gCBrNuN7aQQJvkZQ6mv/Yz
+         xJC2fFiBqEt6kK6k/KAZm51XbPg+MdJlT+YTduSfMHv8YdcjRHGmvk9z+FN3bXH5jh5W
+         in3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791062625; x=1791667425;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=c0OjECR4PbKu7DNQWWCoLM1tH92ztwNdu/t4kIPA7nQ=;
+        b=gE1RrOo+maORmS4KsWYoIFPBEbqiqJgT3zPK8vOsNwlk4407JA7ZQiMVAjUn6/NJKU
+         rYf6CUfrBjeeTf/y6DNCXPQeCmfy7guykl3L4r4XNIbA4KFHg6YwEEa3BpKQSKl7v0YW
+         1XXjWTjnMSLEqvXVGg7Xuh5Gse2zomBiXX+Xy//qFTVOWJ9lwaoKOW5hIQySY/kgTveV
+         osSLG5OdGCbsYG1U/a3fLVl6qQGV+UF2/euCSQy9pbs3Gyw0padQZE3Z/7DBFqYgfG5b
+         e9G1Av7TrgUhGuFuJXADjkdQzxMvqZWFEvC7AVxDhAUlMnqUAs75r4qrm5sBeB3YUg2h
+         QjVw==
+X-Forwarded-Encrypted: i=1; AKwUvBzoNQ44q6wADHB/8+2cJuvkAnJ8kF8rcO0yzXENp6tWCFhB2IAXz3T2AsqoO+Vk0y7duxFPgN4=@vger.kernel.org
+X-Gm-Message-State: AFuF++mWQ4HGM8J95asvWXUVfAXf/bTV5V+1E3PXcowL8ksUIfn2b3V7
+	ySQ+sURclO8lAZTNhmfr8cVESqBGG6kCEwA5kUugw2x0l/yBWWx828o4HrG11jPeQPNZ6I4gcQp
+	FLWOTyQ==
+X-Received: from pfme17.prod.google.com ([2002:aa7:98d1:0:b0:88c:18bb:95e6])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:846:b0:882:ace7:88e2
+ with SMTP id d2e1a72fcca58-88af54f765dmr6515134b3a.12.1791062624500; Sat, 03
+ Oct 2026 14:23:44 -0700 (PDT)
+Date: Sat,  3 Oct 2026 21:23:14 +0000
+In-Reply-To: <20261003212336.1304988-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20261003212336.1304988-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003212336.1304988-1-kuniyu@google.com>
-Subject: [PATCH v2 net-next 0/9] neighbour: Add IPv4/IPv6-specific wrappers
- for neigh_lookup() and friends.
+Message-ID: <20261003212336.1304988-2-kuniyu@google.com>
+Subject: [PATCH v2 net-next 1/9] ipv4: Rename ipv4_neigh_lookup() to ipv4_dst_neigh_lookup().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -67,66 +70,66 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-syzbot reported that ip6_finish_output2() could pass tbl and dev
-from different netns to neigh_create().
+Later, we will add ipv4_neigh_lookup() as a wrapper for
+neigh_lookup(arp_table(net), ...).
 
-When namespacifying neigh_table, I chose to resolve neigh_table
-in callers to minimise changes, but it turned out to be error-prone.
+The existing ipv4_neigh_lookup() is more like ip6_dst_neigh_lookup().
 
-This series adds IPv4/IPv6-specific helpers for neigh_lookup()
-and neigh_create() that always fetch the netns from dev to fix
-the problem.
+Let's rename ipv4_neigh_lookup() to ipv4_dst_neigh_lookup().
 
-Along the way, the confusing and now mostly redundant helpers
-__neigh_lookup() and __neigh_lookup_errno() are converted and
-removed.
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ net/ipv4/route.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-
-Changes:
-  v2:
-    * Add Patch 9
-    * Patch 6 & 7: Convert __teql_resolve()
-
-  v1: https://lore.kernel.org/netdev/20260930200326.718459-1-kuniyu@google.com/
-
-
-Kuniyuki Iwashima (9):
-  ipv4: Rename ipv4_neigh_lookup() to ipv4_dst_neigh_lookup().
-  ipv6: Rename ip6_neigh_lookup() to __ip6_dst_neigh_lookup().
-  ipv4: Add wrappers for neigh_lookup() and neigh_create().
-  ipv6: Add wrappers for neigh_lookup() and (__)?neigh_create().
-  mlxsw: spectrum: Resolve neigh_table right before neigh_lookup().
-  ipv6: Use ipv6_neigh_lookup() and friends.
-  ipv4: Use ipv4_neigh_lookup() and friends.
-  neighbour: Remove __neigh_lookup() and __neigh_lookup_errno().
-  neighbour: Check n->parms->tbl under tbl->lock in ___neigh_create().
-
- .../marvell/prestera/prestera_router.c        | 14 ++--
- .../mellanox/mlx5/core/en/tc_tun_encap.c      | 14 ++--
- .../mellanox/mlx5/core/en_accel/ipsec.c       |  6 +-
- .../ethernet/mellanox/mlxsw/spectrum_router.c | 77 +++++++++++--------
- .../ethernet/mellanox/mlxsw/spectrum_span.c   | 42 ++++++----
- .../netronome/nfp/flower/tunnel_conf.c        |  8 +-
- drivers/net/ethernet/rocker/rocker_ofdpa.c    |  2 +-
- drivers/net/ethernet/sfc/tc_counters.c        | 11 +--
- drivers/net/vrf.c                             |  4 +-
- drivers/net/vxlan/vxlan_core.c                | 14 +---
- include/net/arp.h                             | 16 ++++
- include/net/ip6_route.h                       |  6 +-
- include/net/ndisc.h                           | 31 ++++++--
- include/net/neighbour.h                       | 24 ------
- net/bridge/br_arp_nd_proxy.c                  |  4 +-
- net/core/neighbour.c                          | 11 ++-
- net/ieee802154/6lowpan/tx.c                   |  3 +-
- net/ipv4/arp.c                                | 26 ++++---
- net/ipv4/fib_semantics.c                      |  5 +-
- net/ipv4/route.c                              | 18 ++---
- net/ipv6/ip6_output.c                         |  2 +-
- net/ipv6/ndisc.c                              | 48 +++++++-----
- net/ipv6/route.c                              | 23 +++---
- net/sched/sch_teql.c                          | 15 +++-
- 24 files changed, 234 insertions(+), 190 deletions(-)
-
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index d7da2f1acbb5..50c842617e45 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -146,9 +146,9 @@ static u32 *ipv4_cow_metrics(struct dst_entry *dst, unsigned long old)
+ 	return NULL;
+ }
+ 
+-static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
+-					   struct sk_buff *skb,
+-					   const void *daddr);
++static struct neighbour *ipv4_dst_neigh_lookup(const struct dst_entry *dst,
++					       struct sk_buff *skb,
++					       const void *daddr);
+ static void ipv4_confirm_neigh(const struct dst_entry *dst, const void *daddr);
+ 
+ static struct dst_ops ipv4_dst_ops = {
+@@ -163,7 +163,7 @@ static struct dst_ops ipv4_dst_ops = {
+ 	.update_pmtu =		ip_rt_update_pmtu,
+ 	.redirect =		ip_do_redirect,
+ 	.local_out =		__ip_local_out,
+-	.neigh_lookup =		ipv4_neigh_lookup,
++	.neigh_lookup =		ipv4_dst_neigh_lookup,
+ 	.confirm_neigh =	ipv4_confirm_neigh,
+ };
+ 
+@@ -409,9 +409,9 @@ void rt_cache_flush(struct net *net)
+ 	rt_genid_bump_ipv4(net);
+ }
+ 
+-static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
+-					   struct sk_buff *skb,
+-					   const void *daddr)
++static struct neighbour *ipv4_dst_neigh_lookup(const struct dst_entry *dst,
++					       struct sk_buff *skb,
++					       const void *daddr)
+ {
+ 	const struct rtable *rt = container_of(dst, struct rtable, dst);
+ 	struct net_device *dev;
+@@ -2910,7 +2910,7 @@ struct rtable *ip_route_output_key_hash_rcu(struct net *net, struct flowi4 *fl4,
+ static struct dst_ops ipv4_dst_blackhole_ops = {
+ 	.family			= AF_INET,
+ 	.default_advmss		= ipv4_default_advmss,
+-	.neigh_lookup		= ipv4_neigh_lookup,
++	.neigh_lookup		= ipv4_dst_neigh_lookup,
+ 	.check			= dst_blackhole_check,
+ 	.cow_metrics		= dst_blackhole_cow_metrics,
+ 	.update_pmtu		= dst_blackhole_update_pmtu,
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
