@@ -1,110 +1,168 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1778944605B;
-	Sat,  3 Oct 2026 15:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C48339872;
+	Sat,  3 Oct 2026 15:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791042706; cv=none; b=U3jHTmmMqwlWbV8GWikoZNJ6W8WpKe8hqx9lOlQZXwM0NJ+r0o4S6oJJiJoKVtBiF3KV6ByUZF1N6bhaGctHfcwjzlaO0ihudEOSs1GYjBte5LrF+b1ivahAxnOnvGEmsluCNLe2Eoa90n/1l200OozysQ2O2iocnphjSCCbA+Q=
+	t=1791042721; cv=none; b=GIqg59oAgOChtxA4eAipsxtcq2K0IxNJSV4OUigdq9xJkVZCfIaZFtHwbTN99J820hXFIGRI64e4fGqIek5zQHNGC0e/GVVa4rbIsdTcBoGqewz/s8wLFMUu+9oUkoWNBg/pQYtqUS/3bikJ4ooeh8Hc7WBLgXqECdrdMPM17x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791042706; c=relaxed/simple;
-	bh=e1vKh2q2bAik4aanQLqwwfix2JTwK1OUaKj0xHiHhOY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JMncqNkt+9hlZ7ARDlkZpBg8kq1ikEyVwegLoVFJU18AhnENyI3pD6Q0dqWcRTcGI3szALnEaoXd2eW5uDv+x0t2MzTDgB+Ee2ExHVXBWSBA9Z7qco/gxDRMKeohXlK8TVcWMUhi61DQDuRu7dcr7SetWYLjhqejjPM93R7ciog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=nT0BeXRX; arc=none smtp.client-ip=67.231.154.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="nT0BeXRX"
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8D9A48007F;
-	Sat,  3 Oct 2026 15:51:35 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.37.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id BE5A813C2B0;
-	Sat,  3 Oct 2026 08:51:34 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com BE5A813C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1791042694;
-	bh=e1vKh2q2bAik4aanQLqwwfix2JTwK1OUaKj0xHiHhOY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nT0BeXRXWR7B2r5NAzyWMjCxRtExDyVDmIN+O/taY7XJDoCKoBvr84XMlctey+Xhz
-	 DT6desBQG+FMI3niKyjNHnX8ShwqvM3iGNvNwwhir/pMtI/+3KbpUhArUjeYC7x+D6
-	 /mrxT3/PTkvSYdJKjLCbXjb0q97fqXn7VO4QwNHU=
-Message-ID: <c4286904-2a9a-41fd-93ce-be57964909f6@candelatech.com>
-Date: Sat, 3 Oct 2026 08:51:34 -0700
+	s=arc-20240116; t=1791042721; c=relaxed/simple;
+	bh=qO+fmdmr6QNl5LeoXf/3TJkWNd7H7cQy4oDx1mMbw/s=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XXDiTFYFhjYqL1g+41t1CW1ZehyJc8eYlw56J+QNujNk0o5F/5TB1Rwj51i3xIIlTpk2gqJr26Yvld7jmteUfhApp2nCg/v+YZHVwpMmjKSlsOShDQBbhwIMR/oV2ghgBfvPwtAH1MHRRCt2Q2DeWk/rl4vts8uT4Ocx7vP0sRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
+	 (Exim 4.100.1)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1xD21j-000000001Gg-1fvh;
+	Sat, 03 Oct 2026 15:51:55 +0000
+Date: Sat, 3 Oct 2026 16:51:52 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	driver-core@lists.linux.dev
+Subject: [PATCH net-next v19 2/6] net: dsa: mxl862xx: add SMDIO clause-22
+ register access
+Message-ID: <8fbcfd5ceef8cb1da98145491399d8f4cfd7497a.1791035885.git.daniel@makrotopia.org>
+References: <cover.1791035885.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug] Triple whammy of mt7996e bugs on 7.2+
-To: Ilya K <me@0upti.me>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd>
- <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com>
- <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615>
- <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com>
- <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df>
- <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21>
- <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com>
- <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4>
- <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8>
- <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136>
- <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
- <143991791036721@40be7595-980b-4665-ba66-1601e10a0899>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <143991791036721@40be7595-980b-4665-ba66-1601e10a0899>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1791042696-OXx-lt94Esen
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;at1;1791042696;OXx-lt94Esen;<greearb@candelatech.com>;6f76c88c2c731de9ad886e575864f8cc
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1791035885.git.daniel@makrotopia.org>
 
-On 10/3/26 07:12, Ilya K wrote:
-> OK, so another update: my current branch which is basically 7.2.8 + bpi-r4 specific stuff + any patches from Ben's tree that touch net/wireless or mt76 code (http://github.com/K900/linux/tree/bpi-r4-728-ct) survived an entire week of no crashes, which is a very good sign. Unfortunately, it's still >500 commits with a total of +20k -2k lines of diff, so I'll have to go through it again and strip it down even more before I can have any idea of what is actually helping...
-> 
+Add mxl862xx_smdio_read() and mxl862xx_smdio_write() for clause-22
+SMDIO register access. The switch's MCUboot bootloader exposes only
+clause-22 registers; the clause-45 MMD interface needs the running
+firmware and is unavailable while the switch is in MCUboot. The MDIO
+bus lock is held per-transaction (not across polls) so that SB PDI
+polling during flash erase does not starve other non-switch users of
+the same MDIO bus, such as separate PHYs providing WAN or management
+interfaces.
 
-Hello Ilya,
+mxl862xx_api_wrap() takes the bus lock with MDIO_MUTEX_NESTED because
+it can be entered from the accessors of the switch-internal MDIO bus
+while that bus's lock of the same lock class is already held. The
+SMDIO helpers take it with a plain mutex_lock(): they run where no
+other MDIO bus lock is held, from probe, the devlink flash path and
+the rescue recovery work.
 
-Going back to your original report, your logs showed a lockup.  We have added a bunch of mac80211
-patches to deal with failing hardware around this path.  This was primarily done for working
-around iwlwifi issues, I have not seen mtk7996 hit this path.  Our kernel should warn pretty loudly
-in this case, so if you are still hitting it you should see signs.
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+v19: commit message and comment: name the rescue recovery work among the
+     callers, state the locking of each path on its own, and say that no
+     MDIO bus lock at all may be held, as every bus shares the lock class
+     (found by Sashiko AI review and a local review)
+v18: no changes
+v17: no changes
+v16: no changes
+v15: no changes
+v14: no changes
+v13: no changes
+v12: no changes
+v11: no changes
+v10: no changes
+v9: no changes, picked up Andrew's v5 Reviewed-by
+v8: document the paged register window and the per-transaction bus
+    locking next to the helpers, rather than only in this changelog
+    (found by Sashiko AI review)
+v7: no changes
+v6: no changes
+v5: no changes
+v4: no changes
+v3: explain the plain mutex_lock() vs MDIO_MUTEX_NESTED choice in
+    the commit message
+v2: clarify in the commit message that the per-transaction bus
+    locking is about unrelated non-switch devices on the same MDIO
+    bus (Andrew Lunn)
 
-[59002.686052] Hardware became unavailable during restart.
-[59002.692099] WARNING: net/mac80211/util.c:1959 at ieee80211_reconfig+0x254/0x1ad8 [mac80211], CPU#2: kworker/2:3/26768
-[59002.702894] Modules linked in: wireguard sch_cake mt7996e mt76_connac_lib rtc_pcf8563 at24 mt76 mac80211 libarc4 cfg80211 rfkill nft_queue nft_nat 
-nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_masq nft_ct nft_chain_nat nf_nat nft_flow_offload nf_flow_table_inet nf_flow_table nf_tables mtk_ge_soc 
-mtk_phy_lib sfp tag_mtk mtk_eth mt7530_mmio mt7530 dsa_core governor_passive hsr bridge cmdlinepart pcs_mtk_usxgmii stp llc sm4 spinand phy_mtk_xsphy reset_gpio 
-rt5190a_regulator pcs_mtk_lynxi phy_mtk_xfi_tphy phylink mdio_i2c pwm_mediatek lvts_thermal pwm_fan mtk_cci_devfreq ramoops reed_solomon tcp_bbr sch_fq_codel 
-amneziawg nf_conntrack libcurve25519 libchacha20poly1305 libchacha libpoly1305 nf_defrag_ipv6 ip6_udp_tunnel nf_defrag_ipv4 udp_tunnel fuse zram 842_decompress 
-842_compress lz4hc_compress nvme nvme_core nvme_keyring mmc_block dm_mod nvme_auth pcie_mediatek_gen3 rpmb_core
-[59002.780906] CPU: 2 UID: 0 PID: 26768 Comm: kworker/2:3 Not tainted 7.2.2 #1-NixOS PREEMPTLAZY
-[59002.789512] Hardware name: Banana Pi BPI-R4 (2x SFP+) (DT)
-[59002.794988] Workqueue: events_freezable ieee80211_restart_work [mac80211]
-[59002.801949] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[59002.808902] pc : ieee80211_reconfig+0x254/0x1ad8 [mac80211]
-[59002.814622] lr : ieee80211_reconfig+0x254/0x1ad8 [mac80211]
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c | 41 ++++++++++++++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.h |  2 ++
+ 2 files changed, 43 insertions(+)
 
-And, if you can reproduce the deadlock with lockdep enabled, that may
-help.  Your original logs didn't show the problem part of the lockup
-as far as I could tell, just processes blocked on acquiring rtnl.
-
-Thanks,
-Ben
-
-
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+index 4acd216f7cc00..6fc04a38675ae 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+@@ -495,6 +495,47 @@ int mxl862xx_reset(struct mxl862xx_priv *priv)
+ 	return ret;
+ }
+ 
++#define MXL862XX_SMDIO_ADDR_REG		0x1f
++#define MXL862XX_SMDIO_PAGE_MASK	0xfff0
++#define MXL862XX_SMDIO_OFF_MASK		0x000f
++
++/* Paged clause-22 window: the page goes into MII register 0x1f, the low nibble
++ * of addr selects one of the 16 registers within it. Both helpers take the MDIO
++ * bus lock per transaction with a plain mutex_lock(), so the caller may hold
++ * no MDIO bus lock at all, every bus sharing the lock class;
++ * mxl862xx_api_wrap() holds this one across a whole firmware command.
++ */
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr)
++{
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
++
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_read(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
++}
++
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val)
++{
++	struct mii_bus *bus = priv->mdiodev->bus;
++	int phy = priv->mdiodev->addr;
++	int ret;
++
++	mutex_lock(&bus->mdio_lock);
++	ret = __mdiobus_write(bus, phy, MXL862XX_SMDIO_ADDR_REG,
++			      addr & MXL862XX_SMDIO_PAGE_MASK);
++	if (ret >= 0)
++		ret = __mdiobus_write(bus, phy, addr & MXL862XX_SMDIO_OFF_MASK,
++				      val);
++	mutex_unlock(&bus->mdio_lock);
++	return ret;
++}
++
+ void mxl862xx_host_init(struct mxl862xx_priv *priv)
+ {
+ 	INIT_WORK(&priv->crc_err_work, mxl862xx_crc_err_work_fn);
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.h b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+index 66d6ae198aff4..4e054c6e4c0e4 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx-host.h
++++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.h
+@@ -18,5 +18,7 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *data, u16 size,
+ 	mxl862xx_api_wrap(dev, cmd, &(data), sizeof((data)), true, true)
+ 
+ int mxl862xx_reset(struct mxl862xx_priv *priv);
++int mxl862xx_smdio_read(struct mxl862xx_priv *priv, u32 addr);
++int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val);
+ 
+ #endif /* __MXL862XX_HOST_H */
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+2.56.0
