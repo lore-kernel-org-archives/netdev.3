@@ -1,84 +1,84 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7745399018
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 09:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4801A9FA0
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 09:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791021244; cv=none; b=SCbT0tq9e5PPvN3rBCwb/ZTzxcleo7AG51KkCvTj8Sviz3nThIIARftU6JUB8Nrydk/xUGJjf6dueTLtqvuN5caNQ6/IlR/4pjoGUf8DjsvCCoGFoH4Mz3zqmDNv/lpjeB8nv5lxIbA3k1horBfbr85ho61WygEFDHrLtcd/A0s=
+	t=1791021296; cv=none; b=I2GFM51fbF/cLCma/mBTKp4g6PtSwfXOc0sTNQVb03j0LQOSRUZ+xZFWuHUHgXQ+pP+EW7OOUcqMPWPISx72QJhKdlieTfhPcLzdXr2mw1g2MFJtziHUc48oiOxkPCuc0nTTWl8RlaoVrpIO95dJBncloGbb6+JUo2gF325R62I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791021244; c=relaxed/simple;
-	bh=PuFx0zWXcplwcO/kwwbec+csZfwCfv3PjuRMiBzgrK4=;
+	s=arc-20240116; t=1791021296; c=relaxed/simple;
+	bh=1/VUdwEcbJKn9K5jvVdYdoM5ofQSW9yKaOYYCgehtB8=;
 	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=XZJ8/YTJ0zgZndL083EDVXNgh5EtiiAltQWWOykX+r1oxwsR7LdhFTfEpnyFfV9k7xHGheVcn50lvRV1Oj3nIOjA2rMgEyOEay6pJn6nxOB5cCat7cfuzA8783ZCWxUmBtNXD/7znuBcxEi0znDBgPAXXhrGPjeJWvfhMBi52fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aywX4vr+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HtdP3DZb; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=s5J7XFZNcd5biU+fm5U22R4zG5MXeoQPwExEuiDSDdNsXi4DuRaluH2s2WMTje52RnHoFSv5KCKKRa7hBC7KD/TlsX43VAOik4oF8WygSm9y9mek6I8OPLVtoJ7H1PgAvWp4TLO5URGR9/olF7kY3YohfrlOZpEA+twFZKFGMc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YelXNC98; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SKlamEu8; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aywX4vr+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HtdP3DZb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YelXNC98";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SKlamEu8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791021241;
+	s=mimecast20190719; t=1791021294;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pj3fnkRnguG1XzZ2CAsEmH/UIzLjDfjSPrnu5Kpy4iA=;
-	b=aywX4vr+jaPHR9wHwKFtCLHdgwxLpsZrxWyQxnbQRHpkoiFnVLBMmNWMxLmPezj7Q4CH7Z
-	OvNBHUpaaAKmhjP2iV9PYgEoWK9KtpxsnAHpT7sSKof4aP2Q9G0bbp9SMO/puxbzOEhjBO
-	Fo8YP+Pa0zF/4Y4o2cn/Y92OJeM2GH0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ikxWZJeYQ1V1AF6NYmjgqyaYfUGSJz9U1lEa1NQkyHg=;
+	b=YelXNC98L+igRf+hXbKY9JjYq2unv9MW6bdrG31n9fTyMHEG546Fw/czI7QssUgEq3/Og5
+	Vx7/94sc889HuzO2t0JS4JsXHcN1BHd/gfzK+t6rAV5v1z+IVoJSnge7ysrGc93z+qgyPf
+	/+18Wv4odAaqJ0Pgkv3Ufdlmol2Doww=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-117-ABTmimegO_md_gWhVgRQiQ-1; Sat, 03 Oct 2026 05:54:00 -0400
-X-MC-Unique: ABTmimegO_md_gWhVgRQiQ-1
-X-Mimecast-MFC-AGG-ID: ABTmimegO_md_gWhVgRQiQ_1791021239
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e6862e924so4689965e9.0
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 02:54:00 -0700 (PDT)
+ us-mta-98-OI0x4zyiN7W_HqbnHuJhow-1; Sat, 03 Oct 2026 05:54:52 -0400
+X-MC-Unique: OI0x4zyiN7W_HqbnHuJhow-1
+X-Mimecast-MFC-AGG-ID: OI0x4zyiN7W_HqbnHuJhow_1791021291
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48b028d93c5so144903f8f.3
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 02:54:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791021239; x=1791626039; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1791021291; x=1791626091; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id
          :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=pj3fnkRnguG1XzZ2CAsEmH/UIzLjDfjSPrnu5Kpy4iA=;
-        b=HtdP3DZbWeCreZmZN7fUAmzif1TTLCD2K0/R7NvgKggJcSCHrJjMylmT6ue7xwE40s
-         TbnGviD9DHMNXAibM8qXYdnQxdrAY8uOBon9OCwrwCaspyiWmjFZGfIvLMV5LXk24/TD
-         LlnnAz69e1QxX9IbrWZQmVsS6glGm5tJT2gEzXo+e/LwjCmgyWMniTkEkfY3VAioqeei
-         8DAcnArkz9HlxbOqOrgNGpI1FDkIe66wHiOgrvU4mrqrRlMKiKrjaLH4UGcJ7lnVGQo5
-         YIlqEh0LL/gIzFcuCxeVU9o3KC5Sdr296uouQEm3Y6GdOKNBELMfqTm+XHGskK9Eo6A4
-         hBoA==
+        bh=ikxWZJeYQ1V1AF6NYmjgqyaYfUGSJz9U1lEa1NQkyHg=;
+        b=SKlamEu8u6fuVr7vilZpojQE+visLd4UijwB/z3O+ASsul8T/xuyG2VthdHdVSfltK
+         L7M3KXlkQlmrLdOJvhYTcIvMEq3YbtfILYoxjpzNzY8VPWfEqwI7SNhc9+ZGaDXcf/lf
+         htsI0S3TF9MDRVlkOZLDK1Zq0srPyICY+cqFqpnT/RuThN6VspAPUAg2cBOnjE303NK4
+         6tRUMm9+Rkoi+2W3Wt3VVVBydDTlJEty4RAbztjHev4ceRjc246hycmCRiEzzeo88Yql
+         rorzoeqKFHrCkjgDFoXCMdKrza4UAXLDmiq9YkJ6HqVSEKBnuDUzXYDU6cl9L+AYTaQA
+         M5UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791021239; x=1791626039;
+        d=1e100.net; s=20260707; t=1791021291; x=1791626091;
         h=content-transfer-encoding:content-type:mime-version:message-id
          :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=pj3fnkRnguG1XzZ2CAsEmH/UIzLjDfjSPrnu5Kpy4iA=;
-        b=Vc8j0QotgcH6wfgdRyB+ctBoxhry3RSinoRsdPf+FhxP2toaaNMX0+N2FqaNCeR5Rw
-         SDP0l6JGPfS5cf1/z1kDv8YQdiBiVgUbXNZlmcXW1mM8mbWOk1L6ESab6LVziI1iGpjB
-         xgivsRcdxlIiILnjtHjktOu2tB8OeC9Iunp31bGQ5lo42vSULV+VkwrJFuQRRofZ4pqh
-         pHmXOIlttP9iQCPrJExKHPQPMXjYUfn8bW3LYg813BIhSLVtKDlz4bBeggkImtibxOmR
-         jEcOVkdjiysXmW1ef4JMbU+HDEVsvKGsJYAsXaf3zINQwSswHEzG8F32lj6heLFAqE1L
-         dorg==
-X-Forwarded-Encrypted: i=1; AKwUvBzCXviRAIYt7Sxs3EYhYrBo8epoDX696hs962yenWkzNZB/uorByNdHlx71YA2qWP13ePVD9sg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lM7ws0t/5L3LlBGNlVYXTsnGsjzOLlAD+WBlWj+8EMFifehtQ5
-	FIp3AwJ6Rb+lhs1HFrilAPtCTwHLdVtGv24Dn09lD4PbgHxHPs4hHDb1OhgvrgS6SWUibTqLJ2r
-	AiA+P101NeM5bkufuk7C+PNARMZK5EAEsnjP5K3uezV/r44X8pWpfsxy33g==
-X-Gm-Gg: AYBFou1eYIEZRkF/zM0JdBtfijt7M1NjBugs4mud74qfxWwLUPEXbhk+57lBB+BmTlJ
-	MhXT7nUIRFLn7HcSVKl+7Iao3AF8dcqCsAgEOaQqOPouuwzxd4yn6ziTZJzb+s7yO8HyevbDGdi
-	Z/Pf1XEphzZqCQc9kxAUM9b+qCJTLDdRfEdP6Hyb+LopgyEiQIq2k8yP2UcF7dLLyucbko1/jqP
-	eCr8AlRSYzNP7bGkmhRmmTqdUpfJ+HCEomGQjPo6ohM5oTEZiy0bsg6LD0gMvGq2yA19n9DpqC8
-	W0A6YoKCjoccXouc4lGIKs6wc02c4NcdvCeG6XEQovbgfn80Xjq5MyG9K3MLdBStcjZsPvG3UTV
-	Mezur1OJhJ00Lv3m1muLbYQTdgVoLczz51G8C9EQ=
-X-Received: by 2002:a05:600c:3c98:b0:4a0:37d:9e21 with SMTP id 5b1f17b1804b1-4a168101d2dmr29368745e9.29.1791021239020;
-        Sat, 03 Oct 2026 02:53:59 -0700 (PDT)
-X-Received: by 2002:a05:600c:3c98:b0:4a0:37d:9e21 with SMTP id 5b1f17b1804b1-4a168101d2dmr29368635e9.29.1791021238635;
-        Sat, 03 Oct 2026 02:53:58 -0700 (PDT)
+        bh=ikxWZJeYQ1V1AF6NYmjgqyaYfUGSJz9U1lEa1NQkyHg=;
+        b=PORAysKvgW30Kgs4KB5rOssqjZOD8BUiekNZ9UxTveAeGkfXNULwdhIAHRafi/NaCb
+         gPJB14V99m73HIbwRtplJKIxrrB6P7EJCKFnbMcdTmB82n5/sKoPxLJS7yRvDHJVodPk
+         FHX6Zb89bPYUsXpdTaTRJrV2KRiIC3NoF2Ncby9NoDSMzBD7ZgoFbveru1BMdD1HaSop
+         gFsbJ0Pc5k+1/o65/85em+KrjpmE1mY9djgiolA4GYsc/pUZE/e8T/wfqoiQlVyg0r1M
+         23TuZ6h3pj5nW83JfQqzT3LtvuDGZboxUAtpGhp6XgdCST9qXl/bOkqXgScSU0DFBTHV
+         4qcQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxjH0vtKoaTTW/2sd42Az9TBWybEttQBQXZspY9Gbxyam6+GlhdBfqoxyOiqEdupE/b9bW2VkQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLiriTbJzKzAgtpbln+ocJcimbA+jVVeh8q+9iFj4bDt8O0uS58
+	CJ5roraBfHSYx9s+Nu2BlugeiVHIoRLvCjceJPA9lJlBHhg+yBfChoZim8cxoR3IPAB33RJKvzt
+	R5MHKYGnZik4hzhnQBNFBAnblFuuHXlxOCaE2iGkj+Mf9zuIHRis/Tq1nfw==
+X-Gm-Gg: AYBFou1WxRGwxdWhCj0ja3Gu5fHtay266izGQ2XxTXE01uDTlkcFMxV9fJckyHhYPAH
+	KbQfHhLjXBi1s/hoXiuBbyfssJErhmxu64SZ7hJ7CIdxR9zqzLAn+ElHCloswSNrM3glcif7mhx
+	DzgDYyrOMZCefEKcUu8tKm1gKDV/wjtvAM9ygrCbsU2re6CHZH+p5TJucpGCWkOItc8Dw3QZxzB
+	hM4rc+uoW+AaG1iRCzkJRSnZ9uLcEOzZ7jUV6ueUq5+j/5T7tGEsqW54/0h4CXNLIJzXqHEKMI4
+	RHbOaOJcgGoVuZX01lFdMfICelqWM/kUTlPgNW2EbSu0VRRTWrWHu1TpafPjIHft9u+kbIjh0JD
+	5frPzUwV0OOPdhzmzXAzpypIpz/dup6rwoOhODUs=
+X-Received: by 2002:a05:6000:4553:b0:48b:610:df98 with SMTP id ffacd0b85a97d-48b1276366bmr5184996f8f.40.1791021291321;
+        Sat, 03 Oct 2026 02:54:51 -0700 (PDT)
+X-Received: by 2002:a05:6000:4553:b0:48b:610:df98 with SMTP id ffacd0b85a97d-48b1276366bmr5184980f8f.40.1791021290914;
+        Sat, 03 Oct 2026 02:54:50 -0700 (PDT)
 Received: from ehlo.thunderbird.net ([2a00:e580:bf11:1:2666:d874:79e6:3214])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b38104d64sm10844602f8f.29.2026.10.03.02.53.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b38104d58sm12123904f8f.28.2026.10.03.02.54.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Oct 2026 02:53:57 -0700 (PDT)
-Date: Sat, 03 Oct 2026 11:53:56 +0200
+        Sat, 03 Oct 2026 02:54:50 -0700 (PDT)
+Date: Sat, 03 Oct 2026 11:54:48 +0200
 From: Ivan Vecera <ivecera@redhat.com>
 To: intel-wired-lan@osuosl.org, Petr Oros <poros@redhat.com>,
  netdev@vger.kernel.org
@@ -101,12 +101,12 @@ CC: Tony Nguyen <anthony.l.nguyen@intel.com>,
  Stephen Hemminger <stephen@networkplumber.org>,
  intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
  bpf@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_iwl-net_02/10=5D_ice=3A_fix_IRQ_fr?=
- =?US-ASCII?Q?eeing_in_ice=5Fvsi=5Freq=5Firq=5Fmsix=28=29_error_path?=
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_iwl-net_03/10=5D_ice=3A_stop_the?=
+ =?US-ASCII?Q?_LAN_Tx_queues_when_ice=5Fvsi=5Fopen=28=29_fails?=
 User-Agent: Thunderbird for Android
-In-Reply-To: <20261002130752.2597259-3-poros@redhat.com>
-References: <20261002130752.2597259-1-poros@redhat.com> <20261002130752.2597259-3-poros@redhat.com>
-Message-ID: <5E5BE0F3-4AB6-4DCB-A730-511D626B9189@redhat.com>
+In-Reply-To: <20261002130752.2597259-4-poros@redhat.com>
+References: <20261002130752.2597259-1-poros@redhat.com> <20261002130752.2597259-4-poros@redhat.com>
+Message-ID: <1465AD22-8132-4286-A2AF-ED94E64E12C8@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -117,59 +117,78 @@ Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On October 2, 2026 3:07:44 PM GMT+02:00, Petr Oros <poros@redhat=2Ecom> wro=
+On October 2, 2026 3:07:45 PM GMT+02:00, Petr Oros <poros@redhat=2Ecom> wro=
 te:
->The vectors are requested with the q_vector as dev_id, but the error
->path frees them with &vsi->q_vectors[vector], which is the address of
->the array slot=2E devm_free_irq() finds no matching devres entry, warns
->and leaves the IRQ requested=2E The unwind also tries to free vectors tha=
-t
->the request loop skipped because they have no rings=2E
+>ice_vsi_cfg_lan() adds the LAN (and XDP) Tx queues to the scheduler and
+>enables them in hardware=2E If anything after it fails in ice_vsi_open(),
+>for example requesting the MSI-X vectors, the error path only frees the
+>ring memory and leaves the queues configured=2E Every following open then
+>fails to add the same queues again and the netdev can not be brought up
+>until the driver is reloaded:
 >
->Forcing request_irq to fail on the fourth vector during ndo_open gives:
+>  ice 0000:04:00=2E2: Failed to set LAN Tx queue context, error: -5
+>  ice 0000:04:00=2E2 enp4s0f2np2: Failed to open VSI 0x0010 on switch 0x0=
+002
 >
->  ice 0000:04:00=2E2 enp4s0f2np2: MSIX request_irq failed, error: -16
->  WARNING: kernel/irq/devres=2Ec:191 at devm_free_irq+0x30/0x40
->  WARNING: kernel/irq/devres=2Ec:191 at devm_free_irq+0x30/0x40
->  WARNING: kernel/irq/devres=2Ec:191 at devm_free_irq+0x30/0x40
+>Stop the Tx queues on the error paths that run after ice_vsi_cfg_lan()=2E
+>The ice_up_complete() failure path already does it through ice_down(),
+>so let it skip the new step=2E
 >
->and the three IRQs stay registered in /proc/interrupts while the
->interface is down=2E
->
->Pass the q_vector as dev_id and skip the vectors without rings, which
->the request loop never requested=2E
->
->i40e fixed the same mistake in commit 915470e1b44e ("i40e: fix IRQ
->freeing in i40e_vsi_request_irq_msix error path")=2E
+>There is no i40e counterpart of this fix, i40e does not add its Tx
+>queues through the admin queue=2E It was found while verifying the
+>previous patch=2E With the IRQ unwind fixed the warnings were gone, but
+>the netdev still could not be opened again after the forced
+>request_irq failure=2E
 >
 >Fixes: cdedef59deb0 ("ice: Configure VSIs for Tx/Rx")
 >Assisted-by: LLM
+
+Which one?
+
+Otherwise=2E=2E=2E
+
+Reviewed-by: Ivan Vecera <ivecera@redhat=2Ecom>
+
+
 >Signed-off-by: Petr Oros <poros@redhat=2Ecom>
 >---
-> drivers/net/ethernet/intel/ice/ice_main=2Ec | 8 ++++++--
-> 1 file changed, 6 insertions(+), 2 deletions(-)
+> drivers/net/ethernet/intel/ice/ice_main=2Ec | 10 ++++++++--
+> 1 file changed, 8 insertions(+), 2 deletions(-)
 >
 >diff --git a/drivers/net/ethernet/intel/ice/ice_main=2Ec b/drivers/net/et=
 hernet/intel/ice/ice_main=2Ec
->index f2121e79fca993=2E=2Ed246cde36ae726 100644
+>index d246cde36ae726=2E=2Ee62a8f544345a3 100644
 >--- a/drivers/net/ethernet/intel/ice/ice_main=2Ec
 >+++ b/drivers/net/ethernet/intel/ice/ice_main=2Ec
->@@ -2582,8 +2582,12 @@ static int ice_vsi_req_irq_msix(struct ice_vsi *vs=
-i, char *basename)
+>@@ -7561,13 +7561,13 @@ int ice_vsi_open(struct ice_vsi *vsi)
 >=20
-> free_q_irqs:
-> 	while (vector--) {
->-		irq_num =3D vsi->q_vectors[vector]->irq=2Evirq;
->-		devm_free_irq(dev, irq_num, &vsi->q_vectors[vector]);
->+		struct ice_q_vector *q_vector =3D vsi->q_vectors[vector];
->+
->+		if (!q_vector->tx=2Etx_ring && !q_vector->rx=2Erx_ring)
->+			continue;
->+
->+		devm_free_irq(dev, q_vector->irq=2Evirq, q_vector);
-> 	}
-> 	return err;
-> }
-
-Reviewed-by: Ivan Vecera <ivecera@redhat=2Ecom>
+> 	err =3D ice_vsi_cfg_lan(vsi);
+> 	if (err)
+>-		goto err_setup_rx;
+>+		goto err_stop_tx;
+>=20
+> 	snprintf(int_name, sizeof(int_name) - 1, "%s-%s",
+> 		 dev_driver_string(ice_pf_to_dev(pf)), vsi->netdev->name);
+> 	err =3D ice_vsi_req_irq_msix(vsi, int_name);
+> 	if (err)
+>-		goto err_setup_rx;
+>+		goto err_stop_tx;
+>=20
+> 	if (bitmap_empty(pf->txtime_txqs, pf->max_pf_txqs))
+> 		ice_vsi_cfg_netdev_tc(vsi, vsi->tc_cfg=2Eena_tc);
+>@@ -7593,8 +7593,14 @@ int ice_vsi_open(struct ice_vsi *vsi)
+>=20
+> err_up_complete:
+> 	ice_down(vsi);
+>+	ice_vsi_free_irq(vsi);
+>+	goto err_setup_rx;
+> err_set_qs:
+> 	ice_vsi_free_irq(vsi);
+>+err_stop_tx:
+>+	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
+>+	if (vsi->xdp_rings)
+>+		ice_vsi_stop_xdp_tx_rings(vsi);
+> err_setup_rx:
+> 	ice_vsi_free_rx_rings(vsi);
+> err_setup_tx:
 
