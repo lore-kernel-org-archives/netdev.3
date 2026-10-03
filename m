@@ -1,194 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4801A9FA0
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 09:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEED11A9FA0
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 09:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791021296; cv=none; b=I2GFM51fbF/cLCma/mBTKp4g6PtSwfXOc0sTNQVb03j0LQOSRUZ+xZFWuHUHgXQ+pP+EW7OOUcqMPWPISx72QJhKdlieTfhPcLzdXr2mw1g2MFJtziHUc48oiOxkPCuc0nTTWl8RlaoVrpIO95dJBncloGbb6+JUo2gF325R62I=
+	t=1791021302; cv=none; b=WdIQqJwLGy/w5zKdgeLC0DmT3HBI1ITmUt093yS+KAp41sjhVGFeKQhqenvRajjokcGU4fUnb6nKA49gIb15r2jPJ7FVhbJDRuSMJXrmt2XT1Zx5jQqNYDV92CHPhu1xf+C/QMwIMFwhTKKdq/rNbt+Ims2NkITHtd3xvDVcTJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791021296; c=relaxed/simple;
-	bh=1/VUdwEcbJKn9K5jvVdYdoM5ofQSW9yKaOYYCgehtB8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=s5J7XFZNcd5biU+fm5U22R4zG5MXeoQPwExEuiDSDdNsXi4DuRaluH2s2WMTje52RnHoFSv5KCKKRa7hBC7KD/TlsX43VAOik4oF8WygSm9y9mek6I8OPLVtoJ7H1PgAvWp4TLO5URGR9/olF7kY3YohfrlOZpEA+twFZKFGMc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YelXNC98; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SKlamEu8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791021302; c=relaxed/simple;
+	bh=LWL2mpu5aKq/KWBeDWwk7AH+dZECoiTwjCRx9zv3wlM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=umCkboRxyLQux2AiT0PIdgBI3bTWFilb07eyln57YTtJxVJodrZJpB3gwXwoTJEJZxB7PKcxZU3HvJKH45bB0ISUr9sqwPtEg4oRRXKTXJZnRzdRWPdmchYr6q4a0vTvQ0iBx13IQ2mVWMXiwJSETuoV+cOvQPYOdoG+tv8aGGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=UKez3Ijo; arc=none smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YelXNC98";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SKlamEu8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791021294;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ikxWZJeYQ1V1AF6NYmjgqyaYfUGSJz9U1lEa1NQkyHg=;
-	b=YelXNC98L+igRf+hXbKY9JjYq2unv9MW6bdrG31n9fTyMHEG546Fw/czI7QssUgEq3/Og5
-	Vx7/94sc889HuzO2t0JS4JsXHcN1BHd/gfzK+t6rAV5v1z+IVoJSnge7ysrGc93z+qgyPf
-	/+18Wv4odAaqJ0Pgkv3Ufdlmol2Doww=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-OI0x4zyiN7W_HqbnHuJhow-1; Sat, 03 Oct 2026 05:54:52 -0400
-X-MC-Unique: OI0x4zyiN7W_HqbnHuJhow-1
-X-Mimecast-MFC-AGG-ID: OI0x4zyiN7W_HqbnHuJhow_1791021291
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48b028d93c5so144903f8f.3
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 02:54:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="UKez3Ijo"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb769ca17so1351981cf.2
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 02:55:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791021291; x=1791626091; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ikxWZJeYQ1V1AF6NYmjgqyaYfUGSJz9U1lEa1NQkyHg=;
-        b=SKlamEu8u6fuVr7vilZpojQE+visLd4UijwB/z3O+ASsul8T/xuyG2VthdHdVSfltK
-         L7M3KXlkQlmrLdOJvhYTcIvMEq3YbtfILYoxjpzNzY8VPWfEqwI7SNhc9+ZGaDXcf/lf
-         htsI0S3TF9MDRVlkOZLDK1Zq0srPyICY+cqFqpnT/RuThN6VspAPUAg2cBOnjE303NK4
-         6tRUMm9+Rkoi+2W3Wt3VVVBydDTlJEty4RAbztjHev4ceRjc246hycmCRiEzzeo88Yql
-         rorzoeqKFHrCkjgDFoXCMdKrza4UAXLDmiq9YkJ6HqVSEKBnuDUzXYDU6cl9L+AYTaQA
-         M5UA==
+        d=mojatatu.com; s=google; t=1791021300; x=1791626100; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CNeW7Vd7tIlOnNM3yD+vQZMp3opWNzf3Bnh6aL6k2qI=;
+        b=UKez3Ijo/ujA7dJTUFD7JUhCtO4ZpDrVGpzQ0FG4MF6PXwmzjrdg+L7LAgX3+ufz3z
+         Qn+qEB12+KI0Wwjy0DqsDdiQON+gOZ+55gJwLn6SeuQ1KFpVMiB1Om7rU9XH/Ijf1gv4
+         f/c889fdAdzx08ay8SryNXdQ4y7aLtlCkvY1E=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791021291; x=1791626091;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ikxWZJeYQ1V1AF6NYmjgqyaYfUGSJz9U1lEa1NQkyHg=;
-        b=PORAysKvgW30Kgs4KB5rOssqjZOD8BUiekNZ9UxTveAeGkfXNULwdhIAHRafi/NaCb
-         gPJB14V99m73HIbwRtplJKIxrrB6P7EJCKFnbMcdTmB82n5/sKoPxLJS7yRvDHJVodPk
-         FHX6Zb89bPYUsXpdTaTRJrV2KRiIC3NoF2Ncby9NoDSMzBD7ZgoFbveru1BMdD1HaSop
-         gFsbJ0Pc5k+1/o65/85em+KrjpmE1mY9djgiolA4GYsc/pUZE/e8T/wfqoiQlVyg0r1M
-         23TuZ6h3pj5nW83JfQqzT3LtvuDGZboxUAtpGhp6XgdCST9qXl/bOkqXgScSU0DFBTHV
-         4qcQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxjH0vtKoaTTW/2sd42Az9TBWybEttQBQXZspY9Gbxyam6+GlhdBfqoxyOiqEdupE/b9bW2VkQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLiriTbJzKzAgtpbln+ocJcimbA+jVVeh8q+9iFj4bDt8O0uS58
-	CJ5roraBfHSYx9s+Nu2BlugeiVHIoRLvCjceJPA9lJlBHhg+yBfChoZim8cxoR3IPAB33RJKvzt
-	R5MHKYGnZik4hzhnQBNFBAnblFuuHXlxOCaE2iGkj+Mf9zuIHRis/Tq1nfw==
-X-Gm-Gg: AYBFou1WxRGwxdWhCj0ja3Gu5fHtay266izGQ2XxTXE01uDTlkcFMxV9fJckyHhYPAH
-	KbQfHhLjXBi1s/hoXiuBbyfssJErhmxu64SZ7hJ7CIdxR9zqzLAn+ElHCloswSNrM3glcif7mhx
-	DzgDYyrOMZCefEKcUu8tKm1gKDV/wjtvAM9ygrCbsU2re6CHZH+p5TJucpGCWkOItc8Dw3QZxzB
-	hM4rc+uoW+AaG1iRCzkJRSnZ9uLcEOzZ7jUV6ueUq5+j/5T7tGEsqW54/0h4CXNLIJzXqHEKMI4
-	RHbOaOJcgGoVuZX01lFdMfICelqWM/kUTlPgNW2EbSu0VRRTWrWHu1TpafPjIHft9u+kbIjh0JD
-	5frPzUwV0OOPdhzmzXAzpypIpz/dup6rwoOhODUs=
-X-Received: by 2002:a05:6000:4553:b0:48b:610:df98 with SMTP id ffacd0b85a97d-48b1276366bmr5184996f8f.40.1791021291321;
-        Sat, 03 Oct 2026 02:54:51 -0700 (PDT)
-X-Received: by 2002:a05:6000:4553:b0:48b:610:df98 with SMTP id ffacd0b85a97d-48b1276366bmr5184980f8f.40.1791021290914;
-        Sat, 03 Oct 2026 02:54:50 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([2a00:e580:bf11:1:2666:d874:79e6:3214])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b38104d58sm12123904f8f.28.2026.10.03.02.54.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Oct 2026 02:54:50 -0700 (PDT)
-Date: Sat, 03 Oct 2026 11:54:48 +0200
-From: Ivan Vecera <ivecera@redhat.com>
-To: intel-wired-lan@osuosl.org, Petr Oros <poros@redhat.com>,
- netdev@vger.kernel.org
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Henry Tieman <henry.w.tieman@intel.com>,
- Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>,
- Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
- Jesse Brandeburg <jbrandeb@kernel.org>,
- Preethi Banala <preethi.banala@intel.com>,
- Kiran Patil <kiran.patil@intel.com>, Dan Nowlin <dan.nowlin@intel.com>,
- Stephen Hemminger <stephen@networkplumber.org>,
- intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_iwl-net_03/10=5D_ice=3A_stop_the?=
- =?US-ASCII?Q?_LAN_Tx_queues_when_ice=5Fvsi=5Fopen=28=29_fails?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20261002130752.2597259-4-poros@redhat.com>
-References: <20261002130752.2597259-1-poros@redhat.com> <20261002130752.2597259-4-poros@redhat.com>
-Message-ID: <1465AD22-8132-4286-A2AF-ED94E64E12C8@redhat.com>
+        d=1e100.net; s=20260707; t=1791021300; x=1791626100;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CNeW7Vd7tIlOnNM3yD+vQZMp3opWNzf3Bnh6aL6k2qI=;
+        b=pZ6Io98LjhBLxHzxgXscS+MY3i28AR5wlH6UbcpA/7fJlY77MzQcbhJjXY1urM8TWP
+         ofPXnQNdy+5vWiDvNrVzEBtJIBgkpvuBE2YaMrSkQrMKc7wl0rJ/D2iRPlLRwOcjwsJf
+         6ZSRJokITwURnNnhMzEGkmEL32D2Zxfl2FdEnLcSYp3LhPpuXo/0ouI45GvpXnBL5hU1
+         n1onwRonZjWS9YwnNZ7596Oos6GanSYznHbhxnSI9NPq81ln4p1DYE7SXe91nkvXL1FB
+         ddQM7aPxUXRnToB+Ti5hCtXKMCKtneqXpka+m7ttnfVa103yLpXoHYT6CUFsuBjvxgJZ
+         ICeQ==
+X-Gm-Message-State: AFuF++lQ81TbRzUiOd46ErnlYWSS0KNF/+O4Z2wtk6HOi229H0Rw3Hax
+	I4AZQj6nRWck0U2WfbmMhmMt+9At002ZWhEj85Fk0qzxudBLeyCAQ5vXpQ02h49tzvWNgNwtx3t
+	17AM=
+X-Gm-Gg: AYBFou2mq2G/PImPZbmdlLoeAujCikBd+sGSYoWOLocIu1p65AQ7FypBxLXDEXPl0Cx
+	bhAjkxBTkuIxbSmGyWN1gyIiJvtqq09L8DRbAmJZKXY2P18bmJHF9+Mgalu1ir7cpoaVdAxccqu
+	B4oasiphuyqIOXX21icpHNnvAZqdzxFxNoVp4vdgQfh2RcVFrUlbPDWi9VbNs8dO/d2Nmzvy9nv
+	qI6G0jMbIbzLKsKwSLX4kGQKqjLvmZ/IJ6g7uaC+EbI6ug1QkU53MfV7dWPYt27tOy45/oL5dKj
+	AoFjN2Brrl2NqfrAeJHUStOd1yqBzkOzhpn4Hou0QKN3TbqczpSJ6HVMkzFjWH4X+SscB10YMgK
+	FZhJjFI1C7tFLmrCXVuafeLg8nMJDRv6vYXwxoB7r6ytG+Li2ObqoI51oWwT+EPLmPwgDzB9+9u
+	oiV6/zb/YW63GZNh4BO4dTcYP0bDblQur7izSlg6kEWphRAk0/SGysElyjNoNN8s63ImxfD88/f
+	WgWZgcWbi+wO/edaAN9l7yu0h4eIe4eY5SFTYAOVhWXqtvIwD9OPbzWxhjI
+X-Received: by 2002:a05:622a:610c:b0:533:8900:4eae with SMTP id d75a77b69052e-533cba1ae1emr103536221cf.13.1791021299729;
+        Sat, 03 Oct 2026 02:54:59 -0700 (PDT)
+Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-917e0c3e2bdsm40853956d6.49.2026.10.03.02.54.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 02:54:59 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	stable@vger.kernel.org,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	hybris <hybris@mojatatu.ai>,
+	sashiko-bot@kernel.org
+Subject: [PATCH net 1/2 repost2] net/sched: act_api: reject duplicate actions in a batch
+Date: Sat,  3 Oct 2026 05:54:53 -0400
+Message-ID: <QDISC-K1TH.v1.20260922072206@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Message-ID: <20261003095453.4jiXbPK5mkXck0VOLiLu3sM9l-NGfDiZ4G96YKNDV-0@z>
 
-On October 2, 2026 3:07:45 PM GMT+02:00, Petr Oros <poros@redhat=2Ecom> wro=
-te:
->ice_vsi_cfg_lan() adds the LAN (and XDP) Tx queues to the scheduler and
->enables them in hardware=2E If anything after it fails in ice_vsi_open(),
->for example requesting the MSI-X vectors, the error path only frees the
->ring memory and leaves the queues configured=2E Every following open then
->fails to add the same queues again and the netdev can not be brought up
->until the driver is reloaded:
->
->  ice 0000:04:00=2E2: Failed to set LAN Tx queue context, error: -5
->  ice 0000:04:00=2E2 enp4s0f2np2: Failed to open VSI 0x0010 on switch 0x0=
-002
->
->Stop the Tx queues on the error paths that run after ice_vsi_cfg_lan()=2E
->The ice_up_complete() failure path already does it through ice_down(),
->so let it skip the new step=2E
->
->There is no i40e counterpart of this fix, i40e does not add its Tx
->queues through the admin queue=2E It was found while verifying the
->previous patch=2E With the IRQ unwind fixed the warnings were gone, but
->the netdev still could not be opened again after the forced
->request_irq failure=2E
->
->Fixes: cdedef59deb0 ("ice: Configure VSIs for Tx/Rx")
->Assisted-by: LLM
+tca_action_gd() builds actions[] with one tcf_action_get_1() per nested
+TCA_ACT_TAB entry.  Each successful lookup takes its own reference to the
+resolved action, so repeated TCA_ACT_INDEX entries in one request yield
+the same pointer in multiple slots.
 
-Which one?
+For RTM_DELACTION, tcf_action_delete() then consumes two references per
+slot: one in tcf_action_put() and one in tcf_idr_delete_index().  A
+duplicate therefore drives the refcount to zero mid-walk -- the delete
+frees the action and removes its IDR slot -- and the next slot calls
+tcf_action_put() on the freed action:
 
-Otherwise=2E=2E=2E
+  refcount_t: underflow; use-after-free.
+  WARNING: lib/refcount.c:87 at refcount_dec_not_one
+   refcount_dec_and_mutex_lock
+   __tcf_action_put
+   tca_action_gd
 
-Reviewed-by: Ivan Vecera <ivecera@redhat=2Ecom>
+Three duplicate entries are enough.  Reject a repeated action while a
+delete batch is built, dropping the reference the extra lookup took, and
+return -EINVAL.  RTM_GETACTION balances its own references and keeps
+accepting duplicate entries.
 
+Conditions to recreate the bug:
+  tc actions add action gact index 100
+  tc actions delete action gact index 100 action gact index 100 \
+                     action gact index 100
 
->Signed-off-by: Petr Oros <poros@redhat=2Ecom>
->---
-> drivers/net/ethernet/intel/ice/ice_main=2Ec | 10 ++++++++--
-> 1 file changed, 8 insertions(+), 2 deletions(-)
->
->diff --git a/drivers/net/ethernet/intel/ice/ice_main=2Ec b/drivers/net/et=
-hernet/intel/ice/ice_main=2Ec
->index d246cde36ae726=2E=2Ee62a8f544345a3 100644
->--- a/drivers/net/ethernet/intel/ice/ice_main=2Ec
->+++ b/drivers/net/ethernet/intel/ice/ice_main=2Ec
->@@ -7561,13 +7561,13 @@ int ice_vsi_open(struct ice_vsi *vsi)
->=20
-> 	err =3D ice_vsi_cfg_lan(vsi);
-> 	if (err)
->-		goto err_setup_rx;
->+		goto err_stop_tx;
->=20
-> 	snprintf(int_name, sizeof(int_name) - 1, "%s-%s",
-> 		 dev_driver_string(ice_pf_to_dev(pf)), vsi->netdev->name);
-> 	err =3D ice_vsi_req_irq_msix(vsi, int_name);
-> 	if (err)
->-		goto err_setup_rx;
->+		goto err_stop_tx;
->=20
-> 	if (bitmap_empty(pf->txtime_txqs, pf->max_pf_txqs))
-> 		ice_vsi_cfg_netdev_tc(vsi, vsi->tc_cfg=2Eena_tc);
->@@ -7593,8 +7593,14 @@ int ice_vsi_open(struct ice_vsi *vsi)
->=20
-> err_up_complete:
-> 	ice_down(vsi);
->+	ice_vsi_free_irq(vsi);
->+	goto err_setup_rx;
-> err_set_qs:
-> 	ice_vsi_free_irq(vsi);
->+err_stop_tx:
->+	ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, 0);
->+	if (vsi->xdp_rings)
->+		ice_vsi_stop_xdp_tx_rings(vsi);
-> err_setup_rx:
-> 	ice_vsi_free_rx_rings(vsi);
-> err_setup_tx:
+Fixes: 16af6067392c ("net: sched: implement reference counted action release")
+Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260824153903.4143642-1-victor@mojatatu.com
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ net/sched/act_api.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index e45a63be397c..a9323c42a69a 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -2026,7 +2026,7 @@ static int
+ tca_action_gd(struct net *net, struct nlattr *nla, struct nlmsghdr *n,
+ 	      u32 portid, int event, struct netlink_ext_ack *extack)
+ {
+-	int i, ret;
++	int i, j, ret;
+ 	struct nlattr *tb[TCA_ACT_MAX_PRIO + 1];
+ 	struct tc_action *act;
+ 	size_t attr_size = 0;
+@@ -2051,6 +2051,25 @@ tca_action_gd(struct net *net, struct nlattr *nla, struct nlmsghdr *n,
+ 			ret = PTR_ERR(act);
+ 			goto err;
+ 		}
++
++		/* A delete consumes two references per slot (tcf_action_put()
++		 * and tcf_idr_delete_index()) but each entry takes one, so a
++		 * repeated action would hit zero mid-walk.  GET balances its
++		 * own references and keeps accepting duplicates.
++		 */
++		if (event == RTM_DELACTION) {
++			for (j = 0; j < i - 1; j++) {
++				if (actions[j] != act)
++					continue;
++
++				tcf_action_put(act);
++				NL_SET_ERR_MSG(extack,
++					       "Duplicate TC action in a delete batch");
++				ret = -EINVAL;
++				goto err;
++			}
++		}
++
+ 		attr_size += tcf_action_fill_size(act);
+ 		actions[i - 1] = act;
+ 	}
+-- 
+2.43.0
 
