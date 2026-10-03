@@ -1,260 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E20547071
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 20:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709F22E7379
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 20:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791058365; cv=none; b=TWYpZze+65CsY6pyvKxwSq14v4PM4JytTFmPEMUkz3VFwRprssKk8BDq9IWSXMJn4wjmlDJpJ70dOLYItYW0y5n/pXGMquHzMpDnsHxSof3PtCnjOyyPonv0VSDYcfYw0jf08erKmXfssN/37gk5Z6PZjETxoaZzfqan6VbWVAM=
+	t=1791058595; cv=none; b=lAs17jj8Af78Itq4U2LWffTPvOWyC3ado5/df1yH4BzrKUqgLnPoecMZwycWXP/WpQsJcUqvNZSirAxLoWDWOqSxQWvra7xBdhIc93BmEdRyKuVDocVAUl7Ze9lAOpcgw4zp9Bsnqfrbl6b8HYHxfA5pTrPYCj0qI9HsRfsArUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791058365; c=relaxed/simple;
-	bh=tuaK8cFfX8KirHx01CnwZwrBks61F0YZTy57kPFfSEQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n2DZKOQVjOBoWwIQjEGb7oBNU8xSOky26QRjJa3JUcVdujZgtYEaY9K0lJzFtbZGR3abEUxTu5iv00rRZJGOfYICfl15QVcNFKeXt9t1Gi/9Xk+fHpF1MErQbAM84vDja/oAUngtrIQCaPCUMpDKQY8nZZ5D7U/TjunZHNvRqKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYSh04Eo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791058595; c=relaxed/simple;
+	bh=SyKBO76ev2NriW6LktGJTb69Uo9mhcn47+zY2SXVJ5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RKRtLHql5Pfy3SkVIS+DhtXSA3RpD9YfQKoGKKvnjQlZEhldrJrxskyXO+RFeFE+Wx6NsAH+4P8C0hZaiMClek3mcLi6s0Sjlh8Z4KqcjXAP+4R7XOn21ewOR448ySFBJ3kR/NJC6vZAzfjsYKAHBK63uIczkwCwlQAOEFAnxtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gr3qjM2S; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYSh04Eo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DD31F0089B;
-	Sat,  3 Oct 2026 20:12:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791058363;
-	bh=f/Srug0ripxhrjP8zuXfyr30DPzL3PSP2pLijnaexbo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WYSh04EoyAk3S7NhWklqsKFWajLtKrvMna7IYWB2V5NCX2aEozDYiNzh5vGwZS9xL
-	 Sq8VZFmfykEEpxvheM7f1aUCPDSSjKX0tP3P2qMpJnmfpQ8V+GhvzYjoknqUdoJdWk
-	 tx03yfmDDghgf7rawdlH22lFZ9Eya/Nx6TRo6iONmcWEqWKSstGEEAhnK7hp+GE2Qt
-	 Q3sTnY0f9QdQHCRjDeBefsOG2kbVGTunY9DiKWHfca3rsLsx/oJkJav/BdWKqK7znJ
-	 EPVgrLiEYIb9wcyioxRMI2KhOCdvvmzrN441eIdtjF6/e+AllfmoazIgjp0HWlYKCw
-	 92MY/LJP6CsLw==
-Subject: Re: [PATCH net-next] net: openvswitch: do not set transport header on
- later IPv4 fragments
-From: netdev-bot+sashiko@kernel.org
-To: fmancera@suse.de
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, aatteka@nicira.com,
- jesse@nicira.com, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@kernel.org, davem@davemloft.net, i.maximets@ovn.org,
- echaudro@redhat.com, aconole@redhat.com
-Date: Sat, 03 Oct 2026 20:12:42 +0000
-Message-ID: <179105836225.434549.3683022386264078751@kernel.org>
-In-Reply-To: <20261002195436.8473-1-fmancera@suse.de>
-References: <20261002195436.8473-1-fmancera@suse.de>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gr3qjM2S"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a16aaf2067so5027805e9.0
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 13:16:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791058593; x=1791663393; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xSJHmcS6fdALBnPJ5e4ZZCDQp3UfYu5aUPElGXfZW+Q=;
+        b=gr3qjM2SOXIDXZ4oyvPCqdDXnS8Q8BPOE8b6TG+GYQLwCmc+wWac51qM1JTRvgJQ/m
+         s8qdQAe8oZxD5NsPCq7TUxSt5wKxZ+nx5VMyA8Z2aBKboSnup2FOxdFnzVfIlAzd3Tnf
+         JaDv9u63AlarcYCQ7JZLp6e74T1d+nj+5ZBeacTXfDzMhrZ5yaoj6HDJPCl30Y6+1bha
+         tEf3/6tKZvEKgArhWqJ2SqSfsb3yYMiak5MFJvclKK2DrlTwZvzsP0aoBZMN0bZLGjAG
+         uykj6B8nWrfdMykWIFgdB2IGpMagMTrd9dVFemn/KxKp5l8tFjKbPLZWDWvIavPpyoc4
+         NXtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791058593; x=1791663393;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xSJHmcS6fdALBnPJ5e4ZZCDQp3UfYu5aUPElGXfZW+Q=;
+        b=OJFtnkaDwZzLk76G56bhDWH3ycZiCrlzOvnI3SBClk9H6Dg8ykBfdP4mmMn6GqsmQv
+         pIRu/uidzL84nbbYVo+o/NTdfzehFATsfeMMs+XUSHA6WATMqSf3jMMt7dby4iTCtm2e
+         W41n/mQv1xxnwlzI7Jj0CJPm80/uV4O2XBbtoK0RX1dtIJ2TwegVW22yMhE62v2VQZvu
+         0B+80SJLPgphuLPFBhc8JAO288Rw8jbe2Ry98OWaIXkV/gmK9ZXS9jDMmjmDxEsX/szX
+         jVZVbhFtemRDTGOSMt3U6q5It8nPqO0F3U4916TqIc5LlcLoBDuwUuKVg3IiyRMF4ba4
+         QVQg==
+X-Forwarded-Encrypted: i=1; AKwUvBwe2ZqZiNS6/C2J3DcTx0Ie3bS7oy5Ywxx2Rh6U5qCWEy1xsaEQIDYCjodPdcqubPSrGLCQ9xw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lECT5jyR1/ZoCdJVz1i2T+uvdKd3ArGhJ16PFS6yqAQTzw6ipJ
+	pU1ndqlfx/E2b4G9mluSPGuA2vREGzij9mCyIFKHfX4IAKdMePfpqAJv
+X-Gm-Gg: AYBFou0zonjIsvEbcjkWVKqMl0lxeWfQ0/h4Pn0Wo8uN64S9bTio8ctAT8VAKZxzuIK
+	fhTU4RdY1aM9CIx25jO3zhlMxJMJpY6xSU1FM2kTJdndk9jWppd6JAZeRU07pdMsAM0IOQpboS+
+	hHLbLCLtJbkucVtohBMfxC9SiNXr7R41fBpzuycVKmA7muaCHf13lHmNFRxBw00CAUOthvUcCa/
+	qfO6XrC02tg4BdkBJRQp5cOS4qJraQ7q7+2IW27tr8tCOfue4uiknvyyBOogYpa+SFVuZMZFi5M
+	QNpQ3sXj4aUk9mNRMzfzIG/dObIIsofedovrS2qk7AOA8jEev23JThe/4e4N/pFcoLU6RdAs6na
+	tXKYVQKaZ0Qw/BALxqwtlPP0sMaoopiOT9WsteMpzHBm0aybY92mSGvp8vCxI901R/7WMj+Em+s
+	ncQn88/u7zxObGtCaOdo+XFIn6obYOhktGhIlgVLnSXAgCdt/ybLdkRUoV1Z3Ku2D9ipuSXBVzw
+	tE=
+X-Received: by 2002:a05:600c:c1d7:10b0:4a0:4f6:3dc5 with SMTP id 5b1f17b1804b1-4a1680dd4f4mr34160075e9.7.1791058592594;
+        Sat, 03 Oct 2026 13:16:32 -0700 (PDT)
+Received: from Mac ([188.163.8.107])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a16d6295f9sm51579145e9.14.2026.10.03.13.16.31
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 03 Oct 2026 13:16:32 -0700 (PDT)
+From: Andrii Pasichnyk <apasichnik9@gmail.com>
+To: "Jason A . Donenfeld" <Jason@zx2c4.com>,
+	netdev@vger.kernel.org,
+	wireguard@lists.zx2c4.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Andrii Pasichnyk <apasichnik9@gmail.com>
+Subject: [PATCH net] wireguard: peer: free packets left on the per-peer queues on removal
+Date: Sat,  3 Oct 2026 23:16:25 +0300
+Message-ID: <20261003201625.4572-1-apasichnik9@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+peer_remove_after_dead() flushes the crypt workqueue and then disables
+the peer's NAPI. Once a disable is pending, __napi_poll() completes the
+instance after the poll returns even if it used its whole budget, so a
+peer removed while more than one budget of decrypted packets waits on
+rx_queue keeps the rest there. Each entry holds a keypair and a peer
+reference, so the peer is never released; the WARN_ON in rcu_release()
+that checks for leftovers is never reached either.
 
-Critical: 1 · High: 1 · Medium: 0 · Low: 2
+Free whatever is left on both per-peer queues once nothing can feed them
+any more: receive entries are single packets, transmit entries lists.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reproduced with the WireGuard selftest VM (x86 KVM, 1 vCPU, net-next):
+remove a peer while a UDP flood keeps its receive queue busy, re-add it,
+repeat, then run the selftest's created/destroyed object check. Over
+2140 removals the unpatched kernel leaked a peer and its keypair 5
+times ("wg0: Peer 27: merely created"); with this patch, 0 times in
+another 2140.
 
-- [Critical] After this patch, a stale transport header on IPv4 later
-  fragments is used by set_tcp(), set_udp() and set_sctp().
-- [High] The patch does not achieve its stated goal.
-- [Low] The kernel-doc for key_extract() (net/openvswitch/flow.c:903-906)
-  says that when key->eth.type is ETH_P_IP or ETH_P_IPV6,…
-- [Low] The commit message is inaccurate and incomplete.
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Assisted-by: LLM
+Signed-off-by: Andrii Pasichnyk <apasichnik9@gmail.com>
+---
+ drivers/net/wireguard/peer.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
---
-
-net: openvswitch: do not set transport header on later IPv4 fragments
-
-This patch changes check_iphdr() so it no longer calls
-skb_set_transport_header() for IPv4 packets with a non-zero fragment
-offset. It also moves the transport_len calculation in
-update_ip_l4_checksum() so it runs after the fragment check.
-
-Link: https://lore.kernel.org/netdev/59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org/
-
-> As discussed, let's not set the transport header for non-first IPv4
-> fragments to prevent a future out-of-bounds memory access that can
-> happen silently because the warning at skb_transport_header_offset()
-> does not trigger.
-
-[Severity: Low]
-I can't find a function named skb_transport_header_offset() in the tree.
-Is this about the following check in skb_transport_header() and
-skb_network_header_len()?
-
-	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
-
-Both checks are only built with CONFIG_DEBUG_NET.
-
-Could the message also say that the change only matters when the
-transport header was never set? Could it also mention the behavior change
-for set_tcp(), set_udp() and set_sctp() on IPv4 later fragments?
-
-[ ... ]
-
-> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-> index 1c4f3a0790443..d549a58180a73 100644
-> --- a/net/openvswitch/flow.c
-> +++ b/net/openvswitch/flow.c
-
-[ ... ]
-
-> @@ -201,7 +202,11 @@ static int check_iphdr(struct sk_buff *skb)
->  		     skb->len < nh_ofs + ip_len))
->  		return -EINVAL;
->  
-> -	skb_set_transport_header(skb, nh_ofs + ip_len);
-> +	nh = ip_hdr(skb);
-> +
-> +	if (!(nh->frag_off & htons(IP_OFFSET)))
-> +		skb_set_transport_header(skb, nh_ofs + ip_len);
-> +
-
-[Severity: Critical]
-For a later fragment, skb->transport_header now keeps whatever value it
-had when the packet entered OVS.
-
-key_extract_l3l4() also returns early for these packets. It does not apply
-the network_header fallback that its -EINVAL path uses:
-
-net/openvswitch/flow.c:key_extract_l3l4() {
-    ...
-		offset = nh->frag_off & htons(IP_OFFSET);
-		if (offset) {
-			key->ip.frag = OVS_FRAG_TYPE_LATER;
-			memset(&key->tp, 0, sizeof(key->tp));
-			return 0;
-		}
-    ...
-}
-
-The IPv6 path sets key->ip.proto = NEXTHDR_FRAGMENT. An IPv4 later
-fragment instead keeps key->ip.proto = nh->protocol.
-
-validate_set() accepts OVS_KEY_ATTR_TCP, OVS_KEY_ATTR_UDP and
-OVS_KEY_ATTR_SCTP after checking only eth_type and ip.proto. So a flow
-matching ipv4(proto=132) with frag wildcarded can apply set(sctp(...)) to
-these packets.
-
-set_tcp(), set_udp() and set_sctp() have no fragment check of their own.
-The patch adds one only to update_ip_l4_checksum(). Can these actions now
-use a stale transport offset?
-
-A GRE vport is one way to get a stale value:
-
-  ip_rcv_core()
-    sets transport_header to the outer GRE header
-  __iptunnel_pull_header()
-    pulls the tunnel header without resetting it
-  inet_gro_receive()
-    jumps out on ip_is_fragment() before resetting it
-  __netif_receive_skb_core()
-    resets the header only if it was never set
-
-This leaves an offset of about -4 or -8 relative to the inner Ethernet
-header.
-
-nsh_pop() followed by recirculation gives a similar offset of -8. On
-!CONFIG_DEBUG_NET, plain netdev rx leaves the offset at the IPv4 header.
-
-In set_sctp(), sctphoff would be (unsigned int)-8:
-
-net/openvswitch/actions.c:set_sctp() {
-	unsigned int sctphoff = skb_transport_offset(skb);
-	...
-	err = skb_ensure_writable(skb, sctphoff + sizeof(struct sctphdr));
-	...
-	old_correct_csum = sctp_compute_cksum(skb, sctphoff);
-    ...
-}
-
-As a size_t, sctphoff + sizeof(struct sctphdr) is 0x100000004. Passed to
-skb_ensure_writable(), whose write_len is an unsigned int, this becomes 4,
-so the check passes. Any offset from -12 to -1 passes the same way.
-
-sctp_compute_cksum() then reads, zeroes and restores sh->checksum at
-skb->data + 0xfffffff8. On 64-bit, isn't that about 4 GiB past the
-packet?
-
-In set_tcp(), both -8 + 20 and -4 + 20 pass skb_ensure_writable(). Do the
-port writes then land in headroom, and the th->check update in the inner
-Ethernet or IPv4 header?
-
-In the plain rx case, set_tcp() and set_udp() would write into the IPv4
-header itself (tot_len, and frag_off as uh->check). The IP header
-checksum is not fixed up afterwards.
-
-With CONFIG_DEBUG_NET and a header that was never set, the warning fires
-and the packet is dropped.
-
-Before this patch the offset was always nh_ofs + ip_len, which is inside
-the packet.
-
-The fragment can come from a remote peer. The OVS genl ops use
-GENL_UNS_ADMIN_PERM, so CAP_NET_ADMIN over a netns owned by a user
-namespace is enough to install such a flow. ovs-vswitchd may never
-generate these flows, but the kernel accepts them.
-
-Should later fragments get a defined value here, such as
-transport_header = network_header as the -EINVAL path does? Separately,
-should set_tcp(), set_udp() and set_sctp() get later-fragment guards, or
-should validate_set() reject these set actions when the flow can match
-later fragments?
-
-[Severity: High]
-Does this do what the commit message describes? Skipping
-skb_set_transport_header() doesn't invalidate the field.
-
-The warning in skb_transport_header() fires only when the field holds the
-~0 sentinel, and only with CONFIG_DEBUG_NET:
-
-include/linux/skbuff.h:skb_transport_header() {
-	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
-    ...
-}
-
-On the common paths the field is already set when OVS gets the packet:
-
-- on !CONFIG_DEBUG_NET, __netif_receive_skb_core() resets an unset header
-  to the network header
-- on GRE and other tunnel paths, ip_rcv_core() leaves it at the outer
-  header
-- ip_frag_next() sets it on every locally generated fragment, and those
-  can enter OVS through internal_dev_xmit()
-- recirculated packets keep the value from an earlier pass
-
-In all of these cases skb_transport_header_was_set() is true, so the
-warning can't fire, even on debug kernels. The value is also stale now,
-where before it was always an offset inside the packet.
-
-The warning can fire only for skbs whose header was never set. That means
-netdev rx on CONFIG_DEBUG_NET kernels, or skbs built for
-OVS_PACKET_CMD_EXECUTE.
-
-Would it be closer to the intent to call skb_unset_transport_header() for
-later fragments? Another option is to set
-transport_header = network_header, as the -EINVAL path in
-key_extract_l3l4() does.
-
-[Severity: Low]
-This isn't a bug on its own, but the kernel-doc for key_extract() in
-flow.c still says:
-
- *    - skb->transport_header: If key->eth.type is ETH_P_IP or ETH_P_IPV6
- *      on output, then just past the IP header, if one is present and
- *      of a correct length, otherwise the same as skb->network_header.
-
-For IPv4 later fragments, neither case is true after this change.
-check_iphdr() skips the set, and key_extract_l3l4() returns early without
-the network_header fallback.
-
-The IPv6 later-fragment path already behaved this way. Should the comment
-or the code be updated so they agree?
-
+diff --git a/drivers/net/wireguard/peer.c b/drivers/net/wireguard/peer.c
+index 1cb502a..3e08898 100644
+--- a/drivers/net/wireguard/peer.c
++++ b/drivers/net/wireguard/peer.c
+@@ -91,6 +91,25 @@ static void peer_make_dead(struct wg_peer *peer)
+ 	/* The caller must now synchronize_net() for this to take effect. */
+ }
+ 
++/* Each queue entry holds a keypair and a peer reference. Transmit entries
++ * are lists of packets, receive entries single packets.
++ */
++static void peer_purge_queue(struct wg_peer *peer, struct prev_queue *queue,
++			     bool lists)
++{
++	struct sk_buff *first;
++
++	while ((first = wg_prev_queue_peek(queue)) != NULL) {
++		wg_prev_queue_drop_peeked(queue);
++		wg_noise_keypair_put(PACKET_CB(first)->keypair, false);
++		wg_peer_put(peer);
++		if (lists)
++			kfree_skb_list(first);
++		else
++			dev_kfree_skb(first);
++	}
++}
++
+ static void peer_remove_after_dead(struct wg_peer *peer)
+ {
+ 	WARN_ON(!peer->is_dead);
+@@ -122,6 +141,11 @@ static void peer_remove_after_dead(struct wg_peer *peer)
+ 	 * here from process context.
+ 	 */
+ 	netif_napi_del(&peer->napi);
++	/* A NAPI being disabled completes after at most one more poll, which
++	 * may leave packets on rx_queue that still hold references.
++	 */
++	peer_purge_queue(peer, &peer->rx_queue, false);
++	peer_purge_queue(peer, &peer->tx_queue, true);
+ 
+ 	/* Ensure any workstructs we own (like transmit_handshake_work or
+ 	 * clear_peer_work) no longer are in use.
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002195436.8473-1-fmancera%40suse.de
+2.53.0
+
