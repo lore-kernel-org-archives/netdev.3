@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5FE37F339
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 01:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B536382283
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 01:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790992688; cv=none; b=pRLGyBITt/g39uySPlT9dahggppFM/iD3c7+PTTc1Mo6SMBAt0HcRDB2FHXGoQJEpOyUtOrhgnP0N9qPkN8z80nCv5B45RaHuSHKYiUWtOBHsN3JLbuy8o5QOkQnZpMsNhPRxA6jCoQh6JlsZMY+yjl1SlhLhlrW6jnmxn4/2KU=
+	t=1790992690; cv=none; b=FoCpmLqzbe0D174z/4XOsmi8mxdWagjsvQkFYjDWdh740nJ4lKpW1zmygVttmbOsyWbmmq5OLc3ltavduwcg2kiGGxhG55UCMx4KcwOGYNRE4XZERGzN6unEE2FH7fdX/RpVF5LSyG9FZr4v2o6QvdGnfHYh37UftIIo7W0FIdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790992688; c=relaxed/simple;
-	bh=672gbZO6UAI3kR0hZRntpWC8Pf5jl9cZ/t8Fxx8HCjk=;
+	s=arc-20240116; t=1790992690; c=relaxed/simple;
+	bh=t3dRM50zJ+G+iL2rQ2hA8+rnaYMcpw1PRVs+9Gs4emc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t+VhTmZLvzcNJyqohjGs1OEZ3z73e21lU1j/emXHXSiwGEmRENWugrWCIu1Bshfe9PhSApgcTm7LT8NihC1cciI345/pp5Szhn79bqxMIp3kMCwIab371yC2Rwc+yjgGOwWb59g6cH15hNoeqiUGR0G5ZpXP62Ct+kS0MqqI9OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rgmHOqnh; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=bLRbkdk1CxqPegdh92VYIksTSe+f9HekAMnQHb6lIcF/Vk898k4M9ijpX57I8DXiS1njMkOGzEV2hQtKqAPtBDpHhLfjNd4XCDPB8DzyygICant9s7H9nvByKQd42dKxNKtaRKMFCD/JYviZ3A2VnCgOzK4HRPRrbuc63C4nVh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Mc6DKL9R; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rgmHOqnh"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Mc6DKL9R"
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6931VvrW832223;
-	Sat, 3 Oct 2026 01:57:49 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6931VpCR832016;
+	Sat, 3 Oct 2026 01:57:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=0alLWs38ruoDESmBm
-	UFoPGQeOkFPa2S0oBHyOVEoZVM=; b=rgmHOqnhAeLGfcVnRQYpL+dACGEB4dnKi
-	AkW839Pf25YjNmmSvRzH+Bfb3hoiXA71ptZ268HBm3+VMGPjm5JzPEKDFEtZWtk1
-	5RGOEcT14XVhWWUNY3O7w4Txn0nwIxGjGGCVLK/rHho6wOeSoHm+rofP0sF5KpwH
-	W+yH0lDv+oDoHX2lPEKYp78uPyZxqLtQ2xaw/JLPpdy8tkezg0Y5zG0NOkPJ/q/I
-	XvcRuQqoD6mWzxyismuW+NNVZLFGov4vHeB8INGDxwkibXxPaEP79apMcPkUFWrl
-	FZVrEdfq+ON2lg1QsnxYwQAGUz9POtV5I/mxZh//cuZyDkmfP8COA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2r4fg1xn-1
+	:mime-version:references:subject:to; s=pp1; bh=pMFPDDEVCTtoTwcyd
+	L/1S0msLUQn46YGi/bOH3mwC/k=; b=Mc6DKL9R1VF/71zU+0tMaGHFi9na7BE+g
+	5TkAtmPszBBntrmspKzT3BcJmVZseQxdOY9CM4s0PIreeFDzvXZAIXcUaSoqwU6u
+	S+K4+vCCAgWotS4csUxxZyuWH5IxR9dY1KfSlUnlorrx5EriqCPHKVNXwoedAXVs
+	nryfXXYPHLA6nAr/czdQ2+L2OBdLD9d3cMgsax/aEJAmFISmo+NzplzqD1aJphJM
+	TLpMAagVCdYh+5iVxnHcrEuns8Kq4/19QzvpTjCJwpro+UtsPgVpVwko1IRQXZqS
+	vsg4VWMKfWPBoDCsUqJ8vXkeoUpv3Vc6TA2zvoxTRvTzQgpvR+3Rw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2r4fg1xv-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 03 Oct 2026 01:57:49 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 692NlhKG1988498;
-	Sat, 3 Oct 2026 01:57:48 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h2kfm8vv0-1
+	Sat, 03 Oct 2026 01:57:52 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 692Nm6DM3271580;
+	Sat, 3 Oct 2026 01:57:52 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h21nu4k4w-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 03 Oct 2026 01:57:48 +0000 (GMT)
+	Sat, 03 Oct 2026 01:57:52 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6931v1S731392416
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6931voN114484142
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 3 Oct 2026 01:57:01 GMT
+	Sat, 3 Oct 2026 01:57:50 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 037FF5804B;
+	by IMSVA (Postfix) with ESMTP id 04FB758055;
+	Sat,  3 Oct 2026 01:57:50 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0022D5804B;
 	Sat,  3 Oct 2026 01:57:46 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C1B5458059;
-	Sat,  3 Oct 2026 01:57:43 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.67.102.94])
 	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  3 Oct 2026 01:57:43 +0000 (GMT)
+	Sat,  3 Oct 2026 01:57:46 +0000 (GMT)
 From: Mingming Cao <mmc@linux.ibm.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
@@ -59,9 +59,9 @@ Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
         nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, davemarq@linux.ibm.com,
         bjking1@linux.ibm.com, Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next 5/7] ibmveth: release the pool kobjects when probe fails
-Date: Fri,  2 Oct 2026 18:57:17 -0700
-Message-Id: <f0186ae5ac4f9838b01c23fc42391abc328f814f.1790991039.git.mmc@linux.ibm.com>
+Subject: [PATCH net-next 6/7] ibmveth: return the error when set_channels cannot add TX queues
+Date: Fri,  2 Oct 2026 18:57:18 -0700
+Message-Id: <779e6d063cc21ed4dbc5cf365f43f39aaff0578e.1790991039.git.mmc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <cover.1790991039.git.mmc@linux.ibm.com>
 References: <cover.1790991039.git.mmc@linux.ibm.com>
@@ -74,23 +74,23 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=TOPQ2Fla c=1 sm=1 tr=0 ts=6ac0611d cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Authority-Analysis: v=2.4 cv=TOPQ2Fla c=1 sm=1 tr=0 ts=6ac06121 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=WQYFMZFA-6iCxkeIJq0A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAzMDAwNCBTYWx0ZWRfX2iA10EF2mQ4M
- rL+Hfmu6sm7WFc3rc94mr+W20vjHedwBvP/wrGRMyfavZah5vp8d1mSJ2hAB7kvHFO3r2z2+EPJ
- Uxy6bvrbcdnDxhOVgrXFWDNpuVPZnQ06nv1+H0uKgEHEGH4oPvS3HxfZU6E0CFoz+/Rb6+3bmZJ
- hc7IbOpBJZ8IIDwTT3tTEOWaGLqUXxymNdbbXtgjEohGjQNCAeUa0CgCJTfC7m/V1lGMmCd8YHW
- K4I0YNVDt22RmWJEaZsK4s0NIUewIulC6uxJTo8f1ZxyRzPhBAMH3KNrCkY6RDQzVpSL1u8gAi8
- lj1KIKDUp6geGbl2SViMtuc5WQtO5ZBeBgwkqQqKBMY0bkh7umks/v5AFrrScFoaMkDzPQeSrWr
- 1CHFcS+nkAZ1FHiYDhV29kAdQaU7ha7RlJcp52dRcR7G96M2oFvzooBWksgpDjRIjOCcVHfzCRD
- ZLNkxFuw+tSKtyv466g==
-X-Proofpoint-GUID: VzsX22ah7nnjXRGV6GhXt7vbu0TX_cLT
-X-Proofpoint-ORIG-GUID: cKJCrIlwR06SaHSlA1N-sOErMaWSR6a4
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAzMDAwNCBTYWx0ZWRfXxUsOzluDRWQh
- p8iIfQ7YiWC6FTYbqCxQjS7y8484Zx3fh6A6P21iYl/VAHggOQY3TW0s5AnbfvZ72qv7zBo+QWs
- kqrz/+EXBOrM9Zj89f07QY8zd/85t0Q=
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=WmY7XiZo9o5BhK5z3CgA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAzMDAwNCBTYWx0ZWRfX1gBS+LJaUIcF
+ 1fuwcfyurm8+cVTOQT5sPWbQVWr2i7dsLiYdIkMBcftR+mdme9DVwL0BwkW4EjiTc7oLf0vWjqK
+ U1X89t7MHXP0PCHCMnngcIrxxGQAOhdqwZ7qh3JMOVERkZSN9x/ZQc6PWv05AMik6rGnfYRQpob
+ zCJe73RE81Lzp41UNqpwhEnVr9AQlu98ayxcn3yQ/MbmW8TFLBMxLhStp+/3miO7fcxZFe6nQqm
+ UUpy0OgwyEFfBWuAO5cbtFqjD9sjgmMyqpfuVWOIZ/79yCAQ8Uo/UD+kE/Hr/NA65qA9Qoyw3mF
+ wywM4Cq2/P3k10VTgvQm6FafUZ577+rTNjUwggKIwFVbSZF6anfjuxqlGkqJJH5drJeTgxSWQA9
+ tzT+uSTPnGH8T6s3B0L2rG7R64G/s/SE7YYcD0W9nOmmw+CflAX5jc1SroYa/qmZwCndPpkRigw
+ hNoRCXkdjirD1XtqFOQ==
+X-Proofpoint-GUID: WOwS2nDH6AZ_vXHxQDEFa8f6ykXcnVyG
+X-Proofpoint-ORIG-GUID: _mA4w9DLnjjtsE58NiU6vMNj0A_pQ4JS
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAzMDAwNCBTYWx0ZWRfX24g28T4IA3TE
+ u2W95AAYEUpRTTxHiaIefoyuq0+gg+17hCCW8snfkmgGNn+mIQw1koFX1S0xErCe+cb6KRgh9d4
+ 41a1Sev8uc7pHfThPmYGH/BUYrWyAos=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-02_07,2026-10-02_02,2025-10-01_01
@@ -100,63 +100,53 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610030004
 
-If register_netdev() fails in ibmveth_probe(), for example with -EINTR
-when the binding task is killed, probe frees the netdev but leaves the
-pool%d kobjects embedded in it registered in sysfs. Reading
-/sys/devices/vio/<unit>/pool0/num is then a use-after-free, and the
-next probe cannot add pool0.
+When ibmveth_set_channels() cannot allocate a TX buffer for a new
+queue, it falls back to the old queue count, and the successful
+netif_set_real_num_tx_queues() call then overwrites rc. ethtool -L
+reports success while the queue count is unchanged.
 
-Put the kobjects before freeing the netdev, as ibmveth_remove() does,
-on this path and on the netif_set_real_num_tx_queues() one.
+Return the allocation error when the fallback succeeds.
 
-As in remove(), the kobjects have no release(), so with
-CONFIG_DEBUG_KOBJECT_RELEASE their deferred cleanup, including
-removing the sysfs files, can still run after the free.
+Tested on a POWER10 LPAR with the TX buffer allocation forced to fail:
+ethtool -L tx 8 now fails with -ENOMEM and the device keeps its four
+queues and passes traffic.
 
-Tested on a POWER10 LPAR with register_netdev() forced to fail with
--EINTR: no pool%d directories remain and the device binds again.
-
-Fixes: 860f242eb534 ("[PATCH] ibmveth change buffer pools dynamically")
+Fixes: 10c2aba89cc0 ("ibmveth: Ethtool set queue support")
 Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
 ---
- drivers/net/ethernet/ibm/ibmveth.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/ibm/ibmveth.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index b89ce389d951..d5ba2f2650d0 100644
+index d5ba2f2650d0..132c740b5844 100644
 --- a/drivers/net/ethernet/ibm/ibmveth.c
 +++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1965,8 +1965,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 	if (rc) {
- 		netdev_dbg(netdev, "failed to set number of tx queues rc=%d\n",
- 			   rc);
--		free_netdev(netdev);
--		return rc;
-+		goto err_put_pools;
+@@ -1169,7 +1169,7 @@ static int ibmveth_set_channels(struct net_device *netdev,
+ 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+ 	unsigned int old = netdev->real_num_tx_queues,
+ 		     goal = channels->tx_count;
+-	int rc, i;
++	int rc, i, alloc_rc = 0;
+ 
+ 	/* If the device is not open (including a failed close/open with
+ 	 * IFF_UP still set) then don't allocate, just set desired
+@@ -1195,6 +1195,7 @@ static int ibmveth_set_channels(struct net_device *netdev,
+ 		/* if something goes wrong, free everything we just allocated */
+ 		netdev_err(netdev, "Failed to allocate more tx queues, returning to %d queues\n",
+ 			   old);
++		alloc_rc = rc;
+ 		goal = old;
+ 		old = i;
+ 		break;
+@@ -1205,6 +1206,8 @@ static int ibmveth_set_channels(struct net_device *netdev,
+ 			   old);
+ 		goal = old;
+ 		old = i;
++	} else if (alloc_rc) {
++		rc = alloc_rc;
  	}
- 	adapter->tx_ltb_size = PAGE_ALIGN(IBMVETH_MAX_TX_BUF_SIZE);
- 	for (i = 0; i < IBMVETH_MAX_QUEUES; i++)
-@@ -1981,13 +1980,18 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 
- 	if (rc) {
- 		netdev_dbg(netdev, "failed to register netdev rc=%d\n", rc);
--		free_netdev(netdev);
--		return rc;
-+		goto err_put_pools;
- 	}
- 
- 	netdev_dbg(netdev, "registered\n");
- 
- 	return 0;
-+
-+err_put_pools:
-+	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-+		kobject_put(&adapter->rx_buff_pool[i].kobj);
-+	free_netdev(netdev);
-+	return rc;
- }
- 
- static void ibmveth_remove(struct vio_dev *dev)
+ 	/* Free any that are no longer needed */
+ 	for (i = old; i > goal; i--) {
 -- 
 2.39.3 (Apple Git-146)
 
