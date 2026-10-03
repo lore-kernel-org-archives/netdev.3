@@ -1,119 +1,109 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342AA49A3AF
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 21:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26D139CCFE;
+	Sat,  3 Oct 2026 21:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791062652; cv=none; b=YNO+NvJXRZMfrkRhAMFwy7aBKObK9Qrewi1Rya2j6sQuLRTgKK7EBmKp3+k5a0ojwf4ZrVJZLvX1Nod98a9DIPLn2/yQfNYSnPDRSyYn2Z6fRjcUdDo7fMJFcQ90mAdFpnixkiEAPK+zhpvTB1+9c9peEjO6SqryQEH8VY9k+r8=
+	t=1791063892; cv=none; b=TuAwXt/oVRrgO/JOFcXjKvn5OeougxAWLxpwFIzqRUNlvx18gHA8IJcvHcvwRcoOBjhd87IMy//bJsEOvY4tb7AZ8WyDnYPTLOULpMUPESaL86koBH9fR6Kyx0Pv9aEvrUokNpnM0iOBY1/Ff8KVIOXI8fXMIx48Wn+AC+ex6Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791062652; c=relaxed/simple;
-	bh=N79/n1ZvbHX4mfom8pI44n7jL6qS2PZwI+FHPyDnrOo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hBQwDNf9JjqjCOxdAGjjHgU9CS3pOazTnNYSZYMUWfdH3pZ7OjJVupe35IegN+64owcUz8gsErbxgmttr/J+HnmPLsV1kgtd/3TFcOyGCHKS/riHvIKd5CiJLIiMzWTP3gxQN+hLDeIMUuCxEo4IQ6nVKWTyWLN5v9b9GMUm3f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eTfQ9KFJ; arc=none smtp.client-ip=209.85.216.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1791063892; c=relaxed/simple;
+	bh=38Fbg65EGEel43VtgYG/9Qaf+D9pTNsdGxBfPRogdU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OVRBKMh5NDwIIYS7rK3uvi6EFWFR8cemp+Y1oU67QuOZMVeSBCLTHgapM9s+9SYYQqLppVEOZgJDz5btaBjL3R8Q3Yk7Muh5gwRBHtfD7bTCec45iRv10Nrha+j1jmJtbF7SCIafNZId2q3EQ8tK80PGyPxB6grK3eD94VUTsUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=4Kwn9ykj; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eTfQ9KFJ"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39deb05ef51so397926a91.3
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 14:24:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791062650; x=1791667450; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G9GxU2xgcM1XufCxG+xkaC7kE27M+8TLX7JfExdPFgA=;
-        b=eTfQ9KFJuC9QzaUUYfc01zk69FnKTjN6KAQtD/0t702/kcPzvHOPHSeUmA66UdPxpQ
-         BCdW9uy2aUnumDDAQY26jhecoxjsybC+jZmZrdk4l8JXfQkQZYNO9jDcVXTUe0ZBurt3
-         nKl21AN/qT9pmaE38cS7GQs7vmvK/3CnMSFmM+lxwrYi4JtVIedTpQesc4BhVHLPQae3
-         nFGX36e65DBV9OKOtAIcs5dzAgUbfgRJr3w7ZnDmxVHdJz9cYWpUTKwyBMWKp7wtydcM
-         4KfljqUFbIbZhTgbi4vU+wEifJ8ckm6Qi8LCRjLd6QOw8rqNJyegjdNAAzTQuJAa+exV
-         2yXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791062650; x=1791667450;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G9GxU2xgcM1XufCxG+xkaC7kE27M+8TLX7JfExdPFgA=;
-        b=jadvKydR0XLPEygE6g1oFWRiGDq38ktw9KOHGV12D0eZGA/cBNom8aEahd5CqQKJMm
-         4HjwmO0/eWpYtgBkISw4S0sJDwqBkTK3dhQKDBC9ICLt9X7QS10C3ZglaseOHX+lsoy0
-         PrLO77GZAtKahEDpxovnnpYuvIN1rlci8kRUQt731eiP5uPaz9k86NHe1Wvm6wyyMmMI
-         E587wNZ/e7qNCCljhFtJnxqBCvXZAkLcy7XUGMXtLX+t6hvhKSd1d7+s+j6z6kXF38Lq
-         17Ex85EOiWs5BVRvHyHnrjbCxIZ/bqtn2Dmn/GCeDNTEQ/89CMCsEeItfL60LP0Vw5qJ
-         4zlQ==
-X-Forwarded-Encrypted: i=1; AKwUvByVCi9S0fFuyUxnTaeE6fzFS+BnvMlt4Mu+kzqqkHXU4zc9K6ElIkOzgrbvpaI2Mc8gUizXKq0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJwGr2nsgzzNn+s4RQMYNBbN0sDL8KYePh5ZNaXYBBQCGgrNV1e
-	U130vMwhEoUC4kjssQCXV/7H9uVVdp2g/8ue1iHIwwVw1mFiDTYg+CF8oDoUxpG6PuuVLxOpxKc
-	kQ9DRnA==
-X-Received: from pjzc8.prod.google.com ([2002:a17:90a:e108:b0:3a4:a19d:1090])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:54c8:b0:3a7:7e9d:c27b
- with SMTP id 98e67ed59e1d1-3a77e9dc7a5mr1348235a91.12.1791062649927; Sat, 03
- Oct 2026 14:24:09 -0700 (PDT)
-Date: Sat,  3 Oct 2026 21:23:22 +0000
-In-Reply-To: <20261003212336.1304988-1-kuniyu@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="4Kwn9ykj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=PRCu0Kt8JudtLQU7puVFYQ3X0LQWTWd0xA6QLuOvzi4=; b=4Kwn9ykjncxT4a81L4rkYGMdWy
+	fKJdEWHGSH5Ne5QIzNptseYoYOxSB54H6Zps6+hOKbHhCFJg/yTqIe+LgWucSspZJTaXCfbnhyKYO
+	2eesTTy+4xU73OhrpknCWRKq+lk2D7VTmv2B/8wg0gfLksjaUYED+ogZ2BeLSELv4jPOi62JL97Fz
+	aoTEA9GlrKzjCr7ea8mDQ5L5rc9r1I+j/R49PU7mJko+tsJnLrxvAs94J8zx1iozVfkGGW7SZzHHC
+	SHCTjwI1Dvw4Ue/jCfFoBjXka9KE0ScDoOT4W+omS+YjuGwVryfBW0jFhOWF02oLzS5phgHIBvyvJ
+	Iz6uEVmw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xD7X2-0000000E5oE-0sGB;
+	Sat, 03 Oct 2026 21:44:36 +0000
+Message-ID: <7ce092a4-5c85-4391-809a-3d04b638a722@infradead.org>
+Date: Sat, 3 Oct 2026 14:44:34 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261003212336.1304988-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003212336.1304988-10-kuniyu@google.com>
-Subject: [PATCH v2 net-next 9/9] neighbour: Check n->parms->tbl under
- tbl->lock in ___neigh_create().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, netdev-bot+sashiko@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC: DMA_PMD 01/22] iommu/dma: introduce CONFIG_DMA_PMD and
+ metadata table
+To: Luigi Rizzo <lrizzo@google.com>, Luigi Rizzo <rizzo.unipi@gmail.com>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <20261003212241.3432303-2-lrizzo@google.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20261003212241.3432303-2-lrizzo@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Sashiko reported that if ___neigh_create() is called outside of
-RCU, it could create a new entry for dev in a different netns
-while __dev_change_net_namespace() is running concurrently:
 
-  creator
-    ipv6_neigh_create(dev, ...)
-      tbl = nd_table(dev_net(dev))   <- old netns
-      <preempted>
 
-  __dev_change_net_namespace()
-    NETDEV_UNREGISTER
-    rcu_barrier()
-    dev_net_set(dev, new_net)
-    NETDEV_REGISTER                  <- new in6_dev
+On 10/3/26 2:22 PM, Luigi Rizzo wrote:
+> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+> index 6e07bd69467a3..1bb347fd9da4a 100644
+> --- a/drivers/iommu/Kconfig
+> +++ b/drivers/iommu/Kconfig
+> @@ -158,6 +158,38 @@ config IOMMU_DMA
+>  	select NEED_SG_DMA_LENGTH
+>  	select NEED_SG_DMA_FLAGS if SWIOTLB
+>  
+> +# PMD_SIZE IOMMU backing for DMA-coherent devices
+> +config DMA_PMD
+> +	bool "PMD_SIZE IOMMU backing for DMA-coherent devices"
+> +	depends on IOMMU_DMA
+> +	depends on X86_64 || (ARM64 && ARM64_4K_PAGES)
+> +	depends on !PREEMPT_RT
+> +	default y
+> +	help
+> +	  Hand out DMA buffers carved out of PMD_SIZE physically contiguous
+> +	  blocks that the IOMMU maps with a single leaf PTE. Mapping,
+> +	  unmapping and IOTLB flushing are done lazily to reduce CPU overhead.
+> +	  The large mappings greatly reduce IOTLB usage. As in strict iommu
+> +	  mode, pages are returned to the buddy allocator only when any existing
+> +	  mappings have been removed and IOTLB flushed.
+> +	  Costs 128KB of metadata per GB of DMA_PMD buffers, allocated on demand.
 
-  creator resumes
-    neigh_create(old_tbl, ...)
-      ndisc_constructor()
-        in6_dev_get(dev)             <- new in6_dev, live parms
+Paragraph 1 of the patch description says 64KB per 1GB, not 128KB.
+Or am I mixing things up?
 
-Let's check n->parms->tbl under tbl->lock.
-
-Fixes: cda2962b6e2b ("neighbour: Namespacify neigh_tables.")
-Reported-by: netdev-bot+sashiko@kernel.org
-Closes: https://lore.kernel.org/netdev/179090663305.434549.17214258093385242325@kernel.org/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- net/core/neighbour.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 0d883c043956..90335895b415 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -690,7 +690,7 @@ ___neigh_create(struct neigh_table *tbl, const void *pkey,
- 
- 	hash_val = tbl->hash(n->primary_key, dev, nht->hash_rnd) >> (32 - nht->hash_shift);
- 
--	if (n->parms->dead) {
-+	if (n->parms->dead || n->parms->tbl != tbl) {
- 		rc = ERR_PTR(-EINVAL);
- 		goto out_tbl_unlock;
- 	}
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+~Randy
 
