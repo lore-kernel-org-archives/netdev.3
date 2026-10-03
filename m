@@ -1,160 +1,198 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa2-f9.google.com (mail-oa2-f9.google.com [74.125.231.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C8F1F938
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 02:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4330D15AADA
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 03:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790993497; cv=none; b=W59lu7Kfp/QcprJYfhJHq03E1OvwUvc3OG1zKhqRDvfF/uGTkdF1XTNlrfPLyHSA5re/yoVAGf6jfnxn7m5KTNGdOjmO3e7SUFMk65D4v2DZ2qZsFJG97MvS8q1y4qH+Ntu5+L6tCIES4rYedZlXpXxd1mWvVl+lC1ZWh+KQb1E=
+	t=1790999422; cv=none; b=At7+MKNi3rMWS/H47n89B/h8/ItpQqYMk5BUq6uZtLQJPfNiWMz5jxkcTDalxmDyODpN1vp31+T5QJOd1rT8RCIMH73Dwpy+Usi3Hs4eHw3oFDGD1H4hRpqhLTTPoKwLDMgBtLWqCqThlXUnfS+WQ6i9cM5kklaYo7SI2VuH2SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790993497; c=relaxed/simple;
-	bh=O36NCawvzHT3NhzJWKislbnQdBi3fibtGswveonl64I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fZGgGen0291VZ+eNSpgZ5AvzUSwSzmUT6433JJaY2sgIP8i5aqNnj2Mi/0q2rRSA+eNo4cVVLIJmoVNKkD2W9TqHtwFnJns6dEoKZxgwe2U6CixL2Kj0ie67w6y76mht1nI6DVMB1vN8vAF0RQrXw5V7kdi9hAl8gz93pGsWR7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=BjGBjx2B; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1790999422; c=relaxed/simple;
+	bh=lODAk/IUedJyfB07YrX7ahLPdEi6D5a1fF5vmhyUlus=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iPiFy+w6MaaNzPqVkoZ3OUIbIUUqOsChVfdFsN913KTwNkKDJfj/dCv2uuhAzaovcYG7jHQ37ujLXkNWFhUORxDBsh93PIxalRJHn4RVrRynAx5n2+mR8M5QA0uja/Yfm/aGFKIxoY4K+Jla17mfnh/yeNLUbSQODj3fcNaqd80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lwn9veqg; arc=none smtp.client-ip=74.125.231.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="BjGBjx2B"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69305viL074471;
-	Sat, 3 Oct 2026 02:11:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=klVEew
-	LrAW86Oep1CCUBMAi3DOy6RkhrYcZ8soryEgM=; b=BjGBjx2BaxWSxJ4gM0N/p1
-	c9fkMbWZRBmJzkU7liLKd3554YQWkLcjzZSvE2DJsDSGcSJ/pI4Rs3eQbbUrKK/y
-	x1HYBvf8jxNqb1SQ6ErP8xYC5SqiIDg2j8whoILepVTaxXig/e3/0sDKNzXhakQM
-	BqJjdYEn92Ede6p9vNFBe+zdQLr1Qg2PQiAQMJ4El9hDYDeRUWNCZfL1lJXgk3Ze
-	8SXSjswF0cKPn02SEOHWe9r25//BtCZG0nKvI3vhhK5fLkgY5Ni7cyT8iEHdgn5F
-	AySA5OcvEXnbY6h1fVyBnNzV3wh2LyqIlmkNE+4tSsAxJKBsQN1JNsaO5hUgRFFg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gx5qrvj0x-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 03 Oct 2026 02:11:19 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 692Nm6Fl3271580;
-	Sat, 3 Oct 2026 02:11:19 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h21nu4mbc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 03 Oct 2026 02:11:18 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6932BGk242402160
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 3 Oct 2026 02:11:16 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E20958059;
-	Sat,  3 Oct 2026 02:11:16 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 429DE5804B;
-	Sat,  3 Oct 2026 02:11:14 +0000 (GMT)
-Received: from [9.67.102.94] (unknown [9.67.102.94])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  3 Oct 2026 02:11:14 +0000 (GMT)
-Message-ID: <7de436b1-82b5-4726-9915-a9a78a20c903@linux.ibm.com>
-Date: Fri, 2 Oct 2026 19:11:10 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lwn9veqg"
+Received: by mail-oa2-f9.google.com with SMTP id 586e51a60fabf-47bb3ddaaf6so69344fac.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 20:50:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790999420; x=1791604220; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4c95XUlHP2n9aXvysG24zI7/Pk1AYs6dQ+z9WolM1mw=;
+        b=Lwn9veqgQJz17Yk7UEg+ZI7Q5jZiAPy1i+ECejedepb4HnZv4p3PTFi3USivc2aMtY
+         P61KII9LEbAUCmLheVF1nCRGNyYeMSOPJS2nBgmm7EHQI+rkXCkRndxAYRROQG/iX84+
+         KSARHRGjHhUHP51hzZvFEIrgHpamjcuHbuQrXA33MaTtEjRRP4A4z3hsKdrimNW8QiVC
+         wRRV2lZlVlBVyFPL+uQy6eKMaGhNIrSeAbPrbCYPf6CQ8bXdCbx81KXHt/x58lPyOxJA
+         OEBVIpU5WKmj+GXKA1wcc7h1lF1DVW59KvZbnIP9iORsRjJOPcm8sQkfAcfR/aDhYSoq
+         NL4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790999420; x=1791604220;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4c95XUlHP2n9aXvysG24zI7/Pk1AYs6dQ+z9WolM1mw=;
+        b=2ELsoV4BeRNO3cXARfqLGXen+OEr4zIjYUD9O+45XY+rMKm9tRFnuh2Jd9Niqf0vBb
+         2zI4YE4eaGT+cY1zE3nJxTW1p3jtA2y3EKrVWgV7FQ+6SVh3yqgXa4Tmfx2fvxu3NuCn
+         NeziK+Kq3VS8byNx42GDxmHiI7YUguxBpDInzfzU34K3xcsuywvl8OMNRAIdtcxbzLg5
+         Wo92fcW+TUtsO8D7cpwr90fdtbR5o7FQbnSds25qxqJFpJ05RflnnNe6+TypRgua5Vh8
+         kklDGDsm/FbcZKQPEGUMoNcwNN62I/7JlYGyXDwBYTKTqPZYebq+Zw0S6IMb9kCBXr72
+         UtWg==
+X-Gm-Message-State: AFuF++kbn38pnYLP2COFNr/A6z0FS4jFcTnGi/7FBD7edzScThFUtziA
+	AejhcNkvP9DTpDwOWRwbBs8RTV7o3iAdtYqfH3wgTZsJHzwKMPfA5J9r
+X-Gm-Gg: AYBFou3xVykeD8+mXZ52S1acMLCbsMR+E8ksEIZnTPLcwOrxgzn2KDf39Uy4hRzLD+b
+	G/yOWSK2FnRPSghEtVLrjHW52uLZ9Zg/gmsk5oDDzbGSagq7tb8kIek1mIrhBy1uCLMd+2C8qPz
+	lu2E49hbYg8nZslz+CD/T7ujLhFP6EgcJEfvckHLegCXMllkBu60p8aX/sCfWMoqLsadUAP8LLH
+	rbG5iCnkl+6YykrbZ+/b5Yb/YBqo1xvx+RuCfnvXsSXj7jSk+uqKSgHch+1k90G6zquQf8DmNeQ
+	WIAHD96f0xLxCkFrwsJFggtz9CSkYKsgTYXdsSx6N84PCmx4TA0WqXfWq2L+aA6AiAglFVBCgQx
+	ivnL8Hg7EWJbY/qI4N0dmlzYDKeSJ9wbDbE/0gT9k/T5+uKgDmYbxvPs8FybWVff3wKeczRLRLV
+	NtjooCbwclY+yKOMVBjmRyu4O3BiVSyT4kclFTj/bbj2rtpPrd+6Gl9gn1dG06MmHcadwXkXbLL
+	+uGYRZkxuzlPwjckiXEIFXvKXP16CnZB9IQC3VKrt1NJPrpO2bMkDu9YL2aPNw=
+X-Received: by 2002:a05:6870:5b89:b0:48f:e107:3188 with SMTP id 586e51a60fabf-49e15df105emr4805815fac.40.1790999420063;
+        Fri, 02 Oct 2026 20:50:20 -0700 (PDT)
+Received: from DESKTOP-D4TFR33.tail0f6352.ts.net (cs244-86-dhcp.cs.colorado.edu. [128.138.244.86])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-49e16d6b450sm3498096fac.3.2026.10.02.20.50.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 20:50:19 -0700 (PDT)
+From: Yunpeng Tian <shionthanatos@gmail.com>
+To: tung.quang.nguyen@est.tech,
+	jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	gmwgg05@gmail.com,
+	npczmd@qq.com,
+	xiao-yu.zhou@connect.polyu.hk,
+	jupmouse@gmail.com,
+	shionthanatos@gmail.com
+Subject: [PATCH net] tipc: bound the device MTU accepted for L2 bearers
+Date: Fri,  2 Oct 2026 20:50:18 -0700
+Message-ID: <20261003035018.397-1-shionthanatos@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 00/15] ibmveth: Add multi-queue RX support
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, horms@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
-        nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
-        ricklind@linux.ibm.com, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
-        shaik.abdulla1@ibm.com
-References: <cover.1790319558.git.mmc@linux.ibm.com>
- <966a8145-421e-4be1-8d46-2cf8e4f9fa2a@linux.ibm.com>
- <20261001155646.5957a373@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <20261001155646.5957a373@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAzMDAwNyBTYWx0ZWRfX7LLk9lnX3waw
- 4L4A3tXLp3n8sEBc77YTG+SmGIm1gH/L13Loq0qeq+/iY4yESrbwTEYzZblo59DqomtkvR0VBp3
- 2jiwR7jiFok15xY1UhwKoPDAUja6YcTzcaGF1DtVwfdA/3KoJ8EU3VfvDDILTXitGmBbkeo3/E7
- z7ldCAQwYwArwjQ5T9A9KwwHUdViej8ynrsuQQc0LcyjZobENRo8so8gUA+CZbDYhmdJscPtIfd
- 88+Hpqrk0n5Nsgus8S7KAkFk77INBwyRNVwo2zw3fmczzqPQ80fnq8U0D9TQNB1LlNSEdobPA3L
- 9rlPvuuQ1tH9KQkI8dH1oMZ7hmz6ctCATohvJVkCJaACNqZQ739jzqV55LOcRtM0VOpQLkr2xyY
- pTTZ64aoR8D+K3Pm3X80qLB4tiAkrwp+VbtUHutE++uE6GhZyF9w/nhDNytrMs/GQ/nfV9ev8ra
- ORlKIxxjgKZNsZa+hhg==
-X-Authority-Analysis: v=2.4 cv=SPbXx+vH c=1 sm=1 tr=0 ts=6ac06448 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=iUzFjSLacEydRaroFD8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: aMaXooieIFlm3P_LTUXyT-rPmQc5NwwK
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAzMDAwNyBTYWx0ZWRfX5V2e/egiWznx
- 39/xalt2OKklK/L7T4cEGuQBXZLHBrKFhI79+ugDplvl6J/4kaYTrO1mnjMR0ahF4Zy7dtahiTz
- XoBnXLk3yhOAa4fhTqw7yqbVQWpmNb0=
-X-Proofpoint-GUID: cVczNlVjocztJ2dL7lquGEGPk80PC6Fy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-02_07,2026-10-02_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2610030007
 
+struct tipc_bearer keeps the bearer MTU in a u32 while struct tipc_link
+keeps the link MTU in a u16.  tipc_enable_l2_media() and the
+NETDEV_CHANGEMTU notifier both do b->mtu = dev->mtu, tipc_link_create()
+assigns that into l->mtu, and tipc_link_set_queue_limits() divides by it:
 
-On 10/1/26 3:56 PM, Jakub Kicinski wrote:
-> On Sat, 26 Sep 2026 10:40:56 -0700 mingming cao wrote:
->> Hi Jacub,
-> There's no c in my name, sir. I wonder why people do that.
-Sorry about that, Jakub. Noted, and noted on To: as well.
->> I noticed this v7 series is flagged red on patchwork. The apply failure
->> is due to a dependency on my own [PATCH net 0/2] (Message-ID:
->> cover.1790357373.git.mmc@linux.ibm.com) sent the same day — kept
->> separate per your earlier feedback to peel fixes out of feature series.
->> Both touch ibmveth_open() in the same region, and the net pair is not
->> yet in net-next.
->>
->> The v7 MQ series is based on net-next 161ea2d4f2a7 (2026-09-24). The
->> fixes are already subsumed by MQ patches 3 and 6.
->>
->> Shall I wait and rebase MQ once the net pair lands in net-next, or send
->> a v8 now with the net pair folded in? Happy to do either.
-> Sorry for the delay, hint: please put just me in the To: if you want me
-> to spot the email sooner. We get 400+ messages to the list every day,
-> I'm only reading the list as I review :(
->
-> To answer your question - please hold off with reposting until the fixes
-> are in net-next. We won't merge the patches if they conflict with fixes.
-Will do. Thanks for applying the net pair (af0524bf4ce1, 84bec0bf0352).
-I will not repost the multi-queue series until they show up in net-next.
-A heads-up so the next series is not a surprise: I posted seven more
-ibmveth fixes, split out of this series:
+	int max_bulk = TIPC_MAX_PUBL / (l->mtu / ITEM_SIZE);
 
-[PATCH net-next 0/7] ibmveth: fix hangs, use-after-frees and
-netpoll races
-https://lore.kernel.org/netdev/cover.1790991039.git.mmc@linux.ibm.com/ 
-<https://lore.kernel.org/netdev/cover.1790991039.git.mmc@linux.ibm.com/>
+ITEM_SIZE is 20, so a device MTU of 65536 truncates to 0 and the
+division faults.
 
-They fix serious pre-existing bugs in the driver (two hangs, three
-use-after-frees and memory corruption), found by AI-assisted review
-of this series. They are based on net-next and merge cleanly with
-the net pair; they also apply to net if you would rather take them
-there.
+tipc_mtu_bad() is the only check on either assignment and tests a lower
+bound only.  The truncation defeats even that: a device MTU of 65556
+passes it, yet the link comes out with l->mtu = 20, below the
+TIPC_MIN_BEARER_MTU the check exists to enforce, and tipc_link_mss()
+then evaluates 20 - INT_H_SIZE - EMSG_OVERHEAD as an int and stores it
+in the u32 tipc_link_entry::mtu.  Read back over TIPC_NL_LINK_GET, every
+device MTU above 65535 leaves the link with a wrong MTU: 20 at 65556,
+464 at 66000, 32768 at 98304.
 
-I am working on v8. My thinking for v8 of the multi-queue series is to 
-base it on
-net-next once both the net pair and these fixes are in. With the
-fixes split out it should be smaller than v7, with the MQ patches
-mostly extending that handling per queue, and it would address the
+The bound added in commit 9f29cd8a8e79 ("tipc: fix u16 MTU truncation in
+media and bearer MTU validation") applies to TIPC_NLA_PROP_MTU in
+tipc_nl_prop_policy, which covers TIPC_NL_MEDIA_SET and
+TIPC_NL_BEARER_SET.  A device MTU never passes through that policy.
 
-review comments on v7. Hope that works for you. Happy to adjust as needed.
+dummy sets max_mtu to 0, and dev_validate_mtu() applies its ceiling only
+when max_mtu is non-zero, so the device accepts 65536; a macvlan inherits
+max_mtu from its lower device,
+and two macvlans in bridge mode on one dummy carry each other's TIPC
+discovery frames, so the bearer reaches tipc_node_check_dest() and
+tipc_link_create() with b->mtu = 65536.  TIPC_NL_BEARER_ENABLE is
+GENL_UNS_ADMIN_PERM, so an unprivileged user can do this in a user
+namespace of their own, on a kernel that has TIPC loaded.
 
-Regards,
-Mingming
+  Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+  RIP: 0010:tipc_link_create (net/tipc/link.c:2531 net/tipc/link.c:520)
+  Call Trace:
+   <IRQ>
+   tipc_node_check_dest (net/tipc/node.c:1284)
+   tipc_disc_rcv (net/tipc/discover.c:252)
+   tipc_rcv (net/tipc/node.c:2134)
+   tipc_l2_rcv_msg (net/tipc/bearer.c:669)
+   __netif_receive_skb_one_core (net/core/dev.c:6216)
+   process_backlog (net/core/dev.c:6680)
+   __napi_poll (net/core/dev.c:7739)
+   net_rx_action (net/core/dev.c:7802)
+   handle_softirqs (kernel/softirq.c:622)
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
+
+Give tipc_mtu_bad() the matching upper bound, so the limit sits next to
+the existing minimum and one check covers both assignments.  A device
+MTU of 65535 is still accepted and the link still comes up, with the
+65532 that TIPC rounds it to.
+
+The u32 max_pkt fields became u16 mtu and advertised_mtu in commit
+ed193ece2649 ("tipc: simplify link mtu negotiation"), which also removed
+link_init_max_pkt(); that had clamped the bearer MTU to MAX_MSG_SIZE
+before it could reach this division.
+
+Fixes: ed193ece2649 ("tipc: simplify link mtu negotiation")
+Reported-by: Yunpeng Tian <shionthanatos@gmail.com>
+Reported-by: Gongming Wang <gmwgg05@gmail.com>
+Reported-by: Mingda Zhang <npczmd@qq.com>
+Reported-by: Xiaoyu Zhou <xiao-yu.zhou@connect.polyu.hk>
+Reported-by: Qinrun Dai <jupmouse@gmail.com>
+Cc: stable@vger.kernel.org # v4.1
+Signed-off-by: Yunpeng Tian <shionthanatos@gmail.com>
+---
+Reproduced on 7.2.0, with the net/tipc files byte-identical to mainline
+as of 2026-10-02, both as an unprivileged user and as root, 3 runs of 3
+at a device MTU of 65536.  At 131072 the low 16 bits are zero as well,
+but the two nodes never completed discovery here, so that case was not
+observed.  With the patch applied, 65536, 65555, 65556, 66000 and 98304
+are all refused by tipc_mtu_bad() and TIPC_NL_BEARER_ENABLE returns
+-EINVAL, while 65535 still brings the link up.
+
+ net/tipc/bearer.h |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+--- a/net/tipc/bearer.h
++++ b/net/tipc/bearer.h
+@@ -63,6 +63,13 @@
+ /* Minimum bearer MTU */
+ #define TIPC_MIN_BEARER_MTU	(MAX_H_SIZE + INT_H_SIZE)
+ 
++/* Maximum bearer MTU
++ *
++ * struct tipc_link stores the link MTU in a u16, so a larger bearer MTU would
++ * be truncated when a link is created on the bearer.
++ */
++#define TIPC_MAX_BEARER_MTU	U16_MAX
++
+ /* Identifiers for distinguishing between broadcast/multicast and replicast
+  */
+ #define TIPC_BROADCAST_SUPPORT  1
+@@ -254,12 +261,13 @@
+ 		tipc_clone_to_loopback(net, pkts);
+ }
+ 
+-/* check if device MTU is too low for tipc headers */
++/* check if device MTU is usable for tipc bearers */
+ static inline bool tipc_mtu_bad(struct net_device *dev)
+ {
+-	if (dev->mtu >= TIPC_MIN_BEARER_MTU)
++	if (dev->mtu >= TIPC_MIN_BEARER_MTU &&
++	    dev->mtu <= TIPC_MAX_BEARER_MTU)
+ 		return false;
+-	netdev_warn(dev, "MTU too low for tipc bearer\n");
++	netdev_warn(dev, "MTU not usable for tipc bearer\n");
+ 	return true;
+ }
+ 
