@@ -1,77 +1,87 @@
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D7E392C28;
-	Sat,  3 Oct 2026 08:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
+Received: from mail-106102.protonmail.ch (mail-106102.protonmail.ch [79.135.106.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F237E39182A
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 08:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791014965; cv=none; b=n4713LvUMN3Uoy1xA5l9HIBL3/nDmIcd4wEbVnGaDzmnBowWL+aMwcleCnv6LvQFQ/QIhurUVjSk4KxiRns0/NYtz3vFmrOwrZpHhdi/BimsaHqU0MpLWgZ7U3qOdUM+6kfcvSzOaX9YOko791gMMVztiDpkxphSyVocu5nDQs4=
+	t=1791015512; cv=none; b=Cv4VODm043f8rryFgwjBH99fFAORXETLen7PCBTf3w1X0IPT6ukW6h5T/hLLR5+9ebJCAtS2SeD7uIUArRCmZXFwUS0g97yavU10nThYHW7URo1IFmNYZ0qDG+0mIe5h+dCmFdy4qIbJN9oJ2Dry7NOQCkLLKw13KguQZo3v2zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791014965; c=relaxed/simple;
-	bh=8x++qprszopeRwOaDKMCsHIWAF5BtQ9fEVvgpFM5zJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVf0yznOxZ/lL74qbxIPAnJ45T5KhQ+2HUqmcEOg2IGgNNlNk9xnr9azhBDmqo/RS9Fyc92urjzRUS/LQKLX8LNd/tX46NRlegjiF8fXnhxEihbH56JJbgm7a/51tXCjVkolpCXZr1Z7lH65klQCqP4GJAz/3POHtnOmpZx82gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=Uj/7FZ7G; arc=none smtp.client-ip=111.22.67.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	s=arc-20240116; t=1791015512; c=relaxed/simple;
+	bh=fIQYchEyl9V/S9Mi9fJ+YKUhkFzbMNbC/Q9u5MLuAxA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nB+sm0EBleriDsGHFhwwDE3UuzFpPSBcW+1VsZ5cLaqbHFuVfrl2rCH1CjYpmg3L6ZRN1bAmvDmdGS59Lb9e6/Tk+Cq3+pcJn7azmOFmCHXChTttHVBLLo06ZuVL31Jzu40A2QltRKC8x45OAdZiubEwexOQR3ZHNH3x4dvLAT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=g6If6B17; arc=none smtp.client-ip=79.135.106.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="Uj/7FZ7G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Uj/7FZ7GrxWECPphpcg+CbgPJmvnYXfrVeN6N33mIK6O0DRPX7hmmxEoYfYueRXO6P7YsIglFjY/1
-	 5FbA/0u6Z93a3++9R6YykUIN211KMAL2J60PauDeyPDPfiqeT7XGeawqMwVL9zqUjCAO7s73wpd91O
-	 AwA0cgPLmodRdGes=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56ac0b8253bf-98d45;
-	Sat, 03 Oct 2026 16:09:13 +0800 (CST)
-X-RM-TRANSID:2ee56ac0b8253bf-98d45
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[112.22.250.209])
-	by rmsmtp-syy-appsvr06-12006 (RichMail) with SMTP id 2ee66ac0b817274-5dc75;
-	Sat, 03 Oct 2026 16:09:13 +0800 (CST)
-X-RM-TRANSID:2ee66ac0b817274-5dc75
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: Alice Mikityanska <alice.kernel@fastmail.im>
-Cc: netdev@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] bareudp: Enable BIG TCP packets
-Date: Fri,  2 Oct 2026 22:40:26 +0800
-Message-ID: <20261002144026.454301-1-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <12e098d5-18b1-4b01-bd55-ccebf8a78bbc@app.fastmail.com>
-References: <12e098d5-18b1-4b01-bd55-ccebf8a78bbc@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="g6If6B17"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=cstzjhqkrzeg5beecotbbtswl4.protonmail2; t=1791015496;
+	x=1791274696; bh=fIQYchEyl9V/S9Mi9fJ+YKUhkFzbMNbC/Q9u5MLuAxA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=g6If6B17F3B2QHb7J/bUB60XzMlE2zKTv64yNRlQdeIm7A+3RpL0YxqKQNtSqm1ri
+	 A39FCu7ilDA3ESWpJngn2Ro2UwA9MyTQWzj1f9saybomhbi3TM3yG/HFXuE8mEvrJe
+	 rRn2YqarNlv2ayZ1ZEzIQWW8dlJks1XkjY8EsTgKb5Lxet2uWalF1lXdXJolLzAJdC
+	 O7d1CBuvKG+TY8hdC6ppceT3wM9rcnA4wHsELKKER65i9UM/zJDdLr6PBfqGEaekAt
+	 Pweyvkrx2XHVy2fJcuD+DIndV+KJiQus5B/evviHUdmc77tdRbMTXD9fQerdyx+3BO
+	 5GdBJdkMHIByA==
+Date: Sat, 03 Oct 2026 00:07:54 +0000
+To: netdev@vger.kernel.org
+From: iugfdin <iugfdin@proton.me>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net 1/2] r8169: preserve checksum offload when packet padding is unnecessary
+Message-ID: <179098478410.1174319.5605355405318252998.r8169-1@proton.me>
+In-Reply-To: <179098478409.1174319.4377246796187959500.r8169-cover@proton.me>
+References: <179098478409.1174319.4377246796187959500.r8169-cover@proton.me>
+Feedback-ID: 225708956:user:proton
+X-Pm-Message-ID: a3461f477443c527c93a7cde279d2212acdac29d
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 02, 2026 at 12:00:45 +0300, Alice Mikityanska wrote:
-> Acked-by: Alice Mikityanska <alice.kernel@fastmail.im>
->
-> Do you mind extending the big_tcp_tunnels.sh selftest to cover bareudp?
+rtl_quirk_packet_padto() returns the minimum packet length required by
+the padding quirks. For RTL8168evl and RTL8125-family chips this is at
+least ETH_ZLEN, even when the skb is already longer.
 
-Thanks for the review. Sure, I will extend big_tcp_tunnels.sh to cover
-bareudp and send it together with this patch in v2, with your Acked-by.
+rtl8169_features_check() treats that nonzero target as a boolean and
+therefore disables checksum offload for ordinary non-GSO
+CHECKSUM_PARTIAL packets on these chips. Packets that need no padding
+are unnecessarily checksummed in software.
 
-> Besides, enabling BIG TCP with fou would also be a one-liner, the
-> basement was added in "udp: Support BIG TCP GSO packets where they
-> can occur"
+Compare the skb length with the padding target instead. Packets that
+actually need padding continue to use software checksumming; the
+existing short-frame and transport-offset checks are unchanged.
 
-Thanks for the pointer. I will look into fou separately.
+Fixes: 8d520b4de3ed ("r8169: work around RTL8125 UDP hw bug")
+Assisted-by: LLM
+Signed-off-by: iugfdin <iugfdin@proton.me>
+---
+Tested with W=3D1 driver-target builds on net under x86-64
+allmodconfig and allyesconfig, and source-executing ASan/UBSan
+checks with modeled kernel/DMA/MMIO boundaries. No physical
+Realtek NIC was available; this is not an on-device test claim.
 
-Thanks,
-Haishuang
-
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethern=
+et/realtek/r8169_main.c
+index ee1bc9bd..045fcd4d 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4677,7 +4677,7 @@ static netdev_features_t rtl8169_features_check(struc=
+t sk_buff *skb,
+ =09=09if (skb->len < ETH_ZLEN)
+ =09=09=09features &=3D ~NETIF_F_CSUM_MASK;
+=20
+-=09=09if (rtl_quirk_packet_padto(tp, skb))
++=09=09if (skb->len < rtl_quirk_packet_padto(tp, skb))
+ =09=09=09features &=3D ~NETIF_F_CSUM_MASK;
+=20
+ =09=09if (skb_transport_offset(skb) > TCPHO_MAX &&
 
