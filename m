@@ -1,37 +1,44 @@
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-127.mta1.migadu.com [95.215.58.127])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4892F87B
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 06:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BF8242D65
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 06:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.127
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791008573; cv=none; b=nrByoJdaXdAIYKWWuypMXbodH39RJmcLzBf8k8t8ADcrydj2d4+jYm2D6ORbV9g5UI3JmL+EP/mLjK7UXonOD+dXTfcNjoby7l2yTN9enudjS0jBgqAMTF4Wjf2tbP14SPFpehJO2XgM6SX0joJHz8bh8GZ5NNCviyXAuoLPbuE=
+	t=1791008649; cv=none; b=W6yKZPlCEVGQxGBISdlCFm/tpZ5o5k3TaJWETEVrhtjlLLHdtX1Ni2ZV+dA2Ffg37etZ8mbhiFWNXAPgfcx8XfIfIZ48/Gj5KJddwn5Tj9rsZw4H0LKqyr1uieCsx6PX/FNUzGu3FhmHbYfFAd0/09L3P4Dqt7YZUf4cbqh4R6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791008573; c=relaxed/simple;
-	bh=wvGB9H9HwGdd/hOr3ef0lxT4b8C0HfnFPPf2T5k80VI=;
+	s=arc-20240116; t=1791008649; c=relaxed/simple;
+	bh=uXr2q7UZes+MeSF6RarEYCzlQMvAzuwsQ0pseuoaz2I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LFHn6UTq9G9uQg55uPoogf1R8Sb7SVM/xqy0w+EQ/f1XMUxOFG6MMo3fjvg9PqxhezwEF4HxYD/7BgEgzOlUdZB0mc2HhIpQydGnzM8KNCvEAA9GUqKul/upc9iMe8rzdzAJIR/82LR1yVcVISprXBKKzQzyjitro+azTC5eGw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gnumonks.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gnumonks.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from uucp by ganesha.gnumonks.org with local-bsmtp (Exim 4.96)
-	(envelope-from <laforge@gnumonks.org>)
-	id 1xCslM-007iar-2o;
-	Sat, 03 Oct 2026 07:58:24 +0200
-Received: from laforge by localhost.localdomain with local (Exim 4.100.1)
-	(envelope-from <laforge@gnumonks.org>)
-	id 1xCsl4-00000000Ix4-0UjQ;
-	Sat, 03 Oct 2026 13:58:06 +0800
-Date: Sat, 3 Oct 2026 13:58:06 +0800
-From: Harald Welte <laforge@gnumonks.org>
-To: Anil Kaushik <anilkaushikwireless@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	osmocom-net-gprs@lists.osmocom.org
-Subject: Re: [RFC] gtp: add 5G PDU Session Container (QFI) support?
-Message-ID: <asCZbsGo90ROQIS6@nataraja>
-References: <20261002134002.3529706-1-anilkaushikwireless@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=VMYQ876TJ/lS03yHZrGpl3E9qLAdXLRadrnwFBwKkLFIComdJ/b9QbfVfKjH0vIYBPYN8qwNOfQPcYWIOlB/2MN9QoXrR32RSlxPsOx6Lpqz9hiZcGj0uR42eHSB6RK0rcwXArmpowtvPiYY28HCv5VxTIao+S0/UHDJw6m2Y5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=I3ynhin+; arc=none smtp.client-ip=95.215.58.127
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="I3ynhin+"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=uXr2q7UZes+MeSF6RarEYCzlQMvAzuwsQ0pseuoaz2I=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791008644; v=1; x=1791613444;
+ b=I3ynhin+y1MOY6yewIJDVRDoe7ViJIxwHoMLR1xw4GwlQgKju5xQSSCe6lWayNvTrUXa2efz
+ Pk3KyrIaw9jPqVvQhtG/TC7xI6ejdH4dsMMvMdImiPhpgBvIbWj2OLlFLsVicPn0NFvTgb4XFzY
+ PPfWp9X+tzaIsiEbGvZt7d5M=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id d7c4947124629513;
+	Sat, 03 Oct 2026 06:24:04 +0000
+X-Mizu-Trace-ID: d7c4947124629513
+X-Migadu-Flow: FLOW_OUT
+Date: Sat, 3 Oct 2026 14:23:53 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: sashiko-reviews@lists.linux.dev
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v3 2/6] tools: ynl: convert enum selector to
+ string for sub-message parsing
+Message-ID: <asCfefn6IADLNDtD@fedora>
+References: <20260930-ynl_rt_encap-v3-0-4106c21b9ee7@kylinos.cn>
+ <20260930-ynl_rt_encap-v3-2-4106c21b9ee7@kylinos.cn>
+ <20261001015134.963061F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,45 +47,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261002134002.3529706-1-anilkaushikwireless@gmail.com>
+In-Reply-To: <20261001015134.963061F00898@smtp.kernel.org>
 
-Hi Anil,
+On Thu, Oct 01, 2026 at 01:51:34AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] ynl: early return 0 aborts entire parsing loop on unknown sub-message
+> - [Medium] ynl: invalid C code generated for external enum selectors
+> --
+> 
+> commit f2c434cd3f008807f1723585dcbfd634aa3f28b7
+> Author: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> tools: ynl: convert enum selector to string for sub-message parsing
+> 
+> YNL sub-message parsing expects a string selector for strcmp(). So for
+> non-external enum selectors, convert the integer value to its string form
+> via the family's {enum}_str() helper. This enables correct decoding of
+> sub-messages keyed by enum values.
+> 
+> > diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
+> > index 15c79849c6096..783242537fe48 100755
+> > --- a/tools/net/ynl/pyynl/ynl_gen_c.py
+> > +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
+> > @@ -951,13 +951,31 @@ class TypeSubMessage(TypeNest):
+> >              sel_var = f"_sel_{sel}"
+> >          else:
+> >              sel_var = f"{var}->{sel}"
+> > -        get_lines = [f'if (!{sel_var})',
+> > -                     f'return ynl_submsg_failed(yarg, "{self.name}", "{selector}");',
+> > -                     f"if ({self.nested_render_name}_parse(&parg, {sel_var}, attr))",
+> > -                     "return YNL_PARSE_CB_ERROR;"]
+> > +
+> > +        local_vars = None
+> > +
+> > +        if self.selector.is_enum_val():
+>             ^^^^
+> 
+> [Severity: Medium]
+> Will this generate invalid C code for external enum selectors?
+> 
+> The condition doesn't check if the selector is external. If a YAML spec
+> defines a sub-message with an external enum selector, it appears this will
+> generate a non-existent structure member access for the presence variable:
+> 
+>     pres_var = f"{var}->_present.{sel}"
+> 
+> and try to pass the string pointer to the enum string helper, which expects
+> an integer. Should this check include `and not self.selector.is_external()`?
 
-On Fri, Oct 02, 2026 at 01:40:02PM +0000, Anil Kaushik wrote:
-> 1) Is this something you'd welcome in mainline gtp.c?  I'm aware a lot of
->    5G user-plane work lives in out-of-tree datapaths (gtp5g, the eBPF
->    eUPF), so I don't want to add datapath complexity you'd rather not
->    carry here.
+OK...
 
-I think the big question is about the use case.  Do you yourself have a use case
-for this? Which userspace programs (ideally open source ones) will be using your
-proposed mechanism? For the existing GTPv0/v1 code we have a couple of different
-FOSS applications (osmo-ggsn and ergw) as well as know of a number of proprietary
-applications using it.
+> 
+> > +            enum = self.family.consts[self.selector.get_enum_name()]
+> > +            pres_var = f"{var}->_present.{sel}"
+> > +            parse_sel = f"{sel}_str"
+> > +            local_vars = [f'const char *{parse_sel};']
+> > +
+> > +            get_lines = [
+> > +                f'if (!{pres_var})',
+> > +                f'return ynl_submsg_failed(yarg, "{self.name}", "{selector}");',
+> > +                f'{parse_sel} = {enum.render_name}_str({sel_var});',
+> > +                f'if (!{parse_sel})',
+> > +                'return 0;']
+>                  ^^^^
+> 
+> [Severity: High]
+> Does returning 0 here abort the entire parsing loop?
+> 
+> If a generated YNL parser encounters an unrecognized sub-message enum
+> selector (for example, sent by a newer kernel), it looks like `return 0;`
+> executes directly inside the attribute loop of the parsing function.
+> 
+> This would silently abort processing the remainder of the Netlink message and
+> drop all trailing attributes without returning an error. Is it possible to
+> skip the attribute and continue parsing instead?
 
-So I'm wondering if this proposed enhancement is "just for the sake of completeness",
-or if you have any application (or will contribute patches to existing applications) so
-they will make use of this feature.
+OK, I will use continue then.
 
-> 2) If yes: on RX, once the QFI has been parsed out of the PSC, what would
->    you like the driver to do with it?  The options I see are:
->      - stash it in skb->mark, so tc/nftables can classify uplink traffic
->        by QoS flow;
->      - attach it as skb metadata (tc_skb_ext / metadata_dst); or
->      - just validate it and otherwise ignore it.
->    The shape of the RX patch depends on this, so I'd rather ask than
->    guess.
-
-I would say skb->mark would make sense to me.
-
-Regards,
-	Harald
-
-p.s.: Answers might be slow, I'm just about to go on a motorbike tour in remote
-mountainous areas with limited connectivity and/or time for e-mails
-
--- 
-- Harald Welte <laforge@gnumonks.org>          https://laforge.gnumonks.org/
-============================================================================
-"Privacy in residential applications is a desirable marketing option."
-                                                  (ETSI EN 300 175-7 Ch. A6)
+Thanks
+Hangbin
