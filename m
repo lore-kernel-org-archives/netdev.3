@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB19E320CD1;
-	Sat,  3 Oct 2026 13:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CBC315D5D;
+	Sat,  3 Oct 2026 13:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791034567; cv=none; b=fV3I6ZVUcDtQYYzkb7JH+HclhLxP7S/cPH/bLjQn9WSs2Vs8UVHRE2xfzBP7m4a3BjNxApaSRD9WbR8I4ddNI0Z0CSQ6L3+s6Qweh6u7Oz/RhLyjHJT7VJmpKlX2ujUOesGrks2Vk58Ob+axqHY3GaI27qYCW1tvPF8f/H1ayXU=
+	t=1791034569; cv=none; b=b8hIyBtBw//JzzKO9WR5OzYvSicGlM7phnR6tCT2ePyxIZziwdbDbTLK5A8MHFRa4yPo531qcvmGCmqikRGQW3sR/KJRWZArQF4MkwaG3o6/Px/wTbHT367seuuR4c89vm7fBz9ecI8XMbCCgSUbyV5NyMndOC9vOAGPRkBoCg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791034567; c=relaxed/simple;
-	bh=9AnDKYXwr2pv+uCBK9IaEBRQ1WqP/CWZeMbcm3eNk+o=;
+	s=arc-20240116; t=1791034569; c=relaxed/simple;
+	bh=AS2wXpDXUk3CxI6oO+Zx/S7EIzf/YdtGdPYWhMqvDP0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=r+YAd4wm9hGBN7mAZXcP+pKQD8ZpGtJIPnOLTBf6+DFZVV45swMSrFZqfNh5qZE/BPOaHPuvAEpurwfmFiB5M9TPnf49kujswscMZ7v7Lc4+fNT8YY0d3qm4JPb0l/AiUh+epJSDxqvBhQi4rAqgfEucBKfQl/fpjtW2uy8eU2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLL3LDjO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=rEMxB5s9sA1R5rEgrJEtU/sl9pu89HM8gxhwIizsPMbm+DKXYY9V3LF4OpSPLF85Ln7pdkXUf0DY78xYgZpB9OPdqNNtMTfDzkqCTYFKI0hEKziwprO0JW6DPEUMoMADNAwnlOey6TQ0icxkCC5di1wvNmByE7b4XFfwJPTGF0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNABgP4i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLL3LDjO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FCF1F0089D;
-	Sat,  3 Oct 2026 13:36:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNABgP4i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142181F0089C;
+	Sat,  3 Oct 2026 13:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791034564;
-	bh=aBdC7E9rJbZ13AuNxkOnG0VxqbxCL/7cA3wYmmzyfGk=;
+	s=k20260515; t=1791034566;
+	bh=5N04o3FgDdHlFpQIGY4i+MqaBqH3v/HvzYdfB2IUXc4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OLL3LDjOoqANZok9rpTJjcot2EfeEFT3q0FOJYXkTh2Bx8uInGGvwlX+etSr/69Bd
-	 PKY6STbNeJlJF/u6ciVSlCLVBjPdphCpCjjl6r3TM3YnuX8+SQBowb+/K701p4NEvq
-	 Evnlj3eJMMal+iKMEsumOTNFkMjvbjdvuuPhCuMd+y5JWU10BEPcnoKZ+fVG0qxMMy
-	 uvpXjIsF/G4SMA0Tw5Y9gz8GVTlQT3CJ4dk+1ivNiXJ27UBlA13YRzkaX3qcXbic8/
-	 olUb2vEmVWkzn+gKIGmO6pUMshC25f6h3mpC6jfoDIEjmGMIgULzA80lCGAuaB3Gc3
-	 g0/fxvI+aX8WA==
-Subject: Re: [PATCH net-next v4 2/4] net: ethernet: oa_tc6: deliver the PHY
- interrupt to phylib
+	b=fNABgP4iIu+wDrmY+QLXbrVK7gPF5M3Nq0zW+khZLREmqH+XLLyBvNIr7VF0CnvWJ
+	 tWogPBUl6QAQJ928iSA3J1Ozqc946f/jkOME4FvIJo5RIWN2nD5R34uOHNcCanDMl7
+	 Zo670XNnsqZHREDCRcdnb9KyvIVkQZEtTzuozrugjJzcbt51mRjmWEeBs2e8OJ67EH
+	 HFQ07xDUwGFsSfOCzNXmJRCbn/80oyiWF1SiCDUm73gh5EH8tCqRLqm8ADBwD9LNy/
+	 GtEJtP9IMGyYHM2C5I22TcQVV4eoADT4Hg7BYBb2xHWD3cFz9MOvUjZZhq8eZwtkAv
+	 ZXKDa343AFY4Q==
+Subject: Re: [PATCH net-next v4 4/4] net: phy: microchip_t1s: fix collision
+ detection for LAN867X Rev.D0
 From: netdev-bot+sashiko@kernel.org
 To: parthiban.veerasooran@microchip.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
  linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  UNGLinuxDriver@microchip.com
-Date: Sat, 03 Oct 2026 13:36:03 +0000
-Message-ID: <179103456304.434549.18224886836207577425@kernel.org>
-In-Reply-To: <20260929125928.611784-3-parthiban.veerasooran@microchip.com>
-References: <20260929125928.611784-3-parthiban.veerasooran@microchip.com>
+Date: Sat, 03 Oct 2026 13:36:05 +0000
+Message-ID: <179103456563.434549.3604641648907923968@kernel.org>
+In-Reply-To: <20260929125928.611784-5-parthiban.veerasooran@microchip.com>
+References: <20260929125928.611784-5-parthiban.veerasooran@microchip.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 3
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,296 +59,258 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] oa_tc6_phy_exit() now calls
-  cancel_work_sync(&tc6->phy_irq_work) for every device that does not…
-- [Medium] In oa_tc6_process_extended_status(), the hot path sets
-  INT_MASK0 bit 7 in hardware (oa_tc6_phy_irq_mask_hw()) and leaves…
-- [Medium] oa_tc6_phy_irq_setup() sets tc6->phy_irq_masked = true only
-  after irq_create_mapping() returns.
-- [Low] No MAC driver sets the new OA_TC6_PHY_INT quirk in this commit.
-- [Low] oa_tc6_disable_traffic() writes INT_MASK0 =
-  OA_TC6_INT_MASK0_ALL_INTERRUPTS as a "point of no return" and now…
-- [Low] In oa_tc6_process_extended_status(), oa_tc6_phy_irq_mask_hw() is
-  called every time STATUS0 shows PHY_INT, even when INT_MASK0 bit 7 has…
+- [Medium] On LAN867X Rev.D0 the driver never actually enables CDEN
+  (collision detection, COL_DET_CTRL0 bit 15), although the design…
+- [Medium] lan867x_revd0_config_intr() and
+  lan867x_revd0_handle_interrupt() choose the Rev.D0 link-status source…
+- [Low] In steady state, the PLCA_STS_CHANGED branch of
+  lan867x_revd0_handle_interrupt() changes nothing.
+- [Low] lan867x_revd0_config_intr() reads priv->plca_enabled and does a
+  read-then-write of PRSCTL1 and LINK_STATUS_CTRL without taking…
+
+Pre-existing issues:
+- [Medium] In polling mode (no PHY IRQ), the Rev.D0 link-status selection
+  is not resynced after phy_init_hw().
 
 --
 
-net: ethernet: oa_tc6: deliver the PHY interrupt to phylib
+net: phy: microchip_t1s: fix collision detection for LAN867X Rev.D0
 
-This commit adds an OA_TC6_PHY_INT quirk. When the quirk is set, the
-in-band PHY interrupt signalled through STATUS0 is passed to phylib as a
-nested virtual IRQ. The PHYINT mask bit in INT_MASK0 is driven over SPI by
-a custom irq_chip using bus_lock/bus_sync_unlock, and the dispatch from
-oa_tc6_process_extended_status() is deferred to a workqueue.
+This commit configures CCMFC in COL_DET_CTRL0 on LAN867X Rev.D0 so that
+collision forwarding is gated by PLCA_Status in hardware. It also stops
+software CDEN toggling on Rev.D0. It adds Rev.D0 specific config_intr and
+handle_interrupt callbacks that re-evaluate the link status selection
+(forcing the semaphore source when CSMA/CD fallback is enabled), and sets
+PHY_POLL_CABLE_TEST for Rev.D0.
 
-> diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-> index 364027c39fa4a..74fe65b76359e 100644
-> --- a/drivers/net/ethernet/oa_tc6.c
-> +++ b/drivers/net/ethernet/oa_tc6.c
-
-[ ... ]
-
-> +static void oa_tc6_phy_irq_work(struct work_struct *work)
-> +{
-> +	struct oa_tc6 *tc6 = container_of(work, struct oa_tc6, phy_irq_work);
-> +	int ret;
-> +
-> +	/* Dispatched off the SPI chunk-processing thread so that
-> +	 * phy_interrupt() taking phydev->lock and issuing synchronous SPI
-> +	 * control transfers from PHY handle_interrupt() cannot stall the single
-> +	 * thread pumping TX/RX data chunks.
-> +	 */
-> +	handle_nested_irq(tc6->phy_virq);
-> +
-> +	ret = oa_tc6_phy_irq_unmask_hw(tc6);
-> +	if (ret)
-> +		dev_err(&tc6->spi->dev, "Failed to unmask PHY interrupt: %d\n",
-> +			ret);
-> +}
-
-[Severity: Medium]
-What re-arms PHYINT if oa_tc6_phy_irq_unmask_hw() fails here?
-
-The hot path in oa_tc6_process_extended_status() sets INT_MASK0 bit 7 in
-hardware through oa_tc6_phy_irq_mask_hw() and leaves phy_irq_masked false.
-This worker is the only place that clears the bit again.
-
-If the INT_MASK0 read or write in oa_tc6_phy_irq_unmask_hw() fails (a
-spi_sync error, or -EPROTO from oa_tc6_check_ctrl_read_reply() or
-oa_tc6_check_ctrl_write_reply()), we only get the dev_err(). The MAC-PHY
-then keeps PHYINT masked, while genirq and phylib still consider the IRQ
-enabled.
-
-Nothing retries. genirq has no pending mask change to sync, and phylib
-does not poll a PHY that is in interrupt mode. Later link and PLCA status
-changes would then be lost until some unrelated extended-status event, or
-a disable_irq()/enable_irq() cycle, re-syncs the bit.
-
-The mask side can end up in the same state. If the device applies the
-INT_MASK0 write but the echoed reply fails validation,
-oa_tc6_process_extended_status() logs an error and skips schedule_work().
-Hardware stays masked and no worker is queued.
+> diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
+> index 5ce0304bf0952..d667f57aa4a8f 100644
+> --- a/drivers/net/phy/microchip_t1s.c
+> +++ b/drivers/net/phy/microchip_t1s.c
 
 [ ... ]
 
-> +static int oa_tc6_phy_irq_setup(struct oa_tc6 *tc6)
-> +{
-> +	INIT_WORK(&tc6->phy_irq_work, oa_tc6_phy_irq_work);
-> +
-> +	tc6->phy_irq_domain =
-> +		irq_domain_create_linear(NULL, 1,
-> +					 &oa_tc6_phy_irq_domain_ops, tc6);
-> +	if (!tc6->phy_irq_domain)
-> +		return -ENOMEM;
-> +
-> +	tc6->phy_virq = irq_create_mapping(tc6->phy_irq_domain, 0);
-> +	WRITE_ONCE(tc6->phy_irq_masked, true);
-
-[Severity: Medium]
-Is phy_irq_masked set too late here?
-
-irq_create_mapping() calls into the .map callback, and
-irq_set_chip_and_handler() takes the chip bus lock in __irq_set_handler():
-
-irq_create_mapping()
-  oa_tc6_phy_irq_map()
-    irq_set_chip_and_handler()
-      irq_set_chip()           /* installs oa_tc6_phy_irq_chip */
-      __irq_set_handler()
-        scoped_irqdesc_get_and_buslock(irq, 0)
-          oa_tc6_phy_irq_bus_lock()
-          oa_tc6_phy_irq_bus_sync_unlock()
-
-At that point phy_irq_masked is still false from devm_kzalloc(), so
-oa_tc6_phy_irq_bus_sync_unlock() takes this branch:
-
-	else
-		regval &= ~OA_TC6_INT_MASK0_PHY_INT_MASK;
-
-It then writes INT_MASK0 over SPI, unmasking PHYINT in the MAC-PHY before
-phylib has requested the IRQ. Only after that is the shadow set to
-masked.
-
-That seems to contradict this part of the commit message:
-
-    The interrupt starts masked (hardware reset default) and is only
-    unmasked when phylib requests it
-
-If phylib never requests the IRQ (for example, the PHY driver has no
-interrupt support and phy_probe() falls back to PHY_POLL), hardware PHYINT
-stays unmasked while the shadow says masked. The same happens if
-mdiobus_register() fails and the mapping is disposed.
-
-Would setting phy_irq_masked to true before irq_create_mapping() avoid
-this?
-
-> +	if (!tc6->phy_virq) {
-> +		irq_domain_remove(tc6->phy_irq_domain);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> @@ -624,6 +821,7 @@ static void oa_tc6_phy_exit(struct oa_tc6 *tc6)
->  	if (tc6->quirk_flags & OA_TC6_BROKEN_PHY)
->  		return;
+> @@ -542,7 +574,7 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
+>  	 * (not -1, which means "don't change").
+>  	 */
+>  	if (phydev->phy_id == PHY_ID_LAN867X_REVD0 && plca_cfg->enabled != -1) {
+> -		ret = lan867x_revd0_link_active_selection(phydev,
+> +		ret = lan867x_revd0_update_link_selection(phydev,
+>  							  plca_cfg->enabled);
+>  		if (ret)
+>  			return ret;
+> @@ -555,6 +587,12 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
+>  	if (plca_cfg->enabled != -1)
+>  		priv->plca_enabled = plca_cfg->enabled;
 >  
-> +	cancel_work_sync(&tc6->phy_irq_work);
-
-[Severity: Medium]
-Can this hit the WARN_ON(!work->func) in __flush_work()?
-
-phy_irq_work is only initialized by the INIT_WORK() in
-oa_tc6_phy_irq_setup(). oa_tc6_mdiobus_register() only calls that when
-OA_TC6_PHY_INT is set, and tc6 comes from devm_kzalloc().
-
-At this commit, lan865x_probe() does:
-
-	priv->tc6 = oa_tc6_init(spi, netdev, NULL);
-
-so quirk_flags is 0. Removal then goes through:
-
-oa_tc6_exit()
-  oa_tc6_phy_exit()
-    cancel_work_sync()
-      __cancel_work_sync()
-        __flush_work()
-          if (WARN_ON(!work->func))
-
-with a zeroed work_struct.
-
-That looks reachable on every lan865x remove or unbind. It also looks
-reachable on the error paths that call oa_tc6_phy_exit(), both in
-oa_tc6_init() and on lan865x probe failure after oa_tc6_init().
-
-The follow-up patch "microchip: lan865x: enable PHY interrupt via virtual
-IRQ" sets OA_TC6_PHY_INT for lan865x. The library would still warn for any
-user that passes NULL or zero quirks, though, and this commit on its own
-breaks bisection for lan865x.
-
-Could INIT_WORK() move to oa_tc6_init() unconditionally? Alternatively,
-cancel_work_sync() could be gated on OA_TC6_PHY_INT or tc6->phy_virq.
-
->  	phy_disconnect(tc6->phydev);
->  	oa_tc6_mdiobus_unregister(tc6);
->  }
-> @@ -780,7 +978,12 @@ static void oa_tc6_disable_traffic(struct oa_tc6 *tc6)
->  	netif_tx_disable(tc6->netdev);
->  	oa_tc6_drop_tx_skb(tc6, skb);
->  	oa_tc6_free_ongoing_skbs(tc6);
-> +	/* Serialize INT_MASK0 write with phylib's mask/unmask to prevent
-> +	 * read-modify-write races in oa_tc6_phy_irq_bus_sync_unlock().
-> +	 */
-> +	mutex_lock(&tc6->phy_irq_lock);
->  	oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
-> +	mutex_unlock(&tc6->phy_irq_lock);
 
 [Severity: Low]
-Does this lock keep PHYINT masked after the point of no return?
+Can the Rev.D0 link selection end up based on the old enable state here?
+lan86xx_plca_set_cfg() writes the selection from plca_cfg->enabled above.
+It updates priv->plca_enabled only here and does not recompute afterwards.
 
-The mutex serializes this single write. However, phy_irq_work is not
-cancelled, phy_irq_masked is not updated, and later read-modify-writes are
-not blocked.
+lan867x_revd0_config_intr() reads priv->plca_enabled and then does the
+PRSCTL1 read and the LINK_STATUS_CTRL write without taking phydev->lock
+or priv->cden_lock. The sibling lan86xx_config_intr() does take cden_lock
+for its resync. The commit that added it notes that config_intr() is not
+guaranteed to run under phydev->lock.
 
-In oa_tc6_process_extended_status(), the PHY_INT dispatch runs before the
-TX protocol, loss of frame and header error checks that return -ENODEV. A
-single STATUS0 value carrying PHY_INT plus one of those error bits will
-queue the work. It then leads oa_tc6_macphy_threaded_irq() into
-disable_irq_nosync() and oa_tc6_disable_traffic(). Any SPI failure while
-the work is already pending gets to the same place.
+If lan867x_revd0_config_intr() runs between those two steps, it would
+write a selection based on the old cached value. Nothing would correct
+that until the next PSTC event. The unlocked read of priv->plca_enabled
+is also a data race.
 
-The work can then run concurrently, or after this write:
+I couldn't find a concrete caller for this PHY that runs phy_init_hw()
+at the same time as an ethtool PLCA set. Some MAC drivers do call
+phy_init_hw() from their own work or reset paths, though.
 
-oa_tc6_phy_irq_work()
-  handle_nested_irq()          /* PHY driver SPI control transfers */
-  oa_tc6_phy_irq_unmask_hw()
-    phy_irq_masked is false, INT_MASK0 reads back all-masked
-    regval &= ~OA_TC6_INT_MASK0_PHY_INT_MASK;
-    oa_tc6_write_register(tc6, OA_TC6_REG_INT_MASK0, regval);
+> +	/* LAN867X Rev.D0 uses CCMFC for autonomous collision detection
+> +	 * gating; CDEN remains enabled and does not require software toggling.
+> +	 */
+> +	if (phydev->phy_id == PHY_ID_LAN867X_REVD0)
+> +		return 0;
+> +
 
-This unmasks PHYINT again and keeps issuing PHY control transfers on a
-device that has been shut down. Neither oa_tc6_phy_irq_unmask_hw() nor
-oa_tc6_phy_irq_bus_sync_unlock() checks tc6->disable_traffic.
+[ ... ]
 
-The host IRQ is already disabled by disable_irq_nosync(), so there is no
-host interrupt storm. Should the PHY work still be stopped here, or should
-the unmask paths check tc6->disable_traffic?
-
->  	oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &regval);
->  	oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, regval);
->  	dev_err(&tc6->spi->dev, "Device interrupt disabled to avoid interrupt storm");
-> @@ -813,6 +1016,29 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
->  		return ret;
+> @@ -582,6 +620,20 @@ static int lan867x_revd0_config_init(struct phy_device *phydev)
+>  			return ret;
 >  	}
 >  
-> +	/* Dispatch the PHY interrupt to phylib via the nested virtual IRQ so
-
-[ ... ]
-
-> +	 * Gate on phy_virq (the actual resource) rather than just the flag to
-> +	 * be self-consistent if OA_TC6_BROKEN_PHY skips initialization.
+> +	/* AN1699: Configure CCMFC (Collision Counting and MAC Forwarding
+> +	 * Control) to OA default (0x1) so that the hardware autonomously gates
+> +	 * collision forwarding to the MAC based on the live PLCA_Status:
+> +	 * collisions are neither counted nor forwarded when PLCA_Status is OK,
+> +	 * and are counted/forwarded when not OK. This eliminates the need for
+> +	 * software-driven CDEN toggling. CDEN defaults to enabled on Rev.D0
+> +	 * and remains enabled.
 > +	 */
-> +	if (tc6->phy_virq && FIELD_GET(OA_TC6_STATUS0_PHY_INT, value)) {
-> +		ret = oa_tc6_phy_irq_mask_hw(tc6);
+> +	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
+> +			     COL_DET_CTRL0_CCMFC_MASK,
+> +			     COL_DET_CTRL0_CCMFC_OA_DEFAULT);
 
-[Severity: Low]
-Does this repeat a full INT_MASK0 read-modify-write for every chunk footer
-while PHYINT is still asserted?
+[Severity: Medium]
+This call only changes bits 10:9 of COL_DET_CTRL0, so bit 15 (CDEN)
+keeps whatever value the PHY already has. Does anything on Rev.D0
+actually set CDEN?
 
-According to the commit message, PHYINT is level triggered and stays
-asserted until the worker services the PHY. So the STATUS0 write-back does
-not clear it, and the "if (!value) return 0;" shortcut never fires.
+The comment added above lan86xx_plca_set_cfg() says:
 
-Footers are processed after the whole data transaction completes. Every
-EXST footer captured after the PHY event therefore costs a STATUS0 read, a
-STATUS0 write, and the two INT_MASK0 transfers in oa_tc6_phy_irq_mask_hw(),
-even though bit 7 is already set. It also costs a no-op schedule_work().
+  CDEN remains permanently enabled in config_init()
 
-The same redundant read-modify-write happens when an unrelated
-extended-status event arrives while PHYINT is already masked. That seems
-to work against the goal of not stalling the thread that pumps TX/RX
-chunks.
+However, this phy_modify_mmd() does not write COL_DET_ENABLE, and
+lan867x_revd0_fixup_regs[] has no entry for 0x0087. Rev.D0 also has no
+.soft_reset, so phy_init_hw() does not reset the PHY back to its
+defaults before config_init() runs.
 
-Would it make sense to skip the mask while a PHY dispatch is already
-pending?
+Before this patch, lan86xx_plca_set_cfg() cleared CDEN on Rev.D0
+whenever PLCA was enabled. It did this through lan86xx_update_cden(),
+and through a direct COL_DET_DISABLE write since commit 78341049fbcd.
+With the new early return in lan86xx_plca_set_cfg():
 
-> +		if (ret)
-> +			dev_err(&tc6->spi->dev,
-> +				"Failed to mask PHY interrupt: %d\n", ret);
-> +		else
-> +			schedule_work(&tc6->phy_irq_work);
-> +	}
+	if (phydev->phy_id == PHY_ID_LAN867X_REVD0)
+		return 0;
+
+no Rev.D0 path writes CDEN any more.
+
+Suppose the PHY comes up with CDEN=0 and is not power cycled. Two
+examples are a warm reboot or kexec from an older kernel after
+"ethtool --set-plca-cfg ... enable on", and a bootloader that followed
+the older AN1699 advice. Would CDEN then stay disabled for good?
+
+CCMFC only controls whether detected collisions are counted and
+forwarded. In that case, CSMA/CD operation (PLCA disabled, or the
+autonomous fallback) would run with no collision detection.
+
+Could COL_DET_CTRL0_ENABLE_BIT_MASK and COL_DET_ENABLE be added to this
+phy_modify_mmd() call?
 
 [ ... ]
 
-> diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-> index 27f652d4920b2..1c8cc263c5e53 100644
-> --- a/include/linux/oa_tc6.h
-> +++ b/include/linux/oa_tc6.h
-
-[ ... ]
-
-> @@ -68,6 +70,7 @@ struct oa_tc6;
+> @@ -712,6 +764,76 @@ static irqreturn_t lan86xx_handle_interrupt(struct phy_device *phydev)
+>  	return ret_irq;
+>  }
 >  
->  enum oa_tc6_quirk_flag {
->  	OA_TC6_BROKEN_PHY = BIT(0),
-> +	OA_TC6_PHY_INT    = BIT(1),
->  };
+> +static int lan867x_revd0_config_intr(struct phy_device *phydev)
+> +{
+> +	u16 mask = LAN86XX_STS1_PLCA_STS_CHANGED |
+> +		   LAN86XX_STS1_LINK_STS_CHANGED;
+> +	struct lan86xx_priv *priv = phydev->priv;
+> +	int sts1, ret;
+> +
+> +	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+> +		/* Read to clear any pending status before enabling. */
+> +		sts1 = lan86xx_read_clear_sts1(phydev);
+> +		if (sts1 < 0)
+> +			return sts1;
+> +
+> +		/* STS1 may have cleared a pending PSTC while masked, and a
+> +		 * missed PSTC leaves no trace to key off, so unconditionally
+> +		 * resync the link-status-selection source from the current
+> +		 * PLCA enable state and fallback configuration.
+> +		 */
+> +		ret = lan867x_revd0_update_link_selection(phydev,
+> +							  priv->plca_enabled);
+
+[Severity: Medium]
+Can priv->plca_enabled be stale at this point? Only
+lan86xx_plca_set_cfg() writes it, and the PHY can be hardware reset
+while the driver stays bound.
+
+For example, phy_detach() asserts the reset GPIO with
+phy_device_reset(phydev, 1). A MAC that connects the PHY in ndo_open and
+disconnects it in ndo_stop therefore resets it on every ifdown/ifup.
+Losing power across suspend has the same effect.
+
+Suppose PLCA was enabled with ethtool, so priv->plca_enabled == 1. The
+next attach then does:
+
+phy_attach_direct()
+  phy_init_hw()
+    lan867x_revd0_config_init()
+      lan867x_revd0_link_active_selection(phydev, false)  /* SEMAPHORE */
+...
+phy_request_interrupt()
+  phy_enable_interrupts()
+    phy_config_interrupt()
+      lan867x_revd0_config_intr()
+        lan867x_revd0_update_link_selection(phydev, 1)    /* PLCA_STATUS */
+
+If PRSCTL1 fallback reads 0, this selects LINK_STATUS_CONFIG_PLCA_STATUS
+while PLCA_EN is 0 in hardware. Would the BMSR link then stay down until
+userspace runs ethtool --set-plca-cfg again? The PSTC branch in
+lan867x_revd0_handle_interrupt() uses the same cached value, so it would
+not recover this either.
+
+Before this patch, Rev.D0 had no config_intr. The SEMAPHORE selection
+from config_init() stayed in place and the link came up.
+
+Would reading the PLCA_EN bit from MDIO_OATC14_PLCA_CTRL0 here, or
+resyncing priv->plca_enabled from hardware in config_init(), avoid this?
+
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		return lan86xx_set_intr_mask(phydev, mask, true);
+> +	}
+> +
+> +	ret = lan86xx_set_intr_mask(phydev, mask, false);
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch.
+The resync above only runs in the PHY_INTERRUPT_ENABLED branch.
+
+In polling mode, phy_init_hw() calls lan867x_revd0_config_init(), which
+always forces the SEMAPHORE source. It then calls
+lan867x_revd0_config_intr(), which takes this disable branch and never
+calls lan867x_revd0_update_link_selection().
+
+If the PHY was not reset (resume without power loss, or re-attach
+without a reset GPIO), PLCA_EN and priv->plca_enabled both remain 1.
+With fallback disabled, is the link then forced up instead of following
+PLCA_Status until ethtool --set-plca-cfg runs again?
+
+config_init() has forced SEMAPHORE on every re-init since commit
+07f5765f26c3. This patch adds the resync only for interrupt mode.
+
+[ ... ]
+
+> +static irqreturn_t lan867x_revd0_handle_interrupt(struct phy_device *phydev)
+> +{
+
+[ ... ]
+
+> +	if (sts1 & LAN86XX_STS1_PLCA_STS_CHANGED) {
+> +		/* Re-evaluate the link-status selection when PLCA status
+> +		 * changes. A resulting link-status change raises
+> +		 * LINK_STS_CHANGED, which triggers the PHY state machine.
+> +		 */
+> +		ret = lan867x_revd0_update_link_selection(phydev,
+> +							  priv->plca_enabled);
 
 [Severity: Low]
-This isn't a bug, but no in-tree MAC driver sets OA_TC6_PHY_INT in this
-commit. lan865x passes NULL quirks and adin1140 passes OA_TC6_BROKEN_PHY,
-so the new irq_chip, irq_domain and workqueue path is unused at this point
-in the series.
+Can this call ever change LINK_STATUS_CTRL in steady state?
+lan867x_revd0_update_link_selection() only looks at PRSCTL1 bit 10
+(through lan86xx_fallback_to_csmacd()) and the cached
+priv->plca_enabled. It never reads PLCA_STATUS.
 
-The next patch, "microchip: lan865x: enable PHY interrupt via virtual
-IRQ", sets tc6_quirks.quirk_flags = OA_TC6_PHY_INT in lan865x_probe(). It
-also carries the Fixes: 78341049fbcd tag and names this commit as its
-prerequisite. So within the series this looks like the usual
-infrastructure-then-user split.
+This driver only reads PRSCTL1 and never writes it. priv->plca_enabled
+only changes in lan86xx_plca_set_cfg(), which has already written the
+selection for the new value. So each BEACON gain or loss seems to cost a
+PRSCTL1 read plus a rewrite of the same LINK_STATUS_CTRL value.
+
+The comment says a resulting link-status change raises
+LINK_STS_CHANGED. When the selection is PLCA_STATUS, though, the hardware
+already changes the link and raises LINK_STS_CHANGED on its own.
+
+The commit message also says:
+
+  The PSTC interrupt handler for Rev.D0 therefore only needs to update
+  the link status selection on each PLCA transition.
+
+Does Rev.D0 need LAN86XX_STS1_PLCA_STS_CHANGED unmasked at all? If it
+does, could the commit message and this comment be updated to say what
+the branch actually does?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929125928.611784-1-parthiban.veerasooran%40microchip.com
