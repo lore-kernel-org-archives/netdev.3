@@ -1,122 +1,96 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F0730F526;
-	Sat,  3 Oct 2026 10:05:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC8A34D382;
+	Sat,  3 Oct 2026 10:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791021950; cv=none; b=T4QP5E2G1ewQMDV6SpMinZy2jRoN6ThRRubEYOsJA5AaepstboSPONA94y5UMwJBcQE8tJiC+4qAsfLYSsJ1ABhvyHLOXbP33U4ybvVP3GIafa4D72TqjPBlGcz9kxRiTRXXCcEyuzQs0HjMstodeGBaet9eV4xVd2oa1OpJPuw=
+	t=1791022217; cv=none; b=Jrw+svB/9VrEY58O/5sPebGj3bopGBkIzjXTQinU7A+wRAZAIW35mI++zHrJlSpa9K60OnKlSCtyzQgi9p/73/A6cAVl3wp+6ZNCTn6ynQ+HQ6sdYM5s9lIykST9ndEYIMCo2d2mP7Q5Lxn3lAWmPL5CA4aYmehAaEJZsRhHTFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791021950; c=relaxed/simple;
-	bh=CrKUgrI+tlpT8PZeMTD3lCBuPH+nIM53URnJwC/rDuE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=rPlYWM0U+20Ug7SzdEaz0Fa9IsTqcuh/3xPOjN147532423I1z+IoS6UAgEJujC1PMTFni3T8/NNcKpyK6E044kRScN8tTcSd/PhgeD6+IXDexnXRtQckRMe3pfh2EZq6ELX2vS9ACeRP255zQ4IqZ2An+0pn84cCgawNwBOwpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=R13B6I7F; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1791022217; c=relaxed/simple;
+	bh=kvxIUZftEtUBFFpv+cIaXNq6AXY53meKB1Oq89Ddw5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nd+2EU8pT+07RyiTjq0pVkjI0vo3muSsnPjUjuNSPc/7CCWLGMWKYN3peffU0wpbVNy9wHv6bw4uvV5Gu8R5JgPHrnyk7upitNJm1JMrb5/nFxZvoyPutf2dV5C3JxD3AWTEQzlAYr0j2WYcic97ulaE//lNmvlUWki5L5gbixA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=hqPNJdZT; arc=none smtp.client-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="R13B6I7F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=CrKUgrI+tlpT8PZeMTD3lCBuPH+nIM53URnJwC/rDuE=; b=R
-	13B6I7F+EA5cdX6KjG1bAzsF3+Cq4Q4FAgsksL7Xasg7pPVblQco8+/f7H1tpnJ3
-	Tc/898i8VxrZE7VUD8iz8qxWJmEc3Ut4jhmUlyZxapVc2+aiMzhX/dxVZc+xEbFP
-	f5ZSPnDIV8lhgJF0gZ2/1Ig5cbfrd410PrPUtxZk1A=
-Date: Sat, 3 Oct 2026 18:04:41 +0800 (CST)
-From: "jiale yao" <19888972804@163.com>
-To: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>
-Cc: "Paul Barker" <paul@pbarker.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Sergey Shtylyov" <s.shtylyov@omp.ru>,
-	"Claudiu Beznea" <claudiu.beznea.uj@bp.renesas.com>,
-	netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re:Re: [PATCH net v3 6/7] net: ravb: release managed IRQs before
- freeing netdev
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <20261003095921.GB1933679@ragnatech.se>
-References: <20261003085940.493951-1-yaojiale02@163.com>
- <20261003085940.493951-7-yaojiale02@163.com>
- <20261003095921.GB1933679@ragnatech.se>
-X-NTES-SC: AL_Qu2SA/yZvkAj5yiaYukdmE8Uges8WcC0svki1YJUc+4GhzHBwiABbHpeBEnt4NmlFwSNnAm9ShFy8/5qb6BZEHm0hyzCcXMZlL66xakoBw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="hqPNJdZT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=hqPNJdZTNR+kt40RB7nWH37b1m7Wx0gvRmN08iJprhACt+MQJ/GlsSc91n4rzxA4aPVuJJ1zJNQW6
+	 qSjde0wFzBrYhsiL2lyxWgvpbVdLLZQiWURVcWVdXVEM7S2uRWNd6Z63vI8Jbvaa4lyon2QIoiGNTQ
+	 nkVd8QluIe+0sKOE=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66ac0d47cf0e-67c7c;
+	Sat, 03 Oct 2026 18:10:05 +0800 (CST)
+X-RM-TRANSID:2ee66ac0d47cf0e-67c7c
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[112.22.250.209])
+	by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee46ac0d4698ac-60979;
+	Sat, 03 Oct 2026 18:10:05 +0800 (CST)
+X-RM-TRANSID:2ee46ac0d4698ac-60979
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Alice Mikityanska <alice.kernel@fastmail.im>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Subject: [PATCH net-next v2 0/2] bareudp: Enable BIG TCP packets
+Date: Sat,  3 Oct 2026 18:09:37 +0800
+Message-ID: <20261003100939.468181-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <75941506.13f3.1a1013919eb.Coremail.19888972804@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:jygvCgD3n1U608BqB0cHAA--.63680W
-X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbCzRrNCGrA0zoFHQAA3J
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 
-QXQgMjAyNi0xMC0wMyAxNzo1OToyMSwgIk5pa2xhcyBTw7ZkZXJsdW5kIiA8bmlrbGFzLnNvZGVy
-bHVuZEByYWduYXRlY2guc2U+IHdyb3RlOgo+SGkgSmlhbGUsCj4KPk9uIDIwMjYtMTAtMDMgMTY6
-NTk6MzcgKzA4MDAsIEppYWxlIFlhbyB3cm90ZToKPj4gcmF2Yl9yZW1vdmUoKSBmcmVlcyB0aGUg
-bmV0ZGV2IGJlZm9yZSBkZXZyZXMgcmVsZWFzZXMgdGhlIG1hbmFnZWQgSVJRcy4KPj4gVGhlIGhh
-bmRsZXJzIHVzZSB0aGUgbmV0ZGV2IGFzIHRoZWlyIGRhdGEgcG9pbnRlciwgc28gYW4gaW50ZXJy
-dXB0IGR1cmluZwo+PiB0aGF0IHdpbmRvdyBjYW4gYWNjZXNzIGZyZWVkIG1lbW9yeS4gUHJvYmUg
-ZXJyb3IgcGF0aHMgaGF2ZSB0aGUgc2FtZQo+PiBvcmRlcmluZyBwcm9ibGVtLgo+PiAKPj4gS2Vl
-cCB0aGUgbmV0ZGV2IG1hbnVhbGx5IG1hbmFnZWQgYW5kIHBsYWNlIG9ubHkgdGhlIElSUSByZXNv
-dXJjZXMgaW4gYQo+PiBkZWRpY2F0ZWQgZGV2cmVzIGdyb3VwLiBSZWxlYXNlIHRoZSBncm91cCBh
-ZnRlciB1bnJlZ2lzdGVyaW5nIHRoZSBuZXRkZXYKPj4gYW5kIGJlZm9yZSBmcmVlaW5nIGl0LCBh
-bmQgcmVsZWFzZSBpdCBvbiBwcm9iZSBmYWlsdXJlcyBhcyB3ZWxsLiBUaGlzCj4+IGtlZXBzIHRo
-ZSBleGlzdGluZyBydW50aW1lIFBNIGVycm9yIGhhbmRsaW5nIHVuY2hhbmdlZC4KPj4gCj4+IFRo
-aXMgaXNzdWUgd2FzIGZvdW5kIGJ5IGEgc3RhdGljIGFuYWx5c2lzIG1ldGhvZCB1c2VkIGluIG91
-ciByZXNlYXJjaC4KPgo+V2hhdCBoYXBwZW5lZCB0byBzd2l0Y2hpbmcgdG8gdXNlIGRldm1fYWxs
-b2NfZXRoZXJkZXZfbXFzKCkgaW5zdGVhZCBvZiAKPmFkZGluZyB0aGlzIGNvbXBsZXggdGhpbmcs
-IGFzIHdlIGRpc2N1c3NlZCBpbiB2Mj8KCllvdSdyZSByaWdodC4gSSBtaXNzZWQgdGhpcyBwb2lu
-dCB3aGlsZSB3b3JraW5nIHRocm91Z2ggYSBsYXJnZSBudW1iZXIKb2YgcGF0Y2hlcy4uLj5fPApJ
-IHNob3VsZCB0YWtlIGEgYnJlYWsgYW5kIHBvc3QgYW4gdXBkYXRlZCByZXZpc2lvbiBhZnRlciB0
-aGUKMjQtaG91ciB3YWl0aW5nIHBlcmlvZC4KCj4KPk5hY2tlZC1ieTogTmlrbGFzIFPDtmRlcmx1
-bmQgPG5pa2xhcy5zb2Rlcmx1bmQrcmVuZXNhc0ByYWduYXRlY2guc2U+Cj4KPj4gCj4+IEZpeGVz
-OiAzMmYwMTJiOGMwMWMgKCJuZXQ6IHJhdmI6IE1vdmUgZ2V0dGluZy9yZXF1ZXN0aW5nIElSUXMg
-aW4gdGhlIHByb2JlKCkgbWV0aG9kIikKPj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPj4g
-U2lnbmVkLW9mZi1ieTogSmlhbGUgWWFvIDx5YW9qaWFsZTAyQDE2My5jb20+Cj4+IC0tLQo+PiAg
-ZHJpdmVycy9uZXQvZXRoZXJuZXQvcmVuZXNhcy9yYXZiX21haW4uYyB8IDE4ICsrKysrKysrKysr
-KysrLS0tLQo+PiAgMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25z
-KC0pCj4+IAo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvcmVuZXNhcy9yYXZi
-X21haW4uYyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3JlbmVzYXMvcmF2Yl9tYWluLmMKPj4gaW5k
-ZXggZWExYzdlNTM2NzkxLi5hYjQ3MDM4ODg3NzggMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvbmV0
-L2V0aGVybmV0L3JlbmVzYXMvcmF2Yl9tYWluLmMKPj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJu
-ZXQvcmVuZXNhcy9yYXZiX21haW4uYwo+PiBAQCAtMjk2MywyOCArMjk2MywzNSBAQCBzdGF0aWMg
-aW50IHJhdmJfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKPj4gIAkJcHJpdi0+
-bnVtX3J4X3JpbmdbUkFWQl9OQ10gPSBOQ19SWF9SSU5HX1NJWkU7Cj4+ICAJfQo+PiAgCj4+ICsJ
-aWYgKCFkZXZyZXNfb3Blbl9ncm91cCgmcGRldi0+ZGV2LCBwcml2LCBHRlBfS0VSTkVMKSkgewo+
-PiArCQllcnJvciA9IC1FTk9NRU07Cj4+ICsJCWdvdG8gb3V0X3Jlc2V0X2Fzc2VydDsKPj4gKwl9
-Cj4+ICsKPj4gIAllcnJvciA9IHJhdmJfc2V0dXBfaXJxcyhwcml2KTsKPj4gIAlpZiAoZXJyb3Ip
-Cj4+IC0JCWdvdG8gb3V0X3Jlc2V0X2Fzc2VydDsKPj4gKwkJZ290byBvdXRfcmVsZWFzZV9pcnFf
-Z3JvdXA7Cj4+ICsKPj4gKwlkZXZyZXNfY2xvc2VfZ3JvdXAoJnBkZXYtPmRldiwgcHJpdik7Cj4+
-ICAKPj4gIAlwcml2LT5jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgTlVMTCk7Cj4+ICAJ
-aWYgKElTX0VSUihwcml2LT5jbGspKSB7Cj4+ICAJCWVycm9yID0gUFRSX0VSUihwcml2LT5jbGsp
-Owo+PiAtCQlnb3RvIG91dF9yZXNldF9hc3NlcnQ7Cj4+ICsJCWdvdG8gb3V0X3JlbGVhc2VfaXJx
-X2dyb3VwOwo+PiAgCX0KPj4gIAo+PiAgCWlmIChpbmZvLT5ncHRwX3JlZl9jbGspIHsKPj4gIAkJ
-cHJpdi0+Z3B0cF9jbGsgPSBkZXZtX2Nsa19nZXQoJnBkZXYtPmRldiwgImdwdHAiKTsKPj4gIAkJ
-aWYgKElTX0VSUihwcml2LT5ncHRwX2NsaykpIHsKPj4gIAkJCWVycm9yID0gUFRSX0VSUihwcml2
-LT5ncHRwX2Nsayk7Cj4+IC0JCQlnb3RvIG91dF9yZXNldF9hc3NlcnQ7Cj4+ICsJCQlnb3RvIG91
-dF9yZWxlYXNlX2lycV9ncm91cDsKPj4gIAkJfQo+PiAgCX0KPj4gIAo+PiAgCXByaXYtPnJlZmNs
-ayA9IGRldm1fY2xrX2dldF9vcHRpb25hbCgmcGRldi0+ZGV2LCAicmVmY2xrIik7Cj4+ICAJaWYg
-KElTX0VSUihwcml2LT5yZWZjbGspKSB7Cj4+ICAJCWVycm9yID0gUFRSX0VSUihwcml2LT5yZWZj
-bGspOwo+PiAtCQlnb3RvIG91dF9yZXNldF9hc3NlcnQ7Cj4+ICsJCWdvdG8gb3V0X3JlbGVhc2Vf
-aXJxX2dyb3VwOwo+PiAgCX0KPj4gIAljbGtfcHJlcGFyZShwcml2LT5yZWZjbGspOwo+PiAgCj4+
-IEBAIC0zMTI0LDYgKzMxMzEsOCBAQCBzdGF0aWMgaW50IHJhdmJfcHJvYmUoc3RydWN0IHBsYXRm
-b3JtX2RldmljZSAqcGRldikKPj4gIAlwbV9ydW50aW1lX2Rpc2FibGUoJnBkZXYtPmRldik7Cj4+
-ICAJcG1fcnVudGltZV9kb250X3VzZV9hdXRvc3VzcGVuZCgmcGRldi0+ZGV2KTsKPj4gIAljbGtf
-dW5wcmVwYXJlKHByaXYtPnJlZmNsayk7Cj4+ICtvdXRfcmVsZWFzZV9pcnFfZ3JvdXA6Cj4+ICsJ
-ZGV2cmVzX3JlbGVhc2VfZ3JvdXAoJnBkZXYtPmRldiwgcHJpdik7Cj4+ICBvdXRfcmVzZXRfYXNz
-ZXJ0Ogo+PiAgCXJlc2V0X2NvbnRyb2xfYXNzZXJ0KHJzdGMpOwo+PiAgb3V0X2ZyZWVfbmV0ZGV2
-Ogo+PiBAQCAtMzE0NCw2ICszMTUzLDcgQEAgc3RhdGljIHZvaWQgcmF2Yl9yZW1vdmUoc3RydWN0
-IHBsYXRmb3JtX2RldmljZSAqcGRldikKPj4gIAkJcmV0dXJuOwo+PiAgCj4+ICAJdW5yZWdpc3Rl
-cl9uZXRkZXYobmRldik7Cj4+ICsJZGV2cmVzX3JlbGVhc2VfZ3JvdXAoZGV2LCBwcml2KTsKPj4g
-IAlpZiAoaW5mby0+bmNfcXVldWVzKQo+PiAgCQluZXRpZl9uYXBpX2RlbCgmcHJpdi0+bmFwaVtS
-QVZCX05DXSk7Cj4+ICAJbmV0aWZfbmFwaV9kZWwoJnByaXYtPm5hcGlbUkFWQl9CRV0pOwo+PiAt
-LSAKPj4gMi4zNC4xCj4+IAo+Cj4tLSAKPktpbmQgUmVnYXJkcywKPk5pa2xhcyBTw7ZkZXJsdW5k
-Cg==
+This series allows BIG TCP on bareudp, the same way as on vxlan and
+geneve, and extends the big_tcp_tunnels.sh selftest to cover it.
+
+Patch 1 bumps tso_max_size of bareudp devices to GSO_MAX_SIZE.
+
+Patch 2 adds bareudp to big_tcp_tunnels.sh. bareudp only works in
+external mode, so the test attaches the tunnel metadata with a tc
+tunnel_key action on egress.
+
+Patch 2 depends on "bareudp: set the inner protocol to the protocol of
+the packet", posted to net:
+
+https://lore.kernel.org/netdev/20261002153039.462663-1-yanhaishuang@cmss.chinamobile.com/
+
+Until that fix reaches net-next, the bareudp cases of the selftest with
+veth tx checksum offload disabled fail for IPv6 over IPv4 and for both
+families over IPv6, because software GSO drops the packets. Everything
+else passes without the fix.
+
+v2:
+- New patch 2, as Alice asked for selftest coverage.
+
+v1: https://lore.kernel.org/netdev/20261001042336.224343-1-yanhaishuang@cmss.chinamobile.com/
+
+Haishuang Yan (2):
+  bareudp: Enable BIG TCP packets
+  selftests: net: big_tcp_tunnels: Cover bareudp
+
+ drivers/net/bareudp.c                         |  1 +
+ .../testing/selftests/net/big_tcp_tunnels.sh  | 45 ++++++++++++++++---
+ 2 files changed, 39 insertions(+), 7 deletions(-)
+
+-- 
+2.43.0
+
+
+
