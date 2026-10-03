@@ -1,187 +1,182 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD273932D9
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 17:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDABC221FB4
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 17:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791048755; cv=none; b=SqUlxIUQc1LfJrw1LDlxE+yvdIbLFHFe3YOPk/cqUXAt+otD5JnwkYMe3WawL7xkimLTm0XbJ6nNdmqK0w8xqf+BTjpY5Mktf5ArxqubRfh9J4Zxi1eScZ+sTL/0bgSBS9aRX1tuo9DlaKHVY2Iv3z8Rxu+gzRge7qSfUtnSOus=
+	t=1791048775; cv=none; b=Ahc01hfVG8oAA6SL7pkYB3nPLBMJdbwLhnYvZeW+PCis84eF6HMnf8smrDKhQEC6L8UrFG0m9QDXsfsNAPhfvUMw4ncE3oQXznTwz6iT0fIAR6xGsgodN0XMh44C5rMzQlp7jZaeSGsAXlRXMlaZbd0Z03AfFgG0MoBM4d7ENIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791048755; c=relaxed/simple;
-	bh=QoRqzlPVZ4N5xoYxODT20puuFWUAgXPIHnwQx6BlFbU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pJHmENXLi+0T3byxpG3AnfNmW4c1ZLFVMVwyD+fDFfuJLRfFoFkGM6y9KsJcTdn16Va71nSFebRG/hjz4+YnA+AHsP8YO5UrvFiLHSEAgWm9NoBwxilaP1s2GGgv4EI5Uxie8hXCt1arU8wEAWWS9ZfnOZzJsQEbe0MeeDMfxY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kfXoiA5Z; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791048775; c=relaxed/simple;
+	bh=/qv9zU8bz72r5GwFA5K1hispFWhnPd/LxDLu00K8sHs=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=nPWdY5QvS7abYMYyD1RT6ghBQfItA2Kd8KeIg18QfdsWWm1mGwRZLVV5yQx6gNiC1TjmcDAUIRxK2ATIvgqhSTusLXvNh+9HKiYSChlRhH3B8Am1jJrESFt1mlZAiUTURmpDWRD6RzFNCk/jBZpwrXdndFKjLIYxQO/lh+dopos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=XbUHYZUo; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=s9+mfNiW; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kfXoiA5Z"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c29c6a3930bso85193166b.3
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 10:32:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791048745; x=1791653545; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LleUE9L6TCx7eK5ckWEfi/VBEFROX7GUZJBsnTVJ2/c=;
-        b=kfXoiA5ZzBkmZkhZBNZlFNHF+THFF1lC5HYWTkqqd9+A+nHHfUlHzc/HPh+FwBMl7g
-         iBi4y4LOsJA+AUkOQ9SIXsDgybwv7dWxSww8jzSLpb4T9WecQl7pOvq26lSdFm941j2F
-         dO61WQs3BJV6sXYhBYmrmVQjN4nP4pCu+1e9jUwT4YwqvHLzmNPWnL3VzIuX7YJWMZ1B
-         E8g5tS4maoIOrt3PO21NGJgaSxN4ieTei1dMchRlhp0WY9Yu+M4I12wEPpNyMk1teG9t
-         NYOfV32OvouFbiXe3XysjaHZdGxr4yQT0613Jg5hYtvARmY9Vq9UzXd/jpH5iJyK3GHK
-         P2Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791048745; x=1791653545;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LleUE9L6TCx7eK5ckWEfi/VBEFROX7GUZJBsnTVJ2/c=;
-        b=jaccfTLErRHif9XoFOk2reNmZxsv8g6q2MKrHv4azDjqECxi7iRBD1XeNPTJUSjaQS
-         HpAB5iLj3NI7Lp2xtHcSJOHN1wWxowRtXq1EgE7w4nTshv1a9yhYp4zOuR3vpA05di/T
-         L2hT8tx+Lhel/9f4VqCxm9L0wwWbHgXrtA26fArmyQtQig5B5bWIKKW36fiRe7oLNfyC
-         gH97VFDYQ4EvPBF3SGSBpraxfCAxbE3i0m2V7dUhQ1Ze9Yw2ivLekRdc/nqsUgkfr3PI
-         y0pLBJKy7q/K2cRu2v8MG4KrrSyG5y6NA3pFvAZSXvCFQWGPl1NqtHPtgHLGWhi2u3aa
-         HWsg==
-X-Gm-Message-State: AFuF++nrb+MJfH8N3FRm6fcFfQI04Yb9CxucXNOkqyZHx3245dWO693b
-	Ev+fw4LMA7SYTKWOXNRZgpWF+UJcERd3fbC/pWj+RP/7CZQ/QYRqEgENfj9mPh1BAD9fmQ==
-X-Gm-Gg: AYBFou10+GxK4fxioBoFCi4KAHg1uV0FLDYHIfua5VxusWvxz1b8SH9hGV+bcAYqgnz
-	QaZWj/hbjD9lNFDiZ/pvnrWZqrN7fbmj4XamcXltXsHqtiE60JpYfNywcrP8T0HojcvPRKsfR7J
-	j/VhI7TMyEiQWZhataWnM4KM9gKb4ASEQAr6DgsLg2JYc9iREhDGi7cACHrcTLrSVuM7vO46Ul0
-	OKXmcbBKBOvZZWE+08XfNHv7LyaUtDDLsauPiWEYiEpLrJAzJCDe0gtQEFyRiTojshHXl1cKzUs
-	MEYtxLnCa1Ips0IZ26rJ18irCx4X0/IlPJj6QPSp6Lk2bjfL+zb9c2B7Yhh/lglRkBXQ6uI9mIg
-	lUV8XeFkjaMqBugmwExI6QwsXTHbIPINjThiMDg4zde2ZSaUZrhhC8D8cioqe4yK9ZzY+w3MO1/
-	JaEf4cASuIHq8TGE0pX7IGmCnyEKaaOZ0gDuDcMKhKOLpb1BrYYqhwqfmZe9zfEw+wpV52JIiyz
-	AQIx49Zn6cL1XkOUs73lTlmcltcKFzh+3SXEYegPsnZMjzqH8HyQS/v
-X-Received: by 2002:a17:907:d08f:b0:c29:6400:ef8e with SMTP id a640c23a62f3a-c2e6f249ff1mr248303866b.42.1791048744873;
-        Sat, 03 Oct 2026 10:32:24 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:801:793:68fd:7995:7ccd:ec2b:6712])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e71d58d94sm84957766b.1.2026.10.03.10.32.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 10:32:24 -0700 (PDT)
-From: Yongzhao Chen <yongzhao.derek@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: phy: qca83xx: read resolved QCA8337 link status
-Date: Sat,  3 Oct 2026 19:32:09 +0200
-Message-ID: <20261003173210.1235-1-yongzhao.derek@gmail.com>
-X-Mailer: git-send-email 2.45.2.windows.1
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="XbUHYZUo";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="s9+mfNiW"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 693HWD98009882;
+	Sat, 3 Oct 2026 19:32:18 +0200
+Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 904AC1208F0;
+	Sat,  3 Oct 2026 19:32:08 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1791048728; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O6S5nuzyHxS2GVmDPDBhvu3UBrM83s93T24wqvFyOyI=;
+	b=XbUHYZUo7SgXgmig9bqDod6FSkaWWvnbLMn79n5d4zko8EwzbWlnyZUzanRskscSbk69Oo
+	xnSGKW+x6szyGQAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1791048728; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O6S5nuzyHxS2GVmDPDBhvu3UBrM83s93T24wqvFyOyI=;
+	b=s9+mfNiW6yO/qMH7DTsiaBPRuXzw6Y8gDJMDFaSUNez5qBQjzI8x/HWHW4JZg1Whr//5RL
+	CT7/j2Ze/7+K02B6G8eshw9Gu32zfnFdCWRNRBAa58hbUskYYe6/ivvTIFr4SaUyxqjR+W
+	xTgILiNOeXIlbs9n81kykn8lj9O6xW6lMQiiQJAarDVoUhb9TJ/VRgEYZBwKb2tXEFU1iQ
+	abl2Om+rvRY9C8v7Q0S8QlyqsV8lLcUvGIXyRwt4T0fmuPOMvR904whDp0+yFbjyI4gpRS
+	2JUlavZx5dePw5h1A/y23QTWavBQ+hCnoH0lp0aXTIH4llFFI+1VXpBS2H0EQw==
+Date: Sat, 3 Oct 2026 19:32:08 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Ren Wei <weir@nebusec.ai>, Xiang Mei <xmei5@asu.edu>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+        pablo@netfilter.org, contact@proelbtn.com, vega@nebusec.ai,
+        sashiko-bot@kernel.org, petalzu987@gmail.com,
+        stefano.salsano@uniroma2.it, Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net 1/1] seg6: validate state in netfilter continuations
+Message-Id: <20261003193208.6e43539a8381ca6bc776bd53@uniroma2.it>
+In-Reply-To: <8e22f1e0a04d4a48bd990872490e21bfc61f9223.1790748418.git.petalzu987@gmail.com>
+References: <cover.1790748418.git.petalzu987@gmail.com>
+	<8e22f1e0a04d4a48bd990872490e21bfc61f9223.1790748418.git.petalzu987@gmail.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-After SmartSpeed lowers the speed of a link, the generic status code
-still reports the advertised speed, because it derives speed from the
-advertised and link partner modes.
+On Thu,  1 Oct 2026 02:08:53 +0800
+Ren Wei <weir@nebusec.ai> wrote:
 
-This breaks traffic on a QCA8337 user port. With a downstream OpenWrt
-6.18.52 kernel, a port connected to an Intel igb NIC over a two-pair
-cable downshifted to 100 Mbit/s, but phylib reported 1000 Mbit/s. qca8k
-then programmed the MAC for 1000 Mbit/s and no traffic passed. With
-at803x_read_status() and genphy_read_master_slave(), as in this change,
-the port reported 100 Mbit/s and traffic passed.
+> From: Zixuan Chai <petalzu987@gmail.com>
+> 
+> Netfilter hooks can drop or replace the dst while an SRv6 packet is
+> queued for continuation. The seg6local callbacks must not assume that
+> skb_dst() still carries the state for the route being processed.
+> 
+> Validate the destination and SEG6_LOCAL state before using it in the
+> End.DX4/End.DX6 continuations and seg6_local_input_core(). The
+> seg6_iptunnel continuations must also resolve the SEG6 state beneath
+> an XFRM dst and hold a reference while processing the SRH.
+> 
+> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/all/20260720204430.1886091-1-xmei5@asu.edu/
+> Assisted-by: LLM
+> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
 
-Use at803x_read_status() for QCA8337, so speed and duplex come from the
-PHY-Specific Status register. The register layout matches what the
-helper expects: speed encoding 3 is reserved and bits 9:7 read as zero
-(QCA8337 data sheet 80-Y0619-3 Rev. D, page 328), and the MDI crossover
-field of the function control register is the same as on AT803X (page
-327).
+Hi,
+Thanks for the patch.
 
-Compared with genphy_read_status(), MDI-X is now reported. A reserved
-speed encoding or an unresolved status leaves the speed at SPEED_UNKNOWN
-with the link up. The new wrapper also calls genphy_read_master_slave(),
-to keep the master/slave status that genphy_read_status() provides.
-This refreshes master/slave status on each poll, including while the
-link stays up. In forced mode, speed and duplex also come from the
-PHY-Specific Status register instead of BMCR.
+A similar fix was posted by Xiang Mei in July [1]. It got review
+comments and no new version yet. Xiang, are you still working on it?
 
-Fixes: b3591c2a3661 ("net: dsa: qca8k: Switch to PHYLINK instead of PHYLIB")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
-Assisted-by: LLM
----
-v2:
- - Target net as Andrew requested and describe the observed user-port
-   failure. The Fixes tag identifies the switch to phylink, after which
-   the reported speed is used to program the user-port MAC.
- - Use at803x_read_status() instead of decoding the vendor status here. It
-   reads that status only when the link changes, so the code that forced the
-   link down for an unresolved status or a reserved speed encoding, and the
-   code that cleared the state again when there is no link, is gone. That
-   also answers Andrew's two questions on v1: the helper needs no special
-   handling of those cases, and page 328 of the data sheet lists speed
-   encoding 3 as reserved.
- - Keep the master/slave status of genphy_read_status() with a small wrapper
-   around the helper.
- - Cite the data sheet pages in the commit message.
- - v1 could change speed and duplex while the link stayed up, without
-   PHYLIB telling its consumers. The helper does not.
+Xiang's v2 1/2 makes the same seg6_local.c changes as this patch. On
+that patch I suggested adding unlikely() to the new checks, as in patch
+2/2. The same applies here.
 
-v1: https://lore.kernel.org/netdev/20260928220749.857-1-yongzhao.derek@gmail.com/
+For net, I would only check the state and drop the packet, as Xiang's
+v2 does, with the limit already discussed on v1 and v2 (the check is on
+the type, not on the instance). That check alone stops the crash, also
+when SNAT and an XFRM policy replace the dst. Looking through the XFRM
+dst is not needed for this fix.
 
-Testing: a model test compiles the real genphy_update_link(),
-at803x_read_status(), at803x_read_specific_status(),
-genphy_read_master_slave(), phy_resolve_aneg_pause() and
-phy_check_link_status() against an MDIO stub. It covers speed and duplex on
-link-up, no rereads of the vendor status while the link stays up, a BMSR
-latch-low renegotiation, unresolved and reserved speed encodings, MDIO
-errors, pause, forced mode and master/slave status. An arm64 W=1 build of
-qca83xx.o, at803x.o and qcom-phy-lib.o is clean.
+The cover letter has a reproducer, but the commit message, which stays
+in the git log, should say how the crash was triggered and how the fix
+was tested.
 
-The hardware comparison in the commit message used one board, QCA8337
-lan2 and default autonegotiation; the downshift resolved to 100 Mbit/s
-full duplex. Ping was 0/20 in both directions with genphy_read_status()
-and 20/20 each way with the new path. Each path ran two warm boots and
-three port down/up cycles. I have not tested a cold boot, other boards,
-forced mode, or an unresolved status on hardware. The latter two cases
-are only modelled; whether QCA8337 sets the resolved bit on a forced
-link has not been verified.
+> [snip]
+> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+> index 61c6a27bf202..e3d36fb0f290 100644
+> --- a/net/ipv6/seg6_iptunnel.c
+> +++ b/net/ipv6/seg6_iptunnel.c
+> [snip]
+> @@ -60,6 +62,26 @@ static inline struct seg6_lwt *seg6_lwt_lwtunnel(struct lwtunnel_state *lwt)
+>  	return (struct seg6_lwt *)lwt->data;
+>  }
+>  
+> +static struct lwtunnel_state *seg6_lwt_state(struct dst_entry *dst)
+> +{
+> +	dst = xfrm_dst_path(dst);
+> +	return dst->lwtstate;
+> +}
+> +
+> +static struct lwtunnel_state *seg6_lwt_state_get(struct sk_buff *skb)
+> +{
+> +	struct lwtunnel_state *lwtst;
+> +
+> +	if (!skb_valid_dst(skb))
+> +		return NULL;
+> +
+> +	lwtst = seg6_lwt_state(skb_dst(skb));
+> +	if (!lwtst || lwtst->type != LWTUNNEL_ENCAP_SEG6)
+> +		return NULL;
+> +
+> +	return lwtstate_get(lwtst);
 
- drivers/net/phy/qcom/qca83xx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+The route that carries the lwtstate holds a reference on it, and drops
+it only after an RCU grace period. Which path needs the one taken by
+lwtstate_get()? Sashiko asks the same question [2].
 
-diff --git a/drivers/net/phy/qcom/qca83xx.c b/drivers/net/phy/qcom/qca83xx.c
-index bc70ed8efd8..b8da6a41788 100644
---- a/drivers/net/phy/qcom/qca83xx.c
-+++ b/drivers/net/phy/qcom/qca83xx.c
-@@ -92,6 +92,17 @@ static int qca83xx_probe(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int qca8337_read_status(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = at803x_read_status(phydev);
-+	if (ret)
-+		return ret;
-+
-+	return genphy_read_master_slave(phydev);
-+}
-+
- static int qca83xx_config_init(struct phy_device *phydev)
- {
- 	u8 switch_revision;
-@@ -220,6 +231,7 @@ static struct phy_driver qca83xx_driver[] = {
- 	.flags			= PHY_IS_INTERNAL,
- 	.config_init		= qca83xx_config_init,
- 	.soft_reset		= genphy_soft_reset,
-+	.read_status		= qca8337_read_status,
- 	.get_sset_count		= qca83xx_get_sset_count,
- 	.get_strings		= qca83xx_get_strings,
- 	.get_stats		= qca83xx_get_stats,
+> [snip]
+> @@ -557,18 +577,16 @@ static int seg6_input_finish(struct net *net, struct sock *sk,
+>  static int seg6_input_core(struct net *net, struct sock *sk,
+>  			   struct sk_buff *skb)
+>  {
+> -	struct dst_entry *orig_dst = skb_dst(skb);
+>  	struct dst_entry *dst = NULL;
+>  	struct lwtunnel_state *lwtst;
+>  	struct seg6_lwt *slwt;
+>  	int err;
+>  
+> -	/* We cannot dereference "orig_dst" once ip6_route_input() or
+> -	 * skb_dst_drop() is called. However, in order to detect a dst loop, we
+> -	 * need the address of its lwtstate. So, save the address of lwtstate
+> -	 * now and use it later as a comparison.
+> -	 */
+> -	lwtst = orig_dst->lwtstate;
+> +	lwtst = seg6_lwt_state_get(skb);
+> +	if (!lwtst) {
+> +		err = -EINVAL;
+> +		goto drop;
+> +	}
 
-base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
--- 
-2.43.0
+This comment explains why the lwtstate address is saved before
+ip6_route_input() or skb_dst_drop() and compared after them. This still
+holds after the patch: seg6_input_route() calls one of them between the
+save and the comparison. I don't see a reason to remove the comment
+here.
 
+> [snip]
+
+[1] https://lore.kernel.org/all/20260728215448.1543553-1-xmei5@asu.edu/
+[2] https://netdev-ai.bots.linux.dev/sashiko/#/patchset/8e22f1e0a04d4a48bd990872490e21bfc61f9223.1790748418.git.petalzu987@gmail.com
+
+Ciao,
+Andrea
