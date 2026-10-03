@@ -1,109 +1,166 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26D139CCFE;
-	Sat,  3 Oct 2026 21:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E1C13AF2;
+	Sat,  3 Oct 2026 21:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791063892; cv=none; b=TuAwXt/oVRrgO/JOFcXjKvn5OeougxAWLxpwFIzqRUNlvx18gHA8IJcvHcvwRcoOBjhd87IMy//bJsEOvY4tb7AZ8WyDnYPTLOULpMUPESaL86koBH9fR6Kyx0Pv9aEvrUokNpnM0iOBY1/Ff8KVIOXI8fXMIx48Wn+AC+ex6Rk=
+	t=1791064164; cv=none; b=OwKNE4iAcQR77TD1Z3zVPdFM66hpqvoFfkuggPIZRPShpEGVkGC2eOXMThflJYAuYAVj2vCn0t+bidibZRfqXQt7k9bhWvloqtdw6xW9dAHN31Et7nzsNS0iWOAuM4MICBJv1mk2+ol0fcFJGkEfSVnsznI1uETv/HipvsInpO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791063892; c=relaxed/simple;
-	bh=38Fbg65EGEel43VtgYG/9Qaf+D9pTNsdGxBfPRogdU0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OVRBKMh5NDwIIYS7rK3uvi6EFWFR8cemp+Y1oU67QuOZMVeSBCLTHgapM9s+9SYYQqLppVEOZgJDz5btaBjL3R8Q3Yk7Muh5gwRBHtfD7bTCec45iRv10Nrha+j1jmJtbF7SCIafNZId2q3EQ8tK80PGyPxB6grK3eD94VUTsUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=4Kwn9ykj; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1791064164; c=relaxed/simple;
+	bh=4TG97MM+3gRs48QCT/rp3cfJxvQuycSAgP7Phi9j8sQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=k3+8WbDPGM/g4kMDu0hB6dPUNHrJq3ZJ50HS+oMw8h1z+Dm2zwbpu0vn2Gn/OJOhc4Nepm82l+R4IZbNhjA670GdTVnkuTpCr+gTDNYo9nzSV/96RajZ1vSXKOgCweh4CzIUeqOYxLcLsh2/OIqkvvD0IHgdPFTkH9UwGF3J0ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=haMufA1n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="4Kwn9ykj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=PRCu0Kt8JudtLQU7puVFYQ3X0LQWTWd0xA6QLuOvzi4=; b=4Kwn9ykjncxT4a81L4rkYGMdWy
-	fKJdEWHGSH5Ne5QIzNptseYoYOxSB54H6Zps6+hOKbHhCFJg/yTqIe+LgWucSspZJTaXCfbnhyKYO
-	2eesTTy+4xU73OhrpknCWRKq+lk2D7VTmv2B/8wg0gfLksjaUYED+ogZ2BeLSELv4jPOi62JL97Fz
-	aoTEA9GlrKzjCr7ea8mDQ5L5rc9r1I+j/R49PU7mJko+tsJnLrxvAs94J8zx1iozVfkGGW7SZzHHC
-	SHCTjwI1Dvw4Ue/jCfFoBjXka9KE0ScDoOT4W+omS+YjuGwVryfBW0jFhOWF02oLzS5phgHIBvyvJ
-	Iz6uEVmw==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xD7X2-0000000E5oE-0sGB;
-	Sat, 03 Oct 2026 21:44:36 +0000
-Message-ID: <7ce092a4-5c85-4391-809a-3d04b638a722@infradead.org>
-Date: Sat, 3 Oct 2026 14:44:34 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="haMufA1n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629121F0089B;
+	Sat,  3 Oct 2026 21:49:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791064163;
+	bh=bo70h+3LGgIRjJuSL+jQlrh0XcLtNjAdhKi74Dy7L/I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=haMufA1nCwNhx4wUjRXR0a3mH0gHKdjUsxV5hcsYwiyAhu1RvjCXlUEyBOAxtmxVy
+	 5iXgcweMNssXO7k4lqSUDqUbQ4+HMVYg7u7srXTYD+ObJCenBKbEPLSZIcb+MkHr+G
+	 eUcSpFE2CiGdvlVnCfTwnxGgZATquzCinHuluqWY1QZtav5lKhy2cN2Re/1rb7fXqk
+	 5RhxLIR/rmHPsb0Dk9hTpWcBoJ3fP3UJyV/xwgeKS/2fGHzOi+BOcOEIqHhE7PydRM
+	 K3nXS9AaIN2y4bb33aNsX7yXQMDeDp9Y6SHvCteRotsTjbc1f9Q42T0eqIULxpKRTL
+	 VO06ISwt1ZKHA==
+Subject: Re: [PATCH net-next v2 1/2] amt: mark relay data as a UDP tunnel
+ packet before sending it
+From: netdev-bot+sashiko@kernel.org
+To: omar@blockcast.net
+Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sat, 03 Oct 2026 21:49:21 +0000
+Message-ID: <179106416186.434549.2202047416681649119@kernel.org>
+In-Reply-To: <20261002212458.34247-2-omar@blockcast.net>
+References: <20261002212458.34247-2-omar@blockcast.net>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC: DMA_PMD 01/22] iommu/dma: introduce CONFIG_DMA_PMD and
- metadata table
-To: Luigi Rizzo <lrizzo@google.com>, Luigi Rizzo <rizzo.unipi@gmail.com>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
- netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <20261003212241.3432303-2-lrizzo@google.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20261003212241.3432303-2-lrizzo@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
+Low priority / nit picks for your consideration:
 
-On 10/3/26 2:22 PM, Luigi Rizzo wrote:
-> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
-> index 6e07bd69467a3..1bb347fd9da4a 100644
-> --- a/drivers/iommu/Kconfig
-> +++ b/drivers/iommu/Kconfig
-> @@ -158,6 +158,38 @@ config IOMMU_DMA
->  	select NEED_SG_DMA_LENGTH
->  	select NEED_SG_DMA_FLAGS if SWIOTLB
+- [Low] The commit fixes a user-visible bug but has no Fixes: trailer.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but fraglist GSO
+  skbs that reach the AMT relay unsegmented, the same situation the…
+
+--
+
+amt: mark relay data as a UDP tunnel packet before sending it
+
+This patch makes amt_send_multicast_data() call
+udp_tunnel_handle_offloads(skb, true), so GSO packets relayed with tx
+checksum offload enabled are marked as UDP tunnel packets. It also resets
+the mac header of the copied skb before recording the inner headers, so
+inner_mac_header lines up with the inner IP header.
+
+> Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> Assisted-by: LLM
+> Signed-off-by: Omar Ramadan <omar@blockcast.net>
+
+[Severity: Low]
+Should this have a Fixes: tag?
+
+The send path being fixed was added by commit cbc21dc1cfe9 ("amt: add data
+plane of amt interface"). That commit introduced amt_send_multicast_data()
+with skb_copy_expand(), skb_reset_inner_headers() and
+udp_tunnel_xmit_skb(), but no udp_tunnel_handle_offloads().
+
+Suggested trailer:
+
+Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
+
+The notes say this was tested on net-next. Since it fixes packet loss
+that users can see, should it target net instead?
+
+> diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+> index 0277e4cac39bd..a8236d40c2e70 100644
+> --- a/drivers/net/amt.c
+> +++ b/drivers/net/amt.c
+> @@ -1078,7 +1078,17 @@ static void amt_send_multicast_data(struct amt_dev *amt,
+>  	if (!skb)
+>  		return;
 >  
-> +# PMD_SIZE IOMMU backing for DMA-coherent devices
-> +config DMA_PMD
-> +	bool "PMD_SIZE IOMMU backing for DMA-coherent devices"
-> +	depends on IOMMU_DMA
-> +	depends on X86_64 || (ARM64 && ARM64_4K_PAGES)
-> +	depends on !PREEMPT_RT
-> +	default y
-> +	help
-> +	  Hand out DMA buffers carved out of PMD_SIZE physically contiguous
-> +	  blocks that the IOMMU maps with a single leaf PTE. Mapping,
-> +	  unmapping and IOTLB flushing are done lazily to reduce CPU overhead.
-> +	  The large mappings greatly reduce IOTLB usage. As in strict iommu
-> +	  mode, pages are returned to the buddy allocator only when any existing
-> +	  mappings have been removed and IOTLB flushed.
-> +	  Costs 128KB of metadata per GB of DMA_PMD buffers, allocated on demand.
 
-Paragraph 1 of the patch description says 64KB per 1GB, not 128KB.
-Or am I mixing things up?
+[Severity: High]
+This is a pre-existing issue, but it is closely related to this patch.
+Fraglist GSO skbs can reach the relay unsegmented in the same way, yet they
+never get to the new udp_tunnel_handle_offloads() call. The
+skb_copy_expand() just above rejects them first:
+
+net/core/skbuff.c:skb_copy_expand() {
+    ...
+	if (WARN_ON_ONCE(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST))
+		return NULL;
+    ...
+}
+
+amt_link_setup() advertises fraglist GSO:
+
+	dev->features		|= NETIF_F_GSO_SOFTWARE;
+	dev->hw_features	|= NETIF_F_SG | NETIF_F_HW_CSUM;
+	dev->hw_features	|= NETIF_F_FRAGLIST | NETIF_F_RXCSUM;
+	dev->hw_features	|= NETIF_F_GSO_SOFTWARE;
+
+NETIF_F_GSO_SOFTWARE includes NETIF_F_GSO_FRAGLIST and
+NETIF_F_GSO_UDP_L4.
+
+Suppose the relay's ingress device has rx-gro-list enabled. For
+forwarded multicast there is no local socket, so udp_gro_receive() sets
+is_flist. The result is an skb with gso_type
+SKB_GSO_UDP_L4 | SKB_GSO_FRAGLIST and a frag_list.
+
+ipmr then forwards it to the amt vif. ipmr_prepare_xmit() only drops
+oversized skbs when DF is set, and the sender controls DF.
+
+Now suppose tx-checksumming and tx-scatter-gather-fraglist are enabled on
+amt. skb_gso_ok() then returns true, so validate_xmit_skb() leaves the skb
+unsegmented, and the path becomes:
+
+amt_dev_xmit()
+  amt_send_multicast_data()
+    skb_copy_expand()
+      WARN_ON_ONCE(... SKB_GSO_FRAGLIST)
+      return NULL
+
+The function then returns without any drop accounting. Once those
+non-default offloads are on, can ordinary remote multicast traffic trigger
+this WARN? With panic_on_warn, that would panic the relay.
+
+The notes list "a forwarded GRO packet as the GSO source" as untested.
+Would it make sense to also stop advertising NETIF_F_GSO_FRAGLIST and
+NETIF_F_FRAGLIST on amt? Another option is to segment or linearize
+fraglist skbs before the copy.
+
+> +	/* amt_dev_xmit() pulled the Ethernet header without moving the mac
+> +	 * header. The tunnelled payload has no link-layer header, so the
+> +	 * inner mac header must coincide with the inner IP header.
+> +	 */
+> +	skb_reset_mac_header(skb);
+>  	skb_reset_inner_headers(skb);
+> +	if (udp_tunnel_handle_offloads(skb, true)) {
+> +		kfree_skb(skb);
+> +		return;
+> +	}
+> +
+
+[ ... ]
 
 -- 
-~Randy
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002212458.34247-1-omar%40blockcast.net
