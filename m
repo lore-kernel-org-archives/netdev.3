@@ -1,105 +1,98 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65613AA4EF;
-	Sat,  3 Oct 2026 14:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065EB42669C;
+	Sat,  3 Oct 2026 14:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791038854; cv=none; b=DavrD/TXjgYjMjm15UR2+bXhNpouB+Z4OV1MKBNNua00UtgISNqWadW/5HCr/Q4pehPWI2qvTcas8zmJwX1ZeodMp/O/TABrNlivkoBQKlQIE0stACsqV8sbRhodd0w9PO3FaPUxWhW3vHmRDKECbFBr6UWec2pFFg/TRl6n3GQ=
+	t=1791039451; cv=none; b=cOm4/9kMcgdd8z5zJhhOnJH/Jj58k6OWlaBJQ8HE3PTWKutnEIZH0S0ShqkNHUihYLmoY5rrCg28pbcPEwGFwEX3gYrJ/AM5djI26mC2rczZlYWsuQL+Hmod0FAKWKvV2XiuirlRfVeBXkIjWayApdBu3v7CRSA3DsNF9NlIVSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791038854; c=relaxed/simple;
-	bh=mB/dG/SgGk5ffMybraWJ0qYGHriRWch+eYQSWWwj7k4=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Th1DnFFZ7IHJv7264Uo2wcQPQS00a4rh17ubDK+dZq9iaCj9z3pnr0cfGg+DjcWsgH14QZ8p3Yw2nQ3X6FY98pDMv2pJEQ/UIkPuqsaF4Auldg73y3e6MlsDsy7VJW1GN1zdAdAiwML/l2bW9UiluBZKg5CsO14BOJy/so5qh2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TTvBdKCS; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791039451; c=relaxed/simple;
+	bh=uXJZsVteBsFqjHbXMx/x9zuPLikQCN04yzIKRIVguww=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G+AVygObPkp3N2Zb5xKYUwt7U9sLStUlMXtbZJbLtJ4EinmYmWTMp21AwJSNRnGFCHUfju1YQ1dscDtYHNiXEyrCm2M+G6hu7ZaUysb43RskvXY6Bwcnt49iyqLUeTbGSqlETFvwa629QZmdEJW5pEsEoGeCun3+u1Zoj3kLsDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=krETLDSJ; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TTvBdKCS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791038852; x=1822574852;
-  h=date:from:to:subject:message-id:references:mime-version:
-   in-reply-to;
-  bh=mB/dG/SgGk5ffMybraWJ0qYGHriRWch+eYQSWWwj7k4=;
-  b=TTvBdKCSX+bvSyZ4gbyyOuyvlteWoZhPjN34K1JUW9+oaANMGwLf0rfe
-   J0CM3xKioBmNBgzTQsfzlmyTRSxMNNGSFebC9/UmcMbO+x0jfo5Y74U45
-   cnqVh5iFAmfp9/BYRURvSia1GwSkHrCSpR2D/kCa+iJhcL+hUkVnPbh8u
-   4DeM+WVNyWQLDcXM+Z8o6yV/HJ+CbJzHg/KVxU0vw7TXj3B3cmDGeYl9P
-   dChTa8sDM6LNXdPd0NPQxH6KK5IvOiMCpUR1cNOe+KFaD0TcLv/RCI6xb
-   gXFmNfbJr3tPCBr4mLfi7QXKgFRvm9Sgm/269oabItGbGXMTgouPqyN3m
-   w==;
-X-CSE-ConnectionGUID: 5Xep6lpYQCy5rHegGizM0g==
-X-CSE-MsgGUID: UcDnCNltTHGLgjBNQrYfhw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11924"; a="101107096"
-X-IronPort-AV: E=Sophos;i="6.27,138,1787036400"; 
-   d="scan'208";a="101107096"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2026 07:47:31 -0700
-X-CSE-ConnectionGUID: Q5SY4u41QcKuMmly/bPTqQ==
-X-CSE-MsgGUID: SyuFaXRfT0yRQU9SSTzL5g==
-X-ExtLoop1: 1
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.245.78])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2026 07:47:29 -0700
-Date: Sat, 3 Oct 2026 17:47:26 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Joe Damato <joe@dama.to>, Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
-	Philo Lu <lulie@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v2 1/5] eea: Drop temporary buffer by using
- %*pEhp directly
-Message-ID: <asEVfjCp3cUAv50m@ashevche-desk.local>
-References: <20261002100035.863275-1-andriy.shevchenko@linux.intel.com>
- <20261002100035.863275-2-andriy.shevchenko@linux.intel.com>
- <asAZF53tsdq/QAYv@devvm20253.cco0.facebook.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="krETLDSJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1791039437; x=1791298637;
+	bh=uXJZsVteBsFqjHbXMx/x9zuPLikQCN04yzIKRIVguww=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=krETLDSJFteY5BJdc1leBNvIaU/JT5EvBg0qmMKmXAMGCIixEkKBV1/RvNOYdQNw4
+	 ZsMOUI8PVJcNmD4cwCsqYEwSO1hPSPcxcghYh0Y+2aJWcf1SfpWdekhQ7DuhwqBykO
+	 VUXFMH0QoyueBEwkYDaSW5eMsWpZ3fEFxIQDnQOk+IZ3JV/xbTQWlVPnCa1ElVBqgg
+	 YKWVur9NcKXLKhovIH7SaxfSVYNlUVkXUxk0Dw2Pjp40jnM5TAuc74RmvmTek+xenm
+	 ANkIPCqfLyq9n/Z/WaUiiHW4GS1/o4g8n/OdqjVoRtyEpC0OMBhPTiMFBBWjDUGyK6
+	 NyyvFIp5tt/Lg==
+Date: Sat, 03 Oct 2026 14:57:11 +0000
+To: wens@kernel.org
+From: Norman Herms <dockseed@proton.me>
+Cc: Junhui Liu <junhui.liu@pigmoral.tech>, Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>, linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, netdev@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>, Enzo Adriano <enzo.adriano.code@gmail.com>, Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH v5 3/8] clk: sunxi-ng: a733: Add PRCM CCU
+Message-ID: <Xss-x8UR9RSDehrUzeE27kgFWXhob67jMdSrxfgSV5FIhrtDiD5VRcpJYP2-j7itF4eArxOmzsGWXqQucflO9EJqt7LK70OVjFmCjsaqHc0=@proton.me>
+In-Reply-To: <CAGb2v65q8w6NLzTtuMX3HZR98nAvR=Z4ODUCFZb5j3TgkDu_3Q@mail.gmail.com>
+References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech> <20260930-a733-clk-v5-3-11175b41cd2d@pigmoral.tech> <CAGb2v65q8w6NLzTtuMX3HZR98nAvR=Z4ODUCFZb5j3TgkDu_3Q@mail.gmail.com>
+Feedback-ID: 144388465:user:proton
+X-Pm-Message-ID: 1db97b86471db45a5d153e83a4f06e314e249029
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asAZF53tsdq/QAYv@devvm20253.cco0.facebook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 02, 2026 at 01:50:31PM -0700, Joe Damato wrote:
-> On Fri, Oct 02, 2026 at 11:59:19AM +0200, Andy Shevchenko wrote:
+Hi ChenYu,
 
-...
+Measurements for your comments on this patch. Same two Radxa Cubie A7S
+boards and boot chain as in my reply to the cover letter (SID + 0xA0 =3D
+0, no secure boot). Cold boot, register reads from U-Boot at
+non-secure EL2 on both boards (same values). On one board also a
+non-secure write test, and reads from EL3 with a test BL31 that only
+reads, before and after sunxi_security_setup(). Again done by AI agents
+(Claude) on my boards, so a report, not a Tested-by.
 
-> >  			rep->reply_str[EEA_HINFO_MAX_REP_LEN - 1] = '\0';
+> The three bus dividers are secure by default, and either need to be toggl=
+ed
+> to non-secure by the bootloader, or (I'm guessing) the system is running
+> without secure boot and the secure access bit isn't in effect.
 
-^^^ (see below)
+On our boards the bootloader toggles them. Bit 0 of PRCM_SEC_SWITCH_REG
+(UM 4.2.5.26) covers exactly AHBS/APBS0/APBS1, and TF-A's common
+sunxi_security_setup() writes 0x1 to that register (our BL31 and the
+vendor BL31 set 0x7). From EL3 it reads 0 before and 0x7 after that
+write. From non-secure: 0x07010290 =3D 0x7, r-ahb =3D 0x03000000, r-apb1 =
+=3D
+0x04000000. Both differ from the reset value 0, so these registers are
+readable. We have not checked non-secure access to them before BL31
+sets the switch. Note that secure filtering is active on these parts
+even without the fuse, see the TWD gate below.
 
-> > +			dev_warn(dev, "Device replied: %*pEhp\n",
-> > +				 (int)strlen(rep->reply_str), rep->reply_str);
-> 
-> i have no idea what this otuput could be but i suppose if you wanted to remove
-> the terminator write above, you could do:
-> 
->    strnlen(rep->reply_str, ....)
+> > +static SUNXI_CCU_GATE_HW(bus_r_twd_clk, "bus-r-twd", &r_apb0_clk.commo=
+n.hw, 0x12c, BIT(0), 0);
+>
+> User manual says this is secure only.
 
-I haven't touched original code, which as you see above NUL-terminates
-the reply string. So this has no difference with strlen(), but the latter
-is shorter (doesn't need an additional argument).
+On our boards it behaves like that even without secure boot. From EL3,
+S_TWD_BGR_REG (0x0701012C) reads its UM default 0x1, before and after
+the BL31 security setup, so the gate is open after reset. From
+non-secure it reads 0 on both boards, and a non-secure write of 0x1
+does not stick.
 
-> instead, but that feels like a fairly useless nit so:
+> BSP sources say there is a "dma-clken-sw" gate at 0x1dc bit 0. Same on th=
+e
+> A523, though it's unclear what it does or controls.
 
-Indeed :-)
+The A733 UM lists no register at 0x1DC (the S_PRCM list goes from
+0x01CC to 0x020C). In the Radxa BSP (radxa/allwinner-bsp, branch
+cubie-aiot-v1.5.0) "dma-clken-sw" exists in ccu-sun55iw3-r.c and
+ccu-sun60iw1-r.c, but not in ccu-sun60iw2-r.c, the A733 one. On our
+boards 0x070101DC reads 0 from non-secure.
 
-> Reviewed-by: Joe Damato <joe@dama.to>
-
-Thanks!
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Thanks,
+Norman
