@@ -1,222 +1,260 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6363F9C0;
-	Sat,  3 Oct 2026 20:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E20547071
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 20:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791058301; cv=none; b=n5pC3mQiyrOIlf2dYzGpuGA6ceN7YCYftZN1g3of8LcC41/uCNJ/rJkQz7w4/JHtW0tPpZZrxfo+D9SZpn/KOFRHONd8n3LcWaCJYET2k/V/nL4wDx352iQePW8rswBUvPpgV9fDIRjW4CvHQmcoCg5JKzXa6tXHKxa1ALTYJas=
+	t=1791058365; cv=none; b=TWYpZze+65CsY6pyvKxwSq14v4PM4JytTFmPEMUkz3VFwRprssKk8BDq9IWSXMJn4wjmlDJpJ70dOLYItYW0y5n/pXGMquHzMpDnsHxSof3PtCnjOyyPonv0VSDYcfYw0jf08erKmXfssN/37gk5Z6PZjETxoaZzfqan6VbWVAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791058301; c=relaxed/simple;
-	bh=5IeaE827rv+Q1p2AXZiCp+95Kthb1WG1NRQ8kweWmek=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=RvbA7eDABOr/ZqO8g+qde+A8kgcQFInwLSQepJhHubodRu5KO445+Vjbkqzzh0KK/r8jtUm2r4emKkjrHUU0i9rgh1X1PkrtTA1+mx3aHxEXmGdLkZJWUIpUMnUMCsz5i7C2wJLPoSVXpqL2sc0mJQVv1Ye1qUb4VybJrUyzm5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIvu/8ka; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791058365; c=relaxed/simple;
+	bh=tuaK8cFfX8KirHx01CnwZwrBks61F0YZTy57kPFfSEQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=n2DZKOQVjOBoWwIQjEGb7oBNU8xSOky26QRjJa3JUcVdujZgtYEaY9K0lJzFtbZGR3abEUxTu5iv00rRZJGOfYICfl15QVcNFKeXt9t1Gi/9Xk+fHpF1MErQbAM84vDja/oAUngtrIQCaPCUMpDKQY8nZZ5D7U/TjunZHNvRqKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYSh04Eo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIvu/8ka"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7ED1F0089B;
-	Sat,  3 Oct 2026 20:11:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYSh04Eo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DD31F0089B;
+	Sat,  3 Oct 2026 20:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791058299;
-	bh=HnaJKlN8LxH7o7jG2NsRu7r9mCT0MH+lvPgfyVxXx60=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=CIvu/8kaYP9klD37V0LxaOqbWwIxdsfvyhVxjJP8wgSrPQDN5zAK+k+mZ4Id5/3Cx
-	 Wo/UMOMVUeAKVjvu565TXDqJprfppbkn63hkwKHRZUCEmbWm0L46raGqxeZt4ssfaT
-	 Bv+r6cpG+o01prDJ9A+GuwLuNkgsFcOk8jOiUc+GUdYJG7o4ki+aghuT4Qa5KGZHib
-	 jJPQZeraP5K77KAfZRxsa/IEIbB1w6S4qhUohvuWS5D5XJVoLmTb33ReOQCX81GxWi
-	 r4FaeMGPOREj0MHbn8JohZ48E1NKt2gF1lwQaCryxy6bWv1X+B6BlXKpIh3Ky0FYId
-	 LlXiWgGTNp0nA==
-Content-Type: multipart/mixed; boundary="===============7134958192468196825=="
+	s=k20260515; t=1791058363;
+	bh=f/Srug0ripxhrjP8zuXfyr30DPzL3PSP2pLijnaexbo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WYSh04EoyAk3S7NhWklqsKFWajLtKrvMna7IYWB2V5NCX2aEozDYiNzh5vGwZS9xL
+	 Sq8VZFmfykEEpxvheM7f1aUCPDSSjKX0tP3P2qMpJnmfpQ8V+GhvzYjoknqUdoJdWk
+	 tx03yfmDDghgf7rawdlH22lFZ9Eya/Nx6TRo6iONmcWEqWKSstGEEAhnK7hp+GE2Qt
+	 Q3sTnY0f9QdQHCRjDeBefsOG2kbVGTunY9DiKWHfca3rsLsx/oJkJav/BdWKqK7znJ
+	 EPVgrLiEYIb9wcyioxRMI2KhOCdvvmzrN441eIdtjF6/e+AllfmoazIgjp0HWlYKCw
+	 92MY/LJP6CsLw==
+Subject: Re: [PATCH net-next] net: openvswitch: do not set transport header on
+ later IPv4 fragments
+From: netdev-bot+sashiko@kernel.org
+To: fmancera@suse.de
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, aatteka@nicira.com,
+ jesse@nicira.com, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ edumazet@kernel.org, davem@davemloft.net, i.maximets@ovn.org,
+ echaudro@redhat.com, aconole@redhat.com
+Date: Sat, 03 Oct 2026 20:12:42 +0000
+Message-ID: <179105836225.434549.3683022386264078751@kernel.org>
+In-Reply-To: <20261002195436.8473-1-fmancera@suse.de>
+References: <20261002195436.8473-1-fmancera@suse.de>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <e694bd6bbeff7f31ceff7c361dba55514ce3f5ad03d45b4314d07151e82cb86b@mail.kernel.org>
-In-Reply-To: <20261003193347.1137527-4-thisseanzhang@gmail.com>
-References: <20261003193347.1137527-4-thisseanzhang@gmail.com>
-Subject: Re: [RFC bpf-next v2 3/3] selftests/bpf: Add a test for the PPPoE encap/decap adjust_room flags
-From: bot+bpf-ci@kernel.org
-To: thisseanzhang@gmail.com,bpf@vger.kernel.org
-Cc: ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,netdev@vger.kernel.org,nhudson@akamai.com,nbd@nbd.name,dqfext@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sat,  3 Oct 2026 20:11:38 +0000 (UTC)
 
---===============7134958192468196825==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-> selftests/bpf: Add a test for the PPPoE encap/decap adjust_room flags
+Critical: 1 · High: 1 · Medium: 0 · Low: 2
 
-TL;DR:
-- Test issue: reject-flag-mix and reject-encap-shrink pass even without the
-  new ENCAP_PPPOE checks
-- No IPv6 truncated-decap subtest, so the inner_len check goes untested
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/tc_pppoe.c b/tools/testing/selftests/bpf/prog_tests/tc_pppoe.c
-> new file mode 100644
-> index 000000000000..73e602c91230
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/tc_pppoe.c
-> @@ -0,0 +1,254 @@
+- [Critical] After this patch, a stale transport header on IPv4 later
+  fragments is used by set_tcp(), set_udp() and set_sctp().
+- [High] The patch does not achieve its stated goal.
+- [Low] The kernel-doc for key_extract() (net/openvswitch/flow.c:903-906)
+  says that when key->eth.type is ETH_P_IP or ETH_P_IPV6,…
+- [Low] The commit message is inaccurate and incomplete.
 
-[ ... ]
+--
 
-> +void test_tc_pppoe(void)
-> +{
+net: openvswitch: do not set transport header on later IPv4 fragments
 
-[ ... ]
+This patch changes check_iphdr() so it no longer calls
+skb_set_transport_header() for IPv4 packets with a non-zero fragment
+offset. It also moves the transport_len calculation in
+update_ip_l4_checksum() so it runs after the fragment check.
 
-> +	/*
-> +	 * A PPPoE packet whose payload is too short to still contain a
-> +	 * full IP header after decapsulation.
-> +	 */
-> +	static const __u8 truncated_pkt[] = {
-> +		0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
-> +		0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
-> +		0x88, 0x64,
-> +		0x11, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x21,
-> +		0x45, 0x00,
-> +	};
+Link: https://lore.kernel.org/netdev/59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org/
 
-[ ... ]
+> As discussed, let's not set the transport header for non-first IPv4
+> fragments to prevent a future out-of-bounds memory access that can
+> happen silently because the warning at skb_transport_header_offset()
+> does not trigger.
 
-> +	test_decap_reject_input(skel, bad_ppp_pkt, sizeof(bad_ppp_pkt),
-> +				"decap-bad-ppp-proto");
-> +	test_decap_reject_input(skel, truncated_pkt, sizeof(truncated_pkt),
-> +				"decap-truncated");
+[Severity: Low]
+I can't find a function named skb_transport_header_offset() in the tree.
+Is this about the following check in skb_transport_header() and
+skb_network_header_len()?
 
-Does decap-truncated reach the new "full inner L3 header" check in
-bpf_skb_net_shrink()?
+	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
 
-truncated_pkt is 24 bytes, so in bpf_skb_adjust_room() the generic length
-check fires first:
+Both checks are only built with CONFIG_DEBUG_NET.
 
-    len_cur = 24 - 14 = 10
-    len_cur - len_diff_abs = 2, which is < len_min (sizeof(struct iphdr))
-
-and the call returns -ENOTSUPP before bpf_skb_net_shrink() runs.
-
-The check added by the decap patch:
-
-    /* A full inner L3 header must remain after decapsulation. */
-    if (skb->len - off - PPPOE_SES_HLEN < inner_len)
-        return -EINVAL;
-
-is redundant for PPP_IP here, because inner_len == len_min == 20.  It is the
-only guard for PPP_IPV6, where inner_len is 40, and no subtest feeds a
-PPPoE/IPv6 packet with 20-39 bytes after the PPP header.
-
-If that check were removed or broken, an skb could be marked ETH_P_IPV6
-without a full IPv6 header, and none of the subtests would notice.
-
-Would it make sense to add an IPv6 truncated case, for example PPP protocol
-0x0057 with 20 bytes of payload, so the inner_len check is exercised?
-
-> +	test_reject(skel, 6, fake_ppp_pkt, sizeof(fake_ppp_pkt),
-> +		    "reject-decap-fake-ppp-proto");
+Could the message also say that the change only matters when the
+transport header was never set? Could it also mention the behavior change
+for set_tcp(), set_udp() and set_sctp() on IPv4 later fragments?
 
 [ ... ]
 
-> +	test_reject(skel, 1, ip4_pkt, sizeof(ip4_pkt), "reject-encap-len");
-> +	test_reject(skel, 2, ip4_pkt, sizeof(ip4_pkt), "reject-encap-mode");
-> +	test_reject(skel, 3, ip4_pkt, sizeof(ip4_pkt), "reject-encap-shrink");
-> +	test_reject(skel, 4, ip4_pkt, sizeof(ip4_pkt), "reject-flag-mix");
-
-Can reject-flag-mix or reject-encap-shrink fail on a kernel that lacks the
-new ENCAP_PPPOE checks?
-
-For reject-flag-mix, case 4 passes ENCAP_PPPOE | DECAP_PPPOE on ip4_pkt, so
-skb->protocol is ETH_P_IP.  bpf_skb_adjust_room() returns early at the
-decap protocol gate:
-
-    if (unlikely(flags & BPF_F_ADJ_ROOM_DECAP_PPPOE)) {
-        if (proto != htons(ETH_P_PPP_SES))
-            return -ENOTSUPP;
-
-which is before the ENCAP_PPPOE flag combination check is reached.  Even with
-a PPPoE input, a grow with any decap flag is already rejected by the existing
-"if (!shrink) return -EINVAL;" in the BPF_F_ADJ_ROOM_DECAP_MASK block.
-
-For reject-encap-shrink, without the "shrink ||" clause in the ENCAP_PPPOE
-check, bpf_skb_net_shrink() would still return -EINVAL, because
-BPF_F_ADJ_ROOM_ENCAP_PPPOE is outside its allowed flag mask.
-
-tc_pppoe_reject only records !ret, so both subtests pass whether or not the
-new checks exist.  A negative test should give a different result on a
-kernel that is missing the check it targets.
-
-Should case 4 use ENCAP_PPPOE together with another encap flag, for example
-BPF_F_ADJ_ROOM_ENCAP_L3_IPV4 or BPF_F_ADJ_ROOM_ENCAP_L2_ETH, so the new
-rejection is actually exercised?
+> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+> index 1c4f3a0790443..d549a58180a73 100644
+> --- a/net/openvswitch/flow.c
+> +++ b/net/openvswitch/flow.c
 
 [ ... ]
 
-> diff --git a/tools/testing/selftests/bpf/progs/tc_pppoe.c b/tools/testing/selftests/bpf/progs/tc_pppoe.c
-> new file mode 100644
-> index 000000000000..b1624f0f9d8a
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/tc_pppoe.c
-> @@ -0,0 +1,163 @@
-
-[ ... ]
-
-> +SEC("tc")
-> +int tc_pppoe_reject(struct __sk_buff *skb)
-> +{
-> +	int ret = 0;
+> @@ -201,7 +202,11 @@ static int check_iphdr(struct sk_buff *skb)
+>  		     skb->len < nh_ofs + ip_len))
+>  		return -EINVAL;
+>  
+> -	skb_set_transport_header(skb, nh_ofs + ip_len);
+> +	nh = ip_hdr(skb);
 > +
-> +	switch (reject_case) {
+> +	if (!(nh->frag_off & htons(IP_OFFSET)))
+> +		skb_set_transport_header(skb, nh_ofs + ip_len);
+> +
 
-[ ... ]
+[Severity: Critical]
+For a later fragment, skb->transport_header now keeps whatever value it
+had when the packet entered OVS.
 
-> +	case 4:
-> +		/* Encap flag combined with a decap flag. */
-> +		ret = bpf_skb_adjust_room(skb, PPPOE_SES_HLEN_TEST,
-> +					  BPF_ADJ_ROOM_MAC,
-> +					  BPF_F_ADJ_ROOM_ENCAP_PPPOE |
-> +					  BPF_F_ADJ_ROOM_DECAP_PPPOE);
-> +		break;
+key_extract_l3l4() also returns early for these packets. It does not apply
+the network_header fallback that its -EINVAL path uses:
 
-Does this case reach the ENCAP_PPPOE flag combination check it is meant to
-exercise?
+net/openvswitch/flow.c:key_extract_l3l4() {
+    ...
+		offset = nh->frag_off & htons(IP_OFFSET);
+		if (offset) {
+			key->ip.frag = OVS_FRAG_TYPE_LATER;
+			memset(&key->tp, 0, sizeof(key->tp));
+			return 0;
+		}
+    ...
+}
 
-prog_tests/tc_pppoe.c runs it as test_reject(skel, 4, ip4_pkt, ...), so
-eth_type_trans() in bpf_prog_test_run_skb() sets skb->protocol to
-htons(ETH_P_IP).  Because BPF_F_ADJ_ROOM_DECAP_PPPOE is set,
-bpf_skb_adjust_room() returns -ENOTSUPP at the protocol check, before the
-new validation is reached:
+The IPv6 path sets key->ip.proto = NEXTHDR_FRAGMENT. An IPv4 later
+fragment instead keeps key->ip.proto = nh->protocol.
 
-    flags & ((BPF_F_ADJ_ROOM_ENCAP_MASK |
-              BPF_F_ADJ_ROOM_DECAP_MASK) &
-             ~BPF_F_ADJ_ROOM_ENCAP_PPPOE))
-        return -EINVAL;
+validate_set() accepts OVS_KEY_ATTR_TCP, OVS_KEY_ATTR_UDP and
+OVS_KEY_ATTR_SCTP after checking only eth_type and ip.proto. So a flow
+matching ipv4(proto=132) with frag wildcarded can apply set(sctp(...)) to
+these packets.
 
-The call is rejected for the same reason as case 6 (reject-decap-non-pppoe
-on the same ip4_pkt), so this subtest adds no coverage.  With a PPPoE input,
-a positive len_diff combined with any decap flag would still be caught by
-the existing "if (!shrink) return -EINVAL;" in the DECAP_MASK block.
+set_tcp(), set_udp() and set_sctp() have no fragment check of their own.
+The patch adds one only to update_ip_l4_checksum(). Can these actions now
+use a stale transport offset?
 
-The combination that only the new check rejects is not tested at all:
-ENCAP_PPPOE together with another encap flag, for example:
+A GRE vport is one way to get a stale value:
 
-    bpf_skb_adjust_room(skb, PPPOE_SES_HLEN_TEST, BPF_ADJ_ROOM_MAC,
-                        BPF_F_ADJ_ROOM_ENCAP_PPPOE |
-                        BPF_F_ADJ_ROOM_ENCAP_L3_IPV4);
+  ip_rcv_core()
+    sets transport_header to the outer GRE header
+  __iptunnel_pull_header()
+    pulls the tunnel header without resetting it
+  inet_gro_receive()
+    jumps out on ip_is_fragment() before resetting it
+  __netif_receive_skb_core()
+    resets the header only if it was never set
 
-If that check were missing, this call would go into bpf_skb_net_grow() with
-encap == true and succeed, and reject_unexpected would catch it.  The test
-already builds fake_ppp_pkt so that case 6 can fail on a kernel without the
-protocol check.
+This leaves an offset of about -4 or -8 relative to the inner Ethernet
+header.
 
-Could case 4 use a second encap flag in the same way, so that it also fails
-on a kernel without the check it targets?
+nsh_pop() followed by recirculation gives a similar offset of -8. On
+!CONFIG_DEBUG_NET, plain netdev rx leaves the offset at the IPv4 header.
 
+In set_sctp(), sctphoff would be (unsigned int)-8:
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+net/openvswitch/actions.c:set_sctp() {
+	unsigned int sctphoff = skb_transport_offset(skb);
+	...
+	err = skb_ensure_writable(skb, sctphoff + sizeof(struct sctphdr));
+	...
+	old_correct_csum = sctp_compute_cksum(skb, sctphoff);
+    ...
+}
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/37148983810
---===============7134958192468196825==--
+As a size_t, sctphoff + sizeof(struct sctphdr) is 0x100000004. Passed to
+skb_ensure_writable(), whose write_len is an unsigned int, this becomes 4,
+so the check passes. Any offset from -12 to -1 passes the same way.
+
+sctp_compute_cksum() then reads, zeroes and restores sh->checksum at
+skb->data + 0xfffffff8. On 64-bit, isn't that about 4 GiB past the
+packet?
+
+In set_tcp(), both -8 + 20 and -4 + 20 pass skb_ensure_writable(). Do the
+port writes then land in headroom, and the th->check update in the inner
+Ethernet or IPv4 header?
+
+In the plain rx case, set_tcp() and set_udp() would write into the IPv4
+header itself (tot_len, and frag_off as uh->check). The IP header
+checksum is not fixed up afterwards.
+
+With CONFIG_DEBUG_NET and a header that was never set, the warning fires
+and the packet is dropped.
+
+Before this patch the offset was always nh_ofs + ip_len, which is inside
+the packet.
+
+The fragment can come from a remote peer. The OVS genl ops use
+GENL_UNS_ADMIN_PERM, so CAP_NET_ADMIN over a netns owned by a user
+namespace is enough to install such a flow. ovs-vswitchd may never
+generate these flows, but the kernel accepts them.
+
+Should later fragments get a defined value here, such as
+transport_header = network_header as the -EINVAL path does? Separately,
+should set_tcp(), set_udp() and set_sctp() get later-fragment guards, or
+should validate_set() reject these set actions when the flow can match
+later fragments?
+
+[Severity: High]
+Does this do what the commit message describes? Skipping
+skb_set_transport_header() doesn't invalidate the field.
+
+The warning in skb_transport_header() fires only when the field holds the
+~0 sentinel, and only with CONFIG_DEBUG_NET:
+
+include/linux/skbuff.h:skb_transport_header() {
+	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
+    ...
+}
+
+On the common paths the field is already set when OVS gets the packet:
+
+- on !CONFIG_DEBUG_NET, __netif_receive_skb_core() resets an unset header
+  to the network header
+- on GRE and other tunnel paths, ip_rcv_core() leaves it at the outer
+  header
+- ip_frag_next() sets it on every locally generated fragment, and those
+  can enter OVS through internal_dev_xmit()
+- recirculated packets keep the value from an earlier pass
+
+In all of these cases skb_transport_header_was_set() is true, so the
+warning can't fire, even on debug kernels. The value is also stale now,
+where before it was always an offset inside the packet.
+
+The warning can fire only for skbs whose header was never set. That means
+netdev rx on CONFIG_DEBUG_NET kernels, or skbs built for
+OVS_PACKET_CMD_EXECUTE.
+
+Would it be closer to the intent to call skb_unset_transport_header() for
+later fragments? Another option is to set
+transport_header = network_header, as the -EINVAL path in
+key_extract_l3l4() does.
+
+[Severity: Low]
+This isn't a bug on its own, but the kernel-doc for key_extract() in
+flow.c still says:
+
+ *    - skb->transport_header: If key->eth.type is ETH_P_IP or ETH_P_IPV6
+ *      on output, then just past the IP header, if one is present and
+ *      of a correct length, otherwise the same as skb->network_header.
+
+For IPv4 later fragments, neither case is true after this change.
+check_iphdr() skips the set, and key_extract_l3l4() returns early without
+the network_header fallback.
+
+The IPv6 later-fragment path already behaved this way. Should the comment
+or the code be updated so they agree?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002195436.8473-1-fmancera%40suse.de
