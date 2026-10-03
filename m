@@ -1,128 +1,114 @@
-Received: from mta1.migadu.com (out-127.mta1.migadu.com [95.215.58.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BF8242D65
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 06:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.127
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4434F377A89
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 06:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791008649; cv=none; b=W6yKZPlCEVGQxGBISdlCFm/tpZ5o5k3TaJWETEVrhtjlLLHdtX1Ni2ZV+dA2Ffg37etZ8mbhiFWNXAPgfcx8XfIfIZ48/Gj5KJddwn5Tj9rsZw4H0LKqyr1uieCsx6PX/FNUzGu3FhmHbYfFAd0/09L3P4Dqt7YZUf4cbqh4R6s=
+	t=1791009577; cv=none; b=ki2XW7ya9rQJN7m13MpA570Ub21nHVveHRvkbtbQWKgYd+DCo77sY3Hpq1CYWwBQgM9MYpHxxAdkfqSAY7QZh8M86kGGuy2kHrROp5VwwvsItGf7FSYdEgCAnIvW17BbrIEhQnKEX3bRjC1I4l0dXxwNxiAaXjy/fOnvZHdiAis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791008649; c=relaxed/simple;
-	bh=uXr2q7UZes+MeSF6RarEYCzlQMvAzuwsQ0pseuoaz2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VMYQ876TJ/lS03yHZrGpl3E9qLAdXLRadrnwFBwKkLFIComdJ/b9QbfVfKjH0vIYBPYN8qwNOfQPcYWIOlB/2MN9QoXrR32RSlxPsOx6Lpqz9hiZcGj0uR42eHSB6RK0rcwXArmpowtvPiYY28HCv5VxTIao+S0/UHDJw6m2Y5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=I3ynhin+; arc=none smtp.client-ip=95.215.58.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791009577; c=relaxed/simple;
+	bh=I8T8XTYxcCgX2Ir1lfsA7jF+T8sRSV36CDj+wxJeNbU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XVwgUVc4oW2zED9UtqvSpxuEMZU6rKKxuEfYJNSePRkA+yFpzwu8W/DefKyCxlcjRrB1d0H1Er0rlRA+kov+i2w7EDx2DHr85GORTb82Jw3f3l3NfHDnNYhixheEIq+Kh+QDGAlxJ2SzUkGzHnuyK5kLHbJUJ/CvxDq86t+yfuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ARlsNXAh; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="I3ynhin+"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=uXr2q7UZes+MeSF6RarEYCzlQMvAzuwsQ0pseuoaz2I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791008644; v=1; x=1791613444;
- b=I3ynhin+y1MOY6yewIJDVRDoe7ViJIxwHoMLR1xw4GwlQgKju5xQSSCe6lWayNvTrUXa2efz
- Pk3KyrIaw9jPqVvQhtG/TC7xI6ejdH4dsMMvMdImiPhpgBvIbWj2OLlFLsVicPn0NFvTgb4XFzY
- PPfWp9X+tzaIsiEbGvZt7d5M=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id d7c4947124629513;
-	Sat, 03 Oct 2026 06:24:04 +0000
-X-Mizu-Trace-ID: d7c4947124629513
-X-Migadu-Flow: FLOW_OUT
-Date: Sat, 3 Oct 2026 14:23:53 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: sashiko-reviews@lists.linux.dev
-Cc: bpf@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/6] tools: ynl: convert enum selector to
- string for sub-message parsing
-Message-ID: <asCfefn6IADLNDtD@fedora>
-References: <20260930-ynl_rt_encap-v3-0-4106c21b9ee7@kylinos.cn>
- <20260930-ynl_rt_encap-v3-2-4106c21b9ee7@kylinos.cn>
- <20261001015134.963061F00898@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ARlsNXAh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=3D
+	/7y/WW4sPagmyMrlAm8civXyyfDUyE5UyNP3pHT6Q=; b=ARlsNXAhXAjFTMbY/Z
+	dco2CfHZf5NiOeeTayUYtqgB8m7A/rV/SRjSFCzjAstaVaqh9YUSSFxTuedTzd7G
+	nfjc5OSDCWurV1vpBZrzuvCsGRYlaZJEcvuZPjkzLJ+vChqE35xVyEsNgi48IW8c
+	N5AoqdNL8Xa7EiPiCf7uKqQXU=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wDXD0AEo8BqidfxCA--.46014S2;
+	Sat, 03 Oct 2026 14:39:02 +0800 (CST)
+From: Rongguang Wei <clementwei90@163.com>
+To: netdev@vger.kernel.org
+Cc: willemdebruijn.kernel@gmail.com,
+	jasowangio@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	Rongguang Wei <weirongguang@kylinos.cn>
+Subject: [PATCH net v4 0/2] tun: fix re-attaching the socket filter
+Date: Sat,  3 Oct 2026 14:38:57 +0800
+Message-Id: <20261003063859.136895-1-clementwei90@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261001015134.963061F00898@smtp.kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXD0AEo8BqidfxCA--.46014S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tw1kCw17uFyfuF1ftrW5Wrg_yoW5JF17pF
+	WYg345Kw4kW34fZ3Z3ZayxZ34Yyws7JFy5Awn7Ga4rZw45Wryjv3yaga45Z3W7AFZ7Gw12
+	yF1Y9r9Ig3WDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07joGQDUUUUU=
+X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC4Qe0IGrAowcCxgAA34
 
-On Thu, Oct 01, 2026 at 01:51:34AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] ynl: early return 0 aborts entire parsing loop on unknown sub-message
-> - [Medium] ynl: invalid C code generated for external enum selectors
-> --
-> 
-> commit f2c434cd3f008807f1723585dcbfd634aa3f28b7
-> Author: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> tools: ynl: convert enum selector to string for sub-message parsing
-> 
-> YNL sub-message parsing expects a string selector for strcmp(). So for
-> non-external enum selectors, convert the integer value to its string form
-> via the family's {enum}_str() helper. This enables correct decoding of
-> sub-messages keyed by enum values.
-> 
-> > diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-> > index 15c79849c6096..783242537fe48 100755
-> > --- a/tools/net/ynl/pyynl/ynl_gen_c.py
-> > +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-> > @@ -951,13 +951,31 @@ class TypeSubMessage(TypeNest):
-> >              sel_var = f"_sel_{sel}"
-> >          else:
-> >              sel_var = f"{var}->{sel}"
-> > -        get_lines = [f'if (!{sel_var})',
-> > -                     f'return ynl_submsg_failed(yarg, "{self.name}", "{selector}");',
-> > -                     f"if ({self.nested_render_name}_parse(&parg, {sel_var}, attr))",
-> > -                     "return YNL_PARSE_CB_ERROR;"]
-> > +
-> > +        local_vars = None
-> > +
-> > +        if self.selector.is_enum_val():
->             ^^^^
-> 
-> [Severity: Medium]
-> Will this generate invalid C code for external enum selectors?
-> 
-> The condition doesn't check if the selector is external. If a YAML spec
-> defines a sub-message with an external enum selector, it appears this will
-> generate a non-existent structure member access for the presence variable:
-> 
->     pres_var = f"{var}->_present.{sel}"
-> 
-> and try to pass the string pointer to the enum string helper, which expects
-> an integer. Should this check include `and not self.selector.is_external()`?
+From: Rongguang Wei <weirongguang@kylinos.cn>
 
-OK...
+This is v4 of the series that fixes attaching a queue to a TAP device which
+re-installs the socket filter of a persistent device.
 
-> 
-> > +            enum = self.family.consts[self.selector.get_enum_name()]
-> > +            pres_var = f"{var}->_present.{sel}"
-> > +            parse_sel = f"{sel}_str"
-> > +            local_vars = [f'const char *{parse_sel};']
-> > +
-> > +            get_lines = [
-> > +                f'if (!{pres_var})',
-> > +                f'return ynl_submsg_failed(yarg, "{self.name}", "{selector}");',
-> > +                f'{parse_sel} = {enum.render_name}_str({sel_var});',
-> > +                f'if (!{parse_sel})',
-> > +                'return 0;']
->                  ^^^^
-> 
-> [Severity: High]
-> Does returning 0 here abort the entire parsing loop?
-> 
-> If a generated YNL parser encounters an unrecognized sub-message enum
-> selector (for example, sent by a newer kernel), it looks like `return 0;`
-> executes directly inside the attribute loop of the parsing function.
-> 
-> This would silently abort processing the remainder of the Netlink message and
-> drop all trailing attributes without returning an error. Is it possible to
-> skip the attribute and continue parsing instead?
+Patch 1 keeps a copy of the program in the kernel when it is configured,
+instead of reading tun->fprog from user space again on every later attach,
+and fixes the inverted error check in tun_attach(). The two changes are
+one patch on purpose: with only the kernel copy every re-attach returns 0
+without publishing the queue, and with only the check fixed a re-attach
+that used to succeed without a filter starts to fail. IFF_NOFILTER keeps
+working and is no longer needed as a workaround.
 
-OK, I will use continue then.
+Patch 2 adds selftests: it re-attaches a queue after the buffer the program
+was copied from was made unreadable, attaches a second queue from a fresh
+socket to check that the filter is rebuilt from the kernel copy, and checks
+that a rejected TUNATTACHFILTER keeps the saved program, plus the ways to
+attach a queue without a filter.
 
-Thanks
-Hangbin
+Thanks to Willem de Bruijn for the reviews, and to the CI reviews for
+the comments they raised.
+
+Rongguang Wei (2):
+  tun: keep a kernel copy of the socket filter program
+  selftests: net: add TAP socket filter attach tests
+
+---
+v4:
+  - merge the kernel copy and the error check into one patch, so that no
+    step of the series turns a re-attach into a silent no-op or into a new
+    failure
+  - charge the kernel copy to the caller's memory cgroup
+  - selftests: check that the queue is attached again, and attach a new
+    queue to see that the filter was installed from the kernel copy
+v3:
+  - reorder: the kernel copy of the program comes before the corrected
+    error check
+  - add sk_attach_filter_kern() in the patch that first uses it
+  - address the review of the selftests
+v2:
+  - roll back the filter attach when a later step of tun_attach() fails
+  - keep a copy of the program in the kernel, so that a later attach does
+    not depend on the address space of the process that set the filter
+  - add selftests for the re-attach and for a rejected TUNATTACHFILTER
+v1:
+  - https://lore.kernel.org/netdev/20260923025653.59348-1-clementwei90@163.com/
+---
+ drivers/net/tun.c                 |  56 ++++++++-
+ include/linux/filter.h            |   1 +
+ net/core/filter.c                 |  22 +++++
+ tools/testing/selftests/net/tun.c | 193 ++++++++++++++++++++++++++++++
+ 4 files changed, 267 insertions(+), 5 deletions(-)
+
+
+base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
+-- 
+2.43.0
+
+
+No virus found
+		Checked by Hillstone Network AntiVirus
+
