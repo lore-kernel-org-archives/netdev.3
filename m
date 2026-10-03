@@ -1,139 +1,80 @@
-Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604BB31A56D;
-	Sat,  3 Oct 2026 14:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791038206; cv=pass; b=h0SCVEIJPOrdfgA5P8ptzzPDjBygi9D+N4XLQ8zq72LRvAQegZq4BPyKMYJNBBlmtOyhWCXjj109MdQ9RbLpkblRIf6RosuDWJrTbZQgD01sH9qNH8BiqWqkndys9s0gfRFUIEdxqzkTZtglh0zQK7RvujPy0S3UPVZ6qXfSpq8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791038206; c=relaxed/simple;
-	bh=9Egv4q97ghG6oqT2h8uxYWEJx97iLxhYm/0+T/pO2i4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=VtIY7M4czw9XDZUHBaYHrIlQ7MpD36ul/klz1uXcALvDDouL+IPBZBM1uyRmRFB68DWhrh6A5XaeTivlpcYNlZ0dPhMD0+NfJy5LToUUXNtO7Zo12/YxAZJiJrphSrJtA0LzRO1tsC0hTM04Uo89Z0FVzuXDgn4eH4fOhmFozvQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=aVP6eu9Q; arc=pass smtp.client-ip=165.173.180.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25F83655E6;
+	Sat,  3 Oct 2026 14:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791038300; cv=none; b=OkUetlNIyFwnbzTy0YUKNRIQ+0b5DIWh4ASRhxv/bQeWlmQtY1fnlpzVW+T7L9RVzkHrBLGrngPTZ7DI7ufnuVU4O9fp3G/kERw3Nu/2Y8OtmVzic+CkCJvWwQaHrP47pkAHJK2kT1g7OZmQdBgYVdcKv9ZLcAI3gVPjtzEWchQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791038300; c=relaxed/simple;
+	bh=lk4x11EHLXs2UR+/ptY9IIa9Osi6U0fC+7NUCI7ocrc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PPulZPJ8SQ7L4nQTh1V9DZ6v61tTrzOgomZqkGIIVkGJT+an6vH+yGNbQM4fU9I4ieJkfldR86OwwAFEyfb8ymBfrzBOLtIL5Ajgl37zCmT/8f0MtZ27E/fNZzkCKhbU/QryL0AUjZdngo4Tu+IDC/hoy8TEFAgxOO/BnkngMVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lxEb1/yq; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="aVP6eu9Q"
-ARC-Seal: i=1; a=rsa-sha256; t=1791038153; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=kLHYAhye2LfTlMwX0V6q6TTBkux+wUFvoV4mXNTnSVevlJCYF5FyMMRkdeFkH0XszsbgO+qYY2nuDmDtmuWaPe/Qry8FJt2ZBs79Ypjdi3fNNl4hpSYv+BiOAYPvjEGr930y6mI6YFb29oTMGzg8MfOcXrhEuaUKicppeQkNN0A=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791038153; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9Egv4q97ghG6oqT2h8uxYWEJx97iLxhYm/0+T/pO2i4=; 
-	b=kRHyPxPAhgGthdAaCK3cR3qk8LPjw/tJr7goGPLgT4hdbGXJLOiOJ1lqY0IdtuTXa9XDacMAmTO1f4RS03uNFPlHZxXQGT2pAIugaTweekvCg9hn+GKltqoM9snXW4m7nB8EGOvghDWut1qOUqMP68/t2wHIXMBOcPKR2QN3pmM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=pigmoral.tech;
-	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
-	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791038153;
-	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
-	h=Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Date:Message-Id:Message-Id:To:To:Cc:Cc:Subject:Subject:From:From:In-Reply-To:Reply-To;
-	bh=9Egv4q97ghG6oqT2h8uxYWEJx97iLxhYm/0+T/pO2i4=;
-	b=aVP6eu9QquEmV95y1DiK1BJcTJUnvthZ3+boRCVkxLohCUk8OTC/+kQtbqhGdwwC
-	V3gRD61LqmAqz0zOpqvCC3f+OHP72cIIbFN5+2qPbvitDeoBI/XjkIeRaTIsvgm5ev7
-	f6L/Rn7N7zv+L3ETm7cY0TEXFhKrt4FIczIQYM5w=
-Received: by smtp.zohomail.com with SMTPS id 1791038151074231.15688188388413;
-	Sat, 3 Oct 2026 07:35:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lxEb1/yq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=rzMXWV4KkLzL1+bqSDAMTe9QwTODJ26nW39l5tWgYw4=; b=lxEb1/yqaPtt07KQPB0GXTYyKs
+	xduLB7MZVgl+0Fg1WOyqqCX/fueGzNzdwMVY899dvb7HCbn3GFGciQE7pMITdCavgFhZylC6PykU5
+	xgx2RJqn29VFTacaSG9MUi6YwiERzJqszO3P52yGBdIhz/8hwINGoUc976fMz8gKDzss=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xD0sI-008lU4-FJ; Sat, 03 Oct 2026 16:38:06 +0200
+Date: Sat, 3 Oct 2026 16:38:06 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Yongzhao Chen <yongzhao.derek@gmail.com>
+Cc: Christian Marangi <ansuelsmth@gmail.com>, netdev@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: qca83xx: read resolved QCA8337 link
+ status
+Message-ID: <36c4c389-bc11-4363-8e23-eb8199dc3499@lunn.ch>
+References: <20260928220749.857-1-yongzhao.derek@gmail.com>
+ <01a62e77-6c4e-4665-ba46-26d12b1c77b4@lunn.ch>
+ <20260930212348.1919-1-yongzhao.derek@gmail.com>
+ <2ea832eb-33f4-4bf3-bdba-5d983038d012@lunn.ch>
+ <20261001181634.1508-1-yongzhao.derek@gmail.com>
+ <7eed302b-d455-447f-9ce9-f15468b9792b@lunn.ch>
+ <20261002203522.1219-1-yongzhao.derek@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 03 Oct 2026 22:35:41 +0800
-Message-Id: <DLVA17A4RRG7.2ECQKV3SJDAGI@pigmoral.tech>
-To: <wens@kernel.org>, "Junhui Liu" <junhui.liu@pigmoral.tech>
-Cc: "Stephen Boyd" <sboyd@kernel.org>, "Brian Masney"
- <bmasney+clk@redhat.com>, "Jerome Brunet" <jbrunet+clk@baylibre.com>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Jernej Skrabec"
- <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>,
- "Philipp Zabel" <p.zabel@pengutronix.de>, "Paul Walmsley" <pjw@kernel.org>,
- "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Alexandre Ghiti" <alex@ghiti.fr>, "Richard Cochran"
- <richardcochran@gmail.com>, <linux-clk@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-sunxi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <linux-riscv@lists.infradead.org>, <netdev@vger.kernel.org>, "Jerome
- Brunet" <jbrunet@baylibre.com>, "Enzo Adriano"
- <enzo.adriano.code@gmail.com>, "Andre Przywara" <andre.przywara@arm.com>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, "Yixun Lan"
- <dlan@gentoo.org>
-Subject: Re: [PATCH v5 0/8] clk: sunxi-ng: Add support for Allwinner A733
- CCU and PRCM
-From: "Junhui Liu" <junhui.liu@pigmoral.tech>
-X-Mailer: aerc 0.22.0
-References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
- <CAGb2v66O7Ze=TiHO_5q=76QpU8ZXraFyV+HfO+_HpkTDr1U-nQ@mail.gmail.com>
-In-Reply-To: <CAGb2v66O7Ze=TiHO_5q=76QpU8ZXraFyV+HfO+_HpkTDr1U-nQ@mail.gmail.com>
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261002203522.1219-1-yongzhao.derek@gmail.com>
 
-Hi Chen-Yu,
+On Fri, Oct 02, 2026 at 10:35:22PM +0200, Yongzhao Chen wrote:
+> Hi Andrew,
+> 
+> > The traffic failure was however because of the error with setting the
+> > DACs?
+> 
+> No, sorry, my last mail was not clear about this. The failure was on
+> a QCA8337 user port connected to a NAS
 
-On Sat Oct 3, 2026 at 9:37 PM CST, Chen-Yu Tsai wrote:
-> On Wed, Sep 30, 2026 at 1:27=E2=80=AFAM Junhui Liu <junhui.liu@pigmoral.t=
-ech> wrote:
->>
->> Add support for the main CCU and the PRCM module (R-CCU) found in the
->> Allwinner A733 SoC. The clock architecture is derived from the previous
->> A523 design, with the MCU_CCU removed and the clock tree extended for
->> the additional functional blocks found on the A733.
->>
->> The A733 introduces a "pll-ref" clock that normalizes the physical
->> oscillator frequency, which can be 19.2MHz, 24MHz, or 26MHz, into a
->> consistent 24MHz reference for the PLL clock tree.
->>
->> The peripheral, video, and DE PLLs provide multiple independently gated
->> outputs with programmable dividers. Model these outputs as separate
->> divider-and-gate child clocks. Also follow the documented hierarchy for
->> the derived peripheral PLL outputs. The explicitly named PLL_AUDIO1 /2
->> and /5 outputs are modeled as fixed-factor clocks, with their divider
->> fields initialized accordingly.
->>
->> Also extend the sunxi-ng SDM (Sigma-Delta Modulation) support for the
->> dual-pattern register layout used by the A733 PLLs. PLL_AUDIO0 uses the
->> dual-pattern SDM support to synthesize its fractional output.
->> PLL_AUDIO1 does not expose fractional rates, but its SDM controls are
->> modeled so that stale settings left by firmware can be disabled when an
->> integer rate is programmed.
->
-> Some of the clock controls, like the PLL and AHB/APB bus dividers, are
-> secure by default and need to be set to non-secure for Linux to be able
-> to use them properly. And there is also a TWD clock in the PRCM that the
-> user manual says is secure only.
->
-> Have you given any thought to this? If we end up having to convert to
-> SCMI or something to handle those clocks it's going to be a bit ugly.
->
-> And presumably things work now because the secure/non-secure access bit
-> isn't in effect right now because you aren't using secure boot? At least
-> this was a thing in the past...
->
+In that case, net. It is a real problem that bothers somebody,
+you. That fulfils the requirements for stable.
 
-Thanks for pointing this out. This is indeed something I had not
-considered before. I will try enabling secure boot on my spare Cubie A7Z
-board and test it on actual hardware.
+With LLM, we see a lot of patches fixing issues which nobody ever
+comes across, they are theoretical. We want those to go into net-next.
 
-For the PLL and AHB/APB bus clock controls, the user manual indicates
-that the relevant security bits can be set by TF-A to allow the kernel
-to access these registers. This also appears to be how this has
-traditionally been handled on sunxi platforms. So I think we can do the
-same in TF-A for the A733.
+So ideally we want to clear indication in the commit message that the
+fix is for a real problem. There is now an automated email when
+patches are submitted when it is not clear if they are theoretical or
+real fixes, reproduced on real hardware, or just build tested, etc.
 
-For bus_r_twd_clk, I will test whether the register is indeed always
-secure. If it is, I think the clock can be removed from the kernel and
-left enabled by its hardware reset value or by the boot firmware.
-
->
-> Thanks
-> ChenYu
->
-
---=20
-Best regards,
-Junhui Liu
-
+	Andrew
