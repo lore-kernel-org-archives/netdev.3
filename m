@@ -1,271 +1,226 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from sender5-op-o15.zoho.com (sender5-op-o15.zoho.com [165.173.182.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6453841C30F;
-	Sat,  3 Oct 2026 11:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791026993; cv=none; b=slW+Br3yitopx8/jiD4y/X0f+Bi/DT01Xvvt/+YEYt/qVsjSULw9jMuDS7DwB+CG4jsF7LOU3PyT0403QNl3n3Ok5Wanv/diEDzSC0BZjPeqDtlJa2JQRmdtwyBBqv1rxKJe107M4MZEcVXzSjKBH1+KmYe55WwY8BvFx4DAgfw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791026993; c=relaxed/simple;
-	bh=XKYjWElE6T7a/jw1KFTEt3APJRA9tNi9WXZ32y+CUxA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pr7gvu+pTSqfVlhRcbtKxB2T7TvO078zR4r+2AATMu4BzKC65cgwtxBkFw1zapyj7zu9uFXfeYskYlHkWLJSY4LRXRKjxtK2yzZyu0kxl1X5V+q7CMJiiaZSNVD7CrJqUC4j5K35kmp13Zr7exjeo0YlyD5ZrW2Ga6a/4zX/gnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=g37Ln9qa; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058913B6359;
+	Sat,  3 Oct 2026 12:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791031992; cv=pass; b=SjjcDQw9GlbI6KnyInd3r1YBYcvj1tskP1vgDzCThqzQyVlHDxwxDm7nWQ/b1jzFb6Eq90IQx44imuPBrXpOasDTd2ltaINwFWBoNxIddm0KEqYeRRPJTYuVj+tAn36B/bNjTQTpKiDenSJLrAJ5Ny1X48f+KAANp1W34tf7kRc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791031992; c=relaxed/simple;
+	bh=rH14carUj0uSQqIYD5FEvx8V6DrzhIC+GPdnpvka0pM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=GFfiwVw9Lc9qtmsIv0RhTS8pGnvTl39rJjgimI96K0nkxtsGhdESgxlrqrehJYzcWZaGq1UsvG3FyIW/yKCZMZhSmOjuLR+/96moGba0/orQImb7J9cfypAd0IfVi/ggorpEM1aqXo7wFIP3gvEDFkfDKJeddGOv3S/3aHTjYDk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=NcNoKS1c; arc=pass smtp.client-ip=165.173.182.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="g37Ln9qa"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XKYjWElE6T7a/jw1KFTEt3APJRA9tNi9WXZ32y+CUxA=; b=g37Ln9qaotzGx2EbsuvW5d7wqJ
-	dtl+8yWWcx6cpX8k7qUbQ5bRrO8DOfWdcpfyu70+Gze2xSksxMC2/L50l6kXiIMA/HBXM4sLDLIuT
-	ZT3sgEZnP7A3sJCO3T0BGXDi7nImApf8V9Hsb4Lh5Z3psOFG4Lys7e8MBQ9R/BZrMYfmVR1AbH9TH
-	VWp7sNPG2Mywg3z+pWHD4MpqNSJh2BFgLd27E9BvdnSaQBDc76jKx3iRfXPdfX3EEpSj8m7WuRWgV
-	BpxStthgW6pY+JYWqS7CPQgQkODVWswyKAQTdKluC/TyVzm5U9/X6gPKzztiw/SHmFSI7PM/y0NFT
-	9zaiBx0w==;
-Received: from 54-240-197-228.amazon.com ([54.240.197.228] helo=edge-m3-r1-106.e-iad51.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCxvm-00000006Inz-3Khg;
-	Sat, 03 Oct 2026 11:29:30 +0000
-Message-ID: <c47a3d769d374b6fd2a52f4a7c4fabb88bf0392c.camel@infradead.org>
-Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
- pps_get_ts()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Rodolfo Giometti <giometti@enneenne.com>, Miroslav Lichvar
-	 <mlichvar@redhat.com>
-Cc: Richard Cochran <richardcochran@gmail.com>, Andrew Lunn	
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet	 <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni	 <pabeni@redhat.com>, John Stultz <jstultz@google.com>, Thomas
- Gleixner	 <tglx@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, Alexander Gordeev	
- <agordeev@linux.ibm.com>
-Date: Sat, 03 Oct 2026 12:29:29 +0100
-In-Reply-To: <dd7a873caecab6c912e2c0f910d1e46818ea455d.camel@infradead.org>
-References: <20260829210041.40649-1-dwmw2@infradead.org>
-				 <20260829210041.40649-4-dwmw2@infradead.org>
-				 <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
-				 <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
-				 <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
-				 <ar5cq0vslvQ00Pek@localhost>
-				 <b567acf8-c3e3-4b51-99a8-058ab42f3026@enneenne.com>
-			 <24e8134b35cc8be26606d7472295cdb43ea6b38a.camel@infradead.org>
-		 <777d19602ed1868abbd3d3ef3a4e78a8688d4a17.camel@infradead.org>
-	 <dd7a873caecab6c912e2c0f910d1e46818ea455d.camel@infradead.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-2tl1Erg1oN+ikStjYtNr"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="NcNoKS1c"
+ARC-Seal: i=1; a=rsa-sha256; t=1791031939; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=N5vt+iiHQmegh8SyIvLQAUi/f2vSOUw9Z9mN4vteHwlOWTE4409DJodDQF5EkRZNNI0TPyqm/MGA8uJ1Ioo93Cy9VtqAL82OGHcE7dPOUVcDxWgG++iyd5Aatnp2CNrONz4v8lTl8odyrZ62C5QzKzNLyf9TGlucNq2QrxcLJno=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1791031939; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=w9AGJ2+NMj0TzmkVZNqdUpfodPO1cSXhGRHZ/sEBZS8=; 
+	b=lOLp+AnBm+oAYiJ6gKX/8SnHJ+Z7hqO0RnfS42v81HGtL1WRXtB4n/ASPZ28t8dTTjrsgg04dX1V0yVC9L5wbTNt16x8cGSbcF0LumQiW0mItpj/JuVFHU90kfeGQdLCw5HTAupV9FOgiAObpwDWtmEcw48zA60ShPVeVrKxsaQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=pigmoral.tech;
+	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
+	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791031939;
+	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
+	h=Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Date:Message-Id:Message-Id:Subject:Subject:From:From:To:To:Cc:Cc:In-Reply-To:Reply-To;
+	bh=w9AGJ2+NMj0TzmkVZNqdUpfodPO1cSXhGRHZ/sEBZS8=;
+	b=NcNoKS1cOcBSYTvhxhBySCVO9GEvTQJ2o4AjxuwLzD3RQ2hda0qzJm1wX9BrRGCO
+	1gKy70NWKW4Avd7awRlod4hQIxxeDcqLXnF9/O4/fOXCMZ92QlEuH0WDRbs3WW4lCOI
+	Qqk53dxVOoXI8x61uIvSXgdFzt6FwD5p4CFHmy7A=
+Received: by smtp.zohomail.com with SMTPS id 1791031938348944.7508385072523;
+	Sat, 3 Oct 2026 05:52:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 03 Oct 2026 20:52:08 +0800
+Message-Id: <DLV7TXB5Q2PM.EYY9YISYPCR@pigmoral.tech>
+Subject: Re: [PATCH v5 0/8] clk: sunxi-ng: Add support for Allwinner A733
+ CCU and PRCM
+From: "Junhui Liu" <junhui.liu@pigmoral.tech>
+To: "Junhui Liu" <junhui.liu@pigmoral.tech>, "Stephen Boyd"
+ <sboyd@kernel.org>, "Brian Masney" <bmasney+clk@redhat.com>, "Jerome
+ Brunet" <jbrunet+clk@baylibre.com>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Chen-Yu Tsai" <wens@kernel.org>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>,
+ "Philipp Zabel" <p.zabel@pengutronix.de>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Alexandre Ghiti" <alex@ghiti.fr>, "Richard Cochran"
+ <richardcochran@gmail.com>
+Cc: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-sunxi@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+ <netdev@vger.kernel.org>, "Jerome Brunet" <jbrunet@baylibre.com>, "Enzo
+ Adriano" <enzo.adriano.code@gmail.com>, "Andre Przywara"
+ <andre.przywara@arm.com>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: aerc 0.22.0
+References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
+In-Reply-To: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
+X-ZohoMailClient: External
 
+Hi folks,
 
---=-2tl1Erg1oN+ikStjYtNr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Gentle ping on this series.
 
-T24gRnJpLCAyMDI2LTEwLTAyIGF0IDE0OjQ0ICswMTAwLCBEYXZpZCBXb29kaG91c2Ugd3JvdGU6
-Cj4gCj4gSGFoLCBJIHNob3VsZCBzdG9wIHByZWRpY3RpbmcgcmVzdWx0cyBiZWZvcmUgSSBoYXZl
-IHRoZW0uIEknbSBjbGVhcmx5Cj4gbm90IHZlcnkgcHJlc2NpZW50LiBTcGlubmluZyBvbiB0aGUg
-TU1JTyAodGhlIEdQSU8gd2FpdF9mb3JfZWRnZSgpCj4gbWV0aG9kIGlkZWEpIG1ha2VzIG1vcmUg
-b2YgYSBkaWZmZXJlbmNlIHRoYW4gSSB0aG91Z2h0ICh+MzAlIG9mZiBldmVyeQo+IGNvbHVtbiBi
-cmluZ3MgdXMgZG93biB0byBvbmx5IDPDlyB0aGUgZW50cnkuUyBjYXB0dXJlKToKPiAKPiDCoCDi
-lIzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilKzi
-lIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDi
-lIDilKzilIDilIDilIDilIDilIDilJAKPiDCoCDilIIgY2FwdHVyZSBtZXRob2TCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIOKUgiBwNTAg4pSCwqAgcDk1IOKUgsKgIHA5OSDilILCoCBtYXgg
-4pSCwqDCoCDPgyDilIIKPiDCoCDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lLzilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDi
-lIDilLzilIDilIDilIDilIDilIDilIDilLzilIDilIDilIDilIDilIDilKQKPiDCoCDilIIgcHBz
-LWdwaW8gKElSUSnCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIOKUgsKgIDg0IOKUgiAxMjA2
-IOKUgiA0MDEzIOKUgiA0ODg5IOKUgiA2ODgg4pSCCj4gwqAg4pSCIHBvbGxpbmcsIHN0YW1wIGFm
-dGVyIGVkZ2XCoMKgwqAg4pSCIDIwNiDilILCoCA1MzYg4pSCwqAgNjY1IOKUgiAxMTA2IOKUgiAy
-ODYg4pSCCj4gwqAg4pSCIHBvbGxpbmcsIGJyYWNrZXRlZCBjb3VudGVywqDCoCDilIIgMjA2IOKU
-gsKgIDU0NSDilILCoCA2NDcg4pSCwqAgODExIOKUgiAyODYg4pSCCj4gwqAg4pSCIHBvbGxpbmcs
-IGJyYWNrZXRlZCwgcmF3IE1NSU8g4pSCIDEzNSDilILCoCAzNTkg4pSCwqAgNDM0IOKUgsKgIDU2
-NCDilIIgMTg4IOKUggo+IMKgIOKUgiBlbnRyeS5TIGNvdW50ZXIgY2FwdHVyZcKgwqDCoMKgwqAg
-4pSCwqAgNDYg4pSCwqAgMTA5IOKUgsKgIDEzNSDilILCoCAyMDYg4pSCwqAgNTgg4pSCCj4gwqAg
-4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pS0
-4pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA
-4pSA4pS04pSA4pSA4pSA4pSA4pSA4pSYCj4gCj4gKE5COiBXZSBzaG91bGQgYmUgY2FyZWZ1bCBu
-b3QgdG8gZm9yZ2V0IHRoZSBjb21tb24tbW9kZSBoYXJkd2FyZQo+IGxhdGVuY3kgd2hpY2ggY291
-bGQgYmUgZGlmZmVyZW50IGZvciB0aGUgSVJRIHBhdGhzIHZzLiB0aGUgcG9sbGluZwo+IHBhdGhz
-LiBPbiBteSBsaXN0IGlzIGEgdGVzdCB3aGVyZSBvbmUgQ1BVIHBvbGxzIHdoaWxlIHRoZSBvdGhl
-ciB0YWtlcwo+IHRoZSBpbnRlcnJ1cHQsIHNvIHdlIGNhbiBjb21wYXJlIG9uIHRoZSAqc2FtZSog
-cHVsc2UuKQoKSSBkaWQgdGhpcyB0ZXN0LCBvbiBhIGxpdmUgc3lzdGVtIHJhdGhlciB0aGFuIGEg
-dHdlYWtlZC1mb3ItaWRsZW5lc3MKaW5pdHJhbWZzIGVudmlyb25tZW50IHdoaWNoIHdhcyBnb2lu
-ZyB0byBmbGF0dGVyIHRoZSBJUlEgcGF0aAptYXNzaXZlbHkuCgpJdCBjb21wYXJlcyB0aGUgY3lj
-bGUgY291bnQgZnJvbSB0aGUgR1BJTyBzcGluIG9uIG9uZSBDUFUsIHdpdGggdGhlCmVudHJ5LlMg
-KGFuZCwgZXZlbnR1YWxseSwgcHBzX2dwaW9faXJxX2hhcmRpcnEoKSkgb24gdGhlIG90aGVyLgoK
-RnVsbCByZXN1bHRzIGF0IGh0dHBzOi8vZGF2aWQud29vZGhvdS5zZS9udHB0ZXN0LXI2NC9jYXB0
-dXJlLWxhdGVuY3kvCiAKUnVubmluZyBpZGxlLWlzaCwgd2l0aCBzY2hlZHV0aWwgZGlzYWJsZWQs
-IHRoZSBwb2xsIGNhcHR1cmVzIHRoZSBlZGdlCnNvb25lciAoLTIwMG5zKSwgYnV0IHdpdGggaGln
-aGVyIGppdHRlciAoz4MgMTUwIG5zIHZzLiAxMTUgbnMgZm9yCmVudHJ5LlMpLgoKUnVubmluZyB1
-bmRlciBsb2FkLCB3ZSBzZWUgYSBsb3QgbW9yZSBqaXR0ZXIgZXZlbiBvbiB0aGUgZW50cnkuUwpj
-YXB0dXJlICjPgyA3LjbCtXMpLiBBbmQgc29tZSBjYXB0dXJlcyBhcmUgc2VlbiAqYmVmb3JlKiB0
-aGUgcG9sbGVkCnB1bHNlLCBwcmVzdW1hYmx5IGJlY2F1c2Ugc29tZXRoaW5nIGVsc2UgYXNzZXJ0
-ZWQgdGhlIElSUSBsaW5lIGZpcnN0CmFuZCB0aGVuIHRoZSBHUElPIGludGVycnVwdCB3YXMgcHJl
-c2VudCBieSB0aGUgdGltZSBpdCB3YXMgY2hlY2tlZC4KRWxpbWluYXRpbmcgdGhvc2UsIM+DIDUu
-OMK1cyB1bmRlciBsb2FkLgoKQWxsIG9mIHdoaWNoIGJyaW5ncyBtZSBiYWNrIHRvIHRoZSBjYXNl
-IGZvciBiZXR0ZXIgZmlsdGVyaW5nLiBUaGUgQ0RGCnN1Z2dlc3RzIHRoZXJlIGFyZSBlbm91Z2gg
-Kmdvb2QqIHB1bHNlcyDigJQgZXZlbiB1bmRlciBsb2FkIHRoZSBtZWRpYW4KZW50cnkuUyBjYXB0
-dXJlIGlzIHdpdGhpbiB+MzAwbnMgYW5kIDk1JSBhcmUgd2l0aGluIDEuNcK1cy4KClVsdGltYXRl
-bHksIHRoZSBjb21tb24gbW9kZSBvZmZzZXQgaXMgdW5tZWFzdXJhYmxlIGFuZCBpbmNsdWRlcyB0
-aGluZ3MKbGlrZSB0aGUgYW50ZW5uYSBsZW5ndGguCgpUaGUgKmppdHRlciogaGFzIGEgaGFyZCBm
-bG9vciBmb3IgdGhlIHBvbGxpbmcgbWV0aG9kLCBiYXNlZCBvbiB0aGUgdGltZQppdCB0YWtlcyB0
-byBhY3R1YWxseSByZWFkIHRoZSBHUElPIChncGlvX3JlYWQgQDYwMG5zIOKGkiDPgzI4Nm5zLCBk
-aXJlY3QKTU1JTyBANDAwbnMg4oaSIM+DMTg4bnMgYXMgc2hvd24gaW4gdGhlIHRhYmxlIGNpdGVk
-IGFib3ZlLCB3aGljaCBpcwpzbGlnaHRseSBkaWZmZXJlbnQgYmVjYXVzZSBpdCdzIHBoYXNlIG9m
-ZnNldCBhZ2FpbnN0IHdoYXQgaGFyZHBwcyB3YXMKdHJhY2tpbmcpLgoKVGhlcmUncyBubyBzdWNo
-IG9idmlvdXMgaGFyZCBmbG9vciBmb3IgdGhlIGVudHJ5LlMgY2FwdHVyZSwgYnV0IGl0IGRvZXMK
-cmVxdWlyZSBmaWx0ZXJpbmcgdG8gdGhyb3cgYXdheSB0aGUgb3V0bGllcnMuwqAKCkludGVsbGln
-ZW50bHkgYW5kIGluICpyZXRyb3NwZWN0KiBidWlsZGluZyBhIGJlc3QgZml0IGxpbmUgZm9yIHRv
-ZGF5J3MKZGF0YSAobm8gaGFyZHBwcyBoZXJlOyBqdXN0IGNvdW50ZXIgY2FwdHVyZXMpLCB3ZSBn
-ZXQgz4MgMTUwLTE4MG5zIGZvcgpwb2xsaW5nLCBhbmQgNTAtMjgwbnMgZm9yIGVudHJ5LlMgY2Fw
-dHVyZSwgdGhlIGxhdHRlciBjb3JyZWxhdGVkIHdpdGgKbG9hZC4KClBvbGxpbmcgdW5kZXIgbG9h
-ZCBiYXNpY2FsbHkgZG9lcyBpdHMgKm93biogZmlsdGVyaW5nLCBiZWNhdXNlIGlmIGl0Cm1pc3Nl
-cyBhIHB1bHNlIHdoZW4gaXRzIGhydGltZXIgZG9lc24ndCBnZXQgdG8gcnVuLCB0aGF0IGRhdHVt
-IGp1c3QKZG9lc24ndCBleGlzdCBpbiB0aGUgZmlyc3QgcGxhY2UuIFNvIGl0cyBqaXR0ZXIgKmlz
-KiBpdHMgaGFyZCBmbG9vci4KKE1vZHVsbyB0aGUgYnVzIHRha2luZyBhIGJpdCBsb25nZXIgdG8g
-ZG8gdGhlIEdQSU8gcmVhZCwgcGVyaGFwcykuCgpXaGlsZSBpbnRlcnJ1cHQgY2FwdHVyZSDigJQg
-aG93ZXZlciBlYXJseSB5b3UgZG8gaXQg4oCUIGlzIHdvcnNlIGVpdGhlciB3YXkKd2hlbiB0aGUg
-bG9hZCBpcyBoaWdoLiAoTXkgZnJpZW5kIG1hZGUgbWUgYWRkICJ3aGVuIHRoZSBsb2FkIGlzIGhp
-Z2giCmluIHJldmlld2luZyBmb3Igc3RhdGlzdGljYWwgYWNjdXJhY3kgYW5kIGRlZmVuc2liaWxp
-dHkgYWdhaW5zdCB0aGUKcmVzdWx0cywgYnV0IGl0J3MgdGF1dG9sb2dpY2FsIOKAlCB0aGUgdmFy
-aWFiaWxpdHkgaXMgaGlnaCwgd2hlbiB5b3UKZG9uJ3QgZXhjbHVkZSB0aGUgb3V0bGllcnMuKQoK
-SWYgd2UgbmVlZCB0byBjb3BlIHdpdGggbG9hZCAoYW5kIEkgdGhpbmsgd2UgZG8pLCB0aGUgaW50
-ZXJydXB0IGNhcHR1cmUKZGlkbid0IHN1cnZpdmUgdGhlIHRlc3QuIFdoaWNoIGlzIGp1c3QgYXMg
-d2VsbCByZWFsbHksIGJlY2F1c2Ugbm9ib2R5CmFjdHVhbGx5IHdhbnRlZCB0byBpbXBsZW1lbnQg
-aXQgdGhhdCB3YXkuIEJ1dCBJIHRoaW5rIGl0IHdhcyB3b3J0aApmaW5kaW5nIG91dCwgd2hpbGUg
-SSBoYWQgdGhlIHRlc3QgcmVnIHNldCB1cCB0byBkbyBzby4KClN0aWxsIGxvb2tpbmcgZm9yd2Fy
-ZCB0byBoYXJkd2FyZSB3aGljaCBjYXB0dXJlcyB0aGUgY291bnRlciBmb3IgaXRzZWxmCndoZW4g
-dGhlIGVkZ2Ugb2NjdXJzLgo=
+It would be great if this could make it into v7.4, as other A733 drivers
+can then be developed on top of the clock/reset support provided by this
+series.
 
+On Wed Sep 30, 2026 at 1:26 AM CST, Junhui Liu wrote:
+> Add support for the main CCU and the PRCM module (R-CCU) found in the
+> Allwinner A733 SoC. The clock architecture is derived from the previous
+> A523 design, with the MCU_CCU removed and the clock tree extended for
+> the additional functional blocks found on the A733.
+>
+> The A733 introduces a "pll-ref" clock that normalizes the physical
+> oscillator frequency, which can be 19.2MHz, 24MHz, or 26MHz, into a
+> consistent 24MHz reference for the PLL clock tree.
+>
+> The peripheral, video, and DE PLLs provide multiple independently gated
+> outputs with programmable dividers. Model these outputs as separate
+> divider-and-gate child clocks. Also follow the documented hierarchy for
+> the derived peripheral PLL outputs. The explicitly named PLL_AUDIO1 /2
+> and /5 outputs are modeled as fixed-factor clocks, with their divider
+> fields initialized accordingly.
+>
+> Also extend the sunxi-ng SDM (Sigma-Delta Modulation) support for the
+> dual-pattern register layout used by the A733 PLLs. PLL_AUDIO0 uses the
+> dual-pattern SDM support to synthesize its fractional output.
+> PLL_AUDIO1 does not expose fractional rates, but its SDM controls are
+> modeled so that stale settings left by firmware can be disabled when an
+> integer rate is programmed.
+>
+> The actual parents of a small number of bus gates are not documented in
+> the user manual. Follow the vendor BSP and keep these gates parented to
+> "hosc" until more complete hardware information is available.
+>
+> This series depends on the A523 single-divider clock fixes [1], which
+> add feature support to the M-only clock macro used by the MBUS and DRAM0
+> clocks. The prerequisite series has been applied to the
+> sunxi/clk-for-7.4 branch.
+>
+> Link: https://patch.msgid.link/20260906-sunxi-clk-no-p-v1-0-cbde21c9fe69@=
+pigmoral.tech [1]
+> Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
+> ---
+> Changes in v5:
+> - Add the CLK_GIC binding ID, inserted after CLK_TRACE
+> - Add the GIC clock and mark it critical
+> - Fix the continuation line alignment of the trace clock
+> - Mark ahb-cpus critical
+> - Link to v4: https://patch.msgid.link/20260921-a733-clk-v4-0-9c184ebe9ac=
+1@pigmoral.tech
+>
+> Changes in v4:
+> - Model the MBUS and DRAM0 clocks as M-only clocks
+> - Base the series on the A523 single-divider clock fixes
+> - Link to v3: https://patch.msgid.link/20260905-a733-clk-v3-0-50f238f39c7=
+8@pigmoral.tech
+>
+> Changes in v3:
+> - Patch 1: Rename the clock/reset binding headers with the allwinner vend=
+or
+>   prefix, use BSD-2-Clause for their dual license, and reorder the bindin=
+g
+>   properties according to the preferred schema layout
+> - Patches 1 and 4: Drop the undocumented 12X suffix from the video and DE
+>   PLL core clock names and binding IDs
+> - Patch 2: Require all PAT1 enable bits to be set when checking whether S=
+DM
+>   is enabled
+> - Patch 4: Model the independently gated peripheral, video, and DE PLL
+>   outputs as programmable-divider child clocks
+> - Patch 4: Follow the documented hierarchy for the derived peripheral PLL
+>   outputs
+> - Patch 4: Model the explicitly named PLL_AUDIO1 /2 and /5 outputs as
+>   fixed-factor clocks and initialize their divider fields accordingly
+> - Patch 4: Model the PLL_AUDIO1 SDM controls so stale firmware settings a=
+re
+>   disabled when an integer rate is programmed
+> - Patch 4: Add the missing module device table and remove an unused inclu=
+de
+> - Patch 6: Replace the MP helpers used by timer clocks, which have no M
+>   divider, with the corresponding P-only helpers
+> - Patch 7: Document the unresolved parents of bus gates kept on hosc and
+>   fix the APB/AHB IOMMU1 system clock names
+> - Patches 3 and 8: Make the reset maps const
+> - Link to v2: https://patch.msgid.link/20260711-a733-clk-v2-0-974d188cbe0=
+c@pigmoral.tech
+>
+> Changes in v2:
+> - Rework the clocks property in DT bindings to source hosc directly from
+>   the oscillator to adapt to the new RTC binding
+> - Clean up the SDM dual-pattern helper macro and add the missing enable
+>   parameter for pll-audio0
+> - Number single-instance clocks with 0, e.g. GPU0, VE_ENC0/VE_DEC0,
+>   DRAM0, NAND0, GPADC0, THS0, etc
+> - Correct 8x PLL post-divider names to 12x for video and DE PLLs
+>   (pll-videoX-12x, pll-de-12x)
+> - Drop gic, cpu-peri, nsi clocks
+> - Rename clocks: OWA -> SPDIF, USB_REF -> USB01_REF, HDMI_ESM -> HDCP_ESM=
+,
+>   PWMCTRL -> PWM
+> - Mark bus-dram0, ahb-store and mbus-store critical to avoid DMA, MMC and
+>   SPI NOR failures when unused clocks are disabled
+> - Switch PRCM timer clocks to P-only helpers
+> - Fix bus gate bit positions for UARTs and correct the sysdap register
+>   address
+> - Interleave bus clocks into function clocks
+> - Link to v1: https://lore.kernel.org/r/20260310-a733-clk-v1-0-36b4e9b244=
+57@pigmoral.tech
+>
+> ---
+> Junhui Liu (8):
+>       dt-bindings: clk: sun60i-a733-ccu: Add Allwinner A733 support
+>       clk: sunxi-ng: sdm: Add dual patterns support
+>       clk: sunxi-ng: a733: Add PRCM CCU
+>       clk: sunxi-ng: a733: Add PLL clocks support
+>       clk: sunxi-ng: a733: Add bus clocks support
+>       clk: sunxi-ng: a733: Add mod clocks support
+>       clk: sunxi-ng: a733: Add bus clock gates
+>       clk: sunxi-ng: a733: Add reset lines
+>
+>  .../bindings/clock/allwinner,sun60i-a733-ccu.yaml  |  107 +
+>  drivers/clk/sunxi-ng/Kconfig                       |   10 +
+>  drivers/clk/sunxi-ng/Makefile                      |    4 +
+>  drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c           |  273 +++
+>  drivers/clk/sunxi-ng/ccu-sun60i-a733.c             | 2406 ++++++++++++++=
+++++++
+>  drivers/clk/sunxi-ng/ccu_sdm.c                     |   52 +-
+>  drivers/clk/sunxi-ng/ccu_sdm.h                     |   29 +-
+>  .../dt-bindings/clock/allwinner,sun60i-a733-ccu.h  |  291 +++
+>  .../clock/allwinner,sun60i-a733-r-ccu.h            |   39 +
+>  .../dt-bindings/reset/allwinner,sun60i-a733-ccu.h  |  129 ++
+>  .../reset/allwinner,sun60i-a733-r-ccu.h            |   23 +
+>  11 files changed, 3337 insertions(+), 26 deletions(-)
+> ---
+> base-commit: e5e04726cdd043e309677071ab1b65a4b18f422b
+> change-id: 20260202-a733-clk-0d4fc00a9f9c
+> prerequisite-message-id: <20260906-sunxi-clk-no-p-v1-0-cbde21c9fe69@pigmo=
+ral.tech>
+> prerequisite-patch-id: 0df2ae41836b86fd868dfa01ddfde57f888f761a
+> prerequisite-patch-id: 88f3a431e7c551a9fa732f062188f10fdd362eeb
+> prerequisite-patch-id: 3e88bc873c909059d1199f82cda4013765e7a5e5
+> prerequisite-patch-id: 0dbc27cd7417352319a0705a051dff35085e8922
+>
+> Best regards,
+> -- =20
+> Junhui Liu <junhui.liu@pigmoral.tech>
 
---=-2tl1Erg1oN+ikStjYtNr
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+--=20
+Best regards,
+Junhui Liu
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-UzfYPGYIt6uqU7xqIs42rmQAAAAAAAA=
-
-
---=-2tl1Erg1oN+ikStjYtNr--
