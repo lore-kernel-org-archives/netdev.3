@@ -1,302 +1,234 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B991F344D91;
-	Sat,  3 Oct 2026 21:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BC1393DF5
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 22:05:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791064166; cv=none; b=NXnExRXtqjBTFZlIgt9JX+0pKXrmB4Lm5g9180pdynDtsHtZnBP5GLbqBLIT07gO1KpOW3X+5jGejJwZQ94kfTYgjjCb0xAEC4fWkEJRwJin5l+wu9BTLPC5Oj0ws8L8D8unptTeLOH9BDtDEI2sNTlWMflHl0uxa7+Jy4lH8D4=
+	t=1791065123; cv=none; b=XLyvPjBUO7GFQqzoVv3Vne/wKRFm03xHCvtYdb9FCOB4Vp+357mxUMwang27C79xrKamDgQkAnQXaJlwXqge7mW1stWCFAbadkccu/bMg2xzIDrUG9QaUaQVbLz/MZFPc/z3fKs55sU11v6FuUDX/zm4FJ/Y+2KG4NOZJ5Z1Ib4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791064166; c=relaxed/simple;
-	bh=BKH8PX+y0pOC8w745CjUjPgBs1Jy2AaZfFoYvJ5kAEU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=toz8nsFjU3xZCMX2PCaxffQ41njAbck6fvJ2HijwFcXfyoZoMLAXGO3yRpSoHfvtVBQl2ESWkat3DP/D+EkfyYWgBv5oRoTyXSHnsmenIbTvehYEEOYP/7JiiOvmwz0icMbpKujDtZ4M28IKy6wVjQFV3Z9tsHBAZJe/Zrl8cC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVvsC/Pz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791065123; c=relaxed/simple;
+	bh=aK9NyPg9WdNRBs1yFtqMqYI8TpHY/tAU99q93VGtmRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Sa3D9oCnH1C4cLawmED+BD1Ar/tvps+rINgsI6Pso81qDvGaJyl7Gu2UPLgAsJKe8fsnDdu1OpZvA8c2B6sLjZwelMqf5bmPBDUeDih9MELv5VUchACASOxUEHKkI/FsdoF1WQutitVPP1SygG7/TkxsqF15+de8iaYhu9Vy27w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eua8PkH0; arc=none smtp.client-ip=74.125.229.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVvsC/Pz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC0D1F0089C;
-	Sat,  3 Oct 2026 21:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791064164;
-	bh=RDy2m2oxu3R65RPvJv/J5OvLzymzXKgX6whOWb+nG6g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LVvsC/PzV6EsPd09TdlrQ6w7qiTTDCF1TZi3UNnpg8lYiK45UOiOA4HmMQEZOMuXU
-	 /WNG7q5LWFs+lf53b3G2lWfQH5vElYsih7gIFTFKUN9Nsswe1ECnln3n7d9f9uf9fb
-	 y5cNnxyJJRUlCBhetweUHGVry66B5oM/xtZmHPm8bAvV7DFOFGtxBWPn7II6f3elcF
-	 Z8JIcYpyP2SsuW5NExSz/BMxkxveVsqBtAMmqsUSSyyraklfJg0A9TtI7JmzMbRM8V
-	 pQI6tveLjatcMkTgURXem176Dq9OufEr7jZOBY9Dyx/J/XmszINt6fEob3rfZFxt2x
-	 lTBODqgy599Vg==
-Subject: Re: [PATCH net-next v2 2/2] selftests: net: add an amt test for
- UDP_SEGMENT through the relay
-From: netdev-bot+sashiko@kernel.org
-To: omar@blockcast.net
-Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
- horms@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 03 Oct 2026 21:49:23 +0000
-Message-ID: <179106416321.434549.5874142465613964174@kernel.org>
-In-Reply-To: <20261002212458.34247-3-omar@blockcast.net>
-References: <20261002212458.34247-3-omar@blockcast.net>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eua8PkH0"
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5ba42939bfeso408858e87.0
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 15:05:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791065120; x=1791669920; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=RW/+ZSSWPHJHETVoaq9Xi2UM3j7Ki+goAW41qNebiQM=;
+        b=eua8PkH0PSaBcR2uWWzhMOmi0+YfcrsX+jLYwvJTxnrhEpGtnc+EQiPJzQi1NsbpPf
+         +r/T59mb9WX7YJMca0IfhTm8SDZC9rchogsP+y9xYQkjQtmRz/kcPvKJAL06PKZkcmXF
+         YOewiq9ZcR7BgekDXhr3szkmyTT9T+w94BHWTCN6XZsGDNiLO49jZBwmx5HI2pVeYglc
+         tFuxIzO7Yz9td+GiiRsh14RTg4Wh65b56isx+r1qbKTTWAUoLEuNMBsRQq7/C4uOeCx8
+         q637NgtaPEX4OtIYXfb+ir6OKS55VUiD9hrA6ZAbrGmcH7FYlw8RAHa+Bt6K+PxmDLFv
+         yVKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791065120; x=1791669920;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=RW/+ZSSWPHJHETVoaq9Xi2UM3j7Ki+goAW41qNebiQM=;
+        b=fORBnUgFbgzZZyAuGuw2/2wMrkeotYkGRPCW3tjHgsPFBpT6ddLJfq+7RmmC2n9fMq
+         TxyVW7lL38Z81Q+VzptdIcfa1EzK/yEHisiB+XBR08lVJoRrtdMAEWGpgUnuata0ZFyg
+         HUpQrfH0PJn7uQrUNlT/l1gfdMgELoK5UAaT5si/Ds0myl9p2AT3LSogqM2VJ5gd6nJj
+         aAnui8gNfp8LAIm/tV0d9TriW4n0kwAqLbc7wyPCjEkRMMBeAMnnblRtPOLuULVaDmR7
+         XNBuBi790uPRUJg/NVBbI8y5ggyKVJQkmHuM8eYbzHqr3cqia6FUx7Ac9VFYRrOXaysn
+         sATA==
+X-Forwarded-Encrypted: i=1; AKwUvBwLJjMrUDfWhCgYE6oOgwbgrmwGD25lWSUeqgtKeenLFklBJXXtTEIGzUhnYY0EMGOeM9z6mv4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIqttJjJyvgqdm2hlCOIri3AKp9s3R4J/TTwicSRsRwPlf4YXCr
+	67YFCooldiXlsb+xXjfGtQyf8LIzLg2wfn8m+2ILp6+dQwJTg+rODWsi
+X-Gm-Gg: AYBFou2Q9wHUfvC6O/IUBJb1MXNA2iPtjwx/H++UUafiVKMHfvpowrCjF32bhoS1R8e
+	AE5zpSIAKfejatUNpPnA5CX8kgLhn8znuQICwb7btd/Nm1ZJ8juukbJtnqbFtRgy1uogTt0CXwI
+	WVmTEJ0/8ykimEkRj+FWbazhIXXuE/Wggya4gCcAZFIfjWEyQAeX+sLrZkpMUx/RmygUMO0muNf
+	D3VrrIyvDvsvwHbhvwa0yRZ/sHXL0eyA7raS01M3IR5R8A01LCTyxZLLdpt+4PaMAO4Ul3+PvuZ
+	Dkus0JV19YZriGOH2pyyJ5N3jSD0B/MoW5UoVOV1gJ/SMLDWollofKw85SoMRnO/5hDL19Pmj3x
+	xd86pHKIkzyMQJXW5OTASByd6CsyLJakLu+gA+wklPSrBRlPkTuw0ae2LEcU9UdgxHgCGFJIouj
+	uUqeKazILfOgyXL9AN9QFH4gy4thm8JsbbiC5t3XXmXLgNzCpQCac84kqtJPnJywSk0ZwN+TKPs
+	TKNCMsVNBKqQsBHOd/T/Ocdo4jGqJ/obYD0NEhLkyIcKRn4DCWo
+X-Received: by 2002:a05:6512:33d4:b0:5b8:e925:cc15 with SMTP id 2adb3069b0e04-5bb9bc36a22mr2422512e87.62.1791065119842;
+        Sat, 03 Oct 2026 15:05:19 -0700 (PDT)
+Received: from dau-home-pc.. ([212.35.161.1])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bb7c7986a3sm1861464e87.45.2026.10.03.15.05.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 15:05:18 -0700 (PDT)
+From: Anton Danilov <littlesmilingcloud@gmail.com>
+To: Florian Westphal <fw@strlen.de>
+Cc: Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Mazin Al Haddad <mazin@getstate.dev>
+Subject: Re: [PATCH net v3] ip6_gre: use skb_vlan_inet_prepare() instead of pskb_inet_may_pull()
+Date: Sun,  4 Oct 2026 01:05:10 +0300
+Message-ID: <20261003220513.107668-1-littlesmilingcloud@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <aW7FvS8wE2zNDDZ2@strlen.de>
+References: <20260119112512.28196-1-fw@strlen.de> <20260119090629.20d202e8@kernel.org> <CANn89iJOz_PQ_N4e=FS+toEDfLw-Ei9SwV6LU9Jmsvhtyxb7SQ@mail.gmail.com> <aW7FvS8wE2zNDDZ2@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On Tue, Jan 20, 2026 at 01:01:01AM +0100, Florian Westphal wrote:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 4
+> It has to be either true or false depending on test case 8-/
+>
+> gre_gso.sh needs this to be set to true, skbs don't have a mac
+> header: with "false": skb nhoff gets munged from 0 to 14.
+>
+> But in mirror_gre.sh test case, skbs do have a mac header:
+> "true" munges nh offset from 14 to 0 and test fails.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Sorry for reviving an old thread: the syzbot report is still open and
+net still has pskb_inet_may_pull() in both functions.
 
-- [Medium] If a capture fails, its checks pass anyway.
-- [Low] The commit message says the test checks that "the relay's egress
-  device and the gateway report no drops or checksum errors".
-- [Low] wait_tunnel() (amt_gso.sh:126-142) counts the tunnel as up only
-  when a relayed, non-GSO probe reaches the listener.
-- [Low] The READY handshakes are not enforced.
-- [Low] do_send() computes `total = c->cnt * c->seg + c->tail`
-  (amt_gso.c:138) in unsigned int and only checks `total > MAX_DGRAM`…
+The two tests use different devices behind the same
+ip6gre_tunnel_xmit(): ip6gre (no MAC header) in gre_gso.sh and
+ip6gretap (ARPHRD_ETHER) in mirror_gre.sh. So the argument can
+follow the device type, as vxlan does with no_eth_encap:
 
---
+	skb_vlan_inet_prepare(skb, dev->type != ARPHRD_ETHER)
 
-selftests: net: add an amt test for UDP_SEGMENT through the relay
+ip6erspan is always ARPHRD_ETHER, so false there, as Eric had it.
 
-This adds amt_gso.sh and its C helper amt_gso. The test sends a
-UDP_SEGMENT burst from the relay namespace through an amt relay and
-gateway to a listener, with tx offload on the amtr device off and on.
+Tested on net (6e0022b5ae3d), changing only ip6_gre.c:
 
-It checks delivery on the listener and uses AF_PACKET captures to check
-frame sizes, both those handed to amt_dev_xmit() and those put on the
-wire. CONFIG_PACKET is added to the net selftests config.
+  ip6gre, ip6erspan     gre_gso.sh          mirror_gre.sh
+  --------------------------------------------------------------
+  unpatched             pass                pass
+  false, false (v2)     2 GSO tests fail    pass
+  true,  true (v3)      pass                2 ip6gretap tests fail
+  true,  false          pass                2 ip6gretap tests fail
+  diff below            pass                pass
 
-> diff --git a/tools/testing/selftests/net/amt_gso.c b/tools/testing/selftests/net/amt_gso.c
-> new file mode 100644
-> index 0000000000000..eebf3ecb94979
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/amt_gso.c
-> @@ -0,0 +1,457 @@
+The selftests only check that normal traffic still goes. They don't
+send short tagged frames, so they do not hit this bug. The bug needs
+such a frame: a 20 byte tagged frame on ip6gretap and a 10 byte frame
+on ip6erspan are sent out on net, and dropped with the diff. An untagged
+frame that is too short for its IP header is already dropped by 
+pskb_inet_may_pull(); the diff only applies the same rule to tagged
+frames.
 
-[ ... ]
+The diff also fixes two problems I found while testing:
 
-> +static int do_send(const struct cfg *c)
-> +{
-> +	static uint8_t buf[MAX_DGRAM];
-> +	struct sockaddr_storage dst, src;
-> +	socklen_t dlen, slen;
-> +	unsigned int total, ifindex, i;
-> +	int fd, ttl = 8, zero = 0;
-> +
-> +	total = c->cnt * c->seg + c->tail;
-> +	if (total > MAX_DGRAM ||
-> +	    (c->tail && c->tail < sizeof(struct chunk_hdr)) ||
-> +	    c->seg < sizeof(struct chunk_hdr))
-> +		error(2, 0, "bad sizes");
+1. On transmit, skb->mac_len is still that of the receiving device,
+   and the VLAN walk starts from it. A packet that came in on an NBMA
+   ipgre device (mac_len 24) and is routed to a VLAN on ip6gretap has
+   its walk start inside the inner IPv4 header. On net the tag is
+   then missed and nothing is inherited; with skb_vlan_inet_prepare()
+   alone, a crafted packet also gets its traffic class from the wrong
+   byte. The diff clears skb->mac_len for Ethernet devices.
 
-[Severity: Low]
-Can this multiplication wrap before the total > MAX_DGRAM check runs?
-cnt, seg, tail and num all come from atoi() with no range checks. For
-example, -s 65536 -c 65536 gives a total equal to tail, and -s 1200
--c 3579140 gives 704.
+2. ip6gre without a remote has header_ops, so skb->data points at the
+   pseudo header from ip6gre_header(). With true, the network header
+   lands on it, and an ICMPv6 error then quotes its unwritten bytes
+   (KMSAN in icmpv6_push_pending_frames()). The diff keeps
+   pskb_inet_may_pull() there, as in net.
 
-fill_dgram() ignores total and writes cnt chunks of seg bytes into the
-static buffer:
+With the diff, gre_gso, l2_tos_ttl_inherit and
+mirror_gre{,_vlan,_bridge_1q,_changes} pass. KMSAN, run with my
+other GRE fixes on top, shows nothing on these paths.
 
-	for (i = 0; i < n; i++) {
-		unsigned int len = chunk_len(c, i);
-		...
-		buf += len;
-	}
+About Fixes: v3 blames d8a6213d70ac ("geneve: fix header validation
+in geneve[6]_xmit_skb"). That commit only added
+skb_vlan_inet_prepare(); the bug in ip6_gre is older.
 
-Would that overflow buf[MAX_DGRAM] in do_send()? Also, chunk_hdr.len is
-a uint16_t, so any seg above 65535 is silently truncated.
+The length check, pskb_inet_may_pull(), looks at skb->protocol. For
+a tagged frame that is ETH_P_8021Q, so the inner IP header is not
+checked at all. This used to be fine: the code after the check also
+used skb->protocol, so tagged frames went to ip6gre_xmit_other(),
+which does not read the inner header.
 
-do_recv() has the same pattern:
+Two later commits made the code look through the tags, but did not
+change the check:
 
-	unsigned int per = chunks_per_dgram(c), expected = c->num * per;
-	...
-	seen = calloc(expected ? expected : 1, 1);
-	...
-	if (seen[h.seq * per + h.idx]++) {
+ - 3f8a8447fd0b ("ip6_gre: use actual protocol to select xmit") made
+   ip6gre_tunnel_xmit() switch on skb_protocol(skb, true). Tagged
+   IPv4 and IPv6 frames now go to ip6gre_xmit_ipv4() and
+   ip6gre_xmit_ipv6(), which read the inner header.
 
-If c->num * per wraps, can seen[] end up too small? The index is only
-bounded by h.seq < c->num and h.idx < per, not by the allocation size.
+ - b09ab9c92e50 ("ip6_tunnel: allow to inherit from VLAN encapsulated
+   IP") did the same in ip6_tnl_xmit(), which reads the inner header
+   to inherit the hop limit. ip6erspan goes through this path too.
 
-amt_gso.sh only passes small fixed values, so this only applies when the
-helper is run by hand with large arguments.
+Since then a short tagged frame passes the check, and its inner
+header is read from bytes that were never pulled into the linear
+data. That is the uninit-value syzbot reports.
 
-[ ... ]
+skb_vlan_inet_prepare() walks the tags the same way as
+skb_protocol(skb, true), pulls the inner IP header and points the
+network header at it. So the check now covers what the code reads
+later. That is why I would point Fixes at the two commits above:
 
-> diff --git a/tools/testing/selftests/net/amt_gso.sh b/tools/testing/selftests/net/amt_gso.sh
-> new file mode 100755
-> index 0000000000000..3c37cb59d9b02
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/amt_gso.sh
-> @@ -0,0 +1,269 @@
+Fixes: 3f8a8447fd0b ("ip6_gre: use actual protocol to select xmit")
+Fixes: b09ab9c92e50 ("ip6_tunnel: allow to inherit from VLAN encapsulated IP")
 
-[ ... ]
+The IPv4 side has the same problems: gre_tap_xmit(), erspan_xmit()
+and ip_tunnel_rcv(). ip6_tnl_xmit() has one more: it walks the tags
+after the GRE header is pushed. I will send these fixes separately;
+the ip6_tnl_xmit() one depends on this patch.
 
-> +# Send one single-datagram probe every second until the listener sees it,
-> +# which means that discovery, request and update are done for this group.
-> +wait_tunnel()
-> +{
-> +	local fam=$1 v6="" grp=$GRP4 src=$SRC4 port=4999 i
-> +
-> +	[ "$fam" = 6 ] && { v6=-6; grp=$GRP6; src=$SRC6; port=6999; }
-> +
-> +	for i in $(seq 40); do
-> +		ip netns exec "$LISTENER" $AMT_GSO recv $v6 -p $port \
-> +			"${PROBE_OPTS[@]}" -T 1 >"$TMPD/probe.out" &
-> +		local pid=$!
-> +		busywait 5000 grep -q READY "$TMPD/probe.out"
+Eric, would you like to respin with this, or should I send it as v4?
 
-[Severity: Low]
-Can this grep match a stale READY? probe.out is never removed, either
-between iterations or between the IPv4 and IPv6 calls. The truncating
-open for the redirection happens in the background child after fork.
-
-If the parent's grep runs before the new child has truncated the file
-and bound its socket, the probe goes to nobody. recv then waits out its
-1 second idle timeout, exits 1, and the iteration is wasted.
-
-The busywait return value is also ignored here and in run_burst():
-
-	for f in recv amtr gw; do
-		busywait 5000 grep -q READY "$TMPD/$f.out"
-	done
-
-If one of the helpers is not ready within 5 seconds, the burst is sent
-anyway. Could that cause a spurious listener failure? Could a sniffer
-also get SIGTERM before its handler is installed and exit without a
-report?
-
-> +		ip netns exec "$RELAY" $AMT_GSO send $v6 -I amtr -g $grp \
-> +			-b $src -p $port "${PROBE_OPTS[@]}"
-> +		wait $pid && return 0
-> +	done
-> +	return 1
-> +}
-
-[ ... ]
-
-> +	wait $pid_r
-> +	RECV_RC=$?
-> +	# The receiver is done, so every frame the captures will see is already
-> +	# queued on their sockets. Ask them to drain it and report.
-> +	kill -TERM $pid_a $pid_g
-> +	wait $pid_a $pid_g
-
-[Severity: Medium]
-What happens here if one of the sniffers has already died? The exit
-status is discarded. With two PIDs, wait only returns the status of the
-last one anyway.
-
-do_sniff() exits through error(2, ...) when recvfrom() fails or poll()
-fails with something other than EINTR. It also dies with no output if
-SIGTERM arrives before this line runs:
-
-	signal(SIGTERM, sniff_sig);
-
-In that case field() turns the missing key into 0:
-
-	echo "${val:-0}"
-
-so big and lost both read as 0 for the amtr capture.
-
-In the control and plain datagram cases, would check_err $((big != 0))
-and the lost check then pass with no capture behind them? In the tx-on
-UDP_SEGMENT cases, the result becomes a skip ("no GSO skb reached
-amt_dev_xmit()") rather than an error.
-
-A failed gw capture is still caught indirectly by gwn != EXPECT. A
-failed amtr capture does not seem to be caught at all.
-
-> +
-> +	DROPS=$(($(dev_stat "$RELAY" relay_gw tx_dropped) - DROP0))
-> +	TXP=$(($(dev_stat "$RELAY" relay_gw tx_packets) - TXP0))
-> +	CSUMERR=$(($(csum_errors) - CSUM0))
-> +	GRX=$(($(dev_stat "$GATEWAY" amtg rx_packets) - GRX0))
-> +	LRX=$(($(dev_stat "$LISTENER" l_gw rx_packets) - LRX0))
-> +	GRXD=$(($(dev_stat "$GATEWAY" amtg rx_dropped) - GRXD0))
-> +	EXPECT=$((NUM * (cnt + (tail ? 1 : 0))))
-> +}
-
-[ ... ]
-
-> +	stats="relay_gw tx +$TXP drop +$DROPS; gw csum_err +$CSUMERR"
-> +	stats="$stats; amtg rx +$GRX drop +$GRXD; listener rx +$LRX"
-> +	log_info "$name: $stats"
-> +
-> +	check_err $(($(field "$TMPD/amtr.out" lost) + \
-> +		     $(field "$TMPD/gw.out" lost) != 0)) \
-> +		"a packet capture lost frames, the verdict is unreliable"
-> +	check_err $RECV_RC "listener did not get every datagram intact"
-> +	check_err $((DROPS != 0)) "relay_gw dropped $DROPS packets"
-> +	check_err $((CSUMERR != 0)) "gateway counted $CSUMERR csum errors"
-
-[Severity: Low]
-The commit message says the test checks:
-
-  "that the relay's egress device and the gateway report no drops or
-  checksum errors."
-
-GRXD is sampled in run_burst() but only printed in the log_info line
-above. No check_err uses it, so a nonzero rx_dropped on amtg never
-fails a case.
-
-Some of those drops have nothing to do with the tested data. For
-example, amt_membership_query_handler() in drivers/net/amt.c does this
-on a failed query delivery:
-
-	amt->dev->stats.rx_dropped++;
-
-so a case can pass with GRXD > 0. TXP, GRX and LRX are also computed
-but only logged.
-
-Should GRXD be passed to check_err, or should the commit message be
-reworded to match what is actually checked?
-
-The commit message also only describes the UDP_SEGMENT cases with tx
-offload off and on. It does not mention the two "plain datagrams, amt
-tx offload on" cases.
-
-[ ... ]
-
-> +setup_topology
-> +
-> +wait_tunnel 4 || skip_all "IPv4 AMT tunnel did not come up"
-> +wait_tunnel 6 || skip_all "IPv6 AMT tunnel did not come up"
-
-[Severity: Low]
-wait_tunnel() only succeeds when a relayed probe reaches the listener.
-That probe goes through amt_send_multicast_data(). The preceding commit
-"amt: mark relay data as a UDP tunnel packet before sending it" makes
-that function run this on every relayed packet:
-
-	if (udp_tunnel_handle_offloads(skb, true)) {
-		kfree_skb(skb);
-		return;
-	}
-
-If relay data forwarding breaks completely, every probe is lost and
-the whole test exits with KSFT_SKIP. Should that be reported as a
-failure instead, given that this is the data path the test is meant to
-cover?
-
-The existing amt.sh would still report FAIL for its IPv4/IPv6 multicast
-forwarding cases, so the gap is limited to this test's own verdict.
-
-[ ... ]
+diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+index e61cb10b50dc..f48141820fb5 100644
+--- a/net/ipv6/ip6_gre.c
++++ b/net/ipv6/ip6_gre.c
+@@ -883,8 +883,22 @@ static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *skb,
+ 	__be16 payload_protocol;
+ 	int ret;
+ 
+-	if (!pskb_inet_may_pull(skb))
+-		goto tx_err;
++	if (dev->type != ARPHRD_ETHER && dev->header_ops) {
++		/* ip6gre_header() has pushed a pseudo header in front of
++		 * the packet, so skb->data is not where the packet starts.
++		 */
++		if (!pskb_inet_may_pull(skb))
++			goto tx_err;
++	} else {
++		/* The VLAN tag walks below start at skb->mac_len - VLAN_HLEN,
++		 * or at ETH_HLEN if it is 0, and a forwarded skb still has
++		 * the mac_len of the device it was received on.
++		 */
++		if (dev->type == ARPHRD_ETHER)
++			skb->mac_len = 0;
++		if (skb_vlan_inet_prepare(skb, dev->type != ARPHRD_ETHER))
++			goto tx_err;
++	}
+ 
+ 	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
+ 		goto tx_err;
+@@ -934,7 +948,12 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+ 	__u32 mtu;
+ 	int nhoff;
+ 
+-	if (!pskb_inet_may_pull(skb))
++	/* The VLAN tag walks below start at skb->mac_len - VLAN_HLEN, or at
++	 * ETH_HLEN if it is 0, and a forwarded skb still has the mac_len of
++	 * the device it was received on.
++	 */
++	skb->mac_len = 0;
++	if (skb_vlan_inet_prepare(skb, false))
+ 		goto tx_err;
+ 
+ 	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002212458.34247-1-omar%40blockcast.net
+Anton Danilov
+
