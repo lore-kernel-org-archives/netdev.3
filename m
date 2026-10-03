@@ -1,120 +1,62 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [31.44.14.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176E93B5837
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 18:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AB638F949;
+	Sat,  3 Oct 2026 18:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=31.44.14.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791052782; cv=none; b=iGwCPANQ1I72qyTbp+nEhxAtSZy32nLXCOGA3KabzHX0RYl8tpWkBwbB1JIm5Il+WstYAvAW57x+xpsoPNsvCFMyt+5jHq+62r0kfrkwpzj2wuaCXJYJWOdu3/7wWtO9CXJomveNdTS967wpnlLqfzpVNO1WEXbGXCPaSX71bYk=
+	t=1791052813; cv=none; b=DhOW+hhzoDxlAw+jDSkD7bxhKpnEo045Ljb3PpojUmAOnNWptezu6rdOGo0mwbtse0Qq4oefMJu3G9iIVVlNgLLNqddp8cChAza+SexOjjAYWbGAvVu3zCUiQvLEd+TBHbvB1eA7fUmgmXZANi+LCAHWS1tyoZM9aM7IfZt94hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791052782; c=relaxed/simple;
-	bh=056kRNqLTrWVRBCgOEu8imgvJ36Z9qNZEx/TfU7hb+s=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ABE1hewDGF1McWpM9jLZ1Mxc65N+JZhhueWeItJGHTdr/yl0eDlETBO8onVKFZDK1EfPaK2U/R7l6gCiTX3m185jB/SsaK71E5b9+A2rgYERoBEAngVS/I3nUxNgtwJ+o7pTDMiw/ULIaQ6SlAPzz4t+J34kQsie3DO3yrtbS8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q6FrHKAN; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791052813; c=relaxed/simple;
+	bh=dskkS6LDPCtTx6HuEeTN3ds94w/Gub2MzDXXV9xpoLQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:MIME-Version:Date:
+	 Message-Id:Content-Type; b=utolfbQtNXb6NYhJvC4Dttt3UPrT0b5kyMcwftP0+d176vyCqLfW1YKdSGGQbYZudRgx/Zm2jup1mPqhT8UQvumsu/Y6rP/pcWOM2hDGsxt2pa8DAnauEtDY6i+VOk4Y5BaBzXtiLar8p3UYlQlchZN8uWdkhguOrQddz9umPQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=J/v5eIrF; arc=none smtp.client-ip=31.44.14.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q6FrHKAN"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-8a83d2706fdso4160047b3.0
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 11:39:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791052780; x=1791657580; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=XBMG0D3b1PTVJxlXUwjY0aIBghz+3035Rg7em3GyBks=;
-        b=Q6FrHKANCPNEevD4N8aQRTLN+opd/FYLsU7w9eO0rP3w6T3ztAIDfjV7M5KU+tU/5A
-         gm15InuLpoaq7EUhzZ3bEf/D0OmihEFCYm9ObHCebj1IEpLiQvcWYqdSLp+GuX7TUewh
-         f/IUM4aq9MIHxKOvpQOl7x+jmCWcLbg19sYr1P7XlA4x620+5toCFo3M6vU+qFGqH6C9
-         NgSPXa/naccWc02UpJ0LI/R7LIMuMW+97lfFtDLEurK53NqJUzXQjr35HnCW8DhxXg3j
-         jK3aL6xRT0jfbyrFxdTUc5I+RQWPPDeElGukZ9u0875DawYyENCWRpY4ogpHslg95LT/
-         73ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791052780; x=1791657580;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XBMG0D3b1PTVJxlXUwjY0aIBghz+3035Rg7em3GyBks=;
-        b=fIEdDNpmxAWUxF2eXTsefPHznT6D6q+5yNDoFk5+O5mgkjZF0ZwSfix/7wN+csLY83
-         X/daQA/YijLYNyitPyL90pW4uH32ikvuK+17WmJjzLfILBbe2nFkWz6QOviMUysbAv6X
-         rSj4pSj4kPZyIoy+aeVkdN9dwopWOV0Q37g8RLZyqjWkHpksAVNHRB+xkVGZPyI9hGAv
-         nVkWTV5CnG8R5fW/uTer4yJDibrmhvHsqXutiG7VCGssTCv730AWF82XyzUe31KNr6jZ
-         YNZ4Ak3y3zUi2F93SaMfXl/U7KNlA8DmOG96O30JOOPIQ5whefr4rJ+oVauxneiAiEEd
-         EHbg==
-X-Forwarded-Encrypted: i=1; AKwUvBwbrYk/iRl46Z3Xs71H/vuRZ3XMmto+kDXU7FjVuhg0xTDQLAAMfwovz/R/XIiUZgvW2K8ozLs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKmqeka7DIiDGpNLebkRZMxd5XdpvkMArIWY9drdYbwcr/Tu8/5
-	t9Tkbe4Hi64knRQ4bg2HyF31MnUy9KjdNlmLwX3Cb+3RApBl1t07P/Bz
-X-Gm-Gg: AYBFou3/Vw78sHkjmEta46+taEoM7R9dW+4WcZH5p8yynKvA0WSXQzn3rBBHAOjAYhQ
-	KbmLJONcNr6xnlcCL7Ds5eWB4QT/zY24xhEIde4l1KNea1bI3ByAGxbU8gryYCFi+j7VsmQ0Wzs
-	80GOjlRaSWF7yL5EikRbXlWYHsIkAwWTjrbJxfYBiG+RoXaTO1qxkFTV6Y6PjpEE2v/yGM0r+Ae
-	1CsFDjHvcBlTPbulBY3sYZJMrWxBcAg7T+bFdYLqlXgv7RAsbssNtko6VUEXYgNYfei4Ks/TGqb
-	rjLu8Z5ZUOiM3G+GrNEJd/HFLLHoFjtwqIMRQG96UBv+wXaYrFp+bpuK5bXBroqpicG8o6COd4O
-	PB1+wZiyTVrE7+vvSrIi6s8l5bcuC8jehXJfCpBephmbNo5BpWYRTpsXPWfijLggdgwKtmjlgOf
-	QlnFj+sP/BhLsClSG1T1wgEGHZzHgzSCjeh7CHoQAqNPx+SN+6lxM+uFVr6V07iPcgVmw2u/a1y
-	svPSYkMEHKag3M9cndXM+fOp8z13cdxbKiJfvwB3PEt1Z2GWh9WMg==
-X-Received: by 2002:a05:690c:308a:b0:873:5bb2:6c35 with SMTP id 00721157ae682-8ae94ef9db3mr10300027b3.60.1791052779968;
-        Sat, 03 Oct 2026 11:39:39 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae321fa64esm21978917b3.12.2026.10.03.11.39.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 11:39:39 -0700 (PDT)
-Date: Sat, 03 Oct 2026 14:39:38 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Anton Danilov <littlesmilingcloud@gmail.com>, 
- netdev@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S . Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.2d8f815dbad43@gmail.com>
-In-Reply-To: <20261003132340.4175269-1-littlesmilingcloud@gmail.com>
-References: <20261003132340.4175269-1-littlesmilingcloud@gmail.com>
-Subject: Re: [PATCH net-next v2] tun: use pskb_may_pull_reason() and remove
- SKB_DROP_REASON_HDR_TRUNC
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="J/v5eIrF"
+Received: from mail-nwsmtp-mxback-production-main-57.klg.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-57.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:4d0f:0:640:45ce:0])
+	by forward502d.mail.yandex.net (postfix) with ESMTPS id C3285CE5A8;
+	Sat, 03 Oct 2026 21:32:36 +0300 (MSK)
+Received: from mail.yandex.ru (2a02:6b8:c42:de41:0:640:5afa:0 [2a02:6b8:c42:de41:0:640:5afa:0])
+	by mail-nwsmtp-mxback-production-main-57.klg.yp-c.yandex.net (mxback) with HTTPS id IWrqV77AbSw0-ABx8XyaZ;
+	Sat, 03 Oct 2026 21:32:36 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1791052356; bh=QJVrIB7qkSU0nHkAG5G7mRwWRLxDg1bGwqOVq12cvos=;
+	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
+	b=J/v5eIrF7NViugMMQhMTIDg39zldRxtdqinS9p8wXp5xLxKzSJakvbeeY7RuECUi+
+	 2+wWOPxpt6oBqxYUKRS23FaEM5GrQXbJg3s41vtuoX+vpfhH1searzqyVVksDiV9mb
+	 Yq82fteD1AK4F1KER1lqqDdESEMECdHZ45/RdeVo=
+Authentication-Results: mail-nwsmtp-mxback-production-main-57.klg.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+Received: by mail-sendbernar-production-main-55.klg.yp-c.yandex.net (sendbernar) with HTTPS id c21a6e1b34ae069be1de7566bbbe38f6;
+	Sat, 03 Oct 2026 21:32:35 +0300
+From: Ilya K <me@0upti.me>
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+In-Reply-To: <c4286904-2a9a-41fd-93ce-be57964909f6@candelatech.com>
+References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com> <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df> <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21> <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com> <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4> <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8> <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136> <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd> <143991791036721@40be7595-980b-4665-ba66-1601e10a0899> <c4286904-2a9a-41fd-93ce-be57964909f6@candelatech.com>
+Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Sat, 03 Oct 2026 21:32:35 +0300
+Message-Id: <221941791052355@558b3e58-c2b1-4e14-91fe-beb5649d18f6>
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Anton Danilov wrote:
-> tun_get_user() is the only user of SKB_DROP_REASON_HDR_TRUNC. It sets
-> it when pskb_may_pull() fails to pull the Ethernet header of a frame
-> written to a TAP device.
-> 
-> pskb_may_pull_reason() reports why the pull failed: PKT_TOO_SMALL if
-> the packet is shorter than requested, NOMEM if pulling the data into
-> the linear area fails. Use it for both header pulls in tun_get_user(),
-> on TAP and on TUN devices, and remove the now unused
-> SKB_DROP_REASON_HDR_TRUNC. The pull of the IP version byte on a TUN
-> device with IFF_NO_PI was reported as NOT_SPECIFIED and now reports
-> PKT_TOO_SMALL, for example when only the virtio-net header is written.
-> 
-> After a successful pull drop_reason is SKB_NOT_DROPPED_YET. The later
-> error paths without a reason of their own, the unknown IP version on
-> TUN and the path that finds the queue detached, relied on the
-> SKB_DROP_REASON_NOT_SPECIFIED initializer. Fall back to
-> SKB_DROP_REASON_NOT_SPECIFIED at the free_skb label, as vxlan_rcv()
-> does, so that these paths, and any later one without a reason of its
-> own, keep reporting it.
-> 
-> The errors returned to user space do not change.
-> 
-> Suggested-by: Ido Schimmel <idosch@nvidia.com>
-> Link: https://lore.kernel.org/netdev/20260923145931.GA2859441@shredder/
-> Assisted-by: LLM
-> Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
+>  Our kernel should warn pretty loudly in this case, so if you are still hitting it you should see signs.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Any specific log lines to look out for? I have all the logs from this machine piped into Loki so I can check quickly.
+
+> And, if you can reproduce the deadlock with lockdep enabled, that may
+help.
+
+I'll try building a kernel with minimal patches + lockdep and crashing it some time next week probably, would do it tomorrow but have a dental appointment that will take up most of the day :(
