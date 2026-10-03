@@ -1,56 +1,56 @@
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFA14A2633
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 21:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E364A2601
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 21:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791062597; cv=none; b=Kkx70rWm6QTOTtrD6ouU6D3ARwcTdubzr6naQVzolSgFkZ/UzBTuipMoomjIFuoS2y+w+phe4yczGwO7u+/KUeEwJk8R4sx3ke2Ta5LdL0BKIyrew/qPHvecRPhrU6qf9JmdNPjblIIZKhM8kBZsAfXwNrZzczzqgxFSSyw0C7M=
+	t=1791062597; cv=none; b=Y2fyJPpoYOSpXrxGo/6dN52SHKEDzX8i6h6DkCYXNfGtH2u0OdTsSTiLLw1ID/G5tNoNtGRt9CsrKboBTTGtkLsq19kc370JHjHBzVOH5Irt7osFeiy+x8W1tgBRvuEEC6/hWvK/F3QYQpWFd85a1994vgnUYigNqLPKIs8lc+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791062597; c=relaxed/simple;
-	bh=3FnAcNdQeBpwauuPUEv8Hb+n/TAjxKWq99qHjkzEXiE=;
+	bh=7u9qTwVAWXI5MAFgewGcoaTlYcgOYP37j0/7wZFdjLA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fSRSw8LxylloW+xU8iWsV0QKxudSiocq18C8Ukm44yhdLYoPiu0cpsTLFqBqGjij5stMH98xySnWPThVh+6EODN04glkCGVQZwKjXKFWSHpSue7CFQTHly8ctaOLnJkoGp3woZ7TJ1UYfXtxi/hdshrU8OA/4H+21Ym2XnPhdHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oyvG9vMg; arc=none smtp.client-ip=209.85.218.72
+	 To:Cc:Content-Type; b=agFawA2po2G8Re6SniuxO5sAO/D9UQFXN380I2b6PlnHrZ8KydHgWzwcBRnmA4ftmaBHXfqx3BNa2Gk5I9t6w/VPK7fBwO+q5PCBa8MzZ+4EN8sYRFLHh+g7g9bdZ+5htVKtAaDytlao48y0YZ+fADPOtkfcfrrJjS3YORBbxes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p1KJj9Kh; arc=none smtp.client-ip=209.85.218.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--lrizzo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oyvG9vMg"
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c29c391bd2fso68306666b.2
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 14:23:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p1KJj9Kh"
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c2e2a9fa1fcso90926766b.0
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 14:23:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791062591; x=1791667391; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791062588; x=1791667388; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ekKJz+HTYRvtVEqBBOEAxTGImVFcYe3lcvJJhW15OKU=;
-        b=oyvG9vMgIw0/OIeAcEiK85a09ZcXIq9rr9EXUvObbXdv1dJIQ+Rds7GKV/LONULmYW
-         1KsqwpMR0qU8R0xj+SIlkjjmQcYH6W2sbeVYqhb6wtTjpgkZ4CBiPAyTG6YoBL2uOCVJ
-         XvRsDj4e0gLnHs6tVtx9AU0eMxho4gc7aFhdT9FLCdLT06IfTPTXrwTF8DfcWCYIYypw
-         0G31F/uU46Qli14iAxjZ5RpJPMAnQLrdm0g5PCqztb6Mkaxxs7N8vC9qQnW9qLk6aXzf
-         GXjgxYF3C7NyPOJOrOsyLzsTuaNICWKmQwLXyHir/DPAVgU7rnfpgyKaiRpZ2krK5GY3
-         fOPw==
+        bh=ruiMF87Q7JhX4xV02dgR8MOgre7MI5p5T6AzJckpwRA=;
+        b=p1KJj9Kh2+a6+s5nc3nAnyB0JTXtN1dJynYwYGePmmb197Evxjt2kieNO/iftNlMnK
+         aeBG1kyECHQCc32iLi/AFpHOf4HOgZCsm56JN3Okb+IQWlflBFLdS+L+HAla2WPK+NLo
+         AmK4I2Sqs6vV2GTgSL8zxtmmP9LbfmZZaq14409bKC8FFjlLEEZ4wJ+OGZIUpN9va6oa
+         t8U/YxZg17j6M2pxhHupBa611RKDRjX886yAqNbx120gMRuX5q0fLTPqglt23QHvuj1l
+         YxbQFM4Im+dNqE3gLBl8HPAnJNs5irKGPjkL2oTwaNXyZ8VP80Ybn3rryKp+5wivaKrk
+         90fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791062591; x=1791667391;
+        d=1e100.net; s=20260707; t=1791062588; x=1791667388;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ekKJz+HTYRvtVEqBBOEAxTGImVFcYe3lcvJJhW15OKU=;
-        b=N8T06ZNL+nTWyOrJzm4n3EJaUWamT9+MyOzrbHabyLQW88Uvi+7wY+iNrtm8WooUAl
-         EgDCPDWu/tN0xYHHS1r/9PBQumzuvmAhQwKrzQo75qoJcQOZFhN6ANnDH7Fs2CdkwTSK
-         hGg1JGDl3Av1i0XxCJZOOa2HNpDfZYs16kNPzmu1MZHIeGi4UY2yLpEgvzPZ2xp5ZAvY
-         PcVLS944IbVc4Y3ai+D7eA3MFLc44HEAjSYVCv2JtGr+upgv/bISBwqlMWmQD2ft1DWe
-         cA7v4Tmu695ssNuC2Yt18N2FR4bKvc8yrjL9OJqK+0uZV5RpokllgxRplSnh50EbhuaR
-         pMyw==
-X-Forwarded-Encrypted: i=1; AKwUvBw0Rq9Kw0SRKleSnl3+DJ5FMRyxzawFAh7sSBenBV9rNk96hsUNkiRnTIA5ma4M5+a5umx9nx4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK/vPbmFGrEKXTt/Xpm2Co5TKRlMhujphSM+G/i+fU5yVMeFruu
-	d1wbwTzIdC1NgJZoQr31A0FUApj60srQrsvhFlPhBXWCfTonG8EeQu4BUnNUNPmz7DAoh60YmNU
-	ja5QBAQ==
-X-Received: from ejbhk6.prod.google.com ([2002:a17:906:c9c6:b0:c2d:efb7:91a3])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:4fc9:b0:c2e:3307:b922
- with SMTP id a640c23a62f3a-c2e4ade0f4emr633013566b.28.1791062590162; Sat, 03
- Oct 2026 14:23:10 -0700 (PDT)
-Date: Sat,  3 Oct 2026 21:22:37 +0000
+        bh=ruiMF87Q7JhX4xV02dgR8MOgre7MI5p5T6AzJckpwRA=;
+        b=TA9+VbhCgVDLdcnGxvMnC2gEtf6NOtJ+8y6ojBaH1it5G6Lwky7j4dSyBxnKPGg/wV
+         +9zxyCJQFzbXvv8/TVuW+zWrL24nUsrR1ng5xwvpi4dS+NG5d+taFv8YXq64/ZL7yimV
+         pOcwxHTAPIwpFB4WAULeFq3obaAF+OIE/br6y5r5z7mkn7Fj1rWT+3D910hveaCdwzwj
+         PO9Z/h/emnIuq9ZeS3PvVvXSLqCo8Sgn0Ymd93SpJ9EuzFRcSijnYrMagouRkuhi4Kts
+         flbL7AztD9klxnLIbtf47DCxX78i0FfZAYPXzdq+m6vjfOB0Es24UYdfzOKM+xvxxwXb
+         b1/g==
+X-Forwarded-Encrypted: i=1; AKwUvBz+jexIuf+hWThjbjo+2n+/Bomy+eiH8cT9NL9rQ/ErvgTEcPRjqrgxNWTA4rmGlMMC4cDHI9o=@vger.kernel.org
+X-Gm-Message-State: AFuF++lacAejV/bbkt4ej5ckCEE6qW7m2F+GBzwge7EI6MmSTnYUZ+un
+	D1DKffzPxUuNkJt9Oo5IBtKeRC/HBz8TVCbZ0TC3mEs3Kx9qZ2XrL0Zr4S3oNHzZAxRJgzfcf3f
+	088SI4g==
+X-Received: from ejra7.prod.google.com ([2002:a17:906:4687:b0:c2e:7ffa:c615])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:cf86:b0:c26:19de:9ad3
+ with SMTP id a640c23a62f3a-c2e4af70e4emr531232766b.43.1791062587675; Sat, 03
+ Oct 2026 14:23:07 -0700 (PDT)
+Date: Sat,  3 Oct 2026 21:22:35 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003212241.3432303-19-lrizzo@google.com>
-Subject: [RFC: DMA_PMD 18/22] net/gve: Use DMA_PMD memory for tx header bounce buffers
+Message-ID: <20261003212241.3432303-17-lrizzo@google.com>
+Subject: [RFC: DMA_PMD 16/22] iommu/dma: Add per-NUMA-node PMD page reservoir
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -82,203 +82,464 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	linux-kernel@vger.kernel.org, Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When dev->dma_pmd_tx_hdrs is enabled, allocate a MAX_TCP_HEADER
-bounce buffer per TX slot/packet out of the DMA_PMD arena in raw-addressing
-mode (both GQI and DQO). When skb_headlen(skb) <= MAX_TCP_HEADER, the
-linear portion is copied into the pre-mapped bounce buffer instead of
-calling dma_map_single()/dma_unmap_single() on every packet.
+Add a per-NUMA-node reservoir of pre-allocated, pre-zeroed, and
+pre-prepared 2MB pages (dma_pmd_reservoirs[MAX_NUMNODES]) refilled in
+process context by a background worker (dma_pmd_reservoir_work):
+
+- Controlled by dma_pmd.reservoir_max (default 16 PMD pages = 32 MB per
+  N_MEMORY node, subject to the global dma_pmd_max_pages ceiling).
+- dma_pmd_add_page() first tries dma_pmd_reservoir_get(nid) (preferring
+  the target NUMA node and falling back to other N_MEMORY nodes),
+  avoiding blocking or failing order-9 buddy allocations on pool misses.
+- When a node's reservoir drops to <= reservoir_max / 2 (or on pool
+  creation), dma_pmd_reservoir_work is scheduled to refill in the
+  background.
+- Integrate the reservoir with dma_pmd_shrink_count() and
+  dma_pmd_shrink_scan() so reservoir pages are reclaimed first under
+  memory pressure.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- drivers/net/ethernet/google/gve/gve.h        |  3 ++
- drivers/net/ethernet/google/gve/gve_tx.c     | 38 ++++++++++++++---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 45 +++++++++++++++-----
- 3 files changed, 69 insertions(+), 17 deletions(-)
+ drivers/iommu/dma-pmd-pool.c | 307 +++++++++++++++++++++++++++++++----
+ 1 file changed, 277 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 11330404f681b..00e438fe05a50 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -18,6 +18,7 @@
- #include <linux/ptp_clock_kernel.h>
- #include <linux/u64_stats_sync.h>
- #include <net/page_pool/helpers.h>
-+#include <net/tcp.h>
- #include <net/xdp.h>
+diff --git a/drivers/iommu/dma-pmd-pool.c b/drivers/iommu/dma-pmd-pool.c
+index d774cd05347b8..d48c8e19741ab 100644
+--- a/drivers/iommu/dma-pmd-pool.c
++++ b/drivers/iommu/dma-pmd-pool.c
+@@ -21,6 +21,7 @@
+ #include <linux/mm.h>
+ #include <linux/moduleparam.h>
+ #include <linux/mutex.h>
++#include <linux/nodemask.h>
+ #include <linux/rcupdate.h>
+ #include <linux/seq_file.h>
+ #include <linux/set_memory.h>
+@@ -62,6 +63,18 @@ static atomic_long_t dma_pmd_nr_pages __cacheline_aligned_in_smp;
+ static unsigned long dma_pmd_max_pages __read_mostly;
+ core_param(dma_pmd_max_pages, dma_pmd_max_pages, ulong, 0644);
  
- #include "gve_desc.h"
-@@ -642,6 +643,8 @@ struct gve_tx_ring {
- 			};
- 		} dqo;
- 	} ____cacheline_aligned;
-+	void *tx_hdr_bufs;
-+	dma_addr_t tx_hdr_bufs_dma;
- 	struct netdev_queue *netdev_txq;
- 	struct gve_queue_resources *q_resources; /* head and tail pointer idx */
- 	struct device *dev;
-diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
-index 79338fd9bf66e..9610b54ef4792 100644
---- a/drivers/net/ethernet/google/gve/gve_tx.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx.c
-@@ -224,6 +224,11 @@ static void gve_tx_free_ring_gqi(struct gve_priv *priv, struct gve_tx_ring *tx,
- 	u32 slots;
++/* Target number of pre-allocated PMD pages per NUMA node in reservoir. */
++static unsigned int dma_pmd_reservoir_max __read_mostly = 16;
++module_param_named(reservoir_max, dma_pmd_reservoir_max, uint, 0644);
++
++struct dma_pmd_reservoir {
++	spinlock_t		lock;	/* protects @pages and @nr_pages */
++	struct list_head	pages;
++	unsigned int		nr_pages;
++};
++
++static struct dma_pmd_reservoir dma_pmd_reservoirs[MAX_NUMNODES];
++
+ /* All live pools. */
+ static LIST_HEAD(dma_pmd_pools);
+ static DEFINE_MUTEX(dma_pmd_pools_lock);
+@@ -69,6 +82,7 @@ static LLIST_HEAD(dma_pmd_dead_pools);
  
- 	slots = tx->mask + 1;
-+	if (tx->tx_hdr_bufs) {
-+		dma_free_coherent(hdev, slots * MAX_TCP_HEADER,
-+				  tx->tx_hdr_bufs, tx->tx_hdr_bufs_dma);
-+		tx->tx_hdr_bufs = NULL;
-+	}
- 	dma_free_coherent(hdev, sizeof(*tx->q_resources),
- 			  tx->q_resources, tx->q_resources_bus);
- 	tx->q_resources = NULL;
-@@ -298,6 +303,11 @@ static int gve_tx_alloc_ring_gqi(struct gve_priv *priv,
- 		/* map Tx FIFO */
- 		if (gve_tx_fifo_init(priv, &tx->tx_fifo))
- 			goto abort_with_qpl;
-+	} else if (hdev->dma_pmd_tx_hdrs) {
-+		tx->tx_hdr_bufs = dma_alloc_coherent(hdev,
-+						     cfg->ring_size * MAX_TCP_HEADER,
-+						     &tx->tx_hdr_bufs_dma,
-+						     GFP_KERNEL);
- 	}
+ static void dma_pmd_schedule_reclaim(void);
+ static void dma_pmd_schedule_scrub(void);
++static void dma_pmd_schedule_reservoir(void);
  
- 	tx->q_resources =
-@@ -311,6 +321,12 @@ static int gve_tx_alloc_ring_gqi(struct gve_priv *priv,
- 	return 0;
- 
- abort_with_fifo:
-+	if (tx->tx_hdr_bufs) {
-+		dma_free_coherent(hdev,
-+				  cfg->ring_size * MAX_TCP_HEADER,
-+				  tx->tx_hdr_bufs, tx->tx_hdr_bufs_dma);
-+		tx->tx_hdr_bufs = NULL;
-+	}
- 	if (!tx->raw_addressing)
- 		gve_tx_fifo_release(priv, &tx->tx_fifo);
- abort_with_qpl:
-@@ -423,6 +439,8 @@ static inline int gve_skb_fifo_bytes_required(struct gve_tx_ring *tx,
- #define MAX_TX_DESC_NEEDED	(MAX_SKB_FRAGS + 4)
- static void gve_tx_unmap_buf(struct device *dev, struct gve_tx_buffer_state *info)
+ static void dma_pmd_pool_free_kref(struct kref *kref)
  {
-+	if (!dma_unmap_len(info, len))
-+		return;
- 	if (info->skb) {
- 		dma_unmap_single(dev, dma_unmap_addr(info, dma),
- 				 dma_unmap_len(info, len),
-@@ -657,13 +675,21 @@ static int gve_tx_add_skb_no_copy(struct gve_priv *priv, struct gve_tx_ring *tx,
+@@ -81,8 +95,10 @@ static void dma_pmd_pool_free_kref(struct kref *kref)
+ static int dma_pmd_page_prepare(struct page *page, struct dma_pmd_meta *meta,
+ 				bool can_block)
+ {
+-	bool want_decrypt = READ_ONCE(dma_pmd_decrypt);
+-	bool want_pin = READ_ONCE(dma_pmd_pin);
++	bool want_decrypt = READ_ONCE(dma_pmd_decrypt) &&
++			    !(meta->flags & DMA_PMD_DECRYPTED);
++	bool want_pin = READ_ONCE(dma_pmd_pin) &&
++			!(meta->flags & DMA_PMD_PINNED);
+ 	void *vaddr = page_address(page);
+ 	int ret;
  
- 	info->skb =  skb;
+@@ -142,6 +158,16 @@ static int dma_pmd_page_unprepare(struct dma_pmd_meta *meta)
+ 	return 0;
+ }
  
--	addr = dma_map_single(tx->dev, skb->data, len, DMA_TO_DEVICE);
--	if (unlikely(dma_mapping_error(tx->dev, addr))) {
--		tx->dma_mapping_error++;
--		goto drop;
-+	if (tx->tx_hdr_bufs && len <= MAX_TCP_HEADER) {
-+		u32 hdr_off = idx * MAX_TCP_HEADER;
++static void dma_pmd_free_reservoir_page(struct dma_pmd_meta *meta)
++{
++	struct page *page = pfn_to_page(dma_pmd_meta_to_pfn(meta));
 +
-+		memcpy(tx->tx_hdr_bufs + hdr_off, skb->data, len);
-+		addr = tx->tx_hdr_bufs_dma + hdr_off;
-+		dma_unmap_len_set(info, len, 0);
-+	} else {
-+		addr = dma_map_single(tx->dev, skb->data, len, DMA_TO_DEVICE);
-+		if (unlikely(dma_mapping_error(tx->dev, addr))) {
-+			tx->dma_mapping_error++;
-+			goto drop;
++	if (!dma_pmd_page_unprepare(meta)) {
++		__free_pages(page, PMD_ORDER);
++		atomic_long_dec(&dma_pmd_nr_pages);
++	}
++}
++
+ /*
+  * Releasing an idle PMD page proceeds in three stages:
+  *
+@@ -226,8 +252,12 @@ static void dma_pmd_reclaim_work_fn(struct work_struct *work)
+ 	struct dma_pmd_pool *pool, *ptmp;
+ 	struct dma_pmd_meta *meta, *tmp;
+ 
+-	llist_for_each_entry_safe(meta, tmp, node, llnode)
+-		dma_pmd_release_page(meta);
++	llist_for_each_entry_safe(meta, tmp, node, llnode) {
++		if (meta->pool)
++			dma_pmd_release_page(meta);
++		else
++			dma_pmd_free_reservoir_page(meta);
++	}
+ 
+ 	node = llist_del_all(&dma_pmd_dead_pools);
+ 	if (node) {
+@@ -463,6 +493,186 @@ static void dma_pmd_schedule_scrub(void)
+ 		schedule_work(&dma_pmd_scrub_work);
+ }
+ 
++/*
++ * Per-NUMA-node PMD page reservoir
++ * --------------------------------
++ * Order-9 (2MB) buddy allocations can compact/reclaim and fail or stall in
++ * atomic context (such as NAPI RX refill or softirq TX), and CoCo decryption /
++ * hypervisor pinning cannot run in atomic context at all.
++ *
++ * Each NUMA node maintains a small reservoir of up to @dma_pmd_reservoir_max
++ * (default 8 = 16 MB/node) pre-allocated, pre-zeroed, and pre-decrypted/pinned
++ * PMD pages. On a pool miss, dma_pmd_add_page() pops a ready PMD page from the
++ * target node's reservoir in O(1) under a spinlock (falling back to other
++ * nodes before calling alloc_pages_node() directly).
++ *
++ * A background worker on system_wq refills nodes whenever a node's count drops
++ * to or below half of @dma_pmd_reservoir_max, on a reservoir miss, or when a
++ * new pool is created. Pages held in the reservoir count toward the global
++ * @dma_pmd_nr_pages budget and are reclaimable by the shrinker under memory
++ * pressure.
++ */
++
++/**
++ * dma_pmd_reservoir_refill_node - Refill node @nid's reservoir up to @max
++ * @nid: NUMA node ID
++ * @max: Target number of PMD pages to hold in @nid's reservoir
++ *
++ * Cost: Slow path; allocates order-9 pages with GFP_KERNEL | __GFP_RETRY_MAYFAIL,
++ *       populates metadata, decrypts/pins if configured, and zeroes 2MB per page.
++ * Locking: Process context (system_wq); sleeps during buddy allocation, CPA
++ *          decryption, and cond_resched(). Takes @res->lock briefly to enqueue.
++ * Frequency: Rare (when reservoir drops to <= @max / 2 or on pool creation).
++ */
++static void dma_pmd_reservoir_refill_node(int nid, unsigned int max)
++{
++	gfp_t gfp = GFP_KERNEL | __GFP_THISNODE | __GFP_NOWARN | __GFP_RETRY_MAYFAIL;
++	struct dma_pmd_reservoir *res = &dma_pmd_reservoirs[nid];
++
++	while (READ_ONCE(res->nr_pages) < max) {
++		struct dma_pmd_meta *meta;
++		unsigned long flags;
++		struct page *page;
++
++		if (atomic_long_inc_return(&dma_pmd_nr_pages) >
++		    READ_ONCE(dma_pmd_max_pages)) {
++			atomic_long_dec(&dma_pmd_nr_pages);
++			break;
 +		}
-+		dma_unmap_len_set(info, len, len);
-+		dma_unmap_addr_set(info, dma, addr);
- 	}
--	dma_unmap_len_set(info, len, len);
--	dma_unmap_addr_set(info, dma, addr);
- 
- 	num_descriptors = 1 + shinfo->nr_frags;
- 	if (hlen < len)
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index ad99cbb77e291..ac69793492c9f 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -176,8 +176,9 @@ static void gve_unmap_packet(struct device *dev,
- 		return;
- 
- 	/* SKB linear portion is guaranteed to be mapped */
--	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
--			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
-+	if (dma_unmap_len(pkt, len[0]))
-+		dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
-+				 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
- 	for (i = 1; i < pkt->num_bufs; i++) {
- 		netmem_dma_unmap_page_attrs(dev, dma_unmap_addr(pkt, dma[i]),
- 					    dma_unmap_len(pkt, len[i]),
-@@ -232,6 +233,13 @@ static void gve_tx_free_ring_dqo(struct gve_priv *priv, struct gve_tx_ring *tx,
- 	size_t bytes;
- 	u32 qpl_id;
- 
-+	if (tx->tx_hdr_bufs) {
-+		dma_free_coherent(hdev,
-+				  tx->dqo.num_pending_packets * MAX_TCP_HEADER,
-+				  tx->tx_hdr_bufs, tx->tx_hdr_bufs_dma);
-+		tx->tx_hdr_bufs = NULL;
++
++		page = alloc_pages_node(nid, gfp, PMD_ORDER);
++		if (!page) {
++			atomic_long_dec(&dma_pmd_nr_pages);
++			break;
++		}
++
++		if (unlikely(!dma_pmd_meta_ensure_pfn(page_to_pfn(page), true))) {
++			__free_pages(page, PMD_ORDER);
++			atomic_long_dec(&dma_pmd_nr_pages);
++			break;
++		}
++
++		meta = dma_pmd_meta_of_pfn(page_to_pfn(page));
++		memset(meta, 0, sizeof(*meta));
++		spin_lock_init(&meta->map_lock);
++
++		if (dma_pmd_page_prepare(page, meta, true)) {
++			__free_pages(page, PMD_ORDER);
++			atomic_long_dec(&dma_pmd_nr_pages);
++			break;
++		}
++
++		if (!(meta->flags & DMA_PMD_DECRYPTED))
++			memset(page_address(page), 0, PMD_SIZE);
++
++		spin_lock_irqsave(&res->lock, flags);
++		list_add(&meta->list, &res->pages);
++		res->nr_pages++;
++		spin_unlock_irqrestore(&res->lock, flags);
++
++		cond_resched();
++	}
++}
++
++static void dma_pmd_reservoir_work_fn(struct work_struct *work)
++{
++	unsigned int max = READ_ONCE(dma_pmd_reservoir_max);
++	int nid;
++
++	if (!max || !dma_pmd_meta_base())
++		return;
++
++	for_each_node_state(nid, N_MEMORY)
++		dma_pmd_reservoir_refill_node(nid, max);
++}
++
++static DECLARE_WORK(dma_pmd_reservoir_work, dma_pmd_reservoir_work_fn);
++
++static void dma_pmd_schedule_reservoir(void)
++{
++	if (READ_ONCE(dma_pmd_reservoir_max) &&
++	    !work_pending(&dma_pmd_reservoir_work))
++		schedule_work(&dma_pmd_reservoir_work);
++}
++
++/*
++ * Pop one pre-prepared PMD page from node @nid's reservoir.
++ *
++ * Cost: O(1) list pop under @res->lock.
++ * Locking: Acquires @res->lock (irqsave). Safe from any context (IRQ, softirq,
++ *          process). Never sleeps.
++ * Frequency: Only on pool miss (dma_pmd_add_page()).
++ */
++static struct dma_pmd_meta *dma_pmd_reservoir_pop_node(int nid, unsigned int max)
++{
++	struct dma_pmd_reservoir *res = &dma_pmd_reservoirs[nid];
++	struct dma_pmd_meta *meta;
++	unsigned long flags;
++	bool refill = false;
++
++	if (!READ_ONCE(res->nr_pages))
++		return NULL;
++
++	spin_lock_irqsave(&res->lock, flags);
++	meta = list_first_entry_or_null(&res->pages, struct dma_pmd_meta, list);
++	if (meta) {
++		list_del_init(&meta->list);
++		res->nr_pages--;
++		refill = res->nr_pages <= max / 2;
++	}
++	spin_unlock_irqrestore(&res->lock, flags);
++
++	if (refill)
++		dma_pmd_schedule_reservoir();
++
++	return meta;
++}
++
++/**
++ * dma_pmd_reservoir_get - Obtain a pre-prepared PMD page, preferring @nid
++ * @nid: Preferred NUMA node (or NUMA_NO_NODE for local node)
++ *
++ * Tries @nid's reservoir first, then falls back to other memory nodes and
++ * schedules an async refill if a fallback or empty reservoir is encountered.
++ *
++ * Cost: O(1) on local node hit; O(MAX_NUMNODES) lockless checks on miss.
++ * Locking: Acquires @res->lock (irqsave) on non-empty node. Safe from any
++ *          context. Never sleeps.
++ * Frequency: Only on pool miss (dma_pmd_add_page()).
++ *
++ * Return: Metadata pointer of a ready PMD page (not yet compound-split or
++ *         bound to a pool), or NULL if all reservoirs are empty.
++ */
++static struct dma_pmd_meta *dma_pmd_reservoir_get(int nid)
++{
++	unsigned int max = READ_ONCE(dma_pmd_reservoir_max);
++	struct dma_pmd_meta *meta;
++	int target_nid, n;
++
++	if (!max)
++		return NULL;
++
++	target_nid = (nid == NUMA_NO_NODE) ? numa_mem_id() : nid;
++	if (target_nid >= 0 && target_nid < MAX_NUMNODES) {
++		meta = dma_pmd_reservoir_pop_node(target_nid, max);
++		if (meta)
++			return meta;
 +	}
 +
- 	if (tx->q_resources) {
- 		dma_free_coherent(hdev, sizeof(*tx->q_resources),
- 				  tx->q_resources, tx->q_resources_bus);
-@@ -399,6 +407,12 @@ static int gve_tx_alloc_ring_dqo(struct gve_priv *priv,
++	for_each_node_state(n, N_MEMORY) {
++		if (n == target_nid)
++			continue;
++		meta = dma_pmd_reservoir_pop_node(n, max);
++		if (meta) {
++			dma_pmd_schedule_reservoir();
++			return meta;
++		}
++	}
++
++	dma_pmd_schedule_reservoir();
++	return NULL;
++}
++
+ unsigned int dma_pmd_pools_forget_domain(int idx)
+ {
+ 	struct dma_pmd_pool *pool;
+@@ -538,6 +748,7 @@ struct dma_pmd_pool *dma_pmd_pool_create(unsigned int order, unsigned int max_id
+ 	}
+ 	list_add(&pool->node, &dma_pmd_pools);
+ 	mutex_unlock(&dma_pmd_pools_lock);
++	dma_pmd_schedule_reservoir();
  
- 		if (gve_tx_qpl_buf_init(tx))
- 			goto err;
-+	} else if (hdev->dma_pmd_tx_hdrs) {
-+		tx->tx_hdr_bufs =
-+			dma_alloc_coherent(hdev,
-+					   tx->dqo.num_pending_packets * MAX_TCP_HEADER,
-+					   &tx->tx_hdr_bufs_dma,
-+					   GFP_KERNEL);
+ 	return pool;
+ }
+@@ -616,10 +827,18 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
+ 	 */
+ 	bool can_block = (gfp & GFP_KERNEL) == GFP_KERNEL;
+ 	unsigned int nr = DMA_PMD_BLOCKS(pool->order);
++	bool from_reservoir = false;
+ 	struct dma_pmd_meta *meta;
+ 	gfp_t alloc_gfp, base_gfp;
+ 	struct page *page;
+ 
++	meta = dma_pmd_reservoir_get(nid);
++	if (meta) {
++		page = pfn_to_page(dma_pmd_meta_to_pfn(meta));
++		from_reservoir = true;
++		goto prepare;
++	}
++
+ 	/*
+ 	 * A high-order allocation is expensive when it fails, and under fragmentation
+ 	 * it fails on every pool miss. For GFP_ATOMIC, back off briefly.
+@@ -687,9 +906,10 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
+ 
+ 	meta = dma_pmd_meta_of_pfn(page_to_pfn(page));
+ 	memset(meta, 0, sizeof(*meta));
+-	meta->pool = pool;
+ 	spin_lock_init(&meta->map_lock);
+ 
++prepare:
++	meta->pool = pool;
+ 	if (dma_pmd_page_prepare(page, meta, can_block)) {
+ 		__free_pages(page, PMD_ORDER);
+ 		atomic_long_dec(&dma_pmd_nr_pages);
+@@ -705,8 +925,8 @@ static struct dma_pmd_meta *dma_pmd_add_page(struct dma_pmd_pool *pool,
+ 		return NULL;
  	}
  
- 	return 0;
-@@ -712,12 +726,20 @@ static int gve_tx_add_skb_no_copy_dqo(struct gve_tx_ring *tx,
- 		u32 len = skb_headlen(skb);
- 		dma_addr_t addr;
+-	if (zero || (meta->flags & DMA_PMD_DECRYPTED)) {
+-		if (!(meta->flags & DMA_PMD_DECRYPTED))
++	if (from_reservoir || zero || (meta->flags & DMA_PMD_DECRYPTED)) {
++		if (!from_reservoir && !(meta->flags & DMA_PMD_DECRYPTED))
+ 			memset(page_address(page), 0, PMD_SIZE);
+ 		bitmap_set(meta->free_bitmap, 0, nr);
+ 		meta->nr_free = nr;
+@@ -1042,14 +1262,17 @@ static unsigned long dma_pmd_shrink_count(struct shrinker *shrink,
+ {
+ 	struct dma_pmd_pool *pool;
+ 	unsigned long nr = 0;
++	int nid;
  
--		addr = dma_map_single(tx->dev, skb->data, len, DMA_TO_DEVICE);
--		if (unlikely(dma_mapping_error(tx->dev, addr)))
--			goto err;
-+		if (tx->tx_hdr_bufs && len <= MAX_TCP_HEADER) {
-+			u32 hdr_off = (u32)completion_tag * MAX_TCP_HEADER;
+-	if (!mutex_trylock(&dma_pmd_pools_lock))
+-		return 0;
++	for_each_node_state(nid, N_MEMORY)
++		nr += READ_ONCE(dma_pmd_reservoirs[nid].nr_pages);
  
--		dma_unmap_len_set(pkt, len[pkt->num_bufs], len);
--		dma_unmap_addr_set(pkt, dma[pkt->num_bufs], addr);
-+			memcpy(tx->tx_hdr_bufs + hdr_off, skb->data, len);
-+			addr = tx->tx_hdr_bufs_dma + hdr_off;
-+			dma_unmap_len_set(pkt, len[pkt->num_bufs], 0);
-+		} else {
-+			addr = dma_map_single(tx->dev, skb->data, len,
-+					      DMA_TO_DEVICE);
-+			if (unlikely(dma_mapping_error(tx->dev, addr)))
-+				goto err;
-+			dma_unmap_len_set(pkt, len[pkt->num_bufs], len);
-+			dma_unmap_addr_set(pkt, dma[pkt->num_bufs], addr);
+-	list_for_each_entry(pool, &dma_pmd_pools, node)
+-		nr += READ_ONCE(pool->num_idle_pages);
++	if (mutex_trylock(&dma_pmd_pools_lock)) {
++		list_for_each_entry(pool, &dma_pmd_pools, node)
++			nr += READ_ONCE(pool->num_idle_pages);
+ 
+-	mutex_unlock(&dma_pmd_pools_lock);
++		mutex_unlock(&dma_pmd_pools_lock);
++	}
+ 
+ 	return nr << PMD_ORDER;
+ }
+@@ -1062,34 +1285,50 @@ static unsigned long dma_pmd_shrink_scan(struct shrinker *shrink,
+ 	unsigned long freed = 0;
+ 	LIST_HEAD(release_list);
+ 	unsigned long flags;
+-	int srcu_idx;
++	int srcu_idx, nid;
+ 
+-	if (!mutex_trylock(&dma_pmd_pools_lock))
+-		return SHRINK_STOP;
++	for_each_node_state(nid, N_MEMORY) {
++		struct dma_pmd_reservoir *res = &dma_pmd_reservoirs[nid];
+ 
+-	srcu_idx = srcu_read_lock(&dma_pmd_srcu);
+-	list_for_each_entry(pool, &dma_pmd_pools, node) {
+-		/*
+-		 * Every PMD page on @idle is a candidate, so this detaches one
+-		 * per iteration and stops as soon as the reclaim path has
+-		 * what it asked for: the IRQs-off section is bounded by the
+-		 * work done, not by how many PMD pages the pool holds.
+-		 */
+-		spin_lock_irqsave(&pool->lock, flags);
+-		list_for_each_entry_safe(meta, tmp, &pool->idle, list) {
++		if (!READ_ONCE(res->nr_pages))
++			continue;
++		spin_lock_irqsave(&res->lock, flags);
++		list_for_each_entry_safe(meta, tmp, &res->pages, list) {
+ 			if (freed >= sc->nr_to_scan)
+ 				break;
+ 			list_move(&meta->list, &release_list);
+-			pool->num_idle_pages--;
++			res->nr_pages--;
+ 			freed += 1UL << PMD_ORDER;
+ 		}
+-		spin_unlock_irqrestore(&pool->lock, flags);
+-
++		spin_unlock_irqrestore(&res->lock, flags);
+ 		if (freed >= sc->nr_to_scan)
+ 			break;
+ 	}
+ 
+-	mutex_unlock(&dma_pmd_pools_lock);
++	srcu_idx = srcu_read_lock(&dma_pmd_srcu);
++	if (freed < sc->nr_to_scan && mutex_trylock(&dma_pmd_pools_lock)) {
++		list_for_each_entry(pool, &dma_pmd_pools, node) {
++			/*
++			 * Every PMD page on @idle is a candidate, so this detaches one
++			 * per iteration and stops as soon as the reclaim path has
++			 * what it asked for: the IRQs-off section is bounded by the
++			 * work done, not by how many PMD pages the pool holds.
++			 */
++			spin_lock_irqsave(&pool->lock, flags);
++			list_for_each_entry_safe(meta, tmp, &pool->idle, list) {
++				if (freed >= sc->nr_to_scan)
++					break;
++				list_move(&meta->list, &release_list);
++				pool->num_idle_pages--;
++				freed += 1UL << PMD_ORDER;
++			}
++			spin_unlock_irqrestore(&pool->lock, flags);
++
++			if (freed >= sc->nr_to_scan)
++				break;
 +		}
- 		++pkt->num_bufs;
++		mutex_unlock(&dma_pmd_pools_lock);
++	}
  
- 		gve_tx_fill_pkt_desc_dqo(tx, desc_idx, enable_csum, len, addr,
-@@ -748,10 +770,11 @@ static int gve_tx_add_skb_no_copy_dqo(struct gve_tx_ring *tx,
- err:
- 	for (i = 0; i < pkt->num_bufs; i++) {
- 		if (i == 0) {
--			dma_unmap_single(tx->dev,
--					 dma_unmap_addr(pkt, dma[i]),
--					 dma_unmap_len(pkt, len[i]),
--					 DMA_TO_DEVICE);
-+			if (dma_unmap_len(pkt, len[i]))
-+				dma_unmap_single(tx->dev,
-+						 dma_unmap_addr(pkt, dma[i]),
-+						 dma_unmap_len(pkt, len[i]),
-+						 DMA_TO_DEVICE);
- 		} else {
- 			dma_unmap_page(tx->dev,
- 				       dma_unmap_addr(pkt, dma[i]),
+ 	/*
+ 	 * Retiring is done outside both locks: dma_pmd_release_page() unmaps
+@@ -1103,8 +1342,10 @@ static unsigned long dma_pmd_shrink_scan(struct shrinker *shrink,
+ 		if (meta->flags & (DMA_PMD_DECRYPTED | DMA_PMD_PINNED)) {
+ 			llist_add(&meta->llnode, &dma_pmd_free_list);
+ 			dma_pmd_schedule_reclaim();
+-		} else {
++		} else if (meta->pool) {
+ 			dma_pmd_release_page(meta);
++		} else {
++			dma_pmd_free_reservoir_page(meta);
+ 		}
+ 	}
+ 	srcu_read_unlock(&dma_pmd_srcu, srcu_idx);
+@@ -1128,6 +1369,12 @@ static unsigned long dma_pmd_shrink_scan(struct shrinker *shrink,
+ static int __init dma_pmd_init(void)
+ {
+ 	struct shrinker *shrink;
++	int nid;
++
++	for (nid = 0; nid < MAX_NUMNODES; nid++) {
++		spin_lock_init(&dma_pmd_reservoirs[nid].lock);
++		INIT_LIST_HEAD(&dma_pmd_reservoirs[nid].pages);
++	}
+ 
+ 	/*
+ 	 * Hard ceiling on memory diverted from the buddy allocator into 2MB
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
