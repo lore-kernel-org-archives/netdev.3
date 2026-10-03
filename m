@@ -1,55 +1,69 @@
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C271B313E03;
-	Sat,  3 Oct 2026 14:18:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD703019C8
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 14:23:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791037089; cv=none; b=QnUfmr4Z2hpT7DBPxuh8J46IBx6mIMizgOPWGV/ZlrLAyIlQvA/2S6YgWr01/iR7EuzRkCT8v8sHYfe/gddKK5WuGmKIyNfivy588hK6aN05aOC8py5YbmWXHlJRKmvQvOi47LvieTtZgExIZrdJBSffzpC3l1enBzT/gjNVpsg=
+	t=1791037400; cv=none; b=g6GZdTr2TiUZOwwaSs+mT47UGx3tl+2nDFaS5LaUodHD1sylhHySvgLlnDcbgJ6LBjIYWnwSQBVWBMj6Qj40nLy+c+TGho9pTZ3GAY4vaDW9E2DGxy1JFZ35LOfHzVp4CA3mJpxLVdlPeKUzTrfSmYne/KbuIGESe1BwyMwVIgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791037089; c=relaxed/simple;
-	bh=p1iE9IJuA9vzahQdkL4uD4ZoYz14exJJjYG0KNLd2AU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:MIME-Version:Date:
-	 Message-Id:Content-Type; b=gs8BJXLtKNisOd1APhPZUFi0V1AAKAi+nlfE2kWmCJxkvgE2xN09qiUGgG3FSK+RlQ9iKQ/qmVYtZAbZIS8qGhXJblhAVrXeeRnTtRI2FzuOpi2wgcrfx0vCgV+tSClQFMEkMqDIQAPL6FW/BmCgMToHCMFBVAh/IV2jIXEN7D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=GQdg3GxM; arc=none smtp.client-ip=178.154.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
+	s=arc-20240116; t=1791037400; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TOiXT9P7myMaEetPicslClziyLE1sx4QrnwfIEgO1Yq6eIOdsxAHFsKWBLhWJrHJCLy2SMbxTEJc01dX0vLH0oxr8QkXuC0bvnTgaH9foRvxSPd4B/b/ekUmo5EJOr2DvQVDjUkbV3nyHabv0y3TO9pcez3QAT8A9tIFxAB7AOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIYfWPya; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="GQdg3GxM"
-Received: from mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:5a80:0:640:5f14:0])
-	by forward500a.mail.yandex.net (postfix) with ESMTPS id 0EDB4C1A3E;
-	Sat, 03 Oct 2026 17:12:03 +0300 (MSK)
-Received: from mail.yandex.ru (2a02:6b8:c0c:5c14:0:640:a57b:0 [2a02:6b8:c0c:5c14:0:640:a57b:0])
-	by mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net (mxback) with HTTPS id ZBnmCa5JU0U0-uaRxgpvu;
-	Sat, 03 Oct 2026 17:12:02 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
-	t=1791036722; bh=p1iE9IJuA9vzahQdkL4uD4ZoYz14exJJjYG0KNLd2AU=;
-	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
-	b=GQdg3GxMKnjDtrIjZh0QrCu5kM1xhINdJesJyy4yrZFahZoGEghildQm5SzcpOyF8
-	 eolunvKhE4ANInoHCfjW/QEx/wGRIQzTHNviK19rFLiKc8JU7gl4zuPOFlGP1IHX1a
-	 eORP3jrRt73DwL9U8oIouuXCGiIrB0GOIvGUrIWU=
-Authentication-Results: mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net; dkim=pass header.i=@0upti.me
-Received: by mail-sendbernar-production-main-60.iva.yp-c.yandex.net (sendbernar) with HTTPS id ee00c04c1aa76ab2be9247f83e4d4341;
-	Sat, 03 Oct 2026 17:12:01 +0300
-From: Ilya K <me@0upti.me>
-To: Ben Greear <greearb@candelatech.com>
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-In-Reply-To: <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
-References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com> <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df> <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21> <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com> <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4> <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8> <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136> <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
-Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIYfWPya"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE9B1F0089B;
+	Sat,  3 Oct 2026 14:23:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791037399;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aIYfWPya5+jjzcbdUXND29acJOS2oH9/ANHilJeDccteAcrmXPvv/3B2nrO2wYd9U
+	 iKc0A1UTqPdcjWOkFuYSAVCMHICfdsHBSyI7OxayDchQncjYbK1Axdws9JzQ/y4q1F
+	 bMeY9SqS0PMqRxf3o3iCnpwwBXzvCUT9n/odBqtRcmDmXHFfY3Pa6bgeBMYDcybaax
+	 CXTy7ByazxIMvSikjwrfjTZ5pOZf30CB5GjeZvQ9LCt+dV6cp98uhxYvQTJQv2nUPp
+	 WE93vdnnvKGBnDm4MjmYny4B3H4plMcLS6tM/6+phGQ0E1ETJI5JfsgL9ivd1o5mXM
+	 RFzeGIdwkvOkQ==
+From: netdev-bot+sinfo@kernel.org
+To: xiaoshoukui@gmail.com
+Cc: netdev@vger.kernel.org, jmaloy@redhat.com, tung.quang.nguyen@est.tech,
+ edumazet@google.com, w@1wt.eu
+Subject: 
+ Re: [PATCH net v2] tipc: fix memory leaks in bundle and fragment paths
+Date: Sat, 03 Oct 2026 14:23:18 +0000
+Message-ID: <179103739863.1402591.1705487825430458668@kernel.org>
+In-Reply-To: <20261003141635.33711-1-xiaoshoukui@gmail.com>
+References: <20261003141635.33711-1-xiaoshoukui@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date: Sat, 03 Oct 2026 17:12:01 +0300
-Message-Id: <143991791036721@40be7595-980b-4665-ba66-1601e10a0899>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
 
-OK, so another update: my current branch which is basically 7.2.8 + bpi-r4 specific stuff + any patches from Ben's tree that touch net/wireless or mt76 code (http://github.com/K900/linux/tree/bpi-r4-728-ct) survived an entire week of no crashes, which is a very good sign. Unfortunately, it's still >500 commits with a total of +20k -2k lines of diff, so I'll have to go through it again and strip it down even more before I can have any idea of what is actually helping...
+Hi!
+
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
+
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
