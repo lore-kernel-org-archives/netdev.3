@@ -1,52 +1,62 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25F83655E6;
-	Sat,  3 Oct 2026 14:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65613AA4EF;
+	Sat,  3 Oct 2026 14:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791038300; cv=none; b=OkUetlNIyFwnbzTy0YUKNRIQ+0b5DIWh4ASRhxv/bQeWlmQtY1fnlpzVW+T7L9RVzkHrBLGrngPTZ7DI7ufnuVU4O9fp3G/kERw3Nu/2Y8OtmVzic+CkCJvWwQaHrP47pkAHJK2kT1g7OZmQdBgYVdcKv9ZLcAI3gVPjtzEWchQ=
+	t=1791038854; cv=none; b=DavrD/TXjgYjMjm15UR2+bXhNpouB+Z4OV1MKBNNua00UtgISNqWadW/5HCr/Q4pehPWI2qvTcas8zmJwX1ZeodMp/O/TABrNlivkoBQKlQIE0stACsqV8sbRhodd0w9PO3FaPUxWhW3vHmRDKECbFBr6UWec2pFFg/TRl6n3GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791038300; c=relaxed/simple;
-	bh=lk4x11EHLXs2UR+/ptY9IIa9Osi6U0fC+7NUCI7ocrc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PPulZPJ8SQ7L4nQTh1V9DZ6v61tTrzOgomZqkGIIVkGJT+an6vH+yGNbQM4fU9I4ieJkfldR86OwwAFEyfb8ymBfrzBOLtIL5Ajgl37zCmT/8f0MtZ27E/fNZzkCKhbU/QryL0AUjZdngo4Tu+IDC/hoy8TEFAgxOO/BnkngMVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=lxEb1/yq; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791038854; c=relaxed/simple;
+	bh=mB/dG/SgGk5ffMybraWJ0qYGHriRWch+eYQSWWwj7k4=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Th1DnFFZ7IHJv7264Uo2wcQPQS00a4rh17ubDK+dZq9iaCj9z3pnr0cfGg+DjcWsgH14QZ8p3Yw2nQ3X6FY98pDMv2pJEQ/UIkPuqsaF4Auldg73y3e6MlsDsy7VJW1GN1zdAdAiwML/l2bW9UiluBZKg5CsO14BOJy/so5qh2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TTvBdKCS; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="lxEb1/yq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=rzMXWV4KkLzL1+bqSDAMTe9QwTODJ26nW39l5tWgYw4=; b=lxEb1/yqaPtt07KQPB0GXTYyKs
-	xduLB7MZVgl+0Fg1WOyqqCX/fueGzNzdwMVY899dvb7HCbn3GFGciQE7pMITdCavgFhZylC6PykU5
-	xgx2RJqn29VFTacaSG9MUi6YwiERzJqszO3P52yGBdIhz/8hwINGoUc976fMz8gKDzss=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xD0sI-008lU4-FJ; Sat, 03 Oct 2026 16:38:06 +0200
-Date: Sat, 3 Oct 2026 16:38:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: Christian Marangi <ansuelsmth@gmail.com>, netdev@vger.kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TTvBdKCS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791038852; x=1822574852;
+  h=date:from:to:subject:message-id:references:mime-version:
+   in-reply-to;
+  bh=mB/dG/SgGk5ffMybraWJ0qYGHriRWch+eYQSWWwj7k4=;
+  b=TTvBdKCSX+bvSyZ4gbyyOuyvlteWoZhPjN34K1JUW9+oaANMGwLf0rfe
+   J0CM3xKioBmNBgzTQsfzlmyTRSxMNNGSFebC9/UmcMbO+x0jfo5Y74U45
+   cnqVh5iFAmfp9/BYRURvSia1GwSkHrCSpR2D/kCa+iJhcL+hUkVnPbh8u
+   4DeM+WVNyWQLDcXM+Z8o6yV/HJ+CbJzHg/KVxU0vw7TXj3B3cmDGeYl9P
+   dChTa8sDM6LNXdPd0NPQxH6KK5IvOiMCpUR1cNOe+KFaD0TcLv/RCI6xb
+   gXFmNfbJr3tPCBr4mLfi7QXKgFRvm9Sgm/269oabItGbGXMTgouPqyN3m
+   w==;
+X-CSE-ConnectionGUID: 5Xep6lpYQCy5rHegGizM0g==
+X-CSE-MsgGUID: UcDnCNltTHGLgjBNQrYfhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11924"; a="101107096"
+X-IronPort-AV: E=Sophos;i="6.27,138,1787036400"; 
+   d="scan'208";a="101107096"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2026 07:47:31 -0700
+X-CSE-ConnectionGUID: Q5SY4u41QcKuMmly/bPTqQ==
+X-CSE-MsgGUID: SyuFaXRfT0yRQU9SSTzL5g==
+X-ExtLoop1: 1
+Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.245.78])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2026 07:47:29 -0700
+Date: Sat, 3 Oct 2026 17:47:26 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Joe Damato <joe@dama.to>, Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Wen Gu <guwen@linux.alibaba.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: qca83xx: read resolved QCA8337 link
- status
-Message-ID: <36c4c389-bc11-4363-8e23-eb8199dc3499@lunn.ch>
-References: <20260928220749.857-1-yongzhao.derek@gmail.com>
- <01a62e77-6c4e-4665-ba46-26d12b1c77b4@lunn.ch>
- <20260930212348.1919-1-yongzhao.derek@gmail.com>
- <2ea832eb-33f4-4bf3-bdba-5d983038d012@lunn.ch>
- <20261001181634.1508-1-yongzhao.derek@gmail.com>
- <7eed302b-d455-447f-9ce9-f15468b9792b@lunn.ch>
- <20261002203522.1219-1-yongzhao.derek@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2 1/5] eea: Drop temporary buffer by using
+ %*pEhp directly
+Message-ID: <asEVfjCp3cUAv50m@ashevche-desk.local>
+References: <20261002100035.863275-1-andriy.shevchenko@linux.intel.com>
+ <20261002100035.863275-2-andriy.shevchenko@linux.intel.com>
+ <asAZF53tsdq/QAYv@devvm20253.cco0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,26 +65,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261002203522.1219-1-yongzhao.derek@gmail.com>
+In-Reply-To: <asAZF53tsdq/QAYv@devvm20253.cco0.facebook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Fri, Oct 02, 2026 at 10:35:22PM +0200, Yongzhao Chen wrote:
-> Hi Andrew,
+On Fri, Oct 02, 2026 at 01:50:31PM -0700, Joe Damato wrote:
+> On Fri, Oct 02, 2026 at 11:59:19AM +0200, Andy Shevchenko wrote:
+
+...
+
+> >  			rep->reply_str[EEA_HINFO_MAX_REP_LEN - 1] = '\0';
+
+^^^ (see below)
+
+> > +			dev_warn(dev, "Device replied: %*pEhp\n",
+> > +				 (int)strlen(rep->reply_str), rep->reply_str);
 > 
-> > The traffic failure was however because of the error with setting the
-> > DACs?
+> i have no idea what this otuput could be but i suppose if you wanted to remove
+> the terminator write above, you could do:
 > 
-> No, sorry, my last mail was not clear about this. The failure was on
-> a QCA8337 user port connected to a NAS
+>    strnlen(rep->reply_str, ....)
 
-In that case, net. It is a real problem that bothers somebody,
-you. That fulfils the requirements for stable.
+I haven't touched original code, which as you see above NUL-terminates
+the reply string. So this has no difference with strlen(), but the latter
+is shorter (doesn't need an additional argument).
 
-With LLM, we see a lot of patches fixing issues which nobody ever
-comes across, they are theoretical. We want those to go into net-next.
+> instead, but that feels like a fairly useless nit so:
 
-So ideally we want to clear indication in the commit message that the
-fix is for a real problem. There is now an automated email when
-patches are submitted when it is not clear if they are theoretical or
-real fixes, reproduced on real hardware, or just build tested, etc.
+Indeed :-)
 
-	Andrew
+> Reviewed-by: Joe Damato <joe@dama.to>
+
+Thanks!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
