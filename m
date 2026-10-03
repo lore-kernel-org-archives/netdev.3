@@ -1,316 +1,231 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CBC315D5D;
-	Sat,  3 Oct 2026 13:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85BD32B104
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 13:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791034569; cv=none; b=b8hIyBtBw//JzzKO9WR5OzYvSicGlM7phnR6tCT2ePyxIZziwdbDbTLK5A8MHFRa4yPo531qcvmGCmqikRGQW3sR/KJRWZArQF4MkwaG3o6/Px/wTbHT367seuuR4c89vm7fBz9ecI8XMbCCgSUbyV5NyMndOC9vOAGPRkBoCg8=
+	t=1791034682; cv=none; b=Xw1ljkZEb5oHdMzDVdUgB8woqQlAgzclr8RUT1gnCHsKMABrvYGFBbl3CEebZFilF1c65SX462F3Nq5nW56kyhrwJQ30X/8CUe5q0h+9aWW55anaFnLZveyHVWzZdTcrv03aV8AmXxyNySkJQRPX7spL4Vee/MgbXZWzFat1Nr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791034569; c=relaxed/simple;
-	bh=AS2wXpDXUk3CxI6oO+Zx/S7EIzf/YdtGdPYWhMqvDP0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rEMxB5s9sA1R5rEgrJEtU/sl9pu89HM8gxhwIizsPMbm+DKXYY9V3LF4OpSPLF85Ln7pdkXUf0DY78xYgZpB9OPdqNNtMTfDzkqCTYFKI0hEKziwprO0JW6DPEUMoMADNAwnlOey6TQ0icxkCC5di1wvNmByE7b4XFfwJPTGF0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNABgP4i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791034682; c=relaxed/simple;
+	bh=ArrPLAXTmiW750X0hyiB51dp23uByMOYZwkt3RhpfVE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AHeXefDTco/ZRwGJUTTb7bsXuNmuR9AnjBO0rJAZmIVxuYixW3nTd1hxoN/X7qoj2I8IMO5bDfYBTfVaLG/+hokF7MvdZOb1FNe9xIF39dxA92WkdZ+3SUXK8/kQj+FU/yXqvzR8SmBhYvTQR80h5cXK4x/ffC4vwMPDGmoc7dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gkmkDHPq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNABgP4i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142181F0089C;
-	Sat,  3 Oct 2026 13:36:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gkmkDHPq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861B81F008A1
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 13:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791034566;
-	bh=5N04o3FgDdHlFpQIGY4i+MqaBqH3v/HvzYdfB2IUXc4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fNABgP4iIu+wDrmY+QLXbrVK7gPF5M3Nq0zW+khZLREmqH+XLLyBvNIr7VF0CnvWJ
-	 tWogPBUl6QAQJ928iSA3J1Ozqc946f/jkOME4FvIJo5RIWN2nD5R34uOHNcCanDMl7
-	 Zo670XNnsqZHREDCRcdnb9KyvIVkQZEtTzuozrugjJzcbt51mRjmWEeBs2e8OJ67EH
-	 HFQ07xDUwGFsSfOCzNXmJRCbn/80oyiWF1SiCDUm73gh5EH8tCqRLqm8ADBwD9LNy/
-	 GtEJtP9IMGyYHM2C5I22TcQVV4eoADT4Hg7BYBb2xHWD3cFz9MOvUjZZhq8eZwtkAv
-	 ZXKDa343AFY4Q==
-Subject: Re: [PATCH net-next v4 4/4] net: phy: microchip_t1s: fix collision
- detection for LAN867X Rev.D0
-From: netdev-bot+sashiko@kernel.org
-To: parthiban.veerasooran@microchip.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
- linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- UNGLinuxDriver@microchip.com
-Date: Sat, 03 Oct 2026 13:36:05 +0000
-Message-ID: <179103456563.434549.3604641648907923968@kernel.org>
-In-Reply-To: <20260929125928.611784-5-parthiban.veerasooran@microchip.com>
-References: <20260929125928.611784-5-parthiban.veerasooran@microchip.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791034680;
+	bh=R73yQ3jH6GvWRUmndkK++08QPLSVcxmoMOlppi3GsLA=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
+	b=gkmkDHPqUMMEtJPnPIOMYKgusfwkkGQEnExjtK270Y2aRbiYJ3J4owePAH7MtL6Rs
+	 +pMqnV/CZm5MYSpNN7FmqXellpG1au572wfMvXsVpqxuzSTl8BIQaJmYIN6pmHxB2Q
+	 pUsvROA1pc1L17BJPC4Gvm2lmigBOjO2SplnnyiNsXwdcW+Y3z43ZKYyBpPVT6TdoF
+	 U+hdWghywMfDda2XiTxIG1e8dozBnHR3Iqcquh/ua1ak/G/1oC/9sB5OnR7VtyNHx/
+	 6OImIsZsSatsjCyIyREHFrdadfKfdI4QrrbYGRRLBnMSvrzWdFQKxNSjaQ4nSvmeST
+	 JwxnMPTbu497g==
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5bcb81018ecso229064e87.2
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 06:38:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxZ2bE2cfY5sXgLErTn8Cf2IYmmzZmq3NRg7jrfQrBV5wLEYDMc4Xw+LlAPGUuIxRKb53m5g7Y=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKFCEimes5AxwUcWILaTtokt1F1dBm/K5UZfGU2sMY1xTmiCg5P
+	EEpBUAZ0/jMJLSzwGEZPY2hj+nPeRjz5sPB38XWr3WJnKLlm2cGNVJLMmijeV7rQ5QX2krbXIVN
+	ZPVhTdbhJbQkWl82iA8VmxMgH8C7svJo=
+X-Received: by 2002:a05:651c:b11:b0:3a7:7a0e:5703 with SMTP id
+ 38308e7fff4ca-3a87ed423a1mr16877761fa.2.1791034678614; Sat, 03 Oct 2026
+ 06:37:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
+In-Reply-To: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Sat, 3 Oct 2026 21:37:45 +0800
+X-Gmail-Original-Message-ID: <CAGb2v66O7Ze=TiHO_5q=76QpU8ZXraFyV+HfO+_HpkTDr1U-nQ@mail.gmail.com>
+X-Gm-Features: AclHuK8VXX-H-epbJc-LIAYuxq6Cwq5Gper5Df4uf2UiYK9NyxKckBCIfgbI7oY
+Message-ID: <CAGb2v66O7Ze=TiHO_5q=76QpU8ZXraFyV+HfO+_HpkTDr1U-nQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/8] clk: sunxi-ng: Add support for Allwinner A733 CCU
+ and PRCM
+To: Junhui Liu <junhui.liu@pigmoral.tech>
+Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+	Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>, linux-clk@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, netdev@vger.kernel.org, 
+	Jerome Brunet <jbrunet@baylibre.com>, Enzo Adriano <enzo.adriano.code@gmail.com>, 
+	Andre Przywara <andre.przywara@arm.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, Yixun Lan <dlan@gentoo.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Wed, Sep 30, 2026 at 1:27=E2=80=AFAM Junhui Liu <junhui.liu@pigmoral.tec=
+h> wrote:
+>
+> Add support for the main CCU and the PRCM module (R-CCU) found in the
+> Allwinner A733 SoC. The clock architecture is derived from the previous
+> A523 design, with the MCU_CCU removed and the clock tree extended for
+> the additional functional blocks found on the A733.
+>
+> The A733 introduces a "pll-ref" clock that normalizes the physical
+> oscillator frequency, which can be 19.2MHz, 24MHz, or 26MHz, into a
+> consistent 24MHz reference for the PLL clock tree.
+>
+> The peripheral, video, and DE PLLs provide multiple independently gated
+> outputs with programmable dividers. Model these outputs as separate
+> divider-and-gate child clocks. Also follow the documented hierarchy for
+> the derived peripheral PLL outputs. The explicitly named PLL_AUDIO1 /2
+> and /5 outputs are modeled as fixed-factor clocks, with their divider
+> fields initialized accordingly.
+>
+> Also extend the sunxi-ng SDM (Sigma-Delta Modulation) support for the
+> dual-pattern register layout used by the A733 PLLs. PLL_AUDIO0 uses the
+> dual-pattern SDM support to synthesize its fractional output.
+> PLL_AUDIO1 does not expose fractional rates, but its SDM controls are
+> modeled so that stale settings left by firmware can be disabled when an
+> integer rate is programmed.
 
-Critical: 0 · High: 0 · Medium: 2 (1) · Low: 2
+Some of the clock controls, like the PLL and AHB/APB bus dividers, are
+secure by default and need to be set to non-secure for Linux to be able
+to use them properly. And there is also a TWD clock in the PRCM that the
+user manual says is secure only.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Have you given any thought to this? If we end up having to convert to
+SCMI or something to handle those clocks it's going to be a bit ugly.
 
-- [Medium] On LAN867X Rev.D0 the driver never actually enables CDEN
-  (collision detection, COL_DET_CTRL0 bit 15), although the design…
-- [Medium] lan867x_revd0_config_intr() and
-  lan867x_revd0_handle_interrupt() choose the Rev.D0 link-status source…
-- [Low] In steady state, the PLCA_STS_CHANGED branch of
-  lan867x_revd0_handle_interrupt() changes nothing.
-- [Low] lan867x_revd0_config_intr() reads priv->plca_enabled and does a
-  read-then-write of PRSCTL1 and LINK_STATUS_CTRL without taking…
+And presumably things work now because the secure/non-secure access bit
+isn't in effect right now because you aren't using secure boot? At least
+this was a thing in the past...
 
-Pre-existing issues:
-- [Medium] In polling mode (no PHY IRQ), the Rev.D0 link-status selection
-  is not resynced after phy_init_hw().
 
---
+Thanks
+ChenYu
 
-net: phy: microchip_t1s: fix collision detection for LAN867X Rev.D0
 
-This commit configures CCMFC in COL_DET_CTRL0 on LAN867X Rev.D0 so that
-collision forwarding is gated by PLCA_Status in hardware. It also stops
-software CDEN toggling on Rev.D0. It adds Rev.D0 specific config_intr and
-handle_interrupt callbacks that re-evaluate the link status selection
-(forcing the semaphore source when CSMA/CD fallback is enabled), and sets
-PHY_POLL_CABLE_TEST for Rev.D0.
-
-> diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
-> index 5ce0304bf0952..d667f57aa4a8f 100644
-> --- a/drivers/net/phy/microchip_t1s.c
-> +++ b/drivers/net/phy/microchip_t1s.c
-
-[ ... ]
-
-> @@ -542,7 +574,7 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
->  	 * (not -1, which means "don't change").
->  	 */
->  	if (phydev->phy_id == PHY_ID_LAN867X_REVD0 && plca_cfg->enabled != -1) {
-> -		ret = lan867x_revd0_link_active_selection(phydev,
-> +		ret = lan867x_revd0_update_link_selection(phydev,
->  							  plca_cfg->enabled);
->  		if (ret)
->  			return ret;
-> @@ -555,6 +587,12 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
->  	if (plca_cfg->enabled != -1)
->  		priv->plca_enabled = plca_cfg->enabled;
->  
-
-[Severity: Low]
-Can the Rev.D0 link selection end up based on the old enable state here?
-lan86xx_plca_set_cfg() writes the selection from plca_cfg->enabled above.
-It updates priv->plca_enabled only here and does not recompute afterwards.
-
-lan867x_revd0_config_intr() reads priv->plca_enabled and then does the
-PRSCTL1 read and the LINK_STATUS_CTRL write without taking phydev->lock
-or priv->cden_lock. The sibling lan86xx_config_intr() does take cden_lock
-for its resync. The commit that added it notes that config_intr() is not
-guaranteed to run under phydev->lock.
-
-If lan867x_revd0_config_intr() runs between those two steps, it would
-write a selection based on the old cached value. Nothing would correct
-that until the next PSTC event. The unlocked read of priv->plca_enabled
-is also a data race.
-
-I couldn't find a concrete caller for this PHY that runs phy_init_hw()
-at the same time as an ethtool PLCA set. Some MAC drivers do call
-phy_init_hw() from their own work or reset paths, though.
-
-> +	/* LAN867X Rev.D0 uses CCMFC for autonomous collision detection
-> +	 * gating; CDEN remains enabled and does not require software toggling.
-> +	 */
-> +	if (phydev->phy_id == PHY_ID_LAN867X_REVD0)
-> +		return 0;
-> +
-
-[ ... ]
-
-> @@ -582,6 +620,20 @@ static int lan867x_revd0_config_init(struct phy_device *phydev)
->  			return ret;
->  	}
->  
-> +	/* AN1699: Configure CCMFC (Collision Counting and MAC Forwarding
-> +	 * Control) to OA default (0x1) so that the hardware autonomously gates
-> +	 * collision forwarding to the MAC based on the live PLCA_Status:
-> +	 * collisions are neither counted nor forwarded when PLCA_Status is OK,
-> +	 * and are counted/forwarded when not OK. This eliminates the need for
-> +	 * software-driven CDEN toggling. CDEN defaults to enabled on Rev.D0
-> +	 * and remains enabled.
-> +	 */
-> +	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
-> +			     COL_DET_CTRL0_CCMFC_MASK,
-> +			     COL_DET_CTRL0_CCMFC_OA_DEFAULT);
-
-[Severity: Medium]
-This call only changes bits 10:9 of COL_DET_CTRL0, so bit 15 (CDEN)
-keeps whatever value the PHY already has. Does anything on Rev.D0
-actually set CDEN?
-
-The comment added above lan86xx_plca_set_cfg() says:
-
-  CDEN remains permanently enabled in config_init()
-
-However, this phy_modify_mmd() does not write COL_DET_ENABLE, and
-lan867x_revd0_fixup_regs[] has no entry for 0x0087. Rev.D0 also has no
-.soft_reset, so phy_init_hw() does not reset the PHY back to its
-defaults before config_init() runs.
-
-Before this patch, lan86xx_plca_set_cfg() cleared CDEN on Rev.D0
-whenever PLCA was enabled. It did this through lan86xx_update_cden(),
-and through a direct COL_DET_DISABLE write since commit 78341049fbcd.
-With the new early return in lan86xx_plca_set_cfg():
-
-	if (phydev->phy_id == PHY_ID_LAN867X_REVD0)
-		return 0;
-
-no Rev.D0 path writes CDEN any more.
-
-Suppose the PHY comes up with CDEN=0 and is not power cycled. Two
-examples are a warm reboot or kexec from an older kernel after
-"ethtool --set-plca-cfg ... enable on", and a bootloader that followed
-the older AN1699 advice. Would CDEN then stay disabled for good?
-
-CCMFC only controls whether detected collisions are counted and
-forwarded. In that case, CSMA/CD operation (PLCA disabled, or the
-autonomous fallback) would run with no collision detection.
-
-Could COL_DET_CTRL0_ENABLE_BIT_MASK and COL_DET_ENABLE be added to this
-phy_modify_mmd() call?
-
-[ ... ]
-
-> @@ -712,6 +764,76 @@ static irqreturn_t lan86xx_handle_interrupt(struct phy_device *phydev)
->  	return ret_irq;
->  }
->  
-> +static int lan867x_revd0_config_intr(struct phy_device *phydev)
-> +{
-> +	u16 mask = LAN86XX_STS1_PLCA_STS_CHANGED |
-> +		   LAN86XX_STS1_LINK_STS_CHANGED;
-> +	struct lan86xx_priv *priv = phydev->priv;
-> +	int sts1, ret;
-> +
-> +	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-> +		/* Read to clear any pending status before enabling. */
-> +		sts1 = lan86xx_read_clear_sts1(phydev);
-> +		if (sts1 < 0)
-> +			return sts1;
-> +
-> +		/* STS1 may have cleared a pending PSTC while masked, and a
-> +		 * missed PSTC leaves no trace to key off, so unconditionally
-> +		 * resync the link-status-selection source from the current
-> +		 * PLCA enable state and fallback configuration.
-> +		 */
-> +		ret = lan867x_revd0_update_link_selection(phydev,
-> +							  priv->plca_enabled);
-
-[Severity: Medium]
-Can priv->plca_enabled be stale at this point? Only
-lan86xx_plca_set_cfg() writes it, and the PHY can be hardware reset
-while the driver stays bound.
-
-For example, phy_detach() asserts the reset GPIO with
-phy_device_reset(phydev, 1). A MAC that connects the PHY in ndo_open and
-disconnects it in ndo_stop therefore resets it on every ifdown/ifup.
-Losing power across suspend has the same effect.
-
-Suppose PLCA was enabled with ethtool, so priv->plca_enabled == 1. The
-next attach then does:
-
-phy_attach_direct()
-  phy_init_hw()
-    lan867x_revd0_config_init()
-      lan867x_revd0_link_active_selection(phydev, false)  /* SEMAPHORE */
-...
-phy_request_interrupt()
-  phy_enable_interrupts()
-    phy_config_interrupt()
-      lan867x_revd0_config_intr()
-        lan867x_revd0_update_link_selection(phydev, 1)    /* PLCA_STATUS */
-
-If PRSCTL1 fallback reads 0, this selects LINK_STATUS_CONFIG_PLCA_STATUS
-while PLCA_EN is 0 in hardware. Would the BMSR link then stay down until
-userspace runs ethtool --set-plca-cfg again? The PSTC branch in
-lan867x_revd0_handle_interrupt() uses the same cached value, so it would
-not recover this either.
-
-Before this patch, Rev.D0 had no config_intr. The SEMAPHORE selection
-from config_init() stayed in place and the link came up.
-
-Would reading the PLCA_EN bit from MDIO_OATC14_PLCA_CTRL0 here, or
-resyncing priv->plca_enabled from hardware in config_init(), avoid this?
-
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		return lan86xx_set_intr_mask(phydev, mask, true);
-> +	}
-> +
-> +	ret = lan86xx_set_intr_mask(phydev, mask, false);
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch.
-The resync above only runs in the PHY_INTERRUPT_ENABLED branch.
-
-In polling mode, phy_init_hw() calls lan867x_revd0_config_init(), which
-always forces the SEMAPHORE source. It then calls
-lan867x_revd0_config_intr(), which takes this disable branch and never
-calls lan867x_revd0_update_link_selection().
-
-If the PHY was not reset (resume without power loss, or re-attach
-without a reset GPIO), PLCA_EN and priv->plca_enabled both remain 1.
-With fallback disabled, is the link then forced up instead of following
-PLCA_Status until ethtool --set-plca-cfg runs again?
-
-config_init() has forced SEMAPHORE on every re-init since commit
-07f5765f26c3. This patch adds the resync only for interrupt mode.
-
-[ ... ]
-
-> +static irqreturn_t lan867x_revd0_handle_interrupt(struct phy_device *phydev)
-> +{
-
-[ ... ]
-
-> +	if (sts1 & LAN86XX_STS1_PLCA_STS_CHANGED) {
-> +		/* Re-evaluate the link-status selection when PLCA status
-> +		 * changes. A resulting link-status change raises
-> +		 * LINK_STS_CHANGED, which triggers the PHY state machine.
-> +		 */
-> +		ret = lan867x_revd0_update_link_selection(phydev,
-> +							  priv->plca_enabled);
-
-[Severity: Low]
-Can this call ever change LINK_STATUS_CTRL in steady state?
-lan867x_revd0_update_link_selection() only looks at PRSCTL1 bit 10
-(through lan86xx_fallback_to_csmacd()) and the cached
-priv->plca_enabled. It never reads PLCA_STATUS.
-
-This driver only reads PRSCTL1 and never writes it. priv->plca_enabled
-only changes in lan86xx_plca_set_cfg(), which has already written the
-selection for the new value. So each BEACON gain or loss seems to cost a
-PRSCTL1 read plus a rewrite of the same LINK_STATUS_CTRL value.
-
-The comment says a resulting link-status change raises
-LINK_STS_CHANGED. When the selection is PLCA_STATUS, though, the hardware
-already changes the link and raises LINK_STS_CHANGED on its own.
-
-The commit message also says:
-
-  The PSTC interrupt handler for Rev.D0 therefore only needs to update
-  the link status selection on each PLCA transition.
-
-Does Rev.D0 need LAN86XX_STS1_PLCA_STS_CHANGED unmasked at all? If it
-does, could the commit message and this comment be updated to say what
-the branch actually does?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929125928.611784-1-parthiban.veerasooran%40microchip.com
+> The actual parents of a small number of bus gates are not documented in
+> the user manual. Follow the vendor BSP and keep these gates parented to
+> "hosc" until more complete hardware information is available.
+>
+> This series depends on the A523 single-divider clock fixes [1], which
+> add feature support to the M-only clock macro used by the MBUS and DRAM0
+> clocks. The prerequisite series has been applied to the
+> sunxi/clk-for-7.4 branch.
+>
+> Link: https://patch.msgid.link/20260906-sunxi-clk-no-p-v1-0-cbde21c9fe69@=
+pigmoral.tech [1]
+> Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
+> ---
+> Changes in v5:
+> - Add the CLK_GIC binding ID, inserted after CLK_TRACE
+> - Add the GIC clock and mark it critical
+> - Fix the continuation line alignment of the trace clock
+> - Mark ahb-cpus critical
+> - Link to v4: https://patch.msgid.link/20260921-a733-clk-v4-0-9c184ebe9ac=
+1@pigmoral.tech
+>
+> Changes in v4:
+> - Model the MBUS and DRAM0 clocks as M-only clocks
+> - Base the series on the A523 single-divider clock fixes
+> - Link to v3: https://patch.msgid.link/20260905-a733-clk-v3-0-50f238f39c7=
+8@pigmoral.tech
+>
+> Changes in v3:
+> - Patch 1: Rename the clock/reset binding headers with the allwinner vend=
+or
+>   prefix, use BSD-2-Clause for their dual license, and reorder the bindin=
+g
+>   properties according to the preferred schema layout
+> - Patches 1 and 4: Drop the undocumented 12X suffix from the video and DE
+>   PLL core clock names and binding IDs
+> - Patch 2: Require all PAT1 enable bits to be set when checking whether S=
+DM
+>   is enabled
+> - Patch 4: Model the independently gated peripheral, video, and DE PLL
+>   outputs as programmable-divider child clocks
+> - Patch 4: Follow the documented hierarchy for the derived peripheral PLL
+>   outputs
+> - Patch 4: Model the explicitly named PLL_AUDIO1 /2 and /5 outputs as
+>   fixed-factor clocks and initialize their divider fields accordingly
+> - Patch 4: Model the PLL_AUDIO1 SDM controls so stale firmware settings a=
+re
+>   disabled when an integer rate is programmed
+> - Patch 4: Add the missing module device table and remove an unused inclu=
+de
+> - Patch 6: Replace the MP helpers used by timer clocks, which have no M
+>   divider, with the corresponding P-only helpers
+> - Patch 7: Document the unresolved parents of bus gates kept on hosc and
+>   fix the APB/AHB IOMMU1 system clock names
+> - Patches 3 and 8: Make the reset maps const
+> - Link to v2: https://patch.msgid.link/20260711-a733-clk-v2-0-974d188cbe0=
+c@pigmoral.tech
+>
+> Changes in v2:
+> - Rework the clocks property in DT bindings to source hosc directly from
+>   the oscillator to adapt to the new RTC binding
+> - Clean up the SDM dual-pattern helper macro and add the missing enable
+>   parameter for pll-audio0
+> - Number single-instance clocks with 0, e.g. GPU0, VE_ENC0/VE_DEC0,
+>   DRAM0, NAND0, GPADC0, THS0, etc
+> - Correct 8x PLL post-divider names to 12x for video and DE PLLs
+>   (pll-videoX-12x, pll-de-12x)
+> - Drop gic, cpu-peri, nsi clocks
+> - Rename clocks: OWA -> SPDIF, USB_REF -> USB01_REF, HDMI_ESM -> HDCP_ESM=
+,
+>   PWMCTRL -> PWM
+> - Mark bus-dram0, ahb-store and mbus-store critical to avoid DMA, MMC and
+>   SPI NOR failures when unused clocks are disabled
+> - Switch PRCM timer clocks to P-only helpers
+> - Fix bus gate bit positions for UARTs and correct the sysdap register
+>   address
+> - Interleave bus clocks into function clocks
+> - Link to v1: https://lore.kernel.org/r/20260310-a733-clk-v1-0-36b4e9b244=
+57@pigmoral.tech
+>
+> ---
+> Junhui Liu (8):
+>       dt-bindings: clk: sun60i-a733-ccu: Add Allwinner A733 support
+>       clk: sunxi-ng: sdm: Add dual patterns support
+>       clk: sunxi-ng: a733: Add PRCM CCU
+>       clk: sunxi-ng: a733: Add PLL clocks support
+>       clk: sunxi-ng: a733: Add bus clocks support
+>       clk: sunxi-ng: a733: Add mod clocks support
+>       clk: sunxi-ng: a733: Add bus clock gates
+>       clk: sunxi-ng: a733: Add reset lines
+>
+>  .../bindings/clock/allwinner,sun60i-a733-ccu.yaml  |  107 +
+>  drivers/clk/sunxi-ng/Kconfig                       |   10 +
+>  drivers/clk/sunxi-ng/Makefile                      |    4 +
+>  drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c           |  273 +++
+>  drivers/clk/sunxi-ng/ccu-sun60i-a733.c             | 2406 ++++++++++++++=
+++++++
+>  drivers/clk/sunxi-ng/ccu_sdm.c                     |   52 +-
+>  drivers/clk/sunxi-ng/ccu_sdm.h                     |   29 +-
+>  .../dt-bindings/clock/allwinner,sun60i-a733-ccu.h  |  291 +++
+>  .../clock/allwinner,sun60i-a733-r-ccu.h            |   39 +
+>  .../dt-bindings/reset/allwinner,sun60i-a733-ccu.h  |  129 ++
+>  .../reset/allwinner,sun60i-a733-r-ccu.h            |   23 +
+>  11 files changed, 3337 insertions(+), 26 deletions(-)
+> ---
+> base-commit: e5e04726cdd043e309677071ab1b65a4b18f422b
+> change-id: 20260202-a733-clk-0d4fc00a9f9c
+> prerequisite-message-id: <20260906-sunxi-clk-no-p-v1-0-cbde21c9fe69@pigmo=
+ral.tech>
+> prerequisite-patch-id: 0df2ae41836b86fd868dfa01ddfde57f888f761a
+> prerequisite-patch-id: 88f3a431e7c551a9fa732f062188f10fdd362eeb
+> prerequisite-patch-id: 3e88bc873c909059d1199f82cda4013765e7a5e5
+> prerequisite-patch-id: 0dbc27cd7417352319a0705a051dff35085e8922
+>
+> Best regards,
+> --
+> Junhui Liu <junhui.liu@pigmoral.tech>
+>
+>
