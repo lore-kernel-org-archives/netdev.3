@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4AC381EA9
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 01:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A533845D8
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 01:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790992691; cv=none; b=rE+OSeI8gBag8U3ssQUEGfV+ZYpg7Ka13tmrBJpcaTiiq2aqiMNBtLBGZonudVTY57qLB2pHc7bx+mEBfGS1Xh9/hbdNNHEZgFEefoDhIShgKIHmoy9mo61IpSerR9XBfjvCGad+dmOO2rHXtWKojk60ml2E81aCiNAOKuUU1eU=
+	t=1790992692; cv=none; b=YWFb2MzlkYlRj5N8JHJDkJ/KExU7wBlyy933Oc00VfBaZcZ69zI097/9eFChQ74SdjPTDE5wVzyYFxB8+kFGgAttLTad+xt4ozwjiVzZMVIJgytyR0fdJhVQDln2qKOuIhnrXJWEu2xokpwOWJGE4cyhIRCcwx5VqzwSIGA2Axk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790992691; c=relaxed/simple;
-	bh=gyf1LXy3lNnBq17O8ZgTFP3qCir25ZEMKhpx9wy2wo8=;
+	s=arc-20240116; t=1790992692; c=relaxed/simple;
+	bh=cmroKXnJCIz4HrrG2XpvDyEJXeY3XwMjRROTNLLJrVk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hTIjqB8gkQNDr1jwultRXNSaEgqsR2caJ/mlKWTQoTw5fhvgfvb31hcRd5+sDOOSbiyrrQRpu+k8wrvxTj46TBNzjhe7/Ifi6O3y55KUNZYUuYS4sKK6mFW5sChyT59g4AzopPgMlj/t3+L2RWzh2KzCRrnxOwp0AnNqxJct1j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sCDNa1tH; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=pLODh21V9JodFfaNPjHFS2vJgB1XAsK22590xJ5okUxpSu2aD8oLQn2xYFmu4MwvtIw2/GIxbmCanF04YiJFeSaGeEX8AUt/9FiF+ZqBUgfwcyNhtXkYuIs8UYxUpFqS4kC39kiAdbT+ewxRjC4P6O6+6o5dGg3+vu8iswPMvbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GLC766N0; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sCDNa1tH"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GLC766N0"
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6930NsBb1778367;
-	Sat, 3 Oct 2026 01:57:46 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6930P8Nj1780776;
+	Sat, 3 Oct 2026 01:57:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=VPCUaZsjBszWyKgm0
-	92w9w4GJ9G5XjYAhM511zRh3ck=; b=sCDNa1tH/C9syjz8eLYD3dZgsMPQau5FP
-	bDbkJF5rtHrMEZDmSKjfpQbcaYs0RijlMfPeN7WAcDdTP+BhJzW6aoea926mPeZ/
-	KnVmVBgsJipDLUe4nTuRefW837EkmHmuHXFUAV8ggu8a+4KsocjD2mcBA86M5mCN
-	RIiGSohRJzT+qJmuMeM4JzGsTtqQHYZf56PHb1RqOaF+6lNgrbXsdfAUzYBIEC+Y
-	qmj9LqlfNQ8lQAZ29ATZa21RYIbb3B0WLVqkLYfRA+RXh8SVVpjwwxgnxaXOFx3m
-	rS0y+uZsP59AKBZdoZVkhwDeU64agWxW/aMerRTcHcSY8Vl/e5I1A==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2q4j87mu-1
+	:mime-version:references:subject:to; s=pp1; bh=NI9X7DQsFH/qwQ3lN
+	loQEK/JRrsyUB9o9pUjyW+bS70=; b=GLC766N0l5El7GKHXJeYnDFYRRFZIs9zj
+	Hr/etbT6EyStY2eNfcqY5sXazmlFz1O7Lyv1usuxTqLJT7fl6PTEstCrjLDQv5D2
+	U6LHHOJEy5Xosg87U5Zrw++aXO8UgfBKpNE7U7yrtuswN24TLa48u2gxerZaPjXQ
+	PPgjOlcjd4lCF4dQSogqRG2tjfIugiWHTGeqkZTsFaOz1LFb0nYjEcY0P/EwQTyR
+	gND82Gsem2w0Vrpw1zzaowUOh8lpeCSm9mt8yhfj9FvoxMtLYo9VCogWaHvjIOGN
+	O+5wnTVLENMusHDFBfHbc4zCMEdR+C6C8Bc9K0HTdxkYypZHZfW9g==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2q4j87n7-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 03 Oct 2026 01:57:45 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 692NlwbZ3233087;
-	Sat, 3 Oct 2026 01:57:45 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h1y2dn71r-1
+	Sat, 03 Oct 2026 01:57:55 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 692NlVVF3271160;
+	Sat, 3 Oct 2026 01:57:55 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h1xk15agp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 03 Oct 2026 01:57:45 +0000 (GMT)
+	Sat, 03 Oct 2026 01:57:54 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6931vh1826411652
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6931vrv232113302
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 3 Oct 2026 01:57:43 GMT
+	Sat, 3 Oct 2026 01:57:53 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D83EE58055;
-	Sat,  3 Oct 2026 01:57:42 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 42FC658059;
+	Sat,  3 Oct 2026 01:57:53 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 98C2C5804B;
-	Sat,  3 Oct 2026 01:57:40 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id F23C45804B;
+	Sat,  3 Oct 2026 01:57:50 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.67.102.94])
 	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  3 Oct 2026 01:57:40 +0000 (GMT)
+	Sat,  3 Oct 2026 01:57:50 +0000 (GMT)
 From: Mingming Cao <mmc@linux.ibm.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
@@ -59,9 +59,9 @@ Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
         nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
         linuxppc-dev@lists.ozlabs.org, davemarq@linux.ibm.com,
         bjking1@linux.ibm.com, Mingming Cao <mmc@linux.ibm.com>
-Subject: [PATCH net-next 4/7] ibmveth: step past bad RX correlators instead of spinning or oopsing
-Date: Fri,  2 Oct 2026 18:57:16 -0700
-Message-Id: <14aa52f296c474726c049efc6b5a045187c45868.1790991039.git.mmc@linux.ibm.com>
+Subject: [PATCH net-next 7/7] ibmveth: wait for in-flight transmits in ibmveth_close()
+Date: Fri,  2 Oct 2026 18:57:19 -0700
+Message-Id: <fcee28d86e161c955425afbfa01ba55160fbbcc6.1790991039.git.mmc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <cover.1790991039.git.mmc@linux.ibm.com>
 References: <cover.1790991039.git.mmc@linux.ibm.com>
@@ -74,23 +74,23 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: GYGqmxF07dIE89jS9SG0v4oNUKYBwO23
-X-Proofpoint-GUID: KIbeYlAYtUMBdn8gtbzzSSSgIvzuNRiK
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAzMDAwNSBTYWx0ZWRfX9t4DKqyKu95e
- NQW7MsxgC7nm9Nea8Ep3UWnnDTzZx6+pN2gispVXY6KcGDuX4/cR+QkTbEY6q+ER8le2FpRIm5d
- G1bQxwLUM8+PvxKY90tV4KtA7tGrhak=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAzMDAwNSBTYWx0ZWRfX/p4htR2V/2cz
- gHfCHKszrSDBIWPavCH/gueqYRV3MTxsXa5RZ1AawbvNjbpMzMFIB80qQeKHRftWu6HQZJgtMVp
- KDPgy7FcQwSatqgkkJUpJqkKuYtlOrylyBAJFoTYhbSaZz33mkxpo/Rzer2WYOnSd+/pzX6aW/b
- 1A+QLeW29W3Lpv+3aofmBkAf5m+fP6AK4Hf78wRztgzdKHKWs+JoT3Pcnp2gtudvt9vcVjhc21P
- 7TFi1h5Y+dQ1XuYzhgw+PxnQ/Pv9ryi7TnOm9gNN59KkAm1sSbMlZGKMGpj9exoxnp+Tc2Zqs59
- gAQtqfRuzk4CDJc4k87l6+yTF6BLa+Um7375kwUBGdU/256jsWhzJ9yX2GEUBPh0MZvwdVjpy2r
- YZLt/ruUNsf9B84jhq0pV/OkreP4CY5XtF2Jrg/5j8k6E8TLgTJHg+fPvORXTohQ0ivmqkI6/cx
- apNeUmHa6mVH507Qoeg==
-X-Authority-Analysis: v=2.4 cv=eYeo7LEH c=1 sm=1 tr=0 ts=6ac0611a cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Proofpoint-ORIG-GUID: RLHkcwMRPwWZZ4tUyFEZpqQKyZxYohv-
+X-Proofpoint-GUID: Qja7TpskROvl5YPt4XWlqHgbttk_KLH3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDAzMDAwNSBTYWx0ZWRfX96Gg+kReJ2uz
+ jtUlLmYmxEX0rMiw57GDbvTVF5h8o/LkXg677gpzefEoM7/K3Zmh1xbK9Om4LlSI6jL+zwCoonG
+ VflZoNBBheTAq33fKkj0xVeab12nzh0=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDAzMDAwNSBTYWx0ZWRfX+RTvQb5mRhlV
+ s8+vIJeed9byWMV/lfXF427/zQTF00uk3Di7CFYtQaDy39Falrb0py3ckiKyW5EUYWzyVpllom5
+ BkiRdNkLzBEd+kflYe8cn+vS1Jv3HotBkhucKCIAxzMbSFuC7O0XdejHpTFhVFzGPlzK3r1Z2YL
+ UBHvTkud545MiPLRhsLoauALWgFb4VvCblhVohTgc721gy/E4w/+MrYNLNA2nHvJRdoPCxSNf+A
+ WF1ZRO+vPnOtwv2q61L3FE4dESItelompm4+fI0lWPLFx0UCR0wUrlM6vYqDk7MR74PH5jCI0+b
+ /B0bsCGi57kvlAyGCBNmj7D7H4wrUJgzkaJ6SXkCohiVJNtXEl3Crx9tNSgYt7uMAcjYxb5uAWG
+ 4WnzFCm6UW0SJG+uH+G0pOFnY8GzQYmz9/9xZNf3RXZo6IEeQeG9A+BQwoCTdrN6Hk1roWbeo2a
+ yqkZM7BMw1IsHlLD7JA==
+X-Authority-Analysis: v=2.4 cv=eYeo7LEH c=1 sm=1 tr=0 ts=6ac06124 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=o7Lj9WSxMYmEPoeJ8j0A:9
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=4X-BtLuwBG46RJIdyTYA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-02_07,2026-10-02_02,2025-10-01_01
@@ -100,338 +100,38 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610030005
 
-ibmveth_poll() mishandles a bad RX correlator from PHYP in two ways.
+ibmveth_close() frees the TX buffers after netif_tx_stop_all_queues(),
+which does not wait for an ibmveth_start_xmit() already running on
+another CPU. That transmit can copy into a freed buffer and hand PHYP
+a stale DMA address.
 
-If harvest fails or ibmveth_rxq_get_buffer() returns NULL, poll
-breaks out without advancing the ring and restarts on the same slot
-forever. For an out-of-range correlator it also fires a WARN_ON() and
-schedules a reset each pass, but the reset is queued on that CPU and
-never runs, and the CPU stalls RCU, so RTNL holders hang too. This
-dates from the first commit in Fixes:, which turned the BUG_ON()s
-here into WARN_ON() plus a reset.
+ifdown and the reset work go through dev_close(), which drains TX
+first, but MTU, csum/TSO and buffer pool changes call ibmveth_close()
+directly while traffic flows.
 
-The range check also accepts a correlator naming an inactive buffer
-pool (pools 2 and 3 by default), whose skbuff array is NULL, so the
-lookup dereferences NULL in softirq. Pools became inactive with the
-second commit in Fixes:.
+Use netif_tx_disable(), which waits for running transmits.
 
-Validate the correlator in one helper that also rejects a pool with
-no skbuff array. On a bad slot, advance the ring, count the drop in
-rx_dropped and still schedule the reset, which rebuilds the pools.
-The correlator comes from PHYP, and with the ring advancing a burst
-of bad slots would WARN once per slot (and panic with
-panic_on_warn), so use a ratelimited netdev_err() instead. Also free
-the rx_copybreak skb if harvest fails there.
+The race was not reproduced. Tested on a POWER10 LPAR with MTU changes
+during a ping flood, with no warnings.
 
-Add a KUnit case for harvest advancing on errors and extend the
-existing cases to an inactive pool; on the unfixed driver the first
-fails and the others oops.
-
-Hitting either bug needs PHYP to return a bad correlator, so neither was
-reproduced on hardware. Tested with KUnit on qemu pseries (ppc64le), and
-on a POWER10 LPAR with a ping flood and MTU changes under traffic.
-
-Fixes: 2c91e2319ed9 ("net: ibmveth: Reset the adapter when unexpected states are detected")
-Fixes: 860f242eb534 ("[PATCH] ibmveth change buffer pools dynamically")
+Fixes: d6832ca48d8a ("ibmveth: Copy tx skbs into a premapped buffer")
 Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
 ---
- drivers/net/ethernet/ibm/ibmveth.c | 171 ++++++++++++++++++++++++-----
- 1 file changed, 143 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/ibm/ibmveth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 77d3740cc52a..b89ce389d951 100644
+index 132c740b5844..5acd5e49b0ad 100644
 --- a/drivers/net/ethernet/ibm/ibmveth.c
 +++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -443,6 +443,37 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
- 	}
- }
+@@ -827,7 +827,7 @@ static int ibmveth_close(struct net_device *netdev)
  
-+/* The correlator comes back from PHYP; a bad one schedules a reset. */
-+static bool ibmveth_rxq_correlator_valid(struct ibmveth_adapter *adapter,
-+					 u64 correlator)
-+{
-+	unsigned int index = correlator & 0xffffffffUL;
-+	unsigned int pool = correlator >> 32;
-+
-+	/* An inactive pool keeps its size but has no skbuff array. */
-+	if (pool < IBMVETH_NUM_BUFF_POOLS &&
-+	    index < adapter->rx_buff_pool[pool].size &&
-+	    adapter->rx_buff_pool[pool].skbuff)
-+		return true;
-+
-+	if (net_ratelimit())
-+		netdev_err(adapter->netdev,
-+			   "invalid RX correlator %llx, resetting\n",
-+			   correlator);
-+	schedule_work(&adapter->work);
-+	return false;
-+}
-+
-+static void ibmveth_rxq_no_skb(struct ibmveth_adapter *adapter,
-+			       u64 correlator)
-+{
-+	if (net_ratelimit())
-+		netdev_err(adapter->netdev,
-+			   "no buffer for RX correlator %llx, resetting\n",
-+			   correlator);
-+	schedule_work(&adapter->work);
-+}
-+
- /**
-  * ibmveth_remove_buffer_from_pool - remove a buffer from a pool
-  * @adapter: adapter instance
-@@ -451,7 +482,8 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
-  *
-  * Return:
-  * * %0       - success
-- * * %-EINVAL - correlator maps to pool or index out of range
-+ * * %-EINVAL - correlator maps to pool or index out of range, or to an
-+ *              inactive pool
-  * * %-EFAULT - pool and index map to null skb
-  */
- static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
-@@ -462,15 +494,12 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
- 	unsigned int free_index;
- 	struct sk_buff *skb;
+ 	napi_disable(&adapter->napi);
  
--	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
--	    WARN_ON(index >= adapter->rx_buff_pool[pool].size)) {
--		schedule_work(&adapter->work);
-+	if (!ibmveth_rxq_correlator_valid(adapter, correlator))
- 		return -EINVAL;
--	}
+-	netif_tx_stop_all_queues(netdev);
++	netif_tx_disable(netdev);
  
- 	skb = adapter->rx_buff_pool[pool].skbuff[index];
--	if (WARN_ON(!skb)) {
--		schedule_work(&adapter->work);
-+	if (!skb) {
-+		ibmveth_rxq_no_skb(adapter, correlator);
- 		return -EFAULT;
- 	}
- 
-@@ -510,14 +539,23 @@ static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *ada
- 	u64 correlator = adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator;
- 	unsigned int pool = correlator >> 32;
- 	unsigned int index = correlator & 0xffffffffUL;
-+	struct sk_buff *skb;
- 
--	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
--	    WARN_ON(index >= adapter->rx_buff_pool[pool].size)) {
--		schedule_work(&adapter->work);
-+	if (!ibmveth_rxq_correlator_valid(adapter, correlator))
- 		return NULL;
--	}
- 
--	return adapter->rx_buff_pool[pool].skbuff[index];
-+	skb = adapter->rx_buff_pool[pool].skbuff[index];
-+	if (!skb)
-+		ibmveth_rxq_no_skb(adapter, correlator);
-+	return skb;
-+}
-+
-+static void ibmveth_rxq_advance(struct ibmveth_adapter *adapter)
-+{
-+	if (++adapter->rx_queue.index == adapter->rx_queue.num_slots) {
-+		adapter->rx_queue.index = 0;
-+		adapter->rx_queue.toggle = !adapter->rx_queue.toggle;
-+	}
- }
- 
- /**
-@@ -528,6 +566,9 @@ static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *ada
-  *
-  * Context: called from ibmveth_poll
-  *
-+ * The ring advances even on error, so poll does not return to a bad
-+ * slot before the scheduled reset can run.
-+ *
-  * Return:
-  * * %0    - success
-  * * other - non-zero return from ibmveth_remove_buffer_from_pool
-@@ -540,15 +581,9 @@ static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
- 
- 	cor = adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator;
- 	rc = ibmveth_remove_buffer_from_pool(adapter, cor, reuse);
--	if (unlikely(rc))
--		return rc;
-+	ibmveth_rxq_advance(adapter);
- 
--	if (++adapter->rx_queue.index == adapter->rx_queue.num_slots) {
--		adapter->rx_queue.index = 0;
--		adapter->rx_queue.toggle = !adapter->rx_queue.toggle;
--	}
--
--	return 0;
-+	return rc;
- }
- 
- static void ibmveth_free_tx_ltb(struct ibmveth_adapter *adapter, int idx)
-@@ -1468,6 +1503,7 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 	int frames_processed = 0;
- 	unsigned long lpar_rc;
- 	u16 mss = 0;
-+	int rc;
- 
- restart_poll:
- 	while (frames_processed < budget) {
-@@ -1490,8 +1526,11 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 			__sum16 iph_check = 0;
- 
- 			skb = ibmveth_rxq_get_buffer(adapter);
--			if (unlikely(!skb))
-+			if (unlikely(!skb)) {
-+				ibmveth_rxq_advance(adapter);
-+				netdev->stats.rx_dropped++;
- 				break;
-+			}
- 
- 			/* if the large packet bit is set in the rx queue
- 			 * descriptor, the mss will be written by PHYP eight
-@@ -1515,12 +1554,19 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 				if (rx_flush)
- 					ibmveth_flush_buffer(skb->data,
- 						length + offset);
--				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, true)))
-+				rc = ibmveth_rxq_harvest_buffer(adapter, true);
-+				if (unlikely(rc)) {
-+					dev_kfree_skb_any(new_skb);
-+					netdev->stats.rx_dropped++;
- 					break;
-+				}
- 				skb = new_skb;
- 			} else {
--				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, false)))
-+				rc = ibmveth_rxq_harvest_buffer(adapter, false);
-+				if (unlikely(rc)) {
-+					netdev->stats.rx_dropped++;
- 					break;
-+				}
- 				skb_reserve(skb, offset);
- 			}
- 
-@@ -2200,8 +2246,7 @@ static void ibmveth_reset_kunit(struct work_struct *w)
-  * @test: pointer to kunit structure
-  *
-  * Tests the error returns from ibmveth_remove_buffer_from_pool.
-- * ibmveth_remove_buffer_from_pool also calls WARN_ON, so dmesg should be
-- * checked to see that these warnings happened.
-+ * Each error also logs a ratelimited netdev_err.
-  *
-  * Return: void
-  */
-@@ -2210,6 +2255,7 @@ static void ibmveth_remove_buffer_from_pool_test(struct kunit *test)
- 	struct ibmveth_adapter *adapter = kunit_kzalloc(test, sizeof(*adapter), GFP_KERNEL);
- 	struct ibmveth_buff_pool *pool;
- 	u64 correlator;
-+	int ret;
- 
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter);
- 
-@@ -2233,6 +2279,13 @@ static void ibmveth_remove_buffer_from_pool_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
- 	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
- 
-+	/* Pool 2 is in range but has no skbuff array, like an inactive pool. */
-+	correlator = ((u64)2 << 32) | 0;
-+	ret = ibmveth_remove_buffer_from_pool(adapter, correlator, false);
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ret);
-+	ret = ibmveth_remove_buffer_from_pool(adapter, correlator, true);
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ret);
-+
- 	correlator = (u64)0 | 0;
- 	pool->skbuff[0] = NULL;
- 	KUNIT_EXPECT_EQ(test, -EFAULT, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
-@@ -2245,9 +2298,8 @@ static void ibmveth_remove_buffer_from_pool_test(struct kunit *test)
-  * ibmveth_rxq_get_buffer_test - unit test for ibmveth_rxq_get_buffer
-  * @test: pointer to kunit structure
-  *
-- * Tests ibmveth_rxq_get_buffer. ibmveth_rxq_get_buffer also calls WARN_ON for
-- * the NULL returns, so dmesg should be checked to see that these warnings
-- * happened.
-+ * Tests ibmveth_rxq_get_buffer. Each NULL return also logs a ratelimited
-+ * netdev_err.
-  *
-  * Return: void
-  */
-@@ -2284,6 +2336,10 @@ static void ibmveth_rxq_get_buffer_test(struct kunit *test)
- 	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | adapter->rx_buff_pool[0].size;
- 	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
- 
-+	/* Pool 2 is in range but has no skbuff array, like an inactive pool. */
-+	adapter->rx_queue.queue_addr[0].correlator = (u64)2 << 32 | 0;
-+	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
-+
- 	pool->skbuff[0] = skb;
- 	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | 0;
- 	KUNIT_EXPECT_PTR_EQ(test, skb, ibmveth_rxq_get_buffer(adapter));
-@@ -2291,9 +2347,68 @@ static void ibmveth_rxq_get_buffer_test(struct kunit *test)
- 	flush_work(&adapter->work);
- }
- 
-+/**
-+ * ibmveth_rxq_harvest_buffer_test - unit test for ibmveth_rxq_harvest_buffer
-+ * @test: pointer to kunit structure
-+ *
-+ * A bad correlator must still advance the RX ring, wrapping and flipping
-+ * the toggle at the end. This covers the harvest path; the advance after
-+ * ibmveth_rxq_get_buffer() fails in ibmveth_poll() is not tested here.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_rxq_harvest_buffer_test(struct kunit *test)
-+{
-+	struct ibmveth_adapter *adapter;
-+	struct ibmveth_buff_pool *pool;
-+	int ret;
-+
-+	adapter = kunit_kzalloc(test, sizeof(*adapter), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter);
-+
-+	INIT_WORK(&adapter->work, ibmveth_reset_kunit);
-+
-+	adapter->rx_queue.num_slots = 2;
-+	adapter->rx_queue.index = 0;
-+	adapter->rx_queue.toggle = 1;
-+	adapter->rx_queue.queue_addr =
-+		kunit_kcalloc(test, 2, sizeof(struct ibmveth_rx_q_entry),
-+			      GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter->rx_queue.queue_addr);
-+
-+	/* Set sane values for buffer pools */
-+	for (int i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+					 pool_count[i], pool_size[i],
-+					 pool_active[i]);
-+
-+	pool = &adapter->rx_buff_pool[0];
-+	pool->skbuff = kunit_kcalloc(test, pool->size, sizeof(void *),
-+				     GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool->skbuff);
-+
-+	/* Slot 0: pool out of range. Slot 1: valid, but no skb. */
-+	adapter->rx_queue.queue_addr[0].correlator =
-+		(u64)IBMVETH_NUM_BUFF_POOLS << 32 | 0;
-+	adapter->rx_queue.queue_addr[1].correlator = (u64)0 << 32 | 0;
-+
-+	ret = ibmveth_rxq_harvest_buffer(adapter, true);
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ret);
-+	KUNIT_EXPECT_EQ(test, 1ULL, adapter->rx_queue.index);
-+	KUNIT_EXPECT_EQ(test, 1ULL, adapter->rx_queue.toggle);
-+
-+	ret = ibmveth_rxq_harvest_buffer(adapter, true);
-+	KUNIT_EXPECT_EQ(test, -EFAULT, ret);
-+	KUNIT_EXPECT_EQ(test, 0ULL, adapter->rx_queue.index);
-+	KUNIT_EXPECT_EQ(test, 0ULL, adapter->rx_queue.toggle);
-+
-+	flush_work(&adapter->work);
-+}
-+
- static struct kunit_case ibmveth_test_cases[] = {
- 	KUNIT_CASE(ibmveth_remove_buffer_from_pool_test),
- 	KUNIT_CASE(ibmveth_rxq_get_buffer_test),
-+	KUNIT_CASE(ibmveth_rxq_harvest_buffer_test),
- 	{}
- };
+ 	h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_DISABLE);
  
 -- 
 2.39.3 (Apple Git-146)
