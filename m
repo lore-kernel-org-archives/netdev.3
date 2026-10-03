@@ -1,153 +1,202 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1199E37B00E
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 09:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD583FA5FA
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 09:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791021304; cv=none; b=GKnDuioEADyFnt1BUl5SVLOEUm9I+7sFAUDfzCfaeqG5OM3mLDUgAOjcXoA0V235Kttbe+fYUR5xnKB0lpxAFj9T3vC3Ij4+ElyTnVZtRZMxmruc8LEQinGtUxSkROKfdQpm2ijnYlaSZ9DtJqvy/JeJVoGbzAEiS6Q9aO3/vX8=
+	t=1791021317; cv=none; b=cb3wD8BqK6MakQbteDWLYQzjyA5yQfH0/sq66e+1nRZeKllYEFNS6hLasrHnFrfUS9cAgCxEP0Bz/P76D0aoJuLvcfzLxEfjLh9pNLeZMHPbKmCKUQ/ScCLDhzKXaP7VAXfvkKyTSoQGgDoPhwtpqX+MFEC8sTizbvpX2m/H6V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791021304; c=relaxed/simple;
-	bh=cqoC/mpI00uBeyIZHK4KcDf5NQYVnPkZr/zaNcMKN1U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Slw1H+wP1BBPb2oKOk3DsmWThJqkj/H4g3YPLlJw2VNP639thZGmY05nGn6fBBwJB/c/X0rvwvKToh24arE5G5aSDIOKeXAUIHiO1suiDmBkTLVZ8hCRGvTJOY4Vq9KgXXpD/5loVPa1CyYnM1y0ZpHFu5VX2Hhye2sXSHIz/jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=cNAvFfEv; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1791021317; c=relaxed/simple;
+	bh=NHfm0Eh0e5c3LLN1fFu1fRbBPZmobkgTphSr2BvPs88=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=L/EAJWtMVro9+IHvHvE/v/5Q3+PnhrP9S5SHWggSNh8ToLMCCk9Ocoki8BfZveqCN817jmb8rglxhKUnhphQrNWrN66TUbfYdba6xjOeyw8Tq8i38X9kVa+x23XVWVrbA0ilsngQJNBFRBZM6wZnVRvWSG7mbPxf4bXBUZGwSJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hS8YNAQ8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=noE5U2M2; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="cNAvFfEv"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-9144e8021d3so9197306d6.3
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 02:55:02 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hS8YNAQ8";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="noE5U2M2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791021314;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tQ8GTJMyG/70amiU9TQuHecr5ANRYYJaxoKqzMbMzN0=;
+	b=hS8YNAQ8/rU27PjonS4QU82QhdHzEK6NoEWbmn1fKlicwajvg7nrNmiGNFeS4oBwfDN1Sp
+	qw/fcBswjGOaVuEMB/qsevNkTaDIofQOzWbdes4486YRipCut837pLD1HML84r+oAtPGvS
+	sVc2Xc1RII2oD3JpzuWWDYYMaDCARrY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-340-tM1rRuCKNZqGmwbow9C3oA-1; Sat, 03 Oct 2026 05:55:11 -0400
+X-MC-Unique: tM1rRuCKNZqGmwbow9C3oA-1
+X-Mimecast-MFC-AGG-ID: tM1rRuCKNZqGmwbow9C3oA_1791021310
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a01ba12198so5047695e9.1
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 02:55:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791021302; x=1791626102; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yXMN+/zb28CkK1fnScLZHRvDxt7URwPd+oZeBLTFd18=;
-        b=cNAvFfEvJN3glHvogLgb/ErlbpKdYjEB8LMFyRIN7S8fjViCYfZ9rgaUBrf/oUcat1
-         6QHZMz6yBI2W0rfo8lw3119KHPCY8aaswpbjmLfqSJFwyBHfJW1DT5Ag0NCxSLgGYEv3
-         ql+pJHcsY0RddurdH9hzInm/dmCZAosLI8sKo=
+        d=redhat.com; s=google; t=1791021310; x=1791626110; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=tQ8GTJMyG/70amiU9TQuHecr5ANRYYJaxoKqzMbMzN0=;
+        b=noE5U2M2y5mmq+Vd/HOmuubDeUj9xH5I9SB5ud7h1b/jdSpbR+p7UIXYaUIAmXesnD
+         YyHSj0SNXxy5hp7VkO8TK7vf4EhEc84+ntkw+GyRUzkhicynII9Fp/kVsP7zWCbgFQiC
+         lnpYB9onbPRCh5X6p8Qr9gyPkxyc5fwHHz6QDwAHN0g0II2HDFQD/qnG7q4EjHFg2V60
+         mHuMm5ZLW0NqHVCpZ/wmVtAeYTJ97D6TBfBHUmGZvOh2w4/1fVQWA1IFzN7Qu9FrhqNU
+         du26bCTyM9CZt8LjGcE2lpjxpN9wDplK0rLG7820T7BEGwk9OGp/UEeEgwXiTcrrMTs4
+         1mjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791021302; x=1791626102;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yXMN+/zb28CkK1fnScLZHRvDxt7URwPd+oZeBLTFd18=;
-        b=xfO37wwq3Jmy1czqQvZ8evxzZNc8GLUEUPq0T7HrpAkfPmH82wxZQ4YCRKarWi8wqp
-         o8gbUQoj6NS8ztjkUHyrH/kwCEsUN3IX2KchLGUZGeO6XgrubDT/vfOu44NefcleXX2x
-         zLrMaHh5pQsbnvQaO0en1e6tkb2UVBznLSWt0KL1mDJSFAXmdglB4kqgHDlLTX0IS7SN
-         uYtPp59FfJDbH32bv1Xf0pB4kQHM0WPys/o3OvIuX7dL+q+gXhWV9oZi8FYS9gg9/tkG
-         XSg2Aku6V+EcwgEqMyqjExK28D1pKXLQRehHK+/zcGBc8Y3iIbo2NFlBdmI+8Akb3efr
-         FwWw==
-X-Gm-Message-State: AFuF++npOh54C0H3ZmAikpqCAY3NNz9GqHbAt2xVaISX92ZEqxF7SURC
-	dbHYf6Z964ouWSBgKo+Y4T2qMUNDNnzuJJZyX5DNEILhHtdOhbAd3rHLngUYuCB321IaOQDYsi0
-	/15g=
-X-Gm-Gg: AYBFou1EvunAbpJE2RCn9razgkablECYiixW+rbmS3m7VKr18GmsKb2i+cA0Ve5P4Xj
-	VIj9zCFiwQpwWRFfoh+cKjm9twZ+82QgJQqtNcUbtGRJGoXZPBijdT22SmOTqwjZYOGvqVWyRia
-	3qi1t/Ie2mNyBlU3NLRtXfpxv4WkSTukRXCnSJyzs0O3b4S1wNFZ7CkHrB7mjexFdx9ylxAfAv9
-	Bysa+IbrQWiExaxQEWiVzXcZ8fDWWDtHC15wWpcxZp2rusqxE6I5zbgmOj5pbx7iE+C9+qcvWdm
-	OGHC5ZbiIfi7I4aJuUmBVR7xTTfbRKlrLasRh9BxLfxFYL/Y5K48aa7YHlCuabCTi3Q7xhx89GD
-	0uoqCjcobfMu/d5RUX1BBJkUU2n7mPaZZRsIUEJDVAOyKd1iE6FlRjcJGAad9P0lkEYxlY6u1EJ
-	HMSIiSMNw+NNfjbAEiczayQ8LsiLG/atbzw6ts0DGqcR8tWbDaSTsQUNT0fD4EU+ndeNjcdYBcy
-	0uyxbC1NpdECsSPmQr5DAxXcVXTQ7rp61PnPP4lVbOiBS+H+QcJ1Zb1Lub7
-X-Received: by 2002:a05:620a:29c8:b0:93a:2bdc:cd57 with SMTP id af79cd13be357-93e50e0820emr341771285a.2.1791021301991;
-        Sat, 03 Oct 2026 02:55:01 -0700 (PDT)
-Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-917e0c3e2bdsm40853956d6.49.2026.10.03.02.54.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 02:55:00 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	hybris <hybris@mojatatu.ai>,
-	sashiko-bot@kernel.org
-Subject: [PATCH net 2/2 repost2] selftests: tc-testing: add duplicate action delete batch test
-Date: Sat,  3 Oct 2026 05:54:54 -0400
-Message-ID: <QDISC-K1TH.v1.20260922072206@mojatatu.com.2>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-K1TH.v1.20260922072206@mojatatu.com>
-References: <QDISC-K1TH.v1.20260922072206@mojatatu.com>
+        d=1e100.net; s=20260707; t=1791021310; x=1791626110;
+        h=content-transfer-encoding:content-type:mime-version:message-id
+         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tQ8GTJMyG/70amiU9TQuHecr5ANRYYJaxoKqzMbMzN0=;
+        b=MmYcM5gNSC9NSr1W7RlNFA33C+Z6nq52PKSIal3iLg3DLNNaoQo8cA7CSvLuWU25Yi
+         Ygim5/8Zcp+MvyMiBqpRm3hBXExr4gSBxH3r2Vc3CF6Xg/cYwjT0o90MFyV89ijLdFSb
+         BObh1IybV0uNVu4oxyRGVie+ICoZgbjiaJSk3WkW+g1t8LiNrSbks3Wh70eJRUYnrn/5
+         +qBWgiZ0qpz9ZEgzw2oIdU+rP2iKqEu7P4SJrJqiegGT2SU83BBRIIQkxPZy+2V6MwDb
+         I/MApCTZRujnIU7AL16rMfXIqRRa+z1rcvog/CrQ1Ot4OX72wIckMyHwPdWdGnSHMgPr
+         n/rA==
+X-Forwarded-Encrypted: i=1; AKwUvBygcWxwC05LK5uUQe4eaOXEkREVU/l2dKckXxuUF/lyBGQwlyqTjHT463tkV/hHMOYU/m/V2gM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kvuWrkvsOMRw4uMQUu5Cu+R1TFu7u4wV6l1X9Wk2OASG4Lvdrl
+	lzSSy+QY44R+HbKkWTSQVcx+h3nYrZXXBST/ENUIhgCFM1LdZD0cYUWwEduagYFFcL4Ag4nU392
+	sU4TfEgSyglkz1hHuTKfP3X+aeEQ3+q9VwYoCWg5crjyWrpzOHGzPTRyNUg==
+X-Gm-Gg: AYBFou3IDSQs93Pd06w93i2n7Ily28vqwhU9x65s5OORIe9J/mNzZFvUjfoT8tRcFrD
+	72A53TYisK5Xj0MMn3IOh/5vn/tTK1EPpfw9+Ud7GnoXabbq2YthIavGyUpNd89X/YfQJNhnd8G
+	CdLVrHL5ES57XReTNql4ngoFuhvH53wPsGJEKqt6Higj8I190Enm3Xf2VrozxI1VCW8zJb1h+QT
+	wcJ0Pl6oshrGvBLvyvTvbuU2mjoqr7OYuIFzwgCE5s9QSsMOkWpND9zZo6mOwa1eCg6h/aSLhUo
+	KkMP2XwTr63fPTK1PLg1XgF5PWlbkzxN3fBypZMJyT4/0qCdsj5ed/Dxnpi5G+P/vucQImFe+Y3
+	P5tbYBHf8GklnF8uZC/qOXSybmCpUKGRMIP3wEo8=
+X-Received: by 2002:a05:600c:354a:b0:4a0:ec5:46d9 with SMTP id 5b1f17b1804b1-4a027447475mr93187345e9.0.1791021309704;
+        Sat, 03 Oct 2026 02:55:09 -0700 (PDT)
+X-Received: by 2002:a05:600c:354a:b0:4a0:ec5:46d9 with SMTP id 5b1f17b1804b1-4a027447475mr93187105e9.0.1791021309284;
+        Sat, 03 Oct 2026 02:55:09 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([2a00:e580:bf11:1:2666:d874:79e6:3214])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0280be5dfsm173800425e9.7.2026.10.03.02.55.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 03 Oct 2026 02:55:08 -0700 (PDT)
+Date: Sat, 03 Oct 2026 11:55:06 +0200
+From: Ivan Vecera <ivecera@redhat.com>
+To: intel-wired-lan@osuosl.org, Petr Oros <poros@redhat.com>,
+ netdev@vger.kernel.org
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>,
+ Henry Tieman <henry.w.tieman@intel.com>,
+ Anirudh Venkataramanan <anirudh.venkataramanan@intel.com>,
+ Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+ Jesse Brandeburg <jbrandeb@kernel.org>,
+ Preethi Banala <preethi.banala@intel.com>,
+ Kiran Patil <kiran.patil@intel.com>, Dan Nowlin <dan.nowlin@intel.com>,
+ Stephen Hemminger <stephen@networkplumber.org>,
+ intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_iwl-net_04/10=5D_ice=3A_restore_th?=
+ =?US-ASCII?Q?e_default_XPS_map_after_a_netdev_TC_change?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20261002130752.2597259-5-poros@redhat.com>
+References: <20261002130752.2597259-1-poros@redhat.com> <20261002130752.2597259-5-poros@redhat.com>
+Message-ID: <83677D09-EC66-48A1-94CA-6DE008FE1AE5@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-ID: <20261003095454.A4i__8DE05M3wQB_gihs9BDHXVQXu0XpMHEs0y-k3Ow@z>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-tca_action_gd() takes one reference per nested TCA_ACT_TAB entry while
-tcf_action_delete() consumes two per slot, so three duplicate
-TCA_ACT_INDEX entries in one RTM_DELACTION free the action mid-walk and
-the next slot dereferences it.  Assert a duplicate batch is rejected and
-the action survives.
+On October 2, 2026 3:07:46 PM GMT+02:00, Petr Oros <poros@redhat=2Ecom> wro=
+te:
+>ice_cfg_xps_tx_ring() programs the default XPS map only once per ring,
+>guarded by ICE_TX_XPS_INIT_DONE=2E netdev_reset_tc() and
+>netdev_set_num_tc() drop all XPS maps of the device, but the bit is never
+>cleared, so the default map is not programmed again=2E
+>
+>Since commit 122045ca7704 ("ice: config netdev tc before setting queues
+>number") ice_vsi_open() calls ice_vsi_cfg_netdev_tc() after the Tx
+>queues have been configured, so the map is wiped right after it was
+>written on every open and stays empty:
+>
+>  # cat /sys/class/net/enp4s0f0np0/queues/tx-*/xps_cpus
+>  0000
+>  0000
+>  =2E=2E=2E
+>
+>A DCB reconfiguration ends the same way through ice_vsi_cfg_tc()=2E
+>
+>Clear ICE_TX_XPS_INIT_DONE in ice_vsi_cfg_netdev_tc(), which resets the
+>netdev TC state, and configure the netdev TCs in ice_vsi_open() before
+>the Tx queues so the default map is applied after the reset, not before
+>it=2E
+>
+>i40e fixed the same stale bit in commit 82e0572b2302 ("i40e: Fix not
+>setting default xps_cpus after reset")=2E
+>
+>Fixes: 122045ca7704 ("ice: config netdev tc before setting queues number"=
+)
+>Assisted-by: LLM
+>Signed-off-by: Petr Oros <poros@redhat=2Ecom>
+>---
+> drivers/net/ethernet/intel/ice/ice_lib=2Ec  | 6 ++++++
+> drivers/net/ethernet/intel/ice/ice_main=2Ec | 6 +++---
+> 2 files changed, 9 insertions(+), 3 deletions(-)
+>
+>diff --git a/drivers/net/ethernet/intel/ice/ice_lib=2Ec b/drivers/net/eth=
+ernet/intel/ice/ice_lib=2Ec
+>index 5e183314e0d792=2E=2E416e2d6a6f1709 100644
+>--- a/drivers/net/ethernet/intel/ice/ice_lib=2Ec
+>+++ b/drivers/net/ethernet/intel/ice/ice_lib=2Ec
+>@@ -3218,6 +3218,12 @@ void ice_vsi_cfg_netdev_tc(struct ice_vsi *vsi, u8=
+ ena_tc)
+> 	if (vsi->type =3D=3D ICE_VSI_CHNL)
+> 		return;
+>=20
+>+	if (vsi->tx_rings)
+>+		ice_for_each_txq(vsi, i)
+>+			if (vsi->tx_rings[i])
+>+				clear_bit(ICE_TX_XPS_INIT_DONE,
+>+					  vsi->tx_rings[i]->xps_state);
+>+
+> 	if (!ena_tc) {
+> 		netdev_reset_tc(netdev);
+> 		return;
+>diff --git a/drivers/net/ethernet/intel/ice/ice_main=2Ec b/drivers/net/et=
+hernet/intel/ice/ice_main=2Ec
+>index e62a8f544345a3=2E=2E8a21f87eb6ca21 100644
+>--- a/drivers/net/ethernet/intel/ice/ice_main=2Ec
+>+++ b/drivers/net/ethernet/intel/ice/ice_main=2Ec
+>@@ -7559,6 +7559,9 @@ int ice_vsi_open(struct ice_vsi *vsi)
+> 	if (err)
+> 		goto err_setup_rx;
+>=20
+>+	if (bitmap_empty(pf->txtime_txqs, pf->max_pf_txqs))
+>+		ice_vsi_cfg_netdev_tc(vsi, vsi->tc_cfg=2Eena_tc);
+>+
+> 	err =3D ice_vsi_cfg_lan(vsi);
+> 	if (err)
+> 		goto err_stop_tx;
+>@@ -7569,9 +7572,6 @@ int ice_vsi_open(struct ice_vsi *vsi)
+> 	if (err)
+> 		goto err_stop_tx;
+>=20
+>-	if (bitmap_empty(pf->txtime_txqs, pf->max_pf_txqs))
+>-		ice_vsi_cfg_netdev_tc(vsi, vsi->tc_cfg=2Eena_tc);
+>-
+> 	if (vsi->type =3D=3D ICE_VSI_PF || vsi->type =3D=3D ICE_VSI_SF) {
+> 		/* Notify the stack of the actual queue counts=2E */
+> 		err =3D netif_set_real_num_tx_queues(vsi->netdev, vsi->num_txq);
 
-Conditions to recreate the bug:
-  tc actions add action pass index 1
-  tc actions delete action gact index 1 action gact index 1 \
-                     action gact index 1
-
-Testing:
-  Case 8135 fails on the unfixed kernel (tdc_8135_unfixed.log) and passes
-  with the fix, alongside the batch-delete family (tdc_8135_fixed.log).
-
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- .../tc-tests/actions/batch-delete.json        | 33 +++++++++++++++++++
- 1 file changed, 33 insertions(+)
-
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json b/tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
-index ef7ca4a6775b..7620e927ae2c 100644
---- a/tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
-+++ b/tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
-@@ -111,5 +111,38 @@
-                 255
-             ]
-         ]
-+    },
-+    {
-+        "id": "8135",
-+        "name": "Reject duplicate action in a delete batch",
-+        "category": [
-+            "actions",
-+            "gact"
-+        ],
-+        "plugins": {
-+            "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            [
-+                "$TC actions flush action gact",
-+                0,
-+                1,
-+                255
-+            ],
-+            "$TC actions add action pass index 1"
-+        ],
-+        "cmdUnderTest": "$TC actions del action gact index 1 action gact index 1 action gact index 1",
-+        "expExitCode": "255",
-+        "verifyCmd": "$TC actions ls action gact",
-+        "matchPattern": "total acts 1\\b.*index 1 ref 1 bind 0\\b",
-+        "matchCount": "1",
-+        "teardown": [
-+            [
-+                "$TC actions flush action gact",
-+                0,
-+                1,
-+                255
-+            ]
-+        ]
-     }
- ]
--- 
-2.43.0
+Reviewed-by: Ivan Vecera <ivecera@redhat=2Ecom>
 
