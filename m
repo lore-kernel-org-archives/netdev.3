@@ -1,157 +1,156 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31B92737FC
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 00:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1790988863; cv=pass; b=imCZQd416EBNcxmaYWgLplMFCiaupjieeqKKF8B9uxHy7+gFZwiDd2jC+0fOLXyB6KgQTQHy4j7z/xwLbOzcRYmjZr90eTH3DY9pahGKdHW93Gr9Qy23ZjaIxnvrek2GJn+CyZjjBQyz1wccXgbjDzjhWud8kFd2QYer4rL/o4Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1790988863; c=relaxed/simple;
-	bh=ZVQBnQo/eFh06vorGcqF1KC/7SENgnUf6N9nm8JGWSg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BnBJGkbefk6SQEGupx7iLiyj5iJeJICHt2ad2CzsMfxP1wnH8TT81pbHv1h6zHnvs1sD1VhBIh4ZFmukBWiiMwyHwCx5Vub/aiT5UaTtWJY1o1qJDUeEohbNL7ebxOc5pUlYhPiRd+3/v3WvHfqBdzObk70ZD7wZApm9cYuvff4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aconHeI3; arc=pass smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DD23403F8
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 01:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1790990550; cv=none; b=W3dxamzJLgtBT99e9uRJMus8t5R4pBJQn+VGtz++BxOjD/jmk43WAXn7VWq+O0IDC9TSkQAXPwuUUNTcydjgloyLeoF2VD5woePPadOPGLoV0/tT1WPMp2zt5gTAy0Mh1HHdDfOV+J2jD7gRXiCi+g1lD1AsDDF4jDnklYTqOmA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1790990550; c=relaxed/simple;
+	bh=EC2ysHutNfHyx2kEpKS3O7HmAhqBDv9DKiBIacjyDQM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dWS0M4EYXeklj1ukWhvHQ6qwsjqMi0QzPrkOvweJP0BR9GMUnhO5RzC+kycyEhxuUuDoSIGkDM2MoxaMKF5dcqo9zyCZS+jJ4tkiacjebsKX9rBIi+7rHf57T/9KzZG7RBki6NYHoEsqqM2yOX3i/y3/XFjixE+4xzUiI0R6Hxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYThIIcX; arc=none smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aconHeI3"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so13035ad.1
-        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 17:54:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790988859; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QTSnDSZQEJFAwrtEw6tGKtYqUkD5Od9iFVX5lFRRZSO/fGrLLuWKGl2zAKId8H2BYv
-         p3zas57472in3tqbsEMQfRrE7aS7HPo/YoxRqPcOeD0eCMZes9zFgVhy8b09lGTXwfoH
-         r/tmUog2XNtCCkXX02Q35jjIG6LXB8eN/LHYiVO/EILAKeFEb28yyfmoFrDK3P5kAJcZ
-         cTmS1KVdjy2+f/YF3fCSTkvu/gC8MfVzy8AmmEolYTu2a4QzyeytKIjKq23gniRMX4Ay
-         shS1HQh4Iyqc73RtSMjPanqBhmrq1+kdNgrXlljG6UgnR4pQnmUSG5VmTXvbnoYtVYNY
-         WsDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WEp8X+PRKs7nUSCeaHUChoo386upLZKNHaOGRHgrf60=;
-        fh=0llUh96Eej4QEzdzNMp789GuVHjGkHCWtxOm0CXxNAc=;
-        b=skhV6B/eino8c/85xYYMC/eicD5L2/Fj7EwmPXoqYlKg80HcvScl43cCDO7+A3rxJm
-         eWNyLKzkEkZwZYbNX7eicHg8Sq450SE2BUxWO1ByRJ5zaA7/x1ioORJbhuQ8ckZchcRb
-         2O3djz6W99AnEHtixL2T+RHd0nv5lYBUygIgELNHQ9N/9DDgCbSn48UXzBcSJ7tt0MTa
-         JEY21l4xBBrr2kjSgFRL7rNzjV3/gKV9VfTdwri4cdxrSWg1UAMNGFgJFPLwMewhDs4m
-         kTfmlHnMvt4kj8bXjrLTJ/fBq5/MNJIsJ/WTBmBrrnbBbEGHdPK8eu1IcLbtoDsRhKWG
-         l5Gw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYThIIcX"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33e630052ebso197228eec.0
+        for <netdev@vger.kernel.org>; Fri, 02 Oct 2026 18:22:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790988859; x=1791593659; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WEp8X+PRKs7nUSCeaHUChoo386upLZKNHaOGRHgrf60=;
-        b=aconHeI3/hgLgqEsabadPOGMQikGcMYgxzJo1eATfENUCkwfHRnL5saJJvuJ8Xvq+6
-         GID3ZNFQScvFV0X7+n8DFVt1Gs5KQBN0gUPWVfR45sL3+PFD9Ywmllkxb+zmyewUdFZZ
-         ufR/10yGa6vWq67h+akc5q+Zl5joYXKbzB/Kl2cOCwZDAF1Y2iRGHOg4hfWJPEsL4IAG
-         /Vje/YmSiBrbdnI2T4qyNTFKN5YkUOGLRXFDY5yQnbmc/wr5mnqScgCMjOMWzD8XxZ+f
-         b5drWA1L8SbnUzA2UiYQQZWVUWx8NuYC/qmmbyME+NQMrlMRr362H02TuglD+bHF3ulD
-         jXOA==
+        d=gmail.com; s=20251104; t=1790990543; x=1791595343; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IKt5nrCKJhUIAbepDHxZ+a2pchIMUOKa3TpjI93uFg8=;
+        b=QYThIIcX8qsBLAxELPe529OnP2rut9UmRfZgVD5anGlIZh5a5VLIDfTmkkR2BWgNDe
+         I5Ie/DpVr7gFShZQoTq6rSajyKE5UfDKS3F4VsBq8exoDUfZws9L4rCO7zQlQH9mAfFT
+         mJwz4IcIiFenPzzIpY+rEgLU3DWxcC8zQEhJJYyYN3bQw8pFIqVEid20yhY9D/vNFqCv
+         IWIZfBOW6E6wAMXd3p/kYFenTAuuwYFkzw4hKVDXkBPlZpdYPUvRmq2HBWYZJ9EtZcf9
+         wYPku7+VpeUMQtMdnJ3P7u58rPXGijs6uF6W8NqWSWHCFaRPsJhdnjjezWP7a5IeOEcU
+         DqjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790988859; x=1791593659;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WEp8X+PRKs7nUSCeaHUChoo386upLZKNHaOGRHgrf60=;
-        b=sMVfJxjV6ttJAk4j45UfBCacynEGULKarX3BhWUcOK0v5fRKV7W5cz9hyq+J6RCV/v
-         08bBMKk922JyU8nKinGiAAAozdbJuzv+lMWYQ5AzcGCK8eywfxpec92QL3j8o446Ri9e
-         PTRUCbKu45BOQJlYAwi63NloB3ysTe/7RVx2zgwAaKMXSof0CH07hgsmvfHfH4bFSUHO
-         KTtIW7TE71sWwSEHY2LJHLnCmwoi55HA6SRS/RnDAHFgdR2gqUNZKRPVZ700+X2Wm8qu
-         6NC72hsV8hcFe1JlGp1AVedakHCU71khS1s4feA/h8PM470u7xMx0jMtAMKTB0yvCcGu
-         lgCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw1z9WHgyxYfjk1zwAL0x2/yyiwuGiHJMwNTDnWM7BmhEc6HJvhfxkhd96v14DjXpbDeO9OOM0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIWQPi015ipJdda2KFWb68Ymsx4DQJWndhl+ntcbN6vqWKL6/ej
-	saA+zFLZP0qXU8lDZxIyZdA1dvEIYeoiwirazL2DiYfKofBsraKDQ73CAvj+Ne7pq+H7P+m19VQ
-	hevBkwtEs4zmw9iYLhNXd8mb4d8dteKZnUWSAdCJ0
-X-Gm-Gg: AYBFou3XBxGSq1EA30Vad5y/w3X3MOVJ874Pmkl2nO4UtdyVsljdQNiXFj+REc/NfBe
-	A8XmOgCALNE+FXVwq1UnXt+NEX5meIoqTuMeGSNsdLGmibBw9KYxkTa7roNfwIrf2eLz1Er7h60
-	Olo/qhXNs0vktaCnsqXpDmQtDWWafoExjNvhk27ZZvWFuK5gCN7A2dgaLgSEgVwisKj82FnxvYs
-	y7p5ZfSWQfRncAJCr2a9aG27BOaDm4pKucoRropYybb12BaaKrVXxXStqoHPeaJn2qNso6RSEIv
-	XMnZwe5anj/oxTyXl2um/kKX9AAKpuhjBFBmbrr+v6Y55YY8Dm2lSS+t90sKkybVrYU0nJP5uk1
-	k6PqKSw7/FxPMrZJmGagq9alDONSkDdkk1ADBuHYnsfmsodauSZAwxg==
-X-Received: by 2002:a17:902:ce8e:b0:2dd:3a08:d47b with SMTP id
- d9443c01a7336-2e5339f93a4mr1143425ad.13.1790988858220; Fri, 02 Oct 2026
- 17:54:18 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790990543; x=1791595343;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IKt5nrCKJhUIAbepDHxZ+a2pchIMUOKa3TpjI93uFg8=;
+        b=hg2qOKaWPalJ/kotHWwUBpvZmF9PwzorLhClWOfC+oXn9EX5r2H5kf2Xbx+6EBbacT
+         HxuYYCUbVwXUFT7KKzD306jfKqNhQcWpA4cYh55UF01YJFdxrYq6JMUCZteoNJxalXq5
+         0DZWCYU/x8JOoPGRGAjZVehwf9YPSnkZabQK95+kHj0xzaYYyx1v+HBMRQI+ua/R5owT
+         VrRJSRyqVUs5MaUkTgBth4FKygJkhMNFi8LtBKiZ7BnPedVyZWnkLOeBKik5eRQ0juZB
+         PVypCdMNxlFkKMPnfO4lJ4hgVsTNYGWYfUguHk3L2/SfYkY2O3DCkGXhUFLXzcX0opCP
+         zm7Q==
+X-Gm-Message-State: AFq9FYI2qnu7hM8e2M7OhWK0/Xmx25kmtyfZumfIfb1IBLDCSSHvWQQS
+	PmKeZlQBjN0/PPhflOyPWr5ZhOW8xV7m5sOhXnIz47N98oUw1ZGgKVrIo6TgO8L3
+X-Gm-Gg: AYBFou2+jxlSYktXmnbC6pvTWNoqPRXLQN17ObBmekI+6Ho3BX6LhkC5XRrCmiVZd9y
+	rEd0cloH7fgnGbRiMCmqYMuxh1crQkqmZ3+Sd7ZjoQ8cLSoA/2CCk2oPdYCTB26zNG0AJ/Uv7ty
+	VPRN2nwlOUMt04+t0NwmuxHyM8De7V4/h1MKOWmDKXtBqoq4Cd3EqOT4R8GzB/aPJ+ue4ptziRP
+	R4C5Ftg3bSe4QO9i6yO00Og/S06Fpx1XAIlY3vLEE98yNmlzIUSyE2mpP8punN9sCn3cIBehHNI
+	BhuyIUT0zondrva4FTEyKTeNIpYTlL+6Ja/rnuNGqpAPgy7UNaG6tbeTV0TA7MeF6u+UvSt+b1u
+	bd1HQ48hUoxMPU156wFu1d2R0/0GwFmRsRzsqtJVkJo1Q4aXOJ1E0fxmP/XjzGyUGAljuw2Iioa
+	5izOmFko3mopkOf7FQWQCpRRqrJbk1nqsYqHrdCaI+NWljSIo8wywgS2dcVbcWMXUFFq40HXw+0
+	zN7h4y0/NyE94U3Hunt7IgiBwuusrfrQf148Z9QLUUMvgLXETeihJROJIJ33g==
+X-Received: by 2002:a05:693c:88dc:20b0:351:985:e729 with SMTP id 5a478bee46e88-35109953237mr2982467eec.12.1790990542518;
+        Fri, 02 Oct 2026 18:22:22 -0700 (PDT)
+Received: from s1lverbox.orsomething.local (47-144-201-183.lsan.ca.frontiernet.net. [47.144.201.183])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f14fd5620sm9954916eec.21.2026.10.02.18.22.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Oct 2026 18:22:21 -0700 (PDT)
+From: Jean-Paul Sergent <jpsergent@gmail.com>
+To: netdev@vger.kernel.org
+Cc: i.maximets@ovn.org,
+	kuba@kernel.org,
+	kees@kernel.org,
+	stable@vger.kernel.org
+Subject: [Bug Report] fortify false-positive + real overread in skb_metadata_dst_cmp (geneve, gro_cell_poll)
+Date: Fri,  2 Oct 2026 18:22:21 -0700
+Message-ID: <20261003005449.2675.1@jpsergent.gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261001-linux-mpnic-v1-0-6422ee74233a@gmail.com>
-In-Reply-To: <20261001-linux-mpnic-v1-0-6422ee74233a@gmail.com>
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-Date: Fri, 2 Oct 2026 17:54:06 -0700
-X-Gm-Features: AclHuK8ouJgcRlucOdN3eH5_YugyE8t5pnHL2laHJr6qeoqr1Ko3b7rLVQ6y5Y4
-Message-ID: <CAEAWyHfyamEKdRa6PAjEfffq2Xw1ByF_g_jpmr=Kup8UJQY7sg@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/4] mpnic: add NAPI buffer depletion check
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: Alexander Duyck <alexanderduyck@fb.com>, Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 1, 2026 at 10:35=E2=80=AFAM Daniel Zahka <daniel.zahka@gmail.co=
-m> wrote:
->
-> This series provides a buffer depletion check to unwedge Rx processing
-> when page pool allocations have failed. Patch 4 has a more detailed
-> description of the events that lead to the wedge, but the high level
-> idea is that when page pool allocations fail, the buffer descriptor ring
-> can run low, and when that happens the device will drop Rx packets and
-> not raise interrupts, which causes the NAPI event loop not to be
-> scheduled, so new buffers are not posted.
->
-> There are three setup patches for the depletion check:
->
-> Patch 1: convert writes to BDQ ring head and tail to WRITE_ONCE(), so
-> the depletion check, which is not synchronized with the NAPI event loop,
-> can READ_ONCE() those same fields.
->
-> Patch 2: introduce the driver level service task that runs once per
-> second while the netif is running.
->
-> Patch 3: set the minimum Rx buffers needed per packet based on page size
-> and max MTU.
->
-> With those in place, we have everything we need to watch the buffer ring
-> head and tail positions from the service task, compare posted buffers to
-> programmed Rx drop thresholds, and then force mpnic_poll() to run if
-> needed.
->
-> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-> ---
-> Daniel Zahka (4):
->       eth: mpnic: use WRITE_ONCE() for BDQ head and tail updates
->       eth: mpnic: add a service task
->       eth: mpnic: set Rx buffer minimums using page size and mtu
->       eth: mpnic: add a NAPI depletion check
+Hi,
 
-For the series:
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+We are hitting a fortify false-positive (followed by a fatal Oops) in
+skb_metadata_dst_cmp() on Cilium geneve overlay traffic, via the
+gro_cells GRO path. Full trace from the serial console:
 
->
->  drivers/net/ethernet/meta/mpnic/mpnic.h        |  3 +++
->  drivers/net/ethernet/meta/mpnic/mpnic_init.c   | 13 ++++++---
->  drivers/net/ethernet/meta/mpnic/mpnic_netdev.c |  3 +++
->  drivers/net/ethernet/meta/mpnic/mpnic_pci.c    | 21 +++++++++++++++
->  drivers/net/ethernet/meta/mpnic/mpnic_txrx.c   | 37 ++++++++++++++++++++=
-+++---
->  drivers/net/ethernet/meta/mpnic/mpnic_txrx.h   |  7 +++++
->  6 files changed, 77 insertions(+), 7 deletions(-)
-> ---
-> base-commit: eb0c18404c8943356f4aa164e5db9067b79ea93c
-> change-id: 20260929-linux-mpnic-428998421ffc
->
-> Best regards,
-> --
-> Daniel Zahka <daniel.zahka@gmail.com>
->
->
+  memcmp: detected buffer overflow: 108 byte read of buffer size 96
+  WARNING: CPU: 0 PID: 15 at lib/string_helpers.c:1036 __fortify_report+0x45/0x60
+  Modules linked in: usbhid virtio_net virtio_scsi virtio_console psmouse uhci_hcd virtio_pci virtio_pci_legacy_dev vmgenid ehci_pci ehci_hcd virtio_pci_modern_dev ata_piix button
+  CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted 6.18.54-talos #1 PREEMPT(none)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+  RIP: 0010:__fortify_report+0x45/0x60
+  Call Trace:
+   <TASK>
+   __fortify_panic+0x9/0x10
+   skb_metadata_dst_cmp+0x11b/0x120
+   dev_gro_receive+0x303/0x620
+   gro_receive_skb+0xc5/0x230
+   gro_cell_poll+0x67/0xa0
+   __napi_poll+0x2f/0x190
+   net_rx_action+0x2e3/0x500
+   handle_softirqs+0xe7/0x310
+   run_ksoftirqd+0x26/0x50
+   smpboot_thread_fn+0x167/0x250
+   kthread+0x201/0x260
+   ret_from_fork+0x10c/0x190
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+The WARNING is immediately followed by a fatal Oops (kernel BUG at
+lib/string_helpers.c:1043, "Oops: invalid opcode: 0000 [#1] SMP PTI"),
+which takes the node down. We caught the same crash twice: once in
+ksoftirqd/0 after ~11.5h of uptime, once in IRQ context (Comm:
+containerd-shim, dev_gro_receive reached straight from the IP receive
+path) ~14 minutes into a heavy-traffic boot, same signature both
+times.
+
+Environment: 12-node Talos v1.14.2 cluster (kernel 6.18.54-talos,
+built with clang + CONFIG_FORTIFY_SOURCE) as QEMU/KVM guests
+(i440FX, vmxnet3 NICs), Cilium 1.18 with geneve encapsulation and
+kube-proxy replacement. Workload at crash time: sustained cross-node
+overlay traffic (BitTorrent + NFS + Cilium service traffic).
+
+skb_metadata_dst_cmp() does a single memcmp of struct ip_tunnel_info
+plus options:
+
+  memcmp(&a->u.tun_info, &b->u.tun_info,
+         sizeof(a->u.tun_info) + a->u.tun_info.options_len);
+
+Geneve carries 108 bytes of options here, but kmalloc_flex() in
+metadata_dst_alloc() sets __counted_by(options_len) while options_len
+is still 0 at comparison time, so the compiler's view of the tail is
+96 bytes -> 108-byte read of a 96-byte view. Same disease as the
+tun_dst_unclone fix 4c6d43db2a4d ("net: dst_metadata: fix
+false-positive memcpy overflow in tun_dst_unclone"), on the RX/GRO
+sibling path; that fix carries Fixes: 69050f8d6d07 for the same
+reason.
+
+While reading the function I believe there is also a real overread,
+independent of fortify: the memcmp length uses a->options_len for
+BOTH sides, so when b's metadata carries fewer options than a's, the
+comparison reads past b's allocation. In the geneve/GRO case both
+sides come from the same tunnel and carry equal option lengths, but
+the helper is generic (any METADATA_IP_TUNNEL comparison).
+
+A patch follows: pre-check options_len equality, compare the fixed
+part, then compare options via ip_tunnel_info_opts() on both sides so
+the counted_by view matches the read length - the same two-stage
+shape as 4c6d43db2a4d.
+
+NOTE: I could not build-test the fix (no kernel build environment on
+the reporting host). The reproducer is the production workload itself
+(sustained cross-node geneve RX under GRO): with GRO left enabled the
+node panicked twice; since disabling GRO offload on the geneve device
+(ethtool -K cilium_geneve gro off) as a stopgap, the same workload has
+run clean - consistent with the crash living in the geneve device's
+gro_cells stage.
+
+-- 
+Jean-Paul Sergent
