@@ -1,31 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1332747A894;
-	Sat,  3 Oct 2026 16:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5206047255A;
+	Sat,  3 Oct 2026 16:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791045252; cv=none; b=QNWd28N+22tOInVaRiFVlkQ2ycysDO2Z/WdCc2IQiwLL9QqrA9znGtQRQCuioujBzRnNLeeLh+WNGRcN0crkGqlQCBW9HPwZDjB/M7FmPrUlaMS7UGoLYFQlbqzAZXp7jcbvjdRY9BAz0dxPCPJ4OLsRNw2jWzHesscTCCzt/cI=
+	t=1791045328; cv=none; b=j76L4Sh8TOPUsJchuJi0CHQ+0uZtzP/saMKd15fvL8Bb1rbvNDgt/ImFtAp7RQcBPOk3bCan3BkpcIINEAbPAVOTb6nTcMVvXWxD1rURknrkcYShKoXdQVUeoKSsxjek1FhwT69gcQvyhkNmGMWWY+feJNYw6H/Re2FSIP1+X+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791045252; c=relaxed/simple;
-	bh=8Jpgu807ckWG+qfaJ+TsNrGwOZqOCNkG+A2tBGeaIoM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZLfdSUMTZnTEHB8n+4kpv8xEvKWFlnZnpO6pLdqXbeG+NhpB+dwMqnB+jS2Jo9CupRi+rruRtAR6sSTOP9ngO0l2+UtZEVA6LiO7ojG5xdBiJ5YjdFkSBAOfDVgdV9Pj0Wvhy1O1Cc2rwmBwD7SfCTlh2Cit0Ms6yDmaTuWbymY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LcApQZeQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791045328; c=relaxed/simple;
+	bh=7P5haTQVhP8gUZwWXPA5DaBWwruqAwOAUIlUekyZu2U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CkXMrCfC7/jc1DzXioHGn+IPC/GXPg7/rLhSM5T6Y4fokaanAPLzKVCZLyXmUKMg2j7YASTSqjGO8u+ddrJGCTyR3Ga1GRM7/zJ3ighODgvvYJgFo5zv8Q3qXA94MYknCV/LWZqdYjdL9iL4s/hLQ8zq939zUezJWXhpos4jH2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drNqF8Wf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LcApQZeQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB3A1F0089F;
-	Sat,  3 Oct 2026 16:34:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drNqF8Wf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5E31F0089B;
+	Sat,  3 Oct 2026 16:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791045250;
-	bh=/ub/+Gx9bPwwtaANK/Cn8b5+X8YVvEpP6pTinf/0UfM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LcApQZeQhXUQNzTaLe8vA3GzM2SLsdakXJA0lDbXVYhlNVUG3uRqt4gduvF36+GAZ
-	 KdKqpVbrdX1kj0fk4J67/SnMjYBrS68wsdtgt8JJ35DNYQYl4UNKnF8S7CEDan1oZf
-	 B0wHRx+xuW/NaMCcpaGvQf11uugT1wfqURIK3H74+yJCSfuosYsc8Y9WST1ECWwrrc
-	 swgGuolodKdKfR0NwGe/JeTJQErry8NzIanucL4C4ynJgk1EkCYJvKRjNqiBWDnYP6
-	 /j2GA1w7ImuxT/qFzqrvIr81i0x9YwY+oLcrRAQluzJCrhZXodHeW11hbUJWn2JGbH
-	 dC8cxQoGk5g3Q==
+	s=k20260515; t=1791045327;
+	bh=F9KWweFw1xj/dFmgE0bxq2l5YmXG9MzCEOyS98AAsyE=;
+	h=From:To:Cc:Subject:Date;
+	b=drNqF8WfKQldS+2zbIZzhZHgjQLP1Vr+hq0fXQr0hfbYLh/MynXUmxIVvJ9A0eEZL
+	 GOGGHo0Olj4toPtFcoO/ESsZ39NeY+Q3Ed4y0EI0Yjg0YwdhjDQT4gKt0wEOePVTNf
+	 nmhqBrfhGL58DnePckMMR8rrWMkLhS6KCc+i9Hz5AbtWZrUWtcmgCowb2HDeiMZr+R
+	 ZJwNFiMdRS9gvgGZBiY7LpJrBkTNVXb1MXFpGcOUHqdFjGXLRAvbYBIOaW/I61xEnn
+	 TwoGeROUwweOQDhMZM66uowspv2IlbP4qBPau61SKF47ZwF6dzjMtxcRbS0/3DNA+X
+	 OoDWY61Q0LinA==
 From: Allison Henderson <achender@kernel.org>
 To: netdev@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
@@ -33,15 +32,11 @@ To: netdev@vger.kernel.org,
 	edumazet@google.com,
 	kuba@kernel.org,
 	horms@kernel.org
-Cc: achender@kernel.org,
-	ljp1205831794@gmail.com,
-	henrymei@tencent.com
-Subject: [PATCH net v4 2/2] net/rds: don't let the rdma_cm destroy an id RDS still owns on route failure
-Date: Sat,  3 Oct 2026 09:34:08 -0700
-Message-Id: <20261003163408.250568-3-achender@kernel.org>
+Cc: achender@kernel.org
+Subject: [PATCH net v3 0/2] net/rds: scope-aware sendmsg connection cache
+Date: Sat,  3 Oct 2026 09:35:24 -0700
+Message-Id: <20261003163526.250805-1-achender@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261003163408.250568-1-achender@kernel.org>
-References: <20261003163408.250568-1-achender@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,54 +45,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rds_rdma_cm_event_handler_cmn() hands the return value of
-rdma_resolve_route() straight back to the rdma_cm on
-RDMA_CM_EVENT_ADDR_RESOLVED.  A synchronous failure there - -ENOMEM
-from the route work allocation, an SA query that cannot be set up, a
-RoCE route with no usable device - makes addr_handler() destroy the
-id the event was delivered on.  That id is ic->i_cm_id, and nothing
-clears the pointer: the connection sits in RDS_CONN_CONNECTING with a
-freed id until its shutdown calls rdma_disconnect() and
-rdma_destroy_id() on it.
+Hi all,
 
-The ROUTE_RESOLVED case already avoids this: rds_ib_cm_initiate_connect()
-forces a zero return while ic->i_cm_id == cm_id, as the comment there
-explains.  Do the same here - drop the connection and return 0 - so
-the id stays RDS's to destroy from the shutdown, and the reconnect
-gets a fresh one.
+This is v3 of the sendmsg connection-cache scope fix (v1 at [1], v2 at
+[2]), now two patches.
 
-Fixes: 55b7ed0b582f ("RDS: Common RDMA transport code")
-Assisted-by: Claude-Code:claude-fable-5
-Signed-off-by: Allison Henderson <achender@kernel.org>
----
- net/rds/rdma_transport.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+  Patch 1 gives the connected peer's link-local scope its own field.
+  rds_connect() used to store it in rs_bound_scope_id, the scope of
+  the socket's own bound address, which a later bind() to a
+  non-link-local address resets to 0 and which a later connect()
+  pollutes for a globally bound socket.  A send without a destination
+  now takes its scope from the connected peer's field, and rds_bind()'s
+  connected-socket check compares against it.
 
-diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
-index 09cc2ba23570..7be38be1228e 100644
---- a/net/rds/rdma_transport.c
-+++ b/net/rds/rdma_transport.c
-@@ -107,9 +107,19 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma_cm_id *cm_id,
- 			}
- 			rdma_set_service_type(cm_id, conn->c_tos);
- 			rdma_set_min_rnr_timer(cm_id, IB_RNR_TIMER_000_32);
--			/* XXX do we need to clean up if this fails? */
- 			ret = rdma_resolve_route(cm_id,
- 						 RDS_RDMA_RESOLVE_TIMEOUT_MS);
-+			if (ret) {
-+				/* A non-zero return has the rdma_cm destroy
-+				 * the id, but it is still ic->i_cm_id, which
-+				 * the connection's shutdown would then
-+				 * disconnect and destroy again.  Drop the
-+				 * connection and keep the id for that
-+				 * shutdown.
-+				 */
-+				rds_conn_drop(conn);
-+				ret = 0;
-+			}
- 		}
- 		break;
- 
+  Patch 2 compares c_dev_if with the request's scope in the cache-hit
+  test, so the cache uses the same key as rds_conn_lookup().
+
+Changes since v2 [2]:
+ - The v2 "scope 0 matches anything" wildcard is gone: it sent a
+   connected socket's traffic out whichever interface the socket last
+   used explicitly (review of v2).  Instead the destination-less send
+   carries the connected peer's scope (new patch 1), and the comparison
+   is exact.
+ - Rebased onto current net.
+
+Changes since v1 [1]:
+ - A request without a scope kept matching the cached connection
+   (superseded by the above).
+
+[1] https://lore.kernel.org/netdev/20260921215046.174745-1-achender@kernel.org/
+[2] https://lore.kernel.org/netdev/20260927062312.169097-1-achender@kernel.org/
+
+Thank you,
+Allison
+
+
+Allison Henderson (2):
+  net/rds: keep the connected peer's scope id apart from the bound one
+  net/rds: include the scope id in the sendmsg connection cache check
+
+ net/rds/af_rds.c | 12 ++++++++----
+ net/rds/bind.c   |  4 ++--
+ net/rds/rds.h    |  2 ++
+ net/rds/send.c   |  5 +++--
+ 4 files changed, 15 insertions(+), 8 deletions(-)
+
 -- 
 2.25.1
 
