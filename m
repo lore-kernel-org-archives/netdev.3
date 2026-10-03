@@ -1,43 +1,43 @@
-Received: from mail-106102.protonmail.ch (mail-106102.protonmail.ch [79.135.106.102])
+Received: from mail-24427.protonmail.ch (mail-24427.protonmail.ch [109.224.244.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F237E39182A
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 08:18:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E3D37FF48
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 08:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791015512; cv=none; b=Cv4VODm043f8rryFgwjBH99fFAORXETLen7PCBTf3w1X0IPT6ukW6h5T/hLLR5+9ebJCAtS2SeD7uIUArRCmZXFwUS0g97yavU10nThYHW7URo1IFmNYZ0qDG+0mIe5h+dCmFdy4qIbJN9oJ2Dry7NOQCkLLKw13KguQZo3v2zM=
+	t=1791015511; cv=none; b=T+F1PPyv+PKgpPcWWEX95YVNUI+haUn1kASSbu9vHB/U3hR9rqhqxgnEPBm8ascQRGhC8t4ERrdrB2t4+WaQarTJXvn5Ck5Rlmoh0SaFwMqalTkEYwZI4YpWD81vxw2cYmniolT7LQwAeW7dkUzrmyiK2zT+hxKyjGW5XnZ6Ak4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791015512; c=relaxed/simple;
-	bh=fIQYchEyl9V/S9Mi9fJ+YKUhkFzbMNbC/Q9u5MLuAxA=;
+	s=arc-20240116; t=1791015511; c=relaxed/simple;
+	bh=xBzJEkqpbm553jn0OaGDHQjKkx4MFvLAXpkGc+8QPWU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nB+sm0EBleriDsGHFhwwDE3UuzFpPSBcW+1VsZ5cLaqbHFuVfrl2rCH1CjYpmg3L6ZRN1bAmvDmdGS59Lb9e6/Tk+Cq3+pcJn7azmOFmCHXChTttHVBLLo06ZuVL31Jzu40A2QltRKC8x45OAdZiubEwexOQR3ZHNH3x4dvLAT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=g6If6B17; arc=none smtp.client-ip=79.135.106.102
+	 MIME-Version:Content-Type; b=JovhQuWS4awh2JkvD7gJYPSRlXYIypLOiZ7OtGCNHG9Q1DPwGuRUO0A3vtb+RKV8s2lsv6yZaVPPrVP9hVJFCRJqxJM7ykh5r7923hKjwdOEYY7KNWz9aQ8piStl5QYeFAF71fP8+yPMyktTG/sWrWx8VB/T4+Q6SO09zVNmdZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nHTEVBrN; arc=none smtp.client-ip=109.224.244.27
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="g6If6B17"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nHTEVBrN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=cstzjhqkrzeg5beecotbbtswl4.protonmail2; t=1791015496;
-	x=1791274696; bh=fIQYchEyl9V/S9Mi9fJ+YKUhkFzbMNbC/Q9u5MLuAxA=;
+	s=protonmail2; t=1791015503; x=1791274703;
+	bh=xBzJEkqpbm553jn0OaGDHQjKkx4MFvLAXpkGc+8QPWU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=g6If6B17F3B2QHb7J/bUB60XzMlE2zKTv64yNRlQdeIm7A+3RpL0YxqKQNtSqm1ri
-	 A39FCu7ilDA3ESWpJngn2Ro2UwA9MyTQWzj1f9saybomhbi3TM3yG/HFXuE8mEvrJe
-	 rRn2YqarNlv2ayZ1ZEzIQWW8dlJks1XkjY8EsTgKb5Lxet2uWalF1lXdXJolLzAJdC
-	 O7d1CBuvKG+TY8hdC6ppceT3wM9rcnA4wHsELKKER65i9UM/zJDdLr6PBfqGEaekAt
-	 Pweyvkrx2XHVy2fJcuD+DIndV+KJiQus5B/evviHUdmc77tdRbMTXD9fQerdyx+3BO
-	 5GdBJdkMHIByA==
-Date: Sat, 03 Oct 2026 00:07:54 +0000
+	b=nHTEVBrN5Z/h4WSgOqPWZIxQyi6apyoaeTsv2M4O71ZTNf8kDsQ4Cn3vXzdIWOhBd
+	 RxTDgxKQOvoeTGtEKE1qAhGeEa7p/VsN0WF5c4wd4TbB0wsjlWYKt0sBtE70984z5u
+	 DUIDFAixGVLvXlXhKaDPyxkCPdGtJHaPcO8S44TUVdBgT1REnx+A2L9p8lcc7n0W/s
+	 V7WM4Rvjth/oUexZR+7HXjTokgukQ57hHAqOQ5HwAbUs07+lglLU0MILXbZi6WcWK1
+	 wKJ07KoS4IzFe/YMFOMWdFZ51KbgYU5wXCTOrTgaoHYV+pPZu5t8FL5uv/K3oT9HnB
+	 JK2ZZLZyJmA8Q==
+Date: Sat, 03 Oct 2026 00:08:01 +0000
 To: netdev@vger.kernel.org
 From: iugfdin <iugfdin@proton.me>
 Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net 1/2] r8169: preserve checksum offload when packet padding is unnecessary
-Message-ID: <179098478410.1174319.5605355405318252998.r8169-1@proton.me>
+Subject: [PATCH net 2/2] r8169: flush pending transmit packets when an skb is dropped
+Message-ID: <179098478410.1174319.17923728268629391314.r8169-2@proton.me>
 In-Reply-To: <179098478409.1174319.4377246796187959500.r8169-cover@proton.me>
 References: <179098478409.1174319.4377246796187959500.r8169-cover@proton.me>
 Feedback-ID: 225708956:user:proton
-X-Pm-Message-ID: a3461f477443c527c93a7cde279d2212acdac29d
+X-Pm-Message-ID: c71b5c56695a88b852d35f3e9d360f30a1967e09
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,20 +47,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-rtl_quirk_packet_padto() returns the minimum packet length required by
-the padding quirks. For RTL8168evl and RTL8125-family chips this is at
-least ETH_ZLEN, even when the skb is already longer.
+rtl8169_start_xmit() can defer a transmit poll when xmit_more is set.
+If a later skb fails preparation or DMA mapping, the shared error
+path drops it without issuing that deferred poll. If the failed skb
+ends the batch, previously committed packets can remain pending
+until another packet or recovery path kicks the device.
 
-rtl8169_features_check() treats that nonzero target as a boolean and
-therefore disables checksum offload for ordinary non-GSO
-CHECKSUM_PARTIAL packets on these chips. Packets that need no padding
-are unnecessarily checksummed in software.
+Issue a transmit poll after cleaning up the failed skb so earlier
+packets can make progress. The failed skb still does not advance
+the producer index or contribute to BQL accounting.
 
-Compare the skb length with the padding target instead. Packets that
-actually need padding continue to use software checksumming; the
-existing short-frame and transport-offset checks are unchanged.
-
-Fixes: 8d520b4de3ed ("r8169: work around RTL8125 UDP hw bug")
+Fixes: ef14358546b1 ("r8169: make use of xmit_more")
 Assisted-by: LLM
 Signed-off-by: iugfdin <iugfdin@proton.me>
 ---
@@ -71,17 +68,17 @@ Realtek NIC was available; this is not an on-device test claim.
 
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethern=
 et/realtek/r8169_main.c
-index ee1bc9bd..045fcd4d 100644
+index 045fcd4d..ae8ea0d8 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4677,7 +4677,7 @@ static netdev_features_t rtl8169_features_check(struc=
-t sk_buff *skb,
- =09=09if (skb->len < ETH_ZLEN)
- =09=09=09features &=3D ~NETIF_F_CSUM_MASK;
+@@ -4625,6 +4625,8 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff =
+*skb,
+ err_dma_0:
+ =09dev_kfree_skb_any(skb);
+ =09dev->stats.tx_dropped++;
++=09/* Flush packets queued with xmit_more before this failure. */
++=09rtl8169_doorbell(tp);
+ =09return NETDEV_TX_OK;
+ }
 =20
--=09=09if (rtl_quirk_packet_padto(tp, skb))
-+=09=09if (skb->len < rtl_quirk_packet_padto(tp, skb))
- =09=09=09features &=3D ~NETIF_F_CSUM_MASK;
-=20
- =09=09if (skb_transport_offset(skb) > TCPHO_MAX &&
 
