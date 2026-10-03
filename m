@@ -1,56 +1,56 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C4939B949
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 21:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C0B494A10
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 21:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791062626; cv=none; b=IWYsfb7Pq6jPOPTmMbWFc1vn7dTT6pfiAKjeqoJw/ee2opvy+C9aDz22SID84kkOfpcFdb7eQ3CH3+jpWKqCeWRIS42qDAI5FPAdE8EXluQnY8okZUETlBM7r24WvVX9wIzyV4gSeAGI7uK4AuMNVJbXPsq1dzbCr+lki/cxhf4=
+	t=1791062627; cv=none; b=F6ZGEFJigS58cqym+1/PYq7joFnuo/XuG05K7Ijc93eHmh5Ze5ob7M4FKI7/XEc/Kn+4vJIrLoLLd4oya6XAFnQtvI3C41HWh70X+WjWhU/lw2QLC70L2DJnZnk3ygAXNSHghCFj7Q6bqEiZ4YkUwk+TorIOeacgJ5zZ18hbWSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791062626; c=relaxed/simple;
-	bh=ThoT7cXfDyyrpjdI4GGUDFw/EtThazkBFBTRFFAW/OI=;
+	s=arc-20240116; t=1791062627; c=relaxed/simple;
+	bh=YFzOIl4HWghWMp2lAQuk1H58PtPzCNfCXIS+NpdkBZ4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZTqDu7MqMvacbmBuL7W1u/TEb1oF5EpzqTNt65k7IzMhY72i0wfapnhqoljm4zN1qnF3jSZF1RMzjlQuLcsQscT5wnZTNyyFzDItJtDv+InaQBEdydhFKQ20wNBsZ8uMjRwyCM22Hs7E+9DcuTnv/2laEAljf54PBn70SoT6X9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KDFc14oz; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=DHGgXzfPCR+CixsTswig0U71Bq48gwtiTdYQ1lFSFDFAVusrLtrX6AcIbmnKlDGqjYi6pmadV6CUjzs9teIVxEZ5wOq8D0Fbxz5GTcdIde9kQbC9g64bK2mzYHhMdLpm6P5W7LsiBWt4nYOkzo1xhw37I5EHCzT+MJCYdHffmyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XDTv+wHq; arc=none smtp.client-ip=209.85.216.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KDFc14oz"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-88a2c5d7ef1so804099b3a.3
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 14:23:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XDTv+wHq"
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3a46f0f158dso583240a91.1
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 14:23:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791062625; x=1791667425; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791062626; x=1791667426; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=c0OjECR4PbKu7DNQWWCoLM1tH92ztwNdu/t4kIPA7nQ=;
-        b=KDFc14ozYF7q03c5BSg8Q+bgyIqXXeggfHl64L68pMX0f/+h8GsUn+53UaPmKTq0NP
-         5iZ03ZhN6hO8QMERZ2MaUxz0WK8FSx6M8NcPvAA1KDVtoml0oSf2eR02erWkEjybal5d
-         fBZK//j4rPeE4vMrsaPIJD+AotMDzY4DvIWwS6/TWQ6KYVxj5gpI0fh37qO/EoE2iM5G
-         3RkUs6Z7mr7ZwvQQgyfn9PeHzzkFx7OMPp4wgzXDTmW511gCBrNuN7aQQJvkZQ6mv/Yz
-         xJC2fFiBqEt6kK6k/KAZm51XbPg+MdJlT+YTduSfMHv8YdcjRHGmvk9z+FN3bXH5jh5W
-         in3g==
+        bh=wiOikGFamsRkgS9kwvuByl1mO8zUgVaffR3/L5ESCuU=;
+        b=XDTv+wHqjK1nGeQklGzNZc1tNmmuLMCD/QG9md+y8nIJWj+DNX3xSOBrqauWJypu8F
+         95B/7LlMBSX1Q50aukwzIhV/2u9PBsDqg5WaZ/uYXoE97sSs8Cv/hepGTSSwA2EWrnTB
+         wSrZmUc6etZCghE789FhpS8Agtq+DgcxcFS//KFsUNpx7KqenhzKwwdKCZSANiwWUnT9
+         vpuXDxVpzjqH/xKF0KGJ7yg/s+IK4kg++xVqbpKfv/fg+vf9C3GLEOw/krsYjqLHShLc
+         leV2JKJ5Tdq+OZ0yk2IsQDJxSGCgYqD2pQVqFUwmjj+4JmKOhKoIfnYkyH6ojSiFPm/G
+         ZvoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791062625; x=1791667425;
+        d=1e100.net; s=20260707; t=1791062626; x=1791667426;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=c0OjECR4PbKu7DNQWWCoLM1tH92ztwNdu/t4kIPA7nQ=;
-        b=gE1RrOo+maORmS4KsWYoIFPBEbqiqJgT3zPK8vOsNwlk4407JA7ZQiMVAjUn6/NJKU
-         rYf6CUfrBjeeTf/y6DNCXPQeCmfy7guykl3L4r4XNIbA4KFHg6YwEEa3BpKQSKl7v0YW
-         1XXjWTjnMSLEqvXVGg7Xuh5Gse2zomBiXX+Xy//qFTVOWJ9lwaoKOW5hIQySY/kgTveV
-         osSLG5OdGCbsYG1U/a3fLVl6qQGV+UF2/euCSQy9pbs3Gyw0padQZE3Z/7DBFqYgfG5b
-         e9G1Av7TrgUhGuFuJXADjkdQzxMvqZWFEvC7AVxDhAUlMnqUAs75r4qrm5sBeB3YUg2h
-         QjVw==
-X-Forwarded-Encrypted: i=1; AKwUvBzoNQ44q6wADHB/8+2cJuvkAnJ8kF8rcO0yzXENp6tWCFhB2IAXz3T2AsqoO+Vk0y7duxFPgN4=@vger.kernel.org
-X-Gm-Message-State: AFuF++mWQ4HGM8J95asvWXUVfAXf/bTV5V+1E3PXcowL8ksUIfn2b3V7
-	ySQ+sURclO8lAZTNhmfr8cVESqBGG6kCEwA5kUugw2x0l/yBWWx828o4HrG11jPeQPNZ6I4gcQp
-	FLWOTyQ==
-X-Received: from pfme17.prod.google.com ([2002:aa7:98d1:0:b0:88c:18bb:95e6])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:846:b0:882:ace7:88e2
- with SMTP id d2e1a72fcca58-88af54f765dmr6515134b3a.12.1791062624500; Sat, 03
- Oct 2026 14:23:44 -0700 (PDT)
-Date: Sat,  3 Oct 2026 21:23:14 +0000
+        bh=wiOikGFamsRkgS9kwvuByl1mO8zUgVaffR3/L5ESCuU=;
+        b=iPEUdwvjZTGRnmwfdEi3CdLTkloPWnVIXD4px8uJKZ5d++6Ug98Hno6dWtHYivbau6
+         B5JHxqxE6LBSx6ItwEBoXBYwznjggi1JIWzmPpR2E8ALTZAkk7ru8zSDmaezLfKu18UG
+         O7H8M6CcodJiYW9lHyezZVz9sMCfmSVc2ztW6pIf9IgaWba/LVu3Z0wuA394Cefc3KJv
+         oNGwprpATtd5xtJRU66OAViPDyc6aphKpWxYJLlSN2FdGuy7s2gtobQ3TOvjHmL1nX1R
+         izj4BRP9X7x/KP12uSXAsKC8Z602tqjdTgg0kpaXTjuZO1WU1eFHllpo3iPsgHjDjFNV
+         Q11g==
+X-Forwarded-Encrypted: i=1; AKwUvBzXf2SarNBr/IOcos/aLkzUerETNXyOKiSZsgngFu1A6rE+UOXUyL1SmrEqrXlhI0M1v7mBuPE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLJJPY3/T/S59OvDQyTeXa/KDD8DJwyZsi1zcmjGfbwjJTrif17
+	Il7QlTmg249sGF4uMKqtXyRiL3K3MGcHs+bRC87p7ZrQ2j3ZRcxVkHG1If+zFPbPsuWQ4z1L7oQ
+	sIwirng==
+X-Received: from pghc19.prod.google.com ([2002:a63:da13:0:b0:cc7:d704:8c90])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:54c6:b0:3a4:9416:a2f8
+ with SMTP id 98e67ed59e1d1-3a4f32d90c9mr6958962a91.9.1791062625378; Sat, 03
+ Oct 2026 14:23:45 -0700 (PDT)
+Date: Sat,  3 Oct 2026 21:23:15 +0000
 In-Reply-To: <20261003212336.1304988-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261003212336.1304988-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261003212336.1304988-2-kuniyu@google.com>
-Subject: [PATCH v2 net-next 1/9] ipv4: Rename ipv4_neigh_lookup() to ipv4_dst_neigh_lookup().
+Message-ID: <20261003212336.1304988-3-kuniyu@google.com>
+Subject: [PATCH v2 net-next 2/9] ipv6: Rename ip6_neigh_lookup() to __ip6_dst_neigh_lookup().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
 	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -70,66 +70,96 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Later, we will add ipv4_neigh_lookup() as a wrapper for
-neigh_lookup(arp_table(net), ...).
+Later, we will add ipv6_neigh_lookup() as a wrapper for
+neigh_lookup(nd_table(net), ...).
 
-The existing ipv4_neigh_lookup() is more like ip6_dst_neigh_lookup().
+The existing ip6_neigh_lookup() is called from ip6_dst_neigh_lookup()
+with a gateway address.
 
-Let's rename ipv4_neigh_lookup() to ipv4_dst_neigh_lookup().
+Let's rename ip6_neigh_lookup() to __ip6_dst_neigh_lookup().
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/ipv4/route.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ include/net/ip6_route.h |  6 +++---
+ net/ipv6/ndisc.c        | 12 ++++++------
+ net/ipv6/route.c        | 12 ++++++------
+ 3 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index d7da2f1acbb5..50c842617e45 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -146,9 +146,9 @@ static u32 *ipv4_cow_metrics(struct dst_entry *dst, unsigned long old)
- 	return NULL;
+diff --git a/include/net/ip6_route.h b/include/net/ip6_route.h
+index 0f9b7a260d25..5a21ed4b6e1c 100644
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -430,7 +430,7 @@ u32 ip6_mtu_from_fib6(const struct fib6_result *res,
+ 		      const struct in6_addr *daddr,
+ 		      const struct in6_addr *saddr);
+ 
+-struct neighbour *ip6_neigh_lookup(const struct in6_addr *gw,
+-				   struct net_device *dev, struct sk_buff *skb,
+-				   const void *daddr);
++struct neighbour *__ip6_dst_neigh_lookup(const struct in6_addr *gw,
++					 struct net_device *dev, struct sk_buff *skb,
++					 const void *daddr);
+ #endif
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 12d85d7f8234..e1cbffaa0ad0 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1359,9 +1359,9 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 	/* routes added from RAs do not use nexthop objects */
+ 	rt = rt6_get_dflt_router(net, &ipv6_hdr(skb)->saddr, skb->dev);
+ 	if (rt) {
+-		neigh = ip6_neigh_lookup(&rt->fib6_nh->fib_nh_gw6,
+-					 rt->fib6_nh->fib_nh_dev, NULL,
+-					  &ipv6_hdr(skb)->saddr);
++		neigh = __ip6_dst_neigh_lookup(&rt->fib6_nh->fib_nh_gw6,
++					       rt->fib6_nh->fib_nh_dev, NULL,
++					       &ipv6_hdr(skb)->saddr);
+ 		if (!neigh) {
+ 			net_err_ratelimited("RA: %s got default router without neighbour\n",
+ 					    __func__);
+@@ -1395,9 +1395,9 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+ 			return reason;
+ 		}
+ 
+-		neigh = ip6_neigh_lookup(&rt->fib6_nh->fib_nh_gw6,
+-					 rt->fib6_nh->fib_nh_dev, NULL,
+-					  &ipv6_hdr(skb)->saddr);
++		neigh = __ip6_dst_neigh_lookup(&rt->fib6_nh->fib_nh_gw6,
++					       rt->fib6_nh->fib_nh_dev, NULL,
++					       &ipv6_hdr(skb)->saddr);
+ 		if (!neigh) {
+ 			net_err_ratelimited("RA: %s got default router without neighbour\n",
+ 					    __func__);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index a76869ff87cd..8baac4d85251 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -206,10 +206,10 @@ static inline const void *choose_neigh_daddr(const struct in6_addr *p,
+ 	return daddr;
  }
  
--static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
--					   struct sk_buff *skb,
--					   const void *daddr);
-+static struct neighbour *ipv4_dst_neigh_lookup(const struct dst_entry *dst,
-+					       struct sk_buff *skb,
-+					       const void *daddr);
- static void ipv4_confirm_neigh(const struct dst_entry *dst, const void *daddr);
- 
- static struct dst_ops ipv4_dst_ops = {
-@@ -163,7 +163,7 @@ static struct dst_ops ipv4_dst_ops = {
- 	.update_pmtu =		ip_rt_update_pmtu,
- 	.redirect =		ip_do_redirect,
- 	.local_out =		__ip_local_out,
--	.neigh_lookup =		ipv4_neigh_lookup,
-+	.neigh_lookup =		ipv4_dst_neigh_lookup,
- 	.confirm_neigh =	ipv4_confirm_neigh,
- };
- 
-@@ -409,9 +409,9 @@ void rt_cache_flush(struct net *net)
- 	rt_genid_bump_ipv4(net);
- }
- 
--static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
--					   struct sk_buff *skb,
--					   const void *daddr)
-+static struct neighbour *ipv4_dst_neigh_lookup(const struct dst_entry *dst,
-+					       struct sk_buff *skb,
-+					       const void *daddr)
+-struct neighbour *ip6_neigh_lookup(const struct in6_addr *gw,
+-				   struct net_device *dev,
+-				   struct sk_buff *skb,
+-				   const void *daddr)
++struct neighbour *__ip6_dst_neigh_lookup(const struct in6_addr *gw,
++					 struct net_device *dev,
++					 struct sk_buff *skb,
++					 const void *daddr)
  {
- 	const struct rtable *rt = container_of(dst, struct rtable, dst);
- 	struct net_device *dev;
-@@ -2910,7 +2910,7 @@ struct rtable *ip_route_output_key_hash_rcu(struct net *net, struct flowi4 *fl4,
- static struct dst_ops ipv4_dst_blackhole_ops = {
- 	.family			= AF_INET,
- 	.default_advmss		= ipv4_default_advmss,
--	.neigh_lookup		= ipv4_neigh_lookup,
-+	.neigh_lookup		= ipv4_dst_neigh_lookup,
- 	.check			= dst_blackhole_check,
- 	.cow_metrics		= dst_blackhole_cow_metrics,
- 	.update_pmtu		= dst_blackhole_update_pmtu,
+ 	struct neighbour *n;
+ 
+@@ -228,8 +228,8 @@ static struct neighbour *ip6_dst_neigh_lookup(const struct dst_entry *dst,
+ {
+ 	const struct rt6_info *rt = dst_rt6_info(dst);
+ 
+-	return ip6_neigh_lookup(rt6_nexthop(rt, &in6addr_any),
+-				dst_dev(dst), skb, daddr);
++	return __ip6_dst_neigh_lookup(rt6_nexthop(rt, &in6addr_any),
++				      dst_dev(dst), skb, daddr);
+ }
+ 
+ static void ip6_confirm_neigh(const struct dst_entry *dst, const void *daddr)
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
