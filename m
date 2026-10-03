@@ -1,71 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A0815AADA;
-	Sat,  3 Oct 2026 09:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4440D1A9FA0;
+	Sat,  3 Oct 2026 09:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791020584; cv=none; b=Cx35MzcgNnMuyK+coeFccm1Hj2GTzVciq6jktypLDbpSdNZZAxFBjmyIg+pwg+CQ/YAFXo/ja9rn2MYy5eckybJPOeXD0d+0PxpJCiFS+OtiyKScbzaXiLr67suMStNUTjJj+82smEoybFzChhWbrgD9lkcU9+QcRfT/I0pm794=
+	t=1791020739; cv=none; b=bdxw/gk5zmxisisXrwx51WgHLe8FJOsYUrf2MZMPvSjoofJ8kFJKx8LMo3Mey/Tn1vvUzH/2/0DwlrkArQUy/CWB6Q60PS1hb6FOUug5+IxbkDlXBtSDYSYU/3Blbt1OpLatsM3ongZtBplu6E3GjBy8vVbFkBVJNlw9UhK1puY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791020584; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hA+Q22nMO7BoCV1UTt+fF0xGzAcxGi8KwGYOOJEnQrg/vVLP7DkhhOYuB1J0+5m10TF9evsEmFyfheuiUyLpuSCwEl+KVyL2Xed8FUe+qquUBmMXuUHUkjD41fS8vbTPsAlvCKcDHay0A9TQjlZjS6EhcK8r4qMJFmekLUHp6aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdYM2XRl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791020739; c=relaxed/simple;
+	bh=KBX+8dwqjjJeqTwvAQH1qKq6zd9qAHSj3a97B1IHKh8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=GAcKCavphxaIuISHLnY9d8mp54FW3Z3d9sKzQwTtRp0LSRvZ6pUIS+mkdt7X9Dn3PlZkNNpYpI1mrbdUW2AHNWQxXRcPcetdOd5khEPs9ih68g1xnjs1mOdksI4l5l7o2WdrWRsKoWJo2jFOKvY/V18a6rWaCFfY5R7cV95SOiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=b4axHCB5; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdYM2XRl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703171F0089B;
-	Sat,  3 Oct 2026 09:43:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791020582;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FdYM2XRlX+MvHBx5H8B43BsooytwXXOnmTx05w4uOHc6o2qeO8GyikzAiXrTg4MpO
-	 mOuRSGeum5+0F1aybZ6cGBSJdJB5iFVDFVMILBicnBks3hji65XAOlNj7ypSWfBAO6
-	 eFy9ZRz4vK/DqQq3D5NWu5vEGa/ziYIyg/n9/WIBnCKdA2iNtsx4h7UTZTva8aEDYP
-	 5Is9TMaKXNYIhq0nqXIze3HTOJUR3sw4r2sGRhCfsOivCY+BM3d4jGn7zXtWe029TH
-	 NsI9s0X9V3TrDuXXnqbgki3byJevMTp0B1kWA7ohb2xRVxOAuLnKb9T5Sy4eC2NkHW
-	 UOCSWYZg6fEqQ==
-From: netdev-bot+sinfo@kernel.org
-To: Jiale Yao <yaojiale02@163.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Wang <jasowangio@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tun: Drain eBPF RCU callbacks on module exit
-Date: Sat, 03 Oct 2026 09:43:01 +0000
-Message-ID: <179102058192.1402591.6469519866772089867@kernel.org>
-In-Reply-To: <20261003093822.544964-1-yaojiale02@163.com>
-References: <20261003093822.544964-1-yaojiale02@163.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="b4axHCB5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=KBX+8dwqjjJeqTwvAQH1qKq6zd9qAHSj3a97B1IHKh8=; b=b
+	4axHCB53HTHcRn+XsfJv9wDPxKQ/+PUu3fXWM6Q2X6thyOnTmpyaDF/uQIRZJjOU
+	gf5PTWovp7viU6gpje9Pg9oGvUtw905oHulGKo6rtUTjFTCFyh6BRc+x1zKVlmIN
+	qMrZIyK+uwv/SocJL853j53GhHs8wL8XfrZdIOEaYM=
+Date: Sat, 3 Oct 2026 17:45:04 +0800 (CST)
+From: "jiale yao" <19888972804@163.com>
+To: "Jakub Kicinski" <kuba@kernel.org>
+Cc: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
+	"Jason Wang" <jasowangio@gmail.com>,
+	"Andrew Lunn" <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Paolo Abeni" <pabeni@redhat.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re:Re: [PATCH 2/3] tun: Drain eBPF RCU callbacks on module exit
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <20261001161209.135f0aef@kernel.org>
+References: <20260926162554.163197-1-yaojiale02@163.com>
+ <20260926162554.163197-3-yaojiale02@163.com>
+ <20261001161209.135f0aef@kernel.org>
+X-NTES-SC: AL_Qu2SA/yZv08r4iWdYOkdmE8Uges8WcC0svki1YJUc+4GhzHBwiABbHpeBEnt4NmlFwSNnAm9ShFy8/5qb6BZFZLhWms8IHbL+IWRqQIsJw==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <3283db82.138f.1a101272332.Coremail.19888972804@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:jygvCgD3JyOgzsBqjkYHAA--.60013W
+X-CM-SenderInfo: x1dryxhdohiji6rwjhhfrp/xtbC8ACm4GrAzqBgFgAA3E
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-Hi!
-
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
-
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+SGkgSmFrdWIsCkF0IDIwMjYtMTAtMDIgMDc6MTI6MDksICJKYWt1YiBLaWNpbnNraSIgPGt1YmFA
+a2VybmVsLm9yZz4gd3JvdGU6Cj5PbiBTdW4sIDI3IFNlcCAyMDI2IDAwOjI1OjUxICswODAwIEpp
+YWxlIFlhbyB3cm90ZToKPj4gU3ViamVjdDogW1BBVENIIDIvM10gdHVuOiBEcmFpbiBlQlBGIFJD
+VSBjYWxsYmFja3Mgb24gbW9kdWxlIGV4aXQKPgo+cGxlYXNlIHJlcG9zdCB0aGlzIGlmIHlvdSBl
+eHBlY3QgbmV0d29ya2luZyB0byB0YWtlIHRoZSBwYXRjaAo+cGF0Y2h3b3JrIHdpbGwgd2FpdCBm
+b3IgdGhlIG90aGVyIGVtYWlscyB0aGF0IHlvdSBkaWQgbm90IGNjIHVzIG9uCj55b3Ugc2hvdWxk
+bid0IHBvaW50bGVzc2x5IG1ha2UgcGF0Y2hlcyBmb3IgZGlmZmVyZW50IHN1YnN5c3RlbXMgaW50
+byAKPmEgc2VyaWVzCgpUaGFua3MgZm9yIHBvaW50aW5nIHRoaXMgb3V0LiBJIGhhdmUgc3BsaXQg
+b3V0IHRoZSBUVU4gY2hhbmdlIGFuZApyZXBvc3RlZCBpdCBhcyBhIHN0YW5kYWxvbmUgcGF0Y2gs
+CmluIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDI2MTAwMzA5MzgyMi41NDQ5NjQtMS15
+YW9qaWFsZTAyQDE2My5jb20vIAoKSmlhbGU=
