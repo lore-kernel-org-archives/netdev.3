@@ -1,106 +1,139 @@
-Received: from mail-wr2-f33.google.com (mail-wr2-f33.google.com [74.125.225.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12AE356773
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 14:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.97
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791037794; cv=none; b=J2W3G2Le9t8P1teULZ5bPCpv7Cr2We3GM6Ll3r0nsgqtrdwr6ydfsdqwwMr8FAh27x8pAAdnpiADwJfXOl9wP2Ux5lTCmVC6Mvwvxv9SENLPUPi8ka6XPj5IEODaQQOEoxXQbbjGOg1YRIMjiLhfo/yzU36gpjJDD9Z8Jg81C7Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791037794; c=relaxed/simple;
-	bh=0FDlgE8/WtKxquJ1GTctYIuuqUHSqOHXaOawd/W2wAY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jaNe9khNrVp87VUg8Z8lX0yYcdwTwTFK2q0VREYX6cHLd27Hfq9/ze2XAL1bgAFoM9Aa6/nmbfQPP4PiE0L0KbNUzYeGm51z782zwhJ5gP4WxsZvYxom3uqzGg8CDq7sIDsATtYai3SB5dfz7BniMkshIWOrUYFvUPgmxpnmRjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfRVTunU; arc=none smtp.client-ip=74.125.225.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604BB31A56D;
+	Sat,  3 Oct 2026 14:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791038206; cv=pass; b=h0SCVEIJPOrdfgA5P8ptzzPDjBygi9D+N4XLQ8zq72LRvAQegZq4BPyKMYJNBBlmtOyhWCXjj109MdQ9RbLpkblRIf6RosuDWJrTbZQgD01sH9qNH8BiqWqkndys9s0gfRFUIEdxqzkTZtglh0zQK7RvujPy0S3UPVZ6qXfSpq8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791038206; c=relaxed/simple;
+	bh=9Egv4q97ghG6oqT2h8uxYWEJx97iLxhYm/0+T/pO2i4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=VtIY7M4czw9XDZUHBaYHrIlQ7MpD36ul/klz1uXcALvDDouL+IPBZBM1uyRmRFB68DWhrh6A5XaeTivlpcYNlZ0dPhMD0+NfJy5LToUUXNtO7Zo12/YxAZJiJrphSrJtA0LzRO1tsC0hTM04Uo89Z0FVzuXDgn4eH4fOhmFozvQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=aVP6eu9Q; arc=pass smtp.client-ip=165.173.180.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfRVTunU"
-Received: by mail-wr2-f33.google.com with SMTP id ffacd0b85a97d-48b0fc598f8so202424f8f.2
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 07:29:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791037791; x=1791642591; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5Nh4xYcLHpPWPglzT1Rb9TR1ScNizAo9fpmTf/BkSqU=;
-        b=DfRVTunU9jbFEsqPT9kqur/9LUCxYqIC+cipGl1i2VS8mMiqkJSoQUrdrA4NYvYU1F
-         i5yqhKQBaDUnT6qZmuLwxlfrps9z2NNB/Hdl41KPPHWvE2HNvKAW15itrkWMckQtckOg
-         ESuy/bZmn9SSge4YdhSFTpilIczq21qJSYMN0VhVdO4sLjx7112gOGUWV1GoyRItZqfn
-         FUZnvi9uX5E50UP1/cIXtLqwIxIE5Hs7mGkwjA4UptForWelIRe9wGNegybDXpI6ls+6
-         mhgSiNy1FbIthXXp48buPfw1UoEYPlTCsu3OKx9lf2IqqNUN0GYbMXqRQO+TyS7arerY
-         6Kxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791037791; x=1791642591;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5Nh4xYcLHpPWPglzT1Rb9TR1ScNizAo9fpmTf/BkSqU=;
-        b=BPemm0sTPd0Zs5nQhjVcs2Jje7OAXCpFVKPv+Bu3sSy8sjzkGO3oSdrSmFto8HuPwd
-         qg9Fl6N9/UXgK0g+vGxdTwM4oKv/l61srYCPW2r0ZiRMcm6L/0LfgpU52NFFP+bjA5ip
-         guHVxywnDAcDvhN+0F1KmyTT09KEbg8X/I6rvrY4jELk6HqE7wrNy5N4tGu1ChRle7ae
-         PP40ggyKK5fkELEHvipyi4Ih7RAG1EP5GDlQaooY6MF7pPg7zJQP8aDWfy14LvR+JlOQ
-         IUt+EDOqq5/fOxPHkYUlWeonrHeNHAS3IOkulgL+n7qovI7PDaoK7ugO5nNINq2JyqPj
-         4BUw==
-X-Gm-Message-State: AFuF++lMPx/RLqScfBoPcj5C8JI+hN6etdHXImG6zx8iypviCuka64HG
-	XNYdHCiiyg4i1Nmi1Nj6XeH7cpFld++44GNOadGlnpby/ULE1HjOb9gf
-X-Gm-Gg: AYBFou1v2HBLCldmDFxYqav0kGzofblC5NAO/fMIYMzMawIVgBIXwIoCigu2MfITmCb
-	w8hhd7xTWLxeNGKcG/98GOr1T46P/I3zd+SrscpV5nsKQOp7gxIk6Zblq1X2Yc7oZDaAhSFVhcL
-	PGz9uW9ICcxnxcQQ2xhilCQTYCddVbyzHlP1gQzmaL/T7959mltsYrHn2fiLR5+ajjWshtYoFW3
-	9ib5LCxL3jT2y56lY6YZlSkcnDZ9YnyBchfq9FFBqXU0iFJmDUIwLXUSsKt/ytg+JaBfozHuAJR
-	LN8yfgk00vWb7fdyUC2aHq8Nw3NpX32tMG4Y28PvR4io3sfQ0L7qu/JWnRdJUVD4ftRsfxAWr3n
-	efwU3bySXbynoii/oTPt46cBUdMPYUuyxXMZojJzXFG+bGOaJQNhfMaqvOhqfx6KsPyuuWkbRJq
-	/UkyKi9adFhItJUhQwkpqhfALdfZooWXJvGibC5pYjRdfeT+TBWzF6Szh770HDfdQNLqde9/v6m
-	stsC7hHjXd1Wf8rKn5MR2KE5ImQuJRgv9Xkg1CTqq8ENCb2zaIcpYJIylG11oNFaTKyfovx0Hq5
-	qS6DVG43I7DyNbB0R52ysPT76MDv55HIu9ZoCWEtDkv/eBgS4CZJAKVWj8v0vnsrvAqS1gEC1SY
-	=
-X-Received: by 2002:a05:600c:c162:b0:4a0:1b77:db0 with SMTP id 5b1f17b1804b1-4a0276b86b5mr102814875e9.35.1791037791041;
-        Sat, 03 Oct 2026 07:29:51 -0700 (PDT)
-Received: from unknown748F3CBA5068 (dynamic-2a02-3100-b2e2-2001-c47f-5a89-3d9a-cd2d.310.pool.telefonica.de. [2a02:3100:b2e2:2001:c47f:5a89:3d9a:cd2d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a030326132sm146494905e9.0.2026.10.03.07.29.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 07:29:50 -0700 (PDT)
-Date: Sat, 3 Oct 2026 16:29:48 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, Siddharth Vadapalli <s-vadapalli@ti.com>, 
-	Roger Quadros <rogerq@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Keerthy <j-keerthy@ti.com>, 
-	Kevin Hao <haokexin@gmail.com>, Alexander Sverdlin <alex@sverdlin.org>, 
-	Arnd Bergmann <arnd@arndb.de>, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 0/2] net: cpsw: fix failed-probe cleanup
-Message-ID: <asEQ9o6etFua8Hof@gmail.com>
-References: <cover.1791035789.git.kmehltretter@gmail.com>
- <179103680648.1402591.2581152276872666183@kernel.org>
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="aVP6eu9Q"
+ARC-Seal: i=1; a=rsa-sha256; t=1791038153; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=kLHYAhye2LfTlMwX0V6q6TTBkux+wUFvoV4mXNTnSVevlJCYF5FyMMRkdeFkH0XszsbgO+qYY2nuDmDtmuWaPe/Qry8FJt2ZBs79Ypjdi3fNNl4hpSYv+BiOAYPvjEGr930y6mI6YFb29oTMGzg8MfOcXrhEuaUKicppeQkNN0A=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1791038153; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=9Egv4q97ghG6oqT2h8uxYWEJx97iLxhYm/0+T/pO2i4=; 
+	b=kRHyPxPAhgGthdAaCK3cR3qk8LPjw/tJr7goGPLgT4hdbGXJLOiOJ1lqY0IdtuTXa9XDacMAmTO1f4RS03uNFPlHZxXQGT2pAIugaTweekvCg9hn+GKltqoM9snXW4m7nB8EGOvghDWut1qOUqMP68/t2wHIXMBOcPKR2QN3pmM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=pigmoral.tech;
+	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
+	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791038153;
+	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
+	h=Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Date:Message-Id:Message-Id:To:To:Cc:Cc:Subject:Subject:From:From:In-Reply-To:Reply-To;
+	bh=9Egv4q97ghG6oqT2h8uxYWEJx97iLxhYm/0+T/pO2i4=;
+	b=aVP6eu9QquEmV95y1DiK1BJcTJUnvthZ3+boRCVkxLohCUk8OTC/+kQtbqhGdwwC
+	V3gRD61LqmAqz0zOpqvCC3f+OHP72cIIbFN5+2qPbvitDeoBI/XjkIeRaTIsvgm5ev7
+	f6L/Rn7N7zv+L3ETm7cY0TEXFhKrt4FIczIQYM5w=
+Received: by smtp.zohomail.com with SMTPS id 1791038151074231.15688188388413;
+	Sat, 3 Oct 2026 07:35:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179103680648.1402591.2581152276872666183@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 03 Oct 2026 22:35:41 +0800
+Message-Id: <DLVA17A4RRG7.2ECQKV3SJDAGI@pigmoral.tech>
+To: <wens@kernel.org>, "Junhui Liu" <junhui.liu@pigmoral.tech>
+Cc: "Stephen Boyd" <sboyd@kernel.org>, "Brian Masney"
+ <bmasney+clk@redhat.com>, "Jerome Brunet" <jbrunet+clk@baylibre.com>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>,
+ "Philipp Zabel" <p.zabel@pengutronix.de>, "Paul Walmsley" <pjw@kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Alexandre Ghiti" <alex@ghiti.fr>, "Richard Cochran"
+ <richardcochran@gmail.com>, <linux-clk@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-sunxi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <linux-riscv@lists.infradead.org>, <netdev@vger.kernel.org>, "Jerome
+ Brunet" <jbrunet@baylibre.com>, "Enzo Adriano"
+ <enzo.adriano.code@gmail.com>, "Andre Przywara" <andre.przywara@arm.com>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, "Yixun Lan"
+ <dlan@gentoo.org>
+Subject: Re: [PATCH v5 0/8] clk: sunxi-ng: Add support for Allwinner A733
+ CCU and PRCM
+From: "Junhui Liu" <junhui.liu@pigmoral.tech>
+X-Mailer: aerc 0.22.0
+References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
+ <CAGb2v66O7Ze=TiHO_5q=76QpU8ZXraFyV+HfO+_HpkTDr1U-nQ@mail.gmail.com>
+In-Reply-To: <CAGb2v66O7Ze=TiHO_5q=76QpU8ZXraFyV+HfO+_HpkTDr1U-nQ@mail.gmail.com>
+X-ZohoMailClient: External
 
-On Sat, Oct 03, 2026 at 02:13:26PM +0100, netdev-bot+sinfo@kernel.org wrote:
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
+Hi Chen-Yu,
 
-The rx_mode_work lifetime issue was found during an LLM-assisted review
-of the 6.12.112-rc1 stable series.
+On Sat Oct 3, 2026 at 9:37 PM CST, Chen-Yu Tsai wrote:
+> On Wed, Sep 30, 2026 at 1:27=E2=80=AFAM Junhui Liu <junhui.liu@pigmoral.t=
+ech> wrote:
+>>
+>> Add support for the main CCU and the PRCM module (R-CCU) found in the
+>> Allwinner A733 SoC. The clock architecture is derived from the previous
+>> A523 design, with the MCU_CCU removed and the clock tree extended for
+>> the additional functional blocks found on the A733.
+>>
+>> The A733 introduces a "pll-ref" clock that normalizes the physical
+>> oscillator frequency, which can be 19.2MHz, 24MHz, or 26MHz, into a
+>> consistent 24MHz reference for the PLL clock tree.
+>>
+>> The peripheral, video, and DE PLLs provide multiple independently gated
+>> outputs with programmable dividers. Model these outputs as separate
+>> divider-and-gate child clocks. Also follow the documented hierarchy for
+>> the derived peripheral PLL outputs. The explicitly named PLL_AUDIO1 /2
+>> and /5 outputs are modeled as fixed-factor clocks, with their divider
+>> fields initialized accordingly.
+>>
+>> Also extend the sunxi-ng SDM (Sigma-Delta Modulation) support for the
+>> dual-pattern register layout used by the A733 PLLs. PLL_AUDIO0 uses the
+>> dual-pattern SDM support to synthesize its fractional output.
+>> PLL_AUDIO1 does not expose fractional rates, but its SDM controls are
+>> modeled so that stale settings left by firmware can be disabled when an
+>> integer rate is programmed.
+>
+> Some of the clock controls, like the PLL and AHB/APB bus dividers, are
+> secure by default and need to be set to non-secure for Linux to be able
+> to use them properly. And there is also a TWD clock in the PRCM that the
+> user manual says is secure only.
+>
+> Have you given any thought to this? If we end up having to convert to
+> SCMI or something to handle those clocks it's going to be a bit ugly.
+>
+> And presumably things work now because the secure/non-secure access bit
+> isn't in effect right now because you aren't using secure boot? At least
+> this was a thing in the past...
+>
 
-Reviewing the same probe error path in dual-EMAC mode then exposed the
-older secondary-netdev cleanup bug.
+Thanks for pointing this out. This is indeed something I had not
+considered before. I will try enabling secure boot on my spare Cubie A7Z
+board and test it on actual hardware.
 
-Thanks,
-Karl
+For the PLL and AHB/APB bus clock controls, the user manual indicates
+that the relevant security bits can be set by TF-A to allow the kernel
+to access these registers. This also appears to be how this has
+traditionally been handled on sunxi platforms. So I think we can do the
+same in TF-A for the A733.
+
+For bus_r_twd_clk, I will test whether the register is indeed always
+secure. If it is, I think the clock can be removed from the kernel and
+left enabled by its hardware reset value or by the boot firmware.
+
+>
+> Thanks
+> ChenYu
+>
+
+--=20
+Best regards,
+Junhui Liu
+
