@@ -1,153 +1,55 @@
-Received: from mail-pj2-f9.google.com (mail-pj2-f9.google.com [74.125.227.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD81313E03
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 14:17:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C271B313E03;
+	Sat,  3 Oct 2026 14:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791037054; cv=none; b=GjXE589D2pq2Z1wjx6bm90XhzJPJV6L7BHK9a/CDJ1VIDGq6mPiEzKSjEDf0LemcaopBxYOrG0MS7/tYZ/XBUAFhfOu2ItVB9cdzILeNG0YsH0KZIe3S0dQuFmdYPI11LCAJ12nNetc90TpxYobob8AQvVANZ8yHMnSDDyN84tQ=
+	t=1791037089; cv=none; b=QnUfmr4Z2hpT7DBPxuh8J46IBx6mIMizgOPWGV/ZlrLAyIlQvA/2S6YgWr01/iR7EuzRkCT8v8sHYfe/gddKK5WuGmKIyNfivy588hK6aN05aOC8py5YbmWXHlJRKmvQvOi47LvieTtZgExIZrdJBSffzpC3l1enBzT/gjNVpsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791037054; c=relaxed/simple;
-	bh=4zLo0UbKSEICGkFKan5yv8Z26l3uVHBjePen8rFMVm8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q7NtG/DgNK7frz9FLJYw/nUPNy2wFdU6wjmHYHV8WDYASkmbyAvLS1k1QKQOCWVTduoPP8QBJS7F0buIxa5OzWMHRsExMiK9umT1aoPo3MDTP0XmSvFxCYm+sTglFHKlzva/6fdB4Le8m8t7daIkQ/AFEtoyxisi27J2uLAJzSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HC3qb5X6; arc=none smtp.client-ip=74.125.227.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791037089; c=relaxed/simple;
+	bh=p1iE9IJuA9vzahQdkL4uD4ZoYz14exJJjYG0KNLd2AU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:MIME-Version:Date:
+	 Message-Id:Content-Type; b=gs8BJXLtKNisOd1APhPZUFi0V1AAKAi+nlfE2kWmCJxkvgE2xN09qiUGgG3FSK+RlQ9iKQ/qmVYtZAbZIS8qGhXJblhAVrXeeRnTtRI2FzuOpi2wgcrfx0vCgV+tSClQFMEkMqDIQAPL6FW/BmCgMToHCMFBVAh/IV2jIXEN7D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=GQdg3GxM; arc=none smtp.client-ip=178.154.239.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HC3qb5X6"
-Received: by mail-pj2-f9.google.com with SMTP id 98e67ed59e1d1-3a51696a650so305278a91.1
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 07:17:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791037052; x=1791641852; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XE7zmJjii7x1F8lw11kuc/7tPw1OpeRSYZ1+GJGjbo8=;
-        b=HC3qb5X6TcW/BWkOmLcEHVBQoq4xrh/3P0kEsEbeIW+M92gPIbi3sHkHQyG21A590J
-         4CbCWUSj07ZhzJTBK6OpBplS+zh4KIHoVhDCf5kdRgccSesZfG19rqbLfycEmx+/0k98
-         raQpYwXs78lqLva3gwt2CDwcMYfDm10+tsCiNuDYhVT++y/iokFZrg29y2J4gIIgm4FV
-         M9aP/S9v2Kmuk+/Bd/q6+lmRGXeURNSIMDatqYRZ5BHeiyIRDk9xq+hkjSBdGztxfKZs
-         5MBoYwe73BdclOz1rHw5WgiMUKALtOHlIhl0grVRd9cxbrh7bKSXnBP38siWX3wCdAnR
-         3S5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791037052; x=1791641852;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XE7zmJjii7x1F8lw11kuc/7tPw1OpeRSYZ1+GJGjbo8=;
-        b=oNUOOdcgM+qVBHSUBoL3IOgvK97axi+NkGOwmf8kcR2Ri9oDyG05AVFJvd1FOMKzG3
-         MWRhuKO1j6RQEliG56lqBP3Hen+YRpdLe99Hc6fDIRdOJG3xoMVbviaNX83byosSPCUl
-         5e9fnRWb6TFdq8MfxrajmkTRqvFRkFfpRSYoXJu9dU/xLYE9aEGBKFAVbpZvwDWjmCVH
-         aUyLDcz/+3ZeZuZwGhZdybr3wbeZ7cYhcnuiFoJCy2zV0rnmfUxrglEKgMo/Nsx6VchZ
-         yOpyJSb5gVYyEoAlBN85lDSusrN/bZGaJA6AT/ThE6bkw8QaxjZ7vtG/wDftFXChW1pS
-         pbfA==
-X-Gm-Message-State: AFq9FYIRFwyGtxSt2Wr83UObXF04AmQCWXuxEW4ZKhxwss/VMIu6Yca/
-	wwcvnx/H6LXstbqHE1bjZ4oMPwqBPPrhNtSvYAzHNXwDNG3LLDj97gPL/9tpx51TpkAO0A==
-X-Gm-Gg: AYBFou16SChH1WL2dnCnss2kY+Zg2sOxFX/ddLDlDrZDiMLfldF9s9WdcZ3/0LZqwgt
-	f2xdRaInbaTcNPpgAX5UHPwXjCfhORXGnHGXJXe5uQjLgw7Qj9sRLuCadPptZmyVgyoEmYY7T0k
-	eydfITut3jEWuk68oLWmszP/qgczYVTCH7u7kjWEz13Ieay0/ryyepWnAZ9ZJNL6xqi9EqHYZp/
-	vaLFbQVfp8ZGsiDXvIxfjlvpl0jiVJmATlPPFApORHQO/Dg7IE7Ts7sL6RAQTVBA/Pmo3DzeMP6
-	9Up3w5xz6iqMK116O6d3T/XbTVpKwGIhYeZo5N7WeL0ttEm5bnrvR1iQHJthaNhiUtJmjtsMDPc
-	/MswKcER+1PdYIf2MSwqJ4c3jl4Hg4UHwNz1emPfAraL+gfHSlU+ZXVbD8naP4EzjN6J2Y9e2Ne
-	Lz4tR4SBjFEp7vCU5lJUPAe3/A+9VtJ3n0JqstpbTUJk1ZlN+Wr/qF3+mL8dqyq+iN/NXEJXPBO
-	xwGWfbi2p1gRZvK7n4E0qIZ
-X-Received: by 2002:a17:90b:3b8a:b0:3a2:b4a6:92a7 with SMTP id 98e67ed59e1d1-3a7a356ccb2mr829218a91.47.1791037052058;
-        Sat, 03 Oct 2026 07:17:32 -0700 (PDT)
-Received: from localhost.localdomain ([112.49.112.188])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4c6135sm3043715a91.13.2026.10.03.07.17.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 07:17:31 -0700 (PDT)
-From: xiaoshoukui@gmail.com
-To: netdev@vger.kernel.org
-Cc: jmaloy@redhat.com,
-	tung.quang.nguyen@est.tech,
-	edumazet@google.com,
-	w@1wt.eu,
-	xiaoshoukui <xiaoshoukui@gmail.com>
-Subject: [PATCH net v2] tipc: fix memory leaks in bundle and fragment paths
-Date: Sat,  3 Oct 2026 14:16:35 +0000
-Message-Id: <20261003141635.33711-1-xiaoshoukui@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="GQdg3GxM"
+Received: from mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:5a80:0:640:5f14:0])
+	by forward500a.mail.yandex.net (postfix) with ESMTPS id 0EDB4C1A3E;
+	Sat, 03 Oct 2026 17:12:03 +0300 (MSK)
+Received: from mail.yandex.ru (2a02:6b8:c0c:5c14:0:640:a57b:0 [2a02:6b8:c0c:5c14:0:640:a57b:0])
+	by mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net (mxback) with HTTPS id ZBnmCa5JU0U0-uaRxgpvu;
+	Sat, 03 Oct 2026 17:12:02 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1791036722; bh=p1iE9IJuA9vzahQdkL4uD4ZoYz14exJJjYG0KNLd2AU=;
+	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
+	b=GQdg3GxMKnjDtrIjZh0QrCu5kM1xhINdJesJyy4yrZFahZoGEghildQm5SzcpOyF8
+	 eolunvKhE4ANInoHCfjW/QEx/wGRIQzTHNviK19rFLiKc8JU7gl4zuPOFlGP1IHX1a
+	 eORP3jrRt73DwL9U8oIouuXCGiIrB0GOIvGUrIWU=
+Authentication-Results: mail-nwsmtp-mxback-production-main-813.iva.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+Received: by mail-sendbernar-production-main-60.iva.yp-c.yandex.net (sendbernar) with HTTPS id ee00c04c1aa76ab2be9247f83e4d4341;
+	Sat, 03 Oct 2026 17:12:01 +0300
+From: Ilya K <me@0upti.me>
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+In-Reply-To: <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
+References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com> <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df> <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21> <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com> <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4> <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8> <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136> <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
+Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Sat, 03 Oct 2026 17:12:01 +0300
+Message-Id: <143991791036721@40be7595-980b-4665-ba66-1601e10a0899>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-From: xiaoshoukui <xiaoshoukui@gmail.com>
-
-In tipc_data_input(), recognized internal control message users (such
-as MSG_BUNDLER, TUNNEL_PROTOCOL, MSG_FRAGMENTER, and BCAST_PROTOCOL)
-return false WITHOUT releasing the skb via kfree_skb().
-
-However, callers in the bundle extraction and fragment reassembly
-receive paths currently ignore the return value of tipc_data_input().
-This leads to memory leaks in the following scenarios:
-
-1. Nested Bundle Path:
-   When an outer MSG_BUNDLER message contains a structurally valid
-   inner MSG_BUNDLER payload, tipc_msg_extract() allocates and
-   extracts the inner skb. tipc_data_input() inspects the inner
-   header, sees MSG_BUNDLER, and returns false without consuming or
-   freeing the skb. Because the extraction loop ignores the return
-   value, the inner skb is leaked.
-
-2. Fragment Reassembly Path:
-   When reassembly completes in tipc_buf_append(), the reassembled
-   skb may carry msg_user == MSG_FRAGMENTER. tipc_data_input()
-   inspects the reassembled skb, sees MSG_FRAGMENTER, and returns
-   false without consuming or freeing it. The fragment completion path
-   ignores the return value, leaking the reassembled skb.
-
-Fix this by checking the return value of tipc_data_input() with
-unlikely() in both receive paths and dropping unhandled skbs via
-kfree_skb().
-
-Hot-path disassembly verification confirms that adding unlikely()
-preserves ideal branch layout. Benchmark evaluations under strict CPU
-core isolation show no statistically significant throughput variation.
-
-Fixes: c637c1035534 ("tipc: resolve race problem at unicast message reception")
-Signed-off-by: xiaoshoukui <xiaoshoukui@gmail.com>
----
-v1 -> v2:
- - Added unlikely() annotations to low-probability error paths.
- - Reverted to kfree_skb() to align with existing TIPC module conventions
-   and avoid 80-column line wrapping / checkpatch warnings.
- - Re-evaluated benchmarks with strict CPU affinity (taskset).
-
-Link: https://lore.kernel.org/netdev/20260916061220.798324-1-xiaoshoukui@gmail.com/
-
- net/tipc/link.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index 49dfc098d89b..dec72a2b113e 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -1306,15 +1306,18 @@ static int tipc_link_input(struct tipc_link *l, struct sk_buff *skb,
- 		skb_queue_head_init(&tmpq);
- 		l->stats.recv_bundles++;
- 		l->stats.recv_bundled += msg_msgcnt(hdr);
--		while (tipc_msg_extract(skb, &iskb, &pos))
--			tipc_data_input(l, iskb, &tmpq);
-+		while (tipc_msg_extract(skb, &iskb, &pos)) {
-+			if (unlikely(!tipc_data_input(l, iskb, &tmpq)))
-+				kfree_skb(iskb);
-+		}
- 		tipc_skb_queue_splice_tail(&tmpq, inputq);
- 		return 0;
- 	} else if (usr == MSG_FRAGMENTER) {
- 		l->stats.recv_fragments++;
- 		if (tipc_buf_append(reasm_skb, &skb)) {
- 			l->stats.recv_fragmented++;
--			tipc_data_input(l, skb, inputq);
-+			if (unlikely(!tipc_data_input(l, skb, inputq)))
-+				kfree_skb(skb);
- 		} else if (!*reasm_skb && !link_is_bc_rcvlink(l)) {
- 			pr_warn_ratelimited("Unable to build fragment list\n");
- 			return tipc_link_fsm_evt(l, LINK_FAILURE_EVT);
--- 
-2.34.1
-
+OK, so another update: my current branch which is basically 7.2.8 + bpi-r4 specific stuff + any patches from Ben's tree that touch net/wireless or mt76 code (http://github.com/K900/linux/tree/bpi-r4-728-ct) survived an entire week of no crashes, which is a very good sign. Unfortunately, it's still >500 commits with a total of +20k -2k lines of diff, so I'll have to go through it again and strip it down even more before I can have any idea of what is actually helping...
