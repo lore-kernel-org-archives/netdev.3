@@ -1,51 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364B43B1EE7;
-	Sat,  3 Oct 2026 22:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9A43B0583;
+	Sat,  3 Oct 2026 22:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791067189; cv=none; b=sMZaq4lsyRcfz54V0yEQeQHso7GGaBNz5hf9AAEpJ5JECBPIizySH2G8YFN+02AUsCPfr+4FnqhaoU/ojsMQPsR3qcrZjoSZ89tca4pQotBKuVLbmOgM0m1ak5DwYQgBXcWdWJ4yP2J51UkLvzIRlpXuhzDO1z19ed6Pb+T2oLc=
+	t=1791067227; cv=none; b=WuCUnbnMhLPTY0dpPiKnaS5aOVwerBsT76EoxjYbdjmZifHreadte4k0zO3Ju53eqmZg9WGFnH8N2fDPNi9BqIUWUgUc5SeMqj/wWnlLlLSHaJ+kfG85O8LrSv2iVitXP5MLaWl65t3Dj9bb2ebY6Q1yvqggndxKhgvwsi92aCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791067189; c=relaxed/simple;
-	bh=Ic31HEJux3OFcbIc6poO19+ZaFOmBs6cZxLUPzFdQig=;
+	s=arc-20240116; t=1791067227; c=relaxed/simple;
+	bh=L7pwffU3fZsS+/W7QfK9PO0bGs2w1m1fnbDh7pK5+Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUc9htI56eFeZWm2nGDiTtaUErdKkqhlxgjtN061ghMi4jqUJkFkmsMzXuk7DSrL1iy8t9FGk4DQrzRXrh+8d/U3YtSeuXhP/YLorSX1/Dmm1o9Jzr0TIPhyALWV5kdlH8DGSBYazn4Dj8rDE55q2R7sQJqxTsHMcilrmT8mTpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CaDNBDfu; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=WYLj8HHsmF5bZIenS/AxW7HdeejpKijAqddmb/tILGGmaAcswiAl/t+XbarwGqudNP/lT1FF6wZ7m58rUpyp2dgfIWskAsdTYxumKcxMIxA6sDWGOrG3FWGbZe8ywitQWaiEGy6Kl9AgjEeaVJiU81ylsJcDF1USigmIvD1Cy38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nc7d7Q9N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CaDNBDfu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C53A51F0089B;
-	Sat,  3 Oct 2026 22:39:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nc7d7Q9N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DFC1F0089B;
+	Sat,  3 Oct 2026 22:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791067187;
-	bh=+QaOQm84zXoAmhkOFMND1UHGru0OngaSsCEco/m8OwY=;
+	s=k20260515; t=1791067225;
+	bh=ZQJP1J/W43TjYs+7RMpzpaCZzFr74DHsRH7rvfe8WjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CaDNBDfuOVucEEvBrFpJ1lt2ZdYv4rZGgzznYkeq1Ok1inYrtd9F+nVJDXm27UpaH
-	 lav2THT+21IZ0YSZ8xsnLvgYfr3XcHyCIytn3cvSKJyG8qghLA28E3hCA5deXmg1fP
-	 BOcE9Ie2E5d/gZRgvjhnTUrRYockMpBHsChy79x4G+e3xJUdvfXzSwfCfzG4CoAuU5
-	 1qAiDA3oZSGrEsIFH5Pcvd0BpxwJvBjI+Hry9bz/1F29xks2CP+aVumDAHoVlUlx4G
-	 yruJGUIjmJE2VYTM+HtAeyDMtQZpqSnpM12h9dbnLAmDBRXgO0iW6eu3IDNLGNF5Aq
-	 cXmUswkcy9RyQ==
+	b=Nc7d7Q9NZ22VxhMTWY70nrf+vRyFbMM8jOZO1cmZ6tXfFTEHxmyvZyNkWzrpF9D6w
+	 DhllHUYOFL/IPh5HoY1p8ZM+XcZWGmo4UdJzxM5IS74Qa/I+dadAs6pqXMOEMszLZu
+	 Ks1H3HRE42uYlars9+9tzNUBonxe6s+DdtvTIzIHbCI85At8zg/4d1RGSuPywlXygx
+	 2aim7ZZe2NxMrjyuj5CkTiAnXflcdkg2cVPvxyWUIOAU9CiODs0P6Qt0IxoW5iQPuY
+	 RGq0w3eM99FjSo6fV1d1CWlfu3FZQ6F9MKtNeF3HYXyIZx8Ua7QoHifQA+zdYyN2fJ
+	 h5lrRrWxpb4Ng==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
+To: netdev@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	Artem Dinaburg <artem@trailofbits.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH 6.1.y] ethtool: fail closed if we can't get max channel used in indirection tables
-Date: Sat,  3 Oct 2026 18:33:06 -0400
-Message-ID: <2026-10-03-1-daily-reply-0025-re-ethtool-rss-max-channel-6-1@kernel.org>
+	i.maximets@ovn.org,
+	kuba@kernel.org,
+	kees@kernel.org,
+	stable@vger.kernel.org,
+	Jean-Paul Sergent <jpsergent@gmail.com>
+Subject: Re: [Bug Report] fortify false-positive + real overread in skb_metadata_dst_cmp (geneve, gro_cell_poll)
+Date: Sat,  3 Oct 2026 18:33:09 -0400
+Message-ID: <2026-10-03-1-daily-reply-0028-re-skb-metadata-dst-cmp-fixes-tag@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261002200059.22598-1-artem@trailofbits.com>
-References: <20261002200059.22598-1-artem@trailofbits.com>
+In-Reply-To: <20261003005449.2675.1@jpsergent.gmail.com>
+References: <20261003005449.2675.1@jpsergent.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,9 +48,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> [ Upstream commit 2899d58462ba868287d6ff3acad3675e7adf934f ]
+> Same disease as the
+> tun_dst_unclone fix 4c6d43db2a4d ("net: dst_metadata: fix
+> false-positive memcpy overflow in tun_dst_unclone"), on the RX/GRO
+> sibling path; that fix carries Fixes: 69050f8d6d07 for the same
+> reason.
 
-Queued for 6.1, thanks.
+I've queued that one for 6.18: 6.18 has the counted_by annotation it trips on.
+
+For your skb_metadata_dst_cmp() patch, the Fixes: tag should be ce87fc6ce3f9
+("gro: Make GRO aware of lightweight tunnels."), not 69050f8d6d07 ("treewide:
+Replace kmalloc with kmalloc_obj for non-scalar types"). The overread predates
+kmalloc_flex, and 6.18 has no kmalloc_flex at all, so with the current tag the
+fix would miss 6.18, which is the tree that panics for you, and the older
+trees, where the overread is silent.
 
 -- 
 Thanks,
