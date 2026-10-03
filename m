@@ -1,246 +1,249 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC1578F2F
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 13:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2207C3161A2;
+	Sat,  3 Oct 2026 13:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791034275; cv=none; b=CLPPhzkRY9RZmn7Ut6oVUZCz4hCdmpQ1+rKsog0SJ3ooif4hn/QsI+J9vwGTN33uhVUR0+EVPlFUwlzg4hBGAitUHAY5XOE+NDCP1P43IjbIWKJs/Tu9pFoTp9MSMZ9d+f0p7nroKR7eN2PSuZs7tU49qc8XyMP4hxbKfOvf6oQ=
+	t=1791034564; cv=none; b=HstYMjDIDcRNxWeACcb8AEufykfrlhksBfaOGsFsf5K3FfVzpZ7jY15/eNLaRg3VI88b1dgWNeMT2trMJ/i3rEHI7yKu7/lmkQWRH4q7sPeKK8Fi0Kry5hjExJD/iw1XVRe9vqmLHmZELbN+P0qavF59jhbg7Z4BeYEjJfCGdls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791034275; c=relaxed/simple;
-	bh=o1ct5O7P++z+BWWKxmpMYC5OaBNz8+fxETk7z3k3D5U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qZeeM0cWXJ4I+PJyF41RPavyqsor96SyJqKUeOm70BIJ/99PzIwwRM/EpUt3VbyoDdj86bdYKtGGlPTvwfy2K5GwNawwcq/ujL3WkT1os8FjhuxSV+h2m8HEvQp1JpLGCPiRbEGLONexq3JP/hWqt3SwsEjn8/0jgfbq8rCLtlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=IRs9ZlOK; arc=none smtp.client-ip=121.127.44.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
+	s=arc-20240116; t=1791034564; c=relaxed/simple;
+	bh=D1IMWS4NlvyL61u7PsL/Rjlj9/tibH7i19YT51ooD/U=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=otFSjqQiI52JsLTY4F34w/Qt6MWh+fbH+K+0JJVoBiAx9x/6niZPcVS9wbM8q13otIn4TebnJZAIe1E3acs2/v52rp4pqff4jiqXHsiYs0Pdy/yULJ2JHdOo5pOSBHhpIpGI5Hb6usB5j5Gj6qM6feoaXjdfX+fDRWC8mqgfgcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrQSwNCl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="IRs9ZlOK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1791034273;
- bh=ODkEeefSLrm7hij5ZurlSzDvVH3h/IuT7Yn34ArBMRw=;
- b=IRs9ZlOKcW2ikY7KN9pQ02jJIKSCy5aXmMB/OZizMd99H09Yo7+UEVKwai3M48UZ41Ll4NCDf
- JI6Th4es8sd87bkQPcssY8+WGv6JnHFTwsHPpXEB67vrJb/Lg8qh8auTbuHKfAg+MhStB0+P/Ei
- +ALfEKqqDgM0wPZO1Rb1Zfg=
-X-Forward-Email-ID: 6ac1039e24093e5eace53723
-X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 121.127.44.66
-X-Forward-Email-Version: 2.17.0
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <787c2c1e-1260-43ae-bee0-9798e1e53c2b@ovn.org>
-Date: Sat, 3 Oct 2026 15:31:07 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrQSwNCl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0A61F0089B;
+	Sat,  3 Oct 2026 13:36:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791034562;
+	bh=N9bLhJAaRjLMHJ2t1wQDqGKkxSiNRw7nnJkH9dboKPU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NrQSwNClP9761Mfc0eYOTkVt5deD6fkPk1mKMn0gXFBN87YlItrIuA8/dXP53BSBh
+	 1Uitf20tSGnhoNEpjS5KXi5KjWOWfQEQnGvnh+jmTRmP2lfD7uGHBe7vwzO3MhXDpB
+	 SnBIOq4C+fPZe7dj/BMldDAkaMxgGc0xJI+f0WIzZFVv0Lw7F/k7ElTc1ZgKn8d+Be
+	 rYVTlr8g/Hge2v2Tssx3MH71WOGnC64OCAiSM8MEAxcWuV6XY23ipFygrsJrHWlHhM
+	 CGjqjxdXPn0DvktgHd/JNYh9G0+/Re35AlP7NnoSVpse1dvGsF9h2pwN7bDafviCHe
+	 xJfx8erlGMlUA==
+Subject: Re: [PATCH net-next v4 1/4] net: phy: microchip_t1s: fix collision
+ detection on PLCA status change
+From: netdev-bot+sashiko@kernel.org
+To: parthiban.veerasooran@microchip.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ UNGLinuxDriver@microchip.com
+Date: Sat, 03 Oct 2026 13:36:01 +0000
+Message-ID: <179103456181.434549.13678740418494545404@kernel.org>
+In-Reply-To: <20260929125928.611784-2-parthiban.veerasooran@microchip.com>
+References: <20260929125928.611784-2-parthiban.veerasooran@microchip.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: dst_metadata: fix fortify trap + overread in
- skb_metadata_dst_cmp
-To: Jean-Paul Sergent <jpsergent@gmail.com>, netdev@vger.kernel.org
-Cc: i.maximets@ovn.org, kuba@kernel.org, kees@kernel.org,
- stable@vger.kernel.org
-References: <20261003005449.2675.2@jpsergent.gmail.com>
- <20261003005449.2675.3@jpsergent.gmail.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20261003005449.2675.3@jpsergent.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/3/26 3:24 AM, Jean-Paul Sergent wrote:
-> memcmp: detected buffer overflow: 108 byte read of buffer size 96
->  WARNING: CPU: 0 PID: 15 at lib/string_helpers.c:1036 __fortify_report+0x45/0x60
->   __fortify_panic+0x9/0x10
->   skb_metadata_dst_cmp+0x11b/0x120
->   dev_gro_receive+0x303/0x620
->   gro_receive_skb+0xc5/0x230
->   gro_cell_poll+0x67/0xa0
-> 
-> Same disease as the tun_dst_unclone fix (4c6d43db2a4d), on the RX
-> sibling: kmalloc_flex() in metadata_dst_alloc() sets __counted_by for
-> the structure to options_len, which is then initialized to zero, so
-> the compiler's view of the metadata_dst tail is 96 bytes at the time
-> of the access. Geneve carries 108 bytes of options, and the combined
-> struct+options memcmp trips CONFIG_FORTIFY_SOURCE when built with
-> clang. Observed live on 6.18.54-talos with Cilium geneve, in
-> gro_cell_poll (gro_cells GRO on the geneve device) under sustained
-> cross-node RX; the warning is followed by a fatal Oops
-> (kernel BUG at lib/string_helpers.c:1043).
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-This doesn't make sense to me.  The problem in tun_dst_unclone was
-at the initialization time, where we couldn't write the options_len
-together with the options while the currently stored value is zero.
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-Here the function just compares two blocks and they must be already
-fully initialized and have options_len properly set.  If they have
-options, but the length is zero, that's a bug somewhere else.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> 
-> While here, fix a related overread: the memcmp length uses
-> a->u.tun_info.options_len for BOTH sides, so when b carries fewer
-> options than a the comparison reads past b's allocation. Pre-check
-> that both sides carry the same options_len
+- [Medium] The collision-detect (CDEN) setting is chosen from a software
+  copy of the PLCA enable state (priv->plca_enabled), not from the PHY's…
+- [Low] [Baseline decision: false.
+- [Low] [Baseline decision: false.
 
-This makes sense and may be the real bug here?  If options actually
-have different length for some reason, then the memcmp will rightly
-trigger the fortification check as it should.
+--
 
-However, someone more familiar with GRO should probably look at this
-to see how the comparison should behave when options are different as
-it sounds a little weird that they are.
+net: phy: microchip_t1s: fix collision detection on PLCA status change
 
-> and compare the options
-> through ip_tunnel_info_opts() so the counted_by view matches the read
-> length (the same two-stage shape the unclone fix uses).
+This patch makes the collision detection enable bit (CDEN) follow
+autonomous PLCA/CSMA-CD transitions. It adds a PLCA status change
+interrupt and a resync in read_status(), and it takes the PRSCTL1
+fallback bit into account. It also adds a probe routine that allocates
+a per-PHY mutex and a cached plca_enabled value, and it treats
+plca_cfg->enabled as tri-state.
 
-This makes no sense.  Single memcmp should work just fine as long as the
-compared size doesn't exceed the actual size of both memory regions.
+> diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
+> index 73c23d311d72a..5ce0304bf0952 100644
+> --- a/drivers/net/phy/microchip_t1s.c
+> +++ b/drivers/net/phy/microchip_t1s.c
 
-Do you still see the fortification issue trigger with just the length
-comparison change?
+[ ... ]
 
-> 
-> Fixes: 69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
+> @@ -430,6 +469,57 @@ static int lan867x_revd0_link_active_selection(struct phy_device *phydev,
 
-This is likely wrong and should point to the commit that added the
-tunnel info comparison.
+[ ... ]
 
-> Cc: stable@vger.kernel.org
-> Reported-by: Jean-Paul Sergent <jpsergent@gmail.com>
-
-If you are the author you need a sign-off instead of a reported-by.
-
-Also, you're missing a lot of maintainers in the Cc list.
-
-> Closes: https://lore.kernel.org/netdev/20261003005449.2675.1@jpsergent.gmail.com/
-
-There is no point linking the same thread where you're posting a patch,
-it will be linked anyway on commit.
-
-> Assisted-by: LLM
-> 
-> v2: fix subject prefix to [PATCH net]; no code changes.
-
-This should not be in the commit message.  Also, there should be a link
-to the previous version here.
-
-> 
-> ---
-> 
-> Reproduced without the fix: live kernel panic on 6.18.54-talos
-> (Cilium geneve, gro_cell_poll) under sustained cross-node RX; trace
-> in the report. The fix itself is NOT build-tested - no kernel build
-> environment on the reporter's host.
-> ---
->  include/net/dst_metadata.h | 28 ++++++++++++++++++++++++----
->  1 file changed, 24 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/net/dst_metadata.h b/include/net/dst_metadata.h
-> index f45d1e3..60878ea 100644
-> --- a/include/net/dst_metadata.h
-> +++ b/include/net/dst_metadata.h
-> @@ -115,10 +115,30 @@ static inline int skb_metadata_dst_cmp(const struct sk_buff *skb_a,
->  	case METADATA_HW_PORT_MUX:
->  		return memcmp(&a->u.port_info, &b->u.port_info,
->  			      sizeof(a->u.port_info));
-> -	case METADATA_IP_TUNNEL:
-> -		return memcmp(&a->u.tun_info, &b->u.tun_info,
-> -			      sizeof(a->u.tun_info) +
-> -					 a->u.tun_info.options_len);
-> +	case METADATA_IP_TUNNEL: {
-> +		int ret;
+> +static int lan86xx_update_cden(struct phy_device *phydev)
+> +{
+> +	struct lan86xx_priv *priv = phydev->priv;
+> +	struct phy_plca_status plca_st;
+> +	int fallback, ret;
+> +	u16 cden;
 > +
-> +		/* Options lengths must match, or the options memcmp below
-> +		 * would read past b's allocation when b carries fewer
-> +		 * options than a.
-> +		 */
+> +	fallback = lan86xx_fallback_to_csmacd(phydev);
+> +	if (fallback < 0)
+> +		return fallback;
+> +
+> +	ret = genphy_c45_plca_get_status(phydev, &plca_st);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* PLCA disabled                          -> CDEN enabled
+> +	 * PLCA enabled + BEACON                  -> CDEN disabled
+> +	 * PLCA enabled + no BEACON + fallback    -> CDEN enabled
+> +	 * PLCA enabled + no BEACON + no fallback -> CDEN disabled
+> +	 */
+> +	if (!priv->plca_enabled)
+> +		cden = COL_DET_ENABLE;
+> +	else if (plca_st.pst)
+> +		cden = COL_DET_DISABLE;
+> +	else if (fallback)
+> +		cden = COL_DET_ENABLE;
+> +	else
+> +		cden = COL_DET_DISABLE;
 
-This is obvious, drop the comment.
+[Severity: Medium]
+Can priv->plca_enabled get out of sync with the PLCA_CTRL0 enable bit in
+the hardware? This decision uses the cached copy. read_status(),
+config_intr() and the PSTC handler all rewrite CDEN from it, so a
+mismatch gets written back on every poll.
 
-> +		if (a->u.tun_info.options_len != b->u.tun_info.options_len)
-> +			return 1;
-> +		ret = memcmp(&a->u.tun_info, &b->u.tun_info,
-> +			     sizeof(a->u.tun_info));
+The copy is only updated in lan86xx_plca_set_cfg(), and only after
+genphy_c45_plca_set_cfg() fully succeeds. When enabled == 0, the generic
+helper clears PLCA_EN first and then does more MDIO accesses that can
+fail:
+
+drivers/net/phy/phy-c45.c:genphy_c45_plca_set_cfg() {
+    ...
+	if (plca_cfg->enabled == 0) {
+		ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
+					 MDIO_OATC14_PLCA_CTRL0,
+					 MDIO_OATC14_PLCA_EN);
+    ...
+		ret = phy_write_mmd(phydev, MDIO_MMD_VEND2,
+				    MDIO_OATC14_PLCA_CTRL1, val);
+
+		if (ret < 0)
+			return ret;
+    ...
+}
+
+If one of the later writes fails, PLCA is off in the hardware but
+plca_enabled is still 1.
+
+A PHY reset while the driver stays bound has the same effect. For MACs
+that connect the PHY in ndo_open and have a reset GPIO or reset
+controller, ifdown goes through:
+
+drivers/net/phy/phy_device.c:phy_detach() {
+    ...
+	/* Assert the reset signal */
+	phy_device_reset(phydev, 1);
+    ...
+}
+
+A resume after the PHY lost power has the same effect. PLCA_CTRL0 goes
+back to its default, but priv is devm-allocated at probe, so it keeps
+plca_enabled = 1. lan867x_revc_config_init() does not touch PLCA_CTRL0.
+
+In both cases this function sees plca_enabled = 1 and pst = 0. If
+PRSCTL1 bit 10 (fallback) is clear, it writes COL_DET_DISABLE while the
+PHY is actually running CSMA/CD. That is the situation the commit
+message says it fixes.
+
+The opposite can happen at probe. lan86xx_probe() zero-allocates priv
+without reading PLCA_CTRL0. If PLCA is already enabled in the hardware
+(for example, a module reload with no reset line), read_status() forces
+CDEN on in PLCA mode, even though genphy_c45_plca_get_cfg() reports PLCA
+as enabled.
+
+The same logic is still there at the end of the series. Would it be
+more robust for lan86xx_update_cden() to read the PLCA_CTRL0 enable bit
+directly, instead of using the cached value?
+
+> +
+> +	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
+> +			      COL_DET_CTRL0_ENABLE_BIT_MASK, cden);
+> +}
+
+[ ... ]
+
+> @@ -458,14 +552,18 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (plca_cfg->enabled)
+> -		return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> -				      LAN86XX_REG_COL_DET_CTRL0,
+> -				      COL_DET_CTRL0_ENABLE_BIT_MASK,
+> -				      COL_DET_DISABLE);
+> +	if (plca_cfg->enabled != -1)
+> +		priv->plca_enabled = plca_cfg->enabled;
+
+[Severity: Low]
+This isn't a bug, but priv->plca_enabled is written here under
+phydev->lock only. lan86xx_config_intr() reads it through
+lan86xx_update_cden() under cden_lock only.
+
+In practice, the ethtool path (rtnl or the netdev instance lock) and
+the config_intr() callers that reach lan86xx_update_cden() are
+serialized. Also, the locked lan86xx_update_cden() call below writes
+CDEN last using the new value.
+
+Would it be cleaner to do this store inside the cden_lock section, so
+that the lock covers both the cached state and the register update?
+
+>  
+> -	return phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
+> -			      COL_DET_CTRL0_ENABLE_BIT_MASK, COL_DET_ENABLE);
+> +	if (plca_cfg->enabled != -1) {
+> +		mutex_lock(&priv->cden_lock);
+> +		ret = lan86xx_update_cden(phydev);
+> +		mutex_unlock(&priv->cden_lock);
 > +		if (ret)
 > +			return ret;
-> +		/* Compare the options through the flex-array member so the
-> +		 * compiler's __counted_by(options_len) view stays consistent
-> +		 * with the read length (same shape as the tun_dst_unclone
-> +		 * fix); a single memcmp of struct+options trips
-> +		 * CONFIG_FORTIFY_SOURCE when options_len is still 0 from
-> +		 * allocation time.
-> +		 */
-
-This part of the change doesn't make much sense, but anyway, when asking
-LLMs to write comments, please ask them to be concise.  There is too much
-stuff in there that makes no sense in the context of the code, e.g. the
-mentioning of the "tun_dst_unclone fix", and the comment is generally way
-too long for what it tries to accomplish.  It should be 2 lines at most
-in this particular case.
-
-Same applies to the commit message, there is too much fluff in there that
-makes it harder to read.
-
-So, please, do some quality control before sending patches, read what
-you're sending.  Don't just shoot out AI slop.  Next person may not be
-that kind in their replies.
-
-> +		return memcmp(ip_tunnel_info_opts(&a->u.tun_info),
-> +			      ip_tunnel_info_opts(&b->u.tun_info),
-> +			      a->u.tun_info.options_len);
 > +	}
->  	case METADATA_MACSEC:
->  		return memcmp(&a->u.macsec_info, &b->u.macsec_info,
->  			      sizeof(a->u.macsec_info));
 
-Best regards, Ilya Maximets.
+[Severity: Low]
+The commit message says:
+
+    Rev.D0 is handled separately (follow-on patch).
+
+At this commit, though, LAN867X Rev.D0 also uses lan86xx_plca_set_cfg(),
+and this block calls lan86xx_update_cden() for it too. The Rev.D0 entry
+in microchip_t1s_driver[] also gets .probe = lan86xx_probe in this
+patch.
+
+Rev.D0 has no read_status, config_intr or handle_interrupt at this
+point. Enabling PLCA while pst reads 0 and the PRSCTL1 fallback bit is
+set would therefore leave CDEN enabled after PLCA comes up. Is that
+expected for this intermediate commit?
+
+The follow-on patch, "net: phy: microchip_t1s: fix collision detection
+for LAN867X Rev.D0", adds an early return for PHY_ID_LAN867X_REVD0
+before the CDEN update, so this only affects bisection.
+
+Rev.D0 does need .probe here, because the shared setter now dereferences
+phydev->priv. Could the commit message mention this Rev.D0 change?
+
+> +
+> +	return 0;
+>  }
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929125928.611784-1-parthiban.veerasooran%40microchip.com
