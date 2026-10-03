@@ -1,82 +1,83 @@
 Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF62243956
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 22:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2E13515CF
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 23:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791067812; cv=none; b=iu7CBUFW32A1mGpn5ILeLz1LuzP0ohMTYdxVKF2ZNcfwH7u31IuOPHEAKTriDvb4iEuV90EzEZyX7jdgCp2dRduOYWvEAtIquQXY/J5YTC4pIJ6sPKwtZmyTbMNXmw4uRUPZ+ofBaxRC1c73cr7sCETSJ+r8TgYB+VUqOJob89k=
+	t=1791068737; cv=none; b=TpymcPp8gn7E6JiRSkn6t8rpbZuhgdwBVJdtFd/hGeNv575hMFmZKVXSkI6fgCu4iIYsNIZExZQtj6njDAW7eVBLgPNrtiS84pxXRYTWminZ7FBu+Z4i0swUJZR62n7RZUWCbYHgHoF0QqZKoQwNWaR55oSbEQMs7VdO/LnaeEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791067812; c=relaxed/simple;
-	bh=Ln+Azr7HK2EXQEptTDhG0BbitoBWSxq4Kg02LgI222c=;
+	s=arc-20240116; t=1791068737; c=relaxed/simple;
+	bh=Rkky40wGVQtWpZiRdUGCgO6wPZ8GvQJgk1hyFS74oPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTebiI7P7Trjz3hM0Yy4Jpwtsu9HoNuG8Uge38DGjg3L4iVOry5W7CAG+3gxm8iucU6QWihOZlx0H9W+hC6HxvYzqw00oKLUmbAw2doS2rX8/Q4u1uSE13U91DI/qUgQhtnWeQBJGVNqipsaFPULH5Zl4sCWtPiJehG5q7aazjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h55L5dCX; arc=none smtp.client-ip=74.125.229.41
+	 MIME-Version; b=HHxdwZjrX8A+oU6Ch2sQmGLWibH5tskeqPdHEZNB+ZIByP8jkIYwED1PX3CAm7WrAlEB+f2ANHlV7xfbvNZm0EZT5or7q/JS+kJmgx4KiOaaBLyUQNtYNS84ll//0yojxT6C5V5b6SaFvvwt+4Jnrzp2frBjcJ5Dm/yclyrpzXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQyWCSf1; arc=none smtp.client-ip=74.125.229.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h55L5dCX"
-Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34c0b552ccfso329933eec.3
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 15:50:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQyWCSf1"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-344447f9c3dso307608eec.0
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 16:05:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791067810; x=1791672610; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791068735; x=1791673535; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LZL+tSKElyr0AUFsinzmRr5UN/djSQukFYuYztshUAk=;
-        b=h55L5dCXTPm6ShMp+X06sEsBM2F7N5tNpA64U6QjymQajOFvvm+Nqt7v1L/wyZ1ski
-         eRvvEJb+Ey6DRZO3u28C7wgeCF8/S2pZFB3BumzKBlM6sgfKiSF69tVTHfQ2Ut9sLmyD
-         rRDvEZzGnwndwYBzFq8vqXce4f9o7acITEdr7cuL1EyfBuZDlYwWASnYZQEyRwYM7OAS
-         FEUWF40+Blc/LTXUrr6O49N6DtL9tuDrgf+PS4qbmPACFFLEffjvoQIL4+EBJWJrF2zx
-         S5okVQXBKDk94i5MdRIVCk0oFgaiQoh0yyS80YlCvZ1bJPoKVizXCTayag1Sy3UGQQPZ
-         em8g==
+        bh=nAsZ9nqlfLC/NXKIok2LcpdNpmbchDX1EXb8UFtVzig=;
+        b=NQyWCSf1N0vFbniJEPoFBN13bijVhblM4hn73XtK04Wu8bowpb3WV9+9J7nNK+BVNB
+         fssMNJ5p0Cc1U2KOF7Jt09aAWwUrZlqcFagGcuXfiJ+CaSQSPMsSB5ffrXSsPP6QYPPp
+         zhGL6G0HK14niqHiAtt6PR/unJeXQRDnRv7FBmsKD6VO/fFlsApGFoq2edaEZTgUIIum
+         bqpvuxR8gTFdW8q9UuHgbHOrb3cVikbboVMzrD/7oLTxCwuQeX0QqD+qJiumF4wy3Ity
+         5emPwSi1Ks2doDl7xKimI6L6RLTJxWYHjSZIe2EBKcSlYjozY2J1feofH3slvxD5bqrW
+         Wwqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791067810; x=1791672610;
+        d=1e100.net; s=20260707; t=1791068735; x=1791673535;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LZL+tSKElyr0AUFsinzmRr5UN/djSQukFYuYztshUAk=;
-        b=xxxZq9QywEA2EJWDN+UJqF4hOkDJnrGyDFvtZWhBLGoUIsK3iwblqkktTHNL4C+PnA
-         z3sHrBtQFQ8zNnKkgdIvNAjLeiGr2u+RXoJqa7MXUe7plhcGqz6m75pBxbDVKtn5pje1
-         i70rb+4Zqu8A8Axc4NicHsBWOeZp00+ZfDQXlAbxjF9vaY6g5Ood2hV9M2MNuvYWOAen
-         2VBR7nK9plalPfjvSWqlNG+k67lvoSoyv6YE6cKNdSDxUU1qfgKDdiChcaVp6efI3n5F
-         pnmrfRe2PS+OWT4jz7+r8i09inpxJBcmsATuw1pMsvhu1k/3tq7P3mPjEIRprs5bdaV3
-         eytg==
-X-Forwarded-Encrypted: i=1; AKwUvBwg1eWWiMi7d1LRXW78WZaCXr5e+DgmpNUDGfxQ58gjxRXC59xHAzV7VGsj0vhPmNtLYaBszds=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLXFvaVyJDlVVRiMNHx+t4UxGazUc4/unpSh2eFayoB78RCmAwk
-	IvewwaqrVl7PjJm/gZEzcVOcOcvwNeOrSV/ple90NYtXTJB4VHZGp1nq
-X-Gm-Gg: AYBFou3MHmDSvlcDL5wLzVl6xFPYd55dnSiLXiWTkbi3u7lhElZTQrtnTl8J2+Ek/3N
-	CWHkhkiVhg6wZmyJQuxmkinn3ypLkRxuFZQut+tsLcTU9DFJCyrn1G7cbYWPY1N7vfAr12B6w9D
-	ohryrUViz6IkCEpSe/0fUDw68fCyRIXxlbiBufWZt7ReH7Y9p2DbuJR28nmvCmAFuaeK36ZRZzZ
-	LyGrjyphrqBlE7EtiUYwKAUBu5BTNQfHW/1DQwbER+3hCoIfBQ/79VbSkkLgI1tuabrhufp5un0
-	N8wT+xYLGNEE7VQYSGfPzwXQHkcEUcF65t4S8yTObK6ncg34yE/S6anqZvQXLAmaU/AWUH84LtB
-	rOK7D4Fc18n/uv+G9ne6p7ZZ2AQ7CVo6yObRBGvJCd70jm9p8pEH4buy7DldUOFjDr7n0KVNYQH
-	lnFs3yf0Wr3nb+cSm6rWlJMAza0UCnkBEUXlciRRoC1HuoTVkCe6L7r4ElIPR3+BGDcoxYJfstg
-	FnVi21qbv7kuAQGC4bqfvbwvFkrYJrBq+uuHOAOxl23WJULqEYhRzrMM+fulg==
-X-Received: by 2002:a05:693c:87c6:10b0:343:4a95:f120 with SMTP id 5a478bee46e88-34f152d8ea9mr7606205eec.25.1791067809905;
-        Sat, 03 Oct 2026 15:50:09 -0700 (PDT)
+        bh=nAsZ9nqlfLC/NXKIok2LcpdNpmbchDX1EXb8UFtVzig=;
+        b=BtQMF9jaB0YB5ArA/SElJKVD2K02J/9jFh3f6Pu+H9rkTlUA+3EnYHXgNDdTloEmNO
+         LAS6lGsMIeDc9zvpeyixsK4uACZu9TdLW1WzmeaG3jPyPlncKYJN/ZcRP6cKkAVHoM9c
+         GrA8vJcnAkT95Zs+CEOYcGKL3RG2oiLz27PrgHAzA26A+X2hGOi6rNsIxaWdPe2B9Ydj
+         s4ls4GVvkZY4Gh3bg3Ghivl9B9J95bPw7HUUWTu/XLbI0QSDateAfOJx8gKAld0OMgc9
+         RjMSAanVchCW2B07/fzXc0jpejsZp4dp2ilmYbSqmkEzDzBQeNAWjL3f9wHbp4tIfEEq
+         UpbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxWGxsJVK8v8jYIPvkmV0ZUVRxtOSopAXLj7tc160FalDlaeLuqSLm2t1Zem9xZ1kkPZ2BnRD0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIqPSjuvXIuxEjMbdmu1JzujdNjiMMKRI3bofjfWmZdUFwbydb9
+	9qonmCcrk/84/4m34g96/1FwRGuaoAGkgxblHe1mPW1c4P0iPIckl8/I
+X-Gm-Gg: AYBFou2wBVXX3eIEkFshYnlym9kgDBYdzzNrT0RJnUvyD6lnGOcDnO5fnAf34UGLOem
+	wLvyTWGWWZthygNm5Ra7niwaPG5NuQqgUUg864lHmGBIIfGQ/A0iHTV9S4xPZZ4TwJc6Ih2vpY/
+	aQF8PrfLEg6YL+CXj+PAF72oGiygnpuPaK9w+LnYun2Cd+RZ43t/z/sT97zm+GhtWmnjcelmEV5
+	Uh6tuFf25Pp0/8QQfHUkpKRr7UiajRQn9vFhkQ4ny7yAowKAR06qO37Wk7eCmUnjkpVutKtPyXe
+	YvgK78xDEKlVGIsDNGfYEvMxj/Lkaglf4vz+2SALJPRE6A4PKkSggZI/52Z/UJqMxGuORW0Jiyh
+	rKnaa6bojlgUvdHimXoFMSE1cUY1bdUZApZgsM/B8FZ9eYuvsJhLoMfrqfulKi+htxHSdVDCOav
+	zB9VKExqLlo7UDjJsiE1U6qSBhEr0k63PRDMoK9d1i7IpiT41KBOiusq71FTq9LUF1IMt2P7lec
+	mshdleh4289tkmKTfMABrxtIYschBmeTLpUGvVzBw0WPc1Lgk4iEfPm/ix5eg==
+X-Received: by 2002:a05:7300:fe81:b0:343:bcfc:fd1 with SMTP id 5a478bee46e88-34f219aaea3mr7391278eec.39.1791068735023;
+        Sat, 03 Oct 2026 16:05:35 -0700 (PDT)
 Received: from s1lverbox.orsomething.local (47-144-201-183.lsan.ca.frontiernet.net. [47.144.201.183])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3511d87cfa7sm5036648eec.26.2026.10.03.15.50.09
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35127021706sm57043eec.3.2026.10.03.16.05.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 15:50:09 -0700 (PDT)
+        Sat, 03 Oct 2026 16:05:34 -0700 (PDT)
 From: Jean-Paul Sergent <jpsergent@gmail.com>
-To: Ilya Maximets <i.maximets@ovn.org>
+To: Sasha Levin <sashal@kernel.org>
 Cc: Jean-Paul Sergent <jpsergent@gmail.com>,
 	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Ilya Maximets <i.maximets@ovn.org>,
 	Kees Cook <kees@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: dst_metadata: fix fortify trap + overread in skb_metadata_dst_cmp
-Date: Sat,  3 Oct 2026 15:50:08 -0700
-Message-ID: <20261003225008.1634351-1-jpsergent@gmail.com>
+	Sridhar Samudrala <sridhar.samudrala@intel.com>
+Subject: Re: [Bug Report] fortify false-positive + real overread in skb_metadata_dst_cmp (geneve, gro_cell_poll)
+Date: Sat,  3 Oct 2026 16:05:33 -0700
+Message-ID: <20261003230533.1650829-1-jpsergent@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <787c2c1e-1260-43ae-bee0-9798e1e53c2b@ovn.org>
-References: <20261003005449.2675.1@jpsergent.gmail.com> <20261003005449.2675.3@jpsergent.gmail.com> <787c2c1e-1260-43ae-bee0-9798e1e53c2b@ovn.org>
+In-Reply-To: <2026-10-03-1-daily-reply-0028-re-skb-metadata-dst-cmp-fixes-tag@kernel.org>
+References: <20261003005449.2675.1@jpsergent.gmail.com> <2026-10-03-1-daily-reply-0028-re-skb-metadata-dst-cmp-fixes-tag@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,161 +86,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 03, 2026 at 03:31:07PM +0200, Ilya Maximets wrote:
-> On 10/3/26 3:24 AM, Jean-Paul Sergent wrote:
-> > memcmp: detected buffer overflow: 108 byte read of buffer size 96
-> > ...
-> > Geneve carries 108 bytes of options, and the combined struct+options
-> > memcmp trips CONFIG_FORTIFY_SOURCE when built with clang. ...
-> 
-> This doesn't make sense to me.  The problem in tun_dst_unclone was
-> at the initialization time, where we couldn't write the options_len
-> together with the options while the currently stored value is zero.
-> 
-> Here the function just compares two blocks and they must be already
-> fully initialized and have options_len properly set.  If they have
-> options, but the length is zero, that's a bug somewhere else.
+On Sat, Oct 03, 2026 at 06:33:09PM -0400, Sasha Levin wrote:
+> I've queued that one for 6.18: 6.18 has the counted_by annotation it trips on.
 
-Thank you for the review, and I apologize for the noise. You are
-completely right on this. I re-tested the case properly with a userspace
-test mimicking the FORTIFY_SOURCE check (clang __builtin_dynamic_object_size
-on a __counted_by flexible array matching ip_tunnel_info geometry: 96-byte
-struct, options at offset 96):
+Thanks for queueing the tun_dst_unclone fix for 6.18.
 
-  - Equal options_len (12/12): compiler bound 108, memcmp length 108 ->
-    no trip.
-  - Unequal options_len (12/0): compiler bound 96, memcmp length 108 ->
-    trips with the exact reported message: "108 byte read of buffer size 96".
-  - Same unequal case under ASan: real heap-buffer-overflow, READ of size
-    108 past b's 96-byte allocation.
+> For your skb_metadata_dst_cmp() patch, the Fixes: tag should be ce87fc6ce3f9
+> ("gro: Make GRO aware of lightweight tunnels."), not 69050f8d6d07 ("treewide:
+> Replace kmalloc with kmalloc_obj for non-scalar types"). The overread predates
+> kmalloc_flex, and 6.18 has no kmalloc_flex at all, so with the current tag the
+> fix would miss 6.18, which is the tree that panics for you, and the older
+> trees, where the overread is silent.
 
-So my initial "false positive at allocation time" theory was completely
-wrong. The metadata is fully initialized at comparison time, the trip
-happens because of unequal options_len, and the out-of-bounds read past
-b's allocation is real.
+Agreed that 69050f8d6d07 is wrong - Ilya pointed that out earlier today as
+well (our messages crossed in flight).
 
-> > While here, fix a related overread: the memcmp length uses
-> > a->u.tun_info.options_len for BOTH sides, so when b carries fewer
-> > options than a the comparison reads past b's allocation. Pre-check
-> > that both sides carry the same options_len
-> 
-> This makes sense and may be the real bug here?  If options actually
-> have different length for some reason, then the memcmp will rightly
-> trigger the fortification check as it should.
-> 
-> However, someone more familiar with GRO should probably look at this
-> to see how the comparison should behave when options are different as
-> it sounds a little weird that they are.
+Looking at the git history, the options_len equality check that prevents the
+overread was actually present in ce87fc6ce3f9 itself. It was dropped later by
+commit 3fcece12bc1b ("net: store port/representator id in metadata_dst") when
+skb_metadata_dst_cmp() was refactored into a type switch.
 
-Yes, this unequal options_len overread is the real bug.
+So the overread was introduced in 3fcece12bc1b (2017). v3 carries:
 
-Regarding GRO behavior: in v3 I kept the original pre-2017 semantics
-(unequal options_len -> return 1, no aggregation). Aggregating skbs
-with differing tunnel options would drop one packet's options, so
-rejecting aggregation seems right. I have CC'd the GRO and networking
-maintainers to weigh in.
+  Fixes: 3fcece12bc1b ("net: store port/representator id in metadata_dst")
 
-We are also investigating why the two skbs have differing options_len in
-our Cilium geneve setup in the first place, but regardless of the cause,
-the comparison helper must not overread past b's buffer.
+Since 3fcece12bc1b is present in 6.18 and all active stable trees, this reaches
+both 6.18 and the older trees. It also means the patch applies cleanly exactly
+on the trees that have the bug - in 4.5-4.12 the check is still present and the
+patch would not apply there.
 
-> > and compare the options
-> > through ip_tunnel_info_opts() so the counted_by view matches the read
-> > length (the same two-stage shape the unclone fix uses).
-> 
-> This makes no sense.  Single memcmp should work just fine as long as the
-> compared size doesn't exceed the actual size of both memory regions.
-> 
-> Do you still see the fortification issue trigger with just the length
-> comparison change?
-
-No, the fortification issue does not trigger with just the length check.
-With equal lengths, the compiler bound tracks the allocation and the
-single memcmp is completely fine.
-
-v3 drops the two-stage compare entirely and restores the options_len
-check before the memcmp.
-
-> > Fixes: 69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
-> 
-> This is likely wrong and should point to the commit that added the
-> tunnel info comparison.
-
-Right again. Git history shows that the options_len equality check was
-present in the original GRO lightweight tunnel support (commit
-ce87fc6ce3f9, "gro: Make GRO aware of lightweight tunnels", 2016), but
-was inadvertently dropped when commit 3fcece12bc1b ("net: store
-port/representator id in metadata_dst", 2017) switched to a metadata_type
-enum.
-
-v3 uses:
-Fixes: 3fcece12bc1b ("net: store port/representator id in metadata_dst")
-
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Jean-Paul Sergent <jpsergent@gmail.com>
-> 
-> If you are the author you need a sign-off instead of a reported-by.
-> 
-> Also, you're missing a lot of maintainers in the Cc list.
-
-Fixed. Added Signed-off-by and dropped Reported-by. Maintainers from
-get_maintainer.pl have been added to the Cc list.
-
-> > Closes: https://lore.kernel.org/netdev/20261003005449.2675.1@jpsergent.gmail.com/
-> 
-> There is no point linking the same thread where you're posting a patch,
-> it will be linked anyway on commit.
-
-Dropped the Closes: tag.
-
-> > Assisted-by: LLM
-> > 
-> > v2: fix subject prefix to [PATCH net]; no code changes.
-> 
-> This should not be in the commit message.  Also, there should be a link
-> to the previous version here.
-
-Moved the changelog below the '---' line with lore links to previous
-versions.
-
-> > +		/* Options lengths must match, or the options memcmp below
-> > +		 * would read past b's allocation when b carries fewer
-> > +		 * options than a.
-> > +		 */
-> 
-> This is obvious, drop the comment.
-> 
-> > +		/* Compare the options through the flex-array member so the
-> ...
-> 
-> This part of the change doesn't make much sense, but anyway, when asking
-> LLMs to write comments, please ask them to be concise.  There is too much
-> stuff in there that makes no sense in the context of the code, e.g. the
-> mentioning of the "tun_dst_unclone fix", and the comment is generally way
-> too long for what it tries to accomplish.  It should be 2 lines at most
-> in this particular case.
-> 
-> Same applies to the commit message, there is too much fluff in there that
-> makes it harder to read.
-> 
-> So, please, do some quality control before sending patches, read what
-> you're sending.  Don't just shoot out AI slop.  Next person may not be
-> that kind in their replies.
-
-Point taken, and my sincere apologies. The criticism is entirely fair.
-I took an unverified explanation at face value and skipped the build
-testing I should have done.
-
-For v3:
-  - Both comments and the two-stage compare are gone; the fix is a simple
-    options_len equality check before the memcmp.
-  - The commit message is rewritten and concise.
-  - Build-tested locally against net/core/gro.o with clang 22 and
-    CONFIG_FORTIFY_SOURCE=y (the affected system's kernel config).
-  - In accordance with netdev rules, I will observe the 24-hour waiting
-    period from v2 before posting the v3 patch series in a separate thread.
-
-Thanks again for the thorough review.
+Unless you see any issue with using 3fcece12bc1b, I will post v3 with that tag
+once the 24-hour waiting window from v2 closes.
 
 -- 
 Jean-Paul Sergent
