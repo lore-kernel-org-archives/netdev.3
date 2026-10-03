@@ -1,95 +1,95 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F3D49552C
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 19:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C7D4399C4
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 19:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.99
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791056789; cv=pass; b=R512DpJ/9pKxXz2nG2b+z5Ht12BW8kHxlM/LtFA0XOx1uZKwRpjwJdBR/yTKxebJUZ/w81xmU1tChLamFXQBShIcg8nqcuHb7anjjHscCVpGZEnRYqySKIGHgfJKBGBkc/jZsUlR7CRH0J/igDWid5gpTXwwbtEwGjyGkvqEon4=
+	t=1791056973; cv=pass; b=JcH5lpFt83rYh9KCP70/wrA9PP/nvxeGWDRzYgaEAwDdog8cUay7o3SEaRI6RvfeEZN4ih5lt0WTiKoDXk0LWUvJ9WKNKZ5qctvzqXLPl0kVcfctMb1wn8TKdRN3mcQ5kLJYkbcyHCMGrZRNmDc6c+SZuisEH/8jv8rpA5lV+sI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791056789; c=relaxed/simple;
-	bh=gyCEr85muo1IcZ8BEDAQBdXVw7XlrGoIbyEzokUqs70=;
+	s=arc-20240116; t=1791056973; c=relaxed/simple;
+	bh=c2qoWHsQlTh+5S32DI962bDO3NnnJ1VQFtDuQoujjfs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=un2e5dqtw24fY6GpuZ34l5ZVpjU4oDPYkpmQ1gUb8irdfvcJz5mFELX3ws2BxhGlI6Fwtvr0AckKurR9vopsbWhMM22rXZsgO8ctHcFDMTkdC0lOOFbqWiJrJJXTXMJQsJ5/pu+38++qTJLSj677WTwq23IBB3/L69L/e0EYe00=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LYxMr7/y; arc=pass smtp.client-ip=74.125.228.140
+	 To:Cc:Content-Type; b=fDwOsvVmAfPbpXzTcxoz5MB02t4Tg5n9N/nKkd6eiF/BWe8pR6sA/HX5hCV4B1Q8r0qzr/2fZHsNwVxdWJzGMqRv2N/YhrtjRODwFmzz8gGJRsWtKbDCovgtlvl23/JKy+9C5641bQbuj+ax8qnXNzx9YX5AEoYr8EF//aRDFpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EAS1QFOA; arc=pass smtp.client-ip=74.125.228.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LYxMr7/y"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c25bf832368so7693666b.0
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 12:46:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791056782; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAS1QFOA"
+Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6a9a26ce219so93790a12.3
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 12:49:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791056970; cv=none;
         d=google.com; s=arc-20260327;
-        b=Av5WqyDXiHtWsGYxMqNhpnxfMtGJ4RIgEgZKsfk1tF7oijEvj3dRLAc50KqN7R4Vf/
-         UrM3If/SfFMGQNAXPRno1JyFiAFNOW1TxF1rU1F5EX1KQGzKIh7ybFFyNhDA4uOdcP8/
-         1f8Jdsz5bQbPF2Rd5PqdT9ZIjBw5NcT6bou6h6G2K0x50ehjfEHtj3MvtTXcBZQIwv3Q
-         OdTGLGq/lFtEI4TbafM7O5FqIOTtXwu+IPzpZL/ASLp37hoMlgqpzWKD3Syg+Gr9WjhO
-         nDh4Iuv1JuMaQ7KSWZdic/deyeHwq8gQWtPojOQyNNftH6CgJW0no0IQeTNq4EJvNds0
-         n3Ug==
+        b=hWrVR3bWNMo6VbfdjCHPMSHDreghOSQQGBfAIZPuhh0nKcT3BqEWWb89d1IDEHIrGG
+         rbo20UXMUIpRAuZpYo9dCCbxHehF/OykSdhYenl0MI5Z1oeaGmaFMJUdPm6/1ngT8Trb
+         wldeHxRz/waWglOr5HIKVORJUPzKmLRrsuqq090lYfmlB6KlMLBr4QGJM4H4b4K9wn2I
+         SeZqL+XBSD0mv6FlQLBdqFuxgK/ftAvxu4mtFY0ZvHoCnRDSwitod2b6ZGGqPROfS2d/
+         UyfRq2jEr6xMkgUP8IIlZwRmsdygOV7wkmrmcHPz4lRjq8ldoqluYUfbMUod0Q/FgwTU
+         2O4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=+qV/L/2fUM1iBr4IKUcgQQzX7MgqliA4Mcl4KozKTq0=;
-        fh=sFmVzhM/TyS3YJMA+CpNprcLBaxHs8YeSpnboGFVSvg=;
-        b=Q8NuceJrxkwM/U06OMY+onGuDd9YmRD/n5ZvBxhwOdT3407vOPJLVyXHKSin6nOkFx
-         WAcgcm8FJmilc2+pj++qFTrUjnNXXJlxVgrtxp565SmC6DV/BJrk/pRAkGG43dfv38fv
-         fORzqOOOpmr0gV3W0eJIE7I8wLlPAdqsm6YgDegN0M/na0rsidHvRmyY0V6FJS2nfxAr
-         GUYk2bXXxYrRBjhVV16E/5Nov3ISo0cFqEFEQy40zOjgVbyG9SXZagHpncsB4/GZdD0a
-         2InwTyJWvc++d4TExseHedcthyu4I4OZ/u0aL1KBFu+tkfasallv5tgBVumLZ+osBeQ1
-         9fIw==;
+        bh=bL60aTdrtyYKQsnQIlO0Kdzapjm5bDbHcbO8RKh/OCw=;
+        fh=8jb7D5Nx3mfvaCWiWszfSRTigADXqRQ5DY7szKw3y2s=;
+        b=h2iYV85xqJeZ6QHgpS343lQvzOafF7zeba1iFvUjWRA1hbvfG4RGEkZc1+koDI8weO
+         HN3h5njsodsGBjQvYUE03atFLGoEuXDsNDCOOicgjC2b8UiGUN3YaeaYxhW7iSkKztiq
+         X+bRSY/t/zIXEHHx6LWnU+rg2P/bS6aOOJz+T5SxXdayjC7qMuTYJCWY60GoNiuqkOaM
+         LLB4tgPyPF+tVvCAvL4FrhtyxNDBCrioJpPL9MacVpNJvlbBTIwIPeRkHclgNsdtjw8k
+         vB/Yuu+ne2CsJtRZ0XNmrg8d159q/LnSw8uOf53TPTeCBlyZECruOLJqEyU3sOm+mmIS
+         DqfQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791056782; x=1791661582; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791056970; x=1791661770; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+qV/L/2fUM1iBr4IKUcgQQzX7MgqliA4Mcl4KozKTq0=;
-        b=LYxMr7/ymNj1BR0ht8qIimJZnsbLQQP1Nk9mOENyVHcjG4BdZVLoNzdQNz/JuQetMr
-         2IG4zg63Xtq59te5U5Rp9nzv0hNFJ2rcf0OFYig97G8OErEa3SR5+vEEwl2lpLLZT+Xz
-         8ZBQ4AX8jG7yFByHVFuDD9rcNs9wGlQPGgchjKLe09cabajiK84LROgNagC7q15Lbb69
-         nMIw75VgB2lLyVU3T2f7X52bUXo4/narmp7h/aMkDDsiyLDs3n25w+EB4BgLLWQDJa2H
-         xiWFAZIcz9v9d+pUM0rpEaH/gslZicUDfbq9pvDR2UU1nhFg9HgZ+LDzCW+K8+pUBdwL
-         oscg==
+        bh=bL60aTdrtyYKQsnQIlO0Kdzapjm5bDbHcbO8RKh/OCw=;
+        b=EAS1QFOA2+YyhspV4Nle7v47vYDOHFe7rgDdnmjugIevLnMwQBP5V5JN+mTRrH+Qve
+         J62fquYVfK6cNWEK98FeEF+7kbfwGgAd5k9kIcnSIIXwgS4qXk6gkvxrjqTFhLzuKke0
+         /tXNRpX50RchKwOARfTYnYUctG5LUPQzzPkKsT0FiERWiAbcmBeO6u8ovs9LXX0kfj2u
+         z+lYoltLngXvi2dqs8IDsQLoXhXt5hBG2U0mJa8ecan1pJOyhRAFXl4idE5uLSgPDI+R
+         e/hLBkFEymQbUjXY/4svpc9H0vDhXWK6JwyLfmOTHwDz3hNVPJ7P7FmQ7XBQYqe/sNAV
+         fXPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791056782; x=1791661582;
+        d=1e100.net; s=20260707; t=1791056970; x=1791661770;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+qV/L/2fUM1iBr4IKUcgQQzX7MgqliA4Mcl4KozKTq0=;
-        b=b3p78N1xS+JM/j0PYqaEX/qL6DJSIcg0rnAAd9jcDJjJvx+x4x5CXF4QWjpwCL8kca
-         6zaoKsjtlb/RZePOZRfYWF2DflypaUp5u4A4XADHGIn84rbhkcDnUiYRvzuuPtHxEdeN
-         JtiBma4HO7LIA25pQcTeEy3ooVeZQ5g/RebfUiSJsRG5nz/kgYpsuN5cwFdahCFDTScF
-         3Yf4+YW+/bK4yHkirF0byJRMf/VdRBWc5V+eNktn8Oy0vSxluQBGmmo+13CwBBUvZPIc
-         /e3+emjKZpdsEnDI6DmQUIGRuVmPHFesTWZFUgeuU1PtWmDji2lmX63AX/u6BQzUK2Oq
-         OfYA==
-X-Forwarded-Encrypted: i=1; AKwUvByr1Uzz3XqsL+xKndxoz1P7Jf6mkMHpw7R2Z7LUvjF+AF7mgpB/Fb+gftceC9zWUBMT/FsiPd4=@vger.kernel.org
-X-Gm-Message-State: AFuF++nSm+9gtRvuNKny2+2irbS5N+1hc6V4ai1siwMsN7GXbOhkL2HS
-	ckRtNus3vznxo1SsvfPgVbjZJawrLc5XiSGHRlpWGhCFM32Z8HyhW90mauirzyEmeLPVSePS+EI
-	Qi0lWsFbcPExPzLnI39qF/PPDSqwkZyM=
-X-Gm-Gg: AYBFou1DDGmxnqQzYx4ieMIONCuo2q5nYuMzgVu67YwXKf4sMCy2p+oULnPOWCr8s75
-	FfrrAlXtcxNlnxWFBCp5Gj9X4Kmvu8CZLqZ69+HTa2aLp9fK1KbjtRwgNgyr6oraqeZRnHZNsjf
-	vksLAMM/et0rAHxNGgQlBY2aCGYMu7Y7rEevNgyIsxG/TMlqjqHVUg2ARky4QZX/XSqZTTETWbQ
-	AaUbQ+0jwNCEixSgyk8Ej0RPI2v/BxiMZ6qGtE5+yrQQpH8qDQpU3to77Nq/5CGbEyXtBG8/+Yo
-	2ZNlMjlaFwDG51vIwmk4p+FWWtZImCQHHBBdZ3PpyFfN2dVDUz5NsDbX8kB9a1O4QTQwkjRvxb/
-	d/r5yt3RZsvia
-X-Received: by 2002:a17:907:6d1f:b0:c24:908b:4e2e with SMTP id
- a640c23a62f3a-c2e4adb6f57mr571051766b.4.1791056781598; Sat, 03 Oct 2026
- 12:46:21 -0700 (PDT)
+        bh=bL60aTdrtyYKQsnQIlO0Kdzapjm5bDbHcbO8RKh/OCw=;
+        b=c0DlcJsK4LQ/I81HGgGM+gpyikbsvfpwDGce5RuKSf76EyR8SqpiVITJeegtL0NsF7
+         24lYJosZIxArmjIKWZQpZph+80UQRJzkI7ZCniMgGap6fDm2Z0QqD+ls97R5//kohjdM
+         5W7EcZoGRs8vQb0zyJxNlr92yDInLB3D5kJEJZ9BsNdKZINOkHV4Zkpa1D1sT/GeeIhM
+         sWI8ILVHFELH5nVFZdTApu4Dj7RYGgHOhhBqcrk2wNK0mYAhDJxrM4HzdGJop2YWtoke
+         gfW8b9Yyt/1HULwVqUJVKBy/JPnz31NA+B94dWg9Gs4ATbVGOWu+s8HhqQuhwLD6Cw8A
+         T1/w==
+X-Forwarded-Encrypted: i=1; AKwUvBzd/iw0Vh5cWsAs9wdtC9HgK8iwqsXVzXXQ0gWMt6bm21dGG1tpqaG9yPHUJgYhMZXal5GloHQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLAhjifbSNe5/xCHdvvt4M7NT0wLyKKlDE7VMN5ugyB79NoJwMc
+	ILADKljnJATvWYELASOIX10N+WdQp+zQrEEFam7FDNrs+IvnYN7yS2MrIRAjyze+Wv+kbWiRHpM
+	jS1QFi8D4wCG8Gx7PYAYO5ev8CSoYmew=
+X-Gm-Gg: AYBFou1EgEz1JB9ROHsF1Y+mQelxgRdWem0JF7RHdzgEB9+cs600Y9t8ki9Wh85KIqm
+	Y6T0MnPpciAN0nA5ej3kPgQPl8ZYiACre1/Y0eb/Rf2jlM7rO36bc5jRwyi8BQKSWYacBo54MQr
+	CKmLbAwNT7XSMruSg6OqkEmdODPQIUvJtelKbVvcwVtvrQd59k/3Y0AkMZIoh7PYuQ8owCLPDsA
+	87Qwb43NLt1ejsxMQ0U4wrzRC3Hgx8gGyWbBfoMiEVTtga1fyHD/XOxa3sdNDCWj3/2YS9YpQXg
+	wcE25gzEDjY4QXJAwjfS4CQ1buMzA27kZ3RYI/z4JDPisRZLRAtk6aXMwn0r3e3c3+4EJJCCRzx
+	KRjsin6U7dWY=
+X-Received: by 2002:a05:6402:1ed0:b0:6aa:a040:cc0b with SMTP id
+ 4fb4d7f45d1cf-6af9e26f8demr6054679a12.1.1791056969478; Sat, 03 Oct 2026
+ 12:49:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260927074520.3694663-1-nicoyip.dev@gmail.com> <179072912501.434549.7831981029772644673@kernel.org>
-In-Reply-To: <179072912501.434549.7831981029772644673@kernel.org>
+References: <20260927074600.3694802-1-nicoyip.dev@gmail.com> <179072931609.434549.973981787075835588@kernel.org>
+In-Reply-To: <179072931609.434549.973981787075835588@kernel.org>
 From: Chengfeng Ye <nicoyip.dev@gmail.com>
-Date: Sun, 4 Oct 2026 03:46:10 +0800
-X-Gm-Features: AclHuK_L2GLX9bAEDsQkTzc7iq6mfzr6SnUv5Tc6X-n5RJVXG2AqpX2JSIzLkgw
-Message-ID: <CAAo+4rUezKDNgd8Fwjs7_YaBCBS-Kj26wZRzDcF+6nNkpYNxDQ@mail.gmail.com>
-Subject: Re: [PATCH net] net/smc: serialize link group free work scheduling
+Date: Sun, 4 Oct 2026 03:49:18 +0800
+X-Gm-Features: AclHuK_Y0i4trNbA9V55a6x6i4E4Q33ZR1G4G_SD7hO5cjoUUquUDzMxcOA1ENU
+Message-ID: <CAAo+4rXocEj=0WZAtTD1em+c6SirU+4Bb-GEJ8P1piVnhxFCuw@mail.gmail.com>
+Subject: Re: [PATCH net] net/smc: Serialize CLC preparation with link teardown
 To: netdev-bot+sashiko@kernel.org
 Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, 
 	sidraya@linux.ibm.com, mjambigi@linux.ibm.com, tonylu@linux.alibaba.com, 
@@ -100,13 +100,13 @@ Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 8:45=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+On Wed, Sep 30, 2026 at 8:48=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
 te:
 >
-> Thank you for your contribution! Sashiko AI review found 2 potential
+> Thank you for your contribution! Sashiko AI review found 3 potential
 > issue(s) to consider.
 >
-> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 1 =C2=B7 Low: 0
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 (2) =C2=B7 Low: 1 (1)
 >
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -116,218 +116,267 @@ k
 y
 > (one such reply per series is enough).
 >
-> - [High] The fix is incomplete.
-> - [Medium] The patch treats lgr_lock as the lock for lgr->freeing (the
->   new comment reads 'protects lgr->freeing').
+> - [Medium] When smc_clc_send_confirm_accept() (net/smc/smc_clc.c) finds
+>   that conn->lnk is unusable or being cleared under llc_conf_mutex, it=E2=
+=80=A6
+> - [Medium] smc_clc_send_confirm() (net/smc/smc_clc.c) now does
+>   `smc->sk.sk_err =3D smc->clcsock->sk->sk_err ?: -len; reason_code =3D=
+=E2=80=A6
+> - [Low] The `sk_err ?: -len` changes in smc_clc_send_confirm() and
+>   smc_clc_send_accept() (net/smc/smc_clc.c) do more than keep the new=E2=
+=80=A6
 >
 > Pre-existing issues:
-> - [High] Separately from the pending-timer rearm this patch fixes, a
->   free_work callback that has already started can race with lgr teardown=
-=E2=80=A6
+> - [Medium] This problem wasn't introduced by this patch, but it concerns
+>   the locking contract the fix relies on.
+> - [Medium] This problem wasn't introduced by this patch, but the patch
+>   makes the CLC send helpers inconsistent.
+> - [Low] This problem wasn't introduced by this patch (it dates from
+>   2020).
 >
 > --
 >
-> net/smc: serialize link group free work scheduling
+> net/smc: Serialize CLC preparation with link teardown
 >
-> This patch takes the link group list lock in smc_lgr_schedule_free_work()
-> around the lgr->freeing check and the mod_delayed_work() call. The goal i=
-s
-> to stop a concurrent smc_lgr_free_work() from setting freeing and cancell=
-ing
-> the work between the check and the rearm, which would leave a timer pendi=
-ng
-> on a freed link group.
+> This commit makes smc_clc_send_confirm_accept() hold llc_conf_mutex for
+> reading while it prepares the SMC-R CONFIRM/ACCEPT message. If the link
+> is unusable or being cleared, it returns -ENOLINK. It also changes
+> smc_clc_send_confirm() and smc_clc_send_accept() to use the
+> kernel_sendmsg() return value when the TCP socket has no sk_err set.
 >
-> > diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-> > index 9974149659c2f..8feb486ada562 100644
-> > --- a/net/smc/smc_core.c
-> > +++ b/net/smc/smc_core.c
-> > @@ -80,6 +80,10 @@ static void smc_ibdev_cnt_dec(struct smc_link *lnk)
-> >
-> >  static void smc_lgr_schedule_free_work(struct smc_link_group *lgr)
-> >  {
-> > +     spinlock_t *lgr_lock; /* protects lgr->freeing */
+> > diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+> > index 014d527d5462d..6b9e64a5b9d0a 100644
+> > --- a/net/smc/smc_clc.c
+> > +++ b/net/smc/smc_clc.c
+> > @@ -1169,14 +1169,21 @@ static int smc_clc_send_confirm_accept(struct s=
+mc_sock *smc,
+> >       clc->hdr.version =3D version;     /* SMC version */
+> >       if (first_contact)
+> >               clc->hdr.typev2 |=3D SMC_FIRST_CONTACT_MASK;
+> > -     if (conn->lgr->is_smcd)
+> > +     if (conn->lgr->is_smcd) {
+> >               smcd_clc_prep_confirm_accept(conn, clc, first_contact,
+> >                                            version, eid, ini, &fce_len,
+> >                                            &fce_v2x, &trl);
+> > -     else
+> > +     } else {
+> > +             down_read(&conn->lgr->llc_conf_mutex);
+> > +             if (!smc_link_usable(conn->lnk) || conn->lnk->clearing) {
+> > +                     up_read(&conn->lgr->llc_conf_mutex);
+> > +                     return -ENOLINK;
 >
 > [Severity: Medium]
-> Is lgr_lock enough to protect lgr->freeing? freeing is a 1-bit bitfield,
-> and it shares a u8 with sync_err and terminating:
+> Should this return a positive CLC decline code instead of -ENOLINK?
 >
-> net/smc/smc_core.h:struct smc_link_group {
->         ...
->         u8                      sync_err : 1;   /* lgr no longer fits to =
-peer */
->         u8                      terminating : 1;/* lgr is terminating */
->         u8                      freeing : 1;    /* lgr is being freed */
->         ...
+> Both handshake paths read a negative reason code as "fallback is not
+> possible". On the client, smc_clc_send_confirm() returns -ENOLINK,
+> smc_connect_rdma() jumps to connect_abort, and then
+> smc_connect_decline_fallback() does:
+>
+> net/smc/af_smc.c:smc_connect_decline_fallback() {
+>     ...
+>         if (reason_code < 0) { /* error, fallback is not possible */
+>     ...
 > }
 >
-> Both neighbouring bits are written without lgr_lock. One example is
-> smc_clc_wait_msg():
+> As a result, connect() fails with ENOLINK.
 >
->         smc->conn.lgr->sync_err =3D 1;
->         smc_lgr_terminate_sched(smc->conn.lgr);
+> On the server, smc_listen_work()->smc_listen_decline() does:
 >
-> Another is __smc_lgr_terminate():
+>         if (reason_code < 0 ||
+>             smc_switch_to_fallback(new_smc, reason_code)) {
+>                 /* error, no fallback possible */
+>                 smc_listen_out_err(new_smc);
 >
->         lgr->terminating =3D 1;
+> and the accepted connection is torn down.
 >
-> Each of these stores is a read-modify-write of the whole byte.
-> smc_smcd_terminate() and smc_lgr_free_work() set freeing =3D 1 under
-> lgr_lock. Can a concurrent sync_err or terminating store write back a sta=
-le
-> byte and lose that freeing =3D 1?
+> Other SMC-R link and buffer failures at the same stage return positive
+> decline codes, send a DECLINE and fall back to TCP. Examples in
+> smc_connect_rdma() are SMC_CLC_DECL_ERR_RDYLNK and
+> SMC_CLC_DECL_ERR_REGBUF. Neither CONFIRM nor ACCEPT has been sent yet,
+> so a DECLINE is still valid here.
 >
-> In the sync_err case, smc_lgr_terminate_sched() then returns early becaus=
-e
-> the lgr is already unlinked, so freeing is never set again.
+> A matching code already exists and smcr_lgr_conn_assign_link() uses
+> it:
 >
-> Consider a later smc_conn_free() that passed its unlocked list_empty()
-> check before the unlink. Once __smc_lgr_terminate() has cancelled
-> free_work, that call could reach smc_lgr_schedule_free_work() with
-> conns_num =3D=3D 0. It would read freeing =3D=3D 0 under the new lock and=
- rearm the
-> timer on an lgr that is about to be freed.
+> #define SMC_CLC_DECL_NOACTLINK  0x030a0000  /* no active smc-r link in lg=
+r    */
 >
-> Would it work better to give freeing its own storage (for example a bool)=
-,
-> or to make every writer of that byte hold lgr_lock?
+> In multi-link groups, smc_switch_conns() skips SMC_INIT connections. A
+> connection that is still handshaking therefore keeps the dying link
+> even when another link is available.
 >
-> > +
-> > +     smc_lgr_list_head(lgr, &lgr_lock);
-> > +     spin_lock_bh(lgr_lock);
-> >       /* client link group creation always follows the server link grou=
-p
-> >        * creation. For client use a somewhat higher removal delay time,
-> >        * otherwise there is a risk of out-of-sync link groups.
-> > @@ -90,6 +94,7 @@ static void smc_lgr_schedule_free_work(struct smc_lin=
-k_group *lgr)
-> >                                               SMC_LGR_FREE_DELAY_CLNT :
-> >                                               SMC_LGR_FREE_DELAY_SERV);
+> Could SMC_CLC_DECL_NOACTLINK be reported here so the connection falls
+> back to TCP? The callers of smc_clc_send_confirm_accept() treat positive
+> return values as byte counts, so the wrappers would need a small
+> restructure to pass it through.
+>
+> The commit message also doesn't mention that this case now fails
+> instead of falling back to TCP.
+>
+> > +             }
+> >               smcr_clc_prep_confirm_accept(conn, clc, first_contact,
+> >                                            version, eid, ini, &fce_len,
+> >                                            &fce_v2x, &gle, &trl);
+> > +             up_read(&conn->lgr->llc_conf_mutex);
+> > +     }
+>
+> [Severity: Medium]
+> This is a pre-existing issue, not one introduced by this patch, but it
+> affects the locking contract this down_read() relies on.
+> smcr_link_clear() is documented as:
+>
+> /* must be called under lgr->llc_conf_mutex lock */
+>
+> smcr_clnt_conf_first_link() in af_smc.c calls smc_llc_cli_add_link()
+> without taking llc_conf_mutex:
+>
+>                 smc_llc_flow_qentry_clr(&link->lgr->llc_flow_lcl);
+>                 smc_llc_cli_add_link(link, qentry);
+>
+> smc_llc_cli_add_link() calls smcr_link_init() and
+> smcr_buf_map_lgr(lnk_new). On its out_clear_lnk error path it also
+> calls smcr_link_clear(lnk_new).
+>
+> The other callers take the write side. smc_llc_process_cli_add_link()
+> wraps the same function in down_write(), and smcr_serv_conf_first_link()
+> and smc_llc_process_srv_add_link() do the same around
+> smc_llc_srv_add_link().
+>
+> The new reader here doesn't seem able to see the cleared lnk_new. That
+> slot isn't any connection's conn->lnk, and smc_client_lgr_pending
+> serializes other client connections on this link group.
+>
+> Should smcr_clnt_conf_first_link() still hold llc_conf_mutex for
+> writing around smc_llc_cli_add_link()? The new down_read() assumes
+> that all link setup and teardown runs under the write side.
+>
+> >       memset(&msg, 0, sizeof(msg));
+> >       i =3D 0;
+> >       vec[i].iov_base =3D clc;
+>
+> [Severity: Low]
+> This isn't a bug introduced by this patch (it dates from 2020), but
+> further down, smc_clc_send_confirm_accept() builds up to five kvecs
+> (header, fce_v2x, gle, gid list, trailer) and then sends them with num
+> set to 1:
+>
+>         return kernel_sendmsg(smc->clcsock, &msg, vec, 1,
+>                               ntohs(clc->hdr.length));
+>
+> kernel_sendmsg() passes num to iov_iter_kvec() as nr_segs. This only
+> works because iterate_kvec() walks the segments by remaining length
+> rather than by nr_segs. Afterwards, iter->nr_segs underflows:
+>
+>         iter->nr_segs -=3D p - iter->kvec;
+>
+> Should this pass i instead of 1?
+>
+> [ ... ]
+>
+> > @@ -1227,7 +1234,7 @@ int smc_clc_send_confirm(struct smc_sock *smc, bo=
+ol clnt_first_contact,
+> >                       reason_code =3D -ENETUNREACH;
+> >                       smc->sk.sk_err =3D -reason_code;
+> >               } else {
+> > -                     smc->sk.sk_err =3D smc->clcsock->sk->sk_err;
+> > +                     smc->sk.sk_err =3D smc->clcsock->sk->sk_err ?: -l=
+en;
+> >                       reason_code =3D -smc->sk.sk_err;
+>
+> [Severity: Medium]
+> Can this copy -ERESTARTSYS into sk_err and into the connect() return
+> value?
+>
+> On a blocking connect(), __smc_connect() runs in the caller's context,
+> and the clcsock sndtimeo defaults to MAX_SCHEDULE_TIMEOUT. Suppose
+> tcp_sendmsg_locked() waits in sk_stream_wait_memory(), for example
+> under TCP memory pressure, while a signal is pending. It then returns
+> sock_intr_errno(MAX_SCHEDULE_TIMEOUT), which is -ERESTARTSYS.
+>
+> With this change, smc->sk.sk_err is set to 512, which
+> getsockopt(SO_ERROR) can expose. smc_connect() also returns
+> -ERESTARTSYS, so the syscall may be restarted, for example after
+> SIGSTOP/SIGCONT or with an SA_RESTART handler.
+>
+> smc_connect_decline_fallback() leaves sk_state at SMC_INIT and
+> sock->state at SS_CONNECTING. On restart, kernel_connect() on the
+> already connected clcsock returns -EISCONN. The application may read
+> that as success, even though the SMC connection was aborted.
+>
+> The receive side in smc_clc_wait_msg() handles this case explicitly:
+>
+>         if (signal_pending(current)) {
+>                 reason_code =3D -EINTR;
+>                 clc_sk->sk_err =3D EINTR;
+>                 smc->sk.sk_err =3D EINTR;
+>
+> Should the send side map signal errors to EINTR the same way? Before
+> this patch the same case was reported as success, so the change helps,
+> but the errno exposed here looks wrong.
+>
+> [Severity: Medium]
+> This is a pre-existing issue, but after this change the CLC send
+> helpers handle the same error differently. smc_clc_send_proposal()
+> still does:
+>
+>         len =3D kernel_sendmsg(smc->clcsock, &msg, vec, i, plen);
+>         if (len < 0) {
+>                 smc->sk.sk_err =3D smc->clcsock->sk->sk_err;
+>                 reason_code =3D -smc->sk.sk_err;
+>
+> sk_err can be 0 here: after sk_stream_error()->sock_error() clears it
+> on EPIPE, or when the send fails with -EAGAIN, -EINTR or -ENOMEM. In
+> that case this returns 0 even though the send failed. The client then
+> waits in smc_clc_wait_msg() and is likely to hit an error or EOF there.
+>
+> Should smc_clc_send_proposal() use the same sk_err ?: -len fallback?
+>
+> >               }
 > >       }
-> > +     spin_unlock_bh(lgr_lock);
+> > @@ -1246,7 +1253,8 @@ int smc_clc_send_accept(struct smc_sock *new_smc,=
+ bool srv_first_contact,
+> >       len =3D smc_clc_send_confirm_accept(new_smc, &aclc, srv_first_con=
+tact,
+> >                                         version, negotiated_eid, ini);
+> >       if (len < ntohs(aclc.hdr.length))
+> > -             len =3D len >=3D 0 ? -EPROTO : -new_smc->clcsock->sk->sk_=
+err;
+> > +             len =3D len >=3D 0 ? -EPROTO :
+> > +                     -(new_smc->clcsock->sk->sk_err ?: -len);
+> >
+> >       return len > 0 ? 0 : len;
 > >  }
 >
-> [Severity: High]
-> Does this fully close the rearm race? The commit message says a rearm
-> "either precedes the freeing transition and is caught by the subsequent
-> cancellation, or sees freeing set and is skipped". That only holds if eve=
-ry
-> teardown path sets lgr->freeing under lgr_lock before it cancels free_wor=
-k.
+> [Severity: Low]
+> The commit message describes these two hunks as:
 >
-> smc_lgr_cleanup_early() unlinks the lgr under lgr_lock but never sets
-> freeing:
+>     Preserve the preparation error in both CLC send wrappers when the TCP
+>     socket has no error recorded. Otherwise the new -ENOLINK return is
+>     converted to success.
 >
-> net/smc/smc_core.c:smc_lgr_cleanup_early() {
->         ...
->         spin_lock_bh(lgr_lock);
->         /* do not use this link group for new connections */
->         if (!list_empty(&lgr->list))
->                 list_del_init(&lgr->list);
->         spin_unlock_bh(lgr_lock);
->         __smc_lgr_terminate(lgr, true);
-> }
+> Is that the whole effect? The change also covers every failed
+> kernel_sendmsg() where clcsock->sk->sk_err is 0.
 >
-> __smc_lgr_terminate() then cancels only once, outside the lock. It sets
-> terminating, not freeing:
+> That case is common. When tcp_sendmsg_locked() fails with EPIPE,
+> sk_stream_error() calls sock_error(), which clears sk_err. Timeouts and
+> signals (-EAGAIN, -EINTR, -ERESTARTSYS) also leave sk_err at 0.
 >
-> net/smc/smc_core.c:__smc_lgr_terminate() {
->         if (lgr->terminating)
->                 return; /* lgr already terminating */
->         /* cancel free_work sync, will terminate when lgr->freeing is set=
- */
->         cancel_delayed_work(&lgr->free_work);
->         lgr->terminating =3D 1;
->         ...
->         smc_lgr_cleanup(lgr);
->         smc_lgr_free(lgr);
-> }
+> Before this patch, those failures became reason_code 0 in
+> smc_clc_send_confirm() and a return value of 0 in smc_clc_send_accept(),
+> which callers treat as success.
 >
-> On an SMC-D server, smc_listen_work() drops smc_server_lgr_pending after
-> it sends the ACCEPT. A second connection (conn2) from the same peer can
-> then join the first-contact lgr.
->
-> If the first connection then fails (no CONFIRM, or a DECLINE), teardown
-> goes through:
->
-> smc_listen_work()->smc_listen_decline()->smc_conn_abort()->
->     smc_lgr_cleanup_early()->__smc_lgr_terminate()
->
-> Meanwhile conn2 can be freed on another CPU:
->
-> CPU0 (conn1 abort)                CPU1 (smc_conn_free(conn2))
->                                   !list_empty(&lgr->list) is true
->                                   smc_lgr_unregister_conn(conn2)
-> smc_lgr_cleanup_early()
->   list_del_init(&lgr->list)
->   __smc_lgr_terminate()
->     cancel_delayed_work()
->     lgr->terminating =3D 1
->                                   lgr->conns_num =3D=3D 0
->                                   smc_lgr_schedule_free_work()
->                                     spin_lock_bh(lgr_lock)
->                                     lgr->freeing =3D=3D 0
->                                     mod_delayed_work()
->     smc_lgr_free()
->                                   smc_lgr_put() drops last reference
->
-> This would leave free_work's timer pending on a kfree'd lgr, which is the
-> same __run_timers use-after-free as in the KASAN report.
->
-> Should smc_lgr_cleanup_early() set lgr->freeing under lgr_lock? Or should
-> smc_lgr_schedule_free_work() also skip the rearm when the lgr is unlinked
-> or terminating?
->
-> [Severity: High]
-> This is a pre-existing issue and was not introduced by this patch. Can a
-> smc_lgr_free_work() callback that has already started running race with
-> lgr teardown?
->
-> smc_lgr_free_work() holds no reference on the lgr and dereferences it
-> straight away:
->
-> net/smc/smc_core.c:smc_lgr_free_work() {
->         ...
->         smc_lgr_list_head(lgr, &lgr_lock);
->         spin_lock_bh(lgr_lock);
->         if (lgr->freeing) {
->         ...
-> }
->
-> Suppose the idle timer fires and the worker starts, but is delayed before
-> this point (by preemption, or on PREEMPT_RT). A teardown can then set
-> freeing and reach __smc_lgr_terminate(). Examples are smc_smcd_terminate(=
-)
-> from an ISM peer shutdown event in smcd_handle_sw_event(),
-> smc_lgr_terminate_sched(), and smc_smcd_terminate_all() or
-> smc_smcr_terminate_all(). The only cancellation there is:
->
->         cancel_delayed_work(&lgr->free_work);
->
-> That call neither cancels nor waits for a callback that is already
-> running.
->
-> With no connections left, smc_lgr_free() destroys lgr->tx_wq. free_work i=
-s
-> on system_percpu_wq, so this does not drain it. smc_lgr_put() then calls
-> __smc_lgr_free(), which frees the lgr.
->
-> When the worker resumes, it takes spin_lock_bh() on a lock pointer loaded
-> from freed memory. If the stale freeing bit reads 0, it also calls
-> list_del_init() and smc_lgr_free() a second time.
->
-> Should teardown use cancel_delayed_work_sync() where the context allows,
-> or should the queued work hold its own lgr reference?
+> Could the commit message say that ordinary TCP send failures during
+> CONFIRM/ACCEPT are no longer reported as success?
 >
 > --
 > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260927074520.3694663-1-nicoyip.dev%40gmail.com
+set/20260927074600.3694802-1-nicoyip.dev%40gmail.com
 
-v2 (in a patch series 1/2, fixed together with another issue net/smc:
-Serialize early link group cleanup with termination) has just been
-sent to address the issues reported by sashiko.
-https://lore.kernel.org/netdev/179105277608.1402591.16173087244761956438@ke=
-rnel.org/T/#m30bd40e302bc951b76e8507324f6457502e4512c.
+These pre-existing issues are variant of the data race reported by
+this patch, now they are also addressed in v2
+https://lore.kernel.org/netdev/20261003183325.2289707-1-nicoyip.dev@gmail.c=
+om/T/#u.
 
 Best regards,
 Chengfeng
