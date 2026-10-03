@@ -1,544 +1,315 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BA73AAF5F
-	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 19:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791056051; cv=none; b=P45MkqQ9/eM6WHumsEQdcUdoKhx3ny/7XFQwCwwb+X/Jej4kWjWQ1GG6pduhxJgLRuXrVCLK0j1VFEm9Dm9c8cuUKeRQmip0XixkEHu8rzQkB+j1J9ZGd4Li2aWypv361C8CQts9StLbyX5/FhIhL2aAjJr2LUWr65uJtIfZnw0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791056051; c=relaxed/simple;
-	bh=xRsp2N9Z+8qPpeJznDmWv/uBeHAgNqjbt5JGt05EFNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qh0bnrSlq3SiN8T8QPI2j0aXiK0Rsc3yOHZXA+UFr9T1DTWUa8tz0yrzwiFu7npqXXKqk2IFzDhxJuj8+FR3ukgOtLRPf39/qFenvDlXnQEeuFwXOm18VenWR0mmnyiYxG3FVnlULoola/g7KjSvgUq9vpIy/bUVuU7njmqgFkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m8gaA/tV; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CE03955EB
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 19:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791056256; cv=pass; b=kMTTzLGhrP6ObBuu+Bogo4Wz2MSu8NWf3axJVb9svVpAIWW+httoKGlGYpq9/akqL88NHUJZF61Yx3LjnmWEgLh2BRtLa/fxUsFeh8sX6WVEUtysqcCDFl0VsVHDN8b6PgB9Mg792ymgzgFcdOhFth2L91/hQPlECfmoC/lCTkU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791056256; c=relaxed/simple;
+	bh=RQdISwCIeTHJRNNRYXKnQccif86ZtXCpqBErB1KRL7U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZHgKy7Bl/4KLbtiKFtw8cEYIT+c46R4SV82En8vgr361LBl2GQvmAG348iZPCucM8fJT8P0Pqo1slifAgI32fAfAtcU5OSJ0UuFFzRCD2r13lz+5YA0l4m9+4RiHVETFqfzciI82kE7MQAoJy9TLt0ZG1eqbcKJY8SiNLC/Y1B8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p2qBkOJb; arc=pass smtp.client-ip=74.125.228.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m8gaA/tV"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-34bb8b31647so1112600eec.0
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 12:34:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p2qBkOJb"
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a837b0c2bso11414366b.3
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 12:37:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791056252; cv=none;
+        d=google.com; s=arc-20260327;
+        b=r+zpMKX9qWf5Gq6MEKcKR+eDxdwmeLStfD0wqUFuNn7iWo3fyTxpruewWn3W1xVe1N
+         e7tvRtqzNdx6cVxNJ/Pq7sMv9PoASbGiVqcIvfY5RW6qHQAZWqAhO+Xx/9FoTZLlDd8a
+         xDCHUid4Y9Z21dB+bZQ+VPnBvEAChqiUzc9O5ccKD1EQsnQf6kQKtFxzjHu7CkgtSv0+
+         XkTmGbBmCwqjTAGqkAWuL+nzTUpuCvkalOBamDazXIXEvgeBZWfkG50w9SMH3HP9X6M6
+         ccGsFKqxJgviQZ4gEKjrycHlPh7dI9nCd7jGssMKZ2ItpjWIXlLKFg8gx3c7BAqk51v3
+         SgoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+1sgNjTuEhjk9Api27Ek7GbjZW7LaWBth9pDAUxc4Wk=;
+        fh=2Pu4KWRueU0DyFSqMYhBHwkL+kdoIOZzbPeJiEu1/4I=;
+        b=Xn2eynTH7zRwZN/JFsYJ6qMGGKShas53tNbJ2rx/CFE6dzts2vop9VNF0+rpH4aazL
+         WlqAUt9SecCmMTsDaciueKM/RfLaozd5HANh/e6OpQMUJbcRuzsa4n8lKthBLYZClbHj
+         JgRoU3fydHeNsETbQlMuNHRX7Z3Fs8BJWu6qT2u5IhRmS4bTJz8Hj1EcJOv6NMenOWkv
+         fwayTRwcQxAmqL0hcTND4grTDeWtyyJKzCmT8by3W0UKEmaFS8GBaRpgT7gZqeuqTHv7
+         u3p/U2nXVs6PYGyX3jVP8EntcQOSTND7oofA/XPCt9HP7d5sHmQWWUlh6ZtM6LitNOMx
+         IVeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791056049; x=1791660849; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gvL+/Of+YP/3PYHN30KJwZwXhArUTW+KadtVDQB+A84=;
-        b=m8gaA/tVVh29GoraWWTmwFPqW7PbPJ1Qvr8jWB66qcdKSZyefCczyM+1vaol6WIsoN
-         Hgr9BfJLs8RlkxlKgXS5nPZAz2C3jBIxW+pC1rfDF6sX7Dbcny/Lv1P81Gi0lisFM2Kt
-         /sRWUB38uuWP6YbUL5+r9NXZOk+rjMKUyTYKJHc17kqGdzLKI+D5oFSvz+sLYL48i3qd
-         MKAWVTlYbNh7WcPm9xS/X2rlHZUDVNjeyDc8/YrwNXKG9uQ0THyUOUJbZMqEchd6F0WG
-         Z6HOULtVDr/AdLl8A3o7fNWRapgr0OKyKRuRG4MWhVgJPc6nSvZyOFZtnuWBBptpbHS8
-         Yp6w==
+        d=gmail.com; s=20251104; t=1791056252; x=1791661052; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+1sgNjTuEhjk9Api27Ek7GbjZW7LaWBth9pDAUxc4Wk=;
+        b=p2qBkOJbe0JoIVZCajmcrQTxkDnY+IOH3/Tk7u4MNIVFwtr+MwYQD/b8Wiq+6L1Z5D
+         XH8mXaO7g+fmFom3HdXa+rO/y6TynLCKTZZpNl6SscUG+2P0WMrwx5aRc3kjGm6PfhRd
+         1Rr8zmBaUPRzZe1ZoIUjLsdfPRDUU8P5zuF9k9YDE+0VfkHUzJduxWdNTQ6ThddUKhmO
+         2M7odiGaEisdf693nRTuGLEe1H63qaLVrTKKCXqkbNhho+sqeZzA8Euk8bvc1Bq1rnMp
+         omDjAxvICJx04pmTcLSMIRTpsmpop8GR/dN9vInYBmrSD2ufRbKFagmEqiFPTI5+Rh+f
+         Ylcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791056049; x=1791660849;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gvL+/Of+YP/3PYHN30KJwZwXhArUTW+KadtVDQB+A84=;
-        b=sL6/gBApDPc3I1ErVMKpTWShgMrRBEL1E0YshGnOq4M0ah2bGsX1IdgIJy3a2kwC7z
-         H53AO5510tKlX9tLaaQ++GKzqlqf1He+vcnj02NHnqmPgEvBE0dlhNLMSEACcaRykGfD
-         PZVOwomT0z+UF5kfzWXbTOBBAhePCyOP/0x1jdQAd0F8CEPMQV+GxJ1QQQPM75bN49qp
-         NgRLoLQqpcAw+j3gwObOsOuOLeix7iEvRHEAT6LmGnG/p4NuHPHv51QK8SywDtmn7SGp
-         z11VEPmziIX9ruXJbbwRgUYfRmmcts4TBi0DbAsGo63Bx3rijKlFgRT8D+WPFF7+6KRL
-         x4YA==
-X-Forwarded-Encrypted: i=1; AKwUvBwhlUTIOBnrzg1FTRUfgFt6LEHJZzlzUmmtwhl92ginLsLISfkC93xHBdIVRFn6cyqzYPcc2ws=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIWZ8c29waUQD4sOb0SWphR46QYOZ5h9k5y6sZN7kqzg1MEH6Lc
-	p8Z60Pm4arMGGH6rMjRDW4TEdkV8GiQ21skaaHAAt8Kp+zwgx8BARsI5
-X-Gm-Gg: AYBFou21Hx41fX9s9SReTtMNGtZFimIbEdpRN1j6U2RtOUGwbZ6BD1cdBpDkEnp8D1H
-	hEIvORXzKX3ok4K5yBSXk3el2F3UKC93nSVFksairW9nr2ne02qmJJCLQ+fTp3zFQ7vxjj8L/+5
-	/Xo1KcI9pNywV/1l/WCp8qznCXUdevi4m50NF6VRn0kmGAbttGrJ9Bxe7UgvtA0v/3s4mLAsohQ
-	LyiSxgyzyNc7zVt4xR5Fzp1H5kHRSaDAT79cTg3zFUDJ9hS86FnKRK+R7B2vGfB1q7WIBps8ezt
-	GtN1O/Xda5qJy177p7soeLCci2KCYvE3Nnk22J1vaEQbHSdhzHghNGjHILEu1dy2VxOKlUdptJk
-	WHugg53VSoUZPgF6hNImNqel0FFNjBCHDVT0ENbdMOZ3MbUYNCOGDeLdSvjm4lBQuDu2iV1ZXiv
-	2dG++FDRNF/zFABAIhK5Lq57KntgPVQry4mZKJ+J/f5HvBn1P/DLSZI2C1Na8SpmNXPSVkRpSjU
-	DpyyGS8BjMNTXbrWxW9eZqIcJgYIuiZ
-X-Received: by 2002:a05:7300:d519:b0:340:e422:fd40 with SMTP id 5a478bee46e88-3511141b58amr5927695eec.16.1791056048512;
-        Sat, 03 Oct 2026 12:34:08 -0700 (PDT)
-Received: from build2026.lan (67.230.168.206.16clouds.com. [67.230.168.206])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-34f14f660f1sm17793271eec.13.2026.10.03.12.34.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 12:34:08 -0700 (PDT)
-From: ThisSeanZhang <thisseanzhang@gmail.com>
-To: bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	netdev@vger.kernel.org,
-	Nick Hudson <nhudson@akamai.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Qingfang Deng <dqfext@gmail.com>
-Subject: [RFC bpf-next v2 3/3] selftests/bpf: Add a test for the PPPoE encap/decap adjust_room flags
-Date: Sat,  3 Oct 2026 15:33:47 -0400
-Message-ID: <20261003193347.1137527-4-thisseanzhang@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261003193347.1137527-1-thisseanzhang@gmail.com>
-References: <20261003193347.1137527-1-thisseanzhang@gmail.com>
+        d=1e100.net; s=20260707; t=1791056252; x=1791661052;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+1sgNjTuEhjk9Api27Ek7GbjZW7LaWBth9pDAUxc4Wk=;
+        b=VZ5fxH2NrZzRAEXELagkkwCBO5NWCZlsUmykU8bvsMycN1LNpolX4CPvBWW1u9ilyJ
+         iJgHfUJSS/F6aUC1y+P17H0iCDXgEV0OQM4Ii7dos/925MqrZfzq+/qyyuetXYOdSsV9
+         HTjGyGngB5OxWsdITufr/8fc9cdrMy/HXMIznuSjNHE3+s5WvJLZlXNePbzRcy3s9iPs
+         nKp5VIkxADQHUBKJOxK+FUXKKtec1CcpMOug7tRwSLeSUc5zPZ3Y6BNtuXmUt5b+87ut
+         1klYRn5KNeTnnLSat2loMTJEhrySxP2tT0bO1RtPFbFRpKxnC+u51rCR7rf5C8Iwf+kD
+         Z21Q==
+X-Forwarded-Encrypted: i=1; AKwUvBym31Kh3qbTLrXzfABCc8xJ02T+ooblzqzFRremrtO0KvvqAfIk9N0IlAJyGyxM01PxyyQsbU0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8JBDU8WixloPcnRhkXY5reFIESV6Vrkfc/dqDsbc2F9RsDJI+
+	o2tIKBh7ZsKgSILIF/uv/aiiDptnN1n7Z+y3lLfTH1ze8JLCfHEHwbBFSw3zA6L7h0eiXmCNXGP
+	h0JOR1JXdiNlJEjOzk3pVwhvEY0HpilA=
+X-Gm-Gg: AYBFou2neJtiv39ZDEz2lSL88jGOFawjY4EZMywfHbB9p5BmRx8Yzblvsxz1PqSUbBI
+	uEHFLYXj7PRTBZVx16Sf3GDBxrLipcwwijHIrIyLOXxbx4T2Ua6Vef5VSPbhRNFWcvIahK0LfHl
+	/PH58NqkVryAVIlAfPVlFV6DY2SpmCVDuDjKaH2y3B79CM5XEqUXlZC40n9tf/AFax2ewEiQTdq
+	VBu/PybFKmyepjC8NTFbBjWn8uzCaQuW/OiW1hIdK4EJXnRSs/9jNAJSlXDthv+8UWghHhjBIde
+	1qF2+CH9fPf1Sp72+Qb3/4PGtLBEFErKHoxi9LMutV7ElPCwkn6B3Td4pTHUVDWaEDHzW6n3jqc
+	is3cGGL6I6kgLozzn3u6X2g==
+X-Received: by 2002:a05:6402:1ed0:b0:6aa:a040:cc0b with SMTP id
+ 4fb4d7f45d1cf-6af9e26f8demr6033264a12.1.1791056251842; Sat, 03 Oct 2026
+ 12:37:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260927063607.3691520-1-nicoyip.dev@gmail.com> <179072873236.434549.5842458403458661428@kernel.org>
+In-Reply-To: <179072873236.434549.5842458403458661428@kernel.org>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Sun, 4 Oct 2026 03:37:18 +0800
+X-Gm-Features: AclHuK9p6aQ_J43EOVKpodci3vxNOzsM7jVie2jHyLl0wZCCleShlxslsIU4Ncg
+Message-ID: <CAAo+4rVATDapayqSFFjRaNxFod=bnUGk66opVVUgdwVBr48FNg@mail.gmail.com>
+Subject: Re: [PATCH net] net/smc: Serialize early link group cleanup with termination
+To: netdev-bot+sashiko@kernel.org
+Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com, 
+	sidraya@linux.ibm.com, mjambigi@linux.ibm.com, tonylu@linux.alibaba.com, 
+	guwen@linux.alibaba.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ubraun@linux.ibm.com, 
+	kgraul@linux.ibm.com, linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a tc test that exercises the new BPF_F_ADJ_ROOM_ENCAP_PPPOE and
-BPF_F_ADJ_ROOM_DECAP_PPPOE flags of bpf_skb_adjust_room().
+On Wed, Sep 30, 2026 at 8:38=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 =C2=B7 Low: 0 (1)
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] The patch covers only one of the two callers of
+>   smc_lgr_cleanup_early().
+> - [Medium] Early cleanup can free the link group while a
+>   smc_lgr_free_work() callback that has already started is still using=E2=
+=80=A6
+>
+> Pre-existing issues:
+> - [Low] In __smc_lgr_terminate() (net/smc/smc_core.c:1573-1574), the
+>   comment says "cancel free_work sync, will terminate when lgr->freeing=
+=E2=80=A6
+>
+> --
+>
+> net/smc: Serialize early link group cleanup with termination
+>
+> This commit makes smc_lgr_cleanup_early() check and claim lgr->freeing
+> under lgr_lock before it calls __smc_lgr_terminate(). This stops early
+> cleanup from racing with the other teardown paths. It also makes
+> smc_conn_abort() hold a temporary link group reference across
+> smc_conn_free() and early cleanup.
+>
+> > diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+> > index e9f93b3ab435b..97b0a0b510664 100644
+> > --- a/net/smc/af_smc.c
+> > +++ b/net/smc/af_smc.c
+> > @@ -1011,12 +1011,16 @@ static void smc_conn_abort(struct smc_sock *smc=
+, int local_first)
+> >       struct smc_link_group *lgr =3D conn->lgr;
+> >       bool lgr_valid =3D false;
+> >
+> > -     if (smc_conn_lgr_valid(conn))
+> > +     if (local_first && smc_conn_lgr_valid(conn)) {
+> >               lgr_valid =3D true;
+> > +             smc_lgr_hold(lgr);
+> > +     }
+>
+> [Severity: High]
+> This adds a reference for the smc_conn_abort() caller, because the new
+> lgr->freeing check needs the link group to still be allocated. Does the
+> other caller of smc_lgr_cleanup_early() need the same protection?
+>
+> net/smc/smc_core.c:smc_conn_create() {
+>     ...
+>                 write_lock_bh(&lgr->conns_lock);
+>                 rc =3D smc_lgr_register_conn(conn, true);
+>                 write_unlock_bh(&lgr->conns_lock);
+>                 if (rc) {
+>                         smc_lgr_cleanup_early(lgr);
+>                         goto out;
+>                 }
+>         }
+>         smc_lgr_hold(conn->lgr); /* lgr_put in smc_conn_free() */
+>     ...
+> }
+>
+> The hold is only taken after registration succeeds. On the failure path,
+> smc_lgr_cleanup_early() runs without a reference of its own.
+>
+> For SMC-R first contact, smc_lgr_register_conn() fails through
+> smcr_lgr_conn_assign_link() only when the new link is no longer
+> SMC_LNK_ACTIVATING. As far as I can tell, that happens only when
+> __smcr_link_clear() resets the link inside a teardown's smc_lgr_free(). T=
+hat
+> teardown drops the link's lgr reference and then the initial one. For
+> example:
+>
+> smc_smcr_terminate_all(NULL)   /* reboot notifier via smc_lgrs_shutdown()=
+ */
+>     list_splice_init(&smc_lgr_list.list, &lgr_free_list);
+>     lgr->freeing =3D 1;
+>     __smc_lgr_terminate(lgr, false)
+>         smc_lgr_free()
+>             smcr_link_clear()->__smcr_link_clear()  /* link UNUSED, lgr p=
+ut */
+>             smc_lgr_put(lgr); /* theoretically last lgr_put */
+>                 __smc_lgr_free()->kfree(lgr)
+>
+> The connecting thread (connect() or the smc_hs_wq listen worker) then see=
+s
+> registration fail and calls smc_lgr_cleanup_early() on the freed lgr. The=
+re,
+> smc_lgr_list_head() reads lgr->is_smcd and the new check reads
+> lgr->freeing.
+>
+> The commit message says:
+>
+>     The extra reference keeps the group alive until early cleanup has
+>     checked teardown ownership.
+>
+> The smc_conn_create() caller has the same lifetime requirement. Is a
+> use-after-free from early cleanup racing with termination still reachable
+> through that path? The window is narrow. It looks like it needs a teardow=
+n
+> such as a reboot to run during an SMC-R first-contact handshake.
+>
+> >
+> >       smc_conn_free(conn);
+> > -     if (local_first && lgr_valid)
+> > +     if (lgr_valid) {
+> >               smc_lgr_cleanup_early(lgr);
+> > +             smc_lgr_put(lgr);
+> > +     }
+> >  }
+> >
+> >  /* check if there is a rdma device available for this connection. */
+> > diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+> > index 9974149659c2f..b166a379753c7 100644
+> > --- a/net/smc/smc_core.c
+> > +++ b/net/smc/smc_core.c
+> > @@ -688,6 +688,11 @@ void smc_lgr_cleanup_early(struct smc_link_group *=
+lgr)
+> >
+> >       smc_lgr_list_head(lgr, &lgr_lock);
+> >       spin_lock_bh(lgr_lock);
+> > +     if (lgr->freeing) {
+> > +             spin_unlock_bh(lgr_lock);
+> > +             return;
+> > +     }
+> > +     lgr->freeing =3D 1;
+>
+> [Severity: Medium]
+> Can early cleanup free the link group while a smc_lgr_free_work() callbac=
+k
+> that has already started is still using it?
+>
+> After freeing is claimed here, __smc_lgr_terminate() only does a
+> non-synchronous cancel:
+>
+> net/smc/smc_core.c:__smc_lgr_terminate() {
+>     ...
+>         /* cancel free_work sync, will terminate when lgr->freeing is set=
+ */
+>         cancel_delayed_work(&lgr->free_work);
+>         lgr->terminating =3D 1;
+>     ...
+> }
+>
+> free_work is queued on system_percpu_wq, not lgr->tx_wq. So
+> destroy_workqueue(lgr->tx_wq) in smc_lgr_free() does not flush it. The
+> callback also holds no lgr reference.
+>
+> Suppose the callback has started but has not yet reached the freeing chec=
+k:
+>
+> net/smc/smc_core.c:smc_lgr_free_work() {
+>     ...
+>         smc_lgr_list_head(lgr, &lgr_lock);
+>         spin_lock_bh(lgr_lock);
+>         if (lgr->freeing) {
+>     ...
+> }
+>
+> Teardown can then run to completion. smc_lgr_free() drops the initial
+> reference, and the new smc_lgr_put() in smc_conn_abort() drops the last
+> one. __smc_lgr_free() then frees the lgr and its embedded free_work, and
+> the callback goes on to dereference freed memory.
+>
+> The commit message says:
+>
+>     This also prevents early cleanup from racing with the delayed free
+>     worker
+>
+> It looks like the freeing flag only prevents a second teardown while the
+> object is still allocated. It does not keep the lgr alive for a worker th=
+at
+> lost the race. Is the commit message accurate here?
+>
+> To trigger this, the SMC_LGR_FREE_DELAY_* timer has to expire during the
+> creator's abort. That looks like it needs an unusual stall or a jiffies
+> jump.
+>
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but the comment in
+> __smc_lgr_terminate() quoted above says "cancel free_work sync". The code
+> calls cancel_delayed_work(), which does not wait for a callback that is
+> already running.
+>
+> What protects a pending smc_lgr_free_work() is its own re-check of
+> lgr->freeing under lgr_lock, not a synchronous cancel. Early cleanup now
+> reaches this code after claiming freeing. Could the comment be updated to
+> match the code?
+>
+> >       /* do not use this link group for new connections */
+> >       if (!list_empty(&lgr->list))
+> >               list_del_init(&lgr->list);
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260927063607.3691520-1-nicoyip.dev%40gmail.com
 
-The encap program is run over plain Ethernet/IPv4 and Ethernet/IPv6
-packets. The test checks that the PPPoE session header is inserted
-between the Ethernet and network headers, that the PPP protocol and
-skb->protocol are correct, and that the payload is preserved. It then
-runs the decap program and checks that the original packet and
-protocol metadata are restored.
+The issues (incomplete fix and comment consistency) identified are
+addressed in v2
+https://lore.kernel.org/netdev/179105277608.1402591.16173087244761956438@ke=
+rnel.org/T/#t
 
-A rejection program exercises calls to bpf_skb_adjust_room() that
-the helper must reject: an encapsulation length other than
-PPPOE_SES_HLEN, encapsulation in BPF_ADJ_ROOM_NET mode, a negative
-encapsulation length, the encap flag combined with a decap flag,
-shrinking a PPPoE packet without the PPPoE flag, and decapsulation of a
-packet whose skb->protocol is not ETH_P_PPP_SES. Decapsulation of a PPPoE
-packet with an unsupported PPP protocol and of a packet too short to
-still hold an IP header is rejected as well.
-
-Signed-off-by: ThisSeanZhang <thisseanzhang@gmail.com>
----
- .../selftests/bpf/prog_tests/tc_pppoe.c       | 254 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/tc_pppoe.c  | 163 +++++++++++
- 2 files changed, 417 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/tc_pppoe.c
- create mode 100644 tools/testing/selftests/bpf/progs/tc_pppoe.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/tc_pppoe.c b/tools/testing/selftests/bpf/prog_tests/tc_pppoe.c
-new file mode 100644
-index 000000000..73e602c91
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/tc_pppoe.c
-@@ -0,0 +1,254 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2026 ThisSeanZhang */
-+
-+#include <arpa/inet.h>
-+#include <test_progs.h>
-+#include "tc_pppoe.skel.h"
-+
-+/* Ethernet + IPv4 + TCP, 54 bytes in total. */
-+static const __u8 ip4_pkt[] = {
-+	/* Ethernet header. */
-+	0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
-+	0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
-+	0x08, 0x00,
-+	/* IPv4 header. */
-+	0x45, 0x00, 0x00, 0x28,
-+	0x12, 0x34, 0x40, 0x00,
-+	0x40, 0x06, 0x00, 0x00,
-+	0xc0, 0xa8, 0x01, 0x01,
-+	0xc0, 0xa8, 0x01, 0x02,
-+	/* TCP header. */
-+	0x00, 0x50, 0x1f, 0x90,
-+	0x00, 0x00, 0x00, 0x01,
-+	0x00, 0x00, 0x00, 0x00,
-+	0x50, 0x02, 0x10, 0x00,
-+	0x00, 0x00, 0x00, 0x00,
-+};
-+
-+/* Ethernet + IPv6 + TCP, 74 bytes in total. */
-+static const __u8 ip6_pkt[] = {
-+	/* Ethernet header. */
-+	0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
-+	0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
-+	0x86, 0xdd,
-+	/* IPv6 header. */
-+	0x60, 0x00, 0x00, 0x00,
-+	0x00, 0x14, 0x06, 0x40,
-+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,
-+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02,
-+	/* TCP header. */
-+	0x00, 0x50, 0x1f, 0x90,
-+	0x00, 0x00, 0x00, 0x01,
-+	0x00, 0x00, 0x00, 0x00,
-+	0x50, 0x02, 0x10, 0x00,
-+	0x00, 0x00, 0x00, 0x00,
-+};
-+
-+#define PPP_SES_HLEN	8
-+#define TC_ACT_SHOT	2
-+
-+static int run_prog(int prog_fd, const void *data_in, __u32 size_in,
-+		    void *data_out, __u32 size_out, __u32 *retval,
-+		    __u32 *size_out_actual)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, opts,
-+		    .data_in = (void *)data_in,
-+		    .data_size_in = size_in,
-+		    .data_out = data_out,
-+		    .data_size_out = size_out,
-+	);
-+	int ret;
-+
-+	ret = bpf_prog_test_run_opts(prog_fd, &opts);
-+	if (!ret && retval)
-+		*retval = opts.retval;
-+	if (!ret && size_out_actual)
-+		*size_out_actual = opts.data_size_out;
-+
-+	return ret;
-+}
-+
-+static void test_encap_decap(struct tc_pppoe *skel, const char *subtest,
-+			     const __u8 *pkt, __u32 pkt_len, int ethertype,
-+			     __u8 ppp_proto)
-+{
-+	__u8 encap_pkt[128];
-+	__u8 decap_pkt[128];
-+	__u32 retval, out_len;
-+	int ret;
-+
-+	if (!test__start_subtest(subtest))
-+		return;
-+
-+	skel->bss->encap_proto = 0;
-+	ret = run_prog(bpf_program__fd(skel->progs.tc_pppoe_encap),
-+		       pkt, pkt_len, encap_pkt, sizeof(encap_pkt),
-+		       &retval, &out_len);
-+	ASSERT_OK(ret, "encap test_run");
-+	ASSERT_OK(retval, "encap retval");
-+	ASSERT_EQ(out_len, pkt_len + PPP_SES_HLEN, "encap pkt len");
-+	ASSERT_EQ(skel->bss->encap_proto, htons(0x8864),
-+		  "encap skb protocol");
-+
-+	/* Ethernet header, with the ethertype changed to PPPoE session. */
-+	ASSERT_EQ(encap_pkt[12], 0x88, "encap eth h_proto");
-+	ASSERT_EQ(encap_pkt[13], 0x64, "encap eth h_proto");
-+	/*
-+	 * PPPoE session header: ver/type/code, session id, length and
-+	 * PPP protocol.
-+	 */
-+	ASSERT_EQ(encap_pkt[14], 0x11, "encap pppoe ver/type");
-+	ASSERT_EQ(encap_pkt[15], 0x00, "encap pppoe code");
-+	ASSERT_EQ(encap_pkt[16], 0xde, "encap pppoe sid");
-+	ASSERT_EQ(encap_pkt[17], 0xad, "encap pppoe sid");
-+	ASSERT_EQ(encap_pkt[18], 0x00, "encap pppoe length");
-+	ASSERT_EQ(encap_pkt[19], pkt_len - 14 + 2, "encap pppoe length");
-+	ASSERT_EQ(encap_pkt[20], 0x00, "encap ppp proto");
-+	ASSERT_EQ(encap_pkt[21], ppp_proto, "encap ppp proto");
-+	/*
-+	 * The original packet must be shifted unchanged behind the
-+	 * new header.
-+	 */
-+	ASSERT_MEMEQ(encap_pkt + 14 + PPP_SES_HLEN, pkt + 14,
-+		     pkt_len - 14, "encap payload");
-+
-+	skel->bss->decap_proto = 0;
-+	ret = run_prog(bpf_program__fd(skel->progs.tc_pppoe_decap),
-+		       encap_pkt, pkt_len + PPP_SES_HLEN, decap_pkt,
-+		       sizeof(decap_pkt), &retval, &out_len);
-+	ASSERT_OK(ret, "decap test_run");
-+	ASSERT_OK(retval, "decap retval");
-+	ASSERT_EQ(out_len, pkt_len, "decap pkt len");
-+	ASSERT_EQ(skel->bss->decap_proto, ethertype, "decap skb protocol");
-+	ASSERT_MEMEQ(decap_pkt, pkt, pkt_len, "decap packet");
-+}
-+
-+static void test_reject(struct tc_pppoe *skel, int case_id,
-+			const void *data_in, __u32 size_in, const char *name)
-+{
-+	__u8 out[128];
-+	__u32 retval = 0;
-+	int ret;
-+
-+	if (!test__start_subtest(name))
-+		return;
-+
-+	skel->bss->reject_case = case_id;
-+	skel->bss->reject_unexpected = 0;
-+	ret = run_prog(bpf_program__fd(skel->progs.tc_pppoe_reject),
-+		       data_in, size_in, out, sizeof(out), &retval, NULL);
-+	ASSERT_OK(ret, "reject test_run");
-+	ASSERT_EQ(retval, TC_ACT_SHOT, "helper rejected the call");
-+	ASSERT_EQ(skel->bss->reject_unexpected, 0, "no unexpected success");
-+}
-+
-+static void test_decap_reject_input(struct tc_pppoe *skel,
-+				    const __u8 *pkt, __u32 pkt_len,
-+				    const char *subtest)
-+{
-+	__u8 out[128];
-+	__u32 retval = 0;
-+	int ret;
-+
-+	if (!test__start_subtest(subtest))
-+		return;
-+
-+	skel->bss->decap_proto = 0;
-+	ret = run_prog(bpf_program__fd(skel->progs.tc_pppoe_decap),
-+		       pkt, pkt_len, out, sizeof(out), &retval, NULL);
-+	ASSERT_OK(ret, "decap reject test_run");
-+	ASSERT_EQ(retval, TC_ACT_SHOT, "helper rejected the call");
-+	ASSERT_EQ(skel->bss->decap_proto, 0, "skb protocol unchanged");
-+}
-+
-+void test_tc_pppoe(void)
-+{
-+	/*
-+	 * A PPPoE packet whose PPP protocol is neither IPv4 nor IPv6:
-+	 * IP control protocol (0x8021) in this case.
-+	 */
-+	static const __u8 bad_ppp_pkt[] = {
-+		0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
-+		0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
-+		0x88, 0x64,
-+		0x11, 0x00, 0x00, 0x00, 0x00, 0x28, 0x80, 0x21,
-+		0x45, 0x00, 0x00, 0x28,
-+		0x12, 0x34, 0x40, 0x00,
-+		0x40, 0x06, 0x00, 0x00,
-+		0xc0, 0xa8, 0x01, 0x01,
-+		0xc0, 0xa8, 0x01, 0x02,
-+		0x00, 0x50, 0x1f, 0x90,
-+		0x00, 0x00, 0x00, 0x01,
-+		0x00, 0x00, 0x00, 0x00,
-+		0x50, 0x02, 0x10, 0x00,
-+		0x00, 0x00, 0x00, 0x00,
-+	};
-+	/*
-+	 * A PPPoE packet whose payload is too short to still contain a
-+	 * full IP header after decapsulation.
-+	 */
-+	static const __u8 truncated_pkt[] = {
-+		0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
-+		0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
-+		0x88, 0x64,
-+		0x11, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x21,
-+		0x45, 0x00,
-+	};
-+	/* Non-PPPoE IPv4 packet whose bytes 20/21 decode as PPP_IP. */
-+	static const __u8 fake_ppp_pkt[] = {
-+		0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
-+		0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
-+		0x08, 0x00,
-+		0x45, 0x00, 0x00, 0x28,
-+		0x12, 0x34, 0x00, 0x21,
-+		0x40, 0x06, 0x00, 0x00,
-+		0xc0, 0xa8, 0x01, 0x01,
-+		0xc0, 0xa8, 0x01, 0x02,
-+		0x00, 0x50, 0x1f, 0x90,
-+		0x00, 0x00, 0x00, 0x01,
-+		0x00, 0x00, 0x00, 0x00,
-+		0x50, 0x02, 0x10, 0x00,
-+		0x00, 0x00, 0x00, 0x00,
-+	};
-+	__u8 encap_pkt[128];
-+	struct tc_pppoe *skel;
-+	__u32 retval, out_len;
-+
-+	skel = tc_pppoe__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel open_and_load"))
-+		return;
-+
-+	test_encap_decap(skel, "encap-decap-v4", ip4_pkt, sizeof(ip4_pkt),
-+			 htons(0x0800), 0x21);
-+	test_encap_decap(skel, "encap-decap-v6", ip6_pkt, sizeof(ip6_pkt),
-+			 htons(0x86dd), 0x57);
-+
-+	test_decap_reject_input(skel, bad_ppp_pkt, sizeof(bad_ppp_pkt),
-+				"decap-bad-ppp-proto");
-+	test_decap_reject_input(skel, truncated_pkt, sizeof(truncated_pkt),
-+				"decap-truncated");
-+	test_reject(skel, 6, fake_ppp_pkt, sizeof(fake_ppp_pkt),
-+		    "reject-decap-fake-ppp-proto");
-+
-+	/*
-+	 * Encapsulate a v4 packet once more to get a PPPoE packet as
-+	 * input for the "decap without the flag" rejection case.
-+	 */
-+	ASSERT_OK(run_prog(bpf_program__fd(skel->progs.tc_pppoe_encap),
-+			   ip4_pkt, sizeof(ip4_pkt), encap_pkt,
-+			   sizeof(encap_pkt), &retval, &out_len),
-+		  "encap v4 for reject input");
-+
-+	test_reject(skel, 1, ip4_pkt, sizeof(ip4_pkt), "reject-encap-len");
-+	test_reject(skel, 2, ip4_pkt, sizeof(ip4_pkt), "reject-encap-mode");
-+	test_reject(skel, 3, ip4_pkt, sizeof(ip4_pkt), "reject-encap-shrink");
-+	test_reject(skel, 4, ip4_pkt, sizeof(ip4_pkt), "reject-flag-mix");
-+	test_reject(skel, 5, encap_pkt, sizeof(ip4_pkt) + PPP_SES_HLEN,
-+		    "reject-decap-no-flag");
-+	test_reject(skel, 6, ip4_pkt, sizeof(ip4_pkt),
-+		    "reject-decap-non-pppoe");
-+
-+	tc_pppoe__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/tc_pppoe.c b/tools/testing/selftests/bpf/progs/tc_pppoe.c
-new file mode 100644
-index 000000000..b1624f0f9
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/tc_pppoe.c
-@@ -0,0 +1,163 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2026 ThisSeanZhang */
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_endian.h>
-+
-+#define ETH_P_IP_TEST		0x0800
-+#define ETH_P_IPV6_TEST		0x86dd
-+#define ETH_P_PPP_SES_TEST	0x8864
-+#define PPP_IP_TEST		0x21
-+#define PPP_IPV6_TEST		0x57
-+
-+#define ETH_HLEN_TEST		14
-+#define PPPOE_SES_HLEN_TEST	8
-+
-+#define TC_ACT_OK_TEST		0
-+#define TC_ACT_SHOT_TEST	2
-+
-+/* Selects the bpf_skb_adjust_room() call made by tc_pppoe_reject. */
-+int reject_case;
-+
-+/* skb->protocol as observed after the helper call. */
-+int encap_proto;
-+int decap_proto;
-+
-+/*
-+ * Set when tc_pppoe_reject observes a call that should have been
-+ * rejected by the helper.
-+ */
-+int reject_unexpected;
-+
-+SEC("tc")
-+int tc_pppoe_encap(struct __sk_buff *skb)
-+{
-+	__u8 hdr[PPPOE_SES_HLEN_TEST] = {
-+		0x11, 0x00,			/* ver, type, code */
-+		0xde, 0xad,			/* session id */
-+		0x00, 0x00,			/* length, set below */
-+		0x00, 0x00,			/* PPP protocol, set below */
-+	};
-+	struct ethhdr eth;
-+	/*
-+	 * The PPPoE length field covers everything after the 6 byte
-+	 * session header: the PPP protocol field plus the payload.
-+	 */
-+	__u16 plen = skb->len - ETH_HLEN_TEST + 2;
-+
-+	hdr[4] = (plen >> 8) & 0xff;
-+	hdr[5] = plen & 0xff;
-+
-+	switch (skb->protocol) {
-+	case bpf_htons(ETH_P_IP_TEST):
-+		hdr[7] = PPP_IP_TEST;
-+		break;
-+	case bpf_htons(ETH_P_IPV6_TEST):
-+		hdr[7] = PPP_IPV6_TEST;
-+		break;
-+	default:
-+		return TC_ACT_SHOT_TEST;
-+	}
-+
-+	if (bpf_skb_adjust_room(skb, PPPOE_SES_HLEN_TEST, BPF_ADJ_ROOM_MAC,
-+				BPF_F_ADJ_ROOM_ENCAP_PPPOE))
-+		return TC_ACT_SHOT_TEST;
-+
-+	encap_proto = skb->protocol;
-+
-+	if (bpf_skb_store_bytes(skb, ETH_HLEN_TEST, hdr, sizeof(hdr), 0))
-+		return TC_ACT_SHOT_TEST;
-+
-+	if (bpf_skb_load_bytes(skb, 0, &eth, sizeof(eth)))
-+		return TC_ACT_SHOT_TEST;
-+	eth.h_proto = bpf_htons(ETH_P_PPP_SES_TEST);
-+	if (bpf_skb_store_bytes(skb, 0, &eth, sizeof(eth), 0))
-+		return TC_ACT_SHOT_TEST;
-+
-+	return TC_ACT_OK_TEST;
-+}
-+
-+SEC("tc")
-+int tc_pppoe_decap(struct __sk_buff *skb)
-+{
-+	struct ethhdr eth;
-+
-+	if (bpf_skb_load_bytes(skb, 0, &eth, sizeof(eth)))
-+		return TC_ACT_SHOT_TEST;
-+	if (eth.h_proto != bpf_htons(ETH_P_PPP_SES_TEST))
-+		return TC_ACT_SHOT_TEST;
-+
-+	if (bpf_skb_adjust_room(skb, -PPPOE_SES_HLEN_TEST, BPF_ADJ_ROOM_MAC,
-+				BPF_F_ADJ_ROOM_DECAP_PPPOE))
-+		return TC_ACT_SHOT_TEST;
-+
-+	decap_proto = skb->protocol;
-+
-+	/*
-+	 * Restore the ethertype to the protocol of the decapsulated
-+	 * payload, as picked by the kernel from the PPP protocol field.
-+	 */
-+	eth.h_proto = (__be16)skb->protocol;
-+	if (bpf_skb_store_bytes(skb, 0, &eth, sizeof(eth), 0))
-+		return TC_ACT_SHOT_TEST;
-+
-+	return TC_ACT_OK_TEST;
-+}
-+
-+/*
-+ * Every bpf_skb_adjust_room() call below must be rejected by the
-+ * helper; tc_pppoe_reject reports (and fails the test) if one of
-+ * them unexpectedly succeeds.
-+ */
-+SEC("tc")
-+int tc_pppoe_reject(struct __sk_buff *skb)
-+{
-+	int ret = 0;
-+
-+	switch (reject_case) {
-+	case 1:
-+		/* Encap with a wrong room size. */
-+		ret = bpf_skb_adjust_room(skb, PPPOE_SES_HLEN_TEST - 4,
-+					  BPF_ADJ_ROOM_MAC,
-+					  BPF_F_ADJ_ROOM_ENCAP_PPPOE);
-+		break;
-+	case 2:
-+		/* Encap at the wrong position. */
-+		ret = bpf_skb_adjust_room(skb, PPPOE_SES_HLEN_TEST,
-+					  BPF_ADJ_ROOM_NET,
-+					  BPF_F_ADJ_ROOM_ENCAP_PPPOE);
-+		break;
-+	case 3:
-+		/* Encap with a negative room size. */
-+		ret = bpf_skb_adjust_room(skb, -PPPOE_SES_HLEN_TEST,
-+					  BPF_ADJ_ROOM_MAC,
-+					  BPF_F_ADJ_ROOM_ENCAP_PPPOE);
-+		break;
-+	case 4:
-+		/* Encap flag combined with a decap flag. */
-+		ret = bpf_skb_adjust_room(skb, PPPOE_SES_HLEN_TEST,
-+					  BPF_ADJ_ROOM_MAC,
-+					  BPF_F_ADJ_ROOM_ENCAP_PPPOE |
-+					  BPF_F_ADJ_ROOM_DECAP_PPPOE);
-+		break;
-+	case 5:
-+		/* Shrink of a PPPoE packet without the PPPoE flag. */
-+		ret = bpf_skb_adjust_room(skb, -PPPOE_SES_HLEN_TEST,
-+					  BPF_ADJ_ROOM_MAC, 0);
-+		break;
-+	case 6:
-+		/* Decap of a non-PPPoE packet (plain IP or fake PPP proto). */
-+		ret = bpf_skb_adjust_room(skb, -PPPOE_SES_HLEN_TEST,
-+					  BPF_ADJ_ROOM_MAC,
-+					  BPF_F_ADJ_ROOM_DECAP_PPPOE);
-+		break;
-+	}
-+
-+	if (!ret)
-+		reject_unexpected = 1;
-+
-+	return TC_ACT_SHOT_TEST;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.47.3
-
+Best regards,
+Chengfeng
