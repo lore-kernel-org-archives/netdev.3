@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987E54766B7;
-	Sat,  3 Oct 2026 19:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A494B496917;
+	Sat,  3 Oct 2026 19:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791057060; cv=none; b=OG1s2kX/aVSw9/b4UIFl4Ew8DkRSPlzTh27uARC/5WlaTZwuCoKG9NvhCGKotmx5z+JQWc19dkQjYPo0IglHSJK38mmSQg8CMbERCrvtuoOm7QOu6rUP+ZxV7cQAeIwOpvMPmOdtB/RaMRSSXoJBEJECuLPmG0XEvK7FNxtV504=
+	t=1791057061; cv=none; b=oslLX6G1NpJVd+VhgPslND1BBg8gBj7yCdOtJ9zTZ6PTRJ5lBogdDr+J7TitGxwnwD0h9DIauUx7A8Sj8uCXHho0So9hkC0+IfsVGJuBKp/6KOosBo5z3kLLoZ2QgGbJkxnyWIIz5YPzFNTpLjeWn0tGRVoleoZuBqZRwSM0Qmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791057060; c=relaxed/simple;
-	bh=oPQsqm5L67MCj1T3+AgEB5+pAF8ITGySMLGyUHlrRzk=;
+	s=arc-20240116; t=1791057061; c=relaxed/simple;
+	bh=TDxrqVro0M7jCHrK6kg9vD8bKbfswrrpR6+pTo2uGpg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UFHegEToU6/QV0P/HpHdMt+ziGWYEuitXdaRPhr0nwXxNVMTQgVVY5/3dryXWSiSZ/jy/l1RE2FNI1LkO1G/1wSZ/+F5fSHlrB6XNXaSjMpJtiFk558jzDwfI4p7ScT2mtt3KiXtqYW4aL8E+Zhz2F1zxZBzbjWr5JxOYfO9Lmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PembsyDc; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=f4gK18M9AQrU/RiocTbkV32srj9CJfd2J2RWsbNPJTp5r23gIFJgal5VbbjtdENjnGbjGFYNHgldKH61eMq8LZ4iW0wABVvWwhosOShIOPxEvH/jG/xEzH4wWSwKETQjdkzRHqhZRePjYK7UZxzyWPiUGhCd/HLUW56e8Cl2ZxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aspq8pRA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PembsyDc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939E01F0089D;
-	Sat,  3 Oct 2026 19:50:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aspq8pRA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF6B1F0089B;
+	Sat,  3 Oct 2026 19:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791057058;
-	bh=5cGkrI2m14RZ2wCIrSTI4qSekwfXdER0T63snKhbo14=;
+	s=k20260515; t=1791057059;
+	bh=zw7reVeo8t5Nhp9L4+IOqRGwkYZNaqNz4J9ptNFRxpQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PembsyDcSQXgFNyjlzVRoMuG4d/2ew0vWVxVshimSeDHpoYkSxJEWeDP/4hjFWQJv
-	 iwOqXnb8j7KM+h9rRrUkh1AQhFJDx5Tp0Kgt6USuuOQT7saQx2DaxMQsx8kdSxEX6V
-	 LYPdOC08axG1nnqVC6F5wxHvXQMrAonUaqVfhdu2TvSVkiB4ldUJZJzhRyfAjxyWJH
-	 pJiHLYi23CLwOqnr6RiZuxnrZUWrCZMz5y1gbVouPEIdYoyZMty18c5h4gfQInbTb9
-	 M8AdwrekzGkNameVBqumXNu54I7htz3RKzLZEyAw7eSWhsXQxXdM5vB0z2ZhBgbINF
-	 Mk1FiUY5txD3A==
+	b=Aspq8pRAOIrmZXBWWCvfNdxgm1mCNQqsT+rMoHwjl20XMWLNoKfutPGJcDF1TPS72
+	 dtG4JmGSvU0Vrdoh6q80HW3PfxXcUGbJ8eymGylGMwNUfwJX3TIukI+CSB8QbU8lId
+	 5/3ToTHbSCNWqiz8jFvaTmcqx5s7AQxkKhVFDLnO6OoTw2j4G8CGWencQxQ2/SX8cB
+	 J2/tGLTEOSL4voUheDN/vJFQRrJad9iBXmtXswZ+HYVvNIeKzaIG6IHN3JEVGNlT1R
+	 zgXiL1Aah52CIOxoPfOCCU0jZzdE4a/9SvW13qm4JBEw1DaQwevQL/NYqnSI+7l41S
+	 MWKNqqlSZIt9Q==
 Subject:
- Re: [PATCH net-next v2 5/6] enic: manage V2 VF station and administrative MAC
+ Re: [PATCH net-next v2 6/6] enic: configure V2 VF receive mode over mailbox
 From: netdev-bot+sashiko@kernel.org
 To: satishkh@cisco.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, sebaddel@cisco.com
-Date: Sat, 03 Oct 2026 19:50:57 +0000
-Message-ID: <179105705715.434549.4447540966056164842@kernel.org>
+Date: Sat, 03 Oct 2026 19:50:58 +0000
+Message-ID: <179105705830.434549.15753082776541886216@kernel.org>
 In-Reply-To:
- <20260929-b4-enic-sriov-v2-vf-receive-control-v2-5-5962c10061b2@cisco.com>
+ <20260929-b4-enic-sriov-v2-vf-receive-control-v2-6-5962c10061b2@cisco.com>
 References:
- <20260929-b4-enic-sriov-v2-vf-receive-control-v2-5-5962c10061b2@cisco.com>
-X-sashiko-severity: Medium
+ <20260929-b4-enic-sriov-v2-vf-receive-control-v2-6-5962c10061b2@cisco.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3 (1)
+Critical: 0 · High: 1 · Medium: 4 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,260 +60,336 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] At this commit, enic_remove() runs
-  enic_vf_admin_mac_quiesce(), VF_UNREGISTER and…
-- [Low] At this commit, enic_vf_station_sync_reset() drops the core sync
-  reference for the uc entry that matches vf_station_addr only once.
-- [Low] The comment in enic_remove() says "VF_UNREGISTER is the protocol
-  teardown operation: the PF removes all VF-requested configuration,…
-- [Low] At this commit, a runtime station change does not reprogram an
-  old station address A that is still wanted as a secondary unicast…
-
-Pre-existing issues:
-- [Low] enic_reset_addr_lists() now holds netif_addr_lock_bh() only
-  around __dev_uc_unsync()/__dev_mc_unsync().
+- [High] enic_open() and enic_set_vf_rx_mode() handle the same PF refusal
+  of a needed broad receive mode in opposite ways.
+- [Medium] For V2 VFs the patch stops syncing receive mode inside
+  enic_open(): enic_set_rx_mode() is now called only `if…
+- [Medium] If the whole ADD_DEL_MAC request is rejected, the batch's
+  DELETEs are left unrecovered.
+- [Medium] enic_vf_sync_mac_filters() misreads a transactional MAC-batch
+  result.
+- [Medium] In enic_set_vf_rx_mode(), broad_enable_needed is computed from
+  what was previously requested, not from what was applied: `(flags &…
+- [Low] The comment in the broad_enable_needed branch of
+  enic_set_vf_rx_mode() says the code will 'Retain any broad mode that…
+- [Low] enic_set_vf_rx_mode() runs from the global netdev_work item under
+  rtnl_lock(): enic has no ops lock, so netdev_lock_ops_compat() takes…
 
 --
 
-enic: manage V2 VF station and administrative MAC
+enic: configure V2 VF receive mode over mailbox
 
-V2 VFs now manage the station MAC through a mailbox DEL+ADD replace
-request. The address is installed on open and removed on an ordinary
-stop. A delayed worker applies PF administrative MAC notifications, the
-admin MAC policy is re-read after every VF registration, and the worker
-is quiesced and rearmed around teardown and reset.
+This patch adds an ndo_set_rx_mode_async callback for V2 VFs. The callback
+sends unicast/multicast exact-filter changes and packet-filter settings to
+the PF over the mailbox. For V2 VFs, enic_open() now programs only the
+packet filter and relies on the core async receive-mode path (scheduled
+explicitly after internal resets) to replay the address lists.
 
 > diff --git a/drivers/net/ethernet/cisco/enic/enic_main.c b/drivers/net/ethernet/cisco/enic/enic_main.c
-> index 28738bd14fa7c..2132bfa9c8d38 100644
+> index 2132bfa9c8d38..382bac6669bf3 100644
 > --- a/drivers/net/ethernet/cisco/enic/enic_main.c
 > +++ b/drivers/net/ethernet/cisco/enic/enic_main.c
 
 [ ... ]
 
-> @@ -1040,8 +1043,10 @@ void enic_reset_addr_lists(struct enic *enic)
->  {
->  	struct net_device *netdev = enic->netdev;
->  
-> +	netif_addr_lock_bh(netdev);
->  	__dev_uc_unsync(netdev, NULL);
->  	__dev_mc_unsync(netdev, NULL);
-> +	netif_addr_unlock_bh(netdev);
->  
->  	enic->mc_count = 0;
->  	enic->uc_count = 0;
+> +static int enic_vf_sync_mac_filters(struct enic *enic,
+> +				    struct netdev_hw_addr_list *uc,
+> +				    struct netdev_hw_addr_list *mc,
+> +				    bool install_uc, bool install_mc)
+> +{
+
+[ ... ]
+
+> +	/* The protocol carries all changed unicast and multicast addresses in
+> +	 * one request.  Besides matching the native ABI, this bounds time spent
+> +	 * in the RTNL-held asynchronous receive-mode callback to one MAC reply.
+> +	 */
 
 [Severity: Low]
-This is a pre-existing issue, and this patch did not introduce it. The
-baseline did both the unsync and the counter reset with no lock at all,
-so this change only narrows the window.
+This isn't a bug, but does this comment describe the whole callback? The
+ADD_DEL_MAC part is bounded to one reply. Before calling this,
+enic_set_vf_rx_mode() can also send the broad_enable_needed SET_PKT_FILTER
+and the broad_withdrawal SET_PKT_FILTER. Each of those waits up to 3000 ms
+in enic_mbox_wait_reply().
 
-The addr lock now covers only the two unsync calls. mc_count, uc_count
-and flags are still reset after netif_addr_unlock_bh().
+The callback runs from netdev_work_proc() with RTNL held through
+netdev_lock_ops_compat(). So one callback can hold RTNL across up to three
+mailbox round trips.
 
-Devices that use the legacy ndo_set_rx_mode path update these counters
-under addr_list_lock only:
+Also, while PROMISC or ALLMULTI is requested, filter_needed is always true.
+Every receive-mode run then sends a SET_PKT_FILTER under RTNL.
 
-enic_set_rx_mode()
-  __dev_uc_sync(netdev, enic_uc_sync, enic_uc_unsync);
-    enic_uc_sync()
-      enic->uc_count++;
+A timeout sets the reconnect flag, so later sends fail fast. The commit
+message also says completing all phases in one callback is deliberate.
 
-Can an rx_mode run between the unlock and the counter reset leave
-uc_count or mc_count out of step with the core sync state? If uc_count
-underflows, the ENIC_*_PERFECT_FILTERS limit check would no longer work.
-Could the counter resets move inside the locked section?
+Could the comment say that the bound applies to the MAC request only?
 
-For V2 VFs, the last patch in the series ("enic: configure V2 VF receive
-mode over mailbox") switches to ndo_set_rx_mode_async.
-netif_rx_mode_run() is serialized by RTNL, and so are the callers of
-enic_reset_addr_lists().
-
-[ ... ]
-
-> @@ -1072,6 +1532,52 @@ static int enic_set_mac_address_dynamic(struct net_device *netdev, void *p)
-
-[ ... ]
-
-> +		/* Keep the old software address visible until the complete station
-> +		 * replacement proves convergence.
-> +		 */
-> +		err = enic_vf_station_addr_replace(enic, addr);
-> +		if (err)
-> +			return err;
-> +
-> +		enic_vf_station_sync_reset(enic);
-> +		err = enic_set_mac_addr(netdev, addr);
-> +		if (!err) {
-> +			enic_vf_station_addr_set(enic, addr);
-> +			enic_vf_station_sync_reset(enic);
-> +			enic_vf_admin_mac_cache_selected(enic, addr);
-> +		}
-> +
-> +		return err;
-> +	}
-
-[Severity: Low]
-At this commit, if the old station address A is also in the uc list as a
-secondary address, does anything reprogram A after the station moves?
-
-enic_vf_station_addr_replace() deletes A at the PF, and
-enic_vf_station_sync_reset() unsyncs A's core entry. No rx_mode update
-is scheduled afterwards, so A would not be added back as a secondary
-filter.
-
-The nonzero-policy path in enic_vf_admin_mac_work() has a similar gap:
-
-enic_vf_admin_mac_work() {
-    ...
-	} else if (enic->vf_station_addr_valid &&
-		   !ether_addr_equal(enic->vf_station_addr, selected)) {
-		mutated = true;
-		err = enic_vf_station_addr_del(enic);
-    ...
-	changed = !ether_addr_equal(enic->netdev->dev_addr, selected);
-	enic_vf_station_sync_reset(enic);
-    ...
-}
-
-enic_vf_station_addr_del() clears vf_station_addr_valid on success. The
-first enic_vf_station_sync_reset() then returns early, and a re-synced
-entry for A can keep sync_cnt=1 while the PF no longer has a filter for
-A.
-
-Could receive for A be lost until the next rx_mode event?
-
-The last patch in the series, "enic: configure V2 VF receive mode over
-mailbox", fixes this:
-
-  - It adds netif_rx_mode_schedule_update() here and after the admin-MAC
-    update in enic_vf_admin_mac_work().
-  - enic_vf_collect_mac_ops() skips the station address, so A has
-    sync_cnt==0 while it is the station.
-
-Would it make sense to schedule the rx_mode update in this patch too, so
-that intermediate commits don't have this behaviour?
-
-[ ... ]
-
-> @@ -1807,6 +2314,25 @@ static int enic_open(struct net_device *netdev)
->  	if (!enic_is_dynamic(enic) && !enic_is_sriov_vf(enic))
->  		enic_dev_add_station_addr(enic);
->  
-> +	if (enic_is_sriov_vf_v2(enic)) {
-
-[ ... ]
-
-> +		enic_vf_station_addr_set(enic, netdev->dev_addr);
-> +		enic_vf_station_sync_reset(enic);
-> +		vf_mac_added = true;
-> +	}
-> +
->  	enic_set_rx_mode(netdev);
-
-[Severity: Low]
-enic_vf_station_sync_reset() drops the core sync reference for the
-station entry only once. At this commit V2 VFs still use
-enic_set_rx_mode(), which runs on the very next line, and enic_uc_sync()
-does not exclude vf_station_addr:
-
-enic_uc_sync() {
-    ...
-	enic_dev_add_addr(enic, uc_addr);
-	enic->uc_count++;
-    ...
-}
-
-Won't this re-sync the station entry right away?
-
-If that uc entry is removed later, enic_uc_unsync() would call
-enic_dev_del_addr() for the station address. It is not clear whether
-that devcmd reaches the PF's address-keyed ledger for V2 VFs. The last
-patch says V2 VFs cannot program receive filters directly.
-
-The last patch in the series, "enic: configure V2 VF receive mode over
-mailbox", resolves this:
-
-  - V2 VFs move to enic_set_vf_rx_mode() via ndo_set_rx_mode_async.
-  - enic_vf_collect_mac_ops() and enic_vf_addr_list_count() skip
-    vf_station_addr.
-  - enic_open() calls enic_set_rx_mode() only for non-V2 devices.
-
-[ ... ]
-
-> @@ -3542,9 +4106,13 @@ static void enic_remove(struct pci_dev *pdev)
->  
->  		/* Close the admin channel and unregister from the PF before
->  		 * unregister_netdev() to prevent a late PF notification from
-> -		 * touching a netdev that is being torn down.
-> +		 * touching a netdev that is being torn down. VF_UNREGISTER is the
-> +		 * protocol teardown operation: the PF removes all VF-requested
-> +		 * configuration, including the station address, before replying.
->  		 */
-
-[Severity: Low]
-The VF now relies on this contract to skip the station DEL_MAC on
-remove and on internal reset (__enic_stop(netdev, false)).
-
-The in-tree PF side doesn't do this yet. enic_mbox_pf_handle_unregister()
-only does:
-
-	enic->vf_state[vf_id].registered = false;
-
-and replies. enic_mbox_pf_process_msg() has no case for
-ENIC_MBOX_VF_ADD_DEL_MAC_REQUEST or ENIC_MBOX_PF_SET_ADMIN_MAC_ACK, so
-both fall through to -EOPNOTSUPP.
-
-This can't be reached today. enic_driver has no .sriov_configure, and
-the comment above enic_sriov_configure() says the V2 helpers are
-"defined but not yet wired". The earlier patch "enic: validate V2 VF
-configuration replies" also says PF-side MAC handling must be added
-before that callback is wired.
-
-Should this comment say it describes the PF protocol contract rather
-than the in-tree PF? That would remind the PF activation series to
-implement station cleanup in the unregister handler.
-
->  		if (enic_is_sriov_vf_v2(enic)) {
-> +			enic_vf_admin_mac_quiesce(enic);
-> +
->  			if (READ_ONCE(enic->vf_registered)) {
->  				int unreg_err = enic_mbox_vf_unregister(enic);
+> +	err = enic_mbox_vf_add_del_macs(enic, macs, num_ops);
+> +	if (err)
+> +		goto free_ops;
 
 [Severity: Medium]
-At this commit, enic_vf_admin_mac_quiesce(), VF_UNREGISTER and
-enic_admin_channel_close() all run while the netdev is still registered
-and attached, and RTNL is not held. Can a concurrent ndo_open undo this
-teardown?
+What happens to the DELETEs in this batch if the PF rejects the whole
+ADD_DEL_MAC request?
 
-Under RTNL, enic_open() can see !admin_chan_up, !vf_registered or
-reconnect_required and reopen the channel:
+For a nonzero ret_major such as ENIC_MBOX_ERR_GENERIC, or an errno-style
+value, enic_mbox_vf_classify_reply() returns -EIO and leaves recovery at
+ENIC_MBOX_VF_REPLY_OK:
 
-	if (enic->admin_chan_up)
-		enic_admin_channel_close(enic);
-	err = enic_admin_chan_reopen(enic);
+    if (ret_major)
+        return -EIO;
 
-That path re-registers with the PF and then rearms the worker:
+The SET_PKT_FILTER reply handler escalates this case to a reconnect, but
+the ADD_DEL_MAC handler does not. So enic_mbox_vf_add_del_macs() returns
+-EIO without calling enic_mbox_vf_require_reconnect().
 
-enic_open()
-  enic_admin_chan_reopen()
-    ... admin channel open, VF register ...
-    enic_vf_admin_mac_rearm()
-      enic->vf_admin_mac_work_enabled = true;
+This goto free_ops then skips the per-address loop below. That loop is the
+only place where a failed DELETE becomes a reconnect. The comment further
+down says:
 
-unregister_netdev() -> enic_stop() does not close the admin channel.
-Could the admin resources and the admin IRQ then outlive
-free_netdev()?
+    A failed DELETE can leave hardware accepting an address no longer in
+    the requested list.  Registration is the fail-closed cleanup boundary.
 
-The last patch in the series, "enic: configure V2 VF receive mode over
-mailbox", closes this window:
+enic_set_vf_rx_mode() returns -EIO. The core retries at most
+NETIF_RX_MODE_RETRY_MAX times, and then netif_rx_mode_schedule_retry()
+prints "rx_mode retry limit reached, giving up".
 
-  - It adds rtnl_lock(); netif_device_detach(netdev); rtnl_unlock();
-    after the quiesce, so __dev_open() returns -ENODEV once the device
-    is detached.
-  - enic_admin_channel_close() quiesces the worker again at entry.
+After that, can the removed address stay installed at the PF, still
+accepting traffic, until some unrelated receive-mode event?
 
-Could the detach be moved into this patch so intermediate commits don't
-carry the race?
+> +
+> +	for (i = 0; i < num_ops; i++) {
+> +		u16 flags = le16_to_cpu(macs[i].flags);
+> +		bool add = flags & ENIC_MAC_ADDR_FLAG_ADD;
+> +
+> +		if (flags & ENIC_MAC_ADDR_FLAG_SKIPPED) {
+> +			if (add)
+> +				retryable_add = true;
+> +			else
+> +				reconnect = true;
+> +			continue;
+> +		}
+
+[ ... ]
+
+> +	if (reconnect) {
+> +		enic_mbox_vf_require_reconnect(enic);
+> +		err = -EIO;
+> +	} else if (retryable_add) {
+> +		err = -EAGAIN;
+> +	} else if (permanent_add) {
+> +		err = -EACCES;
+> +	}
+
+[Severity: Medium]
+How does this classification behave when the PF permanently rejects one ADD
+and marks the rest of the batch as SKIPPED? enic_vf_station_addr_replace()
+documents that PF behaviour:
+
+    /* A policy-rejected ADD can be reported with all preceding DELETEs
+     * skipped. No operation changed state in that coherent result tuple.
+     */
+
+Here a SKIPPED DELETE sets reconnect. One stable policy denial then calls
+enic_mbox_vf_require_reconnect() and triggers a VF reset on every list
+change that includes a DELETE.
+
+The rejected ADD keeps sync_cnt == 0, so enic_vf_collect_mac_ops() sends it
+again in every batch. After the reset replay the batch contains only ADDs,
+and the valid ADDs come back SKIPPED. Because retryable_add is checked
+before permanent_add, the result is -EAGAIN rather than -EACCES.
+
+Does the core then retry the same batch until NETIF_RX_MODE_RETRY_MAX and
+give up, leaving none of the valid secondary addresses installed? That
+seems to contradict the commit message:
+
+    stable policy denials do not consume the retry budget
+
+The -EAGAIN/-EIO return also skips the final enic_vf_set_pkt_filter() in
+enic_set_vf_rx_mode(), so pending packet-filter changes are dropped too.
+
+[ ... ]
+
+> +static int enic_set_vf_rx_mode(struct net_device *netdev,
+> +			       struct netdev_hw_addr_list *uc,
+> +			       struct netdev_hw_addr_list *mc)
+> +{
+
+[ ... ]
+
+> +	filter_needed = !enic->vf_pkt_filter_valid ||
+> +			 enic->vf_pkt_filter_requested != flags ||
+> +			 (flags & broad_modes);
+> +	broad_enable_needed =
+> +		(!enic->vf_pkt_filter_valid && (flags & broad_modes)) ||
+> +		(flags & broad_modes & ~enic->vf_pkt_filter_requested);
+> +	broad_withdrawal = enic->vf_pkt_filter_valid &&
+> +		(enic->vf_pkt_filter_applied & broad_modes & ~flags);
+> +	if (broad_enable_needed) {
+> +		/* Establish newly required broad coverage before an independent
+> +		 * exact-address rejection can block it. Retain any broad mode that
+> +		 * is currently applied until its finite replacement is installed.
+> +		 */
+> +		prefilter_flags = flags;
+> +		if (enic->vf_pkt_filter_valid)
+> +			prefilter_flags |= enic->vf_pkt_filter_applied & broad_modes;
+> +		err = enic_vf_set_pkt_filter(enic, prefilter_flags,
+> +					     &applied_flags);
+> +		if (err)
+> +			return err;
+> +		target_filter_updated = prefilter_flags == flags;
+> +		enic_vf_report_pkt_filter_denial(netdev, flags, applied_flags);
+> +	}
+> +
+> +	if (broad_withdrawal) {
+> +		/* Withdraw stale broad acceptance before installing its finite
+> +		 * replacement. Complete both phases in this callback so a synchronous
+> +		 * receive-mode operation cannot return between them.
+> +		 */
+> +		err = enic_vf_set_pkt_filter(enic, flags, &applied_flags);
+
+[Severity: Low]
+This isn't a bug, but the broad_enable_needed comment above says the
+applied broad mode is kept until its finite replacement is installed.
+
+When broad_withdrawal is also true, this block runs right afterwards. That
+happens, for example, when UC goes from overflow back to finite while MC
+starts to overflow. The block then removes the retained mode before
+enic_vf_sync_mac_filters() installs the exact filters.
+
+The commit message and this comment describe the actual order. Should the
+earlier comment be updated? In this case the retained bit in
+prefilter_flags only costs an extra mailbox round trip.
+
+[ ... ]
+
+> +	err = enic_vf_sync_mac_filters(enic, uc, mc, !uc_overflow,
+> +				       !mc_overflow);
+> +	if (err == -EACCES) {
+
+[ ... ]
+
+> +	}
+> +	if (err)
+> +		return err;
+> +
+> +	if (!target_filter_updated && filter_needed) {
+> +		err = enic_vf_set_pkt_filter(enic, flags, &applied_flags);
+> +		if (err)
+> +			return err;
+
+[Severity: Medium]
+Can a denied broad mode stay unrequested after PF policy starts allowing
+it? broad_enable_needed is computed from vf_pkt_filter_requested, not from
+vf_pkt_filter_applied:
+
+    (flags & broad_modes & ~enic->vf_pkt_filter_requested);
+
+Once PROMISCUOUS or ALL_MULTICAST has been requested and withheld, the bit
+is set in vf_pkt_filter_requested, so later callbacks skip the early enable
+phase. The broad mode is then re-requested only by this final
+enic_vf_set_pkt_filter().
+
+If a finite-class ADD comes back SKIPPED (-EAGAIN), or the MAC request
+fails some other way, the "if (err) return err;" above returns before this
+call. Repeated failures can use up the core retry budget without the
+broad-mode request ever being sent again.
+
+That looks like the case the broad_enable_needed comment says the code
+prevents:
+
+    Establish newly required broad coverage before an independent
+    exact-address rejection can block it.
+
+[ ... ]
+
+> @@ -2331,9 +2703,38 @@ static int enic_open(struct net_device *netdev)
+>  		enic_vf_station_addr_set(enic, netdev->dev_addr);
+>  		enic_vf_station_sync_reset(enic);
+>  		vf_mac_added = true;
+
+[ ... ]
+
+> +		if ((enic_vf_uc_needs_promisc(vf_uc_count) &&
+> +		     !(vf_filter_applied & CMD_PFILTER_PROMISCUOUS)) ||
+> +		    (vf_mc_count > ENIC_MULTICAST_PERFECT_FILTERS &&
+> +		     !(vf_filter_applied & CMD_PFILTER_ALL_MULTICAST))) {
+> +			netdev_err(netdev,
+> +				   "PF denied receive mode required by VF address lists\n");
+> +			err = -EACCES;
+> +			goto err_out_disable_wq;
+> +		}
+> +	}
+
+[Severity: High]
+Is it intended that enic_open() fails on a denial that
+enic_set_vf_rx_mode() accepts at runtime?
+
+Take 32 or more secondary UC addresses, or more than 32 MC addresses, with
+a PF policy that withholds PROMISCUOUS/ALL_MULTICAST (for example an
+untrusted VF). enic_set_vf_rx_mode() computes the same flags, but it:
+
+- only reports the denial with netdev_dbg() in
+  enic_vf_report_pkt_filter_denial()
+- stops installing new exact filters for the overflowing class
+- returns 0
+
+So the lists can grow past the limit while the interface is up, and the VF
+keeps running while silently dropping the extra traffic.
+
+Any later enic_open() with those lists then fails here with -EACCES. That
+includes an administrative down/up, _enic_change_mtu(), enic_reset() and
+enic_tx_hang_reset(). The reset workers only log the error:
+
+    err = enic_open(enic->netdev);
+    if (err)
+        netdev_err(enic->netdev,
+                   "Failed to reopen datapath after reset: %d\n", err);
+
+Does that leave the VF with IFF_UP set and the datapath closed until the
+address lists are shrunk? The commit message doesn't mention this new
+failure mode for open and reset.
+
+>  
+> -	enic_set_rx_mode(netdev);
+> +	if (!enic_is_sriov_vf_v2(enic))
+> +		enic_set_rx_mode(netdev);
+
+[Severity: Medium]
+enic_set_rx_mode() is now skipped for V2 VFs. Every caller that calls
+enic_open() directly, bypassing __dev_open(), then has to schedule the
+async update itself. enic_reset() and enic_tx_hang_reset() do that below.
+Is _enic_change_mtu() missing the same call?
+
+enic_mtu_check()->schedule_work(&enic->change_mtu_work)
+  enic_change_mtu_work()
+    _enic_change_mtu()
+      enic_open()
+
+_enic_change_mtu() {
+    ...
+    if (running) {
+        err = enic_open(netdev);
+        if (err)
+            return err;
+    }
+    ...
+}
+
+Here enic_open() can take its reconnect branch (!admin_chan_up,
+!vf_registered or vf_mbox_reconnect_required). That branch is reachable
+after a failed reset handshake, because vf_mbox_reconnect_required stays
+set until a later external recovery event.
+
+That branch calls enic_reset_addr_lists() and re-registers, so the PF drops
+all VF-requested filters. Only the station address and the packet filter
+are then installed again.
+
+Would the secondary unicast and multicast filters then stay uninstalled
+until some unrelated address-list or flag change queues a receive-mode
+run?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260929-b4-enic-sriov-v2-vf-receive-control-v2-0-5962c10061b2%40cisco.com
