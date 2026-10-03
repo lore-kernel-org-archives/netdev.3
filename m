@@ -1,138 +1,130 @@
-Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CA734BA24;
-	Sat,  3 Oct 2026 15:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791041068; cv=pass; b=DgaqSL2NDzAZOMIFYVxc0bwbfPT75zpJRnge48vr43v6oYNreHfGrmgpmBgGRWJCMgyznY36FSgp7lGCyCtq9zWH02iQsd3kGQOM9WEzPMXhBkdsU2ZwiMhfYO50wI7v1j/RosXXecgxvwX70PVFBNFdSrmpKnJZqCv7E5PTV2c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791041068; c=relaxed/simple;
-	bh=m4X/RhhMPONFFNOGIFwjTcEamNfPucpOxeJgUJZ/0xg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=PJiB/lRs+7ei6t1mMU6WZ5fJ/ULUE/KydKJiNScufLLUjJSH0C1cE3YbJp4Mq268zkqKSVEwXL/ymuAZxxhsMAhDM0nkFPFrgFOP+ZO6eXTNMdySssCF6CCP4En/OAFz2SlJIP8wF/wAQDw0DBinxd751YociuboIVd9mP0yLwA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=mR/f9bi1; arc=pass smtp.client-ip=165.173.180.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2003E21ABAA
+	for <netdev@vger.kernel.org>; Sat,  3 Oct 2026 15:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791041568; cv=none; b=Bi3r1hj6BJOtnohaCBx7eCR1vHSv40RMeJQRjKNxlKbdleVz0gLWhcwwMKce4Oytb6Z+HvNpnrPscYEXQERUJcHXL4cY+nZhD995ce82qA5ZbvwCaOWxOGPmxl1bVOS2ePqqKF8WYk/ZP2mreg1oKbdS3lcsrNv+48tonDbbxbc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791041568; c=relaxed/simple;
+	bh=J8Tll/VLNt8JScE8FOiO8Ze5cawoB3U978ao0umZdK0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tErztG5bnhOn1X37r9ny9Yg7Xyq6sTzBKcI57QiGCzz0/wHneK6pHZWv+B4mwqPw2wIR0k55kOKwfqKJL0n1uFxkNMk3U8oW9cwHLteZtuUq4OD8gXc0e3sP+IKc4EIhJ8lN0msaXicVo9G5ei+E9UvvvIxNrFyZBFIw1IjrUDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nJwAAMOb; arc=none smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="mR/f9bi1"
-ARC-Seal: i=1; a=rsa-sha256; t=1791041012; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Mla9QlvbKLfkIGm5F8CLZaJ0IQ2tiUxPFt+eAf2jLpuoig8zEBtn5uQsaJ5fe+elg6gB69uM9dXHYX9ayyO5LmTGJdop/MOrRhNpHrdo0qdObawACrVXlXAWDQ0qgfPeeT6XKTqCmDO9IrWMqnd9gA+Y+Q7mchB6dc5Xp5kBwVw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1791041012; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=m4X/RhhMPONFFNOGIFwjTcEamNfPucpOxeJgUJZ/0xg=; 
-	b=T4v4+0UI7Q4e5xYrfbMQKzgVpyzxQncJImxKtVRjbWv7lTg6QmYaeWR6QvDA5LdQBbBqDdsyR1deGQIQxq0zD/Ha+zs+5fqXqcz/1tFspaK3fKHcVt2nlldw7tJfD1ePxqM5dhAGpzi7YDhV5b476VZ4FjjWnhd4NLeVdxxbzCQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=pigmoral.tech;
-	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
-	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791041012;
-	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
-	h=Mime-Version:Content-Transfer-Encoding:Content-Type:Date:Date:Message-Id:Message-Id:From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:Reply-To;
-	bh=m4X/RhhMPONFFNOGIFwjTcEamNfPucpOxeJgUJZ/0xg=;
-	b=mR/f9bi16V5mpGJwGJF+eRlDykL3W+2i8B+eqzU1eydlpkvJ17Svx0r+gWyIP7/A
-	MS/k9V7KXnUWpgm7pwW1H7ihOCim1+nTZ0tyTCX0T59AV4i5TxafSGCaa8Nl+mtGLua
-	Kw8NwmBd1xY5WSb/ol7TylPdSFTELIhIWejKV9bw=
-Received: by smtp.zohomail.com with SMTPS id 1791041011797544.830040683923;
-	Sat, 3 Oct 2026 08:23:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nJwAAMOb"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-15354aa70e8so988396c88.1
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 08:32:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791041566; x=1791646366; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yadZIPttRBv9dSKwud0a+5YxcIkLDEjOglnwJ2Qre08=;
+        b=nJwAAMObHugGA0YG12f89NyL7cMpcmgjH84EEJXXPfnz8j/9/uS5O/JratbladAOwg
+         PZ2n6nCFMSKXu5mctKbaR45aSj3BGlMunuBy1vwVco50Cgr1JfrGexnKMWqlMmWZ+WjC
+         i6lJPb9ck1Z+k+p2/g9RR1JEl4IhYk6+56eUS1DOEIs/p+D5f/LvJD1FERb4K3YtpOuV
+         2zk5atVpn0Rjx4fs2JuTMBLvXbeLEEt+OaekuYSZl8zlMnL3XXr+QBSsCnTg9Jb2Oxzt
+         fKEiw5gX10BtA92vvwdsxe4hMVwAs4NPtCK/K8I0yPGnZp+zbNPcuScL8O1WMBHiCh1T
+         lN7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791041566; x=1791646366;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yadZIPttRBv9dSKwud0a+5YxcIkLDEjOglnwJ2Qre08=;
+        b=BG9vgYL2Rttl2xSC65cm7bg2gzgPfJnu5N7SqC8esy6eN0WIVMMdF3MD8FS3tfg7b3
+         pFwHR27LT16ktt8I5pUE5VV200rW+oPfYArbDqIsxninFaVRpDQHT8kRqWa2SIdepGfj
+         c657Lp5lzaEnmHFp5UZxiul1t0VQE08sx/Ulxc5DE78LvyfOOJL89kkUAbJiZKzw4uqX
+         2pqb7NVXsYMEf+KStHc6x7cG16ONb43UFuY6fv1frV+2Ql+RA6eCNuh021SmUuJ/ZbHR
+         RMEJLegEzWjy3uK0iz/aZtlDi5tcFHtE1wDBD9kf1NMxaKJfxGFEBfYZYWoOkmmih4u4
+         VlNw==
+X-Forwarded-Encrypted: i=1; AKwUvBxy4XKK77IDayaoh19HGHS/e/x9owE8LRB8GTE/zMgFU/97d34LPdiCNmLTOSg42VnkwgMZg/U=@vger.kernel.org
+X-Gm-Message-State: AFuF++mLJEaCdZ2QsziAz8OIXPyFrIxsiwQRppPskM8lHN7HvNaj+mVB
+	spLNp6Z4j4cn1Z3Nr4llggU4l/SJepO3JvbGuBlsjDLccDRAQZ5hOy7J
+X-Gm-Gg: AYBFou0iKYzSRbQBVBHX9uvFo3+iD6bw+f1Y3CwnljhKVhuNGbXPbgvH7KVgIzLYl3w
+	2T79Qj0x8n+WdQ8B8HGKuJrxtBiieGSPS5vF/Bd0GcY7HUjJwOj9h2rKh6dNGk3kbPXbbFrXVRz
+	9CJZVCRrSSO4kJJrqYqD3aDY5HmGeHsAemFRqr6ev54ZqOUBtE4/kRKENTBGQZ+TEiTsOkVIGkP
+	9VCTnDnf7rFbLpnCxFrQgqR+ONkbIGTCk6uQ3+z3ETP1GmmupFOGg5cz3HfFqXkwD8tGh42jMi+
+	iiF5T+yHmGsMTyviEvKn1jQ81eagM2QgEUY0ftEe4j51zan6siMz4ydJ9QohVGyjeTm1hNRQAKI
+	n7YqjT29iNYI+SPY2PHffmSQZgE7k43p4GRj70EXvJ/wX311GY1hH15O7gN1fHMA72GeWZQMmpZ
+	TjXh1L4AZgtY3qd9naHyH4kCc+S5Xfv8Jn1bKrIn2SwxKDxW5S97ixOKDUzwrgtQQ8HwbuhGghw
+	NRjYuqIfwA9Fx1d6n499KZRCEjzY1md
+X-Received: by 2002:a05:7022:126:b0:153:4a27:4ea5 with SMTP id a92af1059eb24-1534a3691aemr2407293c88.28.1791041565937;
+        Sat, 03 Oct 2026 08:32:45 -0700 (PDT)
+Received: from 192.168.50.3 ([198.176.50.208])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-151fc39a7d1sm6576061c88.3.2026.10.03.08.32.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 08:32:45 -0700 (PDT)
+From: bestswngs@gmail.com
+To: edumazet@google.com,
+	ncardwell@google.com,
+	netdev@vger.kernel.org
+Cc: kuniyu@google.com,
+	davem@davemloft.net,
+	horms@kernel.org,
+	xmei5@asu.edu,
+	co+71b6509cb791e531@bugs.sh,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH net] tcp: ignore locked zero CWND route metric
+Date: Sat,  3 Oct 2026 23:32:25 +0800
+Message-ID: <20261003153224.2683219-2-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 03 Oct 2026 23:23:22 +0800
-Message-Id: <DLVB1PLRC8GV.2YX3NP2B1KV2A@pigmoral.tech>
-From: "Junhui Liu" <junhui.liu@pigmoral.tech>
-To: "Norman Herms" <dockseed@proton.me>, "Junhui Liu"
- <junhui.liu@pigmoral.tech>
-Cc: <wens@kernel.org>, "Stephen Boyd" <sboyd@kernel.org>, "Brian Masney"
- <bmasney+clk@redhat.com>, "Jerome Brunet" <jbrunet+clk@baylibre.com>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Jernej Skrabec"
- <jernej.skrabec@gmail.com>, "Samuel Holland" <samuel@sholland.org>,
- "Philipp Zabel" <p.zabel@pengutronix.de>, "Paul Walmsley" <pjw@kernel.org>,
- "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Alexandre Ghiti" <alex@ghiti.fr>, "Richard Cochran"
- <richardcochran@gmail.com>, <linux-clk@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-sunxi@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <linux-riscv@lists.infradead.org>, <netdev@vger.kernel.org>, "Jerome
- Brunet" <jbrunet@baylibre.com>, "Enzo Adriano"
- <enzo.adriano.code@gmail.com>, "Andre Przywara" <andre.przywara@arm.com>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski@oss.qualcomm.com>, "Yixun Lan"
- <dlan@gentoo.org>
-Subject: Re: [PATCH v5 0/8] clk: sunxi-ng: Add support for Allwinner A733
- CCU and PRCM
-X-Mailer: aerc 0.22.0
-References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
- <CAGb2v66O7Ze=TiHO_5q=76QpU8ZXraFyV+HfO+_HpkTDr1U-nQ@mail.gmail.com>
- <DLVA17A4RRG7.2ECQKV3SJDAGI@pigmoral.tech>
- <BZm0Br5_P98xkwslO2JLeCMSyqps8EfQzDnH1Ox34cpoxCpkznXDa4RUM40-b1WKuZ3w3Cy0LPBE31oL8T1nq1Z8iT9Z51wUJBRp3iQIn-Y=@proton.me>
-In-Reply-To: <BZm0Br5_P98xkwslO2JLeCMSyqps8EfQzDnH1Ox34cpoxCpkznXDa4RUM40-b1WKuZ3w3Cy0LPBE31oL8T1nq1Z8iT9Z51wUJBRp3iQIn-Y=@proton.me>
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Norman,
+From: Weiming Shi <bestswngs@gmail.com>
 
-Thanks for testing this. You saved my A7Z board from an almost certain
-sacrifice. :)
+A locked RTAX_CWND route metric of zero is copied into the TCP metrics
+cache and then into snd_cwnd_clamp. This sets the initial cwnd to zero.
+With a cached SSTHRESH metric, a later Reno ACK can reach a divide by
+zero in tcp_cong_avoid_ai(). A user with CAP_NET_ADMIN in a user-created
+network namespace can trigger the oops.
 
-On Sat Oct 3, 2026 at 11:05 PM CST, Norman Herms wrote:
-> Hi Junhui,
->
->> Thanks for pointing this out. This is indeed something I had not
->> considered before. I will try enabling secure boot on my spare Cubie A7Z
->> board and test it on actual hardware.
->
-> First a correction to my earlier reply in this thread. I answered
-> ChenYu's "presumably ... the secure/non-secure access bit isn't in
-> effect" with "yes" and quoted the UM note that these registers are
-> always non-secure in non-security mode. On our non-fused A7S boards
-> (SID + 0xA0 =3D 0, also when read from EL3) that does not hold for every
-> register. Read from EL3 with a test BL31, CCMU_SEC_SWITCH_REG is 0x7
-> after BL31's security setup, S_TWD_BGR_REG is 0x1 and the SPC status
-> registers are 0xffffffff, but from non-secure all of them read 0, and
-> non-secure writes to the first two do not stick. So secure filtering
-> is active on these parts even without the fuse.
+Ignore a zero cached CWND metric when applying the locked clamp, leaving
+the socket's initialized nonzero clamp in place.
 
-I will double-check this on my side and add the relevant comments as
-Chen-Yu suggested.
+  Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+  RIP: 0010:tcp_cong_avoid_ai (net/ipv4/tcp_cong.c:482)
+  Call Trace:
+  tcp_ack (net/ipv4/tcp_input.c:4440)
+  tcp_rcv_established (net/ipv4/tcp_input.c:6678)
+  tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1854)
+  tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2248)
+  Kernel panic - not syncing: Fatal exception in interrupt
 
->
->> For the PLL and AHB/APB bus clock controls, the user manual indicates
->> that the relevant security bits can be set by TF-A to allow the kernel
->> to access these registers. This also appears to be how this has
->> traditionally been handled on sunxi platforms. So I think we can do the
->> same in TF-A for the A733.
->
-> That is what the BL31 on our boards does: PRCM_SEC_SWITCH_REG |=3D 0x7
-> and 0x7 to CCMU_SEC_SWITCH_REG at CCU + 0x1F00, as the vendor BL31
-> does. From EL3 both read 0 before and 0x7 after. The 0x1F00 versus
-> 0x0F00 trap in the A733 TF-A port is in my first reply.
->
->> For bus_r_twd_clk, I will test whether the register is indeed always
->> secure. If it is, I think the clock can be removed from the kernel and
->> left enabled by its hardware reset value or by the boot firmware.
->
-> On our non-fused boards it is already inaccessible from the non-secure
-> side (reads 0, writes ignored). From EL3 it reads 0x1, the UM default,
-> so the gate is open. Details are in my reply to ChenYu on patch 3/8,
-> which crossed with yours.
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Reported-by: <co+71b6509cb791e531@bugs.sh>
+Assisted-by: LLM
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+ net/ipv4/tcp_metrics.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Understood. This bus gate is therefore not meaningful to the kernel,
-so I will remove the clock in the next version.
-
->
-> Same boards and caveats as before: AI agents (Claude) on my boards, a
-> report, not a Tested-by.
->
-> Thanks,
-> Norman
-
---=20
-Best regards,
-Junhui Liu
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index dc0c081fc1f3..ff41804ad086 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -484,8 +484,11 @@ void tcp_init_metrics(struct sock *sk)
+ 		goto reset;
+ 	}
+ 
+-	if (tcp_metric_locked(tm, TCP_METRIC_CWND))
+-		tp->snd_cwnd_clamp = tcp_metric_get(tm, TCP_METRIC_CWND);
++	if (tcp_metric_locked(tm, TCP_METRIC_CWND)) {
++		val = tcp_metric_get(tm, TCP_METRIC_CWND);
++		if (val)
++			tp->snd_cwnd_clamp = val;
++	}
+ 
+ 	val = READ_ONCE(net->ipv4.sysctl_tcp_no_ssthresh_metrics_save) ?
+ 	      0 : tcp_metric_get(tm, TCP_METRIC_SSTHRESH);
+-- 
+2.55.0
 
