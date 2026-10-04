@@ -1,67 +1,67 @@
 Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE44C43E48B
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F524477E3
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791127762; cv=none; b=tNYceRDTmH8UqedrIXv6qUdwUoQ50rx6f1zG1Tmn6W4239kqucS7KeM54RlhJ1HF7lQvh8t4XDk+fiXI9es72lPHnKY5JHUP+8zomN/AUnDnqF9JlWG9dnUhc6AlfOFG0rzYR+mnW5dV1c+v9Z0+X0GjssIBvPVkeZXF8dKKam4=
+	t=1791127785; cv=none; b=tIL7v5oXSDQi8M3uzLWn1bbDercvjTlTD0DJgzTt4UmOeSNK12VpsGHgRlAiSTiPT9Bz7k6us7xTzpW+/Xdz/JoMdJWf3/ETN6kvb0EQFdmJ5YstgigPR/wf6S8RZc5ODJU7Udw38vFdCj/01xL02rR7ShJLCf7wqDco0s2jSAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791127762; c=relaxed/simple;
-	bh=dp0/nCH05DwygzWEsV1XBCgBJ8K4fIcNyE/T0vIMAr4=;
+	s=arc-20240116; t=1791127785; c=relaxed/simple;
+	bh=xEn5Z1b6PaWQLfWKSkISq8/V99w7wGJxLyGbZB9ZtPQ=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=tJcfgDs6aaN4AK1t86KeyBdyTK1HyScHZ1K69Jd9mbEX9FcFQWiVtmAua9qqaS5Sx40+6aLAiPCfJrOYrJn9ySIJJLikrlln19VkBN8eUVKtlsTnYxB04pog+gNqvXTT2VuUdnPUyQsvvFItyNsNmRilCLwmvweaWuNbI6H+8/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mRYhgNiD; arc=none smtp.client-ip=74.125.225.140
+	 In-Reply-To:Content-Type; b=k6td7WV/LHnHhi52QdvprcgztXkqZ8v6hIPhkx2NZJncmglj7SPjKQeMdebLf7g3s6lvIfhSoRS70BkZiPVZrA1e64qi02jxaYckYsJXDeJ0YdBsW65fgYAaNWy84/ccrMUz5f0pJIhTiIMcVg4mjosYU7oZh9r4KZPs5o/0Id4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fXczgOto; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mRYhgNiD"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d37b6so6307455e9.0
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:29:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fXczgOto"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a01ff8c098so6835885e9.3
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:29:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1791127757; x=1791732557; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1791127781; x=1791732581; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=i3n8J2PGXLDx/H5KLegGco+ygP5/7+r1Zqv1kXmn61w=;
-        b=mRYhgNiDOpbsb/KbDnmqaEszbxWmIRzCpndJkQFw0ABhexqsVIopjprnglivtSlvDU
-         /KpufS8FP/8nx2CjIGsMwD/KXoLPWBWmf23xhR1kTmxlhae1lyOEnOPfPhsMMDUisNW8
-         eqMHe7C+9YjhVIkgtI8dVRVURsuVrewDDCIhmfF7UOap386Hu6yQMtg96QY9VOHS4pJ3
-         GPadtTLcmXjPZ4z9siLdeI4EdWZ8/Z5KE2OmnSItc4VSvzcG3tZPcxbmmza9twfkuFC/
-         7EnH2akgCCsjT5MUlxSkH0Y3Sglk3Z1PFiZWtHOelhBRN0gDEc7W6jcRPhZxsyfWseTf
-         49Vg==
+        bh=9ijVzIve29PHeaUaMD0UnyB/2N/58uvZFm5f+2hPLu0=;
+        b=fXczgOtohJS7oN76SkNO//fzv5jIelOrz07NtnNnsKr/+GZprhQF2IWxmvA9ONBY4a
+         cpQsoKUuLdCYljNAip/LobptP+nS2Ta3n9KTMQQLu4kXngMlS+s+M36u4GFpejxavkuy
+         Vq9pG4xk14nAMQOMKWrD7YVdMKdRAeWsFqsN5FZwcUWXDhD5vm/QNOkUs5vb24MDI6YL
+         87uAqnLbxXSIzD4egYCT6wbKDPOlle5d0KETHVC7naZQPWQRiTBcCh/s+PwTzuDuq99n
+         ZAK6puFbWzeyZmTflDd7J84+VAQAnRBg3MUAElFGYiyVZazJb204tL56aOewJzxUdlH8
+         RqMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791127757; x=1791732557;
+        d=1e100.net; s=20260707; t=1791127781; x=1791732581;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i3n8J2PGXLDx/H5KLegGco+ygP5/7+r1Zqv1kXmn61w=;
-        b=DmRMG+YdfHAZphsQUQ6b/3DqPmyyg2gN4z1DJM1KlhU5WW/0iM6V+trDCzbL4uaYf3
-         Q1RJFfmDGC5FNSCDaEA84tVrZjjhOnopCNxjt0HeP6a4CRSw2QOFXcxIABwRtlGne4hQ
-         gDcIQY/8ZVMzYiJHXdMKBb7ubetJ+S4osU1ntG6RJrqKjIDte42UWeEsXd/FLY2H0xQq
-         vAKb0/t8qsGz6x5TOPefHkiw43ZQjgzP3ijpC7sSzAW2WjA5N9TYdks2iq2zPuoB8l4y
-         bxMv9ytaEInJslJDiXY6nAsBOhSyQK9AOPmouLolQ2eMLiF7pNoos6giihXdhLcdWB30
-         l00Q==
-X-Gm-Message-State: AFuF++lXnxBkLo4QpLlpd4TKwgJq7QZsFdsx7oz2spbqLmTvUSSKBbJO
-	POS12NekJRlH6Q070qauyZeSCTMqbqXwrH8TVOm1j+DnReoIgkX9WmhjPk1ck5URJG4=
-X-Gm-Gg: AYBFou2y2/k3WHKI9tyNmirtV8saE0ywWbzAbSG5vRKnTW2bQqkDG1xk0aizztpKOPj
-	OxTZzcom8+O505+hjHzTGKPAQNheP2rwNEGaSEeAwWOEEqDGEZ+wdM7eo9rlh5dzhkZkSSxfSYD
-	in2iNdy/UUKnnZRyFCOybfM8gSODgrqcN76ThwNQPN8RhRvUwFv2StCeBcQDN32RZakqNKY32AO
-	003zW5ZqKfrh5PHLPk29nLxO0cY16sqasWPe3f4ni0E7Mrebusr9FzCH32WHLkbs4A7luKjuD6L
-	YGsXGyoad8LqH9lSo0dDQ10nwjYF2cyPLkz3on1Oxq+fcB7AlB6Sq8+n3gUfUELqBnfkUkFn44E
-	cxcUxbvjkJyF7dtTe/VcAeN4Bq24AmNtWIF7D5UtRHEZeMKgOaRAYv0XxMzWrJ8DdTWrlwRaeZw
-	/FU8Mv24LiNdKlAHjiR1PX6t6Gvlu7C0ebr9cAHOwFsObaRNtlUmZDXXVlImvFTzOwbcLdM7NsG
-	7tdUAfS
-X-Received: by 2002:a05:600c:4ecf:b0:49f:ce78:3567 with SMTP id 5b1f17b1804b1-4a02769ceefmr145584105e9.24.1791127756918;
-        Sun, 04 Oct 2026 08:29:16 -0700 (PDT)
+        bh=9ijVzIve29PHeaUaMD0UnyB/2N/58uvZFm5f+2hPLu0=;
+        b=prAtA3BmzvVSC/J5BsdMONTTB2uEuVnZUg2isGg/m1oxWl3uQJDDUI8sFfCELZXkte
+         GdQlrs1PBiqrm7GZkPgl6F2K3T0EarhyT8f+IkxudKTZhuRV1RN6HVtsivgWW6G66JjQ
+         8xiwqsd6RD/2gLoak5BJj+zn/iyuP5B9FxbPxMNM6CkYkStDAHyF7+zmm4Ugj8r/aI+J
+         bHGQhVaLzHLPemA8QG+VQof100n1NyEGv3hyfcvhDBYmfvrXyTLDZvI4jkdmKDlPNGjv
+         BkxCN4D9PRtO6b7BM33EZpvhKC6NfaZWYjikySAzq+w364mJQN/tzBwilYhW0TGNK0jW
+         c/yw==
+X-Gm-Message-State: AFuF++lcj3eQKEAiKOLouT5fhtOw/ZFPXJXtrfjtWWA2Nw/FtaifJMNh
+	fYyfx1y5DyuM9tFjpuVHc7wO6jiWdygEg59z79UCFPqSuYyB3RnZ08vWyztghf8Oylo=
+X-Gm-Gg: AYBFou2IxFMj2q3hxkNk2+YnFpmUTr7rFSdM3zuNUwL0dV89NYJPjhHK8CZUrVvI8vO
+	NhX0s5p48zAIZ/AeLXJrYyQilB5YtccaOcS9w95xSR9kWoILjAiS3rYAr56ZPma4L0T/xUFerRS
+	Z/KRZT3wg8HEbLel4UHnJbnwdD8FPrwSHBx8MxAgyAdhCBgEmmvTjhLkBkXR+M3lcBXViEiCUJp
+	iN+aZwDCVz1EJ3JE/H0OewhJ8mnZhYDXDPTUwkSkBaNY/XBlBqSaJRQaAZNkFXimDoV3jpkIoiM
+	gilV/Tkkn8pt0iIHuhVrv9YKeGuHAgJJ3IeDca/FjHKa7NsM4L6fx57097//aSIwZAekIc8/uJJ
+	v7/V4uHbxbaNi+79TJvOS4yOfwnnbsGHR3a1n2sB27E+x/AT1Vepgk0lXiHYSqa4iWoP47okDSd
+	HA/3JVR9AVQh+opoJGRGfdIvQr80f67yWrhabgUqC5rq45yneBkLkKEC/LRwKgodKEDAn0fvh1S
+	8wL+mZn
+X-Received: by 2002:a05:600c:8b22:b0:4a1:6811:8d with SMTP id 5b1f17b1804b1-4a1681100f1mr75606585e9.11.1791127780679;
+        Sun, 04 Oct 2026 08:29:40 -0700 (PDT)
 Received: from [172.20.10.3] ([37.169.53.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a02769a818sm280087545e9.2.2026.10.04.08.29.13
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0280d1e38sm220447725e9.13.2026.10.04.08.29.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Oct 2026 08:29:16 -0700 (PDT)
-Message-ID: <30637763-03bf-4d3c-a9e9-769de28c729d@linaro.org>
-Date: Sun, 4 Oct 2026 17:29:10 +0200
+        Sun, 04 Oct 2026 08:29:39 -0700 (PDT)
+Message-ID: <e27cd2c3-7fd6-4327-a84d-3f66d902f141@linaro.org>
+Date: Sun, 4 Oct 2026 17:29:37 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,8 +71,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [RFC PATCH 5/6] arm64: dts: amlogic: t7: add the ethernet
- controller
+Subject: Re: [RFC PATCH 6/6] arm64: dts: amlogic: t7: khadas-vim4: enable the
+ ethernet port
 To: Lucas Tanure <tanure@linux.com>, xianwei.zhao@amlogic.com,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
@@ -88,7 +88,7 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
 References: <20261004144046.391444-1-tanure@linux.com>
- <20261004144046.391444-6-tanure@linux.com>
+ <20261004144046.391444-7-tanure@linux.com>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -115,110 +115,79 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20261004144046.391444-6-tanure@linux.com>
+In-Reply-To: <20261004144046.391444-7-tanure@linux.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/4/26 16:40, Lucas Tanure wrote:
-> The SoC pairs a Synopsys gigabit MAC with a small block of glue
-> registers that selects the interface type and trims the clock timing,
-> and with a multiplexer that points the management bus at either the
-> on-chip 100M PHY or the external pins. None of it was described, so the
-> port could not be used at all.
+> The board carries a Realtek RTL8211F gigabit PHY on the external
+> management bus, connected to the MAC over RGMII.
 > 
-> Add the controller and the multiplexer. The MAC reports a 5.10a core.
-> The path the controller reaches memory over runs through a pipeline
-> stage with a gate of its own, so hand that to the controller as well;
-> nothing else claims it and it would otherwise be switched off as unused,
-> leaving the port unable to complete a transfer.
+> Enable the controller, hand it the ethernet pins and point it at the
+> PHY. The clock delays RGMII needs are supplied by the MAC rather than
+> the PHY: 2ns on transmit and 2000ps on receive, the values the vendor
+> kernel programs.
 > 
-> The on-chip PHY behind the second port of the multiplexer is described
-> the way the G12A does it. No board in tree uses it and that path is
-> untested.
+> The PHY interrupt output is wired to GPIOH_6, so describe it and let
+> link changes be reported instead of polled. The PHY reset pin is driven
+> by an RC network on the board, not by the SoC, so there is no reset line
+> to describe.
 > 
-> The controller is left disabled for boards to enable.
+> Tested at 930Mbit/s sustained receive over a minute, with no MAC error
+> counters moving in either direction.
 > 
 > Assisted-by: LLM
 > Signed-off-by: Lucas Tanure <tanure@linux.com>
 > ---
->   arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 57 +++++++++++++++++++++
->   1 file changed, 57 insertions(+)
+>   .../amlogic/amlogic-t7-a311d2-khadas-vim4.dts | 28 +++++++++++++++++++
+>   1 file changed, 28 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> index 7bd53ec16607..140f1836f3dd 100644
-> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> @@ -250,6 +250,31 @@ gic: interrupt-controller@fff01000 {
->   			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_HIGH)>;
->   		};
+> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> index 0fa83362b417..5d0365ddde72 100644
+> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
+> @@ -14,6 +14,7 @@ / {
+>   	compatible = "khadas,vim4", "amlogic,a311d2", "amlogic,t7";
 >   
-> +		ethmac: ethernet@fdc00000 {
-> +			compatible = "amlogic,t7-dwmac",
-> +				     "snps,dwmac-5.10a",
-> +				     "snps,dwmac";
-> +			reg = <0x0 0xfdc00000 0x0 0x10000>,
-> +			      <0x0 0xfe024000 0x0 0x8>;
-> +			interrupts = <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>;
-> +			interrupt-names = "macirq";
-> +			clocks = <&clkc_periphs CLKID_SYS_ETH>,
-> +				 <&scmi_clk CLKID_FCLK_DIV2>,
-> +				 <&mpll CLKID_MPLL2>,
-> +				 <&clkc_periphs CLKID_SYS_AMPIPE_ETH>;
-> +			clock-names = "stmmaceth", "clkin0", "clkin1", "pipeline";
-> +			power-domains = <&pwrc PWRC_T7_ETH_ID>;
-> +			rx-fifo-depth = <4096>;
-> +			tx-fifo-depth = <2048>;
-> +			status = "disabled";
-> +
-> +			mdio0: mdio {
-> +				compatible = "snps,dwmac-mdio";
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
-> +			};
-> +		};
-> +
->   		apb4: bus@fe000000 {
->   			compatible = "simple-bus";
->   			reg = <0x0 0xfe000000 0x0 0x480000>;
-> @@ -645,6 +670,38 @@ gpio_intc: interrupt-controller@4080 {
->   					<10 11 12 13 14 15 16 17 18 19 20 21>;
->   			};
+>   	aliases {
+> +		ethernet0 = &ethmac;
+>   		serial0 = &uart_a;
+>   		mmc0 = &sd_emmc_c;
+>   		mmc1 = &sd_emmc_b;
+> @@ -256,6 +257,33 @@ xtal: xtal-clk {
+>   	};
+>   };
 >   
-> +			eth_phy: mdio-multiplexer@28000 {
-> +				compatible = "amlogic,g12a-mdio-mux";
-> +				reg = <0x0 0x28000 0x0 0xa4>;
-> +				clocks = <&clkc_periphs CLKID_SYS_ETHPHY>,
-> +					 <&xtal>,
-> +					 <&scmi_clk CLKID_FCLK_50M>;
-> +				clock-names = "pclk", "clkin0", "clkin1";
-> +				mdio-parent-bus = <&mdio0>;
-> +				#address-cells = <1>;
-> +				#size-cells = <0>;
+> +&ethmac {
+> +	status = "okay";
+> +	pinctrl-0 = <&eth_pins>, <&eth_rgmii_pins>;
+> +	pinctrl-names = "default";
 > +
-> +				ext_mdio: mdio@0 {
-> +					reg = <0>;
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +				};
+> +	/*
+> +	 * The RGMII clock delays are added by the MAC, so the PHY is
+> +	 * asked for the mode that adds none.
+> +	 */
+> +	phy-mode = "rgmii";
+> +	phy-handle = <&external_phy>;
+> +	amlogic,tx-delay-ns = <2>;
+> +	rx-internal-delay-ps = <2000>;
+> +};
 > +
-> +				int_mdio: mdio@1 {
-> +					reg = <1>;
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
+> +&ext_mdio {
+> +	external_phy: ethernet-phy@0 {
+> +		/* Realtek RTL8211FD-CG */
+> +		reg = <0>;
+> +		max-speed = <1000>;
 > +
-> +					internal_ephy: ethernet-phy@8 {
-> +						compatible = "ethernet-phy-id0180.3301",
-> +							     "ethernet-phy-ieee802.3-c22";
-> +						interrupts = <GIC_SPI 340 IRQ_TYPE_LEVEL_HIGH>;
-> +						reg = <8>;
-> +						max-speed = <100>;
-> +					};
-> +				};
-> +			};
+> +		interrupt-parent = <&gpio_intc>;
+> +		/* RGMII_INT on GPIOH_6 */
+> +		interrupts = <154 IRQ_TYPE_LEVEL_LOW>;
+> +	};
+> +};
 > +
->   			uart_a: serial@78000 {
->   				compatible = "amlogic,t7-uart", "amlogic,meson-s4-uart";
->   				reg = <0x0 0x78000 0x0 0x18>;
+>   &i2c_m_ao_a {
+>   	status = "okay";
+>   	pinctrl-0 = <&i2c0_ao_d_pins>;
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
