@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E936A4192EF;
-	Sun,  4 Oct 2026 09:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCC0418360;
+	Sun,  4 Oct 2026 09:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791105159; cv=none; b=i7IS4719B/MDCI1Ll9ztAO5jLsikIT27waO955njQ5ZMI9CPmdXQYYjplFqdtF98W5YBbqitjhACD0ymap4U2g698DhUr8X354iCp8cTLoYHhjsVYKVdwZBykUYzNMIUZNn//Pj+aKa7sGbRAkGGjkvjLNCTOG58lA3N5UqlpgI=
+	t=1791105161; cv=none; b=ZbHKq1d1PaFWQeYXy9w8cNnpZLkm8RN4gfzVdSfjiy6m3qmthsN1dJaWL4XIHPF+Bbx8v5B7JWYoy+kXJSm4q7X2bMCJuWxsTryrHNvNcRMV8X3wnr++QhTl8NN4LIFMhl4ZcRNZ9s0Tyr1tDgqEDTYXSWNuz7avlJ9Lr9Kth+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791105159; c=relaxed/simple;
-	bh=ByLXeI4o9mIuBE/ZVS1tJ1eLIkIRhmDeWJIRXOg2Rdo=;
+	s=arc-20240116; t=1791105161; c=relaxed/simple;
+	bh=BeBghOodyGOIqnuBJtkmT75EfHHWe23pF5TXXOtJnEk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O6lIHNyTjV2HhmtAboBf/a7AS5kALjiR6aiPnMjGn7Y/xTqw9SbEKo/XImfcpuUnHRUBCz6Xt46OCRS6M2fsSLcUBE6i1dqbi58iKJuAyNQgLtAts1mbDdSkHfEmdJ+ZAw/kTxxl0sVLhQUCUjqf6Kro1SrDYRcjEzZyQ8mym8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ha+DgrdW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=uA9tIzKA/PLD/EmzI39voJGnZ9F6Cwduy4JKrQfF9e8WdUei4YoDDBY8zTqFoeAtBbIvaL42Is+AHw3JkIQiQ1hm/pqupDa6oYtTY4Alf/5SmG8/SgXdcUOB5my9xJFm1sNWtLTORMUjUlle6IyTwYgRfZlFXVvjdAvc0Gcfznk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XR2wluDl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ha+DgrdW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47ED91F00898;
-	Sun,  4 Oct 2026 09:12:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XR2wluDl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB351F000FF;
+	Sun,  4 Oct 2026 09:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791105156;
-	bh=Ih4oAK0OwMwrSLYuUhAbQsNHv2aEGyrlLMOjMr0/TgM=;
+	s=k20260515; t=1791105158;
+	bh=l6YKx75v1UHh5u3ecRBAiuJ8eUyaZ/IdvdwFVRz+vjI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ha+DgrdWUodRP4XlBpkXbNZlUsKt+y1Uze+63wzFexGpxe1u3cYBbogFojAWq2kol
-	 hmr7qvYuDIhzcJwNUemNlXl5JCbsorqGz9KxtlBprR/5hNErxEXFpzqisNqWk/Uuh9
-	 W8SzkB5IZ6DBs4o6GNtu6HsAaDzFDlK/uJMddy76DDO5QPzZ43INS5IhJRBjRAgzDo
-	 OEtayE4MVZeY+EbKMxHd03tHpUNEm1ShVfHl90Z9MI+EBVPMZPSdoumSWUAmgIgGUH
-	 1bF2wl4BkTIQRD14PC/yzuIpHEOqTkLlwXT+9RC8xAZsZqsK1bhlRd6Fe0wP5hVbUb
-	 n6jCCfCKJ8znw==
-Subject: Re: [PATCH v9 3/6] net: wwan: t9xx: Add control DMA interface
+	b=XR2wluDlOV9aGrmgD/K6q5O0gyOup2aG8H7yG5onXaPbwFmkuHG1SNKA/9jVPFAHx
+	 C68GsnRZNqn28vSX5NrWqvl73jvSb1jT/E2I01Fv2sZwiXHdk+K9+6NBLc7RI9yEzO
+	 XxGIEJEbIdX3KFLWpq9cGFPIw5I3thHgRzTRjeFVf8+u8qBNxf3JIKuxae2qNNQM6k
+	 R58Xc+rp6czR3ZGwZ/elR/HeTVVjKrd1IKovpN92mQQ4ht6aWB0z5iDMXkOny6RRUl
+	 /wULa+c37Z/EovZyo/XDmkdvtofLxv0ud2YCDKsCWs+CHjfqqL9EhWBOK+Mu0DHhE+
+	 Z+zUgs/WMNMHg==
+Subject: Re: [PATCH v9 4/6] net: wwan: t9xx: Add control port
 From: netdev-bot+sashiko@kernel.org
 To: jackbb_wu@compal.com
 Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
@@ -39,10 +39,10 @@ Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
  linux-doc@vger.kernel.org
-Date: Sun, 04 Oct 2026 09:12:34 +0000
-Message-ID: <179110515484.434549.9164635676367238537@kernel.org>
-In-Reply-To: <20260930-t9xx_driver_v1-v9-3-3248b9256956@compal.com>
-References: <20260930-t9xx_driver_v1-v9-3-3248b9256956@compal.com>
+Date: Sun, 04 Oct 2026 09:12:36 +0000
+Message-ID: <179110515680.434549.14127316399726574616@kernel.org>
+In-Reply-To: <20260930-t9xx_driver_v1-v9-4-3248b9256956@compal.com>
+References: <20260930-t9xx_driver_v1-v9-4-3248b9256956@compal.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,10 +53,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 12 potential
+Thank you for your contribution! Sashiko AI review found 20 potential
 issue(s) to consider.
 
-Critical: 0 · High: 3 · Medium: 8 · Low: 1
+Critical: 0 · High: 2 · Medium: 1 · Low: 17
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -64,1115 +64,1065 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Use-after-free of struct trb_srv on HIF teardown.
-- [High] Race between mtk_cldma_rx_done_work() and mtk_cldma_rxq_free()
-  that restarts DMA into freed memory.
-- [High] net: wwan: t9xx: use-after-free when deleting radix tree entries
-  during iteration
-- [Medium] In BD mode, mtk_cldma_rx_skb_adjust() limits each BD's
-  recv_len only by data_allow_len, which it reads back from the device-…
-- [Medium] mtk_pcie_hif_submit_skb() inserts a DISABLE before the first
-  non-ENABLE entry in the queue list.
-- [Medium] In non-BD mode, when mtk_cldma_reload_rx_skb() fails and the
-  recycle dma_map_single() also fails, mtk_cldma_rx_done_work() jumps to…
-- [Medium] In mtk_ch_status_check(), a TRB_CMD_ENABLE increments
-  usr_cnt[hif_id][txqno] unconditionally.
-- [Medium] Pending TRBs in skb_list are flushed (completed with -EIO)
-  only at the end of mtk_ctrl_trb_thread(), via mtk_ctrl_chs_flush().
-- [Medium] mtk_cldma_drv_reset() drives the infracfg RST0_SET and
-  RST0_CLR registers with read-modify-write: 'val = read(SET); val |=…
-- [Medium] When mtk_cldma_start_xfer() fails, mtk_cldma_tx() calls
-  mtk_cldma_txq_flush() without stopping the TX queue first.
-- [Medium] mtk_cldma_rearm_queues() restarts each TX queue at
-  req_pool[free_idx] without reclaiming completed descriptors first.
-- [Low] mtk_ctrl_trb_handler() keeps using the skb after
-  mtk_cldma_submit_tx() has published it to the hardware ring.
+- [High] net: core: skb_push() called without verifying headroom causes
+  kernel panic
+- [High] net: rcu: lockless radix tree lookup causes UAF in port search
+- [Medium] mtk_port_ch_enable() treats `trb->status <= 0` as meaning the
+  ENABLE completion has finished.
+- [Low] The commit message leaves out two changes to existing code.
+- [Low] Concern: at this commit nothing calls ->enable(),
+  mtk_port_internal_open/write/recv_register or mtk_port_status_update,…
+- [Low] The patch adds non-static globals with no driver prefix:
+  `DEFINE_MUTEX(port_mngr_grp_mtx)` in mtk_port.c and `const struct…
+- [Low] Two small quality problems.
+- [Low] Concern: mtk_cldma_rx_done_work() retries rx_done() with the same
+  skb when it returns -EAGAIN.
+- [Low] The port layer handles an ENABLE that completes with -EBUSY
+  inconsistently.
+- [Low] Concern: the comment in mtk_port_internal_disable() refers to
+  FSM_STATE_ON and to usr_cnt being rebuilt there, but neither exists at…
+- [Low] mtk_port_send_data() can return the in-flight sentinel
+  MTK_TRB_HEADER_ADDED (0xADDED = 712173) as if it were a byte count.
+- [Low] Concern: rx_seq and tx_seq are initialised only once, in
+  mtk_port_struct_init(), so the first packet after a modem reset or…
+- [Low] Concern: mtk_port_status_update() reads the 12-byte enumeration
+  header before checking data_len >= sizeof(*msg).
+- [Low] Concern: in the scatter-gather RX path, -EIO means both 'partial
+  dispatch' and a raw head-skb recv() failure.
+- [Low] Concern: TRBs hold `trb->priv = port` without a port reference.
+- [Low] Concern: mtk_port_internal_open() looks up the port by name
+  without holding a lock, and only then takes kref_get() under…
+- [Low] Concern: mtk_port_common_open()/mtk_port_internal_close() do a
+  non-atomic test_bit+set_bit/clear_bit on PORT_S_OPEN, so concurrent…
+- [Low] Concern: recv_cb/arg are published with plain stores and read
+  without ordering, and close does not synchronise with in-flight…
+- [Low] Concern: port->tx_seq++ and tx_seq-- are not protected, so
+  concurrent writers could duplicate or reorder sequence numbers.
+- [Low] Concern: the port layer's SG predicate (rx_mtu - 128 >
+  rx_frag_size) differs from CLDMA's BD-mode predicate (rx_mtu >…
 
 --
 
-net: wwan: t9xx: Add control DMA interface
+net: wwan: t9xx: Add control port
 
-This commit adds the CLDMA (Cross Layer DMA) driver for the t9xx control
-plane. The driver manages GPD/BD rings for TX and RX, and the patch also
-adds a transport control layer with a TRB service kthread. Probe now
-registers the transport plane and the queue info table. The FSM listener
-that brings CLDMA up arrives later in the series.
+This commit adds a port manager and a port I/O layer to the t9xx WWAN
+driver. Two internal control ports (MDCTRL, SAPCTRL) submit TRBs to CLDMA
+and receive dispatched data. The port manager is hooked into
+mtk_ctrl_init()/mtk_ctrl_exit(), and module_pci_driver() is replaced with
+explicit module init/exit functions.
 
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_cldma.c b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
-> new file mode 100644
-> index 0000000000000..0f281bfb38cc7
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_cldma.c
-> @@ -0,0 +1,1520 @@
+> diff --git a/drivers/net/wwan/t9xx/mtk_ctrl_plane.c b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+> index fa2ab8c3e7577..10f0d3267b3b1 100644
+> --- a/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
+> +++ b/drivers/net/wwan/t9xx/mtk_ctrl_plane.c
 
 [ ... ]
 
-> +static int mtk_cldma_rx_skb_adjust(struct mtk_md_dev *mdev, struct rxq *rxq,
-> +				   struct rx_req *req)
-> +{
-
-[ ... ]
-
-> +		recv_len = le16_to_cpu(bd_dsc->bd->rx_bd.data_recv_len);
-> +		allow_len = le16_to_cpu(bd_dsc->bd->rx_bd.data_allow_len);
-> +		if (recv_len > allow_len) {
-> +			ret = -EPROTO;
-> +			recv_len = allow_len;
-> +		}
-> +		total_len += recv_len;
-> +		if (total_len > req->mtu) {
-> +			ret = -EPROTO;
-> +			recv_len -= min(total_len - req->mtu, recv_len);
-> +			total_len = req->mtu;
-> +		}
-> +		bd_dsc->skb->len = 0;
-> +		skb_reset_tail_pointer(bd_dsc->skb);
-> +		skb_put(bd_dsc->skb, recv_len);
-
-[Severity: Medium]
-Can a device overrun a single BD skb here?
-
-The only per-BD bound is data_allow_len, and that value is read back from
-the dma_pool BD, which the device can write. The BD skbs themselves are
-only frag_size bytes:
-
-mtk_cldma_alloc_rx_bd()
-    bd_dsc->skb = __dev_alloc_skb(req->frag_size, GFP_KERNEL);
-    ...
-    bd_dsc->bd->rx_bd.data_allow_len =
-        cpu_to_le16(min(req->frag_size, left_size));
-
-mtk_cldma_reload_rx_skb() uses the same size.
-
-Suppose the device writes data_allow_len and data_recv_len up to mtu into
-BD 0. Then recv_len passes both checks, and skb_put() runs past skb->end
-into skb_over_panic(). The comment above the function says "a device that
-inflates data_allow_len cannot grow the packet past the buffer". That is
-true of the running total, but not of each BD.
-
-Should recv_len also be clamped to req->frag_size?
-
-BD mode is not configured today, because Q_MTU_3_5K == Q_FRAG_3_5K keeps
-nr_bds at 0. This path becomes reachable as soon as a queue uses
-mtu > frag_size.
-
-[ ... ]
-
-> +		ret = mtk_cldma_reload_rx_skb(mdev, rxq, req);
-> +		if (ret) {
-
-[ ... ]
-
-> +			skb_trim(rx_skb, 0);
-> +			req->skb = rx_skb;
-> +			req->data_dma_addr = dma_map_single(mdev->dev,
-> +							    rx_skb->data,
-> +							    req->mtu,
-> +							    DMA_FROM_DEVICE);
-> +			if (dma_mapping_error(mdev->dev, req->data_dma_addr)) {
-> +				req->data_dma_addr = 0;
-> +				/* Keep rx_skb in req->skb for clean stall.
-> +				 * HWO is not set — HW won't touch this slot.
-> +				 * Queue stalls until modem reset recovery.
-> +				 */
-> +				goto out;
-
-[Severity: Medium]
-What brings this slot back after the goto out?
-
-At this point req->skb is rx_skb trimmed to 0, data_dma_addr is 0, HWO is
-clear and data_recv_len is already 0. free_idx has not advanced, the
-previous GPD has not been re-armed, and the queue has not been resumed.
-Nothing marks the slot dead or schedules a retry.
-
-On the next run of mtk_cldma_rx_done_work(), the slot passes both the
-!req->skb check and the HWO check as a completed descriptor.
-mtk_cldma_rx_skb_adjust() then does skb_put(skb, 0). If the reload
-succeeds this time, a zero-length skb goes up through rxq->rx_done().
-
-If no further completion arrives at all, doesn't RX stay stalled even
-after memory pressure clears? Nothing appears to implement the "clean
-stall until modem reset recovery" in the comment.
-
-[ ... ]
-
-> +	if (!atomic_read(&rxq->need_exit)) {
-> +		if (atomic_xchg(&rxq->need_restart, 0))
-> +			mtk_cldma_rxq_restart(drv_info, rxq);
-> +		else if (ret != -ENXIO)
-> +			mtk_cldma_resume_queue(drv_info, DIR_RX, rxq->rxqno);
-> +	}
-
-[Severity: High]
-Is the need_exit check atomic with respect to mtk_cldma_rxq_free()?
-Consider this ordering:
-
-rx_done_work                        mtk_cldma_rxq_free()
-atomic_read(need_exit) == 0
-<preempted>
-                                    atomic_set(&rxq->need_exit, 1);
-                                    mtk_cldma_stop_queue() returns 0
-                                    synchronize_irq()
-                                    flush_work(&rxq->rx_done_work)
-mtk_cldma_resume_queue() or
-mtk_cldma_rxq_restart()
-return
-                                    ret == 0, unmap and free RX skbs,
-                                    BDs and GPDs
-
-mtk_cldma_rxq_free() does not stop the queue again after flush_work(). Can
-the engine then be running on GPDs with HWO set while their buffers and
-descriptors are being unmapped and freed?
-
-[ ... ]
-
-> +static void mtk_cldma_rearm_queues(struct cldma_drv_info *drv_info)
-> +{
-
-[ ... ]
-
-> +		txq = drv_info->txq[i];
-> +		if (txq) {
-> +			spin_lock(&txq->ring_lock);
-> +			mtk_cldma_setup_start_addr(drv_info, DIR_TX, i,
-> +						   txq->req_pool[txq->free_idx].gpd_dma_addr);
-> +			mtk_cldma_unmask_intr(drv_info, DIR_TX, i, QUEUE_ERROR);
-> +			mtk_cldma_unmask_intr(drv_info, DIR_TX, i, QUEUE_XFER_DONE);
-> +			if (READ_ONCE(txq->tx_started))
-> +				mtk_cldma_start_queue(drv_info, DIR_TX, i);
-> +			spin_unlock(&txq->ring_lock);
-> +		}
-
-[Severity: Medium]
-What happens if free_idx names a GPD the hardware has already completed
-(HWO=0) but mtk_cldma_tx_done_work() has not reclaimed yet?
-
-In that case the engine would restart at that descriptor, stop there, and
-never reach the HWO=1 descriptors behind it. tx_started stays true, so
-later kicks from mtk_cldma_start_xfer() only resume:
-
-mtk_cldma_start_xfer()
-    } else {
-        mtk_cldma_resume_queue(drv_info, DIR_TX, qno);
-    }
-
-That never moves the hardware cursor. Could the pending slots between the
-old free_idx and wr_idx then stay unprocessed, draining req_budget to zero
-and stalling TX? This depends on how the hardware handles RESUME at an
-HWO=0 descriptor.
-
-[ ... ]
-
-> +static int mtk_cldma_tx(struct cldma_dev *cd, struct sk_buff *skb)
-> +{
-
-[ ... ]
-
-> +	ret = mtk_cldma_start_xfer(drv_info, que->txqno);
-> +	if (unlikely(ret)) {
-> +		dev_err(mdev->dev, "Failed to trigger cldma tx\n");
-> +		mtk_cldma_txq_flush(drv_info, txq, ret);
-> +	}
-
-[Severity: Medium]
-Is it safe to flush here without stopping the TX queue first?
-
-mtk_cldma_start_xfer() can fail after mtk_cldma_hw_recovery() ->
-mtk_cldma_rearm_queues() has already issued UL_START. It can also fail on
-a transient all-ones read. mtk_cldma_txq_flush() then does three things
-on descriptors the engine may still own:
-
-  - clears CLDMA_GPD_FLAG_HWO in place
-  - dma_unmap_single()s their buffers
-  - advances free_idx
-
-tx_started also stays true. The next successful kick therefore only
-resumes from the hardware's stale current-GPD pointer, which now names an
-HWO=0 slot behind wr_idx.
-
-The err_work added later in the series stops the queue before flushing,
-with the comment "the device may still be walking the ring: unmapping its
-buffers here would leave it writing into unmapped memory".
-
-Should this path also stop the queue and clear tx_started before calling
-mtk_cldma_txq_flush()?
-
-[ ... ]
-
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c b/drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c
-> new file mode 100644
-> index 0000000000000..8ab153da2083e
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_cldma_drv.c
-> @@ -0,0 +1,561 @@
-
-[ ... ]
-
-> +void mtk_cldma_drv_reset(struct cldma_drv_info *drv_info)
-> +{
-> +	struct cldma_hw_regs *hw_regs;
-> +	struct mtk_md_dev *mdev;
-> +	u32 val;
+> @@ -28,7 +31,15 @@ int mtk_ctrl_init(struct mtk_md_dev *mdev)
+>  	ctrl_blk->mdev = mdev;
+>  	mdev->ctrl_blk = ctrl_blk;
+>  
+> +	err = mtk_port_mngr_init(ctrl_blk, port_layer_cfg->port_cfg,
+> +				 port_layer_cfg->port_cnt);
+> +	if (err)
+> +		goto err_free_mem;
 > +
-> +	mdev = drv_info->mdev;
-> +	hw_regs = drv_info->hw_regs;
+>  	return 0;
 > +
-> +	val = mtk_pci_read32(mdev, REG_DEV_INFRA_BASE + hw_regs->reg_infra_rst0_set);
-> +	val |= 1 << (REG_CLDMA0_RST_SET_BIT + drv_info->hw_id);
-> +	mtk_pci_write32(mdev, REG_DEV_INFRA_BASE + hw_regs->reg_infra_rst0_set, val);
-> +	udelay(1);
-> +	val = mtk_pci_read32(mdev, REG_DEV_INFRA_BASE + hw_regs->reg_infra_rst0_clr);
-> +	val |= 1 << (REG_CLDMA0_RST_CLR_BIT + drv_info->hw_id);
-> +	mtk_pci_write32(mdev, REG_DEV_INFRA_BASE + hw_regs->reg_infra_rst0_clr, val);
-> +}
-
-[Severity: Medium]
-Are RST0_SET and RST0_CLR write-1-to-set and write-1-to-clear registers?
-On MediaTek set/clear reset banks every 1 written is normally a command,
-and the in-tree MediaTek reset code writes only BIT(id).
-
-If these registers read back the current reset status, the
-read-modify-write on RST0_CLR would release every other block in bank 0
-that is currently held in reset. Would writing just the CLDMA bit be
-safer?
-
-Separately, udelay(1) follows a posted write with no read-back. Is the
-reset assert width actually guaranteed?
-
-[ ... ]
-
-> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.c b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.c
-> new file mode 100644
-> index 0000000000000..531940b06e2a9
-> --- /dev/null
-> +++ b/drivers/net/wwan/t9xx/pcie/mtk_trans_ctrl.c
-> @@ -0,0 +1,615 @@
-
-[ ... ]
-
-> +	switch (trb->cmd) {
-> +	case TRB_CMD_ENABLE:
-> +		trb_open_priv = (struct trb_open_priv *)skb->data;
-> +		trb_open_priv->log_rg_offset = que->log_rg_offset;
-> +		trans->usr_cnt[que->hif_id][que->txqno]++;
-> +		if (trans->usr_cnt[que->hif_id][que->txqno] == 1)
-> +			break;
-> +		trb_open_priv->tx_mtu = que->tx_mtu;
-> +		trb_open_priv->rx_mtu = que->rx_mtu;
-> +		trb_open_priv->tx_frag_size = que->tx_frag_size;
-> +		trb_open_priv->rx_frag_size = que->rx_frag_size;
-> +		if (mtk_cldma_check_ch_cfg(trans->dev, que)) {
-> +			trb->status = -EINVAL;
-> +			ret = -EINVAL;
-> +		} else {
-
-[Severity: Medium]
-Should usr_cnt be rolled back when the ENABLE is rejected with -EINVAL?
-
-mtk_cldma_open() drops the count on its own failure paths:
-
-mtk_cldma_open()
-    if (ret)
-        cd->trans->usr_cnt[que->hif_id][que->txqno]--;
-
-This path leaves the increment in place. One leaked increment keeps
-usr_cnt at 1 or more. The real owner's DISABLE would then never reach
-mtk_cldma_close(), and later ENABLEs would keep failing until
-mtk_pcie_hif_init() resets the count.
-
-[ ... ]
-
-> +		case TRB_CMD_TX:
-> +			spin_unlock_irqrestore(&skb_list->lock, flags);
-> +			err = mtk_cldma_submit_tx(trans->dev, skb);
-
-[ ... ]
-
-> +			trans_list->tx_burst_cnt[qno]++;
-> +			spin_lock_irqsave(&skb_list->lock, flags);
-> +			if (trans_list->tx_burst_cnt[qno] >= TX_BURST_MAX_CNT ||
-> +			    skb_queue_is_last(skb_list, skb)) {
-> +				kick = true;
-> +			} else {
-> +				skb_next = skb_peek_next(skb, skb_list);
-> +				trb_next = (struct trb *)skb_next->cb;
-> +				if (trb_next->cmd != TRB_CMD_TX)
-> +					kick = true;
-> +			}
-> +
-> +			__skb_unlink(skb, skb_list);
-> +			spin_unlock_irqrestore(&skb_list->lock, flags);
-> +			break;
+> +err_free_mem:
+> +	return err;
+>  }
 
 [Severity: Low]
-Once mtk_cldma_submit_tx() has published the skb to the ring,
-mtk_cldma_tx_done_work() can complete it through trb_complete(). The
-handler then still uses the skb for skb_queue_is_last(), __skb_unlink()
-and mtk_cldma_trb_process(trans->dev, skb). What keeps it alive?
+This isn't a bug, but the err_free_mem label frees nothing, because
+ctrl_blk comes from devm_kzalloc(). Also, mdev->ctrl_blk still points at
+ctrl_blk after the failure. Could this just return err, or clear
+mdev->ctrl_blk and use a label name that matches what it does?
 
-At this commit the path is not reachable, because submit_tx always fails
-and trb_complete does not free anything. The later patch "net: wwan: t9xx:
-Add control port" adds kref_get(&trb->kref) in mtk_ctrl_trb_handler()
-under skb_list->lock, which covers this.
+Similarly, mtk_trans_ctrl.c casts away const:
 
-Would it be clearer to take that reference here, where the code is
-introduced?
+	.port_cfg = (struct mtk_port_cfg *)mtk_port_cfg_tbl,
 
-[ ... ]
+mtk_port_mngr_init() and mtk_port_tbl_create() only read the table (via
+memcpy() in mtk_port_alloc_and_add()). Could they take a
+const struct mtk_port_cfg * so the cast isn't needed?
 
-> +static int mtk_ctrl_trb_thread(void *args)
-> +{
-
-[ ... ]
-
-> +	mtk_ctrl_chs_flush(srv);
-> +	return 0;
-> +}
-
-[Severity: Medium]
-What happens to queued TRBs if kthread_stop() arrives before this thread
-has run for the first time?
-
-kthread() skips threadfn entirely when KTHREAD_SHOULD_STOP is already set,
-so mtk_ctrl_chs_flush() would never run. mtk_pcie_hif_init() sets
-available to 1 right after kthread_run(), so skbs can be queued before
-the thread is scheduled.
-
-mtk_ctrl_trb_srv_exit() does not flush the lists itself, and the next
-mtk_pcie_hif_init() calls skb_queue_head_init() over the orphaned
-entries. Are those skbs then leaked and their waiters never completed?
-
-Would flushing in mtk_ctrl_trb_srv_exit() after kthread_stop() cover this?
+> diff --git a/drivers/net/wwan/t9xx/mtk_port.c b/drivers/net/wwan/t9xx/mtk_port.c
+> new file mode 100644
+> index 0000000000000..a8ff06ab4de4e
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/mtk_port.c
+> @@ -0,0 +1,693 @@
 
 [ ... ]
 
-> +int mtk_pcie_hif_exit(struct mtk_md_dev *mdev)
-> +{
-> +	struct mtk_ctrl_blk *ctrl_blk = mdev->ctrl_blk;
-> +	struct mtk_ctrl_trans *trans;
-> +
-> +	trans = ctrl_blk->ctrl_hw_priv;
-> +
-> +	mutex_lock(&trans->submit_lock);
-> +	atomic_set(&trans->available, 0);
-> +	mutex_unlock(&trans->submit_lock);
-> +
-> +	/* Join the service threads before freeing what they dereference: they
-> +	 * read trans->dev without a lock, so clearing it cannot stop a
-> +	 * consumer that has already loaded the pointer.
-> +	 */
-> +	mtk_ctrl_trb_srv_exit(trans);
-> +	mtk_cldma_exit(trans);
+> +/* mutex lock for the port refcount */
+> +DEFINE_MUTEX(port_mngr_grp_mtx);
 
-[Severity: High]
-Can this free struct trb_srv while the CLDMA completion paths still
-dereference it?
+[Severity: Low]
+This isn't a bug, but port_mngr_grp_mtx, ports_ops[] (in mtk_port_io.c)
+and struct port_ops are all global and have no driver prefix. With
+CONFIG_MTK_T9XX=y they become kernel-wide symbols. The single mutex is
+also shared by every device instance.
 
-mtk_ctrl_trb_srv_exit() calls kthread_stop() and kfree(srv), and only
-afterwards sets trans->trb_srv[i] = NULL. The CLDMA IRQ and TX queues are
-torn down after that point (at the end of the series in
-mtk_cldma_exit()->mtk_cldma_dev_exit()). Until then,
-mtk_cldma_tx_done_work() and mtk_cldma_txq_flush() can still run:
-
-mtk_cldma_tx_done_work()
-    srv = trans->trb_srv[trans->srv_cfg[hif_id][txqno]];
-    if (was_starved && srv)
-        wake_up(&srv->trb_waitq);
-
-A worker can load srv before the NULL store, or between kfree() and the
-NULL store. wake_up() would then take the waitqueue lock inside the freed
-trb_srv.
-
-The comment "The service may already have been torn down" treats the NULL
-check as sufficient, but nothing orders that check against the free.
-
-Would it be safer to quiesce the CLDMA IRQ and workers before freeing the
-service?
+Could they get an mtk_ prefix, or be made static where possible?
 
 [ ... ]
 
-> +	if (trb->cmd == TRB_CMD_DISABLE) {
-> +		struct sk_buff *entry = NULL;
-> +		struct sk_buff_head *list;
-> +		struct sk_buff *iter;
-> +		unsigned long flags;
+> +start_wait:
 > +
-> +		/* A disable may overtake queued data, so teardown does not
-> +		 * wait for a TX backlog, but it must never overtake a pending
-> +		 * ENABLE for the same queue: the two do not commute, and a
-> +		 * DISABLE consumed before its ENABLE closes nothing while the
-> +		 * ENABLE then arms rings nobody owns.
-> +		 */
-> +		list = &trans->trans_list[que->hif_id].skb_list[que->txqno];
-> +		spin_lock_irqsave(&list->lock, flags);
-> +		skb_queue_walk(list, iter) {
-> +			if (((struct trb *)iter->cb)->cmd != TRB_CMD_ENABLE) {
-> +				entry = iter;
-> +				break;
-> +			}
-> +		}
-> +		if (entry)
-> +			__skb_queue_before(list, entry, skb);
+> +	/* wait trb done, and no timeout in tx blocking mode */
+> +	ret = wait_event_interruptible_timeout(port->trb_wq,
+> +					       trb->status <= 0 ||
+> +					       test_bit(PORT_S_FLUSH, &port->status) ||
+> +					       !test_bit(PORT_S_WR, &port->status),
+> +					       MTK_DFLT_TRB_TIMEOUT);
+> +	if (!ret) {
+> +		goto start_wait;
+> +	} else if (ret == -ERESTARTSYS) {
+> +		ret = -EINTR;
+> +	} else if (ret > 0) {
+> +		if (test_bit(PORT_S_FLUSH, &port->status))
+> +			ret = len;
 > +		else
-> +			__skb_queue_tail(list, skb);
+> +			ret = (!trb->status) ? len : trb->status;
 
-[Severity: Medium]
-Does this walk hold up the promise in the comment when an ENABLE sits
-behind a TX entry?
+[Severity: Low]
+Can this return MTK_TRB_HEADER_ADDED as a byte count?
 
-The walk stops at the first non-ENABLE entry. With a list of TX, ENABLE,
-a new DISABLE is inserted at the front, which gives DISABLE, TX, ENABLE.
+mtk_port_add_header() sets trb->status = MTK_TRB_HEADER_ADDED (0xADDED)
+before the skb is submitted. The wait also ends when PORT_S_WR is
+cleared, and mtk_port_internal_disable() clears it before the DISABLE
+TRB is even queued:
 
-The DISABLE is then handled while usr_cnt is 0. It completes with -EBUSY
-in mtk_ch_status_check() without closing anything. The later ENABLE then
-arms the rings after the close has already been reported.
+	clear_bit(PORT_S_WR, &port->status);
+	wake_up_all(&port->trb_wq);
 
-Should the DISABLE go after the last pending ENABLE for this queue
+In that case PORT_S_FLUSH is clear and the TX TRB has not completed yet.
+The code then returns trb->status, 712173, as if that many bytes had
+been written.
+
+mtk_ctrl_ch_flush() later completes the TX TRB with -EIO. The data is
+dropped, but the blocking write has already reported success.
+
+Later in the series this can happen for a blocking WWAN write during
+mtk_port_wwan_disable(). Should the !PORT_S_WR case return an error
 instead?
 
 [ ... ]
 
-> @@ -0,0 +1,615 @@
+> +int mtk_port_ch_enable(struct mtk_port *port)
+> +{
+
+[ ... ]
+
+> +	ret = wait_event_timeout(port->trb_wq, trb->status <= 0,
+> +				 MTK_DFLT_TRB_TIMEOUT);
+> +	if (!ret)
+> +		ret = -ETIMEDOUT;
+> +	else
+> +		ret = trb->status;
+
+[Severity: Medium]
+Can mtk_port_ch_enable() return 0 before mtk_port_open_trb_complete()
+has filled in the port geometry?
+
+The transport stores the status before it calls the completion callback.
+For example, in mtk_cldma_open():
+
+	trb->status = ret;
+	trb->trb_complete(skb);
+
+The MTU and fragment sizes are only written inside the callback:
+
+	if (!trb->status) {
+		port->tx_mtu = trb_open_priv->tx_mtu;
+		...
+
+wait_event_timeout() checks trb->status <= 0 before it sleeps. A waiter
+that checks between those two points, or while the trb_srv thread is
+preempted inside the callback, returns 0 with port->tx_mtu still 0.
+There is also no acquire/release pairing, so on weakly ordered CPUs the
+MTU stores may not be visible yet.
+
+Later in the series, mtk_port_wwan_enable() checks port->tx_mtu right
+after this returns:
+
+	if (!port->tx_mtu) {
+		dev_err(port_mngr->ctrl_blk->mdev->dev,
+			"Invalid tx_mtu for port(%s)\n", port->info.name);
+
+It then disables the channel, so the AT or MBIM port would not be
+created for the rest of that device's lifetime.
+
+Would it be better to signal completion from
+mtk_port_open_trb_complete() after its last store? A struct completion,
+or a separate done flag using smp_store_release()/smp_load_acquire(),
+would do that.
+
+[ ... ]
+
+> diff --git a/drivers/net/wwan/t9xx/mtk_port_io.c b/drivers/net/wwan/t9xx/mtk_port_io.c
+> new file mode 100644
+> index 0000000000000..6cff0704b7fc8
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/mtk_port_io.c
+> @@ -0,0 +1,258 @@
+
+[ ... ]
+
+> +static void mtk_port_internal_enable(struct mtk_port *port)
+> +{
+> +	int ret;
+> +
+> +	if (test_bit(PORT_S_ENABLE, &port->status))
+> +		return;
+> +
+> +	ret = mtk_port_ch_enable(port);
+> +	if (ret && ret != -EBUSY) {
+
+[ ... ]
+
+> +	set_bit(PORT_S_WR, &port->status);
+> +	set_bit(PORT_S_ENABLE, &port->status);
+> +}
+
+[Severity: Low]
+If the ENABLE TRB completes with -EBUSY, does the port end up enabled
+with zero MTU and fragment sizes?
+
+Two paths fill trb_open_priv->tx_mtu, rx_mtu, tx_frag_size and
+rx_frag_size and then complete with -EBUSY:
+
+  - mtk_ch_status_check(), when usr_cnt is already non-zero
+  - mtk_cldma_open(), when the txq/rxq already exist
+
+mtk_port_open_trb_complete() copies those values only when the status
+is 0:
+
+	if (!trb->status) {
+		port->tx_mtu = trb_open_priv->tx_mtu;
+
+This function treats -EBUSY as success, so it sets PORT_S_WR and
+PORT_S_ENABLE. If this port never had a successful ENABLE, tx_mtu,
+rx_mtu and the frag sizes stay 0.
+
+The mtk_cldma_open() -EBUSY path also rolls back usr_cnt:
+
+	if (ret)
+		cd->trans->usr_cnt[que->hif_id][que->txqno]--;
+
+The port still believes it owns the channel, so its later DISABLE would
+also complete with -EBUSY.
+
+Should the geometry also be copied on -EBUSY, or should -EBUSY not
+count as a successful enable?
+
+[ ... ]
+
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+> index 6c31a5d80693d..84b7fb3c82fd0 100644
+> --- a/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+
+[ ... ]
+
+> @@ -1069,7 +1071,28 @@ static struct pci_driver mtk_pci_drv = {
+>  	.err_handler = &mtk_pci_err_handler
+>  };
+>  
+> -module_pci_driver(mtk_pci_drv);
+> +static int __init mtk_drv_init(void)
+> +{
+> +	int ret;
+> +
+> +	ret = mtk_port_io_init();
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = pci_register_driver(&mtk_pci_drv);
+> +	if (ret)
+> +		mtk_port_io_exit();
+> +
+> +	return ret;
+> +}
+> +module_init(mtk_drv_init);
+
+[Severity: Low]
+The commit message leaves out two changes to existing code.
+
+First, mtk_drv_init()/mtk_drv_exit() replace module_pci_driver() only to
+call mtk_port_io_init() and mtk_port_io_exit(), and both are empty:
+
+	int mtk_port_io_init(void)
+	{
+		return 0;
+	}
+
+They are still empty at the end of the series. Could module_pci_driver()
+stay and the stubs be dropped?
+
+Second, mtk_ctrl_trb_handler() in mtk_trans_ctrl.c now takes and drops a
+reference around every TRB, including on the -EAGAIN early return:
+
+	kref_get(&trb->kref);
+	...
+	kref_put(&trb->kref, mtk_port_trb_free);
+
+This makes the transport layer depend on the port layer's release
+function. Could the commit message describe this change to TRB
+ownership?
+
+[ ... ]
+
+> @@ -0,0 +1,693 @@
 > +// SPDX-License-Identifier: GPL-2.0-only
 > +/*
 > + * Copyright (c) 2022, MediaTek Inc.
 > + */
 > +
+> +#include <linux/bitfield.h>
 > +#include <linux/device.h>
-> +#include <linux/freezer.h>
-> +#include <linux/hashtable.h>
-> +#include <linux/kthread.h>
-> +#include <linux/list.h>
-> +#include <linux/nospec.h>
-> +#include <linux/sched.h>
+> +#include <linux/err.h>
+> +#include <linux/kernel.h>
+> +#include <linux/netdevice.h>
+> +#include <linux/slab.h>
 > +#include <linux/wait.h>
 > +
-> +#include "mtk_cldma.h"
-> +#include "mtk_ctrl_plane.h"
-> +#include "mtk_dev.h"
-> +#include "mtk_pci.h"
+> +#include "mtk_port.h"
+> +#include "mtk_port_io.h"
 > +#include "mtk_trans_ctrl.h"
 > +
-> +#define QUEUE_CHL_MASK	0xFFFF
-> +#define TRB_SRV_NUM	(1)
+> +#define MTK_DFLT_TRB_TIMEOUT		(5 * HZ)
+> +#define MTK_DFLT_TRB_STATUS		(0x1)
+> +#define MTK_TRB_HEADER_ADDED		(0xADDED)
+> +#define MTK_CHECK_RX_SEQ_MASK		(0x7fff)
 > +
-> +static const int mtk_srv_cfg[NR_CLDMA][HW_QUE_NUM] = {
-> +	{0},
-> +	{0},
-> +};
+> +#define MTK_PORT_ENUM_VER		(0)
+> +#define MTK_PORT_ENUM_HEAD_PATTERN	(0x5a5a5a5a)
+> +#define MTK_PORT_ENUM_TAIL_PATTERN	(0xa5a5a5a5)
 > +
-> +/* the number of RX GPDs should be at least two */
-> +static const struct queue_info mtk_queue_info[] = {
-> +	{CCCI_CONTROL_TX, CCCI_CONTROL_RX, CLDMA1, TXQ(0), RXQ(0),
-> +	 Q_MTU_3_5K, Q_MTU_3_5K, TX_GPD_NUM, RX_GPD_NUM, Q_FRAG_3_5K, Q_FRAG_3_5K, 0},
-> +	{CCCI_SAP_CONTROL_TX, CCCI_SAP_CONTROL_RX, CLDMA0, TXQ(0), RXQ(0),
-> +	 Q_MTU_3_5K, Q_MTU_3_5K, TX_GPD_NUM, RX_GPD_NUM, Q_FRAG_3_5K, Q_FRAG_3_5K, 0},
-> +};
+> +#define MTK_PORT_SEARCH_FROM_RADIX_TREE(p, s) ({\
+> +	struct mtk_port *_p;			\
+> +	_p = rcu_dereference_raw(*(s));		\
+> +	if (!_p)				\
+> +		continue;			\
+> +	p = _p;					\
+> +})
 > +
-> +static bool mtk_queue_list_is_full(struct mtk_ctrl_trans *trans, struct queue_info *que)
+> +#define MTK_PORT_INTERNAL_NODE_CHECK(p, s, i) ({\
+> +	if (radix_tree_is_internal_node(p)) {	\
+> +		s = radix_tree_iter_retry(&(i));\
+> +		continue;			\
+> +	}					\
+> +})
+> +
+> +struct mtk_port_info {
+> +	__le16 channel;
+> +	__le16 reserved;
+> +} __packed;
+> +
+> +struct mtk_port_enum_msg {
+> +	__le32 head_pattern;
+> +	__le16 port_cnt;
+> +	__le16 version;
+> +	__le32 tail_pattern;
+> +	u8 data[];
+> +} __packed;
+> +
+> +/* mutex lock for the port refcount */
+> +DEFINE_MUTEX(port_mngr_grp_mtx);
+> +
+> +/* This function working always under mutex lock port_mngr_grp_mtx */
+> +void mtk_port_release(struct kref *port_kref)
 > +{
-> +	return skb_queue_len_lockless(&trans->trans_list[que->hif_id].skb_list[que->txqno]) >=
-> +	       SKB_LIST_MAX_LEN;
+> +	struct mtk_port *port;
+> +
+> +	port = container_of(port_kref, struct mtk_port, kref);
+> +	ports_ops[port->info.type]->exit(port);
+> +	kfree_rcu(port, rcu);
 > +}
 > +
-> +static bool mtk_ctrl_chs_is_busy_or_empty(struct trb_srv *srv)
+> +static int mtk_port_tbl_add(struct mtk_port_mngr *port_mngr, struct mtk_port *port)
 > +{
-> +	struct srv_que *srv_que;
-> +	int i;
-> +
-> +	for (i = 0; i < NR_CLDMA; i++) {
-> +		list_for_each_entry(srv_que, &srv->srv_q_list[i], list) {
-> +			struct sk_buff *skb;
-> +			struct trb *trb;
-> +
-> +			skb = skb_peek(&srv->trans->trans_list[i].skb_list[srv_que->qno]);
-> +			if (!skb)
-> +				continue;
-> +
-> +			/* ENABLE and DISABLE are software-only and are queued at
-> +			 * the head, so gating them on TX budget would make a queue
-> +			 * that cannot drain impossible to close.
-> +			 */
-> +			trb = (struct trb *)skb->cb;
-> +			if (trb->cmd != TRB_CMD_TX ||
-> +			    mtk_cldma_get_tx_budget(srv->trans->dev, i, srv_que->qno))
-> +				return false;
-> +		}
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +static void mtk_ctrl_ch_flush(struct sk_buff_head *skb_list)
-> +{
-> +	struct sk_buff *skb;
-> +	struct trb *trb;
-> +
-> +	while (!skb_queue_empty(skb_list)) {
-> +		skb = skb_dequeue(skb_list);
-> +		trb = (struct trb *)skb->cb;
-> +		trb->status = -EIO;
-> +		trb->trb_complete(skb);
-> +	}
-> +}
-> +
-> +static void mtk_ctrl_chs_flush(struct trb_srv *srv)
-> +{
-> +	struct srv_que *srv_que;
-> +	int i;
-> +
-> +	for (i = 0; i < NR_CLDMA; i++)
-> +		list_for_each_entry(srv_que, &srv->srv_q_list[i], list)
-> +			mtk_ctrl_ch_flush(&srv->trans->trans_list[i].skb_list[srv_que->qno]);
-> +}
-> +
-> +static int mtk_ch_status_check(struct mtk_ctrl_trans *trans, struct sk_buff *skb)
-> +{
-> +	struct trb *trb = (struct trb *)skb->cb;
-> +	struct trb_open_priv *trb_open_priv;
-> +	struct queue_info *que;
-> +	int ret = 0;
-> +
-> +	que = radix_tree_lookup(&trans->queue_tbl, trb->channel_id & QUEUE_CHL_MASK);
-> +
-> +	switch (trb->cmd) {
-> +	case TRB_CMD_ENABLE:
-> +		trb_open_priv = (struct trb_open_priv *)skb->data;
-> +		trb_open_priv->log_rg_offset = que->log_rg_offset;
-> +		trans->usr_cnt[que->hif_id][que->txqno]++;
-> +		if (trans->usr_cnt[que->hif_id][que->txqno] == 1)
-> +			break;
-> +		trb_open_priv->tx_mtu = que->tx_mtu;
-> +		trb_open_priv->rx_mtu = que->rx_mtu;
-> +		trb_open_priv->tx_frag_size = que->tx_frag_size;
-> +		trb_open_priv->rx_frag_size = que->rx_frag_size;
-> +		if (mtk_cldma_check_ch_cfg(trans->dev, que)) {
-> +			trb->status = -EINVAL;
-> +			ret = -EINVAL;
-> +		} else {
-> +			trb->status = -EBUSY;
-> +			ret = -EBUSY;
-> +		}
-> +		trb->trb_complete(skb);
-> +		break;
-> +	case TRB_CMD_DISABLE:
-> +		if (trans->usr_cnt[que->hif_id][que->txqno] > 0) {
-> +			trans->usr_cnt[que->hif_id][que->txqno]--;
-> +			if (!trans->usr_cnt[que->hif_id][que->txqno])
-> +				break;
-> +		}
-> +		trb->status = -EBUSY;
-> +		trb->trb_complete(skb);
-> +		ret = -EBUSY;
-> +		break;
-> +	default:
-> +		dev_err((trans->mdev)->dev, "Invalid trb command(%d)\n", trb->cmd);
-> +		ret = -EINVAL;
-> +		break;
-> +	}
-> +	return ret;
-> +}
-> +
-> +/* Single consumer per srv_que — only this kthread dequeues from skb_list.
-> + * The list lock is held around every list read (peek, is_last, peek_next,
-> + * unlink) so a producer inserting a DISABLE at the head cannot race the
-> + * traversal, but it is dropped across submit and dispatch: those paths
-> + * may allocate with GFP_KERNEL and thus sleep. Dropping the lock there
-> + * is safe because no other consumer can steal the peeked skb.
-> + */
-> +static void mtk_ctrl_trb_handler(struct trb_srv *srv, struct trans_list *trans_list, u32 qno)
-> +{
-> +	struct sk_buff_head *skb_list = &trans_list->skb_list[qno];
-> +	struct mtk_ctrl_trans *trans = srv->trans;
-> +	struct sk_buff *skb, *skb_next;
-> +	struct trb *trb, *trb_next;
-> +	unsigned long flags;
-> +	bool kick = false;
-> +	int loop = 0;
-> +	int err;
-> +
-> +	do {
-> +		spin_lock_irqsave(&skb_list->lock, flags);
-> +		skb = skb_peek(skb_list);
-> +		if (!skb) {
-> +			spin_unlock_irqrestore(&skb_list->lock, flags);
-> +			break;
-> +		}
-> +		trb = (struct trb *)skb->cb;
-> +
-> +		switch (trb->cmd) {
-> +		case TRB_CMD_ENABLE:
-> +		case TRB_CMD_DISABLE:
-> +			__skb_unlink(skb, skb_list);
-> +			spin_unlock_irqrestore(&skb_list->lock, flags);
-> +			err = mtk_ch_status_check(trans, skb);
-> +			if (!err) {
-> +				kick = true;
-> +				if (trb->cmd == TRB_CMD_DISABLE)
-> +					mtk_ctrl_ch_flush(skb_list);
-> +			}
-> +			break;
-> +		case TRB_CMD_TX:
-> +			spin_unlock_irqrestore(&skb_list->lock, flags);
-> +			err = mtk_cldma_submit_tx(trans->dev, skb);
-> +			if (err) {
-> +				if (trans_list->tx_burst_cnt[qno]) {
-> +					kick = true;
-> +					break;
-> +				}
-> +				if (err == -EAGAIN)
-> +					return;
-> +
-> +				skb_unlink(skb, skb_list);
-> +				trb->status = err;
-> +				trb->trb_complete(skb);
-> +				break;
-> +			}
-> +
-> +			trans_list->tx_burst_cnt[qno]++;
-> +			spin_lock_irqsave(&skb_list->lock, flags);
-> +			if (trans_list->tx_burst_cnt[qno] >= TX_BURST_MAX_CNT ||
-> +			    skb_queue_is_last(skb_list, skb)) {
-> +				kick = true;
-> +			} else {
-> +				skb_next = skb_peek_next(skb, skb_list);
-> +				trb_next = (struct trb *)skb_next->cb;
-> +				if (trb_next->cmd != TRB_CMD_TX)
-> +					kick = true;
-> +			}
-> +
-> +			__skb_unlink(skb, skb_list);
-> +			spin_unlock_irqrestore(&skb_list->lock, flags);
-> +			break;
-> +		default:
-> +			__skb_unlink(skb, skb_list);
-> +			spin_unlock_irqrestore(&skb_list->lock, flags);
-> +			trb->status = -EINVAL;
-> +			trb->trb_complete(skb);
-> +			break;
-> +		}
-> +
-> +		if (kick) {
-> +			err = mtk_cldma_trb_process(trans->dev, skb);
-> +			if (err)
-> +				dev_err_ratelimited((trans->mdev)->dev,
-> +						    "Failed to process trb on queue %u: %d\n",
-> +						    qno, err);
-> +			trans_list->tx_burst_cnt[qno] = 0;
-> +			kick = false;
-> +		}
-> +
-> +		loop++;
-> +	} while (loop < TRB_NUM_PER_ROUND);
-> +}
-> +
-> +static void mtk_ctrl_trb_process(struct trb_srv *srv)
-> +{
-> +	struct mtk_ctrl_trans *trans = srv->trans;
-> +	struct srv_que *srv_que;
-> +	int i;
-> +
-> +	for (i = 0; i < NR_CLDMA; i++)
-> +		list_for_each_entry(srv_que, &srv->srv_q_list[i], list)
-> +			mtk_ctrl_trb_handler(srv, &trans->trans_list[i], srv_que->qno);
-> +}
-> +
-> +static int mtk_ctrl_trb_thread(void *args)
-> +{
-> +	struct trb_srv *srv = args;
-> +
-> +	for (;;) {
-> +		wait_event_interruptible(srv->trb_waitq,
-> +					 !mtk_ctrl_chs_is_busy_or_empty(srv) ||
-> +					 kthread_should_stop() || kthread_should_park());
-> +		if (kthread_should_stop())
-> +			break;
-> +
-> +		if (kthread_should_park())
-> +			kthread_parkme();
-> +
-> +		do {
-> +			mtk_ctrl_trb_process(srv);
-> +			cond_resched();
-> +		} while (!mtk_ctrl_chs_is_busy_or_empty(srv) && !kthread_should_stop() &&
-> +			 !kthread_should_park());
-> +	}
-> +	mtk_ctrl_chs_flush(srv);
-> +	return 0;
-> +}
-> +
-> +static int mtk_ctrl_trb_srv_init(struct mtk_ctrl_trans *trans)
-> +{
-> +	struct srv_que *srv_que;
-> +	struct trb_srv *srv;
-> +	int i, j;
 > +	int ret;
 > +
-> +	for (i = 0; i < trans->trb_srv_num; i++) {
-> +		srv = kzalloc_obj(*srv);
-> +		if (!srv) {
-> +			ret = -ENOMEM;
-> +			goto err_free_srv;
-> +		}
+> +	mutex_lock(&port_mngr->port_tbl_mtx);
+> +	ret = radix_tree_insert(&port_mngr->port_tbl[MTK_PORT_TBL_TYPE(port->info.rx_ch)],
+> +				port->info.rx_ch & 0xFFF, port);
+> +	if (!ret)
+> +		port_mngr->port_cnt++;
+> +	mutex_unlock(&port_mngr->port_tbl_mtx);
 > +
-> +		srv->trans = trans;
-> +		srv->srv_id = i;
-> +		trans->trb_srv[i] = srv;
-> +
-> +		init_waitqueue_head(&srv->trb_waitq);
-> +		for (j = 0; j < NR_CLDMA; j++)
-> +			INIT_LIST_HEAD(&srv->srv_q_list[j]);
-> +	}
-> +
-> +	for (i = 0; i < NR_CLDMA; i++)
-> +		for (j = 0; j < HW_QUE_NUM; j++) {
-> +			if (trans->srv_cfg[i][j] < 0 ||
-> +			    trans->srv_cfg[i][j] >= trans->trb_srv_num)
-> +				trans->srv_cfg[i][j] = 0;
-> +			srv_que = kzalloc_obj(*srv_que);
-> +			if (!srv_que) {
-> +				ret = -ENOMEM;
-> +				goto err_free_srv_que;
-> +			}
-> +			srv_que->hif_id = i;
-> +			srv_que->qno = j;
-> +			list_add_tail(&srv_que->list,
-> +				      &trans->trb_srv[trans->srv_cfg[i][j]]->srv_q_list[i]);
-> +		}
-> +
-> +	for (i = 0; i < trans->trb_srv_num; i++) {
-> +		trans->trb_srv[i]->trb_thread = kthread_run(mtk_ctrl_trb_thread, trans->trb_srv[i],
-> +							    "mtk_trb_srv%d_%s", i,
-> +							    trans->mdev->dev_str);
-> +		if (IS_ERR(trans->trb_srv[i]->trb_thread)) {
-> +			ret = PTR_ERR(trans->trb_srv[i]->trb_thread);
-> +			trans->trb_srv[i]->trb_thread = NULL;
-> +			goto err_stop_kthread;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +err_stop_kthread:
-> +	while (--i >= 0)
-> +		kthread_stop(trans->trb_srv[i]->trb_thread);
-> +err_free_srv_que:
-> +	for (i = 0; i < trans->trb_srv_num; i++) {
-> +		for (j = 0; j < NR_CLDMA; j++) {
-> +			struct srv_que *next_srv_que;
-> +
-> +			list_for_each_entry_safe(srv_que, next_srv_que,
-> +						 &trans->trb_srv[i]->srv_q_list[j], list) {
-> +				list_del(&srv_que->list);
-> +				kfree(srv_que);
-> +			}
-> +		}
-> +	}
-> +err_free_srv:
-> +	for (i = 0; i < trans->trb_srv_num; i++) {
-> +		if (!trans->trb_srv[i])
-> +			break;
-> +		kfree(trans->trb_srv[i]);
-> +		trans->trb_srv[i] = NULL;
-> +	}
+> +	if (ret)
+> +		dev_err(port_mngr->ctrl_blk->mdev->dev,
+> +			"port(%s) add to port_tbl failed, return %d\n",
+> +			port->info.name, ret);
 > +
 > +	return ret;
 > +}
 > +
-> +static void mtk_ctrl_trb_srv_exit(struct mtk_ctrl_trans *trans)
+> +static void mtk_port_tbl_del(struct mtk_port_mngr *port_mngr, struct mtk_port *port)
 > +{
-> +	struct srv_que *srv_que, *next_srv_que;
-> +	struct trb_srv *srv;
-> +	int i, j;
-> +
-> +	for (i = 0; i < trans->trb_srv_num; i++) {
-> +		srv = trans->trb_srv[i];
-> +		if (!srv)
-> +			continue;
-> +		kthread_stop(srv->trb_thread);
-> +		for (j = 0; j < NR_CLDMA; j++) {
-> +			list_for_each_entry_safe(srv_que, next_srv_que,
-> +						 &trans->trb_srv[i]->srv_q_list[j], list) {
-> +				list_del(&srv_que->list);
-> +				kfree(srv_que);
-> +			}
-> +		}
-> +		kfree(srv);
-> +		trans->trb_srv[i] = NULL;
-> +	}
+> +	mutex_lock(&port_mngr->port_tbl_mtx);
+> +	radix_tree_delete(&port_mngr->port_tbl[MTK_PORT_TBL_TYPE(port->info.rx_ch)],
+> +			  port->info.rx_ch & 0xFFF);
+> +	port_mngr->port_cnt--;
+> +	mutex_unlock(&port_mngr->port_tbl_mtx);
 > +}
 > +
-> +static void mtk_ctrl_remove_radix_tree(struct mtk_ctrl_trans *trans)
+> +static struct mtk_port *mtk_port_alloc_and_add(struct mtk_port_mngr *port_mngr,
+> +					       struct mtk_port_cfg *dflt_info)
 > +{
+> +	struct mtk_port *port;
+> +	int ret;
+> +
+> +	port = kzalloc_obj(*port, GFP_KERNEL);
+> +	if (!port) {
+> +		ret = -ENOMEM;
+> +		goto err_alloc_port;
+> +	}
+> +	memcpy(&port->info, dflt_info, sizeof(*dflt_info));
+> +
+> +	ret = mtk_port_tbl_add(port_mngr, port);
+> +	if (ret < 0) {
+> +		dev_err(port_mngr->ctrl_blk->mdev->dev,
+> +			"Failed to add port(%s) to port tbl\n", dflt_info->name);
+> +		goto err_free_port;
+> +	}
+> +
+> +	port->port_mngr = port_mngr;
+> +	ret = ports_ops[port->info.type]->init(port);
+> +	if (ret < 0) {
+> +		mtk_port_tbl_del(port_mngr, port);
+> +		goto err_free_port;
+> +	}
+> +
+> +	return port;
+> +
+> +err_free_port:
+> +	kfree(port);
+> +err_alloc_port:
+> +	return ERR_PTR(ret);
+> +}
+> +
+> +static void mtk_port_free(struct mtk_port_mngr *port_mngr, struct mtk_port *port)
+> +{
+> +	mutex_lock(&port_mngr_grp_mtx);
+> +	mtk_port_tbl_del(port_mngr, port);
+> +	kref_put(&port->kref, mtk_port_release);
+> +	mutex_unlock(&port_mngr_grp_mtx);
+> +}
+> +
+> +static struct mtk_port *mtk_port_search_by_id(struct mtk_port_mngr *port_mngr, int rx_ch)
+
+[Severity: High]
+Does anything keep the port returned here alive until
+mtk_port_get_locked() takes its reference?
+
+mtk_port_search_by_name() walks port_tbl[] without rcu_read_lock(),
+port_tbl_mtx or port_mngr_grp_mtx, and returns a bare pointer.
+mtk_port_get_locked() only takes port_mngr_grp_mtx afterwards. Its
+!port check tests the pointer value, not whether the port is still in
+the table.
+
+On the mtk_ctrl_exit() path, mtk_port_tbl_destroy() calls
+mtk_port_free(). That takes port_mngr_grp_mtx, deletes the port from
+the radix tree and drops the last reference, so mtk_port_release()
+queues the port with kfree_rcu(). The reader is not inside an RCU
+read-side critical section, so the grace period does not wait for it.
+
+If the free runs between the lookup and the mutex_lock() in
+mtk_port_get_locked(), then kref_get() and mtk_port_common_open() use
+freed memory. The tree walk itself can also see nodes that a
+concurrent radix_tree_delete() is freeing.
+
+mtk_port_search_by_id() has the same problem. That includes the RX
+path in mtk_port_rx_dispatch(), which uses the port without taking any
+reference.
+
+Could the lookup and kref_get() be done inside one port_mngr_grp_mtx
+section? Another option is rcu_read_lock() with
+kref_get_unless_zero(). Also, the rcu_dereference_raw() in
+MTK_PORT_SEARCH_FROM_RADIX_TREE hides this from lockdep.
+
+> +{
+> +	int tbl_type = MTK_PORT_TBL_TYPE(rx_ch);
+> +
+> +	if (tbl_type < PORT_TBL_SAP || tbl_type >= PORT_TBL_MAX)
+> +		return NULL;
+> +
+> +	return radix_tree_lookup(&port_mngr->port_tbl[tbl_type], MTK_CH_ID(rx_ch));
+> +}
+> +
+> +struct mtk_port *mtk_port_search_by_name(struct mtk_port_mngr *port_mngr, char *name)
+> +{
+> +	int tbl_type = PORT_TBL_SAP;
 > +	struct radix_tree_iter iter;
-> +	struct queue_info *queue;
+> +	struct mtk_port *port;
 > +	void __rcu **slot;
 > +
-> +	radix_tree_for_each_slot(slot, &trans->queue_tbl, &iter, 0) {
-> +		queue = radix_tree_deref_slot(slot);
-> +		if (!queue)
-> +			continue;
-> +		radix_tree_delete(&trans->queue_tbl, iter.index);
-> +		kfree(queue);
-> +	}
+> +	do {
+> +		radix_tree_for_each_slot(slot, &port_mngr->port_tbl[tbl_type], &iter, 0) {
+> +			MTK_PORT_SEARCH_FROM_RADIX_TREE(port, slot);
+> +			MTK_PORT_INTERNAL_NODE_CHECK(port, slot, iter);
+> +			if (!strncmp(port->info.name, name, MTK_DFLT_PORT_NAME_LEN))
+> +				return port;
+> +		}
+> +		tbl_type++;
+> +	} while (tbl_type < PORT_TBL_MAX);
+> +
+> +	return NULL;
 > +}
 > +
-> +int mtk_pcie_hif_init(struct mtk_md_dev *mdev)
+> +static int mtk_port_tbl_create(struct mtk_port_mngr *port_mngr, struct mtk_port_cfg *cfg,
+> +			       const int port_cnt)
 > +{
-> +	struct mtk_ctrl_blk *ctrl_blk = mdev->ctrl_blk;
-> +	struct queue_info *queue, *queue_info;
-> +	struct mtk_ctrl_trans *trans;
-> +	int i, j;
-> +	int ret;
+> +	struct mtk_port_cfg *dflt_port;
+> +	struct mtk_port *port;
+> +	int i;
 > +
-> +	trans = ctrl_blk->ctrl_hw_priv;
-> +	trans->ctrl_blk = ctrl_blk;
-> +	queue_info = trans->queue_info;
+> +	INIT_RADIX_TREE(&port_mngr->port_tbl[PORT_TBL_SAP], GFP_KERNEL);
+> +	INIT_RADIX_TREE(&port_mngr->port_tbl[PORT_TBL_MD], GFP_KERNEL);
 > +
-> +	INIT_RADIX_TREE(&trans->queue_tbl, GFP_KERNEL);
-> +	for (i = 0; i < trans->queue_info_num; i++) {
-> +		queue = kmemdup(queue_info + i, sizeof(*queue), GFP_KERNEL);
-> +		if (!queue) {
-> +			ret = -ENOMEM;
-> +			goto err_free_radix_tree;
-> +		}
-> +		if (queue->txqno >= HW_QUE_NUM || queue->rxqno >= HW_QUE_NUM ||
-> +		    queue->hif_id >= NR_CLDMA) {
-> +			dev_err(mdev->dev, "Failed to get correct queue info %x\n",
-> +				queue->rx_chl);
-> +			kfree(queue);
-> +			ret = -EINVAL;
-> +			goto err_free_radix_tree;
-> +		}
-> +		ret = radix_tree_insert(&trans->queue_tbl, queue->rx_chl & QUEUE_CHL_MASK, queue);
-> +		if (ret) {
-> +			dev_err(mdev->dev, "Insert %x fail, ret: %d", queue->rx_chl, ret);
-> +			kfree(queue);
-> +			goto err_free_radix_tree;
+> +	/* copy ports from static port cfg table */
+> +	for (i = 0; i < port_cnt; i++) {
+> +		dflt_port = cfg + i;
+> +		if (!mtk_port_search_by_id(port_mngr, dflt_port->rx_ch)) {
+> +			port = mtk_port_alloc_and_add(port_mngr, dflt_port);
+> +			if (IS_ERR(port))
+> +				return PTR_ERR(port);
 > +		}
 > +	}
-> +
-> +	for (i = 0; i < NR_CLDMA; i++) {
-> +		for (j = 0; j < HW_QUE_NUM; j++) {
-> +			skb_queue_head_init(&trans->trans_list[i].skb_list[j]);
-> +			trans->trans_list[i].tx_burst_cnt[j] = 0;
-> +			/* usr_cnt tracks the queues rebuilt by mtk_cldma_init()
-> +			 * below, so it must be reset with them. Otherwise a
-> +			 * count left over from a torn-down cycle makes the
-> +			 * channel permanently unopenable.
-> +			 */
-> +			trans->usr_cnt[i][j] = 0;
-> +		}
-> +	}
-> +	ret = mtk_cldma_init(trans);
-> +	if (ret)
-> +		goto err_free_radix_tree;
-> +
-> +	ret = mtk_ctrl_trb_srv_init(trans);
-> +	if (ret)
-> +		goto err_cldma_exit;
-> +
-> +	atomic_set(&trans->available, 1);
 > +
 > +	return 0;
+> +}
 > +
-> +err_cldma_exit:
-> +	mtk_cldma_exit(trans);
-> +err_free_radix_tree:
-> +	mtk_ctrl_remove_radix_tree(trans);
+> +static void mtk_port_tbl_destroy(struct mtk_port_mngr *port_mngr)
+> +{
+> +	struct radix_tree_iter iter;
+> +	struct mtk_port *port;
+> +	void __rcu **slot;
+> +	int tbl_type;
 > +
+> +	tbl_type = PORT_TBL_SAP;
+> +	do {
+> +		radix_tree_for_each_slot(slot, &port_mngr->port_tbl[tbl_type], &iter, 0) {
+> +			MTK_PORT_SEARCH_FROM_RADIX_TREE(port, slot);
+> +			MTK_PORT_INTERNAL_NODE_CHECK(port, slot, iter);
+> +			ports_ops[port->info.type]->disable(port);
+> +		}
+> +
+> +		while (radix_tree_gang_lookup(&port_mngr->port_tbl[tbl_type],
+> +					      (void **)&port, 0, 1))
+> +			mtk_port_free(port_mngr, port);
+> +	} while (++tbl_type < PORT_TBL_MAX);
+> +}
+> +
+> +void mtk_port_trb_init(struct mtk_port *port, struct trb *trb, enum mtk_trb_cmd_type cmd,
+> +		       int (*trb_complete)(struct sk_buff *skb))
+> +{
+> +	kref_init(&trb->kref);
+> +	trb->channel_id = port->info.rx_ch;
+> +	trb->status = MTK_DFLT_TRB_STATUS;
+> +	trb->priv = port;
+> +	trb->cmd = cmd;
+> +	trb->trb_complete = trb_complete;
+> +}
+> +
+> +void mtk_port_trb_free(struct kref *trb_kref)
+> +{
+> +	struct trb *trb = container_of(trb_kref, struct trb, kref);
+> +	struct sk_buff *skb, *frag_skb, *next_skb;
+> +
+> +	skb = container_of((char *)trb, struct sk_buff, cb[0]);
+> +	/* Free frag_list for scatter gather TX */
+> +	if (trb->cmd == TRB_CMD_TX && skb_has_frag_list(skb)) {
+> +		frag_skb = skb_shinfo(skb)->frag_list;
+> +		while (frag_skb) {
+> +			next_skb = frag_skb->next;
+> +			frag_skb->next = NULL;
+> +			dev_kfree_skb_any(frag_skb);
+> +			frag_skb = next_skb;
+> +		}
+> +		skb_shinfo(skb)->frag_list = NULL;
+> +		skb->data_len = 0;
+> +	}
+> +	dev_kfree_skb_any(skb);
+> +}
+> +
+> +static int mtk_port_open_trb_complete(struct sk_buff *skb)
+> +{
+> +	struct trb_open_priv *trb_open_priv = (struct trb_open_priv *)skb->data;
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct mtk_port *port = trb->priv;
+> +
+> +	if (!trb->status) {
+> +		port->tx_mtu = trb_open_priv->tx_mtu;
+> +		port->rx_mtu = trb_open_priv->rx_mtu;
+> +		port->tx_frag_size = trb_open_priv->tx_frag_size;
+> +		port->rx_frag_size = trb_open_priv->rx_frag_size;
+> +		port->tx_mtu -= MTK_CCCI_H_ELEN;
+> +		port->rx_mtu -= MTK_CCCI_H_ELEN;
+> +	}
+> +
+> +	wake_up_all(&port->trb_wq);
+> +
+> +	kref_put(&trb->kref, mtk_port_trb_free);
+> +	return 0;
+> +}
+> +
+> +static int mtk_port_close_trb_complete(struct sk_buff *skb)
+> +{
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct mtk_port *port = trb->priv;
+> +
+> +	wake_up_all(&port->trb_wq);
+> +	wake_up_all(&port->rx_wq);
+> +	kref_put(&trb->kref, mtk_port_trb_free);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mtk_port_tx_complete(struct sk_buff *skb)
+> +{
+> +	struct trb *trb = (struct trb *)skb->cb;
+> +	struct mtk_port *port = trb->priv;
+> +
+> +	if (trb->status < 0)
+> +		dev_warn(port->port_mngr->ctrl_blk->mdev->dev,
+> +			 "Failed to send data: status:%d, port:%s\n",
+> +			 trb->status, port->info.name);
+> +
+> +	wake_up_all(&port->trb_wq);
+> +	kref_put(&trb->kref, mtk_port_trb_free);
+> +
+> +	return 0;
+> +}
+> +
+> +int mtk_port_status_check(struct mtk_port *port)
+> +{
+> +	if (!test_bit(PORT_S_ENABLE, &port->status))
+> +		return -ENODEV;
+> +
+> +	if (!test_bit(PORT_S_OPEN, &port->status) || test_bit(PORT_S_FLUSH, &port->status) ||
+> +	    !test_bit(PORT_S_WR, &port->status))
+> +		return -EBADF;
+> +
+> +	return 0;
+> +}
+> +
+> +int mtk_port_send_data(struct mtk_port *port, void *data, bool blocking, bool force_send)
+> +{
+> +	struct mtk_port_mngr *port_mngr;
+> +	struct sk_buff *skb = data;
+> +	struct trb *trb;
+> +	int ret, len;
+> +
+> +	port_mngr = port->port_mngr;
+> +
+> +	trb = (struct trb *)skb->cb;
+> +	mtk_port_trb_init(port, trb, TRB_CMD_TX, mtk_port_tx_complete);
+> +	len = skb->len;
+> +	kref_get(&trb->kref); /* kref count 1->2 */
+> +
+> +	/* add ccci header */
+> +	mtk_port_add_header(skb);
+> +	ret = mtk_port_status_check(port);
+> +	if (!ret)
+> +		ret = mtk_pcie_hif_submit_skb(port_mngr->ctrl_blk->mdev, skb,
+> +					      force_send);
+> +
+> +	if (ret < 0) {
+> +		kref_put(&trb->kref, mtk_port_trb_free); /* kref count 2->1 */
+> +		kref_put(&trb->kref, mtk_port_trb_free); /* kref count 1->0 */
+> +		port->tx_seq--;
+> +		goto out;
+> +	}
+> +
+> +	if (!blocking) {
+> +		kref_put(&trb->kref, mtk_port_trb_free);
+> +		ret = len;
+> +		goto out;
+> +	}
+> +start_wait:
+> +
+> +	/* wait trb done, and no timeout in tx blocking mode */
+> +	ret = wait_event_interruptible_timeout(port->trb_wq,
+> +					       trb->status <= 0 ||
+> +					       test_bit(PORT_S_FLUSH, &port->status) ||
+> +					       !test_bit(PORT_S_WR, &port->status),
+> +					       MTK_DFLT_TRB_TIMEOUT);
+> +	if (!ret) {
+> +		goto start_wait;
+> +	} else if (ret == -ERESTARTSYS) {
+> +		ret = -EINTR;
+> +	} else if (ret > 0) {
+> +		if (test_bit(PORT_S_FLUSH, &port->status))
+> +			ret = len;
+> +		else
+> +			ret = (!trb->status) ? len : trb->status;
+> +	}
+> +	kref_put(&trb->kref, mtk_port_trb_free);
+> +
+> +out:
 > +	return ret;
 > +}
 > +
-> +int mtk_pcie_hif_exit(struct mtk_md_dev *mdev)
+> +static int mtk_port_check_rx_seq(struct mtk_port *port, struct mtk_ccci_header *ccci_h)
 > +{
-> +	struct mtk_ctrl_blk *ctrl_blk = mdev->ctrl_blk;
-> +	struct mtk_ctrl_trans *trans;
+> +	u16 seq_num, assert_bit, channel;
+> +	struct mtk_md_dev *mdev;
 > +
-> +	trans = ctrl_blk->ctrl_hw_priv;
+> +	seq_num = FIELD_GET(MTK_HDR_FLD_SEQ, le32_to_cpu(ccci_h->status));
+> +	assert_bit = FIELD_GET(MTK_HDR_FLD_AST, le32_to_cpu(ccci_h->status));
+> +	if (assert_bit && port->rx_seq &&
+> +	    ((seq_num - port->rx_seq) & MTK_CHECK_RX_SEQ_MASK) != 1) {
+> +		mdev = port->port_mngr->ctrl_blk->mdev;
+> +		channel = FIELD_GET(MTK_HDR_FLD_CHN, le32_to_cpu(ccci_h->status));
+> +		dev_warn(mdev->dev,
+> +			 "<ch: %04x> seq num out-of-order %d->%d, len(%u)\n",
+> +			 channel, seq_num, port->rx_seq,
+> +			 le32_to_cpu(ccci_h->packet_len));
 > +
-> +	mutex_lock(&trans->submit_lock);
-> +	atomic_set(&trans->available, 0);
-> +	mutex_unlock(&trans->submit_lock);
-> +
-> +	/* Join the service threads before freeing what they dereference: they
-> +	 * read trans->dev without a lock, so clearing it cannot stop a
-> +	 * consumer that has already loaded the pointer.
-> +	 */
-> +	mtk_ctrl_trb_srv_exit(trans);
-> +	mtk_cldma_exit(trans);
-> +
-> +	/* Late submitters may still hold the lock and walk the tree. */
-> +	mutex_lock(&trans->submit_lock);
-> +	mtk_ctrl_remove_radix_tree(trans);
-> +	mutex_unlock(&trans->submit_lock);
+> +		port->rx_seq = seq_num;
+> +		return -EPROTO;
+> +	}
 > +
 > +	return 0;
 > +}
 > +
-> +int mtk_pcie_hif_submit_skb(struct mtk_md_dev *mdev, struct sk_buff *skb, bool force_send)
+> +static int mtk_port_rx_dispatch_frag_skb(struct mtk_port *port, struct sk_buff *skb)
 > +{
-> +	struct mtk_ctrl_blk *ctrl_blk = mdev->ctrl_blk;
-> +	struct mtk_ctrl_trans *trans;
-> +	struct queue_info *que;
+> +	struct sk_buff *frag_skb, *frag_next;
+> +	int ret;
+> +
+> +	frag_skb = skb_shinfo(skb)->frag_list;
+> +	skb->len -= skb->data_len;
+> +	skb->data_len = 0;
+> +	skb_shinfo(skb)->frag_list = NULL;
+> +
+> +	ret = ports_ops[port->info.type]->recv(port, skb);
+> +	if (ret < 0) {
+> +		skb_shinfo(skb)->frag_list = frag_skb;
+> +		return ret;
+> +	}
+> +
+> +	while (frag_skb) {
+> +		frag_next = frag_skb->next;
+> +		if (!frag_skb->len) {
+> +			frag_skb->next = NULL;
+> +			dev_kfree_skb_any(frag_skb);
+> +			frag_skb = frag_next;
+> +			continue;
+> +		}
+> +		frag_skb->next = NULL;
+> +		ret = ports_ops[port->info.type]->recv(port, frag_skb);
+> +		if (ret < 0) {
+> +			frag_skb->next = frag_next;
+> +			while (frag_skb) {
+> +				frag_next = frag_skb->next;
+> +				frag_skb->next = NULL;
+> +				dev_kfree_skb_any(frag_skb);
+> +				frag_skb = frag_next;
+> +			}
+> +			return -EIO;
+> +		}
+> +		frag_skb = frag_next;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int mtk_port_rx_dispatch(struct sk_buff *skb, void *priv, bool force_recv)
+> +{
+> +	struct mtk_port_mngr *port_mngr;
+> +	struct mtk_ccci_header *ccci_h;
+> +	struct mtk_port *port = priv;
+> +	int ret = -EPROTO;
+> +	u16 channel;
+> +
+> +	if (!skb || !priv) {
+> +		pr_err("Invalid input value in rx dispatch\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	port_mngr = port->port_mngr;
+> +
+> +	ccci_h = mtk_port_strip_header(skb);
+> +	if (unlikely(!ccci_h)) {
+> +		dev_warn(port_mngr->ctrl_blk->mdev->dev,
+> +			 "Unsupported: skb length(%d) is less than ccci header\n",
+> +			 skb->len);
+> +		goto drop_data;
+> +	}
+> +
+> +	channel = FIELD_GET(MTK_HDR_FLD_CHN, le32_to_cpu(ccci_h->status));
+> +	port = mtk_port_search_by_id(port_mngr, channel);
+> +	if (unlikely(!port)) {
+> +		dev_warn(port_mngr->ctrl_blk->mdev->dev,
+> +			 "Failed to find port by channel:%d\n", channel);
+> +		goto drop_data;
+> +	}
+> +
+> +	ret = mtk_port_check_rx_seq(port, ccci_h);
+> +	if (unlikely(ret))
+> +		goto drop_data;
+> +
+> +	port->rx_seq = FIELD_GET(MTK_HDR_FLD_SEQ, le32_to_cpu(ccci_h->status));
+> +	skb_pull(skb, sizeof(*ccci_h));
+> +
+> +	/* Support scatter gather transmission */
+> +	if (port->rx_mtu > port->rx_frag_size) {
+> +		ret = mtk_port_rx_dispatch_frag_skb(port, skb);
+> +		/* -EIO means partial data dispatch complete, does not goto drop flow */
+> +		if (ret < 0 && ret != -EIO)
+> +			goto drop_frag_skb;
+> +	} else {
+> +		ret = ports_ops[port->info.type]->recv(port, skb);
+> +		if (ret < 0)
+> +			goto drop_data;
+> +	}
+> +
+> +	return ret;
+> +
+> +drop_frag_skb:
+> +	{
+> +		struct sk_buff *frag_skb, *tmp;
+> +
+> +		frag_skb = skb_shinfo(skb)->frag_list;
+> +		while (frag_skb) {
+> +			tmp = frag_skb->next;
+> +			frag_skb->next = NULL;
+> +			dev_kfree_skb_any(frag_skb);
+> +			frag_skb = tmp;
+> +		}
+> +		skb_shinfo(skb)->frag_list = NULL;
+> +	}
+> +drop_data:
+> +	dev_kfree_skb_any(skb);
+> +	return ret;
+> +}
+> +
+> +int mtk_port_add_header(struct sk_buff *skb)
+> +{
+> +	struct mtk_ccci_header *ccci_h;
+> +	struct mtk_port *port;
+> +	struct trb *trb;
+> +
+> +	trb = (struct trb *)skb->cb;
+> +	if (trb->status == MTK_TRB_HEADER_ADDED)
+> +		return 0;
+> +
+> +	port = trb->priv;
+> +	if (!port)
+> +		return -EINVAL;
+> +
+> +	ccci_h = skb_push(skb, sizeof(*ccci_h));
+> +
+> +	ccci_h->packet_header = cpu_to_le32(0);
+> +	ccci_h->packet_len = cpu_to_le32(skb->len);
+> +	ccci_h->ex_msg = cpu_to_le32(0);
+> +	ccci_h->status = cpu_to_le32(FIELD_PREP(MTK_HDR_FLD_CHN, port->info.tx_ch) |
+> +				     FIELD_PREP(MTK_HDR_FLD_SEQ, port->tx_seq++) |
+> +				     FIELD_PREP(MTK_HDR_FLD_AST, 1));
+> +
+> +	trb->status = MTK_TRB_HEADER_ADDED;
+> +
+> +	return 0;
+> +}
+> +
+> +struct mtk_ccci_header *mtk_port_strip_header(struct sk_buff *skb)
+> +{
+> +	struct mtk_ccci_header *ccci_h;
+> +
+> +	if (skb->len < sizeof(*ccci_h)) {
+> +		pr_err("Invalid input value\n");
+> +		return NULL;
+> +	}
+> +
+> +	ccci_h = (struct mtk_ccci_header *)skb->data;
+> +
+> +	return ccci_h;
+> +}
+> +
+> +int mtk_port_status_update(struct mtk_md_dev *mdev, void *data, u32 data_len)
+> +{
+> +	struct mtk_port_enum_msg *msg = data;
+> +	struct mtk_port_info *port_info;
+> +	struct mtk_port_mngr *port_mngr;
+> +	struct mtk_ctrl_blk *ctrl_blk;
+> +	struct mtk_port *port;
+> +	int port_id;
+> +	u16 ch_id;
+> +
+> +	if (unlikely(!mdev || !msg))
+> +		return -EINVAL;
+> +
+> +	ctrl_blk = mdev->ctrl_blk;
+> +	port_mngr = ctrl_blk->port_mngr;
+> +	if (le16_to_cpu(msg->version) != MTK_PORT_ENUM_VER ||
+> +	    le32_to_cpu(msg->head_pattern) != MTK_PORT_ENUM_HEAD_PATTERN ||
+> +	    le32_to_cpu(msg->tail_pattern) != MTK_PORT_ENUM_TAIL_PATTERN)
+> +		return -EPROTO;
+> +
+> +	if (data_len < sizeof(*msg) +
+> +	    le16_to_cpu(msg->port_cnt) * sizeof(*port_info))
+> +		return -EPROTO;
+> +
+> +	for (port_id = 0; port_id < le16_to_cpu(msg->port_cnt); port_id++) {
+> +		port_info = (struct mtk_port_info *)(msg->data +
+> +						   (sizeof(*port_info) * port_id));
+> +		ch_id = FIELD_GET(MTK_INFO_FLD_CHID, le16_to_cpu(port_info->channel));
+> +		port = mtk_port_search_by_id(port_mngr, ch_id);
+> +		if (!port)
+> +			continue;
+> +		port->enable = FIELD_GET(MTK_INFO_FLD_EN, le16_to_cpu(port_info->channel));
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +int mtk_port_ch_enable(struct mtk_port *port)
+> +{
+> +	struct mtk_port_mngr *port_mngr = port->port_mngr;
+> +	struct trb_open_priv *trb_open_priv;
+> +	struct sk_buff *skb;
 > +	struct trb *trb;
 > +	int ret;
 > +
-> +	trans = ctrl_blk->ctrl_hw_priv;
+> +	skb = __dev_alloc_skb(Q_MTU_3_5K, GFP_KERNEL);
+> +	if (!skb)
+> +		return -ENOMEM;
+> +
+> +	trb_open_priv = (struct trb_open_priv *)skb->data;
+> +	trb_open_priv->rx_done = mtk_port_rx_dispatch;
+> +
+> +	skb_put(skb, sizeof(struct trb_open_priv));
 > +	trb = (struct trb *)skb->cb;
+> +	mtk_port_trb_init(port, trb, TRB_CMD_ENABLE, mtk_port_open_trb_complete);
+> +	kref_get(&trb->kref);
 > +
-> +	if (trb->cmd == TRB_CMD_STOP || trb->cmd == TRB_CMD_RECOVER) {
-> +		trb->trb_complete(skb);
-> +		return 0;
+> +	ret = mtk_pcie_hif_submit_skb(port_mngr->ctrl_blk->mdev, skb, true);
+> +	if (ret) {
+> +		dev_err(port_mngr->ctrl_blk->mdev->dev,
+> +			"Failed to submit trb for port(%s), ret=%d\n",
+> +			port->info.name, ret);
+> +		kref_put(&trb->kref, mtk_port_trb_free);
+> +		kref_put(&trb->kref, mtk_port_trb_free);
+> +		return ret;
 > +	}
 > +
-> +	mutex_lock(&trans->submit_lock);
+> +	ret = wait_event_timeout(port->trb_wq, trb->status <= 0,
+> +				 MTK_DFLT_TRB_TIMEOUT);
+> +	if (!ret)
+> +		ret = -ETIMEDOUT;
+> +	else
+> +		ret = trb->status;
 > +
-> +	if (!atomic_read(&trans->available)) {
-> +		ret = -EIO;
-> +		goto unlock;
-> +	}
+> +	kref_put(&trb->kref, mtk_port_trb_free);
 > +
-> +	que = radix_tree_lookup(&trans->queue_tbl, trb->channel_id & QUEUE_CHL_MASK);
-> +	if (!que) {
-> +		dev_warn(mdev->dev, "lookup que fail, ch_id: %x\n",
-> +			 trb->channel_id);
-> +		ret = -EINVAL;
-> +		goto unlock;
-> +	}
-> +
-> +	if (mtk_queue_list_is_full(trans, que) && !force_send) {
-> +		ret = -EAGAIN;
-> +		goto unlock;
-> +	}
-> +
-> +	if (trb->cmd == TRB_CMD_DISABLE) {
-> +		struct sk_buff *entry = NULL;
-> +		struct sk_buff_head *list;
-> +		struct sk_buff *iter;
-> +		unsigned long flags;
-> +
-> +		/* A disable may overtake queued data, so teardown does not
-> +		 * wait for a TX backlog, but it must never overtake a pending
-> +		 * ENABLE for the same queue: the two do not commute, and a
-> +		 * DISABLE consumed before its ENABLE closes nothing while the
-> +		 * ENABLE then arms rings nobody owns.
-> +		 */
-> +		list = &trans->trans_list[que->hif_id].skb_list[que->txqno];
-> +		spin_lock_irqsave(&list->lock, flags);
-> +		skb_queue_walk(list, iter) {
-> +			if (((struct trb *)iter->cb)->cmd != TRB_CMD_ENABLE) {
-> +				entry = iter;
-> +				break;
-> +			}
-> +		}
-> +		if (entry)
-> +			__skb_queue_before(list, entry, skb);
-> +		else
-> +			__skb_queue_tail(list, skb);
-> +		spin_unlock_irqrestore(&list->lock, flags);
-> +	} else {
-> +		skb_queue_tail(&trans->trans_list[que->hif_id].skb_list[que->txqno], skb);
-> +	}
-> +
-> +	wake_up(&trans->trb_srv[trans->srv_cfg[que->hif_id][que->txqno]]->trb_waitq);
-> +	ret = 0;
-> +
-> +unlock:
-> +	mutex_unlock(&trans->submit_lock);
 > +	return ret;
 > +}
 > +
-> +int mtk_pcie_hif_cmd_func(struct mtk_md_dev *mdev, int cmd, void *data)
+> +int mtk_port_ch_disable(struct mtk_port *port)
 > +{
-> +	struct mtk_ctrl_blk *ctrl_blk = mdev->ctrl_blk;
-> +	struct mtk_ctrl_trans *trans;
-> +	struct queue_info *que;
+> +	struct mtk_port_mngr *port_mngr = port->port_mngr;
+> +	struct sk_buff *skb;
+> +	struct trb *trb;
 > +	int ret;
 > +
-> +	switch (cmd) {
-> +	case HIF_CTRL_CMD_CHECK_TX_FULL:
-> +		trans = ctrl_blk->ctrl_hw_priv;
-> +		mutex_lock(&trans->submit_lock);
-> +		if (!atomic_read(&trans->available)) {
-> +			ret = -EIO;
-> +			break;
-> +		}
-> +		que = radix_tree_lookup(&trans->queue_tbl,
-> +					((union ctrl_hif_cmd_data *)data)->rx_ch & QUEUE_CHL_MASK);
-> +		if (!que) {
-> +			dev_warn(mdev->dev, "Failed to find que to check tx full\n");
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +		ret = mtk_queue_list_is_full(trans, que);
-> +		break;
-> +	default:
-> +		return -EINVAL;
+> +	skb = __dev_alloc_skb(Q_MTU_3_5K, GFP_KERNEL);
+> +	if (!skb)
+> +		return -ENOMEM;
+> +
+> +	trb = (struct trb *)skb->cb;
+> +	mtk_port_trb_init(port, trb, TRB_CMD_DISABLE, mtk_port_close_trb_complete);
+> +	kref_get(&trb->kref);
+> +
+> +	ret = mtk_pcie_hif_submit_skb(port_mngr->ctrl_blk->mdev, skb, true);
+> +	if (ret) {
+> +		dev_warn(port_mngr->ctrl_blk->mdev->dev,
+> +			 "Failed to submit trb for port(%s), ret=%d\n",
+> +			 port->info.name, ret);
+> +		kref_put(&trb->kref, mtk_port_trb_free);
+> +		kref_put(&trb->kref, mtk_port_trb_free);
+> +		return ret;
 > +	}
-> +	mutex_unlock(&trans->submit_lock);
+> +
+> +	ret = wait_event_timeout(port->trb_wq, trb->status <= 0,
+> +				 MTK_DFLT_TRB_TIMEOUT);
+> +	if (!ret)
+> +		ret = -ETIMEDOUT;
+> +	else
+> +		ret = trb->status;
+> +
+> +	kref_put(&trb->kref, mtk_port_trb_free);
 > +
 > +	return ret;
 > +}
 > +
-> +int mtk_trans_ctrl_init(struct mtk_md_dev *mdev)
+> +int mtk_port_mngr_init(struct mtk_ctrl_blk *ctrl_blk, struct mtk_port_cfg *port_cfg, int port_cnt)
 > +{
-> +	struct mtk_ctrl_trans *trans;
-> +	struct mtk_ctrl_blk *ctrl_blk;
-> +	int err;
+> +	struct mtk_port_mngr *port_mngr;
+> +	int ret = -ENOMEM;
 > +
-> +	trans = devm_kzalloc(mdev->dev, sizeof(*trans), GFP_KERNEL);
-> +	if (!trans)
-> +		return -ENOMEM;
-> +	trans->mdev = mdev;
-> +	mutex_init(&trans->submit_lock);
-> +	atomic_set(&trans->available, 0);
+> +	port_mngr = devm_kzalloc(ctrl_blk->mdev->dev, sizeof(*port_mngr), GFP_KERNEL);
+> +	if (unlikely(!port_mngr)) {
+> +		dev_err((ctrl_blk->mdev)->dev, "Failed to alloc memory for port_mngr\n");
+> +		goto err_out;
+> +	}
 > +
-> +	memcpy(trans->srv_cfg, mtk_srv_cfg, sizeof(mtk_srv_cfg));
-> +	trans->queue_info = (struct queue_info *)mtk_queue_info;
-> +	trans->queue_info_num = ARRAY_SIZE(mtk_queue_info);
-> +	trans->trb_srv_num = TRB_SRV_NUM;
+> +	port_mngr->ctrl_blk = ctrl_blk;
+> +	mutex_init(&port_mngr->port_tbl_mtx);
 > +
-> +	err = mtk_ctrl_init(mdev);
-> +	if (err)
-> +		return err;
+> +	ret = mtk_port_tbl_create(port_mngr, port_cfg, port_cnt);
+> +	if (unlikely(ret)) {
+> +		dev_err((ctrl_blk->mdev)->dev, "Failed to create port_tbl\n");
+> +		goto err_free_port_mngr;
+> +	}
 > +
-> +	ctrl_blk = mdev->ctrl_blk;
-> +	ctrl_blk->ctrl_hw_priv = trans;
+> +	ctrl_blk->port_mngr = port_mngr;
 > +
-> +	return 0;
+> +	return ret;
+> +
+> +err_free_port_mngr:
+> +	mtk_port_tbl_destroy(port_mngr);
+> +err_out:
+> +	return ret;
 > +}
 > +
-> +int mtk_trans_ctrl_exit(struct mtk_md_dev *mdev)
+> +void mtk_port_mngr_exit(struct mtk_ctrl_blk *ctrl_blk)
 > +{
-> +	mtk_ctrl_exit(mdev);
+> +	struct mtk_port_mngr *port_mngr = ctrl_blk->port_mngr;
 > +
-> +	return 0;
+> +	mtk_port_tbl_destroy(port_mngr);
+> +
+> +	ctrl_blk->port_mngr = NULL;
 > +}
 
 [Severity: High]
-Is it safe to call radix_tree_delete() from inside
-radix_tree_for_each_slot() in mtk_ctrl_remove_radix_tree()?
+Can mtk_port_add_header() hit skb_under_panic() here?
 
-radix_tree_delete() frees the node holding the current slot once its
-last entry is gone, and it may also shrink the tree. The iterator
-then advances by stepping slot within that same node, so the next
-radix_tree_deref_slot(slot) reads from it. The node is released
-through call_rcu(), but this walk holds no rcu_read_lock(), so
-nothing keeps the node alive.
+The skb comes straight from the caller of mtk_port_internal_write().
+Nothing on the way to this skb_push() checks skb_headroom(skb) against
+sizeof(struct mtk_ccci_header).
 
-With the two channels in mtk_queue_info[] this is the normal case,
-not a corner case. 0x1000 and 0x2000 land in separate leaf nodes of
-a three level tree, so deleting the first entry already empties and
-frees its node before the iterator moves on.
+An internal user might allocate its skb with alloc_skb() and no
+skb_reserve(), or pass in an skb whose headroom is already used up.
+In that case skb_push() calls BUG() instead of failing the write.
 
-The walk runs from mtk_pcie_hif_exit() and from the error unwind in
-mtk_pcie_hif_init(). Once the FSM patch later in the series calls
-those, every teardown and every failed init goes through it.
+If the skb is cloned, the header is also written into data that is
+shared with the clone.
 
-radix_tree_iter_delete() exists for deleting at the iterator
-position, and it moves the iterator past a freed node. Would that
-work here? Or, since this is new code, would an xarray with
-xa_for_each() and xa_erase() be simpler?
+Should this call skb_cow_head(skb, sizeof(*ccci_h)) and return an
+error on failure? If so, mtk_port_send_data() would need to stop
+ignoring the return value of mtk_port_add_header(). The port->tx_seq--
+in its error path would also have to be skipped when no sequence
+number was consumed.
+
+Or, if the API requires callers to reserve the headroom, could that be
+documented and checked here?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930-t9xx_driver_v1-v9-0-3248b9256956%40compal.com
