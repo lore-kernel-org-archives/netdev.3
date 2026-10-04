@@ -1,144 +1,156 @@
-Received: from mail-vs2-f20.google.com (mail-vs2-f20.google.com [74.125.227.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E262A3FFFA7
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 19:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791141037; cv=pass; b=NdrRj90vfkx+QoZlnZDxyxQmWRxtlIJDeKA4alvPY4glKv9FsB87U+tPkzkc5U58KIeTlmt/umDIXaWHikJIcninbTdPyerhAoBVNxEIsHHEU17vMkrM2eMwzB4291w46kj6XqefiRdtqTe+2vcPI9jMuOb/b1dK4baseIN4SOc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791141037; c=relaxed/simple;
-	bh=z4KDwGSCeUl6OO60pOlQkNnNe+e6ge5EX8bgo8KStA8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kf/bL8ldlOMIs14w2A9uV67TSrFIcZvaifZQ/PEs7d1+vHuzpba4YRyoAP7+zrpWQJRxi7KclO3W7ZxXTBA7KXZ8axiZrMJqerrbvWoPfJKwtNHlKy8B+UkZ/F/xMLncjb0Bczn2lcrqJ0CV1KLXKl70gOix+M9FRcmksFm5iLQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azmJ86dj; arc=pass smtp.client-ip=74.125.227.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84DB2EF653;
+	Sun,  4 Oct 2026 19:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791141227; cv=none; b=dAKbRqzcXAg0hGaXkPRaL87SgO0Nm+aOn8PbI9momaczgKBuU7r33NxtwnMnSMMiihtCjzYtlH90VLeYfktrk5cKZZCWrgVBOmuBOooyR3RSn+N/C9Q01NEgjcLFpzQccZIGzCB6vKNty96Wu5b34TRDCci+KmmN42QrL91RfIA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791141227; c=relaxed/simple;
+	bh=LmT7qUG0+JDTwsZCtUim498HbU/w8AFnWENCKFAEM80=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fKXcJeQKdP6I7dio/7VIjn7rSxHUtv6dx992Dg0D8mOGPusB6HFl21jh9BJjuT2szrINAP1lLiY/XdCZ+IrZa/rOLjzkMKzOnlD9c6gpe/2wqDWWzHUyeTttWX4uRyPYYExVO0+8+N8N479G646V885Zgaz9y4QAXvqZwc7tGf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=iiW+jCyZ; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azmJ86dj"
-Received: by mail-vs2-f20.google.com with SMTP id ada2fe7eead31-7ba99a2e56dso206967137.3
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 12:10:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791141034; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nrs303Q+pnSLbs58r7ULHr+pPBJim7LZoYVUh+lqVvea8DpJDFZHYv+lPDcVHU1+b0
-         o1jb8h7aGmflxBN0UNKP/YH3YmvWffu6dvROGE7BhCDRtrDhHWfAIi2ZVXjDsL5kgI/5
-         +y+0j5U7J2+f8YulF1tUT6VYcfZtzzYq0e49+jQ7M8Tn3Sc9Zf9cMip3w2VkNjtCDh+2
-         y79xAn0yo8eRgO8j53iuiTBL5O0hStMaaSbqMRwujv1hLbmYHcWNY8FKC8NFCM3MtpAa
-         cXZadDXs5m6UXAfQdADMD/P7DmwTigSfLkBdWIunzNi+zaCMM0iTEOaGhILbwEVI875r
-         jTHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xkZNnkM2zHQpEZqhgoebCPzMrZI5v2FZv8Rlnaa+Lhw=;
-        fh=zT239D3uluY0S4SaxSt6v9qsARJBm0AH8ZIzY6AOLC8=;
-        b=RS9JgEcMSZPSNe1c43KtFY3HuHvIJh5JbT27UKomhPsG8Zi3ExNR6+Y4/2O56iuDZl
-         GkpMhHSjXfjq5qIyq3nfNhrbgIvTcOEbV2cZb8c6S7/yHp+OrECP1RFXZci1a2rSPrdC
-         wxChFX6Ujhya/VKDffSh03R5ga/h/3TFKFhR8+H1oRJIqe7JGSXACOYol/i4OC4L/5PA
-         ZKBR/2ReB4S3dTvS+FhYl4x60HL3FROWryOLgJZGSppYg/0ZTUD08F3xjd5uGN1NfCfz
-         qrMb07mo0ggFNVeKP8plQ3h8EgFrGHm5Xho9TRILmpEjlRSlBlzdxG2y0xNQ13eIRYe8
-         z4Ew==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791141034; x=1791745834; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xkZNnkM2zHQpEZqhgoebCPzMrZI5v2FZv8Rlnaa+Lhw=;
-        b=azmJ86djbSt3sBvvtqyEcjmK39zF85f4M9bUnxi9mUUeM/hr0dDPefKZiljTxy19xk
-         HwynE6c+zk4Yhhh9btgLRgV9/Xvn4zKg0L0Y8SkS/853a5SAnttxlXr+VCsURtx1oUFt
-         eVhdW+ViZA1DrlqD7TZjs069rbiprVMflyvUr9Qf5T+65w/s0RkWxhUTKcco/PwnrE/n
-         aSicfbvGHuXa08nd3g2ELzE27r6tptaUFEFbpKNHCvmhDsm0/qzRNL96ef5k7JoO7kad
-         vMQRWDacHdWByEActGgEpbDdPogJcjzKYkFB1p4+06zMLKQ7IQrJ/g94IvigrLIMXoxL
-         SdNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791141034; x=1791745834;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xkZNnkM2zHQpEZqhgoebCPzMrZI5v2FZv8Rlnaa+Lhw=;
-        b=BnTmajS3Ej7T2BTc+dnlOV00eiB9cPqQFyoRl1uQUeBvYNwSTSCirDM+/9u3lXAigw
-         soSm6wKvMjgnfcFQ3+UmTQ3ynB0Q+cq3vKUIzGsjLEDbdscu48xVB9huFW+qyCL/83JV
-         ScfZXTHGLe3Pk0P7tlf+5pBHEhQu7pxyeMxtU+gr1cDP2q3LeD4jqa9AyZ2pxBUJOyll
-         UMPdJ/wQy7sIQmAWYK9ICVDBB9epzfcpInRCkdgNGyW4b6/D4gZu7luD89JPnS1ojZj9
-         T9qTDrS456j5mj5IXbS1xIDE1ItmFGFSm3LOel/8YPTW7xAc1ZLBxwSAEGkOQs6D95gW
-         L1qw==
-X-Gm-Message-State: AFq9FYLKQms8Q6S+Da3A7ikQb2DtcoHUDZv7OWGdJ83lNfbohqwxDXcE
-	cCY6O5vaWFGYzwHO5Sz2BEVqMcZTmfLnnP4B+KBvs51L+Frpj9nHPZNlOd2lRnxKsjYgN0uJM7T
-	I0+AVVfa80DtJGoaxchywvrw5gZlcilE=
-X-Gm-Gg: AYBFou1GdajLu2J0OdMfe8MoJ42dXlYaiceQq5Il1jyYvLSSaUsDfRtENRaAZN8t4Kq
-	jf0VuB3t3SyJJzThg5unai4Sz6c9ahKNzrRcg3AsT/8EK5rk0v+9uTZWZeEG6etSU1NFImIgkLp
-	WMbGnIHgDiyFCopr7M31neqvhNp40npyCdh+UMUqLamKa7roeNbVFS1AA62wSDviHQhPGg9HBFM
-	Mu0LcoeuvCCCe6OiA0pGjQxnjzo8aVsIlsR6ECIi4gvHymp1PWPLXQjdHokOPNPySlXf7JGeIN9
-	wwif31VvD0VdyJ17sANVUCKJhQX61ycoiC0R0QZGdPUED+21w20Ulf7+XY2whie2yR6bV8gP6n7
-	NZ08aK7wcWdrDndhMraeb9B+JO6jKKbST3wpFCIfMI5D+bvGhg6Wn2acx/JWHKEuf1qC3wlb5I/
-	dAV0JT6O5mZBL+I+ncI/LB53+XXbSNrVSrLiRwwLOeiUN5
-X-Received: by 2002:a05:6102:ac7:b0:7c1:b55d:373c with SMTP id
- ada2fe7eead31-7c1b55d5b1amr1023105137.31.1791141034613; Sun, 04 Oct 2026
- 12:10:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="iiW+jCyZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1791141213;
+	bh=6KYwscBAPThUi2rjcfCeCcgpFd71+oEj095WqmAons0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iiW+jCyZC1wbPm1lGzLldTbD1VnW2rM1oWRESBoYa+TwYXW+pAPbCLMN6Y4PsNNv7
+	 ehkubjBjx6ehkHxBKEXJwNUi2AuTEAPhFwVckNnm4m7cOWC+hlxEbrvXmYaTLvOJzs
+	 ObwHBwa5BNQVMGt77Z4tpvMvEOM3ATl4zUQvQYSWW4atazeKLfdvneEKQ49v1Pvp9D
+	 kNHVaiY3AyCqHtGwfprE49tRKwRpzQtVnbzwgxURwI0d9TLDYhWjTIlWViRhcHg3kp
+	 ZdRociy87W6/yaWyBOfUym8nEoGQYLjqZgd6KLad1xBN9KlFEwyamJD6eiijBviPS1
+	 /gJOoVjdaDKTg==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 7889E60060;
+	Sun,  4 Oct 2026 21:13:33 +0200 (CEST)
+Date: Sun, 4 Oct 2026 21:13:30 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+d7795c8487ca4e20ed88@syzkaller.appspotmail.com,
+	syzbot+d0d2f1a65f45b319d25d@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH nf] netfilter: nft_synproxy: only handle pure SYN and ACK
+ packets
+Message-ID: <asKkUzOppJayDbvD@chamomile>
+References: <20261004160615.142456-1-ngocthang2710.1999@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261001-submit-phylink-suspended-stop-v1-v1-1-0669fdb4a93b@gmail.com>
- <04e29fa0-3ff9-4248-bfe1-87dfe8ce3ec3@lunn.ch>
-In-Reply-To: <04e29fa0-3ff9-4248-bfe1-87dfe8ce3ec3@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 4 Oct 2026 13:10:23 -0600
-X-Gm-Features: AclHuK_y06FW1116Mu5hZ1KX5sWXMaJ-6Dz8hI1d53uu8GYrxhRaXRuilJzrS9U
-Message-ID: <CADvTj4rm0h0iy7vHsdxc4zQGuybjUvGFqVqrHOn7r2O1z+OWoQ@mail.gmail.com>
-Subject: Re: [PATCH net] net: phylink: allow stopping a suspended instance
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261004160615.142456-1-ngocthang2710.1999@gmail.com>
 
-On Sun, Oct 4, 2026 at 7:54=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Thu, Oct 01, 2026 at 01:24:53AM -0600, James Hilliard wrote:
-> > After a failed MAC resume, a driver must be able to stop phylink withou=
-t
-> > resuming it and reconfiguring the failed MAC.
->
-> This is adding a lot of complexity, for an edge case, which i don't
-> particularly like.
->
-> In your case, why is resume failing?
+On Sun, Oct 04, 2026 at 11:06:15PM +0700, Nguyen Ngoc Thang wrote:
+> nft_synproxy treats any segment with SYN set as a client's initial SYN
+> and any segment with ACK set as the client's final ACK. A SYN-ACK thus
+> gets answered with a fresh SYN-ACK cookie.
+> 
+> If that reply is routed back to the same host, e.g. to a peer address
+> covered by an address on lo, it re-enters the input hook, is answered
+> again, and never stops. Every such SYN starts its own endless loop over
+> the loopback backlog, so NET_RX softirq keeps the CPU busy and memory
+> fills with skbs and rtable entries until workqueues stall and the
+> machine OOMs.
+> 
+> Use the same flag checks as ip(6)t_SYNPROXY: SYN without ACK, FIN or
+> RST is an initial SYN; ACK without SYN, FIN or RST is the client ACK.
+> Anything else falls through to the next expression.
 
-This is a prerequisite for the stmmac recovery fixes, rather than a
-fix for the underlying cause of a particular resume failure.
+Wrong tree. This proposal has to go through nf-next.
 
-stmmac_resume() already returns an error if stmmac_hw_setup() fails,
-for example when the DMA reset does not complete. That return is
-before phylink_resume(), leaving phylink suspended.
-
-The stmmac recovery work preserves the interface's administrative
-state after that failure, but leaves the datapath detached and
-quiescent. An ordinary down/up must then be able to release the
-retained resources and attempt a fresh open. Closing the interface
-therefore needs to terminate the suspended phylink instance.
-
-Calling phylink_resume() merely to make phylink_stop() usable would
-reconfigure the MAC and restart link resolution, even though MAC
-setup has just failed.
-
-The additional bookkeeping handles the two different suspend paths:
-with MAC WoL, stop must finish the deferred link-down and clear the
-WoL disable state; without MAC WoL, suspend has already stopped the
-instance, so stop must avoid repeating that shutdown. Suspend-owned
-PHY speed changes also need unwinding so the next start does not
-retain the reduced advertisement.
-
-Those are phylink-owned transitions which stmmac cannot complete
-itself. The driver still owns the recovery policy and any fix for
-the underlying resume failure; this supplies the cleanup transition
-needed when restoration fails.
-
->
->    Andrew
+> Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
+> Reported-by: syzbot+d7795c8487ca4e20ed88@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=d7795c8487ca4e20ed88
+> Reported-by: syzbot+d0d2f1a65f45b319d25d@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=d0d2f1a65f45b319d25d
+> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+> ---
+> Notes (not for the changelog):
+> 
+> Reproduced in QEMU (x86_64, 2 vCPUs, KASAN+lockdep) with syzbot's C
+> repro for d7795c8487ca4e20ed88. Minimised: only the nft batch and the
+> injected SYN matter, which is exactly the d0d2f1a65f45b319d25d program.
+> 
+> The rule is an inet table, base chain on input, with an unconditional
+> "synproxy" expression. The SYN goes from 172.20.20.187 to .170 via tun;
+> syzkaller puts 172.20.20.10/24 on lo, so the whole /24 is local and the
+> SYN-ACK cookie comes back through lo. Instrumented trace:
+> 
+>   synproxy tx .170->.187 in=syz_tun out=lo syn=1 ack=1
+>   synproxy tx .187->.170 in=lo      out=lo syn=1 ack=1
+>   synproxy tx .170->.187 in=lo      out=lo syn=1 ack=1
+>   ...
+> 
+> Before (3fd2ff60f6d6, full C repro):
+>   - synproxy syn_received ~400k per CPU per netns after 15s
+>   - rtable 80k -> 295k, skbuff_head_cache >1M, softirq time explodes
+>   - "BUG: workqueue lockup", then OOM / hung task, VM wedges
+> 
+> After (2 runs x 300s, full C repro):
+>   - no lockup, hung task or OOM
+>   - rtable flat (~2.2k), skbuff_head_cache flat (~80k)
+>   - syn_received grows slowly (~9.5k/300s): real SYNs still answered
+> 
+> ACK|FIN and ACK|RST no longer hit the cookie check (and its NF_DROP);
+> they continue, as with ip(6)t_SYNPROXY's XT_CONTINUE. The usual
+> "ct state invalid drop" rule still catches them.
+> 
+>  net/netfilter/nft_synproxy.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
+> index 9ed288c9d168..a580cb7324da 100644
+> --- a/net/netfilter/nft_synproxy.c
+> +++ b/net/netfilter/nft_synproxy.c
+> @@ -53,13 +53,13 @@ static void nft_synproxy_eval_v4(const struct nft_synproxy *priv,
+>  	struct synproxy_net *snet = synproxy_pernet(net);
+>  	struct sk_buff *skb = pkt->skb;
+>  
+> -	if (tcp->syn) {
+> +	if (tcp->syn && !(tcp->ack || tcp->fin || tcp->rst)) {
+>  		/* Initial SYN from client */
+>  		nft_synproxy_tcp_options(opts, tcp, snet, &info);
+>  		synproxy_send_client_synack(net, skb, tcp, opts);
+>  		consume_skb(skb);
+>  		regs->verdict.code = NF_STOLEN;
+> -	} else if (tcp->ack) {
+> +	} else if (tcp->ack && !(tcp->fin || tcp->rst || tcp->syn)) {
+>  		/* ACK from client */
+>  		if (synproxy_recv_client_ack(net, skb, tcp, opts,
+>  					     ntohl(tcp->seq))) {
+> @@ -84,13 +84,13 @@ static void nft_synproxy_eval_v6(const struct nft_synproxy *priv,
+>  	struct synproxy_net *snet = synproxy_pernet(net);
+>  	struct sk_buff *skb = pkt->skb;
+>  
+> -	if (tcp->syn) {
+> +	if (tcp->syn && !(tcp->ack || tcp->fin || tcp->rst)) {
+>  		/* Initial SYN from client */
+>  		nft_synproxy_tcp_options(opts, tcp, snet, &info);
+>  		synproxy_send_client_synack_ipv6(net, skb, tcp, opts);
+>  		consume_skb(skb);
+>  		regs->verdict.code = NF_STOLEN;
+> -	} else if (tcp->ack) {
+> +	} else if (tcp->ack && !(tcp->fin || tcp->rst || tcp->syn)) {
+>  		/* ACK from client */
+>  		if (synproxy_recv_client_ack_ipv6(net, skb, tcp, opts,
+>  						  ntohl(tcp->seq))) {
+> -- 
+> 2.43.0
+> 
