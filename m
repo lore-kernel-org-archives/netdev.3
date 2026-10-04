@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2A8370D79;
-	Sun,  4 Oct 2026 23:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E4D4A9D61;
+	Sun,  4 Oct 2026 23:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791156808; cv=none; b=SrBu8khF6qXClEfNHjTx/QK6bgYKWgUeyYsesAcFRI0Nc2dAMkFBm4aVWtBPvsjMD5m0xlgGBKqzVe8vIIJ/TmghAHjpdtVg8KTr55e3Snsdhew/YdiHLvm9OeBp/6ZMdgK+wa2kpYnUIGGMEfjFv4OPA0O9bw3rtuTLKaL10Z4=
+	t=1791156810; cv=none; b=CBXTHW3F5XFBt+oRFL95Fh2S5cvD7VGtRKn1GQ6U55d1LRtuZLYPF9qrq80Ov4Tk+1z37XxaO+4Um5QGtb4ww9uqX0wkMWYjNq1KTUrowAE6gq/W9oIH+CFEmU+EUmilOH2j9ts5V5jeIn8v/f6TCiAMf+fGY7MhIPyT6DACh9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791156808; c=relaxed/simple;
-	bh=S0quYlFJxiJ9EEBg+v/5yVdeMpgzya4xtqOD4Vk0RTI=;
+	s=arc-20240116; t=1791156810; c=relaxed/simple;
+	bh=gzTPK1kgCcfbEh/SgJPAiHKNR2bkNbowfQXzL3iyd2M=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=L9HjJCj7PXxXhThb//3cKeC6A+53QgxzlL5b+1rqW708UbGvNKGmKmli8+Jt5v0NYc+k+o1XRy2SwUSbVTtQv1q8czsI9OYW8nw1J3R9EjGKTOmziDdxTStk/AtZJKcMBGU2mDpzTD2RD5lLgCNpZkn5CGoU76+V+hGrT/4Gkko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlq8yxD8; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=mj6Lp9o2iQOS1O+NtgeIrmJ6gBviLXjLEQMaZntifzeLRj6Wp98aMwjs44tVljeYKyc3TkPkoccLB06dPWrwckd6FtrrHlfR7Cx0ZNU/PL8ejeP5FzXLu8JMXWI2t3H9mYyeOaPINSif7ZhCaNzo7iZgqVAm25b9MIT9S0nb4ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kETp0PIt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlq8yxD8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C1E1F00893;
-	Sun,  4 Oct 2026 23:33:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kETp0PIt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9681F000FF;
+	Sun,  4 Oct 2026 23:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791156807;
-	bh=y+I+nhV4tmxvaiCBG1Ie8pXtveWP2/rZEEr1Gx+5TGc=;
+	s=k20260515; t=1791156808;
+	bh=eMbqOy7D+B/cTppdW34ezcVo5LlA/Z+uE3UF/jHTbkc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nlq8yxD846x+Nm7F27PshKZDMuQEPDLURaCdGOF9W8usDGJ5xz6DbTE2TYfDdm9lv
-	 E7/fomeg94p/Ay0J2HFFUxA5FJ+5mBRxrnbF5U3tLXeVb3zaa1Tw4FzsLxiz9BRlAv
-	 kiFWYpzhb4MUC84FxUgDd60/jSNiu4sdXHbAuArfbvgXg5hkjOMDvQSrDN7X//w+uN
-	 22TO5rC0IgunugHq8lUlfF8ApKqzema5VspdDQgkMqYjIKVC8EIGi71ox/TsQfi9ZS
-	 JFTxW6iW6CoSGUCylmmNlpREy8QkDG+qBb8lHk8kENWzX1OFSC1RXWZWQG+qfPDnNO
-	 Irm3igGXy1d4w==
-Subject: Re: [PATCH net-next v10 7/8] net: macb: use context swapping in
- .set_ringparam()
+	b=kETp0PItlsjNw+KbMPWVoMZfDgcB3z3Bd3ilfURtYo5nz1Fd8S4eVRlkTtCF2xKDu
+	 vNDmYaWI+5D/+qH6Q33Rj+A8d73DzYQMuFuYFTsIhC8gZFPyhEOY6UXGE+1B218MvF
+	 E4cdh3PgbgkUl/DfDZACfsDInQtzGHN0jICbvViI+Ys6mAbXMKPlIb+REDOPDOoa4G
+	 0ijnF44/YPJX/XeMJOW2vUohh7XQXGvJh3cllxVJ4ZRyTfKxj9YF8MIxs9Ptqz9mX7
+	 dddyoe+eIxax84fTWb7HbSA5JWCo95YcxZMimbVZrWifAj/ioVJAaPdUIq8Rthw6g0
+	 wq1lDh6OXTPhg==
+Subject: Re: [PATCH net-next v10 8/8] net: macb: use context swapping in
+ .ndo_change_mtu()
 From: netdev-bot+sashiko@kernel.org
 To: theo.lebrun@bootlin.com
 Cc: conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
@@ -37,10 +37,10 @@ Cc: conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  vladimir.kondratiev@mobileye.com, gregory.clement@bootlin.com,
  benoit.monin@bootlin.com, tawfik.bayouk@mobileye.com,
  thomas.petazzoni@bootlin.com
-Date: Sun, 04 Oct 2026 23:33:25 +0000
-Message-ID: <179115680572.434549.1016291990685937691@kernel.org>
-In-Reply-To: <20261001-macb-context-v10-7-beb541bbb7df@bootlin.com>
-References: <20261001-macb-context-v10-7-beb541bbb7df@bootlin.com>
+Date: Sun, 04 Oct 2026 23:33:27 +0000
+Message-ID: <179115680718.434549.17282980902772682527@kernel.org>
+In-Reply-To: <20261001-macb-context-v10-8-beb541bbb7df@bootlin.com>
+References: <20261001-macb-context-v10-8-beb541bbb7df@bootlin.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -62,138 +62,122 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Use-after-free in the new live context swap.
+- [High] A live MTU change can free the old context while a NAPI poll on
+  another CPU is still reading it.
 
 --
 
-net: macb: use context swapping in .set_ringparam()
+net: macb: use context swapping in .ndo_change_mtu()
 
-This patch reworks macb_set_ringparam(). It now allocates a new context
-before stopping the interface, swaps it in and then frees the old one,
-instead of doing a full close/open. The generic swap logic is split into
-macb_context_swap_start() and macb_context_swap_end(), and a new
-mac_cfg_lock mutex serialises the swap against the phylink MAC callbacks.
+This patch changes .ndo_change_mtu() so that it works on a running
+interface. It allocates a new context, quiesces and reconfigures the
+hardware, then frees the old context. Before this patch the call returned
+-EBUSY when the interface was up. AT91 EMAC still returns -EBUSY.
 
 > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 69873966a9890..93049b399d783 100644
+> index 93049b399d783..4b03f8a513722 100644
 > --- a/drivers/net/ethernet/cadence/macb_main.c
 > +++ b/drivers/net/ethernet/cadence/macb_main.c
-
-[ ... ]
-
-> @@ -3217,6 +3255,112 @@ static void macb_configure_dma(struct macb *bp)
->  	}
->  }
+> @@ -3624,11 +3624,29 @@ static int macb_close(struct net_device *netdev)
 >  
-> +static void macb_context_swap_start(struct macb *bp)
-> +{
-> +	struct macb_queue *queue;
-> +	unsigned long flags;
-> +	unsigned int q;
-> +	u32 ctrl;
-> +
-> +	mutex_lock(&bp->mac_cfg_lock);
-> +
-> +	macb_quiesce_start(bp);
+>  static int macb_change_mtu(struct net_device *netdev, int new_mtu)
+>  {
+> -	if (netif_running(netdev))
+> -		return -EBUSY;
 
 [ ... ]
 
-> +static void macb_context_swap_end(struct macb *bp,
-> +				  struct macb_context *new_ctx)
-> +{
-
-[ ... ]
-
-> +	old_ctx = bp->ctx;
-> +	WRITE_ONCE(bp->ctx, new_ctx);
-> +	wmb(); /* ensure IRQ enabled below read the new context */
-> +	macb_init_buffers(bp);
-
-[ ... ]
-
-> +	mutex_unlock(&bp->mac_cfg_lock);
+> +		new_ctx = macb_context_alloc(bp, new_mtu,
+> +					     bp->configured_rx_ring_size,
+> +					     bp->configured_tx_ring_size);
+> +		if (IS_ERR(new_ctx))
+> +			return PTR_ERR(new_ctx);
 > +
-> +	/* Free old context. */
-> +
-> +	macb_free(old_ctx);
-> +	kfree(old_ctx);
-> +}
+> +		macb_context_swap_start(bp);
+> +	}
+>  
+>  	WRITE_ONCE(netdev->mtu, new_mtu);
+>  
+> +	if (running)
+> +		macb_context_swap_end(bp, new_ctx);
 
 [Severity: High]
-Can a NAPI poll still be reading old_ctx when it gets freed here?
+Can a live MTU change free the old context while a NAPI poll on another
+CPU is still reading it?
 
-The swap depends on macb_quiesce_start() calling napi_disable() to drain
-NAPI. However, napi_disable() only waits for NAPIF_STATE_SCHED and
-NAPIF_STATE_NPSVC to clear, and napi_complete_done() clears SCHED before
-the poll callback returns. Documentation/networking/napi.rst notes that
-napi_disable() only waits for the ownership of the instance to be
-released, not for the poll method to exit.
+Both poll functions keep using context memory after
+napi_complete_done(). In macb_rx_poll():
 
-Both poll functions keep reading the context after napi_complete_done()
-succeeds. In macb_rx_poll():
+    if (work_done < budget && napi_complete_done(napi, work_done)) {
+        queue_writel(queue, IER, bp->rx_intr_mask);
+        ...
+        if (macb_rx_pending(queue)) {
 
-	if (work_done < budget && napi_complete_done(napi, work_done)) {
-		queue_writel(queue, IER, bp->rx_intr_mask);
-		...
-		if (macb_rx_pending(queue)) {
+macb_rx_pending() then reads bp->ctx and rxq->tail/prepared_head, and
+dereferences a descriptor in the rx ring:
 
-and macb_rx_pending() does:
-
-	struct macb_context *ctx = queue->bp->ctx;
-	struct macb_rxq *rxq = macb_rxq(queue);
-	...
-	entry = macb_rx_ring_wrap(ctx, rxq->tail);
-	desc = macb_rx_desc(ctx, q, entry);
-	...
-	return (desc->addr & MACB_BIT(RX_USED)) != 0;
-
-macb_tx_poll() does the same through macb_tx_complete_pending(). That
-function reads queue->bp->ctx and the TX ring under tx_ptr_lock. The swap
-and free path takes neither tx_ptr_lock nor any other lock or RCU grace
-period that these helpers respect.
-
-This looks like a possible interleaving:
-
-poll CPU
-macb_rx_poll()
-  napi_complete_done()   /* clears SCHED */
-  macb_rx_pending()
-    ctx = queue->bp->ctx;   /* old ctx */
-    <delayed>
-
-ethtool CPU
-macb_set_ringparam()
-  macb_context_swap_start()
-    macb_quiesce_start()
-      napi_disable()   /* returns, SCHED already clear */
-  macb_context_swap_end()
-    WRITE_ONCE(bp->ctx, new_ctx);
+    struct macb_context *ctx = queue->bp->ctx;
+    struct macb_rxq *rxq = macb_rxq(queue);
     ...
-    macb_free(old_ctx);   /* rings NULLed and dma_free_coherent()ed */
-    kfree(old_ctx);
+    desc = macb_rx_desc(ctx, q, entry);
+    ...
+    return (desc->addr & MACB_BIT(RX_USED)) != 0;
 
-poll CPU
-    desc = macb_rx_desc(ctx, q, entry);   /* freed memory */
+macb_tx_poll() does the same thing. After napi_complete_done() it calls
+macb_tx_complete_pending(), which reads:
 
-Here the poll CPU would dereference the kfree()d context, a NULL ring
-pointer, or freed coherent DMA memory. The delay could come from threaded
-NAPI, softirq preemption on PREEMPT_RT, interrupts or vCPU preemption.
-This can be triggered with ethtool -G while traffic is flowing.
+    if (macb_tx_desc(ctx, q, txq->tail)->ctrl & MACB_BIT(TX_USED))
 
-The new irq_quiesced check in macb_tx_restart() does not seem to cover
-this. That helper runs before napi_complete_done() and is already
-protected by NAPI ownership.
+napi_complete_done() clears NAPIF_STATE_SCHED. napi_disable() only waits
+for the instance's ownership bits to clear, not for the poll callback to
+return. Documentation/networking/napi.rst says drivers should not touch
+data structures after napi_complete_done() for this reason.
 
-macb_close() uses the same napi_disable-then-free pattern. This patch adds
-a new free-while-running site that is reachable during normal operation.
-The later patch "net: macb: use context swapping in .ndo_change_mtu()"
-reuses these helpers without adding any extra synchronization.
+One possible interleaving:
 
-Would a synchronize_net() (or an equivalent grace period) before
-macb_free(old_ctx) be enough to close this window? Alternatively, the
-post-completion helpers could be made to check for an ongoing swap.
+CPU A (softirq)
+macb_rx_poll()
+    napi_complete_done()   /* SCHED cleared */
 
-[ ... ]
+CPU B
+macb_change_mtu()
+    macb_context_swap_start()
+        macb_quiesce_start()
+            synchronize_irq() ...
+            napi_disable()   /* returns immediately */
+    macb_context_swap_end()
+        WRITE_ONCE(bp->ctx, new_ctx);
+        ...
+        macb_free(old_ctx);   /* dma_free_coherent() of rings */
+        kfree(old_ctx);
+
+CPU A
+    macb_rx_pending()
+        reads the freed ctx and descriptor ring
+
+As far as I can see, nothing on the swap path closes this window. There
+is no synchronize_net() or synchronize_rcu(), and no tx_ptr_lock or
+bp->lock handshake with the poll tail.
+
+On non-coherent ARM/arm64 SoCs, coherent DMA memory is usually remapped
+and unmapped on free, so this read could fault in softirq context. The
+window is short on !PREEMPT_RT. It can be much longer under PREEMPT_RT,
+threaded NAPI, or vCPU preemption.
+
+Before this patch, macb_change_mtu() never reached the swap path on a
+running interface. Any CAP_NET_ADMIN "ip link set mtu" while traffic is
+flowing now gets there.
+
+The same window also seems to exist through .set_ringparam(), which an
+earlier patch in this series ("net: macb: use context swapping in
+.set_ringparam()") converted to context swapping. Would a grace period
+such as synchronize_net() before freeing old_ctx in
+macb_context_swap_end() fix both paths? So would making the poll tails
+avoid touching the context after napi_complete_done().
+
+> +
+>  	return 0;
+>  }
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001-macb-context-v10-0-beb541bbb7df%40bootlin.com
