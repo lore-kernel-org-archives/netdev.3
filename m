@@ -1,69 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp-5.sys.kth.se (smtp-5.sys.kth.se [130.237.48.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811E817BCA;
-	Sun,  4 Oct 2026 14:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338354519A2;
+	Sun,  4 Oct 2026 14:35:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.237.48.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791124524; cv=none; b=bB8AFcqgEB/8GvRwYwIhBgeAFRMiIs12B/gDuZuYWUwnJTBMcvS020dCypRn1w+pskukSRKNh2VisBg9W1iaghNyRBlRXa9HcA6qnThPls9fnqkq5N9TfLvzXB36rrGMMPcJHBREcJIHbVrN0PNdUFIV8zqIRuzvSI+A2NFIMEw=
+	t=1791124541; cv=none; b=D98M6FnbW7xsBdmWEqUgGxgSJUZzrag0VQnpcctN12GBWM+AXVo/8+LhodxCIbCJvt7y54d6ziGU5YhPf6do5xOz6PKls70SpJdcYewVmTS27QY8OxzF2uoykiSdptLdpoCxveaz1xKALYc9k/gYQb8xQq20RSwiy7P9jOHf8vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791124524; c=relaxed/simple;
-	bh=KfkLjcW/tKdgnBJXgRKTVEeAR1KUWD8jDu7yRDyk0Uo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cet8/z4mkJQpQxOgH6ZhoBJGi9+wFVJvqGtpghvHjzJTjhjBX1jyy34I3fq1u6kFZaiLbCIMaQ7ZPLtMUSXB74f1DwDGJTWVBVy2nTi+yzM6aWLMFGkmqkp4wjH2tcd7XTvApydqk/VDSTht6gj7rGK6umbMPSDTUtAIeIlVmB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sLT0G5OC; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791124541; c=relaxed/simple;
+	bh=M1oTNlB/p3KI8hvVPYtrCmshRpJ/mJtloQQQucRUoc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VHNDca74Gqbm+SxuIWgMT0cQ5RThN0I6utRX/RNmD2GPrJiFVN1sMtZMdGjIX17gXnoFIbZBEi05ZNrwJIDbFxoujdcPb8BQ8CG8TwMizQ7S4+BTPLbExEgeLY3pRB/nbYW0gEtc8RHiQwChcDXoQXzoyBiOK8XIDFBic2Yhbvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kth.se; spf=pass smtp.mailfrom=kth.se; dkim=pass (1024-bit key) header.d=kth.se header.i=@kth.se header.b=hrt0BD0d; arc=none smtp.client-ip=130.237.48.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kth.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kth.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sLT0G5OC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3Xj2E3zp+z9VyVZKqnPlhHjZYBy2RAnbUbQDh2qi2aQ=; b=sLT0G5OCXPy5WzJ5YXXg/WcZwh
-	ggOtnhEnXIqj5Y1OEqd6qCVRuxHOKXU6GUEhDMi1OspCY7itkukZBWQMxWQHcvbbrTz00j09QT593
-	Y5QSaX+8un2D+jqThhCc2GfoCfke+oU4BI8hnyAFx+DCpoqaFtMUdr+4jVYcd8jLGFiY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xDNJ4-008tKz-Q3; Sun, 04 Oct 2026 16:35:14 +0200
-Date: Sun, 4 Oct 2026 16:35:14 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Igor Velkov <iav@iav.lv>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: postpone PHY interrupts during sleep with
- MAC-managed PM
-Message-ID: <77e5a3c4-8b47-4609-b8a2-7f7b353bc219@lunn.ch>
-References: <20261002043548.1302145-1-iav@iav.lv>
+	dkim=pass (1024-bit key) header.d=kth.se header.i=@kth.se header.b="hrt0BD0d"
+Received: from nargothrond (c213-100-197-198.bredband.tele2.se [213.100.197.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sfle)
+	by smtp-5.sys.kth.se (Postfix) with ESMTPSA id 4hyQ6Y01zyzPNPw;
+	Sun,  4 Oct 2026 16:35:32 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 smtp-5.sys.kth.se 4hyQ6Y01zyzPNPw
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kth.se; s=default;
+	t=1791124533; bh=lrgdVqGTcvAZg2IddQq+bm33rQHG+7FiKg2IzhyG5Fs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=hrt0BD0d7TmOj7lRkTZgBI6uYfCKCxP+RO8yFqjGBHbRs9cQDF+/CT5N5+EWyKSBL
+	 sqH+wXwKSB/jmnwHpaAS6393ud/NXXyz/hNKgwtIFmawE/sfbtxAGq1PutlJG7TCpO
+	 GMeGEa7hRhzwiHntjOs3oHOvOK88Mr5AQWc9AiFg=
+Date: Sun, 4 Oct 2026 16:35:32 +0200
+From: Stefan Fleischmann <sfle@kth.se>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, Michael Chan
+ <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+ regressions@lists.linux.dev, Joe Damato <joe@dama.to>
+Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
+ macvlan/vlan with bnxt_en
+Message-ID: <20261004163532.3134dd41@nargothrond>
+In-Reply-To: <f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
+References: <20261004122616.56714cbd@nargothrond>
+	<f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
+Organization: KTH
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261002043548.1302145-1-iav@iav.lv>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
->  	/* Wakeup interrupts may occur during the system sleep transition when
->  	 * the PHY is inaccessible. Set flag to postpone handling until the PHY
->  	 * has resumed. Wait for concurrent interrupt handler to complete.
-> +	 * The MDIO bus may be powered down even when the MAC manages PHY PM.
+On Sun, 4 Oct 2026 13:46:08 +0200
+Eric Dumazet <edumazet@kernel.org> wrote:
 
-Just think about that statement. MAC manages _PHY_ PM. It is not MAC
-managed _PHY and MDIO_ bus PM.
 
-To me, this is key, because it means your whole approach is
-wrong. Lets start with a clear definition what MAC manages PHY PM
-is. Then we can decide on a solution.
+> 
+> Notice that 0xfc499000 is on an exact 4KB page boundary. This points
+> to a DMA read overrun where the Broadcom DMA engine reads past the
+> end of a buffer mapped in page 0xfc498xxx into the adjacent unmapped
+> page 0xfc499000.
+> 
+> Have you tried a recent net kernel ?
 
-    Andrew
+Hi Eric,
 
----
-pw-bot: cr
+that might be a bit tricky. We use ZFS on this server and the version
+we have installed only supports up to kernel 7.2.
+
+> Could you please test whether disabling TSO or hardware VLAN offload 
+> prevents the crash? (maybe adding one option at a time)
+> 
+>    # ethtool -K eno1np0 tso off
+> 
+>    # ethtool -K eno1np0 tx-vlan-offload off
+
+I tested this now and none of these options made a difference. I've also
+tested disabling other offloads, no difference.
+
+Best,
+Stefan
+
+> Adding Joe to this thread, because some parts in
+> tso_dma_map_init() or tso_start() might have bugs.
+> 
+> # Disable USO on the physical interface
+> ethtool -K eno1np0 tx-udp-segmentation off
+> 
+> This reminds me on a prior attempt I made months ago to sanitize
+> tso_start()
+> 
+> Note that my email address has changed to edumazet@kernel.org
+> 
+> Thanks.
+> 
