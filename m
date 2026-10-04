@@ -1,115 +1,155 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B1428506F
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 22:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CD23921F6
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 22:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791153887; cv=none; b=QW1TiDzpzGTE3K8R7GLkdOZegEsY44poey8rQLNACX3Zd5KTPshCBxflRzqOqu454qr19gK24ugr8gTkyGLg4cE376rtumKRA21LXunab3/gJL+4ph5VUoDiQPeafEBuYwklCM7H8yiTJNiG4cqTMrS+ICnII5W5O/P50Gr0ud8=
+	t=1791154350; cv=none; b=DOSrxjCqDifNkmMCOsLDS1vXJIOwAPdA9IDXq0KdHrHxI2Q8PNIM5pDwKept1AzN5YsEjNkf+lt/tCku/fm6j76cjKFGdxJnaMszi4DtpMk6yIlWYlL0Qwvr3co8AJObxTXxC6cGbZkzPjVG+PMalN5bghiX0ckNUjodMghrkkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791153887; c=relaxed/simple;
-	bh=RQrQZVvWkrjZgbQ4MZd+PC9ooU9Z249UpmAHe4qG04M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BLW6yU63A4Un1HhVUYJbVjnj4U1dBO4+8mhibuGOEKnOT7EhIVeNHhmNhAQGUT0QTpJqJey3UZi5RRfTG7YNqSl3uk1GgbCW3Hxc4c5pXtqHY3Shd2qtWZfEvov3+TdOpmRqqash9MUF1R3YWmzevOcN6KgMiwvW3ZwzBSdlTw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X3QuSwNE; arc=none smtp.client-ip=74.125.225.99
+	s=arc-20240116; t=1791154350; c=relaxed/simple;
+	bh=iUX0rypZ3xf/SH5sB9G6Uz8fWv/TVGB7aC4y+ZSUuCw=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=eOL94/tKmnelsduoiWoQ/B/CuiHX1G1Qmbw3mJmuPOU/dhrvVqLNCjdexM4Y24d3H3awlChLeMtbcCd68nlMFUieZWx6Gb+1ZCDdbv97L5QiqM8dmS/eVjx7GBL1sS3tkN6yMjkdFEIH1QEWZf01y0djBOVpOYMnh6g1mwxWvRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KuWq2JBk; arc=none smtp.client-ip=74.125.224.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X3QuSwNE"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b08452cafso780102f8f.3
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 15:44:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KuWq2JBk"
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-67375a844dfso655024d50.2
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 15:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791153885; x=1791758685; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Lusv9musr2ttjnYRqCBgWFai9OjQZSC81iWtocGvUX4=;
-        b=X3QuSwNE0n8SLMhtQLu/Cwux/TJp0QUlJGU7lVppNu2d5R4uWdjfKTDkqnmLZAJ5ny
-         AAGCXhw+MWPPw94GN9HwU9SUd2Vc75kJeRkKonPmJHjeit8dKUDXcphOdzoP2i4kCsaB
-         P56369PQ8mFl05vGy8x7nshaORw3/ci9rQWJdrMFBNEzf2gJXnI+B/F66b+Ruj2oHRnH
-         ubDBobnOzwXnXf5NPWmOuwzx/3TJiPgil9UOCLRlFkW8MlvENU7jZWMOhUgMsGM7PRoF
-         LKLQLRWyKFAxS3ke3dw79PxndJgUvEsclY2zmgAUgl6OY+cMU9mhaTRUIF3BWMImEkSZ
-         7taA==
+        d=gmail.com; s=20251104; t=1791154346; x=1791759146; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gNU7QFwaNW3Vr4qAV6/bo1RjIhjs4Gw/kzl9KhJGzgc=;
+        b=KuWq2JBkOPCrGTA1X+rVWsaQAmyqI80WIIJu6WmBeGPlCwwd8aeX+Ziv0gENeCQyKs
+         UGHRlCC+ZBuDZ0guPAYc6GXacXdznZvAxSmbfW5gwoW3TYT5Tys4eHSC9yqKabxc/xYP
+         Le/wsg8zwNXmxGf8CS9pH1kjFXO4Svr5GKoDk56CWN0ae2gGmGNRLmHJtwdIorSC7VrT
+         N6mnCpRPynClAlODHCki11v9hx8oFuHZJkRlgQdm+t47Dq9obmZjx1ePuOSW92UqRe9i
+         AxswocPnBg5QMVHgk8/H9fR7aKwTD+rjTl6q9KhsK+rG4dRkdWjPmaWXRGUd6f2ApAe2
+         ZtQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791153885; x=1791758685;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Lusv9musr2ttjnYRqCBgWFai9OjQZSC81iWtocGvUX4=;
-        b=slrZIYhlwnIci1Y/fLxeek+HfPxpBP/IHKFDxH0MqerFGEyl46onV7F3gwqfDlcSw0
-         OFVVMcnJksbfNSb1UFdQRrDYt5mrcXgUFwPljJhWFFrG3yy5f+FkICKoSdp/MLV6/Hau
-         KOO/0/pjLINuDu0aEmW344UTzrrRlab5O3YnzIbsAS8dsGHX9lw0Se1Aop1cs257QF6z
-         NsKHNBR1gxMD+KnxkV7JmP08EpEfyWomIFQaQml9my8mmMPGm5zVh6iXjhckae8P8zYa
-         wrmo7YNoh75Z2n4SK0Z5FgFX/JqvzeYI2nh+09z2BdeS2hLda0BSLaNenc+NSY3gK3ll
-         MkJQ==
-X-Gm-Message-State: AFq9FYIi7tRteBgzWMWfGsbvUBq/YD8UYRyo2Ib4V+FkaBGzYgS/Cr0p
-	kiScLnHOoIyFsskJ7Up/LMeMSU69fDgV63O+7emLMmS3Cl/fTPxPx+Kk
-X-Gm-Gg: AYBFou0fPx4BADL1K4Jkyt4z3ieWOujTnPmU1V3i2KSyrLAD3ff+bOdemThzAtijzJ2
-	ULBEXnnlE+n3rE2qQCYcsb999Q249BB/dVrqcQJpllitGE7XeEbapzAx7pwRsONB39Z10ZBPODx
-	iuHp9jSKP/Ks98+G2Rt23+H9G1qJUh8fWEFRc5pD2bcAlsSk38YGusvTLeJI716cctcb+Uum2+G
-	ChRN6skZtYtwxmOunoS05Ml/7yp+TkBhseWT9717nV2UadQ68/fhq7aIV0U8zDRDJMAvcstpXWT
-	OYFLu1ScZQut9gzsdOPsfN3MvxMWc3Nt90J7bQxt7MMGl5piBBWKEM415BQMpvDul8QqGXGo9mi
-	u3I/MtG/TaxDsWGWNwS7dbbLgGVBD8IzoDta//aWSnunhzDtefWEOcbxkhG1acu54eda09MuLjL
-	QLtRvSwGdlOY+K/Znv/UOKn26cIjpkk4rWGC4R4nTKIzf/WlHkZw7IA7SZ6tb9RtuBPpivqHMoQ
-	jXg2fci
-X-Received: by 2002:a05:6000:4312:b0:48b:4a2:8175 with SMTP id ffacd0b85a97d-48b12720405mr15518616f8f.43.1791153884706;
-        Sun, 04 Oct 2026 15:44:44 -0700 (PDT)
-Received: from [192.168.18.21] ([46.197.185.71])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c57d927cdsm5985325f8f.6.2026.10.04.15.44.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Oct 2026 15:44:44 -0700 (PDT)
-Message-ID: <35882765-2f65-474d-ba07-3f7642bd1329@gmail.com>
-Date: Mon, 5 Oct 2026 01:44:42 +0300
+        d=1e100.net; s=20260707; t=1791154346; x=1791759146;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gNU7QFwaNW3Vr4qAV6/bo1RjIhjs4Gw/kzl9KhJGzgc=;
+        b=KN6tb7nPGoBToZUXERCXiC7CNJB/n80PGyBXRnkacCE83piodOY6xsePhFzhuju3JI
+         saX7cNpQkx4XBuXYVDP38w/9r6L0kvtD6qpas7nflE2/r0YSBBsmxzAXsW/jYpS1c+Th
+         LSDICqo1JyUBrdg6c0lXbanUtFpHNsQPkVDo7pC/8QXkgCmEdXzoSE1FH44h+uVRF+ia
+         RtS7QaOr0BNAqVBFDTt0EMrto0ITnXyb+44HqOQZ01CN8RAlQfHB52TmQxvVhAnUVS+M
+         +/RbqsVKI7Wv24fsJPRxZKnbxvUt2bygXz649svHVUkRi25mn1hmGfvaDqD8gp+CWpFd
+         C1tQ==
+X-Gm-Message-State: AFq9FYI3ovGJvCnRfQjs16j9g0Td7hvuG5meNNtTGB9aY9JL8q4U8meb
+	xnyjuuMLEfI7otxfmCq2mTSTVhqrg4mtQgHcNSdKkaxMmN5J+T9cOhvR
+X-Gm-Gg: AYBFou3lAX1fRSp0IRpy0N9P/Zq88yM22TAxwyNdWl9jri/J5QxDFlO5uFur491mOYA
+	S4hFVTFzWbKPAa3UettRQJGWkxVzf6fc7I7x2uYBkJ1Q4xCIqV+UE4CP3xeU1zgKXx5ZAChA2r6
+	mYwYq+sl0xEUoZTJYpu5Rbg61HXmaKCOUdZGGV4rkCWQYCm/ev6OyzTTVgYt5pjUuFAuIhUx3G7
+	7ijK/ADOyJOY5MBXb5Isb8CaNGJdIObjZiN3Y1cBE65ZWY2eYKPHE81d6He1Qm5WFgZTB0lgoFd
+	dtF957VGPANqET3W5+plMnCtabd/0cs8KKiA8NZoVi61xe6xi65jCxdF6GmUSMFar7GQG+MGoap
+	VFg96+3PeqWNDxUfbTpOVmNfw4O1xtvNLhUSy1De52+jT69tAP+N31ohocVINn2oyctE7fIholZ
+	YIbg/mFGIpe8h7ka+XNBePyvbB+MfldwpxaYGlb1NYPmJFrvwRNqL9Mj9GzNvH4G/ScIb7WGKTm
+	nLeqybSWWk2i/MOO/Vj7PyGw9H6LE3AKy47kBC+kql5lWLBExKv
+X-Received: by 2002:a53:ac88:0:b0:677:c369:ff5b with SMTP id 956f58d0204a3-677c369ffafmr1639953d50.63.1791154346051;
+        Sun, 04 Oct 2026 15:52:26 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677c1baf25bsm2314865d50.14.2026.10.04.15.52.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 15:52:25 -0700 (PDT)
+Date: Sun, 04 Oct 2026 18:52:24 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Umang Pokhriyal <umangpokhriyall@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.3720fccc8b4e4@gmail.com>
+In-Reply-To: <20261004174739.36179-1-umangpokhriyall@gmail.com>
+References: <20261004174739.36179-1-umangpokhriyall@gmail.com>
+Subject: Re: [PATCH net-next v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] usbnet: fix EVENT_RX_PAUSED race in
- usbnet_skb_return()
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, oneukum@suse.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
-References: <20261004223852.312487-1-omermetekaya0@gmail.com>
- <179115379510.1402591.18007585712452116262@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?=C3=96mer_Mete_Kaya?= <omermetekaya0@gmail.com>
-In-Reply-To: <179115379510.1402591.18007585712452116262@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-
-
-On 10/5/26 01:43, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+Umang Pokhriyal wrote:
+> tun sets IFF_DETACH_QUEUE in the flags returned by TUNGETIFF when the
+> queue is detached, since commit 3d407a80b62f ("tun: Report whether the
+> queue is attached or not"). tap does not, so userspace cannot tell a
+> detached macvtap or ipvtap queue from an attached one.
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> Cloud Hypervisor ran into this when checking queue state on macvtap.
 > 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-
-Sashiko pointed it out.
-
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-
-Theoretical.
-
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
+> Report the flag from q->enabled, as tun does. Unlike tun, tap accepts
+> TUNSETIFF on a bound fd, so ignore IFF_DETACH_QUEUE there to keep
+> writing the TUNGETIFF flags back working.
 > 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> Assisted-by: LLM
+> Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
+> ---
+> 
+> Notes:
+>     v2:
+>       - ignore IFF_DETACH_QUEUE in TUNSETIFF so the TUNGETIFF flags can be
+>         written back, and describe the change as parity with tun (Sashiko)
+>       - drop Willem's Reviewed-by because of the new TUNSETIFF hunk
+>     v1: https://lore.kernel.org/netdev/20260929142238.41742-1-umangpokhriyall@gmail.com/
+> 
+>  drivers/net/tap.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+> index ff67d99deb39e..832439b8a8988 100644
+> --- a/drivers/net/tap.c
+> +++ b/drivers/net/tap.c
+> @@ -932,6 +932,9 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
+>  		if (get_user(u, &ifr->ifr_flags))
+>  			return -EFAULT;
+>  
+> +		/* TUNGETIFF may report IFF_DETACH_QUEUE, ignore it here */
+> +		u &= ~IFF_DETACH_QUEUE;
+> +
+
+I suppose we want tap to expose this state through TUNGETIFF, like tun,
+because applications already use that?
+
+Else cleaner than working around bits would be a whole new TUNGETQUEUE
+call to match TUNSETQUEUE. Rather than to squish this into TUNGETIFF,
+while that has no equivalent in TUNSETIFF.
+
+But, that approach does not help existing applications.
+
+So this is probably the right way. Just want to quickly check.
+
+>  		ret = 0;
+>  		if ((u & ~TAP_IFFEATURES) != (IFF_NO_PI | IFF_TAP))
+>  			ret = -EINVAL;
+> @@ -950,6 +953,8 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
+>  
+>  		ret = 0;
+>  		u = q->flags;
+> +		if (!q->enabled)
+> +			u |= IFF_DETACH_QUEUE;
+>  		if (copy_to_user(&ifr->ifr_name, tap->dev->name, IFNAMSIZ) ||
+>  		    put_user(u, &ifr->ifr_flags))
+>  			ret = -EFAULT;
+> 
+> base-commit: cfb7793d1bc0f7d90571611979654cf1b3886b29
+> -- 
+> 2.53.0
+> 
+
 
