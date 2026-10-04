@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60319360EF0;
-	Sun,  4 Oct 2026 10:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775CF134CCF;
+	Sun,  4 Oct 2026 10:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791108695; cv=none; b=kSn9jpGx6xzrCq4QAbPk5pi5flbqn1jwQgpGXmx2XQ83aTOoXueqz8bZJ313aeyBHLEnNgf/LwZinFQsLgr046n1Tq/t1sbwW2wEz08r6XRmxIw6Q/Hks819B1gmvBEbqRsisXRhN5Cghcy6Ytp5C9ckwxfJ4vq5W+3QJZ99WjY=
+	t=1791108880; cv=none; b=gdfA/PJexPMahGmbezWp7CB2yomdThguvFX+Yb+cBpNQHUm8kKHRm/wkYk0yv1oDTNFZ1gdr7QhRKSq5Zi+88eKCVPd66eLMAiqdU1liIJMwwjzYeuMowvlhVGIS/9lJ6Rzg9bjzSq4DY0xmlm3vhQaTB+XNMYPBaojTDeFHApQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791108695; c=relaxed/simple;
-	bh=btjxOFBncYcxeFTQHEr93pMLtej9EhJUaEBzY4YpKfc=;
+	s=arc-20240116; t=1791108880; c=relaxed/simple;
+	bh=aQBpPbkz7ZDBMOBOV8wDOvq9JzIBpm/LNzyMWA0JHKk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ePa+k9I5uHc5ZnkgqsI9XJ6CduBQ2DC9w8L8Qh+HvXRgJxN2w1bkFRx9I6LjjlSwHXQl9UwEkllyUT5kXxdupwOFJ76x2L2mViB9bqirm96zJQ9zErLlrHj/EmVVLuyUJ1LngkZLjdVEgkB3VOBODNw9+Nq40AJIIkpYJQANoiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHXXpBnV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=iwjuaJxbtbBiHrdqHTp4Izii0+UosPtZ1hEbGR60MoZEhQQQv4FZYpW69pq97hJnupn9jaCV7OftgSEr/+a1wbDUKf3nxACRNd8o0D+Xzeht1TA5NbtKc0Lp9qDxvMcbOLSYiIwQFukmfkVrb/p9v/jY/IEBLXvbCZrLkSxmp6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B1FqCqr7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHXXpBnV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CC51F000FF;
-	Sun,  4 Oct 2026 10:11:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B1FqCqr7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FFF1F000FF;
+	Sun,  4 Oct 2026 10:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791108694;
-	bh=CkSaGWts0W4FuW/tGrCciXI8NMI5AFPyJYFUhRRfSWY=;
+	s=k20260515; t=1791108879;
+	bh=4r5/C4JCJZeEUGXdTQ3rAADP0uRBtsY2xFNcp4jidH0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BHXXpBnV4T4M2ffN2oYCNvYAIwO9HQDmS3AjdA/56LPsmbvxoUrZWasOo5KQTvvr9
-	 zKW/5w/vdH12cMqIz1eG/IHP3cvnijatqlmz2O5leHG8v5PlU66GCb71Kvqs9rhcUM
-	 9EzfQr7a2KJ6UEP3RyUwKU2w1l8OxeuTX7ZMEws9UqBbtbv82DlvqPXjUHnSm/HbXS
-	 Z9KZXPfRsgvMeGmbeD9TfZx305wekzVCCReErQLgaKErUZrya0Ny5giHoyuYIXFx63
-	 Bj8JQXxZgu0dEh1MJZgk49dS6RRUvD7xksf7wjkBlcW5f4MbGW7XmfrAw8B8Pi/UQ6
-	 vQWh9wj3mkpFg==
-Subject:
- Re: [PATCH net-next v2 2/2] selftests: net: big_tcp_tunnels: Cover bareudp
+	b=B1FqCqr7nq9qX1hvafa0Lbd8V5iO0ku/V2kP3bolCqyZq+I7TwiCY0mTNr9X10pEN
+	 McE0C235vtElkMMT9lhx06zpNaUxQ87p6em/bx937n9/L1CxTQ3LtblPyeY/0MYKxo
+	 SwzESCLeTPhse3gAsCQgQf/TIjmyY6lu4fhejkrODtoviIDkScrRSUahjhpsObtLyO
+	 ReNqSsFxrS/FhjmmRRiQ7x68q9iDQ9vt0vJoo4BryfVf25u1icLmq7L2TIKuF3uRNi
+	 Bxnr97zdwov9KC/EPFMVKfclieVusXY5zb+cZSYIflGzf7slx8CU0hqcY6cSEELdp6
+	 J1NgO9hq5bxLA==
+Subject: Re: [PATCH] bnxt: prevent timer rearming during teardown
 From: netdev-bot+sashiko@kernel.org
-To: yanhaishuang@cmss.chinamobile.com
-Cc: netdev@vger.kernel.org, alice.kernel@fastmail.im, daniel@iogearbox.net,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 04 Oct 2026 10:11:32 +0000
-Message-ID: <179110869274.434549.7292617532752243045@kernel.org>
-In-Reply-To: <20261003100939.468181-3-yanhaishuang@cmss.chinamobile.com>
-References: <20261003100939.468181-3-yanhaishuang@cmss.chinamobile.com>
-X-sashiko-severity: High
+To: runyu.xiao@seu.edu.cn
+Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, huangjw@broadcom.com,
+ eddie.wai@broadcom.com, prashant@broadcom.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, jianhao.xu@seu.edu.cn
+Date: Sun, 04 Oct 2026 10:14:37 +0000
+Message-ID: <179110887788.434549.16288034417298811962@kernel.org>
+In-Reply-To: <20260930092806.2977763-1-runyu.xiao@seu.edu.cn>
+References: <20260930092806.2977763-1-runyu.xiao@seu.edu.cn>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,161 +59,90 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Seven of the twelve new bareudp test cases cannot pass, so
-  tools/testing/selftests/net/big_tcp_tunnels.sh now always fails.
-- [Low] Comments in tools/testing/selftests/net/big_tcp_tunnels.sh do not
-  match the new coverage.
-- [Low] The return status of the new bareudp setup commands is never
-  checked.
+- [Medium] The commit message describes a bug that does not exist, and
+  the change does not work the way the message says.
 
 --
 
-selftests: net: big_tcp_tunnels: Cover bareudp
+bnxt: prevent timer rearming during teardown
 
-This patch adds bareudp to the tunnel types tested by big_tcp_tunnels.sh.
-The bareudp devices run in external mode with ethertype ipv4 multiproto. A
-tc tunnel_key action on egress supplies the tunnel metadata, and the device
-MTU is lowered to leave room for the IPv6 and UDP headers.
+This patch adds a BNXT_STATE_OPEN check before the final mod_timer() in
+bnxt_timer(). The goal is to stop a callback that is already running from
+rearming the timer once __bnxt_close_nic() has cleared the flag. It is
+tagged Fixes: c0c050c58d84 and Cc: stable.
 
-> diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh b/tools/testing/selftests/net/big_tcp_tunnels.sh
-> index cc0875e52fb9..cf38377f576b 100755
-> --- a/tools/testing/selftests/net/big_tcp_tunnels.sh
-> +++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
-> @@ -53,6 +53,16 @@ setup() {
->  	DEFAULT_TCP_MIN_TSO_SEGS=$(ip netns exec "$CLIENT_NS" sysctl -n net.ipv4.tcp_min_tso_segs)
->  }
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index d7728d0c5b6e6..c506b6160902f 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -14521,7 +14521,8 @@ static void bnxt_timer(struct timer_list *t)
+>  		bnxt_queue_sp_work(bp, BNXT_RING_COAL_NOW_SP_EVENT);
 >  
-> +# bareudp only works in external mode: attach the tunnel metadata to all
-> +# packets sent through the device. Its MTU does not account for the
-> +# encapsulation either, so leave room for IPv6 and UDP headers.
-> +setup_bareudp() {
-> +	ip -netns "$1" link set "$2" mtu 1452
-> +	tc -netns "$1" qdisc add dev "$2" clsact
-> +	tc -netns "$1" filter add dev "$2" egress matchall \
-> +		action tunnel_key set src_ip "$3" dst_ip "$4" id 0 ttl 64
-> +}
+>  bnxt_restart_timer:
+> -	mod_timer(&bp->timer, jiffies + bp->current_interval);
+> +	if (test_bit(BNXT_STATE_OPEN, &bp->state))
+> +		mod_timer(&bp->timer, jiffies + bp->current_interval);
 
-[Severity: Low]
-Should failures from these commands be passed back to the caller?
-setup_bareudp() ignores the exit status of ip link set, tc qdisc add and tc
-filter add. The same is true of the ip link add ... type bareudp ...
-multiproto calls in setup_tunnel().
+[Severity: Medium]
+Is there actually a teardown race here? The commit message says:
 
-The exit status of setup_tunnel() comes from its last command:
+  If teardown clears BNXT_STATE_OPEN while the callback is running, the
+  callback can rearm the timer after __bnxt_close_nic() has started
+  deleting it.
 
-    ip netns exec "$SERVER_NS" ethtool -K link1 tx-checksumming "$3" > /dev/null
+In __bnxt_close_nic(), the teardown sequence is:
 
-As a result, setup_tunnel ... || exit "$?" never sees these failures. The
-new tc -V check only shows that the tc binary exists. It does not show that
-matchall or tunnel_key work.
-
-Without the tunnel_key filter, bareudp_xmit() drops every packet:
-
-drivers/net/bareudp.c:bareudp_xmit() {
+drivers/net/ethernet/broadcom/bnxt/bnxt.c:__bnxt_close_nic() {
     ...
-	info = skb_tunnel_info(skb);
-	if (unlikely(!info || !(info->mode & IP_TUNNEL_INFO_TX))) {
-		err = -EINVAL;
-		goto tx_error;
-	}
+	clear_bit(BNXT_STATE_OPEN, &bp->state);
+	smp_mb__after_atomic();
+    ...
+	timer_delete_sync(&bp->timer);
     ...
 }
 
-The test then reports a packet-count FAIL rather than a SKIP or a clear
-setup error. The vxlan and geneve setup ignores errors in the same way.
+timer_delete_sync() already handles a callback that rearms itself. While
+the callback is running, __timer_delete_sync() keeps retrying:
 
-> @@ -64,26 +74,42 @@ setup_tunnel() {
-
-[ ... ]
-
-> +	bareudp)
-> +		ip -netns "$CLIENT_NS" link add tun0 type bareudp \
-> +			dstport 6635 ethertype ipv4 multiproto
-> +		setup_bareudp "$CLIENT_NS" tun0 "$CLIENT_IP" "$SERVER_IP"
-> +		;;
-> +	esac
-
-[Severity: High]
-Can the bareudp cases that use IPv6, inner or outer, with csum offload off
-pass in this configuration?
-
-With tx-checksumming off on link0, every encapsulated GSO skb is segmented
-in software by skb_udp_tunnel_segment(). That function chooses the inner
-handler based on skb->inner_protocol:
-
-net/ipv4/udp_offload.c:skb_udp_tunnel_segment() {
+kernel/time/timer.c:__timer_delete_sync() {
     ...
-	case ENCAP_TYPE_ETHER:
-		protocol = skb->inner_protocol;
-		gso_inner_segment = skb_mac_gso_segment;
+	do {
+		ret = __try_to_del_timer_sync(timer, shutdown);
+
+		if (unlikely(ret < 0)) {
+			del_timer_wait_running(timer);
+			cpu_relax();
+		}
+	} while (ret < 0);
     ...
 }
 
-On the IPv4 underlay, bareudp_xmit_skb() always stores the configured
-ethertype. It does this even for IPv6 inner traffic in multiproto mode:
+After the callback returns, __try_to_del_timer_sync() sees that
+base->running_timer != timer and calls detach_if_pending(). That removes
+any timer the callback rearmed. The kerneldoc for timer_delete_sync()
+says:
 
-drivers/net/bareudp.c:bareudp_xmit_skb() {
-    ...
-	skb_set_inner_protocol(skb, bareudp->ethertype);
-    ...
-}
+  Upon exit the timer is not queued and the handler is not running on any
+  CPU.
 
-The IPv6 header is then handed to inet_gso_segment(). There, iph->ihl * 4
-reads the low nibble of the first IPv6 byte, and the ihl < sizeof(*iph)
-check fails.
+The rearmed timer could also fire before it is detached. In that case the
+entry check in bnxt_timer() returns without rearming, because
+BNXT_STATE_OPEN is already clear. The only other place that arms the
+timer is __bnxt_open_nic(), and it does so after
+set_bit(BNXT_STATE_OPEN).
 
-On the IPv6 underlay, bareudp6_xmit_skb() never sets inner_protocol. The
-field stays 0, so skb_mac_gso_segment() fails:
+So before this patch, the worst case looks like one extra mod_timer()
+that timer_delete_sync() then detaches.
 
-net/core/gso.c:skb_mac_gso_segment() {
-    ...
-	__be16 type = skb_network_protocol(skb, &vlan_depth);
+The commit message also says the new check "prevents a callback already
+in progress from starting another timer period". But test_bit() and
+mod_timer() are two separate steps with no lock around them. A
+clear_bit() on another CPU can land between them, and the callback can
+still rearm. The guarantee still comes from timer_delete_sync().
 
-	if (unlikely(!type))
-		return ERR_PTR(-EINVAL);
-    ...
-}
-
-In both cases validate_xmit_skb() drops the GSO skbs. The bigtcp iptables
-counter on tun1 stays below packets_threshold, and do_test ... || exit "$?"
-stops the run at the first such case: bareudp, tun_family 4,
-traffic_family 6, csum off.
-
-vxlan and geneve are not affected because they set inner_protocol to
-ETH_P_TEB.
-
-This driver behaviour is older than this series. The previous patch,
-"bareudp: Enable BIG TCP packets", only raises tso_max_size and does not
-change it. As a result, the commit message goal to "run the same checks
-over bareudp as for vxlan and geneve" cannot be met as written.
-
-Could the bareudp inner_protocol handling be fixed first? That would mean
-setting it from the actual inner protocol, and also setting it on the IPv6
-path. Alternatively, the bareudp combinations could be limited to the
-cases that work.
-
-[ ... ]
-
-> @@ -205,7 +236,7 @@ fi
->  WORKDIR=$(mktemp -d)
->  trap cleanup EXIT
->  setup
-> -for tunnel in vxlan geneve; do
-> +for tunnel in vxlan geneve bareudp; do
-
-[Severity: Low]
-This isn't a bug, but the comment at the top of the file still reads:
-
-# Testing for IPv4 and IPv6 BIG TCP over VXLAN and GENEVE tunnels.
-
-Should it mention bareudp now?
-
-The comment in do_test() is also out of date:
-
-	# packet to veth. Check BIG TCP packets inside the VXLAN tunnel to verify
-
-That branch runs for every tunnel type. The wording was already wrong once
-geneve was added, and adding bareudp makes it more misleading.
+Would it be better to treat this as a cleanup? That would mean dropping
+the Fixes: and Cc: stable tags and rewording the commit message so it
+doesn't describe a teardown race fix.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261003100939.468181-1-yanhaishuang%40cmss.chinamobile.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930092806.2977763-1-runyu.xiao%40seu.edu.cn
