@@ -1,197 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011030.outbound.protection.outlook.com [40.107.208.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176933EF0AA;
-	Sun,  4 Oct 2026 07:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791100127; cv=none; b=o//XbTZI4Qc8J8LM7bRp8Px36D9MmrwzUwHZyzF9Eb1moptuQm9szca6MwbERC1i3Ku5fUFjXe3Es691S6tPYmYgCQ8S8GKDFpWHDZJt6298Ckus6N0RiclN0TRLd818yqqmFo1dPKh1yV9oozJcwWSyDHLDIf+LVlkaF9FOg9E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791100127; c=relaxed/simple;
-	bh=ufsoPI5ErQhfwid1FVxSilhHFg/Y1m4Cko/D3D3/ksk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I9KQ7ClqnsyVfxQiPfB4NHlypPCynjB27MyQNcf4uJlFLQRVTor/KAUMILGv0GnRvh+yR4WGFKLICTmfG9/H2d3dnaOTrNsiX8fyBz+OUPH5axx9IDQZyMbFmuZHyssWQvuaCVixAkxDdOty8ZZDJemnYOLNmaRWiQhr0Pq3yGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ByMshHBk; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250A9414A3B;
+	Sun,  4 Oct 2026 08:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791100967; cv=fail; b=GA/tHbLLW7ygRLIj4xtObO342qsS1db642RsIwyjSVc+4LFfdSaNLkEbcYb25m/p0l/gpMX05mQDx/mU1SAypNWeDQ3LfvgJEIheLvRRgLeH2RBkqkiBgO3Ka0WvlFnNS1M9zP4fj1IHstbJ71XivFIBYazydAYkVPes2krySM8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791100967; c=relaxed/simple;
+	bh=vfs/yJYtFtoruRJ2jbMiYIEsxe4t7GZwzHuFGrY/TbE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=n/fknP8nzk9gJNj14pqMZhlFIwKBKpPFZ6wy4fyFbLoKimqJIu7FTMbeQV+sFHch3MqwkpsFD+UwShXjpk4fSy17IPVno3joawbceAU7n+KkcY7nzvidFXwZyB8j0vTpUWfqJF7WWIfviZrqP/vWTOBXSHGfWhBhmv2hnXrG6Ss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Mn1ai1G9; arc=fail smtp.client-ip=40.107.208.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ByMshHBk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FB01F000FF;
-	Sun,  4 Oct 2026 07:48:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791100125;
-	bh=qWuqTnRYrVRWB+5EiFqkLhW64/Chnr+y9CqLPL+2oJE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ByMshHBkV60IasVbCdZNNg2rQnG1jxMlC+HK0R+UnGYFr2o7RYGP4OicJePP0RkqD
-	 I5ExPMP+uRewlI7zYRY88QZap1sgFcLB+7MfHcHC+/Pp4BO7lqJXaOUsD90SzU1XCH
-	 fWbqISa33KhHwOvUOpPScKDJP6Qj5zUrcL9dDgbISfa55xGscG7M9jAfvOOQOZz3N9
-	 47tO17ISvW7hoqiHvBi7WevUAgm4pnsoeeXsvG+RJjQhUncMbowaixeRm7FKAyYRmU
-	 PYLiKPdau4TV2oxk53q0WrIZUArM6ezFZkVFkdkYssLBykpNuBdfyfmA9H62pk3EYE
-	 B4Sh7wxgT0J0A==
-Subject: Re: [PATCH net v7] net/smc: fix lgr/lnk lifetime vs diag reader race
-From: netdev-bot+sashiko@kernel.org
-To: mjambigi@linux.ibm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
- dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
- pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
- guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Sun, 04 Oct 2026 07:48:44 +0000
-Message-ID: <179110012456.434549.13805687630302688897@kernel.org>
-In-Reply-To: <20260930073029.1201202-1-mjambigi@linux.ibm.com>
-References: <20260930073029.1201202-1-mjambigi@linux.ibm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Mn1ai1G9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L1mXi1MSKa+s9vL+pe2Yo3ffME8rD4U8F10aHYfPxvMjPvhhMODSXnZUwx04i758MMoC0HmxozHPuTkrAWzYnlCqormHwHZ09vonMUiRs3orkVm7xU2C+9FCflwOuQxPZwLHz3wzRSGlciX7u9r1Tsgi7yWDqhHBlO6QSugn98p1RdN7ByLcUQt6tqRpuDPaTZS14Tqj87IY0MkwhNKZgMZutXATVwp7k29CMxVLEROLYcgOOR3SN98s7mb0Q00zRi6fui6obw4Om3ppjI9mYTBolEZlZVw13B3sj0dAtT4CCBrgTB7aivz4jBVib0mXEGw+cZI7yGSp8zEARB4HIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6RmuSFYJXzpfx8t2GYsyKzDDFvLcdOSiZkcw8l3ddTk=;
+ b=pldNIJPUuoMDPnxx2uPhOAse0w2AP0Ax4q3fyCtKO2d7L5syPRz9Z1aSqDlHXfRWr9+7eM3rlYkyQPUFZm6/X3ELEp2YlCtIyCDFjcCimmyGAmsxfiLp2jh3VzDoef7P1jkZW9SrNw/6iisEnyNZcv9ik53xuNXvDn4kJQPAOgVYfZh7bSQnE8LtJMw2sPPgHKL9X/pfEZTyoKMp9wtsCpbaipnl1iszzqcv0msr93I5TWjVKGtRHt7DvDS84JYwKHmkW0NNe/PI9IYrzjagGUUiz5BK9XsLKxTcP+oUVE0fLLfC7yoxBwaIB+wNoZDuLmNFhrGvcTwLGdZFz/SufQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6RmuSFYJXzpfx8t2GYsyKzDDFvLcdOSiZkcw8l3ddTk=;
+ b=Mn1ai1G9ZwPxGdAnWNWVMLuC1Md1KkXzTiY6Ev5eqGNnFrlEIl8RsUnb0ALj0/xQO3RNcZICmTxEcVVVikfx/GQERqgS/DTI9kVHksiaQ6ofc7Y8wm8DVHTBGL6kqZfxcN+66w50GsY/z2DVIlcipzsTU+I8tCydF4nk2If4zutxLzXOrB8VQgy5K9NyanwFICD8q+Y/4CfxBR1Ft5KnrwFc7ZLSfPlejxO8yICVtuuJGshy227y3rABkHy2ozwqYOore1xIZFSSVlgGouDYInhieAMRzTFw3672eEvtWzizeFqk6SaDNsqkfBC82Mo+4ybx7G+e4MaIK69zhZMBQw==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by SJ2PR12MB9115.namprd12.prod.outlook.com (2603:10b6:a03:55c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Sun, 4 Oct
+ 2026 08:02:42 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Sun, 4 Oct 2026
+ 08:02:36 +0000
+Date: Sun, 4 Oct 2026 11:02:28 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Vladimir Vdovin <deliran@verdict.gg>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Amit Cohen <amcohen@nvidia.com>, Roopa Prabhu <roopa@nvidia.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/3] ipv4: stop exception dump when nexthop group
+ shrinks
+Message-ID: <20261004080228.GA92032@shredder>
+References: <cover.1790915964.git.4ncienth@gmail.com>
+ <5bb7bd97411eb9db454464bf449107395e760f26.1790915964.git.4ncienth@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5bb7bd97411eb9db454464bf449107395e760f26.1790915964.git.4ncienth@gmail.com>
+X-ClientProxiedBy: TL2P290CA0021.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:3::15) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SJ2PR12MB9115:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f9ec4ec-c986-426b-1b6e-08df21edda25
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|11063799006|56012099006|4143699003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	Ym5e9DwGytOFjH3rudycAi9JDSwTFSk+zg61FsdowztHkXgYGHVUcqRuYZkIOfuw3KrG6KSiMn1BZrWXIoqW4JvxDNdpuZqOEWE1KarAHvEhKLDdXcEJfE9BSZcwvLCPNQMeOy3no8gd+N8VSm1ghZV0SGz/B7HKlNMQrFqBQZ4aGC/WbXiMxSpMhnl2fB2n7BVE48dx70FSiVQMIsZJdIsDRsJu2zt8yY6QKfM/ZCoD/k7R0+SiFJ0FW4kNpebwdO+GgCqZgndeSi72H5sbC/K/HDI/56UqhfdY+nZxE7AlGV+O8yt/OTNmOn2t7fCHWNxq5yOv07lC10x4x7kG2hHlZ8shZX5SIz0MbTUt2fbwLyTjstFgb7k0NkeaEM24Aw6KCwZzImE6L6rjJ86R5kjUzLb1GFBs9hlA1RWATZdqo2P0F4Genl7Y48AptegcWEQ9yS18EVTwzsMIoyXx0AD9exXDVF4abb19LtHSq2dWKmNEHIf/50GboryD96CxLgp7+IIeSsQ80I5l5L2v6nelY+0E79QIaidMZqTlxeITwyxdIgxSXWLiTTmS+mkJ9b5VfiFWSSbSr9SG+nVu+XOKNgAWOHRUxDbZcKA2XwJFmyNLhwngrcqtEqyiTaxhHppRBo9yHP/RNK0/3/rrPI5vG36YoreTv66LC3l5MDc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(11063799006)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WM94sDHotQGofSPFJSbPHyC5obavGF6vlKTLdYdJTCekJSwfUkZKk+59hiI7?=
+ =?us-ascii?Q?JTzyMvTDymd8hS6rQ3lyCGXFIOwbzsxdUBeNY9w4+t+POTEfaxA17k1kmGMT?=
+ =?us-ascii?Q?vQjP0h604rR9YTkzQdlEMVBf8bog6MsDuDjBN562Y5LAFwiiAKKpb5zi5k7g?=
+ =?us-ascii?Q?18X8Xxt24J74lHYf86j0OCpfbl3zcjcr/FRjz0bKwQyE6VpQQX8LrhW7XnSk?=
+ =?us-ascii?Q?2s7Vsn7VdhaXyfsV6HUKnYTUcDk34WpnjiaUvoafpJBQlptkHjC9lg8m63fC?=
+ =?us-ascii?Q?Vu8LhBx0BFRlFCpinnLxOF+fBKl5Gp9YsZc8il2XebzjZvwBLg/4H66nuQEX?=
+ =?us-ascii?Q?alKcYwz5ruopC3JPZhooDyfMtW/qtl3VbX3R/sxbTbcmqQgGTXs02V0ScLGc?=
+ =?us-ascii?Q?VTc+SasDFqJBXs3CzXOiMuzfMqegvKhHPgpbCF0LS2aZBIlotX+v+Y3Aoin0?=
+ =?us-ascii?Q?mX8IiDQTkgF2h6b5zsugcFzDmVQPhlkdwdCVc23fiwS/XXckHRsWxJpzXRkS?=
+ =?us-ascii?Q?l8p8a3fFiVzEiUsRnA55ARYUeJHVo3pF/VTRRxB5CVpCgOCKYYJtIrMVypk/?=
+ =?us-ascii?Q?+xpo5aCGNpJ+3zV6HOF0Dsmhr6LUB/JI41hk/cb/bQBbNu+XI73G0UrVFiEt?=
+ =?us-ascii?Q?a9Se2iO+PiDVPgh/VeePwrvGoxNIwNZIMl4gkRskhZmKGMMTl3+C0egAhHL4?=
+ =?us-ascii?Q?ln1xIS7ca+KsFSdZrkJeeU/hmUM9Q45D6Xs//x5hiH3w5HF2gByH9XeAf5IJ?=
+ =?us-ascii?Q?iwRY5aJ7Nr4qmuhaCRij/UFODhJibUGWdry1VuTWuFOhLUZs11hZtGuHza6R?=
+ =?us-ascii?Q?D2PZtPp1X+3zOkKuqjE7LcBskuIBQCLkQNal5VyR7QgdVLqQRuKSqaYdBfad?=
+ =?us-ascii?Q?V7DUmgJ3DQTJGVb+/ihJhgjmlv2qUygCKm6lAT4ROVMUz3QCFG8QrH1MN2Nb?=
+ =?us-ascii?Q?r8RZy+4o4pYA1stpKPjvagXveG7w4xynEVHnj5bQPQKpt+aVcaDfMoDYuuJh?=
+ =?us-ascii?Q?/bUhDAKq+2zuS5EXRYLGNS37uh7mJ5FGw9zNTMbv4JaPX323+cXxv3uw14Tt?=
+ =?us-ascii?Q?biKY454+F2APJbws5cVslVeBDXg1x5IWf+f+adejZpgxKCtE/+W4jtWMBQLp?=
+ =?us-ascii?Q?9BkZArg5t5XjkaOKxwAb1besmjg5XVWJGwX0h89A2wxhv7snK1h9Ep/boskq?=
+ =?us-ascii?Q?IX3lpO02Cg5z/fBKCeGjv1jIdnzF8oyyVd4WBLQENhPdnXiI4w4/IT7tjqWc?=
+ =?us-ascii?Q?9MEmzm1ArIB70RhbWs52HxD1qe0Gh/pHtdoZFWKYDA68/uyxg+AoOwsPoCp9?=
+ =?us-ascii?Q?SKW7eDXG2rjKKonshh40T7Wl8y1FgBTPE7wZnPt28iYi4kTNY0SEk6VkVVLm?=
+ =?us-ascii?Q?MKNqnDXeuKMbSIDk1p9SoRf+JldhGVUPFsn2Iiey2SgdSOejLpLohnVUYH9J?=
+ =?us-ascii?Q?GyTJLYPKY5NpziX9cmXQZE8t1LMUkZJf7NwYoIadli1aGwlD2xZdcyo8UZQY?=
+ =?us-ascii?Q?Ozy0DElXMoBS10zNnszlMsY0IlRvsj+Bu75dk6u+hA51EQADH2IUPtOZUT1L?=
+ =?us-ascii?Q?TD9NQsA5NRNCJ77dhjPDdGX5Ffj2LFFEkREAnbVkZKsLGg9cjLvwQWGMFSc8?=
+ =?us-ascii?Q?EnsFRww/DnnQFaPp2QwKO/4OwxNW1ptICHGG1qDH35twu4VyLcSjQq71Kqz1?=
+ =?us-ascii?Q?NiXB35xxUyneeRaIR8/yx232oDu/mzrBa9dpULo/egsrsEqm?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f9ec4ec-c986-426b-1b6e-08df21edda25
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2026 08:02:36.2158
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4JSCQPOWc1rXTwPKqSlCEkG7x9tUtyi6e4iy/YGfNezjgr2+rkL4nBksobHV2ZMpkTNWmKbxUZBftEoTrZGB3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9115
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Fri, Oct 02, 2026 at 01:50:59PM +0900, Daehyeon Ko wrote:
+> Commit 4ce5dc9316de ("inet: switch inet_dump_fib() to RCU
+> protection") allowed IPv4 FIB dumps to run concurrently with nexthop
+> replacement.
+> 
+> fib_dump_info_fnhe() uses fib_info_num_path() as the loop bound,
+> then fib_info_nhc() independently reloads nh->nh_grp. If
+> RTM_NEWNEXTHOP replaces a group with fewer paths between those loads,
+> fib_info_nhc() returns NULL and the dump dereferences it through
+> nhc_flags.
+> 
+> Stop the walk when the indexed path is absent. Nexthop groups are
+> dense, so the current snapshot has no later path.
+> 
+> Fixes: 4ce5dc9316de ("inet: switch inet_dump_fib() to RCU protection")
+> Reported-by: Ido Schimmel <idosch@nvidia.com>
+> Link: https://lore.kernel.org/netdev/20261001170513.GA1657889@shredder/
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch does not fully close the diag-reader vs. link-lifetime
-  race it says it fixes.
-- [Medium] The new safety gates in __smc_diag_dump() depend on a plain,
-  lockless load of sk->sk_state.
-
---
-
-net/smc: fix lgr/lnk lifetime vs diag reader race
-
-This patch tries to close races between the SMC sock_diag dump and
-teardown paths. The dump walks the socket hash under read_lock, while the
-teardown paths free lgr, lnk or sndbuf_desc state. The patch adds sk_state
-based guards for SMC_INIT and SMC_CLOSED sockets to __smc_diag_dump(), and
-unhashes the socket earlier in smc_conn_kill(), smc_close_active_abort()
-and smc_close_passive_work().
-
-> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
-> index bf0beaa23bdb6..b29bd34acf7b5 100644
-> --- a/net/smc/smc_diag.c
-> +++ b/net/smc/smc_diag.c
-> @@ -90,7 +90,8 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->  	r->diag_state = sk->sk_state;
->  	if (smc->use_fallback)
->  		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
-> -	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
-> +	else if (sk->sk_state != SMC_INIT &&
-> +		 smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
->  		r->diag_mode = SMC_DIAG_MODE_SMCD;
->  	else
->  		r->diag_mode = SMC_DIAG_MODE_SMCR;
-
-[Severity: Medium]
-Is a plain load of sk->sk_state enough to order the later loads of
-conn->alert_token_local, conn->lgr->is_smcd and conn->sndbuf_desc->len?
-
-This check, and the SMC_INIT/SMC_CLOSED guard added below, share no lock
-with the writer. Nothing sits between the sk_state load and the conn field
-loads: no READ_ONCE(), no smp_load_acquire(), no smp_rmb(). Only a control
-dependency links them, and that doesn't order load->load on weakly ordered
-CPUs.
-
-On the early abort path the writer runs under lock_sock():
-
-smc_conn_abort()
-  smc_conn_free()
-    smc_lgr_unregister_conn()    /* alert_token_local = 0 */
-  smc_lgr_cleanup_early()
-    __smc_lgr_terminate()
-      smc_lgr_free()             /* lgr and buffers freed, conn->lgr and
-                                    conn->sndbuf_desc left set */
-smc_switch_to_fallback()
-...
-sk->sk_state = SMC_ACTIVE
-
-On arm64, could the reader see sk_state == SMC_ACTIVE together with a
-stale non-zero alert_token_local? It would then read lgr->is_smcd or
-sndbuf_desc->len from freed memory and copy the value into the netlink
-reply.
-
-This can't happen on x86 or s390, which keep load-load order, and the
-writer's window is long. The Linux kernel memory model still allows it.
-
-Would READ_ONCE() or smp_load_acquire() on sk_state (or an smp_rmb()
-before the conn field loads), paired with release-ordered state changes,
-be needed here?
-
-> @@ -103,6 +104,9 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
->  	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
->  		goto errout;
->  
-> +	if (sk->sk_state == SMC_INIT || sk->sk_state == SMC_CLOSED)
-> +		goto out;
-> +
-
-[Severity: High]
-Does this leave the conn->lnk replacement during SMC-R link failover still
-racing with the diag reader?
-
-For SMC_ACTIVE and closing-state sockets, the LGRINFO block further down
-still does this with only read_lock(&smc_hash->lock) held:
-
-net/smc/smc_diag.c:__smc_diag_dump() {
-    ...
-		struct smc_link *link = smc->conn.lnk;
-		...
-		memcpy(linfo.lnk[0].ibname, link->smcibdev->ibdev->name,
-		       sizeof(link->smcibdev->ibdev->name));
-    ...
-}
-
-The failover side doesn't take the hash lock and doesn't unhash the
-socket. For example, when the peer sends DELETE_LINK:
-
-smc_llc_process_cli_delete_link()
-  smc_switch_conns(lgr, lnk_del, false)
-    smc_switch_link_and_count(conn, to_lnk)
-      smcr_link_put(conn->lnk);
-      conn->lnk = to_lnk;
-  smcr_link_clear(lnk_del, true)
-    ...
-    __smcr_link_clear()
-      put_device(&lnk->smcibdev->ibdev->dev);
-      smcibdev = lnk->smcibdev;
-      memset(lnk, 0, sizeof(struct smc_link));
-      ...
-      atomic_dec_return(&smcibdev->lnk_cnt)
-
-A local RNIC or port going down reaches smc_switch_conns() the same way,
-through smcr_link_down().
-
-smc_switch_link_and_count() runs only under lgr->conns_lock and
-conn->send_lock. The diag reader takes neither lock.
-
-Suppose the reader loaded the old conn->lnk before the switch and was
-delayed before the later loads. Could it then dereference a NULL
-link->smcibdev after the memset()? Could it instead read a freed smcibdev
-or ibdev and copy those bytes to userspace?
-
-An unprivileged SOCK_DIAG dump that asks for SMC_DIAG_LGRINFO (for
-example smcss -R) can reach this.
-
-The socket stays hashed in SMC_ACTIVE or a closing state. So neither this
-guard nor the !list_empty(&smc->conn.lgr->list) check from 9dbe086c69b8
-filters it out.
-
-v2 of this patch protected the swap in smc_switch_link_and_count() with
-lgr_lnk_lock, but v3 dropped that. The patch still carries Fixes:
-9dbe086c69b8 and is titled "fix lgr/lnk lifetime vs diag reader race".
-Should the conn->lnk replacement also be covered, for example with a lock
-or RCU pairing on the link swap?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930073029.1201202-1-mjambigi%40linux.ibm.com
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
