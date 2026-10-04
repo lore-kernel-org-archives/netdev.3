@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE414296BA9;
-	Sun,  4 Oct 2026 13:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770971F3B85;
+	Sun,  4 Oct 2026 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791119871; cv=none; b=NVjUsTU37lQgEP4/cLuGS8N/Nu5nuaPluj6p9oOC4roQytdDMKzzq3WbYyDbS8TY68b0eSn0PYcIY3QeRMnWXpEDnozoS/kXugKhSgmVOn0E8hq3dIbdYypcsIckycswUk8oVeaxls2EC3a4FBR5S0i6df8jL8hxLWAnMLKOio8=
+	t=1791119871; cv=none; b=idcZjZlYncUT4BU4CKJfOHdE+LoqjM4XhlY6Nwk6tHjECBQCii2iZn9HTr5jc3GNGrPzQ7XXSW9prXjWDVaBsNSXjbDEfGZFCWftaYt5orfHfYJcrB31HNii8fxGf/bL007RZIkWqLGJQdF0mjTLIGyD8HCjVd9jWw0s/tiHrkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791119871; c=relaxed/simple;
-	bh=eiZ0ytx/GzaVZKESSlon9Ky+pjkpkpKUkIIC0vxtsCo=;
+	bh=vUA5WKJqhGmlI7KcbJrBIYYjKz9sp6W098rZd3zh5ac=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aoDktDtMcvdk9JBSoS/ZhnZktBdIN7kuxOwQ5CmBadumliLdzDV06o6LuZWEIkhyp79hLE50uyf03Klj2VumcadTYpkGbNkPswbQtEAjRX2OCX3NcYYj0x2n2x9dQyspVwjmONyGSsGqOGDVIXWM+WF2Oj9ARk6mKy6Ry9tNtTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HWN3nclK; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=inVi5ktgC6H1dL0pHKvYfEhubY62CaUXmzfjalHO++hy8RcrXhDb3OjMNaHMlnFfCd/2fymALIHQSrXB8BAdXWNrzLKpixzR8wT4WcJQeE7ndCaBFi5mOmExzXWwMH6Lan6iFoy435h75SY4zACAcxB+/EIzHJL2/cOPrtlK1aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3mLcn+O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HWN3nclK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26C01F00893;
-	Sun,  4 Oct 2026 13:17:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3mLcn+O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3A81F000FF;
+	Sun,  4 Oct 2026 13:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791119864;
-	bh=UI/+ROfNY8CI2KeLNP5CFWRi9MRb++9Dj01tc+lMdQw=;
+	s=k20260515; t=1791119866;
+	bh=/+CqUBQZJxc90ye40efzg01j4LH4VlBM6/2chZcLOhc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HWN3nclKlBoZd9HfEReqMpo6EgabkcaVHm9gJ6hAFenF1qVOvJuM04mFQa5Pud0sv
-	 xQOb8xIQRWGj1rM3++9zElIZFc967o0nB4ljlVBT+JcacDAphCo5BGY1YhB+amJhVZ
-	 CEIyziqfMl1AioyqxT5k89MfTkqPMYcR2Jtp9ILzM7shy7ZzM18KYdHbQREkSOXRok
-	 gQJb5tyLOp90m9Ona0tC7Rz6+SiJo4zvKKxLKbd4tweK6mWq9vx9JO6AOprNZ+XP9y
-	 goPaOd8NnXsSwuaifUoebuie2vwLkGC533P3vmtif/8CWbzcWvgkkHNoV9w1CzzTEt
-	 NztgIUpMZBkRg==
-Subject: Re: [PATCH 4/5] dt-bindings: net: maxlinear: add MxL86211C lane
- mapping support
+	b=U3mLcn+OES8yXa7M33W0J4YnJwdQo/pieLF/et1//Xh1HZsXpAzsGW2WkK0V8x/jl
+	 Bqxss6bqptrdHfYHnsV73+GT5+iU0+eZJFWt6FO9+49ZmxLl7OyHaOgt9X6FpSsOK/
+	 m81uZDL59SCXfxNjO3sJ0qB7CiodUVv3NKdt0Vkkr3w61PQgQZb8Gd0D2lHcBWVSVH
+	 SMaDyc/krKaSUMm1+lruJ3wiv9RYCi+RJteUAT0jAi31WuVr6G/udugn/7jiCZzB+R
+	 OmwFOcqqJEeZcATNHh2EfQMt0j/jn9LMLZ7Kze9ZTNo+WXX6TNh6iHeilLGc4rMwcG
+	 LCrkFAmfqbQ/w==
+Subject: Re: [PATCH 5/5] net: phy: mxl-gpy: support MxL86211C lane mapping
 From: netdev-bot+sashiko@kernel.org
 To: robert.marko@sartura.hr
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -35,11 +34,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  conor+dt@kernel.org, hkallweit1@gmail.com, lxu@maxlinear.com,
  michael@walle.cc, netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, luka.perkov@sartura.hr
-Date: Sun, 04 Oct 2026 13:17:43 +0000
-Message-ID: <179111986344.434549.288089367079411456@kernel.org>
-In-Reply-To: <20260930122305.293686-4-robert.marko@sartura.hr>
-References: <20260930122305.293686-4-robert.marko@sartura.hr>
-X-sashiko-severity: Low
+Date: Sun, 04 Oct 2026 13:17:44 +0000
+Message-ID: <179111986480.434549.1016045593989432989@kernel.org>
+In-Reply-To: <20260930122305.293686-5-robert.marko@sartura.hr>
+References: <20260930122305.293686-5-robert.marko@sartura.hr>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,75 +48,95 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The concern says that nothing reads the `maxlinear,lane-asp-map`
-  property added by this binding, so DTs using it would be silently…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] net: phy: mxl-gpy: potential overwrite of upper bits in
+  VSPEC1_LANE_ASP_MAP
 
 --
 
-dt-bindings: net: maxlinear: add MxL86211C lane mapping support
-
-This commit adds an optional maxlinear,lane-asp-map property to the
-maxlinear,gpy2xx binding. The property describes how the MxL86211C
-physical TPI lanes map to its analog signal processing lanes. It is
-allowed only for the MxL86211C compatible.
-
-> diff --git a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> index 0645e885f1747..b98cb3c3e6d49 100644
-> --- a/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> +++ b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> @@ -22,6 +22,21 @@ allOf:
+> diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
+> --- a/drivers/net/phy/mxl-gpy.c
+> +++ b/drivers/net/phy/mxl-gpy.c
+> @@ -440,6 +447,50 @@ static const struct regulator_desc mxl86211c_mdio_desc = {
+>  	.owner = THIS_MODULE,
+>  };
 >  
->      then:
->        properties:
-> +        maxlinear,lane-asp-map:
-> +          description: |
-> +            Mapping of the physical TPI lanes A through D to the PHY's
-> +            analog signal processing lanes (ASPs). The array index identifies
-> +            physical lane A, B, C, or D, while its value identifies ASP A, B,
-> +            C, or D, encoded as 0 through 3. Each ASP must be mapped exactly
-> +            once. Omit the property to retain the hardware reset mapping.
-> +          $ref: /schemas/types.yaml#/definitions/uint32-array
-> +          minItems: 4
-> +          maxItems: 4
-> +          uniqueItems: true
-> +          items:
-> +            minimum: 0
-> +            maximum: 3
+> +static int mxl86211c_configure_lane_asp_map(struct phy_device *phydev)
+> +{
+> +	struct device *dev = &phydev->mdio.dev;
+> +	u32 lane_asp_map[4];
+> +	u16 val;
+> +	unsigned int seen = 0;
+> +	int i, ret;
 > +
-
-[Severity: Low]
-Does anything read maxlinear,lane-asp-map at this point in the series? In
-drivers/net/phy/mxl-gpy.c at this commit, mxl86211c_probe() does not
-handle a lane map. So a device tree that sets this property would have it
-silently ignored.
-
-The concern goes away later in the series. The next patch, "net: phy:
-mxl-gpy: support MxL86211C lane mapping", adds
-mxl86211c_configure_lane_asp_map(), and mxl86211c_config_init() calls it:
-
-mxl86211c_config_init()
-  -> mxl86211c_configure_lane_asp_map()
-       device_property_present(dev, "maxlinear,lane-asp-map")
-       device_property_read_u32_array(dev, "maxlinear,lane-asp-map", ...)
-       phy_write_mmd(..., VSPEC1_LANE_ASP_MAP, ...)
-
-That function checks that the four values are a permutation of 0..3
-before it writes the register. Once the whole series is applied, the
-property has a consumer. Keeping the binding and driver changes in
-separate patches is normal for dt-bindings, so this looks fine as posted.
-
+> +	if (!device_property_present(dev, "maxlinear,lane-asp-map"))
+> +		return 0;
 > +
->          mdio-regulator:
->            type: object
->            description: |
+> +	ret = device_property_read_u32_array(dev, "maxlinear,lane-asp-map",
+> +					     lane_asp_map,
+> +					     ARRAY_SIZE(lane_asp_map));
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(lane_asp_map); i++) {
+> +		if (lane_asp_map[i] > 3 || seen & BIT(lane_asp_map[i]))
+> +			return -EINVAL;
+> +
+> +		seen |= BIT(lane_asp_map[i]);
+> +	}
+> +
+> +	val = FIELD_PREP(VSPEC1_LANE_ASP_MAP_A, lane_asp_map[0]) |
+> +	      FIELD_PREP(VSPEC1_LANE_ASP_MAP_B, lane_asp_map[1]) |
+> +	      FIELD_PREP(VSPEC1_LANE_ASP_MAP_C, lane_asp_map[2]) |
+> +	      FIELD_PREP(VSPEC1_LANE_ASP_MAP_D, lane_asp_map[3]);
+> +
+> +	return phy_write_mmd(phydev, MDIO_MMD_VEND1, VSPEC1_LANE_ASP_MAP,
+> +			     val);
+> +}
+> +
+> +static int mxl86211c_config_init(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	ret = mxl86211c_configure_lane_asp_map(phydev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return gpy21x_config_init(phydev);
+> +}
+> +
+>  static int mxl86211c_probe(struct phy_device *phydev)
+>  {
+>  	struct device *dev = &phydev->mdio.dev;
 
-[ ... ]
+[Severity: Medium]
+mxl86211c_configure_lane_asp_map() writes VSPEC1_LANE_ASP_MAP with
+a plain phy_write_mmd(). That means bits 15:8 of the register are
+always written as zero, even though the patch only defines the four
+2-bit lane fields in bits 7:0.
+
+Those upper bits might hold something: reserved bits with a non-zero
+reset value, or an unrelated control field. If so, they get cleared
+whenever maxlinear,lane-asp-map is present in DT. The commit message
+says the reset configuration is left alone when the property is
+absent. When the property is present, this write also changes
+whatever else lives in that register, not just the lane mapping.
+
+Does the datasheet say bits 15:8 of VSPEC1 0x14 are unused and safe
+to write as zero? If not, would phy_modify_mmd() with a mask built
+from VSPEC1_LANE_ASP_MAP_A..D be safer? mxl86211c_probe() already
+uses phy_modify_mmd() for VSPEC1_PM_CTRL, so that would also match
+the rest of the driver.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930122305.293686-1-robert.marko%40sartura.hr
