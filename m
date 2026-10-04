@@ -1,182 +1,181 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-wr2-f42.google.com (mail-wr2-f42.google.com [74.125.225.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205661CAA6D
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F0D3B8D79
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791127726; cv=none; b=trFXganYamBVvSfF3yi7IfMMx0uWfg9yneemZOCydv4EzYx8RG4C9Oi80Oq3GGg2cGAxwThONUYTCh+wl7PS4LwQp4uEoSMvR9wgfRqRb8vzSS7CfvCQ89hC2ZfqjgRel+1Kw7h0LrclPL8kc0Y9THsCjvz9q5K5VDQvKOiyNas=
+	t=1791127747; cv=none; b=Htyvc+Acof62OZhknQs7VaeDmYrm86IuLwzb5HkBo3WuqHJjgN93WcDqvaSLkWCxbnAnc6su4GoZpk9MS9Tw+FQFaiWRcdIKDmXWY/cWw/TqvhyTMzwQhUKmYOy5fzO3DX5j4bcRkcFbpm1lq0X86LZ1FH8b2WeyeCt5B1V3kQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791127726; c=relaxed/simple;
-	bh=bAbuzrhxzxKziDCqa8JoYkrRD1FsUq1P0pQ8nvCKJ7c=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=EqD2AR2LKpI3sL7TgJalgyYUD1bh0JAnZxQiSu0yDGwdGGnQmKuCu1Jd13z/sOOqSySUj+poMYhBrr4p3YRlmRcUnykOBXpRl8uLq4y6pHm+Xt5I9/uU33H5QJQ/glVhvFbPF1F5ndt8fAXwHAjL2eGi2s/aNJHCRJBDm2w5lWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wHLu3uL0; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1791127747; c=relaxed/simple;
+	bh=X6sQTrF5sRJS4FjRxjDb+iu01tlVl/GwIKIQobzsJcA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DJsAKcNSmn0X+3k7+ki4V08bZDbGvQupq3GepC/Drh2FuD4k/5aAvC3hvgbqUqySUBn48Nwv9gN3QeRa928tlftUfEKQbj+54u9IXpxz//KgK53ZyuCycnwIKo5pPifFC2bK8taSvqdI6kRJJoxdw9HRYGeNwiEsghk/cTc0yDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sQ2WfDFl; arc=none smtp.client-ip=74.125.225.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wHLu3uL0"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e66390995so6503585e9.2
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:28:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sQ2WfDFl"
+Received: by mail-wr2-f42.google.com with SMTP id ffacd0b85a97d-48b0622cc90so397355f8f.1
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:29:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1791127722; x=1791732522; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0MkHQ33bfr4m25EDydRQk1cIUu8p3JZCdXBnxf0p91E=;
-        b=wHLu3uL0quXkkD2knVQL5Ih1zMwbNfYU8SNRGgBdyo8KirDom3yXryyIj0GCIyRM0S
-         yjbtgzK6BOSumTChwRmHi0ZxmuumzjNAm+p1AsOD5YXHZuWX+IYWjVe2gobbEJnC7yLR
-         f8y232ZRDwxc1/4kkrUlcEkZ//wM1lTjnA/+gh2KQpWzr2R0qp/PhWx3xK5ozwh9spy7
-         yS3iiEdDyncETVUp5gXDiT7lF708oWuOgOTF4coeMk9CKme+4QD/h8DHi6nS8fu9Z3qN
-         EfHrTtXggfXE+rwIKgJeyLF0h/IfVNoaeta1LO8rz0+94E31TBhmXFxp0ysiRkJSozvK
-         93EA==
+        d=gmail.com; s=20251104; t=1791127743; x=1791732543; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=da8v9Ff4EAj7a0ycHgkCs+irzmjp0yJ76SMiIUMp9bU=;
+        b=sQ2WfDFl+UnNJ3TviQGq1ZVj4X2IPH1YipRbI/LFNB/qMm1rJO3zi+BIFVPJslCWN+
+         7uiVGbsx5vcL2E3VsIy7B+stPtuLgEMEY+sR+U8pFgG9EtJziVtm0J/Plcnr4ap5xxoJ
+         aP8yZjZXVDLymjB7Dua1+Dvld5Tgp+zDF9Kc8/G0k+Ylf8In59JvKYJSgYK8b+OBSQTk
+         BJHKpHkbsEn63liLk7c4SL3mPV2A3CgUry6XcOC2xR/lbelF7cmjO+PgucyeNWy5n/T2
+         buTbRFWFz6g++Qsm5ldQ5BYRzPHTxiGK565Zgdo5nLczPV+nm3F7AmwKRSnK34z/dH6Y
+         DFdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791127722; x=1791732522;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:content-language:references:cc:to:subject:reply-to:from
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0MkHQ33bfr4m25EDydRQk1cIUu8p3JZCdXBnxf0p91E=;
-        b=XFXOBkOEutrys1Sgx8V8NCAnV3dDiuhlx3kFDbSXEt7Fgm7aXaSULSHaLWCiAMH06b
-         6ysSeRJ1L7+hSG3ErEsn1cuzBMRU/sHXE+lUgRZen110y9y+QRLMXu2TcB/yQ3Sxxpkq
-         V4EwYZ/nqoBgt0FBaROnnwZy16GdpFbDAopUyhkIcP00NH2DhddGrRZiyX5Bj0gvtMAq
-         GUKOTvy1LgyjsqvP7kPBUswXkcLEy3/8JG0K0TQyDnETqKdCurpWt17vH3kAHEqBGkkZ
-         29Unrr5BZsextIM5zpEiUM4qM9lkHoVfGvgIH/nqUXXXvttkfHhb7tVw/9aJShi5XO3C
-         GClw==
-X-Gm-Message-State: AFuF++nVA9OLNoJKozfg4WHqjnP/O8pAFa99V9jwSa6K0ePCMZO7SGRS
-	VlJSYwu9RedKMjdPk84IY4k0Dr2734qdhHQfd2A0adZdKYvVwR0hFw8AustoQWvRiYg=
-X-Gm-Gg: AYBFou2lppYWRFNTkjYVh6QPOgTaGlZqUWvUyhF5d95k6wE5Q+CnrQnPlUk1L6kVo5b
-	nn7lYmx3vVfAEMYeFgKWEC/Gxvsk0Fw09jRpucBTT7ZhvalnRTE4TXSd/QmIzTpOWljL8mW3E7Y
-	2+Nb+t+CoJO8UPrCp3fnWsHDJNRWNWK3XQ+paN2oAQdlR7OUX6slSAAcEGPkCXUfsGoDYKRTj73
-	FlEVzDH6hlZXnqzTLx+mJeF+odi1KcNRj5c0zJQ7XqlRsCp5/QUaOkLGXEHeFKEELIZvePx3UU9
-	9b/aToi9GQoHmFmHxgm3f+HvdZxkY55V0sM49Txf5guS0t9EeXKKuRBadrXfvdkZJ9MdPZC1vKC
-	PaOBAD7Ls4IuYDeIfzotLaBJX39aqOlVHDPfJlxzNeFUkh76m9qt4gWZOOP+7nOI5nNu+zv796A
-	yU3GGeOPDy4qjdIKw1jGKBLovz7wJ1SUGL1qlPcldRIqsa081wOb4odjC2hP6CcvAxQEX8dsTcW
-	gAhyOD4gFB1Qxmsq+Ju
-X-Received: by 2002:a05:600c:8b6c:b0:49f:ec98:f030 with SMTP id 5b1f17b1804b1-4a0276b3e15mr140322415e9.33.1791127722245;
-        Sun, 04 Oct 2026 08:28:42 -0700 (PDT)
-Received: from [172.20.10.3] ([37.169.53.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a039505568sm231387545e9.3.2026.10.04.08.28.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Oct 2026 08:28:41 -0700 (PDT)
-Message-ID: <413e7e67-ccdc-40e3-b360-8e349820de85@linaro.org>
-Date: Sun, 4 Oct 2026 17:28:39 +0200
+        d=1e100.net; s=20260707; t=1791127743; x=1791732543;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=da8v9Ff4EAj7a0ycHgkCs+irzmjp0yJ76SMiIUMp9bU=;
+        b=ENMrd1Db4qKMwxI7Ra1VNxwI71yy98vN62k5ixKPwIHuGii7rD7gJL5gLRQKy1todG
+         5Ca1Ag+tvkisc7WyX8dD0sHDfOrdZHqdQZc6d4KfA0k/pDWHPrT5cebYOBRrMClLre4J
+         a/JYy0cDWL9tiIcYZbV8mwTMfdqd1NUyZkUKvmlz3vv39yZKwvC63GUCoyE0iFxjbNWz
+         ytUViMIR6EnsyRV2q6sS2+WRlKvgpKEFbhngyJwpITfNvkH0o/HVRz7j7/S1kIKFO8ig
+         MZ+oKVP9M0MQCUwXPCKiep61dY4ekB/SgofPawo1h4j5ax9cGAkf2E0WSYDwTB309dtI
+         GX6w==
+X-Gm-Message-State: AFuF++kwRYQfroIYfgw4HxYAntM54gMjinTC5LxTfVMLEjxl9vK4Wcv/
+	h2XxMyGePRBvHbv6FyAsNUTc8yhtadnmblTpeFRm//Hi39V7hNeX3Xf1
+X-Gm-Gg: AYBFou0kE4cFvBPvvCqrTUu6lRIb9+PoLuRudSglo7fhoIfohxIC0UJpxlAZU8dN+/W
+	UIyEslx4HZsdLrofWGG5RYb5T+wg8GbGAUy0OARJvGhqEnwC3KV5UGXHELKjQAfhCmuGv6OusgY
+	bw26VZZy2D9ZXz1KHbDdMjBABb9nfjuXaM6ygiEXtUs7g3c0RJiGI75S8l9Oh8iAOSQHNk0Fggx
+	HBAYTCDkXO0YiPkh5tdxUBatlS2KICeLS+whINmt7LwvuHe3AaGDJ9qIVGsqq9XjvTb48Ocf2/w
+	odevckqh4Rh9netuBo/1tjEuz9lXyF0qtLICBju8xBhFGh82FGnx7AIV3++FdPke9EPld7Mt8F7
+	TXre9nD2pnvaRyvzmyfqYCP1kcikaTG/XOTleW4+ll7bgcKh0KHb6v8ab1j8yEUdHJO2C2tFGw9
+	2Cxk52xfGWANVSS04xpZhcJIUQr0MpbfUO7cOCKz/YGz1SqLyeXNsudLrVqZKeEUIAavA8k1dl1
+	VdyAxGvIpvg27Fh7ujPkn0vIOh1Pz7tvHZkicQu/ugsJl8TARNDs8/oYchPVXkH+VDCrhN6WSo=
+X-Received: by 2002:a05:600c:1552:b0:49b:d03:8d3a with SMTP id 5b1f17b1804b1-4a02755f84bmr145261655e9.11.1791127743178;
+        Sun, 04 Oct 2026 08:29:03 -0700 (PDT)
+Received: from citron.bnl.ovh ([2001:861:44c1:870::1])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1698f7910sm83819735e9.3.2026.10.04.08.29.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 08:29:02 -0700 (PDT)
+From: Benoit DE RANCOURT <b2rancourt@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Sasha Neftin <sasha.neftin@intel.com>,
+	linux-kernel@vger.kernel.org,
+	Benoit DE RANCOURT <b2rancourt@gmail.com>
+Subject: [PATCH iwl-net 0/2] igc: Fix Tx hangs after NETDEV_TX_BUSY with TSO
+Date: Sun,  4 Oct 2026 17:28:38 +0200
+Message-ID: <20261004152840.61222-1-b2rancourt@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [RFC PATCH 4/6] arm64: dts: amlogic: t7: add the ethernet pinctrl
- nodes
-To: Lucas Tanure <tanure@linux.com>, xianwei.zhao@amlogic.com,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Kevin Hilman <khilman@baylibre.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-References: <20261004144046.391444-1-tanure@linux.com>
- <20261004144046.391444-5-tanure@linux.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20261004144046.391444-5-tanure@linux.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/4/26 16:40, Lucas Tanure wrote:
-> The SoC brings its ethernet interface out on bank Z, but no pin groups
-> were described, so a board had no way to hand those pins over to the
-> MAC.
-> 
-> Describe them as the two sets a board actually needs: the nine pins the
-> interface always uses, and the five extra ones RGMII adds for its wider
-> data path.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Lucas Tanure <tanure@linux.com>
-> ---
->   arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 30 +++++++++++++++++++++
->   1 file changed, 30 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> index 6894c06a836b..7bd53ec16607 100644
-> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
-> @@ -376,6 +376,36 @@ mux {
->   					};
->   				};
->   
-> +				eth_pins: eth {
-> +					mux {
-> +						groups = "eth_mdio",
-> +							 "eth_mdc",
-> +							 "eth_rgmii_rx_clk",
-> +							 "eth_rx_dv",
-> +							 "eth_rxd0",
-> +							 "eth_rxd1",
-> +							 "eth_txen",
-> +							 "eth_txd0",
-> +							 "eth_txd1";
-> +						function = "eth";
-> +						drive-strength-microamp = <4000>;
-> +						bias-disable;
-> +					};
-> +				};
-> +
-> +				eth_rgmii_pins: eth-rgmii {
-> +					mux {
-> +						groups = "eth_rxd2_rgmii",
-> +							 "eth_rxd3_rgmii",
-> +							 "eth_rgmii_tx_clk",
-> +							 "eth_txd2_rgmii",
-> +							 "eth_txd3_rgmii";
-> +						function = "eth";
-> +						drive-strength-microamp = <4000>;
-> +						bias-disable;
-> +					};
-> +				};
-> +
->   				i2c0_ao_d_pins: i2c0-ao-d {
->   					mux {
->   						groups = "i2c0_ao_sck_d",
+Since commit db0b124f02ba ("igc: Enhance Qbv scheduling by using first
+flag bit"), igc_xmit_frame_ring() requires count + 5 free descriptors,
+while the queue is only stopped in advance below DESC_NEEDED =
+MAX_SKB_FRAGS + 4. TSO skbs with 16 or 17 fragments then hit
+NETDEV_TX_BUSY. That return skips the tail write deferred by
+xmit_more, so the queue can stay stopped with descriptors the hardware
+never saw, until the Tx watchdog resets the adapter.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Patch 1 aligns DESC_NEEDED with the admission check. Patch 2 writes the
+tail before returning NETDEV_TX_BUSY, which remains reachable for skbs
+with buffers larger than IGC_MAX_DATA_PER_TXD. Each patch was tested
+alone; together they keep the queue stop logic consistent and the
+remaining busy path safe.
 
-Thanks,
-Neil
+Setup: CWWK router, Pentium Gold 8505, six I226-V (8086:125c rev 04,
+NVM 2017:888d), 7.2.8, default MAX_SKB_FRAGS = 17. Load: CPU saturated
+with busy loops, a remote build routed through the port, two SSH bulk
+streams in each direction and short TCP bursts, 180 seconds of load
+per run observed during a 195-second probe window, TSO enabled on the
+egress port. bpftrace probes on igc_xmit_frame, __igc_maybe_stop_tx
+and igc_poll recorded NETDEV_TX_BUSY returns, the inferred last tail
+write and next_to_clean stalls.
+
+                       runs  Tx timeouts  NETDEV_TX_BUSY  TX_OK returns
+  unpatched 7.2.8         3           25           10890       7.3M
+  patch 2 only            3            0           10751       9.5M
+  patch 1 only            3            0               0       8.8M
+  both patches            3            0               0       9.4M
+  unpatched, TSO off      1            0               0      21.5M
+
+In all 25 timeout episodes, the stalled queue had pending descriptors
+after a NETDEV_TX_BUSY return. The probes inferred at least 214
+descriptors beyond the last tail write. For that queue, the hardware
+register dump showed TDH = TDT = the next_to_clean value recorded by
+the probe.
+
+With both patches applied, no NETDEV_TX_BUSY occurred, so the flush
+path of patch 2 was not exercised in that run; its effect is shown by
+the patch 2 only runs.
+
+TX_OK returns count igc_xmit_frame() calls returning NETDEV_TX_OK,
+excluding NETDEV_TX_BUSY retries. These are software call counts,
+not hardware packet counters; with TSO disabled, segmentation occurs
+before the driver.
+
+Related code, not addressed in this series and not tested:
+
+- bnxt: commit e8d8c5d80f5e ("bnxt: make sure xmit_more + errors does
+  not miss doorbells") rings a pending doorbell on the drop paths. It
+  leaves the busy path alone, reasoning that busy can only happen if
+  start_xmit races with completions that both enable the queue, in
+  which case no kick can be pending; the current code warns "ring busy
+  w/ flush pending!" if that assumption breaks. In igc, patch 1
+  restores that property for skbs whose buffers each fit in one
+  descriptor, and patch 2 covers the remaining case.
+
+- igc drop paths (skb_put_padto() failure in igc_xmit_frame(), out_drop
+  in igc_xmit_frame_ring(), the DMA mapping error path of igc_tx_map())
+  also return without writing a pending tail, the case bnxt fixed in
+  e8d8c5d80f5e and 00eeab0c644a ("bnxt_en: Write doorbell when
+  linearizing skb fails"). The queue is not stopped there, so pending
+  descriptors are delayed until the next transmit on that queue rather
+  than stranded.
+
+- igb, ixgbe, fm10k, i40e, iavf, ice, e1000e and e1000 also defer the
+  tail write with xmit_more and return NETDEV_TX_BUSY from their
+  admission check without writing it. Their stop thresholds match
+  their admission checks, so this should only be reachable for skbs
+  needing more descriptors than the stop threshold assumes.
+
+Not done:
+- runtime test on a kernel built from this tree; the patches were
+  tested on 7.2.8, where the affected code is identical, and apply
+  cleanly here;
+- launch time (ETF/taprio) and XDP/AF_XDP traffic, which share the
+  ring and the wake threshold;
+- longer runs and other I226/I225 boards;
+- only the igc objects were built with W=1 under allmodconfig, not
+  the full tree.
+
+The analysis and the patches were prepared with an LLM-based coding
+assistant, which also wrote the bpftrace probes; the results above come
+from those probes and the kernel log on real hardware.
+
+Benoit DE RANCOURT (2):
+  igc: Fix Tx stop threshold to cover empty frame descriptors
+  igc: Flush pending Tx descriptors before returning NETDEV_TX_BUSY
+
+ drivers/net/ethernet/intel/igc/igc.h      | 8 ++++++--
+ drivers/net/ethernet/intel/igc/igc_main.c | 6 +++++-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
+
+
+base-commit: a83267db14681b3be481e02a4d5a38177507006c
+-- 
+2.55.0
+
