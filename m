@@ -1,151 +1,278 @@
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA313B1ED1
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 17:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2313046D096;
+	Sun,  4 Oct 2026 17:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791134336; cv=none; b=TUj6fxxQAuq1u+rOMstz0uj3M8aK530zvjFV0jpEPQHw0GiYcdEnvtS84cR2K9PID2LnDhNGuWxDK4/JAJwx19WqwXbtMgQa5ZJm/QWz4pdOdRG5Pf76Lj7exbM9TnMDmY1PCTIeanf9S1K9Q6ndCnhjeLnsJ3aPbGiz68dy4T4=
+	t=1791134549; cv=none; b=blea7/hB4aULEDUtlLTmq71WEIkP5Tf8pk2HuZCEKUZuXF+LcpYieSAM8gAUBA2K0BSKtRK10p3UPP8/pwbW8T2Ot1sOajGcplxMHRpiPx56kKYZpxsbnSNtkdk5BQXkjDA2l8fC0MQcsZFC+hPuqJmYNNl0EF5XLXj6WYNKrz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791134336; c=relaxed/simple;
-	bh=j6R7ECN44unp2mCC6cIHIXevE6gt0xloJtTFudKCrPc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n5dmutfmZP+6mIOGrI3edQqLPlN0Mn/Ki0dG9jm0rnZdj4IaKV4QO/JpnJutdcjY0Mp5TIGSGEIKIuP1sQ8MGkDh6j1i8EoLwtrR9Uw5aVfUW8pJaABoppFfndEwCJfrlqLz5S+Uxpnd2+6ZmXkSm1Tf6HBqXZNPBXqaJsd+QHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B68ACjWa; arc=none smtp.client-ip=74.125.224.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791134549; c=relaxed/simple;
+	bh=a5U+72tKI9vxb9cehQbCiyroyWRVx59lcQpxUFkcpMw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UaAcCA3FjfCZEAEaiJmYmqMMCaJ3pTn7td0KIyiFpM9FPB0aCU+1963pSlhPofMl1dKSgHm8cs7czvhf9sUENmkQl7QODTZEsjvkv/wTLeiwKtqRX5U/568GfktY01/yZolArdQgsw0TC7jAY2Uyq3V/9v/Cv5p0Z/CrILA1wNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fIC/M/UM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B68ACjWa"
-Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8ac8eb87a11so5640847b3.2
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 10:18:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791134334; x=1791739134; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UrX1mUl+wXxohAdY3g7vCwgltIUQZvOK983vfJTp2Bo=;
-        b=B68ACjWaXTVohk3BNo9SzD7r+AxCjxvQsnOX75BUwskY4+8ObGY/K4ormZXbNr5Vbd
-         rzOwVJJciv9lWalVsGvTbJP/X0ksc4zJJaNr8Z7T2aZAvEYTL/CPLzDGCxS92RQInuas
-         7wKZF9UwFpJQI6vaw6DtfAc2oE+FBhB36sXNaweuhDQBxBi03xuXN51y54UngyqRMy5+
-         srDLBcEvf9dj6nyrHF8UyGASOZdEbCMQK5858LezuWDT4dK/zL4UnGELed0m6yN4iBrw
-         5BZnfyCKGtX+B60dwkfiZokiLW+dhXygJN/+uMRiOv23CrEGZQKmzm63p56H+jUv02/1
-         IHYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791134334; x=1791739134;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UrX1mUl+wXxohAdY3g7vCwgltIUQZvOK983vfJTp2Bo=;
-        b=o/7y2EnO76rfamNYDQtH7TKTVSa47lYlFIvnBAA4+7lf/EpxaQP7Mh6FWLrwCsp0a8
-         s3hwBecojy386eZBrG5ihsL44s8hImJsAYI8LjyU8bNMmj0rOXF1SjTLmg94wwHnkFuL
-         JbmMN1ZNDOBh+j7c/LcVvqRpDTMAsb57JGWYeuH/+BLb68RHJnQofmVrAs6m1TRsFvDO
-         9XGy1kgkPJtrqCcZJB/td5iOogWFSiJbvaejM/Vk59UXCp+3eqwct8Y2vsuYyT8/Dhv/
-         BHp7uxIrUWkRNSCwUtJdLnsR3ejxbfrPvNoxiptyPq9dhtyEyjuqAgHbKmdhnOCKgpRL
-         5hXw==
-X-Gm-Message-State: AFq9FYKXVfsDQBgd9hE4AIRyjI1oOnQOdOGxWq8+OetQ3AgH7lHglksH
-	crz3n6fNtgKHD63xYZx0EoufgiCxomxOJJ9ztMeksZb8VCmbvdDLA8SESMj0aQ==
-X-Gm-Gg: AYBFou0EDdDhlji68j3U+rnr8qQ6RUr46YG5ICHSw8JNcIAaadfVOmcUBDvlb+i4Kku
-	iTrRrTyIv3k49ixmfGOq9To43plRnmieIWCPzs8wIYp7wcElFsZxp2QfmcppE97VCYy1E1VlVoK
-	rerqhF+GqX9ni2W16mRaPeppEvMStg3Kfcvh0LYXQDQUXkoz/gs5OatkaLkmT+MDx5w0k/U32lG
-	alINaC1Dyo0XEVk5nnEy39vaK8AhswU6+H5w1cwhM0mVxB9s3nrLBq22RSi7WaZiUdO6uOKUdbv
-	0b430BtSKFn89wgLXLxy0yMyFDd4ALqbV7g3PDx27TsBEoLw1py0oyHVKBcgOCforS4HL9Sc+D2
-	zjKDV/Zl+XxfFcJKkX0B68KEu62djaBS05w8rIwayPXaJdgTjvWoUnZet+GjF8OynKlOdjEPwoJ
-	wUOfR7hVZeanHNEUMAY/+lEEsF50LbGLRdOzvAsiS+8ZUmbAdUW0H5XSpAJVuiDbkGzjRopsKUA
-	fp9CtgAQcLkqNuQXmtZJKOO6/ZR9ASQO5pbcY9G5BKSs8AMEAU7dW2Rk+nZJyu7zg3Wfs5lgXk=
-X-Received: by 2002:a05:690c:c4fa:b0:8a9:9c3f:906 with SMTP id 00721157ae682-8ae3a4e9ac0mr34442507b3.43.1791134334059;
-        Sun, 04 Oct 2026 10:18:54 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae33fe64d5sm30414437b3.48.2026.10.04.10.18.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 10:18:53 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	daniel@iogearbox.net,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net] net/packet: ignore timestamp bits when testing tx frame status
-Date: Sun,  4 Oct 2026 13:10:53 -0400
-Message-ID: <20261004171847.186954-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fIC/M/UM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E27D1F000FF;
+	Sun,  4 Oct 2026 17:22:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791134547;
+	bh=eNDOPZYZSMHNd1Bs7oNDiHexizZgAb5SQSZyBYVU8FY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fIC/M/UMgvYKdKP+wVB3ybwVreqsK7r5T0sUW9wMGVw6PfdSfW1pfbaZJiwTHiFbI
+	 Tb3ZdCp9MDfB6CPQSv8XH0zgR+O+vP5Hh6QcpRRpFWzV57mbhpkkW3xJCJ3JdrPh9P
+	 76/PKTkfRk87kDT86LrYHXvad5sb2CSovAuOZhQi/n7BJlqxi1pammob9TbnDydYDf
+	 YDONp+wAgujSd985iZm1hvvPS9r9OChHl118GnyrKis9me7VV3b/DmeKvuKxBhOdzo
+	 vIKJfFMorXZDAH2ReC6kYGZzuVopJ94ht53oyz8ggomY+jnlBsrq8foLeYV3zatlmj
+	 NPBdRbM3niYWw==
+Subject: Re: [PATCH 02/16 net-next v3] net: core: add IPv4 fallback stubs and
+ guards for CONFIG_IPV4=n
+From: netdev-bot+sashiko@kernel.org
+To: fmancera@suse.de
+Cc: netdev@vger.kernel.org, horms@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@kernel.org, davem@davemloft.net,
+ johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 04 Oct 2026 17:22:26 +0000
+Message-ID: <179113454679.434549.8561549828918413865@kernel.org>
+In-Reply-To: <20260930135334.4739-3-fmancera@suse.de>
+References: <20260930135334.4739-3-fmancera@suse.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-Since the commit in Fixes, the tx completion handler writes the frame
-status as TP_STATUS_AVAILABLE | ts, where ts can be
-TP_STATUS_TS_SOFTWARE or TP_STATUS_TS_RAW_HARDWARE.
+Critical: 0 · High: 0 · Medium: 2 · Low: 3
 
-Two places compare a tx frame status to TP_STATUS_AVAILABLE for
-equality, and so fail to detect such a released frame:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-- tpacket_snd(), when packet_xmit() fails: the packet is silently
-  dropped instead of an error being returned to the caller for retry.
+- [Medium] With CONFIG_IPV4=n, the new ip_setsockopt()/ip_getsockopt()
+  stubs make every SOL_IP option return -EAFNOSUPPORT.
+- [Medium] The patch adds `if (!IS_ENABLED(CONFIG_IPV4)) return
+  -EAFNOSUPPORT;` at the top of dev_ifconf() (net/core/dev_ioctl.c).
+- [Low] Baseline decision: false (not a real bug by the end of the
+  series).
+- [Low] The patch changes the INDIRECT_CALL_INET_1() gate in
+  include/linux/indirect_call_wrapper.h from CONFIG_INET to CONFIG_IPV4.
+- [Low] The CONFIG_IPV4=n stub of ip_route_output_flow() in
+  include/net/route.h is a function definition with an unnamed first…
 
-- packet_poll(), on the tx ring head frame: the socket is not reported
-  as writable.
+--
 
-Mask out the timestamp bits in both. In packet_lookup_frame(), only do
-so when testing a tx ring frame for TP_STATUS_AVAILABLE.
+net: core: add IPv4 fallback stubs and guards for CONFIG_IPV4=n
 
-Fixes: b9c32fb27170 ("packet: if hw/sw ts enabled in rx/tx ring, report which ts we got")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
----
- net/packet/af_packet.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+This commit adds static inline stubs to include/net/ip.h and
+include/net/route.h for use when CONFIG_IPV4 is disabled. It also adds
+IS_ENABLED(CONFIG_IPV4) guards to generic networking code so that code
+links without IPv4. Finally, it gates the INDIRECT_CALL_INET() and
+INDIRECT_CALL_INET_1() helpers on CONFIG_IPV4 instead of CONFIG_INET.
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 6ff16eef24f4..1cabe292ebb4 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -398,6 +398,10 @@ static inline struct page * __pure pgv_to_page(void *addr)
- 	return virt_to_page(addr);
- }
- 
-+/* Timestamp bits that may be set in addition to the frame state */
-+static const u32 tp_status_ts_mask = TP_STATUS_TS_SOFTWARE |
-+				     TP_STATUS_TS_RAW_HARDWARE;
-+
- static void __packet_set_status(struct packet_sock *po, void *frame, int status)
- {
- 	union tpacket_uhdr h;
-@@ -519,6 +523,7 @@ static void *packet_lookup_frame(const struct packet_sock *po,
- {
- 	unsigned int pg_vec_pos, frame_offset;
- 	union tpacket_uhdr h;
-+	u32 mask = 0;
- 
- 	pg_vec_pos = position / rb->frames_per_block;
- 	frame_offset = position % rb->frames_per_block;
-@@ -526,7 +531,10 @@ static void *packet_lookup_frame(const struct packet_sock *po,
- 	h.raw = rb->pg_vec[pg_vec_pos].buffer +
- 		(frame_offset * rb->frame_size);
- 
--	if (status != __packet_get_status(po, h.raw))
-+	if (rb == &po->tx_ring && status == TP_STATUS_AVAILABLE)
-+		mask = tp_status_ts_mask;
-+
-+	if (status != (__packet_get_status(po, h.raw) & ~mask))
- 		return NULL;
- 
- 	return h.raw;
-@@ -2948,7 +2956,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 		if (unlikely(err != 0)) {
- 			if (err > 0)
- 				err = net_xmit_errno(err);
--			if (err && __packet_get_status(po, ph) ==
-+			if (err && (__packet_get_status(po, ph) & ~tp_status_ts_mask) ==
- 				   TP_STATUS_AVAILABLE) {
- 				/* skb was destructed already */
- 				skb = NULL;
+> diff --git a/include/linux/indirect_call_wrapper.h b/include/linux/indirect_call_wrapper.h
+> index 0e4340ecd857a..583efbc034466 100644
+> --- a/include/linux/indirect_call_wrapper.h
+> +++ b/include/linux/indirect_call_wrapper.h
+
+[ ... ]
+
+> -#if IS_ENABLED(CONFIG_INET)
+> +#if IS_ENABLED(CONFIG_IPV4)
+>  #define INDIRECT_CALL_INET_1(f, f1, ...) INDIRECT_CALL_1(f, f1, __VA_ARGS__)
+>  #else
+>  #define INDIRECT_CALL_INET_1(f, f1, ...) f(__VA_ARGS__)
+
+[Severity: Low]
+Does INDIRECT_CALL_INET_1() need to be gated on CONFIG_IPV4?
+
+Every f1 passed to this macro is a TCP core function that is still built
+when IPV4=n: tcp_release_cb, tcp_leave_memory_pressure,
+tcp_stream_memory_free and tcp_bpf_bypass_getsockopt. tcpv6_prot uses
+all of them as well.
+
+For example, release_sock() in net/core/sock.c has:
+
+	INDIRECT_CALL_INET_1(sk->sk_prot->release_cb,
+			     tcp_release_cb, sk);
+
+Consider a CONFIG_IPV4=n, CONFIG_IPV6=y kernel with retpolines. There,
+release_sock(), sk_leave_memory_pressure(), sk_stream_memory_free() and
+BPF_CGROUP_RUN_PROG_GETSOCKOPT would make an indirect call instead of
+the direct tcp_* call.
+
+INDIRECT_CALL_INET() above keeps an IPv6 fast path, but
+INDIRECT_CALL_INET_1() loses it. Could this macro stay gated on
+CONFIG_INET?
+
+> diff --git a/include/net/ip.h b/include/net/ip.h
+> index 6f602df72ee62..194a464c443af 100644
+> --- a/include/net/ip.h
+> +++ b/include/net/ip.h
+
+[ ... ]
+
+> @@ -225,27 +235,58 @@ int ip_append_data(struct sock *sk, struct flowi4 *fl4,
+
+[ ... ]
+
+> +static inline struct sk_buff *ip_finish_skb(struct sock *sk, struct flowi4 *fl4)
+> +{
+> +	return ERR_PTR(-EAFNOSUPPORT);
+> +}
+
+[Severity: Low]
+The real ip_finish_skb() calls __ip_make_skb(), which only returns NULL
+or a valid skb. Its callers check only for NULL:
+
+	skb = ip_finish_skb(sk, fl4);
+	if (!skb)
+		goto out;
+
+Later in the series, both callers, udp_push_pending_frames() and
+ip_push_pending_frames(), end up in objects that are built only with
+CONFIG_IPV4. udp_v6_push_pending_frames() also guards its call with
+IS_ENABLED(CONFIG_IPV4).
+
+So this stub looks unreachable. At this commit CONFIG_IPV4 is still
+def_bool y, so the stub isn't compiled at all.
+
+Should the stub return NULL to match the return contract of the real
+function?
+
+[ ... ]
+
+> @@ -813,24 +854,60 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev);
+
+[ ... ]
+
+> +static inline int ip_setsockopt(struct sock *sk, int level, int optname,
+> +				sockptr_t optval, unsigned int optlen)
+> +{
+> +	return -EAFNOSUPPORT;
+> +}
+> +
+> +static inline int ip_getsockopt(struct sock *sk, int level, int optname,
+> +				char __user *optval, int __user *optlen)
+> +{
+> +	return -EAFNOSUPPORT;
+> +}
+> +#endif
+
+[Severity: Medium]
+With CONFIG_IPV4=n, do these stubs remove SOL_IP options that IPv6
+sockets rely on?
+
+ipv6_setsockopt() and ipv6_getsockopt() forward SOL_IP to these
+functions for AF_INET6 sockets:
+
+net/ipv6/ipv6_sockglue.c:ipv6_setsockopt() {
+    ...
+	if (level == SOL_IP && sk->sk_type != SOCK_RAW)
+		return ip_setsockopt(sk, level, optname, optval, optlen);
+    ...
+}
+
+MPTCP also calls ip_setsockopt() directly, from
+mptcp_setsockopt_sol_ip_set() and mptcp_setsockopt_v4_set_tos().
+
+Some of these options work for any address family and have no SOL_IPV6
+equivalent, such as IP_BIND_ADDRESS_NO_PORT and IP_LOCAL_PORT_RANGE.
+The only code that sets INET_FLAGS_BIND_ADDRESS_NO_PORT and the
+per-socket local_port_range is in ip_sockglue.c. By the end of the
+series that file is built only with CONFIG_IPV4. However, __inet6_bind()
+and the port range selection still read that state for IPv6 sockets.
+
+On an IPv6-only kernel, this call would then fail with EAFNOSUPPORT:
+
+	setsockopt(fd6, SOL_IP, IP_BIND_ADDRESS_NO_PORT, ...)
+
+The commit message says:
+
+    This behaves as IPv6 code does.
+
+However, CONFIG_IPV6=n doesn't remove any options from IPv4 sockets. Is
+this loss of IPv6 socket functionality intended?
+
+> diff --git a/include/net/route.h b/include/net/route.h
+> index 6b55de2e4df88..8c21881eb5f4f 100644
+> --- a/include/net/route.h
+> +++ b/include/net/route.h
+> @@ -169,8 +169,16 @@ static inline struct rtable *__ip_route_output_key(struct net *net,
+>  	return ip_route_output_key_hash(net, flp, NULL);
+>  }
+>  
+> +#if IS_ENABLED(CONFIG_IPV4)
+>  struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
+>  				    const struct sock *sk);
+> +#else
+> +static inline struct rtable *ip_route_output_flow(struct net *, struct flowi4 *flp,
+> +						  const struct sock *sk)
+> +{
+> +	return ERR_PTR(-EAFNOSUPPORT);
+> +}
+> +#endif
+
+[Severity: Low]
+Will this stub build with all supported compilers once the later patch
+in the series makes CONFIG_IPV4=n selectable?
+
+The stub is a function definition whose first parameter has no name.
+gnu11 doesn't allow that; only C23 does. GCC 8 through 10 reject it with
+"parameter name omitted", and Documentation/process/changes.rst lists
+GCC 8.1 as the minimum version. Clang warns that this is a C23
+extension, which breaks CONFIG_WERROR builds.
+
+Naming the parameter (struct net *net) would avoid this.
+
+> diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+> index 164643140a523..a10921aa3e23f 100644
+> --- a/net/core/dev_ioctl.c
+> +++ b/net/core/dev_ioctl.c
+> @@ -44,6 +44,9 @@ int dev_ifconf(struct net *net, struct ifconf __user *uifc)
+>  	size_t size;
+>  	int len, total = 0, done;
+>  
+> +	if (!IS_ENABLED(CONFIG_IPV4))
+> +		return -EAFNOSUPPORT;
+> +
+
+[Severity: Medium]
+Does this early return change SIOCGIFCONF behaviour on existing
+CONFIG_INET=n kernels?
+
+CONFIG_IPV4 is only defined inside "if INET" in net/Kconfig. That means
+IS_ENABLED(CONFIG_IPV4) evaluates to 0 whenever CONFIG_INET=n.
+
+Before this patch, those kernels used the !CONFIG_INET stub in
+include/linux/inetdevice.h:
+
+static inline int inet_gifconf(struct net_device *dev, char __user *buf,
+			       int len, int size)
+{
+	return 0;
+}
+
+So SIOCGIFCONF succeeded and returned ifc_len = 0.
+
+sock_ioctl() passes SIOCGIFCONF to dev_ifconf() for any socket family,
+for example AF_UNIX, AF_PACKET or AF_NETLINK. On CONFIG_INET=n kernels
+the ioctl now fails with EAFNOSUPPORT. The inet_gifconf() stub also
+becomes unreachable.
+
+Could the inet_gifconf() stub be gated on CONFIG_IPV4 instead, and this
+early return dropped? That would keep the existing result of success
+with an empty list.
+
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930135334.4739-1-fmancera%40suse.de
