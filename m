@@ -1,43 +1,80 @@
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.62.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6C1343882;
-	Sun,  4 Oct 2026 06:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.62.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B17F35F5EA
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 06:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791097064; cv=none; b=p9HmEtpntWdpLLtD+KWQAsOnpi30RPU4k+vEDon2yLahh7QwfWV5FGn0k9rzGVqJ0pcWoyKPcGjiEADW8y9PaR0JBQiBynO+A2AnBBJp9I36GFGBKbB6gwlqf+6QbQZBZPnUnr2KzvaNCegDEjZaKTLtUnJ8TwDaubAlViWhFTE=
+	t=1791097178; cv=none; b=Vf8nBGnolsuidnoQTIAoJPcidR8Tib5okJ/oF/bkd3HPnD1FApZhS36HeYrdMZeLhOL+FZXzWHshG4Txdph+4D/3EEuR9hMYXsOLG0liFWI0ZijSkh9tHU6UpfamsbN3+NNqm+e9ov60QEyngHkMpydtxsrE2q+ppEINc9KtmRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791097064; c=relaxed/simple;
-	bh=qMKTeX6QtXNBVgXx7Zs6dfhOPvBtw5YVSWO/dUNU3+A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FW/wuyzPQVW1hZ9uV92qmhSajYsncze+rKBsvOyxAIsBNwvq8LolfkSbXAo6EyeTfDeVyAW7i5vgnFZqZMm91Ovd7EZmeNsWliahJLAApZntJdGZNUhY8m58DlhtxlsOCinSpKx25cOBuVTtMoNdd1NmYMlAVlnvbOYyEH6aPbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=114.132.62.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpsz10t1791096970t10344664
-X-QQ-Originating-IP: nJOR0frfwbGnqrdfnzE1aYjnJ2R8q/MNtkEsBs/YjUs=
-Received: from nic-Precision-5820-Tower ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 04 Oct 2026 14:56:07 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 1219953670316839340
-EX-QQ-RecipientCnt: 11
-From: Dong Yibo <dong100@mucse.com>
-To: andrew+netdev@lunn.ch,
+	s=arc-20240116; t=1791097178; c=relaxed/simple;
+	bh=7bUhH/KPZO2e6VYSg4aJn1VClINpmoLcCMRzvLmtLtw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ry9nprd25wcSG6qF4hL3AbA1Vxp/rDUzsm1MjQ+c/efn4JgOQGAlnLfbCayHWUFbV48prky2FTuDP6SOwEMCRjutCMNT1Nem6cw7AcsM3kQ/OnK5yL0AQ5CkyEQUMpHk/iccqq/FYBGkBrOfauBPT/CB5905rxWccB0b9PsFxTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LX67hq8k; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LX67hq8k"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48b9d8055dfso592555f8f.3
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 23:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791097175; x=1791701975; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jUq35Mj7y/kPdp1eqVQTd7ny1GwkFBnwNODPDMNc1j4=;
+        b=LX67hq8k7UF/BXMFF3MujneexUiXhOao57wXGfg/U8RAzVInwBL8KaDxxDy9q95Qmr
+         c79f9BH/zFaQ/uuTYoquhW0u5BHaozo/myZSlEDZ/4IYXBeMBTmjpD8iQStHNBB4tR3W
+         tPcuo7GDc0eT4n0VAOcGxG348ItNWQMnhMWagrrtcM4F3YZHVItyMJL0EDiH7EIo8mLB
+         FYHIKNwB6oq5VJN2tPUWzFQBP9xbv1yeeQnQOoQp1En6F3ipZcDqWJ8GO77Y1N6Zr0LR
+         jFPvt3xEaM2TzX1+Ca7SPF71mMvLsjGHRsu8v2CwrgvcqfLiXCDS8e+ThsflYiLWtcR1
+         E7wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791097175; x=1791701975;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jUq35Mj7y/kPdp1eqVQTd7ny1GwkFBnwNODPDMNc1j4=;
+        b=SOcHAiufs5w2UxAzEf6jOcSfZVgzInnoDFQm7xW/st5WOO9nvkt2EHLk0b72nHS6xj
+         NZhHmMJZGuE6P6F91F7FEpaOo5hjON89XO1a22Y33LjN4/AHVO3RppHj1yKdV/wlraXD
+         HLmzuGpUenQi7TlhCdDA52JQn46RZ+nUSuLGZ6ga1h5FlG1q2Hemc9VYKDpbxrW3vn6e
+         9oVCv6YshvTsFhbu618LmUyqxBdUPhEgA3E0wqDm7tkvo3M1PuClP5fcxZm/ClFKlINz
+         86Gtf1zq5GUj+zeNvZxDWu0t1Ah+fbQS+u1z9hCkWasJAXemGJ7PXaJQfohby5uiE31H
+         wlgg==
+X-Gm-Message-State: AFq9FYJAhKdvJH1lCLO1NXfBVyuF08rQZ+GregewHz1rXQwBhIK4IgJO
+	rBn/dHrTb22xwJTRATGA6+hdA9X1xcOSMZkwuLcm4IMNiS89lmKbFHtLwBKcQgc3
+X-Gm-Gg: AYBFou06XHEKJchq8Ahs0yX2LKDKdgouCHcIVbUl9y6DvltAYNuJZJRkpOrDncNKaS/
+	keVq6RLnxLdR0KKw83n6RPOOi10ztYOHGz7b/wazmldSwhFV5oBrO2C5Fw78Lo+iIyesgajhlwF
+	Xf47CZwf7zWDxLOJsJrBEDdbvt8Dlgecp9xZ8pzzzSckwK2ALzqvXkN0ecxrORgG+GkLT9OFzVp
+	ji09r34tIa6a8UMIRuqdi9mACm2V+YxBEIRVXK7PJ8GoUetiHAjkeg4S7FLl2KKgNK8lsVIbVRt
+	9/5oMajwQXXcUTY0YRjTKZdn4qAqQ+/996rYSwk5O3S3TWxp/XewGzHyCxwOdlumEIB2KD6+ovp
+	tukSpB73GqFbVfDTpEN5eZketjBN/I5hFa/4yrbkAp7dI15U4NFBuQUTGRxhifAhOFc4MoDMk4J
+	kAUaivqIlQRobLsIDrfOu6MkQUuC0Dv4o8IW5TSMSv/Qpb/TQztRpE8osOcuZW6oh3zOKfYY5bt
+	qmShy3LWlHi1M+ambH2dxBQ4CKkeGSSJT1USvcd5x7ef0ZOJFU=
+X-Received: by 2002:a05:6000:2610:b0:48a:f11e:6d57 with SMTP id ffacd0b85a97d-48c47fe6a3fmr6495332f8f.19.1791097174408;
+        Sat, 03 Oct 2026 23:59:34 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c57d927cdsm1761318f8f.6.2026.10.03.23.59.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 23:59:34 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: kuba@kernel.org,
+	pabeni@redhat.com,
+	suraj.gupta2@amd.com,
+	radhey.shyam.pandey@amd.com,
+	michal.simek@amd.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	u.kleine-koenig@baylibre.com
-Cc: netdev@vger.kernel.org,
+	robert.hancock@calian.com,
+	sean.anderson@linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	dong100@mucse.com,
-	yaojun@mucse.com
-Subject: [PATCH net-next v15 0/5] net: rnpgbe: Add TX/RX and link status support
-Date: Sun,  4 Oct 2026 14:56:04 +0800
-Message-ID: <B438B0A83ACCA2DE+20261004065604.224873-1-dong100@mucse.com>
-X-Mailer: git-send-email 2.50.1
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net v5] net: axienet: do not report TX completions as NAPI work
+Date: Sun,  4 Oct 2026 09:59:30 +0300
+Message-ID: <20261004065930.1004953-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,122 +82,110 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: Ml+nSbudC4cFn5V7GcE68rimTl9hs1oBTR/nO/m2q8saddUlLX/5Jb6+
-	z+CDICfkO7Axh+ywv/m1I5VbfYTcbc0VvP3rwrmctn/db20b3M2UE4tYq1yDEGtD5/BgND+
-	Ir8t3buk3tWJ8pE1vnMrIiQcudIXXdzgOOxFGoIihkIY79jBPDND7xsS7y3DduA7zc0y/Ly
-	y+OsqlmTgO+Y8Nn8lo7+3R34GUkHNrkoWLoY8rY1xAMjHojmoris3N3X9Rmp01jlfgKM3mD
-	ciLBldnEA+ZxjyX5UWFksUys7ds0lqdMGI+voRqkhGKkl6InvrTR/UB4hANfwBQzGIru2Wz
-	pIpBNuwMwKaXDICzpNjiyoquiymoqgZmxCJqA3qDjE2sSisIMQ9ipoqOqmOYMJ6vZmseTLF
-	v9CxDDmIOUIF1X+o3Qa/L/sh0lcirvbuE/XjV7UYkq0+kxdAKZabSLdvu+HXyAcQKfZMbOr
-	sKxPweln3uKfWNtww0KzZHuhMeAUeH3sJ8tsmebD7P+PExbxcTFlDlUE/L0O8HvGJf3EbGc
-	b9L9Vir6cYqJar+h0v+lhPuLQmd941UW0S+ECXp+fAWTcfH6XVUiS5Zfli8bb/aZltDMYYC
-	/KZhihpxV/UtkuClvDtqrq6nn/51uHYE4KkTyKx/tumwRbWWq+qAE0qCrwLv/ZVys2RrFS1
-	fFjb2M7KHPuC7sdaOOSKG7ZftjVntxsYtZzf6Hdwp0FnvD9nWfHkw0pQj14Bg6Lm1tnaxxG
-	+Hq65vsOS03P3S4dkwIUAbU1fJwDxjj6aO0g0dlfPRGmeDcG91MOFkeLfGRte8WNI2No/+B
-	1hKUXQ+N6Rmy3xlM+i647FmV2x3MFttowg0eMk1vJO8EtyiaxBALCT59xfVL75ObIv0htxR
-	DyrLJdksJPZ1KNlDma02QFhBJo12vlbQMaL37+/mxo5nMjTRCSf7VTRptPVqaMMFUX9p2Op
-	KmbygMkaKbMe0nv/PxvvYISvUEgyHtFnLlIVnfuXZ0WIiZE58AxijhlNDqRIw1/YewyzBwO
-	24BQ95VJQ7Q12fVyg2N4KWwerxi/tEFi+8qzTuFKi9Je8hjdNy4c1D5ybHn78=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
 
-Hi maintainers,
+axienet_tx_poll() reclaims every completed TX descriptor in one pass:
+it passes lp->tx_bd_num to axienet_free_tx_chain() as the descriptor
+limit, and @budget is only used as the napi_consume_skb() bulk-free
+hint.  It then returns the number of packets reclaimed, which is bounded
+by the ring size rather than by the budget, so the poll can report more
+work than it was given.  This was seen after TX completion interrupts
+had not been taken for a while and a full ring was reclaimed at once:
 
-This patch series adds the packet transmission, reception, and link status
-management features to the RNPGBE driver, building upon the previously
-introduced mailbox communication and basic driver infrastructure.
+  eth0: NAPI poll function axienet_tx_poll+0x0/0x180 [xilinx_emac]
+        returned 96, exceeding its budget of 64.
 
-The series introduces:
-- MSI-X interrupt handling with NAPI support
-- TX path with scatter-gather DMA and completion handling
-- RX path with page pool buffer management
-- Unicast/Multicast filter.
-- Firmware link-event processing and carrier management
+netpoll is affected as well.  poll_one_napi() polls with a budget of 0
+to reclaim the TX path only, and warns once if any work is reported.
 
-These changes enable the RNPGBE driver to support basic TX/RX
-network operations.
+TX completions are not budgeted work: Documentation/networking/napi.rst
+lets a poll process any number of them.  Do as bcmgenet does since
+commit a58cdf56b6eb ("net: bcmgenet: complete Tx NAPI after one reclaim
+pass"): reclaim the ring, complete NAPI with no work done, re-enable the
+TX completion interrupt and return 0.  Re-enabling the interrupt raises
+it straight away if more completions are already pending, so none is
+left behind.  This also drops the extra poll that used to follow a full
+budget's worth of completions, which only found an empty ring.
 
----
-Changelog:
-v14 -> v15:
-[patch 1/5]:
-1. Update the interrupt helper documentation to describe the MSI-X-only
-   implementation instead of implying MSI or INTx fallback support.
-2. Document in the commit message that mailbox transactions run in
-   process context and use sleepable polling to acquire the hardware
-   mailbox lock.
-[patch 2/5]:
-1. Document that carrier is kept off before register_netdev(), and is
-   enabled only after a valid link state is reported by the later
-   link-status patch.
-[patch 3/5]:
-1. Clarify that rnpgbe_is_non_eop() may consume and free the skb when the
-   fragment limit is reached.
-2. Avoid retrying a failed RX page allocation for every descriptor in the
-   same NAPI poll. Check for pending refills after NAPI completes and use
-   the per-q_vector timer for delayed retries.
-3. Report invalid RX descriptor lengths through rx_errors and
-   rx_length_errors instead of rx_dropped. Count at most one length error
-   for each complete packet and protect the counter with the existing
-   u64_stats_sync sequence.
-4. Set the page-pool DMA synchronization window to start at
-   RNPGBE_SKB_PAD and cover only RNPGBE_RX_DESC_DATA_LEN bytes. Use the
-   same range when manually synchronizing reused pages.
-5. Schedule the initial allocation retry only for batch-sized shortfalls.
-   Leave smaller shortfalls to be replenished when traffic frees a full
-   refill batch, and update the comment to describe this behavior.
-[patch 4/5]:
-1. Avoid transient receive-filter gaps when updating RAR and multicast
-   filter state.
-2. Switch the receive-mode implementation to ndo_set_rx_mode_async while
-   retaining synchronous filter setup before RX is enabled.
-[patch 5/5]:
-1. Avoid a GMAC_CONTROL read-modify-write race with firmware during
-   port-down by leaving GMAC receiver disablement to firmware after RX
-   DMA has been quiesced.
+netpoll polls with a budget of 0 and must not complete NAPI, so skip
+the completion then; napi_complete_done() refuses it in that case
+anyway.
 
-Links:
-v1:  https://lore.kernel.org/netdev/20260325091204.94015-1-dong100@mucse.com/
-v2:  https://lore.kernel.org/netdev/20260403025713.527841-1-dong100@mucse.com/
-v3:  https://lore.kernel.org/netdev/20260507081539.171844-1-dong100@mucse.com/
-v4:  https://lore.kernel.org/netdev/20260526033539.164061-1-dong100@mucse.com/
-v5:  https://lore.kernel.org/netdev/20260528023150.239532-1-dong100@mucse.com/
-v6:  https://lore.kernel.org/netdev/20260604112750.769215-1-dong100@mucse.com/
-v7:  https://lore.kernel.org/netdev/20260611100036.36370-1-dong100@mucse.com/
-v8:  https://lore.kernel.org/netdev/20260731120322.895955-1-dong100@mucse.com/
-v9:  https://lore.kernel.org/netdev/20260814111317.1741087-1-dong100@mucse.com/
-v10: https://lore.kernel.org/netdev/F44E6669E6C9E7C4+20260831073608.401988-2-dong100@mucse.com/
-v11: https://lore.kernel.org/netdev/745DADAC2A5786BD+20260911112416.2142101-1-dong100@mucse.com/
-v12: https://lore.kernel.org/netdev/64BE41C2D2C0836A+20260914013019.2262317-1-dong100@mucse.com/
-v13: https://lore.kernel.org/netdev/B8AF0FDE24FAFB51+20260920092424.345309-1-dong100@mucse.com/
-v14: https://lore.kernel.org/netdev/0A4D45AD9F6A0F14+20260928033701.1033196-1-dong100@mucse.com/
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5a6caa2cfabb ("net: xilinx: axienet: Fix packet counting")
+Assisted-by: LLM sparse
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 ---
 
-Dong Yibo (5):
-  net: rnpgbe: Add interrupt handling
-  net: rnpgbe: Add basic TX packet transmission support
-  net: rnpgbe: Add basic RX data path support
-  net: rnpgbe: Add receive mode support
-  net: rnpgbe: Add link status handling support
+Notes:
+    Changes in v5:
+    - Complete NAPI with 0 and return 0, following commit a58cdf56b6eb as
+      Jakub suggested, instead of capping the returned packet count at the
+      budget.  Subject changed to match.
+    - Dropped Suraj's Reviewed-by, as the change is different now.
+    - Build-tested only; not yet run on hardware.
+    - v4: https://lore.kernel.org/netdev/20260930071536.627964-1-maimon.sagi@gmail.com/
+    
+    Changes in v4:
+    - Keep reclaiming the whole ring and cap only the value returned, as
+      Paolo Abeni and the review of v3 suggested, instead of stopping the
+      reclaim at the budget.
+    - Fixes: now names 5a6caa2cfabb (review of v3).
+    - v3: https://lore.kernel.org/netdev/20260924135052.185129-1-maimon.sagi@gmail.com/
+    
+    Changes in v3:
+    - Report no work for a budget of 0, so netpoll cannot trip the
+      WARN_ONCE() in poll_one_napi().
+    - v2: https://lore.kernel.org/netdev/20260917115657.20697-1-maimon.sagi@gmail.com/
+    
+    Changes in v2:
+    - Treat a budget of 0 as no limit, so that netpoll still drains the TX
+      ring.
+    - v1: https://lore.kernel.org/netdev/20260914114821.55503-1-maimon.sagi@gmail.com/
 
- drivers/net/ethernet/mucse/Kconfig            |    2 +
- drivers/net/ethernet/mucse/rnpgbe/Makefile    |    3 +-
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  210 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  167 +-
- drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   45 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 2258 +++++++++++++++++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |   88 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  208 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |  179 +-
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |    4 +
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  283 +++
- .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |   60 +
- 12 files changed, 3468 insertions(+), 39 deletions(-)
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
- create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 09443623a3e2..a13323a9399f 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -985,9 +985,9 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+  * axienet_tx_poll - Invoked once a transmit is completed by the
+  * Axi DMA Tx channel.
+  * @napi:	Pointer to NAPI structure.
+- * @budget:	Max number of TX packets to process.
++ * @budget:	NAPI budget, or 0 when polled by netpoll.
+  *
+- * Return: Number of TX packets processed.
++ * Return: Always 0.  TX completions are not counted against the budget.
+  *
+  * This function is invoked from the NAPI processing to notify the completion
+  * of transmit operation. It clears fields in the corresponding Tx BDs and
+@@ -1019,7 +1019,12 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
+ 			netif_wake_queue(ndev);
+ 	}
+ 
+-	if (packets < budget && napi_complete_done(napi, packets)) {
++	/* The whole ring was reclaimed above, so there is nothing left to
++	 * poll for: complete with no work done, as TX completions do not
++	 * count against the budget.  netpoll polls with a budget of 0 and
++	 * must not complete NAPI.
++	 */
++	if (budget && napi_complete_done(napi, 0)) {
+ 		/* Re-enable TX completion interrupts. This should
+ 		 * cause an immediate interrupt if any TX packets are
+ 		 * already pending.
+@@ -1028,7 +1033,7 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
+ 		axienet_dma_out32(lp, XAXIDMA_TX_CR_OFFSET, lp->tx_dma_cr);
+ 		spin_unlock_irq(&lp->tx_cr_lock);
+ 	}
+-	return packets;
++	return 0;
+ }
+ 
+ /**
+
+base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
 -- 
-2.50.1
+2.47.0
 
