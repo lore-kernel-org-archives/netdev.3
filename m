@@ -1,108 +1,142 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32668388379;
-	Sun,  4 Oct 2026 12:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A60381E8B;
+	Sun,  4 Oct 2026 13:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791118166; cv=none; b=FukerPlAH91Wf48OOrD+J2hxa7T73LXgSz1+GBnS3O2zP3dKccbjzyJeSijCjIFEEgvmlJeR4+S6vC9Yqrb9Kx/gxDayE8+PrsnEDEU7xednfvsakuYlVsGSj2eS7VYd0O4Ptc4mgRSNQnCpX/Tq1+I0ksAhNjEt/hMvLaQt6Wc=
+	t=1791118932; cv=none; b=sXhQFXtvK/gFWGo0yQXVXnmYn9JKwQ2ZCWMe+0/T1mE8ahrv60s1mwOAEXzjlZzHfRb8mqBEXD9pdqs+LAmtydW0A85aNJ/pyu/AiG8Oaa8Zx7GTN0vjPPlGHJH8QOSIGSkzOS7a07xhBYM+b9wkDjTARjdBKbDN4DHj7hL8EEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791118166; c=relaxed/simple;
-	bh=mol2aMlgWpSO+Qo+MW6h6dw5A2JNlatnKsDk2DB11zI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=AzuT+VYaOaKx78zu8YcP+5wqStjTJfanM5EWcsESzW9VPekmGnXhHPrTiRf7GIQPK1OealfNcJMQkb8AL/9bTaaGpMd0m91IY1Zz7SDE8NKEguXkcseoBe6Wlthvc/ITyZgwNFT9/vmDR7R9x8/Eo65zT412sLI353n6f3wHKfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=A+Ob0GwR; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791118932; c=relaxed/simple;
+	bh=ewsHhT0Y693+ulyI/5/45VClFz7ryAT4kYPzRhI78ig=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GlGfsU6hV33zyeGe41F5O44kpDNMsuJ9LzV4S8WZwLrbU3WtA62Pd/4u7elFIOyS0snrUP3ZpleF6RohNnWZz01MKdMV7K8rMSfKsigJyMYe3tTbrY6O1B7xSptfBtTcNePsrFDhl3t1YtkX5VgEKKfSLzYS1/N9UtdLPBEVcZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mdz8QOcI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="A+Ob0GwR"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7D1E11A1059;
-	Sun,  4 Oct 2026 12:49:22 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3F7E9604FE;
-	Sun,  4 Oct 2026 12:49:22 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AE5D21032817F;
-	Sun,  4 Oct 2026 14:49:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791118161; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=mol2aMlgWpSO+Qo+MW6h6dw5A2JNlatnKsDk2DB11zI=;
-	b=A+Ob0GwREiKa80YIWL2SCmKA7AsWfJXQccHWajBDj/vGDveF/5FHGEBKOVcDI5+n2+6k16
-	RlNTsFC2dIR3VmwopA4qyWdKDN3CzWL4RKF07S7p3wE2VI2v83/mGW7rkHnASSBSGVRE5C
-	bdZVdA1FhjJOORVPOEXYf/GNpFNki3K7UtSwbuaExauoOBRSKsRlvsjXcWkQniSjItvlqQ
-	D+++3v7Og6dAuwe0DlOH/rkGBHimQik7Nb+0hDa9/pFfxvvqmMCWW4Y8ItKsPTLAz7b70u
-	7QzmjmqncPPmcq4GL2gmNZ0Pp40LL6YGSj4NLLu5gKhnXRVGbWLGTgsviWZ7zw==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mdz8QOcI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1321F00893;
+	Sun,  4 Oct 2026 13:02:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791118931;
+	bh=dlcd0zuZhmEVNGntmaV+rmnnPoHJNhMxp5duOKoPYHY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Mdz8QOcIiXPyTmKf5TFt6Ut5dxRpnxvithsCuJsjsYh5SCTojSH12SyH/Z7prEdc6
+	 MmTWyVBdZRmEqAgrpcBWs5Ko0uyl98rpyKbjRz79lzLWiPC1FLevam60/6ZNS6C+FT
+	 rS8uKpLulVMM5aAkYwH0i6D6qyIFbJlVyL+iDMA5VrkjmZgfyFjrsmBlqeeervESYE
+	 SqMS8FaGNi3DHZh2qF8+glDP7qlH9SWvoAiQFidFXHiJ2vvLx09N1iu9TATNGZMqyx
+	 SN3R4Hdd2yikrpbzBkEyg++dPoZXlxSfkbwhb72pi9NH3zOXMBlnNjmvmh+13eCUGD
+	 OQxB7q8vwa/Ug==
+Subject: Re: [PATCH net] ipv4: stop PMTU walk when nexthop group shrinks
+From: netdev-bot+sashiko@kernel.org
+To: 4ncienth@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ deliran@verdict.gg, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 04 Oct 2026 13:02:10 +0000
+Message-ID: <179111893007.434549.14219431686863441999@kernel.org>
+In-Reply-To: <20261001010550.2742297-1-4ncienth@gmail.com>
+References: <20261001010550.2742297-1-4ncienth@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 04 Oct 2026 14:49:11 +0200
-Message-Id: <DLW2E7JXT811.PKQ54Y98FZ88@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net v3 1/7] net: macb: manage the netdev lifetime with
- devres
-Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Russell King" <linux@armlinux.org.uk>,
- "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Soren Brinkmann"
- <soren.brinkmann@xilinx.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-To: "jiale yao" <19888972804@163.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261003085940.493951-1-yaojiale02@163.com>
- <20261003085940.493951-2-yaojiale02@163.com>
- <DLVX7ZLU4GOM.1WCL74N0U7PUP@bootlin.com>
- <178a0ccc.167b.1a106d6770f.Coremail.19888972804@163.com>
-In-Reply-To: <178a0ccc.167b.1a106d6770f.Coremail.19888972804@163.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
 
-Hello Jiale,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-On Sun Oct 4, 2026 at 2:14 PM CEST, jiale yao wrote:
-> At 2026-10-04 16:45:58, "Th=C3=A9o Lebrun" <theo.lebrun@bootlin.com> wrot=
-e:
->>Hello Jiale,
->>
->>Those LLM bugs are code churn, that's why you are seeing pushback.
->>Please don't ignore the pushback. For example on V2 you got asked to
->>reply to an automated message, which you didn't do.
->>
->>https://lore.kernel.org/netdev/20260927153020.5311dba6@kernel.org/
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-You've skipped over part of my message.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
->>On Sat Oct 3, 2026 at 10:59 AM CEST, Jiale Yao wrote:
->>> macb_remove() frees the netdev while its managed IRQs are only
->>> released after the remove callback returns. An interrupt in that window
->>> can dereference the freed netdev or queue data.
->>
->>Please indicate how an interrupt could land in that window.
->>Thinking about it for a brief instant, I cannot think of one.
->
-> I reproduced this on QEMU aarch64 virt + KASAN:
-> I added a macb node via an extended device tree, with its interrupt
-> line shared with virtio-rng. Keeping the rng busy triggers a steady
-> stream of interrupts during unbind/rebind, and macb_interrupt() hits the
-> window after `free_netdev()` on the first attempt.=20
-
-But that never happens in the real world. We use shared interrupts
-because we want to supports boards with a single interrupt lane for
-all queues.
-
-I've been thinking about removing the IRQF_SHARED flag recently, because
-it tricks Sashiko (and you) into thinking that we might share our IRQ
-lane with anything and anyone.
-
-Thanks,
+- [High] The fix is incomplete.
 
 --
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
+ipv4: stop PMTU walk when nexthop group shrinks
+
+The PMTU walk in __ip_rt_update_pmtu() reads the path count with
+fib_info_num_path() and then each path with fib_info_nhc(). For nexthop
+objects, these two calls load nh->nh_grp separately, so a group
+replacement in between can make fib_info_nhc() return NULL. This patch
+adds a NULL check and stops the walk at that point.
+
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index 37674d76f90f0..5f2197874bebc 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+> @@ -1082,6 +1082,8 @@ static void __ip_rt_update_pmtu(struct rtable *rt, struct flowi4 *fl4, u32 mtu)
+>  
+>  			for (nhsel = 0; nhsel < fib_info_num_path(res.fi); nhsel++) {
+>  				nhc = fib_info_nhc(res.fi, nhsel);
+> +				if (!nhc)
+> +					break;
+
+[Severity: High]
+Is this fix complete? fib_dump_info_fnhe(), in the same file, has the
+same fib_info_num_path()/fib_info_nhc() loop and does not check nhc for
+NULL:
+
+net/ipv4/route.c:fib_dump_info_fnhe() {
+    ...
+	for (nhsel = 0; nhsel < fib_info_num_path(fi); nhsel++) {
+		struct fib_nh_common *nhc = fib_info_nhc(fi, nhsel);
+		struct fnhe_hash_bucket *bucket;
+		int err;
+
+		if (nhc->nhc_flags & RTNH_F_DEAD)
+			continue;
+    ...
+}
+
+For a route that uses a nexthop object, nexthop_num_path() can see a
+two-member group and accept nhsel = 1. A writer can then publish a
+smaller group on the same struct nexthop, in either of two ways:
+
+replace_nexthop_grp()
+    rcu_assign_pointer(old->nh_grp, newg);
+
+remove_nh_grp_entry()
+    rcu_assign_pointer(nhp->nh_grp, newg);
+
+After that, nexthop_fib_nhc() loads the new group, and
+nexthop_mpath_select() returns NULL because nhsel >= num_nh. That makes
+the nhc->nhc_flags read a NULL pointer dereference.
+
+The reader path holds only RCU:
+
+inet_dump_fib()
+  fib_table_dump()
+    fn_trie_dump_leaf()
+      fib_dump_info_fnhe()
+
+inet_dump_fib() is registered with RTNL_FLAG_DUMP_UNLOCKED and takes only
+rcu_read_lock(), so nothing stops the RTNL-held nexthop writers from
+running at the same time.
+
+The dump_exceptions filter is set by default for non-strict dumps. For
+strict dumps it stays set when RTM_F_CLONED is requested, for example by
+ip route show cache. The dump itself needs no privilege. The writer
+needs CAP_NET_ADMIN in the netns, which the commit message notes is
+reachable through an unprivileged user namespace.
+
+If only this patch goes to stable, the same NULL dereference is still
+reachable through the route dump with the same writer. Should the same
+guard also go into fib_dump_info_fnhe()? Alternatively, could each walk
+take a single snapshot of nh_grp, so the count and the per-index lookup
+always use the same group?
+
+>  				update_or_create_fnhe(nhc, fl4->daddr, 0, mtu, lock,
+>  						      jiffies + net->ipv4.ip_rt_mtu_expires);
+>  			}
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001010550.2742297-1-4ncienth%40gmail.com
