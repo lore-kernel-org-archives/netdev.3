@@ -1,165 +1,129 @@
-Received: from mail1.kuutio.org (mail1.kuutio.org [65.108.50.241])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C730146D547;
-	Sun,  4 Oct 2026 20:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.50.241
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791147214; cv=none; b=X+M7r9xrUtTVTp9pWkJidjVqwPSpGZcLiYWOyO9QQuXtAFtQ3OLHiTq77SB+uLCJq4kCzpFmeFWdELVD9yqp8/A3J28c6TioG9kujDDabuyeRuyVwYTmb1lTJQrjQIZ5f6fAOxkjOCZqqG5VJcpJgPnPBTa3w+cx8QtP/sH7ILE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791147214; c=relaxed/simple;
-	bh=v49ZB23Kze7PHLcH2i3goNue+IyusDCjZ/u9rJ2G2lU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uxthC/dn8OJHPqJEK4aEdafXuo+nw3ilaPNbcEKWM4Y8Ps/TahMYmsoQbnB/b07q4ouK1j5WjplhQ8h4+iKP22LHbFWSyLxiVoG1wyR1mBr5/JYcpzX35TEKB3/pCF9ZKTPcEHeRYJNF/DmcpUjh1+POWbnf/2q2uBbeNZnkejk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lemmela.net; spf=pass smtp.mailfrom=lemmela.net; arc=none smtp.client-ip=65.108.50.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lemmela.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lemmela.net
-Received: from localhost (mail1.kuutio.org [127.0.0.1])
-	by mail1.kuutio.org (Postfix) with ESMTP id BCC291FD9C;
-	Sun,  4 Oct 2026 20:46:46 +0000 (UTC)
-X-Virus-Scanned: amavis at kuutio.org
-Received: from mail1.kuutio.org ([127.0.0.1])
- by localhost (mail1.kuutio.org [127.0.0.1]) (amavis, port 10024) with LMTP
- id vR5kU_o3mZqC; Sun,  4 Oct 2026 20:46:46 +0000 (UTC)
-Received: from muovi.kuutio.org (nbqchc6j3dhrbnnpubi-1.v6.elisa-laajakaista.fi [IPv6:2001:99a:adc:6a00::8be])
-	by mail1.kuutio.org (Postfix) with ESMTPSA id E4A771FD92;
-	Sun,  4 Oct 2026 20:46:45 +0000 (UTC)
-From: Oskari Lemmela <oskari@lemmela.net>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Damien Dejean <dam.dejean@gmail.com>
-Cc: Manuel Stocker <mensi@mensi.ch>,
-	Oskari Lemmela <oskari@lemmela.net>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: phy: realtek: fix RTL8224 package address selection
-Date: Sun,  4 Oct 2026 23:46:36 +0300
-Message-ID: <20261004204637.721148-1-oskari@lemmela.net>
-X-Mailer: git-send-email 2.55.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B8047FB0F
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 20:57:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791147438; cv=pass; b=RwcQKiOw/AEkLFQ46kHyN0XGi4ylim0f2hiSdD8SSXXl52aUgVnM85fJqK+UeZHlCt9tiffnmtZ4pvrAUDX80FeOEGB9wbNMPzrYxudgEz4x4lYiGoftLmrEfin5VgsE8w222wRkARp8pusVgnLhht3k4h3wKdcd2Egv5Zl9KW8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791147438; c=relaxed/simple;
+	bh=l2DWYrMPEPkpCBeEGbcDPTrkRXyWOflPOtrsbcHJFDg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VfeBZSfRp4t1l3NQAW0UfAVwHq/bXpRKT70mYe3wSqVJ+L7OxTLq0nbq9u/MOumHPVm4F8uQtvlFEi0uvdp1sfe09GvcmmpEPXty2fOhJu106JQYoIVyJUeXOZqLYEy4OcQ1XIg/o4i9tPwJKvnI/wkwX6o5ezNPO7dNXlo48OU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OwSY2Q7t; arc=pass smtp.client-ip=74.125.231.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OwSY2Q7t"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c112aaaf04so563671b6e.1
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 13:57:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791147436; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gE4n+YOFoxp1Y8frvEZ2diH0hkKrDTrJrTLNehfX0V7/xblY7k3hYfpVy8NY5Wwb60
+         A0hpAIzUAE8c1rn46YeAZQZNngUHfO1wq63rhR/2Iui8Ns973PX4oO/jykuKVxiUuVWP
+         FwMY1oaniOzmGF19bjzP7EzF79DqlG84P4uYupZCsVlOgiBGayArqEXN88wev4evzQCx
+         IP1E4Q8hWTcBSn6IhCP24KtD5yhuVffENNn34YBTU8YOkMIh8790ErxITpM/VN03Ltzk
+         wXFC8oWWSu/l42Zi15T7ZIit9DORGlf1vQz57fQpNr6AuQH2IpZbPDZXcW/4nSEmJ1Zy
+         kSvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+gAZp/BShGctoAlT0g/webMwCwP75rSNvd4mdkXsmm0=;
+        fh=Xskzwo5XZaFM/CJuJVhtDMxM6/OToS8n6tbCFGaK7Z4=;
+        b=TWZ1YW7oTT98/GijLqwRrjbZiKNamKRCwjwEq+h5+XhoBFh0uE7Hy10dGsggryrU/e
+         MsfVwJLvhJjzKm/8o7wJUButlI1BewrbLoylBDfdaUpr/xQXssG5CiF6tCXskCJRlV+x
+         2CMoKIc3yPK941aQyg9kKe0n8Sc0c/EC2Svk9rP4V64G80FW40SamZAmUMExDGzhVCs2
+         tuQM0NcVTrcd/NKyHs4MnhEUiBDLKkdaDWAX751oy+l5erGQTxAtF4GDhuu3bXryye6R
+         6e13o1+xB7A4klbU8ga7Y/azt/ZI6dFj6fijtyYs1whwJhYlHJxVvLA1Z380kv1Xq7HO
+         IFIQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791147436; x=1791752236; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+gAZp/BShGctoAlT0g/webMwCwP75rSNvd4mdkXsmm0=;
+        b=OwSY2Q7t/sSi5iPYIqUh98yNRWyIyoOWQLXQTSCdLZJh5WDAvnvmA5DLr0icwRuxe3
+         xiX9j8I48Py1zP5pyb33kXcrV8h/a1c9FjKUErKombh4qmmRPODUHuGHlSS3za2Lvj2Q
+         IChGacpuG54vi3GYWdNfjWXjjTpJjRcuhuc1yXh0EWk2dpEy1WHzh5SrhHPuOIGLpDUO
+         8j1ifdtGekNQRIerjB20uf5DbdQxVUBREqOh8cDP9mCHa+0g4BTDewlwoEnGvo7vTncO
+         pdHevkvPNDcGLBcdLuflzKaGefK3xPDufJ2+jsuaLVniqdMjQ3vGMc+uhQyvTmXNNfXl
+         5pfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791147436; x=1791752236;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+gAZp/BShGctoAlT0g/webMwCwP75rSNvd4mdkXsmm0=;
+        b=ZQLRgASQPVeVv6cgc3TL9mFufsQLz9ZH+HI3lcy2rV2LzupsGgSisfsKp6HfsyHLSx
+         /UG0rkajMA8xdePlN+W4UtYjex2QZ7PpPz2IQW5Pk+Kasdh7d/Ambv66Fk0rsSVmJ9Sp
+         Hu7Jhb7CzuN29ag91sYfInYV8iTzDh9zukyNxd1efGA647z596wVK5ZNc5DIshGRuF5f
+         W4/LmGK4VReIwii2AZnnm2wblPGmLu47GUnvZJNcj/O2b4aAVq5kjPUCeqUxhwGbQHVj
+         zSlyFWmJI0Yg12zZLw+S6KwM2WdMC7WDX1W9AjuRZ2y9xTySAC1VML0NVzjv9gujEMVj
+         E6WQ==
+X-Gm-Message-State: AFuF++kqE5eWlaLwCWl2VzJjObbLM3dOuODJAfH0wXGRsZByiHjuC2SY
+	eSdqttk2N3BbK75oCY+K4YBIoRJXf2VA1l/4lV6H4N61/2tDOaOnA/RrCB2Fob3bQK3fSZEwD2n
+	5p3dh92bUgMOzJN7az9NmquJT162+uQA=
+X-Gm-Gg: AYBFou0eeYI/v2klOcDwI1x7AOGHTR0YKhHl7Gw+ph7rtlJt6PNdm9siuW9lKt1PNAf
+	dOtR5E5UVv/kgaodPPRiIcoTl3ooSApY35NC8l9gQ+EnjUTsGGbOxQ6+JQ06ApuXpyOV3VP2Jv3
+	qNHOaVKzbFeHw1KcNQcOpj8Cw8Iji0KyZ21qEgq4olUpA+IImVeoV7VnkljK1sHdrIyo0v/wcy+
+	qikWpOGS0j/AS5cTJBnwl+Jhh3GwdivARwrBz6NC9ffOqBsY78rD9cXW5u0TUBJwKvUL/EWRozs
+	t2bnELGSmYi0nGI+YYSMCe6no8oN3jwN4hE530IwTVB3SmHIY1DqdbB5rtavU+aySWYBI+Tm8in
+	PajgWBzQ9pw==
+X-Received: by 2002:a05:6808:14d3:b0:4cb:26a3:a0dc with SMTP id
+ 5614622812f47-4f529a0c087mr8651948b6e.20.1791147436337; Sun, 04 Oct 2026
+ 13:57:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261004184246.1260426-1-mmyangfl@gmail.com> <8a9ec69b-0823-48b1-aac1-f40cb4713f23@lunn.ch>
+In-Reply-To: <8a9ec69b-0823-48b1-aac1-f40cb4713f23@lunn.ch>
+From: David Yang <mmyangfl@gmail.com>
+Date: Mon, 5 Oct 2026 04:56:40 +0800
+X-Gm-Features: AclHuK-Gqsq1sWsTwqtU_9nAXJD_m0-GFmjnDbkG-2Q4w2Mrh_J-t9h4WYXOnMc
+Message-ID: <CAAXyoMP_8Pa3XpTdTttTP2HgQOrVqT-_P-vK-M1qJNi79Ed6RQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: phy: motorcomm: Add cable test support for
+ internal YT861x PHYs
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Frank <Frank.Sae@motor-comm.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Manuel Stocker <mensi@mensi.ch>
+On Mon, Oct 5, 2026 at 4:17=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Mon, Oct 05, 2026 at 02:42:43AM +0800, David Yang wrote:
+> > The YT921x switches integrate GbE PHYs of the YT861x family (PHY ID
+> > 0x01e04281) on the switch-internal MDIO bus exposed by the yt921x DSA
+> > driver. Without a specific driver they bind to the generic PHY driver
+> > and lack the cable diagnostic facility. Add a driver entry for them
+> > with cable test support.
+>
+> Since this does two different things, it should be two patches.
+>
+> Does the cable test code apply to other devices this driver drive?
 
-The RTL8224 driver rounds each PHY address down to a multiple of four
-to select the package base and uses the low two address bits as the
-port index. For a package starting at an unaligned MDIO address, this
-accesses shared registers at the wrong address and selects incorrect
-MDI pair order and polarity fields.
+I don't have other devices to test with.
 
-The Hasivo S1100WP-8GT-2S+ uses two RTL8224 packages at MDIO
-addresses 1-4 and 5-8. The aligned-address assumption splits each
-physical package into incorrect software groups rather than using
-the actual package bases of 1 and 5.
+> > @@ -18,7 +19,9 @@
+> >  #define PHY_ID_YT8522                0x4f51e928
+> >  #define PHY_ID_YT8531                0x4f51e91b
+> >  #define PHY_ID_YT8531S               0x4f51e91a
+> > +#define PHY_ID_INT861X               0x01e04281
+>
+> Is this the ID of the switch itself? It does not match the pattern.
 
-Use the base address from an ethernet-phy-package node when present
-and calculate each port's offset relative to that address. Reject
-PHY addresses outside the four-port package and propagate explicit
-package errors instead of falling back to another base address.
+It's live captured from the system. By the way the serdes PCS does
+show something matching the pattern 0x4f51e899.
 
-Keep the existing aligned-address assumption when no package node
-is present.
-
-Fixes: 330296ea9e15 ("net: phy: realtek: add RTL8224 pair order support")
-Signed-off-by: Manuel Stocker <mensi@mensi.ch>
-[Oskari: rebased on net/main, reworded commit message]
-Signed-off-by: Oskari Lemmela <oskari@lemmela.net>
----
- drivers/net/phy/realtek/realtek_main.c | 49 +++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 177b62a7b2d1..8405a74d631f 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -340,6 +340,10 @@ struct rtl821x_priv {
- 	u16 iner;
- };
- 
-+struct rtl8224_priv {
-+	u8 port_offset;
-+};
-+
- struct rtl8261x_priv {
- 	const char *fw_name;
- 	bool fw_loaded;
-@@ -2699,7 +2703,8 @@ static int rtl8224_package_modify_mmd(struct phy_device *phydev, int devad,
- static int rtl8224_mdi_config_order(struct phy_device *phydev)
- {
- 	struct device_node *np = phydev->mdio.dev.of_node;
--	u8 port_offset = phydev->mdio.addr & 3;
-+	struct rtl8224_priv *priv = phydev->priv;
-+	u8 port_offset = priv->port_offset;
- 	u32 order = 0;
- 	int ret;
- 
-@@ -2724,7 +2729,8 @@ static int rtl8224_mdi_config_order(struct phy_device *phydev)
- static int rtl8224_mdi_config_polarity(struct phy_device *phydev)
- {
- 	struct device_node *np = phydev->mdio.dev.of_node;
--	u8 offset = (phydev->mdio.addr & 3) * 4;
-+	struct rtl8224_priv *priv = phydev->priv;
-+	u8 offset = priv->port_offset * 4;
- 	u32 polarity = 0;
- 	int ret;
- 
-@@ -2759,9 +2765,42 @@ static int rtl8224_config_init(struct phy_device *phydev)
- 
- static int rtl8224_probe(struct phy_device *phydev)
- {
--	/* Chip exposes 4 ports, join all of them in the same package */
--	return devm_phy_package_join(&phydev->mdio.dev, phydev,
--				     phydev->mdio.addr & ~3, 0);
-+	struct device *dev = &phydev->mdio.dev;
-+	u32 base_addr = phydev->mdio.addr & ~3;
-+	struct rtl8224_priv *priv;
-+	struct device_node *np;
-+	int ret;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	np = of_get_parent(dev->of_node);
-+	if (of_node_name_eq(np, "ethernet-phy-package")) {
-+		ret = of_property_read_u32(np, "reg", &base_addr);
-+		of_node_put(np);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "Missing or invalid PHY package reg\n");
-+
-+		if (phydev->mdio.addr < base_addr ||
-+		    phydev->mdio.addr - base_addr >= 4)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "PHY address outside RTL8224 package\n");
-+
-+		ret = devm_of_phy_package_join(dev, phydev, 0);
-+	} else {
-+		of_node_put(np);
-+		/* Without a package node, assume four aligned PHY addresses. */
-+		ret = devm_phy_package_join(dev, phydev, base_addr, 0);
-+	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to join PHY package\n");
-+
-+	priv->port_offset = phydev->mdio.addr - base_addr;
-+	phydev->priv = priv;
-+
-+	return 0;
- }
- 
- static bool rtlgen_supports_2_5gbps(struct phy_device *phydev)
-
-base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
--- 
-2.55.0
-
+> >  #define PHY_ID_YT8821                0x4f51ea19
+>
+>         Andrew
