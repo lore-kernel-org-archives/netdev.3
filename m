@@ -1,339 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f37.google.com (mail-pz2-f37.google.com [74.125.228.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEC8246774;
-	Sun,  4 Oct 2026 05:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56103328FC
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 05:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791091350; cv=none; b=oEktBwiZa7PZDp+RXPhB5fNJStMZ8Vbtr24aO5Y2gmXcRVPg7LXvrV3zOeuyX0C9bKVeZ3XwZYa15CvUeJ7ntF8jPzQx1Vk9ghYHAgzyVMOewccQ4j+zhyoZEk4UQBSDTRmBfEGVGseCfn9vywVH4JsHCPzJQVyf+jyyepUMMwY=
+	t=1791091589; cv=none; b=pyJ6Mzr1LkhC3asduyQ22fb9mbRMm9V6Q4abKXlLNmJ/I52SESdy6543aL/0wuJxKWHaq05x3Qiac8zSDy97FfxiR3GtfnjzISIp8E3V/S72rbBH4jx/VjqteMuz4M8EjeMizbmE0UlRO02v+AS59Mg6adWCXdtgD3aJecUQy4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791091350; c=relaxed/simple;
-	bh=gFCSsZKGqyX+BtvkYmkzgjI0ln+y5zYPo6lpFHkd2i0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pE9IHAzL7AnHVBRBaGD/NvsDfrnim/OqudsOYGmuiIVVJ5s1QvELEwWBkD6TxlruKSzQKGdSrX1TSPJDgoZZZA7Ds6+g3S1MqxOCzJ+li5CbavHsboQCC+R2UyePWRF5LlWrDsUAM2HB/ikVywW3L/z/ys2F2THYOR2k4Fe9MeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRN04K3v; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791091589; c=relaxed/simple;
+	bh=eZ2p6zXDNQHbt4Zn0SxItyBiCh80mtsGPEzghGsZle4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pGPrkbO6t6OrcdGLyDR6vGZUg4U56AXe0cWFvSo6Aeufay4Pdv4i05UzwtWES1BKHSkDjR224C+l/AobrE6Wo4tH/wMEpUr139+8AwWmXCOuiEtWAwqqnDoWUu/jucsz3JSssqCaKRSttQZbZT4ZskmwUO8rETvIVtj9x9L4O3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FIb3lKV7; arc=none smtp.client-ip=74.125.228.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRN04K3v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B0D1F00893;
-	Sun,  4 Oct 2026 05:22:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791091349;
-	bh=bLv2OJdfnAx8JZtbHtlongojMY5gvUcTMUVTpzHUFW8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MRN04K3v56bEAUDejekHs3Kj4fAYg/UTFCkP61xvnSp5CY7c9BlN7++fnUjToDeL2
-	 l3gLxisFn/LPr/qWLr0cITKezASKHlJKonvvO8T9oUqlvFB3lp1/SWFUZXOAHAm8uY
-	 pX70aHUyCtgUnSVU30AE1j7GUsDL6l5jKvvYdSO9+75WUtjb0UR0TXu5Qc7BDBTIBE
-	 XuEfNWA9s5ZZmcctBsDVuIBAuu2UKWDIUNgcawZ6n569g4shSRQYPbMf4x/UBQu9KL
-	 MPBgw7y5hPYJ9a4s9WNsa+waqcFzi/OINGSweGg6Cce5yfJPAeRV+fNEhghwohw+G1
-	 2XsngeM2JKo2Q==
-Subject: Re: [PATCH net v3 2/2] xfrm: iptfs: hold a device reference while
- packets are queued
-From: netdev-bot+sashiko@kernel.org
-To: roshaen09@gmail.com
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
- herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, chopps@labn.net,
- linux-kernel@vger.kernel.org, lilly@aronleigh.au, shubham@octane.security,
- gio@octane.security, robert@octane.security, paolo@octane.security,
- stable@vger.kernel.org
-Date: Sun, 04 Oct 2026 05:22:27 +0000
-Message-ID: <179109134778.434549.14695158385773009033@kernel.org>
-In-Reply-To: <20260930050307.1978654-3-roshaen09@gmail.com>
-References: <20260930050307.1978654-3-roshaen09@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIb3lKV7"
+Received: by mail-pz2-f37.google.com with SMTP id d2e1a72fcca58-88826f3ff80so207563b3a.3
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 22:26:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791091587; x=1791696387; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yrSoyR0XDRjfdCWPMbPLnbv5pHqYkj4I5sTbgAVqzyc=;
+        b=FIb3lKV7MByZxb4XzPygVdbnbUKGURPvWz0CLQVjEykLKvFNWY2UPJgmFBG/tWzx7s
+         aCjLtD6dUtezPsSUHtkHE5aKMQLneLezmvYNC31zMSjya8dhVerODNC7D3t1DZ+HGYuE
+         UDLa3vvGdBIX/fRKnfyiiNJDSOERacE6rHT/q5byCefBcWAJ1tqblkXM0BxBveStojm0
+         fqt7k+EmIKlYBaSq816ZS7mx3/LMHxeHZa3jIlahppKrNzrzrOjlsDFpKndCNPsCF69w
+         HI44TLkMhhAqO/y5kX/6875Udz3cZiIaEQLuEgokNhrmjROkpr4ymE1qGuS9NjQlrf1G
+         ZNiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791091587; x=1791696387;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yrSoyR0XDRjfdCWPMbPLnbv5pHqYkj4I5sTbgAVqzyc=;
+        b=Rv0vWPp0OeKSpG0PFmkrSxXrhRfF5b/tttkBaZqaAtU9Pqx00+XGePew3YlLnOmYde
+         PO4On9dasB8+TMs1lbocIYiNgl1MqpvSLbYD1qIlLo5S4BKyEsm5z5fXmoKd39FEyEc7
+         OHjYhr3467fcOb5m6q+k8w6HU4+LVaQnt3ONRIAQrQoBGXz0hO/5rQGfrmoabTpBvgJW
+         DfA2DgvjXjI9g+Q/Z1AZKXzsCiulkY/rv6FSA4GtGe7sM8AEbZ3fX4dRoAiG49hYhJ+/
+         spPkJPXVTcBXa/xUNTTxvRppeHajAUohfWcrRNgHSEnoMegNmovWn1h8kwUt4k1G9uHD
+         JRiw==
+X-Forwarded-Encrypted: i=1; AKwUvByr0pR8XvReO9ckAoZIc8WCf+6JEIvCCuoisxofuwzs1mkWAKJkslczNH8Hg18wg5OfcIwBkxQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nIh+1WVfRj/Wk/eXxy4h1Uzp6drmH+xoXYCgu518SKYHAcnDaa
+	DZ6NyOCVG92JXvayQKThknF6LEsR/XH/Fwf08GE7FR6Q97ZjqBD8a9UN
+X-Gm-Gg: AYBFou0IqJBo6JofSR73AK2620FmmQh8gE33CHYIAEj0INKkm+udKgyzKj8KypsVyQ3
+	ElfWv7CKKYnTevxJ50B88YtS+ITaE26dBeThJ78lJuQElznOBIZRywa3yCoAQvctX2gEcunyN3U
+	ei9kZ30kE8lzyO6IyfqZql8e9wEYxj6M1vJOrJJ3PY+fRh/WZ/C3eVucCUc3f+Cfd2vuc9q8wRu
+	mH3IubGeRmipEZ++eiC3IHZcnhIKR5M1KUQKjxbxfv2YvmWrK5pmDeZOVyR2OAQPmIF3GBm/oKD
+	Ih1VLNGfTwh4UyHLlFRzp0w3tvUcT8wFMpKOVTaZIqX7eBdHCBOVVJboilb9B1i1aMjhM+kauh0
+	Cm+we1sQjvu3+K2b/11fuFTkQBlJWySg263AuwxwBlX8piKMcJ8Cdk4AqUgT2EA7dC+DcuGG+7M
+	t9izsNY4Mdxe5E25E6uaua0sboWJa8k3kH6u9qBR6rdL/dv+NaV4/l1Fzcz0Tv2+WNCEq8q919o
+	x0XpNOKYOXM+O+HTAbOZooQGj7C/yEjvqSt2f4AfLKd68NkxnfmZyTD/y1k4aCJjE50GdoDAKn7
+	FAYu96pBW7RfaZo52PWdb41A
+X-Received: by 2002:a05:6a00:4f86:b0:881:e266:c3e1 with SMTP id d2e1a72fcca58-88af56e732cmr7763772b3a.48.1791091587013;
+        Sat, 03 Oct 2026 22:26:27 -0700 (PDT)
+Received: from Inspiron5409 (61-228-84-245.dynamic-ip.hinet.net. [61.228.84.245])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-88b0968d44asm2226260b3a.5.2026.10.03.22.26.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 22:26:26 -0700 (PDT)
+From: Jianhui Xu <neuromoments@gmail.com>
+To: mail@birger-koblitz.de
+Cc: andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	chenhuacai@kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	hkallweit1@gmail.com,
+	kernel@xen0n.name,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux@armlinux.org.uk,
+	loongarch@lists.linux.dev,
+	nb@tipi-net.de,
+	netdev@vger.kernel.org,
+	neuromoments@gmail.com,
+	pabeni@redhat.com
+Subject: Re: [PATCH v15 0/13] ax88179_178a: Add support for AX88179A-based chips
+Date: Sun,  4 Oct 2026 13:26:19 +0800
+Message-ID: <20261004052619.112885-1-neuromoments@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261002-ax88179a-v15-0-131d9286fcd7@birger-koblitz.de>
+References: <20261002-ax88179a-v15-0-131d9286fcd7@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 (1) · Medium: 0 (1) · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch stops the stale skb->dev use-after-free by pinning the
-  ingress net_device with netdev_hold().
-- [High] The new reference counting depends on xtfs->ra_newskb having a
-  single owner, but nothing serializes ordered processing.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is a
-  remotely triggerable memory leak.
-- [Medium] This problem wasn't introduced by this patch, but there is an
-  off-by-one in __reorder_drop() (net/xfrm/xfrm_iptfs.c).
-
---
-
-xfrm: iptfs: hold a device reference while packets are queued
-
-This patch takes a net_device reference whenever an skb is stored in the
-IP-TFS reorder window or becomes the in-progress reassembly skb. The
-reference is released after ordered processing, and on the timeout, abort
-and state destruction paths. The goal is to stop a stale skb->dev access
-after the ingress device is unregistered.
-
-Link: https://lore.kernel.org/netdev/20260921084743.817859-1-roshaen09@gmail.com/
-Link: https://lore.kernel.org/netdev/179023970333.2160803.2776986020964028023@kernel.org/
-
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index e538cc98e2572..954d28e7ec2e5 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-
-[ ... ]
-
-> @@ -957,7 +971,7 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
->  		xtfs->ra_wantseq++;
->  	} else {
->  		/* We are done with packet reassembly! */
-> -		iptfs_reassem_done(xtfs);
-> +		*dev_to_put = iptfs_reassem_done(xtfs);
->  		iptfs_complete_inner_skb(xtfs->x, newskb);
->  		list_add_tail(&newskb->list, list);
->  	}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the completed reassembly skb
-put on the list here can be leaked. The list is the sublist local in
-iptfs_input_ordered(), which is then passed to __input_process_payload().
-
-In __input_process_payload(), three error exits in the parse loop jump to
-the done label:
-
-	if (skb_copy_seq_read(skbseq, data, hbytes, iphlen)) {
-		XFRM_INC_STATS(net, LINUX_MIB_XFRMINBUFFERERROR);
-		goto done;
-	}
-	...
-			if (iplen < iphlen || iphlen < sizeof(*iph)) {
-				XFRM_INC_STATS(net,
-					       LINUX_MIB_XFRMINHDRERROR);
-				goto done;
-			}
-	...
-		} else {
-			XFRM_INC_STATS(net, LINUX_MIB_XFRMINBUFFERERROR);
-			goto done;
-		}
-
-The done label comes after the send loop:
-
-	/* Send the packets! */
-	list_for_each_entry_safe(skb, next, sublist, list) {
-		skb_list_del_init(skb);
-		if (xfrm_input(skb, 0, 0, -2))
-			kfree_skb(skb);
-	}
-done:
-
-In that case, are the skbs already on sublist leaked?
-__input_process_payload() returns true, so iptfs_input_ordered() frees
-nothing, and nothing walks sublist afterwards.
-
-Three kinds of skb would leak:
-
-  - the reassembled skb queued here
-  - inner packets built by iptfs_pskb_extract_seq() or
-    iptfs_pskb_add_frags()
-  - the reused root skb, which sits on sublist with defer == NULL and
-    first_skb != NULL, so the cleanup after done does not free it
-
-One ESP payload that holds a valid inner IPv4 packet followed by a byte with
-version nibble 5 seems to leak one skb per packet. A peer on the SA can
-repeat this.
-
-With this patch applied, dev_to_put still drops the device reference of a
-leaked reassembled skb, so only the skb memory leaks.
-
-> @@ -1189,6 +1203,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
->  			spin_lock(&xtfs->drop_lock);
->  
->  			xtfs->ra_newskb = skb;
-> +			netdev_hold(skb->dev, NULL, GFP_ATOMIC);
->  			xtfs->ra_wantseq = seq + 1;
->  			xtfs->ra_drop_time = ktime_get_raw_fast_ns() +
->  					     xtfs->drop_time_ns;
-
-[Severity: High]
-Can this overwrite an existing ra_newskb and leak its device reference?
-
-xfrm_input() calls xfrm_inner_mode_input() after spin_unlock(&x->lock).
-iptfs_input(), iptfs_drop_timer() and the reorder_win_size == 0 fast path
-all run iptfs_input_ordered() outside drop_lock. So two CPUs can do ordered
-processing for the same SA at the same time.
-
-In iptfs_input_ordered(), this check runs before __input_process_payload(),
-and drop_lock is released in between:
-
-	if (blkoff || xtfs->ra_runtlen || xtfs->ra_newskb) {
-
-Say CPU0 handles seq N and CPU1 handles seq N+1, both with blkoff == 0 and a
-truncated inner packet. Both can see ra_newskb == NULL and both reach this
-"Start reassembly" block:
-
-CPU0                                  CPU1
-xtfs->ra_newskb = skbA;
-netdev_hold(skbA->dev, ...);
-                                      xtfs->ra_newskb = skbB;
-                                      netdev_hold(skbB->dev, ...);
-
-The runt path in iptfs_reassem_cont() has the same problem. It also assigns
-ra_newskb and takes a reference without checking for an existing one. In
-addition, iptfs_input_save_runt() updates ra_runtlen and ra_wantseq without
-holding drop_lock.
-
-Before this patch, the overwrite leaked skbA. With it, every release path
-only sees the current ra_newskb:
-
-  - __iptfs_reassem_done()
-  - iptfs_reassem_done()
-  - iptfs_drop_timer()
-  - iptfs_destroy_state()
-
-Wouldn't skbA's device reference then leak for good? That would leave
-unregister_netdevice() and netns cleanup waiting forever.
-
-The commit message says references are released "on all completion,
-timeout, abort, and state-destruction paths", but this overwrite path does
-not seem to be covered. Should the existing ra_newskb be aborted before it is
-replaced, or should ordered processing be serialized?
-
-[ ... ]
-
-> @@ -1490,6 +1509,7 @@ static void __reorder_future_fits(struct xfrm_iptfs_data *xtfs,
->  	}
->  
->  	xtfs->w_saved[index].skb = inskb;
-> +	netdev_hold(inskb->dev, NULL, GFP_ATOMIC);
->  	xtfs->w_savedlen = max(savedlen, index + 1);
->  	iptfs_set_window_drop_times(xtfs, index);
->  }
-
-[Severity: High]
-Once this reference is held, what releases it when the ingress device is
-unregistered?
-
-xfrm_iptfs.c has no netdevice notifier. The only xfrm NETDEV_UNREGISTER
-handling is xfrm_dev_unregister():
-
-net/xfrm/xfrm_device.c:xfrm_dev_unregister() {
-	xfrm_dev_state_flush(dev_net(dev), dev, true);
-	xfrm_dev_policy_flush(dev_net(dev), dev, true);
-}
-
-That only flushes offloaded states whose xso.dev matches, and
-xfrm_net_pre_exit() only flushes policies.
-
-This reference, like the ones taken in __reorder_future_shifts(),
-iptfs_reassem_cont() and __input_process_payload(), is only released by the
-drop timer, by ordered processing, or by iptfs_destroy_state(). Would
-unregister_netdevice() then wait in netdev_wait_allrefs_any(), printing
-"waiting for X to become free", until the drop deadline passes?
-
-The deadline comes from XFRMA_IPTFS_DROP_TIME, which is a plain NLA_U32 with
-no range check:
-
-iptfs_user_init() {
-	...
-	if (attrs[XFRMA_IPTFS_DROP_TIME])
-		xtfs->drop_time_ns =
-			(u64)nla_get_u32(attrs[XFRMA_IPTFS_DROP_TIME]) *
-			NSECS_IN_USEC;
-	...
-}
-
-So the deadline can be as long as about 4295 seconds.
-
-The stall can also last about twice that. When the timer fires,
-iptfs_drop_timer()->iptfs_input_ordered()->__input_process_payload() can
-start a new reassembly. That takes a new netdev_hold() on the same
-unregistering device, with a fresh deadline of now + drop_time.
-
-During netns teardown, default_device_exit_batch() runs before the xfrm state
-cleanup, so cleanup_net() would block on these references. cleanup_net()
-runs on the single-threaded netns workqueue. Could this stall namespace
-destruction for the whole host?
-
-The commit message says an unprivileged user can build this setup in a user
-and network namespace. That user also picks the drop time.
-
-Other code avoids pinning the device. IPv4 defrag stores the ifindex and
-looks the device up again with dev_get_by_index_rcu(). nf_queue flushes
-queued entries from a netdev notifier. Would one of these approaches work
-here?
-
-The commit message also does not mention this change in unregistration
-behaviour.
-
-[ ... ]
-
-> @@ -1721,13 +1745,20 @@ static enum hrtimer_restart iptfs_drop_timer(struct hrtimer *me)
->  
->  	spin_unlock(&xtfs->drop_lock);
->  
-
-[ ... ]
-
->  	if (count) {
->  		list_for_each_entry_safe(skb, next, &list, list) {
-> +			struct net_device *dev = skb->dev;
-> +
->  			skb_list_del_init(skb);
->  			iptfs_input_ordered(x, skb);
-> +			netdev_put(dev, NULL);
->  		}
->  	}
-
-[Severity: Medium]
-This is a pre-existing issue, but is there an off-by-one in
-__reorder_drop(), which builds the list processed here?
-
-__reorder_future_fits() uses index = inseq - w_wantseq - 1, and
-__reorder_this() shifts by count + 1. So w_saved[0] stands for
-w_wantseq + 1.
-
-When __reorder_drop() stops at an empty slot that has not expired, it runs
-this:
-
-	count = s - xtfs->w_saved;
-	if (count) {
-		xtfs->w_wantseq += count;
-
-		/* Shift handled slots plus final empty slot into slot 0. */
-		__vec_shift(xtfs, count);
-	}
-
-w_wantseq was already incremented once before the loop, so it now equals the
-sequence number of that empty slot. The shift, however, leaves the empty slot
-at index 0. Doesn't that put every saved entry one index too high?
-
-For example, take w_wantseq = 10 and w_saved = [11, NULL, 13], where the slot
-for 11 expires first:
-
-  - __reorder_drop() sends 11 and stops at the empty slot for 12. It sets
-    w_wantseq = 12 and shifts by 1, which leaves [NULL, 13].
-
-  - Packet 12 arrives. __reorder_this() finds w_saved[0] empty and flushes
-    nothing. It shifts by 1 and sets w_wantseq = 13, so 13 now sits at
-    index 0.
-
-  - Packet 13 is not delivered, even though it is the expected sequence.
-
-  - Packet 14 arrives. __reorder_future_fits() finds index 0 occupied and
-    frees 14 as "a dup of a future".
-
-Can ordinary reordering cause legitimate packets to be dropped this way, or
-held until the next timeout?
-
+Content-Transfer-Encoding: 8bit
+
+Hi Birger,
+
+I tested the 13-patch v15 series on an AX88179B adapter (USB 0b95:1790,
+bcdDevice 0x0200) on the declared net-next base
+071876fd50482a68603a9460d80dd6dd58827ee1.
+
+Builds, cold DHCP, 1000/100/10 Mbit/s link changes, EEE, pause settings,
+EEPROM reads, autonegotiation restart, module reload, USB reattach, MII
+ioctl reads, and repeated 100/1000 Mbit/s transitions all passed. The build
+only showed the pre-existing unused mask warning in
+asix_ax88772D_get_features(). Deep-S3 resume also passed with both wol
+d and wol g; resume was triggered with QEMU system_wakeup, not a magic
+packet. The guest later hit an init-exit panic during poweroff, which
+appears separate and has not been investigated further.
+
+However, I did find a reproducible RX VLAN filtering failure. With
+rx-vlan-filter enabled, ip link add for VLAN 123 or 124 returned
+success, but no VLAN interface was created. With the feature disabled,
+VLAN creation worked normally.
+
+The first read in ax88179a_vlan_rx_add_vid() returns the byte count on
+success, so:
+
+if (ret)
+    return ret;
+
+returns 1 before the VLAN bitmap is programmed.
+
+The patch below fixes both issues and worked correctly when applied
+directly on top of v15.
+
+Because unmodified v15 has this VLAN failure, please do not carry my
+previous Tested-by for v15.
+
+Thanks,
+Jianhui
+
+Signed-off-by: Jianhui Xu <neuromoments@gmail.com>
+---
+ drivers/net/usb/ax88179a_devices.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
+index 16b441fea..f2140e2bb 100644
+--- a/drivers/net/usb/ax88179a_devices.c
++++ b/drivers/net/usb/ax88179a_devices.c
+@@ -422,7 +422,7 @@ static int ax88179a_vlan_rx_add_vid(struct net_device *net, __be16 proto, u16 vi
+ 	u8 reg8;
+ 
+ 	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
+-	if (ret)
++	if (ret < 0)
+ 		return ret;
+ 	vlan_ctrl = reg8;
+ 
+@@ -438,7 +438,7 @@ static int ax88179a_vlan_rx_add_vid(struct net_device *net, __be16 proto, u16 vi
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
++	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
+ 	if (ret < 0)
+ 		return ret;
+ 	reg16 |= (1 << (vid % 16));
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930050307.1978654-1-roshaen09%40gmail.com
+2.56.0
+
