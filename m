@@ -1,260 +1,202 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3872E480DED
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 20:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7D83D6CDE;
+	Sun,  4 Oct 2026 20:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791146720; cv=none; b=e1TkBlELKFlD/uf0NIAWLxk0eEqFwtSyl1fHI2i45H6Q4thJiygwW7xLBre+dUypDmXTuj88bPjbAqgS4VxhSU03+ofZ3Z2HKCKtfZpyhnXxdrSII5bjNPedTNvpE+8IoQyD3Yd5sGnRte0Avy50/1DB2npt48uhjHlBv1J7zyc=
+	t=1791146756; cv=none; b=ZpqgFr+n5Dyp44h3CLdvnwCzhKcrmDKI7QN1dGu6WFkZ9kPuzgRFoq/PgWI7ZMttY3LK5EP6jW7aoWXOgh4wZ418MzAlR4rnFbQnOlnrEMgtCuif74LCqYaNc6dHd5RNni68SXDv7muQkZRma/I77QVS+SguVDUuAJuy2+w2gX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791146720; c=relaxed/simple;
-	bh=xMoSp4FdgRy1bVhggGuIcX8pZXe1ZK1/2iziGVzC/54=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EQueLFNO4CUKkIdZ6TETf222mGhg+hsOyVH5chTTOxzuHGBwNzQjQPoC0LGdYI7PLcLCeu4YQutkCeKFDDyGasZprNa+C4ArnzRwFc54w1zVd3eRobq5PSSfiUooyyzN5pqMnSbnyYCjmouwSku/KEpA7Ukp0yXvN0oWpaY26eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HjJW3LvZ; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791146756; c=relaxed/simple;
+	bh=AZ/Id6ZYC0nEjD0j7yvd+4hstmqkPbdt1uKeJgEDyso=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=tGT0o5IdNrE3GGtq+IGaVrlqA74PeirqV5DcIok0PZO6vUJdiSnY4dTsZN5JWF52S0uhtNOehSTZXSRsYQ4MqKDAHb8QBhFjHXbQrSRVFXzSKqIejp43YeeGc5L9nkQjGtA5xrqR3gNDYr3RddjT0hv1/AwMSjg6pUOzaOApXfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=iEMMcRcL; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HjJW3LvZ"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccda24afso317882a91.3
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 13:45:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791146718; x=1791751518; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=c/J6RbeRxty2BiTTIdArujRf0sFmvP2NG8OiyeIhsdc=;
-        b=HjJW3LvZJD9dchZe7l+R5OKAnpVoMJdPMv4Abp79zyjgteX7pD1/CMm4zf2oorwVHm
-         IJ3PG/IqfBuucTl2SBSNy+QDMjxihURo1KQ2vF+BPttykct8mJn1GabgHvJfN470/ZA2
-         +84/RmvZOJYjU6mqQGcV1aj/hIMVWvVrExtmU8eHCekvHQv+HchQioZwttAENaiZ8lzA
-         1bJxS269xdhDPBup0gTNIutPepbi0lCGF/YiirLx1Fsu/2GmhHtcGJ6xd9CUAoFg1XsV
-         jc1Smd7g6ifNs9jlPaN1RrPiw7YSxFspx2/ryQFgD3KILBQVpoCHdMCk3uboR7p1AXBf
-         OyNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791146718; x=1791751518;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=c/J6RbeRxty2BiTTIdArujRf0sFmvP2NG8OiyeIhsdc=;
-        b=s3KqIb00zmUN2vS8vcowqdBaLkiyT+w1/su89mI9vIgEJQvqJMAsEBAtPJ2WOBm9OD
-         DIwvQUQJIsLhoMELI8wGN2+9CcjxhPt20+cd/TQabg9q8l25Gcliwl/F94vphmmQKA2l
-         azs3Fxi6DcXlT0AZNm0HgJfX2vHmE6+1vc641ByKWsYYMaSER8ifvDlTqaWkpkJQhWio
-         JJt9XwYb6Jr4uraMIkMJ4YkELVKf90l9gzkY/PlpSx0gg32kdwTynIgDwdxpn+/44PER
-         QbkKLaVrFO4nq5PzOWJKfFbxK/oCLCZ+hBftLNlW+WShOBi/Lgc4lQqZKDPs4zivHSux
-         xoBA==
-X-Gm-Message-State: AFq9FYJGnmXoF3OChbgObWsr4uKkfATlPee19OeVE4xGixWcSaszyz1h
-	PmWMLVwQFTaR/UMhnZ4a+cHAMRfD0g63KwRl9mj40jTtKO0+LNx/3Ue893fqx2oN
-X-Gm-Gg: AYBFou1w7hP8+VlPJuJ7s3sdsN7V3H6D8SqbFjAUtJUlVwd12BfWMlXGRPa23JuMLDi
-	oLW6OQiEvzx8ZnUZdMlofEZXzirDJa7ENruZAkyGCgLWRwSDdyHD4N8pXEGiUE1MR0gKaDlOkch
-	npsy8HcKXloXW1I9kNGM8Bg6Dz6yIRKzIF4jsEUFE+WHJx+2/Ajpxel5QM1DuBiN5G/t22/HxHC
-	ibiYnPsQqb1ADgrIJ+J1LHq6Ds4ciXsnT9RNgQXAFuORoaiKD57O1igcepzVukYeLHv+nUs6HXp
-	hjOq6kI7TmQFgPpL3bA6xbNP0YMHWo1wOwsNq/2gVO0CC+p+FwWPkkqoObQkr7z+/p1Cd+WNUC8
-	hLikeTcyPIL41GMSAdNxyrQ9dVOvFownwlRD7zyIiKLfrR04zVRYrwpAfa56bYBmztX2EzyUs3R
-	ge8jIuXsWes46/bfowl30ou+h5/oqboI30nInGtBqfc+daWuZkc2tw2SsL4jmntUgVit0EZmrb/
-	+4HO6aPrAWys0hdLGPZQmyusFnmIIYRaj0HN0N6uDGgiWsuwNWg7TlIVCtHMMCMWMO2FRdm3ehK
-	rjZ3JNgOUEB54K8I4QTa7CUYSPGJhEzBdOMN9VqwbnPmD8j+
-X-Received: by 2002:a17:90b:3846:b0:3a0:c276:1ec2 with SMTP id 98e67ed59e1d1-3a6ce6af085mr3796668a91.19.1791146718441;
-        Sun, 04 Oct 2026 13:45:18 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e35])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4262bcsm7753671a91.5.2026.10.04.13.45.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 13:45:17 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Michael Stapelberg <michael@stapelberg.de>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2] net: phy: marvell: keep WOL_EIE across interrupt reconfiguration
-Date: Sun,  4 Oct 2026 13:45:16 -0700
-Message-ID: <20261004204516.281201-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="iEMMcRcL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=NPvZyu0myKxwG9F9SdBTbUKeFJxAzSnA3inj1//jMKU=; b=iEMMcRcLJ2Es5+AJxeSY9pECgF
+	O5lJXFX7M68SifImCdrXLROlV4JWBEJuJ/3Y0R3yBl5dZxoQ61XNUvHt9SB6dCIaK9E5Lv55uJhAH
+	/45n9FViOOWqgg0CIr/jmPsL01K17XBQT/75WUj+yYvNOl2ogy3m5SEssP1/Vp2yK4mGxsdmGmbnU
+	uxt0d5WbYc/2UDzbPDmZeLn/tz2o4b1eGLBjmwW3Ho9mdTOEeRKBTqOEGA8pih1OVx2NdaFZ4Ey49
+	Hhoh7+PF9YuXljfXBUGkz7QRWyVmi4Y8HenQt+WlTgD1vcpAMwN7ARNG8YXONwJV3UiS4Zw5EdVAv
+	mhvh3n8w==;
+Received: from [::1] (port=59926 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xDT5k-000000075yp-3Wxn;
+	Sun, 04 Oct 2026 22:45:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Sun, 04 Oct 2026 22:45:52 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: netdev-bot+sashiko@kernel.org
+Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, netdev@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH] tipc: fix use-after-free in netns teardown
+In-Reply-To: <179114204389.434549.3724053905057286143@kernel.org>
+References: <20261003192530.2414682-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <179114204389.434549.3724053905057286143@kernel.org>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <be98434488231b3464631e6df78a5b5a@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-marvell_config_intr() rewrote the whole register, so the config_intr
-call from phy_init_hw() on resume silently cleared WOL_EIE on polled
-PHYs: m88e1318_get_wol() still reported WAKE_MAGIC, but a matched magic
-packet was no longer routed to INTn and the board did not wake.
+On 2026-10-04 21:27, netdev-bot+sashiko@kernel.org wrote:
+> [Severity: Medium]
+> 
+> Can restarting from id 0 on every pass livelock the teardown?
+> 
+> rcv_wq is an ordered workqueue:
+> 
+> tipc_topsrv_work_start()
+>     s->rcv_wq = alloc_ordered_workqueue("tipc_rcv", 0);
+> 
+> Take a lower-id connection A whose rwork is queued behind the running
+> rwork of a higher-id connection B. The loop closes A, but the reference
+> held by A's queued rwork keeps A in conn_idr. On every later pass
+> idr_get_next() returns A again, so the loop never reaches B.
+> 
+> tipc_conn_recv_work() keeps running while B is connected and requests
+> keep arriving:
+> 
+>     while (connected(con)) {
+>         if (tipc_conn_rcv_from_sock(con))
+>             break;
+>     ...
+> 
+> The cond_resched() here gives up the CPU. A's work still cannot run on
+> the ordered queue until B's worker returns. If B's receive queue never
+> empties, idr_in_use never reaches 0 and cleanup_net() spins.
+> 
+> The old loop advanced with id++. It would have cleared CF_CONNECTED on 
+> B,
+> which ends B's worker.
+> 
+> Local peers probably cannot keep this going. The listener is bound with
+> TIPC_NODE_SCOPE, and local user sockets hold a reference on the netns.
+> 
+> Remote peers are another matter. tipc_net_ops is registered before
+> tipc_topsrv_net_ops, so the bearers are still up when 
+> tipc_topsrv_stop()
+> runs. The TIPC_LISTEN branch of tipc_sk_filter_connect() has no scope
+> check. A remote node that knows the listener's port id might be able to
+> connect and keep sending TIPC_SUB_CANCEL requests. That precondition 
+> has
+> not been confirmed.
+> 
+> Would it work to first walk forward through all entries, using
+> idr_get_next() from id + 1 and closing each one? The loop could then
+> retry from 0 only for the entries still waiting on asynchronous 
+> release.
 
-Give these two PHYs a dedicated config_intr that sets WOL_EIE from the
-driver's own WoL state rather than from the hardware, so a bit left
-armed by the bootloader or a previous kernel is cleared at probe. On the
-disable path the bit is only kept for polled PHYs; with a PHY interrupt
-the handler is about to be freed or not yet requested, and a latched
-WoL event would be left with nobody to clear it. The enable path re-arms
-it. Add a handle_interrupt that also claims the WoL event mirrored in
-the interrupt status register. m88e1318_set_wol() now also clears WOL_EIE
-when WoL is fully disabled, so "wol d" disarms it immediately.
+This looks like a valid concern. I will address it in a v2.
 
-Fixes: 3871c3876f80 ("mv643xx_eth with 88E1318S: support Wake on LAN")
-Assisted-by: LLM
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v2: resolved review warnings, including wol d.
- drivers/net/phy/marvell.c | 106 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 102 insertions(+), 4 deletions(-)
+> 
+>> +		if (con && !kref_get_unless_zero(&con->kref))
+>> +			con = NULL;
+>> +		spin_unlock_bh(&srv->idr_lock);
+>>  		if (con) {
+>> -			conn_get(con);
+>> -			spin_unlock_bh(&srv->idr_lock);
+>>  			tipc_conn_close(con);
+> 
+> [Severity: High]
+> 
+> This is a pre-existing issue, but can this call to tipc_conn_close()
+> dereference a NULL con->sock?
 
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index f71cffa88406..46527abab6af 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -354,6 +354,7 @@ struct marvell_priv {
- 	u32 step;
- 	s8 pair;
- 	u8 vct_phase;
-+	bool wol_armed;
- };
- 
- static int marvell_read_page(struct phy_device *phydev)
-@@ -425,6 +426,83 @@ static irqreturn_t marvell_handle_interrupt(struct phy_device *phydev)
- 	return IRQ_HANDLED;
- }
- 
-+/*
-+ * On the 88E1318S/88E1510, copper page register 0x12 serves two
-+ * masters: it is the MII_M1011_IMASK interrupt mask for the generic
-+ * Marvell interrupt handling, and m88e1318_set_wol() sets the WoL
-+ * interrupt enable bit (MII_88E1318S_PHY_CSIER_WOL_EIE) in it.
-+ *
-+ * config_intr runs from phy_probe(), from phy_init_hw() on attach and
-+ * on resume, and from phy_request_interrupt()/phy_free_interrupt() on
-+ * ifup/ifdown. Each of these rewrites the register, so the routines
-+ * below re-arm WOL_EIE while WoL is set up; otherwise a resume would
-+ * silently disarm Wake-on-LAN for the next suspend.
-+ *
-+ * WOL_EIE is derived from the driver's own WoL state rather than read
-+ * back from the PHY, so a bit left armed by the bootloader or a
-+ * previous kernel is cleared at probe/init instead of carried over.
-+ */
-+static int m88e1318_config_intr(struct phy_device *phydev)
-+{
-+	struct marvell_priv *priv = phydev->priv;
-+	u16 wol_eie = 0;
-+	int err;
-+
-+	if (priv->wol_armed)
-+		wol_eie = MII_88E1318S_PHY_CSIER_WOL_EIE;
-+
-+	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-+		err = marvell_ack_interrupt(phydev);
-+		if (err < 0)
-+			return err;
-+
-+		err = phy_write(phydev, MII_88E1318S_PHY_CSIER,
-+				MII_M1011_IMASK_INIT | wol_eie);
-+	} else {
-+		/* On a polled PHY, keep WOL_EIE so an armed WoL event
-+		 * still asserts INTn across phy_init_hw() on resume.
-+		 *
-+		 * With a PHY interrupt, being disabled means the handler
-+		 * is not requested yet or is about to be freed, and
-+		 * nobody would clear a latched WoL event; a shared line
-+		 * would then be disabled as "nobody cared". Drop WOL_EIE
-+		 * here, the enable path re-arms it.
-+		 */
-+		if (phy_interrupt_is_valid(phydev))
-+			wol_eie = 0;
-+
-+		err = phy_write(phydev, MII_88E1318S_PHY_CSIER, wol_eie);
-+		if (err < 0)
-+			return err;
-+
-+		err = marvell_ack_interrupt(phydev);
-+	}
-+
-+	return err;
-+}
-+
-+static irqreturn_t m88e1318_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	irq_status = phy_read(phydev, MII_M1011_IEVENT);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	/* Claim events from the IMASK_INIT set as well as the WoL event
-+	 * mirrored from WOL_EIE in the enable register.
-+	 */
-+	if (!(irq_status & (MII_M1011_IMASK_INIT |
-+			    MII_88E1318S_PHY_CSIER_WOL_EIE)))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int marvell_set_polarity(struct phy_device *phydev, int polarity)
- {
- 	u16 val;
-@@ -1969,6 +2047,7 @@ static void m88e1318_get_wol(struct phy_device *phydev,
- static int m88e1318_set_wol(struct phy_device *phydev,
- 			    struct ethtool_wolinfo *wol)
- {
-+	struct marvell_priv *priv = phydev->priv;
- 	int err = 0, oldpage;
- 
- 	oldpage = phy_save_page(phydev);
-@@ -2074,6 +2153,25 @@ static int m88e1318_set_wol(struct phy_device *phydev,
- 			goto error;
- 	}
- 
-+	if (!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY))) {
-+		/* Fully disabled: drop the WoL interrupt enable now
-+		 * instead of waiting for the next config_intr call.
-+		 */
-+		err = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
-+		if (err < 0)
-+			goto error;
-+
-+		err = __phy_clear_bits(phydev, MII_88E1318S_PHY_CSIER,
-+				       MII_88E1318S_PHY_CSIER_WOL_EIE);
-+		if (err < 0)
-+			goto error;
-+	}
-+
-+	/* Let m88e1318_config_intr() re-arm CSIER.WOL_EIE, or keep it
-+	 * cleared once WoL is disabled.
-+	 */
-+	priv->wol_armed = !!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY));
-+
- error:
- 	return phy_restore_page(phydev, oldpage, err);
- }
-@@ -3817,8 +3915,8 @@ static struct phy_driver marvell_drivers[] = {
- 		.config_init = m88e1318_config_init,
- 		.config_aneg = m88e1318_config_aneg,
- 		.read_status = marvell_read_status,
--		.config_intr = marvell_config_intr,
--		.handle_interrupt = marvell_handle_interrupt,
-+		.config_intr = m88e1318_config_intr,
-+		.handle_interrupt = m88e1318_handle_interrupt,
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
- 		.resume = genphy_resume,
-@@ -3925,8 +4023,8 @@ static struct phy_driver marvell_drivers[] = {
- 		.config_init = m88e1510_config_init,
- 		.config_aneg = m88e1510_config_aneg,
- 		.read_status = marvell_read_status,
--		.config_intr = marvell_config_intr,
--		.handle_interrupt = marvell_handle_interrupt,
-+		.config_intr = m88e1318_config_intr,
-+		.handle_interrupt = m88e1318_handle_interrupt,
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
- 		.resume = m88e1510_resume,
--- 
-2.56.0
+Indeed, Sashiko is right. I reproduced it.
 
+I will fix it in a seperate commit in the v2, by guarding 
+tipc_conn_close()
+behind a check on con->sock:
+
+diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
+index af530c9..01dd34b 100644
+--- a/net/tipc/topsrv.c
++++ b/net/tipc/topsrv.c
+@@ -706,7 +706,8 @@ static void tipc_topsrv_stop(struct net *net)
+                 if (con) {
+                         conn_get(con);
+                         spin_unlock_bh(&srv->idr_lock);
+-                       tipc_conn_close(con);
++                       if (con->sock)
++                               tipc_conn_close(con);
+                         conn_put(con);
+                         spin_lock_bh(&srv->idr_lock);
+                 }
+
+
+> tipc_topsrv_kern_subscr() creates conn_idr entries that have no socket:
+> 
+>     con = tipc_conn_alloc(tipc_topsrv(net), NULL);
+> 
+> tipc_conn_close() dereferences the socket before it tests CF_CONNECTED:
+> 
+>     static void tipc_conn_close(struct tipc_conn *con)
+>     {
+>         struct sock *sk = con->sock->sk;
+> 
+> Other code in this file already allows for a NULL sock.
+> tipc_conn_kref_release() checks if (con->sock). 
+> tipc_conn_send_to_sock()
+> only calls tipc_conn_close() inside its if (con->sock) branch.
+> 
+> Here is a possible sequence:
+> 
+> 1. tipc_topsrv_queue_evt() takes a reference on a kernel subscription
+>    connection K through tipc_conn_lookup(). It then queues K->swork on
+>    send_wq.
+> 
+> 2. Before that work runs, the group socket is closed:
+>    tipc_release()->tipc_group_delete()->tipc_topsrv_kern_unsubscr().
+>    This clears CF_CONNECTED and drops two references. K stays in
+>    conn_idr, held only by the swork reference.
+> 
+> 3. cleanup_net()->tipc_topsrv_exit_net()->tipc_topsrv_stop() runs.
+>    cancel_work_sync(&srv->awork) does not drain send_wq. idr_get_next()
+>    returns K, kref_get_unless_zero() succeeds, and tipc_conn_close(K)
+>    dereferences NULL.
+> 
+> The old idr_find() plus conn_get() loop had the same exposure. The new
+> loop retries until idr_in_use reaches 0, so any socketless entry still 
+> in
+> conn_idr is now guaranteed to reach tipc_conn_close() at least once.
+> 
+> This loop is being rewritten anyway. Could it skip tipc_conn_close() 
+> when
+> con->sock is NULL? Alternatively, tipc_conn_close() could check
+> con->sock before using it.
+> 
+>>  			conn_put(con);
+>> -			spin_lock_bh(&srv->idr_lock);
+>>  		}
+>> +		cond_resched();
+>> +		spin_lock_bh(&srv->idr_lock);
+>>  	}
+> 
+> [ ... ]
