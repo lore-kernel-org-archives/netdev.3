@@ -1,84 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A734A7C90;
-	Sun,  4 Oct 2026 20:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641F46D547;
+	Sun,  4 Oct 2026 20:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791146953; cv=none; b=GoMo6VkMJbkDInbhgDznpNlgu5dUtXJdF6T1fw+Db51L8rO/6JrqMBDzjX/e5v4TZwi/JN+7cYJ9tmcPVkUitJ7ZyEmcCygSn1q+qG0CFFt/XbiBk31wUIL/k8X3xQOPsv0rGUCub+8wxc+2LDl3YXu7sU3fuu+JA2fFvMQITPU=
+	t=1791147177; cv=none; b=lF5SxpaRFKhtzxFD2DitE7EuWnMC0Z7C9ZRHo2sQEx7xiEu2hUONZHDmWbkIjoFM91JApPdCM0q3XINdo37KdGx6kIinU6lr210NUG6OJPr4yeTqVVWoQH48j3bTOnpSeHBjmpsyUDJ85Q1D0kY22ZFaFxMi9jalUDyUhQbcpqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791146953; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=in4QHYHKnPFgocRNERAYgnj/cpH69GjjqdPVLglMSnsPw5VDS8xxU4laF9rsFkzvwPuQdK18bGJ7sbeTucuZNLnmqZFEetfAjShHE2Yd8h4A0i8wYi93+L6AfefGTwNWh8rzeg48Rl99XxJc3/fJ26SijiDU4vB1k3So2o4mJ2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQPFG1eH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791147177; c=relaxed/simple;
+	bh=4F98gCfH/a3S6D7ajfNo8HPxvP18/75MDPbhlAebBms=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iGVhlJE5mNBE/RNMBNPLMCEtQhc3CmC+Y5TdaktLUsKFMR3JXq4zAr2J9y8YhsYWaGxcJ3w4U2W5ZHydkxyXpna4EvCpt2wQTleM/FIskDmgb6SHLRhjzAKdeSZXYnT2Lq//mohHSWYFXohA9m681rCMPARkEAcsAPPZyI1F86s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asNzq5Nb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQPFG1eH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE661F000FF;
-	Sun,  4 Oct 2026 20:49:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asNzq5Nb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462781F000FF;
+	Sun,  4 Oct 2026 20:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791146952;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bQPFG1eH8MlS1WdA1PL227LgKW3ijDNeLX4a/hFg3A5tIJBs2R4L2pQmbea3oPOZ9
-	 uEDR4AFrQIH2K1vLGYWUh9CJMilLz4E6BfOfSRGJBSKzGh0ai4XccVHtFU6p9/ZPmb
-	 zkXGKzgGu6nyO1i3CB0N1mEuKvjeK2c3SZ+afifpbsSmpQNl7s0q4Xolxb9ZbixSaK
-	 IrCM3I0AbmC79vbvGNwfeli07npEC5loZOsPRkZqR3AiJaGnd5fZ48u+7ZdggW7ZxL
-	 bWZZwWBGsoE/EdM5OcyLiL0gcZNQjTdhO7pOrHjhZQZvDWVeZoWg/F6hqXGvZxN28T
-	 +ceI17KlLvYSA==
-From: netdev-bot+sinfo@kernel.org
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Jose Abreu <Jose.Abreu@synopsys.com>,
- Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
- James Hilliard <james.hilliard1@gmail.com>
-Subject: 
- Re: [PATCH net-next v3 0/2] net: stmmac: introduce XDP rx multi-buff support
-Date: Sun, 04 Oct 2026 20:49:10 +0000
-Message-ID: <179114695065.1402591.17659606391395950626@kernel.org>
-In-Reply-To: <20261004-stmmac-rx-mb-v3-0-50fa171af9ec@oss.qualcomm.com>
-References: <20261004-stmmac-rx-mb-v3-0-50fa171af9ec@oss.qualcomm.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1791147175;
+	bh=IiKYqe+0JnRhLAddcDWqeOuJqO+Zz1xcsm4f01eB790=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=asNzq5NbWIVTjxQShq6lqiil9TLvxhyLcPQ1xNhdx/63FSdhG8iCLRqw/V3zgaEvY
+	 LTQn6/jQJhejAyY9UyBbi4JacbxcTlWNAnPq3pSDeg8rFchNm2n/KBy97vN5KtASA2
+	 z2Yvst+miZVIcM5Wr3tbu/A2JDExCRbigwTMzK+OipWPVZ+nmRLHsekTgnS3biWa9b
+	 C6bXY19qhD0yhmcvXQCg5C7Ad8mwH3d8b4HinppRyjBBefwxWhKFIot4bXKmuCjpOR
+	 +xj1st0HRpoyncRpI6vknGZTksd1eKHUUa9MNKUnor3nTryrT8QW441INUuy2rqysK
+	 zKKMQYNQFLwWw==
+Message-ID: <919dcfaa-005f-4bfd-8889-39acda5f7a92@kernel.org>
+Date: Sun, 4 Oct 2026 22:52:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
+ macvlan/vlan with bnxt_en
+To: Stefan Fleischmann <sfle@kth.se>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, regressions@lists.linux.dev,
+ Joe Damato <joe@dama.to>
+References: <20261004122616.56714cbd@nargothrond>
+ <f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
+ <20261004163532.3134dd41@nargothrond> <20261004192902.3ab3b7f3@nargothrond>
+Content-Language: en-US
+From: Eric Dumazet <edumazet@kernel.org>
+In-Reply-To: <20261004192902.3ab3b7f3@nargothrond>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi!
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+On 10/4/26 19:29, Stefan Fleischmann wrote:
+> On Sun, 4 Oct 2026 16:35:32 +0200
+> Stefan Fleischmann <sfle@kth.se> wrote:
+> 
+>> On Sun, 4 Oct 2026 13:46:08 +0200
+>> Eric Dumazet <edumazet@kernel.org> wrote:
+>>
+>>
+>>>
+>>> Notice that 0xfc499000 is on an exact 4KB page boundary. This points
+>>> to a DMA read overrun where the Broadcom DMA engine reads past the
+>>> end of a buffer mapped in page 0xfc498xxx into the adjacent unmapped
+>>> page 0xfc499000.
+>>>
+>>> Have you tried a recent net kernel ?
+>>
+>> Hi Eric,
+>>
+>> that might be a bit tricky. We use ZFS on this server and the version
+>> we have installed only supports up to kernel 7.2.
+> 
+> Scratch that, I noticed that this even happens with none of the LXC
+> containers running. So I tested with the main branch from
+>   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
+>   (commit 6dc989ea46b9)
+> 
+> Same issue.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Okay, this must be a bnxt issue, that has been hidden years because of 
+some skb->data headroom/offset.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+LL_RESERVED_SPACE() has been increased from 48 to 64. So perhaps small 
+packets are now crossing a page boundary (which should be fine)
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+I see one bug in the skb_pad() vicinity. Could you try:
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c 
+b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 
+d7728d0c5b6e63ee72de9dea54426bb4c8b7a9fc..f9feeb4471a8cf310788ef8d00b68a1508a7e78e 
+100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -678,6 +678,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff 
+*skb, struct net_device *dev)
+                         /* SKB already freed. */
+                         goto tx_kick_pending;
+                 length = BNXT_MIN_PKT_SIZE;
++               len += pad;
+         }
+
+         mapping = dma_map_single(&pdev->dev, skb->data, len, 
+DMA_TO_DEVICE);
+
+
+
