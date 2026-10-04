@@ -1,96 +1,127 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69851DDA18;
-	Sun,  4 Oct 2026 11:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9FC313E03;
+	Sun,  4 Oct 2026 11:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791114248; cv=none; b=pmXyDdcw31PvTKUT8/RrgvDrX0USrqYijb8iGxTROGqoxI+xoyXQ+6wKYXVgmnTGBsVI44m3/S0fXbRpQTJGPb9cXlyLJFy2nmA8/0E68Z6pdXaRIZkn3ORkpSjfrvKNpCOEb82yrUU4YdfUwvanjBj1DkfU3M8L0toYL6U+kas=
+	t=1791114374; cv=none; b=CckdIcsTxVM5SJ1kqpuglTnYHvlEWd7bcl7NUdXq6qRumAB3FEm6zrCqVpJgzZyvYg9foEn2W1x1cUKiM6KEeVxELcbQRfqygEnbQo1UGsSzW4Kt9JYH3ovVh6QMoU48oCIVX1QAHLb/n+k0Z7VNDq7P6Yg2Ykm+7gpuwzU5vbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791114248; c=relaxed/simple;
-	bh=k71Tq7xa1Y3Qng6gydCjWjLj3umuA1sje+J8w9IP6gc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EFaMbEDw0eF26dMiK8Jb9WWS56G3jYMNb23CDDSfz9IfzGgcxN8S4ZmBopa3X3oBqBLsMal+9mFcvCBYbqDi5HPoh6O5Pr7i9Z28d6E6mKknFAMx75UQ9qVriZ+YEdBOb2pQfzhwVugzVsBWMc6VQEh7p/ZybY2x8MyebvIlA8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=ZR7w4QNf; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1791114374; c=relaxed/simple;
+	bh=BNCNvqlSdQgCGZglcBRKo95ngBtg2fwoeaiBlf8VQtM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AUUROwFDWCZYPtHUZRllmVXC6V12J2zQ4K1ekGvDKUOyebifd9k5U/3K12MoBP8l344xjGRQEHAUvQuwok8ylekCTaNVP9Olh6n/LVAUIsd9nfx2lKBsf6k0eCMlcBTwbftd4fs8+YfvwFwNnE3jsO13Aw+322yXn3piLkp9Aos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvXUOYB2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="ZR7w4QNf"
-Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4fec266b1;
-	Sun, 4 Oct 2026 19:43:59 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Jacob Keller <jacob.e.keller@intel.com>,
-	Matthew Vick <matthew.vick@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>
-Subject: [PATCH net] net: fm10k: shut down the service timer during removal
-Date: Sun,  4 Oct 2026 19:43:52 +0800
-Message-Id: <20261004114352.1232745-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvXUOYB2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB3F1F000FF;
+	Sun,  4 Oct 2026 11:46:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791114372;
+	bh=HR+Flyh6aOq+YBmyhdw6aQRstQVaH53Q+XG2o/BckCY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=QvXUOYB2TXNKa27HG2yT/mfKhjcX55Ox92w9jLAkcgxIlqqkLJCc76iMVFMgaOg9w
+	 a/gFfoXfqcR71AWpEcwy/qoR5o2ORanMxbuWvSE5+nWoXfMagTLOqIaouKJSds0d1D
+	 xbokGQP+TaojNSnMYBJH5YtXHMoxdHrpPm5AV1Ib3vzC8GRpC+JhiEPmQh1wpAScvD
+	 vcslQC17rw7wb6FGR1H+FEvBZJNnlpsRbePwpxl6e3L5nuObPH/FNWqcEBPAq51uif
+	 BSwikk6tPfnxgPYma6PBaNz4XO2Qx8uBaDoymu5y3dubJOCaEquMI0VAd8a+JYBGZm
+	 MJDFPjaSitgGw==
+Message-ID: <f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
+Date: Sun, 4 Oct 2026 13:46:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa106ba5e1703a1kunm59abddd933b26d
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaHh1MVh0aQ0hNGRgYSUhMTlYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
-	xVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=ZR7w4QNfR/layPI4kuciqtPreg6ByWjPLtStUW8+dDHRfx26MpBDihhNSxVkuLRISKVnj/1G+13WlUI7Bz6SpXV/eGFlmT+n/FcKUcB+Zst9EPwsq1gmEbKFPXuqC94WP5dJLlHwaEqMWNpqLGSWfmjbHztLpG8bu9RlqJkvOC4=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=VrC8MipqRMsjFleiMybcQkY+76/LuM2Mw14J4Ebzgz4=;
-	h=date:mime-version:subject:message-id:from;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
+ macvlan/vlan with bnxt_en
+To: Stefan Fleischmann <sfle@kth.se>, netdev@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, regressions@lists.linux.dev,
+ Joe Damato <joe@dama.to>
+References: <20261004122616.56714cbd@nargothrond>
+Content-Language: en-US
+From: Eric Dumazet <edumazet@kernel.org>
+In-Reply-To: <20261004122616.56714cbd@nargothrond>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The fm10k service timer rearms itself from its callback. During PCI
-removal, timer_delete_sync() waits for a running callback but does not
-prevent a callback or another service path from rearming the timer. This
-can leave the timer referencing the fm10k_intfc after free_netdev().
 
-Use timer_shutdown_sync() to permanently prevent rearming before teardown
-continues.
 
-The issue was identified by code inspection. No runtime reproduction or
-trace demonstrating the failure is available.
+On 10/4/26 12:26, Stefan Fleischmann wrote:
+> Hi,
+> 
+> I have bisected a regression introduced in kernel 6.18.51 (and 7.2.3).
+> The issue is still present in 6.18.55 and 7.2.9. Verified by reverting
+> 1517d1996b52 (the equivalent of 447cbe95ebb9 in the 6.18 branch) on top
+> of 6.18.51 and 6.18.55.
+> 
+> The hardware is a Dell R640 server with Intel Xeon Silver 4210 and
+> Broadcom BCM57412 NetXtreme-E NIC.
+> 
+> The network interface is configured as an untagged interface and has a
+> couple of tagged VLAN interfaces configured on top. All of these are
+> used by LXC containers with Macvlan.
+> 
+> The interface comes up fine after boot, but after some time (anywhere
+> between 2 to 40 minutes) I see a DMA error in the kernel log (attached),
+> and the driver ends up tearing down the interface. It can be brought up
+> again after that, but it will hit a DMA error again after a while and
+> the interface goes down again.
+> 
+> I'm happy to provide more debug info if needed, or test patches.
 
-The patch was not tested on real hardware. No hardware- or
-firmware-specific runtime result is available. Validation used source
-review and available build or emulation checks.
+Hi Stefan,
 
-Fixes: 54b3c9cfad6b ("fm10k: start service timer on probe")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
----
- drivers/net/ethernet/intel/fm10k/fm10k_pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for the bisect and detailed report.
 
-diff --git a/drivers/net/ethernet/intel/fm10k/fm10k_pci.c b/drivers/net/ethernet/intel/fm10k/fm10k_pci.c
-index f5b4d0627..836664cfd 100644
---- a/drivers/net/ethernet/intel/fm10k/fm10k_pci.c
-+++ b/drivers/net/ethernet/intel/fm10k/fm10k_pci.c
-@@ -2245,7 +2245,7 @@ static void fm10k_remove(struct pci_dev *pdev)
- 	struct fm10k_intfc *interface = pci_get_drvdata(pdev);
- 	struct net_device *netdev = interface->netdev;
- 
--	timer_delete_sync(&interface->service_timer);
-+	timer_shutdown_sync(&interface->service_timer);
- 
- 	fm10k_stop_service_event(interface);
- 	fm10k_stop_macvlan_task(interface);
--- 
-2.34.1
+Notice that 0xfc499000 is on an exact 4KB page boundary. This points to 
+a DMA read overrun where the Broadcom DMA engine reads past the end of a 
+buffer mapped in page 0xfc498xxx into the adjacent unmapped page 0xfc499000.
+
+Have you tried a recent net kernel ?
+
+Could you please test whether disabling TSO or hardware VLAN offload 
+prevents the crash? (maybe adding one option at a time)
+
+   # ethtool -K eno1np0 tso off
+
+   # ethtool -K eno1np0 tx-vlan-offload off
+
+Adding Joe to this thread, because some parts in
+tso_dma_map_init() or tso_start() might have bugs.
+
+# Disable USO on the physical interface
+ethtool -K eno1np0 tx-udp-segmentation off
+
+This reminds me on a prior attempt I made months ago to sanitize tso_start()
+
+Note that my email address has changed to edumazet@kernel.org
+
+Thanks.
+
+> 
+> I've already updated to the latest firmware released by Dell, the problem
+> persist. Here is some more info on the network device:
+> 
+> 18:00.0 Ethernet controller [0200]: Broadcom Inc. and subsidiaries BCM57412 NetXtreme-E 10Gb RDMA Ethernet Controller [14e4:16d6] (rev 01)
+> 	Subsystem: Broadcom Inc. and subsidiaries NetXtreme E-Series Advanced Dual-port 10Gb SFP+ Ethernet Network Daughter Card [14e4:4120]
+> 
+> # ethtool -i eno1np0
+> driver: bnxt_en
+> version: 7.2.9-1-generic
+> firmware-version: 238.1.168.0/pkg 38.11.70.00
+> expansion-rom-version:
+> bus-info: 0000:18:00.0
+> supports-statistics: yes
+> supports-test: yes
+> supports-eeprom-access: yes
+> supports-register-dump: yes
+> supports-priv-flags: no
+> 
+> Best,
+> Stefan
+
