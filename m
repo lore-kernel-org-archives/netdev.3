@@ -1,236 +1,280 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EAA480DDA;
-	Sun,  4 Oct 2026 20:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B668638F92F;
+	Sun,  4 Oct 2026 20:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791144757; cv=none; b=bKfsSZWsvggdRyNFdauGQMGBdSDlg5JZ9RmsHhy3eEHwWbLByi9V0z3lTDpguFxGk3f9VckC5gThh45phtBu4GwrFZ6UPyiVJfNF8+2UeQy5fz3wlDf+nuxkVFdG/6R2WK+js2plGNnv+Ofd1W09+9C5MyN7VIA5MlenILuDLf4=
+	t=1791144841; cv=none; b=h1/JyFLDwARXG7P18FU2DfZKXkHuID3DTV90ox5buru2gvAnRC3j0/Nfuj7ndEG3we3fk+nVxxhCAMsdoo0RtdXUsL7PgEk9UQgyvOxyokGiJ5GJ4qbBo5NUAGk37HOvZM66K0h7RP9w0I/xrdzxlR9VFrk1HBeTvSLA1lXl+Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791144757; c=relaxed/simple;
-	bh=6i3i7WsSNX6ARj4QoJw0wpV9iavfas580CAV2v7AKKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZmlyVL3PmcohwljyX6OvJjGy5dcbZR49+6gOJt4NfqUCFB6N1KqonhoASFNgGL13EZFu6d8sEWRROmTf3+NdZ+Ad73uSRg3g3RT0V03rwl4pP8U2/cJqP6OeU8HZ3dPA6uDb+KlNp3+7GZA6PY6RGmnGz7JSGlOPILUJbSBweck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ep8BLexM; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791144841; c=relaxed/simple;
+	bh=JuI4FfFu7Fyt64CymKie/49zNIQ0f4ie5JD09Mb2hTc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TxjY12HHp5pmKYMN4e2lM2vVxidhxaCRunItS4ii6Qwjefsa02mW7fCNONTp7PaIQcpdwS8z+NQ3CYIEYqarMh9aF+PSG3phequ3m4ucEYboT+exYf1ZNaVIVUzVTMyIugIrp00B45lNcsZY982ZOcuyycYNu2eyt1Jf/RHkyvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jg0JWCa/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ep8BLexM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791144756; x=1822680756;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6i3i7WsSNX6ARj4QoJw0wpV9iavfas580CAV2v7AKKY=;
-  b=Ep8BLexMG0MLTFZAikPnrJYuErrJXXAKB0M85z7kyLGGz5wdoor2njc7
-   QxCCxRb/qTVMImuIpZ5YYBvLmmww2AmMTQrsShZUuEBNtbuveZXAUFwnY
-   XT5+w4lD9Smys48ZeLYY/pjYtJO1H0cJnF/B16XjVmR1hpqGdOb6IwEbe
-   4D+vV1LOPyXXl6VQf20K0aQHg3bGy0z3mc5FCofdS4X6oJe0Wh2AiUyCj
-   sMgrjy2ud0lObiTb8F7E3KTi1CZXNp6gkI9BIdP21VDqoBN4H/IeLOCaO
-   /8QAK8ODl7SYDEa2vXWjerVKVLyPyia1Wv773dMx3alAf9HB+ezCOMadI
-   g==;
-X-CSE-ConnectionGUID: G2PN/LHmSJChbc2i2PCjMw==
-X-CSE-MsgGUID: oPgHj6edSz25pqKmZfCXjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="94697104"
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
-   d="scan'208";a="94697104"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2026 13:12:36 -0700
-X-CSE-ConnectionGUID: DRFD465VTQu+1j2b7Swpcg==
-X-CSE-MsgGUID: 5q0Xphp/S2ionY8l3AbMXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
-   d="scan'208";a="304614437"
-Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 04 Oct 2026 13:12:31 -0700
-Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xDSZQ-00000000V2X-2RJA;
-	Sun, 04 Oct 2026 20:12:28 +0000
-Date: Mon, 5 Oct 2026 04:12:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Birger Koblitz <mail@birger-koblitz.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Eric Dumazet <edumazet@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	netdev@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	Jianhui Xu <neuromoments@gmail.com>,
-	Birger Koblitz <mail@birger-koblitz.de>
-Subject: Re: [PATCH net-next v16 04/13] ax88179_178a: Add HW support for
- AX179A-based chips
-Message-ID: <202610050430.ZlYvvYse-lkp@intel.com>
-References: <20261004-ax88179a-v16-4-2a9ae4e68f7b@birger-koblitz.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jg0JWCa/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BFF1F000FF;
+	Sun,  4 Oct 2026 20:13:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791144839;
+	bh=kUIWaC88q0Bw4l+W8HSB54nC9nI/6KV4K3UIv1ypbKY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jg0JWCa/by34WL3CmzK/O05a1p/buJChGldkdMlaLCsm8gM+mvk8EduO9B2LJ2wtq
+	 Nhhww3mCRVYJlNH44bI7XMPWzxrKl7gwtnj2kodSY1EvWPwbq8GUPedBdKlgfi6V/y
+	 cEjC44FwvlIUwKZGiFdjTyetP6qpaGjMG0Hqt4UvFp/xnI4jhEDneI7YyL2qH1wQHx
+	 pyiI9v9gedayEb9VZCNz6gGSMcFs4hBKR1wCIPqYy2EkRR4FDYFw9cDWFBW1N4JV1y
+	 XlWhPyeWPsGugh+/sS8rNK8HZY7Bw6riahDO6a5z9T8T5jsUMkUUQDM/d6ZlIQamoZ
+	 QnsfKV0GmlfmA==
+Subject: Re: [PATCH net-next] net: stmmac: mask the MAC interrupt while resume
+ resets the MAC
+From: netdev-bot+sashiko@kernel.org
+To: iav@iav.lv
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Sun, 04 Oct 2026 20:13:58 +0000
+Message-ID: <179114483834.434549.10718571008152168526@kernel.org>
+In-Reply-To: <20260930-stmmac-irq-shut-v1-1-104d1a1dcb28@iav.lv>
+References: <20260930-stmmac-irq-shut-v1-1-104d1a1dcb28@iav.lv>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261004-ax88179a-v16-4-2a9ae4e68f7b@birger-koblitz.de>
 
-Hi Birger,
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-kernel test robot noticed the following build errors:
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-[auto build test ERROR on 071876fd50482a68603a9460d80dd6dd58827ee1]
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Birger-Koblitz/phylink-Add-phylink_mac_interrupt/20261004-073905
-base:   071876fd50482a68603a9460d80dd6dd58827ee1
-patch link:    https://lore.kernel.org/r/20261004-ax88179a-v16-4-2a9ae4e68f7b%40birger-koblitz.de
-patch subject: [PATCH net-next v16 04/13] ax88179_178a: Add HW support for AX179A-based chips
-config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20261005/202610050430.ZlYvvYse-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 5f609f950d2e80addf5566623013db68394334db)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261005/202610050430.ZlYvvYse-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610050430.ZlYvvYse-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/net/usb/ax88179a_devices.c:694:2: error: incompatible integer to pointer conversion passing 'u64' (aka 'unsigned long long') to parameter of type '__u64 *' (aka 'unsigned long long *'); take the address with & [-Wint-conversion]
-     694 |         le64_to_cpus(rx_hdr);
-         |         ^~~~~~~~~~~~~~~~~~~~
-   include/linux/byteorder/generic.h:111:22: note: expanded from macro 'le64_to_cpus'
-     111 | #define le64_to_cpus __le64_to_cpus
-         |                      ^
-   include/uapi/linux/byteorder/big_endian.h:94:37: note: expanded from macro '__le64_to_cpus'
-      94 | #define __le64_to_cpus(x) __swab64s((x))
-         |                                     ^~~
-   include/uapi/linux/swab.h:265:46: note: passing argument to parameter 'p' here
-     265 | static __always_inline void __swab64s(__u64 *p)
-         |                                              ^
-   1 error generated.
-
-
-vim +694 drivers/net/usb/ax88179a_devices.c
-
-   655	
-   656	static int ax88179a_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
-   657	{
-   658		struct ax88179_data *ax179_data = dev->driver_priv;
-   659		struct sk_buff *ax_skb;
-   660		u32 hdr_off, pkt_end;
-   661		u64 *pkt_desc_ptr;
-   662		u16 vlan_tag;
-   663		u16 pkt_cnt;
-   664		u64 rx_hdr;
-   665	
-   666		/* SKB contents for AX179A-based chips:
-   667		 *   <packet 1>
-   668		 *   ...
-   669		 *   <packet N>
-   670		 *   <per-packet metadata entry 1>
-   671		 *   ...
-   672		 *   <per-packet metadata entry N>
-   673		 *   <rx_hdr>
-   674		 *
-   675		 * where:
-   676		 *   <packet N> contains pkt_len data bytes and padding:
-   677		 *		2 bytes of IP alignment (optional, depends on AX_RX_CTL_IPE flag)
-   678		 *		packet data received
-   679		 *		optional padding to 8-bytes boundary
-   680		 *   <per-packet metadata entry N> contains 8 bytes:
-   681		 *		pkt_len and fields AX_RXHDR_*
-   682		 *   <rx-hdr>	contains 8 bytes:
-   683		 *		pkt_cnt and hdr_off (offset of <per-packet metadata entry 1>)
-   684		 *
-   685		 * pkt_cnt is number of entries in the per-packet metadata array.
-   686		 */
-   687	
-   688		if (!skb || skb->len < sizeof(rx_hdr))
-   689			goto err;
-   690	
-   691		/* RX Descriptor Header */
-   692		skb_trim(skb, skb->len - sizeof(rx_hdr));
-   693		rx_hdr = *(u64 *)skb_tail_pointer(skb);
- > 694		le64_to_cpus(rx_hdr);
-   695	
-   696		/* Check these packets */
-   697		hdr_off = FIELD_GET(AX179A_RX_DH_DESC_OFFSET, rx_hdr);
-   698		pkt_cnt = rx_hdr & AX179A_RX_DH_PKT_CNT_MASK;
-   699	
-   700		/* Consistency check header position */
-   701		if (hdr_off != skb->len - (pkt_cnt * sizeof(rx_hdr)))
-   702			goto err;
-   703	
-   704		/* Make sure that the bounds of the metadata array are inside the SKB
-   705		 * (and in front of the counter at the end).
-   706		 */
-   707		if (pkt_cnt * 8 + hdr_off > skb->len)
-   708			goto err;
-   709	
-   710		/* Packets must not overlap the metadata array */
-   711		skb_trim(skb, hdr_off);
-   712	
-   713		if (!pkt_cnt)
-   714			goto err;
-   715	
-   716		/* Get the first RX packet descriptor */
-   717		pkt_desc_ptr = (u64 *)(skb->data + hdr_off);
-   718	
-   719		pkt_end = 0;
-   720		while (pkt_cnt--) {
-   721			u64 pkt_desc = le64_to_cpu(*pkt_desc_ptr);
-   722			u32 pkt_len_plus_padd;
-   723			u32 pkt_len;
-   724	
-   725			pkt_len = FIELD_GET(AX179A_RX_PD_LEN, pkt_desc);
-   726			pkt_len -= (ax179_data->ip_align ? 2 : 0);
-   727			pkt_len_plus_padd = ((pkt_len + 7 + (ax179_data->ip_align ? 2 : 0)) & 0x7FFF8);
-   728	
-   729			pkt_end += pkt_len_plus_padd;
-   730			if (pkt_end > hdr_off || (pkt_cnt == 0 && pkt_end != hdr_off))
-   731				goto err;
-   732	
-   733			if (pkt_desc & AX179A_RX_PD_DROP || !(pkt_desc & AX179A_RX_PD_RX_OK) ||
-   734			    pkt_len > (dev->hard_mtu + AX179A_RX_HW_PAD) || pkt_len < 2 + ETH_HLEN) {
-   735				skb_pull(skb, pkt_len_plus_padd);
-   736	
-   737				/* Next RX Packet Descriptor */
-   738				pkt_desc_ptr++;
-   739				continue;
-   740			}
-   741	
-   742			ax_skb = netdev_alloc_skb_ip_align(dev->net, pkt_len);
-   743			if (!ax_skb)
-   744				goto err;
-   745	
-   746			skb_put(ax_skb, pkt_len);
-   747			memcpy(ax_skb->data, skb->data + (ax179_data->ip_align ? AX179A_RX_HW_PAD : 0),
-   748			       pkt_len);
-   749	
-   750			if (ax179_data->rx_checksum)
-   751				ax88179a_rx_checksum(ax_skb, pkt_desc);
-   752	
-   753			if (pkt_desc & AX179A_RX_PD_VLAN) {
-   754				vlan_tag = pkt_desc >> AX179A_RX_PD_VLAN_SHIFT;
-   755				__vlan_hwaccel_put_tag(ax_skb, htons(ETH_P_8021Q), vlan_tag);
-   756			}
-   757	
-   758			usbnet_skb_return(dev, ax_skb);
-   759			skb_pull(skb, pkt_len_plus_padd);
-   760	
-   761			/* Next RX Packet Header */
-   762			pkt_desc_ptr++;
-   763		}
-   764	
-   765		return 1;
-   766	
-   767	err:
-   768		return 0;
-   769	}
-   770	
+- [Medium] The defect is specific to dwmac1000, but stmmac_resume() now
+  calls disable_irq(ndev->irq) on every core for the whole resume.
+- [Medium] stmmac_resume() now re-enables ndev->irq on every exit path,
+  including error exits where GMAC_INT_MASK was never restored.
+- [Low] The commit message names commit 2e2c878a3141 ("net: stmmac:
+  remove SGMII/RGMII/SMII interrupt handling") as the point after which…
+- [Low] The new comment in the generic stmmac_resume() says 'Resume
+  resets the MAC, leaving every core interrupt unmasked until the mask…
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+net: stmmac: mask the MAC interrupt while resume resets the MAC
+
+This patch disables ndev->irq for the whole of stmmac_resume() when the
+interface is running, and enables it again on every exit path. The aim is
+to stop an RGMII interrupt storm on dwmac1000. There, the MAC reset in
+stmmac_hw_setup() clears GMAC_INT_MASK, and it stays clear until
+dwmac1000_core_init() writes it again.
+
+> stmmac_resume() resets the MAC in stmmac_hw_setup(). On dwmac1000 the
+> reset clears the interrupt mask, and all core interrupts stay unmasked
+> until dwmac1000_core_init() writes it again. A link change in that
+> window raises an RGMII interrupt, and no handler clears it since
+> commit 2e2c878a3141 ("net: stmmac: remove SGMII/RGMII/SMII interrupt handling").
+> The line storms:
+
+[ ... ]
+
+> The message repeats every few milliseconds and the network stays down
+> until a power cycle or a watchdog reset.
+
+[Severity: Low]
+Should this carry a Fixes: tag for the commit it names?
+
+Fixes: 2e2c878a3141 ("net: stmmac: remove SGMII/RGMII/SMII interrupt handling")
+
+That commit removed dwmac1000_rgsmii() and its call from
+dwmac1000_irq_status(). That call read GMAC_RGSMIIIS to ack the interrupt:
+
+-	if (intr_status & PCS_RGSMIIIS_IRQ)
+-		dwmac1000_rgsmii(ioaddr, x);
+
+It also moved GMAC_INT_DISABLE_RGMII into GMAC_INT_DEFAULT_MASK. Since
+then, the mask written by dwmac1000_core_init() is the only protection.
+
+The only trailers are Assisted-by and Signed-off-by, and the note after
+them says the patch was ported to net-next. Both 7.2 and 7.3-rc5 were
+tested as affected. Would net, with a Fixes: tag and possibly Cc: stable,
+be the better target?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 3ad9252bf6aea..6e0415538327b 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -8356,16 +8356,26 @@ int stmmac_resume(struct device *dev)
+>  {
+>  	struct net_device *ndev = dev_get_drvdata(dev);
+>  	struct stmmac_priv *priv = netdev_priv(ndev);
+> +	bool irq_off;
+>  	int ret;
+>  
+> +	/* Resume resets the MAC, leaving every core interrupt unmasked until
+> +	 * the mask is written again: a link change in that window would storm.
+> +	 */
+
+[Severity: Low]
+Does this comment hold for every core that uses stmmac_resume()?
+
+Only dwmac1000 writes a mask register, where 0 means everything is
+unmasked:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c:dwmac1000_core_init() {
+    ...
+	writel(GMAC_INT_DEFAULT_MASK, ioaddr + GMAC_INT_MASK);
+    ...
+}
+
+dwmac4 and xgmac write enable registers instead. On those cores a reset
+leaves the core interrupts disabled, not unmasked:
+
+drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:dwmac4_core_init() {
+    ...
+	writel(GMAC_INT_DEFAULT_ENABLE, ioaddr + GMAC_INT_EN);
+    ...
+}
+
+drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:dwxgmac2_core_init() {
+    ...
+	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
+    ...
+}
+
+Could the comment say that this is a workaround specific to dwmac1000?
+
+> +	irq_off = netif_running(ndev);
+> +	if (irq_off)
+> +		disable_irq(ndev->irq);
+
+[Severity: Medium]
+What happens to other devices on this line while resume runs? In single
+IRQ mode the line is requested as shared:
+
+stmmac_request_irq_single() {
+    ...
+	ret = request_irq(dev->irq, stmmac_interrupt,
+			  IRQF_SHARED, dev->name, dev);
+    ...
+}
+
+disable_irq() masks the line for every handler on it. The line then stays
+masked through all of these:
+
+  plat->resume()
+  stmmac_mdio_reset()
+  SerDes power-up
+  rtnl_lock()
+  mutex_lock(&priv->lock)
+  stmmac_hw_setup(), including the DMA soft reset poll of up to 200ms
+  in dwmac_dma_reset()
+  PTP init
+  phylink_resume()
+
+No other device on the line gets interrupts during that time. Suppose one
+of them waits for its own interrupt while holding RTNL, or another lock
+that stmmac_resume() needs. Can that stall until a timeout, or forever if
+the wait has no timeout? Lockdep would not see this dependency.
+
+The commit message mentions IRQF_SHARED only as the reason to leave the
+line enabled during suspend.
+
+The problem is specific to dwmac1000. Could the fix avoid the shared line
+altogether? Some options:
+
+  rewrite GMAC_INT_MASK right after the reset
+  restore the read-to-clear of GMAC_RGSMIIIS in dwmac1000
+  disable the line only between the reset and core_init
+
+[ ... ]
+
+> @@ -8451,6 +8462,9 @@ int stmmac_resume(struct device *dev)
+>  	stmmac_legacy_serdes_power_down(priv);
+>  	mutex_unlock(&priv->lock);
+>  	rtnl_unlock();
+> +out:
+> +	if (irq_off)
+> +		enable_irq(ndev->irq);
+
+[Severity: Medium]
+Can this enable the line again while GMAC_INT_MASK is still clear?
+
+If stmmac_init_dma_engine() fails, stmmac_hw_setup() returns before
+stmmac_core_init(). That is the only place where dwmac1000_core_init()
+restores the mask:
+
+stmmac_hw_setup() {
+    ...
+	ret = stmmac_init_dma_engine(priv);
+	if (ret < 0) {
+		phylink_rx_clk_stop_unblock(priv->phylink);
+		...
+		return ret;
+	}
+    ...
+	stmmac_core_init(priv, priv->hw, dev);
+    ...
+}
+
+The failure can come from stmmac_prereset_configure(), or from
+stmmac_reset() timing out ("Failed to reset the dma"). The timeout is a
+known case when clk_rx_i from the PHY is not running yet.
+
+dwmac_dma_reset() returns -ETIMEDOUT and leaves SFT_RESET set:
+
+dwmac_dma_reset() {
+    ...
+	return readl_poll_timeout(ioaddr + DMA_BUS_MODE, value,
+				 !(value & DMA_BUS_MODE_SFT_RESET),
+				 10000, 200000);
+}
+
+So the hardware finishes the reset once the RX clock starts. That usually
+happens when the PHY link comes up, which phylink_prepare_resume() has
+already started. The reset clears the mask just as the RGMII link change
+event arrives.
+
+The error then takes this path:
+
+stmmac_resume()
+  stmmac_hw_setup() fails
+  goto error_unlock
+  out:
+    enable_irq(ndev->irq)
+
+stmmac_interrupt() never acks the RGMII source and always returns
+IRQ_HANDLED:
+
+stmmac_interrupt() {
+    ...
+	stmmac_common_interrupt(priv);
+	stmmac_dma_interrupt(priv);
+	return IRQ_HANDLED;
+}
+
+Because of that, the spurious IRQ detector will not disable the line
+either. Does the storm this patch fixes come back on these exits, with no
+later core_init to close the window?
+
+The commit message says the line is enabled again "on every exit path".
+On these exits, though, it is enabled inside the window the patch is
+meant to close.
+
+>  
+>  	return ret;
+>  }
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930-stmmac-irq-shut-v1-1-104d1a1dcb28%40iav.lv
