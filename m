@@ -1,81 +1,81 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012061.outbound.protection.outlook.com [40.107.200.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0494A3EEACB;
-	Sun,  4 Oct 2026 08:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791102990; cv=fail; b=hY+Wpvi9oTJ658y6uqZKrsBdnSiff3zM87FOUgSS0DxHSRBXJl8SAdf5ddWjiIMJ7NuzA6ud5gEQi6Dl+4DVFw3ZjfVdK/yj5yEHlJWze0QuFbfDlru8eE+Z/6EcPv4aPULbD2Q2XnimyA8O7AIn1xX1XggfS6r5Tv6xZB+LKfQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791102990; c=relaxed/simple;
-	bh=kctlMZlzclEutisB9OjmkA5Stfe0U91D3PiLBhEKpQk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IbDCvjowYU/LU3NQxaJnLCj2ASGQm1eQTuNVFskBctM8qAkLv7iTR3ye6ty4mXXv9+U+BfC5PvghaUwXhxbz5acrkacxRxTct6+tboaxSNj2F3qxnry5zlVreJsm8ERcuQptFY9fT3k07xqBFnoaBNUWdXjUp4qWi5fkxCmYN68=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nV6gh0pt; arc=fail smtp.client-ip=40.107.200.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8218F390C8D
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 08:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791103087; cv=none; b=e+HRu2NchQOh6hNOCK2t8tM6GrkcHaOzMxIMoS2pnWI5nG8Zsm++QIEvOGFO3zBHXsH6aDwF208aqLdiuwsdKOg4SDnxwQK77NemsHl7HKNnBIQ5ebG47zoC6FEmkoQhRHwOWtOkRpg5n9H53cDg58DOp5OFYXQpuBjAfvrRkfk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791103087; c=relaxed/simple;
+	bh=z4RzOrKDb588quTWl5K8AHG+o8U6K6BzoqWIihT5pvk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=st3vm0p27znSOk/7bpAZMe40BIBJpn/Gb0KxW8XKCvk8lboENJvF6KuDZPsjhn0c7dYSlKDnPnHasTX8FstQ3ZQaXhii2i8kr6aNz/4+T3oXNIe1O7HP1a2Z2ipxXVPnFXZJJOVDqDPfAWQnW5CFXKASjSM4AaGYJSobHj65wRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MzoBOQ6k; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nV6gh0pt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=P7PGdWk6d5+5paICSnMrqlN0nu4wSNLUpbI73iDyM5BnCvb4zRoLhtaPgTL26WEIcDXDfuNGRmzamYwpA1MGkdkAD9QW8c1fSyc/qFF/fnlnxqj+YCglfv5cx/3zmebsB2dGKnhlPJhcFz4Zv+3uymDdBVpAxQncP+xVAiKRJ/TQ8mV8ameWrY1jnv7K9BShe9WOEbG5yaWHkeObeFYgQPnU3UkYmANw6QLM/TBxSYVj/TgsLSFp5D2Kj6nsHEJ9AEWmlKhigH5Bi8RCt+qu1OUu0XSo4WkmnBEa3nIYHMxVPz/K7cboV7JTco9fwlt7kS/ECHo3iHL8i5ja5h7nMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DAzs9teOHAck/fP57ExC/jBLoAMyJEAVC03COMAn1ZI=;
- b=prY8szd+Kf6VdXedVYptKz+2Ls+t3QeAgYNQw7wE/+xLYLfLx9H4IoK2THJlRFfjv6szZc+Euku4H0pSvJYcGY1tYhcsrZ0JT1BbNlWWnrCz79JIxjmZcuphgDw4hhxiizbmbyGVn2jy++bZSSXWT7w+V36IXiadvrPRwXgHgAdkeBvfyIEjwDWFi3vXutCN5rTdwJlzd5SJfvREvlzOk1u6ICZo37bAvxQnDzYim9uvJNyzZEWbE7R9XLu+WNE83dIRQ7HZuMU1x2wDGFftHj7Iqr+bCbvZGG+W9cEb1ZdMdZMMkm382Ij8Pr+ugVEcPWmUVWGto0vCPfsLE59YzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DAzs9teOHAck/fP57ExC/jBLoAMyJEAVC03COMAn1ZI=;
- b=nV6gh0ptbfjQhDvMUMkFl1/IOihA84ObegWUTzZwWOc0pA3NlnSrVN9DtTmueJSwetMsJABVLwoDykfw8oIUxbgBq3+7L3ff8qS71Tw3rgdWz/i+0h+pUoo7PLxux7x6b3oOWWSsAYsHThPyiHNERO8hmWV7MZivT5mVWbeuGAlDyXOEaaq4Ds7vpgoJ8dVE9vHTspGNd5Puvzi+dBRqiZ2bWRCCmUtmoVkWlhO6ouKvozVXKHyLWLfKx8DPD6dzwvNVBZvuHgcoJuPeuyCfawvUm5XhKQlM/CyR1w7UiojPgEam5e4yFlYQ99+qCmLmJEX/tklKMC3MLn/CkaVhmw==
-Received: from CH0PR03CA0444.namprd03.prod.outlook.com (2603:10b6:610:10e::12)
- by PH8PR12MB6772.namprd12.prod.outlook.com (2603:10b6:510:1c7::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Sun, 4 Oct
- 2026 08:36:20 +0000
-Received: from DM2PEPF00003FC2.namprd04.prod.outlook.com
- (2603:10b6:610:10e:cafe::69) by CH0PR03CA0444.outlook.office365.com
- (2603:10b6:610:10e::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Sun, 4
- Oct 2026 08:36:20 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DM2PEPF00003FC2.mail.protection.outlook.com (10.167.23.20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Sun, 4 Oct 2026 08:36:20 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 4 Oct
- 2026 01:36:06 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 4 Oct
- 2026 01:36:06 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
- with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Sun, 4 Oct
- 2026 01:36:02 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, "open
- list" <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark
- Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Or Har-Toov
-	<ohartoov@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drori
-	<shayd@nvidia.com>, Simon Horman <horms@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>
-Subject: [PATCH net] Revert "net/mlx5: E-Switch, preserve max tx speed on vport state modification"
-Date: Sun, 4 Oct 2026 11:35:31 +0300
-Message-ID: <20261004083531.216988-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MzoBOQ6k"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so5383105e9.1
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 01:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791103083; x=1791707883; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=McuNVp32CTxlLQ2QlE0pJplIh7P/8gxpjbSLGhtHHVw=;
+        b=MzoBOQ6k++FfKG1vuDMndhLIACrHFYydq3OKwbz+viPJtujTbM1ZTmzRhpAbpONEj6
+         Bvu669MMrXrKSouZIqI5wUR+UNQkm22Kh+NSVOeOQMMz64vv/fELfCT9/ily8rl9AL7B
+         MNHIG6NKFKuZNTTvFa/QaeACOR4RBb2YfrfXuoFssgoCT6lYqV5YN7VNG2OsXdiDKpxw
+         uz1hZA3HdTOmEe9/cGETDs+K30Z0oIcZhnBoPHnxke185OucsacqBkem2sCkAbQ/ecuN
+         ooux204lnERXunnD6sGawoW4czu+e0xpzXydcQV993CHVnjpenpe8xVLhwiyzDlVyoD2
+         UV0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791103083; x=1791707883;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=McuNVp32CTxlLQ2QlE0pJplIh7P/8gxpjbSLGhtHHVw=;
+        b=qy5pHtFhqIALOWjVJtZ0wvfKFdBAUzsQfA81Ym+EvnwP4UTouE0AU/oaTu7yqiwJXk
+         588niGcfdxLBqpt+U2jFdsapOUa2cYeKjfOwnEv/vMv+gsBeNEiw738mqVQVQT3HonwN
+         QcvmBwxeouCtcZH9y0adARBGJ3JW29+OH/MSo56J93JcVT8RHUejU/8W4UDeaQSscgI0
+         Ndj7qmCpnfdyYob69wRH0F+OWtI5XfAqScMS4gD8+oIYuzpM9qjP3TJmUBS7QBS27ewn
+         h0dWCWi6V0Lr5DCeRA821gk+Cw8ERpL9MnQKQMJY2jqQowmAWU3jInlRU2R0VnDOx+kl
+         ZLFg==
+X-Gm-Message-State: AFuF++mb1pJGkDq3d4ESKc0sr/jM8bKdxmssVMdEWJqkMn2GLAYLOw5g
+	zBXmd6FDHwkO1O2ApTg1k08AowKeGqELeX5f+z2w/nFzLnLDZo8hvI+FKdCd8fU8
+X-Gm-Gg: AYBFou0Oe30Q3FCfe6ERj+rAqlxn/HwEgihoYXKyaIo6oOHLxHxPzZ6vEkU3SCbxitJ
+	lAdWJf11/ksVA8u84dyF/amiM6VMoOaZOo6e21ey8Z0foPh+mVrBbt4ywm07RJY7MGnuWDpcqla
+	HPsBibtn/jXQIvp9dUaQgAGTcXJMvEY93qIWoPxs3X6uMhDqeeB1pyTbI6TvgxzhpFDngeqhFsA
+	MQhOorSJ/iDNhgRn7vyxv4GRafHQ/SAH3LFlOO78crFqqQmrYBFy87fG5zbCVP9+SO61r1TALQP
+	YMQQ0fn1aRs3lv/l/LxtukMpuuWsLpnyr8lAu2AfHASKefunhpyvk+eJ51C0sb8YpkheSc+NFl9
+	Cb25nrzDAviZI16VfYc2KtItQc1F4+OuZrCGsJwoorz/OaIUs87LbAfSzSfuuiE1pjLdiSmteB7
+	iQk8n5d8LdQd3YNFL8t2u6dYpeiYklkDvNG+bEdEijndaloqIx9chQ38i7GhICOasj0qnnJiOQQ
+	0fBfgvg1k2IUqbYlNcItYJgyIY1TbZrqyGpkdi8
+X-Received: by 2002:a05:600c:3e07:b0:49f:fe39:5bc8 with SMTP id 5b1f17b1804b1-4a027585dfemr125622175e9.12.1791103083428;
+        Sun, 04 Oct 2026 01:38:03 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a027f2a4cfsm206540565e9.1.2026.10.04.01.38.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 01:38:02 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: radhey.shyam.pandey@amd.com,
+	michal.simek@amd.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	daniel@iogearbox.net,
+	jacob.e.keller@intel.com,
+	joe@dama.to,
+	suraj.gupta2@amd.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net v3] net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
+Date: Sun,  4 Oct 2026 11:37:59 +0300
+Message-ID: <20261004083759.1016519-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,127 +83,123 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM2PEPF00003FC2:EE_|PH8PR12MB6772:EE_
-X-MS-Office365-Filtering-Correlation-Id: 70212f20-c04d-425e-e531-08df21f290b5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|23010399003|36860700016|82310400026|1800799024|56012099006|10067099003|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	oSkFdT4O0uLDS3GxkQATZ7wb+9fc2NOqw/fTRTn2H3NcNTURq99F2ow/apm9hEFytfdH2bm2OfwdYMppVA08QaiiFnZC82j6E970E7ZhRHVgKdClUA40PgDHxp5HdS5j8vjoCFPkVM7ervxlYjU9orwMf7g4dMFM/HqwnNd6N98CzYm0GGbhx26YgdtSDXZbkeDTZWd+AGE6zE0cFw02E8wYS9B5R3e+L+Omkw2uT28U079FwjA/L1dIm8Bwaith4ygAFKrCPIJKb1ZGlsvYJV1lvmPRf4bEQHyohrSBg1WAqpB0kuIuVV3/sJyuZ+7cMcQvK3JCCYKH6ee+uZLEz2ZgkwgCSESRHTnLvBzJqtmlT0EmLfNELGPlAEf7n/rxrqcPcJPvB2Q6TAspbiGmw1i6uUs+j94tjyLb2LZbc1eLZEO1c2n/2uOpzZ1DsR5hL1Rt+dLnyWC1T8tk6ap2Y1yCmD575ieuNoZCIVGTc6lsCTlqEPnULEUL4JxvXHojAV824xY8I30qq2QhqglyOofZidzmQxv/UDXNP6t1s2IKZM/E5g2ZJ82jSibHsHVclfZJQJtpXESsoUyq0+MSX88qGXftQ3gA6ydwMX28VYDnttHjKOTMJiaF+5V7cujtYNejcJ7U39XMKPIkf/tQDhjkusMwmKI71/jgNLqCllHLoF+vj6bL06d3w/mnFUUv0DESbDfp8wdhpH3K43g78g==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(56012099006)(10067099003)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ozvOLzglU+g4JX42C+oF+fvB8ozebT9b93yqkSjuXQhdSyhmXXmpODlddA6mRP6CgG8xkuuP/UdHA1au4/Id6aJQSDA6MLdr5CS2wMmBghCNPFr4RUIkrulMG4PDpL/1Zy8E+puRO5kcrMOMsyUI94ZiQMy7hjuIY6GlSy2/cJ5KQsarpRaHY+98uInzVIB4p0XqByIy7aXo7eM+fMwX4pwg+Kc5g2E12qDoLG/EGIdlIbm2EJ+n9b00+rdlxiipxrj6WrIB7r1kZVQPtKFZChWSwp9M7NRQQl2CLDJn96haZ7iIkhijcJuyaIHat03uoAUDSkoPAnljzc7jm5921XygFvYhUBV8DMW1altihScorshxg2blYs3zvyG1he07OxrLEMTVeGM8tICVy2N1Hhx7IjnEcIsfKXZ2ouiU8xDhXBgb2PIDC4EEe70ha+Jw
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2026 08:36:20.2044
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70212f20-c04d-425e-e531-08df21f290b5
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DM2PEPF00003FC2.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6772
 
-From: Or Har-Toov <ohartoov@nvidia.com>
+axienet_dma_bd_release() walks the RX ring to unmap and free every
+receive buffer before releasing it, but frees the TX descriptor ring
+with dma_free_coherent() alone.  Any descriptor that
+axienet_free_tx_chain() had not yet reclaimed still holds its skb and
+its streaming DMA mapping, and both are lost.
 
-This reverts commit ad0ae7aefa7a ("net/mlx5: E-Switch, preserve max tx
-speed on vport state modification").
+axienet_stop() disables TX NAPI and stops the DMA engine before calling
+it, so nothing reclaims those descriptors afterwards.  Bringing the
+interface down while frames are in flight therefore leaks up to
+lp->tx_bd_num skbs and mappings each time.
 
-mlx5_modify_vport_admin_state() and mlx5_esw_adj_vport_modify() query
-the vport's current max_tx_speed before modifying its state, and
-write that value back, to avoid resetting it to 0 as a side effect
-of an unrelated admin-state change.
+Walk the TX ring the way axienet_dma_err_handler() already does: unmap
+every descriptor whose cntrl is still set - axienet_free_tx_chain()
+clears it on reclaim - and free any skb still attached, as a drop.
+This relies on axienet_stop() having stopped the DMA engine first, as
+the RX walk in the same function already does.
 
-That's unnecessary: max_tx_speed is optional in MODIFY_VPORT_STATE -
-FW skips writing it whenever it's 0, treating that as "not provided"
-rather than "reset to zero". Leaving it unset already preserves FW's
-current value, with no query needed.
+The walk must not run on a ring that is not there.  axienet_open() does
+not check the result of the reset that runs axienet_dma_bd_init(), so
+when that reset fails tx_bd_v is either still NULL or, after an earlier
+close, points at the ring that close freed.  Clear tx_bd_v and rx_bd_v
+once their rings are freed, and skip the walk when tx_bd_v is NULL.
+That also ends the second dma_free_coherent() of a stale ring which the
+same path already did.  On the axienet_dma_bd_init() error path the TX
+ring has just been allocated zeroed, so the walk does nothing.
 
-Fixes: ad0ae7aefa7a ("net/mlx5: E-Switch, preserve max tx speed on vport state modification")
-Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+This was reported by the Sashiko AI review bot.
+
+Tested on the AXI Ethernet MAC of an ADVA TimeCard X2 (PCIe card, with
+the built-in AXI DMA): traffic passes, and after each of ten down/up
+cycles and five module reloads, all made with traffic running and each
+running axienet_dma_bd_release(), traffic resumes and nothing is logged.
+The leak itself was not measured, and the failed-reset paths were not
+exercised.
+
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Assisted-by: LLM sparse
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 ---
- .../mellanox/mlx5/core/esw/adj_vport.c        | 20 ----------------
- .../net/ethernet/mellanox/mlx5/core/vport.c   | 24 -------------------
- 2 files changed, 44 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c
-index 7950b82d8b8a..3624c680a861 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/adj_vport.c
-@@ -11,26 +11,6 @@ int mlx5_esw_adj_vport_modify(struct mlx5_core_dev *dev, u16 vport,
+Notes:
+    Changes in v3:
+    - Clear tx_bd_v and rx_bd_v after freeing the rings.  v2 only caught a
+      NULL tx_bd_v from a first open; after a close followed by a failed
+      reset the walk would have read the freed ring (Sashiko).
+    - Reword the comment on the skb free: a descriptor can complete after
+      TX NAPI was disabled, so "never transmitted" was not always true
+      (Sashiko).
+    - Say in the commit message which hardware the test ran on.
+    - Kept Jacob's Reviewed-by, as the changes are small; please say if
+      that is not OK.
+    - The hardware test is v1's.  The changes since only affect the
+      failed-reset paths, which it did not exercise, and how the freed skbs
+      are accounted.
+    - v2: https://lore.kernel.org/netdev/20260930133851.663023-1-maimon.sagi@gmail.com/
+    
+    Changes in v2:
+    - Skip the TX walk when tx_bd_v is NULL (Sashiko).
+    - Free the skbs with dev_kfree_skb_any(), so they count as drops as in
+      axienet_dma_err_handler() (Sashiko).
+    - v1: https://lore.kernel.org/netdev/20260927081034.350422-1-maimon.sagi@gmail.com/
+
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 26 ++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 09443623a3e2..c88c671f8b2d 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -186,11 +186,34 @@ static void axienet_dma_bd_release(struct net_device *ndev)
+ 	int i;
+ 	struct axienet_local *lp = netdev_priv(ndev);
  
- 	lockdep_assert_held(&dev->priv.eswitch->state_lock);
+-	/* If we end up here, tx_bd_v must have been DMA allocated. */
++	/* tx_bd_v is NULL if axienet_dma_bd_init() did not get as far as
++	 * allocating it, and is cleared below once the ring is freed;
++	 * dma_free_coherent() accepts NULL.
++	 */
++	for (i = 0; lp->tx_bd_v && i < lp->tx_bd_num; i++) {
++		struct axidma_bd *cur_p = &lp->tx_bd_v[i];
++
++		/* axienet_free_tx_chain() clears cntrl when it reclaims a
++		 * descriptor, so a non-zero value means the mapping is live.
++		 */
++		if (cur_p->cntrl) {
++			dma_addr_t addr = desc_get_phys_addr(lp, cur_p);
++
++			dma_unmap_single(lp->dev, addr,
++					 (cur_p->cntrl &
++					  XAXIDMA_BD_CTRL_LENGTH_MASK),
++					 DMA_TO_DEVICE);
++		}
++		/* not reclaimed by axienet_free_tx_chain(), so a drop */
++		if (cur_p->skb)
++			dev_kfree_skb_any(cur_p->skb);
++	}
++
+ 	dma_free_coherent(lp->dev,
+ 			  sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
+ 			  lp->tx_bd_v,
+ 			  lp->tx_bd_p);
++	lp->tx_bd_v = NULL;
  
--	if (MLX5_CAP_ESW(dev, esw_vport_state_max_tx_speed)) {
--		u8 op_mod = MLX5_VPORT_STATE_OP_MOD_ESW_VPORT;
--		struct mlx5_vport *esw_vport;
--		u32 speed = 0;
--		int err;
--
--		err = mlx5_query_vport_max_tx_speed(dev, op_mod, vport,
--						    true, &speed, NULL);
--		if (err) {
--			esw_vport = mlx5_eswitch_get_vport(dev->priv.eswitch,
--							   vport);
--			speed = IS_ERR(esw_vport) ? 0 :
--				esw_vport->agg_max_tx_speed;
--			mlx5_core_dbg(dev,
--				      "Failed to query vport %d max tx speed, err=%d, using cached %u\n",
--				      vport, err, speed);
--		}
--		MLX5_SET(modify_vport_state_in, in, max_tx_speed, speed);
--	}
--
- 	MLX5_SET(modify_vport_state_in, in, opcode,
- 		 MLX5_CMD_OP_MODIFY_VPORT_STATE);
- 	MLX5_SET(modify_vport_state_in, in, op_mod,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-index 5774ec117428..78f3d15b599d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -93,30 +93,6 @@ int mlx5_modify_vport_admin_state(struct mlx5_core_dev *mdev, u8 opmod,
- 	lockdep_assert_held(&mdev->priv.eswitch->state_lock);
- #endif
+ 	if (!lp->rx_bd_v)
+ 		return;
+@@ -221,6 +244,7 @@ static void axienet_dma_bd_release(struct net_device *ndev)
+ 			  sizeof(*lp->rx_bd_v) * lp->rx_bd_num,
+ 			  lp->rx_bd_v,
+ 			  lp->rx_bd_p);
++	lp->rx_bd_v = NULL;
+ }
  
--	if (MLX5_CAP_ESW(mdev, esw_vport_state_max_tx_speed) &&
--	    opmod == MLX5_VPORT_STATE_OP_MOD_ESW_VPORT &&
--	    vport != MLX5_VPORT_UPLINK) {
--		u32 speed = 0;
--		int err;
--
--		err = mlx5_query_vport_max_tx_speed(mdev, opmod, vport,
--						    other_vport, &speed, NULL);
--		if (err) {
--#ifdef CONFIG_MLX5_ESWITCH
--			struct mlx5_vport *esw_vport;
--
--			esw_vport = mlx5_eswitch_get_vport(mdev->priv.eswitch,
--							   vport);
--			speed = IS_ERR(esw_vport) ? 0 :
--				esw_vport->agg_max_tx_speed;
--#endif
--			mlx5_core_dbg(mdev,
--				      "Failed to query vport %d max tx speed, err=%d, using cached %u\n",
--				      vport, err, speed);
--		}
--		MLX5_SET(modify_vport_state_in, in, max_tx_speed, speed);
--	}
--
- 	MLX5_SET(modify_vport_state_in, in, opcode,
- 		 MLX5_CMD_OP_MODIFY_VPORT_STATE);
- 	MLX5_SET(modify_vport_state_in, in, op_mod, opmod);
+ static u64 axienet_dma_rate(struct axienet_local *lp)
 
 base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
 -- 
-2.44.0
+2.47.0
 
