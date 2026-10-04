@@ -1,113 +1,101 @@
-Received: from smtp-5.sys.kth.se (smtp-5.sys.kth.se [130.237.48.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A86CEEC0;
-	Sun,  4 Oct 2026 17:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.237.48.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D29937C11C
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 17:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791134951; cv=none; b=PUie9WC1VDVLj0+5iDOpmbdCkM1NtqusL7afOwg5d3eGIq3pxsMsH/SSHVfqjhKuyQEsCSJBlUjmTeQILoJ+mJRbf2VCIxvdG+//IXzSY/BupKbS0F9yBky11bAq60UNS1kQIkRYhM8ITZEwrhPJZgGDhCFLBcVLirDYMtAqCrs=
+	t=1791135208; cv=none; b=PnfmydULuqLHbf9V+o9Zh8SmT91x0mfKKfurG9e4m7uqsAvYJa7w68c6PpXsTwOYVuCLpwqKYQnyN5Ww7AIYQRtHBZCW9Z3g2azVslkXz8CR2Tj0p/SH7UxnPVS3CDu2EYM5AzmlMIKa9aFR5hvUQ85PFyo/pjCWGanAMStsZeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791134951; c=relaxed/simple;
-	bh=hK6E+45sBVzz2jJ6CO/SqVH0q1OgFKjrSc+BGRSntvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aJNjFN0amcbjWUyjKVvxK0XDeGPyIYt+uwaY6MMjWHgKCZEzj6cQzECR8MnclWBGIWrdu0xPZ7c/ePC6GFfOOQTbLzSx4YW5Tv1Q2SRs00kvSLMvnu9uUQq1urBT0NQsIlyR7Fuf+swNu+xqPy0jNIBx3mh0cYMFBSJs0iSu49A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kth.se; spf=pass smtp.mailfrom=kth.se; dkim=pass (1024-bit key) header.d=kth.se header.i=@kth.se header.b=ISade73v; arc=none smtp.client-ip=130.237.48.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kth.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kth.se
+	s=arc-20240116; t=1791135208; c=relaxed/simple;
+	bh=eCJ/xgGOZpf3QBfsJ28uBGeOBNwffgZsfhRIp63slgw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AyHIUMOzbtqmCxymQxyX7/jXJ6wHC7pAL1ak+Q/C/TuUA/ssTIcBBx00xfrwNOMZxBjTF1vw1QB+pDg+XNwBPHLx47jrDWtlKn3HEXb7IIba/MAfZdhriwdgCsSiG9nUBTnHqcCM4a/KbRhYpAVSKm2pcEEXy8bYjZ3y266uhgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MnFurfGL; arc=none smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kth.se header.i=@kth.se header.b="ISade73v"
-Received: from nargothrond (c213-100-197-198.bredband.tele2.se [213.100.197.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sfle)
-	by smtp-5.sys.kth.se (Postfix) with ESMTPSA id 4hyTyl0LbLzPNQ1;
-	Sun,  4 Oct 2026 19:29:02 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp-5.sys.kth.se 4hyTyl0LbLzPNQ1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kth.se; s=default;
-	t=1791134943; bh=3iQQZKWZE7b00XERG4KjbFNTvF+cDXLsDgw08nTzOkA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ISade73vf0r/BSwyJFK6lKKpg0RPz7tlINdoesJV9jOPgBqT2Jq/7twYUh1n7HtEZ
-	 tQJny+L5CaT0DVmtwgX4KQ9XQ7ArDqxexlcBNo3eLsD3df5AQ4moXgTfaq1b4LLSV/
-	 v/WEiWStL4bZtmO27PI72zqoaCM6M6VsdUTTTJJE=
-Date: Sun, 4 Oct 2026 19:29:02 +0200
-From: Stefan Fleischmann <sfle@kth.se>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: <netdev@vger.kernel.org>, <stable@vger.kernel.org>, Michael Chan
- <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>,
- <regressions@lists.linux.dev>, Joe Damato <joe@dama.to>
-Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
- macvlan/vlan with bnxt_en
-Message-ID: <20261004192902.3ab3b7f3@nargothrond>
-In-Reply-To: <20261004163532.3134dd41@nargothrond>
-References: <20261004122616.56714cbd@nargothrond>
-	<f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
-	<20261004163532.3134dd41@nargothrond>
-Organization: KTH
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MnFurfGL"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-34b1743e9c7so905961eec.3
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 10:33:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791135206; x=1791740006; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eCJ/xgGOZpf3QBfsJ28uBGeOBNwffgZsfhRIp63slgw=;
+        b=MnFurfGLZdm1wwOVkmkg+BTyflG0y6kD4pqWYCy8ExSjhsnevDG/6gW6w3RDYrG8JJ
+         4Y0NYFiwCW+/jNePXjKKkDZ9KJkGEJugkQe22jg3SCdNouJxL9SMnlQ+kt/so+9cMnpv
+         /LRW5DUEEh8bCPwnAYjBlTrSIXLQK+MDSchNl6kV/IjZEAAQsO3t+T9MQ9Oc8o5qfXiz
+         6DHYJWMwCDBWv7/dFe0kyecclvQAPQVTRhuxu6Dd5+1Tx6ZvsCYKuHpbw0ZpI0AWJ3Bu
+         JGVbnCpfSXREfWoRtLXD7hhkcX+WEJIo+1X76K5XYLx50nALyPV0pvXeHdyB77akztnT
+         EBqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791135206; x=1791740006;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eCJ/xgGOZpf3QBfsJ28uBGeOBNwffgZsfhRIp63slgw=;
+        b=2Szd9JZfypyAuPTeP9VnQSK/P5rvLr6W15B1kqeyCH/YCHDHNBsxpFQ/5U3IcyoKBK
+         30RFIIuT4T2/R1T9L2HRB4mCgE4J/3fCq4AyGkLO0Kn0WwzmSEU9TpP3nGoNpqka/fyX
+         FuqqaYuf8++C4Dpm5RlF6BuvNsBcMyTqiuUaf26hGwHfRWSljrGAn+1emxfnMk/b5mRu
+         li8p4tJWHw3kvY8dD+r6kfGJw9VViuTLrlmaD0InbufHDTLoZ7KPgvmMzdcfa3vJ/Z+l
+         wnIhX3PxbqIaEulEktuUmEHFpEtoFtFzACG4UQnkRnzU1vJyiqUwVwyXS9d2rBXfzzS7
+         szEA==
+X-Forwarded-Encrypted: i=1; AKwUvBw7Wcs65kRHQI1ZV9Xy7T4QSAYj9yIpja/FbTf/i+XhwzNojHLWuqHqkQaYVcChd1HFT/Yno1o=@vger.kernel.org
+X-Gm-Message-State: AFuF++kICKo/MlsEv3QMo+J6Z1a0XtZl7G1ehToGkHL9mdPAbngGyDhH
+	r+tD7N10igWFJeWQI8oL4VNu8YdvI4+YvLyGB7ekDDCG1rQ5OM+UTOs+
+X-Gm-Gg: AYBFou1t6tkoBiQrRtboDVQz5xYhWKPoHYgVa2oueRl+m/p+I+o/LKCKSNLHXnaXFX8
+	LXuWs1Lh1DNP/GRpUHr74AuwdwEmmVqdcIkzUVAjgidCjOiyu+W6of6jBpDuped1Y/fD5cUcTkb
+	gR1xs3cgrD6MgsDRGRUUWpi98yTsimqFmUSavc4fgBesGMJLrDQ0Xe+R+C/56OXavPVFecDpvhf
+	7luReDVxrDlA2BlTe6WjLEHme231B6z7x85StE0X8xIThLyz0ttqMLafmwWNbWSUqtdbiCCC5A+
+	U68srKtDA4JkfPDwbj5gojXo/sBRAK/piL3o4oOn5BpOAgpe3XylbGnVb5y9g2f72eXbkWRhhYZ
+	P1NXmIO+Rfwl8jzJ77rYUHj1lf/LMSbMwwsOsxyIC6qnTaU5zts6k7A1MihtMTjo7Hf2iae+8Tz
+	t5C+GXodGeZjeeDxUUNwQzQEdjXIkD/LO274hW8LkBpGOM5j0KToKpJ8IYhEnkoIzzu97/LTAwD
+	sk/JAzfsTXnsyO0grvvvw==
+X-Received: by 2002:a05:7301:786:b0:351:3106:4a33 with SMTP id 5a478bee46e88-35131065510mr305442eec.10.1791135206515;
+        Sun, 04 Oct 2026 10:33:26 -0700 (PDT)
+Received: from umang-Inspiron-3501 ([2401:4900:1f3b:8187:3c41:9181:ca6a:23ec])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35127021d1esm6966533eec.4.2026.10.04.10.33.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 10:33:26 -0700 (PDT)
+From: Umang Pokhriyal <umangpokhriyall@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] tap: report IFF_DETACH_QUEUE in TUNGETIFF
+Date: Sun,  4 Oct 2026 23:02:23 +0530
+Message-ID: <20261004173224.33809-1-umangpokhriyall@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <179087539624.434549.6585301310404315341@kernel.org>
+References: <179087539624.434549.6585301310404315341@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 4 Oct 2026 16:35:32 +0200
-Stefan Fleischmann <sfle@kth.se> wrote:
+On Thu, Oct 01, 2026 at 05:23:16PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> [Severity: Medium]
+> Can this break a read-modify-write of TUNGETIFF and TUNSETIFF on a
+> detached queue?
 
-> On Sun, 4 Oct 2026 13:46:08 +0200
-> Eric Dumazet <edumazet@kernel.org> wrote:
-> 
-> 
-> > 
-> > Notice that 0xfc499000 is on an exact 4KB page boundary. This points
-> > to a DMA read overrun where the Broadcom DMA engine reads past the
-> > end of a buffer mapped in page 0xfc498xxx into the adjacent unmapped
-> > page 0xfc499000.
-> > 
-> > Have you tried a recent net kernel ?  
-> 
-> Hi Eric,
-> 
-> that might be a bit tricky. We use ZFS on this server and the version
-> we have installed only supports up to kernel 7.2.
+Yes. tap accepts TUNSETIFF on a bound fd and tun does not, so only tap
+has this round trip. v2 will ignore IFF_DETACH_QUEUE in TUNSETIFF.
 
-Scratch that, I noticed that this even happens with none of the LXC
-containers running. So I tested with the main branch from
- https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
- (commit 6dc989ea46b9)
+> [Severity: Low]
+> If it is meant as feature parity for net-next, could the commit message
+> say so instead of calling it a bug?
 
-Same issue.
+It is meant as parity with tun for net-next. v2 will say so.
 
-Best,
-Stefan
-
-> > Could you please test whether disabling TSO or hardware VLAN
-> > offload prevents the crash? (maybe adding one option at a time)
-> > 
-> >    # ethtool -K eno1np0 tso off
-> > 
-> >    # ethtool -K eno1np0 tx-vlan-offload off  
-> 
-> I tested this now and none of these options made a difference. I've
-> also tested disabling other offloads, no difference.
-> 
-> Best,
-> Stefan
-> 
-> > Adding Joe to this thread, because some parts in
-> > tso_dma_map_init() or tso_start() might have bugs.
-> > 
-> > # Disable USO on the physical interface
-> > ethtool -K eno1np0 tx-udp-segmentation off
-> > 
-> > This reminds me on a prior attempt I made months ago to sanitize
-> > tso_start()
-> > 
-> > Note that my email address has changed to edumazet@kernel.org
-> > 
-> > Thanks.
-> >   
-
+pw-bot: cr
