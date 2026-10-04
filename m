@@ -1,219 +1,142 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5483612F1
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:35:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F822F60CC;
+	Sun,  4 Oct 2026 15:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791128132; cv=none; b=hj34l/7kQrFTqH5HQAT291BG3UCHHUka6BRtHTlHqJbbWVs0RE1JPTf4aEftbtiTuhviVwyxzK8CMl36PtIlMhEidTiSWWjvOSWhArc9xohE07CjRMqu2yrDvOtNjWUjAS6znC8UdHr/HbWY07TYKZ6a7j4EHdFHMW60lf7sWoU=
+	t=1791129208; cv=none; b=lZtaWB6Zp+bxYuxflqrnOEnlJTLbZQnmpgKbCld7sfRsuJal8pj+fKRgArvKJ1/6/6dhOy0VpLgB1f17kv3+zO7AszEm7daDx8CDv9kGzNiEhPaReUsyHK0EvfLQgMVn8fstg0u1recrqeem1UuJC/1P9D5AP8T4XJXGZNKxB/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791128132; c=relaxed/simple;
-	bh=sViDSdZKQRI9ydvQk0h3/BkhqBPxKExmezC30XiSMd8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=qMrFjO5Czv53RcTj53f0XXFhL1Fezqe1dcEj0s7nD+KzhemtUYtPM/A140fs0izAfGH2xt6fSDBmuZFJ2c7IjBRk1J7YTKcvtHv1yJmEapm+iTlKwIe+2S45t05BTNen9XEvma9qCOgmOx9qtuioz6eJt81fo2TXoURoJOVUrfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49d0da752ffso8566075e9.3
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:35:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791128127; x=1791732927;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SwyDMGKhrQUUcZw1khziLYF4shBI37cIxufrD9bOvf4=;
-        b=xI5/CyPVfvWcrUDGg15TtkGHj4yP9ZWtpkZK4cG0MuvRpKKIASdo84O8FszjbusWz+
-         TX1oNZTKH4JOFHqcHEDRMoIIxnqBMARJ5LiEBxEWw8zDipGYWJQD74lGhJVGzeOwaUb+
-         pLczuBUO9SLU4RRKItQpdrb4qdMOPOnRXB5+1i+2MrivxoKUTso5trS8qn7+ZLRDfXBd
-         RdbEj55lJP0wXIlWfgl0N6+PcwthkprJOohcJ+l77durYabArQmv+pmHZwCqjgXmLmJL
-         fj9cbk5+gEKp+ELqRQRSDKwAqyMTLjqhpMeBqUn3XHxJIm8oEP+Kftdnc7zTNwwvCO2y
-         MjRg==
-X-Forwarded-Encrypted: i=1; AKwUvBxuBrqy70NZbsNImbcRDX2uxsmdkLxHgrpJGRxT+vxwPRTQyKxOa1au+s4ZluCMdmLBOCNywlM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nO4YIf6/wwwTIyJwPQiutSKXvEb8ff1SC+a0f1g4QOTTLemVjT
-	ZS+dhf9a9Csg93sdtIU28E3EqIjupzAGPpCV72k7h5uAnWUVGsMZkIpy
-X-Gm-Gg: AYBFou2zMNUcIS1u1DPKZcSe/RlCj6gomQrjdET7H1YNlJ5b0MfVFSgNP0zD+E+uPCL
-	dudcHvWLWU5mq4eQJVNl/JQhmspfeJeMCFjJn/erWkwDs7qDg04nP7Ut7IBznLR+OolVpeAJjn1
-	LnIqaDAxdZpyRoWSuNQlUpKrOjNCI5DC+hU8LK+MQiHre9mG2h/Qi9qDc4UVfF8l/jTjohYwbIc
-	/4+jxLXbyLbrpL3I+CVhX7OQ+OlepwD7mCAH+m9pO1YuKt1vc5kAb6iXIBlo6NLIutEFTQ0IU8y
-	zF7UhzqAkUalM4oUcI0TpuXQLqEqQQfNGges7rHxzgMc6MMiD3SGSBDDlI6vAfmduQggHJAlDZg
-	Koe3Q8/zrRQR8cF5Irx+0areRwVX8tjiVsOoBL1QQ+GZCLoGuYSenaTX3uvtXKxzLPychIcRE23
-	Dkr2f5ubyECDKiD/efhH+Ik3lUQsc06I1yzPIOPw/f+r3PwR74U9aZU5+NVYtX0NQvA3asop2NF
-	UMbRO0/UumyQ06pHv1Ua/Z5RqwS
-X-Received: by 2002:a05:600c:348d:b0:4a0:c02:938c with SMTP id 5b1f17b1804b1-4a1680f405fmr76449125e9.25.1791128127431;
-        Sun, 04 Oct 2026 08:35:27 -0700 (PDT)
-Received: from [192.168.1.135] ([84.68.183.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0316b2524sm310617265e9.1.2026.10.04.08.35.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Oct 2026 08:35:26 -0700 (PDT)
-Message-ID: <54b064f8-8e01-44da-be40-4125620ff9d0@linux.com>
-Date: Sun, 4 Oct 2026 16:35:26 +0100
+	s=arc-20240116; t=1791129208; c=relaxed/simple;
+	bh=lv1tuIGYGldphto25KVS1nVNoKz+O4guecPc91FwUq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZEFsKoHi/v1bpIfBOxmS4xBOQWaaX32buCc/0o2URskMXEZP3ElC+3YQfcvf8gT6YjnCqNQD7uoCFkrpNbu7L6hzh0j5+I7GSbB2nRCE0I51T8bABvpulAiYH6abK5DiC10ZbtlUC80lKtnMXbBXzIXwG1pn+yLLg+FMdidBPqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/rhd/M+; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/rhd/M+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791129205; x=1822665205;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lv1tuIGYGldphto25KVS1nVNoKz+O4guecPc91FwUq8=;
+  b=a/rhd/M+HNhyj7UGj4+jyBY4CpPsxLeTN/XKLSYpdSLMpdr4d5kugj1l
+   fAf1zNW7MuI6RXVHwyAgcg0b/f94pzOw/SJkytwwlHiPFJZGw9HeA2QS7
+   bPS1jf14N+9K3nyDWUiai0W53NeiWNJ1VegNe0CBBtFa2MZhTV2onlM9X
+   88MA1CdmjbOX2D9VSEW9/RG4PoVCtP81+ypn3CV8yCfuG7akvcA9QSqKv
+   4maMcLKifI1kDfWEorJxl7JzA3N4hPTQACblGq9rofCKi7nOGTzW/zAne
+   F1hhrg3vXH9iXspA3JydVGtZ0OHTa0A0YMgtw6WH2LpPozWq2LixruGPK
+   Q==;
+X-CSE-ConnectionGUID: R/5P0wIPTKeHbxZGDXb/Tw==
+X-CSE-MsgGUID: hPVCoSMdS0+TN9Te4Q+JGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="95627949"
+X-IronPort-AV: E=Sophos;i="6.27,139,1787036400"; 
+   d="scan'208";a="95627949"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2026 08:53:23 -0700
+X-CSE-ConnectionGUID: oEBoJPlCQ2G9hBPfsJYkmw==
+X-CSE-MsgGUID: tlqqacLyQbeHvEGJeU3+Tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,139,1787036400"; 
+   d="scan'208";a="314637099"
+Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 04 Oct 2026 08:53:19 -0700
+Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xDOWa-00000000UqT-0uUY;
+	Sun, 04 Oct 2026 15:53:16 +0000
+Date: Sun, 4 Oct 2026 23:52:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Birger Koblitz <mail@birger-koblitz.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Eric Dumazet <edumazet@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, Jianhui Xu <neuromoments@gmail.com>,
+	Birger Koblitz <mail@birger-koblitz.de>
+Subject: Re: [PATCH net-next v16 13/13] ax88796b: Add support for AX88772D,
+ AX88179A and AX88279
+Message-ID: <202610042301.MlmvbRpS-lkp@intel.com>
+References: <20261004-ax88179a-v16-13-2a9ae4e68f7b@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] dt-bindings: net: meson-dwmac: add T7 support
-From: Lucas Tanure <tanure@linux.com>
-To: Conor Dooley <conor@kernel.org>, xianwei.zhao@amlogic.com
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260924-t7-node-new-v2-0-319d3c19b4b2@amlogic.com>
- <20260924-t7-node-new-v2-2-319d3c19b4b2@amlogic.com>
- <20260924-stinger-stoplight-7c327c3225fa@spud>
- <4460ec4a-1a28-4481-a33e-3fe72f68bf58@linux.com>
-Content-Language: en-US
-In-Reply-To: <4460ec4a-1a28-4481-a33e-3fe72f68bf58@linux.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261004-ax88179a-v16-13-2a9ae4e68f7b@birger-koblitz.de>
 
-On 04/10/2026 15:06, Lucas Tanure wrote:
-> On 24/09/2026 18:21, Conor Dooley wrote:
->> On Thu, Sep 24, 2026 at 05:51:09AM +0000, Xianwei Zhao via B4 Relay 
->> wrote:
->>> From: Xianwei Zhao <xianwei.zhao@amlogic.com>
->>>
->>> Add the T7 compatible to the Meson DWMAC binding.
->>>
->>> The T7 DWMAC controller requires the following compatible combination:
->>>
->>> amlogic,t7-dwmac
->>> amlogic,meson-axg-dwmac
->>> snps,dwmac-4.00
->>>
->>> Add a conditional schema check to enforce this compatible combination
->>> when amlogic,t7-dwmac is used.
->>>
->>> Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
->>> ---
->>>   .../devicetree/bindings/net/amlogic,meson-dwmac.yaml    | 17 ++++++ 
->>> +++++++++++
->>>   1 file changed, 17 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson- 
->>> dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson- 
->>> dwmac.yaml
->>> index 5c91716d1f21..b529ca5577a9 100644
->>> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->>> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
->>> @@ -23,11 +23,24 @@ select:
->>>             - amlogic,meson-gxbb-dwmac
->>>             - amlogic,meson-axg-dwmac
->>>             - amlogic,meson-g12a-dwmac
->>> +          - amlogic,t7-dwmac
->>>     required:
->>>       - compatible
->>>   allOf:
->>>     - $ref: snps,dwmac.yaml#
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +          contains:
->>> +            const: amlogic,t7-dwmac
->>> +    then:
->>> +      properties:
->>> +        compatible:
->>> +          items:
->>> +            - const: amlogic,t7-dwmac
->>> +            - const: amlogic,meson-axg-dwmac
->>> +            - const: snps,dwmac-4.00
->>
->> This is not how fallback compatibles are described.
->>
->> Instead of doing this, which affects all other compatibles in the file
->> by allowing dwmac-4.00 for all devices, please do this the normal way.
->> dwmac isn't special, it's just this binding that's weird!
->> Can whats currently in the binding (before this patch) be largely
->> replaced by just doing:
->>    compatible:
->>      oneOf:
->>        - items:
->>            - enum:
->>                - amlogic,meson8b-dwmac
->>                - amlogic,meson-gxbb-dwmac
->>                - amlogic,meson-axg-dwmac
->>                - amlogic,meson-g12a-dwmac
->>            - const: snps,dwmac-3.70a
->>            - const: snps,dwmac
->>        - items:
->>            - enum:
->>                - amlogic,meson6-dwmac
->>                - amlogic,meson8m2-dwmac
->>            - const: snps,dwmac
->>
->> You'll have to check this yourself against the amlogic devicetrees and
->> see if this is correct, but with this you should be able to add your new
->> device without doing anything special.
-> 
-> I have the same patch in my T7 work and checked it against the amlogic 
-> device trees: meson6 and meson8m2 use the two entry form, the rest add 
-> snps,dwmac-3.70a. dt_binding_check and dtbs_check are clean. The example 
-> needs fixing.
-> 
-> Xianwei, from my VIM4: the MAC reports Synopsys ID 0x51, DWMAC_CORE_5_10
-> in common.h, so the core is 5.10a, not 4.00. And the controller reaches
-> DRAM through a pipeline stage. Nothing claims its gate, sys_ampipe_eth,
-> so clk_disable_unused switches it off. My node lists it as a fourth
-> clock. Does the AN400 differ?
-> 
-> I will send my series today so the code is on the list. Not a race: I
-> will drop or rebase whatever overlaps once you tell me.
-> 
-> Thanks,
-> Lucas
-My Ethernet patches 
-https://lore.kernel.org/linux-amlogic/20261004144046.391444-1-tanure@linux.com 
+Hi Birger,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on 071876fd50482a68603a9460d80dd6dd58827ee1]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Birger-Koblitz/phylink-Add-phylink_mac_interrupt/20261004-073905
+base:   071876fd50482a68603a9460d80dd6dd58827ee1
+patch link:    https://lore.kernel.org/r/20261004-ax88179a-v16-13-2a9ae4e68f7b%40birger-koblitz.de
+patch subject: [PATCH net-next v16 13/13] ax88796b: Add support for AX88772D, AX88179A and AX88279
+config: m68k-defconfig (https://download.01.org/0day-ci/archive/20261004/202610042301.MlmvbRpS-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261004/202610042301.MlmvbRpS-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610042301.MlmvbRpS-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/kasan-checks.h:5,
+                    from include/asm-generic/rwonce.h:26,
+                    from ./arch/m68k/include/generated/asm/rwonce.h:1,
+                    from include/linux/compiler.h:369,
+                    from include/linux/array_size.h:5,
+                    from include/linux/kernel.h:16,
+                    from drivers/net/phy/ax88796b.c:6:
+   drivers/net/phy/ax88796b.c: In function 'asix_ax88772D_get_features':
+>> drivers/net/phy/ax88796b.c:217:42: warning: unused variable 'mask' [-Wunused-variable]
+     217 |         __ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
+         |                                          ^~~~
+   include/linux/types.h:10:23: note: in definition of macro 'DECLARE_BITMAP'
+      10 |         unsigned long name[BITS_TO_LONGS(bits)]
+         |                       ^~~~
+   drivers/net/phy/ax88796b.c:217:9: note: in expansion of macro '__ETHTOOL_DECLARE_LINK_MODE_MASK'
+     217 |         __ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-> 
->>
->> pw-bot: changes-requested
->>
->> Thanks,
->> Conor.
->>
->>>     - if:
->>>         properties:
->>>           compatible:
->>> @@ -38,6 +51,7 @@ allOf:
->>>                 - amlogic,meson-gxbb-dwmac
->>>                 - amlogic,meson-axg-dwmac
->>>                 - amlogic,meson-g12a-dwmac
->>> +              - amlogic,t7-dwmac
->>>       then:
->>>         properties:
->>> @@ -93,6 +107,7 @@ allOf:
->>>                 - amlogic,meson8m2-dwmac
->>>                 - amlogic,meson-gxbb-dwmac
->>>                 - amlogic,meson-axg-dwmac
->>> +              - amlogic,t7-dwmac
->>>       then:
->>>         properties:
->>>           rx-internal-delay-ps:
->>> @@ -139,8 +154,10 @@ properties:
->>>             - amlogic,meson-gxbb-dwmac
->>>             - amlogic,meson-axg-dwmac
->>>             - amlogic,meson-g12a-dwmac
->>> +          - amlogic,t7-dwmac
->>>       contains:
->>>         enum:
->>> +        - snps,dwmac-4.00
->>>           - snps,dwmac-3.70a
->>>           - snps,dwmac
->>>
->>> -- 
->>> 2.52.0
->>>
->>>
+vim +/mask +217 drivers/net/phy/ax88796b.c
 
+   213	
+   214	static int asix_ax88772D_get_features(struct phy_device *phydev)
+   215	{
+   216		int ret;
+ > 217		__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
+   218	
+   219		/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
+   220		phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
+   221	
+   222		ret = genphy_read_abilities(phydev);
+   223		if (ret < 0)
+   224			return ret;
+   225	
+   226		/* AX88772D does not support reported 1000baseT mode */
+   227		linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, phydev->supported);
+   228	
+   229		return 0;
+   230	}
+   231	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
