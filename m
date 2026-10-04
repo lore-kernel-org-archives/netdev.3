@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224DE1A9F90;
-	Sun,  4 Oct 2026 13:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EEC296BC8;
+	Sun,  4 Oct 2026 13:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791119863; cv=none; b=PZkc48x+GpDWvjfsWVsOBfWQA0qdw04CYojgF6Z5q9KSm3zP7Rwnr9kuAfzHxzCYqsLBWw0dy/laz9IqTwufO2LFjhNFKendBf1fN0a8lAUVuU4qki6ApXtc3nZO4xmm2Ff3sSQZH6cfnDK+bzb2RkUPdo/8VEtWgUFgfal+aMU=
+	t=1791119864; cv=none; b=fXv2B+eIMCn9XaRpl7peXYwbRprKatfeJWrOkv09wZDcrqErHT0Vl+qMjwj4f0TVk8/cfzBYhT0mV8d/qtbVDQ1BzkgKgG25naL7MzWDdpTQR5ncgNiUTN1h+sHvRJmEnZY+AsN+eUi2NRcK42XgrVYA/vjOcQs22XepqiQggg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791119863; c=relaxed/simple;
-	bh=a0uLDL6xZuAxwgdZBqnQIBBcwuFMNpEgr+JaDThakKg=;
+	s=arc-20240116; t=1791119864; c=relaxed/simple;
+	bh=Hti5+OOkxQauKue4Ej4SUGwcqHvfHL11YM7MBS9DzZw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=f49Fv/2EGblIynlDr09rfO+JkrNN/7eRbfOiJEIWP1a9YmyE9wqo7qAuVjc2n3gTyrbfUb91zGGK/EU/5zuS0BLDmLq2LV+75ahL0G8l/BzHiSP/eiv4bvbmja+VOzASc/L5hjMjXQnDzJ24jpv1JNWK9rgzzSsnwygl8/Y/uws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1zFfIXj; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=lwRRGwnUVbTy/9LIcru4bQwNaZGbMoGFUkJb6VSaN+xA+aXRYYj5YascBMWfGS8p3xg6BGXtxKOsRJGaoKN1k94uxxNqpATqIgij0HENx/Bx/DAw0ZMOIE43F09nU9TfZO7crEqRw00Jsh9k4uD8wG1wFm9BUlhRjg++JjmZlPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXKt+OXR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1zFfIXj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A5B1F00893;
-	Sun,  4 Oct 2026 13:17:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXKt+OXR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A921F000FF;
+	Sun,  4 Oct 2026 13:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791119861;
-	bh=U6xYvDnIcoPAEJY89wI5sG383AN59F+emyyFMZjonH8=;
+	s=k20260515; t=1791119863;
+	bh=2jR4kp0vYc7dw8g8qKDnqJBw25nMwGXdA+Ey7E8EQzk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Z1zFfIXjtdwQz63t0+Z99hPf3lgNqCJTRjoHkAkrHdGl6M5AKMBUT3Nq21HM+7ZY3
-	 hLBFzwdY3LgWJ6w/66zw5TUcFiQX0xyxE9nAJyWgkjFRI5i+ymxdmMJUd+slwb7Fns
-	 xB3LF2iCMxR5g7Kym32hi+YGJMQ7Aat6cuLiSUeqz6vHakcL9Cc47vpOmN2Vj7/opb
-	 GLkDStfJY+uDALR+feWWj0q7aLDgc20PC9WiFjC5xdalGZkIeSelIUlBRIDYw2j/zp
-	 Fu7L6/q/MjVJHGfMGT6r5FvvnvbgoPYpgb9d+86emCqf1XuOWelsYN1twJ/5hNNBRT
-	 JjFLCM2PTprEA==
-Subject: Re: [PATCH 2/5] net: phy: mxl-gpy: add MxL86211C MDIO I/O regulator
+	b=FXKt+OXRKfDkiAoNlgf1z/xkQWePcXxJPifx9MpY+hw5yArCBusi8FAmj5Cr9VFfU
+	 kUp65pldBXSaW+aFslTDMUd7WvqtL5v/vHpnXiy8cCswBqdVuaFRDyuEgAIZhdIWm9
+	 SPJzm6BZfyqNlfBLMKnmmIjl6lC4Gneq55zf4TtA11Npbai2Em15FnSL3VcgrHbSR9
+	 JM9gosdTn9FpNkbrwjRm1yY0/v88HexgQeXtOIJtRfaOZ7Ql0XuzmPnEdWeLte9oOC
+	 KifNizJvDNIa4AaEvfHQZ3iPgDaypDZVZeXbNHssugt5/B+4/8DiV28lmpy1ebP4Rw
+	 VJIynJGU0/Ecg==
+Subject: Re: [PATCH 3/5] net: phy: mxl-gpy: release MxL86211C Super Isolate
 From: netdev-bot+sashiko@kernel.org
 To: robert.marko@sartura.hr
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -34,10 +34,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  conor+dt@kernel.org, hkallweit1@gmail.com, lxu@maxlinear.com,
  michael@walle.cc, netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, luka.perkov@sartura.hr
-Date: Sun, 04 Oct 2026 13:17:40 +0000
-Message-ID: <179111986048.434549.17170713963171981994@kernel.org>
-In-Reply-To: <20260930122305.293686-2-robert.marko@sartura.hr>
-References: <20260930122305.293686-2-robert.marko@sartura.hr>
+Date: Sun, 04 Oct 2026 13:17:41 +0000
+Message-ID: <179111986196.434549.4683250107533877836@kernel.org>
+In-Reply-To: <20260930122305.293686-3-robert.marko@sartura.hr>
+References: <20260930122305.293686-3-robert.marko@sartura.hr>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,150 +59,90 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The driver programs VSPEC1_PM_CTRL.MDIO_VOL only as a side
-  effect of devm_regulator_register() in mxl86211c_probe(), via…
-- [Medium] The patch adds an unconditional `depends on REGULATOR` to
-  MAXLINEAR_GPHY (drivers/net/phy/Kconfig:305), so the whole mxl-gpy…
+- [High] The patch clears Super Isolate only once, in mxl86211c_probe()
+  (drivers/net/phy/mxl-gpy.c:459-463).
 
 --
 
-net: phy: mxl-gpy: add MxL86211C MDIO I/O regulator
+net: phy: mxl-gpy: release MxL86211C Super Isolate
 
-This commit models the MxL86211C VSPEC1_PM_CTRL.MDIO_VOL bit as a
-regulator. The bit selects 1.8V or 3.3V signaling for the MDIO, MDC and
-MDINT pads. The regulator is registered from a new mxl86211c_probe(), and
-MAXLINEAR_GPHY now depends on REGULATOR.
+This commit clears VSPEC1_PM_CTRL.SI in mxl86211c_probe() so that a
+MxL86211C strapped into Super Isolate mode gets released. The clear
+happens after the MDIO voltage regulator is registered, and gpy_probe()
+now runs after it.
 
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index d3835597e3795..bdaee0cb4829d 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -302,6 +302,7 @@ config MAXLINEAR_GPHY
->  	tristate "Maxlinear Ethernet PHYs"
->  	select POLYNOMIAL if HWMON
->  	depends on HWMON || HWMON=n
-> +	depends on REGULATOR
-
-[Severity: Medium]
-Does this unconditional dependency hide the whole mxl-gpy driver when
-REGULATOR=n?
-
-MAXLINEAR_GPHY covers GPY2xx, GPY115B/C, GPY211B/C, GPY212B/C, GPY215B/C,
-GPY241B/BM, GPY245B, MxL86211C, MxL86252 and MxL86282. Only the MxL86211C
-probe path uses the regulator API.
-
-Take an existing .config with REGULATOR=n and MAXLINEAR_GPHY=y/m. After
-olddefconfig, MAXLINEAR_GPHY is silently dropped and Kconfig gives no
-warning. Those PHYs then fall back to genphy and lose SGMII/2500BASE-X
-handling, inband AN, LEDs, WoL and hwmon.
-
-include/linux/regulator/driver.h has no !CONFIG_REGULATOR stubs for
-devm_regulator_register() or rdev_get_drvdata(). That is probably why the
-dependency covers the whole driver.
-
-Could the regulator code in mxl86211c_probe() be guarded with
-IS_ENABLED(CONFIG_REGULATOR) instead, so the rest of the PHY family does
-not need the regulator framework?
-
-The commit message does not mention this dependency change. The last patch
-in the series still has the unconditional dependency.
-
->  	help
->  	  Support for the Maxlinear GPY115, GPY211, GPY212, GPY215,
->  	  GPY241, GPY245 PHYs.
 > diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-> index 089a1a9e5bc61..4cbbfae046317 100644
+> index 4cbbfae046317..790075632fc3f 100644
 > --- a/drivers/net/phy/mxl-gpy.c
 > +++ b/drivers/net/phy/mxl-gpy.c
 
 [ ... ]
 
-> @@ -390,6 +396,72 @@ static int gpy_probe(struct phy_device *phydev)
->  	return 0;
->  }
+> @@ -459,7 +456,15 @@ static int mxl86211c_probe(struct phy_device *phydev)
+>  		return PTR_ERR(rdev);
+>  	}
 >  
-> +static int mxl86211c_mdio_reg_set_voltage_sel(struct regulator_dev *rdev,
-> +					      unsigned int selector)
-> +{
-> +	struct phy_device *phydev = rdev_get_drvdata(rdev);
-> +
-> +	return phy_modify_mmd(phydev, MDIO_MMD_VEND1, VSPEC1_PM_CTRL,
-> +			      VSPEC1_PM_CTRL_MDIO_VOL,
-> +			      selector ? 0 : VSPEC1_PM_CTRL_MDIO_VOL);
-> +}
-
-[ ... ]
-
-> +static int mxl86211c_probe(struct phy_device *phydev)
-> +{
-> +	struct device *dev = &phydev->mdio.dev;
-> +	struct regulator_config config = { };
-> +	struct regulator_dev *rdev;
-> +	int ret;
-> +
-> +	ret = gpy_probe(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	config.dev = dev;
-> +	config.driver_data = phydev;
-> +
-> +	rdev = devm_regulator_register(dev, &mxl86211c_mdio_desc, &config);
+> -	return 0;
+> +	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, VSPEC1_PM_CTRL,
+> +			     VSPEC1_PM_CTRL_SI,
+> +			     0);
 
 [Severity: High]
-Is MDIO_VOL restored after a PHY hardware reset?
+Can the PHY end up back in Super Isolate after a later hardware reset?
 
-The bit is written only in two cases. One is devm_regulator_register(),
-when the regulator core applies the apply_uV constraints once at
-registration. The other is a consumer calling set_voltage. Nothing writes
-it again after that.
+The commit message says the strap leaves "the PHY halted after reset until
+software releases it". However, SI is only cleared here in probe, and
+probe runs once per driver bind.
 
-phylib asserts the PHY reset in phy_detach(). It releases the reset in
-phy_init_hw(), which then calls only drv->config_init, not probe:
+On boards that have a PHY reset-gpio or reset controller, phylib can
+pulse the reset line after probe. phy_detach_internal() asserts it:
 
-drivers/net/phy/phy_device.c:phy_detach() {
+drivers/net/phy/phy_device.c:phy_detach_internal() {
     ...
 	/* Assert the reset signal */
 	phy_device_reset(phydev, 1);
     ...
 }
 
+On the next attach or resume, phy_init_hw() releases reset. After that it
+only calls soft_reset (this PHY has none) and config_init:
+
 drivers/net/phy/phy_device.c:phy_init_hw() {
-    ...
 	/* Deassert the reset signal */
 	phy_device_reset(phydev, 0);
     ...
+	if (phydev->drv->config_init) {
+		ret = phydev->drv->config_init(phydev);
+    ...
 }
 
-Consider a board with 1.8V VDDP and reset-gpios in DT, behind a MAC that
-disconnects the PHY in ndo_stop. An ifdown/ifup cycle would go through:
+The MxL86211C entry in genphy_driver[] uses gpy21x_config_init() as its
+.config_init. That function only sets possible_interfaces and writes
+PHY_ERRCNT, and nothing else in the driver clears VSPEC1_PM_CTRL_SI.
 
-phy_detach()->phy_device_reset(phydev, 1)
-phy_attach_direct()->phy_init_hw()->phy_device_reset(phydev, 0)
-phy_init_hw()->gpy21x_config_init()
+Take a MAC driver that connects the PHY in ndo_open and disconnects it in
+ndo_stop. Wouldn't an "ip link set dev X down; ip link set dev X up"
+cycle bring the PHY back isolated, with no link until the driver is
+rebound?
 
-The MxL86211C entry has no soft_reset. gpy21x_config_init() never touches
-VSPEC1_PM_CTRL.
+The same could happen on a resume that power-cycles the PHY, because
+mdio_bus_phy_resume() also goes through phy_init_hw().
 
-The commit message says the bit defaults to 3.3V. After such a reset,
-would the pads go back to 3.3V signaling and bring back the unreliable
-MDIO that this patch is meant to fix? The registered regulator would then
-also report 3.3V, which no longer matches the board. Losing the supply
-across suspend would have the same effect.
+Later in the series, "net: phy: mxl-gpy: support MxL86211C lane mapping"
+adds mxl86211c_config_init(). It only calls
+mxl86211c_configure_lane_asp_map() and gpy21x_config_init(), so the SI
+clear is still only done in probe at the end of the series.
 
-Would it work to cache the requested selector and re-apply it from
-config_init? This is still the case at the end of the series, where
-mxl86211c_config_init() only adds the lane ASP mapping.
+Would it be better to clear SI in a MxL86211C-specific config_init, so
+that it runs after every phy_init_hw()?
 
-> +	if (IS_ERR(rdev)) {
-> +		phydev_err(phydev, "failed to register MDIO regulator\n");
-> +		return PTR_ERR(rdev);
-> +	}
+> +	if (ret)
+> +		return ret;
 > +
-> +	return 0;
-> +}
-
-[ ... ]
+> +	ret = gpy_probe(phydev);
+> +
+> +	return ret;
+>  }
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930122305.293686-1-robert.marko%40sartura.hr
