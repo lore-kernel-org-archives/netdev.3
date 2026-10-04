@@ -1,65 +1,67 @@
-Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD4A40B0F9
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 17:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C52F3ACA4A
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 17:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791134186; cv=none; b=ZZwkO4V4vyOmfTpGpUnBcUhI3zFpJ0RyXAt21Q9toR/SYReQCy9203AFYlCDzJ4guTbjl6Iyg14NUZEHTewRp5sPZfKio9AGZTK36qbwpFCcd3y21tE+0e5S8bHcKhMyqBN8sEWO9/t677HbYfiW2n/LYN+40Nhuxf6yiBCBzWs=
+	t=1791134187; cv=none; b=Wh6jO3XKdLgxwRd2rkHcqJ18ZhGW/7Z55AxGwDrBZHz6qN+uw1Xsy6Ju7n7ymcetlzbNUQwCDwRlHB/di9KK2bbOHv7p6Nu3Yv0eodSHKqPWvpHKsP6vKaVk3oDPXXEP4L9rHLp7Dmw3n8VlWrUEzTFi9jveq+n1ld5/ugeC4Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791134186; c=relaxed/simple;
-	bh=ITxbZyy/8+4On80Giq8R9Rj7Fl1GPU/lQNDmPuwvfH0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pq7NLqm/9AT01KOPP1RvqlTVyZKdrKSKsPBhdZKnbnj/E6QoUqlRaJSWBK/uVg6Uijms44cZeXTOG8dbERocRylQVwM6IwI8SwbX1gBwGOskj9+6tCBU6wlDIawen5RbDZ0ySgcwmDU3Ykzn6x9A6MiGLI5jfKDhaAnXjv8wKI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=mfNJwzLN; arc=none smtp.client-ip=74.125.228.169
+	s=arc-20240116; t=1791134187; c=relaxed/simple;
+	bh=dj3NwmJPrPWb/bw6YKz6XnTWInhGE7dX0FcP3wklm9Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VCxWptfC/UHeOH9RWXWbIJ7t8HbPxibHKkifViVwv4KV3dzjb413NggpruPOW0BJkN4+3d6/zcn+UdO7mbBZmu038s1yTLckOnCMbWKwGZUXxUHU7eUiVV9LXU0X8VWE9E4Eb3n/w8njgXp6Fl+PHefJENB7xfUb6Y9+eADFXzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=Mm2sSM17; arc=none smtp.client-ip=74.125.228.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="mfNJwzLN"
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2e0b486d91so194211166b.2
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 10:16:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="Mm2sSM17"
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2e4a2f00beso184612066b.3
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 10:16:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1791134180; x=1791738980; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=REM+0eVSevhhqRi1ya4wokt6SQ21EvmCZ8tdDdEeLnE=;
-        b=mfNJwzLNnGo1k+13OZt08ghMO+MTewabqrH3O8b3uR0wZv60U7jgUtjeTT9dAKsd1g
-         HgRHrdJUVJV/7R/WnEePvFkqFgl6malSQiCETefJGVy2N/da4cai7v8re9eGX3LrAlwa
-         lBBO6EnSwamA0dX2Hmwt7sxYHJUYPLiYL6J3fV7A332Z7zdc5oVMjfvqAPiTvemxcz15
-         mevIllKwfabl1+UY2gp6BMhou50p9bo0Mvsn8BuzhgBSar/pogu1rxWo17eA5tQKPWNQ
-         DVxJhGMnHtUZWfN0fc9QwnMcwZtVbcbZmQhZhv78362coqgJomul/K3SO7Dy/5tw7I5f
-         4Mtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791134180; x=1791738980;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bairaktaris.de; s=google; t=1791134181; x=1791738981; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=REM+0eVSevhhqRi1ya4wokt6SQ21EvmCZ8tdDdEeLnE=;
-        b=EExaye0b4Y/Q5j0VjpktdYizKdcUC52Y3xNZonnyIqP5CNT/tEniBbKSFQGHkNX+XB
-         cfQ4/1tJ1Q0B5iWK4hdWQb3qT8osKVTegk4EL9uczxoeoRPgeyOFCau7sTVjjwyB1RZr
-         PIk+tUtNX+Rb20dHEHU6PAs7eKxOqH39egXACFNB3LMyDAKBdko3JPKVP1z8BmpIBSdd
-         yjkWO58xH7Uyl/5Gz//Bl/a2jWTVnTMk9WL8k9aQiWzzLDqhRTLWdFkt+/fXpdyo+Jsr
-         vrh6IoIlvDHhzVTm0kMuEslSe/BteH/fA5VeBw2mU4MSX6fgvB0kr7t88MM0WXVIU28P
-         SZdQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzeVx+xqBxBL5Glq7OCue0dG1u+dTiWUjx2PxDi7D3ZJ1NVHIWLf0RH6EtfFWMAJYdMS4xbjiY=@vger.kernel.org
-X-Gm-Message-State: AFuF++l16EfTxedX50V2lXmdDmEbxHVGCrfYKtzsjykOaOt9C9PPtH+y
-	2dcGyknLGabA7YpcMFYlmw8xHQxQiPfvpirmVETrWFH//3pT0C8xoWXp7aRXxTEBVA==
-X-Gm-Gg: AYBFou24t+Y5vKK884OMAA75mjsfum9fvYj6QTotWTJ3NSNsHLygkkm+/iA5UPEXU7B
-	jlgXJ8r5+P/H4woAoCkMnIx81La8snHUnMeE913MtuaDRTAecvIEJ6IT8nuFyizdYKgugcCANuf
-	CqF07inXLhqcPnODMqJkWP/gRsHIrTCuDbQwd2l947Yv/26/8H0kStDq91Gx6NFuZMmAuw6KovS
-	9u2X7D1x32KPDxylHGLSaNrBNbNRRByN62RXzxHyGqKQVQyMmJ+TXtnYKZsQL7hR3/GSgUWrNBR
-	q8aIVmAoCg3qgg6n2s5T43Luk2eFZ3tSYFN5lpOxZZjrgYQs+OSfC38eofUOV+NaJgo2Phdhf8j
-	unINYK3UZVeIpNk1P/5Hlyig+2UWdVym6sb9u0F8lXkuXFPjUluu5TIpnQXSQldbomXNCWOGy1q
-	eCipzvJObNStzuHNX/JitVaOmcw7RB2R2ZozAiAh3JxzhzrLQR+UhY5vimBs3fDlLAvsS2Sw0BT
-	tOQQt/eZvWKILZZ3NgSL/A5bQgs5HtNBgdi3slXA0ymKnGASy/xsCrcdUMw8rVIaMEXumGvd131
-	TdbwSAf9c2wgJEuW88pxhENQVHHeqM+rhXklEK/pTM6Mj2UM1JPRxZ6hndJGqDVPsZ7xSvx6cy4
-	/3+yfKE6Rhhh9EO+yDeFgSVfC8oil90T9vMR6mNjKKACZFlMeEhV7DvhhG6iiqqUblRlWLKQEvo
-	t1QJmBkwWHFELs0jTR0cJSGLo=
-X-Received: by 2002:a17:907:cf86:b0:c26:19de:9ad3 with SMTP id a640c23a62f3a-c2e4af70e4emr698023766b.43.1791134180574;
-        Sun, 04 Oct 2026 10:16:20 -0700 (PDT)
+        bh=DQy1p6uH5D5EZA+BdR7YHzdsKEg9LefUPPRF/B7n4zU=;
+        b=Mm2sSM17vVAzKT20oK0g+uDXswxBLImaEhGqc5eS2W6BQ0fQLZQkSY4HBP/KXxCE7t
+         K327YbYlwP6WbZqWvZBDImm0ULDv9OxztUnJslzzlNrRdaTprV0/CHOonmKFaVQZf+ta
+         7P3LXOTL30Py3LJhv0yMWRrmb2cvMgmYnar2XvOq95pg1wpyB4or1iiKjzo0m0l5n8SY
+         eWdcrTny2rKauowywnxX8IOi510RUd+ZXGUEsDFfkrroIsk2aRFDx9FKW+ovwRXCNHoq
+         XI4nQoCDvZQis7rPLfOPDH7lwjHVEc4T7ciNN2R8kQh2lnJU7ljA9CqcOBuabHZMAHaQ
+         jF0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791134181; x=1791738981;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DQy1p6uH5D5EZA+BdR7YHzdsKEg9LefUPPRF/B7n4zU=;
+        b=opOC8Xhn/flu7PXrShsKbaf/5ubayFXpVpQ68oB62KyFweBp00Big8TuLEMC7Yt9Cn
+         QhHChs08s78+D/fOI/NYlyozBnTkMndS82Yvy2FktJitecSh5cD3cjZkmGGRAu3i6Eo2
+         Q2QcJKttrIn2NXCH4Vyo7OlMtdr484UIYNsCCDqYXXsn5QNBtIynjWq5UMS/k8NyrJmz
+         qJIbLhHInGRXpd4/MFuOmatVDcfOCboORJWRs7TW2gmdwHXGxQkNFkHZkyHyq1T+hbN9
+         4UNv5Hojd07BXXB0ru7kaNXllwpi7SG9KRBO7GKadzLl/b6309gSJN/sRyBgD0NoDm9f
+         AlNA==
+X-Forwarded-Encrypted: i=1; AKwUvByOyVgXx+C1yP2KuzpNUMz1wbkKofJPhPw75LS0bbtHAEUclVTAdm293wBT/dXeyGGtAk8POCs=@vger.kernel.org
+X-Gm-Message-State: AFuF++mnVTocGla/UZJ3NiggUhTDcqKx8cPGjMmuhnlE26og+e3h/nFR
+	GhrAIR0zFEnyzYDZmI118iI2fqS16/nzBNHceWoRXUUiu0uD3NYEgzbW6/OecHM1GA==
+X-Gm-Gg: AYBFou1qHDMhM0leCaalgs7b7CutLQWUpUZ4Tq49DHp0eMETSNhlnUFKXokVIWNROCS
+	vp3vElz489j+OJ/akBnrBsST2MVMrCsCHEAKFySXTd/ANHJYLxY99BFxHJei6PjguuTW9I9OsFE
+	CHN+5fY1OnTFaVt5REQbdY/TRTHttVRlYmPOG1CCfUzNwQjtPTtlH70tJL9ULTzgevUM8mNxzOq
+	xTAP4m/WuGfYqpcZB12WHQxQLPnXU52aN50I+bX2OjNuoPxTF23+iJhHuUEXrWJM76ggFfDcbiR
+	FDtz/6XWBczTHLmJGyYJAy4yMOBYthBN9WtG5XrMdpRW6kRavlPAfUr/6HZP68En5pYCdNxFwFN
+	FEkCaSWEHFJ2pswpgwoZOSDFQc+eefuk9TIgn0QDqE7Vp/UKktnR/qsE4kWxv3kqOpv2xLS3EXj
+	AHO27Q03JAitN1berCt/rjTmdt3rPaSdNw+o9W3lUmKKA/bC+GRdQdP089Srx1prqGm8aUk3tNx
+	3NnDOGNHuCMOpmvfyqtih6C23YSRJdQLeZuVf/WBNxfJ7tEQWqu+R45DWlLqCxhE/6gpJlctuei
+	d6NRFwESUnilKdTVZ/8bI16N7xhjPgPjUpDucLNhv+k575Gzg4X6fGGXil7yJGUO98Uq8PvVITq
+	dpqre6mqTbqvQf0YOHQL3HTQShDXnOKY1z1RuiDkmD88tkr4GjKztEzrOlCkgSmypG+nbffovMB
+	ci1w74pCu9izkSDlDyfe3DLKdU
+X-Received: by 2002:a17:907:7281:b0:c2d:c6e7:9e9f with SMTP id a640c23a62f3a-c2e4ad3fe21mr707178466b.27.1791134181453;
+        Sun, 04 Oct 2026 10:16:21 -0700 (PDT)
 Received: from Desktop (pd9513667.dip0.t-ipconnect.de. [217.81.54.103])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4cd278cesm314885266b.37.2026.10.04.10.16.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4cd278cesm314885266b.37.2026.10.04.10.16.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 10:16:19 -0700 (PDT)
+        Sun, 04 Oct 2026 10:16:21 -0700 (PDT)
 From: Julius Bairaktaris <julius@bairaktaris.de>
 To: netfilter-devel@vger.kernel.org
 Cc: pablo@netfilter.org,
@@ -77,10 +79,12 @@ Cc: pablo@netfilter.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	nbd@nbd.name
-Subject: [PATCH nf-next 0/3] netfilter: flowtable: update upper device stats in the fast path
-Date: Sun,  4 Oct 2026 19:16:13 +0200
-Message-ID: <20261004171616.3544880-1-julius@bairaktaris.de>
+Subject: [PATCH nf-next 1/3] 8021q: add vlan_dev_sw_netstats_rx_add() and vlan_dev_sw_netstats_tx_add()
+Date: Sun,  4 Oct 2026 19:16:14 +0200
+Message-ID: <20261004171616.3544880-2-julius@bairaktaris.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261004171616.3544880-1-julius@bairaktaris.de>
+References: <20261004171616.3544880-1-julius@bairaktaris.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,44 +93,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With the software flowtable, packets bypass the bridge, VLAN, PPPoE and
-tunnel devices above the flowtable device, so their counters only see
-the first packets of each connection. The classic forwarding path
-always counts them, so this series does too, without a flag.
+Let code that forwards packets on behalf of a VLAN device update its
+per-cpu counters, like dev_sw_netstats_rx_add() and
+dev_sw_netstats_tx_add() do for devices with tstats. The netfilter
+flowtable fast path uses them in the next patch.
 
-Patch 1 adds VLAN stats helpers; it touches include/linux/if_vlan.h, so
-a netdev ack would let it go through nf-next. Patch 2 updates the
-counters from the fast path with the lengths the classic path counts.
-Patch 3 adds bridge, VLAN and tunnel counter checks to nft_flowtable.sh,
-which fail without patches 1 and 2.
+Assisted-by: Claude:claude-fable-5-1
+Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
+---
+ include/linux/if_vlan.h | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-Hardware offloaded flows are not counted. A GSO packet sent through a
-PPPoE device counts once, not once per segment.
-
-Cost: struct flow_offload grows from 296 to 328 bytes (slab object 320
-to 384). Forwarding from a bridge with a VLAN port to a veth in an x86
-guest, mean of three interleaved runs without/with the series: TCP
-55.7/55.0 Gbit/s, 64 byte UDP 177/173 kpps.
-
-This series was written with the help of an AI coding assistant. I have
-reviewed and tested it.
-
-Julius Bairaktaris (3):
-  8021q: add vlan_dev_sw_netstats_rx_add() and
-    vlan_dev_sw_netstats_tx_add()
-  netfilter: flowtable: update upper device stats in the fast path
-  selftests: netfilter: nft_flowtable.sh: check upper device counters
-
- include/linux/if_vlan.h                       | 36 ++++++++++
- include/net/netfilter/nf_flow_table.h         |  8 ++-
- net/netfilter/nf_flow_table_core.c            |  3 +
- net/netfilter/nf_flow_table_ip.c              | 53 +++++++++++++++
- net/netfilter/nf_flow_table_path.c            |  9 +++
- .../selftests/net/netfilter/nft_flowtable.sh  | 67 +++++++++++++++++++
- 6 files changed, 175 insertions(+), 1 deletion(-)
-
-
-base-commit: 87b80c2f6b05cad9f0ff9136709c62a0f59923e3
+diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
+index 20cc16ea4e5a..4873a12958da 100644
+--- a/include/linux/if_vlan.h
++++ b/include/linux/if_vlan.h
+@@ -231,6 +231,31 @@ vlan_dev_get_egress_qos_mask(struct net_device *dev, u32 skprio)
+ 	return vlan_qos;
+ }
+ 
++static inline void vlan_dev_sw_netstats_rx_add(struct net_device *dev,
++					       unsigned int len)
++{
++	struct vlan_pcpu_stats *stats;
++
++	stats = this_cpu_ptr(vlan_dev_priv(dev)->vlan_pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	u64_stats_inc(&stats->rx_packets);
++	u64_stats_add(&stats->rx_bytes, len);
++	u64_stats_update_end(&stats->syncp);
++}
++
++static inline void vlan_dev_sw_netstats_tx_add(struct net_device *dev,
++					       unsigned int packets,
++					       unsigned int len)
++{
++	struct vlan_pcpu_stats *stats;
++
++	stats = this_cpu_ptr(vlan_dev_priv(dev)->vlan_pcpu_stats);
++	u64_stats_update_begin(&stats->syncp);
++	u64_stats_add(&stats->tx_packets, packets);
++	u64_stats_add(&stats->tx_bytes, len);
++	u64_stats_update_end(&stats->syncp);
++}
++
+ extern bool vlan_do_receive(struct sk_buff **skb);
+ 
+ extern int vlan_vid_add(struct net_device *dev, __be16 proto, u16 vid);
+@@ -249,6 +274,17 @@ static inline bool is_vlan_dev(const struct net_device *dev)
+ 	return false;
+ }
+ 
++static inline void vlan_dev_sw_netstats_rx_add(struct net_device *dev,
++					       unsigned int len)
++{
++}
++
++static inline void vlan_dev_sw_netstats_tx_add(struct net_device *dev,
++					       unsigned int packets,
++					       unsigned int len)
++{
++}
++
+ static inline struct net_device *
+ __vlan_find_dev_deep_rcu(struct net_device *real_dev,
+ 		     __be16 vlan_proto, u16 vlan_id)
 -- 
 2.53.0
 
