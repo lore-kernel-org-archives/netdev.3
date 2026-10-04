@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3598360EF0;
-	Sun,  4 Oct 2026 09:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501C2418346;
+	Sun,  4 Oct 2026 09:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791104589; cv=none; b=GgdSuQDDHkoUvqb/yexLEyBE8eEEm27NrKiqIBOmWF7xLAgMFY/eyl9TLmf4VT20lrcxdJI9DHTvvhtqqexs8t30Q1pR3OnNbOYSqqHBNk3l6XGWCE+egrTZqpl3h7niPljg6l37QavyYsqm+PbNRcXnr8hmC0+vQEUuCyRZg0E=
+	t=1791104591; cv=none; b=XmNh2bt2jquADGrZLjCpwwyRAAKlEnJ3GcegniKizpFrHeF+pUOLYkb8KTg74/CMZ/c4hTO0xx8yoJLL08KutCSFD5rpYfLVPFgsGHYGV3X9qorUlFxB8vD3X+ND+lY0c65inF61fyhbGYt7qcxehFBLggORBmbY5Wf77UuiNlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791104589; c=relaxed/simple;
-	bh=dAyplgO00n0HEE4zcitkVirRbAzdiXQ9O/lh88MDHWE=;
+	s=arc-20240116; t=1791104591; c=relaxed/simple;
+	bh=+8GUFTAjAciR0Q/QLfTaVRVe8TBQFljEoI1Pp3Wb2yM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ilrk/K/BIyYQyyL33i2rJPdK6NZf40FtbJrwE6bfYOs9ODYYKX2k5+xL4NP7YOHCFobfF8QLGO049wNd+SGPqo0DoMwvpxyD1CFoqQ+3GPWn+/gkExUSsftk11MiHoXZ5N89mf1rbrTw8VCjIL1YcA50BJj1eQ8OnaDZ20zyyUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qorac9m/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ET7iKqEvGGGXWCg53Oc52jOtV3qMZG5FihD46ZUvZjDXdQ+uI9YfU+WiUNFP9MPnw6+6a4AKZsWdfPHb3bKFYCcpkjd8DbEwIPEkre+0dg/VvSrFScyRrJNswujFEiJEz7sn2CE3DyUj5g/7AgJbMl+3RcvxLTrcoLXvqYq+LXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DK7U+fEo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qorac9m/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879211F000FF;
-	Sun,  4 Oct 2026 09:03:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DK7U+fEo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1564C1F00893;
+	Sun,  4 Oct 2026 09:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791104587;
-	bh=Y8NJ7FC8c8jGtpz584cECOONAAKeTFL6PMZgV0gSdks=;
+	s=k20260515; t=1791104589;
+	bh=2rAaA5FVRIQlHu+rJ7W2001hRh3YbSqf2nsZRkjv4U0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Qorac9m/ftUJFq+xKEyHwMnY5sC5XRrwuHuiDvSOjQ6xI7D8Xk1w6wpeyNwY6u5zm
-	 xdSgiKm54nxhmCkr0rs3fbEo+NZkula/HFZkJwdAJlWUvZ/KKdN7DsNLb8WrfKX4ND
-	 qDi+bkT+5Sog3mLGqw/nCRyHtc0IPEFS82duSOuUnrUNsTtBJF926Eyc3RFQyY0mD+
-	 0I5GucphIlOwcoNlMXopQ44vd7G5T2fkL52X8/u2l7+NeWCHgRyzTFkBs9qsPpJIvq
-	 oF+sR0P2HLUj4JjB1Jyvrm30WMp7TwRjp7QYTakohmfrfh1lxWlf09GFqdWmFdh9o+
-	 a3ZOQF914O7PQ==
+	b=DK7U+fEohTWIjJz5gzT7KDaQ1p3vpW3G7DGDscOHvCkhv12hj3eNiWgSEVxrYwQSB
+	 Nk1sJA7B4Qu9Sq2r5WB1nBeFyn8w4j2Ol/fk26C7vCfQOALrC+Awk/SkHvncKSigKm
+	 qkFZFiSMt0hHgDgRiIQS8SwVyNdOvP5f86txEnYUZjEjtkQEeWxpfV2w5wq59iw6ZO
+	 +wMc5jQtgKzd5sW1GfxRL7dINs1xHZFY4/ZnLpsfnwAqtS0204yVKf7iN6Mf2xVZVs
+	 yabJmjQqDJa3xUwl2f4XrHI5+LAWdtrbUOO3BJuNrtQdlxyaeDcE/oEFMELDia7REl
+	 8Q1vMcNE3emwA==
 Subject:
- Re: [PATCH net v3 2/7] net: fec: release IRQs before dependent resources
+ Re: [PATCH net v3 6/7] net: ravb: release managed IRQs before freeing netdev
 From: netdev-bot+sashiko@kernel.org
 To: yaojiale02@163.com
 Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
@@ -42,10 +42,10 @@ Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
  siva.kallam@samsung.com, ks.giri@samsung.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
  linux-renesas-soc@vger.kernel.org
-Date: Sun, 04 Oct 2026 09:03:05 +0000
-Message-ID: <179110458503.434549.14613784745596683672@kernel.org>
-In-Reply-To: <20261003085940.493951-3-yaojiale02@163.com>
-References: <20261003085940.493951-3-yaojiale02@163.com>
+Date: Sun, 04 Oct 2026 09:03:07 +0000
+Message-ID: <179110458762.434549.4656958920205004630@kernel.org>
+In-Reply-To: <20261003085940.493951-7-yaojiale02@163.com>
+References: <20261003085940.493951-7-yaojiale02@163.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,10 +56,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -67,168 +67,190 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix leaves out the PPS/1588 timer IRQ, which is also devm-
-  managed.
-- [High] fec_drv_remove() still calls
-  cancel_work_sync(&fep->tx_timeout_work) first.
-- [Low] fec_drv_remove() bounds its new disable_irq() loop by calling
-  fec_enet_get_irq_cnt(pdev) again, instead of using the number of IRQs…
+- [High] The commit message says the probe error paths are fixed.
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch.
+- [Low] This problem wasn't introduced by this patch.
 
 --
 
-net: fec: release IRQs before dependent resources
+net: ravb: release managed IRQs before freeing netdev
 
-In fec_drv_remove(), this commit masks the FEC interrupt sources and calls
-disable_irq() on the main FEC IRQs before unregister_netdev(). It adds the
-same cleanup to the fec_probe() error path. It also switches to
-devm_alloc_etherdev_mqs() so the netdev stays alive until the devm-managed
-IRQs are released.
+This commit puts the IRQs requested by ravb_setup_irqs() into their own
+devres group. ravb_remove() releases the group after unregister_netdev()
+and before free_netdev(). The probe error paths also release it before
+free_netdev(), so the IRQ handlers should no longer see a freed netdev.
 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 794ec427b0ee6..b0fc5b39c748d 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> index ea1c7e536791..ab4703888778 100644
+> --- a/drivers/net/ethernet/renesas/ravb_main.c
+> +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> @@ -2963,28 +2963,35 @@ static int ravb_probe(struct platform_device *pdev)
+>  		priv->num_rx_ring[RAVB_NC] = NC_RX_RING_SIZE;
+>  	}
+>  
+> +	if (!devres_open_group(&pdev->dev, priv, GFP_KERNEL)) {
+> +		error = -ENOMEM;
+> +		goto out_reset_assert;
+> +	}
+> +
+>  	error = ravb_setup_irqs(priv);
+>  	if (error)
+> -		goto out_reset_assert;
+> +		goto out_release_irq_group;
+> +
+> +	devres_close_group(&pdev->dev, priv);
+>  
+>  	priv->clk = devm_clk_get(&pdev->dev, NULL);
+>  	if (IS_ERR(priv->clk)) {
+>  		error = PTR_ERR(priv->clk);
+> -		goto out_reset_assert;
+> +		goto out_release_irq_group;
+>  	}
+
+[Severity: High]
+
+The commit message says:
+
+  "Probe error paths have the same ordering problem."
+
+Can ravb_interrupt() still crash on the probe error paths that fail early?
+
+The netdev is no longer freed before free_irq(). However, the IRQs are
+still requested before priv->addr, priv->lock and runtime PM are set up.
+
+The single IRQ variants (ravb_gen2_hw_info and gbeth_hw_info) do not set
+multi_irqs. For them, ravb_setup_irq() requests a shared IRQ and passes
+ndev as dev_id:
+
+	} else {
+		irq_num = platform_get_irq(pdev, 0);
+		flags = IRQF_SHARED;
+	}
+
+With CONFIG_DEBUG_SHIRQ, __free_irq() calls the handler once for
+IRQF_SHARED actions, so releasing the group here runs it:
+
+ravb_probe()
+  devres_release_group()
+    devm_irq_release()
+      free_irq()
+        __free_irq()
+          ravb_interrupt(irq, ndev)
+
+A real interrupt from another device on the shared line can also run the
+handler at any point in this window.
+
+The only guard in ravb_interrupt() is:
+
+	if (unlikely(!pm_runtime_active(dev)))
+		goto out_rpm_put;
+
+	spin_lock(&priv->lock);
+	/* Get interrupt status */
+	iss = ravb_read(ndev, ISS);
+
+pm_runtime_active() returns true whenever dev->power.disable_depth is
+nonzero. That is the case both before pm_runtime_enable() and after
+pm_runtime_disable().
+
+The handler then calls spin_lock() on priv->lock before spin_lock_init()
+has run. It also calls ravb_read() through an invalid priv->addr:
+
+- The devm_clk_get() failures here (including -EPROBE_DEFER), the gptp
+  and refclk clock failures, and a pm_runtime_resume_and_get() failure
+  all leave priv->addr NULL.
+
+- A devm_platform_get_and_ioremap_resource() failure leaves an ERR_PTR
+  in priv->addr.
+
+Before this patch, the same handler call ran from devres_release_all()
+and hit freed memory. With this patch it reads MMIO through NULL or an
+ERR_PTR.
+
+The ordering where IRQs are requested before this state is initialised
+came from 32f012b8c01c, the commit in the Fixes: tag.
+
+Could the IRQs be requested only after priv->addr, priv->lock and
+runtime PM are valid, while still releasing the group before
+free_netdev()? Alternatively, could ravb_interrupt() return early until
+probe has finished initialising?
 
 [ ... ]
 
-> @@ -5502,7 +5501,15 @@ fec_drv_remove(struct platform_device *pdev)
->  	cancel_work_sync(&fep->tx_timeout_work);
->  	if (fep->bufdesc_ex)
->  		fec_ptp_stop(pdev);
-> +	if (ret >= 0)
-> +		fec_irqs_disable(ndev);
-> +	irq_cnt = fec_enet_get_irq_cnt(pdev);
+> @@ -3124,6 +3131,8 @@ static int ravb_probe(struct platform_device *pdev)
+>  	pm_runtime_disable(&pdev->dev);
+>  	pm_runtime_dont_use_autosuspend(&pdev->dev);
+>  	clk_unprepare(priv->refclk);
+> +out_release_irq_group:
+> +	devres_release_group(&pdev->dev, priv);
+>  out_reset_assert:
+>  	reset_control_assert(rstc);
+>  out_free_netdev:
 
 [Severity: Low]
-Should this reuse the number of IRQs that probe actually requested, instead
-of computing it again?
 
-fec_enet_get_irq_cnt() maps any platform_irq_count() result <= 0 to 1. That
-includes -EPROBE_DEFER:
+This is a pre-existing issue, not one introduced by this patch. The
+out_rpm_put path just above this hunk does an async put and then
+disables runtime PM straight away:
 
-	else if (irq_cnt <= 0)
-		irq_cnt = 1;	/* At least 1 irq is needed */
+out_rpm_put:
+	pm_runtime_put(&pdev->dev);
+out_rpm_disable:
+	pm_runtime_disable(&pdev->dev);
 
-Say a later interrupt's parent deferred at probe time while index 0
-resolved. Then probe requests only fep->irq[0] and still succeeds. At remove
-time the count can be larger, so the loop below would call disable_irq() on
-fep->irq[1] and fep->irq[2]. Both are still 0.
+Autosuspend is enabled with a 100 ms delay. The barrier inside
+pm_runtime_disable() cancels the queued idle/autosuspend request, so the
+driver never suspends the device itself.
 
-On ARM32 with SPARSE_IRQ, that raises the depth of descriptor 0 and calls
-synchronize_irq(0). On arm64 it does nothing.
+Would pm_runtime_put_sync() fit better here?
 
-> +	for (i = 0; i < irq_cnt; i++)
-> +		disable_irq(fep->irq[i]);
+The effect on the hardware is mostly limited. After a failed probe,
+device_unbind_cleanup() calls dev_pm_domain_detach() with
+detach_power_off. Through the Renesas CPG detach callbacks this reaches
+pm_clk_destroy(), which disables the module clock, and the genpd power
+off gets queued.
 
-[Severity: High]
-The commit message says the patch will "disable each IRQ" before
-unregistering the netdev. Does this loop also cover the PPS interrupt?
+The commit message also says the runtime PM error handling is left
+unchanged on purpose.
 
-fec_ptp_init() requests a separate devm-managed IRQ, and its number is never
-stored in fep->irq[]:
-
-drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_init() {
-    ...
-	irq = platform_get_irq_byname_optional(pdev, "pps");
-	if (irq < 0)
-		irq = platform_get_irq_optional(pdev, irq_idx);
-    ...
-	if (irq >= 0) {
-		ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
-				       0, pdev->name, ndev);
-    ...
-}
-
-So this IRQ stays enabled until devres runs after fec_drv_remove() returns.
-Writing 0 to FEC_IMASK in fec_irqs_disable() does not gate it either. The
-timer channel interrupt is armed by FEC_T_TIE in FEC_TCSR(pps_channel).
-
-fec_ptp_stop() also runs before any IRQ is disabled here. It calls
-ptp_clock_unregister() without synchronizing the PPS IRQ. Meanwhile,
-fec_pps_interrupt() checks pps_enable without taking a lock:
-
-	if (fep->pps_enable) {
-		event.type = PTP_CLOCK_PPS;
-		ptp_clock_event(fep->ptp_clock, &event);
-
-Could a handler already running on another CPU use the ptp_clock after it
-has been freed?
-
-In PTP_CLK_REQ_PEROUT mode, pps_enable is 0. fec_ptp_stop() then only
-cancels the hrtimer, and FEC_TCSR keeps TIE set in toggle mode. On
-FEC_QUIRK_HAS_MULTI_QUEUES parts, fec_stop() also turns EN1588 back on.
-
-Could fec_pps_interrupt() still readl()/writel() FEC_TCSR/FEC_TCCR after
-fec_drv_remove() disables clk_ahb and clk_ipg further down?
-
-The new probe unwind has the same gap:
-
-failed_irq:
-	fec_irqs_disable(ndev);
-	while (i--)
-		disable_irq(fep->irq[i]);
-	fec_enet_deinit(ndev);
-failed_init:
-	if (fep->bufdesc_ex)
-		fec_ptp_stop(pdev);
-
-fec_ptp_init() runs before fec_enet_init(). The PPS IRQ is therefore still
-live through fec_ptp_stop() and through the clock disables at
-failed_regulator.
-
-Would it make sense to store the PPS IRQ number and disable_irq() it before
-fec_ptp_stop()? FEC_TCSR could also be cleared for the PEROUT case. Nothing
-later in the series seems to touch fec.
-
+> @@ -3144,6 +3153,7 @@ static void ravb_remove(struct platform_device *pdev)
+>  		return;
+>  
 >  	unregister_netdev(ndev);
+> +	devres_release_group(dev, priv);
 
-[Severity: High]
-cancel_work_sync(&fep->tx_timeout_work) has already run at this point. The
-IRQs are now disabled while the netdev is still registered and running. Can
-the TX watchdog queue tx_timeout_work again in this window?
+[Severity: Medium]
 
-With the IRQs disabled, fec_enet_interrupt() can no longer schedule NAPI, so
-TX descriptors are not reclaimed. Under traffic, fec_enet_start_xmit()
-eventually stops the queue.
+This isn't a bug introduced by this patch. What happens when
+pm_runtime_resume_and_get() fails at the top of ravb_remove()?
 
-Suppose unregister_netdev() waits for RTNL longer than watchdog_timeo
-(TX_TIMEOUT). The chain would then be:
+	error = pm_runtime_resume_and_get(dev);
+	if (error < 0)
+		return;
 
-dev_watchdog()
-  fec_timeout()
-    schedule_work(&fep->tx_timeout_work);
+The early return skips all of the following:
 
-Nothing cancels or flushes the work after this. Once unregister_netdev()
-drops RTNL, fec_enet_timeout_work() runs:
+- unregister_netdev()
+- the new devres_release_group()
+- netif_napi_del()
+- ravb_mdio_release()
+- dma_free_coherent() of desc_bat
+- pm_runtime_disable()
+- clk_unprepare()
+- reset_control_assert()
+- free_netdev()
 
-	rtnl_lock();
-	if (netif_device_present(ndev) || netif_running(ndev)) {
-		napi_disable(&fep->napi);
-		netif_tx_lock_bh(ndev);
-		fec_restart(ndev);
+Remove returns void, so the driver core unbinds anyway, and
+devres_release_all() frees the IRQs and unmaps priv->addr.
 
-netif_device_present() is still true after unregister. The work therefore
-calls napi_disable() on a NAPI that fec_enet_close() has already disabled.
+Does this leak the netdev, the MDIO bus and the desc_bat coherent DMA
+buffer? Does it also leave the netdev registered on hardware that is no
+longer mapped?
 
-Would napi_disable_locked() then spin forever with RTNL held?
-
-The work could also run later still. The netdev is now freed by devres
-(devm_alloc_etherdev_mqs()), so it would then use fep after the netdev has
-been freed.
-
-Before this patch, this path needed a real TX hang. Now normal TX traffic
-plus RTNL contention looks like enough. Should tx_timeout_work be cancelled
-again after unregister_netdev()? Alternatively, the IRQs could be disabled
-only after the device has been closed.
-
-> +	/* fec_stop() enables the default interrupt mask. */
-> +	if (ret >= 0)
-> +		fec_irqs_disable(ndev);
->  	fec_enet_mii_remove(fep);
->  	if (fep->reg_phy)
->  		regulator_disable(fep->reg_phy);
-
-[ ... ]
+The ndev is never freed on this path, so the patch does not turn this
+into a use-after-free.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261003085940.493951-2-yaojiale02%40163.com
