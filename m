@@ -1,128 +1,200 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BA938F92F;
-	Sun,  4 Oct 2026 19:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2856F3B8412;
+	Sun,  4 Oct 2026 19:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791142003; cv=none; b=QFlO4c2gpBCC94/6AdDNttJnykix9ig1A1JN1/SMAhP+XTk+V5unyJzE/i/7mFIpqnUXpuvTPEcERd0FGv5+rNux9ErxWhv82+aaZ+ZEDreA4QfWJnoiwXf6jMVJIqdz2T+6km4FrMeE/X/Vg1eisXRDMFJUUJ337lWXD6uiQb8=
+	t=1791142049; cv=none; b=OpYTeQLmSlu9GqEEYUoLaNwhs9nxvUS/SjNuO3kv+J8I5Atvw9PnS3/+7AGBBe8G/MfLG/TThrhITOvzZUNemWFAj3JYeSP3oqUE5xTCV+Etl104/FNEGqXGpd5sXYEwxtIY6mBphrrCqCPLR4y1yY756Zi8fKxbPR6WHVZUx2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791142003; c=relaxed/simple;
-	bh=EZqj9oz9hc/uErnnmjyNBZUXrr48+ZU27QZxpRRKcEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bQtdIR2URtmFg4SnIPqo1xQB5U5O+vgE0sqsujKUE1aRFpUER4PdG8QJTpOZDIgo9OAcpV/LLQDWfIs/fgEgyVFFcluFCU4wK5zWuQez0QQw+NSO5MiniPg+o5qQcvXCmnm6+jhb2LXP500D8AzU24bw4ORPfrMn3RYcnYEzec0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=oju769jK; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1791142049; c=relaxed/simple;
+	bh=fo+kfVYTqykxYEMEyS3xEUOKLVhZpn1Y+X3krlOdjOg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Dtrl1b7/gFXZu5uQ3hjvI+ZnHqtSgI3uf8LwVSNXIuCZFvoZJhRBkNe7b4GZzxr2w2bAfO3Eccy56vGXqpprkMbj07tvXtt5mXU/j7FZV4obYc6ROjtc8hwxAd68sc2vN9+Ez/uBcZeUDAYSpTbABOhOihDKiRSu4gx+qH2ul6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0Oxj1jf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="oju769jK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1791141998;
-	bh=DvHBIiApvl4tSWC5DbD9q2NS2XSoHvWiFwW0/l7xdlI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oju769jKfWggoOLVGJ5WomnnuABTJPPS3vUlQ569aZ8mRIRcon/cnC45yynUkNWeH
-	 sUUUtPLsISfcyI3vk0MLXZonZ5obg6iM4+NSsUvq8SfZgyLuGQMtk1VMy4dxdaMG1P
-	 VORvGmAfZVNKbfhcph9DhDxfDNQbvdVtc0IikKT2f95mqnAl7CMx7D8F3Pe8PqLBCa
-	 jInw9Cek3fRXTT9BeKCuuTA0/RzRjAyCrgcV7XzH3jBRUGJ+m0qBGqLRkMdpQbmEP5
-	 DT9X3EZNcBpQ98sYQ3zhX0Q01IESZ8RWQMOtarCIGuJpMK/s1oQJeEkAwrvLlx2WYc
-	 e/5HfMEBKB4cw==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 20FEA602C6;
-	Sun,  4 Oct 2026 21:26:38 +0200 (CEST)
-Date: Sun, 4 Oct 2026 21:26:35 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net-next 01/11] netfilter: synproxy: fix reset of ct
- seqadj when reopening a connection
-Message-ID: <asKoa2wFW5QneXEA@chamomile>
-References: <20260927223436.269024-1-pablo@netfilter.org>
- <20260927223436.269024-2-pablo@netfilter.org>
- <179054884482.31693.9985445366421543993@kernel.org>
- <armg511ZWKl5ZqhZ@chamomile>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0Oxj1jf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2111F000FF;
+	Sun,  4 Oct 2026 19:27:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791142044;
+	bh=pEsCEEIlhAlv1c9hPn4LM6ZCnsREWSEF/BB4zwo6m68=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=J0Oxj1jftlGKWLqKvWK13t6GANkD7kxE/UY92OQnlrdNweIefajnxDtcNo/3/2TsM
+	 EXinakPh5lBnOmOwgWWhKHtIeCg49fxY/aZVVdXuH9qB0u2D6n0QNbOAkL/oPDYNMi
+	 t8wQih1mSao7DoSBxv8IpksGf9uFYmn3jHWlCmndRVlRALtGCEQOwfhXtP3jU+1mRU
+	 k5osoOVdlWX4it5UA4YDoiG+1TjB515h7mbW2+S2P52fwvymT/44/JyE0esMUgQgMN
+	 4gN9NcQAuOLm4Z4DZ1WQfpHOxtauSJXIxEa5lOhfPq51M/KhjCayNYDVbxT8TzhgIT
+	 gXOnilWPtPHgg==
+Subject: Re: [PATCH] tipc: fix use-after-free in netns teardown
+From: netdev-bot+sashiko@kernel.org
+To: Jeremy.Jean@oss.cyber.gouv.fr
+Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, netdev@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kuba@kernel.org
+Date: Sun, 04 Oct 2026 19:27:23 +0000
+Message-ID: <179114204389.434549.3724053905057286143@kernel.org>
+In-Reply-To: <20261003192530.2414682-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261003192530.2414682-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <armg511ZWKl5ZqhZ@chamomile>
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Just a gentle bump to this net-next PR containing Netfilter updates.
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
-Let me know if there is anything that needs to be addressed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Thanks.
+- [Medium] Because the teardown loop in tipc_topsrv_stop() always
+  restarts at the lowest IDR id (line 709, `id = 0`), it can block on…
 
-On Mon, Sep 28, 2026 at 01:04:07AM +0200, Pablo Neira Ayuso wrote:
-> Hi,
-> 
-> On Sun, Sep 27, 2026 at 10:40:44PM +0000, netdev-bot+sinfo@kernel.org wrote:
-> > Hi!
-> > 
-> > This is an automated message. This series looks like a fix, but its
-> > commit messages seem to be missing some information:
-> > 
-> >  - How the issue was discovered, e.g. hit in production, hit during
-> >    development, syzbot report, manual code inspection, LLM or static
-> >    analysis tool scan.
-> > 
-> >  - Whether the issue was actually triggered, or is only theoretical
-> >    (e.g. found by code inspection). If it was triggered please include
-> >    the symptoms, like the stack trace or error messages.
-> >
-> > Please do not repost the series just to address the above. Instead,
-> > reply to this email with the missing information, so that reviewers
-> > can take it into account. If the series needs another revision for
-> > other reasons, please include the information in the commit messages
-> > then.
-> >
-> > The evaluation is done by an LLM so it may be wrong, if you think
-> > that is the case please reply and explain.
-> 
-> This are correctness fixes (no crashes to my knowledged, hence I
-> decided to target net-next) as the cover letter specifies:
-> 
-> Patch #1 TCP sequence tracking issue was reported by sashiko as the
->          cover letter says.
-> 
-> Patch #2 Just documentation update to fix incorrect information
->          about the maximum number of expectations.
-> 
-> Patch #3 Just a cleanup patch to remove a break;
-> 
-> Patch #4 Just a cleanup, typos in comments.
-> 
-> Patch #5 and #6 are the result of a human triggered review of the
->          conntrack error stats by Phil Sutter, I think.
-> 
-> Patch #7 is a preparation patch for #8.
-> 
-> Patch #8 removes a unnecessary workqueue flush, submitter does not
->          specify if it is visible in production, I suspect with
->          a very large number of netns it must be. Author does not
->          claim LLM assistance.
-> 
-> Patch #9 is a fix triggered by sashiko report IIRC, I deemed it too
->          large for net so I am routing this rework-fix to net-next.
-> 
-> Patch #10 is a feature fix, IPv6 filtering does not work.
->           I suspect it was found when trying to use this (broken)
->           feature by the submitter.
-> 
-> Patch #11 Ilya Maximets reports the CTA_ZONE filtering feature is
->           not easy to infer from userspace, I don't think LLM
->           triggered this, it looks more like an improvement to help
->           userspace tools discover this feature.
-> 
-> This is human written reply, my cover letter has been generated by me
-> too to provide more context on these patches.
-> 
-> Thanks!
-> 
+Pre-existing issues:
+- [High] Netns teardown can hit a NULL pointer dereference on a kernel-
+  subscription connection.
+
+--
+
+tipc: fix use-after-free in netns teardown
+
+Before walking conn_idr, this patch makes tipc_topsrv_stop() clear the
+listener's sk_user_data and cancel the accept work. The idr_find() plus
+conn_get() lookup is replaced with idr_get_next() plus
+kref_get_unless_zero(). The walk now restarts from id 0 on every pass and
+calls cond_resched() between passes.
+
+> diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
+> index af530c9ed8402..9ab2349f71190 100644
+> --- a/net/tipc/topsrv.c
+> +++ b/net/tipc/topsrv.c
+> @@ -700,16 +700,23 @@ static void tipc_topsrv_stop(struct net *net)
+>  	struct tipc_conn *con;
+>  	int id;
+>  
+> +	write_lock_bh(&lsock->sk->sk_callback_lock);
+> +	lsock->sk->sk_user_data = NULL;
+> +	write_unlock_bh(&lsock->sk->sk_callback_lock);
+> +	cancel_work_sync(&srv->awork);
+> +
+>  	spin_lock_bh(&srv->idr_lock);
+> -	for (id = 0; srv->idr_in_use; id++) {
+> -		con = idr_find(&srv->conn_idr, id);
+> +	for (id = 0; srv->idr_in_use; id = 0) {
+> +		con = idr_get_next(&srv->conn_idr, &id);
+
+[Severity: Medium]
+
+Can restarting from id 0 on every pass livelock the teardown?
+
+rcv_wq is an ordered workqueue:
+
+tipc_topsrv_work_start()
+    s->rcv_wq = alloc_ordered_workqueue("tipc_rcv", 0);
+
+Take a lower-id connection A whose rwork is queued behind the running
+rwork of a higher-id connection B. The loop closes A, but the reference
+held by A's queued rwork keeps A in conn_idr. On every later pass
+idr_get_next() returns A again, so the loop never reaches B.
+
+tipc_conn_recv_work() keeps running while B is connected and requests
+keep arriving:
+
+    while (connected(con)) {
+        if (tipc_conn_rcv_from_sock(con))
+            break;
+    ...
+
+The cond_resched() here gives up the CPU. A's work still cannot run on
+the ordered queue until B's worker returns. If B's receive queue never
+empties, idr_in_use never reaches 0 and cleanup_net() spins.
+
+The old loop advanced with id++. It would have cleared CF_CONNECTED on B,
+which ends B's worker.
+
+Local peers probably cannot keep this going. The listener is bound with
+TIPC_NODE_SCOPE, and local user sockets hold a reference on the netns.
+
+Remote peers are another matter. tipc_net_ops is registered before
+tipc_topsrv_net_ops, so the bearers are still up when tipc_topsrv_stop()
+runs. The TIPC_LISTEN branch of tipc_sk_filter_connect() has no scope
+check. A remote node that knows the listener's port id might be able to
+connect and keep sending TIPC_SUB_CANCEL requests. That precondition has
+not been confirmed.
+
+Would it work to first walk forward through all entries, using
+idr_get_next() from id + 1 and closing each one? The loop could then
+retry from 0 only for the entries still waiting on asynchronous release.
+
+> +		if (con && !kref_get_unless_zero(&con->kref))
+> +			con = NULL;
+> +		spin_unlock_bh(&srv->idr_lock);
+>  		if (con) {
+> -			conn_get(con);
+> -			spin_unlock_bh(&srv->idr_lock);
+>  			tipc_conn_close(con);
+
+[Severity: High]
+
+This is a pre-existing issue, but can this call to tipc_conn_close()
+dereference a NULL con->sock?
+
+tipc_topsrv_kern_subscr() creates conn_idr entries that have no socket:
+
+    con = tipc_conn_alloc(tipc_topsrv(net), NULL);
+
+tipc_conn_close() dereferences the socket before it tests CF_CONNECTED:
+
+    static void tipc_conn_close(struct tipc_conn *con)
+    {
+        struct sock *sk = con->sock->sk;
+
+Other code in this file already allows for a NULL sock.
+tipc_conn_kref_release() checks if (con->sock). tipc_conn_send_to_sock()
+only calls tipc_conn_close() inside its if (con->sock) branch.
+
+Here is a possible sequence:
+
+1. tipc_topsrv_queue_evt() takes a reference on a kernel subscription
+   connection K through tipc_conn_lookup(). It then queues K->swork on
+   send_wq.
+
+2. Before that work runs, the group socket is closed:
+   tipc_release()->tipc_group_delete()->tipc_topsrv_kern_unsubscr().
+   This clears CF_CONNECTED and drops two references. K stays in
+   conn_idr, held only by the swork reference.
+
+3. cleanup_net()->tipc_topsrv_exit_net()->tipc_topsrv_stop() runs.
+   cancel_work_sync(&srv->awork) does not drain send_wq. idr_get_next()
+   returns K, kref_get_unless_zero() succeeds, and tipc_conn_close(K)
+   dereferences NULL.
+
+The old idr_find() plus conn_get() loop had the same exposure. The new
+loop retries until idr_in_use reaches 0, so any socketless entry still in
+conn_idr is now guaranteed to reach tipc_conn_close() at least once.
+
+This loop is being rewritten anyway. Could it skip tipc_conn_close() when
+con->sock is NULL? Alternatively, tipc_conn_close() could check
+con->sock before using it.
+
+>  			conn_put(con);
+> -			spin_lock_bh(&srv->idr_lock);
+>  		}
+> +		cond_resched();
+> +		spin_lock_bh(&srv->idr_lock);
+>  	}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261003192530.2414682-2-Jeremy.Jean%40oss.cyber.gouv.fr
