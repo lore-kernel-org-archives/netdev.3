@@ -1,140 +1,158 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DBF43932A;
-	Sun,  4 Oct 2026 13:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B7443932A;
+	Sun,  4 Oct 2026 13:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791121270; cv=none; b=k64JaX/Swv+MNcXk/xReaZDDLx6Houb85zoOaIIlgzF8vXshtgpvuQVgBikvGq0OjXSLmPfrYZqxIBOBWvLM72jLfWOZcfIxEGHHIavP3Sxp4ZAgaZyr0NN1qGsixbCnynphsJaexPChIkFT8TSNwaBlhsYt1Cf5DWvhDRwaEhs=
+	t=1791121293; cv=none; b=HzEDu9In0kD1OOGMxsvMzWfTjFI6whr8J9pUVERfb/rHS/KvNwpIn4AGBuniyM8exyv1PS/92jdjDJo8Mv+SIWzXhePEDxSfvUJ953/9t3rj3daHPItWnc7PouIBmKQefYbiFOXniFfDf569p7gaUw5oCDxApNluXrzeyeThf50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791121270; c=relaxed/simple;
-	bh=qYSHF+X139cwmIzUUroDNV1G+HYXki0eyfluRiEVUFo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O5pWr5u9UpznAHbdyV+RK7/eT5S1pmoTkqu0CJGSIQdRMk7QPRJBDEngIQ7HLyVQK5vOhUSafyqeUclSGSgoTzddlRXD0k8uKVpQT/yUVc1zGwLbwJPvV44FQfamI4RTAc2WwFb49giORFC2ZtIaKKYLmKcyJj2tG1C6iU+bpG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NvJQmWY6; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791121293; c=relaxed/simple;
+	bh=PtkV7iCUL7SLX+DkR5SZirNeigd2I/22pujk//bGiF4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=uDSZazJ+xKOrQ05oPmof8Fq9DE05DJ4OuZGlGjU5nRq5KuCEf9d7f8tgTH9utk9UoWkHcp0V7gB8VPmKGlH096/st8yYRqiwYecWKLGuBL2HbGwWo1dOMH8sr2HXCtRNkSdWLSR4hS4jz+Ypua12003H7FmI0Q5j8C2p/42pBcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MKTsDSv0; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NvJQmWY6"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id CE4D41A1129;
-	Sun,  4 Oct 2026 13:41:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 29736604FE;
-	Sun,  4 Oct 2026 13:41:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2A72C1032817F;
-	Sun,  4 Oct 2026 15:40:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791121263; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Ihd+dofvU6Mcgj3MdWdld4bUs480ZOkVZ8XCTiohnu8=;
-	b=NvJQmWY6oV3Ja8xANIq3B3P9pcEN+tee1cqds4XePR5AAnzLOaknyImx+sZw2QP9RrlXLL
-	eHpb9Q6y8Qr3aXJXh6klwYhtolMHCP/1xooHI/SZXhaBSs9O14zhoWt1KBOvYa5aGJyZAt
-	ypm/zMhH98KMkIWI4HKqQWRMz6NE3D1apdac1VRIoszUyE8Iaz30wjhq8UqZACrqPekFTg
-	CnBgGke4wA6VzRxfbOBuPy6jFZGwQjmPCX8usxGOlLV9F34mKppDxW5zsU9wkxnJfRTYjF
-	VcV9c4vtzdMC3s6ZpMKmKAHHk0XGLfT8HIIXKckonFsxD8tXPqvwsrAZNQClLg==
-Message-ID: <c76a27fd-4131-4a4d-a832-de96e0006a55@bootlin.com>
-Date: Sun, 4 Oct 2026 15:40:56 +0200
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MKTsDSv0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=PtkV7iCUL7SLX+DkR5SZirNeigd2I/22pujk//bGiF4=; b=M
+	KTsDSv01XbHu1gvNc6ES4jdUMS/Mfwl9bAMVkkX7wOU8EzKvZdvVIcAf2khZ2F+8
+	DtBkfpGpwvZfnwF8KOEFYjsGuzztc8AMDRXOEHIgXyPMROxFt/N/GGCDZPJzd10x
+	iBOWiM5vNjLk6VrKY1fq0hsfiRp/pE2n2MclQg2JmY=
+Received: from taozj888$163.com ( [2409:8a20:22c4:8eb0:4c8a:acdb:bd14:bd14]
+ ) by ajax-webmail-wmsvr-40-126 (Coremail) ; Sun, 4 Oct 2026 21:40:05 +0800
+ (CST)
+Date: Sun, 4 Oct 2026 21:40:05 +0800 (CST)
+From: taozj888  <taozj888@163.com>
+To: =?GBK?Q?Th=A8=A6o_Lebrun?= <theo.lebrun@bootlin.com>
+Cc: "Nicolai Buchwitz" <nb@tipi-net.de>, stable@vger.kernel.org,
+	"Conor Dooley" <conor.dooley@microchip.com>,
+	"Andrew Lunn" <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Jakub Kicinski" <kuba@kernel.org>,
+	"Paolo Abeni" <pabeni@redhat.com>,
+	"Haavard Skinnemoen" <hskinnemoen@atmel.com>,
+	"Jeff Garzik" <jeff@garzik.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re:Re: [PATCH net v2] net: macb: rate limit netdev error info print
+ in the data path
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <DLUC9MKOACM3.OPW5RYHOYZV1@bootlin.com>
+References: <20260930113520.392025-1-taozj888@163.com>
+ <b06cb02d9b26ceff272d7e34927a7eac@tipi-net.de>
+ <DLUC9MKOACM3.OPW5RYHOYZV1@bootlin.com>
+X-NTES-SC: AL_Qu2SA/2Zvkor4ySZYekfm04bju07UMu2v/4l2Y9SOp9wjA3pxxorW0JOFHr86eOOOjqUoBelVgZE6tx/bKBaZroJznldgSEDtjhpY+sK4thzEA==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 3/7] net: stmmac: mediatek: add RX/TX delay
- stage divider in platform data
-To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Biao Huang <biao.huang@mediatek.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: kernel@collabora.com, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com
-References: <20260924-dwmac-mediatek-mt8189-v2-0-430bd74d5ef9@collabora.com>
- <20260924-dwmac-mediatek-mt8189-v2-3-430bd74d5ef9@collabora.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260924-dwmac-mediatek-mt8189-v2-3-430bd74d5ef9@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Message-ID: <7cd93a53.199d.1a10724a8ae.Coremail.taozj888@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:figvCgD3X2k1V8JqbX9SAA--.81W
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3RUu9WrCVzVNHQAA3J
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-Hi,
-
-On 9/24/26 09:23, Louis-Alexis Eyraud wrote:
-> In preparation of newer SoC support, that have like MT8189 SoC
-> different RX and TX internal delay stage steps than MT8188/MT8195, add
-> the RX and TX delay stage divider values in the variant platform data
-> and replace the hardcoded value use in mt8195_set_delay.
-> 
-> Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c | 20 ++++++++++++++++++--
->  1 file changed, 18 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> index f7eb85110df0..1c532cc3a975 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-mediatek.c
-> @@ -100,6 +100,8 @@ struct mediatek_dwmac_variant {
->  
->  	u32 rx_delay_max;
->  	u32 tx_delay_max;
-> +	u16 rx_delay_stage_div;
-> +	u16 tx_delay_stage_div;
->  	u8 dma_bit_mask;
->  };
->  
-> @@ -300,13 +302,25 @@ static int mt8195_set_interface(struct mediatek_dwmac_plat_data *plat,
->  
->  static int mt8195_set_delay(struct mediatek_dwmac_plat_data *plat)
->  {
-> +	u16 rx_delay_stage_div = plat->variant->rx_delay_stage_div;
-> +	u16 tx_delay_stage_div = plat->variant->tx_delay_stage_div;
->  	struct mac_delay_struct *mac_delay = &plat->mac_delay;
-> -	u32 rx_delay_stage_val = mac_delay->rx_delay / MT8195_DLY_RXC_STAGE_DIV;
-> -	u32 tx_delay_stage_val = mac_delay->tx_delay / MT8195_DLY_TXC_STAGE_DIV;
-> +	u32 rx_delay_stage_val;
-> +	u32 tx_delay_stage_val;
->  	u32 gtxc_delay_val = 0;
->  	u32 rmii_delay_val = 0;
->  	u32 delay_val = 0;
->  
-> +	if (rx_delay_stage_div)
-> +		rx_delay_stage_val = mac_delay->rx_delay / rx_delay_stage_div;
-> +	else
-> +		rx_delay_stage_val = 0;
-> +
-> +	if (tx_delay_stage_div)
-> +		tx_delay_stage_val = mac_delay->tx_delay / tx_delay_stage_div;
-> +	else
-> +		tx_delay_stage_val = 0;
-> +
->  	switch (plat->phy_mode) {
->  	case PHY_INTERFACE_MODE_MII:
->  		delay_val |= FIELD_PREP(MT8195_DLY_TXC_ENABLE,
-> @@ -415,6 +429,8 @@ static const struct mediatek_dwmac_variant mt8195_gmac_variant = {
->  	.num_clks = ARRAY_SIZE(mt8195_dwmac_clk_l),
->  	.rx_delay_max = MT8195_DLY_RXC_MAX,
->  	.tx_delay_max = MT8195_DLY_TXC_MAX,
-> +	.rx_delay_stage_div = MT8195_DLY_RXC_STAGE_DIV,
-> +	.tx_delay_stage_div = MT8195_DLY_TXC_STAGE_DIV,
->  	.dma_bit_mask = 35,
->  };
->  
-> 
-
+SGVsbG8gVGhlbywgTmljb2xhaToKClBsZWFzZSBzZWUgYW5zd2VyIGlubGluZS4KClRoYW5rcywK
+ClppamluIFRhbwoKCgoKQXQgMjAyNi0xMC0wMiAyMDowODowMywgIlRoqKZvIExlYnJ1biIgPHRo
+ZW8ubGVicnVuQGJvb3RsaW4uY29tPiB3cm90ZToKPkhlbGxvIE5pY29sYWksCj4KPk9uIEZyaSBP
+Y3QgMiwgMjAyNiBhdCAxMjoxMCBQTSBDRVNULCBOaWNvbGFpIEJ1Y2h3aXR6IHdyb3RlOgo+PiBP
+biAzMC45LjIwMjYgMTM6MzUsIHRhb3pqODg4QDE2My5jb20gd3JvdGU6Cj4+PiBGcm9tOiB0YW96
+aWppbiA8dGFvemo4ODhAMTYzLmNvbT4KPj4+IAo+Pj4gTm93IHRoZSBNQUNCIGV0aGVybmV0IGRy
+aXZlciBwcmludCB0aGUgbmV0ZGV2IGVycm9yIGluZm9ybWF0aW9uCj4+PiBkaXJlY3RseSBieSBu
+ZXRkZXZfZXJyKCksIHdoaWNoIHdvdWxkIGxlYWQgdG8gYSBsYXJnZSBudW1iZXIgb2YKPj4+IGVy
+cm9yIGluZm9ybWF0aW9uIHByaW50IGlmIHRoZXJlIHdhcyBhIHNpZ25pZmljYW50IG51bWJlciBv
+Zgo+Pj4gZXJyb3Igb3IganVzdCBqdW1ibyBwYWNrZXRzIGV4Y2VlZGluZyB0aGUgTVRVIHJlY2Vp
+dmVkIHdoZW4gYm9vdGluZy4KPj4+IEZvciBleGFtcGxlLCBpdCB3b3VsZCBwcmludCBhIGxhcmdl
+IG51bWJlciBvZjoKPj4+IAo+Pj4gbWFjYiBQSFlUMDAzNjowMCBldGgwOiBub3Qgd2hvbGUgZnJh
+bWUgcG9pbnRlZCBieSBkZXNjcmlwdG9yCj4+PiBtYWNiIFBIWVQwMDM2OjAwIGV0aDA6IG5vdCB3
+aG9sZSBmcmFtZSBwb2ludGVkIGJ5IGRlc2NyaXB0b3IKPj4+IC4uLgo+Pgo+PiBPdXQgb2YgaW50
+ZXJlc3Q6IElzIHRoaXMgYSBQaHl0aXVtIHZlbmRvciBrZXJuZWw/Cj4KPkkgbG9va2VkIGluIHRo
+ZSBwYXN0IHNvIEknbGwgYW5zd2VyOiB5ZXMhCj4KPkludGVybmV0IHNlYXJjaCBnaXZlcyBvbmUg
+d29ydGh5IHJlc3VsdDogYSAyMDI1IHNlcmllcyB0byBEUERLIGFkZGluZwo+TUFDQiBzdXBwb3J0
+LiBTb21lIGV4dHJhY3RzIGFib3V0IHRoZSBleGFjdCBzdHJpbmcgbWF0Y2ggYW5kIGFsc28gaG93
+Cj50aGV5IHN1cHBvcnQgQUNQSSBvciBPRiBhbmQgbm8gb3RoZXIgcGxhdGZvcm0gYXBwYXJlbnRs
+eS4KPgo+I2RlZmluZSBPRl9QSFlUSVVNX0dFTTFQMF9NQUMJImNkbnMscGh5dGl1bS1nZW0tMS4w
+IgkvKiBQaHl0aXVtIDEuMCBNQUMgKi8KPiNkZWZpbmUgT0ZfUEhZVElVTV9HRU0yUDBfTUFDCSJj
+ZG5zLHBoeXRpdW0tZ2VtLTIuMCIJLyogUGh5dGl1bSAyLjAgTUFDICovCj4jZGVmaW5lIEFDUElf
+UEhZVElVTV9HRU0xUDBfTUFDCSJQSFlUMDAzNiIJLyogUGh5dGl1bSAxLjAgIE1BQyAqLwo+Cj5z
+dGF0aWMgaW50IG1hY2JfZ2V0X2Rldl90eXBlKHN0cnVjdCBydGVfZXRoX2RldiAqZGV2KQo+ewo+
+CS8vIC4uLgo+Cj4JaWYgKCFzdHJjbXAoZGV2X3R5cGUsIE9GX1BIWVRJVU1fR0VNMVAwX01BQykg
+fHwKPgkgICAgIXN0cmNtcChkZXZfdHlwZSwgQUNQSV9QSFlUSVVNX0dFTTFQMF9NQUMpKSB7Cj4J
+CXByaXYtPmRldl90eXBlID0gREVWX1RZUEVfUEhZVElVTV9HRU0xUDBfTUFDOwo+CX0gZWxzZSBp
+ZiAoIXN0cmNtcChkZXZfdHlwZSwgT0ZfUEhZVElVTV9HRU0yUDBfTUFDKSkgewo+CQlwcml2LT5k
+ZXZfdHlwZSA9IERFVl9UWVBFX1BIWVRJVU1fR0VNMlAwX01BQzsKPgl9IGVsc2Ugewo+CQlNQUNC
+X0xPRyhFUlIsICJVbnN1cHBvcnRlZCBkZXZpY2UgdHlwZTogJXMuIiwgZGV2X3R5cGUpOwo+CQly
+ZXQgPSAtRUlOVkFMOwo+CX0KPgo+CS8vIC4uLgo+fQo+Cj5AWmlqaW46IGRvIHlvdSBoYXZlIGFu
+eSBvdGhlciBMaW51eCBNQUNCIHBhdGNoZXMgZm9yIGl0IHRvIHdvcms/CgpObywgSSBoYXZlIG5v
+IG90aGVyIHBhdGNoZXMgZm9yIExpbnV4IE1BQ0IgZXhjZXB0IHRoZSBjdXJyZW50IG9uZS4KCgo+
+Cj4+PiBpbiBnZW1fcngoKSBieSByZWNlaXZlZCBhIGxhcmdlIG51bWJlciBvZiBwYWNrZXRzIHdp
+dGhvdXQKPj4+IFJYX0VPRiBmbGFnIHNldCwgZXNwZWNpYWxseSB3aXRoIHVua25vd24gcGFja2V0
+Cj4+PiB0eXBlIHRoYXQgd291bGQgcGVuZXRyYXRlIHRoZSBoYXJkd2FyZSBvZmZsb2FkIGZvciB0
+aGUgSVAgcGFja2V0cy4KPj4+IAo+Pj4gVGhlIHVubGltaXRlZCBwcmludHMgaGVyZSB3b3VsZCBn
+cmVhdGx5IGJvdGhlciBhbmQgZGVsYXkKPj4+IHRoZSBzeXN0ZW0gYm9vdGluZyBwcm9jZXNzIHVu
+bGVzcyB0aGUgc291cmNlIHN0b3Agc2VuZGluZwo+Pj4gcGFja2V0cyBzaW5jZSB0aGV5IG9jY3Vw
+eSB0aGUgY29uc29sZSBvdXRwdXQgYmFuZHdpZHRoIGFuZAo+Pj4gb3RoZXIgcHJvY2Vzc2VzIGhh
+dmUgdG8gd2FpdCBmb3IgdGhlIGNvbXBsZXRpb24gb2YgcHJpbnRpbmcgdGhvc2UKPj4+IG1lc3Nh
+Z2VzLgo+Pj4gCj4+PiBTbyByYXRlIGxpbWl0IHRoZSBuZXRkZXYgZXJyb3IgaW5mb3JtYXRpb24g
+cHJpbnQgaW4gdGhlIHJlY2VpdmUKPj4+IGFuZCB0cmFuc21pdCBkYXRhIHBhdGguCj4+PiAKPj4+
+IEZpeGVzOiA4OWU1Nzg1ZmM4YTYgKCJbUEFUQ0hdIEF0bWVsIE1BQ0IgZXRoZXJuZXQgZHJpdmVy
+IikKPj4KPj4gSU1ITyB0aGUgY29ycmVjdCB0YWcgaXMgNGRmOTUxMzFlYTgwICgibmV0L21hY2I6
+IGNoYW5nZSBSWCBwYXRoIGZvciAKPj4gR0VNIik/Cj4+IEF0IGxlYXN0IHRoZSBnZW1fcngoKSBt
+ZXNzYWdlcyB3ZXJlIGludHJvZHVjZWQgaGVyZS4KPgo+VGhlIHBhdGNoIHVzZWQgdG8gdG91Y2gg
+bWFjYl9zdGFydF94bWl0KCksIHdoaWNoIGV4cGxhaW5zIHdoeSBJIHRvbGQKPlppamluIHRvIHRh
+cmdldCB0aGUgaW5pdGlhbCBjb21taXQgb24gcHJldmlvdXMgcmV2aXNpb24uCj4KT0ssIEkgd2ls
+bCBzdGlsbCB1c2UgdGhlIGluaXRpYWwgY29tbWl0IGluZGljYXRlZCBieSBUaGVvLgoKPkBaaWpp
+bjogd2hlcmUgaXMgdGhlIFYyIGNoYW5nZWxvZz8gRWFjaCBuZXcgcmV2aXNpb24gbXVzdCBsaXN0
+IChiZWxvdwo+dGhlIGZvbGQgbGluZSBmb3Igc2luZ2xlIHBhdGNoZXMpIHRoZWlyIGV4aGF1c3Rp
+dmUgbGlzdCBvZiBjaGFuZ2VzCj5jb21wYXJlZCB0byB0aGUgcHJldmlvdXMgcmV2aXNpb24uCgpT
+b3JyeSBmb3IgbWlzc2luZyB0aGUgVjIgY2hhbmdlbG9nLiBJIHdpbGwgYWRkIGl0IGluIHRoZSBW
+MyBwYXRjaC4KCj4KPmh0dHBzOi8vd3d3Lmtlcm5lbC5vcmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nl
+c3Mvc3VibWl0dGluZy1wYXRjaGVzLmh0bWwjcmVzcG9uZC10by1yZXZpZXctY29tbWVudHMKPmh0
+dHBzOi8vd3d3Lmtlcm5lbC5vcmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nlc3Mvc3VibWl0dGluZy1w
+YXRjaGVzLmh0bWwjdGhlLWNhbm9uaWNhbC1wYXRjaC1mb3JtYXQKPgo+Pj4gQ2M6IHN0YWJsZUB2
+Z2VyLmtlcm5lbC5vcmcKPj4+IAo+Pgo+PiBEcm9wIHRoZSBibGFuayBsaW5lIGFzIG90aGVyd2lz
+ZSB0b29saW5nIG1pZ2h0IGdldCBjb25mdXNlZCBhbmQgZG9lc24ndAo+PiBnZXQgYWxsIHRhZ3Mg
+Y29ycmVjdGx5LgoKT0ssIEkgd2lsbCB0YWtlIGNhcmUgb2YgaXQgaW4gdGhlIFYzIHBhdGNoLgoK
+Pj4KPj4+IFNpZ25lZC1vZmYtYnk6IFppamluIFRhbyA8dGFvemo4ODhAMTYzLmNvbT4KPj4+IC0t
+LQo+Pj4gIGRyaXZlcnMvbmV0L2V0aGVybmV0L2NhZGVuY2UvbWFjYl9tYWluLmMgfCAxNCArKysr
+KysrKy0tLS0tLQo+Pj4gIDEgZmlsZSBjaGFuZ2VkLCA4IGluc2VydGlvbnMoKyksIDYgZGVsZXRp
+b25zKC0pCj4+PiAKPj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9jYWRlbmNl
+L21hY2JfbWFpbi5jIAo+Pj4gYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9jYWRlbmNlL21hY2JfbWFp
+bi5jCj4+PiBpbmRleCA4ZTVjMDM0ZGMzYTQuLmNhNjA5NjBiZWMzNiAxMDA2NDQKPj4+IC0tLSBh
+L2RyaXZlcnMvbmV0L2V0aGVybmV0L2NhZGVuY2UvbWFjYl9tYWluLmMKPj4+ICsrKyBiL2RyaXZl
+cnMvbmV0L2V0aGVybmV0L2NhZGVuY2UvbWFjYl9tYWluLmMKPj4+IEBAIC0xNjE3LDE2ICsxNjE3
+LDE2IEBAIHN0YXRpYyBpbnQgZ2VtX3J4KHN0cnVjdCBtYWNiX3F1ZXVlICpxdWV1ZSwgCj4+PiBz
+dHJ1Y3QgbmFwaV9zdHJ1Y3QgKm5hcGksCj4+PiAgCQljb3VudCsrOwo+Pj4gCj4+PiAgCQlpZiAo
+IShjdHJsICYgTUFDQl9CSVQoUlhfU09GKSAmJiBjdHJsICYgTUFDQl9CSVQoUlhfRU9GKSkpIHsK
+Pj4+IC0JCQluZXRkZXZfZXJyKGJwLT5uZXRkZXYsCj4+PiAtCQkJCSAgICJub3Qgd2hvbGUgZnJh
+bWUgcG9pbnRlZCBieSBkZXNjcmlwdG9yXG4iKTsKPj4+ICsJCQlpZiAobmV0X3JhdGVsaW1pdCgp
+KQo+Pj4gKwkJCQluZXRkZXZfZXJyKGJwLT5uZXRkZXYsICJub3Qgd2hvbGUgZnJhbWUgcG9pbnRl
+ZCBieSBkZXNjcmlwdG9yXG4iKTsKPj4KPj4gVGhpcyB3aWxsIGp1c3QgaGlkZSB0aGUgZXJyb3Ig
+bWVzc2FnZSwgYnV0IHRoZSBzcGxpdC9kcm9wIGlzIHN0aWxsIAo+PiBwcmVzZW50Lgo+PiBIb3cg
+YWJvdXQgbGltaXRpbmcgSk1MIGluIG1hY2JfaW5pdF9odygpIHByb3Blcmx5Pwo+Pgo+PiAgICAg
+ICAgICBpZiAoKGJwLT5jYXBzICYgTUFDQl9DQVBTX0pVTUJPKSAmJiBicC0+anVtYm9fbWF4X2xl
+bikgewo+PiAgICAgICAgICAgICAgICAgIHUzMiBqbWwgPSBicC0+cnhfYnVmZmVyX3NpemUgLSBO
+RVRfSVBfQUxJR04gKyAKPj4gRVRIX0ZDU19MRU47Cj4+ICAgICAgICAgICAgICAgICAgZ2VtX3dy
+aXRlbChicCwgSk1MLCBtaW4oam1sLCBicC0+anVtYm9fbWF4X2xlbikpOwo+PiAgICAgICAgICB9
+Cj4+Cj4+IFRoZSBjb2RlIGFib3ZlIGlzIHVudGVzdGVkLCBzbyBwcm9iYWJseSBuZWVkcyBmdXJ0
+aGVyIHR3ZWFraW5nLiBBbiAKPj4gYWx0ZXJuYXRpdmUgY291bGQKPj4gYmUgdG8gaGFuZGxlIHRo
+ZSBzcGxpdCBmcmFtZXMgaW4gZ2VtX3J4KCkgY29ycmVjdGx5Lgo+Cj5JIGFncmVlIHdpdGggeW91
+IGJ1dCB0byBjbGFyaWZ5IGZvciBaaWppbjogaWYgeW91IGRvIHRoaXMgdGhlbiBpdCBzaG91bGQK
+PmJlIGEgc2VwYXJhdGUgcGF0Y2ggYXMgY2hhbmdlcyBhcmUgcHJldHR5IHVucmVsYXRlZC4KClll
+cywgd2l0aCB5b3VyIGV4cGVyaWVuY2UgaW4gdGhpcyBhcmVhLCBtYXliZSBhIHNlcGFyYXRlIHBh
+dGNoIGZvciBpdCBpcyBwcmVmZXJyZWQuCkkgdGhpbmsgdGhlIGVycm9yIHJlcG9ydGVkIGlzIG5v
+dCBqdXN0IHJlbGF0ZWQgdGhlIEp1bWJvIGZyYW1lLCBidXQgdGhlIGp1bWJvIGZyYW1lCndvdWxk
+IHRyaWdnZXIgdGhlIGVycm9yLiBTbyByYXRlIGxpbWl0IHByaW50aW5nIHRoaXMga2luZCBvZiBt
+c2cgaXMgbmVlZGVkIGJ1dCBub3QKdG90YWxseSBoaWRlIHRob3NlIG1zZ3MuICAKCgo+Cj5UaGFu
+a3MsCj4KPi0tCj5UaKimbyBMZWJydW4sIEJvb3RsaW4KPkVtYmVkZGVkIExpbnV4IGFuZCBLZXJu
+ZWwgZW5naW5lZXJpbmcKPmh0dHBzOi8vYm9vdGxpbi5jb20K
