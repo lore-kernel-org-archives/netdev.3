@@ -1,63 +1,64 @@
-Received: from mail-wr2-f8.google.com (mail-wr2-f8.google.com [74.125.225.72])
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6CB3C1991
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 16:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6363C3C14
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 16:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791130338; cv=none; b=P8wxu5R26/cXVOduYEKkrRDtAPjuqyBNNuUoDKV5xknSoIEl2BSCQhOtmNvNj89EJD67H0jfWkusc1C+BjWwfMYp/F03TCt7t+NhExN6MKNh5yUlDteGpWmCF0pcGJHRNGJsfWDzXHlBFEqQFUxiJhA8mKE3eR+AiPwg5wjyx/I=
+	t=1791130347; cv=none; b=VSiAKiaU+Qj/ZbiGIjLvfL6xa69wrrsU7o/cQEW+BJ/cP68oK2fYAOf2K/00+MmO8wAN+N7sNrTHi1Y0ku4upG1N/pdjQemoDj7GYgfpTv0v+jnACSn0NLdPsxWVKZ8E8Of4P4BZRN1bjrGr8YUvnPk85V/C3WiOwB+6zkdtGm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791130338; c=relaxed/simple;
-	bh=/idkTiictibcBwPx3KaPsQdtHC3he+EupjWKYNAP2kU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a/7i7BNgHWGrZCfVavsI4a+DRRRo33/M/jn0F69/ghMCFR9bcwcbga4O3fptv/ODUGgYtG5JfvxMhwMLbAXUjK9vQf/K0lLtrqI+W1SjssgWlhnDiTBPr2U6b2Y6O2sHwycfK6zoNgDkdhsqIP8FVuH5eNrp6u/GIlgbQBPJrXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=LvYwD5Gy; arc=none smtp.client-ip=74.125.225.72
+	s=arc-20240116; t=1791130347; c=relaxed/simple;
+	bh=cygj9XrML4i1wJQ8hHaGD+G5g+hpr9bOnAluhNYTSDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mKOstL10CksRt5GomtyKuGRbc9E+eLHLokBZtuDYRFjG4jJvubHBxvJQqVGnjGUXfIfJMxa47GAPpE8Mv64A3VZAnwHbHwKDu7mNTZs+eaEkEbCS0n85iRBh9s2ZO60YkB8uVPlOiFgvhgYtjEs5UJaW3hnsOJR0WdJQYbG/lcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=eh4qp+TF; arc=none smtp.client-ip=74.125.225.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="LvYwD5Gy"
-Received: by mail-wr2-f8.google.com with SMTP id ffacd0b85a97d-48b0241a47eso396178f8f.1
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 09:12:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="eh4qp+TF"
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48b05fdb2f9so818608f8f.0
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 09:12:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1791130334; x=1791735134; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FPYochGZLRchHnAPZrvdvx5IZfJjHufMRI6BSKQPizk=;
-        b=LvYwD5GyiDwXhrg/S3JMlbplWAU5Gcxl9zVnG1Q9it0n5G223lMoTRKLnxwTCSII6i
-         K6JOHWf6U61ppLp3jIfvF243UtfPQ+lZW9g96sbmxG3bPMQwBs2LiwWp0ERocW9Fbkiu
-         voMfnuuPH3woYNouPAHZeoIGSdhDt3K372E/rPhoG2EVsqWMLOTgw7NTvpsX4uEJx4wY
-         K6TYwAJrPc6JxVLPC4WbKCffPhCWMm85zq7Njg5QU+KMR5A7rddbxf955UmAcpZU45if
-         wpm0bU+hWdXebgQUI0ClWc94jgXoCpFv0lGgDF35leDqggX7gL4U25OUC9JOsku8z+fm
-         vV/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791130334; x=1791735134;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=blockcast.net; s=google; t=1791130344; x=1791735144; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FPYochGZLRchHnAPZrvdvx5IZfJjHufMRI6BSKQPizk=;
-        b=dpwm5MHoMWkDpSRRdZdarHZh1BdCtbOkfGqwGpxnyJ13D9O9fyRqP0B8ze9tzDIuGN
-         r2RlAm+y3yikq5wiwG6WR2c0lShrv9SpED4BiEkHHLhPelOfltiDsYfR0dQ3kTwpBkzM
-         HSO7FcFgsq0LtR5imlVKouHNtcFKECbiGEdJagszpgMymbTBBUUrntvbJqzkQidqwAcI
-         3NhALPOUa1rEKkdsIvkBGIfYWW00Z9/99rsrxMirUhmbwb8tVnEFonMcSgeOzGt3U2aU
-         Oin3oN8Ia5v3EnS9/7hsnfmNqM8j6/A+ZQkr2YuMQlSsC+t7nwEAR+YbMuKPE9FzRKWA
-         4O2Q==
-X-Forwarded-Encrypted: i=1; AKwUvByLxAW9Gx/z723uMdB0EkBQFZ5KtbBkHoXSzeD8Gn5pDnPRS54zIx7jkuCLUKIVAtm9AdyRKR8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mDnxcXTqJKEl+YJAWd8hNo7SY/AuKXRp3MlGqBH2C+2yFUU+yw
-	n1I25qMXf7wpNpywG4IxBcFwgmwAAzL1xQuxHlhMsUWrXOZgARWmTIh4D9//Pkjih7Y=
-X-Gm-Gg: AYBFou09B51IO3wEBH98FhCHtBCUD2YeCYp66PKCR5R29GzEB5G+wpriSNQB+yZea9b
-	w3s/KaPPi6u8WsgobxJvvd1sWAOcLaGS5SgKnxhvnPmacLXDjMTNioIDdXZGFW3dqDL45najlZk
-	uL6EtPenT4aAQsxxH+Py+MN/VOOKvBEc3Hs66ykMvi9gCe3HigYRnTE9/CnPlWUBpZOOD8u1fTp
-	KQZlyDsEvfl0hORho59PdQIjFsfLQOKKZZkq6ams9IhaFlNOOr107YG+TfOeZkCpe2kvCPNprXi
-	/mzWJKGpXYp1EiqepnbgsvIq3Yp9EKLvkV1Mf0eZolOIarvEy2GRyw+TSF3OT5EJv+BLz1XsFQ1
-	lJ3Kcc72vKe13HPn8TE5mViHLHoo0K0RPqd8vdV6LAd/nwPDrjXKNNKdmZZsqgcUd5sSOjTq+QV
-	ut8X1FzBZgRyLecb/LqqSiQDBfR5NIpSi9ku5LMT4iSScT9YwghuKvJfQCTWOLVAzFKpwhSoxw8
-	QTH85CDTOnns7nbupBK20y5xt1UHAuZh12CaXjmX8ax8y+tTRDYwB+4/UIWUeVz/P4efLgnQInm
-	IEnRtW/XpYo=
-X-Received: by 2002:a05:600c:5392:b0:4a1:6991:36d7 with SMTP id 5b1f17b1804b1-4a1699137bfmr78497205e9.10.1791130333960;
-        Sun, 04 Oct 2026 09:12:13 -0700 (PDT)
+        bh=0IQefR0ITJSQZvvgSeBhwGRR05na9J9C3XNmDgSGtQA=;
+        b=eh4qp+TFOKpPkQo9I20hLQA++A85KCA+XcbXBxi21mt6k33ZMEKwcC5h9/IiikwFXL
+         I3GJ0zgmHCsIaL+ifdjwL2fj8dJHuPeidzqGbvezXqppQs2iJleaw7WOOc1IrQL6iP/e
+         hWW58vOqivsdc6ACIyLIjTNAVfjEMYZF9Zx1nwdAzDXy0YR3KF3JKSFs0PUJpt2Szo1/
+         eIBl5lwV15t62DTLrE0fLmDzJ5fFJwBCPXxAd9W8TF2EU19v2CeKASCLNUBtjjb/Swu0
+         TsvFr+tQLlTvbsSTyUGq6VXASV/UaRX8geyxkauZyb5TCz43xQMkLJILJJ2RNe5Ud5LR
+         R9kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791130344; x=1791735144;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0IQefR0ITJSQZvvgSeBhwGRR05na9J9C3XNmDgSGtQA=;
+        b=tV1LjLVAF9aqzAeqwH5+0mIv0gibDtVlSieYJUdnO8hMtXTDwrbo6pJG4w7df5xL5g
+         W5eEdN5exDmZJRfvuZygHXB5eoo3VfBsSghZH4EoBPZIffHpi83UwEpxCICX9BK5eFnK
+         5fz2i8jq328HQncL1SyNrKhDeDjel3KChUBfIPa3tsZbViwOy0se7aYPLv7/tDnUY9sa
+         uOfpaO0PrvOz5u0ePnyJqRJfBsrW2l/zHkMNPjcPPvI5ky/V//aNo3YeFcqnqCNiaEYH
+         qyucQzDmCbnSdznRPI89vPqxG7+f6PHSQkvyXgeVHIIY4qBY9GrdiFiZfWylK4j1AhNG
+         rpQw==
+X-Forwarded-Encrypted: i=1; AKwUvBw1z+Pe+63s7L4z1G2Z3LSK0yN/gUKJXlqsH+dtUp1m8U0SukGuYDUS5WSAxur/1x/nYsWofV4=@vger.kernel.org
+X-Gm-Message-State: AFuF++mRhPDyBJ1mTK4WrO3EEpZILITA0tcL8dZw0l88kA/Yu2Zxaxkn
+	XqN65qd7l0lG1C9Fr43LTyNXIHIvhtA72uJ92yx2w9c83m6lvJYtE6rPv3rX88hPoyQ=
+X-Gm-Gg: AYBFou0KpfdbbvPfGn1wXSpdbFW4LOWrqJwN++IvHI0GsD2p4PE0EShxn2tKU8aq/8h
+	4xkcML5cOObKi334gExTM8h89rslVM2BOJItlB/+npdXVCuZJQ22ckpm6FxDyd9MM7CxfQiXW1Z
+	OJYlBffPwdrVkNSUwOHbiPEshkjE92aLEoy1Y6wk5Tr2slSvkR28yjAqxC8MZueKDqXXAsnZmGW
+	x6tjxoUuYaTsZyNm3RamYXwwBOfn+R6bVBwX3F+ySOWw1u1pEWrasvVEuHmQdykkUXoLq1FJ9aj
+	7NaF3tk70N5EZm8MwW1DyuBQbxrOBb3an3eyLmYXFrlpfV2B4etn7gIOPJgO1cXaMYet3u0mSLl
+	jgexGnRvIulJCxJ6ko8HqYMPhnJZDG0p8g5ifKDE3+1nRGGCv5NCGBFpwXssjS8i+JECNIiVlNg
+	M5ANrAuy/9gx1kX50g4wpis+yhP9m2xfUb0dT7+LvpbUE2sizXe1MsegO2DqZ5kd+HjS1SQ6CTU
+	ZXjVN6UHppJkvG5auhvqnitgKzV1L85nC5L5CpXUjERF5ybxR3lECTxmtFVN/ONxT8Sz372EtHV
+X-Received: by 2002:a05:600c:6092:b0:4a0:20c7:6d4c with SMTP id 5b1f17b1804b1-4a027452eb0mr134814135e9.0.1791130343733;
+        Sun, 04 Oct 2026 09:12:23 -0700 (PDT)
 Received: from localhost.localdomain ([197.51.72.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a02854073csm244512275e9.3.2026.10.04.09.12.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a02854073csm244512275e9.3.2026.10.04.09.12.14
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 04 Oct 2026 09:12:13 -0700 (PDT)
+        Sun, 04 Oct 2026 09:12:22 -0700 (PDT)
 From: Omar Ramadan <omar@blockcast.net>
 To: Taehee Yoo <ap420073@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -69,11 +70,14 @@ To: Taehee Yoo <ap420073@gmail.com>,
 Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 0/2] amt: mark relay data as a UDP tunnel packet, with a selftest
-Date: Sun,  4 Oct 2026 19:11:58 +0300
-Message-ID: <20261004161200.27196-1-omar@blockcast.net>
+	linux-kernel@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net-next v3 1/2] amt: mark relay data as a UDP tunnel packet before sending it
+Date: Sun,  4 Oct 2026 19:11:59 +0300
+Message-ID: <20261004161200.27196-2-omar@blockcast.net>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261004161200.27196-1-omar@blockcast.net>
+References: <20261004161200.27196-1-omar@blockcast.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,56 +86,81 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-amt_send_multicast_data() never calls udp_tunnel_handle_offloads(),
-unlike other UDP tunnels. With tx checksum offload on the amt device (off
-by default), a UDP_SEGMENT burst through the relay is dropped before
-patch 1 and delivered after it. Patch 2 adds the selftest.
+amt_send_multicast_data() encapsulates the multicast packet in
+AMT + UDP + IP headers, but unlike other UDP tunnels it never calls
+udp_tunnel_handle_offloads().
 
-This follows Eric Dumazet's suggestion on my withdrawn [PATCH net] "amt:
-do not offer software GSO on the amt device":
-https://lore.kernel.org/all/20260928181554.85766-1-omar@blockcast.net/
+If tx checksum offload is enabled on the amt device (off by default),
+GSO packets (e.g. from a UDP_SEGMENT sender) reach amt_dev_xmit()
+unsegmented. They are then sent with neither skb->encapsulation nor
+SKB_GSO_UDP_TUNNEL_CSUM set, and the lower device drops them:
+__udp_gso_segment() fails because csum_start does not match the
+(outer) transport header.
 
-Not touched: amt advertises NETIF_F_GSO_FRAGLIST and skb_copy_expand()
-refuses such skbs with a WARN_ON_ONCE(). I have not reproduced it, and
-it would be a separate fix.
+Call udp_tunnel_handle_offloads(skb, true), as other UDP tunnels do.
+udp_csum is true because udp_tunnel_xmit_skb() is called with
+nocheck == false.
 
-v3:
- - patch 2: fail a case when one of its captures dies (Sashiko review)
- - patch 2: also check amtg rx_dropped, as the changelog says, and
-   mention the plain-datagram cases there (Sashiko review)
- - patch 2: wait for a fresh READY, and fail a case when a helper does
-   not start (Sashiko review)
- - patch 2: fail, not skip, when no relayed probe gets through (Sashiko
-   review)
- - patch 2: fail, not skip, a tx-on UDP_SEGMENT case in which no GSO
-   skb reaches amt_dev_xmit(), as the changelog says
- - patch 2: make amt_gso reject sizes that would overflow its buffers
-   (Sashiko review)
- - patch 1 is unchanged
-v2: https://lore.kernel.org/all/20261002212458.34247-1-omar@blockcast.net/
- - shorten the changelogs, add Suggested-by, and move the testing notes
-   below the "---" (Eric); patch 1's code is unchanged, one comment is
-   corrected
- - patch 2: fix the shellcheck and 80-column checkpatch findings reported
-   by the netdev CI, skip when AF_PACKET is not available (v1 reported no
-   result and exit 0), add CONFIG_PACKET to the config, drop dead options
-   and code
-v1: https://lore.kernel.org/all/20261001171016.88208-1-omar@blockcast.net/
+Also reset the mac header of the copy before recording the inner
+headers. amt_dev_xmit() pulled the Ethernet header without moving
+mac_header, so inner_mac_header would point 14 bytes before the
+inner IP header. That makes tnl_hlen negative in
+__skb_udp_tunnel_segment().
 
-Omar Ramadan (2):
-  amt: mark relay data as a UDP tunnel packet before sending it
-  selftests: net: add an amt test for UDP_SEGMENT through the relay
+Suggested-by: Eric Dumazet <edumazet@kernel.org>
+Assisted-by: LLM
+Signed-off-by: Omar Ramadan <omar@blockcast.net>
+---
 
- drivers/net/amt.c                      |  10 +
- tools/testing/selftests/net/.gitignore |   1 +
- tools/testing/selftests/net/Makefile   |   2 +
- tools/testing/selftests/net/amt_gso.c  | 462 +++++++++++++++++++++++++
- tools/testing/selftests/net/amt_gso.sh | 282 +++++++++++++++
- tools/testing/selftests/net/config     |   1 +
- 6 files changed, 758 insertions(+)
- create mode 100644 tools/testing/selftests/net/amt_gso.c
- create mode 100755 tools/testing/selftests/net/amt_gso.sh
+Notes (v3):
+    Found by an LLM-assisted review of drivers/net/amt.c. Reproduced with
+    the selftest in patch 2 (x86_64 KVM guest, CONFIG_DEBUG_NET=y), tx
+    offload on, UDP_SEGMENT bursts of 8 x 1200 + 100 bytes, IPv4 and IPv6
+    inner traffic, 40 runs per kernel on net-next eb0c18404c89 and 20 with
+    this version of the selftest on 071876fd5048:
+    
+     - before: 0 of 900 datagrams delivered and tx_dropped +100 on the
+       relay's egress device, in every case
+     - after: 900 of 900 delivered, no drops and no UDP checksum errors at
+       the gateway, in every case
+     - with only the skb_reset_mac_header() call removed (two runs, an
+       earlier version of the selftest), the packets are still dropped and
+       DEBUG_NET warns in skb_udp_tunnel_segment()
+     - tx offload off, and non-GSO datagrams with it on, work before and
+       after; amt.sh passes with the patch
+    
+    Not tested here: hardware UDP tunnel segmentation offload, hardware
+    checksumming of a non-GSO CHECKSUM_PARTIAL packet (it now leaves amt
+    with skb->encapsulation set, as with other UDP tunnels; the selftest's
+    egress device has tx offload off), a forwarded GRO packet as the GSO
+    source, KASAN (the netdev CI's debug kernel ran v1), sparse, udp_csum ==
+    false, and amt.sh on the unpatched kernel.
 
+ drivers/net/amt.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 0277e4c..a8236d4 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -1078,7 +1078,17 @@ static void amt_send_multicast_data(struct amt_dev *amt,
+ 	if (!skb)
+ 		return;
+ 
++	/* amt_dev_xmit() pulled the Ethernet header without moving the mac
++	 * header. The tunnelled payload has no link-layer header, so the
++	 * inner mac header must coincide with the inner IP header.
++	 */
++	skb_reset_mac_header(skb);
+ 	skb_reset_inner_headers(skb);
++	if (udp_tunnel_handle_offloads(skb, true)) {
++		kfree_skb(skb);
++		return;
++	}
++
+ 	memset(&fl4, 0, sizeof(struct flowi4));
+ 	fl4.flowi4_oif         = amt->stream_dev->ifindex;
+ 	fl4.daddr              = tunnel->ip4;
 -- 
 2.50.1 (Apple Git-155)
 
