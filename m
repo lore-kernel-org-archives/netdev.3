@@ -1,275 +1,144 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-vs2-f20.google.com (mail-vs2-f20.google.com [74.125.227.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99014756CB
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 18:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791139375; cv=none; b=GPfLQ2852qIiVY9WfvGprel1OhDgxRn+z4UYoucJZnpOtRGD4kpTH3X8Ny6WWBlFKXkMA4SaP3gPy9ZcCHxJR2OmFpcIHXRsNfZTkjvfFyGCEgYUatQuD9SOd4ihBKreSmplAlgBq94EPyfO4pjjTzcgW5KfKxXYurSiAR277lQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791139375; c=relaxed/simple;
-	bh=c8QqcgF7ocZMljqDs1R3TUAV/GbB+QI1ABTrXNU4zfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jW8VoEvBTgU6SQYfN/wVYaNtNYCAB54eQRwIh8w28DUjMpdkGBsaDpSTujEhwHoaiA1WuL2s9BX6NWF9Cq72FVRg9Ju0fuKS907gjLneSt1nFLpAM6/vQArsrKndsDyj2sM0BnmgpKVTcz5uBKd26x0yJJ+66aj4D3xwgcfP0BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qKj7RbsF; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E262A3FFFA7
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 19:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791141037; cv=pass; b=NdrRj90vfkx+QoZlnZDxyxQmWRxtlIJDeKA4alvPY4glKv9FsB87U+tPkzkc5U58KIeTlmt/umDIXaWHikJIcninbTdPyerhAoBVNxEIsHHEU17vMkrM2eMwzB4291w46kj6XqefiRdtqTe+2vcPI9jMuOb/b1dK4baseIN4SOc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791141037; c=relaxed/simple;
+	bh=z4KDwGSCeUl6OO60pOlQkNnNe+e6ge5EX8bgo8KStA8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kf/bL8ldlOMIs14w2A9uV67TSrFIcZvaifZQ/PEs7d1+vHuzpba4YRyoAP7+zrpWQJRxi7KclO3W7ZxXTBA7KXZ8axiZrMJqerrbvWoPfJKwtNHlKy8B+UkZ/F/xMLncjb0Bczn2lcrqJ0CV1KLXKl70gOix+M9FRcmksFm5iLQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azmJ86dj; arc=pass smtp.client-ip=74.125.227.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qKj7RbsF"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3a7bf792424so440494a91.1
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 11:42:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azmJ86dj"
+Received: by mail-vs2-f20.google.com with SMTP id ada2fe7eead31-7ba99a2e56dso206967137.3
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 12:10:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791141034; cv=none;
+        d=google.com; s=arc-20260327;
+        b=nrs303Q+pnSLbs58r7ULHr+pPBJim7LZoYVUh+lqVvea8DpJDFZHYv+lPDcVHU1+b0
+         o1jb8h7aGmflxBN0UNKP/YH3YmvWffu6dvROGE7BhCDRtrDhHWfAIi2ZVXjDsL5kgI/5
+         +y+0j5U7J2+f8YulF1tUT6VYcfZtzzYq0e49+jQ7M8Tn3Sc9Zf9cMip3w2VkNjtCDh+2
+         y79xAn0yo8eRgO8j53iuiTBL5O0hStMaaSbqMRwujv1hLbmYHcWNY8FKC8NFCM3MtpAa
+         cXZadDXs5m6UXAfQdADMD/P7DmwTigSfLkBdWIunzNi+zaCMM0iTEOaGhILbwEVI875r
+         jTHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xkZNnkM2zHQpEZqhgoebCPzMrZI5v2FZv8Rlnaa+Lhw=;
+        fh=zT239D3uluY0S4SaxSt6v9qsARJBm0AH8ZIzY6AOLC8=;
+        b=RS9JgEcMSZPSNe1c43KtFY3HuHvIJh5JbT27UKomhPsG8Zi3ExNR6+Y4/2O56iuDZl
+         GkpMhHSjXfjq5qIyq3nfNhrbgIvTcOEbV2cZb8c6S7/yHp+OrECP1RFXZci1a2rSPrdC
+         wxChFX6Ujhya/VKDffSh03R5ga/h/3TFKFhR8+H1oRJIqe7JGSXACOYol/i4OC4L/5PA
+         ZKBR/2ReB4S3dTvS+FhYl4x60HL3FROWryOLgJZGSppYg/0ZTUD08F3xjd5uGN1NfCfz
+         qrMb07mo0ggFNVeKP8plQ3h8EgFrGHm5Xho9TRILmpEjlRSlBlzdxG2y0xNQ13eIRYe8
+         z4Ew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791139373; x=1791744173; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ri7RfvF5jW6amKjaENZTiBgapNpPsH0K5fFWNQhIJFY=;
-        b=qKj7RbsF8f9ibw+K+eXZB7gHtqoqoTfQ++wlJl/ubjcHcEBTDjJmdsDf2NMgZeov0r
-         19TzLQkJ8ou6k+/C+csSwQo+7NyP3m7TrsdEV+vpYnYyJruY7nGWkM+McI1PgastSj+e
-         NakqemZSoOh3fZD1TED8xJ8Y5PHQBLFHb/c9NAVIVpeYoLfzfNxmN5iOzj1PT+PlvCPY
-         6dTeOgIbXgPc/UlgNpv7J6+dR4VjmNoIVQ8XnJZRA2+PQL3U+em5Irj3G8iRS3T6g1JP
-         EXl4nWOeRnQUxqozp8zeWlaC8sZ7c7Px7+99hPXV5jO2rYkWtnvIL3WiTcjatDSCjcis
-         iLFQ==
+        d=gmail.com; s=20251104; t=1791141034; x=1791745834; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xkZNnkM2zHQpEZqhgoebCPzMrZI5v2FZv8Rlnaa+Lhw=;
+        b=azmJ86djbSt3sBvvtqyEcjmK39zF85f4M9bUnxi9mUUeM/hr0dDPefKZiljTxy19xk
+         HwynE6c+zk4Yhhh9btgLRgV9/Xvn4zKg0L0Y8SkS/853a5SAnttxlXr+VCsURtx1oUFt
+         eVhdW+ViZA1DrlqD7TZjs069rbiprVMflyvUr9Qf5T+65w/s0RkWxhUTKcco/PwnrE/n
+         aSicfbvGHuXa08nd3g2ELzE27r6tptaUFEFbpKNHCvmhDsm0/qzRNL96ef5k7JoO7kad
+         vMQRWDacHdWByEActGgEpbDdPogJcjzKYkFB1p4+06zMLKQ7IQrJ/g94IvigrLIMXoxL
+         SdNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791139373; x=1791744173;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ri7RfvF5jW6amKjaENZTiBgapNpPsH0K5fFWNQhIJFY=;
-        b=LbhfEuGcxrINzsB3hyZvkdRa3+a2vG3wtWycSzklPTJaqZJYjhP2DsQk0q8sc5c3X9
-         9Rr4HZbZN0fxC4Bo/7GAVuRj9dATgTDIoWnwz/V1rqoKmJEBCeGw99frWpBuB+6oCo8e
-         CNW2n4uLr3tFyGS7lHlLYvrKWabOcdcSJndsNmHJ+cH8rIDN3f4+ewSGHEFbEEThZ7pU
-         O70rM8/3LI1PXP1ZP4IWSWifXLsm4TXOWmhFL+jnt4fNFMv00zZ2FF26qb3Eh55cqwFl
-         5plIG6lAUUMAS95O4oIbFYbRUDQl6kxqY5+cYMjvMZEo2pcB347Mcf0ZGxjkaAPI3uTt
-         DJDQ==
-X-Gm-Message-State: AFq9FYLWw/Rw3yfLMntjv2+68A5/ZduLTODmt0s+hciEcqZPU5MOQq0k
-	FE03jLrA43sKcFsgg9ibRT7bWKld8OnigKk8fEsS5bL0UrP2F07BgnWmj7IvUG2iJjQ=
-X-Gm-Gg: AYBFou1A/PwFWuGjJMVsl2PQiUQNyxyBdluAs0Y+wacNKMPrd8wWPwagQiad6wXVosN
-	BYNd/SHk9ntHNk9pQjOC2AiWPC+C2FqJXOoPKxfmtjfwSp+5/JtG/USrCN3vMwenw/MqXSizuop
-	3ATodolkpXwBz7qt/gXqPmQEhzdvVQPXnZtUiurJ5LjyWNOOEIoYaSuqCVhmtDewWyZkPKtLYoI
-	3zzWnGSPJTgZ6//TL7czGPVm/OWVptQdMOkVl2iHk7MbsMBKBPUhtN1a1jA7hRSpbX3vOuO1M/9
-	5NUXJYYgHVwaj3DjMxaeWcX5vpZNouUlo4NX8pveqjYFum65RK7qmMzzN5PPvn1jwp759CMbgEn
-	WVtqAw80Mp5CBS9r1reBtREtYCFkbFTo1iKpy2qIfb0kTydjzgEaRiEAyhh49SFh5ZxmMbl9tDy
-	e1CUPL5dAlOZeTX5k0Te82VpqCxP/iDM3ufmd1cD0XOCyGJn+pTdcgQadlY1DsE95UZivD1itYb
-	LdSfvz7/rs4fi6c2v2d5I3Qtg==
-X-Received: by 2002:a17:90b:388e:b0:398:b1eb:136c with SMTP id 98e67ed59e1d1-3a78673670bmr4239108a91.9.1791139372953;
-        Sun, 04 Oct 2026 11:42:52 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:661c:1246::1d2:d1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78d6b3ceasm7622579a91.10.2026.10.04.11.42.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 11:42:52 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Frank <Frank.Sae@motor-comm.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: phy: motorcomm: Add cable test support for internal YT861x PHYs
-Date: Mon,  5 Oct 2026 02:42:43 +0800
-Message-ID: <20261004184246.1260426-1-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20260707; t=1791141034; x=1791745834;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xkZNnkM2zHQpEZqhgoebCPzMrZI5v2FZv8Rlnaa+Lhw=;
+        b=BnTmajS3Ej7T2BTc+dnlOV00eiB9cPqQFyoRl1uQUeBvYNwSTSCirDM+/9u3lXAigw
+         soSm6wKvMjgnfcFQ3+UmTQ3ynB0Q+cq3vKUIzGsjLEDbdscu48xVB9huFW+qyCL/83JV
+         ScfZXTHGLe3Pk0P7tlf+5pBHEhQu7pxyeMxtU+gr1cDP2q3LeD4jqa9AyZ2pxBUJOyll
+         UMPdJ/wQy7sIQmAWYK9ICVDBB9epzfcpInRCkdgNGyW4b6/D4gZu7luD89JPnS1ojZj9
+         T9qTDrS456j5mj5IXbS1xIDE1ItmFGFSm3LOel/8YPTW7xAc1ZLBxwSAEGkOQs6D95gW
+         L1qw==
+X-Gm-Message-State: AFq9FYLKQms8Q6S+Da3A7ikQb2DtcoHUDZv7OWGdJ83lNfbohqwxDXcE
+	cCY6O5vaWFGYzwHO5Sz2BEVqMcZTmfLnnP4B+KBvs51L+Frpj9nHPZNlOd2lRnxKsjYgN0uJM7T
+	I0+AVVfa80DtJGoaxchywvrw5gZlcilE=
+X-Gm-Gg: AYBFou1GdajLu2J0OdMfe8MoJ42dXlYaiceQq5Il1jyYvLSSaUsDfRtENRaAZN8t4Kq
+	jf0VuB3t3SyJJzThg5unai4Sz6c9ahKNzrRcg3AsT/8EK5rk0v+9uTZWZeEG6etSU1NFImIgkLp
+	WMbGnIHgDiyFCopr7M31neqvhNp40npyCdh+UMUqLamKa7roeNbVFS1AA62wSDviHQhPGg9HBFM
+	Mu0LcoeuvCCCe6OiA0pGjQxnjzo8aVsIlsR6ECIi4gvHymp1PWPLXQjdHokOPNPySlXf7JGeIN9
+	wwif31VvD0VdyJ17sANVUCKJhQX61ycoiC0R0QZGdPUED+21w20Ulf7+XY2whie2yR6bV8gP6n7
+	NZ08aK7wcWdrDndhMraeb9B+JO6jKKbST3wpFCIfMI5D+bvGhg6Wn2acx/JWHKEuf1qC3wlb5I/
+	dAV0JT6O5mZBL+I+ncI/LB53+XXbSNrVSrLiRwwLOeiUN5
+X-Received: by 2002:a05:6102:ac7:b0:7c1:b55d:373c with SMTP id
+ ada2fe7eead31-7c1b55d5b1amr1023105137.31.1791141034613; Sun, 04 Oct 2026
+ 12:10:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261001-submit-phylink-suspended-stop-v1-v1-1-0669fdb4a93b@gmail.com>
+ <04e29fa0-3ff9-4248-bfe1-87dfe8ce3ec3@lunn.ch>
+In-Reply-To: <04e29fa0-3ff9-4248-bfe1-87dfe8ce3ec3@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Sun, 4 Oct 2026 13:10:23 -0600
+X-Gm-Features: AclHuK_y06FW1116Mu5hZ1KX5sWXMaJ-6Dz8hI1d53uu8GYrxhRaXRuilJzrS9U
+Message-ID: <CADvTj4rm0h0iy7vHsdxc4zQGuybjUvGFqVqrHOn7r2O1z+OWoQ@mail.gmail.com>
+Subject: Re: [PATCH net] net: phylink: allow stopping a suspended instance
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The YT921x switches integrate GbE PHYs of the YT861x family (PHY ID
-0x01e04281) on the switch-internal MDIO bus exposed by the yt921x DSA
-driver. Without a specific driver they bind to the generic PHY driver
-and lack the cable diagnostic facility. Add a driver entry for them
-with cable test support.
+On Sun, Oct 4, 2026 at 7:54=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Thu, Oct 01, 2026 at 01:24:53AM -0600, James Hilliard wrote:
+> > After a failed MAC resume, a driver must be able to stop phylink withou=
+t
+> > resuming it and reconfiguring the failed MAC.
+>
+> This is adding a lot of complexity, for an edge case, which i don't
+> particularly like.
+>
+> In your case, why is resume failing?
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/phy/motorcomm.c | 119 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 117 insertions(+), 2 deletions(-)
+This is a prerequisite for the stmmac recovery fixes, rather than a
+fix for the underlying cause of a particular resume failure.
 
-diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-index 90a4f86f2758..ef15fef304aa 100644
---- a/drivers/net/phy/motorcomm.c
-+++ b/drivers/net/phy/motorcomm.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0+
- /*
-- * Motorcomm 8511/8521/8522/8531/8531S/8821 PHY driver.
-+ * Motorcomm 8511/8521/8522/8531/8531S/861x/8821 PHY driver.
-  *
-  * Author: Peter Geis <pgwipeout@gmail.com>
-  * Author: Frank <Frank.Sae@motor-comm.com>
-@@ -8,6 +8,7 @@
- 
- #include <linux/clk.h>
- #include <linux/etherdevice.h>
-+#include <linux/ethtool_netlink.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/phy.h>
-@@ -18,7 +19,9 @@
- #define PHY_ID_YT8522		0x4f51e928
- #define PHY_ID_YT8531		0x4f51e91b
- #define PHY_ID_YT8531S		0x4f51e91a
-+#define PHY_ID_INT861X		0x01e04281
- #define PHY_ID_YT8821		0x4f51ea19
-+
- /* YT8521/YT8531S/YT8821 Register Overview
-  *	UTP Register space	|	FIBER Register space
-  *  ------------------------------------------------------------
-@@ -298,6 +301,19 @@
- #define YT8531_SCR_CLK_SRC_REF_25M		4
- #define YT8531_SCR_CLK_SRC_SSC_25M		5
- 
-+/* TDR (cable diagnostic) test control */
-+#define YT861X_TDR_CTRL_REG			0x80
-+#define YT861X_TDR_CTRL_START			BIT(0)
-+
-+#define YT861X_TDR_STATUS_REG			0x84
-+#define YT861X_TDR_STATUS_BUSY			BIT(15)
-+#define YT861X_TDR_STATUS_PAIR_OK		0
-+#define YT861X_TDR_STATUS_PAIR_UNKNOWN		1
-+#define YT861X_TDR_STATUS_PAIR_SHORT		2
-+#define YT861X_TDR_STATUS_PAIR_OPEN		3
-+
-+#define YT861X_TDR_PAIR_LENGTH_REG(n)		(0x87 + (n))	/* in cm */
-+
- #define YT8821_SDS_EXT_CSR_CTRL_REG			0x23
- #define YT8821_SDS_EXT_CSR_VCO_LDO_EN			BIT(15)
- #define YT8821_SDS_EXT_CSR_VCO_BIAS_LPF_EN		BIT(8)
-@@ -2538,6 +2554,95 @@ static int yt8521_get_features(struct phy_device *phydev)
- 	return ret;
- }
- 
-+/**
-+ * yt861x_cable_test_start() - start a cable diagnostic (TDR) test
-+ * @phydev: a pointer to a &struct phy_device
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+static int yt861x_cable_test_start(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* auto sleep would abort the TDR test */
-+	ret = ytphy_modify_ext_with_lock(phydev,
-+					 YT8521_EXTREG_SLEEP_CONTROL1_REG,
-+					 YT8521_ESC1R_SLEEP_SW, 0);
-+	if (ret)
-+		return ret;
-+
-+	return ytphy_write_ext_with_lock(phydev, YT861X_TDR_CTRL_REG,
-+					 YT861X_TDR_CTRL_START);
-+}
-+
-+/**
-+ * yt861x_cable_test_get_status() - report cable diagnostic test results
-+ * @phydev: a pointer to a &struct phy_device
-+ * @finished: set to true when the test is complete
-+ *
-+ * Returns: 0 or negative errno code
-+ */
-+static int yt861x_cable_test_get_status(struct phy_device *phydev,
-+					bool *finished)
-+{
-+	int ret;
-+
-+	*finished = false;
-+
-+	ret = ytphy_read_ext_with_lock(phydev, YT861X_TDR_STATUS_REG);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (ret & YT861X_TDR_STATUS_BUSY)
-+		return 0;
-+
-+	for (int pair = ETHTOOL_A_CABLE_PAIR_A; pair <= ETHTOOL_A_CABLE_PAIR_D;
-+	     pair++) {
-+		u8 code;
-+
-+		switch ((ret >> (2 * pair)) & 0x3) {
-+		case YT861X_TDR_STATUS_PAIR_OK:
-+			code = ETHTOOL_A_CABLE_RESULT_CODE_OK;
-+			break;
-+		case YT861X_TDR_STATUS_PAIR_SHORT:
-+			code = ETHTOOL_A_CABLE_RESULT_CODE_SAME_SHORT;
-+			break;
-+		case YT861X_TDR_STATUS_PAIR_OPEN:
-+			code = ETHTOOL_A_CABLE_RESULT_CODE_OPEN;
-+			break;
-+		default:
-+			code = ETHTOOL_A_CABLE_RESULT_CODE_UNSPEC;
-+		}
-+
-+		ethnl_cable_test_result(phydev, pair, code);
-+
-+		if (code != ETHTOOL_A_CABLE_RESULT_CODE_OK &&
-+		    code != ETHTOOL_A_CABLE_RESULT_CODE_UNSPEC) {
-+			ret = ytphy_read_ext_with_lock(phydev,
-+						       YT861X_TDR_PAIR_LENGTH_REG(pair));
-+			if (ret >= 0)
-+				ethnl_cable_test_fault_length(phydev, pair,
-+							      ret);
-+		}
-+	}
-+
-+	/* restore auto sleep and restart the PHY to resume the link */
-+	ret = ytphy_modify_ext_with_lock(phydev,
-+					 YT8521_EXTREG_SLEEP_CONTROL1_REG,
-+					 YT8521_ESC1R_SLEEP_SW,
-+					 YT8521_ESC1R_SLEEP_SW);
-+	if (ret)
-+		return ret;
-+
-+	ret = genphy_soft_reset(phydev);
-+	if (ret)
-+		return ret;
-+
-+	*finished = true;
-+
-+	return 0;
-+}
-+
- /**
-  * yt8821_get_features - read mmd register to get 2.5G capability
-  * @phydev: target phy_device struct
-@@ -3173,6 +3278,15 @@ static struct phy_driver motorcomm_phy_drvs[] = {
- 		.suspend	= yt8521_suspend,
- 		.resume		= yt8521_resume,
- 	},
-+	{
-+		PHY_ID_MATCH_EXACT(PHY_ID_INT861X),
-+		.name			= "Internal YT861x Gigabit Ethernet",
-+		.soft_reset		= genphy_soft_reset,
-+		.suspend		= genphy_suspend,
-+		.resume			= genphy_resume,
-+		.cable_test_start	= yt861x_cable_test_start,
-+		.cable_test_get_status	= yt861x_cable_test_get_status,
-+	},
- 	{
- 		PHY_ID_MATCH_EXACT(PHY_ID_YT8821),
- 		.name			= "YT8821 2.5Gbps PHY",
-@@ -3194,7 +3308,7 @@ static struct phy_driver motorcomm_phy_drvs[] = {
- 
- module_phy_driver(motorcomm_phy_drvs);
- 
--MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/8821 PHY driver");
-+MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/861x/8821 PHY driver");
- MODULE_AUTHOR("Peter Geis");
- MODULE_AUTHOR("Frank");
- MODULE_LICENSE("GPL");
-@@ -3205,6 +3319,7 @@ static const struct mdio_device_id __maybe_unused motorcomm_tbl[] = {
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8522) },
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8531) },
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8531S) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_INT861X) },
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_YT8821) },
- 	{ /* sentinel */ }
- };
--- 
-2.53.0
+stmmac_resume() already returns an error if stmmac_hw_setup() fails,
+for example when the DMA reset does not complete. That return is
+before phylink_resume(), leaving phylink suspended.
 
+The stmmac recovery work preserves the interface's administrative
+state after that failure, but leaves the datapath detached and
+quiescent. An ordinary down/up must then be able to release the
+retained resources and attempt a fresh open. Closing the interface
+therefore needs to terminate the suspended phylink instance.
+
+Calling phylink_resume() merely to make phylink_stop() usable would
+reconfigure the MAC and restart link resolution, even though MAC
+setup has just failed.
+
+The additional bookkeeping handles the two different suspend paths:
+with MAC WoL, stop must finish the deferred link-down and clear the
+WoL disable state; without MAC WoL, suspend has already stopped the
+instance, so stop must avoid repeating that shutdown. Suspend-owned
+PHY speed changes also need unwinding so the next start does not
+retain the reduced advertisement.
+
+Those are phylink-owned transitions which stmmac cannot complete
+itself. The driver still owns the recovery policy and any fix for
+the underlying resume failure; this supplies the cleanup transition
+needed when restoration fails.
+
+>
+>    Andrew
