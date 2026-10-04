@@ -1,81 +1,43 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011056.outbound.protection.outlook.com [40.107.208.56])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.62.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3C4352030;
-	Sun,  4 Oct 2026 06:49:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791096599; cv=fail; b=MdEoejF/QQrCDz10vOjsy92jMJJnCs7fVgJJKg9vRihAxC229nJqV8OA960AWByXRE5aSYaMwbLmkSHZKEjneV7Xyuf+Jw0DYxvPZc8tw/pDVOwO1W2Vh1lijmBVdPy9sYn/kLP6zXUOcDpl3EpdGxFCywox+aiWQ7iBW+QSKvo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791096599; c=relaxed/simple;
-	bh=bfeLESUN4v8SB9UssKknA5SVpXkAwBJ8iv8U9Ha0Bh4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c5T98HL5zX7KWmJoUs6KE6S7tqaWNbT/6fQfHPSz9ZKpGRQbjpSmhdLw3KL/Su0EHHrLl8Z4MfK1N0uER/lESRAjho6pl1dW2qqwuohd4bg/hNSuELdQ+K4rGZN/JhPACD0waIMERNlTrOKKGr9aPMBcGjfXCR8ZUWKTAiOWfVU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kkYu7d2H; arc=fail smtp.client-ip=40.107.208.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kkYu7d2H"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fDxyr9c4Zz46Fp96BlLlgpZEsraEIiOrsO3fbuxjI1HDcT4/snLOs0zIfrFPN289CgG1EqqwdnkPEJxFLYq7FLhq+dptxZfR20Okf7/agqJdi2n/85gm08c2SxjWKg5Jmj3436sZY2ZvFXvjsmqaIfG+Lg4tAZmGdwYMYo0d/6gqFefsdadVOP81aXlZGP7CHIYSzaoZAPa9fedEXAE6OhO92dYuqrIbiVod6fY9c0iZ/W8kulqo+XilcxRyhj32Y8wUYrPX3XQgnQR2/cT78F5PmCHDyAMkfaxFfqnpUCIEgCmpFYiR2d06zgAQWlskOqqI21+WrYq1hB4pYC6gQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Lvwd8hLV4YbfzOLwOAVVw3iXTxexnl5OJKwSEqf2RWE=;
- b=Ns0eG3rV4W1pF9fsIKxGicBgSYyayjvmWuynvfbwnEbXTnzNyK4iQyIEkgqCz91W4crgX7BoLDKw0Q1ng+Qf8BloGBTR9rIuH0MO7c50FO2mrUsF/x6kMmkpM6E5Z2rPP17eI6yIfiZeoTxUc7SRYvnAk66SJOHL+SZZrcgjMhcCxIi0kpxaGk7yeig83TJV6pVF2KouuU7+NyYfafxgQW3ky75LQAJGw8ihYYFjLM7iv3OYOYLYVs9KTJjAnjNZlEjzPyhYsvMJR3+mawubrbHoGv5QgllZP+3Hq2NWoI+7adTcsYm/bpK1riZofllYZtpKtRO8CGPMAZ1EzMWPmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Lvwd8hLV4YbfzOLwOAVVw3iXTxexnl5OJKwSEqf2RWE=;
- b=kkYu7d2Hjfc/PPRlkWawQ1CAXJLuZYltwe6xp02gP5puItdagY965EC4cR/dHfKPDKZrHOtEi7J4gg2nWPrpnoGaW/PAAZP+xdDrbPV+ovjteEihTX17wPKbxBworHCRiYvIRfkurUJo+f2t7qBcKbEBxuE3RFi2wTIjnV6FGbnAdzvm+SQkT44T8CnEXyF0hZej+us3LF5a87mvfqKb90JaR/5ABoMP8gdCbBlPA0jTyWlhS5jTqVud2jf+xaIbB4LILEB8jgFNtdYFHNW00tAHx4TKW5mibmx7trfDGeU1T1Mysfo3WP1U/t3NgMtP/7gtdOqc2c25CgX6d7umwA==
-Received: from CH0P223CA0007.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:116::31)
- by MW4PR12MB5666.namprd12.prod.outlook.com (2603:10b6:303:188::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Sun, 4 Oct
- 2026 06:49:53 +0000
-Received: from BL6PEPF0006C3DE.namprd02.prod.outlook.com
- (2603:10b6:610:116:cafe::79) by CH0P223CA0007.outlook.office365.com
- (2603:10b6:610:116::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Sun, 4
- Oct 2026 06:49:52 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- BL6PEPF0006C3DE.mail.protection.outlook.com (10.167.249.233) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Sun, 4 Oct 2026 06:49:52 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sat, 3 Oct
- 2026 23:49:41 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sat, 3 Oct 2026 23:49:40 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Sat, 3 Oct 2026 23:49:36 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>, Gal Pressman <gal@nvidia.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky <leonro@nvidia.com>, open list
-	<linux-kernel@vger.kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [pull-request] mlx5: Move data direct infrastructure to mlx5_core
-Date: Sun, 4 Oct 2026 09:49:21 +0300
-Message-ID: <20261004064921.213888-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6C1343882;
+	Sun,  4 Oct 2026 06:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.62.65
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791097064; cv=none; b=p9HmEtpntWdpLLtD+KWQAsOnpi30RPU4k+vEDon2yLahh7QwfWV5FGn0k9rzGVqJ0pcWoyKPcGjiEADW8y9PaR0JBQiBynO+A2AnBBJp9I36GFGBKbB6gwlqf+6QbQZBZPnUnr2KzvaNCegDEjZaKTLtUnJ8TwDaubAlViWhFTE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791097064; c=relaxed/simple;
+	bh=qMKTeX6QtXNBVgXx7Zs6dfhOPvBtw5YVSWO/dUNU3+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FW/wuyzPQVW1hZ9uV92qmhSajYsncze+rKBsvOyxAIsBNwvq8LolfkSbXAo6EyeTfDeVyAW7i5vgnFZqZMm91Ovd7EZmeNsWliahJLAApZntJdGZNUhY8m58DlhtxlsOCinSpKx25cOBuVTtMoNdd1NmYMlAVlnvbOYyEH6aPbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=114.132.62.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: esmtpsz10t1791096970t10344664
+X-QQ-Originating-IP: nJOR0frfwbGnqrdfnzE1aYjnJ2R8q/MNtkEsBs/YjUs=
+Received: from nic-Precision-5820-Tower ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 04 Oct 2026 14:56:07 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 1219953670316839340
+EX-QQ-RecipientCnt: 11
+From: Dong Yibo <dong100@mucse.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dong100@mucse.com,
+	yaojun@mucse.com
+Subject: [PATCH net-next v15 0/5] net: rnpgbe: Add TX/RX and link status support
+Date: Sun,  4 Oct 2026 14:56:04 +0800
+Message-ID: <B438B0A83ACCA2DE+20261004065604.224873-1-dong100@mucse.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,115 +45,122 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0006C3DE:EE_|MW4PR12MB5666:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e5e5ce5-15a6-47f2-d353-08df21e3b11c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|7416014|376014|23010399003|6133799003|18002099003|10067099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	D3/CoywAY1fbHWUK0g2g9QnQ9Dyf+RaXx/VP+/KiUN9NA2grtvaCabnchYIC13St6d6AjEaZrz1J16fR4li3QUski9nc2d+4Q6FncgiHc5W3LGas4+1DefMQ2oeDE7V9LD3+pA/wAyZk61B+crxBk+cXDDcE/GOBhFFd8lw5ofCtQxsEFtsTkG+j6MI6RG3h5CHMAIud0eYbFShDmgyxnM0wW0n/iHaFUtkvZmKrltj3BYYWoHNzSV9PsfB71nATNu4LvCPBLDPO7KG+7U46Nl2atZEu7+JO4TJLFURIPqke2dtkFT62O63LUysFw1EK26UB+Jmn51rHuPqlV0Sh8UrQWGd8S7T6mw+ar7Ep3KxxcR7nsfYO3ymy8w+afSsS/QjSG/3dYV/OcYiX7vD6ttos25DX7klRgVQTi9RfKRWgFBeySJE/ctDD4UygUj693QMYoGHZf1zy9Hsrr3IuDmLCWJ48BfTYa+oTnccYK03LFJ9gYt7ncgdICD+ZNhZByzfclDHB0GdY4E0NFPtRNwuXTp5eAb0K7DVlH/mlo2ICOm4mfhpqHslYGCYdLE34uo2ZixJWcy2PUDfytEU/RWTzUi8Y1Ta01STMJIErjjpI1ciWkmTX3Mp0zi3bwI9xE6/FRecgZwVs+fkUqvG9jCTfwWx46tz1lkecDQDZFONlj+PMGI6e37UQIZNHCctTkZhdp++OefOLbkdOa4AB2w==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(7416014)(376014)(23010399003)(6133799003)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	Y4URZKTYaUrMPqeQcMu1vQbwSWpHTx5fRXsuITE6xMRHIJXWIW20glx7W/XyvZm0GeVuAT27sQOQ2Id4RFp6GXjan/efPck5O2poulMY2WuzhbPEk205WH8DATwWH0KzRBj6uRh4/UfaWNHKYmeXciRC0yp4MD2rPkAPNz/SP/bNHimSoFiav5HmOiAbvT48TWrWyzAKiLJuQbz2L2b1EC2U2a0mVihEauT31TBLTNN6hJ9fXyX3xXvgdM3MYcoauHqsiH35Ey22m4i5Eb0rzhMz5fZG7gnrYuBXc7r2OhvoeRyotPe7sSu1YzBuzCZVG3FuqUirCDWEs9O4Y3QWGr7w4PtoD1fW+gNOXqr2GJNzgJgCw9nFlYb7FUbqP8Z5Yx8/Qp6Zp0zcL4JKlme1YHb62n6LS4NbEwuuIVTXwI4TIRbcXB0BZYE3TIWpZucU
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2026 06:49:52.0674
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e5e5ce5-15a6-47f2-d353-08df21e3b11c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0006C3DE.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5666
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: Ml+nSbudC4cFn5V7GcE68rimTl9hs1oBTR/nO/m2q8saddUlLX/5Jb6+
+	z+CDICfkO7Axh+ywv/m1I5VbfYTcbc0VvP3rwrmctn/db20b3M2UE4tYq1yDEGtD5/BgND+
+	Ir8t3buk3tWJ8pE1vnMrIiQcudIXXdzgOOxFGoIihkIY79jBPDND7xsS7y3DduA7zc0y/Ly
+	y+OsqlmTgO+Y8Nn8lo7+3R34GUkHNrkoWLoY8rY1xAMjHojmoris3N3X9Rmp01jlfgKM3mD
+	ciLBldnEA+ZxjyX5UWFksUys7ds0lqdMGI+voRqkhGKkl6InvrTR/UB4hANfwBQzGIru2Wz
+	pIpBNuwMwKaXDICzpNjiyoquiymoqgZmxCJqA3qDjE2sSisIMQ9ipoqOqmOYMJ6vZmseTLF
+	v9CxDDmIOUIF1X+o3Qa/L/sh0lcirvbuE/XjV7UYkq0+kxdAKZabSLdvu+HXyAcQKfZMbOr
+	sKxPweln3uKfWNtww0KzZHuhMeAUeH3sJ8tsmebD7P+PExbxcTFlDlUE/L0O8HvGJf3EbGc
+	b9L9Vir6cYqJar+h0v+lhPuLQmd941UW0S+ECXp+fAWTcfH6XVUiS5Zfli8bb/aZltDMYYC
+	/KZhihpxV/UtkuClvDtqrq6nn/51uHYE4KkTyKx/tumwRbWWq+qAE0qCrwLv/ZVys2RrFS1
+	fFjb2M7KHPuC7sdaOOSKG7ZftjVntxsYtZzf6Hdwp0FnvD9nWfHkw0pQj14Bg6Lm1tnaxxG
+	+Hq65vsOS03P3S4dkwIUAbU1fJwDxjj6aO0g0dlfPRGmeDcG91MOFkeLfGRte8WNI2No/+B
+	1hKUXQ+N6Rmy3xlM+i647FmV2x3MFttowg0eMk1vJO8EtyiaxBALCT59xfVL75ObIv0htxR
+	DyrLJdksJPZ1KNlDma02QFhBJo12vlbQMaL37+/mxo5nMjTRCSf7VTRptPVqaMMFUX9p2Op
+	KmbygMkaKbMe0nv/PxvvYISvUEgyHtFnLlIVnfuXZ0WIiZE58AxijhlNDqRIw1/YewyzBwO
+	24BQ95VJQ7Q12fVyg2N4KWwerxi/tEFi+8qzTuFKi9Je8hjdNy4c1D5ybHn78=
+X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
+X-QQ-RECHKSPAM: 0
 
-Hi,
+Hi maintainers,
 
-The following pull-request contains common mlx5 updates
-for your *net-next* tree.
-Please pull and let me know of any problem.
+This patch series adds the packet transmission, reception, and link status
+management features to the RNPGBE driver, building upon the previously
+introduced mailbox communication and basic driver infrastructure.
 
-Find more details below [1].
+The series introduces:
+- MSI-X interrupt handling with NAPI support
+- TX path with scatter-gather DMA and completion handling
+- RX path with page pool buffer management
+- Unicast/Multicast filter.
+- Firmware link-event processing and carrier management
 
-Regards,
-Tariq
+These changes enable the RNPGBE driver to support basic TX/RX
+network operations.
 
-[1]
-Data direct support currently lives in mlx5_ib, which owns the data
-direct PCI driver, device matching and resource management. To prepare
-for data direct support in netdev, move this infrastructure to mlx5_core
-and provide a common interface for its consumers.
+---
+Changelog:
+v14 -> v15:
+[patch 1/5]:
+1. Update the interrupt helper documentation to describe the MSI-X-only
+   implementation instead of implying MSI or INTx fallback support.
+2. Document in the commit message that mailbox transactions run in
+   process context and use sleepable polling to acquire the hardware
+   mailbox lock.
+[patch 2/5]:
+1. Document that carrier is kept off before register_netdev(), and is
+   enabled only after a valid link state is reported by the later
+   link-status patch.
+[patch 3/5]:
+1. Clarify that rnpgbe_is_non_eop() may consume and free the skb when the
+   fragment limit is reached.
+2. Avoid retrying a failed RX page allocation for every descriptor in the
+   same NAPI poll. Check for pending refills after NAPI completes and use
+   the per-q_vector timer for delayed retries.
+3. Report invalid RX descriptor lengths through rx_errors and
+   rx_length_errors instead of rx_dropped. Count at most one length error
+   for each complete packet and protect the counter with the existing
+   u64_stats_sync sequence.
+4. Set the page-pool DMA synchronization window to start at
+   RNPGBE_SKB_PAD and cover only RNPGBE_RX_DESC_DATA_LEN bytes. Use the
+   same range when manually synchronizing reused pages.
+5. Schedule the initial allocation retry only for batch-sized shortfalls.
+   Leave smaller shortfalls to be replenished when traffic frees a full
+   refill batch, and update the comment to describe this behavior.
+[patch 4/5]:
+1. Avoid transient receive-filter gaps when updating RAR and multicast
+   filter state.
+2. Switch the receive-mode implementation to ndo_set_rx_mode_async while
+   retaining synchronous filter setup before RX is enabled.
+[patch 5/5]:
+1. Avoid a GMAC_CONTROL read-modify-write race with firmware during
+   port-down by leaving GMAC receiver disablement to firmware after RX
+   DMA has been quiesced.
 
-The series first replaces the direct IB unbind callback with a blocking
-notifier chain, allowing multiple consumers to receive unbind events.
-It then separates consumer registration from initialization, consolidates
-the per-device state and resources, and keeps IB-specific locking and MR
-teardown in mlx5_ib.
+Links:
+v1:  https://lore.kernel.org/netdev/20260325091204.94015-1-dong100@mucse.com/
+v2:  https://lore.kernel.org/netdev/20260403025713.527841-1-dong100@mucse.com/
+v3:  https://lore.kernel.org/netdev/20260507081539.171844-1-dong100@mucse.com/
+v4:  https://lore.kernel.org/netdev/20260526033539.164061-1-dong100@mucse.com/
+v5:  https://lore.kernel.org/netdev/20260528023150.239532-1-dong100@mucse.com/
+v6:  https://lore.kernel.org/netdev/20260604112750.769215-1-dong100@mucse.com/
+v7:  https://lore.kernel.org/netdev/20260611100036.36370-1-dong100@mucse.com/
+v8:  https://lore.kernel.org/netdev/20260731120322.895955-1-dong100@mucse.com/
+v9:  https://lore.kernel.org/netdev/20260814111317.1741087-1-dong100@mucse.com/
+v10: https://lore.kernel.org/netdev/F44E6669E6C9E7C4+20260831073608.401988-2-dong100@mucse.com/
+v11: https://lore.kernel.org/netdev/745DADAC2A5786BD+20260911112416.2142101-1-dong100@mucse.com/
+v12: https://lore.kernel.org/netdev/64BE41C2D2C0836A+20260914013019.2262317-1-dong100@mucse.com/
+v13: https://lore.kernel.org/netdev/B8AF0FDE24FAFB51+20260920092424.345309-1-dong100@mucse.com/
+v14: https://lore.kernel.org/netdev/0A4D45AD9F6A0F14+20260928033701.1033196-1-dong100@mucse.com/
+---
 
-With these preparations in place, the final patch moves the shared
-implementation and PCI driver to mlx5_core. Data direct initialization
-and resource creation run during core load, before consumers attach;
-cleanup runs during core unload, after consumers detach.
+Dong Yibo (5):
+  net: rnpgbe: Add interrupt handling
+  net: rnpgbe: Add basic TX packet transmission support
+  net: rnpgbe: Add basic RX data path support
+  net: rnpgbe: Add receive mode support
+  net: rnpgbe: Add link status handling support
 
-The data direct PCI driver is also explicitly named "mlx5_dd", replacing
-the previous "mlx5_ib" name derived from KBUILD_MODNAME.
+ drivers/net/ethernet/mucse/Kconfig            |    2 +
+ drivers/net/ethernet/mucse/rnpgbe/Makefile    |    3 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  210 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  167 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   45 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 2258 +++++++++++++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |   88 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  208 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |  179 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |    4 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  283 +++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |   60 +
+ 12 files changed, 3468 insertions(+), 39 deletions(-)
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
 
-This series prepares the shared infrastructure for netdev support.
-The netdev consumer will follow in a separate series.
+-- 
+2.50.1
 
-----------------------------------------------------------------
-
-The following changes since commit 36b1d3299d0b6aa51485cc9a79b8d94948d5f3d4:
-
-  net/mlx5: Add qp_latency_sensitive_disable cap bit (2026-07-27 02:35:16 -0400)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mellanox/linux.git mlx5-next
-
-for you to fetch changes up to 00290b9ff59ef47b990d26a6b1a8b2ea6dedf5e9:
-
-  mlx5: Move data direct implementation to mlx5_core (2026-10-01 11:40:42 -0400)
-
-----------------------------------------------------------------
-Dragos Tatulea (10):
-      RDMA/mlx5: Notify data direct users via a notifier chain on unbind
-      RDMA/mlx5: Add mlx5_data_direct_supported() helper
-      RDMA/mlx5: Make the data direct VUID query self-contained
-      RDMA/mlx5: Give the data direct PCI driver a proper name
-      RDMA/mlx5: Move and rename data direct resource functions
-      RDMA/mlx5: Add new registration stage for data direct users
-      RDMA/mlx5: Extract IB specific lock out of data direct
-      RDMA/mlx5: Consolidate data direct state into one object
-      RDMA/mlx5: Pull data_direct resource creation in init phase
-      mlx5: Move data direct implementation to mlx5_core
-
- drivers/infiniband/hw/mlx5/Makefile                |   1 -
- drivers/infiniband/hw/mlx5/cmd.c                   |  21 --
- drivers/infiniband/hw/mlx5/cmd.h                   |   2 -
- drivers/infiniband/hw/mlx5/data_direct.c           | 227 ------------
- drivers/infiniband/hw/mlx5/data_direct.h           |  23 --
- drivers/infiniband/hw/mlx5/main.c                  | 144 ++------
- drivers/infiniband/hw/mlx5/mlx5_ib.h               |  18 +-
- drivers/infiniband/hw/mlx5/mr.c                    |   7 +-
- drivers/infiniband/hw/mlx5/odp.c                   |   2 +-
- drivers/infiniband/hw/mlx5/std_types.c             |   3 +-
- drivers/infiniband/hw/mlx5/umr.c                   |  11 +-
- drivers/net/ethernet/mellanox/mlx5/core/Makefile   |   2 +-
- .../net/ethernet/mellanox/mlx5/core/data_direct.c  | 400 +++++++++++++++++++++
- drivers/net/ethernet/mellanox/mlx5/core/main.c     |  15 +
- .../net/ethernet/mellanox/mlx5/core/mlx5_core.h    |   5 +
- include/linux/mlx5/data_direct.h                   |  47 +++
- include/linux/mlx5/driver.h                        |   8 +
- 17 files changed, 515 insertions(+), 421 deletions(-)
- delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.c
- delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/data_direct.c
- create mode 100644 include/linux/mlx5/data_direct.h
