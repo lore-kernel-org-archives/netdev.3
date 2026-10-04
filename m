@@ -1,89 +1,53 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-139-mta238.mxyeet.net (mail-139-mta238.mxyeet.net [23.172.139.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D7B476040
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 21:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C81D3DFC6D
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 21:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.172.139.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791150190; cv=none; b=N609ZIeUUiyMU8uo0NP14XYQfRG3El/PJmbNY7AMo297/Ld+sus+hbHxsBze4LpPLc83OoaRYKVqm3BFf/usQkQPnLjOgteNMcjvdh4t94uSWAzSM1tKT80jTnxO1dcaeqKS5dTrtWA9baZesnRJfLUJyOOpw2fpHbrSVJ7exIQ=
+	t=1791150693; cv=none; b=m1iONUTLePwY1RdUNU9HQN3gV9nmAtkQcYQRjn1OPxzeMfJAADNDJBrDaCmxO+Tk3LWoRX5QFXvp9N4uSgj4YPUh7MNABK2ThpTv3Ixyfm50EtPkWL54M7tgxzbQRefv0ie7x9bCsBb53a9muhJiQwjzpR/wAPTjZF1Z9LOjhXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791150190; c=relaxed/simple;
-	bh=ONQ3/fm+VvJcbR2hGlWWmoJvTQ4LkcEql3G60OArTd8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLQVOVgDTpbKY6Ab4OO3DD5V+CDTIslQXVSODveMOBiYGh1TpIJPpgPV0tUVKcK4D8XsPddQcbDvH/wIhs0QqiyUF783d9AqZcv9AGvJBTCvlJzsO/eo6SLpY9FoAx4cWh+IAeMgjUw7Nnfh+Ezw2oZba6aGZRFKiV3SWty3P7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tw05ZvwO; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791150693; c=relaxed/simple;
+	bh=4YlyFoVd99oxKR55yIsBbI8vnY/VmwSK2dh5SNpSSVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X+SKT6+9bcFMVIEhofsaiJLN5QP05+8nLNPToPCM1+awnyyyd6VfX/vlI4Xi/Z8WqXBCmDuwZuaxa1ZaLIkKN7+oCC+R0pV04bFSYfYBfP0GqWrkSzOOQzz64fVa5Eyc1drj6zJn48guyhBIsdwOW9rY+LvLgUs3Gg4vAX3LrAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endrik.dev; spf=pass smtp.mailfrom=endrik.dev; dkim=pass (2048-bit key) header.d=endrik.dev header.i=@endrik.dev header.b=bQHp4LK2; arc=none smtp.client-ip=23.172.139.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endrik.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=endrik.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tw05ZvwO"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48b001cd92bso579877f8f.2
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 14:43:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791150185; x=1791754985; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=44L+w1lo0aEfL1hM5su/VJjhXTZhdo5HD8XfCtpMzH4=;
-        b=Tw05ZvwOODV1gx+0jiHCKped/cJPi82G8/unjkIEmDya/VLQZKaBXscApMH/ZHbGBc
-         HrfqA+4hy+nXSBpR/NBvRa71qLYUzVBXZiJOKB9QujsOG13gJo3O0RvPBA7LHLh4UHY8
-         59kiD3YQrCjUlAIX+NYoozOqpc9Ll5oLHIzngtxwbhkVaZJtekABeZXchxpJvbvncP+Z
-         Tw5sfa4MRj5drP6/+hRFjUHznlyeLzMc+1NAtBDRx+MVDUVmFrJCdn7dtVFj5X1dTvJC
-         rwk4/io0813IUk9ESbIa9EL1i/WtkIt99av2M94TNqDoOUhYvVLuTmmiSEROhO9kivzg
-         no2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791150185; x=1791754985;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=44L+w1lo0aEfL1hM5su/VJjhXTZhdo5HD8XfCtpMzH4=;
-        b=D8iWTL+CpWMg4gGd/MARgeiZme7YzuvCHMfycGZ6ZjeF82fHDjvxlKQ1vihSb+Xb2S
-         UIq7Lf8iWNHJAae+KiOmQamPdik/7QdpWsT65Lomp98HuNXGJ3EDkYglbRm6RO/quKrR
-         2c+kcAMWsIvN9q5Af9Q1caI2TEy7zsXqHXcj/hW3yEctxVP03fSNr0CL2o5ID19O6Nke
-         AR6iU7ZFVD1UnJnxJ5BEukH1Nj6XS5j/mocvsUsjMmySz6EWJNDfvqqsOf92O/vioY8N
-         zi2ncd8DicO+eiICvoXiTA7kU1OKuJBIsfxwpGwgL3C/+UPab11yh+mod5r1xzBSe7H9
-         5mTg==
-X-Forwarded-Encrypted: i=1; AKwUvBwaq9pZN4ZiPhGi4FjJNA/ExD4o3MlftMz5XMbZcuqnUPzhfI2LhyKz8aVC9vUmm9wp08Bt04Q=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIlRpQxESNoRD1pwjek/YaxW5RUL1+ziymWEx/IrN4OeBmhZjgd
-	vjM1Mkvr7UsSTMw9kuErv/oElLOrUcRFEy4VGsuW82HARVE4ealPkTTm
-X-Gm-Gg: AYBFou1+7cuU9m2VC97cHWZHOaavzw+go/Xek7swAQaJ6mfQjq5Kk1u1d9i2HW+uk2W
-	LEoLEujVfqMnlwKjj109JsHX1mZjKUzwjNwd+TtcLssLxY3Hb93x9YxV55U6vCLz0uLC+9Csxu9
-	Zk2w9nd0hbwyEG1rYXQ0ZYMxg6DbtzddL2W5vEqq3vfLyk0QO32EjQCM0qqsZK1p4w4Zo3cj3nN
-	HNbdJlxNuicLAOzFoEPMGyOiVGVD12TAgFpQ97Sd81tM+FWXyMlOOxKa6//8ROO3miSkoH39NwY
-	MASkjScp2xLRKCR1sk5I/Fr/pl2uz4kmcsyr/apvJSwTp17nZ620MLTDDpTwhQpcgojkFDQxuQK
-	imlS//4uTGS8s2R/M+TjNl4+xpoibW5q/gDk1ujfePgZXvxGhRFPfpD7lXnE/DrUrDx6nvj+ij8
-	PMeiH0rDpTRYrjhRh+CiuQeDHLvnB/fXUxYMj+a3AsGrPxO5KAvj/Nd1um/WxOKzDNhiriLGA7f
-	h3uZpU83rhzIX4x6+eeVjdNl27H/LyEYOIUZZzuu3gM61TnMPQi2TNxncWS
-X-Received: by 2002:a05:6000:491b:b0:487:834:9307 with SMTP id ffacd0b85a97d-48c48023772mr8504789f8f.50.1791150185325;
-        Sun, 04 Oct 2026 14:43:05 -0700 (PDT)
-Received: from andreayoga.localdomain ([195.122.200.174])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48b38104e07sm19331801f8f.31.2026.10.04.14.43.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 14:43:04 -0700 (PDT)
-From: Andrea Parri <parri.andrea@gmail.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: Andrea Parri <parri.andrea@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	netfilter-devel@vger.kernel.org,
-	Phil Sutter <phil@nwl.cc>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Bernhard Thaler <bernhard.thaler@wvnet.at>,
-	coreteam@netfilter.org,
-	bridge@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=endrik.dev header.i=@endrik.dev header.b="bQHp4LK2"
+Received: from lu-shared04.cpanelplatform.com [2602:faa9:3000::1006] (Authenticated sender: relay@mxyeet.net)
+ by mail-139-mta238.mxyeet.net (MailFilter Outbound) with ESMTPSA id 1a108e1ccf900089d7.003
+ for <netdev@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Sun, 04 Oct 2026 21:46:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=endrik.dev;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vHFr8/CTwZAVFjirB4h0/WeMgo2o6MuAR0uEbIJCBZY=; b=bQHp4LK2fZxlDn8QqWbyUZu4EW
+	QtJBRyx5F3cXUKAcQGCpOAhfP3Py4zQ4w5s6b4dpq4nzCkQ1RsKiCbdedDhKihqL8RRipQP4NZEPe
+	CxZoMdrTmcm+GL0wpJ+NvW5AQPxL+Y7QECEVM//d6jrPNQ/t3sPdnWxqn3ASnLd0IhDxmGfvZ7b7D
+	h6tcimhpi4n15fbmr3vyysP5i69NX7OjV2U3PcsP81cvhiiHIvVt0t1HolxkQuxapDG5IEtF/wVMl
+	NFxI0G9ciJzDxZIbP183+46VO+VNxRQ0qKzfWoWzOEPAd7CIxrZBUT17bb/VUBMyOlFqojX2s7Pvd
+	chcT0plA==;
+Received: from [85.253.174.246] (port=35450 helo=noether.localdomain)
+	by lu-shared04.cpanelplatform.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <git@endrik.dev>)
+	id 1xDU2C-00000006hka-1q3y;
+	Sun, 04 Oct 2026 23:46:16 +0200
+From: Endrik Einberg <git@endrik.dev>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH nf v2 0/2] netfilter: preserve bridge egress VLAN tags
-Date: Sun,  4 Oct 2026 23:42:51 +0200
-Message-ID: <20261004214253.5432-1-parri.andrea@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Endrik Einberg <git@endrik.dev>
+Subject: [PATCH] wifi: iwlwifi: mld: include VI packets in low latency detection
+Date: Mon,  5 Oct 2026 00:44:38 +0300
+Message-ID: <20261004214438.128694-1-git@endrik.dev>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <179114935323.1402591.1020652042294576959@kernel.org>
-References: <20261004212429.3648-1-parri.andrea@gmail.com> <179114935323.1402591.1020652042294576959@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,22 +55,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-From-Rewrite: unmodified, there is a forwarder that points to the actual sender.
+X-AuthUser: endrik@endrik.dev
+X-NCN-Id: qrBpiUCfTMOkjygEbw==
 
-On Sun, Oct 04, 2026 at 09:29:13PM +0000, netdev-bot+sinfo@kernel.org wrote:
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+iwl_mld_is_vo_vi_pkt() checks whether the mapped access category
+is less than IEEE80211_AC_VI.
+Since mac80211 defines IEEE80211_AC_VO as 0 and IEEE80211_AC_VI as 1,
+this only matches voice traffic and excludes video traffic.
 
-The issue fixed by the first patch was found by an LLM-assisted scan of
-br_netfilter. The issue fixed by the second patch was reported by the
-Sashiko AI review of v1 [1]. I then confirmed both with a reproducer
-under virtme-ng; the reproduced symptoms are described in each commit
-message.
+Include IEEE80211_AC_VI as intended,
+matching behaviour of iwlmvm's iwl_mvm_calc_tcm_stats().
 
-[1] https://lore.kernel.org/all/179084999520.434549.4764913674478855382@kernel.org/
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Signed-off-by: Endrik Einberg <git@endrik.dev>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/low_latency.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-  Andrea
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c b/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c
+index a4ddc32e2860..36da639aee54 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/low_latency.c
+@@ -257,7 +257,7 @@ static bool iwl_mld_is_vo_vi_pkt(struct ieee80211_hdr *hdr)
+ 	if (tid >= IWL_MAX_TID_COUNT)
+ 		return false;
+ 
+-	return tid_to_mac80211_ac[tid] < IEEE80211_AC_VI;
++	return tid_to_mac80211_ac[tid] <= IEEE80211_AC_VI;
+ }
+ 
+ void iwl_mld_low_latency_update_counters(struct iwl_mld *mld,
+-- 
+2.53.0
+
