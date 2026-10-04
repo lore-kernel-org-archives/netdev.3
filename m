@@ -1,134 +1,124 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2793161BE;
-	Sun,  4 Oct 2026 21:00:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5295C30D41F;
+	Sun,  4 Oct 2026 21:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791147626; cv=none; b=tWzBXDfMDFmnr/w2BK7sRfcCbJiO7vUqyf1FtsT7T2a1sHcGJNhkxBeGPQCmmFHjFtZIY7/IyUjWxOpt8A40Jw4VaPTywB88Spn93PbB0A01EsKvilnxC/3QzrHCcgi3tR/cngtorIuUkBB4odmfokvvAf0X5HRzYhTb1yRsncs=
+	t=1791147648; cv=none; b=D7UiFQoC1wAkO3f/JYJsrX4iRhGWFx3UAFUZLjQdBdWVtjVn53HaCvKETGGFxhNztYAo1uaSN4mOBM/u1TxzSMvHD/Zaf728HG9ktiIPo3evSoLuFSySwjJtfoXFPucEbyNjlAzyZZZFydgnZRimLywrvKWIv84fAN6F/E3PNuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791147626; c=relaxed/simple;
-	bh=r0rHDsLZOA2ic17J4JKnnqLHj1ZrU+69qCj1TVSofUg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lPFZI5OMzH7XwyInDM1o5mkZTWsWQuCjDJpOEADc1G6dLT5BKIMBm3nzPz17/uPZocN22vaf9uRbeRjkp6WfuXxONOI/jd69Q5HoBDFPcO+aQGSwyUhRONlhFHO0RVbQDFEzCwOkg8KkEAIyy6pHifIhg5ANmPnQhdaB32PqlwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=dSafmNae; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1791147648; c=relaxed/simple;
+	bh=nZ18ZPCAW9/6X4VvdjQu2sUY3F3ig2qNVltZnLDQ9O0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fmQlzRpXEnTC7mtPFbbuhsUnN2hw216haRbEHtioCPnRCKbvXGDHawDCHppdSBCXN2Hx9+dAUlxCtL7oclu+kcP9q04eA4aolmTs0YUUt3RpylYO9d4z7auYPJMp881649o0/diQXEjnMxJbBTblpC/RoNwSZscTFLPSoF639kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XpTXxYxi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="dSafmNae"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=uD72eE0Kdngwa+FAEryAIrrH8bo+4S26T3z3EGBC8gs=; b=dSafmNaeimK8ATnqGNPuGwOWP3
-	9VJWmcsshSyUV+lXhxptXp+plTMd0EJpz9ZQfnh8CDFnyYxuYMfR3mxLwmZytxY/a6feqsYj2JJEK
-	hMCixJIwWm7uV9tVlLcVBjICTEQoi1IpF865GpxySUFhqLGF3JaxpzRLja6glkDhClXRQbxa4JG2q
-	AZ2SoUz7IsrwBXsB0ExcBs9OCwYJyNwf8cvDViRkskQpHoNd/ACBQW8HBq4RCVXn1A8CORb5zZGWy
-	fu0XnYZq98RXmHo+0/70ynoSVu3i6Obh1RbxRKvvafFXLQYYADU7l7eVaKmjqG3PLGAgFyhDGInWf
-	k+O75C5A==;
-Received: from [151.115.150.205] (port=43990 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xDTJn-00000007JF1-0HYM;
-	Sun, 04 Oct 2026 23:00:23 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
-	Jon Maloy <jmaloy@redhat.com>
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] tipc: fix use-after-free in netns teardown
-Date: Sun,  4 Oct 2026 21:00:16 +0000
-Message-ID: <20261004210016.3051310-3-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261004210016.3051310-1-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261004210016.3051310-1-Jeremy.Jean@oss.cyber.gouv.fr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XpTXxYxi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7381F000FF;
+	Sun,  4 Oct 2026 21:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791147647;
+	bh=RC1yc6hXsA0c3ASRol8ZG9T26SGtytDAHnSJ6UVwfGE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XpTXxYxif3vy2CVmABPvTHroX1a98DEcm7BFHVjxnUenAdOC5QU7+m1Q/ODjKEh3q
+	 lv8ZFKL16R2M2dzU0LBGKR29+Ep33Te/ZtUsK8tG6SwZ6KapWpqDtcBu4g9vUNO4gQ
+	 h0aJhqVgDyRJtWiPo7NvEGbE1ymA+rJqLKQw+N2eSotmzNDPTAv+kodpNWR4uZOe96
+	 +EE6+YjutIxIkOG9jC6cqCaY1QgM1FF2o5l4m6r4ClPDvR1HEXxEqb7oAKGjJeLfs8
+	 fY92OrSyy6nEHbtppVCuoYd4Duy19/e0nIlWSs6xCp9D6b3udhMxg/SXjVsCTl+6cr
+	 IMJKJ70Kq1teA==
+Subject: Re: [PATCH net-next v5 02/14] ip_tunnel: make
+ __iptunnel_pull_header() return a drop reason
+From: netdev-bot+sashiko@kernel.org
+To: littlesmilingcloud@gmail.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org
+Date: Sun, 04 Oct 2026 21:00:45 +0000
+Message-ID: <179114764588.434549.11011384832570880257@kernel.org>
+In-Reply-To: <20260930183910.3151873-3-littlesmilingcloud@gmail.com>
+References: <20260930183910.3151873-3-littlesmilingcloud@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
 
-conn_put() decreases the reference count of a connection, and when it
-reaches zero, tipc_conn_kref_release() removes the connection from
-conn_idr and frees it. Removing the entry is protected by idr_lock,
-but decreasing the count is not.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-During netns dismantle, it may happen that a connection gets its count
-dropped to zero by conn_put() while tipc_topsrv_stop() still holds the
-lock idr_lock. tipc_topsrv_stop() calls conn_get() on that connection
-whose count is already zero, and then releases idr_lock.
-tipc_conn_kref_release() can then free the connection before
-tipc_conn_close() uses it. KASAN reports a UAF as:
+Low priority / nit picks for your consideration:
 
-  BUG: KASAN: slab-use-after-free in tipc_conn_close (net/tipc/topsrv.c:158)
-  Read of size 8 at addr ff1100000cf4f408 by task kworker/u16:3/70
+- [Low] At this commit, vxlan_rcv() in drivers/net/vxlan/vxlan_core.c
+  still ignores the drop reason that __iptunnel_pull_header() now…
 
-Stop accepting connections before walking conn_idr. Use
-kref_get_unless_zero() to avoid taking references when the count is zero.
-Walk forward through conn_idr to disconnect all connections before
-draining the workqueues.
+--
 
-Fixes: 667eeab4999e ("tipc: Fix use-after-free in tipc_conn_close().")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
----
- net/tipc/topsrv.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ip_tunnel: make __iptunnel_pull_header() return a drop reason
 
-diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
-index 01dd34b..f3f32fd 100644
---- a/net/tipc/topsrv.c
-+++ b/net/tipc/topsrv.c
-@@ -698,19 +698,25 @@ static void tipc_topsrv_stop(struct net *net)
- 	struct tipc_topsrv *srv = tipc_topsrv(net);
- 	struct socket *lsock = srv->listener;
- 	struct tipc_conn *con;
--	int id;
-+	unsigned long id;
-+
-+	write_lock_bh(&lsock->sk->sk_callback_lock);
-+	lsock->sk->sk_user_data = NULL;
-+	write_unlock_bh(&lsock->sk->sk_callback_lock);
-+	cancel_work_sync(&srv->awork);
- 
- 	spin_lock_bh(&srv->idr_lock);
--	for (id = 0; srv->idr_in_use; id++) {
--		con = idr_find(&srv->conn_idr, id);
-+	for (id = 0; (con = idr_get_next_ul(&srv->conn_idr, &id)); id++) {
-+		if (!kref_get_unless_zero(&con->kref))
-+			con = NULL;
-+		spin_unlock_bh(&srv->idr_lock);
- 		if (con) {
--			conn_get(con);
--			spin_unlock_bh(&srv->idr_lock);
- 			if (con->sock)
- 				tipc_conn_close(con);
- 			conn_put(con);
--			spin_lock_bh(&srv->idr_lock);
- 		}
-+		cond_resched();
-+		spin_lock_bh(&srv->idr_lock);
- 	}
- 	__module_get(lsock->ops->owner);
- 	__module_get(lsock->sk->sk_prot_creator->owner);
+__iptunnel_pull_header() and iptunnel_pull_header() used to return -ENOMEM.
+They now return an enum skb_drop_reason: the reason from
+pskb_may_pull_reason() when a pull fails, SKB_DROP_REASON_NOMEM when
+skb_unclone() fails, and SKB_NOT_DROPPED_YET on success. The three callers
+in ip_gre and ip6_gre that tested the result with "< 0" now test for a
+non-zero value.
+
+> diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+> index bab42b9e277f7..6c2855adff289 100644
+> --- a/net/ipv4/ip_tunnel_core.c
+> +++ b/net/ipv4/ip_tunnel_core.c
+
+[ ... ]
+
+>  	if (!raw_proto && inner_proto == htons(ETH_P_TEB)) {
+>  		struct ethhdr *eh;
+>
+> -		if (unlikely(!pskb_may_pull(skb, ETH_HLEN)))
+> -			return -ENOMEM;
+> +		reason = pskb_may_pull_reason(skb, ETH_HLEN);
+> +		if (unlikely(reason))
+> +			return reason;
+                        ^^^^
+
+[Severity: Low]
+After this change, a truncated inner Ethernet header returns
+SKB_DROP_REASON_PKT_TOO_SMALL here. Should vxlan_rcv() be updated in this
+patch as well? At this commit it still throws away the returned reason:
+
+drivers/net/vxlan/vxlan_core.c:vxlan_rcv() {
+    ...
+	if (__iptunnel_pull_header(skb, VXLAN_HLEN, protocol, raw_proto,
+				   !net_eq(vxlan->net, dev_net(vxlan->dev)))) {
+		reason = SKB_DROP_REASON_NOMEM;
+		goto drop;
+	}
+    ...
+}
+
+This means a non-GPE VXLAN packet (protocol ETH_P_TEB, raw_proto false)
+with an inner frame shorter than ETH_HLEN is still reported as NOMEM. The
+commit message uses exactly this case as its example.
+
+Only the drop reason seen through skb:kfree_skb and drop_monitor is
+affected. The packet is dropped either way.
+
+The next patch in the series, "vxlan: report the drop reason of
+__iptunnel_pull_header()", changes this to
+reason = __iptunnel_pull_header(...), so the problem only exists partway
+through the series.
+
+Would it make sense to fold that change into this patch? Alternatively,
+the commit message could say that vxlan is converted separately.
+
+>
+>  		eh = (struct ethhdr *)skb->data;
+>  		if (likely(eth_proto_is_802_3(eh->h_proto)))
+
+[ ... ]
+
 -- 
-2.47.3
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930183910.3151873-1-littlesmilingcloud%40gmail.com
