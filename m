@@ -1,67 +1,67 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5711F39A06F
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205661CAA6D
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791127707; cv=none; b=recsCC5HFFAcTMmkEQGWjMK5UNjFVRwWmkaultdWQxddKlNMUTRJInJZ/3G83jRF2bJGbJD0/1vBTg5Ikd2NRKiyY6M3DLWet+VYJrusn2NwLgDAXP3EPkPVW/nzaVXTi4BU3wU8dugzre6YEX+GgeXkG2X2wwrEwXKgZpHAePk=
+	t=1791127726; cv=none; b=trFXganYamBVvSfF3yi7IfMMx0uWfg9yneemZOCydv4EzYx8RG4C9Oi80Oq3GGg2cGAxwThONUYTCh+wl7PS4LwQp4uEoSMvR9wgfRqRb8vzSS7CfvCQ89hC2ZfqjgRel+1Kw7h0LrclPL8kc0Y9THsCjvz9q5K5VDQvKOiyNas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791127707; c=relaxed/simple;
-	bh=5mYst5Ullbp+HHdr6Uh5aXV63tNmZJUMGFOFHhbt800=;
+	s=arc-20240116; t=1791127726; c=relaxed/simple;
+	bh=bAbuzrhxzxKziDCqa8JoYkrRD1FsUq1P0pQ8nvCKJ7c=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=lwwG24qWWHTHnhHPVb2W5YFSfyJRyRuRiaxch2fLsIR6UXkrxeirmiMt9XOWb9QqkxIuWZ3ksxJ3CYb7/8pl/k6pdtukS1i/GmmCgcmJ3jS1iQGCmzh6WHF9338e80UDGsYO4dVGZ/AP/4AdrQCJrCuT0voQ3Nsw8R5Wylt2xyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HX7Q4eRR; arc=none smtp.client-ip=74.125.225.141
+	 In-Reply-To:Content-Type; b=EqD2AR2LKpI3sL7TgJalgyYUD1bh0JAnZxQiSu0yDGwdGGnQmKuCu1Jd13z/sOOqSySUj+poMYhBrr4p3YRlmRcUnykOBXpRl8uLq4y6pHm+Xt5I9/uU33H5QJQ/glVhvFbPF1F5ndt8fAXwHAjL2eGi2s/aNJHCRJBDm2w5lWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wHLu3uL0; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HX7Q4eRR"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so9281945e9.0
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:28:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wHLu3uL0"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e66390995so6503585e9.2
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1791127704; x=1791732504; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1791127722; x=1791732522; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WA4cfENfPEbrDvuT53Cr6d7+lPDcZpBsXedFYV5NI20=;
-        b=HX7Q4eRRpcUbqae8boTKZSbgrk+zYFV3KMoptto/dhZHtaGEv7Xb8D/1D63BgaD3j2
-         R+eiHPeSaJIa4s4fbeETuzR1+AnhqgQo7mxI0jsnmbEKkoOumaAyUfd1xJ6+AgAqIzjg
-         mdcf/w5is/dosUMtraMIon8QFgDIoHz6YrLpQRxl63OWIagb1ELSo0E4yx8u5xXQLD2S
-         h8ydZdYq/xL+1XFFR8dfs5d+WiDwmAktDw5Uah/PLX+UtJepbHhwgJIzQQzuG7zwPQI8
-         c8182pFY9F6Mfn+zgEeKQg43EcW4WJfZGHnW9yQzAuD+luPSn4Qffux0W9OK9Wci6fs2
-         21Ow==
+        bh=0MkHQ33bfr4m25EDydRQk1cIUu8p3JZCdXBnxf0p91E=;
+        b=wHLu3uL0quXkkD2knVQL5Ih1zMwbNfYU8SNRGgBdyo8KirDom3yXryyIj0GCIyRM0S
+         yjbtgzK6BOSumTChwRmHi0ZxmuumzjNAm+p1AsOD5YXHZuWX+IYWjVe2gobbEJnC7yLR
+         f8y232ZRDwxc1/4kkrUlcEkZ//wM1lTjnA/+gh2KQpWzr2R0qp/PhWx3xK5ozwh9spy7
+         yS3iiEdDyncETVUp5gXDiT7lF708oWuOgOTF4coeMk9CKme+4QD/h8DHi6nS8fu9Z3qN
+         EfHrTtXggfXE+rwIKgJeyLF0h/IfVNoaeta1LO8rz0+94E31TBhmXFxp0ysiRkJSozvK
+         93EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791127704; x=1791732504;
+        d=1e100.net; s=20260707; t=1791127722; x=1791732522;
         h=content-transfer-encoding:content-type:in-reply-to:organization
          :autocrypt:content-language:references:cc:to:subject:reply-to:from
          :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WA4cfENfPEbrDvuT53Cr6d7+lPDcZpBsXedFYV5NI20=;
-        b=tXKieB81DFJIYdwpG4XlAqqK9Y8LEVceySrJOQtSoO2lAGwOE1CvvQwZy8I2HRbFps
-         U+Tks1ik23VWZnTO8I0cuLKl6wg9GD2pqElPvFh1dnBT+S2LKCuKEjZbsbhbFXb5S982
-         Fuyg21y/LtrLy88yG8gDS29JaiRTKTgzJpGtD0aH5C558SL3dVx+MhpXMalAXDkHZHZ5
-         mQTmMdHA1M2akvD6ZNeDYzv6kgXRwCIWqX+eLOnWWyK9dUCUQAV9yhGwFvNt2IOSKgMI
-         4HGc5PC9iNzFvjezcXkbKR/FmIBIi8ZcbaOjFk9KrqqxQD39w2RbfuIuKHdaSqJ30S04
-         S4qQ==
-X-Gm-Message-State: AFuF++ndwxy+2qcdrC2EPkATLH1+Pizxp/G7snKDW1WuKenW6zAlVpIG
-	yQ62ZugiWjtqlxs1pupJPwOF1lko/1mLijYVkgeIDAWqrvfO2Qy7qxm0ycc/kqSJdRE=
-X-Gm-Gg: AYBFou08C4K0yd7E1lK0nb6Wm512FGDP8Va7WfO3IYXOE/FkvbkcNhibe275znj/1Qs
-	rZQ2k8C9oUMNjBG9RLfF2n16dm9blog0F3+xDBE0zd/CXClnzLNoOKQN+/1zLxHWeKwoigQO/X7
-	eRTnHfiISOPnOgIr8WQUtDCf9e5LdTfMIibmjPKVT+Gtc9nMyVlJCrrjXBoCvnvB7mEXoofsLA8
-	jYoD+xUsijAGEQl+fwR+r26f27EsdKXgGGHj5DGU2eig+6MWy57LB9UA9EtaX3n95r/7HVxL4uk
-	y3ZQEXpfCP2izz0LO4y+G9wOS+8pwC7sz0IS62F3LGW85Lw6Y8NTJR2DnISiXwE3pLLa8IDdZS5
-	KjvBZrVdXnYmZIJW0trpbzNiU7Q9LH5y4hxnuEIKsKcF+GFe/jOYOFh8i7wuTAGJ4aWxSali2XD
-	w65f+Ta7Q09/LE8VBavWdoweFzO2IZOeJVJ7kfdVqQx+4/cI+4DlW1eSO8r2jmzAI8zCeDdMbCk
-	KvlHWB8
-X-Received: by 2002:a05:600c:4e13:b0:49c:cee0:e7c1 with SMTP id 5b1f17b1804b1-4a02757999cmr135331735e9.16.1791127704520;
-        Sun, 04 Oct 2026 08:28:24 -0700 (PDT)
+        bh=0MkHQ33bfr4m25EDydRQk1cIUu8p3JZCdXBnxf0p91E=;
+        b=XFXOBkOEutrys1Sgx8V8NCAnV3dDiuhlx3kFDbSXEt7Fgm7aXaSULSHaLWCiAMH06b
+         6ysSeRJ1L7+hSG3ErEsn1cuzBMRU/sHXE+lUgRZen110y9y+QRLMXu2TcB/yQ3Sxxpkq
+         V4EwYZ/nqoBgt0FBaROnnwZy16GdpFbDAopUyhkIcP00NH2DhddGrRZiyX5Bj0gvtMAq
+         GUKOTvy1LgyjsqvP7kPBUswXkcLEy3/8JG0K0TQyDnETqKdCurpWt17vH3kAHEqBGkkZ
+         29Unrr5BZsextIM5zpEiUM4qM9lkHoVfGvgIH/nqUXXXvttkfHhb7tVw/9aJShi5XO3C
+         GClw==
+X-Gm-Message-State: AFuF++nVA9OLNoJKozfg4WHqjnP/O8pAFa99V9jwSa6K0ePCMZO7SGRS
+	VlJSYwu9RedKMjdPk84IY4k0Dr2734qdhHQfd2A0adZdKYvVwR0hFw8AustoQWvRiYg=
+X-Gm-Gg: AYBFou2lppYWRFNTkjYVh6QPOgTaGlZqUWvUyhF5d95k6wE5Q+CnrQnPlUk1L6kVo5b
+	nn7lYmx3vVfAEMYeFgKWEC/Gxvsk0Fw09jRpucBTT7ZhvalnRTE4TXSd/QmIzTpOWljL8mW3E7Y
+	2+Nb+t+CoJO8UPrCp3fnWsHDJNRWNWK3XQ+paN2oAQdlR7OUX6slSAAcEGPkCXUfsGoDYKRTj73
+	FlEVzDH6hlZXnqzTLx+mJeF+odi1KcNRj5c0zJQ7XqlRsCp5/QUaOkLGXEHeFKEELIZvePx3UU9
+	9b/aToi9GQoHmFmHxgm3f+HvdZxkY55V0sM49Txf5guS0t9EeXKKuRBadrXfvdkZJ9MdPZC1vKC
+	PaOBAD7Ls4IuYDeIfzotLaBJX39aqOlVHDPfJlxzNeFUkh76m9qt4gWZOOP+7nOI5nNu+zv796A
+	yU3GGeOPDy4qjdIKw1jGKBLovz7wJ1SUGL1qlPcldRIqsa081wOb4odjC2hP6CcvAxQEX8dsTcW
+	gAhyOD4gFB1Qxmsq+Ju
+X-Received: by 2002:a05:600c:8b6c:b0:49f:ec98:f030 with SMTP id 5b1f17b1804b1-4a0276b3e15mr140322415e9.33.1791127722245;
+        Sun, 04 Oct 2026 08:28:42 -0700 (PDT)
 Received: from [172.20.10.3] ([37.169.53.153])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0280d1e38sm220380705e9.13.2026.10.04.08.28.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a039505568sm231387545e9.3.2026.10.04.08.28.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 04 Oct 2026 08:28:23 -0700 (PDT)
-Message-ID: <162c3908-cbf9-4bf2-8594-8592d5e4c3e5@linaro.org>
-Date: Sun, 4 Oct 2026 17:28:21 +0200
+        Sun, 04 Oct 2026 08:28:41 -0700 (PDT)
+Message-ID: <413e7e67-ccdc-40e3-b360-8e349820de85@linaro.org>
+Date: Sun, 4 Oct 2026 17:28:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,8 +71,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [RFC PATCH 3/6] net: stmmac: dwmac-meson8b: add support for the
- Amlogic T7
+Subject: Re: [RFC PATCH 4/6] arm64: dts: amlogic: t7: add the ethernet pinctrl
+ nodes
 To: Lucas Tanure <tanure@linux.com>, xianwei.zhao@amlogic.com,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
@@ -88,7 +88,7 @@ Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
 References: <20261004144046.391444-1-tanure@linux.com>
- <20261004144046.391444-4-tanure@linux.com>
+ <20261004144046.391444-5-tanure@linux.com>
 Content-Language: en-US, fr
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
@@ -115,90 +115,66 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro
-In-Reply-To: <20261004144046.391444-4-tanure@linux.com>
+In-Reply-To: <20261004144046.391444-5-tanure@linux.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 10/4/26 16:40, Lucas Tanure wrote:
-> The glue registers on the T7 are laid out exactly as the G12A ones, RX
-> delay field included, so the T7 can reuse the G12A settings.
+> The SoC brings its ethernet interface out on bank Z, but no pin groups
+> were described, so a board had no way to hand those pins over to the
+> MAC.
 > 
-> What the T7 does not share is how the controller reaches DRAM: the bus
-> path goes through a pipeline stage with a gate of its own, and no device
-> other than the controller has any use for that gate. Claim it and hold
-> it enabled for as long as the controller is bound, otherwise it is
-> switched off as unused and a transfer that has been started can never
-> complete.
-> 
-> Give the T7 match data of its own so that only it looks the clock up,
-> and require the clock instead of treating it as optional: the controller
-> cannot do DMA without it, and failing the probe with a clear message
-> beats booting and hitting an undiagnosable hang later.
+> Describe them as the two sets a board actually needs: the nine pins the
+> interface always uses, and the five extra ones RGMII adds for its wider
+> data path.
 > 
 > Assisted-by: LLM
 > Signed-off-by: Lucas Tanure <tanure@linux.com>
 > ---
->   .../ethernet/stmicro/stmmac/dwmac-meson8b.c   | 19 +++++++++++++++++++
->   1 file changed, 19 insertions(+)
+>   arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi | 30 +++++++++++++++++++++
+>   1 file changed, 30 insertions(+)
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
-> index e4d5c41294f4..450f7b4b29a6 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-meson8b.c
-> @@ -81,6 +81,7 @@ struct meson8b_dwmac;
->   struct meson8b_dwmac_data {
->   	int (*set_phy_mode)(struct meson8b_dwmac *dwmac);
->   	bool has_prg_eth1_rgmii_rx_delay;
-> +	bool has_pipeline_clk;
->   };
+> diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+> index 6894c06a836b..7bd53ec16607 100644
+> --- a/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+> +++ b/arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi
+> @@ -376,6 +376,36 @@ mux {
+>   					};
+>   				};
 >   
->   struct meson8b_dwmac {
-> @@ -384,6 +385,7 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
->   	struct plat_stmmacenet_data *plat_dat;
->   	struct stmmac_resources stmmac_res;
->   	struct meson8b_dwmac *dwmac;
-> +	struct clk *pipeline_clk;
->   	int ret;
->   
->   	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
-> @@ -443,6 +445,13 @@ static int meson8b_dwmac_probe(struct platform_device *pdev)
->   	if (IS_ERR(dwmac->timing_adj_clk))
->   		return PTR_ERR(dwmac->timing_adj_clk);
->   
-> +	if (dwmac->data->has_pipeline_clk) {
-> +		pipeline_clk = devm_clk_get_enabled(dwmac->dev, "pipeline");
-> +		if (IS_ERR(pipeline_clk))
-> +			return dev_err_probe(dwmac->dev, PTR_ERR(pipeline_clk),
-> +					     "missing pipeline clock\n");
-> +	}
+> +				eth_pins: eth {
+> +					mux {
+> +						groups = "eth_mdio",
+> +							 "eth_mdc",
+> +							 "eth_rgmii_rx_clk",
+> +							 "eth_rx_dv",
+> +							 "eth_rxd0",
+> +							 "eth_rxd1",
+> +							 "eth_txen",
+> +							 "eth_txd0",
+> +							 "eth_txd1";
+> +						function = "eth";
+> +						drive-strength-microamp = <4000>;
+> +						bias-disable;
+> +					};
+> +				};
 > +
->   	ret = meson8b_init_rgmii_delays(dwmac);
->   	if (ret)
->   		return ret;
-> @@ -479,6 +488,12 @@ static const struct meson8b_dwmac_data meson_g12a_dwmac_data = {
->   	.has_prg_eth1_rgmii_rx_delay = true,
->   };
->   
-> +static const struct meson8b_dwmac_data meson_t7_dwmac_data = {
-> +	.set_phy_mode = meson_axg_set_phy_mode,
-> +	.has_prg_eth1_rgmii_rx_delay = true,
-> +	.has_pipeline_clk = true,
-> +};
+> +				eth_rgmii_pins: eth-rgmii {
+> +					mux {
+> +						groups = "eth_rxd2_rgmii",
+> +							 "eth_rxd3_rgmii",
+> +							 "eth_rgmii_tx_clk",
+> +							 "eth_txd2_rgmii",
+> +							 "eth_txd3_rgmii";
+> +						function = "eth";
+> +						drive-strength-microamp = <4000>;
+> +						bias-disable;
+> +					};
+> +				};
 > +
->   static const struct of_device_id meson8b_dwmac_match[] = {
->   	{
->   		.compatible = "amlogic,meson8b-dwmac",
-> @@ -500,6 +515,10 @@ static const struct of_device_id meson8b_dwmac_match[] = {
->   		.compatible = "amlogic,meson-g12a-dwmac",
->   		.data = &meson_g12a_dwmac_data,
->   	},
-> +	{
-> +		.compatible = "amlogic,t7-dwmac",
-> +		.data = &meson_t7_dwmac_data,
-> +	},
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(of, meson8b_dwmac_match);
+>   				i2c0_ao_d_pins: i2c0-ao-d {
+>   					mux {
+>   						groups = "i2c0_ao_sck_d",
 
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
