@@ -1,41 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58893B14B4
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 10:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60319360EF0;
+	Sun,  4 Oct 2026 10:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791108510; cv=none; b=hoDEMwIFPCUd8Y9Eeh4U/Bp0/Te5wGYIV+niTU2QtpWZHLs2wT8SlXPw58s1L4DLpRNPsjVX8kQ407iHpsCw+xhwctcFMmasal0+ZyCrIma/DH26tId2kwsHwKbluiy4RyBt2xUW8aAqPdQ3kYxdx228NNbA+yV8OYvKEXIspwM=
+	t=1791108695; cv=none; b=kSn9jpGx6xzrCq4QAbPk5pi5flbqn1jwQgpGXmx2XQ83aTOoXueqz8bZJ313aeyBHLEnNgf/LwZinFQsLgr046n1Tq/t1sbwW2wEz08r6XRmxIw6Q/Hks819B1gmvBEbqRsisXRhN5Cghcy6Ytp5C9ckwxfJ4vq5W+3QJZ99WjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791108510; c=relaxed/simple;
-	bh=ZOLUqWQEEg8TZeQ3pWAI7dlROHYOjzOvuoezSeRSEnA=;
+	s=arc-20240116; t=1791108695; c=relaxed/simple;
+	bh=btjxOFBncYcxeFTQHEr93pMLtej9EhJUaEBzY4YpKfc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T3LlQ5OxwUyCBKvO8Tj+XMxGkpz4KsVknXwbJYrcQLEiDyYnJmcSG7x740ZQa1Rd4P7Fh8+iD7CXknA8Gb8/pcgI7irgvHbY7A/t8INX8e4YXVfK6xOTd/9B+BUTSs5iWfa09H5977b8rWwojOJSilmdNIm/In9Z4Sa4asRsl6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dK/IvoLy; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ePa+k9I5uHc5ZnkgqsI9XJ6CduBQ2DC9w8L8Qh+HvXRgJxN2w1bkFRx9I6LjjlSwHXQl9UwEkllyUT5kXxdupwOFJ76x2L2mViB9bqirm96zJQ9zErLlrHj/EmVVLuyUJ1LngkZLjdVEgkB3VOBODNw9+Nq40AJIIkpYJQANoiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHXXpBnV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dK/IvoLy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F811F00899;
-	Sun,  4 Oct 2026 10:08:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHXXpBnV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CC51F000FF;
+	Sun,  4 Oct 2026 10:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791108508;
-	bh=4gX6xxDYYhSNEN2ziZbKbSZ+gL0pAeF1+GewCfGqaAA=;
+	s=k20260515; t=1791108694;
+	bh=CkSaGWts0W4FuW/tGrCciXI8NMI5AFPyJYFUhRRfSWY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dK/IvoLyhu/qWRwYb6ZSW5oCBUEj3Ge4/YBDQegeOoK8saW9YFGTHVs41Z17eW7ZS
-	 ZSyVIUYjTEJZd/4eSmHeOAPTUv3ZbiGPuNSk2SP6jm8mRZeSK6z4sjoX1/WA9dK9vp
-	 vRwDQVuXOyB841KrLj/WepGhMwtGHmkLq9MYwP+flxEqAzrSD582z2jQzyxGz81LEg
-	 griFuJeAjrfbYCGR/pkxClqAj/KjMJcHCKiw28/5xQtXL2QiHmoY7EqDC5N2fmAUMs
-	 R2TQQsCcR9+jPIjpUdkraajgyan075Q5cAy66szrUQ+T0KQdtK1op9II0DVS8tW/43
-	 JG/ZDWe0AufQg==
-Subject: Re: [PATCH net 2/2] vti6: fix tunnel device use-after-free across
- async crypto resumption
+	b=BHXXpBnV4T4M2ffN2oYCNvYAIwO9HQDmS3AjdA/56LPsmbvxoUrZWasOo5KQTvvr9
+	 zKW/5w/vdH12cMqIz1eG/IHP3cvnijatqlmz2O5leHG8v5PlU66GCb71Kvqs9rhcUM
+	 9EzfQr7a2KJ6UEP3RyUwKU2w1l8OxeuTX7ZMEws9UqBbtbv82DlvqPXjUHnSm/HbXS
+	 Z9KZXPfRsgvMeGmbeD9TfZx305wekzVCCReErQLgaKErUZrya0Ny5giHoyuYIXFx63
+	 Bj8JQXxZgu0dEh1MJZgk49dS6RRUvD7xksf7wjkBlcW5f4MbGW7XmfrAw8B8Pi/UQ6
+	 vQWh9wj3mkpFg==
+Subject:
+ Re: [PATCH net-next v2 2/2] selftests: net: big_tcp_tunnels: Cover bareudp
 From: netdev-bot+sashiko@kernel.org
-To: q.h.hack.winter@gmail.com
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
- herbert@gondor.apana.org.au, kuba@kernel.org
-Date: Sun, 04 Oct 2026 10:08:27 +0000
-Message-ID: <179110850758.434549.17852121461164878491@kernel.org>
-In-Reply-To: <20260930090813.73901-3-q.h.hack.winter@gmail.com>
-References: <20260930090813.73901-3-q.h.hack.winter@gmail.com>
+To: yanhaishuang@cmss.chinamobile.com
+Cc: netdev@vger.kernel.org, alice.kernel@fastmail.im, daniel@iogearbox.net,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 04 Oct 2026 10:11:32 +0000
+Message-ID: <179110869274.434549.7292617532752243045@kernel.org>
+In-Reply-To: <20261003100939.468181-3-yanhaishuang@cmss.chinamobile.com>
+References: <20261003100939.468181-3-yanhaishuang@cmss.chinamobile.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 3 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -57,217 +59,161 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] This patch leaks the new ip6_vti device reference whenever an
-  async-resumed (or HW-offloaded) packet hits an SA that is no longer…
-- [High] On a vti6 tunnel whose SA uses IP-TFS mode, the new dev_hold()
-  leaks for every outer packet that IP-TFS frees instead of reinjecting.
-- [High] vti6_rcv_cb() sets skb->dev to the vti6 device (line 395) and
-  then calls dev_put(dev) (line 397).
-- [Medium] Unloading the module can hang forever if the fallback ip6_vti0
-  device still has an async receive in flight.
+- [High] Seven of the twelve new bareudp test cases cannot pass, so
+  tools/testing/selftests/net/big_tcp_tunnels.sh now always fails.
+- [Low] Comments in tools/testing/selftests/net/big_tcp_tunnels.sh do not
+  match the new coverage.
+- [Low] The return status of the new bareudp setup commands is never
+  checked.
 
 --
 
-vti6: fix tunnel device use-after-free across async crypto resumption
+selftests: net: big_tcp_tunnels: Cover bareudp
 
-When vti6_input_proto() caches the tunnel pointer in the skb cb, this
-commit now takes a reference on the vti6 tunnel device. vti6_rcv_cb()
-drops that reference on both its error path and its success path. The
-change mirrors the equivalent IPv4 vti fix.
+This patch adds bareudp to the tunnel types tested by big_tcp_tunnels.sh.
+The bareudp devices run in external mode with ethertype ipv4 multiproto. A
+tc tunnel_key action on egress supplies the tunnel metadata, and the device
+MTU is lowered to leave room for the IPv6 and UDP headers.
 
-> diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-> index ab94b3a4ba9c3..b53830d5cf54b 100644
-> --- a/net/ipv6/ip6_vti.c
-> +++ b/net/ipv6/ip6_vti.c
-> @@ -322,6 +322,9 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
->  		rcu_read_unlock();
+> diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh b/tools/testing/selftests/net/big_tcp_tunnels.sh
+> index cc0875e52fb9..cf38377f576b 100755
+> --- a/tools/testing/selftests/net/big_tcp_tunnels.sh
+> +++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
+> @@ -53,6 +53,16 @@ setup() {
+>  	DEFAULT_TCP_MIN_TSO_SEGS=$(ip netns exec "$CLIENT_NS" sysctl -n net.ipv4.tcp_min_tso_segs)
+>  }
 >  
->  		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-> +
-> +		dev_hold(t->dev);
-> +
+> +# bareudp only works in external mode: attach the tunnel metadata to all
+> +# packets sent through the device. Its MTU does not account for the
+> +# encapsulation either, so leave room for IPv6 and UDP headers.
+> +setup_bareudp() {
+> +	ip -netns "$1" link set "$2" mtu 1452
+> +	tc -netns "$1" qdisc add dev "$2" clsact
+> +	tc -netns "$1" filter add dev "$2" egress matchall \
+> +		action tunnel_key set src_ip "$3" dst_ip "$4" id 0 ttl 64
+> +}
 
-[Severity: High]
-Can this reference leak when an async-resumed packet hits an SA that is
-no longer valid?
+[Severity: Low]
+Should failures from these commands be passed back to the caller?
+setup_bareudp() ignores the exit status of ip link set, tc qdisc add and tc
+filter add. The same is true of the ip link add ... type bareudp ...
+multiproto calls in setup_tunnel().
 
-The only dev_put() calls that match this dev_hold() are in
-vti6_rcv_cb(). xfrm_input() does not always reach the protocol callback
-chain.
+The exit status of setup_tunnel() comes from its last command:
 
-Suppose esp6_input() returns -EINPROGRESS, and the SA is deleted or
-expires before esp_input_done() calls xfrm_input_resume(). The resumed
-xfrm_input() call then takes the early branch:
+    ip netns exec "$SERVER_NS" ethtool -K link1 tx-checksumming "$3" > /dev/null
 
-net/xfrm/xfrm_input.c:xfrm_input() {
+As a result, setup_tunnel ... || exit "$?" never sees these failures. The
+new tc -V check only shows that the tc binary exists. It does not show that
+matchall or tunnel_key work.
+
+Without the tunnel_key filter, bareudp_xmit() drops every packet:
+
+drivers/net/bareudp.c:bareudp_xmit() {
     ...
-		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
-			...
-			if (encap_type == -1)
-				dev_put(dev);
-			goto drop;
-		}
-
-		family = x->props.family;
-    ...
-}
-
-At the drop label family is still AF_UNSPEC, so this runs:
-
-drop:
-	if (async)
-		dev_put(dev);
-	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
-	kfree_skb(skb);
-
-Only AF_INET and AF_INET6 afinfo are ever registered, so
-xfrm_input_get_afinfo(AF_UNSPEC, is_ipip) returns NULL. xfrm_rcv_cb()
-then returns -EAFNOSUPPORT and never calls xfrm6_rcv_cb() or
-vti6_rcv_cb().
-
-The offload path can hit the same early drop without any async crypto.
-Take an skb with xfrm_offload state, received with GRO disabled. It goes
-through vti6_rcv()->vti6_input_proto(..., 0) and takes the early branch
-because xo && encap_type == 0.
-
-Before this patch, skipping vti6_rcv_cb() here only lost a stats
-increment. With the new dev_hold(), would a later unregister of the
-ip6_vti device wait forever in netdev_wait_allrefs_any()? Deleting the
-old SA after an IKE rekey looks like a routine way to trigger this.
-
-The IPv4 patch in this series has the same gap in vti_input() and
-vti_rcv_cb().
-
-[Severity: High]
-What happens to this reference when the SA on the vti6 tunnel uses
-IP-TFS mode?
-
-xfrm_tunnel_check() accepts IP-TFS SAs here, because the IPTFS entry in
-xfrm6_mode_map has XFRM_MODE_FLAG_TUNNEL set. After decryption,
-xfrm_inner_mode_input() calls x->mode_cbs->input(), which is
-iptfs_input(). That function always returns -EINPROGRESS. xfrm_input()
-then returns without calling xfrm_rcv_cb() for the outer skb:
-
-net/xfrm/xfrm_input.c:xfrm_input() {
-    ...
-		err = xfrm_inner_mode_input(x, skb);
-		if (err == -EINPROGRESS) {
-			if (async)
-				dev_put(dev);
-			return 0;
+	info = skb_tunnel_info(skb);
+	if (unlikely(!info || !(info->mode & IP_TUNNEL_INFO_TX))) {
+		err = -EINVAL;
+		goto tx_error;
+	}
     ...
 }
 
-That dev_put() only drops the reference on the lower device.
+The test then reports a packet-count FAIL rather than a SKIP or a clear
+setup error. The vxlan and geneve setup ignores errors in the same way.
 
-The outer skb carries tunnel.ip6 in its cb. It only gets back to
-vti6_rcv_cb() if IP-TFS reuses it as the first inner packet and
-reinjects it with xfrm_input(skb, 0, 0, -2). In several other cases
-IP-TFS frees it without any callback:
-
-  - iptfs_input_ordered() on an invalid IP-TFS header (kfree_skb at
-    done:)
-  - __input_process_payload() on pad-only or continuation-only payloads
-    (!first_skb leads to kfree_skb), and the defer consume_skb
-  - the reorder-window freelist in iptfs_input()
-  - expiry of the reassembly drop timer for ra_newskb
-
-Inner skbs from iptfs_alloc_skb() have a zeroed cb. vti6_rcv_cb()
-returns 1 for them without calling dev_put().
-
-Would each of these outer packets leak one reference on the vti6
-device? The peer controls the payload layout, and all-pad IP-TFS packets
-are normal traffic. The IPv4 patch has the same issue.
-
-[Severity: Medium]
-Can rmmod ip6_vti hang forever if the fallback ip6_vti0 device has an
-async receive in flight?
-
-vti6_tnl_lookup() can return the fallback tunnel while its device is up,
-so this dev_hold() can be taken on ip6_vti0. vti6_tunnel_cleanup() then
-runs:
-
-	rtnl_link_unregister(&vti6_link_ops);
-	...
-	xfrm6_protocol_deregister(&vti_ipcomp6_protocol, IPPROTO_COMP);
-	xfrm6_protocol_deregister(&vti_ah6_protocol, IPPROTO_AH);
-	xfrm6_protocol_deregister(&vti_esp6_protocol, IPPROTO_ESP);
-	unregister_pernet_device(&vti6_net_ops);
-
-rtnl_link_unregister() does not drain ip6_vti0, because vti6_dellink()
-skips it:
-
-	if (dev != ip6n->fb_tnl_dev)
-		unregister_netdevice_queue(dev, head);
-
-Suppose the crypto completion runs after the xfrm6_protocol_deregister()
-calls. xfrm6_rcv_cb() only walks the handlers that are still registered,
-so vti6_rcv_cb() never runs and the reference is never dropped.
-
-Would unregister_pernet_device() then wait forever in
-netdev_wait_allrefs_any() for ip6_vti0, while holding pernet_ops_rwsem?
+> @@ -64,26 +74,42 @@ setup_tunnel() {
 
 [ ... ]
 
-> @@ -387,6 +394,7 @@ static int vti6_rcv_cb(struct sk_buff *skb, int err)
->  	skb_scrub_packet(skb, !net_eq(t->net, dev_net(skb->dev)));
->  	skb->dev = dev;
->  	dev_sw_netstats_rx_add(dev, skb->len);
-> +	dev_put(dev);
+> +	bareudp)
+> +		ip -netns "$CLIENT_NS" link add tun0 type bareudp \
+> +			dstport 6635 ethertype ipv4 multiproto
+> +		setup_bareudp "$CLIENT_NS" tun0 "$CLIENT_IP" "$SERVER_IP"
+> +		;;
+> +	esac
 
 [Severity: High]
-Is this reference dropped before the last use of the vti6 device?
+Can the bareudp cases that use IPv6, inner or outer, with csum offload off
+pass in this configuration?
 
-skb->dev has just been set to the vti6 device. After xfrm_rcv_cb()
-returns, xfrm_input() keeps using it in the decaps branch:
+With tx-checksumming off on link0, every encapsulated GSO skb is segmented
+in software by skb_udp_tunnel_segment(). That function chooses the inner
+handler based on skb->inner_protocol:
 
-net/xfrm/xfrm_input.c:xfrm_input() {
+net/ipv4/udp_offload.c:skb_udp_tunnel_segment() {
     ...
-		if (async)
-			dev_put(dev);
-		gro_cells_receive(&gro_cells, skb);
-		rcu_read_unlock();
-    ...
-}
-
-The dev_put() there only drops the reference on the original lower
-device. gro_cells_receive() then dereferences skb->dev:
-
-net/core/gro_cells.c:gro_cells_receive() {
-	struct net_device *dev = skb->dev;
-	...
-	if (unlikely(!(dev->flags & IFF_UP)))
-		goto drop;
-	...
-drop:
-		dev_core_stats_rx_dropped_inc(dev);
+	case ENCAP_TYPE_ETHER:
+		protocol = skb->inner_protocol;
+		gso_inner_segment = skb_mac_gso_segment;
     ...
 }
 
-Consider an unregister that starts while crypto is pending. It has
-already cleared IFF_UP and finished its synchronize_net() calls, and is
-now polling in netdev_wait_allrefs_any().
+On the IPv4 underlay, bareudp_xmit_skb() always stores the configured
+ethertype. It does this even for IPv6 inner traffic in multiproto mode:
 
-Once this dev_put() brings the refcount to 1, netdev_run_todo() goes on
-to free the pcpu stats and the device with no further grace period. The
-rcu_read_lock() in xfrm_input() started after the unregister's grace
-periods, so it does not hold off that free.
+drivers/net/bareudp.c:bareudp_xmit_skb() {
+    ...
+	skb_set_inner_protocol(skb, bareudp->ethertype);
+    ...
+}
 
-Could gro_cells_receive() then read dev->flags and write
-dev->core_stats on freed memory?
+The IPv6 header is then handed to inet_gso_segment(). There, iph->ihl * 4
+reads the low nibble of the first IPv6 byte, and the ihl < sizeof(*iph)
+check fails.
 
-The commit message says:
+On the IPv6 underlay, bareudp6_xmit_skb() never sets inner_protocol. The
+field stays 0, so skb_mac_gso_segment() fails:
 
-    Take a device reference while the pointer is cached and drop it in
-    vti6_rcv_cb() after the last use, like the IPv4 side.
+net/core/gso.c:skb_mac_gso_segment() {
+    ...
+	__be16 type = skb_network_protocol(skb, &vlan_depth);
 
-The last use of the device is in xfrm_input(), after vti6_rcv_cb() has
-returned, so the use-after-free window seems narrower but still
-reachable. The IPv4 patch has the same ordering.
+	if (unlikely(!type))
+		return ERR_PTR(-EINVAL);
+    ...
+}
 
->  
->  	return 0;
->  }
+In both cases validate_xmit_skb() drops the GSO skbs. The bigtcp iptables
+counter on tun1 stays below packets_threshold, and do_test ... || exit "$?"
+stops the run at the first such case: bareudp, tun_family 4,
+traffic_family 6, csum off.
+
+vxlan and geneve are not affected because they set inner_protocol to
+ETH_P_TEB.
+
+This driver behaviour is older than this series. The previous patch,
+"bareudp: Enable BIG TCP packets", only raises tso_max_size and does not
+change it. As a result, the commit message goal to "run the same checks
+over bareudp as for vxlan and geneve" cannot be met as written.
+
+Could the bareudp inner_protocol handling be fixed first? That would mean
+setting it from the actual inner protocol, and also setting it on the IPv6
+path. Alternatively, the bareudp combinations could be limited to the
+cases that work.
+
+[ ... ]
+
+> @@ -205,7 +236,7 @@ fi
+>  WORKDIR=$(mktemp -d)
+>  trap cleanup EXIT
+>  setup
+> -for tunnel in vxlan geneve; do
+> +for tunnel in vxlan geneve bareudp; do
+
+[Severity: Low]
+This isn't a bug, but the comment at the top of the file still reads:
+
+# Testing for IPv4 and IPv6 BIG TCP over VXLAN and GENEVE tunnels.
+
+Should it mention bareudp now?
+
+The comment in do_test() is also out of date:
+
+	# packet to veth. Check BIG TCP packets inside the VXLAN tunnel to verify
+
+That branch runs for every tunnel type. The wording was already wrong once
+geneve was added, and adding bareudp makes it more misleading.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930090813.73901-1-q.h.hack.winter%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261003100939.468181-1-yanhaishuang%40cmss.chinamobile.com
