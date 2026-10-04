@@ -1,112 +1,165 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail1.kuutio.org (mail1.kuutio.org [65.108.50.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641F46D547;
-	Sun,  4 Oct 2026 20:52:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C730146D547;
+	Sun,  4 Oct 2026 20:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.50.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791147177; cv=none; b=lF5SxpaRFKhtzxFD2DitE7EuWnMC0Z7C9ZRHo2sQEx7xiEu2hUONZHDmWbkIjoFM91JApPdCM0q3XINdo37KdGx6kIinU6lr210NUG6OJPr4yeTqVVWoQH48j3bTOnpSeHBjmpsyUDJ85Q1D0kY22ZFaFxMi9jalUDyUhQbcpqw=
+	t=1791147214; cv=none; b=X+M7r9xrUtTVTp9pWkJidjVqwPSpGZcLiYWOyO9QQuXtAFtQ3OLHiTq77SB+uLCJq4kCzpFmeFWdELVD9yqp8/A3J28c6TioG9kujDDabuyeRuyVwYTmb1lTJQrjQIZ5f6fAOxkjOCZqqG5VJcpJgPnPBTa3w+cx8QtP/sH7ILE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791147177; c=relaxed/simple;
-	bh=4F98gCfH/a3S6D7ajfNo8HPxvP18/75MDPbhlAebBms=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iGVhlJE5mNBE/RNMBNPLMCEtQhc3CmC+Y5TdaktLUsKFMR3JXq4zAr2J9y8YhsYWaGxcJ3w4U2W5ZHydkxyXpna4EvCpt2wQTleM/FIskDmgb6SHLRhjzAKdeSZXYnT2Lq//mohHSWYFXohA9m681rCMPARkEAcsAPPZyI1F86s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asNzq5Nb; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asNzq5Nb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462781F000FF;
-	Sun,  4 Oct 2026 20:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791147175;
-	bh=IiKYqe+0JnRhLAddcDWqeOuJqO+Zz1xcsm4f01eB790=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=asNzq5NbWIVTjxQShq6lqiil9TLvxhyLcPQ1xNhdx/63FSdhG8iCLRqw/V3zgaEvY
-	 LTQn6/jQJhejAyY9UyBbi4JacbxcTlWNAnPq3pSDeg8rFchNm2n/KBy97vN5KtASA2
-	 z2Yvst+miZVIcM5Wr3tbu/A2JDExCRbigwTMzK+OipWPVZ+nmRLHsekTgnS3biWa9b
-	 C6bXY19qhD0yhmcvXQCg5C7Ad8mwH3d8b4HinppRyjBBefwxWhKFIot4bXKmuCjpOR
-	 +xj1st0HRpoyncRpI6vknGZTksd1eKHUUa9MNKUnor3nTryrT8QW441INUuy2rqysK
-	 zKKMQYNQFLwWw==
-Message-ID: <919dcfaa-005f-4bfd-8889-39acda5f7a92@kernel.org>
-Date: Sun, 4 Oct 2026 22:52:49 +0200
+	s=arc-20240116; t=1791147214; c=relaxed/simple;
+	bh=v49ZB23Kze7PHLcH2i3goNue+IyusDCjZ/u9rJ2G2lU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uxthC/dn8OJHPqJEK4aEdafXuo+nw3ilaPNbcEKWM4Y8Ps/TahMYmsoQbnB/b07q4ouK1j5WjplhQ8h4+iKP22LHbFWSyLxiVoG1wyR1mBr5/JYcpzX35TEKB3/pCF9ZKTPcEHeRYJNF/DmcpUjh1+POWbnf/2q2uBbeNZnkejk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lemmela.net; spf=pass smtp.mailfrom=lemmela.net; arc=none smtp.client-ip=65.108.50.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lemmela.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lemmela.net
+Received: from localhost (mail1.kuutio.org [127.0.0.1])
+	by mail1.kuutio.org (Postfix) with ESMTP id BCC291FD9C;
+	Sun,  4 Oct 2026 20:46:46 +0000 (UTC)
+X-Virus-Scanned: amavis at kuutio.org
+Received: from mail1.kuutio.org ([127.0.0.1])
+ by localhost (mail1.kuutio.org [127.0.0.1]) (amavis, port 10024) with LMTP
+ id vR5kU_o3mZqC; Sun,  4 Oct 2026 20:46:46 +0000 (UTC)
+Received: from muovi.kuutio.org (nbqchc6j3dhrbnnpubi-1.v6.elisa-laajakaista.fi [IPv6:2001:99a:adc:6a00::8be])
+	by mail1.kuutio.org (Postfix) with ESMTPSA id E4A771FD92;
+	Sun,  4 Oct 2026 20:46:45 +0000 (UTC)
+From: Oskari Lemmela <oskari@lemmela.net>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Damien Dejean <dam.dejean@gmail.com>
+Cc: Manuel Stocker <mensi@mensi.ch>,
+	Oskari Lemmela <oskari@lemmela.net>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: phy: realtek: fix RTL8224 package address selection
+Date: Sun,  4 Oct 2026 23:46:36 +0300
+Message-ID: <20261004204637.721148-1-oskari@lemmela.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
- macvlan/vlan with bnxt_en
-To: Stefan Fleischmann <sfle@kth.se>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, regressions@lists.linux.dev,
- Joe Damato <joe@dama.to>
-References: <20261004122616.56714cbd@nargothrond>
- <f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
- <20261004163532.3134dd41@nargothrond> <20261004192902.3ab3b7f3@nargothrond>
-Content-Language: en-US
-From: Eric Dumazet <edumazet@kernel.org>
-In-Reply-To: <20261004192902.3ab3b7f3@nargothrond>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+From: Manuel Stocker <mensi@mensi.ch>
 
+The RTL8224 driver rounds each PHY address down to a multiple of four
+to select the package base and uses the low two address bits as the
+port index. For a package starting at an unaligned MDIO address, this
+accesses shared registers at the wrong address and selects incorrect
+MDI pair order and polarity fields.
 
-On 10/4/26 19:29, Stefan Fleischmann wrote:
-> On Sun, 4 Oct 2026 16:35:32 +0200
-> Stefan Fleischmann <sfle@kth.se> wrote:
-> 
->> On Sun, 4 Oct 2026 13:46:08 +0200
->> Eric Dumazet <edumazet@kernel.org> wrote:
->>
->>
->>>
->>> Notice that 0xfc499000 is on an exact 4KB page boundary. This points
->>> to a DMA read overrun where the Broadcom DMA engine reads past the
->>> end of a buffer mapped in page 0xfc498xxx into the adjacent unmapped
->>> page 0xfc499000.
->>>
->>> Have you tried a recent net kernel ?
->>
->> Hi Eric,
->>
->> that might be a bit tricky. We use ZFS on this server and the version
->> we have installed only supports up to kernel 7.2.
-> 
-> Scratch that, I noticed that this even happens with none of the LXC
-> containers running. So I tested with the main branch from
->   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
->   (commit 6dc989ea46b9)
-> 
-> Same issue.
+The Hasivo S1100WP-8GT-2S+ uses two RTL8224 packages at MDIO
+addresses 1-4 and 5-8. The aligned-address assumption splits each
+physical package into incorrect software groups rather than using
+the actual package bases of 1 and 5.
 
-Okay, this must be a bnxt issue, that has been hidden years because of 
-some skb->data headroom/offset.
+Use the base address from an ethernet-phy-package node when present
+and calculate each port's offset relative to that address. Reject
+PHY addresses outside the four-port package and propagate explicit
+package errors instead of falling back to another base address.
 
-LL_RESERVED_SPACE() has been increased from 48 to 64. So perhaps small 
-packets are now crossing a page boundary (which should be fine)
+Keep the existing aligned-address assumption when no package node
+is present.
 
-I see one bug in the skb_pad() vicinity. Could you try:
+Fixes: 330296ea9e15 ("net: phy: realtek: add RTL8224 pair order support")
+Signed-off-by: Manuel Stocker <mensi@mensi.ch>
+[Oskari: rebased on net/main, reworded commit message]
+Signed-off-by: Oskari Lemmela <oskari@lemmela.net>
+---
+ drivers/net/phy/realtek/realtek_main.c | 49 +++++++++++++++++++++++---
+ 1 file changed, 44 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 177b62a7b2d1..8405a74d631f 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -340,6 +340,10 @@ struct rtl821x_priv {
+ 	u16 iner;
+ };
+ 
++struct rtl8224_priv {
++	u8 port_offset;
++};
++
+ struct rtl8261x_priv {
+ 	const char *fw_name;
+ 	bool fw_loaded;
+@@ -2699,7 +2703,8 @@ static int rtl8224_package_modify_mmd(struct phy_device *phydev, int devad,
+ static int rtl8224_mdi_config_order(struct phy_device *phydev)
+ {
+ 	struct device_node *np = phydev->mdio.dev.of_node;
+-	u8 port_offset = phydev->mdio.addr & 3;
++	struct rtl8224_priv *priv = phydev->priv;
++	u8 port_offset = priv->port_offset;
+ 	u32 order = 0;
+ 	int ret;
+ 
+@@ -2724,7 +2729,8 @@ static int rtl8224_mdi_config_order(struct phy_device *phydev)
+ static int rtl8224_mdi_config_polarity(struct phy_device *phydev)
+ {
+ 	struct device_node *np = phydev->mdio.dev.of_node;
+-	u8 offset = (phydev->mdio.addr & 3) * 4;
++	struct rtl8224_priv *priv = phydev->priv;
++	u8 offset = priv->port_offset * 4;
+ 	u32 polarity = 0;
+ 	int ret;
+ 
+@@ -2759,9 +2765,42 @@ static int rtl8224_config_init(struct phy_device *phydev)
+ 
+ static int rtl8224_probe(struct phy_device *phydev)
+ {
+-	/* Chip exposes 4 ports, join all of them in the same package */
+-	return devm_phy_package_join(&phydev->mdio.dev, phydev,
+-				     phydev->mdio.addr & ~3, 0);
++	struct device *dev = &phydev->mdio.dev;
++	u32 base_addr = phydev->mdio.addr & ~3;
++	struct rtl8224_priv *priv;
++	struct device_node *np;
++	int ret;
++
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	np = of_get_parent(dev->of_node);
++	if (of_node_name_eq(np, "ethernet-phy-package")) {
++		ret = of_property_read_u32(np, "reg", &base_addr);
++		of_node_put(np);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Missing or invalid PHY package reg\n");
++
++		if (phydev->mdio.addr < base_addr ||
++		    phydev->mdio.addr - base_addr >= 4)
++			return dev_err_probe(dev, -EINVAL,
++					     "PHY address outside RTL8224 package\n");
++
++		ret = devm_of_phy_package_join(dev, phydev, 0);
++	} else {
++		of_node_put(np);
++		/* Without a package node, assume four aligned PHY addresses. */
++		ret = devm_phy_package_join(dev, phydev, base_addr, 0);
++	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to join PHY package\n");
++
++	priv->port_offset = phydev->mdio.addr - base_addr;
++	phydev->priv = priv;
++
++	return 0;
+ }
+ 
+ static bool rtlgen_supports_2_5gbps(struct phy_device *phydev)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c 
-b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 
-d7728d0c5b6e63ee72de9dea54426bb4c8b7a9fc..f9feeb4471a8cf310788ef8d00b68a1508a7e78e 
-100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -678,6 +678,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff 
-*skb, struct net_device *dev)
-                         /* SKB already freed. */
-                         goto tx_kick_pending;
-                 length = BNXT_MIN_PKT_SIZE;
-+               len += pad;
-         }
-
-         mapping = dma_map_single(&pdev->dev, skb->data, len, 
-DMA_TO_DEVICE);
-
-
+base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
+-- 
+2.55.0
 
