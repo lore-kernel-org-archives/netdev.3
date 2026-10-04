@@ -1,331 +1,310 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2098.outbound.protection.partner.outlook.cn [139.219.17.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836573E9C18;
-	Sun,  4 Oct 2026 03:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791085764; cv=none; b=AbuZBT7tghxMfIqjDki3eZui+9YP1HfLOo4b44J4R4TUOegQaMoKYx0AZfcIScels1qwWMQUrtoAREuzP+b1NeG+O3bioefIfoBsv/DlpeFydUgJWrz+pyz8LwrUaVahn8xH8WD3QufcB+W91OUFZ+gc4DDTUvMa5L5BHIGQlwU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791085764; c=relaxed/simple;
-	bh=UCTsqYO+Ehy1SIuVQFCwrpgMJFT4MqnJdrTY4LdKHlE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=s9TsiHjyRY019KWEqclioYQUXHt2+FCXLyObYvDPdgeo4cUYDCiem1/SjVoBWvWni2mY8YdNiZjts0tDcSfUQZ0zzEwDknZqLkYdGCysRmY7VK7MjIHbCxZHyKT1pNXPcbfiAfkaEg8yZkrtkGVlZE0iFVwibWHF99Eq26BQx5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mWsZTxRn; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mWsZTxRn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7524F1F0089B;
-	Sun,  4 Oct 2026 03:49:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791085762;
-	bh=UbfkJ6KY8SB3d1NUD1ZUcHps7cq9ey81ri0/lR2jRAw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mWsZTxRn5j2i9+3twDJDbhJmDA4YVEVE2YLdyKl25hbs70wN7iBV0jMRoUzX7VLic
-	 lBJXIa0r2wQ7b3tl53OdBL2ooi1t97uV3jWc+BeJy92jtrxGRgHPNTpNizH2vdJ2Bw
-	 R8bn2YwqI/pnGw7/H2NwKOvwkeriGLWIsC1R26RykFWuKNCUMxBto2m/MxGkPxPjtG
-	 rv51plrO2klPCvWTj547q5f43u8OWSsOkP2IoF66AX+NmwOSNQH/iDL1LTw4xCPvFS
-	 wN1Iqc97LNEnjX5olzqt0qRmB1ELHUiQZYx/Gy/RygBDwZhWmxtPRRRa5efBSAe+md
-	 rrlXErW83L+Gw==
-Subject: Re: [PATCH v2] net: dsa: push hwaccel VLAN tag into payload in
- dsa_user_xmit()
-From: netdev-bot+sashiko@kernel.org
-To: singh.amitesh@gmail.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org
-Date: Sun, 04 Oct 2026 03:49:20 +0000
-Message-ID: <179108576097.434549.17028077406245909874@kernel.org>
-In-Reply-To: <20260930033239.57093-1-singh.amitesh@gmail.com>
-References: <20260930033239.57093-1-singh.amitesh@gmail.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922BD33ADA7;
+	Sun,  4 Oct 2026 04:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.98
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791086992; cv=fail; b=b6t49/HUSAdBuYQve/G+LBW1943LY2q8i6nVrsBfNXhv+2s1bYVKCiFw3YH7YQH1E1K/KtTz0Eo41D8mV5lw0yWp91tzTfT878usgIPPViPR1Wx5ZK9h19OUPtc4d8+xDe0hGB0ReeBN/6U0H2n6MYhg0uXvAj3qpMGRwgdHk8o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791086992; c=relaxed/simple;
+	bh=rhfw5EtQmrb2N8oSGnR+yAIIsTl/juajpFGOjIldHo8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=stpIqlauAeGndzWEHi15GzA8p/b+5joBRBV2MCG3qlP4K0gWtDHLR/qV2bFYPlOBYaWpTUZ8yff4JrGfq8FTdTLkH8YEBdO1NICX6PoPAV/+PqFaXiGHGveKEAXjZ2lESIhGcnDLgD5t3QceSxRoDVuk8is1tCwWoXul/09khcg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q4usiuyccACsFhU57wizHDnGQtd35oLHzPcuL7ys7g0ngN6kdhxzYqHzULbozICEjVuIdpVYuYtSlD1CLtT/BjCQFwT1qZOB64m3LIPxvtxbqFavMgqyDzj09T1IVrZDtSmveV4LcuspG08/c88z4sFr8oSuy7Rifz0DjobP0/A9ih5lHFUJeES5doByCmUFSDSMkryzi8U+JMakfVu7fs/gAz6tbBDWRTBOxA/otq0tohE8suZ4TuVemKf5k/43JYO9DoKJ5aLFOjvYUyHabZp+MmORY7Vg1Jm5gpBA8jGF6V/G7+8QBCLK2HBjd5JhOW17clZ3iLQl7Ka8udPstw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dDx260ByFWlF+0C6uIEXZmUiTZI2QDT3nQFK6SLVHOg=;
+ b=Pk5EkwrfjxdBUAvihamStthJLKU5F2j7Tqy0TeaEN28ppbfoQtDud5Nx2mNwHXjNio6BxS1IATvRVlPtsdtGk2ToWbEblUI7X+LRzTx+2E/7Cfw4qCIfqv8/l3Km1Q9Wn3N5/apULVvVA5qajQE6uJjV1NtiDMwm8RFzcaYkDxkqYnoNrGJqjaGcvc0VSJnky7hVJ8OuAaNiM5s126PRsii+DFksFfcJGIidLjKBYLowlDpKeOGaKJlmPGJZkvZjyLUPk2h0KMGbAemUe/g/9ab2Sf9de6/iVFSPpUYeCMZMci+YQFU+NWf3yZpX3c66mZs9C5QNo1KO6PpmZuSibg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:17::6) by ZQ4PR01MB1155.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:15::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Sun, 4 Oct
+ 2026 04:09:36 +0000
+Received: from ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+ ([fe80::e7d4:256c:b066:850d]) by
+ ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn ([fe80::e7d4:256c:b066:850d%4])
+ with mapi id 15.21.0472.016; Sun, 4 Oct 2026 04:09:36 +0000
+From: Changhuang Liang <changhuang.liang@starfivetech.com>
+To: Brian Masney <bmasney@redhat.com>
+CC: Michael Turquette <mturquette@baylibre.com>, Jerome Brunet
+	<jbrunet+clk@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Philipp Zabel
+	<p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Paul Walmsley
+	<pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Emil Renner
+ Berthing <kernel@esmil.dk>, Kees Cook <kees@kernel.org>, "Gustavo A . R .
+ Silva" <gustavoars@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, Hal Feng
+	<hal.feng@starfivetech.com>
+Subject: Re: [PATCH v5 10/23] clk: starfive: Add JHB100 System-2 clock
+ generator driver
+Thread-Topic: [PATCH v5 10/23] clk: starfive: Add JHB100 System-2 clock
+ generator driver
+Thread-Index: AQHdUNlXLmh95bym/0m9TiTYdcb04bbqrOAAgAIdwuA=
+Date: Sun, 4 Oct 2026 04:09:36 +0000
+Message-ID:
+ <ZQ4PR01MB120205E933ED1F874645F35DF2972@ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn>
+References: <20260930124317.5648-1-changhuang.liang@starfivetech.com>
+ <20260930124317.5648-11-changhuang.liang@starfivetech.com>
+ <asALCsosWkutrwUK@redhat.com>
+In-Reply-To: <asALCsosWkutrwUK@redhat.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: ZQ4PR01MB1202:EE_|ZQ4PR01MB1155:EE_
+x-ms-office365-filtering-correlation-id: d76536f5-b40b-4e31-9e1a-08df21cd4dad
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|23010399003|376014|38070700021|56012099006|10067099003|4143699003|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ 5/pFXrQGql3q359qYvs6MNXAX+1oAbUkvOr0A+L46nTUEBIocV/ONd4GkGVgmhUMzDNpRqkNZm9TWIUr6r6ZvLxYXJAq14OhUSYOAswmzPA3dyv90Vd3d/Zh1ZzQa7lFqByJChcJ0ifx9QzxSZcUzWd9UM3EfEM1ntWqAwpntXUnRm0U2jC5wpq81mpiSUxGnkd8DlkyAOjWy6Xn2IYz5UW/samCeJSsdNNJ4/ehM1dEGGA+vqBzhzc1r0uebiVUTO32I+cH0vuIzRmVxn7C1cTO3z1DgWiA10Ek27k3QXWWuOlWgUDfClxlBq5YOdrWKrpbc3zc86WsR9wCdF6EPW2wXcWP92/IHDMoXb22bGun2UpZjjCbLni1Ad0q+lrsDLVZe10IIpz9/Qgk20hMYV3Wt11sgx28oWWBVH085+/+Qd30u/Dwk11IV+5fEYPlM2Z71jb4ME016J/ihBbEWlEv7xfa+QXAoX7FXw2JFGXa17//fyis2R/8uMBldokivu4e/3v7vSUpVwWcUzB3b2mf62yp3S1+7O4A4JyR6hwAS0dJxf510Z7XWeZbx8pQ
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(23010399003)(376014)(38070700021)(56012099006)(10067099003)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ePO9JzroDLPkNqm4hLGFDV8gzGV7mEowD0LIzBn+41Yz4mA7lSDO89MA0Ijt?=
+ =?us-ascii?Q?v6sH21JjfnDW5ocEJwY+pKDoGAaqT4t/1C/E9IREot9jwYjjaBgRfyzSG2bz?=
+ =?us-ascii?Q?zVeczjqUTFMEJn7/KbtIQHcLCs46XnLrsFkzuZoYlwYWYyox3YqdYuvVtkVI?=
+ =?us-ascii?Q?vqzmbwh0n7LblDATpGS/E9KJf3GOUdnQal10127HW+wZ347jYxL3T5f8tqVQ?=
+ =?us-ascii?Q?zTyznsreRMXxmD5N5iJnw0Vv5ojALcxav3SOduuslR5hKu5aCcIFKkluND7t?=
+ =?us-ascii?Q?/wvI6Ap+u9ljsoVQa2ZlbgwyLYDLC31H48kZ44eE0+V/qRozbtvlOpwP9eFb?=
+ =?us-ascii?Q?v9AcHh5ndkqsPAHTW9yaU4EkbkvbsoOOuhLcbb7dFHpj85TjFW7AA7svj2Vf?=
+ =?us-ascii?Q?cAXY3PZnSVNbN5IbzD8xUp6V0yO2nUmnh4P8Y3raH2+64C0KiYwdMZKNNoll?=
+ =?us-ascii?Q?imxbB9i9VUShNKqDjjOjBw2lvHYadrGNjZjZes0w8LqyYlfd5mEzo2gElBqu?=
+ =?us-ascii?Q?k+GBkDExhz/8A8ij/ilyy+etMo711kxJVlZo4jU4vuL5RTdJ8+BX2W27Mxv+?=
+ =?us-ascii?Q?o9/YQfaNWta/RukCHXvYPjm2D7In+H4JZVrwPUCFYBdMt9X2oZSo3K6pIYUZ?=
+ =?us-ascii?Q?VBqr/b2r+F5ad8oRk31720OEb2fTD9tnvAbg5GtoCe5H72n8/jyky3XWw91A?=
+ =?us-ascii?Q?8jeAvU+5TMrjAyJU6+gQGaQy/6BF4RUVM68n76hLGbyBvW6jURiijfPMMdlE?=
+ =?us-ascii?Q?cxHoaxivbqhJ5yg+VgAksVdnMMUGE9+yIhPYz4xqzyeMw0Eo2EEgM69+Ki2a?=
+ =?us-ascii?Q?jWRlRprT501leDvjL1O59k+MYXRU4DpoCybznFrRnWY7ESAkmoFdwENyhlFL?=
+ =?us-ascii?Q?c3XbTRepZmriLh5W/NKWF7XxTk9cEcw17Dg1QsKBcLQnlfG7zyQeZP6XbWFT?=
+ =?us-ascii?Q?lUZOrTe+qqVazw57mI5jwCFvBICAoiO8C/iInFK/JuO6zHqiqUV4X/kRPD7g?=
+ =?us-ascii?Q?G+tfPX7F4yoSTU7gpjDsNmqrI6EeguGDyQ9D+1/cdlcm+kta3xkeV5kc5WZS?=
+ =?us-ascii?Q?p//RmYwtk+95YTpX0JebMOqLt6Ks5jQGKaX5rje2hkqYzmFXOJqhKz3Brs71?=
+ =?us-ascii?Q?gIPQukeQc64Am1d2SZav2d5di9394oKUnNNVSYMoQV8r2z6TaT0aDHa3+Zy1?=
+ =?us-ascii?Q?1X8u3YCfs4QbRRqMAMQVWB269dTEHOAf6CuEeSSFdmETL40omouhjZ9zU3+H?=
+ =?us-ascii?Q?VmgHFsehs1lioLIePRNfRaiHISP+ct4iamW5DIgPc46x6yZ3yHnChZ1Nqwgq?=
+ =?us-ascii?Q?EM5PRkaxfQYq0h7R1od7nwqXbT4EZZr/Yq4E7U6Pp+p/IcDWR0qKZT3Cuobb?=
+ =?us-ascii?Q?7QZc+Yh0NJC4zBAVIbijhSpoo0N3P+9RulNJVsmgG+cMqDgLlMVjXsZqN885?=
+ =?us-ascii?Q?L94HHwWbocv6PsYn5xjiiXQG9wh0vTOvGyYLqQVeVdeHtH6ERAGWzJEwJWs3?=
+ =?us-ascii?Q?gIfbLzA8550LbtxwxCslNW0b++a4HYhsWK/HgJv1rCxGf2lPZwHBdcI2V96s?=
+ =?us-ascii?Q?bU3fOxn1GTQRkAMOCIZmiIH0rsaX2JqCjRfx9EdSsEcOip3kUOR/X5gL8SEJ?=
+ =?us-ascii?Q?ux3/uH3GZN5utbBZ4LzGHKZrSakSlb7+/azwC2GXKn1CRW5gocvAWcyf6Y0c?=
+ =?us-ascii?Q?5MDEl94ncDcAbFSvjxAGDiMu+aRXHaHMFu9OA4quNPIXYnkaZUTB2v1hFny9?=
+ =?us-ascii?Q?60v/CRfS3fKsRluXtToWG+WwVI+0GN8=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
-
-Critical: 1 · High: 0 · Medium: 4 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Critical] The patch materialises the hwaccel VLAN tag in
-  dsa_user_xmit() (net/dsa/user.c:945-949) after…
-- [Medium] dsa_user_xmit() now moves the hwaccel VLAN into skb->data
-  after dsa_skb_tx_timestamp() has run (user.c:925 then 945-949).
-- [Medium] The new free point in dsa_user_xmit() leaks the TX-timestamp
-  clone.
-- [Medium] The commit message says 'tag_rtl8_4 and tag_sja1105 both
-  carried open-coded workarounds' and 'Remove the now-redundant per-…
-- [Medium] The commit message and the new comment in dsa_user_xmit()
-  (user.c:939-944) misdescribe the bug.
-- [Low] The commit fixes a user-visible bug: the message calls the
-  resulting on-wire VLAN/tag ordering 'broken' on conduits such as imx-…
-
---
-
-net: dsa: push hwaccel VLAN tag into payload in dsa_user_xmit()
-
-This commit calls __vlan_hwaccel_push_inside() in dsa_user_xmit(), so
-any hwaccel VLAN tag is moved into the payload before the tagger's xmit
-function runs. It also removes the per-tagger copy of that logic from
-sja1105_pvid_tag_control_pkt() in tag_sja1105.c.
-
-> When a socket buffer has a hardware-accelerated VLAN tag (skb->vlan_tci
-> set), the conduit NIC inserts the 802.1Q header after whatever the DSA
-> tagger prepends, producing the wrong on-wire ordering:
->
->   [tagger header][802.1Q VID]
->
-> instead of the correct:
->
->   [802.1Q VID][tagger header]    (for taggers that follow the VLAN)
->   [tagger header][802.1Q VID]    (for taggers that precede the VLAN — broken)
->
-> This affects any platform where tx-vlan-offload is enabled or fixed:on
-> and cannot be disabled (e.g. imx-dwmac). tag_rtl8_4 and tag_sja1105
-> both carried open-coded workarounds for this; rather than let each new
-> tagger rediscover the problem, handle it once in dsa_user_xmit() before
-> the skb is handed to any tagger.
-
-[Severity: Medium]
-Is this ordering diagram right? The "wrong" ordering and the "broken"
-line under "instead of the correct:" are both [tagger header][802.1Q VID].
-
-For etype taggers, the conduit inserts the VLAN at offset 12. That
-actually gives DA SA [802.1Q][tagger].
-
-The stated trigger also looks a bit off. Hardware tags reach
-dsa_user_xmit() because the user netdev inherits
-NETIF_F_HW_VLAN_CTAG_TX from the conduit at setup time, in
-dsa_user_setup_tagger():
-
-	user->features = conduit->vlan_features | NETIF_F_HW_TC;
-
-Turning tx-vlan-offload off on the conduit later does not clear it from
-the user port. In that case the conduit's validate_xmit_vlan() inserts
-the tag in software, still after the tagger, so disabling offload is not
-a workaround. The new comment in dsa_user_xmit() repeats this wording.
-
-Is this later claim accurate?
-
-  Note: tag_lan9303.c is unaffected.
-
-lan9303_xmit() inserts its [8100 | port] header after the source MAC:
-
-	/* provide 'LAN9303_TAG_LEN' bytes additional space */
-	skb_push(skb, LAN9303_TAG_LEN);
-
-	/* make room between MACs and Ether-Type */
-	dsa_alloc_etype_header(skb, LAN9303_TAG_LEN);
-
-Before this patch, the conduit added the user VLAN outside that header,
-giving DA SA [8100 VID][8100 port]. With the VLAN pushed into the payload
-first, the frame becomes DA SA [8100 port][8100 VID]. Doesn't that change
-the on-wire output for LAN9303?
-
-> __vlan_hwaccel_push_inside() frees the skb internally on allocation
-> failure, so returning NETDEV_TX_OK on NULL is correct. Remove the
-> now-redundant per-tagger copies from tag_rtl8_4.c and tag_sja1105.c.
-
-[Severity: Medium]
-The diff only touches net/dsa/tag_sja1105.c and net/dsa/user.c. Was
-tag_rtl8_4.c meant to be part of this change?
-
-In the tree this patch applies to, rtl8_4_tag_xmit() has no hwaccel VLAN
-handling:
-
-static struct sk_buff *rtl8_4_tag_xmit(struct sk_buff *skb,
-				       struct net_device *dev)
-{
-	skb_push(skb, RTL8_4_TAG_LEN);
-
-	dsa_alloc_etype_header(skb, RTL8_4_TAG_LEN);
-
-	rtl8_4_write_tag(skb, dev, dsa_etype_header_pos_tx(skb));
-
-	return skb;
-}
-
-In net/dsa, the only TX-side use of skb_vlan_tag_present() or
-__vlan_hwaccel_push_inside() is in tag_sja1105.c. That makes the
-statement "tag_rtl8_4 and tag_sja1105 both carried open-coded
-workarounds" look wrong too.
-
-Was this written against a different tree, or does it depend on an
-rtl8_4 patch that isn't mentioned here?
-
-[ ... ]
-
-> Signed-off-by: Amitesh Singh <singh.amitesh@gmail.com>
-
-[Severity: Low]
-The commit message says the on-wire ordering is broken on conduits like
-imx-dwmac. stmmac sets NETIF_F_HW_VLAN_CTAG_TX, copies it into
-vlan_features, and DSA then inherits it for user ports. Since this is a
-user-visible fix, should it carry a Fixes: tag, and possibly a stable Cc?
-
-> diff --git a/net/dsa/user.c b/net/dsa/user.c
-> index 041f9060c8ef0..7c178634228c0 100644
-> --- a/net/dsa/user.c
-> +++ b/net/dsa/user.c
-
-[ ... ]
-
-> @@ -935,6 +936,18 @@ static netdev_tx_t dsa_user_xmit(struct sk_buff *skb, struct net_device *dev)
->  	if (dev->needed_tailroom)
->  		eth_skb_pad(skb);
->  
-> +	/* If the conduit NIC has tx-vlan-offload enabled (or it is fixed:on and
-> +	 * cannot be turned off, e.g. imx-dwmac), it will insert the 802.1Q
-> +	 * header *after* whatever the tagger prepends, producing the wrong
-> +	 * on-wire ordering. Materialise any hwaccel VLAN tag into the payload
-> +	 * here, once, before handing the skb to the tagger.
-> +	 */
-> +	if (skb_vlan_tag_present(skb)) {
-> +		skb = __vlan_hwaccel_push_inside(skb);
-
-[Severity: Critical]
-Does this use up headroom that was reserved for the tagger? Earlier in
-dsa_user_xmit(), headroom is sized only for the tagger:
-
-	if (skb_ensure_writable_head_tail(skb, dev)) {
-		dev_kfree_skb_any(skb);
-		return NETDEV_TX_OK;
-	}
-
-skb_ensure_writable_head_tail() grows the head only by the shortfall
-against dev->needed_headroom:
-
-	needed_headroom = max_t(int, needed_headroom - skb_headroom(skb), 0);
-
-dev->needed_headroom is tag_ops->needed_headroom plus
-conduit->needed_headroom. stmmac sets no needed_headroom, so this is
-just the tag length.
-
-__vlan_insert_inner_tag() then checks for VLAN_HLEN of its own headroom
-only, and pushes:
-
-	if (skb_cow_head(skb, meta_len + VLAN_HLEN) < 0)
-		return -ENOMEM;
-
-	skb_push(skb, VLAN_HLEN);
-
-That leaves TAG_LEN - 4 bytes of headroom for the tagger. Taggers such
-as rtl8_4_tag_xmit(), brcm_tag_xmit_ll() and lan9303_xmit() call
-skb_push() without checking and rely on the DSA headroom guarantee:
-
-	skb_push(skb, RTL8_4_TAG_LEN);
-
-No tagger in net/dsa calls skb_cow_head(), and
-Documentation/networking/dsa/dsa.rst says taggers don't need to check
-headroom.
-
-Wouldn't that push move skb->data below skb->head and end in
-skb_under_panic()?
-
-This can happen when the user port has inherited NETIF_F_HW_VLAN_CTAG_TX
-from conduit->vlan_features, as with stmmac with vlins, which is the
-setup this patch targets. Any hwaccel-tagged skb that arrives with less
-than needed_headroom + VLAN_HLEN of headroom would be affected.
-
-One example: UDP sent from a netns over veth, which leaves about 2 bytes
-of headroom before the Ethernet header. A VLAN-aware bridge tags it with
-the PVID via __vlan_hwaccel_put_tag(), and br_dev_queue_push_xmit()
-forwards it to a DSA user port. Skbs whose headroom is between TAG_LEN
-and TAG_LEN + 3 would hit it as well.
-
-The removed sja1105 copy avoided this only because
-sja1105_pvid_tag_control_pkt() goes on to call vlan_insert_tag(), which
-reallocates as needed.
-
-Could the push be done before skb_ensure_writable_head_tail(), for
-example at the top of dsa_user_xmit(), or could an extra VLAN_HLEN be
-reserved?
-
-> +		if (!skb)
-> +			return NETDEV_TX_OK;
-
-[Severity: Medium]
-Can this error path leak the TX timestamp clone? dsa_skb_tx_timestamp()
-has already run at this point. Both sja1105_port_txtstamp() and
-ksz_port_txtstamp() keep the only pointer to an skb_clone_sk() clone in
-the original skb's cb:
-
-	SJA1105_SKB_CB(skb)->clone = clone;
-
-	KSZ_SKB_CB(skb)->clone = clone;
-
-When __vlan_hwaccel_push_inside() fails, the original skb is freed and
-NETDEV_TX_OK is returned, but nothing releases the clone. The clone
-holds a socket reference that is only dropped through sock_efree, so the
-socket would never be freed.
-
-The commit message says "returning NETDEV_TX_OK on NULL is correct", but
-that only covers the original skb.
-
-This looks reachable with KSZ, a tail tagger with needed_headroom 0
-behind stmmac. A PTP frame from a VLAN upper can arrive with about 2
-bytes of headroom. skb_cow_head(skb, 4) then calls
-pskb_expand_head(..., GFP_ATOMIC), and that allocation can fail. KSZ had
-no such failure point before; sja1105 already had the same leak inside
-its tagger.
-
-The skb_ensure_writable_head_tail() error path just above leaks the
-clone the same way, but that one predates this patch. Would doing the
-VLAN push before dsa_skb_tx_timestamp() avoid adding another instance?
-
-> +	}
-> +
->  	/* Transmit function may have to reallocate the original SKB,
->  	 * in which case it must have freed it. Taggers will drop the
->  	 * passed skb on error.
-
-[Severity: Medium]
-Does moving the tag into the payload here invalidate the PTP class that
-dsa_skb_tx_timestamp() computed earlier in this function?
-
-ksz_port_txtstamp() classifies the frame with ptp_classify_raw(), which
-reads skb->data. At that point the tag is still in the skb metadata,
-not in the frame, so the class has no PTP_CLASS_VLAN bit. For one-step
-P2P Pdelay_Resp the class is saved for the tagger:
-
-	KSZ_SKB_CB(skb)->ptp_type = type;
-
-After the 802.1Q header has been pushed into the payload,
-ksz_xmit_timestamp() in net/dsa/tag_ksz.c parses the frame again with
-the saved class:
-
-	ptp_hdr = ptp_parse_header(skb, ptp_type);
-
-ptp_parse_header() skips the VLAN header only when the class says to:
-
-	if (type & PTP_CLASS_VLAN)
-		ptr += VLAN_HLEN;
-
-For L2 PTP, the parsed header ends up 4 bytes early. For IPv4, the IHL
-is read from the TCI byte.
-
-The tagger then reads the wrong correctionField. If that value looks
-negative, it computes the wrong tstamp_raw for the tail tag, zeroes the
-wrong 8 bytes, and patches the wrong UDP checksum via
-ptp_header_update_correction(). Otherwise it sends a tstamp of 0 and
-leaves the real negative correction in place.
-
-Before this patch the conduit inserted the VLAN after the KSZ tail
-tagger ran, and the resulting frame was consistent. Could
-KSZ9477/KSZ8563/LAN937x switches behind an stmmac conduit with vlins now
-send bad Pdelay_Resp frames when ptp4l runs one-step P2P on a VLAN upper
-of the user port?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930033239.57093-1-singh.amitesh%40gmail.com
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: ZQ4PR01MB1202.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-Network-Message-Id: d76536f5-b40b-4e31-9e1a-08df21cd4dad
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2026 04:09:36.4925
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YTNm6XUIMMxj8N0hTwIos2yu43jnvY23xANhRnAqAIWN2xnT/PahdahRNIq8jwYJctD5HTZ4iHPEr3ereHdL7ONdMhFNmEsRhQGGHZKINI/RjVXAAkr75A28yov+Ov5g
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQ4PR01MB1155
+
+Hi, Brain
+
+Thanks for the review.
+
+> Hi Changhuang,
+>=20
+> On Wed, Sep 30, 2026 at 05:43:04AM -0700, Changhuang Liang wrote:
+> > Add support for JHB100 System-2 clock generator (SYS2CRG).
+> >
+> > Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
+> > ---
+> >  drivers/clk/starfive/Kconfig                  |  10 ++
+> >  drivers/clk/starfive/Makefile                 |   1 +
+> >  .../clk/starfive/clk-starfive-jhb100-sys2.c   | 129 ++++++++++++++++++
+> >  3 files changed, 140 insertions(+)
+> >  create mode 100644 drivers/clk/starfive/clk-starfive-jhb100-sys2.c
+> >
+> > diff --git a/drivers/clk/starfive/Kconfig
+> > b/drivers/clk/starfive/Kconfig index 11da8bcc4046..cfaac934a8e0 100644
+> > --- a/drivers/clk/starfive/Kconfig
+> > +++ b/drivers/clk/starfive/Kconfig
+> > @@ -92,3 +92,13 @@ config CLK_STARFIVE_JHB100_SYS1
+> >  	help
+> >  	  Say yes here to support the system-1 clock controller on the
+> >  	  StarFive JHB100 SoC.
+> > +
+> > +config CLK_STARFIVE_JHB100_SYS2
+> > +	bool "StarFive JHB100 system-2 clock support"
+> > +	depends on ARCH_STARFIVE || COMPILE_TEST
+> > +	select CLK_STARFIVE_JH71X0
+> > +	select RESET_STARFIVE_JHB100 if RESET_CONTROLLER
+> > +	default ARCH_STARFIVE
+> > +	help
+> > +	  Say yes here to support the system-2 clock controller on the
+> > +	  StarFive JHB100 SoC.
+> > diff --git a/drivers/clk/starfive/Makefile
+> > b/drivers/clk/starfive/Makefile index 0061550e0f7e..29cdef20575e
+> > 100644
+> > --- a/drivers/clk/starfive/Makefile
+> > +++ b/drivers/clk/starfive/Makefile
+> > @@ -13,3 +13,4 @@ obj-$(CONFIG_CLK_STARFIVE_JH7110_VOUT)	+=3D
+> clk-starfive-jh7110-vout.o
+> >
+> >  obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS0)		+=3D
+> clk-starfive-jhb100-sys0.o
+> >  obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS1)		+=3D
+> clk-starfive-jhb100-sys1.o
+> > +obj-$(CONFIG_CLK_STARFIVE_JHB100_SYS2)		+=3D
+> clk-starfive-jhb100-sys2.o
+> > diff --git a/drivers/clk/starfive/clk-starfive-jhb100-sys2.c
+> > b/drivers/clk/starfive/clk-starfive-jhb100-sys2.c
+> > new file mode 100644
+> > index 000000000000..a2c7e8eba9b6
+> > --- /dev/null
+> > +++ b/drivers/clk/starfive/clk-starfive-jhb100-sys2.c
+> > @@ -0,0 +1,129 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * StarFive JHB100 System-2 Clock Driver
+> > + *
+> > + * Copyright (C) 2024 StarFive Technology Co., Ltd.
+> > + *
+> > + * Author: Changhuang Liang <changhuang.liang@starfivetech.com>
+> > + *
+> > + */
+> > +
+> > +#include <dt-bindings/clock/starfive,jhb100-crg.h>
+> > +#include <linux/init.h>
+> > +#include <linux/platform_device.h>
+> > +
+> > +#include "clk-starfive-jh71x0.h"
+> > +
+> > +#define JHB100_SYS2CLK_NUM_CLKS
+> 	(JHB100_SYS2CLK_MAIN_ICG_EN_JTAG1 + 1)
+> > +
+> > +/* external clocks */
+> > +#define JHB100_SYS2CLK_OSC
+> 	(JHB100_SYS2CLK_NUM_CLKS + 0)
+> > +#define JHB100_SYS2CLK_PLL1
+> 	(JHB100_SYS2CLK_NUM_CLKS + 1)
+> > +#define JHB100_SYS2CLK_GPU0_NCNOC_INIT
+> 	(JHB100_SYS2CLK_NUM_CLKS + 2)
+> > +#define JHB100_SYS2CLK_GPU1_NCNOC_INIT
+> 	(JHB100_SYS2CLK_NUM_CLKS + 3)
+> > +
+> > +static const char * const jhb100_sys2_ext_clk[] =3D {
+> > +	"osc",
+> > +	"pll1",
+> > +	"gpu0_ncnoc_init",
+> > +	"gpu1_ncnoc_init",
+> > +};
+> > +
+> > +static const struct jh71x0_clk_data jhb100_sys2crg_clk_data[] =3D {
+> > +	/* jtag mst*/
+> > +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM0_HCLK, "jtagm0_hclk", 6,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM1_HCLK, "jtagm1_hclk", 6,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM0_ATPG, "jtagm0_ATPG", 12,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM1_ATPG, "jtagm1_ATPG", 12,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM0_ATPG_TCLOCK,
+> "jtagm0_atpg_tclock", 2,
+> > +		    JHB100_SYS2CLK_JTAGM0_ATPG),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_JTAGM1_ATPG_TCLOCK,
+> "jtagm1_atpg_tclock", 2,
+> > +		    JHB100_SYS2CLK_JTAGM1_ATPG),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG0_MST_WRAP_HCLK,
+> "jtag0_mst_wrap_hclk",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM0_HCLK),
+>=20
+> Can you leave a comment somewhere about why CLK_IGNORE_UNUSED is
+> on some of these clocks? We may be able to deprecate this flag once some
+> variation of the clk sync_state support lands:
+>=20
+> https://lore.kernel.org/linux-clk/20260626-clk-sync-state-v1-0-4156d8196d=
+c
+> 8@redhat.com/
+>=20
+>=20
+
+There are some clocks that we do not consume through a driver. Currently,=20
+CLK_IGNORE_UNUSED can keep them in their hardware default state (always on)=
+.=20
+If there is an intention to deprecate this flag, in the next version I may =
+need to=20
+replace it with CLK_IS_CRITICAL.
+
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG0_MST_WRAP_CLK_JTAG,
+> "jtag0_mst_wrap_clk_jtag",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM0_HCLK),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG0_MST_WRAP_APB_PCLK,
+> "jtag0_mst_wrap_apb_pclk",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM0_ATPG),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG0_MST_WRAP_ATPG_TCLOCK,
+> "jtag0_mst_wrap_atpg_tclock",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM0_ATPG),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG1_MST_WRAP_HCLK,
+> "jtag1_mst_wrap_hclk",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM1_HCLK),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG1_MST_WRAP_CLK_JTAG,
+> "jtag1_mst_wrap_clk_jtag",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM1_HCLK),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG1_MST_WRAP_APB_PCLK,
+> "jtag1_mst_wrap_apb_pclk",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM1_ATPG),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_JTAG1_MST_WRAP_ATPG_TCLOCK,
+> "jtag1_mst_wrap_atpg_tclock",
+> > +		    CLK_IGNORE_UNUSED, JHB100_SYS2CLK_JTAGM1_ATPG),
+> > +	/* hostusbcmn */
+> > +	JH71X0__DIV(JHB100_SYS2CLK_HOSTUSB_NCNOC_TARG,
+> "hostusb_ncnoc_targ", 12,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_HOSTUSBCMN_CFG_500,
+> "hostusbcmn_cfg_500", 4,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	/* bmcperiph1 */
+> > +	JH71X0__DIV(JHB100_SYS2CLK_BMCPER1_NCNOC_TARG,
+> "bmcper1_ncnoc_targ", 6,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_BMCPER1_CFG_250,
+> "bmcper1_cfg_250", 5,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0__DIV(JHB100_SYS2CLK_BMCPER1_CFG_143_DFT,
+> "bmcper1_cfg_143_dft", 8,
+> > +		    JHB100_SYS2CLK_PLL1),
+> > +	JH71X0_GATE(JHB100_SYS2CLK_BMCPER1_CFG_143,
+> "bmcper1_cfg_143",
+> > +CLK_IS_CRITICAL,
+>=20
+> Also please leave a comment why CLK_IS_CRITICAL is needed as well for
+> these particular clocks.
+
+OK.
+
+Best Regards,
+Changhuang
