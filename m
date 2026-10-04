@@ -1,73 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930D4455619;
-	Sun,  4 Oct 2026 14:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0859D442370;
+	Sun,  4 Oct 2026 14:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791125128; cv=none; b=VtUKHI7htjs73F2fVsy8qW9UvCsfn9CGj0akmPgwjU9FasFx64P0WVRvGvg7mCkL458hf2Y/WdN4/37G7VJ4A6+GJQt5iRR8SvJjvFCYss1iti9nBnTqDkvZn/hv+1oxJ6JfYBFqTbLKrhLJ2XWPDYgcrU0e51AN3d48UeyzcbE=
+	t=1791125368; cv=none; b=n4zUvZD3HnUwpQW4JCpVeBieMao9D1RNTQpU4bkbpKVW8SCeNHckrW+SNYixEiK376lBYkXT3HBX23LJ9JPE+0itcaCMPjV3P7GdEZrjYBWqVq4TiKBcBWA+VBT0LLEQVcF0gCeJ4SdZxJ3slfQ1x0rkVeylMqvgSGF89Ca8yqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791125128; c=relaxed/simple;
-	bh=b5HU/UHLmrAopsEUI7DjH+Rr21xBEqf7j1jORuMJ7dk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F9oL7wmtxm69/tu8S2XnXa+TlcUxNc0FURvJv/PQqTOhJcJiwub151Z1PBjyqxbfqGYovU88boCj+9r8VC/2vP3e6irz8sAvNHbfnXcWllGgDlFUW9tfQzX1y1rj2EhYiJuPPvK0781CvQPq5RMjlNGFfiXZwmRI53H7gwWNtsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=OTkmtRNA; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791125368; c=relaxed/simple;
+	bh=n/bsfr5Ie2mthGBcdNfgnOxf9AGJc1SSIC3qCiVBYQI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Eubk05FS6zZVgrL3uV1s/S89uIet+cZhh8+8OoZU2jhba82zX+YgSdN7m1UWEZQvAkhUKwarQIfGqOUIcbMeGd/Z67IKRBAQ4a27RjYRUzpOUG342+6Hw6lt8vemNsCEaM1YzruG8ovIbPsIvZm/fHtcuCBkKPOcVITmIu7D4vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=zJxtxjUu; arc=none smtp.client-ip=111.22.67.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OTkmtRNA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=zx/CoOu1HuzQ3qCq3whgDNdU4gkodPjsS56YvVj7h6M=; b=OTkmtRNAr0ev+xyLTHe7Rz0TTQ
-	qgokJtdM6VBLXR3D0gzlhOi7y4Kaztl0ZUYhL1dtsgzLhPLNWadasfB5l5EBtg2JdDaDJxge+Dw/J
-	ScL/Zvq38f3OeFWMDrNHEiKCN0wxYaiuFwPHA6NCtqKBtw/iZcsdLs0vSrv23xdxv65c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xDNSk-008tXn-Re; Sun, 04 Oct 2026 16:45:14 +0200
-Date: Sun, 4 Oct 2026 16:45:14 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: Re: [PATCH net-next v19 5/6] net: dsa: mxl862xx: recover switch
- stuck in MCUboot rescue mode
-Message-ID: <35da2f04-0797-49c0-9926-62eeda9798e3@lunn.ch>
-References: <cover.1791035885.git.daniel@makrotopia.org>
- <dd243fa0df46b0cee4caf155b0388ea1702853ba.1791035885.git.daniel@makrotopia.org>
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="zJxtxjUu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=zJxtxjUugpBDLUJveGh3LCMglc4eUIobNigrAfBGq3Qf5CFogai1x2qcuZvxRHkRyLXPdf2Zma91u
+	 ldkNb4l15Whpx6TfG9RZnBHt8+aOOvxXH8bGZTHUa0GoYu10CCNgO3QmZVpPLyrLzyzUmXmg/ueho0
+	 WbWDfz3Rd5M3xkeQ=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee66ac26764d2e-6cb07;
+	Sun, 04 Oct 2026 22:49:12 +0800 (CST)
+X-RM-TRANSID:2ee66ac26764d2e-6cb07
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from openEuler-24.03 (unknown[112.22.250.209])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36ac26756250-7f8be;
+	Sun, 04 Oct 2026 22:49:12 +0800 (CST)
+X-RM-TRANSID:2ee36ac26756250-7f8be
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org,
+	Alice Mikityanska <alice.kernel@fastmail.im>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] selftests: net: big_tcp_tunnels: Cover bareudp
+Date: Sun,  4 Oct 2026 22:48:44 +0800
+Message-ID: <20261004144844.831190-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179110869274.434549.7292617532752243045@kernel.org>
+References: <179110869274.434549.7292617532752243045@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dd243fa0df46b0cee4caf155b0388ea1702853ba.1791035885.git.daniel@makrotopia.org>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 03, 2026 at 04:53:34PM +0100, Daniel Golle wrote:
-> A broken or interrupted firmware image, or the sticky rescue bit, keeps
-> the switch in its MCUboot loader, which exposes only the clause-22 SMDIO
-> download interface. The clause-45 firmware API never comes up there, so
-> an ordinary probe would spend its whole timeout on a mailbox nothing
-> answers before failing.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+On Sun, Oct 04, 2026 at 10:11:32 +0000, netdev-bot+sashiko@kernel.org wrote:
+> [Severity: High]
+> Can the bareudp cases that use IPv6, inner or outer, with csum offload off
+> pass in this configuration?
+[...]
+> Could the bareudp inner_protocol handling be fixed first? That would mean
+> setting it from the actual inner protocol, and also setting it on the IPv6
+> path. Alternatively, the bareudp combinations could be limited to the
+> cases that work.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Right, and this is the dependency mentioned in the cover letter. The fix
+does exactly that and is posted to net, reviewed by Willem:
 
-    Andrew
+https://lore.kernel.org/netdev/20261002153039.462663-1-yanhaishuang@cmss.chinamobile.com/
+
+With it, all the bareudp cases pass. I will repost once the fix has
+reached net-next.
+
+> [Severity: Low]
+> Should failures from these commands be passed back to the caller?
+
+Yes, setup_bareudp() will create the device itself and return an error
+with a message if any step fails, and setup_tunnel() will pass it on.
+
+> [Severity: Low]
+> This isn't a bug, but the comment at the top of the file still reads:
+>
+> # Testing for IPv4 and IPv6 BIG TCP over VXLAN and GENEVE tunnels.
+>
+> Should it mention bareudp now?
+
+Yes, I will update both comments.
+
+pw-bot: cr
+
+
