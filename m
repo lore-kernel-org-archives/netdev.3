@@ -1,155 +1,200 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CD23921F6
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 22:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C98D3FA5FA;
+	Sun,  4 Oct 2026 23:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791154350; cv=none; b=DOSrxjCqDifNkmMCOsLDS1vXJIOwAPdA9IDXq0KdHrHxI2Q8PNIM5pDwKept1AzN5YsEjNkf+lt/tCku/fm6j76cjKFGdxJnaMszi4DtpMk6yIlWYlL0Qwvr3co8AJObxTXxC6cGbZkzPjVG+PMalN5bghiX0ckNUjodMghrkkI=
+	t=1791154940; cv=none; b=EdaufDKGGUmxwn1nDN0BgoWcS/aoBwHOS/9Hti2fA6jx8x044buPwOFoVA81iIHAx86saosnaKzhuk7gpfM+CH8cnHATVwrGd7HAGEWvH+sWhujzsSp6ERjNkrduvhjRtdssPPU4qgp6ZnTO1Hmwg0TAQlWzLC6E+K8LN+Rovkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791154350; c=relaxed/simple;
-	bh=iUX0rypZ3xf/SH5sB9G6Uz8fWv/TVGB7aC4y+ZSUuCw=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=eOL94/tKmnelsduoiWoQ/B/CuiHX1G1Qmbw3mJmuPOU/dhrvVqLNCjdexM4Y24d3H3awlChLeMtbcCd68nlMFUieZWx6Gb+1ZCDdbv97L5QiqM8dmS/eVjx7GBL1sS3tkN6yMjkdFEIH1QEWZf01y0djBOVpOYMnh6g1mwxWvRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KuWq2JBk; arc=none smtp.client-ip=74.125.224.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791154940; c=relaxed/simple;
+	bh=lCNGoxfJ6gbt1h/Um0ZGsuSNQP8LhKi7UR+AZ9snesM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oC+lOp8+8GN8H09/UC3tEFOHC04mYDyMELdvOXhUXtYog002lTbHTziEFu0E9LIrywHKCIzDSXzjbE5Io//2zG+VNDoj7Equ+NuXweLvgSjA+wjCt9fduWiAZX1SlPdoxnWPDoC49tcOS4Tjb3rpF9SdvEoaFaRc4ZgDforbJDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UhbicqdO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KuWq2JBk"
-Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-67375a844dfso655024d50.2
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 15:52:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791154346; x=1791759146; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gNU7QFwaNW3Vr4qAV6/bo1RjIhjs4Gw/kzl9KhJGzgc=;
-        b=KuWq2JBkOPCrGTA1X+rVWsaQAmyqI80WIIJu6WmBeGPlCwwd8aeX+Ziv0gENeCQyKs
-         UGHRlCC+ZBuDZ0guPAYc6GXacXdznZvAxSmbfW5gwoW3TYT5Tys4eHSC9yqKabxc/xYP
-         Le/wsg8zwNXmxGf8CS9pH1kjFXO4Svr5GKoDk56CWN0ae2gGmGNRLmHJtwdIorSC7VrT
-         N6mnCpRPynClAlODHCki11v9hx8oFuHZJkRlgQdm+t47Dq9obmZjx1ePuOSW92UqRe9i
-         AxswocPnBg5QMVHgk8/H9fR7aKwTD+rjTl6q9KhsK+rG4dRkdWjPmaWXRGUd6f2ApAe2
-         ZtQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791154346; x=1791759146;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gNU7QFwaNW3Vr4qAV6/bo1RjIhjs4Gw/kzl9KhJGzgc=;
-        b=KN6tb7nPGoBToZUXERCXiC7CNJB/n80PGyBXRnkacCE83piodOY6xsePhFzhuju3JI
-         saX7cNpQkx4XBuXYVDP38w/9r6L0kvtD6qpas7nflE2/r0YSBBsmxzAXsW/jYpS1c+Th
-         LSDICqo1JyUBrdg6c0lXbanUtFpHNsQPkVDo7pC/8QXkgCmEdXzoSE1FH44h+uVRF+ia
-         RtS7QaOr0BNAqVBFDTt0EMrto0ITnXyb+44HqOQZ01CN8RAlQfHB52TmQxvVhAnUVS+M
-         +/RbqsVKI7Wv24fsJPRxZKnbxvUt2bygXz649svHVUkRi25mn1hmGfvaDqD8gp+CWpFd
-         C1tQ==
-X-Gm-Message-State: AFq9FYI3ovGJvCnRfQjs16j9g0Td7hvuG5meNNtTGB9aY9JL8q4U8meb
-	xnyjuuMLEfI7otxfmCq2mTSTVhqrg4mtQgHcNSdKkaxMmN5J+T9cOhvR
-X-Gm-Gg: AYBFou3lAX1fRSp0IRpy0N9P/Zq88yM22TAxwyNdWl9jri/J5QxDFlO5uFur491mOYA
-	S4hFVTFzWbKPAa3UettRQJGWkxVzf6fc7I7x2uYBkJ1Q4xCIqV+UE4CP3xeU1zgKXx5ZAChA2r6
-	mYwYq+sl0xEUoZTJYpu5Rbg61HXmaKCOUdZGGV4rkCWQYCm/ev6OyzTTVgYt5pjUuFAuIhUx3G7
-	7ijK/ADOyJOY5MBXb5Isb8CaNGJdIObjZiN3Y1cBE65ZWY2eYKPHE81d6He1Qm5WFgZTB0lgoFd
-	dtF957VGPANqET3W5+plMnCtabd/0cs8KKiA8NZoVi61xe6xi65jCxdF6GmUSMFar7GQG+MGoap
-	VFg96+3PeqWNDxUfbTpOVmNfw4O1xtvNLhUSy1De52+jT69tAP+N31ohocVINn2oyctE7fIholZ
-	YIbg/mFGIpe8h7ka+XNBePyvbB+MfldwpxaYGlb1NYPmJFrvwRNqL9Mj9GzNvH4G/ScIb7WGKTm
-	nLeqybSWWk2i/MOO/Vj7PyGw9H6LE3AKy47kBC+kql5lWLBExKv
-X-Received: by 2002:a53:ac88:0:b0:677:c369:ff5b with SMTP id 956f58d0204a3-677c369ffafmr1639953d50.63.1791154346051;
-        Sun, 04 Oct 2026 15:52:26 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677c1baf25bsm2314865d50.14.2026.10.04.15.52.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 15:52:25 -0700 (PDT)
-Date: Sun, 04 Oct 2026 18:52:24 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Umang Pokhriyal <umangpokhriyall@gmail.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.3720fccc8b4e4@gmail.com>
-In-Reply-To: <20261004174739.36179-1-umangpokhriyall@gmail.com>
-References: <20261004174739.36179-1-umangpokhriyall@gmail.com>
-Subject: Re: [PATCH net-next v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UhbicqdO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22B41F00893;
+	Sun,  4 Oct 2026 23:02:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791154939;
+	bh=Ou3Kn/QKNAyotDEY9AYLl+dL3qiaOM0hudZA+OTObMw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UhbicqdOQSPNiVfEX3as78TLavcvunea/+iajgFE6+Gm49NS+Pwwx1M5yq8IklTgh
+	 796cgYn5DzAMhRfDtNRosffN1zhhEwsai+XvDYMlAhcbSNR4wWNoiI7xV2MXiovczZ
+	 JhKNze2NCrSlTYlh3XxyuBhQZzuNaqc4Lx5Uz2Zjtw28p1CJK1M/brsTVGn55+/xgZ
+	 0RviHaBni6r6EAe01e8yQFaKoE47X0jTVvod86jciRqyK3qimu8XdzOazXnXxyibl1
+	 xW8fgidFPHCijkVUIeHnEuLS82vufMwJ3wgFgZt+JswyRU2+/dwLIZoKTJ3UDkStnw
+	 hDDPOSnNxzsEg==
+Subject: Re: [PATCH net] nfc: nci: fix out-of-bounds read in
+ nci_core_reset_rsp_packet()
+From: netdev-bot+sashiko@kernel.org
+To: omermetekaya0@gmail.com
+Cc: oe-linux-nfc@lists.linux.dev, david@ixit.cz, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 04 Oct 2026 23:02:18 +0000
+Message-ID: <179115493823.434549.14381250566135948269@kernel.org>
+In-Reply-To: <20260930224940.725976-1-omermetekaya0@gmail.com>
+References: <20260930224940.725976-1-omermetekaya0@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Umang Pokhriyal wrote:
-> tun sets IFF_DETACH_QUEUE in the flags returned by TUNGETIFF when the
-> queue is detached, since commit 3d407a80b62f ("tun: Report whether the
-> queue is attached or not"). tap does not, so userspace cannot tell a
-> detached macvtap or ipvtap queue from an attached one.
-> 
-> Cloud Hypervisor ran into this when checking queue state on macvtap.
-> 
-> Report the flag from q->enabled, as tun does. Unlike tun, tap accepts
-> TUNSETIFF on a bound fd, so ignore IFF_DETACH_QUEUE there to keep
-> writing the TUNGETIFF flags back working.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
-> ---
-> 
-> Notes:
->     v2:
->       - ignore IFF_DETACH_QUEUE in TUNSETIFF so the TUNGETIFF flags can be
->         written back, and describe the change as parity with tun (Sashiko)
->       - drop Willem's Reviewed-by because of the new TUNSETIFF hunk
->     v1: https://lore.kernel.org/netdev/20260929142238.41742-1-umangpokhriyall@gmail.com/
-> 
->  drivers/net/tap.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-> index ff67d99deb39e..832439b8a8988 100644
-> --- a/drivers/net/tap.c
-> +++ b/drivers/net/tap.c
-> @@ -932,6 +932,9 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
->  		if (get_user(u, &ifr->ifr_flags))
->  			return -EFAULT;
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
+
+Critical: 0 · High: 1 · Medium: 0 · Low: 2
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch breaks the NCI 2.x reset/init handshake.
+- [Low] The new comment in nci_core_reset_rsp_packet() and the commit
+  message both swap the NCI versions.
+- [Low] The commit message overstates the impact of the bug it fixes.
+
+--
+
+nfc: nci: fix out-of-bounds read in nci_core_reset_rsp_packet()
+
+This patch changes nci_core_reset_rsp_packet() so it only reads
+rsp->nci_ver and rsp->config_status when the payload is at least 3 bytes.
+It also adds an early nci_req_complete() and return for 1-byte responses.
+With that, the reset request is completed for every payload length.
+
+> nfc: nci: fix out-of-bounds read in nci_core_reset_rsp_packet()
+>
+> nci_core_reset_rsp_packet() guards with skb->len != 1 before reading
+> rsp->nci_ver (offset 1) and rsp->config_status (offset 2), but this
+> admits a 2-byte payload where config_status lies one byte past skb->len.
+
+[Severity: Low]
+
+Is "out-of-bounds read" the right description of the old behaviour? For a
+2-byte payload, the only access past skb->len was rsp->config_status. That
+value was only passed to pr_debug():
+
+    pr_debug("nci_ver 0x%x, config_status 0x%x\n",
+             rsp->nci_ver, rsp->config_status);
+
+If DEBUG is not defined and the dynamic debug site is not enabled,
+no_printk() never evaluates the arguments. If it is evaluated, the byte is
+just past skb->len but still inside the skb head allocation. rsp->nci_ver
+at offset 1 is in bounds for a 2-byte payload.
+
+With the Fixes: tag, this framing invites a stable backport of a patch that
+also changes the NCI 2.x reset flow (see below). Could the commit message
+describe the impact more precisely?
+
+> diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
+> index b0ab4f5acbce8..e52956bf33de8 100644
+> --- a/net/nfc/nci/rsp.c
+> +++ b/net/nfc/nci/rsp.c
+> @@ -32,16 +32,22 @@ static void nci_core_reset_rsp_packet(struct nci_dev *ndev,
 >  
-> +		/* TUNGETIFF may report IFF_DETACH_QUEUE, ignore it here */
-> +		u &= ~IFF_DETACH_QUEUE;
-> +
-
-I suppose we want tap to expose this state through TUNGETIFF, like tun,
-because applications already use that?
-
-Else cleaner than working around bits would be a whole new TUNGETQUEUE
-call to match TUNSETQUEUE. Rather than to squish this into TUNGETIFF,
-while that has no equivalent in TUNSETIFF.
-
-But, that approach does not help existing applications.
-
-So this is probably the right way. Just want to quickly check.
-
->  		ret = 0;
->  		if ((u & ~TAP_IFFEATURES) != (IFF_NO_PI | IFF_TAP))
->  			ret = -EINVAL;
-> @@ -950,6 +953,8 @@ static long tap_ioctl(struct file *file, unsigned int cmd,
+>  	pr_debug("status 0x%x\n", rsp->status);
 >  
->  		ret = 0;
->  		u = q->flags;
-> +		if (!q->enabled)
-> +			u |= IFF_DETACH_QUEUE;
->  		if (copy_to_user(&ifr->ifr_name, tap->dev->name, IFNAMSIZ) ||
->  		    put_user(u, &ifr->ifr_flags))
->  			ret = -EFAULT;
-> 
-> base-commit: cfb7793d1bc0f7d90571611979654cf1b3886b29
-> -- 
-> 2.53.0
-> 
+> -	/* Handle NCI 1.x ver */
+> -	if (skb->len != 1) {
+> -		if (rsp->status == NCI_STATUS_OK) {
+> -			ndev->nci_ver = rsp->nci_ver;
+> -			pr_debug("nci_ver 0x%x, config_status 0x%x\n",
+> -				 rsp->nci_ver, rsp->config_status);
+> -		}
+> -
+> +	/* NCI 2.x reset response carries nci_ver and config_status;
+> +	 * a 1-byte response is the NCI 1.x status-only form.
+> +	 * Require at least 3 bytes before reading those fields.
+> +	 */
 
+[Severity: Low]
 
+Are the protocol versions swapped in this comment? The 3-byte response
+(status, nci_ver, config_status) is the NCI 1.x form. The 1-byte
+status-only response is NCI 2.x, and its version arrives later in
+CORE_RESET_NTF.
+
+The removed comment said "Handle NCI 1.x ver" above the branch that reads
+rsp->nci_ver. nci_core_reset_ntf_packet() in net/nfc/nci/ntf.c is where
+nci_ver gets set for NCI 2.x:
+
+    /* Handle NCI 2.x core reset notification */
+    ...
+    ndev->nci_ver = ntf->nci_ver;
+
+The selftest vectors in tools/testing/selftests/nci/nci_dev.c use the same
+mapping:
+
+    const __u8 nci_reset_rsp[] = {0x40, 0x00, 0x03, 0x00, 0x10, 0x01};
+    const __u8 nci_reset_rsp_v2[] = {0x40, 0x00, 0x01, 0x00};
+
+The commit message has the same mix-up in "The 1-byte (NCI 1.x
+status-only) case".
+
+> +	if (skb->len == 1) {
+>  		nci_req_complete(ndev, rsp->status);
+> +		return;
+>  	}
+
+[Severity: High]
+
+Does this break the NCI 2.x reset sequence? The old code did not complete
+the request on a 1-byte CORE_RESET_RSP. For NCI 2.x, the request stayed
+pending until nci_core_reset_ntf_packet() had set nci_ver, manufact_id and
+manufact_specific_info. That function then calls:
+
+    nci_req_complete(ndev, NCI_STATUS_OK);
+
+With this change, __nci_request(nci_reset_req) in nci_open_device() returns
+as soon as the RSP arrives, before the NTF. nci_open_device() then picks
+the CORE_INIT_CMD format from nci_ver, which is not set yet (it is 0 on
+first open):
+
+    if (ndev->nci_ver & NCI_VER_2_MASK)
+        opt = &nci_init_v2_cmd;
+
+As a result, an NCI 2.x controller gets an NCI 1.x CORE_INIT_CMD.
+nci_core_init_rsp_packet() also uses nci_ver to choose the v1 or v2
+parser, so the CORE_INIT_RSP would go to the v1 parser.
+
+What happens when the late CORE_RESET_NTF arrives? nci_req_complete() only
+checks req_status == NCI_REQ_PEND:
+
+    if (ndev->req_status == NCI_REQ_PEND) {
+        ndev->req_result = result;
+        ndev->req_status = NCI_REQ_DONE;
+        complete(&ndev->req_completion);
+    }
+
+So the NTF's completion would land on the next pending request, either
+ops->setup() or CORE_INIT, before that request's own response has been
+parsed. Every later request/response pair would then be off by one.
+
+The NTF's write to ndev->nci_ver can also now race with the read in
+nci_open_device(). The complete()/wait pair that used to order them is
+gone.
+
+The selftest covers this flow. virtual_dev_open_v2() writes
+nci_reset_rsp_v2 and then nci_reset_ntf, and it expects nci_init_cmd_v2
+next.
+
+The commit message says nci_req_complete() should be "always called
+regardless of payload length". Would it be enough to keep the original
+completion behaviour and just add the skb->len >= 3 check before reading
+rsp->nci_ver and rsp->config_status? A 1-byte RSP with a non-OK status
+could still be completed right away, because no NTF follows it.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930224940.725976-1-omermetekaya0%40gmail.com
