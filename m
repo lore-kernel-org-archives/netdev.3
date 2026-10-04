@@ -1,151 +1,193 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673B826296
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 01:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6D12E4257;
+	Sun,  4 Oct 2026 01:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791077037; cv=none; b=XvCbj064EHTKQzXHgIjr0u6fWVknO7bS/8VnelcQryAEDxtEZYzjclX5B3N2K+DAgSukEkNd0ly6z4NtEo/BlqWkjjJYy+toaZk2mHx6z4jbJNA+/3CJhy9AwMZ7unGZIgqlcbi3X3hHnB29y2IAKlrbNUuEwuQll2W+k2X7jiE=
+	t=1791077196; cv=none; b=QatuNIFsSmpQ0BvnF0H5XzmXtaS1Ae8290r+fV6YuWXsK+okgrNNUaRSppkv29jywaxnF59jH6MUewpIRPhtcmrMecCUsElZ5AMHcRgpV2EBGhdji3w3OUMpOM2Cr//f1Jj+y+sA+9+Uc75OXJJlXKf9N+0uNiGBngWUdIxfhd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791077037; c=relaxed/simple;
-	bh=LX3eZ/DgHV51IkVCeksy1ap1xX5kMSDk+PX+61/jzpc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQnWdfiGWWVKTi4KeFB4CdzBSNCVZlqCz6uPlN1hs5cN/9ziPyO0v4lruRtMyarNrxcjPaCZ2T/zGeb1OneTZbDW8Z7U2SW3Y9jy+562mUPNorKJWQnLzuEWu1LMDmiW0WMLmTPmhYZSpS3l4rqf886vTRDi+gChYHBC1rczytA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iVA/DeUS; arc=none smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791077196; c=relaxed/simple;
+	bh=BEzGUI5h/7CJwvvqrOXWTza+u1N8nXzax5WHQtls7pY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YkOVfPum3Kf9hfaKgbxmNRd+bPzJopMG1vHTsLrp1KPiT9nCy9O+rLBp4mI4wRg6VGLRzh3MTIltTbn7u7U+v58m17yfn8SSwdrT7ciD5lNSdAmTIrWtF1d/BPWOFO4gS9PaTrTNGKbSKftvOzYfrnza3X9bqsc38pda0oCI/Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aznCVEOL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iVA/DeUS"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-351224e684dso367494eec.1
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 18:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791077035; x=1791681835; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=32MCDfAvq4KE3yjH4nIAdZCu2QsOHyK08TzQ25bvmfo=;
-        b=iVA/DeUS+bN7p0rvRe052q6nClnugqPY12lP7Ni/zlgX8+DrdbjRymaWqJwdx1yeVU
-         PB9siCNGfMCqr3iH8g7lMHih06ZxUpQAvCM06hORiT+PVimCl+An2Smv5AFbGZJ6nmLS
-         PWjPnwJ1KjDvun5cfTLYwLe6RTtsc2GyXkTT9FkqcCq/kkFh0u+jCk/fMQ2T9LnA4gnY
-         yaXKRNIsJFdg7W+4ICvYzfG/ubvK2iVOjV34iCibQvfk5uVXaxPBcpJ/W7E0V6jPIoZ+
-         RhJhERChZd2ZNRnUXV8J/GWeu/FrTWcweBK/EImxmrP1IVi0yjEyp+8JkaBEiZZs1Kk/
-         y9Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791077035; x=1791681835;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=32MCDfAvq4KE3yjH4nIAdZCu2QsOHyK08TzQ25bvmfo=;
-        b=Md/yUPSeez58eAy8bwzmA0os0VtFVFFUWau8Qj1g+PFPy+jIHBDYIyUOBrU4misxGo
-         ano5u7PJx+qRBSx+wD08u2joCvVUSjbGGg0XPMVwnYhShJD2R59Qllzi122Yxvkvi7U1
-         /biL0b7E6FqKsCPp+81Zdd+o+Y/H+W6VBlvHbJWQkhhcf7BrFab3jsUg+tLKgJYJFHyG
-         NKIu+QUwwdoEr2kCLrap0rTkiaHzAyiOU1mixPejGKMjBnkDp7CsFsuAUREPvqr+OOfK
-         Ye6EtJjhaL0YVOIulS91Epy7gt+naB/27BKUQ50iUEMjfDlxslQUOhactneo4r4bgGEr
-         iZRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxCXRWtb3RajZaAnWJ4JMEPCkHYhQSIbtJkZf8Qz0Ure70n/MO6xPGJwE7fGen2plVDfDmRMHU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKK4Ha3bIx9MIvaqQXktSC1cb+McGZryDGlVuvjCrZw+R/aK3Bw
-	KrJKKA9/jTrMVqObXTPzg9qrbLrLKwHyL0i1smM1phMpR6BouwD2+7hr
-X-Gm-Gg: AYBFou3WIYDeTWNgirOoGBqw7g7Tsk2KOR8q4zOAxW7rcTbruepmoOAVNLOTcnYKjj/
-	F+tyvg7yuSF//JibCN45yVTEIsXPyqoBUEYZ6SpFzMZYuiPra1fjREhfkEjnMpK+U8Oh0az4Oe/
-	y4a8l9a1OWuLbZN1puZ4rYHmLYZIWOyXBoD3qDiqAEyB1xbLsZcyHHk7X0Spyx25sp/PcvyDeEa
-	8M3oA7453VIiQZSH5CRDVzDQieKtBCTpnZJnWOMctin4iF4ySw6RBjGZTzxCyQqgU7yBAKi6ZFE
-	tmOY6LFW9JjlL556E+eRXxsQW0u+N+NTVCMGJ2dQQZGVjZKXpGUQbV0KbxFUvptVhalb67P13Hn
-	DimwvNPEpekjpAZ/0tKBA22SEisrb1TcKssdyy8ZKDbLxkDMYZWUwGnXglHW0is0axorPKojr3z
-	feZMZvKuwtzPslTxXh5glSzI5lKJxDntxt/nvIv0DG958VHwSJzNbXpqQ/lD80zoABGpqzWeLOP
-	OvnCg/I+owS2LIlBBshFg8BL2egmpte9lOl2J0VkiLbpGvONxGW6aRoEtZ+ew==
-X-Received: by 2002:a05:693c:368e:b0:351:1230:e379 with SMTP id 5a478bee46e88-3511230e3e1mr4341684eec.6.1791077035328;
-        Sat, 03 Oct 2026 18:23:55 -0700 (PDT)
-Received: from s1lverbox.orsomething.local (47-144-201-183.lsan.ca.frontiernet.net. [47.144.201.183])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351272d5103sm506055eec.27.2026.10.03.18.23.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2026 18:23:54 -0700 (PDT)
-From: Jean-Paul Sergent <jpsergent@gmail.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Jean-Paul Sergent <jpsergent@gmail.com>,
-	netdev@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: dst_metadata: fix fortify trap + overread in skb_metadata_dst_cmp
-Date: Sat,  3 Oct 2026 18:23:54 -0700
-Message-ID: <20261004012354.1805181-1-jpsergent@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <787c2c1e-1260-43ae-bee0-9798e1e53c2b@ovn.org>
-References: <20261003005449.2675.1@jpsergent.gmail.com> <20261003005449.2675.3@jpsergent.gmail.com> <787c2c1e-1260-43ae-bee0-9798e1e53c2b@ovn.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aznCVEOL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9194C1F0089B;
+	Sun,  4 Oct 2026 01:26:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791077194;
+	bh=SKOKmZ+6noJA7PYh2xhgEd2D5EveHhrMqvu/m6C+lmU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aznCVEOLW99zQHsiDofVXMXPvEIbLxwjxU2jGitRy+ec6VCvp2G3zjHwHo83Lf2Bi
+	 iRqKg7/VOO5khTxBG0sRWkiqgbqhDPZSNd5y9BIr1loFFf8B4CgS8ynvkQDRexJnkZ
+	 ZbwKkXB6CWw4dQpdC4zEliS6AB5ivR1t/MohlDWnP+Mm9UgmKSFSr/3rwGST6dtcAr
+	 h6LVK+/PXRZjr/GXGdJ/EXHok8vxD7tL9TBTTF5MHfkVKWZfHYhpzzmNfSR5znFrFL
+	 BgkV7twRlgd1jLeUEO3REEszEcqwLJz56Im+YWqj8r5IAbASO/v+igzYT9Hu1Ehm+m
+	 xgPjamoSaCslw==
+Subject: Re: [PATCH] net: dst_metadata: fix fortify trap + overread in
+ skb_metadata_dst_cmp
+From: netdev-bot+sashiko@kernel.org
+To: jpsergent@gmail.com
+Cc: netdev@vger.kernel.org, i.maximets@ovn.org, kuba@kernel.org,
+ kees@kernel.org, stable@vger.kernel.org
+Date: Sun, 04 Oct 2026 01:26:34 +0000
+Message-ID: <179107719409.434549.17882025479449823991@kernel.org>
+In-Reply-To: <20261003005449.2675.2@jpsergent.gmail.com>
+References: <20261003005449.2675.2@jpsergent.gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 03, 2026 at 03:31:07PM +0200, Ilya Maximets wrote:
-> Here the function just compares two blocks and they must be already
-> fully initialized and have options_len properly set.  If they have
-> options, but the length is zero, that's a bug somewhere else.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Following up on my earlier reply: I captured the outer traffic on the
-receiving node to answer where the differing options_len come from.
-Neither packet is buggy or uninitialized - both lengths are legitimate
-traffic on the same geneve device, and the comparison just cannot
-handle the mix safely.
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-This cluster runs Cilium with bpf-lb-mode: dsr and
-bpf-lb-dsr-dispatch: geneve. The service LB node forwards a client's
-SYN inside geneve with a 12-byte DSR option appended (class 0x014b,
-type 0x81, carrying the LB address and service port), while the rest
-of the connection and all regular overlay traffic ride the same
-tunnel with no options - this Cilium setup adds no identity option
-to normal overlay packets.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-60 seconds of capture (talosctl pcap, unfiltered; GRO is disabled on
-the geneve device here as the standing mitigation, which does not
-affect the outer side): 1,423 option-bearing packets from the LB
-node, every one a TCP SYN, against 70,935 zero-option packets. 1,370
-flows carried both classes on the same inner 5-tuple within that one
-window - the SYN with the option, then data without it - all inbound
-to one NodePort service.
+- [Medium] The commit message and the new comment in
+  skb_metadata_dst_cmp() (include/net/dst_metadata.h) give the wrong…
+- [Medium] The Fixes: tag points at 69050f8d6d07 ("treewide: Replace
+  kmalloc with kmalloc_obj for non-scalar types", Feb 2026), but the…
+- [Medium] The commit trailers are Reported-by, Closes, Cc: stable and
+  'Assisted-by: LLM', with no Signed-off-by.
 
-How that turns into the overread: geneve RX pulls the tunnel headers
-and clears the skb hash (iptunnel_pull_header() ->
-skb_clear_hash_if_not_l4()), and these virtio netdevs provide no
-receive hash, so every decapped packet enters the per-CPU gro cell
-with skb->hash == 0 and dev_gro_receive() buckets them all into the
-same gro_hash list. In gro_list_prepare() the remaining gates before
-the metadata-dst comparison are the inner ethernet header compare and
-the slow_gro path. DSR delivers every flow for a service to the same
-backend pod, so those flows share the inner destination MAC, and
-because the LB node encapsulates every client packet it forwards,
-they share the inner source MAC - the LB node's - as well. With a
-torrent client running on that pod, hundreds of concurrent
-connections hit the same service: the SYN of one connection and
-the data segment of another pass every check up to
-skb_metadata_dst_cmp(), which then reads 96 + 12 bytes against a
-96 + 0 allocation - the "108 byte read of buffer size 96" from the
-original report, with the earlier packet on the GRO list (skb_a)
-carrying the longer options, matching the reported trip direction.
-GRO batches here live exactly one NAPI poll (gro_flush_timeout is
-0), so a SYN and a same-service data segment merely have to be
-processed by the same poll - routine at ~23 DSR SYNs/s mixed into
-~70k packets/min of overlay traffic. This also explains why my
-single-stream iperf attempts never reproduced it: a lone
-connection's SYN and data are separated by RTT and cannot share a
-poll, and it has no second same-MAC-pair flow to collide with.
+--
 
-The v3 patch restores the options_len equality check, so GRO
-declines aggregation (clearing same_flow) instead of reading past
-the shorter allocation; since the two packets belong to different
-TCP flows, declining aggregation is also the correct protocol
-behavior. I will post v3 once this discussion settles.
+net: dst_metadata: fix fortify trap + overread in skb_metadata_dst_cmp
 
-Happy to share the capture or the parsing script if that is useful.
+This commit reworks the METADATA_IP_TUNNEL case in skb_metadata_dst_cmp().
+It first checks that both sides have the same options_len. It then compares
+the fixed part of struct ip_tunnel_info and the options in two separate
+memcmp() calls through ip_tunnel_info_opts(). The goal is to fix a
+FORTIFY_SOURCE panic seen in GRO on a geneve device.
+
+Closes: https://lore.kernel.org/netdev/20261003005449.2675.1@jpsergent.gmail.com/
+
+> Fixes: 69050f8d6d07 ("treewide: Replace kmalloc with kmalloc_obj for non-scalar types")
+
+[Severity: Medium]
+Is this the right Fixes target? The commit message says the crash was seen
+on 6.18.54. In v6.18, metadata_dst_alloc() still allocates with
+kmalloc(struct_size(md_dst, u.tun_info.options, optslen), flags), not
+kmalloc_flex().
+
+Both pieces needed for the trap are older than 69050f8d6d07:
+
+  - the __counted_by(options_len) annotation on options[] in struct
+    ip_tunnel_info, added by bb5e62f2d547 ("net: Add options as a flexible
+    array to struct ip_tunnel_info")
+
+  - the memcmp() in skb_metadata_dst_cmp() that uses a's options_len for
+    both sides, which dates back to 3fcece12bc1b
+
+This patch is Cc: stable. With the current Fixes target, would the fix miss
+6.15 through 6.19, including the 6.18 tree where the crash was seen? Would
+bb5e62f2d547 be a better target?
+
+> Cc: stable@vger.kernel.org
+> Reported-by: Jean-Paul Sergent <jpsergent@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20261003005449.2675.1@jpsergent.gmail.com/
+> Assisted-by: LLM
+
+[Severity: Medium]
+The trailer block has no Signed-off-by line.
+Documentation/process/coding-assistants.rst says the human submitter is
+responsible for "Adding their own Signed-off-by tag to certify the DCO".
+
+Could a respin add a Signed-off-by so the patch can be applied?
+
+> diff --git a/include/net/dst_metadata.h b/include/net/dst_metadata.h
+> index f45d1e3163f00..60878ea1eb50a 100644
+> --- a/include/net/dst_metadata.h
+> +++ b/include/net/dst_metadata.h
+> @@ -115,10 +115,30 @@ static inline int skb_metadata_dst_cmp(const struct sk_buff *skb_a,
+>  	case METADATA_HW_PORT_MUX:
+>  		return memcmp(&a->u.port_info, &b->u.port_info,
+>  			      sizeof(a->u.port_info));
+> -	case METADATA_IP_TUNNEL:
+> -		return memcmp(&a->u.tun_info, &b->u.tun_info,
+> -			      sizeof(a->u.tun_info) +
+> -					 a->u.tun_info.options_len);
+> +	case METADATA_IP_TUNNEL: {
+> +		int ret;
+> +
+> +		/* Options lengths must match, or the options memcmp below
+> +		 * would read past b's allocation when b carries fewer
+> +		 * options than a.
+> +		 */
+> +		if (a->u.tun_info.options_len != b->u.tun_info.options_len)
+> +			return 1;
+> +		ret = memcmp(&a->u.tun_info, &b->u.tun_info,
+> +			     sizeof(a->u.tun_info));
+> +		if (ret)
+> +			return ret;
+> +		/* Compare the options through the flex-array member so the
+> +		 * compiler's __counted_by(options_len) view stays consistent
+> +		 * with the read length (same shape as the tun_dst_unclone
+> +		 * fix); a single memcmp of struct+options trips
+> +		 * CONFIG_FORTIFY_SOURCE when options_len is still 0 from
+> +		 * allocation time.
+> +		 */
+
+[Severity: Medium]
+Does this comment, and the commit message, describe the actual root cause?
+The commit message says:
+
+  kmalloc_flex() in metadata_dst_alloc() sets __counted_by for the
+  structure to options_len, which is then initialized to zero, so the
+  compiler's view of the metadata_dst tail is 96 bytes at the time of
+  the access. Geneve carries 108 bytes of options
+
+On the geneve RX path, options_len is overwritten before the skb reaches
+gro_cell_poll():
+
+geneve_rx()
+  udp_tun_rx_dst() -> ... -> tun_rx_dst()
+      tun_dst->u.tun_info.options_len = 0;
+  ip_tunnel_info_opts_set(&tun_dst->u.tun_info,
+                          gnvh->options, gnvh->opt_len * 4, flags);
+      info->options_len = len;
+
+So by the time gro_list_prepare() calls skb_metadata_dst_cmp(p, skb), both
+objects hold their real options lengths.
+
+The old code read sizeof(a->u.tun_info) + a->u.tun_info.options_len bytes,
+and FORTIFY sizes a's object with the same options_len, so a's side cannot
+trip. That means "108 byte read of buffer size 96" points to
+a->options_len == 12 and b->options_len == 0. In other words, 12 bytes of
+options, not 108.
+
+If so, the real bug is the old memcmp() using a's options_len for both
+sides. __counted_by only exposed it. Without FORTIFY, it is a slab
+out-of-bounds read past b's allocation.
+
+The options_len pre-check, which the commit message calls a "While here"
+fix, is what actually stops the panic. Once the lengths are known to be
+equal, a single memcmp() of sizeof(tun_info) + options_len would also pass
+FORTIFY on both sides, so the two-stage split does not seem to add
+anything.
+
+The commit message also says this was seen "under sustained cross-node RX".
+Can any Geneve sender trigger it remotely by mixing packets with and
+without options in the same inner flow?
+
+Could the commit message and this comment be updated to describe the
+options_len mismatch between a and b as the root cause?
+
+[ ... ]
 
 -- 
-Jean-Paul Sergent
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261003005449.2675.2%40jpsergent.gmail.com
