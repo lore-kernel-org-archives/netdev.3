@@ -1,67 +1,67 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424334718DB
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 17:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F9D3C2774
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 17:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791134200; cv=none; b=dCBVTOXd4CQkmdTPtzmpaKjJcWr9HqIuBIVmBurvAC3YjCeJvDoVSqAtM5Vmy6d2I27YHkfvF4i0nRz5O5FTSyHT4aupiesGQrMw+sFULaLSwKKw/yoTKlPn/X0gwiS3g0kCStkU+ZG/wTMJLlAX6ul1HFWbqO9zsO04iCxYlZM=
+	t=1791134202; cv=none; b=f1knaXtSC6IXaB5LDcEtJ8rw7vKP+2EXVBQL4cb8YyG0Y8kdG/DTUvQCBcWz14uUc5/zmi17wnLGpIrtW/TDRwYdeOwiHuYgml+RN6oINu660mnAJGScj89vjOVY8Kh0vd5sclNY7PCNyfJcAQ/p+57Qcuu4h/XBeAIOr1Hhc3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791134200; c=relaxed/simple;
-	bh=N2fEn5naZVynWAREy9aYIddLfbC9cTCqMP6evTuQQrw=;
+	s=arc-20240116; t=1791134202; c=relaxed/simple;
+	bh=o+JP6AFkjXqu+xgn0kPky3tJsPD7UpyZPMamq+tPVVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oABfMmdwBhCRZcR5mvaNOjmC2S+DBrPzhCw9eZUnkSvid/ZJUeAorhIMWgE66qd1xnVLrSlWcOHjhvgz48IwvTJRYz05r04IY2Sd1q6Ts4BaIpaRIgIUY6P3BFu3ePZAw6FSswhXgPt8YLriq38YfDk7sswkxFoLNJ7Q6qAx2mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=gImvn9C/; arc=none smtp.client-ip=209.85.218.53
+	 MIME-Version; b=GmTbcpNV5u0dBphq7xvq14+DcI9ptVFOPhm2c/xGitY59gCFnigaeFYo8yN+JCIhNUh5GDAyxQU/Ynja69Y7arAJqNwL5Sgn5DYPhlG101nCYq1MuO2sfSHdkhvFiYgSyZIvH2j0ki+ce+FK5rAv0GSwXY+QpOrJD6c7zAnzBWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=DpEDTgQR; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="gImvn9C/"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c2e69aa07c3so151618966b.1
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="DpEDTgQR"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c2e36c3478aso152541166b.0
         for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 10:16:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1791134191; x=1791738991; darn=vger.kernel.org;
+        d=bairaktaris.de; s=google; t=1791134192; x=1791738992; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7pciMmt6xvkKxAILLtPxurNk5XIP3aiXY2Q8mmcn43k=;
-        b=gImvn9C/gR68omXOgmOhHwB+3WO9azBAH1Vach+nKQaIJvVRbIYvjOarZ4WLaT7S6Y
-         TzIVwG6JwBYrb3MV5N4pb8MQxzeLsJASfqKYwOlbmRHjnmoXsVIqFujn1pa7eKo7ZaAb
-         m/fVlaQwrJT5hncJVqNrYVw1yc3gSpqdks04MW2Mp/RD80UABCaGODDtnzKxdrVe5dZ2
-         iEVIoXDKWuH+8HPnkYIGuk9Jsf5mhWLoAmDvFySxvE5OocbHZ6xLboBMxPZpzFIwuuWP
-         /kmUn4bPKsMsX+A3kVAUK/5+B9bYgdnfOwK5VIZaf1HzvBze2UJfi+RvhQDFQuC/E1NF
-         toxQ==
+        bh=TJNhbzdzUtweI2bWLQScQsYVxoKpUAcTekhWP7Abrus=;
+        b=DpEDTgQRauCXnYOV7ZoTK/2porP1x5M+2Q1zQnBHLxTxA5kzM3O8BNIB+gZRTYk9i1
+         HWH6yFPxWqqyfZeB/BdutxpmlPELsvOZE6i8mzJHs8gqmjTjovkFkoqaiNJStCgNhcAk
+         VB8K51s6ji3q7/0ReSrPFOgVJ6AaBRiBsxN78Qdk3nEQngYOVyFIGiY3Hf8HphHLy5mz
+         r/e/jjiDEq5lyADdqqAGeAv3Tsmw5MKr1DFb8LZpKKivVbn2YpuRl72Li5Vw8kmG+HAG
+         p7OU6p4cVIfR4eVpZ1xP4JJgBHa/pm6S9njFzFYggZmv9ckdRRATZCfxdRlIJTmAS6q6
+         nomw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791134191; x=1791738991;
+        d=1e100.net; s=20260707; t=1791134192; x=1791738992;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7pciMmt6xvkKxAILLtPxurNk5XIP3aiXY2Q8mmcn43k=;
-        b=CZdZAeghPiFIHuX7L7aidxcLcLwDX06Dm7LKJekhBhxcnPpovu9Lv2Ux4EGhIhxzwJ
-         hUOhnPRIpswzAs6f0cin5+vitxjrBJ8VgGrKDMU2ljxjBydi27XRzENxYj41yBP2RH18
-         60n23jA1kDzipOe0nGpqNjCeVXRUG2g2/BgZyGRDSL4cXd39mqjoaEgfr6CzQ5sPY+Uo
-         n9lWdr5EhykedxpuAjS+qw9l8bJ0sPn/nhQqjnL3TOcpVRIGSeFnjF/afInO3Us6e9qY
-         Uq7lySdgJFZmUOr1uQ3VIxzr/xc0CST8Dmhn1NjV589feZnKjELEfmM4Yy2X4XO7bn/q
-         RsjA==
-X-Forwarded-Encrypted: i=1; AKwUvBwuTczhWB8GhSTPagRY/Z15HLFONg5KDie/i23XYDUXOVbc8GEIQuywNyoHzFXZaDyN9B6flhI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kLsH6fF6dl+nO07CONpTaZ8Myq8G0PUkMGzOlYGCmNFeT0brDt
-	VzG2FUAHZ2pmpsaojHMa19SHP8W8702HV8B4gmt0nH/9lv2mCuFayDEhCP8s5dgb9A==
-X-Gm-Gg: AYBFou3M5eY2He/WFCpQvbPPLaFbKe+FKPgfdeebe7jwaLZNwSA9dtyqQq4RB92pqPT
-	Ypn7AzVTUXr5i95iflGDVYfBF0MLxO06ed3/OXVJp6pGT8u2Z0MolYTPdlSi+pdQSJJfzdeEGgE
-	3WDbV9ssGEr56q93iFp+4deTXqgcoPSNIpQ08AlT5WPw4wJAS+vrRXRdUdeMGbLdMrM/swWKvNg
-	cdRRSKlY4vGQ+9N1nUWuNoopeTSx8NRc7cwEKZtdUM6MS0/CKZxoN9wX6OtCBpkeNjoGnwAornV
-	eqcOWLS4oN5gXXJQ89PNgFJmEWJEZBosbHqZaHaucOFIzhaHc58k/HBRHVVyQjFXC+/jDt99Bg7
-	8+RmeP2eTlZILlW+h7kPBem4tdTLPSR0y1dW4kbAmqgcJcnqr1EsoYSi5tyEgxyOvx3M0TX2hrp
-	klvrGu4m18ndcokLW2VQlZZFyQObMHaji6UWzSXrggCPNWcfvPQkGLpZ65puZiEoZqRMe7bxjPh
-	JTAdDLqmeiF57xZ00UhkDaSSFnj7e/mNvVdv4U37f1HRfbucHer5pdGjkWhqE6cUFnpe/A5fSyN
-	l5WMAKRm52zPCkiT400CGiGlakHjwx8wdnBaw2qiOeafMM9p0uyHGU/WHT34d2oaMvCssPbWG2Z
-	SaZ6hxOpiDMm17c8JmZsn8GwEwSdNjYkRhtaaeYaw2wTv3VqdVGnDpFF67phvrES/NtlszG6Xcz
-	Oe0bBWp/qEjYZp3A8lHM0pFCA=
-X-Received: by 2002:a17:907:3f1f:b0:c2e:317e:d711 with SMTP id a640c23a62f3a-c2e6edf32b9mr428205766b.27.1791134191269;
-        Sun, 04 Oct 2026 10:16:31 -0700 (PDT)
+        bh=TJNhbzdzUtweI2bWLQScQsYVxoKpUAcTekhWP7Abrus=;
+        b=RfHQ2GUETOdgR4bInV6rUdb4/9pErUvUZXUI278yMfNMmfM1H2sgFEpCiHPtlMxfHd
+         TUp9vRy+C//hPMEIWwamJhlNrWR2OJ5SZCu+KhpfI8YBI74TckcrOXa8puuRF2JW40Ff
+         0Co/pzrkfbYUfiOT683HW+P0QyOp7wif+aW2feTU0wyk4c9MQp/Kn9R25Vdhm68IC5wO
+         nhyVUJLfWZfTJ/JGZ10QS/3epMDiwn60IRZqwGcbjfcMKPieZyQ1fWEuqpeYwDzuH66E
+         jiXlolOaX9wOWoeSqAgcRKFX80NX6m4zG3xo5Sa8xeYhM8d4mP8mr+vlIOGyISlE6wtE
+         Xa3w==
+X-Forwarded-Encrypted: i=1; AKwUvBzKYqKCMp6Dr6plJhgwQrYbgf0vguWDz+0mO5vaCidYUBFc+WjwoIGrEI4CdKZoV6eIEFApG8U=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLBkF/MlGztNgz2absbQNFL0ejM7ip+FoU6ShclDU8X76I5zrB2
+	r6ItgT+3AOXnKzKZ8jL89LOA245+zn6Pa4odZpVRVLR7SzfKZpzo3QIiKf7cOCorlQ==
+X-Gm-Gg: AYBFou2Yu1IExca/do0fX6m8K/r/PptZtqnQmiyaN0NodXbRixES2fqSOUdYKaONOiB
+	B1WMe3Nzgyl3mBWMAM+PlrcdYYPNmEpkf2jm8IYgh97RK4e4E5/Fy4aOUm5gcXCPljSGtp1ri0D
+	AM3hxN7RuznpXp9V2dbZB3rZTKDtmvPIViMdEnqCNPO76p2+DKsZalDdRuOALIWYI97ccydfEBO
+	t6KuA2Nm6jZ1/VruRz3OVkEc9RalxXG74+X03bUx+0ZDTOGnG4cjUYiubc7kQ/L3SjCx3df9i3z
+	1oTkz4romn9M5el5gubvdEFavmo+p/E0Iad8A1Dmbted895i0E4YBI6QPdS6yLbrFDDb0T0QUD+
+	p5jcO15NwauEOVbofnFN2iP0nyEVSbpVleGiZ/apBcilIA9DSEQgPAktJ4nkC49ppQq/qdGAJ8k
+	DRq7bHbTL/VJrXbStWFE3vxoNk0bFxg+sROLLvfJGbM206Bvz/qNYxZCCVLl3jik5RnMh6IqJJN
+	g5NIZf/AxXu99e8XASvndNX9YjWi/EpXCFz7PE+lMxnlmEVHgPg+KMauN+8izK7uB8hvQQQ9pXw
+	DhCFhCljc3LpwLIaqSHqAhhWideQO5bISRhiOJcUQeGrptJZyiwrv2XGcotQvbEhfVbZ0+X5foB
+	fjIoblmPduk0iAuX7rVCeQ0/AI35NWc1BbQGQoawMwRtRaPtP1MaWB11dlYvaJScgg0Ie+0XXYo
+	X1SS0m66g3jrTfbrHbwXkmqBbOebdOvVQD0w==
+X-Received: by 2002:a17:906:f586:b0:c2d:c8be:4e71 with SMTP id a640c23a62f3a-c2e6ed46571mr421857166b.19.1791134192089;
+        Sun, 04 Oct 2026 10:16:32 -0700 (PDT)
 Received: from Desktop (pd9513667.dip0.t-ipconnect.de. [217.81.54.103])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4cf9ddbesm317345166b.69.2026.10.04.10.16.30
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e4cf9ddbesm317345166b.69.2026.10.04.10.16.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 10:16:30 -0700 (PDT)
+        Sun, 04 Oct 2026 10:16:31 -0700 (PDT)
 From: Julius Bairaktaris <julius@bairaktaris.de>
 To: pablo@netfilter.org,
 	netfilter-devel@vger.kernel.org
@@ -72,9 +72,9 @@ Cc: kadlec@netfilter.org,
 	geldot@protonmail.com,
 	shuah@kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH nf-next v2 2/4] netfilter: flowtable: promote a flow offloaded in one direction only
-Date: Sun,  4 Oct 2026 19:16:26 +0200
-Message-ID: <20261004171628.3544978-3-julius@bairaktaris.de>
+Subject: [PATCH nf-next v2 3/4] netfilter: nft_flow_offload: offload a TCP flow that has no reply
+Date: Sun,  4 Oct 2026 19:16:27 +0200
+Message-ID: <20261004171628.3544978-4-julius@bairaktaris.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261004171628.3544978-1-julius@bairaktaris.de>
 References: <20261004171628.3544978-1-julius@bairaktaris.de>
@@ -86,85 +86,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The next patch offloads TCP flows without a reply in the original
-direction only. Keep the reply direction of such a flow on the classic
-path until the connection is assured, then offload it too, as act_ct
-does for UDP. The XDP flowtable lookup does not return that reply tuple
-either.
+From: Gary Dotzler <geldot@protonmail.com>
 
+A TCP connection picked up without a reply is not assured, so it is not
+offloaded. Offload it in the original direction; if a reply arrives and
+the connection becomes assured, the reply direction follows.
+
+When such a flow leaves the flowtable, cap the conntrack timeout at
+UNACK, as nf_conntrack_tcp_packet() does without a reply.
+
+Signed-off-by: Gary Dotzler <geldot@protonmail.com>
 Assisted-by: Claude:claude-opus-5
+Co-developed-by: Julius Bairaktaris <julius@bairaktaris.de>
 Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
 ---
- net/netfilter/nf_flow_table_bpf.c |  4 ++++
- net/netfilter/nf_flow_table_ip.c  | 26 ++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+With nf_conntrack_tcp_timeout_established=7440, an idle unreplied flow
+that aged out of the flowtable had 7390 s left without the cap and
+250 s with it (3 runs each, virtme-ng).
 
-diff --git a/net/netfilter/nf_flow_table_bpf.c b/net/netfilter/nf_flow_table_bpf.c
-index cbd5b97a6329..7070bc600db1 100644
---- a/net/netfilter/nf_flow_table_bpf.c
-+++ b/net/netfilter/nf_flow_table_bpf.c
-@@ -50,6 +50,10 @@ bpf_xdp_flow_tuple_lookup(struct net_device *dev,
- 
- 	nf_flow = container_of(tuplehash, struct flow_offload,
- 			       tuplehash[tuplehash->tuple.dir]);
-+	if (tuplehash->tuple.dir == FLOW_OFFLOAD_DIR_REPLY &&
-+	    !test_bit(NF_FLOW_HW_BIDIRECTIONAL, &nf_flow->flags))
-+		return ERR_PTR(-ENOENT);
-+
- 	flow_offload_refresh(nf_flow_table, nf_flow, false);
- 
- 	return tuplehash;
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index c8c29a9a1684..289fe6c9e4f5 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -465,6 +465,26 @@ nf_flow_offload_lookup(struct nf_flowtable_ctx *ctx,
- 	return flow_offload_lookup(flow_table, &tuple);
+ include/net/netfilter/nf_conntrack_l4proto.h | 9 +++++++++
+ net/netfilter/nf_flow_table_core.c           | 5 +++++
+ net/netfilter/nft_flow_offload.c             | 6 ++++--
+ 3 files changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/netfilter/nf_conntrack_l4proto.h b/include/net/netfilter/nf_conntrack_l4proto.h
+index fde2427ceb8f..c251ee862bb6 100644
+--- a/include/net/netfilter/nf_conntrack_l4proto.h
++++ b/include/net/netfilter/nf_conntrack_l4proto.h
+@@ -208,6 +208,15 @@ static inline bool nf_conntrack_tcp_established(const struct nf_conn *ct)
+ 	return ct->proto.tcp.state == TCP_CONNTRACK_ESTABLISHED &&
+ 	       test_bit(IPS_ASSURED_BIT, &ct->status);
  }
- 
-+/* The reply direction of a flow offloaded in one direction only stays on the
-+ * classic path so that conntrack sees it. Once the connection is assured, that
-+ * direction is offloaded too.
++
++/* Picked up mid-stream, no reply seen yet. Caller must check
++ * nf_ct_protonum(ct) is IPPROTO_TCP.
 + */
-+static bool nf_flow_reply_unoffloaded(struct nf_flowtable *flow_table,
-+				      struct flow_offload *flow,
-+				      enum flow_offload_tuple_dir dir)
++static inline bool nf_conntrack_tcp_unreplied(const struct nf_conn *ct)
 +{
-+	if (dir != FLOW_OFFLOAD_DIR_REPLY ||
-+	    test_bit(NF_FLOW_HW_BIDIRECTIONAL, &flow->flags))
-+		return false;
-+
-+	if (test_bit(IPS_ASSURED_BIT, &flow->ct->status)) {
-+		set_bit(NF_FLOW_HW_BIDIRECTIONAL, &flow->flags);
-+		flow_offload_refresh(flow_table, flow, true);
-+	}
-+
-+	return true;
++	return ct->proto.tcp.state == TCP_CONNTRACK_ESTABLISHED &&
++	       !test_bit(IPS_SEEN_REPLY_BIT, &ct->status);
 +}
-+
- static int nf_flow_offload_forward(struct nf_flowtable_ctx *ctx,
- 				   struct nf_flowtable *flow_table,
- 				   struct flow_offload_tuple_rhash *tuplehash,
-@@ -478,6 +498,9 @@ static int nf_flow_offload_forward(struct nf_flowtable_ctx *ctx,
- 	dir = tuplehash->tuple.dir;
- 	flow = container_of(tuplehash, struct flow_offload, tuplehash[dir]);
+ #endif
  
-+	if (nf_flow_reply_unoffloaded(flow_table, flow, dir))
-+		return 0;
+ #ifdef CONFIG_NF_CT_PROTO_SCTP
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 03241d4bfd5e..2f2a6ecc9195 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -224,6 +224,11 @@ static void flow_offload_fixup_ct(struct flow_offload *flow)
+ 			tcp_state = READ_ONCE(ct->proto.tcp.state);
+ 			flow_offload_fixup_tcp(ct, tcp_state);
+ 			timeout = READ_ONCE(tn->timeouts[tcp_state]);
++			if (nf_conntrack_tcp_unreplied(ct)) {
++				u32 unack = READ_ONCE(tn->timeouts[TCP_CONNTRACK_UNACK]);
 +
- 	mtu = flow->tuplehash[dir].tuple.mtu + ctx->offset;
- 	if (flow->tuplehash[!dir].tuple.tun_num)
- 		mtu -= sizeof(*iph);
-@@ -1074,6 +1097,9 @@ static int nf_flow_offload_ipv6_forward(struct nf_flowtable_ctx *ctx,
- 	dir = tuplehash->tuple.dir;
- 	flow = container_of(tuplehash, struct flow_offload, tuplehash[dir]);
++				timeout = min_t(s32, timeout, unack);
++			}
+ 			expired = nf_flow_has_expired(flow);
+ 		}
+ 		offload_timeout = READ_ONCE(tn->offload_timeout);
+diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
+index 32b4281038dd..b37590c3dac0 100644
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -73,7 +73,8 @@ static void nft_flow_offload_eval(const struct nft_expr *expr,
+ 		tcph = skb_header_pointer(pkt->skb, nft_thoff(pkt),
+ 					  sizeof(_tcph), &_tcph);
+ 		if (unlikely(!tcph || tcph->fin || tcph->rst ||
+-			     !nf_conntrack_tcp_established(ct)))
++			     (!nf_conntrack_tcp_established(ct) &&
++			      !nf_conntrack_tcp_unreplied(ct))))
+ 			goto out;
+ 		break;
+ 	case IPPROTO_UDP:
+@@ -117,7 +118,8 @@ static void nft_flow_offload_eval(const struct nft_expr *expr,
+ 	if (tcph)
+ 		flow_offload_ct_tcp(ct);
  
-+	if (nf_flow_reply_unoffloaded(flow_table, flow, dir))
-+		return 0;
-+
- 	mtu = flow->tuplehash[dir].tuple.mtu + ctx->offset;
- 	if (flow->tuplehash[!dir].tuple.tun_num)
- 		mtu -= sizeof(*ip6h);
+-	__set_bit(NF_FLOW_HW_BIDIRECTIONAL, &flow->flags);
++	if (!tcph || test_bit(IPS_ASSURED_BIT, &ct->status))
++		__set_bit(NF_FLOW_HW_BIDIRECTIONAL, &flow->flags);
+ 	ret = flow_offload_add(flowtable, flow);
+ 	if (ret < 0)
+ 		goto err_flow_add;
 -- 
 2.53.0
 
