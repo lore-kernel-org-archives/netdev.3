@@ -1,78 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8F62F7445;
-	Sun,  4 Oct 2026 12:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC15E347536;
+	Sun,  4 Oct 2026 12:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791115718; cv=none; b=qoEoW+QSsOoZ2Wb8JDzcpIlh40Ct1DSRe1fc0YU+MSumNKFMQ5cCggncFCbQggjL8TnAJVnsQLoIESICjARKorW5KXMZ8njgPIyN14SdEf/ugWH9L8YKFM2Dz39vcoA7XgZ/srN76RvoFX4jQRDNTH1/MXJE5gn12Fyv8PCY4oo=
+	t=1791115994; cv=none; b=i5+zvPebX6hD6XTJOcfl2EUqIT7Uy9R8zHo158PmelS1flIHXK0s6FmDYOPfX6PxRgPwTdIUYkMc4aOE0p4sUGGY5dUO+eNv+3JTbv8Y0CfzQh6hsJ5Rs9ZfikF7UAxqcScVEY7WOfiMW0SBOQHLohzwo79RoIXEAnaEqSV1n88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791115718; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FVoFYwoZk0a0xyP91aGx5gFyEPEcEaSyA+6MvVjGWSAKnknNyfxa5z2mqHMzLDvA2mUWhAB8J/ErpCFG5IOhIA3JksTbu1SdhIYa6CZFbgKtT5rdhfvPZe6zbD05AzN1Tu5u4Eb7PYlgeevakj6rTcZKypt3LCUCX3yuLqFGKvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZutm8nj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791115994; c=relaxed/simple;
+	bh=clC3Ra4ilIlBmI1xpPqz3JnH4QU67loNKQHDk0ueN5o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kBtkdL7K+eFa8eJdfPSd22jW2Ve86VBnz8e4cEBGjnzCcPWrX71spmHE3PjpKD6hF6N0GYq2jqmTdZNGwu/8SRHYN/4ADTkd+eLkBAjfzGoU9crfL5EwldGVkDg4yl1+NtqoWie++pzMHTf5fgzsK05h7ZAYyeNRMM+yetLoO2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=EHZanvJO; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZutm8nj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE9F1F000FF;
-	Sun,  4 Oct 2026 12:08:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791115717;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NZutm8njI2v7VK97N07h9qgy6qxGWip/seTajVlknDy/BU9gYfcU7gmqE1Kqh4wJm
-	 xtQxupntjNEcw45lswEWMoouzK7ejY3tvI5ggyLbn5GjfgRVwde6L+IaoudsZo7RTN
-	 Yn1scpQiLTS2BIWuH1qE04RuDuJ+/AAlEw0y/ie1FJc8AaTHWdncvVs3gcb3CddXUo
-	 Q90g6UXVH6WwD8oPf/mR/oOkZ2ogR+TR2fl//PrAnbgLRd9VzcT+nf5DOxwT2SaOuG
-	 3AtPvNWx+/+avJLf4/1fzzo10l4tINCJYV5VurRwcIySeH3PFm+FilezYAy8minmz+
-	 vnqtBmXuZm/iQ==
-From: netdev-bot+sinfo@kernel.org
-To: Zxyan Zhu <zxyan0222@gmail.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, richardcochran@gmail.com,
- maxime.chevallier@bootlin.com, muhammad.nazim.amirul.nazle.asmade@altera.com,
- rohan.g.thomas@altera.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v7 0/3] net: stmmac: dwxgmac2: timestamp
- interrupt support + Agilex5 fix
-Date: Sun, 04 Oct 2026 12:08:36 +0000
-Message-ID: <179111571610.1402591.377888819234151971@kernel.org>
-In-Reply-To: <20261004120526.2728564-1-zxyan0222@gmail.com>
-References: <20261004120526.2728564-1-zxyan0222@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="EHZanvJO"
+Received: from PC-202605011814.localdomain (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4fec2680c;
+	Sun, 4 Oct 2026 20:13:07 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>
+Subject: [PATCH net] net/mlx4: shut down catas recovery timer during teardown
+Date: Sun,  4 Oct 2026 20:12:59 +0800
+Message-Id: <20261004121259.1245171-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa106d50a1903a1kunm4cfc896833c1b9
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZTUMfVkpLH0IaQkhLGUhPQlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpPSE
+	xVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=EHZanvJOzWoQk6w8US9ZuI7g86oeQL7zqCK2Op3GwUWc3puP3D9+/ClvxIOuG63XFXbNRrzmPjcfPgVWpkPxKhICQSkRBEAA4ojZdGnLGUfX/dj1qtcIVLtgiV0fpOwuUpk46H3T/Yoo2/ELpRlqLUM7xEKXrMJQ4+MRQaqdL1o=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=OUEMRtWmjylDs/HhQsxvQBKuzZdXHJDRqFQOscXEJig=;
+	h=date:mime-version:subject:message-id:from;
 
-Hi!
+The catas error timer can rearm itself while the device is being
+stopped. If poll_catas() is running when timer_delete_sync() drops the
+timer-base lock, it can call mod_timer() after the deletion. The delete
+can then return with the timer queued again, allowing a subsequent callback
+to access teardown-owned MMIO state after it has been unmapped.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+On PFs, poll_catas() accesses catas_err.map; on VFs, it accesses the
+mapped communication channel. Use timer_shutdown_sync() to prevent the
+callback from rearming the timer once teardown starts.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+mlx4_start_catas_poll() calls timer_setup() when device registration is
+restarted after reload or port reconfiguration, so the timer is
+reinitialized before it is used again.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+The change was validated by source review and a target-object build.
+Runtime validation on mlx4 hardware was not available.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Fixes: ee49bd9397cd ("mlx4_core: Reset device when internal error is detected")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/net/ethernet/mellanox/mlx4/catas.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+diff --git a/drivers/net/ethernet/mellanox/mlx4/catas.c b/drivers/net/ethernet/mellanox/mlx4/catas.c
+index edcc6f662..62574b790 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/catas.c
++++ b/drivers/net/ethernet/mellanox/mlx4/catas.c
+@@ -305,7 +305,7 @@ void mlx4_stop_catas_poll(struct mlx4_dev *dev)
+ {
+ 	struct mlx4_priv *priv = mlx4_priv(dev);
+ 
+-	timer_delete_sync(&priv->catas_err.timer);
++	timer_shutdown_sync(&priv->catas_err.timer);
+ 
+ 	if (priv->catas_err.map) {
+ 		iounmap(priv->catas_err.map);
+-- 
+2.34.1
