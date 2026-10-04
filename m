@@ -1,177 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971542EEE75;
-	Sun,  4 Oct 2026 11:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BA321FF29
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 12:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791115013; cv=none; b=HsE78A6PqBHzCsZjMJhfoFMr73d8YKkLEYlSh+rclsIpx/mSrmWHarFzVzY3jg2rsfHnLq0a7ENJNS9TWOy7qcy3yhQQLpUYa72h51+24qlZkcNhEiTKvpPIp7FgYAYKDK5UwAwG66PYUoOUN0NwfLac2JMwwPE/M5Z28nFrfr0=
+	t=1791115571; cv=none; b=u6TlYSmmp29TgZT8iIfs9tvlvfZgwU/cs9qQZ+hxEE8s0f1QiQMgwtAkRGy0DtTkaIRAnwKO+Mf/Ru4KgYbu7V8+5+I4AFF8h+KICyXoNxPZ1bC1k/Q/ZFwmALz6U0FKkh++CGg0BHKfZSLhNcYwOGN9qVnqpTByFZ7ftA7YOLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791115013; c=relaxed/simple;
-	bh=4e1cggxNcpNhzjwVlx5Tr8gCS/0Wm34WDbMKjABmtCo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bOk4CPmJSsMFCVTl7v6odZgQMhlgFcen5KVdPyObK/lGsY1RKyMcNYZi8BdjbI9cQ4v0ex6LOcxbD7K8/x/nGGgMkiw05L3Wwo8mpZ/bowxhiWSiKZgM1AzP3LxYyXJJT0ozgbs4Fo3buLcVPtzXsQfuW4nQE38GFVPbjntHtZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xi3uw4c/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791115571; c=relaxed/simple;
+	bh=oWcntV/BrgOJNRaVQjTBsXl79ydnNX7DAAGD7GhrFSo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UN8qt8/pdNBEDMl4y4VI4vtvDemZXP1BxIRYCPoDaI6YYQ9k131LJlAu2MgzOJXyTSkBDLbueHQ3gOByJnmgdjdPnfcTkUirwMIppNbdi5KlKSAP9HG2ujj1GqPN0mptju7fpYKkHOfic8anZRaa9q/2r5HkymG4a+GJr3zJ8OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UbD3M4Hz; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xi3uw4c/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFFB1F000FF;
-	Sun,  4 Oct 2026 11:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791115012;
-	bh=sCLAUkbhpcI/kDJevY41b6eZab5uxLiANrpl2/hnmQ8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Xi3uw4c/F1Bv0NPLI9+5z0aM5ZdBVBXbDqAwolhyVxtrBgdKE2PB1GvGgltu5w/Mh
-	 g/QsNTJesZC7sEDTXjQWV7Tg2r39D8p699PODjHztCNEy9IQn1N31YGVbQTKW1Dmkf
-	 hiCrgFJr1DDwTcP7euTvxp/6qCwKCGejxvXJsHag8BbIvKbsNvM1XiG1q5i2kT/bxB
-	 zAdMcP1/3yemSGlFNDAzFmQaYoieU3zTU9C8gYMt07ot/iLOVa5BjpPPfK1iSd04NJ
-	 IXLUb17l7uxvTDNLhs5PZzO70aMHzabnN8PwAux7IcGGDlZBMC1OiB7mUrKQcbsm25
-	 1POj5Oqw5XA4g==
-Subject: Re: [PATCH net v2] net: macb: rate limit netdev error info print in
- the data path
-From: netdev-bot+sashiko@kernel.org
-To: taozj888@163.com
-Cc: theo.lebrun@bootlin.com, stable@vger.kernel.org,
- conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- hskinnemoen@atmel.com, jeff@garzik.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 04 Oct 2026 11:56:51 +0000
-Message-ID: <179111501100.434549.3605361274069666617@kernel.org>
-In-Reply-To: <20260930113520.392025-1-taozj888@163.com>
-References: <20260930113520.392025-1-taozj888@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UbD3M4Hz"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc797656e5eso419067a12.3
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 05:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791115569; x=1791720369; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nwd8qadBr0UxQpeVs5pWLNg1qZ6CtGQ15NzXNboPOx4=;
+        b=UbD3M4HzuJar+CyzPxIMc1muNztlWJBD96qXrw5ro+4EoMRal4UpLaNy9ahPAVk3g5
+         iH3ZaYI+WnhdKSHFhUo3LZkxR8I4P1T5gXEuuSNUBq0U6Hwlbd2Blb8SQOi7EVecF9bF
+         8zKqwUVJnVDOP/+9VDyQd5egB1iUkKPxp3lKSD3kGdywiYSQAS01escP9JfpWi0OMUZ9
+         BJiUnVDtnkeIGBDjJrG2COIZzNqRJ2MKxwSeuans25SaSgSYsXhNCKFFkD45OmuZG2K+
+         eMktd8rG6XaWKfcc2GQeWNgzfKw+pAxt2H6qjHGH6g987F7EzCEfmF8+DzPI+aWGo06U
+         Gs0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791115569; x=1791720369;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nwd8qadBr0UxQpeVs5pWLNg1qZ6CtGQ15NzXNboPOx4=;
+        b=WyA2kcUUa8fdptDi0SNijQRQohpoe70j23wkpbo+P+3If1aKMHwc7ZvMNzJyFYftxP
+         2Hpmsu3lHPDhjZNpBsXPK0D9We/BewjFszn825v4V6Lm6OS8mDYmGTuj0gD1fjf3A/2J
+         SSkEgNYUgVI2UbjLUCJoKxTCgCsnVvauGnzkahXudRy9bDKFwpz7HbLodfIFLVkT2kVl
+         8GIwfVmNPBLI02JaK7pl9tAQqY+DnjLBxAMT1QxcuEU4FbtwmZckagXyASShImwlKdVe
+         clRal37C55DH+nHFKX3o7D9fWUIN5o+A/wkYjBV2mT+p98zGfzmqANKl8MHSsaW4CZ24
+         tgMw==
+X-Forwarded-Encrypted: i=1; AKwUvBxCTC00smqQKu7HZ30y9R7IO/JjYRgaAHqFkMu3swIwBWC+U2JV+pmj2Ec9mX085mokkqmbq3Y=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJizOVBdy/qnLaveht+iKx2IlT+EGTi8Q2BR75tjXpgTUjDtG/L
+	+yhjFiTiiIU+9IiOIw8iblcdg4A3Ik2H2FGpqxdNWZahmzCKExJvsyoF
+X-Gm-Gg: AYBFou0xbE6BZpX2znJna/0rfNlDBklZkhgaVZ+Cfexryzd7mmG8Nyl1TpREsEX6Vq+
+	8IxDb/xAdk/hU9f7es3mS/ZM8OT6scz9vhmXkZpFowXZVkDYOLWGy/xNX0Tp/11qWc11FPC4YIs
+	LvjequQDWcJJDjTHNcJQhuMZZWxAHxx6y5x6HwXbUWnJU5sNEc0knSBZDRB3EAldduHR070MVlF
+	2ZiBbYCC6yr4EVwVFEYEh8pWsIfwAzQHsM3GPQg22QniQOaZa+Os8Ff78mc5YinuOA1Rp55Tku4
+	hvP2WuvF+cKxUVmSHkJut0GS4oItA+9cyQ0aTBA21JDL6BTdRfGfss/pTozyleviFIciSsUhQKv
+	YjTjLlY4qYt2i+3CuJd7syvDhOTm3VmeZg6m6czHgxOPFtnN9rlqKVJL8gNud57ONngCiKTvZ33
+	kMIIVfX5o+JWfKUljw7LZGgv67r0jUQku3Yb+IFhmLrIryAYRbkilLY8EL065UMlnAHwQNFg==
+X-Received: by 2002:a17:90b:3c4d:b0:3a7:8350:49a5 with SMTP id 98e67ed59e1d1-3a783505109mr3878592a91.32.1791115568964;
+        Sun, 04 Oct 2026 05:06:08 -0700 (PDT)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a79e7c243csm2603661a91.0.2026.10.04.05.06.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 05:06:08 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	richardcochran@gmail.com,
+	maxime.chevallier@bootlin.com,
+	muhammad.nazim.amirul.nazle.asmade@altera.com,
+	rohan.g.thomas@altera.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zxyan Zhu <zxyan0222@gmail.com>
+Subject: [PATCH net-next v7 0/3] net: stmmac: dwxgmac2: timestamp interrupt support + Agilex5 fix
+Date: Sun,  4 Oct 2026 20:05:23 +0800
+Message-Id: <20261004120526.2728564-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+This series adds auxiliary snapshot (EXTTS) interrupt support to
+DWXGMAC2/DWXLGMAC2, fixes a stale TSIS race on the Agilex5
+cross-timestamp path that the new handler would otherwise expose, and
+guards the shared aux snapshot handler against a zero channel mask.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Patch 1 makes smtg_crosststamp() complete on the persistent ATSNS
+count instead of the transient TSIS bit, waits for the ATSFC FIFO
+clear to complete, and holds aux_ts_lock across the whole
+trigger/poll/drain sequence so a concurrent PTP_CLK_REQ_EXTTS
+request cannot flush the snapshot FIFO mid-flight.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Patch 2 guards the shared aux snapshot handler against a zero
+PTP_ACR channel mask: ilog2() is applied to the mask without
+checking for zero, and ilog2(0) yields an out-of-range event index
+that ptp_clock_event() feeds to test_bit() unchecked from hard IRQ
+context.
 
-- [High] The fix does not cover what its commit message claims.
-- [Low] The author identity "taozijin <taozj888@163.com>" does not match
-  the Signed-off-by trailer "Zijin Tao <taozj888@163.com>".
+Patch 3 wires up a dedicated DWXGMAC2 timestamp interrupt handler,
+following the guarded pattern of the shared one.  Before this change
+the XGMAC hwif entries used the generic stmmac_ptp ops, whose
+timestamp_interrupt callback read the dwmac4 offset
+GMAC_TIMESTAMP_STATUS (0xb20) instead of the XGMAC register at 0xd20.
+The PTP clock advertised the aux snapshot channels, so
+PTP_EXTTS_REQUEST succeeded but no event was ever delivered.
 
---
+Following 30300d9f9150 ("net: stmmac: xgmac: Disable the Timestamp
+interrupt by default"), XGMAC_TSIE is not added back to
+XGMAC_INT_DEFAULT_EN.  Instead it is armed on demand from the
+PTP_CLK_REQ_EXTTS enable/disable path via a new optional
+timestamp_interrupt_cfg mac callback (mirroring dwmac1000).  The
+interrupt is only touched after the ATSFC FIFO clear has completed,
+and the handler refuses to drain entries while that clear is still
+in flight; it also leaves the snapshot FIFO alone while an internal
+cross-timestamp owns it (STMMAC_FLAG_INT_SNAPSHOT_EN), is disarmed
+when the PTP clock is unregistered, and is re-armed on resume by
+stmmac_rearm_timestamp_irq(), which redoes the EXTTS programming
+under aux_ts_lock before re-arming, when a channel was left enabled
+across suspend.
 
-net: macb: rate limit netdev error info print in the data path
+v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
+v2: https://lore.kernel.org/netdev/20260810100221.9166-1-zxyan0222@gmail.com/
+v3: https://lore.kernel.org/netdev/20260818132722.1852876-1-zxyan0222@gmail.com/
+v4: https://lore.kernel.org/netdev/20260902131441.322167-1-zxyan0222@gmail.com/
+v5: https://lore.kernel.org/netdev/20260910081020.86227-1-zxyan0222@gmail.com/
+v6: https://lore.kernel.org/netdev/20260929073553.4136336-1-zxyan0222@gmail.com/
 
-This patch wraps four netdev_err() calls in the macb driver with
-net_ratelimit(). Two are in gem_rx(), one is the RX queue corruption
-message in macb_rx(), and one is the HRESP DMA bus error in
-macb_interrupt_misc(). The goal is to stop console floods at boot when
-many bad or oversized frames arrive.
+v7:
+- Rebase onto the current net-next/main: stmmac_resume() now only
+  re-initialises timestamping under priv->ptp_enabled (8181678a92f0),
+  so stmmac_rearm_timestamp_irq() moved inside that block.
+- Raise and drop STMMAC_FLAG_INT_SNAPSHOT_EN under aux_ts_lock in
+  smtg_crosststamp(), so concurrent cross-timestamp requests cannot
+  lose the flag.
+- Restore the enabled auxiliary snapshot trigger on resume: the
+  platform init resets the MAC, so stmmac_rearm_timestamp_irq() now
+  flushes the FIFO and re-programs the PTP_ACR ATSEN bit (channel
+  recorded by stmmac_enable()) before re-arming the interrupt.
 
-> Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
-> Cc: stable@vger.kernel.org
->
-> Signed-off-by: Zijin Tao <taozj888@163.com>
 
-[Severity: Low]
-This isn't a bug, but the name in the Author line does not match the
-name in the Signed-off-by. The email address is the same:
+Zxyan Zhu (3):
+  net: stmmac: dwmac-socfpga: complete cross-timestamp on ATSNS
+  net: stmmac: guard against a zero channel in the aux snapshot handler
+  net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
 
-  Author: taozijin <taozj888@163.com>
-  Signed-off-by: Zijin Tao <taozj888@163.com>
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 36 ++++++++---
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 59 +++++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/hwif.c    |  4 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |  5 ++
+ .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 17 +++++-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 51 ++++++++++++++++
+ .../net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 23 +++++++-
+ .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  2 +
+ include/linux/stmmac.h                        |  1 +
+ 9 files changed, 187 insertions(+), 11 deletions(-)
 
-checkpatch.pl reports this as FROM_SIGN_OFF_MISMATCH.
 
-Also, a blank line separates the Fixes: and Cc: tags from the
-Signed-off-by, so they don't form a single trailer block.
-
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 8e5c034dc3a48..ca60960bec362 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-
-[ ... ]
-
-> @@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
->  
->  	if (status & MACB_BIT(HRESP)) {
->  		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
-> -		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
-> +		if (net_ratelimit())
-> +			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
->  		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
->  	}
-
-[Severity: High]
-The commit message says:
-
-  So rate limit the netdev error information print in the receive
-  and transmit data path.
-
-Does the patch match that description? The only non-RX print it
-converts is this HRESP one in macb_interrupt_misc(). That is a DMA bus
-error interrupt, not the transmit data path. No TX data path print
-seems to be rate limited.
-
-Several prints of the same kind in macb_main.c look like they are still
-unlimited. at91ether_interrupt() runs in hard IRQ context and still
-does:
-
-	if (intstatus & MACB_BIT(ISR_ROVR))
-		netdev_err(netdev, "ROVR error\n");
-
-at91ether_open() enables ISR_ROVR. A line rate flood from a link peer
-would cause exactly this RX overrun, which is the scenario in the commit
-message. macb_interrupt_misc() handles the same bit by only incrementing
-hw_stats rx_overruns.
-
-gem_rx_refill() runs at the end of every gem_rx() poll and still has:
-
-	if (unlikely(!skb)) {
-		netdev_err(bp->netdev,
-			   "Unable to allocate sk_buff\n");
-		break;
-	}
-
-Under memory pressure, would this log again on every poll, right next
-to the gem_rx() prints that are now rate limited?
-
-On the TX side, these still print without a limit:
-
-  macb_tx_map():
-	netdev_err(bp->netdev, "TX DMA map failed\n");
-
-  macb_start_xmit():
-	netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
-	/* if this is required, would need to copy to single buffer */
-	return NETDEV_TX_BUSY;
-
-  at91ether_start_xmit():
-	netdev_err(netdev, "%s: DMA mapping error\n", __func__);
-	...
-	netdev_err(netdev, "%s called, but device is busy!\n",
-		   __func__);
-	return NETDEV_TX_BUSY;
-
-  macb_tx_error_task():
-	netdev_err(bp->netdev,
-		   "BUG: TX buffers exhausted mid-frame\n");
-
-The comment in macb_tx_error_task() says that last print is meant to be
-loud, so it may be fine to leave as is.
-
-For the two paths that return NETDEV_TX_BUSY, won't the qdisc requeue
-the same skb and print the message again on every retry?
-
-This is tagged for stable. Should the remaining RX, IRQ and TX data path
-sites be converted too? Or should the commit message only describe the
-RX and HRESP prints this patch changes?
-
+base-commit: 62d7b9186cad08324d6b9d262631104bb215e67d
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930113520.392025-1-taozj888%40163.com
+2.34.1
+
