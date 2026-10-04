@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C6345039
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 02:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16170305699
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 02:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791079980; cv=none; b=qpQV6CoiUDZ7hOrCzMffLT/2iJhjvMB4ommHt+/SS5pcOzqJAc+m8Qw84fZsTApgphI2ecwasY+gnqY320JoUUBCbLm6oesWce3CSK0++/SXMBENpvJ6o7pmUQjHc+k23/Ou6TlaGf3wBCW9YGaUxug7q6igkAQt+hiJrbkofMI=
+	t=1791079981; cv=none; b=arKm1/GwOymPtHvIAORnEzaLt6dEsMh/iSiYJAj1G/OSa/vhaGcA8BCuF8JPi2RprV2npjUtMXQcls2UVxLBGDBb86PkERKfJcB7c9TcxvtUx7QzOoURXrDjSl9n1nNhyZCdDwfCttF3NaQbYUItjp65tLICrZlrRbJMm5pO6VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791079980; c=relaxed/simple;
-	bh=le8Y9O4UArTsooQutKIGkkqzjM369PeKE2PSGaikQ8w=;
+	s=arc-20240116; t=1791079981; c=relaxed/simple;
+	bh=KEycQU+DpjRQB7Kl+S28OeAWl2ThZwr1UUByejH8Q10=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ohz3XzCOdRUFa6MYzK6CqBTEAWtqJ6IgOxZPGoLsYydLW6tu/5DMSjyPvZoKXO916gt6Yqfwrmd/TuDTFRoNm1mKEKgYmqZU6VvBHHUqeNNimg4Hjc7m9tiL+rNwm7OPcT+XpUIjb9eXiC6EQSymkxthQGDIbQiBnENG9hRkuVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYSPumFT; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=iQ6OnUMxwKmEKS0Hjw2jjY0zUlaZ8df8yJdD3H1iEt0DISd9wBGdS7vg+fpLdHRrl8joEIZInq4CrM0K3izR+JuKMO+QyucvKnwKElZ6KAnLgpbrR5eYQ/2rVT7QXM30+VqEl9yq2H0CESMPEukxvUaZ0Qq5X4DbXvIwHSyPAVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0h/zuDd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYSPumFT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6101F0089B;
-	Sun,  4 Oct 2026 02:12:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0h/zuDd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84F21F0089C;
+	Sun,  4 Oct 2026 02:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791079978;
-	bh=16l66Uzb8+XvEx8M4vY8FEkREMfnLp+3Kdb9Sqc3ZAs=;
+	s=k20260515; t=1791079979;
+	bh=XGIPL9EuyriPZ4ZDdC2jLlOsbYSmA3TBmbbk/fQDRJU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oYSPumFTA7i98EAHE4csXPxrTukm9EyCmwVPyNW4HeyKW1oNpTBHfwBRaw1zQwnUU
-	 YbXcJizX2fJiOrkph3bUgSVy4agx77Z3FnP5k1euRqjDJYvx+fS8/dkG2WofgnN1rJ
-	 lSOIH+W1+aIS1WV/VgbtN3o8EwqokS5ZVnLT+XoNzqR1T2YjkjS5fHAbEuIWyNDfLB
-	 CtZRM6hxHMG79bhk+tysjTUrlWpD1B4WC6XdGgdMMBUknWpy4kncbqCCzviooxKBwc
-	 kHn9EDRKPtTaGkatg4hsR5gAqAzZsOhKDHpqYiLmQN+HAsEhXK1rfnTzWaHWjmYxWN
-	 KV4gdrh0hS5BA==
-Subject: Re: [PATCH net-next 4/7] ibmveth: step past bad RX correlators
- instead of spinning or oopsing
+	b=P0h/zuDd4yf+49PXJDojrAw8+m4YhJ2djB92J7Ebu+HBsPl4TKumPPkomYMEmqg9U
+	 c3K0t5fm0ekKAyg3i2oHmaJ22+YwMy0Cmh2vVXsdmTrnGzuMj5GtXK/VJZjLWS8XDp
+	 wyPUEv0pgZlLgOPqvYO35+t9yMoHivH23puIW5h7U3Srp+wgSCjRN2jzp0J24tt+yc
+	 WYq5B8NKNghBTrYsSTqZgfex4aWJfceRUMtkGs2kwIZJNU9MTM+i07l0Me35g92LEX
+	 9jKNXHXa3uCJLoIf7LG1wOHtzJmGrZgVZxAY4qkXobV0+GQ45vBH3tfXkdynkLEkid
+	 UL5GDgwxyPkxg==
+Subject:
+ Re: [PATCH net-next 5/7] ibmveth: release the pool kobjects when probe fails
 From: netdev-bot+sashiko@kernel.org
 To: mmc@linux.ibm.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
@@ -35,13 +35,13 @@ Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
  mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, davemarq@linux.ibm.com,
  bjking1@linux.ibm.com
-Date: Sun, 04 Oct 2026 02:12:57 +0000
-Message-ID: <179107997707.434549.11109515809612717921@kernel.org>
+Date: Sun, 04 Oct 2026 02:12:58 +0000
+Message-ID: <179107997848.434549.4525032963009141215@kernel.org>
 In-Reply-To:
- <14aa52f296c474726c049efc6b5a045187c45868.1790991039.git.mmc@linux.ibm.com>
+ <f0186ae5ac4f9838b01c23fc42391abc328f814f.1790991039.git.mmc@linux.ibm.com>
 References:
- <14aa52f296c474726c049efc6b5a045187c45868.1790991039.git.mmc@linux.ibm.com>
-X-sashiko-severity: Low
+ <f0186ae5ac4f9838b01c23fc42391abc328f814f.1790991039.git.mmc@linux.ibm.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,145 +51,107 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] The new bad-slot handling in ibmveth_poll()
-  (drivers/net/ethernet/ibm/ibmveth.c) neither charges consumed error…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but:
-  ibmveth_poll() uses the PHYP-written descriptor length…
+- [Medium] On the new err_put_pools path in ibmveth_probe()
+  (drivers/net/ethernet/ibm/ibmveth.c), the code calls kobject_put() on…
 
 --
 
-ibmveth: step past bad RX correlators instead of spinning or oopsing
+ibmveth: release the pool kobjects when probe fails
 
-This patch adds a helper that validates the RX correlator returned by
-PHYP. The helper also rejects inactive pools that have no skbuff array.
-On a bad slot, the RX ring now advances, the drop is counted in
-rx_dropped, and a reset is scheduled. WARN_ON() is replaced with a
-ratelimited netdev_err(), and the KUnit cases are extended to cover
-these paths.
+This commit adds an err_put_pools unwind label to ibmveth_probe(). The label
+calls kobject_put() on each rx_buff_pool[i].kobj before free_netdev(). It is
+used when either netif_set_real_num_tx_queues() or register_netdev() fails.
 
 > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 77d3740cc52a6..b89ce389d951f 100644
+> index b89ce389d951f..d5ba2f2650d0f 100644
 > --- a/drivers/net/ethernet/ibm/ibmveth.c
 > +++ b/drivers/net/ethernet/ibm/ibmveth.c
 
 [ ... ]
 
-> @@ -1468,6 +1503,7 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
->  	int frames_processed = 0;
->  	unsigned long lpar_rc;
->  	u16 mss = 0;
-> +	int rc;
+> @@ -1981,13 +1980,18 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
 >  
->  restart_poll:
->  	while (frames_processed < budget) {
-> @@ -1490,8 +1526,11 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
->  			__sum16 iph_check = 0;
+>  	if (rc) {
+>  		netdev_dbg(netdev, "failed to register netdev rc=%d\n", rc);
+> -		free_netdev(netdev);
+> -		return rc;
+> +		goto err_put_pools;
+>  	}
 >  
->  			skb = ibmveth_rxq_get_buffer(adapter);
-> -			if (unlikely(!skb))
-> +			if (unlikely(!skb)) {
-> +				ibmveth_rxq_advance(adapter);
-> +				netdev->stats.rx_dropped++;
->  				break;
-> +			}
-
-[Severity: Low]
-The ring now moves past the bad slot. Should this consumed entry also
-count against the NAPI budget, and should the loop continue here rather
-than break?
-
-frames_processed is not incremented here or in the two harvest error
-branches below. The break goes to the tail of ibmveth_poll():
-
-    ibmveth_replenish_task(adapter);
-
-    if (frames_processed == budget)
-        goto out;
-
-    if (!napi_complete_done(napi, frames_processed))
-        goto out;
-
-    lpar_rc = h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_ENABLE);
-    ...
-    if (ibmveth_rxq_pending_buffer(adapter) && napi_schedule(napi)) {
-        lpar_rc = h_vio_signal(adapter->vdev->unit_address,
-                               VIO_IRQ_DISABLE);
-        goto restart_poll;
-    }
-
-With a run of N bad correlators, one poll call would then do N
-replenish passes and 2N hcalls but report 0 work. This all runs on the
-CPU where schedule_work() has just queued the reset.
-
-A bad correlator never decrements pool->available. That means the burst
-is only bounded by how many buffers are posted to PHYP, about 1024 with
-the default active pools.
-
-Documentation/networking/napi.rst says the budget "limits how many
-packets driver can process in a single poll". Would it bound this work
-to count the consumed error descriptors in frames_processed and use
-continue instead of break?
-
+>  	netdev_dbg(netdev, "registered\n");
 >  
->  			/* if the large packet bit is set in the rx queue
->  			 * descriptor, the mss will be written by PHYP eight
-> @@ -1515,12 +1554,19 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
->  				if (rx_flush)
->  					ibmveth_flush_buffer(skb->data,
->  						length + offset);
-> -				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, true)))
-> +				rc = ibmveth_rxq_harvest_buffer(adapter, true);
-> +				if (unlikely(rc)) {
-> +					dev_kfree_skb_any(new_skb);
-> +					netdev->stats.rx_dropped++;
->  					break;
-> +				}
->  				skb = new_skb;
->  			} else {
-> -				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, false)))
-> +				rc = ibmveth_rxq_harvest_buffer(adapter, false);
-> +				if (unlikely(rc)) {
-> +					netdev->stats.rx_dropped++;
->  					break;
-> +				}
->  				skb_reserve(skb, offset);
->  			}
+>  	return 0;
+> +
+> +err_put_pools:
+> +	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+> +		kobject_put(&adapter->rx_buff_pool[i].kobj);
+> +	free_netdev(netdev);
+> +	return rc;
+>  }
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but the correlator from PHYP
-is now validated. Should the length and offset from the same descriptor
-be checked as well?
+With CONFIG_DEBUG_KOBJECT_RELEASE=y, can this path still free the pool
+kobjects while their cleanup is pending?
 
-ibmveth_rxq_frame_length() returns the raw be32 length as an int.
-ibmveth_rxq_frame_offset() can return values up to IBMVETH_RXQ_OFF_MASK
-(0xFFFF). ibmveth_poll() does not check either one against the source
-pool's buff_size, which is 512 bytes for pool 0.
+The kobjects are embedded in netdev_priv(netdev), and ktype_veth_pool has
+no release() callback:
 
-The copybreak branch does this:
+static struct kobj_type ktype_veth_pool = {
+	.release        = NULL,
+	.sysfs_ops      = &veth_pool_ops,
+	...
+};
 
-    skb_copy_to_linear_data(new_skb,
-                            skb->data + offset,
-                            length);
+On that config, kobject_release() defers the cleanup to a delayed_work
+that is embedded in the kobject itself:
 
-If offset is close to 0xFFFF, can this read up to about 64 KiB past the
-RX buffer and then hand that data up through napi_gro_receive()?
+lib/kobject.c:kobject_release() {
+	...
+	INIT_DELAYED_WORK(&kobj->release, kobject_delayed_cleanup);
 
-The non-copybreak branch does this:
+	schedule_delayed_work(&kobj->release, delay);
+	...
+}
 
-    skb_reserve(skb, offset);
-    ...
-    skb_put(skb, length);
+free_netdev() then frees the adapter while that work is still armed. The
+work runs 1 to 4 seconds later. kobject_cleanup() then works on freed
+memory: it reads kobj->state_in_sysfs and kobj->name, calls
+__kobject_del(), and drops the parent reference.
 
-This path has no tailroom check. Could an oversized or negative length
-reach skb_over_panic() -> BUG() in softirq?
+Until the work runs, the pool%d active, num and size files under
+/sys/devices/vio/<unit>/ still exist. A read or write goes through
+veth_pool_show() or veth_pool_store(). Both use container_of() to reach
+the freed pool, adapter and netdev.
+
+A re-probe in that window could also fail to add pool0. That is the same
+failure this commit is meant to fix.
+
+The commit message mentions this and refers to ibmveth_remove(), which
+uses the same put-then-free pattern. kobject_cleanup() also reports this
+ktype as one that "does not have a release() function, it is broken and
+must be fixed".
+
+Calling kobject_del() before kobject_put() would remove the sysfs files
+synchronously. However, the delayed_work inside the freed adapter would
+still be armed.
+
+Would it make sense to give the pool kobjects their own lifetime? One
+option is to allocate them separately with a real release() callback.
+
+This also stays the same later in the series. "ibmveth: wait for
+in-flight transmits in ibmveth_close()" leaves both err_put_pools and the
+NULL release in place.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1790991039.git.mmc%40linux.ibm.com
