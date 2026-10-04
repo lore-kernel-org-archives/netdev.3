@@ -1,33 +1,40 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA8547D471;
-	Sun,  4 Oct 2026 21:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9549480DEB;
+	Sun,  4 Oct 2026 21:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791148291; cv=none; b=NmpA7Lrpo0L1e160jHrrX6KHAE/ebcXrTniZT8i/fm9DHh+dbpo2bEMzG8+gh3O23hZqEUURjRWTUmSYc47mmVqxnoA4/8+5JLvjl9T3+9Zmn8J9zWhPoz7OtKOfuimdV/zB72hNtyH2M0Zhw+uX09Ju9rQXcSgXTxOkLJWtRTw=
+	t=1791148424; cv=none; b=O0XgxLWzTbTPmkS7yK67GL6elTzAPXyuLVX15rOEr86GihGuGptLGWYslxLOUdqZOeIsd56IQVOcIDr8EPC0HoXvTs+Wx0ayx19vgWEPHt3MimISoIc89pOGnYTMEwPuNfMX44UwG0TYzhLkRGYVC0bloAFoS+wv8kQIvNFcgxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791148291; c=relaxed/simple;
-	bh=DZhEdq8mFasWzol8qqfkAUZbYB48NdumR1ZAdNHnZV8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Mywayrd9f0R7XAv9nQVeK7GHEeldff9rzwa6TzV7wzhrjLBV75/5lAdAY5j55SMFvrjmmFoBB6Q2Fw/hr2PlvL+1oNSYs7lL4QxPMpa/3c4K+K1zY9eSUE5V6Q8ztlzZk1YtcdXuxKH+Qgl4h47KM4TQYX2B6Rm+yHJ8GM3t6X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Go6zVW0C; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791148424; c=relaxed/simple;
+	bh=NFYhCoYyRwrUc0Lyiyp3uLvg7G1eCSWrSipN36e/iwg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eeaqf1eDrmzU2TjIHIe0XJT0+PgGi2ozMuuQ2n6w9UWqZRYiGa3nk6ZH4QRXUdBQgGTI2655GErVMQ9fFTmv7jNqEBYQDS565vvovhmJTFhFV7d7CzVJ2S0Ta0iEkGsedwzepLhlSHNdEL71Dqdf3Ws65vgUnERTAJ6EytO0flY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kCUsydxH; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Go6zVW0C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CED1F000FF;
-	Sun,  4 Oct 2026 21:11:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791148289;
-	bh=IrUsNEXqFQwzlpkitoF/PRUCcL6ofop0HTFSPBkuJB0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=Go6zVW0CspluWyyF3H75sbYYEQLuEhLl5Iet66jfCWAZUB2CpVDrWu8nyUj0xbBAX
-	 /hHuxVABuO6PyL4RYzjjbZ97DFtX96bCQeCJgDGKGlwi8+2KesGLCavZEPoeQZZiz1
-	 i6qNdehSO0rBxbB13C3fi02zdUEwxEveodWvNmrBAOBGqSfmEW9ipuhwEGVEV5RxwX
-	 RMx2UGUAUy1Jq4sl9GxcS/FUe4lEqhq+ikFEWfTHAfhfJPHQyqwhZms+jYJ6EPgSCZ
-	 pX1pPG4l5b5UwUKALIZPOQoUfSV/Za7fFx7mrIQnMaRU7/QyqzkCynqqUqh2sa6B++
-	 oHb78fq4KImuA==
-Message-ID: <854f3985-a4ab-4014-b18d-9fead61602e1@kernel.org>
-Date: Sun, 4 Oct 2026 23:11:26 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kCUsydxH"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1B5AB1A113A;
+	Sun,  4 Oct 2026 21:13:39 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D2DFD604FE;
+	Sun,  4 Oct 2026 21:13:38 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DD9731032820F;
+	Sun,  4 Oct 2026 23:13:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791148417; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=nXPXirW3eRDsSI9mvG4DFF7E3a00ea/RwmInqyXUVd4=;
+	b=kCUsydxHi1pBYG/VMU/FQcimtNJep3NIuesye/jvgOjSjEhH/76NRdMy4W334dzAh2mwqL
+	NAJrzK4xjqvAQEWVQPuKKWXqgC7W993Gfw7IanqW/t0bd2hSCIZ8YHThNyq8lPs7XLmL+c
+	sj8d3hdOigyOeVezUEzMB0h6XSzD+4RUTVJHTD+EoVPHOHXabzSdpDL6RrFoqjTImoGhlX
+	xk6jjh850A9O8vO5ZjhDzfrhIrbACQKXO3O/G6ycuany91IVzTe3wlEXh6S7EltG9da2Eo
+	INQJBZJLmavvZBTml0LeAhLl7Mt9OxbwWQKNXhSHnfHzXN3ud2jt/NntjLibew==
+Message-ID: <aafea01f-546e-47de-9e1d-e404450e78c5@bootlin.com>
+Date: Sun, 4 Oct 2026 23:13:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,137 +42,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
- macvlan/vlan with bnxt_en
-From: Eric Dumazet <edumazet@kernel.org>
-To: Stefan Fleischmann <sfle@kth.se>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, regressions@lists.linux.dev,
- Joe Damato <joe@dama.to>
-References: <20261004122616.56714cbd@nargothrond>
- <f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
- <20261004163532.3134dd41@nargothrond> <20261004192902.3ab3b7f3@nargothrond>
- <919dcfaa-005f-4bfd-8889-39acda5f7a92@kernel.org>
+Subject: Re: [RFC PATCH 3/6] net: stmmac: dwmac-meson8b: add support for the
+ Amlogic T7
+To: Lucas Tanure <tanure@linux.com>, xianwei.zhao@amlogic.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+References: <20261004144046.391444-1-tanure@linux.com>
+ <20261004144046.391444-4-tanure@linux.com>
 Content-Language: en-US
-In-Reply-To: <919dcfaa-005f-4bfd-8889-39acda5f7a92@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20261004144046.391444-4-tanure@linux.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Lucas,
 
-
-On 10/4/26 22:52, Eric Dumazet wrote:
+On 10/4/26 16:40, Lucas Tanure wrote:
+> The glue registers on the T7 are laid out exactly as the G12A ones, RX
+> delay field included, so the T7 can reuse the G12A settings.
 > 
+> What the T7 does not share is how the controller reaches DRAM: the bus
+> path goes through a pipeline stage with a gate of its own, and no device
+> other than the controller has any use for that gate. Claim it and hold
+> it enabled for as long as the controller is bound, otherwise it is
+> switched off as unused and a transfer that has been started can never
+> complete.
 > 
-> On 10/4/26 19:29, Stefan Fleischmann wrote:
->> On Sun, 4 Oct 2026 16:35:32 +0200
->> Stefan Fleischmann <sfle@kth.se> wrote:
->>
->>> On Sun, 4 Oct 2026 13:46:08 +0200
->>> Eric Dumazet <edumazet@kernel.org> wrote:
->>>
->>>
->>>>
->>>> Notice that 0xfc499000 is on an exact 4KB page boundary. This points
->>>> to a DMA read overrun where the Broadcom DMA engine reads past the
->>>> end of a buffer mapped in page 0xfc498xxx into the adjacent unmapped
->>>> page 0xfc499000.
->>>>
->>>> Have you tried a recent net kernel ?
->>>
->>> Hi Eric,
->>>
->>> that might be a bit tricky. We use ZFS on this server and the version
->>> we have installed only supports up to kernel 7.2.
->>
->> Scratch that, I noticed that this even happens with none of the LXC
->> containers running. So I tested with the main branch from
->>   https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
->>   (commit 6dc989ea46b9)
->>
->> Same issue.
+> Give the T7 match data of its own so that only it looks the clock up,
+> and require the clock instead of treating it as optional: the controller
+> cannot do DMA without it, and failing the probe with a clear message
+> beats booting and hitting an undiagnosable hang later.
 > 
-> Okay, this must be a bnxt issue, that has been hidden years because of 
-> some skb->data headroom/offset.
-> 
-> LL_RESERVED_SPACE() has been increased from 48 to 64. So perhaps small 
-> packets are now crossing a page boundary (which should be fine)
-> 
-> I see one bug in the skb_pad() vicinity. Could you try:
-> 
-> 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ 
-> ethernet/broadcom/bnxt/bnxt.c
-> index 
-> d7728d0c5b6e63ee72de9dea54426bb4c8b7a9fc..f9feeb4471a8cf310788ef8d00b68a1508a7e78e 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -678,6 +678,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff 
-> *skb, struct net_device *dev)
->                          /* SKB already freed. */
->                          goto tx_kick_pending;
->                  length = BNXT_MIN_PKT_SIZE;
-> +               len += pad;
->          }
-> 
->          mapping = dma_map_single(&pdev->dev, skb->data, len, 
-> DMA_TO_DEVICE);
+> Assisted-by: LLM
+> Signed-off-by: Lucas Tanure <tanure@linux.com>
+> ---
 
-A more polished patch would be this one.
+[...]
 
-bnxt_start_xmit() needs an audit I think :/
+>  
+> +static const struct meson8b_dwmac_data meson_t7_dwmac_data = {
+> +	.set_phy_mode = meson_axg_set_phy_mode,
+> +	.has_prg_eth1_rgmii_rx_delay = true,
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c 
-b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 
-d7728d0c5b6e63ee72de9dea54426bb4c8b7a9fc..48e544544754b04cff891bda5bc86cc370e0aa0b 
-100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -486,7 +486,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff 
-*skb, struct net_device *dev)
-         struct netdev_queue *txq;
-         int i;
-         dma_addr_t mapping;
--       unsigned int length, pad = 0;
-+       unsigned int length;
-         u32 len, free_size, vlan_tag_flags, cfa_action, flags;
-         struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
-         struct pci_dev *pdev = bp->pdev;
-@@ -672,14 +672,12 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff 
-*skb, struct net_device *dev)
-         }
+Hmpf sorry this falls onto your series, but looking at the code it seems
+that this glue has the RGMII handling backwards...
 
-  normal_tx:
--       if (length < BNXT_MIN_PKT_SIZE) {
--               pad = BNXT_MIN_PKT_SIZE - length;
--               if (skb_pad(skb, pad))
--                       /* SKB already freed. */
--                       goto tx_kick_pending;
--               length = BNXT_MIN_PKT_SIZE;
-+       if (skb_padto(skb, BNXT_MIN_PKT_SIZE)) {
-+               /* SKB already freed. */
-+               goto tx_kick_pending;
-         }
--
-+       length = skb->len;
-+       len = skb_headlen(skb);
-         mapping = dma_map_single(&pdev->dev, skb->data, len, 
-DMA_TO_DEVICE);
+In meson8b_init_rgmii_delays :
 
-         if (unlikely(dma_mapping_error(&pdev->dev, mapping)))
-@@ -759,10 +757,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff 
-*skb, struct net_device *dev)
-                 txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
-         }
+         switch (dwmac->phy_mode) {                           
+         case PHY_INTERFACE_MODE_RGMII:                       
+                 delay_config = tx_dly_config | rx_adj_config;
+                 break;                                       
+         case PHY_INTERFACE_MODE_RGMII_RXID:                  
+                 delay_config = tx_dly_config;                
+                 cfg_rxclk_dly = 0;                           
+                 break;                                       
+         case PHY_INTERFACE_MODE_RGMII_TXID:                  
+                 delay_config = rx_adj_config;                
+                 break;                                       
+         case PHY_INTERFACE_MODE_RGMII_ID:                    
+         case PHY_INTERFACE_MODE_RMII:                        
+                 delay_config = 0;                            
+                 cfg_rxclk_dly = 0;                           
 
--       flags &= ~TX_BD_LEN;
--       txbd->tx_bd_len_flags_type =
--               cpu_to_le32(((len + pad) << TX_BD_LEN_SHIFT) | flags |
--                           TX_BD_FLAGS_PACKET_END);
-+       txbd->tx_bd_len_flags_type |= cpu_to_le32(TX_BD_FLAGS_PACKET_END);
+This is the behaviour one would expect from a PHY perspective.
 
-         netdev_tx_sent_queue(txq, skb->len);
+And indeed, 66 amlogic dts have "phy-mode = rgmii".
 
+grep "phy-mode = \"rgmii\"" $(find arch/ | grep amlogic) | wc -l
+66
 
+I really think all these 66 "rgmii" instance should have been "rgmii-id"...
 
+It's probably too late to change that though :(
+
+Maxime
