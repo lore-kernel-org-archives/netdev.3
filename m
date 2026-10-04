@@ -1,75 +1,124 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B53409266;
-	Sun,  4 Oct 2026 20:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA25846F48D;
+	Sun,  4 Oct 2026 20:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791145062; cv=none; b=PL9xuVtEDPZtf951THArl6FOzvlR9BHA7OUsn2ILOo5NRtOkczxeTpHWvXvHcSMJ5xZ8ihqatIolzcGrrCvfMH6wkUjszbBGdXE9fjha2msnMRJeISWRrktfwRS9mQsdCqF11SZr4V7kPTOB4/XQafJVq4yrbvk/Yl2aaewbjso=
+	t=1791145941; cv=none; b=D3vFFWJsaaIbpe2ZGY4C+IZlPrMmtT7aSjLEUOGmLuq2+4n3lqzUIv2U+aqeclfxMjruq9FXvr/Bo1oZY6pKUZzCeAE0y3Te+cu+h69fOsqRWWBmTCzDdKIV/zes1DOifYHTSNbmKQ64W5NY8Xe1TBzdu2IOcbNSoJ0fWV9UaUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791145062; c=relaxed/simple;
-	bh=u1qwHVsKJGZlVjTIpJIv+s1rcfyxFJLvXNW59VgQcC0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SCpmaAXI+64jcs55yFm3LpJr8MtUh1Ls3XWxjbO6p2EGYcle5kj9y5S0HdHVtlnphI/6NSwtMxzUOZIXADBXqzCrdeN9sQJDFkeCuFXIQCnur8NVOhzHLSHprZ6x6p16Dja81nyjsdoKpUkAhQ6pEVF0Zxvu0dGImcLluVxHNKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IZazm4Xy; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791145941; c=relaxed/simple;
+	bh=oIzCA0Ouk7T109u03t6jw/xCJYMvbOFK80sJbAbO0EE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kjzuf3zaelzN+k07JvHHo/veaVMxwiqVMQJPESad24a01bnOGOQAJJEc/2QHQ8zmXvDyPS+t17H4B2j60k9yidG9l9qQt5SAT0TWsnMv+igG3hv9333UBOkUizwgpih7bklTuvNnYbpbom5Oe1vbS1AfDzUvVvTXMUJvnafvGSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=MWFTrdwZ; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IZazm4Xy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=bR3SRhKCmzmX9coE4hC/OPg+4S7sEFFbseBqUid8HSI=; b=IZazm4XySWJtW7yktdM/0v0t+A
-	2XyfJmVCt/otVf+cvgdDLNdvNdGyUf0EFX57mUlG30Ugi2+MJQZ2YIuCTlIt4PLwYpOGWhI8AhfLd
-	wC3EdwEn7ZBD8P37dMdDBQEcdptBr3u8k/zyhF6NpvS6NN2dK1SA7EF5RvHurD127lxU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xDSe8-008w3J-9Z; Sun, 04 Oct 2026 22:17:20 +0200
-Date: Sun, 4 Oct 2026 22:17:20 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Frank <Frank.Sae@motor-comm.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: motorcomm: Add cable test support for
- internal YT861x PHYs
-Message-ID: <8a9ec69b-0823-48b1-aac1-f40cb4713f23@lunn.ch>
-References: <20261004184246.1260426-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="MWFTrdwZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=p+iesSfsDsR+tdcNJWQ0YJUQsl3KCeOY72NG0wBFil4=; b=MWFTrdwZnU9c0JUEmu3X2R4Ya2
+	3SrsWre6H7veF0oY08o2tZcqqa+/cvC+P9ckC3CFSlqOzmcrXsoVziWogGITXVIdqt0zlrLLbuPla
+	pqeW9bWVpIQ/Xud3GMV26WdbWfBafQKGUJUxZRu0oPR5AWZu47QGeXlaTvMQqoeMrhaMnpKfxTj8k
+	rGjM8MrXP4NddkZZSt1/XDY5snnoA+9HipcTruArqUlzAbDqDsoxEnlDUSybNak4ZtvW5id1Cpi4V
+	i8FO4wUPRCTlNuRSWbs6kqiXbq5+xM9arwscROzul4Vue7osUlt1BuZYx/WT/h9PniBg4/F7rcw6I
+	bffOjKgA==;
+Received: from [151.115.150.205] (port=57118 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1xDSsT-00000006qBz-023y;
+	Sun, 04 Oct 2026 22:32:09 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: Subash Abhinov Kasiviswanathan <subash.a.kasiviswanathan@oss.qualcomm.com>,
+	Sean Tranchetti <sean.tranchetti@oss.qualcomm.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: qualcomm: rmnet: require real-netns admin for bridging
+Date: Sun,  4 Oct 2026 20:31:50 +0000
+Message-ID: <20261004203149.3042491-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261004184246.1260426-1-mmyangfl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Mon, Oct 05, 2026 at 02:42:43AM +0800, David Yang wrote:
-> The YT921x switches integrate GbE PHYs of the YT861x family (PHY ID
-> 0x01e04281) on the switch-internal MDIO bus exposed by the yt921x DSA
-> driver. Without a specific driver they bind to the generic PHY driver
-> and lack the cable diagnostic facility. Add a driver entry for them
-> with cable test support.
+An rmnet device keeps its link to the real device when moved to another
+network namespace. The bridge callbacks change the real port, but rtnetlink
+only checks CAP_NET_ADMIN in the slave device's namespace.
 
-Since this does two different things, it should be two patches.
+Require CAP_NET_ADMIN in the real device's namespace before adding or
+removing a bridge. Use the slave device's namespace for the comparison,
+since that is the namespace rtnetlink authorized.
 
-Does the cable test code apply to other devices this driver drive?
+Fixes: 60d58f971c10 ("net: qualcomm: rmnet: Implement bridge mode")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+---
 
-> @@ -18,7 +19,9 @@
->  #define PHY_ID_YT8522		0x4f51e928
->  #define PHY_ID_YT8531		0x4f51e91b
->  #define PHY_ID_YT8531S		0x4f51e91a
-> +#define PHY_ID_INT861X		0x01e04281
+Changes in v2, after Subash Abhinov's review:
+- Add the teardown check and use slave_dev for both capability checks.
 
-Is this the ID of the switch itself? It does not match the pattern.
+v1: https://lore.kernel.org/all/20260821202845.4053530-2-Jeremy.Jean@oss.cyber.gouv.fr/
 
->  #define PHY_ID_YT8821		0x4f51ea19
+ .../ethernet/qualcomm/rmnet/rmnet_config.c    | 20 ++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-	Andrew
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+index bed6f63facf2..62d7acb13e0c 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -441,6 +441,13 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+ 	struct rmnet_port *port, *slave_port;
+ 	int err;
+ 
++	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(slave_dev),
++	 * but bridge mode below controls real_dev, which may live in another
++	 * netns.
++	 */
++	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
++		return -EPERM;
++
+ 	port = rmnet_get_port_rtnl(real_dev);
+ 
+ 	/* If there is more than one rmnet dev attached, its probably being
+@@ -489,7 +496,18 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+ int rmnet_del_bridge(struct net_device *rmnet_dev,
+ 		     struct net_device *slave_dev)
+ {
+-	struct rmnet_port *port = rmnet_get_port_rtnl(slave_dev);
++	struct rmnet_priv *priv = netdev_priv(rmnet_dev);
++	struct net_device *real_dev = priv->real_dev;
++	struct rmnet_port *port;
++
++	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(slave_dev),
++	 * but bridge teardown also updates real_dev, which may live in another
++	 * netns.
++	 */
++	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
++		return -EPERM;
++
++	port = rmnet_get_port_rtnl(slave_dev);
+ 
+ 	rmnet_unregister_bridge(port);
+ 
