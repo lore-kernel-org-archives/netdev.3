@@ -1,44 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F462BE034;
-	Sun,  4 Oct 2026 07:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC5238F947;
+	Sun,  4 Oct 2026 07:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791097463; cv=none; b=bxa1CjM6ObwLSSRqKVOu2mRulVQYeayl4HMovxjD+SaJR+yHw4m3mVkRpIKE5ToXcuCGPaf1nMTB9UwZ4mky/YjvT395MszquWSgzv+7KbJh5m1ZmHp+G9KUc0OwY/McE09oU9tTbypnpb9B7NXBIMEMZCno7TMFp9o/lNp0WDg=
+	t=1791097700; cv=none; b=BW7S2HZLPMd1h/2B8c7ITXA2TQYY52PofO6zlJxeyrF958dHd/6nHX5q1mvS+rahkgxo0dgmZB8S1zkEBl1/k5UcWfmtZhxvil+mXSTrqFwRTgfAKB/cXzdZF6AejO03CB7q107zvFSG2iwUlJp6k1SFlVI+WJ4z/qqM3+LqVuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791097463; c=relaxed/simple;
-	bh=Frc+ADQTxRwKDWaoqMQMlUJQ/gCXB8qyIs31/48aD70=;
+	s=arc-20240116; t=1791097700; c=relaxed/simple;
+	bh=zvpmhm+BAUlfIVJ/6Kp9ShG7pA3G2q65FWBMzuTisWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hi9FKRGCE6gy3E/bXH7f6d4PjbaNjXK9+5gQ+1gPQjAAvGPbaUKlcbNPCoKzT87hlSborXk4E6OOS6HBpXpSsKBDxK19J7kNpLukW2PjyXjBWyODL5adMrnkPeQ5eDHeZ6tBf7BB5PDVfmo+wjRm4n4I9JJFn/4AvZF3neImpac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=is6j0xil; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=UCPtY/aTxy+y6Uos98XC2NvMa78TO7926OXQUo4VTubWcZai1Acmi/cu53APGeHyWxH0nZA3wiVYwQNbnGgCah+igUuAxr4WsxOIRGiejKVg940XjYb297WOMzMmzfmBRahfpDZHwwxvcDk4OwO9Xxj4/wba7P9t/IF0hADjd/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RqSBMjPG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="is6j0xil"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A55A01F000FF;
-	Sun,  4 Oct 2026 07:04:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RqSBMjPG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C5751F000FF;
+	Sun,  4 Oct 2026 07:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791097461;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
+	s=k20260515; t=1791097699;
+	bh=R4WIaVmgxMJzlsaERAlBqwLuDwVcuzfSzsQMDWtKV3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=is6j0xilXhR4ypqsKJsBM9X5lO6Qm7OUlcfEeJmeAXo0J/ruHrmYoexYJ1Z9w2nu/
-	 zx7rj/yqLYTth3bUYmx8tXowSYP4aFFokyhdyMbgMI9mXNRUkrq65/0QQtSLBLJiVS
-	 kByIRa6Z3baBMCYMvIlx7lRkIrVU7W8pKaf48a63aHAMnJgTHiV/Ya+86c8H1NH3vd
-	 L2n9Eame+UJcugO5y/H0JhTS2asC9wlHbHxGP2Mnz4LUpBkF/O1MRdWwHCOExUZIRy
-	 +YOg8aG+A8wmQ36PoqmboPnoIwMnTMSrci4sAWPZ6VuIi/mjHG1vGq3PdY52e9kNBL
-	 UwatJhLYGqoaQ==
+	b=RqSBMjPGizCDA7dvs+RMYH2N1mB/6iSb4Cag9O+n0JX5pz3HcVN5168xoS2PG+EFt
+	 Q75oRuhDw3gL/T20Sod5Do7rkRfSOdpWAzNaGWh8nUoZtKRiFY/YsNMrm3giMcaoBg
+	 O+jBg1qO1TKjSjYciUuX6AzIvY/HhtmSczwWMJp+YsceYNBOxQvzlmhAJdcbgo4zbt
+	 X6ahlPgqgwIOLqXvAKuvGo6o+ZE+TcYCTobtjz3sxH1MpdyoHXOwPZe2B81zwKFjQW
+	 izPWR4fGfdZ2b43g1di0OnU+m+5ce8C3xdnQyOwwijIGSTz0AIpLwdaGAAX6FJip/l
+	 ODU7RTM5x7YUA==
 From: netdev-bot+sinfo@kernel.org
-To: Sagi Maimon <maimon.sagi@gmail.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- suraj.gupta2@amd.com, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- robert.hancock@calian.com, sean.anderson@linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH net v5] net: axienet: do not report TX completions as NAPI work
-Date: Sun, 04 Oct 2026 07:04:20 +0000
-Message-ID: <179109746015.1402591.14131579685594488279@kernel.org>
-In-Reply-To: <20261004065930.1004953-1-maimon.sagi@gmail.com>
-References: <20261004065930.1004953-1-maimon.sagi@gmail.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+ Or Har-Toov <ohartoov@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Shay Drory <shayd@nvidia.com>
+Subject: Re: [PATCH net] net/mlx5: Lag, only cache max_tx_speed that FW has
+ not accepted
+Date: Sun, 04 Oct 2026 07:08:17 +0000
+Message-ID: <179109769789.1402591.13480427139921934784@kernel.org>
+In-Reply-To: <20261004070246.215239-1-tariqt@nvidia.com>
+References: <20261004070246.215239-1-tariqt@nvidia.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -53,6 +56,10 @@ Hi!
 
 This is an automated message. This series looks like a fix, but its
 commit messages seem to be missing some information:
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
  - What hardware the change was tested on. For driver fixes please
    mention the device (and if relevant firmware version) used for
