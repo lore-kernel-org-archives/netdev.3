@@ -1,85 +1,79 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADBA40A92B
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 07:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1A140802B
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 07:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791099253; cv=none; b=KVgBI8SSo7vFYxCG/kmTPsDP1rl7YEYtU/w6fn9iC7xNufAI6uffSNOCdKGxGaPqMl2WMe06BryT4eXhRyMIil8haChOXisl93RekC7zy4QxsH1YjHfkeeqmLDUMlLQLdea5UxftPPv7Y3VT0UJm/7IzZMgBa0K2XXOhLBAjPFY=
+	t=1791099281; cv=none; b=l9OxTbJB1VDHSMihPGb/PkxzCPePJUguuj1izck8laYGRezZLSg1Wyo+iRpgdX1NIrrr0ontxWbLALfNQiGWUpG20EFOjlhb2EUFc4hLTV7Li5l4lP6EsPu6+t6F/uGK6HiGnfKi4BPWyIXDjenIEDpqXO40tF/jorx6EuxTudg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791099253; c=relaxed/simple;
-	bh=PVwIXQQ5/WGjpPJCRs7zgHzHTHu6X07EUwTtNa24yqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwtYFu/eeHwc5hJDG+R/BsG4NcsW55s3FCGvIWAoW9rXRYjh56cfv/eqVHdxtGcGdS4g5VCR2HKbqSPMVkIa7JGb23PDeKXRk/USPgcN4iBMjzzAzbFre76/YommueQpoKnMxTRoxVub0Q2o9nYs7zw4hBBFtwma2ZFLgn3DHOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GerNWho1; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1791099281; c=relaxed/simple;
+	bh=oV8I52EnEn4Do2vf3jRoStkeuMXWZFI+JGNnneSg3Ug=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u8wz6zbJmz4F22wpHMIGOKaBNGrTM36FnapI/LRMebR0qTZux8comaNZJuAFvX4mX/Nqrlc+teQ6scB/0DxLkVzA1++xasE/1xWYUXwKbM/6OdlUKb9CFJGRSfzYv3yTlVuKh3RGxitp+agG8kGAHpJ56wDkZg6BaQkdpan8Jlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TlC846XP; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GerNWho1"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccb1a98dso350029a91.0
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 00:34:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TlC846XP"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e30b9f1441so9238855ad.3
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 00:34:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791099244; x=1791704044; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ATqBSGgki2so7eu3mfXFJfLMGYQGWd86CLIs5RcaLgw=;
-        b=GerNWho1PMFs3FM71jALYluT/hDPYCH1rkP7w7ib+mT0SnrbHYaxV2fodt2ANOKpVS
-         +4g3FN1GvpPKMhWR63Nu7Yu5uBv8RaNxn13eX6XX5v4NT8Wus549VEaOmm/THcEgIpNa
-         C6MNRyVj8WOFyZistXcmfax7a1t8Yl8emn/GHJDg9zxTxMhiINTQyAugQOuYVRSzTYb2
-         4Z15R4LvCOkRmeOCt4Vz8Vgj1h3BT4kIe9s3lyziR6BSHNtmrIy3wEAgQQGJSHmi4seJ
-         YRAUrGbPP422oTBGODLjn98gx5gL6aEntC3Ihfg/PYVt/8KqcPKB86YPIbeQJv7H+GpH
-         qXXg==
+        d=gmail.com; s=20251104; t=1791099271; x=1791704071; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3TSxZwHRoZMu3vBmEpKbk/Zl8R7mBDI5Id5VQd4Apzw=;
+        b=TlC846XPO2Gv+JsPUu5xUx66cWpftMkB/Z2wAhQWBpx/7mXVNPBCIUSnLiLVna7gCO
+         t99eU3AcaHJRvCi4mkwrsuIhRMrH9FbdI3ylKBv91MO0v/fK9Q37EG4LwYPPn+AiZF1j
+         BpP0PXJL9CbKTjPVT0e0fXuhWA1ch8wOgTy1nGv3fBszLn2hrPqIiH5/E0ZUdjJ6nDXC
+         6MqyWJZWHRYgE+1cqtAuA+pahi/ADtvexVJYyZ3iamzNJjRBYFWjwXEI1+/5Q6bnPGNQ
+         72qRT4b5mVb4TW75tQkwMce3T2PayOTyQI2o/RgDRoazTIdXxpDGEOlPSZ2KEhukV5NM
+         mjQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791099244; x=1791704044;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ATqBSGgki2so7eu3mfXFJfLMGYQGWd86CLIs5RcaLgw=;
-        b=rQ9uCApt3XdWZ+Z2rEjiiaCVEN2rMEfjHm0T4GMiNIoxcMSj6u3va5AA9I5HgY7V/C
-         Hkv6vJ7m889qPtHmf3qLCs2tcyZcbjd1UmsmsExFzbZ5e8yUk23Xrbcgei861G5aqq4G
-         +zgIPH7m33oyxZToMhc7e9E+iyz6WRGJo0n0rWvNsMB1EyC49WpnrSvos00qtaIt8Iky
-         JCBD8sejwx+whVGwWI8eCvqgTsgoQ9KkqWpxTNEP0aRtfnvrwTERtYqcL0mC79P8wllV
-         zRIU7HuoPLj46D6EJJNIAAQKfb1pFyjkXqhKzromScd9BoIV2cwRemLpeO33wrJMI4Vq
-         29fA==
-X-Forwarded-Encrypted: i=1; AKwUvBxvEYvcamHkmJ9V5P7JMbt39rwfIrQfxptKM/OAYtYEqwtaeBL14fYUSBC5fGtzeDFBwGeGe2s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLAfe2PM9BT6JyxMpInOti8Q+5x8XfYeO+kDoEkFucRSxPrAs4v
-	Qu5TAU4+sM8TB5q0wkcY3DidPeQ/vvurp42baMnHtXDwYaBhsWfydaAY
-X-Gm-Gg: AYBFou1R50xfW9DJvKoHiPEab5dNIDUbg90rAZKgsKmVPzHBnOfMkyQLnpx0FRO8U9W
-	27/oIJKXGENfe+WhlQaGIY1kFWFVLmkWTEh8beslNeI3pqyhDErrQGrMCd88Jgiuyj88RSAqm83
-	tq3NEv7fx1Rk2EGjOENTP43wotc6qMXIjqGMFWcljCbJbPOhBQN0ymERWoHUBHaesib28/puwnG
-	36twQ6PTbsz9DPxe/2+mulua0vL47OkrBFd0BuEXL2kAlKQXR42cL6Qk6uwFBtKGOS2amlLUqeP
-	gJkOQkPtLNgjpJNWlhAnN6u1jo3GhU/FGFQzEcUe0CRgkcOxyjlcqFcR2Glx57GcaCUCp76+QUT
-	I0Iv1uFVnt4fOOVZwkchYLOOm5XCvxvH8TSrT9T4qzR4jyMr3WhwiBksud3YQwaOsKA811l9E3X
-	oomfwoKnU3qiOj6E4WHuu5Vu7o1qG85RvRWjjYjpVw6e44SCo4WpSUFALob8akgk/BP9d/V7yg4
-	Dlk342aY9M=
-X-Received: by 2002:a17:90b:5310:b0:3a7:b2d4:e411 with SMTP id 98e67ed59e1d1-3a7b2d4e54cmr2200992a91.21.1791099244227;
-        Sun, 04 Oct 2026 00:34:04 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791099271; x=1791704071;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3TSxZwHRoZMu3vBmEpKbk/Zl8R7mBDI5Id5VQd4Apzw=;
+        b=PKHIFijlzVEl76zqVFTWoYP8ZjvhuYciv0WetoW+lfYPJDLgMYZQg46jddh/YIYkjv
+         b0uLm3hvmP7puo4GlgKFpmlqSOsqfNRrcf4gHiLDiMV66edFLUrtAc9b2PxcnGJ5AT+l
+         OonnisUMndHNPhrSF0YVbOwly1cOZoswGzgFw9TU7j74hqb01SmBtDbjW0aGHdL4xh35
+         Yeh6qemm29Irlf39p1eij6kHTJaNtQcc8+aCZTGk155KAjY6GUso2RE8Ushg2DKbaMxV
+         zAwohFWfm7JmkQ673SCWxVtIjSZtAb9pRINTva8pMiWbgcv4XftZMcimaf43F7sB7MkK
+         vvIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBznD7Ejd4OJkRlUAZTC70Uhaiuv7xRWXGg1zxn1smqGmKhC2eOYTUaSa8XGAb2/K1hoVu49dqI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLTNt1i7XW2MVP9Xtr5rs9ad7teUq6pJcPk8FBtS2ybJUkdxRyr
+	iOBdLf+j8C3Jkfka26ZPQMDVlsgM9mpylLGwsp1JGRmVqMXH5OSp2X6d
+X-Gm-Gg: AYBFou2cge23iutsdKh5idznm/IuBhWxKV1dRVlGRsQwpe7Ioi9cVf2UirqWEHGmPg+
+	ilyNbssxa975V98R3Lkoo20QbzkO8gBwagKmi+BH648L68u/07mC7FJPysRhcktzvQ0/uvLXKBo
+	VEo9mZIgUUYw0J7xf9wmGumcsfKhKEaPv01z4BNJX5oQt9EsSMH9kTUoYff8QFOIYJD5gRLeami
+	x3fP3RAH7mjsKG8+alzOe/rkwiPcsmwabj918oNc0UHBm5s3dJq17bnfO0NTmQfW4hqTdVTATDp
+	8HR2Ypeylhnp/818i/ll1J0CUbuSVOO5M3sL9jIXLTUXKOGUTopKIAxsVTkpyeuB8Up0/6HKTP9
+	9qlhhxTzI1rWIvIgHAtbGvEEoZUfiGDu6IpTAb7SMPVNgzRO7Rg7pQ6DtCStTR+RdPUG9nQJLCR
+	vXxX2EB+ciJqW0a9HoKKxW9cWRP9b1wP6t2Jc27YUbWNg+2eTuLmgXxbQl7RdYjG9sU6kqQtqtX
+	/0CVgqhYb0=
+X-Received: by 2002:a17:902:f686:b0:2e2:dc50:16a8 with SMTP id d9443c01a7336-2e510573f7cmr31772435ad.27.1791099271346;
+        Sun, 04 Oct 2026 00:34:31 -0700 (PDT)
 Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78e4f3911sm5749884a91.15.2026.10.04.00.34.00
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e49f7312aasm21800865ad.79.2026.10.04.00.34.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 00:34:03 -0700 (PDT)
+        Sun, 04 Oct 2026 00:34:29 -0700 (PDT)
 From: Daehyeon Ko <4ncienth@gmail.com>
-To: netdev-bot+sashiko@kernel.org
+To: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>
 Cc: Daehyeon Ko <4ncienth@gmail.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
 	"Michael S . Tsirkin" <mst@redhat.com>,
 	Jason Wang <jasowangio@gmail.com>,
 	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Will Deacon <will@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
 	kvm@vger.kernel.org,
 	virtualization@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] vhost/vsock: trim nonlinear SKBs to declared payload length
-Date: Sun,  4 Oct 2026 16:33:35 +0900
-Message-ID: <20261004073341.4034680-1-4ncienth@gmail.com>
+Subject: [PATCH net v2] vhost/vsock: size receive SKBs from declared payload
+Date: Sun,  4 Oct 2026 16:34:19 +0900
+Message-ID: <20261004073419.4039011-1-4ncienth@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <179108986364.434549.5339286904514687491@kernel.org>
-References: <20260930044147.3818241-1-4ncienth@gmail.com> <179108986364.434549.5339286904514687491@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,9 +82,119 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Both findings are valid.  V2 validates hdr->len before allocation and sizes
-the skb from the declared payload, which also avoids the 32-bit addition
-overflow.  I am posting it as a separate thread per netdev policy.  Thank you
-for the review.
+vhost_vsock_alloc_skb() allocates an skb from the total guest descriptor
+length before reading hdr->len.  Descriptor capacity and declared payload
+length are independent, so a guest can supply a large descriptor with a
+zero or short payload.
 
-pw-bot: cr
+On Linux v7.2, 455 zero-payload packets with 64 KiB descriptors retained
+30,255,680 bytes on a 256 KiB receive buffer while rx_bytes and buf_used
+stayed zero.  A full-payload control retained 265,984 bytes.  The existing
+SKB_TRUESIZE(0) budget caps skb count but does not account for the
+descriptor-sized allocation.
+
+Repeating this across connections can exhaust host kernel memory.
+
+Trimming after allocation is insufficient.  Linear skbs retain their full
+head, while a nonlinear payload exceeding head tailroom can retain its
+first page fragment.
+
+Copy the header into a stack object, validate hdr->len before allocating,
+and size the skb from the declared payload plus the header.  This keeps the
+allocation proportional to receive accounting for both linear and
+nonlinear skbs.
+
+Use payload_len > len - sizeof(hdr) for validation.  This avoids addition
+overflow on 32-bit hosts and ensures payload_len fits the subsequent
+int-length copy path.
+
+Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+Changes in v2:
+- validate the header before allocation with an overflow-safe bounds check;
+- size the skb from declared payload and remove the global trim-helper
+  change;
+- remove the generic clean-validation statement from the changelog; and
+- add Will Deacon to Cc.
+
+v1: https://lore.kernel.org/netdev/20260930044147.3818241-1-4ncienth@gmail.com/
+
+Built and booted on v7.2 with KASAN, UBSAN and LOCKDEP.  A focused
+allocation/queue probe retained 436,800 and 582,400 bytes for 455 zero and
+341-byte packets, versus 30,255,680 bytes for the vulnerable zero case.  No
+KASAN report, WARN, oops or panic occurred.  The probe injects skbs
+in-kernel rather than through a live guest virtqueue.
+ drivers/vhost/vsock.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index abed1fbcf66cc5..35f75e23c7497e 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -364,7 +364,7 @@ static struct sk_buff *
+ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+ 		      unsigned int out, unsigned int in)
+ {
+-	struct virtio_vsock_hdr *hdr;
++	struct virtio_vsock_hdr hdr;
+ 	struct iov_iter iov_iter;
+ 	struct sk_buff *skb;
+ 	size_t payload_len;
+@@ -382,34 +382,32 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
+ 	    len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
+ 		return NULL;
+ 
+-	/* len contains both payload and hdr */
+-	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
+-	if (!skb)
+-		return NULL;
+-
+ 	iov_iter_init(&iov_iter, ITER_SOURCE, vq->iov, out, len);
+ 
+-	hdr = virtio_vsock_hdr(skb);
+-	nbytes = copy_from_iter(hdr, sizeof(*hdr), &iov_iter);
+-	if (nbytes != sizeof(*hdr)) {
++	nbytes = copy_from_iter(&hdr, sizeof(hdr), &iov_iter);
++	if (nbytes != sizeof(hdr)) {
+ 		vq_err(vq, "Expected %zu bytes for pkt->hdr, got %zu bytes\n",
+-		       sizeof(*hdr), nbytes);
+-		kfree_skb(skb);
++		       sizeof(hdr), nbytes);
+ 		return NULL;
+ 	}
+ 
+-	payload_len = le32_to_cpu(hdr->len);
++	payload_len = le32_to_cpu(hdr.len);
++
++	/* The pkt is too big or the length in the header is invalid */
++	if (payload_len > len - sizeof(hdr))
++		return NULL;
++
++	/* Allocate only for the payload declared in the header. */
++	skb = virtio_vsock_alloc_skb(payload_len + sizeof(hdr), GFP_KERNEL);
++	if (!skb)
++		return NULL;
++
++	memcpy(virtio_vsock_hdr(skb), &hdr, sizeof(hdr));
+ 
+ 	/* No payload */
+ 	if (!payload_len)
+ 		return skb;
+ 
+-	/* The pkt is too big or the length in the header is invalid */
+-	if (payload_len + sizeof(*hdr) > len) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
+-
+ 	virtio_vsock_skb_put(skb, payload_len);
+ 
+ 	if (skb_copy_datagram_from_iter(skb, 0, &iov_iter, payload_len)) {
+
+base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
+-- 
+2.55.0
+
