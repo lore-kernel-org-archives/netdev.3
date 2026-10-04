@@ -1,61 +1,63 @@
-Received: from mail-wr2-f42.google.com (mail-wr2-f42.google.com [74.125.225.106])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F0D3B8D79
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4587A41DE12
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 15:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791127747; cv=none; b=Htyvc+Acof62OZhknQs7VaeDmYrm86IuLwzb5HkBo3WuqHJjgN93WcDqvaSLkWCxbnAnc6su4GoZpk9MS9Tw+FQFaiWRcdIKDmXWY/cWw/TqvhyTMzwQhUKmYOy5fzO3DX5j4bcRkcFbpm1lq0X86LZ1FH8b2WeyeCt5B1V3kQg=
+	t=1791127748; cv=none; b=cPu8n875LpZnKtg8y4DTMRIN8cGs9ZnCB8SK420VSv0Cuvlqga7g8RNqjky4WCjgknynY7piI3nKZs9NVxb7yVJ+sqadlrsGqWhQmdawt7fSHgv1r8+OwjVlWX8tK3iErGtS8sE142idR0zo8QIMGh6V0zb2HppTf1L/hfw5U2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791127747; c=relaxed/simple;
-	bh=X6sQTrF5sRJS4FjRxjDb+iu01tlVl/GwIKIQobzsJcA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DJsAKcNSmn0X+3k7+ki4V08bZDbGvQupq3GepC/Drh2FuD4k/5aAvC3hvgbqUqySUBn48Nwv9gN3QeRa928tlftUfEKQbj+54u9IXpxz//KgK53ZyuCycnwIKo5pPifFC2bK8taSvqdI6kRJJoxdw9HRYGeNwiEsghk/cTc0yDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sQ2WfDFl; arc=none smtp.client-ip=74.125.225.106
+	s=arc-20240116; t=1791127748; c=relaxed/simple;
+	bh=ns8JUZo/8h1qt2BLbxp7mlBkPBfbdESk+YHF71YA72g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=T+CuiVmIcOF9pbAwF98NcViQDBelxV1JzYsrnECSZDBUZUEIJG5pg4CGo89VlkFyKn4IVFyRrm2OQM+J6SMZ0+rUELO/qpkfJ4sPYF8880+FjgRnyxczsFnZ+/DBzss6A600T7OZlPR6PtrkC6f2shk52sPFJRsqeu3FhP2UY0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YJPYG8sr; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sQ2WfDFl"
-Received: by mail-wr2-f42.google.com with SMTP id ffacd0b85a97d-48b0622cc90so397355f8f.1
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:29:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YJPYG8sr"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so9283725e9.0
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 08:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791127743; x=1791732543; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=da8v9Ff4EAj7a0ycHgkCs+irzmjp0yJ76SMiIUMp9bU=;
-        b=sQ2WfDFl+UnNJ3TviQGq1ZVj4X2IPH1YipRbI/LFNB/qMm1rJO3zi+BIFVPJslCWN+
-         7uiVGbsx5vcL2E3VsIy7B+stPtuLgEMEY+sR+U8pFgG9EtJziVtm0J/Plcnr4ap5xxoJ
-         aP8yZjZXVDLymjB7Dua1+Dvld5Tgp+zDF9Kc8/G0k+Ylf8In59JvKYJSgYK8b+OBSQTk
-         BJHKpHkbsEn63liLk7c4SL3mPV2A3CgUry6XcOC2xR/lbelF7cmjO+PgucyeNWy5n/T2
-         buTbRFWFz6g++Qsm5ldQ5BYRzPHTxiGK565Zgdo5nLczPV+nm3F7AmwKRSnK34z/dH6Y
-         DFdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791127743; x=1791732543;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1791127744; x=1791732544; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=da8v9Ff4EAj7a0ycHgkCs+irzmjp0yJ76SMiIUMp9bU=;
-        b=ENMrd1Db4qKMwxI7Ra1VNxwI71yy98vN62k5ixKPwIHuGii7rD7gJL5gLRQKy1todG
-         5Ca1Ag+tvkisc7WyX8dD0sHDfOrdZHqdQZc6d4KfA0k/pDWHPrT5cebYOBRrMClLre4J
-         a/JYy0cDWL9tiIcYZbV8mwTMfdqd1NUyZkUKvmlz3vv39yZKwvC63GUCoyE0iFxjbNWz
-         ytUViMIR6EnsyRV2q6sS2+WRlKvgpKEFbhngyJwpITfNvkH0o/HVRz7j7/S1kIKFO8ig
-         MZ+oKVP9M0MQCUwXPCKiep61dY4ekB/SgofPawo1h4j5ax9cGAkf2E0WSYDwTB309dtI
-         GX6w==
-X-Gm-Message-State: AFuF++kwRYQfroIYfgw4HxYAntM54gMjinTC5LxTfVMLEjxl9vK4Wcv/
-	h2XxMyGePRBvHbv6FyAsNUTc8yhtadnmblTpeFRm//Hi39V7hNeX3Xf1
-X-Gm-Gg: AYBFou0kE4cFvBPvvCqrTUu6lRIb9+PoLuRudSglo7fhoIfohxIC0UJpxlAZU8dN+/W
-	UIyEslx4HZsdLrofWGG5RYb5T+wg8GbGAUy0OARJvGhqEnwC3KV5UGXHELKjQAfhCmuGv6OusgY
-	bw26VZZy2D9ZXz1KHbDdMjBABb9nfjuXaM6ygiEXtUs7g3c0RJiGI75S8l9Oh8iAOSQHNk0Fggx
-	HBAYTCDkXO0YiPkh5tdxUBatlS2KICeLS+whINmt7LwvuHe3AaGDJ9qIVGsqq9XjvTb48Ocf2/w
-	odevckqh4Rh9netuBo/1tjEuz9lXyF0qtLICBju8xBhFGh82FGnx7AIV3++FdPke9EPld7Mt8F7
-	TXre9nD2pnvaRyvzmyfqYCP1kcikaTG/XOTleW4+ll7bgcKh0KHb6v8ab1j8yEUdHJO2C2tFGw9
-	2Cxk52xfGWANVSS04xpZhcJIUQr0MpbfUO7cOCKz/YGz1SqLyeXNsudLrVqZKeEUIAavA8k1dl1
-	VdyAxGvIpvg27Fh7ujPkn0vIOh1Pz7tvHZkicQu/ugsJl8TARNDs8/oYchPVXkH+VDCrhN6WSo=
-X-Received: by 2002:a05:600c:1552:b0:49b:d03:8d3a with SMTP id 5b1f17b1804b1-4a02755f84bmr145261655e9.11.1791127743178;
-        Sun, 04 Oct 2026 08:29:03 -0700 (PDT)
+        bh=LNNbazBXmL+AGn+X6q34XEzodiqndLswy1F6C+r0wbk=;
+        b=YJPYG8srbinfjEFY46TxPa7yWtO9ydxgkO4/CM9/KebSnGIjXIRDjrrm1YScd2Fx6X
+         IGfeEYuMWJjAlrFSFMxI2O6mjcPSSPEjtmXWf71e5w/3VVxL6jBxlv47TsBaAggZ02yq
+         CwH54XkAGCK8838tn2hTpCbPnTvnL7kgfMPrDHuGmrg+me8kc5PWhPo2k9qk8eTrdBGv
+         ypBhJiCA33X9dny9S8XT4NJYg1BSSY2EX99G9vgQqdiTWrN2KbsWvBPiK2V2aQHHp0ke
+         2WM+2Ks+j+f02wr3mRrMre3PjjZUj6xcfBh7spfLrB/e8AeKlthsklZ8Kf7H5rLMfEns
+         FxRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791127744; x=1791732544;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LNNbazBXmL+AGn+X6q34XEzodiqndLswy1F6C+r0wbk=;
+        b=Isvq2uNByfFF4py/RarUgq7ySsmF7PTZV/uCgLBVjL18MaQHxHSmrS8rrv2iBBF0pF
+         wNL/leTpX78pMSFLWtvFKdKwrMnbwVSPF0LKPsPOjiqIOD5c8jfCuVE6olvx6vG5kAID
+         IdSnbNMVBrfwzs0YwBoLWKrulz1T645oZnJ0aWdGP4jHWTuhjPOtA4NV3/p+z7M0ye/e
+         u5NZaT7GMk5vwmzKkvGSzjiEJ1x96VPTVAsWDQtHlODkwqZKkRMkuVHe63Rvn5LmAH0B
+         776xMIrOxdh05OTWXn0jgCo/Xl30mSmNqoHmqzgX93tqf1HiMiBoGuKQYA5Y290hUCPd
+         XeDQ==
+X-Gm-Message-State: AFuF++lm2LmqjwUjlvIqUKCyOxBMIWoCRbDZhuT5nXqI3b7wvdz/phAb
+	73dRda4Ug7GlYQxl0OCv+s3IMVBcN+MGnRXG/cXDBWz3mAR9h2dl+w/N
+X-Gm-Gg: AYBFou0jLsd+AMKdcUmBoCSO9Uba7VCRvy+EokCxekJMN5RG4VDj0nG62vXH6pguZAx
+	dNgg0aHJFi7m9dG+gPM5squEsESWG5O3X7S4ttEyQD+9wcT5dWG8CM/61eTYywAb+uN7VcrTwba
+	foGypbVaitP2FQkFhIjsO2jIeMJ0/R4tMkwOOaTRcYUV/XHpLL+RxjGW2DBu/DfftkCAQU711Bp
+	NtaChOHX1eCRt/Y8KsAZLbuhKFyK4/045rB2+SjCqgCrCqPM45zrrvXxi//uhGyoY44HmVUH2N/
+	C+yQSaYycm4YsnSyGWKcs05t3oWQWC+EKhxMkVERKzIXOzMuESQoUKLx6p4WyXVMvbw08sgHn6/
+	w7eI0harDkRWYMx9WyDu9AbRtimM1IEmjn1CQ7Q5p601b+Tw+OTUhrbP93HGNtxcx08lu62/+4s
+	HJdfDTw/uFi1kOcpaWUYq0+jv2ijbXkQD4NXAf5/55uAjCzLg9Spz18xSYKNPdoacSzBT55uSmq
+	sdPMew0jKNvRzH8IRkCiuBqo5jH4UHdsUQnbSrlSCdzYm5EJsqCosEnJ+/y1wFYQNk5AcJr0LA=
+X-Received: by 2002:a05:600c:3545:b0:4a1:242:1353 with SMTP id 5b1f17b1804b1-4a102421468mr124163015e9.5.1791127744379;
+        Sun, 04 Oct 2026 08:29:04 -0700 (PDT)
 Received: from citron.bnl.ovh ([2001:861:44c1:870::1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1698f7910sm83819735e9.3.2026.10.04.08.29.02
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1698f7910sm83819735e9.3.2026.10.04.08.29.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Oct 2026 08:29:02 -0700 (PDT)
+        Sun, 04 Oct 2026 08:29:03 -0700 (PDT)
 From: Benoit DE RANCOURT <b2rancourt@gmail.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
@@ -70,10 +72,12 @@ Cc: netdev@vger.kernel.org,
 	Sasha Neftin <sasha.neftin@intel.com>,
 	linux-kernel@vger.kernel.org,
 	Benoit DE RANCOURT <b2rancourt@gmail.com>
-Subject: [PATCH iwl-net 0/2] igc: Fix Tx hangs after NETDEV_TX_BUSY with TSO
-Date: Sun,  4 Oct 2026 17:28:38 +0200
-Message-ID: <20261004152840.61222-1-b2rancourt@gmail.com>
+Subject: [PATCH iwl-net 1/2] igc: Fix Tx stop threshold to cover empty frame descriptors
+Date: Sun,  4 Oct 2026 17:28:39 +0200
+Message-ID: <20261004152840.61222-2-b2rancourt@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261004152840.61222-1-b2rancourt@gmail.com>
+References: <20261004152840.61222-1-b2rancourt@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,98 +86,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since commit db0b124f02ba ("igc: Enhance Qbv scheduling by using first
-flag bit"), igc_xmit_frame_ring() requires count + 5 free descriptors,
-while the queue is only stopped in advance below DESC_NEEDED =
-MAX_SKB_FRAGS + 4. TSO skbs with 16 or 17 fragments then hit
-NETDEV_TX_BUSY. That return skips the tail write deferred by
-xmit_more, so the queue can stay stopped with descriptors the hardware
-never saw, until the Tx watchdog resets the adapter.
+Commit db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag
+bit") raised the number of free descriptors that igc_xmit_frame_ring()
+requires before mapping a packet from count + 3 to count + 5, to leave
+room for the empty frame (one context and one data descriptor) that may
+be inserted ahead of a launch time packet. DESC_NEEDED was left at
+MAX_SKB_FRAGS + 4. igc_tx_map() uses it to stop the queue in advance,
+and TX_WAKE_THRESHOLD is derived from it.
 
-Patch 1 aligns DESC_NEEDED with the admission check. Patch 2 writes the
-tail before returning NETDEV_TX_BUSY, which remains reachable for skbs
-with buffers larger than IGC_MAX_DATA_PER_TXD. Each patch was tested
-alone; together they keep the queue stop logic consistent and the
-remaining busy path safe.
+A queue left running after a transmit therefore only guarantees
+MAX_SKB_FRAGS + 4 free descriptors, while the next skb with a linear
+part and MAX_SKB_FRAGS fragments, each fitting in one data descriptor,
+requires MAX_SKB_FRAGS + 6. igc_xmit_frame_ring() then returns
+NETDEV_TX_BUSY, which the queue stop logic is meant to prevent.
 
-Setup: CWWK router, Pentium Gold 8505, six I226-V (8086:125c rev 04,
-NVM 2017:888d), 7.2.8, default MAX_SKB_FRAGS = 17. Load: CPU saturated
-with busy loops, a remote build routed through the port, two SSH bulk
-streams in each direction and short TCP bursts, 180 seconds of load
-per run observed during a 195-second probe window, TSO enabled on the
-egress port. bpftrace probes on igc_xmit_frame, __igc_maybe_stop_tx
-and igc_poll recorded NETDEV_TX_BUSY returns, the inferred last tail
-write and next_to_clean stalls.
+With TSO this happens routinely. On an I226-V (8086:125c) running 7.2.8
+with MAX_SKB_FRAGS = 17, routed and locally generated TCP traffic on a
+CPU-saturated router produced 10890 NETDEV_TX_BUSY returns in three
+runs of 180 seconds, all for TSO skbs with 16 or 17 fragments, with
+21 or 22 free descriptors in all but 5 cases. Together with deferred
+tail writes (xmit_more), these returns led to 25 Tx timeouts and
+adapter resets in the same runs:
 
-                       runs  Tx timeouts  NETDEV_TX_BUSY  TX_OK returns
-  unpatched 7.2.8         3           25           10890       7.3M
-  patch 2 only            3            0           10751       9.5M
-  patch 1 only            3            0               0       8.8M
-  both patches            3            0               0       9.4M
-  unpatched, TSO off      1            0               0      21.5M
+  igc 0000:08:00.0 terra: NETDEV WATCHDOG: CPU: 1: transmit queue 2 timed out 5353 ms
+  igc 0000:08:00.0 terra: Reset adapter
 
-In all 25 timeout episodes, the stalled queue had pending descriptors
-after a NETDEV_TX_BUSY return. The probes inferred at least 214
-descriptors beyond the last tail write. For that queue, the hardware
-register dump showed TDH = TDT = the next_to_clean value recorded by
-the probe.
+The following patch addresses the lost tail write itself.
 
-With both patches applied, no NETDEV_TX_BUSY occurred, so the flush
-path of patch 2 was not exercised in that run; its effect is shown by
-the patch 2 only runs.
+Raise DESC_NEEDED to MAX_SKB_FRAGS + 6 to match the admission check.
+The additional reservation is currently unconditional, including when
+launch time is disabled; match that existing admission policy in the
+proactive stop threshold. With MAX_SKB_FRAGS = 17, the queue is now
+stopped below 23 free descriptors instead of 21. This also raises the
+completion-based wake threshold from 42 to 46 free descriptors,
+preserving the existing two-times-stop-threshold policy. Throughput
+and latency effects were not measured.
 
-TX_OK returns count igc_xmit_frame() calls returning NETDEV_TX_OK,
-excluding NETDEV_TX_BUSY retries. These are software call counts,
-not hardware packet counters; with TSO disabled, segmentation occurs
-before the driver.
+With this change alone, three runs of the same test on 7.2.8 produced
+no NETDEV_TX_BUSY and no Tx timeout over 8.8M NETDEV_TX_OK returns,
+including 613k TSO skbs with 17 fragments.
 
-Related code, not addressed in this series and not tested:
+As before commit db0b124f02ba, an skb whose linear part or fragments
+exceed IGC_MAX_DATA_PER_TXD may still need more descriptors than
+DESC_NEEDED accounts for.
 
-- bnxt: commit e8d8c5d80f5e ("bnxt: make sure xmit_more + errors does
-  not miss doorbells") rings a pending doorbell on the drop paths. It
-  leaves the busy path alone, reasoning that busy can only happen if
-  start_xmit races with completions that both enable the queue, in
-  which case no kick can be pending; the current code warns "ring busy
-  w/ flush pending!" if that assumption breaks. In igc, patch 1
-  restores that property for skbs whose buffers each fit in one
-  descriptor, and patch 2 covers the remaining case.
+Fixes: db0b124f02ba ("igc: Enhance Qbv scheduling by using first flag bit")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM bpftrace
+Signed-off-by: Benoit DE RANCOURT <b2rancourt@gmail.com>
+---
+ drivers/net/ethernet/intel/igc/igc.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-- igc drop paths (skb_put_padto() failure in igc_xmit_frame(), out_drop
-  in igc_xmit_frame_ring(), the DMA mapping error path of igc_tx_map())
-  also return without writing a pending tail, the case bnxt fixed in
-  e8d8c5d80f5e and 00eeab0c644a ("bnxt_en: Write doorbell when
-  linearizing skb fails"). The queue is not stopped there, so pending
-  descriptors are delayed until the next transmit on that queue rather
-  than stranded.
-
-- igb, ixgbe, fm10k, i40e, iavf, ice, e1000e and e1000 also defer the
-  tail write with xmit_more and return NETDEV_TX_BUSY from their
-  admission check without writing it. Their stop thresholds match
-  their admission checks, so this should only be reachable for skbs
-  needing more descriptors than the stop threshold assumes.
-
-Not done:
-- runtime test on a kernel built from this tree; the patches were
-  tested on 7.2.8, where the affected code is identical, and apply
-  cleanly here;
-- launch time (ETF/taprio) and XDP/AF_XDP traffic, which share the
-  ring and the wake threshold;
-- longer runs and other I226/I225 boards;
-- only the igc objects were built with W=1 under allmodconfig, not
-  the full tree.
-
-The analysis and the patches were prepared with an LLM-based coding
-assistant, which also wrote the bpftrace probes; the results above come
-from those probes and the kernel log on real hardware.
-
-Benoit DE RANCOURT (2):
-  igc: Fix Tx stop threshold to cover empty frame descriptors
-  igc: Flush pending Tx descriptors before returning NETDEV_TX_BUSY
-
- drivers/net/ethernet/intel/igc/igc.h      | 8 ++++++--
- drivers/net/ethernet/intel/igc/igc_main.c | 6 +++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+index 17f213cc93e4..f1efadbd9f74 100644
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -575,9 +575,13 @@ enum igc_boards {
+ #define IGC_MAX_TXD_PWR		15
+ #define IGC_MAX_DATA_PER_TXD	BIT(IGC_MAX_TXD_PWR)
+ 
+-/* Tx Descriptors needed, worst case */
+ #define TXD_USE_COUNT(S)	DIV_ROUND_UP((S), IGC_MAX_DATA_PER_TXD)
+-#define DESC_NEEDED	(MAX_SKB_FRAGS + 4)
++
++/* Tx descriptor budget for a head and MAX_SKB_FRAGS fragments,
++ * each fitting in one data descriptor: one context descriptor,
++ * two descriptors for an optional empty frame, and two spare entries.
++ */
++#define DESC_NEEDED	(MAX_SKB_FRAGS + 6)
+ 
+ struct igc_rx_buffer {
+ 	union {
 
 base-commit: a83267db14681b3be481e02a4d5a38177507006c
 -- 
