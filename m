@@ -1,235 +1,195 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C078C223DFF;
-	Sun,  4 Oct 2026 01:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C6345039
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 02:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791078137; cv=none; b=jvfKW4FZCKJpla2vUs08NrHSadTDPqLfPrT8ckvyWb0cpV6tiZ/jI88kLnp18WO7AeA8QNjbVU+bolJ3At/YJ+c0Ka4JR/V4wbgCn1KhqMJv8edjHHzMZTx2P1DOlsy2N3HsyiiawHuqKD7mWyUtX2Zat19PvFNa87k5Za9OcxE=
+	t=1791079980; cv=none; b=qpQV6CoiUDZ7hOrCzMffLT/2iJhjvMB4ommHt+/SS5pcOzqJAc+m8Qw84fZsTApgphI2ecwasY+gnqY320JoUUBCbLm6oesWce3CSK0++/SXMBENpvJ6o7pmUQjHc+k23/Ou6TlaGf3wBCW9YGaUxug7q6igkAQt+hiJrbkofMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791078137; c=relaxed/simple;
-	bh=9N+2eWbTOHqbqaVDuPJRHZN2V/OgbiPpyNBcplH4KtQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E11Yci+nacPA+QWPahd9DDoUDCD8NLLAmaO+NWqXWYKuQbq2O0Dr5xerLrcls6ymCgm4BV/NHbs0Zdv+1mn9CkABspLcbyJgSZwFB6hXp8TXW5pmMPbnZeVHb91F6e1NqoC3KO67Vce7D7cC30pqcG0H/s2QRjLKk/ZWgPWTzdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=UAoNICME; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uPMAe7uN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=UAoNICME; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uPMAe7uN; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1791079980; c=relaxed/simple;
+	bh=le8Y9O4UArTsooQutKIGkkqzjM369PeKE2PSGaikQ8w=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ohz3XzCOdRUFa6MYzK6CqBTEAWtqJ6IgOxZPGoLsYydLW6tu/5DMSjyPvZoKXO916gt6Yqfwrmd/TuDTFRoNm1mKEKgYmqZU6VvBHHUqeNNimg4Hjc7m9tiL+rNwm7OPcT+XpUIjb9eXiC6EQSymkxthQGDIbQiBnENG9hRkuVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYSPumFT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="UAoNICME";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uPMAe7uN";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="UAoNICME";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uPMAe7uN"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 36AC61FF20;
-	Sun,  4 Oct 2026 01:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791078128; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6a2aMukQHkDeYh+eEepXB2zCYb/RsKgbpWFD27bPbjs=;
-	b=UAoNICME/r3MRFt1Qdv4YDWL8FEIchrXmU0/mr30p163m8MVPsgZVYVGxE3g1eCvZZdJvx
-	Eoj+cKuqfUWRP+2BikM1fLYbJr5iwKACrTF9gIps5nFPHBC+6Cv4FC0phEfqzPmEiFSMJd
-	GTIBCLvNy5M1019Xiah4JswysMjYeMo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791078128;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6a2aMukQHkDeYh+eEepXB2zCYb/RsKgbpWFD27bPbjs=;
-	b=uPMAe7uNaFkxqJjXPjtZhFmrTFnc4MiN4w55XDfQgeHYL8rMwspWlDyxDtbxJXl6T+Xevy
-	G9DZc9JKY3D9KwAw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UAoNICME;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=uPMAe7uN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791078128; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6a2aMukQHkDeYh+eEepXB2zCYb/RsKgbpWFD27bPbjs=;
-	b=UAoNICME/r3MRFt1Qdv4YDWL8FEIchrXmU0/mr30p163m8MVPsgZVYVGxE3g1eCvZZdJvx
-	Eoj+cKuqfUWRP+2BikM1fLYbJr5iwKACrTF9gIps5nFPHBC+6Cv4FC0phEfqzPmEiFSMJd
-	GTIBCLvNy5M1019Xiah4JswysMjYeMo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791078128;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6a2aMukQHkDeYh+eEepXB2zCYb/RsKgbpWFD27bPbjs=;
-	b=uPMAe7uNaFkxqJjXPjtZhFmrTFnc4MiN4w55XDfQgeHYL8rMwspWlDyxDtbxJXl6T+Xevy
-	G9DZc9JKY3D9KwAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A333813278;
-	Sun,  4 Oct 2026 01:42:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CzJhDO6uwWo2bgAAD6G6ig:T2
-	(envelope-from <fmancera@suse.de>); Sun, 04 Oct 2026 01:42:07 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH 2/2 nf-next] netfilter: nft_exthdr: avoid 60 bytes stack buffer in TCP option mangling
-Date: Sun,  4 Oct 2026 03:41:44 +0200
-Message-ID: <20261004014144.4330-2-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20261004014144.4330-1-fmancera@suse.de>
-References: <20261004014144.4330-1-fmancera@suse.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYSPumFT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6101F0089B;
+	Sun,  4 Oct 2026 02:12:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791079978;
+	bh=16l66Uzb8+XvEx8M4vY8FEkREMfnLp+3Kdb9Sqc3ZAs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=oYSPumFTA7i98EAHE4csXPxrTukm9EyCmwVPyNW4HeyKW1oNpTBHfwBRaw1zQwnUU
+	 YbXcJizX2fJiOrkph3bUgSVy4agx77Z3FnP5k1euRqjDJYvx+fS8/dkG2WofgnN1rJ
+	 lSOIH+W1+aIS1WV/VgbtN3o8EwqokS5ZVnLT+XoNzqR1T2YjkjS5fHAbEuIWyNDfLB
+	 CtZRM6hxHMG79bhk+tysjTUrlWpD1B4WC6XdGgdMMBUknWpy4kncbqCCzviooxKBwc
+	 kHn9EDRKPtTaGkatg4hsR5gAqAzZsOhKDHpqYiLmQN+HAsEhXK1rfnTzWaHWjmYxWN
+	 KV4gdrh0hS5BA==
+Subject: Re: [PATCH net-next 4/7] ibmveth: step past bad RX correlators
+ instead of spinning or oopsing
+From: netdev-bot+sashiko@kernel.org
+To: mmc@linux.ibm.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ horms@kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, davemarq@linux.ibm.com,
+ bjking1@linux.ibm.com
+Date: Sun, 04 Oct 2026 02:12:57 +0000
+Message-ID: <179107997707.434549.11109515809612717921@kernel.org>
+In-Reply-To:
+ <14aa52f296c474726c049efc6b5a045187c45868.1790991039.git.mmc@linux.ibm.com>
+References:
+ <14aa52f296c474726c049efc6b5a045187c45868.1790991039.git.mmc@linux.ibm.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 36AC61FF20
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,suse.de:dkim];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
 
-nft_exthdr_tcp_set_eval() and nft_exthdr_tcp_strip_eval() fetched the
-TCP header and options through nft_tcp_header_pointer(), which calls
-skb_header_pointer() a second time for the full tcphdr_len into a 60
-bytes stack buffer. Since commit 28427f368f0e ("netfilter: nft_exthdr:
-Fix non-linear header modification") both functions then call
-skb_ensure_writable() and re-read the header from skb->data, so the
-buffer was never used.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Only the 20 bytes fixed header is needed to learn tcphdr_len, so fetch
-just that, validate the length as before, and let skb_ensure_writable()
-pull the rest. This also drops the 60 bytes stack buffer from both
-functions.
+Low priority / nit picks for your consideration:
 
-Comparison of performance in mpps:
+- [Low] The new bad-slot handling in ibmveth_poll()
+  (drivers/net/ethernet/ibm/ibmveth.c) neither charges consumed error…
 
-  op       linear/non-linear     before    after    delta
-==================================================================
-   set,         non-linear       4.193     4.348    +3.7% mpps
-   strip,       non-linear       4.184     4.434    +6.0% mpps
-   set,         linear           5.302     5.427    +2.4% mpps
-   strip,       linear           5.452     5.527    +1.4% mpss
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but:
+  ibmveth_poll() uses the PHYP-written descriptor length…
 
-Comparison of performance in ns/expression:
+--
 
-  op       linear/non-linear     before    after    delta
-==================================================================
-   set,         non-linear       34.6      25.3     -9.4  ns
-   strip,       non-linear       35.2      20.8     -14.3 ns
-   set,         linear           23.6      19.7     -3.9  ns
-   strip,       linear           22.9      19.8     -3.1  ns
+ibmveth: step past bad RX correlators instead of spinning or oopsing
 
-./scripts/bloat-o-meter exthdr_before.o exthdr_after.o
-add/remove: 0/1 grow/shrink: 3/0 up/down: 233/-207 (26)
-Function                                     old     new   delta
-nft_exthdr_tcp_eval                          792     946    +154
-nft_exthdr_tcp_strip_eval                    825     891     +66
-nft_exthdr_tcp_set_eval                      602     615     +13
-nft_tcp_header_pointer.part.constprop        207       -    -207
-Total: Before=6527, After=6553, chg +0.40%
+This patch adds a helper that validates the RX correlator returned by
+PHYP. The helper also rejects inactive pools that have no skbuff array.
+On a bad slot, the RX ring now advances, the drop is counted in
+rx_dropped, and a reset is scheduled. WARN_ON() is replaced with a
+ratelimited netdev_err(), and the KUnit cases are extended to cover
+these paths.
 
-This also allow the compiler to inline nft_tcp_header_pointer inside
-nft_exthdr_tcp_eval() which could yield some minimal performance gain.
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index 77d3740cc52a6..b89ce389d951f 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
- net/netfilter/nft_exthdr.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+[ ... ]
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index 3492426dccf7..861bab93f435 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -233,16 +233,23 @@ static void nft_exthdr_tcp_set_eval(const struct nft_expr *expr,
- 				    struct nft_regs *regs,
- 				    const struct nft_pktinfo *pkt)
- {
--	u8 buff[sizeof(struct tcphdr) + MAX_TCP_OPTION_SPACE];
- 	struct nft_exthdr *priv = nft_expr_priv(expr);
- 	unsigned int i, optl, tcphdr_len, offset;
--	struct tcphdr *tcph;
-+	struct tcphdr *tcph, _tcph;
- 	u8 *opt;
- 
--	tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
-+	if (pkt->tprot != IPPROTO_TCP || pkt->fragoff)
-+		goto err;
-+
-+	tcph = skb_header_pointer(pkt->skb, nft_thoff(pkt), sizeof(_tcph), &_tcph);
- 	if (!tcph)
- 		goto err;
- 
-+	tcphdr_len = __tcp_hdrlen(tcph);
-+	if (tcphdr_len < sizeof(*tcph) ||
-+	    tcphdr_len > sizeof(*tcph) + MAX_TCP_OPTION_SPACE)
-+		goto err;
-+
- 	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
- 		goto err;
- 
-@@ -313,16 +320,23 @@ static void nft_exthdr_tcp_strip_eval(const struct nft_expr *expr,
- 				      struct nft_regs *regs,
- 				      const struct nft_pktinfo *pkt)
- {
--	u8 buff[sizeof(struct tcphdr) + MAX_TCP_OPTION_SPACE];
- 	struct nft_exthdr *priv = nft_expr_priv(expr);
- 	unsigned int i, tcphdr_len, optl;
--	struct tcphdr *tcph;
-+	struct tcphdr *tcph, _tcph;
- 	u8 *opt;
- 
--	tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
-+	if (pkt->tprot != IPPROTO_TCP || pkt->fragoff)
-+		goto err;
-+
-+	tcph = skb_header_pointer(pkt->skb, nft_thoff(pkt), sizeof(_tcph), &_tcph);
- 	if (!tcph)
- 		goto err;
- 
-+	tcphdr_len = __tcp_hdrlen(tcph);
-+	if (tcphdr_len < sizeof(*tcph) ||
-+	    tcphdr_len > sizeof(*tcph) + MAX_TCP_OPTION_SPACE)
-+		goto err;
-+
- 	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
- 		goto drop;
- 
+> @@ -1468,6 +1503,7 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>  	int frames_processed = 0;
+>  	unsigned long lpar_rc;
+>  	u16 mss = 0;
+> +	int rc;
+>  
+>  restart_poll:
+>  	while (frames_processed < budget) {
+> @@ -1490,8 +1526,11 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>  			__sum16 iph_check = 0;
+>  
+>  			skb = ibmveth_rxq_get_buffer(adapter);
+> -			if (unlikely(!skb))
+> +			if (unlikely(!skb)) {
+> +				ibmveth_rxq_advance(adapter);
+> +				netdev->stats.rx_dropped++;
+>  				break;
+> +			}
+
+[Severity: Low]
+The ring now moves past the bad slot. Should this consumed entry also
+count against the NAPI budget, and should the loop continue here rather
+than break?
+
+frames_processed is not incremented here or in the two harvest error
+branches below. The break goes to the tail of ibmveth_poll():
+
+    ibmveth_replenish_task(adapter);
+
+    if (frames_processed == budget)
+        goto out;
+
+    if (!napi_complete_done(napi, frames_processed))
+        goto out;
+
+    lpar_rc = h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_ENABLE);
+    ...
+    if (ibmveth_rxq_pending_buffer(adapter) && napi_schedule(napi)) {
+        lpar_rc = h_vio_signal(adapter->vdev->unit_address,
+                               VIO_IRQ_DISABLE);
+        goto restart_poll;
+    }
+
+With a run of N bad correlators, one poll call would then do N
+replenish passes and 2N hcalls but report 0 work. This all runs on the
+CPU where schedule_work() has just queued the reset.
+
+A bad correlator never decrements pool->available. That means the burst
+is only bounded by how many buffers are posted to PHYP, about 1024 with
+the default active pools.
+
+Documentation/networking/napi.rst says the budget "limits how many
+packets driver can process in a single poll". Would it bound this work
+to count the consumed error descriptors in frames_processed and use
+continue instead of break?
+
+>  
+>  			/* if the large packet bit is set in the rx queue
+>  			 * descriptor, the mss will be written by PHYP eight
+> @@ -1515,12 +1554,19 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>  				if (rx_flush)
+>  					ibmveth_flush_buffer(skb->data,
+>  						length + offset);
+> -				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, true)))
+> +				rc = ibmveth_rxq_harvest_buffer(adapter, true);
+> +				if (unlikely(rc)) {
+> +					dev_kfree_skb_any(new_skb);
+> +					netdev->stats.rx_dropped++;
+>  					break;
+> +				}
+>  				skb = new_skb;
+>  			} else {
+> -				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, false)))
+> +				rc = ibmveth_rxq_harvest_buffer(adapter, false);
+> +				if (unlikely(rc)) {
+> +					netdev->stats.rx_dropped++;
+>  					break;
+> +				}
+>  				skb_reserve(skb, offset);
+>  			}
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the correlator from PHYP
+is now validated. Should the length and offset from the same descriptor
+be checked as well?
+
+ibmveth_rxq_frame_length() returns the raw be32 length as an int.
+ibmveth_rxq_frame_offset() can return values up to IBMVETH_RXQ_OFF_MASK
+(0xFFFF). ibmveth_poll() does not check either one against the source
+pool's buff_size, which is 512 bytes for pool 0.
+
+The copybreak branch does this:
+
+    skb_copy_to_linear_data(new_skb,
+                            skb->data + offset,
+                            length);
+
+If offset is close to 0xFFFF, can this read up to about 64 KiB past the
+RX buffer and then hand that data up through napi_gro_receive()?
+
+The non-copybreak branch does this:
+
+    skb_reserve(skb, offset);
+    ...
+    skb_put(skb, length);
+
+This path has no tailroom check. Could an oversized or negative length
+reach skb_over_panic() -> BUG() in softirq?
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1790991039.git.mmc%40linux.ibm.com
