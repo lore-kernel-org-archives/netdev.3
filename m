@@ -1,267 +1,369 @@
-Received: from mail-dy1-f228.google.com (mail-dy1-f228.google.com [74.125.82.228])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szelinsky.de (szelinsky.de [85.214.127.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AEB453A39
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 14:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518652EEE75;
+	Sun,  4 Oct 2026 14:34:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791124278; cv=none; b=TqbiBcs6Ucg+5zi04Q8xchrVkbWXMz7f2X5Ru6VcLR4B2ErNtHLmfH39E+pUQKGfhRJytJDwwcuxO8HSHSaWeil73aScvRAkKzQlCBDDE+NKnh/Sv+8fcIH7ssFwvJXplUoxgKE6mdpOblQwPlY3i4YyuMsyqx40XIGI6BgqJnc=
+	t=1791124455; cv=none; b=F4XcXSEWIoeRIXNTl1ig4dQZxXwaeAMMbuhzWC+2qMgycoJGPOf1X3lcaEzGw9mwsIThMQDI3a+cGXDbYRNlU1AHt15GOEwyKoLK7tLyUX7FktoSc3l9lHGXRNw6woP96iLBK4gLkoZ6Pz9eJJjXLYAWY4dYXmwlsEVKULe2C9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791124278; c=relaxed/simple;
-	bh=VjJECe4DutzIKd4SB52cjRGb8ySGcTVnlXDyTmDAV20=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uRG/r5HqHBJPdUaWlk5FA7mtm5JJyO1rJIi3/m3dN8fAEwJ2dMnPkM1xyNwDwdBQirthYGZaDxel0mhOTaoHntH6DAB7fQG1Qg/zSZC6hGYboPeISTLfzfBx/0tLn2YAVo/P41lwzcHLZ0kEJFJ/2z12AzCrYH2H1RStbdaXRYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YBEawOY3; arc=none smtp.client-ip=74.125.82.228
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1791124455; c=relaxed/simple;
+	bh=x/CkPs5ju8X+uBtaYGJYEhKyJtXFukfvQzWvslnZ1KI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U/CxN8LRbzNblVRsVRn2cOvSTYGKo/QMj5miiFQarVzZ5BC1+vTcppIj+QjdyYU2NMsyX4MIe4PYf2HNnokoROqIDdSSVgdO3Rr/rTpWlFkqFmCq0NtkbSJW+Ns0R/4P+Laudx/xmRvZc36mw8TtcpSdlmPL7NRyh40qyDMhUcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=PoavaiPo; arc=none smtp.client-ip=85.214.127.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YBEawOY3"
-Received: by mail-dy1-f228.google.com with SMTP id 5a478bee46e88-33e6279a1d7so323955eec.1
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 07:31:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791124275; x=1791729075;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=czfCLEtMgCgdXiNw2NI/p7zzD/6MuXkvdrb0OZ+QyC0=;
-        b=FcsCN+RuNp/vd5yII2woELQTsBznLHocw3k8m8vY0vfWeFwnWV3SuuTfpXCx9LhLWq
-         h6PQIdBx2LhXSh83806l4zsuwK6rSa3Ev2YZOghpU581s2kt5ofqRnOuGduEx6EZhl9k
-         +VfendhLldu7YRkD7EgtF0TqX7on0Lvkb9WfFuSp+TB42wGZ8mbPpmMieBCdkXkgFYVe
-         UQmOSrHN7rZijv4wwlXbEzO/Gzqc2W+7N94yDha6Vq2xkmbIvyaclPfUFfjkZFyIsXlV
-         WphHi888ai9ZmpZuFPaS3nA655iYOpcffBGmuBxa5/C0P2O2T64N+EfpSciP20vdDQcI
-         DPQw==
-X-Forwarded-Encrypted: i=1; AKwUvBzEUdFAq9m6KMuvJDGtEdr5fYTcFIjz9nAV3cbpuLeMlp/+x4ZNxlJl/xmUsr2dvOVmGd4q0lk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ5qsafNdDq2HBoSQ6OujXFcrovtrad9ZyqbzAirN9XkuEuPJwg
-	fijRUY2F06qGeAiKh+2iOaQ4/Q4nyLiyFPHnW2WlvDpVdmSOJeTmgIQc3WT07vaP401QwJo+frk
-	h7oUM0I+GxqDzUVk7hhWVpaaO22HrK8bZOKRTZL2NIKubtCr9hbjNquzDkSwwCfLv+KxLPEQJLe
-	QqD6imq+wi2yYX419C1NgIJrfRX/uIuQgNR5rmZG5G7BQM7A01fEx3LaSOCTV6VDOvi1z31D2Yp
-	+4MiF6nkh/W/5ihww==
-X-Gm-Gg: AYBFou0MbwxtsmW5jIrdI3KbgGKFn4Vrsib7wTGKP3D1o8W9ku6k6K7sAzaGYoUruls
-	nZ+HGxxtO5NSFyjkge5PxVdCcXaKWcMN1/FP++OaGKxrRCw2qiqrWbuiwWIhX62isa0ESPu+KOH
-	pri34JYCM6KgjXVNHHWGUUCMVHSa3PwK+dbYVmiZux4buqYgVXtUB0McUKzBUCV2jdiB9A1YPT4
-	7P0UzeeTcD8gr/NToHspsg+qUtURAy59gog2fYRRe6rx1ywlKAHELr7xfE1s8yjenEcaKTeh1Ez
-	Sg3LExVsCHXXy+okAAN29PzxLPCMVdxZLj2q/hpyYscGxWe3IT4UtVTjP8vNehPLul73vtcGzLw
-	fJAb/RQxFCyi2XqWphvXEWOOuBsLX/WsFIOHJqeyS2wyHCt9pqsZkJIjO1Pc0R3v7OuVvIzHKy0
-	jFxekpmanDWt6GOsWGlvHLUHhE9gdZDxYJ95CGDsauiR4B
-X-Received: by 2002:a05:7300:80c6:b0:351:985:e716 with SMTP id 5a478bee46e88-35109953121mr12114340eec.13.1791124274213;
-        Sun, 04 Oct 2026 07:31:14 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-351272d9593sm12149eec.29.2026.10.04.07.31.13
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 04 Oct 2026 07:31:14 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-313d1015161so3096103eec.1
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 07:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791124272; x=1791729072; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=czfCLEtMgCgdXiNw2NI/p7zzD/6MuXkvdrb0OZ+QyC0=;
-        b=YBEawOY3RjKvfXIh8r89MXcorWGNXkD7HV1w4BJhbZjyrOyeb3f+b/7emSdXYx2rdH
-         f7OcVyZn1bW+bKnwEKZ6Z7tUWLicB6RBoWH1iuukbEdxpM0552bMkzsgv7diu5qfUg3z
-         wU8mNkcBNp3Doul5UZ/QWp4oU7rELwlrduFNI=
-X-Forwarded-Encrypted: i=1; AKwUvBwevI6tUe/wJ7rY3hMHa4on3ca4USphI34h2rThK0Da5n7x4tfBpEU4pBaVyYzzhgEYm+2d+fs=@vger.kernel.org
-X-Received: by 2002:a05:693c:41cb:20b0:342:810b:9554 with SMTP id 5a478bee46e88-34f21854311mr10099469eec.32.1791124272027;
-        Sun, 04 Oct 2026 07:31:12 -0700 (PDT)
-X-Received: by 2002:a05:693c:41cb:20b0:342:810b:9554 with SMTP id
- 5a478bee46e88-34f21854311mr10099428eec.32.1791124271336; Sun, 04 Oct 2026
- 07:31:11 -0700 (PDT)
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="PoavaiPo"
+Received: from localhost (localhost [127.0.0.1])
+	by szelinsky.de (Postfix) with ESMTP id D315FE8322C;
+	Sun, 04 Oct 2026 16:34:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
+	s=mail; t=1791124443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=StKiYi9iJrZ2ynJtqg7rY64P6f6HyK3/3awHOz1ktZU=;
+	b=PoavaiPok8XTKF5XmV1O/ZtkVq0R1OXhUUJlbTGJQQC/aH0FF5cmLCFV1EYJf3j1VyrnP8
+	eXrV7/8eeboPTaosLbgZfCzS2uEK5UlRF+EcTO4CfCWaIMXJN70MieOVT6kQKjF5ixMe+3
+	lNRAY5l21L5O5DjqjAxc/0QvnoJ3CiDywpieZLVz5LhhrxpTQwGe5tTXnGrful/yDutReU
+	oApd4sOvt610v3COrzCNY3bZTufOhh7XOPr6YSQDCLUDaZr/fSRN4yCC7nWqbHKNC+1TYv
+	3/fCRh8SNd1kTKHhhG62I3aAbBdC/ecRHWO0cAZxQWNB692dGfLsSvVXuLbtSg==
+X-Virus-Scanned: Debian amavis at szelinsky.de
+Received: from szelinsky.de ([127.0.0.1])
+ by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
+ id UzSXedJARIK7; Sun,  4 Oct 2026 16:34:03 +0200 (CEST)
+Received: from p14sgen5.lan (86-103-67-252.ip.tng.de [86.103.67.252])
+	by szelinsky.de (Postfix) with ESMTPSA;
+	Sun, 04 Oct 2026 16:34:02 +0200 (CEST)
+From: Carlo Szelinsky <github@szelinsky.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>
+Cc: Corey Leavitt <corey@leavitt.info>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	netdev-bot+sashiko@kernel.org,
+	devicetree@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v7 0/5] net: pse-pd: decouple controller lookup from MDIO probe
+Date: Sun,  4 Oct 2026 16:33:51 +0200
+Message-ID: <20261004143351.969544-1-github@szelinsky.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260927191850.1370515-1-github@szelinsky.de>
+References: <20260927191850.1370515-1-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922052904.59237-2-bhargava.marreddy@broadcom.com>
- <179026966721.2160803.3672240762098051468@kernel.org> <20260926184926.GC13925@horms.kernel.org>
-In-Reply-To: <20260926184926.GC13925@horms.kernel.org>
-From: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Date: Sun, 4 Oct 2026 20:00:57 +0530
-X-Gm-Features: AclHuK9ovojThm6coEwtzF_5gjwZu6S5DTHHdY_M2n52MMUlvkcDOacKpPvGJNg
-Message-ID: <CANXQDtYHw1j2rZkMqirXviYwReg696GUYOxOuYAHRmCqYONLow@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/6] bnge: Extract bnapi allocation and
- cleanup into helpers
-To: Simon Horman <horms@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	michael.chan@broadcom.com, pavan.chebbi@broadcom.com, 
-	vsrama-krishna.nemani@broadcom.com, vikas.gupta@broadcom.com, 
-	dharmender.garg@broadcom.com
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000004d914065d049ea6"
+Content-Transfer-Encoding: 8bit
 
---00000000000004d914065d049ea6
-Content-Type: text/plain; charset="UTF-8"
+Hey guys,
+One process question first. I do run an LLM review before posting, as
+maintainer-netdev.rst asks. I ran the review prompts (masoncl) locally 
+against a frontier model and still got a different set of findings than
+the bot reported here. If there is a better way to run it so the two 
+line up, I would be glad to hear it - right now I cannot tell whether 
+I am missing setup or just reading different output.
 
-> > > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> > > index a4288f0258f87..c1810a3098883 100644
-> > > --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> > > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> > > @@ -825,6 +825,9 @@ static void bnge_free_tpa_info(struct bnge_net *bn)
-> > >     struct bnge_dev *bd = bn->bd;
-> > >     int i, j;
-> > >
-> > > +   if (!bn->rx_ring)
-> > > +           return;
-> > > +
->
-> The check above appears to be purely defensive.
-> I do not believe it can ever be true.
-> If so, please remove it.
+On the review itself: it turned up something in code I added in v7, so I
+am answering per patch below. v8 follows with the fixes.
 
-Hi Simon,
+Four findings I fixed in code, one I disagree with and say why, one is
+real but belongs in a net fix rather than here, five I have conceded in
+the changelogs, and five are pre-existing and want separate net patches
+rather than growing this series. Everything I claim to have checked, I
+checked against the tree rather than reasoning from the changelogs.
 
-Ack, will fix in next version.
+pw-bot: cr
 
-> > > @@ -1024,6 +1030,9 @@ static void bnge_free_tx_rings(struct bnge_net *bn)
-> > >     struct bnge_dev *bd = bn->bd;
-> > >     int i;
-> > >
-> > > +   if (!bn->tx_ring)
-> > > +           return;
-> > > +
-> >
-> > [Severity: Medium]
-> > Are these three new NULL checks really just preparation, or do they fix a
-> > reachable NULL pointer dereference that exists today?
->
-> It seems to me that the two hunks above do fix a bug,
-> can could manifest under memory pressure..
-> And thus should be broken out as a separate patch for net.
+patch 4, [High] sibling-PI supply lookup
+----------------------------------------
 
-Agreed, will send as a separate net fix.
+Correct. of_get_regulator() first reads the vpwr-supply phandle from the
+node it is given. If there is none, it calls
+of_get_child_regulator(dev->of_node), which walks every node under that
+device. I passed pcdev->dev as the device and the PI node as the node. So
+for a PI with no supply of its own, the walk went over the whole
+controller and found a sibling PI's supply, and the check passed. The
+core does not do this in its first stage. There it looks at the PI node
+only.
 
-> > >     bn->rx_ring = kzalloc_objs(struct bnge_rx_ring_info, bd->rx_nr_rings);
-> > >     if (!bn->rx_ring)
-> > >             goto err_free_core;
-> >
-> > This is the branch that reaches bnge_free_core() with both bn->rx_ring and
-> > bn->tx_ring still NULL.
->
-> I will add that they way that this code relies on unwind functions,
-> such as bnge_free_core(), that can unwind from both a fully and partially
-> initialised state is not the preferred approach.
->
-> E.g. while having bnge_free_core() fully clean up state the taredown
-> patch is fine, the probe path should have a goto ladder that unwinds
-> incrementally based on where initialization failed.
->
-> For a bug fix, a minimal approach, that adds some conditions, is probably
-> best. But perhaps there are more cases than are covered by this discussion.
->
+v8 takes the first stage only once the PI's own phandle resolves, so the
+walk is never reached. I resolve the phandle instead of only testing that
+the property is there, so a broken phandle cannot slip into the walk
+either.
 
-Thanks. I found no other cases in the helpers called from bnge_free_core().
-I plan to send a goto-ladder fix for bnge_alloc_core() to net.
+One part of the finding is too strong, and my first v8 comment had the
+same mistake. The core does reach that sibling walk, but in its second
+stage, through regulator_dev_lookup(pcdev->dev). So the gate does not
+stop the sibling walk. What it stops is a supply on the controller node
+being hidden by a sibling's.
 
-Thanks,
-Bhargava Marreddy
+v8 also treats -EPERM as resolved. _regulator_get_common() returns it
+when someone else holds the provider exclusively. The provider is still
+there, and regulator_resolve_supply() never checks this, so failing here
+would block a registration the core would have finished.
 
---00000000000004d914065d049ea6
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+patch 4, [Medium] deferral after setup_pi_matrix()
+--------------------------------------------------
 
-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
-tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
-2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
-phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
-a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
-ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
-07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
-SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
-rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGqjCCBJKg
-AwIBAgIMFJTEEB7G+bRSFHogMA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
-ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
-MDIzMB4XDTI1MDYyMDEzNTI1NVoXDTI3MDYyMTEzNTI1NVowge0xCzAJBgNVBAYTAlVTMRMwEQYD
-VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
-MDExNzERMA8GA1UEBBMITWFycmVkZHkxGDAWBgNVBCoTD0JoYXJnYXZhIENoZW5uYTEWMBQGA1UE
-ChMNQlJPQURDT00gSU5DLjEnMCUGA1UEAwweYmhhcmdhdmEubWFycmVkZHlAYnJvYWRjb20uY29t
-MS0wKwYJKoZIhvcNAQkBFh5iaGFyZ2F2YS5tYXJyZWRkeUBicm9hZGNvbS5jb20wggEiMA0GCSqG
-SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCq1sbXItt9Z31lzjb1WqEEegmLi72l7kDsxOJCWBCSkART
-C/LTHOEoELrltkLJnRJiEujzwxS1/cV0LQse38GKog0UmiG5Jsq4YbNxmC7s3BhuuZYSoyCQ7Jg+
-BzqQDU+k9ESjiD/R/11eODWJOxHipYabn/b+qYM+7CTSlVAy7vlJ+z1E/LnygVYHkWFN+IJSuY26
-OWgSyvM8/+TPOrECYbo+kLcjqZfLS9/8EDThXQgg9oCeQOD8pwExycHc9w6ohJLoK7mVWrDol6cl
-vW0XPONZARkdcZ69nJIHt/aMhihlyTUEqD0R8yRHfBp9nQwoSs8z+8xZ+cczX/XvtCVJAgMBAAGj
-ggHiMIIB3jAOBgNVHQ8BAf8EBAMCBaAwDAYDVR0TAQH/BAIwADCBkwYIKwYBBQUHAQEEgYYwgYMw
-RgYIKwYBBQUHMAKGOmh0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjZz
-bWltZWNhMjAyMy5jcnQwOQYIKwYBBQUHMAGGLWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dz
-Z2NjcjZzbWltZWNhMjAyMzBlBgNVHSAEXjBcMAkGB2eBDAEFAwMwCwYJKwYBBAGgMgEoMEIGCisG
-AQQBoDIKAwIwNDAyBggrBgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3Np
-dG9yeS8wQQYDVR0fBDowODA2oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2
-c21pbWVjYTIwMjMuY3JsMCkGA1UdEQQiMCCBHmJoYXJnYXZhLm1hcnJlZGR5QGJyb2FkY29tLmNv
-bTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNVHSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAd
-BgNVHQ4EFgQUkiPQZ5IKnCUHj3xJyO85n4OdVl4wDQYJKoZIhvcNAQELBQADggIBALtu8uco00Hh
-dGp+c7lMOYHnFquYd6CXMYL1sBTi51PmiOKDO2xgfVvR7XI/kkqK5Iut0PYzv7kvUJUpG7zmL+XW
-ABC2V9jvp5rUPlGSfP9Ugwx7yoGYEO+x42LeSKypUNV0UbBO8p32C1C/OkqikHlrQGuy8oUMNvOl
-rrSoYMXdlZEravXgTAGO1PLgwVHEpXKy+D523j8B7GfDKHG7M7FjuqqyuxiDvFSoo3iEjYVzKZO9
-NkcawmbO73W8o/5QE6GiIIvXyc+YUfVSNmX5/XpZFqbJ/uFhmiMmBhsT7xJA+L0NHTR7m09xCfZd
-+XauyU42jyqUrgRWA36o20SMf1IURZYWgH4V7gWF2f95BiJs0uV1ddjo5ND4pejlKGkCGBfXSAWP
-Ye5wAfgaC3LLKUnpYc3o6q5rUrhp9JlPey7HcnY9yJzQsw++DgKprh9TM/9jwlek8Kw1SIIiaFry
-iriecfkPEiR9HVip63lbWsOrBFyroVEsNmmWQYKaDM4DLIDItDZNDw0FgM1b6R/E2M0ME1Dibn8P
-alTJmpepLqlS2uwywOFZMLeiiVfTYSHwV/Gikq70KjVLNF59BWZMtRvyD5EoPHQavcOQTr7I/5Gc
-GboBOYvJvkYzugiHmztSchEvGtPA10eDOxR1voXJlPH95MB73ZQwqQNpRPq04ElwMYICVzCCAlMC
-AQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMf
-R2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0EgMjAyMwIMFJTEEB7G+bRSFHogMA0GCWCGSAFlAwQC
-AQUAoIHHMC8GCSqGSIb3DQEJBDEiBCB4p8W6b9XqC2KfA9qd/wKUxky2uV3QEqhwSCGiOZY83zAY
-BgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yNjEwMDQxNDMxMTJaMFwG
-CSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYI
-KoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAz90my
-I55rZbpRVMBsWR0B/dxys5O3EeuqjCB6pCYTFe+5/grWbcKXK+zrQnr/XgbB2cAZuLFWkbw/SDYX
-L6JidtQDiIF80xjGtcj+l5VJBdMw1LVzeU0mtadhNOpPaQV8+TUn2bRBIjU8nJqk9x5uOcuylkTN
-TLEnQIIrSsik7NCQY2lbA3nPaKJqZUEHHu6pXhcLhjRYJSNVciKLr67zU+vp3gJ2xRVB+EnsxUvU
-z9TpEITPgNKnaakiSkA5Aq/RtI1zgUgFUnEIG3TQvzrFUXdYSA80eFPn4tlmPL9a/K8i9rCej5sl
-D+CN7JLgYUGwOpfuO5gcdhKsdsuPjs8K
---00000000000004d914065d049ea6--
+The leak is real. pd692x0 claims a power budget in setup_pi_matrix(). It
+frees it only from that function's own error labels or from remove(), and
+neither runs when registration fails later.
+
+But the suggested fix does not work. I tried it. microchip,pd692x0.yaml
+has
+
+  pse-pi@0 { vpwr-supply = <&manager0>; };
+
+and manager0's regulator is registered by
+pd692x0_register_manager_regulator(dev, name, manager[i].node), with
+rconfig.of_node set to that manager node. That call comes from
+pd692x0_setup_pi_matrix(). So checking the supply before
+setup_pi_matrix() asks for a regulator that only this driver can create.
+It returns -EPROBE_DEFER every time and pd692x0 never probes.
+
+I added a controller of that shape to my test setup and ran it both ways.
+With the checks moved early it logs "PI 0: failed to get vpwr supply" and
+stays in deferred probe. With them where they are it registers. So the
+loop stays after setup_pi_matrix(), and the v8 changelog says what that
+placement does not clean up.
+
+For pd692x0 the new deferral does not fire anyway: the supplies its PIs
+name are the manager regulators setup_pi_matrix() has just registered. A
+board that points a pd692x0 PI at an external provider would hit the
+leak, and that cleanup belongs in pd692x0.
+
+patch 2, [High] worker re-queued after cancel_work_sync()
+---------------------------------------------------------
+
+Right, and the changelog said more than it should. At that commit every
+phy still gets its handle from fwnode_mdio, and only phy_device_remove()
+releases it. So an ethtool path can queue work after the drain. The tree
+behaves that way today and this patch does not make it worse. It closes
+once the phy patch releases those handles in the event and takes
+pse_phy_lock() on both sides. v8 says that instead of implying the race
+is already closed.
+
+patch 2, [Low] disable_irq() and devres ordering
+------------------------------------------------
+
+Right. tps23881 is the only in-tree user of devm_pse_irq_helper(), and it
+requests the irq after devm_pse_controller_register(). devres unwinds in
+reverse, so free_irq() runs first and the handler is already stopped
+before this disable_irq(). The move matters for a driver that requests
+its irq earlier, instead of leaving the ordering to devres. Comment and
+changelog both reworded.
+
+While there: devm_pse_irq_helper() sets pcdev->irq even when
+devm_request_threaded_irq() fails, so disable_irq() can be called on an
+irq that was never requested. Pre-existing, and on my list below.
+
+patch 3, [High] flush_pw_ds() vs a concurrent controller
+--------------------------------------------------------
+
+Real. I am not fixing it here. Reason below.
+
+kref_put_mutex() drops the count outside pse_pw_d_mutex. And
+pse_register_pw_ds() takes a new reference with a plain kref_get(), after
+an xa_for_each() under that mutex. So another controller on the same
+supply can take a reference while this unwind drops the last one. The
+count then goes 2->1, nothing is released, and devres frees the pw_d
+anyway, because that memory belongs to the controller that created it.
+
+Closing that window does not fix the real problem. A power domain can be
+shared by two controllers, but its memory belongs to the one that created
+it, through devm. So any time a controller with a shared domain goes
+away, that memory is freed while the other controller still points at it.
+This is true with or without this patch.
+
+The fix is to move the domain out of devm and use kref_get_unless_zero()
+in the lookup. That is a net fix. It does not belong in a patch that is
+only meant to stop the common failure leaking.
+
+What this patch does fix happens every time today: a controller fails to
+register, leaves its domains in pse_pw_d_map, and the next controller
+reads them in regulator_is_equal(). v8 says which case is left open.
+
+patch 3, [Medium] pi[i].pw_d left dangling
+------------------------------------------
+
+Fixed in v8. pse_flush_pw_ds() clears it now.
+
+The domain is devm memory of whichever controller created it, so it can
+go as soon as that probe unwinds. But pse_pi_is_enabled() still reads
+pi[].pw_d through the regulator "state" attribute, and the PI regulators
+are only unregistered after us. So the pointer had to go.
+
+Before relying on NULL there I checked every place that reads pi[].pw_d.
+They are all guarded, and pse_pw_d_is_sw_pw_control() returns false for
+NULL, so a read in that window now falls back to the hardware state
+instead of touching freed memory.
+
+patch 3, [Medium] OF references on the paths that keep pi[]
+-----------------------------------------------------------
+
+Accurate, and my changelog invited that reading.
+
+The OF references are taken per PI in of_load_pse_pis() and dropped only
+by pse_release_pis(). So they travel with the array: recovered wherever
+release_pis is reached, and leaked together with the array on the three
+paths that end at free_kfifo. Same trade as the array, and v8 now says
+so plainly instead of listing the references among the things it fixes.
+
+One more thing in that changelog was simply wrong. I wrote that
+pse_release_pis() only runs from pse_controller_unregister().
+of_load_pse_pis() calls it on its own error path too. Fixed.
+
+patch 4/5, [Medium] -EPROBE_DEFER no longer retried
+---------------------------------------------------
+
+Conceded. v8 no longer says a PI "can resolve late" - that implied
+something recovers it, and nothing does. There is no retry until the next
+PSE_REGISTERED or a phy re-registration.
+
+fw_devlink does not close this window for the form the bindings
+document. A vpwr-supply in a pse-pi node links the pse-pi node, not the
+controller, so the controller only gets a SYNC_STATE_ONLY proxy link from
+it, and device_links_check_suppliers() does not hold its probe for those.
+Only a vpwr-supply on the controller node delays the probe.
+
+patch 5/5, [Medium] ports powered down when a PSE probe fails late
+----------------------------------------------------------------
+
+Real, and now documented.
+
+The REGISTERED walk runs inside pse_controller_register(), so handles get
+attached part way through the PSE driver's probe. For a PI the hardware
+already has powered, pse_control_get_internal() records
+admin_state_enabled. If a later probe step then fails - tps23881 requests
+its irq after registration - devres runs the UNREGISTERED walk, the last
+reference goes, and __pse_control_release() disables the PI.
+
+So a port that was up before the driver loaded gets powered down when
+that driver fails to finish probing. It is the same thing a clean unbind
+does, and the alternative is leaving a port owned by a controller that is
+going away.
+
+patch 5/5, [Medium] fw_devlink leaves the phy on genphy
+-----------------------------------------------------
+
+"pses" is an enforcing supplier binding. So once the MDIO deferral goes,
+the phy registers while its own driver is still held in
+device_links_check_suppliers(). If a MAC attaches in that window,
+phy_attach_direct() falls back to genphy, and device_bind_driver() ->
+device_links_force_bind() binds it past the pending link. Nothing
+re-probes the phy later, so it stays on genphy.
+
+v8 adds a drivers/of patch marking the link FWLINK_FLAG_IGNORE. It sits
+before the phy patch, so no commit carries the window. Rob, Saravana:
+that one is yours.
+
+It drops the device link completely rather than relaxing it -
+fw_devlink_create_devlink() returns early and the fwnode link is deleted
+at the consumer's device_add().
+
+Two things do ride on that link, and I had the changelog wrong about this
+at first, so to be explicit: the link is managed. The fwnode link sits on
+the phy's own node, so fw_devlink_create_devlink() takes its
+"con->fwnode == link->consumer" branch and asks for fw_devlink_flags,
+which defaults to FW_DEVLINK_FLAGS_RPM; that has neither
+DL_FLAG_STATELESS nor DL_FLAG_SYNC_STATE_ONLY, so device_link_add()
+promotes it to DL_FLAG_MANAGED and device_links_unbind_consumers() acts
+on it. So unbinding the PSE controller releases the phy's driver today,
+and DL_FLAG_AUTOPROBE_CONSUMER probes the phy when the controller binds.
+
+Both are given up on purpose: the notifier does the attach and detach now
+and does not tear the phy driver down, and with the deferral gone there
+is nothing for an autoprobe to wait on. DL_FLAG_PM_RUNTIME is the one
+that really had no effect, and there is no dpm or devices_kset ordering
+to lose.
+
+That also makes patch 5 not a no-op on its own. The MDIO path registers
+the phy before it looks the PI up, so the link exists and goes active as
+soon as the controller binds - the cascade therefore goes away at patch 5
+rather than at the phy patch. It also stops holding the phy's driver back
+during the MDIO retries, so with patch 5 alone the driver probes inside
+device_add() and is removed again on each retry until the controller
+binds; the phy patch removes the retries. The changelog says all of this
+now.
+
+phy_try_attach_pse() comment
+----------------------------
+
+Separately: the comment still said that any error other than -ENOENT or
+-EPROBE_DEFER "means a broken binding". That is not true. -ENOMEM lands
+there, and so does -EPERM from regulator_get_exclusive() when the PI is
+already held exclusively - _regulator_get_common() returns that from its
+"if (rdev->exclusive)" test, before it ever looks at open_count. I agreed
+this was wrong in the v6 thread but only fixed the changelog back then.
+The comment is fixed in v8, and it now also says that -EPROBE_DEFER from
+a registered controller, while its vpwr provider is not yet bound, is not
+retried.
+
+Pre-existing, and I would rather send these as separate net patches than
+grow this series
+-----------------------------------------------------------------------
+
+All five verified against the base this series sits on, e3bfd25626b4:
+
+- pse_controller_register() calls kfifo_alloc() with pcdev->nr_lines
+  before the 0 -> 1 fixup, and __kfifo_alloc_node() rejects a rounded
+  size below 2. pse_regulator.c never sets nr_lines, so it stays 0 and
+  podl-pse-regulator cannot register at all on net-next today. Any
+  driver with one PI fails the same way, and realtek-pse-mcu-core.c can
+  reach that since it accepts max_ports == 1 from the MCU. I ran into
+  this building a one-PI test controller. Fixes: ffef61d6d273.
+
+- devm_pse_irq_helper() sets pcdev->irq even when
+  devm_request_threaded_irq() fails. pse_controller_unregister() then
+  calls disable_irq() on an irq that was never requested.
+
+- pse_control_get_internal() leaks a module reference: the
+  !pi_get_admin_state and pse_pi_is_hw_enabled() < 0 paths goto free_psec,
+  which sits below put_module. The retry walk makes it easier to hit.
+
+- psec->attached_phydev is a raw pointer with no device reference and is
+  never cleared. pse_send_ntf_worker() reaches it through
+  pse_control_get_netdev(), which dereferences
+  psec->attached_phydev->attached_dev under rtnl_lock() but not
+  pse_phy_lock().
+
+  I had this wrong when I first looked at the two-phys-on-one-PI variant,
+  so to correct myself: no second handle is created, but not because the
+  second get is refused. pse_control_get_internal() walks
+  pcdev->pse_control_head first and returns a matching psec with a
+  kref_get(), before any regulator_get_exclusive() runs, so the handle is
+  shared rather than rejected - and it keeps attached_phydev pointing at
+  the first phy, which is exactly the case raised. It behaves identically
+  before this series, since fwnode_mdiobus_register_phy() made the same
+  call for each phy, so it is not a regression here, but it is reachable
+  and the net fix should cover it.
+
+- pse_release_pis() frees pcdev->pi while the PI regulators are still
+  registered - devm_pse_controller_register() adds its devres node after
+  them, so unregister runs first and the regulator "state" attribute can
+  read freed memory. This one is already covered by my pending net
+  series:
+  https://lore.kernel.org/netdev/20260813200653.980170-1-github@szelinsky.de/
+
+Thanks for the review. v8 follows this mail.
+
+Carlo
