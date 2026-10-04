@@ -1,200 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2856F3B8412;
-	Sun,  4 Oct 2026 19:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5093655D1
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 19:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791142049; cv=none; b=OpYTeQLmSlu9GqEEYUoLaNwhs9nxvUS/SjNuO3kv+J8I5Atvw9PnS3/+7AGBBe8G/MfLG/TThrhITOvzZUNemWFAj3JYeSP3oqUE5xTCV+Etl104/FNEGqXGpd5sXYEwxtIY6mBphrrCqCPLR4y1yY756Zi8fKxbPR6WHVZUx2I=
+	t=1791143052; cv=none; b=kAjfNzpkmayKYGO6QD7PwOaYe90W+WNOqIYn5yjEH3A9l0VPGjguqOziZBA/aOtECKgafaKwXO1sxG0CjD7O1Mu9QUnxyvE7vW1Qz9DnU9kSW5U50iOxR7s1OtKWWewmBaMwT1qg6DdvoKNi3PjMm5k/Ca4k24vO386kQRbn13U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791142049; c=relaxed/simple;
-	bh=fo+kfVYTqykxYEMEyS3xEUOKLVhZpn1Y+X3krlOdjOg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Dtrl1b7/gFXZu5uQ3hjvI+ZnHqtSgI3uf8LwVSNXIuCZFvoZJhRBkNe7b4GZzxr2w2bAfO3Eccy56vGXqpprkMbj07tvXtt5mXU/j7FZV4obYc6ROjtc8hwxAd68sc2vN9+Ez/uBcZeUDAYSpTbABOhOihDKiRSu4gx+qH2ul6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0Oxj1jf; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0Oxj1jf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2111F000FF;
-	Sun,  4 Oct 2026 19:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791142044;
-	bh=pEsCEEIlhAlv1c9hPn4LM6ZCnsREWSEF/BB4zwo6m68=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J0Oxj1jftlGKWLqKvWK13t6GANkD7kxE/UY92OQnlrdNweIefajnxDtcNo/3/2TsM
-	 EXinakPh5lBnOmOwgWWhKHtIeCg49fxY/aZVVdXuH9qB0u2D6n0QNbOAkL/oPDYNMi
-	 t8wQih1mSao7DoSBxv8IpksGf9uFYmn3jHWlCmndRVlRALtGCEQOwfhXtP3jU+1mRU
-	 k5osoOVdlWX4it5UA4YDoiG+1TjB515h7mbW2+S2P52fwvymT/44/JyE0esMUgQgMN
-	 4gN9NcQAuOLm4Z4DZ1WQfpHOxtauSJXIxEa5lOhfPq51M/KhjCayNYDVbxT8TzhgIT
-	 gXOnilWPtPHgg==
-Subject: Re: [PATCH] tipc: fix use-after-free in netns teardown
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, netdev@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Sun, 04 Oct 2026 19:27:23 +0000
-Message-ID: <179114204389.434549.3724053905057286143@kernel.org>
-In-Reply-To: <20261003192530.2414682-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261003192530.2414682-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1791143052; c=relaxed/simple;
+	bh=imrdfYDk0VENbFWm3P3TRfhlP2/Qano50es+05xhvX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RIYru3jdM6CnCVI8CcxzDutZ9Iqz82KtWxRQAJ93g04WvCjNbohX3S/tYOVDmHsZq9f28wIVJRk+8NWNXgDCPy1HDSPFxhCdgr5xvjBBzDDriu5NcZWoEJupzIvA8p+kptOk0Hy3Tn64lN7f+4/+vwX2zp7CB7xB0OP5NJCT5Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 9666347984;
+	Sun, 04 Oct 2026 21:44:01 +0200 (CEST)
+From: Thomas Lamprecht <t.lamprecht@proxmox.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Don Skidmore <donald.c.skidmore@intel.com>,
+	Radoslaw Tyl <radoslawx.tyl@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Viacheslav Tyryshkin <s@tyryshkin.me>,
+	Melissa Romanus <melissa.romanus@proton.me>
+Subject: [PATCH iwl-net 1/2] ixgbe: fix NULL pointer dereference on MDD event without VFs
+Date: Sun,  4 Oct 2026 21:36:59 +0200
+Message-ID: <20261004193704.2895700-2-t.lamprecht@proxmox.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261004193704.2895700-1-t.lamprecht@proxmox.com>
+References: <20261004193704.2895700-1-t.lamprecht@proxmox.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1791143040562
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+ixgbe_check_mdd_event() treats every flagged pool as a VF: it clears
+adapter->vfinfo[pool].clear_to_send and pings the pool's mailbox. But
+PF queues can be flagged too, and ixgbe_msg_task() calls it on every
+mailbox interrupt, also with SR-IOV disabled, where vfinfo is NULL. An
+MDD event on a PF queue then crashes the host in interrupt context:
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+  ixgbe 0000:01:00.0: Malicious event on VF 0 tx:80000 rx:1
+  BUG: kernel NULL pointer dereference, address: 000000000000004c
+  RIP: 0010:ixgbe_check_mdd_event+0x124/0x160 [ixgbe]
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+With SR-IOV enabled, the PF pools follow the VF pools, so an event on
+one of them writes past the end of vfinfo instead.
 
-- [Medium] Because the teardown loop in tipc_topsrv_stop() always
-  restarts at the lowest IDR id (line 709, `id = 0`), it can block on…
+Keep releasing the queues of every flagged pool, as PF queues would
+otherwise stay blocked, but only notify VFs. Check num_vfs under
+vfs_lock, like ixgbe_msg_task() does, as SR-IOV disable frees vfinfo
+after clearing num_vfs under that lock.
 
-Pre-existing issues:
-- [High] Netns teardown can hit a NULL pointer dereference on a kernel-
-  subscription connection.
+Fixes: da3ab95f9b06 ("ixgbe: check for MDD events")
+Reported-by: Melissa Romanus <melissa.romanus@proton.me>
+Closes: https://lore.kernel.org/netdev/bqzPMb-F5iRWe7S2DWkQDhsK8u9ZoIaK34sF2pHpAjP6WHFb70Weq3pc8ZIVUoIx2EbPHd6HLBzz1HHd3xb5rxRZ9F3w1L6TQAd87S18CPQ=@proton.me/
+Reported-by: Viacheslav Tyryshkin <s@tyryshkin.me>
+Closes: https://lore.kernel.org/all/abc23ed3-f194-4546-bf99-7152464b93e2@intel.com/
+Link: https://bugzilla.proxmox.com/show_bug.cgi?id=7874
+Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---
-
-tipc: fix use-after-free in netns teardown
-
-Before walking conn_idr, this patch makes tipc_topsrv_stop() clear the
-listener's sk_user_data and cancel the accept work. The idr_find() plus
-conn_get() lookup is replaced with idr_get_next() plus
-kref_get_unless_zero(). The walk now restarts from id 0 on every pass and
-calls cond_resched() between passes.
-
-> diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
-> index af530c9ed8402..9ab2349f71190 100644
-> --- a/net/tipc/topsrv.c
-> +++ b/net/tipc/topsrv.c
-> @@ -700,16 +700,23 @@ static void tipc_topsrv_stop(struct net *net)
->  	struct tipc_conn *con;
->  	int id;
->  
-> +	write_lock_bh(&lsock->sk->sk_callback_lock);
-> +	lsock->sk->sk_user_data = NULL;
-> +	write_unlock_bh(&lsock->sk->sk_callback_lock);
-> +	cancel_work_sync(&srv->awork);
-> +
->  	spin_lock_bh(&srv->idr_lock);
-> -	for (id = 0; srv->idr_in_use; id++) {
-> -		con = idr_find(&srv->conn_idr, id);
-> +	for (id = 0; srv->idr_in_use; id = 0) {
-> +		con = idr_get_next(&srv->conn_idr, &id);
-
-[Severity: Medium]
-
-Can restarting from id 0 on every pass livelock the teardown?
-
-rcv_wq is an ordered workqueue:
-
-tipc_topsrv_work_start()
-    s->rcv_wq = alloc_ordered_workqueue("tipc_rcv", 0);
-
-Take a lower-id connection A whose rwork is queued behind the running
-rwork of a higher-id connection B. The loop closes A, but the reference
-held by A's queued rwork keeps A in conn_idr. On every later pass
-idr_get_next() returns A again, so the loop never reaches B.
-
-tipc_conn_recv_work() keeps running while B is connected and requests
-keep arriving:
-
-    while (connected(con)) {
-        if (tipc_conn_rcv_from_sock(con))
-            break;
-    ...
-
-The cond_resched() here gives up the CPU. A's work still cannot run on
-the ordered queue until B's worker returns. If B's receive queue never
-empties, idr_in_use never reaches 0 and cleanup_net() spins.
-
-The old loop advanced with id++. It would have cleared CF_CONNECTED on B,
-which ends B's worker.
-
-Local peers probably cannot keep this going. The listener is bound with
-TIPC_NODE_SCOPE, and local user sockets hold a reference on the netns.
-
-Remote peers are another matter. tipc_net_ops is registered before
-tipc_topsrv_net_ops, so the bearers are still up when tipc_topsrv_stop()
-runs. The TIPC_LISTEN branch of tipc_sk_filter_connect() has no scope
-check. A remote node that knows the listener's port id might be able to
-connect and keep sending TIPC_SUB_CANCEL requests. That precondition has
-not been confirmed.
-
-Would it work to first walk forward through all entries, using
-idr_get_next() from id + 1 and closing each one? The loop could then
-retry from 0 only for the entries still waiting on asynchronous release.
-
-> +		if (con && !kref_get_unless_zero(&con->kref))
-> +			con = NULL;
-> +		spin_unlock_bh(&srv->idr_lock);
->  		if (con) {
-> -			conn_get(con);
-> -			spin_unlock_bh(&srv->idr_lock);
->  			tipc_conn_close(con);
-
-[Severity: High]
-
-This is a pre-existing issue, but can this call to tipc_conn_close()
-dereference a NULL con->sock?
-
-tipc_topsrv_kern_subscr() creates conn_idr entries that have no socket:
-
-    con = tipc_conn_alloc(tipc_topsrv(net), NULL);
-
-tipc_conn_close() dereferences the socket before it tests CF_CONNECTED:
-
-    static void tipc_conn_close(struct tipc_conn *con)
-    {
-        struct sock *sk = con->sock->sk;
-
-Other code in this file already allows for a NULL sock.
-tipc_conn_kref_release() checks if (con->sock). tipc_conn_send_to_sock()
-only calls tipc_conn_close() inside its if (con->sock) branch.
-
-Here is a possible sequence:
-
-1. tipc_topsrv_queue_evt() takes a reference on a kernel subscription
-   connection K through tipc_conn_lookup(). It then queues K->swork on
-   send_wq.
-
-2. Before that work runs, the group socket is closed:
-   tipc_release()->tipc_group_delete()->tipc_topsrv_kern_unsubscr().
-   This clears CF_CONNECTED and drops two references. K stays in
-   conn_idr, held only by the swork reference.
-
-3. cleanup_net()->tipc_topsrv_exit_net()->tipc_topsrv_stop() runs.
-   cancel_work_sync(&srv->awork) does not drain send_wq. idr_get_next()
-   returns K, kref_get_unless_zero() succeeds, and tipc_conn_close(K)
-   dereferences NULL.
-
-The old idr_find() plus conn_get() loop had the same exposure. The new
-loop retries until idr_in_use reaches 0, so any socketless entry still in
-conn_idr is now guaranteed to reach tipc_conn_close() at least once.
-
-This loop is being rewritten anyway. Could it skip tipc_conn_close() when
-con->sock is NULL? Alternatively, tipc_conn_close() could check
-con->sock before using it.
-
->  			conn_put(con);
-> -			spin_lock_bh(&srv->idr_lock);
->  		}
-> +		cond_resched();
-> +		spin_lock_bh(&srv->idr_lock);
->  	}
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+index 431d77da15a5f..7edb84986a312 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+@@ -1444,6 +1444,7 @@ bool ixgbe_check_mdd_event(struct ixgbe_adapter *adapter)
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
+ 	DECLARE_BITMAP(vf_bitmap, 64);
++	unsigned long flags;
+ 	bool ret = false;
+ 	int i;
+ 
+@@ -1466,11 +1467,16 @@ bool ixgbe_check_mdd_event(struct ixgbe_adapter *adapter)
+ 
+ 			hw->mac.ops.restore_mdd_vf(hw, i);
+ 
+-			/* get the VF to rebuild its queues */
+-			adapter->vfinfo[i].clear_to_send = 0;
+-			ping = IXGBE_PF_CONTROL_MSG |
+-			       IXGBE_VT_MSGTYPE_CTS;
+-			ixgbe_write_mbx(hw, &ping, 1, i);
++			/* indexes >= num_vfs are PF queues, no VF to notify */
++			spin_lock_irqsave(&adapter->vfs_lock, flags);
++			if (i < adapter->num_vfs) {
++				/* get the VF to rebuild its queues */
++				adapter->vfinfo[i].clear_to_send = 0;
++				ping = IXGBE_PF_CONTROL_MSG |
++				       IXGBE_VT_MSGTYPE_CTS;
++				ixgbe_write_mbx(hw, &ping, 1, i);
++			}
++			spin_unlock_irqrestore(&adapter->vfs_lock, flags);
+ 		}
+ 
+ 		ret = true;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261003192530.2414682-2-Jeremy.Jean%40oss.cyber.gouv.fr
+2.47.3
+
+
