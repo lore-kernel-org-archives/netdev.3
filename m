@@ -1,408 +1,200 @@
-Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FA73B71D2
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 04:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.99
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791087981; cv=pass; b=Dif58FfRaPKLbgKyPHaoaRBGt3VZqJOAD0wpxIwX+2fHuxPECzNvslYETCwjzYiwnBqrXnLrZBIfIFydB3pN/7mdYCOAbdZeqJSS/mjjUne13gG9pOFlPBR2eYtLE+Wiqh8YrW0vQUOVeGxjdXIMuPMm56cYNufvKzsuH2OwVas=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791087981; c=relaxed/simple;
-	bh=SKotPdHlVTuPg1FAd/5spA1tpsR+3ppmd41oAH4wdg8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sk9B09YtWpXEfdcP8tb2TnokqFLJkoKXs2tAftQ/ee6ppqzQe4rH94g8RhFCq6QN4V6PnM6+QkyPijUWIVQzJaKTu97NAukM5M1PMx3uh6CfpNUvcKzN43IxRLSShunChzd2wd8i/Z513uiYuGMcAo7ndhtJ5cdoIHJtVllGtig=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njpwzmFW; arc=pass smtp.client-ip=74.125.228.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A013EFFC6
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 04:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791088027; cv=none; b=oUiIFfly6SSnuuaFjI3nKjnNkEo+DDWzqMLIJ5jcXJJJuUI1sci7nNcaWfJjr/pmOwm4F4EpaxqQ37fd9HVP8yRR5gBry2s9nK1WElNAC8gOetcfc2JbmvDAXS5mrFBcMhT1MqfHMW9LPt0xgwF0ZPKm4JJIEH74hhWWIpxAJjA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791088027; c=relaxed/simple;
+	bh=UzB+W8GkiSnjNiEwgE3e6swB1W7HFwpILYFfQew3kLQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RBHgHhF7SpBSOs+CWgwwCqyZMjTZ4b24aZxGLkKZ0o+bGzywbq8wGyG6li6MwFv+0VF1gJxWOl0QrBzNyx6/3M8vH1J+S0PCwIr+TVV3t1EL/702OiFwQxr0ChcQF++/w8f1q6h7ED+zh5Hfl4ZZFWffYfC7LknVjHQwuWvHlxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hsAwVE70; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njpwzmFW"
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6a996c8adf3so1059564a12.1
-        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 21:26:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791087978; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cLX19dOmzf9/K64dhqweAKuz3EWkkPksqLBGlgXJlft4pj7M+MD0+6TKOJ3Puj3dmO
-         rcrE070bZZs0pdxUkBYwcdpfAALzmVcfs2GTOvjJIjr8E+AF2G+dnAjLQ1vDBRnDjD3t
-         LfOUUy+hi3pUG5UBXFN3Ats1TZy6m3zvabDbIgIXnGjpHYIfbH5k6M0mYq3GrLM8+iHx
-         z7cTExu/CA4IfAxivaMbfTNgGT32ttnst1eCQeVxWS1XJayPDsyh+U3TiZtu9FwxiQyI
-         vvfD/5i5ENDKrtcq/dx9siq+fi139C8qR0+PuJG0yDKhU30WncTjVj0qLK9dBiCJpGQ1
-         NT0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Iz+fpsXmiRfCDAzd66+Z5Ai8Rr0ZHI0jxjB0XZLmA2w=;
-        fh=Ah+dWAcmH0qiB6vhgAmxyWh9saUzQyqk1N5WnMlzyEk=;
-        b=iuIxk7cx0RQFmzK0NOb2SQZMTT92YeklDQu5nvH2jyvpUTpXsXCrp+XQcfirLmkBAG
-         ZiByzWjQfOSIcaBB61lDJwTJ86MWxmODc7DnhGPtijrK3HykvHM+5/PfQhg+aYBTTCzI
-         YJ1OEKyPOsGsZ+mZLRkclnOTUygqKQMoL2HrovpY7a76iBvioIUU7PnZ/sFBM5tKYRfl
-         kuSxU4HLBYFmDogRsDPaMc/jIJvDYx3+WEgFUdX5Zgr1rhZLw29AuoDYKfBtfO00PP8D
-         NO6LeQMdiZqxCEU9wMqexuakUyMkIXB8WXFaGk5sjFEv3783Rgtvbe68ZitRBKUhHFrh
-         x6Fw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hsAwVE70"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-534e6545939so5520291cf.3
+        for <netdev@vger.kernel.org>; Sat, 03 Oct 2026 21:27:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791087978; x=1791692778; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Iz+fpsXmiRfCDAzd66+Z5Ai8Rr0ZHI0jxjB0XZLmA2w=;
-        b=njpwzmFWOGD3bCxZW7e4mHaG0aXWv5RMw4Cww1FmkIDuX3Q4ElVdJry0EqP+0ESnFS
-         MlUwn/j4auMMWhld+vD8Crf0w7Uj7+GAdUgvlvCPmDVr7ly6kDmHKbjkpRW/0Ev0bDzB
-         kIWv6JjOku9wK/rNjy6kNq9TO8abgCnAeTPM9AImSZSK8FRSvRr8I0vCjHWsRDyw4+3s
-         m+VKAq+QIIe7ZJ5Wk8YxIfXS1fp2KFiIQapkkqji0VHFLzmgjiT9yJYQTW7Q4ekfCUBh
-         NvOD4D+tugJWLaCKlxcOmDgFDBj+yL0TxLSjpFzMNQMrgYMfPgl/vVrHXcJxnJJDWHOQ
-         Srsg==
+        d=gmail.com; s=20251104; t=1791088025; x=1791692825; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=abpir8BYL825hyvaRsoY2mSsbuMYUcaKMePmeAwHmvU=;
+        b=hsAwVE7009iZAQmkLB7iYdPqA0PGq+S3uc0dl9IzhiVUfJ/WMSOOA4eXgWR5FqJfbJ
+         5oeTxh7xyYWZOQdIRMIrgeVVKoNCO/yfFYCLQAEx1wgnMASID1Jfcsz0N/LWBef49Q/p
+         f1xyn1PiRCIUgO6hwY324HPAxYfQ7W2O+YUUSmLbq4Dn0sbgYCfJ4OAZbbh+zkXJatQ7
+         LDz3I+1fRdZVHfI4wUNqR4zh9HVFdqZ0HaNyUNwYTD2ogIvkYGB7ee05IB/g4zS1LGUD
+         2JJPl55siYmbuaWE+o+NgXfsY5eezlYuwjIXNG6r777df7YFiCqWidNINrq3Ny6V9d+7
+         5ERA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791087978; x=1791692778;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Iz+fpsXmiRfCDAzd66+Z5Ai8Rr0ZHI0jxjB0XZLmA2w=;
-        b=K1CSl3xZ5GO9Jsd6d1hjLkVkeckYY5985Z0EZvNA1JztnzRieQVPStVBY+UBPeb8tG
-         Gyc6ihkegxNP1T2XhFD2xo8eFRHNxX+Llli0fepgfmCo4CaswjdMG/VJep+Zp7s4/ctY
-         9ETkTg2bXW3jEc/K5MUUfCr4BSSlcpP5lVx16/olLWoYaxJUGAbzZtt6bLSzBHpBYMCX
-         ZN3j9gdepfFQ5KXa8Oi57JiHU0/lZ6q9MSg513VoGilKobWP1TqdUbYwVFO1joBdOk04
-         Os73wWox3N5c9UCSWohduBKD0Tcel1mLxdFEEfEpIA6Ksh7mkJTcsoeGyeUiUnsQQnyc
-         mpPg==
-X-Gm-Message-State: AFq9FYIStkXOPJ//LgcXorzPQFF7lsN6JASUyib426gVsyhri/e8DRHZ
-	j5Cu1nYaUkNln65QcDvcLjtJocvu3Y5XYGddteUDU5QSd/f+zMkP9EmwRD99CQh3AdPWh3mstA6
-	fLH9iDNwS/cYLP7vsYEcOrQQbiIZ4NQ==
-X-Gm-Gg: AYBFou292guUriEJy/ftH8QtXkDPUm5OQzEjNZ851qU1Ln1u9banoxfd/FYsVeGMLDq
-	GGcnulJKSb0WNv9A7CnYu2ddhpkbVcnBYIT8UKcx5A8qVTWsvmBa+YhOTf5ff72OXipR8M7hxkl
-	HYy9FVQO7BDMSqbfEovM9J2npfM4itBsJbUyrRP8bPE245Lz9R0jfwb4muO1EFbr+xUBeY65E6A
-	up8QVn5Q+3hId+OuHbvzJ92Xz+351h6TpmzqCN/7yM63sFiI9RWue/jl+hDAk53hnjdW2s2Ud1y
-	48TMcAQaAV8kH/wTCVmu5KcELnvoevXqFU4/fYDZ/NNRyx5JNPeFiDEKV7AHj4dvHWskNR9+GNj
-	KGt8+JYX7A5o3qLqcX2/LPcArBpww1+2WnKZU2zovxLLMYqlgNdvvVxqecNyfzO+VvbTu
-X-Received: by 2002:a05:6402:24ce:b0:6ab:663:c97c with SMTP id
- 4fb4d7f45d1cf-6af9e2fbc80mr4197641a12.18.1791087977728; Sat, 03 Oct 2026
- 21:26:17 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791088025; x=1791692825;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=abpir8BYL825hyvaRsoY2mSsbuMYUcaKMePmeAwHmvU=;
+        b=XoNv9Lh7OfzwXyQNTb0ua7Udc3H4NkhUulqGMQlcFLYX2GjY0Cx8Rnckkejf96OG2W
+         SNB8K5X6CskWY2cW5GGEBxLJQ/NjWXz4ts5sAuuLU2qTsBINVjCIn5qoP7jiE9sUGb4B
+         z/crEbhEh8cOSNHi4L2iIuRS0bXTi7Bid/LsrLfdr8mWOjKlg2HAxn1TiYdQMF+TH4Ow
+         qxPbvY42PieP2tWgNyp2hLX5ovLNR+DACtPXiL7RCoXTZNzn5AaKpMCPGXsnbrhDOJ1n
+         PWd/gpJeyRFqZXXcudjP1/h69P68nOBMfQtP1s05WCvTO0MBCFimy34UCmWDKFKzuH4O
+         9Ubg==
+X-Gm-Message-State: AFuF++kxDw8fZjjfxvpf4kqRzRmacg4tpMLgSACpQEDY3QLwShnQMmAR
+	ZzjA8L/8tjK4gvaLt+YjRAVkKcUmXMaLI8vqsLOvCKqlbEdNR4Th7tZOGMUXicM=
+X-Gm-Gg: AYBFou2mDAnNruEwG5bTBWrpOw7QPjEwysznd18mJfp/W5wiBCKZAQTeSJlgOWY39sp
+	DGzAk/BePOkGsDelPJ8oOhd7IikVUYa0PSBLkyzUme16UWJy5PjzzzMg+gu3aVudWwB7ld5SdhB
+	YxXyDx4mIar4kJKkrwuBRRfXniM1fI5qXcFM88LFuZAAmZESgcXxtxYuREUAffAW6aCUN0NEQOX
+	ccoMXwXFVSBWGawdOfE4nZY1WdDJ+DkfjBbFanCyA3LpkK15Q1LcjOiBYImE0URuene7cRzotNd
+	k5Cr1Ji0uwmdO+FlOqe+aHE7hP6YTYeyPt/gNb1Re6jEveobKIsbaFEhprtYCSUrIGUOcAzK2Bx
+	SCRhFPSRzjZEkDzxMOzWT6SNaAI3tMayG58lFBChPJwa6ImfEqUTUl/FxTTw273HclS/ouJ96ot
+	P2iGKav2StBrIWJ0k96TV/YSdZFy4glhUlSfgRxdptebcxQ6FxbmLqd+GeQA/ei/8f6ihMeoDHg
+	5zB8mSfuC3l/RsrLbS7XSprgQLPgZKDEBVvcCSJIu7iCuQDAlXk4on+egNNWU1nomXtFHW5TooL
+	jzJRXvWilHMmOfFuTcNCnaCBBNXeDRowbqG4n7I=
+X-Received: by 2002:ac8:5cc1:0:b0:535:1bf:6195 with SMTP id d75a77b69052e-53511d17715mr74684071cf.9.1791088024517;
+        Sat, 03 Oct 2026 21:27:04 -0700 (PDT)
+Received: from i4-gl-tmk5904-1.ad.psu.edu ([130.203.156.90])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-533988343b5sm65291551cf.1.2026.10.03.21.27.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Oct 2026 21:27:03 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	ae878000@gmail.com
+Subject: [PATCH net v2] net: nixge: stop IRQ producers before draining DMA error tasklet
+Date: Sun,  4 Oct 2026 00:27:02 -0400
+Message-ID: <20261004042702.1130389-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261003041242.650599-1-mhun512@gmail.com> <179108725013.434549.7036380491047031962@kernel.org>
-In-Reply-To: <179108725013.434549.7036380491047031962@kernel.org>
-From: Myeonghun Pak <mhun512@gmail.com>
-Date: Sun, 4 Oct 2026 00:26:05 -0400
-X-Gm-Features: AclHuK9klZkgqSKlWsLqixubrZTUZHsUiItQSy1Q0vtxuTUQnY5Jwq9tUrgeWEw
-Message-ID: <CAGEsz8ENvK96T3R6kQduXwCYB0LPVxKkusLfZ6SLrf7UcsmHJw@mail.gmail.com>
-Subject: Re: [PATCH net] net: nixge: stop IRQ producers before draining DMA
- error tasklet
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, ae878000@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Thanks for the review. I agree that clearing RUNSTOP alone is insufficient.
-I will send v2 with a checked DMA reset after freeing both IRQs and
-draining the tasklet. On reset timeout, it retains the DMA buffers and
-rejects subsequent opens.
+The TX and RX IRQ handlers can reschedule dma_err_tasklet after
+tasklet_kill(), allowing it to access rings freed by nixge_stop().
 
-The other findings are pre-existing issues and need separate fixes.
+Free both IRQs before killing the tasklet. Since pending recovery can
+restart DMA, mask channel interrupts and wait for a DMA reset to finish
+before releasing the rings. Clearing RUNSTOP alone does not ensure that
+outstanding DMA accesses have completed.
 
-pw-bot: cr
+If reset times out, retain the DMA buffers and reject subsequent opens
+to prevent those buffers from being freed or their pointers overwritten.
 
-2026=EB=85=84 10=EC=9B=94 4=EC=9D=BC (=EC=9D=BC) =EC=98=A4=EC=A0=84 12:14, =
-<netdev-bot+sashiko@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 (3) =C2=B7 Medium: 0 (2) =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The second stop the patch adds to nixge_stop() (lines 937-943)
->   only clears DMACR.RS on the RX and TX AXI DMA channels.
->
-> Pre-existing issues:
-> - [High] nixge_hw_dma_bd_release()
->   (drivers/net/ethernet/ni/nixge.c:244-281) frees priv->rx_bd_v, the RX=
-=E2=80=A6
-> - [High] The DMA error tasklet nixge_dma_err_handler() runs in softirq
->   context and starts by calling __nixge_device_reset() for TX and RX=E2=
-=80=A6
-> - [High] nixge_dma_err_handler() takes no lock while it resets tx_bd_ci,
->   tx_bd_tail and rx_bd_ci (lines 816-818), rewrites every TX descriptor,=
-=E2=80=A6
-> - [Medium] nixge_hw_dma_bd_release() calls devm_kfree(priv->tx_skb) (line
->   273) and frees tx_bd_v without first calling nixge_tx_skb_unmap() on=E2=
-=80=A6
-> - [Medium] nixge_open() calls nixge_device_reset() first.
->
-> --
->
-> net: nixge: stop IRQ producers before draining DMA error tasklet
->
-> This reorders nixge_stop() so both IRQs are freed before tasklet_kill()
-> drains the DMA error tasklet. That stops the interrupt handlers from
-> rescheduling the tasklet afterwards. It also clears RUNSTOP on both DMA
-> channels a second time after tasklet_kill(), in case error recovery
-> restarted them.
->
-> > diff --git a/drivers/net/ethernet/ni/nixge.c b/drivers/net/ethernet/ni/=
-nixge.c
-> > index 230d5ff99dd7e..7bba6f8e64fe1 100644
-> > --- a/drivers/net/ethernet/ni/nixge.c
-> > +++ b/drivers/net/ethernet/ni/nixge.c
->
-> [ ... ]
->
-> > @@ -927,11 +928,20 @@ static int nixge_stop(struct net_device *ndev)
-> >       nixge_dma_write_reg(priv, XAXIDMA_TX_CR_OFFSET,
-> >                           cr & (~XAXIDMA_CR_RUNSTOP_MASK));
-> >
-> > -     tasklet_kill(&priv->dma_err_tasklet);
-> > -
-> > +     /* Remove both producers before draining the error tasklet. */
-> >       free_irq(priv->tx_irq, ndev);
-> >       free_irq(priv->rx_irq, ndev);
->
-> [Severity: High]
-> This is a pre-existing issue, but what serializes nixge_dma_err_handler()
-> against the TX paths? The tasklet takes no lock while it unmaps every
-> tx_skb[] entry and resets the ring indices:
->
-> drivers/net/ethernet/ni/nixge.c:nixge_dma_err_handler() {
->     ...
->         for (i =3D 0; i < TX_BD_NUM; i++) {
->                 cur_p =3D &lp->tx_bd_v[i];
->                 tx_skb =3D &lp->tx_skb[i];
->                 nixge_tx_skb_unmap(lp, tx_skb);
->     ...
->         lp->tx_bd_ci =3D 0;
->         lp->tx_bd_tail =3D 0;
->         lp->rx_bd_ci =3D 0;
->     ...
-> }
->
-> Two other paths update the same state:
->
-> - nixge_start_xmit(), which holds only netif_tx_lock. The error IRQ
->   handlers never stop the TX queue.
-> - nixge_tx_irq()->nixge_start_xmit_done(), in hardirq context. This can
->   run on another CPU because tx_irq and rx_irq are separate lines.
->
-> For example:
->
-> CPU1
-> nixge_rx_irq()            /* DMA error */
->   tasklet_schedule()
-> nixge_dma_err_handler()
->   lp->tx_bd_tail =3D 0;
->
-> CPU0
-> nixge_start_xmit()
->   tx_skb->skb =3D skb;      /* tx_skb[tx_bd_tail] */
->   ++priv->tx_bd_tail;
->
-> Another case: a TX completion on CPU0 runs nixge_start_xmit_done(), which
-> calls nixge_tx_skb_unmap() on the same entry the tasklet is unmapping.
->
-> nixge_tx_skb_unmap() checks and then frees tx_skb->mapping and tx_skb->sk=
-b
-> without a lock. Can this cause a double dma unmap and a double
-> dev_kfree_skb_any()? Could the tasklet also free an skb whose descriptor
-> the hardware then transmits from? The sleeping reset poll at the start of
-> the tasklet makes this window wider.
->
-> nixge_stop() has a similar window between the first RUNSTOP clear and the
-> free_irq() calls above.
->
-> >
-> > +     tasklet_kill(&priv->dma_err_tasklet);
-> > +
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but nixge_stop() now waits
-> here for the error tasklet to finish its recovery. Can
-> nixge_dma_err_handler() sleep in softirq context?
->
-> nixge_dma_err_handler()
->   __nixge_device_reset()
->     nixge_dma_poll_timeout(priv, offset, status, ..., 10, 1000)
->       readl_poll_timeout()
->         usleep_range()
->
-> nixge_dma_poll_timeout() wraps readl_poll_timeout(), not
-> readl_poll_timeout_atomic(). With sleep_us set to 10, it calls
-> might_sleep_if(). It then calls usleep_range() whenever the reset bit has
-> not cleared on the first read. The comment in __nixge_device_reset() says
-> the reset "takes a while to complete", so the sleeping path is expected
-> to run.
->
-> Would every TX or RX DMA error interrupt then trigger "BUG: scheduling
-> while atomic"? Using readl_poll_timeout_atomic(), or moving the recovery
-> to a workqueue, would avoid that.
->
-> > +     /* Error recovery may have restarted DMA, so stop both channels a=
-gain. */
-> > +     cr =3D nixge_dma_read_reg(priv, XAXIDMA_RX_CR_OFFSET);
-> > +     nixge_dma_write_reg(priv, XAXIDMA_RX_CR_OFFSET,
-> > +                         cr & (~XAXIDMA_CR_RUNSTOP_MASK));
-> > +     cr =3D nixge_dma_read_reg(priv, XAXIDMA_TX_CR_OFFSET);
-> > +     nixge_dma_write_reg(priv, XAXIDMA_TX_CR_OFFSET,
-> > +                         cr & (~XAXIDMA_CR_RUNSTOP_MASK));
-> > +
->
-> [Severity: High]
-> Is clearing RUNSTOP enough to quiesce the engines before
-> nixge_hw_dma_bd_release() frees the rings?
->
-> On AXI DMA, clearing DMACR.RS only requests a halt. The engine stops
-> after it finishes or flushes the current transfer and any outstanding
-> descriptor updates. Nothing here polls XAXIDMA_RX_SR_OFFSET or
-> XAXIDMA_TX_SR_OFFSET for the halted bit, and the channels are not reset.
->
-> This block is meant for the case where the error tasklet has just
-> restarted the engines. In that case nixge_dma_err_handler() has
-> re-enabled the interrupts and handed the whole RX ring back to the
-> hardware:
->
-> drivers/net/ethernet/ni/nixge.c:nixge_dma_err_handler() {
->     ...
->         cr |=3D XAXIDMA_IRQ_ALL_MASK;
->         /* Finally write to the Rx channel control register */
->         nixge_dma_write_reg(lp, XAXIDMA_RX_CR_OFFSET, cr);
->     ...
->         nixge_dma_write_reg(lp, XAXIDMA_RX_CR_OFFSET,
->                             cr | XAXIDMA_CR_RUNSTOP_MASK);
->         nixge_dma_write_desc_reg(lp, XAXIDMA_RX_TDESC_OFFSET, lp->rx_bd_p=
- +
->                             (sizeof(*lp->rx_bd_v) * (RX_BD_NUM - 1)));
->     ...
-> }
->
-> Right after the posted RS clear, nixge_hw_dma_bd_release() unmaps and
-> frees the RX skbs and frees both coherent BD rings. Can an in-flight
-> frame or a BD status writeback land in that freed memory?
->
-> Frames can still arrive if phy_disconnect() did not power down the PHY,
-> for example when the PHY driver has no suspend callback or WoL is
-> enabled.
->
-> The bare RS clear also leaves the coalesce, delay and error interrupt
-> enables set by the tasklet, even though the handlers are now freed.
->
-> Other drivers for the same IP wait for the halt:
->
-> - axienet_dma_stop() in xilinx_axienet_main.c clears RS and the IRQ
->   enables, polls XAXIDMA_SR_HALT_MASK, and then resets "to ensure DMA is
->   really stopped".
-> - xilinx_dma_stop_transfer() in drivers/dma/xilinx/xilinx_dma.c polls
->   DMASR.HALTED after clearing RUNSTOP.
->
-> The commit message says:
->
->     Stop them again after tasklet_kill() returns so error recovery cannot
->     undo the final stop before the descriptors are released.
->
-> Would one of these be a better final quiesce before the release?
->
-> - Call the existing __nixge_device_reset() on both channels here. It
->   writes XAXIDMA_CR_RESET_MASK and waits for it to clear.
-> - Wait for the halted bit before releasing the descriptors.
->
-> >       nixge_hw_dma_bd_release(ndev);
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but nixge_hw_dma_bd_release()
-> frees rx_bd_v, the RX skbs, tx_skb and tx_bd_v without setting the
-> pointers back to NULL. What happens on the next ifup if an allocation in
-> nixge_hw_dma_bd_init() fails?
->
-> For example, if dma_alloc_coherent() for tx_bd_v fails, tx_bd_v is NULL.
-> rx_bd_v and tx_skb still hold the addresses that the previous
-> nixge_stop() freed:
->
-> nixge_open()
->   nixge_device_reset()
->     nixge_hw_dma_bd_init()
->       out:
->         nixge_hw_dma_bd_release()
->
-> The release then does the following with stale pointers:
->
-> - Walks the freed rx_bd_v ring.
-> - Calls dma_unmap_single() and dev_kfree_skb() on skbs that were already
->   freed.
-> - Calls dma_free_coherent() on rx_bd_v a second time.
-> - Calls devm_kfree() on a tx_skb that is no longer on the devres list.
->
-> If the failure happens partway through the RX skb loop, the release also
-> unmaps descriptors whose phys field was never filled in.
->
-> nixge_device_reset() only logs the error:
->
->         if (nixge_hw_dma_bd_init(ndev))
->                 netdev_err(ndev, "%s: descriptor allocation failed\n",
->                            __func__);
->
-> So nixge_open() still returns success with NULL or freed rings.
-> nixge_start_xmit() and the IRQ handlers then use those rings. The next
-> nixge_stop() calls nixge_hw_dma_bd_release() on the same stale pointers
-> again.
->
-> Should the release set the pointers to NULL, and should
-> nixge_device_reset() return the -ENOMEM to nixge_open()?
->
-> [Severity: Medium]
-> This is also a pre-existing issue, but does nixge_stop() leak the pending
-> TX skbs and their DMA mappings? nixge_hw_dma_bd_release() frees the
-> tx_skb array and tx_bd_v without first calling nixge_tx_skb_unmap() on
-> each entry:
->
->         if (priv->tx_skb)
->                 devm_kfree(ndev->dev.parent, priv->tx_skb);
->
-> TX skbs are only unmapped and freed in two places:
->
-> - nixge_start_xmit_done(), on a TX completion interrupt.
-> - nixge_dma_err_handler().
->
-> Some TX descriptors may still be pending when nixge_stop() clears
-> RUNSTOP and frees the IRQs. For example, the link may have gone down, or
-> a completion interrupt may be held back by coalescing. Are those skbs
-> and their mappings then lost on every ifdown?
->
-> [Severity: Medium]
-> This is another pre-existing issue, not introduced by this patch, but the
-> nixge_open() error paths skip this release entirely.
-> nixge_device_reset() allocates the rings, allocates and maps 128 RX
-> skbs, and sets RUNSTOP on both channels. If of_phy_connect() or either
-> request_irq() fails, nixge_open() takes these paths:
->
->         phy =3D of_phy_connect(ndev, priv->phy_node,
->                              &nixge_handle_link_change, 0, priv->phy_mode=
-);
->         if (!phy)
->                 return -ENODEV;
->     ...
-> err_rx_irq:
->         free_irq(priv->tx_irq, ndev);
-> err_tx_irq:
->         napi_disable(&priv->napi);
->         phy_stop(phy);
->         phy_disconnect(phy);
->         tasklet_kill(&priv->dma_err_tasklet);
->
-> Neither path calls nixge_hw_dma_bd_release() or stops the DMA. Do the
-> coherent rings, the RX skbs and their mappings leak here, with RX DMA
-> still running into them?
->
-> The next nixge_open() overwrites tx_bd_v, tx_skb and rx_bd_v, so these
-> allocations can never be reclaimed.
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261003041242.650599-1-mhun512%40gmail.com
+Fixes: 492caffa8a1a ("net: ethernet: nixge: Add support for National Instruments XGE netdev")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+Changes in v2:
+- Wait for DMA reset completion; retain buffers and reject reopen on timeout.
+
+Based on net commit 6dc989ea46b96ce170840174b4a38c4a387fb005.
+No hardware testing was performed.
+
+ drivers/net/ethernet/ni/nixge.c | 33 ++++++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/ni/nixge.c b/drivers/net/ethernet/ni/nixge.c
+index 230d5ff..878ca67 100644
+--- a/drivers/net/ethernet/ni/nixge.c
++++ b/drivers/net/ethernet/ni/nixge.c
+@@ -185,6 +185,7 @@ struct nixge_priv {
+ 	void __iomem *dma_regs;
+ 
+ 	struct tasklet_struct dma_err_tasklet;
++	bool dma_stop_failed;
+ 
+ 	int tx_irq;
+ 	int rx_irq;
+@@ -391,7 +392,7 @@ out:
+ 	return -ENOMEM;
+ }
+ 
+-static void __nixge_device_reset(struct nixge_priv *priv, off_t offset)
++static int __nixge_device_reset(struct nixge_priv *priv, off_t offset)
+ {
+ 	u32 status;
+ 	int err;
+@@ -407,6 +408,8 @@ static void __nixge_device_reset(struct nixge_priv *priv, off_t offset)
+ 				     1000);
+ 	if (err)
+ 		netdev_err(priv->ndev, "%s: DMA reset timeout!\n", __func__);
++
++	return err;
+ }
+ 
+ static void nixge_device_reset(struct net_device *ndev)
+@@ -869,6 +872,10 @@ static int nixge_open(struct net_device *ndev)
+ 	struct phy_device *phy;
+ 	int ret;
+ 
++	/* A failed stop retained buffers which DMA may still be using. */
++	if (priv->dma_stop_failed)
++		return -EIO;
++
+ 	nixge_device_reset(ndev);
+ 
+ 	phy = of_phy_connect(ndev, priv->phy_node,
+@@ -911,6 +918,7 @@ static int nixge_stop(struct net_device *ndev)
+ {
+ 	struct nixge_priv *priv = netdev_priv(ndev);
+ 	u32 cr;
++	int ret;
+ 
+ 	netif_stop_queue(ndev);
+ 	napi_disable(&priv->napi);
+@@ -920,6 +928,7 @@ static int nixge_stop(struct net_device *ndev)
+ 		phy_disconnect(ndev->phydev);
+ 	}
+ 
++	/* Stop DMA while the completion IRQ handlers are still installed. */
+ 	cr = nixge_dma_read_reg(priv, XAXIDMA_RX_CR_OFFSET);
+ 	nixge_dma_write_reg(priv, XAXIDMA_RX_CR_OFFSET,
+ 			    cr & (~XAXIDMA_CR_RUNSTOP_MASK));
+@@ -927,11 +936,29 @@ static int nixge_stop(struct net_device *ndev)
+ 	nixge_dma_write_reg(priv, XAXIDMA_TX_CR_OFFSET,
+ 			    cr & (~XAXIDMA_CR_RUNSTOP_MASK));
+ 
+-	tasklet_kill(&priv->dma_err_tasklet);
+-
++	/* Remove both producers before draining the error tasklet. */
+ 	free_irq(priv->tx_irq, ndev);
+ 	free_irq(priv->rx_irq, ndev);
+ 
++	tasklet_kill(&priv->dma_err_tasklet);
++
++	/* Error recovery may have restarted DMA and enabled interrupts. */
++	cr = nixge_dma_read_reg(priv, XAXIDMA_RX_CR_OFFSET);
++	nixge_dma_write_reg(priv, XAXIDMA_RX_CR_OFFSET,
++			    cr & ~(XAXIDMA_CR_RUNSTOP_MASK | XAXIDMA_IRQ_ALL_MASK));
++	cr = nixge_dma_read_reg(priv, XAXIDMA_TX_CR_OFFSET);
++	nixge_dma_write_reg(priv, XAXIDMA_TX_CR_OFFSET,
++			    cr & ~(XAXIDMA_CR_RUNSTOP_MASK | XAXIDMA_IRQ_ALL_MASK));
++
++	/* Either channel's reset quiesces the entire AXI DMA engine. */
++	ret = __nixge_device_reset(priv, XAXIDMA_TX_CR_OFFSET);
++	if (ret) {
++		/* Retain DMA buffers and prevent a subsequent open replacing them. */
++		priv->dma_stop_failed = true;
++		netdev_err(ndev, "DMA stop failed; retaining DMA buffers\n");
++		return ret;
++	}
++
+ 	nixge_hw_dma_bd_release(ndev);
+ 
+ 	return 0;
+-- 
+2.53.0
+
