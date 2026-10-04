@@ -1,66 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E0132B100;
-	Sun,  4 Oct 2026 16:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F74F246781;
+	Sun,  4 Oct 2026 16:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791131433; cv=none; b=glMvyW8wwi0FfSpEJFfNP0cmih+C/BWPu2mrSWWCeKTIox+B3g38IFCatIduvac+hlaTFdSRy/sniV7VOR+nO61r8/uctIArkRRXbiFqdRCCKLsJd2tP2aZvW0v7EK71moL6z0sxH504zCuexC3sRLHtfh0FRXoqw12pqo9lLZQ=
+	t=1791131499; cv=none; b=ngLnWV+TNy45oClHjXaQ0cBcGZmE5g5GFHLeF8gRTCqi7j9sWQdX9eKM8qmzWzk5/zt6Pnwb0sabnQZJPi8YMlKGdSh1lRorxwnR90zA+rB/7qiD0uGQSbn0ukU6GVwpDiGq4ozcHfBvhfen6HVA+EN81o9QNIhzg8oIgjUhWvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791131433; c=relaxed/simple;
-	bh=1PhH179gsuOt8b03NLM1uj8nRWinWC2B0Sk9mz2+GCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Unc4A+2+liWcuqjHgcK6+ljEOtUw94h8p+OrSNzrIdSpNkTaPCusNeNRKERb9TI2jaMGlV6FjvFUBQxmHBaKD5hPT2eHw0FEcqRGDTxbC7WLio+yBwja2mzlRjWYpTvVWD13AEOZ14Ty8KQ5LikPcTy9OpMs1gS7Nh3ZEPerO1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBK7ivaT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791131499; c=relaxed/simple;
+	bh=8P67gz19cpgeFJPOMVt1SSWjvPa/gxhRq2QRe35w0HM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fob1RSAWFez3kuJdiwcqTj38MbsArgsB4aOp4aF0VPmQm+JdI6R+iKzyHGKsX0sE5tTo5ePhCrfSxd4mowp+t73mPiRbiE2aoqkfus4oGrIvtGf3HQp1U1AZlG3ce5lqdh7NpPSq/5ZSf3b+zpkepHRzLv30QmoBLfCpTL2AU0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLgblLRV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBK7ivaT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4611F00893;
-	Sun,  4 Oct 2026 16:30:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLgblLRV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58D81F0089B;
+	Sun,  4 Oct 2026 16:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791131431;
-	bh=SKrRD/RbvtksCwyJOHSUpOj7N0EZFsk0+D6uNzFV8a8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oBK7ivaTxkhelb6UIfQYJigSjV+5VH29JhG+kaN+oMthfm1X87ZSP6TbcCxB/edkb
-	 IFnBD8YNBWs/2cfsVM9TwwAdNApGxezhSG7lqa7ENQ6GRaDmZ7Kn3s205W0iY65NpZ
-	 De+YsTAcIYO70pQKxPn+K5hvdXeFNqB2GBOF2poIQnexNgyUkp1WWJ/gqrHSilRwaG
-	 0Tb6IaCGQ5mOfHzwl/McE7ij2x4G/7pyFd9AZpM2jCqLqfFMMpTYb+3+hzDotfnkTb
-	 BJJbbKDdO7VfY6JKJrqF/N63H2rFsz3HFwq4hhxomG5Sl3CY5c5linB7grbD+Wrgox
-	 xpet6mik0SKpg==
-From: Sasha Levin <sashal@kernel.org>
-To: Jean-Paul Sergent <jpsergent@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Kees Cook <kees@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>
-Subject: Re: [Bug Report] fortify false-positive + real overread in skb_metadata_dst_cmp (geneve, gro_cell_poll)
-Date: Sun,  4 Oct 2026 12:29:51 -0400
-Message-ID: <2026-10-04-1-daily-reply-0013-skb-metadata-dst-cmp-fixes-tag@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261003230533.1650829-1-jpsergent@gmail.com>
-References: <20261003230533.1650829-1-jpsergent@gmail.com>
+	s=k20260515; t=1791131496;
+	bh=pmLmCHhZUkng1a1sJsVWurObbYX5gzaqi+ICK+jZ02A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YLgblLRVb2UJ1uybJdbAh5CkyQV0wIDLlYNs/81LP1rCVJ5ab35wFfxZBcEOCCwmX
+	 w3zmzi1Yfm3hBAxoRvAZhjKP+qlJ3PDif8MsrYiw80ECM45gdw17heZ534D9GPl7C7
+	 Xd0gBXpQ0IliUCymjw1xIMdxUIoECba4OOMq53pk4RdMG71ZkXGqOM6BE6IxHOdAqi
+	 cGy1oDXELWxnij2MHzdopHv3/9s2p4S6ACshwYPDRjZ1vhV6lBgvpiHy9SYPezz5d0
+	 wFGED41QhyScmUudpLkxoQZ0wd0hb1aiipLgoB3TqWmVXQv1HLjvCq3rKn9L5Pk+IN
+	 NqjGCa4mLcO3Q==
+Date: Sun, 4 Oct 2026 17:31:30 +0100
+From: Will Deacon <will@kernel.org>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] vhost/vsock: size receive SKBs from declared
+ payload
+Message-ID: <asJ_Yt2kGhkG8b2E@willie-the-truck>
+References: <20261004073419.4039011-1-4ncienth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261004073419.4039011-1-4ncienth@gmail.com>
 
-> Unless you see any issue with using 3fcece12bc1b, I will post v3 with that tag
-> once the 24-hour waiting window from v2 closes.
+On Sun, Oct 04, 2026 at 04:34:19PM +0900, Daehyeon Ko wrote:
+> vhost_vsock_alloc_skb() allocates an skb from the total guest descriptor
+> length before reading hdr->len.  Descriptor capacity and declared payload
+> length are independent, so a guest can supply a large descriptor with a
+> zero or short payload.
+> 
+> On Linux v7.2, 455 zero-payload packets with 64 KiB descriptors retained
+> 30,255,680 bytes on a 256 KiB receive buffer while rx_bytes and buf_used
+> stayed zero.  A full-payload control retained 265,984 bytes.  The existing
+> SKB_TRUESIZE(0) budget caps skb count but does not account for the
+> descriptor-sized allocation.
 
-No objection, that is the right tag. 3fcece12bc1b ("net: store
-port/representator id in metadata_dst") dropped the options_len equality
-check that ce87fc6ce3f9 ("gro: Make GRO aware of lightweight tunnels.")
-had.
+Are you saying that we leak the descriptor memory or that we don't account
+for it properly or something else? I'm trying to understand why the
+zero-payload part is important.
 
--- 
-Thanks,
-Sasha
+> Repeating this across connections can exhaust host kernel memory.
+> 
+> Trimming after allocation is insufficient.  Linear skbs retain their full
+> head, while a nonlinear payload exceeding head tailroom can retain its
+> first page fragment.
+
+Seems like a weird paragraph to include here... that's commentary on why
+you did a v2, no?
+
+> Copy the header into a stack object, validate hdr->len before allocating,
+> and size the skb from the declared payload plus the header.  This keeps the
+> allocation proportional to receive accounting for both linear and
+> nonlinear skbs.
+> 
+> Use payload_len > len - sizeof(hdr) for validation.  This avoids addition
+> overflow on 32-bit hosts and ensures payload_len fits the subsequent
+> int-length copy path.
+> 
+> Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers")
+
+Are you sure about this Fixes tag? The linear allocation before that
+patch doesn't look much different when considering the report above (which
+is a little hard to follow given that it's the usual LLM-style of prose).
+
+Will
