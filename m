@@ -1,240 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59784369D4A;
-	Sun,  4 Oct 2026 16:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791129779; cv=none; b=DG5fIExLwYd2zgX38YlhqXwKX0pIsc5c4X6j4Kn77oiLIEtLrgVLudt330i+5jUBtbQSIXvkBGQ639LbOAIcUQpTrb4deZjpK2pUWW+WzsD0pfFq0OiTqa764tSMszhZzcQ36LxqqgLcoV9iITcY9bmFOv7LoV8CZL/Qm85p214=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791129779; c=relaxed/simple;
-	bh=5hlhdfTYDhRJBR3smWk7TuxzZLkde3K2fj5nUX6XO6k=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SFudG6tdzgZqyDlCK1STAfVyuE2TibFRAgV6eCKTw75V4iG4KQ0095iBW6uQVNKENgxLaVCU1RbMEKGyX5StR03RZJFtpal5CCLvWltZVeIkK+lKigeF203W9p6ux0bfC1v31RfQgMhWvXQrm35WVlGzXE9kRm8FgiYIBpQXvaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXmsEzmE; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A91B37C0EC
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 16:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791129941; cv=pass; b=j9sBvP87URyhC53sKUYf5F+C5aTeXz2dEwXoj9/kjxdd3j+zQFK5FzmqkSJFq/OYCWZ7Ok+7BfZsNxqjgoPpGAhgbNl2ONOFzrWfGiN9jHWpCJAPxQ633XrcJQ7sSmu3AkqN0QnVQWyTSVJcjabzbGruOTEWd+4zndSgoxvooiU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791129941; c=relaxed/simple;
+	bh=JqhgSbKXiRs9KJieJ1Lo+MaB0d6v2jx8N12NDJx+2Yk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cffLh7ksFsq5kt8j+DRirqsAewNMcDSjIdr3Jgf+c6KtzveLfBhiSSSLsG5q8cf197/zOJtXz5iXVAK5beoMCOzS6TJHPEdWGjmVTFVcrYRDadCZiPwxBCmRL2VRSnHWIfkSWwpQktA/jVqAfA55FEJgCEVD/ZHr3B+zeBZAdwA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=RjGZsGAq; arc=pass smtp.client-ip=74.125.224.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXmsEzmE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6EF1F00898;
-	Sun,  4 Oct 2026 16:02:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791129778;
-	bh=WjS4aUEzoXoabvArkYPhbhiVegpeiFFThfHmZhXKFOw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FXmsEzmES5+9V7VZq/lq3dQq9NNsScZW6LzROEJi01qA8Tgr06x+Wiz1CEP7alzcU
-	 StX71eeiPakT5CLnazXd5AWr1/p4ooe0MHRLyMz8l2Rp0pbepNpJx2oyHhmWaF6vI0
-	 1AjjrlQomDkeO0sft0zFkmYSykAa3j5rca3g7uj9R9BfkCIMmTw1i6gS6sHYpw3af+
-	 3iRajGocf1l5bDiqpP59rFjSniMcxru/RX0RBKGrwlH59iVBkiqGq4tXrd7WeChvEl
-	 lxlmmeiIS/29YsRbvT1ceLrOlP7LFPuMnca1fbKtMn68bMsul7TKmG5F13dI3JC9No
-	 /hZ4Ozltl8QgQ==
-Subject: Re: [PATCH net-next 5/5] hv_netvsc: let the core take XDP off a
- netvsc device that is going away
-From: netdev-bot+sashiko@kernel.org
-To: kuba@kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
- longli@microsoft.com, linux-hyperv@vger.kernel.org, hawk@kernel.org,
- andriin@fb.com, stable+noautosel@kernel.org
-Date: Sun, 04 Oct 2026 16:02:57 +0000
-Message-ID: <179112977709.434549.14979338946585736323@kernel.org>
-In-Reply-To: <20261001014131.310771-6-kuba@kernel.org>
-References: <20261001014131.310771-6-kuba@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="RjGZsGAq"
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e50968489so662649d50.0
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 09:05:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791129939; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GIPjUlh1W2/dpvLqV8YOe6xNANFRo6lMMLganxXhkRZ2jKLgzNXBI3bFZ052L8gAE7
+         8gDV5HI9w495FUjbIADp+Gs55CyxcfjA2wiD8hukjQ/YwzIp09WEtobuRkmfbyOjxKJf
+         BeckbTDifis4AdBfps1/REih3qKrhlwGAqvfXdWEjzD06U/CifnmodbPDTc29OSPfg/1
+         TQajzmCeXVJuAK7RcegEFKCRNKGPTvSL4W44rdL0Z5dNKOgHZR9hAMZgf2C5lWCzHyGw
+         yeI2ZjViLq9VmpnZ1Mmxigd5/ys/LdL0SIdvVBsevL6/EFi4pIax2XxpE3qGZjIaGrEq
+         VYCA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=y3fsU5omFgw6BhNB+mUuwA3rZgfGs6fxlIGxVAPmPAU=;
+        fh=kDE0JXKkIv2X4wwfdXQ5un52mZTUKyy+R8gbCEeMDWs=;
+        b=SVEdLt7dxnjh3EFGT82lrR/KHzxUi3LyEkE6hWyFGie+bTmaUTqjFcSQfLKUF1dJk/
+         TFy7VA9ZSQvYmooZuXupFr6CP591ZwRiNreiXwn+8YRg7U3Dfq9g23HH6ZN1ENQkFlXj
+         4swi0BLq7PZ7yZ+ldjjtai4OVBYfoU0rU8VnW2zFUjOeQwtYsH0lE2Cm5yxJ3CVYN4qp
+         235gPlYio0Kylq5OOMmKZBgfWmHvSqBsna4cYjsIX86NNp1IRSrTyCMOL6IYN1Ldujc3
+         v8b+1xy6mGLguONTYPLSo8MF8+jfk/sSH5KuOvynF4nCtKh0FTni0+OQOYlbpJXtvH9g
+         W8gA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bairaktaris.de; s=google; t=1791129939; x=1791734739; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y3fsU5omFgw6BhNB+mUuwA3rZgfGs6fxlIGxVAPmPAU=;
+        b=RjGZsGAqhhSreoarXDoOvhzfpy3W/aOihmSVvX3Tf9P2vktJ2e6wWDjLIdVPrpjh1D
+         oschrti25pzjEp6Mnwk5tiZKjiopvhZ6PS2DbllQr7ta2pDNWnE0EuT85UzqWdfHMlCh
+         saoVnuiF4AUA6Ldbc9TYJOaaXNBmO9wTz/TTeex4BUacJeZZrS7VPRi5F0AsFenJmXPM
+         Sgn6CmXMAq2bhzDUmzeXvTrTE/2Zj0wYyQAl1gGWJ77mvGSX6T9qkcvM+LfLp7q63jKO
+         303rmGpSP1Aa33AGwS1cC4SdaT2DgMuRi7/M4z1QemGdjhq5++ndolRtCJ+teG8PHDOo
+         BG/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791129939; x=1791734739;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=y3fsU5omFgw6BhNB+mUuwA3rZgfGs6fxlIGxVAPmPAU=;
+        b=GvkEnAeKmL/xX5Ki0/If77uVei3nnMSm/4wK4pw4nfdWxt1JQ2vRaQiA/zfpafazgD
+         eJp/+hkeElrTBIPxRNC1tLn0SvVJx6kefOIidxCU9fgmlMm/dBQQoKUQn2NNHxy3JR+4
+         p8zmqDr6aKnwIgchDzqH9jMyvTQe1ZmcrLWkfIlTquWGjSTdqzcpkKBolTLf/RnCoyn9
+         hH57UW8reUTonAJQmnWjoXsLvTkut/0khgVHYPOqY15x+bCHKE+6kiTwHQ0kY5kEoL+i
+         GUs44ZIF3zHX9qAGuY9TvbWmhIHnHHwfAh1WcMvqHQXoDC/XFBl7TWUjMb7C1rhi4klS
+         3AGQ==
+X-Gm-Message-State: AFq9FYJw9arnEWh1FTfRQsvDBrE9Wwe/2nvVxp5QhKTC9jodf6Cq3HUb
+	P0r0mcam+XDfguaufst3ON9I5ye6ATf/LQxEPVaNR00CJKh95sRgBRhEFcgdJiaSI/IBEGB2/ed
+	anUcma8HHONaHwFjTLEDmWonDTY9hbF5epREDq1dj
+X-Gm-Gg: AYBFou37xwIj8ZLuVbwhZ7IlSZRAb6B/RRsYP67DNlyipLy6H3IEzH/Ud47dAx7OLGc
+	wVhFR7ZFy6WNgPDvnEHMjRva75SxmupB91EhpSbMb3hbqgDTfgvtwOIbf4GzEAD+XHzqTwqTpgj
+	4PNXDYvlKh9Fo5gxb0698Pw4fAtlhnDr7EgHKGc9Ht2LCUccucFrV56iJ+dPW+5ExweBw8iUyXA
+	G7qt/WXNFvdetZMLclRESetNtfnb0bRTwEO1MYyHHFkmKD/sL7cSM7lP2rXMQqdYyKX4fLav2FY
+	RYk4vy1mLd5e9/xebMvamIgB+aJOXziUsmt9SK+J4dXtsGgNA4MH42eyVbhZUNG5hdD6lqE46YT
+	tqlMcWqrhYfpzcBH1Hu0xo8WrD/55n8n5BKJ1S57PmZg92hl8g5dP9Iu9OCYiuZuspf4LypulPq
+	Cx0QGP9eCaAX62QZqp56CYmWxO9vONUuwI9yKWR3lSibW+0wF122OmVZD1cmIr18b4Xc8LHR8nt
+	BxD4suRWPFiP3WsGm+lhNGE3VtpPq7vNmyyzWKl4HoLKXnd7hM9kFL3qT/GAeTUdHP11w==
+X-Received: by 2002:a05:690e:1616:b0:672:be40:5eaf with SMTP id
+ 956f58d0204a3-677ac079547mr3282301d50.54.1791129938951; Sun, 04 Oct 2026
+ 09:05:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261004124254.3525496-1-julius@bairaktaris.de> <01600be7-3d8b-48b2-a59a-1125eb452714@blackwall.org>
+In-Reply-To: <01600be7-3d8b-48b2-a59a-1125eb452714@blackwall.org>
+From: Julius Bairaktaris <julius@bairaktaris.de>
+Date: Sun, 4 Oct 2026 16:05:02 +0000
+X-Gm-Features: AclHuK90kbEfr1-jBe_BFIZ77DR1u5zlZLof02Y-HmHYvTegFl8NjlWTcp5jAKI
+Message-ID: <CAC1t37+4-Pf3j_x4_cYj-+_hj50W66f7TZWQaLavPJwSzmAf5Q@mail.gmail.com>
+Subject: Re: [PATCH net] net: bridge: fdb: hold hash_lock when an entry roams
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: netdev@vger.kernel.org, bridge@lists.linux.dev, 
+	Ido Schimmel <idosch@nvidia.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Nik,
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Thanks for the review. Sounds reasonable to me and I will look into it.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Julius
 
-- [Medium] The new branch in netvsc_bpf()
-  (drivers/net/hyperv/netvsc_bpf.c:206-213) returns success for…
-- [Medium] The fix treats a non-NULL ndev_ctx->saved_netvsc_dev_info as
-  meaning 'suspend parked the program and netvsc_resume() will put it…
-
---
-
-hv_netvsc: let the core take XDP off a netvsc device that is going away
-
-With this patch, netvsc_bpf() returns success for an XDP program removal
-when nvdev is gone, no VF is linked and suspend has not saved its config.
-The aim is to stop dev_xdp_uninstall() from hitting its WARN_ON() on
-unbind or hot-remove of a netvsc device running native XDP. It also lets
-the program be dropped from the XDP dispatcher.
-
-> diff --git a/drivers/net/hyperv/netvsc_bpf.c b/drivers/net/hyperv/netvsc_bpf.c
-> index 951c19ce15ebc..7fe38574f66f6 100644
-> --- a/drivers/net/hyperv/netvsc_bpf.c
-> +++ b/drivers/net/hyperv/netvsc_bpf.c
-> @@ -204,6 +204,12 @@ int netvsc_bpf(struct net_device *dev, struct netdev_bpf *bpf)
->  	int ret;
->  
->  	if (!nvdev || nvdev->destroy) {
-> +		/* The channels and the VF are gone, and so is the program,
-> +		 * unless suspend parked it for netvsc_resume() to put back.
-> +		 */
-> +		if (bpf->command == XDP_SETUP_PROG && !bpf->prog && !vf_netdev &&
-> +		    !ndevctx->saved_netvsc_dev_info)
-> +			return 0;
-
-[Severity: Medium]
-Does !vf_netdev here guarantee that the program is gone from the VF?
-
-netvsc_unregister_vf() takes netvsc's program back from the VF only while
-nvdev exists and the channels still have a program. It clears vf_netdev
-in every case:
-
-drivers/net/hyperv/netvsc_drv.c:netvsc_unregister_vf() {
-    ...
-	nvdev = rtnl_dereference(net_device_ctx->nvdev);
-	if (nvdev && netvsc_xdp_get(nvdev)) {
-		netdev_lock_ops(vf_netdev);
-		netvsc_vf_setxdp(vf_netdev, NULL);
-		netdev_unlock_ops(vf_netdev);
-	}
-
-	netdev_upper_dev_unlink(vf_netdev, ndev);
-	RCU_INIT_POINTER(net_device_ctx->vf_netdev, NULL);
-    ...
-}
-
-nvdev can be NULL while the VF is still linked and still runs netvsc's
-program. netvsc_detach() clears XDP only on the channels:
-
-drivers/net/hyperv/netvsc_drv.c:netvsc_detach() {
-    ...
-	netvsc_xdp_set(ndev, NULL, NULL, nvdev);
-    ...
-}
-
-Both attaches can then fail in netvsc_set_channels().
-netvsc_change_mtu() and netvsc_set_ringparam() follow the same pattern:
-
-drivers/net/hyperv/netvsc_drv.c:netvsc_set_channels() {
-    ...
-	ret = netvsc_attach(net, device_info);
-	if (ret) {
-		device_info->num_chn = orig;
-		if (netvsc_attach(net, device_info))
-			netdev_err(net, "restoring channel setting failed\n");
-	}
-    ...
-}
-
-After that, nvdev stays NULL. The VF still holds the program, along with
-the reference that netvsc_vf_setxdp() took through
-netif_xdp_propagate().
-
-A later unbind, hot-remove, rmmod or netns move would then do this:
-
-netvsc_unregister_vf()
-    nvdev == NULL, so netvsc_vf_setxdp(vf_netdev, NULL) is skipped
-    vf_netdev = NULL
-dev_xdp_uninstall()->dev_xdp_install(NULL)->netvsc_bpf()
-    nvdev == NULL, vf_netdev == NULL, saved_netvsc_dev_info == NULL
-    return 0
-
-At that point the core treats the program as gone. The former VF keeps
-running netvsc's XDP program on its traffic, and nothing records the
-program in the VF's xdp_state.
-
-Before this patch, this state at least triggered the WARN in
-dev_xdp_uninstall(). The gating in netvsc_unregister_vf() comes from the
-earlier commit in the series, "hv_netvsc: treat the VF's XDP program the
-way bonding treats a slave's". The new guard and comment assume that
-gating covers every case.
-
-Could the take-back in netvsc_unregister_vf() check what netvsc has
-recorded, for example dev_xdp_prog_count(ndev), instead of the channel
-state? Alternatively, should the guard here stop treating !vf_netdev as
-proof that the program was removed?
-
-[Severity: Medium]
-Can saved_netvsc_dev_info be non-NULL here even though netvsc_resume()
-will never run to put the program back?
-
-netvsc_suspend() saves the config, which takes a bprog reference through
-netvsc_devinfo_get(), and only then calls netvsc_detach():
-
-drivers/net/hyperv/netvsc_drv.c:netvsc_suspend() {
-    ...
-	ndev_ctx->saved_netvsc_dev_info = netvsc_devinfo_get(nvdev);
-	...
-	ret = netvsc_detach(net, nvdev);
-    ...
-}
-
-netvsc_detach() clears the channel programs first and can fail after
-that:
-
-drivers/net/hyperv/netvsc_drv.c:netvsc_detach() {
-    ...
-	netvsc_xdp_set(ndev, NULL, NULL, nvdev);
-	...
-		ret = rndis_filter_close(nvdev);
-		if (ret) {
-			...
-			return ret;
-		}
-
-		ret = netvsc_wait_until_empty(nvdev);
-		if (ret) {
-			...
-			return ret;
-		}
-    ...
-}
-
-The error goes back through vmbus_suspend(), the noirq callback. Because
-the callback failed, device_suspend_noirq() does not set
-is_noirq_suspended. device_resume_noirq() then skips the device, so
-netvsc_resume() never runs. netvsc_resume() is the only code that puts
-and clears saved_netvsc_dev_info, and netvsc_remove() does not touch it.
-
-A later unbind or hot-remove with native XDP still attached would then
-go like this:
-
-netvsc_remove()
-    netvsc_xdp_set(net, NULL, NULL, nvdev)
-    rndis_filter_device_remove()    /* nvdev becomes NULL */
-    unregister_netdevice()
-        dev_xdp_uninstall()
-            dev_xdp_install(NULL)->netvsc_bpf()
-                saved_netvsc_dev_info != NULL
-                return -ENODEV
-            WARN_ON(...)
-
-On this path the WARN_ON() in dev_xdp_uninstall() that this patch is
-meant to remove still fires. bpf_prog_change_xdp() is also skipped, so
-the XDP dispatcher keeps its reference to the program.
-
-The commit message gives the reason for the exclusion as:
-
-  "unless suspend parked the program for resume to put back, as the core
-  would then lose track of it"
-
-dev_xdp_uninstall() drops xdp_state and the core's reference no matter
-what the driver returns. Does that reason still hold on this path?
-
-The leaked devinfo and its bprog reference predate this patch, but the
-fix now depends on that stale pointer. Should saved_netvsc_dev_info be
-put and cleared on the netvsc_suspend() error path, and in
-netvsc_remove() before unregister_netdevice()?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001014131.310771-1-kuba%40kernel.org
+Am So., 4. Okt. 2026 um 13:44 Uhr schrieb Nikolay Aleksandrov
+<razor@blackwall.org>:
+>
+> On 04/10/2026 15:42, Julius Bairaktaris wrote:
+> > br_fdb_update() lets an entry roam to a new port without holding
+> > hash_lock. It notifies switchdev that the entry left the old port,
+> > writes the new port, then notifies the addition. When two CPUs receive
+> > the same source address on different ports, these steps interleave: a
+> > driver sees two deletions for one addition, or an addition for the port
+> > the other CPU wrote.
+> >
+> > DSA counts references to a host address on the CPU port. The extra
+> > deletion fails and the extra addition is never released:
+> >
+> >    qca-ppe 3a000000.ppe: port 5 failed to delete 02:5a:0b:a2:1a:46 vid 0 from fdb: -2
+> >
+> > With one address roaming between a DSA user port and a Wi-Fi AP port of
+> > the same bridge, the error appears 3-6 times per address when the two
+> > ports receive on different CPUs, and not at all when they share one CPU
+> > (4 runs each). With this change it does not appear (6 runs, different
+> > CPUs).
+> >
+> > Take hash_lock when the entry roams or its flags change, and send both
+> > notifications under it. The common case, where the entry neither roams
+> > nor changes, stays lockless.
+> >
+> > Fixes: 90dc8fd36078 ("net: bridge: notify switchdev of disappearance of old FDB entry upon migration")
+> > Assisted-by: Claude:claude-opus-5-5
+> > Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
+> > ---
+> >
+> > Notes:
+> >      net-next 941056f91907 ("net: bridge: fdb: factor out existing entry updates")
+> >      moves this code into __fdb_update(); the same change applies there.
+> >
+> >   net/bridge/br_fdb.c | 14 ++++++++++++--
+> >   1 file changed, 12 insertions(+), 2 deletions(-)
+> >
+>
+> Absolutely not, this was made intentionally. Taking the hash_lock would further kill learning
+> and roaming scaling. Surely switchdev drivers must have dealt with this for some time
+> now, if you'd like to fix it do it so the software path isn't affected.
+>
+> Cheers,
+>   Nik
+>
+>
+>
