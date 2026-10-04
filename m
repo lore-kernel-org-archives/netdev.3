@@ -1,267 +1,301 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B234052B5
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 10:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803FB420889
+	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 10:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791108505; cv=none; b=UKouR3YTmxuIF9NTPyrgPprOADeYCh3TI/2nLenOpZCVzB6ddxeizc1Pte54L8xQWBi/Wq3lDzX8QK3ZOhD3RsxGLL1d/zETSFcWYO8vPMOkkwXP7KIXWr6e7VDFttw3uE+c73rqvim+GfJSkPkW/4eapZP5U29w7qNqxY3iTS4=
+	t=1791108509; cv=none; b=lg957rC1m3A63b88QrOpI5CZd/bpT+pSHi/uDLxHtNzMxpURNhbRzuZqCPZYvnordZNHjDeqJb3J8oWRE8uTkIURYBz/Ev28T1O30ZsU/5lKnuS5L8m2KN4R094F24/NZLTH6nmw03/u/XXtQPrFavrkZr2djhSAPXSlWZSFDwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791108505; c=relaxed/simple;
-	bh=G/R6MGtCJ6DlmiEoXQTuAdjeifQTg6NvJ9XsvCp6R34=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iUgsYoLt+h9IpSCerTS0pk1BCMOeTYmnGFWIvyMSqIf874EYQ1RajpR71J3aayl71GocZOSl3jd5/nYGUq13+TzIspcixCbcaY6laf5qPdlmYTf9/LOAKRIphIStijKC46gGEOhx8JxJio/e1nPK2ABH4sbKBhFsXy3edjnidvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6rqwm7E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791108509; c=relaxed/simple;
+	bh=q7zMw39eX7VwWYPtl3F8V009Diybh6stzXg9hcDrQYg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NIODBxJ2ooa221BS7xmWhQiwXpEXft3BPdAx8TVDq1Tf4uQBKpvD8DLpQNgKL7yfsyD3NTscG5mZXLInpozf6YORIs2amokrWxB492iMmX28snkNFscXwXP381aXNcOsSVHa80jb1FFZeJvb/Ah7RT81K6Pf2bj2OahP2kJZ9/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOW/vBM8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6rqwm7E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E091F0089C
-	for <netdev@vger.kernel.org>; Sun,  4 Oct 2026 10:08:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOW/vBM8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3C71F000FF;
+	Sun,  4 Oct 2026 10:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791108504;
-	bh=vKoduvLX5z/YUM9feDBQJrglxz3zcKCNGZ5PZ6GJP60=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc;
-	b=T6rqwm7ESExS4MLIjLN0ngQpbcP+Y8CYI1EnkaCqr8ErbtEBknpYeBYC86m0tNRSl
-	 bnnGYRh2FWcvXBp4/NizZazdkSA5oEUHpOMVROyceCzZq9P/fjBWbXXNQiD2ui0x/w
-	 D6BLvGhBWlt6q8IGD6cmXV1J5CUIw3zWzcqvLQqg/BbbUyJecVlDGwqk48O27rHbAQ
-	 dyr7hRA6pY11WSrPiFg78UVsANR3d6foPtGTlvLQGyKaRqtlyE3S3xl4V8hxpMBLp2
-	 sToAdI52r3tNOCKZ0zwcV8rQROWHVnLblLigxrqgy9V0G1eqB1q0R9aRtWgrdpw4hZ
-	 dBWHmExJI4QLA==
-Received: by mail-lr2-f33.google.com with SMTP id 38308e7fff4ca-3a87e1f5c81so8156571fa.2
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 03:08:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz2hxKpChVAygPvnO8IYrh38TniQ6+o9bfPRUWDk+hY63qSi8a6vn6pH9uTC2zTINiX1v4p7Rk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKj0iNAO9WToxqmGehO7vmrOnphD/dprb8VEu7AZ8DtRJduCk9m
-	f93O0GJAMSl6ZZ0ltO+HnhS6s2OTKB1Z9N7S9P5JGy1p1cD9sfhe0YiqPG+hDeBJrh13w9ZwK4r
-	QOaCCMVsC2CoJxgU4gKkhcAZPZa8L4Gg=
-X-Received: by 2002:a05:651c:150e:b0:3a7:8372:61b7 with SMTP id
- 38308e7fff4ca-3a8877e6611mr23833891fa.25.1791108502268; Sun, 04 Oct 2026
- 03:08:22 -0700 (PDT)
+	s=k20260515; t=1791108507;
+	bh=rDSavNkTrMp/lP4PpVt9NeUHEf9vsBtk2+B+HnZLens=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=HOW/vBM8JIN8Iol1dpTd7RDvgqMU/aGpfJlrCXzU+4h7QzxByZmwU37KT6OXffvyD
+	 Fntuydf1qOVt+8rBgYtqgsvm/qnAgmlNdhaaTAE/9mnvRWepijKbOZgP886Vk9MxIy
+	 Tzbn78E5hP1UiCKWbEABDC7B1LHauPWUvP8NorkJ4VpkUTc8ATSoIzFZwDaZjHqeny
+	 SXzNQIZDMUYYIItklJPta3Pzk6e4wgVjbnCAnVw1yH4V1WFJPj5BPGNrbmDAom5VCd
+	 53VM1IJetdSpc/96x7Dn0AfUeQxvGr94aOd6CvThqoDVKwOa6GxPAjOKJOZVEUgGHb
+	 R8rZcR/M2t+tg==
+Subject: Re: [PATCH net 1/2] vti: fix tunnel device use-after-free across
+ async crypto resumption
+From: netdev-bot+sashiko@kernel.org
+To: q.h.hack.winter@gmail.com
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com,
+ herbert@gondor.apana.org.au, kuba@kernel.org
+Date: Sun, 04 Oct 2026 10:08:26 +0000
+Message-ID: <179110850671.434549.2584497019282941556@kernel.org>
+In-Reply-To: <20260930090813.73901-2-q.h.hack.winter@gmail.com>
+References: <20260930090813.73901-2-q.h.hack.winter@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech> <20260930-a733-clk-v5-4-11175b41cd2d@pigmoral.tech>
-In-Reply-To: <20260930-a733-clk-v5-4-11175b41cd2d@pigmoral.tech>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Sun, 4 Oct 2026 12:08:09 +0200
-X-Gmail-Original-Message-ID: <CAGb2v67hYTAMBDXOO7WUqyJCJT-iQcv5HPF_AWd=bi9g92cZgg@mail.gmail.com>
-X-Gm-Features: AclHuK_3WsWtq45ADBjf91lBHr1AAi5tH_px4YPNZFZZ2l_iDRXd9C8l96EONSU
-Message-ID: <CAGb2v67hYTAMBDXOO7WUqyJCJT-iQcv5HPF_AWd=bi9g92cZgg@mail.gmail.com>
-Subject: Re: [PATCH v5 4/8] clk: sunxi-ng: a733: Add PLL clocks support
-To: Junhui Liu <junhui.liu@pigmoral.tech>
-Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
-	Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, netdev@vger.kernel.org, 
-	Jerome Brunet <jbrunet@baylibre.com>, Enzo Adriano <enzo.adriano.code@gmail.com>, 
-	Andre Przywara <andre.przywara@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 29, 2026 at 7:28=E2=80=AFPM Junhui Liu <junhui.liu@pigmoral.tec=
-h> wrote:
->
-> Add PLL clock support for the main CCU of the Allwinner A733 SoC. The
-> structure is mostly similar to the sun55i, with the addition of a
-> PLL_REF clock that normalizes the hardware-detected DCXO/hosc frequency
-> (19.2MHz, 24MHz, or 26MHz) into a consistent 24MHz reference for all
-> subsequent PLLs.
->
-> Model the independently gated outputs of the peripheral, video, and DE
-> PLLs as programmable-divider child clocks, with each output gate modeled
-> separately. Follow the documented hierarchy for the derived peripheral
-> PLL outputs.
->
-> PLL_AUDIO0 uses SDM parameters from the vendor driver to provide a
-> 22.5792MHz * 4 output. PLL_AUDIO1 provides fixed /2 and /5 outputs and
-> does not expose fractional rates, but its SDM controls are modeled so
-> that stale firmware settings can be disabled when an integer rate is
-> programmed.
->
-> Tested-by: Jerome Brunet <jbrunet@baylibre.com>
-> Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
-> ---
->  drivers/clk/sunxi-ng/Kconfig           |   5 +
->  drivers/clk/sunxi-ng/Makefile          |   2 +
->  drivers/clk/sunxi-ng/ccu-sun60i-a733.c | 582 +++++++++++++++++++++++++++=
-++++++
->  3 files changed, 589 insertions(+)
->
-> diff --git a/drivers/clk/sunxi-ng/Kconfig b/drivers/clk/sunxi-ng/Kconfig
-> index 202e793dc754..cffa83056934 100644
-> --- a/drivers/clk/sunxi-ng/Kconfig
-> +++ b/drivers/clk/sunxi-ng/Kconfig
-> @@ -67,6 +67,11 @@ config SUN55I_A523_R_CCU
->         default ARCH_SUNXI
->         depends on ARM64 || COMPILE_TEST
->
-> +config SUN60I_A733_CCU
-> +       tristate "Support for the Allwinner A733 CCU"
-> +       default ARCH_SUNXI
-> +       depends on ARM64 || COMPILE_TEST
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
+
+Critical: 0 · High: 3 · Medium: 0 · Low: 0 (1)
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] Leaked net_device reference when a VTI tunnel uses an IPTFS SA.
+- [High] vti_rcv_cb() drops the only reference that keeps the VTI device
+  alive before its caller has finished using it.
+- [High] The dev_hold() added in vti_input() (net/ipv4/ip_vti.c:66) leaks
+  when xfrm_input() drops the skb through the early invalid-state check.
+
+Pre-existing issues:
+- [Low] Concern: the IPv6 VTI driver has the same unreferenced cached-
+  tunnel pattern and this patch does not fix it.
+
+--
+
+vti: fix tunnel device use-after-free across async crypto resumption
+
+This patch takes a reference on the VTI tunnel device in vti_input() when
+the tunnel pointer is cached in the skb control buffer. It drops that
+reference in vti_rcv_cb() on both the error and success paths, so the
+device stays alive across async crypto completion.
+
+> diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
+> index 3b80929994a00..9f44666139f8c 100644
+> --- a/net/ipv4/ip_vti.c
+> +++ b/net/ipv4/ip_vti.c
+> @@ -63,6 +63,8 @@ static int vti_input(struct sk_buff *skb, int nexthdr, __be32 spi,
+>  
+>  		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = tunnel;
+>  
+> +		dev_hold(tunnel->dev);
 > +
->  config SUN60I_A733_R_CCU
->         tristate "Support for the Allwinner A733 PRCM CCU"
->         default ARCH_SUNXI
-> diff --git a/drivers/clk/sunxi-ng/Makefile b/drivers/clk/sunxi-ng/Makefil=
-e
-> index d3702bdb7a23..3a39eb9287da 100644
-> --- a/drivers/clk/sunxi-ng/Makefile
-> +++ b/drivers/clk/sunxi-ng/Makefile
-> @@ -36,6 +36,7 @@ obj-$(CONFIG_SUN50I_H616_CCU) +=3D sun50i-h616-ccu.o
->  obj-$(CONFIG_SUN55I_A523_CCU)  +=3D sun55i-a523-ccu.o
->  obj-$(CONFIG_SUN55I_A523_MCU_CCU)      +=3D sun55i-a523-mcu-ccu.o
->  obj-$(CONFIG_SUN55I_A523_R_CCU)        +=3D sun55i-a523-r-ccu.o
-> +obj-$(CONFIG_SUN60I_A733_CCU)  +=3D sun60i-a733-ccu.o
->  obj-$(CONFIG_SUN60I_A733_R_CCU)        +=3D sun60i-a733-r-ccu.o
->  obj-$(CONFIG_SUN4I_A10_CCU)    +=3D sun4i-a10-ccu.o
->  obj-$(CONFIG_SUN5I_CCU)                +=3D sun5i-ccu.o
-> @@ -65,6 +66,7 @@ sun50i-h616-ccu-y             +=3D ccu-sun50i-h616.o
->  sun55i-a523-ccu-y              +=3D ccu-sun55i-a523.o
->  sun55i-a523-mcu-ccu-y          +=3D ccu-sun55i-a523-mcu.o
->  sun55i-a523-r-ccu-y            +=3D ccu-sun55i-a523-r.o
-> +sun60i-a733-ccu-y              +=3D ccu-sun60i-a733.o
->  sun60i-a733-r-ccu-y            +=3D ccu-sun60i-a733-r.o
->  sun4i-a10-ccu-y                        +=3D ccu-sun4i-a10.o
->  sun5i-ccu-y                    +=3D ccu-sun5i.o
-> diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c b/drivers/clk/sunxi-n=
-g/ccu-sun60i-a733.c
-> new file mode 100644
-> index 000000000000..430a535919c6
-> --- /dev/null
-> +++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
-> @@ -0,0 +1,582 @@
 
-[...]
+[Severity: High]
+Can this reference leak when the matching SA uses IPTFS mode?
 
-> +#define SUN60I_A733_PLL_VIDEO0_REG     0x120
-> +static struct ccu_nm pll_video0_clk =3D {
-> +       .lock           =3D BIT(28),
-> +       .n              =3D _SUNXI_CCU_MULT_MIN(8, 8, 11),
-> +       .m              =3D _SUNXI_CCU_DIV(1, 1), /* input divider */
-> +       .common         =3D {
-> +               .reg            =3D SUN60I_A733_PLL_VIDEO0_REG,
-> +               .hw.init        =3D CLK_HW_INIT_PARENTS_HW("pll-video0", =
-pll_ref_hws,
-> +                                                        &ccu_nm_ops,
-> +                                                        CLK_SET_RATE_GAT=
-E),
-> +       },
-> +};
-> +
-> +static const struct clk_hw *pll_video0_hws[] =3D {
-> +       &pll_video0_clk.common.hw
-> +};
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_video0_4x_clk, "pll-video0-4x",
-> +                                pll_video0_hws, SUN60I_A733_PLL_VIDEO0_R=
-EG,
-> +                                20, 3, BIT(27), 0);
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_video0_3x_clk, "pll-video0-3x",
-> +                                pll_video0_hws, SUN60I_A733_PLL_VIDEO0_R=
-EG,
-> +                                16, 3, BIT(26), 0);
+The only matching dev_put() calls are in vti_rcv_cb(). That means this
+relies on xfrm_input() calling the callback exactly once per skb.
 
-You probably want CLK_SET_RATE_PARENT on these child clks, otherwise their
-consumers can't properly set any rate they need?
+For an IPTFS SA, xfrm_input() dispatches to iptfs_input(), which always
+returns -EINPROGRESS:
 
-> +
-> +#define SUN60I_A733_PLL_VIDEO1_REG     0x140
-> +static struct ccu_nm pll_video1_clk =3D {
-> +       .lock           =3D BIT(28),
-> +       .n              =3D _SUNXI_CCU_MULT_MIN(8, 8, 11),
-> +       .m              =3D _SUNXI_CCU_DIV(1, 1), /* input divider */
-> +       .common         =3D {
-> +               .reg            =3D SUN60I_A733_PLL_VIDEO1_REG,
-> +               .hw.init        =3D CLK_HW_INIT_PARENTS_HW("pll-video1", =
-pll_ref_hws,
-> +                                                        &ccu_nm_ops,
-> +                                                        CLK_SET_RATE_GAT=
-E),
-> +       },
-> +};
-> +
-> +static const struct clk_hw *pll_video1_hws[] =3D {
-> +       &pll_video1_clk.common.hw
-> +};
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_video1_4x_clk, "pll-video1-4x",
-> +                                pll_video1_hws, SUN60I_A733_PLL_VIDEO1_R=
-EG,
-> +                                20, 3, BIT(27), 0);
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_video1_3x_clk, "pll-video1-3x",
-> +                                pll_video1_hws, SUN60I_A733_PLL_VIDEO1_R=
-EG,
-> +                                16, 3, BIT(26), 0);
+net/xfrm/xfrm_input.c:xfrm_input() {
+    ...
+		err = xfrm_inner_mode_input(x, skb);
+		if (err == -EINPROGRESS) {
+			if (async)
+				dev_put(dev);
+			return 0;
+		}
+    ...
+}
 
-Same for these two.
+That return skips xfrm_rcv_cb(). Only the outer skb has tunnel.ip4 in its
+cb. It comes back into vti_rcv_cb() through xfrm_input(skb, 0, 0, -2) only
+when __input_process_payload() reuses it as a complete first inner packet.
 
-> +
-> +#define SUN60I_A733_PLL_VIDEO2_REG     0x160
-> +static struct ccu_nm pll_video2_clk =3D {
-> +       .lock           =3D BIT(28),
-> +       .n              =3D _SUNXI_CCU_MULT_MIN(8, 8, 11),
-> +       .m              =3D _SUNXI_CCU_DIV(1, 1), /* input divider */
-> +       .common         =3D {
-> +               .reg            =3D SUN60I_A733_PLL_VIDEO2_REG,
-> +               .hw.init        =3D CLK_HW_INIT_PARENTS_HW("pll-video2", =
-pll_ref_hws,
-> +                                                        &ccu_nm_ops,
-> +                                                        CLK_SET_RATE_GAT=
-E),
-> +       },
-> +};
-> +
-> +static const struct clk_hw *pll_video2_hws[] =3D {
-> +       &pll_video2_clk.common.hw
-> +};
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_video2_4x_clk, "pll-video2-4x",
-> +                                pll_video2_hws, SUN60I_A733_PLL_VIDEO2_R=
-EG,
-> +                                20, 3, BIT(27), 0);
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_video2_3x_clk, "pll-video2-3x",
-> +                                pll_video2_hws, SUN60I_A733_PLL_VIDEO2_R=
-EG,
-> +                                16, 3, BIT(26), 0);
+In these other cases the outer skb is freed without any callback:
 
-And these two.
+  - consume_skb(defer) in __input_process_payload(), when the skb has a
+    frag_list, is head_frag, or cannot be reused
+  - kfree_skb(skb) in __input_process_payload() when there is no
+    first_skb (padding-only or continuation-only outer packets)
+  - kfree_skb(skb) in iptfs_input_ordered() when IPTFS header validation
+    fails
+  - the reorder window freelist in iptfs_input()
+  - the reassembly drop timer and state teardown that free ra_newskb
 
-[...]
+iptfs_alloc_skb() builds inner skbs with alloc_skb(), so their cb is zeroed
+and tunnel.ip4 is NULL. For those skbs vti_rcv_cb() returns 1, so they
+can't make up the missing dev_put().
 
-> +#define SUN60I_A733_PLL_DE_REG         0x2e0
-> +static struct ccu_nm pll_de_clk =3D {
-> +       .lock           =3D BIT(28),
-> +       .n              =3D _SUNXI_CCU_MULT_MIN(8, 8, 11),
-> +       .m              =3D _SUNXI_CCU_DIV(1, 1), /* input divider */
-> +       .common         =3D {
-> +               .reg            =3D SUN60I_A733_PLL_DE_REG,
-> +               .hw.init        =3D CLK_HW_INIT_PARENTS_HW("pll-de", pll_=
-ref_hws,
-> +                                                        &ccu_nm_ops,
-> +                                                        CLK_SET_RATE_GAT=
-E),
-> +       },
-> +};
-> +
-> +static const struct clk_hw *pll_de_hws[] =3D {
-> +       &pll_de_clk.common.hw
-> +};
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_de_4x_clk, "pll-de-4x", pll_de_hws,
-> +                                SUN60I_A733_PLL_DE_REG,
-> +                                20, 3, BIT(27), 0);
-> +static SUNXI_CCU_M_HWS_WITH_GATE(pll_de_3x_clk, "pll-de-3x", pll_de_hws,
-> +                                SUN60I_A733_PLL_DE_REG,
-> +                                16, 3, BIT(26), 0);
+IPTFS is a tunnel mode, so it passes xfrm_tunnel_check() on a VTI device.
+Once such an SA is configured, would normal traffic from the peer leak one
+VTI device reference per packet? If so, ip link del or netns teardown would
+block forever in netdev_wait_allrefs_any() with "waiting for vtiX to
+become free". This path did not leak before this patch.
 
-Same here. Do you need CLK_SET_RATE_PARENT?
+The follow-up commit "vti6: fix tunnel device use-after-free across async
+crypto resumption" takes the same unconditional hold in
+vti6_input_proto(), so ip6_vti looks like it has the same leak.
 
-The rest looks fine.
+[Severity: Low]
+This is a pre-existing issue, not one introduced by this patch.
+vti6_input_proto() in net/ipv6/ip6_vti.c also caches t in
+XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 without taking a device reference.
+vti6_rcv_cb() may later dereference t->dev, t->parms.i_key and t->net from
+an async crypto completion.
 
+The next patch in the series, "vti6: fix tunnel device use-after-free
+across async crypto resumption", adds dev_hold(t->dev) in
+vti6_input_proto() and matching dev_put() calls in vti6_rcv_cb(). That
+fixes the IPv6 side. It also inherits the leak and early-release
+questions raised here for IPv4.
 
-ChenYu
+Is the IPv6 side meant to be handled only by that follow-up?
+
+>  		if (update_skb_dev)
+>  			skb->dev = tunnel->dev;
+>  
+
+[ ... ]
+
+> @@ -109,10 +111,14 @@ static int vti_rcv_cb(struct sk_buff *skb, int err)
+>  
+>  	dev = tunnel->dev;
+>  
+> +	/* Drop the reference taken in vti_input().  -EINVAL/-EPERM make
+> +	 * xfrm_input() re-invoke us with err = -1 and drop it then.
+> +	 */
+
+[Severity: High]
+Does every drop in xfrm_input() actually call back here with err = -1?
+
+In xfrm_input(), the early invalid-state check jumps to drop before family
+is set:
+
+net/xfrm/xfrm_input.c:xfrm_input() {
+	unsigned int family = AF_UNSPEC;
+    ...
+		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
+			...
+			if (encap_type == -1)
+				dev_put(dev);
+			goto drop;
+		}
+
+		family = x->props.family;
+    ...
+drop:
+	if (async)
+		dev_put(dev);
+	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+	kfree_skb(skb);
+	return 0;
+}
+
+With family == AF_UNSPEC, xfrm_rcv_cb() looks up
+xfrm_input_afinfo[is_ipip][0]. Nothing is registered at that index, since
+only AF_INET and AF_INET6 register. So it returns without ever calling
+vti_rcv_cb():
+
+	afinfo = xfrm_input_get_afinfo(family, is_ipip);
+	if (!afinfo)
+		return -EAFNOSUPPORT;
+
+The skb is then freed, and the reference taken in vti_input() is never
+dropped.
+
+This path can be reached in three ways:
+
+  - async resume (encap_type == -1) when the SA was deleted or expired
+    while decryption was in flight, e.g. ip xfrm state flush or an IKE
+    rekey under traffic with an async crypto driver
+  - the hardware offload entry (encap_type == 0) with a non-valid SA
+  - IPTFS re-injection (encap_type == -2) with a non-valid SA
+
+Would the VTI device then wait forever in netdev_wait_allrefs_any() on
+unregister? The vti6 follow-up commit adds the same hold in
+vti6_input_proto(), so it looks exposed as well.
+
+>  	if (err) {
+>  		DEV_STATS_INC(dev, rx_errors);
+>  		DEV_STATS_INC(dev, rx_dropped);
+>  
+> +		dev_put(dev);
+>  		return 0;
+>  	}
+>  
+> @@ -141,6 +147,7 @@ static int vti_rcv_cb(struct sk_buff *skb, int err)
+>  	skb_scrub_packet(skb, !net_eq(tunnel->net, dev_net(skb->dev)));
+>  	skb->dev = dev;
+>  	dev_sw_netstats_rx_add(dev, skb->len);
+> +	dev_put(dev);
+
+[Severity: High]
+Is this really after the last use of dev? The commit message says the
+reference is dropped "after the last use". However, skb->dev was just set
+to the VTI device, and xfrm_input() keeps using it after this returns 0:
+
+net/xfrm/xfrm_input.c:xfrm_input() {
+    ...
+	err = xfrm_rcv_cb(skb, family, xfrm_proto, 0);
+    ...
+	nf_reset_ct(skb);
+
+	if (decaps) {
+		...
+		if (async)
+			dev_put(dev);
+		gro_cells_receive(&gro_cells, skb);
+    ...
+}
+
+xfrm_tunnel_check() forces tunnel mode for VTI, so decaps is set.
+gro_cells_receive() reads skb->dev->flags. On the !IFF_UP drop path it
+calls dev_core_stats_rx_dropped_inc(dev), which can allocate and cmpxchg
+into dev->core_stats.
+
+Here is the race, with an async ESP decrypt pending on the VTI device:
+
+CPU1 (ip link del vtiX)
+  unregister clears IFF_UP
+  netdev_run_todo()
+    netdev_wait_allrefs_any()   polling, the async skb holds a ref
+
+CPU2 (crypto completion)
+  xfrm_input_resume()
+    xfrm_input(skb, ..., -1)
+      xfrm_rcv_cb()
+        vti_rcv_cb()
+          dev_put(dev)          refcnt drops to 1
+
+CPU1
+    netdev_wait_allrefs_any() returns dev
+    netdev_do_free_pcpu_stats(dev)
+    dev->priv_destructor(dev)
+    free_netdev(dev)
+
+CPU2
+      gro_cells_receive(&gro_cells, skb)
+        reads skb->dev->flags   on the freed device
+
+netdev_run_todo() has no RCU grace period between the refcount check and
+the free, so the rcu_read_lock() in xfrm_input() gives no protection here.
+
+Can this still reach the use-after-free the patch is meant to fix, just in
+a smaller window?
+
+The xfrm core does the same "if (async) dev_put(dev)" for the lower device
+right before gro_cells_receive(). That shows the pattern is shared, but
+not that it is safe.
+
+Would the reference need to be held until after gro_cells_receive() or
+transport_finish()?
+
+The vti6 follow-up commit repeats the same early dev_put() in
+vti6_rcv_cb().
+
+>  
+>  	return 0;
+>  }
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930090813.73901-1-q.h.hack.winter%40gmail.com
