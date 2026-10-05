@@ -1,249 +1,200 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ED34BF921
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 15:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120F14C043C
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 15:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791212934; cv=none; b=kLKupdhuVv6D+3aoQaIbtQy8gic7HfeIyYJ2KADzL2WY5ID8qHN/ayo476vtvtRECp6KTIuKvmYVLX1S/Y3JX7ASKIw9RWr6+GjDqHn+6qUy6Ez/BF5z5vO1iTT6vU/2e/MMTip+hqg3GFzdgvizUY+79W57NuMvz7t3QCpNrM8=
+	t=1791212991; cv=none; b=dRUrGRi5drz4d3dWq278p9QRspTYZjmOdoKHKgIiL2g3PHI0BzRg1LT2511pLNKG9pAc/4WsmkOBUoRljfR+O+2E/srpeGr8lL9RHqTPTV7nRHQEGCE7l8leK9yPgdG80ZmD/1SvJSXqHhwYKlD3HBZ8fwW/p+C3kZl5lUaHi8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791212934; c=relaxed/simple;
-	bh=wa5F9VyCcwTEhvNCfm8/xiuVlSb7uL2If1y/bm80PoA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K2czlbNDXIqk+DnptUlpC0ohSjs6nbVW4AJpQV2VMpv/aHmyP0XtYb3obBO3vzssPo6M4qJtRAOgCSz7OyLV4FiGLZnYhRgr6GWS5eLLGEp5Wju4v445D7wrf/5/OSXnIqmsjdWRXgmBYOvcZrg0NLjLggGNC5k6Kv2H9pOKnpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EfID3qr8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W0HlEuAd; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aXlnnh+P; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=haWUKiK8; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1791212991; c=relaxed/simple;
+	bh=f/woB4zv5hScqqREFIP6f53WqZ95GL6Jj2Xs5j03KO4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IrRm59DDmIrNd+2TQEgXlcW+H355oiEYU/HvN0LY6UxLywr6gvCitTfTTtdWH7oo/KoUemUVNzl1z2p39fhYz33Zr5gSWtGH6rfwzOku57mk7t6p8vtNp1gFFwZuwiPo6Osd5HUkB1w1N0+kMmpHofCLMl+Pu1a/gpnne2uy6Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com; spf=pass smtp.mailfrom=amutable.com; dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b=Ri3ctAsy; arc=none smtp.client-ip=74.125.224.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EfID3qr8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W0HlEuAd";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aXlnnh+P";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="haWUKiK8"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9BBBA1F7B6;
-	Mon,  5 Oct 2026 15:08:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791212926; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qKTnA8jTdOC/ZoHULSlTljtuRlAWfmhsqjEIy+r+F+U=;
-	b=EfID3qr8oKtGYoIVfFGVkvL20tC9Z4ZFKx7ktJ2YPcVyn/eeCYIgooveIQA1mbtkrUnWdb
-	Wa4BXb1RFTmt8X2vP/WdbLMzq015OaHuMCCgw2uuwASpo6w9YGj0U4V0aJ2NwEV6BfAu8C
-	CRphyB7aBj4uuh98RslAoPuvKHsnHPk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791212926;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qKTnA8jTdOC/ZoHULSlTljtuRlAWfmhsqjEIy+r+F+U=;
-	b=W0HlEuAd6jirp6NaxhvEPJTCLt/65zmxD0o//282gzq9cN7GWBS5UdXzbKE6p8QtX2X8Ug
-	+YnLAp3HSrIJlaCA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791212922; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qKTnA8jTdOC/ZoHULSlTljtuRlAWfmhsqjEIy+r+F+U=;
-	b=aXlnnh+PagdMTLqMG+c6IZk4W5wnJ61hrge7NufIcCtu1gRh9Htn+5WfDYj7vOt+vpQur/
-	DZMWME5lwX0Juv9KQ3XhpQ2i3AUmORsycvJTrWX6y91k5IuAASQ6m9ZPz/bYPpa+YTSPnl
-	kYwCndJfCq8qPmPKYtKlZTNOneD9gPM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791212922;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qKTnA8jTdOC/ZoHULSlTljtuRlAWfmhsqjEIy+r+F+U=;
-	b=haWUKiK8OgWRYSun3z7EQjW1tRS3koK50tmbOBysJjGwnPDtoq94y41yFbD9A+ItkpQtoc
-	hn8ft31OXJMCz8Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE47513688;
-	Mon,  5 Oct 2026 15:08:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id I8uoH3m9w2oaXwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 05 Oct 2026 15:08:41 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: dev@openvswitch.org,
-	blp@nicira.com,
-	joe@wand.net.nz,
-	jesse@nicira.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@kernel.org,
-	davem@davemloft.net,
-	i.maximets@ovn.org,
-	echaudro@redhat.com,
-	aconole@redhat.com,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH net-next v2] net: openvswitch: do not set transport header on later IPv4 fragments
-Date: Mon,  5 Oct 2026 17:08:31 +0200
-Message-ID: <20261005150831.4831-1-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b="Ri3ctAsy"
+Received: by mail-yx2-f39.google.com with SMTP id 00721157ae682-8acdb1ddd96so12262217b3.0
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 08:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amutable-com.20251104.gappssmtp.com; s=20251104; t=1791212988; x=1791817788; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=4D5E7ltBzHimp9ShKO1mDxupR9nAa8S/1Y35nys92p0=;
+        b=Ri3ctAsyzeoPsl2AqZ7RO34QMpgUrXFPTMPrQ3mWxAxM1wLJXKWuIyXP/hCZcpKrLz
+         FwoX2nmMgZfM6hNzfAY9+r3VL/m1zShTOZBktjH8hXTisB/JKXp25lzx5FbaP1P5MjGi
+         4y4sKVRlgX5pDzwd25ELPIB/gNdoLfSJHv20zuNXyDPW18fo5X9DwHxGYOzTdzUNhgvx
+         JzwMc4nWortBSUR8YUvgioutf1bvzaUlySgHB25JyttTvmi+jXqAyy2noSQpfAs/XORe
+         6nIpSRQFxGDxoyHC+wVOjipt9rpfLzrSIr8s2K+Kr8GrNxoOw80D6whWzzHsLUU/DN7U
+         wMjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791212988; x=1791817788;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4D5E7ltBzHimp9ShKO1mDxupR9nAa8S/1Y35nys92p0=;
+        b=kohSryuLdPcI9acs1EqQSZXDftXL8mMiYL2H3xXt6jOAZ02OPVdafKnZ8cbH2hSYxo
+         JvUdRgoS4eGxaXBtiP3ubTZ5+FM7lWNGKMFBk/fMP6Q7OonbH84bj5EmpZqnQ/hGfdvY
+         KAomMY+otiWLDwvcZCw3wmtaFvK6Fe1ht4op9y8EgySUR/lKxznxSXnTuIQoEzidK10n
+         gLB9H0qLhc4G1B47jSG9Gp2FO2ce0L/yB7Fr6mYqPOCPH4u+uF27OqOvwAB03WfdCkzQ
+         uh/T38hmkh9UMntWfXPkwIVVZf08v0ekmUt9Y7tD6Bm5KYGIkUJYisF6HLIQqTIQQgLZ
+         7sIA==
+X-Forwarded-Encrypted: i=1; AKwUvBwQfh2RewOUIPdPh66UcbkKJmz+Myms+LOywoVyXib4LI7bYCJC/dfIeiLPyu9HRIl6ABaKQbM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJCW0dYu8cBm9B0sPHsY0ZqN5QZ1pX197EUejuYHq8xrTwr0/k1
+	i4IuFAy6A/WtRn6J2Y5MnV0ZjIkw23WwnxKZNBV7kFwhhyTSS9o1X5MDbyhbtpjdAJ5dwck36l6
+	RhZn52Q==
+X-Gm-Gg: AYBFou3uGGV/nWGyVMTA2bbxw9fyNhEBHXUUpXB9ou7bGL4/dtgmkVAOML5kPgmsjr1
+	DdMgCkULXDk8SFcWXi0BPrJrj2WeejvIQj9BYmDUQ9pTuQnZxnzubbPayeUa3Tsz56fRvGONbpW
+	/e5oT2GD07DwMu9tEJOS9xh2qGIrHRaEsHTraOPRXn5fFbP4c/k+DKKjDLRS4mUN5pFJ7Q4Q7jM
+	5SrMpmFnWPR94w/mXhhPDReUedINyitDE2cTf3DWRobhQ+Y78vUiBGl33tuqjCEcOfapkcgtIss
+	5mbETNyeMtg6zGAVdqPxwxEX7uq/JtHiPw6PHHRXHkX5roVM4S8bL+pY5/3LHWmXI7UVX4G9eQd
+	xUf/nAVX0IFxLxaPhvI9HL0lcLCghrgG2KyqKYyEGI6B8sjia2pkVwl6IjWg4IdYsaiIyyDIPS/
+	otSfqfUAGoRCK7OoLNiBzhpzHsHksJsErnY1uVM8BN/3gqx0Ie7QESd/jZfpW1Oe6/RujZpMHms
+	E5BBU61Iw1/BtHK7tRu2seJLXVBUv7fpUHfafUCCkaZ+rxjmniTtgA/ljSHK7VB0Q==
+X-Received: by 2002:a05:690c:e215:10b0:88c:b863:e405 with SMTP id 00721157ae682-8ae39ab3796mr31469067b3.38.1791212987733;
+        Mon, 05 Oct 2026 08:09:47 -0700 (PDT)
+Received: from [192.168.1.110] (104-53-165-62.lightspeed.stlsmo.sbcglobal.net. [104.53.165.62])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae33fe81fdsm41210467b3.47.2026.10.05.08.09.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 08:09:47 -0700 (PDT)
+From: Andrew Halaney <andrew@amutable.com>
+Subject: [PATCH v4 00/10] net: support thread-specific pidfds for send and
+ connect
+Date: Mon, 05 Oct 2026 10:09:30 -0500
+Message-Id: <20261005-work-unix-passpidfd-v4-0-350183b6e02a@amutable.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-0.996];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23Oyw7CIBAF0F8xrIUA9UFd+R/GxUCnFh/QQFs1p
+ v9uR41uXN7JnZP7YBmTx8w2swdLOPjsY5jCYj5jroFwQO6rKTMt9UoaveTXmE68D/7GW8i59VV
+ dcWlWoNDJEg2w6bNNWPvbS93t3zn39oiuI4oaFjJymyC4hk6ECkLFFxVUoWrjcxfT/bVwUER+x
+ hTq75hBccnX0tm6AunWFrYnTAHPIqYDozVD8UNKbf4jxYQsCy2VgVJZrbZw6TuwZxQuXth+HMc
+ nqMF8ejsBAAA=
+X-Change-ID: 20260825-work-unix-passpidfd-086a1ec09e8a
+To: Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ Oleg Nesterov <oleg@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+ Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>, 
+ Andrew Halaney <andrew@amutable.com>, Eric Dumazet <edumazet@kernel.org>, 
+ Alexander Mikhalitsyn <alexander@mihalicyn.com>
+X-Mailer: b4 0.14.3
 
-Currently, check_iphdr() sets the transport header offset for all IPv4
-packets, including later fragments that do not contain an L4 header.
+SO_PASSPIDFD/SCM_PIDFD and SO_PEERPIDFD allow to retrieve a pidfd for
+the thread-group leader. The coredump server using the coredump socket
+cannot get a handle on the task that took the signal and is writing the
+coredump easily. Workloads interested in per-thread authentification
+have similar problems.
 
-Stop setting the transport header for non-first IPv4 fragments. This
-leaves skb->transport_header at whatever value it had when the packet
-entered OVS. That is only safe if no later code relies on it.
+Add SO_PASSPIDFD_THREAD/SCM_PIDFD_THREAD and SO_PEERPIDFD_THREAD. We
+record the sending and the connecting thread in addition to the
+thread-group leader.
 
-update_ip_l4_checksum() read the transport offset before checking for a
-later fragment, so do the check first.
+SO_PASSPIDFD_THREAD functions like SO_PASSPIDFD but instead of an
+SCM_PIDFD message for the thread-group leader, SCM_PIDFD_THREAD sends a
+pidfd for the specific thread. SO_PASSPIDFD / SO_PASSPIDFD_THREAD are
+independent, allowing callers to get both styles of pidfd back in their
+cmsg.
 
-set_tcp(), set_udp() and set_sctp() had no such check. An IPv4 later
-fragment keeps ip.proto set to the real protocol, and the flow may
-wildcard the frag field, so validate_set() accepts these actions for it.
-They then modified the start of the fragment payload as if it were an L4
-header, corrupting the packet. Skip the actions for OVS_FRAG_TYPE_LATER,
-as there is no L4 header to modify.
+SO_PEERPIDFD_THREAD allows to retrieve a pidfd for the specific thread
+that called connect(), listen(), or socketpair().
 
-IPv6 later fragments are not affected, since their ip.proto is
-NEXTHDR_FRAGMENT and validate_set() rejects L4 set actions for them.
+pidfs_coredump() now also stamps the dumping thread's struct pid so a
+pidfd for that thread reports the coredump like the pidfd of the
+thread-group leader does.
 
-Link: https://lore.kernel.org/netdev/59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org/
-Suggested-by: Ilya Maximets <i.maximets@ovn.org>
-Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
-Fixes: a175a723301a ("openvswitch: Add SCTP support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Signed-off-by: Andrew Halaney <andrew@amutable.com>
+
 ---
-Note: since the data corruption issue was actually found by sashiko, I
-suggest we still take this on net-next instead of net, this is just a
-corner-case most users won't ever hit.
+Changes in v4:
+- Moved get_pid() out of scm_set_cred() into scm_send() (Kuniyuki)
+- Dropped unnecessary helps (Kuniyuki)
+- Rebased on v7.3-r6
+- Collected Kuniyuki's RB tags
+- Link to v3: https://lore.kernel.org/r/20260928-work-unix-passpidfd-v3-0-532018a91b21@amutable.com
 
-Sashiko: If you notice a similar problem at IPv6 path, we have fixed it
-already in net tree, here is submission:
+Changes in v3:
+ - I picked this series up from Christian at his request (thanks!)
+ - Make SO_PASSPIDFD and SO_PASSPIDFD_THREAD completely independent (and
+   in doing so add SCM_PIDFD_THREAD) instead of mutually exclusive. This goes
+   against Kuniyuki's suggestion for a separate flag option, which I
+   argued the mutually exclusive nature of the prior implementation +
+   that would be confusing in v2 thread. I think with it being
+   independent things are more clear, and useful, and it matches the
+   SO_PEERPIDFD_THREAD counterpart nicely. For that reason I dropped
+   Reviewed-by tags present on the implementation / selftests patches
+   related to that.
+ - Address grammar, reverse xmas tree, sk_is_unix() feedback from
+   Kuniyuki Iwashima
+ - Collect tags
+ - Rebase on v7.3-rc5 for Christian to make shared branch for net to
+   pull from
+ - Link to v2: https://lore.kernel.org/r/20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org
 
-https://lore.kernel.org/netdev/20261002075255.5015-1-fmancera@suse.de/
+Changes in v2:
+- Fix a few documentation issues.
+- Link to v1: https://patch.msgid.link/20260831-work-unix-passpidfd-v1-0-70cbfda0c7ba@kernel.org
+
 ---
- net/openvswitch/actions.c | 19 ++++++++++++++++---
- net/openvswitch/flow.c    |  9 +++++++--
- 2 files changed, 23 insertions(+), 5 deletions(-)
+Christian Brauner (10):
+      pid: add helpers to operate on a struct pid array
+      af_unix: record the pid of the sending thread
+      net: add SO_PASSPIDFD_THREAD to get a thread-specific SCM_PIDFD
+      selftests/net: SO_PASSPIDFD_THREAD
+      net: turn sk_peer_pid into an array indexed by pid type
+      af_unix: record the pid of the connecting thread
+      net: add SO_PEERPIDFD_THREAD to get a thread-specific pidfd
+      selftests/net: SO_PEERPIDFD_THREAD
+      pidfs: record the coredump on the dumping thread's pid too
+      selftests/coredump: check the dumping thread's pidfd
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index dc5ff859f114..8556a5a74ccd 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -322,11 +322,13 @@ static int pop_nsh(struct sk_buff *skb, struct sw_flow_key *key)
- static void update_ip_l4_checksum(struct sk_buff *skb, struct iphdr *nh,
- 				  __be32 addr, __be32 new_addr)
- {
--	int transport_len = skb->len - skb_transport_offset(skb);
-+	int transport_len;
- 
- 	if (nh->frag_off & htons(IP_OFFSET))
- 		return;
- 
-+	transport_len = skb->len - skb_transport_offset(skb);
-+
- 	if (nh->protocol == IPPROTO_TCP) {
- 		if (likely(transport_len >= sizeof(struct tcphdr)))
- 			inet_proto_csum_replace4(&tcp_hdr(skb)->check, skb,
-@@ -590,6 +592,9 @@ static int set_udp(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 	__be16 src, dst;
- 	int err;
- 
-+	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
-+		return 0;
-+
- 	err = skb_ensure_writable(skb, skb_transport_offset(skb) +
- 				  sizeof(struct udphdr));
- 	if (unlikely(err))
-@@ -633,6 +638,9 @@ static int set_tcp(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 	__be16 src, dst;
- 	int err;
- 
-+	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
-+		return 0;
-+
- 	err = skb_ensure_writable(skb, skb_transport_offset(skb) +
- 				  sizeof(struct tcphdr));
- 	if (unlikely(err))
-@@ -658,11 +666,16 @@ static int set_sctp(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 		    const struct ovs_key_sctp *key,
- 		    const struct ovs_key_sctp *mask)
- {
--	unsigned int sctphoff = skb_transport_offset(skb);
--	struct sctphdr *sh;
- 	__le32 old_correct_csum, new_csum, old_csum;
-+	unsigned int sctphoff;
-+	struct sctphdr *sh;
- 	int err;
- 
-+	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
-+		return 0;
-+
-+	sctphoff = skb_transport_offset(skb);
-+
- 	err = skb_ensure_writable(skb, sctphoff + sizeof(struct sctphdr));
- 	if (unlikely(err))
- 		return err;
-diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-index 1c4f3a079044..52cc63837445 100644
---- a/net/openvswitch/flow.c
-+++ b/net/openvswitch/flow.c
-@@ -189,6 +189,7 @@ static bool arphdr_ok(struct sk_buff *skb)
- static int check_iphdr(struct sk_buff *skb)
- {
- 	unsigned int nh_ofs = skb_network_offset(skb);
-+	const struct iphdr *nh;
- 	unsigned int ip_len;
- 	int err;
- 
-@@ -201,7 +202,10 @@ static int check_iphdr(struct sk_buff *skb)
- 		     skb->len < nh_ofs + ip_len))
- 		return -EINVAL;
- 
--	skb_set_transport_header(skb, nh_ofs + ip_len);
-+	nh = ip_hdr(skb);
-+	if (!(nh->frag_off & htons(IP_OFFSET)))
-+		skb_set_transport_header(skb, nh_ofs + ip_len);
-+
- 	return 0;
- }
- 
-@@ -898,7 +902,8 @@ static int key_extract_l3l4(struct sk_buff *skb, struct sw_flow_key *key)
-  *    - skb->transport_header: If key->eth.type is ETH_P_IP or ETH_P_IPV6
-  *      on output, then just past the IP header, if one is present and
-  *      of a correct length, otherwise the same as skb->network_header.
-- *      For other key->eth.type values it is left untouched.
-+ *      For later IP fragments and for other key->eth.type values it is
-+ *      left untouched.
-  *
-  *    - skb->protocol: the type of the data starting at skb->network_header.
-  *      Equals to key->eth.type.
+ arch/alpha/include/uapi/asm/socket.h               |   4 +
+ arch/mips/include/uapi/asm/socket.h                |   4 +
+ arch/parisc/include/uapi/asm/socket.h              |   4 +
+ arch/sparc/include/uapi/asm/socket.h               |   4 +
+ fs/coredump.c                                      |  22 +-
+ fs/pidfs.c                                         |  27 +-
+ include/linux/coredump.h                           |   4 +-
+ include/linux/pid.h                                |  53 ++
+ include/linux/pid_types.h                          |   8 +
+ include/linux/pidfs.h                              |   5 +
+ include/linux/sched/signal.h                       |  18 +
+ include/linux/socket.h                             |   9 +-
+ include/net/scm.h                                  |  10 +-
+ include/net/sock.h                                 |   8 +-
+ include/trace/events/landlock.h                    |   2 +-
+ include/uapi/asm-generic/socket.h                  |   4 +
+ net/bluetooth/af_bluetooth.c                       |   6 +-
+ net/bluetooth/hci_sock.c                           |   8 +-
+ net/bluetooth/l2cap_sock.c                         |   2 +-
+ net/core/scm.c                                     |  40 +-
+ net/core/sock.c                                    | 108 ++--
+ net/unix/af_unix.c                                 |  66 +--
+ net/unix/af_unix.h                                 |   3 +-
+ tools/lib/python/kdoc/xforms_lists.py              |   1 +
+ .../selftests/coredump/coredump_socket_test.c      | 175 ++++++
+ tools/testing/selftests/coredump/coredump_test.h   |   2 +
+ .../selftests/coredump/coredump_test_helpers.c     |  49 ++
+ tools/testing/selftests/net/af_unix/Makefile       |   2 +
+ tools/testing/selftests/net/af_unix/scm_pidfd.c    | 602 +++++++++++++++++++++
+ 29 files changed, 1137 insertions(+), 113 deletions(-)
+---
+base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
+change-id: 20260825-work-unix-passpidfd-086a1ec09e8a
+
+Best regards,
 -- 
-2.55.0
+Andrew Halaney <andrew@amutable.com>
 
