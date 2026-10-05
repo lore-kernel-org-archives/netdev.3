@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AE041E6B6;
-	Mon,  5 Oct 2026 09:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEBF46EF79;
+	Mon,  5 Oct 2026 09:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791194246; cv=none; b=Ds37BlLfPBLaGeyxO0S5eHTFZ41f5/qZK+pelOdOZr1sKycYM3LDY/MoNi2yKaiXDIcyFaKgV88HghuVNOR+k52g0BNCVKFph39ummaZ3yLvqRWX71Ra6UXLK3JYCVHD8+8/QbV5nsJmTYdbQr0tVlBa03ODWo2GJffcZD/iL0U=
+	t=1791194249; cv=none; b=JfeGx2i6+xzgJFxY8/ispm271Ycmvr2Jzh39/h8hOyvlUPXY/8Elmxy8py/ldljd6rlsMjeayNisagvVfm4DnTa/2BoTMceAnTXx4yZdd55pysfyB8q0WOu3N7rYAtyrs7KreE/KM3FaTDmc4LmPjQud0zpLmNR1JFgp2P3ufSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791194246; c=relaxed/simple;
-	bh=BcSAU7V2BNV/2w2moHoVDTAzO65SRGTBxE4Nc5hFjX4=;
+	s=arc-20240116; t=1791194249; c=relaxed/simple;
+	bh=HYpxleanNS41hy3ucuwhaEzuDllE0uxvbwmNlZGFApU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YOocHHvpEKBWGSiwz7G8oyaHt1qS7YbnNPJXaorPzIpou4eaoXZj9EfWOXGWwbOMOitPMnkDdhUJ7qSqDCpVo2Zu0J8ZReowU69emHDyjV5/cNzoyVslX2GwABMMtk2FIJopDXSFuD5xDWdCScUs3s1LrhSiB0EipdzoN764wTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWT8Xugx; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=fBbquTG81BWIwVPEvihRRvZmKnVMEECq1zNlfN2oWPTpe+pbgyvdj7C13ZfeGDDfexq7xuis1Djwoofo31j80xFkBZhvDgq402q8Z+paLrZCu4sAMse5O0WE0xLqYISLWqeoXOOBFCntcN1y2rqjubpp9lf0CEtIZ+JFSxZftr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzE790cQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWT8Xugx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C429B1F000FF;
-	Mon,  5 Oct 2026 09:57:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzE790cQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5065F1F00899;
+	Mon,  5 Oct 2026 09:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791194240;
-	bh=8MmSHBDUwLj+PzySVR8HqwmbQn13Gr0asVMdg/a5DnE=;
+	s=k20260515; t=1791194244;
+	bh=U3fYLmiXzRnLvwFlLUeb9uBB+CuAbRdmC5rtcPN5Be4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZWT8XugxGLUF40OoDSfjkMludDZjjSjo5vB092bGZQ6O+TGZC4teublevV4QL/bMe
-	 ogZOTrXVRf8lImB4VwO54BYr1BDl6JUQiHuYLVK/ormOMleGqNksh0fq+00Ohdh/DJ
-	 RUKgka6THOWIOOzxuSLaZ4NAFZzB98W6HjsNXsI7yk9itkD6IOpKhOJ3yH9OXovj3y
-	 QjyZa/xD6nHzK4LrHhs8MI6eHEbTZ8Zavt445A0ivIbAl2q4mjrn5kRRYsMAMIAn/H
-	 Bh07yHvGmhxyIuQ4VVtQ5Soty9Vfo3QM33KmA9ALiBLbXMNyhUC3q6M1I8KEA2MvFj
-	 CDJ7v/xVtdtpg==
-Subject: Re: [PATCH net-next v5 1/9] r8152: split r8156_init per chip and add
- missing init writes
+	b=MzE790cQKN+U6yEthYBdwszNGLChKMyTWVmQq4yrN0CmRbeRj/ixmimwY/5SFQyXc
+	 5DZNaS117xG/34R1XCK6WVLmp0OAEV5GxpGJFOaWoe/M9+Wx4m3hQ5LFl6eaoQYJcn
+	 wfRLxypSBLCC5nJ4thBAJaroTfBMWHReEp/ycneOeXhojzfnFRk3uC4fCNnO6sgEm7
+	 7sEtWn1zi/JqXiatAxRzESgCu018MyQU9yov88NIlFJiMs+4YCgSIDLhDXtIcsRF4N
+	 oUshDqicSYIghT5XO0816knoeNzATZ/Odf4zRjSOXS+V+JZ0oF+0Z1BEau8p/c8/+1
+	 LrOM/YIyXOSYA==
+Subject:
+ Re: [PATCH net-next v5 6/9] r8152: add rtl8157_unload and rtl8157_change_mtu
 From: netdev-bot+sashiko@kernel.org
 To: hsu.chih.kai@realtek.com
 Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
  nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
-Date: Mon, 05 Oct 2026 09:57:19 +0000
-Message-ID: <179119423934.434549.8623262119068946046@kernel.org>
-In-Reply-To: <20261001091144.28191-2-nic_swsd@realtek.com>
-References: <20261001091144.28191-2-nic_swsd@realtek.com>
-X-sashiko-severity: Medium
+Date: Mon, 05 Oct 2026 09:57:22 +0000
+Message-ID: <179119424285.434549.10300913467934880637@kernel.org>
+In-Reply-To: <20261001091144.28191-7-nic_swsd@realtek.com>
+References: <20261001091144.28191-7-nic_swsd@realtek.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,122 +47,79 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] This patch is presented as splitting r8156_init() per chip,
-  but it also changes hardware behaviour for all four chip families, and…
+- [Low] The commit message for "r8152: add rtl8157_unload and
+  rtl8157_change_mtu" has two Fixes: tags (fd3c7d080df5 for RTL8157,…
 
 --
 
-r8152: split r8156_init per chip and add missing init writes
+r8152: add rtl8157_unload and rtl8157_change_mtu
 
-This commit splits the shared r8156_init() into separate init functions
-for RTL8156, RTL8156B, RTL8157 and RTL8159. It also moves the
-AUTOLOAD_DONE polling into a new wait_autoload_done() helper. While
-splitting, it adds several new register writes to the per-chip init
-paths, including clearing RX_END_TRANSFER_EN on RTL8157.
+This adds unload and change_mtu callbacks that only RTL8157 and RTL8159
+use. rtl8157_unload() calls r8157_power_cut_en() and always disables
+interrupt mitigation. rtl8157_change_mtu() sets MTPS from the configured
+MTU instead of using the fixed MTPS_JUMBO.
 
-> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index af3d7dcb2f141..4d8f0815d79d1 100644
-> --- a/drivers/net/usb/r8152.c
-> +++ b/drivers/net/usb/r8152.c
-
-[ ... ]
-
-> @@ -8421,73 +8444,261 @@ static void r8156_init(struct r8152 *tp)
+> RTL8157 and RTL8159 used rtl8153_unload() and rtl8156_change_mtu(),
+> which program power-cut and MTPS the way earlier chips require. Per
+> the datasheet, RTL8157/RTL8159 need r8157_power_cut_en() (already
+> used by r8157_init()/r8159_init()) instead of r8153_power_cut_en(),
+> and an MTPS scaled from the configured MTU (10K-16K, max_pkt_size /
+> 64 capped at 0xff) instead of a fixed MTPS_JUMBO.
 
 [ ... ]
 
->  	set_bit(GREEN_ETHERNET, &tp->flags);
->  
-> -	/* RX aggregation / 16 bytes RX descriptor
-> -	 * BIT(11) is specific to RTL8159, with unknown meaning
-> -	 */
-> -	if (tp->version == RTL_VER_17)
-> -		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> -				  RX_AGG_DISABLE | RX_DESC_16B | BIT(11));
-> -	else if (tp->version == RTL_VER_16)
-> -		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_DESC_16B);
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> +			  RX_AGG_DISABLE | RX_ZERO_EN);
+> Fixes: fd3c7d080df5 ("r8152: Add support for the RTL8157 hardware")
+> Fixes: ad2a55b63b41 ("r8152: Add support for the RTL8159 chip")
 
-[ ... ]
+[Severity: Low]
+With two Fixes: tags, this will probably go to net and stable. The
+message doesn't say what goes wrong on RTL8157/RTL8159 without the
+patch, though. Could it state the user-visible symptom being fixed?
 
-> +static void r8157_init(struct r8152 *tp)
-> +{
+The patch changes several things.
 
-[ ... ]
+In rtl8157_unload(), r8157_power_cut_en(tp, false) replaces
+r8153_power_cut_en(tp, false). After this, unload no longer clears
+PHASE2_EN in USB_POWER_CUT, and it now clears BIT(1) of USB_MISC_2:
 
-> +	/* RX aggregation / 16 bytes RX descriptor / Bulk In End transfer */
-> +	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-> +			  RX_AGG_DISABLE | RX_DESC_16B | RX_END_TRANSFER_EN);
+drivers/net/usb/r8152.c:r8157_power_cut_en() {
+	...
+	} else {
+		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_POWER_CUT, PWR_EN);
+		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_MISC_0, PCUT_STATUS);
+		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_MISC_2, BIT(1));
+	}
+}
 
-[Severity: Medium]
-Is this a functional fix for RTL8157 that should go in as its own patch
-with a Fixes: tag?
+drivers/net/usb/r8152.c:r8153_power_cut_en() {
+	...
+	else
+		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
+				  PWR_EN | PHASE2_EN);
+	...
+}
 
-Before this patch, the RTL_VER_16 branch in r8156_init() cleared only
-RX_AGG_DISABLE | RX_DESC_16B. BIT(11) was cleared only for RTL_VER_17,
-and the comment said its meaning was unknown. r8157_init() now clears
-RX_END_TRANSFER_EN as well.
+In rtl8157_change_mtu(), MTPS is no longer the fixed MTPS_JUMBO, which
+is 12 * 1024 / 64 = 0xc0:
 
-The commit message says that while this bit is set, "Bulk-in transfers
-are suspended", and that "the driver must manually clear it to resume
-Bulk-in transfers".
+- At the default MTU of 1500, mtu_to_size() gives 1522, so MTPS drops
+  from 0xc0 (12K) to 0xa0 (10K).
+- Above about 12K, MTPS grows with the MTU.
+- At max_mtu = size_to_mtu(16 * 1024), the value would be 0x100, so it
+  is capped to 0xff.
 
-That sounds like an RX stall on RTL8157 that goes back to commit
-fd3c7d080df5 ("r8152: Add support for the RTL8157 hardware"). This fix
-has no Fixes: tag and is part of a refactor touching about 490 lines,
-so it seems unlikely to reach net or stable.
+max_mtu allows frames up to 16K. Did the fixed 12K MTPS make jumbo
+frames between 12K and 16K fail? If so, could the message say that?
 
-Later patches in this series do carry Fixes: tags: "r8152: fix up and
-down register settings for RTL8156/8156B/8157/8159" and "r8152: add
-rtl8157_unload and rtl8157_change_mtu".
-
-Could this change be sent as a small standalone fix ahead of the split?
-
-The other new hardware writes raise the same question. The commit
-message lists them, but it doesn't say what problem or symptom each one
-fixes:
-
-    PREBOOT_OPTION and RMT_WAKE_EN, cleared in all four init functions
-    r8156b_u2phy_backup() writing 0xd3ce/0xd3d0/0xd3d4/0xd3d8/0xd3dc
-    0xcf04 interrupt mitigation disable in r8157_init()/r8159_init()
-    0xcd06 BIT(11) in r8157_init()/r8159_init()
-    0xb9a6 BIT(0) and 0xb9a2 = 0x0448 in r8159_init()
-
-Could these be split out, or have their purpose explained? If one of
-them causes a regression, a bisect would land on this large mixed
-commit.
-
-r8156b_init() also moves the AUTO_SPEEDUP clear. It used to be part of
-the USB_FW_CTRL read-modify-write that ran after usb_enable_lpm() and
-the flow control setup:
-
-    ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_FW_CTRL);
-    ...
-    ocp_data &= ~AUTO_SPEEDUP;
-    ocp_write_word(tp, MCU_TYPE_USB, USB_FW_CTRL, ocp_data);
-
-Now it runs right after r8153_u2p3en():
-
-    r8153_u2p3en(tp, false);
-
-    /* Disable Auto Speed up */
-    ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_FW_CTRL, AUTO_SPEEDUP);
-
-That is before the MSC timer, r8156b_u2phy_backup(), power-cut, UPS and
-LPM setup. Is this reordering intended for RTL8156B? The commit message
-doesn't mention it.
+The subject also reads like a refactor rather than a fix. Could the
+unload power-cut change and the MTPS change be sent as two separate
+patches, each describing the failure it fixes?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001091144.28191-1-nic_swsd%40realtek.com
