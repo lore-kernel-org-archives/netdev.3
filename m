@@ -1,279 +1,435 @@
-Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9AC4D954B
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 18:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2292E231836;
+	Mon,  5 Oct 2026 18:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791224248; cv=none; b=Bo7V+5OUH8E5GBi1hrGnpIvnhmXxCTMoXWaT/omTfx84hQhXVnbkL5YBl/DisN/LqGa6gsWOnFOHLUx5HKG/9+1Pnmmcp3ZFIfEwYXyRiNEe58xPl6POLQdvtzsMV3sKlSFIladdZomNvjQEcaEYLrb1CSlXVfpYtc+s9xr2S0o=
+	t=1791224460; cv=none; b=N9iL99NFr0emZu0vgQmbV3jvkPTZ1D2jSFu4zTpjRfXdm8fQVjk5sbU0uE7ypCirzNnEEbKLTBBTEPA/MWITXXOQq23H/Bl5SxMZTXL795DbTQSN0Uvoh2JlZd0ze2rSMoXu3y1sHg/20sPwFr/rg+vj8gBflvLBpGXSGfGbs6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791224248; c=relaxed/simple;
-	bh=SlfT5CpG1gfS0O6dGhXo30NrXX/THyrTJARh8LcTSNs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aW7gBbw7/V/NQ6kwfg8rIBpsvafBInyp0v/sjjI39U0WpXUxZUtYhiJDjD0Z/PrNQNNmoqP4nLToKuQ9wiDveHVwe3QzO4P8l4ce+4FzegPr+je1de0ufq/TPy8YTfpZiIxNfNtpgqf+nVAlF9ipA5svhaRyM0+uyN+h/xq5xS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GHc1A6mP; arc=none smtp.client-ip=74.125.231.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791224460; c=relaxed/simple;
+	bh=T+VVep/92PKjE2kTJDVWKSX/tmgRSpIQlYXRtCMUT9Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P1bdMAy7g2Y/lDVBeIiKTMlm3fTYvAfuK43Vm4eF2h7D1SQjg79QZfYSBmEHL2joV8/dp3oD4FstBMzxKQU8fmk39H4Vc7g91DOxFpv9t/g39xWb+K1m+OID0jGAIDj6tL2ti0Tps5/c7KvR3PGjFQ5gzJbsAD+cDJlt4gQVKto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgB7UOTc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GHc1A6mP"
-Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-46ac6e5d8f7so1377110fac.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 11:17:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791224245; x=1791829045; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Rouq59a9OyBo1EeAraKbx0994ONwMJ1+oA66imSzKao=;
-        b=GHc1A6mPFwU1mQCKMjDNf+uUGZeU4DFLIqQ7sdz8bjBTnPFJ7011JJxtO0nZSKYktG
-         3+6QSHWijl+eWp4uyM4l+2MkUUet/D7BhKuSrHvAorUIXPSDrzlufyLMvXSpDG5MrT8z
-         1aYh2GxWSaz4MBe4I3Xz9OE+GyS/1zDejvxEP9UCwonjxMISA4hIKV1+nFjNprKUvbQl
-         mwmu98xVsf3m6cZBGx+kxMZHpfPJfdIJWF6F2k6+RUFCBwT2qeessGg3fB4vOSI47JKh
-         UJcMNe0vmB6azLj/KxovSf9Vwmq/SmnoH4K4Ay0Lg+gqw2UvQndHI/5UHti7zR8HYN0Z
-         9KhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791224245; x=1791829045;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Rouq59a9OyBo1EeAraKbx0994ONwMJ1+oA66imSzKao=;
-        b=IFIGjMTV9ZMW74F1GHlL/XyI+5eCxmi8CSzN86MSQy8KmCIMs5fbPGSWLDaZJQoYY6
-         z8HqABxxhEZ3AkZL8CtZsKD/JV2qQMunZrYFmlbboVcHF1q9ovyEdXc6mw5USm38BHWV
-         Ov3dqTkxHYqaNyVhN40ZBnSQqvyZEqCIGNZ6zkOEv4TNGuAT/d48+c27w9Zlj2bGRFE+
-         uXSHPp+UOvSuFXKZoT9xWa7u0c9YNCyxMIHUls6jbU+qWzukBulGhhgQb//kgj50sh7+
-         kUoJVR9A/XYsf+a3FK5IOWMrEy1PIBN9eAf/ccLc7luJEqz5znxkPCrvuoy2hB1gc81r
-         rkEQ==
-X-Gm-Message-State: AFq9FYIb7n9W8wOQwEBe9isxmufu17o4Iyga+1l24Y6C8lE6S/vMfnAO
-	Bw25OZL+7Cg6gBDP797DgideqKsMpjkH4IFoXM8XiqM7DpZ0x8pd01Pw
-X-Gm-Gg: AYBFou0xenW3kl8lFYhDmlkVyxM2gk7UK0vYR7Dc5dy8T5DJmKr5/L5T3IN/tCcQZzf
-	fs+T4GT9u+oywtbx0XxuNLJ0d43VC8kYos5ar5+2XjB8IevDaGWRzomAG+kWC386RiNeP7ghpxb
-	g4x5cfT+YEToEaCJiW1hHhQ0n9yXZCdRfcv3emfdj98fvj+KdQPJKnwxNSUmlUzuvRmo5/YcgM5
-	HLY+XXvUc5PJVAHbyXZWU2v61VS+H1pY9xLqe62NbjPVeKrCvz9ZzTp7nCccX3EY/htjOpy6agg
-	Y0ZaM+HoyT0ymcwMm8fUacZ9UcwnE8pSXhfXsgrF3rSvrjU8J2CMPgN05jDp0u6WeHCc4m7W5lp
-	I4II2zMOHTXcGcGxPO1RKu/FQh3uaGevoQZij4P9rDVfuJjebLiRP+pXJVDoEjJDdnbBler9v6k
-	nTBu3UpmMW64yqSRgO1VeRmnZeyeNiFAGXoEgzL0SRQZTNrpRwFvMUYltVCk+OvP5ulRzqP8+Rx
-	bmPille+Rqf6xQsULGAOPaeqSexqNpZEKZZg58KQA2SuWIRtydOL2d4rZtNXCVc8SMH0bpElgUU
-	rgyGFagH5kVzsfxDEatagOq3uqeZyH98XtHlAVLd6YyGzK0/Q/7M5HOgwfvILcMGysKkwTIfWWp
-	nxpp9h2IinCmScKNFqNiqhA==
-X-Received: by 2002:a05:6870:524f:b0:48f:e0f6:c465 with SMTP id 586e51a60fabf-49e15e5c8c3mr10012930fac.51.1791224244819;
-        Mon, 05 Oct 2026 11:17:24 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-49e16d60931sm10358053fac.4.2026.10.05.11.17.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 11:17:24 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 05 Oct 2026 12:17:21 -0600
-Subject: [PATCH net v2] xsk: freeze deferred pool teardown without blocking
- unregister
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgB7UOTc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9624C1F000FF;
+	Mon,  5 Oct 2026 18:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791224458;
+	bh=0jzubDrM1LBV2q2TOEssRBj48zjVZ8LqA0rRiUNuvyc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NgB7UOTcYo6hS5I89BxvF58JQ075hcU+uMWcHM8cfmgZtYHEhobSKu8ENmT2/MYMy
+	 tcS5y2wAMZTUZMYqvPwQ3TBwmhjZ4QEfLfu5wvRav44hUlk+dAA5bH5FFRgYsgkWln
+	 9tC4qOsrW98x6LHNdtHqL3WcgOv+huOdvQZ4Owz+8wHnpUuqtcgTYyXKD3WyCfTwnf
+	 m6O3ZZs0hkn9LHs6kdWWh3hbvFwUlj0eIhai4jEkPJHdwXVpZ75+aUxhFcp6EhmMnB
+	 U6ELYzNkT4gmdUwbsbrSbksX2xYZ/XpkUzvjCFscLovwIC3h24z2DB26VSLPtu7n+f
+	 QIh0vr2xdAOUQ==
+Subject: Re: [PATCH net RESEND] net: fec: drain PEROUT requests before
+ canceling the timer
+From: netdev-bot+sashiko@kernel.org
+To: mhun512@gmail.com
+Cc: wei.fang@nxp.com, netdev@vger.kernel.org, frank.li@nxp.com,
+ shenwei.wang@nxp.com, richardcochran@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, horms@kernel.org,
+ stable@vger.kernel.org, ae878000@gmail.com
+Date: Mon, 05 Oct 2026 18:20:57 +0000
+Message-ID: <179122445706.434549.1378689403745992657@kernel.org>
+In-Reply-To: <20261001180258.4054391-1-mhun512@gmail.com>
+References: <20261001180258.4054391-1-mhun512@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32OwQ6CMBBEf4Xs2ZqlaGk5+R/Gw1IWbZSibUWN4
- d9t0LNzm9nsm3lD5OA4QlO8IfDkoht9NnJVgD2RP7JwXfYgUSo0FYpnPIt4j1f2nUhMoRsfXhi
- UvdEb1NZUkF+vgXv3XLB78Jzg8A0D3+65Iv0uLUUWdhwGl5qCsnpdMxnT6lopa0gTIdcl0Uaya
- q2mbSVxYZ1cTGN4LbOncoH9XziVohSkLFltscKWd8eB3GWd2+Ewz/MHKiuLHQkBAAA=
-X-Change-ID: 20260930-xsk-suspend-teardown-902f98408c93
-To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, bpf@vger.kernel.org, 
- linux-kernel@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-X-Mailer: b4 0.15.2
 
-Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
-not frozen during system sleep, so that callback can run after a
-device has suspended and gated its clocks. Use system_freezable_wq
-so running destruction finishes before device suspend and new work
-waits until process thaw.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Keep assigned pools visible to NETDEV_UNREGISTER independently of
-the socket list. A released socket has already left that list, but
-its final pool put can queue destruction after workqueues freeze.
-A resume-time unregister would then wait for a device reference
-whose release cannot run until the resume completes.
+Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 1 (2)
 
-Track assigned pools per netdev under RTNL and detach remaining pools
-after the notifier socket walk, including copy-mode pools. This also
-covers leased queues without scanning pools from unrelated devices or
-network namespaces. Remove the entry on assignment failure and normal
-teardown. The deferred worker still owns the pool and later observes
-the cleared device pointer, avoiding a second driver detach or put.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The lifetime problem was identified by code inspection of the deferred
-release and system-sleep paths.
+- [High] net: fec: use-after-free of ptp_clock in fec_pps_interrupt
+- [Medium] With the new `if (fep->ptp_clk_on)` guard,
+  fec_ptp_pps_disable() can clear `fep->perout_enable` while skipping…
+- [Low] The patch applies the new clock-off guard
+  (`mutex_lock(&ptp_clk_mutex)` + `if (fep->ptp_clk_on)`) to only one of…
 
-Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
-Changes in v2:
-- Track assigned pools per netdev instead of scanning a global pool list.
-- Keep deferred releases visible across queue changes and queue leases.
-- Rebase onto current net.
-- Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
+Pre-existing issues:
+- [High] fec_ptp_stop() runs while the netdev is still registered.
+- [High] fec_ptp_stop() unregisters the PTP clock without first draining
+  the PPS interrupt handler.
+- [Medium] The PEROUT enable path in fec_ptp_enable() publishes state
+  before arming it: - Under ptp_clk_mutex and tmreg_lock it sets…
+- [Medium] PPS and PEROUT share the same compare channel
+  (fep->pps_channel).
+- [Low] fec_ptp_enable_pps() checks `fep->perout_enable` before its
+  `pps_enable == enable` no-op check.
+- [Low] fec_ptp_init() copies `fsl,pps-channel` from the device tree
+  straight into fep->pps_channel (fec_ptp.c:753-754) without a range…
 
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: Magnus Karlsson <magnus.karlsson@intel.com>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: Stanislav Fomichev <sdf@fomichev.me>
-To: Alexei Starovoitov <ast@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>
-To: Björn Töpel <bjorn@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: bpf@vger.kernel.org
----
- include/linux/netdevice.h   |  5 +++++
- include/net/xsk_buff_pool.h |  3 +++
- net/xdp/xsk.c               |  5 +++++
- net/xdp/xsk_buff_pool.c     | 25 ++++++++++++++++++++++++-
- 4 files changed, 37 insertions(+), 1 deletion(-)
+--
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 3cff2174dc03..72091938f6e6 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2545,6 +2545,11 @@ struct net_device {
- 	/* protected by rtnl_lock */
- 	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
- 
-+#ifdef CONFIG_XDP_SOCKETS
-+	/** @xsk_pools: assigned AF_XDP pools, protected by rtnl_lock */
-+	struct hlist_head	xsk_pools;
-+#endif
-+
- 	u8 dev_addr_shadow[MAX_ADDR_LEN];
- 	netdevice_tracker	linkwatch_dev_tracker;
- 	netdevice_tracker	watchdog_dev_tracker;
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index a7df573784fd..5cc2f61d7fdf 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -48,6 +48,8 @@ struct xsk_buff_pool {
- 	struct device *dev;
- 	struct net_device *netdev;
- 	struct list_head xsk_tx_list;
-+	/* Assigned pools, including deferred releases; protected by RTNL. */
-+	struct hlist_node dev_node;
- 	/* Protects modifications to the xsk_tx_list */
- 	spinlock_t xsk_tx_list_lock;
- 	refcount_t users;
-@@ -119,6 +121,7 @@ bool xp_put_pool(struct xsk_buff_pool *pool);
- void xp_clear_dev(struct xsk_buff_pool *pool);
- void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
- void xp_del_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
-+void xp_clear_dev_all(struct net_device *dev);
- 
- /* AF_XDP, and XDP core. */
- void xp_free(struct xdp_buff_xsk *xskb);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 33475b180ea6..781ba46eb152 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -2145,6 +2145,11 @@ static int xsk_notifier(struct notifier_block *this,
- 			mutex_unlock(&xs->mutex);
- 		}
- 		mutex_unlock(&net->xdp.lock);
-+		/*
-+		 * A released socket is no longer on xdp.list. Its pool can still
-+		 * hold a device reference on the frozen release workqueue.
-+		 */
-+		xp_clear_dev_all(dev);
- 		break;
- 	}
- 	return NOTIFY_DONE;
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 9d2d94f1fb75..c4d722008670 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -204,6 +204,11 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	pool->cached_need_wakeup = XDP_WAKEUP_TX;
- 
- 	dev_hold(netdev);
-+	/*
-+	 * Socket removal precedes the final pool put. Keep the pool visible to
-+	 * NETDEV_UNREGISTER even while release work is waiting for process thaw.
-+	 */
-+	hlist_add_head(&pool->dev_node, &netdev->xsk_pools);
- 
- 	if (force_copy)
- 		/* For copy-mode, we are done. */
-@@ -265,6 +270,8 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 		err = 0; /* fallback to copy mode */
- 	if (err) {
- 		xsk_clear_pool_at_qid(netdev, queue_id);
-+		hlist_del(&pool->dev_node);
-+		pool->netdev = NULL;
- 		dev_put(netdev);
- 	}
- 	return err;
-@@ -291,17 +298,29 @@ void xp_clear_dev(struct xsk_buff_pool *pool)
- {
- 	struct net_device *netdev = pool->netdev;
- 
-+	ASSERT_RTNL();
- 	if (!pool->netdev)
- 		return;
- 
- 	netdev_lock_ops(netdev);
- 	xp_disable_drv_zc(pool);
- 	xsk_clear_pool_at_qid(pool->netdev, pool->queue_id);
-+	hlist_del(&pool->dev_node);
- 	pool->netdev = NULL;
- 	netdev_unlock_ops(netdev);
- 	dev_put(netdev);
- }
- 
-+void xp_clear_dev_all(struct net_device *dev)
-+{
-+	struct xsk_buff_pool *pool;
-+	struct hlist_node *next;
-+
-+	ASSERT_RTNL();
-+	hlist_for_each_entry_safe(pool, next, &dev->xsk_pools, dev_node)
-+		xp_clear_dev(pool);
-+}
-+
- static void xp_release_deferred(struct work_struct *work)
- {
- 	struct xsk_buff_pool *pool = container_of(work, struct xsk_buff_pool,
-@@ -337,7 +356,11 @@ bool xp_put_pool(struct xsk_buff_pool *pool)
- 
- 	if (refcount_dec_and_test(&pool->users)) {
- 		INIT_WORK(&pool->work, xp_release_deferred);
--		schedule_work(&pool->work);
-+		/*
-+		 * Teardown calls ndo_bpf(), which may need powered hardware.
-+		 * RTNL alone does not exclude the device's system PM callbacks.
-+		 */
-+		queue_work(system_freezable_wq, &pool->work);
- 		return true;
- 	}
- 
+net: fec: drain PEROUT requests before canceling the timer
 
----
-base-commit: aaaaf87ea99b8766c9a8aa0e71aa42e6bc8a5320
-change-id: 20260930-xsk-suspend-teardown-902f98408c93
+The commit changes the order in fec_ptp_stop(). ptp_clock_unregister() now
+runs before the PEROUT hrtimer is canceled, and fec_ptp_pps_disable() and the
+PPS disable come after it. fec_ptp_pps_disable() now takes ptp_clk_mutex and
+skips the TCSR write when the PTP clock is off.
 
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+> index 56801c2009d59..67901e036ac32 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -506,10 +506,13 @@ static int fec_ptp_pps_disable(struct fec_enet_private *fep, uint channel)
+>  
+>  	hrtimer_cancel(&fep->perout_timer);
 
+[Severity: Medium]
+This is a pre-existing issue, but can a concurrent PEROUT enable still arm
+the timer or the hardware after this cancel has run?
+
+In fec_ptp_enable(), the enable path sets the state and drops both locks
+before it arms anything:
+
+fec_ptp_enable() {
+    ...
+			fep->perout_enable = true;
+
+unlock:
+			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+			mutex_unlock(&fep->ptp_clk_mutex);
+    ...
+			if (delta > FEC_PTP_MAX_NSEC_COUNTER) {
+				timeout = ns_to_ktime(delta - NSEC_PER_SEC);
+				hrtimer_start(&fep->perout_timer, timeout, HRTIMER_MODE_REL);
+			} else {
+				return fec_ptp_pps_perout(fep);
+			}
+    ...
+}
+
+Suppose a PEROUT disable runs fec_ptp_pps_disable() inside that window:
+
+- hrtimer_cancel() finds nothing armed.
+- perout_enable is cleared and TCSR is zeroed.
+- The enable thread then starts the hrtimer or programs toggle mode.
+
+That leaves a live timer or periodic output while perout_enable == false. A
+later PPS enable would then pass its perout_enable check on the same
+channel.
+
+This looks reachable because period_store() in drivers/ptp/ptp_sysfs.c calls
+ops->enable() without ptp->pincfg_mux, while the chardev path holds it.
+
+With this patch's teardown order, the hrtimer is canceled only after
+ptp_clock_unregister() has drained sysfs and chardev users. So this is a
+state mismatch rather than a use-after-free.
+
+>  
+> +	mutex_lock(&fep->ptp_clk_mutex);
+>  	spin_lock_irqsave(&fep->tmreg_lock, flags);
+>  	fep->perout_enable = false;
+> -	writel(0, fep->hwp + FEC_TCSR(channel));
+> +	if (fep->ptp_clk_on)
+> +		writel(0, fep->hwp + FEC_TCSR(channel));
+
+[Severity: Medium]
+Can this leave the compare channel armed while the driver records PEROUT as
+disabled?
+
+When ptp_clk_on is false, perout_enable is cleared but the only write that
+disarms TCSR(pps_channel) is skipped. Nothing replays that write later.
+
+A possible sequence:
+
+1. PEROUT is armed. fec_ptp_pps_perout() sets toggle mode, TIE and TF in
+   TCSR.
+
+2. ip link set down. On FEC_QUIRK_HAS_MULTI_QUEUES parts (and with
+   NO_HARD_RESET plus link), fec_stop() -> fec_ctrl_reset() only writes
+   ECNTRL = 0, without FEC_ECR_RESET. fec_ptp_restore_state() only
+   reprograms PPS. fec_enet_clk_enable(false) then sets ptp_clk_on = false
+   with the channel still armed.
+
+3. A PEROUT-off request (chardev period 0, or a write to the sysfs period
+   file) reaches fec_ptp_enable() -> fec_ptp_pps_disable(). There is no
+   ptp_clk_on check on that path. perout_enable becomes false, but TCSR is
+   not written.
+
+4. ip link set up. fec_restart() again does no hard reset, and
+   fec_ptp_restore_state() does not touch TCSR for PEROUT. Once clk_ptp
+   runs, the stale channel fires and fec_pps_interrupt() keeps reloading
+   TCCR, so the output pin keeps toggling.
+
+Before this patch the write was unconditional. Whether this misbehaves
+depends on hardware: whether TCSR survives clock gating, and whether the old
+unconditional write took effect with clk_ptp gated.
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but can a PEROUT disable silently
+stop an active PPS output here?
+
+PPS and PEROUT share fep->pps_channel, but they exclude each other only on
+the enable side. In fec_ptp_enable(), a PEROUT request with on = 0 goes
+straight to:
+
+		} else {
+			fec_ptp_pps_disable(fep, fep->pps_channel);
+		}
+
+There is no pps_enable check first. This writes TCSR(pps_channel) = 0 while
+PPS is running, which clears TMODE and TIE, but fep->pps_enable stays 1.
+
+The driver then reports PPS as enabled, but the hardware no longer generates
+PPS interrupts or events.
+
+[ ... ]
+
+> @@ -856,11 +859,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+>  	struct net_device *ndev = platform_get_drvdata(pdev);
+>  	struct fec_enet_private *fep = netdev_priv(ndev);
+>  
+> -	if (fep->pps_enable)
+> -		fec_ptp_enable_pps(fep, 0);
+> -
+>  	cancel_delayed_work_sync(&fep->time_keep);
+> -	hrtimer_cancel(&fep->perout_timer);
+>  	if (fep->ptp_clock)
+>  		ptp_clock_unregister(fep->ptp_clock);
+
+[Severity: High]
+Does moving the PPS disable after ptp_clock_unregister() open a
+use-after-free of fep->ptp_clock in fec_pps_interrupt()?
+
+Before this patch, fec_ptp_stop() cleared pps_enable and zeroed
+TCSR(pps_channel) before the clock was unregistered. Now the driver's
+own fec_ptp_enable_pps(fep, 0) runs only after ptp_clock_unregister()
+has done its final put_device(). That put can free the ptp_clock and
+its pps_source.
+
+The interrupt handler checks pps_enable without a lock and then uses
+the clock:
+
+	if (fep->pps_enable) {
+		event.type = PTP_CLOCK_PPS;
+		ptp_clock_event(fep->ptp_clock, &event);
+	}
+
+The irq is requested with devm_request_irq() in fec_ptp_init(), so it
+stays live until after fec_drv_remove() returns.
+
+Some trees have a ptp_clock_unregister() that does not disable PPS
+itself, and this patch is tagged for stable. There, pps_enable stays
+1 and the compare channel stays armed with TIE set for the whole
+unregister. The next compare event, at most a second or two later,
+then does:
+
+fec_pps_interrupt()
+  fep->pps_enable == 1
+  ptp_clock_event(fep->ptp_clock)   <- freed by put_device()
+
+On such a tree, the fec_ptp_enable_pps(fep, 0) call that now follows
+unregister comes too late to prevent this.
+
+Where ptp_disable_all_events() does call fec_ptp_enable_pps(fep, 0)
+from inside unregister, the window is smaller but not closed. That
+call clears pps_enable under tmreg_lock. The handler does not take
+tmreg_lock, and nothing calls synchronize_irq(). A handler that has
+already passed the check can still reach the freed clock. That part
+was already possible before this patch.
+
+The hrtimer race described in the commit message only needs the
+PEROUT cleanup to run after unregister. Could the PPS disable stay
+before ptp_clock_unregister()? It could be followed by a
+synchronize_irq() on the PPS interrupt, so the handler is quiesced
+before the clock and pps_source are released.
+
+[Severity: High]
+This is a pre-existing issue, but is the PPS interrupt handler drained before
+ptp_clock_unregister() releases the clock?
+
+fec_pps_interrupt() checks pps_enable without a lock and then uses the
+clock:
+
+		if (fep->pps_enable) {
+			event.type = PTP_CLOCK_PPS;
+			ptp_clock_event(fep->ptp_clock, &event);
+		}
+
+ptp_clock_unregister() does:
+
+	ptp_disable_all_events(ptp);
+	...
+	if (ptp->pps_source)
+		pps_unregister_source(ptp->pps_source);
+
+	/* The final put, normally here, will invoke ptp_clock_release(). */
+	put_device(&ptp->dev);
+
+A possible interleaving:
+
+CPU1 (fec_pps_interrupt)
+  passes the fep->pps_enable check
+
+CPU0 (fec_ptp_stop)
+  ptp_clock_unregister()
+    ptp_disable_all_events()
+      fec_ptp_enable_pps(fep, 0)   <- tmreg_lock does not exclude the handler
+    pps_unregister_source()
+    put_device()                   <- frees pps_device and ptp_clock
+
+CPU1
+  ptp_clock_event()
+    pps_event(ptp->pps_source)     <- takes pps->lock on freed memory
+
+The irq is requested with devm_request_irq() in fec_ptp_init(), so it stays
+live until after remove returns. Nothing calls synchronize_irq() or
+disable_irq() before the clock and PPS source are released.
+
+On PREEMPT_RT the force-threaded handler is preemptible, which widens the
+window.
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but does removal with PEROUT
+active always log a spurious "PEROUT is running" error here?
+
+The call chain is ptp_clock_unregister() -> ptp_disable_all_events() ->
+fec_ptp_enable(PTP_CLK_REQ_PPS, 0) -> fec_ptp_enable_pps(fep, 0).
+fec_ptp_enable_pps() checks perout_enable before its no-op check:
+
+	if (fep->perout_enable) {
+		spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+		dev_err(&fep->pdev->dev, "PEROUT is running");
+		return -EBUSY;
+	}
+
+	if (fep->pps_enable == enable) {
+
+fec_ptp_stop() clears perout_enable only after ptp_clock_unregister()
+returns. So a PPS disable that should be a no-op returns -EBUSY and logs an
+error on every such removal.
+
+> +
+> +	/* An in-flight PEROUT ioctl can arm the timer until unregister returns. */
+> +	fec_ptp_pps_disable(fep, fep->pps_channel);
+
+[Severity: Low]
+This is a pre-existing issue, but fep->pps_channel comes straight from the
+device tree in fec_ptp_init() without a range check:
+
+	fep->pps_channel = DEFAULT_PPS_CHANNEL;
+	of_property_read_u32(np, "fsl,pps-channel", &fep->pps_channel);
+
+It is then used in FEC_TCSR(n), which is 0x608 + n * 0x08, while the driver
+defines MAX_TIMER_CHANNEL as 3. With this new unconditional call, a malformed
+fsl,pps-channel value would cause an MMIO write outside the timer channel
+block on every remove or probe failure, whenever ptp_clk_on is set.
+
+The same unchecked index is already used by fec_ptp_enable_pps(),
+fec_ptp_pps_perout() and fec_pps_interrupt().
+
+Should the value be checked against MAX_TIMER_CHANNEL when it is read?
+
+> +	if (fep->pps_enable)
+> +		fec_ptp_enable_pps(fep, 0);
+>  }
+
+[Severity: Low]
+Can this check ever be true on the remove path?
+
+ptp_caps.pps is set, so ptp_clock_unregister() above has already done:
+
+ptp_clock_unregister()
+  ptp_disable_all_events()
+    fec_ptp_enable(PTP_CLK_REQ_PPS, 0)
+      fec_ptp_enable_pps(fep, 0)   <- sets pps_enable = 0
+
+So pps_enable is normally 0 by the time this runs, and the "then disable
+PPS" step described in the commit message does nothing here.
+
+Related to that, the new ptp_clk_mutex / ptp_clk_on guard is only added in
+fec_ptp_pps_disable(). The disable branch of fec_ptp_enable_pps() writes the
+same register with only tmreg_lock held:
+
+	} else {
+		writel(0, fep->hwp + FEC_TCSR(fep->pps_channel));
+	}
+
+That is the write that actually runs inside ptp_clock_unregister().
+
+This looks reachable: enable PPS, run ip link set down, then remove the
+driver.
+
+- fec_stop() -> fec_ptp_restore_state() re-enables PPS, leaving
+  pps_enable = 1.
+- fec_enet_clk_enable(false) gates clk_ptp and clears ptp_clk_on.
+- fec_drv_remove() only resumes ipg/ahb through pm_runtime_get_sync().
+
+In that state, the new guard skips the PEROUT write, but the PPS write to the
+same channel still happens with clk_ptp gated.
+
+If the guard is needed, should fec_ptp_enable_pps() have it too? If it is
+not needed, is the new conditional in fec_ptp_pps_disable() necessary?
+
+[Severity: High]
+This is a pre-existing issue, but can a concurrent fec_restart() re-enable
+PPS after this one-shot check?
+
+fec_drv_remove() calls fec_ptp_stop() before unregister_netdev() and without
+rtnl:
+
+	fec_ptp_stop(pdev);
+	unregister_netdev(ndev);
+
+So fec_restart() can still run, from fec_enet_open(), link change or ethtool
+paths. fec_restart() calls fec_ptp_save_state() first and
+fec_ptp_restore_state() last, and restore_state does:
+
+	if (fep->ptp_saved_state.pps_enable) {
+		/* Re-enable PPS */
+		fec_ptp_enable_pps(fep, 1);
+	}
+
+A possible interleaving:
+
+fec_restart()                      fec_drv_remove()->fec_ptp_stop()
+  fec_ptp_save_state()
+    saved pps_enable = 1
+                                   ptp_clock_unregister()
+                                     ptp_disable_all_events()
+                                       pps_enable = 0
+                                     pps_unregister_source()
+                                     put_device()  <- may free ptp_clock
+                                   if (fep->pps_enable)  <- false
+  fec_ptp_restore_state()
+    fec_ptp_enable_pps(fep, 1)
+      pps_enable = 1, TCSR armed with TIE
+
+When the compare fires 1-2 seconds later, before close gates clk_ptp:
+
+fec_pps_interrupt()
+  ptp_clock_event(fep->ptp_clock)   <- freed
+    pps_event(ptp->pps_source)      <- freed
+
+fep->ptp_clock is never cleared after unregister, and nothing serialises
+fec_restart() against fec_ptp_stop(). The close path inside
+unregister_netdev() also goes through fec_stop() and restore_state, which
+re-arms PPS once more before clk_ptp is gated.
+
+This patch narrows one interleaving by disabling PPS again after unregister,
+but it does not seem to close the race.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001180258.4054391-1-mhun512%40gmail.com
