@@ -1,79 +1,126 @@
-Received: from mail-139-mta239.mxyeet.net (mail-139-mta239.mxyeet.net [23.172.139.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BC6483BEB
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 14:08:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.172.139.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB3749E5D8
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 14:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791209304; cv=none; b=bbLBuCc96IRBfy7PgOdRa9JOSY8sbOt1fKkwbyOnTN7vX9HXiK8D7J+JfEn8WnQQatIHamq7UvgWQGTM8DhRiwEhSwdonSbN8dt6e5R+8Fwh0028wVHDiZiplcaR4/x1OMq+S5XQEeU3jIvOSmu5l3VR1fMmC02AV1l3zk5gO84=
+	t=1791209649; cv=none; b=LlhS7ljoD3CUWnz0yc0ONG7XnXWl3nzUyKvTRw1uUL+/rp16/kwcB2s/Jth7fkWtpPEO27WRVDirEGXSy49UH/fxpJj5pkWqWzkrlYeJ58jVsSFF/dQpNpu9VQEobjc6VfgRoqOLJ5EqC41HnlJmrJZ3pHVZf2U+C0jGVxcCKZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791209304; c=relaxed/simple;
-	bh=bXP2gsPKInS3wxEiRyHL64d/IyuhIOqfNGcm9LumHTk=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=r2kLpUlPX0ANqf/SD+SFAxGrNslnv3OsZ0WEDBC8hAoFp2TTbqMwxNYev8JFWKdnnR+9e0aB2lK4WQpOuNUTsvPk71OXCLp/9ZMKkTq5t5/oJkPfVclN7p8zzSRHon9qmAWLnex+aVv2Kf0uhBX9RqvU3OOk1z5N77YsKItGntU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endrik.dev; spf=pass smtp.mailfrom=endrik.dev; dkim=pass (2048-bit key) header.d=endrik.dev header.i=@endrik.dev header.b=ps608y4H; arc=none smtp.client-ip=23.172.139.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endrik.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=endrik.dev
+	s=arc-20240116; t=1791209649; c=relaxed/simple;
+	bh=lLfFIlgTK8T/FOk7LUTds2Zx9Z4K70GZdC/QkiwqZ0M=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JFYOwldtKygmHqTI/tthmR3pW3xuznanP5RjRjQvpJCPc3RYtOLG/cAH8A/GA3rsWcF2Vmsir2N47wvyCsl9lqs36oHX/2hCQjasElBvPQ3AQZOfyXQ3ldfMw5a0UI1p+zNYrc0osBuzUoHS3FsZY+G8Jq7ZgDz77g6Gjxd6vlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nofCIAYh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=endrik.dev header.i=@endrik.dev header.b="ps608y4H"
-Received: from lu-shared04.cpanelplatform.com [2602:faa9:3000::1006] (Authenticated sender: relay@mxyeet.net)
- by mail-139-mta239.mxyeet.net (MailFilter Outbound) with ESMTPSA id 1a10c64c76900089d7.003
- for <netdev@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Mon, 05 Oct 2026 14:08:13 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=endrik.dev;
-	s=default; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
-	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tx3Yyu7EF76UxqlyUCyryECBr1KTcBsd0J+ccOAf8Yk=; b=ps608y4HhMrmhuFVL3TB8eycQF
-	Ed40sDquQKudRnUFH/vYsFROYzGzQUgyCnfZkU5AZDbp5Hlf7Lo1O76Y5VNbd9GNCtkPMtMiTxGY1
-	zxMfggJXFju/HAdmNidqkC3COC/sm844mNr9ZHRRo+dObGNWOgybc+w8siVM+suBWZnIa4dM5Im0Y
-	SiMA6RCP+szT06qwvG8Oleqj6PnVRkQAK4iilaCzeAlPX3gXWLYUB7t/HD1cbkgjNiy0toVatiDRl
-	7ZzqO49Vl2276zXm4qzY+bZDQ/V3T64KZ2XlOyTGBR9ULfrxelGLyf3Ji8Yv0iaVZ5ux2Ko14yaVz
-	6istlqIw==;
-Received: from [::1] (port=41434 helo=lu-shared04.cpanelplatform.com)
-	by lu-shared04.cpanelplatform.com with esmtpa (Exim 4.100.1)
-	(envelope-from <git@endrik.dev>)
-	id 1xDjMR-00000002mNC-3l8V;
-	Mon, 05 Oct 2026 16:08:11 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nofCIAYh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F6A1F000FF;
+	Mon,  5 Oct 2026 14:14:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791209641;
+	bh=ATzG+L8YsNUmOKoBB/0ap9vpolQt4BSY6mfBdVkuIBU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=nofCIAYhG7dNx6Jw6Tof83bZ3Q/+7konRGEISbyroRn1NByU6/aOAKmc0teLiI8lt
+	 K6tsqsGxDeQcEDShasFyL66hB3qgvNpFedhW7YfO0UcexAJpg26kjhGEttcbwPgRsG
+	 x3BPnfgN3VaS0D8pNgHIyuGwfBdTjxmYLVw+tqArtgDTkc459DVhh+9OP8yI6YPbqs
+	 SJfhWhqj4LZhura48DtBsEZ9CGUqi/83qsbutwq/qJzlojUDwCaMw5MztiiLKaRiwH
+	 cBXV0ZCS8qWievWHK3MgCjFQbDLhRoFP7AxcSNy5f7tQqfu9Vl0aD15ANj99os4pRU
+	 3paQf3N7TilWg==
+Subject: Re: [PATCH net-next v4 1/3] net: stmmac: set real_num_tx_queues to
+ max(offset + count)
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, olteanv@gmail.com,
+ 0x1207@gmail.com, daniel@riscstar.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, dcaratti@redhat.com
+Date: Mon, 05 Oct 2026 14:13:59 +0000
+Message-ID: <179120963986.434549.17858114667686220816@kernel.org>
+In-Reply-To:
+ <20261001-stmmac-mqprio-prio-offload-v4-1-a74610d7f1e5@oss.qualcomm.com>
+References:
+ <20261001-stmmac-mqprio-prio-offload-v4-1-a74610d7f1e5@oss.qualcomm.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 05 Oct 2026 16:08:11 +0200
-From: git@endrik.dev
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, git@endrik.dev
-Subject: Re: [PATCH] wifi: iwlwifi: mld: include VI packets in low latency
- detection
-In-Reply-To: <IA3PR11MB7213134F2D0E081A853C7A06A6A3962@IA3PR11MB721313.namprd11.prod.outlook.com>
-References: <20261004214438.128694-1-git@endrik.dev>
- <IA3PR11MB7213134F2D0E081A853C7A06A6A3962@IA3PR11MB721313.namprd11.prod.outlook.com>
-User-Agent: Roundcube Webmail/1.6.19
-Message-ID: <173121002b0895ac0b12bd3cbae3b78b@endrik.dev>
-X-Sender: git@endrik.dev
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-From-Rewrite: unmodified, there is a forwarder that points to the actual sender.
-X-AuthUser: endrik@endrik.dev
-X-NCN-Id: qrBpiUCfTMOkjygEbw==
 
-> I don't want to rely on the value of the different enums too much.
-> Let's be explicit:
-> return tid_to_mac80211_ac[tid]  == IEEE80211_AC_VI ||
->             tid_to_mac80211_ac[tid]  == IEEE80211_AC_VO
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Hey,
+Low priority / nit picks for your consideration:
 
-I actually considered that initially, but as a kernel newbie,
-I thought a minimal patch would result in less hassle for reviewers.
+- [Low] The commit message describes only one of two failure modes.
 
-A v2 with the explicit comparison is coming shortly.
+--
 
-Thanks,
-Endrik
+net: stmmac: set real_num_tx_queues to max(offset + count)
+
+This patch changes how tc_setup_dwmac510_mqprio() computes the number of
+real TX queues. It now uses the maximum of offset[i] + count[i] instead
+of the sum of the per-TC counts. As a result, real_num_tx_queues covers
+the highest queue in the TC map even when the mqprio layout has gaps or
+a non-zero first offset.
+
+> netif_set_real_num_tx_queues() then passes this too-small count to
+> netif_setup_tc(), which invalidates the mapping.
+
+[Severity: Low]
+Is this description complete? It seems to cover only layouts where TC0
+itself ends up out of range.
+
+In tc_setup_dwmac510_mqprio(), stmmac_set_ndev_tcs() runs before
+netif_set_real_num_tx_queues(). It starts by calling netdev_reset_tc(),
+which zeroes dev->prio_tc_map:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c:stmmac_set_ndev_tcs() {
+	...
+	netdev_reset_tc(ndev);
+	...
+}
+
+So when netif_setup_tc() runs, every priority maps to TC0, and the TC0
+check is the only one that can fire:
+
+net/core/dev.c:netif_setup_tc() {
+	...
+	/* If TC0 is invalidated disable TC mapping */
+	if (res.offset + res.count > txq) {
+		netdev_warn(dev, "Number of in use tx queues changed invalidating tc mappings. Priority traffic classification disabled!\n");
+		WRITE_ONCE(dev->num_tc, 0);
+		return;
+	}
+	...
+}
+
+mqprio_init() installs the user's prio_tc_map only after the offload
+callback returns.
+
+Take a gapped layout where TC0 fits, such as "queues 1@0 1@2". The old
+sum gives real_num_tx_queues = 2, and nothing gets invalidated. TC1
+keeps offset 2, so on transmit:
+
+netdev_core_pick_tx()
+  netdev_pick_tx()
+    skb_tx_hash()          /* returns 2 */
+  netdev_cap_txqueue()     /* 2 >= real_num_tx_queues, warns, returns 0 */
+
+stmmac does not implement ndo_select_queue. That traffic class,
+including express or preemptible FPE traffic, would therefore go out on
+queue 0 with only a ratelimited warning. Its mapping would not be
+rejected.
+
+The code change handles both cases. Could the commit message also
+describe this misrouting case, so backporters can see the full impact of
+the bug being fixed?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001-stmmac-mqprio-prio-offload-v4-0-a74610d7f1e5%40oss.qualcomm.com
