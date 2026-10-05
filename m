@@ -1,126 +1,108 @@
-Received: from mail-oo2-f11.google.com (mail-oo2-f11.google.com [74.125.231.139])
+Received: from mail-dy2-f41.google.com (mail-dy2-f41.google.com [74.125.229.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841E130F7EA
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 04:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.139
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791175020; cv=pass; b=fmdAoCSiyAwUuge2SKsY15j0/HDtNrf9DdLJUfyasapOTaUOHrdVD5Vobz6GXtouymJJExq5MziT1reqbHKsu86lATap45OmkUD4IRp9IYBFy5RG+ExQDb16/L6138YlfHIdOh3GM+k4ioE+TR5am6Ctlw1ND1q2Rk5zTnGQMSk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791175020; c=relaxed/simple;
-	bh=4JaW8TsfEgIYQ0t1F0pY0awGa16inumluGQbcchpNhM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qcmXV0bw6PVwgW+t6jiVHDzkZBRhIQabq1QWB3YI1M+82EUhuqVAxMEnAEouGoO15uc/dVzdKz8SkpLgQ86TN8oNzoQIcoPAzhtYfPDPCuO+F9VQE7AU6bXsefxjsdx5kImbT3TAnlIrGXVHfOLoOpEt83OHz1PpzBJcsiSGhZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LGJeDFSL; arc=pass smtp.client-ip=74.125.231.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B352E762C
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 04:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791175102; cv=none; b=d1FCrfFCYiuM40W2iOZmUeXnD4Vq4aI8k7EkpT5rf3ZPMhA+Af8+7l9kfx6e/Dsng6aiFoUkolpDyPpKNLy8B55e2qOu17/a9wsBzat55iGZPsGw5Rb84N63lpxJNofAbwIdT/Kj2T1DGCJQR1UZZvV04INF1a2Ag+BmSy/CxZw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791175102; c=relaxed/simple;
+	bh=Pk1V3yBnj2gKrN3bv2Nfw53cNs1zJpDrB5f3qShOohY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BPQ0EJuW0B4XVPudlz1BSuHLwSj72a58UNcKf6bkcr0HgJdkhDYhVNuEYmEh7GvVQr9UPlO5L5K0F5PJV8ZWHWVP9VOTL2SjAJA9PIK5xaBvvA669Ra4YDSIWhJYS+Vy6yoXVrc156Cc4tbvl8KnNzg24gpCkOodYOhTEuCsKaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fdk/TLZH; arc=none smtp.client-ip=74.125.229.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LGJeDFSL"
-Received: by mail-oo2-f11.google.com with SMTP id 46e09a7af769-826f42e479dso194183a34.1
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 21:36:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791175016; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YyAPqxqsRmaCQ75ntx/dC04zjMaV8pZW57sDSy6YS2/NJovG7MvIE23u0ukEw5ZFBd
-         ovD0nFFIdDqoLrq9Ap9m+2rkSS5N78WjsTbaM5fi0SSAuk7qsckTRASqRZQZNnkkYzZS
-         8VjSqt0XTe+pGqTxt9AdzfqDc/D5bEXu8YZHnCamxTcJK3RwQMVxg0OCV+PXhduaRjQu
-         91n/UzUPZBe2nc8XruUfP3X0Mnlqqy1mrFSmgiBcuD54U3RHUMpsBc4jDMkzNnlvJarr
-         OFapou6BZKEInkQ+sBtl3O9yHe0x2Hfe8KKi4QcWoTCqrzG1rz1z2Rl/gCJS5AxvkXyC
-         R2Hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jMemwemCDjVQ/IRLCAlo5A+Uc/DpvQUIN6OnaV6i+nM=;
-        fh=O+NqppMi2tP7qs+U7ZA9Kh5pFkd9M2n3HKuKfjUNAQQ=;
-        b=ClPI3hPOaiWy3MD1FtiXN36qj/MCmOT5VVGkffNadefZgMekKa51NFjxGL5bCR1NZ5
-         7lUtdd/T/2I5Hwdf8Om1jpESMoTx9r7GJKOvzwJqGick9k6XqPIDXS4ReAfMluKm72SE
-         7KoKKKz80ZDxLLNOExrzIBws4TcJAuqL2oZORyhO4I2HtkECwJQT5wTC5xa//HOerodt
-         Atb+jZ/0De+71UiNfw8rPSun83kKUimGMcc64T07DelBHgZHwBva67jhie5ovxaeRg+6
-         wQ4hDshvfRSnwEo+ZCNm+mWDQQsZn1N04oBMWB28MdnStfRspa4RHLQScKuu4rKOmVlv
-         rkpw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fdk/TLZH"
+Received: by mail-dy2-f41.google.com with SMTP id 5a478bee46e88-34d2d25127aso526355eec.1
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 21:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791175016; x=1791779816; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jMemwemCDjVQ/IRLCAlo5A+Uc/DpvQUIN6OnaV6i+nM=;
-        b=LGJeDFSLZkI/vPN7f6LghCYPc/jKOpleFeaWKdzZDzdOihg8ozwKHvBFCGqzHZ4+Fk
-         iudgg00839NrKv6mRHs4sGjUaTRZIP2J/zBqWcf/zxmzk9q/Eg7P5vp40rMFtDVBOHQm
-         H5qEGHr45g/LpgcFQFJ7yGkQXfEU0UTu4twTSgFRcfcUFtFpX2U0tnPt3VTDyNENoxoz
-         c8KtIhABRG1vheMUe09gbhFaM3ldigSRskHlFPoeLrPtyPxG6VwINfRNbTS9nKnIBWcC
-         ig+rgWHidmPpf3Z/xlxVoU+PpD9BuoRY35M9ePkqTcL2TJfWz8AZRJUvr0t4hbElrfE+
-         fWwQ==
+        d=gmail.com; s=20251104; t=1791175100; x=1791779900; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Pk1V3yBnj2gKrN3bv2Nfw53cNs1zJpDrB5f3qShOohY=;
+        b=Fdk/TLZHhgf3TTKcFnziKeT123qf++x+z3sAPbLTBe8OUcM6iBXNTIHkIy9VxgIL0m
+         sIxfjZBGOjbl2vLKeYeC+brPAUmSMxJli0L8ItNfDJmHklnF2c0Fx+7SdStUSgD044w0
+         +4+dVxpyxWyXuEs+2TTqdLXHYo3WaSrBZnCXsjXnQTw7bKOhmoQk3/eQafOjXi3rL34k
+         FbNRKXwkCWimlRvFgSn4+T6Eq+bvye3B5FDUd7LY0z7QUE8l+mCbr89HiK44o4TrCowm
+         Uo00lxPdKHC3/m8F7bKCSVxtmyO/B0GWBvHbTWrUF97omC+cfiLx44WqSjyai06wIfEe
+         9XSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791175016; x=1791779816;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jMemwemCDjVQ/IRLCAlo5A+Uc/DpvQUIN6OnaV6i+nM=;
-        b=IinAHWLfK7yPXeU3SCo3QesLyqpvbXygwW/TqTA9oiM3JWaQxB16s0A1lQvXB8aP0f
-         FdXj7eBZO7kBEA9mtPEnbJrux5JjEEvIOMzh6AjNaqIadE1oLyKemXDeWs8eNb8A71IR
-         Iy3jEJRRqp5WLyrAixVDD3AbY6vI0qKIY6Vnq87vCagrI5a7SGxksdeU7Ce/gbKhauYB
-         i8CYFrwqJO/P4FOGXd6qlZAekU9lsy+yxvF4frIhOtXS6vT9RnEz/DUK1Ij3i+OcvzSZ
-         i+w8uyeyooNup5t8146hP8n1DDf1ak2UKm1nJcf8P3pMXOS/HgIxVVmXr9gcZsb6Sc+p
-         aR1A==
-X-Gm-Message-State: AFuF++n3V9Sp+gHp+nPS81vMEFHv2Gwu1aQ57oI4skRyTYPQxGaaqCkA
-	KpAagO5M8WRBAtpI/ttSvkCGdUM1ARH94SUSHxSR3HXWcRzToa0SAHy13cqHFhHy1GvgZnvdBva
-	N0FZ8wtOE0O+f/2wh0JShH7UHylB5QKU=
-X-Gm-Gg: AYBFou3+WAeYpV3bi5+qPlIV8dkvf0PWRXDIgjlBiyqeoQAdOr7SmLI4Nn/9oIUILZZ
-	FVvmMbCoUkU1f/+HEeBsp9ChHNUDxqopMaIUdEim9eOHRVwm/fUpvreTT8Ai5FQ3jNi/wiwr146
-	VULZANCnsMfi3VABeH7oaJNbqUPCnd920CqqW+vY/AFnEp3LdTxVcc9tHec40GXCUSjH8p1MEpd
-	Fm9kDEfByNCLgtD48XHLK4LFmP34nkqOFcUQMeLCntGuAi9jP/wWfpB3Nby6CvmWxevlw6CjgOp
-	p41ahieFsmy8+hXPTWA14OSOncmxlS4Ys+YzFU4PzDtpoFrQH/KVK+Z4UX+JnFA1y86yERaFVN9
-	6J3/VPEuqtwXK6a+HuTZbyYPC0g==
-X-Received: by 2002:a05:6808:169e:b0:4b9:a829:f00e with SMTP id
- 5614622812f47-4f529a2c191mr8446849b6e.26.1791175016138; Sun, 04 Oct 2026
- 21:36:56 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791175100; x=1791779900;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Pk1V3yBnj2gKrN3bv2Nfw53cNs1zJpDrB5f3qShOohY=;
+        b=YXglGWgnONL1UqG33fG4WNh214Tx/A96J9W0K9TvFo7sjWKQNp/nahbvpzaDJoHu5l
+         ar09OLOUT1hPGVLVrTDqkH62nMLhrUd990GkpeI8NjnnfFnSgV3EtVyf2hTUfwruQWR4
+         mAHO+9EIVloBkVf+K2rEQ9lCkFpB7LAKxSz0WHHAuCtxteTRM0OPjJtJICbB/DJScYUb
+         dJ8+Zc7ZUlUBWKLh7nWfhMEKqty1FGsznchChcuIOXRDNq5vKT7Om4Nj3MGWOtnxiIOi
+         47Df7Jh0Q4NK+le1jaf5ixAKblR3P/O+VOUJVy01JXt2TzWyi5svokI+xVLsUu9yFKHH
+         j1QA==
+X-Gm-Message-State: AFuF++nzR1Bs2woj3uc2rCGD3j0zoT40mKKSpxsJ7Q0/5wWnRN2rCuVO
+	DM6p70DwJrwY+NVIwAOOw6yt77xTPcJX+ZXKBgsjJWT9wpnB/2Twl9mn
+X-Gm-Gg: AYBFou1bb5glxeMOOMZULRQamZZ/HH17NJsbk8G3xW1oRR4J3JON4EsfahYrp0LFkyr
+	UPkCw++jmYMwUX8IDWQBBwwVOQulzSfVp+/P7Vn2LDeA2Z+rHSWEPZqdnfrFZScBPCxYiAuKiOn
+	jJweBfdiwRjnOr4CuozEJB+Uqu601OHGv1dhjNPn421WrRbYA8t29U4LaHSx02pEyZ8riXlmR+I
+	5cOWzTLupZsS5pETFE90bmBR+G7tbjU6c1E610JglQKMijnKNsjew9J4XdCs6bOoUc2lXzOen8V
+	dMDe7Fmx/NAwJZqFpE522ROskHbYRNyooaWDkqmK0bb5UeMO70N+0Sg1QkSNZ/b7+b2kCcFlhPP
+	aBxGqavk9Q4aX6Dla29USIyO13jFFSCKLITPUeS/e6lI0IhTVxJrINhe/X+K67D3p8lXE4y6aO0
+	eklPmhTnY6iEWgJrkaQBhWbK2rrut8iq+VlmnriKFk4giNLX7q/8TyJPNUOcVuYjiONVtx1F89v
+	QIfBwM=
+X-Received: by 2002:a05:7300:8284:b0:328:3cce:4b3b with SMTP id 5a478bee46e88-34f14f18c81mr10979887eec.4.1791175099687;
+        Sun, 04 Oct 2026 21:38:19 -0700 (PDT)
+Received: from vscode-11-19.w453y.xyz ([59.164.88.43])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35126f01924sm9649984eec.0.2026.10.04.21.38.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 21:38:19 -0700 (PDT)
+From: Abdul Wasey <w453y.me@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org,
+	razor@blackwall.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	horatiu.vultur@microchip.com,
+	bridge@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: bridge: cfm: notify userspace on CFM config changes
+Date: Mon,  5 Oct 2026 04:38:12 +0000
+Message-ID: <20261005043812.3106517-1-w453y.me@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179117378916.434549.16185635728868721491@kernel.org>
+References: <179117378916.434549.16185635728868721491@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005041525.49111-1-xinsheng.zhu.ny@gmail.com> <179117397560.1402591.15477443356899321449@kernel.org>
-In-Reply-To: <179117397560.1402591.15477443356899321449@kernel.org>
-From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
-Date: Mon, 5 Oct 2026 00:36:45 -0400
-X-Gm-Features: AclHuK8AQ_fJPqH9F2RpLy5B-liqnS01GJJ2XrnacHzFOOm1bTKvMDyxIGNhDR8
-Message-ID: <CAFGKm+x2563P6iwWwrJq1VaLJJEbodx8-f5r6Fe41R2f1wdbvw@mail.gmail.com>
-Subject: Re: [PATCH net] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, oliver@neukum.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-I noticed this while manually reviewing usbnet_read_cmd() callers for
-short-read handling.
-This is a theoretical issue based on code inspection.
+On Mon, 05 Oct 2026 04:16:29 +0000, netdev-bot+sashiko@kernel.org wrote:
+> [Severity: High]
+> Is the skb that br_info_notify() allocates large enough for a message
+> with only RTEXT_FILTER_CFM_CONFIG set?
 
-On Mon, Oct 5, 2026 at 12:19=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Right, this is a real bug. br_get_link_af_size_filtered() never counts
+the config attributes, so the notification only fit for small configs.
+I reproduced it: with one MEP and about 32 peer MEPs every config change
+hits the WARN_ON in br_info_notify() and the notification is lost.
+
+v2 adds a patch before this one that counts the config attributes when
+RTEXT_FILTER_CFM_CONFIG is set.
+
+> [Severity: Medium]
+> What does userspace receive when this request deletes the last MEP?
+
+Right, it gets an RTM_NEWLINK with no IFLA_BRIDGE_CFM at all, which
+can't be told apart from other bridge notifications. v2 sends an empty
+IFLA_BRIDGE_CFM nest for a bridge with no MEPs, so that case is visible.
+
+pw-bot: cr
