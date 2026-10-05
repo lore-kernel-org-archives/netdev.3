@@ -1,69 +1,69 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FC24C1506
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 15:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF98C4C4F42
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 15:09:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791212995; cv=none; b=cZDB0crL9zrDkjF3P1HKRDcoI4kHN9Gukbd46JMgB+cQWvn1Vfv7uAxf0ZWwJLePHkZZIzfhAi31HuWNTpXiysdVRFoHEQkFKh8fllE+HyphJwTlqkE2m+qNNr9vUrhtEIkfFXAUG7oHsooKgSYfxcXkM7gbK0BzILwAFQA9GvU=
+	t=1791212999; cv=none; b=gkpYiRRTvPRzgLF8bWj/64cu6z4SHOEf4DFUu4oXLn7VgicMt9fOWqeVugnQOz2xZimyxnsaZviLThRL3Q1k7Q+Yp4KFasFAwNPSwy5CMVYAEP6z6d9uNk7koHsoKymnhm0xheMIrvpM0eSe7f3a7MUf+4hYcYByT7Fg9P78q7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791212995; c=relaxed/simple;
-	bh=XyVR6Z39eA5zyjac0UsK09fwwnAKlUDpWY2E2WEE91c=;
+	s=arc-20240116; t=1791212999; c=relaxed/simple;
+	bh=BMqojRjNhkYSxwyUudbPmPVtVxwSAowRsnpmA8uGJIA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kYkiV5Py96u0/xzlQtH1DwktapkQBU4KPQ3Q5SWcLw6BJrM3hsqisPd7jGHJ5RrrnsxSnKE/esWvhvdhPYBtVoBOja9bCAgbw6ilBWqLsElgtkFlydZdwx36GfgwySDpQ7PgShkew7caNcLhQFxnrHY+CRnoRhiv70jaDm0iRjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com; spf=pass smtp.mailfrom=amutable.com; dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b=aHGLU/Lu; arc=none smtp.client-ip=209.85.128.179
+	 In-Reply-To:To:Cc; b=b01TD3fkDxPz4XA0++uWwXIJ6kkF4ISkufH4KPumw40VlqsJ+3F5ZGFPVLcxJ6MuhnWGxV5WLJZ4xBDBcam388aCBu8ErnxlhnbIOAYA2K+UoqznuU4E2r5FCn0aWZ/38H5hqX6iG22tQX0F2WB7xX45T4UxOP6xmsrj2dQmU6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com; spf=pass smtp.mailfrom=amutable.com; dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b=Duq8xjZw; arc=none smtp.client-ip=74.125.224.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amutable.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amutable.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b="aHGLU/Lu"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8ac9d666d4eso17116407b3.3
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 08:09:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amutable-com.20251104.gappssmtp.com header.i=@amutable-com.20251104.gappssmtp.com header.b="Duq8xjZw"
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-895353e9051so15483387b3.0
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 08:09:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amutable-com.20251104.gappssmtp.com; s=20251104; t=1791212991; x=1791817791; darn=vger.kernel.org;
+        d=amutable-com.20251104.gappssmtp.com; s=20251104; t=1791212993; x=1791817793; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vlXzFGZotE9UMMZtn0AdDxO1akAHhbmhs0KxtWboHE0=;
-        b=aHGLU/LuWwxbroKB1zrfzRGCdPQmk/7oFDjXLr2iog2SLAccQGFAFi8NypKqKS+lQw
-         xT6/FQ0kKvDfIwdCLxxoUberjL/tt//2BGo60xvqBeThM7bPhfv5hGdH6oyxs9ZflDzh
-         gi/lY5QWTb1dirt6QOzVQhxo138Kkvcxa42sBIcpevL/w2IPH8DhxK4HPutZAQSltcQt
-         joww1z2v3aktuSUHzzFpob8cMLQzay4cHXrXcQp6Q26WUF4BkzMeSzDlEpG4w3aWPbfs
-         JYfERj5ecqqKILO1TJvg5czl2FvdsYHxaIL0m16XbNQ6dAnkok5DPdxvp5VTfoBAMqS3
-         zh2w==
+        bh=C2aSa/qLzQIOUn8l0PqY1ok2qCL0S/A2InzYJfPEi2k=;
+        b=Duq8xjZwUo71QOND6gNpVnUQbOdNK2lYC9bx1HK894cQG8x113Wb/yLCO9p5ZFuIf3
+         CY8sEjMQH6I0iRxkgZBy4p2KUxJHzb6u9x+A0mupAoRuCj25VnQ/eM+8xvxn633uQ2kf
+         mFjoxOrsdbFMHFZAehbGonh1WVvBwLvFq2s0eF3bqynVShHzJczKKF7P0OCYwzTV/OyM
+         G453F+xUaNlwgvZv5Uha1hZFGEoU416dMz+9b1ktLA7jyS+WJgEDuxI4yVet4jqadgP+
+         XUg68LBXWKOgh9WVy7dO3g6qXc4MaqsMiaoG1vumCv6hXS+eSvN9n1j8JFRqbtaCDI+p
+         mFCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791212991; x=1791817791;
+        d=1e100.net; s=20260707; t=1791212993; x=1791817793;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vlXzFGZotE9UMMZtn0AdDxO1akAHhbmhs0KxtWboHE0=;
-        b=UQm3dFFr6+TpBsXDcejhTGYe4cSbsgBJQbritpLlySA6yuCHiQC0gljDJPLLHQRemW
-         eVaDstR6ugj0t/f66cgAoPj99HnZ6v9bSnkYl0+aNGwuNqwkbEBuXliqRyTwyxe7vYFe
-         4SdU2au2m9sXBUEWDbRkz9VoDsAEi/ItrAUPtEtwav7J9lGqBNH6jvBOTnY246l8Afhl
-         Je9RLGy2oglA2FdEMxJ8uSVuVwh7l7tSZJzrskHRYf1VuU99+r3P0vVDwKkw+o9LJNSl
-         0X9VdronUJvboeNDpWqT426mnQB/oU8mbggqXnr0BaZ016LL0G6iBpz+pYK02KUa+puj
-         rrvQ==
-X-Forwarded-Encrypted: i=1; AKwUvBziNYjzCei0AKUaNlVRTVa0UWPsmcku59COWIac8YrrHX9xBHB/PqRzGn01Er/QjNf3/JEBXfk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ7uGteqx8iy2KJX/FPSzCfJ5Bbvp1VG/jpVEujbSTeoNV4jquN
-	8Pt4gO37yJ0mA2evy9hqFpA/P36A/8ne74lO5EuAXOyLK9JyRNT4YlMG+BYkXtwEqPQX
-X-Gm-Gg: AYBFou2BYuai0Jmc3kVHwmGW2pS04PevIeGWOhlO6L/280BzzvnnEWdzia6Hgbx+ObV
-	g8OYr1vHkq1D/iy5KeMVTcr/vNnOtb1wKrDCkgm3uRpkI97/JI9f9vRORMaqHNka+p+PwosMrcD
-	UHAESVbDjkaMalaH1TuFuS1Ab0HAbUyDH16zlWh2dVLAlqh7a2JKNjbvG8ZIHRJilgoTnsVK9J7
-	QU9csBLwU+80cxmK6yqf/MtG8qK+lqTohXQ1beYLBdnsgbKR/u3wIiNI11mMnj6vYCRNwVSIpg/
-	KFiAv/IPPAWFDWvmdquxETaWsOngpKu87oSgZYVeNsNEqustYGQ+8tBe/0weG77ocMK9ygwnXDu
-	EBa4nnvYShy9sDCxgxri5hWMgW697fvzbqfwLona0b1vQZiR1KteR5JHXce6uTtjtlJA+2Dn5Hx
-	4sEvBxoORT6kgc4r85rgTYKmb2Ah9pxEHz9F6OtbLF4Mb6YxroyBQVSlt6WuPZGU892EvCsAVqE
-	vxY6tPBAMm+5ISbfjm59vE4DM6BEsj/6ZOv2i2yvp88QnRvQyVAKJ8=
-X-Received: by 2002:a05:690c:480c:b0:8ab:415c:d733 with SMTP id 00721157ae682-8ae948ab9f8mr27618037b3.7.1791212990698;
-        Mon, 05 Oct 2026 08:09:50 -0700 (PDT)
+        bh=C2aSa/qLzQIOUn8l0PqY1ok2qCL0S/A2InzYJfPEi2k=;
+        b=BAZOR5PB8KnXpu5S1V5T/5k+vsTdaFZ2+alj+gmdA8G+Vh1MO5Jn2KvujR8U/cbwCM
+         gvXGkG5yZhipHahCeUGvOFtQ+m7XGCIPRWUBRC11me7aj6dHxisc2fTKZQZrMyvg4bvc
+         oCdzFVIr5haP6qdxELLho+QPZI49zAsBQj0QdY9S80Jk0kQlylBTn/Di86d7jHUhvm5l
+         duYgDT0jrubgdQHXvy7VL2Sei7FV1iDLfkokAg9x1mG8ILjq9OOrZa/nY+dhBUohxpsK
+         qztTEz0Cm3xCUrkRa71j4hjlB0ppRAgPey9rRvgfufDFkpf5FMoADuhbHHqUV877rDA2
+         4EXQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwflTOQpwdz6uEUAlkKNHuRRhpy7eT7ZeCNyoNdliOFVw6wqpObmb3NsRS+7gQ5CTUffF5PNXk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIwdqtFxx3nzzEuHpx42DZW/2R43hyHZvI1QqFzsHOeJrn5nXUK
+	veVpQZc9UriWggIeP8oRqKvz85k3T6mOVHQn4NKC8CjhEyXxLLTRD2JVNU2a9gbpHADB
+X-Gm-Gg: AYBFou2h+YlSZW9S4X83zFtOHCYezssfrN9r2Vq/jF0YPd1tVyRAsB8e4R62fOe094g
+	1TLnHCz45yh3CRq3SFJ42ZG4DElAKwd1USkjguJbO5VH29xv/0YbkYvwxzWGeM2kcHn2QfRgYM3
+	jae+fjrc7zuWdGJUVABCDcwGH0SbfhIF9SawJzD3HfymvVwhJ7e+mnnEjnqMaF5dGb4oLVuKPBW
+	goBe6N5lCTMz8vjChbcij3ZKA6OaMRWqoQLmPnIWtuXpUN7qiK7eeKsc4T31EJLWAMbimPzm+RO
+	Ttm8rss2+SchP5W/IAXzS5mUbd4S8YPtH7h4uk4nuXyIF6VQDFrIx5XJv81U3+6jQsT+ll5ihut
+	noyuk8hfEzjVkrQ8yePlvr7EDrp+P6Clg/i7fwR2lENHEIB6jCf17FPrVUm4Ad1VqSvJzCrVmjq
+	kbrknmyMqmlIbE89CyJ5t6j9oJdUoApWAVgRrlBBTfh+bSARZykH2jnj9mjFVf8CPZ36uRKae4y
+	CuVLNYDF/ptRGcaBrJClCLiVQ3QIcq8xXyUjIBUECz6e2LtBQFAQvTGBsBrweETSw==
+X-Received: by 2002:a05:690c:e647:b0:8a8:7fda:15ee with SMTP id 00721157ae682-8ae3a1093b2mr26723677b3.50.1791212992728;
+        Mon, 05 Oct 2026 08:09:52 -0700 (PDT)
 Received: from [192.168.1.110] (104-53-165-62.lightspeed.stlsmo.sbcglobal.net. [104.53.165.62])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae33fe81fdsm41210467b3.47.2026.10.05.08.09.49
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae33fe81fdsm41210467b3.47.2026.10.05.08.09.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 08:09:50 -0700 (PDT)
+        Mon, 05 Oct 2026 08:09:52 -0700 (PDT)
 From: Andrew Halaney <andrew@amutable.com>
-Date: Mon, 05 Oct 2026 10:09:33 -0500
-Subject: [PATCH v4 03/10] net: add SO_PASSPIDFD_THREAD to get a
- thread-specific SCM_PIDFD
+Date: Mon, 05 Oct 2026 10:09:35 -0500
+Subject: [PATCH v4 05/10] net: turn sk_peer_pid into an array indexed by
+ pid type
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,7 +72,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261005-work-unix-passpidfd-v4-3-350183b6e02a@amutable.com>
+Message-Id: <20261005-work-unix-passpidfd-v4-5-350183b6e02a@amutable.com>
 References: <20261005-work-unix-passpidfd-v4-0-350183b6e02a@amutable.com>
 In-Reply-To: <20261005-work-unix-passpidfd-v4-0-350183b6e02a@amutable.com>
 To: Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
@@ -84,282 +84,256 @@ Cc: "David S. Miller" <davem@davemloft.net>,
  Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
  Alexander Mikhalitsyn <alexander@mihalicyn.com>, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Andrew Halaney <andrew@amutable.com>, Eric Dumazet <edumazet@kernel.org>
+ Andrew Halaney <andrew@amutable.com>, Eric Dumazet <edumazet@kernel.org>, 
+ Alexander Mikhalitsyn <alexander@mihalicyn.com>
 X-Mailer: b4 0.14.3
 
 From: Christian Brauner <brauner@kernel.org>
 
-Currently, SCM_PIDFD carries a pidfd for the thread-group leader. A
-broker or the coredump server cannot learn the identity of the specific
-thread that sent a given message. Now that both struct pids are recorded
-a receiver can ask for the specific identity it needs.
+Currently only the struct pid of the thread-group leader is recorded
+for a socket's peer. To make room for the struct pid of the thread that
+called connect(), listen() or socketpair() turn sk_peer_pid into an
+array indexed by pid type. All users, including bluetooth and the
+coredump socket, keep using the PIDTYPE_TGID slot.
 
-So add SO_PASSPIDFD_THREAD as a sibling of SO_PASSPIDFD.
-SO_PASSPIDFD_THREAD delivers an SCM_PIDFD_THREAD, i.e. scoped
-to the specific thread sending. This is completely independent of
-SO_PASSPIDFD, meaning you can use both options and get both cmsgs.
-
-On SOCK_STREAM sockets recvmsg() only stops merging data at a thread
-boundary when the receiver asked for a thread pidfd. For SO_PASSCRED and
-SO_PASSPIDFD receivers all threads of one process remain a single
-writer.
+Nothing fills the PIDTYPE_PID slot yet. No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-Co-developed-by: Andrew Halaney <andrew@amutable.com>
+Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 Signed-off-by: Andrew Halaney <andrew@amutable.com>
 ---
- arch/alpha/include/uapi/asm/socket.h  |  2 ++
- arch/mips/include/uapi/asm/socket.h   |  2 ++
- arch/parisc/include/uapi/asm/socket.h |  2 ++
- arch/sparc/include/uapi/asm/socket.h  |  2 ++
- include/linux/socket.h                |  9 +++++----
- include/net/sock.h                    |  4 +++-
- include/uapi/asm-generic/socket.h     |  2 ++
- net/core/scm.c                        | 23 +++++++++++++++++------
- net/core/sock.c                       | 14 ++++++++++++++
- net/unix/af_unix.c                    | 12 +++++++++---
- 10 files changed, 58 insertions(+), 14 deletions(-)
+ fs/coredump.c                   |  2 +-
+ include/net/sock.h              |  4 ++--
+ include/trace/events/landlock.h |  2 +-
+ net/bluetooth/af_bluetooth.c    |  6 +++---
+ net/bluetooth/hci_sock.c        |  8 ++++----
+ net/bluetooth/l2cap_sock.c      |  2 +-
+ net/core/sock.c                 |  9 +++++----
+ net/unix/af_unix.c              | 14 +++++++-------
+ 8 files changed, 24 insertions(+), 23 deletions(-)
 
-diff --git a/arch/alpha/include/uapi/asm/socket.h b/arch/alpha/include/uapi/asm/socket.h
-index 946a5fad2691..bb3d534826bb 100644
---- a/arch/alpha/include/uapi/asm/socket.h
-+++ b/arch/alpha/include/uapi/asm/socket.h
-@@ -157,6 +157,8 @@
+diff --git a/fs/coredump.c b/fs/coredump.c
+index 6114839f5178..9b267d3c0ed7 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -722,7 +722,7 @@ static bool coredump_sock_connect(struct core_name *cn, struct coredump_params *
+ 	}
  
- #define SO_RIGHTS_NOTRUNC      85
+ 	/* ... and validate that @sk_peer_pid matches @cprm.pid. */
+-	if (WARN_ON_ONCE(unix_peer(socket->sk)->sk_peer_pid != cprm->pid))
++	if (WARN_ON_ONCE(unix_peer(socket->sk)->sk_peer_pid[PIDTYPE_TGID] != cprm->pid))
+ 		return false;
  
-+#define SO_PASSPIDFD_THREAD    86
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/mips/include/uapi/asm/socket.h b/arch/mips/include/uapi/asm/socket.h
-index f1641dde135f..269badcaa086 100644
---- a/arch/mips/include/uapi/asm/socket.h
-+++ b/arch/mips/include/uapi/asm/socket.h
-@@ -168,6 +168,8 @@
- 
- #define SO_RIGHTS_NOTRUNC      85
- 
-+#define SO_PASSPIDFD_THREAD    86
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
-index f3a3815c7dc2..313aee10a52c 100644
---- a/arch/parisc/include/uapi/asm/socket.h
-+++ b/arch/parisc/include/uapi/asm/socket.h
-@@ -149,6 +149,8 @@
- 
- #define SO_RIGHTS_NOTRUNC	0x4053
- 
-+#define SO_PASSPIDFD_THREAD	0x4054
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64
-diff --git a/arch/sparc/include/uapi/asm/socket.h b/arch/sparc/include/uapi/asm/socket.h
-index 7907f3b1f0ee..bd3e69bcce7a 100644
---- a/arch/sparc/include/uapi/asm/socket.h
-+++ b/arch/sparc/include/uapi/asm/socket.h
-@@ -150,6 +150,8 @@
- 
- #define SO_RIGHTS_NOTRUNC        0x005e
- 
-+#define SO_PASSPIDFD_THREAD      0x005f
-+
- #if !defined(__KERNEL__)
- 
- 
-diff --git a/include/linux/socket.h b/include/linux/socket.h
-index 5a5eb1250103..b17fdb7d38a7 100644
---- a/include/linux/socket.h
-+++ b/include/linux/socket.h
-@@ -189,10 +189,11 @@ static inline size_t msg_data_left(const struct msghdr *msg)
- 
- /* "Socket"-level control message types: */
- 
--#define	SCM_RIGHTS	0x01		/* rw: access rights (array of int) */
--#define SCM_CREDENTIALS 0x02		/* rw: struct ucred		*/
--#define SCM_SECURITY	0x03		/* rw: security label		*/
--#define SCM_PIDFD	0x04		/* ro: pidfd (int)		*/
-+#define	SCM_RIGHTS		0x01	/* rw: access rights (array of int) */
-+#define SCM_CREDENTIALS		0x02	/* rw: struct ucred		*/
-+#define SCM_SECURITY		0x03	/* rw: security label		*/
-+#define SCM_PIDFD		0x04	/* ro: pidfd (int)		*/
-+#define SCM_PIDFD_THREAD	0x05	/* ro: thread pidfd (int)	*/
- 
- struct ucred {
- 	__u32	pid;
+ 	cprm->limit = RLIM_INFINITY;
 diff --git a/include/net/sock.h b/include/net/sock.h
-index 60ea55dc1885..2c4f754b498b 100644
+index 2c4f754b498b..77dfb170d3c8 100644
 --- a/include/net/sock.h
 +++ b/include/net/sock.h
-@@ -356,6 +356,7 @@ struct sk_filter;
-   *	@sk_scm_security: flagged by SO_PASSSEC to recv SCM_SECURITY
-   *	@sk_scm_pidfd: flagged by SO_PASSPIDFD to recv SCM_PIDFD
-   *	@sk_scm_rights: flagged by SO_PASSRIGHTS to recv SCM_RIGHTS
-+  *	@sk_scm_pidfd_thread: flagged by SO_PASSPIDFD_THREAD to recv a thread SCM_PIDFD
-   *	@sk_scm_unused: unused flags for scm_recv()
-   *	@ns_tracker: tracker for netns reference
-   *	@sk_user_frags: xarray of pages the user is holding a reference on.
-@@ -562,7 +563,8 @@ struct sock {
- 				sk_scm_security : 1,
- 				sk_scm_pidfd : 1,
- 				sk_scm_rights : 1,
--				sk_scm_unused : 4;
-+				sk_scm_pidfd_thread : 1,
-+				sk_scm_unused : 3;
- 		};
- 	};
- 	u8			sk_clockid;
-diff --git a/include/uapi/asm-generic/socket.h b/include/uapi/asm-generic/socket.h
-index 84ea7b92936e..d1e5c6de146d 100644
---- a/include/uapi/asm-generic/socket.h
-+++ b/include/uapi/asm-generic/socket.h
-@@ -152,6 +152,8 @@
+@@ -301,7 +301,7 @@ struct sk_filter;
+   *	@sk_type: socket type (%SOCK_STREAM, etc)
+   *	@sk_protocol: which protocol this socket belongs in this network family
+   *	@sk_peer_lock: lock protecting @sk_peer_pid and @sk_peer_cred
+-  *	@sk_peer_pid: &struct pid for this socket's peer
++  *	@sk_peer_pid: &struct pid for this socket's peer, by pid type
+   *	@sk_peer_cred: %SO_PEERCRED setting
+   *	@sk_rcvlowat: %SO_RCVLOWAT setting
+   *	@sk_rcvtimeo: %SO_RCVTIMEO setting
+@@ -546,7 +546,7 @@ struct sock {
+ 	u64			sk_ino;
+ 	spinlock_t		sk_peer_lock;
+ 	int			sk_bind_phc;
+-	struct pid		*sk_peer_pid;
++	DECLARE_PIDS(sk_peer_pid, PIDTYPE_TGID);
+ 	const struct cred	*sk_peer_cred;
  
- #define SO_RIGHTS_NOTRUNC	85
- 
-+#define SO_PASSPIDFD_THREAD	86
-+
- #if !defined(__KERNEL__)
- 
- #if __BITS_PER_LONG == 64 || (defined(__x86_64__) && defined(__ILP32__))
-diff --git a/net/core/scm.c b/net/core/scm.c
-index 9b9e119c353a..00025579d53e 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -499,11 +499,16 @@ static bool scm_has_secdata(struct sock *sk)
- }
- #endif
- 
--static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
-+static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm,
-+			   enum pid_type type, int cmsg_type)
- {
-+	unsigned int flags = PIDFD_STALE;
- 	struct file *pidfd_file = NULL;
-+	struct pid *pid;
- 	int len, pidfd;
- 
-+	pid = scm->pid[type];
-+
- 	/* put_cmsg() doesn't return an error if CMSG is truncated,
- 	 * that's why we need to opencode these checks here.
+ 	ktime_t			sk_stamp;
+diff --git a/include/trace/events/landlock.h b/include/trace/events/landlock.h
+index 3a43638c9bc2..9e172ea22d95 100644
+--- a/include/trace/events/landlock.h
++++ b/include/trace/events/landlock.h
+@@ -1037,7 +1037,7 @@ TRACE_EVENT(landlock_deny_scope_abstract_unix_socket,
+ 		 * updates.  The peer socket keeps a reference to sk_peer_pid
+ 		 * through pid_nr(); sun_path is the reliable identifier.
+ 		 */
+-		peer_pid		= READ_ONCE(peer->sk_peer_pid);
++		peer_pid		= READ_ONCE(peer->sk_peer_pid[PIDTYPE_TGID]);
+ 		__entry->peer_pid	= peer_pid ? pid_nr(peer_pid) : 0;
+ 		__assign_str(sun_path);
+ 	),
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index 411d66f24393..7758e9ea3848 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -161,7 +161,7 @@ struct sock *bt_sock_alloc(struct net *net, struct socket *sock,
+ 	/* Init peer information so it can be properly monitored */
+ 	if (!kern) {
+ 		spin_lock(&sk->sk_peer_lock);
+-		sk->sk_peer_pid  = get_pid(task_tgid(current));
++		sk->sk_peer_pid[PIDTYPE_TGID]  = get_pid(task_tgid(current));
+ 		sk->sk_peer_cred = get_current_cred();
+ 		spin_unlock(&sk->sk_peer_lock);
+ 	}
+@@ -235,9 +235,9 @@ void bt_accept_enqueue(struct sock *parent, struct sock *sk, bool bh)
+ 	 * socket is allocated by the kernel.
  	 */
-@@ -517,12 +522,15 @@ static void scm_pidfd_recv(struct msghdr *msg, struct scm_cookie *scm)
- 		return;
+ 	spin_lock(&sk->sk_peer_lock);
+-	old_pid = sk->sk_peer_pid;
++	old_pid = sk->sk_peer_pid[PIDTYPE_TGID];
+ 	old_cred = sk->sk_peer_cred;
+-	sk->sk_peer_pid = get_pid(parent->sk_peer_pid);
++	sk->sk_peer_pid[PIDTYPE_TGID] = get_pid(parent->sk_peer_pid[PIDTYPE_TGID]);
+ 	sk->sk_peer_cred = get_cred(parent->sk_peer_cred);
+ 	spin_unlock(&sk->sk_peer_lock);
+ 
+diff --git a/net/bluetooth/hci_sock.c b/net/bluetooth/hci_sock.c
+index 6d56c77741e1..4c40068ba5fb 100644
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -284,21 +284,21 @@ static void hci_sock_copy_creds(struct sock *sk, struct sk_buff *skb)
+ 	creds = &bt_cb(skb)->creds;
+ 
+ 	/* Check if peer credentials is set */
+-	if (!sk->sk_peer_pid) {
++	if (!sk->sk_peer_pid[PIDTYPE_TGID]) {
+ 		/* Check if parent peer credentials is set */
+-		if (bt_sk(sk)->parent && bt_sk(sk)->parent->sk_peer_pid)
++		if (bt_sk(sk)->parent && bt_sk(sk)->parent->sk_peer_pid[PIDTYPE_TGID])
+ 			sk = bt_sk(sk)->parent;
+ 		else
+ 			return;
  	}
  
--	if (!scm->pid[PIDTYPE_TGID])
-+	if (!pid)
+ 	/* Check if scm_creds already set */
+-	if (creds->pid == pid_vnr(sk->sk_peer_pid))
++	if (creds->pid == pid_vnr(sk->sk_peer_pid[PIDTYPE_TGID]))
  		return;
  
--	pidfd = pidfd_prepare(scm->pid[PIDTYPE_TGID], PIDFD_STALE, &pidfd_file);
-+	if (type == PIDTYPE_PID)
-+		flags |= PIDFD_THREAD;
+ 	memset(creds, 0, sizeof(*creds));
  
--	if (put_cmsg(msg, SOL_SOCKET, SCM_PIDFD, sizeof(int), &pidfd)) {
-+	pidfd = pidfd_prepare(pid, flags, &pidfd_file);
-+
-+	if (put_cmsg(msg, SOL_SOCKET, cmsg_type, sizeof(int), &pidfd)) {
- 		if (pidfd_file) {
- 			put_unused_fd(pidfd);
- 			fput(pidfd_file);
-@@ -540,7 +548,7 @@ static bool __scm_recv_common(struct sock *sk, struct msghdr *msg,
+-	creds->pid = pid_vnr(sk->sk_peer_pid);
++	creds->pid = pid_vnr(sk->sk_peer_pid[PIDTYPE_TGID]);
+ 	if (sk->sk_peer_cred) {
+ 		creds->uid = sk->sk_peer_cred->uid;
+ 		creds->gid = sk->sk_peer_cred->gid;
+diff --git a/net/bluetooth/l2cap_sock.c b/net/bluetooth/l2cap_sock.c
+index 1194c37e466f..872d8fb31b6f 100644
+--- a/net/bluetooth/l2cap_sock.c
++++ b/net/bluetooth/l2cap_sock.c
+@@ -1890,7 +1890,7 @@ static struct pid *l2cap_sock_get_peer_pid_cb(struct l2cap_chan *chan)
  {
- 	if (!msg->msg_control) {
- 		if (sk->sk_scm_credentials || sk->sk_scm_pidfd ||
--		    scm->fp || scm_has_secdata(sk))
-+		    sk->sk_scm_pidfd_thread || scm->fp || scm_has_secdata(sk))
- 			msg->msg_flags |= MSG_CTRUNC;
+ 	struct sock *sk = chan->data;
  
- 		scm_destroy(scm);
-@@ -587,7 +595,10 @@ void scm_recv_unix(struct socket *sock, struct msghdr *msg,
- 	}
- 
- 	if (sock->sk->sk_scm_pidfd)
--		scm_pidfd_recv(msg, scm);
-+		scm_pidfd_recv(msg, scm, PIDTYPE_TGID, SCM_PIDFD);
-+
-+	if (sock->sk->sk_scm_pidfd_thread)
-+		scm_pidfd_recv(msg, scm, PIDTYPE_PID, SCM_PIDFD_THREAD);
- 
- 	scm_destroy_cred(scm);
+-	return sk->sk_peer_pid;
++	return sk->sk_peer_pid[PIDTYPE_TGID];
  }
+ 
+ static void l2cap_sock_suspend_cb(struct l2cap_chan *chan)
 diff --git a/net/core/sock.c b/net/core/sock.c
-index e8551df8330f..c6f33fcbea43 100644
+index c6f33fcbea43..f8436e494138 100644
 --- a/net/core/sock.c
 +++ b/net/core/sock.c
-@@ -1578,6 +1578,13 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
- 			ret = -EOPNOTSUPP;
- 		break;
+@@ -1921,7 +1921,8 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 			len = sizeof(peercred);
  
-+	case SO_PASSPIDFD_THREAD:
-+		if (sk_is_unix(sk))
-+			sk->sk_scm_pidfd_thread = valbool;
-+		else
-+			ret = -EOPNOTSUPP;
-+		break;
-+
- 	case SO_PASSRIGHTS:
- 		if (sk_is_unix(sk))
- 			sk->sk_scm_rights = valbool;
-@@ -1893,6 +1900,13 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 		v.val = sk->sk_scm_pidfd;
- 		break;
+ 		spin_lock(&sk->sk_peer_lock);
+-		cred_to_ucred(sk->sk_peer_pid, sk->sk_peer_cred, &peercred);
++		cred_to_ucred(sk->sk_peer_pid[PIDTYPE_TGID], sk->sk_peer_cred,
++			      &peercred);
+ 		spin_unlock(&sk->sk_peer_lock);
  
-+	case SO_PASSPIDFD_THREAD:
-+		if (!sk_is_unix(sk))
-+			return -EOPNOTSUPP;
-+
-+		v.val = sk->sk_scm_pidfd_thread;
-+		break;
-+
- 	case SO_PASSRIGHTS:
- 		if (!sk_is_unix(sk))
- 			return -EOPNOTSUPP;
+ 		if (copy_to_sockptr(optval, &peercred, len))
+@@ -1940,7 +1941,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
+ 			len = sizeof(pidfd);
+ 
+ 		spin_lock(&sk->sk_peer_lock);
+-		peer_pid = get_pid(sk->sk_peer_pid);
++		peer_pid = get_pid(sk->sk_peer_pid[PIDTYPE_TGID]);
+ 		spin_unlock(&sk->sk_peer_lock);
+ 
+ 		if (!peer_pid)
+@@ -2394,7 +2395,7 @@ static void __sk_destruct(struct rcu_head *head)
+ 
+ 	/* We do not need to acquire sk->sk_peer_lock, we are the last user. */
+ 	put_cred(sk->sk_peer_cred);
+-	put_pid(sk->sk_peer_pid);
++	put_pids(sk->sk_peer_pid);
+ 
+ 	if (likely(sk->sk_net_refcnt)) {
+ 		put_net_track(net, &sk->ns_tracker);
+@@ -3799,7 +3800,7 @@ void sock_init_data_uid(struct socket *sock, struct sock *sk, kuid_t uid)
+ 	sk->sk_frag.offset	=	0;
+ 	sk->sk_peek_off		=	-1;
+ 
+-	sk->sk_peer_pid 	=	NULL;
++	memset(sk->sk_peer_pid, 0, sizeof(sk->sk_peer_pid));
+ 	sk->sk_peer_cred	=	NULL;
+ 	spin_lock_init(&sk->sk_peer_lock);
+ 
 diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 64e720bd289b..e44afb059abf 100644
+index e44afb059abf..4e571c5a0e16 100644
 --- a/net/unix/af_unix.c
 +++ b/net/unix/af_unix.c
-@@ -803,7 +803,8 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
- 
- static bool unix_may_passcred(const struct sock *sk)
- {
--	return sk->sk_scm_credentials || sk->sk_scm_pidfd;
-+	return sk->sk_scm_credentials || sk->sk_scm_pidfd ||
-+		sk->sk_scm_pidfd_thread;
+@@ -737,7 +737,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
  }
  
- static int unix_listen(struct socket *sock, int backlog)
-@@ -2046,9 +2047,14 @@ static int unix_maybe_add_creds(struct sk_buff *skb, const struct sock *sk,
- 	return 0;
+ struct unix_peercred {
+-	struct pid *peer_pid;
++	DECLARE_PIDS(peer_pid, PIDTYPE_TGID);
+ 	const struct cred *peer_cred;
+ };
+ 
+@@ -749,7 +749,7 @@ static inline int prepare_peercred(struct unix_peercred *peercred)
+ 	pid = task_tgid(current);
+ 	err = pidfs_register_pid(pid);
+ 	if (likely(!err)) {
+-		peercred->peer_pid = get_pid(pid);
++		peercred->peer_pid[PIDTYPE_TGID] = get_pid(pid);
+ 		peercred->peer_cred = get_current_cred();
+ 	}
+ 	return err;
+@@ -762,7 +762,7 @@ static void drop_peercred(struct unix_peercred *peercred)
+ 
+ 	might_sleep();
+ 
+-	swap(peercred->peer_pid, pid);
++	swap(peercred->peer_pid[PIDTYPE_TGID], pid);
+ 	swap(peercred->peer_cred, cred);
+ 
+ 	put_pid(pid);
+@@ -772,7 +772,7 @@ static void drop_peercred(struct unix_peercred *peercred)
+ static inline void init_peercred(struct sock *sk,
+ 				 const struct unix_peercred *peercred)
+ {
+-	sk->sk_peer_pid = peercred->peer_pid;
++	sk->sk_peer_pid[PIDTYPE_TGID] = peercred->peer_pid[PIDTYPE_TGID];
+ 	sk->sk_peer_cred = peercred->peer_cred;
  }
  
--static bool unix_skb_scm_eq(struct sk_buff *skb,
-+static bool unix_skb_scm_eq(const struct sock *sk, struct sk_buff *skb,
- 			    struct scm_cookie *scm)
- {
-+	/* Only a thread pidfd receiver can tell threads of one process apart. */
-+	if (sk->sk_scm_pidfd_thread &&
-+	    UNIXCB(skb).pid[PIDTYPE_PID] != scm->pid[PIDTYPE_PID])
-+		return false;
-+
- 	return UNIXCB(skb).pid[PIDTYPE_TGID] == scm->pid[PIDTYPE_TGID] &&
- 	       uid_eq(UNIXCB(skb).uid, scm->creds.uid) &&
- 	       gid_eq(UNIXCB(skb).gid, scm->creds.gid) &&
-@@ -3031,7 +3037,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
+@@ -782,12 +782,12 @@ static void update_peercred(struct sock *sk, struct unix_peercred *peercred)
+ 	struct pid *old_pid;
  
- 		if (check_creds) {
- 			/* Never glue messages from different writers */
--			if (!unix_skb_scm_eq(skb, &scm))
-+			if (!unix_skb_scm_eq(sk, skb, &scm))
- 				break;
- 		} else if (unix_may_passcred(sk)) {
- 			/* Copy credentials */
+ 	spin_lock(&sk->sk_peer_lock);
+-	old_pid = sk->sk_peer_pid;
++	old_pid = sk->sk_peer_pid[PIDTYPE_TGID];
+ 	old_cred = sk->sk_peer_cred;
+ 	init_peercred(sk, peercred);
+ 	spin_unlock(&sk->sk_peer_lock);
+ 
+-	peercred->peer_pid = old_pid;
++	peercred->peer_pid[PIDTYPE_TGID] = old_pid;
+ 	peercred->peer_cred = old_cred;
+ }
+ 
+@@ -796,7 +796,7 @@ static void copy_peercred(struct sock *sk, struct sock *peersk)
+ 	lockdep_assert_held(&unix_sk(peersk)->lock);
+ 
+ 	spin_lock(&sk->sk_peer_lock);
+-	sk->sk_peer_pid = get_pid(peersk->sk_peer_pid);
++	sk->sk_peer_pid[PIDTYPE_TGID] = get_pid(peersk->sk_peer_pid[PIDTYPE_TGID]);
+ 	sk->sk_peer_cred = get_cred(peersk->sk_peer_cred);
+ 	spin_unlock(&sk->sk_peer_lock);
+ }
 
 -- 
 2.55.0
