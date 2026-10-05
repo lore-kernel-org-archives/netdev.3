@@ -1,206 +1,217 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFEE379ED6;
-	Mon,  5 Oct 2026 08:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FB72ED84A;
+	Mon,  5 Oct 2026 08:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791187372; cv=none; b=IvVOg7CyW6hWfSLDFJ4Tp/AiarprBQRWGw2wdIacIoVKdcO2C7aKqJOWlE9evVf1+DRSWssrB/EpCZOfuoHxAIdpQLc6TkuAlH0xawG4Xh7L+VMMpZFAK8R8fyvOPwonrVHxSsAUnd5QBReV6geqEWhicbiCVldDZxCfXJubDRI=
+	t=1791187646; cv=none; b=C/XrRLLN4E6aytQ+fOe5/DNilesIBiMb9DlQ9F0SNuvQsoGzLkDHM3OtEyeoI/K3JPZ1UhTNZfCS0J2uRMLdalcWY5moHCY/3Tg39ciHscWGJViv4Wi36qSNnmBntuXntHCCBkGqw9HBrzL3Jh6aHqYJBOkVP5Du0k0WyFxGx40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791187372; c=relaxed/simple;
-	bh=c9PLKgT9PjUa5yu+bQ7vVgGGhEb2VwiD0sBt+bFpVDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qgQkCk/l7oJ3I2+XUoH7uHfyllHlYdnxLPO5beRqaxhmXeYEU5zrJK0+ZiERebJ++Yl6JNNmulX3FRPhSF5/+qQLVV/Z0YZiWY0/6uIlbq453Wi4RTcextsxDHH/9ZoDqo7N/S3pa3AaNK45CC9PcnWtuAWb/j0wQC5c97No6NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: esmtpsz21t1791187298tcd9050ed
-X-QQ-Originating-IP: 275tgGnNQCORTtpj8gN1J7Q8ETEtg+ZTJDkvgVieLtY=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 05 Oct 2026 16:01:36 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 16061130098445531546
-EX-QQ-RecipientCnt: 11
-Date: Mon, 5 Oct 2026 16:01:36 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
-	u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yaojun@mucse.com
-Subject: Re: [PATCH net-next v15 5/5] net: rnpgbe: Add link status handling
- support
-Message-ID: <3B0F410B16397174+20261005080136.GC53018@nic-Precision-5820-Tower>
-References: <0FD7535DB8A65243+20261004065947.225144-1-dong100@mucse.com>
- <179118576816.434549.7440017946535436802@kernel.org>
+	s=arc-20240116; t=1791187646; c=relaxed/simple;
+	bh=5MAFg4lualOQ4wF9YuSfq87SCufHgj7pToEhAngQk4M=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Eh7ShVgseQuOux6q6QD06w3BtpqvrfZdGTeThl3j5DQcNRdX2YqWrR8IuOzCt3hvjT9mSn+OiHbBW8gSGzxMiiN+ZpvieNMYglldvxsn3hbalagDtbI395MHiATfyA2YA+fiOS9AUa2VcXDF/SCBBHCi7DBb5gJBAop45Ccn52U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHKVX4rQ; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHKVX4rQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E231F000FF;
+	Mon,  5 Oct 2026 08:07:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791187645;
+	bh=XXkyvNpPZqrM5P5UyeacA+TyFuP56hMHBlt411AUfhk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=FHKVX4rQKpRY8RrCMtnTYucloQH8ReN38hlkAK1CA5qYPt8kQamrFV62rn9/Pf0b8
+	 SYy8fhLnFufschUrdMxZlL4rkxwkLGq6jZ4BtVmBL+Rx1ydZQmh9D2EkBfAQc+EKco
+	 9PekgerDeWSVRzRGOUMDwxU9fF860loJZvgejSh+aU0Jla7I5iSJHuutjjrKsIwnNH
+	 +NiBMkVf7XBgVqIl0+E+bSh8J+dkzODQyb7FMav1auMNwIXYKb4MVRm/nWQgCGbBda
+	 n2sAWr1z04Qsuu3zcrtIbOLmdgY9SZo//jwuIMxT0HEKKuUDt4qzah/iDBIhfcT1jR
+	 UXMlF5+OQA9kQ==
+Subject:
+ Re: [PATCH net 2/2] net: phy: xilinx-gmii2rgmii: Restore PHY driver on remove
+From: netdev-bot+sashiko@kernel.org
+To: vineeth.karumanchi@amd.com
+Cc: git@amd.com, netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, michal.simek@amd.com,
+ f.fainelli@gmail.com, harini.katakam@amd.com, appanad@amd.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 08:07:23 +0000
+Message-ID: <179118764380.434549.2031845358588611322@kernel.org>
+In-Reply-To: <20261001074718.3944521-3-vineeth.karumanchi@amd.com>
+References: <20261001074718.3944521-3-vineeth.karumanchi@amd.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179118576816.434549.7440017946535436802@kernel.org>
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: NWujniBqiFoNMUXMm/py4Me40QAC5YYSYuEisp8qODSY2Uz1ZHq7mh45
-	fwTjzeOUPrgCVSjyUwXz/+aWDFfl+4ajLAE5ZYC+FE9kb/KYFOu8AkuqOD5zvQrmdK1winz
-	8FLi162prB6Eg5Xf+l2DKrH33Kj2YmANvFzPIxlMGOtGjdKA/TLW+O99/Ad6cWiCHsw9KBx
-	YY7Rz7wIG7Y2GXKEKqSKNK6UM/9ECCnzhe+QpgWcd1mYim63nzILnI+aGj1dD2KiXMw6m12
-	uxvFBRXX7SwXs0LoNo5NDK6bFzAKf71hj8rFo1sfKrQPs0yVa3rvqf/sQM6EY8B2y7UwgK9
-	9A1mWuMaHljNkklacQs00e+7pWoT/uwaDS2PqGFKTj6fhr3Z/3ty92T5jgbyQy6s6eEM7b7
-	OMyGgQ6QyVZasgfzj4oprjyFREJ4dCPTY/aQxd0OUGzTA7PK24Uj3DDrfhEKLB3fWT8mSru
-	W1EzkcW/fKfGQ0nLqZqq1zD/2gKq+p/xnnsh9W5v32gMah/JWdy2aEYixQ2X0mMCjb8ZmzQ
-	8xwj9t1KOlKeXluVbsoGW4A0yf0AyQKJiE1to1lwJLKtdwfPQzY8sbG0KlkaxVmbp1dhEj3
-	Kymyev6esYOg4ezi3ziwSf76AVkav9fY75XOgmFTdFiJEKP5p0A24a7za5C5gHlZk+dBfrk
-	3rVjrJGOWlJH2L/X4Kgb3WUZSrG9oith3/zzSZPmK6K99rLK148e7TfP1Vv6S6qL28SZ2Ee
-	EPvVfbP8b1zSDxPcMxU9YPWgv0ExNYR/nkAml/5wvFEZ01KnzdE3yDgPhupN/y7o7fk7l/B
-	++Nm0UHmx3FUSnUuWX88+ox7skdtuQZnStUL4XOmI8oVBA30pJqf64zh7kbXFdQD4G/hda1
-	vtsMwkpku+gc66gboIPKPU/DDz2I+4zQEpigwnSrbqOI3HSGRpFJQrh1tAfFBuKXT83dOrm
-	Asnx1GpjYgq0MizAxxTMc07k7tr1Nh74Savo5kTkbndiQLUuop+cbzhKnFaoaYTq5G+e4en
-	ZVcMqjIhhUqI1/41TlkOXfqLsOS/0uj+ix/EK8yx+xo8ieLPEM6DWGaSQjTIU3ndLtLdL5j
-	0Wt4otcCY55uMov0m+8vHc=
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
 
-On Mon, Oct 05, 2026 at 07:36:08AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] Only two PF-to-firmware command senders follow the mailbox
->   rule this patch documents.
-> 
-> --
-> 
-> net: rnpgbe: Add link status handling support
-> 
-> This commit adds handling of firmware link events for the rnpgbe driver.
-> Link events arrive over the mailbox and a service task updates the
-> carrier state. It also sends SET_PHY_UP and LINK_REPORT_EN on open and
-> close, and adds a PHY_LINK_SET command at probe that fails probe if the
-> firmware does not acknowledge it.
-> 
-> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
-> > index 2310f01df1f50..ef00b948ad0f6 100644
-> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
-> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
-> 
-> [ ... ]
-> 
-> > + * On success the hardware mailbox remains locked. The caller must process
-> > + * the event and call mucse_mbx_event_end() to acknowledge it and release
-> > + * the hardware mailbox lock.
-> > + *
-> > + * Firmware releases the hardware mailbox lock before raising the event
-> > + * interrupt and does not access the shared window again until the PF
-> > + * acknowledges the event. Therefore, failure to acquire the lock indicates
-> > + * a mailbox fault rather than transient contention.
-> 
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> > index e28f3193aa854..683e0ea741136 100644
-> > --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> > +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> 
-> [ ... ]
-> 
-> > +int mucse_mbx_set_link(struct mucse_hw *hw, u32 advertising, bool autoneg,
-> > +		       u32 speed, u32 duplex, u32 mdix_ctrl)
-> > +{
-> 
-> [ ... ]
-> 
-> > +	len = le16_to_cpu(req.r.datalen);
-> > +	mutex_lock(&hw->mbx.lock);
-> > +	err = mucse_write_and_wait_ack_mbx(hw, req.dwords, len);
-> > +	mutex_unlock(&hw->mbx.lock);
-> 
-> [Severity: Medium]
-> Could a pending LINK_CHANGE_EVT stop the firmware from picking up this
-> command, or the POWER_UP command?
-> 
-> The kernel-doc of mucse_mbx_event_begin() says firmware does not touch
-> the shared window until the PF acknowledges the event. Only
-> mucse_mbx_phyup() and mucse_mbx_link_report() send through
-> mucse_write_mbx_coalesce_event(), which calls mucse_ack_pending_event()
-> first.
-> 
-> mucse_mbx_set_link() and mucse_mbx_powerup() go through
-> mucse_write_and_wait_ack_mbx()->mucse_write_mbx_pf(). That path writes
-> FWPF_SHM and bumps pf_req without checking FW2PF_CNT for an event that
-> has not been acknowledged.
-> 
-> At teardown, rnpgbe_down() only warns if LINK_REPORT_EN(0) fails:
-> 
->     err = rnpgbe_send_notify(hw, false, mucse_fw_link_report_en);
->     if (err) {
->         ...
->         dev_warn(&hw->pdev->dev, "Fw will still report link event\n");
->     }
-> 
-> The following SET_PHY_UP(0) drops the link, so firmware can post
-> LINK_CHANGE_EVT. Then rnpgbe_rm_adapter() and rnpgbe_dev_shutdown() do:
-> 
->     rnpgbe_free_mbx_irq(mucse);
->     rnpgbe_notify_powerdown(mucse);
-> 
-> rnpgbe_free_mbx_irq() frees the IRQ and cancels mbx_work. Nothing
-> acknowledges the event, and POWER_UP(0) goes out on the
-> non-coalescing path.
-> 
-> At probe, the driver never turns link reporting off. Suppose reporting
-> was left enabled by a previous instance, for example after a crash or
-> kexec with the interface up, and RESET_HW does not clear it. The new
-> PHY_LINK_SET restarts autonegotiation, so an event could be posted
-> while set_link or get_macaddr is in flight. Also, mucse_mbx_reset()
-> treats an event that is already pending as consumed:
-> 
->     val = mbx_data_rd32(mbx, MUCSE_MBX_FW2PF_CNT);
->     hw->mbx.fw_req = FIELD_GET(GENMASK_U32(15, 0), val);
-> 
-> If the firmware rule holds, the PF would wait out the mailbox ack
-> timeout. At remove or shutdown that gives "Send powerdown to hw
-> failed". At probe, the error from rnpgbe_setup_default_link() now
-> fails the probe.
-> 
-> Should every PF-to-firmware sender acknowledge a pending event first,
-> the way mucse_write_mbx_pf_coalesce_event() does? Alternatively,
-> should a pending event be drained before these commands are sent?
-> 
-Same feedback with v14.
-I think no need to handle this. rnpgbe_down only warns is because driver
-should release memory for tx/rx even with a mailbox error.
-After a system crash, the PCIe reset performed during system
-initialization causes firmware to clear the driver-loaded, port-up and
-link-event-enable states.
-During a normal driver probe, mailbox synchronization is performed before
-RESET_HW and PHY_LINK_SET. If an unexpected pending event prevents
-mailbox synchronization, probe fails rather than continuing with an
-ambiguous mailbox state. The driver does not need to distinguish whether
-that failure was caused by firmware or by stale mailbox state.
-Therefore, after successful synchronization and reset, no asynchronous
-event can be pending when mucse_mbx_set_link() (which is called even before
-mailbox irq is registered) is called.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-> > +
-> > +	return err;
-> > +}
-> 
-> [ ... ]
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/B438B0A83ACCA2DE%2B20261004065604.224873-1-dong100%40mucse.com
-> 
+Critical: 0 Â· High: 2 Â· Medium: 0 Â· Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] xgmiitorgmii_remove()
+  (drivers/net/phy/xilinx_gmii2rgmii.c:147-149) always writes the driverâ€¦
+- [High] The fix relies on every reader of phydev->drv holding
+  phydev->lock, and that is not true.
+
+--
+
+net: phy: xilinx-gmii2rgmii: Restore PHY driver on remove
+
+This adds a remove callback to the GMII-to-RGMII converter. The callback
+restores the attached PHY's original phydev->drv under phydev->lock, so
+phydev->drv no longer points at the devres-freed conv_phy_drv copy after
+the converter is unbound. It also drops the device reference taken by
+of_phy_find_device().
+
+> diff --git a/drivers/net/phy/xilinx_gmii2rgmii.c b/drivers/net/phy/xilinx_gmii2rgmii.c
+> index 61f71e977a574..b9aa5515577b5 100644
+> --- a/drivers/net/phy/xilinx_gmii2rgmii.c
+> +++ b/drivers/net/phy/xilinx_gmii2rgmii.c
+> @@ -128,10 +128,29 @@ static int xgmiitorgmii_probe(struct mdio_device *mdiodev)
+
+[ ... ]
+
+> +static void xgmiitorgmii_remove(struct mdio_device *mdiodev)
+> +{
+> +	struct gmii2rgmii *priv = mdiodev_get_drvdata(mdiodev);
+> +
+> +	/*
+> +	 * The attached PHY is a separate, still-bound device whose state
+> +	 * machine keeps running and dispatches ->read_status / ->set_loopback
+> +	 * under phydev->lock. Restore its original driver under that lock so
+> +	 * the swap cannot race an in-flight dispatch; the restored driver is
+> +	 * the PHY's own static phy_driver, not the devres-freed conv_phy_drv.
+> +	 */
+> +	mutex_lock(&priv->phy_dev->lock);
+> +	priv->phy_dev->drv = priv->phy_drv;
+
+[Severity: High]
+Is it safe to write priv->phy_drv back here without first checking that
+phydev->drv still points at &priv->conv_phy_drv?
+
+The only thing the converter holds is the device reference from
+of_phy_find_device(). There is no device link and no module reference on
+the PHY driver. That means the PHY can be unbound or rebound while the
+converter stays bound, and in that case phylib has already changed
+phydev->drv:
+
+drivers/net/phy/phy_device.c:phy_remove() {
+    ...
+	phydev->drv = NULL;
+
+	return 0;
+}
+
+A rebind does the same thing: phy_probe() installs a new driver with
+phydev->drv = phydrv.
+
+If the converter is unbound after that, xgmiitorgmii_remove() writes back
+the stale pointer that xgmiitorgmii_probe() saved. Three outcomes look
+possible.
+
+First, an unbound PHY gets a non-NULL drv again. That passes the
+"if (!phydev->drv)" guards in phy.c and phy_device.c. The old driver's
+callbacks then run against a phydev->priv that devres already freed. If
+the PHY driver module was unloaded, they run in freed module text.
+
+Second, if the PHY was rebound to another driver (for example Generic
+PHY), the old driver's ops get installed over the new binding. They then
+see the new driver's phydev->priv.
+
+Third, if the converter is probed again, it passes the
+!priv->phy_dev->drv check in xgmiitorgmii_probe() and memcpy()s from the
+stale driver struct.
+
+The comment above assumes the PHY is still bound and that the restored
+driver is the PHY's own phy_driver. Nothing seems to enforce either
+assumption.
+
+Would it be better to restore only when phydev->drv == &priv->conv_phy_drv,
+and to tie the converter's lifetime to the PHY binding?
+
+> +	mutex_unlock(&priv->phy_dev->lock);
+
+[Severity: High]
+Does taking phydev->lock here actually prevent the use-after-free on
+conv_phy_drv? The commit message says:
+
+    Restore the attached PHY's original driver while
+    holding phydev->lock so that the update cannot race with an active PHY
+    callback.
+
+The lock only excludes readers that also hold phydev->lock, and not every
+reader of phydev->drv does. Once xgmiitorgmii_remove() returns,
+devres_release_all() frees priv, and conv_phy_drv along with it.
+
+The state machine drops the lock before its suspend step:
+
+drivers/net/phy/phy.c:phy_state_machine() {
+    ...
+	mutex_lock(&phydev->lock);
+	state_work = _phy_state_machine(phydev);
+	mutex_unlock(&phydev->lock);
+
+	_phy_state_machine_post_work(phydev, state_work);
+}
+
+phy_stop() does the same. _phy_state_machine_post_work() then calls
+phy_suspend(), which copies phydev->drv into a local and dereferences it
+with no lock held:
+
+drivers/net/phy/phy_device.c:phy_suspend() {
+    ...
+	const struct phy_driver *phydrv = phydev->drv;
+    ...
+	if (phydev->wol_enabled && !(phydrv->flags & PHY_ALWAYS_CALL_SUSPEND))
+		return -EBUSY;
+
+	if (!phydrv->suspend)
+		return 0;
+
+	ret = phydrv->suspend(phydev);
+    ...
+}
+
+phy_ethtool_get_sset_count() also dereferences the driver before it takes
+the mutex. It is reachable from the ethtool ioctl through
+ethtool_get_phy_stats_phydev():
+
+drivers/net/phy/phy.c:phy_ethtool_get_sset_count() {
+    ...
+	if (phydev->drv->get_sset_count &&
+	    phydev->drv->get_strings &&
+	    phydev->drv->get_stats) {
+		mutex_lock(&phydev->lock);
+    ...
+}
+
+Could this sequence happen?
+
+CPU0                                  CPU1
+phy_suspend()
+  phydrv = &priv->conv_phy_drv
+                                      xgmiitorgmii_remove()
+                                        mutex_lock(&phydev->lock)
+                                        phydev->drv = priv->phy_drv
+                                        mutex_unlock(&phydev->lock)
+                                      devres_release_all()
+                                        kfree(priv)
+  phydrv->flags / phydrv->suspend
+
+If so, CPU0 would read freed memory and might call through it. That is the
+same kind of use-after-free this patch is meant to fix.
+
+-- 
+Sashiko AI review Â· https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001074718.3944521-1-vineeth.karumanchi%40amd.com
