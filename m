@@ -1,208 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D19385D94;
-	Mon,  5 Oct 2026 10:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49FDE479866;
+	Mon,  5 Oct 2026 10:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791197187; cv=none; b=Qs6igASj+htYNAxan0nkoGBuqNCk4iVMwQg2udw/6oR5tVwxTTOPFEjHSnMPMx2QZbjM0DOekOFsyH2Wrul9SfOxwkxp8AXP2OYfgD8K3fb1mauJsAns33a5ihVdZLkgLLXVKJ4mhj22pbHV5hRpczHSG2uZD5v9FsFDLqsaSyk=
+	t=1791197304; cv=none; b=r7qe86gFD5lsLOXDnW3Nu+fCzWCHjib0Zxefi9nfxlVmh9QPmGxNFri3EUoCJFhCPKECvw5fujT1kwIIg4VsnvQiWshULm361dKqpptNzJPJ4PDLcXcfYK5uO4Er0rrTDoJ+lVWg7ngN5fKuPO6KaPu2zb6Sji/POgmbITy2BH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791197187; c=relaxed/simple;
-	bh=dHMACaWYMeE13Va/fHy15h8CSXR5scS7BNxw2ctt8y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ks23uG5S+V3T5UqCmVd+OlcSpwnsguJh6AYV6eZ2NzLmzLz/TsZs1LsiVhhX17N4dKXeRU3XBL20rqbNu8mMz1WTAssBpynNKzpxyg+SvQhFCsfBG3D1PMN3xUhcPIaKKwcF/ly538jzfqtuvCjMh+bjojVDzIxxS9ZueNRV4/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bcun3XAs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791197304; c=relaxed/simple;
+	bh=SoIpKiCi8AjRfRbdlbcOF35l7PXRzMjd9I+cr0oMA24=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=njfQUI4HCOa1hB5MUkuJaOBD0rk7qV57X9oZeAwCsxX3EmZAdyVYxGEKa/7AyOcKWyAznyNjeeLsOa9z4PKfDHx8/yao7vbGa9PpKDNRVGDdqjFgRHhx+KX+jqmTH1bJ//0x7KOAEW5IpmElZoNOUXLCjIKSIVIWHii6zym7Hwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dW6Bvjjm; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bcun3XAs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F9D1F00893;
-	Mon,  5 Oct 2026 10:46:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791197186;
-	bh=/d8LfWyLYdaFbqA2Zb7PPVzA3eT0mVZ68XMXAvLeC0g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Bcun3XAstKR5IyK7IU9Nfj+U15NzNKZwLn5GhGzfSHOfATfiIPYoSMvvmSUe6in/h
-	 lAbpP66YUjBUB6fAdtJhFkLYxx2LYFqfjhKwjTlpZQrgPmyNsoq0A1BuvskXwdrXDq
-	 oR9U1vkXfbQuxfNwMCAUx1R1BA2OIDcL+9ANhlnCW9qfS9Ih6UZnNDv+JUYEN9lCw1
-	 Lr9LQalvJRFbQdxbL86oUuKjJM/gn/TmSfk5cY36e72pDeP3g0/c/uxDOiJrTvS3Jv
-	 ltuxqcVz2cDdjvMGrCHYNvdMuXwo6egJ38MQLg4oW5pMWQ0LY6go7qxYpE/h/eeSDt
-	 lxzPLwmmYOmoA==
-Date: Mon, 5 Oct 2026 11:46:19 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Lucas Tanure <tanure@linux.com>
-Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [RFC PATCH 2/6] dt-bindings: net: amlogic,meson-dwmac: add
- amlogic,t7-dwmac
-Message-ID: <asN_-5zalENhkdVA@squawk>
-References: <20261004144046.391444-1-tanure@linux.com>
- <20261004144046.391444-3-tanure@linux.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dW6Bvjjm"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 8486D4E4115C;
+	Mon,  5 Oct 2026 10:48:19 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 55C25604FE;
+	Mon,  5 Oct 2026 10:48:19 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7D58710330764;
+	Mon,  5 Oct 2026 12:48:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791197297; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=oobK+U8ONIFu0Yqr2NZfLK8gYWnLurpU4xBiBDjHtkA=;
+	b=dW6BvjjmKgGnTYyWKVsevZZNV3WFLqooayo+kwnW7XrMaHwQieZFlJxrjmqYaN5wJtokfe
+	gxI4C+ylelKQhT03lgrda/a3jtGyYyX5G9ZpoYvzI98zGTtc9+cmmU6NAz2UVrOyB8XsdN
+	2A4+8cOAZc2twQ/V4veukTFJ2a/BKUHjdRKkkWmFyYoe/TavRwnyw7d0wUm+Z+NpeQ4ic/
+	lvESWtan/TBa3p3U1wYqK4IQDUE049YYMOu4H9Ro/StAaZ7ZzT6nfpfJoqXoYo8z4+0iWZ
+	PvAvI0vpRjzDprHRmDOt/A3jMn7AkBunFvt12V5xs8oIIIdSeV6Zhz8s6KRTEQ==
+From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+Date: Mon, 05 Oct 2026 12:48:00 +0200
+Subject: [PATCH 5.15.y] net: sched: cls_u32: Undo tcf_bind_filter if
+ u32_replace_hw_knode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JIUT8vrAkNrJ90Yp"
-Content-Disposition: inline
-In-Reply-To: <20261004144046.391444-3-tanure@linux.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261005-cve-2023-53733-5-15-v1-1-caeaaf7de3f5@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMSwrCQBAFrxLe2g7zsaPJVcSFM7baLqLMaFBC7
+ m6rmwf1oGpGlaJSMTQzikxa9TYa+FWDfDmMZyE9GiO40HnnmPIkZBCJ4ybakmdyfb9OnWxDjgl
+ m3ouc9PWr7sCt5/aN/f+vz3SV/PgmsSwfSUJNkX8AAAA=
+X-Change-ID: 20261005-cve-2023-53733-5-15-0994b6e82c3b
+To: stable@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ "Samudrala, Sridhar" <sridhar.samudrala@intel.com>, 
+ John Fastabend <john.r.fastabend@intel.com>
+Cc: Benjamin Robin <benjamin.robin@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, 
+ Pedro Tammela <pctammela@mojatatu.com>, 
+ Simon Horman <simon.horman@corigine.com>, Sasha Levin <sashal@kernel.org>, 
+ "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791197287; l=3623;
+ i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
+ bh=4QDJlcyfXKSWgy6axAo7H09lYM292QlvkWfT6PxkboY=;
+ b=P/eU043cJf/0FAk9q4MsRwTKv4wTvVAazKmIlrSttbsI1LtibQ/sLg04tPPllyoEYs7qbydPC
+ NeNPZapIbxgDBHHLnv1/Aifwp+TXj17uw5yDLWWCrkPVyiVcaQB+eQ0
+X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
+ pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
+X-Last-TLS-Session-Version: TLSv1.3
 
---JIUT8vrAkNrJ90Yp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+From: Victor Nogueira <victor@mojatatu.com>
 
-On Sun, Oct 04, 2026 at 03:40:42PM +0100, Lucas Tanure wrote:
-> The T7 has the same ethernet glue as the G12A, but the controller
-> reaches DRAM through a pipeline stage that the hardware design inserts
-> in the bus path. That stage has a gate of its own, which no other member
-> of the family has. Nothing else in Linux claims the gate, so it is
-> switched off as unused and the port can then no longer complete a
-> transfer.
->=20
-> Describing it means a fourth clock, and the fourth clock of the existing
-> list is the one driving the timing adjustment logic. The T7 applies the
-> RGMII RX delay through PRG_ETH1 and never enables that logic, so it has
-> no use for that clock. Give the T7 a list of its own with the pipeline
-> gate as the fourth entry, under the same name the SD/eMMC controllers of
-> this SoC already use for the equivalent stage on their own bus path. All
-> four entries are required, since the port cannot move data without any
-> of them.
->=20
-> The RX delay range is the one the G12A has, since it is the same
-> register field.
->=20
-> The compatible pairs the T7 name with the 5.10a Synopsys core the MAC
-> reports, and with the generic fallback.
->=20
-> Assisted-by: LLM
-> Signed-off-by: Lucas Tanure <tanure@linux.com>
-> ---
->  .../bindings/net/amlogic,meson-dwmac.yaml     | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.ya=
-ml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> index 90ef79161ab1..96118b4d1560 100644
-> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> @@ -23,6 +23,7 @@ select:
->            - amlogic,meson-gxbb-dwmac
->            - amlogic,meson-axg-dwmac
->            - amlogic,meson-g12a-dwmac
-> +          - amlogic,t7-dwmac
->    required:
->      - compatible
-> =20
-> @@ -57,6 +58,47 @@ allOf:
->              - const: clkin1
->              - const: timing-adjustment
-> =20
-> +  # The T7 applies the RGMII RX delay through PRG_ETH1 and never enables=
- the
-> +  # timing adjustment logic, so it has no timing-adjustment clock. What =
-it does
-> +  # need is the gate of the pipeline stage the controller reaches DRAM t=
-hrough.
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: amlogic,t7-dwmac
-> +    then:
-> +      properties:
-> +        clocks:
-> +          items:
-> +            - description: GMAC main clock
-> +            - description: First parent clock of the internal mux
-> +            - description: Second parent clock of the internal mux
-> +            - description:
-> +                clock of the pipeline stage inserted in the bus path bet=
-ween
-> +                the controller and the DRAM. Without it, the controller =
-cannot
-> +                complete DMA transfers.
+[ Upstream commit 9cb36faedeafb9720ac236aeae2ea57091d90a09 ]
 
-Have you checked that this actually works as a limiter to only 4 clocks?
-There's an additionalItems: true in the snps,dwmac.yaml that I don't
-know if will permit random additional items here.
+When u32_replace_hw_knode fails, we need to undo the tcf_bind_filter
+operation done at u32_set_parms.
 
-Cheers,
-Conor.
+Fixes: d34e3e181395 ("net: cls_u32: Add support for skip-sw flag to tc u32 classifier.")
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+---
+ net/sched/cls_u32.c | 38 +++++++++++++++++++++++++++++---------
+ 1 file changed, 29 insertions(+), 9 deletions(-)
 
-> +
-> +        clock-names:
-> +          items:
-> +            - const: stmmaceth
-> +            - const: clkin0
-> +            - const: clkin1
-> +            - const: pipeline
-> +
-> +  # Delay definitions for Meson8b and newer (including T7)
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - amlogic,meson8b-dwmac
-> +              - amlogic,meson8m2-dwmac
-> +              - amlogic,meson-gxbb-dwmac
-> +              - amlogic,meson-axg-dwmac
-> +              - amlogic,meson-g12a-dwmac
-> +              - amlogic,t7-dwmac
-> +    then:
-> +      properties:
->          amlogic,tx-delay-ns:
->            enum: [0, 2, 4, 6]
->            default: 2
-> @@ -106,6 +148,7 @@ allOf:
->            contains:
->              enum:
->                - amlogic,meson-g12a-dwmac
-> +              - amlogic,t7-dwmac
->      then:
->        properties:
->          rx-internal-delay-ps:
-> @@ -143,6 +186,10 @@ properties:
->                - amlogic,meson6-dwmac
->                - amlogic,meson8m2-dwmac
->            - const: snps,dwmac
-> +      - items:
-> +          - const: amlogic,t7-dwmac
-> +          - const: snps,dwmac-5.10a
-> +          - const: snps,dwmac
-> =20
->    reg:
->      items:
-> --=20
-> 2.56.0
->=20
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index 23f9e2b5f3b6..b36eced10ff4 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -709,8 +709,23 @@ static const struct nla_policy u32_policy[TCA_U32_MAX + 1] = {
+ 	[TCA_U32_FLAGS]		= { .type = NLA_U32 },
+ };
+ 
++static void u32_unbind_filter(struct tcf_proto *tp, struct tc_u_knode *n,
++			      struct nlattr **tb)
++{
++	if (tb[TCA_U32_CLASSID])
++		tcf_unbind_filter(tp, &n->res);
++}
++
++static void u32_bind_filter(struct tcf_proto *tp, struct tc_u_knode *n,
++			    unsigned long base, struct nlattr **tb)
++{
++	if (tb[TCA_U32_CLASSID]) {
++		n->res.classid = nla_get_u32(tb[TCA_U32_CLASSID]);
++		tcf_bind_filter(tp, &n->res, base);
++	}
++}
++
+ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
+-			 unsigned long base,
+ 			 struct tc_u_knode *n, struct nlattr **tb,
+ 			 struct nlattr *est, u32 flags,
+ 			 struct netlink_ext_ack *extack)
+@@ -756,10 +771,6 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
+ 		if (ht_old)
+ 			ht_old->refcnt--;
+ 	}
+-	if (tb[TCA_U32_CLASSID]) {
+-		n->res.classid = nla_get_u32(tb[TCA_U32_CLASSID]);
+-		tcf_bind_filter(tp, &n->res, base);
+-	}
+ 
+ 	if (ifindex >= 0)
+ 		n->ifindex = ifindex;
+@@ -898,7 +909,7 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		if (!new)
+ 			return -ENOMEM;
+ 
+-		err = u32_set_parms(net, tp, base, new, tb,
++		err = u32_set_parms(net, tp, new, tb,
+ 				    tca[TCA_RATE], flags, extack);
+ 
+ 		if (err) {
+@@ -906,8 +917,12 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 			return err;
+ 		}
+ 
++		u32_bind_filter(tp, new, base, tb);
++
+ 		err = u32_replace_hw_knode(tp, new, flags, extack);
+ 		if (err) {
++			u32_unbind_filter(tp, new, tb);
++
+ 			__u32_destroy_key(new);
+ 			return err;
+ 		}
+@@ -1108,15 +1123,18 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 	}
+ #endif
+ 
+-	err = u32_set_parms(net, tp, base, n, tb, tca[TCA_RATE], flags,
++	err = u32_set_parms(net, tp, n, tb, tca[TCA_RATE], flags,
+ 			    extack);
++
++	u32_bind_filter(tp, n, base, tb);
++
+ 	if (err == 0) {
+ 		struct tc_u_knode __rcu **ins;
+ 		struct tc_u_knode *pins;
+ 
+ 		err = u32_replace_hw_knode(tp, n, flags, extack);
+ 		if (err)
+-			goto errhw;
++			goto errunbind;
+ 
+ 		if (!tc_in_hw(n->flags))
+ 			n->flags |= TCA_CLS_FLAGS_NOT_IN_HW;
+@@ -1134,7 +1152,9 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+ 		return 0;
+ 	}
+ 
+-errhw:
++errunbind:
++	u32_unbind_filter(tp, n, tb);
++
+ #ifdef CONFIG_CLS_U32_MARK
+ 	free_percpu(n->pcpu_success);
+ #endif
 
---JIUT8vrAkNrJ90Yp
-Content-Type: application/pgp-signature; name=signature.asc
+---
+base-commit: a051a4bf909f76f470ccb3761ee0cf6e2395616e
+change-id: 20261005-cve-2023-53733-5-15-0994b6e82c3b
 
------BEGIN PGP SIGNATURE-----
+Best regards,
+--  
+Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
 
-iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasN/+wAKCRB4tDGHoIJi
-0oDyAP4+IQpTnFmpW2yrTw+Bsr5db2sboD7vx1z7xYwq24/bEgEAgceiW2kGrrqP
-RgLSuoYLpe5+tAKurXzLtYmc7bAuaQs=
-=bcjg
------END PGP SIGNATURE-----
-
---JIUT8vrAkNrJ90Yp--
