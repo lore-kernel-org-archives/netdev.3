@@ -1,146 +1,193 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4213F4908C4
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 18:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791225459; cv=pass; b=nxduL+Y7foRIN+PKnCrOdPTjptXqg7mVeKMTxIuHNRU/MlJ3FcUdmcwxwS8RrWsf9afSOCcbGlzAHPJycSsm5qRsVcqozX8AXq+U0dr5FHmlWocARlLtKK6GXCr6IGKNXd/mqqN/b62WSZ81zJvhwM1yE2rG4zJ3EHK0kRkmyOA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791225459; c=relaxed/simple;
-	bh=2JU+Sheh6MQ1xEoN5samKQCu2q7ijg0IaggxyuAyf1M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A3qF70Q2Ux24lPLqoNgD9oyXojwP0bfE1htbosT+zFNRQrpYsy0Jgyjp5tLBfyd08q6mk2fopOD4NEt1o9HebUs5aBsWP1U2O+4rUZ25eNO7DJ2QkguS9bJJLhIV/uq7q6LyL8eFxt+PDCUgnSxTKozAswE9ZgfCDXKJEBLagTI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AZ4FvSS0; arc=pass smtp.client-ip=74.125.82.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BCF4DA9A0;
+	Mon,  5 Oct 2026 18:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791225604; cv=none; b=FcgvNNX5GjQ5rcyaF8sGp+FV+UFmWohy/whaoYQbn2ePp93ag2B+EGXOU50uQwBhc5rXKAYwqHfKnW0Wcv5+GkTRPX8QJANFIT2kbbH6MvtgVYlyvujgilMrjQhOx+5VJ32dEIueTVcehosx0hVhe772pA1KACWebdsQfPrsMM0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791225604; c=relaxed/simple;
+	bh=kYrojStYa9f2rkzVS/+86vqhqOx0RVVx0KJzaPqITa8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VUYoVqPSJrJa1nh/4dWwx3RcYTdTH3gTchPnmVPgEQ7oMSkHNrZxbrpVggfMo0PDKy6DHBZe8QX1Y6Aw/5TfG8u2mVuBeg/HAHP/MoALhEfk+PPguA0Z3qAqO+G1bk2k2cE3c+YWhKz7oKod2gpk61G8+MtsofnZjwe/Vrdo1CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4adeSDi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AZ4FvSS0"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1433e7b057fso1218789c88.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 11:37:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791225457; cv=none;
-        d=google.com; s=arc-20260327;
-        b=H4cygDJC1/yRrLEEkmQdhGJzxfU4jJQsq/LfnNquECfOB/fycWVVj7TBSCdiR3mpGb
-         sik0qSPKxlR6SQGMzvGrImFc+ajNG+nsePystWWtcBm4GOnXE++AdPaF+IaJEQwnqSry
-         WEgorM/cGFvj40gosv7oZ+pIjzE/qYbj3X0Vl8u7vXWo6RxeC26ZGcXTc8KHSDnAwpvh
-         zQPbbIXTxaWqui/+bgfIiJxU3scGUk3QFwd66oy6V0YwcPXnlV8HO63ford1H8POJ8b0
-         nBXaUfz2F5xsNt9ZcnJrsFOPcZczOoDGtZH7rVixfyVG807WGqbybhm2yIU6+aLoF5cI
-         tmrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Lh9jWG1rCxabPueueZRnWmHBAH9yIQrASjMRaLKUo30=;
-        fh=pULc+JuY/IvmgthdkKT1iF0tLYIG4PazBGlzSYiB2wQ=;
-        b=SwXjjIzWdNkn/H8ovBfbpb/Hd5p9+tSl4rqW9E2xVCqeqIAw/H3+ilspRBpZacZnGb
-         pLFhAq25h0mde9RL2aCkOW+hok3iCxiGpTf4s0sd04uddeDCEURjziJDpWc1yLQULHHA
-         n0Tg5mWGytgkG9J0LTcD4N7xdr71igDSv5y4JZWQObZGFHQdChICxy6RkTPMeNe9NadL
-         kLYE6eSzdNQrlG9Mp8nWsQAThE28BL/iiCl+3ed8/yIrZV+Gwx5upyquTrjR2L2mZRua
-         q3bUHo1aNWUXP3EZPUdWAMyBTVBZw6x023Wte4lYbR/CuMGruuLP8FTHWXTBtHBC77zc
-         /INA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791225457; x=1791830257; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Lh9jWG1rCxabPueueZRnWmHBAH9yIQrASjMRaLKUo30=;
-        b=AZ4FvSS0jSF8Qo7UdXfySa2q1ycVumXiEJJQJ7/8/EKkRj9QNEodm1mTZqikkIOs6y
-         w0zAlYJK4EZNLwWc5mM+X7+fMCOe3sQ9bgqkTt8MTe8IyzqzAbls2uTjytGsfhiXdvy2
-         vZhuFtWHNr2uFjQwz9of/ZSJkSQx6aMJOEj0mso5eAUvw06Ehn3/y0mUT6/CtmQNpnEZ
-         gJsiv3BiBsoedwI04P73DU5y6/W31k0WDivD4LRULhKhJnzT88OxY17L4cm6m7SRdfOW
-         QqE/KG5gYQcXvI2YrPcMPTL43FvVYXlaLyIGRZitIxyG0sPZmUUQEWs072WVXGjSPEXC
-         FNqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791225457; x=1791830257;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Lh9jWG1rCxabPueueZRnWmHBAH9yIQrASjMRaLKUo30=;
-        b=G42J7b7ZYGncBBWn697JJ2T9wsPQcdcVj0aXl0J3BGJ8d/1VdkxFU2gyHMld1wGKGn
-         veeWtL9mBB6Ji/f05eW9Rr9ACCtrM7nnvByL2rJLUzVH9XP161X+wSt2yFY1q00GxYPp
-         f+hBj+t1Xgl4NovyTYix9JWLppY/7SOsfLSTf/02L39EBfe4E5eSMdg8C3H9HVEbg/xE
-         V8vKhHN1GN6DEizIjm4XJiwX/XufonMjeuL+CBVS83WA3SYm+jE2rPT7wcN9/r2Ke/qk
-         NhXoMNduGZIQIRjt9B66L2xcle0pVX2nU1rAg/8DeTSwGW9T3mCHm94SlEOPLoUp5qYy
-         MsBQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzgxxB17SOII1sHiazeAmz5bc2jgEryYvPl5h9Wm7XhADnZzaaJBJI2aXmNycO1ns3Q/8lRlZE=@vger.kernel.org
-X-Gm-Message-State: AFuF++msGkv2nFWAiT3gMoJRB/ZdiypHZfl0N162SMjrtGDNmUWvvgcN
-	/Mno6qSFaNP62hqyWVfn1PhbCl7k7oHI20ZeM6237vxxdgE39qchVpl9IYTha4lKO6cgDvBp5Ix
-	S2kAzoHAg+EOrFE0ieOhh8O++fg84SkWZQWJ7GAFW
-X-Gm-Gg: AYBFou0m5+0TYAQRZQTz/FCmlnF3H33U+L/2GLA6skC2US1VE50l1Whts9qbUdHmhom
-	ZHSgjBXKNCEraxpgQ8c0aS3t75YcH0WGjfR8mJL2CrX5lpcYiZ3zXVoha7/vAVIkl23sPD/P4v4
-	IbJwqI2suYIr/KQUfHFVT28gSFrs3w9C4AGFyaq9EhEDwchIekjjkr18vmPJD3JmfCV9BxXn/zj
-	d9BUaHCcwnDhe6UtCYExqEraqp9hJ/z3X5L68l4gAqRbiSV39FamANQ/ZL0kl5yClZVviz6JwcY
-	Vxi9j7t7xbbp34vNAH/xcil6/ZMc+7SEpyaqkZ9Hwro64jTwEAZ99zo+FlMrbZWVeGkQ1A59gHz
-	C5JZwKT0yoMgfMIc85kkuRFe9mZgL8ELzezz7qnpWtIdduicAmsw/vrLdTlqW12SHJmOQRFF7uU
-	bV7PFhyHv1OrshvsgSje+zew==
-X-Received: by 2002:a05:7022:f51a:b0:136:b50c:c0e9 with SMTP id
- a92af1059eb24-151c33d34cbmr10196374c88.21.1791225456263; Mon, 05 Oct 2026
- 11:37:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4adeSDi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACAF1F000FF;
+	Mon,  5 Oct 2026 18:39:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791225600;
+	bh=EyJBhpnt+a00Z6n4RfwT1Ttm6wadK+l2MLfsyB5eVlE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=V4adeSDiis4Tu3mLwOrA4li1WNPNYoKuTp3nBZss3a1FwwsUcAo1AGl3Z0XwuWZfz
+	 CIIfcTL7MdxfXWSSzMnMZu29toQ/vvwEjSDdoUq/+C4Swgy82eeDwC7xdWiMh6lg7r
+	 DDYx+90xv18geUveeDvYvS6+v73i6xEIjosU+RCVhTxT0aqrBHF3mZfinRrKEqigOo
+	 bJLgpWmf2MR+rMRnbttWCLEkE9587+eoefTF3SqyPA5UIBmC29lLgPXXViHyyPKkLd
+	 HUs6CIpz0Ng6gkxzejpV66YgyIuEpsHyNapA6yRVVKLIbkyLpf0q0xOUaCRvRFiqr7
+	 ZMsu/MGMKepNQ==
+Subject: Re: [PATCH net v2 1/2] ipv6: serialize address publication with
+ device teardown
+From: netdev-bot+sashiko@kernel.org
+To: 4ncienth@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 18:39:59 +0000
+Message-ID: <179122559913.434549.12720841717630168470@kernel.org>
+In-Reply-To: <20261004183639.3773498-2-4ncienth@gmail.com>
+References: <20261004183639.3773498-2-4ncienth@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005154533.4147685-1-kuniyu@google.com> <20261005154533.4147685-3-kuniyu@google.com>
- <asPsATnTIr0Fxa_b@devvm7509.cco0.facebook.com>
-In-Reply-To: <asPsATnTIr0Fxa_b@devvm7509.cco0.facebook.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 5 Oct 2026 11:37:24 -0700
-X-Gm-Features: AclHuK-8QnzKqa05dEZjVlQCiqXkS0NX0LuNZTU47FVLnAJahel19JQ74BKYS8s
-Message-ID: <CAAVpQUBikn+8Zb_01T5aebhRyhKpHpWFbWHwk-vV=N9S0LCQXA@mail.gmail.com>
-Subject: Re: [PATCH v3 bpf-next 2/9] bpf: tcp: Add a new per-socket flag and
- kfunc for bpf_tcp_ops.
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Amery Hung <ameryhung@gmail.com>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 5, 2026 at 11:30=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
-l.com> wrote:
->
-> On 10/05, Kuniyuki Iwashima wrote:
-> > The legacy SOCK_OPS guards some hooks with a per-socket flag,
-> > tp->bpf_sock_ops_cb_flags.
-> >
-> > In contrast, bpf_tcp_ops was initially designed without per-socket
-> > flags so that users can simply define only the callbacks they need.
-> >
-> > However, it turned out that even attaching a bpf_tcp_ops with a NULL
-> > callback incurs measurable overhead in the fast path. [0]
-> >
-> > We could reuse tp->bpf_sock_ops_cb_flags, but it is u8 and has only
-> > 1 bit left for a new opt-in callback, while not all of the 7 existing
-> > opt-in hooks are in the fast path and really need a flag guard.
-> >
-> > Moreover, tp->bpf_sock_ops_cb_flags has two bpf helper functions to
-> > update it, both of which require sock_owned_by_me(sk):
-> >
-> >   * bpf_sock_ops_cb_flags_set()
-> >   * bpf_setsockopt(TCP_BPF_SOCK_OPS_CB_FLAGS)
->
-> Can we return -EINVAL from these when used with sock_ops?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-bpf_sock_ops_cb_flags_set() is not allowed for bpf_tcp_ops,
-so we could add a check in bpf_setsockopt() for bpf_tcp_ops
-to disallow TCP_BPF_SOCK_OPS_CB_FLAGS.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-But not all of bpf_tcp_ops hooks are opt-in, so we cannot prevent
-attaching bpf_tcp_ops to SOCK_OPS-enabled sockets.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
+- [High] The patch leaves a teardown race open that leaks a reference and
+  has the same symptom it sets out to fix.
 
-> If we keep one flag we can presumably put both tcp_call_bpf_Xarg and
-> bpf_tcp_ops_call under the same if conditional?
+--
 
-I assuemd we will use the new flag only for bpf_tcp_ops and will no
-longer add a new bit to the sock_ops flag and fainlly we can deprecate
-it under a Kconfig like CONFIG_BPF_LEGACY_SOCK_OPS.
+ipv6: serialize address publication with device teardown
+
+This patch takes idev->lock around the write of idev->dead in
+addrconf_ifdown(). In ipv6_add_addr() it holds idev->lock across both the
+hash and the device-list publication, and rechecks dead and disable_ipv6
+before publishing. The goal is to stop an address being published on a
+dead idev, which leaks references and makes device deletion hang.
+
+> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+> index c90ee6dd7446c..426739abb0744 100644
+> --- a/net/ipv6/addrconf.c
+> +++ b/net/ipv6/addrconf.c
+> @@ -1168,14 +1168,20 @@ ipv6_add_addr(struct inet6_dev *idev, struct ifa6_config *cfg,
+>  
+>  	rcu_read_lock();
+>  
+> -	err = ipv6_add_addr_hash(idev->dev, ifa);
+> +	write_lock_bh(&idev->lock);
+> +
+> +	if (idev->dead)
+> +		err = -ENODEV;
+> +	else if (READ_ONCE(idev->cnf.disable_ipv6))
+> +		err = -EACCES;
+> +	else
+> +		err = ipv6_add_addr_hash(idev->dev, ifa);
+>  	if (err < 0) {
+> +		write_unlock_bh(&idev->lock);
+>  		rcu_read_unlock();
+>  		goto out;
+>  	}
+>  
+> -	write_lock_bh(&idev->lock);
+> -
+>  	/* Add to inet6_dev unicast addr list. */
+>  	ipv6_link_dev_addr(idev, ifa);
+>  
+
+[Severity: High]
+Can the same kind of leak still happen for temporary addresses after this
+change?
+
+The new critical section ends in ipv6_add_addr() once the address is on the
+hash, addr_list and tempaddr_list:
+
+net/ipv6/addrconf.c:ipv6_add_addr() {
+    ...
+	in6_ifa_hold(ifa);
+	write_unlock_bh(&idev->lock);
+
+	rcu_read_unlock();
+
+	inet6addr_notifier_call_chain(NETDEV_UP, ifa);
+    ...
+}
+
+The ifp reference held by ipv6_create_tempaddr() is handed to the new
+address only after ipv6_add_addr() returns:
+
+net/ipv6/addrconf.c:ipv6_create_tempaddr() {
+    ...
+	ift = ipv6_add_addr(idev, &cfg, block, NULL);
+    ...
+	spin_lock_bh(&ift->lock);
+	ift->ifpub = ifp;
+	ift->cstamp = now;
+    ...
+	addrconf_dad_start(ift);
+	in6_ifa_put(ift);
+    ...
+}
+
+On the RA path, ipv6_create_tempaddr() runs in softirq without RTNL:
+
+ndisc_router_discovery()
+  addrconf_prefix_rcv()
+    addrconf_prefix_rcv_add_addr()
+      manage_tempaddrs()
+        ipv6_create_tempaddr(ifp, false)
+
+Meanwhile, addrconf_notify() handles NETDEV_CHANGEMTU with
+dev->mtu < IPV6_MIN_MTU by calling addrconf_ifdown(dev, true). The device
+is still up and keeps receiving RAs. This is the same trigger the commit
+message cites.
+
+Suppose addrconf_ifdown() takes idev->lock right after ipv6_add_addr()
+drops it. It sets dead, and the new recheck can't help because the address
+is already published. Step 3 then sees ift on tempaddr_list with ifpub
+still NULL, so it has nothing to drop:
+
+net/ipv6/addrconf.c:addrconf_ifdown() {
+    ...
+		if (ifa->ifpub) {
+			in6_ifa_put(ifa->ifpub);
+			ifa->ifpub = NULL;
+		}
+    ...
+}
+
+The rest of the loop marks ift DEAD, unlinks it and puts it. Then
+ipv6_create_tempaddr() stores ifp in ift->ifpub. addrconf_dad_start() does
+nothing because ift is DEAD, and in6_ifa_put(ift) drops the last reference.
+
+inet6_ifa_finish_destroy() never releases ifpub. Only ipv6_del_addr() and
+Step 3 of addrconf_ifdown() do, and only while the address is still on
+tempaddr_list.
+
+If so, the public ifp stays pinned. That pins its idev, and the idev pins
+the net_device through dev_tracker. Later device deletion would then wait
+forever in netdev_wait_allrefs_any(), which is the symptom described in the
+commit message.
+
+Would it make sense to set ifpub inside the idev->lock publication section,
+for example by passing it into ipv6_add_addr()? Another option would be a
+teardown or destroy path that releases an ifpub attached this late.
+
+> @@ -3897,7 +3903,9 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
+>  	 *	   Do not dev_put!
+>  	 */
+>  	if (unregister) {
+> +		write_lock_bh(&idev->lock);
+>  		WRITE_ONCE(idev->dead, 1);
+> +		write_unlock_bh(&idev->lock);
+>  
+>  		/* protected by rtnl_lock */
+>  		RCU_INIT_POINTER(dev->ip6_ptr, NULL);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004183639.3773498-1-4ncienth%40gmail.com
