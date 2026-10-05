@@ -1,97 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0A447AF57;
-	Mon,  5 Oct 2026 20:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5DC4D9561
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:18:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791231400; cv=none; b=cQmFZNL7/9n9IbTQwbcK6t9arOkcM17or5rI41DyyCZoCpSZ0beAh1zz61398pUONRXgWlALNCuf8GQ6Z6QkHMPjkNZHFzdTOq6duKQnC9nMr+LtZ0n7Fo+Sll4cEryHc1lW1r4uZrQK0YskFSV5/q3kNEDCfGglYgeekmq4Cbw=
+	t=1791231505; cv=none; b=sLEzPFdVB4yjSGdgRUxM0SMlIw09dX7rpwCJjRCu1YFAY7CQtcR4J21ecFsDUH2BSl5G0p4POM4r0L03hVzzDuT9L6ibrg7twRAtHLbfuYRuBiTjTYR0w1IqHLGsb32n3d57GeeXGJZCR2E1wMSZpkZnvP2KS4OFUNexeBm9HfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791231400; c=relaxed/simple;
-	bh=8Jzek+0zRSiVuZ7n0HDJlhS/n5kPtErQnI7huKM+UP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gG4JkHOK60ZbhTL3roX5NfpsB5HcgiOaphM+kSCv9/401Gi1SKT+RWpWrPuAyKSPuMhjZhA1nYbs/vS5UsQonDwFNJj1wZ+Q0xjkrDnpUTlNk5aU0Zs23W4W6oNg8VMQ2dz+U4rkLCupX78z6RbEYu5+p1LJixR99hnpJMvPnS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hZ2ytO0s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791231505; c=relaxed/simple;
+	bh=BXoFvpeLE9KoGidUa4e0smSWqKCrh9rC2ND9HlaDXpM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IDNFzl/kR25cyS4eZZMdehyWk8N042oHGU0XdzPkT3e8nM7201vd4pCx3xRpKcJN2j3mzzqu7IgGAIsMSlcE7Kc7c8VKdA2fNkPEKe4YKWyB4niSn/OhVDFaeXao2PGPTag3Li/o81QKx9vFN/CS11aOSmelpOuE9z4h2mQwZCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q92ijepU; arc=none smtp.client-ip=74.125.227.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hZ2ytO0s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5E61F00899;
-	Mon,  5 Oct 2026 20:16:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791231399;
-	bh=2JUEgppnsskmxzR6hR4FkRdIFTQOgEmr9ItwcDNvDFI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hZ2ytO0sFLlzH4xRT+cCs/c8fstDoh4U2Eqck7SoEtjBfo1o/iXk1AE676BfwQ1hq
-	 KRxVF5A/bjOg7Cjo8VzH1GeLzf8Ww7TQotpSrb8jsxgXx49xpyl0JhAcDSiZQQUGGk
-	 wrK8aqDMH3nIVoKwKpsXfHWj+RIbNvSFSiRrVuKEQ8bsmj0nzA0ad0Vz3vtWnQ7eUA
-	 VRIWvL6zrIF1qicvT4xbGQUMqrTJ6n9FN/6ZPcuiXCxAOHU8utLuOgksNcocVzPZhZ
-	 Hp36Q4TYrXj76CnBBm68Xo0yne4/bjOh9w1JLWq0X2+1lZvVIiWGZ2XHHsmEZfD/Ua
-	 detfejExnZnNQ==
-Date: Mon, 5 Oct 2026 15:16:38 -0500
-From: Rob Herring <robh@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, shenjian15@huawei.com, shaojijie@huawei.com,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q92ijepU"
+Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3a834ff6565so165256a91.0
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:18:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791231503; x=1791836303; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=UaqXT4ErWO3i859O4DLN6R0LDK8LuXc4vcaqlzX/HHc=;
+        b=q92ijepUkteqdvbpwBJ+Q9rqk5H07n+2J55qNuy1I1QxHjZ6pwiTUJ0MBn5WmxPYcn
+         XsPKR/miPhuuHD5Rg76ez7Gn8ScmGkTNNHJNakzLEHqr1zsfIYbQrHWQptOKnwEU4rdz
+         bgRpOuhrEgtk0LJRqeVqyNtD6Lo1FIJiJ3MUbVnpvnicu3B6K6WacbZPskjtuBvqC/OQ
+         QQT/kOpyXxiQF88mB5KXGUeNjgSPbofTUBXNvhkc5fPz6TFYv4I9wSvol/MSqFe/XBws
+         N/NG/yj/wBX9aDAXCv2XQZ8wB0ZwRxTPIpRpKXwuYOx125w7tDftDATSzzHQp2syMVGd
+         HmMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791231503; x=1791836303;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=UaqXT4ErWO3i859O4DLN6R0LDK8LuXc4vcaqlzX/HHc=;
+        b=Zs+lBTJ4Ie3MEfj9T6FcjKjRZVxNdIq9rz/hda7hJXb6gK/hH6JRoTn0TVs8wFUo+U
+         TWCim5dPOCUAy6tV5+TolLwHHHnhrMlsZkNB4Dlo8ns12JxR+YOUNG7SF2SE0y+D2Fpr
+         U9I0RgQORFL7e82dDsrvI5+r1sQPK28KF2CeR9SLitTe+g+Do/MjfyOmb9NIq3oAdMir
+         Ylnm4DGAhDasaAza1USBt8cX9roJdRS0BqguQ57Bm07+FwLH26mYIcpKO0xm/dkQpJsN
+         kvfxdIXTq/MJSuqJ9GWLwkHJ0QBtnutP215QF3Rxrp9mTXPvDUt1fGem4bgFAwYQSscr
+         ysvw==
+X-Gm-Message-State: AFq9FYJy0HQtRYSeuu1Fooc+FDCwFHwTn3uMprMpo/zfWox/NUMcjzhS
+	RsIWOpwe6vI9icH5JDAQL2R3/hqh/Jonr6fxNN6t+6p7ZEesS3AMo00IejUxt4iK
+X-Gm-Gg: AYBFou0DdkAyw8O779sdt97v8401lesXA6aunTVONUL2UBVOsbUBMpAu5MEJ2xmOetK
+	JL61a/bQj1CFgWDFN6lqk8PyyQ1Tr1Fp/lXdZTCSRwJUJvabUwDqCwNi75MXMHPFjGImaTPNweI
+	62SiA/qSlzGEaecp6CZJ2RH3pzNP30Zej6TXimQnbBTFLQbxl0aCO7xDgByRae7rk1K7rHyWTGD
+	6uuJw8Wo9CzuXEc8QqFRvkeANKgDWIFL8IzrbGQ6R6kcAn+/GemL1HBHlnrfmqt1G7e9icKr9fn
+	1AV+fpdLtKgXN0inI9xeU/oayNQyWtk43IRzES+wwo/ir53fDCdEVBjUw1YhfM+EUJwjJgJDxDy
+	bTktp3HYGdACznIwgSSrkrtaCmZKwHEm3kdGro9MjHGBcoUJaGsop/tMRSZgqG7kHMxqm1lhznh
+	eRRnp4Dlqr9nBJJ2sapwBkkGoFkieZQksmpnb/jdOROYhXkO38yfvVo2SZRGBsP40MI+l+bZlUr
+	Ko=
+X-Received: by 2002:a17:90b:582f:b0:3a4:ee64:f492 with SMTP id 98e67ed59e1d1-3a85439e2camr322431a91.33.1791231503215;
+        Mon, 05 Oct 2026 13:18:23 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:71::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a853d00fc5sm1125229a91.16.2026.10.05.13.18.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 13:18:22 -0700 (PDT)
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	sdf@fomichev.me,
+	bobbyeshleman@meta.com,
+	almasrymina@google.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] dt-bindings: net: Convert HiSilicon hns-dsaf
- to DT schema
-Message-ID: <20261005201638.GA1807068-robh@kernel.org>
-References: <20260930201919.76465-2-robh@kernel.org>
- <179115213771.434549.6434616017051204695@kernel.org>
+Subject: [PATCH net-next] net: devmem: remove net_iov_area base_virtual
+Date: Mon,  5 Oct 2026 13:18:22 -0700
+Message-ID: <20261005201822.3060658-1-sdf@fomichev.me>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179115213771.434549.6434616017051204695@kernel.org>
 
-On Sun, Oct 04, 2026 at 10:15:37PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 2 · Low: 4
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The conversion drops the two leading legacy 'reg' regions
->   (sub-control and SerDes) that the old binding documented as the…
+Since commit 083e64a3af77 ("net: devmem: replace gen_pool with
+freelist"), a binding has a single net_iov_area covering the whole
+dma-buf, and base_virtual is always 0. Its only reader is
+net_iov_virtual_addr(), where it adds nothing. io_uring zcrx never
+uses it.
 
-The old binding was deprecated for a long time and there are no users. 
-Will detail in commit msg.
+Drop the field and the store, and compute the dma-buf offset from the
+net_iov index alone.
 
-> - [Medium] The top-level 'required' list in hisilicon,hns-dsaf-v1.yaml
->   leaves out 'desc-num' and 'buf-size', although the deleted text…
+No functional change. From review feedback on:
+https://lore.kernel.org/netdev/asPUZ8DPllHd6Yu9@devvm7509.cco0.facebook.com/
 
-Will fix.
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+ include/net/netmem.h | 3 ---
+ net/core/devmem.c    | 1 -
+ net/core/devmem.h    | 3 +--
+ 3 files changed, 1 insertion(+), 6 deletions(-)
 
-> - [Low] The patch deletes
->   Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt, but…
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index cc97611632dc..0cc8572f62ca 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -102,9 +102,6 @@ struct net_iov_area {
+ 	/* Array of net_iovs for this area. */
+ 	struct net_iov *niovs;
+ 	size_t num_niovs;
+-
+-	/* Offset into the dma-buf where this chunk starts.  */
+-	unsigned long base_virtual;
+ };
+ 
+ static inline struct net_iov_area *net_iov_owner(const struct net_iov *niov)
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 71c83730d73d..07c62e2e3088 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -252,7 +252,6 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		goto err_unmap;
+ 	}
+ 
+-	binding->area.base_virtual = 0;
+ 	binding->area.num_niovs = dmabuf->size >> niov_shift;
+ 	if (direction == DMA_TO_DEVICE) {
+ 		binding->tx_vec = kvmalloc_objs(struct net_iov *,
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index 28d6fa7bcb57..1cec10f0257c 100644
+--- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -112,8 +112,7 @@ static inline unsigned long net_iov_virtual_addr(const struct net_iov *niov)
+ 	struct net_devmem_dmabuf_binding *binding =
+ 		net_devmem_iov_binding(niov);
+ 
+-	return net_iov_owner(niov)->base_virtual +
+-	       ((unsigned long)net_iov_idx(niov) << binding->niov_shift);
++	return (unsigned long)net_iov_idx(niov) << binding->niov_shift;
+ }
+ 
+ static inline bool
+-- 
+2.53.0-Meta
 
-Not an issue. Fixed when other binding is converted.
-
-> - [Low] The deleted text binding had the buf-size and desc-num ranges
->   swapped ('buf-size: ... should be 16-1024', 'desc-num: ... should be…
-
-Based on the .dts files and driver, the text binding is wrong.
-
-> - [Low] The concern says that 'mc-mac-mask' with only 'maxItems: 6'
->   accepts 1–5 bytes, while hns_mac_get_info() needs exactly ETH_ALEN (6)…
-
-Not an issue.
-
-> - [Low] reg and reg-names use 'minItems: 1' for every 'mode'.
-
-Not worth the complexity to try to express that.
-
-pw-bot: cr
-
-Rob
