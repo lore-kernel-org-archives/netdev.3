@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A462586341;
-	Mon,  5 Oct 2026 01:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE7227E074;
+	Mon,  5 Oct 2026 01:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791162597; cv=none; b=dd1ncO7xdtJDlmcbivZLsbUphzRkOBl8VRTPO5lzKDNcVYYwe2w7ja6UhCOU77kWQk6jIsiHHEFCJaoJvtEs0mizV2PySP8on2Nbb0egoaIVRWoSDRwSZB4qTMYSamcUiYYoZodrkiRhNgpo7dRxb5z0AMuR1YDY8kuViTAygQs=
+	t=1791162599; cv=none; b=kVYjI9l6MQr0CWUT1alexpWpMaZ7WDDDvuuTSnquRFANlFOLqGPDMpn4m00+PPtyfR2owJm848o8JIkoBMKc/5lUJImTBLmUJIr6VCnvlW3kO6Nkhq40Yiy6fVVmint5mP0B6IFOEogPx2TbBj6S8AiDzE1oAWtLazL3YcK2oRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791162597; c=relaxed/simple;
-	bh=rDvQAVZdl8BWx8TbdLbVvUy9QrE6q7fVysdpKJbIo+0=;
+	s=arc-20240116; t=1791162599; c=relaxed/simple;
+	bh=kUAlBVmp3Xfj14LuKSTZwYZq1Hirs9fzPRNQ3nsJ9Wo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A4I9wjQXAi9012F84/kRMHIcN/nRf6SSUA+TxqcFNVSqkUA3nD6IwIjGRJavVdgFcwaMDLR4EOtOgxGiHmzHGNxiVvW9GWl0WsQgDIYb9DbdCid8OBi9TPHm+y3ZRT81Zn1IOtylhKjxctBcc30GWSMms4K6VKju37la1IcLKSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSEXRdud; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=uKVAlETUKU5eOp+H7rrl8Mi2MZlgLlnDHY73UjieCY6aeEvHQNscG1GEZnIDbBR9kjREtbNyrh7CkKIDfn1K1qhDalYsnhUc9J0gZGZ0ioHxZgG//acCxw0PbaYWKOg8aWJQactVwoHvkTKIG+6hvvkE3WjmKIqdWpBRDqZphwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tfrvl7Jh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSEXRdud"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5031F000FF;
-	Mon,  5 Oct 2026 01:09:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tfrvl7Jh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99901F00893;
+	Mon,  5 Oct 2026 01:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791162596;
-	bh=6u5KYzXTOeeCRUqycfQUGWuiaxYWlFLFuer9wSTJdRE=;
+	s=k20260515; t=1791162597;
+	bh=pyjt3R1kDuaBwqy0eNkSERMkV2VeL+/U1SVPczRgaTk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZSEXRdudc+tO/a8nuwPBfN/PV3l8Sf4xqe+Fc1VRRpSGdrkNv5ZhPd6/haVMqZG1T
-	 zumpbIIhrtd1/1vEjVq3RGL7KD9OUaz1TkK+xBJqnCkbnOHPfg2+840aO9nXjcB8MS
-	 mJ4nMnFDY944EJi2l4CEVef+SHStPJg4UehgDNkgrFGqWbutfxT7+rlniwoxZTcxUw
-	 sVA5o9g+WyNWQXqKHq+lwjAXNFQ2W1ttaUW1+nrshwUi2BH0MW3ZklBgkuhr3leAXt
-	 huq+7C5BY1nyAFi17Ok67tG4E+ffDnX8zt/Fb00zoy6rfBGwyQ4v28zP07z/nRTHan
-	 vtVLsacnvUapw==
-Subject: Re: [PATCH net-next v11 03/13] dt-bindings: dpll: add SiTime SiT95316
- clock generator
+	b=Tfrvl7JhDPkqzFVhx7uDZC5T/XrhCCOgnsuPqMe/JajPtEoDSQclRfKsMkJByQQZy
+	 S/kYTfSGKkkeGUnFzw/C57enIlEiaYIXceYx1mABOsH+/f+V3wMp49aKJyzGUq1+uD
+	 WKRNlVasOScfjVcoyYUNpYg6gwsR7Vb0Itd+Afly3Gnq8H6uU0tf95R1eYo/f33oAp
+	 2q9GURP6xNGzPEw2hbjDAoXit9WXGd6f7xQxJLgWWmeAxfc2yNiVsGaZlCuOLHoCJq
+	 ximD03ZKWGk3Ezy0DLRN3ckzYVfDfHiduYy94oAtoT4pFt+rRX4qn0+mODpWg8h/t7
+	 2Wjm6mI2YbeiA==
+Subject:
+ Re: [PATCH net-next v11 04/13] dpll: add basic SiTime SiT9531x support
 From: netdev-bot+sashiko@kernel.org
 To: arouhi@sitime.com
 Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
@@ -36,11 +36,11 @@ Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  cjubran@nvidia.com, Oleg.Zadorozhnyi@devoxsoftware.com,
  devicetree@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 01:09:54 +0000
-Message-ID: <179116259487.434549.6833952261033036380@kernel.org>
-In-Reply-To: <20260930233714.87679-4-arouhi@sitime.com>
-References: <20260930233714.87679-4-arouhi@sitime.com>
-X-sashiko-severity: Low
+Date: Mon, 05 Oct 2026 01:09:56 +0000
+Message-ID: <179116259637.434549.13673583471206119318@kernel.org>
+In-Reply-To: <20260930233714.87679-5-arouhi@sitime.com>
+References: <20260930233714.87679-5-arouhi@sitime.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,102 +50,127 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
-  defines no power-supply properties (for example a core VDD supply and…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] In drivers/dpll/sit9531x/core.c, the page selector (physical
+  0xFF) is the only cached register: sit9531x_volatile_reg() returns…
 
 --
 
-dt-bindings: dpll: add SiTime SiT95316 clock generator
+dpll: add basic SiTime SiT9531x support
 
-This adds a devicetree binding for the SiTime SiT95316/SiT95317 clock
-generators. They are I2C-controlled DPLL providers with four PLLs, up to
-eight inputs and up to twelve outputs. The XO is described either as a
-clock or as a clock-frequency property.
+This adds the first I2C driver for the SiTime SiT9531x clock generator.
+It sets up a paged regmap with the page selector at offset 0xFF, so the
+register accessors address a register by page and offset. Probe reads
+the crystal rate, takes the optional reset GPIO and identifies the
+variant from page 0 offset 0x02.
 
-> diff --git a/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
+> diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
 > new file mode 100644
-> index 0000000000000..997b410e8f526
+> index 0000000000000..c7c14442df922
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
+> +++ b/drivers/dpll/sit9531x/core.c
+> @@ -0,0 +1,320 @@
 
 [ ... ]
 
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - sitime,sit95316
-> +      - sitime,sit95317
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    items:
-> +      - const: xtal
-> +
-> +  clock-frequency:
-> +    description:
-> +      XO rate in Hz feeding XIN/XO_CLK, for firmware that describes the
-> +      oscillator as a property rather than as a clock provider, such as
-> +      ACPI.  Use either this or "clocks", not both.
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description:
-> +      GPIO connected to the chip's active-low reset pin (RESETB).
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +    description:
-> +      Interrupt from the chip's active-low INTRB output.  Asserted when
-> +      the device detects a status change such as lock acquisition or loss.
-> +
-> +  dpll-types:
-> +    maxItems: 4
-> +
-> +  input-pins:
-
-[Severity: Low]
-This isn't a bug, but should the binding describe the chip's power
-supplies here? For example a core VDD supply and the per-bank VDDO
-output supplies.
-
-The schema ends with:
-
-    unevaluatedProperties: false
-
-With that, a board that adds a *-supply property to the dpll node fails
-dt_binding_check. A board that powers the part from switchable regulators
-then has no valid way to describe those rails. Without them, a driver
-cannot make sure the rails are on before it releases RESETB and starts
-I2C access during probe.
-
-Documentation/devicetree/bindings/writing-bindings.rst says:
-
-    DO attempt to make bindings complete even if a driver doesn't
-    support some features.
-
-The supply names were not checked against the SiTime datasheet. Any
-supply properties added should use the chip's actual VDD/VDDO pin
-names.
-
-The existing microchip,zl30731.yaml DPLL binding also leaves out
-supplies, so there is precedent for this in the subsystem. Optional
-supply properties could also be added later without breaking existing
-DTs.
+> +/*
+> + * Everything the device holds can change without the driver writing it,
+> + * so nothing here is cacheable except the page selector.  Caching that
+> + * one spares a read of it before every access: the range code selects
+> + * the page through a read-modify-write, and with no cache that read goes
+> + * to the bus each time.
+> + *
+> + * The cached value is only as good as the last transfer, though.  A
+> + * transfer that fails can leave the part on another page than the cache
+> + * records, so every accessor drops the entry on an error and the next
+> + * access reads the selector again.
+> + */
+> +static bool sit9531x_volatile_reg(struct device *dev __maybe_unused,
+> +				  unsigned int reg)
+> +{
+> +	return reg != SIT9531X_PAGE_SEL;
+> +}
 
 [ ... ]
 
-> +unevaluatedProperties: false
+> +static void sit9531x_page_cache_drop(struct sit9531x_dev *sitdev)
+> +{
+> +	regcache_drop_region(sitdev->regmap, SIT9531X_PAGE_SEL,
+> +			     SIT9531X_PAGE_SEL);
+> +}
+
+[ ... ]
+
+> +	rc = regmap_read(sitdev->regmap, vreg, &tmp);
+> +	if (rc) {
+> +		sit9531x_page_cache_drop(sitdev);
+> +		dev_err(sitdev->dev,
+> +			"Failed to read page 0x%02x reg 0x%02x: %d\n",
+> +			SIT9531X_REG_PAGE(reg), SIT9531X_REG_OFFSET(reg), rc);
+
+[Severity: Medium]
+Does dropping the cache entry on error keep the cached page selector in
+sync with the chip? The comment above sit9531x_volatile_reg() says it
+does, but some paths seem to be missed.
+
+_regmap_select_page() sets the selector with
+_regmap_update_bits(..., force=false). When the cached value already
+matches the target page, no selector write reaches the bus. With a stale
+cache entry, the access goes to whatever page the chip is really on, and
+the I2C transfer still succeeds.
+
+The first case is an adapter that only supports SMBus byte data. There,
+regmap_get_i2c_bus() picks regmap_smbus_byte, so map->reg_write is
+_regmap_bus_reg_write and defer_caching is false. _regmap_write() then
+updates the cache before the transfer:
+
+drivers/base/regmap/regmap.c:_regmap_write() {
+    ...
+	if (!map->cache_bypass && !map->defer_caching) {
+		ret = regcache_write(map, reg, val);
+    ...
+	ret = map->reg_write(context, reg, val);
+    ...
+}
+
+_regmap_bus_reg_write() does not invalidate the entry when the transfer
+fails. A failed selector write therefore leaves the cache at page N while
+the chip stays on page P.
+
+sit9531x_page_cache_drop() only runs after regmap_read(), regmap_write()
+or regmap_update_bits() has returned and released map->lock. Other
+regmap users, such as the regmap debugfs registers file, can see the
+stale entry in that window.
+
+If the failed selector write happens inside a debugfs read, nothing
+drops the entry at all. Can the next sit9531x_write_u8() to page N then
+land on page P without any error?
+
+Adapters with full I2C support use the raw path. They look safe, because
+_regmap_raw_write_impl() drops the cache under the lock when a write
+fails. Later patches in the series also put the driver's own runtime
+accessors under multiop_lock. So only regmap users outside the driver,
+such as debugfs, can reach that window.
+
+The second case is a selector change with no I2C error at all. Examples
+are RESETB driven by board logic or a BMC, a brown-out, or an NVM reload.
+The chip comes back on page 0 while the cache still holds the old page.
+
+A later patch in the series drops the entry on resume. Nothing covers a
+reset the driver cannot see, though. After one, could writes meant for
+the PLL pages 0x0A-0x0D go to page 0 instead?
+
+Would it be simpler to make SIT9531X_PAGE_SEL volatile as well?
 
 [ ... ]
 
