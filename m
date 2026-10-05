@@ -1,57 +1,57 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9092C27FD43;
-	Mon,  5 Oct 2026 06:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA07E5474E;
+	Mon,  5 Oct 2026 06:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791180471; cv=none; b=T8gX7yv/+EYiHIy5krGbqHpN+BPVx1vD3ZeWpTw3QxxJMI/qqPtubgHCHLNkFR0PPDNI4VD6Go9Yj9qNBeFr2a+ajQqnacRq3Zd/VASqJiTVIO+LMbCt2CIq1lPjRHrxGmgbHePOBjKdbKGnkWNHDqNDKQ3p88VxSVEI6jhGAm8=
+	t=1791180525; cv=none; b=aZZEKbzjywBsEL35eXTCF5FPi3/3n7vyJQkyGxdD+jvUbJCe7d9C8QXjhf8vLXDI4bwob0e62VOwK1IUsd9j16HQ3KgqjfgLVSwnnPrIsToK1SYjfuhCmezSa99RWd81xAp9R/aOuVAGMpVPFL6vOiYkRW+mq9N8o0olkEpSgSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791180471; c=relaxed/simple;
-	bh=z6bEdOBQ5ec2iTfHeZdbvC/mTffVSC2ugRoOBizf8qE=;
+	s=arc-20240116; t=1791180525; c=relaxed/simple;
+	bh=IwroYdYlZxwAxTWh/Oc3ZrvlEGtbCxxZtggzaBg2pYw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ttHKLGQucofdyCeer5XoXVCF298LYd1NUSM3QJI7tjHyFlb0hWIfdBaUeKdWGGb5q2wQsv87gGBqy0HCQDZbXzkgCeQeLxEJg/n6wxGgqLXgil3Ek0U1tijiMYED/tQr60cn7vprr3VMWllbHDJmziiAsjnh7lvnxLXP9Hkts/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mqzTA50C; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=QDeofi6bjSuqGUpy6tOmYpEUx0sZstiC+KJSFwoWbge6hMJisiN0Vl7TUxcvLQNbOGl/WEhOPsGLuHBeMyd1fEpBBR9Sqeq2MroJ7mGHPX5JTHjzrzezLdxx2Y3qSXMINYIvl7bZdO6bD+mosqEYvaTsd9yGU0SxZlDfufvrDwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JgFHL1sc; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mqzTA50C"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JgFHL1sc"
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69515PGE2065654;
-	Mon, 5 Oct 2026 06:07:19 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69516KCK2067199;
+	Mon, 5 Oct 2026 06:08:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=E5rkQjd/Ryuda49pA
-	bQfLqYEszgayqOEnQMRdlQc7O4=; b=mqzTA50CJOf7J7Pe58AvCWy10ps3JSI+9
-	b27PQnWRXke42Fr14akVT5c4SznnOcCH1b8crLqHJcaj5QAAGZU7GFbY9V4nFqXq
-	IYuYEuvDsAaLFGMa+xMRqyI4JakvtZ3o7gheIrOCnptsWp3lO524+aVA4KzG3y7z
-	eE1gN49zQ4sTSJirhc41TZVxuVn36LEJV66DPgCNZ9OowEKCrxHQG2U3mAA27y9o
-	g2dJADSxfKJFmxFZCDhvEirzFxx+6iWOL3MjlIDfu9MGxNxtn4w1Y1FGl1hnOuxI
-	JcS+So8zQEYZrP0SjetD3T/8x32E0yKAKj0bcwxwUX17NM05USy6g==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2r4fr3d9-1
+	:mime-version:references:subject:to; s=pp1; bh=yY5Zy0AOMIswvDraE
+	QovtE1WInwOnlfvewvx1gJAqUQ=; b=JgFHL1sc4G5x1KLDEttJYUIaI+9Eyb2re
+	tPztDU/IZyj9cD2p3vccFUZGp4/EBKdo5g5Zp/4tT5gS97Xl3abOUvgN5mrAbQmK
+	+zUwyRAh5aXhu9ZUsm8LcQT9QbagO7c2nTZvr4Q0lrw8nP/qMPaB8k+Sj2X68ZnC
+	fMeoThvoJJSgRIwiwkyXPG8ohU573YOYYSSszKZv9odoJ/ePJRITr337PlD5ViQZ
+	UtqnTJdABDlo53+zIY188VNFIta69a0Ud55yy9UAJn2eINB13vm/gwXZ7VlGy5Bs
+	xgTHcSgPGTLQvOEHkYPL/4F6+Z5avh9lZq1H605if6JQe7fPGX+6Q==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2r4fr3h2-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 06:07:18 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6951HMdH2163432;
-	Mon, 5 Oct 2026 06:07:17 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3cdvm9jw-1
+	Mon, 05 Oct 2026 06:08:26 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69512ojf2142366;
+	Mon, 5 Oct 2026 06:08:26 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3d1jm6eq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 06:07:17 +0000 (GMT)
+	Mon, 05 Oct 2026 06:08:26 +0000 (GMT)
 Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69567Fmb4850178
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69568Oip32506602
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 06:07:16 GMT
+	Mon, 5 Oct 2026 06:08:24 GMT
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA86A5806A;
-	Mon,  5 Oct 2026 06:07:15 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 31F345805B;
+	Mon,  5 Oct 2026 06:08:24 +0000 (GMT)
 Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 373855805E;
-	Mon,  5 Oct 2026 06:07:12 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 4528458059;
+	Mon,  5 Oct 2026 06:08:20 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.67.97.222])
 	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Oct 2026 06:07:11 +0000 (GMT)
+	Mon,  5 Oct 2026 06:08:20 +0000 (GMT)
 From: Mingming Cao <mmc@linux.ibm.com>
 To: netdev@vger.kernel.org
 Cc: horms@kernel.org, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
@@ -59,12 +59,11 @@ Cc: horms@kernel.org, davemarq@linux.ibm.com, bjking1@linux.ibm.com,
         maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
         andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
-        kuba@kernel.org, pabeni@redhat.com, santil@us.ibm.com, jeff@garzik.org,
-        stephen@networkplumber.org, linuxppc-dev@lists.ozlabs.org,
+        kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 1/8] ibmveth: fix netpoll races with RX replenish
-Date: Sun,  4 Oct 2026 23:06:02 -0700
-Message-Id: <c193ccda2af0b2e91e839d5caa9928274b80f498.1791178212.git.mmc@linux.ibm.com>
+Subject: [PATCH net-next v2 3/8] ibmveth: disable the reset work before unregister in remove
+Date: Sun,  4 Oct 2026 23:06:04 -0700
+Message-Id: <219666bf36377a7b67d14281fb0b57332c3dab15.1791178212.git.mmc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <cover.1791178212.git.mmc@linux.ibm.com>
 References: <cover.1791178212.git.mmc@linux.ibm.com>
@@ -77,23 +76,23 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=TOPQ2Fla c=1 sm=1 tr=0 ts=6ac33e96 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+X-Authority-Analysis: v=2.4 cv=TOPQ2Fla c=1 sm=1 tr=0 ts=6ac33edb cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=qzTZ72RhqM2DaLNR-rAA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDAyNCBTYWx0ZWRfX4o7jVZuAl+QA
- sssX6H9Wg1hzgUwjQY5Jlw6izOY1lR6XJEbx2VKXqQ8MDcUdlIm/BfpyfKqPFhcS8fLKTud67XD
- Gj3gSTufCcvKDd+SyqkPN68AKVEaXyGRSG1CJTayJGW0ohiALvwG09iBYG81Cdmc8MhRKpXMELR
- D/8BhJLxU14zcLVB++y57rAxMjysbALQeYDN1HM9HICL1os4axT8324aa6WVDYwgqm/zEF8bM8g
- 01RpPFoDAa+4O3XbHMjGFP9Y4X5VhhtcvRAyiRIt0SZ3m99aQSq18g4rA3//KPdR/7Xa2sDuYkE
- +MOC1l0EOD9rgDW4YoEjrR0TygpzA/niejn4gAepTr41ODW+9P84KIc4g02R1usd0HsKFAf4hzM
- HdcjuTLNH2ZdFktQ6HIcvcRp5pX3ISNDmiIYT0Kl8282RwNAqhAiET0vI5nlzZP8j1Tff3MHxDa
- C0T7vk3y1frhlW5ochw==
-X-Proofpoint-GUID: Td8gs81fWhhR07w6oRKmcYwxExOPI6F3
-X-Proofpoint-ORIG-GUID: -pwJkgSvnEbODkjnCbZFNdd_cNkLE3ye
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDAyNCBTYWx0ZWRfXwF3yd+YpsGZu
- 1vcZ3dCnjgfWIpa23ibqJ/xltBi20TEO++kglDsPtmMotFreMbzgr8jIXtHr02hUjCHxaPHX/9N
- N8pqPJgC1PkiRpzmjh9td8zeJrQow94=
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=IlR5_4QjEJt1gQzRlPQA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDAyNCBTYWx0ZWRfX7hUS4Z6xagZ/
+ zdz/4PALQDcY3kX0Q/aWEtLZ3Xrgs71gWYdNNfPO116TIOwONhhFh3o+ZrqI4H2VqnyWKsNBQfP
+ uic3ms3xjUR1/ncdUMrEyjxWksW6lPFe05iQTE3V798sr/evNcKJ+U/kM4iQWXV+bS5J/wS/0xC
+ fVC1qwFczyU3qQYrx98DqoH1y0TQT82AFkuxr6/38uIJZZNNei4HZVqeqQa2R1E4RJvwvQvB0mi
+ c1pt6VaRYmoE55hyT94FtszAzWUxdHJhF/MuMBVu5pPN6FQSo4ZIWfzcfB8gflyWXE19EPkpdrr
+ lojZerfSlnPqjp9xUuf7EuzggfE2BpjK9JaNnWBYIjMO2fVpdCp0Iba1/piu1Ir/A4B/FL85xYN
+ 7Mrzhrult5qEVKsMHDT+pUItTBiy1dqvHIA3s+TdeXIz+c2pwZlxl8N2KDNg3A356sOinycFPf9
+ HhHgCWgJ3RJgR+WEzFA==
+X-Proofpoint-GUID: ngPXV_Y1QdmOYgDdnk_d2xPNku-SI-XI
+X-Proofpoint-ORIG-GUID: OTmDrWmKh5eVyuFEPFIzlpf7JbtiPToI
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDAyNCBTYWx0ZWRfX3q3o5206m92T
+ 7+bkWKzqguawcTNzf+HV5NOhd6bjjb9F3rLFhevl9Tzs9VF4aVP9Rvr6AGLBKJqPwoWFeNuMegt
+ 4V4KFrzv/jKpQ96/Mm6Beng/Pfhb9Ys=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-05_01,2026-10-02_02,2025-10-01_01
@@ -103,128 +102,41 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050024
 
-ibmveth_poll_controller() runs RX replenish outside NAPI and without
-a lock, racing NAPI's replenish on another CPU. Both can fill the
-same slot, so an skb and its DMA mapping leak and PHYP can write
-into an unmapped buffer. netpoll calls it from netconsole and from
-netpoll-enabled bonds.
+ibmveth_remove() cancels the reset work before unregister_netdev(),
+but NAPI keeps running until unregister closes the device and can
+queue the reset again, on an interrupt enable failure, a bad
+free_map entry or a bad RX slot. The reset can then run on the
+adapter after free_netdev(), or reopen the device during unregister.
 
-ibmveth_open() also enables NAPI before the RX resources exist.
-ibmveth_change_mtu(), veth_pool_store(), ibmveth_set_csum_offload()
-and ibmveth_set_tso() call close() and open() directly, so while
-open() is still setting up, netpoll and the direct ibmveth_interrupt()
-calls can replenish NULL pools and read freed memory.
-
-Remove the callback, as Eric Dumazet did for many drivers after
-commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional"),
-including ibmvnic in commit 0c3b9d1b37df ("ibmvnic: remove
-ndo_poll_controller"). netpoll then polls NAPI itself with budget 0.
-napi->poll_owner serializes that with NAPI, but not with a NAPI poll
-that was already running when netpoll was set up, so skip RX
-replenish at budget 0, which netpoll uses for TX only. TX completes
-synchronously, so ibmveth_poll() has nothing else to do for netpoll.
-
-Enable NAPI just before request_irq(), once everything
-ibmveth_poll() touches exists.
+Use disable_work_sync(), which waits for a running reset and keeps
+the work from being queued again. A bad RX slot also makes poll
+spin, which can stall unregister; a later patch in this series
+fixes that.
 
 Found by AI-assisted review of the ibmveth multi-queue RX series and
-confirmed by code inspection of poll_one_napi() and the direct
-close()/open() callers; neither race was reproduced. Tested on a POWER10
-LPAR with netconsole over ibmveth: a ping flood (678,470 packets, no
-loss) during a printk flood, and MTU changes and buffer pool toggles
-under traffic, with no warnings. No kernel selftests cover ibmveth.
+confirmed by code inspection; it was not reproduced. Tested on a POWER10
+LPAR with unbind and bind cycles under traffic. No kernel selftests
+cover ibmveth.
 
-Fixes: 6b4223748895 ("[PATCH] ibmveth: Add netpoll function")
-Fixes: bea3348eef27 ("[NET]: Make NAPI polling independent of struct net_device objects.")
+Fixes: 2c91e2319ed9 ("net: ibmveth: Reset the adapter when unexpected states are detected")
 Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
 ---
-
-Changes in v2:
-- skip RX replenish when ibmveth_poll() runs with budget 0:
-  napi->poll_owner does not serialize netpoll with a NAPI poll
-  that was already running when netpoll was set up
-
- drivers/net/ethernet/ibm/ibmveth.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/ibm/ibmveth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 73e051d26b9d..33af8e57be6e 100644
+index dab571fe8dde..d269599f5a99 100644
 --- a/drivers/net/ethernet/ibm/ibmveth.c
 +++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -623,8 +623,6 @@ static int ibmveth_open(struct net_device *netdev)
-
- 	netdev_dbg(netdev, "open starting\n");
-
--	napi_enable(&adapter->napi);
--
- 	for(i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
- 		rxq_entries += adapter->rx_buff_pool[i].size;
-
-@@ -712,10 +710,18 @@ static int ibmveth_open(struct net_device *netdev)
- 		}
- 	}
-
-+	/* NAPI can run as soon as it is enabled, from netpoll during the
-+	 * direct close()/open() pairs or from a direct ibmveth_interrupt()
-+	 * call, so enable it only once everything ibmveth_poll() touches
-+	 * exists.
-+	 */
-+	napi_enable(&adapter->napi);
-+
- 	netdev_dbg(netdev, "registering irq 0x%x\n", netdev->irq);
- 	rc = request_irq(netdev->irq, ibmveth_interrupt, 0, netdev->name,
- 			 netdev);
- 	if (rc != 0) {
-+		napi_disable(&adapter->napi);
- 		netdev_err(netdev, "unable to request irq 0x%x, rc %d\n",
- 			   netdev->irq, rc);
- 		do {
-@@ -763,7 +769,6 @@ static int ibmveth_open(struct net_device *netdev)
- out_free_buffer_list:
- 	free_page((unsigned long)adapter->buffer_list_addr);
- out:
--	napi_disable(&adapter->napi);
- 	return rc;
- }
-
-@@ -1540,7 +1545,11 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 		}
- 	}
-
--	ibmveth_replenish_task(adapter);
-+	/* netpoll polls with budget 0 for TX only, and is not serialized
-+	 * with a NAPI poll that was already running when it was set up
-+	 */
-+	if (budget)
-+		ibmveth_replenish_task(adapter);
-
- 	if (frames_processed == budget)
- 		goto out;
-@@ -1680,14 +1689,6 @@ static int ibmveth_change_mtu(struct net_device *dev, int new_mtu)
- 	return -EINVAL;
- }
-
--#ifdef CONFIG_NET_POLL_CONTROLLER
--static void ibmveth_poll_controller(struct net_device *dev)
--{
--	ibmveth_replenish_task(netdev_priv(dev));
--	ibmveth_interrupt(dev->irq, dev);
--}
--#endif
--
- /**
-  * ibmveth_get_desired_dma - Calculate IO memory desired by the driver
-  *
-@@ -1789,9 +1790,6 @@ static const struct net_device_ops ibmveth_netdev_ops = {
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
- 	.ndo_features_check	= ibmveth_features_check,
--#ifdef CONFIG_NET_POLL_CONTROLLER
--	.ndo_poll_controller	= ibmveth_poll_controller,
--#endif
- };
-
- static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
---
+@@ -1954,7 +1954,7 @@ static void ibmveth_remove(struct vio_dev *dev)
+ 	struct ibmveth_adapter *adapter = netdev_priv(netdev);
+ 	int i;
+ 
+-	cancel_work_sync(&adapter->work);
++	disable_work_sync(&adapter->work);
+ 
+ 	for (i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
+ 		kobject_put(&adapter->rx_buff_pool[i].kobj);
+-- 
 2.39.3 (Apple Git-146)
 
