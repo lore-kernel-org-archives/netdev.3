@@ -1,136 +1,160 @@
-Received: from mail-wr2-f33.google.com (mail-wr2-f33.google.com [74.125.225.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA71A3603C7
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 08:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8791937756C;
+	Mon,  5 Oct 2026 08:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791188085; cv=none; b=lMDVRtU10mTWQJlo5LIiDlfVMfNFx0aV/7Eq+1cYra1Ybur4xa3bOaK/AqpHwd18rB0mIGoW5Fk5lCJ1LT5klpxVryRCbAGYUHb7jybIgYXj12zt2+LI3/C8t8KtcNMEzpn72PYw0tlb8XXebSJrf1l1CA7w1NMmRk70nTtt19U=
+	t=1791188178; cv=none; b=nzlblqFjQIiuQxAYLVRogtag7S7+HF9zho2JJLrNyCCd/UNGmoqKYyqvP4tCy4BfxLv6j0/FA/KB2GqsnN+2lwEooKzyg3Nb7OgyMKc6er04HZqIxgiRHZBn63hvOclqxTctAk5vz9Ja+RSFljI40jEByxbcmRLWA/3ac5+AA5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791188085; c=relaxed/simple;
-	bh=meaS8h7D68gc6KeY2ndo3A5Cb0GHOFfYlgjM6j/Z6So=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BuhQfbMQKObTEEKVNATDB3u0+4orrM+94/2Fy3fvgfAuhD2KJEqEOm2IdWC+qSyCAGMC09jnHetUhrzvFuXWT/X90OSuldwnTHkXglpE91gwQ4y/RWdmfeaDCEkw2AkdNu1AM0gfzRcP0nrrp0veFneM1a3s02ynfVZ6EXuJUeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BDEwNTc8; arc=none smtp.client-ip=74.125.225.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791188178; c=relaxed/simple;
+	bh=TVSyeZxNsNvZ6vTozahYX1bCfmz5Uzn+fmIaVVDd4EU=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=GI2nMrMl8TGcxceXx8TWFUaBvsqmV01ZDeUFH/XeZeMZAetOZ/+wZx7++buCKH1zFicqRpxujwx2rgOJZ/XVup6Kw7C5dQHGPeNEwUKLEQ14ZO4UWnLwi1IiFlkLsSSLfk1ZMI8WPQm/3KLudxjX/MdrGq1sb0utYvD40qEXG+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=Nn64ln6s; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BDEwNTc8"
-Received: by mail-wr2-f33.google.com with SMTP id ffacd0b85a97d-48c58132824so339457f8f.3
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 01:14:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791188082; x=1791792882; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lJtTXJS3lNxs6KeGf0mmSgOkxFqn8ISkKtP7HIHVmNI=;
-        b=BDEwNTc8UbfNVpMfBRo2icrZbPfnvvBgGj9H1t6WZ7GqA67f3DHS+ZZyoIKyz5tSLQ
-         hsWInC5rxX01B6sK/Sm11XW9mePZXW/DayS4q9sF3Otk+/GKA1UL3QuHyMeT49Ef7XjG
-         X8FKILjOl+ct+JLA43f9jQjxwpHkdCNa2cpPqlirzFmLI31CHwFZzDWMFqD7tw87L+pR
-         5QVbEI46z205ejfDNqeovrKwZYngnvmBvSsrKn5kD1iMH5Ai+VL3lsB51Lp64x8sUtA4
-         gpGwhw16wfmjivvEHWKhetVHxet3AyWVqVuXqV7hHtIa06dpR1Ifov6HIkrZCzkdY7E4
-         Mmtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791188082; x=1791792882;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lJtTXJS3lNxs6KeGf0mmSgOkxFqn8ISkKtP7HIHVmNI=;
-        b=CwrCUbqJjL6DpZ7Q/VFxwCLf3A5MEPo1BcSVzHpt0sG2W0jdJFYp0Wn+Xz3XKuwe9T
-         FtWH3KPgdZ2laP7dVLsN1WjmQyA0Mic8yZnPNKZ7IZiaymcX8cGSBdQUmHi3SUx4kcyT
-         4WYTpc813esrddVRWSnrqvgsFpHuwM4zOILcavBZqxaiiq7DVLgOnIc6ZZFKLRqVV5sV
-         eLdSDHiSsF/0C9wzU2ewy2f9OTX0fX3bdSzt600oP7deQv7WWXCsQ2kJGNPwvqzuIcv1
-         R5bMGqhi9U9kk6MuLIEN1N4CAOh3Xn7ZKSwsl+xEM5bhojmSpE/9n9F/nZeZ0UtqzAii
-         3eZw==
-X-Forwarded-Encrypted: i=1; AKwUvBwWnMvIlX5SJ/1pcDdJFdTlbxfR5bsWI3RR+a9COdydkU7xxwD8OoathjGpbfP4S1yFx2L7pbk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL4CkpvqTuk+HcLYc1fY3JetEERjQinoUhZlsUhn/uXCNXZbzO+
-	BSZ0jS3KnM0o28iKnGkBNYkf9RSQcI0dm9j/zcs8yf+iqNk+7M2IY6+K
-X-Gm-Gg: AYBFou16erVD3ylyxznffO6EJqCGOSWvzVy1Du0Kcnsc3Hr8BNJxim+Flmtwlr58MuU
-	XxDlGb/IkR1LrDVs2tenpzLCI/Jh++Bke/z00iyfpcuO0CY+f4kuRgAlNK4OUNph9ATYx9WzwvJ
-	HqzkcGCZL+OPSx3MxIXtYepN3zAm/EvQO3lprnfly5UgOfCzNDLcsNt7yN0wJRXkfvel/R/+7z5
-	RumCAnmKdgKsnFdlGanyP9wnawHDvQwI2XGk2fgIS+D2tkZQj4pC66HqnOBWjWYO5qD9oTANiqq
-	yrgpVx83qQ8emDLbPTHGGq4uN+4tOJA+pU1bw1Fv14C3ila81NgeyMqs4vfkHMo87uQqMLIMjfe
-	D+MxsXdSQH4/STfYqkP8r0AGwc9pr5sP+SaXLHK95Jotjd2pGdP8sPguXPRbZP9EMNcKSQhNup5
-	6nwTpVj080s5f6FpkUUYd++rzm9VjklZYbJcFj+dxadV9CMRDhodpM4ixgNMRpatjVJwJuoenux
-	17+dP2j4/4deiUmKblqgPg4RvcOWwslI3M=
-X-Received: by 2002:a05:6000:25e5:b0:487:15a3:1cab with SMTP id ffacd0b85a97d-48b1270ff98mr16251747f8f.18.1791188081951;
-        Mon, 05 Oct 2026 01:14:41 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c622bb172sm4106826f8f.42.2026.10.05.01.14.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 01:14:41 -0700 (PDT)
-Date: Mon, 5 Oct 2026 09:14:40 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <ast@kernel.org>,
- <daniel@iogearbox.net>, <davem@davemloft.net>, <edumazet@google.com>,
- <hawk@kernel.org>, <john.fastabend@gmail.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>, <sdf@fomichev.me>, <sgoutham@marvell.com>
-Subject: Re: [PATCH v18 net-next 0/2] octeontx2: mqprio bandwidth offload
- for NIX TX schedulers
-Message-ID: <20261005091440.575f0eea@pumpkin>
-In-Reply-To: <asMSSdIK6WBECcs_@rkannoth-OptiPlex-7090>
-References: <20260929022915.2704627-1-rkannoth@marvell.com>
-	<20261002103752.006a7648@pumpkin>
-	<asMSSdIK6WBECcs_@rkannoth-OptiPlex-7090>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="Nn64ln6s"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=pkLuxiXt3VuVVpbJXJpFSrkPv4x9rYEArG3Rcs/r7rk=; b=Nn64ln6sQzgXN09CFM9t9VZc/r
+	zUdlbqNcpjgwZbra/7CLPQTf4S9uWhSwrGkYRiSkH/vf9O5Sn//HVJoJeI8ce+SLIZfoZe7iLWsv0
+	GRh0JWGnUUTC1sFlBH+HysEEVxfF/WI1Ga1Sr8cccxzXB6UEKHQ+glqApSIcR/sqN7PG9xWjKm1qt
+	xOnJHU9wrDUSNVcKt1ZOeoH29VxviBY4maUQBy7RkiHXpAYeMch+2hLpFsXUk8dqRL3bGex/GoJka
+	QIGALVU+WBw+lvXNpt32kvDZgVNTcr5786g70VgKYKAlH109dtndW/MAeTKnLnoDa8N7CPX1snfbB
+	d0uOMu9w==;
+Received: from [::1] (port=55282 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xDdrq-000000026bW-2pOJ;
+	Mon, 05 Oct 2026 10:16:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Date: Mon, 05 Oct 2026 10:16:14 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: subash.a.kasiviswanathan@oss.qualcomm.com
+Cc: 'Sean Tranchetti' <sean.tranchetti@oss.qualcomm.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: qualcomm: rmnet: require real-netns admin for
+ bridging
+In-Reply-To: <000a01dd548c$ea3417a0$be9c46e0$@oss.qualcomm.com>
+References: <20261004203149.3042491-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <000a01dd548c$ea3417a0$be9c46e0$@oss.qualcomm.com>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <3350a4902b5da1e5315206d26513019b@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Mon, 5 Oct 2026 08:28:17 +0530
-Ratheesh Kannoth <rkannoth@marvell.com> wrote:
+On 2026-10-05 07:46, subash.a.kasiviswanathan@oss.qualcomm.com wrote:
+>> -----Original Message-----
+>> From: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>> Sent: Sunday, October 4, 2026 2:32 PM
+>> To: Subash Abhinov Kasiviswanathan
+>> <subash.a.kasiviswanathan@oss.qualcomm.com>; Sean Tranchetti
+>> <sean.tranchetti@oss.qualcomm.com>
+>> Cc: netdev@vger.kernel.org; linux-kernel@vger.kernel.org; Jérémy Jean
+>> <Jeremy.Jean@oss.cyber.gouv.fr>; stable@vger.kernel.org
+>> Subject: [PATCH net v2] net: qualcomm: rmnet: require real-netns admin 
+>> for
+>> bridging
+>> 
+>> An rmnet device keeps its link to the real device when moved to 
+>> another
+>> network namespace. The bridge callbacks change the real port, but 
+>> rtnetlink
+>> only checks CAP_NET_ADMIN in the slave device's namespace.
+>> 
+>> Require CAP_NET_ADMIN in the real device's namespace before adding or
+>> removing a bridge. Use the slave device's namespace for the 
+>> comparison, since
+>> that is the namespace rtnetlink authorized.
+>> 
+>> Fixes: 60d58f971c10 ("net: qualcomm: rmnet: Implement bridge mode")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>> ---
+>> 
+>> Changes in v2, after Subash Abhinov's review:
+>> - Add the teardown check and use slave_dev for both capability checks.
+>> 
+>> v1: https://lore.kernel.org/all/20260821202845.4053530-2-
+>> Jeremy.Jean@oss.cyber.gouv.fr/
+>> 
+>>  .../ethernet/qualcomm/rmnet/rmnet_config.c    | 20
+>> ++++++++++++++++++-
+>>  1 file changed, 19 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+>> b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+>> index bed6f63facf2..62d7acb13e0c 100644
+>> --- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+>> +++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+>> @@ -441,6 +441,13 @@ int rmnet_add_bridge(struct net_device
+>> *rmnet_dev,
+>>  	struct rmnet_port *port, *slave_port;
+>>  	int err;
+>> 
+>> +	/* The rtnl path only checks CAP_NET_ADMIN against
+>> dev_net(slave_dev),
+>> +	 * but bridge mode below controls real_dev, which may live in 
+>> another
+>> +	 * netns.
+>> +	 */
+>> +	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
+>> +		return -EPERM;
+>> +
+>>  	port = rmnet_get_port_rtnl(real_dev);
+>> 
+>>  	/* If there is more than one rmnet dev attached, its probably being
+>> @@ -489,7 +496,18 @@ int rmnet_add_bridge(struct net_device
+>> *rmnet_dev,  int rmnet_del_bridge(struct net_device *rmnet_dev,
+>>  		     struct net_device *slave_dev)
+>>  {
+>> -	struct rmnet_port *port = rmnet_get_port_rtnl(slave_dev);
+>> +	struct rmnet_priv *priv = netdev_priv(rmnet_dev);
+>> +	struct net_device *real_dev = priv->real_dev;
+>> +	struct rmnet_port *port;
+>> +
+>> +	/* The rtnl path only checks CAP_NET_ADMIN against
+>> dev_net(slave_dev),
+>> +	 * but bridge teardown also updates real_dev, which may live in
+>> another
+>> +	 * netns.
+>> +	 */
+>> +	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
+>> +		return -EPERM;
+>> +
+>> +	port = rmnet_get_port_rtnl(slave_dev);
+>> 
+>>  	rmnet_unregister_bridge(port);
+>> 
+> 
+> A similar patch was committed recently in net-next. Please refer to 
+> https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git/commit/?id=26ee8cd69d46a14b37ba5e512084fe80d730127a
 
-> On 2026-10-02 at 15:07:52, David Laight (david.laight.linux@gmail.com) wrote:
-> > > Patch 1 converts PF/VF and representor flag access to atomic bitops.
-> > > Patch 2 depends on it for safe OTX2_FLAG_INTF_DOWN and OTX2_FLAG_PORT_UP
-> > > updates on asynchronous mbox paths and during the mqprio netdev bounce.  
-> >
-> > Can't you just move those two flags to a separate structure member?
-> > In at least one place the code separately clears one and sets the other.
-> > That makes me think it should a a three-valued state not two bits.
-> >
-> > That would save all the expensive locked operations.  
-> 
-> Thanks for your review.
-> 
-> I agree that atomizing the entire flags bitmap is broader than strictly required for the
-> mqprio/mbox concurrency: the cross-CPU hazard is otx2_sync_flags_from_rep() doing a non-atomic
-> read-modify-write on nic->flags while other CPUs update bits in the same word. Relocating
-> OTX2_FLAG_INTF_DOWN and OTX2_FLAG_PORT_UP (or restricting rep sync so it cannot clobber those
-> bits) would be a narrower approach than converting every OTX2_FLAG_* accessor to
-> set_bit()/clear_bit().
-> 
-> On the three-valued model: INTF_DOWN and PORT_UP are not a single FSM in the driver today.
-> INTF_DOWN reflects netdev teardown and is consulted from NAPI completion etc.
-> PORT_UP is set and cleared from rep RVU_EVENT_PORT_STATE in the mbox up-handler and
-> suppresses a duplicate carrier/queue bring-up in otx2_handle_link_event() when rep has already
-> applied port state. Combinations such as INTF_DOWN set after otx2_stop() while PORT_UP remains
-> set are deliberate, so folding the two bits into one enum would need a seperate work
-> and review beyond this series.
-> 
-> please note that this restructuring feels somewhat orthogonal to the goals of the
-> current series. Patch 1 focuses on replacing the non-atomic |=/&=~ operations on the
-> stop/open and mbox paths with atomic bitops for INTF_DOWN/PORT_UP, which patch 2's netdev
-> bounce depends on. The rep-flag sync behavior in otx2_sync_flags_from_rep() is a related but
-> separate concern, and I'd prefer to address the lifecycle-bit layout and sync logic in a
-> dedicated follow-up rather than expand the scope of this patch series.
+Thanks for the pointer.
+I was too slow processing your feedbacks, but good that it is patched.
 
-Right, but the atomic updates are are far more expensive than the non-atomic ones.
-They really are best avoided unless you really need to change/test multiple bits
-or need to limit the size of the data area.
-The patch is likely to be smaller if you remove the UP/DOWN bits from the bitmap
-since it will change far less code.
-
-David
- 
-> 
-> >  
-
+Regards,
+Jérémy
