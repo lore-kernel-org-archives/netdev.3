@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFF82D8379;
-	Mon,  5 Oct 2026 09:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78BC440A07;
+	Mon,  5 Oct 2026 09:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791194246; cv=none; b=rPeF8GgWcAOvGbhOh4zfDxq3lN1ZyCgScLuvVuP+Xk3wDY60U1VHNZZ+4zWf4UkTc6iEJQjJ9wpe+DChNX6wXBS8yDC9PwSxf4eTaSlWmIGxv3Vjx5fZCvH23QG/mMTPc9z9KAHh89PMewyDhmTVqvarEQqkEbKbaAhjh2iyQAQ=
+	t=1791194249; cv=none; b=YxZwt8qxqx7nj5wgmISkaVHCkfa21+fxKw7zFVc141UepZiD+klmfuQQXs/iY4DB/fL+DKPss4Qu1OfIMH2gYPc3ATmmjayL9dSMakyx8vkdHbZpa5cu/MI7NIZ1px7VjziMqqgmGUHto+YhVFWi7JS+1e8ssENgh+sF/NmJiec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791194246; c=relaxed/simple;
-	bh=pPTieTvEgtxDVou/g2rq/vQXz2Uc+SsajH/wGXJEpyo=;
+	s=arc-20240116; t=1791194249; c=relaxed/simple;
+	bh=nJI3QRxbJvrPxYZ4wRFsIBhrlonNjZyU61F5+v5vbj4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eur22FzVELDoq5LSxZaB1DkNL2OzSSnPB1yHG0h4frfANUIuC/uNbWRf1QQ8OCrMqA27UQiThFyTToK/HjiilvE5HL4nFaxi6CU7wSAQMY1ZftXPTcePYSQArEj7tzvuHqt+tToTIXITgmaVfiwCO/82LecOVID5gxwcjl8ELAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XiQFJ0Bm; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=S2S2Xcbksv4rpBpY7Z5SOQFhljQvZW9jpKfR4M2H2kRRnugHQW6AjuIo08vlbsZkRF1hJs6rknrzk3co91fyFVKqRggrnen6FC24GDIus5bllC8InMFQgSakh5uwoK118R2c+Va6jbQWgnlmiOiPk/Xv3tnPNj9mujvsrxZOwEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdk4wWuI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XiQFJ0Bm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21241F00898;
-	Mon,  5 Oct 2026 09:57:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdk4wWuI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1606F1F00893;
+	Mon,  5 Oct 2026 09:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791194241;
-	bh=ujHBDJVNz78vZ7dajK+ArwV45XyWD1dmWWG/JkYh18Q=;
+	s=k20260515; t=1791194242;
+	bh=nH0LGWFiYcjbeClSZ/sAulz56g8Z4+AzX1TqfQEsvVI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XiQFJ0Bm5bY8CUwG+qSNp+uW6l8nlwTTAcZoL0l6LIknqGYe5Y7CcgT/5PFfKgYyo
-	 hQxrKZIbVuvHtVu35bqg07kxYE1Y9bmt5BJaOLevGeXgyltu78t9BCIVeFntV+eMYx
-	 ZpHmLNfDQlIYVZVOaZXwbWVDlF5av2bRmCxaOR0C9+6qx577Ixc/MKi2Ba1o4++Gm1
-	 JHpPTo6obmxuj5sp6vk+fglWttPrBUW5bU1FxxWZYo9ug8E+saHJ9zBmbz1cqdSJs+
-	 u48HpKTgf2JP/MTse2S70FGIJ3S++IZkeEms9/XYdQA56IPCmrnxyHj17QIAMp7S2R
-	 I5CPBqogqd2Ww==
-Subject: Re: [PATCH net-next v5 2/9] r8152: split RTL_VER_17 into QFN68 and
- QFN100 package variants
+	b=fdk4wWuISslPlhbg3h6wFa4rJ82Syhd7djyeaN1Hf7BkQsgRe+/hPBfXsuDmJW5bO
+	 8pbUPrsUuFfCrvXewPU3L9cZcjoo/S574XsiQQVpOxOldV453eBfVoykvAXsM1Ms7K
+	 k5ZQxInSLFVGvRKk04GrklZ6Nede00KgU0qQsa1ZNc5+5eBymvo2t8Gp7dKWAZw1Ia
+	 Y2rkNdBW3Y9XR4Xu6lIboRMrNw7TwBYZao8uRDCKkQrZPyTPnJyt7InXd7ltWnGbI9
+	 aZfeKDDpYwM0z1mbSU3suv1nEAJlg1bM8FL4wW/3PakWIA9LJ2MiSVf5UTy3qcunB7
+	 bnmXG5gPLsrEQ==
+Subject: Re: [PATCH net-next v5 5/9] r8152: split r8157_hw_phy_cfg into
+ RTL8157 and RTL8159 variants
 From: netdev-bot+sashiko@kernel.org
 To: hsu.chih.kai@realtek.com
 Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
  nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
-Date: Mon, 05 Oct 2026 09:57:20 +0000
-Message-ID: <179119424050.434549.6174729043039044928@kernel.org>
-In-Reply-To: <20261001091144.28191-3-nic_swsd@realtek.com>
-References: <20261001091144.28191-3-nic_swsd@realtek.com>
+Date: Mon, 05 Oct 2026 09:57:21 +0000
+Message-ID: <179119424162.434549.12438188375752636403@kernel.org>
+In-Reply-To: <20261001091144.28191-6-nic_swsd@realtek.com>
+References: <20261001091144.28191-6-nic_swsd@realtek.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 (1) · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,143 +58,123 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message says the split is needed because QFN68 and
-  QFN100 "need different firmware and a package-specific u2phy backup-…
-- [Medium] In __rtl_get_pkg_det() (drivers/net/usb/r8152.c), the retry
-  loop `for (i = 0, ret = 0; i < 3 && ret != 4; i++) ret =…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but in
-  __rtl_get_hw_ver() (drivers/net/usb/r8152.c) the buffer `tmp` is…
+- [Medium] r8159_hw_phy_cfg() (drivers/net/usb/r8152.c,
+  RTL_VER_17_QFN68/QFN100) no longer calls rtl_eee_enable(tp, false),…
+- [Low] The commit message says the split gives each function 'its own
+  copy of the shared prologue/epilogue instead of switching on version…
 
 --
 
-r8152: split RTL_VER_17 into QFN68 and QFN100 package variants
+r8152: split r8157_hw_phy_cfg into RTL8157 and RTL8159 variants
 
-This commit splits RTL_VER_17 into RTL_VER_17_QFN68 and RTL_VER_17_QFN100.
-The package is detected by a new __rtl_get_pkg_det() helper that reads
-PLA_PKG_DET. Every RTL_VER_17 switch case now handles both variants, and
-r8159_init() gains a u2phy backup restore write that only applies to QFN68.
+This patch splits r8157_hw_phy_cfg() into r8157_hw_phy_cfg() for
+RTL_VER_16 and a new r8159_hw_phy_cfg() for RTL_VER_17_QFN68/QFN100. The
+RTL8159 variant no longer calls rtl_eee_enable(tp, false), changes how the
+EEE clock divider and 0xa5ea are programmed, and adds new PHY tuning
+parameters. It also adds the sram2_set_bits()/sram2_clr_bits() helpers.
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 4d8f0815d79d1..30af6ed3a638f 100644
+> index 1d7cca55104cc..13a59a1df37ea 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
 
 [ ... ]
 
-> @@ -10172,7 +10194,8 @@ static int rtl_fw_init(struct r8152 *tp)
->  	case RTL_VER_16:
->  		rtl_fw->fw_name		= FIRMWARE_8157_1;
->  		break;
-> -	case RTL_VER_17:
-> +	case RTL_VER_17_QFN68:
-> +	case RTL_VER_17_QFN100:
->  		rtl_fw->fw_name		= FIRMWARE_8159_1;
-
-[Severity: Medium]
-The commit message says the two packages "need different firmware and a
-package-specific u2phy backup-restore patch". However, rtl_fw_init() still
-gives both RTL_VER_17_QFN68 and RTL_VER_17_QFN100 the same firmware,
-FIRMWARE_8159_1 ("rtl_nic/rtl8159-1.fw").
-
-The driver still has only one 8159 firmware define and one
-MODULE_FIRMWARE(FIRMWARE_8159_1). The later patches in the series, up to
-"r8152: enable UPS for RTL8157 and RTL8159 QFN68", do not change this
-either.
-
-Is per-package firmware selection missing from this patch? Or should the
-commit message drop the claim about different firmware?
-
->  		break;
->  	default:
-> @@ -10182,9 +10205,38 @@ static int rtl_fw_init(struct r8152 *tp)
->  	return 0;
->  }
->  
-> +static u32 __rtl_get_pkg_det(struct usb_device *udev)
+> +static void r8159_hw_phy_cfg(struct r8152 *tp)
 > +{
-> +	u32 pkg_det = 0;
-> +	__le32 *tmp;
-> +	int ret, i;
+> +	u16 data;
 > +
-> +	tmp = kmalloc_obj(*tmp);
-> +	if (!tmp)
-> +		return 0;
+> +	r8156b_wait_loading_flash(tp);
+
+[ ... ]
+
+> +	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
 > +
-> +	for (i = 0, ret = 0; i < 3 && ret != 4; i++)
-> +		ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
-> +				      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
-> +				      PLA_PKG_DET, MCU_TYPE_PLA, tmp,
-> +				      sizeof(*tmp), USB_CTRL_GET_TIMEOUT);
+> +	r8153_aldps_en(tp, false);
 > +
-> +	if (ret == sizeof(*tmp)) {
-> +		if (i != 0)
-> +			dev_warn(&udev->dev,
-> +				 "Needed %d retries to read package\n", i);
+> +	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
 
 [Severity: Medium]
-Won't this warning fire on every successful read? The loop increments i
-after the iteration that succeeds. If the first usb_control_msg() returns
-4, i is already 1 when the loop exits, so the i != 0 check is always true.
+With rtl_eee_enable(tp, false) gone, does anything on this path still
+write the EEE-disabled state to the chip when tp->eee_en is false?
 
-The printed count is also one too high: 1 for a first-try success, 3 for a
-success on the third attempt.
+The epilogue of r8159_hw_phy_cfg() only does this:
 
-The version read loop in __rtl_get_hw_ver() avoids this by breaking out on
-success:
+	if (tp->eee_en)
+		rtl_eee_enable(tp, true);
 
-	for (i = 0; i < 3; i++) {
-		ret = usb_control_msg(...);
-		if (ret > 0) {
-			ocp_data = (__le32_to_cpu(*tmp) >> 16) & VERSION_MASK;
-			break;
-		}
-	}
+Before this patch, RTL_VER_17 always called rtl_eee_enable(tp, false)
+first. Through r8156_eee_en(tp, false), that call clears EEE_RX_EN and
+EEE_TX_EN in PLA_EEE_CR, EEE10_EN in OCP_EEE_CFG, and the 2.5G/5G bits in
+OCP_EEE_ADV2. It then writes 0 to OCP_EEE_ADV. So at the end of the
+function the hardware always matched tp->eee_en.
 
-	if (i != 0 && ret > 0)
-		dev_warn(&udev->dev, "Needed %d retries to read version\n", i);
+Take a user who turns EEE off:
 
-__rtl_get_hw_ver() runs from both the cfgselector and the probe paths, so
-the false warning can appear more than once per RTL8159 plug-in. The code
-is still the same at the end of the series.
+r8152_set_eee()
+    tp->eee_en = eee->eee_enabled;   /* false */
+    rtl_eee_enable(tp, tp->eee_en);
 
+The device then loses power or is reset:
+
+r8156_ups_en(tp, false)   /* PCUT_STATUS set */
+    tp->rtl_ops.hw_phy_cfg(tp)   -> r8159_hw_phy_cfg()
+    rtl8152_set_speed(...)
+
+The same applies to rtl8152_reset_resume() -> hw_phy_work ->
+r8159_hw_phy_cfg(). Neither path touches the EEE registers, so they keep
+their post-reset or firmware defaults.
+
+If those defaults have EEE advertised, could the RTL8159 advertise EEE
+and enter LPI after the user disabled it? r8153_get_eee() would then
+report eee_enabled from tp->eee_en, but the advertised mask from
+OCP_EEE_ADV/OCP_EEE_ADV2.
+
+The commit message says:
+
+    RTL8159 doesn't need EEE disabled before reprogramming PHY
+    parameters, so r8159_hw_phy_cfg() drops the rtl_eee_enable(tp,
+    false) call that r8157_hw_phy_cfg() keeps.
+
+That call was also the only place where eee_en == false got applied to
+freshly reset hardware. The other hw_phy_cfg variants keep the
+disable-then-conditionally-enable pattern, and r8152b_hw_phy_cfg() uses
+rtl_eee_enable(tp, tp->eee_en).
+
+Would calling rtl_eee_enable(tp, tp->eee_en) in the r8159_hw_phy_cfg()
+epilogue respect the datasheet requirement and still apply the user's
+setting?
+
+> +	WARN_ON_ONCE(data != PHY_STAT_LAN_ON);
 > +
-> +		pkg_det = __le32_to_cpu(*tmp) & PKG_MASK;
-> +	}
+> +	/* PFM mode */
+> +	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_PHY_PWR, PFM_PWM_SWITCH);
+
+[ ... ]
+
+> +	/* Disable bypass_turn_off_clk_in_aldps */
+> +	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
 > +
-> +	kfree(tmp);
-> +	return pkg_det;
-> +}
-> +
->  static u8 __rtl_get_hw_ver(struct usb_device *udev)
->  {
->  	u32 ocp_data = 0;
-> +	u32 pkg_det = 0;
->  	__le32 *tmp;
->  	u8 version;
->  	int ret;
+> +	switch (tp->version) {
+>  	case RTL_VER_17_QFN68:
+>  	case RTL_VER_17_QFN100:
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the PLA_TCR0 read in
-__rtl_get_hw_ver() accepts a reply of any positive length:
+[Severity: Low]
+This isn't a bug, but the commit message says each function gets:
 
-	tmp = kmalloc_obj(*tmp);
-	...
-		if (ret > 0) {
-			ocp_data = (__le32_to_cpu(*tmp) >> 16) & VERSION_MASK;
-			break;
-		}
+    its own copy of the shared prologue/epilogue instead of switching on
+    version mid-function.
 
-kmalloc_obj() does not zero the buffer. If a faulty or malicious device
-sends only 1 to 3 bytes, can the upper bytes of *tmp still hold leftover
-heap data that then gets decoded as the chip version?
+Both functions still switch on tp->version mid-function.
+rtl_ops_init() assigns r8157_hw_phy_cfg() only for RTL_VER_16, and
+r8159_hw_phy_cfg() only for RTL_VER_17_QFN68/QFN100.
 
-That could misidentify the chip, or leak uninitialized heap bytes to dmesg
-through the "Unknown version 0x%04x" message.
+That means the switch (tp->version) here and the one in
+r8157_hw_phy_cfg() each have just one reachable case. The default
+branches can never run.
 
-The new __rtl_get_pkg_det() helper already requires
-ret == sizeof(*tmp). Would the same check make sense here?
+Could these switches be dropped, or the commit message changed to match
+the code?
 
 [ ... ]
 
