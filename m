@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378B540681D;
-	Mon,  5 Oct 2026 21:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9E436A36B;
+	Mon,  5 Oct 2026 21:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791235568; cv=none; b=dr84Vby09Pe+eYx2YaPADTwGoQa9RP4L9QOJGJiDBob9HrEtFAt1yCAeB7pqbeOVGy2+uge9xyVTxudZxFb44K0sHajPbZ2cuV5HYuMGBjAEPV8UKYzesKV3hAaZzJpZOqSZvhv1Zzzc5XOE4sa5Xdo47peQL+x8UtPNZfLd6i4=
+	t=1791235947; cv=none; b=NvTRrw7GXQU9XKCq6KrqaAlsgGs9/23EhXANkNq0XdCbbnxglAIaiHobdO4Lt2J+XtRZegAvWlDt+Fmz4saBL+rPIN4phnXQu/xtXdh0YGJI/1SN4G44E5n/oZ2JY+iBY830qaOggzeEQzXmBkCVnAd2E9qinwLoHCbvmUf4I4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791235568; c=relaxed/simple;
-	bh=9NgEtDdJu3j+6pP0gmkv8B/r4M7eIow+qhdMXzrnJpc=;
+	s=arc-20240116; t=1791235947; c=relaxed/simple;
+	bh=TDcZCddBf9AsiMRxk2IreZ5YIpQb9+kgqNRD7MI57WU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iUxp0mHXZiRF7bRT+9PIvUYZV6GJQbJUJ4A3adP5sGcsbdx+eJPZBGJL3ErahkZ0tHoJdbtu9dzHnAX4G+w4Ps5C7fcNZUP9WXAVLBxpOZDZBwWv3518gdhiHEt4e1er/APQ5uGk4GeaDFyp5SDb4xLDdoc2I4NwlvW5b/1vaOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSH+B4XP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=oXg/B9PAKuVPjYn5LYHhYR3NQoOIW4Q8592sqwY927swIqK1xfVO4UUui497fmRAOSa0IJMfxN0/hd2g3OBJHwMn14ouNxT+7d51XtFxaELUZSG3DPvsMU+vLX+Kt2IUayHLN1JP645RnIo+Wpp/JsvMNR8fKIMxR+8Iu55wVOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJgvzsyu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSH+B4XP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0BD1F00893;
-	Mon,  5 Oct 2026 21:26:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJgvzsyu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874BF1F000FF;
+	Mon,  5 Oct 2026 21:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791235564;
-	bh=8OefnokcNLrZKb9tp0wPND9CYM539M3kIWSCBZ65Krk=;
+	s=k20260515; t=1791235946;
+	bh=Jiw19YMNcmn444avbsXXHPsf83UFaK2Hh1UK0pvmjbw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lSH+B4XPCI3w9p6prGscAXpaccvgAhpXFFAGoVn2ikp9LU15gnnpDuVZuh3zbzYkB
-	 SPpCl5Lhp5RAfHC5EIFV00YN+tqiElFz7UKV7ZQG7WWaYfNfB9bkSzo5jIeVVnZ/1n
-	 GdkakOmq5drmG/YTfL7POb+wAB7ketLrT5okyFda5FF12gRP5JM7UPY/zRjKwnLW2Q
-	 pVQhZJN58P1FwYgq31AIZaRJs9t0t+naeLsvMk77ToS60oB6N6ktnMZcHk0MHb0ALR
-	 nsWFfObhSiFUK4byIe6WCkB6pRPYdfyaIISHsXT1T5J+yxiTHDyyHQW/kHB/z/WF4E
-	 r06/n1v52Fp4A==
-Subject: Re: [PATCH net v2] vsock/bpf: release sock lock while waiting for
- data in recvmsg
+	b=jJgvzsyuqa3AXZ7H4IL+2rMuygGeyVzRFeOcRrDnv0EJthfJU3z13wNXTTWTRHM7s
+	 jLbN719eAlQtQb2Z2vvXrYSKJ0P3xX55bUALx+tGbvKvkO/kDeT3xH+eRmBYEEM1fA
+	 Vzi+rVIJ68rsaiJALe57kTFPMgUxvhMdAjiu0kPzg/lPSKR3uJuCJ8qk0DZWKzM+u/
+	 QOsQjY8tZnxi4QCZpUsaWJEvtQmtGCPAAQgv5p5HSWvQAeu37Qej6FCuCrq8L5TAog
+	 dfjCopnQolBq7QnUVjOy8MMw8rBmzXOWU8tSNWcZ39heFpDjzrEXEGt2wv5BiHvXdb
+	 GEJfgNsuTzdBQ==
+Subject: Re: [PATCH net v2] net: phy: marvell: keep WOL_EIE across interrupt
+ reconfiguration
 From: netdev-bot+sashiko@kernel.org
-To: jrmmhm.kernel@eldare.de
-Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
- bobby.eshleman@bytedance.com, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- mhal@rbox.co, stable@vger.kernel.org
-Date: Mon, 05 Oct 2026 21:26:03 +0000
-Message-ID: <179123556339.434549.8635789838298158117@kernel.org>
-In-Reply-To: <20261001-kbh3-1-022-fix-v2-v1-1-cfae958a1976@eldare.de>
-References: <20261001-kbh3-1-022-fix-v2-v1-1-cfae958a1976@eldare.de>
-X-sashiko-severity: Medium
+To: rosenp@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, michael@stapelberg.de,
+ linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 21:32:25 +0000
+Message-ID: <179123594509.434549.641674895146976264@kernel.org>
+In-Reply-To: <20261004204516.281201-1-rosenp@gmail.com>
+References: <20261004204516.281201-1-rosenp@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
+Critical: 0 · High: 2 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,233 +59,257 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The rewritten vsock_msg_wait_data()
-  (net/vmw_vsock/vsock_bpf.c:47-77) detects a reset only through…
-- [Low] vsock_bpf_recvmsg() (net/vmw_vsock/vsock_bpf.c:105-109) sends
-  only MSG_ERRQUEUE to the native path before the new `if (!len) return…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch
-  rewrites the code around it.
+- [High] This patch adds a second source of truth for WoL.
+- [High] phy: marvell: m88e1318_config_intr writes WOL_EIE to wrong page
+  on 88E1510
+- [Medium] m88e1318_config_intr() reads priv->wol_armed (marvell.c:451)
+  without any lock, then overwrites the whole CSIER register with…
+- [Low] m88e1318_set_wol() updates priv->wol_armed only at the very end
+  (marvell.c:2173), after all page 0/3/17 accesses have succeeded.
 
 --
 
-vsock/bpf: release sock lock while waiting for data in recvmsg
+net: phy: marvell: keep WOL_EIE across interrupt reconfiguration
 
-This patch changes vsock_msg_wait_data() so it drops the socket lock
-around wait_woken(). It also makes the helper loop until data is ready,
-an error or shutdown is seen, the timeout expires or a signal is pending.
-In vsock_bpf_recvmsg(), MSG_ERRQUEUE now goes to the native path, and
-zero-length reads return 0 early.
+This patch gives the 88E1318S and 88E1510 PHYs their own config_intr. It
+sets CSIER.WOL_EIE from a new driver-private wol_armed flag, so
+phy_init_hw() on resume no longer clears it on polled PHYs. It also adds a
+handle_interrupt that claims the WoL event, and m88e1318_set_wol() now
+clears WOL_EIE when WoL is fully disabled.
 
-> diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-> index 9049d26486460..127a20429aa6c 100644
-> --- a/net/vmw_vsock/vsock_bpf.c
-> +++ b/net/vmw_vsock/vsock_bpf.c
-> @@ -34,24 +34,46 @@ static bool vsock_has_data(struct sock *sk, struct sk_psock *psock)
->  	return vsock_sk_has_data(sk, psock);
+> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+> index f71cffa884062..46527abab6af8 100644
+> --- a/drivers/net/phy/marvell.c
+> +++ b/drivers/net/phy/marvell.c
+
+[ ... ]
+
+> @@ -425,6 +426,83 @@ static irqreturn_t marvell_handle_interrupt(struct phy_device *phydev)
+>  	return IRQ_HANDLED;
 >  }
 >  
-> -static bool vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
-> +/* Returns 1 if data is ready, 0 on EOF/shutdown, or a negative error. */
-> +static int vsock_msg_wait_data(struct sock *sk, struct sk_psock *psock, long timeo)
->  {
+> +/*
 
 [ ... ]
 
-> +	while (1) {
-> +		if (vsock_has_data(sk, psock)) {
-> +			ret = 1;
-> +			break;
-> +		}
+> + * WOL_EIE is derived from the driver's own WoL state rather than read
+> + * back from the PHY, so a bit left armed by the bootloader or a
+> + * previous kernel is cleared at probe/init instead of carried over.
+> + */
+> +static int m88e1318_config_intr(struct phy_device *phydev)
+> +{
+> +	struct marvell_priv *priv = phydev->priv;
+> +	u16 wol_eie = 0;
+> +	int err;
 > +
-> +		if (sk->sk_err) {
-> +			ret = -sk->sk_err;
-> +			break;
-> +		}
-> +
-> +		if ((sk->sk_shutdown & RCV_SHUTDOWN) ||
-> +		    (vsk->peer_shutdown & SEND_SHUTDOWN)) {
-> +			ret = 0;
-> +			break;
-> +		}
-
-[Severity: Medium]
-Can this loop sleep forever on a connection that has already been reset?
-
-The only reset signal checked here is sk->sk_err. Its value can be cleared
-from userspace. virtio_vsock_reset_sock() runs on
-VIRTIO_VSOCK_EVENT_TRANSPORT_RESET (for example after live migration) and
-on device removal. It sets only the state and the error:
-
-net/vmw_vsock/virtio_transport.c:virtio_vsock_reset_sock() {
-	...
-	sk->sk_state = TCP_CLOSE;
-	sk->sk_err = ECONNRESET;
-	sk_error_report(sk);
-}
-
-It does not set any sk_shutdown or peer_shutdown bits, and the psock stays
-in place.
-
-Suppose the application then calls getsockopt(SO_ERROR). sk_getsockopt()
-calls sock_error(), which clears sk_err with xchg(). The next recv() on the
-sockmap'd socket with empty queues gets copied == 0 from sk_msg_recvmsg()
-and enters this loop. None of the exit conditions is true there. A blocking
-call waits until a signal arrives or SO_RCVTIMEO expires, and a
-non-blocking call returns -EAGAIN.
-
-The native path handles this case before it ever waits:
-
-net/vmw_vsock/af_vsock.c:__vsock_connectible_recvmsg() {
-	...
-	if (!transport || sk->sk_state != TCP_ESTABLISHED) {
-		...
-		if (sock_flag(sk, SOCK_DONE))
-			err = 0;
-		else
-			err = -ENOTCONN;
-
-		goto out;
-	}
-	...
-}
-
-The commit message says this fixes the case where "the socket errored (for
-example a reset), recv() did not notice and kept waiting". Should the loop
-also check sk->sk_state and SOCK_DONE, so that case still works after the
-error has been read?
-
-> +
-> +		if (!timeo) {
-> +			ret = -EAGAIN;
-> +			break;
-> +		}
-> +
-> +		release_sock(sk);
-> +		timeo = wait_woken(&wait, TASK_INTERRUPTIBLE, timeo);
-> +		lock_sock(sk);
-
-[ ... ]
-
-> @@ -80,6 +102,12 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
->  	struct vsock_sock *vsk;
->  	int copied;
->  
-> +	if (unlikely(flags & MSG_ERRQUEUE))
-> +		return __vsock_recvmsg(sk, msg, len, flags);
-> +
-> +	if (!len)
-> +		return 0;
-
-[Severity: Low]
-Should MSG_OOB be rejected here as well, next to MSG_ERRQUEUE?
-
-With this shortcut, recv(fd, buf, 0, MSG_OOB) on a sockmap'd vsock socket
-always returns 0.
-
-Before this patch, the same call reached __vsock_recvmsg() when transport
-data was pending and ingress_msg was empty. __vsock_connectible_recvmsg()
-then returned -EOPNOTSUPP before its own zero-length check:
-
-	if (flags & MSG_OOB) {
-		err = -EOPNOTSUPP;
-		goto out;
-	}
-
-The commit message cites unix_bpf_recvmsg() as a model, and it does this
-before its len == 0 guard:
-
-	if (flags & MSG_OOB)
-		return -EOPNOTSUPP;
-
-	if (!len)
-		return 0;
-
-There is also an older issue from 634f1a7110b4. With len > 0 and data in
-ingress_msg, a MSG_OOB read reaches sk_msg_recvmsg(). That function only
-looks at MSG_PEEK, so it copies and consumes ordinary stream bytes. With
-empty queues, the read blocks in the wait loop instead of failing right
-away. Rejecting MSG_OOB next to the new MSG_ERRQUEUE check would fix both
-cases.
-
-> +
->  	psock = sk_psock_get(sk);
->  	if (unlikely(!psock))
->  		return __vsock_recvmsg(sk, msg, len, flags);
-
-[ ... ]
-
-> @@ -101,11 +129,14 @@ static int vsock_bpf_recvmsg(struct sock *sk, struct msghdr *msg,
->  	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
->  	while (copied == 0) {
->  		long timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-> +		int data = vsock_msg_wait_data(sk, psock, timeo);
->  
-> -		if (!vsock_msg_wait_data(sk, psock, timeo)) {
-> -			copied = -EAGAIN;
-> +		if (data < 0) {
-> +			copied = data;
->  			break;
->  		}
-> +		if (!data)
-> +			break;
->  
->  		if (sk_psock_queue_empty(psock)) {
->  			release_sock(sk);
+> +	if (priv->wol_armed)
+> +		wol_eie = MII_88E1318S_PHY_CSIER_WOL_EIE;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but the patch rewrites the code
-around it. Can a blocking recv() hang here while data is waiting in
-psock->ingress_msg?
+Could this flag end up disagreeing with what m88e1318_get_wol() reports?
 
-vsock_msg_wait_data() returns 1 whenever vsock_has_data() is true.
-vsock_sk_has_data() counts a non-empty psock->ingress_skb as data:
+priv->wol_armed starts out false from devm_kzalloc() in marvell_probe(),
+and only a successful set_wol sets it. m88e1318_get_wol() still reports
+from the hardware WOL_CTRL register:
 
-#define vsock_sk_has_data(__sk, __psock)				\
-		({	!skb_queue_empty(&(__sk)->sk_receive_queue) ||	\
-			!skb_queue_empty(&(__psock)->ingress_skb) ||	\
-			!list_empty(&(__psock)->ingress_msg);		\
-		})
-
-sk_psock_queue_empty(), however, only checks ingress_msg. The same pair of
-checks is also used before the loop:
-
-	if (vsock_has_data(sk, psock) && sk_psock_queue_empty(psock)) {
-
-Redirected-ingress data always passes through ingress_skb first:
-
-net/core/skmsg.c:sk_psock_skb_redirect() {
-	...
-	skb_queue_tail(&psock_other->ingress_skb, skb);
-	schedule_delayed_work(&psock_other->work, 0);
-	...
+m88e1318_get_wol() {
+    ...
+	ret = phy_read_paged(phydev, MII_MARVELL_WOL_PAGE,
+			     MII_88E1318S_PHY_WOL_CTRL);
+    ...
+	if (ret & MII_88E1318S_PHY_WOL_CTRL_MAGIC_PACKET_MATCH_ENABLE)
+		wol->wolopts |= WAKE_MAGIC;
+    ...
 }
 
-If the only pending data is on ingress_skb and sk_psock_backlog() has not
-run yet, the reader drops the lock and the psock reference here and falls
-into the native path:
+WOL_CTRL can still have match enables set at probe. A bootloader can leave
+them set. So can a previous kernel (kexec, or a warm reboot without a PHY
+reset), or an earlier bind of this driver (unbind/rebind, rmmod/insmod).
 
-__vsock_recvmsg()
-  __vsock_connectible_recvmsg()
-    __vsock_stream_recvmsg()
-      vsock_connectible_wait_data()
+In that case, both of these paths write CSIER without WOL_EIE:
 
-That native wait loop only wakes for vsock_connectible_has_data() != 0,
-sk_err or a shutdown flag. It never looks at the psock queues. When the
-backlog worker later moves the data to ingress_msg and wakes the socket,
-the native reader sees transport data == 0 and goes back to sleep.
+phy_probe()->phy_disable_interrupts()->m88e1318_config_intr()
+phy_attach_direct()->phy_init_hw()->m88e1318_config_intr()
 
-If the socket also has a verdict program, sk_psock_verdict_data_ready()
-pulls new transport data via read_skb, and an SK_PASS verdict queues it on
-ingress_msg. The transport count therefore stays at 0. The blocking recv()
-then waits until a signal arrives or SO_RCVTIMEO expires.
+Meanwhile get_wol keeps reporting WAKE_MAGIC.
 
-The reader can enter this window on a fresh recv(). It can also enter it
-after a spurious wakeup, such as the credit-update sk_write_space() wakeup
-mentioned in the commit message, which now makes the loop re-check.
+phy_drv_wol_enabled() then treats WoL as active, so phy_suspend() returns
+-EBUSY and keeps the PHY powered. Nothing reaches INTn, though, and the
+board does not wake.
 
-Should this fallback also take psock->ingress_skb into account?
+Running "ethtool -s ethX wol g" doesn't seem to fix this either.
+ethnl_set_wol() starts from get_wol, sees no change, and returns before
+calling set_wol:
+
+	if (!mod)
+		return 0;
+
+so wol_armed stays false.
+
+Writing 0 to this register at probe time isn't new. But the commit message
+describes this same symptom:
+
+  "m88e1318_get_wol() still reported WAKE_MAGIC, but a matched magic
+  packet was no longer routed to INTn and the board did not wake"
+
+It also says stale bootloader or previous-kernel state is "cleared at
+probe". Only WOL_EIE is cleared, though, and WOL_CTRL is left alone.
+
+Should get_wol and config_intr use one source of truth? Some options:
+
+- get_wol could report from wol_armed.
+- The WOL_CTRL match enables could be cleared when wol_armed is false.
+- config_intr could derive WOL_EIE from the hardware state.
+
+> +
+> +	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+> +		err = marvell_ack_interrupt(phydev);
+> +		if (err < 0)
+> +			return err;
+> +
+> +		err = phy_write(phydev, MII_88E1318S_PHY_CSIER,
+> +				MII_M1011_IMASK_INIT | wol_eie);
+> +	} else {
+
+[Severity: High]
+Does this reach the copper page when an 88E1510 is running a fiber
+link?
+
+phy_write() and phy_read() go to whichever page is currently
+selected. m88e1318_set_wol() explicitly switches to
+MII_MARVELL_COPPER_PAGE before touching WOL_EIE, since that is where
+the WoL interrupt enable and the latched WoL event bit live.
+m88e1318_config_intr() and m88e1318_handle_interrupt() don't do
+that.
+
+The 88E1510 entry has PHY_GBIT_FIBRE_FEATURES, and
+marvell_read_status() deliberately leaves the PHY on
+MII_MARVELL_FIBER_PAGE when the fiber link is up. It returns early
+without switching back. After that, these two functions access
+registers 0x12 and 0x13 of the fiber page instead of CSIER and
+IEVENT on the copper page.
+
+That defeats two of the cases this patch sets out to handle:
+
+- With a PHY interrupt, phy_free_interrupt() on ifdown calls
+  config_intr to drop WOL_EIE before the handler goes away. On the
+  fiber page that write misses, and the copper CSIER keeps WOL_EIE
+  set. That leaves a latched WoL event with nobody to clear it,
+  which the comment in the disable path is trying to prevent.
+
+- While the handler is installed, a WoL event latched on the copper
+  page is neither seen nor cleared by the IEVENT read in
+  m88e1318_handle_interrupt(). It returns IRQ_NONE while INTn stays
+  asserted, and on a level-triggered line this repeats until the
+  core disables the interrupt as "nobody cared".
+
+The old marvell_config_intr() and marvell_handle_interrupt() have the
+same dependence on the selected page, but the WoL handling added here
+only works if these accesses land on the copper page. Should the
+WOL_EIE update and the IEVENT read go through phy_write_paged() and
+phy_read_paged() with MII_MARVELL_COPPER_PAGE, the way
+m88e1318_set_wol() does? If so, how should the fiber page interrupt
+enable and status registers be handled, since the current code ends
+up touching those when the fiber page is selected?
+
+[ ... ]
+
+> +		if (phy_interrupt_is_valid(phydev))
+> +			wol_eie = 0;
+> +
+> +		err = phy_write(phydev, MII_88E1318S_PHY_CSIER, wol_eie);
+
+[Severity: Medium]
+Can these whole-register writes race with m88e1318_set_wol()?
+
+m88e1318_config_intr() reads priv->wol_armed without holding a lock, and
+phy_write() only takes the MDIO bus lock for that one access.
+
+m88e1318_set_wol() runs under phydev->lock (taken by
+phy_ethtool_set_wol()) and the MDIO bus lock (taken by phy_save_page()).
+phy_init_hw() takes neither.
+
+On mv643xx_eth, the driver named in the Fixes tag, tx_timeout_task() runs
+from a workqueue without RTNL or phydev->lock:
+
+tx_timeout_task()->port_start()->phy_init_hw()->m88e1318_config_intr()
+
+So it can run at the same time as:
+
+mv643xx_eth_set_wol()->phy_ethtool_set_wol()->m88e1318_set_wol()
+
+For a polled PHY:
+
+config_intr                        set_wol
+reads wol_armed == false
+                                   sets WOL_EIE, routes LED[2] to INTn,
+                                   enables magic match,
+                                   wol_armed = true
+phy_write(CSIER, 0)
+
+get_wol then reports WAKE_MAGIC while WOL_EIE is clear, which is the
+failure this patch sets out to fix. If the order is reversed and the
+ethtool command is "wol d", WOL_EIE stays armed after WoL was disabled.
+
+wol_armed is also a plain bool. It is written under phydev->lock and the
+MDIO bus lock but read with no lock, which KCSAN would report as a data
+race.
+
+There are two ways to avoid this:
+
+- Update only the IMASK_INIT bits with phy_modify(), so that only set_wol
+  ever touches WOL_EIE.
+- Serialize the snapshot and the write against set_wol.
+
+> +		if (err < 0)
+> +			return err;
+
+[ ... ]
+
+> @@ -2074,6 +2153,25 @@ static int m88e1318_set_wol(struct phy_device *phydev,
+>  			goto error;
+>  	}
+>  
+> +	if (!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY))) {
+
+[ ... ]
+
+> +	}
+> +
+> +	/* Let m88e1318_config_intr() re-arm CSIER.WOL_EIE, or keep it
+> +	 * cleared once WoL is disabled.
+> +	 */
+> +	priv->wol_armed = !!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY));
+> +
+>  error:
+>  	return phy_restore_page(phydev, oldpage, err);
+>  }
+
+[Severity: Low]
+What value does wol_armed keep if an MDIO access fails partway through
+m88e1318_set_wol()?
+
+The flag is only updated when every access succeeds. Any earlier failure
+jumps to error:, which skips the update and doesn't roll back the
+registers already written.
+
+On the enable path, CSIER.WOL_EIE, LED_TCR and the WOL_CTRL magic match
+enable may already be set while wol_armed stays false:
+
+		err = __phy_set_bits(phydev, MII_88E1318S_PHY_WOL_CTRL,
+				     MII_88E1318S_PHY_WOL_CTRL_CLEAR_WOL_STATUS |
+				     MII_88E1318S_PHY_WOL_CTRL_MAGIC_PACKET_MATCH_ENABLE);
+
+get_wol then reports WAKE_MAGIC, but the next m88e1318_config_intr()
+writes CSIER without WOL_EIE. If the user retries with the same mode,
+ethnl_set_wol() skips the call because get_wol already matches.
+
+On the disable path, the WOL_CTRL enables may already be cleared while
+wol_armed is still true from an earlier enable. The next config_intr then
+re-arms WOL_EIE.
+
+The missing rollback was already there before this patch. What the patch
+adds is that later config_intr calls now act on the stale flag.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001-kbh3-1-022-fix-v2-v1-1-cfae958a1976%40eldare.de
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004204516.281201-1-rosenp%40gmail.com
