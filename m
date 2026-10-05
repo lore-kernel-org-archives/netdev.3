@@ -1,283 +1,215 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45503E008F;
-	Mon,  5 Oct 2026 21:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420F03F58C9;
+	Mon,  5 Oct 2026 21:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234994; cv=none; b=PBlfpCOTaLMFjFOueQhMSIRbRVNlqC65jVPmi3+Zzwm7UG/VN8L/WqmB8obSv4P61NdPMu+0wj9lSNOZoBrlBw1z4MSRges0trX3yIav6yrxUS/DhsMNrQIAz8OOF8QV6C+5iAe9hJ9taKvdBMtUt35Om5tbZln618cOei1vBVk=
+	t=1791235122; cv=none; b=gp0ywc9B2GTTFifexo29vzKajv2OkXW/YbyY17yFZjKjdcxhSt8O+Z1Q8qIvdV89gNg7WoADFduJuLzdUNCVRviUNmqWnPHCN0wdobQ2l4livSrA+TC0hMlU50jBhZ/fxaBYOlEdWuLvk0P5sbD3bh927DR7nljZe0nkeezFjYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234994; c=relaxed/simple;
-	bh=vlgXhN3e7nRfRr0bz6tNROGI5MLkTy+0od85aeFC05w=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kXRhQtYICnI6xSxi+bTnwf3yd/4c2OUt6jVWSY9XrCelKh5ZYcqH2knV/yVYKYyMEGd/ODAdDIqKQhihNbR77o+WbTeCEG1JNEv9WWcbbbFX+mnTWQPn5jtp2PtnkXf/JVORK+ZeEg2xYWCxU9iqZycAnb2EedEb/cO3vioxiFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTYfzgnR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791235122; c=relaxed/simple;
+	bh=uzRxCjrPOby7teDpJTsYpBxFtosuVxFM0j1PPjdNbIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EMP1kEFzz/ING0koKhMEJqUEsDznybgbOtPz0vsF8qsW1krjshfoN4enzpw6GY7MvC/vFemdGl+a9H1i0ODN2SvOwUTpaxNCdUK1k4CHKP06r6RFd+w3SEixRnG9yde3D3EYPDEZ+i2qqZ9vC30hLhXkePLqWoE0QW1B5uNfy74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=EYeFbHym; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTYfzgnR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3DF1F00899;
-	Mon,  5 Oct 2026 21:16:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791234988;
-	bh=YdzZmoxRoZM+UMpL7Eq9SHs9ftgxVclJGjtJeClfYhA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bTYfzgnRLN+71jSvBERhtSZO3zSjb+mLxaRNWxGUJLayHcjkcTmlTlb6phLm0RktH
-	 cGJyJ4VmroXI2jHiyIZjpBqk1j3kvnHzwSs2p3lqd7RWfazybkVldiDGR+2ezlNWxs
-	 G8sDRskjHQO8ivpJTpIRRnnQHnmWQQFmR+8r1AsjC6gQxgQh3yKI8U37OAklGtNYxU
-	 5h2RJn53JbUrz94DHxAS84FkyB4+G5RLpme2Doqjlo120Cvh+rRv8jXnIy0XDeb1dx
-	 MCf5N6TSHFQhj3yRdwz0owqQ9t/k74HfADaT1cJs7VxH0Nwb0rSaq2iw/cMxmCQTkz
-	 5Vnc+ARNgr0cQ==
-Subject: Re: [PATCH net-next v3 2/2] net: stmmac: rework stmmac_rx to support
- XDP rx multi-buff
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Date: Mon, 05 Oct 2026 21:16:27 +0000
-Message-ID: <179123498740.434549.17434194748750363367@kernel.org>
-In-Reply-To: <20261004-stmmac-rx-mb-v3-2-50fa171af9ec@oss.qualcomm.com>
-References: <20261004-stmmac-rx-mb-v3-2-50fa171af9ec@oss.qualcomm.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="EYeFbHym"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0767B1F000FF;
+	Mon,  5 Oct 2026 21:18:37 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=EYeFbHym
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1791235116;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ArXPZwkOS21svTqyVFuDaFFdnY9qfU5vfWtScr/h5DQ=;
+	b=EYeFbHymVSJkadjsLFpufo37mu0pzdItcuzxYQSucZfWL3N4HCOGN+/Rx5ZANWm8cmtZwO
+	scY1MxjrSOus2i0osYjaZHf7hE94krpdUm3jwnBcK7iMGzw/703W5soEUcZGz4nbqO/75n
+	VNJwL+yAI3OzCgdtSAyuPuvMFupqf9Q=
+Received: 
+	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 7b51b2b2 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Mon, 5 Oct 2026 21:18:35 +0000 (UTC)
+Date: Mon, 5 Oct 2026 23:18:33 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: =?utf-8?B?SsOpcsOpbXk=?= Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] wireguard: noise: reject responses for replaced
+ initiations
+Message-ID: <asQUKTOiEn6GB5sy@zx2c4.com>
+References: <20261005203555.3552816-2-Jeremy.Jean@oss.cyber.gouv.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261005203555.3552816-2-Jeremy.Jean@oss.cyber.gouv.fr>
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+Hi,
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] stmmac_rx() now gathers every buffer of a frame into one
-  xdp_buff.
-- [Medium] stmmac_rx() now hands a multi-buffer xdp_buff (head plus frags
-  in the head page's skb_shared_info) to the XDP program.
-- [Low] Several 'In addition' bullets in the commit message describe the
-  parent tree's behaviour wrongly.
-- [Low] Rejected in the baseline decision; kept here because
-  requires_validation is set.
-- [Low] In stmmac_rx(), the non-PASS verdict branch (if (IS_ERR(skb)))
-  still has the comment '/* Clear skb as it was set as status by the XDP…
-
---
-
-net: stmmac: rework stmmac_rx to support XDP rx multi-buff
-
-This reworks stmmac_rx() to accumulate all descriptors of a frame into a
-single xdp_buff, so the XDP program runs on the full, possibly fragmented,
-packet. A partial skb is no longer saved in rx_q->state across NAPI polls;
-the in-progress xdp_buff is saved there instead. XDP_PASS frames are built
-into an skb with napi_build_skb() and xdp_update_skb_frags_info(), and FCS
-stripping moves to a new stmmac_xdp_shrink_tail() helper.
-
-> Build the xdp_buff by accumulating all the descriptors that make up a
-> frame, so the XDP program runs on the full (possibly fragmented) packet
-> instead of just the first buffer.
-
-[Severity: Low]
-This isn't a bug, but could the scope be stated more precisely? When XDP is
-enabled, stmmac_xdp_set_prog() still rejects dev->mtu > ETH_DATA_LEN and
-still turns off SPH:
-
-	priv->sph_active = priv->sph_capable && !stmmac_xdp_is_enabled(priv);
-
-So the program only sees fragmented xdp_buffs for oversized frames that the
-MAC accepts at MTU 1500 through GMAC_CONFIG_JE or the XGMAC GPSL setting.
-
-Would it help to say in the commit message that the jumbo MTU restriction
-for XDP stays in place?
-
-[ ... ]
-
-> - release all buffers belonging to a frame when it is dropped on RX
->   errors, instead of leaking the ones already attached to the xdp_buff;
-> - drop the whole frame when the number of fragments exceeds
->   MAX_SKB_FRAGS, instead of delivering a truncated one;
-
-[ ... ]
-
-> - skip zero-length fragments, which can happen for non-first
->   descriptors when split-header (SPH) is enabled.
-
-[Severity: Low]
-Are these bullets accurate when compared with the parent tree?
-
-On the leak claim: the parent stmmac_rx() built no xdp_buff frags. On
-error it called dev_kfree_skb(skb) on an skb marked with
-skb_mark_for_recycle(), which returns the attached page_pool frags.
-
-On the truncation claim: the parent called
-skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, ...) with no bound, so it
-would not have delivered a truncated frame.
-
-On zero-length fragments: the parent already had the
-"} else if (buf1_len) {" and "if (buf2_len) {" guards.
-
-These read like changelog notes from an earlier revision of the patch.
-Could they be reworded to describe the change against the current tree?
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index b2d20628ed214..3098fd6df1582 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-
-[ ... ]
-
-> @@ -5874,135 +5996,94 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
-
-[ ... ]
-
->  		} else if (buf1_len) {
-> -			dma_sync_single_for_cpu(priv->device, buf->addr,
-> -						buf1_len, dma_dir);
-> -			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-> -					buf->page, buf->page_offset, buf1_len,
-> -					priv->dma_conf.dma_buf_sz);
-> +			if (!stmmac_build_xdp_frags(priv, rx_q, buf1_len,
-> +						    buf->page,
-> +						    buf->page_offset,
-> +						    dma_dir, &ctx.xdp)) {
-> +				if (!error)
-> +					rx_dropped++;
-> +				error = 1;
-> +			}
->  			buf->page = NULL;
->  		}
+On Mon, Oct 05, 2026 at 08:35:55PM +0000, Jérémy Jean wrote:
+> WireGuard can accept an old handshake response after starting a new
+> handshake. This reinstalls old keys and resets transport counters and
+> replay state, enabling nonce reuse, replay and packet forgery. This
+> breaks confidentiality and integrity guarantees.
+> 
+> Compare ephemeral secrets under the write lock to reject responses for
+> replaced initiations.
+> 
+> Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+> ---
+>  drivers/net/wireguard/noise.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireguard/noise.c b/drivers/net/wireguard/noise.c
+> index 9c0a09bf6c95..88cc9acc7dc7 100644
+> --- a/drivers/net/wireguard/noise.c
+> +++ b/drivers/net/wireguard/noise.c
+> @@ -784,10 +784,12 @@ wg_noise_handshake_consume_response(struct message_handshake_response *src,
 >  
->  		if (buf2_len) {
-> -			dma_sync_single_for_cpu(priv->device, buf->sec_addr,
-> -						buf2_len, dma_dir);
-> -			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
-> -					buf->sec_page, 0, buf2_len,
-> -					priv->dma_conf.dma_buf_sz);
-> +			if (!stmmac_build_xdp_frags(priv, rx_q, buf2_len,
-> +						    buf->sec_page, 0,
-> +						    dma_dir, &ctx.xdp)) {
-> +				if (!error)
-> +					rx_dropped++;
-> +				error = 1;
-> +			}
->  			buf->sec_page = NULL;
->  		}
-> +		frames++;
+>  	/* Success! Copy everything to peer */
+>  	down_write(&handshake->lock);
+> -	/* It's important to check that the state is still the same, while we
+> -	 * have an exclusive lock.
+> +	/* Check that this is still the initiation we authenticated against,
+> +	 * while we have an exclusive lock.
+>  	 */
+> -	if (handshake->state != state) {
+> +	if (handshake->state != state ||
+> +	    crypto_memneq(handshake->ephemeral_private, ephemeral_private,
+> +			  NOISE_PUBLIC_KEY_LEN)) {
+>  		up_write(&handshake->lock);
+>  		goto fail;
+>  	}
 
-[ ... ]
+Could you describe the flow that you think causes a bug? Trying
+to recreate your mental model. Something like this?
 
-> +		skb = stmmac_xdp_run_prog(priv, &ctx.xdp);
+== thread 1 ==
 
-[Severity: Medium]
-Can this pass a multi-buffer xdp_buff to an XDP program that was loaded
-without BPF_F_XDP_HAS_FRAGS?
+	down_read(&handshake->lock);
+	state = handshake->state;
+	memcpy(hash, handshake->hash, NOISE_HASH_LEN);
+	memcpy(chaining_key, handshake->chaining_key, NOISE_HASH_LEN);
+	memcpy(ephemeral_private, handshake->ephemeral_private,
+	       NOISE_PUBLIC_KEY_LEN);
+	memcpy(preshared_key, handshake->preshared_key,
+	       NOISE_SYMMETRIC_KEY_LEN);
+	up_read(&handshake->lock);
 
-stmmac_build_xdp_frags() calls xdp_buff_add_frag(), which sets
-XDP_FLAGS_HAS_FRAGS. stmmac_xdp_run_prog() then runs whatever program is
-attached, and the driver never checks prog->aux->xdp_has_frags.
-stmmac_xdp_set_prog() only gates the attach on MTU:
+	if (state != HANDSHAKE_CREATED_INITIATION)
+		goto fail;
 
-	if (prog && dev->mtu > ETH_DATA_LEN) {
+	/* e */
+	message_ephemeral(e, src->unencrypted_ephemeral, chaining_key, hash);
 
-These frames can still arrive at MTU 1500. GMAC_CORE_INIT always sets
-GMAC_CONFIG_JE, XGMAC sets GPSL to XGMAC_JUMBO_LEN, and dma_buf_sz is 1536.
-On cores with buffer2, a 1537 to 3072 byte frame fills buf1 and buf2 of one
-descriptor and becomes a head plus one frag. Larger frames span several
-descriptors.
+	/* ee */
+	if (!mix_dh(chaining_key, NULL, ephemeral_private, e))
+		goto fail;
 
-A program that never opted in to frags sees only the head through
-data/data_end, but its verdict applies to the whole frame.
+	/* se */
+	if (!mix_dh(chaining_key, NULL, wg->static_identity.static_private, e))
+		goto fail;
 
-Also, stmmac_dvr_probe() still advertises:
+	/* psk */
+	mix_psk(chaining_key, hash, key, preshared_key);
 
-	ndev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
-			     NETDEV_XDP_ACT_XSK_ZEROCOPY;
+	/* {} */
+	if (!message_decrypt(NULL, src->encrypted_nothing,
+			     sizeof(src->encrypted_nothing), key, hash))
+		goto fail;
 
-Should NETDEV_XDP_ACT_RX_SG be advertised here? And should programs
-without xdp_has_frags either be rejected or kept away from frags-bearing
-buffers?
+== thread 2 ==
 
-> +		/* Due xdp_adjust_tail: DMA sync for_device
-> +		 * cover max len CPU touch
-> +		 */
-> +		sync_len = ctx.xdp.data_end - ctx.xdp.data_hard_start;
-> +		sync_len = max(sync_len, pre_len);
-> +
-> +		/* For Not XDP_PASS verdict */
-> +		if (IS_ERR(skb)) {
-> +			unsigned int xdp_res = -PTR_ERR(skb);
-> +
-> +			if (xdp_res & STMMAC_XDP_CONSUMED) {
-> +				stmmac_xdp_put_buff(rx_q, &ctx.xdp, sync_len,
-> +						    true);
-> +				rx_dropped++;
-> +			} else if (xdp_res & (STMMAC_XDP_TX |
-> +					      STMMAC_XDP_REDIRECT)) {
-> +				xdp_status |= xdp_res;
-> +			}
+	down_read(&handshake->static_identity->lock);
+	down_write(&handshake->lock);
 
-[Severity: Medium]
-What happens on XDP_TX when ctx.xdp carries frags? Does the frame go out
-truncated to the head buffer?
+	if (unlikely(!handshake->static_identity->has_identity))
+		goto out;
 
-The path is:
+	dst->header.type = cpu_to_le32(MESSAGE_HANDSHAKE_INITIATION);
 
-__stmmac_xdp_run_prog()
-  stmmac_xdp_xmit_back()
-    xdp_convert_buff_to_frame()
-    stmmac_xdp_xmit_xdpf()
+	handshake_init(handshake->chaining_key, handshake->hash,
+		       handshake->remote_static);
 
-The converted frame keeps the frags flag, but xdpf->len covers only the
-linear head. stmmac_xdp_xmit_xdpf() sets up one descriptor and marks it as
-both first and last:
+	/* e */
+	curve25519_generate_secret(handshake->ephemeral_private);
+	if (!curve25519_generate_public(dst->unencrypted_ephemeral,
+					handshake->ephemeral_private))
+		goto out;
+	message_ephemeral(dst->unencrypted_ephemeral,
+			  dst->unencrypted_ephemeral, handshake->chaining_key,
+			  handshake->hash);
 
-	stmmac_set_tx_dma_entry(tx_q, entry, buf_type, dma_addr, xdpf->len,
-				false);
-	stmmac_set_tx_dma_last_segment(tx_q, entry);
-	...
-	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
-			       csum, priv->descriptor_mode, true, true,
-			       xdpf->len);
+	/* es */
+	if (!mix_dh(handshake->chaining_key, key, handshake->ephemeral_private,
+		    handshake->remote_static))
+		goto out;
 
-The frags are never mapped or queued, yet the action is counted as
-successful. The EST SDU check also measures only the head:
+	/* s */
+	message_encrypt(dst->encrypted_static,
+			handshake->static_identity->static_public,
+			NOISE_PUBLIC_KEY_LEN, key, handshake->hash);
 
-	    xdpf->len > priv->est->max_sdu[queue]) {
+	/* ss */
+	if (!mix_precomputed_dh(handshake->chaining_key, key,
+				handshake->precomputed_static_static))
+		goto out;
 
-The frag pages are not leaked, because stmmac_tx_clean() returns them via
-xdp_return_frame_rx_napi().
+	/* {t} */
+	tai64n_now(timestamp);
+	message_encrypt(dst->encrypted_timestamp, timestamp,
+			NOISE_TIMESTAMP_LEN, key, handshake->hash);
 
-Oversized XDP_TX frames were also truncated before this patch. The
-difference is that the program now sees the whole frame and returns
-XDP_TX for it.
+	dst->sender_index = wg_index_hashtable_insert(
+		handshake->entry.peer->device->index_hashtable,
+		&handshake->entry);
 
-Should frags-bearing frames be dropped on XDP_TX until
-stmmac_xdp_xmit_xdpf() can transmit multiple descriptors?
+	handshake->state = HANDSHAKE_CREATED_INITIATION;
+	ret = true;
 
-> +
-> +			/* Clear skb as it was set as status by
-> +			 * the XDP program
-> +			 */
-> +			frames = 0;
+out:
+	up_write(&handshake->lock);
+	up_read(&handshake->static_identity->lock);
 
-[Severity: Low]
-This isn't a bug, but the comment still talks about clearing skb. The code
-now resets frames instead, and skb is a loop-local variable that is never
-cleared. Could the comment say that the in-progress frame state is being
-dropped?
+== thread 1 ==
 
-[ ... ]
+	down_write(&handshake->lock);
+	/* It's important to check that the state is still the same, while we
+	 * have an exclusive lock.
+	 */
+	if (handshake->state != state) {
+		up_write(&handshake->lock);
+		goto fail;
+	}
+	memcpy(handshake->remote_ephemeral, e, NOISE_PUBLIC_KEY_LEN);
+	memcpy(handshake->hash, hash, NOISE_HASH_LEN);
+	memcpy(handshake->chaining_key, chaining_key, NOISE_HASH_LEN);
+	handshake->remote_index = src->sender_index;
+	handshake->state = HANDSHAKE_CONSUMED_RESPONSE;
+	up_write(&handshake->lock);
+	ret_peer = peer;
+	goto out;
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004-stmmac-rx-mb-v3-0-50fa171af9ec%40oss.qualcomm.com
+And now begin_session is called on the older completed handshake rather
+than the half-completed newer handshake?
+
+Or did you see some other flow?
+
+Let me know.
+
+Thanks,
+Jason
