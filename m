@@ -1,233 +1,427 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F664248A0
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 12:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C078A4248A0;
+	Mon,  5 Oct 2026 12:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791202612; cv=none; b=aZzWTe4EJCqVaBKG2dgqSS5brMGRVJqy/UxvNUFNVUYBDNESBEDY2u47cBbCTM/5raeOgUmu6g2YNDBr46oyYRi8Bj+8/IY7IFW1Ir1TW4QSHw2FvT9e2U1XeRW1QMS8pdZn03ZfQ9EciR6c4cj6XfRAkU8ypETE1D/Arb2cBp8=
+	t=1791202662; cv=none; b=Rrd2Cxf89FvjNPmSgFIOm3u0ZHlq31O0t5UfFaPz+1VZv67zL1FmNohzbs4OMlZfpmBkp7if40xPxAW5eR/mLZUAcxwEN0Di+Zhw5G5Lp6gNsWmuOcXG6EkZsgPpMpdMRuoxVR2mUI4G8B43hHmusmiXKnu6C53fc/YpDh3krSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791202612; c=relaxed/simple;
-	bh=coze0en9Oq/Wq+YzsXQZMW3URl/h2QwkFcKwcuPFtfk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a6mXIEb7MTQX2otFQm4WTXPbIW3vxz45HlsI7n219+/jFzfNm/lGAVyg/aGkCorvHsKeStzbjqD95Jkj+gg5Rkjypjciy/YIDSKy6wqwCbzlcsqbiQMwZVmzOld8HYYaCXSH0QjUG4QBe02xv2gBloOWXD1fb+VbqRaydwaZVUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Zz46f9k3; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1791202662; c=relaxed/simple;
+	bh=kSPUjgq2/YhMjn6W4p8s7KIweMcWZC2J5laXzBBjWGk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QFoC6K+oN+OaAEYflAOlxeTPz6RoJWJZrrI+iZ+ExItD6KT+MRsNSZcs+kq5kjCMF2kthS5W+PkUx3FAGrhy7HVwep4Bvv0l8HsxTxGLNt02Q+6GU2QVED+GaovGe/A2K/kTsb41DnsFQZm7Y8EPIXFfybFFSaZFoxP17drtfaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yt31Dn/8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Zz46f9k3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1791202610; x=1822738610;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=coze0en9Oq/Wq+YzsXQZMW3URl/h2QwkFcKwcuPFtfk=;
-  b=Zz46f9k3/ZlBeQERBof7WPmZcXPlD3FRUSdDMuggcmeIXvWsTc/qWdkK
-   K1YppSKc0nDiJeFVWxZ07yN7KSAxFZECb7UJPiRNGge5JSkV9Gmw/czMB
-   vXtuJ4KnOJVrH02IWtSR+LNmimStN8ByZlK+6SQkw/HOetZyXBjme56Js
-   4NfjEd59G4TMyXOB8h+jCTGuIA7GPClpDBnkwfmGrCKjSVvo0Aaghqc7g
-   7SX918pYW1B+mEW8YhnsQlQr0AwqwLm0vKVJ0EAvu/oXF5phRkEv7IvVS
-   LAKtwgav5lSVLjOABHxe930ITKMENcrb0dU2vdUKxDNew5kbrrFVI2WdJ
-   Q==;
-X-CSE-ConnectionGUID: KJDBQ0RAQzOW/qo6hSVDPw==
-X-CSE-MsgGUID: VEAycdYYT8Ch8lOdhZuIVA==
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
-   d="scan'208";a="63642917"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Oct 2026 05:16:49 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 5 Oct 2026 05:16:48 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 5 Oct 2026 05:16:45 -0700
-Date: Mon, 5 Oct 2026 14:16:45 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-CC: <netdev@vger.kernel.org>, "(JC), Jayachandran" <j-rameshbabu@ti.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Chintan Vankar <c-vankar@ti.com>, Danish
- Anwar <danishanwar@ti.com>, Daolin Qiu <d-qiu@ti.com>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Felix Maurer
-	<fmaurer@redhat.com>, Jakub Kicinski <kuba@kernel.org>, Neelima Muralidharan
-	<neelima@ti.com>, Paolo Abeni <pabeni@redhat.com>, Praneeth Bajjuri
-	<praneeth@ti.com>, Pratheesh Gangadhar TK <pratheesh@ti.com>, Richard Cochran
-	<richardcochran@gmail.com>, Simon Horman <horms@kernel.org>, Vignesh
- Raghavendra <vigneshr@ti.com>, Willem de Bruijn
-	<willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH net-next v8 0/8] hsr: Add additional info to send/
- receive skbs
-Message-ID: <20261005121645.kfcnbceg3viayccr@DEN-DL-M70577>
-References: <20261002-hsr_ptp-v8-0-60dabc07e554@linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yt31Dn/8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF11D1F000FF;
+	Mon,  5 Oct 2026 12:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791202660;
+	bh=DCB7h2l/fhhrhRsOI+6ZZNF0yfPH1xOQDSMte/fi0/8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Yt31Dn/8va/M+gbS9/rvdDjbvJ1MdjzoVIhqusypGCFSWrmXn96GDvGhtgIwalVCb
+	 a16IU/7TB9Uuaxf20AdpRl/UQXue2+8sC/bmo9qchTbKsyd4duHwpLThOSAftkW2u2
+	 1WvU07yxbjECSemJ0Y6Cqt8YAq7bqxIYRs3mtEcv2ZaB+8bKAzDU0eoENdgtkLkE3S
+	 LYynMJx/yv1s8VOeowVHQ8TpNyu6kg8XaP6porQt2kA/piOTuukqcdhE70X1s56jdq
+	 IXZFZPsJAZXCd4OOxSXN+M4Gr3gvDSfcQloEtS+TFmKND8iezq/MeRRzPU0f+5uWWh
+	 NzqU3GXPw5wfg==
+Subject: Re: [PATCH net-next v7 3/3] net: stmmac: dwxgmac2: add XGMAC
+ timestamp interrupt support
+From: netdev-bot+sashiko@kernel.org
+To: zxyan0222@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, richardcochran@gmail.com,
+ maxime.chevallier@bootlin.com, muhammad.nazim.amirul.nazle.asmade@altera.com,
+ rohan.g.thomas@altera.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 12:17:39 +0000
+Message-ID: <179120265939.434549.8164410150343143172@kernel.org>
+In-Reply-To: <20261004120526.2728564-4-zxyan0222@gmail.com>
+References: <20261004120526.2728564-4-zxyan0222@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261002-hsr_ptp-v8-0-60dabc07e554@linutronix.de>
 
-Sebastian,
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-> I am trying to extend linuxptp to support PTP over a HSR network.
-> 
-> This is the kernel side of the changes. In short PTP over HSR sends its
-> packets to a multicast address and every node needs to forward the PTP
-> packet (SYNC and FOLLOW-UP for instance) within the HSR ring.
-> In order to achieve this, the HSR stack must not duplicate and forward
-> the PTP packets as it would do with other packets. The delay caused by
-> the duplication and forwarding adds overhead which in turn makes the
-> timing information within the PTP packet inaccurate.
-> 
-> My current approach is to open the slave devices (eth0/ eth1) from
-> userland in order to receive the PTP packets. Sending happens from the
-> hsr0 device. The actual packet has an inline header prepended of type
-> struct hsr_inline_header. The size of the header is equivalent to
-> ethhdr. The header has a type (h_proto) at the same position as ethhdr
-> and expects it to be ETH_P_1588 as this extra meta information is only
-> relevant for PTP packets. It makes no sense to send PTP packets via the
-> HSR interface because it gets duplicated and the timestamp information
-> is lost so this should not break anything. As an additional safe guard
-> there is a magic value at h_source position. The value has '0xaf' at the
-> most significant byte which makes the address a locally administered
-> multicast address.
-> 
-> The header passes two information from userland: On which slave port
-> the packet has to be sent and does the HSR stack need to prepend a
-> header or not.
-> The header is skipped so that the remaining stack sees the actual data
-> and can send it as requested.
-> 
-> The PRP packets are sent directly via the SLAVE interface. The standard
-> mandates not add a PRP trailer (PRP, redundancy control trailer) to PTP
-> packets. There is not really a reason to use hsr interface.
-> 
-> HSR hardware offloading is optional. The driver needs to know if the
-> operating mode is HSR or PRP. In PRP mode it needs to check the ether
-> type and for ETH_P_1588 it must not perform any offloading.
-> In HSR mode, for ether-type ETH_P_1588 there must be no offloading. If
-> the ether-type is ETH_P_HSR there must be no offloading if the
-> encapsulated protocol is ETH_P_1588.
+Critical: 0 · High: 0 · Medium: 5 (2) · Low: 0
 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Do any drivers need to be updated as part of this series?
+- [Medium] When the FIFO-clear poll times out in the EXTTS 'on' path of
+  stmmac_enable() (stmmac_ptp.c:262-275), the new rollback only sets…
+- [Medium] Auxiliary snapshots are only drained by
+  dwxgmac2_timestamp_interrupt(), called from stmmac_common_interrupt()…
+- [Medium] dwxgmac2_timestamp_interrupt() (dwxgmac2_core.c:1163-1212)
+  reads STMMAC_FLAG_INT_SNAPSHOT_EN (line 1171),…
+- [Medium] In stmmac_enable(), the new XGMAC_TSIE arm/disarm call
+  (stmmac_ptp.c:269-270, stmmac_mac_timestamp_interrupt_cfg(priv, on))…
+- [Medium] The patch arms XGMAC_TSIE on demand
+  (dwxgmac2_timestamp_interrupt_cfg, dwxgmac2_core.c:45-49) and re-arms…
 
-A number of drivers offload HSR duplication using NETIF_F_HW_HSR_DUP. For a
-directed PTP frame the HSR layer only sends it to the requested tx_port, but
-that is undone further down the stack (e.g. dsa_xmit_port_mask() adds the HSR
-partner port back, and icssg sends it as undirected), so e.g. a SYNC frame sent
-to port B would also leave on port A. Or am I missing something?
+Pre-existing issues:
+- [Medium] In the PTP_CLK_REQ_EXTTS case of stmmac_enable(), line 231
+  clears the ATSEN bits (`acr_value &= ~PTP_ACR_MASK`) before line 234…
+- [Medium] smtg_crosststamp() checks STMMAC_FLAG_EXT_SNAPSHOT_EN (dwmac-
+  socfpga.c:310) before it takes aux_ts_lock (line 313), and…
 
-> 
-> This has been tested in a pure software environment and in an HW-assisted
-> environment where the HW is able to duplicate and duplicate packets
-> but does not do it for PTP packets.
-> It has not been tested within an environment where the HW is able to
-> forward the PTP packet and correctly update the timing information.
+--
 
-We support PTP over HSR downstream on lan969x and lan9645x (with a different
-uAPI). Maybe I can be of assistance testing this. Let me know.
+net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
 
-> 
-> ---
-> v7…v8: https://patch.msgid.link/20260928-hsr_ptp-v7-0-d55d304d9a7e@linutronix.de
-> - Use __u8 instead of uint8_t, add header file for in hsr_ptp.h
-> - Add header file to if_hsr.h for struct ethhdr
-> - Remove the inline keyword from hsr_ptp_test.c
-> 
-> v6…v7: https://patch.msgid.link/20260923-hsr_ptp-v6-0-6ea07b3fb8a8@linutronix.de
-> - Change the logic in hsr_create_tagged_frame():
->   - Don't update ->csum_start (the cloning takes care of this)
->   - pskb_may_pull() does not need to include HSR_HLEN (it only copies
->     'movelen')
->   - Set network header to 'movelen' which takes VLAN into account
-> - Drop also PTP packets which were received on HSR_PT_INTERLINK (not
->   just HSR A/B).
-> - Move include HSR header to include/uapi/linux/hsr_ptp.h, so it is also
->   available in userland.
-> - selftests:
->   - Add hsr_ptp.sh alphabetically ordered to the Makefile
->   - Use "$0" in hsr_ptp.sh
->   - Drop unnused arguments in open_socket()
-> 
-> v5…v6: https://lore.kernel.org/r/20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de
-> - hsr_ptp_test: Let it wait up to 100ms for a packet. Otherwise it will
->   complain if the recevied packet is not already in socket.
-> - Use TEST_GEN_PROGS instead TEST_GEN_FILES, the test can not run
->   without additional arguments.
-> - Make the inline header mandatory for sending ETH_P_1588 packets via
->   the HSR device.
-> - Use kfree_skb() instead kfree() for the skb.
-> - Rephrase the commit message saying that skb_clone() shares
->   skb_shared_info and does not copy it.
-> 
-> v4…v5: https://lore.kernel.org/r/20260508-hsr_ptp-v4-1-aa19aa7c6a71@linutronix.de
-> - Split the patch into smaller pieces
-> - Added a test for the added inline header (which signals the port while
->   sending packets).
-> - Replaced __pskb_copy() with skb_clone() + skb_cow_head() in
->   hsr_create_tagged_frame() to preserve timestamp request.
-> 
-> v3…v4: https://lore.kernel.org/r/20260429-hsr_ptp-v3-1-afbf8f200f48@linutronix.de
-> - Removed skb extention. The information within HSR is passed via
->   struct hsr_frame_info. Driver with HSR-offloading capabilities need to
->   know the HSR mode (HSR or PRP) and parse the skb to decide what needs
->   to be done (whether to send on both ports and if adding a header is
->   needed).
-> 
-> v2…v3: https://patch.msgid.link/20260309-hsr_ptp-v2-0-798262aad3a4@linutronix.de
-> - Remove af_packet changes entirely.
-> - Add an internal header to pass additional information for HSR-PTP
->   packets.
-> - Remove PRP, userland will use slave devices directly.
-> - Drop all received PTP packets. Userland needs to use the slave device
->   for RX.
-> 
-> v1…v2: https://patch.msgid.link/20260204-hsr_ptp-v1-0-b421c69a77da@linutronix.de
-> - Added PRP support
-> - skb extention is used instead of extending struct skb_shared_info
-> - in af_packet
->   - packet_sendmsg_spkt() is no longer extended
->   - jump labels are used to avoid the overhead if there no socket that
->     is using this HSR extension.
-> 
-> ---
-> Sebastian Andrzej Siewior (8):
->       hsr: Add header_ops::parse_protocol
->       hsr: Use skb_clone() while adding the HSR header
->       hsr: Add a magic header for sending PTP packets
->       hsr: Drop received PTP packets
->       hsr: Use the port and header information in hsr_forward_skb()
->       hsr: Assign a socket for cloned skbs
->       hsr: Move struct hsr_ethhdr to a global header
->       selftests: hsr: Add test for the inline PTP header on HSR
-> 
->  MAINTAINERS                                    |   1 +
->  include/linux/if_hsr.h                         |   7 +
->  include/uapi/linux/hsr_ptp.h                   |  20 +
->  net/hsr/hsr_device.c                           |  67 +++-
->  net/hsr/hsr_forward.c                          |  78 +++-
->  net/hsr/hsr_forward.h                          |   3 +-
->  net/hsr/hsr_framereg.h                         |   2 +
->  net/hsr/hsr_main.h                             |   5 -
->  net/hsr/hsr_slave.c                            |  34 +-
->  tools/include/uapi/linux/hsr_ptp.h             |  20 +
->  tools/testing/selftests/net/hsr/.gitignore     |   1 +
->  tools/testing/selftests/net/hsr/Makefile       |   5 +
->  tools/testing/selftests/net/hsr/hsr_ptp.sh     | 109 ++++++
->  tools/testing/selftests/net/hsr/hsr_ptp_test.c | 482 +++++++++++++++++++++++++
->  14 files changed, 789 insertions(+), 45 deletions(-)
-> ---
-> base-commit: 5a956dde5526a634dca7ccad27c051ebcc306089
-> change-id: 20260204-hsr_ptp-1f6380f1d35f
-> 
-> Best regards,
-> --
-> Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
+This commit adds a DWXGMAC2-specific timestamp interrupt handler. The
+handler reads XGMAC_TIMESTAMP_STATUS and reports pending auxiliary
+snapshots as PTP_CLOCK_EXTTS events.
 
-/Daniel
+XGMAC_TSIE is armed on demand from the EXTTS path of stmmac_enable()
+through a new timestamp_interrupt_cfg() callback. It is re-armed on
+resume by stmmac_rearm_timestamp_irq(). smtg_crosststamp() now sets
+STMMAC_FLAG_INT_SNAPSHOT_EN while it owns the snapshot FIFO.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> index c5f71bfc7cf42..9030cc1cc6778 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> @@ -311,6 +311,7 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+>  		return -EBUSY;
+>  
+>  	mutex_lock(&priv->aux_ts_lock);
+> +	priv->plat->flags |= STMMAC_FLAG_INT_SNAPSHOT_EN;
+
+[Severity: Medium]
+This is a pre-existing issue, but smtg_crosststamp() checks
+STMMAC_FLAG_EXT_SNAPSHOT_EN before it takes aux_ts_lock:
+
+	if (priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN)
+		return -EBUSY;
+
+	mutex_lock(&priv->aux_ts_lock);
+
+Also, the enable path of stmmac_enable() never checks
+STMMAC_FLAG_INT_SNAPSHOT_EN. ptp_sys_offset_precise() does not take
+pincfg_mux, so a concurrent PTP_EXTTS_REQUEST can set
+STMMAC_FLAG_EXT_SNAPSHOT_EN and ATSEN(idx) inside that window.
+smtg_crosststamp() then overwrites PTP_ACR with the internal channel.
+
+Does that leave STMMAC_FLAG_EXT_SNAPSHOT_EN set, ext_snapshot_num = idx
+and TSIE armed, while the user's channel is no longer enabled in
+PTP_ACR? Later cross-timestamps would then return -EBUSY until the
+channel is disabled and enabled again.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+> index 1a88cbaed70ca..313c24e9a49d7 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+
+[ ... ]
+
+> @@ -1154,6 +1160,57 @@ static int dwxgmac2_get_mac_tx_timestamp(struct mac_device_info *hw, u64 *ts)
+>  	return 0;
+>  }
+>  
+> +void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
+> +{
+> +	u32 ts_status, pending_snapshots, acr_value, channel;
+> +	struct ptp_clock_event event;
+> +	unsigned long flags;
+> +	u64 ptp_time;
+> +	int i;
+> +
+> +	if (priv->plat->flags & STMMAC_FLAG_INT_SNAPSHOT_EN) {
+> +		/* Read the status to clear the timestamp interrupt source;
+> +		 * the FIFO belongs to the cross-timestamp path.
+> +		 */
+> +		readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
+> +		return;
+> +	}
+> +
+> +	/* Reading XGMAC_TIMESTAMP_STATUS clears the TSIS and AUXTSTRIG
+> +	 * bits, so the ATSNS count is the only reliable indication of
+> +	 * pending auxiliary snapshots.  TXTSC is cleared by
+> +	 * XGMAC_TXTIMESTAMP_SEC and is not affected by this read.
+> +	 */
+> +	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
+
+[Severity: Medium]
+The commit message says TSIS is "an aggregate, read-to-clear bit that
+the TX timestamp completion path (which polls the same register for
+TXTSC) clears before the handler can observe it". That covers the case
+where this handler runs and finds TSIS already clear. What happens if
+the handler never runs?
+
+dwxgmac2_get_mac_tx_timestamp() polls the same register:
+
+	if (readl_poll_timeout_atomic(ioaddr + XGMAC_TIMESTAMP_STATUS,
+				      value, value & XGMAC_TXTSC, 100, 10000))
+
+Suppose one of those reads lands after an aux snapshot has set TSIS but
+before the CPU takes the MAC interrupt. TSIS was the only enabled
+source, so a level-triggered MAC interrupt line would deassert before
+stmmac_common_interrupt() runs.
+
+Only stmmac_common_interrupt() calls this handler, and nothing else
+checks ATSNS. Would the snapshot then stay in the FIFO until some
+unrelated MAC interrupt arrives? With a 1PPS source that could be about
+a second later. In multi-vector/MSI mode, DMA interrupts do not go
+through stmmac_common_interrupt(), so it could take much longer.
+
+The trigger is EXTTS enabled together with TX hardware timestamping.
+stmmac_get_tx_hwtstamp() falls back to stmmac_get_mac_tx_timestamp()
+when the descriptor has no timestamp. Whether the interrupt is really
+lost depends on how the interrupt line is triggered.
+
+> +
+> +	if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN) || !priv->ptp_clock)
+> +		return;
+> +
+> +	pending_snapshots = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_status);
+> +	if (!pending_snapshots)
+> +		return;
+> +
+> +	acr_value = readl(priv->ptpaddr + PTP_ACR);
+> +	/* Entries observed while the FIFO is being flushed are stale. */
+> +	if (acr_value & PTP_ACR_ATSFC)
+> +		return;
+> +	channel = FIELD_GET(PTP_ACR_MASK, acr_value);
+> +	if (!channel)
+> +		return;
+> +	channel = ilog2(channel);
+> +
+> +	for (i = 0; i < pending_snapshots; i++) {
+> +		read_lock_irqsave(&priv->ptp_lock, flags);
+> +		stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
+> +		read_unlock_irqrestore(&priv->ptp_lock, flags);
+
+[Severity: Medium]
+Are these checks enough to keep this loop off the FIFO? Each of
+STMMAC_FLAG_INT_SNAPSHOT_EN, STMMAC_FLAG_EXT_SNAPSHOT_EN and
+PTP_ACR_ATSFC is read once without a lock. The loop then drains a
+pending_snapshots count that was sampled earlier.
+
+Three process-context paths flush or consume the same FIFO:
+smtg_crosststamp(), the ATSFC flush in stmmac_enable(), and
+stmmac_rearm_timestamp_irq(). They serialize on aux_ts_lock, which this
+handler cannot take, and none of them calls synchronize_irq().
+
+ptp_lock does not help, because this loop and smtg_crosststamp() both
+take it as readers. Arming TSIE only after the flush does not
+synchronize anything either. stmmac_common_interrupt() calls this
+handler on every common interrupt whatever the TSIE state.
+stmmac_request_irq_single() also registers stmmac_interrupt on the
+separate WoL line, so two copies of this drain can run at the same time.
+
+Two windows look possible:
+
+(A) The handler samples a stale ATSNS. A concurrent enable then sets
+STMMAC_FLAG_EXT_SNAPSHOT_EN and its flush completes. The handler sees
+EXT set and ATSFC clear, and pops entries from the flushed FIFO as
+EXTTS events.
+
+(B) The handler is already past the STMMAC_FLAG_INT_SNAPSHOT_EN check
+and inside this loop when an EXTTS disable and then smtg_crosststamp()
+run. The loop pops the internal cross-timestamp snapshot and reports it
+as an EXTTS event, and smtg_crosststamp() gets the wrong device time.
+
+Doesn't this contradict two claims in the commit message, that "a
+stale snapshot is never reported as an event" and that the handler
+"leaves the snapshot FIFO alone while an internal cross-timestamp owns
+it"?
+
+smtg_crosststamp() sets STMMAC_FLAG_INT_SNAPSHOT_EN on entry and clears
+it on exit to keep the IRQ handler out, so the flag is acting as a
+lock. Would a spinlock shared by the handler and the flush/drain paths,
+or a synchronize_irq() after raising the flag, be more robust?
+
+The windows are narrow on non-RT kernels. They are wider on PREEMPT_RT,
+where the handler runs as a preemptible thread.
+
+> +
+> +		event.type = PTP_CLOCK_EXTTS;
+> +		event.index = channel;
+> +		event.timestamp = ptp_time;
+> +		ptp_clock_event(priv->ptp_clock, &event);
+> +	}
+> +}
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 3ad9252bf6aea..53aaf2716c467 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+[ ... ]
+
+> @@ -8418,6 +8467,8 @@ int stmmac_resume(struct device *dev)
+>  		ret = stmmac_init_timestamping(priv);
+>  		if (ret)
+>  			goto error_stop_dma;
+> +
+> +		stmmac_rearm_timestamp_irq(priv);
+>  	}
+
+[Severity: Medium]
+TSIE is re-armed here on resume. Is there a matching disarm on suspend?
+
+With Wake-on-LAN configured, stmmac_suspend() does:
+
+	if (priv->wolopts) {
+		stmmac_pmt(priv, priv->hw, priv->wolopts);
+		priv->irq_wake = 1;
+
+It leaves XGMAC_INT_EN and PTP_ACR as they are, and dwxgmac2_pmt() only
+writes XGMAC_PMT and RX_CONFIG. Clocks stay on for WoL, so each
+external trigger edge, for example a GNSS 1PPS, sets TSIS and asserts
+the MAC interrupt. stmmac_common_interrupt() then does:
+
+	if (priv->irq_wake)
+		pm_wakeup_event(priv->device, 0);
+
+Could this abort system suspend? Could it also wake the system after
+the noirq phase when the MAC IRQ is the wake IRQ? stmmac_pci uses
+pdev->irq, and stmmac_platform falls back to the MAC IRQ.
+
+Before this patch XGMAC_TSIE was never set on XGMAC, so this would be a
+new wake source. Whether the wake after noirq happens depends on how
+the platform wires the wake IRQ and gates clocks.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> index 3bfcc9760dce7..19fa79839e465 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> @@ -239,13 +239,20 @@ static int stmmac_enable(struct ptp_clock_info *ptp,
+>  				return -EBUSY;
+>  			}
+>  
+> +			if (rq->extts.index >= PTP_ACR_ATSEN_NUM) {
+> +				mutex_unlock(&priv->aux_ts_lock);
+> +				return -EINVAL;
+> +			}
+> +
+>  			priv->plat->flags |= STMMAC_FLAG_EXT_SNAPSHOT_EN;
+> +			priv->plat->ext_snapshot_num = rq->extts.index;
+>  
+>  			/* Enable External snapshot trigger */
+>  			acr_value |= PTP_ACR_ATSEN(rq->extts.index);
+>  			acr_value |= PTP_ACR_ATSFC;
+>  		} else {
+>  			priv->plat->flags &= ~STMMAC_FLAG_EXT_SNAPSHOT_EN;
+> +			priv->plat->ext_snapshot_num = -1;
+>  		}
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but can the -EBUSY branch
+above ever be taken? Earlier in this case:
+
+		acr_value = readl(ptpaddr + PTP_ACR);
+		channel = ilog2(FIELD_GET(PTP_ACR_MASK, acr_value));
+		acr_value &= ~PTP_ACR_MASK;
+
+		if (on) {
+			if (FIELD_GET(PTP_ACR_MASK, acr_value)) {
+
+The ATSEN bits are cleared before they are tested, so the test is
+always false.
+
+The disable branch also ignores rq->extts.index. ptp_extts_request()
+and extts_enable_store() only check index < n_ext_ts. So an enable or
+disable request for one channel can silently retarget or tear down a
+different active channel.
+
+After this patch that teardown also resets ext_snapshot_num and
+disarms XGMAC_TSIE.
+
+>  		netdev_dbg(priv->dev, "Auxiliary Snapshot %d %s.\n",
+>  			   rq->extts.index, on ? "enabled" : "disabled");
+> @@ -255,6 +262,17 @@ static int stmmac_enable(struct ptp_clock_info *ptp,
+>  		ret = readl_poll_timeout(ptpaddr + PTP_ACR, acr_value,
+>  					 !(acr_value & PTP_ACR_ATSFC),
+>  					 10, 10000);
+> +		/* Arm or disarm the timestamp interrupt only once the FIFO
+> +		 * clear has completed, so the handler does not observe a
+> +		 * snapshot that the clear is about to discard.
+> +		 */
+> +		if (!ret) {
+> +			stmmac_mac_timestamp_interrupt_cfg(priv, on);
+
+[Severity: Medium]
+This call runs after aux_ts_lock was dropped just before the poll:
+
+		writel(acr_value, ptpaddr + PTP_ACR);
+		mutex_unlock(&priv->aux_ts_lock);
+
+extts_enable_store() calls ops->enable() without pincfg_mux, so it can
+race with the ioctl path or with another sysfs writer. Can a stale on
+or off value be applied here?
+
+disable request A                  enable request B
+  clear flag and ATSEN
+  mutex_unlock()
+  <preempted>
+                                     mutex_lock()
+                                     set flag, ATSEN|ATSFC
+                                     mutex_unlock()
+                                     poll completes
+                                     timestamp_interrupt_cfg(true)
+  poll completes
+  timestamp_interrupt_cfg(false)
+
+That would leave the channel B enabled with XGMAC_TSIE disarmed.
+
+The timeout branch below has the same problem. It re-takes the lock and
+sets ext_snapshot_num = -1 unconditionally, which could overwrite the
+channel recorded by a newer successful enable.
+
+> +		} else if (on) {
+> +			mutex_lock(&priv->aux_ts_lock);
+> +			priv->plat->ext_snapshot_num = -1;
+> +			mutex_unlock(&priv->aux_ts_lock);
+> +		}
+
+[Severity: Medium]
+When the ATSFC poll times out on enable, only ext_snapshot_num is
+rolled back. STMMAC_FLAG_EXT_SNAPSHOT_EN and the PTP_ACR ATSEN(index)
+bit that were set earlier stay set. Is that intended?
+
+The readers of this state now disagree with each other:
+
+dwxgmac2_timestamp_interrupt() gates on the flag and on PTP_ACR. It runs
+from every stmmac_common_interrupt() even with TSIE disarmed. If ATSFC
+clears later, it can report PTP_CLOCK_EXTTS events for a request that
+returned an error.
+
+stmmac_rearm_timestamp_irq() sees the flag set but ext_snapshot_num < 0
+and skips the restore, so the behaviour changes across suspend and
+resume.
+
+smtg_crosststamp() keeps returning -EBUSY until an explicit disable or
+close.
+
+Should the failure path roll back the flag, the ATSEN bit and
+ext_snapshot_num together?
+
+>  		break;
+>  	}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004120526.2728564-1-zxyan0222%40gmail.com
