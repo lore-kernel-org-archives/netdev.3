@@ -1,211 +1,122 @@
-Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
+Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9FE423784
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 23:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.205
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791242061; cv=none; b=T8XiiSetYvjxkEzebN8T8ncsFs9/DF4YPRDOLdqZN3fLfq2CgIfFCMfHuUMSOzcjePFZBQdxDbnJjqEL1LVeLDZD4kfX9a+zUxnHEu4g0LLeH+jqcSZJ5czGcPtJKR7TKZ3uW9rHcnk15zM+PbXxxbkt2cbZzy1gIf9zTxtgNLg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791242061; c=relaxed/simple;
-	bh=gS+zNwut3yzsGJCudT/8JAJzPmhC/N/xQ6WP5CkudTU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oOEKbti5gE2yvQA5Qvd58dYUZ5+t+8Br3UOjJuzWWCDQ+2fVGM3xw/DPRc7pW4u3EGGaqM4FgPqoabMzHaaJaiEo36UPExOmLarzamWaJTMx/PbZpUgP1v7A949tT2CGywcrhjjCbprqqIKb+LlGuyL7y+BEaopZFMEhCPopGw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EvOVZu7m; arc=none smtp.client-ip=74.125.229.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0660340682C
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 23:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.96
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791242221; cv=pass; b=ta3y5kedQp196oDk34ZCgSot3RSyvrkFuNyfIMUVv1jT0+hL2CyCLPwjHCGwrbI3nWcKOhQFaN1jwuXZ1PXkXRgB10NCoJAXt2CD7La8wQ7qENbSyXU4++vmrr7aKRh7HurNu0AdZEqMIUmytcgRJJUOE2omh6fuhpWxq+DJURk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791242221; c=relaxed/simple;
+	bh=za9hu1YYVovCuUdIpWVDTK3e5USASw6UFL3szK/D1qE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jU9sJFNVaoMnjJ7WxG+/eFoFk5Mp4twStS2L3tmhVa11698ejgqqdtGr97p6But2vvkcBCjLNMxH6yE5thUJeB3sD84HId7NVhNKhibe7+tBM7Uz8lWq5lmRXc6oMrIwhYPu7RnGVH1sNyYwUS9zGiknFjpc81FSCGAAEzt0UG0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RSC7b4VY; arc=pass smtp.client-ip=74.125.228.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EvOVZu7m"
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5ba44044ff8so1780058e87.3
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 16:14:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RSC7b4VY"
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acb91ecaccso3608822a12.2
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 16:16:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791242218; cv=none;
+        d=google.com; s=arc-20260327;
+        b=px4SPL/EBUQ3782/xLEe5fNHFdWyQNcvWu746gbtKfK4h5TcabTIheold7kZ7IptVy
+         T5NQTkDcb+OdlkyAP/DOuk2k6BZcQf+X8QMGmY0lxumjE8NATlHXTBoM2BclZbtsQf/e
+         P6gFOJOMq2gdvtByFQKmsVt3incKF6PaiRPKJLOXKbTNijJ2VwmY4FXf+Lcp5rPk/nb+
+         CH6jqZ8zcTeurUmmM1lpd720fvTmhgL62ijXU/zycHwKQzeBc97WgzdiDQyWnMuDlYQj
+         LttH4ei6ed1vXYig8ll4hh7ZYTeOw4HCLWsRfLLNRn/kl+bSPRqo62SJamiL0FoMe5ay
+         K2Ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ggl0IbFeEE6Or0Q3w+SXUyGJmoXHMIUd48S2FNEyG24=;
+        fh=eGA2bSOerVHAkvo1l0zipwMttWrtxiBrwTDkGnpX/v8=;
+        b=QdkrL98pejp54KAiQcP6kMJBG1gteT23CD1jRjsg0XpwayBcdIwaryAfcqYSwD4HkI
+         VmuueG5T2hLftk7EFDH4ocYOFiEA9CAvP4x1l5j0Vb4xuZc8cAcMKWbmI+33gIahjphF
+         VwuFmfBkgvfmw5BvaUVzGVVdpSSxWinDcMUZ3eiVXCkvpzLdsbaYcZl0tYr57TBe4OMS
+         SjVUAf6b2U7DVuticdvY1onSH3LPr3QybYD+nSIIcG5/QpVxnwWBv2kwu4D4awxvvxEy
+         1DT+vXi7Du9H9F/nlzVAVeo8CLMVU2gUNAPmt1JufgxgE96UdfNYQmRlX/QNwhREUxcZ
+         dmGA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791242057; x=1791846857; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Im0cJAeREuNEud0rN/fkI3qzH2PGAN0Ll6jA64yc3hs=;
-        b=EvOVZu7muvkzzsLMV9wq/lohyPo5fZm9Zmuqs80ThQ06jsg5WPhgIxV9IsdBeux8BL
-         HESh4GE45+nsVNB7GNhjBwozg2h+m4+5cvWkNsEiQGs9/bhDae/KyCBcT1gbTInQUqzK
-         OfvBYxyf9nrgbvNbHUd9GU9ZJ+EB4qgIPH+Qa4cXZ8s43rjIRb2wEB7r+bS3uPy+I80f
-         LAarLBuomRC+CPVhp825Qx8CTmEIWX8mMbmp/ZTXaQFiDet7/Zw+k7vr+6Xutz4lNS7r
-         NbmgfGb3Nl6VBMw0sgo0/wkQy30F55MRjRnfvUBBfu2/kjEbhuo4nYgALIGF8O7HLe+M
-         3oZw==
+        d=gmail.com; s=20251104; t=1791242218; x=1791847018; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ggl0IbFeEE6Or0Q3w+SXUyGJmoXHMIUd48S2FNEyG24=;
+        b=RSC7b4VYFohQA+22vFEq/w3COkgVUnGQ9SwB9fX5ky4yNhxMujGkmLnfZKhegPM4fK
+         6cab6JYPpDs7xxVoEomGeUVi4VaXF5X9wogyNmWX2jMmZ3zG14r1mMuNQda9v2KtQS5n
+         pKUfDplw8KFaVSibZ4FnhjOeVw1a0kGmBSvoGTXtvMSfsPwJtp0lUqETNekHSQ2fHX/Y
+         gzH98xOQmm/E3P8EMnocX9XKDUonCXiX7Jgr3Rl0ViUw4zBrIlMQ5l5EcuVXYZNz8Spy
+         giOdqfFStOIj9pOV3mQWvg2NrwtBw4BOmuuh+I5AxHbt5RzGLQKhnmKsFWElEsmZeSed
+         U59A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791242057; x=1791846857;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Im0cJAeREuNEud0rN/fkI3qzH2PGAN0Ll6jA64yc3hs=;
-        b=0dw5o9HZ5++lQR4s2JbnBe1YHmFOFQRClMn+SUu8ExD0jl0ZCQPaszU1yakBBKJIIR
-         K4ovFNKQlFyB9O390oTNDXYqsigaQfKk0QFM0tk21kYb6XSEvDWpS0Xs0MbXJLwll+vZ
-         UE2c0Kg5o/sSdNcF1WpsZb5DCM88iOm1QZyiZhpe6/yFnRrQVOJF1ntCqMI155eHtcdv
-         j4J1QUZn63A8Cs9yOeVXDeQ384zwWRNlY8u/bHQCkMs4xONCA5QlnZl3y+buNKuWepNV
-         H/n6OLeYDrKphKq+2RO7BTAkoLpftU28r0cv/EJ503ZJRxjL/d47zQDLZ4w3cm0f5EhT
-         9J3w==
-X-Gm-Message-State: AFq9FYL9/v55FaK+mes2VYtohdstvTHd/OOLaEBaIAJcYGV5CWZ/de3m
-	aWw4WDYot6fftEYZAiug62fAlMs4PrbvF7BztgR9s6LH76QXh5nZKlrLZovfnK5z
-X-Gm-Gg: AYBFou21qyvsTaj7ppQBBbdj+y/gHEphqTdYgzka4sEZOK/3wp0Ow+279q90XXH3+hd
-	C5F5OhseH/FHex1vi6dnVouEb/v4LND0WzhSeZejGmxkaMwNnlnFtjyDeFunmoTwQyeP2cgOm9f
-	8TPka+12On2znAfEvqZO33VWc9y7wkywqQWn8jWEsLAtq7Od5CBKrztRFaVRjlXB39EPN71sakD
-	b2mM0VVrUak4lmTf57nvR1iQbXM6z2mPUr1Mo2ejHFXyyUY+vNcTmpRpXuOgdDz+1ne7r00wMUu
-	4+47Tn7OFhcgfmS4url1uW5og4jhhUc1racQYj8ky5urpQ8oPn+q9dl7fvytchiKuY54/6j3apo
-	ZmNKfivFQW8g9hUgHPeH3imkHoVnQ6ma0U3V64l8t9oQ7N5FJpTcdInUt55jcAwujpIest9CmWK
-	N/P+IUb7O3yprOaNlmxcsatNscNFTwa292x07La8vTR8Y+Htz8Ndk+lwGG9y2StddUk8XK7p6TK
-	7ticJxPEX6OJGcubPLZI+8bHPh0s4L2uZLBw6VTxA==
-X-Received: by 2002:a05:6512:3ca5:b0:5ba:3109:4617 with SMTP id 2adb3069b0e04-5bb93808df5mr3907389e87.1.1791242056468;
-        Mon, 05 Oct 2026 16:14:16 -0700 (PDT)
-Received: from dau-home-pc.. ([212.35.161.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bb7c78c286sm3572387e87.20.2026.10.05.16.14.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 16:14:15 -0700 (PDT)
-From: Anton Danilov <littlesmilingcloud@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Eric Dumazet <edumazet@kernel.org>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Mazin Al Haddad <mazin@getstate.dev>,
-	Matthias May <matthias.may@westermo.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v5] ip6_gre: use skb_vlan_inet_prepare() instead of pskb_inet_may_pull()
-Date: Tue,  6 Oct 2026 02:14:14 +0300
-Message-ID: <20261005231414.932997-1-littlesmilingcloud@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        d=1e100.net; s=20260707; t=1791242218; x=1791847018;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ggl0IbFeEE6Or0Q3w+SXUyGJmoXHMIUd48S2FNEyG24=;
+        b=M/TOpR0928DcFWrbzb6SVEw8f7zH0XwNz7fLeR4o5LCoX6yy175C/0VdqDQ/ZrfG7p
+         JrLz8MGuy1vZPdl0uYVuMVARDqccu+jup6qJluxKvPPrTK0PnJzqmeIXcLspnDBvGjAB
+         28l6iDYVBZvThUhsgsVitLhsBVVZwf7NZrNP4pCsksrb23E021ko9yCKh8VCCuTpjPYL
+         kKxYrudkzSA66f33j0Po2wxIV3b0eapPJR+RSGVXZJrl/R1WgeFiWKhoLmZpKkU37PGF
+         Mfhde4Y0+7w713gvC2nFixTgr2sa6r3O6aCLxXzCEYA+SANzaK351kQzbPkaoI4hHA7l
+         SbmQ==
+X-Gm-Message-State: AFq9FYLobo1zeruh8rB1TmKhrBsws11M1RVZYK+RcOhoKf0+zmgFViOz
+	KPNYNROPsVtiQI8gynMhO0rnG/YuWewGZzBDR1pRaAIpprqaQ3d0a5a/jznZDokse3wex6cgOWC
+	hbuzquXAjBX4wZos1hDvf3vmzdx2gEDk=
+X-Gm-Gg: AYBFou1u1UJEyZE0qR3gSbPO7/AAN12p3DKtyOWAJPy7q7Ey1RdD1bCpQvIxXiEkR1u
+	TZakzScUIFDV+WFi1OGBGb8XNoiSJeBxLsuPBU+Q1vtPjlpuQC9r4XuSQa0uXM51A8DbIjCjdIW
+	MgTeA69T+BRjqfWBS3poyqXBPcYho9VcjZ5nuX1dlAQCvbst7cOFvy0ukl6Yug09aN7SYeZtvpS
+	IpSMQb4EIZscouW+D+wLrI8SxQtZ6/0P0GtewVEpu6ShEgWyaFCTX6eRKvA1ELyhMW0xe9Yjq8L
+	iZB7LCIDxgyILi3gvAHniJ7/OYNMJ48qY4IMPff5LwhQK6E0AJRFt4qkMMqJ4r5p3zLHKHpDh4y
+	Qz/vM5gZ8m1t20deb2RuiVY0hUgNekDi0T5OICDBh7WQ3zWd6/pdQfXHwj4unn4Z0n2kYIYhR0B
+	M+qfDuAjInjMbDDxM6EcvKQ88XndG4FNzS2FqeKnZpDf+mKUARME8EOp54IEDxyzy12bDPoml+D
+	gIW
+X-Received: by 2002:a05:6402:23c9:b0:6aa:ff76:3076 with SMTP id
+ 4fb4d7f45d1cf-6af9e356e84mr9525001a12.32.1791242217990; Mon, 05 Oct 2026
+ 16:16:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261005225028.465866-1-rosenp@gmail.com> <179124091720.2231598.15531231594364757004@kernel.org>
+In-Reply-To: <179124091720.2231598.15531231594364757004@kernel.org>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Mon, 5 Oct 2026 16:16:46 -0700
+X-Gm-Features: AclHuK_s9Eud8-TCUpDZfMQzzNEAVfdhAdJIVWcNPPNRW014EWQvbIbsbgBlhm8
+Message-ID: <CAKxU2N-POZFgujAAELRjvoT0N5AEF4mg=GzZvtQah2iQuhp5cQ@mail.gmail.com>
+Subject: Re: [PATCH v3] net: phy: marvell: keep WOL_EIE across interrupt reconfiguration
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Michael Stapelberg <michael@stapelberg.de>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ip6gre_tunnel_xmit() and ip6erspan_tunnel_xmit() check the packet length
-with pskb_inet_may_pull(), which looks at skb->protocol only, while the
-code that follows parses the packet through VLAN tags with
-skb_protocol(skb, true). The parsing started to look through the tags
-with the two commits in the Fixes tags; the check was left as it was.
-A VLAN-tagged frame whose inner IPv4/IPv6 header is not in the linear
-area passes the check, and the inner header is read anyway. A 20 byte
-tagged frame on ip6gretap and a 10 byte frame on ip6erspan are sent
-out, while an untagged frame that is too short for its IP header is
-already dropped.
-
-Use skb_vlan_inet_prepare(), as the IPv6 receive path does since
-commit 81c734dae203 ("ip6_tunnel: use skb_vlan_inet_prepare() in
-__ip6_tnl_rcv()"). The second argument (inner_proto_inherit) depends on
-the device: ip6gre_tunnel_xmit() serves both ip6gre (ARPHRD_IP6GRE, no
-MAC header) and ip6gretap (ARPHRD_ETHER), so it is
-dev->type != ARPHRD_ETHER there; ip6erspan is always an Ethernet device,
-so it is false. vxlan does the same with no_eth_encap.
-
-skb_vlan_inet_prepare() walks the VLAN tags from skb->mac_len - VLAN_HLEN,
-or from ETH_HLEN if skb->mac_len is 0, and on transmit skb->mac_len is
-still what the skb was received with. For a packet that came in through
-an NBMA gre device and is routed out of a VLAN on ip6gretap or ip6erspan,
-the walk starts inside the inner IPv4 header. Clear skb->mac_len for
-Ethernet devices first.
-
-An ip6gre device created without a remote uses ip6gre_header_ops, and
-ip6gre_header() pushes a pseudo IPv6 header in front of the packet, so
-there skb->data is not where the packet starts. skb_vlan_inet_prepare()
-would move the network header onto that pseudo header, whose payload
-length and GRE words are never written, and an ICMPv6 error for the
-packet then quotes them: KMSAN reports uninit-value in
-icmpv6_push_pending_frames(). Keep pskb_inet_may_pull() for that case,
-as before this change.
-
-With this change the two short frames above are dropped. gre_gso.sh,
-l2_tos_ttl_inherit.sh and the mirror_gre, mirror_gre_vlan,
-mirror_gre_bridge_1q and mirror_gre_changes forwarding selftests pass.
-A constant true instead breaks the ip6gretap cases of mirror_gre.sh,
-and a constant false breaks the ip6gre GSO cases of gre_gso.sh.
-
-This fixes the check and the skb_protocol() dispatch in
-ip6gre_tunnel_xmit(). Three related, pre-existing problems are left for
-follow-up patches: ip6_tnl_xmit() parses the VLAN tags once more after
-the GRE header has been pushed, so TTL and traffic class inheritance for
-a tagged frame on ip6gretap with a key or on ip6erspan is still taken
-from the wrong offset; the ip6gre header_ops branch kept above still has
-the check/parse mismatch once a remote is set with changelink; and
-gre_tap_xmit(), erspan_xmit() and ip_tunnel_rcv() on the IPv4 side have
-the same mismatch.
-
-Fixes: 3f8a8447fd0b ("ip6_gre: use actual protocol to select xmit")
-Fixes: b09ab9c92e50 ("ip6_tunnel: allow to inherit from VLAN encapsulated IP")
-Reported-by: syzbot+6023ea32e206eef7920a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6023ea32e206eef7920a
-Suggested-by: Eric Dumazet <edumazet@kernel.org>
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
-
----
-v5: no functional change from v4; only the commit message and two
-    comments. The AI review asked whether the check/parse mismatch is
-    fully fixed here. I compared v4 against net on the cases it named:
-    no regression. The ip6gretap-with-key and ip6erspan outer headers
-    are unchanged, the forwarded ip6gretap-without-key case starts to
-    inherit correctly, and the short tagged frames are now dropped.
-    Spell out in the message and the comments what is and is not fixed
-    here; ip6_tnl_xmit(), the header_ops branch and the IPv4 paths are
-    follow-ups.
-    Link: https://lore.kernel.org/netdev/179121211133.434549.1381649683777834470@kernel.org/
-v4: https://lore.kernel.org/netdev/20261004145205.226974-1-littlesmilingcloud@gmail.com/
-v3: https://lore.kernel.org/netdev/20260119112512.28196-1-fw@strlen.de/
-v2: https://lore.kernel.org/netdev/20260106144529.1424886-1-edumazet@google.com/
-v1: https://lore.kernel.org/netdev/20260105100330.2258612-1-edumazet@google.com/
-
- net/ipv6/ip6_gre.c | 27 ++++++++++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
-
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index e61cb10b50dc..8b286bfd2c4c 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -883,8 +883,23 @@ static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *skb,
- 	__be16 payload_protocol;
- 	int ret;
- 
--	if (!pskb_inet_may_pull(skb))
--		goto tx_err;
-+	if (dev->type != ARPHRD_ETHER && dev->header_ops) {
-+		/* ip6gre_header() has pushed a pseudo header in front of
-+		 * the packet, so skb->data is not where the packet starts.
-+		 */
-+		if (!pskb_inet_may_pull(skb))
-+			goto tx_err;
-+	} else {
-+		/* skb_vlan_inet_prepare() and the skb_protocol() dispatch
-+		 * below walk the VLAN tags from skb->mac_len - VLAN_HLEN, or
-+		 * from ETH_HLEN if it is 0; a forwarded skb still has the
-+		 * mac_len of the device it was received on.
-+		 */
-+		if (dev->type == ARPHRD_ETHER)
-+			skb->mac_len = 0;
-+		if (skb_vlan_inet_prepare(skb, dev->type != ARPHRD_ETHER))
-+			goto tx_err;
-+	}
- 
- 	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
- 		goto tx_err;
-@@ -934,7 +949,13 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
- 	__u32 mtu;
- 	int nhoff;
- 
--	if (!pskb_inet_may_pull(skb))
-+	/* skb_vlan_inet_prepare() below walks the VLAN tags from
-+	 * skb->mac_len - VLAN_HLEN, or from ETH_HLEN if it is 0, to check
-+	 * the length; a forwarded skb still has the mac_len of the device
-+	 * it was received on.
-+	 */
-+	skb->mac_len = 0;
-+	if (skb_vlan_inet_prepare(skb, false))
- 		goto tx_err;
- 
- 	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
--- 
-2.47.3
-
+On Mon, Oct 5, 2026 at 3:55=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+This was tested on a Marvell Helios 4 device.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
