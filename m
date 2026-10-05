@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4ED37A85C;
-	Mon,  5 Oct 2026 07:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4BF37E2EB;
+	Mon,  5 Oct 2026 07:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791185770; cv=none; b=jn39ELfLiF/t+AtELAdfc4WHVdOyA2dZ665Q+k7rkeFggKEPXtn4y+W1medyPiejkuaK2tYIgl5Tq5jIb3ntEuqvtvvfR+aFlBlMLnUakETM0uJM+0uG5xlPzGQjlbj1Z9cF9WTHQ8AFBMdwEg/ecZmydiQ4J2fm/FBS3ayNASc=
+	t=1791185772; cv=none; b=XKwHEVh59U8Lt8Jit+tKy3DzrONx/4e9+5ynVppwLOD8fY3FDFwIUjcb+WT5vsvZnbdHTxOluAvvtYkCx9oxdXnEAwpB8/Yt/nlrv83TwfAehAIIE0ytolhRpQedaCCoR4yDSA7yNteOVK2y5z7NGrFzepZ9cIWRAsWFzMIzTRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791185770; c=relaxed/simple;
-	bh=YV/ViyhJ+egMq6qE/Z5S9GNbo5Ukq6eXG150/uM9Kyc=;
+	s=arc-20240116; t=1791185772; c=relaxed/simple;
+	bh=lWFA/lphBDfFlKdg5ZeH8Da13s7WF/Y+TGpl0iNPuM4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PD0p+WNfgEf5IxaG57VdrfQ9KTW0/SK5qC04tgYs2IVdr6V7f5wwGqr5Tv89vgj4LWU6yrelUb0ueKsy8lV0HIvsxOVRvC+IuCf/dxlCNKoQiJn1WYzHtgkbz59TsVC2Ch1R3Nsqq+u1dMTG0v+Tb6ZbyqdJ1OBm9u/Q3aQalvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JqiPPlHU; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=XuFtAKhQhQUsOryug/9aK5I9xTc9Arin6CCCz4evO7JuDevu+6IvLUCajg6Xy1Nj3MZXdFxVwSBPHc7u/6840fvUzkfdo5fHkBY+iQajInajEXjH23+Gs/1t7ZIUBAGHGHidzYFjxfWcOHwHaWKkJpExB+8QLiiWk3AngceL1/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frTp5m5F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JqiPPlHU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B941F000FF;
-	Mon,  5 Oct 2026 07:36:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frTp5m5F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F37D1F00893;
+	Mon,  5 Oct 2026 07:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791185769;
-	bh=bf5kQbHXQqvwD5eXlquu0rrhNYozh9nHt2RR52WdqWg=;
+	s=k20260515; t=1791185770;
+	bh=wlE1MxfAOeA6OUdgmn9IID89AexVN0AIyazCIkBDGrY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JqiPPlHU0Sggpg8LGWjOnJGenhxPoHIjV19WRoVBDuOUVuSsTictdfboWtdO3Pt86
-	 X//MNaljk8ybZku+AqgItChdSNKEoqLWL/ryrDyV4rUToNX7qp3hlJO6dVtMmbzKHH
-	 hpVJaGgxX9qz19qXV/AyBgHU6QCQiH9emDE7UMEW9cX8NMuWwKjUx/vy1KWY9oQIwb
-	 9gT0GFupV9OPeSrtTl/Z0jOhceBdsc4ymaRmP1b2B0qqDs5KxDWK6w4oOyH810ZZyY
-	 5zmLqxmvyjuE5TK21whrVGdpWe4lMCJuiQ8E6G1H5nwy8WZBIWpmlRDwAun2FNzdkn
-	 Re8+FW9u8i/HQ==
+	b=frTp5m5FFMiIehoN9KO4h/49gjrqMsWBVS16+FSM4hQstV1Qfe9V9OTxGS6aSTsnL
+	 jVDYI7x9YQE+CEdXEd+EomI6cnaTWjxFJCBz6LVI8kWWFC/vPWSmp+8ayq5XxLRz5r
+	 jveLNMX9g262A2+fcHTN0en0+dvFIyYEfYJwvsGrE1CdGh6QbB9QNx6hnjGKiIB7TY
+	 oc4rl5dfWMHTMM2VZfwtnTzZZ/arMLWSxXsuQS79qkzldjuavox8lUdPwfcvCknLLZ
+	 M1lLFoSRFHa6Zbb8+eNpB4BDYVNG3DK3UYsQXh2cEJAsBgqi9oLGmagg53AFj0UiY6
+	 Kz18bZCDMnxdg==
 Subject:
- Re: [PATCH net-next v15 5/5] net: rnpgbe: Add link status handling support
+ Re: [PATCH net v2] vhost/vsock: size receive SKBs from declared payload
 From: netdev-bot+sashiko@kernel.org
-To: dong100@mucse.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
- u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, yaojun@mucse.com
-Date: Mon, 05 Oct 2026 07:36:08 +0000
-Message-ID: <179118576816.434549.7440017946535436802@kernel.org>
-In-Reply-To: <0FD7535DB8A65243+20261004065947.225144-1-dong100@mucse.com>
-References: <0FD7535DB8A65243+20261004065947.225144-1-dong100@mucse.com>
+To: 4ncienth@gmail.com
+Cc: stefanha@redhat.com, sgarzare@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
+ will@kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
+Date: Mon, 05 Oct 2026 07:36:09 +0000
+Message-ID: <179118576977.434549.3015022133910830215@kernel.org>
+In-Reply-To: <20261004073419.4039011-1-4ncienth@gmail.com>
+References: <20261004073419.4039011-1-4ncienth@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,112 +59,97 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Only two PF-to-firmware command senders follow the mailbox
-  rule this patch documents.
+- [Medium] The Fixes: tag names the wrong commit.
+- [Low] The commit message presents the new `payload_len > len -
+  sizeof(hdr)` check in vhost_vsock_alloc_skb() (drivers/vhost/vsock.c)…
 
 --
 
-net: rnpgbe: Add link status handling support
+vhost/vsock: size receive SKBs from declared payload
 
-This commit adds handling of firmware link events for the rnpgbe driver.
-Link events arrive over the mailbox and a service task updates the
-carrier state. It also sends SET_PHY_UP and LINK_REPORT_EN on open and
-close, and adds a PHY_LINK_SET command at probe that fails probe if the
-firmware does not acknowledge it.
+This patch changes vhost_vsock_alloc_skb() to copy the virtio_vsock_hdr
+into a stack object and validate hdr.len before allocating. The skb is
+then sized from the declared payload plus the header, not from the total
+guest descriptor length. A guest can then no longer pin descriptor-sized
+allocations by sending zero or short payloads.
 
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
-> index 2310f01df1f50..ef00b948ad0f6 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c
+> Use payload_len > len - sizeof(hdr) for validation.  This avoids addition
+> overflow on 32-bit hosts and ensures payload_len fits the subsequent
+> int-length copy path.
 
-[ ... ]
+[Severity: Low]
+Should this paragraph say that the old check already overflowed on
+32-bit hosts? This patch removes the following check from
+vhost_vsock_alloc_skb():
 
-> + * On success the hardware mailbox remains locked. The caller must process
-> + * the event and call mucse_mbx_event_end() to acknowledge it and release
-> + * the hardware mailbox lock.
-> + *
-> + * Firmware releases the hardware mailbox lock before raising the event
-> + * interrupt and does not access the shared window again until the PF
-> + * acknowledges the event. Therefore, failure to acquire the lock indicates
-> + * a mailbox fault rather than transient contention.
+	if (payload_len + sizeof(*hdr) > len) {
 
-[ ... ]
+That check came from 10a886aaed29 ("vhost/vsock: Avoid allocating
+arbitrarily-sized SKBs"), which is Cc: stable. That commit dropped the
+earlier payload_len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE short-circuit and
+kept only the addition.
 
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> index e28f3193aa854..683e0ea741136 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
+VHOST_VSOCK has no 64BIT dependency, so size_t can be 32 bits. If the
+guest sets hdr.len anywhere in [0xFFFFFFD4, 0xFFFFFFFF], then
+payload_len + 44 wraps to a value in [0, 43]. That is below len, so the
+bad length passes the check.
 
-[ ... ]
+In mainline this seems harmless. virtio_vsock_skb_put() sets skb->len to
+about 4 GiB. skb_copy_datagram_from_iter() then gets a negative int
+length, copies nothing and returns -EFAULT, and the skb is freed.
 
-> +int mucse_mbx_set_link(struct mucse_hw *hw, u32 advertising, bool autoneg,
-> +		       u32 speed, u32 duplex, u32 mdix_ctrl)
-> +{
+Trees that have 10a886aaed29 but not ab9aa2f3afc2 still copy the payload
+with:
 
-[ ... ]
+	copy_from_iter(skb->data, payload_len, &iov_iter)
 
-> +	len = le16_to_cpu(req.r.datalen);
-> +	mutex_lock(&hw->mbx.lock);
-> +	err = mucse_write_and_wait_ack_mbx(hw, req.dwords, len);
-> +	mutex_unlock(&hw->mbx.lock);
+Wouldn't check_copy_size() hit WARN_ON_ONCE(bytes > INT_MAX) there? On
+32-bit hosts that would be a WARN the guest can trigger, and a host
+panic with panic_on_warn.
+
+This patch fixes that as a side effect. Would it be worth saying so in
+the changelog and adding a Fixes: tag for 10a886aaed29?
+
+> Fixes: ab9aa2f3afc2 ("vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers")
 
 [Severity: Medium]
-Could a pending LINK_CHANGE_EVT stop the firmware from picking up this
-command, or the POWER_UP command?
+Is this the right commit for the Fixes: tag? vhost_vsock_alloc_skb()
+sizes the skb from the descriptor length:
 
-The kernel-doc of mucse_mbx_event_begin() says firmware does not touch
-the shared window until the PF acknowledges the event. Only
-mucse_mbx_phyup() and mucse_mbx_link_report() send through
-mucse_write_mbx_coalesce_event(), which calls mucse_ack_pending_event()
-first.
+	len = iov_length(vq->iov, out);
+	...
+	/* len contains both payload and hdr */
+	skb = virtio_vsock_alloc_skb(len, GFP_KERNEL);
 
-mucse_mbx_set_link() and mucse_mbx_powerup() go through
-mucse_write_and_wait_ack_mbx()->mucse_write_mbx_pf(). That path writes
-FWPF_SHM and bumps pf_req without checking FW2PF_CNT for an event that
-has not been acknowledged.
+This sizing seems to date from 71dc9ec9ac7d ("virtio/vsock: replace
+virtio_vsock_pkt with sk_buff"). Before that commit,
+vhost_vsock_alloc_pkt() sized the buffer from the header:
 
-At teardown, rnpgbe_down() only warns if LINK_REPORT_EN(0) fails:
+	pkt->buf = kvmalloc(pkt->len, GFP_KERNEL);
 
-    err = rnpgbe_send_notify(hw, false, mucse_fw_link_report_en);
-    if (err) {
-        ...
-        dev_warn(&hw->pdev->dev, "Fw will still report link event\n");
-    }
+Here pkt->len came from hdr.len, which is the behaviour this patch
+restores.
 
-The following SET_PHY_UP(0) drops the link, so firmware can post
-LINK_CHANGE_EVT. Then rnpgbe_rm_adapter() and rnpgbe_dev_shutdown() do:
+ab9aa2f3afc2 only switched the call from virtio_vsock_alloc_linear_skb(len)
+to virtio_vsock_alloc_skb(len) so that large sizes could be nonlinear. It
+did not change how the size is chosen.
 
-    rnpgbe_free_mbx_irq(mucse);
-    rnpgbe_notify_powerdown(mucse);
+ab9aa2f3afc2 isn't tagged for stable. Trees with 71dc9ec9ac7d and
+10a886aaed29 but not ab9aa2f3afc2 would still have the problem in its
+linear form. That probably includes 6.6.y and 6.12.y.
 
-rnpgbe_free_mbx_irq() frees the IRQ and cancels mbx_work. Nothing
-acknowledges the event, and POWER_UP(0) goes out on the
-non-coalescing path.
+In those trees, a 64 KiB descriptor with a short payload allocates and
+keeps a kmalloc head of about 128 KiB. Payloads above GOOD_COPY_LEN (128
+bytes) skip the coalescing path in virtio_transport_recv_enqueue(). The
+whole head stays queued, but only the payload bytes count against
+buf_alloc. The changelog itself says "Linear skbs retain their full head",
+which covers this case.
 
-At probe, the driver never turns link reporting off. Suppose reporting
-was left enabled by a previous instance, for example after a crash or
-kexec with the interface up, and RESET_HW does not clear it. The new
-PHY_LINK_SET restarts autonegotiation, so an event could be posted
-while set_link or get_macaddr is in flight. Also, mucse_mbx_reset()
-treats an event that is already pending as consumed:
+10a886aaed29 already uses Fixes: 71dc9ec9ac7d for the descriptor-sized
+allocation. Should this patch use the same tag, so the stable trees pick
+it up?
 
-    val = mbx_data_rd32(mbx, MUCSE_MBX_FW2PF_CNT);
-    hw->mbx.fw_req = FIELD_GET(GENMASK_U32(15, 0), val);
-
-If the firmware rule holds, the PF would wait out the mailbox ack
-timeout. At remove or shutdown that gives "Send powerdown to hw
-failed". At probe, the error from rnpgbe_setup_default_link() now
-fails the probe.
-
-Should every PF-to-firmware sender acknowledge a pending event first,
-the way mucse_write_mbx_pf_coalesce_event() does? Alternatively,
-should a pending event be drained before these commands are sent?
-
-> +
-> +	return err;
-> +}
-
-[ ... ]
+Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/B438B0A83ACCA2DE%2B20261004065604.224873-1-dong100%40mucse.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004073419.4039011-1-4ncienth%40gmail.com
