@@ -1,228 +1,177 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CB937C108;
-	Mon,  5 Oct 2026 19:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65D441A903
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 19:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791228444; cv=none; b=o2bey1XYGmw3p8tc3B5nFSbwapXZZtfdISXOyFyapj3hqnm24KOLtsxUWPBpDg35D/6v8i7O19Q1VPObiaS7VD2nRdm+racEgwRVaDFljFQ3zRB8QFc3ySXyl3vThFqX93htgMdjzJzGVRSXUUbqHmb4kBL+Udd2gHa0sQD1IUs=
+	t=1791229095; cv=none; b=e6FQeeRUrcvCCc05pvwCM4OMGliGimyqvTj+YhaiZiQ35JwseZBjq8CP7mdbpqa4Q2kdbmYkZIcbXRb+EBChzn00p5FNHqa5AVhsyzzsP5OYnSPyy7P/1R80L3MTs8ELkdDtnv+ND5YAPvKdACwKq/R0fehrvU918OzEKGtEFBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791228444; c=relaxed/simple;
-	bh=p25mz2c2U6rP08YevsvgxbMxPR/DzThDgMzYskbcgug=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gp4QnJ5DRl1MD/PZDi3GlCkVrDfsyGaY2ocCJbn3hLeF+LitjBKNXGydLq+Z+auDrOT3jfnKgi8kEI47ydj+j8AttIhJnQGJ8G3PvST9K3usGzl58rc0Gyw88hHQiHhfsvxo7B4ID1GuK5LqgNdUpKymITFYEY6aQZ3fcSTvmik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cw1yKbeM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791229095; c=relaxed/simple;
+	bh=o1DdN2BAqB+RwlvujzPL+tmjXmn7xHOTQPxRxJOfF+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T+o67IEtXeQlvbpzSuwHkLvlktnsop4Oek5lew+WdnIGkTssFKMEs+JS0kweONQlTzVErQB5lXejd+BULj/Ak/57Ywh2KXYJCzZ4F8OvU4VYUpYfoTWXgjFqoJBwqcdxH355pLjsPj0P1O5ouBzaAkvfvby1nXAkP/bf/1PUJwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCzo5cGP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cw1yKbeM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9193B1F000FF;
-	Mon,  5 Oct 2026 19:27:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCzo5cGP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E82F1F000FF;
+	Mon,  5 Oct 2026 19:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791228442;
-	bh=Ba5ES8avXTTTld+4fo4sHn4uA/GOhpAOcPT2KQAZMm8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cw1yKbeMb+2MPymWgEkSDwzKzm3DoRJtLVnQtp22HOM6axkP36kNakQPhQ+fsr9pA
-	 80W/jgF7wwSuSwEe0DfQGGu22iRbJTzaD7GK/MjgGPiGPzzKmSSoED7KFeeyM9LIbV
-	 Xxpf+IPHOLNnLJ2vGlVDZ6aaH0L6t7EEaGJd7gsZFhgHE8cxhOy3khXGCBrd4Ey9Gk
-	 yTjuj4/AQ+o93MW1GT/PXuZSbGdjC0hP/AJF7YBfL2eJ2PCD6RYf8AtoVm5ICoOOac
-	 +tVk6TC41NCm6Ync3ugbJbosSPdhDhVKZBD4S4OhWfLM7yxtkm9qcCIEhNC+eeaeYO
-	 3NbF3kohtCY2g==
-Subject: Re: [PATCH net-next] net: phy: motorcomm: Add cable test support for
- internal YT861x PHYs
-From: netdev-bot+sashiko@kernel.org
-To: mmyangfl@gmail.com
-Cc: netdev@vger.kernel.org, Frank.Sae@motor-comm.com, andrew@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 19:27:21 +0000
-Message-ID: <179122844105.434549.17405741788888758665@kernel.org>
-In-Reply-To: <20261004184246.1260426-1-mmyangfl@gmail.com>
-References: <20261004184246.1260426-1-mmyangfl@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791229094;
+	bh=ssNngxccJb9GMrBBdm78UGfxgNKGvyWAKOtou/kAniM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=WCzo5cGP3IxJcU4OMPeUNvcVliajME/XRG5J6qpE6grOXACJTa/acU1SMT7R8iSUD
+	 GyvKx9HCLa44q3QiyQrlj9/tpANmTE2aQBIVFsgE/BFvfx6YfUM5E6DwLATgLt7RZc
+	 D7HYD13DqbXTHVm1vM9b5pkAVlgASwt4KoVXRlL30/cLbaMi1REs8ayRAK1cGeb6jx
+	 cJsK+sF6tKiR2Yl5bhlNkdEDhaMl/lsPwl4vfMOwyjgf1qeCOBvX/12BS77QvqL1uc
+	 NXutF9oSvvEeP6JHbkFkhpLRborEjl8jfOhVeqXAELhjNVNHpjgb3yc8zooX8edGud
+	 MMitTV6NxC7hA==
+Message-ID: <3663b5be-27a0-4b37-a8a1-f9271d02777e@kernel.org>
+Date: Mon, 5 Oct 2026 21:38:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net 1/3] flow_dissector: avoid u16 truncation of
+ skb->len when computing thoff
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ willemb@google.com, mst@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, edumazet@google.com
+References: <20261001191140.2818991-2-edumazet@kernel.org>
+ <179121420852.434549.8121508269046937218@kernel.org>
+Content-Language: en-US
+From: Eric Dumazet <edumazet@kernel.org>
+In-Reply-To: <179121420852.434549.8121508269046937218@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 10/5/26 17:30, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The fix is incomplete: __skb_flow_dissect() still has a second
+>    path that truncates a length to u16 when it computes thoff, the BPF…
+> 
+> --
+> 
+> flow_dissector: avoid u16 truncation of skb->len when computing thoff
+> 
+> This patch changes the thoff computation at the end of
+> __skb_flow_dissect() to compare in u32 instead of u16. If the result
+> does not fit in key_control->thoff, it is capped to U16_MAX and the
+> dissection is reported as failed.
+> 
+>> diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+>> index 8aa4f9b4df810..27d8a01bc9230 100644
+>> --- a/net/core/flow_dissector.c
+>> +++ b/net/core/flow_dissector.c
+> 
+> [ ... ]
+> 
+>> @@ -1692,7 +1693,13 @@ bool __skb_flow_dissect(const struct net *net,
+>>   	ret = true;
+>>   
+>>   out:
+>> -	key_control->thoff = min_t(u16, nhoff, skb ? skb->len : hlen);
+>> +	thoff = min_t(u32, nhoff, skb ? skb->len : hlen);
+>> +	if (unlikely(thoff > U16_MAX)) {
+>> +		/* Cannot be represented in key_control->thoff. */
+>> +		thoff = U16_MAX;
+>> +		ret = false;
+>> +	}
+>> +	key_control->thoff = thoff;
+> 
+> [Severity: Medium]
+> Does the BPF flow dissector path in the same function still have the
+> same u16 truncation?
 
-- [High] yt861x_cable_test_get_status() in drivers/net/phy/motorcomm.c
-  uses one variable, `ret`, for two different things.
-- [Medium] yt861x_cable_test_start() clears YT8521_ESC1R_SLEEP_SW (auto-
-  sleep) in ext register 0x27 at lines 2568-2570.
-- [Low] The MOTORCOMM_PHY Kconfig help in drivers/net/phy/Kconfig still
-  says "Currently supports YT85xx Gigabit Ethernet PHYs." The patch adds…
 
---
+Seems legit, I will take care of this in a separate and stand alone 
+patch next week (after LPC)
 
-net: phy: motorcomm: Add cable test support for internal YT861x PHYs
+> 
+> When a BPF flow dissector is attached to init_net or the netns,
+> __skb_flow_dissect() returns early and never reaches this out: label:
+> 
+> net/core/flow_dissector.c:__skb_flow_dissect() {
+>      ...
+> 	result = bpf_flow_dissect(prog, &ctx, n_proto, nhoff,
+> 				  hlen, flags);
+> 	if (result != BPF_FLOW_DISSECTOR_CONTINUE) {
+> 		__skb_flow_bpf_to_target(&flow_keys, flow_dissector,
+> 					 target_container);
+> 		rcu_read_unlock();
+> 		return result == BPF_OK;
+> 	}
+>      ...
+> }
+> 
+> bpf_flow_dissect() still clamps as u16, so the int hlen (skb_headlen())
+> is truncated before the comparison:
+> 
+> net/core/flow_dissector.c:bpf_flow_dissect() {
+>      ...
+> 	flow_keys->nhoff = clamp_t(u16, flow_keys->nhoff, nhoff, hlen);
+> 	flow_keys->thoff = clamp_t(u16, flow_keys->thoff,
+> 				   flow_keys->nhoff, hlen);
+>      ...
+> }
+> 
+> Then __skb_flow_bpf_to_target() copies the value as is:
+> 
+> 	key_control->thoff = flow_keys->thoff;
+> 
+> Take a linear head of 65540 bytes and a program that reports nhoff=14,
+> thoff=34 and returns BPF_OK. (u16)hlen is 4, so both offsets collapse
+> to 4, and __skb_flow_dissect() returns true.
+> 
+> That seems to be the case the commit message describes:
+> 
+>    "Whenever skb->len (or hlen) modulo 65536 is smaller than nhoff, the
+>    truncated length wins and thoff is set to a bogus small value, even
+>    when the dissection succeeded."
+> 
+> and:
+> 
+>    "report the dissection as failed rather than silently returning a
+>    wrong transport offset."
+> 
+> skb_headlen() above 65535 looks reachable. packet_snd() skips the MTU
+> check when vnet_hdr.gso_type is set. Both packet_alloc_skb() and
+> tun_alloc_skb() grow the linear part when len exceeds the fragment
+> capacity:
+> 
+> 	linear = len - MAX_SKB_FRAGS * (PAGE_SIZE << PAGE_ALLOC_COSTLY_ORDER);
+> 
+> So a GSO write of roughly 622KB on 4K pages gives a linear head over
+> 64KB. Attaching the BPF dissector does require privilege.
+> 
+> Callers that trust a successful return would then put the transport
+> header inside the L2/L3 header. Examples are skb_probe_transport_header()
+> calling skb_set_transport_header(skb, keys.control.thoff). Another is
+> __virtio_net_hdr_to_skb(), after "net: always dissect GSO packets in
+> __virtio_net_hdr_to_skb()" later in the series. The later patches in
+> the series leave bpf_flow_dissect() unchanged.
+> 
+> Should bpf_flow_dissect() also compare in u32, or cap hlen at U16_MAX,
+> and report failure when the offset cannot be represented?
+> 
+>>   	key_basic->n_proto = proto;
+>>   	key_basic->ip_proto = ip_proto;
+>>
+> 
 
-This patch adds a driver entry for the YT861x family PHYs (PHY ID
-0x01e04281) built into YT921x switches. Before this, they bound to the
-generic PHY driver. The new entry adds TDR cable test start and status
-callbacks.
-
-> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
-> index 90a4f86f2758b..ef15fef304aa9 100644
-> --- a/drivers/net/phy/motorcomm.c
-> +++ b/drivers/net/phy/motorcomm.c
-
-[ ... ]
-
-> @@ -2538,6 +2554,95 @@ static int yt8521_get_features(struct phy_device *phydev)
->  	return ret;
->  }
->  
-> +/**
-> + * yt861x_cable_test_start() - start a cable diagnostic (TDR) test
-> + * @phydev: a pointer to a &struct phy_device
-> + *
-> + * Returns: 0 or negative errno code
-> + */
-> +static int yt861x_cable_test_start(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +
-> +	/* auto sleep would abort the TDR test */
-> +	ret = ytphy_modify_ext_with_lock(phydev,
-> +					 YT8521_EXTREG_SLEEP_CONTROL1_REG,
-> +					 YT8521_ESC1R_SLEEP_SW, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return ytphy_write_ext_with_lock(phydev, YT861X_TDR_CTRL_REG,
-> +					 YT861X_TDR_CTRL_START);
-> +}
-
-[Severity: Medium]
-Can auto-sleep stay disabled if the test does not finish normally?
-
-yt861x_cable_test_start() clears YT8521_ESC1R_SLEEP_SW. The only code
-that sets it again is the success path at the end of
-yt861x_cable_test_get_status(). These exits skip that restore:
-
-- the YT861X_TDR_CTRL_REG write above fails, and the error is returned
-  without restoring the sleep bit
-- the YT861X_TDR_STATUS_REG read in yt861x_cable_test_get_status() fails,
-  so the state machine calls phy_abort_cable_test()
-- phy_stop() aborts the test, for example on "ip link set down" while a
-  test is running
-- the restoring ytphy_modify_ext_with_lock() call itself fails
-
-The abort path is:
-
-phy_stop()
-  phy_abort_cable_test()
-    ethnl_cable_test_finished()
-    phy_init_hw()
-      genphy_soft_reset()
-
-The new driver entry has no config_init, so phy_init_hw() never writes
-YT8521_EXTREG_SLEEP_CONTROL1_REG again. The success path sets SLEEP_SW
-itself before calling genphy_soft_reset(). That suggests a BMCR reset does
-not restore this ext register.
-
-The restore also always writes SLEEP_SW=1 instead of the value that was
-set before the test.
-
-Could the previous value be saved and restored on every exit path? Or
-could the bit be set again from a config_init callback?
-
-> +
-> +/**
-> + * yt861x_cable_test_get_status() - report cable diagnostic test results
-> + * @phydev: a pointer to a &struct phy_device
-> + * @finished: set to true when the test is complete
-> + *
-> + * Returns: 0 or negative errno code
-> + */
-> +static int yt861x_cable_test_get_status(struct phy_device *phydev,
-> +					bool *finished)
-> +{
-> +	int ret;
-> +
-> +	*finished = false;
-> +
-> +	ret = ytphy_read_ext_with_lock(phydev, YT861X_TDR_STATUS_REG);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (ret & YT861X_TDR_STATUS_BUSY)
-> +		return 0;
-> +
-> +	for (int pair = ETHTOOL_A_CABLE_PAIR_A; pair <= ETHTOOL_A_CABLE_PAIR_D;
-> +	     pair++) {
-> +		u8 code;
-> +
-> +		switch ((ret >> (2 * pair)) & 0x3) {
-
-[ ... ]
-
-> +		ethnl_cable_test_result(phydev, pair, code);
-> +
-> +		if (code != ETHTOOL_A_CABLE_RESULT_CODE_OK &&
-> +		    code != ETHTOOL_A_CABLE_RESULT_CODE_UNSPEC) {
-> +			ret = ytphy_read_ext_with_lock(phydev,
-> +						       YT861X_TDR_PAIR_LENGTH_REG(pair));
-
-[Severity: High]
-Does this overwrite the status word in ret while the switch above still
-needs it for the remaining pairs?
-
-If a pair is SHORT or OPEN, ret is replaced by that pair's fault length in
-cm, or by a negative errno if the read fails. The next pairs are then
-decoded from bits of that value, not from YT861X_TDR_STATUS_REG.
-
-Take an unplugged cable, where the status is 0x00ff (all pairs open).
-Pair A is reported OPEN. If each pair's length reads back as 300 (0x12c),
-pair B decodes as OPEN, pair C as SHORT and pair D as OK.
-
-If the length read returns -EIO, later pairs decode as SHORT or OPEN from
-the errno bits. Length registers are then read for faults the hardware
-never reported.
-
-Should the status word be kept in a separate variable from the length
-read?
-
-> +			if (ret >= 0)
-> +				ethnl_cable_test_fault_length(phydev, pair,
-> +							      ret);
-> +		}
-> +	}
-
-[ ... ]
-
-> @@ -3194,7 +3308,7 @@ static struct phy_driver motorcomm_phy_drvs[] = {
->  
->  module_phy_driver(motorcomm_phy_drvs);
->  
-> -MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/8821 PHY driver");
-> +MODULE_DESCRIPTION("Motorcomm 8511/8521/8531/8531S/861x/8821 PHY driver");
-
-[Severity: Low]
-This isn't a bug, but the MOTORCOMM_PHY help text in
-drivers/net/phy/Kconfig still says:
-
-	  Currently supports YT85xx Gigabit Ethernet PHYs.
-
-The header comment and MODULE_DESCRIPTION now mention 861x. Should the
-Kconfig help be updated to match? It was already missing YT8821 before
-this patch.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004184246.1260426-1-mmyangfl%40gmail.com
