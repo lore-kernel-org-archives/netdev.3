@@ -1,42 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1453E6399;
-	Mon,  5 Oct 2026 21:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263363E833E;
+	Mon,  5 Oct 2026 21:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234987; cv=none; b=a2MhH3qPKZt9hrrC2YqF+4Da50ykzsCmPjRbrfrSGuNjFONhMBHM7P+mzlxGZ0s6uSYSxI4/PySEh0eA3U6tjiPDWH7uVq8DyxIheRtLnD8FluDh1QwglQpNxIj/PXi6LPRtMYjxGh63mWSoEi7QOcon3lLrhgIdl+bxuuviiJI=
+	t=1791234991; cv=none; b=ettKvd0YA4TwauYzhB5LBbeIbVN60595IcSZFohIjEFWCwNOTQAS/tjXT0+zpXKvL8fi5C7VQ64lroePjo1va2u9bH7foG5wM9uSgDlyoyroKFNcB5QxBmwf2EMTQq8XL6oAWHib4KfH8oEwvylLzUz9pim51/PtmirJ04V/r9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234987; c=relaxed/simple;
-	bh=LKqxqP3RUQBG9og/AmS/0Q44GkC2P4kE850DriM2Mg4=;
+	s=arc-20240116; t=1791234991; c=relaxed/simple;
+	bh=NRCcXqT1RWKTbBZ1wp4O+ALbvdAJomEJ14ksRfJa5O0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ra+LKwrmeWOasBVMTiJ9YGjNTOFa2kAuHpwJTS8NsJa4/ln1bY/itC+YJIHiz0qKcfky3+CMnk45ca7FojVzO1TuiN10WIr4ltHW+xOOEDLf5LdItv2Lf16/8Oge7foiSTplPgmZjqWTrYhZFigEvJB9tMKndCXh40B7OlElpHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Krbm7OE4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=aZNwXHkE9WLu6MVibjzjHcNglc4FEIHBDNPk2F77xzQ9T6iB/z5+5Uwv0FyVP1f9XBGDEgHeeBX/ZF5JYnl70WQvJLwhdGhPj4f2QQKLFE9WiyC7e5MvgkVM/y9khcfRTDUMzfXvcqfOZ3TIqucS5YTFmgoCC5bkq11ZYz/wa88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9hEDN7k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Krbm7OE4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392881F000FF;
-	Mon,  5 Oct 2026 21:16:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9hEDN7k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A881F00898;
+	Mon,  5 Oct 2026 21:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791234983;
-	bh=EXR1qKKMk+np4wJq294kSw3N5QRAYuFcYUXT3Ki3oak=;
+	s=k20260515; t=1791234987;
+	bh=l8zDm9e1xHnYMUq1q62pJ6OOsloulGmM1Wyx7GdvjYE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Krbm7OE4xVhk2I8+KrkCybYmL9lUrXCJO9IAZ4nat/qtPdo+klILx1UPcVddyBijy
-	 SKFCiu3L4g2uifTc/mfXNoYlvtVDq4GGZmoBgvWLayinX0PKTdL8lJcmvP2KA4OQUc
-	 DwxFNXt1Y96wwLuGwwut2Te7B093STE7xBnV69lYVIBbgxwqZEYvSXXrSK9tO+HQ+s
-	 2ZY7NBIezH2+TsrVJL/JEKlkzpwoiPqHIkJeEjq7RI9w2mj2DU4FltXHSGxy1IBrVs
-	 uUN/Y2SQJT2KrnubHSa/10aHk0LTz4rze8lSpQj1pnRQWME2S8wwUsrA/1D1l/JKjZ
-	 4VSfZIazXrkFg==
-Subject: Re: [PATCH net-next v2 4/5] net: dsa: motorcomm: Enable ACL on demand
+	b=U9hEDN7kGCij1ILVCpFuMKyXOGyKYgTqZ2i/qUau8MN4HTp5ri+yrW2zKmA2NDvul
+	 xZWFv8qQ+7iF/i0Wf9bxEohMEnGvxuTccOtngyopmIFr/+e/kZIyXUYgPswbXvVZEF
+	 FdvXxu3uv3IxmavrOgbklp6CFqrMtWtS41speuoeM/6wCCAqCBbCyPpeRds43Nt/za
+	 EwdD+Ho8pECrPwLMBwZCIH+qwI2OZOvp2Q9O3sdYK1lMQrhCiSAjoXqUGptL7/8TH9
+	 V7GgD8pfIKE4rDk7TatTmNQvGm+uevN9dWKJMw+K59O7RYeONX3/zWIJQBlxeIvw6r
+	 KKcLMFqGJNDVQ==
+Subject: Re: [PATCH net-next v3 1/2] net: stmmac: take ownership of saved RX
+ state at poll entry
 From: netdev-bot+sashiko@kernel.org
-To: mmyangfl@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 21:16:22 +0000
-Message-ID: <179123498276.434549.11929737907865657185@kernel.org>
-In-Reply-To: <20261001204851.2576101-5-mmyangfl@gmail.com>
-References: <20261001204851.2576101-5-mmyangfl@gmail.com>
-X-sashiko-severity: Medium
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Date: Mon, 05 Oct 2026 21:16:25 +0000
+Message-ID: <179123498568.434549.2388087192931853745@kernel.org>
+In-Reply-To: <20261004-stmmac-rx-mb-v3-1-50fa171af9ec@oss.qualcomm.com>
+References: <20261004-stmmac-rx-mb-v3-1-50fa171af9ec@oss.qualcomm.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,7 +54,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -57,117 +62,203 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Memory leak on an error path in yt921x_acl_add()
-  (drivers/net/dsa/motorcomm/tc.c).
-- [Low] The hardware ACL port-enable register can disagree with the
-  software acl_cnt bookkeeping after errors.
+- [High] At the reviewed commit, stmmac_rx() resets skb/error/len at the
+  top of the loop only when `!in_progress`, instead of whenever count >…
+- [Low] The commit message leaves out one of the behaviour changes.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it remains at
+  the end of the series and the patch reworks the same continuation-…
 
 --
 
-net: dsa: motorcomm: Enable ACL on demand
+net: stmmac: take ownership of saved RX state at poll entry
 
-This patch stops yt921x_chip_setup_acl() from enabling ACL on all ports.
-It adds a per-port acl_cnt counter instead. yt921x_acl_add() sets a
-port's YT921X_ACL_PORT bit when the port gets its first rule, and
-yt921x_acl_del() refreshes the register once the last rule for that
-port is removed.
+This patch changes stmmac_rx() and stmmac_rx_zc() so they take the saved
+RX state at poll entry and clear it right away. The state is saved again
+only if the frame is still incomplete, which a new in_progress flag tracks.
+The patch also frees any saved partial skb in
+__free_dma_rx_desc_resources() and stmmac_reset_rx_queue().
 
-> diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
-> index 0e5f19a39d0cc..95ed0f245b1fa 100644
-> --- a/drivers/net/dsa/motorcomm/tc.c
-> +++ b/drivers/net/dsa/motorcomm/tc.c
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 0c381ae0d0ffa..b2d20628ed214 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 
 [ ... ]
 
-> @@ -1312,6 +1347,19 @@ yt921x_acl_add(struct yt921x_priv *priv,
->  	else
->  		aclrule->action[0] &= ~YT921X_ACL_ACTa_METER_EN;
+> @@ -5652,6 +5657,8 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+>  		if (!buf->xdp)
+>  			break;
 >  
-> +	/* Activate ACL if needed */
-> +	ctrl = 0;
-> +	m = FIELD_GET(YT921X_ACL_KEYb_SPORTS_M, ruleext->r.entries[0].key[1]);
-> +	for_each_set_bit(o, &m, YT921X_PORT_NUM)
-> +		if (!priv->ports[o].acl_cnt)
-> +			ctrl |= YT921X_ACL_PORT_PORTn(o);
-> +	if (ctrl) {
-> +		ctrl |= yt921x_acl_activated_ports(priv);
-> +		res = yt921x_reg_write(priv, YT921X_ACL_PORT, ctrl);
-> +		if (res)
-> +			return res;
+> +		in_progress = status & rx_not_ls;
+> +
+>  		if (priv->extend_desc)
+>  			stmmac_rx_extended_status(priv, &priv->xstats,
+>  						  rx_q->dma_erx + entry);
 
-[Severity: Medium]
-Does this early return leak aclrule?
+[Severity: High]
+This isn't a bug introduced by this patch, but this patch reworks the
+continuation state in stmmac_rx_zc(), so it seems worth raising here. Can
+a frame that spans more than one descriptor be delivered with the wrong
+length?
 
-At this point aclrule has already been allocated by kvmemdup(), but it
-hasn't been stored in aclblk->rules[binid] yet:
+The non-LS branch drops the buffer without updating len or setting error:
 
-	aclrule = kvmemdup(&ruleext->r,
-			   offsetof(struct yt921x_acl_rule, entries[entscnt]),
-			   GFP_KERNEL);
-
-The teardown in chip.c only frees rules it can reach through
-priv->acl_blks[]->rules[], so nothing would ever free this one.
-
-The return also skips the err: label:
-
-err:
-	if (!priv->acl_masks[blkid]) {
-		kvfree(aclblk);
-		priv->acl_blks[blkid] = NULL;
+	/* XSK pool expects RX frame 1:1 mapped to XSK buffer */
+	if (likely(status & rx_not_ls)) {
+		xsk_buff_free(buf->xdp);
+		buf->xdp = NULL;
+		dirty++;
+		count++;
+		goto read_again;
 	}
 
-If aclblk was freshly allocated for this rule, it stays in
-priv->acl_blks[blkid] even though the block is empty. That isn't a
-permanent leak, since a later add can reuse it and remove frees it.
+The LS descriptor is then handled as a complete frame with len == 0:
 
-This happens when a source port has acl_cnt == 0 and the YT921X_ACL_PORT
-write fails. Should this path do kvfree(aclrule) and then goto err,
-like the yt921x_acl_commit() failure path does?
+	buf1_len = stmmac_rx_buf1_len(priv, p, status, len);
+	len += buf1_len;
+	...
+	buf->xdp->data_end = buf->xdp->data + buf1_len;
 
-> +	}
+stmmac_rx_buf1_len() returns min(dma_buf_sz, plen - len), so buf1_len
+comes from the total frame length. The LS buffer only holds the tail of
+the frame, though. Also, the hardware buffer size for an XSK queue is
+xsk_pool_get_rx_frame_size() (see stmmac_set_queue_rx_buf_size()), not
+dma_buf_sz.
+
+stmmac_xdp_enable_pool() only requires frame_size >= ETH_FRAME_LEN +
+VLAN_HLEN * 2, and its comment says "XDP ZC does not span multiple
+frame". However, dwmac4 sets GMAC_CONFIG_JE in GMAC_CORE_INIT. So jumbo
+frames from the wire are accepted and split across descriptors.
+
+For example, with 4K chunks frame_size is 3840. A 5000-byte frame leaves
+1160 real bytes in the LS buffer, but data_end = data + 1532. The XDP
+program, AF_XDP or stmmac_construct_skb_zc() would then see a frame whose
+L2 header comes from the sender's payload, followed by 372 stale umem
+bytes. If frame_size is in [1522, 1536), data_end can also run a few
+bytes past the end of the chunk.
+
+The new in_progress tracking only carries error and len, and both are 0
+here, so it doesn't change this.
+
+Would it work to set error = 1 for a non-LS descriptor in ZC mode? The new
+in_progress tracking would then carry the drop state across poll and
+DMA-owned boundaries. The follow-up patch in the series doesn't touch
+stmmac_rx_zc().
+
+[ ... ]
+
+> @@ -5788,25 +5796,28 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+
+[ ... ]
+
+> -		if (!count && rx_q->state_saved) {
+> -			skb = rx_q->state.skb;
+> -			error = rx_q->state.error;
+> -			len = rx_q->state.len;
+> -		} else {
+> -			rx_q->state_saved = false;
+> +		if (!in_progress) {
+>  			skb = NULL;
+>  			error = 0;
+>  			len = 0;
+>  		}
+> -
+>  read_again:
+>  		if (count >= limit)
+>  			break;
+> @@ -5835,6 +5846,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+>  
+>  		prefetch(np);
+>  
+> +		in_progress = status & rx_not_ls;
 > +
->  	/* Write rules */
->  	aclblk->rules[binid] = aclrule;
->  	res = yt921x_acl_commit(priv, entid, aclrule->mask);
+>  		if (priv->extend_desc)
+>  			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx + entry);
+>  		if (unlikely(status == discard_frame)) {
+
+[Severity: High]
+Can len carry over into a new frame when an XDP program returns XDP_TX
+or XDP_REDIRECT on the first, non-LS descriptor of a multi-descriptor
+frame?
+
+in_progress is set from status & rx_not_ls before the XDP verdict, and
+the TX/REDIRECT path doesn't clear it:
+
+	} else if (xdp_res & (STMMAC_XDP_TX |
+			      STMMAC_XDP_REDIRECT)) {
+		xdp_status |= xdp_res;
+		buf->page = NULL;
+		skb = NULL;
+		count++;
+		continue;
+	}
+
+The next iteration skips the !in_progress reset. len is kept while skb
+is NULL, so the continuation descriptor is treated as the start of a
+frame.
+
+If plen - len is 1 to 3 bytes, stmmac_rx_buf1_len() returns that value
+and stmmac_rx_buf2_len() returns 0. Then this code:
+
+	if (stmmac_xdp_is_enabled(priv) && !buf2_len) {
+		buf1_len -= ETH_FCS_LEN;
+		fcs_stripped = true;
+	}
+
+wraps buf1_len to about 0xfffffffd. xdp_prepare_buff() then sets
+data_end about 4GiB past data. On XDP_PASS, this later code would hit
+skb_over_panic():
+
+	buf1_len = ctx.xdp.data_end - ctx.xdp.data;
+	...
+	skb_put(skb, buf1_len);
+
+dwmac4 sets GMAC_CONFIG_JE, so a remote sender can choose the frame
+length.
+
+Before this patch, the XDP_CONSUMED plus rx_not_ls goto read_again path
+already kept len. The mid-frame TX/REDIRECT route looks new, though.
+
+The next patch in the series, "net: stmmac: rework stmmac_rx to support
+XDP rx multi-buff", removes this path. After it, the XDP program only runs
+after the LS descriptor, and the FCS is stripped by
+stmmac_xdp_shrink_tail(), which bounds-checks the offset.
+
+This patch carries Fixes: tags. Could it be backported to stable without
+that rework?
+
+[ ... ]
+
+> @@ -8339,6 +8352,9 @@ static void stmmac_reset_rx_queue(struct stmmac_priv *priv, u32 queue)
+>  {
+>  	struct stmmac_rx_queue *rx_q = &priv->dma_conf.rx_queue[queue];
+>  
+> +	dev_kfree_skb_any(rx_q->state.skb);
+> +	rx_q->state.skb = NULL;
+> +	rx_q->state_saved = false;
+>  	rx_q->cur_rx = 0;
+>  	rx_q->dirty_rx = 0;
+>  }
 
 [Severity: Low]
-Can YT921X_ACL_PORT end up out of sync with acl_cnt here?
+The commit message says:
 
-The port bits are set in hardware before yt921x_acl_commit() runs. If
-any register write inside yt921x_acl_commit() fails, the existing error
-branch only rolls back software state:
+    Release a saved partial skb when the RX ring is destroyed.
 
-	if (res) {
-		aclblk->rules[binid] = NULL;
-		kvfree(aclrule);
-		goto err;
-	}
+That covers the __free_dma_rx_desc_resources() hunk. The
+stmmac_reset_rx_queue() hunk doesn't destroy the ring, though. It runs
+through stmmac_reset_queues_param() from __stmmac_open(),
+stmmac_xdp_open() and stmmac_resume(), and is also called directly from
+stmmac_enable_rx_queue().
 
-acl_cnt++ only runs after a successful commit. So the port stays
-ACL-enabled in hardware while acl_cnt for it is still 0.
+Before this patch, stmmac_reset_rx_queue() only cleared cur_rx and
+dirty_rx. So after stmmac_resume(), the first poll could add descriptors
+from the re-armed ring to the partial skb saved before suspend.
 
-yt921x_acl_del() has the same problem in reverse. acl_cnt is decremented
-to 0 first, and then the register is refreshed:
-
-	if (refresh_en) {
-		ctrl = yt921x_acl_activated_ports(priv);
-		res = yt921x_reg_write(priv, YT921X_ACL_PORT, ctrl);
-		if (res)
-			ret = res;
-	}
-
-If that write fails, the bit stays set while software counts no rules
-on the port.
-
-In both cases the stale bit is only cleared when a later add or del
-rewrites the whole register. Unmatched traffic is still permitted
-because YT921X_ACL_PERMIT_UNMATCH is set for all ports, but the port
-keeps doing ACL lookups when ACL isn't "actually used" on it.
-
-Should the yt921x_acl_add() commit failure path write
-yt921x_acl_activated_ports(priv) back to YT921X_ACL_PORT?
-
-[ ... ]
+Could the commit message also mention the open, resume and queue-enable
+change? The patch carries Fixes: tags and may go to stable.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001204851.2576101-1-mmyangfl%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004-stmmac-rx-mb-v3-0-50fa171af9ec%40oss.qualcomm.com
