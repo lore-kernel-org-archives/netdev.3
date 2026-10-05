@@ -1,125 +1,178 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C24455611;
-	Mon,  5 Oct 2026 09:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9431245D5C0;
+	Mon,  5 Oct 2026 09:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791193457; cv=none; b=sNUCbGpYggnmKnbrlUYxRh2Tv5Tx3TorhhC5+b0mnazs1PlBDZ31TdqzyGadvO0SVTSyzOT0tm1yC3DAysjU9IK/VjjbleYhxjPlzqt3A/a0G3+Wlp7pYsRZis+QGjY/yGyzNZlhLPc/5uqyPuoaCP/NyFU/ePXJ6ej/bFeIfKo=
+	t=1791193679; cv=none; b=D9Z5w32YRQ5A5UTP2rlwphsAf+5RjsRm9JFOAIPT0y/d2k4a5giQoykahyzC2+QxAuk7n1TIyTGtlb93sOw8ytK0JG9N33uzqYaLXKdHKdzBie3fiUoSpMj/+EIBpKEBKlCE0VQ/F2yeV8+PjB1bsQAkAhjGy0Hhm4j7BX05uis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791193457; c=relaxed/simple;
-	bh=GtNUkrjiyoR3HoJ+MKNfmUoiGx8WdpZWdDBCuQbciUs=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:MIME-Version:
-	 Message-Id:Content-Type; b=j3zZf0c5cuOtofK3WhSwC+KJTOTL+iq2pQg1GI5Ld0vYAsR1PZ1Vr4zZ8ggELp63SL4lT8lUfHbci0QkvbjcDJq3F5WjZLgeIfE/gMrhUTmC/e0cUFKjy0oqeNSjFV9EZgG9AY1zzrtpa9hPbU/iLkhaz/YDpRxWnm5wi7jl//g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id F257947BD2;
-	Mon, 05 Oct 2026 11:44:07 +0200 (CEST)
-Date: Mon, 05 Oct 2026 11:44:04 +0200
-From: Fabian =?iso-8859-1?q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>
-Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
- macvlan/vlan with bnxt_en
-To: Eric Dumazet <edumazet@kernel.org>, Michael Chan
-	<michael.chan@broadcom.com>
-Cc: Joe Damato <joe@dama.to>, netdev@vger.kernel.org, Pavan Chebbi
-	<pavan.chebbi@broadcom.com>, regressions@lists.linux.dev, Stefan Fleischmann
-	<sfle@kth.se>, stable@vger.kernel.org
-References: <20261004122616.56714cbd@nargothrond>
-	<f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
-	<20261004163532.3134dd41@nargothrond> <20261004192902.3ab3b7f3@nargothrond>
-	<919dcfaa-005f-4bfd-8889-39acda5f7a92@kernel.org>
-	<854f3985-a4ab-4014-b18d-9fead61602e1@kernel.org>
-	<CACKFLine2gKepH57mg5j2YYWsX-qU8-EfJfnqWiYUEhpXL1F9Q@mail.gmail.com>
-	<ef6eb827-71a6-40a6-a4b7-8e514ab595d3@kernel.org>
-In-Reply-To: <ef6eb827-71a6-40a6-a4b7-8e514ab595d3@kernel.org>
+	s=arc-20240116; t=1791193679; c=relaxed/simple;
+	bh=8Ed+Q0wbZPB+a8w8ZM0vbOvtxPQRlNImj7KcLcrTX3w=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UPnYB3ic4Yzqo3GRvJYEJBDy/xwx0Glp26g/JphQOcc2ANQAbTEs0qsSEgSRPPDncJEZq13XsCxUcBvzpP5MydYeDgMNqQEDj3AK+SSxiUTUCWZE9rtXwWSeguOGPmZwrSlYAAVoCR2Fh7a1kf4UgXaTZX3DoGfkeiUemXuKNfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ju3bQnsD; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ju3bQnsD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E0F1F0089D;
+	Mon,  5 Oct 2026 09:47:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791193670;
+	bh=gRcb9zLvElHXZtFmXPe9zupLvWQuZzujh+9iiVsBPh4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ju3bQnsD4MbRoBThXUmageuiqholHbCt5hOtpn8b2giUuAhnJ9GbYNxnIClxgH0+E
+	 RCDuc7sRvTT6Qxdx5ZwP2nhiSOcVr2YVvrYIdFvxBGrwQVGYQHkZT92PAR8omcq7eJ
+	 6ju/VvTuMecQxRivAVDkceF1UrWu9tI7k0tiNreINhSVNJAfnhws0HVoLKYFJGE2e6
+	 kCTRilci8KCS9f7fQ0phtH/fXSjGl9n96Rb+diZsI36ePLoNBO/Zkk2Cq3jlbEJXaX
+	 hWD1PyMf1/7RI+IE+/rKfEMjuJSUWg+LnvDeZTyv1VMSPn4E6+j+onfqxqL73MBxQp
+	 CpWJdOr0S2rRw==
+Subject: Re: [PATCH net-next v4 1/2] net: stmmac: fix TX coalesce race and
+ div-by-zero in XDP/legacy path
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, boon.leong.ong@intel.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Date: Mon, 05 Oct 2026 09:47:49 +0000
+Message-ID: <179119366947.434549.18258387588944949725@kernel.org>
+In-Reply-To: <20261001-b4-stmmac-xmit-mb-v4-1-664e0c3eb289@oss.qualcomm.com>
+References: <20261001-b4-stmmac-xmit-mb-v4-1-664e0c3eb289@oss.qualcomm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: astroid/0.17.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1791193344.w5j2m55mib.astroid@yuna.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1791193447309
 
-On October 5, 2026 3:59 am, Eric Dumazet wrote:
->=20
->=20
-> On 10/5/26 00:29, Michael Chan wrote:
->>=20
->> I think skb->len is not updated with the padded length here.  So the
->> HW will drop the packet seeing that the length is too short.  There is
->> another skb_put_padto() that might work better?
->=20
-> +1 Exactly, thanks!
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-FWIW, we suspect we have quite a few users running into this since
-importing upstream changes from 7.2.2-7.2.5.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
-Will report back once we've provided those users with a kernel with the
-below diff.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c=20
-> b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index=20
-> d7728d0c5b6e63ee72de9dea54426bb4c8b7a9fc..7ea27e81e88c5ca82a453b449982b79=
-1e8acc831=20
-> 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -486,7 +486,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff=20
-> *skb, struct net_device *dev)
->          struct netdev_queue *txq;
->          int i;
->          dma_addr_t mapping;
-> -       unsigned int length, pad =3D 0;
-> +       unsigned int length;
->          u32 len, free_size, vlan_tag_flags, cfa_action, flags;
->          struct bnxt_ptp_cfg *ptp =3D bp->ptp_cfg;
->          struct pci_dev *pdev =3D bp->pdev;
-> @@ -672,14 +672,12 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff=20
-> *skb, struct net_device *dev)
->          }
->=20
->   normal_tx:
-> -       if (length < BNXT_MIN_PKT_SIZE) {
-> -               pad =3D BNXT_MIN_PKT_SIZE - length;
-> -               if (skb_pad(skb, pad))
-> -                       /* SKB already freed. */
-> -                       goto tx_kick_pending;
-> -               length =3D BNXT_MIN_PKT_SIZE;
-> +       if (skb_put_padto(skb, BNXT_MIN_PKT_SIZE)) {
-> +               /* SKB already freed. */
-> +               goto tx_kick_pending;
->          }
-> -
-> +       length =3D skb->len;
-> +       len =3D skb_headlen(skb);
->          mapping =3D dma_map_single(&pdev->dev, skb->data, len,=20
-> DMA_TO_DEVICE);
->=20
->          if (unlikely(dma_mapping_error(&pdev->dev, mapping)))
-> @@ -759,10 +757,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff=20
-> *skb, struct net_device *dev)
->                  txbd->tx_bd_len_flags_type =3D cpu_to_le32(flags);
->          }
->=20
-> -       flags &=3D ~TX_BD_LEN;
-> -       txbd->tx_bd_len_flags_type =3D
-> -               cpu_to_le32(((len + pad) << TX_BD_LEN_SHIFT) | flags |
-> -                           TX_BD_FLAGS_PACKET_END);
-> +       txbd->tx_bd_len_flags_type |=3D cpu_to_le32(TX_BD_FLAGS_PACKET_EN=
-D);
->=20
->          netdev_tx_sent_queue(txq, skb->len);
->=20
->=20
->=20
->=20
->=20
+- [Medium] The commit message says the stmmac_xdp_xmit_xdpf() divide-by-
+  zero is "only theoretical", but a privileged user can trigger it and…
 
+Pre-existing issues:
+- [Low] __stmmac_set_coalesce() publishes tx_coal_frames[q] and
+  tx_coal_timer[q] as two separate stores and shares no synchronisation…
+
+--
+
+net: stmmac: fix TX coalesce race and div-by-zero in XDP/legacy path
+
+This patch wraps every access to tx_coal_frames[] in READ_ONCE() or
+WRITE_ONCE(), since ethtool writes the array while the TX fast paths read
+it without a lock. It also guards the modulo in stmmac_xdp_xmit_xdpf()
+against a zero tx_coal_frames[queue].
+
+> Both issues were found by code inspection while extending the XDP TX
+> path with multi-buff support, and neither has ever been triggered, so
+> they are only theoretical. Tested on the Qualcomm RB3-gen2 board.
+
+[Severity: Medium]
+
+Is the division by zero in stmmac_xdp_xmit_xdpf() really only
+theoretical?
+
+__stmmac_set_coalesce() only rejects the case where both values are zero:
+
+	if ((ec->tx_coalesce_usecs == 0) &&
+	    (ec->tx_max_coalesced_frames == 0))
+		return -EINVAL;
+
+So "ethtool -C ethX tx-frames 0" is accepted. tx-usecs keeps its default
+of STMMAC_COAL_TX_TIMER, and stmmac_ethtool_ops advertises
+ETHTOOL_COALESCE_MAX_FRAMES. After that, tx_coal_frames[queue] is 0.
+
+>From then on, before this patch, every XDP_TX verdict
+(stmmac_xdp_xmit_back()->stmmac_xdp_xmit_xdpf()) and every ndo_xdp_xmit
+redirect into the device would evaluate:
+
+	if (tx_q->tx_count_frames % priv->tx_coal_frames[queue] == 0)
+
+On x86, for example the dwmac-intel platforms that advertise XDP
+basic and redirect, this raises a divide error in NAPI softirq context.
+
+On arm64, UDIV with a zero divisor returns 0 instead of trapping. That
+may be why the RB3-gen2 board never hit it.
+
+CAP_NET_ADMIN can trigger this with standard tools. Could the commit
+message describe it as a reachable crash rather than a theoretical one?
+Would it also make sense to send the div-by-zero fix separately from the
+READ_ONCE()/WRITE_ONCE() annotations?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> index 1cf0f8820b337..30e0d499326d8 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+
+[ ... ]
+
+> @@ -887,14 +888,14 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+>  		int i;
+>  
+>  		for (i = 0; i < tx_cnt; i++) {
+> -			priv->tx_coal_frames[i] =
+> -				ec->tx_max_coalesced_frames;
+> +			WRITE_ONCE(priv->tx_coal_frames[i],
+> +				   ec->tx_max_coalesced_frames);
+>  			priv->tx_coal_timer[i] =
+>  				ec->tx_coalesce_usecs;
+>  		}
+>  	} else if (queue < tx_cnt) {
+> -		priv->tx_coal_frames[queue] =
+> -			ec->tx_max_coalesced_frames;
+> +		WRITE_ONCE(priv->tx_coal_frames[queue],
+> +			   ec->tx_max_coalesced_frames);
+>  		priv->tx_coal_timer[queue] =
+>  			ec->tx_coalesce_usecs;
+>  	}
+
+[Severity: Low]
+
+This is a pre-existing issue and was not introduced by this patch.
+tx_coal_frames[] and tx_coal_timer[] are still published as two separate
+stores, with no synchronisation against the TX path.
+
+Can a concurrent stmmac_xmit() see a mixed pair? Take a change from
+(frames=N, usecs=0) to (frames=0, usecs=U). The TX path could read the
+new frames value:
+
+	tx_coal = READ_ONCE(priv->tx_coal_frames[queue]);
+	...
+	else if (!tx_coal)
+		set_ic = false;
+
+It could then read the old timer value in stmmac_tx_timer_arm():
+
+	u32 tx_coal_timer = priv->tx_coal_timer[queue];
+
+	if (!tx_coal_timer)
+		return;
+
+That frame would then get neither an IC interrupt nor the completion
+timer. Its completion would wait for the next TX or NAPI activity on that
+queue. The same window exists for stmmac_tso_xmit() and
+stmmac_xdp_xmit_xdpf().
+
+READ_ONCE()/WRITE_ONCE() make each field consistent on its own, which is
+all the commit message claims. The window across the two fields is still
+there.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001-b4-stmmac-xmit-mb-v4-0-664e0c3eb289%40oss.qualcomm.com
