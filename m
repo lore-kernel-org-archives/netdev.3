@@ -1,241 +1,72 @@
-Received: from stargate.chelsio.com (unknown [12.32.117.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE5B41D222
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B272344780F;
+	Mon,  5 Oct 2026 13:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791206377; cv=none; b=jS7o1W4c3tbKaG/RlYQilvvaj3a4hF0ava2tbeRlP3HEUj/j2ATLNzrgXWfSgdY4iJSaLPyKZEJb6jBlIYnhK5s8aVStLpimY0ed7noFML8OPGI9kvBujSg3jYvCqttwjsChZwZ9oM0kWgpgJ/3rFxGZWuqsDQcr/Vpj4gV6Aio=
+	t=1791206374; cv=none; b=n50E5j76cu/2qg0ZYCp+ogCHXbyfAM/ab3yJmtPIapsYiF/4iMyIXVdCRPOBUATweUuX6wLGYgvYjozFPTzhDysnEumALlxc3LT30mBExORnIdUNUsPPQqd9vLB4pzDrWSR7PDOYmIqhVUWfXW94kK1X+f7Pip9v09F+J/WWl/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791206377; c=relaxed/simple;
-	bh=cpHuej9tJcwk/kVhhWXSYhbuIjDt3wW+7bOn/piiCzc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kmkJs/vosqFRTdy1WP3U57Z2TU50Bl8aFUXEJLbCvlUc4cs2/0390BphT+GveLw1c8szxvLlLSx9aWi4AhuE7orgAaXHo2kmDkNuM47HfQQUNj86j7SWZ2GqOa+EBDz/DDSkkACAgclG4T7jojHS8S5/6bKmvegLmQEsF1tOe0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
-Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 695DGO8G010463;
-	Mon, 5 Oct 2026 06:19:11 -0700
-From: Potnuri Bharat Teja <bharat@chelsio.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-        pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
-Subject: [PATCH net-next v3 06/12] cxgb4: update PTP register access for T7
-Date: Mon,  5 Oct 2026 18:48:24 -0400
-Message-Id: <20261005224830.377752-7-bharat@chelsio.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20261005224830.377752-1-bharat@chelsio.com>
-References: <20261005224830.377752-1-bharat@chelsio.com>
+	s=arc-20240116; t=1791206374; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MDhAobq9c4NP5kMEAPPBm8rMdL+KH3aEaUH+LVsq7IxB9B55sGZF8rTsWFGXft6+L8t9zGW0gl1FSqVtPc6IXsfsaG+h2c1bz2ZpPdZ4kWJfGRX8chYv34EapxsAuclhHEJ0jFQ+AF/qe5v5p+MBpfsGYCxYR9nugsvfEDfeWcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLepsIBf; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLepsIBf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B393A1F000FF;
+	Mon,  5 Oct 2026 13:19:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791206365;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OLepsIBfvIegkLKM4ZNB4+47Vn40pL79B0S6VECDq6saZtGnop2w/1eqk8BxYTY1x
+	 fJPDBKqEa4H0UrqzYJkvuj6KlcnqKscO+6ryTB3mqZSaw8a18DnUDPC52B8432Jwry
+	 xetj7spDcsAIZwCgEug+5+48dk17A4BmyGZLAdDO/kqtC2SrsPwS/1Pt6ePG678CXY
+	 Zy6jb/giotZhZZjdkm+7vZBlQWJg8ewXYiBO9Tsv88xApwaul3cxUsaHplvGvlezB4
+	 UKZ9HVfpEU2kEIE52jvvRgoWHV74J54azDyenyhSpNe72CamlLEESk2iQVOE7qHqAt
+	 52usuuipzZyvQ==
+From: netdev-bot+sinfo@kernel.org
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
+ pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net v8] net/smc: fix lgr/lnk lifetime vs diag reader race
+Date: Mon, 05 Oct 2026 13:19:24 +0000
+Message-ID: <179120636424.1402591.14325781567092984615@kernel.org>
+In-Reply-To: <20261005131241.1575131-1-mjambigi@linux.ibm.com>
+References: <20261005131241.1575131-1-mjambigi@linux.ibm.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The MAC_PORT_TX_TS_VAL_LO/HI registers moved within the port register
-block on T7, and the PTP clock sum is now read from the chip global
-MAC_PTP_SUM_LO/HI instead of a per port register. Select the right
-registers by chip version and read both values with t4_read_reg64().
-PTP port accesses now use the logical port number (pi->lport).
+Hi!
 
-On T7 a transmitted PTP event packet is looped back with equal source
-and destination MAC addresses rather than an MPS timestamp header.
-Detect that and hand the packet to the transmit timestamp path. The
-loopback packet is not necessarily UDP, so the RXF_UDP_F test is
-dropped and cxgb4_ptp_is_ptp_rx() parses the frame itself, handling
-VLAN tagged and IEEE 802.3 encapsulated PTP. On transmit,
-ptp_classify_raw() replaces the open coded IPv4/UDP test.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
----
- .../net/ethernet/chelsio/cxgb4/cxgb4_ptp.c    | 82 ++++++++++++++-----
- drivers/net/ethernet/chelsio/cxgb4/sge.c      | 13 ++-
- drivers/net/ethernet/chelsio/cxgb4/t4_regs.h  |  1 +
- 3 files changed, 71 insertions(+), 25 deletions(-)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c
-index cbd06d9b95d4..fb0d4ae11196 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c
-@@ -57,14 +57,13 @@
-  */
- bool cxgb4_ptp_is_ptp_tx(struct sk_buff *skb)
- {
--	struct udphdr *uh;
--
--	uh = udp_hdr(skb);
--	return skb->len >= PTP_MIN_LENGTH &&
--		skb->len <= PTP_IN_TRANSMIT_PACKET_MAXNUM &&
--		likely(skb->protocol == htons(ETH_P_IP)) &&
--		ip_hdr(skb)->protocol == IPPROTO_UDP &&
--		uh->dest == htons(PTP_EVENT_PORT);
-+	unsigned int ptp_class;
-+
-+	ptp_class = ptp_classify_raw(skb);
-+	if (ptp_class == PTP_CLASS_NONE)
-+		return false;
-+
-+	return true;
- }
- 
- bool is_ptp_enabled(struct sk_buff *skb, struct net_device *dev)
-@@ -83,11 +82,50 @@ bool is_ptp_enabled(struct sk_buff *skb, struct net_device *dev)
-  */
- bool cxgb4_ptp_is_ptp_rx(struct sk_buff *skb)
- {
--	struct udphdr *uh = (struct udphdr *)(skb->data + ETH_HLEN +
--					      IPV4_HLEN(skb->data));
-+	int offset = ETH_HLEN;
-+	struct ethhdr *eth;
-+	__be16 proto;
-+
-+	if (skb->len < ETH_HLEN)
-+		return false;
-+
-+	eth = (struct ethhdr *)skb->data;
-+	proto = eth->h_proto;
-+
-+	if (proto == htons(ETH_P_8021Q)) {
-+		struct vlan_hdr *vhdr;
-+
-+		if (skb->len < offset + VLAN_HLEN)
-+			return false;
-+
-+		vhdr = (struct vlan_hdr *)(skb->data + offset);
-+		proto = vhdr->h_vlan_encapsulated_proto;
-+		offset += VLAN_HLEN;
-+	}
-+
-+	if (proto == htons(ETH_P_1588))
-+		return true;
-+
-+	if (proto == htons(ETH_P_IP)) {
-+		struct iphdr *iph;
-+		struct udphdr *uh;
-+
-+		if (skb->len < offset + sizeof(*iph))
-+			return false;
-+		iph = (struct iphdr *)(skb->data + offset);
-+
-+		if (iph->protocol != IPPROTO_UDP)
-+			return false;
-+		offset += (iph->ihl * 4);
-+
-+		if (skb->len < offset + sizeof(*uh))
-+			return false;
-+		uh = (struct udphdr *)(skb->data + offset);
-+
-+		return uh->dest == htons(PTP_EVENT_PORT);
-+	}
- 
--	return  uh->dest == htons(PTP_EVENT_PORT) &&
--		uh->source == htons(PTP_EVENT_PORT);
-+	return false;
- }
- 
- /**
-@@ -103,12 +141,11 @@ void cxgb4_ptp_read_hwstamp(struct adapter *adapter, struct port_info *pi)
- 
- 	skb_ts = skb_hwtstamps(adapter->ptp_tx_skb);
- 
--	tx_ts = t4_read_reg(adapter,
--			    T5_PORT_REG(pi->port_id, MAC_PORT_TX_TS_VAL_LO));
-+	if (CHELSIO_CHIP_VERSION(adapter->params.chip) >= CHELSIO_T7)
-+		tx_ts = t4_read_reg64(adapter, T7_PORT_REG(pi->lport, T7_MAC_PORT_TX_TS_VAL_LO));
-+	else
-+		tx_ts = t4_read_reg64(adapter, T5_PORT_REG(pi->lport, MAC_PORT_TX_TS_VAL_LO));
- 
--	tx_ts |= (u64)t4_read_reg(adapter,
--				  T5_PORT_REG(pi->port_id,
--					      MAC_PORT_TX_TS_VAL_HI)) << 32;
- 	skb_ts->hwtstamp = ns_to_ktime(tx_ts);
- 	skb_tstamp_tx(adapter->ptp_tx_skb, skb_ts);
- 	dev_kfree_skb_any(adapter->ptp_tx_skb);
-@@ -183,7 +220,7 @@ int cxgb4_ptp_redirect_rx_packet(struct adapter *adapter, struct port_info *pi)
- 
- 	c.retval_len16 = cpu_to_be32(FW_CMD_LEN16_V(sizeof(c) / 16));
- 	c.u.init.sc = FW_PTP_SC_RDRX_TYPE;
--	c.u.init.txchan = pi->tx_chan;
-+	c.u.init.txchan = pi->lport;
- 	c.u.init.absid = cpu_to_be16(receive_q->rspq.abs_id);
- 
- 	err = t4_wr_mbox(adapter, adapter->mbox, &c, sizeof(c), NULL);
-@@ -319,9 +356,10 @@ static int cxgb4_ptp_gettime(struct ptp_clock_info *ptp, struct timespec64 *ts)
- 					       ptp_clock_info);
- 	u64 ns;
- 
--	ns = t4_read_reg(adapter, T5_PORT_REG(0, MAC_PORT_PTP_SUM_LO_A));
--	ns |= (u64)t4_read_reg(adapter,
--			       T5_PORT_REG(0, MAC_PORT_PTP_SUM_HI_A)) << 32;
-+	if (CHELSIO_CHIP_VERSION(adapter->params.chip) >= CHELSIO_T7)
-+		ns = t4_read_reg64(adapter, MAC_PTP_SUM_LO_A);
-+	else
-+		ns = t4_read_reg64(adapter, T5_PORT_REG(0, MAC_PORT_PTP_SUM_LO_A));
- 
- 	/* convert to timespec*/
- 	*ts = ns_to_timespec64(ns);
-@@ -432,7 +470,7 @@ void cxgb4_ptp_init(struct adapter *adapter)
- 	spin_lock_init(&adapter->ptp_lock);
- 
- 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_clock_info,
--						&adapter->pdev->dev);
-+						adapter->pdev_dev);
- 	if (IS_ERR_OR_NULL(adapter->ptp_clock)) {
- 		adapter->ptp_clock = NULL;
- 		dev_err(adapter->pdev_dev,
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-index 83cb3f28ab81..cd151696b82c 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-@@ -3483,7 +3483,8 @@ static void do_gro(struct sge_eth_rxq *rxq, const struct pkt_gl *gl,
- enum {
- 	RX_NON_PTP_PKT = 0,
- 	RX_PTP_PKT_SUC = 1,
--	RX_PTP_PKT_ERR = 2
-+	RX_PTP_PKT_ERR = 2,
-+	RX_PTP_PKT_T7 = 3
- };
- 
- /**
-@@ -3509,6 +3510,13 @@ static noinline int t4_systim_to_hwstamp(struct adapter *adapter,
- 
- 	data = skb->data + sizeof(*cpl);
- 	skb_pull(skb, 2 * sizeof(u64) + sizeof(struct cpl_rx_mps_pkt));
-+
-+	if (CHELSIO_CHIP_VERSION(adapter->params.chip) == CHELSIO_T7) {
-+		struct ethhdr *eth = (struct ethhdr *)skb->data;
-+
-+		if (ether_addr_equal(eth->h_source, eth->h_dest))
-+			return RX_PTP_PKT_T7;
-+	}
- 	offset = ETH_HLEN + IPV4_HLEN(skb->data) + UDP_HLEN;
- 	if (skb->len < offset + OFF_PTP_SEQUENCE_ID + sizeof(short))
- 		return RX_PTP_PKT_ERR;
-@@ -3740,8 +3748,7 @@ int t4_ethrx_handler(struct sge_rspq *q, const __be64 *rsp,
- 		__skb_pull(skb, s->pktshift); /* remove ethernet header pad */
- 
- 	/* Handle the PTP Event Tx Loopback packet */
--	if (unlikely(pi->ptp_enable && !ret &&
--		     (pkt->l2info & htonl(RXF_UDP_F)) &&
-+	if (unlikely(pi->ptp_enable && (ret == RX_PTP_PKT_T7 || !ret) &&
- 		     cxgb4_ptp_is_ptp_rx(skb))) {
- 		if (!t4_tx_hststamp(adapter, skb, q->netdev))
- 			return 0;
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h b/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h
-index 5ac262ec389f..e8bcce1993e1 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h
-@@ -4533,6 +4533,7 @@
- #define MAC_PORT_EPIO_OP_A 0x8d0
- 
- #define MAC_PORT_CFG2_A 0x818
-+#define MAC_PTP_SUM_LO_A 0x38108
- 
- #define MAC_PORT_PTP_SUM_LO_A 0x990
- #define MAC_PORT_PTP_SUM_HI_A 0x994
--- 
-2.39.1
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
