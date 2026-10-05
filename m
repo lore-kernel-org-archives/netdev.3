@@ -1,181 +1,221 @@
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454C23B0598
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 21:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86B025B094;
+	Mon,  5 Oct 2026 21:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234253; cv=none; b=Iw/m3dGEDxJoVG25AjjeqAl/mOpQD2ubFtwt88u8RCRiit9jrOcwHLQDGApIi6B1yl2dr13nBlClExhQMcI0WSVk6JiNAK6p2Nf01ooP2kj80TjmV/2SjY5FWZUhvwPnbleNdvpRgDthgSo598bi9oZUugU/Hqp2Kx96V4oLy6s=
+	t=1791234394; cv=none; b=UiiAmScyB1dmkCmfZf5uc3Oo2dkgOP861zQJyq2QG0aZBaVKvhe13TBzTVl2O9+1iCCSye/5NTRbKXpb+OHEviBViMVYpvKoUG1hYWPByKgX6Les8SaqnCb7fDliz41Yh6hqxBPRxIl1i4tGRXoEFqAivc9/6q3e8CNPlJFtacE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234253; c=relaxed/simple;
-	bh=TmqEykrRbiCeVgmK3AIV82QcHK8mCtpYZEu6FYVJNtU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=msGP5YxCNY+0rU3ccSkWCxIW7ulfoKJcvwtDi9xkAuzWTOQtckjG7IcBjg1wjJcFt5LUluQAre9uUfsqs+qee535gVJgJTf6OE+f4aQQ2uGHDScNbycrFp30NZ77rGXRRXMGvhD3/LXnz8HyjUk4M52T422tZjx9g+C+2I0MMik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Plo3XmAR; arc=none smtp.client-ip=74.125.82.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com
+	s=arc-20240116; t=1791234394; c=relaxed/simple;
+	bh=2vK3/pCd5wSr3buEAt8um8z9E85a66favZXRB/rXKVI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jHwP0gN8MdytIqIvIOY4kselj9Us61i9e086HwzNFbDkYOHZeuR78k0F1Rkyd9emTSSDrn6h7lIwFIiv4c+fXJAKoUgS9C8QF5LiZJyJUVOSVvJIuDSQQJ0ahf+LEAoxURuQghzTK+9iNrCUZKK5xCkpQb5JF6s88qWIYZPZsHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/pacUp9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Plo3XmAR"
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-341eff9e381so5373748eec.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 14:04:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791234251; x=1791839051; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KI04OHVNMk1iREh5Vcyr0z3kyY0Bw6/QOTWCwAjjS5Q=;
-        b=Plo3XmAR6IOMiP0lTk5KvpNlKyZWqwB19e54yf4iL6tFOKMsUlyEuBOCfNvutzyZbn
-         dLRBEsPWkFe9ezeGyKWscIlqW/+pdIt4gsnHbOXHlG1nOg+08uT6sLSirL4dHG/jMOyV
-         eHVU4QF0dfuIOVdrU2dghkwPZaxJE3Pb+Gya2YyTNlrrpQczEfBIlVMmmR2T4u/+E4YA
-         diCLDL0Nzr93yS/vTEehkdYhyyedpi3+cQf1J5HpQanM7QYKG/27zzYyrKwBdqTzif1N
-         oyNEbvKFq3qT7NxI3aZQGic/NaS9G8wBZmclffubhTVnjeu9Jx/8qej8cX5lVcnMRjwl
-         /W1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791234251; x=1791839051;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KI04OHVNMk1iREh5Vcyr0z3kyY0Bw6/QOTWCwAjjS5Q=;
-        b=R8Lq4SWsgjoIsyF4xeEr9tLuKBwY6XJDQsl/nK7Og5b5ddqwKEF5A0iSucbpUjopd2
-         JsS2I4JrGo5SrwSokl5mjAAI2ECwO+oMl2wAXch9zJ7oRDQtG+KHMW7Kd48YKm6QiYKg
-         XI1H80k46Vc/SVezFDdAH+sS0mxaafP+nQnMXfXW0nLcJZV35kYM25XhMUfyiavai79a
-         03IpkfO2g0ObFcS+6rjCm8yrbPOXa3EGjgAcH1/Gl9rN3wnWHA5M+qmoH6vLnItpOQ4a
-         eqF6nOEBIB4HQbBg/u8yBxZavEyjsxRruQoroKiwPtDrqCKe4+Ug0jj+OsDh5M+HLNg+
-         zgTQ==
-X-Gm-Message-State: AFuF++kWgkpg7CS/4vQ6VVJzGCE/2uEaG2WfFwzUxVy1NkLyCKrxYpg3
-	z0YB5YGZ2qQZATGQkmI+yjXb/Zg30MFUk8FlvnnU30nazZffNZv8GUOlEQ6HvnZm3D5vFiAVvSR
-	ghCaqMXRFdL7tnYDTJ8/C1EWynO6i8MCqolMJcUB/sEzyEm0YNpxWi3E78rxXCIHH9M6+wQIJP1
-	cF4t4DObYz3JqJtPrbZXuaFYK/+ACuyhpekcv6ZWPqy5r2jA8=
-X-Received: from dycpr6.prod.google.com ([2002:a05:7301:fd86:b0:347:7fea:9fec])
- (user=kaifengw job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7301:4208:b0:351:1e3f:812d with SMTP id 5a478bee46e88-3511e3f8878mr8117223eec.36.1791234250456;
- Mon, 05 Oct 2026 14:04:10 -0700 (PDT)
-Date: Mon,  5 Oct 2026 21:04:03 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/pacUp9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083B31F000FF;
+	Mon,  5 Oct 2026 21:06:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791234392;
+	bh=bEXPh/gBLTg9XMtJ69jAnXwzbGULNfqTXAFztxkmtno=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=C/pacUp9d05vx4UkIUSUoqDaO5lIF2i/i2VcYK/4RdfrnteH9tBwc/VRElIuli5vc
+	 7mDfD9kymOHPYQD/GtWwpOAXPn6NIFdPBU5goUbc0v53hoPF8X/vIO34ILncg2Eapt
+	 Wn8QtMiM1KVMEa/srlZZ+45UsXSj804stTaX8cGoOx5xEJyEjoccU5gEF8TzfcFXBp
+	 PeyMNcmyHUpG4tXjEo2kNwg96jSWQL8v2GEJ5IcUEXhcQ1JgbAuWMbXpOXKMKpGjX/
+	 MT3YilnH691w/oDJswa2tXoHEIEK65o5V/LQQBXb9z2USn38lWowfOEnBBmquG/FVO
+	 xAUvYbFY+4iIQ==
+Subject: Re: [PATCH net v2] net: qualcomm: rmnet: require real-netns admin for
+ bridging
+From: netdev-bot+sashiko@kernel.org
+To: Jeremy.Jean@oss.cyber.gouv.fr
+Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
+ sean.tranchetti@oss.qualcomm.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
+Date: Mon, 05 Oct 2026 21:06:31 +0000
+Message-ID: <179123439155.434549.10322630340184585592@kernel.org>
+In-Reply-To: <20261004203149.3042491-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261004203149.3042491-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20261005210403.3206872-1-kaifengw@google.com>
-Subject: [PATCH net] net: devmem: check uid and netns in net_devmem_get_binding()
-From: Kaifeng Wang <kaifengw@google.com>
-To: netdev@vger.kernel.org
-Cc: almasrymina@google.com, edumazet@google.com, pabeni@redhat.com, 
-	willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org, 
-	sdf@fomichev.me, bobbyeshleman@meta.com, kaiyuanz@google.com, 
-	linux-kernel@vger.kernel.org, Kaifeng Wang <kaifengw@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-NETDEV_CMD_BIND_TX is unprivileged, and dmabuf binding IDs are allocated
-from a single global xarray. Currently net_devmem_get_binding() looks up
-the binding by ID without checking whether the sending socket belongs to
-the same user or network namespace that created the binding.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Record the creating netlink socket's network namespace and UID on the
-binding, and verify both in net_devmem_get_binding() before checking the
-route destination device. Return -EINVAL on mismatch so callers cannot
-distinguish non-existent IDs from bindings owned by other users.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-Fixes: bd61848900bf ("net: devmem: Implement TX path")
-Signed-off-by: Kaifeng Wang <kaifengw@google.com>
----
- net/core/devmem.c      | 7 ++++++-
- net/core/devmem.h      | 5 +++++
- net/core/netdev-genl.c | 5 +++--
- 3 files changed, 14 insertions(+), 3 deletions(-)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index f4d60654ce7f..9a773b1ce92d 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -191,6 +191,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		       enum dma_data_direction direction,
- 		       unsigned int dmabuf_fd, unsigned int niov_shift,
- 		       struct netdev_nl_sock *priv,
-+		       const struct sock *nl_sk,
- 		       struct netlink_ext_ack *extack)
- {
- 	struct net_devmem_dmabuf_binding *binding;
-@@ -220,6 +221,8 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 
- 	binding->dev = dev;
- 	binding->vdev = vdev;
-+	write_pnet(&binding->net, sock_net(nl_sk));
-+	binding->uid = sk_uid(nl_sk);
- 	binding->niov_shift = niov_shift;
- 	xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
- 
-@@ -390,7 +393,9 @@ struct net_devmem_dmabuf_binding *net_devmem_get_binding(struct sock *sk,
- 	int err = 0;
- 
- 	binding = net_devmem_lookup_dmabuf(dmabuf_id);
--	if (!binding || !binding->tx_vec) {
-+	if (!binding || !binding->tx_vec ||
-+	    !net_eq(sock_net(sk), read_pnet(&binding->net)) ||
-+	    !uid_eq(sk_uid(sk), binding->uid)) {
- 		err = -EINVAL;
- 		goto out_err;
- 	}
-diff --git a/net/core/devmem.h b/net/core/devmem.h
-index 4a293a7d1149..7b9d3e04367c 100644
---- a/net/core/devmem.h
-+++ b/net/core/devmem.h
-@@ -10,6 +10,7 @@
- #ifndef _NET_DEVMEM_H
- #define _NET_DEVMEM_H
- 
-+#include <net/net_namespace.h>
- #include <net/netmem.h>
- #include <net/netdev_netlink.h>
- 
-@@ -26,6 +27,8 @@ struct net_devmem_dmabuf_binding {
- 	 * dereferenced.
- 	 */
- 	void *vdev;
-+	possible_net_t net;
-+	kuid_t uid;
- 	struct gen_pool *chunk_pool;
- 	/* Protect dev */
- 	struct mutex lock;
-@@ -97,6 +100,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		       enum dma_data_direction direction,
- 		       unsigned int dmabuf_fd, unsigned int niov_shift,
- 		       struct netdev_nl_sock *priv,
-+		       const struct sock *nl_sk,
- 		       struct netlink_ext_ack *extack);
- struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id);
- void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding);
-@@ -181,6 +185,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		       unsigned int dmabuf_fd,
- 		       unsigned int niov_shift,
- 		       struct netdev_nl_sock *priv,
-+		       const struct sock *nl_sk,
- 		       struct netlink_ext_ack *extack)
- {
- 	return ERR_PTR(-EOPNOTSUPP);
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 33b9f4eb9565..847814e3df3f 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -1094,7 +1094,7 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
- 
- 	binding = net_devmem_bind_dmabuf(netdev, NULL, dma_dev, DMA_FROM_DEVICE,
- 					 dmabuf_fd, niov_shift, priv,
--					 info->extack);
-+					 NETLINK_CB(skb).sk, info->extack);
- 	if (IS_ERR(binding)) {
- 		err = PTR_ERR(binding);
- 		goto err_rxq_bitmap;
-@@ -1243,7 +1243,8 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
- 	binding = net_devmem_bind_dmabuf(bind_dev,
- 					 bind_dev != netdev ? netdev : NULL,
- 					 dma_dev, DMA_TO_DEVICE, dmabuf_fd,
--					 PAGE_SHIFT, priv, info->extack);
-+					 PAGE_SHIFT, priv, NETLINK_CB(skb).sk,
-+					 info->extack);
- 	if (IS_ERR(binding)) {
- 		err = PTR_ERR(binding);
- 		goto err_unlock_bind_dev;
+- [High] The patch closes the cross-netns real-port privilege gap only in
+  the bridge ndo callbacks.
+- [Medium] The commit message says it will 'Require CAP_NET_ADMIN in the
+  real device's namespace before ... removing a bridge'.
+
+--
+
+net: qualcomm: rmnet: require real-netns admin for bridging
+
+An rmnet device keeps its link to the real device after it is moved to
+another network namespace. This patch adds rtnl_dev_link_net_capable()
+checks to rmnet_add_bridge() and rmnet_del_bridge(). With the checks,
+changing the bridge state of the real port needs CAP_NET_ADMIN in the
+real device's namespace.
+
+> diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+> index bed6f63facf25..62d7acb13e0c0 100644
+> --- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+> +++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+> @@ -441,6 +441,13 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+>  	struct rmnet_port *port, *slave_port;
+>  	int err;
+>  
+> +	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(slave_dev),
+> +	 * but bridge mode below controls real_dev, which may live in another
+> +	 * netns.
+> +	 */
+> +	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
+> +		return -EPERM;
+> +
+
+[Severity: High]
+The bridge ops are not the only rtnl entry point that modifies the shared
+real port. Should rmnet_changelink() get the same check?
+
+rmnet_changelink() looks up the port shared by every rmnet endpoint on
+real_dev and modifies it. The only capability check is the one rtnetlink
+does in dev_net(dev):
+
+drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c:rmnet_changelink() {
+    ...
+	port = rmnet_get_port_rtnl(real_dev);
+
+	if (data[IFLA_RMNET_MUX_ID]) {
+		...
+			hlist_del_init_rcu(&ep->hlnode);
+			hlist_add_head_rcu(&ep->hlnode,
+					   &port->muxed_ep[mux_id]);
+		...
+	}
+
+	if (data[IFLA_RMNET_FLAGS]) {
+		...
+		port->data_format &= ~flags->mask;
+		port->data_format |= flags->flags & flags->mask;
+
+		if (rmnet_vnd_update_dev_mtu(port, real_dev)) {
+    ...
+}
+
+Suppose an rmnet device has been moved into netns B while real_dev stays
+in netns A. A user with CAP_NET_ADMIN only in B can then send
+RTM_NEWLINK with IFLA_RMNET_FLAGS. That rewrites port->data_format,
+which controls deaggregation, MAP checksum offload and MAPv5 handling
+for every rmnet endpoint on real_dev in A.
+
+The same user can also move the endpoint between port->muxed_ep[]
+buckets by changing IFLA_RMNET_MUX_ID.
+
+rmnet_vnd_update_dev_mtu() walks every endpoint on the port and calls
+rmnet_vnd_change_mtu(ep->egress_dev, real_dev->mtu - headroom). So
+setting a flag that grows the headroom, such as
+RMNET_FLAGS_EGRESS_MAP_CKSUMV4, also shrinks the MTU of rmnet devices
+in netns A.
+
+macvlan_changelink() already guards shared lower-port settings with:
+
+	!rtnl_dev_link_net_capable(dev, dev_net(vlan->lowerdev))
+
+Would a similar guard in rmnet_changelink(), at least for
+IFLA_RMNET_FLAGS and IFLA_RMNET_MUX_ID, be needed for this fix to be
+complete? The other option would be to mark rmnet devices
+netns_immutable.
+
+>  	port = rmnet_get_port_rtnl(real_dev);
+>  
+>  	/* If there is more than one rmnet dev attached, its probably being
+> @@ -489,7 +496,18 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+>  int rmnet_del_bridge(struct net_device *rmnet_dev,
+>  		     struct net_device *slave_dev)
+>  {
+> -	struct rmnet_port *port = rmnet_get_port_rtnl(slave_dev);
+> +	struct rmnet_priv *priv = netdev_priv(rmnet_dev);
+> +	struct net_device *real_dev = priv->real_dev;
+> +	struct rmnet_port *port;
+> +
+> +	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(slave_dev),
+> +	 * but bridge teardown also updates real_dev, which may live in another
+> +	 * netns.
+> +	 */
+> +	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
+> +		return -EPERM;
+
+[Severity: Medium]
+The commit message says:
+
+    Require CAP_NET_ADMIN in the real device's namespace before adding or
+    removing a bridge.
+
+This check gates only the ndo_del_slave path. Two other teardown paths
+reach rmnet_unregister_bridge() and make the same real port change:
+
+	real_port->bridge_ep = NULL;
+	real_port->rmnet_mode = RMNET_EPMODE_VND;
+
+The first is RTM_DELLINK on the rmnet device. rtnl_delete_link() calls
+ops->dellink directly:
+
+rtnl_delete_link()->rmnet_dellink() {
+    ...
+	bridge_dev = real_port->bridge_ep;
+	if (bridge_dev) {
+		bridge_port = rmnet_get_port_rtnl(bridge_dev);
+		rmnet_unregister_bridge(bridge_port);
+	}
+    ...
+}
+
+The second is NETDEV_UNREGISTER on the slave, which fires when a
+virtual slave is deleted or moved to another netns:
+
+rmnet_config_notify_cb()->rmnet_force_unassociate_device() {
+    ...
+	} else {
+		rmnet_unregister_bridge(port);
+	}
+}
+
+Neither path has a real-netns capability check. Both are void or
+notifier paths, so they cannot fail the same way.
+
+A user who is admin only in the rmnet/slave netns would now get -EPERM
+from "ip link set slave nomaster" or from a master change. In that case
+do_set_master() returns after ndo_del_slave fails, before it attaches the
+new master. The same user can still remove the bridge without
+real-netns privilege by deleting the rmnet device, or the slave if it is
+virtual.
+
+Does the del-side check give any real protection here? The add-side
+check already blocks unprivileged bridge creation. Would it make sense
+to drop or rethink this check rather than block the clean unenslave
+path?
+
+> +
+> +	port = rmnet_get_port_rtnl(slave_dev);
+>  
+>  	rmnet_unregister_bridge(port);
+>
+
 -- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004203149.3042491-2-Jeremy.Jean%40oss.cyber.gouv.fr
