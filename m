@@ -1,79 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA2C456E1E;
-	Mon,  5 Oct 2026 23:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED659378D8A;
+	Mon,  5 Oct 2026 23:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791244189; cv=none; b=ETk0YV/runBfZNml3AWt97ibVR9pdLQwbl3mJ9zVcbMXROVANJROmuswrP52xoLl7IHQMfo4uOrVYek4AU4vtEplgCfRysXSvHHulvFrCjB55BK+VORYc373lj3YR5tiUq5DtSSN/1XzFXwp2890UlzA/58cWp/t8IB4/wdXoOM=
+	t=1791244213; cv=none; b=hZ3ll1SShtSdVRRx7dTx94jKf+GX20xCO2i6uaUj5EQ6b3LPjdhPMuKDkaVoLwRm9Q04bo9okzqt1sa9nYih9PMO4eoXYAarfY3qTSD+JWuNn0UcrgmErF3EpQl+wGyb6KdjuaeuCNKjQJyzJAL/S2x2kunQV/Oerm1AVDdUTro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791244189; c=relaxed/simple;
-	bh=f7LOH7H2f4WUJs84cTbO3REd4wPdn1m4OYbzv5efXg8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X4dIzMarrFCR7alFGhYDaUuP5B3Pj+yWfSSKuut7dl4bChwWKqDrAVQtqpxs93RyDU8963jCP5BGYhzAQk9oB0sXB+HuryM7Yc/VmY0Ub5pZbLLWZOze/vE1bxEKIzTOASa3JkSN2xU+ttqfeMsfEo+2GuR/XIa+NAKqKyyheFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIZkpETz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791244213; c=relaxed/simple;
+	bh=cbJZI6Uf65g/LZcP9oQLy+dfnj0ytsCgKzbPwvSs25g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AQ3ZzUtaBPin855EfYdFQGD6SdfkNF+fLMBaEUWuiswigDLN3Wef2YKLrWe2B/i0kGGqEkUiHjPl4AW4i2x95yCAGMPG8AM4eZee2udseMScVBQmuoK7rD+UVLjxnJrB+BQk4tWsIkBWG8C7JFRDgcxzkZ5XozYeMMGZyNKgHVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=p1W9hGEV; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIZkpETz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A041F000FF;
-	Mon,  5 Oct 2026 23:49:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791244188;
-	bh=tncH384WWqvonNdxO2KdvDGijT7bz/Cse9qfsImGrcI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=FIZkpETz2N7G9H5jaoB6Kyw4LPn5BrEQ6J48C5kq/eA4MjcNmOIcJONgaUxUM1r2E
-	 nmTk9qspUaR0UZt9Be2Yb1CM0mUWUPnq5ud3d5iIubROwoSKdlorsO33fLpiv2oj8G
-	 +ndh3ZtrW6+pU206u1xY7eIUxuPndK/7AOWM/6ShpgfroQ8RJPwQfe1tuEixttL2ph
-	 hVrCvNdgvpK86cOSa3dE09XwbjZQqCXSg+CaNra7RrExRtNPH+sKkAYvSKwEgF1o8W
-	 Z0pYG7RLNIMtHs1dVSrnrnQmY2IxUVgzsDoTKzh36XjyQRLFZQ++aGtJw95UdGwVDR
-	 lbawhiQ5KIEkQ==
-Date: Mon, 5 Oct 2026 16:49:46 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>, Aleksandr Loktionov
- <aleksandr.loktionov@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, "David S. Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Donald Hunter
- <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>, Ido Schimmel
- <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>, Johannes Berg
- <johannes@sipsolutions.net>, Kees Cook <kees@kernel.org>, Kory Maincent
- <kory.maincent@bootlin.com>, Kuniyuki Iwashima <kuniyu@google.com>, Nicolas
- Dichtel <nicolas.dichtel@6wind.com>, Nikolaos Gkarlis
- <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca
- <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, Simon Horman
- <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>, Vadim
- Fedorenko <vadim.fedorenko@linux.dev>, Willem de Bruijn
- <willemb@google.com>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v9 4/6] net: add AF_PACKET multicast dumps
-Message-ID: <20261005164946.25da19c2@kernel.org>
-In-Reply-To: <20260930112842.21323-5-sigefriedhyy@gmail.com>
-References: <20260930112842.21323-1-sigefriedhyy@gmail.com>
-	<20260930112842.21323-5-sigefriedhyy@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="p1W9hGEV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Dc5Nrd0f6InjZVJrPSXowx+WxVSmZMtqZBt/bU7zVHk=; b=p1W9hGEVMTStzHP2TrXAV7+cph
+	lwBiNyKQPbGJymv/gn7F5Bbjo86VE+ZffYaLS00I2x50PgDtFepqjMImK067ECcAgC3KPAb6lVEch
+	mksGqtM9gi+cNdnv+pWcsj+iMn20vhom1Ypv4fOcacNZHPeLgCEXTmDau7J86dS4wcio=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xDsRS-0099At-8G; Tue, 06 Oct 2026 01:49:58 +0200
+Date: Tue, 6 Oct 2026 01:49:58 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Michael Stapelberg <michael@stapelberg.de>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] net: phy: marvell: keep WOL_EIE across interrupt
+ reconfiguration
+Message-ID: <6fd06ce1-e792-4ce9-a0db-711fad1ffeef@lunn.ch>
+References: <20261005225028.465866-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261005225028.465866-1-rosenp@gmail.com>
 
-On Wed, 30 Sep 2026 20:28:40 +0900 Yuyang Huang wrote:
-> +	netdev_for_each_mc_addr(ha, dev) {
-> +		if (addr_idx < *s_addr_idx) {
-> +			addr_idx++;
-> +			continue;
-> +		}
-> +		err = dev_mc_fill_addr(skb, dev, ha, NETLINK_CB(cb->skb).portid,
-> +				       cb->nlh->nlmsg_seq, flags, netnsid);
+>  #define MII_M1011_IMASK			0x12
+>  #define MII_M1011_IMASK_INIT		0x6400
+>  #define MII_M1011_IMASK_CLEAR		0x0000
+> +/* Bits updated by config_intr. The WoL interrupt enable is owned by
+> + * set_wol, so the config_intr call from phy_init_hw() on resume does not
+> + * silently disarm Wake-on-LAN.
+> + */
+> +#define MII_M1011_IMASK_CONFIG_MASK	(U16_MAX & ~MII_88E1318S_PHY_CSIER_WOL_EIE)
+
+I still don't like this. The name MII_88E1318S_PHY_CSIER_ suggests
+this belongs to the MII_88E1318S_PHY_CSIER register.
+
+> +		err = phy_modify(phydev, MII_M1011_IMASK,
+> +				 MII_M1011_IMASK_CONFIG_MASK,
+> +				 MII_M1011_IMASK_INIT);
+>  	} else {
+> -		err = phy_write(phydev, MII_M1011_IMASK,
+> -				MII_M1011_IMASK_CLEAR);
+> +		err = phy_modify(phydev, MII_M1011_IMASK,
+> +				 MII_M1011_IMASK_CONFIG_MASK,
+> +				 MII_M1011_IMASK_CLEAR);
+
+But here you apply it to the MII_M1011_IMASK register.
+
+> +	if (!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY))) {
+> +		err = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
 > +		if (err < 0)
-> +			break;
-> +		nl_dump_check_consistent(cb, nlmsg_hdr(skb));
+> +			goto error;
+> +
+> +		/* Disable the WOL interrupt, config_intr leaves it alone */
+> +		err = __phy_clear_bits(phydev, MII_M1011_IMASK,
+> +				       MII_88E1318S_PHY_CSIER_WOL_EIE);
 
-Why are you checking this on every iteration?
+And here it much more obviously looks wrong. These prefixes are there
+to catch dumb typos, and somebody is going to look at this, and think
+it is a dumb typo and report it.
 
-> +		addr_idx++;
-> +	}
+Please fix the naming.
 
-The changes still lack polish IMO.
+
+    Andrew
+
+---
+pw-bot: cr
