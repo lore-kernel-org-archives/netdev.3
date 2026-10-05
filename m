@@ -1,145 +1,111 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0BD43149D;
-	Mon,  5 Oct 2026 09:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7215432E80
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 09:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791191730; cv=none; b=o4wr4bbAyAaV/JOM+cvFN9MlvDUV/lrz+ZCXtKnTpCkc6Dteg3VifFOiSS+d81tBjIukXhWn1uak8wPhq+jWDLV6TKpUkjCpLHVdhBXj/yidPEZClComm7JYc+gp/D5fl4kv+pDqMaq5hfqQhXK4z1+9XuVuQWqpB85p/p/6hKY=
+	t=1791191783; cv=none; b=fQxpQmED1H1oA0jWP21QSi5Sd/tHWGVM9hiCrqgV9bHu9bF58s26JcCj2494ZGpApsGBNf6jsAS1x+Zn7/lZ90l1Nez5j5/MAfc6cC25YIzT587QNUzRzZwfn8m7jfG8p+PQVTzLgoJ0WUYv/2lw5q1QtBoEU7HggzokldQrq2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791191730; c=relaxed/simple;
-	bh=IvWzLE7BfpaVRZZC/2oAPLGeYslO7bCeb+PdlngvYgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h+Q3XbBXjHmlSA724Z/KvpwWTQFvQJm0m1/CzdTBiiWqwPhzgxUgO0IrlEuoUPMwNA3uKIcgzmkzaJCsOMVE6ydYih81PNRz87gtpC+FauX7IG6imeWoTB/yYlLjRhxq1PCCcXscb57PfqHJIPhOO2jR2BqyzpsD943m5SxjJ18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dwOWGp8w; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791191783; c=relaxed/simple;
+	bh=FUq2avO84bfZ8GLcZBSlMUyLjO/Hl+O/IAjRjhroQVA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RlSYJ6m+ZIwnLpaC6BjgzulLc49Fb3VQwwdr+mv6TBCJJCjw1+tLyYgP4bTnKnVSJ9PgHawKBsp+rs7zAU4YrB5qQgiZGDN02agD3E7kmvW9ll1oldalqnFB3k99U2xVJ4cWLu/UTV0/ObL8hTrRgitnalnLm0S7Bppi2VZ+e0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hl05/ip2; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dwOWGp8w"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 806094E4117D;
-	Mon,  5 Oct 2026 09:15:24 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4FD29604FE;
-	Mon,  5 Oct 2026 09:15:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D83721033071E;
-	Mon,  5 Oct 2026 11:15:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791191722; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=YM7TE7exdYuQCUvvTDui+rJZ2DPmZv/3pJBXSuDfZEY=;
-	b=dwOWGp8wKr0jZVpSpX3ZYBI4KFhl54LXQ9h6fu3/xkcdNtS7BtWiV1Hbkysk4k0skqq6N3
-	/cVZrAg46Ju8MU3LPgMVJuu/6igHYukg4F3FTd8BJ6kYFX5BOqTUP6hZZptWyWvpe4on9y
-	K3mJ8dY0itsAP9AVfG7omEZZJmCW2M/n1O361nbh3QvCpn7sx7DMS9/21UY9fkiGXMpbvW
-	j9+bruWHVmU+tAohvm6D5pGU4KF/5S3kh5KX8g62P6ye2dURx7tGDXDVZzIHPCGQEgy6Wk
-	YVmEiFX1WvgGqb6oxSX5itxoEzwaaMqUwpu8s0BDJmtuOpfv50+lLtDRs3D5dw==
-Message-ID: <6bb85939-ff35-46e1-88cc-1bed0034e787@bootlin.com>
-Date: Mon, 5 Oct 2026 11:15:15 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hl05/ip2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791191780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i6HHcmnZcnfCWuCdH1gD5szgvgpTuYMt7kmo657pMZ8=;
+	b=Hl05/ip23PD3Eyd0WiPHz5QAlA9bFcI6RYJirAurJZMe4/n34E4S/ZMgByV6kwiMvhV4lD
+	ESmlrH/IhwNRKA5GYKXDVeUac6yuLo7ju8y7NTxS84KF6wh6Htmky5wOWQsluLzbP594U1
+	F9q72O66zsl/8m0LXCT3qZiGC0B74qY=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-34jTgZb_NjiYcFOEievRZg-1; Mon,
+ 05 Oct 2026 05:16:15 -0400
+X-MC-Unique: 34jTgZb_NjiYcFOEievRZg-1
+X-Mimecast-MFC-AGG-ID: 34jTgZb_NjiYcFOEievRZg_1791191773
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 34D53192D0EE;
+	Mon,  5 Oct 2026 09:16:13 +0000 (UTC)
+Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D9F2730000E4;
+	Mon,  5 Oct 2026 09:16:08 +0000 (UTC)
+Date: Mon, 5 Oct 2026 11:16:06 +0200
+From: Miroslav Lichvar <mlichvar@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Rodolfo Giometti <giometti@enneenne.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
+ pps_get_ts()
+Message-ID: <asNq1o8TmdNdG45T@localhost>
+References: <20260829210041.40649-1-dwmw2@infradead.org>
+ <20260829210041.40649-4-dwmw2@infradead.org>
+ <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
+ <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
+ <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
+ <ar5cq0vslvQ00Pek@localhost>
+ <b567acf8-c3e3-4b51-99a8-058ab42f3026@enneenne.com>
+ <24e8134b35cc8be26606d7472295cdb43ea6b38a.camel@infradead.org>
+ <777d19602ed1868abbd3d3ef3a4e78a8688d4a17.camel@infradead.org>
+ <dd7a873caecab6c912e2c0f910d1e46818ea455d.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/2] net: stmmac: Disable NAPI before stopping Tx
- queues in stmmac_xdp_release()
-To: Kurt Kanzenbach <kurt@linutronix.de>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Eric Dumazet <edumazet@kernel.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Song Yoong Siang <yoong.siang.song@intel.com>,
- Noor Azura Ahmad Tarmizi <noor.azura.ahmad.tarmizi@intel.com>,
- Mohd Faizal Abdul Rahim <faizal.abdul.rahim@intel.com>,
- Ong Boon Leong <boon.leong.ong@intel.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-References: <20261005-stmmac_xsk_crashes-v2-0-46c60cba6421@linutronix.de>
- <20261005-stmmac_xsk_crashes-v2-1-46c60cba6421@linutronix.de>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261005-stmmac_xsk_crashes-v2-1-46c60cba6421@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dd7a873caecab6c912e2c0f910d1e46818ea455d.camel@infradead.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hi Kurt,
+On Fri, Oct 02, 2026 at 02:44:41PM +0100, David Woodhouse wrote:
+>   ┌──────────────────────────────┬─────┬──────┬──────┬──────┬─────┐
+>   │ capture method               │ p50 │  p95 │  p99 │  max │   σ │
+>   ├──────────────────────────────┼─────┼──────┼──────┼──────┼─────┤
+>   │ pps-gpio (IRQ)               │  84 │ 1206 │ 4013 │ 4889 │ 688 │
+>   │ polling, stamp after edge    │ 206 │  536 │  665 │ 1106 │ 286 │
+>   │ polling, bracketed counter   │ 206 │  545 │  647 │  811 │ 286 │
+>   │ polling, bracketed, raw MMIO │ 135 │  359 │  434 │  564 │ 188 │
+>   │ entry.S counter capture      │  46 │  109 │  135 │  206 │  58 │
+>   └──────────────────────────────┴─────┴──────┴──────┴──────┴─────┘
 
-On 10/5/26 09:09, Kurt Kanzenbach wrote:
-> Attaching an XDP program while Tx traffic is running results in kernel
-> crashes in stmmac_xmit() -> dwmac4_set_addr().
-> 
-> Loading an XDP program tears down and reallocates all DMA resources via
-> stmmac_xdp_release() and stmmac_xdp_open(). stmmac_xdp_release() stops
-> the Tx queues before disabling NAPI:
-> 
->  stmmac_xdp_release:
->    netif_tx_disable
->    stmmac_disable_all_queues
->    ...
->    free_dma_desc_resources
-> 
-> A Tx NAPI poll may still be in flight at that point. stmmac_tx_clean()
-> takes the Tx queue lock, reaps completed descriptors and wakes the queue
-> again when it observes it stopped with enough descriptors available.
-> Nothing stops the queue afterwards, so the Tx path resumes while
-> free_dma_desc_resources() releases the descriptor rings underneath it.
-> 
-> On non-coherent platforms dma_free_coherent() tears down the vmalloc
-> mapping of the descriptors, so the subsequent stmmac_xmit() faults on an
-> unmapped address instead of corrupting memory silently.
-> 
-> Disable NAPI first and stop the Tx queues afterwards, which is the order
-> already used by __stmmac_release().
-> 
-> The issue can be easily reproduced by:
-> 
->  1. Run iperf
->  2. Run application which opens an AF_XDP/ZC socket
-> 
-> Assisted-by: Claude:claude-opus-5
-> Fixes: 77711683a504 ("net: stmmac: ensure tx function is not running in stmmac_xdp_release()")
-> Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+The time to read the GPIO heavily depends on the HW. On the MIPS
+ar71xx where I was using the polling driver, it was 85 nanoseconds
+(the precision logged by the driver when loaded).
 
-This now matches the non-xdp case, great :)
+> (NB: We should be careful not to forget the common-mode hardware
+> latency which could be different for the IRQ paths vs. the polling
+> paths. On my list is a test where one CPU polls while the other takes
+> the interrupt, so we can compare on the *same* pulse.)
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Yes, that is the main advantage of the polling driver that it avoids
+all those delays before the actual read of the clock.
 
-Maxime
+Both pps-gpio and pps-gpio-poll can echo the input PPS signal back to
+a different GPIO pin, so you could measure how the delays differ with
+the two drivers on a scope.
 
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 9741f97fa37a..796817caf7af 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -7178,15 +7178,15 @@ void stmmac_xdp_release(struct net_device *dev)
->  	struct stmmac_priv *priv = netdev_priv(dev);
->  	u8 chan;
->  
-> -	/* Ensure tx function is not running */
-> -	netif_tx_disable(dev);
-> -
->  	/* Disable NAPI process */
->  	stmmac_disable_all_queues(priv);
->  
->  	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
->  		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
->  
-> +	/* Ensure tx function is not running */
-> +	netif_tx_disable(dev);
-> +
->  	/* Free the IRQ lines */
->  	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
->  
-> 
+-- 
+Miroslav Lichvar
 
