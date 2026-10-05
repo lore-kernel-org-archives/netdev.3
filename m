@@ -1,455 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167F92DC331;
-	Mon,  5 Oct 2026 01:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C2F153BE9
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 01:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791162613; cv=none; b=Ra6PfEDd9FSCmLqCq7zN09jZ8n61WvsX5KfI28Fe86yljt6n6E2a/s1BL/LqJua6TWOhAUr/q1wp5Td6zKVFzlDNm64bqOwvIpvSCpp8KHhjfGGWLJ0U26r7BV8wJ+ZQH0687YBu26BDGgbqo2eYPPRQrSM/ZFeOVoJJOMngges=
+	t=1791164664; cv=none; b=MlcJmeCnWHYI1pekZ2wXm2rqn71lTSSBN2CasMWBQAtjNWnMT0fnAB/c2yQeZ+qT4FvehxMqO1DCls5ArvqJ873/5LzbjBAkYFwAzeczX/iLYb7SylNrZR9lgDCzElVYXzfwDTdcY7wto8D4JkUp9G/nHUGb9b9pNo74j6JUoCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791162613; c=relaxed/simple;
-	bh=qYkKLjJYL+jOHWnEo+6fzD24LkjtHtW4j2EUIOou0Z8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rIRGyWCM4u//7qjAdE8hUcl2ZifavwtK2pmxdalSsIHg55Yr6p+rWxelV07OZnnVERcby03bNcEpYOgO//GVMn+4LEF4jUDLZyZTIUXsGMa91R9Zyq5iPODd02MtQMEyO0hn2I/keYZt9J1ghFLhMyxw+wYM8f5Qoxd6/HQE5Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFE18Rdj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791164664; c=relaxed/simple;
+	bh=gdcAc9kU2f37oDPTEaIu3SvgwjNkPW9z3uOTiZijXHo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y+rPl8CVL2Ib1t1aq+5XNO7gQx2uh1RTFQ1ph4Lub0Q6APPSeOhqiJi6cHFEgJJiRQUXlnMTbKiKAaqw06vKQQpXopSI9ou06corDTD10Lep7GBbHqBZolRTm7LmOlqg7v2xjrBStH4b9839nwllcX1pq/pAUCQVVjUq0uXszCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YrTa2yYY; arc=none smtp.client-ip=74.125.229.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFE18Rdj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3327D1F000FF;
-	Mon,  5 Oct 2026 01:10:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791162611;
-	bh=yJac6bB2/RSUQt7vTaLq50zwkDeAFCjOH7s/jENmRqI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PFE18RdjoMIHg3R2chjK/9iOQ42G/OvvHhRJSWXPnJAGY9GQPq+VMljxUJz78X8QC
-	 VWJ26D+6BPsWyL0FSgXnIbYLzp8ch2B5cyNGuk0T/pBPRhBO00WSwa73HgkUC2KkYI
-	 MN2rUee7nSKcueDLLH273tCjNv0Sq0GF41t8mzp+lNaNZ3UThSE3QG0m/iostp44ko
-	 RbK8++d9khNofu7iKdVcb5aABGZqubYdFPu1/Fvsv9OfpLw+d9YxKx7bLS+Agjz1uB
-	 1Z/vklJNO6YjDcqvpzBNFvbCHuhAE8KqwG42IBpan9n8OzYYp6fZtryBUfP73i2GkF
-	 gkwkHFUPIy9eg==
-Subject: Re: [PATCH net-next v11 13/13] dpll: sit9531x: model the inter-PLL
- sync net as a pair of pins
-From: netdev-bot+sashiko@kernel.org
-To: arouhi@sitime.com
-Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
- arkadiusz.kubalewski@intel.com, ivecera@redhat.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- cjubran@nvidia.com, Oleg.Zadorozhnyi@devoxsoftware.com,
- devicetree@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 01:10:09 +0000
-Message-ID: <179116260977.434549.11247923823182031360@kernel.org>
-In-Reply-To: <20260930233714.87679-14-arouhi@sitime.com>
-References: <20260930233714.87679-14-arouhi@sitime.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YrTa2yYY"
+Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c11ef641aso2138515eec.1
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 18:44:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791164660; x=1791769460; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/itbrKvCQTn61vdC6fFvWPbqCrllMkc+xUXFtCNvMmc=;
+        b=YrTa2yYYoP3o5yMC8j3kMKPcz5uNPEYsPisUC9Lf1NbqvWiivY+R/ByODc2LfO2NkQ
+         qmla/8NdIWAnmOTWICM2KdEF0bu6FrjoGNPVGxHRRvQsjyvLtYc2FzvgG7iISbkMuLWd
+         0RxkpGjKSzOnh5/9hJdHPfj50OPSDX3UxUsVVbBfy1lnkAzML/twP8MlBcZhqlTXHRRi
+         YCnRxjnk0ZFe1QPRO0bpxxdZcZ40nDRGaU/jeb6a8p2KpYZkfNI1zTl+LnM46KmL1Qg5
+         Il0UoJYTvQRp+jU2bVhtLttUqtGZll/uN5JOi5NBK4YrvcgKcewFO3LKz0yITN+Gnpdm
+         gnAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791164660; x=1791769460;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/itbrKvCQTn61vdC6fFvWPbqCrllMkc+xUXFtCNvMmc=;
+        b=1tJVUl0Z9TqaFOdIByMJ++fj5gXHpZ6/t/45fAak6GB3tymnl1QOj3ZWxMPoAltT/p
+         61HPEL55gPpW2TYnd7RMJaTmc/aUDPzJzfqLRhV/wWrUnzpBMpP4RP8v3R5tan0pEShL
+         sBmQY3xm3js6L8ZeQZcQu7ywURr6FpANxSlNrZlKsSLw2aTdIKFMaPKoApkl0Rv4LO3T
+         iCeYwIuCsBP4B+1Egj4eP/OGKyIbiyGbsxB8cfDEtq6RuaqDDoIuoqxSrowLAekghnm7
+         Tbfds3sUYbrzu6sXm6RC6N2lvol8OYQNDgKEr86iC7a9siQ+baY+asu3qzaZebSpiknV
+         RQ1A==
+X-Gm-Message-State: AFq9FYKCS4cs7dff9pt+8+VbeZE7r2Z/EeR/VtgaXLHTO1bB0unW1D8v
+	mBpRzpKAcwUAG332IIubnKk/jIHfB/hOVOxxOUA8SSzHhRRW7lDQKfro
+X-Gm-Gg: AYBFou32Ut82hUcfY6iiosRy113sxKate431bnogvOvR3P7HExifdPGlVU/m8dvP1KR
+	co2D1RzYjI5YoYpir/c4S5EagmyBN1DkpYIrsjfAbFSvNz+NbUy3Oj/9dllt/5yhOAAQn65ifh1
+	Pi3TD2gjgyZjnUrt6JPsm1nPNYrRWWZr00cBCZ3i7RLt/LpzGBOwmRZ6s9Zs37tvOzYjTJqj69l
+	1RPXK3towNwDK3bsVuSn/ymIu5AVY3J86nX3mRW4ejcB4gTbH41lPw1NYCU25yoAu99gOWNe3PM
+	SEWXvOsL2tNu6DJ9X8i/ErRqGi/10Ax+jU+SzhWQHdoh8lWXzXa/CI/L6ljVqfUHofKQ+EHSurF
+	OJHrxzzNNoqz77XcOW4sK1hkisgVelZu9lP8/W7BIZ/mrNUT/S36xh3tru2EjiDHSO5wA3MqF4T
+	6hh2EsAhZxj0ljT2rfPZeE8Dm0xIza7sKIX4JTh5gAQcQbRblWZ9tHKeXbgrBKFx8xGd5PDnOwu
+	MmT7w8bQ6IWt9NXl+vrgxgnGbGmwNY/cOg0YBnEoFaTJCta2lZueEyO5xs/DGMeRoD7ktqi/b6+
+	YrYsOAnO18oE/MRX0qB5On3UKVhQI+z25TXJ8vcrWygrUnv428REG3rt40VWoLlSAY7jO5zq9/X
+	o7xAHxv5nupTHCvWon8kamRxJLgCuCZNpjZZH2xqp8aBaLa7TsOAK1uxCvw6ndGPWCA==
+X-Received: by 2002:a05:693c:8952:20b0:351:207d:bff4 with SMTP id 5a478bee46e88-351207dc13amr5037830eec.4.1791164660342;
+        Sun, 04 Oct 2026 18:44:20 -0700 (PDT)
+Received: from FT6N242TWK ([223.181.113.176])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35128156e6esm9000016eec.20.2026.10.04.18.44.14
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 04 Oct 2026 18:44:19 -0700 (PDT)
+From: Shashank Mohan Jain <jain.sm@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Tal Gilboa <talgi@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net] lib/dim: fix 32-bit overflow of epms in dim_calc_stats()
+Date: Mon,  5 Oct 2026 07:14:11 +0530
+Message-ID: <20261005014411.78626-1-jain.sm@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 7 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 5 · Low: 2
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The INTSYNC destination pin reports operstate STANDBY even
-  when no PLL drives the net.
-- [Medium] sit9531x_dpll_intsync_src_state_on_dpll_set() never sends a
-  pin-change notification when a request fails but the cached ownership,…
-- [Medium] sit9531x_intsync_disable() jumps to restore_global on any
-  failure and sets SIT9531X_INTSYNC_EN_BIT again, whichever step failed.
-- [Medium] A failed enable followed by a failed rollback and a failed re-
-  detect leaves the net marked unowned while it is configured.
-- [Medium] restore_global in sit9531x_intsync_disable() writes
-  SIT9531X_INTSYNC_EN_BIT back into page-0 reg 0x40 but does not issue…
-- [Low] A partially configured source looks exactly like a fully
-  connected one.
-- [Low] INTSYNC ownership is not re-detected on resume.
-
---
-
-dpll: sit9531x: model the inter-PLL sync net as a pair of pins
-
-This commit models the internal INTSYNC net as two DPLL pins. The source
-PLL gets an output pin that drives the net, and each destination PLL gets
-an input pin that selects the net by priority. The commit also adds the
-register sequences that enable and disable inter-PLL sync, and it detects
-the current source at probe.
-
-> diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> index 45baa703aa45b..6b607f3d5fc31 100644
-> --- a/drivers/dpll/sit9531x/core.c
-> +++ b/drivers/dpll/sit9531x/core.c
-> @@ -2760,6 +2760,338 @@ int sit9531x_clear_notifications(struct sit9531x_dev *sitdev)
-
-[ ... ]
-
-> +int sit9531x_intsync_src_detect(struct sit9531x_dev *sitdev)
-> +{
-
-[ ... ]
-
-> +		} else if (n_en && n_dis &&
-> +			   n_en + n_dis == ARRAY_SIZE(intsync_config) &&
-> +			   partial < 0) {
-> +			/*
-> +			 * Every register holds one of the two patterns and both
-> +			 * occur: the residue of an enable or a disable that
-> +			 * stopped part way, and nothing a profile writes.
-> +			 */
-> +			partial = pll;
-> +		}
-> +	}
-> +
-> +	/*
-> +	 * A disable that stopped part way leaves a PLL holding a mix of the
-> +	 * two patterns.  Treat it as the owner, so that a repeated disconnect
-> +	 * on that PLL runs the disable again and another PLL cannot be
-> +	 * enabled on top of the leftover configuration.
-> +	 */
-> +	if (src < 0 && partial >= 0) {
-> +		dev_warn(sitdev->dev,
-> +			 "PLL%c holds a partial INTSYNC source configuration\n",
-> +			 'A' + partial);
-> +		src = partial;
-> +	}
-
-[Severity: Low]
-Once this runs, is there any way to tell a half-configured source from a
-fully connected one?
-
-Suppose a DISCONNECTED on the owning PLL writes the first dis_val and then
-fails on a later write. restore_global sets the global bit again. This
-code then sees the mixed pattern and records the PLL as intsync_src.
-
-After that, sit9531x_dpll_intsync_src_state_on_dpll_get() reports
-CONNECTED. But the page-0 small update earlier in the disable has already
-latched the global enable off.
-
-A later CONNECTED on the same PLL hits this check in
-sit9531x_dpll_intsync_src_state_on_dpll_set():
-
-	if (sitdev->intsync_src == sitdpll->id)
-		break;
-
-It returns success without running the enable sequence again. Does the
-configuration ever get completed in that case?
-
-Another DISCONNECTED does run the disable again, so this state can be
-recovered from.
-
-[ ... ]
-
-> +err_disable:
-> +	/*
-> +	 * The global enable is already set at this point.  The caller only
-> +	 * records the source PLL when this function succeeds, so nothing
-> +	 * else will ever clear the bit: undo it here rather than leave the
-> +	 * net asserted with a half-written EXT page.
-> +	 */
-> +	{
-> +		int rollback_rc;
-> +
-> +		rollback_rc = sit9531x_intsync_disable(sitdev, src_pll_idx);
-> +		if (rollback_rc)
-> +			dev_warn(sitdev->dev,
-> +				 "INTSYNC rollback failed after enable error: %d (original %d)\n",
-> +				 rollback_rc, rc);
-> +	}
-
-[Severity: Medium]
-What happens to the cached owner if this rollback also fails?
-
-Start with intsync_src == -1. The enable latches the global bit, writes
-all eight en_val registers, and then fails in sit9531x_pll_small_update().
-The rollback disable returns at once if its first read fails:
-
-	rc = sit9531x_read_u8(sitdev, SIT9531X_REG_INTSYNC_GLOBAL, &val);
-	if (rc)
-		return rc;
-
-That leaves the global bit and the EXT enable pattern in place. The caller
-does not update the cache because rc != 0. If
-sit9531x_intsync_src_detect() then also fails its first read, intsync_src
-stays at -1. Only probe and the setter call detect, so nothing corrects it
-later.
-
-When the bus recovers, a DISCONNECTED on this PLL returns 0 without any
-cleanup, because intsync_src != id. A CONNECTED on another PLL passes the
-intsync_src >= 0 check and programs a second source.
-
-Isn't this the case the setter's comment says it has to prevent ("a cache
-that wrongly says nobody drives the net would let a second PLL be
-configured to drive it")?
-
-[ ... ]
-
-> +int sit9531x_intsync_disable(struct sit9531x_dev *sitdev, u8 src_pll_idx)
-> +{
-
-[ ... ]
-
-> +	/* Small update on source PLL */
-> +	rc = sit9531x_pll_small_update(sitdev, src_pll_idx);
-> +	if (rc)
-> +		goto restore_global;
-
-[Severity: Medium]
-If only this last step fails, should restore_global still set the global
-bit again?
-
-By this point the page-0 small update has latched the cleared bit, and
-all eight registers hold dis_val. restore_global below sets
-SIT9531X_INTSYNC_EN_BIT again anyway.
-
-sit9531x_dpll_intsync_src_state_on_dpll_set() leaves the cache alone
-because rc != 0, but it then calls sit9531x_intsync_src_detect(). Since
-the global bit is set, detect scans the EXT pages. This PLL shows
-n_dis == 8 and n_en == 0. That matches neither the full pattern nor the
-partial one, so intsync_src becomes -1.
-
-A retried DISCONNECTED then hits this check:
-
-	if (sitdev->intsync_src != sitdpll->id)
-		break;
-
-It returns 0 without touching hardware, even though the PLL small update
-that applies the disable values never ran. A CONNECTED on another PLL
-also gets past the -EBUSY check and enables INTSYNC on top of this state.
-
-Doesn't that go against the restore_global comment, which says the state
-stays "one the driver can describe and the request can be repeated"?
-
-The same restore also seems to undo the rollback in
-sit9531x_intsync_enable(). Suppose the enable fails at its page-0 small
-update or at the EXT unlock, so err_disable calls
-sit9531x_intsync_disable(). If that disable then fails at its global
-write or its page-0 update, restore_global sets the bit err_disable was
-meant to clear.
-
-The EXT page then holds no enable pattern, so detect reports no owner.
-The global enable stays asserted, and the driver has no owner on record
-that would ever clear it.
-
-> +
-> +	goto relock;
-> +
-> +restore_global:
-> +	/*
-> +	 * The global enable was cleared first, so a failure here leaves the
-> +	 * EXT page still holding the enable pattern with nothing pointing
-> +	 * at it: the source detector keys on the global bit, would report
-> +	 * the net as unowned, and a retry of the disable would then
-> +	 * short-circuit.  Put the bit back so the state stays one the
-> +	 * driver can describe and the request can be repeated.
-> +	 */
-> +	if (!sit9531x_read_u8(sitdev, SIT9531X_REG_INTSYNC_GLOBAL, &val))
-> +		sit9531x_write_u8(sitdev, SIT9531X_REG_INTSYNC_GLOBAL,
-> +				  val | BIT(SIT9531X_INTSYNC_EN_BIT));
-
-[Severity: Medium]
-Does this write need a page-0 small update after it?
-
-The enable and disable sequences both follow their write to
-SIT9531X_REG_INTSYNC_GLOBAL with this:
-
-	rc = sit9531x_write_u8(sitdev, SIT9531X_REG_GLOBAL_UPDATE,
-			       SIT9531X_SMALL_UPDATE_CMD);
-
-That suggests the bit only takes effect once the update runs.
-restore_global writes the bit back without one.
-
-Suppose the disable fails after its page-0 update has latched the cleared
-bit, for example at the EXT unlock, at any dis_val write, or at the PLL
-small update. The active configuration then has INTSYNC off, while the
-register reads back as on.
-
-sit9531x_intsync_src_detect() trusts that readback. With a mixed EXT
-pattern it records this PLL as the owner, so the SYNCOUT pin reports
-CONNECTED while nothing drives the net.
-
-Later, an unrelated priority-table change on any PLL ends in
-sit9531x_prio_prg_commit(), which also writes SIT9531X_REG_GLOBAL_UPDATE.
-Could that latch the pending bit and turn inter-PLL sync back on over a
-half-written EXT page, without anyone requesting it?
-
-The enable rollback goes through the same restore path.
-
-This assumes the global register is a shadow that the small update
-latches. The driver's own sequences imply that, but I haven't checked it
-against the datasheet.
-
-[ ... ]
-
-> @@ -3379,6 +3711,15 @@ static int sit9531x_dev_state_fetch(struct sit9531x_dev *sitdev)
->  		return rc;
->  	}
->  
-> +	mutex_lock(&sitdev->multiop_lock);
-> +	rc = sit9531x_intsync_src_detect(sitdev);
-> +	mutex_unlock(&sitdev->multiop_lock);
-> +	if (rc) {
-> +		dev_err(sitdev->dev,
-> +			"Failed to detect INTSYNC source: %d\n", rc);
-> +		return rc;
-> +	}
-
-[Severity: Low]
-Should INTSYNC ownership also be detected again on resume?
-
-sit9531x_intsync_src_detect() has two callers: this probe-time call and
-the SYNCOUT setter. The poll does not call it, and sit9531x_resume()
-only does this:
-
-	sit9531x_page_cache_drop(sitdev);
-	if (sitdev->irq > 0)
-		enable_irq(sitdev->irq);
-	kthread_queue_delayed_work(sitdev->kworker, &sitdev->work, 0);
-
-The driver already allows for a part that loses power across suspend.
-Suppose PLL A was the source, and the device reloads a profile with
-INTSYNC disabled or sourced from another PLL. intsync_src stays A.
-
-In that case:
-
-- A's SYNCOUT pin still reports CONNECTED.
-- A CONNECTED on A returns success without programming anything.
-- A CONNECTED on another PLL fails with -EBUSY.
-- A's INTSYNC destination pin is forced to DISCONNECTED.
-
-A DISCONNECTED on A does run the disable and then detect, which refreshes
-the cache.
-
-[ ... ]
-
-> diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
-> index 6bf4efd3c6334..52d5b1a6e36f7 100644
-> --- a/drivers/dpll/sit9531x/dpll.c
-> +++ b/drivers/dpll/sit9531x/dpll.c
-
-[ ... ]
-
-> @@ -772,8 +786,259 @@ sit9531x_dpll_output_pin_direction_get(const struct dpll_pin *pin,
-
-[ ... ]
-
-> +static int
-> +sit9531x_dpll_intsync_src_state_on_dpll_set(const struct dpll_pin *pin,
-
-[ ... ]
-
-> +	if (changed && !rc)
-> +		sitdev->intsync_src = state == DPLL_PIN_STATE_CONNECTED ?
-> +				      sitdpll->id : -1;
-> +
-> +	/*
-> +	 * Re-scan hardware after a transition so the cache follows a
-> +	 * partially failed enable or disable as closely as possible.
-> +	 */
-> +	if (changed)
-> +		detect_rc = sit9531x_intsync_src_detect(sitdev);
-
-[ ... ]
-
-> +	mutex_unlock(&sitdev->multiop_lock);
-> +
-> +	if (rc && rc != -EBUSY && rc != -EINVAL && rc != -EOPNOTSUPP)
-> +		NL_SET_ERR_MSG(extack, "Failed to set INTSYNC source state");
-> +
-> +	return rc;
-> +}
-
-[Severity: Medium]
-If the request fails but this re-scan moves intsync_src, what sends the
-pin change notification?
-
-The core only notifies after a successful set in dpll_pin_state_set().
-sit9531x_dpll_changes_check() skips outputs, and that includes the
-INTSYNC source:
-
-	 * Outputs (incl. the INTSYNC source) change only through their
-	 * own set callback and the XO is permanently connected.
-
-On a failed request, the re-scan can still change what the getter
-reports. Two examples:
-
-- An enable fails and its rollback disable stops part way. That leaves a
-  mixed pattern, so detect records this PLL as the partial owner. The pin
-  goes from DISCONNECTED to CONNECTED.
-- A disable fails at its final step. That leaves an all-dis pattern, so
-  detect sets -1. The pin goes from CONNECTED to DISCONNECTED.
-
-In both cases rc != 0, and no notification is sent.
-
-sit9531x_dpll_output_pin_state_on_dpll_set() already handles this case:
-
-	if (rc) {
-		NL_SET_ERR_MSG(extack, "Failed to set output pin state");
-		...
-		if (changed)
-			__dpll_pin_change_ntf(dpin->dpll_pin);
-	}
-
-Without the same handling here, won't subscribers keep the stale SYNCOUT
-state?
-
-[ ... ]
-
-> +static int
-> +sit9531x_dpll_intsync_dst_operstate_on_dpll_get(const struct dpll_pin *pin,
-> +						void *pin_priv,
-> +						const struct dpll_device *dpll,
-> +						void *dpll_priv,
-> +						enum dpll_pin_operstate *state,
-> +						struct netlink_ext_ack *extack)
-> +{
-> +	struct sit9531x_dpll *sitdpll = dpll_priv;
-> +	struct sit9531x_dev *sitdev = sitdpll->dev;
-> +
-> +	mutex_lock(&sitdev->multiop_lock);
-> +	sit9531x_dpll_selection_operstate_get(sitdev, sitdpll,
-> +					      SIT9531X_INTSYNC_PIN_ID,
-> +					      state);
-> +	mutex_unlock(&sitdev->multiop_lock);
-
-[Severity: Medium]
-Will this report STANDBY even when no PLL drives the net?
-
-sit9531x_dpll_selection_operstate_get() only returns NO_SIGNAL or
-QUAL_FAILED for physical inputs:
-
-	if (pin_id < sitdev->info->num_inputs) {
-		ref = sit9531x_ref_state_get(sitdev, pin_id);
-		if (ref->los) {
-			*operstate = DPLL_PIN_OPERSTATE_NO_SIGNAL;
-	...
-	*operstate = DPLL_PIN_OPERSTATE_STANDBY;
-
-So INTSYNC falls through to STANDBY whenever it is not ACTIVE. The driver
-knows when the net is undriven (sitdev->intsync_src < 0), but this getter
-doesn't check it.
-
-The dpll uAPI defines standby as "pin is qualified but not actively used
-by the DPLL". When the source PLL disconnects, every PLL that lists
-INTSYNC loses that reference, yet its INTSYNC pin still reports STANDBY.
-sit9531x_dpll_changes_check() uses the same helper, so no notification
-goes out either.
-
-The commit message says a destination pin "behaves like any other
-selectable input". The state getter comment also compares an undriven net
-to "a momentary LOS on an external reference", and for a physical input,
-LOS gives NO_SIGNAL.
-
-Should the destination pin report NO_SIGNAL when intsync_src < 0?
-
+Content-Transfer-Encoding: 8bit
+
+Commit 0843b2389064 ("lib/dim: fix 32-bit overflow in dim_calc_stats()
+rates") moved the packet, byte and completion rates in dim_calc_stats()
+to 64-bit arithmetic, but left the event rate as
+
+	DIV_ROUND_UP(DIM_NEVENTS * USEC_PER_MSEC, delta_us)
+
+DIV_ROUND_UP() computes (64000 + delta_us - 1) / delta_us. On 32-bit
+architectures that sum is done in a 32-bit unsigned long and wraps for
+delta_us >= 4294903297, the last 64 ms of the u32 microsecond range
+that the function is meant to cover ("u32 holds up to 71 minutes").
+epms then becomes 0 instead of 1.
+
+net_dim() and rdma_dim() only wait for DIM_NEVENTS events before they
+call dim_calc_stats(), with no time limit, so on an almost idle
+interface a window can last that long. With epms == 0, cpe_ratio is
+set to 0, net_dim_stats_compare() returns DIM_STATS_BETTER instead of
+DIM_STATS_SAME when bpms and ppms did not change significantly, and
+rdma_dim_stats_compare() compares a cpe_ratio of 0. The algorithm can
+then step to another moderation profile based on a wrong rate.
+
+Compute epms with DIV_ROUND_UP_ULL() as well. The result does not
+change on 64-bit, or on 32-bit for windows shorter than 4294903297 us.
+
+The issue was found by the Sashiko AI review of the original patch
+(see the Closes: link). The fix and the test were written with an LLM
+assistant. The dim KUnit suite computed the expected epms with the same
+DIV_ROUND_UP() expression as dim_calc_stats(), so it could not catch
+this; it now uses explicit expected values and gains two cases with
+delta_us of 4294903297 and U32_MAX. Without the fix both new cases fail
+on UML i386 and on qemu i386 (epms 0, expected 1) and pass on UML and
+qemu x86_64; with the fix all 10 dim cases pass on all four.
+
+Fixes: 0843b2389064 ("lib/dim: fix 32-bit overflow in dim_calc_stats() rates")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927051743.71460-1-jain.sm@gmail.com
+Assisted-by: LLM
+Signed-off-by: Shashank Mohan Jain <jain.sm@gmail.com>
+---
+Prepared with Claude Code (Anthropic), model Claude Opus 5.5
+(claude-opus-5-5), which checked the Sashiko report against the code and
+wrote the fix, the test changes and this changelog.
+
+Tested on net.git main 6dc989ea46b9 with
+./tools/testing/kunit/kunit.py run --kunitconfig (CONFIG_NET=y,
+CONFIG_DIMLIB_KUNIT_TEST=y) on UML x86_64, UML i386 (SUBARCH=i386),
+qemu x86_64 (--arch=x86_64) and qemu i386 (--arch=i386), with and
+without the lib/dim/dim.c hunk. W=1 builds of lib/dim/ for i386 and
+UML i386 are clean, and the i386 kernels link, so no 64-bit division
+helper is pulled in.
+Not tested: 32-bit ARM or MIPS builds, and no run on 32-bit hardware
+with a NIC; I did not wait 71 minutes on an idle link to see the wrong
+profile step happen, the effect on net_dim() follows from the code.
+
+ lib/dim/dim.c       |  9 ++++++---
+ lib/dim/dim_kunit.c | 40 +++++++++++++++++++++++++++++-----------
+ 2 files changed, 35 insertions(+), 14 deletions(-)
+
+diff --git a/lib/dim/dim.c b/lib/dim/dim.c
+index 7f3eebae73cb..138589fc9048 100644
+--- a/lib/dim/dim.c
++++ b/lib/dim/dim.c
+@@ -69,13 +69,16 @@ bool dim_calc_stats(const struct dim_sample *start,
+ 	if (!delta_us)
+ 		return false;
+ 
+-	/* u32 * USEC_PER_MSEC overflows a 32-bit long */
++	/*
++	 * u32 * USEC_PER_MSEC overflows a 32-bit long, and so does the
++	 * rounded-up epms dividend 64000 + delta_us - 1 for large delta_us
++	 */
+ 	curr_stats->ppms = DIV_ROUND_UP_ULL((u64)npkts * USEC_PER_MSEC,
+ 					    delta_us);
+ 	curr_stats->bpms = DIV_ROUND_UP_ULL((u64)nbytes * USEC_PER_MSEC,
+ 					    delta_us);
+-	curr_stats->epms = DIV_ROUND_UP(DIM_NEVENTS * USEC_PER_MSEC,
+-					delta_us);
++	curr_stats->epms = DIV_ROUND_UP_ULL((u64)DIM_NEVENTS * USEC_PER_MSEC,
++					    delta_us);
+ 	curr_stats->cpms = DIV_ROUND_UP_ULL((u64)ncomps * USEC_PER_MSEC,
+ 					    delta_us);
+ 	if (curr_stats->epms != 0)
+diff --git a/lib/dim/dim_kunit.c b/lib/dim/dim_kunit.c
+index 2e984f6b9fe4..8aa8df78bd3c 100644
+--- a/lib/dim/dim_kunit.c
++++ b/lib/dim/dim_kunit.c
+@@ -14,7 +14,7 @@ struct dim_calc_stats_case {
+ 	u32 start_pkts, end_pkts;
+ 	u32 start_bytes, end_bytes;
+ 	u32 start_comps, end_comps;
+-	int ppms, bpms, cpms;
++	int ppms, bpms, epms, cpms;
+ };
+ 
+ static const struct dim_calc_stats_case dim_calc_stats_cases[] = {
+@@ -22,13 +22,13 @@ static const struct dim_calc_stats_case dim_calc_stats_cases[] = {
+ 		.name = "small",
+ 		.delta_us = 1000,
+ 		.end_pkts = 640, .end_bytes = 640 * 1500, .end_comps = 64,
+-		.ppms = 640, .bpms = 960000, .cpms = 64,
++		.ppms = 640, .bpms = 960000, .epms = 64, .cpms = 64,
+ 	},
+ 	{
+ 		.name = "round_up",
+ 		.delta_us = 3000,
+ 		.end_pkts = 10, .end_bytes = 10, .end_comps = 1,
+-		.ppms = 4, .bpms = 4, .cpms = 1,
++		.ppms = 4, .bpms = 4, .epms = 22, .cpms = 1,
+ 	},
+ 	{
+ 		.name = "counter_wrap",
+@@ -36,35 +36,55 @@ static const struct dim_calc_stats_case dim_calc_stats_cases[] = {
+ 		.start_pkts = 0xffffff00, .end_pkts = 0x100,
+ 		.start_bytes = 0xfffff000, .end_bytes = 0x1000,
+ 		.start_comps = 0xfffffff0, .end_comps = 0x10,
+-		.ppms = 0x200, .bpms = 0x2000, .cpms = 0x20,
++		.ppms = 0x200, .bpms = 0x2000, .epms = 64, .cpms = 0x20,
+ 	},
+ 	{
+ 		/* 30 MB in 10 ms (24 Gbit/s): nbytes * 1000 exceeds 32 bits */
+ 		.name = "many_bytes",
+ 		.delta_us = 10000,
+ 		.end_pkts = 20000, .end_bytes = 30000000, .end_comps = 64,
+-		.ppms = 2000, .bpms = 3000000, .cpms = 7,
++		.ppms = 2000, .bpms = 3000000, .epms = 7, .cpms = 7,
+ 	},
+ 	{
+ 		/* 4.3 MB in 16 ms (2.15 Gbit/s), just above the 32-bit limit */
+ 		.name = "bytes_32bit_limit",
+ 		.delta_us = 16000,
+ 		.end_pkts = 2900, .end_bytes = 4300000, .end_comps = 64,
+-		.ppms = 182, .bpms = 268750, .cpms = 4,
++		.ppms = 182, .bpms = 268750, .epms = 4, .cpms = 4,
+ 	},
+ 	{
+ 		/* 5 MB in 40 ms: a 1 Gbit/s link at line rate */
+ 		.name = "gigabit",
+ 		.delta_us = 40000,
+ 		.end_pkts = 3300, .end_bytes = 5000000, .end_comps = 64,
+-		.ppms = 83, .bpms = 125000, .cpms = 2,
++		.ppms = 83, .bpms = 125000, .epms = 2, .cpms = 2,
+ 	},
+ 	{
+ 		/* 5 million packets and completions in 2 s */
+ 		.name = "many_packets",
+ 		.delta_us = 2000000,
+ 		.end_pkts = 5000000, .end_bytes = 5000000, .end_comps = 5000000,
+-		.ppms = 2500, .bpms = 2500, .cpms = 2500,
++		.ppms = 2500, .bpms = 2500, .epms = 1, .cpms = 2500,
++	},
++	{
++		/*
++		 * 64 events in 71.6 minutes, the longest window delta_us can
++		 * hold: 64000 + delta_us - 1 exceeds 32 bits
++		 */
++		.name = "long_window",
++		.delta_us = U32_MAX,
++		.end_pkts = 64, .end_bytes = 64 * 1500, .end_comps = 64,
++		.ppms = 1, .bpms = 1, .epms = 1, .cpms = 1,
++	},
++	{
++		/*
++		 * the shortest window for which 64000 + delta_us - 1
++		 * exceeds 32 bits
++		 */
++		.name = "events_32bit_limit",
++		.delta_us = 4294903297U,
++		.end_pkts = 64, .end_bytes = 64 * 1500, .end_comps = 64,
++		.ppms = 1, .bpms = 1, .epms = 1, .cpms = 1,
+ 	},
+ };
+ 
+@@ -95,9 +115,7 @@ static void dim_calc_stats_test(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, stats.ppms, t->ppms);
+ 	KUNIT_EXPECT_EQ(test, stats.bpms, t->bpms);
+ 	KUNIT_EXPECT_EQ(test, stats.cpms, t->cpms);
+-	KUNIT_EXPECT_EQ(test, stats.epms,
+-			(int)DIV_ROUND_UP(DIM_NEVENTS * USEC_PER_MSEC,
+-					  t->delta_us));
++	KUNIT_EXPECT_EQ(test, stats.epms, t->epms);
+ }
+ 
+ static void dim_calc_stats_no_time_test(struct kunit *test)
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260930233714.87679-1-arouhi%40sitime.com
+2.43.0
+
