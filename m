@@ -1,249 +1,133 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E3D434E28;
-	Mon,  5 Oct 2026 09:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791191840; cv=none; b=RqjDN5KfngBCMm8Myboz2Qdh33gmP7fJwIVYQiEdsg0KNM8eMB759CCpErjWS7AComRX62vnxPt8kEfLppnjb+nj97lW7bV1F1cuaIjoWgPnH/vmXf30GE4eldO7znLoAIxMp1vB++cIRRJK1HbkmTfhwzbUEefT7UnwhLUh1HM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791191840; c=relaxed/simple;
-	bh=HVeqBCma9XhPQYuXr7Z1BFby/I89QIvKhp1Qz/Sy+Fc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lI26REcdZtECnAR9fHyEsmN0arXleQKlePi9NmlNdVEa1ojbZRqIHUmNCC9nL5c+6vkTHlSQnv9NF1jhymyNY4Wckf2j7mEozfKmQqXfVN/Ctlh8jU0KO/wqryTK2kCxePFHZbxnNv4Pknrnm3U4mgDGbnCL2fj2yfpVHaEaKQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lpUkjIKq; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6845F35E92F;
+	Mon,  5 Oct 2026 09:20:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791192022; cv=pass; b=KXowPbIc87blY124zybP2P0UFrhfNtFh+OifXGv4TyPzM8agwJY8VYRc7YeHnU+iaq7o/PhAWwj7tZEVa7yM+RiBzRNUhdXB4sC4ToMKls+DVSL6qVKNdMCJm1WNXS4S9tNKlN2aFx4ZU60DlY1Y6W3Dpuz+OnH6pY80M7p7fzg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791192022; c=relaxed/simple;
+	bh=KacnfO9SH16HHjeaj4ZH2d7XhnanGBJQYrbJX1V++2o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=drGscx0Qf4Xj3ua/oI7bsOWx62yezq4MCiGxAjBYvzbVV2N/5NG/EuRvINBr8DH2PzZMlcB8g34M0nlKN657hcmvcrx4z6h+atj5fVCFIRjH/EVzxm3gnq+Asqjrc0NQDE3yH58TuHludRCWhJixcw1ipPYZ4DQoYrxzWOcaGQs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=RTp6c+mD; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lpUkjIKq"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8221152B;
-	Mon,  5 Oct 2026 02:17:12 -0700 (PDT)
-Received: from [192.168.178.24] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED5D03F66F;
-	Mon,  5 Oct 2026 02:17:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791191836; bh=HVeqBCma9XhPQYuXr7Z1BFby/I89QIvKhp1Qz/Sy+Fc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lpUkjIKqVD2+wgOZwWjHfaqcnAIOIiZd3eLZsf6wSBSB4hW0xAMMT3/10Lmlrwifu
-	 CN9yeYzy+LatTmrx6kdYmZFt+2+4QqkeIsWO4jHmUJbkhdKQV+jDepAzXQYqnw21Fc
-	 AcKyquEiAMypKcdXGDJ87Dsc2jJveIx5ZKcjOXDk=
-Message-ID: <4ac4c90f-887e-4545-9c26-9706bdaa1a79@arm.com>
-Date: Mon, 5 Oct 2026 11:17:00 +0200
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="RTp6c+mD"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D062B2004BB;
+	Mon, 05 Oct 2026 11:20:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1791192009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ss4QylMNSQGoq0x72rybiuk3RGdfXtdv9vZi3Q1MtGM=;
+	b=RTp6c+mDm5K8NUTtoiJelQdm5oE/jv7vwoS6AmYoLbyRgjcxIe+nyPe9BKmAhUAnHg3s6c
+	9RJ1PWQmA0COABcn2R/sWhHs3BGeHDLXuRmtjOvUQqctKk3FeV9ExY1lr3nvZUsTJHy5Dg
+	ApG8FlgiRSKrvpPu0FIM/iAVNlhbyMwl6v8NfZzqUN2fu5PHlGOL4PxM7fcd0HNX1TZjv1
+	oesJekuutUxDVu+/b3egTOeE+CxNlqYV6qpMQ9Aa39XA5yOv+uqvLHVyLZpqLJl/i0VBUc
+	TjO9oedKwXwVV9DcGKKaeETbMD2ENJqAJKBKFuXL5KuoJjIQkAUgPN9WqjhPHA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791192009; a=rsa-sha256;
+	cv=none;
+	b=Atyo+gTOLV4jC11a/YINUOSx84heiD5gcN1d1Wa4SMlJ2jfHvXblMWPcX5R0RPVk9//UB6
+	PYqvrZWSV43/62F8vYLDZB4OCx+2tbzxqjyljsd2Rft3G908B+1y4MxuRA3kxUbVJLaRQZ
+	X9DjxbPSZZHcOCpp3CQR6Zv1+FRYDi8gkwf5rU8kt7D6XOJXMQBsEs0iie5t0hRP6hA3rZ
+	k32azvMKOd1FcUBARjCJTHt+5LdI5nfH8Df7eIOPL/56WZKDif+Ls4J6S0iHbsxtyI7tT7
+	zptAYpAn/JTgPM237qyubuHCgmBOCZKF5uouM7dHND3gqpmFdPffwPMmhmjVKw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1791192009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ss4QylMNSQGoq0x72rybiuk3RGdfXtdv9vZi3Q1MtGM=;
+	b=EnjltG2TRkyS/Xp/RiwsrlhiobWfJkNK1jilhEarZ7JHiivtBS7A/EaJhIK9etjFuCPHHz
+	DTDEUwy8L4UgGcMdfDUN/2isrAwx5wjFOaYTNo95v5eN5sTSZDe+w8nd3zhjMRZMiLrHdj
+	B6TIjr7WYOahNsyewyyOX/DExMJLggZa7eX+GjMK/hX8ejO/EOqB4twTMub+WyDkogOVSe
+	HSe0FtWCrUmZU9VXYcxrBxKin5yq43XeZLgoVlGPWZULpfJkF5GJ0FIhDZwjfPLpD/4NUI
+	UiOj7WyxnM1RFdJz5HwADmQ8GbbLYKHRYV3RqqP+dzhP0d0R0jm6c8lE9EsvOg==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xDerh-004MRY-2M;
+	Mon, 05 Oct 2026 11:20:09 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xDerh-0000000FHBo-2WCm;
+	Mon, 05 Oct 2026 11:20:09 +0200
+Date: Mon, 5 Oct 2026 11:20:09 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Corey Leavitt <corey@leavitt.info>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, netdev-bot+sashiko@kernel.org,
+	devicetree@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v7 0/5] net: pse-pd: decouple controller lookup
+ from MDIO probe
+Message-ID: <asNryalTQyUVwu4T@pengutronix.de>
+References: <20260927191850.1370515-1-github@szelinsky.de>
+ <20261004143351.969544-1-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/8] clk: sunxi-ng: a733: Add bus clock gates
-To: Junhui Liu <junhui.liu@pigmoral.tech>, wens@kernel.org
-Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
- Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Philipp Zabel
- <p.zabel@pengutronix.de>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- netdev@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>,
- Enzo Adriano <enzo.adriano.code@gmail.com>
-References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
- <20260930-a733-clk-v5-7-11175b41cd2d@pigmoral.tech>
- <CAGb2v65Lqo7NiFhc2GYdfY7+jkC4Y+p6=Zy85HOFmXJzT0u1fg@mail.gmail.com>
- <DLWMN3TYBP9F.3N62QFP7QEE9U@pigmoral.tech>
-Content-Language: en-GB
-From: Andre Przywara <andre.przywara@arm.com>
-In-Reply-To: <DLWMN3TYBP9F.3N62QFP7QEE9U@pigmoral.tech>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261004143351.969544-1-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-Hi,
+Hey Carlo,
 
-On 10/5/26 06:41, Junhui Liu wrote:
-> Hi Chen-Yu,
-> 
-> On Sun Oct 4, 2026 at 7:03 PM CST, Chen-Yu Tsai wrote:
->> On Tue, Sep 29, 2026 at 7:28 PM Junhui Liu <junhui.liu@pigmoral.tech> wrote:
->>>
->>> Add the bus clock gates that control access to the devices' register
->>> interface on the Allwinner A733 SoC. These clocks are typically
->>> single-bit controls in the BGR registers, covering UARTs, SPI, I2C, and
->>> various multimedia engines. It also includes bus gates for system
->>> components like the IOMMU and MSI-lite interfaces.
->>>
->>> Also mark the ahb-store, mbus-store and ahb-cpus clocks as critical.
->>> Disabling either store gate breaks access to boot/storage devices such
->>> as MMC and SPI NOR, while gating ahb-cpus hangs any access to the CPUS
->>> power domain registers when unused clocks are disabled.
->>>
->>> Tested-by: Jerome Brunet <jbrunet@baylibre.com>
->>> Reviewed-by: Andre Przywara <andre.przywara@arm.com>
->>> Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
->>> ---
->>>   drivers/clk/sunxi-ng/ccu-sun60i-a733.c | 492 ++++++++++++++++++++++++++++++++-
->>>   1 file changed, 491 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
->>> index 1b2d4d36ec4c..b077e5d2f32c 100644
->>> --- a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
->>> +++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
->>> @@ -4,6 +4,10 @@
->>>    * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
->>>    * Based on the A523 CCU driver:
->>>    *   Copyright (C) 2023-2024 Arm Ltd.
->>> + *
->>> + * TODO: The real parents of some bus gates, including its-pcie0-aclk,
->>> + * msi-lite, npu, ufs, sgpio, lpc and i2spcm, are not documented in the
->>> + * manual. For now, follow the vendor BSP, which keeps them on hosc.
->>>    */
->>
->> [...]
->>
->>> @@ -510,9 +522,118 @@ static SUNXI_CCU_M_DATA_WITH_MUX_GATE_FEAT(mbus_clk, "mbus", mbus_parents, 0x588
->>>                                             BIT(31),     /* gate */
->>>                                             CLK_IS_CRITICAL,
->>>                                             CCU_FEATURE_UPDATE_BIT);
->>> +static const struct clk_hw *mbus_hws[] = { &mbus_clk.common.hw };
->>> +
->>> +static SUNXI_CCU_GATE_HWS(mbus_iommu0_sys_clk, "mbus-iommu0-sys", mbus_hws, 0x58c, BIT(0), 0);
->>> +static SUNXI_CCU_GATE_HWS(apb_iommu0_sys_clk, "apb-iommu0-sys", apb0_hws, 0x58c, BIT(1), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_iommu0_sys_clk, "ahb-iommu0-sys", ahb_hws, 0x58c, BIT(2), 0);
->>> +
->>> +static SUNXI_CCU_GATE_DATA(bus_msi_lite0_clk, "bus-msi-lite0", hosc, 0x594, BIT(0), 0);
->>> +static SUNXI_CCU_GATE_DATA(bus_msi_lite1_clk, "bus-msi-lite1", hosc, 0x59c, BIT(0), 0);
->>> +static SUNXI_CCU_GATE_DATA(bus_msi_lite2_clk, "bus-msi-lite2", hosc, 0x5a4, BIT(0), 0);
->>> +
->>> +static SUNXI_CCU_GATE_HWS(mbus_iommu1_sys_clk, "mbus-iommu1-sys", mbus_hws, 0x5b4, BIT(0), 0);
->>> +static SUNXI_CCU_GATE_HWS(apb_iommu1_sys_clk, "apb-iommu1-sys", apb0_hws, 0x5b4, BIT(1), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_iommu1_sys_clk, "ahb-iommu1-sys", ahb_hws, 0x5b4, BIT(2), 0);
->>
->>> +static SUNXI_CCU_GATE_HWS(ahb_ve_dec_clk, "ahb-ve-dec", ahb_hws,
->>> +                         0x5c0, BIT(0), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_ve_enc_clk, "ahb-ve-enc", ahb_hws,
->>> +                         0x5c0, BIT(1), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_vid_in_clk, "ahb-vid-in", ahb_hws,
->>> +                         0x5c0, BIT(2), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_vid_cout0_clk, "ahb-vid-cout0", ahb_hws,
->>> +                         0x5c0, BIT(3), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_vid_cout1_clk, "ahb-vid-cout1", ahb_hws,
->>> +                         0x5c0, BIT(4), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_de_clk, "ahb-de", ahb_hws,
->>> +                         0x5c0, BIT(5), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_npu_clk, "ahb-npu", ahb_hws,
->>> +                         0x5c0, BIT(6), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_gpu0_clk, "ahb-gpu0", ahb_hws,
->>> +                         0x5c0, BIT(7), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_serdes_clk, "ahb-serdes", ahb_hws,
->>> +                         0x5c0, BIT(8), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_usb_sys_clk, "ahb-usb-sys", ahb_hws,
->>> +                         0x5c0, BIT(9), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_msi_lite0_clk, "ahb-msi-lite0", ahb_hws,
->>> +                         0x5c0, BIT(16), 0);
->>> +static SUNXI_CCU_GATE_HWS(ahb_store_clk, "ahb-store", ahb_hws,
->>> +                         0x5c0, BIT(24), CLK_IS_CRITICAL);
->>> +static SUNXI_CCU_GATE_HWS(ahb_cpus_clk, "ahb-cpus", ahb_hws,
->>> +                         0x5c0, BIT(28), CLK_IS_CRITICAL);
->>
->> I suspect these refer to a AHB-AHB bridge for the various subsystems shown
->> in the memory map. That would explain why when the "ahb-store" clock is
->> gated, the storage bits stop working.
->>
->> If that's the case, we should describe it as the parent of each storage
->> peripheral bus gate's parent. Same would go for the other types. I haven't
->> checked what the BSP does though.
-> 
-> As Norman mentioned in his reply, the vendor BSP also does not model
-> this hierarchy and instead models these gates as independent clocks
-> parented to the oscillator. The manual does not describe the hierarchy
-> either, so I don't think we have enough information to model it
-> differently at this point.
+On Sun, Oct 04, 2026 at 04:33:51PM +0200, Carlo Szelinsky wrote:
+> Hey guys,
+> One process question first. I do run an LLM review before posting, as
+> maintainer-netdev.rst asks. I ran the review prompts (masoncl) locally 
+> against a frontier model and still got a different set of findings than
+> the bot reported here. If there is a better way to run it so the two 
+> line up, I would be glad to hear it - right now I cannot tell whether 
+> I am missing setup or just reading different output.
 
-Well, I wouldn't use the BSP as a good example on how to model the clock 
-tree, they have been very misguided in the past.
-What the BSP does is to add just more input/gate MBUS clocks for each 
-device, which is something I think we should avoid.
-To that regard using them as parent clocks for the existing gates, as 
-Chen-Yu suggested, sounds like a good idea: We keep a single clock for 
-the devices, but still can turn both clocks off (I think, not tested).
+In my experience, review prompts are not enough. The limitations are the
+agent and actual model which are running it. I personally already run
+own sashiko instance backed with gemini API (the same variant as the
+public generic sashiko). Since running sashiko is expensive, i run
+multi agent claude setup [1], to stress pre-review patches before sashiko
+round.
 
-Cheers,
-Andre
+Netdev is now running own sashiko-netdev, which is running a multimodel
+sashiko, which is even more expensive and finds even more things.
+Privately I can't afford this.
 
-> I will add comments explaining why ahb_store_clk, mbus_store_clk, and
-> ahb_cpus_clk are marked critical.
-> 
->>
->>> +static SUNXI_CCU_GATE_HWS(mbus_iommu0_clk, "mbus-iommu0", mbus_hws,
->>> +                         0x5e0, BIT(0), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_iommu1_clk, "mbus-iommu1", mbus_hws,
->>> +                         0x5e0, BIT(1), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_desys_clk, "mbus-desys", mbus_hws,
->>> +                         0x5e0, BIT(11), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_ve_enc0_gate_clk, "mbus-ve-enc0-gate", mbus_hws,
->>> +                         0x5e0, BIT(12), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_ve_dec0_gate_clk, "mbus-ve-dec0-gate", mbus_hws,
->>> +                         0x5e0, BIT(14), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_gpu0_clk, "mbus-gpu0", mbus_hws,
->>> +                         0x5e0, BIT(16), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_npu_clk, "mbus-npu", mbus_hws,
->>> +                         0x5e0, BIT(18), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_vid_in_clk, "mbus-vid-in", mbus_hws,
->>> +                         0x5e0, BIT(24), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_serdes_clk, "mbus-serdes", mbus_hws,
->>> +                         0x5e0, BIT(28), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_msi_lite0_clk, "mbus-msi-lite0", mbus_hws,
->>> +                         0x5e0, BIT(29), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_store_clk, "mbus-store", mbus_hws,
->>> +                         0x5e0, BIT(30), CLK_IS_CRITICAL);
->>
->> Same thing for the MBUS clocks.
->>
->>> +static SUNXI_CCU_GATE_HWS(mbus_msi_lite2_clk, "mbus-msi-lite2", mbus_hws,
->>> +                         0x5e0, BIT(31), 0);
->>> +
->>> +static SUNXI_CCU_GATE_HWS(mbus_dma0_clk, "mbus-dma0", mbus_hws,
->>> +                         0x5e4, BIT(0), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_ve_enc0_clk, "mbus-ve-enc0", mbus_hws,
->>> +                         0x5e4, BIT(1), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_ce_clk, "mbus-ce", mbus_hws,
->>> +                         0x5e4, BIT(2), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_dma1_clk, "mbus-dma1", mbus_hws,
->>> +                         0x5e4, BIT(3), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_nand_clk, "mbus-nand", mbus_hws,
->>> +                         0x5e4, BIT(5), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_csi_clk, "mbus-csi", mbus_hws,
->>> +                         0x5e4, BIT(8), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_isp_clk, "mbus-isp", mbus_hws,
->>> +                         0x5e4, BIT(9), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_gmac0_clk, "mbus-gmac0", mbus_hws,
->>> +                         0x5e4, BIT(11), 0);
->>> +/* Undocumented, taken from the vendor kernel. */
->>> +static SUNXI_CCU_GATE_HWS(mbus_gmac1_clk, "mbus-gmac1", mbus_hws,
->>> +                         0x5e4, BIT(12), 0);
->>> +static SUNXI_CCU_GATE_HWS(mbus_ve_dec0_clk, "mbus-ve-dec0", mbus_hws,
->>> +                         0x5e4, BIT(18), 0);
->>
->> [...]
->>
->> The remaining definitions look correct (minus the vendor BSP ones which I
->> couldn't check at this time).
->>
->> I didn't check the clock list additions.
->>
->> Consider this
->>
->> Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
->>
-> 
-> Thanks!
-> 
->>
->> We can change the AHB / MBUS clock parents later if we do figure it out.
->>
->>
->> ChenYu
-> 
+[1] https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them
 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
