@@ -1,286 +1,147 @@
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DC94C7558
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 19:09:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791227351; cv=none; b=IdQtaPm1j+mV8LCmiIm4eyoqiYC/ZKL2YR3DkQI5HroPanNtpa0TDXEWDQ4URhCMCc3iXN8282wr2OnnO0V3lij1r8lJJ5Ss027ac2hXhDz0xOD40O518HabxeLjy/juAHjMXbCay+1Ej/72WmfOc3u5OmNrK5jNWLPU2MpPB0U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791227351; c=relaxed/simple;
-	bh=PVWVS86MW7l2qNXpZ/rKOLW8knz4QwczGM40y9PhxJ0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=c0n8porVlVXHqxQmqmS3bwmYETXUO5rUfbYTLS4YExTOdoVL+UNSxRI1aFHU5bJhXMmMZgsioAn6IaNG32nEC5/NCGGvxUDCcehS6bB/sW4TqMrCH7BK6jMenaAKJF1yRpcAnIfG94FoVR/y2XquA3gkalekRbbPCZSmatpQ574=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pKOzN9Ia; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ED7314B66
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 19:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791227431; cv=pass; b=CknHVA+AzuKasUpj1xp5EsdFeAzEJTK2nJZdUjcKITbLpEcaurvrWPQJ/vXuHDYgz5aqoVjpNa2KjCydGeJ7K1HivVy92h5ycRty8d/lnNvb2M4kPM6Db8swhVqeeQ1qMDJyR/tuNyfuxKlpMxRapqkIzcDRh8+jEw/0no9LRaA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791227431; c=relaxed/simple;
+	bh=20WXjzJT+PbMKu2GbgSthOHdONEfZvO9MLXB1Gc08nQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WVrUbkcmaaPyIGdDgJy/utDoDynC/cC7Vt0jmZMlvCAGu7m2kVLSVTLSoD4IuK+CtrwvbukTu3pr5uV3oEWliUovdyNTV6aKLfK0R00rLD2RiLywAJJTf9LtbVxHue1p1LfEVJxQ8wwarKhCeU/P057hPckaZ7jHIZ51ukJ60ds=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=r7MurOY9; arc=pass smtp.client-ip=209.85.167.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pKOzN9Ia"
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-451a49abd8aso1231742fac.3
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 12:09:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="r7MurOY9"
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4f6d98ff6c7so1342413b6e.0
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 12:10:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791227428; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X95j/RIZR6084hfrdwaYHXol+WHsv+DwWXN5L4AlUT4ZeZ3sn6yWbWA1x51qrmFJ00
+         BugmyjqYhhksqBy71ZzlqWpBIa6bFGa8K01sbUeMx/Pvqpoj3r5HB9wnqXS6rPu7fELY
+         fvg95zKo5dJXCQy+Ck4QUG9AfYQ2M9QdgTdNUwvevxu4uwn+gyeaKl/v4BOFVJsy0Ws0
+         j4pBxDqvcNZl3RMviQEVeiJEBzlcByIM1XoKQFl8P6UFvLccurHCvfmmjXfT0CfVjRSm
+         4d+DNp5woxaYdeR/ick2vp322cYHZgd4vGi48UK+FYe6wCd8fxXONZI4BKStAQsp6NCr
+         c1hA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sZ3adpDGT261XkCW8nTjunmv9uU6/6OcdwlNEH7xpts=;
+        fh=p7qTWCJ48BKtqjAXxioD+nCYyHoMPQxro1KGxAfQAhc=;
+        b=UgJ8cnNPIrI6+o1viJPa3mY5TpqB6mgj5A/Ja8Ht29MY2SKvk7vGkZB9g3ndUQcDFI
+         bkMEGD70PEcDtClGIjMakH/EzhTl9/b89qn71TvNR93mtcwKZfbuRQ0qkdhg/eVeHdZq
+         Q237FzW3jTmMCwq9YHD0hKgZrjAw1NjnbFvcx0APVWfvsOOuO5uQYqJ+DvhV737vTJIQ
+         iKLA0FJWwLFVZtgBne7WBZgK774EEjGNdLgexLFUYeB+9X/qxFz74pvXtzJ5ohZ1gZMM
+         W592d5XNG+Y99TL9xLirlv/Omqla+6PH3EMbtEM/rXu7xU4Vf0Cp/OoaANlIrUS6pqB5
+         76fQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791227349; x=1791832149; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=6w/VDUTavPvcAfJFthKglKbi0EamFwxsmD0049G0nvY=;
-        b=pKOzN9IauPJLf/8+6/Few6r7kEuu2MsM4nL2lyc1JfMlR2IizevXqnpy9idFNltrrC
-         +jloDPxZWJd8hSsJU9vjZnl/Js2ReILzxjqp89djJyr3XWoABg3NZfK515YCYR18/Ake
-         f4QrObIBAgTUTFyGFOsy72JaxvrEk8LBj4Mf/XrkXI01TIgsDF3NfHH0CzI25zsAzUY4
-         BTIkCRA0g5Sgc95zp+4L/+r3ePFFJLjlOskyKIeUlAvzZesNWnzl7Px71fTqrXkPaVvP
-         yw0gmk/ZvNfQZy83B9MvwzAPsjaP/7DAUkuuA71lHgK+IMjt/y8gUR0BvX8eMLwNGded
-         NAGA==
+        d=gmail.com; s=20251104; t=1791227428; x=1791832228; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sZ3adpDGT261XkCW8nTjunmv9uU6/6OcdwlNEH7xpts=;
+        b=r7MurOY9qaX7Ko3JHJ/rmuMnq4fCSsq3Zs1UVa0JTxvWjMet7V0geG0bl3VUyA3s/O
+         poH1F4N/ObmMOftUASLPYU/Q0mJ7HJdxSk0GXhhtdUtcYVpoXPFcSuaXCRVdpCz0U06p
+         PebWa817y8IylwjvTEkda7cjHDPpzdx7/uM0S/rF/mDesRuR6I6N/XrUoHqJkGugiFRV
+         DC8M1vShRN6sD63jsZ6GZRYIsLHoqT13kh9lkU+CYHreZcu2nLN4RGUTshbqUPfuVGDW
+         NWOMuCMoU+pa8LwlChSlTv/qPyxuPshcLv0GMYCUSxsfhXcxY+RVq2dnMYcOYnTaF5Ur
+         o9/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791227349; x=1791832149;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=6w/VDUTavPvcAfJFthKglKbi0EamFwxsmD0049G0nvY=;
-        b=aoR2B9HW9qqysIJxdpZlD/hKOEY29Ng6NE5Z8qrWk5cbfPOooVuF8/CqYu7Cs4Yg8x
-         KCgaoBKU3PX8Pjp4P0pm3jzAJZSgiycThlUe0kGJqlGV6ncBvfI4zLKwPqwIdCqC8OCV
-         3ckI35hv56BsgVcEVQta2t8DJr6+X3i/FQc9n6loWYh3q8OCkuqVF8J4nNbwQv0UD/5K
-         Nd1bVe6z0SlJ5lA39+92J1UWSbM0f1joIiE5ogFl8aa3whxPMOIhf95eODzJg254AK81
-         8h5OZ1NQmAAodMe9v5oiLhOtEOgAZOO0BzgSJDAHJJKvFNC7oKNCwjld/LlxeA7PC5yp
-         Bzgw==
-X-Gm-Message-State: AFuF++k8MaQdDXWvoSzTJ9izHr0m4XDLZ2Qz8Pc/wRrATTjgUL8HykKK
-	Ms1Rej5an7cRduy5U99jDsC6Kr2+Mea5tlnQ3453nFCcGpWJCrmehwBO
-X-Gm-Gg: AYBFou14tFdtL3gxA+oSuz4s/fn5V9S6BM6nf5GGLiJXHVmvPc7601oLc7S2hJXp8EU
-	CdKV8aTb32FIWCa1oT+N8y9/cadgqIv0E4CmMT0xmzGd8pvk8rR879qvM4hcuX1swfyAzx9C3Rw
-	YvriFxK7qQXedYdGxzBuuIgk5/UVm7RZv4BxW+ecJMYT8gTDo2yT8DZbmovpd+p6CghdB9P4CMP
-	W/Fvs8VZ3Y1aXY+UwIQ+YA6OOc96fZUEA15xDlepwP+z2c3kGG/yGyNCYw8dvdIIpnkx2NmDm/K
-	PJFQQbd5FWwKzDqhnMVDsMUWTdTPFC59CGTEtNPYeGhpVPlNyZobFh9Inda/NkkXrx6a7cyhAMA
-	uqmg8DqWYglx+A2MBarqP9fsl67d11Y6JGzLmtL1j6tadUtXXbEfpU78+vMLxrnugtEBdY5mI+m
-	4nEgfxGEKetRuYc6g99DRVf8Lc+QJxYeWi0PVOxko4t6p82KS5ATXmI5+NO/FmnnfIlqOOoDN0S
-	+rmiAo3r/QVvcY5r7Z3glp+1UIsXex4A3NjiYIym2vnHcCh1oTaLCJC35ijROook/4s6xR4IcWg
-	qY7lNFGSTWWBxhhbD8Sjt+wRUfHtgOrG4Mlqzn7ILKshIODh6q78d/HMqmx++LGSyAJRXkUSIy3
-	eFPy/7VVtP8KwdCWY5dtCQ8rnoneJpZ8=
-X-Received: by 2002:a05:6808:4444:b0:4eb:2671:de62 with SMTP id 5614622812f47-4f67bd75d34mr7294544b6e.68.1791227348628;
-        Mon, 05 Oct 2026 12:09:08 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4faca6807ebsm315880b6e.5.2026.10.05.12.09.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 12:09:08 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Mon, 05 Oct 2026 13:09:05 -0600
-Subject: [PATCH net v2] net: phylink: allow stopping a suspended instance
+        d=1e100.net; s=20260707; t=1791227428; x=1791832228;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sZ3adpDGT261XkCW8nTjunmv9uU6/6OcdwlNEH7xpts=;
+        b=TIxppbS8gfOu4FB4NPfz0TMzhZjwX8iLqmdRyfTBz8bIrBs7XUn8IaoagjZVixUtz4
+         xfePf+fBkq7BUEZZATBiCeB3nN/d2wwOuEsNymJrRDhH9U3gpjLC1x45NnR1WUe66JIm
+         Ytota1LKZj0lzICFsZ+aNQNW1fDVwKjuSjS9Q/GR0tbdx1PpIxaUf5x73RTm5Zd+qaF/
+         V4lO4ZYzT/aLKl1jyGhTFQF3lRiTEw3f/lPOyBuPnX5UMXo6HsugBpO3i1mFClKpdkuJ
+         xK0iUn1Gy3sWttS19bcHoXK4gZ51dI8aLqZs+jF3Blt6DWmEpxhvJroZ/+yXfiHVgF88
+         +mBQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzmF9IAOhjJP3TXTNXdF20z+E3hlwAOd7hsoAUgMJTyz/KUD2kPkSWBmEj6FUG8f36Zj14a9S4=@vger.kernel.org
+X-Gm-Message-State: AFuF++n3GNQrJXH8WffUC6IZb8sQS3tyrLDtvjOYBejW2yB1+hzbhkVL
+	tYyDR7KiyN4Kat0rAzNUP2eJz26yNLl5mcBA30qr/TYxtsiT8MqaG28Iffm7F46/UH0+7U7BHR4
+	+Of+eFmeYQWnFIXlLtr8tPK1eOqhUCws=
+X-Gm-Gg: AYBFou2VPGtLRaIimi+vLBHRVMwAmGr9CZ3t+7FK0kcpdVS1m5evd6sjMIzhJAewW8M
+	/RD23HT4GxVsTAtBHL0LFsoFKpl4pbuLe9pdnGbYCid2bpDtQPSh+9ky+EJeNtCOs8RfurQnG+u
+	Dfu0LEumk7+GFfi24MtSufdLQGXhFK0T1q88LdKnyS1l4hTN2BPSalDKeKGZhNxjrJxCROGkzeB
+	XB/fwl8xWpB2wUN4ChHAbv/t0xxzxtrTqMQbHplESCXlvA6VE51+BeXcbduvJXCQOtFoJFt9ZPg
+	Xu1tbhLb/GtaXip1WEUboR48HFW24lUaKXha5/dQLBhNL9LNT1sXBm6kB10akXjXb/2UrGw=
+X-Received: by 2002:a05:6808:10d2:b0:4b9:e6ab:d088 with SMTP id
+ 5614622812f47-4f67a717bd1mr9488930b6e.40.1791227428596; Mon, 05 Oct 2026
+ 12:10:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261005-submit-phylink-suspended-stop-v1-v2-1-8b8e5d53dfc2@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42PQY7DIAxFrxKxLhWQlISueo9RF4aYhmlDMkCjV
- lXuXk+mBxjLm299Pf//YhlTwMyO1YslXEIOUyShdhVzA8QL8tCTZkooLYWQPN/tGAqfh+ctxCv
- JPGPssee5TDNfJBfGG6tr1L6pGWHmhD48thdfLGJh578jgb7RlV/4x5bw504BysdrISN300jvj
- hXQ+K5FMMZ2rdbOQAcgsJUAjUJtXQeHWomNPgQKk55bqUVusP/np6USWhvf2wZMbU+XEcJtT0n
- YeV3XN2B8FjMzAQAA
-X-Change-ID: 20261001-submit-phylink-suspended-stop-v1-09f9b63e6f43
-To: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: linux-kernel@vger.kernel.org, 
- James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
+References: <20261005154533.4147685-1-kuniyu@google.com> <20261005154533.4147685-5-kuniyu@google.com>
+In-Reply-To: <20261005154533.4147685-5-kuniyu@google.com>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Mon, 5 Oct 2026 12:10:17 -0700
+X-Gm-Features: AclHuK9xBuDSZmtHYBnaJWw-Pci852n_5XSt7zgTnXSPvmgFC3rvtB2s4zNdbNw
+Message-ID: <CAMB2axM9iTXqAGkQ3LDB-BRtqs-dVrkoHX1DkXT72KVYjrHQbA@mail.gmail.com>
+Subject: Re: [PATCH v3 bpf-next 4/9] bpf: tcp: Guard fast-path
+ bpf_tcp_ops_call() under per-socket flag.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-After a failed MAC resume, a driver must be able to stop phylink without
-resuming it and reconfiguring the failed MAC. This is needed when recovery
-leaves the interface administratively up but detached until a subsequent
-down/up: ndo_stop() must finish the suspended phylink lifetime even though
-the MAC could not be restored. The missing transition was identified by
-code inspection of the stmmac recovery paths.
+On Mon, Oct 5, 2026 at 8:45=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.com=
+> wrote:
+>
+> bpf_tcp_ops.{parse_hdr,hdr_opt_len} are called for every
+> incoming / outgoing skb.
+>
+> bpf_tcp_ops.rtt is called once per RTT, which is every
+> incoming skb in ping-pong workloads like tcp_rr.
+>
+> Even attaching NULL callbacks in the fast path hurts performance.
+>
+> Let's guard them (and write_hdr_opt) with the new per-socket flags.
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  include/net/tcp.h     |  3 ++-
+>  net/ipv4/tcp_input.c  |  7 +++++++
+>  net/ipv4/tcp_output.c | 20 +++++++++++---------
+>  3 files changed, 20 insertions(+), 10 deletions(-)
+>
+> diff --git a/include/net/tcp.h b/include/net/tcp.h
+> index f69091f5e01f..48487135c076 100644
+> --- a/include/net/tcp.h
+> +++ b/include/net/tcp.h
+> @@ -3142,7 +3142,8 @@ static inline void tcp_bpf_rtt(struct sock *sk, lon=
+g mrtt, u32 srtt)
+>  {90
+>         if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_RTT_CB_FLAG))
+>                 tcp_call_bpf_2arg(sk, BPF_SOCK_OPS_RTT_CB, mrtt, srtt);
+> -       bpf_tcp_ops_call(rtt, sk, mrtt, srtt);
+> +       if (BPF_TCP_OPS_TEST_FLAG(tcp_sk(sk), RTT))
+> +               bpf_tcp_ops_call(rtt, sk, mrtt, srtt);
 
-For MAC WoL, finish the deferred link-down and clear the WoL disable bit.
-Otherwise, avoid repeating PHY, SFP and PCS shutdown, but suspend a PHY
-that prepare_resume() powered up for the MAC reset clock.
+The new per-socket flag load happens before the static-key check
+inside bpf_tcp_ops_call(). Thus, even when no bpf_tcp_ops is attached
+anywhere, every RTT sample (and other similar places) now touches
+tp->bpf_tcp_ops_flags, whereas previously the path stopped at the
+disabled static branch.
 
-Retain the saved link state if MAC WoL is suspended again after a failed
-resume. For example, fbnic can fail to allocate IRQs on resume and call
-phylink_suspend() again on the next system suspend. The carrier is already
-off, so taking another snapshot loses the deferred mac_link_down(). Keep
-the original snapshot until resume or stop completes, allowing the next
-suspend cycle to capture the new link state.
-
-Do not enter MAC WoL suspend on an already stopped instance. The wake
-policy can change between a failed resume and the next suspend, for
-example when fbnic learns a different BMC presence from firmware. Setting
-MAC_WOL alongside STOPPED would leave stop/start gated by MAC_WOL, while
-resume would take the MAC-only path without restarting the PHY, SFP or
-PCS. Keep the stopped state so resume performs the required full start.
-
-Restore any PHY advertisement reduced by suspend. Track that reduction
-separately from explicit driver speed-down requests, so stopping a
-suspended instance does not undo a driver's close-time power saving.
-
-Fixes: f97493657c63 ("net: phylink: add suspend/resume support")
-Fixes: 4c8925cb9db1 ("net: phylink: fix suspend/resume with WoL enabled and link down")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
-Changes in v2:
-- Keep stopped instances out of MAC-WoL suspend when the wake policy changes
-  after a failed resume, so both resume and stop/start can recover.
-- Explain the detached-interface recovery requirement for suspended stop.
-- Link to v1: https://patch.msgid.link/20261001-submit-phylink-suspended-stop-v1-v1-1-0669fdb4a93b@gmail.com
-
-To: Russell King <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Joakim Zhang <qiangqing.zhang@nxp.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/net/phy/phylink.c | 63 +++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 58 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 1bbcf46c8356..0a62ff1bca02 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -78,6 +78,7 @@ struct phylink {
- 
- 	bool link_failed;
- 	bool suspend_link_up;
-+	bool suspend_speed_down;
- 	bool force_major_config;
- 	bool major_config_failed;
- 	bool mac_supports_eee_ops;
-@@ -2498,6 +2499,14 @@ void phylink_start(struct phylink *pl)
- }
- EXPORT_SYMBOL_GPL(phylink_start);
- 
-+static void phylink_restore_suspend_speed(struct phylink *pl)
-+{
-+	if (pl->suspend_speed_down) {
-+		phylink_speed_up(pl);
-+		pl->suspend_speed_down = false;
-+	}
-+}
-+
- /**
-  * phylink_stop() - stop a phylink instance
-  * @pl: a pointer to a &struct phylink returned from phylink_create()
-@@ -2509,11 +2518,30 @@ EXPORT_SYMBOL_GPL(phylink_start);
-  *
-  * This will synchronously bring down the link if the link is not already
-  * down (in other words, it will trigger a mac_link_down() method call.)
-+ * A suspended instance may be stopped without first calling phylink_resume().
-+ * In particular, closing a device after a failed resume must not restart the
-+ * link or reconfigure the MAC just to finish shutting it down.
-+ * Any PHY advertisement reduced by phylink_suspend() is restored as part
-+ * of this transition.
-+ * If phylink_prepare_resume() powered up an already stopped PHY, suspend
-+ * it again when Wake-on-LAN permits.
-  */
- void phylink_stop(struct phylink *pl)
- {
- 	ASSERT_RTNL();
- 
-+	/* Also undo PHY speed control when terminating a suspended instance. */
-+	phylink_restore_suspend_speed(pl);
-+
-+	if (test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state)) {
-+		/* A failed MAC resume may have called phylink_prepare_resume()
-+		 * and powered the stopped PHY back up to supply its RX clock.
-+		 */
-+		if (pl->phydev)
-+			phy_suspend(pl->phydev);
-+		return;
-+	}
-+
- 	if (pl->sfp_bus)
- 		sfp_upstream_stop(pl->sfp_bus);
- 	if (pl->phydev)
-@@ -2526,6 +2554,16 @@ void phylink_stop(struct phylink *pl)
- 
- 	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
- 
-+	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
-+		/* Finish the link-down deferred by MAC WoL, without restarting. */
-+		flush_work(&pl->resolve);
-+		mutex_lock(&pl->state_mutex);
-+		if (pl->suspend_link_up)
-+			phylink_link_down(pl);
-+		__clear_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
-+		mutex_unlock(&pl->state_mutex);
-+	}
-+
- 	pl->pcs_state = PCS_STATE_DOWN;
- 
- 	phylink_pcs_disable(pl->pcs);
-@@ -2631,14 +2669,22 @@ void phylink_suspend(struct phylink *pl, bool mac_wol)
- 	if (phylink_mac_supports_wol(pl))
- 		mac_wol = !!pl->wolopts_mac;
- 
--	if (mac_wol && (!pl->netdev || pl->netdev->ethtool->wol_enabled)) {
-+	/* A failed resume may leave the instance stopped even if the wake
-+	 * policy now requests MAC WoL. There is no running link to preserve;
-+	 * resume must still start the PHY, SFP and PCS in that case.
-+	 */
-+	if (!test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state) &&
-+	    mac_wol && (!pl->netdev || pl->netdev->ethtool->wol_enabled)) {
- 		/* Wake-on-Lan enabled, MAC handling */
- 		mutex_lock(&pl->state_mutex);
- 
-+		/* Preserve the pending link-down if a previous resume failed. */
-+		if (!test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state))
-+			pl->suspend_link_up = phylink_link_is_up(pl);
-+
- 		/* Stop the resolver bringing the link up */
- 		__set_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
- 
--		pl->suspend_link_up = phylink_link_is_up(pl);
- 		if (pl->suspend_link_up) {
- 			/* Disable the carrier, to prevent transmit timeouts,
- 			 * but one would hope all packets have been sent. This
-@@ -2657,8 +2703,10 @@ void phylink_suspend(struct phylink *pl, bool mac_wol)
- 		phylink_stop(pl);
- 	}
- 
--	if (phylink_phy_pm_speed_ctrl(pl))
-+	if (phylink_phy_pm_speed_ctrl(pl)) {
- 		phylink_speed_down(pl, false);
-+		pl->suspend_speed_down = true;
-+	}
- }
- EXPORT_SYMBOL_GPL(phylink_suspend);
- 
-@@ -2698,8 +2746,7 @@ void phylink_resume(struct phylink *pl)
- {
- 	ASSERT_RTNL();
- 
--	if (phylink_phy_pm_speed_ctrl(pl))
--		phylink_speed_up(pl);
-+	phylink_restore_suspend_speed(pl);
- 
- 	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
- 		/* Wake-on-Lan enabled, MAC handling */
-@@ -3616,6 +3663,12 @@ int phylink_speed_down(struct phylink *pl, bool sync)
- 
- 	ASSERT_RTNL();
- 
-+	/* An explicit request takes over from suspend-time speed control.
-+	 * Restore the original advertisement before saving it again, so a
-+	 * repeated speed-down cannot replace it with the reduced advertisement.
-+	 */
-+	phylink_restore_suspend_speed(pl);
-+
- 	if (!pl->sfp_bus && pl->phydev)
- 		ret = phy_speed_down(pl->phydev, sync);
- 
-
----
-base-commit: aaaaf87ea99b8766c9a8aa0e71aa42e6bc8a5320
-change-id: 20261001-submit-phylink-suspended-stop-v1-09f9b63e6f43
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
-
+Can we add something like bpf_tcp_ops_call_flag(op, flag, sk, ...),
+with the static-key check first and the flag check before the cgroup
+lookup/array scan? This would preserve both the no-attachment fast
+path and the flag-clear optimization for attached programs.
