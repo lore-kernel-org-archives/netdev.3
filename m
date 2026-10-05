@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A82F4A3F1C;
-	Mon,  5 Oct 2026 15:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C994BD35E;
+	Mon,  5 Oct 2026 15:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791212684; cv=none; b=CREBKnlleh1dBV/lny0Vnl4XxyxVxyLFcWzOi/MmbeKMwnbNaRw2Ilcwbx+jWp3mK9/91k3HdBCWKtGqQg0ih6gkFaz6aH+sfbWliFZY42sWoo8RqBP9zN1NrnE+O/vh8A4xt7W9+zKsDCC/jbY4O/IbpQC3C4HHftSthe+BS7I=
+	t=1791212686; cv=none; b=oc03+YC/sOTBNCqhVAh8ADeede47toEeWBnicWKYNdeLmiwnqtie7n4ysNiS+MdmfU5tvXS1iAHZP6BpmxlWo6DJ51/7JN8u2cgXmM2sCml7/BcV3E1F7btyJqDisK3BFFYUPJaZTxHTYh2NGU47pSO0PGjIn6dTARoVL7P4jcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791212684; c=relaxed/simple;
-	bh=rJ2AbHjyJf+hYaHOyPJsGHzeoPTKPwWmzbTPn1N9bm8=;
+	s=arc-20240116; t=1791212686; c=relaxed/simple;
+	bh=vq4ypD7pfm+l4SRcMFthGIS/4VGFtFE3ZvXh4ztYCg4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=J+OEMxjffuufeo439ssXC+HijllEDNQK2ZZVENp/r7jHlKC1KmdxkJC1dZStfKSe0RVkNtxc2+T+gVAfwiNiUdYWdZWAk8dRAnEkSmcf6L5ZRFMXys6Ob9EDncdhp1j/gOmYIAFNYllO7tkbAMi9FvC4qCofn8DCxVRNO6MY8Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qnh1IfUO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=bH0UofTGh9Zu/sc0IA2NL8hLALsmUyzyzBgWg/HXxLZ+x8yGGnzki1EgKxX+fWXAk6mpxQT/wYyHM4yfTVIeoIv0BNEAy3qk1ap0IsCb8y5cYy3zQwZf7PzWUfgz+F04pJM/+MbhXOpnGQUYYeoBDqFduSschF1bq1c4GOjTBok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L59hxpyJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qnh1IfUO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE1D1F00893;
-	Mon,  5 Oct 2026 15:04:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L59hxpyJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE9D1F000FF;
+	Mon,  5 Oct 2026 15:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791212683;
-	bh=5FRy4nP6x4AXovEyhDrHELuYi3xMJPxSHA11izmGAVY=;
+	s=k20260515; t=1791212684;
+	bh=WJBxmPwonp5Q98B3F9LC9lcZ/4I0LgrqHq+ZdGw5H0s=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Qnh1IfUOWMqkF1McU2WnaCuQTlbooyC42ISkhtpAj3ix9eRVBEf388y+wQ8juseJG
-	 iaFc388tIrSCjWkFDITeeCWOboYVPIkzHezorf6MX2N3yG5vNIX13ZSbi9Cg2WLss8
-	 cWWTmz8uMR85secp9BXj6rL9anooy87sFFR+FHymA4lv5tHr0O3/jarc/S1QpMTkmb
-	 Dnic8Kmb6TNr56O6RrZ7KDLV/sn7D/o3H8tDS1h5cmTbw95Psoz3c8C/wKnvIy+ocM
-	 okNRLdqVkPEPRusT90GiO6CA3D4u03kZmeXrqQlSfDO4eC1E/P39IOvx4tnkemOmW0
-	 DrCMwioV2jh6A==
-Subject: Re: [PATCH net-next 3/7] net: bcmgenet: rename ENET_MAX_MTU_SIZE to
- ENET_MAX_FRAME_LEN
+	b=L59hxpyJjSWUiK6pSj3DsyelGlVOIstemqQLDkOgwMIlhMvVETEFACYAVGpiLZcCi
+	 edUeunwN6GkfJBUM0B5ZFt20lY4bnbNkVotm1Io8lsxg/UK6sAJz8D7itE2wLuNS3l
+	 mWpFi0uIfA4uW3V/T4Dz3YB3YcyEZA8do82d4FiM3RR7Il2jiFPh/vT8WF8P4XHYmK
+	 wRnnf4EpsDhd7HZ8Y+ZY1pWOZbEik1/E7coqxHqspMSyOXL5xp6K31xdmR5wvem4K7
+	 SQoRoc6kz4sWFzM6FnzKGccUSEkyAbp8khP/vdMT0EVAH0sOXVAkTYBF5MNzDIn/A6
+	 twwA6UMiwWgrw==
+Subject: Re: [PATCH net-next 4/7] net: bcmgenet: derive the receive buffer
+ length from the MTU
 From: netdev-bot+sashiko@kernel.org
 To: nb@tipi-net.de
 Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
@@ -36,10 +36,10 @@ Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
  pierremarinleclercq88@gmail.com
-Date: Mon, 05 Oct 2026 15:04:42 +0000
-Message-ID: <179121268236.434549.12657609913025768622@kernel.org>
-In-Reply-To: <20261002-nb-genet-mtu-nn-v2-v1-3-96dc6d54cbee@tipi-net.de>
-References: <20261002-nb-genet-mtu-nn-v2-v1-3-96dc6d54cbee@tipi-net.de>
+Date: Mon, 05 Oct 2026 15:04:43 +0000
+Message-ID: <179121268363.434549.2122507463306243653@kernel.org>
+In-Reply-To: <20261002-nb-genet-mtu-nn-v2-v1-4-96dc6d54cbee@tipi-net.de>
+References: <20261002-nb-genet-mtu-nn-v2-v1-4-96dc6d54cbee@tipi-net.de>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,68 +56,79 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] In drivers/net/ethernet/broadcom/genet/bcmgenet.h, the patch adds
-  the comment "Longest frame the MAC must accept for the default MTU"…
+- [Low] The ENET_THLD_PAGE_LEN comment added by this patch says 'A
+  descriptor is one page, which also holds skb_shared_info behind the…
 
 --
 
-net: bcmgenet: rename ENET_MAX_MTU_SIZE to ENET_MAX_FRAME_LEN
+net: bcmgenet: derive the receive buffer length from the MTU
 
-This commit renames ENET_MAX_MTU_SIZE to ENET_MAX_FRAME_LEN, because the
-value is a frame length that gets programmed into the hardware and not an
-MTU. It also replaces the comment above the definition. The commit says
-there is no functional change.
+This patch replaces the fixed 2048 byte RX buffer length with one
+computed from the MTU through a new RBUF packet ready threshold, plus the
+64 byte status block. The patch also programs RBUF_PKT_RDY_THLD and sets
+TBUF_PKT_RDY_THLD to its maximum. A new priv->rx_buf_len replaces
+RX_BUF_LENGTH in the refill, sync, length check and ring setup paths.
 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> index 86f2aed20dbe8..501dd12566936 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> @@ -28,12 +28,11 @@
->  /* which ring is descriptor based */
->  #define DESC_INDEX				16
->  
-> -/* Body(1500) + EH_SIZE(14) + VLANTAG(4) + BRCMTAG(6) + FCS(4) = 1528.
-> - * 1536 is multiple of 256 bytes
-> - */
->  #define ENET_BRCM_TAG_LEN	6
->  #define ENET_PAD		8
-> -#define ENET_MAX_MTU_SIZE	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
-> +
-> +/* Longest frame the MAC must accept for the default MTU */
-> +#define ENET_MAX_FRAME_LEN	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
->  				 ENET_BRCM_TAG_LEN + ETH_FCS_LEN + ENET_PAD)
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index 5cb3d25482a0d..bf889558f6ade 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+
+[ ... ]
+
+> -/* RX buffer plus the skb_shared_info napi_build_skb() places behind it */
+> -#define GENET_RX_BUF_SIZE	SKB_HEAD_ALIGN(RX_BUF_LENGTH)
+> +/* A descriptor is one page, which also holds skb_shared_info behind the frame,
+> + * so on 4K pages the page bounds the threshold before the register does.
+> + */
 
 [Severity: Low]
-This isn't a bug, but does the new comment match the value of the macro?
+This isn't a bug, but is "A descriptor is one page" accurate on every page
+size?
 
-ENET_MAX_FRAME_LEN works out to:
+bcmgenet_rx_refill() asks page_pool_dev_alloc() for
+SKB_HEAD_ALIGN(priv->rx_buf_len) bytes. page_pool returns a whole page at
+offset 0 only when twice the request is larger than the page. Otherwise it
+returns a fragment.
 
-  1500 + 14 + 4 + 6 + 4 + 8 = 1536
+rx_buf_len is 2112 with the default MTU, so on 4K pages each descriptor
+gets a whole page. On 16K or 64K pages, several descriptors share one page.
 
-ENET_PAD (8 bytes) is not part of an Ethernet frame. The longest frame for
-the default MTU is 1528 bytes, which the removed comment spelled out.
+This comment also seems to contradict the existing one in
+bcmgenet_rx_ring_create_pool() in the same file:
 
-The removed comment also explained that the value was rounded up to 1536
-because 1536 is a multiple of 256. Without it, nothing in the driver says
-why ENET_PAD exists. The new comment presents the padded value as a frame
-length.
+	/* Buffers share a page. bcmgenet_rx_refill() syncs each one for the
+	 * device, PP_FLAG_DMA_SYNC_DEV would sync the whole page.
+	 */
 
-The same wording is still there at the end of the series. In "net: bcmgenet:
-allow the MTU to be changed", the macro becomes:
+That one is wrong for 4K pages, and the new one is wrong for larger pages.
+Neither comment changes later in the series.
 
-  /* Longest frame the MAC must accept for a given MTU */
-  #define ENET_FRAME_OVERHEAD (ETH_HLEN + VLAN_HLEN + ENET_BRCM_TAG_LEN + \
-                               ETH_FCS_LEN + ENET_PAD)
-  #define ENET_MAX_FRAME_LEN(mtu) ((mtu) + ENET_FRAME_OVERHEAD)
+The ENET_THLD_PAGE_LEN bound itself looks fine, since a buffer never
+exceeds one page. Could both comments be reworded so they agree and say
+that buffers may share a page depending on PAGE_SIZE?
 
-With an arbitrary MTU there is no rounding to a 256-byte multiple, so
-ENET_PAD is just 8 bytes of slack with no stated reason.
+> +#define ENET_SHINFO_LEN		SKB_DATA_ALIGN(sizeof(struct skb_shared_info))
+> +#define ENET_THLD_PAGE_LEN	round_down(PAGE_SIZE - ENET_SHINFO_LEN - \
+> +					   sizeof(struct status_64), \
+> +					   ENET_THLD_BURST)
+> +#define ENET_THLD_MAX_LEN	min_t(unsigned int, \
+> +				      ENET_THLD_MAX * ENET_THLD_UNIT, \
+> +				      ENET_THLD_PAGE_LEN)
 
-Could the comment either keep the 1528/1536 explanation, or say why ENET_PAD
-is still counted as frame overhead?
+[ ... ]
 
->  #define DMA_MAX_BURST_LENGTH    0x10
->
+> @@ -2252,7 +2269,7 @@ static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
+>  			      struct enet_cb *cb)
+>  {
+>  	struct bcmgenet_priv *priv = ring->priv;
+> -	unsigned int size = GENET_RX_BUF_SIZE;
+> +	unsigned int size = SKB_HEAD_ALIGN(priv->rx_buf_len);
+>  	unsigned int offset;
+>  	dma_addr_t mapping;
+>  	struct page *page;
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee%40tipi-net.de
