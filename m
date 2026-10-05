@@ -1,136 +1,311 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1824AB1A9
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 14:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791212051; cv=pass; b=E8x1PawaCBhAxfwVVDAGa5um9It46wQhcp+nQHSu18XnZ8QysyKPMqawmDVtndqjM1CeMjwE5QkEl4jQx7YlSSjhRSs/BtRQCR+QLzM/gqEnQQL/fLx/Zjn0+vUB//ZLNovBXEQosHE/wSuT5LuNwR64XCy5rYZiaXkDg5nHHoA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791212051; c=relaxed/simple;
-	bh=8zZ8QYcbf7PQFHGj3s4MFHZ/+0IN7ifpAJMj58pWUE8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dkeycYrZfiIZ9VkyQq2vAVX36v2wgp9dEjWr/SRsZwYEFHqBoePMyRlkZbP7KgTbxUH1RTfrvu2A+C8SuROHEpu13DfUSlQGTatteAdjue7VkERrznSCSYJUiSyzTLMfIkgUbzqW2QeKRu0tK2MYdVPJ8R5vYXyGnz4MKpMLlRY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UNCs36qR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KlGEzdkk; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33834A260B;
+	Mon,  5 Oct 2026 14:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791212118; cv=none; b=lOAcqdmlMDlBQp5iev62+RBS/woask7oCL1qntbIORfeLgZCPQRrrEA5DngRpKZcD3Y9lcOysTvlb2NDpSSsuBZzISe/9jezQ32eOP7YMlizen1pPjPcw6n5NPRQO8c8okV+mkDTNYo6HmMn//vLclvN25tZcHeH7DZEFvSA+x4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791212118; c=relaxed/simple;
+	bh=LMHf96mDX/Hz+lwct1zv89lYiBr0I7S4BGrBw7/kvSk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OSAIPqmBO9Cb+hdplezx/gad8L3fMrEkP4S1uvGUzPls1GMHJlb0phk5Ag43sPAC8mofKqSzZtGZPk+sTN4Y7TOvuc/gwKkhFYGWQwcnO/3tSEjTG9VRGeMBL+BoEQnKyEAOwcyZhqrjfoQJFJOCCtVfwrGcgwrwoGFqzWyn9KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/wHWk4i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UNCs36qR";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KlGEzdkk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791212041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8zZ8QYcbf7PQFHGj3s4MFHZ/+0IN7ifpAJMj58pWUE8=;
-	b=UNCs36qRvMqrJk+fUE7/slQpMCm6uQzuzt6+booX6SZy+TvPWd2yIbV0ymHfVOZ7BGP98O
-	ofDBF5kbttDo00oplATBLOBHj1HtCJt6n63mD/f6Qf7v0iDkgYjwzDi14d4hN+NPZ+rXa0
-	IeTsFlohHwNea6BpBB7KlKyQv7WsnkA=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-568-gO_-zRFSOMq8UkbyVGVMFQ-1; Mon, 05 Oct 2026 10:53:52 -0400
-X-MC-Unique: gO_-zRFSOMq8UkbyVGVMFQ-1
-X-Mimecast-MFC-AGG-ID: gO_-zRFSOMq8UkbyVGVMFQ_1791212028
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-3a87341f090so10998871fa.3
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 07:53:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791212028; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FWuy7a72qgiXUSiOhzHDpL/AnqNFxi1dc1r1eYWxNvAdpeAiokGR3/jWXEw+lm1Kto
-         fw+ei0bsxTMBHMfEwvsGu5FHx4eoOvCmsUNz40I1sGJX49Xpo6ejvsetbf5vO8KxMAoY
-         74E6+4WVddKyxh2ZqZVvMQTk+bErOqdVjUrybxUA2ygRmevt0W9gX/+V+6BCFPQS7dck
-         BXGGB4YrlmDUtHTwHF8+KpUOnp36J6D8U2ISs/WGl4tQgXy9R3mFg7TJKqdvlWaLzdUO
-         UXtY0jFI1L/1/D8H6MEVTKNRTX5SrJ+h9DZU8cri0AeG+emNjh5abw67xOnuEO85wnBd
-         hUAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=8zZ8QYcbf7PQFHGj3s4MFHZ/+0IN7ifpAJMj58pWUE8=;
-        fh=gM0eV9MPCr5FyTNVdJJWb3HfykgxQzTtrhMo2Ixsft0=;
-        b=hg49iyJ3QxDqozNCsU8tdMlp9bKg9+Jj9TIyHb+bey2mUopc1pjaS6CXHK5n2EJBPs
-         VZ97S+YiS4MVOgf+wr+zJWxhfwdRca3TBZ69GotI+JMzOSMRapGGgV4HoBetoqFJI8Pa
-         svDXModorZXXtL09ATYv8r9JaNkUwciKLeoMusXTj6cvi+S+L7GQ5dXMrXTkBpqClDf8
-         +D0IxolIkWDsfTKNFzmUOQ5e8QPgOBoa0yi9Cn2eOy8wJgO0bMMw2CGT/ezTtV70V5hj
-         5FZZiK7xqZ4GRI0af3HE/JwkJp/fTsZbZrsOJqMJOYlRSl37vSqusWu+zryZQpPBlv9D
-         PlYw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791212028; x=1791816828; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8zZ8QYcbf7PQFHGj3s4MFHZ/+0IN7ifpAJMj58pWUE8=;
-        b=KlGEzdkkmENR0bcKZmM4tW31XfH+ppwyLOfYmgZal3AZ++NCX3ONX63g5bY38o3dim
-         Uc7Ip+hoI4HnYlU0wUaCMRhyJgdgZxYLMFVO4uawEFRznS/a6jW1BFmDCfhpk4qDfhKK
-         5cy4Utj2SpJvWfRl6q6mMaFFpAdU+dL7MpwF3HZ8Yofqy91/pH0NHwZobfJuj4jqJsaH
-         /A8LZinQvvtCLefNPnoZLKHNoLMORYRCPMdZE8TpjxZxkBKVG94+6IVr5aqTmINhOrJV
-         5qmKFxFdajSThs7/E/x79v1XU+K0w1NV5cTSFHnwz0Ja2Wk5xhW4DCXwfX1EX8x9u1R+
-         LIsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791212028; x=1791816828;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8zZ8QYcbf7PQFHGj3s4MFHZ/+0IN7ifpAJMj58pWUE8=;
-        b=UrajUvedq++m2IC9H9BBnf09vtA0XGpeQhQWCuDIULYVOQGt9QbLqhQ6wO8rmLBBt9
-         qdQoRIIwWcrE9NFuLOeA09zfzZ9BoN03DBnVxDVF00stj4HTQB8HiZJmsX8qM5fGf4hu
-         2QJtcPoVYZNN1aebjRnO+20Xix2RhUOd5I0H9GW+7IEb4LuFmCe6p3gzfTxP6IhBspRf
-         ZwKvY2e7hqBbkdc31dVPA1U93ErQ89k5pbnRbPFcBzFz6z4X67N86aWDRH0XPrZVepmm
-         qH+Ag/SI+L4XWOW9LcOaBKJhlEhv8OQ1rOCJNIqcXHNsnXGzjMYTNsYhafQZSNWrpyL6
-         ZdZA==
-X-Forwarded-Encrypted: i=1; AKwUvByiUz5KJBx+lRyYoduRrseB34MPRNehpHZLEauYAN5V99JASHFEYxab7EXkAO1KgYLGpdYB16U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYItHsajO8N3fmk1CdphEGmjAnLiJF7HUB904vAByBc2cQc5mkw8
-	fu7ti6YIAjPIh04WG76PYZsFY84cDHuch8tNVV3zOMtu/4h67kUdIyw3aUcMBAtXxhUMv5Fhl+/
-	1h8zp6iM5Pi8P9ygvmf5O3S3koEkjDrSox4yyxSbrBvIijtvr8+SgRmoZQllA7U34Zv6voR0idi
-	ggB7bIybqJj/Dpmv8k5Xo9pjwM9DOw95Q/
-X-Gm-Gg: AYBFou0+QRfil9F0Rb2qWhd2dYzMvBFklasYtQC9Ulb+XEfN/G1b6d2x+su5QOGlMz+
-	pza9y0Z796+DiuFGRwo8A3uE7oUlPzmLXqyXfOopRMbTTbyBydZzIoqyqguKNVTq/xN9Bmn2IIu
-	QQkyNfUlAJgUh0ILIV2+q+oHHs8BH0jyE2fKUsgZSGEflZns094oXqiUAX
-X-Received: by 2002:a05:651c:a214:10b0:3a6:58fb:8540 with SMTP id 38308e7fff4ca-3a8877acfdbmr19316401fa.19.1791212028013;
-        Mon, 05 Oct 2026 07:53:48 -0700 (PDT)
-X-Received: by 2002:a05:651c:a214:10b0:3a6:58fb:8540 with SMTP id
- 38308e7fff4ca-3a8877acfdbmr19316311fa.19.1791212027578; Mon, 05 Oct 2026
- 07:53:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/wHWk4i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C771F00893;
+	Mon,  5 Oct 2026 14:55:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791212112;
+	bh=vpOmNC/2ZLcT4VnPNQrb9R9hSpyseE66F2HsXbR3ZzE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=V/wHWk4i4D/7R4dGjPBPVrN8O474fHDYA4pW0JeaNQiHziA5kuu3roNKiRFk+0H1q
+	 YRULJkxA98sCW2hDcDGgmMU48L3pDkmYbqQoqlED/TjKEv0mAsDVaYLR7zumHV1hxt
+	 cOOtzst7xpp0ijwfs4z2ZMNNcxxvrfQ6CIiOWEcFhSfxweA/O4YN+uuohDHYF3WUrR
+	 f7aDwbXKpaSac6XLIvJ2oghbphcVwTwNGkZJfMTIMLs+34NkmHd2K2gE3zGsUXXWpL
+	 b/TJSnWj7TfBT+w1mSp3FWWY9tvIN/OkZ7rdN5ViUnvth59j7pUI0j7NgRD7YxY9ON
+	 oxYITUz6nxkdQ==
+Subject: Re: [PATCH net v4] ip6_gre: use skb_vlan_inet_prepare() instead of
+ pskb_inet_may_pull()
+From: netdev-bot+sashiko@kernel.org
+To: littlesmilingcloud@gmail.com
+Cc: netdev@vger.kernel.org, edumazet@kernel.org, fw@strlen.de, kuba@kernel.org,
+ pabeni@redhat.com, davem@davemloft.net, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, mazin@getstate.dev, matthias.may@westermo.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 05 Oct 2026 14:55:11 +0000
+Message-ID: <179121211133.434549.1381649683777834470@kernel.org>
+In-Reply-To: <20261004145205.226974-1-littlesmilingcloud@gmail.com>
+References: <20261004145205.226974-1-littlesmilingcloud@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002232107.1578646-1-aahringo@redhat.com> <20261002232107.1578646-3-aahringo@redhat.com>
-In-Reply-To: <20261002232107.1578646-3-aahringo@redhat.com>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Mon, 5 Oct 2026 10:53:36 -0400
-X-Gm-Features: AclHuK-ouLvX0-7cuNCKJafhkt9kjj0OqJOrCqwFlOBX9-Z-Ur5EBRc5Gfep-CY
-Message-ID: <CAK-6q+i7ix55=aJ0hRHHq-V+YNym-VQ4dKVc0KpWzGP-BLXTwA@mail.gmail.com>
-Subject: Re: [RFC 2/2] dlm: fix socket hang on send buffer limitation with
- socket error
-To: edumazet@kernel.org
-Cc: gfs2@lists.linux.dev, netdev@vger.kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-On Fri, Oct 2, 2026 at 7:21=E2=80=AFPM Alexander Aring <aahringo@redhat.com=
-> wrote:
->
-> As Sashiko AI bot mentioned [0], a socket connection can get stuck when
-> the send buffer limitation is reached and a socket error simultaneously
-> occurs.
->
-> This issue can be reproduced with the following setup:
-> 1. Set sk_sndbuf to SOCK_MIN_SNDBUF.
-> 2. Slow down DLM connections using netem.
-> 3. Use tcpkill to randomly send TCP resets to DLM connections.
+Critical: 0 · High: 2 · Medium: 0 (2) · Low: 0
 
-I ran this over the weekend and wasn't able to get the connection to
-get stuck in the mentioned scenario as I think it triggers
-.sk_write_space() and .sk_error_report() interleaved randomly.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-- Alex
+- [High] The check/parse mismatch the commit says it fixes is still
+  reachable in ip6gre_tunnel_xmit() on ip6gre devices that have…
+- [High] One of the parses this patch is meant to protect is the one
+  added by Fixes: b09ab9c92e50, i.e. payload_protocol =…
 
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the IPv4 GRE
+  transmit paths have the same check/parse mismatch, and the patch…
+- [Medium] This problem wasn't introduced by this patch, but on
+  ip6erspan, frames that are not resolved to IPv4/IPv6 pass the new…
+
+--
+
+ip6_gre: use skb_vlan_inet_prepare() instead of pskb_inet_may_pull()
+
+This patch replaces pskb_inet_may_pull() with skb_vlan_inet_prepare() in
+ip6gre_tunnel_xmit() and ip6erspan_tunnel_xmit(). Before the check it
+clears skb->mac_len on Ethernet devices. pskb_inet_may_pull() is still
+used for ip6gre devices that have header_ops.
+
+Closes: https://syzkaller.appspot.com/bug?extid=6023ea32e206eef7920a
+
+> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
+> index e61cb10b50dc9..f48141820fb5a 100644
+> --- a/net/ipv6/ip6_gre.c
+> +++ b/net/ipv6/ip6_gre.c
+> @@ -883,8 +883,22 @@ static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *skb,
+>  	__be16 payload_protocol;
+>  	int ret;
+>  
+> -	if (!pskb_inet_may_pull(skb))
+> -		goto tx_err;
+> +	if (dev->type != ARPHRD_ETHER && dev->header_ops) {
+> +		/* ip6gre_header() has pushed a pseudo header in front of
+> +		 * the packet, so skb->data is not where the packet starts.
+> +		 */
+> +		if (!pskb_inet_may_pull(skb))
+> +			goto tx_err;
+
+[Severity: High]
+Can the VLAN check/parse mismatch still be reached on this branch?
+
+ip6gre_tunnel_init() installs header_ops only when the device is created
+without a remote:
+
+    if (ipv6_addr_any(&tunnel->parms.raddr))
+        dev->header_ops = &ip6gre_header_ops;
+
+Nothing clears it later. If ip6gre_changelink()->ip6gre_tnl_change() then
+sets a remote, ip6gre_tnl_link_config_common() recomputes
+IP6_TNL_F_CAP_XMIT. ip6_tnl_xmit_ctl() then passes, and packets still take
+this branch.
+
+When skb->protocol == ETH_P_8021Q, pskb_inet_may_pull() uses nhlen = 0 and
+checks nothing. The dispatch further down still does:
+
+    payload_protocol = skb_protocol(skb, true);
+
+With mac_len == 0, that walk reads a vlan_hdr at skb->data + ETH_HLEN. That
+location is inside the pseudo IPv6 header that ip6gre_header() pushed. The
+encapsulated protocol it returns is saddr bytes 8-9, and those come from
+t->parms.laddr:
+
+    ipv6h->saddr = t->parms.laddr;
+
+So if the user picks a laddr such as 2001:db8:0:0:86dd::1, the walk returns
+ETH_P_IPV6.
+
+One way to get there is AF_PACKET SOCK_DGRAM with sll_protocol set to
+htons(ETH_P_8021Q), a non-zero sll_addr and an empty payload.
+packet_snd() resets the network header before dev_hard_header(), so the
+network header points at the empty payload. ip6gre_xmit_ipv6() then reads
+past skb->tail:
+
+    if (ipv6_addr_equal(&t->parms.raddr, &ipv6h->saddr))
+        return -1;
+
+prepare_ip6gre_xmit_ipv6() also reads nexthdr, dsfield and flowlabel from
+the same unpulled bytes. If the protocol is ETH_P_IP instead,
+prepare_ip6gre_xmit_ipv4() reads the tos.
+
+KMSAN would report uninit-value here. With USE_ORIG_TCLASS or
+USE_ORIG_FLOWLABEL, the stale bytes can be copied into the outer header.
+
+There is a separate case on the same kind of device. When it receives a
+frame through tc mirred or bpf redirect, ip6gre_header() is skipped, and
+__gre6_xmit() reads this without any length guarantee:
+
+    if (dev->header_ops && dev->type == ARPHRD_IP6GRE)
+        fl6->daddr = ((struct ipv6hdr *)skb->data)->daddr;
+
+NBMA devices that still have no remote don't seem to be affected.
+ip6_tnl_get_cap() returns only CAP_PER_PACKET when raddr is any, so
+ip6_tnl_xmit_ctl() rejects them.
+
+The commit message names this mismatch in ip6gre_tunnel_xmit(). Does this
+branch need a VLAN-aware check measured from the existing network offset?
+Alternatively, should VLAN ethertypes not be treated as IP here?
+
+> +	} else {
+> +		/* The VLAN tag walks below start at skb->mac_len - VLAN_HLEN,
+> +		 * or at ETH_HLEN if it is 0, and a forwarded skb still has
+> +		 * the mac_len of the device it was received on.
+> +		 */
+> +		if (dev->type == ARPHRD_ETHER)
+> +			skb->mac_len = 0;
+> +		if (skb_vlan_inet_prepare(skb, dev->type != ARPHRD_ETHER))
+> +			goto tx_err;
+> +	}
+
+[Severity: High]
+Does clearing mac_len here match the walk in ip6_tnl_xmit() that the second
+Fixes tag (b09ab9c92e50) added?
+
+That walk runs after the tunnel headers have been pushed:
+
+__gre6_xmit()
+    gre_build_header()
+        skb_push(skb, hdr_len);
+    ip6_tnl_xmit()
+        payload_protocol = skb_protocol(skb, true);
+
+skb_push() moves skb->data but does not change skb->protocol or mac_len.
+With mac_len now 0, __vlan_get_protocol_offset() reads its vlan_hdr at
+skb->data + ETH_HLEN, counted from the GRE header. skb_vlan_inet_prepare()
+checked the Ethernet frame instead.
+
+With a 4-byte GRE header the read happens to land on the TPID. In the
+other cases it reads MAC address bytes:
+
+  - tun_hlen 8 (key or seq): source MAC bytes 2-3
+  - tun_hlen 12: destination MAC bytes 4-5
+  - ip6erspan, after 16 pushed bytes: destination MAC bytes 0-1
+
+Take ip6gretap with a key and an 18-byte VLAN-tagged ARP frame.
+skb_vlan_inet_prepare() pulls 18 bytes and lets it through. If the source
+MAC is xx:xx:08:00:xx:xx, ip6_tnl_xmit() treats payload_protocol as
+ETH_P_IP.
+
+hop_limit is 0 by default over netlink when IFLA_GRE_TTL is omitted, and
+also for a collect_md key with ttl 0. In that case ip6_tnl_xmit() does:
+
+    if (hop_limit == 0) {
+        if (payload_protocol == htons(ETH_P_IP))
+            hop_limit = ip_hdr(skb)->ttl;
+
+This reads past the end of the frame and puts that byte in the outer IPv6
+header.
+
+The same applies to ip6erspan_tunnel_xmit(). There, the ip6_tnl_xmit()
+walk is the only VLAN-aware parse after the check. So the base described
+in the new comment ("The VLAN tag walks below start at ...") doesn't seem
+to hold for it.
+
+The NBMA daddr parsing in ip6_tnl_xmit() can't be reached here.
+ip6_tnl_xmit_ctl() drops raddr == any first, and collect_md skips that
+block.
+
+Should the payload protocol be computed before the header push, or taken
+from the network header that skb_vlan_inet_prepare() set?
+
+>  
+>  	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
+>  		goto tx_err;
+> @@ -934,7 +948,12 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
+>  	__u32 mtu;
+>  	int nhoff;
+>  
+> -	if (!pskb_inet_may_pull(skb))
+> +	/* The VLAN tag walks below start at skb->mac_len - VLAN_HLEN, or at
+> +	 * ETH_HLEN if it is 0, and a forwarded skb still has the mac_len of
+> +	 * the device it was received on.
+> +	 */
+> +	skb->mac_len = 0;
+> +	if (skb_vlan_inet_prepare(skb, false))
+>  		goto tx_err;
+
+[Severity: Medium]
+This is a pre-existing issue, but on ip6erspan, frames that don't resolve
+to IPv4 or IPv6 still get through with only ETH_HLEN bytes guaranteed.
+
+skb_vlan_inet_prepare(skb, false) starts with maclen = ETH_HLEN and adds
+nhlen only for IP. For a VLAN-tagged frame of 14 to 17 bytes,
+__vlan_get_protocol_offset() fails in skb_header_pointer(), and
+vlan_get_protocol_offset_inline() leaves depth unset:
+
+    if (depth && res.type)
+        *depth = res.depth;
+
+So pskb_may_pull(14) succeeds, and the network header is set at offset 14.
+
+ip6erspan_tunnel_xmit() then calls erspan_build_header() or
+erspan_build_header_v2(), which do:
+
+    tos = is_ipv4 ? ip_hdr(skb)->tos :
+            (ipv6_hdr(skb)->priority << 4) +
+            (ipv6_hdr(skb)->flow_lbl[0] >> 4);
+    ...
+    if (eth->h_proto == htons(ETH_P_8021Q)) {
+        qp = (struct qtag_prefix *)(skb->data + 2 * ETH_ALEN);
+        vlan_tci = ntohs(qp->tci);
+
+Both reads hit skb->data[14..15], past skb->len, and the stale bytes are
+sent in the ERSPAN COS and VLAN fields. The tos read also happens for an
+untagged 14-byte non-IP frame.
+
+This patch is still an improvement here: before it, the 10-byte frame
+from the commit message was not dropped either.
+
+Should ip6erspan_tunnel_xmit() require enough bytes for these reads in
+erspan_build_header()?
+
+[ ... ]
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but do the IPv4 GRE transmit
+paths have the same check/parse mismatch?
+
+ipgre_xmit(), erspan_xmit() and gre_tap_xmit() in net/ipv4/ip_gre.c still
+begin with:
+
+    if (!pskb_inet_may_pull(skb))
+        goto free_skb;
+
+That check uses nhlen = 0 for ETH_P_8021Q and ETH_P_8021AD.
+ip_tunnel_xmit() then does payload_protocol = skb_protocol(skb, true). If
+the walk returns IPv4 or IPv6, it reads
+inner_iph = skb_inner_network_header(skb). By then
+gre_handle_offloads()->iptunnel_handle_offloads()->skb_reset_inner_headers()
+has made that equal to the network header.
+
+The fields it reads include tos (tos inherit), frag_off (unless ignore_df),
+ttl or hop_limit (ttl inherit) and, on NBMA, daddr:
+
+    if (payload_protocol == htons(ETH_P_IP) && !tunnel->ignore_df)
+        df |= (inner_iph->frag_off & htons(IP_DF));
+    ...
+        if (payload_protocol == htons(ETH_P_IP))
+            ttl = inner_iph->ttl;
+
+For example, send an 18-byte tagged frame with AF_PACKET SOCK_RAW on
+gretap. packet_parse_headers() sets the network header at 18, so the
+frag_off and ttl reads land past skb->len. Native IPv4 erspan v1 also
+reads ip_hdr(skb)->tos in erspan_build_header().
+
+The IPv4 side came from the IPv4 counterpart of b09ab9c92e50. Was ip_gre.c
+looked at as part of this change, or would it need a similar follow-up?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004145205.226974-1-littlesmilingcloud%40gmail.com
