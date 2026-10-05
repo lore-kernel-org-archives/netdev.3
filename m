@@ -1,127 +1,113 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE8741D10D
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 23:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4541D10D
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 23:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791243533; cv=none; b=hSVTaedxHO+9T8kLyb6T/Ev+HaEwRGMhPzCd3zX4ams6nQLFdb7gMwW1brHlbki7SZYoekfD08Gy8HFG5n4PfavA06ozOcK2FEAB8oW50SgFUMfuN2c9k4OxVx3sEIiSbZLeLELG1Mt+8k5VDhe48eSsyBJYQjgv7HmfsXdCp7k=
+	t=1791243544; cv=none; b=PHTtykodtjAxO/uhpXfL3p+O9BhKXCf7gnOVbciuy0+oqKtO+Ct4vkWyztb7glVlukfDPY+J6dCTYEzvh2vK8Ti1xVCk58gq/vZup3v2Pf2W1cddZ3vhs8dR4rjuyaf9qTzU0ab9KuN1dmibNGa/B24pp431EWCFk2iaQcHHpOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791243533; c=relaxed/simple;
-	bh=k4VxHYPDQlNlaPiDWtm0njKpKpXdpMpaZHAGx8QED6I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mbp4aOVadzEDUNomEIC2NpOOKu/lUtbNkagYm19BLbctMKQ2WwHRsNC+zKvJ+hMq1VyQHf+TEcXVQBkaecoWx+8XeQ6UEeN52jzFSPvFD+rUZwR6c1X3eA/k9NjYkndsyRjwKoULOO0/NHVG0ArChD07UytK2gG2HxxsXbZzRw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pbGV2UM2; arc=none smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791243544; c=relaxed/simple;
+	bh=7Z4YQNQjAkp7fBRBfGTICKlRVpTs3liJVTbe9LCjByU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=so1XoCMAh/WXb/MqYvoiV+lhes3xjIbkzNjhHMW5jpvv0SCz69BRZZZJj1+1YfOTHEpP5UHnxNlQPANvsBAHwEMe726Iol3UF26E5zWgUMNjpkyfb7wcVn0ETQ90bHldbp4GZ33dFTs8CL0AvXLrOzVo/9p0EUVH3aCa0+pxdNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vj0z80kQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pbGV2UM2"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5bcbfb28053so1306247e87.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 16:38:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791243529; x=1791848329; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+DTqPd+FK0C59toCv/w+p9Wc2puRzcD2Gcg0RCLDBBo=;
-        b=pbGV2UM2rQpCCDkEEV4K+AKxKPAmzMlSzCNffeKbdlhzGt2JMPJwaDYYuiSsVidVAn
-         wmZB+38dcDO/yVakIFi/S2ycJGWBEjSavDiYmj5tVI+ZiKrDKZXf2fH/vW/4s8/Phxyo
-         uibgSA9ei135CeEnZkPUm9iX/2TsUHCmvFqOLfhX2Y28+19iGmaBs7awuw+N6Ia9cDh8
-         PeGLd0GZvrfcHjWvrYV/GJseVBBYUp5yt+5m5rYI92b4Ng8eAkhqgZrDwwSnaPTukLDz
-         OI5hdQOPCkGL3J0KC4fT77uIJF5FbfYqwoj6bAh0w6uIqjuJpHkeTXVBDAhsLYy2qr5q
-         ObmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791243529; x=1791848329;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+DTqPd+FK0C59toCv/w+p9Wc2puRzcD2Gcg0RCLDBBo=;
-        b=ot84AhXUhwHJNk3+ZEFto3RiDv1FpGrLSLZ+zKfuc5/8ZywNK6WRyF6Sr8WVsf3sDd
-         A2MD6Ta/3IigWTJFdpC2+x2cuWll7qlUa9m1g2buOO11H7NMnomeTYC3UTRQq3hmzsO1
-         wCTqX/x8nwZ0P9bgnk7gUUmZPCmM8Yk487RBpijZzN3rZUUy078kl2Ic912A9R8HJMTb
-         IvMBOmsfK5EMYlMX1lY5JtKtEXdDEYges6UBSoxX5rlwXYIl5/duxCyrk4Op6aDDl6Hw
-         LAbzjYVTLruUBpmAzK+ZJuELt7AqfQt/RhfIj7wB9PKJvMVKunrc/MmcAuGZhMpL+qG6
-         YStA==
-X-Gm-Message-State: AFq9FYICmfpPU9AB/1phviC/vkQx4UjckzUhxxqCeufEj+Oejp7BP7Ya
-	yzVnhaTf3tjbex6FCuvz9QdIPvfDtGaThEyVix+A/PhexjMQrpAK60G+
-X-Gm-Gg: AYBFou3fC2wcWisaYYDWRDr6o3cbXQPkwfEVq2pzyve1Z25ZcHBWBSlq/SIvhjIFtBO
-	4hb315A3g4nXNqnyxrxBV1TSFHdFXKObUtZ5mOZXFmW4qIQKEjTcGPH/gPeg0FjgPsruPp8+OdW
-	52ODzmj+gluPAsCAx7BOUs4k6aopbrC5JzKz+SjionVwbB3rwEz3oWXBcGH9Rw9DdKVR1IwtzYl
-	OTBXw1NZxnHIYFQMVyLz2wMhXoS4qtkhJ0mfqCEBCuaKl152mX48F6tUCWfSSAopeqLqFajE+VS
-	urrV2f36cOpWwjogFqoRSM2VU8N1ZnZnpxtzqEa5E+7hG8AzNprskp1q2NrlQjiPxKo5rtIKjtp
-	Q6YjaEYILPjy3tvtagT19AVq3gDPAaOu00DYVjKi5KABxkKclNVZ2uMsHsFzzPD98fqQxTyMy87
-	q+lqC5gmfUwvQol4EdCblXH211l35+cg72HGY9klfizk1AdRir/wKb2JlrANqvnYRTJATEFehWE
-	ZSX36bKdfbpwC43DVWTe5bfJ9WpuR9p7njVZC1GBQ==
-X-Received: by 2002:a05:6512:3d21:b0:5ba:4264:da4a with SMTP id 2adb3069b0e04-5bb9bc5b39emr4566381e87.63.1791243529358;
-        Mon, 05 Oct 2026 16:38:49 -0700 (PDT)
-Received: from dau-home-pc.. ([212.35.161.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bb7c7195b3sm3627196e87.8.2026.10.05.16.38.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 16:38:48 -0700 (PDT)
-From: Anton Danilov <littlesmilingcloud@gmail.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	William Tu <u9012063@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] ip6_gre: let collect_md ip6gretap send from the unspecified address
-Date: Tue,  6 Oct 2026 02:38:41 +0300
-Message-ID: <20261005233843.936597-1-littlesmilingcloud@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <179122803467.1402591.12893544301783319251@kernel.org>
-References: <20261005191227.894665-1-littlesmilingcloud@gmail.com> <179122803467.1402591.12893544301783319251@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vj0z80kQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEED1F000FF
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 23:39:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791243543;
+	bh=JBW2ODmtigkrsix+0HH/8z6xbG9n5M8X7qtAqWl/PSA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Vj0z80kQRnNbFBcWuyEU53Oq1Yd7O08hmIxSonFhF3dA8UjvJ6dY9n/6jTKCHWDIm
+	 OFCVAwcjAbS5YxRCcJ2RXN9U0iYNeWt2okSZqrypusfCnp/pvOf2i651GWYObKIKWk
+	 9BtZdV5zFWkVpO2JjGA/EuJOh4Bme9CffeBElqLVfeWnG9eMElKWwDSqe5FuoPqUxN
+	 IgBXtqrF0RNGmipku38DvufyhAkLvTv0xb/n2rYr8ZMeQqQVMROXj9ewoLqDjIcDgE
+	 xKQ6YEp2e6Qg7d9SNjPfpes8RlxTVJe9auu8foC4xojbqODD5VVVT3MzqMNeoxSWm6
+	 hse/ng3NhulNw==
+Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a77da28307so20914281fa.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 16:39:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxxmYa9EsvZ25V60vH4BQPCT3g6XQywWc2hxny4ktMYE4TnYkGwXpKKL2JjXIvcQf9mBaUBcTU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIcroFTWZWHFpMhSfP/x8JoLmYafovsuoIl3RLohKD6qgO1AwYL
+	EkC5AAAxjx7uPKeaKy+DdlvC1lN4OYHOM3jT0y7UGmWBoBNHoqDmeVTFZsYIKE4R4ApgvqoNJms
+	fplAu01bWlL2pvdHrQaSaxQLVvYYZ2rw=
+X-Received: by 2002:a05:651c:b27:b0:3a7:812b:d0b with SMTP id
+ 38308e7fff4ca-3a8877e2986mr33078091fa.11.1791243542023; Mon, 05 Oct 2026
+ 16:39:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261002115850.962676-1-o.rempel@pengutronix.de> <20261002115850.962676-8-o.rempel@pengutronix.de>
+In-Reply-To: <20261002115850.962676-8-o.rempel@pengutronix.de>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 6 Oct 2026 01:38:49 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmckJt44y4HNTs4yb2oMm3nJTTBKDVh8dohAeBrDX4a_Q@mail.gmail.com>
+X-Gm-Features: AclHuK8XA3y4aGMxpVyTYMYhnPBZuxOn10ShDpEb47GBNRqHJNMwmPMgq3wAZ4k
+Message-ID: <CAD++jLmckJt44y4HNTs4yb2oMm3nJTTBKDVh8dohAeBrDX4a_Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 7/8] net: dsa: realtek: rtl8365mb: offload DCB apptrust
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Luiz Angelo Daros de Luca <luizluca@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
+	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 05, 2026 at 07:20:34PM +0000, netdev-bot+sinfo@kernel.org wrote:
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+Hi Oleksij,
 
-Hit during development of the net-next series that annotates these
-drivers with drop reasons. An LLM-assisted review of that series
-flagged the misleading "dead loop" reason this check gives to frames
-sent from :: when raddr is ::. Following that up with code inspection
-and testing showed that for L2 collect_md devices the drop itself is
-wrong, not just the label. The review of that series on the list asked
-about the same case, and this fix was promised in the reply:
+thanks for your patch!
 
-  https://lore.kernel.org/netdev/20261005174649.853236-1-littlesmilingcloud@gmail.com/
+Again some potential to share code here, not going to
+repeat myself from patch 0.
 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+On Fri, Oct 2, 2026 at 1:59=E2=80=AFPM Oleksij Rempel <o.rempel@pengutronix=
+.de> wrote:
 
-Triggered deliberately in a test VM; this is not a production report.
-There is no stack trace or log message: the frames are dropped
-silently, and the loss only shows up in counters. With frames bridged
-from a veth into a collect_md ip6gretap device by tc (flower +
-tunnel_key set + mirred) over a dummy underlay, five DAD-style
-Neighbor Solicitations sent from :: give tx_errors +5 and tx_dropped
-+5 on the tunnel device, zero packets on the underlay, and five
-kfree_skb events in ip6gre_tunnel_xmit() (reason NOT_SPECIFIED). The
-same frames sent from a link-local address are transmitted. With the
-patch applied the frames from :: are transmitted as well, while the
-check still fires for native ip6gretap with a configured remote and
-for L3 collect_md ip6gre; each half of the new condition was verified
-by removing it in turn and watching the case it protects start passing
-frames it must not.
+> +/* rtl8365mb_apptrust_weight() gives the first entry the top weight,
+> + * RTL8365MB_QOS_WEIGHT_PORT + ARRAY_SIZE(rtl8365mb_apptrust_map); fail =
+the
+> + * build if adding a selector would raise it past the decision weight ra=
+nge.
+(...)
+> +/* Trusted sources outrank the port default, and earlier entries in
+> + * rtl8365mb_apptrust_map[] outrank later ones. Deriving the weight from=
+ the
+> + * entry's position makes the table order the sole expression of precede=
+nce,
+> + * so the order and the hardware weights cannot drift apart.
+> + */
+> +static u8 rtl8365mb_apptrust_weight(unsigned int entry)
+> +{
+> +       return RTL8365MB_QOS_WEIGHT_PORT +
+> +              ARRAY_SIZE(rtl8365mb_apptrust_map) - entry;
+> +}
 
----
+RTL8365MB_QOS_WEIGHT_PORT is 1.
+The returned weights
+will be 1 (default), 2 (DSCP), 3 (PCP)
+if I understand correctly.
 
-Anton Danilov
+The RTL8370 source has some other opionions about this,
+it writes a power-of-two value here, would be something like:
+
+return BIT(ARRAY_SIZE(rtl8365mb_apptrust_map) - entry);
+
+returning the weigths 1 (default), 2 (DSCP), 4 (PCP).
+
+So for RTL8365MB this value lands in register 0x0886
+for example if both sources are trusted as the value
+0x0302. But for the RTL8370 (which uses another register)
+the value is instead 0x0402 for both sources trusted.
+
+Can you check this in the RTL8365MB manual because
+the register usage overall seem very similar to
+RTL8370.
+
+Yours,
+Linus Walleij
