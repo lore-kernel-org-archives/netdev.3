@@ -1,39 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C275E3859DE;
-	Mon,  5 Oct 2026 20:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A793876D5
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791233524; cv=none; b=FFa/b3LBEn9oP6LR9rUlHUzaBuCu3s1PlhiTJ7+WIbxuCOfYKCTXaFh/4WdKCIhhAZKsb3RxUjado3MEQcKqoRHkSJyNaGbJE3u3C4XY7VSWlb9QlneVX9bU4ogxQa5btiQOTmb1RsIhIWQzFoDLfvguQTXJIvcuxPU4TyZ09ng=
+	t=1791233533; cv=none; b=QjzGxvy/fB+x33HZ9YIO14k4rRp/bCw9CCxFwSUQrm0bh5XVfj9auBb0WcuRvMDn0wsdw5M3umnyoF6a3+yBQYfeMKrinpQmepIJvLj+nf1JevQj0980CoaORJs9PD5PgBuXI/IAeQH73OIPlCdVjK6FwRA6RA0no2TiPexBglA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791233524; c=relaxed/simple;
-	bh=w2Pj/aA+ACoJ4sNLQmplkZrq+uo0XkJzKyEiCfYZGjs=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=AcaGNSlwmS3CcinGcNslMcRo0dhOc8OZoq755Q6WalpjI+4IeoHqIZuwUKcXMtPYaUDdilVMRPrDDf+Soa/vZRa0y1TvnWI/ZDrULBNZh9e28sJ9l9BAAf7V+a4gf5WJwbnbj58IfZoZHHH3tEobWf0WqnMn2m/r5TkwtJFFCD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=RnO3q848; arc=none smtp.client-ip=185.70.43.16
+	s=arc-20240116; t=1791233533; c=relaxed/simple;
+	bh=giNYsJQLixxH/tn3pTRwaEN7a4MZGpONgq1VDU5ZWDo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OCC2WDVWuh1djAlrux3OfUtXQW+2Yt5m2a5Vhan3GuxeMMz0DWcgn4Ujl2DizcN7ARCXkUVHy+m1VFv59EbkjaltVOoge9udf3h0Cka1Xpzf/BNy/yIJD1ZhVCx0/L5Br1V6rcCMnetS/DValHhNk1YkRq4BS9yA6M8LqLAUV8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZIrve9Cp; arc=none smtp.client-ip=109.224.244.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="RnO3q848"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZIrve9Cp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1791233507; x=1791492707;
-	bh=6W67tFHd6CiLu3WczG673m8vQK8JeD6Yh/iLbczubAI=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=RnO3q848bpHeIatqJgLCMEcNkOP3wKufhsvlm4thJpKP5RM2sSJxX0jd3SqgnZo5c
-	 CB94MYz11k5/wqNmv6jIwO9kMS58VjoTYhucDbN+vp1oNZORE6tpTJcMEEBXKgAE6r
-	 C96ZivhPgUU9Cq6Jv8KPA/aaOvUmT9gsbpvBqngoabYXBoDfdj2/7nAj9WiqDJZ+0Q
-	 YyDbS6GoOVuM802IUrDE8GFDnpz1f9wGSVxckiM5e2Eo8tj1zU3nh3QO6S/Fad51Ct
-	 sEof4PuhWrv8Ehv6PfIbXsD5no9o7ICFeIjXuEVgT8ZakehIIBNpDh0BSazbHtYfK7
-	 v/4qpYnzaZhdA==
-Date: Mon, 05 Oct 2026 20:51:42 +0000
+	s=protonmail2; t=1791233522; x=1791492722;
+	bh=giNYsJQLixxH/tn3pTRwaEN7a4MZGpONgq1VDU5ZWDo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ZIrve9Cpum9TvdO3zwWi/zIKbFZESM1CIWRg+EIsiIu2WUtBwOL0XrdIMrVUwFTsw
+	 4brbtmoTPF/MD5oCvTRaYDKhRAb2jAim0SoLyMKFNu75Gz4Y6/XWIfllEOnm8ipYlp
+	 /Di5osgyh8FCgM14A7OVrtBpoIzb9HKTC/uvKShwqj3vTvUY9QRpoEO+cRklYS+jWz
+	 +Wia9VGqJKpduTxQToBbCfQyHLY0EwMgAmSUe4mciN8tgh5Qr2YUIuDiqqn1CQSEId
+	 dhQ4aW50Ig/cDq22CYgKETsdd+SHApC5qo5hgI3dweH3FJJBrDhS+0KEyHbwcxQrAg
+	 YSQkWJvWTqAsQ==
+Date: Mon, 05 Oct 2026 20:51:56 +0000
 To: David Heidelberg <david@ixit.cz>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
 From: Kristian Brox <isyourbrainfoss@proton.me>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>, Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, Tim auf der Landwehr <tadl-git@taufderl.de>, Abel Vesa <abel.vesa@oss.qualcomm.com>
-Subject: [PATCH v5 0/4] nfc: st-nci: Fairphone 5 NFC bring-up (ST21NFCD)
-Message-ID: <20261005-fp5-st21nfcd-v5-v5-0-7be15a86c61c@proton.me>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>, Tim auf der Landwehr <tadl-git@taufderl.de>
+Subject: [PATCH v5 3/4] nfc: st-nci: map proprietary RF protocol 0x90 to MIFARE
+Message-ID: <20261005-fp5-st21nfcd-v5-v5-3-7be15a86c61c@proton.me>
+In-Reply-To: <20261005-fp5-st21nfcd-v5-v5-0-7be15a86c61c@proton.me>
+References: <20261005-fp5-st21nfcd-v5-v5-0-7be15a86c61c@proton.me>
 Feedback-ID: 203906395:user:proton
-X-Pm-Message-ID: 770e7dd04a105c11704dbf4d72852d48b538ec69
+X-Pm-Message-ID: b8f02c33da1be7e1224d50c41ddd260cf240caf6
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,58 +47,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-This adds NFC on the Fairphone 5 (qcm6490). The board uses an ST21NFCD
-on I2C. That part speaks raw NCI; the current st-nci driver always
-wraps NDLC, so using st,st21nfcb-i2c leaves the adapter unusable.
+From: Tim auf der Landwehr <tadl-git@taufderl.de>
 
-The series adds a st,st21nfcd compatible for the raw-NCI path and the
-Fairphone 5 DT node. Boards that already use st21nfcb / st21nfcc keep
-the NDLC path.
+ST21NFCD reports MIFARE Classic with proprietary RF protocol 0x90
+(a Classic 4K, and a Classic 1K on the Fairphone 5). That value is
+not an NFC Forum protocol. st_nci_get_rfprotocol() returned 0 for it,
+and nci_add_new_protocol() then drops the tag.
 
-A later poll start that times out in "failed to set local general bytes"
-is still unreproduced on this phone.
+Map 0x90 to NFC_PROTO_MIFARE_MASK. ISO15693 (0x83) is unchanged.
 
+Signed-off-by: Tim auf der Landwehr <tadl-git@taufderl.de>
 Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
 ---
-Link to v4:
-https://lore.kernel.org/oe-linux-nfc/20260902-fp5-st21nfcd-v4-v4-0-ded2f1c5=
-01be@proton.me/
+ drivers/nfc/st-nci/core.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-Changes in v5:
-- Map proprietary RF protocol 0x90 to MIFARE (Tim). On this phone a
-  Classic 1K was accepted as 0x90 and was not dropped.
-- Binding carries Reviewed-by from Krzysztof Kozlowski. DTS carries
-  Reviewed-by from Konrad Dybcio and Abel Vesa. The patch bodies are
-  the v4 patches. The raw-NCI driver change is unchanged.
-- Tim's reference-clock restart and leading-0x7e check were tried on
-  this phone and left out.
+diff --git a/drivers/nfc/st-nci/core.c b/drivers/nfc/st-nci/core.c
+index d7802434a..d83221566 100644
+--- a/drivers/nfc/st-nci/core.c
++++ b/drivers/nfc/st-nci/core.c
+@@ -15,6 +15,12 @@
+ #define DRIVER_DESC "NCI NFC driver for ST_NCI"
+=20
+ #define ST_NCI1_X_PROPRIETARY_ISO15693 0x83
++/*
++ * Proprietary RF protocol the controller reports for MIFARE Classic.
++ * Not an NFC Forum protocol, so it must be mapped here or
++ * nci_add_new_protocol drops the tag.
++ */
++#define ST_NCI1_X_PROPRIETARY_MIFARE 0x90
+=20
+ static int st_nci_init(struct nci_dev *ndev)
+ {
+@@ -76,8 +82,14 @@ static int st_nci_send(struct nci_dev *ndev, struct sk_b=
+uff *skb)
+ static __u32 st_nci_get_rfprotocol(struct nci_dev *ndev,
+ =09=09=09=09=09 __u8 rf_protocol)
+ {
+-=09return rf_protocol =3D=3D ST_NCI1_X_PROPRIETARY_ISO15693 ?
+-=09=09NFC_PROTO_ISO15693_MASK : 0;
++=09switch (rf_protocol) {
++=09case ST_NCI1_X_PROPRIETARY_ISO15693:
++=09=09return NFC_PROTO_ISO15693_MASK;
++=09case ST_NCI1_X_PROPRIETARY_MIFARE:
++=09=09return NFC_PROTO_MIFARE_MASK;
++=09default:
++=09=09return 0;
++=09}
+ }
+=20
+ static int st_nci_prop_rsp_packet(struct nci_dev *ndev,
 
----
-Kristian Brox (3):
-      dt-bindings: net: nfc: add st,st21nfcd
-      nfc: st-nci: add raw NCI path for ST21NFCD
-      arm64: dts: qcom: qcm6490-fairphone-fp5: add ST21NFCD NFC
-
-Tim auf der Landwehr (1):
-      nfc: st-nci: map proprietary RF protocol 0x90 to MIFARE
-
- .../devicetree/bindings/net/nfc/st,st-nci.yaml     | 49 +++++++++----
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 34 ++++++++-
- drivers/nfc/st-nci/core.c                          | 38 +++++++++-
- drivers/nfc/st-nci/i2c.c                           | 82 ++++++++++++++++++=
-++--
- drivers/nfc/st-nci/ndlc.c                          | 27 +++++--
- drivers/nfc/st-nci/ndlc.h                          |  5 +-
- drivers/nfc/st-nci/se.c                            |  3 +
- drivers/nfc/st-nci/spi.c                           |  2 +-
- drivers/nfc/st-nci/st-nci.h                        |  2 +
- 9 files changed, 211 insertions(+), 31 deletions(-)
----
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-change-id: 20261005-fp5-st21nfcd-v5-1818d4776267
-
-Best regards,
--- =20
-Kristian Brox <isyourbrainfoss@proton.me>
+--=20
+2.55.0
 
 
