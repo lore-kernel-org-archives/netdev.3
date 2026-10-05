@@ -1,150 +1,203 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E3D488207
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:46:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A436748C3FF
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791207990; cv=none; b=gQYTsuTQDvBQDDzWdHy1cYvG6alPF/3J0OOaA3hCBbSod8f9r3Cuxad8AzyyM4DS1oOaJtvWcYr7/DKWGJtQsaoJyQgxnqL3VpkOWe7PVJgUeogtEZyv5/DkePRf1VLTjuP6OsfzsE+vMUkfKBDgiPzi98dkrdI7peiQ+oSLv/8=
+	t=1791208213; cv=none; b=UY9emvDG7VNWtD3THuScGvYfnqX4UB8O78ONFNBHAiNRH8HKrPaQmx8huXdda//10p7UJjCnPuI1HkxZ9YNyHI6dd/fzkwgy7iNj7abXoK1HbRaHDKXYZIRPO0StZCp2Natej6in8NfJEY0y1m2MjFyLtcGSE3VX6yFXWp3qsb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791207990; c=relaxed/simple;
-	bh=jK1xZfZ/ZAjbb1vwQsBgpSKswaKF6V+VUqJKzKbogOY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MrJSk2s6YcxDKWDkINrNs17tYX7tOX9jPk30EWs6EWwuZ0i4zv63KSqBEj9AWwykcqSBMC8CYlW1ddVL3dda2gWOWBOoFaDjWUY8GiG6TCE0MFpZ3W0gCa9SAxenguy1XXtdtAPywIsBLTc9cA9551/IrvK1ah20wzmBn6fS7YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=DDp+xs0R; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
+	s=arc-20240116; t=1791208213; c=relaxed/simple;
+	bh=kJoCLUlLH5c2PfLDEJkw6TF3W6aoKrKGlZJJKjuBdBc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TFWjpaX6JvIKloTgUm0rqx9sSTw15TOY+M8Vv5FXEp3YdqxLoHXR0Z79uDd64aqLA3iHagp9bhBnilFMCw9N7HOQb/hQyDFGQPa4b4p3w9YKpnKDrks1Wjbs+rd+GDk9oXm7Er4Uf/WZ0oL86mNHZvlV+lmdftHnco9dxGRv134=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=V+IXxX8N; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PHvscd4n; arc=none smtp.client-ip=202.12.124.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="DDp+xs0R"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3a0a911e8d6so766650a91.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 06:46:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1791207986; x=1791812786; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=cV4nIo3kAjiqJAr11D0A33XgzPLg22VQeLn4sDhwBQU=;
-        b=DDp+xs0Rgq5lUOngPgfgVOd5bxf5QTjAmX5ouVAch38Tzfu8BHbBAIUTn6A6Dy2mZv
-         9/0zPDDQvgJERK9EG7CcP+n06syhXrdMDXjhhIaIAAyjdLa5t0Qx7Nf3O1xJSaawpyD2
-         C4GX8qzaqWnabQyWLcIPXkYGte4NbIB1NTC4E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791207986; x=1791812786;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=cV4nIo3kAjiqJAr11D0A33XgzPLg22VQeLn4sDhwBQU=;
-        b=DhMiX3Et5mmO5+hQkKU8Ls858om8bDRd+cyQWjz+dt1MXyhGTcFDduw9I6rLFlwXmb
-         mONdQn1DHgezRjld0MXhD+7fzG8WCWIK8sTVlHQJRfBoL2UCX+IlU7un62lDYtZd7Rg8
-         uVGaViU3/DL/Yl/K+ovffsLh143NTKc41fh2jMkzq0xWO62oB8yV53h6u4/d3jIQLP0Q
-         PekZQjh1A2COPueqYlNCfvw/Ssi9NuYFPesQJt//Svnkdd9Mdrf2GMTF6bQoHBUScJDD
-         iRXgOrFdatikeHQttbvGL2ekvEXd7u6GwVS++XLPeLYcZBBHJnn9uYiFKlebdQ8KCmnC
-         pm9w==
-X-Gm-Message-State: AFq9FYJ6qCt7wbgzjML4S4I90j0/Pv1jBTuedpiQKwCVRxyJfQNQNW4n
-	x8u+giEXJE+ct0ksLpHxoY+aJzf9ez6Cr5OpLPnNGyhx9oGpWTHzfdnjlCUc2/U3wck=
-X-Gm-Gg: AYBFou2uqIvGJbyAHI08IcX6Ezphb6pZE6W35mSqfwqSZ4zxWzieQPNBgust/i1ApNc
-	VQ9MT9+k2m1GWsKea45e3gye4mJgpynIs/FVBsshRFXsQ/7BTKZnW11CDvqdHdPmV/HN4Q+HnYa
-	6ILET9TaK34VlieEfAxGVtg1LqPWfZEAdtzPXt1j7wVGfts3Z0XNOScYEXGiO+84GAV5n4zTrkP
-	EOFfdcR80F0f8Y/53U4nscJC3hR6Mn76ArbAk0LSwtdZLZd81cnHsagLY5YHZ6VcO4KZBU8umUp
-	/aOnnuDfu3gYFTCmDhk8NccaGZJPv3cOXUrNQCEZxSc/XCVHqr2uXnke3ZyXsOp5tO044+0nqe9
-	3cbfY4ILskfbqh5Ib3j3lokSMJ3gGOKovcckxSJlHAwAFt3C16f3IvVjld8/rdgZ2eWLpE8/UuL
-	JuNxKVvHvX6ynzklwAuHk7+8tTs0cedOF4WIRHLB21rRr/E+hlJwDGfI0isXpHoVCU
-X-Received: by 2002:a17:90b:3ec1:b0:3a0:4668:4cb0 with SMTP id 98e67ed59e1d1-3a787510226mr5872122a91.47.1791207986052;
-        Mon, 05 Oct 2026 06:46:26 -0700 (PDT)
-Received: from [172.19.0.2] ([49.142.45.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a78d65d85csm11168162a91.4.2026.10.05.06.46.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 06:46:25 -0700 (PDT)
-From: Seongjun Hong <hsj0512@snu.ac.kr>
-Date: Mon, 05 Oct 2026 13:46:15 +0000
-Subject: [PATCH] net/mlx5: allocate dma pool structs on the pool's NUMA
- node
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="V+IXxX8N";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PHvscd4n"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfout.stl.internal (Postfix) with ESMTP id 2D8101D00072
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 09:50:09 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Mon, 05 Oct 2026 09:50:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm3; t=1791208209; x=1791294609; bh=7vETM4hDdR
+	zBFCOcU0QImx6yNzrgqYDmlD5S3xflOCE=; b=V+IXxX8N6mCqoor8lXyrgigV3x
+	eGBvq1HSMWc9QVW4X77bVOoAbT1Cvdb5XmsYyR4Vu/ZAMiTqqFCo8PQ9KmZMhbo3
+	CkIJXt2smPPLW/+XvXN+VP8u9fsED1sd/etGXmGsA37VUesWrlhf05Ae+XhkwX6W
+	fto8jyyxn1R35txld+eumFf2uxQBiwrW4V1wolzxW5zY58PO2J+3ywsIWzOS0Txw
+	txwpyXkpPdmxBwDMP328ddL/77gGOKcygMKvXgOjGXGFKlqPYtBUq5+tZhvgi3xK
+	c+fLpmPDkdQJ1GM/wbM2muYnO8E1AdFVff/sDmU80b1P6aJSxHIzpfIhTa+g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791208209; x=1791294609; bh=7vETM4hDdRzBFCOcU0QImx6yNzrgqYDmlD5
+	S3xflOCE=; b=PHvscd4nO2bSPijUTj5pbIK48cuLiTfLBaL9LuRoqdD9sgjze4t
+	mf4plkSjgfsWgb4ODzJUi/9kN3MJksp6qimH0Vvcu8k6x99xStwJaX5VK3OohpHK
+	z251wejPua2TipmC5Q2UJkgtktA4Enuncx9b9biCjMb1Apb3v7Wzh3o5qAnf1nYt
+	kZDDXpJi9dDmHsQE13Xo3cZHUWqJWlWlkl0mBJ5L9MaN8H62CJ6VAjMXt1NdCpJG
+	izgF+V8iHSXDy5u+tjldexFHrRl4fJVPLQp19rSm1FLSsQeovp+rIY2zBYFu8BjW
+	uek/wokugt0NHmSaYF1jjU+a9PqRS2JeaOA==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=sign d=queasysnail.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791208209; d=queasysnail.net;
+	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm3:rsa-sha256:UUVtnjT0muk5J3bEDLkcQD0Ya/Wul4e82pzH0Ck/ed3QMEw
+	5DxvZmZf8FdzckTBEHxZ9TlKUvYorvu3V0mTcYCWRmwDB4WP2syaXxC3adJbocvk
+	S9NgLMlSrEKWUjyfZ3KDaX6RpAvyumJ5LKk4D9AKeQsXcuGL06CXhUqomSfjdpdU
+	8uTFf5uAgC+HXq5UoI0EboPMh1Y48kOHoFPV4OA1WjRMED2BO1+7H4pFKgYHrfBD
+	ub5enFWg73i7ogde5x9JninlXMMakqgYo1r/LBTJ1Z8OK3YkxEUjeMXNS+eUAL97
+	gr6GXUm47Zqzbj/j77PDVEBggfUK2qXJZmi/qFQ==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-09-30; sw=lmtpprox;
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:aI99KDTvcRx0wkfO5Sft/Vq5YM2KoIVwCZVsibUZ9HU=:kJoCLUlLH5c2PfLDEJkw6TF3W6aoKrKGlZJJKjuBdBc=;
+X-ME-Sender: <xms:EKvDah90Yv0-c6x3vQCDdZFRNNWm3h8i3trrMAjJHVPbKHOxHdjA6A>
+    <xme:EKvDajhZ8x6tNQutiOF4fyK-xS-nVkcIRtQsrRTEADozDk7cMQMgoiPLwX8yxOncu
+    WUQvs3qqliyrbQBneUgnUVgiIb8YQlNtr8HKXzd32mSKyCFGeiciaE>
+X-ME-Received: <xmr:EKvDapeCpkyGTjHn6DgBHMfdBUNauORKV2dUPT9m73zVLK_oVOhqhmlo3fvd>
+X-ME-Proxy-Cause: dmFkZTEwSXeKQKe90U8Zg0ChVJ7PXvyJWXNdBjW8oqS/AT33NcUbOOkma2D0rwhuDmJGHs
+    F7Y4BtRjrf9yOr78ZjhYJUsqbGba6pD/sxZ3/o5S3BZ5mHF+Dzzsyi7rOx80tS4nZkmd7G
+    D4JUfCD8kB60MFCYuFSxI8o3eN0pd6LMzm4DgysIfUiHRUg7Pe1dfQdcFmojGmV39uEKYY
+    hxXWxHUyB7fgknpamoAIib6hEU8IBPHwYMkJJhavUfTN3sZxMMAJtIgyrtGsLzdKzpvbbX
+    2ow2AxIo3Tuh731gGq/kzShGm3/Hrvc7AjA9lQpwzJezoIAaus8SKEZtAtnlCXHMqwQ2US
+    vpqh0S+ebL6XmPMWXposXj0xeKduhsVoGhEqaHbTiLwXMX8w+KwM6KKlONSOa2LunRsN6D
+    SiXU50G0DKUxqwLQW7wN2mCG2CsAh02i15j4WKZ3487YuasHihGc5jDxrd9dMqqBHRgIk5
+    UL6vVkTzGa7/QI4RCy3lwnrh+7Ygcl1kvgTr54dT+6dWuR3r092YrjerppifQyxBXzF7P1
+    nlLXprwQ7+e5y48hgeTuxPZE6qdBzosCx6Z7iU0AVMRgQ5NeJzGKa9CmUhVMHxMS8zG2if
+    bb5HaN/EW57XiOcC0br2aksZRSD09/NYazyecgBK6ygn3EPw8wWZgcy9yv8A
+X-ME-Proxy: <xmx:EKvDaiqSA-C634I4hI2oxtSFwUN3pUNFR4vMaW-tDx-8815LXiQKQA>
+    <xmx:EKvDamALeklern1QkNUhaSUJ5OcT4gk3z-KIfHaD3c15x46DLFt8WA>
+    <xmx:EKvDanb-28Zvn_VEo9LvZGPJ4gYkE_nPHg3nvdjx2jU0na-qne_-Gg>
+    <xmx:EKvDah7vI97vXT8aj8G64PeS48MkZUbCutb0HHf4h3kKonNlU18vUg>
+    <xmx:EavDaq3LG-LHVTeWF04RGYnBWcGV-ZOI0Cd8K2w4n1lUFy8CdAS5PO1n>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 5 Oct 2026 09:50:08 -0400 (EDT)
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: netdev@vger.kernel.org
+Cc: Sabrina Dubroca <sd@queasysnail.net>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v3] strparser: make sure __strp_recv isn't running before tearing down the parser
+Date: Mon,  5 Oct 2026 15:50:02 +0200
+Message-ID: <425d9d926709b542ed5331110c19fee4aee1f28d.1791206940.git.sd@queasysnail.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261005-net-mlx5-numa-allocate-pool-page-v1-1-01f4283932b4@snu.ac.kr>
-X-B4-Tracking: v=1; b=H4sIACaqw2oC/x2N0QrCMBAEf6XcsweXUBX8FfHhqKsepElIaimU/
- ruHbzMw7O7U0QydbsNODat1K9klnAaaPprfYHu6U5R4CSJnzlh4TpvDd1bWlMqkC7iWkriq9xG
- IojKG8Qrymdrwsu1/cX8cxw/U01I1cgAAAA==
-To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Seongjun Hong <hsj0512@snu.ac.kr>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
-The mlx5 DMA pool structs (mlx5_dma_pool, mlx5_dma_pool_page and its
-block bitmap, and mlx5_frag_buf_node_pools) are allocated without a
-node hint, so they land on the node of whichever CPU happens to create
-or fill the pool, whiile the DMA pages they describe are allocated on
-the pool's node.
+The comment above strp_done() claims that if strp is stopped,
+strp_recv will no longer be called. That's only true if the caller has
+a mechanism (eg locking) to guarantee that strp_recv() calls that
+started before strp_stop() have completed by the time we call
+strp_done().
 
-The pool, page and bitmap are dereferenced on every block allocation
-and free. Allocate them on the pool's NUMA node as well, so that all
-of a pool's state lives on one node.
+This adds a dummy lock_sock/release_sock pair to guarantee that any
+in-flight strp_recv() (which runs under either bh_lock_sock or
+lock_sock, depending if it's called from ->sk_data_ready or strp_work)
+has completed.
 
-Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
+Only espintcp can be affected by this race condition, but this patch
+makes sure no future user of strp can have the bug.
+
+This could crash on strp->sk ("general mode" of strp), but this mode
+has been here for 9 years and has never been used. It'll be gone soon,
+no point worrying about it.
+
+Switch the stopped/paused/etc bits to u8's to avoid races between
+strp_stop() and strp_pause/unpause().
+
+A reproducer has been published and turns the possible UAF into an
+exploit [1].
+
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Link: https://lore.kernel.org/all/aZLn2Faeg1FB7XOf@v4bel/
+Link: https://lore.kernel.org/all/aZgpkyTDU3aXe_V0@v4bel/
+Link: https://github.com/m0x41nos/RustyTux [1]
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/alloc.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+v3: try to make sashiko shut up. drop reviewed-by tag due to code change.
+v2: no code change, just add Cc: stable and Reviewed-by: tags
+    f06217a9b95b7027286c7df21336e67e334c3e6e.1790674872.git.sd@queasysnail.net
+v1: 4c80ea646f95abbd5beca2c081d129fe7d61a0aa.1790344112.git.sd@queasysnail.net
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-index a92cf545bdaf..dcd281c4691d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-@@ -110,7 +110,7 @@ static struct mlx5_dma_pool *mlx5_dma_pool_create(struct mlx5_core_dev *dev,
- {
- 	struct mlx5_dma_pool *pool;
- 
--	pool = kzalloc_obj(*pool);
-+	pool = kzalloc_node(sizeof(*pool), GFP_KERNEL, node);
- 	if (!pool)
- 		return NULL;
- 
-@@ -127,19 +127,20 @@ mlx5_dma_pool_page_alloc(struct mlx5_dma_pool *pool)
- {
- 	int blocks_per_page = BIT(PAGE_SHIFT - pool->block_shift);
- 	struct mlx5_dma_pool_page *page;
-+	int node = pool->node;
- 
--	page = kzalloc_obj(*page);
-+	page = kzalloc_node(sizeof(*page), GFP_KERNEL, node);
- 	if (!page)
- 		goto err_out;
- 
- 	page->pool = pool;
--	page->bitmap = bitmap_zalloc(blocks_per_page, GFP_KERNEL);
-+	page->bitmap = bitmap_zalloc_node(blocks_per_page, GFP_KERNEL, node);
- 	if (!page->bitmap)
- 		goto err_free_page;
- 
- 	bitmap_fill(page->bitmap, blocks_per_page);
- 	page->buf = mlx5_dma_zalloc_coherent_node(pool->dev, PAGE_SIZE,
--						  &page->dma, pool->node);
-+						  &page->dma, node);
- 	if (!page->buf)
- 		goto err_free_bitmap;
- 
-@@ -278,7 +279,7 @@ mlx5_frag_buf_node_pools_create(struct mlx5_core_dev *dev, int node)
- {
- 	struct mlx5_frag_buf_node_pools *node_pools;
- 
--	node_pools = kzalloc_obj(*node_pools);
-+	node_pools = kzalloc_node(sizeof(*node_pools), GFP_KERNEL, node);
- 	if (!node_pools)
- 		return NULL;
- 
+ Documentation/networking/strparser.rst |  2 +-
+ include/net/strparser.h                | 10 +++++-----
+ net/strparser/strparser.c              |  6 +++++-
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
----
-base-commit: 8b4e7209c842d8cb9516f1f5ef0a88aa2d8831a6
-change-id: 20261005-net-mlx5-numa-allocate-pool-page-2ee20a04147e
-
-Best regards,
+diff --git a/Documentation/networking/strparser.rst b/Documentation/networking/strparser.rst
+index 372106b61e65..d0804c88ad0a 100644
+--- a/Documentation/networking/strparser.rst
++++ b/Documentation/networking/strparser.rst
+@@ -77,7 +77,7 @@ Functions
+ 
+      strp_done is called to release any resources held by the stream
+      parser instance. This must be called after the stream processor
+-     has been stopped.
++     has been stopped. The socket lock must not be held.
+ 
+      ::
+ 
+diff --git a/include/net/strparser.h b/include/net/strparser.h
+index 0ed73e364faa..881b7ae34498 100644
+--- a/include/net/strparser.h
++++ b/include/net/strparser.h
+@@ -91,11 +91,11 @@ static inline struct strp_msg *strp_msg(struct sk_buff *skb)
+ struct strparser {
+ 	struct sock *sk;
+ 
+-	u32 stopped : 1;
+-	u32 paused : 1;
+-	u32 aborted : 1;
+-	u32 interrupted : 1;
+-	u32 unrecov_intr : 1;
++	u8 stopped;
++	u8 paused;
++	u8 aborted;
++	u8 interrupted;
++	u8 unrecov_intr;
+ 
+ 	struct sk_buff **skb_nextp;
+ 	struct sk_buff *skb_head;
+diff --git a/net/strparser/strparser.c b/net/strparser/strparser.c
+index a23f4b4dfc67..d5b17d099a0e 100644
+--- a/net/strparser/strparser.c
++++ b/net/strparser/strparser.c
+@@ -505,12 +505,16 @@ void strp_unpause(struct strparser *strp)
+ EXPORT_SYMBOL_GPL(strp_unpause);
+ 
+ /* strp must already be stopped so that strp_recv will no longer be called.
+- * Note that strp_done is not called with the lower socket held.
++ * Note that strp_done must not be called with the lower socket held.
+  */
+ void strp_done(struct strparser *strp)
+ {
+ 	WARN_ON(!strp->stopped);
+ 
++	lock_sock(strp->sk);
++	/* sync with pending strp_recv */
++	release_sock(strp->sk);
++
+ 	cancel_delayed_work_sync(&strp->msg_timer_work);
+ 	cancel_work_sync(&strp->work);
+ 
 -- 
-Seongjun Hong
+2.55.0
 
