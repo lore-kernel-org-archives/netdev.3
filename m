@@ -1,155 +1,119 @@
-Received: from mail-lr2-f27.google.com (mail-lr2-f27.google.com [74.125.230.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620B736F90F
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F33E547073;
+	Mon,  5 Oct 2026 20:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791231278; cv=none; b=KSZJ1MJIpiU3M7D8Zzb3mmNDF9ra9Z1xTUkYlZ14mI/Abt4amSzmmsWYFeAeUdZzor9GlV3BlL+6+NZ7q7qQszbuIB0k+avx7M70rnl8f+ihzOyhSgHmSJ4Zq49Y1uvzXW7gvk3dSxnisCAclUtVlbNZ5zaLYtj3Oenfv1aKINM=
+	t=1791231378; cv=none; b=jEmJ+28ezySkiQKR8o0a2u1GALCdwMZbyQ75ef+s8S8dWTHJqmQd1Eak4jLN7Z86zU8X1clwEcvoLPQNEsv+A3XjsPG6RtIGXgokCDf9cQn3w8EXHRPka4X8z/H9J1DHFJCQTH0Pgmryzo0UH37XH/ZurwOMW/GVUSEA1f97xYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791231278; c=relaxed/simple;
-	bh=AKX0VGDDb7hHniNBSadlltPqnJTVaPw4u961bkdC47U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jk6XXlNqin1vka4Fco3gPdXP5VtMmo7K1qXeInqJdjQImgBB0UJvOTevdEghr2/tzgTbE5pgCDHb9S0kD0VqrD9f2IvxHyoB6LzUbHf7u6jlEPDmyxQhJX4Ihon3QmllBSy8dboUIBnQpMh4Drf3RMJUZqQwdBBC0zbPiGuStsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mvdBdtrI; arc=none smtp.client-ip=74.125.230.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791231378; c=relaxed/simple;
+	bh=/jtXsg7zg5YsVSpKktYmCl2HOLTmXcA3pq8mmylJWnQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rwERS18StRioy8jk7U+DhAVfVIf6hmzWdOYgsQ3ejHHCfdQRXC3nVUN7zH302vsfkFnRN9WX/Bd//rNGPX2sAzJf+tLXcSeqEYyLsdmMQauwjnyjK7Pd3qCsAHQ1B0TS4J6B/nJGDimSQ1pGP+Bcn9z6sbExLtFOqPDLpw3ymuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=asEDHv88; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mvdBdtrI"
-Received: by mail-lr2-f27.google.com with SMTP id 38308e7fff4ca-3a76a5a5d4cso17267551fa.0
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:14:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791231268; x=1791836068; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VttY61a3a/Ies1XvMZgIWwrQFAm/hAwJAXLrgBAs69g=;
-        b=mvdBdtrIb6zt7SInwQ3JgWLoMQOs+Hp6s1sl9Mv7NxZMItUqjgg9ZATpQrWNJPX7Bk
-         x7wr5pgztIouWbJ3jnfdeEQn5o7tM3N4J/LqdjNvLRYd851LFiWHnuQa57ZkTPtvDD1Z
-         veXmJuAtAo35m22Q2qVLDJ0jndJDAOkCyGDzW/kqjRwjN4SsNlgmVNRNtr04zK/nkX4r
-         Z6IEBvqTjXRVt2Vz50UR4TKNNiptVYKXjVNL1TvWWkeeCSLk9ltDTHeRLRTBdy3G9T9/
-         R99cE3jnXz5e9NVfWn6DAnSa84+6IdtymiDLgkhfnvZfXM8pxLeiRagsuh3H+tvzXrUI
-         uXVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791231268; x=1791836068;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VttY61a3a/Ies1XvMZgIWwrQFAm/hAwJAXLrgBAs69g=;
-        b=utaVngmOfvtDWRDeYnUN2fef7vI6FBtfjmK9Cfz7pD8wIJpMXlGS4NlFJMmFYlDGGa
-         7JseUxAIbFKJSrioaJyPHGif1vlRtVY6f5So0opn6NjDB23Z0X5ADJiScc2zoAljPhDr
-         Yzh6ydwW0TjwgGZ4bZ97MjVGJEdcsNvQnvS6rEQRGYdD5vpx6XFgBtWr5w6fJpaTZnXe
-         S6Xx9Vk2pHF/PRTLMehLz8W8mVh1o8fvKNEHBIGf+w3367veMpKF8obz6aLokV+hDt5x
-         k5iTtd1bkrusVYK2IEbYkBPKolsKYqWJQt3U0/v14GUcpyxPCLhG59zlal55J4G3Zt9/
-         Qahg==
-X-Gm-Message-State: AFq9FYLpbwR7ACbRosMzDSQU06YXiGnOvqqqGBzx3cp8UpnN8KW5D2LK
-	juLzLzv/4y3KtLjWd4ME760dFqwkPQmQvK7B7PpgYtqr8P4DIMTH/UowgYaTzljf
-X-Gm-Gg: AYBFou0P6U1EKA4+1ux4xLspY1XjaAMqxpiJbcyOWXSyDVtLkwk/lFntBeRetLyAYBb
-	prj3vREvoXyWrXsDYacwTuw3rg+wws+NEzLyHxXHxvrNcqfHdscJ4hp/Id5OjsgItVpSLYGVdLv
-	hMrOAqjcfvar8bCYGO0o5jgoO9lrtjXEHZB2wjnsGtG/zte5qW3vW4q9y9gfOMCGXNzxKyQkM5v
-	wcd7/j8YRGKqsD6l+T/vF2bx5aGNSIXYF/WmnfM/O8WgiMMk2uGlghH1sxLIn1+iSZRW+8IJehY
-	UPlt3jlv1VTKeOIK0n9phpuwHRe5cn274vDzZLiGAd+RUkCeH0By2CoJCo2AYaa9joCDvcTWAFE
-	ZM3rY2U8KwGu/iS3st8zL05Q751aQQsgTHC/bRS9kWiNxEv3M9ITjMEo6tWtUMbK+XfbR3XqXs1
-	8hgkUskI2Zo5l+2xg9lMX/lctIMNDYVucA2e5JRzYEo084jGA+f+38szt3NlVdMfyizqHYA4N0r
-	6WASH6FwyJOGqEUVoKoaVpCKg70mLVnXMaWgi+STw==
-X-Received: by 2002:a05:651c:19a8:b0:3a8:d34a:dc64 with SMTP id 38308e7fff4ca-3a8d34ade19mr31459901fa.1.1791231268379;
-        Mon, 05 Oct 2026 13:14:28 -0700 (PDT)
-Received: from dau-home-pc.. ([212.35.161.1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a87e303889sm43114681fa.20.2026.10.05.13.14.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 13:14:27 -0700 (PDT)
-From: Anton Danilov <littlesmilingcloud@gmail.com>
-To: netdev@vger.kernel.org
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 4/4] vxlan: report a circular route as SKB_DROP_REASON_RECURSION_LIMIT
-Date: Mon,  5 Oct 2026 23:14:17 +0300
-Message-ID: <20261005201417.906344-5-littlesmilingcloud@gmail.com>
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="asEDHv88"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=/3KL0C/nw0xYEK9+GdpscS3wjuMLqlg3B/VsPRrgino=; b=asEDHv88pciBOR1xFCUufLW6gt
+	kl8QeG1uJfbFDwZaT8pH49WRm6kM9NYNK/VLdxAnZh6d3pWot8WNiI05iHi/yWvX6CLfDYB1iZ+ne
+	yrn0TDzoUULw1Q+vdEPk6dddRPd7l/gKQBNxWBFDQU5c8XCynwp5ch8Z12v/NoKzzJ35QVB7KqRZ/
+	1vbBtLHcrnBty5SSmCmc8vunBDyMOgvU5DGYIUMdGtsLeX6ZQZtRNR/hxH3pDPvFyv/XFl5mOKj4Z
+	OvpNsJa/gZw7g5ROvXjNI5uqFBU52pfd7TRyizX5mavqGV1URY5+PBfn+rIx4O8RH8oPAvJTh9Vwy
+	E93KTpBw==;
+Received: from [151.115.150.205] (port=35328 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1xDp6c-0000000FI5a-2Kmn;
+	Mon, 05 Oct 2026 22:16:14 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	stable@vger.kernel.org
+Subject: [PATCH nf] netfilter: nft_set_rbtree: reject expired interval ends
+Date: Mon,  5 Oct 2026 20:04:05 +0000
+Message-ID: <20261005200404.3544062-2-Jeremy.Jean@oss.cyber.gouv.fr>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
-References: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-udp_tunnel_dst_lookup() and udp_tunnel6_dst_lookup() return -ELOOP
-when the route to the remote end goes out of the vxlan device itself,
-and vxlan_xmit_one() counts that in collisions, apart from the
--ENETUNREACH of a failed lookup. The drop reason does not tell them
-apart: both are reported as SKB_DROP_REASON_IP_OUTNOROUTES, which
-describes a failed route lookup.
+Consider two ranges in a netfilter verdict map:
+* keys 10-19 accept packets, and
+* keys 30-39 jump to chain 'victim'.
+Now, delete the end marker at 20. The lookup array now uses element 30
+as the first range's end, so an INTERVAL_END query for key 15 returns
+element 30, including its jump verdict and chain pointer. This can make
+KASAN reports a UAF after the GC releases reference chain for 30 that
+has expired:
 
-Such a route would send the encapsulated packet back into the device
-it leaves, which is the dead loop on a virtual device that
-SKB_DROP_REASON_RECURSION_LIMIT describes. Report the -ELOOP case with
-that reason, and add the tunnel case to the description of the reason
-as an example. ip_tunnel and ip6_tunnel make the same check,
-rt->dst.dev == dev in ip_tunnel_xmit() and ip_md_tunnel_xmit() and
-tdev == dev in ip6_tnl_xmit(), and can report it with the same reason.
+  BUG: KASAN: slab-use-after-free in nft_verdict_dump+0xdd/0x110
+  Read of size 8 at addr ff110000009dfb58 by task repro/50
+  ...
+  Call Trace:
+  ...
+   nft_verdict_dump+0xdd/0x110
+   nft_data_dump+0x4d/0x80
+   nf_tables_fill_setelem+0x30b/0x8a0
+   ? __asan_memcpy+0x3c/0x60
+   nf_tables_fill_setelem_info+0x1b0/0x200
+   nft_get_set_elem+0x3fd/0x4b0
+  ...
+  Freed by task 24:
+  ...
+   kfree+0x1a5/0x280
+   nf_tables_trans_destroy_work+0x2cb/0x520
 
+Reject expired endpoints in nft_rbtree_get() before returning them.
+
+Fixes: 2aa34191f06f ("netfilter: nft_set_rbtree: use binary search array in get command")
+Cc: stable@vger.kernel.org
 Assisted-by: LLM
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 ---
- drivers/net/vxlan/vxlan_core.c | 10 ++++++++--
- include/net/dropreason-core.h  |  6 +++++-
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 0d98e29e2d72..7c94a630d184 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2547,7 +2547,10 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
- 					   tos, use_cache ? dst_cache : NULL);
- 		if (IS_ERR(rt)) {
- 			err = PTR_ERR(rt);
--			reason = SKB_DROP_REASON_IP_OUTNOROUTES;
-+			if (err == -ELOOP)
-+				reason = SKB_DROP_REASON_RECURSION_LIMIT;
-+			else
-+				reason = SKB_DROP_REASON_IP_OUTNOROUTES;
- 			goto tx_error;
- 		}
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 9894832..1fd9cbe 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -187,6 +187,8 @@ nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 	if (flags & NFT_SET_ELEM_INTERVAL_END) {
+ 		if (!interval->to)
+ 			return NULL;
++		if (nft_set_elem_expired(interval->to))
++			return ERR_PTR(-ENOENT);
  
-@@ -2633,7 +2636,10 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
- 		if (IS_ERR(ndst)) {
- 			err = PTR_ERR(ndst);
- 			ndst = NULL;
--			reason = SKB_DROP_REASON_IP_OUTNOROUTES;
-+			if (err == -ELOOP)
-+				reason = SKB_DROP_REASON_RECURSION_LIMIT;
-+			else
-+				reason = SKB_DROP_REASON_IP_OUTNOROUTES;
- 			goto tx_error;
- 		}
- 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 40a27d8887af..664249924219 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -613,7 +613,11 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_PSP_INPUT,
- 	/** @SKB_DROP_REASON_PSP_OUTPUT: PSP output checks failed */
- 	SKB_DROP_REASON_PSP_OUTPUT,
--	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
-+	/**
-+	 * @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device, e.g. a
-+	 * tunnel whose route to its remote end goes out of the tunnel device
-+	 * itself.
-+	 */
- 	SKB_DROP_REASON_RECURSION_LIMIT,
- 	/**
- 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
+ 		rbe = container_of(interval->to, struct nft_rbtree_elem, ext);
+ 	} else {
 -- 
 2.47.3
 
