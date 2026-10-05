@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE9D283CAF;
-	Mon,  5 Oct 2026 01:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C88F86341;
+	Mon,  5 Oct 2026 01:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791162609; cv=none; b=EZjc6NWoIhI4+ZfUeQDDN2b3onHs8hqjKIY36GHCt1eL5UIiNukFnJDcT0HIkMlgKQSgNynuxZ2VvOGZUTrU5KS0zmMAWFYp+TKOX16pdz2XhmezbB6swZZT7zzD3c0EBiGebuftjFqjmQBNVYvzQyJ/kaFnkXaSIrhH/OR2Yf4=
+	t=1791162610; cv=none; b=nWww0gqSeX/pw6uEhTJAJfcwwh7pAyKcGv+c9IWh/IwHQ2ff/aY0RUEP4XF76aAQ/qzKYV6czgHAVR5gkNFv3I3sqOtc2Swome3bLE6Z0FjGIrchBPumace4/ywfD6QrCWmuM27L8eIs42ngXZ2UCCmkNUTcy+54rCFErc+Nkag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791162609; c=relaxed/simple;
-	bh=vI2ta7csZ/Et15XF+9adaR1S/Ug/o+LRlRkt3dNyym4=;
+	s=arc-20240116; t=1791162610; c=relaxed/simple;
+	bh=a9vRoSfDoLAc96gkUFMiowur8QjndyDDdSB2V06rnP0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KQNrg1aih+89dyo8bQtGn636GYRKI0mvz+E6uN/sjjd4QGVRwiUghMbl7CIcACG/sYrNTo+7PyJtWCbL8jYf4AOOgNpFiEud7hPU1bBfboVNoSPYVxdNTJFl6EvEdYozUDnou3AxwmmZgG6Ygt1yo7c7BMHBl9XTdKJErI1nunQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6tJUZCP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=S5VjLUdRXzAbWtVecHOns3zp92hL+KMDBgyXq2y325d78l/BwO2CgZ2XyWaSSfqnkGymgZkdBDGEGZdqqY1hkjvPCLJsX7RaWCuR2pIpmXUUqYEK4QNBRI8z4bomLO1WnPXv8dMvZ2Y2sqz3CBFN4iAJRRiZ9Bv4yyepdD59FOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTQPchdI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6tJUZCP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05081F00898;
-	Mon,  5 Oct 2026 01:10:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTQPchdI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1721F00893;
+	Mon,  5 Oct 2026 01:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791162603;
-	bh=rg7fga+zqCUFN+I0/3261w7hLADy16MvjxCMeAtluz8=;
+	s=k20260515; t=1791162605;
+	bh=gdJhy+e0MUiA+f8+eBKAoH176JeVs2mlZYY5fMDr8M8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Y6tJUZCPbGtT4HzqJA0ywP0o6UscDsItCRgrrqUQZkPvrd9Vtx/i5yAd0B3AChzsG
-	 BHUejxLItsRhWNrOKQJ/v3KwUYlSPyx7lXCs+NqKzDXts+WPKWkDDmS4kUL6RIWghJ
-	 pxs6G7SQGxaPEQag9OtVSCbj4ZDrDXd+IsIgG/g60r5fwmullNZLZInR4VTwOSQyk7
-	 ErEQcWo5kTq2X0KobgWYN22OUGjfUbSOsCyB7phf0qIlOQvXX5snCm0UhbtRsB1Yll
-	 Q0c3HJ5pB0KSp5fN7zZ9rWVUkRpliVXz/t+EXs4PUUDY+3DkwiJRSGuAs4+/JG/JZs
-	 0qs0+8L3YzByQ==
-Subject: Re: [PATCH net-next v11 08/13] dpll: sit9531x: add support to get and
- set priority on input pins
+	b=QTQPchdI7q4KewspF4Tl6U0GjuvTN5XoYsGN7DDtF0v7WchQ4lNp5hscFLVciX0Qc
+	 LhruxPRpdualbXSlLjNBcrOXiPdUHrEz5M5UKf06M5qzY/oiJsLBMLYgm5QWfof/4/
+	 Jnv0sLy39w2MkOmsq/Jo7jY1+bfl8ZJHTlz1sGZGqsiGqoUyaZs2T9K47PeIuQMefH
+	 Hngt1zwirgGpHUzxRUiFtNnxAu2aDVs+FxsW+65A8v4VvhC2SOz+56rwX9ggGO3uST
+	 m5s6H0EbMesteA+FH54LfpjGIiRl+el4C5ddeVNuzIfTrrIeBDBqDwnTjCblj7HmzL
+	 XTaZZPgGevUkw==
+Subject: Re: [PATCH net-next v11 10/13] dpll: sit9531x: implement output pin
+ state on a DPLL
 From: netdev-bot+sashiko@kernel.org
 To: arouhi@sitime.com
 Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
@@ -36,11 +36,11 @@ Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  cjubran@nvidia.com, Oleg.Zadorozhnyi@devoxsoftware.com,
  devicetree@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 01:10:02 +0000
-Message-ID: <179116260241.434549.7401028968217040174@kernel.org>
-In-Reply-To: <20260930233714.87679-9-arouhi@sitime.com>
-References: <20260930233714.87679-9-arouhi@sitime.com>
-X-sashiko-severity: Medium
+Date: Mon, 05 Oct 2026 01:10:04 +0000
+Message-ID: <179116260402.434549.6445320171946602725@kernel.org>
+In-Reply-To: <20260930233714.87679-11-arouhi@sitime.com>
+References: <20260930233714.87679-11-arouhi@sitime.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,221 +61,180 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] sit9531x_input_prio_set() (core.c:1175-1181) stores the
-  requested priority with `chan->cfg_prio[input_idx] = prio;…
-- [Medium] The first monitoring pass can silently absorb a real
-  operational-state or priority change on an input pin.
-- [Medium] sit9531x_prio_src_live() (core.c:614-622) checks only
-  `!sitdev->ref[index].los`.
-- [Low] The kernel-doc of sit9531x_dpll_input_pin_prio_set()
-  (dpll.c:542-546) says "The other pins keep their priorities, so only…
+- [High] Possible NULL pointer dereference during device teardown, in
+  sit9531x_dpll_output_pin_state_on_dpll_set()…
+- [Medium] sit9531x_dpll_output_pin_state_on_dpll_set() (dpll.c:822-831)
+  has no short-circuit when the requested state is already in place.
+- [Medium] A state change can go unannounced when the read-back fails.
 
 --
 
-dpll: sit9531x: add support to get and set priority on input pins
+dpll: sit9531x: implement output pin state on a DPLL
 
-This patch adds prio_get and prio_set callbacks for the sit9531x input
-pins. Each input keeps a priority per PLL, and the Page 1 priority table
-is rebuilt from those priorities. The poll now watches priority and
-operational state as well as state, and sends pin notifications after
-multiop_lock is dropped.
+This commit adds state_on_dpll_get/set callbacks for output pins. Muting
+forces the slot's Hi-Z override bits inside the PRG_CMD programming
+sequence, and un-muting releases the override. It also starts registering
+output pins that are routed to a given PLL.
 
 > diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
-> index f961b7af28fed..ebbf7f5a3394e 100644
+> index a576d918e68db..ac2d977d36f7d 100644
 > --- a/drivers/dpll/sit9531x/dpll.c
 > +++ b/drivers/dpll/sit9531x/dpll.c
+> @@ -751,10 +751,112 @@ sit9531x_dpll_output_pin_frequency_set(const struct dpll_pin *pin,
 
 [ ... ]
-
-> +/*
-> + * sit9531x_dpll_input_pin_prio_set - set input pin priority
-> + *
-> + * Records the priority and, for a pin in this PLL's table, rewrites the
-> + * Page 1 table in priority order (sit9531x_input_prio_set()).  The other
-> + * pins keep their priorities, so only the named pin changes and the core
-> + * notifies it.  A pin that is not in the table keeps the priority for when
-> + * it is connected.
-> + */
-
-[Severity: Low]
-Is the claim that "only the named pin changes" accurate when the reorder
-moves the active reference? The commit message says the same thing:
-
-  Setting one input's priority leaves every other input's
-  as it was, so only the named pin changes and the core's own notification
-  covers it.
-
-sit9531x_prio_table_commit() calls sit9531x_prio_activesel_pick(). When
-the new order puts another live source first, that function writes the
-other source into the selection nibble:
-
-	if (top != SIT9531X_PRIO_SRC_NONE &&
-	    top != sit9531x_prio_top_live(sitdev, old))
-		return top;
-
-When that happens, the previously active pin's operstate goes from ACTIVE
-to STANDBY, and the new top pin's goes the other way.
-
-chan->selected_ref is only refreshed by sit9531x_chan_state_fetch() in the
-poll. As a result, the notification that dpll_pin_prio_set() sends right
-away for the named pin carries the old operstate. The sibling pins, and
-the corrected operstate, are only notified by the next poll, up to
-SIT9531X_STATUS_POLL_MS later.
 
 > +static int
-> +sit9531x_dpll_input_pin_prio_set(const struct dpll_pin *pin, void *pin_priv,
-> +				 const struct dpll_device *dpll,
-> +				 void *dpll_priv, u32 prio,
-> +				 struct netlink_ext_ack *extack)
+> +sit9531x_dpll_output_pin_state_on_dpll_set(const struct dpll_pin *pin,
+> +					   void *pin_priv,
+> +					   const struct dpll_device *dpll,
+> +					   void *dpll_priv,
+> +					   enum dpll_pin_state state,
+> +					   struct netlink_ext_ack *extack)
 > +{
-
-[ ... ]
-
+> +	struct sit9531x_dpll_pin *dpin = pin_priv;
+> +	struct sit9531x_dpll *sitdpll = dpll_priv;
+> +	struct sit9531x_dev *sitdev = sitdpll->dev;
+> +	bool was_enabled, changed;
+> +	int rc;
+> +
 > +	mutex_lock(&sitdev->multiop_lock);
-> +	rc = sit9531x_input_prio_set(sitdev, sitdpll->id,
-> +				     sit9531x_input_hw_src(dpin->id),
-> +				     (u8)prio);
-> +	if (!rc)
-> +		dpin->prio = prio;
-> +	mutex_unlock(&sitdev->multiop_lock);
+> +
+> +	was_enabled = sitdev->out[dpin->id].enabled;
+> +
+> +	switch (state) {
+> +	case DPLL_PIN_STATE_CONNECTED:
+> +		rc = sit9531x_output_enable(sitdev, dpin->id);
+> +		break;
+> +	case DPLL_PIN_STATE_DISCONNECTED:
+> +		rc = sit9531x_output_disable(sitdev, dpin->id);
+> +		break;
 
 [Severity: Medium]
-If the table write fails, does the driver keep the rejected priority
-anyway? sit9531x_input_prio_set() commits the new value before calling
-the step that can fail:
+Should there be an early return when the request matches the current state?
 
-drivers/dpll/sit9531x/core.c:sit9531x_input_prio_set() {
-    ...
-	chan->cfg_prio[input_idx] = prio;
-	chan->cfg_known |= BIT(input_idx);
+dpll_pin_state_set() in drivers/dpll/dpll_netlink.c passes every request on
+without checking it:
 
-	if (!(chan->prio_mask & BIT(input_idx)))
-		return 0;
+	ret = ops->state_on_dpll_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+				     dpll, dpll_priv(dpll), state, extack);
 
-	return sit9531x_prio_table_apply(sitdev, pll_idx, chan->prio_mask);
-}
+That means a CONNECTED request on an output that is already driving still
+runs the whole sequence:
 
-Nothing restores cfg_prio if sit9531x_prio_table_commit() fails. It can
-fail on the HO_FORCE update, a slot write, the latch, or the holdover
-release.
+sit9531x_output_enable()
+    sit9531x_prg_enter()       <- unlocks the output loops, enters PRG_CMD
+    sit9531x_output_hiz_write() <- clears MASK on every Hi-Z pair
+    sit9531x_prg_commit()      <- UPDATE_NVM, LOOP_LOCK, msleep(100)
 
-On the failure path, sit9531x_prio_table_commit() reads the table back
-and refreshes seen_srcs from it:
+All of this runs with multiop_lock and the core's dpll_lock held.
 
-	} else if (!sit9531x_prio_table_read(sitdev, pll_idx, now)) {
-		sit9531x_prio_mask_build(sitdev, pll_idx, now);
-		memcpy(chan->seen_srcs, now, sizeof(chan->seen_srcs));
-		chan->seen_valid = true;
-	}
-
-This means the check in sit9531x_chan_state_fetch() never re-seeds from
-the hardware:
-
-	if (!chan->seen_valid ||
-	    memcmp(srcs, chan->seen_srcs, sizeof(chan->seen_srcs)))
-		sit9531x_prio_cfg_seed(sitdev, pll_idx, srcs);
-
-Meanwhile dpin->prio keeps the old value, and netlink gets an error. Can
-this lead to the following?
-
-  - prio_get reports a priority that the device rejected.
-  - The next poll sees cfg_prio != pin->prio and sends
-    dpll_pin_change_ntf() for a priority the device never took.
-  - The next rebuild for any other reason, for example a state change on
-    a sibling input of the same PLL, sorts by the stale cfg_prio in
-    sit9531x_prio_table_build() and writes the rejected order.
-    sit9531x_prio_activesel_pick() could then move the PLL to a different
-    reference long after the failed request.
-
-This code is unchanged at the end of the series.
-
-[Severity: Medium]
-With prio_set now available to userspace, can a reorder steer the PLL
-onto an input whose monitor has disqualified it? sit9531x_prio_src_live()
-only looks at LOS:
-
-drivers/dpll/sit9531x/core.c:sit9531x_prio_src_live() {
-    ...
-	return !sitdev->ref[index].los;
-}
-
-It ignores ref->qual_fail. sit9531x_input_mon_fetch() sets qual_fail on
-fine or coarse frequency drift, and
-sit9531x_dpll_selection_operstate_get() reports that same condition as
-DPLL_PIN_OPERSTATE_QUAL_FAILED.
-
-Suppose prio_set moves a qualification-failed input ahead of a healthy
-one. sit9531x_prio_table_commit() then does this:
-
-		sel = sit9531x_prio_activesel_pick(sitdev, chan->prio_srcs,
-						   srcs, sel);
-		val = sit9531x_prio_slot_set(val, slot + 1, sel);
-
-The drifting input counts as the top live source, so it is written into
-the active-selection nibble. The comment on activesel_pick says the PLL
-leaves the named source only when that source loses its signal. That
-seems to contradict the commit message, which says "it takes the first
-slot of its priority table whose signal is qualified".
-
-The helper comes from the previous patch in the series, but this patch
-exposes the reorder that triggers it. It is unchanged at the end of the
+Other paths in this driver skip no-op requests. If the registers already
+hold the value, sit9531x_output_phase_adjust_set() skips the rewrite. The
+INTSYNC source setter added later in the series skips same-state requests,
+with the comment "the core forwards a request for the state the pin is
+already in". This output setter is still the same at the end of the
 series.
 
-[ ... ]
+Could this setter check sitdev->out[dpin->id].enabled and state_stale, and
+return early when there is nothing to change?
 
-> @@ -625,39 +707,67 @@ void sit9531x_dpll_changes_check(struct sit9531x_dpll *sitdpll)
+Also, the commit message calls the mute a per-output control that "leaves
+the divider alone". It doesn't mention that every request runs the
+device-wide programming sequence above.
 
-[ ... ]
-
-> +		if (sit9531x_input_prio_get(sitdev, sitdpll->id,
-> +					    sit9531x_input_hw_src(id), &prio))
-> +			prio = pin->prio;
+> +	default:
+> +		rc = -EINVAL;
+> +		break;
+> +	}
 > +
-> +		changed = pin->seen &&
-> +			  (state != pin->pin_state ||
-> +			   operstate != pin->operstate || prio != pin->prio);
+> +	changed = sitdev->out[dpin->id].enabled != was_enabled;
 
 [Severity: Medium]
-Can the first poll pass silently absorb a real operstate or priority
-change? The probe ordering looks like this:
+Can a state change go unannounced when the read-back fails?
 
-sit9531x_dev_start()
-    sit9531x_dev_state_fetch()        <- fills ref[]/chan[] caches
-    register DPLLs and pins           <- create ntfs and GETs use the caches
-    kthread_queue_delayed_work(sitdev->kworker, &sitdev->work, 0);
+Say the Hi-Z writes and sit9531x_prg_commit() succeed, but
+sit9531x_output_forced_hiz() fails. Then sit9531x_output_disable() and
+sit9531x_output_enable() leave enabled as it was and return the read
+error:
 
-sit9531x_dev_periodic_work()
-    fetch state again
-    sit9531x_dpll_changes_check()     <- every pin still has seen == false
+	} else {
+		sitdev->out[index].state_stale = true;
+		if (!rc)
+			rc = state_rc;
+	}
 
-The pins come from kzalloc_obj() in sit9531x_dpll_pin_alloc(), so
-pin->seen is false on this first pass. Whatever differs, changed is false,
-and the new values become the baseline.
+Because changed is computed from enabled alone, it is false here and no
+notification goes out. The core doesn't notify on error either, from
+dpll_pin_state_set():
 
-An input might lose signal between the initial fetch and the first tick,
-or the table might be rewritten and re-seeded in that window. Userspace
-would then keep the snapshot from registration, with no notification
-until some other change happens.
+	if (ret)
+		return ret;
+	__dpll_pin_change_ntf(pin);
 
-This patch adds operstate and prio to the comparison, so those attributes
-now share the gap. The cache is already valid at registration, so could
-the baseline be taken there instead?
+sit9531x_dpll_changes_check() skips output pins. The refresh in
+sit9531x_dpll_output_pin_state_on_dpll_get() updates the cache but doesn't
+notify anyone.
 
+The comment below says a failed request that changed the output "still has
+to be announced, or subscribers keep the old state for good". When
+state_stale is set, the mute has most likely landed.
+
+Should state_stale count as a possible change here? Alternatively, the
+later refresh could announce the new state if it differs from the cached
+one.
+
+> +
+> +	mutex_unlock(&sitdev->multiop_lock);
+> +
+> +	if (rc) {
+> +		NL_SET_ERR_MSG(extack, "Failed to set output pin state");
+> +		/*
+> +		 * The core notifies only a request that succeeded, and the
+> +		 * poll does not watch outputs.  A failed request whose
+> +		 * read-back shows the output did change still has to be
+> +		 * announced, or subscribers keep the old state for good.
+> +		 * The core's lock is held here, as the helper requires.
+> +		 */
 > +		if (changed)
-> +			dev_dbg(sitdev->dev,
-> +				"%s: state %u->%u operstate %u->%u prio %u->%u\n",
-> +				pin->label, pin->pin_state, state,
-> +				pin->operstate, operstate, pin->prio, prio);
->  
-> -		/*
-> -		 * The first pass only takes the baseline: the pin was
-> -		 * registered with this state, so nothing has changed yet.
-> -		 */
-> -		changed = pin->seen && state != pin->pin_state;
->  		pin->pin_state = state;
-> +		pin->operstate = operstate;
-> +		pin->prio = prio;
->  		pin->seen = true;
+> +			__dpll_pin_change_ntf(dpin->dpll_pin);
+
+[Severity: High]
+Can dpin->dpll_pin be NULL here if the device is being torn down?
+
+sit9531x_dpll_pin_unregister() clears the field before dpll_lock is taken.
+Its comment says callbacks test this field to tell a pin on its way out
+from a live one:
+
+	pin->dpll_pin = NULL;
+
+	dpll_pin_unregister(sitdpll->dpll_dev, dpll_pin, ops, pin);
+
+dpll_pin_pre_doit() holds dpll_lock across this callback. Meanwhile,
+sit9531x_output_enable() and sit9531x_output_disable() spend more than
+100 ms in I2C transfers and the msleep(100) in sit9531x_prg_commit().
+During that window the remove path can clear dpin->dpll_pin and then
+block on dpll_lock.
+
+Suppose the request then fails with changed set, for example because the
+UPDATE_NVM write fails but the read-back shows the new Hi-Z bits. NULL is
+then passed to __dpll_pin_change_ntf(), which dereferences it straight
+away:
+
+	dpll_pin_notify(pin, pin->clock_id, DPLL_PIN_CHANGED);
+
+The oops would leave dpll_lock held. The blocked unregister and every
+later DPLL netlink request would then hang.
+
+Would it be safer to use the pin argument the core passes to this
+callback, which stays valid until dpll_pin_unregister() returns? Another
+option is to read dpin->dpll_pin once and skip the notification when it is
+NULL.
+
+> +	}
+> +
+> +	return rc;
+> +}
 
 [ ... ]
 
