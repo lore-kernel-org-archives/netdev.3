@@ -1,165 +1,173 @@
-Received: from mail-ej2-f7.google.com (mail-ej2-f7.google.com [74.125.228.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A70B3E2AB6
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 21:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.135
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234925; cv=pass; b=W1MLwCpiu0bDyyS1Dj3SD2Xfga60RspiffYPvBPiF7QAhvpUIqRhdfZ7o+eFU+KtvapDP6shws/9QdYAuu/nAwi1Ub8UCuRv05rKkxockTWI6ZNpKqo5F/u5Lhf4Ks/0cTKnOVSYyaGorT/fs12jDD8tXUUczfpEfpvjz+8zJzA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234925; c=relaxed/simple;
-	bh=hqIWRi6Tpux/2qAc3lWZzGdHe7GnVUNYF9Jq8zwuyMI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N+kfpsHiSt/KGE1lq766jmFNfB4TdGu2ptJyqbURl5euBARilTgL6ons16ZqIPMAJkuj8ANrxzuQ4J+7KQ0UVvvO8he4UtR9v1UrhVqSfV+JgWyOtjFyXjIKiSR6++KxJbP2yn1UUtqbftfKi4+3lidEu464pZ2rpAV+Ra70Kq8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAFIFXK6; arc=pass smtp.client-ip=74.125.228.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1453E6399;
+	Mon,  5 Oct 2026 21:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791234987; cv=none; b=a2MhH3qPKZt9hrrC2YqF+4Da50ykzsCmPjRbrfrSGuNjFONhMBHM7P+mzlxGZ0s6uSYSxI4/PySEh0eA3U6tjiPDWH7uVq8DyxIheRtLnD8FluDh1QwglQpNxIj/PXi6LPRtMYjxGh63mWSoEi7QOcon3lLrhgIdl+bxuuviiJI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791234987; c=relaxed/simple;
+	bh=LKqxqP3RUQBG9og/AmS/0Q44GkC2P4kE850DriM2Mg4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ra+LKwrmeWOasBVMTiJ9YGjNTOFa2kAuHpwJTS8NsJa4/ln1bY/itC+YJIHiz0qKcfky3+CMnk45ca7FojVzO1TuiN10WIr4ltHW+xOOEDLf5LdItv2Lf16/8Oge7foiSTplPgmZjqWTrYhZFigEvJB9tMKndCXh40B7OlElpHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Krbm7OE4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAFIFXK6"
-Received: by mail-ej2-f7.google.com with SMTP id a640c23a62f3a-c2e15e7ab2bso135501366b.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 14:15:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791234918; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YCfWRDLCf7y6CqYfoV8ZIkrqN7Bp2QoxVZgqkxzRLtIApIVz4dYEhHurHSkdAQSI4R
-         xQmKqpYLkv6V8tC0ym3CadiTF4tt+cUtR2UV1xwCz0D+jl7xlcLcMZVNOaMwiqMoeI71
-         h61YcDj5MPy5YyCDyBiwk0WpBmQVBU7Et0e+9dItSqXHez3bt7QS0UVcUmlXTEqoxqmk
-         7pW+4qWAMBlg5cs5ncpJNgHhEjC81CAekb5d8KjF4NTtQeGL9quBKnnNYQoftlFEw95G
-         uymJvt0viScAozTnH9gwIjuzjymZlhJrzIXnw336tsBpADWOXbknUovlnQYZRM71rQm8
-         4YIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v463Ztb7l8HkbYlND0+jy6OLKJauaplyxKRrplRmY1k=;
-        fh=w6fBRQVDnKY+Pgxo+/Q+IQDw/S9XwOrL4CdnOj1rT5E=;
-        b=aV+/iFpKHxGGA4w2rslO0ZmaRtJ1NpzIqF4Kwr8dFQyFjZSzBo8HSWKWzUN7YnxZky
-         WAxLqlammrZTRyulq8i/6mi72cqJHtSkXkXKDJSS0ukuSSAVEflk1naDyHdUnIrbOqBK
-         fQIcZpl3hl3hh8d1+LySXexGxeJBdiARSIf2Hya2dIq5xakS2yjANh+XVhj2kx8YgNsA
-         DcNY4TfNJ9j8nPDIYuYuEXvkZwzWO6Uts20Yf0E35hMgpZTYTR675Jzt1iv2JneTL1el
-         hVWu/k2PnKPiPf/CfygqlS0Mj+hOuczKCoq/4rQX/X9x/CqhmS+4baCuyIpMaoUXATyg
-         969g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791234918; x=1791839718; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v463Ztb7l8HkbYlND0+jy6OLKJauaplyxKRrplRmY1k=;
-        b=SAFIFXK6PwsIHAJFlSgsJvpLZAAAaxXXJKBVyGiqvqZBQ1qV/qA02uCQqWCcTBeSEX
-         t+DfKN2/e9Ktb60blPSTUhRP3DMqSr26MBhAffDKXCO1cBKLE9KqjtP3KsFv0pTyIHxA
-         flHZpo7j+AX4rpp765KRTePnoaK0oWKQq+4Z+/4tcvXmUoFWPHOVeyIeOgpmiD4KnKaT
-         BDj+376D567sTBCKAKvaeBqRwnuJFfD4M+QUH+ehf/lLQ6N6RbiWhGuZWAh0IPXjUlw3
-         pTnp4lofAIsfNCiGgwHnH65kdXQbWx+FYypBg2Nl4EWOhIl9WB5K4to+AWXCWn/RXY+X
-         Ac/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791234918; x=1791839718;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v463Ztb7l8HkbYlND0+jy6OLKJauaplyxKRrplRmY1k=;
-        b=ESbAEZAotuhDIOddwBKnxBsCAX3iouFOe6yi+LYN78RT2LyeKJ/5Qs7iVSwsG8kZ1o
-         PhiLcr356JX6Zjoquv3/YfZ/JqrUsK6dd+M+zgSBr5IISZ4vG3sL+FFAlb9/9//wyAQ/
-         MrRKDmr8IBK7ppTsHzIS2RoQzZBgQiw/z2S6TsZzOlPXVC2qRjuRuGXEpptygb0OENwy
-         vI10pz5JxeA14siMN2iSkYZ/kMNjipY9VxE89IaY3OI13xf7WOOELxzxszJdNPbwlgn4
-         WaAqDO47oQbijjhfpAvGtzWjn5GjO27DKkN5V3KTLx5kphJTcbVC5P/WJU4gqtZyMc0F
-         Rvlg==
-X-Forwarded-Encrypted: i=1; AKwUvBzz4hfJ/xPY7inpvT9TK0C5aUl6uMoPYfCAnKtzNTSfgcg0wIxghITguMaos3qmvCuyJoHccsI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIU0sKENCQXbVP6A/bx34LELht0x3kxCWOZZqwXFQonYbmzYIqr
-	OpzTSJa5squQfqTA0YX+afsbqQUxPyeO3FdwleMkn4u4z1t9ocgLHCEve5X1Zp1/70tz0PUr+FR
-	ZIYoJQ3oD8RtmjBDWIKF4FZ9xNagnY6c=
-X-Gm-Gg: AYBFou0nQsyJVUMM2JSSl64scyZFkJK1cyeLAGw+wckdQ7NCHYfgncZYK9gpa5AFPE1
-	pj7iqAyFtNVkUJtg8AEi/UXtOnGZSbpk0XZf2Kcuo6GngIoCy2OZBzbWi07Ds1hZnekzm3vF8K5
-	1LtfuZcGVwSVkShZmCpOLEiJzTGfw+/Bk9PV6xwIh5r1UhhblNeT4wUQS9rkp+yQTtSaStcAIXh
-	E/g+CSOOh+zJj5P0EXrAOeThX5GRsQ55AHgffJGL8d7YXGfQk84CKqTQvnVXCYS80HyTeVmrP6I
-	JQzjoOzJNi4U8kV73eKB4DUh0waiJDF70eOx58RPPkBRt3qgMlQUCTxnBw==
-X-Received: by 2002:a17:907:7215:b0:c2d:bd95:874a with SMTP id
- a640c23a62f3a-c2e4ad79199mr1112515766b.17.1791234918176; Mon, 05 Oct 2026
- 14:15:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Krbm7OE4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392881F000FF;
+	Mon,  5 Oct 2026 21:16:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791234983;
+	bh=EXR1qKKMk+np4wJq294kSw3N5QRAYuFcYUXT3Ki3oak=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Krbm7OE4xVhk2I8+KrkCybYmL9lUrXCJO9IAZ4nat/qtPdo+klILx1UPcVddyBijy
+	 SKFCiu3L4g2uifTc/mfXNoYlvtVDq4GGZmoBgvWLayinX0PKTdL8lJcmvP2KA4OQUc
+	 DwxFNXt1Y96wwLuGwwut2Te7B093STE7xBnV69lYVIBbgxwqZEYvSXXrSK9tO+HQ+s
+	 2ZY7NBIezH2+TsrVJL/JEKlkzpwoiPqHIkJeEjq7RI9w2mj2DU4FltXHSGxy1IBrVs
+	 uUN/Y2SQJT2KrnubHSa/10aHk0LTz4rze8lSpQj1pnRQWME2S8wwUsrA/1D1l/JKjZ
+	 4VSfZIazXrkFg==
+Subject: Re: [PATCH net-next v2 4/5] net: dsa: motorcomm: Enable ACL on demand
+From: netdev-bot+sashiko@kernel.org
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux@armlinux.org.uk, linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 21:16:22 +0000
+Message-ID: <179123498276.434549.11929737907865657185@kernel.org>
+In-Reply-To: <20261001204851.2576101-5-mmyangfl@gmail.com>
+References: <20261001204851.2576101-5-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260922200336.2201212-1-coiaprant@gmail.com> <20260922200336.2201212-4-coiaprant@gmail.com>
- <20261005135939.01ccde50@kernel.org>
-In-Reply-To: <20261005135939.01ccde50@kernel.org>
-From: Coia Prant <coiaprant@gmail.com>
-Date: Tue, 6 Oct 2026 05:15:07 +0800
-X-Gm-Features: AclHuK-hmC2IHermBe0I62cu-4Uo5MfOk7srVIbtbJ9DQ0aB5gykKJWKnA3WMzU
-Message-ID: <CALj3r0h7j-4ZAiX67LmbgpmYCvK-Xmzd_qnYYgoBmniAW+eiWw@mail.gmail.com>
-Subject: Re: [PATCH net-next v10 03/11] phy: rockchip: naneng-combphy: add
- SGMII MAC selection for RK3568
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, Vinod Koul <vkoul@kernel.org>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Romain Gantois <romain.gantois@bootlin.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Russell King <linux@armlinux.org.uk>, 
-	Shawn Lin <shawn.lin@rock-chips.com>, David Heidelberg <david@ixit.cz>, netdev@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=886=E6=97=
-=A5=E5=91=A8=E4=BA=8C 04:59=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Wed, 23 Sep 2026 04:03:27 +0800 Coia Prant wrote:
-> > On RK3568, the SGMII interface can be routed to either GMAC0 or
-> > GMAC1 via the GRF register pipe_sgmii_mac_sel.
-> >
-> > Add support for this selection by introducing
-> > the "rockchip,sgmii-mac-sel" DT property.
-> >
-> > From the RK3568 TRM (Part1, Page 229), the PIPE_GRF_XPCS_CON0
-> > bit 1 (pipe_sgmii_mac_sel) is defined as:
-> >
-> >     0: SGMII routed to GMAC0
-> >     1: SGMII routed to GMAC1
-> >
-> > The hardware reset value is 1 (GMAC1). If the property is set to 0,
-> > the driver routes SGMII to GMAC0; if set to 1 (or omitted), it
-> > remains at GMAC1.
-> >
-> > This is necessary for boards such as the Ariaboard Photonicat, which
-> > uses the SGMII interface connected to GMAC0.
-> >
-> > Out-of-range values are rejected by dtschema, so the driver does not
-> > duplicate the range check.
->
-> While looking thru the patches again I noticed this is changing generic
-> PHY. Maybe you can send it separately to Vinod? I don't see a hard
-> dependency? The code can "converge" during the merge window for the
-> whole thing to work.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Hi Jakub,
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Thanks for the suggestion. I looked at this again, and I think the
-dependency is a bit more involved than it might seem.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The PHY patch (03/11) adds the driver support for
-"rockchip,sgmii-mac-sel", which is documented by the PHY binding (02/11).
-The DTS patch (10/11) then uses this property. If I send 03/11 separately
-to Vinod and keep 10/11 in net-next, dtbs_check will flag the DTS property
-as undocumented until the PHY binding lands in mainline. That would break
-DTS validation for the net-next series.
+- [Medium] Memory leak on an error path in yt921x_acl_add()
+  (drivers/net/dsa/motorcomm/tc.c).
+- [Low] The hardware ACL port-enable register can disagree with the
+  software acl_cnt bookkeeping after errors.
 
-Also, splitting into separate series means each has to queue and get
-reviewed independently, which I'm worried might not all make the merge
-window in time.
+--
 
-So unless you strongly prefer splitting, I'd rather keep the whole series
-together in net-next. If that works, would it be possible to coordinate an
-Ack from Vinod for the PHY part? Or if you still think it should go
-separately, I can do that too, but I wanted to flag the dependency and
-timing first.
+net: dsa: motorcomm: Enable ACL on demand
 
-Thanks,
-Coia
+This patch stops yt921x_chip_setup_acl() from enabling ACL on all ports.
+It adds a per-port acl_cnt counter instead. yt921x_acl_add() sets a
+port's YT921X_ACL_PORT bit when the port gets its first rule, and
+yt921x_acl_del() refreshes the register once the last rule for that
+port is removed.
+
+> diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
+> index 0e5f19a39d0cc..95ed0f245b1fa 100644
+> --- a/drivers/net/dsa/motorcomm/tc.c
+> +++ b/drivers/net/dsa/motorcomm/tc.c
+
+[ ... ]
+
+> @@ -1312,6 +1347,19 @@ yt921x_acl_add(struct yt921x_priv *priv,
+>  	else
+>  		aclrule->action[0] &= ~YT921X_ACL_ACTa_METER_EN;
+>  
+> +	/* Activate ACL if needed */
+> +	ctrl = 0;
+> +	m = FIELD_GET(YT921X_ACL_KEYb_SPORTS_M, ruleext->r.entries[0].key[1]);
+> +	for_each_set_bit(o, &m, YT921X_PORT_NUM)
+> +		if (!priv->ports[o].acl_cnt)
+> +			ctrl |= YT921X_ACL_PORT_PORTn(o);
+> +	if (ctrl) {
+> +		ctrl |= yt921x_acl_activated_ports(priv);
+> +		res = yt921x_reg_write(priv, YT921X_ACL_PORT, ctrl);
+> +		if (res)
+> +			return res;
+
+[Severity: Medium]
+Does this early return leak aclrule?
+
+At this point aclrule has already been allocated by kvmemdup(), but it
+hasn't been stored in aclblk->rules[binid] yet:
+
+	aclrule = kvmemdup(&ruleext->r,
+			   offsetof(struct yt921x_acl_rule, entries[entscnt]),
+			   GFP_KERNEL);
+
+The teardown in chip.c only frees rules it can reach through
+priv->acl_blks[]->rules[], so nothing would ever free this one.
+
+The return also skips the err: label:
+
+err:
+	if (!priv->acl_masks[blkid]) {
+		kvfree(aclblk);
+		priv->acl_blks[blkid] = NULL;
+	}
+
+If aclblk was freshly allocated for this rule, it stays in
+priv->acl_blks[blkid] even though the block is empty. That isn't a
+permanent leak, since a later add can reuse it and remove frees it.
+
+This happens when a source port has acl_cnt == 0 and the YT921X_ACL_PORT
+write fails. Should this path do kvfree(aclrule) and then goto err,
+like the yt921x_acl_commit() failure path does?
+
+> +	}
+> +
+>  	/* Write rules */
+>  	aclblk->rules[binid] = aclrule;
+>  	res = yt921x_acl_commit(priv, entid, aclrule->mask);
+
+[Severity: Low]
+Can YT921X_ACL_PORT end up out of sync with acl_cnt here?
+
+The port bits are set in hardware before yt921x_acl_commit() runs. If
+any register write inside yt921x_acl_commit() fails, the existing error
+branch only rolls back software state:
+
+	if (res) {
+		aclblk->rules[binid] = NULL;
+		kvfree(aclrule);
+		goto err;
+	}
+
+acl_cnt++ only runs after a successful commit. So the port stays
+ACL-enabled in hardware while acl_cnt for it is still 0.
+
+yt921x_acl_del() has the same problem in reverse. acl_cnt is decremented
+to 0 first, and then the register is refreshed:
+
+	if (refresh_en) {
+		ctrl = yt921x_acl_activated_ports(priv);
+		res = yt921x_reg_write(priv, YT921X_ACL_PORT, ctrl);
+		if (res)
+			ret = res;
+	}
+
+If that write fails, the bit stays set while software counts no rules
+on the port.
+
+In both cases the stale bit is only cleared when a later add or del
+rewrites the whole register. Unmatched traffic is still permitted
+because YT921X_ACL_PERMIT_UNMATCH is set for all ports, but the port
+keeps doing ACL lookups when ACL isn't "actually used" on it.
+
+Should the yt921x_acl_add() commit failure path write
+yt921x_acl_activated_ports(priv) back to YT921X_ACL_PORT?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001204851.2576101-1-mmyangfl%40gmail.com
