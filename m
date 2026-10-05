@@ -1,36 +1,36 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B6F36F90F;
-	Mon,  5 Oct 2026 22:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F89642EEC4;
+	Mon,  5 Oct 2026 22:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791239104; cv=none; b=Vy/SU2lBRFD6u0euIM/h1rJrIZZ9MWCmD6gtMRCIi7LutjYdLcXeZWpiwrK0x86Mt3A++OWs8XdNzwtuOded+Y4zRGYuqUGEEpXfXW8DDfF1/+2HUwfkTWjmNsq4JlkvJIu6nmhzMGPVNAalqvyV1y/rj2Nz/QEqFPCP1NpBJJQ=
+	t=1791239107; cv=none; b=kmL/tSxWrZ5pMBP32XTlxRuR0uvt9OBvPhrNf8WzwgtYnmC5O4mM9oOf/wch0SAkfs3F8yGY65srZudnYJORtIdIx9su9Z73dOZQyjVgPdlUI6bYGeXrpsCXkbl5EP2EXJrXKaLEyt0PNlEyttKveJ2UoTEbGDoFD/3blEReqs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791239104; c=relaxed/simple;
-	bh=6hz3kuguRa8clNqqJ7qL2suvrpD9DAQeias9Lpn++Mc=;
+	s=arc-20240116; t=1791239107; c=relaxed/simple;
+	bh=CAy2BMnQYmLM2QvSTAL3JiKwiXaZ69SiJGXAtuuoXzg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Psr31FurwbG5qZbbQwOZHyJQJsvC19evdzFxh7J5bslR557amVcxFNuy4gCxf/VWFjrRINtcpc4vC7FmMYNy2Bb4d/PqjZi81nLXhyD9pbeynWE2pMNim/ppniByX8w3F7gMP+IsP717Og1Ci/UMPSiq0rzAimA1oPqBmqsBlHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Kuss+5H3; arc=none smtp.client-ip=194.13.80.246
+	 In-Reply-To:To:Cc; b=k2KemFrgfavqzlj9ciWO5HjJmy1sYUMyvYPYls9G4MEXggET7wbPTy19opc5W6rP85VGOY+X+G9EWSTyLAenmBRIHMFJMDFsqMB29dJ3rflkvu6qaJmDNcX25h3D7vB9TTWP8LwdovmWRdh7JPviR0oRirEhMpboOxscNIszH28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=4RMpADBa; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Kuss+5H3"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A9FAA0E33;
-	Tue,  6 Oct 2026 00:24:58 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="4RMpADBa"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A4AEFA0EC1;
+	Tue,  6 Oct 2026 00:25:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791239099; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1791239102; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=y72vG2wnD8eFFqzbDZVSVjMG9HD9FVK1LFD4c3Yk0ec=;
-	b=Kuss+5H3qDz395GwXrmmej4V6pdDPDVt+9sIF2Gkjiwyxu8wg46J0lvwewmVKwoljKOsIN
-	xYgqdqLY431QLQYvWZbh0HIZcrgSaTujQYojaZ7eRGXcpdx2F2Rhu7pNgSEGYyfAsq0ZnV
-	weJA+QtbIbQ75TPzUTuctpj0frJpufBg/7WiyWuoAOoyAEaxI3Mv/PoH78CmueeJBfc1B4
-	gRxB0jzlyOtTINohzhzo7pRCT0wrVsPsEX6z1O4ZCN0Cxx/lJ4AaWE5Mr2ymBXVXFeohPX
-	dXrj4hTS8PuLR6TV2OZgBw2BpDnq/zDPTt0bQneWGgOPz6LD0zD2KCLr623MQA==
+	bh=05bPu1MwgKPeVbSky+Xn7yS48dG5gQuLG0JmiejcTFg=;
+	b=4RMpADBachOBE12WXjOTx9jqsRfEhzujEX8uLz3zJ19pyxZ0a4wsR2//e5+NC+F9NZA36F
+	MHQ9ONaHWg7BgFFsKvG4rVYszfvZox3HtOX4J4hU4X57zhBNk+R2J112WLh3AA4VSQvnXQ
+	hpGHlEs6fi3deBtZtYufD81UaQcSPG7Xte2IVwOePryxLxfLxIJYEYqXTdoQrTK5+TVqf7
+	5tGtHgzOLLXQYJalebmapp+FN3xlIdcz4IEaQcyH8CB5s4j5eQqCRBqHNpSHQTzTWkbuZ4
+	xfTJRZfJPbEWVyVkvTRRx08OXdR14NbJv8FDTmAkjtW6XyprwptTZV1LrJ9mLQ==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Tue, 06 Oct 2026 00:24:40 +0200
-Subject: [PATCH net-next v2 1/7] net: bcmgenet: let the caller decide
- whether to start the PHY
+Date: Tue, 06 Oct 2026 00:24:42 +0200
+Subject: [PATCH net-next v2 3/7] net: bcmgenet: rename ENET_MAX_MTU_SIZE to
+ ENET_MAX_FRAME_LEN
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-nb-genet-mtu-nn-v2-v2-1-c4be21151912@tipi-net.de>
+Message-Id: <20261006-nb-genet-mtu-nn-v2-v2-3-c4be21151912@tipi-net.de>
 References: <20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912@tipi-net.de>
 In-Reply-To: <20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>, 
@@ -56,60 +56,59 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-bcmgenet_netif_stop() already takes stop_phy, bcmgenet_netif_start() does
-not. The MTU change in a later patch leaves the PHY running while the
-datapath goes down and comes back, and phy_start() expects a stopped PHY.
-
-Add the same parameter to the start side.
+ENET_MAX_MTU_SIZE holds a frame length, not an MTU. Both users program it
+into hardware that expects a frame length. The name is wrong once the MTU
+is no longer fixed at ETH_DATA_LEN.
 
 No functional change.
 
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 4 ++--
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h | 7 +++----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 4c9db2f9fc25..a82579879f4b 100644
+index c781dfbe3f60..641d918577d4 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -3348,7 +3348,7 @@ static void bcmgenet_get_hw_addr(struct bcmgenet_priv *priv,
- 	put_unaligned_be16(addr_tmp, &addr[4]);
- }
+@@ -2639,7 +2639,7 @@ static void init_umac(struct bcmgenet_priv *priv)
+ 			     UMAC_MIB_CTRL);
+ 	bcmgenet_umac_writel(priv, 0, UMAC_MIB_CTRL);
  
--static void bcmgenet_netif_start(struct net_device *dev)
-+static void bcmgenet_netif_start(struct net_device *dev, bool start_phy)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
+-	bcmgenet_umac_writel(priv, ENET_MAX_MTU_SIZE, UMAC_MAX_FRAME_LEN);
++	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN, UMAC_MAX_FRAME_LEN);
  
-@@ -3365,7 +3365,8 @@ static void bcmgenet_netif_start(struct net_device *dev)
- 	/* Monitor link interrupts now */
- 	bcmgenet_link_intr_enable(priv);
+ 	/* init tx registers, enable TSB */
+ 	reg = bcmgenet_tbuf_ctrl_get(priv);
+@@ -2745,7 +2745,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
  
--	phy_start(dev->phydev);
-+	if (start_phy)
-+		phy_start(dev->phydev);
- }
+ 	/* Set flow period for ring != 0 */
+ 	if (index)
+-		flow_period_val = ENET_MAX_MTU_SIZE << 16;
++		flow_period_val = ENET_MAX_FRAME_LEN << 16;
  
- static int bcmgenet_open(struct net_device *dev)
-@@ -3428,7 +3429,7 @@ static int bcmgenet_open(struct net_device *dev)
+ 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_PROD_INDEX);
+ 	bcmgenet_tdma_ring_writel(priv, index, 0, TDMA_CONS_INDEX);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index 86f2aed20dbe..501dd1256693 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -28,12 +28,11 @@
+ /* which ring is descriptor based */
+ #define DESC_INDEX				16
  
- 	bcmgenet_phy_pause_set(dev, priv->rx_pause, priv->tx_pause);
- 
--	bcmgenet_netif_start(dev);
-+	bcmgenet_netif_start(dev, true);
- 
- 	netif_tx_start_all_queues(dev);
- 
-@@ -4312,7 +4313,7 @@ static int bcmgenet_resume(struct device *d)
- 	if (!device_may_wakeup(d))
- 		phy_resume(dev->phydev);
- 
--	bcmgenet_netif_start(dev);
-+	bcmgenet_netif_start(dev, true);
- 
- 	netif_device_attach(dev);
+-/* Body(1500) + EH_SIZE(14) + VLANTAG(4) + BRCMTAG(6) + FCS(4) = 1528.
+- * 1536 is multiple of 256 bytes
+- */
+ #define ENET_BRCM_TAG_LEN	6
+ #define ENET_PAD		8
+-#define ENET_MAX_MTU_SIZE	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
++
++/* Longest frame the MAC must accept for the default MTU */
++#define ENET_MAX_FRAME_LEN	(ETH_DATA_LEN + ETH_HLEN + VLAN_HLEN + \
+ 				 ENET_BRCM_TAG_LEN + ETH_FCS_LEN + ENET_PAD)
+ #define DMA_MAX_BURST_LENGTH    0x10
  
 
 -- 
