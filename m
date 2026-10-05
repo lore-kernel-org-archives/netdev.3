@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10B534DB56;
-	Mon,  5 Oct 2026 07:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6A754655;
+	Mon,  5 Oct 2026 07:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791185958; cv=none; b=E3jSs+3rnKfH48OOzhfomkr4TFETA8TP+QK+R2bcIZAe+/07g1CenLcdlGL61g01DYXciYDkLLziOca/sp9SW6icZWEamG9sP9rPlBdvcQ3eLxlo/V7AW67lNsoCra+ijj1xxWjTjbWH8zZE5K6frCtv2H7de0AqsSrOlrD0ctc=
+	t=1791186151; cv=none; b=jjeLtjiiPpLA8RbOTEY+6BzcWboNiNgs18IEdlD4IH8+liZgVKms0BvxkP2LNDy7kT/nfqa5TkgbokeV76KCkFaFKwDV2Pp7mEJ7OURJqGSR+BmWlwdn8e5a8uNYym3PoFxHqw3oAfYWaemRYpCsO2QvYdyGl9dEXqC+dJ6ahbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791185958; c=relaxed/simple;
-	bh=FBHakGryps74VWRpsW6RxcIjv8H+CCla+beRxFON5q4=;
+	s=arc-20240116; t=1791186151; c=relaxed/simple;
+	bh=PlnSP6duwTC6qtREeGDzh7rpURM3ZLG5oAJ0vuf8D/c=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ucwldsXgaP3uz5uGm7AjwgUqFQcfB4mT7WtS0PjVs72QCIW2I38i19aADKaUk/D8OHyzKQQc1zFHPniSUWbbYnlt/++K1D/IhWNkBn4JdtuWS1ihhxI2YsYs02qHUeiSEMnJpIb9wsiZQGkBrHV9NCbPbPLz57qPbYRGjewCwFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWVxXrB4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=rIdNptZdURg4chbLVyMBORbIMvzicN5STISEWI3K6f2boUsKSbunqU1M/MDvDtrAMA32y8LTsvEU6O+TP3e7Q2y8vye2bvmWAkKRCE2OC0U7xdfs0o6Bq1p8g+z2YljUBeITaFvNNB12ESbVACuMic2C/QS/ZJwgZZKe/Of4Pvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkbKhayI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWVxXrB4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8151F000FF;
-	Mon,  5 Oct 2026 07:39:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkbKhayI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92BE1F000FF;
+	Mon,  5 Oct 2026 07:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791185956;
-	bh=q4QkilO6Wz+2Ci6IB2te9amWlWhgHlAM/4zp+BDg/wk=;
+	s=k20260515; t=1791186149;
+	bh=IaTlnxZz7nBD56ElFhANPa4xnjc25EbECMZzAeuEaQs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gWVxXrB4vWKt2NL98LWTejrQIsuv3XFHuqspjad15iV90xAgJN0Ukr3XY6OF3jAMR
-	 DbPnEBTB2d0L0r096T09v1mWyhoBibHsO73bSYXEjiz4lAMiwWJ2Ho5tLnuPdNinA5
-	 BnNgxmjQ/4DAAQotURFkU9IgayQSgOewraipPFy8R6h+m/TV9Etdh4kn2ZzRtlGeds
-	 iMMQAA1wvYGLvGGau3k8qAndBAibSxvNte/4NqpRTas2DkEy/0CfW1At7l6Xdxn2XZ
-	 fdJ9qMrfDNQdXJvWTwN2l0Fh6V2nuOLpN0XiMK94cpmBjE54ff1eyjyoi0op3x4m/j
-	 m7TwOKLCWQgjQ==
-Subject: Re: [PATCH net] net: phylink: allow stopping a suspended instance
+	b=UkbKhayIl4rPmBD4E889Y7WUE3qrZOrtYXvGp5RPnqQuVrwlDRfxaG2h8egy/F66P
+	 eHdKEC72E21qi50lJxx1gvL9OqQs2AXzDOiKO8qKmYvJcwr1+iXoPaXdJWBieI59FR
+	 gu3Ct7PS1NTh7eyk+4XLjOKMJSqj4JY+wkwCoFoVsuOFBKm82DGrEyyfEo4MGCzAgP
+	 l0t3VITDnRuIXTmO1IPcI+YUQGLqlLqB+TZoyegI3QO5Zhcd9Za9FZaA/zVYd2Lfw5
+	 7uM3mBGMkDIg3prHfiIvWMGMwTIV9Um61I+yEaFZWHGl93CxHMPD4+J077zwmkwmMq
+	 EkPNCenlDRWAw==
+Subject: Re: [PATCH net] net/mlx5: Lag, only cache max_tx_speed that FW has
+ not accepted
 From: netdev-bot+sashiko@kernel.org
-To: james.hilliard1@gmail.com
-Cc: netdev@vger.kernel.org, linux@armlinux.org.uk, andrew@lunn.ch,
- hkallweit1@gmail.com, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, rmk+kernel@armlinux.org.uk,
- linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 07:39:15 +0000
-Message-ID: <179118595534.434549.13886697155302109114@kernel.org>
-In-Reply-To:
- <20261001-submit-phylink-suspended-stop-v1-v1-1-0669fdb4a93b@gmail.com>
-References:
- <20261001-submit-phylink-suspended-stop-v1-v1-1-0669fdb4a93b@gmail.com>
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, gal@nvidia.com,
+ leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ mbloch@nvidia.com, ohartoov@nvidia.com, saeedm@nvidia.com, shayd@nvidia.com
+Date: Mon, 05 Oct 2026 07:42:28 +0000
+Message-ID: <179118614831.434549.13938965801473464638@kernel.org>
+In-Reply-To: <20261004070246.215239-1-tariqt@nvidia.com>
+References: <20261004070246.215239-1-tariqt@nvidia.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,135 +59,166 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch does not handle the state where
-  PHYLINK_DISABLE_STOPPED and PHYLINK_DISABLE_MAC_WOL are both set.
+- [Medium] This patch breaks the query-failure fallback added by commit
+  ad0ae7aefa7a ("net/mlx5: E-Switch, preserve max tx speed on vport…
+- [Medium] The commit message does not match the code change.
 
 --
 
-net: phylink: allow stopping a suspended instance
+net/mlx5: Lag, only cache max_tx_speed that FW has not accepted
 
-This patch lets drivers call phylink_stop() on a suspended phylink
-instance after a failed MAC resume. For MAC WoL it finishes the deferred
-link-down and clears PHYLINK_DISABLE_MAC_WOL. It also keeps the saved
-link state when MAC WoL suspend is repeated, and tracks suspend-time PHY
-speed-down separately.
+This patch changes mlx5_lag_modify_device_vports_speed() so that
+vport->agg_max_tx_speed is written only when the vport is disabled or the
+FW push fails. When the push succeeds, the cache is cleared to 0. The
+enable-time replay in mlx5_esw_vport_set_max_tx_speed() also clears the
+cache on success.
 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index 1bbcf46c83566..08f06ae5213fa 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
+Link: https://lore.kernel.org/all/20260915015118.875210-1-kuba@kernel.org/
 
-[ ... ]
-
-> @@ -2509,11 +2518,30 @@ EXPORT_SYMBOL_GPL(phylink_start);
->   *
->   * This will synchronously bring down the link if the link is not already
->   * down (in other words, it will trigger a mac_link_down() method call.)
-> + * A suspended instance may be stopped without first calling phylink_resume().
-> + * In particular, closing a device after a failed resume must not restart the
-> + * link or reconfigure the MAC just to finish shutting it down.
-
-[ ... ]
-
->  void phylink_stop(struct phylink *pl)
->  {
->  	ASSERT_RTNL();
->  
-> +	/* Also undo PHY speed control when terminating a suspended instance. */
-> +	phylink_restore_suspend_speed(pl);
-> +
-> +	if (test_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state)) {
-> +		/* A failed MAC resume may have called phylink_prepare_resume()
-> +		 * and powered the stopped PHY back up to supply its RX clock.
-> +		 */
-> +		if (pl->phydev)
-> +			phy_suspend(pl->phydev);
-> +		return;
-> +	}
-> +
->  	if (pl->sfp_bus)
->  		sfp_upstream_stop(pl->sfp_bus);
->  	if (pl->phydev)
-> @@ -2526,6 +2554,16 @@ void phylink_stop(struct phylink *pl)
->  
->  	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
->  
-> +	if (test_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state)) {
-> +		/* Finish the link-down deferred by MAC WoL, without restarting. */
-> +		flush_work(&pl->resolve);
-> +		mutex_lock(&pl->state_mutex);
-> +		if (pl->suspend_link_up)
-> +			phylink_link_down(pl);
-> +		__clear_bit(PHYLINK_DISABLE_MAC_WOL, &pl->phylink_disable_state);
-> +		mutex_unlock(&pl->state_mutex);
-> +	}
-> +
+> mlx5_lag_modify_device_vports_speed() also wrote it for enabled vports,
+> unconditionally, before even attempting the FW push. If that push
+> failed, the cache still claimed speed had been applied, even though FW
+> might still hold the old value. That unconfirmed value could then leak
+> out: mlx5_esw_vport_enable() replays it if the vport is later disabled
+> and re-enabled with no LAG update in between.
 
 [Severity: Medium]
-What happens when PHYLINK_DISABLE_STOPPED and PHYLINK_DISABLE_MAC_WOL
-are both set?
+Does the change actually address the scenario described here?
 
-phylink_suspend() takes the MAC WoL branch without checking
-PHYLINK_DISABLE_STOPPED, so this sequence looks possible:
+After this patch, the failure branch in
+mlx5_lag_modify_device_vports_speed() still caches the speed:
 
-  phylink_suspend(pl, false)   /* non-WoL, phylink_stop() sets STOPPED */
-  <MAC resume fails before phylink_resume() is called>
-  phylink_suspend(pl, true)    /* MAC WoL, sets MAC_WOL */
+		if (ret) {
+			mlx5_core_dbg(mdev, ...);
+			vport->agg_max_tx_speed = speed;
 
-At that point suspend_link_up is false, because the carrier is already
-off.
+and mlx5_esw_vport_enable() still replays any nonzero value:
 
-If phylink_stop() is called next, the new STOPPED early return runs
-before the MAC_WOL block above. That block is the only place that clears
-PHYLINK_DISABLE_MAC_WOL, so the bit survives the stop. The next
-phylink_start() only clears STOPPED:
+	if (vport->agg_max_tx_speed)
+		mlx5_esw_vport_set_max_tx_speed(esw, vport);
 
-  phylink_start()
-    phylink_enable_and_run_resolve(pl, PHYLINK_DISABLE_STOPPED)
-      phylink_run_resolve()
-        if (!pl->phylink_disable_state)
-            queue_work(system_power_efficient_wq, &pl->resolve);
+So a failed push followed by a disable and re-enable, with no LAG update
+in between, behaves the same before and after the patch. The third
+paragraph of the message keeps this on purpose.
 
-Does this leave the resolver gated, so the link stays down until another
-stop/start cycle?
+> Clear it once FW has accepted the value, so a superseded speed is not
+> replayed over a newer one.
 
-If phylink_resume() is called instead, it takes the MAC_WOL branch. It
-calls phylink_mac_initial_config() and clears only MAC_WOL.
-phylink_start() never runs, so STOPPED stays set, phy_start() and
-sfp_upstream_start() are skipped, and the resolver stays gated. This
-patch doesn't change that part of phylink_resume(). Still, the patch is
-meant to make re-suspend and stop after a failed resume behave
-correctly.
+Which path could program a newer speed that a stale cache would then
+overwrite? Only two places write agg_max_tx_speed, and they are also the
+only callers of mlx5_modify_vport_max_tx_speed(). One is the LAG loop,
+which always overwrites the cache with the latest LAG speed. The other is
+the enable-time replay.
 
-fbnic looks like it can reach this. fbnic_stop() passes a firmware
-derived value as mac_wol:
+The only real change in behavior seems to be clearing the cache on
+success. The message doesn't mention two side effects of that:
 
-  phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
+- The query-failure fallback added by ad0ae7aefa7a ("net/mlx5: E-Switch,
+  preserve max tx speed on vport state modification") stops working (see
+  below).
+- Vports that were programmed successfully no longer get a replay on
+  re-enable.
 
-The BMC presence is re-read from firmware during resume, before
-__fbnic_open() runs. So the mode can change between a failed resume (for
-example, fbnic_mac_request_irq() failing) and the next suspend. Since
-fbnic only uses phylink_suspend() and phylink_resume(), the link could
-stay down across open/close cycles while fbnic_bmc_present() stays true.
+Because of the Fixes: c6df9a65cbb0 tag, this change would go to stable
+trees even though the bug described above can still happen. Could the
+commit message and the Fixes tag be revisited?
 
-For stmmac (stmmac_resume() failing in stmmac_hw_setup()) and ucc_geth,
-ethtool rejects WoL changes with -ENODEV while the device is detached. So
-the mode change seems harder to hit on those drivers.
-
-The new kernel-doc says "A suspended instance may be stopped without
-first calling phylink_resume()". The commit message says "For MAC WoL,
-finish the deferred link-down and clear the WoL disable bit".
-
-Should the STOPPED early return also handle a pending
-PHYLINK_DISABLE_MAC_WOL? Separately, should phylink_suspend() avoid
-setting MAC_WOL on an instance that is already stopped, or should
-phylink_resume() fall back to phylink_start() in that case?
-
->  	pl->pcs_state = PCS_STATE_DOWN;
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+> index fc197d1dc9dfe..f8c220bf7b5ca 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+> @@ -951,6 +951,8 @@ static void mlx5_esw_vport_set_max_tx_speed(struct mlx5_eswitch *esw,
+>  		mlx5_core_dbg(esw->dev,
+>  			      "Failed to set vport %d speed %d, err=%d\n",
+>  			      vport->vport, vport->agg_max_tx_speed, ret);
+> +	else
+> +		vport->agg_max_tx_speed = 0;
+>  }
 >  
->  	phylink_pcs_disable(pl->pcs);
+>  int mlx5_esw_vport_enable(struct mlx5_eswitch *esw, struct mlx5_vport *vport,
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> index 3b34bec559e08..7cee78cb47df9 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+> @@ -1502,17 +1502,21 @@ static void mlx5_lag_modify_device_vports_speed(struct mlx5_core_dev *mdev,
+>  		if (vport->vport == MLX5_VPORT_UPLINK)
+>  			continue;
+>  
+> -		vport->agg_max_tx_speed = speed;
+> -
+> -		if (!vport->enabled)
+> +		if (!vport->enabled) {
+> +			vport->agg_max_tx_speed = speed;
+>  			continue;
+> +		}
+>  
+>  		ret = mlx5_modify_vport_max_tx_speed(mdev, op_mod,
+>  						     vport->vport, true, speed);
+> -		if (ret)
+> +		if (ret) {
+>  			mlx5_core_dbg(mdev,
+>  				      "Failed to set vport %d speed %d, err=%d\n",
+>  				      vport->vport, speed, ret);
+> +			vport->agg_max_tx_speed = speed;
+> +		} else {
+> +			vport->agg_max_tx_speed = 0;
+> +		}
 
-[ ... ]
+[Severity: Medium]
+Can clearing the cache here break the query-failure fallback in
+mlx5_modify_vport_admin_state()?
+
+That function, and mlx5_esw_adj_vport_modify() in esw/adj_vport.c, use
+agg_max_tx_speed as the last known speed when QUERY_VPORT_STATE fails:
+
+drivers/net/ethernet/mellanox/mlx5/core/vport.c:mlx5_modify_vport_admin_state() {
+    ...
+		err = mlx5_query_vport_max_tx_speed(mdev, opmod, vport,
+						    other_vport, &speed, NULL);
+		if (err) {
+			...
+			speed = IS_ERR(esw_vport) ? 0 :
+				esw_vport->agg_max_tx_speed;
+			...
+		}
+		MLX5_SET(modify_vport_state_in, in, max_tx_speed, speed);
+    ...
+}
+
+With this patch, agg_max_tx_speed becomes 0 on every vport whose LAG speed
+was pushed successfully, either here or in the replay in
+mlx5_esw_vport_set_max_tx_speed().
+
+Suppose a later admin state change on that vport hits a query failure.
+Wouldn't the fallback then send max_tx_speed = 0, which ad0ae7aefa7a
+describes as an intentional reset in FW? That would wipe the LAG aggregate
+speed that was just programmed:
+
+mlx5_lag_modify_device_vports_speed()
+  mlx5_modify_vport_max_tx_speed()      /* succeeds */
+  vport->agg_max_tx_speed = 0
+...
+mlx5_modify_vport_admin_state()
+  mlx5_query_vport_max_tx_speed()       /* fails */
+  speed = esw_vport->agg_max_tx_speed   /* 0 */
+  MLX5_SET(modify_vport_state_in, in, max_tx_speed, speed)
+
+These are the admin state changes that can reach this path:
+
+- mlx5e_rep_open(), mlx5e_rep_close() and mlx5e_rep_change_carrier()
+- mlx5_eswitch_set_vport_state()
+- esw_vport_setup() and esw_vport_cleanup()
+
+Adjacent vport connect and disconnect through mlx5_esw_adj_vport_modify()
+are affected the same way. After that, nothing pushes the speed again
+until the next LAG speed event.
+
+Before this patch, the cache still held the programmed speed after a
+successful push, so the fallback rewrote the correct value.
+
+The patch now treats agg_max_tx_speed as a pending value, but both
+fallback readers still treat it as the last programmed speed. Can one
+field serve both meanings?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001-submit-phylink-suspended-stop-v1-v1-1-0669fdb4a93b%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004070246.215239-1-tariqt%40nvidia.com
