@@ -1,65 +1,65 @@
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+Received: from mail-pj2-f10.google.com (mail-pj2-f10.google.com [74.125.227.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352944CEE55
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 16:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70A74D0CFB
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 16:52:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791219082; cv=none; b=Lwvll6L4HmwOqJfTY1yOay1PV8ekyUx4igxpErx0glFWvvjyMUDP7/4Oc6YXYkBMuOq415BvZkQ+ouUPA6Flnul3ScuidfRAsV22eDUXG5Z5pCKnTaggTjNCFgwHHQpNag6UFmLbFl6aIyepPqNJ0wY4oWIF4r/7Gpw87KCEg6g=
+	t=1791219133; cv=none; b=uyCZwW6sFoP4dcMcqLLW8Qy0QBZzZh+pt+oQOLpTw7WAo6La48Za84u/sqaL49gBBk68icvBCvz0NMNDojKVWEZeHTOY+t6EatKOc/6R+toUD2Nruh54g7Wy/Gz1U0XwXLQ5HiN2JflBmKtaB/HoSusQvhHmir+itwESlwGWG/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791219082; c=relaxed/simple;
-	bh=ZtOtfI8xTZljtzEITNuddg7KMK3dN7NLgg7QIotbHg0=;
+	s=arc-20240116; t=1791219133; c=relaxed/simple;
+	bh=/tRm15v2eDHO+loamV84hQyUIYclpqiL/2I9jixRE6k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oQvUvsoQTcvJSJa41N7ECWbyw8DYjKvsRiV7vFVBBqmtpW+B2HdTZYdkO3nmp12mW6Ufz4viSeNqTGZj0Ku2iClD8HYEEIY2yRjTNqozB04tiCmo15C4HWkeccsfE7qV40As7nefK5vn8ZwtJcVDimEFgAcJDqLbiuU9hsiZto4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jYBEAguj; arc=none smtp.client-ip=74.125.227.132
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uc9k0ruzyH2C5/CHG1SZGEZ1qCCNDc3xAcm+A/6Z5V1TzO2/XJHVKROT7As/Dul3cbT5aIOhQAaSnoUN+iXtCPEvDyrfVbJJLPvxo+phfcBqnGdcTva7kUfbsVi+7ueKxCWh7TLfTOfrRJBhEPRoveUEVhCdrch9dYK6VYN5EkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pbbmpGgO; arc=none smtp.client-ip=74.125.227.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jYBEAguj"
-Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3a854dffb5dso6924a91.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 09:51:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pbbmpGgO"
+Received: by mail-pj2-f10.google.com with SMTP id d9443c01a7336-2dd9bce707bso8490115ad.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 09:52:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791219080; x=1791823880; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791219131; x=1791823931; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b4mkDJheIxHRdMD7TqVn4ykGrzx67Q/w28iQIL9i/AE=;
-        b=jYBEAguj/HXC2O9ml4GkNN/+9pMpbTf40fb8JKLkjR7FD8OKSyr70p61oJulOnjdra
-         kQaMEQjqyv7sgrI2g2fg6PPmcYTR8lSmBlH090Iui9CcaC+IW37lvow5Ppb4NrXhAkO2
-         IUUbQTvR8oSRFHXnBVOn4p7dae5R/an/Hk/XbBVSAfbNwhQWqhTg9eyVfwJuFg/U1L7j
-         TW4UrRlz0bYBlxFVVvbKXXheqRt+HGKxQJJjuqIluT7hvwbwkHHQEyKPKJCKrRlbR9jh
-         fqoadKhkTSprHmHkHPhqDaUgY3EKNIo4K78uf9PO/TOVsW6IOOw9qLPh+UHkye4inhDv
-         KQvw==
+        bh=0Ml/WHArCmzzGX3zR0T2czoQ4pKZKMdyG5OJbl9EXA8=;
+        b=pbbmpGgO5iRj7JGDznK88nBraAxrqQ5X6sHI5PiSenjpQy8uK4emegnE+ROD1z7APm
+         zJZ/406PYtFGWr6L3fMWI2/v8ZKrZcHjL3vpO0IyQmXZWy6oHlWXolXs+Zq4kvUrBAys
+         TBNV1oGAi4HRVWNJbLARt+d9Eu/Ft/ETjIeGee2HK4F7hmlOARFh5g+P1FtZ3gDyz6Lv
+         Coi3Kqgp2vt10/QzhSN4jMbCqEgr0dyNwW3xOsirh0STCyMtNkPo4qXJlmm5s7lpmAZ2
+         gsj7DlO/2GibNPe7Rdrbjd8VX/feM6mGIT2oPR6cB4swQ2egQkcNMWZa+aSoKvAUx/5s
+         2MMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791219080; x=1791823880;
+        d=1e100.net; s=20260707; t=1791219131; x=1791823931;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :content-type:mime-version:references:message-id:subject:cc:to:from
          :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=b4mkDJheIxHRdMD7TqVn4ykGrzx67Q/w28iQIL9i/AE=;
-        b=UHJwrxGS0noqT+5VGaLGeNyC/x78hQ7p7vgj/zQKCzO2O6RFpY1FZx9oHH+5VR1nc1
-         9RVP+B5/53aM7XSb8gllKHSnsSiZDOu6t4QYAgPeOJ+qKb4S1diANmqNMHTuKUAdLMwg
-         KokAkT0a+4jXqVS7rpkKjTaHs04sEZ/eNkMC1D52TAq7s47tIUhCxfhptYjxL0To+3UX
-         NRyTeW/hSzi4N1ca3m+gPensc2AmaFSxr7zHYo+ouUyoFR8hpP53/yaiM7z2v4CnWhaB
-         +I57FVYfjIBxmzH9X/2IHwiLZsvzkm3kQszIU58QjkiiNlLIcD08fAkqgfEwRrAeTf41
-         5rxQ==
-X-Forwarded-Encrypted: i=1; AKwUvByIS5p6ql8/dQ1smtcB9xSVo+erRbAqNJzXFhBkbm5VuK8562ahe96CxDpp1DawiHgg65UyDwg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLkuAmVC9YxyLG8AFEubees+V0UDraDTGUfF6haTgjcOwDSdCf6
-	DAB/UefZTDCcmxqLWEwKJh/HnAN4s00D7aEGtq100GWtGrHklJM6SFya
-X-Gm-Gg: AYBFou0NcX7ADs56RD2G4atSoR5ETU/bsjgxYJp8EBBakmvjtbSqnrvJpppJlnDTD5L
-	wuHalxjd7LtamS8QvOLxKPKAV+FNgGI0mVM4h8UJeZJ3KSU13Fz6Ds/Q4PMC1MsOJnFhBlBNaji
-	XJPaBFmj3t507zlyd2MAR50K+s+Ois9bZ6eJe9tXI8izaSrnVquctxEZroP4Z79RuHLsLXyCM9S
-	fSAlWfq7IIz6N/vKSK4vWd4aUWwoVRhf+vmfk/nRH53tSsjPvS0p8uU77x5ziGAToNdAxFMSeaC
-	XeO8cTzVpmVH7Kes/7IDX92BbBEWjVC8e6A4pMKrScK4AscTgX7uuz5nIIpRls7ZD2dpAJ1wbTW
-	+OBli9+/V0W2fTsQGG12lzKzfabeVwGETnBYD93Sw1f68Ox3SU56SQ8ipEJwn1mgd2wqwf0zvUx
-	52VXlnSkT9X+KPPdRz0l6lBcXD/Z0DIhxYtcbjfiw2bYn92T+3V5mGyUJdaJGFLOk=
-X-Received: by 2002:a17:90b:2ec3:b0:3a6:fec5:c184 with SMTP id 98e67ed59e1d1-3a6fec5d190mr6627900a91.7.1791219080418;
-        Mon, 05 Oct 2026 09:51:20 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:1::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a851525bffsm261628a91.0.2026.10.05.09.51.19
+        bh=0Ml/WHArCmzzGX3zR0T2czoQ4pKZKMdyG5OJbl9EXA8=;
+        b=OPQI+BzKf8yuxxNnsZ82pvzzDXdwuDSXdRh/9/ilKqG+egK4seOHk6lrEOCMaKUxLS
+         UmsK4i0Fqls4JAOpkR5S+GlIBqp/tS5IQhfEC9bghau0B29DFIKTL/xbGkduJh+ovJLR
+         rJ1NIfYY+KLG5Ryv6np+lpAXVGbjtCmSCf4rRUiBRuwKI9jRjHOJSOHKwwGu+3muhlYU
+         SyrgZL8TXKjkX8GquQPo7ugw6Z3cPuRbruh77Sf6vGXsK61em3kJTAtMdY2DSomFyFUn
+         XLvmgWIDjvYkLx5VTKHgy08pjwCMZWtIS10jXl9etTIODb4HpE9OT8qTIvNGombsv25S
+         btow==
+X-Forwarded-Encrypted: i=1; AKwUvBwz4bixD45hP3jET07BIEWEd9dd1qPI67gcPSQIi/pTlVysuy2RKbkjffesFvnJqQABhZCGm9c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIV9STlCuw3u0XSgqexZxi0RalAGhU651oj6w2UfmdenaCx3yjO
+	mQTjztDsby65Z5IEwy0tg+o5oXnUrMp57UDy8T4PoYFICbPMdhIFh4LZ
+X-Gm-Gg: AYBFou3gaN9Wdg8NkyCO6bEnx+9R4T6NvQF8fZ+ITt8iq7izMVpoyloq0fcN4T+bkSo
+	bBJgexQxwciPPkFrLZ6je0sIvj7clzIoaxBLd7YmnY0EGyzle15QtK4VSNEW2ZHoDi2qT/zjJUH
+	yR9fGH3jWhpiNwwVntZDMcY84pm9VDYSzuQUt3/259iWEdYTjvF0HmgHD1nbh4DfW2lpj6t98/R
+	b6NKvGaQ4Ty6XTG0K1AGfb4BN7K4O5X2xQtw7Iyha8+OTtkMubdbHeO4SSBEM0WRfwyYiIvGkq6
+	qAMz5hDmsag29tVoU3SjSalo9F3RhEnkCPVU0QBf4S+YL6aJkU9cQu7mEuW/zY0yJPzSm7VdG62
+	7ceV552GTGUanl5fFy5yNZ0b84uKKzlAEm+blT0LkXhNDSfwnjtWh4STfR/SLburASq9YwJDsSF
+	pdME+/cgq0XFVEeCN6k1Q0eyJJ/ItYsmeeaCZOTaUZp9F9RJE2Y5jzPJ2ybd/zkH4d
+X-Received: by 2002:a17:902:d2c4:b0:2df:a4d8:57ad with SMTP id d9443c01a7336-2e49b699f84mr98443455ad.72.1791219131179;
+        Mon, 05 Oct 2026 09:52:11 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4d::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e5a5f001d9sm10692365ad.79.2026.10.05.09.52.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 09:51:20 -0700 (PDT)
-Date: Mon, 5 Oct 2026 09:51:15 -0700
+        Mon, 05 Oct 2026 09:52:10 -0700 (PDT)
+Date: Mon, 5 Oct 2026 09:52:05 -0700
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
 Cc: Magnus Karlsson <magnus.karlsson@intel.com>, 
@@ -82,10 +82,11 @@ Cc: Magnus Karlsson <magnus.karlsson@intel.com>,
 	David Wei <dw@davidwei.uk>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Mina Almasry <almasrymina@google.com>
-Subject: Re: [RFC net-next 05/15] page_pool: Extend memory provider operations
-Message-ID: <asPUZ8DPllHd6Yu9@devvm7509.cco0.facebook.com>
+Subject: Re: [RFC net-next 04/15] net: Let memory providers set RX buffer
+ headroom
+Message-ID: <asPVkD_QwZtqVLs4@devvm7509.cco0.facebook.com>
 References: <20261002190018.696925-1-bjorn@kernel.org>
- <20261002190018.696925-6-bjorn@kernel.org>
+ <20261002190018.696925-5-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,103 +96,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261002190018.696925-6-bjorn@kernel.org>
+In-Reply-To: <20261002190018.696925-5-bjorn@kernel.org>
 
 On 10/02, Björn Töpel wrote:
-> The current memory providers give memory that the CPU cannot read,
-> and they can always refill. An AF_XDP provider is different. The CPU
-> can read its memory, it has only the buffers that userspace puts in
-> the FILL ring, and its buffers go back to userspace instead of being
-> freed. It needs four things from page_pool:
+> AF_XDP lets userspace choose a headroom in front of the packet data
+> in each UMEM chunk, and the kernel adds XDP_PACKET_HEADROOM to it. A
+> driver whose buffers come from an AF_XDP memory provider must put
+> packets after this headroom. The driver sees only the page pool, so
+> it has no generic way to learn the value, and nothing checks that
+> the driver supports it.
 > 
-> - A CPU address for each net_iov. A provider can set the address of
->   the first net_iov in its net_iov_area and the size each net_iov
->   covers. netmem_address() then computes the address without a call
->   into the provider; drivers call it for every packet. A
->   net_iov_area without an address stays unreadable.
->   page_pool_is_unreadable() is false for a readable provider.
-> 
-> - A way to say that the refill is not done. The new refill_done
->   callback tells the driver whether it may stop refilling. A
->   provider that still has buffers returns false, and the driver
->   keeps NAPI scheduled.
-> 
-> - A way to give up a buffer without freeing it. Add a batched call
->   that ends page_pool ownership of buffers that leave through the
->   provider, for example to userspace. It clears the page_pool link,
->   so a later page pool can take the buffer. Add the matching batched
->   call that sets the link, and a DMA sync helper for drivers that
->   post a buffer again directly.
-> 
-> - No buffer splitting, because a split buffer has several owners.
->   Add MP_CAP_FRAG. page_pool refuses fragment allocation from a
->   provider without it.
-> 
-> devmem and io_uring set MP_CAP_FRAG and keep their fragment
-> behaviour. Their refill paths now use the batched call that sets the
-> link.
+> Add rx_headroom to the provider parameters and to the queue
+> configuration. It is the full headroom, including
+> XDP_PACKET_HEADROOM; zero means the driver default. Add
+> QCFG_RX_HEADROOM. A provider that sets a headroom can only be
+> installed on a queue that supports it; otherwise the install fails
+> with -EOPNOTSUPP. The driver checks the value with the rest of the
+> queue configuration.
 > 
 > Signed-off-by: Björn Töpel <bjorn@kernel.org>
-> ---
->  include/net/netmem.h                    | 31 ++++++++++-
->  include/net/page_pool/helpers.h         | 62 +++++++++++++++++++++-
->  include/net/page_pool/memory_provider.h | 28 +++++-----
->  io_uring/zcrx.c                         |  4 +-
->  net/core/devmem.c                       |  7 ++-
->  net/core/page_pool.c                    | 68 ++++++++++++++++++++-----
->  6 files changed, 165 insertions(+), 35 deletions(-)
-> 
-> diff --git a/include/net/netmem.h b/include/net/netmem.h
-> index cc97611632dc..e6dff0b01581 100644
-> --- a/include/net/netmem.h
-> +++ b/include/net/netmem.h
-> @@ -105,6 +105,12 @@ struct net_iov_area {
->  
 
-[..]
-
->  	/* Offset into the dma-buf where this chunk starts.  */
->  	unsigned long base_virtual;
-
-Will send a patch to drop this one, don't think we use it anymore..
-
-[..]
-
-> +	/* CPU address of the first net_iov's memory, or NULL when the CPU
-> +	 * cannot read the area. Each net_iov covers 1 << @niov_shift bytes.
-> +	 */
-> +	void *vaddr;
-
-Who is setting this? Somewhere in another patch? Can we keep it here?
-
-> +	u8 niov_shift;
-
-If we need niov_shift at area level, let's move the one from binding here?
-Then the existing callers can do binding->area.niov_shift.
-
->  };
->  
->  static inline struct net_iov_area *net_iov_owner(const struct net_iov *niov)
-> @@ -117,6 +123,23 @@ static inline unsigned int net_iov_idx(const struct net_iov *niov)
->  	return niov - net_iov_owner(niov)->niovs;
->  }
->  
-> +static inline bool net_iov_is_readable(const struct net_iov *niov)
-> +{
-> +	return net_iov_owner(niov)->vaddr;
-> +}
-> +
-> +static inline void *net_iov_address(const struct net_iov *niov)
-> +{
-> +	const struct net_iov_area *area = net_iov_owner(niov);
-> +	unsigned long off;
-> +
-> +	if (!area->vaddr)
-> +		return NULL;
-> +
-> +	off = (unsigned long)net_iov_idx(niov) << area->niov_shift;
-> +	return area->vaddr + off;
-
-Or, alternatively, store dma_base in area and do:
-
-return niov->dma_addr - area.dma_base + vadd ?
+This is also a bit confusing to read on its own. Do we not need to
+convert existing users? The next patch does not seem to use this new rx_headroom?
