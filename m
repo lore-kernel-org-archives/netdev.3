@@ -1,64 +1,64 @@
 Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C721A4AB3C3
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 14:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4764AB3DC
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 14:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791211218; cv=none; b=SJOONyGXMDDeSGUTU5XBVxY3k0Bckdt5LDxjUSJGas3pEzrwerIuFLvJH68CT4/x/TllqB1ULQbHl5muLWvUQH+T3DqFh9zVRGJ2SbdhEFEUKWyLWULIb3I2mdN83/xpCxbe/nmCOEUKzBeT/ZITIYfaverj4BanGeUmT8tL4Mo=
+	t=1791211216; cv=none; b=s7e0dBfTS5hGQTr3A3f8zBhxpB9uXU/Xw3xvKKbH/TfDhcLfrYM6aE2u8htWJDPzld0toXoDDEh5DbFv+KzD4lCx898OCNo5tyi/pTVi7zFvv93DWBRDPq2OmeUCOQcvKigjNQdtqu+M8sXs9/qcs4d2vyW44+6OI9DwTFWxO5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791211218; c=relaxed/simple;
-	bh=Cj6glqTNouog2ShibjfR8Itq6jaQXXZtdrXbWGVCdvs=;
+	s=arc-20240116; t=1791211216; c=relaxed/simple;
+	bh=RRWozVHTotAkW5kYj0hU5Xgt5Xu3zoj4m11js62A+Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=af2C/N0vkrQcT2s4N4LRAalPNQWJ74fkRrOJRlgqbOAD/j1JeSfC+c6TMaLdpUneebD0v45Cb7ovNmiVNcycROssMtzSr68C6/R+ANl3Pj4N8o/7/DghjPDqF1SwuZZovz7Hh+cb404vGkc7Ptsug+LpJMxY8Hb4tkL6djEAzyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=AGBTGZkT; arc=none smtp.client-ip=209.85.128.45
+	 MIME-Version; b=jzhIPdtmyVeym83P3E1fkBhNKi1yZA+GNwE67OkTxQFvlMpDXNJ39tO72p+kBib3euje4F0BBt2FMcpC2b3C3V+cHcMHVplpuAAEZXmPV12EmD8Fvxz9eyWD+dbnsOG2s+HpFTs9CdlJSPoNgAOBRFisrwDPGsjyvgfec+NHhcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=Eaa2vtHt; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="AGBTGZkT"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1728d8dfcso9522915e9.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 07:40:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="Eaa2vtHt"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a1728d8dfcso9523165e9.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 07:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1791211200; x=1791816000; darn=vger.kernel.org;
+        d=blackwall.org; s=google; t=1791211201; x=1791816001; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5bSt5R41K3yP75EtFUWEkcQ6TleKOOF2+mrl49XIVdM=;
-        b=AGBTGZkTYl5mnchA/XalE2uQTc/vWiF9WHZpTFXeicUBWW+5tbleApOGAL6yXI5oh+
-         bc52VxBR0dY3tfHIwdUZlUokrDh3NtfDm/BfrgsxK+aoBKJOAL8Jo5QYza3fd0Qhlku/
-         fGrhpVBJJVx4HkxZicR4DktrfJ9MX+Do0s7kK5ApM86/5tfNC6GbB7iookTysJAv2B9m
-         S57oQ0V5FbVvkvi0Xw4fG/JbkhAnHLuXDaGVUmup4ki3CncGyRWCB5vmj1UxudC8I+Pe
-         wMVMSqVATJimbv6Ht5K6+suiXXJfO/DQ1CzvEgZgAbke3JOQV59cDGEEYYdTkM4NSrR+
-         cNIQ==
+        bh=EYtXcI173soT5vTdt1+eussUhxIt+D0gw4zaR9j1Ifc=;
+        b=Eaa2vtHtArGw+c0LU/cidC5sjdu4dMfFYrJKwjU73xNWJlJ8mStNxfnInDwUE+/V5F
+         qoIi4xmTrG9f7zuV0+1XPvw5LKZm4W0e01EXJYkOXPu05zA21mrLlSNSNxLX+KZKrQiD
+         WaawX5HgxH9wCHBZPLe2q63+CByHscMZycDeFDST7Vl2i/gIxpaffQ7LiJEgC0gmquKU
+         FzW9fg8Em8yA/QbpQXUFCccLBYFfPD4imwBPrdARm4upEnKg5FpcDDxM0qLdp5cYD+lP
+         hjmlUD5a7yW74vaozYRw+uC/9sJkkAhxWqELloD5v2nLVCZyuOAxiRC5+JFxu38/V6yd
+         eIEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791211200; x=1791816000;
+        d=1e100.net; s=20260707; t=1791211201; x=1791816001;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5bSt5R41K3yP75EtFUWEkcQ6TleKOOF2+mrl49XIVdM=;
-        b=ur5rusFD2qbNE6VFes3lJTZfVbkpo4z0f1OVdwxI/TzVX2UB1EvSMu1WHJXj4ACmSN
-         v9Y6XoL7W7G56Fy7y6J6VXpDGT0bTed0Qj6bF0JCjDBd/OGxvS9lNx0FZoHnloANk5mj
-         fwggMUEFHMWPeJm5cjADEwpjzPp1DC+TJtK8eY0tVJpha8+pbZy3qM0auGiASUtCjiHY
-         BV786C8zjEGjv1FVmq3zz+a4wcgNJXYvfij+fU4K/qqWup0J8ewg7exM36mJkULJ3Cu6
-         JlWRQHe5tmHXgwrvYSP40OqRRP994uSsMjy0CrMK/yCTlVCByAQ/IrgtI9qdFLE2JWry
-         ZezA==
-X-Gm-Message-State: AFuF++l6MV2Gn2dZWERpWcp0I6uh96pCVDk50I8L4DK9RYcHnVY3wZ9E
-	9Z78qYCUj5KHxjd7b4jTq/5VrpByTH3smYEpKjCXEosK6KkGl3Q4Ies8BIEczJXebHjPpaQBOXb
-	A6BzF
-X-Gm-Gg: AYBFou1Ds3pCmheIu6K+gcJ9QBCnxVEScqsemUq3cCvC1xchkQZPw/CGPyk3YaHetdC
-	MVRCCk6Zw+VGa4o5VrHTVUl0J2MKr7rCNK0Wi1AwAoKTqq1XjUaJCB3C8lpZAIPtAYYq2uQgCxS
-	VWFRJT71i7A083F/TlM90DSZ84Tl0q5M9KIAYh0SPbOM+cf4Rne5h6UaWXDZx7mGf3BfD1rGYuh
-	KWfy6zym0JGqP8XWuh5Hioa88h7JX6z6VrAubFhn59+ZcC7RS1FXTQ8DaOl0nF4rsQcc9QwM03h
-	nnA/z/gQCLGjb44wsb0qgxZJJBBvPVsDjUpCrHdSPYRvfJadxgRytIIFJy7cgKnzRpC9hB7JHoz
-	R6UkfVO+YiyT++Lrrk2/15RvgcSu3NDC1Y3zdL0eCMsUw7A6tpvAQH6PvwnWXVtHv7Mq3JuQc60
-	0KMGwv8hLD5mgmdkQk2CeH296oN98KfSt6u2uaox0CX2ugg3qHXU336I2TLgioVBaufCBWMrL/V
-	TPRXx8t9GOBWh7jcrmZ
-X-Received: by 2002:a05:600c:a116:b0:49b:9202:6f80 with SMTP id 5b1f17b1804b1-4a1680dd3dbmr90880685e9.6.1791211199889;
-        Mon, 05 Oct 2026 07:39:59 -0700 (PDT)
+        bh=EYtXcI173soT5vTdt1+eussUhxIt+D0gw4zaR9j1Ifc=;
+        b=aOBI8+uWcUHs+Km4PxAR+MoquwgHOQ78iMntN7FEGf4b9Av2fLBF5m8oAeGOtGjMP5
+         Fewo/MxjBGMJMZ76uFlQh6nSBmktGUMftHboupu4Mreg3ExjPYLofDWBk4K8qDvfv9we
+         kef1VngSufe1Z9oRg76Px6u0djMQvH9fXmcSXTcCjWA/W0cD0B0LjCYT+vE7hSYGRSlr
+         zhf9A3+O2cXoQxBsKaxjoB+nh4Mo1B7f22LwY4dzCe3ZpdVqT559X1hgkh9Gojzj6V7h
+         GfyqV5Is5lYp2kSviqKgFqEeCbmjFm0LUAINgZ9ytGs+gsVvGmrwH9+X6b0e6ajlgI20
+         wKHg==
+X-Gm-Message-State: AFuF++l0cCTEXiKSUCoc4qWJgmOC7QU+FBL3e8SuXTwfWN8QVoRHvOg2
+	oCR+jlWu3bTEbYf8O3BsUoU5d8p9ogfTJU+XVsE3YZZRjpjCDtc1UFIPHRwoq3hcRewZeM9rVxA
+	OSkEc
+X-Gm-Gg: AYBFou2tdwUZeQluavvxHqfReDL1d/R7RI0JNQ64Ztlg4SIMikYiJt7JMi9EbtNXJFi
+	+yxHUYf68F6oSiz7fyFb0840SIgal62vtrlLQ3nm1Q1edKRhzcI3xlJLu9aR+7y6utmN3UneGlD
+	tmb37xVsPGjHwqi9RK89A7edWNW0X2PVIjRr+TOWoC+xVwNBUHyUNsFKk7fSVyvx9MT2o/3UTr+
+	LIeirtezmU2H9HT+/aTU1v+wqlmwUY9nYuqk3j5cT7ff5yY8rL2jd1mRKnYEXwNn1YLvP47ii3v
+	uDcqCq+rPrZ91e9AJ1wfH6qIGETmTaOrASC1L6BRyUPD+0HRuPniglBsWvzQeJK4xqNh70p8s2M
+	D/KamXVl8htsGioxgz7qLTKUAGmRflUjWJTnfztAW1DbHSI264nHinIkg/+MhrqkZ40ZHVes4Uh
+	XT3hPRoTkwhXQuBQ9iNceExrd6mfh4UWPppWC2TyXbj8yvGPi4vNlNApJgsuqofclBZwfbYE5Qr
+	uZKu9AMP97RSqG37tEx
+X-Received: by 2002:a05:600c:3b01:b0:49c:ffab:551f with SMTP id 5b1f17b1804b1-4a1680ed179mr109451445e9.22.1791211201035;
+        Mon, 05 Oct 2026 07:40:01 -0700 (PDT)
 Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4a166bfaf73sm174234765e9.4.2026.10.05.07.39.59
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4a02752aeb3sm359304555e9.0.2026.10.05.07.40.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 07:39:59 -0700 (PDT)
+        Mon, 05 Oct 2026 07:40:00 -0700 (PDT)
 From: Nikolay Aleksandrov <razor@blackwall.org>
 To: netdev@vger.kernel.org
 Cc: idosch@nvidia.com,
@@ -69,9 +69,9 @@ Cc: idosch@nvidia.com,
 	horms@kernel.org,
 	bridge@lists.linux.dev,
 	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next 5/6] net: bridge: fdb: factor out configured entry destination updates
-Date: Mon,  5 Oct 2026 17:39:36 +0300
-Message-ID: <20261005143937.877466-6-razor@blackwall.org>
+Subject: [PATCH net-next 6/6] net: bridge: fdb: use the entry key in __fdb_update
+Date: Mon,  5 Oct 2026 17:39:37 +0300
+Message-ID: <20261005143937.877466-7-razor@blackwall.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261005143937.877466-1-razor@blackwall.org>
 References: <20261005143937.877466-1-razor@blackwall.org>
@@ -83,73 +83,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Share the destination update logic used by user configured and ext learned
-entries. Report a modification only when the port changes.
+The address and VLAN ID passed to __fdb_update() match the key of the entry
+just found, so we can just use it.
 
 Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- net/bridge/br_fdb.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ net/bridge/br_fdb.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index ce09e3fbc58b..927e5f23df5b 100644
+index 927e5f23df5b..b601245ad923 100644
 --- a/net/bridge/br_fdb.c
 +++ b/net/bridge/br_fdb.c
-@@ -1193,6 +1193,22 @@ static bool fdb_handle_notify(struct net_bridge_fdb_entry *fdb, u8 notify)
- 	return modified;
+@@ -1000,7 +1000,6 @@ static void __fdb_update(struct net_bridge *br,
+ 			 struct net_bridge_fdb_entry *fdb,
+ 			 struct net_bridge_port *source,
+ 			 struct net_bridge_dst dst,
+-			 const unsigned char *addr, u16 vid,
+ 			 unsigned long flags)
+ {
+ 	struct net_bridge_port *old_port;
+@@ -1012,7 +1011,8 @@ static void __fdb_update(struct net_bridge *br,
+ 	if (unlikely(test_bit(BR_FDB_LOCAL, &fdb->flags))) {
+ 		if (net_ratelimit())
+ 			br_warn(br, "received packet on %s with own address as source address (addr:%pM, vlan:%u)\n",
+-				source->dev->name, addr, vid);
++				source->dev->name, fdb->key.addr.addr,
++				fdb->key.vlan_id);
+ 		return;
+ 	}
+ 
+@@ -1055,7 +1055,8 @@ static void __fdb_update(struct net_bridge *br,
+ 	}
+ 
+ 	if (unlikely(fdb_modified)) {
+-		trace_br_fdb_update(br, source, addr, vid, flags);
++		trace_br_fdb_update(br, source, fdb->key.addr.addr,
++				    fdb->key.vlan_id, flags);
+ 		fdb_notify(br, fdb, RTM_NEWNEIGH, true);
+ 	}
  }
+@@ -1075,7 +1076,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
  
-+static bool fdb_update_dst(struct net_bridge_fdb_entry *fdb,
-+			   struct net_bridge_dst old_dst,
-+			   struct net_bridge_dst dst)
-+{
-+	if (br_dst_equal(old_dst, dst))
-+		return false;
-+
-+	if (br_dst_port(old_dst) == br_dst_port(dst)) {
-+		br_fdb_dst_replace(fdb, old_dst, dst);
-+		return false;
-+	}
-+
-+	br_fdb_dst_write(fdb, dst);
-+	return true;
-+}
-+
- /* Update (create or replace) forwarding database entry */
- static int fdb_add_entry(struct net_bridge *br, struct net_bridge_dst dst,
- 			 const u8 *addr, struct ndmsg *ndm, u16 flags, u16 vid,
-@@ -1246,14 +1262,7 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_dst dst,
- 			return -EEXIST;
- 
- 		old_dst = br_fdb_dst_read(fdb);
--		if (!br_dst_equal(old_dst, dst)) {
--			if (br_dst_port(old_dst) != source) {
--				modified = true;
--				br_fdb_dst_write(fdb, dst);
--			} else {
--				br_fdb_dst_replace(fdb, old_dst, dst);
--			}
--		}
-+		modified = fdb_update_dst(fdb, old_dst, dst);
- 
- 		set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 		if (test_and_clear_bit(BR_FDB_DYNAMIC_LEARNED, &fdb->flags))
-@@ -1634,14 +1643,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 
- 		WRITE_ONCE(fdb->updated, jiffies);
- 
--		if (!br_dst_equal(old_dst, dst)) {
--			if (br_dst_port(old_dst) != p) {
--				modified = true;
--				br_fdb_dst_write(fdb, dst);
--			} else {
--				br_fdb_dst_replace(fdb, old_dst, dst);
--			}
--		}
-+		modified = fdb_update_dst(fdb, old_dst, dst);
- 
- 		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
- 			/* Refresh entry */
+ 	fdb = fdb_find_rcu(&br->fdb_hash_tbl, addr, vid);
+ 	if (likely(fdb)) {
+-		__fdb_update(br, fdb, source, dst, addr, vid, flags);
++		__fdb_update(br, fdb, source, dst, flags);
+ 	} else {
+ 		spin_lock(&br->hash_lock);
+ 		fdb = fdb_create(br, dst, addr, vid, flags);
 -- 
 2.47.3
 
