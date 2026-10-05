@@ -1,29 +1,29 @@
 Received: from stargate.chelsio.com (unknown [12.32.117.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543DD489877
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7442D484226
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791206428; cv=none; b=q5djlCtyuidj+eBBbfIMPr48YosL5MwHZ5GaIe0N/hjBUE2fBdXgCmrid7fVrhV3LXdQ3X1TDlEEMIM8/uBpDXrybMseYRC9DppZ2Qj/lHYD+TBbbAEztb0FP9tGLc6teDyRHqDiAYIlpQKkAwkb/F91M3K/mZ7KjS7Shj2dkhA=
+	t=1791206448; cv=none; b=pvQJkFTWxZXuhalGvItgf0esW2tu4XseqxrGyQsHX/uDRabl5M9rrnl8lds/jyfwd3n4vZ3pKTBCPB35gNp+skI19zzqvUPOQt/q0YRI515mbquAM9K/aGA3MpAkHkSETtMkvDgJQDVePpVIepgckGVNvaf+mUkgqNcwZxXUOmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791206428; c=relaxed/simple;
-	bh=FfG6kVC5b4EjHqhfMHtCOsvZ4inXAJsGmiFOPyDjn00=;
+	s=arc-20240116; t=1791206448; c=relaxed/simple;
+	bh=UUxLPU9OoBWtombwbNoDTb/mIekOQPyJvX9jruxlsS0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JQ1RXY+u7YwZcsXZFj+jslgsedqH8B0NJ92lT0dCsfhFOIXA0imH5Ud6W9y0ZDjdJtjGMI5hSr6xnyGn/bc83pDsoRQzp8fWnHpZ/qCrso5ZE3y5FnMpSMmIqNo0rNy4E+j6D+AvKgt99GtXuMTjFe7WajVWRZS28IAO2Wvszw8=
+	 MIME-Version; b=Q+copNutRMeE/KDS2a6vv3jxlkkp4CO2HFCAGondMpWBrIY7OeMiBRQpfxJYDjuUQ5TBAf/IT3xG6sclVaPFAhHI1Yxl036vr3z4vzKA7qc0lrF07ADNPxlA6xstqLLQJ1Uh2wZRwGrRZPOC840xSiRxL/0LQVmXpEBscLHnB/s=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
 Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 695DGO8H010463;
-	Mon, 5 Oct 2026 06:19:34 -0700
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 695DGO8J010463;
+	Mon, 5 Oct 2026 06:20:19 -0700
 From: Potnuri Bharat Teja <bharat@chelsio.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
-Subject: [PATCH net-next v3 07/12] cxgb4: extend ethtool support for T7 adapters
-Date: Mon,  5 Oct 2026 18:48:25 -0400
-Message-Id: <20261005224830.377752-8-bharat@chelsio.com>
+Subject: [PATCH net-next v3 09/12] cxgb4: Add indirect register definitions for T7
+Date: Mon,  5 Oct 2026 18:48:27 -0400
+Message-Id: <20261005224830.377752-10-bharat@chelsio.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20261005224830.377752-1-bharat@chelsio.com>
 References: <20261005224830.377752-1-bharat@chelsio.com>
@@ -35,605 +35,1191 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update the ethtool implementation to support T7-specific port types,
-link modes, and adapter capabilities.
+Add indirect register definition headers used by the CUDBG
+infrastructure.
 
-Add support for new T7 port configurations including SFP56, QSFP56,
-50G/100G/200G/400G backplane modes, and the associated ethtool link
-mode mappings. Update port statistics handling and module type
-reporting to account for the new hardware capabilities.
+Introduce cudbg_indir_reg.h and cudbg_indir_reg_t7.h containing the
+indirect registers required for cudbg register collection.
 
-Extend RSS configuration support by implementing RSS hash key retrieval
-and programming through ethtool. Also update module EEPROM handling for
-new optical module types and CMIS-based devices.
+These headers will be used by subsequent patch that add indirect
+register handling support to cudbg.
 
 Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
 ---
- .../ethernet/chelsio/cxgb4/cxgb4_ethtool.c    | 381 +++++++++++++-----
- 1 file changed, 278 insertions(+), 103 deletions(-)
+ .../ethernet/chelsio/cxgb4/cudbg_indir_reg.h  |   43 +
+ .../chelsio/cxgb4/cudbg_indir_reg_t7.h        | 1113 +++++++++++++++++
+ 2 files changed, 1156 insertions(+)
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-index 0092bc16f887..605c0783d3d5 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-@@ -14,6 +14,8 @@
- #include "cxgb4_tc_flower.h"
- 
- #define EEPROM_MAGIC 0x38E2F10C
-+#define RSS_HASH_KEY_SIZE 40
-+#define CMIS_PAGE_SELECT_REG 127
- 
- static u32 get_msglevel(struct net_device *dev)
- {
-@@ -358,7 +360,7 @@ static void get_stats(struct net_device *dev, struct ethtool_stats *stats,
- 	int i;
- 	u64 *p0;
- 
--	t4_get_port_stats_offset(adapter, pi->tx_chan,
-+	t4_get_port_stats_offset(adapter, pi->lport,
- 				 (struct port_stats *)data,
- 				 &pi->stats_base);
- 
-@@ -440,10 +442,13 @@ static int from_fw_port_mod_type(enum fw_port_type port_type,
- 		   port_type == FW_PORT_TYPE_CR4_QSFP ||
- 		   port_type == FW_PORT_TYPE_CR_QSFP ||
- 		   port_type == FW_PORT_TYPE_CR2_QSFP ||
--		   port_type == FW_PORT_TYPE_SFP28) {
-+		   port_type == FW_PORT_TYPE_SFP28 ||
-+		   port_type == FW_PORT_TYPE_SFP56 ||
-+		   port_type == FW_PORT_TYPE_QSFP56) {
- 		if (mod_type == FW_PORT_MOD_TYPE_LR ||
- 		    mod_type == FW_PORT_MOD_TYPE_SR ||
- 		    mod_type == FW_PORT_MOD_TYPE_ER ||
-+		    mod_type == FW_PORT_MOD_TYPE_DR ||
- 		    mod_type == FW_PORT_MOD_TYPE_LRM)
- 			return PORT_FIBRE;
- 		else if (mod_type == FW_PORT_MOD_TYPE_TWINAX_PASSIVE ||
-@@ -453,7 +458,11 @@ static int from_fw_port_mod_type(enum fw_port_type port_type,
- 			return PORT_OTHER;
- 	} else if (port_type == FW_PORT_TYPE_KR4_100G ||
- 		   port_type == FW_PORT_TYPE_KR_SFP28 ||
--		   port_type == FW_PORT_TYPE_KR_XLAUI) {
-+		   port_type == FW_PORT_TYPE_KR_XLAUI ||
-+		   port_type == FW_PORT_TYPE_KR_50G ||
-+		   port_type == FW_PORT_TYPE_KR2_100G ||
-+		   port_type == FW_PORT_TYPE_KR4_200G ||
-+		   port_type == FW_PORT_TYPE_KR8_400G) {
- 		return PORT_NONE;
- 	}
- 
-@@ -490,8 +499,100 @@ static unsigned int speed_to_fw_caps(int speed)
- 	return 0;
- }
- 
-+enum link_medium {
-+	LINK_MEDIUM_NONE,
-+	LINK_MEDIUM_TP,		/* plain copper baseT               */
-+	LINK_MEDIUM_KR,		/* electrical backplane             */
-+	LINK_MEDIUM_CR,		/* copper direct-attach (TwinAx)    */
-+	LINK_MEDIUM_SR,
-+	LINK_MEDIUM_LR,		/* also covers ER FR                */
-+	LINK_MEDIUM_DR,
-+	LINK_MEDIUM_LRM,
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+new file mode 100644
+index 000000000000..a33e003c78d5
+--- /dev/null
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
++ */
++
++#ifndef __CUDBG_INDIR_REG_H__
++#define __CUDBG_INDIR_REG_H__
++
++enum cudbg_indir_type {
++	CUDBG_INDIR_TYPE_CIM_CTL,
++	CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL,
++	CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL,
++	CUDBG_INDIR_TYPE_TP_MIB_INDEX,
++	CUDBG_INDIR_TYPE_TP_PIO_ADDR,
++	CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR,
++	CUDBG_INDIR_TYPE_UP,
++	CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG,
++	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG,
++	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG,
++	CUDBG_INDIR_TYPE_MAX, /* New members need to be added at end */
 +};
 +
-+static bool fw_port_is_backplane(enum fw_port_type port_type)
++struct cudbg_indir_reg {
++	u32 addr;
++};
++
++struct cudbg_indir_type_entry {
++	struct cudbg_indir_reg *reg_arr;
++	u32 nentries;
++};
++
++#include "cudbg_indir_reg_t7.h"
++
++static inline struct cudbg_indir_type_entry *
++cudbg_get_indir_reg_info(u32 chip_ver, enum cudbg_indir_type type)
 +{
-+	switch (port_type) {
-+	case FW_PORT_TYPE_KX:
-+	case FW_PORT_TYPE_KX4:
-+	case FW_PORT_TYPE_BP_AP:
-+	case FW_PORT_TYPE_BP4_AP:
-+	case FW_PORT_TYPE_BP40_BA:
-+	case FW_PORT_TYPE_KR:
-+	case FW_PORT_TYPE_KR_50G:
-+	case FW_PORT_TYPE_KR_SFP28:
-+	case FW_PORT_TYPE_KR_XLAUI:
-+	case FW_PORT_TYPE_KR2_100G:
-+	case FW_PORT_TYPE_KR4_100G:
-+	case FW_PORT_TYPE_KR4_200G:
-+	case FW_PORT_TYPE_KR8_400G:
-+		return true;
-+	default:
-+		return false;
-+	}
++	if (chip_ver >= CHELSIO_T7)
++		return &t7_indir_type_arr[type];
++
++	return NULL;
 +}
 +
-+static bool fw_port_is_electrical_tp(enum fw_port_type port_type)
-+{
-+	switch (port_type) {
-+	case FW_PORT_TYPE_BT_SGMII:
-+	case FW_PORT_TYPE_BT_XFI:
-+	case FW_PORT_TYPE_BT_XAUI:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
++#endif /* __CUDBG_INDIR_REG_H__ */
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
+new file mode 100644
+index 000000000000..a246009ffb8d
+--- /dev/null
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
+@@ -0,0 +1,1113 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
++ */
 +
-+static bool fw_port_is_fixed_baset(enum fw_port_type port_type)
-+{
-+	switch (port_type) {
-+	case FW_PORT_TYPE_FIBER_XFI:
-+	case FW_PORT_TYPE_FIBER_XAUI:
-+		return true;
-+	default:
-+		return fw_port_is_electrical_tp(port_type);
-+	}
-+}
++#ifndef __CUDBG_INDIR_REG_T7_H__
++#define __CUDBG_INDIR_REG_T7_H__
 +
-+static int fw_port_class_bit(enum fw_port_type port_type)
-+{
-+	if (fw_port_is_backplane(port_type))
-+		return ETHTOOL_LINK_MODE_Backplane_BIT;
-+	if (fw_port_is_electrical_tp(port_type))
-+		return ETHTOOL_LINK_MODE_TP_BIT;
-+	return ETHTOOL_LINK_MODE_FIBRE_BIT;
-+}
++static struct cudbg_indir_reg t7_cim_ctl[82] = {
++	{ .addr = 0x2000 },
++	{ .addr = 0x2040 },
++	{ .addr = 0x2044 },
++	{ .addr = 0x2050 },
++	{ .addr = 0x2054 },
++	{ .addr = 0x2060 },
++	{ .addr = 0x2064 },
++	{ .addr = 0x2068 },
++	{ .addr = 0x206c },
++	{ .addr = 0x2094 },
++	{ .addr = 0x2098 },
++	{ .addr = 0x209c },
++	{ .addr = 0x20a0 },
++	{ .addr = 0x20a4 },
++	{ .addr = 0x20a8 },
++	{ .addr = 0x20ac },
++	{ .addr = 0x20b0 },
++	{ .addr = 0x20b4 },
++	{ .addr = 0x20b8 },
++	{ .addr = 0x20bc },
++	{ .addr = 0x20c0 },
++	{ .addr = 0x20c4 },
++	{ .addr = 0x20c8 },
++	{ .addr = 0x20cc },
++	{ .addr = 0x20d0 },
++	{ .addr = 0x20e0 },
++	{ .addr = 0x20e4 },
++	{ .addr = 0x20e8 },
++	{ .addr = 0x20ec },
++	{ .addr = 0x20f0 },
++	{ .addr = 0x20f4 },
++	{ .addr = 0x20f8 },
++	{ .addr = 0x20fc },
++	{ .addr = 0x2500 },
++	{ .addr = 0x2504 },
++	{ .addr = 0x2508 },
++	{ .addr = 0x250c },
++	{ .addr = 0x2510 },
++	{ .addr = 0x2514 },
++	{ .addr = 0x2518 },
++	{ .addr = 0x251c },
++	{ .addr = 0x2520 },
++	{ .addr = 0x2524 },
++	{ .addr = 0x2528 },
++	{ .addr = 0x252c },
++	{ .addr = 0x2530 },
++	{ .addr = 0x2534 },
++	{ .addr = 0x2538 },
++	{ .addr = 0x253c },
++	{ .addr = 0x2540 },
++	{ .addr = 0x2600 },
++	{ .addr = 0x2604 },
++	{ .addr = 0x2608 },
++	{ .addr = 0x260c },
++	{ .addr = 0x2610 },
++	{ .addr = 0x2614 },
++	{ .addr = 0x2618 },
++	{ .addr = 0x261c },
++	{ .addr = 0x2620 },
++	{ .addr = 0x2624 },
++	{ .addr = 0x2628 },
++	{ .addr = 0x262c },
++	{ .addr = 0x2630 },
++	{ .addr = 0x2634 },
++	{ .addr = 0x2638 },
++	{ .addr = 0x263c },
++	{ .addr = 0x2640 },
++	{ .addr = 0x26fc },
++	{ .addr = 0x2700 },
++	{ .addr = 0x2704 },
++	{ .addr = 0x2708 },
++	{ .addr = 0x270c },
++	{ .addr = 0x2710 },
++	{ .addr = 0x2714 },
++	{ .addr = 0x2718 },
++	{ .addr = 0x271c },
++	{ .addr = 0x2720 },
++	{ .addr = 0x2724 },
++	{ .addr = 0x2728 },
++	{ .addr = 0x2780 },
++	{ .addr = 0x2784 },
++	{ .addr = 0x2788 },
++};
 +
-+static enum link_medium fw_port_medium(enum fw_port_type port_type,
-+				       enum fw_port_module_type mod_type)
-+{
-+	if (fw_port_is_backplane(port_type))
-+		return LINK_MEDIUM_KR;
-+	if (fw_port_is_fixed_baset(port_type))
-+		return LINK_MEDIUM_TP;
++static struct cudbg_indir_reg t7_hmat6_local_debug_cfg[32] = {
++	{ .addr = 0xa000 },
++	{ .addr = 0xa001 },
++	{ .addr = 0xa002 },
++	{ .addr = 0xa003 },
++	{ .addr = 0xa004 },
++	{ .addr = 0xa005 },
++	{ .addr = 0xa006 },
++	{ .addr = 0xa007 },
++	{ .addr = 0xa008 },
++	{ .addr = 0xa009 },
++	{ .addr = 0xa00a },
++	{ .addr = 0xa00b },
++	{ .addr = 0xa00c },
++	{ .addr = 0xa00d },
++	{ .addr = 0xa00e },
++	{ .addr = 0xa00f },
++	{ .addr = 0xa010 },
++	{ .addr = 0xa011 },
++	{ .addr = 0xa012 },
++	{ .addr = 0xa013 },
++	{ .addr = 0xa014 },
++	{ .addr = 0xa015 },
++	{ .addr = 0xa016 },
++	{ .addr = 0xa017 },
++	{ .addr = 0xa018 },
++	{ .addr = 0xa019 },
++	{ .addr = 0xa01a },
++	{ .addr = 0xa01b },
++	{ .addr = 0xa01c },
++	{ .addr = 0xa01d },
++	{ .addr = 0xa01e },
++	{ .addr = 0xa01f },
++};
 +
-+	switch (mod_type) {
-+	case FW_PORT_MOD_TYPE_TWINAX_PASSIVE:
-+	case FW_PORT_MOD_TYPE_TWINAX_ACTIVE:
-+		return LINK_MEDIUM_CR;
-+	case FW_PORT_MOD_TYPE_SR:
-+		return LINK_MEDIUM_SR;
-+	case FW_PORT_MOD_TYPE_LR:
-+	case FW_PORT_MOD_TYPE_ER:
-+		return LINK_MEDIUM_LR;
-+	case FW_PORT_MOD_TYPE_DR:
-+		return LINK_MEDIUM_DR;
-+	case FW_PORT_MOD_TYPE_LRM:
-+		return LINK_MEDIUM_LRM;
-+	default:
-+		return LINK_MEDIUM_NONE;	/* no module / unreadable */
-+	}
-+}
++static struct cudbg_indir_reg t7_ma_local_debug_cfg[238] = {
++	{ .addr = 0xa000 },
++	{ .addr = 0xa001 },
++	{ .addr = 0xa002 },
++	{ .addr = 0xa003 },
++	{ .addr = 0xa004 },
++	{ .addr = 0xa005 },
++	{ .addr = 0xa006 },
++	{ .addr = 0xa007 },
++	{ .addr = 0xa008 },
++	{ .addr = 0xa009 },
++	{ .addr = 0xa00a },
++	{ .addr = 0xa00b },
++	{ .addr = 0xa00c },
++	{ .addr = 0xa00d },
++	{ .addr = 0xa00e },
++	{ .addr = 0xa00f },
++	{ .addr = 0xa010 },
++	{ .addr = 0xa011 },
++	{ .addr = 0xa012 },
++	{ .addr = 0xa013 },
++	{ .addr = 0xa014 },
++	{ .addr = 0xa015 },
++	{ .addr = 0xa016 },
++	{ .addr = 0xa400 },
++	{ .addr = 0xa401 },
++	{ .addr = 0xa402 },
++	{ .addr = 0xa403 },
++	{ .addr = 0xa404 },
++	{ .addr = 0xa405 },
++	{ .addr = 0xa406 },
++	{ .addr = 0xa407 },
++	{ .addr = 0xa408 },
++	{ .addr = 0xa409 },
++	{ .addr = 0xa40a },
++	{ .addr = 0xa40b },
++	{ .addr = 0xa40c },
++	{ .addr = 0xa40d },
++	{ .addr = 0xa40e },
++	{ .addr = 0xa40f },
++	{ .addr = 0xa410 },
++	{ .addr = 0xa412 },
++	{ .addr = 0xa413 },
++	{ .addr = 0xa414 },
++	{ .addr = 0xa415 },
++	{ .addr = 0xa416 },
++	{ .addr = 0xa417 },
++	{ .addr = 0xa418 },
++	{ .addr = 0xa419 },
++	{ .addr = 0xa41a },
++	{ .addr = 0xa41b },
++	{ .addr = 0xa41c },
++	{ .addr = 0xa41d },
++	{ .addr = 0xa41e },
++	{ .addr = 0xa800 },
++	{ .addr = 0xa801 },
++	{ .addr = 0xa802 },
++	{ .addr = 0xa803 },
++	{ .addr = 0xa804 },
++	{ .addr = 0xa805 },
++	{ .addr = 0xa806 },
++	{ .addr = 0xa807 },
++	{ .addr = 0xa808 },
++	{ .addr = 0xa809 },
++	{ .addr = 0xa80a },
++	{ .addr = 0xa80b },
++	{ .addr = 0xa80c },
++	{ .addr = 0xa80d },
++	{ .addr = 0xa80e },
++	{ .addr = 0xa80f },
++	{ .addr = 0xa810 },
++	{ .addr = 0xa811 },
++	{ .addr = 0xa812 },
++	{ .addr = 0xa813 },
++	{ .addr = 0xac00 },
++	{ .addr = 0xac01 },
++	{ .addr = 0xac02 },
++	{ .addr = 0xac03 },
++	{ .addr = 0xac04 },
++	{ .addr = 0xac05 },
++	{ .addr = 0xac06 },
++	{ .addr = 0xac07 },
++	{ .addr = 0xac08 },
++	{ .addr = 0xac09 },
++	{ .addr = 0xac0a },
++	{ .addr = 0xac0b },
++	{ .addr = 0xac0c },
++	{ .addr = 0xac0d },
++	{ .addr = 0xac0e },
++	{ .addr = 0xac0f },
++	{ .addr = 0xac10 },
++	{ .addr = 0xac11 },
++	{ .addr = 0xac12 },
++	{ .addr = 0xac13 },
++	{ .addr = 0xac14 },
++	{ .addr = 0xac15 },
++	{ .addr = 0xac16 },
++	{ .addr = 0xac17 },
++	{ .addr = 0xac18 },
++	{ .addr = 0xac19 },
++	{ .addr = 0xb000 },
++	{ .addr = 0xb001 },
++	{ .addr = 0xb002 },
++	{ .addr = 0xb003 },
++	{ .addr = 0xb004 },
++	{ .addr = 0xb005 },
++	{ .addr = 0xb006 },
++	{ .addr = 0xb007 },
++	{ .addr = 0xb008 },
++	{ .addr = 0xb009 },
++	{ .addr = 0xb00a },
++	{ .addr = 0xb00b },
++	{ .addr = 0xb00c },
++	{ .addr = 0xb00d },
++	{ .addr = 0xb00e },
++	{ .addr = 0xb00f },
++	{ .addr = 0xb010 },
++	{ .addr = 0xb011 },
++	{ .addr = 0xb012 },
++	{ .addr = 0xb013 },
++	{ .addr = 0xb014 },
++	{ .addr = 0xb015 },
++	{ .addr = 0xb016 },
++	{ .addr = 0xb017 },
++	{ .addr = 0xb018 },
++	{ .addr = 0xb019 },
++	{ .addr = 0xb400 },
++	{ .addr = 0xb401 },
++	{ .addr = 0xb402 },
++	{ .addr = 0xb403 },
++	{ .addr = 0xb404 },
++	{ .addr = 0xb405 },
++	{ .addr = 0xb406 },
++	{ .addr = 0xb407 },
++	{ .addr = 0xb408 },
++	{ .addr = 0xb409 },
++	{ .addr = 0xb40a },
++	{ .addr = 0xb40b },
++	{ .addr = 0xb40c },
++	{ .addr = 0xb40d },
++	{ .addr = 0xb40e },
++	{ .addr = 0xb40f },
++	{ .addr = 0xb410 },
++	{ .addr = 0xb411 },
++	{ .addr = 0xb412 },
++	{ .addr = 0xb413 },
++	{ .addr = 0xb414 },
++	{ .addr = 0xb415 },
++	{ .addr = 0xb416 },
++	{ .addr = 0xb417 },
++	{ .addr = 0xb418 },
++	{ .addr = 0xb419 },
++	{ .addr = 0xe400 },
++	{ .addr = 0xe420 },
++	{ .addr = 0xe440 },
++	{ .addr = 0xe460 },
++	{ .addr = 0xe480 },
++	{ .addr = 0xe4a0 },
++	{ .addr = 0xe4c0 },
++	{ .addr = 0xe4e0 },
++	{ .addr = 0xe500 },
++	{ .addr = 0xe520 },
++	{ .addr = 0xe540 },
++	{ .addr = 0xe560 },
++	{ .addr = 0xe580 },
++	{ .addr = 0xe5a0 },
++	{ .addr = 0xe5c0 },
++	{ .addr = 0xe5e0 },
++	{ .addr = 0xe600 },
++	{ .addr = 0xe640 },
++	{ .addr = 0xe660 },
++	{ .addr = 0xe680 },
++	{ .addr = 0xe6a0 },
++	{ .addr = 0xe6c0 },
++	{ .addr = 0xe6e0 },
++	{ .addr = 0xe700 },
++	{ .addr = 0xe720 },
++	{ .addr = 0xe740 },
++	{ .addr = 0xe760 },
++	{ .addr = 0xe780 },
++	{ .addr = 0xe7a0 },
++	{ .addr = 0xe7c0 },
++	{ .addr = 0xe800 },
++	{ .addr = 0xe820 },
++	{ .addr = 0xe840 },
++	{ .addr = 0xe860 },
++	{ .addr = 0xe880 },
++	{ .addr = 0xe8a0 },
++	{ .addr = 0xe8c0 },
++	{ .addr = 0xe8e0 },
++	{ .addr = 0xe900 },
++	{ .addr = 0xe920 },
++	{ .addr = 0xe940 },
++	{ .addr = 0xe960 },
++	{ .addr = 0xe980 },
++	{ .addr = 0xe9a0 },
++	{ .addr = 0xe9c0 },
++	{ .addr = 0xe9e0 },
++	{ .addr = 0xec00 },
++	{ .addr = 0xec20 },
++	{ .addr = 0xec40 },
++	{ .addr = 0xec60 },
++	{ .addr = 0xec80 },
++	{ .addr = 0xeca0 },
++	{ .addr = 0xecc0 },
++	{ .addr = 0xece0 },
++	{ .addr = 0xed00 },
++	{ .addr = 0xed20 },
++	{ .addr = 0xed40 },
++	{ .addr = 0xed60 },
++	{ .addr = 0xed80 },
++	{ .addr = 0xeda0 },
++	{ .addr = 0xedc0 },
++	{ .addr = 0xede0 },
++	{ .addr = 0xee00 },
++	{ .addr = 0xee20 },
++	{ .addr = 0xee40 },
++	{ .addr = 0xee60 },
++	{ .addr = 0xee80 },
++	{ .addr = 0xeea0 },
++	{ .addr = 0xeec0 },
++	{ .addr = 0xeee0 },
++	{ .addr = 0xef00 },
++	{ .addr = 0xef20 },
++	{ .addr = 0xf000 },
++	{ .addr = 0xf020 },
++	{ .addr = 0xf040 },
++	{ .addr = 0xf100 },
++	{ .addr = 0xf101 },
++	{ .addr = 0xf102 },
++	{ .addr = 0xf103 },
++	{ .addr = 0xf104 },
++	{ .addr = 0xf105 },
++	{ .addr = 0xf106 },
++	{ .addr = 0xf107 },
++	{ .addr = 0xf108 },
++	{ .addr = 0xf120 },
++	{ .addr = 0xf140 },
++	{ .addr = 0xf160 },
++};
 +
- /**
-  *	fw_caps_to_lmm - translate Firmware to ethtool Link Mode Mask
-+ *	@mod_type: Firmware Module Type
-  *	@port_type: Firmware Port Type
-  *	@fw_caps: Firmware Port Capabilities
-  *	@link_mode_mask: ethtool Link Mode Mask
-@@ -500,114 +601,93 @@ static unsigned int speed_to_fw_caps(int speed)
-  *	Link Mode Mask.
-  */
- static void fw_caps_to_lmm(enum fw_port_type port_type,
-+			   enum fw_port_module_type mod_type,
- 			   fw_port_cap32_t fw_caps,
- 			   unsigned long *link_mode_mask)
- {
--	#define SET_LMM(__lmm_name) \
--		do { \
--			__set_bit(ETHTOOL_LINK_MODE_ ## __lmm_name ## _BIT, \
--				  link_mode_mask); \
--		} while (0)
-+	enum link_medium medium = fw_port_medium(port_type, mod_type);
- 
- 	#define FW_CAPS_TO_LMM(__fw_name, __lmm_name) \
- 		do { \
- 			if (fw_caps & FW_PORT_CAP32_ ## __fw_name) \
--				SET_LMM(__lmm_name); \
-+				__set_bit(ETHTOOL_LINK_MODE_ ## __lmm_name ## _BIT, \
-+					  link_mode_mask); \
- 		} while (0)
- 
--	switch (port_type) {
--	case FW_PORT_TYPE_BT_SGMII:
--	case FW_PORT_TYPE_BT_XFI:
--	case FW_PORT_TYPE_BT_XAUI:
--		SET_LMM(TP);
--		FW_CAPS_TO_LMM(SPEED_100M, 100baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
--		break;
--
--	case FW_PORT_TYPE_KX4:
--	case FW_PORT_TYPE_KX:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKX4_Full);
--		break;
--
--	case FW_PORT_TYPE_KR:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		break;
--
--	case FW_PORT_TYPE_BP_AP:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		break;
-+	if (medium != LINK_MEDIUM_NONE)
-+		__set_bit(fw_port_class_bit(port_type), link_mode_mask);
- 
--	case FW_PORT_TYPE_BP4_AP:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKX4_Full);
-+	switch (medium) {
-+	case LINK_MEDIUM_TP:
-+		FW_CAPS_TO_LMM(SPEED_100M, 100baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseT_Full);
- 		break;
- 
--	case FW_PORT_TYPE_FIBER_XFI:
--	case FW_PORT_TYPE_FIBER_XAUI:
--	case FW_PORT_TYPE_SFP:
--	case FW_PORT_TYPE_QSFP_10G:
--	case FW_PORT_TYPE_QSA:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
-+	case LINK_MEDIUM_KR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseKX4_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseR_FEC);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseKR_Full);
-+		FW_CAPS_TO_LMM(SPEED_25G,  25000baseKR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseKR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseKR_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseKR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseKR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseKR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseKR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseKR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_BP40_BA:
--	case FW_PORT_TYPE_QSFP:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
--		break;
--
--	case FW_PORT_TYPE_CR_QSFP:
--	case FW_PORT_TYPE_SFP28:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_25G, 25000baseCR_Full);
-+	case LINK_MEDIUM_CR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseCR_Full);
-+		FW_CAPS_TO_LMM(SPEED_25G,  25000baseCR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseCR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseCR_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseCR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseCR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseCR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_KR_SFP28:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_25G, 25000baseKR_Full);
-+	case LINK_MEDIUM_SR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseSR_Full);
-+		FW_CAPS_TO_LMM(SPEED_25G,  25000baseSR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseSR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseSR_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseSR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseSR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseSR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseSR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseSR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_KR_XLAUI:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_40G, 40000baseKR4_Full);
-+	case LINK_MEDIUM_LR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseLR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseLR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseLR_ER_FR_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseLR2_ER2_FR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseLR4_ER4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseLR4_ER4_FR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseLR8_ER8_FR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_CR2_QSFP:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_50G, 50000baseSR2_Full);
-+	case LINK_MEDIUM_DR:
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseDR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseDR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseDR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_KR4_100G:
--	case FW_PORT_TYPE_CR4_QSFP:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G,  1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
--		FW_CAPS_TO_LMM(SPEED_25G, 25000baseCR_Full);
--		FW_CAPS_TO_LMM(SPEED_50G, 50000baseCR2_Full);
--		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR4_Full);
-+	case LINK_MEDIUM_LRM:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseLRM_Full);
- 		break;
- 
-+	case LINK_MEDIUM_NONE:
- 	default:
- 		break;
- 	}
-@@ -616,7 +696,7 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
- 		FW_CAPS_TO_LMM(FEC_RS, FEC_RS);
- 		FW_CAPS_TO_LMM(FEC_BASER_RS, FEC_BASER);
- 	} else {
--		SET_LMM(FEC_NONE);
-+		__set_bit(ETHTOOL_LINK_MODE_FEC_NONE_BIT, link_mode_mask);
- 	}
- 
- 	FW_CAPS_TO_LMM(ANEG, Autoneg);
-@@ -624,7 +704,6 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
- 	FW_CAPS_TO_LMM(802_3_ASM_DIR, Asym_Pause);
- 
- 	#undef FW_CAPS_TO_LMM
--	#undef SET_LMM
- }
- 
- /**
-@@ -649,10 +728,46 @@ static unsigned int lmm_to_fw_caps(const unsigned long *link_mode_mask)
- 	LMM_TO_FW_CAPS(100baseT_Full, SPEED_100M);
- 	LMM_TO_FW_CAPS(1000baseT_Full, SPEED_1G);
- 	LMM_TO_FW_CAPS(10000baseT_Full, SPEED_10G);
--	LMM_TO_FW_CAPS(40000baseSR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(10000baseKX4_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseR_FEC, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseKR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseCR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseSR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseLR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseLRM_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(25000baseKR_Full, SPEED_25G);
- 	LMM_TO_FW_CAPS(25000baseCR_Full, SPEED_25G);
-+	LMM_TO_FW_CAPS(25000baseSR_Full, SPEED_25G);
-+	LMM_TO_FW_CAPS(40000baseKR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(40000baseCR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(40000baseSR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(40000baseLR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(50000baseKR_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseKR2_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseCR_Full, SPEED_50G);
- 	LMM_TO_FW_CAPS(50000baseCR2_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseSR_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseSR2_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseLR_ER_FR_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(100000baseKR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseKR4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseCR2_Full, SPEED_100G);
- 	LMM_TO_FW_CAPS(100000baseCR4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseSR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseSR4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseLR2_ER2_FR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseLR4_ER4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseDR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(200000baseKR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseCR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseSR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseLR4_ER4_FR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseDR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(400000baseKR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseCR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseSR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseLR8_ER8_FR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseDR8_Full, SPEED_400G);
- 
- 	#undef LMM_TO_FW_CAPS
- 
-@@ -688,14 +803,14 @@ static int get_link_ksettings(struct net_device *dev,
- 		base->mdio_support = 0;
- 	}
- 
--	fw_caps_to_lmm(pi->port_type, pi->link_cfg.pcaps,
-+	fw_caps_to_lmm(pi->port_type, pi->mod_type, pi->link_cfg.pcaps,
- 		       link_ksettings->link_modes.supported);
--	fw_caps_to_lmm(pi->port_type,
-+	fw_caps_to_lmm(pi->port_type, pi->mod_type,
- 		       t4_link_acaps(pi->adapter,
- 				     pi->lport,
- 				     &pi->link_cfg),
- 		       link_ksettings->link_modes.advertising);
--	fw_caps_to_lmm(pi->port_type, pi->link_cfg.lpacaps,
-+	fw_caps_to_lmm(pi->port_type, pi->mod_type, pi->link_cfg.lpacaps,
- 		       link_ksettings->link_modes.lp_advertising);
- 
- 	base->speed = (netif_carrier_ok(dev)
-@@ -800,7 +915,7 @@ static inline unsigned int eth_to_cc_fec(unsigned int eth_fec)
- {
- 	unsigned int cc_fec = 0;
- 
--	if (eth_fec & ETHTOOL_FEC_OFF)
-+	if (eth_fec == ETHTOOL_FEC_OFF)
- 		return cc_fec;
- 
- 	if (eth_fec & ETHTOOL_FEC_AUTO)
-@@ -1576,6 +1691,11 @@ static int get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *ts
- 	return 0;
- }
- 
-+static u32 get_rss_key_size(struct net_device *dev)
-+{
-+	return RSS_HASH_KEY_SIZE;
-+}
++static struct cudbg_indir_reg t7_ma_local_debug_perf_cfg[4] = {
++	{ .addr = 0xa000 },
++	{ .addr = 0xa1e0 },
++	{ .addr = 0xe000 },
++	{ .addr = 0xe1e0 },
++};
 +
- static u32 get_rss_table_size(struct net_device *dev)
- {
- 	const struct port_info *pi = netdev_priv(dev);
-@@ -1590,8 +1710,19 @@ static int get_rss_table(struct net_device *dev,
- 	unsigned int n = pi->rss_size;
- 
- 	rxfh->hfunc = ETH_RSS_HASH_TOP;
++static struct cudbg_indir_reg t7_pm_rx_dbg_ctrl[57] = {
++	{ .addr = 0x10013 },
++	{ .addr = 0x10014 },
++	{ .addr = 0x10015 },
++	{ .addr = 0x10016 },
++	{ .addr = 0x10019 },
++	{ .addr = 0x1001a },
++	{ .addr = 0x1001b },
++	{ .addr = 0x1001c },
++	{ .addr = 0x1001d },
++	{ .addr = 0x10020 },
++	{ .addr = 0x10021 },
++	{ .addr = 0x10022 },
++	{ .addr = 0x10023 },
++	{ .addr = 0x10024 },
++	{ .addr = 0x10025 },
++	{ .addr = 0x10026 },
++	{ .addr = 0x10027 },
++	{ .addr = 0x10028 },
++	{ .addr = 0x10029 },
++	{ .addr = 0x1002a },
++	{ .addr = 0x1002b },
++	{ .addr = 0x1002c },
++	{ .addr = 0x1002d },
++	{ .addr = 0x1002e },
++	{ .addr = 0x1002f },
++	{ .addr = 0x10030 },
++	{ .addr = 0x10031 },
++	{ .addr = 0x10032 },
++	{ .addr = 0x10033 },
++	{ .addr = 0x10034 },
++	{ .addr = 0x10035 },
++	{ .addr = 0x10036 },
++	{ .addr = 0x10037 },
++	{ .addr = 0x10038 },
++	{ .addr = 0x10039 },
++	{ .addr = 0x1003a },
++	{ .addr = 0x1003b },
++	{ .addr = 0x1003c },
++	{ .addr = 0x1003d },
++	{ .addr = 0x1003e },
++	{ .addr = 0x10049 },
++	{ .addr = 0x10060 },
++	{ .addr = 0x10061 },
++	{ .addr = 0x10062 },
++	{ .addr = 0x10063 },
++	{ .addr = 0x10070 },
++	{ .addr = 0x10071 },
++	{ .addr = 0x10072 },
++	{ .addr = 0x10073 },
++	{ .addr = 0x10074 },
++	{ .addr = 0x10075 },
++	{ .addr = 0x10076 },
++	{ .addr = 0x10077 },
++	{ .addr = 0x10078 },
++	{ .addr = 0x10080 },
++	{ .addr = 0x10081 },
++	{ .addr = 0x10082 },
++};
 +
-+	if (rxfh->key) {
-+		__be32 key[10];
++static struct cudbg_indir_reg t7_pm_tx_dbg_ctrl[38] = {
++	{ .addr = 0x10000 },
++	{ .addr = 0x10001 },
++	{ .addr = 0x10002 },
++	{ .addr = 0x10003 },
++	{ .addr = 0x10004 },
++	{ .addr = 0x10005 },
++	{ .addr = 0x10006 },
++	{ .addr = 0x10007 },
++	{ .addr = 0x10008 },
++	{ .addr = 0x10009 },
++	{ .addr = 0x1000a },
++	{ .addr = 0x1000b },
++	{ .addr = 0x1000c },
++	{ .addr = 0x1000d },
++	{ .addr = 0x1000e },
++	{ .addr = 0x1000f },
++	{ .addr = 0x10010 },
++	{ .addr = 0x10011 },
++	{ .addr = 0x10012 },
++	{ .addr = 0x10013 },
++	{ .addr = 0x10014 },
++	{ .addr = 0x10015 },
++	{ .addr = 0x10016 },
++	{ .addr = 0x10017 },
++	{ .addr = 0x10018 },
++	{ .addr = 0x10019 },
++	{ .addr = 0x1001a },
++	{ .addr = 0x1001b },
++	{ .addr = 0x1001c },
++	{ .addr = 0x1001d },
++	{ .addr = 0x1001e },
++	{ .addr = 0x1001f },
++	{ .addr = 0x10020 },
++	{ .addr = 0x10021 },
++	{ .addr = 0x10022 },
++	{ .addr = 0x10023 },
++	{ .addr = 0x10024 },
++	{ .addr = 0x10025 },
++};
 +
-+		t4_read_rss_key(pi->adapter, (u32 *)key, true);
-+		/* RSS hash keys are read in order TP_RSS_SECRET_KEY9..0 */
-+		for (int i = 0; i < 10; i++)
-+			((u32 *)rxfh->key)[i] = be32_to_cpu(key[9 - i]);
-+	}
++static struct cudbg_indir_reg t7_tp_mib_index[130] = {
++	{ .addr = 0x0 },
++	{ .addr = 0x1 },
++	{ .addr = 0x2 },
++	{ .addr = 0x3 },
++	{ .addr = 0x4 },
++	{ .addr = 0x5 },
++	{ .addr = 0x6 },
++	{ .addr = 0x7 },
++	{ .addr = 0x8 },
++	{ .addr = 0x9 },
++	{ .addr = 0xa },
++	{ .addr = 0xb },
++	{ .addr = 0xc },
++	{ .addr = 0x10 },
++	{ .addr = 0x11 },
++	{ .addr = 0x12 },
++	{ .addr = 0x13 },
++	{ .addr = 0x14 },
++	{ .addr = 0x15 },
++	{ .addr = 0x18 },
++	{ .addr = 0x19 },
++	{ .addr = 0x1a },
++	{ .addr = 0x1b },
++	{ .addr = 0x1c },
++	{ .addr = 0x1d },
++	{ .addr = 0x1e },
++	{ .addr = 0x1f },
++	{ .addr = 0x20 },
++	{ .addr = 0x21 },
++	{ .addr = 0x22 },
++	{ .addr = 0x23 },
++	{ .addr = 0x24 },
++	{ .addr = 0x25 },
++	{ .addr = 0x26 },
++	{ .addr = 0x27 },
++	{ .addr = 0x28 },
++	{ .addr = 0x29 },
++	{ .addr = 0x2a },
++	{ .addr = 0x2b },
++	{ .addr = 0x2c },
++	{ .addr = 0x30 },
++	{ .addr = 0x31 },
++	{ .addr = 0x32 },
++	{ .addr = 0x33 },
++	{ .addr = 0x34 },
++	{ .addr = 0x35 },
++	{ .addr = 0x36 },
++	{ .addr = 0x37 },
++	{ .addr = 0x38 },
++	{ .addr = 0x39 },
++	{ .addr = 0x3a },
++	{ .addr = 0x3b },
++	{ .addr = 0x3c },
++	{ .addr = 0x3d },
++	{ .addr = 0x3e },
++	{ .addr = 0x3f },
++	{ .addr = 0x40 },
++	{ .addr = 0x41 },
++	{ .addr = 0x42 },
++	{ .addr = 0x43 },
++	{ .addr = 0x44 },
++	{ .addr = 0x45 },
++	{ .addr = 0x46 },
++	{ .addr = 0x47 },
++	{ .addr = 0x48 },
++	{ .addr = 0x49 },
++	{ .addr = 0x4a },
++	{ .addr = 0x4b },
++	{ .addr = 0x4c },
++	{ .addr = 0x4d },
++	{ .addr = 0x4e },
++	{ .addr = 0x4f },
++	{ .addr = 0x50 },
++	{ .addr = 0x51 },
++	{ .addr = 0x52 },
++	{ .addr = 0x53 },
++	{ .addr = 0x54 },
++	{ .addr = 0x55 },
++	{ .addr = 0x56 },
++	{ .addr = 0x57 },
++	{ .addr = 0x58 },
++	{ .addr = 0x59 },
++	{ .addr = 0x5a },
++	{ .addr = 0x5b },
++	{ .addr = 0x5c },
++	{ .addr = 0x5d },
++	{ .addr = 0x5e },
++	{ .addr = 0x5f },
++	{ .addr = 0x60 },
++	{ .addr = 0x61 },
++	{ .addr = 0x62 },
++	{ .addr = 0x63 },
++	{ .addr = 0x64 },
++	{ .addr = 0x65 },
++	{ .addr = 0x68 },
++	{ .addr = 0x69 },
++	{ .addr = 0x6a },
++	{ .addr = 0x6b },
++	{ .addr = 0x6c },
++	{ .addr = 0x6d },
++	{ .addr = 0x6e },
++	{ .addr = 0x6f },
++	{ .addr = 0x70 },
++	{ .addr = 0x71 },
++	{ .addr = 0x72 },
++	{ .addr = 0x73 },
++	{ .addr = 0x80 },
++	{ .addr = 0x81 },
++	{ .addr = 0x82 },
++	{ .addr = 0x83 },
++	{ .addr = 0x84 },
++	{ .addr = 0x85 },
++	{ .addr = 0x86 },
++	{ .addr = 0x87 },
++	{ .addr = 0x88 },
++	{ .addr = 0x89 },
++	{ .addr = 0x8a },
++	{ .addr = 0x8b },
++	{ .addr = 0x90 },
++	{ .addr = 0x91 },
++	{ .addr = 0x92 },
++	{ .addr = 0x93 },
++	{ .addr = 0x94 },
++	{ .addr = 0x95 },
++	{ .addr = 0x96 },
++	{ .addr = 0x97 },
++	{ .addr = 0x98 },
++	{ .addr = 0x99 },
++	{ .addr = 0x9a },
++	{ .addr = 0x9b },
++};
 +
- 	if (!rxfh->indir)
- 		return 0;
++static struct cudbg_indir_reg t7_tp_pio_addr[191] = {
++	{ .addr = 0x1c },
++	{ .addr = 0x1d },
++	{ .addr = 0x1e },
++	{ .addr = 0x1f },
++	{ .addr = 0x20 },
++	{ .addr = 0x21 },
++	{ .addr = 0x22 },
++	{ .addr = 0x23 },
++	{ .addr = 0x24 },
++	{ .addr = 0x25 },
++	{ .addr = 0x26 },
++	{ .addr = 0x27 },
++	{ .addr = 0x28 },
++	{ .addr = 0x29 },
++	{ .addr = 0x2a },
++	{ .addr = 0x2b },
++	{ .addr = 0x2c },
++	{ .addr = 0x2d },
++	{ .addr = 0x2e },
++	{ .addr = 0x2f },
++	{ .addr = 0x30 },
++	{ .addr = 0x31 },
++	{ .addr = 0x32 },
++	{ .addr = 0x33 },
++	{ .addr = 0x34 },
++	{ .addr = 0x35 },
++	{ .addr = 0x36 },
++	{ .addr = 0x37 },
++	{ .addr = 0x38 },
++	{ .addr = 0x39 },
++	{ .addr = 0x3a },
++	{ .addr = 0x3b },
++	{ .addr = 0x40 },
++	{ .addr = 0x41 },
++	{ .addr = 0x42 },
++	{ .addr = 0x43 },
++	{ .addr = 0x44 },
++	{ .addr = 0x45 },
++	{ .addr = 0x46 },
++	{ .addr = 0x47 },
++	{ .addr = 0x48 },
++	{ .addr = 0x49 },
++	{ .addr = 0x50 },
++	{ .addr = 0x51 },
++	{ .addr = 0x52 },
++	{ .addr = 0x53 },
++	{ .addr = 0x54 },
++	{ .addr = 0x55 },
++	{ .addr = 0x56 },
++	{ .addr = 0x57 },
++	{ .addr = 0x58 },
++	{ .addr = 0x59 },
++	{ .addr = 0x60 },
++	{ .addr = 0x61 },
++	{ .addr = 0x62 },
++	{ .addr = 0x63 },
++	{ .addr = 0x64 },
++	{ .addr = 0x65 },
++	{ .addr = 0x66 },
++	{ .addr = 0x67 },
++	{ .addr = 0x68 },
++	{ .addr = 0x69 },
++	{ .addr = 0x6a },
++	{ .addr = 0x6b },
++	{ .addr = 0x6c },
++	{ .addr = 0x6d },
++	{ .addr = 0x6f },
++	{ .addr = 0x70 },
++	{ .addr = 0x71 },
++	{ .addr = 0x72 },
++	{ .addr = 0x73 },
++	{ .addr = 0x74 },
++	{ .addr = 0x75 },
++	{ .addr = 0x80 },
++	{ .addr = 0x81 },
++	{ .addr = 0x82 },
++	{ .addr = 0x83 },
++	{ .addr = 0x84 },
++	{ .addr = 0x85 },
++	{ .addr = 0x86 },
++	{ .addr = 0x87 },
++	{ .addr = 0x88 },
++	{ .addr = 0x89 },
++	{ .addr = 0x8a },
++	{ .addr = 0x8b },
++	{ .addr = 0x8c },
++	{ .addr = 0x8d },
++	{ .addr = 0x8e },
++	{ .addr = 0x8f },
++	{ .addr = 0x90 },
++	{ .addr = 0x91 },
++	{ .addr = 0x92 },
++	{ .addr = 0x93 },
++	{ .addr = 0x94 },
++	{ .addr = 0x95 },
++	{ .addr = 0x96 },
++	{ .addr = 0x97 },
++	{ .addr = 0x98 },
++	{ .addr = 0x99 },
++	{ .addr = 0x130 },
++	{ .addr = 0x131 },
++	{ .addr = 0x132 },
++	{ .addr = 0x133 },
++	{ .addr = 0x134 },
++	{ .addr = 0x135 },
++	{ .addr = 0x136 },
++	{ .addr = 0x137 },
++	{ .addr = 0x138 },
++	{ .addr = 0x139 },
++	{ .addr = 0x13a },
++	{ .addr = 0x13b },
++	{ .addr = 0x13c },
++	{ .addr = 0x13d },
++	{ .addr = 0x13e },
++	{ .addr = 0x13f },
++	{ .addr = 0x140 },
++	{ .addr = 0x141 },
++	{ .addr = 0x145 },
++	{ .addr = 0x146 },
++	{ .addr = 0x147 },
++	{ .addr = 0x148 },
++	{ .addr = 0x149 },
++	{ .addr = 0x14a },
++	{ .addr = 0x14b },
++	{ .addr = 0x14c },
++	{ .addr = 0x14d },
++	{ .addr = 0x14e },
++	{ .addr = 0x14f },
++	{ .addr = 0x150 },
++	{ .addr = 0x151 },
++	{ .addr = 0x152 },
++	{ .addr = 0x153 },
++	{ .addr = 0x154 },
++	{ .addr = 0x155 },
++	{ .addr = 0x156 },
++	{ .addr = 0x157 },
++	{ .addr = 0x158 },
++	{ .addr = 0x159 },
++	{ .addr = 0x15a },
++	{ .addr = 0x15b },
++	{ .addr = 0x160 },
++	{ .addr = 0x161 },
++	{ .addr = 0x162 },
++	{ .addr = 0x164 },
++	{ .addr = 0x165 },
++	{ .addr = 0x166 },
++	{ .addr = 0x168 },
++	{ .addr = 0x169 },
++	{ .addr = 0x230 },
++	{ .addr = 0x231 },
++	{ .addr = 0x232 },
++	{ .addr = 0x233 },
++	{ .addr = 0x234 },
++	{ .addr = 0x235 },
++	{ .addr = 0x236 },
++	{ .addr = 0x237 },
++	{ .addr = 0x238 },
++	{ .addr = 0x239 },
++	{ .addr = 0x23a },
++	{ .addr = 0x23b },
++	{ .addr = 0x23c },
++	{ .addr = 0x23d },
++	{ .addr = 0x23e },
++	{ .addr = 0x23f },
++	{ .addr = 0x240 },
++	{ .addr = 0x241 },
++	{ .addr = 0x242 },
++	{ .addr = 0x243 },
++	{ .addr = 0x244 },
++	{ .addr = 0x245 },
++	{ .addr = 0x246 },
++	{ .addr = 0x247 },
++	{ .addr = 0x248 },
++	{ .addr = 0x24a },
++	{ .addr = 0x24b },
++	{ .addr = 0x24c },
++	{ .addr = 0x24d },
++	{ .addr = 0x24e },
++	{ .addr = 0x24f },
++	{ .addr = 0x250 },
++	{ .addr = 0x251 },
++	{ .addr = 0x252 },
++	{ .addr = 0x253 },
++	{ .addr = 0x254 },
++	{ .addr = 0x255 },
++	{ .addr = 0x256 },
++	{ .addr = 0x257 },
++	{ .addr = 0x258 },
++	{ .addr = 0x259 },
++	{ .addr = 0x260 },
++	{ .addr = 0x8c0 },
++};
 +
- 	while (n--)
- 		rxfh->indir[n] = pi->rss[n];
- 	return 0;
-@@ -1607,10 +1738,19 @@ static int set_rss_table(struct net_device *dev,
- 	/* We require at least one supported parameter to be changed and no
- 	 * change in any of the unsupported parameters
- 	 */
--	if (rxfh->key ||
--	    (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
--	     rxfh->hfunc != ETH_RSS_HASH_TOP))
-+	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-+	    rxfh->hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
++static struct cudbg_indir_reg t7_tp_tm_pio_addr[14] = {
++	{ .addr = 0x0 },
++	{ .addr = 0x1 },
++	{ .addr = 0x2 },
++	{ .addr = 0x3 },
++	{ .addr = 0x4 },
++	{ .addr = 0x5 },
++	{ .addr = 0x6 },
++	{ .addr = 0x7 },
++	{ .addr = 0x8 },
++	{ .addr = 0x9 },
++	{ .addr = 0xa },
++	{ .addr = 0xb },
++	{ .addr = 0xc },
++	{ .addr = 0xd },
++};
 +
-+	if (rxfh->key) {
-+		__be32 key[10];
++static struct cudbg_indir_reg t7_up[245] = {
++	{ .addr = 0x0 },
++	{ .addr = 0x4 },
++	{ .addr = 0x8 },
++	{ .addr = 0xc },
++	{ .addr = 0x10 },
++	{ .addr = 0x80 },
++	{ .addr = 0x84 },
++	{ .addr = 0x88 },
++	{ .addr = 0x8c },
++	{ .addr = 0x90 },
++	{ .addr = 0xc0 },
++	{ .addr = 0xc4 },
++	{ .addr = 0xc8 },
++	{ .addr = 0xcc },
++	{ .addr = 0xd0 },
++	{ .addr = 0xd4 },
++	{ .addr = 0x100 },
++	{ .addr = 0x104 },
++	{ .addr = 0x108 },
++	{ .addr = 0x10c },
++	{ .addr = 0x110 },
++	{ .addr = 0x114 },
++	{ .addr = 0x118 },
++	{ .addr = 0x11c },
++	{ .addr = 0x120 },
++	{ .addr = 0x130 },
++	{ .addr = 0x140 },
++	{ .addr = 0x144 },
++	{ .addr = 0x14c },
++	{ .addr = 0x200 },
++	{ .addr = 0x204 },
++	{ .addr = 0x208 },
++	{ .addr = 0x20c },
++	{ .addr = 0x210 },
++	{ .addr = 0x214 },
++	{ .addr = 0x218 },
++	{ .addr = 0x21c },
++	{ .addr = 0x220 },
++	{ .addr = 0x224 },
++	{ .addr = 0x228 },
++	{ .addr = 0x22c },
++	{ .addr = 0x230 },
++	{ .addr = 0x234 },
++	{ .addr = 0x238 },
++	{ .addr = 0x23c },
++	{ .addr = 0x240 },
++	{ .addr = 0x244 },
++	{ .addr = 0x250 },
++	{ .addr = 0x254 },
++	{ .addr = 0x260 },
++	{ .addr = 0x264 },
++	{ .addr = 0x270 },
++	{ .addr = 0x274 },
++	{ .addr = 0x400 },
++	{ .addr = 0x404 },
++	{ .addr = 0x408 },
++	{ .addr = 0x40c },
++	{ .addr = 0x410 },
++	{ .addr = 0x414 },
++	{ .addr = 0x418 },
++	{ .addr = 0x41c },
++	{ .addr = 0x420 },
++	{ .addr = 0x424 },
++	{ .addr = 0x428 },
++	{ .addr = 0x42c },
++	{ .addr = 0x430 },
++	{ .addr = 0x434 },
++	{ .addr = 0x438 },
++	{ .addr = 0x43c },
++	{ .addr = 0x440 },
++	{ .addr = 0x444 },
++	{ .addr = 0x448 },
++	{ .addr = 0x44c },
++	{ .addr = 0x450 },
++	{ .addr = 0x454 },
++	{ .addr = 0x458 },
++	{ .addr = 0x45c },
++	{ .addr = 0x460 },
++	{ .addr = 0x464 },
++	{ .addr = 0x468 },
++	{ .addr = 0x46c },
++	{ .addr = 0x470 },
++	{ .addr = 0x474 },
++	{ .addr = 0x478 },
++	{ .addr = 0x47c },
++	{ .addr = 0x480 },
++	{ .addr = 0x484 },
++	{ .addr = 0x488 },
++	{ .addr = 0x48c },
++	{ .addr = 0x490 },
++	{ .addr = 0x494 },
++	{ .addr = 0x498 },
++	{ .addr = 0x49c },
++	{ .addr = 0x4a0 },
++	{ .addr = 0x4a4 },
++	{ .addr = 0x4a8 },
++	{ .addr = 0x4ac },
++	{ .addr = 0x4b0 },
++	{ .addr = 0x4b4 },
++	{ .addr = 0x4b8 },
++	{ .addr = 0x4bc },
++	{ .addr = 0x4c0 },
++	{ .addr = 0x4c4 },
++	{ .addr = 0x4c8 },
++	{ .addr = 0x4cc },
++	{ .addr = 0x4d0 },
++	{ .addr = 0x4d4 },
++	{ .addr = 0x4d8 },
++	{ .addr = 0x4dc },
++	{ .addr = 0x4e0 },
++	{ .addr = 0x4e4 },
++	{ .addr = 0x4e8 },
++	{ .addr = 0x4ec },
++	{ .addr = 0x4f0 },
++	{ .addr = 0x4f4 },
++	{ .addr = 0x4f8 },
++	{ .addr = 0x4fc },
++	{ .addr = 0x500 },
++	{ .addr = 0x504 },
++	{ .addr = 0x510 },
++	{ .addr = 0x514 },
++	{ .addr = 0x520 },
++	{ .addr = 0x524 },
++	{ .addr = 0x530 },
++	{ .addr = 0x534 },
++	{ .addr = 0x540 },
++	{ .addr = 0x544 },
++	{ .addr = 0x550 },
++	{ .addr = 0x554 },
++	{ .addr = 0x560 },
++	{ .addr = 0x564 },
++	{ .addr = 0x570 },
++	{ .addr = 0x574 },
++	{ .addr = 0x580 },
++	{ .addr = 0x584 },
++	{ .addr = 0x590 },
++	{ .addr = 0x594 },
++	{ .addr = 0x5a0 },
++	{ .addr = 0x5a4 },
++	{ .addr = 0x5b0 },
++	{ .addr = 0x5b4 },
++	{ .addr = 0x5c0 },
++	{ .addr = 0x5c4 },
++	{ .addr = 0x5d0 },
++	{ .addr = 0x5d4 },
++	{ .addr = 0x5e0 },
++	{ .addr = 0x5e4 },
++	{ .addr = 0x5f0 },
++	{ .addr = 0x5f4 },
++	{ .addr = 0x600 },
++	{ .addr = 0x604 },
++	{ .addr = 0x608 },
++	{ .addr = 0x60c },
++	{ .addr = 0x610 },
++	{ .addr = 0x614 },
++	{ .addr = 0x618 },
++	{ .addr = 0x61c },
++	{ .addr = 0x620 },
++	{ .addr = 0x624 },
++	{ .addr = 0x628 },
++	{ .addr = 0x62c },
++	{ .addr = 0x630 },
++	{ .addr = 0x634 },
++	{ .addr = 0x638 },
++	{ .addr = 0x63c },
++	{ .addr = 0x640 },
++	{ .addr = 0x644 },
++	{ .addr = 0x648 },
++	{ .addr = 0x64c },
++	{ .addr = 0x650 },
++	{ .addr = 0x654 },
++	{ .addr = 0x658 },
++	{ .addr = 0x65c },
++	{ .addr = 0x660 },
++	{ .addr = 0x664 },
++	{ .addr = 0x668 },
++	{ .addr = 0x66c },
++	{ .addr = 0x670 },
++	{ .addr = 0x674 },
++	{ .addr = 0x678 },
++	{ .addr = 0x67c },
++	{ .addr = 0x680 },
++	{ .addr = 0x684 },
++	{ .addr = 0x688 },
++	{ .addr = 0x68c },
++	{ .addr = 0x690 },
++	{ .addr = 0x694 },
++	{ .addr = 0x698 },
++	{ .addr = 0x69c },
++	{ .addr = 0x6a0 },
++	{ .addr = 0x6a4 },
++	{ .addr = 0x6a8 },
++	{ .addr = 0x6ac },
++	{ .addr = 0x6b0 },
++	{ .addr = 0x6b4 },
++	{ .addr = 0x6b8 },
++	{ .addr = 0x6bc },
++	{ .addr = 0x6c0 },
++	{ .addr = 0x6c4 },
++	{ .addr = 0x6c8 },
++	{ .addr = 0x6cc },
++	{ .addr = 0x6d0 },
++	{ .addr = 0x6d4 },
++	{ .addr = 0x6d8 },
++	{ .addr = 0x6dc },
++	{ .addr = 0x6e0 },
++	{ .addr = 0x6e4 },
++	{ .addr = 0x6e8 },
++	{ .addr = 0x6ec },
++	{ .addr = 0x6f0 },
++	{ .addr = 0x6f4 },
++	{ .addr = 0x6f8 },
++	{ .addr = 0x6fc },
++	{ .addr = 0x700 },
++	{ .addr = 0x704 },
++	{ .addr = 0x710 },
++	{ .addr = 0x714 },
++	{ .addr = 0x720 },
++	{ .addr = 0x724 },
++	{ .addr = 0x730 },
++	{ .addr = 0x734 },
++	{ .addr = 0x740 },
++	{ .addr = 0x744 },
++	{ .addr = 0x750 },
++	{ .addr = 0x754 },
++	{ .addr = 0x760 },
++	{ .addr = 0x764 },
++	{ .addr = 0x770 },
++	{ .addr = 0x774 },
++	{ .addr = 0x780 },
++	{ .addr = 0x784 },
++	{ .addr = 0x790 },
++	{ .addr = 0x794 },
++	{ .addr = 0x7a0 },
++	{ .addr = 0x7a4 },
++	{ .addr = 0x7b0 },
++	{ .addr = 0x7b4 },
++	{ .addr = 0x7c0 },
++	{ .addr = 0x7c4 },
++	{ .addr = 0x7d0 },
++	{ .addr = 0x7d4 },
++	{ .addr = 0x7e0 },
++	{ .addr = 0x7e4 },
++	{ .addr = 0x7f0 },
++	{ .addr = 0x7f4 },
++};
 +
-+		/* RSS hash keys are written in order TP_RSS_SECRET_KEY9..0 */
-+		for (int i = 0; i < 10; i++)
-+			key[i] = cpu_to_be32(((u32 *)rxfh->key)[9 - i]);
-+		t4_write_rss_key(pi->adapter, (u32 *)key, -1, true);
-+	}
++static struct cudbg_indir_type_entry t7_indir_type_arr[CUDBG_INDIR_TYPE_MAX] = {
++	[CUDBG_INDIR_TYPE_CIM_CTL] = {
++		.reg_arr = t7_cim_ctl,
++		.nentries = ARRAY_SIZE(t7_cim_ctl),
++	},
++	[CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG] = {
++		.reg_arr = t7_hmat6_local_debug_cfg,
++		.nentries = ARRAY_SIZE(t7_hmat6_local_debug_cfg),
++	},
++	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG] = {
++		.reg_arr = t7_ma_local_debug_cfg,
++		.nentries = ARRAY_SIZE(t7_ma_local_debug_cfg),
++	},
++	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG] = {
++		.reg_arr = t7_ma_local_debug_perf_cfg,
++		.nentries = ARRAY_SIZE(t7_ma_local_debug_perf_cfg),
++	},
++	[CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL] = {
++		.reg_arr = t7_pm_rx_dbg_ctrl,
++		.nentries = ARRAY_SIZE(t7_pm_rx_dbg_ctrl),
++	},
++	[CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL] = {
++		.reg_arr = t7_pm_tx_dbg_ctrl,
++		.nentries = ARRAY_SIZE(t7_pm_tx_dbg_ctrl),
++	},
++	[CUDBG_INDIR_TYPE_TP_MIB_INDEX] = {
++		.reg_arr = t7_tp_mib_index,
++		.nentries = ARRAY_SIZE(t7_tp_mib_index),
++	},
++	[CUDBG_INDIR_TYPE_TP_PIO_ADDR] = {
++		.reg_arr = t7_tp_pio_addr,
++		.nentries = ARRAY_SIZE(t7_tp_pio_addr),
++	},
++	[CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR] = {
++		.reg_arr = t7_tp_tm_pio_addr,
++		.nentries = ARRAY_SIZE(t7_tp_tm_pio_addr),
++	},
++	[CUDBG_INDIR_TYPE_UP] = {
++		.reg_arr = t7_up,
++		.nentries = ARRAY_SIZE(t7_up),
++	},
++};
 +
- 	if (!rxfh->indir)
- 		return 0;
- 
-@@ -2022,12 +2162,13 @@ static int cxgb4_get_module_info(struct net_device *dev,
- 	case FW_PORT_TYPE_SFP:
- 	case FW_PORT_TYPE_QSA:
- 	case FW_PORT_TYPE_SFP28:
--		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+	case FW_PORT_TYPE_SFP56:
-+		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				I2C_DEV_ADDR_A0, SFF_8472_COMP_ADDR,
- 				SFF_8472_COMP_LEN, &sff8472_comp);
- 		if (ret)
- 			return ret;
--		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				I2C_DEV_ADDR_A0, SFP_DIAG_TYPE_ADDR,
- 				SFP_DIAG_TYPE_LEN, &sff_diag_type);
- 		if (ret)
-@@ -2046,11 +2187,12 @@ static int cxgb4_get_module_info(struct net_device *dev,
- 		break;
- 
- 	case FW_PORT_TYPE_QSFP:
-+	case FW_PORT_TYPE_QSFP56:
- 	case FW_PORT_TYPE_QSFP_10G:
- 	case FW_PORT_TYPE_CR_QSFP:
- 	case FW_PORT_TYPE_CR2_QSFP:
- 	case FW_PORT_TYPE_CR4_QSFP:
--		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				I2C_DEV_ADDR_A0, SFF_REV_ADDR,
- 				SFF_REV_LEN, &sff_rev);
- 		/* For QSFP type ports, revision value >= 3
-@@ -2083,14 +2225,14 @@ static int cxgb4_get_module_eeprom(struct net_device *dev,
- 
- 	memset(data, 0, eprom->len);
- 	if (offset + len <= I2C_PAGE_SIZE)
--		return t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		return t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				 I2C_DEV_ADDR_A0, offset, len, data);
- 
- 	/* offset + len spans 0xa0 and 0xa1 pages */
- 	if (offset <= I2C_PAGE_SIZE) {
- 		/* read 0xa0 page */
- 		len = I2C_PAGE_SIZE - offset;
--		ret =  t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		ret =  t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				 I2C_DEV_ADDR_A0, offset, len, data);
- 		if (ret)
- 			return ret;
-@@ -2101,10 +2243,41 @@ static int cxgb4_get_module_eeprom(struct net_device *dev,
- 		len = eprom->len - len;
- 	}
- 	/* Read additional optical diagnostics from page 0xa2 if supported */
--	return t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan, I2C_DEV_ADDR_A2,
-+	return t4_i2c_rd(adapter, adapter->mbox, pi->lport, I2C_DEV_ADDR_A2,
- 			 offset, len, &data[eprom->len - len]);
- }
- 
-+static int
-+cxgb4_get_module_eeprom_by_page(struct net_device *dev,
-+				const struct ethtool_module_eeprom *page_data,
-+				struct netlink_ext_ack *extack)
-+{
-+	struct port_info *pi = netdev_priv(dev);
-+	struct adapter *adapter = pi->adapter;
-+	int ret;
-+
-+	if (page_data->offset >= 128) {
-+		u8 page = page_data->page;
-+		/* Before reading EEPROM data first select the page in PageSelect register */
-+		ret = t4_i2c_wr(adapter, adapter->mbox, pi->lport,
-+				page_data->i2c_address << 1,
-+				CMIS_PAGE_SELECT_REG,        /* CMIS Page Select register */
-+				1,                           /* Page Select register length */
-+				&page);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
-+			page_data->i2c_address << 1, page_data->offset,
-+			page_data->length, page_data->data);
-+
-+	if (ret)
-+		return ret;
-+
-+	return page_data->length;
-+}
-+
- static u32 cxgb4_get_priv_flags(struct net_device *netdev)
- {
- 	struct port_info *pi = netdev_priv(netdev);
-@@ -2205,6 +2378,7 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
- 	.get_rxnfc         = get_rxnfc,
- 	.set_rxnfc         = set_rxnfc,
- 	.get_rx_ring_count = get_rx_ring_count,
-+	.get_rxfh_key_size = get_rss_key_size,
- 	.get_rxfh_indir_size = get_rss_table_size,
- 	.get_rxfh	   = get_rss_table,
- 	.set_rxfh	   = set_rss_table,
-@@ -2217,6 +2391,7 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
- 	.get_dump_data     = get_dump_data,
- 	.get_module_info   = cxgb4_get_module_info,
- 	.get_module_eeprom = cxgb4_get_module_eeprom,
-+	.get_module_eeprom_by_page  = cxgb4_get_module_eeprom_by_page,
- 	.get_priv_flags    = cxgb4_get_priv_flags,
- 	.set_priv_flags    = cxgb4_set_priv_flags,
- };
++#endif /* __CUDBG_INDIR_REG_T7_H__ */
 -- 
 2.39.1
 
