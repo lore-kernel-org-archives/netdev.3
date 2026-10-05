@@ -1,97 +1,188 @@
-Received: from smtp-6.sys.kth.se (smtp-6.sys.kth.se [130.237.48.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C277D2F6918;
-	Mon,  5 Oct 2026 13:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.237.48.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1395441D216
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791205409; cv=none; b=ebQfQ368xJeUkz53piXczjH4WVO+TUdCNkuES5zGUS8FR1yzmJNnd0LfnvAJdAz+t0YEXkexyhG7mfUN4slaNG9X4Gtd2W/gVxrdJltaeZlc09YDx5f4BTMe7Nj8YXkSI5DWID8arWsi3RSrXFiyBqTAnIkFrV6gA9/8ImS0reY=
+	t=1791205475; cv=none; b=JFY5YR6kAlgpPxqgDllrvq8LuIDDpR48xm9btoR6icbS/eTrqmWdt0RRbMegzVDVc2LdVjA40Hvs3W28wipkV7mAWAuTBrZik2Oz8Betf1ADnK2WXTFRt9PcC2K16d3/3icot2SWM/1FO9kkuvfNNhvH5g+IdDzn7keiNJMsY3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791205409; c=relaxed/simple;
-	bh=MVFfWOIIPiiQkHv07qGu1xruZDVaw9OkSZAAkfZe6ro=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eq2Xl1Vgr7HmRP6sFZ+HyfY+YbfReV0IXhpjqAcQWHvCkKLpLpBKei+Dd8bq+VpRjJkEuk9ts7cX8QrVgrXUNzkkz5xPO+Pbr5SzpKh4dyw+X3n3KiQJ8DkUGHVq6lTa/QhbFQOzB8aEyigVat+eQEYVf1JJ29azgIhC6NdLaqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kth.se; spf=pass smtp.mailfrom=kth.se; dkim=pass (1024-bit key) header.d=kth.se header.i=@kth.se header.b=g+8rvQFN; arc=none smtp.client-ip=130.237.48.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kth.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kth.se
+	s=arc-20240116; t=1791205475; c=relaxed/simple;
+	bh=XgCtgbQRcxPoGRe8mzzM1S1ureZ3oYqdHQgqKRmIIZs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zg3ZgPTmHwyvYRxo2nd87Rgr/MNCjumU5kjztS+0pVpGjCAoPkXi7FRtaGhaOO1IaJDxXB7VcvZC4M5QRDuT6GdxdpM1TLhE96kL79dgN9dURBMJ2CV3xJHs6jnIW+9pKhlkkMms5rJVUpt/V6gb2SyPwUOjR3nMsBbOZPcZkhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=ADMVgs3F; arc=none smtp.client-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kth.se header.i=@kth.se header.b="g+8rvQFN"
-Received: from nargothrond (n183-p49.eduroam.kth.se [130.229.183.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sfle)
-	by smtp-6.sys.kth.se (Postfix) with ESMTPSA id 4hyzqX5gfwzPNQ9;
-	Mon,  5 Oct 2026 14:54:32 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp-6.sys.kth.se 4hyzqX5gfwzPNQ9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kth.se; s=default;
-	t=1791204874; bh=Q+Tspf424GBeNH94ZsNJbIE2u/ekNjbBI5ATi6HYPc4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g+8rvQFNbQZRDnvI+7nG3wFp3CCY1LFUGd5NBlWyGd4Wqe3OgyxwQMMRQjXUBtdSZ
-	 e7QGsZO6NoT5nosTkovcxTocKT1/Un42iObW5J7QESV/c18a6WYhx1rrv9WD+qKwzP
-	 AOI2A5cTKwh86aBFCPWT8rCS4qtC7GlUUJbf9hKg=
-Date: Mon, 5 Oct 2026 14:54:30 +0200
-From: Stefan Fleischmann <sfle@kth.se>
-To: Eric Dumazet <edumazet@kernel.org>, Fabian =?UTF-8?B?R3LDvG5iaWNobGVy?=
- <f.gruenbichler@proxmox.com>
-Cc: Michael Chan <michael.chan@broadcom.com>, Joe Damato <joe@dama.to>,
- netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>,
- regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
- macvlan/vlan with bnxt_en
-Message-ID: <20261005145430.12777c2c@nargothrond>
-In-Reply-To: <CAL4WiioggQU3VtWSL9nrExg5SZZbKiPA8pWmzeH+uRa0gy2ApA@mail.gmail.com>
-References: <20261004122616.56714cbd@nargothrond>
-	<f0c52ecb-b85d-4a53-8329-a8d2fd5d72b8@kernel.org>
-	<20261004163532.3134dd41@nargothrond>
-	<20261004192902.3ab3b7f3@nargothrond>
-	<919dcfaa-005f-4bfd-8889-39acda5f7a92@kernel.org>
-	<854f3985-a4ab-4014-b18d-9fead61602e1@kernel.org>
-	<CACKFLine2gKepH57mg5j2YYWsX-qU8-EfJfnqWiYUEhpXL1F9Q@mail.gmail.com>
-	<ef6eb827-71a6-40a6-a4b7-8e514ab595d3@kernel.org>
-	<1791193344.w5j2m55mib.astroid@yuna.none>
-	<CAL4WiioggQU3VtWSL9nrExg5SZZbKiPA8pWmzeH+uRa0gy2ApA@mail.gmail.com>
-Organization: KTH
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="ADMVgs3F"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-13eddc7e57; t=1791205467;
+ bh=2KrfVbD/U4yfYNyvzPDSSWso/SrtmjhxxY8z5tMgGsc=;
+ b=ADMVgs3FLMfzmSNuiasLgPWl+8r7gtWU5IBR2+D/I9qgusyxkkUh15hq+zixQnKxuwtyDQInX
+ ho711T2F0lkkxoLjeu2ISxVRxAk9MtgnhSuZEVYPjEQRet8g2csevxoLT9rY5dxnF9+meb6ZpBI
+ l/7gnMqOzTJteUGVYl/ir0A=
+X-Forward-Email-ID: 6ac3a055667e8e74acdfd199
+X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 2.18.1
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <e909312d-76bd-498b-afec-86a1cd611e1c@ovn.org>
+Date: Mon, 5 Oct 2026 15:04:18 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 01/11] netfilter: synproxy: fix reset of ct
+ seqadj when reopening a connection
+To: Pablo Neira Ayuso <pablo@netfilter.org>, netdev-bot+sinfo@kernel.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+ netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg,
+ i.maximets@ovn.org
+References: <20260927223436.269024-1-pablo@netfilter.org>
+ <20260927223436.269024-2-pablo@netfilter.org>
+ <179054884482.31693.9985445366421543993@kernel.org>
+ <armg511ZWKl5ZqhZ@chamomile> <asKoa2wFW5QneXEA@chamomile>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <asKoa2wFW5QneXEA@chamomile>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Mon, 5 Oct 2026 12:14:00 +0200
-Eric Dumazet <edumazet@kernel.org> wrote:
+FWOn 10/4/26 9:26 PM, Pablo Neira Ayuso wrote:
+> Hi,
+> 
+> Just a gentle bump to this net-next PR containing Netfilter updates.
+> 
+> Let me know if there is anything that needs to be addressed.
 
-> Le lun. 5 oct. 2026 =C3=A0 11:44, Fabian Gr=C3=BCnbichler
-> <f.gruenbichler@proxmox.com> a =C3=A9crit :
-> >
-> > On October 5, 2026 3:59 am, Eric Dumazet wrote: =20
-> > >
-> > >
-> > > On 10/5/26 00:29, Michael Chan wrote: =20
-> > >>
-> > >> I think skb->len is not updated with the padded length here.  So
-> > >> the HW will drop the packet seeing that the length is too short.
-> > >>  There is another skb_put_padto() that might work better? =20
-> > >
-> > > +1 Exactly, thanks! =20
-> >
-> > FWIW, we suspect we have quite a few users running into this since
-> > importing upstream changes from 7.2.2-7.2.5.
-> >
-> > Will report back once we've provided those users with a kernel with
-> > the below diff. =20
->=20
-> Patch has been sent for review:
->=20
-> https://lore.kernel.org/netdev/20261005023812.130639-1-edumazet@kernel.or=
-g/
+AFAICT, this PR was merged to net-next on the 29th:
+  https://git.kernel.org/netdev/net-next/c/0a1a3898ab64fd4f7b90816fc61186d8eb5302a7
 
-I'm testing the patch on v6.18.55, and it looks good so far. 5 hours and
-counting without any issues.
+The bot was a little confused, but the reply was actually sent:
+  https://lore.kernel.org/all/179064961102.229594.11396134169189168960.git-patchwork-notify@kernel.org/
 
-Best,
-Stefan
+Best regards, Ilya Maximets.
+
+> 
+> Thanks.
+> 
+> On Mon, Sep 28, 2026 at 01:04:07AM +0200, Pablo Neira Ayuso wrote:
+>> Hi,
+>>
+>> On Sun, Sep 27, 2026 at 10:40:44PM +0000, netdev-bot+sinfo@kernel.org wrote:
+>>> Hi!
+>>>
+>>> This is an automated message. This series looks like a fix, but its
+>>> commit messages seem to be missing some information:
+>>>
+>>>  - How the issue was discovered, e.g. hit in production, hit during
+>>>    development, syzbot report, manual code inspection, LLM or static
+>>>    analysis tool scan.
+>>>
+>>>  - Whether the issue was actually triggered, or is only theoretical
+>>>    (e.g. found by code inspection). If it was triggered please include
+>>>    the symptoms, like the stack trace or error messages.
+>>>
+>>> Please do not repost the series just to address the above. Instead,
+>>> reply to this email with the missing information, so that reviewers
+>>> can take it into account. If the series needs another revision for
+>>> other reasons, please include the information in the commit messages
+>>> then.
+>>>
+>>> The evaluation is done by an LLM so it may be wrong, if you think
+>>> that is the case please reply and explain.
+>>
+>> This are correctness fixes (no crashes to my knowledged, hence I
+>> decided to target net-next) as the cover letter specifies:
+>>
+>> Patch #1 TCP sequence tracking issue was reported by sashiko as the
+>>          cover letter says.
+>>
+>> Patch #2 Just documentation update to fix incorrect information
+>>          about the maximum number of expectations.
+>>
+>> Patch #3 Just a cleanup patch to remove a break;
+>>
+>> Patch #4 Just a cleanup, typos in comments.
+>>
+>> Patch #5 and #6 are the result of a human triggered review of the
+>>          conntrack error stats by Phil Sutter, I think.
+>>
+>> Patch #7 is a preparation patch for #8.
+>>
+>> Patch #8 removes a unnecessary workqueue flush, submitter does not
+>>          specify if it is visible in production, I suspect with
+>>          a very large number of netns it must be. Author does not
+>>          claim LLM assistance.
+>>
+>> Patch #9 is a fix triggered by sashiko report IIRC, I deemed it too
+>>          large for net so I am routing this rework-fix to net-next.
+>>
+>> Patch #10 is a feature fix, IPv6 filtering does not work.
+>>           I suspect it was found when trying to use this (broken)
+>>           feature by the submitter.
+>>
+>> Patch #11 Ilya Maximets reports the CTA_ZONE filtering feature is
+>>           not easy to infer from userspace, I don't think LLM
+>>           triggered this, it looks more like an improvement to help
+>>           userspace tools discover this feature.
+>>
+>> This is human written reply, my cover letter has been generated by me
+>> too to provide more context on these patches.
+>>
+>> Thanks!
+>>
+
