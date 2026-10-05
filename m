@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBB43DB630;
-	Mon,  5 Oct 2026 21:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957A83DC4C9;
+	Mon,  5 Oct 2026 21:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234201; cv=none; b=jaCgVyxjQP3cvp8OOirSnKzR3H/ukGITnF9+eBKuYeBMDOor6lvlYIEnjGaHaUi/zHyoxg7grrd+cp95nk2JAR3pJqxe54vkl33rF6ZepEruW/m6ZYgtm2pJT+tNsHknIC0NPRtyPhjdy+ojhYzP0+HlMcpU9oFg1r/0s2/i0cI=
+	t=1791234203; cv=none; b=YKGDlFHfANzWxuH+/gl0FFWV24wynQgzjt8V3MKf0FCJK2PEgL0uQg7/dVlastrNvX/E4gfLecj8Iux9JcvYE0D83rlvM8J3JU7+QpoCUutHpPMm5bgMoABQIte+4Vv00HZrfiRGQpHXyD1A95wYf8T75xUSyvgYkocVhefJvqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234201; c=relaxed/simple;
-	bh=xvu8kyZrzlSTqrj4+ycNVZuOYL908bkbpNaU8CDijhE=;
+	s=arc-20240116; t=1791234203; c=relaxed/simple;
+	bh=lOUO35f3j7w5DYfrecFPedQEqQvAZsNWCE76tojm9Nw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PZQFyLJhy+3dNoz7aHkQJmHwp5fzDRUSUBbMhBHerB8C5k7v0726V+Mf+Q1yxUUzPTMDoYiU97QoN0TNuJOBdz5JNjeW2iwdmMle7s5HT7odJAcz7VIzRRoSsazby13JOmvJiH3IILffMyvsO0TqJJBr3BOyeYAKv+QP3N4VkA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3MOmJ7B; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=NQTnj4iJJtzcJq5Ar8pFENJoz2of6LNFHZViR+Vl542TIbflSKgma6pTMjjHuLYIBh68uSQonmOPQPBpHAM3ffnKsuSmctwDvwaNbjfmnUsZIWsg8weG+2uz6F8UfMqKhQK6IdwwCQ4gZmN4CKX0CytjvJIF8oWGrAPYDnv/8bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PeKg3F6K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3MOmJ7B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D981F00893;
-	Mon,  5 Oct 2026 21:03:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PeKg3F6K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA7E1F000FF;
+	Mon,  5 Oct 2026 21:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791234200;
-	bh=ylSXs10EeRHJrN+BIry7xJNcdvoeVjEUBv+yqgEVv1g=;
+	s=k20260515; t=1791234201;
+	bh=jwv0HVGjzrN5FFLbgJcuw1J8O6A9CSjgD+2/fVQWRCM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=c3MOmJ7BsVLxJ25JZF2LXYkNPcL1/8XQeUbH97tmUNrXpl7NytsN94w7zYUj144iy
-	 Yt9GcH5jXse9P0ZxuW41MEEclGgcCb+I1TpUA/ApigTfYkRvmGKupHs3mF6F2pbA+w
-	 KDltIyhtPqfaf5ynO1KUWtwN/buncDMQf1+8ZWqSghpJ3h32zoBnsP6PvUW6kD4UJB
-	 T1l40VsQemAKN1Hqje1nKtkWz6qk0tPfri5RNGNAuU4k/3zTegKkt3aBOK797JWxIR
-	 iUlpipU78iF20MzRnB0SWEgko9lgUzk3oAja1JubVBBRwff/JAlisOfiq1IuOR98pv
-	 KrB04fZktVuXw==
-Subject: Re: [PATCH net-next v6 2/2] net: wwan: mhi_wwan_ctrl: drive DTR/RTS
- via the IP_CTRL channel
+	b=PeKg3F6KGFyqK8rqNkfgvNJeRlXlWOET6jXV1V08EvejfYCyXrF2qcNBTWc9Y4Qfk
+	 o4nv+6ywq5vbdv26+j3AmuMPHv5cf8V0Zn61TAiJF8wxnYMr/9yaY7JGwh0jQhqLcz
+	 M9ZP8wyqfPg1BiSqC9Qy6lhPFXRoO4SChX/SiElWdxnMWZz7tGkHzl/RkPiPr9DdvS
+	 bZBUPwsmGVu0h5p7CtT9E/O/Aj5WxEmhqWBephwV7h1ufVFIUWHj/gy8i8lMvoTbUV
+	 AatKsDT9PhnlKd/B+AoJCemWirmM60znlqzZ9NWIpkE8v7EKS4yrfyOgdzIctqFm7m
+	 7cBAdr8BPjaWA==
+Subject:
+ Re: [PATCH v2 1/2] tipc: skip socketless connections in topsrv teardown
 From: netdev-bot+sashiko@kernel.org
-To: peter.hunt@opengear.com
-Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- johannes@sipsolutions.net, mani@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 21:03:18 +0000
-Message-ID: <179123419887.434549.1077103528647935423@kernel.org>
-In-Reply-To: <20261001204614.3481089-3-peter.hunt@opengear.com>
-References: <20261001204614.3481089-3-peter.hunt@opengear.com>
+To: Jeremy.Jean@oss.cyber.gouv.fr
+Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, netdev@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kuba@kernel.org
+Date: Mon, 05 Oct 2026 21:03:20 +0000
+Message-ID: <179123420070.434549.7498402204710379095@kernel.org>
+In-Reply-To: <20261004210016.3051310-2-Jeremy.Jean@oss.cyber.gouv.fr>
+References: <20261004210016.3051310-2-Jeremy.Jean@oss.cyber.gouv.fr>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 (2) · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,133 +58,172 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch does not reach its stated goal on any in-tree
-  hardware.
-- [Medium] mhi_wwan_dtr_dl_xfer_cb()
-  (drivers/net/wwan/mhi_wwan_ctrl.c:351-364) discards the return value…
+- [High] This patch is not complete on its own.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the same
+  livelock already exists for socket-backed conns.
+- [High] This problem wasn't introduced by this patch, but
+  tipc_topsrv_stop() calls conn_get() (plain kref_get()) on any conn…
 
 --
 
-net: wwan: mhi_wwan_ctrl: drive DTR/RTS via the IP_CTRL channel
+tipc: skip socketless connections in topsrv teardown
 
-This patch adds a second mhi_driver to mhi_wwan_ctrl. The new driver
-binds the IP_CTRL MHI channel and records it per controller in a small
-registry. AT ports implement ->dtr_rts by sending a host serial state
-message over their own controller's IP_CTRL channel. A single recycled
-DL sink buffer stays queued on IP_CTRL so the modem's transmit path does
-not stall.
+This patch makes tipc_topsrv_stop() skip tipc_conn_close() for kernel
+subscription connections, which have no socket. These connections can
+stay in conn_idr after unsubscribe while send work is still pending.
+Calling tipc_conn_close() on them dereferences a NULL con->sock during
+netns teardown.
 
-> diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
-> index a31d8540fbb85..b94484a1657d7 100644
-> --- a/drivers/net/wwan/mhi_wwan_ctrl.c
-> +++ b/drivers/net/wwan/mhi_wwan_ctrl.c
-
-[ ... ]
-
-> @@ -255,6 +340,86 @@ static void mhi_wwan_ctrl_remove(struct mhi_device *mhi_dev)
-
-[ ... ]
-
-> +static void mhi_wwan_dtr_dl_xfer_cb(struct mhi_device *mhi_dev,
-> +				    struct mhi_result *mhi_result)
-> +{
-> +	struct mhi_wwan_dtr *dtr = dev_get_drvdata(&mhi_dev->dev);
-> +
-> +	/* Channel is being torn down (e.g. -ENOTCONN), do not requeue */
-> +	if (mhi_result->transaction_status &&
-> +	    mhi_result->transaction_status != -EOVERFLOW)
-> +		return;
-> +
-> +	/* Modem serial state not needed, requeue the sink buffer to keep DL ring live */
-> +	mhi_queue_buf(mhi_dev, DMA_FROM_DEVICE, dtr->rx_buf,
-> +		      sizeof(*dtr->rx_buf), MHI_EOT);
-
-[Severity: Medium]
-What happens if this mhi_queue_buf() fails? The return value is ignored,
-and dtr->rx_buf is the only DL buffer. It is queued once in
-mhi_wwan_dtr_probe() and requeued only from here.
-
-parse_xfer_event() has already consumed the ring element before this
-callback runs. A failed requeue therefore leaves the IP_CTRL DL ring
-empty, and nothing retries until the device is unbound and probed again.
-
-mhi_queue() can fail here in three ways:
-
-- -EIO in an MHI PM error state
-- -ENODEV from mhi_gen_tre() when the channel is not enabled
-- -ENOMEM from map_single
-
-The map_single call in mhi_gen_tre() looks like this:
-
-mhi_gen_tre()
-    if (!info->pre_mapped) {
-        ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
-        if (ret)
-            goto out;
-    }
-
-mhi_map_single_no_bb() returns -ENOMEM on dma_mapping_error().
-mhi_map_single_use_bb() calls dma_alloc_coherent(..., GFP_ATOMIC) from
-this completion path.
-
-Couldn't one transient mapping or allocation failure here cause the
-IP_CTRL transmit stall that the sink buffer is meant to prevent? Should
-the error at least be logged, and the refill retried later, for example
-from a work item?
-
-> +}
-
-[ ... ]
-
-> @@ -278,7 +443,45 @@ static struct mhi_driver mhi_wwan_ctrl_driver = {
->  	},
->  };
->  
-> -module_mhi_driver(mhi_wwan_ctrl_driver);
-> +static const struct mhi_device_id mhi_wwan_dtr_match_table[] = {
-> +	{ .chan = "IP_CTRL" },
-> +	{},
-> +};
+> diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
+> index af530c9ed8402..01dd34b758f4b 100644
+> --- a/net/tipc/topsrv.c
+> +++ b/net/tipc/topsrv.c
+> @@ -706,7 +706,8 @@ static void tipc_topsrv_stop(struct net *net)
+>  		if (con) {
+>  			conn_get(con);
+>  			spin_unlock_bh(&srv->idr_lock);
+> -			tipc_conn_close(con);
+> +			if (con->sock)
+> +				tipc_conn_close(con);
+>  			conn_put(con);
+>  			spin_lock_bh(&srv->idr_lock);
+>  		}
 
 [Severity: High]
-Does any in-tree MHI controller declare an "IP_CTRL" channel? This match
-table is the only place the name appears as a channel.
+This avoids the NULL dereference. In the scenario from the commit
+message, though, can netns teardown still stall and then hit a
+use-after-free on con?
 
-MHI client devices are only created for channels in the controller's
-static config, because mhi_create_devices() walks mhi_cntrl->mhi_chan.
-The SDX55/SDX65 tables in drivers/bus/mhi/host/pci_generic.c don't list
-IP_CTRL. For example:
+In that scenario, tipc_topsrv_queue_evt() passes its lookup reference
+to con->swork:
 
-drivers/bus/mhi/host/pci_generic.c:
-static const struct mhi_channel_config mhi_sierra_em919x_channels[] = {
-	...
-	MHI_CHANNEL_CONFIG_UL(32, "DUN", 32, 0),
-	MHI_CHANNEL_CONFIG_DL(33, "DUN", 32, 0),
-	MHI_CHANNEL_CONFIG_HW_UL(100, "IP_HW0", 512, 1),
-	MHI_CHANNEL_CONFIG_HW_DL(101, "IP_HW0", 512, 2),
-};
+	if (queue_work(srv->send_wq, &con->swork))
+		return;
 
-The same is true of modem_qcom_v1 and the Foxconn, Quectel and Telit
-tables.
+tipc_topsrv_kern_unsubscr() then drops its two references:
 
-If so, mhi_wwan_dtr_probe() never runs and mhi_wwan_dtr_list stays empty.
-Every ->dtr_rts call then ends up in this branch of
-mhi_wwan_ctrl_send_dtr(), whether it comes from wwan core open, close,
-remove or TIOCMSET/TIOCMBIS/TIOCMBIC:
+	test_and_clear_bit(CF_CONNECTED, &con->flags);
+	tipc_conn_delete_sub(con, NULL);
+	conn_put(con);
+	conn_put(con);
 
-	if (!ctrl_dev) {
-		dev_dbg(&mhiwwan->mhi_dev->dev,
-			"IP_CTRL not enumerated; DTR/RTS not signalled to modem\n");
-		return 0;
-	}
+After that, the pending swork holds the last reference.
 
-TIOCMGET would then report DTR as asserted, but the modem never receives
-it. The URCs described in the commit message would still be withheld.
+At this commit the loop in tipc_topsrv_stop() is:
 
-Neither this patch nor "net: wwan: core: propagate modem control signals
-to port drivers" adds IP_CTRL UL/DL entries to pci_generic.c. Is a
-controller-side change needed with this patch? If not, could the commit
-message at least note that dependency?
+	spin_lock_bh(&srv->idr_lock);
+	for (id = 0; srv->idr_in_use; id++) {
+		con = idr_find(&srv->conn_idr, id);
+		if (con) {
+		[ ... ]
+
+With the new check, the socketless conn gets conn_get() and conn_put(),
+which leaves the refcount at 1. The loop then retakes idr_lock and moves
+on.
+
+idr_find() returns NULL for every higher id. So idr_lock stays held with
+BH disabled and no cond_resched().
+
+Meanwhile the send_wq worker runs:
+
+tipc_conn_send_work()
+    conn_put(con)
+        tipc_conn_kref_release()
+            spin_lock_bh(&s->idr_lock);   <- blocks on the stop loop
+
+tipc_conn_kref_release() is the only place that calls idr_remove() and
+decrements s->idr_in_use. So the loop only ends after int id wraps
+around, which takes about 2^32 lookups under the spinlock. Won't that
+cause soft lockup and RCU stall warnings?
+
+When id gets back to the conn's slot, conn_get() raises a zero refcount.
+After spin_unlock_bh(), the release path calls kfree(con). The stop path
+then reads con->sock and calls conn_put() on freed memory.
+
+The path is reachable from an unprivileged user in a user+net namespace:
+
+  1. TIPC_GROUP_JOIN (tipc_group_create()->tipc_topsrv_kern_subscr()).
+  2. Leave the group or close the socket while topology events are
+     queued (tipc_group_delete()->tipc_topsrv_kern_unsubscr()).
+  3. Tear down the netns.
+
+The later patch in this series, "tipc: fix use-after-free in netns
+teardown", fixes this. Its loop uses idr_get_next_ul() with
+kref_get_unless_zero() and drops idr_lock with cond_resched() on every
+iteration. Remaining work references are left to
+tipc_topsrv_work_stop(). So the problem only exists at this commit.
+
+The two patches carry different Fixes: tags. Could that cause trouble
+for bisection, or for stable trees that take this patch without the
+follow-up?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the same livelock looks
+possible for socket-backed conns too.
+
+Suppose recv or send work already cleared CF_CONNECTED through
+tipc_conn_close(), while rwork or swork still holds a reference. The
+call to tipc_conn_close() from the stop loop then returns early without
+a conn_put():
+
+	disconnect = test_and_clear_bit(CF_CONNECTED, &con->flags);
+	[ ... ]
+	if (!disconnect)
+		return;
+
+The loop's own conn_get()/conn_put() pair leaves the work's reference
+in place. The loop then scans empty ids under idr_lock, waiting for
+idr_in_use to reach 0.
+
+The worker's final conn_put()->tipc_conn_kref_release() blocks in
+spin_lock_bh(&s->idr_lock). Can idr_in_use ever drop while the stop
+loop spins?
+
+The later patch in this series, "tipc: fix use-after-free in netns
+teardown", also fixes this. With it, the loop ends when
+idr_get_next_ul() returns NULL and drops idr_lock on every iteration.
+
+[Severity: High]
+This is a pre-existing issue, but can the conn_get() here bring back a
+zero refcount? conn_get() is a plain kref_get():
+
+static void conn_get(struct tipc_conn *con)
+{
+	kref_get(&con->kref);
+}
+
+tipc_conn_lookup() uses kref_get_unless_zero() instead.
+
+Say a final conn_put() from rwork, swork or tipc_conn_close() runs on
+another CPU while the stop loop holds idr_lock. The conn is then still
+visible in conn_idr with a refcount of 0:
+
+CPU1                              CPU2 tipc_topsrv_stop()
+                                  spin_lock_bh(&srv->idr_lock)
+conn_put(con)
+  tipc_conn_kref_release()
+    spin_lock_bh(&s->idr_lock)
+      (blocks)
+                                  con = idr_find(&srv->conn_idr, id)
+                                  conn_get(con)    <- refcount from 0
+                                  spin_unlock_bh(&srv->idr_lock)
+    idr_remove(&s->conn_idr, ...)
+    [ ... ]
+    kfree(con)
+                                  if (con->sock)   <- freed memory
+                                      tipc_conn_close(con)
+                                  conn_put(con)
+
+Before this patch, tipc_conn_close() already dereferenced con->sock->sk
+on the same freed object. The new con->sock read touches the same
+memory.
+
+This seems to match the KASAN slab-use-after-free described in the next
+patch in the series, "tipc: fix use-after-free in netns teardown". That
+patch replaces conn_get() with kref_get_unless_zero() under idr_lock
+and sets con = NULL when it fails.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001204614.3481089-1-peter.hunt%40opengear.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004210016.3051310-1-Jeremy.Jean%40oss.cyber.gouv.fr
