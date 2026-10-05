@@ -1,78 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3871424679;
-	Mon,  5 Oct 2026 23:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2977443C11
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 23:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791242912; cv=none; b=usCS/xTu44uICJTt5ySzExxTHpN85SAaZHMGwhGAohw1pTdoMu+TQKHMeOR7QWQhZecam1BobjYCldQk/qUATYEWxaeBFktrZse7Mh+jpKnEQRf7bqwu1JlBnxgTjZFfkwtbHbe7CO7dnEBprZwM2aX+mKMTtUwBl8LXMzzjEDs=
+	t=1791243007; cv=none; b=UfWLlUQgDnftSr2a6qEc050tUVgb1k5OMLL/FCPibzjpoQOj29R14sW04s5vpaC4zG0WfepWRfI5Opuipx2aPqxuJ7Yh/iHooEhNs/Iiz3rLKCpdMhIrbwX5fdYQvE1BFQu+EbsF+sZK+QSN/fDE/ZF6cctB5VdJLZoLUKh/izk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791242912; c=relaxed/simple;
-	bh=FVLmQjO/zyOlaCdMccgcrMrTdps/z/PXZTG8qMUt0Kk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oVEMySmPVKWAwDGhmUnAWn63ZoYXRSkGFFZRY6bhcU7DGpaaoOld/jQd8m7pOS/Hn0i8wwC3OTLMfaSPn49Wm9orpwP4BMJ2bDB2GP7MEugnryiYTLzgOB1/7cgMF2dMG+OgSC188vLCf7kOZ9KmSIpjF6AGMc1IZiswNrJzDdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rawk6CKr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791243007; c=relaxed/simple;
+	bh=DhmLatEzD2rjmdLPINlK+/6inQkxqghJtxOIbcF1JpU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=P1M6FRpXedEIg7Sh7+bn/291x6iaeLkdDMzmN67QYM6JDVtfcK2q+2HPHhlr3Gx4ue02lApl1HPCsJWYDPSscCDxfzZoCK8JfR5X1dH+JlL60sIYoHgeCe0nSQ0NvPhH4xCmxgIYXklAhUwd0PhUyGiqb5c/i7/X8Da5YiyWByM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RnHXEblH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rawk6CKr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1BE1F000FF;
-	Mon,  5 Oct 2026 23:28:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RnHXEblH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460F01F000FF;
+	Mon,  5 Oct 2026 23:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791242910;
-	bh=MVSC1ZTOX6aznc08Ydm8DeQB4kGL9X8hXgmrk6Xf7+o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Rawk6CKrNQ7BPXHOfP7U9zu00LpDyCdr4+hV8K1MqN49Cbqyz4rmG42RNfewt46It
-	 XJ+o/0L3QaffTyiZ6TjkOj86ejOZ9UHQaOVwKOLJqc4wieuHYLSUtFo5kDc1YvUvmX
-	 XkkAfLgXvL9JtBsPHEBw6bznkiYuoZtrWHlfLVL7/gcZ/Kafs81ahXakXmzaz3LjnR
-	 bX/9A32rzhe6AsZrmYiZTcilq+wbHWevWvN+8ZuE/yvA8LcoyucPlq3V1Pmt3tOk9t
-	 +yNGjL/u0CCBBS4hdG5ngIpzmExSDNgzE9d+MAocUc7ZEtH9MR3WIuz7W787mBj7xh
-	 QLQwjwDamEQ8Q==
-Date: Mon, 5 Oct 2026 16:28:29 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jisheng Zhang <jszhang@kernel.org>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: stmmac: Disable checksum insertion for XDP frame
- TX
-Message-ID: <20261005162829.74778c7d@kernel.org>
-In-Reply-To: <f0d8c25f-96e1-4da8-af6c-3286610338ba@lunn.ch>
-References: <20260929121025.20821-1-jszhang@kernel.org>
-	<f0d8c25f-96e1-4da8-af6c-3286610338ba@lunn.ch>
+	s=k20260515; t=1791243006;
+	bh=4Uuxg5FNMXPQkYNrfMaVOcepfBTv43FMsDT6pU0FuFM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=RnHXEblHmecjOViDH0LgLoGmvxuCXX393SITiUvB+Na1+QZe82CaGrMi4MiEiFsfK
+	 /22/njx1GoFjcIvQg/h0naP0qFjtMF1kjOzsmeAsWtOgOTgp5ak/b08W0SPRSjAIci
+	 cMmK/vyiFaxYasEHUyRiTCmOmp/cOWh1TlLebfQ5lHxN0cCDmBj270JuKFqh4Ng0Qa
+	 2VsdHKZnpke5IIG9L8wpdRY/+wGDuFDiSR7iHVWj1ja5MycxHtQ4HiaiEYW04Kjrq2
+	 4KO5xeiiB3Bvi17XtQcXrTLXXyvkRJP5dKBHwbJBv6P5jBEmUhHn3IFY5FadLV+8z+
+	 TO7/PZdVmWvVg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2C0392667F;
+	Mon,  5 Oct 2026 23:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net] ipv4: free inet_opt and ireq_opt after an RCU
+ grace
+ period
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179124300502.1937173.6888058929378452446.git-patchwork-notify@kernel.org>
+Date: Mon, 05 Oct 2026 23:30:05 +0000
+References: <20261001221253.2964024-1-edumazet@kernel.org>
+In-Reply-To: <20261001221253.2964024-1-edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, jiayuan.chen@linux.dev,
+ edumazet@google.com, netdev@vger.kernel.org, xinyang@anthropic.com
 
-On Tue, 29 Sep 2026 22:29:14 +0200 Andrew Lunn wrote:
-> On Tue, Sep 29, 2026 at 08:10:25PM +0800, Jisheng Zhang wrote:
-> > stmmac enables TX checksum insertion for XDP frames whenever the queue
-> > supports it. XDP frames carry no TX checksum offload request, so this
-> > can overwrite a checksum already present in the packet.
-> > 
-> > Pass false to stmmac_prepare_tx_desc() when transmitting an XDP frame
-> > so that the packet is sent with its checksum fields unchanged.  
-> 
-> This seems odd to me.
-> 
-> If the frame contains a checksum, it is either correct, and the
-> hardware calculated one will come out the same, not an issue.  Or the
-> checksum in the frame is actually wrong, because the frame has got
-> mangled by eBPF before sending it out, and you want the hardware to
-> calculate the correct value.
-> 
-> What an i missing?
+Hello:
 
-Oops, missed this before applying. Fair, but also we shouldn't modify
-the frame if user didn't ask for it. Perhaps 0 UDP csum is used, or
-user is trying to build a testing tool and intentionally send bad csum.
-I applied the patch to net-next. It can hurt as much as help, but the
-direction seems right. At the very least any AF_XDP app expecting csum
-insertion without asking for it would not be portable to other drivers.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu,  1 Oct 2026 22:12:53 +0000 you wrote:
+> tcp_v4_syn_recv_sock() transfers ownership of ireq->ireq_opt to the
+> child socket (newinet->inet_opt) without copying it.
+> 
+> Another cpu can concurrently process a retransmitted SYN for the same
+> request socket, and send a SYNACK from tcp_check_req().
+> tcp_v4_send_synack() and inet_csk_route_req() read ireq->ireq_opt
+> under rcu_read_lock() only, and ip_build_and_send_pkt() and
+> ip_options_build() then read opt->optlen twice.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net] ipv4: free inet_opt and ireq_opt after an RCU grace period
+    https://git.kernel.org/netdev/net/c/e3f33b0a1d89
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
