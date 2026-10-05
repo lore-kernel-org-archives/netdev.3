@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A49455198;
-	Mon,  5 Oct 2026 23:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D63A455633;
+	Mon,  5 Oct 2026 23:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791243018; cv=none; b=k+A6MT/lDDuRvqSLchro2TNJgwr3t0Eje548Q3JEJTDlR7TIo/pbYokAps+dQoB1VYFxFAjk8aiwUpoFgdGtx1kBLd4f/reRnRU2zzMxCg8S/MfL6tPO3wTB/qiCqVhUr5Eq7F2MFIh3+/qOezCA5kpUHof6sJUag/IQMZWwAaQ=
+	t=1791243020; cv=none; b=QoFbdQj1lH36moxac1RUycz4cMIvpWRp11uznX3pMfUME/ljWwSYFSyTcINqPhHPpfVSfJJB2hCQk4XNDUr7k+7PvulEehX7ApgClxMgESKvOlhYkUAXwJahSH2n9VCwqOar9B6dooIZhANw2E/lAnTDGqJ+yr66+tiTOHvYQ/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791243018; c=relaxed/simple;
-	bh=QIwvPXcQxa7+G/vFqdW4jA7UWDGyGfxK3EAoSLTHVO8=;
+	s=arc-20240116; t=1791243020; c=relaxed/simple;
+	bh=TuErjOQxU/xGi9+knRePG8J3MZLzsno6xEtEMrIFGeM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cAIwD1iGQsRrxv6qZe5J5cFz9VQRhPKoU2JcECOOUIj6ln9RL/WmX3nF7YBgatbGzO8DSPREjuiX7cAfPDY8DJjXZ7g3iic9aHZjbAhTFidIV9oITWlK6slbMZSgw6/bQo6Ylc42YCyzL8eaVoN6y/Dh0Qkhl1gmskwYyzx9Peg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5/nvrDK; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kDt8EhZmkh2pWGjwM0y2LKni3AGOuhYosaNQ7xX2gNRJPNnnnpVE0peY37e1LUvvM047ZehdPXO39wdhwIfBbGW1xNOryMbEZNadPVZ8v4bB0FG3g8UZWY3KmbXS02zZFqUxY+nHu/hsGvd5E4R7gcET7GuPbPvlJ7MevBaOgiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DT69k3c5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5/nvrDK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E5C1F00893;
-	Mon,  5 Oct 2026 23:30:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DT69k3c5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822B61F000FF;
+	Mon,  5 Oct 2026 23:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791243015;
-	bh=/NMHzcTrsi/FxdyvcZG+G4XA9kpbkZrKF1IZwYI5o0Y=;
+	s=k20260515; t=1791243016;
+	bh=cGDblRaOu2bvA4g0O2ggswBxqHpgYqDBEKzu3LYLMPM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Z5/nvrDKkRuCzLJ3A6uBTtupg97b1rhTpw2ubVYsUSmxeKUP2nYxG6Wply6oEXqIO
-	 e63NoTdgNuMpS9uQTQcUPKERBvEgV8pjHX0/xW6w1F0T7RQMHsRLr/w4qiIQSx5NS6
-	 LLQFNEl+eQUBEt6oPa0U1+jinFcOxYkkSpUKzhF9N9Iwwbz0LRQOJBZ9Ogyn8SAeTg
-	 4knDau1/SFz3pkZpM5Va0cAb7d8gwjVviO/pAagkZ1fjLEnjmlBuwre5v0sucpDuzE
-	 otd0fJp2XWv/vDOvG7gatwmVg3ybHtRfISGHAHC1NFl55KuoD5J+mbHpXgVRbob+nj
-	 iDBcsoLG0tc9w==
+	b=DT69k3c5MvjsgV6EOnq6pDY6AYGFxKz1uzJfVE+Z8SkcFsZSQJ1e/9QPhP5wDcxch
+	 5QjTSGc0hWl7OGZSSi7vYoRWuk3oO3qKwzT4L15QKfAV07sXzAMu0FO0El1Gdi4WnV
+	 hqHxgmEWLUn4AVTjt0uehGv5JRqsTwF8au3/hvFs2nP4aeukVGkEBFpwF4XYNoMkVC
+	 De2a3iqeTt3di3n0yEv1FL1SB6Hz/pP3llRB50r0KpWTEPJxM+KkH5wq1VIypMadVA
+	 6p71XTpf+40sfFIXOgGIJjAi/1JuuPyfVVGFE+x56ZbB4rx9iwPBkcpgAhDBn2x+Nt
+	 QkTOFsd74J3vg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1423392667F;
-	Mon,  5 Oct 2026 23:30:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773AF392667F;
+	Mon,  5 Oct 2026 23:30:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: dsa: motorcomm: Fix register rollback in
- LED
- setup
+Subject: Re: [PATCH net-next] net: macb: move printk() calls out of bp->lock
+ critical section
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179124301369.1937173.18327578726103515612.git-patchwork-notify@kernel.org>
-Date: Mon, 05 Oct 2026 23:30:13 +0000
-References: <20260930141151.3973221-1-mmyangfl@gmail.com>
-In-Reply-To: <20260930141151.3973221-1-mmyangfl@gmail.com>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+ <179124301502.1937173.6589668234241813148.git-patchwork-notify@kernel.org>
+Date: Mon, 05 Oct 2026 23:30:15 +0000
+References: <20260930-macb-irq-v1-1-8994a4c8f3bb@bootlin.com>
+In-Reply-To: <20260930-macb-irq-v1-1-8994a4c8f3bb@bootlin.com>
+To: =?utf-8?q?Th=C3=A9o_Lebrun_=3Ctheo=2Elebrun=40bootlin=2Ecom=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, nb@tipi-net.de,
+ vladimir.kondratiev@mobileye.com, gregory.clement@bootlin.com,
+ benoit.monin@bootlin.com, tawfik.bayouk@mobileye.com,
+ thomas.petazzoni@bootlin.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 30 Sep 2026 22:11:48 +0800 you wrote:
-> The LED error path writes back a stale snapshot of the whole words taken
-> before the class device registration, silently reverting LED2 state of
-> sibling LED groups already registered and reachable from sysfs. Although
-> the odds are very small, fix it by reverting this group's fields only
-> for correctness.
+On Wed, 30 Sep 2026 20:35:36 +0200 you wrote:
+> printk() call while bp->lock is acquired might be a bad idea:
 > 
-> Fixes: 9af9a8168213 ("net: dsa: motorcomm: Add LED support")
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
+>  - It grows the spinlock atomic section.
+> 
+>  - If netconsole is active on the same interface (and we run on the
+>    queue's CPU), we risk a deadlock because macb_poll_controller()
+>    calls macb_interrupt() which grab bp->lock if an IRQ is pending.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] net: dsa: motorcomm: Fix register rollback in LED setup
-    https://git.kernel.org/netdev/net-next/c/1a2dbdb6602a
+  - [net-next] net: macb: move printk() calls out of bp->lock critical section
+    https://git.kernel.org/netdev/net-next/c/3c9d88b04e6c
 
 You are awesome, thank you!
 -- 
