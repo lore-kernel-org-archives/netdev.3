@@ -1,44 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5419A3E5A33;
-	Mon,  5 Oct 2026 21:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45503E008F;
+	Mon,  5 Oct 2026 21:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234995; cv=none; b=qYAu099n33HIFyPyUA4N82t3BnQ+SI1hGSYDmqdQTNu10AFo8XFBG6Ld2CBXB5a+vNaZRDPuD7YMxBHex0t6h1T1fyInCC0KlKQd2dTuH+CoLzDDqw4eDuLPoHPNWvzLeq0RRTAYwu3f934TuiGHxtz0LCGtqEQZfBl+NxJkQg4=
+	t=1791234994; cv=none; b=PBlfpCOTaLMFjFOueQhMSIRbRVNlqC65jVPmi3+Zzwm7UG/VN8L/WqmB8obSv4P61NdPMu+0wj9lSNOZoBrlBw1z4MSRges0trX3yIav6yrxUS/DhsMNrQIAz8OOF8QV6C+5iAe9hJ9taKvdBMtUt35Om5tbZln618cOei1vBVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234995; c=relaxed/simple;
-	bh=LO1J7bob4991rz5cYh3HMP9AtOg22//J0+f124dtHYA=;
+	s=arc-20240116; t=1791234994; c=relaxed/simple;
+	bh=vlgXhN3e7nRfRr0bz6tNROGI5MLkTy+0od85aeFC05w=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZR/bHiMS13qRI761vQ0pZq+VwUCkjqC8wmrsoXyEqYAmCQAjra4DKowDzLq2IMPPB7r/lATqLbhArIXIAsJ5c7MKIcdy4O5TSV039Tnj1hR0G/Yktd33PdQsJ0RsqYjPm0+qLKC4YzYsBpQQA2Z9n7Xh4gGQEFINzc+06FHQ5iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T2Zjn/Yv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=kXRhQtYICnI6xSxi+bTnwf3yd/4c2OUt6jVWSY9XrCelKh5ZYcqH2knV/yVYKYyMEGd/ODAdDIqKQhihNbR77o+WbTeCEG1JNEv9WWcbbbFX+mnTWQPn5jtp2PtnkXf/JVORK+ZeEg2xYWCxU9iqZycAnb2EedEb/cO3vioxiFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTYfzgnR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T2Zjn/Yv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3AF1F000FF;
-	Mon,  5 Oct 2026 21:16:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTYfzgnR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3DF1F00899;
+	Mon,  5 Oct 2026 21:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791234990;
-	bh=GxjGPAdbTyWkLNOx6DyvChvOCeh+LjtpxWD/8SPN/T4=;
+	s=k20260515; t=1791234988;
+	bh=YdzZmoxRoZM+UMpL7Eq9SHs9ftgxVclJGjtJeClfYhA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=T2Zjn/YvgGxax7u4MrUGgo/D9q7To56Huux8cqyni3X8TGdTZFpzcUXAqBWiu79Ns
-	 ONI0/sUJUZG/HgLWID/BlnVlMWAmGm5gAY6M/m1r2FljwURF1D3H03J2MO+mADmGln
-	 6e9x81r+Qt315TM+aFZFcEaIjyvejoHFGSPHeQhl+QPSsGR7526HEGbEfUag8FBVde
-	 WRsTCZW5nIieVZTJEolXzneYRKapIFykfuqtxW3+8MXytuvbR47RZCnUcnWobN2X+n
-	 xJ3pwY5wpA1+4uDKyuRyCCZURgswcR/MrEcyb33BMjt/EA/jljWlA+Vi/EP82ImSiO
-	 //Dec2hJaUhHw==
-Subject:
- Re: [PATCH net] bnxt_en: fix DMA mapping length for padded small packets
+	b=bTYfzgnRLN+71jSvBERhtSZO3zSjb+mLxaRNWxGUJLayHcjkcTmlTlb6phLm0RktH
+	 cGJyJ4VmroXI2jHiyIZjpBqk1j3kvnHzwSs2p3lqd7RWfazybkVldiDGR+2ezlNWxs
+	 G8sDRskjHQO8ivpJTpIRRnnQHnmWQQFmR+8r1AsjC6gQxgQh3yKI8U37OAklGtNYxU
+	 5h2RJn53JbUrz94DHxAS84FkyB4+G5RLpme2Doqjlo120Cvh+rRv8jXnIy0XDeb1dx
+	 MCf5N6TSHFQhj3yRdwz0owqQ9t/k74HfADaT1cJs7VxH0Nwb0rSaq2iw/cMxmCQTkz
+	 5Vnc+ARNgr0cQ==
+Subject: Re: [PATCH net-next v3 2/2] net: stmmac: rework stmmac_rx to support
+ XDP rx multi-buff
 From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, stable@vger.kernel.org, sfle@kth.se,
- edumazet@google.com, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- andrew+netdev@lunn.ch
-Date: Mon, 05 Oct 2026 21:16:29 +0000
-Message-ID: <179123498942.434549.13440734253618262332@kernel.org>
-In-Reply-To: <20261005023812.130639-1-edumazet@kernel.org>
-References: <20261005023812.130639-1-edumazet@kernel.org>
-X-sashiko-severity: High
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Date: Mon, 05 Oct 2026 21:16:27 +0000
+Message-ID: <179123498740.434549.17434194748750363367@kernel.org>
+In-Reply-To: <20261004-stmmac-rx-mb-v3-2-50fa171af9ec@oss.qualcomm.com>
+References: <20261004-stmmac-rx-mb-v3-2-50fa171af9ec@oss.qualcomm.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,10 +51,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,113 +62,222 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete for short non-linear skbs, and for them it
-  changes the wire frame for the worse.
+- [Medium] stmmac_rx() now gathers every buffer of a frame into one
+  xdp_buff.
+- [Medium] stmmac_rx() now hands a multi-buffer xdp_buff (head plus frags
+  in the head page's skb_shared_info) to the XDP program.
+- [Low] Several 'In addition' bullets in the commit message describe the
+  parent tree's behaviour wrongly.
+- [Low] Rejected in the baseline decision; kept here because
+  requires_validation is set.
+- [Low] In stmmac_rx(), the non-PASS verdict branch (if (IS_ERR(skb)))
+  still has the comment '/* Clear skb as it was set as status by the XDP…
 
 --
 
-bnxt_en: fix DMA mapping length for padded small packets
+net: stmmac: rework stmmac_rx to support XDP rx multi-buff
 
-This patch replaces skb_pad() with skb_put_padto() in the normal_tx path
-of bnxt_start_xmit(). After the change, skb->len and skb_headlen() include
-the padding, so dma_map_single() maps the whole padded buffer. The pad
-variable and the rewrite of the last BD length are removed.
+This reworks stmmac_rx() to accumulate all descriptors of a frame into a
+single xdp_buff, so the XDP program runs on the full, possibly fragmented,
+packet. A partial skb is no longer saved in rx_q->state across NAPI polls;
+the in-progress xdp_buff is saved there instead. XDP_PASS frames are built
+into an skb with napi_build_skb() and xdp_update_skb_frags_info(), and FCS
+stripping moves to a new stmmac_xdp_shrink_tail() helper.
 
-Closes: https://lore.kernel.org/netdev/20261004122616.56714cbd@nargothrond/
+> Build the xdp_buff by accumulating all the descriptors that make up a
+> frame, so the XDP program runs on the full (possibly fragmented) packet
+> instead of just the first buffer.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> index d7728d0c5b6e6..7ea27e81e88c5 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+[Severity: Low]
+This isn't a bug, but could the scope be stated more precisely? When XDP is
+enabled, stmmac_xdp_set_prog() still rejects dev->mtu > ETH_DATA_LEN and
+still turns off SPH:
+
+	priv->sph_active = priv->sph_capable && !stmmac_xdp_is_enabled(priv);
+
+So the program only sees fragmented xdp_buffs for oversized frames that the
+MAC accepts at MTU 1500 through GMAC_CONFIG_JE or the XGMAC GPSL setting.
+
+Would it help to say in the commit message that the jumbo MTU restriction
+for XDP stays in place?
 
 [ ... ]
 
-> @@ -672,14 +672,12 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
->  	}
+> - release all buffers belonging to a frame when it is dropped on RX
+>   errors, instead of leaking the ones already attached to the xdp_buff;
+> - drop the whole frame when the number of fragments exceeds
+>   MAX_SKB_FRAGS, instead of delivering a truncated one;
+
+[ ... ]
+
+> - skip zero-length fragments, which can happen for non-first
+>   descriptors when split-header (SPH) is enabled.
+
+[Severity: Low]
+Are these bullets accurate when compared with the parent tree?
+
+On the leak claim: the parent stmmac_rx() built no xdp_buff frags. On
+error it called dev_kfree_skb(skb) on an skb marked with
+skb_mark_for_recycle(), which returns the attached page_pool frags.
+
+On the truncation claim: the parent called
+skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, ...) with no bound, so it
+would not have delivered a truncated frame.
+
+On zero-length fragments: the parent already had the
+"} else if (buf1_len) {" and "if (buf2_len) {" guards.
+
+These read like changelog notes from an earlier revision of the patch.
+Could they be reworded to describe the change against the current tree?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b2d20628ed214..3098fd6df1582 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+
+[ ... ]
+
+> @@ -5874,135 +5996,94 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+
+[ ... ]
+
+>  		} else if (buf1_len) {
+> -			dma_sync_single_for_cpu(priv->device, buf->addr,
+> -						buf1_len, dma_dir);
+> -			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+> -					buf->page, buf->page_offset, buf1_len,
+> -					priv->dma_conf.dma_buf_sz);
+> +			if (!stmmac_build_xdp_frags(priv, rx_q, buf1_len,
+> +						    buf->page,
+> +						    buf->page_offset,
+> +						    dma_dir, &ctx.xdp)) {
+> +				if (!error)
+> +					rx_dropped++;
+> +				error = 1;
+> +			}
+>  			buf->page = NULL;
+>  		}
 >  
->  normal_tx:
-> -	if (length < BNXT_MIN_PKT_SIZE) {
-> -		pad = BNXT_MIN_PKT_SIZE - length;
-> -		if (skb_pad(skb, pad))
-> -			/* SKB already freed. */
-> -			goto tx_kick_pending;
-> -		length = BNXT_MIN_PKT_SIZE;
-> +	if (skb_put_padto(skb, BNXT_MIN_PKT_SIZE)) {
-> +		/* SKB already freed. */
-> +		goto tx_kick_pending;
->  	}
-> -
-> +	length = skb->len;
-> +	len = skb_headlen(skb);
+>  		if (buf2_len) {
+> -			dma_sync_single_for_cpu(priv->device, buf->sec_addr,
+> -						buf2_len, dma_dir);
+> -			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+> -					buf->sec_page, 0, buf2_len,
+> -					priv->dma_conf.dma_buf_sz);
+> +			if (!stmmac_build_xdp_frags(priv, rx_q, buf2_len,
+> +						    buf->sec_page, 0,
+> +						    dma_dir, &ctx.xdp)) {
+> +				if (!error)
+> +					rx_dropped++;
+> +				error = 1;
+> +			}
+>  			buf->sec_page = NULL;
+>  		}
+> +		frames++;
 
-[Severity: High]
-What happens here when the skb is non-linear and shorter than
-BNXT_MIN_PKT_SIZE?
+[ ... ]
 
-bnxt_start_xmit() reads last_frag and tx_buf->nr_frags earlier, before
-any padding:
+> +		skb = stmmac_xdp_run_prog(priv, &ctx.xdp);
 
-	last_frag = skb_shinfo(skb)->nr_frags;
+[Severity: Medium]
+Can this pass a multi-buffer xdp_buff to an XDP program that was loaded
+without BPF_F_XDP_HAS_FRAGS?
+
+stmmac_build_xdp_frags() calls xdp_buff_add_frag(), which sets
+XDP_FLAGS_HAS_FRAGS. stmmac_xdp_run_prog() then runs whatever program is
+attached, and the driver never checks prog->aux->xdp_has_frags.
+stmmac_xdp_set_prog() only gates the attach on MTU:
+
+	if (prog && dev->mtu > ETH_DATA_LEN) {
+
+These frames can still arrive at MTU 1500. GMAC_CORE_INIT always sets
+GMAC_CONFIG_JE, XGMAC sets GPSL to XGMAC_JUMBO_LEN, and dma_buf_sz is 1536.
+On cores with buffer2, a 1537 to 3072 byte frame fills buf1 and buf2 of one
+descriptor and becomes a head plus one frag. Larger frames span several
+descriptors.
+
+A program that never opted in to frags sees only the head through
+data/data_end, but its verdict applies to the whole frame.
+
+Also, stmmac_dvr_probe() still advertises:
+
+	ndev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
+			     NETDEV_XDP_ACT_XSK_ZEROCOPY;
+
+Should NETDEV_XDP_ACT_RX_SG be advertised here? And should programs
+without xdp_has_frags either be rejected or kept away from frags-bearing
+buffers?
+
+> +		/* Due xdp_adjust_tail: DMA sync for_device
+> +		 * cover max len CPU touch
+> +		 */
+> +		sync_len = ctx.xdp.data_end - ctx.xdp.data_hard_start;
+> +		sync_len = max(sync_len, pre_len);
+> +
+> +		/* For Not XDP_PASS verdict */
+> +		if (IS_ERR(skb)) {
+> +			unsigned int xdp_res = -PTR_ERR(skb);
+> +
+> +			if (xdp_res & STMMAC_XDP_CONSUMED) {
+> +				stmmac_xdp_put_buff(rx_q, &ctx.xdp, sync_len,
+> +						    true);
+> +				rx_dropped++;
+> +			} else if (xdp_res & (STMMAC_XDP_TX |
+> +					      STMMAC_XDP_REDIRECT)) {
+> +				xdp_status |= xdp_res;
+> +			}
+
+[Severity: Medium]
+What happens on XDP_TX when ctx.xdp carries frags? Does the frame go out
+truncated to the head buffer?
+
+The path is:
+
+__stmmac_xdp_run_prog()
+  stmmac_xdp_xmit_back()
+    xdp_convert_buff_to_frame()
+    stmmac_xdp_xmit_xdpf()
+
+The converted frame keeps the frags flag, but xdpf->len covers only the
+linear head. stmmac_xdp_xmit_xdpf() sets up one descriptor and marks it as
+both first and last:
+
+	stmmac_set_tx_dma_entry(tx_q, entry, buf_type, dma_addr, xdpf->len,
+				false);
+	stmmac_set_tx_dma_last_segment(tx_q, entry);
 	...
-	tx_buf->nr_frags = last_frag;
+	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
+			       csum, priv->descriptor_mode, true, true,
+			       xdpf->len);
 
-For a non-linear skb, skb_put_padto()->__skb_pad() skips the tailroom
-fast path and calls skb_linearize(). __pskb_pull_tail() then:
+The frags are never mapped or queued, yet the action is counted as
+successful. The EST SDU check also measures only the head:
 
-  - copies the frags into the head
-  - calls skb_frag_unref() on each one
-  - sets nr_frags to 0
+	    xdpf->len > priv->est->max_sdu[queue]) {
 
-The frags[] slots themselves are not cleared.
+The frag pages are not leaked, because stmmac_tx_clean() returns them via
+xdp_return_frame_rx_napi().
 
-After that, len = skb_headlen(skb) covers all 52 padded bytes, but
-last_frag still holds the old count. TX_BD_CNT(last_frag + 2) and
-SET_TX_OPAQUE(bp, txr, prod, 2 + last_frag) still count the old
-fragments. The frag loop also still runs over them:
+Oversized XDP_TX frames were also truncated before this patch. The
+difference is that the program now sees the whole frame and returns
+XDP_TX for it.
 
-	for (i = 0; i < last_frag; i++) {
-		frag = &skb_shinfo(skb)->frags[i];
-		...
-		mapping = skb_frag_dma_map(&pdev->dev, frag, 0, len,
-					   DMA_TO_DEVICE);
+Should frags-bearing frames be dropped on XDP_TX until
+stmmac_xdp_xmit_xdpf() can transmit multiple descriptors?
 
-This emits a BD for each stale frag, and TX_BD_FLAGS_PACKET_END is set on
-the last stale BD:
+> +
+> +			/* Clear skb as it was set as status by
+> +			 * the XDP program
+> +			 */
+> +			frames = 0;
 
-	txbd->tx_bd_len_flags_type |= cpu_to_le32(TX_BD_FLAGS_PACKET_END);
-
-As an example, take a 42-byte frame with a 14-byte linear head and one
-28-byte frag. AF_PACKET PACKET_TX_RING can build one through
-tpacket_fill_skb(). The head BD would describe 52 bytes and the stale frag
-BD another 28. Wouldn't that put an 80-byte frame on the wire, with the
-payload duplicated?
-
-The NIC would also DMA-read pages that the skb no longer holds a
-reference on. If this skb held the last reference, those pages could
-already be freed or recycled.
-
-The completion path in __bnxt_tx_int() (last = tx_buf->nr_frags) and the
-tx_dma_error unwind path also trust the stale count.
-
-bnxt sets NETIF_F_SG, so the core does not linearize these skbs first.
-They reach normal_tx whenever the push path is skipped, for example when
-tx_push_thresh is 0, the ring is not empty, or lflags is set.
-
-The old code mapped the same stale frags, so that part is not new. Its
-total descriptor length still came to 52, though, because the pad was
-added to the last BD. The oversized frame with duplicated data seems to
-come from this change. It also doesn't match this part of the commit
-message:
-
-  so that dma_map_single() maps the full buffer and the descriptor
-  length is consistent.
-
-Could the padding be done before length, len, last_frag and
-tx_buf->nr_frags are read, and before the free_size check? Or could
-last_frag and tx_buf->nr_frags be read again after skb_put_padto()
-succeeds?
+[Severity: Low]
+This isn't a bug, but the comment still talks about clearing skb. The code
+now resets frames instead, and skb is a loop-local variable that is never
+cleared. Could the comment say that the in-progress frame state is being
+dropped?
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005023812.130639-1-edumazet%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004-stmmac-rx-mb-v3-0-50fa171af9ec%40oss.qualcomm.com
