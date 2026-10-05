@@ -1,239 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010025.outbound.protection.outlook.com [52.101.193.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D627D3002CF;
-	Mon,  5 Oct 2026 08:57:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791190663; cv=none; b=OtfYkhTMoWUlreF+QgjGIctdOEztprMl+87iQhtkd6NIp27yHfZfDpcyLun3mA48AkNL/sf/gI+p1hzTAlj8tmXiEbkqWQmJ5cn2vbmhct6+3motugrFRR3tEq4DXXFd2xWhckSCi7QjXjsk9cZY+JfHlLJs1yg9MeSbvJ9O9HQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791190663; c=relaxed/simple;
-	bh=XjWcuUrd7k7lY5Kotix5/3ConqgPhYTTwxQ2qzQyRiE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o79IDgas62EtjWrq6q36Jk3zdH85OCiwhI68icDdkgT78SFGH/BQGV9yvebKNbMCwzaRf5TKdbxUdPU0ETEZ7m5uLaMROUrrPXSdvh0kkpkcmA/jIYFKBSqZsGg2BBiC3f0OJf4jNjChMCFa6GA/4Qs11v4rogxHJ2bJbsvC4Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RN4XdU6n; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4271D424D72;
+	Mon,  5 Oct 2026 09:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791190893; cv=fail; b=URzT5GFGpzI0Z7F1caQ6Vd4iuA9XQpCZ/BQuRQxeAxT6ot95FbtCY+8ssxLfW4m2at/F4ZPCGz0FxPjhizv1if32qtEO+DPHDMtnbqUFhzpt9J/Zt3DerH9hoh1CAGn8ZfcSBiJ01R9HjNMInmcx2N1CmPfevoB/v5yTBNuV2yc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791190893; c=relaxed/simple;
+	bh=eZmyGynWt3FiyzAFPmrphwqIWhHAHm2hzFpSbkeASlE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SB4xyThdNbXj9pRXTuNAwNKAfevzytWZhTL/mJUz2t/kliKxrxlcStbM5NtjrcbINLr+RXiIDLRK5gAVsl4TCUWCFuZ3Tg0Q7KC0UnEABNqoFeExXu5dFRQsnexJIQlw7MqYzwGvMEP6aPRA0ADPkBH8BX77u8aBptWs3GgN0lg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=X16g0ER2; arc=fail smtp.client-ip=52.101.193.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RN4XdU6n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339E91F000FF;
-	Mon,  5 Oct 2026 08:57:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791190661;
-	bh=Gyldysy9Dc9evEL89sNJq+ei2A+IB5431SJpx8esMJw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RN4XdU6nk1F5CyK9nrXaEZxmHtz3HG8rtOdXauYa3T4Q8AsVBrcqOYB3JkXA8s8m/
-	 sX1MRHIqONWiSBM537qaZAIE7jSFpdy30vqv4IfX9gIxgHXfpFdvOxm+9tkW4Sn3pO
-	 XBSfOHzMl1jhHmXlY6chPPMCQHmWkbQXuKdZ9lH++1srdgvuBff8N3hFaROcn0yXXp
-	 xbPJxOf5s+VkFwxSyYua0T++5FHThgnifN926KBLpxC5mVP8nmn7T7BEnT6zfotr60
-	 c2MBlYHg6VJ3ALaP8/w5DgKmhLIqCW+gEYqPSsLMlsAaTSaRXAYFwKgmTsTWvn/Lhz
-	 97lsfPLANpyyw==
-Subject: Re: [PATCH net] net/sched: cls_bpf: accept dev-bound programs on
- shared blocks
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev,
- song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
- emil@etsalapatis.com, ihor.solodrai@linux.dev, john.fastabend@gmail.com,
- sdf@fomichev.me, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, bpf@vger.kernel.org,
- victor@mojatatu.com, stable@vger.kernel.org, sashiko-bot@kernel.org
-Date: Mon, 05 Oct 2026 08:57:39 +0000
-Message-ID: <179119065973.434549.15208309588917304307@kernel.org>
-In-Reply-To: <QDISC-PYC7.v1.20261003103747@mojatatu.com>
-References: <QDISC-PYC7.v1.20261003103747@mojatatu.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="X16g0ER2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lhW5bAfqMuLYH5o2RQjOGhKHLunKcNZYM+lJ0q7X5LBy+kemBwU+CYn5/vHaDE5xVwXL462jUrCa93lm4aoSxAlrazgImuDGYniIiI6hSYLXOOUQpEYcEAd+f07sUP6G7pSDjcIRA8qCy0bZzj43UNto0Vx1Lrqw0xWw9IZAduZVIotMGCo/Qay9vrEA1jZConnzgM3mI+3Pgt1V8YExiKYtek2CGSL0o4GNIclQw4OuX8xyYv744ODfBTaqIilq4+6Gd8/WAZ2dRsTAYIdsg5JhMkC6fWk+sAkr6nZ3vuYJB5kS+0cwOxM/G63r5uhYTCELvMfk+gftJRWLkX2Byg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IM+w9dAhOqYOsdbCTWJUkHo0nJbx2ufXR/nhjZmBaGM=;
+ b=ij5CzMEiP++vOWhtJYFDzheG6fm5xSBFjLjl1GZzAqgnm5a5B5F0CoplZrCouogWnWpwr/9tBljj1kSGNTwoJqwo9lMEzsvs1VRCyg1PIp0U4Nkm0zSrgUFGB/DG2gh8lH2jmkPFjp7nHJnsXClgeeVygw42MUYIU1JwhTKVxBiXIHONw0o+gUXZTna+ESncFJFNr2/AgfOL/xdFxWqPHN8WRwoO32ZyQSS5IoD9PA5HwYJazK6TquxxSgiEJ0vL4klBSbHo2u/KiNLu/INS8tlDfTiD5+EQPHoYFQw2RVHNn4L0Q7+tz3getVvKNZtOXkQ3W6QOhSnx+Z0DlCcDog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IM+w9dAhOqYOsdbCTWJUkHo0nJbx2ufXR/nhjZmBaGM=;
+ b=X16g0ER2aJl3f/CI78TxejPbAMkuI7P1dLJYjUI7fceL/CWswaxm14RErdQRpXrUbY0k5HTZnrRBd9cGVdUdgdCY7Jyh3bFvCxMa6DawDKjTAokVtccvPzt8rW2yojPDIbZJ1ixFC8bbDFvBl4bdlmkN9/Wxra34sjG4tZK/tl8=
+Received: from MN0P221CA0020.NAMP221.PROD.OUTLOOK.COM (2603:10b6:208:52a::32)
+ by SA3PR12MB7998.namprd12.prod.outlook.com (2603:10b6:806:320::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 5 Oct
+ 2026 09:01:26 +0000
+Received: from BN2PEPF000055DA.namprd21.prod.outlook.com
+ (2603:10b6:208:52a:cafe::a9) by MN0P221CA0020.outlook.office365.com
+ (2603:10b6:208:52a::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Mon, 5
+ Oct 2026 09:01:25 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ BN2PEPF000055DA.mail.protection.outlook.com (10.167.245.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.3 via Frontend Transport; Mon, 5 Oct 2026 09:01:25 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 5 Oct
+ 2026 04:01:10 -0500
+Received: from xhdharinik40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Mon, 5 Oct 2026 04:01:07 -0500
+From: Kusuma Vasana <kusuma.vasana@amd.com>
+To: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <michal.simek@amd.com>, <Kusuma.Vasana@amd.com>
+CC: <git@amd.com>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: [PATCH net-next V4] net: axienet: Clear stale AXI DMA TX/RX status before re-enabling interrupts
+Date: Mon, 5 Oct 2026 14:31:06 +0530
+Message-ID: <20261005090106.1594994-1-kusuma.vasana@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DA:EE_|SA3PR12MB7998:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5470441-6882-4fbc-c433-08df22bf3c3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|36860700016|82310400026|1800799024|10067099003|11063799006|5023799004|56012099006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	6pi8cee971pPgK5p4L2yb8/XPlkEX+5+kvznsqkSB8ETeOuHydhb3iifo0C+mmlT8ohLYwzu5gJBLETBY3zorxTo20B0bi/w1BPCFFUHhH7UlbMyaM2GD20L0FJeLHXPsRtM6WZO6MuaXucaj0lWnnn1ipSlF6mjjEPJXfRbMD0GkcJKZMtAyhsZ9Ng/DqtiDCfheE3eL2Rl9x0Xq92X6kgf024XhL4v4ooRqFAdxL42zW6oeA7dWCVXHIfkDPlxDbfH7yA+ADUf6rdyYKApMpTaShDOgubVrS/F+i9XotYC1oN9qgT0PLKnRuYfJh2J1X19upxnnC3Vw1mR47LJgLcTlwELWg+phjWhQFwLmSPSAYw2pPfPZYhnJ4h90grfhJcAP+U7YWV5l0lpMpvYkosqi+68kZiZen7WKUgUjpuNOXLUUj+ohYZPZfKHEQ6LCEmyhSV/HIJCtxobWGfVO2sZ2OO+rqYqNgcl48ZeNvVLmWs9kJ4X7EOp9J2qx+UcggrzFH1MBmChoyDIdYzSqdlhGmtcgoQ0kh/FwR58s3PJg/nHcbUwX3S2SlI0LqAZqPw8MRcfajgL8tZUSbnMyju42HqTIdiAnxl3veiVsNmpG0/tcCx9L+wXDlO54uFB8IJJiby9PodfN4Z2uMl4G1tQQdDMDMM+/zv1JxqkfskTlAGVoI6trZFaFkyWJOXb0cA7HRWysZMuJk2mlT1HTQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(10067099003)(11063799006)(5023799004)(56012099006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ceDzd5bNlIhkbbOdcLjp1QJxsPO4/IBjtDoyFR03TR9GMP/5f6biZAkyOi/BQqXhlpihYPjnCfdlnooAunFjQ8lpg+G7AwGEUeDA0k/+qkU7A9fZJWOe3ydBZXDArK1UTeQ0UwtEiz0qbBuSrRbvHYz23gJNPfkt0xz2+KHzO3lGJmbzmx1cDeRHtPWXmeKW1EsHeI9ZWzltUlLlJF0y32QiKTkGoyXV2jn73I1Mtfd9FNsc9lwFRFy1RDSdu9GnAGWlzmXtnpF4nolLnOvcovZx9Un069V0LC2k4ojRaZaYaJ7rW1SDggc9n+3Ip9ktyqcnEIM0AW3NqfCXehu2GmA9Hkd3IBa6BbkMjlXusUcZE4PD4aF+uf7b+AGIrgAXTgo2UAmq43O1hChD90z2Gz29eBfRzsalmFs5/2rvgfbhn99OSXM1FZnLJc41/CrF
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 09:01:25.4217
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5470441-6882-4fbc-c433-08df22bf3c3c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000055DA.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7998
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+The AXI DMA interrupt line is level-sensitive: it asserts whenever
+the IOC (XAXIDMA_IRQ_IOC_MASK) or DELAY (XAXIDMA_IRQ_DELAY_MASK) bits
+in the status register (XAXIDMA_TX_SR_OFFSET / XAXIDMA_RX_SR_OFFSET)
+are set and their corresponding enable bits in the control register
+are active.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+During TX/RX, interrupts are disabled in the control register while
+NAPI runs. Completions arriving in this window cause hardware to latch
+IOC/DELAY into the status register regardless of the control register
+mask state. After NAPI completion, re-enabling interrupts immediately
+re-asserts the IRQ line due to these stale status register bits, even
+when no new work is pending.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This results in a stale interrupt and redundant NAPI poll cycle with
+no new work pending, causing unnecessary CPU processing.
 
-- [High] This patch's 'every member must match' rule for dev-bound
-  cls_bpf programs on shared blocks is checked only once.
-- [Low] bpf: multi-line comment style violation in cls_bpf.c
+In the initial driver, the status register was cleared after polling
+all packets, which naturally consumed any status accumulated during
+processing. In later versions of the driver, status register clearing
+was moved to the ISR before polling begins, leaving no mechanism to
+clear status bits that arrive during the NAPI poll window.
 
---
+Clear the status register IOC/DELAY bits before re-enabling interrupts
+and recheck the next BD to catch race-window completions. Both are
+skipped on budget exhaustion. On the RX side, both are additionally
+skipped on refill failure.
 
-net/sched: cls_bpf: accept dev-bound programs on shared blocks
+Signed-off-by: Kusuma Vasana <kusuma.vasana@amd.com>
+---
+Changes in v4:
+- Read back SR after W1C so the clear is posted before the BD recheck.
+- Document that poll may return @budget on that recheck.
+- Drop the incorrect "leave IRQ armed" wording for RX refill failure.
 
-This patch lets a device-bound cls_bpf program attach through a shared tc
-block, as long as bpf_offload_dev_match() succeeds for every netdev in
-block->ports. An empty shared block is rejected. Non-shared blocks are still
-checked against the qdisc's device.
+Changes in v3:
+- Updated the commit description.
+- Restricted TX/RX status-register clear and completion recheck to the
+  NAPI completion path, with RX only when refill succeeds.
+- Rechecked descriptor completion after status-register clear to handle
+  race-window completions.
 
-Link: https://lore.kernel.org/netdev/20260809094418.901607-1-jhs@mojatatu.com/
+Changes in v2:
+-Added net-next prefix in the subject
+-Updated the commit description
 
-> diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
-> index 188cf0f949dd4..6a54f8a7b8218 100644
-> --- a/net/sched/cls_bpf.c
-> +++ b/net/sched/cls_bpf.c
-> @@ -392,9 +392,29 @@ static int cls_bpf_prog_from_efd(struct nlattr **tb, struct cls_bpf_prog *prog,
->  	if (bpf_prog_is_dev_bound(fp->aux)) {
->  		struct tcf_block *block = tp->chain->block;
->  		struct net_device *dev;
-> -
-> -		dev = block->q ? qdisc_dev(block->q) : NULL;
-> -		if (!dev || !bpf_offload_dev_match(fp, dev)) {
-> +		unsigned long ifindex;
-> +		bool found = false;
-> +		bool match = false;
-> +
-> +		/* A shared block has no qdisc (block->q == NULL) but may
-> +		 * bind several netdevs; the program is offloaded to all of
-> +		 * them, so it must match all of them.
-> +		 */
-> +		if (!tcf_block_shared(block)) {
-> +			match = bpf_offload_dev_match(fp, qdisc_dev(tcf_block_q(block)));
-> +		} else {
-> +			xa_for_each(&block->ports, ifindex, dev) {
-> +				found = true;
-> +				if (!bpf_offload_dev_match(fp, dev)) {
+---
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 29 +++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-[Severity: Low]
-This is a minor style nit. The new block comment in
-cls_bpf_prog_from_efd() starts its text on the same line as the
-opening /*.
-
-cls_bpf.c is a BPF-related path, and BPF code uses the multi-line
-comment style with the opening /* on a line of its own. That applies
-even where the surrounding code in the file uses the older form.
-
-Could you move the text down so the comment reads like this?
-
-		/*
-		 * A shared block has no qdisc (block->q == NULL) but may
-		 * bind several netdevs; the program is offloaded to all of
-		 * them, so it must match all of them.
-		 */
-
-This has no functional impact. If the comment text changes because of
-the block->ports concern above, it is worth fixing in the same respin.
-
-[Severity: High]
-
-This check runs only once, when the filter is added or replaced. It uses
-whatever block->ports holds at that moment. What happens if a netdev from a
-different bpf_offload_dev joins the shared block later?
-
-For example:
-
-  tc qdisc add dev B ingress_block 22 clsact
-  tc filter add block 22 ingress bpf da object-pinned <pin> skip_sw
-  tc qdisc add dev C ingress_block 22 clsact
-
-On the third command, tcf_block_get_ext() finds the existing block and
-replays its filters to C's callback. This happens before C is added to
-block->ports:
-
-net/sched/cls_api.c:tcf_block_get_ext() {
-    ...
-	err = tcf_block_offload_bind(block, q, ei, extack);
-	if (err)
-		goto err_block_offload_bind;
-
-	if (tcf_block_tracks_dev(block, ei)) {
-		err = xa_insert(&block->ports, dev->ifindex, dev, GFP_KERNEL);
-    ...
-}
-
-The call chain is tcf_block_offload_bind()->tcf_block_bind()->
-tcf_block_playback_offloads()->cls_bpf_reoffload(). cls_bpf_reoffload()
-passes prog->filter to the new callback without calling
-bpf_offload_dev_match():
-
-net/sched/cls_bpf.c:cls_bpf_reoffload() {
-    ...
-		cls_bpf.prog = add ? prog->filter : NULL;
-    ...
-		err = tc_setup_cb_reoffload(block, tp, add, cb, TC_SETUP_CLSBPF,
-					    &cls_bpf, cb_priv, &prog->gen_flags,
-					    &prog->in_hw_count);
-    ...
-}
-
-netdevsim's nsim_bpf_setup_tc_block_cb() does not check the device either.
-It only requires prog->aux->offload to be non-NULL before calling
-nsim_bpf_offload(). That sets C's bpf_offloaded and marks the program as
-loaded in state owned by B's nsim_dev.
-
-Doesn't this build the mixed block that the commit message says the
-all-members check prevents?
-
-  "an any-member check would re-admit the wrong-device attach on a mixed
-  block."
-
-Before this patch, block->q is NULL on a shared block, so every dev-bound
-program was rejected there. That kept dev-bound programs off this replay
-path.
-
-This looks like the problem that commit 120977e2c096 fixed. When B is
-unregistered, __bpf_offload_dev_netdev_unregister() has no altdev, so it
-calls __bpf_prog_offload_destroy():
-
-kernel/bpf/offload.c:__bpf_prog_offload_destroy() {
-    ...
-	if (offload->dev_state)
-		offload->offdev->ops->destroy(prog);
-
-	list_del_init(&offload->offloads);
-	kfree(offload);
-	prog->aux->offload = NULL;
-}
-
-If is_loaded is still set, nsim_bpf_destroy_prog() can hit its WARN here.
-
-The filter and block stay alive because C still holds them. Deleting the
-filter or C's clsact later goes through
-nsim_bpf_offload()->nsim_prog_set_loaded(). aux->offload_requested is still
-true, so the bpf_prog_is_offloaded() check passes, and then:
-
-drivers/net/netdevsim/bpf.c:nsim_prog_set_loaded() {
-    ...
-	state = prog->aux->offload->dev_priv;
-	state->is_loaded = loaded;
-}
-
-Can this dereference a NULL prog->aux->offload?
-
-The reproducer in the commit message only adds the second device before the
-attach. Does the check also need to run on the bind/reoffload side? Or
-should dev-bound programs stay rejected on shared blocks?
-
-There is a smaller related gap. tcf_block_tracks_dev() only records clsact
-ingress and egress binders in block->ports:
-
-net/sched/cls_api.c:tcf_block_tracks_dev() {
-	return tcf_block_shared(block) &&
-	       (ei->binder_type == FLOW_BLOCK_BINDER_TYPE_CLSACT_INGRESS ||
-		ei->binder_type == FLOW_BLOCK_BINDER_TYPE_CLSACT_EGRESS);
-}
-
-Other shared-block binders, such as those set up by tcf_qevent_init(), also
-register offload callbacks. They never appear in block->ports, so the new
-xa_for_each() loop does not see them. Could a device bound this way receive
-the program without being checked?
-
-> +					match = false;
-> +					break;
-> +				}
-> +				match = true;
-> +			}
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index fcf517069d16..4d8169fc39cd 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -986,7 +986,8 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+  * @napi:	Pointer to NAPI structure.
+  * @budget:	Max number of TX packets to process.
+  *
+- * Return: Number of TX packets processed.
++ * Return: Number of TX packets processed, or @budget to continue polling
++ * after a post-clear completion recheck.
+  *
+  * This function is invoked from the NAPI processing to notify the completion
+  * of transmit operation. It clears fields in the corresponding Tx BDs and
+@@ -1018,6 +1019,17 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
+ 			netif_wake_queue(ndev);
+ 	}
+ 
++	/* Clear stale IOC/DELAY bits, flush the clear, and re-check for
++	 * race-window completions. Skipped on budget exhaustion.
++	 */
++	if (packets < budget) {
++		axienet_dma_out32(lp, XAXIDMA_TX_SR_OFFSET,
++				  XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
++		axienet_dma_in32(lp, XAXIDMA_TX_SR_OFFSET);
++		if (lp->tx_bd_v[lp->tx_bd_ci].status & XAXIDMA_BD_STS_COMPLETE_MASK)
++			return budget;
++	}
++
+ 	if (packets < budget && napi_complete_done(napi, packets)) {
+ 		/* Re-enable TX completion interrupts. This should
+ 		 * cause an immediate interrupt if any TX packets are
+@@ -1204,7 +1216,8 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+  * @napi:	Pointer to NAPI structure.
+  * @budget:	Max number of RX packets to process.
+  *
+- * Return: Number of RX packets processed.
++ * Return: Number of RX packets processed, or @budget to continue polling
++ * after a post-clear completion recheck.
+  */
+ static int axienet_rx_poll(struct napi_struct *napi, int budget)
+ {
+@@ -1301,6 +1314,18 @@ static int axienet_rx_poll(struct napi_struct *napi, int budget)
+ 	if (tail_p)
+ 		axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
+ 
++	/* Clear stale IOC/DELAY bits, flush the clear, and re-check for
++	 * race-window completions. Skipped on budget exhaustion and on
++	 * refill failure (cur_p->skb == NULL).
++	 */
++	if (packets < budget && cur_p->skb) {
++		axienet_dma_out32(lp, XAXIDMA_RX_SR_OFFSET,
++				  XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
++		axienet_dma_in32(lp, XAXIDMA_RX_SR_OFFSET);
++		if (cur_p->status & XAXIDMA_BD_STS_COMPLETE_MASK)
++			return budget;
++	}
++
+ 	if (packets < budget && napi_complete_done(napi, packets)) {
+ 		if (READ_ONCE(lp->rx_dim_enabled)) {
+ 			struct dim_sample sample = {
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-PYC7.v1.20261003103747%40mojatatu.com
+2.43.0
+
