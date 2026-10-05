@@ -1,63 +1,63 @@
-Received: from mail-lr2-f32.google.com (mail-lr2-f32.google.com [74.125.230.96])
+Received: from mail-lr2-f27.google.com (mail-lr2-f27.google.com [74.125.230.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6947B4DF4BA
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620B736F90F
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791231271; cv=none; b=nXJdZML8Y+oHeWkrkzYrz0qtSjQV88JoumwKSgMhiQ0CfzGVV3ulMpeRMYHIM0SaLnyVnd9fQSYTSOw/hZNQCGMaPXJYZLDUn5dt4NGe4PjJ8gvsopq2reA6/MIm7H6I23zPGJrE9DNkQRIyGjhTeaJakFmIqBY74v3i3+zSaMo=
+	t=1791231278; cv=none; b=KSZJ1MJIpiU3M7D8Zzb3mmNDF9ra9Z1xTUkYlZ14mI/Abt4amSzmmsWYFeAeUdZzor9GlV3BlL+6+NZ7q7qQszbuIB0k+avx7M70rnl8f+ihzOyhSgHmSJ4Zq49Y1uvzXW7gvk3dSxnisCAclUtVlbNZ5zaLYtj3Oenfv1aKINM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791231271; c=relaxed/simple;
-	bh=k+CqVpScWbP1p48LTH2kXVwo5Ssi8+hZEw2CjOqf9vo=;
+	s=arc-20240116; t=1791231278; c=relaxed/simple;
+	bh=AKX0VGDDb7hHniNBSadlltPqnJTVaPw4u961bkdC47U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2XE9N/6VyyJ/4HM4jnFEVsZ+mNpxHfolhGQOolhk5e5AM5af4oIm1YLy5gE7Z3CvWGl+MJ3fW0yJ4oXWqRAO/q9qWikQZ/NfWQewuV5XP277Gu49rCBFsMhoFIj6dXbSBb2YzNFCkocaNT7LfEezdpzxoUfNvVBNR6rynV30Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rduv9rMk; arc=none smtp.client-ip=74.125.230.96
+	 MIME-Version; b=jk6XXlNqin1vka4Fco3gPdXP5VtMmo7K1qXeInqJdjQImgBB0UJvOTevdEghr2/tzgTbE5pgCDHb9S0kD0VqrD9f2IvxHyoB6LzUbHf7u6jlEPDmyxQhJX4Ihon3QmllBSy8dboUIBnQpMh4Drf3RMJUZqQwdBBC0zbPiGuStsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mvdBdtrI; arc=none smtp.client-ip=74.125.230.91
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rduv9rMk"
-Received: by mail-lr2-f32.google.com with SMTP id 38308e7fff4ca-3a97ab5684aso18988531fa.3
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:14:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mvdBdtrI"
+Received: by mail-lr2-f27.google.com with SMTP id 38308e7fff4ca-3a76a5a5d4cso17267551fa.0
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:14:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791231267; x=1791836067; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791231268; x=1791836068; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aeNCYFzb8b2KgrRiXXEFlWiBLqGLegK23GWQ11tnNlM=;
-        b=rduv9rMkdVqt4blvyIOqQnLVRweW9UeN+3NUfMepxp8DhX+ftL8n8fDPD4q8Q+L+dr
-         hOsnk/EyAsvxp8eGHWPBiIOR4VlQfleAezzdyR9a8psOpYPO2HYt5G3HsD0Zs1t6sgbn
-         haiifvd7MtZCShUe7YClp9G59/oV02tVAO7d279zhp0W4Sw9nrBi5D4ExghsIEx5X/pc
-         KAiSh1EEB9Bk5m/uPTpAxhj0K/z2jq0nCa7XHUWrIJXPpySJiZzvtr4tzqiueIJaEp1d
-         zV7TpR+qMIWeAf9+ZhmbAtPJqDr/ujbpRNLvM/15twVzNswMVW0N97DBaLLauctxtBdt
-         iL9A==
+        bh=VttY61a3a/Ies1XvMZgIWwrQFAm/hAwJAXLrgBAs69g=;
+        b=mvdBdtrIb6zt7SInwQ3JgWLoMQOs+Hp6s1sl9Mv7NxZMItUqjgg9ZATpQrWNJPX7Bk
+         x7wr5pgztIouWbJ3jnfdeEQn5o7tM3N4J/LqdjNvLRYd851LFiWHnuQa57ZkTPtvDD1Z
+         veXmJuAtAo35m22Q2qVLDJ0jndJDAOkCyGDzW/kqjRwjN4SsNlgmVNRNtr04zK/nkX4r
+         Z6IEBvqTjXRVt2Vz50UR4TKNNiptVYKXjVNL1TvWWkeeCSLk9ltDTHeRLRTBdy3G9T9/
+         R99cE3jnXz5e9NVfWn6DAnSa84+6IdtymiDLgkhfnvZfXM8pxLeiRagsuh3H+tvzXrUI
+         uXVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791231267; x=1791836067;
+        d=1e100.net; s=20260707; t=1791231268; x=1791836068;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aeNCYFzb8b2KgrRiXXEFlWiBLqGLegK23GWQ11tnNlM=;
-        b=b2Se+hA9XnIlNrVUbCV4KR3JgJl8564Y+eevruo3NkCN9nZ0CGt0RUJxBIo1CnHdNS
-         aOSkjWUMTMEZ4bCpoRKdt6mlopUu9tdDHwUjbdxXpQJsbvzEdP9K4x+Y8NEPGPGcqvXU
-         hFRKsbANLecjCTp3gl5n4f7dLTSjATk5KwmzuKtDLRlWDc1dBfZvU/UNK1ROM2XXef67
-         841aupwjsaMLEZRLz+RmnOb8JwyJTdYbI3sn/daF7uyQJZdkKjNPbzVRhhuEuHj8spM5
-         AChCJ7Y39KCTUz3E/mA/N0nqhzH+rtBvodry/Uus8h6x87BgTv45dCNsP+c2AUpC06GD
-         fPYw==
-X-Gm-Message-State: AFq9FYJFTKDdRkmPBd9tjs5xJlz+9/TtL8kgvjZeXfDqXXTadnRiX0pY
-	lAeADzdxieRSyJcVwTYfT/+pD2Oz5jMobCVaeECJ9vKiBvx0MOVE4BznZfRaPgns
-X-Gm-Gg: AYBFou08vPinSBhE3aTCsqqz/8uRWxOv+5f8YcvtOp+gaa00fe11CdaMTuoQScRdIOv
-	aaFs0R+6hYbCKgUzOHwyHDxchXeQctpIkHCeOq5YIO38CqYOwXs4loQGsLAGMgEbk6G21aeEg9n
-	Ak8m5uGs+1Zg+xJtsqUjv6eXWMWhVd6h0BWszTRA+8yKOhxjXo1soBXdGK1XqOARCpJprQe8MfO
-	VOWswiDe7s8bPaB0XgbIUTcHxm3FstExe/m6cG15oAEIcA+vhR02cReY4+ZaD/s2bqlotPU94PE
-	ctYrnxKgePgY9MIjZkL+FehdVw6UZE87aY9Jy0KanyAezDo3wqephlaROPL4ksNBnM2rsRr0YTQ
-	poKMch+XUNUgGDXZjQepWr9/s9GWDBG2pUGWEPXW+EVhmFxsx4dzOjVVfPluHk5o0sA0D51vwAA
-	VdT32FAQqyhlbt1hTsrpnugwo5GjT0tcbjKmepZF4hwSPzd/tT6pH5BRHPgeYwPUGVI/tegNG7U
-	zAWB8v7umiEijzwYjUXWzl4Yl1JykjAdOT2LCJt2Q==
-X-Received: by 2002:a2e:a58a:0:b0:3a7:8058:9e45 with SMTP id 38308e7fff4ca-3a887678bbfmr28808481fa.7.1791231267213;
-        Mon, 05 Oct 2026 13:14:27 -0700 (PDT)
+        bh=VttY61a3a/Ies1XvMZgIWwrQFAm/hAwJAXLrgBAs69g=;
+        b=utaVngmOfvtDWRDeYnUN2fef7vI6FBtfjmK9Cfz7pD8wIJpMXlGS4NlFJMmFYlDGGa
+         7JseUxAIbFKJSrioaJyPHGif1vlRtVY6f5So0opn6NjDB23Z0X5ADJiScc2zoAljPhDr
+         Yzh6ydwW0TjwgGZ4bZ97MjVGJEdcsNvQnvS6rEQRGYdD5vpx6XFgBtWr5w6fJpaTZnXe
+         S6Xx9Vk2pHF/PRTLMehLz8W8mVh1o8fvKNEHBIGf+w3367veMpKF8obz6aLokV+hDt5x
+         k5iTtd1bkrusVYK2IEbYkBPKolsKYqWJQt3U0/v14GUcpyxPCLhG59zlal55J4G3Zt9/
+         Qahg==
+X-Gm-Message-State: AFq9FYLpbwR7ACbRosMzDSQU06YXiGnOvqqqGBzx3cp8UpnN8KW5D2LK
+	juLzLzv/4y3KtLjWd4ME760dFqwkPQmQvK7B7PpgYtqr8P4DIMTH/UowgYaTzljf
+X-Gm-Gg: AYBFou0P6U1EKA4+1ux4xLspY1XjaAMqxpiJbcyOWXSyDVtLkwk/lFntBeRetLyAYBb
+	prj3vREvoXyWrXsDYacwTuw3rg+wws+NEzLyHxXHxvrNcqfHdscJ4hp/Id5OjsgItVpSLYGVdLv
+	hMrOAqjcfvar8bCYGO0o5jgoO9lrtjXEHZB2wjnsGtG/zte5qW3vW4q9y9gfOMCGXNzxKyQkM5v
+	wcd7/j8YRGKqsD6l+T/vF2bx5aGNSIXYF/WmnfM/O8WgiMMk2uGlghH1sxLIn1+iSZRW+8IJehY
+	UPlt3jlv1VTKeOIK0n9phpuwHRe5cn274vDzZLiGAd+RUkCeH0By2CoJCo2AYaa9joCDvcTWAFE
+	ZM3rY2U8KwGu/iS3st8zL05Q751aQQsgTHC/bRS9kWiNxEv3M9ITjMEo6tWtUMbK+XfbR3XqXs1
+	8hgkUskI2Zo5l+2xg9lMX/lctIMNDYVucA2e5JRzYEo084jGA+f+38szt3NlVdMfyizqHYA4N0r
+	6WASH6FwyJOGqEUVoKoaVpCKg70mLVnXMaWgi+STw==
+X-Received: by 2002:a05:651c:19a8:b0:3a8:d34a:dc64 with SMTP id 38308e7fff4ca-3a8d34ade19mr31459901fa.1.1791231268379;
+        Mon, 05 Oct 2026 13:14:28 -0700 (PDT)
 Received: from dau-home-pc.. ([212.35.161.1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a87e303889sm43114681fa.20.2026.10.05.13.14.26
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a87e303889sm43114681fa.20.2026.10.05.13.14.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 13:14:26 -0700 (PDT)
+        Mon, 05 Oct 2026 13:14:27 -0700 (PDT)
 From: Anton Danilov <littlesmilingcloud@gmail.com>
 To: netdev@vger.kernel.org
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -69,9 +69,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Ido Schimmel <idosch@nvidia.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 3/4] vxlan: report the drop reason of __iptunnel_pull_header()
-Date: Mon,  5 Oct 2026 23:14:16 +0300
-Message-ID: <20261005201417.906344-4-littlesmilingcloud@gmail.com>
+Subject: [PATCH net-next 4/4] vxlan: report a circular route as SKB_DROP_REASON_RECURSION_LIMIT
+Date: Mon,  5 Oct 2026 23:14:17 +0300
+Message-ID: <20261005201417.906344-5-littlesmilingcloud@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
 References: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
@@ -83,43 +83,73 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vxlan_rcv() reports SKB_DROP_REASON_NOMEM whenever
-__iptunnel_pull_header() fails, as the helper used to return -ENOMEM
-for any failure. The VXLAN header is already in the linear area at this
-point, but the inner Ethernet header of a packet without GPE may not
-be, so a packet whose inner frame is shorter than an Ethernet header is
-reported as an out of memory condition.
+udp_tunnel_dst_lookup() and udp_tunnel6_dst_lookup() return -ELOOP
+when the route to the remote end goes out of the vxlan device itself,
+and vxlan_xmit_one() counts that in collisions, apart from the
+-ENETUNREACH of a failed lookup. The drop reason does not tell them
+apart: both are reported as SKB_DROP_REASON_IP_OUTNOROUTES, which
+describes a failed route lookup.
 
-Report the reason __iptunnel_pull_header() now returns instead:
-PKT_TOO_SMALL for such a packet, NOMEM when an allocation fails.
+Such a route would send the encapsulated packet back into the device
+it leaves, which is the dead loop on a virtual device that
+SKB_DROP_REASON_RECURSION_LIMIT describes. Report the -ELOOP case with
+that reason, and add the tunnel case to the description of the reason
+as an example. ip_tunnel and ip6_tunnel make the same check,
+rt->dst.dev == dev in ip_tunnel_xmit() and ip_md_tunnel_xmit() and
+tdev == dev in ip6_tnl_xmit(), and can report it with the same reason.
 
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
 Assisted-by: LLM
 Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
 ---
- drivers/net/vxlan/vxlan_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 10 ++++++++--
+ include/net/dropreason-core.h  |  6 +++++-
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 35a47cc27200..0d98e29e2d72 100644
+index 0d98e29e2d72..7c94a630d184 100644
 --- a/drivers/net/vxlan/vxlan_core.c
 +++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1743,11 +1743,11 @@ static int vxlan_rcv(struct sock *sk, struct sk_buff *skb)
- 		raw_proto = true;
- 	}
+@@ -2547,7 +2547,10 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 					   tos, use_cache ? dst_cache : NULL);
+ 		if (IS_ERR(rt)) {
+ 			err = PTR_ERR(rt);
+-			reason = SKB_DROP_REASON_IP_OUTNOROUTES;
++			if (err == -ELOOP)
++				reason = SKB_DROP_REASON_RECURSION_LIMIT;
++			else
++				reason = SKB_DROP_REASON_IP_OUTNOROUTES;
+ 			goto tx_error;
+ 		}
  
--	if (__iptunnel_pull_header(skb, VXLAN_HLEN, protocol, raw_proto,
--				   !net_eq(vxlan->net, dev_net(vxlan->dev)))) {
--		reason = SKB_DROP_REASON_NOMEM;
-+	reason = __iptunnel_pull_header(skb, VXLAN_HLEN, protocol, raw_proto,
-+					!net_eq(vxlan->net,
-+						dev_net(vxlan->dev)));
-+	if (reason)
- 		goto drop;
--	}
+@@ -2633,7 +2636,10 @@ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 		if (IS_ERR(ndst)) {
+ 			err = PTR_ERR(ndst);
+ 			ndst = NULL;
+-			reason = SKB_DROP_REASON_IP_OUTNOROUTES;
++			if (err == -ELOOP)
++				reason = SKB_DROP_REASON_RECURSION_LIMIT;
++			else
++				reason = SKB_DROP_REASON_IP_OUTNOROUTES;
+ 			goto tx_error;
+ 		}
  
- 	if (cfg->flags & VXLAN_F_REMCSUM_RX) {
- 		reason = vxlan_remcsum(skb, cfg->flags);
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index 40a27d8887af..664249924219 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -613,7 +613,11 @@ enum skb_drop_reason {
+ 	SKB_DROP_REASON_PSP_INPUT,
+ 	/** @SKB_DROP_REASON_PSP_OUTPUT: PSP output checks failed */
+ 	SKB_DROP_REASON_PSP_OUTPUT,
+-	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
++	/**
++	 * @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device, e.g. a
++	 * tunnel whose route to its remote end goes out of the tunnel device
++	 * itself.
++	 */
+ 	SKB_DROP_REASON_RECURSION_LIMIT,
+ 	/**
+ 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
 -- 
 2.47.3
 
