@@ -1,309 +1,150 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF05374E64;
-	Mon,  5 Oct 2026 12:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12343377EBF
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 12:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791202279; cv=none; b=q4jxeXM4f3JhAwOvS7PxoQaJ+7mSGU4o6rVCKxCTVlLLipaIHiL9ozjSKfSLTMPNzSmGneRM3URNmVmaDJD7Dc+BwDHgfL/WZ56JaaBBTiUqYq3jDZndx3H63MnNKVZPBO4LQbAk5s+EeACos0yuwu3NGREgM/n/W6NPR+VgzX0=
+	t=1791202402; cv=none; b=eqDilpp34ZV+8RfTuNDNegvUBX3FDaI8pYmMV+Oc/qCXACSV0kN7GSkRMa5cZiuQ70bsKKROi3Hv66tzj4XRc7MV951Q40erWv+p0iQztuSMK33j5kwXYa1rTMHLfaX0C3NtlSzOOtHvlAjVQ7e0n3JMf7LAUpWunAPyCI9Z6ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791202279; c=relaxed/simple;
-	bh=NMNSe3FkVICodJODLNmb6qjWWEtDYnXT0FQbdSuT1As=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uGhk9A9/8/hotLIwKWlufAb5njxyWaAMmsZeXcx1XTS/gfABeyv6cc/BFzFU7bIP4PqgOhuy81zPeyt08tKwzAW9sXanROssu83Pj/L8BjDVOi5oAKVSUCL+IwsvpBcf7FOvrXDUkOAKMz+tx3gIHYbeDG7U4UjgBCh0OqmBC4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ik4USNNm; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=gf4VmEZA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Kn7WDEnh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=T7zxEmgb; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1791202402; c=relaxed/simple;
+	bh=i3f4K3HLZx9h8Tkx6FjFjfy/XpZE7lZQGT8K15dF+JQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h+LhXRPse5oh+dSjzBzbuE/X+vuJ2SVpxbIVZZzWoInKw1HQDOE3XYXsUuZpNXxo9d5M9wFlVUQMSoWItZi1Owxo3ijyXNR2JfNrr4aPOfBOzDpjqGTKOSE7XNDQtMDRpRrsog3L7V3AU+qzl5uxHOtocLS/NmC023s9qknXdJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=sDhM4ckF; arc=none smtp.client-ip=185.70.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ik4USNNm";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="gf4VmEZA";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Kn7WDEnh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="T7zxEmgb"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B6DB21F453;
-	Mon,  5 Oct 2026 12:11:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791202271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UgjgUIqUXrg+EmvIXZhJUXz5k9rmyxilEYl1OB1+7V8=;
-	b=ik4USNNmK+n9A++JQnnoX3Hz5lwWSOaG50x95D7B/RH40zLOcXnPeNi2AvRYX+izD8z63V
-	K86g8UlIra9NBP6IrOmWk3XFVFrcCBhPfGeHG2vTQXA/N1QuYlGwHY374/DyN6y/N9mm/y
-	q1Hvp3FP58voky8LUsxRgxZ9t1OEIjI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791202271;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UgjgUIqUXrg+EmvIXZhJUXz5k9rmyxilEYl1OB1+7V8=;
-	b=gf4VmEZASS7PbFVF91RYbmofEgwcscJ9lQdRNXlH8FWxu9u1galIC0tn2uZAc3tzGyZWdr
-	zpiRdolC2H52kWAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791202267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UgjgUIqUXrg+EmvIXZhJUXz5k9rmyxilEYl1OB1+7V8=;
-	b=Kn7WDEnhbd2e1zHJMM9KDoy07nnKPZC6lJOVBWQ3P33gdrskcGGHnHLaDLcz9NkNIRpWdK
-	8Cd7NqfNxPxSKKh/iY1tcs+dFKu+r1X7jvAIJIwne2W6hRul5T51X1x7N5/vwdCkpvVSof
-	siVqZolmZ9j+Q9l1wSbQgl3RUm8QcMs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791202267;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UgjgUIqUXrg+EmvIXZhJUXz5k9rmyxilEYl1OB1+7V8=;
-	b=T7zxEmgbiD4WEJY66TGQy1rF3j67NkL6lG+sBhiTxXMqrpumnonyKDIeXSZwnxjPNj0K09
-	zXGSZcyrORSJYrAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E1704132D3;
-	Mon,  5 Oct 2026 12:11:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1C9OLNqTw2qYGAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 05 Oct 2026 12:11:06 +0000
-Message-ID: <bea33147-1a2e-4fba-93ac-7521dd7b6556@suse.de>
-Date: Mon, 5 Oct 2026 14:09:56 +0200
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="sDhM4ckF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=lolgistvurhtfnhcwytydatpj4.protonmail2; t=1791202387;
+	x=1791461587; bh=ZCtJO+q42KYoNs4xrfVgvNscKdzZmZj/Nd49PSEJ6Oo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=sDhM4ckFFH1gOcUtO0aOA1EMaMh4WLgt/RIClOUcOj709Bh2NHzZzdAqSyN8/LCBN
+	 9bQ1iX1ThEs4ztnZn6foIJNw7VgRXqoKGTr1yMgDR+xNDxuq1JhLkxk83vtvSkcRrJ
+	 Hjba3FFkZCwJz390QkFV9ZVk2Jas1ylKFrK+IJRVxDThpiFuNVZQdbNM8mRwHXvZDg
+	 MpqsxBEBE7uyBzHjH+8oZDydO3lOESlI/fkTjyz2GzRVjNm2DwbxFQgDOhHDZaWRkE
+	 ZXQsSl/KmeY5PhDwXm+xVOBj8/kgmMOfhDvsdLEFGXSfE87AFiB3rzAxiHyVE6o7vg
+	 XNfgS3OFg0Ufw==
+Date: Mon, 05 Oct 2026 12:13:02 +0000
+To: netdev-bot+sashiko@kernel.org
+From: quantumvoid0 <quantumvoid0@proton.me>
+Cc: wireguard@lists.zx2c4.com, Jason@zx2c4.com, netdev@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH] wireguard: allowedips: prevent stack overflow without DEBUG
+Message-ID: <9NzB3VmT-7cBBfdx9sREmRkFb_gOAmI78VheKlX2Mdiqjl3B3N0OCZ5DT8C1SpEJuM5O3TzLltSpGh9ptxni28Lnq4ATz8u86R-f-jdcKPE=@proton.me>
+In-Reply-To: <179117435281.434549.17747961185403870914@kernel.org>
+References: <TaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4Xtksw07sYrIpludwvJQrukFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ=@proton.me> <179117435281.434549.17747961185403870914@kernel.org>
+Feedback-ID: 175132216:user:proton
+X-Pm-Message-ID: eeb04b2d92f3424090027273ca57fb8dd7819688
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH nf-next] netfilter: nf_nat: replace u_int16_t with u16
-To: Carlos Grillet <carlos@carlosgrillet.me>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20261002201057.132466-1-carlos@carlosgrillet.me>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20261002201057.132466-1-carlos@carlosgrillet.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 10/2/26 10:10 PM, Carlos Grillet wrote:
-> Use the preferred kernel type u16 instead of the POSIX u_int16_t
-> variant across the NAT helpers.
-> 
-> No functional change.
-> 
-> Signed-off-by: Carlos Grillet <carlos@carlosgrillet.me>
-> ---
-> This supersedes the nf_nat_amanda one-liner from batch 3, which was
-> dropped in favour of a larger changeset:
-> 
->    https://lore.kernel.org/netfilter-devel/ak5lH1UnFth6oreP@strlen.de/
-> 
-> nf_nat is now converted in one patch, as suggested. The remaining
-> families (nfnetlink, nf_log, x_tables, ...) will follow the same way.
+Thanks, both points are valid.
 
-Hi Carlos,
+Medium is correct, not reachable in tree. cidr strictly increases
+along root->leaf so depth <=3D129, DFS stack stays <=3D129. This is
+hardening only so a future bug cant smash stack[129] in production
+where WARN_ON(DEBUG && ...) compiles out. Ill reword v2 to say
+hardening, no Fixes: tag.
 
-given that this is a mechanical change that is not a risk, can they all 
-be handled in a single patch for the netfilter subsystem?
+Low is correct; author/Sob name mismatch. Will fix to match in v2.
 
-Thanks,
-Fernando.
+pw-bot: cr
 
+
+On Monday, October 5th, 2026 at 4:25 AM, netdev-bot+sashiko@kernel.org <net=
+dev-bot+sashiko@kernel.org> wrote:
+
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>=20
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
+>=20
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>=20
+> - [Medium] The commit message says production builds have "an unchecked
+>   stack[129] write" in push_rcu() (drivers/net/wireguard/allowedips.c),=
+=E2=80=A6
+> - [Low] The commit author is 'quantumvoid <quantumvoid0@proton.me>' but
+>   the Signed-off-by trailer says 'quantumvoid0 <quantumvoid0@proton.me>'.
+>=20
+> --
+>=20
+> wireguard: allowedips: prevent stack overflow without DEBUG
+>=20
+> This commit changes push_rcu() so that the len >=3D MAX_ALLOWEDIPS_DEPTH
+> check is always evaluated and only the WARN is gated on DEBUG. The commit
+> message presents this as a fix for an unchecked stack[129] write in
+> production builds.
+>=20
+> > push_rcu() only bounds-checked the traversal stack when
+> > DEBUG is defined. In production the check is compiled out,
+> > leaving an unchecked stack[129] write.
+>=20
+> [Severity: Medium]
+> Is the stack[129] write actually reachable in the current tree? The trie
+> invariants seem to rule it out.
+>=20
+> add() rejects a cidr larger than the address width:
+>=20
+>     if (unlikely(cidr > bits || !peer))
+>         return -EINVAL;
+>=20
+> On an exact prefix match, node_placement() reuses the existing node. When
+> a node is split, it gets this cidr:
+>=20
+>     cidr =3D min(cidr, common_bits(down, key, bits));
+>=20
+> That value is greater than the parent's cidr and smaller than the
+> children's cidr. So cidr strictly increases along every root-to-leaf path=
+,
+> and a node with cidr =3D=3D bits has no children. That caps any path at 1=
+29
+> nodes.
+>=20
+> root_free_rcu() and root_remove_peer_lists() pop one node before pushing
+> at most two children. While a node at depth d is being handled, the stack
+> holds at most d + 2 <=3D 129 entries. A push with *len =3D=3D 129 never h=
+appens,
+> so stack[129] is never written.
+>=20
+> The DEBUG-only gating also looks deliberate. The selftest in
+> drivers/net/wireguard/selftest/allowedips.c builds a maximal-depth trie t=
+o
+> exercise this assertion. Commit 46622219aae2 ("wireguard: allowedips:
+> expand maximum node depth") sized the array to 129 for this reason and
+> fixed the real off-by-one there.
+>=20
+> Could the commit message call this hardening of a debug-only invariant
+> check? The other option is to show a path that breaks the depth invariant=
+.
+> As written, it reads as a fix for a reachable stack overflow, with no
+> trigger and no Fixes: tag.
+>=20
+> > Signed-off-by: quantumvoid0 <quantumvoid0@proton.me>
+>=20
+> [Severity: Low]
+> This isn't a bug, but the name in the Signed-off-by (quantumvoid0) does
+> not match the Author name (quantumvoid), even though the email is the
+> same. checkpatch.pl warns about this mismatch. Could the two be made
+> consistent?
+>=20
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/TaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4Xtksw07sYrIpludwvJQru=
+kFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ%3D%40proton.me
 > 
->   include/linux/netfilter/nf_conntrack_sip.h |  2 +-
->   net/ipv4/netfilter/nf_nat_h323.c           | 10 +++++-----
->   net/ipv4/netfilter/nf_nat_pptp.c           |  4 ++--
->   net/netfilter/nf_nat_amanda.c              |  2 +-
->   net/netfilter/nf_nat_ftp.c                 |  2 +-
->   net/netfilter/nf_nat_irc.c                 |  2 +-
->   net/netfilter/nf_nat_sip.c                 |  6 +++---
->   7 files changed, 14 insertions(+), 14 deletions(-)
-> 
-> diff --git a/include/linux/netfilter/nf_conntrack_sip.h b/include/linux/netfilter/nf_conntrack_sip.h
-> index aafa0c04f917..3b66ec4b20c8 100644
-> --- a/include/linux/netfilter/nf_conntrack_sip.h
-> +++ b/include/linux/netfilter/nf_conntrack_sip.h
-> @@ -143,7 +143,7 @@ struct nf_nat_sip_hooks {
->   				 unsigned int *datalen,
->   				 unsigned int matchoff,
->   				 unsigned int matchlen,
-> -				 u_int16_t port);
-> +				 u16 port);
->   
->   	unsigned int (*sdp_session)(struct sk_buff *skb,
->   				    unsigned int protoff,
-> diff --git a/net/ipv4/netfilter/nf_nat_h323.c b/net/ipv4/netfilter/nf_nat_h323.c
-> index 6bcd6734769b..265c1ba5b348 100644
-> --- a/net/ipv4/netfilter/nf_nat_h323.c
-> +++ b/net/ipv4/netfilter/nf_nat_h323.c
-> @@ -186,7 +186,7 @@ static int nat_rtp_rtcp(struct sk_buff *skb, struct nf_conn *ct,
->   	struct nf_ct_h323_master *info = nfct_help_data(ct);
->   	int dir = CTINFO2DIR(ctinfo);
->   	int i;
-> -	u_int16_t nated_port;
-> +	u16 nated_port;
->   
->   	if (!info)
->   		return -1;
-> @@ -282,7 +282,7 @@ static int nat_t120(struct sk_buff *skb, struct nf_conn *ct,
->   		    struct nf_conntrack_expect *exp)
->   {
->   	int dir = CTINFO2DIR(ctinfo);
-> -	u_int16_t nated_port = ntohs(port);
-> +	u16 nated_port = ntohs(port);
->   
->   	/* Set expectations for NAT */
->   	exp->saved_proto.tcp.port = exp->tuple.dst.u.tcp.port;
-> @@ -321,7 +321,7 @@ static int nat_h245(struct sk_buff *skb, struct nf_conn *ct,
->   {
->   	struct nf_ct_h323_master *info = nfct_help_data(ct);
->   	int dir = CTINFO2DIR(ctinfo);
-> -	u_int16_t nated_port = ntohs(port);
-> +	u16 nated_port = ntohs(port);
->   
->   	if (!info)
->   		return -1;
-> @@ -402,7 +402,7 @@ static int nat_q931(struct sk_buff *skb, struct nf_conn *ct,
->   {
->   	struct nf_ct_h323_master *info = nfct_help_data(ct);
->   	int dir = CTINFO2DIR(ctinfo);
-> -	u_int16_t nated_port = ntohs(port);
-> +	u16 nated_port = ntohs(port);
->   	union nf_inet_addr addr;
->   
->   	if (!info)
-> @@ -488,7 +488,7 @@ static int nat_callforwarding(struct sk_buff *skb, struct nf_conn *ct,
->   			      struct nf_conntrack_expect *exp)
->   {
->   	int dir = CTINFO2DIR(ctinfo);
-> -	u_int16_t nated_port;
-> +	u16 nated_port;
->   
->   	/* Set expectations for NAT */
->   	exp->saved_addr = exp->tuple.dst.u3;
-> diff --git a/net/ipv4/netfilter/nf_nat_pptp.c b/net/ipv4/netfilter/nf_nat_pptp.c
-> index fed5249001a4..5387c288c348 100644
-> --- a/net/ipv4/netfilter/nf_nat_pptp.c
-> +++ b/net/ipv4/netfilter/nf_nat_pptp.c
-> @@ -130,7 +130,7 @@ pptp_outbound_pkt(struct sk_buff *skb,
->   	struct nf_ct_pptp_master *ct_pptp_info;
->   	struct nf_conn_nat *nat = nfct_nat(ct);
->   	struct nf_nat_pptp *nat_pptp_info;
-> -	u_int16_t msg;
-> +	u16 msg;
->   	__be16 new_callid;
->   	unsigned int cid_off;
->   
-> @@ -243,7 +243,7 @@ pptp_inbound_pkt(struct sk_buff *skb,
->   {
->   	const struct nf_nat_pptp *nat_pptp_info;
->   	struct nf_conn_nat *nat = nfct_nat(ct);
-> -	u_int16_t msg;
-> +	u16 msg;
->   	__be16 new_pcid;
->   	unsigned int pcid_off;
->   
-> diff --git a/net/netfilter/nf_nat_amanda.c b/net/netfilter/nf_nat_amanda.c
-> index 330415809425..17b0c1c8d4e1 100644
-> --- a/net/netfilter/nf_nat_amanda.c
-> +++ b/net/netfilter/nf_nat_amanda.c
-> @@ -34,7 +34,7 @@ static unsigned int help(struct sk_buff *skb,
->   			 struct nf_conntrack_expect *exp)
->   {
->   	char buffer[sizeof("65535")];
-> -	u_int16_t port;
-> +	u16 port;
->   
->   	/* Connection comes from client. */
->   	exp->saved_proto.tcp.port = exp->tuple.dst.u.tcp.port;
-> diff --git a/net/netfilter/nf_nat_ftp.c b/net/netfilter/nf_nat_ftp.c
-> index 25d20e2970ae..0c90165040e0 100644
-> --- a/net/netfilter/nf_nat_ftp.c
-> +++ b/net/netfilter/nf_nat_ftp.c
-> @@ -70,7 +70,7 @@ static unsigned int nf_nat_ftp(struct sk_buff *skb,
->   			       struct nf_conntrack_expect *exp)
->   {
->   	union nf_inet_addr newaddr;
-> -	u_int16_t port;
-> +	u16 port;
->   	int dir = CTINFO2DIR(ctinfo);
->   	char buffer[sizeof("|1||65535|") + INET6_ADDRSTRLEN];
->   	unsigned int buflen;
-> diff --git a/net/netfilter/nf_nat_irc.c b/net/netfilter/nf_nat_irc.c
-> index 89b31fe932ba..140b7d99a887 100644
-> --- a/net/netfilter/nf_nat_irc.c
-> +++ b/net/netfilter/nf_nat_irc.c
-> @@ -39,7 +39,7 @@ static unsigned int help(struct sk_buff *skb,
->   {
->   	char buffer[sizeof("4294967296 65635")];
->   	union nf_inet_addr newaddr;
-> -	u_int16_t port;
-> +	u16 port;
->   
->   	/* Reply comes from server. */
->   	newaddr = ct->tuplehash[IP_CT_DIR_REPLY].tuple.dst.u3;
-> diff --git a/net/netfilter/nf_nat_sip.c b/net/netfilter/nf_nat_sip.c
-> index 8c412bcf6cff..e27c9744054e 100644
-> --- a/net/netfilter/nf_nat_sip.c
-> +++ b/net/netfilter/nf_nat_sip.c
-> @@ -410,7 +410,7 @@ static unsigned int nf_nat_sip_expect(struct sk_buff *skb, unsigned int protoff,
->   	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
->   	struct nf_ct_sip_master *ct_sip_info = nfct_help_data(ct);
->   	union nf_inet_addr newaddr;
-> -	u_int16_t port;
-> +	u16 port;
->   	__be16 srcport;
->   	char buffer[INET6_ADDRSTRLEN + sizeof("[]:nnnnn")];
->   	unsigned int buflen;
-> @@ -536,7 +536,7 @@ static unsigned int nf_nat_sdp_port(struct sk_buff *skb, unsigned int protoff,
->   				    const char **dptr, unsigned int *datalen,
->   				    unsigned int matchoff,
->   				    unsigned int matchlen,
-> -				    u_int16_t port)
-> +				    u16 port)
->   {
->   	char buffer[sizeof("nnnnn")];
->   	unsigned int buflen;
-> @@ -601,7 +601,7 @@ static unsigned int nf_nat_sdp_media(struct sk_buff *skb, unsigned int protoff,
->   	enum ip_conntrack_info ctinfo;
->   	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
->   	enum ip_conntrack_dir dir = CTINFO2DIR(ctinfo);
-> -	u_int16_t port;
-> +	u16 port;
->   
->   	/* Connection will come from reply */
->   	if (nf_inet_addr_cmp(&ct->tuplehash[dir].tuple.src.u3,
-
