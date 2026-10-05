@@ -1,197 +1,156 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04439134CCF
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 18:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C465C79CD;
+	Mon,  5 Oct 2026 19:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791226341; cv=none; b=myiu8j3ZmLlXqm45yE0qt4BzoWJVZdlyylo0UvkzkD07li5P64c1bsOIxK23CukJkexXw8siaw8DcHiagGSTjOAPE4E0UvJ9tiMZcPCWKaiwn/ZYQ+M/jvD0e6xF+PsXWnJ3mjVtui328BDh2wCKbiukjgyz/VAmihrAgAzSeAk=
+	t=1791226913; cv=none; b=bQsmc1YPTuTMDXRW5vTaa6LX6FJOma0fbebR495maURxZZBBsRN/opMK742nZI8fSAS2kKAAQd24VFBRzL5sygV4sGamVq5/wc8BM4XTdNB4Kc9O5odd9qHXNI3qD4IxMU1QeBkp48N8uxkSe/wtqGSRXZ/1eTUvO68jF1fWP5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791226341; c=relaxed/simple;
-	bh=1c7E4TNR3FgmLg/dW68RX19B3YDyGYoWUchSNWou5iU=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=sFoR7XGu1t6WUZQGD2OKEtaGuHuHogL9WEd1Q+yq7X/GFO4E/fhkDSoqHMrCpPr6g+Gs72Rera8l8IP0axCq5gmO/JShuWVy1qLL7v1lvzK9GOSyUcrOp0uPtWxRZmxa3XmFeD8bvj+NLBDJMzvnmS4UQbDZGGRTtqXztAduRdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=sJKNRBlS; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1791226913; c=relaxed/simple;
+	bh=hnm6bOUZbgMgPBRT4+7ffT/wy4OyP5ZauIF5q/q0wHw=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=aOQd7UTtDGY7Z0gNOBpg+Ga448cX/0XY/TlzML/fgu9RMamsZav8WPO3wCd5ihdig/619a9uek48TXXzqWndtt9UJ1bqxnrmEEHPc+WR/0CImrHE8ml91uiKaWS9i2tKs6wGqd+gg/AiCeKWFb/YiU9fMTR+W8T4QsyRfjormyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=OEBkDISV; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="sJKNRBlS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=5l5lyxbu2ncodewjokpvx55fgu.protonmail2; t=1791226334;
-	x=1791485534; bh=1c7E4TNR3FgmLg/dW68RX19B3YDyGYoWUchSNWou5iU=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=sJKNRBlSryeY0Be9rbaPg5GetpPhe/0Xhg0PEUuMbBcPcd0XkSGZ5yCCHWBNt9j1X
-	 GI6iYMjWijargcPQhL85wKLVdfx7uAGV7tOiReIcJllLbKxghZe6l9hb0q9q2akyqa
-	 G8eroPjkvPoswuWtxtUTGnCqLRdCY0+8E1TOjgEq8D68fKv1CXSLK/46D57t4KPdUJ
-	 vgWF6MQC3bNu/e8GvrDwke+ft6g2gJnug6eBC0oaT4jLNRowuizLpZdSGYkiPLrNq2
-	 5amemALGY9gsC1+LH97IgqGa8k7KRVHiLQaFhk8okkSm0q1dhTq0m2S8MQeDYTG0x/
-	 +w4Q2qFPrr1Bw==
-Date: Mon, 05 Oct 2026 18:52:08 +0000
-To: "anthony.l.nguyen@intel.com" <anthony.l.nguyen@intel.com>
-From: ghrafn <ghrafn@proton.me>
-Cc: "dima.ruinskiy@intel.com" <dima.ruinskiy@intel.com>, "przemyslaw.kitszel@intel.com" <przemyslaw.kitszel@intel.com>, "vitaly.lifshits@intel.com" <vitaly.lifshits@intel.com>, "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] e1000e: heavy packet loss on Lenovo ThinkPad P14s Gen 5 (I219-LM, Meteor Lake) after K1 re-enable; fixed by disable-k1
-Message-ID: <_kB6DUeC6oOmJnK0FobVVJHADewewO3wzeFw_GrempgMu6s5CUwHpkT16Bwn8tXRq0k_CN4b2NY6API37M6mVciEpH6DKbTqK7f13KMpmgI=@proton.me>
-Feedback-ID: 206853795:user:proton
-X-Pm-Message-ID: 91f0185fe9051c7baf7bc19a3cd65128fa483646
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="OEBkDISV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=MFmvViKGM02BTIPHCsWBHeyAcfFFDZ4nwZbqK2y2Fco=; b=OEBkDISVDy6iMQlVMG44QL6uCr
+	m7Jh0cTlwe6WWjkOummiuJA9pYYzUJPfMV1wu2IGzlDVYoEHacByBGJfDrEqUPIW6mwECm9oUofpE
+	esdQoaVhTdDToNBTBEyBFbFs9kf4CcPqQCpRytEetWsyp36oiq5r1WbQItM6wPEsROad3qcV4udZ2
+	wRSYP3TA16RiPdCxOp4Uq8FJXpjrP0W4j5r+6OVcjzXpuuc82QgoGeoi4P6NbK6H4dG6tk1JiDmiE
+	PskV7AiU7Dsiq/DYBiw2s2hYNuf40NkNXExUXl33wk3HJdtjfnL0l8htSANWB0J0YQ7aKjDn41E3i
+	xUwUiJew==;
+Received: from [::1] (port=36386 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xDnwc-0000000E0B2-0Qa3;
+	Mon, 05 Oct 2026 21:01:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="b1=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk"
+Date: Mon, 05 Oct 2026 21:01:49 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+Cc: netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jon Maloy
+ <jmaloy@redhat.com>
+Subject: Re: [PATCH net v2] tipc: protect received keys from concurrent flush
+In-Reply-To: <DU4P189MB37501CA7DBF5D6C3C8752349C6962@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+References: <20261002205932.1874012-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <DU4P189MB37501CA7DBF5D6C3C8752349C6962@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <2ac35bd0a3d8c774d0ee2bc977a45cf0@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
---b1=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk
-Content-Type: multipart/alternative;
- boundary="b2=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk"
+Hello,
 
---b2=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
+On 2026-10-05 04:14, Tung Quang Nguyen wrote:
+>> 	/* Attach it to the crypto */
+>> 	if (likely(!rc)) {
+>> -		rc = tipc_crypto_key_attach(c, aead, 0, master_key);
+>> +		spin_lock_bh(&c->lock);
+>> +		if (ukey == c->skey_in_use && c->skey != ukey)
+>> +			rc = -ECANCELED;
+> 
+> This check should be done earlier, before calling tipc_ahead_init() ?
 
-KEZvbGxvd2luZyB1cCBvbiB0aGlzIHJlZ3Jlc3Npb24gcmVwb3J0OiBbaHR0cHM6Ly9saXN0cy5v
-cGVud2FsbC5uZXQvbmV0ZGV2LzIwMjYvMDkvMTUvMjUzXShodHRwczovL2xpc3RzLm9wZW53YWxs
-Lm5ldC9uZXRkZXYvMjAyNi8wOS8xNS8yNTM/dXRtX3NvdXJjZT1jaGF0Z3B0LmNvbSkpCgpIaSwK
-CkkgYXBwZWFyIHRvIGJlIHNlZWluZyB0aGUgc2FtZSBpc3N1ZSBvbiBhIExlbm92byBUaGlua1Bh
-ZCBUMTQgR2VuIDYsIHdpdGggYW4gSW50ZWwgRXRoZXJuZXQgQ29ubmVjdGlvbiAoMjQpIEkyMTkt
-TE0gWzgwODY6NTdhMF0uCgpXaXRoIHRoZSBkZWZhdWx0IGUxMDAwZSBjb25maWd1cmF0aW9uIChk
-aXNhYmxlLWsxOiBvZmYpLCB3aXJlZCBFdGhlcm5ldCBleHBlcmllbmNlcyBzZXZlcmUgcGFja2V0
-IGxvc3MgZXZlbiB0byB0aGUgbG9jYWwgZ2F0ZXdheS4gVGhlIGludGVyZmFjZSBzdGlsbCBuZWdv
-dGlhdGVzIG5vcm1hbGx5IGF0IDEwMDAgTWIvcywgZnVsbCBkdXBsZXgsIGFuZCB0aGUgZTEwMDBl
-IHN0YXRpc3RpY3MgZG8gbm90IHJlcG9ydCBDUkMsIGZyYW1lLCBETUEsIG9yIG90aGVyIFJYIGVy
-cm9ycy4KCkZvciBleGFtcGxlOgoKJCBwaW5nIC1jIDEwIDE5Mi4xNjguMC4xCjEwIHBhY2tldHMg
-dHJhbnNtaXR0ZWQsIDMgcmVjZWl2ZWQsIDcwJSBwYWNrZXQgbG9zcwoKQVJQIHRyYWZmaWMgaXMg
-YWZmZWN0ZWQgYXMgd2VsbDoKCiQgc3VkbyBhcnBpbmcgLUkgZW5wMHMzMWY2IC1jIDIwIDE5Mi4x
-NjguMC4xCjIwIHBhY2tldHMgdHJhbnNtaXR0ZWQsIDExIHBhY2tldHMgcmVjZWl2ZWQsIDQ1JSB1
-bmFuc3dlcmVkCgpBIHRjcGR1bXAgb24gZW5wMHMzMWY2IHNob3dlZCB0aGUgb3V0Z29pbmcgSUNN
-UCBlY2hvIHJlcXVlc3RzLCBidXQgcmVwbGllcyB3ZXJlIGFic2VudCBmb3IgdGhlIGxvc3QgcGFj
-a2V0cy4KClRoZSBOSUMgaWRlbnRpZmllcyBhczoKCkludGVsIENvcnBvcmF0aW9uIEV0aGVybmV0
-IENvbm5lY3Rpb24gKDI0KSBJMjE5LUxNIFs4MDg2OjU3YTBdCgphbmQgdXNlcyBlMTAwMGUuCgpT
-ZXR0aW5nIHRoZSBleGlzdGluZyBwcml2YXRlIGZsYWc6CgojIGV0aHRvb2wgLS1zZXQtcHJpdi1m
-bGFncyBlbnAwczMxZjYgZGlzYWJsZS1rMSBvbgoKaW1tZWRpYXRlbHkgZWxpbWluYXRlcyB0aGUg
-cHJvYmxlbS4KCkFmdGVyIHNldHRpbmcgZGlzYWJsZS1rMToKCiQgcGluZyAtYyAzMCAxOTIuMTY4
-LjAuMQozMCBwYWNrZXRzIHRyYW5zbWl0dGVkLCAzMCByZWNlaXZlZCwgMCUgcGFja2V0IGxvc3MK
-cnR0IG1pbi9hdmcvbWF4L21kZXYgPSAwLjM4NC8wLjUzOC8wLjg4NS8wLjA5OCBtcwoKYW5kOgoK
-JCBzdWRvIGFycGluZyAtSSBlbnAwczMxZjYgLWMgMjAgMTkyLjE2OC4wLjEKMjAgcGFja2V0cyB0
-cmFuc21pdHRlZCwgMjAgcGFja2V0cyByZWNlaXZlZCwgMCUgdW5hbnN3ZXJlZAoKVGhlIHJlc3Vs
-dCBpcyByZXBlYXRhYmxlIHdpdGhpbiB0aGUgc2FtZSBzZXNzaW9uOiB0aGUgc2V2ZXJlIGxvY2Fs
-IHBhY2tldCBsb3NzIGRpc2FwcGVhcmVkIGltbWVkaWF0ZWx5IGFmdGVyIGRpc2FibGluZyBLMS4K
-ClN5c3RlbSBpbmZvcm1hdGlvbjoKCkxhcHRvcDoKCkxlbm92byBUaGlua1BhZCBUMTQgR2VuIDYK
-CkRNSSBzeXNfdmVuZG9yOgoKTEVOT1ZPCgpETUkgcHJvZHVjdF9uYW1lOgoKMjFRQ1MwMTYwMAoK
-RE1JIHByb2R1Y3RfdmVyc2lvbjoKClRoaW5rUGFkIFQxNCBHZW4gNgoKRE1JIGJvYXJkX25hbWU6
-CgoyMVFDUzAxNjAwCgpCSU9TOgoKTjRKRVQyOFcgKDEuMTggKSAoZGF0ZToKCjA2LzE2LzIwMjYK
-CikKCkNQVToKCkludGVsKFIpIENvcmUoVE0pIFVsdHJhIDUgMjM1VQoKS2VybmVsOgoKTGludXgg
-Ny4wLjAtMzgtZ2VuZXJpYwoKTklDOgoKMDA6MWYuNiBJbnRlbCBFdGhlcm5ldCBDb25uZWN0aW9u
-ICgyNCkgSTIxOS1MTSBbODA4Njo1N2EwXQoKZTEwMDBlIGZpcm13YXJlOgoKMC4xLTQKCkxpbms6
-CgoxMDAwIE1iL3MgRnVsbCBEdXBsZXgKCk9TOgoKVWJ1bnR1IDI2LjA0LjEgTFRTCgpJIGFtIGN1
-cnJlbnRseSB3b3JraW5nIGFyb3VuZCB0aGUgaXNzdWUgYnkgc2V0dGluZyBkaXNhYmxlLWsxIG9u
-LgoKVGhpcyBsb29rcyBzdWZmaWNpZW50bHkgc2ltaWxhciB0byB0aGUgcmVwb3J0ZWQgUDE0cyBH
-ZW4gNSBpc3N1ZSB0aGF0IEkgd2FudGVkIHRvIHJlcG9ydCB0aGUgYWRkaXRpb25hbCBhZmZlY3Rl
-ZCBwbGF0Zm9ybSBpbiBjYXNlIHRoZSBUMTQgR2VuIDYgYWxzbyBuZWVkcyB0byBiZSBhZGRlZCB0
-byBkaXNhYmxlX2sxX2xpc3QuCgpJJ20gaGFwcHkgdG8gdGVzdCBhIHBhdGNoIG9yIHByb3ZpZGUg
-YWRkaXRpb25hbCBkaWFnbm9zdGljcyBpZiB1c2VmdWwuCgpUaGFua3MsCkfDrXNsaQ==
+Would moving the check before tipc_aead_init() be enough, given that a
+flush can still happen while AEAD setup is running and before the key
+is attached?
 
---b2=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
+Indeed, the race goes something like:
+1. Worker starts tipc_aead_init()
+2. Flush clears rx->skey
+3. Worker finishes AEAD setup
 
-PHAgc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgZm9udC1zaXplOiAxNHB4
-OyBjb2xvcjogcmdiKDAsIDAsIDApOyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjU1LCAyNTUsIDI1
-NSk7Ij48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlmOyI+KDwvc3Bh
-bj48c3Bhbj48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlmOyI+Rm9s
-bG93aW5nIHVwIG9uIHRoaXMgcmVncmVzc2lvbiByZXBvcnQ6IDwvc3Bhbj48YSBocmVmPSJodHRw
-czovL2xpc3RzLm9wZW53YWxsLm5ldC9uZXRkZXYvMjAyNi8wOS8xNS8yNTM/dXRtX3NvdXJjZT1j
-aGF0Z3B0LmNvbSI+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsi
-Pmh0dHBzOi8vbGlzdHMub3BlbndhbGwubmV0L25ldGRldi8yMDI2LzA5LzE1LzI1Mzwvc3Bhbj48
-L2E+PC9zcGFuPjxzcGFuIHN0eWxlPSJmb250LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7Ij4p
-PC9zcGFuPjwvcD48cD48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlm
-OyI+SGksPC9zcGFuPjwvcD48cD48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5z
-LXNlcmlmOyI+SSBhcHBlYXIgdG8gYmUgc2VlaW5nIHRoZSBzYW1lIGlzc3VlIG9uIGEgTGVub3Zv
-IFRoaW5rUGFkIFQxNCBHZW4gNiwgd2l0aCBhbiBJbnRlbCBFdGhlcm5ldCBDb25uZWN0aW9uICgy
-NCkgSTIxOS1MTSBbODA4Njo1N2EwXS48L3NwYW4+PC9wPjxwPjxzcGFuPldpdGggdGhlIGRlZmF1
-bHQgZTEwMDBlIGNvbmZpZ3VyYXRpb24gKDwvc3Bhbj48Y29kZT48c3Bhbj5kaXNhYmxlLWsxOiBv
-ZmY8L3NwYW4+PC9jb2RlPjxzcGFuPiksIHdpcmVkIEV0aGVybmV0IGV4cGVyaWVuY2VzIHNldmVy
-ZSBwYWNrZXQgbG9zcyBldmVuIHRvIHRoZSBsb2NhbCBnYXRld2F5LiBUaGUgaW50ZXJmYWNlIHN0
-aWxsIG5lZ290aWF0ZXMgbm9ybWFsbHkgYXQgMTAwMCBNYi9zLCBmdWxsIGR1cGxleCwgYW5kIHRo
-ZSBlMTAwMGUgc3RhdGlzdGljcyBkbyBub3QgcmVwb3J0IENSQywgZnJhbWUsIERNQSwgb3Igb3Ro
-ZXIgUlggZXJyb3JzLjwvc3Bhbj48L3A+PHA+PHNwYW4+Rm9yIGV4YW1wbGU6PC9zcGFuPjwvcD48
-cHJlPjxjb2RlPjxzcGFuPiQgcGluZyAtYyAxMCAxOTIuMTY4LjAuMQ0KMTAgcGFja2V0cyB0cmFu
-c21pdHRlZCwgMyByZWNlaXZlZCwgNzAlIHBhY2tldCBsb3NzPC9zcGFuPjwvY29kZT48L3ByZT48
-cD48c3Bhbj5BUlAgdHJhZmZpYyBpcyBhZmZlY3RlZCBhcyB3ZWxsOjwvc3Bhbj48L3A+PHByZT48
-Y29kZT48c3Bhbj4kIHN1ZG8gYXJwaW5nIC1JIGVucDBzMzFmNiAtYyAyMCAxOTIuMTY4LjAuMQ0K
-MjAgcGFja2V0cyB0cmFuc21pdHRlZCwgMTEgcGFja2V0cyByZWNlaXZlZCwgNDUlIHVuYW5zd2Vy
-ZWQ8L3NwYW4+PC9jb2RlPjwvcHJlPjxwPjxzcGFuPkEgPC9zcGFuPjxzcGFuIHN0eWxlPSJmb250
-LWZhbWlseTogTWVubG8sIENvbnNvbGFzLCBDb3VyaWVyIE5ldywgbW9ub3NwYWNlOyI+dGNwZHVt
-cDwvc3Bhbj48c3Bhbj4gb24gZW5wMHMzMWY2IHNob3dlZCB0aGUgb3V0Z29pbmcgSUNNUCBlY2hv
-IHJlcXVlc3RzLCBidXQgcmVwbGllcyB3ZXJlIGFic2VudCBmb3IgdGhlIGxvc3QgcGFja2V0cy48
-L3NwYW4+PC9wPjxwPjxzcGFuPlRoZSBOSUMgaWRlbnRpZmllcyBhczo8L3NwYW4+PC9wPjxwcmU+
-PGNvZGU+PHNwYW4+SW50ZWwgQ29ycG9yYXRpb24gRXRoZXJuZXQgQ29ubmVjdGlvbiAoMjQpIEky
-MTktTE0gWzgwODY6NTdhMF08L3NwYW4+PC9jb2RlPjwvcHJlPjxwPjxzcGFuPmFuZCB1c2VzIGUx
-MDAwZS48L3NwYW4+PC9wPjxwPjxzcGFuPlNldHRpbmcgdGhlIGV4aXN0aW5nIHByaXZhdGUgZmxh
-Zzo8L3NwYW4+PC9wPjxwcmU+PGNvZGU+PHNwYW4+IyBldGh0b29sIC0tc2V0LXByaXYtZmxhZ3Mg
-ZW5wMHMzMWY2IGRpc2FibGUtazEgb248L3NwYW4+PC9jb2RlPjwvcHJlPjxwPjxzcGFuPmltbWVk
-aWF0ZWx5IGVsaW1pbmF0ZXMgdGhlIHByb2JsZW0uPC9zcGFuPjwvcD48cD48c3Bhbj5BZnRlciBz
-ZXR0aW5nIGRpc2FibGUtazE6PC9zcGFuPjwvcD48cHJlPjxjb2RlPjxzcGFuPiQgcGluZyAtYyAz
-MCAxOTIuMTY4LjAuMQ0KMzAgcGFja2V0cyB0cmFuc21pdHRlZCwgMzAgcmVjZWl2ZWQsIDAlIHBh
-Y2tldCBsb3NzDQpydHQgbWluL2F2Zy9tYXgvbWRldiA9IDAuMzg0LzAuNTM4LzAuODg1LzAuMDk4
-IG1zPC9zcGFuPjwvY29kZT48L3ByZT48cD48c3Bhbj5hbmQ6PC9zcGFuPjwvcD48cHJlPjxjb2Rl
-PjxzcGFuPiQgc3VkbyBhcnBpbmcgLUkgZW5wMHMzMWY2IC1jIDIwIDE5Mi4xNjguMC4xDQoyMCBw
-YWNrZXRzIHRyYW5zbWl0dGVkLCAyMCBwYWNrZXRzIHJlY2VpdmVkLCAwJSB1bmFuc3dlcmVkPC9z
-cGFuPjwvY29kZT48L3ByZT48cD48c3Bhbj5UaGUgcmVzdWx0IGlzIHJlcGVhdGFibGUgd2l0aGlu
-IHRoZSBzYW1lIHNlc3Npb246IHRoZSBzZXZlcmUgbG9jYWwgcGFja2V0IGxvc3MgZGlzYXBwZWFy
-ZWQgaW1tZWRpYXRlbHkgYWZ0ZXIgZGlzYWJsaW5nIEsxLjwvc3Bhbj48L3A+PHA+PHNwYW4+U3lz
-dGVtIGluZm9ybWF0aW9uOjwvc3Bhbj48L3A+PHByZT48Y29kZT48c3Bhbj48Yj5MYXB0b3A6PC9i
-PiAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICAgIExlbm92byBUaGlua1BhZCBU
-MTQgR2VuIDYNCjxiPkRNSSBzeXNfdmVuZG9yOjwvYj4gJm5ic3A7ICAgIDxzcGFuPkxFTk9WTzwv
-c3Bhbj4NCjxiPkRNSSBwcm9kdWN0X25hbWU6PC9iPiAgICA8c3Bhbj4yMVFDUzAxNjAwPC9zcGFu
-Pg0KPGI+RE1JIHByb2R1Y3RfdmVyc2lvbjo8L2I+IDxzcGFuPlRoaW5rUGFkIFQxNCBHZW4gNjwv
-c3Bhbj4NCjxiPkRNSSBib2FyZF9uYW1lOjwvYj4gJm5ic3A7ICAgIDxzcGFuPjIxUUNTMDE2MDA8
-L3NwYW4+DQo8Yj5CSU9TOjwvYj4gJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAm
-bmJzcDsgICAgPHNwYW4+TjRKRVQyOFcgKDEuMTggKSAoZGF0ZTogPHNwYW4+MDYvMTYvMjAyNjwv
-c3Bhbj4pPC9zcGFuPg0KPGI+Q1BVOjwvYj4gJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZu
-YnNwOyAmbmJzcDsgICAgIDxzcGFuPkludGVsKFIpIENvcmUoVE0pIFVsdHJhIDUgMjM1VTwvc3Bh
-bj4NCjxiPktlcm5lbDo8L2I+ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgICAg
-PHNwYW4+TGludXggNy4wLjAtMzgtZ2VuZXJpYzwvc3Bhbj4NCjxiPk5JQzo8L2I+ICZuYnNwOyAm
-bmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICAgICAwMDoxZi42IEludGVsIEV0aGVy
-bmV0IENvbm5lY3Rpb24gKDI0KSBJMjE5LUxNIFs4MDg2OjU3YTBdDQo8Yj5lMTAwMGUgZmlybXdh
-cmU6PC9iPiAgICAgMC4xLTQNCjxiPkxpbms6PC9iPiAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
-cDsgJm5ic3A7ICZuYnNwOyAgICAxMDAwIE1iL3MgRnVsbCBEdXBsZXg8YnI+PGI+T1M6PC9iPiA8
-c3Bhbj4gICAgICAgICAgICAgICAgIFVidW50dSAyNi4wNC4xIExUUzwvc3Bhbj4gPC9zcGFuPjwv
-Y29kZT48L3ByZT48cD48c3Bhbj5JIGFtIGN1cnJlbnRseSB3b3JraW5nIGFyb3VuZCB0aGUgaXNz
-dWUgYnkgc2V0dGluZyA8L3NwYW4+PGNvZGU+PHNwYW4+ZGlzYWJsZS1rMTwvc3Bhbj48L2NvZGU+
-PHNwYW4+IG9uLjwvc3Bhbj48L3A+PHA+PHNwYW4+VGhpcyBsb29rcyBzdWZmaWNpZW50bHkgc2lt
-aWxhciB0byB0aGUgcmVwb3J0ZWQgUDE0cyBHZW4gNSBpc3N1ZSB0aGF0IEkgd2FudGVkIHRvIHJl
-cG9ydCB0aGUgYWRkaXRpb25hbCBhZmZlY3RlZCBwbGF0Zm9ybSBpbiBjYXNlIHRoZSBUMTQgR2Vu
-IDYgYWxzbyBuZWVkcyB0byBiZSBhZGRlZCB0byA8L3NwYW4+PGNvZGU+PHNwYW4+ZGlzYWJsZV9r
-MV9saXN0PC9zcGFuPjwvY29kZT48c3Bhbj4uPC9zcGFuPjwvcD48cD48c3Bhbj5JJ20gaGFwcHkg
-dG8gdGVzdCBhIHBhdGNoIG9yIHByb3ZpZGUgYWRkaXRpb25hbCBkaWFnbm9zdGljcyBpZiB1c2Vm
-dWwuPC9zcGFuPjwvcD48cD48c3Bhbj5UaGFua3MsPGJyPkfDrXNsaTwvc3Bhbj48L3A+
+AFAIU, we still need the check under c->lock, immediately before
+tipc_crypto_key_attach(), so that a revoked key cannot be published
+after flush.
 
+> 
+>> +		else
+>> +			rc = tipc_crypto_key_attach(c, aead, 0, master_key);
+>> +		spin_unlock_bh(&c->lock);
+>> 		if (rc < 0)
+>> 			tipc_aead_free(&aead->rcu);
+>> 	}
+>> @@ -1151,6 +1158,8 @@ int tipc_crypto_key_init(struct tipc_crypto *c, 
+>> struct
+>> tipc_aead_key *ukey,
+>>  * @pos: desired slot in the crypto key array, = 0 if any!
+>>  * @master_key: specify this is a cluster master key
+>>  *
+>> + * The caller must hold c->lock.
+>> + *
+>>  * Return: new key id in case of success, otherwise: -EBUSY
+>>  */
+>> static int tipc_crypto_key_attach(struct tipc_crypto *c, @@ -1158,20 
+>> +1167,19
+>> @@ static int tipc_crypto_key_attach(struct tipc_crypto *c,
+>> 				  bool master_key)
+>> {
+>> 	struct tipc_key key;
+>> -	int rc = -EBUSY;
+>> 	u8 new_key;
+>> 
+>> -	spin_lock_bh(&c->lock);
+>> +	lockdep_assert_held(&c->lock);
+>> 	key = c->key;
+>> 	if (master_key) {
+>> 		new_key = KEY_MASTER;
+>> 		goto attach;
+>> 	}
+>> 	if (key.active && key.passive)
+>> -		goto exit;
+>> +		return -EBUSY;
+>> 	if (key.pending) {
+>> 		if (tipc_aead_users(c->aead[key.pending]) > 0)
+>> -			goto exit;
+>> +			return -EBUSY;
+>> 		/* if (pos): ok with replacing, will be aligned when needed */
+>> 		/* Replace it */
+>> 		new_key = key.pending;
+>> @@ -1201,11 +1209,7 @@ attach:
+>> 	c->working = 1;
+>> 	c->nokey = 0;
+>> 	c->key_master |= master_key;
+>> -	rc = new_key;
+>> -
+>> -exit:
+>> -	spin_unlock_bh(&c->lock);
+>> -	return rc;
+>> +	return new_key;
+> 
+> Remove lock from tipc_crypto_key_attach() is enough. Why adding many 
+> irrelevant changes that do not seem necessary ?
 
---b2=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk--
+Those extra changes in tipc_crypto_key_attach() are more cleanup than
+anything else; I preferred the direct returns since the function no
+longer owns the lock, but I can reduce the patch and keep the exit
+label.
 
---b1=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk
-Content-Type: application/pgp-keys; name="publickey - ghrafn@proton.me - 0xBDFBA7A8.asc"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="publickey - ghrafn@proton.me - 0xBDFBA7A8.asc"
-
-LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCgp4ak1FYWtXSlN4WUpLd1lCQkFI
-YVJ3OEJBUWRBL0lGcXUwS2hkbHFoWFdFV1RUN1U5dlNISEVQcG10NVYKQ1hEQmVmcHhrbDdOSTJk
-b2NtRm1ia0J3Y205MGIyNHViV1VnUEdkb2NtRm1ia0J3Y205MGIyNHViV1UrCndzQVJCQk1XQ2dD
-REJZSnFSWWxMQXdzSkJ3a1FUTzFsNXFPdy9sdEZGQUFBQUFBQUhBQWdjMkZzZEVCdQpiM1JoZEds
-dmJuTXViM0JsYm5CbmNHcHpMbTl5WjBySVVkK2o4RzRDcFBkWjRxOGJzOFhZMGxaWFlVV20KQXVN
-aFBIY3FZc2xhQXhVS0NBUVdBQUlCQWhrQkFwc0RBaDRCRmlFRXZmdW5xRTVMYmtwUjNhL2FUTzFs
-CjVxT3cvbHNBQUlBK0FRQ3RleVk2eXhZb1UyMm9YZlkyN1l0TFJJeDg3WjRiV0prSEk1N2xpYU9N
-REFFQQp2QTFsQVFyaldGNHcrb0xadzF3RnNxaDc3Qy9FR0VQWVBHQi9mMG54UkFMT09BUnFSWWxM
-RWdvckJnRUUKQVpkVkFRVUJBUWRBN1JyQmJWcFFxUEhpOXQwVEFoNUtMZzRaZUhZT0lHZEoweE1B
-N2VLKzJoUURBUWdICndyNEVHQllLQUhBRmdtcEZpVXNKRUV6dFplYWpzUDViUlJRQUFBQUFBQndB
-SUhOaGJIUkFibTkwWVhScApiMjV6TG05d1pXNXdaM0JxY3k1dmNtZVZTZEVNSm9hRGJCeGtoN0Y1
-ajBOWDNUVlY5OEdSQTkyVFA0dFoKYkEvK3hRS2JEQlloQkwzN3A2aE9TMjVLVWQydjJrenRaZWFq
-c1A1YkFBQ212Z0VBaXZuUkVzbHhhM2lHCnVtb0lUYlJWTVFWcHlZTEVhV3dQSUFwTks0Uk1kTjhC
-QUpjKzhvU0FOOTg4aGRlV0lsSTF0SkMrSHVuWgpUd01DbjI0eHFXandxTDhFCj16VlZJCi0tLS0t
-RU5EIFBHUCBQVUJMSUMgS0VZIEJMT0NLLS0tLS0K
-
---b1=_VWVH8wuGEEL49m243DEGbDFj6TrN8oxkHyt52za6pk--
-
+Thanks,
+Jérémy
