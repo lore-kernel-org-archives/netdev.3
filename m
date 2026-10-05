@@ -1,105 +1,156 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E67364052
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 19:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE574DDB4B;
+	Mon,  5 Oct 2026 20:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791230171; cv=none; b=WRcva0m2u4llIzGzuNzCwVUyGScPCJat8LsTk7s6pxJpHgtXvzLPyOJz1SH63dvV7VLlNEAKcs/LwSIGh4lsnXBvczTbazaBn6spQlVu+rDcr1RKakUD/poAP+Wx/9eGTMvbeqAquJmr2RdZoQ7jh+0+Vao4VHVpqN54w5kb/10=
+	t=1791230508; cv=none; b=jQEzfUwzZHJSnybyxu70BKH/lo/DOPtSbmtX5QOKM2ZwTlSxFAknu8NW6A8i72JD1sFFAPRrVHNiDsUNlWkIGcEy013AnRyNz8J0Ni65qdvgLmSJVrfwhCLTlxLqg+VDm9XC0k+DuBkCUt2mzVl70UFryx1FEGYW3pHd75QDMaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791230171; c=relaxed/simple;
-	bh=V3WSP+eiM9+d0ZifcOV9ub6UMZ7U9odjgtO0fakZYUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NRb0eTGW50DEHQwNmR/iXE51J4OgS+sUbU4lpSt1hlaLBMrwjfntDci5xrQoXv1iah/+IXKl0u3vevxjMrcM615b1/tvSKb4JmZY3z8JMCd3k3AY/FLLcQwp70Nj9XPKx+vFI4SGzXRLgNrpciJoOkOBH2KmFL/zRmMTjlrel2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aIhu2bgc; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791230508; c=relaxed/simple;
+	bh=BELa2DDWfS8U8jl+SDkG2uJ4g1bJg+pZUDCMnr17IaA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FcROeNC/LSf5+uyWRfHdKbCC26/UBv7rhgjyc59rkxFs+cqo39ZDQN1fr3ZiTo4jKKKYNeM5tG7O5A4Q4p86tfc9jwu1tHcTJW5kWmF6GPCix02Q4qYuHXlS6tBDyWLggeAk2rEw9YNwX0LcHpoaxSv8qmY0qj9KXIiTyGJErQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zSP9HcJG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+gNEbAke; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aIhu2bgc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791230170; x=1822766170;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=V3WSP+eiM9+d0ZifcOV9ub6UMZ7U9odjgtO0fakZYUU=;
-  b=aIhu2bgc77QgeODQbcmuCCKtAb8eKSJxnhVj/cjRuv4rwfdlXeXxhMul
-   ivmRRq6WeSHLjTlnuW2hU6fSpGXB/pTgieB1fDWt6xm6jR17aeb/GgPVu
-   MKzPiZzjo39FLEYWqY1chslKWL6QRFB/Z4Gwes8BkQ6lSkBCA0ODuw2Hm
-   g0JIQrhtVgv/eqzWFr16MTEI6dsioGCbC4sjDZRVadXm9RXIMwNjAcPHM
-   5BnsnnkJlJ0Ajt5hcBE9Rd7b+GpGDmIKe9C41j5SAX1NkX85RhiXyFPVn
-   GK/4RRrWD2HATuqX2sL34D17YzYGR/lTIHdaBiEDlebNyknHBp58SqI0B
-   A==;
-X-CSE-ConnectionGUID: RVlrveyHRFSBsjHqGi91kA==
-X-CSE-MsgGUID: JhmPjCnNRV6qJh38wPzQQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="94621019"
-X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="94621019"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 12:56:09 -0700
-X-CSE-ConnectionGUID: OYbDjfG7QOS9MOnMYW3x2w==
-X-CSE-MsgGUID: lXguA6/HSK21sI8Qwd80kg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="303176760"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 05 Oct 2026 12:56:06 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xDon5-000000000m0-3yuE;
-	Mon, 05 Oct 2026 19:56:03 +0000
-Date: Tue, 6 Oct 2026 03:55:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Tung Nguyen <tung.quang.nguyen@est.tech>, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, davem@davemloft.net, kuba@kernel.org,
-	edumazet@kernel.org, pabeni@redhat.com, jmaloy@redhat.com,
-	horms@kernel.org, tipc-discussion@lists.sourceforge.net,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Chengfeng Ye <nicoyip.dev@gmail.com>
-Subject: Re: [PATCH net] tipc: fix several race conditions caused by
- tipc_node_write_unlock()
-Message-ID: <202610060355.bPzTfoXZ-lkp@intel.com>
-References: <20261005041053.22695-1-tung.quang.nguyen@est.tech>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zSP9HcJG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+gNEbAke"
+Message-ID: <f078112879455b0f59b7278f966b84f2ddea1a0f.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791230495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S+U78JOwbOPXwnC4RFGdnqyGIfBIo2MNgXS2aKLjSCU=;
+	b=zSP9HcJGNuewebdEUnlDr1NPl/4iqp4M9vZxBm06NlF1rfRleoUQtJS27Z9u9CAsYBt3o3
+	O5Ch+jXTYIbsVgQdYAPC73F5X/ZIXxmjalZSyIaWrozDuxbY55j4yJrUCc2tG06nHwzGlW
+	+8A+BwHa2k2rF3Ptp4xlLjSaAbJfaGSfhCmKKg7xCUVTFSUiE/MF7v+oGD2YNufiyWxpjM
+	k6nWWpXtNzapkvLD26G24DP4pPZwpRR2rik28nAGtnNnRWLqAyGJhq1bgjG2plfaWtrCpL
+	X03ENB9oqwDEW6klSsqI+1Kd2mRr+y0WyqvzUXDB+Qf5WM8DVSKU3O+4VXHDYg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791230495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S+U78JOwbOPXwnC4RFGdnqyGIfBIo2MNgXS2aKLjSCU=;
+	b=+gNEbAketoxkH6J3Kiub669W1QnkNLa4q6q0rtwDPmpbJgGcIiMY/eGOjo0rTXDiIlmbOU
+	XvVNrVDZxw/kbYCg==
+Subject: Re: [PATCH net-next v3 2/8] dt-bindings: net: Add SoC-e SWIP MDIO
+ controller
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
+Date: Mon, 05 Oct 2026 22:01:32 +0200
+In-Reply-To: <6a635aa0-3489-4d2b-b302-06b793326654@lunn.ch>
+References: 
+	<20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
+	 <20260923-devel-vstrassheim-soce-dsa-ml-v3-2-ddebafcb9ba7@linutronix.de>
+	 <e5aa5cd8-e805-47d3-a105-07bf1b9eb9b8@lunn.ch>
+	 <218d4c1cf5f05cd6cc648c01f8a20ec66b95362c.camel@linutronix.de>
+	 <6416b34a-83ce-4aca-8adf-c8894ca7b3c3@lunn.ch>
+	 <ad24be6928e33b544f9c8c72ea05f64c2968035f.camel@linutronix.de>
+	 <6a635aa0-3489-4d2b-b302-06b793326654@lunn.ch>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261005041053.22695-1-tung.quang.nguyen@est.tech>
 
-Hi Tung,
+On Wed, 2026-09-30 at 20:24 +0200, Andrew Lunn wrote:
+> On Wed, Sep 30, 2026 at 07:13:35PM +0200, Vasilij Strassheim wrote:
+> > On Wed, 2026-09-30 at 17:14 +0200, Andrew Lunn wrote:
+> > > On Wed, Sep 30, 2026 at 04:00:56PM +0200, Vasilij Strassheim wrote:
+> > > > On Sat, 2026-09-26 at 00:55 +0200, Andrew Lunn wrote:
+> > > > > > The controller exposes separate register regions for transactio=
+n data
+> > > > > > and for the shared transaction control and external bus selecto=
+r
+> > > > > > register.
+> > > > >=20
+> > > > > > +examples:
+> > > > > > +  - |
+> > > > > > +    mdio@204 {
+> > > > > > +        compatible =3D "soce,swip-mdio-23-02";
+> > > > > > +        reg =3D <0x204 0xc>, <0x200 0x4>;
+> > > > >=20
+> > > > > At least in the example, they are not separate?
+> > > >=20
+> > > > Not separate regions but registers...
+> > > > I'm obviously bad at documenting things.
+> > > >=20
+> > > > The current information in the commit message is misleading and
+> > > > irrelevant. Looking at the bot's feedback, it's at the same time no=
+t
+> > > > clear enough yet that the mdio controller part is mapped within the
+> > > > switch memory and can't be used separately from it.
+> > > >=20
+> > > > I will update the commit message to something like this:
+> > > > Add a binding for the MDIO controller integrated into SoC-e SWIP
+> > > > Ethernet switch IP cores.
+> > > > The controller shares the memory of the synthesized switch IP core =
+and
+> > > > cannot be used independently.
+> > >=20
+> > > I think part of the issue is the compatible. That suggests it is a
+> > > separate device, with its own driver. But it is actually driven by th=
+e
+> > > switch driver.
+> >=20
+> > I can't avoid the compatible right now. Somehow it is still a separate
+> > functionality. I hope the following example doesn't cause unnecessary
+> > confusion, but rather helps to understand the system better:
+> >=20
+> > The relationship between the MDIO controller and the switch core is mor=
+e
+> > like that of tools in a Swiss Army knife.
+> > There are a few standalone tools, such as the knife and the screwdriver=
+.
+> > These can also be described on their own. But they only make sense when
+> > they are attached to the knife as a whole. As soon as one takes it
+> > apart, the individual tools can no longer be used effectively. At the
+> > same time, no one needs to worry about the screwdriver if they only nee=
+d
+> > the knife.
+>=20
+> Maybe consider an MFD.
+>=20
+> You then do get independent devices.
+>=20
+> Also, with the current structure, i'm not sure how the mdio-mux is
+> getting instantiated. You list it inside the switch node, so i don't
+> think i will get turned into a platform device and probed. An MFD
+> might helper, maybe.
+>=20
+> There are other switches which are described as MFD, so it is not
+> unknown.
 
-kernel test robot noticed the following build warnings:
+I was initially thinking that an MFD would be too much for a switch, but
+after looking at it more closely, it seems to be the right model here.
+I will update this again with a bigger change.
 
-[auto build test WARNING on net/main]
+I would also update the Kconfig structure. The Ethernet switch child
+will be the only user-visible entry point. Selecting it will select the
+"SWIP IP Core" MFD parent as well as the required MDIO controller and
+mux drivers. The MFD and MDIO controller symbols will have only empty
+tristate options.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Tung-Nguyen/tipc-fix-several-race-conditions-caused-by-tipc_node_write_unlock/20261005-111023
-base:   net/main
-patch link:    https://lore.kernel.org/r/20261005041053.22695-1-tung.quang.nguyen%40est.tech
-patch subject: [PATCH net] tipc: fix several race conditions caused by tipc_node_write_unlock()
-config: parisc-randconfig-1001-20261006 (https://download.01.org/0day-ci/archive/20261006/202610060355.bPzTfoXZ-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261006/202610060355.bPzTfoXZ-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610060355.bPzTfoXZ-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> Warning: net/tipc/name_distr.c:281 function parameter 'publ_list' not described in 'tipc_update_nametbl'
->> Warning: net/tipc/name_distr.c:375 function parameter 'publ_list' not described in 'tipc_named_rcv'
->> Warning: net/tipc/name_distr.c:281 function parameter 'publ_list' not described in 'tipc_update_nametbl'
->> Warning: net/tipc/name_distr.c:375 function parameter 'publ_list' not described in 'tipc_named_rcv'
---
->> Warning: net/tipc/name_table.c:820 function parameter 'skb' not described in 'tipc_nametbl_withdraw'
->> Warning: net/tipc/name_table.c:820 function parameter 'rc_dests' not described in 'tipc_nametbl_withdraw'
->> Warning: net/tipc/name_table.c:820 function parameter 'skb' not described in 'tipc_nametbl_withdraw'
->> Warning: net/tipc/name_table.c:820 function parameter 'rc_dests' not described in 'tipc_nametbl_withdraw'
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>=20
+>       Andrew
+Thanks,
+Vasilij
