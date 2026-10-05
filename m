@@ -1,242 +1,239 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669C13BD65D;
-	Mon,  5 Oct 2026 08:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D627D3002CF;
+	Mon,  5 Oct 2026 08:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791190118; cv=none; b=u2VCpWYb6ytBW6xeCfM7caSB2agDD4GdYECQrq+Y2KLog6X2nk4idBsF+Y2M/Hf5k6LObk4LSohJYuxIUzycTsyrbGgblA972gJqyjud547yd0jkSnhfkYjqcfOgU/HTuakzN1kahxDaleDyxKFnmyniTY04fYy2YDu/zBeQR0c=
+	t=1791190663; cv=none; b=OtfYkhTMoWUlreF+QgjGIctdOEztprMl+87iQhtkd6NIp27yHfZfDpcyLun3mA48AkNL/sf/gI+p1hzTAlj8tmXiEbkqWQmJ5cn2vbmhct6+3motugrFRR3tEq4DXXFd2xWhckSCi7QjXjsk9cZY+JfHlLJs1yg9MeSbvJ9O9HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791190118; c=relaxed/simple;
-	bh=LZIOGAkJ3OgzArNWUywigRAYWez3aNenFptdwUN+GGI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d8g5+zuFBiFiEVGnPMD6ptvaShfT9WRIiyNjG8C/xmTcVifmpKR8PEhOgxGCmMUNIjQZAhJc6hypcpqxAMx/+zP9so5cOOXFOllHFU47pJE9fpthEJ2+70+gT1ddEdhnXwJ3icf50PqkXRnVVn8D68ce1PYuyoZR33GepBQYQ6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hsxl1H8i; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791190663; c=relaxed/simple;
+	bh=XjWcuUrd7k7lY5Kotix5/3ConqgPhYTTwxQ2qzQyRiE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o79IDgas62EtjWrq6q36Jk3zdH85OCiwhI68icDdkgT78SFGH/BQGV9yvebKNbMCwzaRf5TKdbxUdPU0ETEZ7m5uLaMROUrrPXSdvh0kkpkcmA/jIYFKBSqZsGg2BBiC3f0OJf4jNjChMCFa6GA/4Qs11v4rogxHJ2bJbsvC4Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RN4XdU6n; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hsxl1H8i"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69515LCk3343732;
-	Mon, 5 Oct 2026 08:48:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6lL3B7
-	Zp+T9kYBWKTo/ToUgLjDkFtS0muoqzcVHyDyM=; b=hsxl1H8inbQbC5Qp5nmEln
-	hSm41OIK1fvzp5mDd99vz+1hnfBKwQz22+S9D5jRhW6CgcT+5kFfpF0EUL3arOOS
-	kyPrSYAhUwc56Xq+CGr+sFA7KgSWpfXM8WQvPXb1Uy1KjNXHUMG2d8rccFj89ajG
-	2fq2q8HENcznCsidK+tA62oAE1mmMnwfPW3qnPKvn/SXWbBmITExEcW6Z6icHGZy
-	fhOInURvPBH9IbupgpHHAN/NyXdgphT+JiSShvCbWs4dRhcHT+RzYSF+RbYsVTaP
-	s1HqWLt1tFxMcZHRpk/2TfCNerfrfZZNDZ5Tz5EF8asdDG9DzVmZ4VE/QB9IyU1Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2s74ha0g-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 08:48:30 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6956JbAe2165214;
-	Mon, 5 Oct 2026 08:48:29 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h3c1pmu6r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 08:48:29 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6958mPiu40829218
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 08:48:25 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B133D20043;
-	Mon,  5 Oct 2026 08:48:25 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D3FD82004D;
-	Mon,  5 Oct 2026 08:48:21 +0000 (GMT)
-Received: from [9.39.23.177] (unknown [9.39.23.177])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Oct 2026 08:48:21 +0000 (GMT)
-Message-ID: <cc794003-f041-4075-a6be-3ba9f2854acb@linux.ibm.com>
-Date: Mon, 5 Oct 2026 14:18:20 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RN4XdU6n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339E91F000FF;
+	Mon,  5 Oct 2026 08:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791190661;
+	bh=Gyldysy9Dc9evEL89sNJq+ei2A+IB5431SJpx8esMJw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RN4XdU6nk1F5CyK9nrXaEZxmHtz3HG8rtOdXauYa3T4Q8AsVBrcqOYB3JkXA8s8m/
+	 sX1MRHIqONWiSBM537qaZAIE7jSFpdy30vqv4IfX9gIxgHXfpFdvOxm+9tkW4Sn3pO
+	 XBSfOHzMl1jhHmXlY6chPPMCQHmWkbQXuKdZ9lH++1srdgvuBff8N3hFaROcn0yXXp
+	 xbPJxOf5s+VkFwxSyYua0T++5FHThgnifN926KBLpxC5mVP8nmn7T7BEnT6zfotr60
+	 c2MBlYHg6VJ3ALaP8/w5DgKmhLIqCW+gEYqPSsLMlsAaTSaRXAYFwKgmTsTWvn/Lhz
+	 97lsfPLANpyyw==
+Subject: Re: [PATCH net] net/sched: cls_bpf: accept dev-bound programs on
+ shared blocks
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net,
+ andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev,
+ song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org,
+ emil@etsalapatis.com, ihor.solodrai@linux.dev, john.fastabend@gmail.com,
+ sdf@fomichev.me, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, jiri@resnulli.us, bpf@vger.kernel.org,
+ victor@mojatatu.com, stable@vger.kernel.org, sashiko-bot@kernel.org
+Date: Mon, 05 Oct 2026 08:57:39 +0000
+Message-ID: <179119065973.434549.15208309588917304307@kernel.org>
+In-Reply-To: <QDISC-PYC7.v1.20261003103747@mojatatu.com>
+References: <QDISC-PYC7.v1.20261003103747@mojatatu.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 2/2] s390/ctcm: Fix use-after-free in
- channel_remove()
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, wintera@linux.ibm.com,
-        aswin@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        kees@kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org
-References: <20260930070234.569500-3-nagamani@linux.ibm.com>
- <179109824657.434549.2788045083218312906@kernel.org>
-Content-Language: en-US
-From: Nagamani PV <nagamani@linux.ibm.com>
-In-Reply-To: <179109824657.434549.2788045083218312906@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: zIT5mqKrzO6xvQIQpyU5xNZgjQlPrfOL
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDAzNCBTYWx0ZWRfX6kzOLosm0hRw
- dhGiURO4V6+Nsq78RJDbpPPVO29mSMSb7zJhMoA20zoTUWgc2L0aynj+4uWa3Onf8S009wcqLDB
- sGV4iJE9WrLL4JTpsnLUOiT+FZdD10A=
-X-Proofpoint-GUID: IltHLHOB_vBY72tW8ULbPCuV8t2Cm4dQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDAzNCBTYWx0ZWRfXwQanOo2dmz2A
- NIK2Ve/orONlCPxtM3x4vlwP4ua02gYFb9JPG+HikCnyVAaefS9CJeMIzmJ9DMBkK3mNW2WL1Zy
- nIu/kQbQi9C6AUYsYw9cqhzye1+whv3MBMVY5oDoKsfPrjsWci9+ZYTeQrEE+GardYaYGmls05S
- 0UIaU3XGNNT5nC11ldwFys/rfmDHiZY0vrLW+IR3+zpZ6Yac0J/Cj1BjI3nSKyk6vGoWrmW1J+5
- toMO9D/0f7D8krdFcNHQI5SbEy93Cdu/K5wZXFrWTTWMzMOrdGcYbFtuMoE9ldLThFnLn8d4HwQ
- 7lJgee0UkCP8qioIC7Up7QjgccLVMDLng9UnUrN4YCX2NgH22FgmZCjyaOb0th05NduUyMgzYaH
- qjhctyoordWKmyzOVGoOnToPsPD23daTal+KIvzKxHrQOoXlQ4Jdb0lJ6BlnAeDldtSXmHQjzc2
- doX9nlB/jmX//rp3FJA==
-X-Authority-Analysis: v=2.4 cv=fM2sTpae c=1 sm=1 tr=0 ts=6ac3645e cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=45-e2YAC9sOU2Qo0GAIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_01,2026-10-02_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- phishscore=0 adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050034
 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-On 04/10/26 12:47 PM, netdev-bot+sashiko@kernel.org wrote:
-> [Severity: High]
-> Do these waits run too late to protect the state that the channel
-> callbacks use?
-> 
-> The only teardown caller of channel_remove() is ctcm_shutdown_device(),
-> and it calls it after the net_device and its private state are gone:
-> 
-> drivers/s390/net/ctcm_main.c:ctcm_shutdown_device() {
->     ...
-> 	if (dev) {
-> 		unregister_netdev(dev);
-> 		ctcm_free_netdevice(dev);
-> 	}
->     ...
-> 	ccw_device_set_offline(cgdev->cdev[1]);
-> 	ccw_device_set_offline(cgdev->cdev[0]);
-> 	channel_remove(priv->channel[CTCM_READ]);
-> 	channel_remove(priv->channel[CTCM_WRITE]);
->     ...
-> }
-> 
-> ctcm_free_netdevice() does kfree_fsm(grp->fsm), kfree(grp),
-> priv->mpcg = NULL, kfree_fsm(priv->fsm) and priv->fsm = NULL. Under MODULE
-> it also calls free_netdev(dev). The ccw_device_set_offline() calls in
-> between can sleep, so a channel timer or tasklet can fire in that window.
-> 
-> The channel callbacks reach this state through ch->netdev->ml_priv:
-> 
->   ctcm_chx_txretry() (ch->timer):
-> 	fsm_event(priv->fsm, DEV_EVENT_TXDOWN, dev);
-> 
->   ctcmpc_chx_send_sweep() (sweep_timer):
-> 	if (grp->in_sweep == 0)
-> 
->   ctcmpc_bh() (ch_tasklet):
-> 	while ((fsm_getstate(grp->fsm) != MPCG_STATE_FLOWC) &&
-> 
->   ctcm_ccw_check_rc()->ctcm_chx_iofatal():
-> 	fsm_event(priv->fsm, ...);
-> 
-> The circular chain in the commit message also goes through priv->fsm or
-> priv->mpcg. For example, mpc_action_go_inop() does this before it reaches
-> tasklet_hi_schedule():
-> 
-> 	grp =  priv->mpcg;
-> 	grp->flow_off_called = 0;
-> 
-> At channel_remove() time priv->fsm and priv->mpcg are already freed or
-> NULL. Wouldn't that chain crash before it can re-arm anything?
-> 
-> If so, timer_shutdown_sync() only waits for a callback that is already
-> dereferencing freed or NULL memory. tasklet_kill() also lets a queued
-> ch_tasklet run against the freed grp.
-> 
-> channel_free() moves ch->fsm to CTC_STATE_IDLE, which has no handlers,
-> so most late ch->fsm events do nothing. But that state change takes no
-> lock. ctcm_irq_handler() runs FSM actions under the ccwdev lock, and for
-> MPC ctcm_close() does nothing:
-> 
-> 	if (!IS_MPC(priv))
-> 		fsm_event(priv->fsm, DEV_EVENT_STOP, dev);
-> 
-> As a result the MPC channels are not halted. An action that races
-> channel_free() could leave the channel FSM in TXIDLE or TX with timers
-> armed.
-> 
-> ctcmpc_bh() never checks the ch->fsm state, and ctc_mpc_flow_control()
-> can schedule it at any time.
-> 
-> The ctcm_new_device() out_dev path uses the same order, but its channels
-> were never started there.
-> 
-> Could both channels' timers and tasklets be stopped, and the subchannels
-> taken offline, before ctcm_free_netdevice() and kfree_fsm(priv->fsm) run?
-> That would mean moving the quiescing out of channel_remove() instead of
-> reordering it inside channel_remove().
-> 
-> [Severity: High]
-> This isn't a bug introduced by this patch, but the other fsm_timers in
-> this driver seem to follow the same pattern: cancel without a sync, then
-> free.
-> 
-> priv->restart_timer is bound to priv->fsm by fsm_settimer() in
-> ctcm_init_netdevice(). grp->timer is bound to grp->fsm by fsm_settimer()
-> in ctcmpc_init_mpc_group(). Neither timer is ever cancelled with a sync
-> call. The only cancellations are fsm_deltimer(), which is timer_delete().
-> 
-> mpc_action_go_inop() always re-arms the restart timer:
-> 
-> 	fsm_deltimer(&priv->restart_timer);
-> 	fsm_addtimer(&priv->restart_timer, 500, DEV_EVENT_RESTART, dev);
-> 
-> dev_action_restart() re-arms it for 1s in the MPC case. So during MPC
-> group recovery the restart timer is usually pending.
-> 
-> For MPC, ctcm_close() does nothing. So ctcm_shutdown_device() then calls
-> ctcm_free_netdevice(), which frees grp->fsm, grp (which contains
-> grp->timer) and priv->fsm while these timers may be pending or running.
-> After that, ctcm_remove_device() does kfree(priv), and priv contains
-> restart_timer.
-> 
-> When one of these timers expires, fsm_expire_timer() calls
-> fsm_event(this->fi, ...) on a freed fsm_instance. That reads the freed
-> state and jumpmatrix, and calls a function pointer taken from freed
-> memory. A timer still pending inside freed grp or priv memory can also
-> corrupt the timer wheel.
-> 
-> There is a similar ordering problem in ctcm_free_netdevice():
-> 
-> 	if (grp->fsm)
-> 		kfree_fsm(grp->fsm);
-> 	dev_kfree_skb(grp->xid_skb);
-> 	dev_kfree_skb(grp->rcvd_xid_skb);
-> 	tasklet_kill(&grp->mpc_tasklet2);
-> 	kfree(grp);
-> 
-> Can a pending mpc_tasklet2 run here after its FSM has been freed?
-> 
-> Should priv->restart_timer and grp->timer also get timer_shutdown_sync()
-> before priv->fsm and grp are freed? And should mpc_tasklet2 be killed
-> before kfree_fsm(grp->fsm)?
-> 
-> [ ... ]
-> 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Both are confirmed pre-existing issues in ctcm_shutdown_device() and
-ctcm_free_netdevice(), outside the scope of channel_remove(). They are
-tracked for a separate follow-up fix.
+- [High] This patch's 'every member must match' rule for dev-bound
+  cls_bpf programs on shared blocks is checked only once.
+- [Low] bpf: multi-line comment style violation in cls_bpf.c
 
-Nagamani
+--
 
+net/sched: cls_bpf: accept dev-bound programs on shared blocks
+
+This patch lets a device-bound cls_bpf program attach through a shared tc
+block, as long as bpf_offload_dev_match() succeeds for every netdev in
+block->ports. An empty shared block is rejected. Non-shared blocks are still
+checked against the qdisc's device.
+
+Link: https://lore.kernel.org/netdev/20260809094418.901607-1-jhs@mojatatu.com/
+
+> diff --git a/net/sched/cls_bpf.c b/net/sched/cls_bpf.c
+> index 188cf0f949dd4..6a54f8a7b8218 100644
+> --- a/net/sched/cls_bpf.c
+> +++ b/net/sched/cls_bpf.c
+> @@ -392,9 +392,29 @@ static int cls_bpf_prog_from_efd(struct nlattr **tb, struct cls_bpf_prog *prog,
+>  	if (bpf_prog_is_dev_bound(fp->aux)) {
+>  		struct tcf_block *block = tp->chain->block;
+>  		struct net_device *dev;
+> -
+> -		dev = block->q ? qdisc_dev(block->q) : NULL;
+> -		if (!dev || !bpf_offload_dev_match(fp, dev)) {
+> +		unsigned long ifindex;
+> +		bool found = false;
+> +		bool match = false;
+> +
+> +		/* A shared block has no qdisc (block->q == NULL) but may
+> +		 * bind several netdevs; the program is offloaded to all of
+> +		 * them, so it must match all of them.
+> +		 */
+> +		if (!tcf_block_shared(block)) {
+> +			match = bpf_offload_dev_match(fp, qdisc_dev(tcf_block_q(block)));
+> +		} else {
+> +			xa_for_each(&block->ports, ifindex, dev) {
+> +				found = true;
+> +				if (!bpf_offload_dev_match(fp, dev)) {
+
+[Severity: Low]
+This is a minor style nit. The new block comment in
+cls_bpf_prog_from_efd() starts its text on the same line as the
+opening /*.
+
+cls_bpf.c is a BPF-related path, and BPF code uses the multi-line
+comment style with the opening /* on a line of its own. That applies
+even where the surrounding code in the file uses the older form.
+
+Could you move the text down so the comment reads like this?
+
+		/*
+		 * A shared block has no qdisc (block->q == NULL) but may
+		 * bind several netdevs; the program is offloaded to all of
+		 * them, so it must match all of them.
+		 */
+
+This has no functional impact. If the comment text changes because of
+the block->ports concern above, it is worth fixing in the same respin.
+
+[Severity: High]
+
+This check runs only once, when the filter is added or replaced. It uses
+whatever block->ports holds at that moment. What happens if a netdev from a
+different bpf_offload_dev joins the shared block later?
+
+For example:
+
+  tc qdisc add dev B ingress_block 22 clsact
+  tc filter add block 22 ingress bpf da object-pinned <pin> skip_sw
+  tc qdisc add dev C ingress_block 22 clsact
+
+On the third command, tcf_block_get_ext() finds the existing block and
+replays its filters to C's callback. This happens before C is added to
+block->ports:
+
+net/sched/cls_api.c:tcf_block_get_ext() {
+    ...
+	err = tcf_block_offload_bind(block, q, ei, extack);
+	if (err)
+		goto err_block_offload_bind;
+
+	if (tcf_block_tracks_dev(block, ei)) {
+		err = xa_insert(&block->ports, dev->ifindex, dev, GFP_KERNEL);
+    ...
+}
+
+The call chain is tcf_block_offload_bind()->tcf_block_bind()->
+tcf_block_playback_offloads()->cls_bpf_reoffload(). cls_bpf_reoffload()
+passes prog->filter to the new callback without calling
+bpf_offload_dev_match():
+
+net/sched/cls_bpf.c:cls_bpf_reoffload() {
+    ...
+		cls_bpf.prog = add ? prog->filter : NULL;
+    ...
+		err = tc_setup_cb_reoffload(block, tp, add, cb, TC_SETUP_CLSBPF,
+					    &cls_bpf, cb_priv, &prog->gen_flags,
+					    &prog->in_hw_count);
+    ...
+}
+
+netdevsim's nsim_bpf_setup_tc_block_cb() does not check the device either.
+It only requires prog->aux->offload to be non-NULL before calling
+nsim_bpf_offload(). That sets C's bpf_offloaded and marks the program as
+loaded in state owned by B's nsim_dev.
+
+Doesn't this build the mixed block that the commit message says the
+all-members check prevents?
+
+  "an any-member check would re-admit the wrong-device attach on a mixed
+  block."
+
+Before this patch, block->q is NULL on a shared block, so every dev-bound
+program was rejected there. That kept dev-bound programs off this replay
+path.
+
+This looks like the problem that commit 120977e2c096 fixed. When B is
+unregistered, __bpf_offload_dev_netdev_unregister() has no altdev, so it
+calls __bpf_prog_offload_destroy():
+
+kernel/bpf/offload.c:__bpf_prog_offload_destroy() {
+    ...
+	if (offload->dev_state)
+		offload->offdev->ops->destroy(prog);
+
+	list_del_init(&offload->offloads);
+	kfree(offload);
+	prog->aux->offload = NULL;
+}
+
+If is_loaded is still set, nsim_bpf_destroy_prog() can hit its WARN here.
+
+The filter and block stay alive because C still holds them. Deleting the
+filter or C's clsact later goes through
+nsim_bpf_offload()->nsim_prog_set_loaded(). aux->offload_requested is still
+true, so the bpf_prog_is_offloaded() check passes, and then:
+
+drivers/net/netdevsim/bpf.c:nsim_prog_set_loaded() {
+    ...
+	state = prog->aux->offload->dev_priv;
+	state->is_loaded = loaded;
+}
+
+Can this dereference a NULL prog->aux->offload?
+
+The reproducer in the commit message only adds the second device before the
+attach. Does the check also need to run on the bind/reoffload side? Or
+should dev-bound programs stay rejected on shared blocks?
+
+There is a smaller related gap. tcf_block_tracks_dev() only records clsact
+ingress and egress binders in block->ports:
+
+net/sched/cls_api.c:tcf_block_tracks_dev() {
+	return tcf_block_shared(block) &&
+	       (ei->binder_type == FLOW_BLOCK_BINDER_TYPE_CLSACT_INGRESS ||
+		ei->binder_type == FLOW_BLOCK_BINDER_TYPE_CLSACT_EGRESS);
+}
+
+Other shared-block binders, such as those set up by tcf_qevent_init(), also
+register offload callbacks. They never appear in block->ports, so the new
+xa_for_each() loop does not see them. Could a device bound this way receive
+the program without being checked?
+
+> +					match = false;
+> +					break;
+> +				}
+> +				match = true;
+> +			}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-PYC7.v1.20261003103747%40mojatatu.com
