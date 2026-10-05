@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5B52DE709;
-	Mon,  5 Oct 2026 03:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703612D7DE7;
+	Mon,  5 Oct 2026 03:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791169209; cv=none; b=XQeIjCWx+dE9xPRkTe4gb7Gugs9nmlyM76sIkpJg6E0S5FfMmkhcBZrhkLSW9F9rNOll/xBUGDtDOT04hmiYI8mQtYHfCXpzmW8SR9J5cdJbvNmF0Zxy6zxRJLhs7tUQFJlVQ2NEKnEzrwrbqxnvR7PAa0aYBlYAlHcW9Upgpso=
+	t=1791172208; cv=none; b=rIwnp/RtYw7Cm5me0RDXj5DK9vMtfe66BRZDqBfYIf6Il4BxmtNF9VSaDlfb6m82zbrdHm07fZIhGYBq0gzuzavfRADoghl7QND2prPL6HOh9+FJgsgELugOypcJKVaiitTHvLAlkVOuXEjDSfd6s9FLUVJFbuAAEOTgsL9yxSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791169209; c=relaxed/simple;
-	bh=5Q7x7OEo80zK/HpoBsQgszZkuak8WIzB/w4O3z0B2mw=;
+	s=arc-20240116; t=1791172208; c=relaxed/simple;
+	bh=xiCh9O+sIIckE57/jwYPxpADT4sRY0bcY+wJ5BW3o0M=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JMW54ji2eRVwcFDRQr7v9SlSzrk79jXXggWN/fxJnkpwsCZfsyBp+3X2GtaCE7tSNaBzhFYtj2ZNAI17h84BwMugfR4gwjURWQgIZLoKiMgSSJEVZ6iWH7sY+8Vqt76qAoxUHZDAp76MSDFpdbgX+UGUm4KvHvfUE6bNZvnSjLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WpmjYbED; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=igobBvqI5nKZzqvtCCbuHtj+0YwmZApegr0pzQKogA2cdD0YOj9XfRo1dTkSvcogzj+GBFbK6/R+npbsCeOCvjVIVQm3+FEgMkF8hYZPUqHdZeSxby3ZMHhpPvr/cWnTN6Sa0Jo6iRGtxiXsyxcXtqfnHCbkmibpwRIf0u9rfTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuGkv1R4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WpmjYbED"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0703B1F000FF;
-	Mon,  5 Oct 2026 03:00:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuGkv1R4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA3A1F000FF;
+	Mon,  5 Oct 2026 03:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791169207;
-	bh=hkJHbTNZVUgNMyLsyy+h+fbjU0R4JLRIMOcMopTbZgA=;
+	s=k20260515; t=1791172205;
+	bh=ZMlbVtUguEy/7POGWYQdvAFxjw9Hnwu4EyA3dwp7i4M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WpmjYbED3OFRUBM7y4Ptfm6FEe7FEW8akW+zgSQwNlV9omLoM/aoi96WlNXFJtJI4
-	 99Ea2UH7LR5WeK0zWnjOt2t7u74tte1qJy2wVDtM+vL3eD0PCvFZ4ufhW3WnX7FlrP
-	 AxYqVDIbouHILIO+QLMC0QZiMq9TFJU/zh21fYowGothHVO8xhikdP7HCtMYBRRAjJ
-	 hLNf3J4InA34j9degLq8vONRnORZn9wAlbcXVm99bTPG+py+ZSRYpYDsnbaYFrcCt8
-	 HfepjwvhAtU7g00pFROEHTnXB0xD7JMGGfqid0GiDh452W3E84I6ax4xNtC29ctYXR
-	 xv7J1FfTMWQYg==
+	b=PuGkv1R46aj4xBiUbt1G0AUYgkLgTPFFKNMGi07WN8uOtv48izbZ2B+a9mDYRAk/G
+	 akj512i/hALMDeAdE2g2LsI4psisfkiMwQG2mFs73SsVYNDelhl3LTdIk86I/HNNYc
+	 3Udnxlwtrw4hiMhvbTK+I9PtA3tDtVPfUS3U6bu9DM0xhttulk0vfe8dZm1Kluh4b2
+	 PpuLBok4lBJCg0kGcsm8CSrbYgN1KAMvuuPr2DT9mL+HUAmFjVuAaZYS9axIOKlFZ/
+	 57i5aEZ0RnvUXZZjlWqYryMbX0g1HCsQm4cZscqdPHU4X7SPZmiPDuvf7VNTjmho/F
+	 825NWj6NZ/fDw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F145E39253C0;
-	Mon,  5 Oct 2026 03:00:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B454539253C0;
+	Mon,  5 Oct 2026 03:50:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] openvswitch: fix soft lockup in the netlink flow
- dump
+Subject: Re: [PATCH net-next v1 1/1] net: phy: realtek: add MDI-X support for
+ RTL8365MB-VC
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179116920578.1072741.16152613062513950480.git-patchwork-notify@kernel.org>
-Date: Mon, 05 Oct 2026 03:00:05 +0000
-References: <20260929072519.2803304-2-den@openvz.org>
-In-Reply-To: <20260929072519.2803304-2-den@openvz.org>
-To: Denis V. Lunev <den@openvz.org>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
- echaudro@redhat.com, i.maximets@ovn.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- stable@vger.kernel.org
+ <179117220453.1083104.4210804624959109242.git-patchwork-notify@kernel.org>
+Date: Mon, 05 Oct 2026 03:50:04 +0000
+References: <20260929092007.1184843-1-o.rempel@pengutronix.de>
+In-Reply-To: <20260929092007.1184843-1-o.rempel@pengutronix.de>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: linusw@kernel.org, luizluca@gmail.com, andrew@lunn.ch,
+ hkallweit1@gmail.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, kernel@pengutronix.de,
+ linux-kernel@vger.kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
+ alvin.sipraga@analog.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by David S. Miller <davem@davemloft.net>:
 
-On Tue, 29 Sep 2026 09:25:19 +0200 you wrote:
-> From: Denis V. Lunev <den@openvz.org>
+On Tue, 29 Sep 2026 11:20:07 +0200 you wrote:
+> Add MDI-X configuration and status reporting for the RTL8365MB-VC internal
+> PHYs. Without a driver hook genphy cannot reach the chip's crossover
+> control register, so forcing MDI/MDI-X with "ethtool -s <dev> mdix on|off"
+> is a no-op and "ethtool <dev>" cannot report the resolved MDI-X state on
+> this PHY.
 > 
-> A production compute node carrying a few thousand datapath flows hit a
-> soft lockup inside a single netlink flow dump and panicked.
-> 
-> ovs_flow_cmd_dump() calls ovs_flow_stats_get() for every flow it
-> emits, and that releases stats->lock with spin_unlock_bh() once per
-> CPU that has touched the flow. Every release is a local_bh_enable(),
-> and each one runs the pending softirq backlog in the dumping thread's
-> own context.
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] openvswitch: fix soft lockup in the netlink flow dump
-    https://git.kernel.org/netdev/net/c/aaaaf87ea99b
+  - [net-next,v1,1/1] net: phy: realtek: add MDI-X support for RTL8365MB-VC
+    https://git.kernel.org/netdev/net-next/c/8b4e7209c842
 
 You are awesome, thank you!
 -- 
