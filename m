@@ -1,86 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5EE153BE9
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 06:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D5F3290DB
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 06:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791180877; cv=none; b=dUjLPzVOVplKguLZ/iLcZSTWu06NLaTR+mrUFw7smSzmxjxno17SUOrHLXGQPT8e1zs/F1nKQGHIi6nyRl7x2kpy/jcU8JrvlaOOnQwgmcN3tkHN59SlG+0IlUSN/eSf4R7XBMLEd0FvCRdKTs4Fd66vq0e/3akG1X6+vLvWtBA=
+	t=1791180894; cv=none; b=f+E209Ofe+r9r7pljaIEGDRqy4Cceya+7xaJiMMKEr3erHZVj/jBV3mY+cMR/zAGvs+uYueaRNgecIt/YYpSl+iNSxxARbW7jmbQsapMNZsemwRvXWNW0Y2wla5awZEt77Yeg72aIkhL09xUKfBuL7JstxLVj8KjT8EYAXhgWa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791180877; c=relaxed/simple;
-	bh=YlzjDRUa5zedrADn8TMzv1bPeNHHYcSMsu4/mpoNdQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U42RkHvOELA9Fs3WCKHdiITUQNqxojCDt9unHaUXdqjLv50+8G7UqWSYaw9NOQfqd4d/5E2Idouhj2Z93okCT0V3XxsXbBes+rGG2grF31fCnh/r+JPMmThy0ZUIIX+XW5WgUbJCmseb1DL8MfuRWNS+t4bBAYVOWVbZPlxgeuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8n+gomG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791180894; c=relaxed/simple;
+	bh=uD/nb4O7ZbLjFJE9S7MPQ2OU8Ry8eaH9EFc8B05jpd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qZXOGsw1nfNONI9XA8z9pyTa1aTOC9sbRF8Pq+kPtgqobchXsC/fCvNXP0DxFvjFHjBrnMgwTEHGBLmJSyJplTP970155Zu0V0sKPcdnxwhhkgmcxoEGBLOoPd/MBfNQUN9nZ+GOEItcR8JTNa8ePxv5LpTYY8fL2AMRmGcKuEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GF99Z/lP; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8n+gomG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243181F000FF;
-	Mon,  5 Oct 2026 06:14:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791180875;
-	bh=plM8wjZGjNhafEdRaKycPgm1I8dsxntCXfjI+a3I+io=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=d8n+gomGL2lSetvpCpQod5haFq+sGw0xzRDbsVptODwEVgXQBoZ01lrgS6Hdtc2VO
-	 BCSl+75/IRPEwSJ0D3X8ZUiHrmeYzxifCB3Vtnt0+81jV5nJ+iH3U2C6caBHvpCMpm
-	 Av3aUsFyfAYn6sCVOM5iCJPjwGDiYOxY5fhOpHZ9aQOKnbjD+5R3eG1NkVGL7nWKN5
-	 CSGDxr8OWFIaWnl9m8bCkxSfzW2vKq+6fL6hmgIEiojyeFZCuZVriOqNKqc/BgZqH5
-	 Iy7Ywa934rFFs2+9Ia/7Cqki2tmCF1ozdVwVTU7yydZ0xyLEjRpeHeO1SYQcD1Kp33
-	 MyXw6O8JgNcyg==
-Message-ID: <e85fa16e-df3c-43dd-bb3a-9edca07200ea@kernel.org>
-Date: Mon, 5 Oct 2026 08:14:27 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GF99Z/lP"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-351348eb579so142630eec.0
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 23:14:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791180892; x=1791785692; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uD/nb4O7ZbLjFJE9S7MPQ2OU8Ry8eaH9EFc8B05jpd0=;
+        b=GF99Z/lP7aN31CIMG+/6AiTfigp8XQwqLqrenTmEBdd19myWxwGgLcEkVzYqwTn8LL
+         o32guqGacQS8qK0QLf6osz+0wPfIxfhj2d8yaKdeLGe4MohIsKVKbqzyR0vottYVXucm
+         zfK6F7uGwKIg4wxZjRhXXrXHvyXOW7JFtp9ZaQ6RiAwI+pkaEoBv6SJpBG6q9TWXevET
+         M1r2rlDCyALuT/qF7CV6rJPqmcaDZ2t9AEGwNm079QRwCsjRrXm85lDk8xhnc5kS8xjJ
+         vebZslVaJZps9VtYmSUYfaj3BXGygVxA+jvOOyULYiuBjnpW2ZsNzDpnbapxYiEtA7vI
+         58Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791180892; x=1791785692;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uD/nb4O7ZbLjFJE9S7MPQ2OU8Ry8eaH9EFc8B05jpd0=;
+        b=on794uUl1oncuZ4T5jsmjgoWO4HwnFyFT1DQ+hXxH8dhmhz9VIrlAcyurMM0s2iPxw
+         Ym1I/vU1PTNj/nyAZ0cpWq5Bmc5J3tw2kuMdvZjP700q0vk8V+yClOLZRI6/1IKeePZD
+         htjy9+zCvk883hBg2xkV+hyKrb9mdCO1EyZTlE0hYwqHO+VyN4frzyoKAXks9XgsOsX+
+         H23dN+XG/rrNNSu+sTTeF8GWBC84xK3pIYDWBEJvrHvXSNPhMNwBj31UP7xNNgeBdrFc
+         s+hUmv/5KTHhW4ZuanZ+woQv5RqEHQjwWWOuB22yRiIpMAqvE6tWaJPrH85nhCAskqnP
+         2GIA==
+X-Forwarded-Encrypted: i=1; AKwUvBwkWIQxiVCRwXSIqe1yr8U83ZBmld5LpR7mk7vm8Ib7DGS+Nw91bUjb+9DsaC/CbKpnK9zIrrw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kaSggEWcn3ydcxS7If2magh6pBiz/s6Q2+TPZxXxt0WWxGH40/
+	86caNAeGj4CnT4dJZVrWjB5LiY9HuetKQ2b2W51KtsRbt/yG6WhZIOQL
+X-Gm-Gg: AYBFou1ry7m6XDQDkMbcnVG2x3ovl5f8zyn8agH35Bn1siwlgQh7pvIlJU7FTr1ZxGC
+	cs20Rd6rh6JUJZEesdjszykqpL7rNJhGGNyENV6yiHQTeha7ghki+zIz7nGFNevVI8c9lZ3WUyJ
+	LpluNPjftgRuWbSD3sg02qZok5FsI/Cojl/o2d/QucfzMvamYrBBpvfk8OXeA5rQBNrCt2tgyNa
+	c4RNxpOqkhaTe0Hu5hGvDlMVhoKWvi5n4BDWlzOBxSGQgulLZheYbmeInkRwWx/qIozmON3ft9S
+	P7tXrwT8u1x6IqSEYiLFyH8s3dM9NkGg3Mc+HDV4f1k9ATz6MIDjzLm2JUMXEFcmBXkmliUVlun
+	PcobuHJtArVmG+ahoIYhJ2tUxJM2fqhTYhUci2uNcZlnYU/0qqQDZFH6iXW1j1xz7JGUXCMvmXv
+	uJ1rn3zCWCj8EkdnlSPpH3Bjq/UZDCqKB5OYECOvd+10Q/o9zTZUMMUx5v0+yLdaRNJrCu4kW2N
+	E+5IAPwlwtgM1cr+4KuXA==
+X-Received: by 2002:a05:7301:1a8c:b0:33e:6877:ca6a with SMTP id 5a478bee46e88-34db77d1fd5mr14503161eec.26.1791180892305;
+        Sun, 04 Oct 2026 23:14:52 -0700 (PDT)
+Received: from umang-Inspiron-3501 ([2401:4900:1f3b:8187:3c00:622a:7472:e26b])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3512718d9edsm10968288eec.19.2026.10.04.23.14.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Oct 2026 23:14:51 -0700 (PDT)
+From: Umang Pokhriyal <umangpokhriyall@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
+Date: Mon,  5 Oct 2026 11:42:35 +0530
+Message-ID: <20261005061236.22907-1-umangpokhriyall@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <willemdebruijn.kernel.3720fccc8b4e4@gmail.com>
+References: <willemdebruijn.kernel.3720fccc8b4e4@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 1/1] net: loopback: reject skbs with a short linear
- Ethernet header
-To: Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org, kuba@kernel.org,
- jhs@mojatatu.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, pabeni@redhat.com,
- vega@nebusec.ai, bronzed_45_vested@icloud.com, enjou1224z@gmail.com
-References: <20261005052249.1914367-1-weir@nebusec.ai>
- <20261005052249.1914367-2-weir@nebusec.ai>
-Content-Language: en-US
-From: Eric Dumazet <edumazet@kernel.org>
-In-Reply-To: <20261005052249.1914367-2-weir@nebusec.ai>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+Willem de Bruijn wrote:
+> I suppose we want tap to expose this state through TUNGETIFF, like tun,
+> because applications already use that?
 
+Yes. CRIU reads IFF_DETACH_QUEUE from TUNGETIFF when it dumps a tun
+file, and Cloud Hypervisor did the same until it found that macvtap
+reports every queue as attached. Code written for tun's queue API gets
+the wrong answer on macvtap, even though macvtap accepts the same
+TUNSETQUEUE.
 
-On 10/5/26 07:22, Ren Wei wrote:
-> From: Wyatt Feng <bronzed_45_vested@icloud.com>
-> 
-> loopback_xmit() calls eth_type_trans(), which reads the Ethernet header
-> from skb->data and consumes ETH_HLEN bytes. This requires at least
-> ETH_HLEN bytes in the skb's linear area.
-> 
-> An earlier transformation can leave a non-linear skb with fewer than
-> ETH_HLEN bytes in the linear area, even when skb->len is at least
-> ETH_HLEN. Pulling the header then makes skb->len smaller than
-> skb->data_len and triggers the BUG in __skb_pull().
-> 
-> Check skb_headlen(skb) before calling eth_type_trans(). Reject skbs
-> whose linear area is too short, including those whose total length is
-> less than ETH_HLEN, without attempting to pull bytes from fragments.
-> Free rejected skbs, account them as TX drops and return NETDEV_TX_OK.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Link: https://lore.kernel.org/all/2d4e79d252a57bdad83435999dddf2c4b708dcfa.1785049236.git.bronzed_45_vested@icloud.com/
-> Suggested-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> Assisted-by: Codex:GPT-5.4
-> Signed-off-by: Wyatt Feng <bronzed_45_vested@icloud.com>
-> Signed-off-by: Ren Wei <enjou1224z@gmail.com>
-> ---
+> Else cleaner than working around bits would be a whole new TUNGETQUEUE
+> call to match TUNSETQUEUE. Rather than to squish this into TUNGETIFF,
+> while that has no equivalent in TUNSETIFF.
+>
+> But, that approach does not help existing applications.
 
-NACK
+Right, those applications would have to be changed to use a new
+TUNGETQUEUE.
 
-If if we do not fix the root cause, we will have hundreds of drivers to fix.
-
-Stop making linux slower and slower just because you can.
-
+Thanks for taking another look.
