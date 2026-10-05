@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F404BEE5D;
-	Mon,  5 Oct 2026 15:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00CE4BFE96;
+	Mon,  5 Oct 2026 15:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791212688; cv=none; b=Mrk6lJa9+saYW6Cfr8cY6JlKcUKAI1fHe3pccL7Qwb2yiegJyaTEt7F3aGBfxH8XP/dW/mnHUNgjbLOKPJgsK88pA9jlApp3dyaL0sbtcY3TfeyiyXKRIf0AfIsBs1zpdXj3/5nkKWUdFAMYHQ8lSTnyfqsbc15PCPOeByVB89c=
+	t=1791212690; cv=none; b=rpEeTe4oS4B3869AaSbrGIQiV076y8mwkoEu94JyoizcPxVjulN9V/4TPcsjEF8fitxFrTSeqynhSAtrNRy+OMrE8qlDbTBPd7Gfjqk6IQLiXrPM4sqKcf2BBPF+X8cD3/dhbqfVWw44lP2/xIO8IO9985yORKrH6EBN/4oOfRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791212688; c=relaxed/simple;
-	bh=a+tWMfDQxhuiVL5zX+mLPOHNtoUHMgNR2awxwgBfbh4=;
+	s=arc-20240116; t=1791212690; c=relaxed/simple;
+	bh=bB1FCwxSyQ2svC837xOt7t0MX53GmhZTv2P0WMLoGIE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O/+LMED19V2qBAHdjkjep2tbx8s5J4VruT472GjfM2wnqhx0CRBcKDuOBdzDhSF7Ao4FSmHREJrI5rlo6GmTEvczI4rHBEt0GQG3mZKtfSbL59bVlagJ+geUDfnoAOBEaaOA5L8Zg2MSPJwN5pQihEZ8L/wBImk2LPbrzZ1QZbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1dHuR/T; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=rmVwMzjc0ZMgiUCWc+m+TKThjcg1NRlmr9ujFFpc0B6NtC0YoX7ydUS90L/i2/HQx2vb/t7AvL6INRhZ/IqZLv40fXYyIrm1VW/+xqYtB27YqGMHk0TkwmowGuCq9E8Eqof26xqDc2/FufaKBRNdUrf6JcaVaHT9fYSH0dQxYRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5sB8Oof; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1dHuR/T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F26E1F00899;
-	Mon,  5 Oct 2026 15:04:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5sB8Oof"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD85B1F000FF;
+	Mon,  5 Oct 2026 15:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791212687;
-	bh=BCzSeUhYqyJpy5J24LGb4/Ecw8TCvKPvZku0q8I6a20=;
+	s=k20260515; t=1791212688;
+	bh=iTM2d/jcUXJ/OfzHUTGhHAj9OdYm72IOCLZds75CGdI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=G1dHuR/TXivaIeOSVhhftpd4Nsf99tYZhW2XN2Bvg7g+fmc3yIxeAQm4XSjQDhcQw
-	 EH2qlSo5mps0luS6cUr4JwqampWcetz+U8q/uR5BSQq3RL80mYr7ClwSDKJOhdgtzU
-	 EyUZrRdiPA+in8DtxnLSdAk5anf3cHxBV3WtLpUK3m9gzzSHAelUI026gpKbEybcq+
-	 1l5KOHzYwZv8elLXpSJo8GbMl2DX9p30qqDGiP+c/tK5DiJc/rha4l8WBaX+kIV1ik
-	 HYWFKuoNd7q9Ig71JhcIP0FlH1jfuT47bRZWxtd1hggggcyXnrMDDlLZptEwF4x3/d
-	 Sa+xjA9j66U/Q==
-Subject: Re: [PATCH net-next 6/7] net: bcmgenet: pad transmit frames out of
- the packet ready window
+	b=S5sB8OofpkqV79Qt8Cm2MFadCy3taUlAgfJLYx40++VW4X68UFoYjUAdSmUXI3A4E
+	 7kkSDUtayeqSjTyO1pv48VZD4BG9lQPZ9ghE78R6jkPagIsJsbspyjux6g9Wt0/AjK
+	 WcuzMu6u1iinN0JfsztjSmai+voDY4/UgYwq1ar6Ad/FBcUQs3Am0ZIPK/xQJ5RWYx
+	 9u8wCArdzDk8EwTD3X9X437a1eaW6pv8IMahUxc78gQyv2ei0Kq+PZ1AX8jVkaPnk+
+	 c+vImTyilrt86m+0rJHqi36Yp7mAx1sWOt7hrLx4HRAcrmI4iGRvLkIy+TnJW+GxTH
+	 IkO68dbGmio7Q==
+Subject: Re: [PATCH net-next 7/7] net: bcmgenet: reassemble jumbo frames from
+ status block fragments
 From: netdev-bot+sashiko@kernel.org
 To: nb@tipi-net.de
 Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
@@ -36,11 +36,11 @@ Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
  pierremarinleclercq88@gmail.com
-Date: Mon, 05 Oct 2026 15:04:46 +0000
-Message-ID: <179121268616.434549.17024293577065479280@kernel.org>
-In-Reply-To: <20261002-nb-genet-mtu-nn-v2-v1-6-96dc6d54cbee@tipi-net.de>
-References: <20261002-nb-genet-mtu-nn-v2-v1-6-96dc6d54cbee@tipi-net.de>
-X-sashiko-severity: Medium
+Date: Mon, 05 Oct 2026 15:04:47 +0000
+Message-ID: <179121268743.434549.11864751276782263505@kernel.org>
+In-Reply-To: <20261002-nb-genet-mtu-nn-v2-v1-7-96dc6d54cbee@tipi-net.de>
+References: <20261002-nb-genet-mtu-nn-v2-v1-7-96dc6d54cbee@tipi-net.de>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,7 +53,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 1 (1) · Medium: 2 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,169 +61,218 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] bcmgenet_xmit() pads every frame whose length falls in
-  (tx_thld_len, tx_thld_len + 64) with up to 63 zero bytes via…
-- [Medium] (Baseline: resolved later in the series.) At this commit,
-  bcmgenet_tx_pkt_rdy_thld() lowers TBUF_PKT_RDY_THLD from 3840 to 3584…
-- [Low] When skb_put_padto() fails, the new error path in bcmgenet_xmit()
-  jumps to 'out' and skips the TDMA_PROD_INDEX doorbell write.
+- [High] bcmgenet: skb_trim() panics on non-linear jumbo frame SKBs
+- [Medium] This patch adds a TX checksum fallback in bcmgenet_xmit().
+- [Medium] The patch raises dev->max_mtu from the old ENET_MAX_MTU (3564
+  on 4K pages, 3820 otherwise) to ENET_MAX_JUMBO_MTU = GENMASK(13,0) -…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but
+  bcmgenet_timeout() updates ring->stats64 without holding ring->lock.
 
 --
 
-net: bcmgenet: pad transmit frames out of the packet ready window
+net: bcmgenet: reassemble jumbo frames from status block fragments
 
-This patch pads transmit frames that end just past the TX packet ready
-threshold, so they land 64 bytes past it. The window causes the
-transmitter to stop and Tx DMA to refuse to halt. For MTUs where a
-maximum-length frame would fall inside that window, the patch lowers
-the TX threshold instead.
+This commit strips the per-descriptor status blocks from RX frames longer
+than the packet ready threshold and reassembles them into one skb. It also
+adds a software checksum fallback in bcmgenet_xmit() for CHECKSUM_PARTIAL
+frames longer than tx_thld_len, and raises max_mtu to ENET_MAX_JUMBO_MTU
+(16347).
 
 > diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 4634b6521ab8e..0cd56ec1c5ccf 100644
+> index 0cd56ec1c5ccf..62edbe51fe076 100644
 > --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 > +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 
 [ ... ]
 
-> @@ -2171,6 +2176,18 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+> @@ -2176,6 +2173,19 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
 >  		goto out;
 >  	}
 >  
-> +	/* Keep the frame out of the window just past the threshold */
-> +	if (unlikely(skb->len > priv->tx_thld_len &&
-> +		     skb->len < priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
-> +		if (skb_put_padto(skb, priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
-
-[Severity: Medium]
-Can this padding corrupt frames that end in a trailer?
-
-skb_put_padto() appends up to 63 zero bytes after whatever is already at
-the end of the frame. It does not check what the frame carries. Some
-encapsulations put data at the very end of the frame:
-
-DSA tail taggers (tag_ksz, tag_trailer, tag_hellcreek, tag_xrs700x,
-rtl8_4t): the switch would read the zeros as the tag. That is why
-dsa_user_xmit() pads before the tail tagger runs:
-
-net/dsa/user.c:dsa_user_xmit() {
-    ...
-	if (dev->needed_tailroom)
-		eth_skb_pad(skb);
-    ...
-}
-
-PRP: the redundancy control trailer would no longer be the last 6
-bytes. The receiver would then treat the frame as non-PRP, and duplicate
-discard would fail.
-
-Software MACsec: macsec_decrypt() finds the ICV from the received
-length:
-
-	aead_request_set_ad(req, skb->len - icv_len);
-
-so the trailing zeros would make authentication fail.
-
-At this commit, on kernels with 16K or larger pages and an MTU of
-3809..3820, the threshold drops to 3584. Frames of 3585..3647 bytes then
-get padded.
-
-Later in the series, "net: bcmgenet: reassemble jumbo frames from status
-block fragments" raises max_mtu to ENET_MAX_JUMBO_MTU on all page sizes.
-After that, any MTU of 3890 or more pads every frame of 3841..3903
-bytes. MTUs of 3809..3889 pad frames of 3585..3647 bytes. Nothing later
-in the series appears to fix this.
-
-Should frames that carry a trailer be kept out of this window some other
-way, rather than by appending bytes?
-
+> +	/* The MAC holds a frame to insert its checksum, but only as much as
+> +	 * its FIFO takes. Longer frames are dropped silently.
+> +	 */
+> +	if (unlikely(skb->len > priv->tx_thld_len) &&
+> +	    skb->ip_summed == CHECKSUM_PARTIAL) {
+> +		if (skb_checksum_help(skb)) {
 > +			BCMGENET_STATS64_INC((&ring->stats64), dropped);
+> +			dev_kfree_skb_any(skb);
 > +			ret = NETDEV_TX_OK;
 > +			goto out;
-
-[Severity: Low]
-If skb_put_padto() fails, this jumps to out. That skips the
-TDMA_PROD_INDEX write at the end of bcmgenet_xmit():
-
-	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
-		/* Packets are ready, update producer index */
-		bcmgenet_tdma_ring_writel(priv, ring->index,
-					  ring->prod_index, TDMA_PROD_INDEX);
-
-Suppose earlier skbs in the same xmit_more batch already advanced
-ring->prod_index, and the dropped skb was the last one in the batch.
-Could those descriptors sit unsubmitted until a later transmit
-succeeds? The queue is not stopped, so the TX watchdog would not
-notice.
-
-skb_put_padto() can fail when the skb is short on tailroom or is
-cloned, and the GFP_ATOMIC expansion fails. The existing
-bcmgenet_add_tsb() and DMA mapping failure paths already behave this
-way. This patch adds another way to reach that state.
-
 > +		}
 > +	}
 > +
-> +	nr_frags = skb_shinfo(skb)->nr_frags;
-> +
-
-[ ... ]
-
-> @@ -2659,6 +2676,23 @@ static unsigned int bcmgenet_pkt_rdy_thld(unsigned int mtu)
->  		       ENET_THLD_MAX_LEN / ENET_THLD_UNIT);
->  }
->  
-> +/* Transmit threshold in register units. Frames landing in the window just
-> + * past it are padded clear of it, so pick a threshold that leaves room for
-> + * that padding inside the frame the MTU allows. Size the window against the
-> + * longest frame the MAC has to accept, since the tag count is not bounded.
-> + */
-> +static unsigned int bcmgenet_tx_pkt_rdy_thld(unsigned int mtu)
-> +{
-> +	unsigned int thld = ENET_THLD_MAX;
-> +
-> +	while (thld > ENET_THLD_DEFAULT &&
-> +	       ENET_MAX_FRAME_LEN(mtu) - ETH_FCS_LEN > thld * ENET_THLD_UNIT &&
-> +	       thld * ENET_THLD_UNIT + ENET_TX_SAFE_MARGIN > mtu + ETH_HLEN)
-> +		thld -= ENET_THLD_BURST / ENET_THLD_UNIT;
 
 [Severity: Medium]
-For an MTU of 3809..3820, this loop lowers TBUF_PKT_RDY_THLD from 3840
-to 3584 bytes. At this commit that range is only reachable on kernels
-with 16K or larger pages, where ENET_MAX_MTU is 3820.
+The new comment says the MAC silently drops CHECKSUM_PARTIAL frames longer
+than tx_thld_len. Can that already happen before this patch?
 
-bcmgenet_xmit() still sets DMA_TX_DO_CSUM for every CHECKSUM_PARTIAL
-frame:
+An earlier patch in this series, "net: bcmgenet: pad transmit frames out
+of the packet ready window", added bcmgenet_tx_pkt_rdy_thld():
 
-		if (!i) {
-			len_stat |= DMA_SOP;
-			if (skb->ip_summed == CHECKSUM_PARTIAL)
-				len_stat |= DMA_TX_DO_CSUM;
-		}
+	while (thld > ENET_THLD_DEFAULT &&
+	       ENET_MAX_FRAME_LEN(mtu) - ETH_FCS_LEN > thld * ENET_THLD_UNIT &&
+	       thld * ENET_THLD_UNIT + ENET_TX_SAFE_MARGIN > mtu + ETH_HLEN)
+		thld -= ENET_THLD_BURST / ENET_THLD_UNIT;
 
-Full-size TCP/UDP frames of 3585..3834 bytes now exceed the transmit
-threshold. Before this commit, no frame could.
+On 16K and 64K page kernels ENET_THLD_MAX_LEN is 3840, which makes the old
+ENET_MAX_MTU 3820. For MTUs from 3809 to 3820:
 
-The last patch in the series, "net: bcmgenet: reassemble jumbo frames
-from status block fragments", says the MAC only holds threshold bytes
-for checksum insertion and silently drops longer frames. It adds this
-fallback:
+    mtu + 32 > 3840
+    3840 + 64 > mtu + 14
 
-	if (unlikely(skb->len > priv->tx_thld_len) &&
-	    skb->ip_summed == CHECKSUM_PARTIAL) {
-		if (skb_checksum_help(skb)) {
+So the loop lowers the threshold to 0xe0 and tx_thld_len becomes 3584.
+Untagged frames can still be up to mtu + 14 bytes long.
 
-Between this patch and that one, are CHECKSUM_PARTIAL frames longer
-than 3584 bytes dropped when NETIF_F_HW_CSUM is enabled, which is the
-default?
+In that earlier commit, CHECKSUM_PARTIAL frames longer than 3584 bytes go
+out with DMA_TX_DO_CSUM and have no software fallback. Going by the comment
+above, the MAC loses them.
 
-The end of the series fixes this, but bisection can still land in
-between. Could the skb_checksum_help() fallback move into this patch?
+Could this fallback move into, or ahead of, the patch that first lets
+tx_thld_len drop below the largest frame? Bisects and backports that stop
+at that patch would then not see silent TX loss on large-page kernels.
 
-> +
-> +	return thld;
-> +}
+The commit message only mentions the fallback in passing:
+
+    The MAC only checksums a frame it holds in full, so anything longer than
+    the threshold falls back to software.
+
+Could it also say that this fixes TX for the earlier patch?
+
+>  	/* Keep the frame out of the window just past the threshold */
+>  	if (unlikely(skb->len > priv->tx_thld_len &&
+>  		     skb->len < priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
 
 [ ... ]
+
+> @@ -4272,7 +4358,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
+>  	/* v1 cannot program the thresholds, so it stays at the default MTU */
+>  	priv->rx_buf_len = bcmgenet_rx_buf_len(dev->mtu);
+>  	if (!GENET_IS_V1(priv))
+> -		dev->max_mtu = ENET_MAX_MTU;
+> +		dev->max_mtu = ENET_MAX_JUMBO_MTU;
+
+[Severity: Medium]
+Now that max_mtu is 16347, can the TX side describe frames this large?
+This patch leaves bcmgenet_xmit() unchanged. It still puts each skb head or
+frag in one descriptor and shifts the size in without a mask:
+
+	len_stat = (size << DMA_BUFLENGTH_SHIFT) |
+		   (priv->hw_params->qtag_mask << DMA_TX_QTAG_SHIFT);
+
+The header defines that field as 12 bits:
+
+/* Tx/Rx Dma Descriptor common bits*/
+#define DMA_BUFLENGTH_MASK		0x0fff
+#define DMA_BUFLENGTH_SHIFT		16
+
+Buffers over 4095 bytes are common at jumbo MTUs. Near MTU 9000, a UDP or
+ICMP datagram gets a single linear head from __ip_append_data(). A frag
+from an order-3 page_frag page in TCP or soft-GSO can be almost as large as
+the MSS.
+
+For a 9014 byte head the field would hold 822, and the upper bits would
+spill above the field.
+
+If the hardware field really is 12 bits, would these frames go out
+truncated or corrupt while BQL and bytes_sent count the full length?
+
+I couldn't confirm the real field width from the tree. The RX path reads
+the length as dma_length_status >> DMA_BUFLENGTH_SHIFT without a mask. The
+Tested-by may also have covered jumbo TX.
+
+If the field is 12 bits, should max_mtu be capped at the TX descriptor
+limit, or should large TX buffers be split across descriptors?
+
+>  	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch.
+bcmgenet_timeout() updates the TX ring stats without holding ring->lock:
+
+drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_timeout() {
+    ...
+	bcmgenet_tx_reclaim(dev, ring, true);
+
+	/* Re-enable the TX interrupt for this ring */
+	bcmgenet_intrl2_1_writel(priv, 1 << txqueue, INTRL2_CPU_MASK_CLEAR);
+
+	txq_trans_cond_update(txq);
+
+	BCMGENET_STATS64_INC((&ring->stats64), errors);
+    ...
+}
+
+bcmgenet_tx_reclaim() takes ring->lock and releases it again, so the
+increment runs without the lock. Meanwhile, on another CPU,
+bcmgenet_tx_poll()->__bcmgenet_tx_reclaim() holds ring->lock and writes the
+same syncp:
+
+	u64_stats_update_begin(&stats->syncp);
+	u64_stats_add(&stats->packets, pkts_compl);
+	u64_stats_add(&stats->bytes, bytes_compl);
+	u64_stats_update_end(&stats->syncp);
+
+dev_watchdog() holds the TX queue locks. Those only exclude ndo_start_xmit,
+not TX NAPI. Also, the interrupt is unmasked just before the increment, so
+a pending TX-done interrupt can schedule TX NAPI at that moment.
+
+On 32-bit SMP, can the two writers overlap and lose a seqcount increment?
+That would leave the sequence odd. Readers in bcmgenet_get_stats64() and
+bcmgenet_get_ethtool_stats() would then spin forever in
+u64_stats_fetch_begin(). A shorter overlap could give them torn counters.
+
+Should the increment in bcmgenet_timeout() be done while holding
+ring->lock?
+
+[ ... ]
+
+> @@ -2475,6 +2552,13 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+>  		skb_reserve(skb, GENET_RSB_PAD);
+>  		__skb_put(skb, len - GENET_RSB_PAD);
+>  
+> +		if (unlikely(!(dma_flag & DMA_EOP))) {
+> +			ring->frag_head = skb;
+> +			goto next;
+> +		}
+> +
+> +deliver:
+> +
+>  		if (priv->crc_fwd_en) {
+>  			skb_trim(skb, skb->len - ETH_FCS_LEN);
+>  		}
+
+[Severity: High]
+When priv->crc_fwd_en is set, a reassembled jumbo frame now reaches the
+skb_trim() just below the new deliver label. Can skb_trim() handle that
+skb?
+
+Before this patch only linear skbs from napi_build_skb() got here, so
+skb_trim() was fine. bcmgenet_add_frag() now attaches every non-SOP
+descriptor with skb_add_rx_frag(). That makes the skb returned on EOP
+non-linear. skb_trim() calls __skb_trim(), which starts with:
+
+	if (WARN_ON(skb_is_nonlinear(skb)))
+		return;
+
+With CRC forwarding on, every jumbo frame would then:
+
+  - trigger a WARN, once per received frame, which a remote sender can
+    drive as fast as it likes. With panic_on_warn that is a remote
+    crash.
+  - keep its 4 FCS bytes in the payload handed to napi_gro_receive().
+  - have those 4 bytes counted in stats->bytes.
+
+The FCS may also span two frags. min_len for a non-SOP descriptor is
+only sizeof(struct status_64), so the last descriptor can carry fewer
+than ETH_FCS_LEN bytes past its status block. Any trim therefore has to
+be able to reach back into the previous frag.
+
+Should this use pskb_trim(), which walks the frags, with its return
+value checked? Since ip_summed is still CHECKSUM_NONE at that point,
+there is no csum to adjust.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee%40tipi-net.de
