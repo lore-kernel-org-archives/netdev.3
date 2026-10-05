@@ -1,98 +1,108 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAEA397923
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:33:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1405736C582;
+	Mon,  5 Oct 2026 20:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791232425; cv=none; b=RSa1jjIex4eVI2Qv7Skko0CMz82Kv2wT3WfLbWcPIb9KH5HofDRxMo2oSj9d4MN7WeSCtdizVzh0Io4peHAI645yA6GF0TrHoCIt73jR1E6VFOUBWCg8uGT3M+GYYaPQtDhKwblv+hdMyqKjboZ49SMgxCwc44xshRPJr5YhOiQ=
+	t=1791232665; cv=none; b=ieq/wfoS7IdrLGRRBAYtn/417+Z7dMEfVg6SQxrXS7eXnSdwXjJ25YW9JLZtqbYexw27ZY8Zl4NPiCbIqGIZh74hv2exREoaY5sqYapzppJ/VPstHYzhXMmu9RxowQ7GRUdkhOJ1oN9f/kogeulLiff9qvBk37LSx+Jy6BNwYh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791232425; c=relaxed/simple;
-	bh=W7ZgDV85XzKosR4KK6b9llQ1ZXpNjEupVAHB9XWhs4g=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FCwhejRD8XK6sVfqc1kUlsG4pWv+Q/Y9leQQPhmgI7EqoOZjIPEOJEIdO8B2AQ5IPE8VIYGom9u2Lbn3edhw0u2KgNQsu4YCg1TJsNpb9aVL1LVKZxsHRUSpznur1DIRGdp0MYAtpPT5mF9fUP0oXXfhTZteA+TjHiLROLYN/fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b2d1eb484aso3334412b6e.2
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:33:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791232418; x=1791837218;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yzbD9+nTxp47Myo0E+kEg48QK+FPm0GwCR6nWvaHwew=;
-        b=FPQ1efehZp2yEMCUGuBI3YsPwL5wDfP6orQd7RfPwYTOAbaDCQGaynjbxlq8//NAOO
-         sASsmgQxtNg0+gXEdNO/M8Qtq4C1dX/r6gVEGoSdpfaL99M8A/zPJtYBjtKOTxzZO4gx
-         bHSsxLfqi68XhJLkPOytOOglqzjIAOXPn1Ux25lB0Y77/rvylRxaHQM45vOw/GmDdl0J
-         UDgBMSUT/cwEMpRJZ55VEiSFOI4TpU0uBYh+G8uam0dASwsunKdSGJgdcAU/mKHOqLLM
-         ioBHp36g86EjbnrTi9X7GrlvQl4mnccWiZNk1GVP/Kup//KiqfhYkSddERos8hAOHW1m
-         UNlw==
-X-Forwarded-Encrypted: i=1; AKwUvBwzzBggBJ5VfqhKf9G/jURuQEOg5mHW0X2KRGwSg5dxJ0SaeZBf+xyGCblQ+YnEBc5yyq1kcdA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mj0mmZGhH9KGMH7vuS9kOpYIplbp8As262dAincSfEIW5meg5G
-	ewvdjzXSX40jyTOUoz/IXj/h9bE/p5ftanuQY75A9rJr9zTJ1Ged8EWZxiglP3ymeO/S3Pj0iXd
-	4O8aCwbgRmBdjqEfesQiU6GkKxAm/g5lk6dj2HkeX4dFoL7idIoC3dEXmIAA=
+	s=arc-20240116; t=1791232665; c=relaxed/simple;
+	bh=JLf27oE9Qp7HdUg6bp5x9S7XS3a6CcsDZYJUJUJIm5A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AIFecdc+5vqL8tytpvLUkxlkuhsDJJwqoa59EuvXZ7HRJ4EhAsn4/rE8sp1auK2+Iknd5sg1TpfA3uny0cyK+71FWiDL3AdVElJLJNC/Oy0Jq6C2yHmZQQTaw7O9pho88EHRTwcXZziGan3DnaJZIIIQwvfhapuJGv2vZfsTR8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=jvVnzibB; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="jvVnzibB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=rmUD2X7htb8vgmxOIpos2kvCdAmxcnDe8LykJHM2aW0=; b=jvVnzibBSKq5tkXEJ1gqApV4V3
+	Gghp6ivSCYbqmgqieVtcDC74jPyx51rh0zSJrWjdG86tQLJYx8o+hfTRh+MPQg3tMQ9Cwk2ox1VKg
+	OFLYJbm84s9jbMhzEsI+mMAZz2FkZGffzGxJ5zpxV3Vp1gts5BtJQnF7GAlYNL2zY/Vu/KRdk1NdF
+	S+KfC0yNgGSciw56cnvSSS3BTXZPRcuztQSfb4lO3z7rYbheqgSckMP5i7SVM6PFQuhUxiQJk4B9b
+	5eoYjGgbZF6B9QaAjjOyH7pcwqQU/kOOXY2bqKU8SoKiWIeijILWSvNsZDvaYjoPnS16v1Q6j8Vb4
+	R8d4e7cQ==;
+Received: from [151.115.150.205] (port=58382 helo=gepetto..)
+	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.100.1)
+	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
+	id 1xDpRH-0000000Fej3-3PDU;
+	Mon, 05 Oct 2026 22:37:35 +0200
+From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	wireguard@lists.zx2c4.com,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
+	stable@vger.kernel.org
+Subject: [PATCH net] wireguard: noise: reject responses for replaced initiations
+Date: Mon,  5 Oct 2026 20:35:55 +0000
+Message-ID: <20261005203555.3552816-2-Jeremy.Jean@oss.cyber.gouv.fr>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1815:b0:4d6:9335:d533 with SMTP id
- 5614622812f47-4f67bb6e875mr9355855b6e.64.1791232417839; Mon, 05 Oct 2026
- 13:33:37 -0700 (PDT)
-Date: Mon, 05 Oct 2026 13:33:37 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ac409a1.ae2c267a.265a6c.0009.GAE@google.com>
-Subject: [syzbot] Monthly wireless report (Oct 2026)
-From: syzbot <syzbot+list7f43769dfd404e5bafc6@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hello wireless maintainers/developers,
+WireGuard can accept an old handshake response after starting a new
+handshake. This reinstalls old keys and resets transport counters and
+replay state, enabling nonce reuse, replay and packet forgery. This
+breaks confidentiality and integrity guarantees.
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
+Compare ephemeral secrets under the write lock to reject responses for
+replaced initiations.
 
-During the period, 2 new issues were detected and 10 were fixed.
-In total, 18 issues are still open and 215 have already been fixed.
-There are also 6 low-priority issues.
-
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  1670    Yes   INFO: task hung in reg_process_self_managed_hints
-                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
-<2>  1007    No    INFO: task hung in netdev_run_todo (4)
-                   https://syzkaller.appspot.com/bug?extid=894cca71fa925aabfdb2
-<3>  998     Yes   INFO: task hung in crda_timeout_work (8)
-                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
-<4>  360     Yes   INFO: task hung in ath9k_hif_usb_firmware_cb (3)
-                   https://syzkaller.appspot.com/bug?extid=e9b1ff41aa6a7ebf9640
-<5>  55      Yes   INFO: task hung in nl80211_pre_doit (3)
-                   https://syzkaller.appspot.com/bug?extid=da14e8c0ada830335981
-<6>  19      Yes   INFO: task hung in cfg80211_event_work (4)
-                   https://syzkaller.appspot.com/bug?extid=5506b2556159a1ab6923
-<7>  8       No    BUG: workqueue lockup in reg_todo
-                   https://syzkaller.appspot.com/bug?extid=b733a65a200ab7aa2cbe
-<8>  6       Yes   WARNING in __carl9170_tx_process_status
-                   https://syzkaller.appspot.com/bug?extid=381102a7292a374fe8a7
-<9>  1879    Yes   INFO: task hung in reg_check_chans_work (7)
-                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
-<10> 140     Yes   INFO: task hung in regdb_fw_cb (2)
-                   https://syzkaller.appspot.com/bug?extid=aff8125319e0457b4a25
-
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireguard/noise.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+diff --git a/drivers/net/wireguard/noise.c b/drivers/net/wireguard/noise.c
+index 9c0a09bf6c95..88cc9acc7dc7 100644
+--- a/drivers/net/wireguard/noise.c
++++ b/drivers/net/wireguard/noise.c
+@@ -784,10 +784,12 @@ wg_noise_handshake_consume_response(struct message_handshake_response *src,
+ 
+ 	/* Success! Copy everything to peer */
+ 	down_write(&handshake->lock);
+-	/* It's important to check that the state is still the same, while we
+-	 * have an exclusive lock.
++	/* Check that this is still the initiation we authenticated against,
++	 * while we have an exclusive lock.
+ 	 */
+-	if (handshake->state != state) {
++	if (handshake->state != state ||
++	    crypto_memneq(handshake->ephemeral_private, ephemeral_private,
++			  NOISE_PUBLIC_KEY_LEN)) {
+ 		up_write(&handshake->lock);
+ 		goto fail;
+ 	}
+-- 
+2.47.3
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
