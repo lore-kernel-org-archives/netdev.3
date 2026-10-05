@@ -1,271 +1,146 @@
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012053.outbound.protection.outlook.com [52.101.66.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C2F153BE9
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 01:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791164664; cv=none; b=MlcJmeCnWHYI1pekZ2wXm2rqn71lTSSBN2CasMWBQAtjNWnMT0fnAB/c2yQeZ+qT4FvehxMqO1DCls5ArvqJ873/5LzbjBAkYFwAzeczX/iLYb7SylNrZR9lgDCzElVYXzfwDTdcY7wto8D4JkUp9G/nHUGb9b9pNo74j6JUoCI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791164664; c=relaxed/simple;
-	bh=gdcAc9kU2f37oDPTEaIu3SvgwjNkPW9z3uOTiZijXHo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y+rPl8CVL2Ib1t1aq+5XNO7gQx2uh1RTFQ1ph4Lub0Q6APPSeOhqiJi6cHFEgJJiRQUXlnMTbKiKAaqw06vKQQpXopSI9ou06corDTD10Lep7GBbHqBZolRTm7LmOlqg7v2xjrBStH4b9839nwllcX1pq/pAUCQVVjUq0uXszCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YrTa2yYY; arc=none smtp.client-ip=74.125.229.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223F21A267;
+	Mon,  5 Oct 2026 01:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791164715; cv=fail; b=P/MmtZjeuQItTIQ8+QwU2NjNqYbdGdMuSC+foZckU3tm+y+bMPQ6oSuoLpicpROx2TFOX2J6CgluUfA5ijMXYA+Zx/fHbkJEJzycmZcon4/zpKelzUusfa+3RC5e4NOUFi6Vzdq2ibVKHgNxj+rsNKLuNdOpCs4uSuDNYn/Ujmk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791164715; c=relaxed/simple;
+	bh=dv7CEl5HiUxnl9f27Rf60SddAiymows6lJQApNPNnwk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fRaxx/SZg5af8MAd3MbwyPG+6fGV37rs58a9y9JEhhTxstIsuQ1NbkD9YiwKsGiuldsMiaHtM2mtMGKrv5/Wja/8g7+ViKzUi6kcqRZcYkwDp0wNzPLVNJzY25IcvNqZPgULhNpd6AizEPMHxejFvNN3QiYMK3H8Jq1oKmPEMvs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=mZJd6b+0; arc=fail smtp.client-ip=52.101.66.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YrTa2yYY"
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c11ef641aso2138515eec.1
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 18:44:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791164660; x=1791769460; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/itbrKvCQTn61vdC6fFvWPbqCrllMkc+xUXFtCNvMmc=;
-        b=YrTa2yYYoP3o5yMC8j3kMKPcz5uNPEYsPisUC9Lf1NbqvWiivY+R/ByODc2LfO2NkQ
-         qmla/8NdIWAnmOTWICM2KdEF0bu6FrjoGNPVGxHRRvQsjyvLtYc2FzvgG7iISbkMuLWd
-         0RxkpGjKSzOnh5/9hJdHPfj50OPSDX3UxUsVVbBfy1lnkAzML/twP8MlBcZhqlTXHRRi
-         YCnRxjnk0ZFe1QPRO0bpxxdZcZ40nDRGaU/jeb6a8p2KpYZkfNI1zTl+LnM46KmL1Qg5
-         Il0UoJYTvQRp+jU2bVhtLttUqtGZll/uN5JOi5NBK4YrvcgKcewFO3LKz0yITN+Gnpdm
-         gnAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791164660; x=1791769460;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/itbrKvCQTn61vdC6fFvWPbqCrllMkc+xUXFtCNvMmc=;
-        b=1tJVUl0Z9TqaFOdIByMJ++fj5gXHpZ6/t/45fAak6GB3tymnl1QOj3ZWxMPoAltT/p
-         61HPEL55gPpW2TYnd7RMJaTmc/aUDPzJzfqLRhV/wWrUnzpBMpP4RP8v3R5tan0pEShL
-         sBmQY3xm3js6L8ZeQZcQu7ywURr6FpANxSlNrZlKsSLw2aTdIKFMaPKoApkl0Rv4LO3T
-         iCeYwIuCsBP4B+1Egj4eP/OGKyIbiyGbsxB8cfDEtq6RuaqDDoIuoqxSrowLAekghnm7
-         Tbfds3sUYbrzu6sXm6RC6N2lvol8OYQNDgKEr86iC7a9siQ+baY+asu3qzaZebSpiknV
-         RQ1A==
-X-Gm-Message-State: AFq9FYKCS4cs7dff9pt+8+VbeZE7r2Z/EeR/VtgaXLHTO1bB0unW1D8v
-	mBpRzpKAcwUAG332IIubnKk/jIHfB/hOVOxxOUA8SSzHhRRW7lDQKfro
-X-Gm-Gg: AYBFou32Ut82hUcfY6iiosRy113sxKate431bnogvOvR3P7HExifdPGlVU/m8dvP1KR
-	co2D1RzYjI5YoYpir/c4S5EagmyBN1DkpYIrsjfAbFSvNz+NbUy3Oj/9dllt/5yhOAAQn65ifh1
-	Pi3TD2gjgyZjnUrt6JPsm1nPNYrRWWZr00cBCZ3i7RLt/LpzGBOwmRZ6s9Zs37tvOzYjTJqj69l
-	1RPXK3towNwDK3bsVuSn/ymIu5AVY3J86nX3mRW4ejcB4gTbH41lPw1NYCU25yoAu99gOWNe3PM
-	SEWXvOsL2tNu6DJ9X8i/ErRqGi/10Ax+jU+SzhWQHdoh8lWXzXa/CI/L6ljVqfUHofKQ+EHSurF
-	OJHrxzzNNoqz77XcOW4sK1hkisgVelZu9lP8/W7BIZ/mrNUT/S36xh3tru2EjiDHSO5wA3MqF4T
-	6hh2EsAhZxj0ljT2rfPZeE8Dm0xIza7sKIX4JTh5gAQcQbRblWZ9tHKeXbgrBKFx8xGd5PDnOwu
-	MmT7w8bQ6IWt9NXl+vrgxgnGbGmwNY/cOg0YBnEoFaTJCta2lZueEyO5xs/DGMeRoD7ktqi/b6+
-	YrYsOAnO18oE/MRX0qB5On3UKVhQI+z25TXJ8vcrWygrUnv428REG3rt40VWoLlSAY7jO5zq9/X
-	o7xAHxv5nupTHCvWon8kamRxJLgCuCZNpjZZH2xqp8aBaLa7TsOAK1uxCvw6ndGPWCA==
-X-Received: by 2002:a05:693c:8952:20b0:351:207d:bff4 with SMTP id 5a478bee46e88-351207dc13amr5037830eec.4.1791164660342;
-        Sun, 04 Oct 2026 18:44:20 -0700 (PDT)
-Received: from FT6N242TWK ([223.181.113.176])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35128156e6esm9000016eec.20.2026.10.04.18.44.14
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 04 Oct 2026 18:44:19 -0700 (PDT)
-From: Shashank Mohan Jain <jain.sm@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Tal Gilboa <talgi@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net] lib/dim: fix 32-bit overflow of epms in dim_calc_stats()
-Date: Mon,  5 Oct 2026 07:14:11 +0530
-Message-ID: <20261005014411.78626-1-jain.sm@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="mZJd6b+0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dTFMLMK04YCAToG9bCn9VHT0VehCYe9DNRoScCPRSjBDWu2wlvyfmUP8DNuPeRgaJf0BGU4TQrxqMocBLXmMC5O1kT5H7xHvPx4LPgAezOS8Ai1bUPvgOE6PXQ+5e8hGYf8W1ftNmeWQ3Lj2UDCabzb6tBoza9/pMAICNFmyRrENTUA97g6qNrAC8aUBMmK+E6cRF9P/HYdpBMqJQF3vmyRlhrr6BbUsJEYIfQCTg5kVBVc+XUkdhd3ASwRMTKZOJZosb48kWVkzOWNe+RUaE2cFCfXWziXun8k9rSMR0F7wN7goniD+WTB9DOUfrUvRsqzJ+JHdr+KeqHj8spuzKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dv7CEl5HiUxnl9f27Rf60SddAiymows6lJQApNPNnwk=;
+ b=TzFWSSgbdNdmj0pkxwerOVuIoKqWv10fVfI1PN5z8wzcQEXDqty105Xoxn6JwWozYuZgHc31itq5wxcHvvTzFQXQ2MBPY+Bk8Z7mjL0fs7Iuk9BJlmPjueBzO3Y+u9Qt9CrUH/vTt4ZD9HmiweyNAEYU2/laHZqgBThPPcYnS8dWsXYSwzNdQjB6iCbxwSJurVWqjlvnaouTxkhSysUDuQITgo86MrbI2MUnzi8o4CsFuC0k1h/GGaNbjnSIfChgIfQy4KEKL7m3grxzcUJD8w/2Vc5217lP4TTNpdtksrkGpenpYJ1pc2CpoyF1ekkMCZ+l/AIx7mlbAEdRuV/fCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dv7CEl5HiUxnl9f27Rf60SddAiymows6lJQApNPNnwk=;
+ b=mZJd6b+0ooOEDpJ1ZVjfGJkoJc7fzfy1qlEGBUHuYEwoPks8NdAS5FMVpYzqbuyUPN7g/UXagMGhi6/GKHRQpqIBDwyp7n6gkfEnpLINcwXzl9Bg6cS8yCIEpxzE9fvl62wqDWpj9Q45B0H3pMqZPPv80bZEedto1FmWYgCfxkGZejRsZqaUt9dWXBrrc/ReZG//R7H59U5jip8qvnxfUTjpbyGHAqvUWIDiisEYhL+f6DT3b7yjtw7J149D1NieCJTIqffx64Gq9yv68cnIdyxe/QddePMlbdNULGSGMW+DsQor7/lR9AJsFDcXagbcdvXqFFJAkmRh0P1YDBwpeg==
+Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:617::19)
+ by VI0P189MB2687.EURP189.PROD.OUTLOOK.COM (2603:10a6:800:217::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 5 Oct
+ 2026 01:45:07 +0000
+Received: from DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
+ ([fe80::d422:dd3a:7c1e:f4f3]) by DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
+ ([fe80::d422:dd3a:7c1e:f4f3%3]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
+ 01:45:07 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: =?utf-8?B?SsOpcsOpbXkgSmVhbg==?= <Jeremy.Jean@oss.cyber.gouv.fr>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Jon Maloy <jmaloy@redhat.com>
+Subject: RE: [PATCH v2 1/2] tipc: skip socketless connections in topsrv
+ teardown
+Thread-Topic: [PATCH v2 1/2] tipc: skip socketless connections in topsrv
+ teardown
+Thread-Index: AQHdVENhiBl69M9Ihk+V9UOeiHoxIbbuLMJQ
+Date: Mon, 5 Oct 2026 01:45:07 +0000
+Message-ID:
+ <DU4P189MB37509EDC07ED80A505938D05C6962@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+References: <20261004210016.3051310-1-Jeremy.Jean@oss.cyber.gouv.fr>
+ <20261004210016.3051310-2-Jeremy.Jean@oss.cyber.gouv.fr>
+In-Reply-To: <20261004210016.3051310-2-Jeremy.Jean@oss.cyber.gouv.fr>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU4P189MB3750:EE_|VI0P189MB2687:EE_
+x-ms-office365-filtering-correlation-id: 41c26b22-6e47-4edb-17de-08df22824907
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|4022899009|376014|23010399003|38070700021|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ m5yyGEnKd24ew9AFx0ybIhLtWqdSlsrlehsFjT4UuZjItuYPVHKxjIXRwQGBEDr7pOdB9pbZnbJryp+E15UpSZCq+4Za0rL9fDStIlbHvcNwBLi3x6BwbUbuzp4t0XYt5qbssQKtfOoea0xgx6Sof3kRC7G+vLMXDyioVxnpTA3OtCoeQ3rVdI2X1oHSJU5Y8Uc3q6IBx1XNGOHXUPxCVvc5K7u3UXS9y1zG6XRxPqEUOaf3GYf03zRClc53a6OxFHlFwzn6SYSqmZCJI4qlHPowBgCTj7qM4Uj0Mk/6+SEHIoY26aWa2LwHG19gFL/Fn9kOqVSl1Cu3GDWkFf8orEfH85wc2M+N5FGx6jzWp6X0xHPtqYJD0MHCZg1zr54UzP4cB/1JGwGU+rjOUk+JWwiudiMN30fcltiYiwx6z7MofBz6qtyNFJ7BmE2s46XxU+tbOuSjMfHpgg0lIka35UgKpk9zH1H85Hkmt9iWWzWHRrINekSInHou7Rh8KyMBYFy8sEFwoLRm9iO41Rwlzw94m+5yXG9w5kMFE4ekTAn1jtP79CW58iQADpecQwuN5gvWHRRVwGyU0ui+SDDe4gwFNmyiscxak1hspAsAws92rBCnXJLvHcLUfe9n/Pqwab1UPBQi76/rZChzRpvcQUNQMOFuClwao1p9yqdBGrXnPHTtYcNqHcfSaMhw2Y64jXDkZEFd2hfl+7v7hxzb1RWrLuJ8kLjkZcJt9ZDX9MA=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU4P189MB3750.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(4022899009)(376014)(23010399003)(38070700021)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?NE55L245eXh6VzZxQ3hVSWExbXQzQUVWa1A2SHczMytWNFVGRG1pLzY4S3JC?=
+ =?utf-8?B?SkN1STFKdklhanZMWkVqaEcyRXgwOHV1UzNPa0U4SWZXTSt5ajlHbEFlYmZ6?=
+ =?utf-8?B?eGNtODIrZ0dISVNMcmc2bnplQjBoNjc1b1VpbS9EV3d0Y2RlcWltTzhuaWpo?=
+ =?utf-8?B?RWVLa015V2tJbXMwUEdiTSs5OFg4TjFtS29KZEt4STV6SVlESk94MFBXd1dy?=
+ =?utf-8?B?b1BObTl5TnQzOEZHWHVTZmh2M0NLajhoVUlucEZ0MHh6SHdBT3l3UzhDYzVP?=
+ =?utf-8?B?OUpDQnhzZEdlWEN2MjRhQ09VMW1ONzhOajAxZ2lBTm1GTytyZlFXdE5JR3Z1?=
+ =?utf-8?B?UUZrYTc4ZTVBN1VrSWNaWFFhQlhkVVV5UkNJVzRTNXpHL1VBdlJvY1FIT0Z5?=
+ =?utf-8?B?RVBMbmp6WHV4d0F6UFE0c3BsRThmbjJ4eE41NlFIYld5RjNNKzd6OGVlWjZL?=
+ =?utf-8?B?M3l4NHVVd0kxakpGSks1cm9kaTJHbk55eldnRmd0V09rNU83MFU1Y3ltNUlr?=
+ =?utf-8?B?WmdKbDVXUnp1dlhFTWF6Ni9HSTUrRWh4cGMyWFEyVHRUQ08vY3RLSlAwdDAz?=
+ =?utf-8?B?YzZ5R3ovSnozN0RKM1VhbDcxK0tPWDR5RUZBamdaSC9DNE9jcFhCakVmaExl?=
+ =?utf-8?B?TFczY1hxejdrOTdQelVuYk83ZGFuMFl4MHRxQkRnRnQ3S0R0b1pxQ3I0VXkx?=
+ =?utf-8?B?OWRqOXRJdmdqSTJBc0Qzb0tabktjWWRrUHhac0I5WXJYY2JHMGJnTVpKcklh?=
+ =?utf-8?B?NFBXMFJOYUdPSkIxaWhZbklPOTlqMzBnYVRNTFp6b2s1dWlaTmFuOWVzbktT?=
+ =?utf-8?B?Qzgzd2VYaDA4ZUhYTHRCTGg4QzlyMFBhUmJGV1E5SlVXdVAyMytJMm92OXE2?=
+ =?utf-8?B?UXFEdE44YW85UDAyZC95SjJuNk05Tm4vdGdhY2lYNE90YjhPeHlBd1hnWmFr?=
+ =?utf-8?B?dlp4VVg3ZFdkam5yeWZYM25TcGpYSkh4RmR1NmQwZzhGSjNGbXBTS0NCWjJZ?=
+ =?utf-8?B?WEtUVVpQbzBvcDZtdVdaODlQcnUwcExxNlA4MzAyeUUxcGlWaWtrN3NuRFRB?=
+ =?utf-8?B?ek1Ebi9JaHZoeEFBbFp1ZENVNEtBUUg0K29NYU91b1h4M0ViZVY0WGNpcFI3?=
+ =?utf-8?B?Z2x5M3lTODNZb0x2cER0SVlsM1E4MmJqaHREN0FMa3g3bm5nWk1nMGYzNkNX?=
+ =?utf-8?B?T1BDWG8vMFp0djA1R1d6NWIxL2gzWThHaDFSOU82d2ZCMVFqVEZhWFJNdE1O?=
+ =?utf-8?B?N0VrTCtDbHdvQ3g1T08vM0hlR0Z2Ky9GMm43Z3ZzRGRKSjFVWGtnbnVVYURN?=
+ =?utf-8?B?YVZLMmp0ZHJXZ0h1ZjMwOTd5RnF5RVhRWVJaU05FdFdZbHFrSng5Skd4Sk16?=
+ =?utf-8?B?U1dtc1hNTVd3c04zbkE2OVdITlFNMGQ4bEZPd09xV1RRVE9oa1U3NDB1VFhW?=
+ =?utf-8?B?a3hLdW56UE9CaXBEMUVxZnZ0UGNFK0ZuSXhpVW5wNEpmNDhFM054eWZUN3ZE?=
+ =?utf-8?B?RUthOElYMXlWUVFsVHRGQy9sQ3gwdXBqMXZhRTRPZ3VSbDkvY1NWTi91dTRC?=
+ =?utf-8?B?bytZLzJSOXR5eUdUOVdtM3N1ZXZZOUpxajN5ZEdHeUIydmxaSkRrVE9QYVJL?=
+ =?utf-8?B?Y0RRNGRXQ052L0UrK01hRkZJbnpwczFUZ3lhZVZyamJWcE02YnAwZHp4NGFp?=
+ =?utf-8?B?Q2krZUpWOFUvczlpdGNSMldoTlBRb2szRlNKYUF1OTRTNE1SSnhqSENwQzZ4?=
+ =?utf-8?B?WjRzN0kzclBIcUR6V0o3bUJJUVNOUHphdVRrbStSYUtsYSswZCtHY0U3U0lL?=
+ =?utf-8?B?YTJJbEJFVnc5TWNSeXhUNkJpYkRDaTZKenBoOFV0MXdtYmE5VnE2STlqQ0Q5?=
+ =?utf-8?B?OFk5WGszdmxaR0RUZ0w5VkJQMzFtc0lrQkFnOHJ4NjQyUUdoNURyQ1ZnaytI?=
+ =?utf-8?B?YTZpMDdTR0QwSEFHUmhwTTNxQXBlVG1EVW8vTytkbjgwOTFyOXVoeXBvblFI?=
+ =?utf-8?B?NlRCMHRhZFNaSU1vT3FCcE14TnVqSVRtMTc2c0U5OVA2UHE4MmFNRUxNK3o0?=
+ =?utf-8?B?bVRJakthbEdQSkRYTUZCdjVjdGhXaTFVSS9wVDE4REYrSlJDaW8xMGlMc2tS?=
+ =?utf-8?B?T0lTY2NWTVk5SjU4ejAzWWJiUUFHSmVSUEVNR2VnejJhTWwyQWdSVGFJODNr?=
+ =?utf-8?B?eVZ1YlZzc0xLL0lqeWVFckJHSmxkNEZsbXBlOVM5WkdQUkxQczRIbXlJZmtS?=
+ =?utf-8?B?d01KUE5MU1YyS01vU1VjWkNKVmc3NktPOUVPQTIvRkhRNWdzUlF4bWd2NExS?=
+ =?utf-8?B?RUpQUXZocDBza1YwdGRZbDRaZzZGS3MxR2FUVzM5dWlLUXBON1hEUT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU4P189MB3750.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41c26b22-6e47-4edb-17de-08df22824907
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Oct 2026 01:45:07.6020
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hNI+X95+ZVK7/YURtBOwey7dJBmT2aiTHgvnScgKygeiEVBymQdla3drTx6RQqbbGPo5nx18tnmJbYWTrqsXOw2iXTdi89b9E4bkQR19OOA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0P189MB2687
 
-Commit 0843b2389064 ("lib/dim: fix 32-bit overflow in dim_calc_stats()
-rates") moved the packet, byte and completion rates in dim_calc_stats()
-to 64-bit arithmetic, but left the event rate as
-
-	DIV_ROUND_UP(DIM_NEVENTS * USEC_PER_MSEC, delta_us)
-
-DIV_ROUND_UP() computes (64000 + delta_us - 1) / delta_us. On 32-bit
-architectures that sum is done in a 32-bit unsigned long and wraps for
-delta_us >= 4294903297, the last 64 ms of the u32 microsecond range
-that the function is meant to cover ("u32 holds up to 71 minutes").
-epms then becomes 0 instead of 1.
-
-net_dim() and rdma_dim() only wait for DIM_NEVENTS events before they
-call dim_calc_stats(), with no time limit, so on an almost idle
-interface a window can last that long. With epms == 0, cpe_ratio is
-set to 0, net_dim_stats_compare() returns DIM_STATS_BETTER instead of
-DIM_STATS_SAME when bpms and ppms did not change significantly, and
-rdma_dim_stats_compare() compares a cpe_ratio of 0. The algorithm can
-then step to another moderation profile based on a wrong rate.
-
-Compute epms with DIV_ROUND_UP_ULL() as well. The result does not
-change on 64-bit, or on 32-bit for windows shorter than 4294903297 us.
-
-The issue was found by the Sashiko AI review of the original patch
-(see the Closes: link). The fix and the test were written with an LLM
-assistant. The dim KUnit suite computed the expected epms with the same
-DIV_ROUND_UP() expression as dim_calc_stats(), so it could not catch
-this; it now uses explicit expected values and gains two cases with
-delta_us of 4294903297 and U32_MAX. Without the fix both new cases fail
-on UML i386 and on qemu i386 (epms 0, expected 1) and pass on UML and
-qemu x86_64; with the fix all 10 dim cases pass on all four.
-
-Fixes: 0843b2389064 ("lib/dim: fix 32-bit overflow in dim_calc_stats() rates")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927051743.71460-1-jain.sm@gmail.com
-Assisted-by: LLM
-Signed-off-by: Shashank Mohan Jain <jain.sm@gmail.com>
----
-Prepared with Claude Code (Anthropic), model Claude Opus 5.5
-(claude-opus-5-5), which checked the Sashiko report against the code and
-wrote the fix, the test changes and this changelog.
-
-Tested on net.git main 6dc989ea46b9 with
-./tools/testing/kunit/kunit.py run --kunitconfig (CONFIG_NET=y,
-CONFIG_DIMLIB_KUNIT_TEST=y) on UML x86_64, UML i386 (SUBARCH=i386),
-qemu x86_64 (--arch=x86_64) and qemu i386 (--arch=i386), with and
-without the lib/dim/dim.c hunk. W=1 builds of lib/dim/ for i386 and
-UML i386 are clean, and the i386 kernels link, so no 64-bit division
-helper is pulled in.
-Not tested: 32-bit ARM or MIPS builds, and no run on 32-bit hardware
-with a NIC; I did not wait 71 minutes on an idle link to see the wrong
-profile step happen, the effect on net_dim() follows from the code.
-
- lib/dim/dim.c       |  9 ++++++---
- lib/dim/dim_kunit.c | 40 +++++++++++++++++++++++++++++-----------
- 2 files changed, 35 insertions(+), 14 deletions(-)
-
-diff --git a/lib/dim/dim.c b/lib/dim/dim.c
-index 7f3eebae73cb..138589fc9048 100644
---- a/lib/dim/dim.c
-+++ b/lib/dim/dim.c
-@@ -69,13 +69,16 @@ bool dim_calc_stats(const struct dim_sample *start,
- 	if (!delta_us)
- 		return false;
- 
--	/* u32 * USEC_PER_MSEC overflows a 32-bit long */
-+	/*
-+	 * u32 * USEC_PER_MSEC overflows a 32-bit long, and so does the
-+	 * rounded-up epms dividend 64000 + delta_us - 1 for large delta_us
-+	 */
- 	curr_stats->ppms = DIV_ROUND_UP_ULL((u64)npkts * USEC_PER_MSEC,
- 					    delta_us);
- 	curr_stats->bpms = DIV_ROUND_UP_ULL((u64)nbytes * USEC_PER_MSEC,
- 					    delta_us);
--	curr_stats->epms = DIV_ROUND_UP(DIM_NEVENTS * USEC_PER_MSEC,
--					delta_us);
-+	curr_stats->epms = DIV_ROUND_UP_ULL((u64)DIM_NEVENTS * USEC_PER_MSEC,
-+					    delta_us);
- 	curr_stats->cpms = DIV_ROUND_UP_ULL((u64)ncomps * USEC_PER_MSEC,
- 					    delta_us);
- 	if (curr_stats->epms != 0)
-diff --git a/lib/dim/dim_kunit.c b/lib/dim/dim_kunit.c
-index 2e984f6b9fe4..8aa8df78bd3c 100644
---- a/lib/dim/dim_kunit.c
-+++ b/lib/dim/dim_kunit.c
-@@ -14,7 +14,7 @@ struct dim_calc_stats_case {
- 	u32 start_pkts, end_pkts;
- 	u32 start_bytes, end_bytes;
- 	u32 start_comps, end_comps;
--	int ppms, bpms, cpms;
-+	int ppms, bpms, epms, cpms;
- };
- 
- static const struct dim_calc_stats_case dim_calc_stats_cases[] = {
-@@ -22,13 +22,13 @@ static const struct dim_calc_stats_case dim_calc_stats_cases[] = {
- 		.name = "small",
- 		.delta_us = 1000,
- 		.end_pkts = 640, .end_bytes = 640 * 1500, .end_comps = 64,
--		.ppms = 640, .bpms = 960000, .cpms = 64,
-+		.ppms = 640, .bpms = 960000, .epms = 64, .cpms = 64,
- 	},
- 	{
- 		.name = "round_up",
- 		.delta_us = 3000,
- 		.end_pkts = 10, .end_bytes = 10, .end_comps = 1,
--		.ppms = 4, .bpms = 4, .cpms = 1,
-+		.ppms = 4, .bpms = 4, .epms = 22, .cpms = 1,
- 	},
- 	{
- 		.name = "counter_wrap",
-@@ -36,35 +36,55 @@ static const struct dim_calc_stats_case dim_calc_stats_cases[] = {
- 		.start_pkts = 0xffffff00, .end_pkts = 0x100,
- 		.start_bytes = 0xfffff000, .end_bytes = 0x1000,
- 		.start_comps = 0xfffffff0, .end_comps = 0x10,
--		.ppms = 0x200, .bpms = 0x2000, .cpms = 0x20,
-+		.ppms = 0x200, .bpms = 0x2000, .epms = 64, .cpms = 0x20,
- 	},
- 	{
- 		/* 30 MB in 10 ms (24 Gbit/s): nbytes * 1000 exceeds 32 bits */
- 		.name = "many_bytes",
- 		.delta_us = 10000,
- 		.end_pkts = 20000, .end_bytes = 30000000, .end_comps = 64,
--		.ppms = 2000, .bpms = 3000000, .cpms = 7,
-+		.ppms = 2000, .bpms = 3000000, .epms = 7, .cpms = 7,
- 	},
- 	{
- 		/* 4.3 MB in 16 ms (2.15 Gbit/s), just above the 32-bit limit */
- 		.name = "bytes_32bit_limit",
- 		.delta_us = 16000,
- 		.end_pkts = 2900, .end_bytes = 4300000, .end_comps = 64,
--		.ppms = 182, .bpms = 268750, .cpms = 4,
-+		.ppms = 182, .bpms = 268750, .epms = 4, .cpms = 4,
- 	},
- 	{
- 		/* 5 MB in 40 ms: a 1 Gbit/s link at line rate */
- 		.name = "gigabit",
- 		.delta_us = 40000,
- 		.end_pkts = 3300, .end_bytes = 5000000, .end_comps = 64,
--		.ppms = 83, .bpms = 125000, .cpms = 2,
-+		.ppms = 83, .bpms = 125000, .epms = 2, .cpms = 2,
- 	},
- 	{
- 		/* 5 million packets and completions in 2 s */
- 		.name = "many_packets",
- 		.delta_us = 2000000,
- 		.end_pkts = 5000000, .end_bytes = 5000000, .end_comps = 5000000,
--		.ppms = 2500, .bpms = 2500, .cpms = 2500,
-+		.ppms = 2500, .bpms = 2500, .epms = 1, .cpms = 2500,
-+	},
-+	{
-+		/*
-+		 * 64 events in 71.6 minutes, the longest window delta_us can
-+		 * hold: 64000 + delta_us - 1 exceeds 32 bits
-+		 */
-+		.name = "long_window",
-+		.delta_us = U32_MAX,
-+		.end_pkts = 64, .end_bytes = 64 * 1500, .end_comps = 64,
-+		.ppms = 1, .bpms = 1, .epms = 1, .cpms = 1,
-+	},
-+	{
-+		/*
-+		 * the shortest window for which 64000 + delta_us - 1
-+		 * exceeds 32 bits
-+		 */
-+		.name = "events_32bit_limit",
-+		.delta_us = 4294903297U,
-+		.end_pkts = 64, .end_bytes = 64 * 1500, .end_comps = 64,
-+		.ppms = 1, .bpms = 1, .epms = 1, .cpms = 1,
- 	},
- };
- 
-@@ -95,9 +115,7 @@ static void dim_calc_stats_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, stats.ppms, t->ppms);
- 	KUNIT_EXPECT_EQ(test, stats.bpms, t->bpms);
- 	KUNIT_EXPECT_EQ(test, stats.cpms, t->cpms);
--	KUNIT_EXPECT_EQ(test, stats.epms,
--			(int)DIV_ROUND_UP(DIM_NEVENTS * USEC_PER_MSEC,
--					  t->delta_us));
-+	KUNIT_EXPECT_EQ(test, stats.epms, t->epms);
- }
- 
- static void dim_calc_stats_no_time_test(struct kunit *test)
--- 
-2.43.0
-
+PlN1YmplY3Q6IFtQQVRDSCB2MiAxLzJdIHRpcGM6IHNraXAgc29ja2V0bGVzcyBjb25uZWN0aW9u
+cyBpbiB0b3BzcnYgdGVhcmRvd24NCj4NCj5LZXJuZWwgc3Vic2NyaXB0aW9uIGNvbm5lY3Rpb25z
+IGhhdmUgbm8gc29ja2V0IGJ1dCBjYW4gcmVtYWluIGluIGNvbm5faWRyDQo+YWZ0ZXIgdW5zdWJz
+Y3JpYmUgd2hpbGUgc2VuZCB3b3JrIGlzIHBlbmRpbmcuDQo+DQo+U2tpcCB0aXBjX2Nvbm5fY2xv
+c2UoKSBmb3IgdGhlc2UgZW50cmllcyB0byBhdm9pZCBhIE5VTEwgZGVyZWZlcmVuY2UgZHVyaW5n
+DQo+bmV0bnMgdGVhcmRvd24uDQo+DQoNClRoaXMgZG9lcyBub3QgZml4IHRoZSByb290IGNhdXNl
+Lg0KSSBmaXhlZCB0aGUgaXNzdWUgaW4gdGhpcyBwYXRjaDogaHR0cHM6Ly9naXQua2VybmVsLm9y
+Zy9uZXRkZXYvbmV0L2MvM2FjZGQ0NDM4NWJjDQpQbGVhc2UgdXBkYXRlIHlvdXIgbmV0IHRyZWUg
+dG8gY2hlY2sgb3V0ICB0aGUgZml4Lg0KDQotLQ0KcHctYm90OiByZWplY3RlZA0K
