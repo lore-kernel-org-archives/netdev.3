@@ -1,126 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f11.google.com (mail-oo2-f11.google.com [74.125.231.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050923033DE
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 04:25:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791174355; cv=none; b=J+8ai+1TZBROmR3J+qdElWzaNcFHZAYqSxLizkDDiLuyX4fjk1OAtvstDEebCuJJ0crSweP0mu0eIkcjm4s0C1mHmINJYfPFxXWj+WM+zJCwYbebmSEdV22CJ+v442I6WQCBGEldh2mfc1iPv/niT5+rxhA5C9u6docX5UFB9G4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791174355; c=relaxed/simple;
-	bh=OsGkQpIFi/XJKkg6YnxgUmV/rs1yOe918xWCzpPlf1I=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=b/LEgeE01HouaiYY2oEOpSK6sM2XDnV/6ckE+ypZzh/yqYY37WTOKvOiimYyAmhjWRJvNVjYXlMowd0dSfol4CwdFaiLt0JoI8/iVDqIhU24KSzdMEul4Mbh2LHUVXXYRmy2ZbMDJTwFiNACbAJmPgtsqCLc+302qDFJiVp65bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZdSj4JM; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841E130F7EA
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 04:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.139
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791175020; cv=pass; b=fmdAoCSiyAwUuge2SKsY15j0/HDtNrf9DdLJUfyasapOTaUOHrdVD5Vobz6GXtouymJJExq5MziT1reqbHKsu86lATap45OmkUD4IRp9IYBFy5RG+ExQDb16/L6138YlfHIdOh3GM+k4ioE+TR5am6Ctlw1ND1q2Rk5zTnGQMSk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791175020; c=relaxed/simple;
+	bh=4JaW8TsfEgIYQ0t1F0pY0awGa16inumluGQbcchpNhM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qcmXV0bw6PVwgW+t6jiVHDzkZBRhIQabq1QWB3YI1M+82EUhuqVAxMEnAEouGoO15uc/dVzdKz8SkpLgQ86TN8oNzoQIcoPAzhtYfPDPCuO+F9VQE7AU6bXsefxjsdx5kImbT3TAnlIrGXVHfOLoOpEt83OHz1PpzBJcsiSGhZY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LGJeDFSL; arc=pass smtp.client-ip=74.125.231.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZdSj4JM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4321F000FF;
-	Mon,  5 Oct 2026 04:25:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791174353;
-	bh=wGsAq8Av8hkcRTtIuwEPPVSfoWOz3RvyDwmn3cyaqok=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EZdSj4JMZvsPfM3xR+bMKImk0D9m1I/+qNsbiEZHlB4Stop3zeKdCAYtnZPN7QdVi
-	 BRidQNP+6AvBXG08UjC6REQyf2JSHg9+7uA0xyIx3Sx5TVGgSudN2ePgENHR1ZQRg7
-	 Ls9qSBiczpt/d2li7SgWTYXk1v8ys0Pp9e8zdihY0g7fDT7uRK8D50pdL7KtoqRvPO
-	 mjkE2kurygkgxZ4KdvH6+5d/D15qmOWlySPJpp89Lktm1/M8g0MDb/GpT6HxX8tPG3
-	 qSwUTzEuB43ndLib/DyoFGNfjTRAVqwoXRBrV/TFXSxaN0H66uHqRfUgjiqqrKIn8K
-	 NLdoFLYPlaKLw==
-Subject:
- Re: [PATCH] wireguard: allowedips: prevent stack overflow without DEBUG
-From: netdev-bot+sashiko@kernel.org
-To: quantumvoid0@proton.me
-Cc: wireguard@lists.zx2c4.com, Jason@zx2c4.com, netdev@vger.kernel.org,
- kuba@kernel.org
-Date: Mon, 05 Oct 2026 04:25:52 +0000
-Message-ID: <179117435281.434549.17747961185403870914@kernel.org>
-In-Reply-To: =?utf-8?q?=3CTaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4?=
- =?utf-8?q?Xtksw07sYrIpludwvJQrukFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ=3D=40pr?=
- =?utf-8?q?oton=2Eme=3E?=
-References: =?utf-8?q?=3CTaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4X?=
- =?utf-8?q?tksw07sYrIpludwvJQrukFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ=3D=40pro?=
- =?utf-8?q?ton=2Eme=3E?=
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LGJeDFSL"
+Received: by mail-oo2-f11.google.com with SMTP id 46e09a7af769-826f42e479dso194183a34.1
+        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 21:36:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791175016; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YyAPqxqsRmaCQ75ntx/dC04zjMaV8pZW57sDSy6YS2/NJovG7MvIE23u0ukEw5ZFBd
+         ovD0nFFIdDqoLrq9Ap9m+2rkSS5N78WjsTbaM5fi0SSAuk7qsckTRASqRZQZNnkkYzZS
+         8VjSqt0XTe+pGqTxt9AdzfqDc/D5bEXu8YZHnCamxTcJK3RwQMVxg0OCV+PXhduaRjQu
+         91n/UzUPZBe2nc8XruUfP3X0Mnlqqy1mrFSmgiBcuD54U3RHUMpsBc4jDMkzNnlvJarr
+         OFapou6BZKEInkQ+sBtl3O9yHe0x2Hfe8KKi4QcWoTCqrzG1rz1z2Rl/gCJS5AxvkXyC
+         R2Hg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=jMemwemCDjVQ/IRLCAlo5A+Uc/DpvQUIN6OnaV6i+nM=;
+        fh=O+NqppMi2tP7qs+U7ZA9Kh5pFkd9M2n3HKuKfjUNAQQ=;
+        b=ClPI3hPOaiWy3MD1FtiXN36qj/MCmOT5VVGkffNadefZgMekKa51NFjxGL5bCR1NZ5
+         7lUtdd/T/2I5Hwdf8Om1jpESMoTx9r7GJKOvzwJqGick9k6XqPIDXS4ReAfMluKm72SE
+         7KoKKKz80ZDxLLNOExrzIBws4TcJAuqL2oZORyhO4I2HtkECwJQT5wTC5xa//HOerodt
+         Atb+jZ/0De+71UiNfw8rPSun83kKUimGMcc64T07DelBHgZHwBva67jhie5ovxaeRg+6
+         wQ4hDshvfRSnwEo+ZCNm+mWDQQsZn1N04oBMWB28MdnStfRspa4RHLQScKuu4rKOmVlv
+         rkpw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791175016; x=1791779816; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jMemwemCDjVQ/IRLCAlo5A+Uc/DpvQUIN6OnaV6i+nM=;
+        b=LGJeDFSLZkI/vPN7f6LghCYPc/jKOpleFeaWKdzZDzdOihg8ozwKHvBFCGqzHZ4+Fk
+         iudgg00839NrKv6mRHs4sGjUaTRZIP2J/zBqWcf/zxmzk9q/Eg7P5vp40rMFtDVBOHQm
+         H5qEGHr45g/LpgcFQFJ7yGkQXfEU0UTu4twTSgFRcfcUFtFpX2U0tnPt3VTDyNENoxoz
+         c8KtIhABRG1vheMUe09gbhFaM3ldigSRskHlFPoeLrPtyPxG6VwINfRNbTS9nKnIBWcC
+         ig+rgWHidmPpf3Z/xlxVoU+PpD9BuoRY35M9ePkqTcL2TJfWz8AZRJUvr0t4hbElrfE+
+         fWwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791175016; x=1791779816;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jMemwemCDjVQ/IRLCAlo5A+Uc/DpvQUIN6OnaV6i+nM=;
+        b=IinAHWLfK7yPXeU3SCo3QesLyqpvbXygwW/TqTA9oiM3JWaQxB16s0A1lQvXB8aP0f
+         FdXj7eBZO7kBEA9mtPEnbJrux5JjEEvIOMzh6AjNaqIadE1oLyKemXDeWs8eNb8A71IR
+         Iy3jEJRRqp5WLyrAixVDD3AbY6vI0qKIY6Vnq87vCagrI5a7SGxksdeU7Ce/gbKhauYB
+         i8CYFrwqJO/P4FOGXd6qlZAekU9lsy+yxvF4frIhOtXS6vT9RnEz/DUK1Ij3i+OcvzSZ
+         i+w8uyeyooNup5t8146hP8n1DDf1ak2UKm1nJcf8P3pMXOS/HgIxVVmXr9gcZsb6Sc+p
+         aR1A==
+X-Gm-Message-State: AFuF++n3V9Sp+gHp+nPS81vMEFHv2Gwu1aQ57oI4skRyTYPQxGaaqCkA
+	KpAagO5M8WRBAtpI/ttSvkCGdUM1ARH94SUSHxSR3HXWcRzToa0SAHy13cqHFhHy1GvgZnvdBva
+	N0FZ8wtOE0O+f/2wh0JShH7UHylB5QKU=
+X-Gm-Gg: AYBFou3+WAeYpV3bi5+qPlIV8dkvf0PWRXDIgjlBiyqeoQAdOr7SmLI4Nn/9oIUILZZ
+	FVvmMbCoUkU1f/+HEeBsp9ChHNUDxqopMaIUdEim9eOHRVwm/fUpvreTT8Ai5FQ3jNi/wiwr146
+	VULZANCnsMfi3VABeH7oaJNbqUPCnd920CqqW+vY/AFnEp3LdTxVcc9tHec40GXCUSjH8p1MEpd
+	Fm9kDEfByNCLgtD48XHLK4LFmP34nkqOFcUQMeLCntGuAi9jP/wWfpB3Nby6CvmWxevlw6CjgOp
+	p41ahieFsmy8+hXPTWA14OSOncmxlS4Ys+YzFU4PzDtpoFrQH/KVK+Z4UX+JnFA1y86yERaFVN9
+	6J3/VPEuqtwXK6a+HuTZbyYPC0g==
+X-Received: by 2002:a05:6808:169e:b0:4b9:a829:f00e with SMTP id
+ 5614622812f47-4f529a2c191mr8446849b6e.26.1791175016138; Sun, 04 Oct 2026
+ 21:36:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261005041525.49111-1-xinsheng.zhu.ny@gmail.com> <179117397560.1402591.15477443356899321449@kernel.org>
+In-Reply-To: <179117397560.1402591.15477443356899321449@kernel.org>
+From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+Date: Mon, 5 Oct 2026 00:36:45 -0400
+X-Gm-Features: AclHuK8AQ_fJPqH9F2RpLy5B-liqnS01GJJ2XrnacHzFOOm1bTKvMDyxIGNhDR8
+Message-ID: <CAFGKm+x2563P6iwWwrJq1VaLJJEbodx8-f5r6Fe41R2f1wdbvw@mail.gmail.com>
+Subject: Re: [PATCH net] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, oliver@neukum.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+I noticed this while manually reviewing usbnet_read_cmd() callers for
+short-read handling.
+This is a theoretical issue based on code inspection.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message says production builds have "an unchecked
-  stack[129] write" in push_rcu() (drivers/net/wireguard/allowedips.c),…
-- [Low] The commit author is 'quantumvoid <quantumvoid0@proton.me>' but
-  the Signed-off-by trailer says 'quantumvoid0 <quantumvoid0@proton.me>'.
-
---
-
-wireguard: allowedips: prevent stack overflow without DEBUG
-
-This commit changes push_rcu() so that the len >= MAX_ALLOWEDIPS_DEPTH
-check is always evaluated and only the WARN is gated on DEBUG. The commit
-message presents this as a fix for an unchecked stack[129] write in
-production builds.
-
-> push_rcu() only bounds-checked the traversal stack when
-> DEBUG is defined. In production the check is compiled out,
-> leaving an unchecked stack[129] write.
-
-[Severity: Medium]
-Is the stack[129] write actually reachable in the current tree? The trie
-invariants seem to rule it out.
-
-add() rejects a cidr larger than the address width:
-
-    if (unlikely(cidr > bits || !peer))
-        return -EINVAL;
-
-On an exact prefix match, node_placement() reuses the existing node. When
-a node is split, it gets this cidr:
-
-    cidr = min(cidr, common_bits(down, key, bits));
-
-That value is greater than the parent's cidr and smaller than the
-children's cidr. So cidr strictly increases along every root-to-leaf path,
-and a node with cidr == bits has no children. That caps any path at 129
-nodes.
-
-root_free_rcu() and root_remove_peer_lists() pop one node before pushing
-at most two children. While a node at depth d is being handled, the stack
-holds at most d + 2 <= 129 entries. A push with *len == 129 never happens,
-so stack[129] is never written.
-
-The DEBUG-only gating also looks deliberate. The selftest in
-drivers/net/wireguard/selftest/allowedips.c builds a maximal-depth trie to
-exercise this assertion. Commit 46622219aae2 ("wireguard: allowedips:
-expand maximum node depth") sized the array to 129 for this reason and
-fixed the real off-by-one there.
-
-Could the commit message call this hardening of a debug-only invariant
-check? The other option is to show a path that breaks the depth invariant.
-As written, it reads as a fix for a reachable stack overflow, with no
-trigger and no Fixes: tag.
-
-> Signed-off-by: quantumvoid0 <quantumvoid0@proton.me>
-
-[Severity: Low]
-This isn't a bug, but the name in the Signed-off-by (quantumvoid0) does
-not match the Author name (quantumvoid), even though the email is the
-same. checkpatch.pl warns about this mismatch. Could the two be made
-consistent?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/TaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4Xtksw07sYrIpludwvJQrukFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ%3D%40proton.me
+On Mon, Oct 5, 2026 at 12:19=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrote=
+:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
