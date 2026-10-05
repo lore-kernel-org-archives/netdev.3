@@ -1,150 +1,113 @@
-Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12343377EBF
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 12:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CF047CA6D
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 12:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791202402; cv=none; b=eqDilpp34ZV+8RfTuNDNegvUBX3FDaI8pYmMV+Oc/qCXACSV0kN7GSkRMa5cZiuQ70bsKKROi3Hv66tzj4XRc7MV951Q40erWv+p0iQztuSMK33j5kwXYa1rTMHLfaX0C3NtlSzOOtHvlAjVQ7e0n3JMf7LAUpWunAPyCI9Z6ck=
+	t=1791202432; cv=none; b=fMD14tlThhhJfsXA6UiMmnpVjhYMFV3A5ct1UIZXmZhv0JjYHRyZS+x0yJyPCrciDXAQwUmjyKR2LyPfkHK6l+v+7y0cHe2i/qTgkfYJMzQwSuOz7dTNZZAxZkXcSy57Yoy4OqtzhOS8p5q/DNHlHKwW6WgBE0I1Bd6jLmy2dcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791202402; c=relaxed/simple;
-	bh=i3f4K3HLZx9h8Tkx6FjFjfy/XpZE7lZQGT8K15dF+JQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h+LhXRPse5oh+dSjzBzbuE/X+vuJ2SVpxbIVZZzWoInKw1HQDOE3XYXsUuZpNXxo9d5M9wFlVUQMSoWItZi1Owxo3ijyXNR2JfNrr4aPOfBOzDpjqGTKOSE7XNDQtMDRpRrsog3L7V3AU+qzl5uxHOtocLS/NmC023s9qknXdJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=sDhM4ckF; arc=none smtp.client-ip=185.70.43.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1791202432; c=relaxed/simple;
+	bh=OTIsihwJh/wzB/P/Iqrg/6NXagb1SJ69Aw4dFCYb9AY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:In-Reply-To:
+	 Content-Type:References; b=r4vBJhQu2X3RT2xVXElFdvoQtZ+gIU6xHBhPFXcP4uCFkUrqvWKFKGbOE/aydV2hW4BqbQcc1uPIqTRa8G7dpgnujyUgkURKPW7qqojj3up42DQKJPuIR71yWxdWNADh+KgHJwem/RpPvlZTuogWOeHwMwI7V+6rIObjQze5wNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=TuiU0ram; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="sDhM4ckF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=lolgistvurhtfnhcwytydatpj4.protonmail2; t=1791202387;
-	x=1791461587; bh=ZCtJO+q42KYoNs4xrfVgvNscKdzZmZj/Nd49PSEJ6Oo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=sDhM4ckFFH1gOcUtO0aOA1EMaMh4WLgt/RIClOUcOj709Bh2NHzZzdAqSyN8/LCBN
-	 9bQ1iX1ThEs4ztnZn6foIJNw7VgRXqoKGTr1yMgDR+xNDxuq1JhLkxk83vtvSkcRrJ
-	 Hjba3FFkZCwJz390QkFV9ZVk2Jas1ylKFrK+IJRVxDThpiFuNVZQdbNM8mRwHXvZDg
-	 MpqsxBEBE7uyBzHjH+8oZDydO3lOESlI/fkTjyz2GzRVjNm2DwbxFQgDOhHDZaWRkE
-	 ZXQsSl/KmeY5PhDwXm+xVOBj8/kgmMOfhDvsdLEFGXSfE87AFiB3rzAxiHyVE6o7vg
-	 XNfgS3OFg0Ufw==
-Date: Mon, 05 Oct 2026 12:13:02 +0000
-To: netdev-bot+sashiko@kernel.org
-From: quantumvoid0 <quantumvoid0@proton.me>
-Cc: wireguard@lists.zx2c4.com, Jason@zx2c4.com, netdev@vger.kernel.org, kuba@kernel.org
-Subject: Re: [PATCH] wireguard: allowedips: prevent stack overflow without DEBUG
-Message-ID: <9NzB3VmT-7cBBfdx9sREmRkFb_gOAmI78VheKlX2Mdiqjl3B3N0OCZ5DT8C1SpEJuM5O3TzLltSpGh9ptxni28Lnq4ATz8u86R-f-jdcKPE=@proton.me>
-In-Reply-To: <179117435281.434549.17747961185403870914@kernel.org>
-References: <TaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4Xtksw07sYrIpludwvJQrukFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ=@proton.me> <179117435281.434549.17747961185403870914@kernel.org>
-Feedback-ID: 175132216:user:proton
-X-Pm-Message-ID: eeb04b2d92f3424090027273ca57fb8dd7819688
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="TuiU0ram"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20261005121348euoutp012ce7722a32f6d4788bc8e7f8d959eb69~boR5Fst-V1153911539euoutp01b
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 12:13:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20261005121348euoutp012ce7722a32f6d4788bc8e7f8d959eb69~boR5Fst-V1153911539euoutp01b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1791202428;
+	bh=5N0rAphdQXhDeG2zN0j4OieVC6GDsi8gQbUz5rLVie4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TuiU0ram3YbY8naFnqfZKQbJfMuevcAcyMYEKyKNdhlBv8uSnCVjUy6/PyrjduNq+
+	 wgdRMXIgKzXkC+ttW4jto42/xRGU7rOXwL9vtzQHjAKijd4iwc2+a67PMlBXqfh9uE
+	 CnWQDyrC7tWfNjEk3F0U1hROf2v7wBX+7EGD75E4=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20261005121347eucas1p29ebae14955b2b55cc73f268a624a87f0~boR4abyA70900509005eucas1p2J;
+	Mon,  5 Oct 2026 12:13:47 +0000 (GMT)
+Received: from AMDC4622.eu.corp.samsungelectronics.net (unknown
+	[106.120.77.34]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20261005121346eusmtip2fa11e9da7308eaff681eeb34682f9a23~boR3ssy-E0502805028eusmtip2V;
+	Mon,  5 Oct 2026 12:13:46 +0000 (GMT)
+Date: Mon, 5 Oct 2026 14:13:43 +0200
+From: Jakub Raczynski <j.raczynski@samsung.com>
+To: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	linux-kernel@vger.kernel.org, k.domagalski@samsung.com,
+	k.tegowski@samsung.com, cs0617.lee@samsung.com, Abhishek Chauhan
+	<abhishek.chauhan@oss.qualcomm.com>, maxime.chevallier@bootlin.com
+Subject: Re: [PATCH net-next v2 2/3] net/stmmac/dwxgmac: Extend MTL/DMA
+ support to 16 queues
+Message-ID: <asOUd4j4VWS2Svla@AMDC4622.eu.corp.samsungelectronics.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1d814431-c01d-4730-ac22-c41f47f93b0e@oss.qualcomm.com>
+X-CMS-MailID: 20261005121347eucas1p29ebae14955b2b55cc73f268a624a87f0
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_112415_"
+X-RootMTR: 20260601162618eucas1p14be36902c4948647448160da08aaebc5
+X-EPHeader: CA
+X-CMS-RootMailID: 20260601162618eucas1p14be36902c4948647448160da08aaebc5
+References: <20260601162537.553512-1-j.raczynski@samsung.com>
+	<CGME20260601162618eucas1p14be36902c4948647448160da08aaebc5@eucas1p1.samsung.com>
+	<20260601162537.553512-3-j.raczynski@samsung.com>
+	<1d814431-c01d-4730-ac22-c41f47f93b0e@oss.qualcomm.com>
 
-Thanks, both points are valid.
+------6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_112415_
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
 
-Medium is correct, not reachable in tree. cidr strictly increases
-along root->leaf so depth <=3D129, DFS stack stays <=3D129. This is
-hardening only so a future bug cant smash stack[129] in production
-where WARN_ON(DEBUG && ...) compiles out. Ill reword v2 to say
-hardening, no Fixes: tag.
-
-Low is correct; author/Sob name mismatch. Will fix to match in v2.
-
-pw-bot: cr
-
-
-On Monday, October 5th, 2026 at 4:25 AM, netdev-bot+sashiko@kernel.org <net=
-dev-bot+sashiko@kernel.org> wrote:
-
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->=20
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
->=20
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->=20
-> - [Medium] The commit message says production builds have "an unchecked
->   stack[129] write" in push_rcu() (drivers/net/wireguard/allowedips.c),=
-=E2=80=A6
-> - [Low] The commit author is 'quantumvoid <quantumvoid0@proton.me>' but
->   the Signed-off-by trailer says 'quantumvoid0 <quantumvoid0@proton.me>'.
->=20
-> --
->=20
-> wireguard: allowedips: prevent stack overflow without DEBUG
->=20
-> This commit changes push_rcu() so that the len >=3D MAX_ALLOWEDIPS_DEPTH
-> check is always evaluated and only the WARN is gated on DEBUG. The commit
-> message presents this as a fix for an unchecked stack[129] write in
-> production builds.
->=20
-> > push_rcu() only bounds-checked the traversal stack when
-> > DEBUG is defined. In production the check is compiled out,
-> > leaving an unchecked stack[129] write.
->=20
-> [Severity: Medium]
-> Is the stack[129] write actually reachable in the current tree? The trie
-> invariants seem to rule it out.
->=20
-> add() rejects a cidr larger than the address width:
->=20
->     if (unlikely(cidr > bits || !peer))
->         return -EINVAL;
->=20
-> On an exact prefix match, node_placement() reuses the existing node. When
-> a node is split, it gets this cidr:
->=20
->     cidr =3D min(cidr, common_bits(down, key, bits));
->=20
-> That value is greater than the parent's cidr and smaller than the
-> children's cidr. So cidr strictly increases along every root-to-leaf path=
-,
-> and a node with cidr =3D=3D bits has no children. That caps any path at 1=
-29
-> nodes.
->=20
-> root_free_rcu() and root_remove_peer_lists() pop one node before pushing
-> at most two children. While a node at depth d is being handled, the stack
-> holds at most d + 2 <=3D 129 entries. A push with *len =3D=3D 129 never h=
-appens,
-> so stack[129] is never written.
->=20
-> The DEBUG-only gating also looks deliberate. The selftest in
-> drivers/net/wireguard/selftest/allowedips.c builds a maximal-depth trie t=
-o
-> exercise this assertion. Commit 46622219aae2 ("wireguard: allowedips:
-> expand maximum node depth") sized the array to 129 for this reason and
-> fixed the real off-by-one there.
->=20
-> Could the commit message call this hardening of a debug-only invariant
-> check? The other option is to show a path that breaks the depth invariant=
-.
-> As written, it reads as a fix for a reachable stack overflow, with no
-> trigger and no Fixes: tag.
->=20
-> > Signed-off-by: quantumvoid0 <quantumvoid0@proton.me>
->=20
-> [Severity: Low]
-> This isn't a bug, but the name in the Signed-off-by (quantumvoid0) does
-> not match the Author name (quantumvoid), even though the email is the
-> same. checkpatch.pl warns about this mismatch. Could the two be made
-> consistent?
->=20
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/TaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4Xtksw07sYrIpludwvJQru=
-kFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ%3D%40proton.me
+On Fri, Oct 02, 2026 at 11:40:19AM -0700, Sagar Cheluvegowda wrote:
+> On 6/1/2026 9:25 AM, Jakub Raczynski wrote:
+> > New datasheets for XGMAC (3.20a and 3.40a, depending on product) support up to
+> > 16 MTL/DMA queues. Before we increase max amount through macro,
+> > prepare dwxgmac functions to handle that.
 > 
+> Hi Jakub,
+> 
+> We are interested in this change as well. We carry an equivalent
+> change downstream for a Qualcomm XGMAC-based controller that
+> implements 12 MTL/DMA queues (MAP0..MAP2), and would be glad to see
+> this land upstream.
+> 
+> Could you share what the next steps are for this series? Is a v3
+> planned?
+> 
+
+Hi Sagar,
+
+Sadly not for foreseeable or borderline never, for few reasons:
+- Increasing number of DMA channels without providing hardware DTS
+  configuration for that is quite an useless feature,
+  and there are 'issues' with me providing DTS for our hardware.
+  Cannot say much, but generally won't happen for very long.
+- This has lowest priority and doing other projects, won't be able to
+  continue within reasonable amount of time.
+
+I will be very glad if you would continue this patch,
+as I will not be able to contribute that.
+
+BTW. Adding Maxime to CC, since he will be most interested in this as
+newest stmmac maintainer. Apologies for missing you earlier.
+
+BR
+Jakub Raczynski
+
+------6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_112415_
+Content-Type: text/plain; charset="utf-8"
+
+
+------6Yzir0.DT2R1UiBbNh0_rPWXcRyD2CU8yss_stBlwropLZCy=_112415_--
