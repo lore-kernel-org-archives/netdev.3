@@ -1,125 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8013DD87B;
-	Mon,  5 Oct 2026 21:03:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454C23B0598
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 21:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791234203; cv=none; b=Fw0eAahwoPIJnJq5iAa7d4KC6l3Wk+4pUOwK72GkB5o6emSr/gzENWlcwdxz1EHbVPZFbHF6AeqxIvA5LKs157a+hRBPbe7yJzMAWkB0eEccLjFWCF6CQ1l7U3H9lhywkQ+pFLVO7VqrQ+E78uCXHeU2WKXO3QNsk6HY8hCuyLA=
+	t=1791234253; cv=none; b=Iw/m3dGEDxJoVG25AjjeqAl/mOpQD2ubFtwt88u8RCRiit9jrOcwHLQDGApIi6B1yl2dr13nBlClExhQMcI0WSVk6JiNAK6p2Nf01ooP2kj80TjmV/2SjY5FWZUhvwPnbleNdvpRgDthgSo598bi9oZUugU/Hqp2Kx96V4oLy6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791234203; c=relaxed/simple;
-	bh=aVX6Ao29QGAf3mitZkGZkzKlwKGwrMO8++0iOj1DtyM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G1vTKKaE9Tot6y/XRFuEf83o3GqlRcp1AJyo9IsrQXFe6nvo6X0bo+kXgQTpec+DsYPGx94eEUn42oD1qWhiXRS35IbQyPfkqPSrYcG7BAOTSAs38xAIZ7SrfoRaquKhhln/jS4OPJHJKCMQCPAFdqfRj1SU7IBiNOWuuvNrJrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpnjAp0k; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791234253; c=relaxed/simple;
+	bh=TmqEykrRbiCeVgmK3AIV82QcHK8mCtpYZEu6FYVJNtU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=msGP5YxCNY+0rU3ccSkWCxIW7ulfoKJcvwtDi9xkAuzWTOQtckjG7IcBjg1wjJcFt5LUluQAre9uUfsqs+qee535gVJgJTf6OE+f4aQQ2uGHDScNbycrFp30NZ77rGXRRXMGvhD3/LXnz8HyjUk4M52T422tZjx9g+C+2I0MMik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Plo3XmAR; arc=none smtp.client-ip=74.125.82.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kaifengw.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpnjAp0k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149901F00893;
-	Mon,  5 Oct 2026 21:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791234202;
-	bh=cK7MK+kzcK8gWwXWnBrCk7CQu8mValjttqE5AbyN8Co=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HpnjAp0krZaHmORh3OkprUKk+ci7J50Wc6YkshN9+R3QR/Sts930MdL3bh3Dr9GNb
-	 sJSTuSgOPqLnmaFxLmfiBxvCiFZndFWZkpcOlmwVJVcSQnxmcLqcQjIqtF7PgI5bZZ
-	 nLtavcU78dnycQLRSqjxkEjkH/UwNlexFwQczJRa1oWTQpM72ijWNkPRULi34IbX7L
-	 2ZzJRJ/GgrR82a+S2OFTDjKrDZ7XFeTrobcvXgzTDMNO4plg0RPZ6b4ayjmGjbKus6
-	 tMaDj4S91mLCHkHNoVjxvPN8dv9EVEXLFp0mPiIyLBjK0aPN+5Q0dPEf6QmqD6CYiu
-	 1WZqUD2T7xw4Q==
-Subject: Re: [PATCH v2 2/2] tipc: fix use-after-free in netns teardown
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, netdev@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Mon, 05 Oct 2026 21:03:21 +0000
-Message-ID: <179123420166.434549.12436565517014196849@kernel.org>
-In-Reply-To: <20261004210016.3051310-3-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20261004210016.3051310-3-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Plo3XmAR"
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-341eff9e381so5373748eec.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 14:04:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791234251; x=1791839051; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KI04OHVNMk1iREh5Vcyr0z3kyY0Bw6/QOTWCwAjjS5Q=;
+        b=Plo3XmAR6IOMiP0lTk5KvpNlKyZWqwB19e54yf4iL6tFOKMsUlyEuBOCfNvutzyZbn
+         dLRBEsPWkFe9ezeGyKWscIlqW/+pdIt4gsnHbOXHlG1nOg+08uT6sLSirL4dHG/jMOyV
+         eHVU4QF0dfuIOVdrU2dghkwPZaxJE3Pb+Gya2YyTNlrrpQczEfBIlVMmmR2T4u/+E4YA
+         diCLDL0Nzr93yS/vTEehkdYhyyedpi3+cQf1J5HpQanM7QYKG/27zzYyrKwBdqTzif1N
+         oyNEbvKFq3qT7NxI3aZQGic/NaS9G8wBZmclffubhTVnjeu9Jx/8qej8cX5lVcnMRjwl
+         /W1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791234251; x=1791839051;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KI04OHVNMk1iREh5Vcyr0z3kyY0Bw6/QOTWCwAjjS5Q=;
+        b=R8Lq4SWsgjoIsyF4xeEr9tLuKBwY6XJDQsl/nK7Og5b5ddqwKEF5A0iSucbpUjopd2
+         JsS2I4JrGo5SrwSokl5mjAAI2ECwO+oMl2wAXch9zJ7oRDQtG+KHMW7Kd48YKm6QiYKg
+         XI1H80k46Vc/SVezFDdAH+sS0mxaafP+nQnMXfXW0nLcJZV35kYM25XhMUfyiavai79a
+         03IpkfO2g0ObFcS+6rjCm8yrbPOXa3EGjgAcH1/Gl9rN3wnWHA5M+qmoH6vLnItpOQ4a
+         eqF6nOEBIB4HQbBg/u8yBxZavEyjsxRruQoroKiwPtDrqCKe4+Ug0jj+OsDh5M+HLNg+
+         zgTQ==
+X-Gm-Message-State: AFuF++kWgkpg7CS/4vQ6VVJzGCE/2uEaG2WfFwzUxVy1NkLyCKrxYpg3
+	z0YB5YGZ2qQZATGQkmI+yjXb/Zg30MFUk8FlvnnU30nazZffNZv8GUOlEQ6HvnZm3D5vFiAVvSR
+	ghCaqMXRFdL7tnYDTJ8/C1EWynO6i8MCqolMJcUB/sEzyEm0YNpxWi3E78rxXCIHH9M6+wQIJP1
+	cF4t4DObYz3JqJtPrbZXuaFYK/+ACuyhpekcv6ZWPqy5r2jA8=
+X-Received: from dycpr6.prod.google.com ([2002:a05:7301:fd86:b0:347:7fea:9fec])
+ (user=kaifengw job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:4208:b0:351:1e3f:812d with SMTP id 5a478bee46e88-3511e3f8878mr8117223eec.36.1791234250456;
+ Mon, 05 Oct 2026 14:04:10 -0700 (PDT)
+Date: Mon,  5 Oct 2026 21:04:03 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20261005210403.3206872-1-kaifengw@google.com>
+Subject: [PATCH net] net: devmem: check uid and netns in net_devmem_get_binding()
+From: Kaifeng Wang <kaifengw@google.com>
+To: netdev@vger.kernel.org
+Cc: almasrymina@google.com, edumazet@google.com, pabeni@redhat.com, 
+	willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org, 
+	sdf@fomichev.me, bobbyeshleman@meta.com, kaiyuanz@google.com, 
+	linux-kernel@vger.kernel.org, Kaifeng Wang <kaifengw@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+NETDEV_CMD_BIND_TX is unprivileged, and dmabuf binding IDs are allocated
+from a single global xarray. Currently net_devmem_get_binding() looks up
+the binding by ID without checking whether the sending socket belongs to
+the same user or network namespace that created the binding.
 
-Low priority / nit picks for your consideration:
+Record the creating netlink socket's network namespace and UID on the
+binding, and verify both in net_devmem_get_binding() before checking the
+route destination device. Return -EINVAL on mismatch so callers cannot
+distinguish non-existent IDs from bindings owned by other users.
 
-- [Low] After this patch, `struct tipc_topsrv::idr_in_use` is dead state.
+Fixes: bd61848900bf ("net: devmem: Implement TX path")
+Signed-off-by: Kaifeng Wang <kaifengw@google.com>
+---
+ net/core/devmem.c      | 7 ++++++-
+ net/core/devmem.h      | 5 +++++
+ net/core/netdev-genl.c | 5 +++--
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
---
-
-tipc: fix use-after-free in netns teardown
-
-This patch stops the listener and cancels the accept work before
-tipc_topsrv_stop() walks conn_idr. The walk now goes forward with
-idr_get_next_ul() and uses kref_get_unless_zero(), so it no longer takes
-a reference on a connection whose count has already reached zero.
-Connections are disconnected before the workqueues are drained.
-
-> diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
-> index 01dd34b758f4b..f3f32fd8134ac 100644
-> --- a/net/tipc/topsrv.c
-> +++ b/net/tipc/topsrv.c
-
-[ ... ]
-
->  	spin_lock_bh(&srv->idr_lock);
-> -	for (id = 0; srv->idr_in_use; id++) {
-> -		con = idr_find(&srv->conn_idr, id);
-> +	for (id = 0; (con = idr_get_next_ul(&srv->conn_idr, &id)); id++) {
-
-[Severity: Low]
-This isn't a bug, but this loop condition was the only place that read
-srv->idr_in_use. Is the field still needed after this change?
-
-It is still declared and documented in struct tipc_topsrv:
-
- * @idr_in_use: amount of allocated identifier entry
- ...
-	int idr_in_use;
-
-It is also still written under idr_lock. It is set to 0 in
-tipc_topsrv_start(), incremented in tipc_conn_alloc() and decremented in
-tipc_conn_kref_release():
-
-	s->idr_in_use++;
-	...
-	s->idr_in_use--;
-
-Nothing reads it now.
-
-I checked whether dropping the old termination condition removes a
-guarantee that all connections are gone before kfree(srv), and it does
-not appear to.
-
-tipc_conn_close() unsubscribes synchronously via tipc_conn_delete_sub()
-->tipc_sub_unsubscribe() before it drops its reference. That
-unsubscribe serializes on sc->lock and calls timer_delete_sync(). The
-get/put pairs in tipc_conn_data_ready() and tipc_conn_write_space() are
-bounded by sk_callback_lock. The remaining final puts run from
-rcv_wq/send_wq, and tipc_topsrv_work_stop() drains those.
-
-The old loop also held idr_lock while stepping over empty ids, so it
-could not act as a wait-for-empty barrier anyway.
-
-Could the field and its kernel-doc entry be removed in this patch? If
-it is kept, could the commit message say that the old idr_in_use
-termination condition was dropped on purpose?
-
-> +		if (!kref_get_unless_zero(&con->kref))
-> +			con = NULL;
-> +		spin_unlock_bh(&srv->idr_lock);
->  		if (con) {
-
-[ ... ]
-
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index f4d60654ce7f..9a773b1ce92d 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -191,6 +191,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       enum dma_data_direction direction,
+ 		       unsigned int dmabuf_fd, unsigned int niov_shift,
+ 		       struct netdev_nl_sock *priv,
++		       const struct sock *nl_sk,
+ 		       struct netlink_ext_ack *extack)
+ {
+ 	struct net_devmem_dmabuf_binding *binding;
+@@ -220,6 +221,8 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 
+ 	binding->dev = dev;
+ 	binding->vdev = vdev;
++	write_pnet(&binding->net, sock_net(nl_sk));
++	binding->uid = sk_uid(nl_sk);
+ 	binding->niov_shift = niov_shift;
+ 	xa_init_flags(&binding->bound_rxqs, XA_FLAGS_ALLOC);
+ 
+@@ -390,7 +393,9 @@ struct net_devmem_dmabuf_binding *net_devmem_get_binding(struct sock *sk,
+ 	int err = 0;
+ 
+ 	binding = net_devmem_lookup_dmabuf(dmabuf_id);
+-	if (!binding || !binding->tx_vec) {
++	if (!binding || !binding->tx_vec ||
++	    !net_eq(sock_net(sk), read_pnet(&binding->net)) ||
++	    !uid_eq(sk_uid(sk), binding->uid)) {
+ 		err = -EINVAL;
+ 		goto out_err;
+ 	}
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index 4a293a7d1149..7b9d3e04367c 100644
+--- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -10,6 +10,7 @@
+ #ifndef _NET_DEVMEM_H
+ #define _NET_DEVMEM_H
+ 
++#include <net/net_namespace.h>
+ #include <net/netmem.h>
+ #include <net/netdev_netlink.h>
+ 
+@@ -26,6 +27,8 @@ struct net_devmem_dmabuf_binding {
+ 	 * dereferenced.
+ 	 */
+ 	void *vdev;
++	possible_net_t net;
++	kuid_t uid;
+ 	struct gen_pool *chunk_pool;
+ 	/* Protect dev */
+ 	struct mutex lock;
+@@ -97,6 +100,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       enum dma_data_direction direction,
+ 		       unsigned int dmabuf_fd, unsigned int niov_shift,
+ 		       struct netdev_nl_sock *priv,
++		       const struct sock *nl_sk,
+ 		       struct netlink_ext_ack *extack);
+ struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id);
+ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding);
+@@ -181,6 +185,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 		       unsigned int dmabuf_fd,
+ 		       unsigned int niov_shift,
+ 		       struct netdev_nl_sock *priv,
++		       const struct sock *nl_sk,
+ 		       struct netlink_ext_ack *extack)
+ {
+ 	return ERR_PTR(-EOPNOTSUPP);
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index 33b9f4eb9565..847814e3df3f 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -1094,7 +1094,7 @@ int netdev_nl_bind_rx_doit(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	binding = net_devmem_bind_dmabuf(netdev, NULL, dma_dev, DMA_FROM_DEVICE,
+ 					 dmabuf_fd, niov_shift, priv,
+-					 info->extack);
++					 NETLINK_CB(skb).sk, info->extack);
+ 	if (IS_ERR(binding)) {
+ 		err = PTR_ERR(binding);
+ 		goto err_rxq_bitmap;
+@@ -1243,7 +1243,8 @@ int netdev_nl_bind_tx_doit(struct sk_buff *skb, struct genl_info *info)
+ 	binding = net_devmem_bind_dmabuf(bind_dev,
+ 					 bind_dev != netdev ? netdev : NULL,
+ 					 dma_dev, DMA_TO_DEVICE, dmabuf_fd,
+-					 PAGE_SHIFT, priv, info->extack);
++					 PAGE_SHIFT, priv, NETLINK_CB(skb).sk,
++					 info->extack);
+ 	if (IS_ERR(binding)) {
+ 		err = PTR_ERR(binding);
+ 		goto err_unlock_bind_dev;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004210016.3051310-1-Jeremy.Jean%40oss.cyber.gouv.fr
+2.56.0.rc1.315.gc6ed9934b7-goog
+
