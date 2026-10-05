@@ -1,83 +1,136 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D92B305674;
-	Mon,  5 Oct 2026 17:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0951D2E737F;
+	Mon,  5 Oct 2026 17:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791220051; cv=none; b=rZ5w1FdTSIVZl/i95T6aZHTf3rDwjKPfTmQDeG0NqZN9Z5gNwNsoXFYmBxBMl3r3xXHS9SaujdnJ1dPSWVhUv17hKoXU/RoP/Irb7yVmM/5j/IyY3h2mgl1TcE3AGTCgr+s2LzcxsC9r3EmF4mr33j4ijCz9kBAR8VeUlYuUZRA=
+	t=1791220181; cv=none; b=lQgs3sQctKwmHb2QJR4tumojHwtRdBNZY58+j3QdQhm5KXyPltp8KavUdDEoo7E86GZr2qGAWc6Wzk5u/RaK5W2UezWPL8wELSlezZ+zp8DP37mtclykbcajRTpuk4pvyjqnbVdSb9FluwhN2yDza6myRWaoRi7IBGLjRMRrbTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791220051; c=relaxed/simple;
-	bh=NKPat69VdyRRxeucmul7oD2+f5c+2rs8coJTsYSLt8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W5fqnZZ9t5bTA9Zi/Nv0i6jlECn/YWQJa6F3qq/2St2uwtKJVZ32IJQxWuKNvtLmt/LLI+IWWKIhNCbeiRwz3C3R9RsBAtAR75556LBJBLxjXVGabTapJh0wK5Ag/Eww448FgqNYF7PkpmlFzccvXoQaP4tyQrt0w7LyL2DhSJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3qUwBt81; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791220181; c=relaxed/simple;
+	bh=6eNWLxi3XC5hnQMZZFGNoAUlqM6meGtN/6Vqbk0a4yY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uEg1bfy1aqFIv0sTR3bilVb9K0EX0722sVg73t1GphmWYr7uq/dlj9OBbShvb4rDrKX5+WYGO7oTJBlMpKH1U+R7snRZ0BkQPjYiDzP6b+TCELK7UOQJEw8aCWTmsAr+HXNHetrI+aHVxM/Qso2qgGR2ASOyAsCfRLOOiC8Ov2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Sm7vlAZU; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3qUwBt81"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KNYKyPv1ZJsDcW5BAzMAF1YFbZZMWHKFPAkA22JHz1Q=; b=3qUwBt81UYgQwJWeFeYX3i2Jli
-	8ZC17yIKjGn/1FABubeh9UOCqaU7A7ukF2wmNjbcYsHagApVjPryzrznBa5gMf0ZDYlEvr3JVxwBu
-	ZLBlP2r44wLOMzdLJXtnZmfvC5s9FNptDWjjWL8TMBT59tA3chS95kv3O6rgdqSZKDH0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xDm9s-0095ey-Uv; Mon, 05 Oct 2026 19:07:24 +0200
-Date: Mon, 5 Oct 2026 19:07:24 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, Christian Marangi <ansuelsmth@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	John Crispin <john@phrozen.org>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 3/3] net: dsa: qca8k: fail mgmt Ethernet MDIO
- access on busy wait errors
-Message-ID: <acbcea38-30e5-4aba-908a-7ff986bc4da0@lunn.ch>
-References: <20261003172405.342-1-yongzhao.derek@gmail.com>
- <20261003172405.342-4-yongzhao.derek@gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Sm7vlAZU"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695EZZ5s3285211;
+	Mon, 5 Oct 2026 17:09:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=di4qI3
+	Cwp+BfxwkQAeN1wv1+JQWyKnPX9H6gYSNRXw4=; b=Sm7vlAZUKAqLCIlrmFOvy5
+	ABcyUuFm14kleqoudWPPgpJvf5cOXy8nMihEQX3oL0qi2JrPIP2+eMKis81SxVSd
+	j/MKU9PQWrse3+QA4EIZWttc71z6f/6EiTOxPOeRUS0Kh4f67cxGLGVt58fX8zbM
+	M7FSksKUmYEJ7K/bZW46LdfKJjz2mSuVUHhE3S4SYXJgAzFoBNPyWa+VcorsxQh/
+	l5P/THJ7XYQQCpjnrw3cxX0z82HmJFvrW9NLooU9cmHk7UTErSc7/f8JGNhN/lCx
+	PVFlnCqd4YXaDgHvkHnpSVw8+JeILYqQtVOKJvfS+z0pIUF8OcJwqJDc7Ztb4sKg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2scrbgrg-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 17:09:31 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695EWZIn3025094;
+	Mon, 5 Oct 2026 17:09:31 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3d1jpcpd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 17:09:30 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695H9TrY3736478
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Oct 2026 17:09:29 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6D3665805A;
+	Mon,  5 Oct 2026 17:09:29 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6499158051;
+	Mon,  5 Oct 2026 17:09:22 +0000 (GMT)
+Received: from [9.124.213.181] (unknown [9.124.213.181])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Oct 2026 17:09:22 +0000 (GMT)
+Message-ID: <1e2fc39c-7062-4d66-954f-53811fda8854@linux.ibm.com>
+Date: Mon, 5 Oct 2026 22:39:20 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261003172405.342-4-yongzhao.derek@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v8] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: netdev-bot+sinfo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
+        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20261005131241.1575131-1-mjambigi@linux.ibm.com>
+ <179120636424.1402591.14325781567092984615@kernel.org>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <179120636424.1402591.14325781567092984615@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA2NyBTYWx0ZWRfX8Ffs4bb79L5x
+ 0vfmJeFxXSPA9zg/9jxQSQ7qRK/dRJAm96tKz5cjtcDfYlt05Awu+Ld9Fv2Tus4vSnU73AJH73L
+ wjGQROf6D0Eqv8HtNOAn1RNTLdk1puM=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA2NyBTYWx0ZWRfX5Q5N87W6AAml
+ 31GLLKEYpB/B+ZtZqIwogcuL5E6lIiR/4zdr3bdr9HkiCd9h2rABGbVM0NtCgxuLhwVUHCKtbkR
+ M1A1gsC+dmUJ584nEZiZ8tBYqbvVQuOQL908/txlxfEGbJoEl9q0sOhnJUk+RAV7MaUPhglVS9v
+ guIEF8tetHTt1fd7jSPqrJx+oCiZC5Yst9eNhfPkApQn3s9qw/X98xwvWvRx1YB280pvDmgGNzp
+ amkrnsp1AXL0L8g4MKqYB/jVou1+bCI3lBplJyvSDz79GXQ4EFMb1/dsZRDnflUkVmaHF9gCdi5
+ nctifo63upLCgfkoWpgOcPba0MXzjvEh8FuYD2LEjIwLIsxzPa5Xq7N5BqXy1He5Houd5ACseCR
+ tHCHgYkJ11nHqxvBHyoKM8qHQXtaIWLXgJ6Ot6oLjEzdvrPDXNhGAQ40gYnzxVMM3oChbyKTUDL
+ obLL64UQCrEHLeCnK9Q==
+X-Proofpoint-GUID: ETgPZYWLNkwWQi9dtHrsQBsjJO9Q4qsT
+X-Proofpoint-ORIG-GUID: J6B_AkogrLXUfMsruMVo1j1-MtD1L4Wt
+X-Authority-Analysis: v=2.4 cv=B7osQ+tM c=1 sm=1 tr=0 ts=6ac3d9cc cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=8WImSUdLa4LpenjYlHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-05_04,2026-10-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 malwarescore=0 impostorscore=0 phishscore=0
+ clxscore=1015 spamscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050067
 
-On Sat, Oct 03, 2026 at 07:24:04PM +0200, Yongzhao Chen wrote:
-> qca8k_phy_eth_command() polls MASTER_CTRL over management Ethernet until
-> BUSY clears, but only bails out when the poll timed out and the last
-> poll request also failed. If every request succeeds while BUSY stays
-> set, the -ETIMEDOUT is dropped. A read then returns MASTER_CTRL data
-> from a transaction that has not completed, and
-> qca8k_internal_mdio_read() does not fall back to the MDIO bus.
-> 
-> A failed poll request does not stop the loop either.
-> qca8k_phy_eth_busy_wait() leaves the value unchanged on failure, so the
-> BUSY test then uses the previous value, or an uninitialized one if the
-> first request fails.
-> 
-> Stop polling when a request fails and return the poll error or timeout.
-> The poll-error path also leaked read_skb, which is only consumed when the
-> read request is sent; free it on this path.
-> 
-> The Sashiko review of v1 identified the dropped timeout. A userspace
-> model of the driver's functions reproduces it and the poll-error path
-> with scripted BUSY responses and failed poll requests; these cases pass
-> after this change.
-> 
-> The polling loop comes from commit 2cd548566384 ("net: dsa: qca8k: add
-> support for phy read/write with mgmt Ethernet").
-> 
-> Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-    Andrew
+On 05/10/26 6:49 pm, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+
+The issue was found by manual code inspection while reviewing the diag
+dump path in net/smc/smc_diag.c.
+
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+
+The races are theoretical — none of the three windows were triggered in
+practice. The smc_conn_kill() / smcd_buf_detach() race requires an
+active smcss poll to coincide with an SMC-D lgr termination on the
+dmb_nocopy path; the smc_close_active_abort() and
+smc_close_passive_work() races require a concurrent diag dump during the
+narrow teardown window between sk_state = SMC_CLOSED and
+smc_conn_free(). No stack trace or error message is available since the
+bugs were not hit in a running system.
