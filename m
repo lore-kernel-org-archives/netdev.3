@@ -1,136 +1,115 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f38.google.com (mail-yx2-f38.google.com [74.125.224.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0951D2E737F;
-	Mon,  5 Oct 2026 17:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111315350B
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 17:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791220181; cv=none; b=lQgs3sQctKwmHb2QJR4tumojHwtRdBNZY58+j3QdQhm5KXyPltp8KavUdDEoo7E86GZr2qGAWc6Wzk5u/RaK5W2UezWPL8wELSlezZ+zp8DP37mtclykbcajRTpuk4pvyjqnbVdSb9FluwhN2yDza6myRWaoRi7IBGLjRMRrbTk=
+	t=1791220539; cv=none; b=bZAFp/zL+Q2ZAV//mOPabdEVNySaLt9VFaGKbpKbURtFQW5H5kAT8LWoQgew9QFVQj3jnCHkk5VU8/gn2Y0A0bJL2bNgZqqgBOxSFqWrrwdoIi70ntm8s3gtKYGUXZ0pxWlaRbcUzeLmZOZvX7d4ivKcDOv9k5ll2hixcEaFRCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791220181; c=relaxed/simple;
-	bh=6eNWLxi3XC5hnQMZZFGNoAUlqM6meGtN/6Vqbk0a4yY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uEg1bfy1aqFIv0sTR3bilVb9K0EX0722sVg73t1GphmWYr7uq/dlj9OBbShvb4rDrKX5+WYGO7oTJBlMpKH1U+R7snRZ0BkQPjYiDzP6b+TCELK7UOQJEw8aCWTmsAr+HXNHetrI+aHVxM/Qso2qgGR2ASOyAsCfRLOOiC8Ov2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Sm7vlAZU; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791220539; c=relaxed/simple;
+	bh=998FNxn0ZJwzCIzGEHQSyAioUYH2GLPFWbSOsSZUURw=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=F/VXYNXMMTdVUGRqrkqyVBj7raXKdNOALDRwPP/0QxySRhJwkqBccexLqWgKP/H5tNWQmQywcLKj+DQYLQWYJgkEi7jxBHi5vQerIAuE4krfWMLck/6EsXDODsfkrGMezUIrXB0rGGK/v8tQjEObfLiXM+DvkcpSlQ1Wqx21iTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XZqJi8Jl; arc=none smtp.client-ip=74.125.224.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Sm7vlAZU"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695EZZ5s3285211;
-	Mon, 5 Oct 2026 17:09:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=di4qI3
-	Cwp+BfxwkQAeN1wv1+JQWyKnPX9H6gYSNRXw4=; b=Sm7vlAZUKAqLCIlrmFOvy5
-	ABcyUuFm14kleqoudWPPgpJvf5cOXy8nMihEQX3oL0qi2JrPIP2+eMKis81SxVSd
-	j/MKU9PQWrse3+QA4EIZWttc71z6f/6EiTOxPOeRUS0Kh4f67cxGLGVt58fX8zbM
-	M7FSksKUmYEJ7K/bZW46LdfKJjz2mSuVUHhE3S4SYXJgAzFoBNPyWa+VcorsxQh/
-	l5P/THJ7XYQQCpjnrw3cxX0z82HmJFvrW9NLooU9cmHk7UTErSc7/f8JGNhN/lCx
-	PVFlnCqd4YXaDgHvkHnpSVw8+JeILYqQtVOKJvfS+z0pIUF8OcJwqJDc7Ztb4sKg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2scrbgrg-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 17:09:31 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695EWZIn3025094;
-	Mon, 5 Oct 2026 17:09:31 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3d1jpcpd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 Oct 2026 17:09:30 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695H9TrY3736478
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 Oct 2026 17:09:29 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6D3665805A;
-	Mon,  5 Oct 2026 17:09:29 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6499158051;
-	Mon,  5 Oct 2026 17:09:22 +0000 (GMT)
-Received: from [9.124.213.181] (unknown [9.124.213.181])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 Oct 2026 17:09:22 +0000 (GMT)
-Message-ID: <1e2fc39c-7062-4d66-954f-53811fda8854@linux.ibm.com>
-Date: Mon, 5 Oct 2026 22:39:20 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XZqJi8Jl"
+Received: by mail-yx2-f38.google.com with SMTP id 956f58d0204a3-67561cbafd0so1743286d50.2
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 10:15:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791220537; x=1791825337; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=GiMc97/Iy0RVOFN6ykyk8XCmXGkN1FTr+5lXo5/eSk4=;
+        b=XZqJi8Jlr0a5iFqv2jXPXVMwV8vSgpkSet4rAuGkz+CVq6X4ov8obxKAygbLlmB/Oz
+         cFZAeMGStXX/hNR419JYeWkp+D1q9Hrp2gkhMemE8zRxoPRLIidqFzDG638jQxtfG5Zr
+         rlmRNmtAQYaU7hfqRDPDhZjXmXgvATcdLedJKo3f0e7B+IbJWgt1rcF6bWh8vV91m3Kr
+         bgAGUmXiUkcCRyqs2mB3t5Y7Qld6xhYanUL3DYBwHcKdHC1WYnENjLTLYLrz688cTwXc
+         WRo+k/Lvfw1WzopUABk2rgzYx+rnKqXSvRjSFFvQ0ISw8/mEaux+BU41pZ4mRUk8HymF
+         NQVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791220537; x=1791825337;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GiMc97/Iy0RVOFN6ykyk8XCmXGkN1FTr+5lXo5/eSk4=;
+        b=Fa10Zfb+qEwYyHEz3flWTtl5xA7ss6BA8lIwlyvb+HkjgdNYN/ktW5E7m0W2zmBm4X
+         gF5T4hLEXHnKoLomnEQD/0EunNSbKNJBZiyBz6HvDN+zxmjzbm2W2wqlOhT94xqTMQbn
+         QCXc+RQzddHe1WUJYnpyEbEFTQEF0vr/QI5lcl2RV5/j3VspsEWc4ZvdZHKy6DoWpeqN
+         meK3jscwIGgUinMk1IUgHRS+V42OhpOGBm/VA/jiyxq9VcN0HlO+oxrdrpejT5g5eAP0
+         7H5TvgCRWzoTxfKUNzinZ2hQHDDaFUAKDRPK3X4aDvlR6VHmGDTGzXo5MoLvSivkSC8S
+         bOMw==
+X-Forwarded-Encrypted: i=1; AKwUvBxulZ+u4OTIOEXuUGoqMi7OsIlSp3SvXju/fYGKQxvKhwN41jv/BPLCSW94ir7vQD30b4kLf1A=@vger.kernel.org
+X-Gm-Message-State: AFq9FYISw7qHMEjqIVW8fgMDLtHGHAzp1605vhrnJSiUv5EkZDA8rOrX
+	N2izUWc3vYwzPzxSJgGtF6+vFkgdwuvTWjPYFYGyt+q1hiEWXy/CX9Ix
+X-Gm-Gg: AYBFou3R1dKozz7AeY/RV0aOIYuu1Y8dLScc95k0hcpQxhxqz/gpyBeyV4umkIHlyEH
+	OYvN524XRvmWqyqnAExym2Tm9yDSupXMF6XDeRgZtBeR0T6Kx4xWU2qKDuiQfIHiwUwMPVNsnTN
+	hxwnMbRClGcuvSR7sMC+IM7OMce7k6rbPtz3PjJKzjW+mPhu/AcAvGllTgyH9bqVhPYwmt8u7VR
+	HV5NVW6HYa3YFiFbUczHRBQMNu1vs5uxDuf3a3YqiNl/76cylbYfk7PiOcYAvp6LxgCRUdh9I8O
+	Ok3OERCEVmneVjZJLncxY1h5DWdOoPb25Wmc4hrA64Y8DyWmeHvLQHk9kgRxd0avW1MK6JE7lrs
+	nP/hxLvtVpRQUeiIgbyPw2RZf+Abqhew4rlP1ZGKty6YjOja7YoWPs7DwzDuabif7AkadWeqnsR
+	i87lVCfxUZoFDInBlFuak9yABxJT3z0sz7+N1S4fPk0RZnhcua23uTIoZsFrTBQXu3p1CRliYo6
+	ScBoSTDOsUzJmqVA38MWO/E9LHTasQ11rcNQIjvpAXsyYbmGlarAFpE3hMjgDg=
+X-Received: by 2002:a05:690e:e8a:b0:677:a816:4bbd with SMTP id 956f58d0204a3-677af52917cmr4014487d50.51.1791220536664;
+        Mon, 05 Oct 2026 10:15:36 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677c1b1b585sm3432802d50.5.2026.10.05.10.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 10:15:35 -0700 (PDT)
+Date: Mon, 05 Oct 2026 13:15:34 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Umang Pokhriyal <umangpokhriyall@gmail.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Jason Wang <jasowangio@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.2caa30c4a0ad5@gmail.com>
+In-Reply-To: <20261005061236.22907-1-umangpokhriyall@gmail.com>
+References: <willemdebruijn.kernel.3720fccc8b4e4@gmail.com>
+ <20261005061236.22907-1-umangpokhriyall@gmail.com>
+Subject: Re: [PATCH net-next v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v8] net/smc: fix lgr/lnk lifetime vs diag reader race
-To: netdev-bot+sinfo@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
-        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
-        stable@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20261005131241.1575131-1-mjambigi@linux.ibm.com>
- <179120636424.1402591.14325781567092984615@kernel.org>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <179120636424.1402591.14325781567092984615@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA2NyBTYWx0ZWRfX8Ffs4bb79L5x
- 0vfmJeFxXSPA9zg/9jxQSQ7qRK/dRJAm96tKz5cjtcDfYlt05Awu+Ld9Fv2Tus4vSnU73AJH73L
- wjGQROf6D0Eqv8HtNOAn1RNTLdk1puM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA2NyBTYWx0ZWRfX5Q5N87W6AAml
- 31GLLKEYpB/B+ZtZqIwogcuL5E6lIiR/4zdr3bdr9HkiCd9h2rABGbVM0NtCgxuLhwVUHCKtbkR
- M1A1gsC+dmUJ584nEZiZ8tBYqbvVQuOQL908/txlxfEGbJoEl9q0sOhnJUk+RAV7MaUPhglVS9v
- guIEF8tetHTt1fd7jSPqrJx+oCiZC5Yst9eNhfPkApQn3s9qw/X98xwvWvRx1YB280pvDmgGNzp
- amkrnsp1AXL0L8g4MKqYB/jVou1+bCI3lBplJyvSDz79GXQ4EFMb1/dsZRDnflUkVmaHF9gCdi5
- nctifo63upLCgfkoWpgOcPba0MXzjvEh8FuYD2LEjIwLIsxzPa5Xq7N5BqXy1He5Houd5ACseCR
- tHCHgYkJ11nHqxvBHyoKM8qHQXtaIWLXgJ6Ot6oLjEzdvrPDXNhGAQ40gYnzxVMM3oChbyKTUDL
- obLL64UQCrEHLeCnK9Q==
-X-Proofpoint-GUID: ETgPZYWLNkwWQi9dtHrsQBsjJO9Q4qsT
-X-Proofpoint-ORIG-GUID: J6B_AkogrLXUfMsruMVo1j1-MtD1L4Wt
-X-Authority-Analysis: v=2.4 cv=B7osQ+tM c=1 sm=1 tr=0 ts=6ac3d9cc cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=8WImSUdLa4LpenjYlHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_04,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 malwarescore=0 impostorscore=0 phishscore=0
- clxscore=1015 spamscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050067
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-
-
-On 05/10/26 6:49 pm, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+Umang Pokhriyal wrote:
+> Willem de Bruijn wrote:
+> > I suppose we want tap to expose this state through TUNGETIFF, like tun,
+> > because applications already use that?
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> Yes. CRIU reads IFF_DETACH_QUEUE from TUNGETIFF when it dumps a tun
+> file, and Cloud Hypervisor did the same until it found that macvtap
+> reports every queue as attached. Code written for tun's queue API gets
+> the wrong answer on macvtap, even though macvtap accepts the same
+> TUNSETQUEUE.
 > 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+> > Else cleaner than working around bits would be a whole new TUNGETQUEUE
+> > call to match TUNSETQUEUE. Rather than to squish this into TUNGETIFF,
+> > while that has no equivalent in TUNSETIFF.
+> >
+> > But, that approach does not help existing applications.
+> 
+> Right, those applications would have to be changed to use a new
+> TUNGETQUEUE.
+> 
+> Thanks for taking another look.
 
-The issue was found by manual code inspection while reviewing the diag
-dump path in net/smc/smc_diag.c.
+Thanks for verifying.
 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-The races are theoretical — none of the three windows were triggered in
-practice. The smc_conn_kill() / smcd_buf_detach() race requires an
-active smcss poll to coincide with an SMC-D lgr termination on the
-dmb_nocopy path; the smc_close_active_abort() and
-smc_close_passive_work() races require a concurrent diag dump during the
-narrow teardown window between sk_state = SMC_CLOSED and
-smc_conn_free(). No stack trace or error message is available since the
-bugs were not hit in a running system.
