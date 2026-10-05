@@ -1,103 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7EC4DD3C4;
-	Mon,  5 Oct 2026 17:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791220603; cv=none; b=XojPyr7DS5nvg+4G+mrVjDNE9wuMxkHayb06OqUww/Rklf9rlw2/PwnaU9uIDvWLRWoPinQWuhvAfESL4R/2VlZCaHrVEYUB7incfp6KTF5Ud1ZKm4HAXdgAv36JWAmBQLKH1REFbxrvIg5g+RsrtRXd3QszlZgMA32n69yuvpA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791220603; c=relaxed/simple;
-	bh=HfVtJ9GnUdwhB8aS6FijORJCCLlhE4nn++9e5pz6qPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oCiXKM0y+KVt0xaPV2K04H+XAT1Mk8dpG4ul1h0i4qa/hnNRMdVkHPGMyMfz9ELPgfU7UODiZi6gi4Ai7x4M/MUIlu+gZXiA0S6FKfhwu7iTW+LvKiPngbSrm6e69dBcxnR86VkseW58POMOq1q0CSKs3xyBDGBMnuOxQROaWs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DHfbiYOb; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17E453446B
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 17:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791220791; cv=pass; b=YoYmPc9HlC0fKs4ov+9wyIzyFJ1kmRSyrlVZEH35AT4FcySRvTuAsEg8MULa/GL9cgmPeuvMC/QTaQr+OGGK9y91pf91OFqe82U/LDe37nFzDopZ5TyYwa96ufCtQFWGkjz0uyu3GLEjlscDMXTx2lWuxbxLtFV3r8vLYOdN+qM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791220791; c=relaxed/simple;
+	bh=Iyy/EbW0PV9CgJFXeNSzqijmw9jKbQl0yvOdKn8dVN8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TOrZ2jBszJMjSy2Z3ghovZuSoyBF/cPIMlgKaFAnwz2Q4+GiL9B6FRH8FlfWXzv2vlCKFvL/YvGj2sGeQAAEG6OsGp4lWYcwxmaVhAVrFP9dL+DTbDyMgKyp3wlsR3n7t7otX87VLWld6Y0Krfl5Dkbw+PDYG6C++o62ZjDCnMw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gE8JLIr7; arc=pass smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DHfbiYOb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E61F1F000FF;
-	Mon,  5 Oct 2026 17:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791220601;
-	bh=EfWMGtVA8d02vQINOKkV2Q8OHs3X3KjSjxJAQvuYqP8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DHfbiYObLeg5HgFnG7oHNe4U7TvIlkeou8gxKzjk+G8fBA6/7A2vwmUMe+01XtImy
-	 jOeH7LLvZ5CVudFttoaN3/OxKDbCuUe9Ngl6tJQNT6BYKBjjonKHAUyqdyRpoe3MYu
-	 6DaC1gFvULVCoZOK0tsM1IARR/VbQSZjG9WL1i9ajMnCKjnDc1ac4kpfoevqgDTPSs
-	 84FVybEQsp1ReO6iENUn08sMTtOnsDlWPpbbwlZv3zlMZzpzwxp7Mp9VJ0tLSFrT1f
-	 5Me5eOt0sMA2Gp1cjXd7a7wdzvJAOgqxRP1UDk0KPBsbad1ZS8rlo66HZY8QntahW7
-	 6SS+zu7c+/SyA==
-Date: Mon, 5 Oct 2026 18:16:36 +0100
-From: Simon Horman <horms@kernel.org>
-To: Nagamani PV <nagamani@linux.ibm.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, wintera@linux.ibm.com,
-	aswin@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-	agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-	svens@linux.ibm.com, kees@kernel.org, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org, stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH net v4 2/2] s390/ctcm: Fix use-after-free in
- channel_remove()
-Message-ID: <20261005171636.GD83879@horms.kernel.org>
-References: <20260930070234.569500-1-nagamani@linux.ibm.com>
- <20260930070234.569500-3-nagamani@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gE8JLIr7"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc4c7fab7b6so1383424a12.0
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 10:19:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791220789; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Wx2XNZhy3uPI+oyeDZkKFlVo+VQkCtAJhHFZlsslBRFMrePgw8/CwgRQbxkzqlf8GB
+         apYJCtaq2/gu59GJztrEX1KYcldDt/F3yaD7pJDqkqy8g4G1KAhazeyGfA97wjiQgPPU
+         /uvCdVdyjIt8Tavc1KLVEHWjISxJMLXwsT69YuahBiChNQmTWFbusMrWcxHk5skP0wYh
+         luMxNpJ0yZkZ8HUHkmjW8U0ToMfA9muenecJ0/ltk2CmTJUKG5TVHPWx+AXd9z6KRfiw
+         JGbhCKJajbhD4q1fyqmYW+be1bulefFjCadLnXc4smv01C/uKncaM7HH8u6EwJQ+OURE
+         bwpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kZaUwiZFto6aopJ87je3gAd8sYajiTqXcqFYb3kLz6E=;
+        fh=ltj18lgIlKjk3hYeW4yRsaaeAtUoazjRYsGVLUCzUyY=;
+        b=sXt4PyhwUwvc/fvfmZwGSjCSIaQF3cAWFf8osMGAZRr1PePRHkMI26XJWAzLOjyMtR
+         gXzeiWZ5lyo+YdKMJaO+PjAGk/VwBB2euwVdZR8SuX2VbXxlffFBgnuA0+AHWxltuVoe
+         dBoes58yNVgObJzyUeUBVxiW8eJlbuF/L7jT5y4F3vOHIWBYpw8eNcgPXjXiTszs1MEv
+         xlwg1P6xp3NjCOBE5OpP0KTYpTHCr691RzHvuTCW1yC3ZwvC4dscqhVGZKVl06BHCaPe
+         ISkn/ZCmg48suo/+AfaRDS+6dE9VLE53DG6jsl5N798sSzgRW8kEQQPgAso/4u0Mmeqn
+         hP/Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791220789; x=1791825589; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kZaUwiZFto6aopJ87je3gAd8sYajiTqXcqFYb3kLz6E=;
+        b=gE8JLIr7W6DAIA2P/MDRVo2hmbxwnbtXbOE3gq2W5rAmpUVaJBoVaVt94axWAYNIrw
+         x90UBYGBiEorg40G5/vkF3/Ui2+UEFjI5rsIlrBBcPFU/DCVKvLb3lCXf0FjRZbutzA4
+         Rnv8+MKrtnkziCBFsmFRkAnq/FrDGrr4d7bxmnuGfATx6pj076+7qVqdw56HcC16t2WB
+         I+eNJr3ikBf5QaXFPSxcTjFSKfjeu8ks1VVeut3gYUjnwVFgSUrV0rI18/ifY2rLt/MK
+         MrZpuQpB85gJJdBs50UXgW0rOj3j78mzHK5jNGxKDgUDroqFwfN+RLAi+Tg/tb4mtDeU
+         oM+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791220789; x=1791825589;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kZaUwiZFto6aopJ87je3gAd8sYajiTqXcqFYb3kLz6E=;
+        b=h1/Ovtmn9NjrxJwzl40+lMcmO3IUmSCu/FtNkztTAnf/y7f1ygOfyfcL0Llys8j0Am
+         yL8dBtbnNWgCTjsAIctu+qUM4n+bkbFRIiQ1lpCvhunAUR8RvaC546gOrJmOJcG+WjwT
+         sNFPtP5+lBECiE/OLo2wxFIG7X+VzeUEcvLS8PUZ4NIaI+h0EcGhNIpJxs1f0F380GAe
+         pFoeXN5BTJHlrpN/Sal/rCBWVLEx6muimeDAYzfuK8y7dKKuXZeTbmRIwoNq1xhRozfF
+         b4DldcAT+bPyjwUJ+NimNaYg7dwMWMllyomlFUMUwZOEDD634bkSFYqyzxsP1haQeduh
+         mF3g==
+X-Forwarded-Encrypted: i=1; AKwUvBwhow3yYXjC5LwSjXRwHO1d0ytS8tzniLrFptqVqykMiLWI3B1q2D7OqW2f1HIv+blY5eBg4NA=@vger.kernel.org
+X-Gm-Message-State: AFuF++l8OTzz03H0Qipg03utSm/aRty6pV8NxHcqOgPItaID+XlouF0w
+	AWqsQTs/GYxCq4TO9xYc9joqNQ6wMmN4tYrZkiZFttl4TdItAA9LEVarKXTO+gprcTm4ujSwEEi
+	hIqtt2K97JTKvBtfdnap+dBfUa6XHMB4=
+X-Gm-Gg: AYBFou3pCPMvFSJTcMX7AzjyLWWRYP+aGYLZ+g/hwq90m6DJpUxAkW11DMm63XO2pyO
+	LvP5HfVhRcTnMaYQwgok3gNmVLem8WGtY36ktFdqqgSmucz1v4ckHGG9QhsJ2x1rpAiVwr3f1OI
+	RnmzEkokr+cTF9zIGU3CLVRUJ0UQQJW0W3yRMtKEMdBRleaG4Hx9Zsg4v7iV4qYVyqNTec2bMSt
+	eGy/yIk4/mk03GOdNryQqkt4AMltBA4HighuL9tuPKZqGYPsJwO4bBO3oOG69zmMejQNIoLXwy7
+	/Yhoq6Rh5fqycbypWW27DkFdhvQGnuiMIb4ftYmEUoSOZQRhrF/cEBD8FnmusSP3Vn4WGpMfcxD
+	/hirpKR+Ke8zSiRgt3+ox7FMYjRG+RSUwdmbKB4nc1PTJRm6gXgvSjhI=
+X-Received: by 2002:a05:6a20:394a:b0:3dd:a197:edfb with SMTP id
+ adf61e73a8af0-3e0d6cbdc69mr7529764637.74.1791220789033; Mon, 05 Oct 2026
+ 10:19:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930070234.569500-3-nagamani@linux.ibm.com>
+References: <20260930044611.204739-1-benquike@gmail.com> <20261005170632.GB83879@horms.kernel.org>
+In-Reply-To: <20261005170632.GB83879@horms.kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 5 Oct 2026 13:19:37 -0400
+X-Gm-Features: AclHuK-lyDkgT7D3dyZG9byu4tcMRkf70JRI3r14isoIqeQu9dgZ6L1lP-o_t_Y
+Message-ID: <CADvbK_eAWQbGs7EUogG3kZDgpX_9bzrR-okU_6cAobcyp_SbtQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] sctp: copy zeroed stats to user in
+ sctp_getsockopt_pr_streamstatus() when !streamoute
+To: Simon Horman <horms@kernel.org>
+Cc: Hui Peng <benquike@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vlad Yasevich <vyasevich@gmail.com>, Neil Horman <nhorman@tuxdriver.com>, linux-sctp@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 30, 2026 at 09:02:34AM +0200, Nagamani PV wrote:
-> channel_remove() uses fsm_deltimer() which calls timer_delete(),
-> returning immediately even if the timer callback is running on
-> another CPU. This leaves a window where fsm_expire_timer() accesses
-> ch->fsm after kfree_fsm().
-> 
-> For MPC channels the teardown has a circular dependency:
-> 
->   ch->timer callback -> ctcm_chx_txretry() -> mpc_action_go_inop()
->     -> tasklet_hi_schedule(&ch->ch_disc_tasklet)
-> 
->   ch_tasklet -> ctcmpc_send_sweep_resp() -> fsm_addtimer(&ch->sweep_timer)
-> 
->   sweep_timer callback -> fsm_addtimer(&ch->timer)
-> 
-> Use timer_shutdown_sync() for both timers: it waits for any running
-> callback and permanently prevents rearming. Shut down sweep_timer
-> first (its callback rearms ch->timer at ctcm_fsms.c), then
-> ch->timer. Only then call tasklet_kill() -- catching any tasklet
-> scheduled by an in-flight callback before shutdown.
-> kfree(ch->discontact_th) follows tasklet_kill(ch_disc_tasklet) since
-> ch->ccw[15].cda points to discontact_th and
-> mpc_action_send_discontact() starts I/O through ch->ccw[15].
-> 
-> timer_shutdown_sync() is also used for non-MPC ch->timer:
-> ctcm_chx_txretry() (CTC_STATE_TX + CTC_EVENT_TIMER) calls
-> fsm_addtimer(&ch->timer) on both paths.
-> 
-> Depends on "s390/ctcm: Fix timer corruption in fsm_addtimer()" which
-> replaces add_timer() with mod_timer(). mod_timer() on a shut-down
-> timer is discarded; without it fsm_addtimer() calls timer_setup()
-> defeating timer_shutdown_sync(). Backporting without that
-> prerequisite is unsafe.
-> 
-> Fixes: 293d984f0e36 ("ctcm: infrastructure for replaced ctc driver")
-> Cc: stable@vger.kernel.org # depends on: s390/ctcm: Fix timer corruption in fsm_addtimer()
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260922101913.239103-1-nagamani@linux.ibm.com?part=2
-> Signed-off-by: Nagamani PV <nagamani@linux.ibm.com>
-> ---
-> Changes in v4:
-> - Shut down timers before tasklet_kill() rather than after,
->   shutting down sweep_timer before ch->timer.
-> - Use timer_shutdown_sync() for ch->timer on both MPC and non-MPC paths.
-> - Name prerequisite by commit title and add structured stable tag
->   dependency (Jakub Kicinski).
-> - Code changed; Reviewed-by and Tested-by dropped.
+On Mon, Oct 5, 2026 at 1:06=E2=80=AFPM Simon Horman <horms@kernel.org> wrot=
+e:
+>
+> On Wed, Sep 30, 2026 at 04:46:11AM +0000, Hui Peng wrote:
+> > When an SCTP stream output extension structure (streamoute) has not yet
+> > been allocated, sctp_getsockopt_pr_streamstatus() sets the local stack
+> > variables params.sprstat_abandoned_unsent =3D 0 and
+> > params.sprstat_abandoned_sent =3D 0, but then immediately jumps to 'out=
+:',
+> > bypassing copy_to_user(). As a result, when an uninitialized user buffe=
+r
+> > is passed to getsockopt(SCTP_PR_STREAM_STATUS), the kernel returns
+> > success (0) without copying the zeroed stats back to user space, leavin=
+g
+> > uninitialized data in the user buffer.
+> >
+> > Refactor the !streamoute check into an if-else chain so that when
+> > streamoute is NULL, params is zeroed and falls through to copy_to_user(=
+),
+> > copying the zeroed stats to user space and setting retval =3D 0 once be=
+fore
+> > returning.
+> >
+> > Tested in QEMU against Linux 7.3.0-rc3 using an uninitialized
+> > sctp_prstatus user struct passed to getsockopt(SCTP_PR_STREAM_STATUS) o=
+n a
+> > freshly created stream: on the unfixed kernel the user struct contains
+> > uninitialized stack garbage; whereas with this fix applied, getsockopt(=
+)
+> > copies zeroed stats into user space and returns 0.
+> >
+> > Fixes: 28b7eab0f910 ("sctp: add SCTP_PR_STREAM_STATUS getsockopt")
+>
+> The hash cited above does not seem to exist.
+> I suggest that the appropriate fixes tag is as you had for v1:
+>
+> Fixes: 28b7eab0f910 ("sctp: add SCTP_PR_STREAM_STATUS getsockopt")
+>
+> Also, the patch should probably be targeted at net, again as you had for =
+v1.
+> I realised that Paolo suggested net-next, without a Fixes tag. But I
+> believe the premise of that suggestion was that he felt this was not a bu=
+g fix.
+> However, Xin responded stating he thought it was, and I expect that carri=
+es,
+> especially when combined with the updated patch description you have
+> supplied in v2.
+>
+> Please treat the above as FYI at this point.
+> I do not expect a repost is required at this time.
+>
+Thanks Simon,
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Yes, the fixes tag should be the one in v1:
 
+Fixes: f952be79cebd ("sctp: introduce struct sctp_stream_out_ext")
+
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Xin Long <lucien.xin@gmail.com>
+> > Assisted-by: LLM
+> > Signed-off-by: Hui Peng <benquike@gmail.com>
+> > ---
+> > Changes in v2:
+> > - Re-target subject tag to [PATCH net-next v2].
+> > - Remove redundant retval =3D 0 assignment in !streamoute block and fal=
+l
+> >   through to copy_to_user() as suggested by Paolo Abeni and Xin Long.
+>
+> ...
