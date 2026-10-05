@@ -1,61 +1,62 @@
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3B134F474
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57DD3290C9
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791231078; cv=none; b=tBCjPwd3LHdi9p92Btq92BQczIP5XV8PaMDh57ULtiCjQRWearIbhfd0PFMdDTho7w7pXcG4hZTGfD4BIeTn/qxmNMGgGVfchKfO6RCzFuapbW3P1MzEzsYna4Lnfo/7L+a76+AR9vVoV/KO2+bm1GeF6ek+ox2T2TZMmvz0luk=
+	t=1791231079; cv=none; b=RaMsO7MdniIOdKG46k00e9VzFRpgULj76YSCtT2M4LPBc0KD4pDqV2S4arS7fznEXeBRb6/BK2n+Xb6nTstd+XQBz121IEcGGuf0ETcpTVih5kKYzglQOushWxphgk5v+bq2UCAysEH8zsylcSFAMbJqBzxEev1YKM6kzyYYqBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791231078; c=relaxed/simple;
-	bh=sUzGzemmOMlLPOSjyXXz/Zn34dBQC9+ywRRqU2/+cd8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ror4NcXzfNXYtNPsLyDWEL28HyZ+r+J4GOCIMntSbw7drOZSvKnonxANHk8J6xeMLtrwkVDB9w1eSHbknGdCxzizANeE36Fe3E/ftFmQ8cIttZO9fz7jFzTOlFkmGajyUeJWzANSGSJ47CYDJZv/oYP9OhqFkOroCOuAjVimuLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffSxOjfP; arc=none smtp.client-ip=74.125.227.133
+	s=arc-20240116; t=1791231079; c=relaxed/simple;
+	bh=pBVHLUHklUyPIhpoQIot7pPyfxQbcgmJVh8RFH0Vevw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oKZbH1aCx1Q9mCL9F5YqMP0mUERTSOuOuBp45hckgOSeez4z7zH0TNXD73Em+fQ/lxtUT345CBxXzOUK3l1KVavfGtC1IJGCUW3bZlLk4QZwQe2LeRNDem9XAvF3l4ND9ZiAD0uFxalykSPK2jEtcGVzXp1OIDTpw/80vvqfFxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OB+HZxh6; arc=none smtp.client-ip=74.125.227.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffSxOjfP"
-Received: by mail-pj2-f5.google.com with SMTP id 98e67ed59e1d1-3a7adbf1b3fso391066a91.0
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:11:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OB+HZxh6"
+Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3a84a12aa97so166190a91.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791231076; x=1791835876; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=U41rNBcTWGQxAOwbXmpLyKpedF2Pv6jvC3H7GKBBfc8=;
-        b=ffSxOjfPEg1qHanJNUSEsfBCG8HibPhmPvlYGLi0iWIzQ1WCH7HEn0AMQMAmqqQ4vP
-         Y/BP9wODtzEV/lTKJGB84JXetm58f+6ishxOYZn4gmK8q0dxz47lR9nlW8wfrD1T14D5
-         WQ8KDworKoBDzLawDpY5j2Af3g5zbTNtmMvU4eIH+o7SjS1wr0v7XzhmHuw8hrlVcCoh
-         VkphNTpZT02t+/PhWoHUzSEp5BBjKP4QbxGIvdE8Tk7m/RCMuSQ2pjuV+HGsFrMTcb25
-         ytjrUPRO92Aq9NwZoTiMf6d/VXDc5wMzOfK644hAyy2sIGNqYXnmdDsIjwODBKormlbr
-         ceIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791231076; x=1791835876;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1791231077; x=1791835877; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=U41rNBcTWGQxAOwbXmpLyKpedF2Pv6jvC3H7GKBBfc8=;
-        b=lCy5qtMK+nGZH1N6TpyMbZBKWkZVxx8hbzA/m3ncNtCJFFUGZKnb0it53uQVbS3nQe
-         ZqzN0x5qlkfqrk9uCS2rxQR8L5/I9l+R9/mCSgbV+Q7Cq1Lp42xyGehgGqGVIorgp8/J
-         q+pBUb0ojb5s9PBjikWseOh9PHNMrJYmwql6DZRnbWoY25c8L+fCVwgKIBshLjRq9qSP
-         zjGTaGWFjrtCHWmE+1eSD/bMjkyy2sBQ9HFGsJyREc+u+gEhcvuQDYFvT/H5yoQimRZV
-         v+aUPtUF1EWdSiE5LQY+b3AEtVhfXZ0Bb/ubGq3z+D5Jm2NzW6fkg9vNyIq7o5eMJso0
-         xbgg==
-X-Gm-Message-State: AFq9FYJuXXVeOJTgfUay/gTBFBYRLLsAx+4y+8Dh3mtgxSpt8H/cI38c
-	rEmOMbJ6Qn1oas7xXJwnE0CbK4oVk7AJvipWKxgIuWi191fhKGnc7ebwAqXxd3ne
-X-Gm-Gg: AYBFou3qzPLWoHaAQuLmO5aa2AVC7nhfwRXQkHH0dEL5nHOW/TlvJutvE6WcnQ5Vu+V
-	T8qqeBtgOUR9D8rvWAM9CdUlDwCqrjhjq1TlV8LmDq6vKmfyccndVp/3jdkoKpscHvqHb5WT7UR
-	+mHApwM1w7iRg/qGtVq5Kfyq6b5w2G+NUG4gPjeEbneHCNJtn173OjEVuVBlCciC1lxC/ZVgXQH
-	68ljGIAxVmiZ2kohX0ubkC8KxSKn0WlFUTA2mfcQQahg1fWadyttsnrAoZO6kFMRXOjPnMqEsON
-	JKgVlJsmtF/c7zx8qAeDtKR+D3D48Ht2ILINP9Iqlk/ApOWCXnp8TltCFbtkxP2e3R87uwcWapI
-	9NSWVZdNgb1Y2OLs6vAAlsNJWpMV5uLxwA4l6cmOh8s+i4ESLDaLhH5t9efwCRoO1syHqodBeme
-	E/4JFDotJavtKULpWrUoQdXhqO5OXzfRs2TTVEFxX1eOPKbQFVI1Gvaw/wxoUfb6NNo2dHH90Wp
-	5A=
-X-Received: by 2002:a17:90b:4a48:b0:3a4:85c4:68fc with SMTP id 98e67ed59e1d1-3a7872b2480mr8013503a91.29.1791231076004;
-        Mon, 05 Oct 2026 13:11:16 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:41::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6d334cb2sm1401800a12.10.2026.10.05.13.11.15
+        bh=c2LM2pkp7GHIUrcyX55T+iGrFwKF6iXV36SsTY5/cT0=;
+        b=OB+HZxh6WgpV31rYF/tMY4VR++wzJy+II82AUaWxWMGYPRdI3XDnVD/9KKC0kHpkI2
+         8firYAPfJweLrMZX+Nu3RRpj029+Hio4sKD4yYacHNapTMWoIOa8wpS6Jn7sp4oBzJNm
+         QIW4n0L9dAPJ2369rLPrXzdzDEwnuHZWWrqukvogolMR8bTHkIH+QidnBkr8qWMdb3u5
+         Rb06XegBNuq1H5984TBC01Beh/5Z8EWvJyZ/1/qlosYkGFwjAKBaDk5psy3SPkcwcK0M
+         nUYnb05DaCqo5Ed3Zt0IXnFOLcAOj0xCFUqtVppzHEJFmASlyhh6oMU2Al0gaWNlWm96
+         lNxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791231077; x=1791835877;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=c2LM2pkp7GHIUrcyX55T+iGrFwKF6iXV36SsTY5/cT0=;
+        b=YsZVPVCu5nRnuFeU+Ac/6Pv6DL1NM65Fz289/qn3HKmi9c5H1Ui5AZNXM7GXx6A8cb
+         fFThCqCJvB5GFvT5bfDESAQwoLER6kwzGQAzbuLEakeY7WKlqF4TIpIfKPbM6s5fcso8
+         ssEJhg7AVIYgGgopKDzCJow9lGvXZznXm0MFGpKgmwWyHglI4Ym8QpQ/lDhp8bZScJtv
+         H0EAllfo/Ps6B6RVvcjdq6As9CRpiUdIa5erf6gvMjdk4dG180S8ofT/f84d4IbCzTY4
+         pqSU+PuTcKFSxZbYupCXqFZTdcFAi1N9OV6or3eO606/CkQ//cruAFiXpxnt6mtNoJ/s
+         QuYA==
+X-Gm-Message-State: AFq9FYI82Eyt6M8+sxQL/WpYBydsMc1REA4wxo7PH/EUEApwmSg4dtQX
+	I9Q/DVaHAUWdLMSZGcEAfYss6Kdf077CJvBjOoM+zvvT1FF2oVJlSxWrL3KSn6TI
+X-Gm-Gg: AYBFou2W1+1xCmOjoA4ibxnbaXtaYGTxS2Hp4YUUPiY1YGQMkFnNVDzvE7DhtRmEj98
+	ujmBaiV9Xjl5CA0QHcolDjXip/jZ6UR48eCmNdtDdI2Z/HE3Yj+E8GGbWj6XLnCkrveD89D6BlS
+	8r2KvTVSAG9hLoAdCnGo996Bgm1L004abE0Ex3QVsHHmznXwi3q4jx7KWM4oAufpu7UkuoMi1pk
+	psZ0ffmz4TUpFIJ39DqV0WMF45NykdA4oRo9IRFKB/8FuaX8A0SRe8BPZ/bl48AziDXUHaA7awe
+	JM19NPJzxvAuGpYHkfBxz8/HmD+3KSBXWA8PoarfgYZgKCCHWWyKIBD9ZlXqt89G9CFa+UCVXRl
+	5L5kdAcgnc81rz6Spo3myInotU6Inm2t74/x5ToJoq9N2o+EGL7fwf0DJ2Hwsj1juK0kiSmdNub
+	JlksCZBsqgI7hP4k5hZFUCSy658zU/vGjvcVjMF+MB7+Lf/U/2XxWmAFVF1Pt4YHeJ
+X-Received: by 2002:a17:90b:1c10:b0:3a0:afc9:a51a with SMTP id 98e67ed59e1d1-3a78718429bmr7493560a91.12.1791231077038;
+        Mon, 05 Oct 2026 13:11:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:59::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a6dd1142cdsm9551437a91.2.2026.10.05.13.11.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 13:11:15 -0700 (PDT)
+        Mon, 05 Oct 2026 13:11:16 -0700 (PDT)
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
 To: netdev@vger.kernel.org
@@ -63,10 +64,12 @@ Cc: davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com
-Subject: [RFC net-next v2 0/5] selftests: net: add performance metric reporting
-Date: Mon,  5 Oct 2026 13:11:09 -0700
-Message-ID: <20261005201115.2690830-1-sdf@fomichev.me>
+Subject: [RFC net-next v2 1/5] selftests: net: py: add timestamped metric output
+Date: Mon,  5 Oct 2026 13:11:10 -0700
+Message-ID: <20261005201115.2690830-2-sdf@fomichev.me>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261005201115.2690830-1-sdf@fomichev.me>
+References: <20261005201115.2690830-1-sdf@fomichev.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,77 +78,236 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add timestamped observations and producer-defined metric policy to Python
-selftests. Add iperf and kperf performance coverage.
+Add ksft_metric() to record timestamped JSON observations for the current
+test case.
 
-System monitoring can live in either place:
+Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+v1: https://lore.kernel.org/netdev/20260916190409.1222272-1-sdf@fomichev.me/
+---
+ .../testing/selftests/drivers/net/README.rst  | 28 +++++++++++
+ .../drivers/net/hw/lib/py/__init__.py         |  8 +--
+ .../selftests/drivers/net/lib/py/__init__.py  |  8 +--
+ .../testing/selftests/net/lib/py/__init__.py  |  9 ++--
+ tools/testing/selftests/net/lib/py/ksft.py    | 49 ++++++++++++++++++-
+ 5 files changed, 89 insertions(+), 13 deletions(-)
 
-Selftests:
-- uses one KTAP format for benchmark and system metrics
-- provides system metrics for direct local runs
-- lets each test select the exact scope and devices
-- adds kernel-side code and maintenance
-
-NIPA:
-- keeps generic monitoring out of the kernel tree
-- allows collection to evolve without kernel changes
-- requires runner-managed test boundaries and local tooling
-
-This version keeps CPU and NIC monitoring in NIPA. NIPA runs each program
-in drivers/net/hw/performance one subtest per process, giving the runner
-exact monitoring boundaries.
-
-Note that we still keep metric aggregation policy (ksft_metric_policy)
-including regression boundaries in the tree. If we were to move it
-to NIPA we'd have to have per-metric-name configs or something.
-
-NIPA changes at https://github.com/fomichev/nipa/tree/nipa-local-hw-metrics
-have a few examples. git clone & ./nipa local view will start an
-http server on :44109 with two sample runs.
-
-v2:
-- move system monitoring to NIPA (Jakub)
-- move performance tests to drivers/net/hw/performance (Jakub)
-- rename metric shape to type and document supported types (Paolo);
-  kind= instead of type= (type shadows a builtin)
-- remove direction from the metric example (Paolo)
-- document policy processing order (Paolo)
-- support producer-selected summary operations, including arbitrary pXX
-- label throughput metrics in Gbps
-- do not mark the iperf benchmark disruptive
-- use 2 GiB udmabuf buffers for kperf devmem
-- drop the ncdevmem devmem probe
-- use a random kperf control port
-- report kperf server cleanup failures
-
-Stanislav Fomichev (5):
-  selftests: net: py: add timestamped metric output
-  selftests: net: py: add metric policy output
-  selftests: drv-net: add an iperf performance test
-  selftests: drv-net: add a kperf runner
-  selftests: drv-net: measure devmem performance with kperf
-
- tools/testing/selftests/Makefile              |   2 +-
- .../testing/selftests/drivers/net/README.rst  |  57 +++++++
- .../drivers/net/hw/lib/py/__init__.py         |  17 +-
- .../drivers/net/hw/performance/Makefile       |  13 ++
- .../drivers/net/hw/performance/config         |   4 +
- .../drivers/net/hw/performance/devmem.py      |  99 +++++++++++
- .../drivers/net/hw/performance/iperf.py       |  27 +++
- .../drivers/net/hw/performance/settings       |   1 +
- .../selftests/drivers/net/lib/py/__init__.py  |  15 +-
- .../selftests/drivers/net/lib/py/kperf.py     | 161 ++++++++++++++++++
- .../selftests/drivers/net/lib/py/load.py      |  24 ++-
- .../testing/selftests/net/lib/py/__init__.py  |  11 +-
- tools/testing/selftests/net/lib/py/ksft.py    | 159 ++++++++++++++++-
- 13 files changed, 571 insertions(+), 19 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/hw/performance/Makefile
- create mode 100644 tools/testing/selftests/drivers/net/hw/performance/config
- create mode 100755 tools/testing/selftests/drivers/net/hw/performance/devmem.py
- create mode 100755 tools/testing/selftests/drivers/net/hw/performance/iperf.py
- create mode 100644 tools/testing/selftests/drivers/net/hw/performance/settings
- create mode 100644 tools/testing/selftests/drivers/net/lib/py/kperf.py
-
+diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
+index 3fe49bce4f3a..3e3cc028d77a 100644
+--- a/tools/testing/selftests/drivers/net/README.rst
++++ b/tools/testing/selftests/drivers/net/README.rst
+@@ -259,6 +259,34 @@ ksft_pr()
+ 
+ Use ``ksft_pr()`` instead of ``print()`` to avoid breaking TAP format.
+ 
++ksft_metric()
++~~~~~~~~~~~~~
++
++Use ``ksft_metric()`` to report a numeric measurement for the current test
++case. The helper records the time relative to the start of the case and emits
++each observation immediately before the test result as compact JSON. For
++example::
++
++  ksft_metric("throughput", 100.5, kind="scalar")
++
++emits output similar to::
++
++  # ktap-metric-json: {"name":"throughput","time":1.234,"type":"scalar","value":100.5}
++
++When ``run_kselftest.sh`` nests the test output, its diagnostic prefix makes
++this ``# # ktap-metric-json: <json>``. A background sampler can call
++``ksft_metric()`` repeatedly. Pass ``kind`` explicitly; it is emitted as the
++``type`` field. Supported kinds are ``scalar`` for one numeric value and
++``per-cpu`` for an array indexed by CPU number, with ``None`` for a missing or
++offline CPU::
++
++  ksft_metric("cpu.utilization", [75.0, 22.0, None, 100.0],
++              kind="per-cpu", host="local")
++
++The helper does not infer the kind from the Python value, since an array may
++represent something other than per-CPU data. Metrics are measurements only and
++do not affect the pass or fail result.
++
+ ksft_disruptive
+ ~~~~~~~~~~~~~~~
+ 
+diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+index 4077f5f1a1be..77e4ef34f8b9 100644
+--- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
++++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+@@ -27,8 +27,8 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
+         wait_file, ctl_file_write, tool
+     from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+     from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+-    from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
+-        ksft_setup, ksft_variants, KsftNamedVariant
++    from net.lib.py import ksft_disruptive, ksft_exit, ksft_metric, ksft_pr, \
++        ksft_run, ksft_setup, ksft_variants, KsftNamedVariant
+     from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
+         ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
+     from drivers.net.lib.py import set_ethtool_feat
+@@ -44,8 +44,8 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
+                "wait_port_listen", "wait_file", "ctl_file_write", "tool",
+                "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+                "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+-               "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
+-               "ksft_setup", "ksft_variants", "KsftNamedVariant",
++               "ksft_disruptive", "ksft_exit", "ksft_metric", "ksft_pr",
++               "ksft_run", "ksft_setup", "ksft_variants", "KsftNamedVariant",
+                "ksft_eq", "ksft_ge", "ksft_in", "ksft_is", "ksft_lt",
+                "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
+                "ksft_not_none", "ksft_not_none",
+diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
+index 40ccdcf0c378..f744280dcc37 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
++++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
+@@ -27,8 +27,8 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
+         wait_file, ctl_file_write
+     from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+     from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+-    from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
+-        ksft_setup, ksft_variants, KsftNamedVariant
++    from net.lib.py import ksft_disruptive, ksft_exit, ksft_metric, ksft_pr, \
++        ksft_run, ksft_setup, ksft_variants, KsftNamedVariant
+     from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
+         ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
+ 
+@@ -41,8 +41,8 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
+                "wait_port_listen", "wait_file", "ctl_file_write",
+                "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+                "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+-               "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
+-               "ksft_setup", "ksft_variants", "KsftNamedVariant",
++               "ksft_disruptive", "ksft_exit", "ksft_metric", "ksft_pr",
++               "ksft_run", "ksft_setup", "ksft_variants", "KsftNamedVariant",
+                "ksft_eq", "ksft_ge", "ksft_in", "ksft_is", "ksft_lt",
+                "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
+                "ksft_not_none", "ksft_not_none"]
+diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
+index 71df5880b356..3d9e6f6b402c 100644
+--- a/tools/testing/selftests/net/lib/py/__init__.py
++++ b/tools/testing/selftests/net/lib/py/__init__.py
+@@ -8,8 +8,8 @@ from .consts import KSRC
+ from .ksft import KsftFailEx, KsftSkipEx, KsftXfailEx, ksft_pr, ksft_eq, \
+     ksft_ne, ksft_true, ksft_not_none, ksft_in, ksft_not_in, ksft_is, \
+     ksft_ge, ksft_gt, ksft_lt, ksft_raises, ksft_busy_wait, \
+-    ktap_result, ksft_disruptive, ksft_setup, ksft_run, ksft_exit, \
+-    ksft_variants, KsftNamedVariant
++    ktap_result, ksft_disruptive, ksft_metric, ksft_setup, ksft_run, \
++    ksft_exit, ksft_variants, KsftNamedVariant
+ from .netns import NetNS, NetNSEnter, UserNetNS
+ from .nsim import NetdevSim, NetdevSimDev
+ from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
+@@ -24,8 +24,9 @@ __all__ = ["KSRC",
+            "KsftFailEx", "KsftSkipEx", "KsftXfailEx", "ksft_pr", "ksft_eq",
+            "ksft_ne", "ksft_true", "ksft_not_none", "ksft_in", "ksft_not_in",
+            "ksft_is", "ksft_ge", "ksft_gt", "ksft_lt", "ksft_raises",
+-           "ksft_busy_wait", "ktap_result", "ksft_disruptive", "ksft_setup",
+-           "ksft_run", "ksft_exit", "ksft_variants", "KsftNamedVariant",
++           "ksft_busy_wait", "ktap_result", "ksft_disruptive", "ksft_metric",
++           "ksft_setup", "ksft_run", "ksft_exit", "ksft_variants",
++           "KsftNamedVariant",
+            "NetNS", "NetNSEnter", "UserNetNS",
+            "CmdExitFailure", "fd_read_timeout", "cmd", "bkg", "defer",
+            "bpftool", "ip", "ethtool", "bpftrace", "rand_port", "rand_ports",
+diff --git a/tools/testing/selftests/net/lib/py/ksft.py b/tools/testing/selftests/net/lib/py/ksft.py
+index 81287c2daff0..1259bbb6d6c5 100644
+--- a/tools/testing/selftests/net/lib/py/ksft.py
++++ b/tools/testing/selftests/net/lib/py/ksft.py
+@@ -4,9 +4,11 @@ import fnmatch
+ import functools
+ import getopt
+ import inspect
++import json
+ import os
+ import signal
+ import sys
++import threading
+ import time
+ import traceback
+ from collections import namedtuple
+@@ -16,6 +18,9 @@ from . import utils
+ KSFT_RESULT = None
+ KSFT_RESULT_ALL = True
+ KSFT_DISRUPTIVE = True
++KSFT_METRICS = None
++KSFT_METRICS_START = None
++KSFT_METRICS_LOCK = threading.Lock()
+ 
+ 
+ class KsftFailEx(Exception):
+@@ -93,6 +98,44 @@ KSFT_DISRUPTIVE = True
+     print(pfx, prefixed, **kwargs)
+ 
+ 
++def ksft_metric(name, value, *, kind, **labels):
++    """Record a timestamped metric with an explicitly described kind.
++
++    The kind is emitted as the ``type`` field. Supported kinds are ``scalar``
++    for one numeric value and ``per-cpu`` for an array indexed by CPU number,
++    with ``None`` for a missing or offline CPU.
++    """
++    with KSFT_METRICS_LOCK:
++        if KSFT_METRICS is None or KSFT_METRICS_START is None:
++            raise RuntimeError("ksft_metric() called outside of a test case")
++
++        metric = {
++            "name": name,
++            "type": kind,
++            "value": value,
++            "time": round(time.monotonic() - KSFT_METRICS_START, 6),
++        }
++        for key, label_value in sorted(labels.items()):
++            if key in metric:
++                raise ValueError(f"Metric label uses reserved name: {key}")
++            metric[key] = label_value
++        KSFT_METRICS.append(metric)
++
++
++def _ksft_flush_metrics():
++    global KSFT_METRICS, KSFT_METRICS_START
++
++    with KSFT_METRICS_LOCK:
++        metrics = KSFT_METRICS
++        KSFT_METRICS = None
++        KSFT_METRICS_START = None
++
++    for metric in metrics or []:
++        payload = json.dumps(metric, allow_nan=False, separators=(",", ":"),
++                             sort_keys=True)
++        ksft_pr(f"ktap-metric-json: {payload}")
++
++
+ def _fail(*args):
+     global KSFT_RESULT
+     KSFT_RESULT = False
+@@ -400,7 +443,7 @@ KsftCaseFunction = namedtuple("KsftCaseFunction",
+ 
+     totals = {"pass": 0, "fail": 0, "skip": 0, "xfail": 0}
+ 
+-    global KSFT_RESULT
++    global KSFT_RESULT, KSFT_METRICS, KSFT_METRICS_START
+     if KSFT_RESULT is not None:
+         raise RuntimeError("ksft_run() can't be called multiple times.")
+ 
+@@ -411,6 +454,9 @@ KsftCaseFunction = namedtuple("KsftCaseFunction",
+     stop = False
+     for func, args, name in test_cases:
+         KSFT_RESULT = True
++        with KSFT_METRICS_LOCK:
++            KSFT_METRICS = []
++            KSFT_METRICS_START = time.monotonic()
+         cnt += 1
+         comment = ""
+         cnt_key = ""
+@@ -450,6 +496,7 @@ KsftCaseFunction = namedtuple("KsftCaseFunction",
+         if not cnt_key:
+             cnt_key = 'pass' if KSFT_RESULT else 'fail'
+ 
++        _ksft_flush_metrics()
+         ktap_result(KSFT_RESULT, cnt, name, comment=comment)
+         totals[cnt_key] += 1
+ 
 -- 
 2.53.0-Meta
 
