@@ -1,34 +1,36 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E258A1632DD;
-	Mon,  5 Oct 2026 22:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B6F36F90F;
+	Mon,  5 Oct 2026 22:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791239102; cv=none; b=LxsRs0eRyfpxspN54PLfx4+igm/eCyK/cyqb9h6AUk0ve1EKKxg+xB6yV4Bm0Suoul9Xx/rwrYG9ksTHrnYkBNMqfylC5EjYeuDWSs1kdjqd1q2exH8xHaX/dF87SIOko+BDC+ZUAC/lfMgqLrj5b4Y8WSjc+TMfdQvTld78lbc=
+	t=1791239104; cv=none; b=Vy/SU2lBRFD6u0euIM/h1rJrIZZ9MWCmD6gtMRCIi7LutjYdLcXeZWpiwrK0x86Mt3A++OWs8XdNzwtuOded+Y4zRGYuqUGEEpXfXW8DDfF1/+2HUwfkTWjmNsq4JlkvJIu6nmhzMGPVNAalqvyV1y/rj2Nz/QEqFPCP1NpBJJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791239102; c=relaxed/simple;
-	bh=CQ4OesbVs7SOGS2ZnAkXo4/CLzA25O1sPf635IooNKY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fp4Fc+uOjITCuoYpVtajuByBYoX0TvOmuyHPF/QgbHVSlvUGl80FP0NtkwX6b9aCRNJGlvJZ7YypFhmEmXMauPZiprhhhVf2jqE8OlDbKNfUJAqkGFHYMvahl8RymAeXU7zxwZrlYDnb+VyfBX+FFqUnw6v2UMiuEJN2uS3+aj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=lgyA91k/; arc=none smtp.client-ip=194.13.80.246
+	s=arc-20240116; t=1791239104; c=relaxed/simple;
+	bh=6hz3kuguRa8clNqqJ7qL2suvrpD9DAQeias9Lpn++Mc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=Psr31FurwbG5qZbbQwOZHyJQJsvC19evdzFxh7J5bslR557amVcxFNuy4gCxf/VWFjrRINtcpc4vC7FmMYNy2Bb4d/PqjZi81nLXhyD9pbeynWE2pMNim/ppniByX8w3F7gMP+IsP717Og1Ci/UMPSiq0rzAimA1oPqBmqsBlHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Kuss+5H3; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="lgyA91k/"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 02553A08BF;
-	Tue,  6 Oct 2026 00:24:54 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Kuss+5H3"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6A9FAA0E33;
+	Tue,  6 Oct 2026 00:24:58 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791239097; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=rBfKSqsobll08Ur8D6VfojiGY5rmj2FUd3zTZ3eKyPI=;
-	b=lgyA91k/toAFxLovPdYv6R/r87Jc0O9l0cbaF/3b3dtsaH3zGZVtCAa9iOwjmpzaPO96VI
-	EPgMGiB9PZuGjzO3+7Dvzb8JzC9Sl9g4Q//n9HOUIsBNyUDR6ZCvivpKAvxQ2V+9EunT4d
-	Prhp1F/Q0qMChzX50uaLqh94GA2RLurgBwCBV/VACn06P2HkhXl/6sRAkSRQDU1CWYEEqu
-	CssSYjZi8dQbYGS/GfTcIFMNWtVcBKaE59xo9/EkdZgaVY8cipZX35WSo36/8PprZCjwpH
-	BQ9JcR5lRwIHt+HuXL1bx4eyQG6iqcgupi5QBOlVOSU8Sw76+oX3/W8Wt2LiPw==
+	t=1791239099; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=y72vG2wnD8eFFqzbDZVSVjMG9HD9FVK1LFD4c3Yk0ec=;
+	b=Kuss+5H3qDz395GwXrmmej4V6pdDPDVt+9sIF2Gkjiwyxu8wg46J0lvwewmVKwoljKOsIN
+	xYgqdqLY431QLQYvWZbh0HIZcrgSaTujQYojaZ7eRGXcpdx2F2Rhu7pNgSEGYyfAsq0ZnV
+	weJA+QtbIbQ75TPzUTuctpj0frJpufBg/7WiyWuoAOoyAEaxI3Mv/PoH78CmueeJBfc1B4
+	gRxB0jzlyOtTINohzhzo7pRCT0wrVsPsEX6z1O4ZCN0Cxx/lJ4AaWE5Mr2ymBXVXFeohPX
+	dXrj4hTS8PuLR6TV2OZgBw2BpDnq/zDPTt0bQneWGgOPz6LD0zD2KCLr623MQA==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v2 0/7] net: bcmgenet: support larger MTUs
-Date: Tue, 06 Oct 2026 00:24:39 +0200
-Message-Id: <20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912@tipi-net.de>
+Date: Tue, 06 Oct 2026 00:24:40 +0200
+Subject: [PATCH net-next v2 1/7] net: bcmgenet: let the caller decide
+ whether to start the PHY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,11 +39,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NQQ6CMBBFr0Jm7ZhSoYmuvIdhIXQKs3AgbW0wp
- He39gAuf97/7x8QyDMFuDUHeEoceJUS9KmBaXnKTMi2ZNBKm1YpjTLiTEIRX/GNIpg0dkqPPRl
- 3UcZBGW6eHO9V+oBfVWiPMBSycIir/9S31Fb+T5xaVHg1djK276aR6B5546KLZ0sw5Jy/SZo5X
- sAAAAA=
-X-Change-ID: 20261002-nb-genet-mtu-nn-v2-402b5e6f306f
+Message-Id: <20261006-nb-genet-mtu-nn-v2-v2-1-c4be21151912@tipi-net.de>
+References: <20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912@tipi-net.de>
+In-Reply-To: <20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>, 
  Florian Fainelli <florian.fainelli@broadcom.com>, 
  Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
@@ -56,62 +56,62 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-Larger MTU aka. jumbo frames are requested often by Raspberry Pi users, but
-the hardware has its quirks with larger frames, so it never got done. Dave
-Stevenson's PoC [1] had the receive side working and Justin checked the RTL
-what the hardware does with long frames, which got me past the rest.
+bcmgenet_netif_stop() already takes stop_phy, bcmgenet_netif_start() does
+not. The MTU change in a later patch leaves the PHY running while the
+datapath goes down and comes back, and phy_start() expects a stopped PHY.
 
-GENET never sets dev->max_mtu, and the packet ready thresholds cut frames
-off at their 2048 byte reset default. With this the receive dropped them as
-fragmented and transmit never sent them out. See commit messages of the
-patches for more details.
+Add the same parameter to the start side.
 
-Patches 1 to 5 implement the MTU as far as one descriptor reaches (3564
-bytes with 4K pages). Patch 6 pads around a transmit quirk where a frame
-ending just past the threshold stops the transmitter [3]. Patch 7
-reassembles the fragments the hardware produces above it, which gets the
-ceiling to 16347 [2].
-
-Tested on a CM4 (GENET v5). MTU 1500 is unchanged, MTU 9000 reaches 991/987
-Mbit/s. Pierre-Marin Leclercq tested on a Pi 4 (also GENET v5) with various
-MTU sizes.
-
-[1] https://github.com/raspberrypi/linux/pull/7614
-[2] https://github.com/raspberrypi/linux/pull/7617#issuecomment-5669564355
-[3] https://github.com/raspberrypi/linux/pull/7617#issuecomment-5735557324
+No functional change.
 
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
-Changes in v2:
-- patch 5: resync the PHY state machine after the MTU restart, a latched
-  link event was lost and an internal PHY is never polled (v1-4)
-- patch 6: move the checksum fallback here from patch 7, a bisect between
-  them dropped checksummed frames on large page kernels
-- patch 6: note the trailer limitation of the padding
-- patch 7: pskb_trim() for the FCS trim, a reassembled frame is paged
-- patch 7: latch frag_drop on a continuation without a start, the counter
-  inflated per descriptor
-- comment and commit message corrections in patches 2, 4 and 5
-- Link to v1: https://lore.kernel.org/r/20261002-nb-genet-mtu-nn-v2-v1-0-96dc6d54cbee@tipi-net.de
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
----
-Nicolai Buchwitz (7):
-      net: bcmgenet: let the caller decide whether to start the PHY
-      net: bcmgenet: allow a continuation descriptor without the alignment pad
-      net: bcmgenet: rename ENET_MAX_MTU_SIZE to ENET_MAX_FRAME_LEN
-      net: bcmgenet: derive the receive buffer length from the MTU
-      net: bcmgenet: allow the MTU to be changed
-      net: bcmgenet: pad transmit frames out of the packet ready window
-      net: bcmgenet: reassemble jumbo frames from status block fragments
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 4c9db2f9fc25..a82579879f4b 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -3348,7 +3348,7 @@ static void bcmgenet_get_hw_addr(struct bcmgenet_priv *priv,
+ 	put_unaligned_be16(addr_tmp, &addr[4]);
+ }
+ 
+-static void bcmgenet_netif_start(struct net_device *dev)
++static void bcmgenet_netif_start(struct net_device *dev, bool start_phy)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 
+@@ -3365,7 +3365,8 @@ static void bcmgenet_netif_start(struct net_device *dev)
+ 	/* Monitor link interrupts now */
+ 	bcmgenet_link_intr_enable(priv);
+ 
+-	phy_start(dev->phydev);
++	if (start_phy)
++		phy_start(dev->phydev);
+ }
+ 
+ static int bcmgenet_open(struct net_device *dev)
+@@ -3428,7 +3429,7 @@ static int bcmgenet_open(struct net_device *dev)
+ 
+ 	bcmgenet_phy_pause_set(dev, priv->rx_pause, priv->tx_pause);
+ 
+-	bcmgenet_netif_start(dev);
++	bcmgenet_netif_start(dev, true);
+ 
+ 	netif_tx_start_all_queues(dev);
+ 
+@@ -4312,7 +4313,7 @@ static int bcmgenet_resume(struct device *d)
+ 	if (!device_may_wakeup(d))
+ 		phy_resume(dev->phydev);
+ 
+-	bcmgenet_netif_start(dev);
++	bcmgenet_netif_start(dev, true);
+ 
+ 	netif_device_attach(dev);
+ 
 
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 326 +++++++++++++++++++++++--
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |  21 +-
- 2 files changed, 315 insertions(+), 32 deletions(-)
----
-base-commit: 071876fd50482a68603a9460d80dd6dd58827ee1
-change-id: 20261002-nb-genet-mtu-nn-v2-402b5e6f306f
-
-Best regards,
 -- 
-Nicolai Buchwitz <nb@tipi-net.de>
+2.53.0
 
