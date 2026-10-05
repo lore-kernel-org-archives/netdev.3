@@ -1,353 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC444E50C7;
-	Mon,  5 Oct 2026 20:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAEA397923
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791232170; cv=none; b=A/uBYIka4XFQBAPtVfUgTpKYNJ22o62O9RRwCs/UVVBQJcEJHaaQjRTM/poH8nqRawgE2yOmTm0w+SsAN6hMfmuzSi9lVQWqNlR/jSgTOv+5rw6UUZE00XMoKz5QsbUIYVvfLLc/Bxnz0oosdOAQJ7VbLsoakH4P1RJd6+zpPz8=
+	t=1791232425; cv=none; b=RSa1jjIex4eVI2Qv7Skko0CMz82Kv2wT3WfLbWcPIb9KH5HofDRxMo2oSj9d4MN7WeSCtdizVzh0Io4peHAI645yA6GF0TrHoCIt73jR1E6VFOUBWCg8uGT3M+GYYaPQtDhKwblv+hdMyqKjboZ49SMgxCwc44xshRPJr5YhOiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791232170; c=relaxed/simple;
-	bh=o0D8pbbn/kyVlqxRb8CcuxR/o3BHaIgIdiXzlWC6sHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ACy+U2gr2h8YQ7Bkk3nPCX2kylyO2aP9S3l5n63peq56DTZcMCczylYsuZtcFbD1/hmV6FuT59dfKIWFuTtUY9h1SWl+HWRbK50eiZY+PxcbqYSjV+6Z5waNYh8nGkiHfLEEjG79Vwe988I8xbspb8v6a0MsXoHC7iRQwC0M564=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PP5ynW/O; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PP5ynW/O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C571F000FF;
-	Mon,  5 Oct 2026 20:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791232158;
-	bh=TRGfGq9Szoti9y54aNwyfNn/t4OPuYp21Qrq9BCxdDg=;
-	h=From:To:Cc:Subject:Date;
-	b=PP5ynW/OeaJfi/j1moETKkydlGFWYuadCnXJLD3QidDdawOFlZTzWhtuab37P3OHR
-	 AhqPqo087xYhWW30CbkEtAkD/KB4w+L57p1AtglROBTqCmi4E+KJG0MhACrdbN1z2F
-	 38WqxPkGGPGF1xFcWoIYCuTRGaM/PIpJP8PeWPzzmPW4mhLHSVPDDp4WZZFUSpaeVJ
-	 D3IsswBrYORRaUMDQMzaH17YIHpR9xPwfqhUJeH1XZCOMRQKVzvNDBXIbpOIFAo7JG
-	 GIOJrGX2QBV9OkFXjG7+EXUJEOANjAKto1wKVBNZPC84zG2wUokMweKETSNs1P27qq
-	 U2fC/E9dGv7yQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>
-Cc: netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3] dt-bindings: net: Convert HiSilicon hns-dsaf to DT schema
-Date: Mon,  5 Oct 2026 15:28:08 -0500
-Message-ID: <20261005202808.1982164-2-robh@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1791232425; c=relaxed/simple;
+	bh=W7ZgDV85XzKosR4KK6b9llQ1ZXpNjEupVAHB9XWhs4g=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FCwhejRD8XK6sVfqc1kUlsG4pWv+Q/Y9leQQPhmgI7EqoOZjIPEOJEIdO8B2AQ5IPE8VIYGom9u2Lbn3edhw0u2KgNQsu4YCg1TJsNpb9aVL1LVKZxsHRUSpznur1DIRGdp0MYAtpPT5mF9fUP0oXXfhTZteA+TjHiLROLYN/fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b2d1eb484aso3334412b6e.2
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:33:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791232418; x=1791837218;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yzbD9+nTxp47Myo0E+kEg48QK+FPm0GwCR6nWvaHwew=;
+        b=FPQ1efehZp2yEMCUGuBI3YsPwL5wDfP6orQd7RfPwYTOAbaDCQGaynjbxlq8//NAOO
+         sASsmgQxtNg0+gXEdNO/M8Qtq4C1dX/r6gVEGoSdpfaL99M8A/zPJtYBjtKOTxzZO4gx
+         bHSsxLfqi68XhJLkPOytOOglqzjIAOXPn1Ux25lB0Y77/rvylRxaHQM45vOw/GmDdl0J
+         UDgBMSUT/cwEMpRJZ55VEiSFOI4TpU0uBYh+G8uam0dASwsunKdSGJgdcAU/mKHOqLLM
+         ioBHp36g86EjbnrTi9X7GrlvQl4mnccWiZNk1GVP/Kup//KiqfhYkSddERos8hAOHW1m
+         UNlw==
+X-Forwarded-Encrypted: i=1; AKwUvBwzzBggBJ5VfqhKf9G/jURuQEOg5mHW0X2KRGwSg5dxJ0SaeZBf+xyGCblQ+YnEBc5yyq1kcdA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mj0mmZGhH9KGMH7vuS9kOpYIplbp8As262dAincSfEIW5meg5G
+	ewvdjzXSX40jyTOUoz/IXj/h9bE/p5ftanuQY75A9rJr9zTJ1Ged8EWZxiglP3ymeO/S3Pj0iXd
+	4O8aCwbgRmBdjqEfesQiU6GkKxAm/g5lk6dj2HkeX4dFoL7idIoC3dEXmIAA=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6808:1815:b0:4d6:9335:d533 with SMTP id
+ 5614622812f47-4f67bb6e875mr9355855b6e.64.1791232417839; Mon, 05 Oct 2026
+ 13:33:37 -0700 (PDT)
+Date: Mon, 05 Oct 2026 13:33:37 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ac409a1.ae2c267a.265a6c.0009.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Oct 2026)
+From: syzbot <syzbot+list7f43769dfd404e5bafc6@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Convert the HiSilicon hns-dsaf binding to DT schema format.
+Hello wireless maintainers/developers,
 
-Drop 'phy-handle' at top level as there are no users. Add undocumented
-'media-type' property.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Support for 4 'reg' regions is dropped as that has long been deprecated
-and there are no known users of it.
+During the period, 2 new issues were detected and 10 were fixed.
+In total, 18 issues are still open and 215 have already been fixed.
+There are also 6 low-priority issues.
 
-Assisted-by: LLM
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  1670    Yes   INFO: task hung in reg_process_self_managed_hints
+                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+<2>  1007    No    INFO: task hung in netdev_run_todo (4)
+                   https://syzkaller.appspot.com/bug?extid=894cca71fa925aabfdb2
+<3>  998     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+<4>  360     Yes   INFO: task hung in ath9k_hif_usb_firmware_cb (3)
+                   https://syzkaller.appspot.com/bug?extid=e9b1ff41aa6a7ebf9640
+<5>  55      Yes   INFO: task hung in nl80211_pre_doit (3)
+                   https://syzkaller.appspot.com/bug?extid=da14e8c0ada830335981
+<6>  19      Yes   INFO: task hung in cfg80211_event_work (4)
+                   https://syzkaller.appspot.com/bug?extid=5506b2556159a1ab6923
+<7>  8       No    BUG: workqueue lockup in reg_todo
+                   https://syzkaller.appspot.com/bug?extid=b733a65a200ab7aa2cbe
+<8>  6       Yes   WARNING in __carl9170_tx_process_status
+                   https://syzkaller.appspot.com/bug?extid=381102a7292a374fe8a7
+<9>  1879    Yes   INFO: task hung in reg_check_chans_work (7)
+                   https://syzkaller.appspot.com/bug?extid=a2de4763f84f61499210
+<10> 140     Yes   INFO: task hung in regdb_fw_cb (2)
+                   https://syzkaller.appspot.com/bug?extid=aff8125319e0457b4a25
+
 ---
-v3:
- - Make subctrl-syscon, buf-size and desc-num required
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-v2:
- - Add constraints for buf-size and desc-num
- - Drop erroneous 1st 2 'reg' entries
- - Fix example 'reg' cell sizes
- - Add 'backplane' to 'media-type' property
----
- .../bindings/net/hisilicon,hns-dsaf-v1.yaml   | 170 ++++++++++++++++++
- .../bindings/net/hisilicon-hns-dsaf.txt       |  90 ----------
- 2 files changed, 170 insertions(+), 90 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
- delete mode 100644 Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
-diff --git a/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml b/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
-new file mode 100644
-index 000000000000..4629acbba810
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/hisilicon,hns-dsaf-v1.yaml
-@@ -0,0 +1,170 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+# Copyright 2025 Hisilicon Ltd.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/hisilicon,hns-dsaf-v1.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Hisilicon DSA Fabric device controller
-+
-+maintainers:
-+  - Jian Shen <shenjian15@huawei.com>
-+  - Jijie Shao <shaojijie@huawei.com>
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - hisilicon,hns-dsaf-v1
-+          - hisilicon,hns-dsaf-v2
-+
-+  reg:
-+    minItems: 1
-+    items:
-+      - description:
-+          PPE register base and size
-+      - description:
-+          DSA Fabric base register and size (not required for single-port mode)
-+
-+  reg-names:
-+    minItems: 1
-+    items:
-+      - const: ppe-base
-+      - const: dsaf-base
-+
-+  interrupts:
-+    minItems: 1
-+    maxItems: 409
-+
-+  dma-coherent: true
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  mode:
-+    description: DSA Fabric mode string
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum:
-+      - 2port-64vf
-+      - 6port-16rss
-+      - 6port-16vf
-+      - single-port
-+
-+  subctrl-syscon:
-+    description: syscon handle for external interface control register
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+
-+  reset-field-offset:
-+    description: offset of reset field in the control register
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
-+  buf-size:
-+    description: RX buffer size (bytes)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [512, 1024, 2048, 4096]
-+
-+  desc-num:
-+    description: number of descriptors in TX and RX queue
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 16
-+    maximum: 1024
-+
-+patternProperties:
-+  "^port@[0-5]$":
-+    description: DSA Fabric port node
-+    $ref: ethernet-switch-port.yaml#
-+    additionalProperties: false
-+
-+    properties:
-+      reg:
-+        maximum: 5
-+
-+      phy-handle: true
-+
-+      serdes-syscon:
-+        description: syscon handle for SerDes register
-+        $ref: /schemas/types.yaml#/definitions/phandle
-+
-+      cpld-syscon:
-+        description: syscon handle plus register offset for CPLD register
-+        $ref: /schemas/types.yaml#/definitions/phandle-array
-+        items:
-+          - items:
-+              - description: CPLD phandle
-+              - description: offset
-+
-+      port-rst-offset:
-+        description: reset field offset for this port
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+
-+      port-mode-offset:
-+        description: port mode field offset for this port
-+        $ref: /schemas/types.yaml#/definitions/uint32
-+
-+      mc-mac-mask:
-+        description: multicast MAC address mask
-+        $ref: /schemas/types.yaml#/definitions/uint8-array
-+        maxItems: 6
-+
-+      media-type:
-+        $ref: /schemas/types.yaml#/definitions/string
-+        enum:
-+          - backplane
-+          - copper
-+          - fiber
-+
-+    required:
-+      - reg
-+      - serdes-syscon
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+  - interrupts
-+  - subctrl-syscon
-+  - mode
-+  - buf-size
-+  - desc-num
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    dsa@c5000000 {
-+        compatible = "hisilicon,hns-dsaf-v1";
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        mode = "6port-16rss";
-+        reg = <0xc5000000 0x890000
-+               0xc7000000 0x60000>;
-+        reg-names = "ppe-base", "dsaf-base";
-+        subctrl-syscon = <&subctrl>;
-+        reset-field-offset = <0>;
-+        interrupts = <131 4>, <132 4>, <133 4>, <134 4>,
-+                     <135 4>, <136 4>, <137 4>, <138 4>,
-+                     <139 4>, <140 4>, <141 4>, <142 4>,
-+                     <143 4>, <144 4>, <145 4>, <146 4>,
-+                     <147 4>, <148 4>, <384 1>, <385 1>,
-+                     <386 1>, <387 1>, <388 1>, <389 1>,
-+                     <390 1>, <391 1>;
-+        buf-size = <4096>;
-+        desc-num = <1024>;
-+        dma-coherent;
-+
-+        port@0 {
-+            reg = <0>;
-+            phy-handle = <&phy0>;
-+            serdes-syscon = <&serdes>;
-+            mc-mac-mask = [ff f0 00 00 00 00];
-+        };
-+
-+        port@1 {
-+            reg = <1>;
-+            serdes-syscon = <&serdes>;
-+            mc-mac-mask = [ff f0 00 00 00 00];
-+        };
-+    };
-diff --git a/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt b/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
-deleted file mode 100644
-index 8ee4b1cedae8..000000000000
---- a/Documentation/devicetree/bindings/net/hisilicon-hns-dsaf.txt
-+++ /dev/null
-@@ -1,90 +0,0 @@
--Hisilicon DSA Fabric device controller
--
--Required properties:
--- compatible: should be "hisilicon,hns-dsaf-v1" or "hisilicon,hns-dsaf-v2".
--  "hisilicon,hns-dsaf-v1" is for hip05.
--  "hisilicon,hns-dsaf-v2" is for Hi1610 and Hi1612.
--- mode: dsa fabric mode string. only support one of dsaf modes like these:
--		"2port-64vf",
--		"6port-16rss",
--		"6port-16vf",
--		"single-port".
--- interrupts: should contain the DSA Fabric and rcb interrupt.
--- reg: specifies base physical address(es) and size of the device registers.
--  The first region is external interface control register base and size(optional,
--  only used when subctrl-syscon does not exist). It is recommended using
--  subctrl-syscon rather than this address.
--  The second region is SerDes base register and size(optional, only used when
--  serdes-syscon in port node does not exist). It is recommended using
--  serdes-syscon rather than this address.
--  The third region is the PPE register base and size.
--  The fourth region is dsa fabric base register and size. It is not required for
--  single-port mode.
--- reg-names: may be ppe-base and(or) dsaf-base. It is used to find the
--  corresponding reg's index.
--
--- phy-handle: phy handle of physical port, 0 if not any phy device. It is optional
--  attribute. If port node exists, phy-handle in each port node will be used.
--  see ethernet.txt [1].
--- subctrl-syscon: is syscon handle for external interface control register.
--- reset-field-offset: is offset of reset field. Its value depends on the hardware
--  user manual.
--- buf-size: rx buffer size, should be 16-1024.
--- desc-num: number of description in TX and RX queue, should be 512, 1024, 2048 or 4096.
--
--- port: subnodes of dsaf. A dsaf node may contain several port nodes(Depending
--  on mode of dsaf). Port node contain some attributes listed below:
--- reg: is physical port index in one dsaf.
--- phy-handle: phy handle of physical port. It is not required if there isn't
--  phy device. see ethernet.txt [1].
--- serdes-syscon: is syscon handle for SerDes register.
--- cpld-syscon: is syscon handle + register offset pair for cpld register. It is
--  not required if there isn't cpld device.
--- port-rst-offset: is offset of reset field for each port in dsaf. Its value
--  depends on the hardware user manual.
--- port-mode-offset: is offset of port mode field for each port in dsaf. Its
--  value depends on the hardware user manual.
--- mc-mac-mask: mask of multicast address, determines bit in multicast address
--  to set:
--  1 stands for this bit will be precisely matched, TCAM will check this bit of
--    MAC address.
--  0 stands for this bit will be fuzzy matched, TCAM won't care about this bit
--    of MAC address.
--
--[1] Documentation/devicetree/bindings/net/phy.txt
--
--Example:
--
--dsaf0: dsa@c7000000 {
--	compatible = "hisilicon,hns-dsaf-v1";
--	mode = "6port-16rss";
--	interrupt-parent = <&mbigen_dsa>;
--	reg = <0x0 0xc5000000 0x0 0x890000
--	       0x0 0xc7000000 0x0 0x60000>;
--	reg-names = "ppe-base", "dsaf-base";
--	subctrl-syscon = <&subctrl>;
--	reset-field-offset = 0;
--	interrupts = <131 4>,<132 4>, <133 4>,<134 4>,
--		     <135 4>,<136 4>, <137 4>,<138 4>,
--		     <139 4>,<140 4>, <141 4>,<142 4>,
--		     <143 4>,<144 4>, <145 4>,<146 4>,
--		     <147 4>,<148 4>, <384 1>,<385 1>,
--		     <386 1>,<387 1>, <388 1>,<389 1>,
--		     <390 1>,<391 1>,
--	buf-size = <4096>;
--	desc-num = <1024>;
--	dma-coherent;
--
--	port@0 {
--		reg = 0;
--		phy-handle = <&phy0>;
--		serdes-syscon = <&serdes>;
--		mc-mac-mask = [ff f0 00 00 00 00];
--	};
--
--	port@1 {
--                reg = 1;
--                serdes-syscon = <&serdes>;
--		mc-mac-mask = [ff f0 00 00 00 00];
--        };
--};
--- 
-2.53.0
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
+You may send multiple commands in a single email message.
