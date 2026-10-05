@@ -1,141 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82E344780F;
-	Mon,  5 Oct 2026 13:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C233848550A
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791206833; cv=none; b=h2Sx+qYhEs+G9IWHqXuCPaCPHi6wfcSuUt89GyOYGl+IkLTq/1nvbuY7cxW2Mpyi1s5Pncv8Ieh6JcJma1WBcnTsR1jlz3R1GyWPtiiBkfX+FLDgjg90ML4GR8tFapzEyNE4otO2dgD5NLE6DzjbjifZnvIUsN+gYVEl/wb2Bng=
+	t=1791206888; cv=none; b=W/zwWY7DBjZtcncFtTHB7nbbhno5LYsDKt02Wa72uVZORj74K/Ke8Xy+H1V6Mzejv+w9YDu3Owtr95FOKvs+NszWY5DMF16KOdxjhG6pWiSUpHngB4qrJx0sgq/q+9bA3thzqdlAbhwyIREwXyCpsLR/TDpIK5XnnTFYLph6tGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791206833; c=relaxed/simple;
-	bh=cOQRX7zlYK29AazHSlnsUCFvh5fQjnyuPjUrCAziMeY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qkMX1n+UnnLnBh/dl2FKCPT+ULbGx71QhQ+ARhdqTDnDBScpL+TQyyaLPCwbyQyIDGZlthBmDSXRCJHFgrMXLLRlpKkKF8Syu9A2y0AFMtQRgnUsi6eanUQ3jHERBtSLhG4iFwWBx1CMtVVjddnCPZfLhowxyNy1vwHIS82VMxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MatDQ2TZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791206888; c=relaxed/simple;
+	bh=akgxDLCMRWnju1F8nlTi8ruGP54ydtpCtXeCGsNTtP4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uMnuAJeszR5Uw8IKOjqDAkufYbi9jKXlOqzPj9r4QcPAAb6DpeK3eVTxMEeSJBBnJcquJQyC51cJxHi2ZQVp+qu4Q+Kztx7DqN91XYRxg9CuhkdM3knXiY0bsjAT1QMcW9cXjT0sxeld10mkTQx5DCQxMaahNhM5SV55Kkzna1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RdlMj8jl; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MatDQ2TZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121071F000FF;
-	Mon,  5 Oct 2026 13:26:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791206798;
-	bh=tagE5Gg1FsrS7WWoiusWHMWvZZqHJEgLVoBN0QGwgR0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MatDQ2TZQ3oBTlwLl4wRmWtXYSHAPKfWoCutznQnaLm/4B0TbOiNkvrXGSZMuqIxL
-	 oqedWYwl9/j1Xlkb178ruCKbbwthUw4Y7fd/EKjaQ44JtM0C8mgR2y8cHmNZu31VXb
-	 mVeKr5h8J+ksZhn56QilKDLm0pbL+7KFC+ukaLtokeyEssc18R89A6PK9iEG2GSBFt
-	 dAQqdaEY2EO+7313QH/R01ZXZycFXWKtcskxM7RqntLkKdihjxG65w76LSnfIRJqgm
-	 VVgtu3oeOp7Tu2cwhuPsSmE4tgyl9UCRxu01GhGduUvw1wBG9qZCkzmYiF+cGDzFY7
-	 jCcQkZEjNJgRQ==
-Subject: Re: [PATCH net v13 3/4] net: phy: take the interrupt back from the
- bus on detach
-From: netdev-bot+sashiko@kernel.org
-To: f@lex.la
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, andrew+netdev@lunn.ch,
- hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- olteanv@gmail.com, Thangaraj.S@microchip.com, UNGLinuxDriver@microchip.com,
- steve.glendinning@shawell.net, f.fainelli@gmail.com,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 13:26:37 +0000
-Message-ID: <179120679761.434549.12466957475136887665@kernel.org>
-In-Reply-To: <20261001130236.106059-4-f@lex.la>
-References: <20261001130236.106059-4-f@lex.la>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RdlMj8jl"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-4a11603310fso16623205e9.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 06:28:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791206878; x=1791811678; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2UiFZMjxaNVOcwpMoTNUMbszzfHwtYL0qU2Yy5cm+FU=;
+        b=RdlMj8jlCxNGEq20K+2pFddX44VQ7qcDVW0iXNleAhb4e2gJiZYizJJM2Mz9LNYywy
+         uYnf54aD8sNAaJWoxfCYzfKaA0zIE/9838Xrs+HxJtnyQyoGDRrznPv9u8ewAdnx4hQe
+         NIJ7cS/r1oAtCYbzQQa1yOOSCpSFaotjc7s3wp9Q/ZKQTsnzEvc0uCC5bsGbSGP+WcsH
+         SueTPeKOcVHT2IrGDvcDko5h9u5GhOuLf1TsbQt1tPd2ZFr4IIGW5ecPMjFCFaNwyDi5
+         UMz3JzWAf0bYquqPGYNx3tsfAcNgRPtEzupYedyrLdVqfTafHbC1nApl5sY6V7yAE4uH
+         7ncQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791206878; x=1791811678;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2UiFZMjxaNVOcwpMoTNUMbszzfHwtYL0qU2Yy5cm+FU=;
+        b=v/VMrBVwHE973hES0ojweFuiSH+Xi7TPaT+ddBnEcJAoRaMkVRRRsZZ+kQ3VTsJPO7
+         lKdnzyuhiEYgbgOP+vpsF94Leu7K0Zv+qhRwlt6iGxc88EaxY+063XCbSaFXaewz1VxI
+         /p2QpeZQaA6S2BdzowQSGv89gDgOE3gecT7aO3hl9TUqSSoAYa/TN1Jstu8KLjCehnag
+         4kBgZI/WvKP/BoKlvoDAUNLBb3VT35ef/6qhFKVUpxKDaPjTaohp5U/Cz6ES9i5LMPZ4
+         PInNGmnze+JVGwCvGIA885IxEYoG+C6ncOtTucE+m+ubzjEIHcj+FhFzF96aI1L74qHC
+         X+cQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzvskfbQ9i2PYC2UKpFpKqS5rQs2loiprJh9NDmNtpHSU2Y9uuv2r+8FvL3rhcX/7W9eznSMyQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lhBl3+ZRT7427SNj5dic3GCcJvesm/u8nEn5ocZa4AwLRyU55k
+	sLDNKSBchlgSjgEcbxWZ6bwjNmSzARV40B6Byxh4t0dtAghlLK0aWz7C
+X-Gm-Gg: AYBFou1GLfXubT1PHCBX2n8d5mr1RHjF1S/4VsU0w6l1u4ExlJLewGLpKFL12LjD7os
+	oTtVDOaNZWP+bG5gd8Gj/kQPRA0E8spLD7ifCsa21V/YeA0PrBvxyWksjnQL9ZBn9A1V+wwfsk1
+	uvP3M3YR5DQrYjBiU6qBaHJGGwZNjQF+sRAS2qYor4muhq4uLp+UFB2iF/qO5KDESJNDueB1yB3
+	Wm7FZlkxw+Twu/XVsaIuiC4lhNuQGpAp/uHeI4sUGX59aRpczyhwIUOE5EwjOGEejTjjiE7Gj9e
+	zDToerRBsnGY6nwBS3OAKU5aGxFoOpX3PwtSZfeN4wiTwLY6p/9W4ZMRGv0s89mgmbgMCl48sOE
+	UxP1P9aXMQRIWxL/Ax1hQlCchDhxhalQOi+7gBvsW93SF+nQXoG/zZULj5tybxddKjzdHvY32qZ
+	oIhtXNHKqz/U+Dyeb30apLwKsekxA4uiFWZutt/1feJsvS5hSdNMWOcK90osOoTV2FrL2U
+X-Received: by 2002:a05:600c:474e:b0:49f:bd3c:bc1b with SMTP id 5b1f17b1804b1-4a02759b67emr197566455e9.22.1791206877810;
+        Mon, 05 Oct 2026 06:27:57 -0700 (PDT)
+Received: from metepc ([46.197.185.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a16d6295f9sm260315305e9.14.2026.10.05.06.27.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 06:27:57 -0700 (PDT)
+From: =?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+To: oe-linux-nfc@lists.linux.dev
+Cc: david@ixit.cz,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?=C3=96mer=20Mete=20Kaya?= <omermetekaya0@gmail.com>
+Subject: [PATCH net v2] nfc: nci: fix out-of-bounds read in nci_core_reset_rsp_packet()
+Date: Mon,  5 Oct 2026 16:26:28 +0300
+Message-ID: <20261005132742.324374-1-omermetekaya0@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+The skb->len != 1 guard admits a 2-byte payload where config_status
+at offset 2 lies one byte past skb->len.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Fix by guarding the nci_ver and config_status accesses with an explicit
+skb->len >= 3 check, and restoring the original skb->len != 1 condition
+around nci_req_complete() so the NCI 2.x reset request stays pending
+until CORE_RESET_NTF arrives.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Fixes: bcd684aace34 ("net/nfc/nci: Support NCI 2.x initial sequence")
+Signed-off-by: Ömer Mete Kaya <omermetekaya0@gmail.com>
+---
+Changes in v2:
+  - Preserve the original skb->len != 1 condition around
+    nci_req_complete() so the NCI 2.x reset request stays
+    pending until CORE_RESET_NTF arrives (reported by sashiko).
+  - Fix NCI version labels in comment (NCI 1.x = 3-byte RSP,
+    NCI 2.x = 1-byte RSP + NTF).
 
-- [Medium] In this commit only, the interrupt restore lives only in
-  phy_detach() (drivers/net/phy/phy_device.c:1969).
+ net/nfc/nci/rsp.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
+diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
+index e20df7fa0829..8226d09c99a5 100644
+--- a/net/nfc/nci/rsp.c
++++ b/net/nfc/nci/rsp.c
+@@ -32,22 +32,15 @@ static void nci_core_reset_rsp_packet(struct nci_dev *ndev,
+
+ 	pr_debug("status 0x%x\n", rsp->status);
+
+-	/* NCI 2.x reset response carries nci_ver and config_status;
+-	 * a 1-byte response is the NCI 1.x status-only form.
+-	 * Require at least 3 bytes before reading those fields.
+-	 */
+-	if (skb->len == 1) {
+-		nci_req_complete(ndev, rsp->status);
+-		return;
+-	}
+-
++	/* NCI 1.x: 3-byte RSP; NCI 2.x: 1-byte RSP, request completed by NTF. */
+ 	if (skb->len >= 3 && rsp->status == NCI_STATUS_OK) {
+ 		ndev->nci_ver = rsp->nci_ver;
+ 		pr_debug("nci_ver 0x%x, config_status 0x%x\n",
+ 			 rsp->nci_ver, rsp->config_status);
+ 	}
+
+-	nci_req_complete(ndev, rsp->status);
++	if (skb->len != 1)
++		nci_req_complete(ndev, rsp->status);
+ }
+
+ static u8 nci_core_init_rsp_packet_v1(struct nci_dev *ndev,
 --
+2.55.0
 
-net: phy: take the interrupt back from the bus on detach
-
-This commit makes phy_detach() restore phydev->irq from the bus table
-(mdio.bus->irq[]) when the generic driver was bound by
-phy_attach_direct(). It undoes the PHY_POLL substitution done by
-phy_probe() for genphy, so that a real driver bound later can use the
-interrupt.
-
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 94b2e85e00a37..a9c71a2861186 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -1965,6 +1965,8 @@ void phy_detach(struct phy_device *phydev)
->  	 * real driver could be loaded
->  	 */
->  	if (phydev->is_genphy_driven) {
-> +		/* The release below lets phy_probe() write this field. */
-> +		phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
-
-[Severity: Medium]
-This patch only restores the irq in phy_detach(). Is there a second way
-out of the genphy bind cycle that still leaves phydev->irq at PHY_POLL?
-
-In phy_attach_direct(), the generic probe and bind failures go straight
-to error_module_put. That path never reaches the error label that calls
-phy_detach():
-
-drivers/net/phy/phy_device.c:phy_attach_direct() {
-    ...
-	if (phydev->is_genphy_driven) {
-		err = d->driver->probe(d);
-		if (err >= 0)
-			err = device_bind_driver(d);
-
-		if (err)
-			goto error_module_put;
-	}
-    ...
-error_module_put:
-	module_put(d->driver->owner);
-	phydev->is_genphy_driven = 0;
-	d->driver = NULL;
-    ...
-}
-
-phy_probe() overwrites the irq before any of its steps that can fail:
-
-drivers/net/phy/phy_device.c:phy_probe() {
-    ...
-	if (!phy_drv_supports_irq(phydrv) && phy_interrupt_is_valid(phydev))
-		phydev->irq = PHY_POLL;
-    ...
-}
-
-The later steps include get_features, genphy_read_abilities() and
-genphy_c45_pma_read_abilities() (all MDIO reads), phy_setup_ports() and
-genphy_c45_read_eee_adv(). If one of them fails, or device_bind_driver()
-fails, error_module_put clears is_genphy_driven and d->driver but does
-not touch phydev->irq. A real driver that binds later would then still
-poll, which is the symptom the commit message describes.
-
-The last patch of this series, "net: phy: restore the interrupt when the
-generic bind cycle fails", appears to close this gap. It saves
-phydev->irq at the start of phy_attach_direct() and restores it under
-error_module_put. At this commit on its own, though, the restore covers
-only the phy_detach() path.
-
->  		device_release_driver(&phydev->mdio.dev);
->  		phydev->is_genphy_driven = 0;
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001130236.106059-1-f%40lex.la
