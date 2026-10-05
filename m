@@ -1,43 +1,43 @@
-Received: from mail-244121.protonmail.ch (mail-244121.protonmail.ch [109.224.244.121])
+Received: from mail-43102.protonmail.ch (mail-43102.protonmail.ch [185.70.43.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156EB385D6B
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E515338A73F
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791233524; cv=none; b=E3M0KBnoZW0iRI/cDIjuQNL/eypdStHZQPsuADteUjKSBRRvayOXzI4JIcsioZ+oKvQFIdolBMqtNNLoqRZ9p106CVEdUyGI8fHLJ7QBMhMQ76cyfN9c8FnNJ6S4IzprFPRgs7TKZF5zlR+9JLXCv5fhKbbbC6SLP6Jauex3U4I=
+	t=1791233541; cv=none; b=ubhdjAwywoRHvbT1KBFf1QyGrpNtUeQXZ76/ExC3bcSrzPYDbNNRH1GoLHDQBDT/nr0l9kJm+a0YzdP4bRILYl5p0EnnFr7ijek2ba/vFprgeFNGqpKvTrGx49aVEtleOtOZqncAqgo6w/NzCXtc0RDAZSbg7SsdaZjacE1dpwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791233524; c=relaxed/simple;
-	bh=uawxJTYUpagfB2bEzjS87yn3PM8pVynT2Bo7e717srU=;
+	s=arc-20240116; t=1791233541; c=relaxed/simple;
+	bh=3biLYym7vGQpoSXoqvf4kLmr25gXZLB/lOyVRb/ctvM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q1O+rSE7S3hGXU02SuG1b5QqbAC3zZFDlaOUYGiJoif05QxP1WqcgoIFCJ5v+QB/kK48IA0ctGW5j7SNCKH5M5CWtj5n9Rer4h8UDFuriZ6WPj/l3cH6xvTlpzZ2EEsvan1/vhdUhB4IkyK+hFepNPT1PTl27jmrSZj8lwfkibE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QoQClmGA; arc=none smtp.client-ip=109.224.244.121
+	 MIME-Version:Content-Type; b=Htm66ZqCH1oQrbiX+cK5Kj2QEkw3u580Q12sGHaOE5JADE7zWCDCvP3vLi0b3HOlYnmfMtXD6XmVtwezZtYTM25GdHxtVvvTACF3ceABbE+6w/7xdzCzwklgBd29XxJCXh6HsX+/dqoKsMpLGBHXa1nkJ4di40XcwuYbZQLSGSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WB2iIX4U; arc=none smtp.client-ip=185.70.43.102
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QoQClmGA"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WB2iIX4U"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1791233512; x=1791492712;
-	bh=/IkGLQOyLVOs4REBwahO0mLaLZQ3lLafg8HHnR9ztYU=;
+	s=protonmail2; t=1791233527; x=1791492727;
+	bh=3biLYym7vGQpoSXoqvf4kLmr25gXZLB/lOyVRb/ctvM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=QoQClmGAqla4ojd3IEzjeeWbgk857Dd9KxtyTfdW6B1GAcCy5O7W+T8j7mJKpRkcx
-	 e3ZBJc/dwdxrdiBHCRL9NUuMPj61tCCyRcfvrqOat0zij3VU4tlXspXZSpkmGKV+E7
-	 fJQE8KbcFColIGx8V1FrxBkW6RephxVPzpioDvDr0jZakVYXGDbU2FIl4OIr2JNOoP
-	 HRZP5Jc+b374xmPwBy/NE6/R7vCgHSzaprFSvs2ylPwxO7e34MXpEcOqILNAUft67f
-	 uECi4UUtAKirNFHdaYR3kJ1iSu/w/jUQjopiZO8aJl2OO1X3j3BGfxEwa7OwPAc+Pv
-	 P6qTWrv/gAO5Q==
-Date: Mon, 05 Oct 2026 20:51:46 +0000
+	b=WB2iIX4U1quNpTcSKN4up5AQyFB3Oxkyn7MH+R7QxZfP7YQqYFDigr/W9hW8qL++Q
+	 bB0mxFLQy46UV0Nod2auCdhEsyGRG5pQ8LTMb7Ta36fSLOKs7VFVJMzAlLl1eW9byu
+	 OYv23XtyhayFEZuePlxRK7xZ6w1zpI2QoG68Yp231VpvoVWs6KKziB8Adx+CSICMQ3
+	 /4EJgFtBYBFWvW+b+4BKWz5QQrQdNmbly1R3gTgyzl665EX3m3eVQg5/sluzg4rPEl
+	 JjnQEQiuDS0KREPO2FuFRJtcDIiRaurYQOdUhQ1EGNg8BEMn0dhKka56HT/jLLBzT4
+	 rg9qcK2PDNDrg==
+Date: Mon, 05 Oct 2026 20:52:02 +0000
 To: David Heidelberg <david@ixit.cz>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
 From: Kristian Brox <isyourbrainfoss@proton.me>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>, Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH v5 1/4] dt-bindings: net: nfc: add st,st21nfcd
-Message-ID: <20261005-fp5-st21nfcd-v5-v5-1-7be15a86c61c@proton.me>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Luca Weiss <luca.weiss@fairphone.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, Kristian Brox <isyourbrainfoss@proton.me>, Abel Vesa <abel.vesa@oss.qualcomm.com>
+Subject: [PATCH v5 4/4] arm64: dts: qcom: qcm6490-fairphone-fp5: add ST21NFCD NFC
+Message-ID: <20261005-fp5-st21nfcd-v5-v5-4-7be15a86c61c@proton.me>
 In-Reply-To: <20261005-fp5-st21nfcd-v5-v5-0-7be15a86c61c@proton.me>
 References: <20261005-fp5-st21nfcd-v5-v5-0-7be15a86c61c@proton.me>
 Feedback-ID: 203906395:user:proton
-X-Pm-Message-ID: 6e23999622433f70f7fb6821a49cd73a8ef60c23
+X-Pm-Message-ID: dd6ccd5ffe37ad9a70df7ac726de46ab6a0c595b
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,104 +47,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Add a compatible for the ST ST21NFCD NFC controller. Document optional
-SYS_CLK (clocks) and VPS_IO (vdd-io-supply).
+Enable the ST21NFCD on i2c9 (0x08), IRQ TLMM 41, reset TLMM 38
+active-low. Compatible is st,st21nfcd (raw NCI).
 
-ST21NFCD is not I2C-only; the ST data brief lists I2C and SPI.
-Split the spi-max-frequency if/else: forbid it for
-st,st21nfcb-i2c and st,st21nfcc-i2c, require it for st,st21nfcb-spi,
-and leave it optional for st,st21nfcd. Add clocks and vdd-io-supply to
-the existing st,st21nfcb-i2c example instead of a second I2C example.
+SYS_CLK is LN_BB_CLK2. VPS_IO is L18B (vreg_l18b). ese-present and
+uicc-present follow the public schematic (NFC_SWP1/SWP2: SWP_SE to
+SIM1, SWP_UICC to SIM2). Reader path is tested; SE/HCE is not.
 
 Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Abel Vesa <abel.vesa@oss.qualcomm.com>
 ---
- .../devicetree/bindings/net/nfc/st,st-nci.yaml     | 49 +++++++++++++++---=
-----
- 1 file changed, 35 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 34 ++++++++++++++++++=
++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml b/Doc=
-umentation/devicetree/bindings/net/nfc/st,st-nci.yaml
-index 1dcbddbc5..8abafb3d8 100644
---- a/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
-+++ b/Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml
-@@ -15,6 +15,7 @@ properties:
-       - st,st21nfcb-i2c
-       - st,st21nfcb-spi
-       - st,st21nfcc-i2c
-+      - st,st21nfcd
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm6=
+4/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index f41ad446a..b028d1bb2 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -933,7 +933,23 @@ redriver_ss_in: endpoint {
+ &i2c9 {
+ =09status =3D "okay";
 =20
-   reset-gpios:
-     description: Output GPIO pin used for resetting the controller
-@@ -36,26 +37,43 @@ properties:
-       Specifies that the uicc swp signal can be physically connected to th=
-e
-       controller
-=20
-+  clocks:
-+    maxItems: 1
-+    description:
-+      External reference clock connected to SYS_CLK.
+-=09/* ST21NFC NFC @ 28 */
++=09nfc@8 {
++=09=09compatible =3D "st,st21nfcd";
++=09=09reg =3D <0x08>;
 +
-+  vdd-io-supply:
-+    description:
-+      Digital I/O supply (VPS_IO).
++=09=09interrupts-extended =3D <&tlmm 41 IRQ_TYPE_LEVEL_HIGH>;
++=09=09reset-gpios =3D <&tlmm 38 GPIO_ACTIVE_LOW>;
 +
- required:
-   - compatible
-   - interrupts
-   - reg
-   - reset-gpios
-=20
--if:
--  properties:
--    compatible:
--      contains:
--        enum:
--          - st,st21nfcb-i2c
--          - st,st21nfcc-i2c
--then:
--  properties:
--    spi-max-frequency: false
--else:
--  $ref: /schemas/spi/spi-peripheral-props.yaml#
--  required:
--    - spi-max-frequency
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - st,st21nfcb-i2c
-+              - st,st21nfcc-i2c
-+    then:
-+      properties:
-+        spi-max-frequency: false
-+    else:
-+      $ref: /schemas/spi/spi-peripheral-props.yaml#
++=09=09pinctrl-0 =3D <&nfc_default>;
++=09=09pinctrl-names =3D "default";
 +
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: st,st21nfcb-spi
-+    then:
-+      required:
-+        - spi-max-frequency
-=20
- unevaluatedProperties: false
-=20
-@@ -76,6 +94,9 @@ examples:
-             interrupts =3D <2 IRQ_TYPE_LEVEL_HIGH>;
-             reset-gpios =3D <&gpio5 29 GPIO_ACTIVE_HIGH>;
-=20
-+            clocks =3D <&clk>;
-+            vdd-io-supply =3D <&vdd_io>;
++=09=09clocks =3D <&rpmhcc RPMH_LN_BB_CLK2>;
++=09=09vdd-io-supply =3D <&vreg_l18b>;
 +
-             ese-present;
-             uicc-present;
-         };
++=09=09ese-present;
++=09=09uicc-present;
++=09};
++
+ =09/* VL53L3 ToF @ 29 */
+ };
+=20
+@@ -1462,6 +1478,22 @@ hall_sensor_default: hall-sensor-default-state {
+ =09=09drive-strength =3D <2>;
+ =09=09bias-pull-up;
+ =09};
++
++=09nfc_default: nfc-default-state {
++=09=09reset-pins {
++=09=09=09pins =3D "gpio38";
++=09=09=09function =3D "gpio";
++=09=09=09drive-strength =3D <2>;
++=09=09=09bias-disable;
++=09=09};
++
++=09=09int-pins {
++=09=09=09pins =3D "gpio41";
++=09=09=09function =3D "gpio";
++=09=09=09drive-strength =3D <2>;
++=09=09=09bias-disable;
++=09=09};
++=09};
+ };
+=20
+ &uart5 {
 
 --=20
 2.55.0
