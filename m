@@ -1,304 +1,246 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801184C224C;
-	Mon,  5 Oct 2026 15:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD524B0E3B;
+	Mon,  5 Oct 2026 15:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791213644; cv=none; b=n2r413PdWhSNY+7CA++sbcsTYpljWMcOR2lzOzMBZbpXBr3/jPKPaWRuPivC2zoxNeivm7b1IBBgxjHBvx7Yn8neAAk8oJg8wSH2TI0wIptpBY2k/f514Epp7Yj+MVykLClL4hNs/03sNBQvUpq4kYgeaFdfJAc/RnlrOqc+D2w=
+	t=1791213791; cv=none; b=K4qUcUKuknJ4beFKkqpEmVDVqSN/T4AMa39j3i8ZbH1fRyoq5HoBza0Z8Rt/cIwg75QNTFoXPYm7TB53kioXikfD79qJ0X4kF8O5xJWji/+LWH/S+aDXcC8OSwD/Jomv6I02qSWaOqN5pOSbmFwlMZ1ghszeR0XzSy+nyIsuj1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791213644; c=relaxed/simple;
-	bh=m+geoa7sqgjtiAAaIl12GrIqmVWw2b/2v7tYNtQ1+yg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EGfgWzwUrTm16c03SjOHwXmwMTVRLPZnlmL3XcEYjjbXFD7pYlz7+x1OotyZa7/sEkJmlTL5RhOzTS3X1zlyiaSrJhLl91s6NYX6RCikC74JtS5IwGM5U7PVM8PqlXcBx+Vdtr0vMSVadILTansRJFVfybSKO8MJ74a5mZdqyRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7b3NiFm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791213791; c=relaxed/simple;
+	bh=RG1agnXLBjcZG441O6oFRZ0nobQwKmC/y9ELIPQfKAU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cFFuUmXbnzLgPm8vtkJ5S+3QU3UBbj60TfFyB9++d/KUPsVXAk5unNwMR2Tg+vBfzx1tgvT6DUPG+WkArKTTtndwtMdo6ViM6vrMBEyAneEkUQM5AQMEZzuiLOnw4wVAYjZZzpf1vuu9ra6es6Xb/dBhWeog/mHW9tyAurL3Cuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ICPvJIG7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PxGXBLY+; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nQ14j51C; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dIH+mpni; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7b3NiFm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C8091F000FF;
-	Mon,  5 Oct 2026 15:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791213643;
-	bh=D23wEKcHFE8exia2wYG9a025ElQqIYJw5G+VPC0O2qk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=m7b3NiFmQ40VKu+ArUfJhVj5YEtUU3sPDNL3Ij+3Aa6+yxeLB8YcUhvPFiAxTNt4+
-	 zNtSlz9uzTFSQYSjXLOYEfRJHq2pPn4u0xYe8iThLn7Qq2CF6A+ZvDAl3DwnAfeoU1
-	 d1dYUHfJq0CuzVOjuaW3aJgNmSTr/X06RvBpMokDXUFSKrgZUxCyXoj0UHGN1/Eh6Y
-	 Hc2063eNDIwv+OkXJ+NR8x3aPekYnzfMrHu0rtoLkaUgZDbevko52ORR/KddJL5eSF
-	 kCneIa5Az2cSXZAtkvuctPYJaZWNJ0Y9lb16gDWp+Jgrxs3SJlAAen0tfZ5On2rwLw
-	 w7z7dI7gXvaYA==
-Subject: Re: [PATCH net] net/x25: don't call lock_sock() from softirq in
- x25_kill_by_neigh()
-From: netdev-bot+sashiko@kernel.org
-To: ngocthang2710.1999@gmail.com
-Cc: ms@dev.tdt.de, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, duoming@zju.edu.cn, linma@zju.edu.cn,
- linux-x25@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+9faa82ae2e94c5c7d2ef@syzkaller.appspotmail.com
-Date: Mon, 05 Oct 2026 15:20:42 +0000
-Message-ID: <179121364205.434549.10310203820251738113@kernel.org>
-In-Reply-To: <20261001150118.128470-1-ngocthang2710.1999@gmail.com>
-References: <20261001150118.128470-1-ngocthang2710.1999@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ICPvJIG7";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PxGXBLY+";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nQ14j51C";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dIH+mpni"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id F122621DF8;
+	Mon,  5 Oct 2026 15:22:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791213783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TtWOvTzDhsbL+fnaDf7hn8RMABYqEKUGcMYsDWK0xRI=;
+	b=ICPvJIG77dMO7DopWY1BM9La9FdlEBUDQeFcPYoxCfs6HuSG7abOWe5348gYc8HU1LGFqP
+	IvmikGCMZfGZTOix/Go543ylzM6uzmtacvWJMuQh5KUlzxgyJnfscSHm+Vz7NiHM5t1KzV
+	XPJpgGABl5hKiryFx9UjbVfXraooeJc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791213783;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TtWOvTzDhsbL+fnaDf7hn8RMABYqEKUGcMYsDWK0xRI=;
+	b=PxGXBLY+sBw49+/lvxY+ac1W0bcl1OeDfPRV7JQZnHe2d2PuyKp15OGkKkaeKW1FBKpGln
+	0fffPRXB7yVMCnDw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nQ14j51C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dIH+mpni
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791213778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TtWOvTzDhsbL+fnaDf7hn8RMABYqEKUGcMYsDWK0xRI=;
+	b=nQ14j51CuWC/cIB0kruN6i6tB+xCe4/p2VcA2pEAwI27C4uME72yTEiD6b5mjr5kri6T2y
+	mOplc5c+c3wGZvJcJM3vKInjmQqChgIfExnCS2+aekuhXf6DxFquEaKssPYwmaD3TQnhst
+	oI0xY/ZLuG0dRgjwzD+DSgCnX0UZlPw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791213778;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TtWOvTzDhsbL+fnaDf7hn8RMABYqEKUGcMYsDWK0xRI=;
+	b=dIH+mpnih/qOlD7xtr2Ya64dfoFdMPpTCMGccl5mS91PRSFFZsqG8WFlNzVF7o5lKFg9J0
+	LIaIE0JdLogkveDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3EB213B06;
+	Mon,  5 Oct 2026 15:22:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xHu4JtHAw2oLbwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 05 Oct 2026 15:22:57 +0000
+Message-ID: <6af568ad-c487-49da-b087-fa0b600b247b@suse.de>
+Date: Mon, 5 Oct 2026 17:21:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH nf-next v2] netfilter: nft_synproxy: only handle pure SYN
+ and ACK packets
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+ Fernando Fernandez Mancera <ffmancera@riseup.net>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+d7795c8487ca4e20ed88@syzkaller.appspotmail.com,
+ syzbot+d0d2f1a65f45b319d25d@syzkaller.appspotmail.com,
+ syzkaller-bugs@googlegroups.com
+References: <20261004160615.142456-1-ngocthang2710.1999@gmail.com>
+ <20261005151257.9128-1-ngocthang2710.1999@gmail.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20261005151257.9128-1-ngocthang2710.1999@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_TO(0.00)[gmail.com,netfilter.org,strlen.de];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	TAGGED_RCPT(0.00)[d0d2f1a65f45b319d25d,d7795c8487ca4e20ed88];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,appspotmail.com:email,suse.de:dkim,suse.de:email,suse.de:mid,syzkaller.appspot.com:url]
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: F122621DF8
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On 10/5/26 5:12 PM, Nguyen Ngoc Thang wrote:
+> nft_synproxy treats any segment with SYN set as a client's initial SYN
+> and any segment with ACK set as the client's final ACK. A SYN-ACK thus
+> gets answered with a fresh SYN-ACK cookie.
+> 
+> If that reply is routed back to the same host, e.g. to a peer address
+> covered by an address on lo, it re-enters the input hook, is answered
+> again, and never stops. Every such SYN starts its own endless loop over
+> the loopback backlog, so NET_RX softirq keeps the CPU busy and memory
+> fills with skbs and rtable entries until workqueues stall and the
+> machine OOMs.
+> 
+> Use the same flag checks as ip(6)t_SYNPROXY: SYN without ACK, FIN or
+> RST is an initial SYN; ACK without SYN, FIN or RST is the client ACK.
+> Anything else falls through to the next expression.
+> 
+> Reported-by: syzbot+d7795c8487ca4e20ed88@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=d7795c8487ca4e20ed88
+> Reported-by: syzbot+d0d2f1a65f45b319d25d@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=d0d2f1a65f45b319d25d
+> Signed-off-by: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+> ---
+> v2:
+> - Retarget to nf-next (Pablo).
+> - Drop the Fixes: tag accordingly.
 
-Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 1
+This should have been sent as a standalone thread not as a reply under 
+the v1. In any case, I agree with the patch.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-- [Medium] The patch adds a deferred-kill state.
-- [Low] x25_make_new() copies the parent's whole flags word into the
-  child (`x25->flags = ox25->flags;`) and clears only X25_INTERRUPT_FLAG.
+> 
+> v1: https://lore.kernel.org/all/20261004160615.142456-1-ngocthang2710.1999@gmail.com/
+> 
+> Notes (not for the changelog):
+> 
+> Reproduced in QEMU (x86_64, 2 vCPUs, KASAN+lockdep) with syzbot's C
+> repro for d7795c8487ca4e20ed88. Minimised: only the nft batch and the
+> injected SYN matter, which is exactly the d0d2f1a65f45b319d25d program.
+> 
+> The rule is an inet table, base chain on input, with an unconditional
+> "synproxy" expression. The SYN goes from 172.20.20.187 to .170 via tun;
+> syzkaller puts 172.20.20.10/24 on lo, so the whole /24 is local and the
+> SYN-ACK cookie comes back through lo. Instrumented trace:
+> 
+>    synproxy tx .170->.187 in=syz_tun out=lo syn=1 ack=1
+>    synproxy tx .187->.170 in=lo      out=lo syn=1 ack=1
+>    synproxy tx .170->.187 in=lo      out=lo syn=1 ack=1
+>    ...
+> 
+> Before (3fd2ff60f6d6, full C repro):
+>    - synproxy syn_received ~400k per CPU per netns after 15s
+>    - rtable 80k -> 295k, skbuff_head_cache >1M, softirq time explodes
+>    - "BUG: workqueue lockup", then OOM / hung task, VM wedges
+> 
+> After (2 runs x 300s, full C repro):
+>    - no lockup, hung task or OOM
+>    - rtable flat (~2.2k), skbuff_head_cache flat (~80k)
+>    - syn_received grows slowly (~9.5k/300s): real SYNs still answered
+> 
+> ACK|FIN and ACK|RST no longer hit the cookie check (and its NF_DROP);
+> they continue, as with ip(6)t_SYNPROXY's XT_CONTINUE. The usual
+> "ct state invalid drop" rule still catches them.
+> 
+>   net/netfilter/nft_synproxy.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
+> index 9ed288c9d168..a580cb7324da 100644
+> --- a/net/netfilter/nft_synproxy.c
+> +++ b/net/netfilter/nft_synproxy.c
+> @@ -53,13 +53,13 @@ static void nft_synproxy_eval_v4(const struct nft_synproxy *priv,
+>   	struct synproxy_net *snet = synproxy_pernet(net);
+>   	struct sk_buff *skb = pkt->skb;
+>   
+> -	if (tcp->syn) {
+> +	if (tcp->syn && !(tcp->ack || tcp->fin || tcp->rst)) {
+>   		/* Initial SYN from client */
+>   		nft_synproxy_tcp_options(opts, tcp, snet, &info);
+>   		synproxy_send_client_synack(net, skb, tcp, opts);
+>   		consume_skb(skb);
+>   		regs->verdict.code = NF_STOLEN;
+> -	} else if (tcp->ack) {
+> +	} else if (tcp->ack && !(tcp->fin || tcp->rst || tcp->syn)) {
+>   		/* ACK from client */
+>   		if (synproxy_recv_client_ack(net, skb, tcp, opts,
+>   					     ntohl(tcp->seq))) {
+> @@ -84,13 +84,13 @@ static void nft_synproxy_eval_v6(const struct nft_synproxy *priv,
+>   	struct synproxy_net *snet = synproxy_pernet(net);
+>   	struct sk_buff *skb = pkt->skb;
+>   
+> -	if (tcp->syn) {
+> +	if (tcp->syn && !(tcp->ack || tcp->fin || tcp->rst)) {
+>   		/* Initial SYN from client */
+>   		nft_synproxy_tcp_options(opts, tcp, snet, &info);
+>   		synproxy_send_client_synack_ipv6(net, skb, tcp, opts);
+>   		consume_skb(skb);
+>   		regs->verdict.code = NF_STOLEN;
+> -	} else if (tcp->ack) {
+> +	} else if (tcp->ack && !(tcp->fin || tcp->rst || tcp->syn)) {
+>   		/* ACK from client */
+>   		if (synproxy_recv_client_ack_ipv6(net, skb, tcp, opts,
+>   						  ntohl(tcp->seq))) {
 
-Pre-existing issues:
-- [High] x25_sendmsg() checks `if (!x25->neighbour)` under lock_sock().
-- [Medium] On NETDEV_DOWN, x25_device_event() runs under RTNL and calls
-  the new x25_kill_by_neigh_sync().
-
---
-
-net/x25: don't call lock_sock() from softirq in x25_kill_by_neigh()
-
-x25_kill_by_neigh() can be reached from softirq. This patch replaces its
-lock_sock() with bh_lock_sock(). Sockets not owned by user are
-disconnected right away. Owned sockets are marked with X25_KILL_FLAG, and
-a new x25_release_cb() disconnects them on release_sock(). NETDEV_DOWN
-also runs a sleeping x25_kill_by_neigh_sync() sweep.
-
-> diff --git a/net/x25/af_x25.c b/net/x25/af_x25.c
-> index 033e7d059f58c..4f9ca22231ac7 100644
-> --- a/net/x25/af_x25.c
-> +++ b/net/x25/af_x25.c
-> @@ -200,6 +200,32 @@ static void x25_remove_socket(struct sock *sk)
->  	write_unlock_bh(&x25_list_lock);
->  }
->  
-> +/*
-> + * Process context only: wait for owners that x25_kill_by_neigh() deferred,
-> + * so no socket still uses nb once the device goes away.
-> + */
-> +static void x25_kill_by_neigh_sync(struct x25_neigh *nb)
-> +{
-> +	struct sock *s;
-> +
-> +again:
-> +	write_lock_bh(&x25_list_lock);
-> +
-> +	sk_for_each(s, &x25_list) {
-> +		if (x25_sk(s)->neighbour == nb) {
-> +			sock_hold(s);
-> +			write_unlock_bh(&x25_list_lock);
-> +			lock_sock(s);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but can this sweep hold RTNL
-indefinitely?
-
-x25_device_event() handles NETDEV_DOWN with RTNL held and calls
-x25_kill_by_neigh_sync(). That function sleeps in lock_sock() for each
-socket on nb. Meanwhile, x25_sendmsg() holds the socket lock across the
-user copy:
-
-net/x25/af_x25.c:x25_sendmsg() {
-    ...
-	rc = memcpy_from_msg(skb_transport_header(skb), msg, len);
-    ...
-}
-
-If the user buffer is backed by userfaultfd or FUSE, the user can stall
-that copy for as long as they like. A later "ip link set <dev> down"
-would then block here with RTNL held.
-
-The old x25_kill_by_neigh() made the same lock_sock() call from the same
-notifier. The commit message keeps this on purpose ("keep waiting for
-socket owners there as before"), so the new helper carries it forward.
-
-> +			if (x25_sk(s)->neighbour == nb)
-> +				x25_disconnect(s, ENETUNREACH, 0, 0);
-
-[ ... ]
-
-> @@ -495,10 +522,20 @@ static int x25_listen(struct socket *sock, int backlog)
->  	return rc;
->  }
->  
-> +/* Finish a link teardown that hit while the socket was owned by user. */
-> +static void x25_release_cb(struct sock *sk)
-> +{
-> +	struct x25_sock *x25 = x25_sk(sk);
-> +
-> +	if (test_and_clear_bit(X25_KILL_FLAG, &x25->flags) && x25->neighbour)
-> +		x25_disconnect(sk, ENETUNREACH, 0, 0);
-
-[Severity: Low]
-Can X25_KILL_FLAG be inherited by a child socket?
-
-x25_make_new() copies the whole flags word from the listener and clears
-only X25_INTERRUPT_FLAG:
-
-net/x25/af_x25.c:x25_make_new() {
-    ...
-	x25->flags	= ox25->flags;
-    ...
-	clear_bit(X25_INTERRUPT_FLAG, &x25->flags);
-    ...
-}
-
-x25_connect() does not reject TCP_LISTEN sockets, and it assigns
-x25->neighbour while it owns the socket. A link kill during connect()
-can therefore set X25_KILL_FLAG on a socket that was listening.
-
-x25_rx_call_request() clones the listener without taking its socket
-lock. A child created in that window would inherit the bit, even though
-its own neighbour is healthy.
-
-x25_release_cb() does not check which neighbour caused the kill. The
-child's first release_sock() after accept() would then disconnect its
-call with ENETUNREACH, and no CLEAR is sent to the peer.
-
-The sequence is contrived. Should x25_make_new() also clear
-X25_KILL_FLAG?
-
-> +}
-> +
-
-[ ... ]
-
-> @@ -1764,6 +1801,23 @@ static struct notifier_block x25_dev_notifier = {
->  	.notifier_call = x25_device_event,
->  };
->  
-> +/* May run in softirq, so lock_sock() is not an option. */
-> +static void x25_kill_sock(struct sock *sk, struct x25_neigh *nb)
-> +{
-> +	struct x25_sock *x25 = x25_sk(sk);
-> +
-> +	local_bh_disable();
-> +	bh_lock_sock(sk);
-> +	if (x25->neighbour == nb) {
-> +		if (sock_owned_by_user(sk))
-> +			set_bit(X25_KILL_FLAG, &x25->flags);
-
-[Severity: Medium]
-While the flag is set, x25->lci and x25->neighbour stay unchanged until
-x25_release_cb() runs. __x25_find_socket() matches on only those two
-fields:
-
-	if (x25_sk(s)->lci == lci && x25_sk(s)->neighbour == nb) {
-
-Could a new incoming call on the same LCI end up on the stale socket's
-backlog?
-
-In X25_LINK_STATE_3, x25_link_control() acknowledges a restart as soon
-as x25_kill_by_neigh() returns:
-
-		case X25_LINK_STATE_3:
-			/* clear existing virtual calls */
-			x25_kill_by_neigh(nb);
-
-			x25_transmit_restart_confirmation(nb);
-
->From then on the peer treats every LCI as free. Suppose it sends a
-CALL_REQUEST on an LCI still held by a flagged, user-owned socket.
-x25_receive_data() finds that socket before it checks the frame type:
-
-	if ((sk = x25_find_socket(lci, nb)) != NULL) {
-		...
-			queued = !sk_add_backlog(sk, skb, READ_ONCE(sk->sk_rcvbuf));
-	...
-	if (frametype == X25_CALL_REQUEST)
-		return x25_rx_call_request(skb, nb, lci);
-
-The call therefore never reaches x25_rx_call_request().
-
-release_sock() replays the backlog before it calls release_cb, so the
-old connection's state machine handles the CALL_REQUEST. In
-X25_STATE_1, x25_state1_machine() treats it as a call collision and
-clears the peer's new call:
-
-	case X25_CALL_REQUEST:
-		/* call collision */
-		...
-		x25_write_internal(sk, X25_CLEAR_REQUEST);
-		x25_disconnect(sk, EISCONN, 0x01, 0x48);
-
-In X25_STATE_3 the frame is dropped as unknown, and x25_release_cb()
-then disconnects the socket.
-
-Before 7781607938c8 the disconnect was immediate. The lock_sock()
-version waited for the owner. Either way, the old (lci, nb) binding was
-gone before the restart was answered.
-
-This window also seems to contradict the note after the commit message
-that a link that comes back quickly cannot have stale state kill
-freshly connected calls.
-
-Should the lookup skip sockets with X25_KILL_FLAG set? Alternatively,
-the lci/neighbour binding could be dropped at kill time.
-
-> +		else
-> +			x25_disconnect(sk, ENETUNREACH, 0, 0);
-
-[Severity: High]
-This is a pre-existing issue, but the immediate disconnect here still
-seems to race with x25_sendmsg().
-
-x25_sendmsg() checks x25->neighbour under lock_sock(). It then drops
-the lock around the skb allocation, and afterwards checks only skb:
-
-	release_sock(sk);
-	skb = sock_alloc_send_skb(sk, size, noblock, &rc);
-	lock_sock(sk);
-	if (!skb)
-		goto out;
-
-While the lock is dropped the socket is not owned. Two paths can then
-run x25_disconnect() and set x25->neighbour to NULL:
-
-  - this branch of x25_kill_sock(), reached from a RESTART or LAPB
-    disconnect via x25_kill_by_neigh()
-  - a remote CLEAR_REQUEST through x25_state3_machine()
-
-sock_alloc_send_pskb() checks sk_err and SEND_SHUTDOWN only before it
-allocates. A disconnect during the allocation or the relock goes
-unnoticed, and the sender then reaches this before any TCP_ESTABLISHED
-recheck:
-
-	if (msg->msg_flags & MSG_OOB) {
-		if (x25->neighbour->extended) {
-
-The non-OOB branch has the same dereference. Can a remote peer trigger
-a NULL pointer dereference this way?
-
-The fragmentation loop in x25_output() has the same pattern. Each
-fragment does release_sock() / sock_alloc_send_skb() / lock_sock(),
-followed by an unchecked x25->neighbour->extended.
-
-The old lock_sock() in x25_kill_by_neigh() could take the lock in the
-same window, so this predates the patch. Still, the claim about keeping
-the 7781607938c8 serialization holds only as far as that earlier fix
-went.
-
-> +	}
-> +	bh_unlock_sock(sk);
-> +	local_bh_enable();
-> +}
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001150118.128470-1-ngocthang2710.1999%40gmail.com
