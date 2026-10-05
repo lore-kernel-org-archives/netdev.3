@@ -1,235 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A20E4A0913;
-	Mon,  5 Oct 2026 14:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB4A4AD4B2
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 14:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791210987; cv=none; b=UADBN9tVVXU8/dwGPnSWFBQaCO1YBACHrajk3KvP/WPm6bRuuEiTIRAttntUpHmaTY0qUFAJVduIKdj+MoX24L7zB+DYfNO5d5hHDSp5AXZXFWjU6MzITq5G+eIeLFNZxsIOs5m1aeL/WAn1JN97mGek8idsXKDHIhKydKf0df0=
+	t=1791211204; cv=none; b=YkWHyYC7/HmJ3wN5P4Rg3o8crrMi6pMq1mOs6Xad3BLM4ftgcNNUaupXmFB+jomnS88TmuHyBDwiuBjmdkU/atI2T7X5+0msdWxZ6Jt1ZnPZGJzXVvcetS0j5DpFjc0DTfcOEV8c10+05J261pdrckzgItbhlkEM/zWyR8m7uCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791210987; c=relaxed/simple;
-	bh=QAhqbUCEw/Bi8WuZmwKE/HrWWVNb0rmCqV15FbxleqQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QxWCM4Wt6ZpKlWeLsGz4uY6ULyYlokyzvq852o3mrfGO5tWSgFMAp5Z8ScbGq5AB7O2gaoyTlihSXSoyl656jq5ltMSIzT2oALhttb9UaKxymokfxL4ZOw0rvKpiDueUzeBUdVhEd9S2U9eAsVEnsWmJB3b6k5RThHmgc8xZN/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tpgff4Vm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791211204; c=relaxed/simple;
+	bh=7prVsLcxC5euibeO10biFrGSkYTV8r8zEoYUDnCIDAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bXE6xcNuIoWlO1zwXyM4ou+E0+P1pv9Rr+Zm3KzyzZPdr4oMHc3WIPaX5nZXvz3Fd03X80ycWt6kiY++2trn4zpmbaZqbNwLH9ByULqq6KnLgxXWW3pdneZQ3GuMNcbWhHGs1lyCwXyIDm5Hy3znvPAbL1T64rieCBbOtexLQrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=bGNXo/hu; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tpgff4Vm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0DD1F000FF;
-	Mon,  5 Oct 2026 14:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791210974;
-	bh=2LUuyLYUKU9h7Ea0wFMspyzfBUMYJEXCWcPXe6626t4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Tpgff4Vm9fIiigwJoq2GholDOdF2CO6WQdQlyagDXV2i7ygFlxv3T+eRi6eaXwKWS
-	 9abwB5aLISbts6K7xhq4sw/MwXBwiKG0fDNJ/lZNA63Xv7TGr/5+pL9cPSHvSX7flC
-	 FRyHKGVZQpo0K0RTQ831zTSEBRIWQA0WEZgzSxd3QJcdc0yamMC0+nShcrzjJiKiVE
-	 1Gc0pEoWfxhA8B2zs8nOF3w/SVvJpR6g/Ne2uR+97yuzfqD/js6+39K8Lz0A6r5ZCg
-	 DotIlrQtv4Nsgm4GL4Nr67X6Ki3O43NVLmbKLTvU5vDLS20PgBtQZhzJCnKi54zekH
-	 VrdGGxOm7s5BA==
-Subject: Re: [PATCH net v3] bnxt_en: don't leave an XDP program installed when
- the open fails
-From: netdev-bot+sashiko@kernel.org
-To: vnagare@redhat.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
- john.fastabend@gmail.com, sdf@fomichev.me, andrew+netdev@lunn.ch,
- netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- nagarevaibhav@gmail.com, stable@vger.kernel.org
-Date: Mon, 05 Oct 2026 14:36:12 +0000
-Message-ID: <179121097298.434549.15823633516902971097@kernel.org>
-In-Reply-To: <20261001142516.1386525-1-vnagare@redhat.com>
-References: <20261001142516.1386525-1-vnagare@redhat.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="bGNXo/hu"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49ff680331aso18656475e9.3
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 07:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1791211196; x=1791815996; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=x9j6IEIFgBzPxK946Me+Dgw49Jbt2Vury8puH8M1Nww=;
+        b=bGNXo/huoVP2DdsDrkBJbXt+ri6+WtkbojVPtBR6QZStHYd2ZLzfzIgH7zy77oBbB3
+         T05M6VoMFydJbfKUPqMcnr8LLc9S6qiS7JNS/Sbb7lDzFRt1zKzpqXPHvss0CHa+Wi1S
+         WtazEH2Q/5xu3seCpxmUVACXm8M8md45Glpw+RzZrNg+vEvN8DmBtO+FK9iMWLtLtUtP
+         HVHpBzocGqMbumoRE1E9Dde2hKKp5gyIlJi+jTs3LjxNHCFsv8MDlduFRk4i736erTQI
+         1b9HkdAD6ftzXT3COlBU4aE/b4ASpg5kxjl2VhP1RqCbjU0Z5ZW3zPEudOwgdL0jS4lV
+         gehg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791211196; x=1791815996;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=x9j6IEIFgBzPxK946Me+Dgw49Jbt2Vury8puH8M1Nww=;
+        b=P87vRv5H2B7czAU7kiro8kw74nIYk1lYcuD8Mawz9FyGY+MbpPrJOI1ny3di31USQ+
+         7xAsiOq2NE1L6bA362wuYB7rr1Vtf95+3CESSwYR5m3fu9kTATMSDxpXovsrEdN4V5w/
+         zklFZbvgjkLAlvlFIGOgku8rymvkyqVAKOn5M/pKsE9Cloy055GQdU7qVAm0JFKKPoXO
+         rd/mFtILYK/rGMfx1FlbddYVm6/ekxB6WEkLBLuYcboEgTTrtdnMrBmMOzw9FRCbMfH4
+         KZ06cXluFLG9JcAcWdNYZwvtie6JFFKil1ar9OAjWgZXssGCxOlKTchnGmt1sXHpoL3U
+         miOQ==
+X-Gm-Message-State: AFuF++mTlXT/t2mx8EyGX/lg9+z1Foy2MLKdrAb8YgmQX/4jdmrthbTj
+	pc8r4WVyCeVQUTRCmyrxmeF+SiPnlpQ4SOLpEGTZnVLMa0wudlPu4e2gGyzTR22NP8nJOMSgbXB
+	2cYdD
+X-Gm-Gg: AYBFou0f6F/fGX3Fn8D3d57Sp1gRVLuHa+a1p5/CHD+jgNka5SwHOTK/4GmzbdTmHNl
+	IHog4Lz4Nk9FdKhSsY9r2mz6rBMdpfa1sO8mCsO85yJ9xbC18aIFSX8lxg3weHKmakLKLx5EBy5
+	I1kQp76TBbNgBC3N56L8/AOK5Csq9oBIQAeN3laj8ZoMAuIUI/cTX0XJ984re3/sCRvj7CoMwEE
+	5d+vN6PqD0SJ5gGK+E8go0tCc7bikSnunE6N3enNh3pMnuivvbP1+t7J5P/MG4cR2Yn0yqCW6hh
+	2Q9IEigngPSJpBj25Zv0CUr3D5rbd0D/sJlP64icGwi2D+5wdmpvDAMmyu8JiA1s/uGgemHloyy
+	5gWo262sCoz8HEk3Vx1Y2kVxjvgqc9Ejw8ObXsN20YJQDDn+qr1Xs6a7HSW1DOnpEPFqNK+CRPa
+	nTHINtR9elNQsx+LeVKkSnK7LZeAVPNc4jXH9C8ozwWUsp+hl6RPDFOar1fwMYl7mDDY7JBYY2c
+	CENacq5MWOtZ7u3kBku
+X-Received: by 2002:a05:600c:c4aa:b0:4a0:5b:7bc0 with SMTP id 5b1f17b1804b1-4a1680f7780mr137106015e9.21.1791211196470;
+        Mon, 05 Oct 2026 07:39:56 -0700 (PDT)
+Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4a03ff56136sm135003335e9.3.2026.10.05.07.39.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 07:39:55 -0700 (PDT)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bridge@lists.linux.dev,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: [PATCH net-next 2/6] net: bridge: fdb: update the comment for br_fdb_cleanup_by_dst
+Date: Mon,  5 Oct 2026 17:39:33 +0300
+Message-ID: <20261005143937.877466-3-razor@blackwall.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261005143937.877466-1-razor@blackwall.org>
+References: <20261005143937.877466-1-razor@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Update the comment for br_fdb_cleanup_by_dst to better reflect what it is
+doing after the recent changes.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ net/bridge/br_fdb.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The rollback after a failed attach does not restore the RX
-  aggregation-ring mode that existed before the attach.
-- [Low] Detach now hides a failed reopen and returns success, and neither
-  the commit message nor the code comment says so.
-
---
-
-bnxt_en: don't leave an XDP program installed when the open fails
-
-This patch changes bnxt_xdp_set() so the old program is released only
-after bnxt_open_nic() succeeds. When an attach or a replace fails, the
-previous program and its ring configuration are put back. The ring and
-feature setup moves into a new helper, bnxt_xdp_apply_cfg(), and a detach
-whose reopen fails is not undone.
-
-> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-> index 9e5009be8e989..430272fc0594a 100644
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-
-[ ... ]
-
-> @@ -418,25 +438,22 @@ static int bnxt_xdp_set(struct bnxt *bp, struct bpf_prog *prog)
->  	if (netif_running(dev))
->  		bnxt_close_nic(bp, true, false);
->  
-> +	old_tx_xdp = bp->tx_nr_rings_xdp;
->  	old = xchg(&bp->xdp_prog, prog);
-> -	if (old)
-> -		bpf_prog_put(old);
-> -
-> -	if (prog) {
-> -		bnxt_set_rx_skb_mode(bp, true);
-> -		xdp_features_set_redirect_target_locked(dev, true);
-> -	} else {
-> -		xdp_features_clear_redirect_target_locked(dev);
-> -		bnxt_set_rx_skb_mode(bp, false);
-> +	bnxt_xdp_apply_cfg(bp, tx_xdp);
-> +
-> +	if (netif_running(dev)) {
-> +		rc = bnxt_open_nic(bp, true, false);
-> +		/* dev_xdp_detach_link() drops the ref even if we fail */
-> +		if (rc && prog) {
-
-[Severity: Low]
-On a detach, prog is NULL, so if bnxt_open_nic() fails the error never
-reaches the caller. The code falls through to bpf_prog_put(old) and
-returns 0. By that point bnxt_open_nic() has already closed the device:
-
-bnxt_open_nic() {
-    ...
-	if (rc) {
-		netdev_err(bp->dev, "nic open fail (rc: %x)\n", rc);
-		netif_close(bp->dev);
-	}
-    ...
-}
-
-Before this patch the detach path ended with return bnxt_open_nic(...),
-so callers saw the error. Those callers include "ip link set dev X xdp
-off", a bpf_link detach and bonding propagation. Now they all report
-success while the port is down.
-
-Returning 0 may be the better choice, since it keeps core and driver
-state consistent. Could the commit message say explicitly that a failed
-reopen during detach now returns success and leaves the device closed?
-The patch is tagged for stable, so this change is visible to users there
-too.
-
-The in-code comment also looks imprecise. dev_xdp_detach_link() does not
-drop a prog reference itself. It warns on a driver error and clears the
-link:
-
-dev_xdp_detach_link() {
-    ...
-	WARN_ON(dev_xdp_install(dev, mode, bpf_op, NULL, 0, NULL));
-	dev_xdp_set_link(dev, mode, NULL);
-    ...
-}
-
-This branch also handles the fd based dev_xdp_attach() path. On a driver
-error that path returns early, and the core keeps cur_prog together with
-its own reference:
-
-dev_xdp_attach() {
-    ...
-		err = dev_xdp_install(dev, mode, bpf_op, extack, flags, new_prog);
-		if (err)
-			return err;
-    ...
-}
-
-Could the comment be reworded to cover both paths and to say that rc is
-dropped on purpose for a detach?
-
-> +			WRITE_ONCE(bp->xdp_prog, old);
-> +			bnxt_xdp_apply_cfg(bp, old_tx_xdp);
-> +			return rc;
-
-[Severity: Medium]
-When old is NULL (a fresh attach), this rollback rebuilds the ring mode
-by calling bnxt_xdp_apply_cfg() with bp->xdp_prog == NULL. That goes
-through bnxt_set_rx_skb_mode(bp, false). Does that path actually undo
-the page mode setup?
-
-In page mode, __bnxt_set_rx_skb_mode() clears both agg ring flags
-unconditionally:
-
-	if (page_mode) {
-		bp->flags &= ~(BNXT_FLAG_AGG_RINGS | BNXT_FLAG_NO_AGG_RINGS);
-		bp->flags |= BNXT_FLAG_RX_PAGE_MODE;
-		...
-		if (dev->mtu > BNXT_MAX_PAGE_MODE_MTU) {
-			bp->flags |= BNXT_FLAG_JUMBO;
-
-The non page mode branch of bnxt_set_rx_skb_mode() only clears
-BNXT_FLAG_NO_AGG_RINGS, and only when bnxt_get_max_rings() reports
-rx > 1. It never sets the flag again.
-
-Take a function where bnxt_get_dflt_rings() decided at probe that agg
-rings cannot be afforded:
-
-	bp->flags |= BNXT_FLAG_NO_AGG_RINGS;
-	bp->dev->hw_features &= ~(NETIF_F_LRO | NETIF_F_GRO_HW);
-
-If the MTU is above BNXT_MAX_PAGE_MODE_MTU and a program with
-xdp_has_frags is attached, the sequence would be:
-
-bnxt_xdp_set()
-  bnxt_check_rings()        /* passes with pre-attach flags */
-  bnxt_xdp_apply_cfg()
-    __bnxt_set_rx_skb_mode(bp, true)  /* clears NO_AGG_RINGS, sets JUMBO */
-  bnxt_open_nic()
-    __bnxt_reserve_rings()  /* RX doubled, hwr.rx < 2 */
-
-and __bnxt_reserve_rings() fails here:
-
-	if (bp->flags & BNXT_FLAG_AGG_RINGS) {
-		if (hwr.rx >= 2) {
-			rx_rings = hwr.rx >> 1;
-		} else {
-			if (netif_running(bp->dev))
-				return -ENOMEM;
-
-During the rollback, bnxt_get_max_rings() still sees JUMBO, so it halves
-max_rx to 0 and fails. NO_AGG_RINGS therefore stays cleared.
-bnxt_set_ring_params() then finds rx_space > PAGE_SIZE without
-NO_AGG_RINGS and sets JUMBO again.
-
-bnxt_open_nic() has already closed the device. Won't every later "ip link
-set up" fail with the same -ENOMEM in __bnxt_reserve_rings()? That would
-leave the port unusable until the MTU is lowered or the driver is
-reloaded.
-
-The commit message says:
-
-    Restore the previous program and its ring and feature configuration
-    when an attach or a replace fails
-
-Would it be more reliable to snapshot and restore the state instead of
-recomputing it? That would cover the relevant bp->flags bits
-(NO_AGG_RINGS, AGG_RINGS, JUMBO), the LRO and GRO_HW bits in
-dev->hw_features, and bp->rx_ring_size, which bnxt_set_ring_params() can
-clamp.
-
-> +		}
->  	}
-
-[ ... ]
-
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 730b178cf6c4..ce09e3fbc58b 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -868,9 +868,11 @@ int br_fdb_delete_bulk(struct nlmsghdr *nlh, struct net_device *dev,
+ 	return 0;
+ }
+ 
+-/* Clean up all entries referring to a specific destination.
+- * if do_all is set also flush static entries
+- * if vid is set delete all entries that match the vlan_id
++/* Clean up entries referring to cleanup_dst's port.
++ * If do_all is set ignore vid and entry flags. Otherwise vid selects
++ * the VLAN (0 means all), keeping static and non-offloaded ext learned entries.
++ * For a port-VLAN dst, vid must match its VLAN ID. Always clean up its local
++ * entry unless user-added and fall back to the port dst for retained entries.
+  */
+ void br_fdb_cleanup_by_dst(struct net_bridge *br,
+ 			   struct net_bridge_dst cleanup_dst, u16 vid,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001142516.1386525-1-vnagare%40redhat.com
+2.47.3
+
