@@ -1,75 +1,76 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-lr2-f35.google.com (mail-lr2-f35.google.com [74.125.230.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BDD34F474
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741AF30675F
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 20:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791231083; cv=none; b=ak9ZbmvzzH9qcDqKPyoJigFti/iHNyYdmyestIdevKgjFOYxLJ93Gcv4dXHvSYLyuOaO1rtHr6Rnw3/B3ltqOBr4XdxTl6Cz9ZgJdSX592x8ZygYQJlOa1yVPWvnuRRj8v59+EFKgi+iCjgIY3swCA+kyFmqH8fH+D1hl+6K73E=
+	t=1791231265; cv=none; b=gMBgk9h7R3IztM30YnNIfcMxNF9inR90bWd3WutOj7wiXWZDjeB5WN5dCDKlZeVNpg5FDSLu0AnpIOWznb/1FsbLbyHxb7lthX8G4cZyiyDfk6LWxjxSt9PqFwZsIVJXo/Ck4KcOXI/zQDe3sut/uML54U2jy0ZvWU3QlXSLRIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791231083; c=relaxed/simple;
-	bh=SRh1aT2eLZcsDsuJF2SW+8mYJmm1umKWj3gfi7wqutY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9eO98sbJyXrIULX1hiLybzbKYtDTPQwPL7kuQxz57mrKpAF9NTs/Gzg2NHvwdaQ+Ai0pmabpaINuEO3ckL+jUH+bm5jiufQCj7hXPen61iLn3fJSEL5UyAaO4bpEuoYjO5mXU4EowGgGdWOT5lVYOvq0KExVL7qqaR3/FhqVHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KE87eOsg; arc=none smtp.client-ip=74.125.227.129
+	s=arc-20240116; t=1791231265; c=relaxed/simple;
+	bh=VJtZChjk1YzuZkS3wi8cphgv6wsquzVP5wCjRV9LqzM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a44JozISivqycbdYey9VYTx6sVX5yqLRG1Sje2rWVLW2ipmMGfOshhV3rp8Bp1zqLgyTbFhczLvGJVeccyPe8aF7T0JY2lzepgHgskkc3dhrdX+kynCRitjFxmmmB6GnFaCrrP+0lYRpTYYJPEiQ/PVmtP2ORYjXbpxIWDy0Qn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yi9Tn4SN; arc=none smtp.client-ip=74.125.230.99
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KE87eOsg"
-Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2cb3f5bb19aso4812525ad.1
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:11:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yi9Tn4SN"
+Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a6124046f0so22572701fa.3
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 13:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791231080; x=1791835880; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8iRO90kh+b1K51NpqxnyiQGiRUYB0ZuY8L6XC4rgpOA=;
-        b=KE87eOsg3P808nZro0KlkJwe8roBO5ia6jTH9hJW567srZl9hvIMFfnLFlFrEDSu5n
-         hbqrGgsiAvndS876kjeD7hxrX4uG0g4aFM+BFbF+jS73juKVaPVohith+gFRSiDvURkD
-         3ncJI8xn5//VYKhsle3jNDs0CCKp6zgcFUOn9/VzEU8ryRcnXq+Xot4ATuqDgoafgvn1
-         Ft5zjqu/xqiLqdEuBLTnYbvyYgKcbVXtN94jVfgYzcn0VP8X6ZIWCSQqqYcrlew96JyT
-         A7mBfJOGRxu+MB64iAilETNumHb6F+6nW6GFl4C8+tdtcGbIA35I+MdP/na6guBF1eH+
-         35rw==
+        d=gmail.com; s=20251104; t=1791231261; x=1791836061; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pikQ4+zyEB4/ceyMLU0ilImsRw9sRxceQzVMlJ5+60c=;
+        b=Yi9Tn4SNntOnBkpuHQBBrjCpPkYIvdZ4JSD2NJz4uvmcmB8pHNRyOGMsrViTPiFVFE
+         +mxgG+v54WTJUVgOBmk24377zxS/tZywzQZvkD/lySRPEqEX0zmF3F/k7RcvLD6RVxlJ
+         CDAeG+QpMgoDg86ny1p3lvbvbYIeHN8UJVNbDNQBPxWlmdEsTopj+pxqq58PBj4U2/UW
+         FLqr5mosDoHP2QME4CAuFGXskVrLq3O6RJsa9uyahAvhpSefwTD4lgvlXAVtKdyM0vws
+         /igv/DjlGuVKyhjkz8nxJQ/zeo5z3A5efjJNgwKMX4Pm0nDYjzIm5VPmRBIba14IKBm0
+         WBTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791231080; x=1791835880;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8iRO90kh+b1K51NpqxnyiQGiRUYB0ZuY8L6XC4rgpOA=;
-        b=obGtObl3OS9QgraP/URLxEK2t2NPmpbuF0CINUxmnZIM8XD4cxsBX9MB52+GrEQ4QK
-         gKYqYSAGIb+R9qNuJn3wxdW1dY6pB5OIWW4tV9MvCFbEMOV8ErMT2ptLBQU4q7gSVSTw
-         5vQq9N33TYKBAFsKltgHrXFcj/+2twItmvs54V3F5bsTuxJMErGtgffKvCHsuDb6MVpb
-         4wnauY9k1Zpnqg3PY4sQlsNcSUqve4H4sH24j62ed2EYWl0FkY3XSjfxaFSNbRMcF430
-         eVF++lDIqqUHWqliG0ACzKhM7SEDJq2oCZN6hXpufqug20FRgpeK+oFAC1cQNeC23LhP
-         AUuw==
-X-Gm-Message-State: AFq9FYLEsRyE62NjW5KIsufOYSLYgAGUVoT0NW5JFcKVw308v0qqnC6L
-	pu4zRPIATYsTETmKVV8HxRalrQ65RvTWGOHPuD9YrCwiTUOOKJsGtgbw/EUFoVA2
-X-Gm-Gg: AYBFou3TsHd6hspacRNeuwc2aO+a7ScUKBPxGP1hekACTHveNMP0384LoFjfV4h9FVq
-	yJFWS7VoJ3MygjtiRRU6fvG4EQEAKoSOEr+k4zj9sTyV9oYUJsKosdiIt1UJohw6pKpbXOBVVcB
-	lQ/+xCzaydQ703mlY6tcrX1HqumwLqxMt6n3KJHpH5YVnFhLVmMWwGcoJMuJTXdw9QfspDbZv1y
-	RxXgwvJMvz6hhp3FKcbCdJlLugi4LvWW03smLVhayJx5mVwkQZN2vHDsh+xuT8qhP2nycXwaHcT
-	XDz4ChJaVpUHQxZDQXTu+XzcwIj7E5L8QXk7ZP2kZD5QwWQ6hBhNJB+AyirHGisQVWM9XnkTn9L
-	fd92F6Mn6FP7ExO4KzUvV8CB+8UwCGlTS3V5SBedapNokY7+o5aJQZoM45KEsJG5WeCkHGkVSkN
-	kUb4rLL+MnHIYFfhH0RVCOQ7lC9yDAb1q0a6dLOuiXFqjP/rghGKfj8Ahd75YWHCE=
-X-Received: by 2002:a17:902:c952:b0:2e2:e0eb:e591 with SMTP id d9443c01a7336-2e5106aebd6mr79207515ad.60.1791231079438;
-        Mon, 05 Oct 2026 13:11:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:3::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e5a55b659asm12573145ad.2.2026.10.05.13.11.18
+        d=1e100.net; s=20260707; t=1791231261; x=1791836061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pikQ4+zyEB4/ceyMLU0ilImsRw9sRxceQzVMlJ5+60c=;
+        b=yOt3tF2JD6/47UBNsqnH4+5vmvK7ADM8HimTBCSw9kOZ36PvSNlEIGB0I5VbOXj45W
+         PLRcUep8E3L1RY2e8WtTCLBoFH69XH6eDPYas/ocxRmFDqrO7QLa3eGZdwbIKm9PX3m2
+         uaqjO8ij/VFZi899DtHfjuCA/36mcxatoDcrn9qew2orChrB9U5xS4nLJbD3i1NITU04
+         pG3+w7OgS2kV0ZZEAan5Q95y2W3zAFIXRxtONXscn/XuUgrSYm6+vQYx2IdkyT6PoEPX
+         afiiHVTpqQH7XKKNleWwtpI/Y8uZQcXD9GDeY3C70rYadyUjEu5Cp+BQk0uIHCc3rF2v
+         XZsw==
+X-Gm-Message-State: AFq9FYIJVcwp2SRFMZ8BBPPuy8pbihHzf7lpZk4IddFv3DiiWugbPv6B
+	8kCwoeg1b5r3xbmPOW6dL4mBIAJj1mmMnTkczM9ecQXP+mzTSVTdtKWoavcMAyGd
+X-Gm-Gg: AYBFou2vpvEARpV0+YnKtWZaDzPWg2gzaQhLkamk3wGDBB7v29ap2xJKhWqMC8HkmOI
+	72rZZI7xTRyPTxTpbARJG8xkM9Oh3BsehJI54sHWr8ypZbtsx7gOjNvH4jFmoTLyuhqGza3MWrs
+	2Dzi7J+3tSKXHnNdhvXEr1fcrzfx6gEPCmLjQ0ObgKT1oZnH49pvp48FZCV9aNxFZyA2dHKG+f5
+	HO/TYdTVbQz88NpdHJbfWt+zYbgZ78zLOqihNhrhAuw3wuYhMUxwB9r/sWOHgBLw7imGep/k9pM
+	GY+rRXmGzQmSsobtsx2McA0DDZ8Qav1VHAV0RWc/Cj0H3Jegsiz2dtG2L7ZKXrvS59GFx0lXw+o
+	AoYkni9DIu+7y3zmSqFoY/tfmL94viikVhu4/1YRoe/VhbkQEITaUStxc0CUfMrgT+2mz8XGNjI
+	eUIoo2fgmOpT72P6CKKKloezQcWrj/RueLpwiTCteR+Dq6eK3SIIbbTogpcxSgcJesOt2Q5wCtA
+	X61asPDPe1+TR/1a/F1HDXHXPAXnwwnXvk+ca/TiJJbIdDUFqOq
+X-Received: by 2002:a2e:be9b:0:b0:3a9:82f2:2a4a with SMTP id 38308e7fff4ca-3a982f22cedmr15653411fa.20.1791231261231;
+        Mon, 05 Oct 2026 13:14:21 -0700 (PDT)
+Received: from dau-home-pc.. ([212.35.161.1])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a87e303889sm43114681fa.20.2026.10.05.13.14.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 13:11:19 -0700 (PDT)
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
+        Mon, 05 Oct 2026 13:14:20 -0700 (PDT)
+From: Anton Danilov <littlesmilingcloud@gmail.com>
 To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [RFC net-next v2 3/5] selftests: drv-net: add an iperf performance test
-Date: Mon,  5 Oct 2026 13:11:12 -0700
-Message-ID: <20261005201115.2690830-4-sdf@fomichev.me>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261005201115.2690830-1-sdf@fomichev.me>
-References: <20261005201115.2690830-1-sdf@fomichev.me>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 0/4] vxlan: generalize and refine drop reasons
+Date: Mon,  5 Oct 2026 23:14:13 +0300
+Message-ID: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,163 +79,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the drivers/net/hw/performance target. Report throughput and
-retransmits from Iperf3Runner when requested.
+This series makes two vxlan drop reasons generic, so that other tunnels
+can report the same conditions with them, and makes the reasons vxlan
+reports for two other failures more precise.
 
-Single-stream iperf3 throughput is flaky and can change considerably
-between back-to-back runs on the same hosts.
+Patch 1 renames VXLAN_INVALID_HDR and VXLAN_VNI_NOT_FOUND to
+TUNNEL_INVALID_HDR and TUNNEL_NOT_FOUND. Their values stay the same;
+the names vxlan drops are reported with change.
 
-Tested on two mlx5 hosts. Captured metric output:
+Patch 2 makes __iptunnel_pull_header() and iptunnel_pull_header() return
+a drop reason. Until now they returned -ENOMEM for any failure, so a
+packet too short to pull looked like an allocation failure. The three
+callers in ip_gre and ip6_gre that tested the result with "< 0" test for
+a non-zero value instead. Patch 3 has vxlan report the reason these
+functions now return: PKT_TOO_SMALL instead of NOMEM for an inner frame
+shorter than an Ethernet header.
 
-  # # ktap-metric-policy-json: {"display_label":"Gbps","name":"throughput","regression":{"better":"higher","compare":"p50","relative_tolerance":0.05},"summarize":"p50"}
-  # # ktap-metric-policy-json: {"name":"tcp.retransmits","summarize":"max"}
-  # # ktap-metric-json: {"host":"local","name":"throughput","time":10.685632,"type":"scalar","value":48.561920255183196}
-  # # ktap-metric-json: {"host":"remote","name":"tcp.retransmits","time":10.68565,"type":"scalar","value":0}
+Patch 4 has vxlan report a route that goes out of the vxlan device
+itself as RECURSION_LIMIT instead of IP_OUTNOROUTES, and adds this case
+to the description of RECURSION_LIMIT.
 
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
----
- tools/testing/selftests/Makefile              |  2 +-
- .../drivers/net/hw/performance/Makefile       | 10 +++++++
- .../drivers/net/hw/performance/config         |  1 +
- .../drivers/net/hw/performance/iperf.py       | 27 +++++++++++++++++++
- .../drivers/net/hw/performance/settings       |  1 +
- .../selftests/drivers/net/lib/py/load.py      | 24 +++++++++++++++--
- 6 files changed, 62 insertions(+), 3 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/hw/performance/Makefile
- create mode 100644 tools/testing/selftests/drivers/net/hw/performance/config
- create mode 100755 tools/testing/selftests/drivers/net/hw/performance/iperf.py
- create mode 100644 tools/testing/selftests/drivers/net/hw/performance/settings
+These were patches 1-3 and 14 of v5 of "tunnels: add core and gre drop
+reasons", split out as Ido suggested. The conversion of ip_tunnel,
+ip6_tunnel and GRE, the rest of that series, will follow once these
+are in.
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 273853937c25..7523f378e026 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -152,7 +152,7 @@ TARGETS_HOTPLUG = cpu-hotplug
- TARGETS_HOTPLUG += memory-hotplug
- 
- # Networking tests want the net/lib target, include it automatically
--ifneq ($(filter net drivers/net drivers/net/hw,$(TARGETS)),)
-+ifneq ($(filter net drivers/net drivers/net/hw drivers/net/hw/performance,$(TARGETS)),)
- ifeq ($(filter net/lib,$(TARGETS)),)
- 	INSTALL_DEP_TARGETS := net/lib
- endif
-diff --git a/tools/testing/selftests/drivers/net/hw/performance/Makefile b/tools/testing/selftests/drivers/net/hw/performance/Makefile
-new file mode 100644
-index 000000000000..5d53ef548306
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/performance/Makefile
-@@ -0,0 +1,10 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+TEST_PROGS := iperf.py
-+
-+TEST_INCLUDES := \
-+	$(wildcard ../lib/py/*.py ../../lib/py/*.py) \
-+	$(wildcard ../../../../net/lib/py/*.py) \
-+	#
-+
-+include ../../../../lib.mk
-diff --git a/tools/testing/selftests/drivers/net/hw/performance/config b/tools/testing/selftests/drivers/net/hw/performance/config
-new file mode 100644
-index 000000000000..6450f34933e6
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/performance/config
-@@ -0,0 +1 @@
-+CONFIG_IPV6=y
-diff --git a/tools/testing/selftests/drivers/net/hw/performance/iperf.py b/tools/testing/selftests/drivers/net/hw/performance/iperf.py
-new file mode 100755
-index 000000000000..415fb67f4100
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/performance/iperf.py
-@@ -0,0 +1,27 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+"""Measure TCP throughput with iperf3."""
-+
-+from os import path
-+import sys
-+
-+sys.path.insert(0, path.join(path.dirname(path.abspath(__file__)), ".."))
-+
-+from lib.py import Iperf3Runner, NetDrvEpEnv, ksft_exit, ksft_run
-+
-+
-+def tcp(cfg):
-+    """Measure TCP throughput."""
-+    Iperf3Runner(cfg).measure_bandwidth(report=True)
-+
-+
-+def main():
-+    """Run the iperf performance test."""
-+    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-+        ksft_run([tcp], args=(cfg,))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
-diff --git a/tools/testing/selftests/drivers/net/hw/performance/settings b/tools/testing/selftests/drivers/net/hw/performance/settings
-new file mode 100644
-index 000000000000..e7b9417537fb
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/performance/settings
-@@ -0,0 +1 @@
-+timeout=0
-diff --git a/tools/testing/selftests/drivers/net/lib/py/load.py b/tools/testing/selftests/drivers/net/lib/py/load.py
-index e24660e5c27f..a7da025b4e21 100644
---- a/tools/testing/selftests/drivers/net/lib/py/load.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/load.py
-@@ -4,7 +4,8 @@ import re
- import time
- import json
- 
--from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
-+from lib.py import cmd, ip, ksft_metric, ksft_metric_policy, ksft_pr, \
-+    rand_port, wait_port_listen
- 
- 
- class Iperf3Runner:
-@@ -53,12 +54,20 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
-             kwargs["timeout"] = duration + 5
-         return cmd(cmdline, **kwargs)
- 
--    def measure_bandwidth(self, reverse=False):
-+    def measure_bandwidth(self, reverse=False, report=False):
-         """
-         Runs an iperf3 measurement and returns the average bandwidth (Gbps).
-         Discards the first and last few reporting intervals and uses only the
-         middle part of the run where throughput is typically stable.
-         """
-+        if report:
-+            ksft_metric_policy(
-+                "throughput", summarize="p50",
-+                regression={"compare": "p50", "better": "higher",
-+                            "relative_tolerance": 0.05},
-+                display_label="Gbps")
-+            ksft_metric_policy("tcp.retransmits", summarize="max")
-+
-         self.start_server()
-         result = self.start_client(duration=10, reverse=reverse)
- 
-@@ -77,6 +86,17 @@ from lib.py import ksft_pr, cmd, ip, rand_port, wait_port_listen
-         stable = samples[3:-3]
- 
-         avg = sum(stable) / len(stable)
-+        retransmits = out.get("end", {}).get("sum_sent", {}).get(
-+            "retransmits")
-+        if report:
-+            if not isinstance(retransmits, int) or \
-+                    isinstance(retransmits, bool):
-+                raise ValueError("iperf3 did not report TCP retransmits")
-+            receiver = "remote" if reverse else "local"
-+            sender = "local" if reverse else "remote"
-+            ksft_metric("throughput", avg, kind="scalar", host=receiver)
-+            ksft_metric("tcp.retransmits", retransmits, kind="scalar",
-+                        host=sender)
- 
-         return avg
- 
+Changes since v5 of "tunnels: add core and gre drop reasons":
+- split out of that series (Ido)
+- the messages of patches 1, 2 and 4 no longer refer to the rest of it
+- the message of patch 2 says that vxlan keeps reporting NOMEM until
+  patch 3
+- patch 4 adds the tunnel case to the description of RECURSION_LIMIT,
+  which v5 did in its patch 9
+
+- v5: https://lore.kernel.org/netdev/20260930183910.3151873-1-littlesmilingcloud@gmail.com/
+
+Anton Danilov (4):
+  vxlan: rename the drop reasons for use by other tunnels
+  ip_tunnel: make __iptunnel_pull_header() return a drop reason
+  vxlan: report the drop reason of __iptunnel_pull_header()
+  vxlan: report a circular route as SKB_DROP_REASON_RECURSION_LIMIT
+
+ drivers/net/vxlan/vxlan_core.c | 26 ++++++++++++++++----------
+ include/net/dropreason-core.h  | 25 ++++++++++++++++---------
+ include/net/ip_tunnels.h       | 10 ++++++----
+ net/ipv4/ip_gre.c              |  4 ++--
+ net/ipv4/ip_tunnel_core.c      | 22 +++++++++++++++-------
+ net/ipv6/ip6_gre.c             |  2 +-
+ 6 files changed, 56 insertions(+), 33 deletions(-)
+
 -- 
-2.53.0-Meta
+2.47.3
 
