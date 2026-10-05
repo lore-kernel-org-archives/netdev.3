@@ -1,111 +1,249 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7215432E80
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 09:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E3D434E28;
+	Mon,  5 Oct 2026 09:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791191783; cv=none; b=fQxpQmED1H1oA0jWP21QSi5Sd/tHWGVM9hiCrqgV9bHu9bF58s26JcCj2494ZGpApsGBNf6jsAS1x+Zn7/lZ90l1Nez5j5/MAfc6cC25YIzT587QNUzRzZwfn8m7jfG8p+PQVTzLgoJ0WUYv/2lw5q1QtBoEU7HggzokldQrq2g=
+	t=1791191840; cv=none; b=RqjDN5KfngBCMm8Myboz2Qdh33gmP7fJwIVYQiEdsg0KNM8eMB759CCpErjWS7AComRX62vnxPt8kEfLppnjb+nj97lW7bV1F1cuaIjoWgPnH/vmXf30GE4eldO7znLoAIxMp1vB++cIRRJK1HbkmTfhwzbUEefT7UnwhLUh1HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791191783; c=relaxed/simple;
-	bh=FUq2avO84bfZ8GLcZBSlMUyLjO/Hl+O/IAjRjhroQVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RlSYJ6m+ZIwnLpaC6BjgzulLc49Fb3VQwwdr+mv6TBCJJCjw1+tLyYgP4bTnKnVSJ9PgHawKBsp+rs7zAU4YrB5qQgiZGDN02agD3E7kmvW9ll1oldalqnFB3k99U2xVJ4cWLu/UTV0/ObL8hTrRgitnalnLm0S7Bppi2VZ+e0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hl05/ip2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791191840; c=relaxed/simple;
+	bh=HVeqBCma9XhPQYuXr7Z1BFby/I89QIvKhp1Qz/Sy+Fc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lI26REcdZtECnAR9fHyEsmN0arXleQKlePi9NmlNdVEa1ojbZRqIHUmNCC9nL5c+6vkTHlSQnv9NF1jhymyNY4Wckf2j7mEozfKmQqXfVN/Ctlh8jU0KO/wqryTK2kCxePFHZbxnNv4Pknrnm3U4mgDGbnCL2fj2yfpVHaEaKQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=lpUkjIKq; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hl05/ip2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791191780;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i6HHcmnZcnfCWuCdH1gD5szgvgpTuYMt7kmo657pMZ8=;
-	b=Hl05/ip23PD3Eyd0WiPHz5QAlA9bFcI6RYJirAurJZMe4/n34E4S/ZMgByV6kwiMvhV4lD
-	ESmlrH/IhwNRKA5GYKXDVeUac6yuLo7ju8y7NTxS84KF6wh6Htmky5wOWQsluLzbP594U1
-	F9q72O66zsl/8m0LXCT3qZiGC0B74qY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-34jTgZb_NjiYcFOEievRZg-1; Mon,
- 05 Oct 2026 05:16:15 -0400
-X-MC-Unique: 34jTgZb_NjiYcFOEievRZg-1
-X-Mimecast-MFC-AGG-ID: 34jTgZb_NjiYcFOEievRZg_1791191773
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 34D53192D0EE;
-	Mon,  5 Oct 2026 09:16:13 +0000 (UTC)
-Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D9F2730000E4;
-	Mon,  5 Oct 2026 09:16:08 +0000 (UTC)
-Date: Mon, 5 Oct 2026 11:16:06 +0200
-From: Miroslav Lichvar <mlichvar@redhat.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Rodolfo Giometti <giometti@enneenne.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH v4 3/4] pps: Always use ktime_get_snapshot_id() for
- pps_get_ts()
-Message-ID: <asNq1o8TmdNdG45T@localhost>
-References: <20260829210041.40649-1-dwmw2@infradead.org>
- <20260829210041.40649-4-dwmw2@infradead.org>
- <920a2d70-c1ec-452b-8fc4-aebf1f6af412@enneenne.com>
- <d1af17dff1d6f181d74edd3b6358398469d61917.camel@infradead.org>
- <4afec82e-9e3d-4615-9657-7d467d8dc3e7@enneenne.com>
- <ar5cq0vslvQ00Pek@localhost>
- <b567acf8-c3e3-4b51-99a8-058ab42f3026@enneenne.com>
- <24e8134b35cc8be26606d7472295cdb43ea6b38a.camel@infradead.org>
- <777d19602ed1868abbd3d3ef3a4e78a8688d4a17.camel@infradead.org>
- <dd7a873caecab6c912e2c0f910d1e46818ea455d.camel@infradead.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="lpUkjIKq"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8221152B;
+	Mon,  5 Oct 2026 02:17:12 -0700 (PDT)
+Received: from [192.168.178.24] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED5D03F66F;
+	Mon,  5 Oct 2026 02:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791191836; bh=HVeqBCma9XhPQYuXr7Z1BFby/I89QIvKhp1Qz/Sy+Fc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lpUkjIKqVD2+wgOZwWjHfaqcnAIOIiZd3eLZsf6wSBSB4hW0xAMMT3/10Lmlrwifu
+	 CN9yeYzy+LatTmrx6kdYmZFt+2+4QqkeIsWO4jHmUJbkhdKQV+jDepAzXQYqnw21Fc
+	 AcKyquEiAMypKcdXGDJ87Dsc2jJveIx5ZKcjOXDk=
+Message-ID: <4ac4c90f-887e-4545-9c26-9706bdaa1a79@arm.com>
+Date: Mon, 5 Oct 2026 11:17:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 7/8] clk: sunxi-ng: a733: Add bus clock gates
+To: Junhui Liu <junhui.liu@pigmoral.tech>, wens@kernel.org
+Cc: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>,
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Philipp Zabel
+ <p.zabel@pengutronix.de>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ netdev@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>,
+ Enzo Adriano <enzo.adriano.code@gmail.com>
+References: <20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech>
+ <20260930-a733-clk-v5-7-11175b41cd2d@pigmoral.tech>
+ <CAGb2v65Lqo7NiFhc2GYdfY7+jkC4Y+p6=Zy85HOFmXJzT0u1fg@mail.gmail.com>
+ <DLWMN3TYBP9F.3N62QFP7QEE9U@pigmoral.tech>
+Content-Language: en-GB
+From: Andre Przywara <andre.przywara@arm.com>
+In-Reply-To: <DLWMN3TYBP9F.3N62QFP7QEE9U@pigmoral.tech>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <dd7a873caecab6c912e2c0f910d1e46818ea455d.camel@infradead.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Fri, Oct 02, 2026 at 02:44:41PM +0100, David Woodhouse wrote:
->   ┌──────────────────────────────┬─────┬──────┬──────┬──────┬─────┐
->   │ capture method               │ p50 │  p95 │  p99 │  max │   σ │
->   ├──────────────────────────────┼─────┼──────┼──────┼──────┼─────┤
->   │ pps-gpio (IRQ)               │  84 │ 1206 │ 4013 │ 4889 │ 688 │
->   │ polling, stamp after edge    │ 206 │  536 │  665 │ 1106 │ 286 │
->   │ polling, bracketed counter   │ 206 │  545 │  647 │  811 │ 286 │
->   │ polling, bracketed, raw MMIO │ 135 │  359 │  434 │  564 │ 188 │
->   │ entry.S counter capture      │  46 │  109 │  135 │  206 │  58 │
->   └──────────────────────────────┴─────┴──────┴──────┴──────┴─────┘
+Hi,
 
-The time to read the GPIO heavily depends on the HW. On the MIPS
-ar71xx where I was using the polling driver, it was 85 nanoseconds
-(the precision logged by the driver when loaded).
+On 10/5/26 06:41, Junhui Liu wrote:
+> Hi Chen-Yu,
+> 
+> On Sun Oct 4, 2026 at 7:03 PM CST, Chen-Yu Tsai wrote:
+>> On Tue, Sep 29, 2026 at 7:28 PM Junhui Liu <junhui.liu@pigmoral.tech> wrote:
+>>>
+>>> Add the bus clock gates that control access to the devices' register
+>>> interface on the Allwinner A733 SoC. These clocks are typically
+>>> single-bit controls in the BGR registers, covering UARTs, SPI, I2C, and
+>>> various multimedia engines. It also includes bus gates for system
+>>> components like the IOMMU and MSI-lite interfaces.
+>>>
+>>> Also mark the ahb-store, mbus-store and ahb-cpus clocks as critical.
+>>> Disabling either store gate breaks access to boot/storage devices such
+>>> as MMC and SPI NOR, while gating ahb-cpus hangs any access to the CPUS
+>>> power domain registers when unused clocks are disabled.
+>>>
+>>> Tested-by: Jerome Brunet <jbrunet@baylibre.com>
+>>> Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+>>> Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
+>>> ---
+>>>   drivers/clk/sunxi-ng/ccu-sun60i-a733.c | 492 ++++++++++++++++++++++++++++++++-
+>>>   1 file changed, 491 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+>>> index 1b2d4d36ec4c..b077e5d2f32c 100644
+>>> --- a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+>>> +++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+>>> @@ -4,6 +4,10 @@
+>>>    * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
+>>>    * Based on the A523 CCU driver:
+>>>    *   Copyright (C) 2023-2024 Arm Ltd.
+>>> + *
+>>> + * TODO: The real parents of some bus gates, including its-pcie0-aclk,
+>>> + * msi-lite, npu, ufs, sgpio, lpc and i2spcm, are not documented in the
+>>> + * manual. For now, follow the vendor BSP, which keeps them on hosc.
+>>>    */
+>>
+>> [...]
+>>
+>>> @@ -510,9 +522,118 @@ static SUNXI_CCU_M_DATA_WITH_MUX_GATE_FEAT(mbus_clk, "mbus", mbus_parents, 0x588
+>>>                                             BIT(31),     /* gate */
+>>>                                             CLK_IS_CRITICAL,
+>>>                                             CCU_FEATURE_UPDATE_BIT);
+>>> +static const struct clk_hw *mbus_hws[] = { &mbus_clk.common.hw };
+>>> +
+>>> +static SUNXI_CCU_GATE_HWS(mbus_iommu0_sys_clk, "mbus-iommu0-sys", mbus_hws, 0x58c, BIT(0), 0);
+>>> +static SUNXI_CCU_GATE_HWS(apb_iommu0_sys_clk, "apb-iommu0-sys", apb0_hws, 0x58c, BIT(1), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_iommu0_sys_clk, "ahb-iommu0-sys", ahb_hws, 0x58c, BIT(2), 0);
+>>> +
+>>> +static SUNXI_CCU_GATE_DATA(bus_msi_lite0_clk, "bus-msi-lite0", hosc, 0x594, BIT(0), 0);
+>>> +static SUNXI_CCU_GATE_DATA(bus_msi_lite1_clk, "bus-msi-lite1", hosc, 0x59c, BIT(0), 0);
+>>> +static SUNXI_CCU_GATE_DATA(bus_msi_lite2_clk, "bus-msi-lite2", hosc, 0x5a4, BIT(0), 0);
+>>> +
+>>> +static SUNXI_CCU_GATE_HWS(mbus_iommu1_sys_clk, "mbus-iommu1-sys", mbus_hws, 0x5b4, BIT(0), 0);
+>>> +static SUNXI_CCU_GATE_HWS(apb_iommu1_sys_clk, "apb-iommu1-sys", apb0_hws, 0x5b4, BIT(1), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_iommu1_sys_clk, "ahb-iommu1-sys", ahb_hws, 0x5b4, BIT(2), 0);
+>>
+>>> +static SUNXI_CCU_GATE_HWS(ahb_ve_dec_clk, "ahb-ve-dec", ahb_hws,
+>>> +                         0x5c0, BIT(0), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_ve_enc_clk, "ahb-ve-enc", ahb_hws,
+>>> +                         0x5c0, BIT(1), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_vid_in_clk, "ahb-vid-in", ahb_hws,
+>>> +                         0x5c0, BIT(2), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_vid_cout0_clk, "ahb-vid-cout0", ahb_hws,
+>>> +                         0x5c0, BIT(3), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_vid_cout1_clk, "ahb-vid-cout1", ahb_hws,
+>>> +                         0x5c0, BIT(4), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_de_clk, "ahb-de", ahb_hws,
+>>> +                         0x5c0, BIT(5), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_npu_clk, "ahb-npu", ahb_hws,
+>>> +                         0x5c0, BIT(6), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_gpu0_clk, "ahb-gpu0", ahb_hws,
+>>> +                         0x5c0, BIT(7), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_serdes_clk, "ahb-serdes", ahb_hws,
+>>> +                         0x5c0, BIT(8), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_usb_sys_clk, "ahb-usb-sys", ahb_hws,
+>>> +                         0x5c0, BIT(9), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_msi_lite0_clk, "ahb-msi-lite0", ahb_hws,
+>>> +                         0x5c0, BIT(16), 0);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_store_clk, "ahb-store", ahb_hws,
+>>> +                         0x5c0, BIT(24), CLK_IS_CRITICAL);
+>>> +static SUNXI_CCU_GATE_HWS(ahb_cpus_clk, "ahb-cpus", ahb_hws,
+>>> +                         0x5c0, BIT(28), CLK_IS_CRITICAL);
+>>
+>> I suspect these refer to a AHB-AHB bridge for the various subsystems shown
+>> in the memory map. That would explain why when the "ahb-store" clock is
+>> gated, the storage bits stop working.
+>>
+>> If that's the case, we should describe it as the parent of each storage
+>> peripheral bus gate's parent. Same would go for the other types. I haven't
+>> checked what the BSP does though.
+> 
+> As Norman mentioned in his reply, the vendor BSP also does not model
+> this hierarchy and instead models these gates as independent clocks
+> parented to the oscillator. The manual does not describe the hierarchy
+> either, so I don't think we have enough information to model it
+> differently at this point.
 
-> (NB: We should be careful not to forget the common-mode hardware
-> latency which could be different for the IRQ paths vs. the polling
-> paths. On my list is a test where one CPU polls while the other takes
-> the interrupt, so we can compare on the *same* pulse.)
+Well, I wouldn't use the BSP as a good example on how to model the clock 
+tree, they have been very misguided in the past.
+What the BSP does is to add just more input/gate MBUS clocks for each 
+device, which is something I think we should avoid.
+To that regard using them as parent clocks for the existing gates, as 
+Chen-Yu suggested, sounds like a good idea: We keep a single clock for 
+the devices, but still can turn both clocks off (I think, not tested).
 
-Yes, that is the main advantage of the polling driver that it avoids
-all those delays before the actual read of the clock.
+Cheers,
+Andre
 
-Both pps-gpio and pps-gpio-poll can echo the input PPS signal back to
-a different GPIO pin, so you could measure how the delays differ with
-the two drivers on a scope.
-
--- 
-Miroslav Lichvar
+> I will add comments explaining why ahb_store_clk, mbus_store_clk, and
+> ahb_cpus_clk are marked critical.
+> 
+>>
+>>> +static SUNXI_CCU_GATE_HWS(mbus_iommu0_clk, "mbus-iommu0", mbus_hws,
+>>> +                         0x5e0, BIT(0), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_iommu1_clk, "mbus-iommu1", mbus_hws,
+>>> +                         0x5e0, BIT(1), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_desys_clk, "mbus-desys", mbus_hws,
+>>> +                         0x5e0, BIT(11), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_ve_enc0_gate_clk, "mbus-ve-enc0-gate", mbus_hws,
+>>> +                         0x5e0, BIT(12), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_ve_dec0_gate_clk, "mbus-ve-dec0-gate", mbus_hws,
+>>> +                         0x5e0, BIT(14), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_gpu0_clk, "mbus-gpu0", mbus_hws,
+>>> +                         0x5e0, BIT(16), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_npu_clk, "mbus-npu", mbus_hws,
+>>> +                         0x5e0, BIT(18), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_vid_in_clk, "mbus-vid-in", mbus_hws,
+>>> +                         0x5e0, BIT(24), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_serdes_clk, "mbus-serdes", mbus_hws,
+>>> +                         0x5e0, BIT(28), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_msi_lite0_clk, "mbus-msi-lite0", mbus_hws,
+>>> +                         0x5e0, BIT(29), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_store_clk, "mbus-store", mbus_hws,
+>>> +                         0x5e0, BIT(30), CLK_IS_CRITICAL);
+>>
+>> Same thing for the MBUS clocks.
+>>
+>>> +static SUNXI_CCU_GATE_HWS(mbus_msi_lite2_clk, "mbus-msi-lite2", mbus_hws,
+>>> +                         0x5e0, BIT(31), 0);
+>>> +
+>>> +static SUNXI_CCU_GATE_HWS(mbus_dma0_clk, "mbus-dma0", mbus_hws,
+>>> +                         0x5e4, BIT(0), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_ve_enc0_clk, "mbus-ve-enc0", mbus_hws,
+>>> +                         0x5e4, BIT(1), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_ce_clk, "mbus-ce", mbus_hws,
+>>> +                         0x5e4, BIT(2), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_dma1_clk, "mbus-dma1", mbus_hws,
+>>> +                         0x5e4, BIT(3), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_nand_clk, "mbus-nand", mbus_hws,
+>>> +                         0x5e4, BIT(5), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_csi_clk, "mbus-csi", mbus_hws,
+>>> +                         0x5e4, BIT(8), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_isp_clk, "mbus-isp", mbus_hws,
+>>> +                         0x5e4, BIT(9), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_gmac0_clk, "mbus-gmac0", mbus_hws,
+>>> +                         0x5e4, BIT(11), 0);
+>>> +/* Undocumented, taken from the vendor kernel. */
+>>> +static SUNXI_CCU_GATE_HWS(mbus_gmac1_clk, "mbus-gmac1", mbus_hws,
+>>> +                         0x5e4, BIT(12), 0);
+>>> +static SUNXI_CCU_GATE_HWS(mbus_ve_dec0_clk, "mbus-ve-dec0", mbus_hws,
+>>> +                         0x5e4, BIT(18), 0);
+>>
+>> [...]
+>>
+>> The remaining definitions look correct (minus the vendor BSP ones which I
+>> couldn't check at this time).
+>>
+>> I didn't check the clock list additions.
+>>
+>> Consider this
+>>
+>> Reviewed-by: Chen-Yu Tsai <wens@kernel.org>
+>>
+> 
+> Thanks!
+> 
+>>
+>> We can change the AHB / MBUS clock parents later if we do figure it out.
+>>
+>>
+>> ChenYu
+> 
 
