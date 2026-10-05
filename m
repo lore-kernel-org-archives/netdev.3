@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FB72ED84A;
-	Mon,  5 Oct 2026 08:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E67FB3793B0;
+	Mon,  5 Oct 2026 08:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791187646; cv=none; b=C/XrRLLN4E6aytQ+fOe5/DNilesIBiMb9DlQ9F0SNuvQsoGzLkDHM3OtEyeoI/K3JPZ1UhTNZfCS0J2uRMLdalcWY5moHCY/3Tg39ciHscWGJViv4Wi36qSNnmBntuXntHCCBkGqw9HBrzL3Jh6aHqYJBOkVP5Du0k0WyFxGx40=
+	t=1791187648; cv=none; b=pokHbGBOCvNglzFsK0Pjf0bjjF7K19/wpsbWna03/niBHSVlEYSyFIKsW8yQD3jGZ+liO6ZIJcxELxbHpVjbgHnmqsRpkloB4SrcBa5ozLaCZdNNRNdZA2GiV0tLRnDtbZEt1wJNSVWKjZ2BFT5iG2csvhPDU5f3X6l4XcW/tt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791187646; c=relaxed/simple;
-	bh=5MAFg4lualOQ4wF9YuSfq87SCufHgj7pToEhAngQk4M=;
+	s=arc-20240116; t=1791187648; c=relaxed/simple;
+	bh=6zh71r7Pekqk+DuJfsTKUYLgEbP99kCj6zYuylZ7BQI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Eh7ShVgseQuOux6q6QD06w3BtpqvrfZdGTeThl3j5DQcNRdX2YqWrR8IuOzCt3hvjT9mSn+OiHbBW8gSGzxMiiN+ZpvieNMYglldvxsn3hbalagDtbI395MHiATfyA2YA+fiOS9AUa2VcXDF/SCBBHCi7DBb5gJBAop45Ccn52U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHKVX4rQ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=QDHvFiHbRzHSaGN2lHvbDJmBosGk8ozHPuL57/UUxa7AwsLU/9LC4xterA6/Jbf0GbyVHtth9hc6l6kl5mzheV/RwgnA2orrOOgZoxbdyvUh3x9PFcMx4FD7whYggySkdHte9hoNRaukN/h1VwJkbUY9dEM89yhK5KwQuVqcgs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=buk1mhH7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHKVX4rQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E231F000FF;
-	Mon,  5 Oct 2026 08:07:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="buk1mhH7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A8A1F00898;
+	Mon,  5 Oct 2026 08:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791187645;
-	bh=XXkyvNpPZqrM5P5UyeacA+TyFuP56hMHBlt411AUfhk=;
+	s=k20260515; t=1791187646;
+	bh=jZ2Wr3yurVlKrvb7u7xx6x/OkIICaMNFkpoPnRtxfq8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FHKVX4rQKpRY8RrCMtnTYucloQH8ReN38hlkAK1CA5qYPt8kQamrFV62rn9/Pf0b8
-	 SYy8fhLnFufschUrdMxZlL4rkxwkLGq6jZ4BtVmBL+Rx1ydZQmh9D2EkBfAQc+EKco
-	 9PekgerDeWSVRzRGOUMDwxU9fF860loJZvgejSh+aU0Jla7I5iSJHuutjjrKsIwnNH
-	 +NiBMkVf7XBgVqIl0+E+bSh8J+dkzODQyb7FMav1auMNwIXYKb4MVRm/nWQgCGbBda
-	 n2sAWr1z04Qsuu3zcrtIbOLmdgY9SZo//jwuIMxT0HEKKuUDt4qzah/iDBIhfcT1jR
-	 UXMlF5+OQA9kQ==
-Subject:
- Re: [PATCH net 2/2] net: phy: xilinx-gmii2rgmii: Restore PHY driver on remove
+	b=buk1mhH7gzE6nThCXxHEN/zjWrDvR/pAkD6HDMkNuJ7K3Vbx89WlctoSi44LoNjrS
+	 rwHJQbzfzyw0JMW0UtJw0x0Bmncwwy3MQZUrlQprCxXJQkmwQcFCSL5bz+jsuLaqsU
+	 8oGQt6Ix2MuworhwKyQRpgRjlziGezN5Fpr8q0d4+cFrvrxxLKUk4o8NFQshdF6MAa
+	 LG5obgj771wBXDMjGdCImSudRWUrwEmFyu13HpHMWkXCulpjgw9OTBoOzMb/B191n3
+	 rDB/qL60C+cAhLPZJ9O7SfVmCX1Vc5Sr375Ru0X9gdOVWrC3eA/SlP4bKfzPygaZ3o
+	 k+sikU2LP870A==
+Subject: Re: [PATCH net 1/2] dpll: zl3073x: make embedded sync follow the
+ output carrier frequency
 From: netdev-bot+sashiko@kernel.org
-To: vineeth.karumanchi@amd.com
-Cc: git@amd.com, netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, michal.simek@amd.com,
- f.fainelli@gmail.com, harini.katakam@amd.com, appanad@amd.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 08:07:23 +0000
-Message-ID: <179118764380.434549.2031845358588611322@kernel.org>
-In-Reply-To: <20261001074718.3944521-3-vineeth.karumanchi@amd.com>
-References: <20261001074718.3944521-3-vineeth.karumanchi@amd.com>
-X-sashiko-severity: High
+To: ivecera@redhat.com
+Cc: netdev@vger.kernel.org, min.li@microchip.com, vadim.fedorenko@linux.dev,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, kuba@kernel.org,
+ Prathosh.Satish@microchip.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 08:07:25 +0000
+Message-ID: <179118764578.434549.11911030839884571148@kernel.org>
+In-Reply-To: <20261001080648.1424172-2-ivecera@redhat.com>
+References: <20261001080648.1424172-2-ivecera@redhat.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,158 +59,112 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] xgmiitorgmii_remove()
-  (drivers/net/phy/xilinx_gmii2rgmii.c:147-149) always writes the driver…
-- [High] The fix relies on every reader of phydev->drv holding
-  phydev->lock, and that is not true.
+- [Medium] In drivers/dpll/zl3073x/dpll.c,
+  zl3073x_dpll_output_pin_esync_get() no longer works out the reported…
 
 --
 
-net: phy: xilinx-gmii2rgmii: Restore PHY driver on remove
+dpll: zl3073x: make embedded sync follow the output carrier frequency
 
-This adds a remove callback to the GMII-to-RGMII converter. The callback
-restores the attached PHY's original phydev->drv under phydev->lock, so
-phydev->drv no longer points at the devres-freed conv_phy_drv copy after
-the converter is unbound. It also drops the device reference taken by
-of_phy_find_device().
+This commit moves the output pin eSync handling into new
+zl3073x_out_esync_{is_enabled,enable,disable}() helpers. When the output
+divider changes in zl3073x_dpll_output_pin_frequency_set(), it recomputes
+the eSync period and width, and it disables eSync when the new carrier is
+1 Hz.
 
-> diff --git a/drivers/net/phy/xilinx_gmii2rgmii.c b/drivers/net/phy/xilinx_gmii2rgmii.c
-> index 61f71e977a574..b9aa5515577b5 100644
-> --- a/drivers/net/phy/xilinx_gmii2rgmii.c
-> +++ b/drivers/net/phy/xilinx_gmii2rgmii.c
-> @@ -128,10 +128,29 @@ static int xgmiitorgmii_probe(struct mdio_device *mdiodev)
+> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+> index f2e137475b40f..9eec27331fe3d 100644
+> --- a/drivers/dpll/zl3073x/dpll.c
+> +++ b/drivers/dpll/zl3073x/dpll.c
 
 [ ... ]
 
-> +static void xgmiitorgmii_remove(struct mdio_device *mdiodev)
-> +{
-> +	struct gmii2rgmii *priv = mdiodev_get_drvdata(mdiodev);
-> +
-> +	/*
-> +	 * The attached PHY is a separate, still-bound device whose state
-> +	 * machine keeps running and dispatches ->read_status / ->set_loopback
-> +	 * under phydev->lock. Restore its original driver under that lock so
-> +	 * the swap cannot race an in-flight dispatch; the restored driver is
-> +	 * the PHY's own static phy_driver, not the devres-freed conv_phy_drv.
-> +	 */
-> +	mutex_lock(&priv->phy_dev->lock);
-> +	priv->phy_dev->drv = priv->phy_drv;
+> @@ -864,38 +864,28 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
 
-[Severity: High]
-Is it safe to write priv->phy_drv back here without first checking that
-phydev->drv still points at &priv->conv_phy_drv?
+[ ... ]
 
-The only thing the converter holds is the device reference from
-of_phy_find_device(). There is no device link and no module reference on
-the PHY driver. That means the PHY can be unbound or rebound while the
-converter stays bound, and in that case phylib has already changed
-phydev->drv:
+>  	esync->range = esync_freq_ranges;
+>  	esync->range_num = ARRAY_SIZE(esync_freq_ranges);
+>  
+> -	if (zl3073x_out_clock_type_get(out) != ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC) {
+> -		/* No need to read esync data if it is not enabled */
+> +	if (zl3073x_out_esync_is_enabled(out)) {
+> +		esync->freq = 1;
+> +		esync->pulse = 25;
+> +	} else {
+>  		esync->freq = 0;
+>  		esync->pulse = 0;
+> -
+> -		return 0;
+>  	}
+>  
+> -	/* Compute esync frequency */
+> -	esync->freq = out_freq / out->esync_n_period;
+> -
+> -	/* By comparing the esync_pulse_width to the half of the pulse width
+> -	 * the esync pulse percentage can be determined.
+> -	 * Note that half pulse width is in units of half synth cycles, which
+> -	 * is why it reduces down to be output_div.
+> -	 */
+> -	esync->pulse = (50 * out->esync_n_width) / out->div;
+> -
 
-drivers/net/phy/phy_device.c:phy_remove() {
-    ...
-	phydev->drv = NULL;
+[Severity: Medium]
+Is it intended that zl3073x_dpll_output_pin_esync_get() now reports fixed
+values instead of what is actually programmed in esync_n_period and
+esync_n_width?
 
-	return 0;
-}
+When the clock type is ESYNC, the getter now always reports freq=1 and
+pulse=25, whatever the cached period and width registers contain. The
+values can differ from the real signal in at least two cases.
 
-A rebind does the same thing: phy_probe() installs a new driver with
-phydev->drv = phydrv.
+First, zl3073x_out_state_fetch() in out.c loads ESYNC_PERIOD and
+ESYNC_WIDTH from the chip at probe and only rejects a zero period:
 
-If the converter is unbound after that, xgmiitorgmii_remove() writes back
-the stale pointer that xgmiitorgmii_probe() saved. Three outcomes look
-possible.
+	rc = zl3073x_read_u32(zldev, ZL_REG_OUTPUT_ESYNC_PERIOD,
+			      &out->esync_n_period);
+	...
+	if (!out->esync_n_period) {
 
-First, an unbound PHY gets a non-NULL drv again. That passes the
-"if (!phydev->drv)" guards in phy.c and phy_device.c. The old driver's
-callbacks then run against a phydev->priv that devres already freed. If
-the PHY driver module was unloaded, they run in freed module text.
+Stale values can carry over. They can come from NVM, or from an older
+kernel that changed div without updating esync_n_period, which is the bug
+this patch fixes. Take a 1 MHz carrier with esync_n_period = 10000000.
+That is really a 0.1 Hz eSync. The old getter reported 0, and the new one
+reports 1.
 
-Second, if the PHY was rebound to another driver (for example Generic
-PHY), the old driver's ops get installed over the new binding. They then
-see the new driver's phydev->priv.
+Second, zl3073x_out_esync_enable() in out.h sets:
 
-Third, if the converter is probed again, it passes the
-!priv->phy_dev->drv check in xgmiitorgmii_probe() and memcpy()s from the
-stale driver struct.
+	out->esync_n_width = out->div / 2;
 
-The comment above assumes the PHY is still bound and that the restored
-driver is the PHY's own phy_driver. Nothing seems to enforce either
-assumption.
+Its comment notes that resolution is lost when div is odd. With div = 5,
+the programmed pulse is 50 * 2 / 5 = 20%. The old getter reported 20, but
+the new one reports 25.
 
-Would it be better to restore only when phydev->drv == &priv->conv_phy_drv,
-and to tie the converter's lifetime to the PHY binding?
+The fixed readback also seems to block reprogramming through netlink.
+dpll_pin_esync_set() in dpll_netlink.c does:
 
-> +	mutex_unlock(&priv->phy_dev->lock);
-
-[Severity: High]
-Does taking phydev->lock here actually prevent the use-after-free on
-conv_phy_drv? The commit message says:
-
-    Restore the attached PHY's original driver while
-    holding phydev->lock so that the update cannot race with an active PHY
-    callback.
-
-The lock only excludes readers that also hold phydev->lock, and not every
-reader of phydev->drv does. Once xgmiitorgmii_remove() returns,
-devres_release_all() frees priv, and conv_phy_drv along with it.
-
-The state machine drops the lock before its suspend step:
-
-drivers/net/phy/phy.c:phy_state_machine() {
-    ...
-	mutex_lock(&phydev->lock);
-	state_work = _phy_state_machine(phydev);
-	mutex_unlock(&phydev->lock);
-
-	_phy_state_machine_post_work(phydev, state_work);
-}
-
-phy_stop() does the same. _phy_state_machine_post_work() then calls
-phy_suspend(), which copies phydev->drv into a local and dereferences it
-with no lock held:
-
-drivers/net/phy/phy_device.c:phy_suspend() {
-    ...
-	const struct phy_driver *phydrv = phydev->drv;
-    ...
-	if (phydev->wol_enabled && !(phydrv->flags & PHY_ALWAYS_CALL_SUSPEND))
-		return -EBUSY;
-
-	if (!phydrv->suspend)
+	if (freq == esync.freq)
 		return 0;
 
-	ret = phydrv->suspend(phydev);
-    ...
-}
+So a request for 1 Hz meant to fix a stale period returns success without
+calling esync_set(). The registers would only be rewritten by setting 0
+and then 1.
 
-phy_ethtool_get_sset_count() also dereferences the driver before it takes
-the mutex. It is reachable from the ethtool ioctl through
-ethtool_get_phy_stats_phydev():
+In dpll.yaml, esync-frequency and esync-pulse describe the actual embedded
+SYNC signal. The input pin getter in the same file only reports 1 after
+checking the divider:
 
-drivers/net/phy/phy.c:phy_ethtool_get_sset_count() {
-    ...
-	if (phydev->drv->get_sset_count &&
-	    phydev->drv->get_strings &&
-	    phydev->drv->get_stats) {
-		mutex_lock(&phydev->lock);
-    ...
-}
+	esync->freq = ref->esync_n_div == ZL_REF_ESYNC_DIV_1HZ ? 1 : 0;
 
-Could this sequence happen?
+Should the output getter keep computing freq and pulse from the cached
+esync_n_period, esync_n_width and div? If the change is intended, could
+the commit message mention it? Right now it only describes moving code
+into helpers, and the values userspace reads back have changed.
 
-CPU0                                  CPU1
-phy_suspend()
-  phydrv = &priv->conv_phy_drv
-                                      xgmiitorgmii_remove()
-                                        mutex_lock(&phydev->lock)
-                                        phydev->drv = priv->phy_drv
-                                        mutex_unlock(&phydev->lock)
-                                      devres_release_all()
-                                        kfree(priv)
-  phydrv->flags / phydrv->suspend
+>  	return 0;
+>  }
 
-If so, CPU0 would read freed memory and might call through it. That is the
-same kind of use-after-free this patch is meant to fix.
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001074718.3944521-1-vineeth.karumanchi%40amd.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001080648.1424172-1-ivecera%40redhat.com
