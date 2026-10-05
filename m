@@ -1,143 +1,270 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AD92F28FF;
-	Mon,  5 Oct 2026 05:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157A8317144;
+	Mon,  5 Oct 2026 05:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791178975; cv=none; b=FGujTTMAabzqgWrHVpeGXB6KmlfnZJrHfQxXqBI09A/4XoUrZ6l1fwJNWZ8qQbnItu5AdJ8fRmlTJQSYqzAwhyWBWdtI/+sD36usSM68/7jpkEFvrQlroK67gdXbBb4BRDYhfPGyp6w9CBiIvX4FAhfuuRW0ZxbNgniTZiMiabM=
+	t=1791179036; cv=none; b=EmwHtTPBZ21Srhs18MOJMIg5yv7KW4w2Ri+e9Ypd1+J4XshscYbNVOG73AXYXgzI+FbGVjvdvYeicGBWcbykF/ZBDx2e7E1WP36PROgRcuM2mlWj8vioRa86nQ4Q0VyJuXgOEuNY2bgMNX0mecJR6vvhWDBHC6XlrD+RA4sivkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791178975; c=relaxed/simple;
-	bh=iZKk1mOm72ZcpBXMoWPHIkLSDEHxpIolabCThdQcIbA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fYC+MkA5UkP+byEaSY5D8LQ6yKlEFK5TMO9DMe/RHcfCQumdS25zuxaTOfLV+rX1W7r9FsfG2XTZTWqzboX+hgNBLVSqWYop1dPtyWYi/pvJkUjxNcKmE9OO581P0bdw2VDDIBIxQ74sGmzTysjHql+W+SZo6JIkaAUdQDNf2rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=IzcRkuke; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1791179036; c=relaxed/simple;
+	bh=xP+WGFNm56hO+r5dARqGPf6tRhtvf256vf5kg1QeQ3g=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fieg/j8BF8J7cFGfQViPqYcT6AAT+lZ5KKE8Olo8fz+e0kH2sxPbe/jnNhXbF5YNFCCGRNF1NGaOMIN4DXzcJodyTlVymfHWhhR3PWCGNcI8PAnFRjKYrKY/Ou6sFDy2pa8L3REltK7q1WchrODpmQiGz//cMqGXURzHqRtbRbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JIziDx0Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="IzcRkuke"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 694NKadJ349013;
-	Mon, 5 Oct 2026 05:42:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=9qxMOmifwaGARzYGyIm/C408IJ5GA
-	I+fqFCtRhndamY=; b=IzcRkukehjfgSdqvtTui4zRE3TVqm+uSZit5DejNZJhpA
-	XgDkfOMjPwp0uANVKn4gJxwBFIlSxDz/hrsEa/1ZYlkUkf+flZTZXBmpA8TYfTp0
-	y9HAosIc0mGl1Q8n5+gz0bWjSdGCD8kZzx/XWdXGM2/Own26QElGtppHvOhE65wD
-	tyH6PnljWd+QbgYhafwo8Q9eLN2lIDyIRZ4ocRqtajQeCKIr38Pt9E0RARJkf+Sx
-	A5Q2pbIW8PM2+Mj3QYgxo71kElhgEoDwV1rtYcMfGhHtUSnTX7TJGuIklWKacrsw
-	eHrWtH87L+AkaAvd7jBtkfMqXN6vdGxK4cGJayMRA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4h2r4b9bnc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 05 Oct 2026 05:42:31 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 6955ZPX4019083;
-	Mon, 5 Oct 2026 05:42:30 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4h2r5ndmbk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 05 Oct 2026 05:42:30 +0000 (GMT)
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 6955gUML038101;
-	Mon, 5 Oct 2026 05:42:30 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4h2r5ndmb1-1;
-	Mon, 05 Oct 2026 05:42:29 +0000 (GMT)
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: maheshb@google.com, willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, peterpenkov96@gmail.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, error27@gmail.com,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] tun: fix skb length underflow in NAPI frags path
-Date: Sun,  4 Oct 2026 22:42:24 -0700
-Message-ID: <20261005054224.4154727-1-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JIziDx0Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299081F000FF;
+	Mon,  5 Oct 2026 05:43:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791179034;
+	bh=NSyfKk1MdZmdYf6bMLvQbQGvnoTw+HSCZk03c2AG8uw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JIziDx0QZ6xs3dFp5w7qdZpUxIXD1qAkDwCaBJzIgl2F6cCTUd9tOxZIcJG6/v535
+	 pvGM+j9z2GBZCwSm/sXP22kOfrbhTeU1TDWHzbEyMnzlQH0fquyfengL4So/K73ZcF
+	 5UVxv7hgwL1QQDd/0mj57oWYxYQZazXNCrllbre3Wc2ir2y0d3Md8iyS4x1VP4sCJb
+	 /BRoHyLAO57VKfWo0Nhp4MFfDV+2kJ0SHtWVHJhAfrAlqg4b7BtyNLX/KuZUOeLcWO
+	 uUQ9q53vO+zXCJBmu3TWyp7Db1c3YGVCvIQ8806V9zIPqikNnOMhKnOEV90mIANgCD
+	 WJniyD5ustX8Q==
+Subject:
+ Re: [PATCH net] ipv6: serialize address publication with addrconf_ifdown
+From: netdev-bot+sashiko@kernel.org
+To: 4ncienth@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 05:43:53 +0000
+Message-ID: <179117903368.434549.18116721683560446705@kernel.org>
+In-Reply-To: <20261001052150.136559-1-4ncienth@gmail.com>
+References: <20261001052150.136559-1-4ncienth@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-05_01,2026-10-02_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- phishscore=0 adultscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
- mlxscore=0 bulkscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2609040000 definitions=main-2610050022
-X-Proofpoint-GUID: T9z6oaFHaBD3IS1aRcqR6kBWkUksulyb
-X-Proofpoint-ORIG-GUID: T9z6oaFHaBD3IS1aRcqR6kBWkUksulyb
-X-Authority-Analysis: v=2.4 cv=BIQmP1QG c=1 sm=1 tr=0 ts=6ac338c7 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=x4eqshVgHu-cdnggieHk:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=K3LnMWoHZJQLLBG9_8cA:9 a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22
- cc=ntf awl=host:12107
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDAyMiBTYWx0ZWRfX2gzoK3nww98S
- V3lDSjmYrWRdtp7kKlkX8ECWD8o6IFbEkgAZ1SX7CFVZnsVn0kXGn7SRw4MNonaET3ul35MXU5h
- Id2KAe6uGAWBedyrcXuPAKvBM8muOPfG+8pedoQ/6tZfa8FhqoAp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDAyMiBTYWx0ZWRfX2QQCn3KE/1nG
- wxs7uphXL88Rlm2mZmoG9iWttlSpI9FOUJxgTXx+UM5m6R40/iTEqwe3r176fF0tvNLk53oveeU
- P0Qry8WtpmXHEOqvnKk0n648tYHkgt/pqrzLSAZ6leR2wuJ2KKJMfpcY/E6l0EqMTHUnSkSKRsb
- jw6IvAjxhYFMZQzosgtjIZO36ZjWlZ8qLkvR8UapY33L4cbzuTDKedtSaYtfXqk+9c9KsN2A8Yp
- cYmrZ33TSA02isgofTdq/BnnLcwgtZb7dyKsTdPMjol2FQqwfwYo0Rtkl6elA+dmePFxY6Th4R/
- tAhKbXHDuWty/4cLRx9OSUFtUvaQW6UJvu+XtXZaIejUBAyuzDlh+Vwf/9hxaYN3KLzvo/GZ7RP
- 4UcW2U+TW5188biZ63xDRerOmNk0p7exUqB9OwytTDCrOanVpX7h/F6TXg6COA/Zn2bsuGSdqAR
- 2v1uV9DVORgxNCBIcYF7+Zphm/1wm9JASsbmDQZE=
 
-When experimental vhost-net zero-copy TX is used with an IFF_NAPI_FRAGS
-TAP backend, tun_get_user() receives msg_control, selects zerocopy, and
-limits copylen to the linear prefix.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-The NAPI frags path subsequently disables zerocopy after allocating the
-skb and copies the complete frame instead. tun_napi_alloc_frags() derives
-the linear length from the first iterator segment, so a segment larger
-than copylen makes skb->data_len underflow. Pulling the Ethernet header
-then triggers BUG() because skb->len is smaller than skb->data_len.
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
 
-Disable zerocopy before calculating the allocation length so this path
-allocates and copies the complete iterator.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Fixes: 90e33d459407 ("tun: enable napi_gro_frags() for TUN/TAP driver")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
----
- drivers/net/tun.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+- [High] The fix is incomplete.
+- [Low] The new recheck in ipv6_add_addr_hash() reads idev->dead and
+  idev->cnf.disable_ipv6 with plain loads…
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 5a302709a68a..1124b8b33664 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1848,6 +1848,10 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
- 			zerocopy = true;
- 	}
- 
-+	/* The NAPI frags path copies the complete iterator. */
-+	if (frags)
-+		zerocopy = false;
-+
- 	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
- 		/* For the packet that is not easy to be processed
- 		 * (e.g gso or jumbo packet), we will do it at after
-@@ -1868,11 +1872,6 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
- 		if (frags) {
- 			mutex_lock(&tfile->napi_mutex);
- 			skb = tun_napi_alloc_frags(tfile, copylen, from);
--			/* tun_napi_alloc_frags() enforces a layout for the skb.
--			 * If zerocopy is enabled, then this layout will be
--			 * overwritten by zerocopy_sg_from_iter().
--			 */
--			zerocopy = false;
- 		} else {
- 			if (!linear)
- 				linear = min_t(size_t, good_linear, copylen);
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it leaves open
+  a race with the same symptom on the same nonblocking RA path.
+
+--
+
+ipv6: serialize address publication with addrconf_ifdown
+
+This patch moves the idev->addr_list and tempaddr_list linking into
+ipv6_add_addr_hash(). Both the hash and the device list publications now
+happen under addrconf_hash_lock and then idev->lock. Before publishing,
+the patch rechecks idev->dead and disable_ipv6, so an add that loses the
+race with addrconf_ifdown() fails before the address is published.
+
+> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+> index c90ee6dd7446c..899e9a47f7585 100644
+> --- a/net/ipv6/addrconf.c
+> +++ b/net/ipv6/addrconf.c
+
+[ ... ]
+
+> @@ -1060,7 +1061,23 @@ static int ipv6_add_addr_hash(struct net_device *dev, struct inet6_ifaddr *ifa)
+>  		netdev_dbg(dev, "ipv6_add_addr: already assigned\n");
+>  		err = -EEXIST;
+>  	} else {
+> -		hlist_add_head_rcu(&ifa->addr_lst, &net->ipv6.inet6_addr_lst[hash]);
+> +		write_lock(&idev->lock);
+> +		if (idev->dead || idev->cnf.disable_ipv6) {
+> +			err = idev->dead ? -ENODEV : -EACCES;
+
+[Severity: High]
+Does this recheck close the window for the addrconf_ifdown(dev, false)
+callers?
+
+idev->dead is set only when unregister is true. disable_ipv6 is set only
+by the sysctl path and the DAD-abort path. Three callers set neither
+flag: NETDEV_DOWN, CHANGEMTU on the loopback device, and
+NETDEV_CHANGEUPPER to an L3 master:
+
+addrconf_notify() {
+    ...
+	case NETDEV_DOWN:
+	case NETDEV_UNREGISTER:
+		...
+		addrconf_ifdown(dev, event != NETDEV_DOWN);
+    ...
+	case NETDEV_CHANGEUPPER:
+		...
+		if (info->upper_dev && netif_is_l3_master(info->upper_dev))
+			addrconf_ifdown(dev, false);
+}
+
+In the VRF case, do_vrf_add_slave() calls netdev_master_upper_dev_link()
+while the port is still up and receiving RAs.
+
+addrconf_ifdown() clears the hash one bucket at a time. Only after that
+does it snapshot addr_list under idev->lock:
+
+addrconf_ifdown() {
+    ...
+	/* Step 2: clear hash table */
+	for (i = 0; i < IN6_ADDR_HSIZE; i++) {
+		...
+		spin_lock_bh(&net->ipv6.addrconf_hash_lock);
+		...
+		spin_unlock_bh(&net->ipv6.addrconf_hash_lock);
+	}
+
+	write_lock_bh(&idev->lock);
+    ...
+	list_for_each_entry(ifa, &idev->addr_list, if_list)
+		list_add_tail(&ifa->if_list_aux, &tmp_addr_list);
+    ...
+}
+
+Suppose an RA is processed in softirq, without RTNL, on another CPU:
+
+ndisc_router_discovery()
+  addrconf_prefix_rcv()
+    addrconf_prefix_rcv_add_addr()
+      ipv6_add_addr(in6_dev, &cfg, false, NULL)
+
+If it publishes into a bucket that Step 2 has already cleared, the ifa
+goes into the snapshot but stays hashed. SLAAC addresses lack
+IFA_F_PERMANENT, so keep is false and the Step 4 loop only does this:
+
+		if (!keep) {
+			write_lock_bh(&idev->lock);
+			list_del_rcu(&ifa->if_list);
+			write_unlock_bh(&idev->lock);
+			in6_ifa_put(ifa);
+		}
+
+When the last reference is dropped, inet6_ifa_finish_destroy() fires
+WARN_ON(!hlist_unhashed(&ifp->addr_lst)). Because the state is DEAD, it
+still calls kfree_rcu(). ipv6_del_addr() cannot clean this up either,
+because it returns early for DEAD addresses.
+
+Can this leave inet6_addr_lst pointing at a freed inet6_ifaddr? If so,
+later hash walks in ipv6_get_ifaddr(), ipv6_chk_addr(),
+ipv6_chk_same_addr(), addrconf_verify_rtnl() and /proc/net/if_inet6
+would read freed memory. The hlist_del_init_rcu() in a later unregister
+would write to it.
+
+This race existed before the patch, and the patch does not widen it.
+Since the subject says publication is serialized with addrconf_ifdown,
+could this mode be covered too? Two options would be unhashing in the
+Step 4 !keep loop, or adding a going-down state that the add path checks.
+
+[Severity: Low]
+Should these reads use READ_ONCE()?
+
+The writers hold RTNL only. They hold neither idev->lock nor
+addrconf_hash_lock:
+
+addrconf_ifdown():
+	WRITE_ONCE(idev->dead, 1);
+
+addrconf_disable_change():
+	WRITE_ONCE(idev->cnf.disable_ipv6, newf);
+
+addrconf_dad_work():
+	WRITE_ONCE(idev->cnf.disable_ipv6, 1);
+
+So the idev->lock held here does not protect these fields, although the
+changelog suggests that the recheck relies on it. The check is correct
+today only because addrconf_ifdown() stores dead and disable_ipv6 before
+it takes addrconf_hash_lock in Step 2, and this check runs while holding
+addrconf_hash_lock.
+
+Could these become READ_ONCE() with a comment that names that ordering?
+As written, KCSAN can report the race. A later reordering in
+addrconf_ifdown(), such as setting dead after Step 2, would also silently
+reopen the window. The earlier checks in ipv6_add_addr() use the same
+plain reads.
+
+> +		} else {
+> +			hlist_add_head_rcu(&ifa->addr_lst,
+> +					   &net->ipv6.inet6_addr_lst[hash]);
+> +			ipv6_link_dev_addr(idev, ifa);
+> +
+> +			if (ifa->flags & IFA_F_TEMPORARY) {
+> +				/* manage_tempaddrs() relies on addresses being added to the head */
+> +				list_add(&ifa->tmp_list, &idev->tempaddr_list);
+> +				in6_ifa_hold(ifa);
+> +			}
+
+[Severity: High]
+This is a pre-existing issue, not one introduced by this patch, but there
+seems to be a related window on the same nonblocking RA path.
+
+ipv6_create_tempaddr() publishes the temporary address first. It sets
+ifpub only after ipv6_add_addr() has returned and all locks are dropped:
+
+ipv6_create_tempaddr() {
+    ...
+	ift = ipv6_add_addr(idev, &cfg, block, NULL);
+    ...
+	spin_lock_bh(&ift->lock);
+	ift->ifpub = ifp;
+    ...
+	addrconf_dad_start(ift);
+	in6_ifa_put(ift);
+    ...
+}
+
+If Step 3 of addrconf_ifdown() runs between those two points, it removes
+ift from tempaddr_list while ifpub is still NULL:
+
+		list_del(&ifa->tmp_list);
+		...
+		if (ifa->ifpub) {
+			in6_ifa_put(ifa->ifpub);
+			ifa->ifpub = NULL;
+		}
+		...
+		in6_ifa_put(ifa);
+
+The creator then stores ifp in ift->ifpub, which hands over its reference
+to ifp. Step 4 marks ift DEAD, because temporary addresses are never
+IFA_F_PERMANENT. The final in6_ifa_put(ift) goes through
+inet6_ifa_finish_destroy(), which never drops ifpub.
+
+Nothing else releases that reference. ift is no longer on tempaddr_list,
+and ipv6_del_addr() returns early for DEAD addresses.
+
+Does this leak the reference on the public inet6_ifaddr? That would also
+pin the inet6_dev and net_device, so unregister_netdevice() would wait
+forever. This is the same netns cleanup stall that the commit message
+describes.
+
+The nonblocking caller is manage_tempaddrs()->ipv6_create_tempaddr(ifp,
+false). It is reached from this softirq path without RTNL:
+
+ndisc_router_discovery()
+  addrconf_prefix_rcv()
+    addrconf_prefix_rcv_add_addr()
+      manage_tempaddrs()
+
+So it can run at the same time as an RTNL-held addrconf_ifdown()
+triggered by NETDEV_DOWN, an MTU drop, VRF enslave or unregister.
+
+[ ... ]
+
 -- 
-2.52.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001052150.136559-1-4ncienth%40gmail.com
