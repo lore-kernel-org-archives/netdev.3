@@ -1,250 +1,279 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8974D7D3A;
-	Mon,  5 Oct 2026 18:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791223894; cv=fail; b=bfwWPyrj0QjdZtQFI09obmSXbUKcPunNoGAw4M8pegrdmkAUVdJf0ZV6nPszzT0jPrNtyWZI/K8N2gwST/kg8wWqmx4xWaLX/C0501FgiprlYywk8YMkri9D4DE+7MVxnZ6r8FXaNpFyrAtBxxvupEItcjEYF1dEAfJ2JQlrbaE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791223894; c=relaxed/simple;
-	bh=C09jS4HlmZOH+VMfuJ+NDM4xyh1+6QVYwUmtDUCTozQ=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UaVKhNV/yvOBTrHCENTwzR5pooSGu2tD/rvk9p+kZdKZjRHwLEXT8z5HWZnhDHGBEF0JinQMtLkv330ndnNL2/1T19wXZJtELslJrLY4UWouwRD6KBP591ukcH1rXy4itW9AzjRVZZZo30n5c/W+DeS95DrakjSWIdDJVji9qzI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XwOc78Az; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9AC4D954B
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 18:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791224248; cv=none; b=Bo7V+5OUH8E5GBi1hrGnpIvnhmXxCTMoXWaT/omTfx84hQhXVnbkL5YBl/DisN/LqGa6gsWOnFOHLUx5HKG/9+1Pnmmcp3ZFIfEwYXyRiNEe58xPl6POLQdvtzsMV3sKlSFIladdZomNvjQEcaEYLrb1CSlXVfpYtc+s9xr2S0o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791224248; c=relaxed/simple;
+	bh=SlfT5CpG1gfS0O6dGhXo30NrXX/THyrTJARh8LcTSNs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aW7gBbw7/V/NQ6kwfg8rIBpsvafBInyp0v/sjjI39U0WpXUxZUtYhiJDjD0Z/PrNQNNmoqP4nLToKuQ9wiDveHVwe3QzO4P8l4ce+4FzegPr+je1de0ufq/TPy8YTfpZiIxNfNtpgqf+nVAlF9ipA5svhaRyM0+uyN+h/xq5xS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GHc1A6mP; arc=none smtp.client-ip=74.125.231.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XwOc78Az"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791223892; x=1822759892;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=C09jS4HlmZOH+VMfuJ+NDM4xyh1+6QVYwUmtDUCTozQ=;
-  b=XwOc78Az8P1b6Wd1mM0kFQJST3ZdLYpfTrmu1XJysnN9PR36a2qOZUWh
-   VlgPfunaKmISgwpMgAsZprmEO0PtPf9Iy+lPECh7VurpuVz/eGkykN9Yz
-   qhSs3Y77ZXE51ZRR1EcyBvoSyf03iKbPeCm+6KkDasRcfw5spm+HQnNYD
-   0UbaBXKhHZXnuZn7Zu9XWMAoO6xW17wlBWtfQ+nEVqsa2kngwTZr1lcw2
-   B3c7idKT6iF7gx8ISp5uvhUaoFmcdy6+3zmVu2L1S0LzSg3sYvMyi1Q86
-   GG2dSZI+ywVfW+Yhhey4Prv0hAAiRb3lTT4Z2hnxSU/AVG8pmsH+wrmQS
-   Q==;
-X-CSE-ConnectionGUID: pN2K7BPkRD6bDC2vzZv6Ug==
-X-CSE-MsgGUID: erPxF5pSS/OlHP+oC2PoHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="53336"
-X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="53336"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 11:11:31 -0700
-X-CSE-ConnectionGUID: vdvauQfuTpedyWj/fl/lkQ==
-X-CSE-MsgGUID: VOcCXL1/RdiHdOU1Ccrrfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; 
-   d="scan'208";a="274680113"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 11:11:30 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 5 Oct 2026 11:11:29 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 5 Oct 2026 11:11:29 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.51) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 5 Oct 2026 11:11:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p9cQMuFUuawX5IzaZYE1xmjWnubxw3ykH78noZP1GjnXdtFwBN6Ega/FSsC5fzrTZUTR9KMIZplj1aB6YwOKp3o9x3u4oHQKb+FrcwfcuQ39hslPS0HXCJcov3yjwZE33bAZfcjkcHy8rwIbbbJY+ht95TYMLIziW8tkiWHT1hk4SS2c9THNqLjPYtgie+AOqk+JwvGjM6OAdSctrzi4S7F1UwZ/G0aV7xEF6e4UpJUrqfSd+avQ7rKWoRLhSmplRtbTSP4O6ANvyC3X3+woPrU5PBxsQcWpiuWimy6T4Iodyx7z9oBJKOk5FlXecrZR7iQYbtKsPYt9B4SFPRLAMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xWRPuUHp/RDNq0pqENTdP6D4Eoqbp5Mc9r9/rsYrABo=;
- b=toPTI1ppixrlVBYfpHRHgZNKq3x7aMuHH34jnDDZ7lv0cdOZ240Y+LRNiDcqrXD70CY2Zq6GMfyWC0K9UPoIXq3gWeQj936FlocOjyZolqdBQkFVCpFpQnu4oZ5CAUng1hWuY4Ho4XhtygI+EcZcs6aH3FwV8X9VobQ7KM0fW2zc4zNbTS1dMWH7FKbDVHWS/5xgHAPn5d7sie2XLfhzUSkG62o/SuqyUqSgLyuh1+EOmVH3KXpJ67/KArLprX4pFRnCbUG7qQE4QBsJrGAz7PK+3/RktOvspWpBiJHTsXr+W8CQFp/uKnCK0M2Uqr+9KGypKj3zVTN1NeKqSr559Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS4PR11MB872716.namprd11.prod.outlook.com (2603:10b6:8:509::16)
- by SJ5PPF20F246184.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::819) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 5 Oct
- 2026 18:11:23 +0000
-Received: from DS4PR11MB872716.namprd11.prod.outlook.com
- ([fe80::ae5f:9b62:3239:2e85]) by DS4PR11MB872716.namprd11.prod.outlook.com
- ([fe80::ae5f:9b62:3239:2e85%4]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
- 18:11:22 +0000
-Message-ID: <86add723-6e77-433b-83db-d186d98140ce@intel.com>
-Date: Mon, 5 Oct 2026 21:11:18 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2 2/2] e1000e: fix ps_pages DMA map error
- sentinel
-To: Matt Vollrath <tactii@gmail.com>, <intel-wired-lan@lists.osuosl.org>
-CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<netdev@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20260913171555.89537-1-tactii@gmail.com>
- <20260913171555.89537-3-tactii@gmail.com>
-Content-Language: en-US
-From: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>
-In-Reply-To: <20260913171555.89537-3-tactii@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TL2P290CA0013.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:2::7)
- To DS4PR11MB872716.namprd11.prod.outlook.com (2603:10b6:8:509::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GHc1A6mP"
+Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-46ac6e5d8f7so1377110fac.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 11:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791224245; x=1791829045; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Rouq59a9OyBo1EeAraKbx0994ONwMJ1+oA66imSzKao=;
+        b=GHc1A6mPFwU1mQCKMjDNf+uUGZeU4DFLIqQ7sdz8bjBTnPFJ7011JJxtO0nZSKYktG
+         3+6QSHWijl+eWp4uyM4l+2MkUUet/D7BhKuSrHvAorUIXPSDrzlufyLMvXSpDG5MrT8z
+         1aYh2GxWSaz4MBe4I3Xz9OE+GyS/1zDejvxEP9UCwonjxMISA4hIKV1+nFjNprKUvbQl
+         mwmu98xVsf3m6cZBGx+kxMZHpfPJfdIJWF6F2k6+RUFCBwT2qeessGg3fB4vOSI47JKh
+         UJcMNe0vmB6azLj/KxovSf9Vwmq/SmnoH4K4Ay0Lg+gqw2UvQndHI/5UHti7zR8HYN0Z
+         9KhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791224245; x=1791829045;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Rouq59a9OyBo1EeAraKbx0994ONwMJ1+oA66imSzKao=;
+        b=IFIGjMTV9ZMW74F1GHlL/XyI+5eCxmi8CSzN86MSQy8KmCIMs5fbPGSWLDaZJQoYY6
+         z8HqABxxhEZ3AkZL8CtZsKD/JV2qQMunZrYFmlbboVcHF1q9ovyEdXc6mw5USm38BHWV
+         Ov3dqTkxHYqaNyVhN40ZBnSQqvyZEqCIGNZ6zkOEv4TNGuAT/d48+c27w9Zlj2bGRFE+
+         uXSHPp+UOvSuFXKZoT9xWa7u0c9YNCyxMIHUls6jbU+qWzukBulGhhgQb//kgj50sh7+
+         kUoJVR9A/XYsf+a3FK5IOWMrEy1PIBN9eAf/ccLc7luJEqz5znxkPCrvuoy2hB1gc81r
+         rkEQ==
+X-Gm-Message-State: AFq9FYIb7n9W8wOQwEBe9isxmufu17o4Iyga+1l24Y6C8lE6S/vMfnAO
+	Bw25OZL+7Cg6gBDP797DgideqKsMpjkH4IFoXM8XiqM7DpZ0x8pd01Pw
+X-Gm-Gg: AYBFou0xenW3kl8lFYhDmlkVyxM2gk7UK0vYR7Dc5dy8T5DJmKr5/L5T3IN/tCcQZzf
+	fs+T4GT9u+oywtbx0XxuNLJ0d43VC8kYos5ar5+2XjB8IevDaGWRzomAG+kWC386RiNeP7ghpxb
+	g4x5cfT+YEToEaCJiW1hHhQ0n9yXZCdRfcv3emfdj98fvj+KdQPJKnwxNSUmlUzuvRmo5/YcgM5
+	HLY+XXvUc5PJVAHbyXZWU2v61VS+H1pY9xLqe62NbjPVeKrCvz9ZzTp7nCccX3EY/htjOpy6agg
+	Y0ZaM+HoyT0ymcwMm8fUacZ9UcwnE8pSXhfXsgrF3rSvrjU8J2CMPgN05jDp0u6WeHCc4m7W5lp
+	I4II2zMOHTXcGcGxPO1RKu/FQh3uaGevoQZij4P9rDVfuJjebLiRP+pXJVDoEjJDdnbBler9v6k
+	nTBu3UpmMW64yqSRgO1VeRmnZeyeNiFAGXoEgzL0SRQZTNrpRwFvMUYltVCk+OvP5ulRzqP8+Rx
+	bmPille+Rqf6xQsULGAOPaeqSexqNpZEKZZg58KQA2SuWIRtydOL2d4rZtNXCVc8SMH0bpElgUU
+	rgyGFagH5kVzsfxDEatagOq3uqeZyH98XtHlAVLd6YyGzK0/Q/7M5HOgwfvILcMGysKkwTIfWWp
+	nxpp9h2IinCmScKNFqNiqhA==
+X-Received: by 2002:a05:6870:524f:b0:48f:e0f6:c465 with SMTP id 586e51a60fabf-49e15e5c8c3mr10012930fac.51.1791224244819;
+        Mon, 05 Oct 2026 11:17:24 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-49e16d60931sm10358053fac.4.2026.10.05.11.17.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 11:17:24 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Mon, 05 Oct 2026 12:17:21 -0600
+Subject: [PATCH net v2] xsk: freeze deferred pool teardown without blocking
+ unregister
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PR11MB872716:EE_|SJ5PPF20F246184:EE_
-X-MS-Office365-Filtering-Correlation-Id: eba924aa-5c6e-49e8-ddc2-08df230c101c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|11063799006|56012099006|4143699003|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info: mQg5lUB58WyWe9x/fBZup5+dYb1T3t0gABul6EJiJtBtek96Q+LqEZAjg5VcNd20MOGW88eYpwdzWRsQ1haZ1ng5D0aybQArU8SABvCPN6ENL4bfw6AxsU0sqatXY2Dyj6JxcXFT1CmiV3EwOERS9MAaBGuSmdH48ud2TF7fZVf2LFWmZztAwxIK9SsIJ7yrcI82gzsD+B9d/23Tpj8saNhTMeqdRizklV73z4sLiJSW6636vGbkswg65KFzW7X+JZaZ6SvIXMc7R2gVmZUANcZfWjM9YvPjyypLjrLbJ1NqkbchMrmpO1hxsjehN32s6TQl0T2GiXcGrxlxXBfI7BQIpz3si4QANRizIVJWQw2F15L3w03u08X29BMHX8gjI2jYueM1NBGYosnXNe+pqqtj4vqZMW0mBvhNc5KRUva6UVuEoz/3x7DKZF33ZMidX3iVsLWRTMu5Ar1G7BtOnMgatOshqC+zHIrPwJKgbeNLq2V89LfPQttcajxXlTy91WrnYfVHSvs3SQGhKH29iuvG/mvY5HQZmLcB8VWIK/lzLeDYrQs86ue5KgkTwhvqPKe/J1ZaGeU6hnjxOXacFVrGS4WGQ+8uslLTp+imNsyJ3GkPTGcangay9vb+NtmjZTySFsD/3CgrQ6Gz8Gts6+mrcSyss78KfR9eSQ6CIm8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR11MB872716.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(11063799006)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ck04ZmdZV3JDYXdySkRmMWlHTDI5dnRxTVczRTMzWUpFWDgvYkFDdG9tbnJU?=
- =?utf-8?B?ejljazNyK2dtN1YyQmtJd2ZqM2tmQmNUN3ZPMVpVa1grOW1oR3lZM0dJcDlJ?=
- =?utf-8?B?MHlkbzArMmYyaFA5NmFGR3lzWkxoVHlZa25qRDVSN0YxK3Bsa1lsZTFwVlR5?=
- =?utf-8?B?ajhrdUJqVHFGSVUrYkJPSm5keXZRenFpVzVqVjdiOExTQzRkNytyUldwdzdI?=
- =?utf-8?B?UTZxV3ZvOEFnRTh6QjJlZXNHazZ2WXIvWURsSCt4L2E2TW1ad3hTV3ZIYU9Y?=
- =?utf-8?B?cGtWL2x1aVg4WklxR0lTVSthdTJyMk9MaElJNWgzYnRKdUlKaWVCNlpPM1c2?=
- =?utf-8?B?Y2pUcERxSUdpUUJnUWZjZmhKV0MzUllBcUNVd2tqSDc2RXA0QS9vNVBrSnR5?=
- =?utf-8?B?WFFQYy8wc3Q1a3l2Smc5aG1lM0R4UXArWFgzVm13NkNCSFM2VzNGWlY5cUF0?=
- =?utf-8?B?LzZISWh3N0NwczlDaDlyODdwV3NmbnZudGUrM0ticHhFb1RLWHFRYmhGYXd6?=
- =?utf-8?B?b0xHWkNqalRvckJVNmRDTWVGYmFRYmhCa2pXanVtTVRRMng1bi9pQ0M4SkVv?=
- =?utf-8?B?RVgzQmRDNjFpVXJMTFAyY3k0a0Nadkx5MzFTZ0xVN25GeFV3SlpHdmIzUW14?=
- =?utf-8?B?MFBCeDZjcEJTZ1dNbzBoalZ0a0pmOCtIOHhZaHIvMHdjNXpKMUdvZk96RXdG?=
- =?utf-8?B?Q2t2bW5HVGRKVFFVY0kwdFg3VDFsTUp3blFPTHJ4bXppRkdBck56UG5GdE4z?=
- =?utf-8?B?NXZBTFU4RjZHeFNYSnJVbFQrTTJMc3JTQW9YL2NuaGZGTjhTT011bzM3QThH?=
- =?utf-8?B?WTR1YmV4YWY4azAwVmlyc2FWUmNhaVpQcGIvQzlYK2xodDFaMnM4WGo5ZDdw?=
- =?utf-8?B?R24xdmpEckJlZjZKRVVwa1JLVHlNWmp0N2VrS3JOR1RyVTdaSWJIQlRqRm1I?=
- =?utf-8?B?aW9qQ3RTcC90LzlnTkt1dzBxRUkyLy9FRkNhK2xFN0ZIVC9IYkJUVlVrM0Uy?=
- =?utf-8?B?L1JxUmhYR2RFNUpFeFZpenFpb1FGSzFCKzI5U3JtQTdmOE1ySWJnaFB2Lzcz?=
- =?utf-8?B?ZnJzcjh0Smt2M09WcDlYQVZ5UVQ3RElDWlpxT2J1Ukk3V0xlaGJ2L3dybHNq?=
- =?utf-8?B?eGV1WnQ3WVlrT3hqVmdHelJNMzkySXYvRm9lMnJJeS9nVEJPV0lOVEY1MXpn?=
- =?utf-8?B?dCszRURxZGxrTnFZanh0T3RSU0dSUzdaem1rUExNWjhsbXFrczgxclJ0aGFH?=
- =?utf-8?B?Z0dEcWlXK05NVGZMcm1wU0tQbDA5UmRVUThHUG1ZUmJtS1IxeDN1VU43eGxH?=
- =?utf-8?B?bXZ6QWRLZkJVQXhoS3hJcmdrRjVrV0hnZ1owMlhaa2tqSWpUejgxNlp1RDlh?=
- =?utf-8?B?bjQ4M0NmMGZ4SVA3bDJMV1p6ZjgwSCszRjlHeExHZythWVlLVmxYVHRyU0sv?=
- =?utf-8?B?R3BTRS90YmdRNzJmbm05YVROeFZLRERDZ1pxMVRQZHQ0UHlCMVlyNlF2bUh6?=
- =?utf-8?B?ZXJzcXFkSGRSV0VyeFk3Ni9BdHhTZGx0SWFONDdONXA1Skw0UkNSL0tCa0lU?=
- =?utf-8?B?d1hwMFY0Y21QUVpFalhXSTNFMTN5MDZQdlIxa0R1VG9ZRkpSN2ZjU0dybmpm?=
- =?utf-8?B?SDNKdzNtMy9ZSGYycFZmOUVlcXl2ZUlQZ2pPMUZBYTlUR0l0allJSXhlZjVy?=
- =?utf-8?B?TUJ2VHVrekVGTld6VFoyV0RVbmMyT2NydW9zeUhGMGRJLzRaSVhVT3NmbXNU?=
- =?utf-8?B?a3pQUGFLNisvQWVITlZDaDQ4ZGJXL2dnS3B3SmpEbzdvcHcwWjY1d2NLR0s0?=
- =?utf-8?B?MjVORjExU2c0b2FseVA5NmJLQ0EyZ0I0UitwMVRHWWRlc2RqTHRrdjZuMlNT?=
- =?utf-8?B?UTRzVlYzenJBMG1pT1UvSTFjbCsvTEVuc0p1c1hsb2RZUFIxZ2I3enJKenZ3?=
- =?utf-8?B?QUlybFhBY0xaY29iQkw4L2VsOHpEZi9BakRqeC9PbHdhR0JkODZSVDdLTytU?=
- =?utf-8?B?RTFNT1pscGJuakROdDNkM09KejNFL0duYmlESXc3dDY2TTI3THdxSWpYV1pz?=
- =?utf-8?B?SzNGRzFMZUNXMFhZM085MXVEdmx1TlZUOTZ5bHVIOXZ4UE9iWDk1S2JrejRL?=
- =?utf-8?B?ODdSVXlYWElSeTNXcWc0RjZ0SjN1L2lqWm5HZ2dXdVhnNEszd3NmcFZnUHRH?=
- =?utf-8?B?YUhWbmYwVUpZVE5FYU9rSlBOemw4YXlpQjhrVW9BaXd4ODVWVkpVbVFoOGRp?=
- =?utf-8?B?azBKUC9SSExHQ092RWdTMWNSSVhJMjhlMktQVE1EcHB4V20wVUFwYVRmaWxz?=
- =?utf-8?B?STdabmVEYzNNRlVBUmVpSXNXK1JwdHpPTTM3dXl3WktuelJnUzJSQT09?=
-X-Exchange-RoutingPolicyChecked: Fd3XQZTcyMBmNjnQfy6u3620OgxzyetRYVdul5+m/eN1OlSWPcf5jfp3SzOgqDbTVMN542McehqPglpc0jGyqPGRt4abnufNChtR0bqTUvaJcTF2wbz3ESGZ0zW82JwgLGSqb1I7aZd1zCe93YzFT4CMxWki/EOpETV4eMirvWkb96tJoSEarvudYhQksX4JNsA19fNERwdE0b3fFv+t8E36mccjibrm9b4D+d7HkgrtTDCB3QEl7ZuPG63F7TYEJhsB2qPyd+VnKlP4el9+rm5YRvJ7W8tMZQWL3ASqJKCt+WBA+BjRAVkY5+4I2vHy7ABBWrtgvVixmc8ihG9k4A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: eba924aa-5c6e-49e8-ddc2-08df230c101c
-X-MS-Exchange-CrossTenant-AuthSource: DS4PR11MB872716.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 18:11:22.8835
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: W29bDRK+wmdA1isiDtsfYBAJAoAlXYi8owFu8Xvu3JfJOeOdUxjzEueYfQ6QTbcc6Rv2mreEZPRXsHOnIi+njw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF20F246184
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32OwQ6CMBBEf4Xs2ZqlaGk5+R/Gw1IWbZSibUWN4
+ d9t0LNzm9nsm3lD5OA4QlO8IfDkoht9NnJVgD2RP7JwXfYgUSo0FYpnPIt4j1f2nUhMoRsfXhi
+ UvdEb1NZUkF+vgXv3XLB78Jzg8A0D3+65Iv0uLUUWdhwGl5qCsnpdMxnT6lopa0gTIdcl0Uaya
+ q2mbSVxYZ1cTGN4LbOncoH9XziVohSkLFltscKWd8eB3GWd2+Ewz/MHKiuLHQkBAAA=
+X-Change-ID: 20260930-xsk-suspend-teardown-902f98408c93
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Magnus Karlsson <magnus.karlsson@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, bpf@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+X-Mailer: b4 0.15.2
 
-On 13/09/2026 20:15, Matt Vollrath wrote:
-> While allocating packet-split buffer pages, a failed DMA mapping would
-> leave DMA_MAPPING_ERROR in the ps_page->dma field.
-> 
-> This would have two consequences:
-> * The next attempt to allocate that buffer would write DMA_MAPPING_ERROR
->    to h/w if all pages are allocated. If the h/w uses that buffer and is
->    handling a frame large enough to touch the affected page, it would
->    cause a DMA fault and be dropped. The driver would then call
->    dma_unmap_page() on DMA_MAPPING_ERROR and unknowingly send the
->    uninitialized page up the stack as part of the frame payload.
-> * On ring teardown, dma_unmap_page() would be called on
->    DMA_MAPPING_ERROR.
-> 
-> This condition is only reachable when MTU > 1500 and PAGE_SIZE <= 16K.
-> 
-> Fix this by setting ps_page->dma = 0 upon mapping failure and separately
-> testing ->page and ->dma during allocation and teardown.
-> 
-> The rewrite of the ps_pages section of e1000_clean_rx_ring was necessary
-> to recognize the case of an allocated page without a valid DMA mapping.
-> It also fixes a separate bug which would potentially leak pages on ring
-> teardown. The cleaner stops cleaning pages when h/w reported that it did
-> not write to a page in the sequence, leaving the following pages
-> allocated and mapped. The teardown would then break early and leak the
-> unused mapped pages. If the ring is re-constructed by down/up with
-> similar configuration, it would reclaim those lost pages. This would
-> only affect configurations with rx_ps_pages >= 2 (MTU > PAGE_SIZE) and
-> the same condition of MTU > 1500 and PAGE_SIZE <= 16K.
-> 
-> Signed-off-by: Matt Vollrath <tactii@gmail.com>
-> Assisted-by: Claude:claude-5-fable
-> Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-> Cc: stable@vger.kernel.org
-> ---
-> v2:
-> * Reword last paragraph of description.
-> ---
->   drivers/net/ethernet/intel/e1000e/netdev.c | 19 ++++++++++++-------
->   1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-> index 26f45ee8c7e7..063fc8cd2673 100644
-> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
-> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-> @@ -759,12 +759,15 @@ static void e1000_alloc_rx_buffers_ps(struct e1000_ring *rx_ring,
->   					adapter->alloc_rx_buff_failed++;
->   					goto no_buffers;
->   				}
-> +			}
-> +			if (!ps_page->dma) {
->   				ps_page->dma = dma_map_page(&pdev->dev,
->   							    ps_page->page,
->   							    0, PAGE_SIZE,
->   							    DMA_FROM_DEVICE);
->   				if (dma_mapping_error(&pdev->dev,
->   						      ps_page->dma)) {
-> +					ps_page->dma = 0;
->   					dev_err(&adapter->pdev->dev,
->   						"Rx DMA page map failed\n");
->   					adapter->rx_dma_failed++;
-> @@ -1722,13 +1725,15 @@ static void e1000_clean_rx_ring(struct e1000_ring *rx_ring)
->   
->   		for (j = 0; j < PS_PAGE_BUFFERS; j++) {
->   			ps_page = &buffer_info->ps_pages[j];
-> -			if (!ps_page->page)
-> -				break;
-> -			dma_unmap_page(&pdev->dev, ps_page->dma, PAGE_SIZE,
-> -				       DMA_FROM_DEVICE);
-> -			ps_page->dma = 0;
-> -			put_page(ps_page->page);
-> -			ps_page->page = NULL;
-> +			if (ps_page->dma) {
-> +				dma_unmap_page(&pdev->dev, ps_page->dma,
-> +					       PAGE_SIZE, DMA_FROM_DEVICE);
-> +				ps_page->dma = 0;
-> +			}
-> +			if (ps_page->page) {
-> +				put_page(ps_page->page);
-> +				ps_page->page = NULL;
-> +			}
->   		}
->   	}
->   
-Reviewed-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
+not frozen during system sleep, so that callback can run after a
+device has suspended and gated its clocks. Use system_freezable_wq
+so running destruction finishes before device suspend and new work
+waits until process thaw.
+
+Keep assigned pools visible to NETDEV_UNREGISTER independently of
+the socket list. A released socket has already left that list, but
+its final pool put can queue destruction after workqueues freeze.
+A resume-time unregister would then wait for a device reference
+whose release cannot run until the resume completes.
+
+Track assigned pools per netdev under RTNL and detach remaining pools
+after the notifier socket walk, including copy-mode pools. This also
+covers leased queues without scanning pools from unrelated devices or
+network namespaces. Remove the entry on assignment failure and normal
+teardown. The deferred worker still owns the pool and later observes
+the cleared device pointer, avoiding a second driver detach or put.
+
+The lifetime problem was identified by code inspection of the deferred
+release and system-sleep paths.
+
+Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v2:
+- Track assigned pools per netdev instead of scanning a global pool list.
+- Keep deferred releases visible across queue changes and queue leases.
+- Rebase onto current net.
+- Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
+
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: Magnus Karlsson <magnus.karlsson@intel.com>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: Stanislav Fomichev <sdf@fomichev.me>
+To: Alexei Starovoitov <ast@kernel.org>
+To: Daniel Borkmann <daniel@iogearbox.net>
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>
+To: Björn Töpel <bjorn@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: bpf@vger.kernel.org
+---
+ include/linux/netdevice.h   |  5 +++++
+ include/net/xsk_buff_pool.h |  3 +++
+ net/xdp/xsk.c               |  5 +++++
+ net/xdp/xsk_buff_pool.c     | 25 ++++++++++++++++++++++++-
+ 4 files changed, 37 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 3cff2174dc03..72091938f6e6 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2545,6 +2545,11 @@ struct net_device {
+ 	/* protected by rtnl_lock */
+ 	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
+ 
++#ifdef CONFIG_XDP_SOCKETS
++	/** @xsk_pools: assigned AF_XDP pools, protected by rtnl_lock */
++	struct hlist_head	xsk_pools;
++#endif
++
+ 	u8 dev_addr_shadow[MAX_ADDR_LEN];
+ 	netdevice_tracker	linkwatch_dev_tracker;
+ 	netdevice_tracker	watchdog_dev_tracker;
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index a7df573784fd..5cc2f61d7fdf 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -48,6 +48,8 @@ struct xsk_buff_pool {
+ 	struct device *dev;
+ 	struct net_device *netdev;
+ 	struct list_head xsk_tx_list;
++	/* Assigned pools, including deferred releases; protected by RTNL. */
++	struct hlist_node dev_node;
+ 	/* Protects modifications to the xsk_tx_list */
+ 	spinlock_t xsk_tx_list_lock;
+ 	refcount_t users;
+@@ -119,6 +121,7 @@ bool xp_put_pool(struct xsk_buff_pool *pool);
+ void xp_clear_dev(struct xsk_buff_pool *pool);
+ void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
+ void xp_del_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
++void xp_clear_dev_all(struct net_device *dev);
+ 
+ /* AF_XDP, and XDP core. */
+ void xp_free(struct xdp_buff_xsk *xskb);
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 33475b180ea6..781ba46eb152 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -2145,6 +2145,11 @@ static int xsk_notifier(struct notifier_block *this,
+ 			mutex_unlock(&xs->mutex);
+ 		}
+ 		mutex_unlock(&net->xdp.lock);
++		/*
++		 * A released socket is no longer on xdp.list. Its pool can still
++		 * hold a device reference on the frozen release workqueue.
++		 */
++		xp_clear_dev_all(dev);
+ 		break;
+ 	}
+ 	return NOTIFY_DONE;
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 9d2d94f1fb75..c4d722008670 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -204,6 +204,11 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	pool->cached_need_wakeup = XDP_WAKEUP_TX;
+ 
+ 	dev_hold(netdev);
++	/*
++	 * Socket removal precedes the final pool put. Keep the pool visible to
++	 * NETDEV_UNREGISTER even while release work is waiting for process thaw.
++	 */
++	hlist_add_head(&pool->dev_node, &netdev->xsk_pools);
+ 
+ 	if (force_copy)
+ 		/* For copy-mode, we are done. */
+@@ -265,6 +270,8 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		err = 0; /* fallback to copy mode */
+ 	if (err) {
+ 		xsk_clear_pool_at_qid(netdev, queue_id);
++		hlist_del(&pool->dev_node);
++		pool->netdev = NULL;
+ 		dev_put(netdev);
+ 	}
+ 	return err;
+@@ -291,17 +298,29 @@ void xp_clear_dev(struct xsk_buff_pool *pool)
+ {
+ 	struct net_device *netdev = pool->netdev;
+ 
++	ASSERT_RTNL();
+ 	if (!pool->netdev)
+ 		return;
+ 
+ 	netdev_lock_ops(netdev);
+ 	xp_disable_drv_zc(pool);
+ 	xsk_clear_pool_at_qid(pool->netdev, pool->queue_id);
++	hlist_del(&pool->dev_node);
+ 	pool->netdev = NULL;
+ 	netdev_unlock_ops(netdev);
+ 	dev_put(netdev);
+ }
+ 
++void xp_clear_dev_all(struct net_device *dev)
++{
++	struct xsk_buff_pool *pool;
++	struct hlist_node *next;
++
++	ASSERT_RTNL();
++	hlist_for_each_entry_safe(pool, next, &dev->xsk_pools, dev_node)
++		xp_clear_dev(pool);
++}
++
+ static void xp_release_deferred(struct work_struct *work)
+ {
+ 	struct xsk_buff_pool *pool = container_of(work, struct xsk_buff_pool,
+@@ -337,7 +356,11 @@ bool xp_put_pool(struct xsk_buff_pool *pool)
+ 
+ 	if (refcount_dec_and_test(&pool->users)) {
+ 		INIT_WORK(&pool->work, xp_release_deferred);
+-		schedule_work(&pool->work);
++		/*
++		 * Teardown calls ndo_bpf(), which may need powered hardware.
++		 * RTNL alone does not exclude the device's system PM callbacks.
++		 */
++		queue_work(system_freezable_wq, &pool->work);
+ 		return true;
+ 	}
+ 
+
+---
+base-commit: aaaaf87ea99b8766c9a8aa0e71aa42e6bc8a5320
+change-id: 20260930-xsk-suspend-teardown-902f98408c93
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
