@@ -1,193 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BCF4DA9A0;
-	Mon,  5 Oct 2026 18:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A7736AB5A
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 18:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791225604; cv=none; b=FcgvNNX5GjQ5rcyaF8sGp+FV+UFmWohy/whaoYQbn2ePp93ag2B+EGXOU50uQwBhc5rXKAYwqHfKnW0Wcv5+GkTRPX8QJANFIT2kbbH6MvtgVYlyvujgilMrjQhOx+5VJ32dEIueTVcehosx0hVhe772pA1KACWebdsQfPrsMM0=
+	t=1791225941; cv=none; b=sSsgPH1Ua+XQtlnXubRvFIxkmH/4FgRJkC2rNWoVKtRAZqovynHiisGMBiPLBphgd0rU0mhxICOOPH81We05fjSLY6fOfAbylkky+HckOJxFb5AB4i8ksEORNQvkefEJU5oiKnQCaY4UsukRUG2pYlSj+fihJvjT8DtDc0tiu7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791225604; c=relaxed/simple;
-	bh=kYrojStYa9f2rkzVS/+86vqhqOx0RVVx0KJzaPqITa8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VUYoVqPSJrJa1nh/4dWwx3RcYTdTH3gTchPnmVPgEQ7oMSkHNrZxbrpVggfMo0PDKy6DHBZe8QX1Y6Aw/5TfG8u2mVuBeg/HAHP/MoALhEfk+PPguA0Z3qAqO+G1bk2k2cE3c+YWhKz7oKod2gpk61G8+MtsofnZjwe/Vrdo1CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4adeSDi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791225941; c=relaxed/simple;
+	bh=b//zlVXeuJXL7Lb4hosPufcIxqNJUBJKw/gIENPO8t0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NZuW30BtU+mZwRt3HyFsrIjfDQQLClDGJZimCNFFpN3SMJ+TqdM2o/sSREOeld+vjzvAsifo6tI9oVyRv0oVEIiYJUIVLPf1MeogKoF9hv5cPNwMF7rlIBvODfWqdWHxEJmkuN42lfxeSZTVzlUQMP5f+uKRkF0Pdz8FqVfTA1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iHLW/GkC; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4adeSDi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACAF1F000FF;
-	Mon,  5 Oct 2026 18:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791225600;
-	bh=EyJBhpnt+a00Z6n4RfwT1Ttm6wadK+l2MLfsyB5eVlE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=V4adeSDiis4Tu3mLwOrA4li1WNPNYoKuTp3nBZss3a1FwwsUcAo1AGl3Z0XwuWZfz
-	 CIIfcTL7MdxfXWSSzMnMZu29toQ/vvwEjSDdoUq/+C4Swgy82eeDwC7xdWiMh6lg7r
-	 DDYx+90xv18geUveeDvYvS6+v73i6xEIjosU+RCVhTxT0aqrBHF3mZfinRrKEqigOo
-	 bJLgpWmf2MR+rMRnbttWCLEkE9587+eoefTF3SqyPA5UIBmC29lLgPXXViHyyPKkLd
-	 HUs6CIpz0Ng6gkxzejpV66YgyIuEpsHyNapA6yRVVKLIbkyLpf0q0xOUaCRvRFiqr7
-	 ZMsu/MGMKepNQ==
-Subject: Re: [PATCH net v2 1/2] ipv6: serialize address publication with
- device teardown
-From: netdev-bot+sashiko@kernel.org
-To: 4ncienth@gmail.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 18:39:59 +0000
-Message-ID: <179122559913.434549.12720841717630168470@kernel.org>
-In-Reply-To: <20261004183639.3773498-2-4ncienth@gmail.com>
-References: <20261004183639.3773498-2-4ncienth@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iHLW/GkC"
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-483a66818edso942852fac.0
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 11:45:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791225938; x=1791830738; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qHXIZ0/VdQKV88LxM3mtQj2aJBqOHLmw3glvybCULXM=;
+        b=iHLW/GkCQ+VaMoywl/A/ZxZLHwRWK+8+1Z/2Vw0vYXkANfyrof6HDB11EZ7HLF8NCt
+         WMffUYodizRaQl4IKCqYa93FJHNGNq1AIdOn4aOec14XikSWQvKkgonCaDOeYUrBR0HS
+         m2qP5IUwFUlQqn8kO1XQKN+cK9Qknxhb6A2mWrTR8fwGi98CpEVXN9ooI9ZGM9ZxnWOC
+         UTPNsRCVWCeafVXPlW5YdZoNhs8uecaQwHkI9As4GlXcoX6BzdUAOQ4nDr3rxzbGNWr0
+         VNrhTZmTDKfQ6yXrsJfEDriaHghxL98xyYEiTicZSBqsSAOqD77hZcZJusBxFJGyn0kj
+         u8IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791225938; x=1791830738;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qHXIZ0/VdQKV88LxM3mtQj2aJBqOHLmw3glvybCULXM=;
+        b=Il8Dyc2dySGJboY6sDkGBDDBbpYfE1ffhugKBq0MnuUwUhmrihLhjBjM4kQfimIw3A
+         8VPsxk7wKemXCIZJILgQmt+T+8dOm736bJJXcxMbTGtpsXbEvxGhD6e18rmd3eETuM17
+         94qYD+tVRnpFk8TcCX5YZRFO2R8z2BNi5QJdr0GfDUQhf6GqQi/lDiyxe5lwFGLiSJ2l
+         GXPLeHViBXsNSHStaeE7vhfSseoum7n3ym6mdiRF7u0guKBwE1OdyzGU1ZRdUYpkaHSD
+         FxxJgWWzb7aUtU/DlT6yTNBm9b5DIa8WUXvCsS8gZHvU2gGubMTxYSUxofWI+s8Y5k3s
+         csqw==
+X-Gm-Message-State: AFuF++lKliNZJ0dwAK7ZlxlyUJGi7GoMR3Tm7rOg3oq9QW/pN8NVnnL1
+	UR1O2yfKlACNGi8sYTKMdId1uN06MY10HtgkZfb3XHG35ia5t8waBKIW
+X-Gm-Gg: AYBFou376U1mI4DG4pfBRwJQ/+7USQlZTetd9bnzUE2v+lc6MsWDZKDhKx5NIzJFtUo
+	N70IWjFZ3LwwgEldOUZjc686VPqyR4pMH8w7H7bFoCkEd3vEqQ/PfIUmS+lvI3umURCtI1elqt2
+	+foo5FIKV+LbZ18ogtfqAOGso6MqR7BhNKb/my241BOMtpjG08+rrwJejxVy6u89R+pr7lzZRIw
+	wGteSXf2DfSpIKqsT9Blu4dyIAlo/J+zLXPGyi3FECi53+8kiJRK4WQYi3537j0ddWF2gp9J0bm
+	WFng859arWs1LnZVi6V8v1/046dlDa2wmrj7K9bn/S2Sj2nsF6LmU/OLpM/as4AGoH8vCFMwM6C
+	L3YNojPixCbq+UdvbktwgaWHyb1f6BH3WG1yUkTdG/vP+EaK+S6/0h7AhoAnzXdCI2m9cGTkJMj
+	oWcIS+AjsX1RPsMU9q0PKofs0u/BKmnAV3fmX8qYmSCRLXOu9dn0teBts86vM8diW1m0K1dqS0X
+	zHVBHwfHxTgZM1rWUstxDa7aBfsH/hB93KaaURHNXj6JajtUAOpp67evDR4FG+tvtAJmbYrleIm
+	90kmmE33QnZXUTFfhIsiNZmc0nwG1lhcsJ/sQQlnwIqNTFk0ydT4OZDADk8W5PafthUWGSTzqFX
+	D0vJ101C8+Ck/Ohaw/PGb
+X-Received: by 2002:a05:6871:69b0:b0:46a:ad97:9ba with SMTP id 586e51a60fabf-49e3a581b13mr6547284fac.8.1791225938410;
+        Mon, 05 Oct 2026 11:45:38 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-49e16ead0dbsm10666593fac.12.2026.10.05.11.45.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Oct 2026 11:45:37 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net v2 0/2] ptp: make virtual clock sampling and teardown
+ failure-safe
+Date: Mon, 05 Oct 2026 12:45:32 -0600
+Message-Id: <20261005-ptp-vclock-sampling-v2-0-8ed12d4d10af@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32OS27DMAxEr2JwXQWSnMpSVrlHkAXN0g5R/yIpR
+ orAd6/gdN3ZzRB8My9IHIUTnKoXRF4lyTwVYz8qoBtOPSv5Kh6stk6HWqslL2qlYaZvlXBcBpl
+ 6FbTtgj9qT6GG8rlE7uS5Uy8wcYbrO4x8f5SG/HdpMbGieRwlnyos6nzDGELrG+cooEfU3BjEo
+ 2XXksfP2uqddZOU5/izr17NDvt34GqUUWRMS8a5YJDP/YgyHEo5XLdt+wVh2FpIBwEAAA==
+X-Change-ID: 20260930-ptp-vclock-sampling-902f98408c93
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Yangbo Lu <yangbo.lu@nxp.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Keep virtual clock state intact when a physical clock cannot be sampled,
+and retain elapsed time when errors postpone the next successful sample.
+Drain virtual clock sysfs changes before parent teardown so failed
+creation requests can safely unwind their newly registered children.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Assisted-by: Codex:gpt-6-astra
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+---
+Changes in v2:
+- Drain virtual clock sysfs changes before parent unregister walks children.
+- Use full-width samples and overflow-safe scaling across long sampling gaps.
+- Update the anchor for extended and cross-timestamp reads under the clock lock.
+- Link to v1: https://patch.msgid.link/20260930-ptp-vclock-sampling-v1-1-c11bc16691ae@gmail.com
 
-- [High] The patch leaves a teardown race open that leaks a reference and
-  has the same symptom it sets out to fix.
+To: Richard Cochran <richardcochran@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Yangbo Lu <yangbo.lu@nxp.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
---
+---
+James Hilliard (2):
+      ptp: drain virtual clock sysfs operations before unregistering children
+      ptp: vclock: preserve time across failed physical clock samples
 
-ipv6: serialize address publication with device teardown
+ drivers/ptp/ptp_clock.c   |   5 ++
+ drivers/ptp/ptp_private.h |  10 ++--
+ drivers/ptp/ptp_sysfs.c   |  14 ++++-
+ drivers/ptp/ptp_vclock.c  | 148 ++++++++++++++++++++++++++++++----------------
+ 4 files changed, 121 insertions(+), 56 deletions(-)
+---
+base-commit: aaaaf87ea99b8766c9a8aa0e71aa42e6bc8a5320
+change-id: 20260930-ptp-vclock-sampling-902f98408c93
 
-This patch takes idev->lock around the write of idev->dead in
-addrconf_ifdown(). In ipv6_add_addr() it holds idev->lock across both the
-hash and the device-list publication, and rechecks dead and disable_ipv6
-before publishing. The goal is to stop an address being published on a
-dead idev, which leaks references and makes device deletion hang.
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
-> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-> index c90ee6dd7446c..426739abb0744 100644
-> --- a/net/ipv6/addrconf.c
-> +++ b/net/ipv6/addrconf.c
-> @@ -1168,14 +1168,20 @@ ipv6_add_addr(struct inet6_dev *idev, struct ifa6_config *cfg,
->  
->  	rcu_read_lock();
->  
-> -	err = ipv6_add_addr_hash(idev->dev, ifa);
-> +	write_lock_bh(&idev->lock);
-> +
-> +	if (idev->dead)
-> +		err = -ENODEV;
-> +	else if (READ_ONCE(idev->cnf.disable_ipv6))
-> +		err = -EACCES;
-> +	else
-> +		err = ipv6_add_addr_hash(idev->dev, ifa);
->  	if (err < 0) {
-> +		write_unlock_bh(&idev->lock);
->  		rcu_read_unlock();
->  		goto out;
->  	}
->  
-> -	write_lock_bh(&idev->lock);
-> -
->  	/* Add to inet6_dev unicast addr list. */
->  	ipv6_link_dev_addr(idev, ifa);
->  
-
-[Severity: High]
-Can the same kind of leak still happen for temporary addresses after this
-change?
-
-The new critical section ends in ipv6_add_addr() once the address is on the
-hash, addr_list and tempaddr_list:
-
-net/ipv6/addrconf.c:ipv6_add_addr() {
-    ...
-	in6_ifa_hold(ifa);
-	write_unlock_bh(&idev->lock);
-
-	rcu_read_unlock();
-
-	inet6addr_notifier_call_chain(NETDEV_UP, ifa);
-    ...
-}
-
-The ifp reference held by ipv6_create_tempaddr() is handed to the new
-address only after ipv6_add_addr() returns:
-
-net/ipv6/addrconf.c:ipv6_create_tempaddr() {
-    ...
-	ift = ipv6_add_addr(idev, &cfg, block, NULL);
-    ...
-	spin_lock_bh(&ift->lock);
-	ift->ifpub = ifp;
-	ift->cstamp = now;
-    ...
-	addrconf_dad_start(ift);
-	in6_ifa_put(ift);
-    ...
-}
-
-On the RA path, ipv6_create_tempaddr() runs in softirq without RTNL:
-
-ndisc_router_discovery()
-  addrconf_prefix_rcv()
-    addrconf_prefix_rcv_add_addr()
-      manage_tempaddrs()
-        ipv6_create_tempaddr(ifp, false)
-
-Meanwhile, addrconf_notify() handles NETDEV_CHANGEMTU with
-dev->mtu < IPV6_MIN_MTU by calling addrconf_ifdown(dev, true). The device
-is still up and keeps receiving RAs. This is the same trigger the commit
-message cites.
-
-Suppose addrconf_ifdown() takes idev->lock right after ipv6_add_addr()
-drops it. It sets dead, and the new recheck can't help because the address
-is already published. Step 3 then sees ift on tempaddr_list with ifpub
-still NULL, so it has nothing to drop:
-
-net/ipv6/addrconf.c:addrconf_ifdown() {
-    ...
-		if (ifa->ifpub) {
-			in6_ifa_put(ifa->ifpub);
-			ifa->ifpub = NULL;
-		}
-    ...
-}
-
-The rest of the loop marks ift DEAD, unlinks it and puts it. Then
-ipv6_create_tempaddr() stores ifp in ift->ifpub. addrconf_dad_start() does
-nothing because ift is DEAD, and in6_ifa_put(ift) drops the last reference.
-
-inet6_ifa_finish_destroy() never releases ifpub. Only ipv6_del_addr() and
-Step 3 of addrconf_ifdown() do, and only while the address is still on
-tempaddr_list.
-
-If so, the public ifp stays pinned. That pins its idev, and the idev pins
-the net_device through dev_tracker. Later device deletion would then wait
-forever in netdev_wait_allrefs_any(), which is the symptom described in the
-commit message.
-
-Would it make sense to set ifpub inside the idev->lock publication section,
-for example by passing it into ipv6_add_addr()? Another option would be a
-teardown or destroy path that releases an ifpub attached this late.
-
-> @@ -3897,7 +3903,9 @@ static int addrconf_ifdown(struct net_device *dev, bool unregister)
->  	 *	   Do not dev_put!
->  	 */
->  	if (unregister) {
-> +		write_lock_bh(&idev->lock);
->  		WRITE_ONCE(idev->dead, 1);
-> +		write_unlock_bh(&idev->lock);
->  
->  		/* protected by rtnl_lock */
->  		RCU_INIT_POINTER(dev->ip6_ptr, NULL);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004183639.3773498-1-4ncienth%40gmail.com
