@@ -1,121 +1,275 @@
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4C3480DC7
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 13:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8894825BB;
+	Mon,  5 Oct 2026 13:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791205736; cv=none; b=K380u2YRnjgFKLGGHgir7VViYsqlq7kFRaHeL0mZ+fpGFr7IjI5C+gaRSZgNHchSd3f0eLEoXM68sG84l3E1v/7fs8eyC2nunSzaralp+tuuVD8mru6a8hSun3bNcXHOMKLmYV6NHlckbS+t1Rg3GxxkriWNx9VGODluIUraU4Q=
+	t=1791205879; cv=none; b=UN7A7h2hGzD9sYo8zJx1PrME0KV3qJkjDJngOMb5PPKs5mogikn2jC3jIQUgjIk8obNRWXp5dzSCgQPSQyQ98fE9KcsmQ/I56Bh9FlKo0EvLLHiK3uIaKT0V1CpeO1jPd66Q/DFgqdNdE/Um0FRVJzCrXdm3WC9u3qCtx0BLC+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791205736; c=relaxed/simple;
-	bh=uTR7vGzEmIPD7bRE8b650ZWfWiO6EfEmpDypUW3oZQY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q9ipP6oMzmmAsuV86A2Bp0XABlopG7UqF4O1OTFdY+kuWawDUf4Yzeytt9XSYZQwnCok9TXfPWWb9yqLsDydiQ8+IfLqjbZaMQCWtopSBVtG1aVXxiCxiJ+1pJ/uVE3L7xyzwIZ4ySqWrQFx05s+PG+jYhfpZrUtWH41oB8pV1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bo5u0KWq; arc=none smtp.client-ip=209.85.216.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791205879; c=relaxed/simple;
+	bh=yggD/7T8H2cKdHwzxrMCg/sJWOUy1fSXJcntZp7PbVM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gdqIEFdoZ8/sX0EAKjosMAjXPjByZ0fpkDV9PqJ9+hIkekw9cKSwv1zdvnnh3TDm0g2/N6uAnj2kDcVN5LoApK/7KdleSeYCqpg2Mx+9Iq7ZLFXOOrbnmB0i06jcUeW16nQ1sSLfWksqYJwHNTjUHrnvjZnWzDD/BSfrg1X1DKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eE4OXAq4; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bo5u0KWq"
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-39647aa9d52so840928a91.0
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 06:08:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791205735; x=1791810535; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pzGSAE/R9LcQ+GhEQ7PEouw8tTP8F2nUBfFpq5GSKUg=;
-        b=Bo5u0KWqeS7jmVwDbnoqXv0/4XlFzlvz/j+vd/IJ06tpNBDKSe5QNImemm4z9ts3jl
-         0NJs+zGpIYLUaEgO6VG+SrxQmgQihN+bJBl/TeX4ySBtUm9AQdKK1zPVPGDDhQ7JinKc
-         rmjBviMrESTwYY+/HdzPAPeyxopujAkhOn92AoAnUdS4LIRqwfy5MtYUslliZG9Od58P
-         nEY9YWp8plDCRzsFeD+SmKuC0BV8nCW5bsKdhjM2h3RHC0HRMB4G6uW5ACiljbJshomC
-         K89oaKOJarh2urR7BIm+9+yX49nj9upxX+DgcgImVrsAfNOlEw4qTsdLL/6qyXUNr/mT
-         Nwlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791205735; x=1791810535;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pzGSAE/R9LcQ+GhEQ7PEouw8tTP8F2nUBfFpq5GSKUg=;
-        b=neFSruL5STtGhYn9WgFibcCO1AxGC6jnydPorS4C8Lty8OdVJLD4du5aqO9nLTAoQ7
-         K6iZTZCgZ+BpVtIvb6W2cm+7zBdmRIqUYvPttfmG/1fhuOlung6HLOH+49091iSXdEUR
-         B1x6qXsg3CNltfCjTSCTdRxV/Uqgce+69IzXe1DCtRq/iXMnyCKMzgSrudFVRRcukZnZ
-         g3rE5SPuM9R7j+sRJuJJvio8TKSQtWay3s4Yab02Ptb6F9pD0KuqeG9+wCE5J5fBfwZj
-         D3yz2XzE/mvrESaBRSjZzM9rVQ4ZfyJwnHS8k2r/TSqxSJ/CY6WybP3xac9Tbkt5R7w5
-         kuHg==
-X-Forwarded-Encrypted: i=1; AKwUvByBCoRMdMcrxRQVwZH6v/z2/dq3jZ8T2Ib1OzXnOldLJojRSB93aFc2qxud7CVdmdorqOy0tOQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJSyFqVYETaZXIp0KQP9FX0hcayTVJHQzqoLncBt4qtgXQwTwQF
-	/uYtgELNq8QEl7TvEcZI6v7n96/zzRkyANtdxRzKagVOvOY3FYkktnvrIpR66PgpKPE54w==
-X-Gm-Gg: AYBFou11BcAX8afwqzN4EozaJhPejNj8GWM4YeGzTqZQ8G8A/TeYHpTs9XYhCCqEbnF
-	RviEdgybb9mZ4fy9gOw1+ID7OB+7Lw+rhaEMYhYzOp4mieZs62MNcZAWxu8uoLTZbe5KBursHXn
-	bZAHxYODDxUo+C8ILNj/3qNxW6vm1KzwWhey3jwOP8x4RDJVoz1suKmIyjZhpeyIXgmXNRPc36u
-	jwe5AHlU80tDUGx1wNevmwoh8GNCFzXSWKRG67xqGzq3XqwcmZJ4c/qIABObb8A7y+qqD81um9K
-	RhxySISuP3aGdaESpQNoNB1a5VFX7CIu8lJEp/wbM/3gmxUn8NStNEDqnBxn06TnE3pMYrnDi8J
-	IT5mvOlRIjSGmleuqKNVi+ZmuaDe0EK33HCWFN4wCsPL9qYxqjbRTUkUGGGvTxkggTj2q4MH3m0
-	obtpzPCOSLPm8LZTmU6ybStjleOZHrgGuOomylp8Co26di+UoEa2F3BBfvnPcdzgZFn2UXgGaok
-	vMoopee1wr2sg==
-X-Received: by 2002:a17:90a:d606:b0:3a7:ada8:c18f with SMTP id 98e67ed59e1d1-3a7ada8c957mr3782621a91.24.1791205734543;
-        Mon, 05 Oct 2026 06:08:54 -0700 (PDT)
-Received: from localhost.localdomain ([112.49.112.188])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cce6d429dcfsm829741a12.7.2026.10.05.06.08.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Oct 2026 06:08:54 -0700 (PDT)
-From: xiaoshoukui@gmail.com
-To: edumazet@google.com
-Cc: jmaloy@redhat.com,
-	tung.quang.nguyen@est.tech,
-	netdev@vger.kernel.org,
-	w@1wt.eu
-Subject: Re: [PATCH net v2] tipc: fix memory leaks in bundle and fragment paths
-Date: Mon,  5 Oct 2026 13:07:29 +0000
-Message-Id: <20261005130729.36294-1-xiaoshoukui@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <DU4P189MB3750FD6F099BF5A2FFF92F05C6962@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
-References: <DU4P189MB3750FD6F099BF5A2FFF92F05C6962@DU4P189MB3750.EURP189.PROD.OUTLOOK.COM>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eE4OXAq4"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 695CZu7T712185;
+	Mon, 5 Oct 2026 13:10:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=IAMuV/
+	Ckmeidgom5DWMsQUY5YhSz05Mw6tgXMXt9cPU=; b=eE4OXAq4YQfKrTl/RuY8fr
+	N8BGfc9zdQ6mDcOeTI02ifU+3T2P8S8vmi5Gl0OJYOsESdkh2iS8Magetk6uuP7Y
+	Xc3L/xRc5buJzH0WGUp8t0NFCuI7nOgnfL5xNha7JX+QalVqInkozsOFrurICIef
+	mysPjzlpUGLDO8oIF40Kn+BQcYY2synS8WOhUH8/MF6mEyp7euJExjWm3qyJJcO3
+	XPv39FtJCuZDIAaVHNrkCgPuAx3tE7fbuCIv6d1spBZ6sY0tGHWCcYDHP81aVXfd
+	wETijCfw355vx/I5QN+fXEEm36tsg8DF/DT1kmqi9WvvSdhbWzRwlgApHOj1INXw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h2s74jdmj-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 13:10:27 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 695CWiD62894025;
+	Mon, 5 Oct 2026 13:10:26 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h3cdvnn9e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Oct 2026 13:10:26 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 695DAPiJ7734074
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 5 Oct 2026 13:10:25 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B5CB558064;
+	Mon,  5 Oct 2026 13:10:25 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B01D5805D;
+	Mon,  5 Oct 2026 13:10:18 +0000 (GMT)
+Received: from [9.39.23.136] (unknown [9.39.23.136])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  5 Oct 2026 13:10:18 +0000 (GMT)
+Message-ID: <46e5b6b2-a0ee-4381-816c-6435c61e320f@linux.ibm.com>
+Date: Mon, 5 Oct 2026 18:40:16 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v7] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
+        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20260930073029.1201202-1-mjambigi@linux.ibm.com>
+ <179110012456.434549.13805687630302688897@kernel.org>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <179110012456.434549.13805687630302688897@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: TZq39kL32FTxUkRF68m-18kLrWAYpPKm
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA1MDA1MSBTYWx0ZWRfX1m5MtzK3ZN5v
+ KGaFLQasXCsVxH3rEkYFwz45tDKP2ln7jkYG1m5UTaUOj9YNFi6BdMrWN018nPRS02DD4bP8j5l
+ BxXN+WyAI3cb9co4xMQUdCIRTCObNH0=
+X-Proofpoint-GUID: sXcoUv1NlrKxestaNaiyM7h_Ny3r3WUG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA1MDA1MSBTYWx0ZWRfX5J8oLxaOOy6d
+ nDdIEclSGUWIcsDm8bG/Zo91amypKMrOwlIInfMPo+NVVR58BGvwaGYT+QPufRNIozqvEWT0xyX
+ xiZxtKL/03MBmODgRMEM3Y46vhNBRW4ebDHnD9Z5UOCuOEKz1lrU5PMaKKIFtqqeYO67ylhpHSg
+ 27ZACOj6PWTaQNv+3ggpbuhYc+pchq+/JhR1+ljj6jjo5qPWFUgO5MGgCSad4OBO2yhx3SFaI2y
+ W7dWWZI7QxoBaUiiht8m1rI1BuxO6Dp8DcbG7XznOqgjSiyEku9eO0FMfyN4C0PZR2qy6vdRlT+
+ FZHLE2DdOb3pKqHCKZVjG25DS/wkVso+PKantnlOf/HKykab4KPXaE76KqWXWzioQ1QTRFRry0g
+ fkpGo336MyTCMqzwHSIrpLDxZW+AJjxi0bXdeA+IcHMDInnPB7ETOjFSaNzYVS5gB9JVSIsqmRn
+ Y15lXYrw6AD8eZ3I48A==
+X-Authority-Analysis: v=2.4 cv=fM2sTpae c=1 sm=1 tr=0 ts=6ac3a1c4 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
+ a=qQrw9uN9OdwYv-SV2ssA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-05_03,2026-10-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ phishscore=0 adultscore=0 malwarescore=0 clxscore=1015 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610050051
 
-Hi Eric,
 
-Since you previously provided helpful feedback on this thread, I would
-appreciate your guidance on the appropriate way to address this TIPC
-receive-path issue.
 
-To summarize the current situation:
+On 04/10/26 1:18 pm, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 1 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] The patch does not fully close the diag-reader vs. link-lifetime
+>   race it says it fixes.
+> - [Medium] The new safety gates in __smc_diag_dump() depend on a plain,
+>   lockless load of sk->sk_state.
+> 
+> --
+> 
+> net/smc: fix lgr/lnk lifetime vs diag reader race
+> 
+> This patch tries to close races between the SMC sock_diag dump and
+> teardown paths. The dump walks the socket hash under read_lock, while the
+> teardown paths free lgr, lnk or sndbuf_desc state. The patch adds sk_state
+> based guards for SMC_INIT and SMC_CLOSED sockets to __smc_diag_dump(), and
+> unhashes the socket earlier in smc_conn_kill(), smc_close_active_abort()
+> and smc_close_passive_work().
+> 
+>> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+>> index bf0beaa23bdb6..b29bd34acf7b5 100644
+>> --- a/net/smc/smc_diag.c
+>> +++ b/net/smc/smc_diag.c
+>> @@ -90,7 +90,8 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>>  	r->diag_state = sk->sk_state;
+>>  	if (smc->use_fallback)
+>>  		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
+>> -	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+>> +	else if (sk->sk_state != SMC_INIT &&
+>> +		 smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+>>  		r->diag_mode = SMC_DIAG_MODE_SMCD;
+>>  	else
+>>  		r->diag_mode = SMC_DIAG_MODE_SMCR;
+> 
+> [Severity: Medium]
+> Is a plain load of sk->sk_state enough to order the later loads of
+> conn->alert_token_local, conn->lgr->is_smcd and conn->sndbuf_desc->len?
+> 
+> This check, and the SMC_INIT/SMC_CLOSED guard added below, share no lock
+> with the writer. Nothing sits between the sk_state load and the conn field
+> loads: no READ_ONCE(), no smp_load_acquire(), no smp_rmb(). Only a control
+> dependency links them, and that doesn't order load->load on weakly ordered
+> CPUs.
+> 
+> On the early abort path the writer runs under lock_sock():
+> 
+> smc_conn_abort()
+>   smc_conn_free()
+>     smc_lgr_unregister_conn()    /* alert_token_local = 0 */
+>   smc_lgr_cleanup_early()
+>     __smc_lgr_terminate()
+>       smc_lgr_free()             /* lgr and buffers freed, conn->lgr and
+>                                     conn->sndbuf_desc left set */
+> smc_switch_to_fallback()
+> ...
+> sk->sk_state = SMC_ACTIVE
+> 
+> On arm64, could the reader see sk_state == SMC_ACTIVE together with a
+> stale non-zero alert_token_local? It would then read lgr->is_smcd or
+> sndbuf_desc->len from freed memory and copy the value into the netlink
+> reply.
+> 
+> This can't happen on x86 or s390, which keep load-load order, and the
+> writer's window is long. The Linux kernel memory model still allows it.
+> 
+> Would READ_ONCE() or smp_load_acquire() on sk_state (or an smp_rmb()
+> before the conn field loads), paired with release-ordered state changes,
+> be needed here?
 
-1. Demonstrated issue:
-   Streaming 30,000 crafted TIPC UDP packets to a 4 GB VM reliably triggers
-   unconsumed skb memory leaks originating from
-   tipc_buf_acquire() -> tipc_msg_extract() -> tipc_link_input() when
-   tipc_data_input() returns false. The memory growth eventually results in
-   an OOM kernel panic in 14 seconds.
+Agreed. Under the LKMM, a control dependency does not order load-load on
+weakly ordered architectures (such as ARM64).
 
-2. Benchmark results:
-   I re-ran the benchmark for 10 back-to-back rounds with strict CPU
-   affinity. The results did not show any measurable throughput regression
-   between the pre-patch and post-patch versions with unlikely().
+In v8, I will address this with acquire-release ordering:
+- In __smc_diag_dump(), I use smp_load_acquire(&sk->sk_state) and reuse
+  the acquired state (in r->diag_state) across the subsequent mode/state
+  checks.
+- In af_smc.c, I paired it with smp_store_release(&sk->sk_state,
+SMC_ACTIVE) when transitioning out of SMC_INIT.
 
-3. Current review concern:
-   Tung rejected the v2 implementation because of the concern that adding
-   caller-side cleanup checks may introduce overhead on the fast path, and
-   because these malformed inputs are not generated by compliant TIPC
-   senders.
+> 
+>> @@ -103,6 +104,9 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>>  	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
+>>  		goto errout;
+>>  
+>> +	if (sk->sk_state == SMC_INIT || sk->sk_state == SMC_CLOSED)
+>> +		goto out;
+>> +
+> 
+> [Severity: High]
+> Does this leave the conn->lnk replacement during SMC-R link failover still
+> racing with the diag reader?
+> 
+> For SMC_ACTIVE and closing-state sockets, the LGRINFO block further down
+> still does this with only read_lock(&smc_hash->lock) held:
+> 
+> net/smc/smc_diag.c:__smc_diag_dump() {
+>     ...
+> 		struct smc_link *link = smc->conn.lnk;
+> 		...
+> 		memcpy(linfo.lnk[0].ibname, link->smcibdev->ibdev->name,
+> 		       sizeof(link->smcibdev->ibdev->name));
+>     ...
+> }
+> 
+> The failover side doesn't take the hash lock and doesn't unhash the
+> socket. For example, when the peer sends DELETE_LINK:
+> 
+> smc_llc_process_cli_delete_link()
+>   smc_switch_conns(lgr, lnk_del, false)
+>     smc_switch_link_and_count(conn, to_lnk)
+>       smcr_link_put(conn->lnk);
+>       conn->lnk = to_lnk;
+>   smcr_link_clear(lnk_del, true)
+>     ...
+>     __smcr_link_clear()
+>       put_device(&lnk->smcibdev->ibdev->dev);
+>       smcibdev = lnk->smcibdev;
+>       memset(lnk, 0, sizeof(struct smc_link));
+>       ...
+>       atomic_dec_return(&smcibdev->lnk_cnt)
+> 
+> A local RNIC or port going down reaches smc_switch_conns() the same way,
+> through smcr_link_down().
+> 
+> smc_switch_link_and_count() runs only under lgr->conns_lock and
+> conn->send_lock. The diag reader takes neither lock.
+> 
+> Suppose the reader loaded the old conn->lnk before the switch and was
+> delayed before the later loads. Could it then dereference a NULL
+> link->smcibdev after the memset()? Could it instead read a freed smcibdev
+> or ibdev and copy those bytes to userspace?
+> 
+> An unprivileged SOCK_DIAG dump that asks for SMC_DIAG_LGRINFO (for
+> example smcss -R) can reach this.
+> 
+> The socket stays hashed in SMC_ACTIVE or a closing state. So neither this
+> guard nor the !list_empty(&smc->conn.lgr->list) check from 9dbe086c69b8
+> filters it out
+Good catch. When smcr_link_clear() drops the final base refcount after
+smc_switch_conns(), __smcr_link_clear() can execute memset() and
+put_device() while a concurrent diag reader holds a pointer to the old link.
 
-Given that the remote memory exhaustion issue is reliably reproducible, 
-I would appreciate your thoughts on the preferred netdev/TIPC approach:
+To eliminate the pointer dereference and external device lifetime
+dependency entirely, in v8 I switched from chasing
+link->smcibdev->ibdev->name to copying directly from the cached
+link->ibname (which is embedded in struct smc_link and initialized once
+at link creation). Since struct smc_link is embedded in the link group
+(pinned while the socket is hashed), this avoids the NULL dereference
+and UAF on smcibdev/ibdev without introducing extra locking on the
+critical TX path.
 
-- Should the TIPC receive path defensively handle such malformed wire inputs
-  to prevent unbounded skb memory consumption and remote DoS?
-- If the current caller-side cleanup is not the preferred approach, what would
-  be the cleanest way to ensure that the unconsumed skbs are released without
-  adding meaningful overhead to the normal receive path?
+I'll post v8 shortly with these 2 changes.
 
-I am not wedded to the current v2 implementation. I would be happy to explore 
-a cleaner, more effective fix based on the maintainers' guidance.
+pw-bot: cr
 
-Thanks,
-Xiaoshoukui
