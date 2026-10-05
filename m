@@ -1,159 +1,79 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-139-mta239.mxyeet.net (mail-139-mta239.mxyeet.net [23.172.139.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B235493622;
-	Mon,  5 Oct 2026 14:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BC6483BEB
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 14:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.172.139.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791209261; cv=none; b=CWWaGiXHBP5PnL7KLgBzS4+TwQ1an872DGta07Bj96jZKK6sv09/Q9eA6cwaODe7mc3dJPQ4wZ9w+5JbIzIL6qLuN5ZoHSb/U/ca3anyC8QUeaz2hO0Fok01vHomWSiHs+uelr+2JSMujm+u9YrMtIGzxQRA0VVhKyuDuUXOYSU=
+	t=1791209304; cv=none; b=bbLBuCc96IRBfy7PgOdRa9JOSY8sbOt1fKkwbyOnTN7vX9HXiK8D7J+JfEn8WnQQatIHamq7UvgWQGTM8DhRiwEhSwdonSbN8dt6e5R+8Fwh0028wVHDiZiplcaR4/x1OMq+S5XQEeU3jIvOSmu5l3VR1fMmC02AV1l3zk5gO84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791209261; c=relaxed/simple;
-	bh=cK5qrDph1P/G1BEJo/ML/xly0Oz0FIzZEATx0N+8QPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cYlhnIqfgGKPuMVYv7MeBGvTOMRbYGrG/GpEx3YCnS6nmG8jabAqEbDDHeAsdiCHAfahAYE6pfwizFPwltpmetJkHDHJMpKdLYwcPScz6llhKiqWNs5qH04r50lPg1C4s7bJz0VxFp/pdfNeubMgI4O/EMlyrqt566A1CmdlSoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E9082439B8;
-	Mon, 05 Oct 2026 16:07:36 +0200 (CEST)
-Date: Mon, 5 Oct 2026 16:07:35 +0200
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3] net: ipv6: seg6: report lwtunnel setup
- errors via extack
-Message-ID: <asOu-Baq8F3DxqqC@luna.proxmox.com>
-References: <20260923120228.172643-1-g.goller@proxmox.com>
- <arR9WwUQv5NReOyS@fedora>
+	s=arc-20240116; t=1791209304; c=relaxed/simple;
+	bh=bXP2gsPKInS3wxEiRyHL64d/IyuhIOqfNGcm9LumHTk=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=r2kLpUlPX0ANqf/SD+SFAxGrNslnv3OsZ0WEDBC8hAoFp2TTbqMwxNYev8JFWKdnnR+9e0aB2lK4WQpOuNUTsvPk71OXCLp/9ZMKkTq5t5/oJkPfVclN7p8zzSRHon9qmAWLnex+aVv2Kf0uhBX9RqvU3OOk1z5N77YsKItGntU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endrik.dev; spf=pass smtp.mailfrom=endrik.dev; dkim=pass (2048-bit key) header.d=endrik.dev header.i=@endrik.dev header.b=ps608y4H; arc=none smtp.client-ip=23.172.139.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endrik.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=endrik.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=endrik.dev header.i=@endrik.dev header.b="ps608y4H"
+Received: from lu-shared04.cpanelplatform.com [2602:faa9:3000::1006] (Authenticated sender: relay@mxyeet.net)
+ by mail-139-mta239.mxyeet.net (MailFilter Outbound) with ESMTPSA id 1a10c64c76900089d7.003
+ for <netdev@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Mon, 05 Oct 2026 14:08:13 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=endrik.dev;
+	s=default; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
+	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Unsubscribe-Post:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tx3Yyu7EF76UxqlyUCyryECBr1KTcBsd0J+ccOAf8Yk=; b=ps608y4HhMrmhuFVL3TB8eycQF
+	Ed40sDquQKudRnUFH/vYsFROYzGzQUgyCnfZkU5AZDbp5Hlf7Lo1O76Y5VNbd9GNCtkPMtMiTxGY1
+	zxMfggJXFju/HAdmNidqkC3COC/sm844mNr9ZHRRo+dObGNWOgybc+w8siVM+suBWZnIa4dM5Im0Y
+	SiMA6RCP+szT06qwvG8Oleqj6PnVRkQAK4iilaCzeAlPX3gXWLYUB7t/HD1cbkgjNiy0toVatiDRl
+	7ZzqO49Vl2276zXm4qzY+bZDQ/V3T64KZ2XlOyTGBR9ULfrxelGLyf3Ji8Yv0iaVZ5ux2Ko14yaVz
+	6istlqIw==;
+Received: from [::1] (port=41434 helo=lu-shared04.cpanelplatform.com)
+	by lu-shared04.cpanelplatform.com with esmtpa (Exim 4.100.1)
+	(envelope-from <git@endrik.dev>)
+	id 1xDjMR-00000002mNC-3l8V;
+	Mon, 05 Oct 2026 16:08:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <arR9WwUQv5NReOyS@fedora>
-User-Agent: NeoMutt/20260504
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1791209256097
+Date: Mon, 05 Oct 2026 16:08:11 +0200
+From: git@endrik.dev
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, git@endrik.dev
+Subject: Re: [PATCH] wifi: iwlwifi: mld: include VI packets in low latency
+ detection
+In-Reply-To: <IA3PR11MB7213134F2D0E081A853C7A06A6A3962@IA3PR11MB721313.namprd11.prod.outlook.com>
+References: <20261004214438.128694-1-git@endrik.dev>
+ <IA3PR11MB7213134F2D0E081A853C7A06A6A3962@IA3PR11MB721313.namprd11.prod.outlook.com>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <173121002b0895ac0b12bd3cbae3b78b@endrik.dev>
+X-Sender: git@endrik.dev
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-From-Rewrite: unmodified, there is a forwarder that points to the actual sender.
+X-AuthUser: endrik@endrik.dev
+X-NCN-Id: qrBpiUCfTMOkjygEbw==
 
-On 24.09.2026 09:31, Hangbin Liu wrote:
-> Hi Gabriel,
-> On Wed, Sep 23, 2026 at 02:02:04PM +0200, Gabriel Goller wrote:
-> > seg6_build_state() rejected invalid configurations with a generic -EINVAL,
-> > so "ip route add ... encap seg6 ..." always reported "Invalid argument".
-> > 
-> > Attach an extack message to each of them. The checks themselves and their
-> > return values are unchanged.
-> > 
-> > Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
-> > ---
-> > 
-> > v3 (https://lore.kernel.org/all/20260922090851.38978-1-g.goller@proxmox.com/):
-> >  * format fix
-> >  * use NL_SET_ERR_MSG_ATTR
-> > 
-> > v2 (https://lore.kernel.org/all/20260918153544.1178884-1-g.goller@proxmox.com/):
-> >  * dropped tests
-> > 
-> >  net/ipv6/seg6_iptunnel.c | 24 +++++++++++++++++++-----
-> >  1 file changed, 19 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-> > index 61c6a27bf202..9f1aecc4f215 100644
-> > --- a/net/ipv6/seg6_iptunnel.c
-> > +++ b/net/ipv6/seg6_iptunnel.c
-> > @@ -756,8 +756,11 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
-> >  	struct seg6_lwt *slwt;
-> >  	int err;
-> >  
-> > -	if (family != AF_INET && family != AF_INET6)
-> > +	if (family != AF_INET && family != AF_INET6) {
-> > +		NL_SET_ERR_MSG(extack,
-> > +			       "unsupported address family for SRv6 encapsulation");
-> >  		return -EINVAL;
-> > +	}
-> >  
-> >  	err = nla_parse_nested_deprecated(tb, SEG6_IPTUNNEL_MAX, nla,
-> >  					  seg6_iptunnel_policy, extack);
-> > @@ -765,8 +768,10 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
-> >  	if (err < 0)
-> >  		return err;
-> >  
-> > -	if (!tb[SEG6_IPTUNNEL_SRH])
-> > +	if (!tb[SEG6_IPTUNNEL_SRH]) {
-> > +		NL_SET_ERR_MSG_ATTR(extack, nla, "missing SRv6 SRH attribute");
-> >  		return -EINVAL;
-> 
-> My bad. NL_SET_ERR_MSG_ATTR expects the specific attr. In this error path,
-> there is no tb[SEG6_IPTUNNEL_SRH]. So we can keep using NL_SET_ERR_MSG().
+> I don't want to rely on the value of the different enums too much.
+> Let's be explicit:
+> return tid_to_mac80211_ac[tid]  == IEEE80211_AC_VI ||
+>             tid_to_mac80211_ac[tid]  == IEEE80211_AC_VO
 
-Agree.
+Hey,
 
-> > +	}
-> >  
-> >  	tuninfo = nla_data(tb[SEG6_IPTUNNEL_SRH]);
-> >  	tuninfo_len = nla_len(tb[SEG6_IPTUNNEL_SRH]);
-> > @@ -776,13 +781,18 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
-> >  	 */
-> >  	min_size = sizeof(*tuninfo) + sizeof(struct ipv6_sr_hdr) +
-> >  		   sizeof(struct in6_addr);
-> > -	if (tuninfo_len < min_size)
-> > +	if (tuninfo_len < min_size) {
-> > +		NL_SET_ERR_MSG(extack, "truncated SRv6 SRH attribute");
-> 
-> And here I think we can use like
-> 
-> 	NL_SET_ERR_MSG_ATTR(extact, tb[SEG6_IPTUNNEL_SRH], "truncated ...")
-> 
-> >  		return -EINVAL;
-> > +	}
-> >  
-> >  	switch (tuninfo->mode) {
-> >  	case SEG6_IPTUN_MODE_INLINE:
-> > -		if (family != AF_INET6)
-> > +		if (family != AF_INET6) {
-> > +			NL_SET_ERR_MSG(extack,
-> > +				       "inline mode requires an IPv6 route");
-> 
-> Same here
-> 
-> 	NL_SET_ERR_MSG_ATTR(extact, tb[SEG6_IPTUNNEL_SRH], "inline ...")
-> 
-> >  			return -EINVAL;
-> > +		}
-> >  
-> >  		if (tb[SEG6_IPTUNNEL_SRC]) {
-> >  			NL_SET_ERR_MSG(extack, "incompatible mode for tunsrc");
-> > @@ -798,12 +808,16 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
-> >  	case SEG6_IPTUN_MODE_L2ENCAP_RED:
-> >  		break;
-> >  	default:
-> > +		NL_SET_ERR_MSG(extack, "invalid SRv6 encapsulation mode");
-> 
-> And here.
-> 
-> >  		return -EINVAL;
-> >  	}
-> >  
-> >  	/* verify that SRH is consistent */
-> > -	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo), false))
-> > +	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo),
-> > +			       false)) {
-> > +		NL_SET_ERR_MSG(extack, "invalid SRv6 segment routing header");
-> >  		return -EINVAL;
-> > +	}
-> 
-> Here.
-> 
-> Thanks
-> Hangbin
+I actually considered that initially, but as a kernel newbie,
+I thought a minimal patch would result in less hassle for reviewers.
 
-Sent a new version, thanks for the review!
-Gabriel
+A v2 with the explicit comparison is coming shortly.
 
+Thanks,
+Endrik
