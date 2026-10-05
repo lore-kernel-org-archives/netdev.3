@@ -1,116 +1,221 @@
-Received: from mail-yx2-f8.google.com (mail-yx2-f8.google.com [74.125.224.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151FEC8EB
-	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 04:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6126323A99F;
+	Mon,  5 Oct 2026 04:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791173753; cv=none; b=GXcynI8Yox1EzugwTvoDCt1+BZe4Z3vn2hMRx8YRnmY6xMdKEoCjs3f9LYn2A5ki/r2zS2j8WKFR1ufUQJE0PrwXItUFpYw933o9CFJYMR6P9tOOtqyHt2L/FoAQAgNDmQbm+Y1/SwkIFpwe4q+4Dvsir37w8qCR68Aq2zrl4Yk=
+	t=1791173793; cv=none; b=sp0WBMfyiV0ngQKXDalb3nZnndA2kkLZQGTcawmqIVJX0+bC+LkjxuLJOR3T7SYEXR4yYHq+3tyP96P5xtrcOmE2Gsn/r+e771MWqE+TIWs1eImLiqn/7NA3jmUHT/z3iR35s7Rq//e3CF0fxamm7hgxL1r971aj8RJcIGf4vSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791173753; c=relaxed/simple;
-	bh=Ol495Yd1bB9OG/RIDv/QVy7GjKIVdA/eEWiihj9bEt4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EwLd82g/RjE7sWxgLjqmdsPd1EjQHjk0VkA9fYUFSWb9lrO4N2Xaus9oCbdfIywvO/UEoIVBkU90Iv8YFQVXRjSreoJdn4IHW441+D+IGaIfRyBGLqttYrzJ4ns9WpWuJXBA3kTzdbitRrgfLamz4UyWu0GQ0HTgN/rXwsxVJfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sHONQFvq; arc=none smtp.client-ip=74.125.224.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791173793; c=relaxed/simple;
+	bh=th6nWGSKd6xIzfI0gxSeIq4uYuIBFdEnLlpcUUrCdL0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Qqc5UXsg39lPJ46Afr1qcfGbEwYMorp7oAL+POoPsIkUXg2wkFZvMLe1x+MC4yQ/QMbNzZwT/95GXGyQY+/PphiBht6jfFn+uguCA9amKY6ZG0k27rwoQOVcnf2RfqZGkiuQc0KNaupsq6BNqRdaLYqu2v2H88hrhtAEVEpIa3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HC/iq/YU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sHONQFvq"
-Received: by mail-yx2-f8.google.com with SMTP id 956f58d0204a3-66cde2e181cso471776d50.0
-        for <netdev@vger.kernel.org>; Sun, 04 Oct 2026 21:15:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791173751; x=1791778551; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WffhMcSo+8l7cweCHxFJooIzIC81MEZIr3lUnbAuzfw=;
-        b=sHONQFvqA4JbN6SEh+mjlVXd6UjxGIfQHrjLTrwz1yarsJRkkbOijbPJaOERGOHxp6
-         eWvbHTYzkN8EPKeDOhg2rawdCjLgf+s4hBHG0Jmb1Qqo/4HHs6s8bpBHMX7tkt23rR9V
-         7Axo0AV356PdvBMH01RmctS02ueQZVQD7uFs+tcV9PzBVFlNyWvbtZSPFmYi0+JCs+Mu
-         KtX9NuCQ2Z8ew3nw2b5vLNVreZzoAaR9hhRJ+hdaPSKQTbgzHzwQjZHqjKUhEUg75uiQ
-         h/ZF/ynb5Fm0gpng77WfAcJTj2fqNPifeRH/16SkM6/futENkNHTefFzl7ZWO623JC+I
-         PnKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791173751; x=1791778551;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WffhMcSo+8l7cweCHxFJooIzIC81MEZIr3lUnbAuzfw=;
-        b=Gx7tXxq1/9UyM4n8scjYt8c5zRBMTvXflS13jFzMBN1ug49MFFENV3uqQkmudkFmEQ
-         5QKX88wnB4DGT12OdNh8TqzZohoO2tBnOmsEqGUrDd5+BNy/Ya+Glikv/0Tp+kJyT/y4
-         iP9w6KM7lyyYesg5nZ0bT9pRVwYNtEQR9shbhHkvCKLGzryv8aBAwC5lQPyzOiPHTNzB
-         YJS+hPUtv/VVy/Xpe68FqvQaNrSvv3XUxRwRx6K0iC6wygWZ8jjiYkykWg2yelk/SdUM
-         dl7UyTa8OdoqPdAS9wgKm1jgFwgSHi5wvVmbe+6quZ8pPsj+oof0MFhpPOX6789GAPqB
-         NxXw==
-X-Gm-Message-State: AFq9FYJoDzU3C0GMNWod75TO1Y8zQow7IdR2dgYL5eScuaHyATF0m2mV
-	obIkCYIojE6pp1iLeI/y6FFXSjo+IIR5hktWDti10f3llNz3bxTZwq6ZpbsEQJzaiSJP8A==
-X-Gm-Gg: AYBFou0x9K/bsA2Pw3MddDtWS+7itmC+yDv01GM9nY0K1r1y9RpSHwtr9guLYVbKSqM
-	yU9EhQCQUwu+j1wc+ykBhgMLtCR0FWjcfZ/+XS0ZVMvgOT+A2Ozb05dXYK3pLZ0QPj8Ki1gipPN
-	mKuDNWZxeOekNMCKrY+NMtQPRKmAWkuyQis8N5YKjMAsL/J1E6eBZLQd0k9JQsZtSdr8gw8HAD+
-	gcAXP6Vr/MrDq0ZIj7ZqdS8SqVA8gbW1BB5oxm6/ovoje5SUr8bqxNZG9JraKpR36F/zkAThghw
-	8e8ulqXZALPFm5JZ2H6yu+IFij3to9zNM4Twedy3ZTjN1eKnIPmuR0T5MD3NN7WFPmK1GzR67nf
-	vJevn19c1bWoy0/maFNpRGO05+R0u09saoJSrH7HpH+RsxlGrcZ3wX2Bs5Pf20PDIYKGIrbI/DD
-	aPMNRiE49qTTEpuZ82rLjI2WqhrmyUmqEk0hvGF1AmNvTjgmHQT9O3mHWRswEPckJi8YpmA1JmK
-	lIubII823SeDw6fh9LAmJu47tPA1shftZdMIadmhMfR4BSzPReZ
-X-Received: by 2002:a53:b64a:0:b0:671:5818:1591 with SMTP id 956f58d0204a3-677abff80f1mr3069658d50.20.1791173751046;
-        Sun, 04 Oct 2026 21:15:51 -0700 (PDT)
-Received: from Xinshengs-MBP.attlocal.net ([2600:1702:7d20:7d20:edd1:61d6:442f:e3ff])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-677c1bf368esm2205213d50.20.2026.10.04.21.15.49
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 04 Oct 2026 21:15:50 -0700 (PDT)
-From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
-To: netdev@vger.kernel.org
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	oliver@neukum.org,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [PATCH net] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
-Date: Mon,  5 Oct 2026 00:15:25 -0400
-Message-ID: <20261005041525.49111-1-xinsheng.zhu.ny@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HC/iq/YU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980741F000FF;
+	Mon,  5 Oct 2026 04:16:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791173790;
+	bh=0l0oG3Rk79/4j2rYWUPEHVTt8L/8m1YX2NMq+q+S7fc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=HC/iq/YURq7VVA1EGZE9wPc7jcRopFNTOHSjCj8PAC/6LQEF5KP1nCAyqEoWYgpzD
+	 X/0udchz02N1g9mB+eErtoheBGJ20HPqH1jMkI9urJsrjJVbaf7RB7xBfoLlRuKIak
+	 ZwntHs8+XCZvF1YLt2EbpJAPvyjeWVgWOjShHo8c2oIHuLj7FQLl1HHl1Ah+546n4B
+	 YDau6x+92aCJDuZuD58H80xSYuBFNQ9bvew1Y3EuwWoUA01KwSp7S4ElKPr747I1dS
+	 mpb64Qes/kQYtlPglN2na9bHsq01YifJacMoTZyfcNiD76VIKExqPgITTXJ/K6tGwP
+	 PKr5r2s4wN42Q==
+Subject:
+ Re: [PATCH net-next] net: bridge: cfm: notify userspace on CFM config changes
+From: netdev-bot+sashiko@kernel.org
+To: w453y.me@gmail.com
+Cc: netdev@vger.kernel.org, razor@blackwall.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, horatiu.vultur@microchip.com, bridge@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Date: Mon, 05 Oct 2026 04:16:29 +0000
+Message-ID: <179117378916.434549.16185635728868721491@kernel.org>
+In-Reply-To: <20261004041320.2684045-1-w453y.me@gmail.com>
+References: <20261004041320.2684045-1-w453y.me@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-usbnet_read_cmd() returns the number of bytes read on success, which may
-be smaller than the requested size. cdc_ncm_init() calls it and only
-checks for negative return values, allowing initialization to continue
-with an incomplete NTB parameter response.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-The context is allocated and zero-initialized by kzalloc_obj() in
-cdc_ncm_bind_common(). Bytes missing from a short response therefore
-remain zero and may be interpreted as device-provided parameters.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-Require the return value to equal sizeof(ctx->ncm_parm), consistent with
-the existing exact-length check for GET_MAX_DATAGRAM_SIZE in
-cdc_ncm_set_dgram_size().
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
----
- drivers/net/usb/cdc_ncm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- [High] The new config notification uses an skb that is too small, so a
+  user can trigger WARN_ON and the notification is lost.
+- [Medium] Deleting the last MEP sends a notification that does not show
+  the CFM config is now empty.
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 35db38cb3e4a..66f40f0d9c27 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -524,7 +524,7 @@ static int cdc_ncm_init(struct usbnet *dev)
- 			      |USB_RECIP_INTERFACE,
- 			      0, iface_no, &ctx->ncm_parm,
- 			      sizeof(ctx->ncm_parm));
--	if (err < 0) {
-+	if (err != sizeof(ctx->ncm_parm)) {
- 		dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
- 		return err; /* GET_NTB_PARAMETERS is required */
- 	}
+--
 
-base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
+net: bridge: cfm: notify userspace on CFM config changes
+
+This patch makes br_cfm_parse() send one RTM_NEWLINK through
+br_info_notify() with RTEXT_FILTER_CFM_CONFIG after any CFM config group
+in the request is applied. The message is still sent if a later group in
+the same request fails.
+
+> diff --git a/net/bridge/br_cfm_netlink.c b/net/bridge/br_cfm_netlink.c
+> index 91b9922dc3f25..56309e6f4b1be 100644
+> --- a/net/bridge/br_cfm_netlink.c
+> +++ b/net/bridge/br_cfm_netlink.c
+
+[ ... ]
+
+> @@ -399,59 +400,72 @@ int br_cfm_parse(struct net_bridge *br, struct net_bridge_port *p,
+>  		err = br_mep_create_parse(br, tb[IFLA_BRIDGE_CFM_MEP_CREATE],
+>  					  extack);
+>  		if (err)
+> -			return err;
+> +			goto out;
+> +		changed = true;
+>  	}
+>  
+>  	if (tb[IFLA_BRIDGE_CFM_MEP_DELETE]) {
+>  		err = br_mep_delete_parse(br, tb[IFLA_BRIDGE_CFM_MEP_DELETE],
+>  					  extack);
+>  		if (err)
+> -			return err;
+> +			goto out;
+> +		changed = true;
+>  	}
+
+[Severity: Medium]
+What does userspace receive when this request deletes the last MEP?
+
+After br_mep_delete_parse() succeeds, br->mep_list is empty. When
+br_info_notify() builds the message, br_fill_ifinfo() takes this branch:
+
+net/bridge/br_netlink.c:br_fill_ifinfo() {
+    ...
+		if (!br_cfm_created(br) || port)
+			goto done;
+    ...
+}
+
+This filter puts nothing else in IFLA_AF_SPEC, so the nest is dropped at
+done:
+
+	if (af) {
+		if (nlmsg_get_pos(skb) - (void *)af > nla_attr_size(0))
+			nla_nest_end(skb, af);
+		else
+			nla_nest_cancel(skb, af);
+	}
+
+The resulting RTM_NEWLINK has neither IFLA_AF_SPEC nor IFLA_BRIDGE_CFM.
+It looks like any other AF_BRIDGE RTM_NEWLINK for the bridge master, for
+example one from br_ifinfo_notify() on a bridge with no VLANs. The filter
+is not part of the message, so a listener has no way to tell that the CFM
+config is now empty.
+
+Wouldn't a listener that relies on these notifications keep a stale MEP
+entry here, and still have to poll RTM_GETLINK? The commit message says
+this patch removes the need for that polling.
+
+The notification layout becomes uAPI once released. Could the empty case
+emit an empty IFLA_BRIDGE_CFM nest, or otherwise be made distinguishable?
+
+[ ... ]
+
+>  	if (tb[IFLA_BRIDGE_CFM_CC_CCM_TX]) {
+>  		err = br_cc_ccm_tx_parse(br, tb[IFLA_BRIDGE_CFM_CC_CCM_TX],
+>  					 extack);
+>  		if (err)
+> -			return err;
+> +			goto out;
+> +		changed = true;
+>  	}
+>  
+> -	return 0;
+> +out:
+> +	/* Earlier groups may have been applied even if a later one failed */
+> +	if (changed)
+> +		br_info_notify(RTM_NEWLINK, br, NULL, RTEXT_FILTER_CFM_CONFIG);
+
+[Severity: High]
+Is the skb that br_info_notify() allocates large enough for a message
+with only RTEXT_FILTER_CFM_CONFIG set?
+
+br_info_notify() sizes the skb with nlmsg_new(br_nlmsg_size(dev, filter)).
+br_nlmsg_size() takes the IFLA_AF_SPEC size from
+br_get_link_af_size_filtered(). That function returns before counting any
+CFM attributes unless the status bit is set:
+
+net/bridge/br_netlink.c:br_get_link_af_size_filtered() {
+    ...
+	if (!(filter_mask & RTEXT_FILTER_CFM_STATUS))
+		return vinfo_sz;
+    ...
+}
+
+No code path there sizes the config attributes at all. br_fill_ifinfo()
+still writes the full config payload, though:
+
+net/bridge/br_netlink.c:br_fill_ifinfo() {
+    ...
+		if (filter_mask & RTEXT_FILTER_CFM_CONFIG) {
+			rcu_read_lock();
+			err = br_cfm_config_fill_info(skb, br);
+    ...
+}
+
+br_cfm_config_fill_info() writes about 248 bytes per MEP (CREATE_INFO,
+CONFIG_INFO, CC_CONFIG_INFO with the 48-byte MAID, RDI_INFO and
+CCM_TX_INFO), plus about 20 bytes per peer MEP. br_cfm_cc_peer_mep_add()
+does not limit the number of peers, and each bridge port can have one MEP.
+
+The only spare room is the unused IFLA_PROTINFO/IFLA_LINK budget plus slab
+rounding. One MEP with about 20 peers, or a few MEPs on several ports,
+looks like enough to overflow it.
+
+Once that happens, br_fill_ifinfo() returns -EMSGSIZE and br_info_notify()
+does this:
+
+		/* -EMSGSIZE implies BUG in br_nlmsg_size() */
+		WARN_ON(err == -EMSGSIZE);
+		kfree_skb(skb);
+		goto errout;
+	...
+errout:
+	rtnl_set_sk_err(net, RTNLGRP_LINK, err);
+
+Would every later CFM config change then hit the WARN_ON, drop the
+notification, and set a socket error on every RTNLGRP_LINK listener in the
+netns? With panic_on_warn set, this would panic the host.
+
+This path only needs CAP_NET_ADMIN in the user namespace that owns the
+netns:
+
+RTM_SETLINK -> rtnl_bridge_setlink() -> br_setlink() -> br_afspec()
+  -> br_cfm_parse() -> br_info_notify() -> br_fill_ifinfo()
+  -> br_cfm_config_fill_info()
+
+Before this patch, CFM_CONFIG was only written into GETLINK and dump skbs,
+which handle -EMSGSIZE cleanly. Does br_get_link_af_size_filtered() need
+to count the config attributes when RTEXT_FILTER_CFM_CONFIG is set?
+
+> +
+> +	return err;
+>  }
+
 -- 
-2.54.0 (Apple Git-157)
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261004041320.2684045-1-w453y.me%40gmail.com
