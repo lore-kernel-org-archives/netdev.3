@@ -1,76 +1,63 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-4325.protonmail.ch (mail-4325.protonmail.ch [185.70.43.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45115429037;
-	Mon,  5 Oct 2026 12:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7C636A37F
+	for <netdev@vger.kernel.org>; Mon,  5 Oct 2026 12:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791203004; cv=none; b=bfKnyf1sxWK9RuwpRsYcjdgKuEBtjNWxqrtQdZEmSjJo2TU2G7j4eFQfPyHTiaJa0VHomK9/2ej+vVAeu88KFfud2XwpSM4XQcRsR7F3y8jcV5jTNiVxPGK2ZtOUmFcPe97emDR7YJcNELHt6iTV2S2secjXz5eXguQ26QzKsyk=
+	t=1791203003; cv=none; b=AjDD14jCIN5m7drfCOrcqMf57S9GCxKgauaStXII8QGNKr+yRLq34QrCwnyIEsk1P6u00iC17N1j26sr0dh9SIJWF5/PUTPHtYExU1FTDuR3KhKg+dCVi6hBeICUd53fPS/I2fFOseZPnlnXpAnQ8yugVb9sGqcnadz+XQPOA5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791203004; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uMemEX3b4rsCfEYTGNJRU3cBNW97B4yKjKtCdS4KylqCk7f5M68iNRAXn4+x7Jan2tKgodqVT9hCi0kYnw0gTsdD1Q3ZgPKU4iZpcFyY5vwJ0mYFewlsZkCWjBh1iY6OkMISkqPXyLK7LQ6NUTgX/4or560OgDlFEthAR+fD+Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUSVs+ds; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791203003; c=relaxed/simple;
+	bh=KefP+qA5hud1luOviTA4eg5Uxtw50e9F0Uh9thm9lp4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gzkVPiPujqMpXyzDbBEGtxW809Jpx+/IfxYZEYes4cdLyRlNjcyR7nzHDkhWfeCNdk+KPVb6bnbwJhIp+/3YW8+ZlamoxSQwQGNZyfPFKx9VssncMOSgy0NfrrpiGE8l3QH1aC8q05GJs+3U3L+7jlWhlYXQawOviciM7kMprjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bsgJA6Se; arc=none smtp.client-ip=185.70.43.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUSVs+ds"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD531F000FF;
-	Mon,  5 Oct 2026 12:23:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791203002;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gUSVs+dsZ9JTxa8LBCJpurNYpKgBmlxXvRXHX4J/2nL1Ag8k/3oewb5ITm6lif7XW
-	 iuyaSIm6bcfQWSGjgcRfQ2ogOIjE0i+AG1Age0fG5YdHvq5rd1vsN0bTNj6TuFKSXG
-	 E6eRdEyU3LwC2bOzG9N7v19P+/l7NiYh2Dc9kuMK1jhKjUnBqXMns6XPJQvTpd9Ydw
-	 7h7zHkkdl6GncrNOWtBqxThhv/zjyCQMNlqqkCOtvFuuvgj/Rwpd8u+SDyjlgI+iYH
-	 2ubBR7bgd7KwsDoy5Q7m9G/KMjql0f4fmnWto/AjtU+f6HMyMjjKaqWF3+IuiGM0jb
-	 UdU38jfD7urcg==
-From: netdev-bot+sinfo@kernel.org
-To: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- vsrama-krishna.nemani@broadcom.com, vikas.gupta@broadcom.com
-Subject: 
- Re: [PATCH net 0/4] bnge: Fix error-path and IRQ setup bugs in probe/open
-Date: Mon, 05 Oct 2026 12:23:21 +0000
-Message-ID: <179120300167.1402591.3718496528368377342@kernel.org>
-In-Reply-To: <20261005121704.227866-1-bhargava.marreddy@broadcom.com>
-References: <20261005121704.227866-1-bhargava.marreddy@broadcom.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bsgJA6Se"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1791202993; x=1791462193;
+	bh=rlThywjyebgmdMMYOSCOBBh7IXfkT7Zoqqpj3w6jndQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bsgJA6SevpwZyXaw6aD3GYAyc96l+YEr+WC7k8Y5hh/5cZ/LuP8kunSgmfYhD05N0
+	 MiUPTu+7tIP45oyhYsOlFsQYEmJC999nLUR3n8dYFl0oDNKUtgLc5aLZ9gXPP8akDh
+	 VOBIk360XTugIWj0vuBJqXzgSjN9+xTxz0tMiR5+iw6BJal2/czgyYK3Wi6fbULw/W
+	 efXH+qkfNaz2PNv+VXw3yIqMfuI47QPL8IGkm3ckXowwUTl1MbdzzWGnERCZXdgHkZ
+	 OjcSBhFUK0uYnV94OJq1rys3qogU0XrhvJYAdXdP4BFpUuDs40cUzc2oZosBpIvGgE
+	 6fiJ4lUo0cu+g==
+Date: Mon, 05 Oct 2026 12:23:08 +0000
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+From: quantumvoid0 <quantumvoid0@proton.me>
+Cc: netdev-bot+sashiko@kernel.org, wireguard@lists.zx2c4.com, netdev@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH] wireguard: allowedips: prevent stack overflow without DEBUG
+Message-ID: <J3FhBqGm5xM550mTZHy9x-YSafy3ThxZgEkM-QOIfVTyC21TBnH0l6Mnmt5Suar61dhuBpv9QLNns4zdDIvaDK_Uvs54MF1uW4n09XAmVro=@proton.me>
+In-Reply-To: <CAHmME9qod-kW93qUPE14ABA3sKnoGjtxwpa2m-fXh1PwKXSOJg@mail.gmail.com>
+References: <TaZxFNfdnpo-3szeC-LoWZBxj-6XGhXkdEqnQi6yyaOHXp8cw4Xtksw07sYrIpludwvJQrukFoCGw3r9rXDcInkdB5QD2EswKPNsXMU3qMQ=@proton.me> <179117435281.434549.17747961185403870914@kernel.org> <9NzB3VmT-7cBBfdx9sREmRkFb_gOAmI78VheKlX2Mdiqjl3B3N0OCZ5DT8C1SpEJuM5O3TzLltSpGh9ptxni28Lnq4ATz8u86R-f-jdcKPE=@proton.me> <CAHmME9qod-kW93qUPE14ABA3sKnoGjtxwpa2m-fXh1PwKXSOJg@mail.gmail.com>
+Feedback-ID: 175132216:user:proton
+X-Pm-Message-ID: 5cfc955f16f15cf58728799d9121e0660cd3b84f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Understood, thanks for explaining. Ill drop this.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+quantumvoid0
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+On Monday, October 5th, 2026 at 12:19 PM, Jason A. Donenfeld <Jason@zx2c4.c=
+om> wrote:
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+> This is not reachable. The DEBUG is there because the point of the
+> selftests is to reach it, but not for this to run in production. I
+> coded it this way intentionally. I don't want to remove the DEBUG
+> test.
+>=20
+> Jason
+> 
