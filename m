@@ -1,417 +1,182 @@
-Received: from smtp10.goneo.de (smtp10.goneo.de [85.220.189.106])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013067.outbound.protection.outlook.com [40.107.201.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859974A4EEC;
-	Mon,  5 Oct 2026 15:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.220.189.106
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791214574; cv=none; b=fQANnLLsnYXC+WzbUDcIqYFlmE1f7HnZrquk0fgc0NUokHcEP1g/FcFDpdsvRbM5aqmXRoFh3DF/m2dRaxzMe/Mj2pEqoUKvD1xHh3jan1sEXmSiPLklkcrgWgsxu5GKrdV49tCkXMGmdybq6qzmtt24TLrjd9vDMb55Wd/kLyw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791214574; c=relaxed/simple;
-	bh=E2eQePaIwWJyy5LbmGTX5tJRU/ZvTPTCk+jry6l++5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCxqZzrAIxra90mlDqCp5J1bdmJGka1FFqsOsyzeDcIeIWr2tuoWHPzLxse3K786THpw3R4PC1eGhKMce764KDudvyqDDK6dhThM7UX7nxPL2y+E8VxsYyNZMkK4fsZwbRjYutd5JMTj5GS9Tc5GkpYtuQgUQU9eqKX9AZAsDJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de; spf=pass smtp.mailfrom=tk154.de; dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b=ShCGhc4y; arc=none smtp.client-ip=85.220.189.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tk154.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tk154.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3294CDA3E;
+	Mon,  5 Oct 2026 15:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791215083; cv=fail; b=rsNbZ0lGilWyXkxM3xuynj33Y/Zd/uqahlq+yIqCRKG1Q5DFv/5sD1QXjOXO7Fze+YcIKKdRG3IXLcZzonRnBRnFYtGz2nPR7I2sxDvPj9Slh1ua3KWWv5J+Ik4ErLg9fleUzj0chWUuYj6AjcBirpTodPkKFHiAgRB2o59uID0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791215083; c=relaxed/simple;
+	bh=3hbX7jsQ22sPhk7kcGeV9SMyfkT8UAkpP/k3gwslW2U=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=goYIjNgk03ld3Uzpee8ySfon4g27BX5eIEr/usZWc1kFjfDHbPuy9/RNFYSXV0bdJut8T789duYZQMOrOBaCaf4j4y9B1pL59zUtoUU/SRHCQ9wTd3c+LmKvz+DVU0dfwSYw+r7fpNvUgyZcEnZDTpiFZUJlUprb+vpr8HqAQwo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kBtEC2EJ; arc=fail smtp.client-ip=40.107.201.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tk154.de header.i=@tk154.de header.b="ShCGhc4y"
-Received: from hub1.goneo.de (hub1.goneo.de [IPv6:2001:1640:5::8:52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by smtp10.goneo.de (Postfix) with ESMTPS id BCE94240172;
-	Mon, 05 Oct 2026 17:29:42 +0200 (CEST)
-Received: from hub1.goneo.de (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519)
-	(No client certificate requested)
-	by hub1.goneo.de (Postfix) with ESMTPS id 85526240453;
-	Mon, 05 Oct 2026 17:29:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tk154.de; s=DKIM001;
-	t=1791214180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q8tbxwlO1Hf7TO92AXk1J/Epolkc2L2uSHkM3q+ZCdg=;
-	b=ShCGhc4yc64j2TzwHbK4yVp5xyZ9GCB094py079RHG7W8gRMn9lLXlScFV+nk5ygm4sc8I
-	tNCAb8ceEONwex77BAX4NZM6hU5nk+oa12CdWckYB46UkV6XBQqjnYnP/NSzceWBjLMDZ2
-	DRM8qJO7Vll1qbh4twuhEqf5WUpakZxQcJpQ7Uifh7mYFTzBkKQoezkPTskKEalC2Cl/Nd
-	Mge3xrH2pELbrwT/rn+K6NTYvWU0tY9uFMm1UDuciyf85tqFI5d8sMFfmPUjP4rfGENhai
-	rPlQqqTXQ6PbTl0hZp5lt/JMIyvOQdbCjPXgJYELYUtTqsOE3h8D8qARddbV2w==
-Received: from CASE (unknown [195.37.88.189])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by hub1.goneo.de (Postfix) with ESMTPSA id 0559F240410;
-	Mon, 05 Oct 2026 17:29:38 +0200 (CEST)
-From: Til Kaiser <mail@tk154.de>
-To: netdev@vger.kernel.org
-Cc: Luo Jie <jie.luo@oss.qualcomm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Lei Wei <quic_leiwei@quicinc.com>,
-	Suruchi Agarwal <quic_suruchia@quicinc.com>,
-	Pavithra R <quic_pavir@quicinc.com>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	Til Kaiser <mail@tk154.de>
-Subject: [PATCH net-next 4/4] net: ethernet: qualcomm: ppe: Add IPQ5332 support
-Date: Mon,  5 Oct 2026 17:29:15 +0200
-Message-ID: <20261005152915.101780-5-mail@tk154.de>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261005152915.101780-1-mail@tk154.de>
-References: <20261005152915.101780-1-mail@tk154.de>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kBtEC2EJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aIJZv43Prg36m1YJUfwIPTqzPQKauCfJSN4CgMdm4XiNHVKxNlD4T2CYx7iaE4uL5iZMHMb4coyGmSsIp7cLJjSOoGM8ou9vD1RwxSRvAFDgy95LHI15w5PFTkIKlNJ4NGUBJEVUDZOjZzGh3j+oQ7m99FlfAIghKvLWT7n2lk+0NiX7jCCI/Dig+ooaWSs7EWmiXSq8lWnGmxuydCEUZIVwIsyJd/1vMojVSZ6WWElbohoPNygBOyhv3PpM23DsjQ3JCQmbRKjAordcg+5ZDzhD9lN5Qk3sw2rOfzIiGmesyjyu8Upd/wAwicnpbK2GAQAO3Le4JfBJx+oaibUn7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/oulLIW7yIBobshB8shFErViK2jq9RA74n6BCVI/HjA=;
+ b=v6nBp3eZhvdDX+26DMvz6DV/EdbXAzr+6S95z/5JyJfJCianNT7qD3KwlM1FgTyM/NIM8Yyt+pB355bfD1cf+Aoryz7FCh0unpPFDsQPKAsbuso5kHVJenfy2zd7ObFiDQViUBQZAsEygxL3dHJq9oE5rBSjwmrfXArmg4+xyTkvbUudJEKhBVAjFLeL5ieFL5mgW9OKt9YTO9jX1xxXU3FCtn2SgZTbCv+Fb0pPImMoRc0WywQhopkJQ+J+3GfaSfmKiqDcHmK6QGLprwZPzDHIyjwpRBG9WakjqxoKOEjKZpmlIxbZ+/WPmvlYzhVmz1iB55Pa/Pb8+zrEW8I1BQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/oulLIW7yIBobshB8shFErViK2jq9RA74n6BCVI/HjA=;
+ b=kBtEC2EJthc3c9MwVAoNPZ7zDu/j8LJdi2j+gjWq6ASYEPRqLnBUqTm9Rn89NnCrBSfy5LmyTdj93O7ziruGW2zGSEBH85QV8YV0WDK/2Y5EDMfJBXQ6Tz57j2i1hYRtb/x2VSN2k6IfYe5AyxP2fmOO4Xl8Zod4ImOFSeVexY3+8QvuKePa+V713ZkLaWW22C6mxo/EsaTaJbdqVB05JI5zpQed9qY2H36CPhEUFW2cpFJuBc8VhtV4778Jyw8mJTXAOLqhSrkU5h7l/UuiUCXfQOAbZ+eCLG4qOgTnEBSYDXFpubion8wWorxhSI0FNavfBRoOjTHLudlZH/FSvA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA3PR12MB239779.namprd12.prod.outlook.com
+ (2603:10b6:806:5a5::7) by PH8PR12MB7445.namprd12.prod.outlook.com
+ (2603:10b6:510:217::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Mon, 5 Oct
+ 2026 15:44:36 +0000
+Received: from SA3PR12MB239779.namprd12.prod.outlook.com
+ ([fe80::2ac4:299a:52e3:5d9c]) by SA3PR12MB239779.namprd12.prod.outlook.com
+ ([fe80::2ac4:299a:52e3:5d9c%6]) with mapi id 15.21.0472.016; Mon, 5 Oct 2026
+ 15:44:35 +0000
+Message-ID: <0a1daf0f-a71c-4b06-bc7b-9a1a2d6d6d08@nvidia.com>
+Date: Mon, 5 Oct 2026 18:44:23 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net V2] net/mlx5: Lag, split aggregate speed into oper and
+ max helpers
+To: netdev-bot+sinfo@kernel.org, Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Edward Srouji <edwards@nvidia.com>,
+ Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, linux-rdma@vger.kernel.org,
+ Maher Sanalla <msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>
+References: <20260930170406.148548-1-tariqt@nvidia.com>
+ <179078810510.31693.8484299734852796324@kernel.org>
+Content-Language: en-US
+From: Or Har-Toov <ohartoov@nvidia.com>
+In-Reply-To: <179078810510.31693.8484299734852796324@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0449.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c6::9) To SA3PR12MB239779.namprd12.prod.outlook.com
+ (2603:10b6:806:5a5::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-UID: d21fac
-X-Rspamd-UID: 986db9
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR12MB239779:EE_|PH8PR12MB7445:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d229093-aca3-4f69-1219-08df22f78eb9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|22082099003|18002099003|6133799003|10067099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	YEoAbkJvw6pIawYLA1XLbo5UYa0h9zNNb+eQe4l2b7qQ6aa4hFErfhunjdOokWmm8D7J/UawPE81r1PdvhXtxZOhr2RmCEyw0ysb9Uf53EOR7+EzkMubSwqUM3ZtrnJ2IbVDAB26+6s3RzUivx78gWlY7ZFOkNXUWPOEzpAa5rEw1AxfL8qdLC4KraLAKrwZDyv2kBSVb83NT8RSXybSPBxOdAbQaelmnQH1r/F+8n40vJfrR2psu3MnaGD7MWeT1V35/rw8rfngBoArTBoSyyvEXzv3vIBDNpAXE0bzzG3Vh9/aEB6i4EN1PRzAdqOU6OiGMPPdhwusJGfBitpQB/vACKIyT+Win2jGhMJcfteiItm8ywEGsvoL2USawJTHBRFPyy3cn8AX44oPWomlH0HYVkA5gGX0u/LEQAHjp2zT4/vzYyQUbJfe0A6d+XZwuzlw2/CnMCE500rmslznBZMwedEabNzGcaSJqU8V27L+mfw8PnENc7LXpsRuZ3KooBQrznU6H7aiw1WYuhRQ7OWgVi3OxFpOf5fcr/U3kdSTJDCf/DQBrsiydknOMUqX2y7l7/WWXBwW1OgfywmdonGgYJ1M4LJHvab3SRxU3be+fR5iJOE5NL/P2IAJ1kMJv8/9FHrSxA3myK1GDZ0eWrccPPLV6gKMSb+FtE2A4/4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB239779.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(22082099003)(18002099003)(6133799003)(10067099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U0l3VnhoTXMrZ1gzRjFvSGlJOGo1L0VORGNDNGwvaCtXMENSWGVIemNlSTZG?=
+ =?utf-8?B?Qk4rNFIwL3REWjBqUnBFUTMvU0FHN3RaSmRXT1laeDJmak5rWUQyeUI1dTdE?=
+ =?utf-8?B?eHZ5RDlDYVN0bGxFQUdTOVdIQ2s5dFJmWGRBNEF3M29Zc0t1OTFza2M5bDl0?=
+ =?utf-8?B?WmNXMzBkV0hkR1A2Q3VxQUFCNWU1L2VyZVZHSVVnajRMczBQQTJFYWVpM1M5?=
+ =?utf-8?B?MFpWMy9oNFhibEdxRndpa2xObUJIclVGNWlmMjltUzJ1SURkSGxxVnlzSzdw?=
+ =?utf-8?B?MktWT2lUSGZUUXd1dDUvNzl1OVZnWCt0T2tQZkRHM0dmZEtjbmVFVWJuQUE1?=
+ =?utf-8?B?c0R3ZStpQzBTdmtZcHdIc2NUZk15Smw0UHJhZ2cyYmwzdDJQcVlWeW9XbS9n?=
+ =?utf-8?B?Rkp4dm1UNi80S0xLNlhmUmNJSDZKSWNjYjZIRUJ6bm84YjF3aUJoTGpZZUI2?=
+ =?utf-8?B?MUI5b1FockNFNmsvU01pTlNUV0JLTk5XUU9ESUZpV09HVldOeU9ldmxHdU9K?=
+ =?utf-8?B?alZhQ1J2Vmp6ZHd1U1g0ZndPU1lmOXM4bG53ZUlmSVNoclJMV0x0UHh5MWxV?=
+ =?utf-8?B?ZFk3SzRSRi9OU3hoMUZmZUpsZnNyQWd2dUV3a2V1ZlBvUFpIVzcvamR0Q3Bi?=
+ =?utf-8?B?Y2NZeFBjNEgvV2NCdUVuOHJ2eFhNdVFjSU5kRUU3alh6NFQ2d214WTJwL3Y3?=
+ =?utf-8?B?YzNrOFQ2bzFiR3NvYWR2TjBCUnBOd2ZWVDFPZjZnK3hpNnArTmJTOVJKaEpF?=
+ =?utf-8?B?Um1nVkFYNzVDSEQvNXc5Ym5rdnJMZWFPUmJrajMxOG9wOWJLQ05CK1BZWS8v?=
+ =?utf-8?B?T21SS3pkM3gyT1p6VlZoZXR5N2ZOZTBIdC9xa2tXU3lzeGFBMkN5dDBkVEVK?=
+ =?utf-8?B?Rk5GT1VmY0R2Wm1Oby9JVXdySnpGRjlrRUpCclJyRSsrL0dNTklqdUl4OVNV?=
+ =?utf-8?B?am5EOS9FUEtDenJRTkUwcFJUSWtlY1Y3aW91S0NCdkZFZFgraGh1WDdIaVlN?=
+ =?utf-8?B?cHdNMTh3c0ZFTWdTNGFwbytEUEVHSDRsZ1dXZVNGa1FWS25seVZFSVU4KzVr?=
+ =?utf-8?B?d3piSlp5L2NYVlVnMEJMRldsTllobzl5VCsxd3FvUy92d1BCdW1SZkxUTURv?=
+ =?utf-8?B?NXpPL3ZBZzlHZFpXTTV4VTZRczlScHdMcUJEc1FtQ1lmZ0NxWmt1UERTN0Fr?=
+ =?utf-8?B?R1VyWGJtYnR5MWVib2JjWFBjREdiSzA5S0E1Kytvem80blBCQVNSVzFWcHJr?=
+ =?utf-8?B?SkV0Nnhyd3I0SlhiUWRKa3IyUGM1SEl0RlUrODE5bTFiMUR5M0FIdllpOVdY?=
+ =?utf-8?B?TERPenJFeDFTSnJTWlRkc0dzbmRpUThUd0VOdVBxajNMbUxrellLSWxsbEdm?=
+ =?utf-8?B?cmdMNHlvUmxsT01KZ3owR2JKcHdhNUxOKy85a3IyZW03WThlZmJ2OU4yRFhS?=
+ =?utf-8?B?Nm95RjJvS0VBV3BDSkFPUmc0V0wwdmJ6Q1NrdEpDVEN4ZFRFREoyQXdJQWl3?=
+ =?utf-8?B?MU9EWWtySUxXWlZRMXhNRzlPU0VqbDY1eWRBZFZKS3lEVld3ZUpSczZOd2JK?=
+ =?utf-8?B?a0JwQng3dVZVMEQ0Mi9TbFRPMkE2MUJCU3RwWDY1citoMk9qN1hVSVY3M0dY?=
+ =?utf-8?B?WWFuaFUwQlFCVjZLVDZqUm1YbGZHbUI5aEUySEhRd1drZEgrUktvQlRrRUEw?=
+ =?utf-8?B?elVtZGtTMFJFbjFNUDJxSW8rN2dJd3dOUnhrSEFiUitwb05xVnN5Rlc3L3Jl?=
+ =?utf-8?B?T1huNUJLK0xpYktTcU1BSURJUlVjRWhCSSt5V2VFd1VIY01hZktBV1kyNllt?=
+ =?utf-8?B?VkF0cFJNczN3bnpKaWhudlZtT3hLUUZUdVZzeHBZclBaU2hFZjF1ajV5TUdV?=
+ =?utf-8?B?R3ZMalBCajdZZ2dIeWppaXpXc2tUMTFVVTBTejRmQjQ5QVF6SXNXdWRCWmRn?=
+ =?utf-8?B?aFZ5bUdwLy90RDlpYUxEakxEdkxNSUxzZFZTU2tVTWpkVmlPYTNZd1UwR2pi?=
+ =?utf-8?B?Nm1YK0prTUc5UURSTWl1bE1MQ3BDaHlYTVZPa3ZoK0dSU2tqbFZLQ05TeWJJ?=
+ =?utf-8?B?a2kyMjBrL1F1elRjR1pQQkVxczdoN2F2c0Y3V21MR25QbkNJdG1nZDR0a3ZM?=
+ =?utf-8?B?dXhuMW5oMzhVYkJOS1FSOVhjN0hYemxDMW45WXlnV0NkcFV0N1JxYzBPM1dW?=
+ =?utf-8?B?MWV1TnZySkVQNlh2OTEwcE1uZGsxTHArRTVueXlFbS9QWVRPNTVVSUo2Slhk?=
+ =?utf-8?B?Wm5DdE9rRHZPbFZPODA0cUkzMzBFaVcwY29wY21QS2xpZWkvZXhFa3ZHd2c5?=
+ =?utf-8?B?QVZ5aXFIQ0crTUYvOEtIaTBhRU11cTFNQzVUVFUrWXJBRkdvTm9Ydz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d229093-aca3-4f69-1219-08df22f78eb9
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB239779.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 15:44:35.9099
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: f1xQIYC0v/GWLDz7mjWNNJOnD4DnRahOHRxd6AEWWwICOey2C+CVZVUdvxeDBVG/4awRFq+a546NHkH3BsTJiA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7445
 
-IPQ5332 shares the IPQ9574 PPE architecture, but has only two front
-panel ports and uses a different clock rate, interconnect paths, buffer
-limits and scheduler arbitration.
 
-Add match data for qcom,ipq5332-ppe: a 200 MHz PPE clock, four
-interconnect paths and three PPE ports (the CPU port and two front panel
-ports), together with its BM and QM limits and thresholds and its
-scheduler arbitration tables. The values come from Qualcomm's QSDK
-14.0.1595.1665 qca-ssdk revision 48484d531927b070b996685f1570aff3bccb9c32:
-src/init/ssdk_hppe.c and ssdk_appe.c, and src/adpt/hppe/adpt_hppe_qm.c.
 
-Reuse the IPQ9574 scheduler resources for ports 0 (CPU), 1 and 2.
-The queue, flow and DRR node ranges for ports 1 and 2 match the
-IPQ5332 port_scheduler_resource definitions in QSDK ipq5332.dtsi.
-The CPU flow and DRR node ranges also match; retain the IPQ9574 CPU
-and reserved queue partition. QSDK assigns CPU unicast queues 0-95
-and multicast queues 256-263, while this driver uses 0-63 and 256-271.
-The reserved pool is selected from the final resource-table entry
-using port ID 3 on IPQ5332.
+On 30/09/2026 20:08, netdev-bot+sinfo@kernel.org wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>   - How the issue was discovered, e.g. hit in production, hit during
+>     development, syzbot report, manual code inspection, LLM or static
+>     analysis tool scan.
+> 
+>   - Whether the issue was actually triggered, or is only theoretical
+>     (e.g. found by code inspection). If it was triggered please include
+>     the symptoms, like the stack trace or error messages.
+> 
+>   - What hardware the change was tested on. For driver fixes please
+>     mention the device (and if relevant firmware version) used for
+>     testing, or say that the change was not tested on real hardware.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-QSDK uses the same block base addresses and HPPE register offsets
-for the common PPE blocks on IPQ5332 and IPQ9574, so retain the
-existing regmap ranges and offsets for those blocks.
+The bugs were discovered during integration and reproduced on a 
+back-to-back ConnectX-8 setup.
 
-Document the IPQ5332 port and UNIPHY counts and add it to the list of
-supported SoCs.
+The first bug (stale oper speed when link goes down) was observed: after 
+the link partner disconnected, the aggregate TX speed reported to vports 
+remained full speed because firmware still returned the last oper speed, 
+causing vports to be rate-limited to the old aggregate speed.
 
-Signed-off-by: Til Kaiser <mail@tk154.de>
----
- .../ethernet/qualcomm/ppe/ppe.rst             |   9 +-
- drivers/net/ethernet/qualcomm/ppe/ppe.c       |  33 +++++
- .../net/ethernet/qualcomm/ppe/ppe_config.c    | 127 ++++++++++++++++++
- .../net/ethernet/qualcomm/ppe/ppe_config.h    |   1 +
- 4 files changed, 169 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst b/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst
-index 4ab299a28969..caf8ab1431de 100644
---- a/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst
-+++ b/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst
-@@ -96,6 +96,10 @@ The port wrapper provides connections from the 6 GMAC/XGMACS to UNIPHY (PCS) sup
- various modes such as SGMII/QSGMII/PSGMII/USXGMII/10G-BASER. There are 3 UNIPHY (PCS)
- instances supported on the IPQ9574.
- 
-+IPQ5332 uses the same PPE architecture with two front panel ports and two UNIPHY
-+(PCS) instances. Its Ethernet datapath has a CPU port (port0) and two GMAC/XGMAC
-+ports (port1 and port2).
-+
- Ethernet DMA is used to transmit and receive packets between the Ethernet subsystem
- and ARM host CPU.
- 
-@@ -118,6 +122,8 @@ PPE driver:
-     through the UNIPHY PCS block. Each MAC block includes the GMAC and XGMAC blocks and
-     the switch port can select to use GMAC or XMAC through a MUX selection according to
-     the external PHY's capability.
-+    IPQ5332 has two MACs (MAC0 and MAC1), connected to switch ports port1 and
-+    port2 through two UNIPHY instances.
- - EDMA (Ethernet DMA)
-     The Ethernet DMA is used to transmit and receive Ethernet packets between the PPE
-     ports and the ARM cores.
-@@ -164,8 +170,9 @@ CPU code counters and queue counters.
- PPE Driver Supported SoCs
- =========================
- 
--The PPE driver supports the following IPQ SoC:
-+The PPE driver supports the following IPQ SoCs:
- 
-+- IPQ5332
- - IPQ9574
- 
- 
-diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe.c b/drivers/net/ethernet/qualcomm/ppe/ppe.c
-index 0ef72c20364b..69e970db4a78 100644
---- a/drivers/net/ethernet/qualcomm/ppe/ppe.c
-+++ b/drivers/net/ethernet/qualcomm/ppe/ppe.c
-@@ -26,6 +26,30 @@ struct ppe_plat_data {
- 	unsigned int num_icc, num_ports;
- };
- 
-+/* IPQ5332 interconnect paths. Zero bandwidths use the PPE clock rate. */
-+static const struct icc_bulk_data ipq5332_icc_data[] = {
-+	{
-+		.name = "ppe",
-+		.avg_bw = 0,
-+		.peak_bw = 0,
-+	},
-+	{
-+		.name = "ppe_cfg",
-+		.avg_bw = 0,
-+		.peak_bw = 0,
-+	},
-+	{
-+		.name = "qos_gen",
-+		.avg_bw = 6000,
-+		.peak_bw = 6000,
-+	},
-+	{
-+		.name = "timeout_ref",
-+		.avg_bw = 6000,
-+		.peak_bw = 6000,
-+	},
-+};
-+
- /* IPQ9574 interconnect paths. Zero bandwidths use the PPE clock rate. */
- static const struct icc_bulk_data ipq9574_icc_data[] = {
- 	{
-@@ -65,6 +89,14 @@ static const struct icc_bulk_data ipq9574_icc_data[] = {
- 	},
- };
- 
-+static const struct ppe_plat_data ipq5332_ppe_data = {
-+	.soc_cfg = &ipq5332_soc_config,
-+	.icc_data = ipq5332_icc_data,
-+	.ppe_clk_rate = 200000000,
-+	.num_icc = ARRAY_SIZE(ipq5332_icc_data),
-+	.num_ports = 3,
-+};
-+
- static const struct ppe_plat_data ipq9574_ppe_data = {
- 	.soc_cfg = &ipq9574_soc_config,
- 	.icc_data = ipq9574_icc_data,
-@@ -237,6 +269,7 @@ static void qcom_ppe_remove(struct platform_device *pdev)
- }
- 
- static const struct of_device_id qcom_ppe_of_match[] = {
-+	{ .compatible = "qcom,ipq5332-ppe", .data = &ipq5332_ppe_data },
- 	{ .compatible = "qcom,ipq9574-ppe", .data = &ipq9574_ppe_data },
- 	{}
- };
-diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-index 65ac6c0841d5..91e6ee9524a6 100644
---- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-+++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-@@ -174,6 +174,9 @@ struct ppe_port_schedule_resource {
-  */
- static const int ipq9574_ppe_bm_group_config = 1550;
- 
-+/* IPQ5332 BM group0 shared buffer limit. */
-+static const int ipq5332_ppe_bm_group_config = 360;
-+
- /* The buffer configurations per PPE port. There are 15 BM ports and
-  * 4 BM groups supported by PPE. BM port (0-7) is for EDMA port 0,
-  * BM port (8-13) is for PPE physical port 1-6 and BM port 14 is for
-@@ -230,6 +233,34 @@ static const struct ppe_bm_port_config ipq9574_ppe_bm_port_config[] = {
- 	},
- };
- 
-+/* IPQ5332: BM ports 0-7 serve EDMA, ports 8-9 serve ports 1-2. */
-+static const struct ppe_bm_port_config ipq5332_ppe_bm_port_config[] = {
-+	{
-+		/* Buffer configuration for the BM port ID 0-7 of EDMA. */
-+		.port_id_start	= 0,
-+		.port_id_end	= 7,
-+		.pre_alloc	= 12,
-+		.in_fly_buf	= 40,
-+		.ceil		= 30,
-+		.weight		= 7,
-+		.resume_offset	= 5,
-+		.resume_ceil	= 20,
-+		.dynamic	= true,
-+	},
-+	{
-+		/* Buffer configuration for the BM port ID 8-9 of PPE ports. */
-+		.port_id_start	= 8,
-+		.port_id_end	= 9,
-+		.pre_alloc	= 12,
-+		.in_fly_buf	= 128,
-+		.ceil		= 48,
-+		.weight		= 7,
-+		.resume_offset	= 5,
-+		.resume_ceil	= 20,
-+		.dynamic	= true,
-+	},
-+};
-+
- /* QM fetches the packet from PPE buffer management for transmitting the
-  * packet out. The QM group configuration limits the total number of buffers
-  * enqueued by all PPE hardware queues.
-@@ -240,6 +271,9 @@ static const struct ppe_bm_port_config ipq9574_ppe_bm_port_config[] = {
-  */
- static const int ipq9574_ppe_qm_group_config = 2000;
- 
-+/* IPQ5332 QM group0 buffer limit. */
-+static const int ipq5332_ppe_qm_group_config = 500;
-+
- /* Default QM settings for unicast and multicast queues for IPQ9754. */
- static const struct ppe_qm_queue_config ipq9574_ppe_qm_queue_config[] = {
- 	{
-@@ -264,6 +298,30 @@ static const struct ppe_qm_queue_config ipq9574_ppe_qm_queue_config[] = {
- 	},
- };
- 
-+/* IPQ5332 unicast and multicast queue thresholds. */
-+static const struct ppe_qm_queue_config ipq5332_ppe_qm_queue_config[] = {
-+	{
-+		/* QM settings for unicast queues 0 to 255. */
-+		.queue_start	= 0,
-+		.queue_end	= 255,
-+		.prealloc_buf	= 0,
-+		.ceil		= 300,
-+		.weight		= 7,
-+		.resume_offset	= 18,
-+		.dynamic	= true,
-+	},
-+	{
-+		/* QM settings for multicast queues 256 to 299. */
-+		.queue_start	= 256,
-+		.queue_end	= 299,
-+		.prealloc_buf	= 0,
-+		.ceil		= 50,
-+		.weight		= 0,
-+		.resume_offset	= 18,
-+		.dynamic	= false,
-+	},
-+};
-+
- /* PPE scheduler configuration for BM includes multiple entries. Each entry
-  * indicates the primary port to be assigned the buffers for the ingress or
-  * to release the buffers for the egress. Backup port ID will be used when
-@@ -372,6 +430,44 @@ static const struct ppe_scheduler_bm_config ipq9574_ppe_sch_bm_config[] = {
- 	{true, PPE_SCH_EGRESS,  7, false, 0},
- };
- 
-+/* IPQ5332 BM arbitration. The invalid final slot is included in the
-+ * 32-slot scheduler depth.
-+ */
-+static const struct ppe_scheduler_bm_config ipq5332_ppe_sch_bm_config[] = {
-+	{true,  PPE_SCH_INGRESS, 2, false, 0},
-+	{true,  PPE_SCH_EGRESS,  0, false, 0},
-+	{true,  PPE_SCH_INGRESS, 1, false, 0},
-+	{true,  PPE_SCH_EGRESS,  1, false, 0},
-+	{true,  PPE_SCH_INGRESS, 2, false, 0},
-+	{true,  PPE_SCH_EGRESS,  2, false, 0},
-+	{true,  PPE_SCH_INGRESS, 0, false, 0},
-+	{true,  PPE_SCH_EGRESS,  0, false, 0},
-+	{true,  PPE_SCH_INGRESS, 2, false, 0},
-+	{true,  PPE_SCH_EGRESS,  1, false, 0},
-+	{true,  PPE_SCH_INGRESS, 1, false, 0},
-+	{true,  PPE_SCH_EGRESS,  2, false, 0},
-+	{true,  PPE_SCH_INGRESS, 0, false, 0},
-+	{true,  PPE_SCH_EGRESS,  0, false, 0},
-+	{true,  PPE_SCH_INGRESS, 1, false, 0},
-+	{true,  PPE_SCH_EGRESS,  1, false, 0},
-+	{true,  PPE_SCH_INGRESS, 2, false, 0},
-+	{true,  PPE_SCH_EGRESS,  2, false, 0},
-+	{true,  PPE_SCH_INGRESS, 1, false, 0},
-+	{true,  PPE_SCH_EGRESS,  0, false, 0},
-+	{true,  PPE_SCH_INGRESS, 2, false, 0},
-+	{true,  PPE_SCH_EGRESS,  1, false, 0},
-+	{true,  PPE_SCH_INGRESS, 0, false, 0},
-+	{true,  PPE_SCH_EGRESS,  2, false, 0},
-+	{true,  PPE_SCH_INGRESS, 2, false, 0},
-+	{true,  PPE_SCH_EGRESS,  0, false, 0},
-+	{true,  PPE_SCH_INGRESS, 1, false, 0},
-+	{true,  PPE_SCH_EGRESS,  1, false, 0},
-+	{true,  PPE_SCH_INGRESS, 0, false, 0},
-+	{true,  PPE_SCH_EGRESS,  2, false, 0},
-+	{true,  PPE_SCH_INGRESS, 1, false, 0},
-+	{false, PPE_SCH_INGRESS, 0, false, 0},
-+};
-+
- /* PPE scheduler configuration for QM includes multiple entries. Each entry
-  * contains ports to be dispatched for enqueueing and dequeueing. The backup
-  * port for dequeueing is supported to be used when the primary port for
-@@ -439,6 +535,22 @@ static const struct ppe_scheduler_qm_config ipq9574_ppe_sch_qm_config[] = {
- 	{0x98, 6, 5, true, 2},
- };
- 
-+/* IPQ5332 QM arbitration. The enqueue bitmap is zero in every slot;
-+ * ensch_port identifies the enqueue port. Backup dequeue ports are disabled.
-+ */
-+static const struct ppe_scheduler_qm_config ipq5332_ppe_sch_qm_config[] = {
-+	{0x0, 0x2, 0, false, 0x0},
-+	{0x0, 0x1, 2, false, 0x0},
-+	{0x0, 0x0, 1, false, 0x0},
-+	{0x0, 0x0, 2, false, 0x0},
-+	{0x0, 0x1, 0, false, 0x0},
-+	{0x0, 0x2, 1, false, 0x0},
-+	{0x0, 0x0, 2, false, 0x0},
-+	{0x0, 0x0, 1, false, 0x0},
-+	{0x0, 0x0, 2, false, 0x0},
-+	{0x0, 0x0, 1, false, 0x0},
-+};
-+
- static const struct ppe_scheduler_port_config ppe_port_sch_config[] = {
- 	{
- 		.port		= 0,
-@@ -732,6 +844,8 @@ static const struct ppe_scheduler_port_config ppe_port_sch_config[] = {
- 
- /* The scheduler resource is applied to each PPE port, The resource
-  * includes the unicast & multicast queues, flow nodes and DRR nodes.
-+ * Entries 1 and 2 serve ports 1 and 2 on both IPQ5332 and IPQ9574.
-+ * The reserved pool is the last entry.
-  */
- static const struct ppe_port_schedule_resource ppe_scheduler_res[] = {
- 	{	.ucastq_start	= 0,
-@@ -835,6 +949,19 @@ static const struct ppe_port_schedule_resource ppe_scheduler_res[] = {
- 	},
- };
- 
-+const struct ppe_soc_config ipq5332_soc_config = {
-+	.bm_group_config = ipq5332_ppe_bm_group_config,
-+	.bm_port_config = ipq5332_ppe_bm_port_config,
-+	.bm_port_config_cnt = ARRAY_SIZE(ipq5332_ppe_bm_port_config),
-+	.qm_group_config = ipq5332_ppe_qm_group_config,
-+	.qm_queue_config = ipq5332_ppe_qm_queue_config,
-+	.qm_queue_config_cnt = ARRAY_SIZE(ipq5332_ppe_qm_queue_config),
-+	.sch_bm_config = ipq5332_ppe_sch_bm_config,
-+	.sch_bm_config_cnt = ARRAY_SIZE(ipq5332_ppe_sch_bm_config),
-+	.sch_qm_config = ipq5332_ppe_sch_qm_config,
-+	.sch_qm_config_cnt = ARRAY_SIZE(ipq5332_ppe_sch_qm_config),
-+};
-+
- const struct ppe_soc_config ipq9574_soc_config = {
- 	.bm_group_config = ipq9574_ppe_bm_group_config,
- 	.bm_port_config = ipq9574_ppe_bm_port_config,
-diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.h b/drivers/net/ethernet/qualcomm/ppe/ppe_config.h
-index 0dafab264743..b42731aa3e7e 100644
---- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.h
-+++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.h
-@@ -316,6 +316,7 @@ struct ppe_soc_config {
- 	unsigned int sch_qm_config_cnt;
- };
- 
-+extern const struct ppe_soc_config ipq5332_soc_config;
- extern const struct ppe_soc_config ipq9574_soc_config;
- 
- int ppe_hw_config(struct ppe_device *ppe_dev,
--- 
-2.56.0
-
+The second bug (active-backup summing all port speeds instead of the 
+active port's speed) was also triggered: in active-backup mode the 
+computed aggregate was double the expected value since both port speeds 
+were summed even though only one port was active.
