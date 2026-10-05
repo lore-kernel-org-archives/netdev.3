@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CBE4FDE50;
-	Mon,  5 Oct 2026 17:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759964FDE68;
+	Mon,  5 Oct 2026 17:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791221609; cv=none; b=no0g6vOWduUteOfFy76LWtibJKlHT6tqGe26eOnZllbltTlJ6KsimWk0ZCgqyGBDzhtwPR9HhYMRyVeDMRj+EfuhBSqdNyspiyJDwae//IIYCw8XtuO1TNwV3bovElGlX1vGlCN6/pHHUyjg5VwurcyIN+9ZugcCG5+ddJuqWJY=
+	t=1791221611; cv=none; b=XWKDrbCTG5Ad8NjDISTra78PzE5couQvWmsROzcFRWHUQI8gJrXhI7vAyJwr5OROLqsSjB+bEklO8fn4BV+qj5+N3y29TPsC111BScQN9p/8xhVNetIJparhSvn//iCY5k3/W3RR8KbO2UmE2UKfYkvi+w3J0hNmZvthqknXgT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791221609; c=relaxed/simple;
-	bh=C5GBE9LT0wraAd+40KpHweMTUSk++Rlxtm3cLO9AWr4=;
+	s=arc-20240116; t=1791221611; c=relaxed/simple;
+	bh=nV8orihuoCAhnSxmF3qRf+zoIc6htvf2bHL57JoxfQ4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FDCrjfl/RQAxSdyN+p4ubkzxHv35H/5PRV5aPwVWrRISuQ4N5Ut2ARGKHZsbfzqajKHCWAANRcz1Kxgezm0IUS16aemjiOz7j6CLbbngdaKe8NSLdTbTn2sTztVp1wbEjBNk18mpZtZT+UBuCYLBziryhpuHyUmfmza3w+Pr0I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oT/vnSdV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=u3UrlpYwJA6YIsDhiZz+lUfYHmTGpdd7yiQ8u49D0tD23WWqVeBk6jzgH6OFJlb8Sa0Zw4miwtb9Am2ns1t+Q7oK1jjsK5lk2LBad2Ctku0pi8dALMImNPueefFaIbtdK95OCNCnL38Wb5Kzbg+eWhmnmHqsbAvzBzXQz2qH92w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cht0NPSU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oT/vnSdV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020121F0089C;
-	Mon,  5 Oct 2026 17:33:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cht0NPSU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94CE1F000FF;
+	Mon,  5 Oct 2026 17:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791221607;
-	bh=SgQpRfizg/ctZLrqeO9sbgprIheTSC5BeKia/T2ByJk=;
+	s=k20260515; t=1791221609;
+	bh=l6osWULBa/GYOFe9cSFdcQUBYzSDcUmOqumWZxYeTxw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oT/vnSdVkcGoGkIsW/B/0uS1HTm2YouW0onsVnh3i2r2MvfipvKEk5RU1uZg55FQ/
-	 jymoQWO4MAIBa2bdm2dY4DIxeVLsLkM8haJpLNwZ2GJ+NIDKNblvZxwKN8xlvL7IxA
-	 gl9+ToW+KNOKLmLZAPxKu08m5Q6j6VQIjfeOcBm8Iqh5ndZmS9a8d7yDDa1miXe9mU
-	 oMjVrN7Wx2/n9WGGUSru5j9fbJWRKMFlmzTITCrjl6Ry7Q0Ap+7JbuKj3QZ86wt0Ca
-	 8Y9eOe1f6exySODEwpbLvqnjWeYfyFTdB0r1zYLE5sem0oqR/Z3cCxqBcYITK9ZdpU
-	 V3oM1M4yDYSCQ==
-Subject: Re: [PATCH net-next v8 2/7] net: pse-pd: fire lifecycle events on
- controller register/unregister
+	b=Cht0NPSU3WbcPyIjlXfSdSVA4BiLQ21gFM1Folq8r1fX+R4rqIKf6BdGTuAQfXtG5
+	 bT2jzz4pq9WZP9QaCSM9opjAbRta0fs3BQHdRtNkRVwMWcfrJ9gre6xwJ6lR9ghd38
+	 Os0bl6rOnjilUXzCfvou5xm0cFIRC/12kwXERKycRaE59449KAevFEg/J9ca2Izouy
+	 s2s6l2UGGZXogVljwf+hkDnswyYnj0qdxDJ0UeCcLg5kD7q4/gKT6OIUAhPJ9Skghk
+	 B1/2ynO2gVL67mAPVrkMjh/sxvq3PobWe7lsMXQJzxRjZ7xi5Z91MWaxcpSvedkx+I
+	 2lX2bYQ6B8f1A==
+Subject: Re: [PATCH net-next v8 3/7] net: pse-pd: unwind allocations when
+ controller registration fails
 From: netdev-bot+sashiko@kernel.org
 To: github@szelinsky.de
 Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
@@ -37,10 +37,10 @@ Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
  horms@kernel.org, olek2@wp.pl, broonie@kernel.org, lgirdwood@gmail.com,
  netdev-bot+sashiko@kernel.org, devicetree@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 05 Oct 2026 17:33:25 +0000
-Message-ID: <179122160553.434549.16806647504780466154@kernel.org>
-In-Reply-To: <20261004164219.1161294-3-github@szelinsky.de>
-References: <20261004164219.1161294-3-github@szelinsky.de>
+Date: Mon, 05 Oct 2026 17:33:27 +0000
+Message-ID: <179122160743.434549.17705968645948888828@kernel.org>
+In-Reply-To: <20261004164219.1161294-4-github@szelinsky.de>
+References: <20261004164219.1161294-4-github@szelinsky.de>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,10 +51,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (2) · Medium: 1 (2) · Low: 1
+Critical: 0 · High: 1 (1) · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -62,303 +62,273 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Work can be re-queued after cancel_work_sync() by pse_control
-  holders that do not subscribe (baseline decision: discarded, fixed…
-- [Medium] A port could be powered on inside PSE_UNREGISTERED while the
-  irq is masked (baseline decision: discarded).
-- [Low] Fixes: tag missing for the teardown race fixed by the reorder
-  (baseline decision: discarded).
+- [High] The use-after-free the patch says it closes is still reachable
+  when two controllers register concurrently.
+- [Medium] The subject says the patch unwinds allocations when
+  registration fails.
+- [Medium] pse_flush_pw_ds() now stores NULL to pcdev->pi[i].pw_d (lines
+  941 and 954) so that nothing is left pointing at the devm-allocated…
+- [Low] The patch fixes a real memory-safety bug but carries no Fixes:
+  tag and no stable Cc.
 
 Pre-existing issues:
-- [High] Shared PSE power domain is freed by devres while other
-  controllers still use it (pre-existing).
-- [High] Stale pse_control handles reach freed pcdev->pi and pcdev after
-  unbind (pre-existing, baseline decision: discarded, fixed later in the…
-- [Medium] disable_irq() without a matching enable on a line the PSE core
-  may not own (pre-existing, baseline decision: discarded).
-- [Medium] pse_controller_register() leaks memory on its error paths
-  (pre-existing, baseline decision: discarded).
+- [High] This problem wasn't introduced by this patch, but the podl-pse-
+  regulator driver can never register a PSE controller.
 
 --
 
-net: pse-pd: fire lifecycle events on controller register/unregister
+net: pse-pd: unwind allocations when controller registration fails
 
-This patch hooks up the pse_controller_notifier chain.
-pse_controller_register() now fires PSE_REGISTERED once the controller is
-on pse_controller_list, and pse_controller_unregister() fires
-PSE_UNREGISTERED after the controller has been unlinked. It also reorders
-pse_controller_unregister(): the irq is disabled and the controller is
-unlinked before the event, and cancel_work_sync() and the frees move
-after it.
-
-> No subscriber exists yet, so the event itself does nothing. The
-> reordering of pse_controller_unregister() around it is not a no-op,
-> though: it closes a teardown race that is reachable today, with no
-> subscriber involved.
-
-[Severity: Low]
-The race described here is real. In the baseline, pse_release_pis() frees
-pcdev->pi while the controller is still on pse_controller_list. That lets
-of_pse_control_get()->of_pse_match_pi() read the freed pcdev->pi[i].np.
-
-The notes say a separate net series reorders the same function as a
-standalone fix. That looks like the right place for a Fixes: tag, because
-this commit depends on the notifier from "net: pse-pd: add notifier chain
-for controller lifecycle events".
-
-Once the net fix lands, will this paragraph be out of date? Could the
-message refer to the net fix instead of saying that this commit closes
-the race?
+This patch adds error unwinding to pse_controller_register(). The
+notification kfifo is now freed on failure, and early failures also free
+the PI array and its OF references. Power domains left by a partial
+pse_register_pw_ds() are flushed, pse_flush_pw_ds() now clears pi[].pw_d,
+and failures from the PI regulator loop onward deliberately leave the PI
+array allocated.
 
 > diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-> index 84c734ed4553e..dc261beb61702 100644
+> index dc261beb61702..eeefbf25e6716 100644
 > --- a/drivers/net/pse-pd/pse_core.c
 > +++ b/drivers/net/pse-pd/pse_core.c
-> @@ -1138,6 +1138,9 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
->  	list_add(&pcdev->list, &pse_controller_list);
->  	mutex_unlock(&pse_list_mutex);
+> @@ -937,11 +937,21 @@ static void pse_flush_pw_ds(struct pse_controller_dev *pcdev)
+>  			continue;
 >  
-> +	blocking_notifier_call_chain(&pse_controller_notifier,
-> +				     PSE_REGISTERED, pcdev);
-> +
->  	return 0;
->  }
+>  		pw_d = xa_load(&pse_pw_d_map, pcdev->pi[i].pw_d->id);
+> -		if (!pw_d)
+> +		if (!pw_d) {
+> +			pcdev->pi[i].pw_d = NULL;
+>  			continue;
+> +		}
+>  
+>  		kref_put_mutex(&pw_d->refcnt, __pse_pw_d_release,
+>  			       &pse_pw_d_mutex);
+> +		/* The pw_d is devm memory of whichever controller created
+> +		 * it, so it can go away as soon as that probe unwinds.
+> +		 * Nothing may be left pointing at it: pse_pi_is_enabled()
+> +		 * reaches pi[].pw_d from the regulator "state" attribute,
+> +		 * which stays readable until the PI regulators are
+> +		 * unregistered after us.
+> +		 */
+> +		pcdev->pi[i].pw_d = NULL;
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but the error paths in
-pse_controller_register() leak memory. Every failure after this call
-returns without kfifo_free():
+Is this store enough to keep pse_pi_is_enabled() away from a freed pw_d?
+The store is done without pcdev->lock, but the reader holds that lock:
+
+pse_pi_is_enabled() {
+	...
+	mutex_lock(&pcdev->lock);
+	if (pse_pw_d_is_sw_pw_control(pcdev, pcdev->pi[id].pw_d)) {
+	...
+}
+
+On the new pse_register_pw_ds() failure path the PI regulators are still
+live. That means the world-readable state attribute can reach this at any
+time:
+
+state_show()->_regulator_is_enabled()->pse_pi_is_enabled()
+
+Say a reader has loaded pcdev->pi[id].pw_d and is preempted before
+pse_pw_d_is_sw_pw_control() reads pw_d->budget_eval_strategy. In that gap,
+pse_flush_pw_ds() can clear the field and return, and the probe fails.
+devres then frees the pw_d before it unregisters the PI regulators,
+because the pw_d was allocated after them. The reader then reads freed
+memory.
+
+Would it close this window to take pcdev->lock around the pointer clear
+and do the kref_put_mutex() calls afterwards, outside pcdev->lock?
+
+There is a second race in the intermediate state of the series.
+pse_ethtool_get_status() checks pi->pw_d, calls the sleeping
+pi_get_admin_state(), and then does:
+
+	switch (pi->pw_d->budget_eval_strategy) {
+
+If that races with pse_controller_unregister(), the new unlocked NULL
+store turns this into a NULL dereference. Later in the series, "net: phy:
+own phydev->psec via PSE notifier and remove fwnode_mdio hook" closes
+that part: the ethtool PSE paths take pse_phy_lock(), and psec is
+detached before the flush. The pse_pi_is_enabled() window is still there
+at the end of the series.
+
+[ ... ]
+
+> @@ -1092,17 +1102,18 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+>  	    !pcdev->ops->pi_get_pw_status) {
+>  		dev_err(pcdev->dev,
+>  			"Mandatory status report callbacks are missing");
+> -		return -EINVAL;
+> +		ret = -EINVAL;
+> +		goto free_kfifo;
+>  	}
+
+[Severity: High]
+This is a pre-existing issue and was not introduced by this patch, but
+this patch reworks the kfifo handling here. Can the kfifo ever be
+allocated for podl-pse-regulator? Earlier in pse_controller_register():
 
 	ret = kfifo_alloc(&pcdev->ntf_fifo, pcdev->nr_lines, GFP_KERNEL);
+	if (ret) {
+		dev_err(pcdev->dev, "failed to allocate kfifo notifications\n");
+		return ret;
+	}
+	INIT_WORK(&pcdev->ntf_work, pse_send_ntf_worker);
 
-Failures after of_load_pse_pis() also leak pcdev->pi and its of_node
-references. A partial pse_register_pw_ds() leaks pw_d krefs and supplies.
+	if (!pcdev->nr_lines)
+		pcdev->nr_lines = 1;
 
-The next patch in the series, "net: pse-pd: unwind allocations when
-controller registration fails", adds the free_kfifo and release_pis
-labels. It also calls pse_flush_pw_ds() when pse_register_pw_ds() fails.
-It still leaks the PI array on purpose once PI regulators exist.
+The kfifo size comes from nr_lines before the default is applied.
+__kfifo_alloc_node() rounds the size up to a power of two and returns
+-EINVAL if the result is below 2, and both 0 and 1 end up there.
 
-kfifo_alloc() is sized from pcdev->nr_lines before the nr_lines = 1
-default is applied. No in-tree driver registers with nr_lines below 2.
-Should the kfifo be sized after that default is set?
+pse_reg_probe() in drivers/net/pse-pd/pse_regulator.c never sets
+nr_lines before it calls devm_pse_controller_register(). That probe
+therefore seems to always fail with "failed to allocate kfifo
+notifications". A controller with nr_lines == 1 fails the same way.
 
-> @@ -1148,15 +1151,41 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
->   */
->  void pse_controller_unregister(struct pse_controller_dev *pcdev)
->  {
-> -	pse_flush_pw_ds(pcdev);
-> -	pse_release_pis(pcdev);
-> +	/* Raise the interrupt's disable depth before anything is freed.
-> +	 * pse_isr() queues notifications and reaches pcdev->pi, and nothing
-> +	 * below re-enables it. For a driver that requests its irq after
-> +	 * devm_pse_controller_register(), devres has already run free_irq()
-> +	 * by the time we get here and this only bumps the depth - the
-> +	 * ordering does not rely on that, so a driver requesting the irq
-> +	 * earlier is covered too.
+Would it be better to size the kfifo from the defaulted nr_lines with a
+minimum of 2, for example max(nr_lines, 2)? This came in with
+ffef61d6d273 ("net: pse-pd: Add support for budget evaluation
+strategies"), and it is still the same at the end of the series.
+
+[ ... ]
+
+> @@ -1110,7 +1121,12 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+>  	 */
+>  	reg_name_len = strlen(dev_name(pcdev->dev)) + 18;
+>  
+> -	/* Register PI regulators */
+> +	/* Register PI regulators. Once one of these exists, pse_pi_ops index
+> +	 * pcdev->pi[] and nothing here can unregister it again, so the array
+> +	 * must outlive this function. Failures below therefore unwind to
+> +	 * free_kfifo and deliberately leak it, as they already do today,
+> +	 * rather than hand the live regulators a freed pointer.
 > +	 */
->  	if (pcdev->irq)
->  		disable_irq(pcdev->irq);
+>  	for (i = 0; i < pcdev->nr_lines; i++) {
+>  		char *reg_name;
+>  
+> @@ -1119,20 +1135,27 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
+>  			continue;
+>  
+>  		reg_name = devm_kzalloc(pcdev->dev, reg_name_len, GFP_KERNEL);
+> -		if (!reg_name)
+> -			return -ENOMEM;
+> +		if (!reg_name) {
+> +			ret = -ENOMEM;
+> +			goto free_kfifo;
+> +		}
+>  
+>  		snprintf(reg_name, reg_name_len, "pse-%s_pi%d",
+>  			 dev_name(pcdev->dev), i);
+>  
+>  		ret = devm_pse_pi_regulator_register(pcdev, reg_name, i);
+>  		if (ret)
+> -			return ret;
+> +			goto free_kfifo;
+>  	}
 
 [Severity: Medium]
-This is a pre-existing issue, but can this disable_irq() mask an
-interrupt line that the PSE core never owned?
+Doesn't this still leak pcdev->pi and the OF references on the PI and
+pairset nodes? That happens on every failure from here on: the reg_name
+allocation, this one, and the pse_register_pw_ds() failure below. It even
+happens on the first loop iteration, before any PI regulator exists.
 
-devm_pse_irq_helper() records the irq even when the request fails:
+On registration failure, devm_pse_controller_register() frees only its
+devres cookie, so nothing else releases the array.
 
-drivers/net/pse-pd/pse_core.c:devm_pse_irq_helper() {
-    ...
-	ret = devm_request_threaded_irq(dev, irq, NULL, pse_isr,
-					IRQF_ONESHOT | irq_flags,
-					irq_name, h);
-	if (ret)
-		dev_err(pcdev->dev, "Failed to request IRQ %d\n", irq);
+The commit message says:
 
-	pcdev->irq = irq;
-	return ret;
-}
+    Freeing the array safely past the loop
+    would need the regulator ops to tolerate a NULL pcdev->pi, which they do
+    not today.
 
-Suppose tps23881's request fails with -EBUSY because another device holds
-the line exclusively. Probe then unwinds through
-devm_pse_controller_release(), and this disable_irq() masks the other
-device's interrupt. Nothing re-enables it afterwards.
+Is that really the only way to do it? devm_pse_pi_regulator_register()
+registers the PI regulators on pcdev->dev with devm_regulator_register().
+A devm action on pcdev->dev that releases the PIs could be added right
+after of_load_pse_pis() succeeds. Devres releases in LIFO order, so that
+action would run after every PI regulator has been unregistered. No
+regulator op would ever see a freed or NULL pcdev->pi.
 
-The new comment is correct for the in-tree success case. tps23881 passes
-irq_flags = 0, devres has already run free_irq(), and the next request
-goes through irq_startup(), which resets the depth to 0.
+That would also cover pse_controller_unregister(), which the commit
+message notes calls pse_release_pis() while the PI regulators are still
+registered.
+
+The later patch "net: pse-pd: check the PI vpwr supply before registering
+the controller" moves the common -EPROBE_DEFER case ahead of the loop.
+The leaks from the loop and from pse_register_pw_ds() are still there at
+the end of the series.
 
 >  
-> -	cancel_work_sync(&pcdev->ntf_work);
-> -	kfifo_free(&pcdev->ntf_fifo);
-> +
-> +	/* Unlink before the event: of_pse_control_get() walks
-> +	 * pse_controller_list and dereferences pcdev->pi[] through
-> +	 * of_pse_match_pi(), so no lookup may still reach this controller
-> +	 * once its teardown starts. Subscribers are handed pcdev as the
-> +	 * event data, so the notifier does not need it on the list.
-> +	 */
->  	mutex_lock(&pse_list_mutex);
->  	list_del(&pcdev->list);
->  	mutex_unlock(&pse_list_mutex);
-> +
-> +	blocking_notifier_call_chain(&pse_controller_notifier,
-> +				     PSE_UNREGISTERED, pcdev);
-
-[Severity: Medium]
-With disable_irq() now running before the event, can a port be powered on
-from inside the PSE_UNREGISTERED walk?
-
-A subscriber's final put can follow this path for a pending PI on the
-same power domain:
-
-__pse_control_release()
-  regulator_disable()
-    _pse_pi_disable()
-      pse_pw_d_retry_power_delivery()
-        ops->pi_enable()
-
-That decision uses an isr_pd_detected value that can no longer change,
-because the irq is already masked.
-
-The commit message says this is intended ("so the call is legal"). In
-the final series the power-on also looks brief. A PI can only be pending
-after pse_pi_enable() on the exclusive psec->ps consumer, so it always
-has a holder. The same walk releases every PHY holder through
-__pse_control_release()->regulator_disable()->pse_pi_disable(), and that
-clears admin_state_enabled.
-
-Leaving a port powered on for good would need a pending PI with no
-holder. Only an earlier failed ops->pi_disable() could produce that. Is
-that case worth handling, or is the brief power-on acceptable here?
-
-> +
-> +	/* After the event, not before. A subscriber dropping the last
-> +	 * pse_control reference reaches __pse_control_release() ->
-> +	 * regulator_disable() -> _pse_pi_disable(), which can end up in
-> +	 * pse_disable_pi_pol() and queue a notification of its own, so a
-> +	 * cancel_work_sync() placed above the walk would not stay drained.
-> +	 */
-> +	cancel_work_sync(&pcdev->ntf_work);
+>  	ret = pse_register_pw_ds(pcdev);
+> -	if (ret)
+> -		return ret;
+> +	if (ret) {
+> +		/* Deliberately not release_pis: the PI regulators registered
+> +		 * above index pcdev->pi[] and outlive this function.
+> +		 */
+> +		pse_flush_pw_ds(pcdev);
+> +		goto free_kfifo;
+> +	}
 
 [Severity: High]
-At this point in the series, can ntf_work be queued again after this
-drain?
+Can a controller probing at the same time still hit the use-after-free
+the commit message describes? On its error path, pse_register_pw_ds()
+drops pse_pw_d_mutex while the domains it just created are still in
+pse_pw_d_map:
 
-Nothing here blocks pse_control holders that do not subscribe. A PHY
-handle from fwnode_mdio can still take this path after
-cancel_work_sync():
+out:
+	mutex_unlock(&pse_pw_d_mutex);
+	return ret;
 
-pse_ethtool_set_config() or pse_ethtool_set_prio()
-  regulator op
-    _pse_pi_disable()
-      pse_disable_pi_pol()
-        kfifo_in_spinlocked(&pcdev->ntf_fifo, &ntf, 1, &pcdev->ntf_fifo_lock);
-        schedule_work(&pcdev->ntf_work);
+pse_flush_pw_ds() runs only after that, without the mutex. Here is one
+possible sequence, where controller B shares the same vpwr supply:
 
-The fifo and the work are freed just below. A requeued worker's
-pse_control_put()->__pse_control_release() would also read the freed
-pcdev->pi[psec->id].
+controller A
+pse_register_pw_ds()
+  devm_pse_alloc_pw_d()       /* pw_d published in pse_pw_d_map */
+  regulator_get() fails on a later PI
+  mutex_unlock(&pse_pw_d_mutex)
 
-The commit message mentions this ("The drain is not yet final on its
-own"). The baseline freed pcdev->pi before cancel_work_sync(), so this
-ordering is no worse.
+controller B
+pse_register_pw_ds()
+  regulator_is_equal(pw_d->supply, rdev->supply) matches
+  pcdev->pi[i].pw_d = pw_d
+  kref_get(&pw_d->refcnt)     /* 1 -> 2 */
 
-The last patch in the series, "net: phy: own phydev->psec via PSE
-notifier and remove fwnode_mdio hook", closes the window:
+controller A
+pse_flush_pw_ds()
+  kref_put_mutex()            /* 2 -> 1, no xa_erase() */
+devres frees pw_d
 
-- The PSE_UNREGISTERED walk clears and puts every phydev->psec under
-  pse_phy_lock().
-- net/ethtool/pse-pd.c takes pse_phy_lock() around
-  pse_get_pse_attributes() and the whole of ethnl_set_pse().
-- A WARN_ON(!list_empty(&pcdev->pse_control_head)) follows the drain.
+Now pse_pw_d_map and B's pi[].pw_d both point at freed memory. The next
+pse_register_pw_ds() reads pw_d->supply, and B's own flush later does
+kref_put on the freed object.
 
-> +
-> +	pse_flush_pw_ds(pcdev);
+Every domain the failing call created stays private to it until
+pse_pw_d_mutex is dropped. Could pse_register_pw_ds() undo those domains
+itself before the out: label, doing kref_put/xa_erase/regulator_put while
+it still holds pse_pw_d_mutex? That would close this window without
+moving pw_d out of devm memory.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but can a shared power domain
-be freed here while another controller still uses it?
+[Severity: Low]
+Should this patch carry Fixes: tags and a stable Cc? A partial
+pse_register_pw_ds() leaves freed power domains in pse_pw_d_map, so this
+fixes a real use-after-free. The commit message has only a Signed-off-by.
 
-pse_register_pw_ds() allocates a new domain with
-devm_pse_alloc_pw_d(pcdev->dev). That is a devm_kzalloc() on the device
-of whichever controller (A) registered first. A second controller (B)
-whose PI regulators share the same parent supply only takes a reference:
+According to blame, the bare returns this patch replaces came from these
+commits:
 
-drivers/net/pse-pd/pse_core.c:pse_register_pw_ds() {
-    ...
-			if (regulator_is_equal(pw_d->supply, rdev->supply)) {
-				present = true;
-				pcdev->pi[i].pw_d = pw_d;
-				break;
-			}
-		}
-		if (present) {
-			kref_get(&pw_d->refcnt);
-			continue;
-		}
-    ...
-}
+- after pse_register_pw_ds(): 50f8b341d268 ("net: pse-pd: Add support
+  for PSE power domains")
+- kfifo_alloc(): ffef61d6d273 ("net: pse-pd: Add support for budget
+  evaluation strategies")
+- after of_load_pse_pis(): 9be9567a7c59 ("net: pse-pd: Add support for
+  PSE PIs")
+- after setup_pi_matrix(): 29e28d1d7a16 ("net: pse-pd: Add support for
+  setup_pi_matrix callback")
 
-When A unbinds, pse_flush_pw_ds() only drops A's own references, for
-example from 2 to 1. __pse_pw_d_release() does not run, so the pw_d stays
-in pse_pw_d_map and in B->pi[i].pw_d.
-
-devm_pse_controller_register() calls devres_add() for the unregister
-cookie only after pse_controller_register() returns. Devres therefore
-frees the pw_d allocation right after pse_controller_unregister(A)
-returns.
-
-B and later controllers then use the freed pw_d:
-
-- pse_pw_d_is_sw_pw_control() reads pw_d->budget_eval_strategy.
-- pse_pi_allocate_pw_budget() and pse_pi_deallocate_pw_budget() use
-  pw_d->supply.
-- B's own pse_flush_pw_ds() does xa_load(&pse_pw_d_map,
-  pcdev->pi[i].pw_d->id), then kref_put_mutex() on the freed kref.
-- A third controller's pse_register_pw_ds() walks pse_pw_d_map and reads
-  pw_d->supply.
-
-The later patch "net: pse-pd: unwind allocations when controller
-registration fails" says it does not fix shared power domains ("devres
-frees the creator's pw_d underneath it anyway"). At the end of the series
-pse_flush_pw_ds() only clears the departing controller's own pi[].pw_d.
-B's pointer and the xarray entry still point at freed memory.
-
-> +	pse_release_pis(pcdev);
-
-[Severity: High]
-This is a pre-existing issue, but at this commit, can PHY-held
-pse_control handles reach the freed pcdev->pi and pcdev after unbind?
-
-PHYs keep the handle they got from fwnode_mdio until phy_device_remove(),
-and nothing subscribes to PSE_UNREGISTERED yet. Once this frees pcdev->pi
-and devres frees pcdev, psec->pcdev points at freed memory.
-
-Unprivileged users can reach this through the ETHTOOL_MSG_PSE_GET path.
-pse_ethtool_get_status() dereferences pcdev->ops and pcdev->pi[psec->id].
-
-The final pse_control_put() from phy_device_remove() also runs this on
-freed memory:
-
-drivers/net/pse-pd/pse_core.c:__pse_control_release() {
-    ...
-	if (psec->pcdev->pi[psec->id].admin_state_enabled)
-		regulator_disable(psec->ps);
-	regulator_put(psec->ps);
-
-	module_put(psec->pcdev->owner);
-    ...
-}
-
-The commit message says this stays open until phylib releases its
-handles. The last patch in the series, "net: phy: own phydev->psec via
-PSE notifier and remove fwnode_mdio hook", fixes it:
-
-- fwnode_find_pse_control() is removed.
-- During PSE_UNREGISTERED, phy_pse_detach_one() clears and puts each
-  matching phydev->psec before cancel_work_sync() and the frees.
-- pse_prepare_data(), ethnl_set_pse() and phy_device_remove() hold
-  pse_phy_lock().
+Could this also go to net on its own, rather than sit inside the
+notifier chain / phylib ownership series?
 
 [ ... ]
 
