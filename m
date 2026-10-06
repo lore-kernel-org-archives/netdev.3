@@ -1,219 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1673BFE47;
-	Tue,  6 Oct 2026 07:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FCC3C3F67
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 07:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791273481; cv=none; b=qafO18rl6n9t3nYZsA+CKAMVHJDbOHh5KCsfRwziD6KXycPQpnS0rZKG7Q+h0ARJthxxY+zx3bguyQNTj0e/d9qsMgHT7sNqkRAgwtMusalhVHX5adhKTVaKRnwE5+bvkTXUeJ+Mwr+9AYv7uFffN4SIL6M2QlAm9ZZXyBJBuVM=
+	t=1791273581; cv=none; b=XxETUiDnZ//lvsKX+bvnj+m+eduAhT8wfvujUArrV26ZwdXtTj7y4dvihACdqQm1PnKN8Qs/LtYUcCgdjUNfHcveJOoozi/KTpdekMg57ksGkBNDxGEtBM7c29EdVkzdrePtsckx1JzgA94DGYwFm1UYZGtemSYk0mZkN+WLmUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791273481; c=relaxed/simple;
-	bh=z83cvtVI/OZvnKWBWCmnpyHuPaDOYziAgjZjwqno7tQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Kr5Nop8xDPnbunotT0jZNsFmvgNV0VhbZW5xVVsPIFJ1fY0i7DNn5VVOiGE/ivV6UciKFtjafgnzUFMh9tt6vBxE6F1p0xd30cLKyerx9IZixy+d7pFqS/shGd1Sc6guM5caifCKgn2JO0+yK/dMkSyEcT3lco7pVTWamgS7vIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yo5KNjs/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791273581; c=relaxed/simple;
+	bh=jKA2w0gKTi/Ivc3d8KgLwzjWwu6n5UjLW4cY/YMxtzA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VtF0uwBqQC3X0bPOKmtvGAiYA4xVua+iWOU0EmVWTFn5PtTJzI4g1mqB+xAFmgnZ9CYDYX5RJQuX5KFtMx5XWdeyQidh+PJhzzWBCk7+BVuMIaZU4jWusfBGgfnsl3LjDajff/Zf1da9zgTgmtMyloDI7qD3tAdDb8NzoIZ2PMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DaBqXNsq; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yo5KNjs/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101501F000FF;
-	Tue,  6 Oct 2026 07:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791273479;
-	bh=96AbM7wmILCi/FUwWn4BbH1/d/V3wqMQSKn7tm4Vo1E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Yo5KNjs/qZJnkYXKoMoh2+afx3BBnWuhPjNLXtBqxXvKmQrM+uRcwTqlclM04+QaO
-	 tcIz1w1zB7Px50yiGFBtx+9YnZYdWHURW3Gi/Jeo62VETP+zRNiIrZJ6rRhhscyp9h
-	 EF7Qy78+TMqZdl79raymOzdhERC0R9zPWAL1zKotnrdtKj1BMa93VbGuPfS3rDhtMj
-	 NPrF3bUenBya9e5Yhwb1gc96WeXJi+LRNL+E1szWVDpQRuc/wjdQIjPsiZknXuKDJW
-	 4ulB04F9cTT094kEd70ThPDjA+uSWxcudnySjDObHySlOeqvH4UBXkwtlxkD1Ad7r2
-	 fUF3E3ESchAow==
-Subject: Re: [PATCH v2 net] netfilter: conntrack: reject nested ctnetlink
- master chains
-From: netdev-bot+sashiko@kernel.org
-To: 4ncienth@gmail.com
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Tue, 06 Oct 2026 07:57:58 +0000
-Message-ID: <179127347858.434549.11821822167265441355@kernel.org>
-In-Reply-To: <20261002165601.1754467-1-4ncienth@gmail.com>
-References: <20261002165601.1754467-1-4ncienth@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DaBqXNsq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 218DD1A1154;
+	Tue,  6 Oct 2026 07:59:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E50D260553;
+	Tue,  6 Oct 2026 07:59:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AFC0103308A6;
+	Tue,  6 Oct 2026 09:59:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791273576; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=9UADx5siGKeK5KCATSLSOTyedeT0k/fdcCEK1ZVtIuQ=;
+	b=DaBqXNsqHxGDfFPoYUUv7E2wCtlmm4y/KS3i8vfonuSiH6cqiVL3+otxLy9VfNEpNh2pj5
+	tL63Ornt/T7WteOWMPXk0iy5lBXfRqkXC3DAtR2Ana3t+EUP1dgRU4ygPo+aRAUum0NRto
+	h/jXGFvvVyGPbfhxCIq3PX1jwRUZpuOg08E+Rd5s0SKLk0WfJD+9tfTJvf9VqK9EsoEAXg
+	tDYjvV6lUEa86kWa3BtrqVIB9C1cS+j+wV4G+qnEeH2AIY5nrO7pATdGICiLMO2plcmRGP
+	+NQFhhxKcf01ecK1yGS8CxKW80/++DTNsiwcOSTrxH3LdxZfCVqly4sQVAjvjg==
+Message-ID: <d6e61c8b-cd3d-43fe-b4ac-19ff5d790b0f@bootlin.com>
+Date: Tue, 6 Oct 2026 09:59:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 1/3] net: rss: Require indir table size or
+ hash key size to support RSS
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ linux@armlinux.org.uk, lorenzo.bianconi@oss.qualcomm.com, nb@tipi-net.de,
+ jitendra.vegiraju@broadcom.com, thomas.petazzoni@bootlin.com,
+ alexis.lothore@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, pbrobinson@gmail.com, joe@dama.to
+References: <20261002142806.1299041-2-maxime.chevallier@bootlin.com>
+ <179121059086.434549.5364767976780818051@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <179121059086.434549.5364767976780818051@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 10/5/26 16:29, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
 
-- [High] The fix does not stop userspace from building an unbounded
-  ct->master chain.
-- [High] The commit keeps "kernel helper expectations unchanged", but the
-  H.323 Q.931 helper nests itself without limit.
-- [Medium] The new check in ctnetlink_create_conntrack()
-  (nf_conntrack_netlink.c:2362) makes IPCTNL_MSG_CT_NEW fail with…
 
---
 
-netfilter: conntrack: reject nested ctnetlink master chains
+> [Severity: Medium]
+> rss_get_data_alloc() is shared by RSS_GET, RSS_SET and RSS_CREATE. Does
+> this drop flow-hash reporting for devices that have ->get_rxfh but report
+> 0/0 sizes?
 
-The patch rejects ctnetlink conntrack creation when the CTA_TUPLE_MASTER
-conntrack already has a master. It also rejects NFQUEUE-attached
-expectations (NFQA_EXP) for conntracks that have a master. The aim is to
-stop userspace from building unbounded master chains, whose recursive
-release in nf_ct_destroy() exhausts the kernel stack.
+Yes it does, that's the intended behaviour here. RSS bits are all optional,
+but does it make sense to report hashing params when the indirection table
+is size 0 and key len is 0 ?
 
-> diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-> index 4e5d7c7014368..c68e79d1ac87b 100644
-> --- a/net/netfilter/nf_conntrack_netlink.c
-> +++ b/net/netfilter/nf_conntrack_netlink.c
-> @@ -2359,6 +2359,11 @@ ctnetlink_create_conntrack(struct net *net,
->  			goto err2;
->  		}
->  		master_ct = nf_ct_tuplehash_to_ctrack(master_h);
-> +		if (master_ct->master) {
-> +			nf_ct_put(master_ct);
-> +			err = -EOPNOTSUPP;
-> +			goto err2;
-> +		}
-
-[Severity: Medium]
-Does this check reject state that the kernel itself creates? In H.323, a
-RAS expectation creates the Q.931 conntrack. That Q.931 conntrack then
-sets up the H.245 expectation:
-
-net/netfilter/nf_conntrack_h323_main.c:expect_h245() {
-    ...
-	rcu_assign_pointer(exp->assign_helper, nf_conntrack_helper_h245_ptr);
-    ...
-}
-
-So the resulting H.245 and RTP conntracks have a master that itself has
-a master.
-
-A state-sync daemon such as conntrackd may recreate those flows with
-IPCTNL_MSG_CT_NEW and a CTA_TUPLE_MASTER that points at the related Q.931
-conntrack. That request used to be accepted and now gets -EOPNOTSUPP, so
-these flows would not be replicated after a failover.
-
-Since this is tagged for stable, could the commit message mention this
-change in what CT_NEW accepts?
-
->  		__set_bit(IPS_EXPECTED_BIT, &ct->status);
->  		ct->master = master_ct;
->  	}
-> @@ -2864,6 +2869,9 @@ ctnetlink_glue_attach_expect(const struct nlattr *attr, struct nf_conn *ct,
->  	struct nf_conntrack_expect *exp;
->  	int err;
->  
-> +	if (ct->master)
-> +		return -EOPNOTSUPP;
-> +
-
-[Severity: High]
-Can nf_tables still reach the same stack exhaustion? The commit message
-says "Stop the repeatable userspace paths", but the patch only covers
-CTA_TUPLE_MASTER and NFQA_EXP.
-
-The first path uses an nft ct expectation object alone.
-nft_ct_expect_obj_eval() only skips conntracks that are confirmed,
-templates, or that already have a help extension:
-
-net/netfilter/nft_ct.c:nft_ct_expect_obj_eval() {
-    ...
-	ct = nf_ct_get(pkt->skb, &ctinfo);
-	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_template(ct)) {
-		regs->verdict.code = NFT_BREAK;
-		return;
-	}
-
-	help = nfct_help(ct);
-	if (help) {
-    ...
-}
-
-A RELATED child created from an expectation with a NULL assign_helper has
-no help extension, so it also gets the ct_expect_help helper.
-
-ct_expect_help() then calls nf_ct_expect_related() with the child as
-exp->master, and it never checks ct->master. Over loopback, each new flow
-from a fresh source port consumes the previous expectation and arms the
-next one, so every flow adds a level.
-
-The second path combines an nft ct helper with ctnetlink.
-IPCTNL_MSG_EXP_NEW only stops the chain because ctnetlink_alloc_expect()
-requires help->helper.
-
-nft_ct_helper_obj_eval() assigns a helper to any unconfirmed conntrack,
-related ones included. After that, ctnetlink_create_expect() succeeds
-with the child as master.
-
-A kernel helper attached this way, such as FTP, could also extend the
-chain from traffic alone.
-
-In every case init_conntrack() sets ct->master = exp->master with no
-depth limit. Freeing the leaf then recurses once per level:
-
-nf_ct_put()
-  nf_ct_destroy()
-    nf_ct_put(ct->master)
-      nf_ct_destroy()
-        ...
-
-Both nft paths need only CAP_NET_ADMIN in a user/net namespace, the same
-privilege ctnetlink needs.
-
-Would a central bound in nf_ct_expect_related() or init_conntrack() be
-needed to close this, or an iterative release of the master chain in
-nf_ct_destroy()? Gating each entry point separately leaves these paths
-open.
-
-[Severity: High]
-The commit message says "Keep regular ctnetlink and kernel helper
-expectations unchanged". Can the H.323 Q.931 helper build an unbounded
-chain on its own?
-
-For a Facility message with reason callForwarded, process_facility()
-calls expect_callforwarding(). That function gives the expected child the
-Q.931 helper again:
-
-net/netfilter/nf_conntrack_h323_main.c:expect_callforwarding() {
-    ...
-	rcu_assign_pointer(exp->assign_helper, nf_conntrack_helper_q931_ptr[0]);
-    ...
-}
-
-Neither function checks IPS_EXPECTED or ct->master. Each new expected
-Q.931 connection can therefore send another Facility(callForwarded) and
-create the next level.
-
-The default callforward_filter does not seem to prevent this.
-callforward_do_filter() only filters when the nexthop and device are the
-same, and two distinct local addresses have different nexthops.
-
-This works over loopback from an unprivileged user namespace once the
-helper is attached. It also works for remote peers wherever the Q.931
-helper is enabled. Either way, the same recursion in nf_ct_destroy()
-exhausts the stack.
-
-SIP REGISTER does not seem to have this problem, because
-process_register_request() returns early when IPS_EXPECTED is set.
-
->  	err = nla_parse_nested_deprecated(cda, CTA_EXPECT_MAX, attr,
->  					  exp_nla_policy, NULL);
->  	if (err < 0)
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002165601.1754467-1-4ncienth%40gmail.com
+Maxime
