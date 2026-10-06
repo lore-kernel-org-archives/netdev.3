@@ -1,109 +1,68 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECF737269C;
-	Tue,  6 Oct 2026 19:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B38388E5B;
+	Tue,  6 Oct 2026 19:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791313521; cv=none; b=hs0VsjzEMKAiCW6UWcgax5oJqfdsYP2w+fhYvsWqyZooyJye3xr7NA1zTzRLWMcHcCiNtY/Uv1EdT/wbcI963+Q8Yv/r8BdhuN8y1p55VS9CLLHqREIXVKTbUODk3Ctm4MDMjFJLCHdr/9WvoPd1gnUTFTzKxIMg81j/eHUkSCk=
+	t=1791313614; cv=none; b=t1wNenzHHjf9wv/RjYV7qnqHusrRTc5PCO7qaX4FsW9jZ0HrPfRASuxXwl3zQvX2iOQrhWAytA+qBygIB8S6aLqws3S3UAcUCnTU890xFW7kXaQxqPukB2UMSXSt8/6yfzbmEAfsPxyGlzRVsvVpLLox0MIkjAjWxruZAHtvayo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791313521; c=relaxed/simple;
-	bh=zQtt7HxACahWkJMUND4HHPod4L2ogOPqrJdS/tbxGv8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uSieA6GGDWtvQ5raupAvhDt+fWLDGHfZdCL5eCD0ym+SvIsihmhwl4W98tHRnvUpA4HXoKbB2G3aQjdJ+ibNjayRuId66xixQjEOfdmUAcrwEu4PWep162fqz7+xBcYZbTWcxLVenlZrzu7dnsI9ixKVozepx3n1QIg1cdMgFjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SxiU8jxc; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1791313614; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JmAIl4vy0qRoBa/2ZkVrKBm6IkHxjCdxK9rHQKCn2S5spJJyECArL12/S5hLvF6/4E7m7ubLCo54Q657zDirK8K6IL9qex57v3vcvHEkNiEb4cgDFAw6b6dpsf6+Txah2GD/R6g4LS5wnFy1cOTdIpRWmYZ691Y+b9kk4tYZb54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aocjp3zQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SxiU8jxc"
-Received: from [192.168.4.134] (unknown [52.172.102.222])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C976320B7175;
-	Tue,  6 Oct 2026 12:04:16 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C976320B7175
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1791313463;
-	bh=FY9kI9KlSQjQKGGd5vqvSNeS2Onh88UrYVFTZP4peVM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SxiU8jxcp0IqHzLxwE3msYDGihbzf+zhfloAvVftai+u9P8KqDKDSIOXjxVk+4q/u
-	 cAwaQdKzuxhjnjWfEf8GjaO/zikd8DizimCFLWFHZOVJNDOUiN7/mW3UjZKx9Tc71s
-	 yy/kzoBg5TwATYQesNkSXLA1uz+rWu+Mkiq52/Mo=
-Message-ID: <2188ea84-8fb3-4170-a4b7-01dcab459ceb@linux.microsoft.com>
-Date: Tue, 6 Oct 2026 12:05:15 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aocjp3zQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA1C1F0089B;
+	Tue,  6 Oct 2026 19:06:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791313612;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Aocjp3zQSwrjm/UPfB0rCYjwzWKhaVmDkiO7ponHzDbw0kDubOO96HBwbzbh8LP+D
+	 ZnkR2Ytx5MrvOQTDcK93fR0b/wJ4bGGiA9JRjCaAcG+gyjnOIXqSuJ0vgAHdseNYmX
+	 qNuJfE0CKZzd8qRssHrQksrVDC+Er8gRhar/Zq3WkFJM+qjRsjW80V2OwYd6W7Ce+J
+	 CuEVAOP/FFNffEcuWuhk6a+rVlTICpkVoUo8XvTJUTNbKuuTOj8EBbsIVWvWdfyO2Z
+	 jfVbSRoTYhVUOcaFVebIhBz63MZ/hrMyJX0f0Q1gaY0H4KiIwFbjdIvukrw+KrcjmO
+	 FE8FX3M9VNH5g==
+From: netdev-bot+sinfo@kernel.org
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Sashiko <netdev-bot+sashiko@kernel.org>
+Subject: 
+ Re: [PATCH net-next 0/2] netconsole: add locking to configfs _show callbacks
+Date: Tue, 06 Oct 2026 19:06:51 +0000
+Message-ID: <179131361154.2231598.14566861570610111064@kernel.org>
+In-Reply-To: <20261006-netcons-fixes-next-v1-0-231cd26f8c51@gmail.com>
+References: <20261006-netcons-fixes-next-v1-0-231cd26f8c51@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/5] hv_netvsc: fix the program refcount when the
- VF refuses XDP
-To: Jakub Kicinski <kuba@kernel.org>, haiyangz@microsoft.com
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- wei.liu@kernel.org, decui@microsoft.com, linux-hyperv@vger.kernel.org,
- hawk@kernel.org, andriin@fb.com, stable+noautosel@kernel.org
-References: <20261001014131.310771-1-kuba@kernel.org>
- <20261001014131.310771-2-kuba@kernel.org>
-Content-Language: en-US
-From: Kameron Carr <kameroncarr@linux.microsoft.com>
-In-Reply-To: <20261001014131.310771-2-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 9/30/2026 6:41 PM, Jakub Kicinski wrote:
-> ndo_bpf() takes over the reference it is passed only on success, the
-> caller puts it back itself on failure. netvsc_xdp_set() takes that one
-> plus num_chn - 1 more for its channels, and the rollback after the VF
-> refuses the program clears the channels again, putting all num_chn of
-> them. dev_xdp_install() then puts the one it passed in a second time,
-> and the program can be freed while the fd which loaded it still points
-> at it.
-> 
-> The VF refuses a program netvsc has already committed to when the
-> program is single-buffer and the VF has header-data split enabled, when
-> the VF has a memory provider bound, or when the VF's driver has
-> conditions of its own.
-> 
-> Reported by Sashiko during core rework. Unverified and untested.
-> 
-> Cc: stable+noautosel@kernel.org # untested fix to unlikely driver error path
-> Fixes: 184367dce4f7 ("hv_netvsc: Fix XDP refcnt for synthetic and VF NICs")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
->  drivers/net/hyperv/netvsc_bpf.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/net/hyperv/netvsc_bpf.c b/drivers/net/hyperv/netvsc_bpf.c
-> index 1dd3755d9e6d..731bb7721fe2 100644
-> --- a/drivers/net/hyperv/netvsc_bpf.c
-> +++ b/drivers/net/hyperv/netvsc_bpf.c
-> @@ -216,6 +216,13 @@ int netvsc_bpf(struct net_device *dev, struct netdev_bpf *bpf)
->  			netdev_err(dev, "vf_setxdp failed:%d\n", ret);
->  			NL_SET_ERR_MSG_MOD(extack, "vf_setxdp failed");
->  
-> +			/* Since we haven't completed the installation
-> +			 * of bpf->prog the reference core implicitly
-> +			 * transfers to us on success isn't ours.
-> +			 * Take a reference to balance the accounting.
-> +			 */
-> +			if (bpf->prog)
-> +				bpf_prog_inc(bpf->prog);
->  			netvsc_xdp_set(dev, NULL, extack, nvdev);
->  		}
->  
+Hi!
 
-The refcount part looks right to me.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Not new, but this rollback clears the channels rather than restoring
-them. If the VF refuses a replace (P1 -> P2), or refuses the NULL on
-detach (memory provider bound, mana failing to re-create its queues),
-the core keeps P1 in xdp_state and the VF keeps running P1, but the
-synthetic path is left with no program at all.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-Could we save a reference to the old program before netvsc_xdp_set() and
-restore it here instead of setting NULL? In patch 3/5
-netvsc_unregister_vf() decides the take-back based on the channels, so
-this matters there too.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
--- 
-Regards,
-Kameron
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
