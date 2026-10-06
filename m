@@ -1,108 +1,72 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FD52EF653;
-	Tue,  6 Oct 2026 07:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2017A2EF653;
+	Tue,  6 Oct 2026 07:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791270282; cv=none; b=DMe5NbZkFkZJxRQoBmEhugOhOr095ANa7a8MfksP9xtrnw3zo7y1JDn5CUOnJ6lp8QxQUycVzWvs0tJnRogxA/koe00nlkTwg4O6HUU2nkF8oo2mUtviKUs+SDOg01zcd1754cxX6MmuLaYXyYRuDa8IRFKoXlMsAzDUhzJDcxM=
+	t=1791270289; cv=none; b=KdgDwawQKM7xeqAiw2t4Y4ECOeGIeE/b8yxlwF1/70dB4pZU/HYaRLJ6Bz+vrBYhCGHDYCW0iTaG8ACC/nAC5FBP/Cz5UMRU0OG3hBP1G3YNd9zHdtYGUtbbbPLZWTjOersezwPCbggvP2MTvndIhO4aEQauXHTuKXqXVx1RTy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791270282; c=relaxed/simple;
-	bh=gS5j/TZ6Vj88SAfRmPzcUqPHiOltknzfAZ8nr4U4HN4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o7ri7zpVbw8B3bbH4nSaZQxuKbeprBbr9ptQnlkM6REa+Lq8+GkHpVFs0W5cRYzE507j6DO5RVvu7MlffpbAqet+b80ADmA/D6XDSdCE5HxGmkPUPXqstpQ4O6l/aky7c0WnGR7u+53ROx4K/glIfQwK1aoq5gpQ+Mp4SF18OWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=h6jgK0DI; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1791270289; c=relaxed/simple;
+	bh=kaByYc/U+5tu8/jtpkw60yZal7zKeAXTBbuq/8jk5Cg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bCQIVgwPF1MVxb6xGOx0TwO4+ck6mRnxvK3Dde8N8v9QYXI2F9UXOilOSnAFFn0viOOEGGTQqjcBnaJ6RBFOP1qzBpP5XVgYzjsSSH5YEXEjbcWnfAvh2r+XYPOE8Zflg+/mudtICkB1qn+i/5tISqtO/5c3r2S7ylo0hhFMcHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQ7Hz3Lx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="h6jgK0DI"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id CBD482083F;
-	Tue,  6 Oct 2026 09:04:37 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id dWUx0ufHGtU5; Tue,  6 Oct 2026 09:04:37 +0200 (CEST)
-Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 456AF2083B;
-	Tue,  6 Oct 2026 09:04:37 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 456AF2083B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1791270277;
-	bh=o9IPAcQ1v6LRdaOkMQoNKl4jZsJxwoH/eVJUJo2uarA=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=h6jgK0DIiHnaeZxaeEJnsKYAeaAeKrx8P4eKjcUOR0cgQ0ZPz1bs5XEY/HoY3uc7X
-	 XXSmsv6zyuPbyk70VyaHJhIWGT3/awQCUtklKaV2na9jh0rbiEBw+tm2F1YZUqF6Cn
-	 r1Jvhomaf2BZ8YTEeezxZR2Qc+tyE9/JGZYprqNutPTNt77jEIS290x9505S509c6q
-	 NVywYiIf94i/5ovyf8egdE0kYCYHZ+n31YemxgbiXlyFF+WHP7c8ugl7W7ZON62AFf
-	 wcUk7dLb3dK29U7d44HSUIWz0PTPX24onvbE6ZYq4JxRq7l/C7tEeu4eEW9JIZC6BB
-	 rwN+TKPCrpCJA==
-Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
- (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
- 2026 09:04:36 +0200
-From: Antony Antony <antony.antony@secunet.com>
-To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
-	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, Jamal Hadi Salim
-	<hadi@cyberus.ca>, Shuah Khan <shuah@kernel.org>, Paul Chaignon
-	<paul.chaignon@gmail.com>, Louis DeLosSantos <louis.delos.devel@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-CC: Sabrina Dubroca <sd@queasysnail.net>, <netdev@vger.kernel.org>, Yan Yan
-	<evitayan@google.com>, Tobias Brunner <tobias@strongswan.org>, Florian
- Westphal <fw@strlen.de>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable+noautosel@kernel.org>
-Subject: [PATCH ipsec v4 2/9] xfrm: state: reject mark with bits outside its mask on ALLOCSPI
-Date: Tue, 6 Oct 2026 09:04:27 +0200
-Message-ID: <migrate-state-fixes-v4-2-d5054459fc78@secunet.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <migrate-state-fixes-v4-0-d5054459fc78@secunet.com>
-References: <migrate-state-fixes-v4-0-d5054459fc78@secunet.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQ7Hz3Lx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5211F000FF;
+	Tue,  6 Oct 2026 07:04:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791270287;
+	bh=RUjKVtdBjLrI1ETUgbz/NG6YLKPD9i8so5/lvVS1KGk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cQ7Hz3LxWsdH5JhGe8XrxnqREH8hJKRxvc+04/JEAla3rBTrBZ6utUBrnufu4BDfy
+	 7t+5iZOHvAzh1AuBtrKXLkr6zxP7mgG4wwaQmg0kNgq4uaXeBWWelLGpimA29IUkYE
+	 1lWzORtbjYaj127F/uYSKmQXRhaMnpM9ieF5v11upQVdWDvtXiY0dfAmGoKBECDkFd
+	 utGfchqxc8upLRWgrFHsan5MJX4yToZrwwwGV/FEXDtzlSWWYQGD9EkIiUeIBK0QUK
+	 G/8WXvJ6WKJYeoh4aPpK55ltDLm5Mm3L7yqR4sHC5lsKnnWf6eDBCua/AD9ekbdG6g
+	 MPNoeJuZ3Y1xg==
+Message-ID: <7a977ccc-b6e5-4430-8ffa-fbde5ed9f4f9@kernel.org>
+Date: Tue, 6 Oct 2026 09:04:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.16-dev
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-02.secunet.de
- (10.32.0.172)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/2] selftests: net: packetdrill: test RACK after
+ partial undo
+To: nramaswamy@openai.com, netdev@vger.kernel.org
+Cc: Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Yuchung Cheng <ycheng@google.com>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <cover.1791248202.git.nramaswamy@openai.com>
+ <79f83ccbd303db0a3d7c7afa5c94c7817549bd9c.1791248202.git.nramaswamy@openai.com>
+Content-Language: en-US
+From: Eric Dumazet <edumazet@kernel.org>
+In-Reply-To: <79f83ccbd303db0a3d7c7afa5c94c7817549bd9c.1791248202.git.nramaswamy@openai.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-__find_acq_core() stores the larval ACQUIRE mark raw, bypassing the
-insert sanitize, so an invalid mark/mask can never match any later
-masked lookup. Reject it at ALLOCSPI time instead.
 
-Fixes: bd55775c8dd6 ("xfrm: SA lookups signature with mark")
-Cc: <stable+noautosel@kernel.org> # avoid breaking existing userspace ABI
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
----
-v3->v4: added this patch
----
- net/xfrm/xfrm_user.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 0723d791b8b7..6b53373168b0 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -1916,6 +1916,9 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
- 
- 	x = NULL;
- 
-+	err = verify_mark(attrs, extack);
-+	if (err)
-+		goto out_noput;
- 	mark = xfrm_mark_get(attrs, &m);
- 
- 	if (attrs[XFRMA_IF_ID])
+On 10/6/26 07:15, nramaswamy@openai.com wrote:
+> From: Neil Ramaswamy <nramaswamy@openai.com>
+> 
+> Reproduces a partial undo bug where a segment is unmarked as lost but is
+> never returned to RACK's timestamp sorted list, which makes it ineligible
+> for future fast retransmission.
+> 
+> Signed-off-by: Neil Ramaswamy <nramaswamy@openai.com>
+> Assisted-by: LLM sparse
+> ---
 
--- 
-2.47.3
+Thanks for this test!
+
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 
