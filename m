@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4DC4A2631
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE5249C4CD
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791307149; cv=none; b=GPDTHxp6AGMAxwbc9zQO5UPmY12ECs+xXxtO1WSe42630av/niYIBmUxQVSo6TVuEAg0x9Dylw+GtB4H6BHeouSxC2x5ctbFCQmucqm4ocYQOMCwuXuV7DdvbR/LAo9nKjpC6CChtAFjDERIMXM3zUwtpH8QnnBH11T5HD3at5U=
+	t=1791307150; cv=none; b=Pv9Q/TA1ioAfoSFg944v5MdVS4xqKcKn1gcJwTeHmaw1WUAgFjAHS7x+CtSyVyb8m7qAXdv8Mjn2VUWriS2Ak1faZ5dq7XFNpRInX4Cudf7lx5lfzhJQc+LAJTDG10HrY1YgCiS4WeWueRq4AO3xctEuOTDdmcTfsWnBrDHCi+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791307149; c=relaxed/simple;
-	bh=hfS2fXQduNVpm02JN6VudYG04t75r7Yk/PLREFKSlYk=;
+	s=arc-20240116; t=1791307150; c=relaxed/simple;
+	bh=xjB47aqGVA58vSups5Kc/1HoPh1jWqS19H4+NO3B9BY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YuWZzMMg0RQjwh9ZhW7tmlJ7njLHazk1Nf9wibkFokgLvL9TBZRCzAhQWkOIEE9vk80pRpGptSiYeVNKJNkmqXPAYl/iQhS+lhc/uLy69In641BoZs6bz4/qp6XeEihxzsJw5IPXrvbXLilNGHuUYtGv3SFnuYHFBek0WOd7vSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouWJa8JE; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Ow+p5GesB8sZ92v27mZDCf7719w6ygmfCBzOT5mf/R+e6mHSySNmLGmNh2zH+snmGZmsOTGtUksmqL6e4+tQefBsZXDWpXEmET9JJwSGmt4or2STn8Hf68JKHfo2HLDIqJDOjGiRa2Pp7BqTWR3NN96+BE1NFua8wN7YkMnM0Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEDNB5J6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouWJa8JE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F11E1F0089C;
-	Tue,  6 Oct 2026 17:19:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEDNB5J6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652C21F0089B;
+	Tue,  6 Oct 2026 17:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791307144;
-	bh=iWqwDZeoxMTQkTT1K5JN8B4zXyknEQqptEZ29bMnVgQ=;
+	s=k20260515; t=1791307146;
+	bh=HbRF31ah0o2Zjw4LL8Wf/vjjdoH81JabfQU9wNTBa70=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ouWJa8JEErgUNKInoBtuBusB4eryp/926gar4LunGNRVMQmiO40jGnRRZda+1/YtM
-	 i7b3nqN0vxuOsLfjk8bXgQwhU4X/ri3EsOn2e2BgXS3rcTQHiO0f5wVs7Mmw2NLjUl
-	 G339RTkVRw/IIFN4dzp0ghy3l2iUHW+2DcKdvAi0IdjZIWaH4k4VXsrGoXTeX0OIDJ
-	 xLNBjgKNJaXKYwlT0RCn5msqJ8ESEUjRsCi2Fpci5RTCUm1nG5RmRYT4uK2yedSpRg
-	 XA+ioiStt7K2yq4nbZ4giPjp5aYp1JsWqLa8dY1J57TFxWj5vDsO7MvmQWr8ZzKaJ5
-	 ebgyHvGq8z+4A==
-Subject: Re: [PATCH net-next v3 02/12] net: ethernet: cortina: Keep shared
- free queue parent-owned
+	b=BEDNB5J6ttG/qZjvW8sYR668px6spaCYWBPCQ8akWqWdC1jbN+3bOjBQm0EiLRf90
+	 hnADdUxQONJaxGrQgqIPs1XsTcnBjgamTgFXVVKLdeCKwNEXwXYzGHqzOUKlzi3ma+
+	 Jmdwgu9XiEdzUNeCYuF6tKzXE4acyckzneT+Q5IxKFP09btjZ46cmoYdC4sNuYOep5
+	 FWEiauYjNVhyMgAGf4lvdbowekwWz/Uoq6Yg7UH61RtD8i/Wv4MauKKWj52PUtbeIh
+	 WGJ0ZPBtTt2iNJYuwxljqWjleeCDMnY2q4DyM/1hsZxZNZS49rd7V57oxwjUA5eMdV
+	 WGX0pYaJZZ/FQ==
+Subject: Re: [PATCH net-next v3 04/12] net: ethernet: cortina: Correct free
+ queue DMA mappings
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
  mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Tue, 06 Oct 2026 17:19:03 +0000
-Message-ID: <179130714372.434549.14095836796572317577@kernel.org>
-In-Reply-To: <20261002-gemini-ethernet-fixes-3-v3-2-3e1f25890ae8@kernel.org>
-References: <20261002-gemini-ethernet-fixes-3-v3-2-3e1f25890ae8@kernel.org>
+Date: Tue, 06 Oct 2026 17:19:05 +0000
+Message-ID: <179130714596.434549.14839505903872006863@kernel.org>
+In-Reply-To: <20261002-gemini-ethernet-fixes-3-v3-4-3e1f25890ae8@kernel.org>
+References: <20261002-gemini-ethernet-fixes-3-v3-4-3e1f25890ae8@kernel.org>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 (1) · High: 0 (1) · Medium: 2 · Low: 0
+Critical: 0 · High: 0 (2) · Medium: 3 (2) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,188 +58,252 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] This patch makes the parent device own the shared software
-  free queue (SWFQ), but the IRQ handler that refills it is still owned…
-- [Medium] gemini_port_clear() clears geth->port0/port1 without any
-  synchronization against sibling readers in geth_resize_freeq().
+- [Medium] In geth_freeq_alloc_map_page()
+  (drivers/net/ethernet/cortina/gemini.c:856-862), replacing a page…
+- [Medium] geth_freeq_alloc_map_page() maps PAGE_SIZE (line 833).
+- [Medium] geth_freeq_lookup() takes freeq_lock with spin_lock_irqsave()
+  (line 738) and then linearly scans all num_freeq_pages entries (line…
 
 Pre-existing issues:
-- [Critical] At this commit, geth_cleanup_freeq() frees each queue page
-  with `while (page_ref_count(gpage->page) > 0) put_page(gpage->page);`…
-- [High] This bug was not introduced by this patch, but the new
-  devm_of_platform_depopulate() call now reaches it directly.
+- [High] geth_cleanup_freeq() (lines 1034-1036) runs 'while
+  (page_ref_count(gpage->page) > 0) put_page(gpage->page);'.
+- [High] gmac_rx() takes frag_len from the 16-bit hardware buffer_size
+  (line 1523).
+- [Medium] This problem wasn't introduced by this patch, but
+  gmac_napi_poll() (line 1629-1635) wraps the whole gmac_rx() call in…
+- [Medium] Freeq pages are mapped DMA_FROM_DEVICE once.
 
 --
 
-net: ethernet: cortina: Keep shared free queue parent-owned
+net: ethernet: cortina: Correct free queue DMA mappings
 
-This commit stops each port's remove path from tearing down the shared
-software free queue. That cleanup now runs only from the parent remove
-callback. The parent first depopulates both port devices and masks
-GLOBAL_INTERRUPT_ENABLE_4_REG, then calls geth_cleanup_freeq(). That
-function now returns early if no queue was allocated.
-
-Closes: https://lore.kernel.org/netdev/20260917192835.58126-1-mhun512@gmail.com/
+This commit keeps the free queue page DMA base separate from the fragment
+iterator, drops the incorrect unmap on page replacement, and unwinds setup
+mappings with PAGE_SIZE. It also replaces gmac_get_queue_page() with
+geth_freeq_lookup(), which works out the fragment offset from the saved DMA
+base under freeq_lock and rejects mappings that don't fit in 32 bits.
 
 > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index 2be3e90519811..15ad9f721dd52 100644
+> index a2daf22e76989..809274aff8e56 100644
 > --- a/drivers/net/ethernet/cortina/gemini.c
 > +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -1004,6 +1004,9 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
->  	unsigned int pages = len >> fpp_order;
->  	unsigned int pn;
->  
-> +	if (!geth->freeq_ring)
-> +		return;
-> +
->  	writew(readw(geth->base + GLOBAL_SWFQ_RWPTR_REG),
->  	       geth->base + GLOBAL_SWFQ_RWPTR_REG + 2);
->  	writel(0, geth->base + GLOBAL_SW_FREEQ_BASE_SIZE_REG);
+> @@ -724,32 +724,43 @@ static int gmac_setup_rxq(struct net_device *netdev)
 
-[Severity: Critical]
-This is a pre-existing issue, but gemini_ethernet_remove() is now the only
-caller of geth_cleanup_freeq(). Could the page release loop further down
-in this function over-release pages?
+[ ... ]
 
-drivers/net/ethernet/cortina/gemini.c:geth_cleanup_freeq() {
-    ...
-		gpage = &geth->freeq_pages[pn];
-		while (page_ref_count(gpage->page) > 0)
-			put_page(gpage->page);
-    ...
-}
-
-This loop also drops the references held by skbs that gmac_rx() passed up
-the stack. Pages still referenced by sockets would then go back to the
-allocator. The loop also reads the refcount of a page that may already
-have been freed and reused.
-
-If the parent is unbound, or the module is removed, while delivered skbs
-are still queued, could this cause a use-after-free or a double free?
-
-This appears to be fixed later in the series by "net: ethernet: cortina:
-Preserve in-flight free queue pages". In that patch,
-geth_freeq_release_pages() drops only the references the driver owns.
-
-> @@ -2405,7 +2408,6 @@ static void gemini_port_remove(struct gemini_ethernet_port *port)
->  		unregister_netdev(port->netdev);
->  	}
->  	clk_disable_unprepare(port->pclk);
-> -	geth_cleanup_freeq(port->geth);
->  	gemini_port_clear(port);
->  }
-
-[Severity: Medium]
-With the parent now owning the queue, what happens if only port1 is
-unbound through sysfs while port0 is up?
-
-The port driver does not set suppress_bind_attrs, so this can be done
-from sysfs. After this change, gemini_port_remove() on port1 leaves
-GLOBAL_SW_FREEQ_BASE_SIZE_REG programmed. It also leaves
-SWFQ_EMPTY_INT_BIT set in GLOBAL_INTERRUPT_ENABLE_4_REG.
-
-Devres then frees the port1 handler that gemini_ethernet_port_probe()
-requested:
-
-	ret = devm_request_threaded_irq(port->dev,
-					port->irq,
-					gemini_port_irq,
-					gemini_port_irq_thread,
-	...
-
-However, gemini_ethernet_init() routes the free queue interrupt to the
-port1 line:
-
-	 *	FreeQ intr -----------> int1 ----> eth1
-
-The queue-empty event would then arrive on an IRQ with no handler, while
-port0 keeps using up fragments. A refill would only happen if an
-unrelated int0 interrupt ran gemini_port_irq() for port0 and it noticed
-the STATUS_4 bit. Once RX is starved, that may never happen.
-
-Can port0 RX stall in this case?
-
-Also, geth->port1 is now NULL, so reopening port0 would fail in
-geth_resize_freeq() while the hardware queue is still live and armed:
-
-	/* The software free queue interrupt is routed through port 1. */
-	if (!geth->port1)
-		return -ENODEV;
-
-The new writel() to GLOBAL_INTERRUPT_ENABLE_4_REG runs only from
-gemini_ethernet_remove(), not when port1 is unbound by itself. This looks
-the same in the final state of the series.
-
-[Severity: Medium]
-What keeps gemini_port_clear() from running while the sibling port is
-inside geth_resize_freeq()?
-
-When gmac_open() runs for port0, it holds only RTNL, and
-geth_resize_freeq() does:
-
-	if (netdev->dev_id == 0)
-		other_port = geth->port1;
-	else
-		other_port = geth->port0;
-	other_netdev = other_port ? other_port->netdev : NULL;
-	...
-		new_size += 1 << (other_port->rxq_order + 1);
-
-On the port1 unbind side, gemini_port_clear() runs after
-unregister_netdev() has released RTNL. If port1 has no netdev, the unbind
-path takes RTNL at no point. Devres then frees the netdev that contains
-the port struct.
-
-The platform bus takes no parent lock, so these two paths do not share a
-lock.
-
-Could geth_resize_freeq() read other_port->netdev or
-other_port->rxq_order after the port struct has been freed?
-
-The window gets wider later in the series. There, geth_resize_freeq()
-reads geth->port1 again for enable_irq(geth->port1->irq) after
-geth_setup_freeq(). geth_setup_freeq() can sleep in GFP_KERNEL and
-dma_alloc_coherent() allocations.
-
-If port1 is cleared during that window, would this be a NULL dereference?
-Or a use-after-free plus an unbalanced enable_irq() on a freed IRQ?
-
-In the final state of the series, geth_freeq_page_slots() also
-dereferences geth->port0 and geth->port1 with only a NULL check.
-
-> @@ -2706,6 +2708,8 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
+> +static struct page *geth_freeq_lookup(struct gemini_ethernet *geth,
+> +				      dma_addr_t mapping,
+> +				      unsigned int *page_offs)
 >  {
->  	struct gemini_ethernet *geth = platform_get_drvdata(pdev);
+> +	unsigned int frag_len = 1 << geth->freeq_frag_order;
+>  	struct gmac_queue_page *gpage;
+> -	dma_addr_t mapping;
+> +	unsigned long flags;
+> +	dma_addr_t page_mapping;
+> +	struct page *page = NULL;
+>  	int i;
 >  
-> +	devm_of_platform_depopulate(&pdev->dev);
+> -	/* Only look for even pages */
+> -	mapping = addr & PAGE_MASK;
+> -
+> +	spin_lock_irqsave(&geth->freeq_lock, flags);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but on 32-bit PREEMPT_RT
+kernels gmac_napi_poll() wraps the whole gmac_rx() call in the
+rx_stats_syncp writer section:
+
+gmac_napi_poll()
+    u64_stats_update_begin(&port->rx_stats_syncp);
+    received = gmac_rx(napi->dev, budget, &freeq_consumed, &reschedule);
+    ...
+    u64_stats_update_end(&port->rx_stats_syncp);
+
+On 32-bit, u64_stats_update_begin() disables preemption, and on
+PREEMPT_RT a spinlock_t can sleep.
+
+Can the freeq_lock taken here for each descriptor trigger a "sleeping
+function called from invalid context" splat with
+CONFIG_DEBUG_ATOMIC_SLEEP?
+
+The baseline gmac_rx() already took irq_lock and called napi_gro_frags()
+inside the same section. The pattern is still there at the end of the
+series, where geth_freeq_claim() runs inside it.
+
+>  	if (!geth->freeq_pages) {
+>  		dev_err_ratelimited(geth->dev,
+>  				    "try to get page with no page list\n");
+> -		return NULL;
+> +		goto unlock;
+>  	}
+>  
+>  	/* Look up a ring buffer page from virtual mapping */
+>  	for (i = 0; i < geth->num_freeq_pages; i++) {
+>  		gpage = &geth->freeq_pages[i];
+> -		if (gpage->mapping == mapping)
+> -			return gpage;
+> +		if (!gpage->page || mapping < gpage->mapping)
+> +			continue;
+> +
+> +		page_mapping = gpage->mapping;
+> +		if (mapping - page_mapping > PAGE_SIZE - frag_len ||
+> +		    ((mapping - page_mapping) & (frag_len - 1)))
+> +			continue;
+> +
+> +		page = gpage->page;
+> +		*page_offs = mapping - page_mapping;
+> +		break;
+>  	}
+
+[Severity: Medium]
+gmac_rx() calls geth_freeq_lookup() once per RX descriptor in NAPI
+context. Doesn't this put a linear scan over all num_freeq_pages entries,
+with interrupts disabled, on the RX hot path?
+
+The next patch in the series, "Index free queue fragments with XArray",
+replaces this scan with an xa_load() in geth_freeq_claim().
+
+[ ... ]
+
+> @@ -833,31 +853,25 @@ static struct page *geth_freeq_alloc_map_page(struct gemini_ethernet *geth,
+>  	 */
+>  	frag_len = 1 << geth->freeq_frag_order; /* Usually 2048 */
+>  	fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
+> +	gpage = &geth->freeq_pages[pn];
+> +	if (gpage->page)
+> +		put_page(gpage->page);
+> +
+> +	/* Then put our new mapping into the page table */
+> +	gpage->mapping = page_mapping;
+> +	gpage->page = page;
+
+[Severity: Medium]
+With the replacement unmap gone, what releases the old page's PAGE_SIZE
+streaming mapping here?
+
+geth_fill_freeq() takes this path whenever page_ref_count(page) > 1:
+
+		if (page_ref_count(page) > 1) {
+			...
+			page = geth_freeq_alloc_map_page(geth, pn);
+
+The old gpage->mapping is overwritten right after the put_page(), and
+geth_cleanup_freeq() only unmaps the address currently posted in the ring.
+
+At this commit, does every replacement leak one DMA mapping when an IOMMU,
+swiotlb or dma-debug is in use?
+
+The commit message says these mappings are released later in the series.
+After "Preserve in-flight free queue pages" and "Recycle claimed free queue
+pages", geth_freeq_release_pages() unmaps every live slot with PAGE_SIZE.
+The old code also left the old mapping live.
+
+>  
+>  	freeq_entry = geth->freeq_ring + (pn << fpp_order);
+
+[ ... ]
+
+> @@ -1019,7 +1031,6 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
+>  
+>  		mapping = geth->freeq_ring[pn << fpp_order].word2.buf_adr;
+>  		dma_unmap_single(geth->dev, mapping, frag_len, DMA_FROM_DEVICE);
+
+[Severity: Medium]
+geth_freeq_alloc_map_page() maps PAGE_SIZE, and this patch changes the
+geth_setup_freeq() error path to unmap with gpage->mapping and PAGE_SIZE.
+
+Should geth_cleanup_freeq() do the same, rather than using frag_len and
+the address read back from the descriptor? As it stands, the two release
+sites for the same mapping disagree, and dma-debug would warn about a
+size mismatch on ifdown or remove.
+
+At the end of the series, geth_cleanup_freeq() goes through
+geth_freeq_release_pages(), which calls
+dma_unmap_single_attrs(geth->dev, gpage->mapping, PAGE_SIZE,
+DMA_FROM_DEVICE, DMA_ATTR_SKIP_CPU_SYNC).
+
+> -
+>  		gpage = &geth->freeq_pages[pn];
+>  		while (page_ref_count(gpage->page) > 0)
+>  			put_page(gpage->page);
 
 [Severity: High]
-This isn't a bug introduced by this patch, but the new
-devm_of_platform_depopulate() call now reaches it straight from the parent
-remove. If a port's netdev is up, does gemini_port_remove() end up calling
-phy_stop() with a NULL phydev?
+This isn't a bug introduced by this patch, but can this loop drop
+references held by skbs that gmac_rx() already passed to the stack through
+napi_gro_frags()?
 
-gemini_port_remove()
-  phy_disconnect(port->netdev->phydev)
-    phy_detach()
-      phydev->attached_dev->phydev = NULL;
-  unregister_netdev(port->netdev)
-    ... __dev_close_many()
-      gmac_stop()
-        phy_stop(netdev->phydev)   <-- now NULL
-          struct net_device *dev = phydev->attached_dev;
+It keeps calling put_page() until the refcount reaches zero. That can free
+pages the stack is still using, and page_ref_count() is read again after
+the final put_page().
 
-phy_stop() does not check for NULL. This looks like a deterministic oops
-when the parent or a port is unbound, or the module is removed, while the
-interface is up.
+Later in the series, geth_freeq_release_pages() drops only the
+gpage->fragments references plus one base reference, and leaves
+skb-owned references alone.
 
-The same ordering is present before this patch and in the final state of
-the series.
+[ ... ]
 
-> +	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
->  	geth_cleanup_freeq(geth);
->  	geth->initialized = false;
->  }
+> @@ -1532,14 +1540,12 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+>  			goto err_drop;
+>  		}
+>  
+> -		/* Freeq pointers are one page off */
+> -		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
+> -		if (!gpage) {
+> +		page = geth_freeq_lookup(geth, mapping, &page_offs);
+> +		if (!page) {
+>  			dev_err_ratelimited(geth->dev,
+>  					    "could not find mapping\n");
+>  			goto err_drop;
+>  		}
+> -		page = gpage->page;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the length passed to
+skb_fill_page_desc() further down in gmac_rx() comes straight from the
+hardware descriptor:
+
+		if (word3.bits32 & SOF_BIT) {
+			...
+			page_offs += NET_IP_ALIGN;
+			frag_len -= NET_IP_ALIGN;
+			...
+		}
+
+		if (word3.bits32 & EOF_BIT)
+			frag_len = frame_len - skb->len;
+		...
+		skb_fill_page_desc(skb, frag_nr, page, page_offs, frag_len);
+
+Can frag_len underflow here? That would happen if buffer_size is smaller
+than NET_IP_ALIGN, or if frame_len is smaller than skb->len.
+
+Nothing checks the result against the 2 KiB fragment size or against
+PAGE_SIZE - page_offs. Could a malformed descriptor expose adjacent memory
+to the stack?
+
+The "Validate RX fragment lengths" patch later in the series adds these
+checks.
+
+[Severity: Medium]
+This is a pre-existing issue, but the freeq pages are mapped
+DMA_FROM_DEVICE once, and gemini.c has no dma_sync_* calls at this commit.
+
+geth_fill_freeq() reposts reused pages with only page_ref_add(). gmac_rx()
+then hands fragments written by the hardware to skb_fill_page_desc()
+without syncing them for the CPU.
+
+Could this give the stack stale cache contents on non-coherent DMA setups?
+
+Later in the series, geth_freeq_claim() calls
+dma_sync_single_range_for_cpu() for each claimed fragment.
+geth_freeq_post_page() syncs for the device when recycling, and
+geth_freeq_release_pages() syncs fragments still owned by the hardware
+before unmapping. A later commit also notes that the CPU sync is a no-op
+on Gemini's FA526.
+
+>  
+>  		if (word3.bits32 & SOF_BIT) {
+>  			skb = gmac_skb_if_good_frame(port, word0, frame_len);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-gemini-ethernet-fixes-3-v3-0-3e1f25890ae8%40kernel.org
