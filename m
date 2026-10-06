@@ -1,80 +1,68 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5233349E13F
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 16:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B0E4A0148;
+	Tue,  6 Oct 2026 16:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791303724; cv=none; b=P8plZqmKGNp25cnMCMZ1a0FdJkaM9/2jkMRQ4g2+EkCLljEYXHkFToBirkSGK5K3OAIymsReETR0yzNlWCmGl5TCSsf6cziiJf/aOjfXxhWz4UUnI9CLhxWF3xZGu9RSGxlK4Y+U/vllb39t2uPswlI6GT8t0v53AcCMUYbKt2k=
+	t=1791303761; cv=none; b=dXGcvLY7TNpEZ0Ke9eAGykFCtGgFN1kcebyj/rbOZTIaCcgOQJDuC4IF1C+jNMtrJjKJ7O+3mQECWRfEs57wGZqhLjlBGZ3CUcWOYtSWnk0e5/8vcF7ZyUHJ3vJZRQxCQxBnUoP4/guEYuPJmCnGG4KOCqq9ObFTrVacc33GMLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791303724; c=relaxed/simple;
-	bh=/5K6FCyCZyI2h2cDIhsGGRqSHDPsga71tJatPBze9bI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=fkpIH3tJOoRAKwitqLDe3gNjaCACqVbw3bHaIi4c2Tug2PXxBBL+2pbH2OD32mCspK4+rP2WiMvQ3sb9IUSIVwsjb686mF0U+sCivA60sWh5fnnMxMVE9iyTR3sWobkD9A7Li0eJJq6eZuJEQHb2cMV232e2S4VGcgIeBpuSWdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=NQPC7TtY; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1791303761; c=relaxed/simple;
+	bh=zwdlM9mYLWiXKgxdorfU2tvLt76yOgS9pj6Z1fc2K8I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVwvW9Ga34/vghhrVx1nhiRcz5QRL8jpPzmRLNxVovz8biq/DboVv9/EebjCxyapA8G4YgiV3WvxGtf6Y164CxKCOIlkuLBSVey5+X7v0uNzPbnuJ449YnJ1hiOB0yq0g5d1zP+liXm2S/ybj610CDKbcFq9TbotLQmhYQjNdsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=io5Vrcex; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="NQPC7TtY"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 548A6A0919;
-	Tue,  6 Oct 2026 18:21:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791303716; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ue1oBzLO8CMbnKTSj9gF4aRo702XwrVTvsiQMXQbTos=;
-	b=NQPC7TtY/O3lNQcme6jSkOJTeVgqk0hQvAyiXM6i0ELgZHKcxDAiKhHjNSroZ+9CWTKLz1
-	Ao6SfHgifOHBwJP9LwITtAPN1vDmkxW/bc7Nip67tcf0nVBtl72LY4e02HOeqLql4jAhKd
-	CU9IR0AGFX/Bwht7d2aJ7E6uHrr1hn6017KjbV1NqBWYXdS338VxMGvI8113tTcoFXCZCc
-	7ke1kFveDXaaE4d70q4xsuncSVr0skB6g9zyatx7nXOj08O4PeznDDn29gCk6F/ifL4AV/
-	gES5WybOAP37yN7zdgufRci1OCKAF33C8hexP0QAbo+NVNH8GVc+XHfnDqZwtQ==
-Date: Tue, 06 Oct 2026 18:21:52 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Andrew Lunn <andrew@lunn.ch>,
- =?ISO-8859-1?Q?S=E9bastien_Royen?= <sebastien.royen@armadeus.com>
-CC: netdev-bot+sinfo@kernel.org, Woojung Huh <woojung.huh@microchip.com>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: microchip: fix KSZ8765 fiber detection
-User-Agent: Thunderbird for Android
-In-Reply-To: <027573f7-b768-45df-8368-6dcd4700e999@lunn.ch>
-References: <20261006130006.134847-1-sebastien.royen@armadeus.com> <179129640372.2231598.1056441247005614175@kernel.org> <4585ddfd-122f-465d-80b9-c907a530075e@armadeus.com> <027573f7-b768-45df-8368-6dcd4700e999@lunn.ch>
-Message-ID: <317F33BB-1739-47AE-9107-F8FF3AE8B370@tipi-net.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="io5Vrcex"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=iVpjNVuw6yuuQV0ozXPyk2bja1hxYcxxeaUxuVF7gGA=; b=io5VrcexvaWR6jAz7EK/6PJihX
+	iGIEAwpoRo1q/EzgVoL138wGBViP5WuL0+LKR0dbqmKgk+yi9rhfe+iYmZc+wpcEMiYbnxCsrFEv3
+	8oxohb/HB6BAgI6V9oMnECn616PJ5d+nFLL+tIKQc1DpGR7yoHBd83IgI7KbdZIWGD9I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xE7vv-009IRC-Pv; Tue, 06 Oct 2026 18:22:27 +0200
+Date: Tue, 6 Oct 2026 18:22:27 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Po-Yu Chuang <ratbert@faraday-tech.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/6] net: ftgmac100: Add AST2700 compatible
+ support
+Message-ID: <68425269-7e99-47a0-82a9-f12bf8835def@lunn.ch>
+References: <20261006-support_ast2700-v2-0-36de51fb8066@aspeedtech.com>
+ <20261006-support_ast2700-v2-2-36de51fb8066@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261006-support_ast2700-v2-2-36de51fb8066@aspeedtech.com>
 
-Hi Andrew
+On Tue, Oct 06, 2026 at 03:20:40PM +0800, Jacky Chou wrote:
+> Add match data for the Aspeed AST2700 FTGMAC100 controller and wire
+> its compatible string into the OF match table. This lets AST2700 device
+> tree nodes bind to the ftgmac100 driver.
+> 
+> Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
 
-On October 6, 2026 6:16:02 PM GMT+02:00, Andrew Lunn <andrew@lunn=2Ech> wr=
-ote:
->> This issue was discovered when upgrading an embedded device from kernel=
- 5=2E10 to 6=2E16=2E
->
->So is this a regression?
->
->If it is, please take a read of:
->
->https://www=2Ekernel=2Eorg/doc/html/latest/process/stable-kernel-rules=2E=
-html
->
->and consider if this should be backported to stable=2E
->
->You then need to set the tree as 'net'
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-I might be overlooking something,  but the target tree is already net?
-
->
->https://www=2Ekernel=2Eorg/doc/html/latest/process/maintainer-netdev=2Eht=
-ml
->
->	Andrew
->
-
-Regards=20
-Nicolai
+    Andrew
