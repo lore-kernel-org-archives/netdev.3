@@ -1,280 +1,278 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10053DD84C;
-	Tue,  6 Oct 2026 18:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A2C2DC792
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 18:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791309952; cv=none; b=NJ1qbQ2ebHDXoEQzzIEiJOj2Lc9zsPOSDbjZhffYoxmQOSUY3M3PLrwZFURVsBpDlaisq9CALB+4g8Il9Gt4pWVj1n1Ov6w3H0+27t+YPuySp+s9UiUbPBfOxhsa1BBsviB2Me55TLRMb3KCTFyg0DEvAmdy4pNZgrXTsLiTURA=
+	t=1791310621; cv=none; b=SGxsxkr/VsfyVzbpCQFVvCOwBmQqHchXodbyceAKv1JUYFfY2tr9RPo89hRqN7X6U/hdVGwb4ZmJI7GnHpOYVX5+IIb/zj0GgDSid0WZQfFEJG1Vzex6BIQbKg4Z1NT3hS52+oUBSwCTso32h8KXTHslXZfoMz1O90N3EcsBQiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791309952; c=relaxed/simple;
-	bh=zd7yaBoRPmh0Q656XDfXeX0avuKhzjMKvz/ysJcYtPs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qh7ZdH29WiCdyJoHLbM0mcv0jpiqrRxyHHK1qmBcWdee94D9uwRI4G8OIkfwbC81rHjfJIqD+IBtlkUf9TEJEhO6/v3AlxnXVI0nerA069mnSuzsACFwFWeXzSnIkF+L3+g7AveRgHXnKiojsN9F8a1h4OE5N2DIGg+XbRNNIMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jphCwQ4m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791310621; c=relaxed/simple;
+	bh=30DM1dlB4xJ8A7cSQJuq8TjBhktB7+c1xwhudJHedkw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J3JC/gDK6fW9t5DPYSli5pcHN0aI6QqTlpKhm0Z8FWo5VEza0pMHMJ34P/hWke2dCY/km4msN/EV67C2o00aVAR0kEsOboupF8TkGDFBKH+xVFFcHoo3Lslpc9WFVkhdft8PcZ1qRdLHbtBpXRr/1pjBEG4ykh1ZJ7kPkWL9+88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LEAtDPo+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jphCwQ4m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE7A1F0089D;
-	Tue,  6 Oct 2026 18:05:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LEAtDPo+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD171F0089B
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 18:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791309950;
-	bh=1v3tJEqqvQC3iOAaN6J8by9TOY9l6x10mSgdjL7Xhb4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jphCwQ4maJhBwKEYz4+H8BN9WcdGru1ZcyZ3H+xd7fd3Cz3MKlpzFcdhY8oWw2jE9
-	 R+PhwvYpNRPudi+OvC4O3EP+HqGzUUTZ2lncYOX4D3u4m0nG8Oj59MrN63SHHWYU1U
-	 hB1jcYhm2+ecoAUtPhh3yB3Y1ccyavdNQU8zHC1lEUGkkVgW4aboIHSDx+UxMChvnX
-	 1yVtO1ksYrLt4Y+36Ib1oJC306qHkyxnlDWtAmlRBfP8bmteRTwCtapzDCSHQ5ci4U
-	 iHAvd3MKYEqq/5m0p75HW194T2lKa7hXHm/Cs5xpNg3rrtNThs567GT0B9lL6m+GNv
-	 avLMoenkDziOg==
-Message-ID: <f66560e3-b821-4e70-980b-d3a6252a022d@kernel.org>
-Date: Tue, 6 Oct 2026 20:05:43 +0200
+	s=k20260515; t=1791310619;
+	bh=/qQgWZIWoeeo8NM7QjEOSkMaOjMn+PrW3wol+OaTg6Q=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LEAtDPo+J4Oio9iL14H/E2Y8K1XL8TktF3qfpR4JkQ+leBeydhqHnqBLD0VmS05Cs
+	 skzT/bAyvB/LS3AH8BdPVhP8hdm5/dcn79X0r3zNytIisGhQSeURDHGsjpK+tZcH/E
+	 eQt0Vx4CT/WqW3eHNaGBU/mS/Q6l+PN1FHZsI8e+y0RZwrbbYDbM1HzRGjRiYETE2o
+	 rhyeJuStpPnOHbEg1DDnMl5FYsI/jfusMjJTfG9nhPzftMx8yJt3wDCPHCkLp+DJif
+	 fefeFPgroloUdQCTMVgzjcMSwh/WftS0PBYDvoJa1uJ7d2th5AEtM3UuOJ52LcwYlF
+	 6XNCF1dDgOURg==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-6dd4f3f696aso455703eaf.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 11:16:59 -0700 (PDT)
+X-Gm-Message-State: AFuF++nwpiEzCSuu0obipzrecNWAVeVOs9u8dPUTTudK7O7FMlqblO0S
+	aNatV1PdTGT+57pIMNaEa3+5PQXVYZGoGzaZu6KOyZJI0MnmxF06UIpqamGNH9W1w4BDzAfQMqK
+	g21NOYPB3evPHFHewSFj0eZfotXFyOdU=
+X-Received: by 2002:a4a:e910:0:b0:6b1:5735:b88e with SMTP id
+ 006d021491bc7-6e551065ac8mr1918247eaf.6.1791310618902; Tue, 06 Oct 2026
+ 11:16:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net v6 0/2] mptcp: fix request migration ownership
-Content-Language: fr
-To: Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org, mptcp@lists.linux.dev,
- geliang@kernel.org
-Cc: martineau@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com,
- kuniyu@google.com, daniel@iogearbox.net, kafai@fb.com, kylebot@openai.com,
- david.lee@trailofbits.com, vega@nebusec.ai, caoruide123@gmail.com
-References: <cover.1788800732.git.caoruide123@gmail.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <cover.1788800732.git.caoruide123@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+ <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org> <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
+In-Reply-To: <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 6 Oct 2026 20:16:47 +0200
+X-Gmail-Original-Message-ID: <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com>
+X-Gm-Features: AclHuK_npeoQgQiFHlHXF0xFKwh-DYkOGnBzdSKiExLCyu4k-6GIIeNMicuP07w
+Message-ID: <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
+ VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
+To: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>, 
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: netdev@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	nic_swsd@realtek.com, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ren, Ruide,
+Le mar. 6 oct. 2026 =C3=A0 19:07, Eric Dumazet <edumazet@kernel.org> a =C3=
+=A9crit :
+>
+> Le mar. 6 oct. 2026 =C3=A0 18:27, Eric Dumazet <edumazet@kernel.org> a =
+=C3=A9crit :
+> >
+> >
+> >
+> > On 10/6/26 13:45, Jan =C4=8Cerm=C3=A1k wrote:
+> > > Hi,
+> > >
+> > > the Home Assistant OS recently shipped kernel update from 6.18.39 to
+> > > 6.18.52 which was followed by a bunch of community reports about fata=
+l
+> > > network breakages [1] which had one thing in common - r8169 driver an=
+d
+> > > configured VLANs. This manifested as network stall early in the setup
+> > > of the system with dmesg events like this:
+> > >
+> > >> r8169 0000:03:00.0 enp3s0: NETDEV WATCHDOG: CPU: 7: transmit queue 0=
+ timed out 6125 ms
+> > >> r8169 0000:03:00.0 enp3s0: rtl_rxtx_empty_cond =3D=3D 0 (loop: 42, d=
+elay: 100).
+> > >
+> > > As there was no change in the r8169 driver itself, I focused on the
+> > > vlan subsystem, where AI pointed me shortly to this suspect commit in
+> > > the range: 1517d1996b5236fe69eccd9d253f725e06996eb1 ("vlan: fix
+> > > skb_under_panic and races when toggling HW VLAN offload"), added in
+> > > 6.18.51. I'm not referring to the mainline counterpart below for
+> > > regzbot (447cbe95ebb9) as I can't confirm whether it triggers the bug
+> > > there as well. FWIW there was another issue [2] with a similar
+> > > combination recently in the regressions ML but that one seems
+> > > unrelated, as disabling EEE fixed that issue, and it doesn't fix it
+> > > here.
+> > >
+> > > I don't have the hardware myself, I asked for testing with this commi=
+t
+> > > reverted, which confirmed that this change indeed started to cause
+> > > trouble. However, it's obvious that the change itself is not bad, as
+> > > it fixes another issue and the regression is scoped to very specific
+> > > hardware/setup combo.
+> > >
+> > > Besides the revert, following workarounds were reported to fix the
+> > > issue as well:
+> > > - Disabling TX checksum offload with `ethtool.feature-tx off` in
+> > > NetworkManager for the connection (HAOS doesn't have ethtool binary,
+> > > hence this option instead of direct ethtool command)
+> > > - Enabling REORDER_HDR with `ip link set enp1s0.100 type vlan reorder=
+_hdr on`
+> > >
+> > > Clearly, this needs rather esoteric setup to trigger the bug - I gues=
+s
+> > > most systems set the REORDER_HDR flag by default, however, due to som=
+e
+> > > legacy in the DBus interface that HAOS stack uses to configure the
+> > > network [3], it was disabled. Anyway, I think that disabling it shoul=
+d
+> > > not lead to driver breakage as we're seeing.
+> > >
+> > > So far it appears that this only affects RTL8168h/8111h, XID 541 -
+> > > there isn't any report of another chip/XID combination yet.
+> > > Unfortunately, as I said above, I don't have the hardware available
+> > > for testing but I believe I'll find some community members who'll be
+> > > willing to test a proposed fix for the issue if needed.
+> > >
+> > > [1] https://github.com/home-assistant/operating-system/issues/5019
+> > > [2] https://lore.kernel.org/regressions/353419280.954808.179029028353=
+0@mail.yahoo.com/
+> > > [3] https://github.com/home-assistant/supervisor/issues/7248
+> > >
+> > > #regzbot introduced: 1517d1996b5236fe69eccd9d253f725e06996eb1
+> > > #regzbot link: https://github.com/home-assistant/operating-system/iss=
+ues/5019
+> > >
+> > > Cheers,
+> > > Jan
+> >
+> > Ok this NIC can not perform tx csum offloads with vlans.
+> >
+> > opts[1] only takes TD1_IPv4_CS and TCPHO (Transport Header Offset).
+> >
+> > There is no IP header offset field in the descriptor. The MAC assumes
+> > the IP header starts immediately at byte 14.
+> >
+> > So we need to change vlan_dev_hard_header() to take into account
+> > vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)
+> >
+> > Can you test the following patch?
+> >
+> > Thanks!
+> >
+> > diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+> > index
+> > cb8f3cdbf1f732c55a8a3d69ab5445988c953205..3a518ff064465e8ab978c66a28bf7=
+df579931256
+> > 100644
+> > --- a/net/8021q/vlan_dev.c
+> > +++ b/net/8021q/vlan_dev.c
+> > @@ -54,7 +54,9 @@ static int vlan_dev_hard_header(struct sk_buff *skb,
+> > struct net_device *dev,
+> >          u16 vlan_tci =3D 0;
+> >          int rc;
+> >
+> > -       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR)) {
+> > +       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR) &&
+> > +           !vlan_hw_offload_capable(READ_ONCE(vlan->real_dev->features=
+),
+> > +                                    vlan->vlan_proto)) {
+> >                  unsigned int hlen =3D READ_ONCE(dev->hard_header_len) =
++
+> >                                      READ_ONCE(dev->needed_headroom);
+>
+> Nope, scratch this. I need to spend more time on a proper fix.
 
-On 08/09/2026 18:41, Ren Wei wrote:
-> TCP request migration clones pending requests with inet_reqsk_clone(). Some
-> MPTCP request fields carry ownership which cannot be duplicated by a plain
-> byte copy.
-> 
-> For MP_JOIN requests, subflow_req->msk holds a socket reference. The clone
-> inherits the pointer without acquiring its own reference, so the original
-> and cloned requests can drop the same reference. Patch 1 lets the cloned
-> request acquire a reference while verifying that the original request still
-> owns the same msk.
-> 
-> For MP_CAPABLE requests, token_node belongs to the original request and is
-> hashed in the token table. Copying the node gives the clone invalid hash
-> state. Patch 2 moves token ownership under the bucket lock and makes token
-> acceptance and destruction tolerate an already moved token.
+It seems this code is not needed anymore, and was the source of many
+bugs anyway.
 
-Thank you for your patience. It looks like we were waiting for Clashiko
-report, but it didn't get processed for some unknown reason, sorry about
-that.
+In modern Linux, core networking already has validate_xmit_vlan() in
+net/core/dev.c which handles software fallback tag insertion right before
+ndo_start_xmit when the lower device lacks HW VLAN TX offload.
 
-The patches look good to me, I suggest taking them in the MPTCP tree,
-and I will send them later on.
+VLAN_FLAG_REORDER_HDR should be an RX option (controlling vlan_untag()).
 
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+I am tempted with this (untested) approach
 
-(...)
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index cb8f3cdbf1f732c55a8a3d69ab5445988c953205..7c1394ee2a653706c42f1b970e1=
+3664583d1cf36
+100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -49,47 +49,14 @@ static int vlan_dev_hard_header(struct sk_buff
+*skb, struct net_device *dev,
+                                unsigned int len)
+ {
+        struct vlan_dev_priv *vlan =3D vlan_dev_priv(dev);
+-       struct vlan_hdr *vhdr;
+-       unsigned int vhdrlen =3D 0;
+-       u16 vlan_tci =3D 0;
+-       int rc;
+-
+-       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR)) {
+-               unsigned int hlen =3D READ_ONCE(dev->hard_header_len) +
+-                                   READ_ONCE(dev->needed_headroom);
+-
+-               if (skb_cow_head(skb, hlen) < 0)
+-                       return -ENOMEM;
+-               vhdr =3D skb_push(skb, VLAN_HLEN);
+-
+-               vlan_tci =3D vlan->vlan_id;
+-               vlan_tci |=3D vlan_dev_get_egress_qos_mask(dev, skb->priori=
+ty);
+-               vhdr->h_vlan_TCI =3D htons(vlan_tci);
+-
+-               /*
+-                *  Set the protocol type. For a packet of type ETH_P_802_3=
+/2 we
+-                *  put the length in here instead.
+-                */
+-               if (type !=3D ETH_P_802_3 && type !=3D ETH_P_802_2)
+-                       vhdr->h_vlan_encapsulated_proto =3D htons(type);
+-               else
+-                       vhdr->h_vlan_encapsulated_proto =3D htons(len);
+-
+-               skb->protocol =3D vlan->vlan_proto;
+-               type =3D ntohs(vlan->vlan_proto);
+-               vhdrlen =3D VLAN_HLEN;
+-       }
++       struct net_device *real_dev =3D vlan->real_dev;
 
-> // poc for MP_JOIN:
+        /* Before delegating work to the lower layer, enter our MAC-address=
+ */
+        if (saddr =3D=3D NULL)
+                saddr =3D dev->dev_addr;
 
-Thank you for the PoCs using packetdrill! Do you mind creating a PR to
-add them in the MPTCP fork, please:
+        /* Now make the underlying real hard header */
+-       dev =3D vlan->real_dev;
+-       rc =3D dev_hard_header(skb, dev, type, daddr, saddr, len + vhdrlen)=
+;
+-       if (rc > 0)
+-               rc +=3D vhdrlen;
+-       return rc;
++       return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
+ }
 
-  https://github.com/multipath-tcp/packetdrill/
+ static inline netdev_tx_t vlan_netpoll_send_skb(struct vlan_dev_priv
+*vlan, struct sk_buff *skb)
+@@ -106,8 +73,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct
+sk_buff *skb,
+                                            struct net_device *dev)
+ {
+        struct vlan_dev_priv *vlan =3D vlan_dev_priv(dev);
+-       struct vlan_ethhdr *veth =3D (struct vlan_ethhdr *)(skb->data);
+        unsigned int len;
++       u16 vlan_tci;
+        int ret;
 
-(if it is an issue, please tell me, I can add them later)
+        /* Handle non-VLAN frames if they are sent to us, for example by DH=
+CP.
+@@ -115,13 +82,9 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct
+sk_buff *skb,
+         * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
+         * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
+         */
+-       if (READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR ||
+-           veth->h_vlan_proto !=3D vlan->vlan_proto) {
+-               u16 vlan_tci;
+-               vlan_tci =3D vlan->vlan_id;
+-               vlan_tci |=3D vlan_dev_get_egress_qos_mask(dev, skb->priori=
+ty);
+-               __vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
+-       }
++       vlan_tci =3D vlan->vlan_id;
++       vlan_tci |=3D vlan_dev_get_egress_qos_mask(dev, skb->priority);
++       __vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
 
-> 
-> // Minimal reproducer for a stale subflow_req->msk after reqsk migration.
-> --tolerance_usecs=200000
-
-Usually, 100000 is used. Do you need more?
-
-> --non_fatal=packet
-
-Why do you need this?
-> `sysctl -q net.mptcp.enabled=1
-
-This one is not needed, you can use '../common/defaults.sh' instead.
-
-> sysctl -q net.ipv4.tcp_migrate_req=1
-> sysctl -q net.ipv4.tcp_synack_retries=1`
-> 
-> // Listener A and the owning MPTCP connection.
-> +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
-> +0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> +0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
-> +0     bind(3, ..., ...) = 0
-> +0     listen(3, 8) = 0
-> 
-> +0.0   <  addr[caddr0] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 1000 ecr 0,    nop, wscale 8, mpcapable v1 flags[flag_h] nokey>
-
-(When validating the listener side, you can drop the TCP TS options,
-except if you do need them, clearer with less options)
-
-> +0.0   >                               S.  0:0(0)  ack 1             <mss 1460, sackOK, TS val 1000 ecr 1000, nop, wscale 8, mpcapable v1 flags[flag_h] key[skey]>
-> +0.1   <                                .  1:1(0)  ack 1  win 256    <nop, nop, TS val 1000 ecr 1000, mpcapable v1 flags[flag_h] key[ckey=2, skey]>
-> +0     accept(3, ..., ...) = 4
-> 
-> // Make the MPTCP socket fully established so it accepts MP_JOIN.
-> +0.1   <                               P.  1:3(2)  ack 1  win 256    <nop, nop, TS val 1001 ecr 1000, mpcapable v1 flags[flag_h] key[skey, ckey] mpcdatalen 2, nop, nop>
-> +0.0   >                                .  1:1(0)  ack 3             <nop, nop, TS val 1001 ecr 1001, dss dack8=3 dll=0 nocs>
-> 
-> // Leave exactly one MP_JOIN request half-open.
-> +0.1   <  addr[caddr1] > addr[saddr0]  S   0:0(0)         win 65535  <mss 1460, sackOK, TS val 2000 ecr 0,    nop, wscale 8, mp_join_syn address_id=1 token=sha256_32(skey)>
-> +0.0   >                               S.  0:0(0)  ack 1             <mss 1460, sackOK, TS val 2000 ecr 2000, nop, wscale 8, mp_join_syn_ack address_id=0 sender_hmac=auto>
-> 
-> // Listener B joins the reuseport group, then A is closed. The next request
-> // timer clones and migrates the half-open MP_JOIN request to B.
-> +0.1   socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 5
-> +0     setsockopt(5, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> +0     setsockopt(5, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
-> +0     bind(5, ..., ...) = 0
-> +0     listen(5, 8) = 0
-> +0     close(3) = 0
-> 
-> // Wait past the first SYN+ACK RTO, then release the owning MPTCP socket.
-> +1.5   setsockopt(4, SOL_SOCKET, SO_LINGER, {onoff=1, linger=0}, 8) = 0
-> +0     close(4) = 0
-> 
-> // The migrated request expires on its next timer and its destructor uses msk.
-> +4.0   `true`
-> 
-> ------------------------------
-> crash log of MP_JOIN> [  280.449259] [      C0] BUG: KASAN: slab-use-after-free in
-subflow_req_destructor (net/mptcp/subflow.c:45)
-
-If such calltrace is on public ML, please, next time, include this in
-the commit message instead (without the prefixes between []). I will
-amend it in the commit message.
-
-(...)
-> MP_CAPABLE packetdrill reproducer:
-> 
-> // Reproducer for MP_CAPABLE request token ownership during TCP req migration.
-> //
-> // The first listener owns the request created by the MP_CAPABLE SYN.  A second
-> // SO_REUSEPORT listener is added only after that SYN, then the first listener is
-> // closed.  The SYN+ACK retransmission timer migrates the request to the second
-> // listener, and a later request timer destroys the migrated request.
-> //
-> // On a vulnerable kernel, inet_reqsk_clone() raw-copies token_node.  The clone
-> // is not the token table owner, so destroying the migrated request triggers the
-> // MPTCP token ownership bug.
-> --tolerance_usecs=250000
-> 
-> +0     `sysctl -q net.mptcp.enabled=1`
-> +0     `sysctl -q net.ipv4.tcp_migrate_req=1`
-> +0     `sysctl -q net.ipv4.tcp_synack_retries=2`
-> +0     `sysctl -q net.ipv4.tcp_timestamps=1`
-> +0     `sysctl -q kernel.panic_on_warn=0`
-> +0     `sysctl -q kernel.panic_on_oops=0`
-> +0     `ip tcp_metrics flush all >/dev/null 2>&1 || true`
-> +0     `tc qdisc replace dev tun0 root pfifo >/dev/null 2>&1 || true`
-
-You probably only require tcp_migrate_req=1 here, after
-../common/defaults.sh.
-
-> +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 3
-> +0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> +0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
-> +0     getsockopt(3, SOL_TCP, TCP_IS_MPTCP, [1], [4]) = 0
-> +0     bind(3, ..., ...) = 0
-> +0     listen(3, 1) = 0
-> 
-> +0       <  S   0:0(0)         win 32792  <mss 1000, sackOK, nop, nop, nop, wscale 7, mpcapable v1 flags[flag_h] nokey>
-> +0       >  S.  0:0(0)  ack 1             <mss 1460, nop, nop, sackOK, nop, wscale 9, mpcapable v1 flags[flag_h] key[skey]>
-
-"wscale 9" is "strange". Note that you can launch tests with run_all.py,
-e.g.
-
-  # ./packetdrill/run_all.py -lv mptcp/<subdir>/<test>.pkt
-
-> +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) = 4
-> +0     setsockopt(4, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-> +0     setsockopt(4, SOL_SOCKET, SO_REUSEPORT, [1], 4) = 0
-> +0     getsockopt(4, SOL_TCP, TCP_IS_MPTCP, [1], [4]) = 0
-> +0     bind(4, ..., ...) = 0
-> +0     listen(4, 1) = 0
-> 
-> +0     close(3) = 0
-> 
-> // Let the retransmission timer migrate the request to fd 4 and let the migrated
-> // request expire.  On vulnerable kernels its raw-copied token_node is not the
-> // token-table owner, so the request timer trips the token owner assertion.
-> +8.0   `true`
-
-If you set `sysctl -q net.ipv4.tcp_synack_retries=0`, can you reduce
-this to 2 seconds instead of 8?
-
-> +0     close(4) = 0
-> 
-> ------------------------------
-> decoded warning from MP_CAPABLE reproducer:
-
-Same here, I will add it in the commit messages.
-
-> [  314.661418] [      C2] ------------[ cut here ]------------
-> [  314.661636] [      C2] WARNING: net/mptcp/token.c:364 at mptcp_token_destroy_request+0x2b0/0x330, CPU#2: swapper/2/0
-> [  314.661931] [      C2] CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tainted 7.2.0-rc5-00353-gc27e36054537 #10 PREEMPT(full)
-> [  314.662092] [      C2] RIP: 0010:mptcp_token_destroy_request (build/../net/mptcp/token.c:364 (discriminator 1))
-> [  314.663001] [      C2] Call Trace:
-> [  314.663043] [      C2]  <IRQ>
-> [  314.663107] [      C2]  subflow_v4_req_destructor (build/../net/mptcp/subflow.c:694)
-> [  314.663213] [      C2]  __reqsk_free (build/../net/ipv4/inet_connection_sock.c:906)
-> [  314.663325] [      C2]  reqsk_timer_handler (build/../include/net/request_sock.h:137 build/../net/ipv4/inet_connection_sock.c:1147)
-> [  314.663762] [      C2]  call_timer_fn (build/../kernel/time/timer.c:1748)
-> [  314.668915] [      C2] ---[ end trace 0000000000000000 ]---
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+        skb->dev =3D vlan->real_dev;
+        len =3D skb->len;
