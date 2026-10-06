@@ -1,225 +1,217 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042D237F337;
-	Tue,  6 Oct 2026 09:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FF5332621
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 09:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791277324; cv=none; b=cuZ9WvxZU2vRcK07wln4XvwjeooKvUf5s2U4X4HaUfD6s83BQBbpvAVnKU93vQJGrYEVk7Jnz6NGLh+QzaVwMpR79uykIANRxJCOJesfexrWRMW2PsqmUJgl6WR6G5Z8oXXMgFYZe76p4qGU7mKepZB8QH0hGPtIokosIFGwsd8=
+	t=1791277868; cv=none; b=JC4tgRfoeM2xKQbZFpzHL3Px588jd8SvJhrgwwUg5RLVgQQL03OPJylwgibGAvmyE1Me6apxewj3te2cdAebRNXTs188ApKnIa4UQgRD5C3ZSsW3E3bN1fwn6y/vzY0qDpmdCgZTdRWmSHHob+ifQi7V/1r6Fo+klcTXX0/rqL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791277324; c=relaxed/simple;
-	bh=8MfpeJFSppQamPfCBYTs5Fd1fLWRa6sO3hiJm8ub+10=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DNTnD2tV8XkxLAd/lyqbo39bgEHOWQJuUFsDDjugyxTsrB2ckv2koW8WY/ATlRe54h26ar98d4F716Z1iNAgfFprPba9X4nJq55nZuRpyAasSaAQQKASZnzFXr7cb6sXSczysDjkPYP1h66IwNdyDM4tCPbZktPs/p9W3migVAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=idJuu1mZ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="idJuu1mZ"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6967Sdp63537718;
-	Tue, 6 Oct 2026 09:01:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=Vf2j2u+/3ZFVhWU7kRS+D/SAyrxMqxWOEyH
-	NN4i7jCo=; b=idJuu1mZVFJ1kWVWOdUMaDZRPSY8vaspIdVZHH3dcm7qkleWhSW
-	n3ZzAYG187J32DZCsL3bJ456C67VFAx+L5jxg5aQB6JyB/rCfbyzb72jNvvG+zhJ
-	mo6CXciyKbKqE+8gsAeUUUoQz6N3ocITy/LgD4xxp84XxP5t8LoT2ezd5aJsIJ09
-	OCRRTuXPmnfOEBT6GKleubaHYBMRDyjN26kMkxsJrsuqu7kQjz7evgLImBoDdgqd
-	p8pakomhtJnS7FcUV8L/pq3Ryx3ZxvHPxr7z9xZ4Efmom0VOLWgnQmspVHHjC8xz
-	5kBVNWaF7noFtpeoTGCfWTkFyLKjAD1ZTLQ==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h4vmrrabd-2
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 06 Oct 2026 09:01:25 +0000 (GMT)
-Received: from pps.filterd (apblrppmta01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 69690Act079404;
-	Tue, 6 Oct 2026 09:00:10 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-haric-blr.qualcomm.com [10.131.39.39])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 69690Anv079366
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 06 Oct 2026 09:00:10 +0000 (GMT)
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 3844793)
-	id 7864A41200; Tue,  6 Oct 2026 14:30:09 +0530 (+0530)
-From: Hari Chandrakanthan <hari.chandrakanthan@oss.qualcomm.com>
-To: pablo@netfilter.org, fw@strlen.de
-Cc: phil@nwl.cc, netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hari Chandrakanthan <hari.chandrakanthan@oss.qualcomm.com>
-Subject: [RFC PATCH net-next] netfilter: nf_conntrack: add ct expression support for netdev egress chains
-Date: Tue,  6 Oct 2026 14:28:44 +0530
-Message-Id: <20261006085844.2694120-1-hari.chandrakanthan@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1791277868; c=relaxed/simple;
+	bh=QSk/c0xFPnxckSA8D/FbrazTD+8/+fmgSsCPpvOdXsA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KQkAFlN3/dYmcprullQlW8vjpcment7KB18+UKUh7Ng9Lh2koxTNyJDmHUAnMpeM1s8TF4utKSQ3LjEJH2mytSl2D3vMxWh+jqiAId5ynTMVIJ58QyiOcr2l46RuE5aWdadz9d01xKrTK3RHiHFSWwkMj6o8AcPe3L++48SCUhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6ddef424972so2447120eaf.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 02:11:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791277865; x=1791882665;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Tm8inQeYXbBmJrsjm+/9U5OYHNYAqX7VnlqX5vcQTFU=;
+        b=MhxiphgVnMsWKXtpwb1G1SuZh3QPe1vgxb1/KCZHv2GInYr/1dQp1+tkZNewwzSEzF
+         BjvB4pjJm2UFEmtsikvuC0QrzDykSdbsoftA+xAjy77lhd6EmvgRLbSRgM5pnXTq2rOD
+         6+24/3bihKaq5Y6/USRGtyfyiUpxe8hEyz9Mdr4DLTQKQ9ZwVmo012Aj7tIgjAPiu+nZ
+         fmTxfk6tPUy+ebfQt49aZP0ejnWxCNePyiCXmLO2Cq2Sa2HWK+Mcb4tGPxqkF3lAIuE6
+         G5j6jOaAUxrEs1t0R0tjXyiABSJSsBOXbI3VAOqV46FuLxh9U6k7mquQc5UEqYTHuDaO
+         MixQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy8b8QdF/rgTDnaYdeaX3ai0qji+TEuQ/L0YFlsHnu/mJvk/4xWL7gOtOZMfX6+DPOyuYvdTDQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lcRoipRgYYZ/Vem+LjkI7YGpUt6h9iCgwI2vEWeCE7o/o4It8n
+	ujX80diIqFEamMPBG+dexUmrRAC+V40nQTHfXmLay12L2HC4PdgQbXjg72ictCyfJUNUnA==
+X-Gm-Gg: AYBFou1BCQuwzvM5wjT8mZtG5K2nZhyjqLcVO9K7HMO2c/G6MMjC8Z4nySshN7ZTWS1
+	CztBnbeES9fhldL8fVMMYUOBIjb6xkHgHzXq//c12CK2t/Qy8qfswH0540yFFlvcHjaAqaPWmBv
+	F3SKaVzl+jh4MKVn8hnIFuJOFP7fV1IntFLBFLQsxgjESiZDS2SWhalzn8I8vkcDSB6AVMTbrT9
+	/7ucJTKvvrm63daekyOp9NXmCwaZwj01JIhwg2jbb/F+ro6J37eK59xhMJ74r9Y7o/xBTiLJafF
+	827iXkiZuCrqwLoGqNtDjOazEKY2bD4lIPvIzowMOFEf3EeP3+x5BdXUCZyPKiSmqhiF15cfkSi
+	anfOg3d/MUP2/FFF60OIguu1h9+FWdHwxNLrGQx9pVmTkx5NFDWNtkBVVxnLMOshy2QbBv7yYTA
+	OKaoi+su5VJHh8ovnLAG79Q+fzowVkkH+zGc5jOcwiOaJe9BpTGv7qdA7GPJE0zI/UQFz0xhEWg
+	GWDGUtx9wP9vLMWvzWM2n86UmAmIbKwnLAnzglKJedwtIhcunD7gCuqZYN0LXXyDFc=
+X-Received: by 2002:a05:6820:8186:b0:6d9:4d1:5c46 with SMTP id 006d021491bc7-6e5544f4f46mr388559eaf.16.1791277865320;
+        Tue, 06 Oct 2026 02:11:05 -0700 (PDT)
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com. [209.85.167.180])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6e4c366ad5bsm1550878eaf.10.2026.10.06.02.11.04
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Oct 2026 02:11:04 -0700 (PDT)
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4f9b643b13aso1315884b6e.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 02:11:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzOQoxYLjIRiINojB0Gsbl8vhuJFSc/AokS2koQgxHR2M7wwgig8NTCq7cuL06WGMhqH+FYQWQ=@vger.kernel.org
+X-Received: by 2002:a05:690c:e216:10b0:89a:63bc:8be with SMTP id
+ 00721157ae682-8b04f45511emr1435597b3.72.1791277525323; Tue, 06 Oct 2026
+ 02:05:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Authority-Analysis: v=2.4 cv=XZ4cX455 c=1 sm=1 tr=0 ts=6ac4b8e5 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=YMgV9FUhrdKAYTUUvYB2:22 a=EUspDBNiAAAA:8 a=9ZRjs37vXSK0Xz5s9nIA:9
-X-Proofpoint-GUID: zdtoavhFzn70cuIX0hlSgil06VE3J6x_
-X-Proofpoint-ORIG-GUID: zdtoavhFzn70cuIX0hlSgil06VE3J6x_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA2MDAzNSBTYWx0ZWRfX8Un9jr8pISRN
- 574g4xqoke3at92eQ85UoRxrXQY76FjNq06dRKIDG/D7Siloey9M7MUFWEjP13UcHreTnpb2Cn6
- bfvRfwydU64HtsTJkbKb3BCFOB3G+TWhDjGow1Qi76u2VSN3nMBQ/WzrpiLoutayyWmXFnRHiNf
- wUXKPvuFJgQJ2cTqlUrLte4y+hdfGBvCEZZMWqwvQNbq0XXqbX44NCxp4gQdwHmiyxViCzWVHLm
- gaQW/FXswcGx4vkBReB6Y8ttIgFZzlzNQ1sYS9l0oDymZjqWRAeJ11CSJgGtV2Q7bgsRDE9WqjD
- 25F83GT7GPOr2L0gYYuzO1DzNswL/Mvf2YL8uvx7pfXxUvdwDh7bp4UQbKRUtJsmyLLBVMeeRIA
- k5z0t2f/Di9BSRRwx1D0R+jbxt37sKSsaup+fG41UdB/ckAsq2b+55G1+CCX31dMpjOPu8yUmnb
- dNveOanw8RFXglSdBGQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA2MDAzNSBTYWx0ZWRfX4G+GTiOVJovN
- jcgGsltq3tOUmbtLbztF6pl3HLp/Gdu0YwVD1YvC+DT/dHGF/g6HyF5Ev9TjSwR6uPLDb/J/j3t
- GB2mEmuxNJUFOSVG12igWEFV1Sb/rmQ=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-06_02,2026-10-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501 adultscore=0
- suspectscore=0 impostorscore=0 bulkscore=0 clxscore=1011 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2610060035
+References: <20261004144046.391444-1-tanure@linux.com> <20261004144046.391444-7-tanure@linux.com>
+ <f282770c-2238-4a1b-b811-c0c483fa7681@lunn.ch>
+In-Reply-To: <f282770c-2238-4a1b-b811-c0c483fa7681@lunn.ch>
+Reply-To: tanure@linux.com
+From: Lucas Tanure <tanure@linux.com>
+Date: Tue, 6 Oct 2026 10:05:13 +0100
+X-Gmail-Original-Message-ID: <CAJX_Q+2pw9=+O0V=e_kNR=c5oVeymbViy0XGGuciw4LL2Y_Ctg@mail.gmail.com>
+X-Gm-Features: AclHuK8uuG7S1lotg92U6NQL5L-fFOK6A4NsqpautQX6RPIs4c5SrrUvYH9tz8s
+Message-ID: <CAJX_Q+2pw9=+O0V=e_kNR=c5oVeymbViy0XGGuciw4LL2Y_Ctg@mail.gmail.com>
+Subject: Re: [RFC PATCH 6/6] arm64: dts: amlogic: t7: khadas-vim4: enable the
+ ethernet port
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add support for using the ct expression in nftables netdev egress chains.
-This enables QoS policy enforcement at the netdev egress hook by
-allowing ct operations such as copying connmark to packet mark.
+On Mon, Oct 5, 2026 at 5:27=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > +&ethmac {
+> > +     status =3D "okay";
+> > +     pinctrl-0 =3D <&eth_pins>, <&eth_rgmii_pins>;
+> > +     pinctrl-names =3D "default";
+> > +
+> > +     /*
+> > +      * The RGMII clock delays are added by the MAC, so the PHY is
+> > +      * asked for the mode that adds none.
+> > +      */
+> > +     phy-mode =3D "rgmii";
+> > +     phy-handle =3D <&external_phy>;
+> > +     amlogic,tx-delay-ns =3D <2>;
+> > +     rx-internal-delay-ps =3D <2000>;
+>
+> I agree with Maxime here, rgmii is wrong. We really need to understand
+> what is going on here, especially since you are asking for the MAC to
+> do the usual 2ns, nothing special.
+>
+> Is the PHY not actually inserting the correct delay?
+It does. The PHY driver shows both delay bits going from off to on, so
+nothing was strapped and the bootloader did not set them.
 
-Add an explicit NFPROTO_NETDEV case in nf_ct_netns_get() and
-nf_ct_netns_put() that enables conntrack for IPv4, IPv6 and bridge when a
-ct expression is added to a netdev chain.
+I swept the MAC RX clock delay and counted CRC errors, to see where the
+good window is:
 
-Restrict ct expression use in the netdev family to egress hooks only, as
-the connection entry is not yet available at ingress.
+  MAC does RX delay, PHY none:  clean 400 .. 3800ps
+  PHY does RX delay, MAC adds:  clean 0 .. 1600ps
 
-Sharing this change as an RFC, to get feedback. The patch has been tested
-by configuring nft rules at netdev egress hook to set ct mark and copy
-ct mark into skb->mark. Also, the patch is validated at netdev ingress to
-ensure the nft rule with ct mark set action is rejected.
+Same window, moved 11 steps. So the PHY gives about 2200ps, and the
+first window is centred at 2100ps. It is right.
 
-Signed-off-by: Hari Chandrakanthan <hari.chandrakanthan@oss.qualcomm.com>
----
- net/netfilter/nf_conntrack_proto.c | 26 ++++++++++++++++++++++++++
- net/netfilter/nft_ct.c             | 22 ++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+Transmit is the broken one. With rgmii-txid the peer sees nothing we
+send.
 
-diff --git a/net/netfilter/nf_conntrack_proto.c b/net/netfilter/nf_conntrack_proto.c
-index 7a40e4e0e33e..b8ee46262901 100644
---- a/net/netfilter/nf_conntrack_proto.c
-+++ b/net/netfilter/nf_conntrack_proto.c
-@@ -587,11 +587,36 @@ static int nf_ct_netns_inet_get(struct net *net)
- int nf_ct_netns_get(struct net *net, u8 nfproto)
- {
- 	int err;
-+	bool bridge_acquired = false;
- 
- 	switch (nfproto) {
- 	case NFPROTO_INET:
- 		err = nf_ct_netns_inet_get(net);
- 		break;
-+	case NFPROTO_NETDEV:
-+		err = nf_ct_netns_do_get(net, NFPROTO_BRIDGE);
-+		if (err < 0) {
-+			mutex_lock(&nf_ct_proto_mutex);
-+			if (nf_ct_bridge_info) {
-+				/* Module present but hook registration failed.*/
-+				mutex_unlock(&nf_ct_proto_mutex);
-+				return err;
-+			}
-+			mutex_unlock(&nf_ct_proto_mutex);
-+			/* Bridge module absent, netdev egress handles routed
-+			 * traffic too, bridge conntrack is only needed for
-+			 * bridged frames.
-+			 */
-+		} else {
-+			bridge_acquired = true;
-+		}
-+		err = nf_ct_netns_inet_get(net);
-+		if (err < 0) {
-+			if (bridge_acquired)
-+				nf_ct_netns_put(net, NFPROTO_BRIDGE);
-+			return err;
-+		}
-+		break;
- 	case NFPROTO_BRIDGE:
- 		err = nf_ct_netns_do_get(net, NFPROTO_BRIDGE);
- 		if (err < 0)
-@@ -615,6 +640,7 @@ void nf_ct_netns_put(struct net *net, uint8_t nfproto)
- {
- 	switch (nfproto) {
- 	case NFPROTO_BRIDGE:
-+	case NFPROTO_NETDEV:
- 		nf_ct_netns_do_put(net, NFPROTO_BRIDGE);
- 		fallthrough;
- 	case NFPROTO_INET:
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 3c4c2faa7398..e90e73475b0c 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -649,6 +649,15 @@ static void nft_ct_get_destroy(const struct nft_ctx *ctx,
- 	nf_ct_netns_put(ctx->net, ctx->family);
- }
- 
-+static int nft_ct_validate(const struct nft_ctx *ctx,
-+			   const struct nft_expr *expr)
-+{
-+	if (ctx->family != NFPROTO_NETDEV)
-+		return 0;
-+
-+	return nft_chain_validate_hooks(ctx->chain, 1 << NF_NETDEV_EGRESS);
-+}
-+
- static void nft_ct_set_destroy(const struct nft_ctx *ctx,
- 			       const struct nft_expr *expr)
- {
-@@ -732,6 +741,7 @@ static const struct nft_expr_ops nft_ct_get_ops = {
- 	.init		= nft_ct_get_init,
- 	.destroy	= nft_ct_get_destroy,
- 	.dump		= nft_ct_get_dump,
-+	.validate	= nft_ct_validate,
- };
- 
- #ifdef CONFIG_MITIGATION_RETPOLINE
-@@ -742,6 +752,7 @@ static const struct nft_expr_ops nft_ct_get_fast_ops = {
- 	.init		= nft_ct_get_init,
- 	.destroy	= nft_ct_get_destroy,
- 	.dump		= nft_ct_get_dump,
-+	.validate	= nft_ct_validate,
- };
- #endif
- 
-@@ -752,9 +763,19 @@ static const struct nft_expr_ops nft_ct_set_ops = {
- 	.init		= nft_ct_set_init,
- 	.destroy	= nft_ct_set_destroy,
- 	.dump		= nft_ct_set_dump,
-+	.validate	= nft_ct_validate,
- };
- 
- #ifdef CONFIG_NF_CONNTRACK_ZONES
-+static int nft_ct_set_zone_validate(const struct nft_ctx *ctx,
-+				    const struct nft_expr *expr)
-+{
-+	if (ctx->family == NFPROTO_NETDEV)
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-+
- static const struct nft_expr_ops nft_ct_set_zone_ops = {
- 	.type		= &nft_ct_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_ct)),
-@@ -762,6 +783,7 @@ static const struct nft_expr_ops nft_ct_set_zone_ops = {
- 	.init		= nft_ct_set_init,
- 	.destroy	= nft_ct_set_destroy,
- 	.dump		= nft_ct_set_dump,
-+	.validate	= nft_ct_set_zone_validate,
- };
- #endif
- 
--- 
-2.34.1
+What does the
+> datasheet say?
+The A311D2 covers both ways of doing it. Table 5-21, RGMII receive:
 
+  PHY internal delay on:   needs 1.2ns setup and 1.2ns hold
+  PHY internal delay off:  needs -0.5 .. 0.5ns skew
+
+with a note to check setup/hold when the PHY delay is on, and skew when
+it is off. Table 5-22 does the same for transmit, separate numbers for
+"clock delay added" and "no clock delay added".
+
+So the MAC doing the delay is a documented mode of this SoC.
+
+What it does not say is why the PHY TX delay misses. I asked Khadas
+about the clock trace lengths, no answer yet.
+>
+> Also, we have one vendor property and one generic property. Can
+> amlogic,tx-delay-ns be replaced by tx-internal-delay-ps? But that
+> comes later, once we have determined these properties really must be
+> used.
+A new version of the series will have a fix for it. It will prefer the
+generic one.
+One thing to know: that register field is a fraction of the clock
+period, not a time.
+The driver comment says "8ns / 4 * tx_dly_val". A quarter cycle is 2ns
+at 1Gbit and 10ns
+at 100Mbit, so 2000 is only true at gigabit.
+>
+> Humm, what is meson8b_init_rgmii_delays() doing?
+It picks the MAC delays from phy-mode alone, with the sense inverted:
+
+  rgmii       MAC adds both delays
+  rgmii-rxid  MAC adds TX
+  rgmii-txid  MAC adds RX
+  rgmii-id    MAC adds none
+
+So the mode that says the delays are internal is the one where the MAC
+switches its own off. It also ignores the *-internal-delay-ps
+properties in those modes. With rgmii-id and both of them set I get:
+
+  phy-mode rgmii-id: tx-delay-ns 2 rx-delay-ps 2000
+    -> PRG_ETH0 delay_config 0x0, PRG_ETH1 cfg_rxclk_dly 0x0
+
+What is
+> phydev->interface in the PHY driver.
+Whatever phy-mode says, dwmac-meson8b.c never rewrites it. Which
+means the MAC and the PHY always split the job:
+
+  rgmii       MAC both    PHY none
+  rgmii-rxid  MAC TX      PHY RX
+  rgmii-txid  MAC RX      PHY TX
+  rgmii-id    MAC none    PHY both
+
+They never both delay the same clock, and never both skip it. So the
+driver is self consistent, it is just labelled backwards from phy.rst.
+That is why the boards using "rgmii" work, and why rgmii-id is the one
+that does not here: it is the mode that hands everything to the PHY.
+>
+> Please take a read on:
+>
+> https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bi=
+ndings/net/ethernet-controller.yaml#L287
+>
+> and figure out what is going on here, because at a first look, it
+> seems broken.
+>
+>       Andrew
+It is broken. phy-mode describes the PCB, but dwmac-meson8b.c reads it
+as which chip adds the delay. The labels are backwards, and in rgmii-id
+both *-internal-delay-ps properties are ignored.
+
+I measured each direction with an eye scan. The PHY RX delay is fine,
+about 2200ps. Its TX delay does not work at all, so the MAC must do
+that one.
+
+Fix: in the -id modes each *-internal-delay-ps property means the MAC
+does that delay, and the PHY is told to do the rest:
+
+  both properties    MAC does TX and RX     PHY told rgmii
+  tx property only    MAC does TX                 PHY told rgmii-rxid
+  rx property only    MAC does RX                 PHY told rgmii-txid
+  no property           MAC does nothing          PHY told rgmii-id
+
+Boards without those properties keep today's behaviour, so
+meson8b-odroidc1 and meson8m2-mxiii-plus are untouched.
+
+Vim4 will use phy-mode =3D "rgmii-id" with tx-internal-delay-ps =3D
+<2000>. 935Mbit/s both ways, no CRC errors.
+
+I am sending a v2 with the fix for dwmac-meson8b.c  as its own patch.
+
+Thanks
+Lucas
