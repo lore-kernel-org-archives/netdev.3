@@ -1,263 +1,388 @@
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092DA48640B
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 14:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16A3497B90;
+	Tue,  6 Oct 2026 15:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791298778; cv=none; b=MDKXNtGk7NsIvJ+NIbWHQO0WqPFhrW6LVGigYdVn2fONEY5bgPekhO+8RRIxpniBc3YI8Ht9pLegfdpgEWWZ+JkRfpEnBtz2OtBOqJKT6k724UxWoaTk+mZ2CZO6UBDLl920IpFmi4hKeeWMaxo3mq07l3nOpRTtk9spodgbs4o=
+	t=1791298849; cv=none; b=cdEJXoeyMO8gf/iscrStnL8cuz3Iv9FsCYI2+mxN0gtMDELZlpXu78IgArprD7Uj6ZNmo2lqDHEXfckjuw52YywiSYo2qkWJ9InwLsUHGazL594xfSTGOJR0JsbjDUyh91d6ZQphh5biwlSIPlcK5M8v4c7HnLkRKNk75YCKtyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791298778; c=relaxed/simple;
-	bh=a2pGJgyenrOQBcUgU4+aMvSHZwkv/cIvXJyf0CX0F6c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FNNZ9mXsvHGwKKz7h7RlE6bnNEKHLGvIyY23hgk6XObuSEbljb4m86lhwu6K74o7zzeOGfpjPcvUhYrbegwl3lIiaZDl506OptOVPSipqRZ6OhKLqT8Nu5WydWpkCPjzhAq9hZ/0pewDVDUxKK/mEMuS7K2xA3hq5OKUOZ+R3ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=VVZUX6Bx; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1791298849; c=relaxed/simple;
+	bh=WnlK7foRCV0BLYNqr4edM9RtUhy6JHhwVBj8zXiX0VI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oKBM8kbV/W1gt4xGXj+KapCc0VBcPljNJYy9bY0nzkuFx+uusGDU5Bpc62G104FMQyE+Hpynk//DaNQ/sDlr+33J5yDcZENnLeRiLiWSbRW5SX4Dw++rBkPes/liWYQeYfa7H6boQcZRtwvv0fTO7UrQWJzgcViah9S17CGICrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DUae81y0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="VVZUX6Bx"
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-49e1dbfe15eso341208fac.2
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 07:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1791298773; x=1791903573; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4tI0LY/5mH9k6I/X/x+R0S0p1KLDmL/lVZOe8khheaM=;
-        b=VVZUX6BxrOH5ap4dVh95/WwdcKxlHK4sNY/3R9hnWFh37bX7WVPtrnoq6WFJDL8iHH
-         fa0S56URHS+G1ucb62rrjPE6RPKkKnzDIRPPsbF8DfFzsJUy6p03MZuzCX2eRBOzO0hO
-         DmyrZEIFohvvKxz9/caN8mTIpVFZKtxs0/FH6ed8uVn/sHEhlBiEwvcH3g4XOH+df3nY
-         4owhplpdcdwy0ISvrsyHXJ4dPn50FCzFwz9KeBI5054dhr0YaLs5ajsgR70jaFxVhFzJ
-         NQgHJ7eSXOj3xupfMQLUcGCFoIRlPufWX47YQUkzfJfmwoX9xQaWwjUX9ASNAP8dnbq1
-         Q9Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791298773; x=1791903573;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4tI0LY/5mH9k6I/X/x+R0S0p1KLDmL/lVZOe8khheaM=;
-        b=ZrVmV+vRJn8KNi2rIK7yBNj7tF9TqdM9DkPtxb5IL7thhzNOUK48+X/jqMm6ljhQOQ
-         6t7KfOGlP5llyzpag5e6P9Ks3dNULRuk30eVPrJTM8JP5rw26yjusp+eh8CKJmODObLV
-         BBpny8yQ4UUpNtacSND0eCNVLGm0gXy3/9WnT+3xRKb+GPGBg7BulPLBWXtd/FTAskZA
-         ytV2cPsFp5fbHAhSy+5kvitnmPte+EPYGyTQuq3sgFNFwkyJA+TmYR5109/c8HToBIQX
-         7ULk8YlbqvrqbjaHbBZtAdrOQVMWfCnFurjxReqJ0ynNG8JPBvI1MAYf6HbRwO5g/Ulu
-         GFeQ==
-X-Gm-Message-State: AFuF++lVbKrCEdiMVsfAGmHKuv5+WIjfqI0MjdzVbhK0I4IDDkwDryyO
-	WeMlIO7NFbS0COc1qdXgr1XnX2WFynDBJo5S9isqBUBfMzAZeRZXGLaOe27+XaReeqk=
-X-Gm-Gg: AYBFou12Xy8Non9uamSYFd0RnmGhWZ+nQhlkwQJxbLTwN31LM9HOblzU4RGhvv/ikhC
-	ebNDRyjH0NuWgScrS5PRsmDRqRdSDDRuKwfP/+k1/mE4JdPDaaXmnvjqah8R4Fq26coo6iXewIe
-	0pjSkA9gXGvTG2Q4+brHXpS+6iJ0S4qQO4bqLfNR2LFchM7Ij7/LhwsNACP4EayZJrxMUG9HXy5
-	+HRYmQ4tgPgFLRUlsEGL63gKE1goSJO9AxAs9h/dy2Z8kcGQDjI3TevdA/07W2WhuPd9iMeaGJa
-	17AY9INJJEnmphPx4ayQgM2HHNx7OT7IEOBvpy+FdOc0n5AC7V6Bb++/e9c9pLjbmeGreXgf2TI
-	zUT8Dmg0oSzxheuBfqZuxo7EhbvpN9fPHp9AygMlMhCXYxwIUSF+Ete3hdq1mUIuoZboLm/7/OX
-	I4BeCiuERUonhWIt4tenxPFD3D7hZMUUDDOgat0DoBIP82JAhQK+D/+c2AJzaiR/bfVHbrEhzBI
-	9AeG8DWgMWzn0qMoo/cQLSkwKa2vWpNVeqJdTsTkf2sBuONav4lCKwzBrslYVdq7RsquZt0qERC
-	dcmc7hQVABR0K3pdHjtW7uai
-X-Received: by 2002:a05:6871:110:b0:498:f70a:b54e with SMTP id 586e51a60fabf-4a240515209mr1399607fac.43.1791298773492;
-        Tue, 06 Oct 2026 07:59:33 -0700 (PDT)
-Received: from [10.0.0.192] ([72.170.223.115])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-49e16f00b5asm13145180fac.14.2026.10.06.07.59.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Oct 2026 07:59:32 -0700 (PDT)
-Message-ID: <01d75013-9eae-4ec6-93b5-cc1b2b83b791@kernel.dk>
-Date: Tue, 6 Oct 2026 08:59:22 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DUae81y0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BD11F0089B;
+	Tue,  6 Oct 2026 15:00:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791298847;
+	bh=LvteLtT2DtFUhLxR0FBmkdivNEg1tgUAE88ZH2UGsWg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DUae81y0aFE6yyuSQblny3Hz8L92GJOJIzfG9ltJEWG1Kv5w++ud378tN7e9UOJwP
+	 OLQ4cnTvV09vYeO2hiWdwtRvGjFs91SLZWj5UBQYSXxjRZiEPESk/J282lbpQ4bMyM
+	 jZlrqpaX1P2scYXiztfx1MBd1YRjXyFbExx+5VTic5WSrwaSGjUwrnczW7KQNATXOC
+	 0Fqs8Tn2uqjppiCMjeWd5u9V7zzCwrB0Gm52JrEazgNGLBuf27X/jUMF18MDrrJpZn
+	 e6/hTW0tOQDN86fY0X7kX6XUR17NBofALoSOcYZ6ZbL9B9wPrTtKDaeGKfqkeCr75W
+	 KbX+sYO5ecbCw==
+Subject: Re: [PATCH net-next 1/4] net: rmnet: use fast monotonic time for tx
+ aggregation
+From: netdev-bot+sashiko@kernel.org
+To: koen.vandeputte@citymesh.com
+Cc: netdev@vger.kernel.org, quic_subashab@quicinc.com,
+ quic_stranche@quicinc.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dnlplm@gmail.com,
+ linux-kernel@vger.kernel.org
+Date: Tue, 06 Oct 2026 15:00:46 +0000
+Message-ID: <179129884653.434549.9845948180140319159@kernel.org>
+In-Reply-To: <20261002143529.3217189-2-koen.vandeputte@citymesh.com>
+References: <20261002143529.3217189-2-koen.vandeputte@citymesh.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring: do not charge the SQ/CQ rings to RLIMIT_MEMLOCK
-To: hengyul@cs.unc.edu, Pavel Begunkov <asml.silence@gmail.com>,
- io-uring@vger.kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20261006125732.3425762-1-hengyul@cs.unc.edu>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20261006125732.3425762-1-hengyul@cs.unc.edu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/6/26 6:57 AM, hengyul@cs.unc.edu wrote:
-> From: Hengyu Liang <hengyul@cs.unc.edu>
-> 
-> Commit 8078486e1d53 ("io_uring: use region api for SQ") and commit
-> 81a4058e0cd0 ("io_uring: use region api for CQ") made io_uring_setup()
-> allocate the rings with io_create_region().
-> 
-> However, io_create_region() charges the memory to RLIMIT_MEMLOCK, and
-> the rings had been exempt from that limit since commit 26bfa89e25f4
-> ("io_uring: place ring SQ/CQ arrays under memcg memory limits"). As of
-> now, a user without CAP_IPC_LOCK gets ENOMEM from io_uring_setup() when
-> their rings exceed the limit, which is 8 MiB by default. PostgreSQL
-> developers have already hit this in their io_uring tests [1].
-> 
-> The issue can be reproduced with a simple liburing program, run as an
-> unprivileged user:
-> 
->     #include <liburing.h>
->     #include <stdio.h>
-> 
->     int main(void)
->     {
->             static struct io_uring ring[64];
->             int i;
-> 
->             for (i = 0; i < 64; i++)
->                     if (io_uring_queue_init(4096, &ring[i], 0) < 0)
->                             break;
->             printf("%d rings\n", i);
->             return 0;
->     }
-> 
-> Before those commits (v6.13), it prints "64 rings". After those commits
-> (v6.14), it prints "21 rings".
-> 
-> This patch makes io_create_region() take the user to charge, and passes
-> no user for the SQ/CQ rings.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Agree that this is a bug, stricter accounting may break use cases.
-However, I think we can solve this simpler, and actually kill more code.
-How about something like the below instead? Only apply accounting to
-user backed memory, which is how it used to work too. Would be great if
-you could take a look and also run your test case against it.
+Critical: 0 · High: 0 (1) · Medium: 3 (2) · Low: 1
 
-diff --git a/io_uring/memmap.c b/io_uring/memmap.c
-index 48c0eb012412..da2328b52b38 100644
---- a/io_uring/memmap.c
-+++ b/io_uring/memmap.c
-@@ -16,10 +16,8 @@
- #include "zcrx.h"
- 
- static bool io_mem_alloc_compound(struct page **pages, int nr_pages,
--				  size_t size, gfp_t gfp,
--				  struct user_struct *user)
-+				  size_t size, gfp_t gfp)
- {
--	unsigned long nr_compound, extra;
- 	struct page *page;
- 	int i, order;
- 
-@@ -29,22 +27,9 @@ static bool io_mem_alloc_compound(struct page **pages, int nr_pages,
- 	else if (order)
- 		gfp |= __GFP_COMP;
- 
--	/*
--	 * get_order() rounds a non power of two size up, so the allocation
--	 * can hold more pages than the region exposes. Account those too,
--	 * and leave the compound allocation alone if they do not fit.
--	 */
--	nr_compound = 1UL << order;
--	extra = nr_compound - nr_pages;
--	if (extra && user && __io_account_mem(user, extra))
--		return false;
--
- 	page = alloc_pages(gfp, order);
--	if (!page) {
--		if (extra && user)
--			__io_unaccount_mem(user, extra);
-+	if (!page)
- 		return false;
--	}
- 
- 	for (i = 0; i < nr_pages; i++)
- 		pages[i] = page + i;
-@@ -120,15 +105,8 @@ void io_free_region(struct user_struct *user, struct io_mapped_region *mr)
- 	}
- 	if ((mr->flags & IO_REGION_F_VMAP) && mr->ptr)
- 		vunmap(mr->ptr);
--	if (mr->nr_pages && user) {
--		unsigned long nr_accounted = mr->nr_pages;
--
--		/* a compound region was accounted for the whole allocation */
--		if (mr->flags & IO_REGION_F_SINGLE_REF)
--			nr_accounted = 1UL << get_order(io_region_size(mr));
--
--		__io_unaccount_mem(user, nr_accounted);
--	}
-+	if ((mr->flags & IO_REGION_F_USER_PROVIDED) && user)
-+		__io_unaccount_mem(user, mr->nr_pages);
- 
- 	memset(mr, 0, sizeof(*mr));
- }
-@@ -154,11 +132,12 @@ static int io_region_init_ptr(struct io_mapped_region *mr)
- }
- 
- static int io_region_pin_pages(struct io_mapped_region *mr,
--			       struct io_uring_region_desc *reg)
-+			       struct io_uring_region_desc *reg,
-+			       struct user_struct *user)
- {
- 	size_t size = io_region_size(mr);
- 	struct page **pages;
--	int nr_pages;
-+	int nr_pages, ret;
- 
- 	pages = io_pin_pages(reg->user_addr, size, &nr_pages);
- 	if (IS_ERR(pages))
-@@ -166,6 +145,16 @@ static int io_region_pin_pages(struct io_mapped_region *mr,
- 	if (WARN_ON_ONCE(nr_pages != mr->nr_pages))
- 		return -EFAULT;
- 
-+	/* pinned user memory is what RLIMIT_MEMLOCK is for */
-+	if (user) {
-+		ret = __io_account_mem(user, nr_pages);
-+		if (ret) {
-+			unpin_user_pages(pages, nr_pages);
-+			kvfree(pages);
-+			return ret;
-+		}
-+	}
-+
- 	mr->pages = pages;
- 	mr->flags |= IO_REGION_F_USER_PROVIDED;
- 	return 0;
-@@ -173,8 +162,7 @@ static int io_region_pin_pages(struct io_mapped_region *mr,
- 
- static int io_region_allocate_pages(struct io_mapped_region *mr,
- 				    struct io_uring_region_desc *reg,
--				    unsigned long mmap_offset,
--				    struct user_struct *user)
-+				    unsigned long mmap_offset)
- {
- 	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN;
- 	size_t size = io_region_size(mr);
-@@ -185,7 +173,7 @@ static int io_region_allocate_pages(struct io_mapped_region *mr,
- 	if (!pages)
- 		return -ENOMEM;
- 
--	if (io_mem_alloc_compound(pages, mr->nr_pages, size, gfp, user)) {
-+	if (io_mem_alloc_compound(pages, mr->nr_pages, size, gfp)) {
- 		mr->flags |= IO_REGION_F_SINGLE_REF;
- 		goto done;
- 	}
-@@ -230,17 +218,16 @@ int io_create_region(struct io_ring_ctx *ctx, struct io_mapped_region *mr,
- 		return -EOVERFLOW;
- 
- 	nr_pages = reg->size >> PAGE_SHIFT;
--	if (ctx->user) {
--		ret = __io_account_mem(ctx->user, nr_pages);
--		if (ret)
--			return ret;
--	}
- 	mr->nr_pages = nr_pages;
- 
-+	/*
-+	 * Only pinned user memory counts against RLIMIT_MEMLOCK, kernel
-+	 * allocated regions are memcg accounted through GFP_KERNEL_ACCOUNT.
-+	 */
- 	if (reg->flags & IORING_MEM_REGION_TYPE_USER)
--		ret = io_region_pin_pages(mr, reg);
-+		ret = io_region_pin_pages(mr, reg, ctx->user);
- 	else
--		ret = io_region_allocate_pages(mr, reg, mmap_offset, ctx->user);
-+		ret = io_region_allocate_pages(mr, reg, mmap_offset);
- 	if (ret)
- 		goto out_free;
- 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message describes the new clock source wrongly and
+  gives no measurements for its performance claims.
+- [Medium] The patch calls ktime_get_mono_fast_ns() from a driver and
+  describes it as monotonic.
+- [Medium] rmnet: stale timestamp assigned to agg_time causes premature
+  tx flush
+- [Low] Dropping the `diff.tv_sec > 0` term quietly changes the in-path
+  flush behaviour of rmnet_map_tx_aggregate() for tx_aggr_time_usecs of…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but there is a
+  time-of-check/time-of-use race in rmnet_map_tx_aggregate() that leaks…
+- [Medium] This problem wasn't introduced by this patch, but
+  rmnet_map_update_ul_agg_config() computes…
+- [Medium] This problem wasn't introduced by this patch, but both flush
+  branches of rmnet_map_tx_aggregate() (lines 637-645 and 658-667) call…
+
+--
+
+net: rmnet: use fast monotonic time for tx aggregation
+
+This commit replaces ktime_get_real_ts64() with ktime_get_mono_fast_ns()
+in rmnet_map_tx_aggregate(). It also changes agg_time and agg_last in
+struct rmnet_port from struct timespec64 to u64 nanoseconds, so the bypass
+and flush age checks become plain u64 subtractions.
+
+> Calling a wall-clock time function on the transmit hot path introduces
+> significant performance bottlenecks, causing cacheline bouncing and pipeline
+> stalls when processing high packet volumes.
+
+[ ... ]
+
+> Replace ktime_get_real_ts64() with ktime_get_mono_fast_ns(). This reads a
+> lockless, per-CPU timestamp directly in nanoseconds, returning a simple u64.
+
+[ ... ]
+
+> This optimization significantly reduces CPU overhead, eliminates struct
+> timespec64 math, and provides a much faster, cache-friendly timekeeping
+> mechanism for high-throughput egress traffic.
+
+[Severity: Medium]
+Is this description of ktime_get_mono_fast_ns() accurate? In
+kernel/time/timekeeping.c it reads from a single global object:
+
+static struct tk_fast tk_fast_mono ____cacheline_aligned = {
+
+u64 notrace ktime_get_mono_fast_ns(void)
+{
+	return __ktime_get_fast_ns(&tk_fast_mono);
+}
+
+__ktime_get_fast_ns() then runs a latch seqcount retry loop and reads the
+hardware clocksource. ktime_get_real_ts64() does the same:
+
+	do {
+		seq = read_seqcount_latch(&tkf->seq);
+		tkr = tkf->base + (seq & 0x01);
+		now = ktime_to_ns(tkr->base);
+		now += timekeeping_get_ns(tkr);
+	} while (read_seqcount_latch_retry(&tkf->seq, seq));
+
+Nothing in this path is per-CPU. Seqcount readers also never write the
+shared cacheline, so the old ktime_get_real_ts64() reader path wouldn't
+cause cacheline bouncing either.
+
+The real savings appear to be a latch seqcount in place of a plain
+seqcount, plus no timespec64 normalisation and no two-field compare.
+
+Could the commit message describe that instead? Could it also include
+measurements to support "significantly reduces CPU overhead"?
+
+> diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
+> index 39d6d084e73f0..2eafb1d969c1a 100644
+> --- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
+> +++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c
+
+[ ... ]
+
+> @@ -591,21 +591,23 @@ static enum hrtimer_restart rmnet_map_flush_tx_packet_queue(struct hrtimer *t)
+>  unsigned int rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port,
+>  				    struct net_device *orig_dev)
+>  {
+
+[ ... ]
+
+>  	spin_lock_bh(&port->agg_lock);
+> -	memcpy(&last, &port->agg_last, sizeof(struct timespec64));
+> -	ktime_get_real_ts64(&port->agg_last);
+> +	last = port->agg_last;
+> +
+> +	now = ktime_get_mono_fast_ns();
+> +	port->agg_last = now;
+
+[Severity: Medium]
+Is ktime_get_mono_fast_ns() a good choice for a driver? Its kernel-doc
+says it is not strictly monotonic:
+
+ * This timestamp is not guaranteed to be monotonic across an update.
+ ...
+ * So reader 6 will observe time going backwards versus reader 5.
+ ...
+ * Callers need to be aware of that and deal with it.
+
+Documentation/core-api/timekeeping.rst also says:
+
+	machine check reporting, but most drivers should never call them,
+	since the time is allowed to jump under certain conditions.
+
+port->agg_last and port->agg_time are shared across CPUs.
+rmnet_vnd_setup() sets rmnet_dev->lltx = true, and several muxed rmnet
+devices can share one rmnet_port. As a result, rmnet_map_tx_aggregate()
+runs on several CPUs at once. agg_lock serialises the transmitters, but
+it does not serialise them against update_fast_timekeeper().
+
+Suppose CPU A reads now from the old base and stores it in agg_last. CPU B
+then reads from the new base after the latch switch. B's now can be
+smaller than last.
+
+Neither unsigned subtraction guards against that:
+
+	diff = now - last;
+	...
+	diff = now - port->agg_time;
+
+In that case diff wraps to roughly U64_MAX. That either forces the
+sparse traffic bypass (diff > RMNET_AGG_BYPASS_TIME_NSEC) or flushes a
+partial aggregate early (diff > egress_agg_params.time_nsec).
+
+The effect is small: one packet skips aggregation, or one aggregate is
+flushed early. The old timespec64_sub() code took the same paths on a
+negative delta. Even so, the commit message calls this clock monotonic.
+
+Would ktime_get_ns() fit better here? It is monotonic, returns a u64, and
+still avoids the timespec64 math.
+
+>  
+>  	if (!port->skbagg_head) {
+>  		/* Check to see if we should agg first. If the traffic is very
+>  		 * sparse, don't aggregate.
+>  		 */
+>  new_packet:
+> -		diff = timespec64_sub(port->agg_last, last);
+> +		diff = now - last;
+>  		size = port->egress_agg_params.bytes - skb->len;
+
+[ ... ]
+
+> @@ -625,11 +626,12 @@ unsigned int rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port
+>  		dev_kfree_skb_any(skb);
+>  		port->skbagg_head->protocol = htons(ETH_P_MAP);
+>  		port->agg_count = 1;
+> -		ktime_get_real_ts64(&port->agg_time);
+> +		port->agg_time = now;
+>  		skb_frag_list_init(port->skbagg_head);
+>  		goto schedule;
+>  	}
+> -	diff = timespec64_sub(port->agg_last, port->agg_time);
+> +
+> +	diff = now - port->agg_time;
+>  	size = port->egress_agg_params.bytes - port->skbagg_head->len;
+>  
+>  	if (skb->len > size) {
+
+[Severity: Medium]
+Does this change when a new aggregate's age starts counting on the
+goto new_packet path?
+
+now is read once, at the top of rmnet_map_tx_aggregate(). Sometimes
+the incoming skb does not fit in the current aggregate. The function
+then drops agg_lock, calls hrtimer_cancel() and rmnet_send_skb() for
+the old aggregate, re-takes agg_lock and jumps back to new_packet. A
+new aggregate started there gets agg_time set to the timestamp read
+before all of that.
+
+The old code called ktime_get_real_ts64(&port->agg_time) at this
+point, so agg_time was a fresh reading taken after the flush. With
+this patch, agg_time is backdated by however long hrtimer_cancel()
+and the nested dev_queue_xmit() took. hrtimer_cancel() can spin until
+a running rmnet_map_flush_tx_packet_queue() finishes.
+dev_queue_xmit() on the real device can contend on the qdisc lock.
+
+The next packet computes now - port->agg_time against that stale
+value. It is therefore more likely to exceed
+egress_agg_params.time_nsec, so the new aggregate is flushed earlier
+than configured. The hrtimer armed at schedule: uses an expiry
+relative to the current time. The timer and the age check therefore
+no longer agree on when the aggregate started.
+
+This path runs on every size-triggered flush. Under sustained traffic
+that overflows aggregates, it seems to work against the throughput
+goal of this patch.
+
+Could agg_time take a fresh ktime_get_mono_fast_ns() reading after
+agg_lock is re-acquired on this path, as the old code effectively
+did? The bypass check at new_packet compares against last. It used
+the entry-time agg_last in the old code too, so only agg_time seems
+to need the fresh value.
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can this branch leak an
+aggregate that another CPU built?
+
+	if (skb->len > size) {
+		agg_skb = port->skbagg_head;
+		reset_aggr_params(port);
+		spin_unlock_bh(&port->agg_lock);
+		hrtimer_cancel(&port->hrtimer);
+		rmnet_send_skb(port, agg_skb);
+		spin_lock_bh(&port->agg_lock);
+		goto new_packet;
+	}
+
+The new_packet label is inside the if (!port->skbagg_head) block. After
+agg_lock is retaken, the goto skips that check.
+
+With lltx = true and several muxed devices sharing one rmnet_port,
+another CPU can run while the lock is dropped:
+
+CPU A                              CPU B
+reset_aggr_params()
+  skbagg_head = NULL
+spin_unlock_bh()
+hrtimer_cancel()                   spin_lock_bh()
+rmnet_send_skb()                   sees skbagg_head == NULL
+                                   small diff, A just set agg_last
+                                   skbagg_head = skb_copy_expand(...)
+                                   spin_unlock_bh()
+spin_lock_bh()
+goto new_packet
+
+If A's diff is small when it resumes, A overwrites the head without
+checking it first:
+
+		port->skbagg_head = skb_copy_expand(skb, 0, size, GFP_ATOMIC);
+
+Nothing references B's head skb or any frag_list entries appended to it
+after that, so they leak. Those packets were already counted as
+transmitted in rmnet_vnd_tx_fixup_len(), but they are never sent.
+
+If A's diff exceeds the bypass threshold instead, A sends its skb directly
+ahead of B's pending aggregate, so packets are reordered.
+
+Could port->skbagg_head be re-checked after the lock is re-acquired? For
+example, the goto could target a label placed before the
+if (!port->skbagg_head) test.
+
+[ ... ]
+
+> @@ -653,7 +655,7 @@ unsigned int rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port
+>  	port->skbagg_tail = skb;
+>  	port->agg_count++;
+>  
+> -	if (diff.tv_sec > 0 || diff.tv_nsec > port->egress_agg_params.time_nsec ||
+> +	if (diff > port->egress_agg_params.time_nsec ||
+
+[Severity: Low]
+Is it intended that removing the diff.tv_sec > 0 term changes flush
+behaviour for timeouts of one second or more?
+
+tv_nsec used to be normalised below 1e9, so the next packet flushed any
+aggregate that was at least 1s old. In effect, a configured time_nsec of
+1s or more was capped at 1s when a packet arrived.
+
+The full configured timeout now applies. rmnet_set_coalesce() passes
+tx_aggr_time_usecs through without an upper bound, and the netlink
+policy for ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS is plain NLA_U32.
+
+With a 2s timeout, a packet that arrives when the aggregate is 1.1s old
+used to trigger a flush and no longer does.
+
+The new behaviour matches the hrtimer, which was always armed with the
+full time_nsec. Could the commit message mention this change?
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but on 32-bit builds the
+time_nsec value compared here can be wrong.
+rmnet_map_update_ul_agg_config() does:
+
+	port->egress_agg_params.time_nsec = time * NSEC_PER_USEC;
+
+time is u32 and NSEC_PER_USEC is 1000L. On 32-bit, long is 32 bits, so
+the product is computed as a 32-bit unsigned long. It wraps before it is
+stored in the u64 time_nsec.
+
+rmnet_set_coalesce() bounds tx_aggr_max_frames and tx_aggr_max_bytes,
+but not tx_aggr_time_usecs. Any value above about 4294967 usec wraps.
+For example, 5000000 usec is stored as 705032704 ns, and
+rmnet_get_coalesce() reports 705032 usec back.
+
+Both the hrtimer and this age check use the wrapped value.
+
+>  	    port->agg_count >= port->egress_agg_params.count ||
+>  	    port->skbagg_head->len == port->egress_agg_params.bytes) {
+>  		agg_skb = port->skbagg_head;
+
+[Severity: Medium]
+This is a pre-existing issue, but can a new aggregate end up with no timer
+armed? Both flush branches do this:
+
+		reset_aggr_params(port);
+		spin_unlock_bh(&port->agg_lock);
+		hrtimer_cancel(&port->hrtimer);
+
+reset_aggr_params() sets agg_state to 0, and the lock is released while
+the old hrtimer is still queued.
+
+Suppose CPU B creates a new aggregate in that window and reaches
+schedule:. The old timer is still active, so this check fails:
+
+	if (!hrtimer_active(&port->hrtimer) && port->agg_state != -EINPROGRESS) {
+
+B then neither arms a timer nor sets agg_state. CPU A cancels the old
+timer next, which leaves B's aggregate with no pending hrtimer and no
+queued work. It stays buffered until the next egress packet on the port.
+
+If the port is torn down first, rmnet_map_tx_aggregate_exit() only frees
+skbagg_head when agg_state is -EINPROGRESS:
+
+	if (port->agg_state == -EINPROGRESS) {
+		if (port->skbagg_head) {
+			dev_kfree_skb_any(port->skbagg_head);
+
+In that case the stranded aggregate also leaks.
+
 -- 
-Jens Axboe
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002143529.3217189-1-koen.vandeputte%40citymesh.com
