@@ -1,127 +1,97 @@
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D21D3E40EF;
-	Tue,  6 Oct 2026 16:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E710A49E5CF;
+	Tue,  6 Oct 2026 16:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791302940; cv=none; b=na9kzQio63jF8HJ5kt0XDllfYm17BcKcWZQZVCbt8shceUVRGuPdVlUXE8TToJrF19T4Ez9aujJbAWjlFhRbbCZRJc+bGvAZcUrou9PbFfDC48mzD8bCsP5+xipCE9UFt7uhik+BwNYmKRiVLKVe3nU4n6nWNH1+LLa+yPXv8ZM=
+	t=1791303044; cv=none; b=hvxXnnyzNWw4mbY5hWuzMz+8KGo9xeOvRKUcm7lMBfkvxZr7LGroSN7sYwl8PMaVHew6dVynIfH606iqtBgfDQx8/igZaLFoDJoCWEL0v2++Qn9xCyK73Y19jUBl5D85j7oFsopJU7wKm1O4FBxdcb2cxT7lmayNKJbn9jFlhfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791302940; c=relaxed/simple;
-	bh=a+jfnn4EpxUTdTpHVi2Jp0n2tIf21E2mpQIDZSU7dVk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=lFgSNy3ZcIydZb4UHuCKLdB4jPYyiderNvlB2Q9Funfm5G6g42oI0q2WehQzUFkdt4Dsq/dm/HpCh0heZqvHLE65lnV/qBzj0CsF0juZhWP2VEpbwCIIBhai6G7iKIlwnBM1iMGBqnESympWMrlZWAAqiM35vIwGZR76hJAO55g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.2.104] (91.79.33.31) by msexch01.omp.ru (10.188.4.12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 6 Oct
- 2026 19:08:34 +0300
-Message-ID: <01c2f59d-8e22-434a-9f5b-b69608c3eae2@omp.ru>
-Date: Tue, 6 Oct 2026 19:08:33 +0300
+	s=arc-20240116; t=1791303044; c=relaxed/simple;
+	bh=aNbsDvFZRK/+AHPuUdCwt746G0BRQlKOX+mNN+HHJ/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CZhWKBrImiF570AEk4bwdSxHJkTC8Ixi+vdNabrYJKrbf4Rhf2UNFalVnFy4s0vordu/X3Fxp98UcAGE7qGKEZTmk6wrwrwHdr11oHjQjZaHphI+wK4CuMafSUEe2Nm3X/MHMC3yla5MDbN2Xk9bjsWG5/ed0daMueTE9aJtGAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hq5dKJJS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hq5dKJJS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=qgSV4GBVU0LvkZzpXKbXapalbfhpM7Y/2Dcz6KnjfDY=; b=hq5dKJJSTWfsJZPMZaSK26cWO/
+	yfadGeI9oklQ6q7+pvHMzZaPf836s9BHy65lTR59H9gL2A30ygoxo0M6EndUZ209nXpMG/5zM/4zf
+	lWxaAPa55KpGyIdTTkR7WLG+AjXWAa8vPjbDmdDzg9gCPsqh/JGHuwXsl0pn9VolQ0q4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xE7k1-009IFD-Kc; Tue, 06 Oct 2026 18:10:09 +0200
+Date: Tue, 6 Oct 2026 18:10:09 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Hayes Wang <hayeswang@realtek.com>
+Cc: Linmao Li <lilinmao@kylinos.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+	nic_swsd <nic_swsd@realtek.com>,
+	Birger Koblitz <mail@birger-koblitz.de>,
+	Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net v2] r8152: Use BMSR to detect the link state
+Message-ID: <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
+References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
+ <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] net: ravb: fix resource teardown ordering
-To: jiale yao <19888972804@163.com>
-CC: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, Paul
- Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Mitsuhiro Kimura
-	<mitsuhiro.kimura.kc@renesas.com>, Claudiu Beznea
-	<claudiu.beznea.uj@bp.renesas.com>, <netdev@vger.kernel.org>,
-	<linux-renesas-soc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-References: <20260927144741.1320558-1-yaojiale02@163.com>
- <20260927144741.1320558-7-yaojiale02@163.com>
- <3b43b4fb-8479-4eb2-be58-1df6f0f747b9@omp.ru>
- <12190bf2.18c1.1a0f004c539.Coremail.19888972804@163.com>
- <b85d8dc9-b787-40e0-bbaf-027df2c3bf49@omp.ru>
- <222db01f.1264.1a101087434.Coremail.19888972804@163.com>
-Content-Language: en-US
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-In-Reply-To: <222db01f.1264.1a101087434.Coremail.19888972804@163.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 10/06/2026 15:56:59
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 19
-X-KSE-AntiSpam-Info: Lua profiles 206480 [Oct 06 2026]
-X-KSE-AntiSpam-Info: Version: 6.1.1.27
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 127 0.3.127
- 0884f7b061fa529b810563f359267cd65d2ec05c
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {diag_burst_silent}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 91.79.33.31 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info:
-	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2;omp.ru:7.1.1
-X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 91.79.33.31
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 19
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/06/2026 15:58:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 10/6/2026 3:38:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
 
-On 10/3/26 12:11 PM, jiale yao wrote:
-
-[...]
-
->> On 9/30/26 4:53 AM, jiale yao wrote:
->>
->> [...]
->>
->>> Thanks for your review.
->>
->>   Top-posting on the kernel MLs is a bad idea... :-)
->>
->>> You're right — I'll split this into two patches:
->>> One patch for the IRQ/netdev ordering issue.
->>> One patch for the runtime PM resume failure handling.
->>> I'll use --no-git-fallback next time, sorry for this.
+On Tue, Oct 06, 2026 at 08:28:21AM +0000, Hayes Wang wrote:
+> Linmao Li <lilinmao@kylinos.cn>
+> > Sent: Monday, October 5, 2026 6:53 PM
+> [...]
+> > r8152 detects carrier from PLA_PHYSTATUS without reading BMSR, so
+> > BMSR_LSTATUS can still be latched low when the carrier comes up.
+> > Since commit f6f2e946aa4d ("net: mii: Fix the Speed display when the network
+> > cable is not connected"), the first speed query after link up can then report
+> > SPEED_UNKNOWN, leaving NetworkManager at 0 Mb/s until the next carrier
+> > change.
+> > 
+> > Use BMSR_LSTATUS in set_carrier() and rtl8152_runtime_resume(), so the
+> > driver consumes the latched link down itself. If the first read still reports link
+> > down, the next link-up notification triggers another read and brings the carrier
+> > up.
+> > 
+> > Tested on an RTL8153B with a 6.6-based kernel. In 5 rebinds and 6 cable
+> > replugs, the first read returned LSTATUS=0, a second link-up notification came
+> > about 32 ms later, the second read returned
+> > LSTATUS=1 and the carrier went up; NetworkManager reported 1000 Mb/s.
+> > Runtime suspend/resume with the link up did not change the carrier.
 > 
-> v3 in https://lore.kernel.org/all/20261003085940.493951-7-yaojiale02@163.com/
-> It only addresses the IRQ/netdev teardown ordering issue. The runtime
-> PM resume failure handling has been left unchanged.
+> I think this patch may introduce a new issue.
+> 
+> Our newer ICs do not generate periodic link-status notifications. They generate a
+> notification only when the link status changes. Therefore, with your patch, BMSR
+> will not be read a second time until the next link-status change.
 
-   Too bad you forgot to address Niklas' comment this time... :-)
+But the link status in BMSR does change.
 
-> I plan to submit the runtime PM fix separately after the patch above
-> has been applied, to avoid conflicts between the two changes, or any
-> other suggestion?
+You read it once and get the latched value. That clears the latch, so
+the link status changes to the current version.
 
-   Yeah, it seems a good idea to address the broken commits in the
-chronological order... However, the fixes seem pretty much orthogonal
-to each other?
+Now, 802.3 C22 has no support for interrupts, that is a vendor
+extension. But if you are not generating an interrupt when BMSR
+changes, i would say that is broken.
 
-[...]
-
-MBR, Sergey
+	 Andrew
 
