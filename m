@@ -1,48 +1,48 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6B33612F1;
-	Tue,  6 Oct 2026 07:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D163B397B02;
+	Tue,  6 Oct 2026 07:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791270390; cv=none; b=Ejq6yxr62nOMoSSpiGNX7iuxC1kDVW9RU8URm94kJKveD2UX8O2zOeU5FVnlfI/FzVxBT71arSOp72WcQtNIp/OiOkGjHT3P7Yb8zzDHoDGB//Xlti93IVSqtww+7HOjWAXLQepjHJOKPgAVPLwhJNnK47b5FnpwEegCWtFsqQ0=
+	t=1791270398; cv=none; b=gNLRo9k0B7HftdIte6Vhnxzi2B9pkTQlDyNRhrF0LWX0dfm0l/9zBbtfY06kGzOnyqjb03lnVFUyHaOiAEYQ2aFj5Y6EZeWMdkBg6gQCdRqn0+JeHo1cE70Jzr/wQp9cgWAWI0jufLjYv1XGI3d+SoDwi9iG9CNU7Zps8gIVa0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791270390; c=relaxed/simple;
-	bh=ZH1f/H8Fh4vX/luAQ/6zICcJVZllTWTaFdoYU3cENBo=;
+	s=arc-20240116; t=1791270398; c=relaxed/simple;
+	bh=9znKpW587vUnd2fqgWhdAEG280DMKsTOwmyotv/xN+M=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KlRc3CPeqZMHIh5UP5Hi32Sl2imAU3raPg4N902aVawBHHm61Zq0ucqWud3Z0VmB0z52KUOG4mfK8uc6v2PHxnNMndwsCcHo7QZTxXJBI4gCmhWj7Ji7bCgjmH3PuMJZWu27+rYdWg2ry/Dy0eRfvs591t1uw1mc1h3eTflYM8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=qtS2PQA1; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=QS8U+meHuVDYsRzIpP8ib2GAbSJPtas8sUYg3C9T4o+N154OLb1JGEgMVfWfJ5//D0WXXvFIJ+hDgc16PSAlq4uLKcZQj9qPBkWPuJAa+81ICwiZ7Xm0SLsEYd4OouQD8slnBXznSRS6dXGvb56a6p/x5KlBQfw0NHQzqoN7UoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=hV42WE/H; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="qtS2PQA1"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="hV42WE/H"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id A9D4420704;
-	Tue,  6 Oct 2026 09:06:26 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 501C520704;
+	Tue,  6 Oct 2026 09:06:35 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id Gv7eelCQ0xXA; Tue,  6 Oct 2026 09:06:25 +0200 (CEST)
+ with ESMTP id 59R1hWly2Cg2; Tue,  6 Oct 2026 09:06:34 +0200 (CEST)
 Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id D4907206D2;
-	Tue,  6 Oct 2026 09:06:25 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com D4907206D2
+	by mx1.secunet.com (Postfix) with ESMTPS id CA0D0206D2;
+	Tue,  6 Oct 2026 09:06:34 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com CA0D0206D2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1791270385;
-	bh=FqDZ4i4jaXyz88J2KJyeoWP+h/RJz+6Kip2B/Ve/k0A=;
+	s=202301; t=1791270394;
+	bh=09QDpxXxEv937Zvaay+i0OjQpOQ5/SZOjB/Lo5SqWU0=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=qtS2PQA1MYBFDULZUmXH8PW0qhDOjif60mjjG1800kg34jjtRN8phLePY4IzCQakY
-	 BBQd74qKuVb/9OqRDQ8OxK7SoPMNpd5iZ1enw+345g0zui6KvP2GQRAXIfputdbiMf
-	 REOcG9hFAu1suKJgLak8XdV+cg6dSMkDJyiqce8QhgAXjFx3WoM7++gDo89MOFsEyf
-	 syYClAyospDOpkcWeB8E+rF1X8+CM7RNqPbRiU5TMKGNg/Dbwy5C5ILRZG9GN0Bhxq
-	 /TSGwIamSTl41FWGIt45D9bUtt3eNIKAXmDKD1uGdsqr45zLWXqJrvbFT3U0oUCMTd
-	 6FLEHbN77ELvw==
+	b=hV42WE/HmGERVr8oNP2Qw2hRIDQH79DC0FiOh+iKRT01gl+U1Y0xcpqA7LaFephSe
+	 NjIdIA7rJJAemBcd1ftrJ5zKzxHpMT/CDlTtid6uFgs8JiNE+CI1PA7D3m6gcfYGaG
+	 RcI094FdY5hxYzo95plmus6C8ZOgJsl8H43pWlV/zGxmhDPQPU7qSVWPIcw2s4Dkzi
+	 YdaQi9X5PsTW9bLBqadnYCzI1f5/WM/DVxIyGUYEzxhtDxMxWV0e4bcVu7wqzoisLv
+	 8Kc6VR1eOfwU+tgyR/THuv3Zm07GTo1/xuL0NwBXBSqMZxAtm4p74pcKbHEBGD4/vC
+	 bN2Y5N8xMc/BA==
 Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
  (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
- 2026 09:06:23 +0200
+ 2026 09:06:34 +0200
 From: Antony Antony <antony.antony@secunet.com>
 To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
 	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
@@ -56,10 +56,10 @@ To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
 CC: Sabrina Dubroca <sd@queasysnail.net>, <netdev@vger.kernel.org>, Yan Yan
 	<evitayan@google.com>, Tobias Brunner <tobias@strongswan.org>, Florian
  Westphal <fw@strlen.de>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH ipsec v4 7/9] xfrm: include mark in MIGRATE_STATE SA collision check
-Date: Tue, 6 Oct 2026 09:06:13 +0200
-Message-ID: <migrate-state-fixes-v4-7-d5054459fc78@secunet.com>
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH ipsec v4 8/9] xfrm: pass extack through to xfrm_init_replay() from xfrm_init_state()
+Date: Tue, 6 Oct 2026 09:06:25 +0200
+Message-ID: <migrate-state-fixes-v4-8-d5054459fc78@secunet.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <migrate-state-fixes-v4-0-d5054459fc78@secunet.com>
 References: <migrate-state-fixes-v4-0-d5054459fc78@secunet.com>
@@ -72,171 +72,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.16-dev
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-02.secunet.de
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-02.secunet.de
  (10.32.0.172)
 
-The SA lookup tuple is (daddr, spi, proto, family, mark), but the
-EEXIST pre-check and the xfrm_state_insert() vs xfrm_state_add()
-decision only considered daddr and family, ignoring mark.
-A migration that only changes the mark inserts a duplicate SA tuple
-into the hash tables.
+xfrm_init_state() takes an extack parameter but doesn't pass it to
+xfrm_init_replay(), so replay-window errors can't be reported via
+extack.
 
-The collision check is implemented as xfrm_state_mark_collides(),
-which walks the SPI hash bucket for the target tuple and excludes the
-state being migrated by pointer, rather than doing a separate
-exact-match lookup followed by a wildcard lookup and comparing the
-result against self.
-
-Before:
-root@west:~# ip xfrm state add src 10.1.1.1 dst 10.1.1.2 proto esp \
-        spi 0x1000  reqid 100 mode tunnel aead "rfc4106(gcm(aes))" \
-        0x1111111111111111111111111111111111111111 96 \
-        mark 0x1 mask 0xff
-
-root@west:~# ip xfrm state add src 10.1.1.1 dst 10.1.1.2 proto esp \
-        spi 0x1000  reqid 100 mode tunnel aead "rfc4106(gcm(aes))" \
-        0x1111111111111111111111111111111111111111 96 \
-        mark 0x2 mask 0xff
-root@west:~# ip xfrm state migrate dst 10.1.1.2 proto esp spi 0x1000 \
-        mark 0x1 mask 0xff \
-        new-dst 10.1.1.2 new-src 10.1.1.1 new-reqid 100 \
-        new-mark 0x2 mask 0xff
-ip x s
-src 10.1.1.1 dst 10.1.1.2
-    proto esp spi 0x00001000 reqid 100 mode tunnel
-    replay-window 0
-    mark 0x2/0xff
-    aead rfc4106(gcm(aes)) 0x1111111111111111111111111111111111111111 96
-    anti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000
-src 10.1.1.1 dst 10.1.1.2
-    proto esp spi 0x00001000 reqid 100 mode tunnel
-    replay-window 0
-    mark 0x2/0xff
-    aead rfc4106(gcm(aes)) 0x1111111111111111111111111111111111111111 96
-    anti-replay context: seq 0x0, oseq 0x0, bitmap 0x00000000
-    sel src 0.0.0.0/0 dst 0.0.0.0/0
-
-Notice two states with same mark 0x2/0xff.
-After:
-
-Error: New SA tuple already occupied.
-
-Fixes: a9d155ea9b44 ("xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: 231a1744dc43 ("xfrm: add extack to xfrm_init_state")
 Signed-off-by: Antony Antony <antony.antony@secunet.com>
-
 ---
-v1->v2: pre-check used wildcard lookup; factored the check into
-xfrm_state_mark_collides() excluding self directly instead of
-lookup_exact()+lookup() with a pointer comparison
----
- include/net/xfrm.h    |  4 ++++
- net/xfrm/xfrm_state.c | 40 +++++++++++++++++++++++++++++++++++++---
- net/xfrm/xfrm_user.c  | 17 ++++++++---------
- 3 files changed, 49 insertions(+), 12 deletions(-)
+ net/xfrm/xfrm_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 9e053388aa4b..26dd4b570588 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -1751,6 +1751,10 @@ struct xfrm_state *xfrm_state_lookup_byaddr(struct net *net, u32 mark,
- struct xfrm_state *xfrm_state_lookup_exact(struct net *net, const struct xfrm_mark *mark,
- 					   const xfrm_address_t *daddr, __be32 spi,
- 					   u8 proto, unsigned short family);
-+bool xfrm_state_mark_collides(struct net *net, u32 mark,
-+			      const xfrm_address_t *daddr, __be32 spi,
-+			      u8 proto, unsigned short family,
-+			      const struct xfrm_state *self);
- #ifdef CONFIG_XFRM_SUB_POLICY
- void xfrm_tmpl_sort(struct xfrm_tmpl **dst, struct xfrm_tmpl **src, int n,
- 		    unsigned short family);
 diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index f1e04df8d501..65663c7ba836 100644
+index 65663c7ba836..0555e5d796ed 100644
 --- a/net/xfrm/xfrm_state.c
 +++ b/net/xfrm/xfrm_state.c
-@@ -2202,10 +2202,12 @@ int xfrm_state_migrate_install(const struct xfrm_state *x,
- 			       struct netlink_ext_ack *extack)
- {
- 	if (m->new_family == m->old_family &&
--	    xfrm_addr_equal(&x->id.daddr, &m->new_daddr, m->new_family)) {
-+	    xfrm_addr_equal(&x->id.daddr, &m->new_daddr, m->new_family) &&
-+	    xc->mark.v == x->mark.v && xc->mark.m == x->mark.m) {
- 		/*
--		 * Care is needed when the destination address of the state is
--		 * to be updated as it is a part of triplet.
-+		 * Care is needed when the destination address or mark of the
-+		 * state is to be updated, as they are part of the lookup
-+		 * triplet.
- 		 */
- 		xfrm_state_insert(xc);
- 	} else {
-@@ -2440,6 +2442,38 @@ xfrm_state_lookup_exact(struct net *net, const struct xfrm_mark *mark,
- }
- EXPORT_SYMBOL(xfrm_state_lookup_exact);
+@@ -3384,7 +3384,7 @@ int xfrm_init_state(struct xfrm_state *x, struct netlink_ext_ack *extack)
+ 	if (err)
+ 		return err;
  
-+/* True if some OTHER state at this tuple would wildcard-match "mark".
-+ * Used by MIGRATE_STATE, which must exclude the state being migrated.
-+ */
-+bool xfrm_state_mark_collides(struct net *net, u32 mark,
-+			      const xfrm_address_t *daddr, __be32 spi,
-+			      u8 proto, unsigned short family,
-+			      const struct xfrm_state *self)
-+{
-+	struct xfrm_hash_state_ptrs state_ptrs;
-+	unsigned int h;
-+	struct xfrm_state *x;
-+	bool collides = false;
-+
-+	rcu_read_lock();
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+	h = __xfrm_spi_hash(daddr, spi, proto, family, state_ptrs.hmask);
-+
-+	hlist_for_each_entry_rcu(x, state_ptrs.byspi + h, byspi) {
-+		if (x != self && x->props.family == family &&
-+		    x->id.spi == spi && x->id.proto == proto &&
-+		    xfrm_addr_equal(&x->id.daddr, daddr, family) &&
-+		    (mark & x->mark.m) == x->mark.v) {
-+			collides = true;
-+			break;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	return collides;
-+}
-+EXPORT_SYMBOL(xfrm_state_mark_collides);
-+
- struct xfrm_state *
- xfrm_find_acq(struct net *net, const struct xfrm_mark *mark, u8 mode, u32 reqid,
- 	      u32 if_id, u32 pcpu_num, u8 proto, const xfrm_address_t *daddr,
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 4de8c401eb44..a5fbe38839c4 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3476,15 +3476,14 @@ static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
- 						       x->nat_keepalive_interval);
+-	err = xfrm_init_replay(x, NULL);
++	err = xfrm_init_replay(x, extack);
+ 	if (err)
+ 		return err;
  
- 	if (m.new_family != um->id.family ||
--	    !xfrm_addr_equal(&m.new_daddr, &um->id.daddr, um->id.family)) {
--		u32 new_mark_key = m.new_mark ? m.new_mark->v & m.new_mark->m :
--						m.old_mark.v & m.old_mark.m;
--		struct xfrm_state *x_new;
--
--		x_new = xfrm_state_lookup(net, new_mark_key, &m.new_daddr,
--					  um->id.spi, um->id.proto, m.new_family);
--		if (x_new) {
--			xfrm_state_put(x_new);
-+	    !xfrm_addr_equal(&m.new_daddr, &um->id.daddr, um->id.family) ||
-+	    (m.new_mark && (m.new_mark->v != x->mark.v ||
-+			   m.new_mark->m != x->mark.m))) {
-+		const struct xfrm_mark *new_mark = m.new_mark ? m.new_mark : &x->mark;
-+
-+		if (xfrm_state_mark_collides(net, new_mark->v & new_mark->m,
-+					     &m.new_daddr, um->id.spi,
-+					     um->id.proto, m.new_family, x)) {
- 			NL_SET_ERR_MSG(extack, "New SA tuple already occupied");
- 			err = -EEXIST;
- 			goto out;
 
 -- 
 2.47.3
