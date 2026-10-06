@@ -1,241 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011059.outbound.protection.outlook.com [40.93.194.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CC03DD871
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 11:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791285838; cv=none; b=lDluHgOuWb4VEBkBnTBzJKHyjcBQGAJKPfyw0vZ8ML7coazP+RHCmfy2Dp5xQUtBu9Th3qH6702k7AAAzliB0pJSd5o5a1GQwHyhn0O8qql4M8Tyf7CZENlWadQad7512vnz7ny77T9GKPOZrUuPNUOB3MadSQZ6Ev3SW3pKr50=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791285838; c=relaxed/simple;
-	bh=XdpAnPmZPdfJMv5U124CuZ+lvv41BcjUyVPRFDrgfH0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=baQcxAIf7SEt3NHF8L0wW1SUACvT3YepNVkbIuLyy/ouks6Y9ByOXH9bGOwZT2o3D53dquvDF3deH4hSAVFFyd1C2A9otO46j4WuheNV+F4Z051QfvkIYB3KesZH4TJ/f8DpZXEk/aKrLbpDAaxiDuGIfZgTUd8TDTLgTJyzG7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hu+FLg7i; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B813AB28D;
+	Tue,  6 Oct 2026 11:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791285893; cv=fail; b=lpWF35D6wtxmaTvd5vutMbyttGiwjgia7HpQbcpiP0svJt1+21RdipvZwxDfr1JJhFwYg0kxw4ts1W6bndJ/NR4DF+qzi4qexkDt3ry9gTQJGk6UgQ3sXJDdfJsTifdSMb8uKyeMe9CwjNRJKDgjuMObkGsUC4bRGB3Qp8uvBJc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791285893; c=relaxed/simple;
+	bh=u9M/053LOtMBXeLbblWSAmARlYZh1J/nz9Lber6N6JU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=etE75uyjL46WmM894XMVva72CYeGIT4CI1euDshn50UIzGdy+hT60qThI/ij0c4IP+XE4VTEAZ+CwhUymy0zF/teAxExaqV0rUd75M0P+yiOHLGP0a1ZjmFdRxQZz4lOrsCOo4j9IU8TlBHU/HirEHJFyL3yZQb71Y3VgangfpE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Aw6m5u16; arc=fail smtp.client-ip=40.93.194.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hu+FLg7i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29C51F008A2
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 11:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791285836;
-	bh=IDroXHxguQo+CybQq2kk/ZUPA2VdUvycoL56+zfLxDY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hu+FLg7i2t7X+Gvv7zjSwsfIK0ePD3+7gCZmtEmo/D2gCjTZ1nVbLJr+RURh0P4Q9
-	 XSjezRUPz2y6rNF3NCMUxu+ixWUpbiyol7/+FkVo3qRCnJowH3xpMWr0QDB4qX3pkD
-	 OH/pm2elW7e0bF8O9R24juwuCe14cV9ArYKXjl/OzTuEOEN2thlklbtRKoDelmOY9T
-	 DoTLHtNMUvYsnIJpa07RBmf6xa//wmU7xZr7KiNNOcpvM51NQfS/mXMW+nJMXg9SHy
-	 bxqUs1lhYiYOTcW95SWsDc3CttgFLuYsf19tiNquvH2NOgjd0Da3OG4Jzv4InskvEI
-	 4gzHfV8tQM2EQ==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4af173320f9so1500507b6e.2
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 04:23:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzvRxuGQn2AXi3FCwwP26iAp/ibYPjEXZSuNZEU8FVVCHP411sHzwUP8+c3cWGawA/gnGhbAnI=@vger.kernel.org
-X-Gm-Message-State: AFuF++mS0O18O2CIXKI+IwkNiiYpP/lABRH00+9pwyxCl4BW2Ynk0yD6
-	PkGChzrn8rIJoQSiL70DFPnqNAJQBVPRiO9D7R2CCoso2HYVz+5JvrPw+z6EeiOD3Kjmink6D2B
-	8NDEmUJuSklY1xw56h0ba2dwoTNqp5R4=
-X-Received: by 2002:a05:6808:bce:b0:4b9:e5fa:8905 with SMTP id
- 5614622812f47-4fb40c95755mr1060603b6e.24.1791285836048; Tue, 06 Oct 2026
- 04:23:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Aw6m5u16"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=unAj/6IgM40VqVbP7d7282cklcZfXtYYTEjGTCpFd9fdtpkSAoguKyVLAy2Q3EoZyf4VNXKavQS5IQzx+j0rDms1xUp7vP4qjDevEpOas/6pqpNWHpg/To55ikQyr4w50OUri06EzXF4s0LL3NbELWBqE+yqPP+2Spf/aCO09bbf8IcMZSI4BnD5ZlBhCaWYlz66sFRfYIPrKRrPkR98j4eOfcpbrvsIZzwp8Fhtwn7C09+0M9NT9aMkz0tVKWFw9xPkgIypKr/B7qKzIYnqAwB9ea0SgVAuTN2Ji/fpVePGPey7RQ4UIyTW7++1K7Z/a5+i0i1Lc/VTzhjHgwd4IA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PggzhCewVSlVEzJvcpo9KqlJyrvfOeG096iBp1NkF8k=;
+ b=H2S/Y2nZAP3tgoN6LVEvcJJDlWFZ+G8jnVREC5X8lujcrrHlvtxOZAaHTV7871x2e3lh06e9NDUz8+JiETjf2wVhitfXWjq9GT2qtLWERUEwWMwIjA9wZ37wu+yNssxKZAQXkqmr09EdbeUidJMBaLg94DP6F+6OIdwpbqJwrq1eiougP94uiPuORhmBlPIz6zwH0Np7745O8OiVA5z+WlMB59Rk03yn5rNgq5FJcJ2reALlFepK6uNgqN/w9dFEacV7TaC3YEPGXaia4J/Vb/z3WIngVwVNa0L29mEjXrJL2abdEuF4l7Qp+WhB3G8Wj6BfH4OVw7J5DnO7WqMtmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PggzhCewVSlVEzJvcpo9KqlJyrvfOeG096iBp1NkF8k=;
+ b=Aw6m5u16Z3n3P0JgDe4rzd2esykZt0AW7MZ2XSAnPxpNszdmFy0aZprFZFc69U9PovmU/ugaXe8dkZWtd7hFM4twb72vhwhsH+vz0AjtOygjIJ9dQqJpS3dyBWlf/BlKtRDUqnk99ZRI379XFvvfcFDYufMHmQNJJRJCRXBwqOiopQfkD2OiRpCyuEqdsDkguVjhH2TZlScZVixIovg7xdS+0hdaRrWUxbqRHQC7RwFHAM33/p3Mn/ikehXUyHqxEX8e1iRlLz1uYKV7A5aP4xS267pRaG3lztuxmWqHhmaTHEiWJBUTI8bTUH6A0vohcz8aVoiHNcgQrrJKc9H+Zw==
+Received: from CH0PR03CA0260.namprd03.prod.outlook.com (2603:10b6:610:e5::25)
+ by PH7PR12MB6538.namprd12.prod.outlook.com (2603:10b6:510:1f1::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Tue, 6 Oct
+ 2026 11:24:44 +0000
+Received: from DM3PEPF000265AF.namprd02.prod.outlook.com
+ (2603:10b6:610:e5:cafe::a5) by CH0PR03CA0260.outlook.office365.com
+ (2603:10b6:610:e5::25) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Tue, 6
+ Oct 2026 11:24:44 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ DM3PEPF000265AF.mail.protection.outlook.com (10.167.23.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Tue, 6 Oct 2026 11:24:44 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
+ 2026 04:24:30 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 04:24:29 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Tue, 6 Oct 2026 04:24:25 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Kees
+ Cook" <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Maher Sanalla
+	<msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Moshe Shemesh
+	<moshe@nvidia.com>, Or Har-Toov <ohartoov@nvidia.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Shay Drori <shayd@nvidia.com>, Tariq Toukan
+	<tariqt@nvidia.com>
+Subject: [PATCH net V2] net/mlx5: Lag, reset vport speed on MPESW teardown
+Date: Tue, 6 Oct 2026 14:24:15 +0300
+Message-ID: <20261006112415.259157-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1791248202.git.nramaswamy@openai.com> <f366f5325d7eb96f0edd999b4f984213743914b8.1791248202.git.nramaswamy@openai.com>
- <627cd81c-9824-4d1b-ae47-f7f929a96596@kernel.org>
-In-Reply-To: <627cd81c-9824-4d1b-ae47-f7f929a96596@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 6 Oct 2026 13:23:44 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--he-dR-SAgqiw@mail.gmail.com>
-X-Gm-Features: AclHuK9Cxm4n9Z6ci6iwtPBgh-TQXM8rupzVknHZfA_6PpM4enJvkSaRp7Cx2L0
-Message-ID: <CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--he-dR-SAgqiw@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] tcp: restore RACK list membership when undoing loss
-To: nramaswamy@openai.com, netdev@vger.kernel.org
-Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Yuchung Cheng <ycheng@google.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PEPF000265AF:EE_|PH7PR12MB6538:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2095bab-0be8-469e-bace-08df239c6be2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700016|23010399003|7416014|82310400026|376014|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	ZSFTPBfw8XKUpb/l0uufnx0/0r/CcbVo084sIGLPnA0YkwznmLZghy4X8jGlENN05x4nukhoMNZvm6aLlNWpBiUZUoIVeZNj+oVe4YaXGxQE3m3rNjVhZAQgyu4F0xh1Z4sUlih/Vi32zcd1iOre719qsxyf/kDsau/37v6+4B+mUZrfG0wNQN3sARb4c616ov8wkYYDxUh4L4gnC4W4JZj6qKwvmgb+MooIIBvGJZGXQKe6/4xH+kvOoDce86mIibsrF0N9alvo+yj+ubwi+7x6l1vkgwnLzICZz5U29n0AtbFwglUhxa3hgwQhPSVmO/JUIPLfN8YCwj4Wq8jIPkJYPdw2UqikIQ1m6AbHXqBbsKuwitbuhT6UazCZXSpFDE+0VHohL8okZodkUIkLifdJX2d+rg+OO9deIIeNfKYea9mWo+AYnIWVs73yfywiHhwUg3F/1WmR2RkDsTb6WBe5d/DXkJmn5/xk2rpbquUQT2uAyvi3flGDlQg5t8te1By78HKPgrr3HEw8azujA/GGctFtmnzq2I9sjNfuneUaIMuKyKN136+xfCfAt4aYl8g3EXP0d25KsR98gUO7CsaqaK42RnHkjmzpbysG5vaGwpwyMTVOJ5j+wUir0K6SAf887lI7wxoQ/Ie3/Xa5foq8xQISa/+WB4N5Sxzb4yB+Bjb+LWWqoL3kU1oYmBI1qKFg3uTuGqRvk6z/AkE+tA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(23010399003)(7416014)(82310400026)(376014)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	BG2+WngydA//ELfyXAFD5Ye8q7MHvMi1pUMLHmgdLmqgBNUv65XlUPkK0cnLOaJ6dtPhMJTP0pRTAb1YLu99IQUW7E+YsGZut2tTsRIo4cHKwuFGYoMM1RVkvW34pfEr+fIpY52EFa9JJvbdSrHHejJtMYTxdS8j6+QmaDLYeRzXhn7XDATeIR3+8bW6EZIoW8gKmPdPfUOykh10FdWtBiIAJcV2vmOFpRvbJII0RWcoVx3Ww7+3gJyqs+Nihq5MoYgAzTlMAMtlrIz2UNR8XTE8akM7SaFiiTKL8AW1IHxw6eR2V2vZBhDaIF7U6OK8PNA8L6A6y6qcWtufCyXCnLaBbbVihVNLQY+PWx09znbULN7kruLUBTgeTWlmMQUpt1hH6hps0Uvio6f1LjHIK2yUiUJ6varRjdAwkofF/QOyGvu9MkXZb3AH2zvcGweH
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 11:24:44.0374
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2095bab-0be8-469e-bace-08df239c6be2
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM3PEPF000265AF.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6538
 
-Le mar. 6 oct. 2026 =C3=A0 08:42, Eric Dumazet <edumazet@kernel.org> a =C3=
-=A9crit :
->
->
->
-> On 10/6/26 07:15, nramaswamy@openai.com wrote:
-> > From: Neil Ramaswamy <nramaswamy@openai.com>
-> >
-> > Partial undo can clear the TCPCB_LOST flag on segments already removed
-> > from RACK's list, which prevents subsequent RACK loss detection, leadin=
-g
-> > to segments only being retransmitted after the RTO. Restoring them to
-> > the RACK list as part of partial undo makes sure we can properly
-> > reconsider them for fast retransmission in the future.
-> >
-> > To do this, we first sort (by transmission time) the segments whose
-> > TCPCB_LOST flag is being cleared and then linearly insert those back
-> > into the RACK list, which is sorted by transmission time.
-> >
-> > My investigation started from seeing repeated TCP stalls in prod and th=
-e
-> > mitigation that seemed to prevent these stalls was limiting SO_SNDBUF t=
-o
-> > 96 KiB. It also seems like others have seen similar symptoms before [1]=
-.
-> >
-> > [1]
-> > https://lore.kernel.org/netdev/35A4DDAA-7E8D-43CB-A1F5-D1E46A4ED42E@gma=
-il.com/
-> >
-> > Fixes: 043b87d7599e ("tcp: more efficient RACK loss detection")
-> > Signed-off-by: Neil Ramaswamy <nramaswamy@openai.com>
-> > Assisted-by: LLM sparse
-> > ---
-> >   net/ipv4/tcp_input.c | 35 +++++++++++++++++++++++++++++++++++
-> >   1 file changed, 35 insertions(+)
-> >
-> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> > index 92bc60716f33..51f04c7474dc 100644
-> > --- a/net/ipv4/tcp_input.c
-> > +++ b/net/ipv4/tcp_input.c
-> > @@ -69,6 +69,7 @@
-> >   #include <linux/module.h>
-> >   #include <linux/sysctl.h>
-> >   #include <linux/kernel.h>
-> > +#include <linux/list_sort.h>
-> >   #include <linux/prefetch.h>
-> >   #include <linux/bitops.h>
-> >   #include <net/dst.h>
-> > @@ -2840,16 +2841,50 @@ static void DBGUNDO(struct sock *sk, const char=
- *msg)
-> >   #endif
-> >   }
-> >
-> > +static int tcp_rack_skb_cmp(void *priv, const struct list_head *a,
-> > +                         const struct list_head *b)
-> > +{
-> > +     const struct sk_buff *skb_a =3D list_entry(a, struct sk_buff,
-> > +                                            tcp_tsorted_anchor);
-> > +     const struct sk_buff *skb_b =3D list_entry(b, struct sk_buff,
-> > +                                            tcp_tsorted_anchor);
-> > +
-> > +     return tcp_skb_sent_after(tcp_skb_timestamp_us(skb_a),
-> > +                               tcp_skb_timestamp_us(skb_b),
-> > +                               TCP_SKB_CB(skb_a)->end_seq,
-> > +                               TCP_SKB_CB(skb_b)->end_seq);
->
-> Patch LGTM, but perhaps we could avoid the two div_u64() calls here.
->
->
->         return tcp_skb_sent_after(skb_a->skb_mstamp_ns,
->                                   skb_b->skb_mstamp_ns,
->                                   TCP_SKB_CB(skb_a)->end_seq,
->                                   TCP_SKB_CB(skb_b)->end_seq);
->
->
->
-> > +}
-> > +
-> >   static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss=
-)
-> >   {
-> >       struct tcp_sock *tp =3D tcp_sk(sk);
-> >
-> >       if (unmark_loss) {
-> > +             LIST_HEAD(restored);
-> >               struct sk_buff *skb;
-> >
-> >               skb_rbtree_walk(skb, &sk->tcp_rtx_queue) {
-> > +                     if (TCP_SKB_CB(skb)->sacked & TCPCB_LOST)
-> > +                             list_move_tail(&skb->tcp_tsorted_anchor,
-> > +                                            &restored);
-> >                       TCP_SKB_CB(skb)->sacked &=3D ~TCPCB_LOST;
-> >               }
-> > +             if (!list_empty(&restored)) {
-> > +                     struct list_head *pos =3D &tp->tsorted_sent_queue=
-;
-> > +
-> > +                     /* Ensure lost skbs are added in transmission ord=
-er */
-> > +                     list_sort(NULL, &restored, tcp_rack_skb_cmp);
+From: Or Har-Toov <ohartoov@nvidia.com>
 
-Second thoughts (sorry I am currently attending LPC in Prague, little
-time this week for reviews)
+mlx5_lag_disable_mpesw() never called mlx5_lag_reset_vports_speed(),
+unlike regular LAG teardown in mlx5_do_bond(), leaving stale cached and
+FW-configured speeds after MPESW is torn down.
 
-pw-bot: cr
+Call it from mlx5_lag_disable_mpesw() as well, so the reset is paired
+with mlx5_lag_set_vports_agg_speed() on the MPESW path too.
 
-I am quite concerned about calling list_sort() inside
-tcp_undo_cwnd_reduction().
+Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to vports")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-In high-BDP environments (like 100G/200G/400G fabrics), a flow can easily
-have thousands of packets in flight. If a loss burst affects, say, 4000
-skbs:
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
+index abf72026c751..e0a57b7dd82e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
+@@ -157,6 +157,7 @@ void mlx5_lag_disable_mpesw(struct mlx5_lag *ldev)
+ 	if (ldev->mode != MLX5_LAG_MODE_MPESW)
+ 		return;
+ 
++	mlx5_lag_reset_vports_speed(ldev);
+ 	mlx5_mpesw_metadata_cleanup(ldev);
+ 	mlx5_lag_shared_fdb_destroy(ldev, MLX5_LAG_FILTER_ALL);
+ 	if (mlx5_lag_has_sd_group(ldev))
 
-1. list_sort() will perform ~45,000 comparisons.
-2. With indirect function calls (retpoline cost) and cache misses across
-   1MB+ of sk_buff structures, this can freeze the CPU in SoftIRQ under
-   the socket lock for multiple milliseconds..
+base-commit: d5a007b9b457c915ab1a53227e8939e4018aa97a
+-- 
+2.44.0
 
-We could avoid list_sort() completely by maintaining a second list,
-e.g. tp->tsorted_lost_queue.
-
-Consider the following:
-
-1. When RACK detects loss in tcp_rack_detect_loss(), instead of calling
-   list_del_init(&skb->tcp_tsorted_anchor), move the skb to the lost
-   queue:
-
---- a/net/ipv4/tcp_recovery.c
-+++ b/net/ipv4/tcp_recovery.c
-@@ -101,7 +101,7 @@ static void tcp_rack_detect_loss(struct sock *sk,
-u32 *reo_timeout)
-  remaining =3D tcp_rack_skb_timeout(tp, skb, reo_wnd);
-  if (remaining <=3D 0) {
-  tcp_mark_skb_lost(sk, skb);
-- list_del_init(&skb->tcp_tsorted_anchor);
-+ list_move_tail(&skb->tcp_tsorted_anchor, &tp->tsorted_lost_queue);
-  } else {
-
-   Because RACK scans tsorted_sent_queue from oldest to newest, packets
-   appended to tsorted_lost_queue are already guaranteed to be in strictly
-   increasing departure timestamp order.
-
-2. When a packet is retransmitted, tcp_update_skb_after_send() already
-   calls:
-
-   list_move_tail(&skb->tcp_tsorted_anchor, &tp->tsorted_sent_queue);
-
-   So retransmitted packets automatically leave tsorted_lost_queue and
-   re-enter the tail of tsorted_sent_queue in O(1).
-
-3. When a partial undo occurs in tcp_undo_cwnd_reduction(), any
-   un-retransmitted packets remaining in tsorted_lost_queue are already
-   in sorted order.
-
-   Since these lost packets were originally sent prior to any subsequent
-   transmissions in tsorted_sent_queue, restoring them can often be done
-   with an O(1) list splice at the head:
-
-   if (unmark_loss && !list_empty(&tp->tsorted_lost_queue))
-           list_splice_init(&tp->tsorted_lost_queue, &tp->tsorted_sent_queu=
-e);
-
-> > +                     while (!list_empty(&restored)) {
-> > +                             struct list_head *entry =3D restored.next=
-;
-> > +
-> > +                             while (pos->next !=3D &tp->tsorted_sent_q=
-ueue &&
-> > +                                    !tcp_rack_skb_cmp(NULL, pos->next,
-> > +                                              entry))
-> > +                                     pos =3D pos->next;
-> > +                             list_move(entry, pos);
-> > +                             pos =3D entry;
-> > +                     }
-> > +             }
-> >               tp->lost_out =3D 0;
-> >               tcp_clear_all_retrans_hints(tp);
-> >       }
->
