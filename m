@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93373B961F;
-	Tue,  6 Oct 2026 12:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ADC39A7EF;
+	Tue,  6 Oct 2026 12:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791289394; cv=none; b=YfxTMQtS/t83fsKUcIeqiJAXbGtrYpLo0/CT5hTfVMcnEd2zP3BmDfI3KjF6mSbZvFiLPULUC8/0aqSafBnXQHFsm8UnbiXNFqoDeaGMKBLXYf8/R6j2fsXTfw7ovbi1nGjMQ8YzDGXzosL5hE/OC3e1kK/sORIzH8af/FGFht8=
+	t=1791289460; cv=none; b=G+shtdO4dP5nMJx5YjskxuDxnalQU1FspJ5Hh7V8hm5MYvVZNyxZCWWFnfRPTmEWEuFkWR/CAVmbImWeta44Ou8fZvYeDjsw8GBhoRs3PglZLzGuzGooJueP1CsHcXHrvxe06KnghOLsCNI9OykQH+lvBFQn7pbjw+EpZAODs/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791289394; c=relaxed/simple;
-	bh=QsYPcCEk6x1kbtHzappODj4VvqYgWoRY8En1KdtdeLY=;
+	s=arc-20240116; t=1791289460; c=relaxed/simple;
+	bh=7S6bsfzOwKenBeK18OPgTrNNVNtxK7kYAfeiNHPqzCU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YeY+xpxSVEdnZBq4qqugEgrZW00dE7YHegYjCmIG++hmLm78bSeJeBR/aU//N9nQW2MNOPeT85i+/Fqtc6xl01hQkklU1SiNiJh69jU91YkoPaJKIG3ohPYp5SKGlCprXzAi67Cz4pw+c8rBOVCLV8iNbr3ZXSq1PJn/j3mdRr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=M1kvph3k; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=mfbyGTod3Gh+DZaVolGAvz3FN6tjV/nJhe6UWBc2+2Jh0RETq9oMMvyJy6Vb7FivXsm+Zr54AD7AsTfSNMWyzR6Nl+f1tynyxMwJWwF7/yJKrX8fdq2jM9iRH48ndaKwruF+uRgR6F1YPHe5qXRUJzAOo7ln8qltLTxRFaBIJ5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZFzSoz8J; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="M1kvph3k"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZFzSoz8J"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=5C68xV8Rja2PPKQVWqPpRRB2YjUKB9zcUPjhhQEGBvA=; b=M1kvph3kamoWjwhBAOzvS/CKco
-	pHChtN3euzSszMBRaLwmUHl35iEqN7W1EuktMaWslwRjyOqbJAfi4OMSOj5fr5WGJm7c+cwuUVy95
-	Akp6K+v2j5Mx13lJdPGd/dw1OpDWEUQ0PnTpyBXqkQDxqt94jBaeZmdF+HnQ4EG+ioeU=;
+	bh=KLleRmOpqOayU9qrImpyZNShZPBIsLRye0/rS7Bp56I=; b=ZFzSoz8JpZab3mu+2cDYde8S0h
+	lstJGclgS6yamx4FoSsiiYiZUK9wTRnXrxpqH9TUWti8MXJN55SEJUcxqsqbw/GjcOAQEr6eI2NeT
+	wAkqwDPj1r0c9x7nnvBIQz2Y0rBLB5XG5geJSI5kpheGGyw3ypTdM9pOWGNDMHpp3P4I=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xE4CB-009G4j-0E; Tue, 06 Oct 2026 14:22:59 +0200
-Date: Tue, 6 Oct 2026 14:22:58 +0200
+	id 1xE4DD-009G6Z-43; Tue, 06 Oct 2026 14:24:03 +0200
+Date: Tue, 6 Oct 2026 14:24:03 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Selvamani.Rajagopal@onsemi.com
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -47,11 +47,11 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org, Jerry Ray <jerry.ray@microchip.com>
-Subject: Re: [PATCH net-next v8 03/11] net: ethernet: oa_tc6: Move oa_tc6.c
- to its own directory
-Message-ID: <5ccd0967-989e-49e6-810d-d2500f531128@lunn.ch>
+Subject: Re: [PATCH net-next v8 04/11] net: ethernet: oa_tc6: Move constant
+ definitions to header file
+Message-ID: <6c5d7e37-79ba-4513-b74d-2372406214ca@lunn.ch>
 References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
- <20260928-s2500-mac-phy-support-v8-3-7e011aacc309@onsemi.com>
+ <20260928-s2500-mac-phy-support-v8-4-7e011aacc309@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,17 +60,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260928-s2500-mac-phy-support-v8-3-7e011aacc309@onsemi.com>
+In-Reply-To: <20260928-s2500-mac-phy-support-v8-4-7e011aacc309@onsemi.com>
 
-On Mon, Sep 28, 2026 at 03:25:10PM -0700, Selvamani Rajagopal via B4 Relay wrote:
+On Mon, Sep 28, 2026 at 03:25:11PM -0700, Selvamani Rajagopal via B4 Relay wrote:
 > From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 > 
-> Moving oa_tc6.c to its own directory, drivers/net/ethernet/oa_tc6. This
-> will facilitate adding more files to support other features
-> defined by OPEN Alliance 10BASE-T1x Serial Interface specification
+> To help other source files within the module share the
+> constant definitions, some of the definitions from oa_tc6.c
+> are moved to a header file. This header file is still
+> private to OA TC6 framework.
 > 
-> This patch series is adding two files, one for hardware
-> timestamp related functions and one for PTP related APIs.
+> oa_tc6 structure is also moved to this header file as it is
+> needed for other source files that are part of OA TC6
+> framework.
 > 
 > Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
