@@ -1,78 +1,78 @@
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+Received: from mail-qk1-f228.google.com (mail-qk1-f228.google.com [209.85.222.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE8E4A1DE1
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 16:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C16649E5E6
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 16:24:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791303849; cv=none; b=GpLI2tb0iloASrPbAeip/zvmjvg2d0mCDf1fYK4o4wKK+6S399WMJJbFLpEAfHBJk/hA1R9ubNPHD+tQfxPQThmME2Z1n5q3Nxf4X83ueYRXG7sO3m6SbSdye/BVSQdNrdbX5YatkRZU5IoescKOaJIuZIAswxM0IHoUemyn8f4=
+	t=1791303849; cv=none; b=WPHs+rjqFuvOA0VdMhBXRmLTIon+vALZmw68aF20oAGh8zjEo2GWiYQ3lHKcv5P2m59mxZfJiuV9O3ieA5nAeG/ZuuPk7IK5wNyax1/iXXkPZdnptom9bKnEcPNPWK9LvNI1DCqce1wA88Ef+Xr1DezesJou+Y9ZWVIopFoomv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791303849; c=relaxed/simple;
-	bh=6cmN/qwkD8ab61iBdsCMwN0wwf/+T1bgiKqzPXzdJxY=;
+	bh=RcbvBXG/6lrsdkpqL8g9IxIvet2V3+6WRbvHO5gAYgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSR/nNg8zq1Xc4oRuftidFxjtNVmjOAaKsfOouWFoPjVqW82aW+r1MHnnBU9DzNlxXMjiajVKcZkKzkTWhixVG6Y68oRNEj2Vp9S30RUBRMP5COr34G1MhqQ68iow+AqpyzWTSTg2y7sS6zcQqd6Q+gXAz+yd3Zi8TNGO92OXpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bqJmwCzE; arc=none smtp.client-ip=209.85.216.98
+	 MIME-Version; b=R/Tq3f0nI2evnorf/Sw2/JMhxAhNLAu54Ba6jb4NL5RrS/Vkku7S0FLhn9hF/f7NKIXqCl6tj5vcWxbSjJhrqCGH1XhP30P8Cpny5uFao5he2PzjY3MitUc5fXSowel7EeBwMAJ0dVveAt5V7Fg8DSkIuv8oDAsbVicLoK6R7Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=h3gxBz3D; arc=none smtp.client-ip=209.85.222.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bqJmwCzE"
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3a865731ee4so789897a91.2
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="h3gxBz3D"
+Received: by mail-qk1-f228.google.com with SMTP id af79cd13be357-93e63ee7b4cso64595485a.2
         for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 09:24:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791303841; x=1791908641;
+        d=1e100.net; s=20260707; t=1791303843; x=1791908643;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=O9o4IvyhfjrWzzCJjzj8Xul7I3SwiYZGMT3QQaUEesk=;
-        b=zJ5ociAkb9CfDRbeVVYrl3DJJCOk/b+EyFMg85v7/krubmi3hIgliRRsyHXB9hZse0
-         QlyN2c7anbmz8grUPzH2eOYGwBWrRr4DgMDc47IF1XZjUg1P1NqAjwbqlM7Aeen6jUH8
-         tqaMAA8ygEazX6bdBV5NAUuda/JoVXJ/uDFBuCL0XeAJns5TdnTyKQT5TZBF28eGhhEf
-         pvr8j2jvmU5BJBOjjVadaEdC6AmUqZVrMtjJ/XzS3dZdjz9qgWSbn0MTB8VjW5CugelE
-         FL2UQIcHOOyO6G8bD17PN9MkQVtfXlee4n7V714o4kYZSnwsR+Ey3MFW3au360tNKHm/
-         FjAA==
-X-Forwarded-Encrypted: i=1; AKwUvBzkx6T5tbAgZGV65bgCDVYi9hIFlExWeH61pZtPdSme97GPNZNST2E8WCBufwFFwKl0S05eZOE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIVB6ZQ3DPGoo/qSpXb+6PXGdJr2KIeerhOB1wDeaNyE6jbD4CS
-	6Qc26d1IxRXhJ7e6VSJwoVcWhKhHVV+LbN57qgGOYNQzHqM8RO/v6UHxsOSnE6rsIKPu/dKSjbC
-	So5MgdE9j6Mc+L52vV51LVD5T85Kvm9H1zjNVTZmFehP97ZzRF0YJkHYLofk+Y6Ixu7rWxAxACF
-	1U1zHBPQlVZApVwrtGlXmNFxphVk37+KM5bFakM6e8cOuA1g/wHrwEySPGgQApDJhfpqfFD5YwN
-	2IVcAlTgqGP
-X-Gm-Gg: AYBFou2Vp2d5IpV+J2FsVMUMi5udDf9SdD8gfNjprunIbgkYGqnnF1xoKLB00NFEcaG
-	TRGAN+WqDyb90FstyKGJs+bS0JNexWDDCSZgTB8tdON9/DBcgMMOlapo4GGsq7jl/QFV+/5eucm
-	4yb/DaoxmKd5X6GHB+cEM5GjP0mKXTTVhvaukXp6L2wkydQSlz3jaLkclImOPsomcav8sJPZJD1
-	+2lyf+W8KEiSF4cQ881zR0kZYBTXYW+pFqGNSknFWcqHh3FKOE/xMB5PUAz4UHOR3azGK0r8ruH
-	8pvcXoK2Lvfeg+F93swolKyeRKbPv8Gt42SAJ/A9YgG9hxzGxmcb/KSeLv0tXSYszPniTxJjeIC
-	Na1gGMbe5Z+SDPoBWgmW60F/fdGlW2etvB+ONVzLhRq2zlJouAIwCOTZGdyGVXIeDcbQMWI0B82
-	YCkCZRUIlr362i2NkvFutrNBD92wdumLglyV9Q
-X-Received: by 2002:a17:90b:2886:b0:3a8:2c7e:8986 with SMTP id 98e67ed59e1d1-3a82c7e90c0mr4558241a91.17.1791303836582;
-        Tue, 06 Oct 2026 09:23:56 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3a89876b5f2sm44818a91.6.2026.10.06.09.23.56
+        bh=F8p9gZ6dHUeXfr9Ect+sOuLZTX6uktr9z7PwXXUBPJY=;
+        b=h6lthJBqueiOiS/B7Vp2MWL3/QkUOYefJls0modJlE7L9cMLv+TvUlT140T5oQtJcd
+         w89idLNhnObwdlbAWgpC12/7UoYsuk05NNKsktVjTi7thBNUWJY0T/Iq1Yi92D6M4vhY
+         WHQSXV5xZ/7wFxOL3KNkZumjoQtRcTEMrRDN5/CC2+QCH0zk7V6NtVabj1yE8ee2pEOY
+         Wi1xs6gwyY8NS7kuHhTjjthOVP+LPFQvi64hpJoH4g68CZXGPEUFftVazOedY+o+IePx
+         6c5w4mfn0FnD2//rL+8IK0dvRgjU6oI6bTmjY4xCCVGFS7a31wjxHCJTvSXMmu6vmFOA
+         ZvSQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwXeMLgHOYIWvDOn9OUMa58qYcme5ZDWkuYAoLXdnUzVQcf2882LCEEvyx0Y6I7cEKr+X7pV9c=@vger.kernel.org
+X-Gm-Message-State: AFuF++kSWwd/aVncy4Cdv27qucAAf/ddqgj/XYgHttlmrMlyysmX5JRG
+	n6J4lpzRw0d+XtTkbLR0Bqsr90KgBHZnPiOE2yqaW/GJncm6TidK0O8UcO0I2xX0MKHGz36QSK5
+	FROj1nG1xhJ/IUJQ70d8bpd3idCjEZvSSHndPAO5iqb/2kpEq8Yk7uXKBgCGjwI9TCcSyth73Wt
+	H5W71BDgsBuLw7LYI2K9fney3qBiT5k+7laDTIUbf0W1a6MVh+HxTpuR5m6AYhThQiYFHlEXa0F
+	bAtaUBTQAwP
+X-Gm-Gg: AYBFou3klLN747SWxflgu7l1qvcvgM89xvSu6a2T78TUB0Sk1+bBrwlmcdhKhS0YY4z
+	PqE8DfBOOuq8G+qtP0P7LxbWeIeSUa75ZhL9AFWcptwgsqDq4PG4/JRfRXXhqZ2mACwuWh1Hy/b
+	1xpoLWKHpOw4gGh4eqyxx67ik58D1SH8FfU4XAolDWdb23XG7J7vLK4yT5Q5XS0ftFnTSZuZqAG
+	oYnB6+LtVpBobS3TJaaQKH+aqYMY8E1vNlw2B/f1h+FKWs3GfRoVWh+iD/ypKGtx+Uz0CoBa5Lh
+	zL5IRINn60ffOPz6sw8cHNGWpR9O6zmXc04bV8T1ce4dGrWn5VZBmnNFPQJpw5kXeM3hVgOrHdW
+	uryTUdfdn/EasxhvBWHlz4hasYMAXeX/ouhU0t/7cPmMgecxSZNnuyuym+b7dh66qDtJpTwndoP
+	q4YtVKL3ynMNQK0lt+bX/Y/x97m3TtvkBYrg==
+X-Received: by 2002:a05:620a:2705:b0:93e:646c:9138 with SMTP id af79cd13be357-93e8f359779mr350634185a.26.1791303842311;
+        Tue, 06 Oct 2026 09:24:02 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-93cca29a552sm482859085a.7.2026.10.06.09.24.02
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Oct 2026 09:23:56 -0700 (PDT)
+        Tue, 06 Oct 2026 09:24:02 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-533928ef33aso38970931cf.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 09:23:55 -0700 (PDT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-53397b6e05aso58563421cf.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 09:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791303835; x=1791908635; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1791303841; x=1791908641; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=O9o4IvyhfjrWzzCJjzj8Xul7I3SwiYZGMT3QQaUEesk=;
-        b=bqJmwCzEH39dHvmIJvZ9nRBDHmSS6iFUyhAWL5JbfzbS4L2Og0xqwgB7zECNeKp6Vd
-         uEwCBkoprfDlhlqKFqNGatP5GP/kZ+aTO79gD+df3425lzUGoZanexwdXA6AoP5v/TFG
-         7cBAyMxsW7wFnDErZCo7oXnhO4MxV/ZMX2HlU=
-X-Forwarded-Encrypted: i=1; AKwUvBx7a7klg2G1/GcUWSk54ZJxW1j2qp45S2pV7H8X2nFtxn9922bYnOEN2sjQX/GzQOvPNeJeQSo=@vger.kernel.org
-X-Received: by 2002:ac8:7f52:0:b0:535:10be:7d5e with SMTP id d75a77b69052e-53511ea8900mr203895141cf.46.1791303835205;
-        Tue, 06 Oct 2026 09:23:55 -0700 (PDT)
-X-Received: by 2002:ac8:7f52:0:b0:535:10be:7d5e with SMTP id d75a77b69052e-53511ea8900mr203894401cf.46.1791303834410;
-        Tue, 06 Oct 2026 09:23:54 -0700 (PDT)
+        bh=F8p9gZ6dHUeXfr9Ect+sOuLZTX6uktr9z7PwXXUBPJY=;
+        b=h3gxBz3D6k97B+mQI3Oex6nh50F8IZvF7hZoEmLHknu9f77Hi3+guupWPYkngMZxe+
+         1ezv2YEWoepQziuvDsbVvqJ2EXGC4oFG9ud8p1q5KLxzC+22DtaW23c6WzhadgTAOVbN
+         NHRGIGTprNn+kvTlynKT16c82xbEQ8Q0ksO0E=
+X-Forwarded-Encrypted: i=1; AKwUvByvwuZzGG4QWDTYucxt+5WKiBdWMxEaRjZjCSgmtKQNN9z0vtTIf1qsVIfTfXUszshhyFqwAk4=@vger.kernel.org
+X-Received: by 2002:a05:622a:312:b0:535:2283:20a3 with SMTP id d75a77b69052e-53566b24b6fmr31828991cf.33.1791303841412;
+        Tue, 06 Oct 2026 09:24:01 -0700 (PDT)
+X-Received: by 2002:a05:622a:312:b0:535:2283:20a3 with SMTP id d75a77b69052e-53566b24b6fmr31828551cf.33.1791303840787;
+        Tue, 06 Oct 2026 09:24:00 -0700 (PDT)
 Received: from mgmt5.dhcp.broadcom.net ([192.19.222.250])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5356b860df8sm9020961cf.14.2026.10.06.09.23.52
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5356b860df8sm9020961cf.14.2026.10.06.09.23.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 09:23:53 -0700 (PDT)
+        Tue, 06 Oct 2026 09:24:00 -0700 (PDT)
 From: Siva Reddy Kallam <siva.kallam@broadcom.com>
 To: leonro@nvidia.com,
 	jgg@nvidia.com,
@@ -87,12 +87,12 @@ Cc: vikas.gupta@broadcom.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
-	Saswati Das <saswati.das@broadcom.com>,
+	Sachin Holla <sachin.holla@broadcom.com>,
 	Siva Reddy Kallam <siva.kallam@broadcom.com>,
 	Dharmender Garg <dharmender.garg@broadcom.com>
-Subject: [net-next v2 2/3] bnge: Update HSI
-Date: Tue,  6 Oct 2026 09:12:55 -0700
-Message-ID: <20261006161256.1493672-3-siva.kallam@broadcom.com>
+Subject: [net-next v2 3/3] bnge: reserve TX/completion rings for the RoCE MPC channel
+Date: Tue,  6 Oct 2026 09:12:56 -0700
+Message-ID: <20261006161256.1493672-4-siva.kallam@broadcom.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20261006161256.1493672-1-siva.kallam@broadcom.com>
 References: <20261006161256.1493672-1-siva.kallam@broadcom.com>
@@ -105,196 +105,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Saswati Das <saswati.das@broadcom.com>
+From: Sachin Holla <sachin.holla@broadcom.com>
 
-Add support for 64-bit doorbells and Mid Path Channel (MPC) firmware
-commands/completions.
+When RoCE is enabled, the bng_re driver allocates its own TX/CQ rings
+for the MPC control channel out of the same per-function FW ring pool.
+Enhanced bnge_reserve_rings() to account for this extra ring count to
+avoid pool overflow while allocating netdev rings.
 
-Signed-off-by: Saswati Das <saswati.das@broadcom.com>
+Signed-off-by: Sachin Holla <sachin.holla@broadcom.com>
 Signed-off-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
 Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
-Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
 ---
- include/linux/bnge/hsi.h | 161 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 161 insertions(+)
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    | 32 ++++++++++++++++---
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/bnge/hsi.h b/include/linux/bnge/hsi.h
-index 1f7bd96415a5..a3383f2c7381 100644
---- a/include/linux/bnge/hsi.h
-+++ b/include/linux/bnge/hsi.h
-@@ -12510,6 +12510,43 @@ struct dbc_dbc {
- 	#define DBC_DBC_TYPE_LAST          DBC_DBC_TYPE_NULL
- };
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+index 4711dd4945ff..9dfb22b7c7c7 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+@@ -110,9 +110,24 @@ static u16 bnge_nqs_demand(struct bnge_dev *bd)
+ 	return bd->nq_nr_rings + bnge_aux_get_msix(bd);
+ }
  
-+/* dbc_dbc64 (size:64b/8B) */
-+struct dbc_dbc64 {
-+	__le64	dbc;
-+	#define DBC_DBC64_INDEX_MASK        0xffffffUL
-+	#define DBC_DBC64_INDEX_SFT         0
-+	#define DBC_DBC64_EPOCH             0x1000000UL
-+	#define DBC_DBC64_TOGGLE_MASK       0x6000000UL
-+	#define DBC_DBC64_TOGGLE_SFT        25
-+	#define DBC_DBC64_XID_MASK          0xfffff00000000ULL
-+	#define DBC_DBC64_XID_SFT           32
-+	#define DBC_DBC64_PATH_MASK         0x300000000000000ULL
-+	#define DBC_DBC64_PATH_SFT          56
-+	#define DBC_DBC64_PATH_ROCE           (0x0ULL << 56)
-+	#define DBC_DBC64_PATH_L2             (0x1ULL << 56)
-+	#define DBC_DBC64_PATH_ENGINE         (0x2ULL << 56)
-+	#define DBC_DBC64_PATH_LAST          DBC_DBC64_PATH_ENGINE
-+	#define DBC_DBC64_VALID             0x400000000000000ULL
-+	#define DBC_DBC64_DEBUG_TRACE       0x800000000000000ULL
-+	#define DBC_DBC64_TYPE_MASK         0xf000000000000000ULL
-+	#define DBC_DBC64_TYPE_SFT          60
-+	#define DBC_DBC64_TYPE_SQ             (0x0ULL << 60)
-+	#define DBC_DBC64_TYPE_RQ             (0x1ULL << 60)
-+	#define DBC_DBC64_TYPE_SRQ            (0x2ULL << 60)
-+	#define DBC_DBC64_TYPE_SRQ_ARM        (0x3ULL << 60)
-+	#define DBC_DBC64_TYPE_CQ             (0x4ULL << 60)
-+	#define DBC_DBC64_TYPE_CQ_ARMSE       (0x5ULL << 60)
-+	#define DBC_DBC64_TYPE_CQ_ARMALL      (0x6ULL << 60)
-+	#define DBC_DBC64_TYPE_CQ_ARMENA      (0x7ULL << 60)
-+	#define DBC_DBC64_TYPE_SRQ_ARMENA     (0x8ULL << 60)
-+	#define DBC_DBC64_TYPE_CQ_CUTOFF_ACK  (0x9ULL << 60)
-+	#define DBC_DBC64_TYPE_NQ             (0xaULL << 60)
-+	#define DBC_DBC64_TYPE_NQ_ARM         (0xbULL << 60)
-+	#define DBC_DBC64_TYPE_NQ_MASK        (0xeULL << 60)
-+	#define DBC_DBC64_TYPE_NULL           (0xfULL << 60)
-+	#define DBC_DBC64_TYPE_LAST          DBC_DBC64_TYPE_NULL
-+};
++static u16 bnge_tx_rings_demand(struct bnge_dev *bd)
++{
++	u16 tx_rings = bd->tx_nr_rings;
 +
- /* db_push_start (size:64b/8B) */
- struct db_push_start {
- 	u64	db;
-@@ -12605,4 +12642,128 @@ struct hcomm_status {
++	if (bnge_is_roce_en(bd))
++		tx_rings += 1; /* For MPC TX ring */
++
++	return tx_rings;
++}
++
+ static u16 bnge_cprs_demand(struct bnge_dev *bd)
+ {
+-	return bd->tx_nr_rings + bd->rx_nr_rings;
++	u16 cprs = bd->tx_nr_rings + bd->rx_nr_rings;
++
++	if (bnge_is_roce_en(bd))
++		cprs += 1; /* For MPC CQ ring */
++
++	return cprs;
+ }
  
- #define HCOMM_STATUS_STRUCT_LOC 0x31001F0UL
+ static u16 bnge_get_avail_msix(struct bnge_dev *bd, int num)
+@@ -250,7 +265,7 @@ static bool bnge_need_reserve_rings(struct bnge_dev *bd)
+ 	u16 nqs = bnge_nqs_demand(bd);
+ 	u16 vnic;
  
-+/* MPC macros */
-+#define MPC_CMD_HDR_REQ_TYPE_ICA   0x1UL
-+#define MPC_CMD_HDR_REQ_TYPE_RCA   0x2UL
-+#define MPC_CMD_HDR_REQ_TYPE_PFVF  0x3UL
-+#define MPC_CMD_HDR_REQ_TYPE_EVENT 0x4UL
-+#define MPC_CMD_HDR_REQ_TYPE_LAST MPC_CMD_HDR_REQ_TYPE_EVENT
-+
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SA_ENABLE                  0x0UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SM_PSP_SA_INIT             0x1UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SM_PSP_NEW_RX_ASSOC        0x2UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SM_PSP_KEY_ROTATE          0x3UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_CM_PSP_SA_INIT             0x4UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_CM_PSP_KEY_ROTATE          0x5UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_CM_PSP_KEY_SET             0x6UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SA_INFO_GET                0x7UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SA_STATS_GET               0x8UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SA_STATS_CLEAR             0x9UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SA_RX_MATCH_RULE_SET       0xaUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_ICA_SM_PSP_SA_SET              0xbUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_QP_MODIFY                  0x0UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_AH_MODIFY                  0x1UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_QP_MODIFY_CMPL             0x2UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_AH_MODIFY_CMPL             0x3UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_QP_MODIFY_BATCH            0x4UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_AH_MODIFY_BATCH            0x5UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_QP_MODIFY_BATCH_CMPL       0x6UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_AH_MODIFY_BATCH_CMPL       0x7UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_MPC_TEST_CMD               0xc8UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_RCA_MPC_TEST_CMPL              0xc9UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_EVENT_RESP_CMPL                0x0UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE                 0x0UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE                 0x1UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY                 0x2UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY                 0x3UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY                0x4UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY                0x5UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE_CMPL            0xaUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE_CMPL            0xbUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY_CMPL            0xcUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY_CMPL            0xdUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY_CMPL           0xeUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY_CMPL           0xfUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE_FWD_REQ         0x14UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE_FWD_REQ         0x15UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY_FWD_REQ         0x16UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY_FWD_REQ         0x17UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY_FWD_REQ        0x18UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY_FWD_REQ        0x19UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE_FWD_RESP        0x1eUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE_FWD_RESP        0x1fUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY_FWD_RESP        0x20UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY_FWD_RESP        0x21UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY_FWD_RESP       0x22UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY_FWD_RESP       0x23UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_ALL_FWD_RESP_CMPL         0x28UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE_BATCH           0x32UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE_BATCH           0x33UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY_BATCH           0x34UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY_BATCH           0x35UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY_BATCH          0x36UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY_BATCH          0x37UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE_BATCH_CMPL      0x3cUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE_BATCH_CMPL      0x3dUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY_BATCH_CMPL      0x3eUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY_BATCH_CMPL      0x3fUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY_BATCH_CMPL     0x40UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY_BATCH_CMPL     0x41UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE_BATCH_FWD_REQ   0x46UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE_BATCH_FWD_REQ   0x47UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY_BATCH_FWD_REQ   0x48UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY_BATCH_FWD_REQ   0x49UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY_BATCH_FWD_REQ  0x4aUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY_BATCH_FWD_REQ  0x4bUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_CREATE_BATCH_FWD_RESP  0x50UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_CREATE_BATCH_FWD_RESP  0x51UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_MODIFY_BATCH_FWD_RESP  0x52UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_MODIFY_BATCH_FWD_RESP  0x53UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_QP_DESTROY_BATCH_FWD_RESP 0x54UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_AH_DESTROY_BATCH_FWD_RESP 0x55UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_ALL_BATCH_FWD_RESP_CMPL   0x5aUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_DRV_RGTR                  0x64UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_DRV_RGTR_CMPL             0x65UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_DRV_UNRGTR                0x66UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_DRV_UNRGTR_CMPL           0x67UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_BUF_RGTR                  0x68UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_BUF_RGTR_CMPL             0x69UL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_BUF_UNRGTR                0x6aUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_BUF_UNRGTR_CMPL           0x6bUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_MPC_TEST_CMD              0xcaUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_MPC_TEST_CMPL             0xcbUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_MPC_TEST_FWD_CMD          0xccUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_MPC_TEST_FWD_CMPL         0xcdUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_MPC_TEST_FWD_REQ          0xceUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_MPC_TEST_FWD_RESP         0xcfUL
-+#define MPC_CMD_HDR_REQ_SUB_TYPE_LAST    MPC_CMD_HDR_REQ_SUB_TYPE_PFVF_MPC_TEST_FWD_RESP
-+
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_NONE                   0x0UL
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_BAD_TARGET_ID          0x1UL
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_SA_NOT_INIT_ENABLED    0x2UL
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_HW_CMD_FAILED          0x3UL
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_BAD_PSP_MODE           0x4UL
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_BAD_SPI                0x5UL
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_SPI_THRESHOLD_BREACHED 0x6UL
-+#define MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_ACTIVE_QPS_EXIST       0x7UL
-+#define MPC_CMPL_HDR_ERROR_CODE_LAST     MPC_CMPL_HDR_ERROR_CODE_ICA_ERR_ACTIVE_QPS_EXIST
-+
-+/* mpc_cmpl_hdr (size:64b/8B) */
-+struct mpc_cmpl_hdr {
-+	u8	cmpl_type_reserved;
-+	#define CMPL_TYPE_RESERVED_CMPL_TYPE_MASK         0x3fUL
-+	#define CMPL_TYPE_RESERVED_CMPL_TYPE_SFT          0
-+	#define CMPL_TYPE_RESERVED_CMPL_TYPE_MPC_CMP_SHORT  0x1eUL
-+	#define CMPL_TYPE_RESERVED_CMPL_TYPE_MPC_CMP_LONG   0x1fUL
-+	#define CMPL_TYPE_RESERVED_CMPL_TYPE_LAST          CMPL_TYPE_RESERVED_CMPL_TYPE_MPC_CMP_LONG
-+	u8	error_code_mp_client;
-+	#define ERROR_CODE_MP_CLIENT_ERROR_CODE_MASK 0xfUL
-+	#define ERROR_CODE_MP_CLIENT_ERROR_CODE_SFT 0
-+	#define ERROR_CODE_MP_CLIENT_MP_CLIENT_MASK 0xf0UL
-+	#define ERROR_CODE_MP_CLIENT_MP_CLIENT_SFT  4
-+	u8	req_type;
-+	u8	req_subtype;
-+	__le32	opaque;
-+};
-+
- #endif /* _BNGE_HSI_H_ */
+-	if (hw_resc->resv_tx_rings != bd->tx_nr_rings)
++	if (hw_resc->resv_tx_rings != bnge_tx_rings_demand(bd))
+ 		return true;
+ 
+ 	vnic = bnge_get_total_vnics(bd, rx);
+@@ -275,6 +290,7 @@ int bnge_reserve_rings(struct bnge_dev *bd)
+ 	u16 nq = bd->nq_nr_rings;
+ 	u16 aux_msix = 0;
+ 	bool sh = false;
++	u16 tx_demand;
+ 	u16 tx_cp;
+ 	int rc;
+ 
+@@ -293,11 +309,12 @@ int bnge_reserve_rings(struct bnge_dev *bd)
+ 		hwr.nq = bnge_nqs_demand(bd);
+ 	}
+ 
+-	hwr.tx = bd->tx_nr_rings;
++	tx_demand = bnge_tx_rings_demand(bd);
++	hwr.tx = tx_demand;
+ 	hwr.rx = bd->rx_nr_rings;
+ 	if (bd->flags & BNGE_EN_SHARED_CHNL)
+ 		sh = true;
+-	hwr.cmpl = hwr.rx + hwr.tx;
++	hwr.cmpl = bnge_cprs_demand(bd);
+ 
+ 	hwr.vnic = bnge_get_total_vnics(bd, hwr.rx);
+ 
+@@ -327,6 +344,13 @@ int bnge_reserve_rings(struct bnge_dev *bd)
+ 	if (hwr.stat > bnge_aux_get_stat_ctxs(bd))
+ 		hwr.stat -= bnge_aux_get_stat_ctxs(bd);
+ 	hwr.nq = min_t(u16, hwr.nq, hwr.stat);
++	/* Drop MPC TX ring from L2 TX ring count; it is owned by RoCE driver */
++	if (bnge_is_roce_en(bd)) {
++		if (hwr.tx >= tx_demand)
++			hwr.tx -= 1;
++		else
++			return -ENOMEM;
++	}
+ 
+ 	/* Adjust the rings */
+ 	rc = bnge_adjust_rings(bd, &rx_rings, &hwr.tx, hwr.nq, sh);
 -- 
 2.43.5
 
