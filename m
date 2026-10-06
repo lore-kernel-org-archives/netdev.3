@@ -1,325 +1,124 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93987439F9C;
-	Tue,  6 Oct 2026 12:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791291180; cv=none; b=f3BC5vydu5LJIGpMHD2OLd1jJV4nYClNfQb/7PFgrThe0WXeMozdsYj1dVd5MSixExoh4p3rzzugEZbE+HoZxvcCAowCgSAdWRfL6dC3tJrlmGG1uatAWPtW368cINDRrInQfHNt9QLcOyvnvNgSlYHtiOiCpkjs/S7fbmQwiDQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791291180; c=relaxed/simple;
-	bh=QmTIxIQL8o4BcQSdRnhk0bo/WvdU0ljdDcoztFJr4Hs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VxxoggujmGMwx18d0i66FjnGNeU8q11t8XInIYInXbN1+NeSrIYxYNko3FoS7tk4O+VrRN9EQh1v/nl1vEhnlvEvPQDd5+6HNn9cjCg1P2wKMdL3pbA7zH27X26xAyK86wcG3bLwo48330blajMFU5IOGNP82PfpwAZsB+SQLJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w/w3iaaa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wCwMD8rC; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F143EA979
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 12:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791291387; cv=pass; b=XdedD6n4P7fhnYmS1Wi3OfNiNllgtS6gKvN+VJNM3GeN34IeUp3QP737G5HS0Z2cMOMTdDGT2xPEiwr/ccUnnVjgv0LkAW8BcBLA/+7v+zq8pE/rpc6kwG2VXtWEAG+SEaxhPbgjhy6Y+WvCOhGfVoTM0BRetYgh+aKDGZ3Dy1Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791291387; c=relaxed/simple;
+	bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Tyz79wVvVJIaAYxgJg/QP3IjLNWIC0QwOtLbGdk26s/Jie7SszCAmH++33u4wagIiZYJbOZbaotx4z0NwLX909rrcJrcI9wxxRFJWyrmzDpMnAuxLsDOF6/aeyrubD6SQSDpwA1TD3LZga6A6zN9luGml8qFQwDf98WEI3fOpAY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=sk/6IpXI; arc=pass smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w/w3iaaa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wCwMD8rC"
-Message-ID: <36ab80c8501f7327351095c02e19362f30cd91cd.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791291167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3XMENZB12qYAD3YmRq0Nu0A4LMi8A5xnfJKWoKWqOIQ=;
-	b=w/w3iaaaEeG6IhsHb1ItbvzqqNABlL0Zcf5kc2pLDcG60BGj/nn7lAbDC9NyzSFUmVlqlO
-	aajXSAyWJQW9Wls7yDve68V9UJdAxJ0DBSxrcWlUn/3V6Fvxbst+rtVs64532/MFKy/0Ej
-	Elqn8vJQ2UOkP2xar8ecwDgkQhuBG23K101zNkxuQed9xzucJiU4UEcHJWgrwXyM9JbwqA
-	AES7AlQqyqumNsnH1y2354gEKmUoslMOAw90B0J4cIfoc64eNeizckc3EnXNnJSu9Gjg9U
-	oZ3pgQwd89U6n68bUJMS9vDd4ViyGDbL1mBTVGpIEb0I2mhS1aCYghoL20t5zg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791291167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3XMENZB12qYAD3YmRq0Nu0A4LMi8A5xnfJKWoKWqOIQ=;
-	b=wCwMD8rCTCCCd4F2Qm/UC1C5XZlciScUdtJrSYsQygTv3N7XYW5lN7e77G12W/AHpIb+U5
-	qM7zgG9LfnC91uAQ==
-Subject: Re: [PATCH net-next v3 7/8] net: dsa: soce: Add VLAN offload support
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: sashiko-reviews@lists.linux.dev
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
- <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
- Kallweit <hkallweit1@gmail.com>,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
- <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
-Date: Tue, 06 Oct 2026 14:52:47 +0200
-In-Reply-To: <20260924104005.597041F00898@smtp.kernel.org>
-References: 
-	<20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
-	 <20260923-devel-vstrassheim-soce-dsa-ml-v3-7-ddebafcb9ba7@linutronix.de>
-	 <20260924104005.597041F00898@smtp.kernel.org>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="sk/6IpXI"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a9787a14ecso21209791fa.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 05:56:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791291384; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Gi4Sl7ALCowrFE/SEl5VvVVubu+tf+b0l/jKlOVElG9Q81Fs1gF/gObUl+9Ykbme9G
+         gy2bc7harbnikCYTs1tvXJWnTVPDg78ECHBv2n5nk4GLPgX/lbTG3Ys0gLA1tjNUCf1A
+         whgWnvybabNJ/aZ6lnk4vR6pQ7yEppQHitQDMb1j8zxHxwDDagyo6UYV6itWwmUiYJCW
+         RSaZQksuT1b1U1LaT0imIZsjXIfOJDTaUeenAzbe6Q0qnyAcgvL8R0paTJNZSPQY5UBw
+         cwqdTtflvN5rNLiU2jPjBu9+D4PNF5yILWYXSH3DJhTMR+l00rSGQ15c6Y0WJ/zp/gGI
+         R8vQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
+        fh=54gP9BWatBn2ga3V35+7k+pE67PYZH8r3aQFqfanzwQ=;
+        b=EmqG+uay1zZOw1cOnPvV8XQXZG6/0qzS5cOrQe8y7hDgmZ6WnBxnKhk6+kTVRU0E4+
+         xOKnCJjv+fvKq/P5DmHlk1QzTaAijDow9FF6hrPu/VT7uO9vtEq9rXlHCF1V72g5zzsL
+         /bxBSvv8neHPDfzEx6IuT1X/CEr36DSpbZKNeYQ92JHpGv1ZScz+BW7vlln2Qh6ofNWf
+         d3FQ9NSI0RCAlWf7VGMoEjTRzd6OJZT6ebCqkaeh/Q1+f5ZQh/VF56lE2eqZ3Sey2Tmo
+         K6nwAm4sastgINd6jgU/XI2tMHW6grOBVvFnWLqlOZYGaLgb57nAEu+Exb7K8Kxo+0t8
+         KKcg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1791291384; x=1791896184; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
+        b=sk/6IpXI46QQjuM+G9a6uGwf5gVm41anPvIQP/rB1vMTU1UgEvjRjkR8pTH8YTkEyX
+         f42sLvBvLw30IN/vS/eIHJX9ueBmAYW2PjeKJlFVkviQeWh9X66Yk6HvefzXb2Swvgi2
+         ho8EMXfKN1LUgxibAk2KZrQ7KH4F8wZHGiuKTnyTJ/H5/Q3GK3bsNTEe3qJ5KfpqO09t
+         7O4giEYGdEurFyaFRCQbTvs+aGiA3+Qke7+PmPb+ZSgqvQvFpwq0IN7NjkXfhA8yzpdP
+         u4bxQSN5tuj/BbVqpg2LR5hT1c0/tCMrOrTJG1mXO1+iPmDDAdXN2SFm+2EL9IqKtqrN
+         +M7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791291384; x=1791896184;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
+        b=JOZ68YGtXpcDuPQhebA1EkyL05Q7/OBoplSxy/klxgmdYAcN9n14nlhwKmFQ1RKfmW
+         2f1v94KXvKAwSvNCo4IblzhyEAyOY+s2XpqWSz9RW1dtxpb+1baTEHm4yHr71rz4SGVF
+         DI/SXajb06/qiQKnOcsKxDUBzW6kSviJGhCk7aOFbizx6TWi8PpwRo3F0Tz3IYcliLFF
+         oSo8wadKrEz0+04RsHI9pOm0gsRGSXJG8YfWadUNUQwQasPNygdArIMwzlC6d2Ua+bOC
+         gEKhaTadh8LNa9/pCbOwmg/ZF7AtIqRF1p2b1rvUT771NZDg3fomO/5gjzYBF9nx5+3L
+         2MfQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwbfkmvhc2p/t9+xSVnsBnOw5+4of7iEWVo6owwfjQmBs36zUNmQGJFYORag8lraEs/efS6rFk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIyd+I73coubQZz0s/Ol5Hvi7qdHTzNXeUR6RjY8VWeDbf1ez6V
+	be7emZHw8tBFicXvCDYHv/rXedi24nHjhsd7PBguuSWb4HFn3aKS9lq0VmlpnnJ8lU4kBs0OEef
+	XK5sXuJKk30LeoP2YACPS03Szh7nkJrV2ppQwBE7KDwg=
+X-Gm-Gg: AYBFou3IdQvhIHCuWruI57gIzzmu/xJMhWg0Sn5wS23A3L8YX3wUeFkY4foShFhNzGw
+	PpIPR2nrj+jux5N2J9PkOdiwmUlSDb//fupWjqigFCcjOWFj/UU6dKsYUuYzpigMNL+zKdqiRci
+	ffV+s6Ev+cnXVlXfJb3pJBcNFk73o2+CpLIkjrMAHfp/234vCn3gEz20RkmbcbXQL98apA2l03E
+	StwErEH+FjKLozyxpQP8l6LLO9S2kxf21enfJfYtVlqqRACohB5TD2yPRbXJElOQuC7v2hYX9RV
+	C+Fhzq7fQxnUbgBlER9FnN7OcnhA9wBjbf7nbWboNfYOepMtbGJSuI21X2d7iJefhoCzFkvGh5D
+	Wj597edcd+A==
+X-Received: by 2002:a05:651c:b0e:b0:3a7:7560:42d with SMTP id
+ 38308e7fff4ca-3a99ac22facmr3447461fa.2.1791291384101; Tue, 06 Oct 2026
+ 05:56:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <cover.1790688018.git.zihanx@nebusec.ai> <20261005184156.01eb0ebd@kernel.org>
+In-Reply-To: <20261005184156.01eb0ebd@kernel.org>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Tue, 6 Oct 2026 20:56:12 +0800
+X-Gm-Features: AclHuK8CF-8Mj_c8FfiAmTqG16QSFj-a07fr-EYY9YJrSyWrswvA_gV_jKau6qU
+Message-ID: <CAANe3eQKOPb8mzWmSVwOLTQpxEdQ09tJzHqXFgHwptLMgCuDaQ@mail.gmail.com>
+Subject: Re: [PATCH net v13 0/2] llc: fix listener child socket leaks
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, kees@kernel.org, ernestas.k@iconn-networks.com, 
+	leitao@debian.org, tim.bird@sony.com, shuangpeng.kernel@gmail.com, 
+	luoxuanqiang@kylinos.cn, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2026-09-24 at 10:40 +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential issu=
-e(s) to consider:
-> - [High] net: dsa: soce: needs_standalone_vlan_filtering drops standalone=
- traffic after bridge leave
-> - [High] net: dsa: soce: VLAN isolation bypass due to missing hardware ro=
-llback on write failure
-> - [Medium] net: dsa: soce: -EOPNOTSUPP fails to reject unsupported VLAN c=
-onfigurations
-> --
->=20
-> commit b9f4e8ae119f137ae188040da4ddc3fbc9794221
-> Author: Vasilij Strassheim <v.strassheim@linutronix.de>
->=20
-> net: dsa: soce: Add VLAN offload support
->    =20
-> Add VLAN filtering and membership offload for switch configurations that
-> implement the Port VLAN synthesis option.
->=20
-> > diff --git a/drivers/net/dsa/soce/soce_dsa_core.c b/drivers/net/dsa/soc=
-e/soce_dsa_core.c
-> > index d391b11b94ad6..f93ce9da8400c 100644
-> > --- a/drivers/net/dsa/soce/soce_dsa_core.c
-> > +++ b/drivers/net/dsa/soce/soce_dsa_core.c
->=20
-> [ ... ]
->=20
-> > @@ -162,6 +200,178 @@ static void soce_sw_disable_tagging(struct soce_d=
-sa_local *local)
->=20
-> [ ... ]
->=20
-> > +static int soce_vlan_write_entry(struct soce_priv *priv, u16 vid)
-> > +{
-> > +	struct soce_dsa_local *local =3D &priv->local;
-> > +	void __iomem *base =3D local->base_addr;
-> > +	u32 cpu_ports;
-> > +	u32 untagged;
-> > +	u32 members;
-> > +	int ret;
-> > +
-> > +	/* The CPU port must be a tagged member of every active VLAN so
-> > +	 * tagged frames can reach the conduit.
-> > +	 */
-> > +	cpu_ports =3D dsa_cpu_ports(&priv->ds);
-> > +	members =3D priv->vlan_members[vid];
-> > +	if (members)
-> > +		members |=3D cpu_ports;
-> > +	untagged =3D priv->vlan_untagged[vid] & ~cpu_ports;
-> > +
-> > +	soce_vlan_select_vid(local, vid);
-> > +	writel(members, base + SOCE_VLAN_MEMBER_PORTS_OFFSET);
-> > +	writel(SOCE_VLAN_MEMBER_CTRL_WRITE,
-> > +	       base + SOCE_VLAN_MEMBER_CTRL_OFFSET);
-> > +	ret =3D soce_vlan_wait_for_write(local, SOCE_VLAN_MEMBER_CTRL_OFFSET,
-> > +				       SOCE_VLAN_MEMBER_CTRL_WRITE);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	writel(untagged, base + SOCE_VLAN_UNTAG_PORTS_OFFSET);
-> > +	writel(SOCE_VLAN_UNTAG_CTRL_WRITE,
-> > +	       base + SOCE_VLAN_UNTAG_CTRL_OFFSET);
-> > +
-> > +	return soce_vlan_wait_for_write(local, SOCE_VLAN_UNTAG_CTRL_OFFSET,
-> > +					SOCE_VLAN_UNTAG_CTRL_WRITE);
-> > +}
->=20
-> [ ... ]
->=20
-> > +static int soce_vlan_setup(struct dsa_switch *ds)
-> > +{
-> > +	struct soce_priv *priv =3D ds->priv;
-> > +	struct soce_dsa_local *local;
-> > +	struct dsa_port *dp;
-> > +	int ret;
-> > +
-> > +	local =3D &priv->local;
-> > +
-> > +	if (!priv->features.port_vlan)
-> > +		return 0;
-> > +
-> > +	ret =3D soce_vlan_reset(local);
-> > +	if (ret) {
-> > +		dev_err(ds->dev, "failed to reset VLAN configuration: %d\n",
-> > +			ret);
-> > +		return ret;
-> > +	}
-> > +
-> > +	/* Default every port to PVID 1, unfiltered, so standalone
-> > +	 * forwarding keeps working before any bridge VLAN is configured.
-> > +	 */
-> > +	scoped_guard(mutex, &priv->vlan_lock) {
-> > +		dsa_switch_for_each_available_port(dp, ds) {
-> > +			priv->port_pvid[dp->index] =3D 1;
-> > +			soce_vlan_config_port(priv, dp->index, false);
-> > +		}
-> > +		soce_vlan_set_enabled(local, true);
-> > +	}
-> > +
-> > +	return 0;
-> > +}
->=20
-> [ ... ]
->=20
-> > @@ -224,6 +443,130 @@ static enum dsa_tag_protocol soce_get_tag_protoco=
-l(struct dsa_switch *ds,
->=20
-> [ ... ]
->=20
-> > +static int soce_port_vlan_add(struct dsa_switch *ds, int port,
-> > +			      const struct switchdev_obj_port_vlan *vlan,
-> > +			      struct netlink_ext_ack *extack)
-> > +{
-> > +	struct dsa_port *dp =3D dsa_to_port(ds, port);
-> > +	struct soce_priv *priv =3D ds->priv;
-> > +	u32 port_mask =3D BIT(port);
-> > +	u32 *untagged_ports;
-> > +	u32 old_untagged;
-> > +	u32 old_members;
-> > +	bool untagged;
-> > +	u32 *members;
-> > +	int ret;
-> > +
-> > +	untagged_ports =3D priv->vlan_untagged;
-> > +	members =3D priv->vlan_members;
-> > +
-> > +	if (!priv->features.port_vlan) {
-> > +		NL_SET_ERR_MSG_MOD(extack,
-> > +				   "Port VLAN support is not implemented in the switch core");
-> > +		return -EOPNOTSUPP;
-> > +	}
->=20
-> [Severity: Medium]
-> Since -EOPNOTSUPP is explicitly masked by the switchdev and DSA cores, wi=
-ll
-> this return value be ignored instead of rejecting the configuration? It
-> looks like this would allow the operation to succeed in the network stack=
-,
-> causing hardware to silently strip VLAN tags on CPU ingress without
-> including them in the DSA tag, which could break the network configuratio=
-n.
->=20
+On Tue, Oct 6, 2026 at 9:41=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Wed, 30 Sep 2026 13:29:40 +0000 Zihan Xi wrote:
+> > We found and validated an issue in net/llc/llc_conn.c and net/llc/af_ll=
+c.c.
+>
+> We found it easier to delete this code.
+> Please look at the net-next tree, and resend the fixes there
+> if the bugs still exist.
 
-The error is propagated through dsa_port_vlan_add(). In my tests VLAN
-upper configuration was rejected in this path. Anyway, I will use
--EINVAL instead to avoid exceptions.
+Thanks for the guidance.
 
-> > +
-> > +	if (!vlan->vid)
-> > +		return 0;
-> > +
-> > +	untagged =3D vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
-> > +
-> > +	scoped_guard(mutex, &priv->vlan_lock) {
-> > +		old_members =3D members[vlan->vid];
-> > +		old_untagged =3D untagged_ports[vlan->vid];
-> > +
-> > +		members[vlan->vid] |=3D port_mask;
-> > +		if (untagged)
-> > +			untagged_ports[vlan->vid] |=3D port_mask;
-> > +		else
-> > +			untagged_ports[vlan->vid] &=3D ~port_mask;
-> > +
-> > +		ret =3D soce_vlan_write_entry(priv, vlan->vid);
-> > +		if (ret) {
-> > +			NL_SET_ERR_MSG_MOD(extack,
-> > +					   "failed to update VLAN hardware tables");
-> > +			dev_err(ds->dev,
-> > +				"failed to add VLAN %u on port %d: %d\n",
-> > +				vlan->vid, port, ret);
-> > +			members[vlan->vid] =3D old_members;
-> > +			untagged_ports[vlan->vid] =3D old_untagged;
-> > +			return ret;
-> > +		}
->=20
-> [Severity: High]
-> If the second write for the untagged mask in soce_vlan_write_entry() fail=
-s
-> and returns an error, the first write for the member mask has already bee=
-n
-> committed to the hardware.=20
->=20
-> Is it safe to only rollback the software state here? By leaving the hardw=
-are
-> member mask modified, the switch might forward frames for this VLAN to th=
-e
-> port, leading to a VLAN isolation bypass while the OS believes the port i=
-s
-> isolated.
->=20
+I checked the current net-next tree. Commit 003f21868b2b ("llc: move
+the type 2 sockets out of tree") removes the in-tree PF_LLC socket
+implementation and LLC type 2 connection state machine. In particular,
+net/llc/llc_conn.c and net/llc/af_llc.c are no longer present, so
+there is no corresponding child-socket allocation path for this series
+to fix in net-next.
 
-Yes, this might become a problem.
-I will fix this with best-effort rollback to the previous configuration
-(like mxl862xx), and also check that both table commands have completed
-before modifying the selector or data registers.
+I'll drop this series.
 
-> [ ... ]
->=20
-> > +static int soce_port_vlan_filtering(struct dsa_switch *ds, int port,
-> > +				    bool vlan_filtering,
-> > +				    struct netlink_ext_ack *extack)
-> > +{
-> > +	struct soce_priv *priv =3D ds->priv;
-> > +
-> > +	if (!priv->features.port_vlan) {
-> > +		NL_SET_ERR_MSG_MOD(extack,
-> > +				   "Port VLAN support is not implemented in the switch core");
-> > +		return -EOPNOTSUPP;
-> > +	}
->=20
-> [Severity: Medium]
-> Similarly to soce_port_vlan_add(), will returning -EOPNOTSUPP here fail t=
-o
-> reject unsupported VLAN configurations since it gets masked by the DSA co=
-re?
-
-Same as above, I will change it to -EINVAL.
-
->=20
-> [ ... ]
->=20
-> > @@ -278,8 +623,35 @@ static int soce_sw_probe(struct platform_device *p=
-dev)
->=20
-> [ ... ]
->=20
-> > +	/* Force VLAN uppers always through the callbacks, so cores without
-> > +	 * Port VLAN feature can reject them instead of silently dropping
-> > +	 * VLAN frames.
-> > +	 */
-> > +	ds->needs_standalone_vlan_filtering =3D true;
->=20
-> [Severity: High]
-> Does enabling needs_standalone_vlan_filtering cause complete loss of stan=
-dalone
-> network traffic when a port leaves a bridge?
->=20
-> When a port is removed from a VLAN-unaware bridge, the DSA core will call
-> dsa_port_vlan_filtering(dp, true), forcing the hardware into ingress filt=
-ering
-> mode.
->=20
-> Since the bridge flushes VLANs on leave, the port is removed from the har=
-dware
-> member mask for VLAN 1. However, earlier in soce_vlan_setup(), the driver
-> assigns PVID 1 but never adds the port to the hardware member mask for VL=
-AN 1.
-> Will all subsequent untagged standalone traffic be classified to PVID 1 a=
-nd
-> dropped by the ingress filter because the port is no longer a member?
->=20
-
-Yes, I will fix this by preserving standalone VLAN membership and
-restoring the default PVID when the port leaves the bridge.
-
-
+Thanks,
+Zihan
