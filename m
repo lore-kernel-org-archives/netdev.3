@@ -1,135 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0AE3E49DE;
-	Tue,  6 Oct 2026 15:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791299530; cv=none; b=DJJZHgcumlhk8eABD/zq8xUH7HoGsKLhHStVPONkvtJ4CSRwm8YZL4rn5/O27wJ+N8Ht07VXHl4kAzZJ7dYJP4FdDfbSP6ElospTphSTuTN2sOqdDaRfWyv96MgoI4totaC31YuxHPyhpfpzZxZ9SM8C+RJ07Pg46yzYwP2yVrg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791299530; c=relaxed/simple;
-	bh=4PoOFwdcF6TQh98s/QAOnBeX4kFkGsObMkDq0NWdMhE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p52qhQb/OAnsXkkftiVGReJDLTF29U0ne38f+t+BhJCDZtEGtp0Lq2nkslPsJZtEYZJedafCdg08FzaeuQrAs59ZzudgjOJ/saYghZesSFf2yg7psYs2USOxd+VAEwPBVdo1a9K3YV0qkyo+XPW3zEOtbN4PWAIJMz8Vrd6vvD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wa0nxPfV; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBE63BB10E
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 15:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791299550; cv=pass; b=HDMro6ueR6cF+WmhwJGZR5790lGholhQ06OH3gEPpdAQY0xeKR2LUC54/guXCYRwKAye/+p2SGgEevGCK3tTO0A8+x+IirqHwSgDqGz2PA0L/E4X/Z8S6dzIz9It/D2sHg3HAvA2Vl/qYbkSBTQbcZ/u9m6t6bbONo3GZMVnl7o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791299550; c=relaxed/simple;
+	bh=C8Yds9gbuLzmPQa6hFceI6DVhk20rZC2n1YeQTNXGfQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sC+xeWd0YauLr+anpephYZA1spE3OayGlM39hlq8sPLPeX5UDd+t08e/ScrLZn/P5uSvU0fzbUjFnPiIsVjPlsZujQqZc3vprhBExRlNRx1gYpZdT/1QehJF+RIA5wOeSjlaZ3FCdCeUjNaKSRtWF+EFUVq1WprAcl+lYwc0MfA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com; spf=pass smtp.mailfrom=tenstorrent.com; dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b=QjqViDQw; arc=pass smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.tenstorrent.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tenstorrent.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wa0nxPfV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B312D1F0089B;
-	Tue,  6 Oct 2026 15:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791299529;
-	bh=i2jarKs3ImpsaYpy+whlnmxkRVhLeakQjLDkSsWIYgI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Wa0nxPfVl5F2ksf8HiPecQy3ruTvq4+rKNTSBTiEd5xz5C+JlJnDX+iSMZdmwaTzR
-	 TOixpMgzVXXMrIWjrUYEZ29vwKB4qiUoSCQ1uP06habI64T666aEwsgcCFen5zMa6n
-	 qVM9sRxaOzUDpHH8gmidjUNFBf92DnglgtwIRaHH8927/YdWnXfVJVvgCAxdMueKgt
-	 C0zHbFlPBV65oXqc9cJ0EW4P0j3+CKLKMhcynpUPJ2VQZVzvn+Hr3srWv3XU5HyaqD
-	 2obMOibFpgKQZsrC3EjJV6XzNlLPAPgWKTBeF+OQgARvkKv6panIjoMflPzCXKR7vF
-	 k6XMYfzv6uVsQ==
-Date: Tue, 6 Oct 2026 16:12:02 +0100
-From: Simon Horman <horms@kernel.org>
-To: Manish Awasthi <mawasthi@linux.microsoft.com>
-Cc: netdev-bot+sashiko@kernel.org, kys@microsoft.com,
-	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-	longli@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	kotaranov@microsoft.com, linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
-	nipun.gupta@amd.com, nikhil.agarwal@amd.com,
-	gargaditya@linux.microsoft.com, ernis@linux.microsoft.com,
-	kees@kernel.org, paulros@microsoft.com, mawasthi@microsoft.com
-Subject: Re: [PATCH net-next 4/4] net: mana: Add support for CDX device ID
- 0x00C2
-Message-ID: <20261006151202.GK83879@horms.kernel.org>
-References: <20260924173054.589291-5-mawasthi@linux.microsoft.com>
- <179035761944.2160803.12943182451050438147@kernel.org>
- <20260928202555.617331-1-mawasthi@linux.microsoft.com>
- <20260929135738.GT13925@horms.kernel.org>
- <20260929234508.10647-1-mawasthi@linux.microsoft.com>
+	dkim=pass (2048-bit key) header.d=tenstorrent.com header.i=@tenstorrent.com header.b="QjqViDQw"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-87ab6e5f91eso8089437b3.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 08:12:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791299548; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TGmgoMp3kNdvfStBZ/GoMz3OqmUf/KDqEhgI9ocyEi7lloJi3pFZ0BJb//je6A5oda
+         oIdwZ/m/7KEFNihUCTIUjkE/kA31VQt9vJ675ovHsPuBOSltuM4tJ+x6+lhqdOS6M1BI
+         LEcqD3kRApJYOOQWbDsWbBd7ct+SPVItnjW5apPGWKxhTfWjEUY/XM9QFNiCknpw2l14
+         sV3jl1RqOGk1WYo9HsAHqhOD3jCP7OZz2Y8zEZGT4vB35wsFzHiA+ziVztyhHVMj55+g
+         DiF+gylvd5SOhTgke566LKT+PP0JpC0kx4a+OSOAgwt6hEsQe4W8/dIirj27sgijyWE6
+         tl8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mtMVlOhfl7dVywIUmoTG/iwD9ZKg/EsOsz1i8lgIOSU=;
+        fh=T43C1OPPvstWnDBEvtcou4eKUGImbJe+ZUiqzkp2bYU=;
+        b=ZdqQOMRZgkYvsjbn4UaDUiBebo31HVENhmjtbuYQIZ2C4JFIvkXbblSK7zCrkI0GHr
+         wiMbWymjaeccNdK/z4Doh2Rki3IcCw6bSL513vtWSvLF4O6v2vlDE3lWagcKXW/o7HKa
+         ZH8o5MKaHNd8jJuY+sbz3SAQXWAamMMvcKd7uHwQzUq43EhArU69cDK0Z/cPs0M7bXWo
+         A5Jt2iseydZFbj2rohy/GYf1dbnLX3fjMj7Ylf4mODbxBKN9uyb78cGVB1XG9wHZzdhU
+         qf6gZ7AewcK5vb1Agau360OL/Efptqr6izlfTWzYvh65drZLT9/fHYRapQ86dttWRhpP
+         IHyg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tenstorrent.com; s=google; t=1791299548; x=1791904348; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mtMVlOhfl7dVywIUmoTG/iwD9ZKg/EsOsz1i8lgIOSU=;
+        b=QjqViDQwtpLuj0JzyMFCucB6rdmyGf1wQLQ0RFFYHLi3Ejepw3DCSFYyColtfprR2n
+         bVcMuzHzyTb3iPnogZMX4jYeX5rIBbONrXFd6vEbgoXOAuL2zvhmRJv/6xIhSwZGkRwf
+         dQ/dNfPB38HqHqcERusfQ6RQuKTlly6EtATz+cJG7D203cNwBJEWAlNmhNzdSZahiBES
+         2vyxp+V6TewRSJyuoGfK7aqivFTeOCin3Us1HCBlSJfc0EvX91/TbSkethLVjm+9g/sj
+         6SIWTRtS5Ki/P4GdZJEcAFhKELcYHT/BuN8VseH2dTx7DVCFd3rcVXdLqv0Vh0xVCilH
+         EYjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791299548; x=1791904348;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mtMVlOhfl7dVywIUmoTG/iwD9ZKg/EsOsz1i8lgIOSU=;
+        b=teo41poWLICqsGCCtjgn8qEaxBIlFwaKNsAEcD96asFfL0YUUoNpEtoE8TWuVr0Bl7
+         KaEkehvL9hTL6hNCfNOO4tlQld7d2Jv1izGE2LJJ3J16XyvH/2BEXissMKGycQ34Jnfy
+         rZJg2PZ12Gqa6LoOkzz/MLEb44JNOH7iucEActGulXGcdVtrJq4QnqCRuVyjG4ttS2nj
+         UrlLF371nXekLjluc3a6STcfa1Wx3ip5A5SWKJPOIiA5h+c5nMQOTogxS0jil4QWdHOs
+         pcyEfcN0Fkr9CJ+u5Wd9Q4Y8yxa87td0IgBpWadBnQ6Eh0tLk7FX5au2JRH2jxlOh9KU
+         YkEQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzwFHrs/TGDDb2N7eZQa5jR730jUqNPjoZMSXK4zDw6FreGwxYobr+jw7b90H+EteFWMULaUf8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKT6aPzclOFw+ygCKL2UHHsPrfgdeLdJKT2fpjc+hlibS1qw258
+	k+kIAQJvY4mnf03lZ1tVjHbGc0Odp2X0LFw0OcFQO0Oi17vJ1dKX5h0tIKUcpeL3fkIFV+SSzIp
+	a/sPBzHt0kA/xUVNuJWgpCb+ncdbAKJveWDS0yvKpJA==
+X-Gm-Gg: AYBFou0/LIDSrSiwQNsO97sK6x4GexmWOkggYYJiKwlqO7CjiU9rt/IEducZhL1KT7J
+	B331s1F8SpAMWhOb6VYK7g6IgXu6UxiGhMVZPZ4Eo3RoywPD8XxHjIP9OzGyOcHBboWIj1leeIz
+	ILqzzh5S08If3WO3y3JS0W2jQmd3Bf0puGDu6GIwL1H0YCKfqteAVW3X+hg1dxR0qep9cEpK3z+
+	5ntBvcK8KF+lWArv0nxg2vEWitaJhKS6NK8gBCdzi6NvtB/qc7yhkGjuISWw/hRR5JPsOyYbZYl
+	WB6nNuZQ/lUeRS4p3/FWX0Zb3d9kub09tfJsul32qdiWJAkOcFSudM952rnprKXxCHoXNZk4CMH
+	eeejsu2m9aF82/AslqUG1
+X-Received: by 2002:a05:690c:85:b0:883:768:7432 with SMTP id
+ 00721157ae682-8b04f441f91mr9459587b3.49.1791299547459; Tue, 06 Oct 2026
+ 08:12:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260929234508.10647-1-mawasthi@linux.microsoft.com>
+References: <20260929-stmmac-ptp-added-systime-error-v3-1-ddd6afe936b4@oss.qualcomm.com>
+ <dy5xfj3754wnp3gh2kpoyf3vpx3vfsfhblgbwbwsgts27xqxga@dzb33gt3zgca>
+ <asQcQIh56MV1OJur@lore-desk> <CAEev2e8+fr1tJnSErD+2TtLDw5fGJbQOMcM5eefMnLyFUR+m7w@mail.gmail.com>
+ <asSb3RNcityVg6ia@lore-desk> <CAEev2e8c6hZQQom6NV-URgdSoWiafCcRR3BtA6yxxqy7T-me8g@mail.gmail.com>
+ <asUGoxyJWVcsYBWG@lore-desk>
+In-Reply-To: <asUGoxyJWVcsYBWG@lore-desk>
+From: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
+Date: Tue, 6 Oct 2026 10:12:16 -0500
+X-Gm-Features: AclHuK-RCm43_jlNT_lFUhdrwLSuRNyZQs6NCda3layOtVwA4kmc3GhgcBuqpZ4
+Message-ID: <CAEev2e_+Dcj60Rj2+_UD=3_kNQxLK4rmWTGK-dr-Ve9mGJBARg@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: stmmac: propagate PTP addend and system time
+ programming errors
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Jose Abreu <Jose.Abreu@synopsys.com>, 
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <fustini@kernel.org>, 
+	Jisheng Zhang <jszhang@kernel.org>, linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 29, 2026 at 11:45:08PM +0000, Manish Awasthi wrote:
-> > On Mon, Sep 28, 2026 at 08:25:55PM +0000, Manish Awasthi wrote:
-> > > thanks for review. Comments inline.
-> > > 
-> > > > Thank you for your contribution! Sashiko AI review found 3 potential
-> > > > issue(s) to consider.
-> > > > 
-> > > > Critical: 0 · High: 0 (1) · Medium: 1 · Low: 2
-> > > > 
-> > > > If you believe none of the issues are legitimate, please reply to each
-> > > > issue of Medium severity or higher and explain why the AI is wrong.
-> > > > If any of them are legitimate and you plan to respin, please let patchwork
-> > > > know by including "pw-bot: cr" as a separate line at the end of your reply
-> > > > (one such reply per series is enough).
-> > > > 
-> > > > - [Medium] The CDX transport installs `.dev_reset = mana_cdx_dev_reset`
-> > > >   (-> `cdx_dev_reset()`) but has no way to recover afterwards.
-> > > > - [Low] `mana_cdx_setup_hwc_irqs()` skips IRQ affinity hints.
-> > > > - [Low] The comment in `mana_gd_query_max_resources()` (gdma_main.c)
-> > > >   says: "Only reset on platforms that support dynamic MSI-X allocation;…
-> > > > 
-> > > > Pre-existing issues:
-> > > > - [High] This problem wasn't introduced by this patch, but the shared HWC
-> > > >   bootstrap path that the new CDX transport now reaches trusts a device-…
-> > > > 
-> > > > --
-> > > > 
-> > > > net: mana: Add support for CDX device ID 0x00C2
-> > > > 
-> > > > This adds a CDX bus transport for MANA, built as mana_cdx.ko on top of
-> > > > the shared gdma_core.ko, for device ID 0x00C2. It allocates the whole MSI
-> > > > pool at probe time, limits the queue count to the available vectors,
-> > > > restricts DMA to 32 bits, and adds a per-bus auxiliary device name prefix
-> > > > so the CDX auxiliary devices stay separate from the PCI ones.
-> > > > 
-> > > > > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_cdx.c b/drivers/net/ethernet/microsoft/mana/gdma_cdx.c
-> > > > > new file mode 100644
-> > > > > index 0000000000000..0d01e3d2f0d96
-> > > > > --- /dev/null
-> > > > > +++ b/drivers/net/ethernet/microsoft/mana/gdma_cdx.c
-> > > > > @@ -0,0 +1,340 @@
-> > > > 
-> > > > [ ... ]
-> > > > 
-> > > > > +static int mana_cdx_dev_reset(struct gdma_context *gc)
-> > > > > +{
-> > > > > +	return cdx_dev_reset(gc->dev);
-> > > > > +}
-> > > > 
-> > > > [Severity: Medium]
-> > > > Can this reset leave the whole function unusable, with no recovery short
-> > > > of a manual rebind?
-> > > > 
-> > > > mana_dealloc_queues() calls it when a TX queue still has pending_sends
-> > > > after the drain timeout:
-> > > > 
-> > > > mana_tx_timeout()
-> > > >   -> queue_reset_work
-> > > >     -> mana_per_port_queue_reset_work_handler()
-> > > >       -> mana_dealloc_queues()
-> > > >         -> mana_gd_dev_reset()
-> > > >           -> mana_cdx_dev_reset()
-> > > >             -> cdx_dev_reset()
-> > > > 
-> > > This version of the driver doesn't support recovery after mana_cdx_dev_reset.
-> > 
-> > I don't think it needs to delay progress of this patchset.
-> > But I am curious to know if there are plans to add such support.
-> > 
->     It is possible to have similar recovery support as the pci in this path
->     after cdx_dev_reset() and we do have plans to add it in future.
+Helo Lorenzo,
 
-Nice. Thanks for the response.
+On Tue, Oct 6, 2026 at 9:33=E2=80=AFAM Lorenzo Bianconi
+<lorenzo.bianconi@oss.qualcomm.com> wrote:
+>
+> On Oct 06, Anirudh Srinivasan wrote:
+> > Hi Lorenzo,
+> >
+> > On Tue, Oct 6, 2026 at 1:57=E2=80=AFAM Lorenzo Bianconi
+> > <lorenzo.bianconi@oss.qualcomm.com> wrote:
+> > >
+> > > > Hi Lorenzo,
+> > > >
+> > > > On Mon, Oct 5, 2026 at 4:53=E2=80=AFPM Lorenzo Bianconi
+> > > > <lorenzo.bianconi@oss.qualcomm.com> wrote:
+> > > > >
+> > > > > > On Tue, Sep 29, 2026 at 03:10:11PM +0200, Lorenzo Bianconi wrot=
+e:
+> > > > > > > stmmac_update_subsecond_increment() ignores the error returne=
+d by
+> > > > > > > stmmac_config_addend(), and stmmac_init_tstamp_counter() disc=
+ards the
+> > > > > > > addend and system time programming errors, always returning s=
+uccess. A
+> > > > > > > failure to program the addend (PTP_TCR_TSADDREG) or to initia=
+lize the
+> > > > > > > system time counter (PTP_TCR_TSINIT) is therefore silently sw=
+allowed,
+> > > > > > > leaving the hardware timestamp counter in a non-running or pa=
+rtially
+> > > > > > > configured state while the driver keeps operating as if times=
+tamping
+> > > > > > > were up. This matters for TAPRIO/EST offloading, which derive=
+s the gate
+> > > > > > > base time from the hardware timestamp counter.
+> > > > > > >
+> > > > > > > The same hooks are also called from the PHC callbacks: settim=
+e64 and
+> > > > > > > adjfine drop the error and report success to clock_settime() =
+and
+> > > > > > > clock_adjtime(), so a dead PTP reference clock goes unnoticed=
+ by
+> > > > > > > ptp4l/phc2sys.
+> > > > > > >
+> > > > > > > Return error codes from stmmac_update_subsecond_increment(),
+> > > > > > > stmmac_init_tstamp_counter(), stmmac_dl_ts_coarse_set() and t=
+he
+> > > > > > > settime64/adjfine callbacks instead of silently returning suc=
+cess. On
+> > > > > > > failure, roll back the partially applied configuration so the=
+ hardware
+> > > > > > > and the driver bookkeeping stay consistent, and report the re=
+ason
+> > > > > > > through the devlink extack. Also guard against a zero sub-sec=
+ond
+> > > > > > > increment, which would otherwise divide by zero when computin=
+g the
+> > > > > > > addend.
+> > > > > > >
+> > > > > > > Reset the persistent timestamping state (hwts_tx_en, hwts_rx_=
+en,
+> > > > > > > tstamp_config, systime_flags and tsfupdt_coarse) when (re)ini=
+tializing
+> > > > > > > timestamping, so a failed init does not leave TX/RX timestamp=
+ing
+> > > > > > > enabled on a counter that never started.
+> > > > > > >
+> > > > > > > Fixes: cc4c9001ce31 ("net: stmmac: Switch stmmac_hwtimestamp =
+to generic HW Interface Helpers")
+> > > > > > > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcom=
+m.com>
+> > > > > > > ---
+> > > > > > > Changes in v3:
+> > > > > > > - Do not run stmmac_config_addend() in
+> > > > > > >   stmmac_update_subsecond_increment() error path.
+> > > > > > > - Return error from stmmac_adjust_freq() and stmmac_set_time(=
+).
+> > > > > > > - Reset hw ts configuration in stmmac_init_timestamping().
+> > > > > > > - Link to v2: https://lore.kernel.org/r/20260924-stmmac-ptp-a=
+dded-systime-error-v2-1-beb2a6b5f866@oss.qualcomm.com
+> > > > > > >
+> > > > > > > Changes in v2:
+> > > > > > > - Initialize sec_inc to 0 in stmmac_restore_subsecond_increme=
+nt()
+> > > > > > >   routine.
+> > > > > > > - Link to v1: https://lore.kernel.org/r/20260920-stmmac-ptp-a=
+dded-systime-error-v1-1-8ac9e7a3fce2@oss.qualcomm.com
+> > > > > > > ---
+> > > > > > >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 106 ++++=
+++++++++++++------
+> > > > > > >  drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  |  10 +-
+> > > > > > >  2 files changed, 84 insertions(+), 32 deletions(-)
+> > > > > >
+> > > > > > Hello, I'm noticing that after this patch was merged into linux=
+-next,
+> > > > > > boot seems to hang when ip=3Ddhcp is used because ethernet isn'=
+t working
+> > > > > > on the TH1520 Lichee Pi 4a. These lines get printed in a loop o=
+ver and
+> > > > > > over
+> > > > > >
+> > > > > > IP-Config: end0 hardware address 72:ca:a8:eb:27:[   24.872982] =
+thead-dwmac ffe7070000.ethernet end0: Register MEM_TYPE_PAGE_POOL RxQ-0
+> > > > > > f2 mtu 1500 DHCP
+> > > > > > [   24.900412] thead-dwmac ffe7070000.ethernet end0: PHY [stmma=
+c-0:01] driver [RTL8211F Gigabit Ethernet] (irq=3DPOLL)
+> > > > > > [   24.912780] dwmac1000: Master AXI performs any burst length
+> > > > > > [   24.912801] thead-dwmac ffe7070000.ethernet end0: No Safety =
+Features support found
+> > > > > > [   25.010229] thead-dwmac ffe7070000.ethernet end0: PTP init f=
+ailed
+> > > > > > SIOCSIFFLAGS: Connection timed out
+> > > > >
+> > > > > Hi Anirudh,
+> > > > >
+> > > > > based on the reported error, stmmac_init_tstamp_counter() fails w=
+ith
+> > > > > -ETIMEDOUT. In particular this can occurs if:
+> > > > >
+> > > > > stmmac_init_tstamp_counter()
+> > > > >  -> stmmac_update_subsecond_increment() -> stmmac_config_addend()=
+ -> -ETIMEDOUT
+> > > > >  -> stmmac_init_systime() -> -ETIMEDOUT
+> > > > >
+> > > > > I guess we should understand which one is failing and why it is f=
+ailing.
+> > > >
+> > > > It seems like both are timing out, both config_addend
+> > > > (PTP_TCR_TSADDREG) and init_systime (PTP_TCR_TSINIT).
+> > >
+> > > It seems hw timestamping has never worked on this board, it was just
+> > > undiscovered since stmmac_init_tstamp_counter() was not reporting any
+> > > error before (this is exactly the goal of this patch).
+> > >
+> > > What are the output for:
+> > > - IEEE 1588-2002 Time Stamp
+> > > - IEEE 1588-2008 Advanced Time Stamp
+> > >
+> > > root@rb3-gen2:~# grep 'Time Stamp' /sys/kernel/debug/stmmaceth/eth0/d=
+ma_cap
+> > > IEEE 1588-2002 Time Stamp: N
+> > > IEEE 1588-2008 Advanced Time Stamp: Y
+> >
+> > This is what I see
+> >
+> > root@debian-trixie-riscv64:/# grep 'Time Stamp'
+> > /sys/kernel/debug/stmmaceth/end0/dma_cap
+> > IEEE 1588-2002 Time Stamp: N
+> > IEEE 1588-2008 Advanced Time Stamp: Y
+>
+> Unfortunately I do not have this board for debugging. The first idea
+> I got is maybe 100ms is too small for this SoC? Can you please try to
+> increase it to like 500ms?
 
-> > ...
+That doesn't help either.
+
+Maybe someone more familiar with this board/has used PTP on it before
+can help out understanding why this is happening. Maybe this is some
+issue to do with clocks.
+
+Regards
+Anirudh
