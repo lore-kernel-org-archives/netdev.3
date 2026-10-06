@@ -1,274 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EA43E5594;
-	Tue,  6 Oct 2026 13:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791292696; cv=none; b=SzRaiJNrLN+2AsDKmRMVygMSeF/MvRzjYxFeX35KljOIFzzI9ErHvcY5ozDPiPgd7aqPzqf43G4lBERXb6J2v6RV6MR4/v+wZqDvP1uLoKPUxYydLMErqRh0gGEPmsCFiwk2Ag1IPRudIhgPJ/bbzSDMVGwuJ6MKQuErYppZliE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791292696; c=relaxed/simple;
-	bh=Q6hr1e//NWP3w9MThugtcJDfN/0Qb8J9ZQvzVy5bgLo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XWbxghj3mC882P7KMEvIAieEPvAg6nqpgasM5F3dbfRVnrS/+AQ/p2MIBrrQ3uATvgZ8k7h2NGtP03b4hBBeK3tHQfLIa96SBGV3+uEUKdQAT36a7zRdzlZ6cWqwMg/mEILrfStg8TOkS1+G+BqqgHh//1uhDgWwocFSckyDcco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJGjF317; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E38445563B
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 13:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791292962; cv=pass; b=W0rKcgxgZF1uYLPOttDlgI0gsaZ60XhoWzlO7/8ynne24bDVEd2NDSF/7XH7RmTHV8bw/1SEkiN0k7zgJPWRP4lABvhnQQ+fsQLq7243HOmwTpIEtfyvXSFDeJnsIjm+NQjhlvbjyImvBfWDOK/00cl+q5CVDXG5kWjUhuBwY0s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791292962; c=relaxed/simple;
+	bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LO34CgLmffrdWtMCUobhVp/BOL/IIbpNbzmA7xliUiXrg3e5MWKzlzN+2HPEkBZkb0DuHIW06ghupKSjkSp5lLaM+sq85mn8swJ/MbJ2xHkXhWyiSIbb6eo/r1C+pevFl1Aorcr6x4Lr6V7i3x0mhkeWV4Wa2cvH5G46z5vlj/s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz; spf=pass smtp.mailfrom=sairon.cz; dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b=C3bDStSH; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJGjF317"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635E41F00893;
-	Tue,  6 Oct 2026 13:18:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791292695;
-	bh=CQWkEbyFeoypLgC86ETxzKIKgUjEbxY7Sx+JR0+C0oQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LJGjF317k7V3P6G9GplpyL92/8Yh5NVHAvmwHiShqwcJnbSgL9Zo1AcWkxT+C45CH
-	 zVppVIv7hLKBscwcjrlYdKn18pzizZ2fof7AzTDPz3OvHYlYXFnddprKUNx1a62/Th
-	 ipbou2J36b4KHjKsd7G4HCgJ1+H423MLKC2Ac94h1GfPvPGyO9OdOGZfqPBs2J70OG
-	 nn8hFsR8rxAtWPzLDL6VL5PcOtJ69gg8yqj2on5B9MiV+v6J97t8o02R4fsJe6zoAu
-	 aHwI7CAsQjsZDe1b4ijautavlG8wD9cXYvqsSH2GOTiTrgW1V1T7I6hCDbyoHsL5aC
-	 rtCz0eVNyF3ZA==
-Subject: Re: [PATCH net v3 1/2] eth: fbnic: Preserve channels across resume
-From: netdev-bot+sashiko@kernel.org
-To: bjorn@kernel.org
-Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, mike.marciniszyn@gmail.com,
- almasrymina@google.com, netdev-bot+sashiko@kernel.org
-Date: Tue, 06 Oct 2026 13:18:13 +0000
-Message-ID: <179129269393.434549.14053731707723183539@kernel.org>
-In-Reply-To: <20261002125617.409447-2-bjorn@kernel.org>
-References: <20261002125617.409447-2-bjorn@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="C3bDStSH"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso2039851a91.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 06:22:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791292960; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lOOskfObvZA4fB4ogy3fWWjGif1bjBf/ODCupfrg4zfBTnouLx4zwyUWHjn2+xMom/
+         VwbBnjFMHHIczfymOoOkB8dnJJRL3Awu8rX7jifaVLaDroqhBXjBVQnK+oHis3nNo52s
+         ku2rVwSkF/eJvLoSYe7hWSPXTVM0x2LWC8l5DAJ8+T+18L8vcLUkff7ylXv53UoCIHPF
+         fWCO8RX0KQ75vOb6OGw2QBnsSHZW8ySnpLNGcq2B3nU4NbN+juMM2T2dQhgUBTr6e+pg
+         /esv67yRcHX8HmZbPSrZOMao8ERvXHb4ZfsrS3Y3VZ3/rTbbqPxirghSY/q2MmYRv08n
+         YuEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
+        fh=18sfnFc4RZRsgl1SzB77nsL6tURc5+nqvfGscMXg8zg=;
+        b=Oggq8R6PPUBevCd23Yemjm8dDPGBGnDiZ07gaiFvgfZ8d+XXZyrjuHxPykq3IF/EZL
+         6JysaX6q4amk0k5PUjasur+b+gN4FR5yyDTOaVOKcNCV8EKZ+nKpT4nm3xBP2w/tLDua
+         9r5+vGN9Ev37Z3LFNXqSs2I9eKryWq+xW5jgzBaenvNdohgdnX+HHcBPW2eNxfwlZWP+
+         OI/3jQwWGIj/MW3xj8f8v8IadIgJ0mRuqxdoT/AEERUVbenLfM1vsOhsHxST/ff6iNOA
+         S1XGMfymJzZEwKo4upsEJipvbExV2lSR+bcVDptfNCHm8o030yuLiW8WelElzehLYRwz
+         yRhg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sairon.cz; s=google; t=1791292960; x=1791897760; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
+        b=C3bDStSHSi2Y6QN93laDi+Neb114peOI4Gf37k/3xVquAGQWUuu1LITVaWeZZz5epA
+         1KFsY2ZW22wvgUBcj0Di8WlDviGLUZiS69CMxJyrenYLkpGm9EkV9UX6u3XnmQWzdbi+
+         uNmAXurX0Qk2Vkz4vashdlrNduQHM9qUROVC+6yvHK4ZlqccQAnThuW8JgzvnGnprgG6
+         /q8xnRtoXvGPshdrceNsVp0whdSd23n64p+h7bD4eXSnt6AiGScl7yZkCQbAjIe4wt2L
+         UEDecubxger8g9RoI+/qMxsB4VGUguI161bSL//FzmdtesNL/ZpKYYzv/vWjYjHvbSGK
+         ytTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791292960; x=1791897760;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
+        b=JVCzusyi1UDG9rr8+w5g2JUrlYiqIf2X04w8m7P/4J1xtnNaRarC90kSi4wRM5SQnh
+         E0MwPhaadiwA44nyi7U8LLapx4uAyaTonpu8zxeeOi5zHsjRcZcJAL4eizFX2h1xwoHL
+         kSyDCDiNeAEwMxVQSQkINFu+AS/e0xETGapRA6PSqrukShu+/8rYkhvWcTMtcQG/uWHP
+         bwvAuzNLlbXQOPuNNd9H94eiFO9YdEXXeb1rWMQ68oqSJtqgBIGgL4tALvRWAd90Xz8S
+         OSlnUMUpeOY9xDfXtAlXvH42SV4g9Wp+8eVRB6xIK+8oA3vTcncxWOP0lNMTg8+ieHDT
+         crkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwwkmH/STvocFFyh/p7770iXoJWNVoL3/KTwVkryGsLGol0xe3XwlH0BUiq7lyGiD+U6E2Ztuk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIPgEHBODFmWCFmQmW9BF5hkGQFjxJ2WXe1GcHBTL9hNMk2qvUd
+	P6vz2SYwGjiW5VQ9mXZBxBlsUsbFHa673BKv2uGd3JAwIW7ewJH0V2hJqxlL83mHP3RySiNxNWN
+	ELO/glakOnnAWGa+AfP5Gq1fDitzjhTkNyh0js+WiEA==
+X-Gm-Gg: AYBFou2mT15+OcZ75MPvGPOfwPB2vp2F+FhDw0riPkVTH2zihuc0v239BPZaIXKZxVn
+	/SW2qbn3V54QbJcT6nzPMMKqbXRxFiaNfDIUPaz+o4D97rN4Iavu0XKzqh/nqtYj7E4QmfL6tZ3
+	7u/4p4NCeV+zBx9kdURP3zuWErTYZkMZhG/hq/zsiAj+7tvZtmj9/aLKp/b+M9QYId2/VmetYmX
+	J3gbusC3/IK6+uQC5M19m67LvO8WLla3sTQa79CptUwwram1YewepIhWjBKOtE1TKHL6PCQsf7U
+	kPJvez80JVQqT2oVZy+3cJ2ir2vGP5h571MHgqvowu+E2Wzz+ZAOJmLnNMsarSSeaBKSui+RsUA
+	H+DYT+PT46iGBApx142GYkS6aq+03xXmEiA+Q+eo9aV8ZdCKxmPrfc2ztg6qcOrfz9l9CgMdVA/
+	c=
+X-Received: by 2002:a17:90b:3ccd:b0:3a8:878:ebab with SMTP id
+ 98e67ed59e1d1-3a80879621cmr5255577a91.35.1791292960306; Tue, 06 Oct 2026
+ 06:22:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+ <f73ca71a-8a22-495c-91a9-12d89968ac2c@leemhuis.info>
+In-Reply-To: <f73ca71a-8a22-495c-91a9-12d89968ac2c@leemhuis.info>
+From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+Date: Tue, 6 Oct 2026 15:22:13 +0200
+X-Gm-Features: AclHuK-K9pG_NO9KBdAk3iESUwUuT_Z21z8xG2zR0qRYXTeutTuoi2M9aya7o-A
+Message-ID: <CAPa5EdAxXiHKrdrUk2nrbxJzgh_B3jwkTP00+rV0-xk=2vmiiw@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
+ VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Eric Dumazet <edumazet@google.com>, Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com, 
+	Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Thorsten,
 
-Critical: 0 · High: 2 · Medium: 0 (2) · Low: 0
+On Tue, 6 Oct 2026 at 15:10, Thorsten Leemhuis
+<regressions@leemhuis.info> wrote:
+> Not my area of expertise, so take the following carefully, as it might
+> send you in the wrong direction:
+>
+> There is another issue known for 447cbe95ebb9:
+> Commit 447cbe95ebb9 causes IOMMU DMA faults on macvlan/vlan with bnxt_en
+> https://lore.kernel.org/all/20261004122616.56714cbd@nargothrond/
+>
+> A fix for it is under review:
+> bnxt_en: fix DMA mapping length for padded small packets
+> https://lore.kernel.org/all/20261006042153.199444-1-edumazet@kernel.org/
+>
+> Is that maybe related?
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I hesitate to tell it's completely unrelated, as I don't fully
+understand what breaks in our case, however, I'm quite sure that the
+fix under review won't help in case of this regression, as it's a
+breakage in a completely different ethernet driver from a different
+vendor - bnxt_en doesn't play any role on the affected systems from my
+report. But _maybe_ there will be some clues what should be fixed in
+r8169 in the discussion for the other regression.
 
-- [High] This patch makes resume fail outright when fewer MSI-X vectors
-  come back than before suspend, and the commit message describes that…
-- [High] After one failed resume, num_napi stays 0 for good, and the next
-  open divides by zero and oopses.
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  __fbnic_pm_attach() calls fbnic_up() without holding rtnl or the…
-- [Medium] This problem wasn't introduced by this patch, but
-  fbnic_service_task_stop() uses cancel_delayed_work(), which does not…
-
---
-
-eth: fbnic: Preserve channels across resume
-
-This patch keeps fbn->num_napi across suspend instead of clearing it. It
-also drops the fbnic_reset_queues() call from __fbnic_pm_resume(), so the
-pre-suspend channel layout is reused on resume. fbnic_stop() gets a new
-early return for when the NAPI vectors have already been freed.
-
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-> index c6698e3002a13..ec916c9f7faa4 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-
-[ ... ]
-
-> @@ -442,16 +441,11 @@ static int fbnic_pm_suspend(struct device *dev)
->  	rtnl_lock();
->  	netdev_lock(netdev);
->  
-> -	fbn = netdev_priv(netdev);
-> -
->  	netif_device_detach(netdev);
->  
->  	if (netif_running(netdev))
->  		netdev->netdev_ops->ndo_stop(netdev);
-
-[Severity: Medium]
-This is a pre-existing issue, but should fbnic_service_task_stop() use
-cancel_delayed_work_sync() here?
-
-drivers/net/ethernet/meta/fbnic/fbnic_pci.c:fbnic_service_task_stop() {
-	...
-	cancel_delayed_work(&fbd->service_task);
-}
-
-fbnic_service_task() takes rtnl_lock(), and at the end it re-arms itself:
-
-	if (netif_running(netdev))
-		schedule_delayed_work(&fbd->service_task, HZ);
-
-fbnic_pm_suspend() calls ndo_stop directly, so __LINK_STATE_START stays
-set. Suppose an instance is already running and blocked on rtnl_lock()
-while suspend holds rtnl. The cancel on this path does not wait for it:
-
-fbnic_stop()->fbnic_down()->fbnic_down_noidle()->fbnic_service_task_stop()
-
-Suspend then drops rtnl and goes on to fbnic_fw_free_mbx(),
-fbnic_free_irqs() and clearing uc_addr0/uc_addr4. Can the service task
-then run fbnic_get_hw_stats32(), fbnic_fw_check_heartbeat() and
-fbnic_health_check() against hardware that is being torn down? After that
-it would re-arm every HZ while the device is suspended.
-
-The MMIO accessors and the mailbox TX path have their own guards, so no
-concrete crash has been shown. With this patch num_napi now stays
-non-zero while napi[] is NULL. fbnic_napi_depletion_check() only runs
-when netif_carrier_ok(), and phylink_suspend() turns the carrier off, so
-that walk does not seem to be reached.
-
->  
-> -	/* The IRQs are about to be freed, so drop the napi vector count */
-> -	fbn->num_napi = 0;
-> -
->  	netdev_unlock(netdev);
->  	rtnl_unlock();
->  
-> @@ -519,9 +513,6 @@ static int __fbnic_pm_resume(struct device *dev)
->  
->  	fbn = netdev_priv(netdev);
->  
-> -	/* Reset the queues if needed */
-> -	fbnic_reset_queues(fbn, fbn->num_tx_queues, fbn->num_rx_queues);
-> -
-
-[Severity: High]
-Wasn't this call the only place where the channel layout was clamped to
-the MSI-X vectors actually granted on resume?
-
-Earlier in __fbnic_pm_resume(), fbnic_alloc_irqs() renegotiates
-fbd->num_irqs from the current online CPU count. It accepts as few as
-FBNIC_NON_NAPI_VECTORS + 1:
-
-	wanted_irqs += min_t(unsigned int, num_online_cpus(), FBNIC_MAX_RXQS);
-	num_irqs = pci_alloc_irq_vectors(pdev, FBNIC_NON_NAPI_VECTORS + 1,
-					 wanted_irqs, PCI_IRQ_MSIX);
-	...
-	fbd->num_irqs = num_irqs;
-
-Before this patch, fbnic_reset_queues() clamped tx/rx to max_napis =
-fbd->num_irqs - FBNIC_NON_NAPI_VECTORS and set num_napi = max(tx, rx).
-The interface came back with fewer queues but still worked.
-
-Fewer vectors can come back if CPUs went offline after probe or the
-MSI-X grant is smaller. With this call removed, num_napi can then be
-larger than num_irqs - FBNIC_NON_NAPI_VECTORS, which breaks the bound
-fbnic_set_channels() enforces. In that case:
-
-__fbnic_open()
-  fbnic_alloc_napi_vectors()
-    fbnic_alloc_napi_vector()
-      fbnic_napi_request_irq()
-        fbnic_request_irq()
-          pci_irq_vector()   <- -EINVAL for an unallocated MSI-X index
-
-__fbnic_open() then fails, and __fbnic_pm_resume() unwinds through
-err_free_mbx. netif_device_attach() is never called, so the NIC stays
-unusable until the driver is reloaded.
-
-The AER path also goes through __fbnic_pm_resume(). There,
-fbnic_err_slot_reset() now returns PCI_ERS_RESULT_DISCONNECT where it
-used to return PCI_ERS_RESULT_RECOVERED.
-
-The commit message says:
-
-    If fewer IRQs return, reopening still fails. Handle that separately.
-
-Is that accurate for the code before this patch? The removed
-fbnic_reset_queues() call seems to have handled exactly this case, so
-this failure looks like it comes from this patch. The follow-up "eth:
-fbnic: Publish real queue counts" does not touch the resume path, so the
-problem is still present at the end of the series.
-
->  	if (netif_running(netdev)) {
->  		err = __fbnic_open(fbn);
->  		/* On failure the vectors are freed, so drop the count */
-
-[Severity: High]
-With fbnic_reset_queues() gone from resume, what restores num_napi after
-this failure path?
-
-Right below this comment, the error path still does:
-
-		if (err)
-			fbn->num_napi = 0;
-
-Before this patch, the fbnic_reset_queues() call on the next resume
-rebuilt num_napi from num_tx_queues/num_rx_queues. fbnic_reset_queues()
-is now static and only called from fbnic_netdev_alloc(). So num_napi
-stays 0 while the queue counts stay non-zero and netif_running() stays
-set. ethtool can't repair it either, because the device is detached.
-
-On the next suspend, the new guard in fbnic_stop() returns early:
-
-	if (!fbn->napi[0])
-		return 0;
-
-On the next resume, num_napi == 0 does not match num_tx + num_rx, so
-fbnic_alloc_napi_vectors() skips the 1:1 branch and reaches:
-
-	while (num_rx | num_tx) {
-		int tqpv = DIV_ROUND_UP(num_tx, num_napi - txq_idx);
-
-Here num_napi == 0 and txq_idx == 0. Can this divide by zero while
-rtnl_lock and the netdev instance lock are held?
-
-There is also a second path. After the failed resume, run ip link set
-down: fbnic_stop() takes the early return. A later suspend/resume then
-succeeds and re-attaches the device. Then ip link set up calls
-fbnic_open()->__fbnic_open() with num_napi still 0.
-
-The first failure doesn't need fewer MSI-X vectors (see above). It can
-also come from -ENOMEM in fbnic_alloc_resources(), a FW ownership message
-failure, a heartbeat init failure, or a fbnic_mac_request_irq() failure.
-
-This also seems to contradict the new comment in fbnic_stop(), which says
-suspend "keeps num_napi for resume". fbnic_get_channels() would also
-derive its combined/standalone split from num_napi == 0, not from what
-the user configured.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but on the same resume path,
-__fbnic_pm_attach() calls fbnic_up() without rtnl or the netdev instance
-lock:
-
-	rtnl_lock();
-	fbnic_reset_hw_stats(fbd);
-	rtnl_unlock();
-	...
-	if (netif_running(netdev))
-		fbnic_up(fbn);
-
-fbnic_up()->fbnic_napi_enable() walks fbn->napi[0..num_napi) and calls
-napi_enable_locked(). Everywhere else (ndo_open, set_channels) this runs
-under rtnl + netdev_lock.
-
-During AER recovery the two halves are separate callbacks.
-fbnic_err_slot_reset()->__fbnic_pm_resume() allocates the NAPI vectors
-under rtnl + netdev_lock and then drops both locks.
-fbnic_err_resume()->__fbnic_pm_attach() runs later. Userspace is not
-frozen in between.
-
-Could an ip link set down in that window reach
-fbnic_stop()->fbnic_down()->fbnic_napi_disable() on NAPIs that were never
-enabled? NAPI_STATE_SCHED is still set from netif_napi_add(), so
-napi_disable_locked() would keep looping in its usleep_range() wait with
-rtnl held.
-
-And if the close overlaps fbnic_up() instead, can fbnic_free_napi_vectors()
-free fbn->napi[i] while fbnic_up() is still using it?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002125617.409447-1-bjorn%40kernel.org
+Thanks,
+Jan
