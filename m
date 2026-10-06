@@ -1,50 +1,48 @@
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6203E3D85;
-	Tue,  6 Oct 2026 10:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4959C38550E;
+	Tue,  6 Oct 2026 10:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791283014; cv=none; b=TOrNAPahVNLnmwiF/dZkXgKsogBCy5PEhGVw+S3oVlkS0tmvBzzLc0fPBVoCPOAZN9Ko/5tDFrVWp8pTX6YjPOEx4mB9jMQAsVzO/XJ/HPQV9N21CssDhVHj9LuqnbJTtp5NVvdZ3CskLK0OqKb9UQbAwqABE0fDARg7y9SIBik=
+	t=1791283187; cv=none; b=u4nUNrznrl3HxDy54h0qCZVit+NFE6Vmij2L9ej8LpvTnJRiVmYPpUBd41ACsx8WChpuBgDJkGRmBP3Dp1772eSZtUM9joy5SW474UEB443eEDZuQ5tbGpKu2CFPn1M5xrKJkLayS/V4J2B+uYh1BDe4N3UVyY23C7VKTAJLlJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791283014; c=relaxed/simple;
-	bh=e6gYyp+VVMvIE+cIP6zSd7UI+UVp7o8gYbgGORFvP1E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ELrr25h/6YKggZPCzSwuLTXbXpmr5Lehn6UDtsqtJfx4CQj/jgLKRNkHgiZbRlrjBej/2qJSwSUdrrtqLwaTYgCIlfMYiukPkihFZwifH3y4XS0+WJQxTvs2FIgkafXxpuzoj96q+47c5o1ElDD91yrIJKNmu6kRiJ3uH72Be6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=JbJ/bCml; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1791283187; c=relaxed/simple;
+	bh=cP96fxvQRUXL1ivWbFgfb8A2r6XFc9ItLo0Axu6G9OQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=j/fjvQdr9wCDaqXtcjl/SSOUOZ96155MeEjdxxfPJ81NICF2ziNB6NW3/xGfRO6rj8tU4f3wLNe2Ic2QxzMLaToRclkdsLUm5br/JQwlQv/q6QLAYGTlzjl0rdbFJMbtRokEqe8962Iz99unkviwS5cQD2LHGCLqJajfsPgA+uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+tDKz/u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="JbJ/bCml"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1791282696;
-	bh=wsO0jS6a66JvPvsOoDsKXWVw4FZJxwvwMdr7oGG4z/0=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+tDKz/u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830501F000FF;
+	Tue,  6 Oct 2026 10:39:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791283186;
+	bh=r6vziFNG7bang1G66r7uDNjLqBkWnGjYAuZvUzOaPSs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JbJ/bCmlRsk4tWD+y0fgOU2RFqndvujfPoxyLXKIB2QpzMDoNrTScBjb5Rs4sNG1D
-	 sgVuAfzeAXi8OlUQDPP3StnIz17bZOiEkf5lxSzFmjEkugGL8RBuvEkJLXYqgTD4XX
-	 WHTwyS4pZk+zhJiop+tGrZfJeKypHEMa+abJHviSNaV7BIa0BS7t5JQN7TJkpRhrmm
-	 tgkeoRM5ANHEXM/m38SXpkNoy1Uvtw6vMC4AofA1CcfZafMnx1dTTpPwnNNVVWU7Tv
-	 ZebxAcINgVaK4NGjKxqv8O8vcakwmSmP5DHn5siy1EnNwISAgDIqVOudPdqdb3JXZA
-	 zYI8fRuqGSH7g==
-Received: from [192.168.14.220] (unknown [144.6.157.237])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id E7A4C6E97D;
-	Tue,  6 Oct 2026 18:31:33 +0800 (AWST)
-Message-ID: <a1e2d7c0644234bd66b806134f7b803af741aa74.camel@codeconstruct.com.au>
-Subject: Re: [PATCH net-next] mctp i2c: add sysfs control for mux child
- netdevs
-From: Matt Johnston <matt@codeconstruct.com.au>
-To: Kenny Hsieh <kenny_hsieh@jabil.com>, netdev@vger.kernel.org, Jeremy Kerr
-	 <jk@codeconstruct.com.au>, Andi Shyti <andi.shyti@kernel.org>, Peter Rosin
-	 <peda@lysator.liu.se>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet	
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni	
- <pabeni@redhat.com>, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 06 Oct 2026 18:31:33 +0800
-In-Reply-To: <20261002073156.759005-1-kenny_hsieh@jabil.com>
-References: <20261002073156.759005-1-kenny_hsieh@jabil.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
+	b=j+tDKz/uD+FltihnD2HnHFllx+PyxnrXT0miata+/7EEQMiuYk0VBhFZ+MO70DO8+
+	 5G/smT0mURtpYtnuyxdldFsZl2FOxZkLLGojLtr/8x7Lt+6EAvwIW/91xtYsh26g9Q
+	 eHurIkY23J1Jnz/HkL8+4c1wtnND1Kdv1B5QixqxEJi4BKMYQJHWzgGpHYILFr8u0h
+	 A3FT33EiVUIZuJAVVnUuSUCrQlnPi1SGEGAFoT9EaB/ZQL2Z6HLdfoFv2cURcjQ7ou
+	 WAsb3/4d5jvCGVRCv8wrnlOdBkYaj/OGNmJj38656pryYlm+ntOKGMrLOLLJhkqVIw
+	 LuUSectJPa1Hg==
+Subject:
+ Re: [PATCH] net: ncsi: clamp filter table counts in GP response handling
+From: netdev-bot+sashiko@kernel.org
+To: kattamurivamsikrishna17@gmail.com
+Cc: netdev@vger.kernel.org, sam@mendozajonas.com, fercerpav@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, gwshan@linux.vnet.ibm.com, joel@jms.id.au,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Tue, 06 Oct 2026 10:39:45 +0000
+Message-ID: <179128318508.434549.4140597995682209212@kernel.org>
+In-Reply-To:
+ <CAANnmVBJ7NCV-SJrFtT9FO3VnaCK3xG5UzNud4xxoicxpY5qCw@mail.gmail.com>
+References:
+ <CAANnmVBJ7NCV-SJrFtT9FO3VnaCK3xG5UzNud4xxoicxpY5qCw@mail.gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,515 +50,218 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hi Kenny,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Thanks for this patch. The sashiko concerns look plausible. I've added a fe=
-w
-other thoughts.=C2=A0
-(Disclosure, I suggested this sysfs approach to Kenny earlier).
+Critical: 0 · High: 1 (1) · Medium: 1 (2) · Low: 0
 
-On Fri, 2026-10-02 at 15:31 +0800, Kenny Hsieh wrote:
-> An MCTP netdev is created for an I2C bus that carries an
-> "mctp-controller" property in the devicetree. A bus instantiated at
-> runtime through the I2C sysfs interface has no devicetree node on which
-> to set that property, so it can never get a netdev.
->=20
-> This matters for a mux topology that is only known at runtime. A BMC
-> that ships one firmware image across several chassis cannot describe
-> every chassis's mux tree in its devicetree. Userspace creates the muxes
-> it finds over i2c sysfs instead, and the channels below them have no
-> node of their own.
->=20
-> Add a writable "mctp_controller" attribute on mux child adapters below
-> a bus that has an mctp-i2c-controller device bound to it. A mux tree
-> with no such device is untouched. Writing 1 creates the netdev for that
-> bus, writing 0 removes it, and reading reports whether one exists.
-> Userspace can then enable MCTP per channel once it has created the
-> muxes.
->=20
-> The root adapter is excluded: its netdev follows the bound
-> mctp-i2c-controller device rather than this attribute, so a write there
-> returns -EINVAL. The devicetree property keeps working, and both
-> mechanisms may be used on the same mux tree.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-It might make sense to create the mctp_controller sysfs attribute for root
-adapters too, so the root bus mctpi2c netdev can be removed at runtime. It
-would probably remove some special-casing for the root node too.
+- [High] The fix is incomplete.
+- [Medium] The new MAC loop clamp in ncsi_rsp_handler_gp()
+  (net/ncsi/ncsi-rsp.c:886-888) also stops `pdata` from advancing.
 
-> The netdev is placed in the network namespace the mctp-i2c-controller
-> device was probed in, not the one that writes the attribute, since the
-> attribute is visible in every namespace.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the NCSI
+  response path never checks packet contents against the actual skb…
+- [Medium] This problem wasn't introduced by this patch, but the new
+  64-entry clamp in ncsi_rsp_handler_gp() still allows i in 32..63,…
+- [Medium] This problem wasn't introduced by this patch, but
+  ncsi_rsp_handler_gc() publishes new addrs/vids pointers and their…
 
-Perhaps creating/removing a netdev should only be permitted when the curren=
-t
-process matches the mctp-i2c-controller network namespace. There could be
-unforseen results creating a netdev in a different namespace? The restricti=
-on
-could be relaxed later if needed and is deemed safe.
+--
 
-> Only one mctp-i2c-controller client is allowed per mux tree. A second
-> one would add the same attribute to every child adapter again, and
-> either client's removal would delete the attribute the other still
-> needs.
+net: ncsi: clamp filter table counts in GP response handling
 
-This is a bit redundant given mctp-i2c-controller client will already only
-bind to root adapters?
+The patch limits the MAC and VLAN filter loops in ncsi_rsp_handler_gp().
+Each loop now stops at the number of entries allocated by the Get
+Controller Capabilities handler, and at the 64-bit width of the filter
+bitmap. The goal is to stop heap and bitmap out-of-bounds writes when the
+device reports contradictory counts in the GC and GP responses.
 
-> Tested on an AST2700 BMC with a nested mux tree by writing 1 to
-> mctp_controller on a channel that has no "mctp-controller" property,
-> which brings up the interface, then writing 0, which removes it. The
-> attribute also survives an unbind and rebind of the
-> mctp-i2c-controller driver.
->=20
-> Signed-off-by: Kenny Hsieh <kenny_hsieh@jabil.com>
-> ---
->  .../ABI/testing/sysfs-bus-i2c-devices-mctp    |  26 ++
->  MAINTAINERS                                   |   1 +
->  drivers/net/mctp/mctp-i2c.c                   | 256 +++++++++++++++---
->  3 files changed, 242 insertions(+), 41 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-i2c-devices-mctp
->=20
-> diff --git a/Documentation/ABI/testing/sysfs-bus-i2c-devices-mctp b/Docum=
-entation/ABI/testing/sysfs-bus-i2c-devices-mctp
-> new file mode 100644
-> index 000000000000..a04bc30aa7b5
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-i2c-devices-mctp
-> @@ -0,0 +1,26 @@
-> +What:		/sys/bus/i2c/devices/i2c-<n>/mctp_controller
-> +Date:		October 2026
-> +KernelVersion:	7.4
-> +Contact:	Kenny Hsieh <kenny_hsieh@jabil.com>
-> +Description:
-> +		Controls whether an MCTP network device exists for this I2C
-> +		bus. Writing 1 creates it, writing 0 removes it, and reading
-> +		returns 1 while it exists. Writing a value that matches the
-> +		current state is a no-op.
-> +
-> +		The attribute appears only on mux child busses whose mux tree
-> +		root has an mctp-i2c-controller device bound to it. The root
-> +		bus itself is excluded, because its network device follows
-> +		that mctp-i2c-controller device rather than this attribute.
-> +
-> +		A bus described in the devicetree can carry an
-> +		"mctp-controller" property instead, which creates the network
-> +		device when the mctp-i2c-controller device probes. This
-> +		attribute covers busses instantiated at runtime through the
-> +		I2C sysfs interface, which have no devicetree node on which to
-> +		set that property. Both mechanisms may be used on the same mux
-> +		tree.
-> +
-> +		Removal is synchronous and does not drain traffic: queued
-> +		packets are discarded and in-flight requests fail, so a
-> +		requester sees a timeout rather than an error.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3011f995437f..1ba32f61a21a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15718,6 +15718,7 @@ M:	Jeremy Kerr <jk@codeconstruct.com.au>
->  M:	Matt Johnston <matt@codeconstruct.com.au>
->  L:	netdev@vger.kernel.org
->  S:	Maintained
-> +F:	Documentation/ABI/testing/sysfs-bus-i2c-devices-mctp
->  F:	Documentation/networking/mctp.rst
->  F:	drivers/net/mctp/
->  F:	include/linux/usb/mctp-usb.h
-> diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
-> index b02476d338bb..d4da32656744 100644
-> --- a/drivers/net/mctp/mctp-i2c.c
-> +++ b/drivers/net/mctp/mctp-i2c.c
-> @@ -22,6 +22,8 @@
->  #include <linux/i2c.h>
->  #include <linux/i2c-mux.h>
->  #include <linux/if_arp.h>
-> +#include <linux/sysfs.h>
-> +#include <linux/nsproxy.h>
->  #include <net/mctp.h>
->  #include <net/mctpdevice.h>
-> =20
-> @@ -89,6 +91,10 @@ struct mctp_i2c_dev {
->  struct mctp_i2c_client {
->  	struct i2c_client *client;
->  	u8 lladdr;
-> +	/* Namespace the controller was probed in. Netdevs are created here
-> +	 * regardless of which namespace writes the mctp_controller attribute.
-> +	 */
-> +	possible_net_t net;
-> =20
->  	struct mctp_i2c_dev *sel;
->  	struct list_head devs;
-> @@ -128,7 +134,7 @@ static struct i2c_adapter *mux_root_adapter(struct i2=
-c_adapter *adap)
->   */
->  static struct mctp_i2c_client *mctp_i2c_new_client(struct i2c_client *cl=
-ient)
->  {
-> -	struct mctp_i2c_client *mcli =3D NULL;
-> +	struct mctp_i2c_client *mcli =3D NULL, *m =3D NULL;
->  	struct i2c_adapter *root =3D NULL;
->  	int rc;
-> =20
-> @@ -154,6 +160,21 @@ static struct mctp_i2c_client *mctp_i2c_new_client(s=
-truct i2c_client *client)
->  		goto err;
->  	}
-> =20
-> +	/* One client per mux tree. A second one would add the same
-> +	 * mctp_controller attribute to every child adapter again, and either
-> +	 * client's removal would delete the attribute the other still needs.
-> +	 */
-> +	WARN_ON(!mutex_is_locked(&driver_clients_lock));
-> +	list_for_each_entry(m, &driver_clients, list) {
-> +		if (m->client->adapter =3D=3D root) {
-> +			dev_err(&client->dev,
-> +				"An mctp-i2c-controller client is already attached to adapter %s\n",
-> +				root->name);
-> +			rc =3D -EBUSY;
-> +			goto err;
-> +		}
-> +	}
-> +
->  	mcli =3D kzalloc_obj(*mcli);
->  	if (!mcli) {
->  		rc =3D -ENOMEM;
-> @@ -163,6 +184,7 @@ static struct mctp_i2c_client *mctp_i2c_new_client(st=
-ruct i2c_client *client)
->  	INIT_LIST_HEAD(&mcli->devs);
->  	INIT_LIST_HEAD(&mcli->list);
->  	mcli->lladdr =3D client->addr & 0xff;
-> +	write_pnet(&mcli->net, current->nsproxy->net_ns);
->  	mcli->client =3D client;
->  	i2c_set_clientdata(client, mcli);
-> =20
-> @@ -857,6 +879,25 @@ static int mctp_i2c_ndo_open(struct net_device *dev)
->  	return 0;
->  }
-> =20
-> +/* Returns the netdev for adap, or NULL if there is none */
-> +static struct mctp_i2c_dev *mctp_i2c_find_dev(struct mctp_i2c_client *mc=
-li,
-> +					      struct i2c_adapter *adap)
-> +{
-> +	struct mctp_i2c_dev *midev =3D NULL, *m =3D NULL;
-> +	unsigned long flags;
-> +
-> +	spin_lock_irqsave(&mcli->sel_lock, flags);
-> +	/* List size is limited by number of MCTP netdevs on a single hardware =
-bus */
-> +	list_for_each_entry(m, &mcli->devs, list)
-> +		if (m->adapter =3D=3D adap) {
-> +			midev =3D m;
-> +			break;
-> +		}
-> +	spin_unlock_irqrestore(&mcli->sel_lock, flags);
-> +
-> +	return midev;
-> +}
-> +
->  static int mctp_i2c_add_netdev(struct mctp_i2c_client *mcli,
->  			       struct i2c_adapter *adap)
->  {
-> @@ -883,7 +924,12 @@ static int mctp_i2c_add_netdev(struct mctp_i2c_clien=
-t *mcli,
->  		rc =3D -ENOMEM;
->  		goto err;
->  	}
-> -	dev_net_set(ndev, current->nsproxy->net_ns);
-> +	/* Tie the netdev to the namespace the mctp-i2c-controller device was
-> +	 * probed in, not to whoever happens to write mctp_controller. A write
-> +	 * from another namespace must not place the netdev there, since the
-> +	 * attribute is visible in all of them.
-> +	 */
-> +	dev_net_set(ndev, read_pnet(&mcli->net));
->  	SET_NETDEV_DEV(ndev, &adap->dev);
->  	dev_addr_set(ndev, &mcli->lladdr);
-> =20
-> @@ -920,18 +966,10 @@ static int mctp_i2c_add_netdev(struct mctp_i2c_clie=
-nt *mcli,
->  static void mctp_i2c_remove_netdev(struct mctp_i2c_client *mcli,
->  				   struct i2c_adapter *adap)
->  {
-> -	struct mctp_i2c_dev *midev =3D NULL, *m =3D NULL;
-> -	unsigned long flags;
-> +	struct mctp_i2c_dev *midev =3D NULL;
-> =20
->  	WARN_ON(!mutex_is_locked(&driver_clients_lock));
-> -	spin_lock_irqsave(&mcli->sel_lock, flags);
-> -	/* List size is limited by number of MCTP netdevs on a single hardware =
-bus */
-> -	list_for_each_entry(m, &mcli->devs, list)
-> -		if (m->adapter =3D=3D adap) {
-> -			midev =3D m;
-> -			break;
-> -		}
-> -	spin_unlock_irqrestore(&mcli->sel_lock, flags);
-> +	midev =3D mctp_i2c_find_dev(mcli, adap);
-> =20
->  	if (midev)
->  		mctp_i2c_unregister(midev);
-> @@ -968,6 +1006,121 @@ static bool mctp_i2c_adapter_match(struct i2c_adap=
-ter *adap, bool match_no_of)
->  	return of_property_read_bool(adap->dev.of_node, MCTP_I2C_OF_PROP);
->  }
-> =20
-> +/* Returns the client owning @root's mux tree, or NULL.
-> + * Call with driver_clients_lock held. The returned pointer is only vali=
-d
-> + * while that lock is held.
-> + */
-> +static struct mctp_i2c_client *mctp_i2c_find_client(struct i2c_adapter *=
-root)
-> +{
-> +	struct mctp_i2c_client *mcli =3D NULL;
-> +
-> +	WARN_ON(!mutex_is_locked(&driver_clients_lock));
-> +	list_for_each_entry(mcli, &driver_clients, list)
-> +		if (mcli->client->adapter =3D=3D root)
-> +			return mcli;
-> +
-> +	return NULL;
-> +}
-> +
-> +/* A bus instantiated at runtime has no devicetree node on which to set =
-the
-> + * "mctp-controller" property, so this attribute is how userspace asks f=
-or its
-> + * netdev once the adapter exists.
-> + */
-> +static ssize_t mctp_controller_show(struct device *dev,
-> +				    struct device_attribute *attr, char *buf)
-> +{
-> +	struct i2c_adapter *root =3D NULL, *adap =3D NULL;
-> +	struct mctp_i2c_client *mcli;
-> +	bool present =3D false;
-> +
-> +	adap =3D mctp_i2c_get_adapter(dev, &root);
-> +	if (!adap)
-> +		return -ENODEV;
-> +
-> +	mutex_lock(&driver_clients_lock);
-> +	mcli =3D mctp_i2c_find_client(root);
-> +	if (mcli)
-> +		present =3D mctp_i2c_find_dev(mcli, adap);
-> +	mutex_unlock(&driver_clients_lock);
-> +
-> +	return sysfs_emit(buf, "%d\n", present);
-> +}
-> +
-> +static ssize_t mctp_controller_store(struct device *dev,
-> +				     struct device_attribute *attr,
-> +				     const char *buf, size_t count)
-> +{
-> +	struct i2c_adapter *root =3D NULL, *adap =3D NULL;
-> +	struct mctp_i2c_client *mcli;
-> +	bool enable;
-> +	int rc;
-> +
-> +	rc =3D kstrtobool(buf, &enable);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	adap =3D mctp_i2c_get_adapter(dev, &root);
-> +	if (!adap)
-> +		return -ENODEV;
-> +
-> +	/* The root adapter's netdev follows the mctp-i2c-controller client
-> +	 * itself, so it is not ours to add or remove here.
-> +	 */
-> +	if (adap =3D=3D root)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&driver_clients_lock);
-> +	mcli =3D mctp_i2c_find_client(root);
-> +	if (!mcli) {
-> +		/* No mctp-i2c-controller on this mux tree's root */
-> +		rc =3D -ENODEV;
-> +		goto out;
-> +	}
-> +
-> +	if (enable) {
-> +		if (mctp_i2c_find_dev(mcli, adap))
-> +			rc =3D 0;	/* Already present, nothing to do */
-> +		else
-> +			rc =3D mctp_i2c_add_netdev(mcli, adap);
-> +	} else {
-> +		mctp_i2c_remove_netdev(mcli, adap);
-> +		rc =3D 0;
-> +	}
-> +out:
-> +	mutex_unlock(&driver_clients_lock);
-> +
-> +	return rc < 0 ? rc : count;
-> +}
-> +
-> +static DEVICE_ATTR_RW(mctp_controller);
-> +
-> +static struct attribute *mctp_i2c_adapter_attrs[] =3D {
-> +	&dev_attr_mctp_controller.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group mctp_i2c_adapter_group =3D {
-> +	.attrs =3D mctp_i2c_adapter_attrs,
-> +};
-> +
-> +/* The root adapter is skipped: its netdev follows the bound client. The=
- group
-> + * is never removed, since kernfs drops it when the adapter is deleted, =
-and
-> + * updating rather than creating lets a rebind accept an existing group.
+> diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+> index fbd84bc8026a3..fa1ed405dfbb7 100644
+> --- a/net/ncsi/ncsi-rsp.c
+> +++ b/net/ncsi/ncsi-rsp.c
+> @@ -883,7 +883,9 @@ static int ncsi_rsp_handler_gp(struct ncsi_request *nr)
+>  	ncmf = &nc->mac_filter;
+>  	spin_lock_irqsave(&nc->lock, flags);
+>  	bitmap = &ncmf->bitmap;
+> -	for (i = 0; i < rsp->mac_cnt; i++, pdata += 6) {
+> +	for (i = 0; i < rsp->mac_cnt &&
+> +	     i < ncmf->n_uc + ncmf->n_mc + ncmf->n_mixed &&
+> +	     i < sizeof(ncmf->bitmap) * 8; i++, pdata += 6) {
 
-Is there a use case for the sysfs attributes to be persistent even if the t=
-he
-mctp-i2c-controller client is removed and re-added? To me it would be less
-surprising if they started with their initial settings when it's re-added.
+[Severity: Medium]
+Does this clamp also change where the VLAN table is read from?
 
-> + */
-> +static void mctp_i2c_add_sysfs(struct i2c_adapter *adap,
-> +			       struct i2c_adapter *root)
-> +{
-> +	int rc;
-> +
-> +	if (adap =3D=3D root)
-> +		return;
-> +
-> +	rc =3D sysfs_update_group(&adap->dev.kobj, &mctp_i2c_adapter_group);
-> +	if (rc < 0)
-> +		dev_warn(&adap->dev,
-> +			 "Failed adding mctp_controller attribute, %d\n", rc);
-> +}
-> +
->  /* Called for each existing i2c device (adapter or client) when a
->   * new mctp-i2c client is probed.
->   */
-> @@ -981,37 +1134,62 @@ static int mctp_i2c_client_try_attach(struct devic=
-e *dev, void *data)
->  		return 0;
->  	if (mcli->client->adapter !=3D root)
->  		return 0;
-> +
-> +	/* Unmarked busses get the attribute too, so userspace can enable them =
-*/
-> +	mctp_i2c_add_sysfs(adap, root);
-> +
->  	/* Must either have mctp-controller property on the adapter, or
->  	 * be a root adapter if it's non-devicetree
->  	 */
->  	if (!mctp_i2c_adapter_match(adap, adap =3D=3D root))
->  		return 0;
-> =20
-> -	return mctp_i2c_add_netdev(mcli, adap);
-> +	/* @mcli cannot be unbound here: the driver core holds the device lock
-> +	 * across probe, and an unbind needs that same lock.
-> +	 */
-> +	mutex_lock(&driver_clients_lock);
-> +	mctp_i2c_add_netdev(mcli, adap);
-> +	mutex_unlock(&driver_clients_lock);
-> +
-> +	return 0;
->  }
-> =20
->  static void mctp_i2c_notify_add(struct device *dev)
->  {
-> -	struct mctp_i2c_client *mcli =3D NULL, *m =3D NULL;
-> +	struct mctp_i2c_client *mcli =3D NULL;
->  	struct i2c_adapter *root =3D NULL, *adap =3D NULL;
-> +	bool have_client;
-> +	bool match;
->  	int rc;
-> =20
->  	adap =3D mctp_i2c_get_adapter(dev, &root);
->  	if (!adap)
->  		return;
-> +
->  	/* Check for mctp-controller property on the adapter */
-> -	if (!mctp_i2c_adapter_match(adap, false))
-> -		return;
-> +	match =3D mctp_i2c_adapter_match(adap, false);
-> =20
-> -	/* Find an existing mcli for adap's root */
->  	mutex_lock(&driver_clients_lock);
-> -	list_for_each_entry(m, &driver_clients, list) {
-> -		if (m->client->adapter =3D=3D root) {
-> -			mcli =3D m;
-> -			break;
-> -		}
-> -	}
-> +	have_client =3D mctp_i2c_find_client(root);
-> +	mutex_unlock(&driver_clients_lock);
-> +
-> +	if (!have_client)
-> +		return;
-> +
-> +	/* Outside the lock: updating the group waits for a kernfs drain, and a
-> +	 * concurrent mctp_controller_store() holds that reference while it
-> +	 * waits for driver_clients_lock.
-> +	 */
-> +	mctp_i2c_add_sysfs(adap, root);
-> +
-> +	if (!match)
-> +		return;
-> =20
-> +	mutex_lock(&driver_clients_lock);
-> +	/* The pointer from the first lookup does not outlive the dropped
-> +	 * lock, so look the client up again.
-> +	 */
-> +	mcli =3D mctp_i2c_find_client(root);
->  	if (mcli) {
->  		rc =3D mctp_i2c_add_netdev(mcli, adap);
->  		if (rc < 0)
-> @@ -1030,36 +1208,32 @@ static void mctp_i2c_notify_del(struct device *de=
-v)
->  		return;
-> =20
->  	mutex_lock(&driver_clients_lock);
-> -	list_for_each_entry(mcli, &driver_clients, list) {
-> -		if (mcli->client->adapter =3D=3D root) {
-> -			mctp_i2c_remove_netdev(mcli, adap);
-> -			break;
-> -		}
-> -	}
-> +	mcli =3D mctp_i2c_find_client(root);
-> +	if (mcli)
-> +		mctp_i2c_remove_netdev(mcli, adap);
->  	mutex_unlock(&driver_clients_lock);
->  }
-> =20
->  static int mctp_i2c_probe(struct i2c_client *client)
->  {
-> -	struct mctp_i2c_client *mcli =3D NULL;
-> -	int rc;
-> +	struct mctp_i2c_client *mcli;
-> =20
->  	mutex_lock(&driver_clients_lock);
->  	mcli =3D mctp_i2c_new_client(client);
->  	if (IS_ERR(mcli)) {
-> -		rc =3D PTR_ERR(mcli);
-> -		mcli =3D NULL;
-> -		goto out;
-> -	} else {
-> -		list_add(&mcli->list, &driver_clients);
-> +		mutex_unlock(&driver_clients_lock);
-> +		return PTR_ERR(mcli);
->  	}
-> +	list_add(&mcli->list, &driver_clients);
-> +	mutex_unlock(&driver_clients_lock);
-> =20
-> -	/* Add a netdev for adapters that have a 'mctp-controller' property */
-> +	/* Add a netdev for adapters that have a 'mctp-controller' property.
-> +	 * Runs with the lock dropped, for the reason mctp_i2c_notify_add()
-> +	 * gives.
-> +	 */
->  	i2c_for_each_dev(mcli, mctp_i2c_client_try_attach);
-> -	rc =3D 0;
-> -out:
-> -	mutex_unlock(&driver_clients_lock);
-> -	return rc;
-> +
-> +	return 0;
->  }
-> =20
->  static void mctp_i2c_remove(struct i2c_client *client)
+In the GP response, the VLAN tag table starts at offset 48 + mac_cnt * 6.
+ncsi_rsp_handler_gp() only gets there through the pdata += 6 side effect
+of this loop. When rsp->mac_cnt is larger than
+min(n_uc + n_mc + n_mixed, 64), the loop now exits early and pdata is
+left inside the MAC table.
 
-Cheers,
-Matt
+Take the scenario from the commit message: GC advertises one filter and
+GP has mac_cnt = 255. The VLAN loop below would then decode MAC address
+bytes as VLAN IDs:
+
+	ncvf->vids[i] = ntohs(*(__be16 *)pdata);
+
+It would also apply the vlan_enable bits to those entries. Later,
+set_one_vid() compares ndp->vlan_vids against these vids[] entries, and
+NCSI_CMD_PKG_INFO reports them to userspace.
+
+Could the packet offset be kept separate from the storage clamp? For
+example, the VLAN start could be computed as
+(unsigned char *)rsp + 48 + rsp->mac_cnt * ETH_ALEN, after checking it
+against the payload length.
+
+[Severity: Medium]
+This is a pre-existing issue, but ncsi_rsp_handler_gc() publishes the new
+addrs and vids pointers and their counts without taking nc->lock. It also
+stores each pointer before its counts:
+
+	nc->mac_filter.addrs = kzalloc(size, GFP_ATOMIC);
+	if (!nc->mac_filter.addrs)
+		return -ENOMEM;
+	nc->mac_filter.n_uc = rsp->uc_cnt;
+	nc->mac_filter.n_mc = rsp->mc_cnt;
+	nc->mac_filter.n_mixed = rsp->mixed_cnt;
+
+The new clamp reads these counts under nc->lock. However, ncsi_rcv_rsp()
+calls nrh->handler(nr) after dropping ndp->lock, so the NCSI core does
+not serialize response handlers.
+
+Suppose a GC and a GP response for the same channel are processed at the
+same time on different CPUs. Could GP pair the new, smaller buffer with
+the old, larger counts and still write out of bounds despite the new
+clamp? This would need NCSI frames to be delivered on multiple RX queues,
+which may not happen on typical single-queue BMC MACs.
+
+>  		if (!(enable & (0x1 << i)))
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but with the new 64-entry
+bound i can still be anywhere from 32 to 63 here. In that case 0x1 << i
+shifts an int by 32 or more. Isn't that undefined behaviour, which UBSAN
+reports as shift-out-of-bounds?
+
+The packet only carries 8 MAC enable bits (unsigned char mac_enable) and
+16 VLAN enable bits (__be16 vlan_enable). On x86 the shift count wraps.
+For i = 32..39, the enable bits of entries 0..7 are reused, so set_bit()
+marks filters that the device never enabled. The VLAN loop uses the same
+expression and has the same problem for i = 32..47.
+
+Before this patch the range was larger (i could reach 254). The patch
+narrows the problem but does not remove it.
+
+>  			clear_bit(i, bitmap);
+>  		else
+
+[ ... ]
+
+> @@ -898,7 +900,8 @@ static int ncsi_rsp_handler_gp(struct ncsi_request *nr)
+>  	ncvf = &nc->vlan_filter;
+>  	bitmap = &ncvf->bitmap;
+>  	spin_lock_irqsave(&nc->lock, flags);
+> -	for (i = 0; i < rsp->vlan_cnt; i++, pdata += 2) {
+> +	for (i = 0; i < rsp->vlan_cnt && i < ncvf->n_vids &&
+> +	     i < sizeof(ncvf->bitmap) * 8; i++, pdata += 2) {
+
+[Severity: High]
+Does this fully close the out-of-bounds bitmap writes that the commit
+message describes? The commit message says:
+
+  The loop indices are additionally used as bit numbers for
+  set_bit()/clear_bit() on the u64 filter bitmaps, so any count larger
+  than 64 writes out-of-bounds bits into struct ncsi_channel.
+
+The counts come from ncsi_rsp_handler_gc(), which does not clamp them:
+
+	nc->vlan_filter.bitmap = U64_MAX;
+	nc->vlan_filter.n_vids = rsp->vlan_cnt;
+
+vlan_cnt can be as large as 255, and n_uc + n_mc + n_mixed as large as
+765. Other users still treat these counts as the bitmap size.
+
+clear_one_vid() runs during the config clear_vids state:
+
+	index = find_first_bit(bitmap, ncf->n_vids);
+	...
+	vid = ncf->vids[index];
+
+	clear_bit(index, bitmap);
+	ncf->vids[index] = 0;
+
+Once bits 0..63 are cleared, find_first_bit() continues into the next
+field of struct ncsi_channel_vlan_filter, which is the vids pointer.
+clear_bit() then clears a bit of that pointer, and ncf->vids[index] = 0
+writes through the modified pointer. Can a GC response with
+vlan_cnt > 64 trigger this on its own, without any GP response?
+
+set_one_vid() follows the same pattern, using find_first_zero_bit() and
+set_bit() sized by n_vids. ncsi_write_channel_info() calls
+find_next_bit() over n_vids bits of the single u64.
+
+The commit message also says the clamp mirrors "the validation the SVF
+and SMA handlers already apply to their indices". Is that accurate?
+Those handlers only check the index against the table size.
+
+ncsi_rsp_handler_svf():
+
+	if (cmd->index == 0 || cmd->index > ncf->n_vids)
+		return -ERANGE;
+
+ncsi_rsp_handler_sma():
+
+	if (cmd->index == 0 ||
+	    cmd->index > ncf->n_uc + ncf->n_mc + ncf->n_mixed)
+		return -ERANGE;
+
+Both then call set_bit(cmd->index - 1, bitmap). In the SMA case, that can
+flip bits in the adjacent addrs pointer.
+
+Would it be better to cap the counts at 64, or reject the response, in
+ncsi_rsp_handler_gc()? That one change would cover GP, SVF, SMA,
+set_one_vid(), clear_one_vid() and the netlink path. As it stands, a
+stable backport of this patch alone would leave those paths reachable.
+
+[Severity: High]
+This is a pre-existing issue, but is pdata ever checked against the
+length of the received frame here?
+
+GP is registered as variable length:
+
+	{ NCSI_PKT_RSP_GP,     -1, ncsi_rsp_handler_gp      },
+
+So ncsi_rcv_rsp() takes the payload length from the device's own header:
+
+	payload = nrh->payload;
+	if (payload < 0)
+		payload = ntohs(hdr->length);
+	ret = ncsi_validate_rsp_pkt(nr, payload);
+
+ncsi_validate_rsp_pkt() then reads the checksum at an offset derived from
+that payload, without checking skb->len, and it accepts a zero checksum.
+There doesn't seem to be any pskb_may_pull() or skb->len check on the
+NCSI RX path.
+
+ncsi_rsp_handler_gp() then walks pdata for up to
+48 + 64 * 6 + 64 * 2 bytes, based only on mac_cnt and vlan_cnt. With a
+short GP frame and large counts, could this copy bytes from past the end
+of the received frame into mac_filter.addrs and vlan_filter.vids?
+
+Those vids[] entries are later sent to userspace by
+ncsi_write_channel_info() through NCSI_CMD_PKG_INFO. That command is not
+marked GENL_ADMIN_PERM.
+
+>  		if (!(enable & (0x1 << i)))
+>  			clear_bit(i, bitmap);
+>  		else
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/CAANnmVBJ7NCV-SJrFtT9FO3VnaCK3xG5UzNud4xxoicxpY5qCw%40mail.gmail.com
