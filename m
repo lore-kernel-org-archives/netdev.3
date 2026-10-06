@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585C649E5FC
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB0C49E14D
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791307157; cv=none; b=dVNnr9JriUodnJnrB0ALYedWLC5tFaa/qkfC2ASyBtbiUXCR5VGuzRMJiCWLNgZCYxRbvtLbN8JUx752QjSyfV7HfNXw4yi20FfXg6+hVLB9hOZwokq0iQCX5hvc+Sj3JF4HyEyA0QVpWu8IVjr1RJsICLh4jq4VM1jnF63XeRc=
+	t=1791307157; cv=none; b=ndlVoYIEv9i+w8jMYwzRjMgr5E7saMHUhMoJ89ASw3rXlvp0KopSE/zW6Wr8IsWVGUMEG8Vp+HiCwc+e9UTBKFdnySaH+xnhHJpngr+Y9oKLZPBBxs+RCVkSpOQYlpjXjUIyU9z6RODqSJLYfuTyOOUV3G4glu85sfKjZibA4E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791307157; c=relaxed/simple;
-	bh=p+FP1NW3GusR5t8ei9gTcYIbjCYxqtrdcLa3DNzHbUY=;
+	bh=ce9RRCKtFccW5QEwYDskod9D4cYO0IwwnQYcshWHp68=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Jp7H32OBk0ojQwEuvvzsqgAkNEZAoqY42BSW9PfUrqQA3MxREsR6QgVpMt2ZCloirjeo/v2wRtvtbpWYM4aKuUNKkTY1k5LT3ABPlAg4P+VvQfoRjBDeyoj5FoLN/RwG3AnLJOQuETfivA5Y1y9eBC9kN5WL80bMwao0li5DVFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MlqBD4rW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=bESCUu8qOgn3R4ECgGC6yy+rvL/aJmE2xK+jMOV+pY7tgQAhd7aXMyEnzkLjHOr91hRpCnerdLoFTZVEJfz11mjIHNx40Ipsj/3RoV3ZoIzv7n5sZIwSBYqXHzZgyqx35XDeaCJMhLvRvRV60/ynt5MYd9tykNqeiwlmrNEvWB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1thEkq2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MlqBD4rW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663691F0089E;
-	Tue,  6 Oct 2026 17:19:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1thEkq2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA1C1F0089C;
+	Tue,  6 Oct 2026 17:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791307154;
-	bh=yb5DmGp80Vdz2Z13Om1I3Tb857ycqJQiYIfM5a6StK4=;
+	s=k20260515; t=1791307153;
+	bh=ak2e46SqXbf3llfN2+9lEywpP+BOCZrPuH1ohO5lzuA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MlqBD4rWPpyB1UFUF5+BZSPD2EYovgrIMSwChixTUAt35jUmfxwyN2rtpAoplNn5+
-	 cFgAkW1fEF7UdayQq0/2cYEZTWYcevtu8erT5/NhA0QJ2ERdNBv1E0WhXqaKTsuo0H
-	 AEaWdSYUdBX/RZ+ikCVdzvKkcDnvt/VH8ChhQWaAtRRmqRmrAnRtXHKXZM60Jrhlf1
-	 Lycwy6mMBE+dFtgG/2c6r5P2NfGVAhW8H4lFoL9N3b42Okn4bSLZWmLLNqye0wwuCy
-	 k9OyOytcm9Op+YOr5k6XlEhXQSH2vFBSrnIfsn5SMXw8qQKkK9YjfLkyRpVQqPhgUD
-	 X7Qf+Jntsd2tA==
-Subject: Re: [PATCH net-next v3 11/12] net: ethernet: cortina: Release partial
- RX frames on stop
+	b=L1thEkq2+610aWWRWYSc3wW5IQ1DPpzNIbRx7/6/ohjNstB7K2zciTsoQ27tH0CI8
+	 SOtJ+Kj1g1VWAlx1SxTldoos1JnYMisghq0WaVuKQK9ukOeM3duccsAD5vg4AOhmgq
+	 ChcGH9VI3AFH1dyUHp/M9rz2KoioyS0hVi5nmPnGR2WxbKhDefmDRvVm/a7P0W8iLk
+	 FPp1xI+3VU/RFwdre+y2aQINAaSdTUXfl6x9+x2rz+AN3QVtY/QSUeXQbGJgAiSogD
+	 D9Lq0M0tQppPCtP1dRdugvGoYvN1TO5MDEBNZhl61E7wYT+oHo8Jfz2VH2VK5jxqa/
+	 wCsshxJEVlMXw==
+Subject: Re: [PATCH net-next v3 10/12] net: ethernet: cortina: Validate RX
+ fragment lengths
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
  mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Tue, 06 Oct 2026 17:19:13 +0000
-Message-ID: <179130715399.434549.3103296397733616991@kernel.org>
-In-Reply-To: <20261002-gemini-ethernet-fixes-3-v3-11-3e1f25890ae8@kernel.org>
-References: <20261002-gemini-ethernet-fixes-3-v3-11-3e1f25890ae8@kernel.org>
-X-sashiko-severity: Medium
+Date: Tue, 06 Oct 2026 17:19:12 +0000
+Message-ID: <179130715277.434549.7024559629176712429@kernel.org>
+In-Reply-To: <20261002-gemini-ethernet-fixes-3-v3-10-3e1f25890ae8@kernel.org>
+References: <20261002-gemini-ethernet-fixes-3-v3-10-3e1f25890ae8@kernel.org>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 2 · Medium: 0 (1) · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,109 +58,193 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The u64_stats writer added to gmac_stop()
-  (drivers/net/ethernet/cortina/gemini.c) runs in preemptible process…
-- [Low] The commit message has no statement of how the bug was found, how
-  it was confirmed, or how the fix was tested.
+- [High] Inconsistent descriptor lengths can still produce an skb shorter
+  than an Ethernet header, and handing it to GRO causes a NULL…
+- [High] net: gemini: valid perfectly aligned packets are dropped on
+  0-length EOF
+- [Low] The commit message does not say how the issue was discovered or
+  validated, or on what hardware the fix was tested.
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but gmac_rx()
+  adds only the payload length to skb->truesize (`skb->truesize +=…
 
 --
 
-net: ethernet: cortina: Release partial RX frames on stop
+net: ethernet: cortina: Validate RX fragment lengths
 
-This patch frees a partially assembled RX frag skb in gmac_stop() after
-napi_disable(). The pages already attached to port->rx_skb are then no
-longer leaked when the interface goes down. The discarded frame is
-counted in rx_dropped under rx_stats_syncp.
+This commit adds length checks to gmac_rx() so that RX descriptor
+lengths cannot place a fragment outside the posted free queue fragment
+or the backing page. Short initial fragments, frame length underflow and
+zero-length fragments are now dropped instead of being added to the skb.
 
-> net: ethernet: cortina: Release partial RX frames on stop
->
-> A NAPI poll can retain a partially assembled frame across invocations. The
-> stop path clears that pointer without releasing its fragment references,
-> leaking every page already attached to the frame.
-
-[ ... ]
-
-> Fixes: 06937db21ee3 ("net: ethernet: cortina: Make RX SKB per-port")
+> Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
 > Assisted-by: LLM
 > Signed-off-by: Linus Walleij <linusw@kernel.org>
 
 [Severity: Low]
-This isn't a bug, but could the commit message say how the leak was found
-and confirmed, and how the fix was tested?
+Could the commit message say how this issue was found and how the fix was
+tested? Documentation/process/maintainer-netdev.rst asks for this in the
+bug fixes section:
 
-The bug fixes section of Documentation/process/maintainer-netdev.rst
-asks for this:
+  All bug fixes must state how the issue was discovered and validated,
+  and how the fix was tested.
 
-    All bug fixes must state how the issue was discovered and validated,
-    and how the fix was tested.
+For hardware drivers, the same section asks for the hardware the fix was
+tested on.
 
-For hardware drivers, it also asks for the hardware the fix was tested on.
-
-For example, was an ifdown during a partly received multi-descriptor
-(jumbo) frame reproduced on Gemini hardware?
+The new checks depend on how the hardware fills buffer_size and
+byte_count. Was this tested on Gemini/SL3516 hardware?
 
 > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index 6b333eb81f9c4..2ebfbbe84ebaf 100644
+> index a0186cc4b9436..6b333eb81f9c4 100644
 > --- a/drivers/net/ethernet/cortina/gemini.c
 > +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -2173,6 +2173,12 @@ static int gmac_stop(struct net_device *netdev)
->  	gmac_disable_tx_rx(netdev);
->  	gmac_stop_dma(port);
->  	napi_disable(&port->napi);
-> +	if (port->rx_skb) {
-> +		napi_free_frags(&port->napi);
-> +		u64_stats_update_begin(&port->rx_stats_syncp);
-> +		port->stats.rx_dropped++;
-> +		u64_stats_update_end(&port->rx_stats_syncp);
-
-[Severity: Medium]
-Is it safe to call u64_stats_update_begin() here with preemption enabled?
-
-gmac_stop() is the ndo_stop callback. It runs in process context and
-holds only RTNL. Gemini is a 32-bit ARM SoC, so rx_stats_syncp contains a
-real seqcount.
-
-On !PREEMPT_RT, __u64_stats_update_begin() calls
-preempt_disable_nested(), which only runs
-lockdep_assert_preemption_disabled(). The write_seqcount_begin() that
-follows on a plain seqcount_t also only asserts. Neither one disables
-preemption.
-
-With CONFIG_PROVE_LOCKING, would this hit the WARN_ON_ONCE() in
-lockdep_assert_preemption_disabled() on every ifdown that finds a pending
-partial frame?
-
-On a preemptible kernel the writer could also be preempted while the
-sequence count is odd. Could a reader on the same CPU then spin in the
-retry loop in gmac_get_stats64() or gmac_get_ethtool_stats()?
-
-gmac_get_stats64() {
-    ...
-	do {
-		start = u64_stats_fetch_begin(&port->rx_stats_syncp);
-		...
-	} while (u64_stats_fetch_retry(&port->rx_stats_syncp, start));
-    ...
-}
-
-Before this patch, the only writer to rx_stats_syncp was gmac_napi_poll()
-in softirq context. The other process-context writer on this stop path,
-gmac_update_hw_stats(), disables interrupts first:
-
-gmac_update_hw_stats() {
-    ...
-	spin_lock_irqsave(&geth->irq_lock, flags);
-	u64_stats_update_begin(&port->ir_stats_syncp);
-    ...
-}
-
-Does this block need similar protection, for example
-u64_stats_update_begin_irqsave() or a local_bh_disable() section?
-
-gmac_stop() still contains the same block at the end of the series, in
-"net: ethernet: cortina: Scale Gemini RX queues to system memory".
 
 [ ... ]
+
+> @@ -1771,6 +1772,9 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+>  			if (!skb)
+>  				goto err_drop;
+>  
+> +			if (frag_len < NET_IP_ALIGN)
+> +				goto err_drop;
+> +
+>  			page_offs += NET_IP_ALIGN;
+>  			frag_len -= NET_IP_ALIGN;
+>  			frag_nr = 0;
+> @@ -1779,15 +1783,26 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+>  			goto err_drop;
+>  		}
+>  
+> -		if (word3.bits32 & EOF_BIT)
+> +		if (word3.bits32 & EOF_BIT) {
+> +			if (frame_len < skb->len)
+> +				goto err_drop;
+>  			frag_len = frame_len - skb->len;
+> +		}
+
+[Severity: High]
+Can inconsistent descriptors still produce an skb shorter than an
+Ethernet header here?
+
+The ETH_ZLEN minimum in gmac_skb_if_good_frame() only applies to the SOF
+descriptor's byte_count. On the EOF descriptor, frame_len comes from that
+descriptor's own word1.bits.byte_count. The only new check on it is
+frame_len < skb->len.
+
+For example:
+
+  SOF descriptor (no EOF bit): buffer_size = 3, byte_count = 60
+    passes gmac_skb_if_good_frame() and frag_len >= NET_IP_ALIGN,
+    appends 1 byte
+  EOF descriptor: byte_count between 2 and 13
+    passes frame_len >= skb->len, the range check and the zero-length
+    check, appends the rest
+
+napi_gro_frags() then receives an skb of 2 to 13 bytes.
+
+napi_frags_skb() cannot pull the 14 byte ethhdr, so it reuses the skb and
+returns NULL:
+
+net/core/gro.c:napi_frags_skb() {
+    ...
+	if (unlikely(!skb_gro_may_pull(skb, hlen))) {
+		eth = skb_gro_header_slow(skb, hlen, 0);
+		if (unlikely(!eth)) {
+			...
+			napi_reuse_skb(napi, skb);
+			return NULL;
+		}
+    ...
+}
+
+napi_gro_frags() then passes that NULL straight on:
+
+net/core/gro.c:napi_gro_frags() {
+	...
+	struct sk_buff *skb = napi_frags_skb(napi);
+	...
+	ret = napi_frags_finish(napi, skb, dev_gro_receive(&napi->gro, skb));
+	...
+}
+
+dev_gro_receive() calls skb_get_hash_raw(skb) on entry. Wouldn't that
+be a NULL dereference in NAPI softirq context?
+
+This crash path existed before this patch. However, the commit message
+says these descriptor inconsistencies are now dropped. Should gmac_rx()
+check that skb->len is at least ETH_HLEN (or ETH_ZLEN) before calling
+napi_gro_frags()? Alternatively, it could check that the EOF frame_len
+matches the SOF frame_len.
+
+>  
+>  		/* append page frag to skb */
+>  		if (frag_nr == MAX_SKB_FRAGS)
+>  			goto err_drop;
+> +		if (frag_len > freeq_frag_len -
+> +			       (page_offs & (freeq_frag_len - 1)) ||
+> +		    frag_len > PAGE_SIZE - page_offs)
+> +			goto err_drop;
+>  
+> -		if (frag_len == 0 && net_ratelimit())
+> -			netdev_err(netdev, "Received fragment with len = 0\n");
+> +		if (!frag_len) {
+> +			if (net_ratelimit())
+> +				netdev_err(netdev,
+> +					   "Received fragment with len = 0\n");
+> +			goto err_drop;
+> +		}
+>  
+>  		skb_fill_page_desc(skb, frag_nr, page, page_offs, frag_len);
+>  		skb->len += frag_len;
+
+[Severity: High]
+Does this drop complete frames when the EOF descriptor carries no
+payload?
+
+On an EOF descriptor frag_len is recomputed as frame_len - skb->len.
+The earlier descriptors of the chain may already have delivered all
+frame_len bytes. One case is a frame that ends exactly on a free queue
+fragment boundary while the hardware still closes the chain with a
+separate EOF descriptor. Then frag_len is 0 here even though the skb
+already holds the whole frame.
+
+The new goto err_drop then calls napi_free_frags() on that skb and
+counts it in rx_dropped, instead of handing it to napi_gro_frags().
+
+Before this patch, this case only printed the ratelimited "Received
+fragment with len = 0" message, and the frame was still delivered.
+That message suggests the condition has been seen on real hardware.
+If the hardware can emit such descriptors, frames of particular
+lengths would now be lost every time, which can be triggered by remote
+traffic.
+
+Would it be better to treat a zero-length EOF fragment as having
+nothing to append? gmac_rx() could release the page with put_page(),
+skip skb_fill_page_desc(), and still complete the skb with
+napi_gro_frags(). The zero-length check would then need to come before
+the frag_nr == MAX_SKB_FRAGS check. Otherwise a complete frame that
+uses all MAX_SKB_FRAGS slots and is followed by an empty EOF
+descriptor is still dropped.
+
+Was the zero-length case checked against the behaviour of the
+Gemini/SL3516 hardware before turning it into a drop?
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the line just after this
+in gmac_rx() adds only the payload length to truesize:
+
+		skb->truesize += frag_len;
+
+Each fragment pins a whole DMA buffer of 1 << freeq_frag_order bytes,
+with its own page reference taken in geth_freeq_post_page():
+
+	frag_len = 1 << geth->freeq_frag_order; /* Usually 2048 */
+
+Doesn't this understate the pinned memory by up to about 2 KiB per
+fragment for socket rmem and GRO accounting? Would adding freeq_frag_len
+here be more accurate?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-gemini-ethernet-fixes-3-v3-0-3e1f25890ae8%40kernel.org
