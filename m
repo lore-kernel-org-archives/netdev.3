@@ -1,70 +1,190 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2863E5EDB;
-	Tue,  6 Oct 2026 20:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C783859D3;
+	Tue,  6 Oct 2026 20:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791319523; cv=none; b=pT7cLKJ2uFHr5IFgWdECfcdix0IBdXeYjR5Z0TwreSVG9pqL55TrgzXLDwutYyZJ1Cq6KQqJQdB8rk+ae4ecJkoBA6pnldLI8jhDbM1p23gUPpWP3wjQpr7xRjlI5iZdMoG4U/gF016naOG+gtj/Ih3pE6LDg/0oUOv20crRbCw=
+	t=1791319724; cv=none; b=nA+oMNy6W2aFKjUi5LtwGaJ4ngIXAy3YKlaR1k0WdOkh8HQJ/eboKDSAZ8udKJoL0ri/0OsPAx9IqKOuxgzQAeqIsPf3BuG+Hox474qpi478azdT9Pnrr8+Njkjs4z/XpqujbM9eF5DQXAA8skD9I4r7HEq926GazJnBLWSoif8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791319523; c=relaxed/simple;
-	bh=ATTTyP+88KjceGR5QEQPws/hPLP7MJ6ZWEzi1w+P0e0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IUDLfnIAPo8wSVLVTO8hE0iBYc7xQti48nwvA48SvmQxfM83HM1uUWhfi92E6HQl+IiyY+nSdHXGm60C+jS9OAk2M92oqvwOL5+h/cRaM7jAMVOT9G7WNdEtxkrdwQy3MY+t6e3fOJU7NOQ0GO6oR3hNZROzgZe70M9aOVQbJcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gcNCk6Pl; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791319724; c=relaxed/simple;
+	bh=tB0qHnJJHa9piPfqzJkvOTKvaRYSaeMyRFhMHIMkdFs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pBiDGS38dVxcml0PkwNsqHCCcf4uaQqJ92KEY/boYU9Sb3xJVgcVrmj+jqodbCRn0WCS+uv2KOUA5wOVAQVILp7ck8elXXR26GyLtWAe0NjtfBEKV/1EBsEzIYClcRkd+KYloHVv7HVSsncugijcuLGJtTvP5vZ9FAajyOLFJJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VgCakNKt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=F/9U/Q/6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Cf3hZmoX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P3gQ93te; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gcNCk6Pl"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=4SfT0hIOP6oHUcuxOuqxpmJe0Evkh9k6/ySYUDHxEew=; b=gcNCk6Pl7m6QXgbpzy+2vBcG+f
-	zYl/m1aQlCtQN4ULUjgX156TYvB7YF/NJ4fGLO286fnJUr3s6khPzNdQ5/mXU/HhQI2jli61582Zm
-	c3AQ9XK7CPpSa8TrUalorRf2SdD2T38sBm75WjatHleEvhcl4lo5L96nNjdfgR4Tbg88=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xEC28-009KlI-Ep; Tue, 06 Oct 2026 22:45:08 +0200
-Date: Tue, 6 Oct 2026 22:45:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Frank <Frank.Sae@motor-comm.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/2] net: phy: motorcomm: Add driver entry
- for internal YT861x PHYs
-Message-ID: <f7410366-c457-4916-8c0b-6e071ec7ff0f@lunn.ch>
-References: <20261006202352.1616626-1-mmyangfl@gmail.com>
- <20261006202352.1616626-2-mmyangfl@gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VgCakNKt";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="F/9U/Q/6";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Cf3hZmoX";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P3gQ93te"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0613C21F72;
+	Tue,  6 Oct 2026 20:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791319717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
+	b=VgCakNKtFP1A4e+W9P2v6GEUIwfkV7xAfnX7kV3mq0zR2PheXK82mphQETy1l86QNICKfX
+	RNazyUpUjjhOenNg0U6TbACsU8w4hYWwK9xI8DTaV2wc+Zisgqce+iIsp2ep+ynoSjAhUO
+	I3Uhcdx2kYFtdzWLuqd8vlmc0qqk4rc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791319717;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
+	b=F/9U/Q/6Qe3Iimo8bmsh7IYVnSyUO3Dn09oFpVfnFBTSsClenM3afDbGZ/sPjqT7uBbyuI
+	HdIhMEZf/qH4LsDg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Cf3hZmoX;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=P3gQ93te
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791319713; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
+	b=Cf3hZmoX9BELsUBFa0geK9LBZ+qZgYTXjtLYyaCk/gWuD+wFx0iM8NIuT+jj43pc1sZQkG
+	WWKpPIiAfZkjpVzylFiFiPiHmaOvJBqlgFhSkPUZM5t55KB8+MrrcNEaCNKohQMPw6gp/W
+	qi3NxXhMrUtYEvxhD46+myEbS3UrIdI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791319713;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
+	b=P3gQ93te75hxqBhXBSAEIG3B5H7xURP/+5cGJu5ECo0ReX2oN4mCCdxM8DnP68roPxb8TE
+	QFKY8xHrc2jJ8cCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60BA4137AC;
+	Tue,  6 Oct 2026 20:48:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QZJsDKBexWonPwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 06 Oct 2026 20:48:32 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	matttbe@kernel.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH nft v2] doc: add MPTCP subtypes documentation to man page
+Date: Tue,  6 Oct 2026 22:48:03 +0200
+Message-ID: <20261006204803.11155-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006202352.1616626-2-mmyangfl@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 0613C21F72
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:email,suse.de:dkim];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
 
-On Wed, Oct 07, 2026 at 04:23:47AM +0800, David Yang wrote:
-> The YT921x switches integrate GbE PHYs of the YT861x family on the
-> switch-internal MDIO bus exposed by the yt921x DSA driver. Without a
-> specific driver they bind to the generic PHY driver. Add a driver entry
-> for them.
-> 
-> The PHY ID 0x01e04281 is live captured from the switch-internal MDIO
-> bus. The switch SerDes PCS does follow the pattern, 0x4f51e899, though.
-> 
-> Auto sleep can be disabled with the "motorcomm,auto-sleep-disabled"
-> device property, as with the other Motorcomm PHYs.
-> 
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
+In addition, document the limitation when there are multiple MPTCP
+options.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+v2: added valid MPTCP situations suggested by Matthieu
+---
+ doc/payload-expression.txt | 41 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-    Andrew
+diff --git a/doc/payload-expression.txt b/doc/payload-expression.txt
+index ceccfdaa..53e92905 100644
+--- a/doc/payload-expression.txt
++++ b/doc/payload-expression.txt
+@@ -805,6 +805,32 @@ TCP option matching also supports raw expression syntax to access arbitrary opti
+ [verse]
+ *tcp option* *@*'number'*,*'offset'*,*'length'
+ 
++.MPTCP subtypes
++[options="header"]
++|============================
++|Keyword| Description
++|mp-capable|
++Multipath capable
++|mp-join|
++Join connection
++|dss|
++Data sequence signal
++|add-addr|
++Add address
++|remove-addr|
++Remove address
++|mp-prio|
++Change subflow priority
++|mp-fail|
++Fallback to single-path TCP
++|mp-fastclose|
++Fast close
++|mp-tcprst|
++Subflow reset
++|============================
++
++Data types can be queried with 'nft describe tcp option mptcp subtype'.
++
+ .IP Options
+ [options="header"]
+ |==================
+@@ -833,6 +859,21 @@ filter input tcp option sack-perm exists counter
+ filter input tcp option maxseg size lt 536
+ --------------------
+ 
++.matching MPTCP suboptions
++--------------------
++filter input tcp option mptcp subtype mp-join drop
++--------------------
++
++[NOTE]
++====================
++Netfilter currently evaluates only the first MPTCP option found in the TCP
++header. If a packet contains multiple MPTCP options, a rule attempting to match
++the second option will never match. Having multiple MPTCP options in the same
++packet is valid, e.g the Linux MPTCP stack inserts 'remove-addr', 'mp-prio' and
++'mp-fail' after an MPTCP 'dss' option; 'mp-tcprst' can also be inserted after
++an 'mp-fastclose'.
++====================
++
+ .matching IPv6 exthdr
+ ---------------------
+ ip6 filter input frag more-fragments 1 counter
+-- 
+2.55.0
+
