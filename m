@@ -1,254 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FFA399013;
-	Tue,  6 Oct 2026 22:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A614238837D
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 22:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791326147; cv=none; b=K/Z+6nbHHxsn7sTaaRp0i3QQw5gQSsc8XZf9HukzDc1PPYsRNgzOXFqi5myfUCC4njuwFXiXJZyyfJFPJp56p0rbVr5N94nlmH2IWxgDBcRetjSKnwqv1MCoGj5pPlM6M+VfxQUIp5XIr1faSMOYi08AqK2H1Yr4R2QomoY3lAU=
+	t=1791326227; cv=none; b=TL4AsH6XnELd57i/JV09RTaRziNagfSKpS4XJk4fbklCKRM7mCX53jqqdcpBZPpzbW8LQWGiF6udeuzwPMtjwuW3+UH87p3qz8GxXTgrsMjI05/+LydKzdbOjCfow5mRHL0y5023LKmZrBTe9H/PtyAaIewdr237d1lfXcJ6UEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791326147; c=relaxed/simple;
-	bh=IVCDTnZq8y+dUc68ekWT1aDzdvRMDQZ8+mtAT6EWde8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mu5Zbeg/TH8IYxcSwzFhGrNrUWJvBejrlTwYaySNHcIc177oCZ9tQaKES5OFuP92xDewVBGAgfMEzDPSG8YAYsHVafgW2tIgUsEn18X7rXFmH6WVjY2n2XNj4rM1zy16UzffrWgyaNbHzUWR53G9SJpp4CTsk9IBJHq9r1XxYZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVVI/s48; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791326227; c=relaxed/simple;
+	bh=8gagy4Br0ffj4FJnMaaU3EPK9gUNhcG5m+wDZFe/L58=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vm7s35hT75iCZ7tV/Bu3kJVUnWJrGbewZA0gKxdUVcaeqx0z1c9grkWkkcN1Jk6LWUip2FOQhf6H0pNLxy1oRvLf3QSDZgj4m3DyODoCG23cNBwrDdzsjUvIA6RzmyVERHQHu0Xe29FBGcTwlpAk0x77W05AlQ7ybmCNatO5RAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=lNa+5zxJ; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVVI/s48"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6261F0089E;
-	Tue,  6 Oct 2026 22:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791326145;
-	bh=0jPfxTRpk3Sf8aMZuaA94a/mttFBQCAq0u4Z9fP9AOY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MVVI/s48QHMeIfmYSn1t90BOYulhv7UvTNk4WJF59go/+/zjQ4NhiplZiMWaDhERQ
-	 /XqU+8n31vT71fsN1ddrxJji5MvJr41Wbzl+N+JuVsuVDgZXuvt+lDa1z8hpnoODaW
-	 B8YfxlkZKCGSdKNjtAzBOWgtUhZMDn6fqogexyPJzFh/iRqZr9eBmLAoSv+VlLUTas
-	 ZzymV1v6wmyB2w+HOJJVqSjQGGjNLmguYJ2ymvDiZl9XqHwRP4ENBXitOTmMidym+E
-	 2JGwIQQEycC5+zW0jNz7QPobRjgH8DlL9zsVByQGEw/1ylCsDr3phUOdU6fWLMt4Ji
-	 dWkXiZQfTlJMw==
-Subject: Re: [PATCH net-next v2 7/7] net: bcmgenet: reassemble jumbo frames
- from status block fragments
-From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
- pierremarinleclercq88@gmail.com
-Date: Tue, 06 Oct 2026 22:35:44 +0000
-Message-ID: <179132614439.434549.8289444609097315292@kernel.org>
-In-Reply-To: <20261006-nb-genet-mtu-nn-v2-v2-7-c4be21151912@tipi-net.de>
-References: <20261006-nb-genet-mtu-nn-v2-v2-7-c4be21151912@tipi-net.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="lNa+5zxJ"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc4aa18f9afso1639305a12.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 15:37:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791326225; x=1791931025; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=srtPY9GyX39p5JfD6t/4b1goE6lD3CZxKoKqv9LGd98=;
+        b=lNa+5zxJcBCBdT+qEA0AMyh7KgG3NKVQTTPdWheaa7arwZ0dW1PsBPWnphEMPvJdOy
+         BYlJb/D4N52bvQQu45WDpcC+5WOlNVUADaOzG2aZ4Hu8F5eHi8b4+nKr/coaJO25tJlK
+         8qGGQ9uPJxd383pT7qBFfypIc7DoVbMvJCnMCO3YJW5Ry6DcmQ1jBIbTbs8yXCQwRIlw
+         3w/OifTsyFZ10vbOX0yS3oFE+uibRU0ntIOyF4kDKzwmFGBT9pvx3cbOQHuRWEtSprNp
+         ki7Vaip6QbxfvBTl2XMfEFSr69X9A/Vuu0iGHdT3LvKBj6hPgthPFy1WUxbZFDklNaNS
+         52qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791326225; x=1791931025;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=srtPY9GyX39p5JfD6t/4b1goE6lD3CZxKoKqv9LGd98=;
+        b=UilN6ZxkQWk9pgGZULnvwjvnxxS/HhkyzK9pRG2WVs9TqAS/2/TuRbxz56WA2ujok1
+         7UXfv0GQlqu8zPfdHjBAfEW7qYuAY0go8KwRgs6kremXibK7OW0tvyC7KiDm9cfqJPmr
+         YF2LYtl7GfcSd5zIpZBvtDFLgUK9ItExdkrP7tLwR7dDEu6TL0UPVuYYQNr32V5HddB8
+         lTg4rcW0IW2pFLq0GODb+78+IdKSDKyQSOwH/h70u67LGK8PvCwm+lC4hPpV7bSyio45
+         qVRWgFyGjwwz9Ge/xQDRE9P2iLzdP5zbEEiIUbOAsXIO5HrppbV8KtN58JhOJJINzM6K
+         rRFQ==
+X-Gm-Message-State: AFuF++lP2o+MFuDUrD9OIRZZnQLl0izS6lEECpeQDB5kZnVReWEXirQK
+	UA74lPWmiPoitCTg8nCGPv6upnYFCmiiulASLzZ2uty7ch+bS2q4tri7Jf2MuNGHBMggjaxlGLE
+	TgThf
+X-Gm-Gg: AYBFou2taCmnuoP5dxwjBt+m6rfWiXqpLHjFuDWTyNQ74jIa0g47sNinDAk09b2phsn
+	JCPOa7ZUJrabztAjKDsFHMW/cxao9ys6QZmbTMoMufI9ZpxqwyXAbQie+1LqF8dLatqX+40m75M
+	C2FvVvQlJesTcC5EbO/ZlC1K0WkzmTku68n5rFb3sj3sucBLU12mOd0d4CmcwBluLDZDmdB1kDD
+	6R0s2vW5s4R5e4AJZK/n7mo1+2gYpM+CfSap0jkizo6BEsDS6skgVj3or9RfGzQUOsZHxwPvXO8
+	fSGG3guFDlD7leciIX/3OOkctx6zNC9GGi/GX8RbxBWyHjTSRDjsfL6IfX2jEUYdvdW/K5REaZD
+	GyZ7u+vEVkWoSjx66cQCe9FKd6FNorkQNPFZJWaXswcARza6JqFNM4wh5qPMp8tzGFlFspa7Vq4
+	CvBA/JFrLjs7u/0eSL32JdkS6/s03mkAbu+3yYDfuiJX0CwdzDyspPmCFtkPK2Qo6IHaTe6Im1D
+	LPS0rsMNkNmDA==
+X-Received: by 2002:a05:6a21:6e84:b0:3d3:adbf:7779 with SMTP id adf61e73a8af0-3e13401b746mr290392637.21.1791326224911;
+        Tue, 06 Oct 2026 15:37:04 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4b::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0a58225b8sm522976a12.2.2026.10.06.15.37.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 15:37:04 -0700 (PDT)
+Date: Tue, 6 Oct 2026 15:37:03 -0700
+From: Joe Damato <joe@dama.to>
+To: anmory <anmory@protonmail.com>
+Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
+Subject: Re: [RFC net v4 0/4] bnxt_en: Make RING FREE more robust
+Message-ID: <asV4D3J7K8FzQO4I@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, anmory <anmory@protonmail.com>,
+	netdev@vger.kernel.org, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
+References: <VyyrJwrwBZEIGezDRJP8QPxbcsGROaxnmohLCnzNQY6sX5CEt0BK3AEC_0MGBx6OxGf4H5UG_xQcqgtAonwmXLdZ5Bd3INWMsof8Oj6ruqg=@protonmail.com>
+ <asVYjdbZGMAEck2t@devvm20253.cco0.facebook.com>
+ <eXJey19uF3K9zJxeuqly_VAGq8y6AiyexdzLKxv22b7m1Av025Dp-w9cGWDelfFwBqcD-wtUIjtz7p1ZYKwlKeyzd3vHHpdY7U6FGPIrK7M=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eXJey19uF3K9zJxeuqly_VAGq8y6AiyexdzLKxv22b7m1Av025Dp-w9cGWDelfFwBqcD-wtUIjtz7p1ZYKwlKeyzd3vHHpdY7U6FGPIrK7M=@protonmail.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Tue, Oct 06, 2026 at 10:22:51PM +0000, anmory wrote:
+> 
+> Hi Joe,
+> one important detail I omitted from my previous mail: the affected eth1 interface is an 802.1Q trunk with multiple VLAN subinterfaces.
+> We also use Keepalived VRRP with use_vmac, so virtual MAC interfaces are layered on the VLAN interfaces. Traffic is routed/forwarded through the host and uses conntrack/SNAT before leaving through another physical interface.
+> We are not deliberately toggling VLAN offload during the test. The reproduction so far is simply to boot Debian 6.12.111-1 with this normal network configuration and workload. On one host it reproduced after about 20 minutes; on another it reproduced almost immediately. We have also seen a previous occurrence after several hours, so we do not yet have a deterministic packet-level trigger.
+> Given the VLAN configuration, Eric's patch looks especially relevant. I'll test 6.12.111 with that patch first as you suggested and report whether the failure still reproduces.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] Use-after-free read of the last status block in
-  bcmgenet_desc_rx() when CRC forwarding is on.
-- [Medium] TX descriptor length can overflow the 12-bit length field once
-  the MTU goes past about 4 KB.
-- [Medium] Short SOP descriptor followed by continuation fragments can
-  reach BUG() in eth_type_trans().
-- [Low] The comment on bcmgenet_pkt_rdy_thld() is now stale.
-
---
-
-net: bcmgenet: reassemble jumbo frames from status block fragments
-
-The hardware splits a frame longer than the packet ready threshold across
-several descriptors, each with its own status block. This patch reassembles
-those descriptors into one skb by attaching the later ones as page frags.
-It also raises max_mtu on v2+ to ENET_MAX_JUMBO_MTU, which is derived from
-the 14-bit UMAC_MAX_FRAME_LEN.
-
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index e8f86374c7cd8..faa13f12ce7e6 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -84,11 +84,8 @@
->  				      ENET_THLD_MAX * ENET_THLD_UNIT, \
->  				      ENET_THLD_PAGE_LEN)
->  
-> -/* Largest MTU that fits one descriptor, with room for a VLAN tag so a VLAN
-> - * interface can use the parent MTU.
-> - */
-> -#define ENET_MAX_MTU		(ENET_THLD_MAX_LEN - GENET_RBUF_ALIGN - \
-> -				 ETH_HLEN - VLAN_HLEN)
-> +/* UMAC_MAX_FRAME_LEN is 14 bits wide and counts the FCS */
-> +#define ENET_MAX_JUMBO_MTU	(GENMASK(13, 0) - ENET_FRAME_OVERHEAD)
-
-[Severity: Medium]
-This limit comes from the UMAC frame length only. Once bcmgenet_probe()
-sets max_mtu to it, the TX path can see MTUs up to 16347. Can the TX
-descriptor length field hold buffers that large?
-
-bcmgenet_xmit() still maps the linear head and each page frag as a single
-descriptor. It writes the size into len_stat with no mask, cap or split:
-
-bcmgenet_xmit() {
-    ...
-		len_stat = (size << DMA_BUFLENGTH_SHIFT) |
-			   (priv->hw_params->qtag_mask << DMA_TX_QTAG_SHIFT);
-    ...
-}
-
-The only in-tree description of that field says it is 12 bits wide:
-
-bcmgenet.h:
-/* Tx/Rx Dma Descriptor common bits*/
-#define DMA_BUFLENGTH_MASK		0x0fff
-#define DMA_BUFLENGTH_SHIFT		16
-
-At jumbo MTU, skb_headlen() can approach 16 KB, plus the 64-byte TSB that
-bcmgenet_add_tsb() adds. TCP frags of around 9 KB are also common.
-
-If the field really is 12 bits, would the length wrap modulo 4096, with the
-upper bits spilling into bits 31:28? Would that truncate or corrupt the
-frame on the wire? Before this patch the largest TX buffer was about 3.9 KB.
-
-Separately, bcmgenet_init_tx_ring() still sets DMA_RING_BUF_SIZE from
-priv->rx_buf_len, which is at most about 3.9 KB:
-
-bcmgenet_init_tx_ring() {
-    ...
-	bcmgenet_tdma_ring_writel(priv, index,
-				  ((size << DMA_RING_SIZE_SHIFT) |
-				   priv->rx_buf_len), DMA_RING_BUF_SIZE);
-    ...
-}
-
-Is that setting still valid now that one TX descriptor can be several times
-larger? Could the commit message say whether the TX descriptor length and
-the TX buffer size limits allow more than 4095 bytes?
-
-[ ... ]
-
-> @@ -2333,6 +2330,54 @@ static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
->  	return 0;
->  }
->  
-
-[ ... ]
-
-> +/* A frame longer than the threshold arrives in several descriptors, each with
-> + * its own status block. Only the first one carries a header, so hand the page
-> + * of every later one to the frame already being collected. Returns the frame
-> + * once EOP is in, NULL while more descriptors are expected or once the frame
-> + * had to be dropped.
-> + */
-
-[Severity: Low]
-This isn't a bug, but the comment above bcmgenet_pkt_rdy_thld() now looks
-stale:
-
-/* Receive threshold in register units. Covers the alignment bytes and the
- * frame, but not the status block, which the hardware adds on top.
- */
-
-With max_mtu raised to ENET_MAX_JUMBO_MTU, any MTU above about 3.5-3.8 KB
-is clamped to ENET_THLD_MAX_LEN / ENET_THLD_UNIT. The threshold then no
-longer covers the frame, which contradicts the comment here. Should that
-comment be updated?
-
-[ ... ]
-
-> @@ -2490,8 +2556,18 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
->  		skb_reserve(skb, GENET_RSB_PAD);
->  		__skb_put(skb, len - GENET_RSB_PAD);
->  
-> -		if (priv->crc_fwd_en) {
-> -			skb_trim(skb, skb->len - ETH_FCS_LEN);
-> +		if (unlikely(!(dma_flag & DMA_EOP))) {
-> +			ring->frag_head = skb;
-> +			goto next;
-> +		}
-
-[Severity: Medium]
-Could a short SOP head lead to BUG() in eth_type_trans()?
-
-For an SOP descriptor the only length check is len >= GENET_RSB_PAD (66). A
-descriptor with SOP and no EOP that carries fewer than ETH_HLEN frame bytes
-would still become ring->frag_head. Later descriptors are then added as
-frags.
-
-Nothing calls pskb_may_pull() before this line after deliver:
-
-		skb->protocol = eth_type_trans(skb, priv->dev);
-
-If the linear part has fewer than 14 bytes and frags are present,
-__skb_pull() would see skb->len < skb->data_len and call BUG().
-
-bcmgenet_pkt_rdy_thld() keeps the threshold at ENET_THLD_DEFAULT (2048
-bytes) or more. Correct hardware should therefore always fill an SOP
-descriptor without EOP to around 2 KB. Reaching this would take a
-malformed status block from the MAC, so this is hardening rather than a
-path reachable from the network.
-
-Would it be worth checking that an SOP descriptor without EOP holds at
-least ETH_HLEN frame bytes?
-
-> +
-> +deliver:
-> +
-> +		if (priv->crc_fwd_en &&
-> +		    unlikely(pskb_trim(skb, skb->len - ETH_FCS_LEN))) {
-> +			BCMGENET_STATS64_INC(stats, dropped);
-> +			dev_kfree_skb_any(skb);
-> +			goto next;
->  		}
->  
->  		/* Set up checksum offload */
-
-[Severity: High]
-Can this read the status block from a page that has already been freed?
-
-For a reassembled frame, status still points to page_address(rx_page) +
-rx_offset of the EOP descriptor. bcmgenet_add_frag() has already given that
-page to the skb as its last frag.
-
-When crc_fwd_en is set, pskb_trim() on this non-linear skb goes through
-___pskb_trim(). That can release the page in two ways.
-
-First, if the EOP descriptor carries 4 or fewer frame bytes, the last frag
-is released with skb_frag_unref(). A non-SOP len of 64-68 passes the
-min_len check.
-
-Second, skb->sk is NULL, so skb_condense() runs. It may pull the remaining
-frag data into the head and free every frag.
-
-The page then goes back through napi_pp_put_page(). If it cannot be
-recycled (pfmemalloc, remote NUMA node, or full cache and ring), it can be
-returned to the page allocator via page_pool_return_netmem().
-
-The very next statements read the status block:
-
-		/* Set up checksum offload */
-		if (dev->features & NETIF_F_RXCSUM) {
-			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
-
-The value read there is then used as CHECKSUM_COMPLETE. Before this patch
-the skb was always linear and status pointed into the head buffer, which
-skb_trim() never frees.
-
-Should rx_csum be read before pskb_trim() is called?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912%40tipi-net.de
+Seems likely you are hitting the bug Eric just fixed, IMHO. If his patch
+resolves your issue, please let me know.
