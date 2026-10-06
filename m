@@ -1,65 +1,65 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF25F23E342
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 11:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F596379C57
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 11:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791287746; cv=none; b=Vj16dAk2HCZDGSmIwD7BkF+8d8Daz7hOS1m33+XDhO8JfKCwyOfO6Yk63SExR2D44t8WUZqj6jnsLiTwa6HqWjGK5SnT/ybYDn8FKrJuUNl8aU4eIKXd+sYmrAhHcmHtk1jSGwJe7brrfvWq9xYYxTE/TyRBMIdCmSSFMDamLlM=
+	t=1791287750; cv=none; b=sgM9bcLcyaHvet29FCzyQ4VyxEF+BIxbBXqNuIy6/og9YCMHVYa8nlrtd+j8hiMCue/apjdGTwG5iWe9OO/gx6WsQFwb657lG3yRHpx43j9dy3trVPn1hkh6io9eprXM74xI/zPCmQCg0vO34WDJdQh52hFBDgJQ+S7LD3LwAzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791287746; c=relaxed/simple;
-	bh=PYDA2NsGtvdEO6m48SQvTOJ4Ei1MI+nEE3W/KkMJ/BE=;
+	s=arc-20240116; t=1791287750; c=relaxed/simple;
+	bh=esBU1+hjpFXEROwNxA4JmBuC5GYIDSizXcT6XgYdscY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yjn/zrHGpg+OJq/pWx2PY36Z77lQYonZ85ZpcZES0PIghEi11vSTg3XrqdQzVWX8u9F/EjjlfZxakjvUFjeXa7n/CRDnllIgEf/FAO0ogJ27qmVJP6m7oQzC0KDKs/OSP8VaDFxHpCLFi2r5cNeUVQDh8G4C60AjQOX5moGzX1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=lpNJxHqG; arc=none smtp.client-ip=74.125.82.170
+	 MIME-Version; b=eMLL84A1T7TmMDy9odjQ8bUX0gzB9dIM3BaJeN6BZdSoFpMj3sGPdPi4CnLmX7VCJPPG+/3kYNOtTtExUGApn6SCj9tcA3eJvaOXXvk04GGc9feRDvg5JPoLJRRD7V0aLwKuEzwpqHL9e+l7hfLUKDSiDcsFq9tSVD3IcUIp7fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=NOZVwif+; arc=none smtp.client-ip=74.125.82.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="lpNJxHqG"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-34ceab2900eso654078eec.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 04:55:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="NOZVwif+"
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-35115b52125so501673eec.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 04:55:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=octane.security; s=google; t=1791287744; x=1791892544; darn=vger.kernel.org;
+        d=octane.security; s=google; t=1791287748; x=1791892548; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rp9ExwtVwETjuUXyxP6tQzqH186LBUjG5zHp0li/qcw=;
-        b=lpNJxHqGDQJlKEDAlNy67dDa2z5hKTs5/vVWystcp46FvnQr4hgqfY2xhfxu7UcVE8
-         6dq2I7yJSmhiK8+rNlyKnH99/5wdYPqT/CKyVWKoJUvmguf2JzsILPLnkpFUAMUSQvtO
-         9+sMyAndLBGUV09bWvV6jNX7YWBpU2ByEIePPd5awgVVfsN2MKd2OKMM9cbo/6RMrAI0
-         P8njOU6/d7YQPy6tWeOg0VBjnz5JkIT4xAsLvvEd3m+I1Z5lwkD2G0NE/0m45t/Ng8dg
-         /wZKqK1bXqL5DCCxSMC+kQKLQcJg7uilLVaGH0/rw1mYd8Gxpgb0JAow0Hq0sYwcKswf
-         AUAQ==
+        bh=090CEinLWtA8ss+plFjMgdVk0E87uATP7NkIB4N/6gM=;
+        b=NOZVwif+o8fgsUsBkTmceAI70IHHM8rcmRx8dv9B3lEZzsSTXd06IZ/kRii+KhYjT0
+         fzkqyia1ILdBum2g4z/aezkU/y++ukS8hZf3PXz7hp9FoRe2bLNRkktMJHV0hdpN8NIb
+         QQSqMfdjZ3Z68ec2Yv9BLArxoPeFr+bSdGa9/lWD2JqI4/djXLdK/Ao3x5GoawjCf3KS
+         oVnckAIaeQw07EXrGgEfn/7uoowwVE29zJwe2Ax6bRpEjMOHfJZo7daaHTKZSFx7xyFc
+         jVNwhKEhnAaeEg5oqN7H4vOX8BjB8Nk7JEe7BWXWPbTiGWTFFivSlo80M6BZm3EIjrCA
+         U3Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791287744; x=1791892544;
+        d=1e100.net; s=20260707; t=1791287748; x=1791892548;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rp9ExwtVwETjuUXyxP6tQzqH186LBUjG5zHp0li/qcw=;
-        b=SnaMSgWJzjG4pHbUDvKwIsBATCuhEm7GeKGLmhu9YiO+hmxWAh5p7+PHl1GUaetmw3
-         kJ1V5xM0NvtHQ2yRDhnLuY/CJndBrXI5tQvo9qia8vtARjH5aL4lbE29xHnTAK8ATPk0
-         WJuRXOP+PHD0hwLk2YH5UK5FBDxCngor9nWEau7S+IMPjDqacxoUpAC9W6IgSD7KZ01h
-         GR04kGc1eLgW8Azd3U9fUpkRrNRGFGSPyIABARFxkw29P4Xl7IJwCCEc/pih0p6+Mm9C
-         AiKxBX90PhZb9y0LvlyF6oGmLMyvLJZGRnY5UqQQKLgz70JODIUmUQUudnYMyX522pec
-         2HKQ==
-X-Gm-Message-State: AFuF++nR21sdLmFayOTAzW2aBB3iWf7bGziwhSzO8QedDofjtHORINIk
-	gI/YdA8T4GiWKrjM1JSZOI9GsAnEZ8ntxUEpHgO2twZYQmz5qBDjwTEGuRviIEspp9/J5F3roMV
-	4wQZs
-X-Gm-Gg: AYBFou2MGhh3xEXv0a4H1V3rdcDePWOhFtoyDlN0yv/+Bcma6lIUn9FVG2yVeyoCQev
-	uwi4x++gnFapVT4aGe2UmDjMDhE9Rnm31wQkFWrQn2krP48Ub+xd53aQRPLCTtcZbnNQQ4XhUMK
-	IIu0/sGvtbd0/pxBeXvmiFYomKsqMx77X10PbQPov+PAtGcyAPcBfUI+5DKg25HTIGaaGIP4QEN
-	BJYQbLlEfTxAsYAHFR1euJ2qOr4JO5IZd943F5Z8yRMPTEJnFwY7648b68JBYO5ns1MK53on5iJ
-	vUQcWgwxmEK1teWRrQNNC0I3QZjdqlnNE/DV+r5YXiuYcl8py3mMKFYAm2S9y0LAM6Vozlxi7xD
-	vfKOhU7yd4BsWchU69ed2xgapqLn7GfF7vzXJI1XjIS7OWAXbxhH31EBJHddsUzXCiSNK12/Rzi
-	fUHXdm24zHJXqijk0dMly0gm/tFaV3uSZ7ce7UKKu9F/RZNwTOwOR+P2PvwDfOpqU3BgzYp92L1
-	MxbS7tMxPGgVY2jaGU3lDm7OBVNTZp/qGUXawtkTL+ODx2Tf0vCMamIAeKilp4VhBh3OUoN7S/M
-	8wqTNzw7xOtXKbIhxEE=
-X-Received: by 2002:a05:7301:4601:b0:351:1f6c:2a85 with SMTP id 5a478bee46e88-3514e2e78edmr1202521eec.14.1791287743780;
-        Tue, 06 Oct 2026 04:55:43 -0700 (PDT)
+        bh=090CEinLWtA8ss+plFjMgdVk0E87uATP7NkIB4N/6gM=;
+        b=FiKKUAdJpmC138cjaqTx2UlbVL6l9NrPwxqpYEogboCVndvki5Xa3TxU6Hg4D7OPcR
+         tCLayjLachMElmo+TXwRtZZw/dNEXEoQbGiaoGjQBPZHBsQ2rW5J6pcKltdolBBPMpJw
+         lYTR7qiEvAgxNmV0K9RFoW06PhN/+SBUtoeMEHYDb9l5WujohhME7eZUZohkwymB6dfM
+         7zJ/OBYyYc1ci1uRiR4Brv63mWAnJDHLksEjT3Y/UuBXvHGPuMiY52SwzscHgHVzgDGg
+         rQ5Uz/W1W6Ea7CCAqmybA5kIt6Cz5hOBwOOrMwyX7sZSzSu1R8zljwXQrCxXOiyXEzMo
+         NyUg==
+X-Gm-Message-State: AFuF++lsg3pN2LbOvFZXWnmjhJTenYM5Dj3RMwvCaPNqzrsW3vV8ybaw
+	Zc5b06TUfmR1fjWYBjaARWKEzREXUIZ7PCbmIqWnl8r9HfyIYNiJAcMiprwA28pgudDTkaZskmN
+	RM6Hu
+X-Gm-Gg: AYBFou1BKqd+PHfKNptLY4WPlFLWxn+3gkJiZX7NLyNC6Mgkh/dihyAmf+FFvlqrWnz
+	mMj9DrQxTxUuxAMrnL+YuqWClvAE1SBK+HLojZPC5nBxEdV+B65xvVDfCtOn5sZyVYCUGsXgrqN
+	792A3fn2Xo9zglWUVD1NlfEwMGgKoQO6KV0OYWmdHp4wTlMAfFQwjHpILIiHxEzj7LAvwDaDS1i
+	sRB3hntfqw1Mozbzgts4eQd0kzhjjux6x49tqmmikfAv/Q2GB3fFQZOaMSxTOAJjEjBoZ3K55sD
+	QbARP9e4OV0ysvnDqwFK3eXWgOZmASVVZ0OH/iymyNWCQJj/tU8uUHwrbGrsqA3UmlC9IkL/Br5
+	9W53AU6iWkXTgwYqXY5zML5iHVo6a6M1lUXN+H4wSKf/Z+zS3P6PlsVTbwL//LMVvGzNyUjXtt9
+	p5iZIZXq7L9J1SiiTXdpqX3JvFDiyu9iER4ilAPnEeG9h2+ryl51sYA47PBFKCm+wf0jLAmwysC
+	J/biedx33wK+V1ZWD35l7WASHUjxmxwoXyrmmw5aTsGOK4hhNqJgpcWmYiQwIlKswGmuKX3tWTO
+	tkeNjidQHdlAmXk5kTY=
+X-Received: by 2002:a05:693c:2410:b0:33b:fc17:e786 with SMTP id 5a478bee46e88-3514e2e62a0mr1112407eec.16.1791287748244;
+        Tue, 06 Oct 2026 04:55:48 -0700 (PDT)
 Received: from localhost.localdomain ([103.207.175.177])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351469f75fesm8638511eec.5.2026.10.06.04.55.39
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-351469f75fesm8638511eec.5.2026.10.06.04.55.44
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 06 Oct 2026 04:55:43 -0700 (PDT)
+        Tue, 06 Oct 2026 04:55:47 -0700 (PDT)
 From: Shubham Antil <shubham@octane.security>
 To: netdev@vger.kernel.org
 Cc: oe-linux-nfc@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: oe-linux-nfc@lists.linux.dev,
 	Johan Hovold <johan@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Giovanni Vignone <gio@octane.security>
-Subject: [PATCH v4 1/2] nfc: nfcmrvl: set drv_data before registering the nci device
-Date: Tue,  6 Oct 2026 17:25:30 +0530
-Message-ID: <20261006115532.72100-2-shubham@octane.security>
+Subject: [PATCH v4 2/2] nfc: nci: uart: fix use-after-free of write_work on ldisc teardown
+Date: Tue,  6 Oct 2026 17:25:31 +0530
+Message-ID: <20261006115532.72100-3-shubham@octane.security>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261006115532.72100-1-shubham@octane.security>
 References: <20261006115532.72100-1-shubham@octane.security>
@@ -86,102 +86,199 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nfcmrvl_nci_uart_open() stores the per-ldisc back-pointer nu->drv_data
-only after nfcmrvl_nci_register_dev() has returned.  That function
-registers the nci device, and a transmit started during registration
-reaches the UART write path
+nci_uart_tty_close() frees nu->tx_skb and purges nu->tx_q before it
+cancels nu->write_work, and the NCI device is still registered at that
+point.  Two paths can therefore (re)queue the write worker after the
+skbs are freed and run it against freed memory:
 
-  nci_uart_write_work() -> nu->ops.tx_start()
-  == nfcmrvl_nci_uart_tx_start()
+ - a tty hangup invokes the ldisc ->write_wakeup() (nci_uart_tty_wakeup
+   -> nci_uart_tx_wakeup -> schedule_work), and
+ - the NCI core keeps sending via the driver (nci_uart_send() ->
+   nci_uart_tx_wakeup -> schedule_work) until the device is unregistered
+   by nu->ops.close().
 
-which dereferences nu->drv_data:
+nci_uart_write_work() then dereferences the freed nu->tx_skb -- a
+use-after-free.  nu->ops.close() also frees driver state that the worker
+dereferences via nu->ops.tx_start()/tx_done(), so the worker has to be
+stopped before ops.close() runs.
 
-  struct nfcmrvl_private *priv = (struct nfcmrvl_private *)nu->drv_data;
+Fix this the way the Bluetooth hci_uart ldisc does: gate
+nci_uart_tx_wakeup() on a new NCI_UART_READY bit taken under a
+per-connection rwsem.  nci_uart_tty_close() clears NCI_UART_READY under
+the write lock -- draining any in-flight nci_uart_tx_wakeup() -- so that
+neither the tty nor the internal send path can requeue write_work once it
+is cancelled; only then is the device closed and the skbs freed.
 
-  if (priv->ndev->nfc_dev->fw_download_in_progress)
+NCI_UART_READY is set, and the module reference taken, before
+nu->ops.open() registers the device: the driver may transmit (e.g.
+download firmware) from within registration and user space can use the
+interface as soon as it is registered, so gating those transmits off
+would drop or leak them.  The open path uses shared error labels and, on
+a failed open, drains the worker the same way the close path does.
 
-At that point nu->drv_data is still NULL:
+Runtime-tested under KASAN with a line-discipline hangup reproducer: the
+unfixed ldisc reports
 
-  BUG: KASAN: null-ptr-deref in nfcmrvl_nci_uart_tx_start+0x2c/0xc0
-  Workqueue: events nci_uart_write_work
-  Call Trace:
-   nfcmrvl_nci_uart_tx_start
-   nci_uart_write_work
-   worker_thread
+  BUG: KASAN: slab-use-after-free in nci_uart_write_work
 
-Publish nu->drv_data (and nu->ndev) for the UART phy before
-nci_register_device() is called, and clear them again if registration
-fails, so that a transmit triggered during registration finds a valid
-pointer.  The now-redundant assignment in nfcmrvl_nci_uart_open() is
-removed.
+within the first iterations, while the fixed ldisc runs the same race for
+56000+ register/hangup cycles without any KASAN report.
 
-Fixes: e097dc624f78 ("NFC: nfcmrvl: add UART driver")
+Fixes: 9961127d4bce ("NFC: nci: add generic uart support")
 Assisted-by: LLM Claude
 Signed-off-by: Shubham Antil <shubham@octane.security>
 ---
- drivers/nfc/nfcmrvl/main.c | 17 +++++++++++++++++
- drivers/nfc/nfcmrvl/uart.c |  3 ---
- 2 files changed, 17 insertions(+), 3 deletions(-)
+ include/net/nfc/nci_core.h |  2 +
+ net/nfc/nci/uart.c         | 80 +++++++++++++++++++++++++++++++-------
+ 2 files changed, 68 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/nfc/nfcmrvl/main.c b/drivers/nfc/nfcmrvl/main.c
-index 6efa83219..8186e86d7 100644
---- a/drivers/nfc/nfcmrvl/main.c
-+++ b/drivers/nfc/nfcmrvl/main.c
-@@ -96,6 +96,7 @@ struct nfcmrvl_private *nfcmrvl_nci_register_dev(enum nfcmrvl_phy phy,
- 				const struct nfcmrvl_platform_data *pdata)
+diff --git a/include/net/nfc/nci_core.h b/include/net/nfc/nci_core.h
+index 664d5058e..c71648ab5 100644
+--- a/include/net/nfc/nci_core.h
++++ b/include/net/nfc/nci_core.h
+@@ -18,6 +18,7 @@
+ #define __NCI_CORE_H
+ 
+ #include <linux/interrupt.h>
++#include <linux/percpu-rwsem.h>
+ #include <linux/skbuff.h>
+ #include <linux/tty.h>
+ 
+@@ -455,6 +456,7 @@ struct nci_uart {
+ 	struct work_struct	write_work;
+ 	struct tty_struct	*tty;
+ 	unsigned long		tx_state;
++	struct percpu_rw_semaphore tx_lock;
+ 	struct sk_buff_head	tx_q;
+ 	struct sk_buff		*tx_skb;
+ 	struct sk_buff		*rx_skb;
+diff --git a/net/nfc/nci/uart.c b/net/nfc/nci/uart.c
+index aa20e8603..a971fb3b1 100644
+--- a/net/nfc/nci/uart.c
++++ b/net/nfc/nci/uart.c
+@@ -33,6 +33,7 @@
+ /* TX states  */
+ #define NCI_UART_SENDING	1
+ #define NCI_UART_TX_WAKEUP	2
++#define NCI_UART_READY		3
+ 
+ static struct nci_uart *nci_uart_drivers[NCI_UART_DRIVER_MAX];
+ 
+@@ -58,13 +59,28 @@ static inline int nci_uart_queue_empty(struct nci_uart *nu)
+ 
+ static int nci_uart_tx_wakeup(struct nci_uart *nu)
  {
- 	struct nfcmrvl_private *priv;
-+	struct nci_uart *nu = NULL;
- 	int rc;
- 	int headroom;
- 	int tailroom;
-@@ -110,6 +111,9 @@ struct nfcmrvl_private *nfcmrvl_nci_register_dev(enum nfcmrvl_phy phy,
- 	priv->dev = dev;
- 	priv->phy = phy;
- 
-+	if (phy == NFCMRVL_PHY_UART)
-+		nu = drv_data;
-+
- 	memcpy(&priv->config, pdata, sizeof(*pdata));
- 
- 	if (!priv->config.reset_gpio) {
-@@ -154,9 +158,22 @@ struct nfcmrvl_private *nfcmrvl_nci_register_dev(enum nfcmrvl_phy phy,
- 
- 	nci_set_drvdata(priv->ndev, priv);
- 
-+	/* For the UART phy the transmit path reaches the driver through
-+	 * nu->drv_data; publish it before nci_register_device() so a transmit
-+	 * triggered during registration does not dereference a NULL pointer.
++	/* This may be called in an IRQ context, so we can't sleep.  Therefore
++	 * we try to acquire the read lock only, and if that fails we assume
++	 * the tty is being closed, because that is the only time the write
++	 * lock is taken (nci_uart_tty_close()).  If the write lock is ever
++	 * taken elsewhere, this must be revisited.
 +	 */
-+	if (nu) {
-+		nu->drv_data = priv;
-+		nu->ndev = priv->ndev;
-+	}
++	if (!percpu_down_read_trylock(&nu->tx_lock))
++		return 0;
 +
- 	rc = nci_register_device(priv->ndev);
- 	if (rc) {
- 		nfc_err(dev, "nci_register_device failed %d\n", rc);
-+		if (nu) {
-+			nu->drv_data = NULL;
-+			nu->ndev = NULL;
-+		}
- 		goto error_fw_dnld_deinit;
++	if (!test_bit(NCI_UART_READY, &nu->tx_state))
++		goto out;
++
+ 	if (test_and_set_bit(NCI_UART_SENDING, &nu->tx_state)) {
+ 		set_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
+-		return 0;
++		goto out;
  	}
  
-diff --git a/drivers/nfc/nfcmrvl/uart.c b/drivers/nfc/nfcmrvl/uart.c
-index 9aedd1687..421e6dc99 100644
---- a/drivers/nfc/nfcmrvl/uart.c
-+++ b/drivers/nfc/nfcmrvl/uart.c
-@@ -138,9 +138,6 @@ static int nfcmrvl_nci_uart_open(struct nci_uart *nu)
+ 	schedule_work(&nu->write_work);
  
- 	priv->support_fw_dnld = true;
- 
--	nu->drv_data = priv;
--	nu->ndev = priv->ndev;
--
++out:
++	percpu_up_read(&nu->tx_lock);
++
  	return 0;
  }
  
+@@ -123,18 +139,46 @@ static int nci_uart_set_driver(struct tty_struct *tty, unsigned int driver)
+ 	INIT_WORK(&nu->write_work, nci_uart_write_work);
+ 	spin_lock_init(&nu->rx_lock);
+ 
+-	ret = nu->ops.open(nu);
+-	if (ret) {
+-		kfree(nu);
+-		return ret;
+-	} else if (!try_module_get(nu->owner)) {
+-		nu->ops.close(nu);
+-		kfree(nu);
+-		return -ENOENT;
++	ret = percpu_init_rwsem(&nu->tx_lock);
++	if (ret)
++		goto err_free;
++
++	/* Take the module reference and enable the write worker before the
++	 * device is registered: ops.open() may already transmit (e.g. download
++	 * firmware), and user space can use the interface as soon as it is
++	 * registered.
++	 */
++	if (!try_module_get(nu->owner)) {
++		ret = -ENOENT;
++		goto err_rwsem;
+ 	}
++
++	set_bit(NCI_UART_READY, &nu->tx_state);
++
++	ret = nu->ops.open(nu);
++	if (ret)
++		goto err_ready;
++
+ 	tty->disc_data = nu;
+ 
+ 	return 0;
++
++err_ready:
++	/* ops.open() may already have scheduled write_work; stop it before
++	 * freeing, the same way nci_uart_tty_close() does.
++	 */
++	percpu_down_write(&nu->tx_lock);
++	clear_bit(NCI_UART_READY, &nu->tx_state);
++	percpu_up_write(&nu->tx_lock);
++	cancel_work_sync(&nu->write_work);
++	kfree_skb(nu->tx_skb);
++	skb_queue_purge(&nu->tx_q);
++	module_put(nu->owner);
++err_rwsem:
++	percpu_free_rwsem(&nu->tx_lock);
++err_free:
++	kfree(nu);
++	return ret;
+ }
+ 
+ /* ------ LDISC part ------ */
+@@ -180,16 +224,24 @@ static void nci_uart_tty_close(struct tty_struct *tty)
+ 	if (!nu)
+ 		return;
+ 
+-	kfree_skb(nu->tx_skb);
+-	kfree_skb(nu->rx_skb);
++	/* Drain in-flight tx_wakeups and block new ones, so write_work cannot
++	 * be requeued once it is cancelled below.
++	 */
++	percpu_down_write(&nu->tx_lock);
++	clear_bit(NCI_UART_READY, &nu->tx_state);
++	percpu_up_write(&nu->tx_lock);
+ 
+-	skb_queue_purge(&nu->tx_q);
++	cancel_work_sync(&nu->write_work);
+ 
+ 	nu->ops.close(nu);
+ 	nu->tty = NULL;
+-	module_put(nu->owner);
+ 
+-	cancel_work_sync(&nu->write_work);
++	kfree_skb(nu->tx_skb);
++	kfree_skb(nu->rx_skb);
++	skb_queue_purge(&nu->tx_q);
++
++	module_put(nu->owner);
++	percpu_free_rwsem(&nu->tx_lock);
+ 
+ 	kfree(nu);
+ }
 -- 
 2.43.0
 
