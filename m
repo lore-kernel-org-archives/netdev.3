@@ -1,108 +1,142 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351BE45C6FC;
-	Tue,  6 Oct 2026 13:06:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85BA3ED5D6;
+	Tue,  6 Oct 2026 13:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791291998; cv=none; b=MhePL5Lwp1M+JWvnSKq2gbaZWXSIYd4XF4prPIwZCkWexDLKAQ+V1aoSBGkDkPI7IblYMuN7Y/gDXA2zJsH7Tys7PL1jOV5Ldt9nEXKvTdbrPO0qwseGapwRBudaLuFcnqqyzF44eisBJKHRSRfgrJlvoDeXWSO9ej2hlQiWxls=
+	t=1791292630; cv=none; b=V3TMdpqv0yxYgHb/YieKYlo1x49zO2cRf8OI8AMldoZuN5uJojxX5kH7rxIfGR3DCpjtnDwYeXkmzXffi5Em9RomRXJ5R6a4guqhLjcwi+skWzB13xFJXefwodyRAB8madJpm8RZJKJbidX1GnqNye6D/8vgjRXerQIea9mGHAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791291998; c=relaxed/simple;
-	bh=zhOu27oxfzwSiANFlhZ2HvPrHAiETkc90ajbDcCfLBc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=crngz9MYagxW501nTZYg5c3dSzpOPb89Wg8kuNXPYPDkQz5mauCORjkUUtcaFGmWZfMEwxEMj0Hlar8dUtvWhH6gTlv+GimMoLYYdln5v2PiYq/5ghrFcn4XmvjvxNpNiC0KcCvGwX4G9mgubNAZGQsf19ApLAZBP7ULxPVBnJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uZ3Ug/lK; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791292630; c=relaxed/simple;
+	bh=nMLIv5b8FgYxUAJL70j13ODD8h60rrpKuPu4YZIEV6A=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=TB/FECdcSQklBQlrNlEm7qiD5g+p4GMzPGwxYAjHFZX+7N+Ohs6nBEGjMwlb8oON40RSbmRcPdRLYSEMol4poGgV8qyf0lZTKNhjTFq5RgPp/0Zn5FMGnyRRXqWAL09ZgxpmGJc1KaP+bc+DUITDJBRMcpO0gUxfQTrqP0Zi9jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=LJwznXkd; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uZ3Ug/lK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6pVnrxOROFVOkwWfQdTsRuJM4AJzKzSq0bMpts2rh5I=; b=uZ3Ug/lKmjg81E6zeai+YA2uKL
-	oHBQ96jo/Zvlz+JrKSMlD77HI2rkFviDHcBL7T3sNk7KYjMArkFYEDYmRwAJ20mm0MlBJpje9i1Wc
-	JpgsLli4Yr13TPQFJcEpSxIoJeqgj0eerqWVLwPU/dPaZgyCarIH83K0eWhKWywn5fv0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xE4sC-009GSp-Rl; Tue, 06 Oct 2026 15:06:24 +0200
-Date: Tue, 6 Oct 2026 15:06:24 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Selvamani.Rajagopal@onsemi.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Piergiorgio Beruto <pier.beruto@onsemi.com>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Jerry Ray <jerry.ray@microchip.com>
-Subject: Re: [PATCH net-next v8 09/11] net: phy: ncn26000: Support for
- loopback
-Message-ID: <344be351-656f-4e02-8c33-d9dde6bf80b1@lunn.ch>
-References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
- <20260928-s2500-mac-phy-support-v8-9-7e011aacc309@onsemi.com>
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="LJwznXkd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=k5vD5U2vDHop2y93h5RObps/SJVwtXt/ikqi9pmsRyw=; b=LJwznXkd9feDS7KEE+0TKpJfvK
+	UbX3SvWbrB/3yge0aTnVhNkc8Pgg13hP6lEQvfmsv9/rtioKOjB+4TgrxNg0w+/V8FfDsOidGdGJR
+	/GVl5d2cgoIjIkmbi4OxjgIAU7b7fsY0+Arj82FoR8ibWTRjniUU1NNDylM1AE8Eti20fQf9F4n9t
+	UkH7M0vFA5EzNEkE8elskAnt4qb8RGJTA0UIA9sspK5R+BA8sYGsJvFvZSoBC7viylvemfJmYzxPz
+	8nSLnCXDdB1+iRvtNjz3R5Lw+CV4kABmLoxM2YY6i1I76Z/RVUFZdsF1S2PWLyFeXSQeu+P6PoJSs
+	TByaNAiw==;
+Received: from [::1] (port=50768 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xE52Z-0000000Fv2X-486s;
+	Tue, 06 Oct 2026 15:17:06 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260928-s2500-mac-phy-support-v8-9-7e011aacc309@onsemi.com>
+Date: Tue, 06 Oct 2026 15:17:06 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH nf] netfilter: nft_set_rbtree: reject expired interval
+ ends
+In-Reply-To: <asQtPfgYhK1uxMpR@chamomile>
+References: <20261005200404.3544062-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <asQtPfgYhK1uxMpR@chamomile>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <9a9f2587b7bd37c8d03d0105cf968b25@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-> @@ -2775,6 +2775,26 @@ int genphy_write_mmd_unsupported(struct phy_device *phdev, int devnum,
->  }
->  EXPORT_SYMBOL(genphy_write_mmd_unsupported);
->  
-> +/**
-> + * genphy_loopback_fixed_speed - Helper to modify the PHY loopback mode
-> + * without affecting any other settings.
-> + * @phydev: The phy_device struct
-> + * @enable: Flag to enable or disable the PHY level loopback.
-> + * @speed: Speed setting. Not expected to be set. Error if it is set.
-> + *
-> + * Returns: 0 if successful, negative error code on failure.
-> + */
-> +int genphy_loopback_fixed_speed(struct phy_device *phydev, bool enable,
-> +				int speed)
-> +{
-> +	if (enable && speed)
-> +		return -EOPNOTSUPP;
-> +
-> +	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
-> +			  enable ? BMCR_LOOPBACK : 0);
-> +}
-> +EXPORT_SYMBOL(genphy_loopback_fixed_speed);
+On 2026-10-06 01:05, Pablo Neira Ayuso wrote:
+> Hi,
+> 
+> On Mon, Oct 05, 2026 at 08:04:05PM +0000, Jérémy Jean wrote:
+>> Consider two ranges in a netfilter verdict map:
+>> * keys 10-19 accept packets, and
+>> * keys 30-39 jump to chain 'victim'.
+>> Now, delete the end marker at 20. The lookup array now uses element 30
+>> as the first range's end, so an INTERVAL_END query for key 15 returns
+>> element 30, including its jump verdict and chain pointer. This can 
+>> make
+>> KASAN reports a UAF after the GC releases reference chain for 30 that
+>> has expired:
+>> 
+>>   BUG: KASAN: slab-use-after-free in nft_verdict_dump+0xdd/0x110
+>>   Read of size 8 at addr ff110000009dfb58 by task repro/50
+>>   ...
+>>   Call Trace:
+>>   ...
+>>    nft_verdict_dump+0xdd/0x110
+>>    nft_data_dump+0x4d/0x80
+>>    nf_tables_fill_setelem+0x30b/0x8a0
+>>    ? __asan_memcpy+0x3c/0x60
+>>    nf_tables_fill_setelem_info+0x1b0/0x200
+>>    nft_get_set_elem+0x3fd/0x4b0
+>>   ...
+>>   Freed by task 24:
+>>   ...
+>>    kfree+0x1a5/0x280
+>>    nf_tables_trans_destroy_work+0x2cb/0x520
+>> 
+>> Reject expired endpoints in nft_rbtree_get() before returning them.
+>> 
+>> Fixes: 2aa34191f06f ("netfilter: nft_set_rbtree: use binary search 
+>> array in get command")
+>> Cc: stable@vger.kernel.org
+>> Assisted-by: LLM
+>> Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>> ---
+>>  net/netfilter/nft_set_rbtree.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>> 
+>> diff --git a/net/netfilter/nft_set_rbtree.c 
+>> b/net/netfilter/nft_set_rbtree.c
+>> index 9894832..1fd9cbe 100644
+>> --- a/net/netfilter/nft_set_rbtree.c
+>> +++ b/net/netfilter/nft_set_rbtree.c
+>> @@ -187,6 +187,8 @@ nft_rbtree_get(const struct net *net, const struct 
+>> nft_set *set,
+>>  	if (flags & NFT_SET_ELEM_INTERVAL_END) {
+>>  		if (!interval->to)
+>>  			return NULL;
+>> +		if (nft_set_elem_expired(interval->to))
+>> +			return ERR_PTR(-ENOENT);
+>> 
+>>  		rbe = container_of(interval->to, struct nft_rbtree_elem, ext);
+>>  	} else {
+>> --
+>> 2.47.3
+> 
+> 
+> Can you test this fix instead? Thanks
 
-Please could you place it next to genphy_loopback()
+Hello Pablo,
 
-> +
->  int genphy_suspend(struct phy_device *phydev)
->  {
->  	return phy_set_bits(phydev, MII_BMCR, BMCR_PDOWN);
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index 7c5098a0dd6c..c1b9bc305c82 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -2327,6 +2327,8 @@ int genphy_read_mmd_unsupported(struct phy_device *phdev, int devad,
->  				u16 regnum);
->  int genphy_write_mmd_unsupported(struct phy_device *phdev, int devnum,
->  				 u16 regnum, u16 val);
-> +int genphy_loopback_fixed_speed(struct phy_device *phydev, bool enable,
-> +				int speed);
+Thanks for this improved fix. I replayed the reproducer I had that 
+triggers the
+bug on the kernel that includes your patch, and I confirm that it fixes 
+the UAF.
 
-and this next to genphy_loopback().
+Let me know if I could be of further assistance.
 
-	Andrew
+Regards,
+Jérémy
