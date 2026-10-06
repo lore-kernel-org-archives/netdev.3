@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1F737F8CB;
-	Tue,  6 Oct 2026 07:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1673BFE47;
+	Tue,  6 Oct 2026 07:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791273290; cv=none; b=Do+otLzgxPJI+mJrMeMhWFpL+gGUcgF3AzWnmFXn5NDF92wzTGA/IgCp3n6d4j9VTV+0uiVHzYEsLwiNJERY9PR11OasssW1rH6rXFNCJFeFH3LqZbyR3iFMa7v/18AU9QXnI226UlwOPk9ZCYeBlVi3SYQkjuzlZy0zHo3fW28=
+	t=1791273481; cv=none; b=qafO18rl6n9t3nYZsA+CKAMVHJDbOHh5KCsfRwziD6KXycPQpnS0rZKG7Q+h0ARJthxxY+zx3bguyQNTj0e/d9qsMgHT7sNqkRAgwtMusalhVHX5adhKTVaKRnwE5+bvkTXUeJ+Mwr+9AYv7uFffN4SIL6M2QlAm9ZZXyBJBuVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791273290; c=relaxed/simple;
-	bh=YNkQyaKyn6ScD9zx23d6iFoOM1y0gpFJNhhwGo6R3Ug=;
+	s=arc-20240116; t=1791273481; c=relaxed/simple;
+	bh=z83cvtVI/OZvnKWBWCmnpyHuPaDOYziAgjZjwqno7tQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pkfWhJSJePR4bEchX7sveF8pv7TdSs4dimA85spRQ9BnJogstD5xwuEfuZEUn4zZY9oNOcT9MBS8XT06uySChVPU/uIDCBhvoG5w7E+jy5MPFI/t9NC9dkIVBsp1/EFWbrklwEYAlPh86I2UCOH2OD0tuPFRvgiSVcKz7CHZfBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7eN6KNB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Kr5Nop8xDPnbunotT0jZNsFmvgNV0VhbZW5xVVsPIFJ1fY0i7DNn5VVOiGE/ivV6UciKFtjafgnzUFMh9tt6vBxE6F1p0xd30cLKyerx9IZixy+d7pFqS/shGd1Sc6guM5caifCKgn2JO0+yK/dMkSyEcT3lco7pVTWamgS7vIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yo5KNjs/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7eN6KNB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE611F00893;
-	Tue,  6 Oct 2026 07:54:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yo5KNjs/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101501F000FF;
+	Tue,  6 Oct 2026 07:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791273289;
-	bh=fpa5+JOtkZZuP2tvDHGlTsvFx2gQANVc+3ezgz25LyQ=;
+	s=k20260515; t=1791273479;
+	bh=96AbM7wmILCi/FUwWn4BbH1/d/V3wqMQSKn7tm4Vo1E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j7eN6KNB25i4mlxGjDOQoCaROpurempRcNbJuXmh/nqQ51MuNvsXA4+NvqamqjkNu
-	 ko7PKQMixvo9LWGc5Q/IM+ldYt+6Uc7eDp8km2LW0ETehodUboQ6VrokfocMvi8mpi
-	 BzavtxLo7O7aKTczhmGk3btQKClmIK8k2jnwgn3YdW8PFcjYBATBOPw3f3rfVP1dg/
-	 XbEXNhoyeA7PWsQCcaHA0NEp3YJ/o+F8dySd9xKioHXgcouzPFvHh4VhkZJhKOKkoT
-	 XAZYNvpjgSsScAtLUbVQutDUwmPkxjxDb7S+AFPAbVeyEC5tzSQ/XpL0NuIzQLzo8s
-	 h5azkc7oUdCgg==
-Subject: Re: [PATCH net-next 1/2] tls: annotate lockless access to sk->sk_err
+	b=Yo5KNjs/qZJnkYXKoMoh2+afx3BBnWuhPjNLXtBqxXvKmQrM+uRcwTqlclM04+QaO
+	 tcIz1w1zB7Px50yiGFBtx+9YnZYdWHURW3Gi/Jeo62VETP+zRNiIrZJ6rRhhscyp9h
+	 EF7Qy78+TMqZdl79raymOzdhERC0R9zPWAL1zKotnrdtKj1BMa93VbGuPfS3rDhtMj
+	 NPrF3bUenBya9e5Yhwb1gc96WeXJi+LRNL+E1szWVDpQRuc/wjdQIjPsiZknXuKDJW
+	 4ulB04F9cTT094kEd70ThPDjA+uSWxcudnySjDObHySlOeqvH4UBXkwtlxkD1Ad7r2
+	 fUF3E3ESchAow==
+Subject: Re: [PATCH v2 net] netfilter: conntrack: reject nested ctnetlink
+ master chains
 From: netdev-bot+sashiko@kernel.org
-To: quanyeyang@proton.me
-Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
- davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
- jakub@cloudflare.com, jiayuan.chen@linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Date: Tue, 06 Oct 2026 07:54:48 +0000
-Message-ID: <179127328838.434549.8857657858630692504@kernel.org>
-In-Reply-To: <20261002-tls-fix-sk-kcsan-err-v1-1-baa0ba056323@proton.me>
-References: <20261002-tls-fix-sk-kcsan-err-v1-1-baa0ba056323@proton.me>
+To: 4ncienth@gmail.com
+Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
+Date: Tue, 06 Oct 2026 07:57:58 +0000
+Message-ID: <179127347858.434549.11821822167265441355@kernel.org>
+In-Reply-To: <20261002165601.1754467-1-4ncienth@gmail.com>
+References: <20261002165601.1754467-1-4ncienth@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 1
+Critical: 0 · High: 2 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,204 +58,162 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
-- [Low] The title calls this an annotation change, but the patch carries
-  a user-visible behavioural fix and has no Fixes: tag.
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the async
-  receive epilogue of tls_sw_recvmsg() (net/tls/tls_sw.c) can overwrite…
+- [High] The fix does not stop userspace from building an unbounded
+  ct->master chain.
+- [High] The commit keeps "kernel helper expectations unchanged", but the
+  H.323 Q.931 helper nests itself without limit.
+- [Medium] The new check in ctnetlink_create_conntrack()
+  (nf_conntrack_netlink.c:2362) makes IPCTNL_MSG_CT_NEW fail with…
 
 --
 
-tls: annotate lockless access to sk->sk_err
+netfilter: conntrack: reject nested ctnetlink master chains
 
-On the no-data path, tls_rx_rec_wait() now calls sock_error() once
-instead of doing a plain sk_err check before it. The has_copied path
-keeps using READ_ONCE(). In tls_sw_sendmsg_locked(), tls_push_data() and
-bpf_exec_tx_verdict(), the two plain sk_err loads become a single
-READ_ONCE() snapshot.
+The patch rejects ctnetlink conntrack creation when the CTA_TUPLE_MASTER
+conntrack already has a master. It also rejects NFQUEUE-attached
+expectations (NFQA_EXP) for conntracks that have a master. The aim is to
+stop userspace from building unbounded master chains, whose recursive
+release in nf_ct_destroy() exhausts the kernel stack.
 
-Link: https://lore.kernel.org/netdev/3d9d442f-f168-43da-87b0-010ad5a78365@redhat.com/
-
-> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> index d1ad31986cf2c..12e4458b44bb8 100644
-> --- a/net/tls/tls_sw.c
-> +++ b/net/tls/tls_sw.c
-> @@ -704,10 +704,14 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
->  	int err;
->  
->  	err = tls_push_record(sk, flags, record_type);
-> -	if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
-> -		*copied -= sk_msg_free(sk, msg);
-> -		tls_free_open_rec(sk);
-> -		err = -sk->sk_err;
-> +	if (err && err != -EINPROGRESS) {
-> +		int skerr = READ_ONCE(sk->sk_err);
-> +
-> +		if (skerr == EBADMSG) {
-> +			*copied -= sk_msg_free(sk, msg);
-> +			tls_free_open_rec(sk);
-> +			err = -skerr;
+> diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+> index 4e5d7c7014368..c68e79d1ac87b 100644
+> --- a/net/netfilter/nf_conntrack_netlink.c
+> +++ b/net/netfilter/nf_conntrack_netlink.c
+> @@ -2359,6 +2359,11 @@ ctnetlink_create_conntrack(struct net *net,
+>  			goto err2;
+>  		}
+>  		master_ct = nf_ct_tuplehash_to_ctrack(master_h);
+> +		if (master_ct->master) {
+> +			nf_ct_put(master_ct);
+> +			err = -EOPNOTSUPP;
+> +			goto err2;
 > +		}
->  	}
->  	return err;
->  }
 
-[Severity: High]
-bpf_exec_tx_verdict() now uses a single snapshot. Its async
-counterpart, tls_encrypt_done(), still loads sk->sk_err three times
-with plain loads. Is that intended?
+[Severity: Medium]
+Does this check reject state that the kernel itself creates? In H.323, a
+RAS expectation creates the Q.931 conntrack. That Q.931 conntrack then
+sets up the H.245 expectation:
 
-net/tls/tls_sw.c:tls_encrypt_done() {
+net/netfilter/nf_conntrack_h323_main.c:expect_h245() {
     ...
-	/* Check if error is previously set on socket */
-	if (err || sk->sk_err) {
-		rec = NULL;
-
-		/* If err is already set on socket, return the same code */
-		if (sk->sk_err) {
-			ctx->async_wait.err = -sk->sk_err;
-		} else {
-			ctx->async_wait.err = err;
-			tls_err_abort(sk, err);
-		}
-	}
+	rcu_assign_pointer(exp->assign_helper, nf_conntrack_helper_h245_ptr);
     ...
 }
 
-tls_encrypt_done() is the async AEAD completion callback. It runs from
-the crypto engine, softirq or a kworker without the socket lock. The
-racing side is the one the commit message names: sk_getsockopt() for
-SO_ERROR does v.val = -sock_error(sk), which clears sk_err with xchg()
-without the socket lock.
+So the resulting H.245 and RTP conntracks have a master that itself has
+a master.
 
-Suppose err is 0, the first check sees a non-zero sk_err, and the
-xchg() clears it before the second check. The else branch then runs
-with err == 0:
+A state-sync daemon such as conntrackd may recreate those flows with
+IPCTNL_MSG_CT_NEW and a CTA_TUPLE_MASTER that points at the related Q.931
+conntrack. That request used to be accepted and now gets -EOPNOTSUPP, so
+these flows would not be replicated after a failover.
 
-	ctx->async_wait.err = 0;
-	tls_err_abort(sk, 0);
+Since this is tagged for stable, could the commit message mention this
+change in what CT_NEW accepts?
 
-tls_err_abort() starts with WARN_ON_ONCE(err >= 0). Can this fire the
-warning (or panic with panic_on_warn) and then write sk_err = 0?
-
-In the other interleaving, the second check sees a non-zero value but
-the -sk->sk_err load sees 0. async_wait.err becomes 0, and if err was
-non-zero the real AEAD error is lost too. rec was already set to NULL,
-so the record is never marked tx_ready. tls_encrypt_async_wait() then
-returns 0 to the sender, and tls_tx_records() stops at the first record
-that is not tx_ready.
-
-After this patch, this looks like the last plain sk_err reader in
-net/tls. The second patch in the series, "net: annotate lockless writes
-to sk->sk_err", does not touch tls_encrypt_done() either.
-
-Could this use one snapshot as well, for example
-int skerr = READ_ONCE(sk->sk_err), for the test, the branch and the
-assignment? Then tls_err_abort() would only ever be called with a
-negative err.
-
-[ ... ]
-
-> @@ -1107,10 +1110,16 @@ tls_rx_rec_wait(struct sock *sk, bool nonblock, bool released, bool has_copied)
->  	timeo = sock_rcvtimeo(sk, nonblock);
+>  		__set_bit(IPS_EXPECTED_BIT, &ct->status);
+>  		ct->master = master_ct;
+>  	}
+> @@ -2864,6 +2869,9 @@ ctnetlink_glue_attach_expect(const struct nlattr *attr, struct nf_conn *ct,
+>  	struct nf_conntrack_expect *exp;
+>  	int err;
 >  
->  	while (!tls_strp_msg_ready(ctx)) {
-> -		if (sk->sk_err) {
-> -			if (has_copied)
-> -				return -READ_ONCE(sk->sk_err);
-> -			return sock_error(sk);
-> +		if (has_copied) {
-> +			int err = READ_ONCE(sk->sk_err);
+> +	if (ct->master)
+> +		return -EOPNOTSUPP;
 > +
-> +			if (err)
-> +				return -err;
-> +		} else {
-> +			int err = sock_error(sk);
-> +
-> +			if (err)
-> +				return err;
->  		}
 
-[Severity: Low]
-This isn't a bug, but the subject calls this an annotation change, and
-this hunk changes user-visible behavior.
+[Severity: High]
+Can nf_tables still reach the same stack exhaustion? The commit message
+says "Stop the repeatable userspace paths", but the patch only covers
+CTA_TUPLE_MASTER and NFQA_EXP.
 
-Before the patch, another thread could clear sk_err between the plain
-check and sock_error(). The data_race(!sk->sk_err) fast path in
-sock_error() then returned 0. With nothing copied, tls_sw_recvmsg()
-passed that 0 to userspace as EOF:
+The first path uses an nft ct expectation object alone.
+nft_ct_expect_obj_eval() only skips conntracks that are confirmed,
+templates, or that already have a help extension:
 
-	return copied ? : err;
+net/netfilter/nft_ct.c:nft_ct_expect_obj_eval() {
+    ...
+	ct = nf_ct_get(pkt->skb, &ctinfo);
+	if (!ct || nf_ct_is_confirmed(ct) || nf_ct_is_template(ct)) {
+		regs->verdict.code = NFT_BREAK;
+		return;
+	}
 
-The commit message describes this ("can return 0 after another thread
-consumes the error"), but there is no Fixes: tag.
+	help = nfct_help(ct);
+	if (help) {
+    ...
+}
 
-The first site comes from f508262ae9f2 ("tls: Preserve sk_err across
-recvmsg() when data has been copied"), which replaced the older
-return sock_error(sk) from 35560b7f06b8. The recheck after
-sk_flush_backlog() below comes from edcf32b8a48f ("tls: Flush backlog
-before waiting for a new record").
+A RELATED child created from an expectation with a NULL assign_helper has
+no help extension, so it also gets the ct_expect_help helper.
 
-Should Fixes: tags be added so stable and backport tooling can pick up
-the spurious EOF fix?
+ct_expect_help() then calls nf_ct_expect_related() with the child as
+exp->master, and it never checks ct->master. Over loopback, each new flow
+from a fresh source port consumes the previous expectation and arms the
+next one, so every flow adds a level.
 
->  
->  		if (ret < 0)
-> @@ -1132,10 +1141,16 @@ tls_rx_rec_wait(struct sock *sk, bool nonblock, bool released, bool has_copied)
->  		 * sk_err here so a connection abort surfaces as the
->  		 * actual error rather than a clean EOF.
->  		 */
-> -		if (sk->sk_err) {
-> -			if (has_copied)
-> -				return -READ_ONCE(sk->sk_err);
-> -			return sock_error(sk);
-> +		if (has_copied) {
-> +			int err = READ_ONCE(sk->sk_err);
-> +
-> +			if (err)
-> +				return -err;
-> +		} else {
-> +			int err = sock_error(sk);
-> +
-> +			if (err)
-> +				return err;
->  		}
->  		if (sk->sk_shutdown & RCV_SHUTDOWN)
->  			return 0;
+The second path combines an nft ct helper with ctnetlink.
+IPCTNL_MSG_EXP_NEW only stops the chain because ctnetlink_alloc_expect()
+requires help->helper.
 
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. Can
-the async receive epilogue in tls_sw_recvmsg() overwrite a negative
-return from tls_rx_rec_wait() with 0?
+nft_ct_helper_obj_eval() assigns a helper to any unconfirmed conntrack,
+related ones included. After that, ctnetlink_create_expect() succeeds
+with the child as master.
 
-tls_rx_msg_size() only rejects data_len < cipher_overhead, so it
-accepts a TLS 1.2 application-data record with empty plaintext. Take
-ctx->async_capable with an AEAD that returns -EINPROGRESS:
+A kernel helper attached this way, such as FTP, could also extend the
+chain from traffic alone.
 
-tls_sw_recvmsg()
-  tls_rx_one_record()          /* darg.async stays true */
-  async |= darg.async;
-  chunk = min_t(int, to_decrypt, len);     /* 0 */
-  async_copy_bytes += chunk;               /* still 0 */
-  tls_rx_rec_wait(..., has_copied=false)   /* -EAGAIN, or sock_error() */
-recv_end:
-  tls_decrypt_async_wait()                 /* 0 */
-  err = process_rx_list(ctx, msg, &control, 0,
-                        async_copy_bytes, is_peek, NULL);
+In every case init_conntrack() sets ct->master = exp->master with no
+depth limit. Freeing the leaf then recurses once per level:
 
-The peek variant passes copied + peeked and decrypted - peeked, which
-are also 0 here. With skip and len both 0, process_rx_list() skips both
-of its loops and returns 0. That value overwrites err, and since copied
-is 0, return copied ? : err returns 0.
+nf_ct_put()
+  nf_ct_destroy()
+    nf_ct_put(ct->master)
+      nf_ct_destroy()
+        ...
 
-On an open socket, would a non-blocking read return 0 (EOF) instead of
--EAGAIN? Would a connection error that sock_error() already consumed in
-tls_rx_rec_wait() be lost and reported as a clean EOF?
+Both nft paths need only CAP_NET_ADMIN in a user/net namespace, the same
+privilege ctnetlink needs.
 
-Could the original receive error be kept when the async drain produces
-no bytes and no error of its own?
+Would a central bound in nf_ct_expect_related() or init_conntrack() be
+needed to close this, or an iterative release of the master chain in
+nf_ct_destroy()? Gating each entry point separately leaves these paths
+open.
+
+[Severity: High]
+The commit message says "Keep regular ctnetlink and kernel helper
+expectations unchanged". Can the H.323 Q.931 helper build an unbounded
+chain on its own?
+
+For a Facility message with reason callForwarded, process_facility()
+calls expect_callforwarding(). That function gives the expected child the
+Q.931 helper again:
+
+net/netfilter/nf_conntrack_h323_main.c:expect_callforwarding() {
+    ...
+	rcu_assign_pointer(exp->assign_helper, nf_conntrack_helper_q931_ptr[0]);
+    ...
+}
+
+Neither function checks IPS_EXPECTED or ct->master. Each new expected
+Q.931 connection can therefore send another Facility(callForwarded) and
+create the next level.
+
+The default callforward_filter does not seem to prevent this.
+callforward_do_filter() only filters when the nexthop and device are the
+same, and two distinct local addresses have different nexthops.
+
+This works over loopback from an unprivileged user namespace once the
+helper is attached. It also works for remote peers wherever the Q.931
+helper is enabled. Either way, the same recursion in nf_ct_destroy()
+exhausts the stack.
+
+SIP REGISTER does not seem to have this problem, because
+process_register_request() returns early when IPS_EXPECTED is set.
+
+>  	err = nla_parse_nested_deprecated(cda, CTA_EXPECT_MAX, attr,
+>  					  exp_nla_policy, NULL);
+>  	if (err < 0)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-tls-fix-sk-kcsan-err-v1-0-baa0ba056323%40proton.me
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002165601.1754467-1-4ncienth%40gmail.com
