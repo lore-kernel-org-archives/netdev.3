@@ -1,885 +1,378 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3332B4AE127
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 19:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F743914F5;
+	Tue,  6 Oct 2026 19:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791314791; cv=none; b=XXd5s1qVtvjGAbBTXhiy26z/9Ny0ZQGzAaDpGgZ5h0apPTiQ157VZ2EsofrJSvsx9slJuU+bDi1XRQVOp2NqfeDGIYaHyfbdxfXkD3X52kZ3iv6z+uPwhjeX8J1Jq3u6AF2hpN+VAel/dRvM/Hw5m36rI1Rp1H74SITO1+8a/20=
+	t=1791315370; cv=none; b=Q9PSx0fik1RzDPAHrwDDSOFElitGnV6FXzB7sdy3IvoZg2HRdNfZ+XqE+IDKqALL0CJ2u15gl53ALEBYehzT6zj8jnXW8bA+i6KTKf1fo7Pjjf8vBX0EQF8ChnjOWDZcoxjzHAUjFr/J8wMMF44EoomZFzCzPzUZvyNR8eJEA78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791314791; c=relaxed/simple;
-	bh=ewEne19xYZEGEfwNDwDFY/1F/6X7zTQ9TVl5mk2aVPI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=cm/IVVsTeQrV6EfGtLHj0rARBSqFszdlTfhrDlMHoEyqGHvpC7wMbhfXg0Z2RiwKCkyKbQrit5iqBrzwwJq5eckQt98klFJb0POvd8yE5vKEQJ4Y93AjAoJt+pdlrUYDz+OuCiNrgZPZYXsfTeXuONsrrYaBm94ama4fNhKXr5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I5saIgo3; arc=none smtp.client-ip=209.85.214.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1791315370; c=relaxed/simple;
+	bh=wj/sWfdoddtzMIGh1H3vjjBs66rG02RDwUhV9GRgmWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OqEE+LXwRZeSUInF7suoYAUtDRremclJbYUAGwBIe5/aj1rypMxanpcx6QrRHDLAUJvdcI7+Fc/9VlCkxgnwlBgdsMYtXm0rE9r3+tX5s+R3DWGp5aeOJlA1p1kcW5imjYaiWbjyLwJuAP/cpehQp5nayyO+rre48TgXzc5E3MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=JIXVxyYP; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I5saIgo3"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d02df2bf09so27590235ad.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 12:26:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791314788; x=1791919588; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8whzxOdMxUqnJrcLLT5LQ6vQwKOuPTNGi8N9c6btCCw=;
-        b=I5saIgo3OUG19vk8Z1odbrmRcZRdeMeQ/Zp7GvIe3xzsKfQ6lp1DUDniAKJ93XY3eR
-         R3QTDN5DC/Bsw6FGeOfKF8hGh2NE9EGb48WvYQsOjGkSDbcVyJVAh31auu0eQYk8ckf+
-         tQQD9/7/n3G4wFoJd/k+lK3Jlx5hQwUdSJVGDVQf4FrqHUBiH266esxp/UMkkz9ZRgUt
-         ShLX+lwF/IR3piwRNFkFRyAYH2XauihmOdNNUJMsq8MtIVbvj0NxuT3Hw9b2IenmdGFS
-         2bSMdLph+F9bDM3qPpdkG8GJrM13QIf03rTizK0cXac89xNmOwcWWXqw/A4A5S65N8Xt
-         9rQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791314788; x=1791919588;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8whzxOdMxUqnJrcLLT5LQ6vQwKOuPTNGi8N9c6btCCw=;
-        b=GPG0X60v/Gwl+d1uBs0J7t3Nm7OS71ynkE3Jq1rRmg7jqGb+nSGwhkqUbXHgj6Zeu6
-         /ToVCCJl1GOKb/yz+uyLpDywTNqzSisFjTnojoPpY7u3N6sjF3gi+NZ7CYxnN9Kx+74z
-         wU5LEvRlsNFo1Nyj14wrNWQ0DFvhKKKc2GyI3QEAL/FBW58GozsrMDkCHHwdIte7ScH4
-         iDr4xXaTQi34rH7QSDKco0UgMQmMox6kxQPe0GOAE25kzIskJlo4r7tZzDou3MLeZOkG
-         EgHC6wfo6PcVbCFuUPWrj8psqHgi+nL1qW7Ja4K22O+WMplvW/zHCc4yHBooaEaE+B/2
-         u9UQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxLYj3zIdN/Rr7OA83Vt5qc/MD6ZCuTSHLGXlbKh39Cyy4kH+nkGXY++jLUCbETxln/qDnM0gw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYITgMyGP7boPOmMo5CVuX7eawXfKaZXbtHTCttqQ9zV0AYWEkdf
-	u+JwTLWIdm/px3o0fn+3n55BWS7kxmNY6usONBoq3EOcRHyNHvyM3JIiZV3l8JPJ2iqaLZanYg0
-	TyJIOwQ==
-X-Received: from pleu12.prod.google.com ([2002:a17:903:41cc:b0:2e4:a4e8:938b])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b06:b0:2e2:d834:a40f
- with SMTP id d9443c01a7336-2e5ffabcbb3mr3005145ad.9.1791314788214; Tue, 06
- Oct 2026 12:26:28 -0700 (PDT)
-Date: Tue,  6 Oct 2026 19:24:36 +0000
-In-Reply-To: <20261006192601.1875100-1-kuniyu@google.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="JIXVxyYP"
+Received: by linux.microsoft.com (Postfix, from userid 1223)
+	id B1A5820B7175; Tue,  6 Oct 2026 12:35:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B1A5820B7175
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791315312;
+	bh=ZHFeuUEcgA/zJNYAb+gVRneYC++YNlFUgfUofhTwpC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JIXVxyYPVGUahVQSbBeR6lhtqlo+464NbJKVnsn6MnEHpuAojkME6r5sK/6Vg4jbk
+	 TE1b2xfxdU9SmWh0bU8XY9UYwUFrXHCszXWEv7hY8gF7i+TF0HC3F7IICTGKZoti5g
+	 8wdiOittX0hXTsSe1NqVwmj/ySYwpMcP8fcsBKbQ=
+Date: Tue, 6 Oct 2026 12:35:12 -0700
+From: Meagan Lloyd <meaganlloyd@linux.microsoft.com>
+To: "Patil, Shubham Sanjay" <shubpati@amd.com>
+Cc: Frank Li <Frank.li@oss.nxp.com>,
+	Shubham Patil <shubhamsanjay.patil@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>, linux-i3c@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	meaganlloyd@linux.microsoft.com, git@amd.com,
+	jk@codeconstruct.com.au, matt@codeconstruct.com.au,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] i3c: master: dw: Clamp GETMRL/GETMWL to controller FIFO
+ limits
+Message-ID: <20261006-fc1d7a5f0e4e3b1b453450f9@linux.microsoft.com>
+References: <20260908102724.3232660-1-shubhamsanjay.patil@amd.com>
+ <aqL4HaQ1gjeaJYUQ@lizhi-Precision-Tower-5810>
+ <eff031f6-e212-43a8-98c0-5f52a4b9317b@amd.com>
+ <arVBZ0j2noe0g0Wi@lizhi-Precision-Tower-5810>
+ <44e2c06b-7742-47a7-b2fa-2284867d4f32@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261006192601.1875100-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.56.0.360.g66cac248cb-goog
-Message-ID: <20261006192601.1875100-11-kuniyu@google.com>
-Subject: [PATCH v4 bpf-next 10/10] selftest: bpf: Add test for bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Amery Hung <ameryhung@gmail.com>, Yonghong Song <yonghong.song@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Tenzin Ukyab <ukyab@berkeley.edu>, 
-	"=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?=" <cleger@meta.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <44e2c06b-7742-47a7-b2fa-2284867d4f32@amd.com>
 
-The test is roughly divided into two stages, and the sequence
-is as follows:
+On Tue, Oct 06, 2026 at 06:05:16PM +0530, Patil, Shubham Sanjay wrote:
+> On 9/24/2026 8:57 PM, Frank Li wrote:
+> > Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+> > 
+> > 
+> > On Thu, Sep 24, 2026 at 10:25:44AM +0530, Patil, Shubham Sanjay wrote:
+> > > 
+> > > 
+> > > On 9/11/2026 12:04 AM, Frank Li wrote:
+> > > > Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+> > > > 
+> > > > 
+> > > > On Tue, Sep 08, 2026 at 03:57:24PM +0530, Shubham Patil wrote:
+> > > > > The DW master rejects private SDR transfers larger than
+> > > > > caps.datafifodepth with -EOPNOTSUPP. Targets often report MRL/MWL
+> > > > > values larger than that FIFO, so the core stores limits the controller
+> > > > > cannot meet.
+> > > > > 
+> > > > > After a successful GETMRL/GETMWL, issue Direct SETMRL/SETMWL to the
+> > > > > same target with lengths capped to the data FIFO (in bytes), then
+> > > > > rewrite the GET payload so the core keeps the same values. Only update
+> > > > > the GET buffer once SET is acked, so a failed SET does not leave the
+> > > > > core and the target disagreeing.
+> > > > 
+> > > > I think i3c device driver should know these information choose
+> > > > min value dring each xfer. even though you set devcie's MRL/MXL, device
+> > > > driver still issue a longer transfer.
+> > > > 
+> > > > Frank
+> > > 
+> > > Understood - I will drop the SETMRL/SETMWL and stop rewriting the GET
+> > > payload, and instead expose the controller limit so the min is taken
+> > > per transfer. Two questions on how you want that done:
+> > > 1) Where should the min be taken?
+> > >     a) In the core: the controller driver sets max_read_len /
+> > >        max_write_len / max_ibi_len in struct i3c_master_controller, and
+> > >        the core caps i3c_device_info to min(target, controller) after
+> > >        GETMRL/GETMWL. Device drivers then use i3c_device_get_info()
+> > >        as-is and cannot forget.
+> > >     b) In each device driver: the core keeps reporting the raw target
+> > >        values, and drivers do the min themselves.
+> > 
+> > We can provide APIs for device driver to get whole data path required
+> > max_read/write_len.
+> 
+> Thanks. Next v2 will be:
+> 
+> Patch 1 - core: add max_read_len/max_write_len to struct
+> i3c_master_controller, set by the controller driver before
+> i3c_master_register(), plus two helpers for client drivers:
+> 	u16 i3c_device_get_max_read_len(const struct i3c_device *dev);
+> 	u16 i3c_device_get_max_write_len(const struct i3c_device *dev);
+> 
+> Each returns the smallest limit along the whole data path, i.e.
+> min_not_zero() of the target's GETMRL/GETMWL value and the controller
+> limit, and U16_MAX when nothing limits it. i3c_device_info keeps the raw
+> target values untouched.
+> 
+> Patch 2 - dw: advertise the data FIFO depth to the core, by setting
+> base.max_read_len/base.max_write_len in dw_i3c_common_probe() before
+> i3c_master_register().
+> 
+> Thanks,
+> Shubham
 
-  I) Setup
+I'd vote to avoid overloading the terms 'max_read_len' and
+'max_write_len' as it currently refers to the device's MRL and MWL
+values retrieved through the GETMRL, GETMWL CCCs.
 
-    1. Attach two BPF programs to a cgroup
-    2. Establish a TCP connection (@client <-> @child) within the cgroup
-    3. Enable BPF_TCP_OPS_FLAG_RCVQ on @child via setsockopt()
+So, maybe something like:
 
- II) RPC frame exchange in various patterns
+struct i3c_master_controller fields rx_fifo_bytes, tx_fifo_bytes
 
-    4. Send a partial RPC descriptor from @client to @child
-    5. Verify that epoll does NOT wake up @child
-    6. Send the remaining data of the RPC frame
-    7. Verify that epoll finally wakes up @child
+i3c_device_get_max_read_xfer_bytes() - min(rx_fifo_bytes, device mrl)
+i3c_device_get_max_write_xfer_bytes() - min(tx_fifo_bytes, device mwl)
 
-During setup, two BPF programs are attached to simulate
-a real-world scenario; one is bpf_tcp_ops and the other is
-CGROUP_SOCKOPT.
+-
 
-While the bpf_tcp_ops prog handles the dynamic adjustment of
-sk->sk_rcvlowat, the CGROUP_SOCKOPT prog is used to enable
-the TCP AutoLOWAT feature via userspace setsockopt() using
-pseudo options:
+The first meaningful user of this patch would be mctp-i3c driver. Where
+the i3c_xfer.len would need to be updated from using the device's mrl/mwl
+to whatever these new API functions return.
 
-  #define SOL_BPF               0xdeadbeef
-  #define BPF_TCP_AUTOLOWAT     0x8badf00d
+I think that the mctp-i3c driver update should be part of this series since
+it'll be the first user. Unless, Alexandre and the MCTP maintainers disagree.
 
-  setsockopt(fd, SOL_BPF, BPF_TCP_AUTOLOWAT, &(int){1}, sizeof(int));
+Thanks,
+Meagan
 
-This reflects a common production use case where an application
-decides to start parsing RPC frames only at a certain point in
-the stream (e.g., after HTTP Upgrade), rather than immediately
-after TCP 3WHS (->passive_established(), etc).
-
-When BPF_TCP_AUTOLOWAT is enabled, the BPF prog sets
-BPF_TCP_OPS_FLAG_RCVQ and initializes sk_local_storage
-for two sequence numbers to manage its state.
-
-Then, for the RPC frame exchange, this test uses a simple format
-defined as follows:
-
-  0        8       16      24       32
-  +--------+--------+-------+--------+ `.
-  |            header size           |  |
-  +--------+--------+-------+--------+   > RPC descriptor (8 bytes)
-  |            payload size          |  |
-  +--------+--------+-------+--------+ .'
-  ~               header             ~
-  +--------+--------+-------+--------+
-  ~               payload            ~
-  +--------+--------+-------+--------+
-
-Every time a new skb is enqueued to sk->sk_receive_queue, the
-bpf_tcp_ops prog parses it and updates these sequence numbers:
-
-  rpc_desc_seq : the SEQ # of the start of the RPC descriptor
-  rpc_end_seq  : the SEQ # of the end of the RPC frame
-                 => rpc_desc_seq + 8 + header size + payload size
-
-Assume we receive two RPC descriptors in the following pattern:
-
-  1. When we receive skb-1, only part of the RPC descriptor is parsed.
-     rpc_desc_seq is set to the first byte while rpc_end_seq is
-     unknown.  Thus, sk->sk_rcvlowat is set to the size of the RPC
-     descriptor (8 bytes).
-
-   <- skb-1 -> <---- skb-2 ----> <------ skb-3 ----->
-  +-----------+.................+....................+......
-  |  RPC desc 1  |  header + payload  |  RPC desc 2  | ...
-  +-----------+.................+....................+......
-  ^              ^-.
-  `- rpc_desc_seq   `- sk->sk_rcvlowat
-
-  2. Next, we receive skb-2, which completes the first RPC descriptor.
-     Now rpc_end_seq is known, so sk->sk_rcvlowat is advanced to it.
-
-   <- skb-1 -> <---- skb-2 ----> <------ skb-3 ----->
-  +-----------+-----------------+....................+......
-  |  RPC desc 1  |  header + payload  |  RPC desc 2  | ...
-  +-----------+-----------------+....................+......
-  ^                                   ^
-  '- rpc_desc_seq                     '- rpc_end_seq
-                                           & sk->sk_rcvlowat
-
-  3. Once we receive skb-3, which contains the next full RPC descriptor,
-     rpc_desc_seq is advanced and rpc_end_seq is updated according
-     to the size of RPC frame 2.
-
-     Note that sk->sk_rcvlowat is NOT updated to the new rpc_end_seq
-     yet.  This ensures that the application is woken up to read the
-     already complete RPC frame 1.
-
-   <- skb-1 -> <---- skb-2 ----> <------ skb-3 ----->
-  +-----------+-----------------+--------------------+......
-  |  RPC desc 1  |  header + payload  |  RPC desc 2  | ...   |
-  +-----------+-----------------+--------------------+......
-                                      ^                      ^
-              rpc_desc_seq -----------'  rpc_end_seq ----...-'
-                & sk->sk_rcvlowat
-
-This sequence corresponds to the 4th test case in rpc_test_cases[],
-and we can see helpful output if we "#define DEBUG":
-
-  # cat /sys/kernel/tracing/trace_pipe | \
-    awk '{ if ($0 ~ /AF_/) sub(/^.*AF_/, "AF_"); print $0 }' & \
-    BGPID=$!; ./test_progs -t tcp_autolowat; kill -9 -$BGPID
-  ...
-  AF_INET6 rpc_test_cases[3]: Start parsing skb: seq: 0, end_seq: 1, len: 1, rpc_desc_seq: 0, rpc_end_seq: 0, rpc_buff_len: 0
-  AF_INET6 rpc_test_cases[3]: Copied 1 bytes: rpc_desc_buff_len: 1
-  AF_INET6 rpc_test_cases[3]: Setting rcvlowat: tp->copied_seq: 0, rpc_desc_seq: 0, rpc_end_seq: 0, rpc_desc_buff_len: 1
-  AF_INET6 rpc_test_cases[3]: Set rcvlowat: expected: 8, actual: 8
-
-  AF_INET6 rpc_test_cases[3]: Start parsing skb: seq: 1, end_seq: 8, len: 7, rpc_desc_seq: 0, rpc_end_seq: 0, rpc_buff_len: 1
-  AF_INET6 rpc_test_cases[3]: Copied full descriptor: rpc_desc_seq: 0, rpc_end_seq: 258, header_len: 100, payload_len: 150
-  AF_INET6 rpc_test_cases[3]: No more descriptor: rpc_end_seq: 258, end_seq: 8
-  AF_INET6 rpc_test_cases[3]: Setting rcvlowat: tp->copied_seq: 0, rpc_desc_seq: 0, rpc_end_seq: 258, rpc_desc_buff_len: 8
-  AF_INET6 rpc_test_cases[3]: Set rcvlowat: expected: 258, actual: 258
-  ...
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
-v3:
-  * Use bpf_tcp_ops_set_flags()
-
-v2:
-  * Avoid address comparison for a specific version of gcc.
-  * Make rpc_test_cases[] static.
-  * Update comment in rpc_test_case[].
----
- .../selftests/bpf/prog_tests/tcp_autolowat.c  | 350 ++++++++++++++++++
- .../selftests/bpf/progs/bpf_tracing_net.h     |   2 +
- .../selftests/bpf/progs/tcp_autolowat.c       | 294 +++++++++++++++
- 3 files changed, 646 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/tcp_autolowat.c
- create mode 100644 tools/testing/selftests/bpf/progs/tcp_autolowat.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_autolowat.c b/tools/testing/selftests/bpf/prog_tests/tcp_autolowat.c
-new file mode 100644
-index 000000000000..337f9d34a39c
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/tcp_autolowat.c
-@@ -0,0 +1,350 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Google LLC */
-+#include <sys/epoll.h>
-+
-+#include "test_progs.h"
-+#include "cgroup_helpers.h"
-+#include "network_helpers.h"
-+
-+#include "tcp_autolowat.skel.h"
-+
-+#define SOL_BPF			0xdeadbeef
-+#define BPF_TCP_AUTOLOWAT	0x8badf00d
-+
-+struct rpc_descriptor {
-+	u32 header_len;
-+	u32 payload_len;
-+};
-+
-+enum rpc_event_type {
-+	RPC_EVENT_END,
-+	RPC_EVENT_AUTOLOWAT,
-+	RPC_EVENT_SEND,
-+	RPC_EVENT_RECV,
-+	RPC_EVENT_EPOLL,
-+	RPC_EVENT_RCVLOWAT,
-+};
-+
-+struct rpc_event {
-+	enum rpc_event_type type;
-+	union {
-+		int len;
-+		int nfds;
-+		int val;
-+		int rcvlowat;
-+	};
-+};
-+
-+#define RPC_DESC_SIZE (sizeof(struct rpc_descriptor))
-+
-+static struct rpc_test_case {
-+	char data[4096];
-+	struct rpc_descriptor desc[32];
-+	struct rpc_event event[32];
-+} rpc_test_cases[] = {
-+	{
-+		.desc = {
-+			{ .header_len = 100, .payload_len = 150 },
-+		},
-+		.event = {
-+			{ .type = RPC_EVENT_AUTOLOWAT,	.val = 1},
-+			/* Single full RPC message in skb. */
-+			{ .type = RPC_EVENT_SEND,	.len = RPC_DESC_SIZE + 100 + 150},
-+			{ .type = RPC_EVENT_EPOLL,	.nfds = 1},
-+			{ .type = RPC_EVENT_RCVLOWAT,	.rcvlowat = RPC_DESC_SIZE + 100 + 150},
-+		},
-+	},
-+	{
-+		.desc = {
-+			{.header_len = 100, .payload_len = 150},
-+			{.header_len = 100, .payload_len = 150},
-+			{.header_len = 100, .payload_len = 150},
-+		},
-+		.event = {
-+			{ .type = RPC_EVENT_AUTOLOWAT,	.val = 1},
-+			/* Two full RPC messages in skb. */
-+			{.type = RPC_EVENT_SEND,	.len = (RPC_DESC_SIZE + 100 + 150) * 2},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 1},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = (RPC_DESC_SIZE + 100 + 150) * 2},
-+			/* Single full RPC message in skb. */
-+			{ .type = RPC_EVENT_SEND,	.len = RPC_DESC_SIZE + 100 + 150},
-+			{ .type = RPC_EVENT_EPOLL,	.nfds = 1},
-+			{ .type = RPC_EVENT_RCVLOWAT,	.rcvlowat = (RPC_DESC_SIZE + 100 + 150) * 3},
-+		},
-+	},
-+	{
-+		.desc = {
-+			{.header_len = 100, .payload_len = 150},
-+			{.header_len = 100, .payload_len = 150},
-+			{.header_len = 100, .payload_len = 150},
-+		},
-+		.event = {
-+			{ .type = RPC_EVENT_AUTOLOWAT,	.val = 1},
-+			/* Two full RPC messages in skb. */
-+			{.type = RPC_EVENT_SEND,	.len = (RPC_DESC_SIZE + 100 + 150) * 2},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 1},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = (RPC_DESC_SIZE + 100 + 150) * 2},
-+			/* Only the next descriptor in skb. */
-+			{ .type = RPC_EVENT_SEND,	.len = RPC_DESC_SIZE},
-+			{ .type = RPC_EVENT_EPOLL,	.nfds = 1},
-+			{ .type = RPC_EVENT_RCVLOWAT,	.rcvlowat = (RPC_DESC_SIZE + 100 + 150) * 2},
-+		},
-+	},
-+	{
-+		.desc = {
-+			{.header_len = 100, .payload_len = 150},
-+			{.header_len = 200, .payload_len = 500},
-+		},
-+		.event = {
-+			{ .type = RPC_EVENT_AUTOLOWAT,	.val = 1},
-+			/* The first descriptor is partial. */
-+			{.type = RPC_EVENT_SEND,	.len = 1},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 0},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = RPC_DESC_SIZE},
-+			/* The first descriptor is available. */
-+			{.type = RPC_EVENT_SEND,	.len = RPC_DESC_SIZE - 1},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 0},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = RPC_DESC_SIZE + 150 + 100},
-+			/* The first header is ready. */
-+			{.type = RPC_EVENT_SEND,	.len = 100},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 0},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = RPC_DESC_SIZE + 150 + 100},
-+			/* skb has the first payload and 1 byte of the next descriptor. */
-+			{.type = RPC_EVENT_SEND,	.len = 150 + 1},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 1},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = RPC_DESC_SIZE + 150 + 100},
-+			/* After reading the first RPC message, SO_RCVLOWAT should be RPC_DESC_SIZE. */
-+			{.type = RPC_EVENT_RECV,	.len = RPC_DESC_SIZE + 150 + 100},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 0},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = RPC_DESC_SIZE},
-+			/* The second descriptor is available. */
-+			{.type = RPC_EVENT_SEND,	.len = RPC_DESC_SIZE - 1},
-+			{.type = RPC_EVENT_EPOLL,	.nfds = 0},
-+			{.type = RPC_EVENT_RCVLOWAT,	.rcvlowat = RPC_DESC_SIZE + 200 + 500},
-+		},
-+	},
-+};
-+
-+struct tcp_autolowat_test_cb {
-+	int saved_netns;
-+	union {
-+		int fd[4];
-+		struct {
-+			int server, client, child;
-+			int epoll;
-+		};
-+	};
-+};
-+
-+static void tcp_autolowat_teardown_cb(struct tcp_autolowat_test_cb *cb)
-+{
-+	int i, err;
-+
-+	for (i = 0; i < ARRAY_SIZE(cb->fd); i++) {
-+		if (cb->fd[i] != -1)
-+			close(cb->fd[i]);
-+	}
-+
-+	if (cb->saved_netns != -1) {
-+		err = setns(cb->saved_netns, CLONE_NEWNET);
-+		ASSERT_OK(err, "restore netns");
-+
-+		close(cb->saved_netns);
-+	}
-+}
-+
-+static int tcp_autolowat_setup_cb(struct tcp_autolowat_test_cb *cb, int family)
-+{
-+	struct epoll_event ev = {};
-+	int err;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(cb->fd); i++)
-+		cb->fd[i] = -1;
-+
-+	cb->saved_netns = open("/proc/self/ns/net", O_RDONLY);
-+	if (!ASSERT_OK_FD(cb->saved_netns, "save netns"))
-+		goto err;
-+
-+	err = unshare(CLONE_NEWNET);
-+	if (!ASSERT_OK(err, "unshare"))
-+		goto err;
-+
-+	err = system("ip link set dev lo up");
-+	if (!ASSERT_OK(err, "set up lo"))
-+		goto err;
-+
-+	cb->server = start_server(family, SOCK_STREAM, NULL, 0, 0);
-+	if (!ASSERT_OK_FD(cb->server, "start_server"))
-+		goto err;
-+
-+	cb->client = connect_to_fd(cb->server, 0);
-+	if (!ASSERT_OK_FD(cb->client, "connect_to_fd"))
-+		goto err;
-+
-+	cb->child = accept(cb->server, NULL, NULL);
-+	if (!ASSERT_OK_FD(cb->child, "accept"))
-+		goto err;
-+
-+	cb->epoll = epoll_create1(0);
-+	if (!ASSERT_OK_FD(cb->epoll, "epoll_create"))
-+		goto err;
-+
-+	ev.events = EPOLLIN;
-+	ev.data.fd = cb->child;
-+
-+	err = epoll_ctl(cb->epoll, EPOLL_CTL_ADD, cb->child, &ev);
-+	if (!ASSERT_OK(err, "epoll_ctl"))
-+		goto err;
-+
-+	return 0;
-+
-+err:
-+	tcp_autolowat_teardown_cb(cb);
-+	return -1;
-+}
-+
-+static int tcp_autolowat_build_data(struct rpc_test_case *test_case)
-+{
-+	struct rpc_descriptor *desc = test_case->desc;
-+	char *ptr = test_case->data;
-+	int rpc_size;
-+
-+	memset(ptr, 0, sizeof(test_case->data));
-+
-+	while (desc->header_len + desc->payload_len) {
-+		rpc_size = sizeof(*desc) + desc->header_len + desc->payload_len;
-+
-+		if (!ASSERT_LE(ptr + rpc_size - test_case->data,
-+			       sizeof(test_case->data), "data overflow"))
-+			return 1;
-+
-+		memcpy(ptr, desc, sizeof(*desc));
-+		ptr += rpc_size;
-+		desc++;
-+	}
-+
-+	if (!ASSERT_GT(ptr - test_case->data, 0, "no data"))
-+		return 1;
-+
-+	return 0;
-+}
-+
-+static void tcp_autolowat_run_rpc_test(struct tcp_autolowat_test_cb *cb,
-+				       struct rpc_test_case *test_case)
-+{
-+	struct rpc_event *event = test_case->event;
-+	char *ptr = test_case->data;
-+	struct epoll_event ev;
-+	socklen_t optlen;
-+	int err, optval;
-+	char buf[4096];
-+
-+	if (tcp_autolowat_build_data(test_case))
-+		return;
-+
-+	while (1) {
-+		switch (event->type) {
-+		case RPC_EVENT_END:
-+			return;
-+		case RPC_EVENT_AUTOLOWAT:
-+			err = setsockopt(cb->child, SOL_BPF, BPF_TCP_AUTOLOWAT,
-+					 &event->val, sizeof(event->val));
-+			if (!ASSERT_OK(err, "setsockopt"))
-+				return;
-+			break;
-+		case RPC_EVENT_SEND:
-+			err = send(cb->client, ptr, event->len, 0);
-+			if (!ASSERT_EQ(err, event->len, "send"))
-+				return;
-+
-+			ptr += event->len;
-+			break;
-+		case RPC_EVENT_RECV:
-+			err = recv(cb->child, buf, event->len, 0);
-+			if (!ASSERT_EQ(err, event->len, "recv"))
-+				return;
-+			break;
-+		case RPC_EVENT_EPOLL:
-+			err = epoll_wait(cb->epoll, &ev, 1, 100);
-+			if (!ASSERT_EQ(err, event->nfds, "epoll_wait"))
-+				return;
-+			break;
-+		case RPC_EVENT_RCVLOWAT:
-+			optval = 0;
-+			optlen = sizeof(optval);
-+
-+			err = getsockopt(cb->child, SOL_SOCKET, SO_RCVLOWAT, &optval, &optlen);
-+			if (!ASSERT_OK(err, "getsockopt") ||
-+			    !ASSERT_EQ(optval, event->rcvlowat, "rcvlowat"))
-+				return;
-+			break;
-+		}
-+
-+		event++;
-+	}
-+}
-+
-+static void tcp_autolowat_run_rpc_tests(struct tcp_autolowat *skel, int family)
-+{
-+	struct tcp_autolowat_test_cb cb;
-+	int err;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(rpc_test_cases); i++) {
-+		memset(skel->bss->test_name, 0, sizeof(skel->bss->test_name));
-+
-+		snprintf(skel->bss->test_name, sizeof(skel->bss->test_name),
-+			 "AF_INET%c rpc_test_cases[%d]",
-+			 family == AF_INET ? ' ' : '6', i);
-+
-+		if (!test__start_subtest(skel->bss->test_name))
-+			continue;
-+
-+		err = tcp_autolowat_setup_cb(&cb, family);
-+		if (err)
-+			continue;
-+
-+		tcp_autolowat_run_rpc_test(&cb, &rpc_test_cases[i]);
-+		tcp_autolowat_teardown_cb(&cb);
-+	}
-+}
-+
-+static void tcp_autolowat_run_tests(struct tcp_autolowat *skel)
-+{
-+	tcp_autolowat_run_rpc_tests(skel, AF_INET);
-+	tcp_autolowat_run_rpc_tests(skel, AF_INET6);
-+}
-+
-+void test_tcp_autolowat(void)
-+{
-+	struct tcp_autolowat *skel;
-+	struct bpf_link *link[2];
-+	int cgroup;
-+
-+	skel = tcp_autolowat__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	cgroup = test__join_cgroup("/tcp_autolowat");
-+	if (!ASSERT_GE(cgroup, 0, "join_cgroup"))
-+		goto destroy_skel;
-+
-+	link[0] = bpf_map__attach_cgroup_opts(skel->maps.tcp_autolowat_ops, cgroup, NULL);
-+	if (!ASSERT_OK_PTR(link[0], "attach_cgroup(tcp_autolowat_ops)"))
-+		goto close_cgroup;
-+
-+	link[1] = bpf_program__attach_cgroup(skel->progs.tcp_autolowat_setsockopt, cgroup);
-+	if (!ASSERT_OK_PTR(link[1], "attach_cgroup(SETSOCKOPT)"))
-+		goto destroy_sockops;
-+
-+	tcp_autolowat_run_tests(skel);
-+
-+	bpf_link__destroy(link[1]);
-+destroy_sockops:
-+	bpf_link__destroy(link[0]);
-+close_cgroup:
-+	close(cgroup);
-+destroy_skel:
-+	tcp_autolowat__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/bpf_tracing_net.h b/tools/testing/selftests/bpf/progs/bpf_tracing_net.h
-index 593b38f90417..4c999d59cbbc 100644
---- a/tools/testing/selftests/bpf/progs/bpf_tracing_net.h
-+++ b/tools/testing/selftests/bpf/progs/bpf_tracing_net.h
-@@ -79,6 +79,8 @@
- 
- #define NEXTHDR_TCP		6
- 
-+#define TCPHDR_FIN		0x01
-+
- #define TCPOPT_NOP		1
- #define TCPOPT_EOL		0
- #define TCPOPT_MSS		2
-diff --git a/tools/testing/selftests/bpf/progs/tcp_autolowat.c b/tools/testing/selftests/bpf/progs/tcp_autolowat.c
-new file mode 100644
-index 000000000000..8a55f3cee260
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/tcp_autolowat.c
-@@ -0,0 +1,294 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright 2026 Google LLC */
-+#include "vmlinux.h"
-+
-+#include <string.h>
-+#include <limits.h>
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+#include <bpf/bpf_core_read.h>
-+
-+#include "bpf_tracing_net.h"
-+
-+#define SOL_BPF			0xdeadbeef
-+#define BPF_TCP_AUTOLOWAT	0x8badf00d
-+
-+//#define DEBUG /* For verbose output. */
-+
-+struct rpc_descriptor {
-+	u32 header_len;
-+	u32 payload_len;
-+};
-+
-+#define RPC_DESC_SIZE		(sizeof(struct rpc_descriptor))
-+#define MAX_RPC_DESC_PER_SKB	100
-+
-+struct tcp_autolowat_cb {
-+	/* Don't put this field at the end; BPF verifier complains. */
-+	char rpc_desc_buf[RPC_DESC_SIZE];
-+	u32 rpc_desc_seq;
-+	u32 rpc_end_seq;
-+#ifdef DEBUG
-+	u32 isn;
-+#endif
-+	u8 rpc_desc_buff_len;
-+};
-+
-+struct {
-+	__uint(type, BPF_MAP_TYPE_SK_STORAGE);
-+	__uint(map_flags, BPF_F_NO_PREALLOC);
-+	__type(key, int);
-+	__type(value, struct tcp_autolowat_cb);
-+} tcp_autolowat_map SEC(".maps");
-+
-+char test_name[64];
-+
-+#ifdef DEBUG
-+#define LOG(str, ...)							\
-+	bpf_printk("%s: " str, test_name, ##__VA_ARGS__)
-+#else
-+#define LOG(...)
-+#endif
-+
-+#define SEQ(val)				\
-+	(val - cb->isn)
-+#define TP_SEQ(field)				\
-+	(tp->field - cb->isn)
-+#define CB_SEQ(field)				\
-+	(cb->field - cb->isn)
-+
-+static int tcp_parse_descriptor(struct tcp_autolowat_cb *cb,
-+				struct bpf_dynptr *dptr,
-+				u32 seq, u32 end_seq)
-+{
-+	struct rpc_descriptor *rpc_desc;
-+	u32 rpc_copied_seq;
-+	u64 copy_len; /* u32 should work, but not for no_alu32 :/ */
-+	u64 rpc_len;
-+	int err;
-+
-+	rpc_copied_seq = cb->rpc_desc_seq + cb->rpc_desc_buff_len;
-+
-+	if (before(cb->rpc_desc_seq + RPC_DESC_SIZE, end_seq))
-+		copy_len = RPC_DESC_SIZE - cb->rpc_desc_buff_len;
-+	else
-+		copy_len = end_seq - rpc_copied_seq;
-+
-+	if (copy_len == 0)
-+		goto disable; /* FIN. */
-+	if (copy_len > RPC_DESC_SIZE)
-+		goto disable; /* always false, only for verifier. */
-+	if (cb->rpc_desc_buff_len >= RPC_DESC_SIZE)
-+		goto disable; /* always false, only for verifier. */
-+
-+	err = bpf_dynptr_read(cb->rpc_desc_buf + cb->rpc_desc_buff_len,
-+			      copy_len, dptr, rpc_copied_seq - seq, 0);
-+	if (err)
-+		goto disable;
-+
-+	cb->rpc_desc_buff_len += copy_len;
-+
-+	if (cb->rpc_desc_buff_len != RPC_DESC_SIZE) {
-+		LOG("Copied %d bytes: rpc_desc_buff_len: %u", copy_len, cb->rpc_desc_buff_len);
-+		goto partial;
-+	}
-+
-+	rpc_desc = (struct rpc_descriptor *)cb->rpc_desc_buf;
-+	rpc_len = RPC_DESC_SIZE + rpc_desc->header_len + rpc_desc->payload_len;
-+
-+	if (rpc_len > INT_MAX)
-+		goto disable;
-+
-+	cb->rpc_end_seq = cb->rpc_desc_seq + rpc_len;
-+
-+	LOG("Copied full descriptor: rpc_desc_seq: %u, rpc_end_seq: %u, header_len: %u, payload_len: %u",
-+	    CB_SEQ(rpc_desc_seq), CB_SEQ(rpc_end_seq),
-+	    rpc_desc->header_len, rpc_desc->payload_len);
-+
-+	return 0;
-+disable:
-+	return -1;
-+partial:
-+	return 1;
-+}
-+
-+static void tcp_set_autolowat(struct tcp_autolowat_cb *cb,
-+			      struct sock *sk)
-+{
-+	struct tcp_sock *tp = (struct tcp_sock *)sk;
-+	u32 val; /* To handle wraparound. */
-+
-+	LOG("Setting rcvlowat: tp->copied_seq: %u, rpc_desc_seq: %u, rpc_end_seq: %u, rpc_desc_buff_len: %u",
-+	    TP_SEQ(copied_seq), CB_SEQ(rpc_desc_seq),
-+	    CB_SEQ(rpc_end_seq), cb->rpc_desc_buff_len);
-+
-+	if (before(tp->copied_seq, cb->rpc_desc_seq))
-+		val = cb->rpc_desc_seq - tp->copied_seq;
-+	else if (cb->rpc_desc_buff_len != RPC_DESC_SIZE)
-+		val = RPC_DESC_SIZE;
-+	else
-+		val = cb->rpc_end_seq - tp->copied_seq;
-+
-+	if (val != tp->inet_conn.icsk_inet.sk.sk_rcvlowat) {
-+		bpf_tcp_ops_set_rcvlowat(sk, val);
-+
-+		LOG("Set rcvlowat: expected: %u, actual: %d\n",
-+		    val, tp->inet_conn.icsk_inet.sk.sk_rcvlowat);
-+	} else {
-+		LOG("No need to set rcvlowat: %u\n", val);
-+	}
-+}
-+
-+static void tcp_disable_autolowat(struct sock *sk)
-+{
-+	bpf_tcp_ops_set_flags((struct tcp_sock *)sk, 0, BPF_TCP_OPS_FLAG_RCVQ);
-+
-+	bpf_tcp_ops_set_rcvlowat(sk, 1);
-+
-+	LOG("Disabled autolowat");
-+}
-+
-+static void tcp_do_autolowat(struct tcp_autolowat_cb *cb,
-+			     struct sock *sk, struct sk_buff *skb)
-+{
-+	struct bpf_dynptr dptr;
-+	struct tcp_skb_cb *tcb;
-+	u32 seq, end_seq;
-+	int ret = 0, i;
-+
-+	if (bpf_dynptr_from_skb((struct __sk_buff *)skb, 0, &dptr)) {
-+		ret = -1;
-+		goto update;
-+	}
-+
-+	tcb = bpf_core_cast(skb->cb, struct tcp_skb_cb);
-+	seq = tcb->seq;
-+	end_seq = tcb->end_seq - !!(tcb->tcp_flags & TCPHDR_FIN);
-+
-+	LOG("Start parsing skb: seq: %u, end_seq: %u, len: %u, rpc_desc_seq: %u, rpc_end_seq: %u, rpc_buff_len: %u",
-+	    SEQ(seq), SEQ(end_seq), end_seq - seq,
-+	    CB_SEQ(rpc_desc_seq), CB_SEQ(rpc_end_seq), cb->rpc_desc_buff_len);
-+
-+	if (cb->rpc_desc_buff_len != RPC_DESC_SIZE) {
-+		ret = tcp_parse_descriptor(cb, &dptr, seq, end_seq);
-+		if (ret)
-+			goto update;
-+	}
-+
-+	i = 0;
-+
-+	while (1) {
-+		if (i++ > MAX_RPC_DESC_PER_SKB) {
-+			ret = -1;
-+			break;
-+		}
-+
-+		if (after(cb->rpc_end_seq, end_seq)) {
-+			LOG("No more descriptor: rpc_end_seq: %u, end_seq: %u",
-+			    CB_SEQ(rpc_end_seq), SEQ(end_seq));
-+			break;
-+		}
-+
-+		cb->rpc_desc_seq = cb->rpc_end_seq;
-+		cb->rpc_desc_buff_len = 0;
-+
-+		if (cb->rpc_end_seq == end_seq)
-+			break;
-+
-+		LOG("Found next descriptor: rpc_end_seq: %u, end_seq: %u, len: %u",
-+		    CB_SEQ(rpc_end_seq), SEQ(end_seq), end_seq - cb->rpc_end_seq);
-+
-+		ret = tcp_parse_descriptor(cb, &dptr, seq, end_seq);
-+		if (ret)
-+			break;
-+	}
-+
-+update:
-+	if (ret >= 0)
-+		tcp_set_autolowat(cb, sk);
-+	else
-+		tcp_disable_autolowat(sk);
-+}
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_autolowat_enqueue_rcvq, struct sock *sk, struct sk_buff *skb)
-+{
-+	struct tcp_autolowat_cb *cb;
-+
-+	cb = bpf_sk_storage_get(&tcp_autolowat_map, sk, 0, 0);
-+	if (!cb)
-+		return;
-+
-+	tcp_do_autolowat(cb, sk, skb);
-+}
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_autolowat_dequeue_rcvq, struct sock *sk)
-+{
-+	struct tcp_autolowat_cb *cb;
-+
-+	cb = bpf_sk_storage_get(&tcp_autolowat_map, sk, 0, 0);
-+	if (!cb)
-+		return;
-+
-+	tcp_set_autolowat(cb, sk);
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_tcp_ops tcp_autolowat_ops = {
-+	.enqueue_rcvq = (void *)tcp_autolowat_enqueue_rcvq,
-+	.dequeue_rcvq = (void *)tcp_autolowat_dequeue_rcvq,
-+};
-+
-+static int tcp_init_autolowat_cb(struct bpf_tcp_sock *btp)
-+{
-+	struct tcp_autolowat_cb *cb;
-+	struct tcp_sock *tp;
-+
-+	cb = bpf_sk_storage_get(&tcp_autolowat_map, btp, 0,
-+				BPF_SK_STORAGE_GET_F_CREATE);
-+	if (!cb)
-+		return -1;
-+
-+	tp = bpf_core_cast(btp, struct tcp_sock);
-+
-+	cb->rpc_desc_seq = tp->copied_seq;
-+	cb->rpc_end_seq = tp->copied_seq;
-+#ifdef DEBUG
-+	cb->isn = tp->copied_seq;
-+#endif
-+
-+	return bpf_tcp_ops_set_flags((struct tcp_sock *)btp,
-+				     BPF_TCP_OPS_FLAG_RCVQ, 0);
-+}
-+
-+SEC("cgroup/setsockopt")
-+int tcp_autolowat_setsockopt(struct bpf_sockopt *ctx)
-+{
-+	void *optval_end = ctx->optval_end;
-+	int *optval = ctx->optval;
-+	struct bpf_tcp_sock *btp;
-+
-+	if (ctx->level != SOL_BPF || ctx->optname != BPF_TCP_AUTOLOWAT)
-+		goto out;
-+
-+	if (optval + 1 > optval_end)
-+		return 0; /* -EPERM */
-+
-+	btp = bpf_tcp_sock(ctx->sk);
-+	if (!btp)
-+		goto out;
-+
-+	if (*optval && tcp_init_autolowat_cb(btp))
-+		return 0; /* -EPERM */
-+
-+	/*
-+	 * BPF has consumed this option, don't call kernel
-+	 * setsockopt handler.
-+	 */
-+	ctx->optlen = -1;
-+out:
-+	return 1;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.56.0.360.g66cac248cb-goog
-
+> 
+> > 
+> > > 2) Either way, a driver that ignores these limits still gets
+> > >     -EOPNOTSUPP from dw_i3c_master_i3c_xfers() when the transfer does
+> > >     not fit the data FIFO. Should the driver keep returning that, or
+> > >     would you consider splitting an oversized private SDR transfer into
+> > >     FIFO-sized chunks in the controller driver? My understanding is
+> > >     no - splitting changes what the target sees on the bus - but I
+> > >     want to be sure before v2.
+> > 
+> > the decision about split transfer should be decided by device drivers.
+> > Not all device treat two continue repeat START as continue write/read.
+> > 
+> > Frank
+> > > 
+> > > Thanks,
+> > > Shubham>
+> > > > > 
+> > > > > GETMRL is variable length: the optional third byte is max IBI payload
+> > > > > and is only present if the target returned it. Clamp that IBI byte to
+> > > > > the IBI queue depth from QUEUE_SIZE_CAPABILITY.IBI_BUF_SIZE (bits 19:16
+> > > > > at 0xe8, encoded as 2^(n+1) dwords).
+> > > > > 
+> > > > > Rename the unused EXTENDED_CAPABILITY macro at 0xe8 to the databook
+> > > > > name QUEUE_SIZE_CAPABILITY.
+> > > > > 
+> > > > > Signed-off-by: Shubham Patil <shubhamsanjay.patil@amd.com>
+> > > > > ---
+> > > > >    drivers/i3c/master/dw-i3c-master.c | 149 ++++++++++++++++++++++++++++-
+> > > > >    drivers/i3c/master/dw-i3c-master.h |   1 +
+> > > > >    2 files changed, 149 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+> > > > > index 4563d8761ba0..51defcb57761 100644
+> > > > > --- a/drivers/i3c/master/dw-i3c-master.c
+> > > > > +++ b/drivers/i3c/master/dw-i3c-master.c
+> > > > > @@ -203,7 +203,13 @@
+> > > > >    #define BUS_IDLE_TIMING                      0xd8
+> > > > >    #define I3C_VER_ID                   0xe0
+> > > > >    #define I3C_VER_TYPE                 0xe4
+> > > > > -#define EXTENDED_CAPABILITY          0xe8
+> > > > > +#define QUEUE_SIZE_CAPABILITY                0xe8
+> > > > > +#define QUEUE_SIZE_CAPABILITY_IBI_BUF(x)     (((x) & GENMASK(19, 16)) >> 16)
+> > > > > +/*
+> > > > > + * IBI_BUF_SIZE is encoded as 2^(field + 1) dwords: the smallest buffer is
+> > > > > + * 2 dwords and each increment of the field doubles the depth.
+> > > > > + */
+> > > > > +#define QUEUE_SIZE_IBI_BUF_MIN_DWORDS        2
+> > > > >    #define SLAVE_CONFIG                 0xec
+> > > > > 
+> > > > >    #define DYN_ADDR_LO_MASK GENMASK(4, 0)
+> > > > > @@ -844,6 +850,130 @@ static int dw_i3c_ccc_get(struct dw_i3c_master *master, struct i3c_ccc_cmd *ccc)
+> > > > >         return ret;
+> > > > >    }
+> > > > > 
+> > > > > +/*
+> > > > > + * Cap the limits a target reported through GETMRL to what this controller can
+> > > > > + * actually transfer, so the core never asks for a private read the data FIFO
+> > > > > + * cannot hold. The optional IBI payload byte is capped to the IBI queue depth
+> > > > > + * instead; since that byte is a u8, the IBI cap only ever applies to
+> > > > > + * controllers whose IBI queue is smaller than 255 bytes.
+> > > > > + *
+> > > > > + * Direct SETMRL is optional, so a target may implement GETMRL and NACK the SET.
+> > > > > + * Clamp the values handed back to the core either way: a failed SET only means
+> > > > > + * the target keeps its own larger limit, which is harmless as long as the core
+> > > > > + * stays within ours.
+> > > > > + */
+> > > > > +static int dw_i3c_master_clamp_mrl(struct dw_i3c_master *master,
+> > > > > +                                struct i3c_ccc_cmd *ccc)
+> > > > > +{
+> > > > > +     u16 max_fifo_bytes = master->caps.datafifodepth * sizeof(u32);
+> > > > > +     u32 max_ibi_bytes = master->caps.ibififodepth * sizeof(u32);
+> > > > > +     u16 actual_len = ccc->dests[0].payload.actual_len;
+> > > > > +     struct i3c_ccc_cmd_dest set_dest = { };
+> > > > > +     struct i3c_ccc_cmd set_cmd = { };
+> > > > > +     struct i3c_ccc_mrl set_mrl;
+> > > > > +     struct i3c_ccc_mrl *mrl;
+> > > > > +     bool clamp_ibi = false;
+> > > > > +     bool clamp_read;
+> > > > > +     u8 ibi_len = 0;
+> > > > > +     u16 read_len;
+> > > > > +     int ret;
+> > > > > +
+> > > > > +     /* Need at least the 2-byte max read length field to act on. */
+> > > > > +     if (actual_len < 2)
+> > > > > +             return 0;
+> > > > > +
+> > > > > +     mrl = ccc->dests[0].payload.data;
+> > > > > +     read_len = be16_to_cpu(mrl->read_len);
+> > > > > +     clamp_read = read_len > max_fifo_bytes;
+> > > > > +
+> > > > > +     /* Optional third byte is valid only if the target returned it. */
+> > > > > +     if (actual_len > 2) {
+> > > > > +             ibi_len = mrl->ibi_len;
+> > > > > +             clamp_ibi = max_ibi_bytes && ibi_len > max_ibi_bytes;
+> > > > > +     }
+> > > > > +
+> > > > > +     if (!clamp_read && !clamp_ibi)
+> > > > > +             return 0;
+> > > > > +
+> > > > > +     set_mrl.read_len = cpu_to_be16(clamp_read ? max_fifo_bytes : read_len);
+> > > > > +     if (actual_len > 2)
+> > > > > +             set_mrl.ibi_len = clamp_ibi ? max_ibi_bytes : ibi_len;
+> > > > > +
+> > > > > +     set_dest.addr = ccc->dests[0].addr;
+> > > > > +     set_dest.payload.data = &set_mrl;
+> > > > > +     set_dest.payload.len = actual_len;
+> > > > > +
+> > > > > +     set_cmd.rnw = 0;
+> > > > > +     set_cmd.id = I3C_CCC_SETMRL(false);
+> > > > > +     set_cmd.ndests = 1;
+> > > > > +     set_cmd.dests = &set_dest;
+> > > > > +
+> > > > > +     ret = dw_i3c_ccc_set(master, &set_cmd);
+> > > > > +     if (ret)
+> > > > > +             dev_dbg(&master->base.dev,
+> > > > > +                     "SETMRL not accepted by target: %d\n", ret);
+> > > > > +
+> > > > > +     if (clamp_read) {
+> > > > > +             mrl->read_len = cpu_to_be16(max_fifo_bytes);
+> > > > > +             dev_dbg(&master->base.dev,
+> > > > > +                     "clamped target MRL from %u to %u bytes (FIFO depth limit)\n",
+> > > > > +                     read_len, max_fifo_bytes);
+> > > > > +     }
+> > > > > +     if (clamp_ibi) {
+> > > > > +             mrl->ibi_len = max_ibi_bytes;
+> > > > > +             dev_dbg(&master->base.dev,
+> > > > > +                     "clamped target IBI len from %u to %u bytes (IBI buffer limit)\n",
+> > > > > +                     ibi_len, max_ibi_bytes);
+> > > > > +     }
+> > > > > +
+> > > > > +     return 0;
+> > > > > +}
+> > > > > +
+> > > > > +/* Same contract as dw_i3c_master_clamp_mrl(), for the write direction. */
+> > > > > +static int dw_i3c_master_clamp_mwl(struct dw_i3c_master *master,
+> > > > > +                                struct i3c_ccc_cmd *ccc)
+> > > > > +{
+> > > > > +     u16 max_fifo_bytes = master->caps.datafifodepth * sizeof(u32);
+> > > > > +     struct i3c_ccc_cmd_dest set_dest = { };
+> > > > > +     struct i3c_ccc_cmd set_cmd = { };
+> > > > > +     struct i3c_ccc_mwl set_mwl;
+> > > > > +     struct i3c_ccc_mwl *mwl;
+> > > > > +     u16 write_len;
+> > > > > +     int ret;
+> > > > > +
+> > > > > +     if (ccc->dests[0].payload.actual_len < 2)
+> > > > > +             return 0;
+> > > > > +
+> > > > > +     mwl = ccc->dests[0].payload.data;
+> > > > > +     write_len = be16_to_cpu(mwl->len);
+> > > > > +
+> > > > > +     if (write_len <= max_fifo_bytes)
+> > > > > +             return 0;
+> > > > > +
+> > > > > +     set_mwl.len = cpu_to_be16(max_fifo_bytes);
+> > > > > +
+> > > > > +     set_dest.addr = ccc->dests[0].addr;
+> > > > > +     set_dest.payload.data = &set_mwl;
+> > > > > +     set_dest.payload.len = sizeof(set_mwl);
+> > > > > +
+> > > > > +     set_cmd.rnw = 0;
+> > > > > +     set_cmd.id = I3C_CCC_SETMWL(false);
+> > > > > +     set_cmd.ndests = 1;
+> > > > > +     set_cmd.dests = &set_dest;
+> > > > > +
+> > > > > +     ret = dw_i3c_ccc_set(master, &set_cmd);
+> > > > > +     if (ret)
+> > > > > +             dev_dbg(&master->base.dev,
+> > > > > +                     "SETMWL not accepted by target: %d\n", ret);
+> > > > > +
+> > > > > +     mwl->len = cpu_to_be16(max_fifo_bytes);
+> > > > > +     dev_dbg(&master->base.dev,
+> > > > > +             "clamped target MWL from %u to %u bytes (FIFO depth limit)\n",
+> > > > > +             write_len, max_fifo_bytes);
+> > > > > +
+> > > > > +     return 0;
+> > > > > +}
+> > > > > +
+> > > > >    static int dw_i3c_master_send_ccc_cmd(struct i3c_master_controller *m,
+> > > > >                                       struct i3c_ccc_cmd *ccc)
+> > > > >    {
+> > > > > @@ -866,6 +996,18 @@ static int dw_i3c_master_send_ccc_cmd(struct i3c_master_controller *m,
+> > > > >         else
+> > > > >                 ret = dw_i3c_ccc_set(master, ccc);
+> > > > > 
+> > > > > +     /*
+> > > > > +      * Clamp GETMRL/GETMWL responses to the data FIFO depth, and the
+> > > > > +      * optional GETMRL IBI byte to the IBI queue depth. The GET itself has
+> > > > > +      * already succeeded, so its result is never overridden here.
+> > > > > +      */
+> > > > > +     if (!ret && ccc->rnw) {
+> > > > > +             if (ccc->id == I3C_CCC_GETMRL)
+> > > > > +                     dw_i3c_master_clamp_mrl(master, ccc);
+> > > > > +             else if (ccc->id == I3C_CCC_GETMWL)
+> > > > > +                     dw_i3c_master_clamp_mwl(master, ccc);
+> > > > > +     }
+> > > > > +
+> > > > >         pm_runtime_put_autosuspend(master->dev);
+> > > > >         return ret;
+> > > > >    }
+> > > > > @@ -1728,6 +1870,11 @@ int dw_i3c_common_probe(struct dw_i3c_master *master,
+> > > > >         ret = readl(master->regs + DATA_BUFFER_STATUS_LEVEL);
+> > > > >         master->caps.datafifodepth = DATA_BUFFER_STATUS_LEVEL_TX(ret);
+> > > > > 
+> > > > > +     /* Read the IBI data buffer size advertised by the controller. */
+> > > > > +     ret = readl(master->regs + QUEUE_SIZE_CAPABILITY);
+> > > > > +     master->caps.ibififodepth = QUEUE_SIZE_IBI_BUF_MIN_DWORDS <<
+> > > > > +                                 QUEUE_SIZE_CAPABILITY_IBI_BUF(ret);
+> > > > > +
+> > > > >         ret = readl(master->regs + DEVICE_ADDR_TABLE_POINTER);
+> > > > >         master->datstartaddr = ret;
+> > > > >         master->maxdevs = ret >> 16;
+> > > > > diff --git a/drivers/i3c/master/dw-i3c-master.h b/drivers/i3c/master/dw-i3c-master.h
+> > > > > index 17ad817d1f8e..54c3912374c8 100644
+> > > > > --- a/drivers/i3c/master/dw-i3c-master.h
+> > > > > +++ b/drivers/i3c/master/dw-i3c-master.h
+> > > > > @@ -15,6 +15,7 @@
+> > > > >    struct dw_i3c_master_caps {
+> > > > >         u8 cmdfifodepth;
+> > > > >         u8 datafifodepth;
+> > > > > +     u32 ibififodepth;
+> > > > >    };
+> > > > > 
+> > > > >    struct dw_i3c_dat_entry {
+> > > > > --
+> > > > > 2.34.1
+> > > > > 
+> > > 
+> 
+> 
+> -- 
+> linux-i3c mailing list
+> linux-i3c@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-i3c
