@@ -1,16 +1,16 @@
 Received: from twmbx01.aspeedtech.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6EB3B19B1;
-	Tue,  6 Oct 2026 07:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683C43B38B1;
+	Tue,  6 Oct 2026 07:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791271255; cv=none; b=Dnqb4Z75+0nfh4dzYpHZTFCFiZN1GpxQxff3SwBx/lX7zouwX5CuvMjkfDArausH+6snxtElOc3BJ1ZwHWDfyjJ30Ng2Nqctht84wkoVUi6alTGSYPmkhiFCjIkFe+JICBZTDu9O1dY2ftozzaG4FLkywuYnYRTry/e7VzPVivE=
+	t=1791271257; cv=none; b=joTccwrpbhmFEXe2NuqRlLTbyI2/yqei8MYhzRWgSQWu44RA8IKcCvMLXFyhnb8YLwNYnnCAQwL3aa/1+quHp+YD1HmqH+GbZ6d3cpghDol9ZcuMuCLSKyOFTn7+jQDEZ+WmZVI02eP3HBPpG6h2NXMMCiSh0tq+iGxJHtVMeV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791271255; c=relaxed/simple;
-	bh=U1WDcZC7qsYWQ4eJtn0pq/dQKkPUfjidP2jdkrhMwLU=;
+	s=arc-20240116; t=1791271257; c=relaxed/simple;
+	bh=g6gcc5LC0udmFwEVnx/sPtwN13WX4iAqvqBG418m8KU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=s+tq5GvdYvDpfvJO/pamQbn8nEkMw30fMHzxwMSaU3y/gUhKdgpUJWQ0frJEmXXWF+7le4ZwuXGheXKhXCfApPxdN/FCkJmqtg+6sdFyDSUBJbDG0khXv0Wpk1F73u3n76p71Yt8YV9CaaU+ksWj/GPnuoCQfCMYYUlJ/y6EsIg=
+	 In-Reply-To:To:CC; b=Xgi5n3OZMOmiFphml5rXxYTCYqABTup2qzVQ3i1V1MArdDt/7hXijE6M6u+Y9I8G3LyahlxDRAWgBO1x/cwlHanDeh+MNWyYGp+db4WxBxRdsT7KCEOWceHznouAaQR3bfi22D/pjZ6rSTnQntmQovMluYpB8j1/UpJUcIK1f4k=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
@@ -22,8 +22,8 @@ Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
  Transport; Tue, 6 Oct 2026 15:20:44 +0800
 From: Jacky Chou <jacky_chou@aspeedtech.com>
-Date: Tue, 6 Oct 2026 15:20:40 +0800
-Subject: [PATCH net-next v2 2/6] net: ftgmac100: Add AST2700 compatible
+Date: Tue, 6 Oct 2026 15:20:41 +0800
+Subject: [PATCH net-next v2 3/6] net: ftgmac100: Enable AST2700 RMII
  support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -33,7 +33,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261006-support_ast2700-v2-2-36de51fb8066@aspeedtech.com>
+Message-ID: <20261006-support_ast2700-v2-3-36de51fb8066@aspeedtech.com>
 References: <20261006-support_ast2700-v2-0-36de51fb8066@aspeedtech.com>
 In-Reply-To: <20261006-support_ast2700-v2-0-36de51fb8066@aspeedtech.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
@@ -46,67 +46,108 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 CC: <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, Jacky Chou <jacky_chou@aspeedtech.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791271243; l=1994;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791271243; l=3468;
  i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
- bh=U1WDcZC7qsYWQ4eJtn0pq/dQKkPUfjidP2jdkrhMwLU=;
- b=YFKxvXO2+NjRkweLtCEtiqjMfe7cUoUEUcNmFOWQw+rRZ08+Fo9ka+R3Z2ctXsLN7uE1FypvE
- dVKYLRSHPr0CBUypWHNFF2ZLDoxsKAC0+lCf1mh3rsrJWf12t2esPIv
+ bh=g6gcc5LC0udmFwEVnx/sPtwN13WX4iAqvqBG418m8KU=;
+ b=kf557WaCRYnJ3PxERolqMihTI8/rFsVvVW9oSElvJpfV4xStYOmVFYU/nwcW02i0tvd4O6Uc5
+ 7zHlbSy77qzAAJhNNBQLxqmBsnJhaH9ZMlFcesxIespFYHrHUNjJjfZ
 X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
  pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
 
-Add match data for the Aspeed AST2700 FTGMAC100 controller and wire
-its compatible string into the OF match table. This lets AST2700 device
-tree nodes bind to the ftgmac100 driver.
+Set the RMII enable bit when an AST2700 port uses RMII so the MAC is
+programmed for the selected interface mode. Describe the requirement as
+a match-data quirk instead of checking the MAC generation in the data
+path, allowing later compatible controllers to opt into the behavior.
 
 Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/faraday/ftgmac100.c | 16 ++++++++++++++--
+ drivers/net/ethernet/faraday/ftgmac100.h |  1 +
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 6d2fe5c2f390..67b1fa464a42 100644
+index 67b1fa464a42..b835472da360 100644
 --- a/drivers/net/ethernet/faraday/ftgmac100.c
 +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -37,7 +37,8 @@ enum ftgmac100_mac_id {
- 	FTGMAC100_FARADAY = 1,
- 	FTGMAC100_AST2400,
- 	FTGMAC100_AST2500,
--	FTGMAC100_AST2600
-+	FTGMAC100_AST2600,
-+	FTGMAC100_AST2700
+@@ -41,8 +41,11 @@ enum ftgmac100_mac_id {
+ 	FTGMAC100_AST2700
  };
  
- struct ftgmac100_match_data {
-@@ -2017,7 +2018,8 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 
- 	if (priv->mac_id == FTGMAC100_AST2400 ||
- 	    priv->mac_id == FTGMAC100_AST2500 ||
--	    priv->mac_id == FTGMAC100_AST2600) {
-+	    priv->mac_id == FTGMAC100_AST2600 ||
-+	    priv->mac_id == FTGMAC100_AST2700) {
- 		priv->rxdes0_edorr_mask = BIT(30);
- 		priv->txdes0_edotr_mask = BIT(30);
- 		priv->is_aspeed = true;
-@@ -2131,6 +2133,10 @@ static const struct ftgmac100_match_data ftgmac100_match_data_ast2600 = {
- 	.mac_id = FTGMAC100_AST2600
- };
- 
-+static const struct ftgmac100_match_data ftgmac100_match_data_ast2700 = {
-+	.mac_id = FTGMAC100_AST2700
-+};
++#define FTGMAC100_QUIRK_RMII_ENABLE	BIT(0)
 +
- static const struct ftgmac100_match_data ftgmac100_match_data_faraday = {
- 	.mac_id = FTGMAC100_FARADAY
+ struct ftgmac100_match_data {
+ 	enum ftgmac100_mac_id mac_id;
++	u32 quirks;
  };
-@@ -2142,6 +2148,8 @@ static const struct of_device_id ftgmac100_of_match[] = {
- 	  .data = &ftgmac100_match_data_ast2500 },
- 	{ .compatible = "aspeed,ast2600-mac",
- 	  .data = &ftgmac100_match_data_ast2600 },
-+	{ .compatible = "aspeed,ast2700-mac",
-+	  .data = &ftgmac100_match_data_ast2700 },
- 	{ .compatible = "faraday,ftgmac100",
- 	  .data = &ftgmac100_match_data_faraday },
- 	{ }
+ 
+ /* Arbitrary values, I am not sure the HW has limits */
+@@ -79,6 +82,7 @@ struct ftgmac100 {
+ 	void __iomem *base;
+ 
+ 	enum ftgmac100_mac_id mac_id;
++	u32 quirks;
+ 
+ 	/* Rx ring */
+ 	unsigned int rx_q_entries;
+@@ -355,6 +359,7 @@ static void ftgmac100_init_hw(struct ftgmac100 *priv)
+ static void ftgmac100_start_hw(struct ftgmac100 *priv)
+ {
+ 	u32 maccr = ioread32(priv->base + FTGMAC100_OFFSET_MACCR);
++	struct phy_device *phydev = priv->netdev->phydev;
+ 
+ 	/* Keep the original GMAC and FAST bits */
+ 	maccr &= (FTGMAC100_MACCR_FAST_MODE | FTGMAC100_MACCR_GIGA_MODE);
+@@ -383,6 +388,11 @@ static void ftgmac100_start_hw(struct ftgmac100 *priv)
+ 	if (priv->netdev->features & NETIF_F_HW_VLAN_CTAG_RX)
+ 		maccr |= FTGMAC100_MACCR_RM_VLAN;
+ 
++	if ((priv->quirks & FTGMAC100_QUIRK_RMII_ENABLE) &&
++	    phydev->interface == PHY_INTERFACE_MODE_RMII) {
++		maccr |= FTGMAC100_MACCR_RMII_ENABLE;
++	}
++
+ 	/* Hit the HW */
+ 	iowrite32(maccr, priv->base + FTGMAC100_OFFSET_MACCR);
+ }
+@@ -1942,7 +1952,7 @@ static int ftgmac100_probe_dt(struct net_device *netdev,
+ 
+ static int ftgmac100_probe(struct platform_device *pdev)
+ {
+-	const struct ftgmac100_match_data *match_data;
++	const struct ftgmac100_match_data *match_data = NULL;
+ 	enum ftgmac100_mac_id mac_id;
+ 	struct resource *res;
+ 	int irq;
+@@ -1987,6 +1997,7 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ 	priv->netdev = netdev;
+ 	priv->dev = &pdev->dev;
+ 	priv->mac_id = mac_id;
++	priv->quirks = match_data ? match_data->quirks : 0;
+ 	INIT_WORK(&priv->reset_task, ftgmac100_reset_task);
+ 
+ 	/* map io memory */
+@@ -2134,7 +2145,8 @@ static const struct ftgmac100_match_data ftgmac100_match_data_ast2600 = {
+ };
+ 
+ static const struct ftgmac100_match_data ftgmac100_match_data_ast2700 = {
+-	.mac_id = FTGMAC100_AST2700
++	.mac_id = FTGMAC100_AST2700,
++	.quirks = FTGMAC100_QUIRK_RMII_ENABLE,
+ };
+ 
+ static const struct ftgmac100_match_data ftgmac100_match_data_faraday = {
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.h b/drivers/net/ethernet/faraday/ftgmac100.h
+index 4968f6f0bdbc..8c35c895b146 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.h
++++ b/drivers/net/ethernet/faraday/ftgmac100.h
+@@ -167,6 +167,7 @@
+ #define FTGMAC100_MACCR_RX_BROADPKT	(1 << 17)
+ #define FTGMAC100_MACCR_DISCARD_CRCERR	(1 << 18)
+ #define FTGMAC100_MACCR_FAST_MODE	(1 << 19)
++#define FTGMAC100_MACCR_RMII_ENABLE	BIT(20)
+ #define FTGMAC100_MACCR_SW_RST		(1 << 31)
+ 
+ /*
 
 -- 
 2.34.1
