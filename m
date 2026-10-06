@@ -1,124 +1,137 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F143EA979
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 12:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791291387; cv=pass; b=XdedD6n4P7fhnYmS1Wi3OfNiNllgtS6gKvN+VJNM3GeN34IeUp3QP737G5HS0Z2cMOMTdDGT2xPEiwr/ccUnnVjgv0LkAW8BcBLA/+7v+zq8pE/rpc6kwG2VXtWEAG+SEaxhPbgjhy6Y+WvCOhGfVoTM0BRetYgh+aKDGZ3Dy1Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791291387; c=relaxed/simple;
-	bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tyz79wVvVJIaAYxgJg/QP3IjLNWIC0QwOtLbGdk26s/Jie7SszCAmH++33u4wagIiZYJbOZbaotx4z0NwLX909rrcJrcI9wxxRFJWyrmzDpMnAuxLsDOF6/aeyrubD6SQSDpwA1TD3LZga6A6zN9luGml8qFQwDf98WEI3fOpAY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=sk/6IpXI; arc=pass smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5CA43B3CE
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 12:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791291450; cv=none; b=okm8TI5wOKEdbEW286UIONHECga4e7u5QKG/OiOAwa002mdhf4qrRITEqO22ROHs/W8N2zHSs1f+IHb9qjTC2DaX5E9ZgrLJxGyicXMiKMahd/U5DzYA7JDGrpq96ivbopcHUrK7qKSC0fgFQYRi854LXJ+y0SCQDXE40UkupCY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791291450; c=relaxed/simple;
+	bh=Btqtd0UsCjcmoPb7z0rRhkP88XKfTDkNPWQFKJwxpPI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZkDM+Cw4RRCDtKIA/od3EAJtVOFbeOrQESMCRCQaLMd/3Y6Maz3rw73I9eFzL0X64S8yJxvRGYBTu1UQ+42WDeyqZDVRJkwxXXLrqeZoON62Z7j//9O5lXcvN20DTWNitWkeU9azKP20sDk3hbZI8biHd+21z1Oh1m9fh9sFfhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=rpbBwRry; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="sk/6IpXI"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a9787a14ecso21209791fa.2
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 05:56:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791291384; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Gi4Sl7ALCowrFE/SEl5VvVVubu+tf+b0l/jKlOVElG9Q81Fs1gF/gObUl+9Ykbme9G
-         gy2bc7harbnikCYTs1tvXJWnTVPDg78ECHBv2n5nk4GLPgX/lbTG3Ys0gLA1tjNUCf1A
-         whgWnvybabNJ/aZ6lnk4vR6pQ7yEppQHitQDMb1j8zxHxwDDagyo6UYV6itWwmUiYJCW
-         RSaZQksuT1b1U1LaT0imIZsjXIfOJDTaUeenAzbe6Q0qnyAcgvL8R0paTJNZSPQY5UBw
-         cwqdTtflvN5rNLiU2jPjBu9+D4PNF5yILWYXSH3DJhTMR+l00rSGQ15c6Y0WJ/zp/gGI
-         R8vQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
-        fh=54gP9BWatBn2ga3V35+7k+pE67PYZH8r3aQFqfanzwQ=;
-        b=EmqG+uay1zZOw1cOnPvV8XQXZG6/0qzS5cOrQe8y7hDgmZ6WnBxnKhk6+kTVRU0E4+
-         xOKnCJjv+fvKq/P5DmHlk1QzTaAijDow9FF6hrPu/VT7uO9vtEq9rXlHCF1V72g5zzsL
-         /bxBSvv8neHPDfzEx6IuT1X/CEr36DSpbZKNeYQ92JHpGv1ZScz+BW7vlln2Qh6ofNWf
-         d3FQ9NSI0RCAlWf7VGMoEjTRzd6OJZT6ebCqkaeh/Q1+f5ZQh/VF56lE2eqZ3Sey2Tmo
-         K6nwAm4sastgINd6jgU/XI2tMHW6grOBVvFnWLqlOZYGaLgb57nAEu+Exb7K8Kxo+0t8
-         KKcg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="rpbBwRry"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e4b5d94277so4901045ad.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 05:57:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1791291384; x=1791896184; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
-        b=sk/6IpXI46QQjuM+G9a6uGwf5gVm41anPvIQP/rB1vMTU1UgEvjRjkR8pTH8YTkEyX
-         f42sLvBvLw30IN/vS/eIHJX9ueBmAYW2PjeKJlFVkviQeWh9X66Yk6HvefzXb2Swvgi2
-         ho8EMXfKN1LUgxibAk2KZrQ7KH4F8wZHGiuKTnyTJ/H5/Q3GK3bsNTEe3qJ5KfpqO09t
-         7O4giEYGdEurFyaFRCQbTvs+aGiA3+Qke7+PmPb+ZSgqvQvFpwq0IN7NjkXfhA8yzpdP
-         u4bxQSN5tuj/BbVqpg2LR5hT1c0/tCMrOrTJG1mXO1+iPmDDAdXN2SFm+2EL9IqKtqrN
-         +M7w==
+        d=octane.security; s=google; t=1791291448; x=1791896248; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XGJoDXN8ML+5H+vmHlmrXHOZlyl9hQU4oGT+sBqpTVs=;
+        b=rpbBwRryqlhYsivAKvTJ/AETTAXITegzeI1Ou+raE7HQznk7Lt77ONZg3FFYXEbU9z
+         9/+pjQMXxa3mwvHLaPx7U/mPq1VYyWIjV9tR+7rI+NQhSqDz07bpyZCFrdINDO6rtp2a
+         OZkBy4FbN/pIEVJjBdVNZciG5BIzNZxHYlmD1wthe5lQwUDEEnbxTJApXq7znpX++EC3
+         UxTP4cOB8fIC3TtPWVA08wRKCNDnY05vfzdVd/GOUx9Ru7sYnfDopGxE5Dl0yyHhUh7k
+         vN2UfGRE8zsCc2YSzTWp0+0JRKbyA2TqbodPRgQEtBlT8sSaI25OgbynOtaUUnMc7VnC
+         nYsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791291384; x=1791896184;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AlKlMcEZvQGx2PeF9qCMp6rHE0hq+vPV3sM/CtLmiyA=;
-        b=JOZ68YGtXpcDuPQhebA1EkyL05Q7/OBoplSxy/klxgmdYAcN9n14nlhwKmFQ1RKfmW
-         2f1v94KXvKAwSvNCo4IblzhyEAyOY+s2XpqWSz9RW1dtxpb+1baTEHm4yHr71rz4SGVF
-         DI/SXajb06/qiQKnOcsKxDUBzW6kSviJGhCk7aOFbizx6TWi8PpwRo3F0Tz3IYcliLFF
-         oSo8wadKrEz0+04RsHI9pOm0gsRGSXJG8YfWadUNUQwQasPNygdArIMwzlC6d2Ua+bOC
-         gEKhaTadh8LNa9/pCbOwmg/ZF7AtIqRF1p2b1rvUT771NZDg3fomO/5gjzYBF9nx5+3L
-         2MfQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwbfkmvhc2p/t9+xSVnsBnOw5+4of7iEWVo6owwfjQmBs36zUNmQGJFYORag8lraEs/efS6rFk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIyd+I73coubQZz0s/Ol5Hvi7qdHTzNXeUR6RjY8VWeDbf1ez6V
-	be7emZHw8tBFicXvCDYHv/rXedi24nHjhsd7PBguuSWb4HFn3aKS9lq0VmlpnnJ8lU4kBs0OEef
-	XK5sXuJKk30LeoP2YACPS03Szh7nkJrV2ppQwBE7KDwg=
-X-Gm-Gg: AYBFou3IdQvhIHCuWruI57gIzzmu/xJMhWg0Sn5wS23A3L8YX3wUeFkY4foShFhNzGw
-	PpIPR2nrj+jux5N2J9PkOdiwmUlSDb//fupWjqigFCcjOWFj/UU6dKsYUuYzpigMNL+zKdqiRci
-	ffV+s6Ev+cnXVlXfJb3pJBcNFk73o2+CpLIkjrMAHfp/234vCn3gEz20RkmbcbXQL98apA2l03E
-	StwErEH+FjKLozyxpQP8l6LLO9S2kxf21enfJfYtVlqqRACohB5TD2yPRbXJElOQuC7v2hYX9RV
-	C+Fhzq7fQxnUbgBlER9FnN7OcnhA9wBjbf7nbWboNfYOepMtbGJSuI21X2d7iJefhoCzFkvGh5D
-	Wj597edcd+A==
-X-Received: by 2002:a05:651c:b0e:b0:3a7:7560:42d with SMTP id
- 38308e7fff4ca-3a99ac22facmr3447461fa.2.1791291384101; Tue, 06 Oct 2026
- 05:56:24 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791291448; x=1791896248;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XGJoDXN8ML+5H+vmHlmrXHOZlyl9hQU4oGT+sBqpTVs=;
+        b=I/OF0+n3SVmlp4AHfZ9kKxUURPzOw9cFY+gw3DOvYY2Eznh1rKbjGjLjhghD3scxJy
+         NudFogVF1MJwpXtC2GjXhr3CanEvBITJ+V1eA4FWp7//96m/EzuHj2AMePKSpH6+slcs
+         cPVEL9C7lcQcT/oPFTGdjzr5WMuNqWNv48cGWh2JRArt3Ow3/Z+DnaAk5BzAZydhenkd
+         ho08efIEps7Ju5TESuDii934GhjUlYgjRM1IYBtxGZ4Pase7PkWxMBjRb2ltgHW2zwR6
+         1XW/fpEEkT6KSzxHwPrFu0DtG0EzcYoWqJzCLipXAeLAiwVYYPCeBGhKZMKAtn/Yia4C
+         PMxg==
+X-Gm-Message-State: AFq9FYLSUuTclcMx9yCOjb0cFehAgKSC5dRgU8ARO1PKXgaR8jsRB6kh
+	miPmK9ujeDKzlgiIxus7L7+aiSdhBxh1Pm7PHx2pYbYxVvmzhv6T2zQwzMF7E3RZzMwfdAKOpSW
+	3eLuJ
+X-Gm-Gg: AYBFou2W4QllaGuQvC4klJB/srm8spPvDl8ODLHCFhqezZGYDs6Ev8z0N9uTbywMKhr
+	x31tocBE2DJURI7ApXQCRLQH4O6TqpPMcv3pAsm5qEfA8rtU/3HgW/Te5qMA/4Tb4X+YArhMPbI
+	992OERH5R3q1ZDi9YYOuBYDXMXivHAFBboUqua95qhqY6SefMUFN05wHyQykkkY4lzAQdsCiYzc
+	9+R16ejzwp5Kp9BScHC6BS5vl7+hl86QhK0PZkh1nfRyjuq4siYiNwHZbWHmBFoCzlooMsH31GC
+	O4nTd2vqYleCZXGlPsEVkilyaEoAXZ5UgTEhZOH+FoUyvyPYyvxwKyKxDSz0KadWbhBIaPf+Cp7
+	ovvXvWS76nGCFcE01CPj5P3AQgpr8L2jzhYBaWZqfPA5pNRbfhTxWwxF1w0k54OVqao+rckwTB0
+	cUvGvAPXKghvzzZca6xJwr8HDkxOWqYJ2UfSPRBoK8xUvEXuSEjBAaPiJe5t6+moVFOJukVDfj9
+	qtKZ205dALL5R5EfalvZpgOXtJB5fUAhjHQTlgyr4383OP8HTJ+9C/J3qdqHF9Onqra6SPJiucP
+	3oKg0XPFGMUL0g==
+X-Received: by 2002:a17:902:d2d2:b0:2df:950d:8f4a with SMTP id d9443c01a7336-2e5dcd9701bmr11664305ad.22.1791291448027;
+        Tue, 06 Oct 2026 05:57:28 -0700 (PDT)
+Received: from localhost.localdomain ([103.207.175.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e5a5ecb12fsm22942235ad.50.2026.10.06.05.57.23
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 06 Oct 2026 05:57:27 -0700 (PDT)
+From: Shubham Antil <shubham@octane.security>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Cc: Allison Henderson <achender@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Giovanni Vignone <gio@octane.security>
+Subject: [PATCH net] net/rds: ib: drop fragments shorter than the header-declared length
+Date: Tue,  6 Oct 2026 18:27:20 +0530
+Message-ID: <20261006125720.81227-1-shubham@octane.security>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1790688018.git.zihanx@nebusec.ai> <20261005184156.01eb0ebd@kernel.org>
-In-Reply-To: <20261005184156.01eb0ebd@kernel.org>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Tue, 6 Oct 2026 20:56:12 +0800
-X-Gm-Features: AclHuK8CF-8Mj_c8FfiAmTqG16QSFj-a07fr-EYY9YJrSyWrswvA_gV_jKau6qU
-Message-ID: <CAANe3eQKOPb8mzWmSVwOLTQpxEdQ09tJzHqXFgHwptLMgCuDaQ@mail.gmail.com>
-Subject: Re: [PATCH net v13 0/2] llc: fix listener child socket leaks
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, kees@kernel.org, ernestas.k@iconn-networks.com, 
-	leitao@debian.org, tim.bird@sony.com, shuangpeng.kernel@gmail.com, 
-	luoxuanqiang@kylinos.cn, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 6, 2026 at 9:41=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Wed, 30 Sep 2026 13:29:40 +0000 Zihan Xi wrote:
-> > We found and validated an issue in net/llc/llc_conn.c and net/llc/af_ll=
-c.c.
->
-> We found it easier to delete this code.
-> Please look at the net-next tree, and resend the fixes there
-> if the bugs still exist.
+rds_ib_process_recv() accepts an incoming RDS/IB fragment once the
+receive completion reports at least an RDS header
+(data_len >= sizeof(struct rds_header)).  It then trusts the
+header-declared total message length h_len: for the first fragment of
+a message it stores be32_to_cpu(hdr->h_len) in ic->i_recv_data_rem,
+and rds_ib_inc_copy_to_user() later copies up to h_len bytes from the
+fragment pages to userspace on recvmsg().
 
-Thanks for the guidance.
+The number of payload bytes actually received into the fragment page is
+data_len (after subtracting the header), but it is never checked against
+the amount the fragment is accounted to contribute to the message,
+min(i_recv_data_rem, RDS_FRAG_SIZE).  A fragment whose header advertises
+a larger h_len than the payload it delivers is still linked onto the
+reassembly list.  The fragment page comes from the per-CPU receive cache
+and is not zeroed, so rds_ib_inc_copy_to_user() then copies up to h_len
+bytes to the PF_RDS reader, including the uninitialized tail the receive
+never wrote.
 
-I checked the current net-next tree. Commit 003f21868b2b ("llc: move
-the type 2 sockets out of tree") removes the in-tree PF_LLC socket
-implementation and LLC type 2 connection state machine. In particular,
-net/llc/llc_conn.c and net/llc/af_llc.c are no longer present, so
-there is no corresponding child-socket allocation path for this series
-to fix in net-next.
+Reject a fragment that carries fewer payload bytes than it is accounted
+to contribute before linking it onto the reassembly list.
 
-I'll drop this series.
+The issue is reproducible under KMSAN with two hosts over rdma_rxe
+(Soft-RoCE); the same reproducer confirms the fix stops it.
 
-Thanks,
-Zihan
+Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Shubham Antil <shubham@octane.security>
+---
+ net/rds/ib_recv.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
+index bd6cb3ffa..fee77b6d7 100644
+--- a/net/rds/ib_recv.c
++++ b/net/rds/ib_recv.c
+@@ -949,6 +949,15 @@ static void rds_ib_process_recv(struct rds_connection *conn,
+ 		}
+ 	}
+ 
++	/* h_len must be backed by the payload actually received (data_len),
++	 * else the unwritten frag-page tail is copied to userspace.
++	 */
++	if (data_len < min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE)) {
++		rds_ib_conn_error(conn,
++			"fragment shorter than header-declared length; forcing reconnect\n");
++		goto done;
++	}
++
+ 	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
+ 	recv->r_frag = NULL;
+ 
+-- 
+2.43.0
+
