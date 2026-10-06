@@ -1,165 +1,109 @@
-Received: from mail-wr2-f33.google.com (mail-wr2-f33.google.com [74.125.225.97])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3073F4AA3F1
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 18:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.97
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECF737269C;
+	Tue,  6 Oct 2026 19:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791313151; cv=none; b=M6V1cn981pVUB9QySv4t7775UVNesV63DQkl7GV3hwfMpY4H/S+OQ7P9MkY8Vn9Tpm/c7pojffthQ6EXrQ2NLq8ypdNgMwZ3vg19qK0rUcOsHIK3otLF9CNiYN5l4p1wyfvosSiSSq66YW+NJDn41eWxY8gmy8MJoSHVIr/KkWs=
+	t=1791313521; cv=none; b=hs0VsjzEMKAiCW6UWcgax5oJqfdsYP2w+fhYvsWqyZooyJye3xr7NA1zTzRLWMcHcCiNtY/Uv1EdT/wbcI963+Q8Yv/r8BdhuN8y1p55VS9CLLHqREIXVKTbUODk3Ctm4MDMjFJLCHdr/9WvoPd1gnUTFTzKxIMg81j/eHUkSCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791313151; c=relaxed/simple;
-	bh=x9osHjTkkxHenRC3xuwNxDLG48HR3gP9JCYzWuIgq1E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aYhkzOXdc7DOMpPR1hqN64j/CW8A7JpC0BpFZYog1a2qgEno2pg84KSpMPUqTJF113rf5zvvHU07VqRki7JMSq9/Bd6DVRF/jyNgQ1Nx55ng61sPiSlGPKxP6OtEq3L7PDvvCGrAcRbROzjaLT1kodxUujH6unnE6hTp3Xn4J9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUCUUu+d; arc=none smtp.client-ip=74.125.225.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791313521; c=relaxed/simple;
+	bh=zQtt7HxACahWkJMUND4HHPod4L2ogOPqrJdS/tbxGv8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uSieA6GGDWtvQ5raupAvhDt+fWLDGHfZdCL5eCD0ym+SvIsihmhwl4W98tHRnvUpA4HXoKbB2G3aQjdJ+ibNjayRuId66xixQjEOfdmUAcrwEu4PWep162fqz7+xBcYZbTWcxLVenlZrzu7dnsI9ixKVozepx3n1QIg1cdMgFjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SxiU8jxc; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUCUUu+d"
-Received: by mail-wr2-f33.google.com with SMTP id ffacd0b85a97d-48c6a19c353so103111f8f.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 11:59:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791313148; x=1791917948; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=sOZRF8MJy2B3jN9+BZ1SftBQ154KCD0egCHuRKb+Ja0=;
-        b=QUCUUu+dijZQmwvMPT1HA4qbZCoM2tT1vmGW1FP0hSCA/StJMrmHibrMTsqPFa/qmc
-         rh2eeK+mjWyTYC7CidOLuhh27GSuph2t0AjJl1TQl8pJEdPee+w9P/2jiWfoxfyCDhJ/
-         gP50pdanfdTJqIj59iX6HFLhSef5ZgOwof8V1ksSgh/rL+P9wW8ihP/o8k/iYr8SC28t
-         1zoI+IgdbaHDk7ZQW4wysh8nHo6G4d8iVLHTgNvPGKLEIo5c+H4ntw2Qppj+QWydxQ4g
-         3LoaAwoFqERGlu7v7z8u6B+xIjfSnr5srId4UDrhaJqo/RB1AyEqCsT71isJtpeJcwzY
-         UM2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791313148; x=1791917948;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sOZRF8MJy2B3jN9+BZ1SftBQ154KCD0egCHuRKb+Ja0=;
-        b=AFs696P+JJb/P6HioL66iPTHuovt1IXcrRkN2I9ax1XKtSieR9/64C6Yb6XOsG9qca
-         lN4ph1ckIKI8g2iR9PM5np3seCFp5/Y69eW6/LTbIuTrwWBjUJwMtdjZif1I+F8L+ME3
-         UhLyez+KcpM2c2NbjUCrCFM7axI/LoU64w0G/s7u1H8zfOdkS+CT2lSNPapXJY0XakNb
-         G/xegmcQC3QXMG0KUPJLs1gSRSs8IgljlN3ObEo7cU5c2OtrOyS1phL6tqGWMMnDYIHG
-         K2smwroalzXtMJmb37iCqWsd79DtRYuh1fwy+kTn/7UrGl9wfwzGZrwORYhNizmK+RAF
-         Jxew==
-X-Gm-Message-State: AFq9FYLzEu3nUAr48+5fRNgh3yXe+hp0STcIQl06rKJAglyRIbUf6NWM
-	JotKYWQLexJ0NJMJ+T8zOvhzOidtxcQOY+PiTFyFQdfKFhEUycQkWGg0
-X-Gm-Gg: AYBFou1hTMwSG5xiojl1QAILVg+mwQrtOUIZHU1vTtzRjCOk7x/nlc53P6fK8WRYQg0
-	dcJ7grNsuoxl9aSaO28BgvQX0tx1OwrJ8TVuVCZzxiunucP1y0mN78gIQ/GFQ4MX9QAx35fIhyS
-	a6p7PqZzTvr+MrCm4itwy4/YNlWaeDXT5hbuaFFEOGoQmXpXBwqbkdpL7sS9ai5EM2RY5ghJzw7
-	UR3esA9M3TdCTvBYqrDn3YVnVAaqacibfzfcriW9B4MP2xbP4CQzLK1Ee9pZUotj/k7VZXsB9w3
-	mJprcqG8MKXGDIRTEmJuAHTYyiUYWv/oSPFN+P6QpI9Joc/Zvh+9oKR7fb+8vq0J6+ty+BP7Ql2
-	x93/DsUqRI0UNOp7TbwYjCn+gc2ccFtrKsmtPalrO9E69K3xW5iDXMpklYgGWgcadkNkL4/rY76
-	RQGwXf+lK40b3bVTCTo+f6LiL24E/ff6o8yuLrVdlX5iJr6afW9aGN
-X-Received: by 2002:a5d:5d08:0:b0:48c:6611:82 with SMTP id ffacd0b85a97d-48c726eeb98mr624395f8f.1.1791313148341;
-        Tue, 06 Oct 2026 11:59:08 -0700 (PDT)
-Received: from localhost ([2620:10d:c092:500::4:4701])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c71d3b502sm1125420f8f.52.2026.10.06.11.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 11:59:07 -0700 (PDT)
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Tue, 06 Oct 2026 19:58:30 +0100
-Subject: [PATCH net-next 2/2] netconsole: remove unnecessary target
- refcounting from the netdev notifier
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SxiU8jxc"
+Received: from [192.168.4.134] (unknown [52.172.102.222])
+	by linux.microsoft.com (Postfix) with ESMTPSA id C976320B7175;
+	Tue,  6 Oct 2026 12:04:16 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C976320B7175
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791313463;
+	bh=FY9kI9KlSQjQKGGd5vqvSNeS2Onh88UrYVFTZP4peVM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SxiU8jxcp0IqHzLxwE3msYDGihbzf+zhfloAvVftai+u9P8KqDKDSIOXjxVk+4q/u
+	 cAwaQdKzuxhjnjWfEf8GjaO/zikd8DizimCFLWFHZOVJNDOUiN7/mW3UjZKx9Tc71s
+	 yy/kzoBg5TwATYQesNkSXLA1uz+rWu+Mkiq52/Mo=
+Message-ID: <2188ea84-8fb3-4170-a4b7-01dcab459ceb@linux.microsoft.com>
+Date: Tue, 6 Oct 2026 12:05:15 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/5] hv_netvsc: fix the program refcount when the
+ VF refuses XDP
+To: Jakub Kicinski <kuba@kernel.org>, haiyangz@microsoft.com
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ wei.liu@kernel.org, decui@microsoft.com, linux-hyperv@vger.kernel.org,
+ hawk@kernel.org, andriin@fb.com, stable+noautosel@kernel.org
+References: <20261001014131.310771-1-kuba@kernel.org>
+ <20261001014131.310771-2-kuba@kernel.org>
+Content-Language: en-US
+From: Kameron Carr <kameroncarr@linux.microsoft.com>
+In-Reply-To: <20261001014131.310771-2-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-netcons-fixes-next-v1-2-231cd26f8c51@gmail.com>
-References: <20261006-netcons-fixes-next-v1-0-231cd26f8c51@gmail.com>
-In-Reply-To: <20261006-netcons-fixes-next-v1-0-231cd26f8c51@gmail.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Gustavo Luiz Duarte <gustavold@gmail.com>
-X-Mailer: b4 0.15.2
 
-Since netconsole_netdev_event() holds target_list_lock, there is no need
-to also protect each target with netconsole_target_get/put()
-refcounting. There is no way a target reachable from the target_list
-would go away while we hold target_list_lock.
+On 9/30/2026 6:41 PM, Jakub Kicinski wrote:
+> ndo_bpf() takes over the reference it is passed only on success, the
+> caller puts it back itself on failure. netvsc_xdp_set() takes that one
+> plus num_chn - 1 more for its channels, and the rollback after the VF
+> refuses the program clears the channels again, putting all num_chn of
+> them. dev_xdp_install() then puts the one it passed in a second time,
+> and the program can be freed while the fd which loaded it still points
+> at it.
+> 
+> The VF refuses a program netvsc has already committed to when the
+> program is single-buffer and the VF has header-data split enabled, when
+> the VF has a memory provider bound, or when the VF's driver has
+> conditions of its own.
+> 
+> Reported by Sashiko during core rework. Unverified and untested.
+> 
+> Cc: stable+noautosel@kernel.org # untested fix to unlikely driver error path
+> Fixes: 184367dce4f7 ("hv_netvsc: Fix XDP refcnt for synthetic and VF NICs")
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  drivers/net/hyperv/netvsc_bpf.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/net/hyperv/netvsc_bpf.c b/drivers/net/hyperv/netvsc_bpf.c
+> index 1dd3755d9e6d..731bb7721fe2 100644
+> --- a/drivers/net/hyperv/netvsc_bpf.c
+> +++ b/drivers/net/hyperv/netvsc_bpf.c
+> @@ -216,6 +216,13 @@ int netvsc_bpf(struct net_device *dev, struct netdev_bpf *bpf)
+>  			netdev_err(dev, "vf_setxdp failed:%d\n", ret);
+>  			NL_SET_ERR_MSG_MOD(extack, "vf_setxdp failed");
+>  
+> +			/* Since we haven't completed the installation
+> +			 * of bpf->prog the reference core implicitly
+> +			 * transfers to us on success isn't ours.
+> +			 * Take a reference to balance the accounting.
+> +			 */
+> +			if (bpf->prog)
+> +				bpf_prog_inc(bpf->prog);
+>  			netvsc_xdp_set(dev, NULL, extack, nvdev);
+>  		}
+>  
 
-This is similar to commit a6d403ac9689 ("netconsole: remove unnecessary
-netconsole_target_get/out() from write_msg()").
+The refcount part looks right to me.
 
-Since this is the only remaining user of netconsole_target_get/put(),
-remove those helpers as well.
+Not new, but this rollback clears the channels rather than restoring
+them. If the VF refuses a replace (P1 -> P2), or refuses the NULL on
+detach (memory provider bound, mana failing to re-create its queues),
+the core keeps P1 in xdp_state and the VF keeps running P1, but the
+synthetic path is left with no program at all.
 
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
----
- drivers/net/netconsole.c | 31 -------------------------------
- 1 file changed, 31 deletions(-)
-
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 188beacb308d..ddc5fcf19fe6 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -262,23 +262,6 @@ static void __exit dynamic_netconsole_exit(void)
- 	configfs_unregister_subsystem(&netconsole_subsys);
- }
- 
--/*
-- * Targets that were created by parsing the boot/module option string
-- * do not exist in the configfs hierarchy (and have NULL names) and will
-- * never go away, so make these a no-op for them.
-- */
--static void netconsole_target_get(struct netconsole_target *nt)
--{
--	if (config_item_name(&nt->group.cg_item))
--		config_group_get(&nt->group);
--}
--
--static void netconsole_target_put(struct netconsole_target *nt)
--{
--	if (config_item_name(&nt->group.cg_item))
--		config_group_put(&nt->group);
--}
--
- static void dynamic_netconsole_mutex_lock(void)
- {
- 	mutex_lock(&dynamic_netconsole_mutex);
-@@ -300,18 +283,6 @@ static void __exit dynamic_netconsole_exit(void)
- {
- }
- 
--/*
-- * No danger of targets going away from under us when dynamic
-- * reconfigurability is off.
-- */
--static void netconsole_target_get(struct netconsole_target *nt)
--{
--}
--
--static void netconsole_target_put(struct netconsole_target *nt)
--{
--}
--
- static void populate_configfs_item(struct netconsole_target *nt,
- 				   int cmdline_count)
- {
-@@ -1979,7 +1950,6 @@ static int netconsole_netdev_event(struct notifier_block *this,
- 	mutex_lock(&target_cleanup_list_lock);
- 	spin_lock_irqsave(&target_list_lock, flags);
- 	list_for_each_entry_safe(nt, tmp, &target_list, list) {
--		netconsole_target_get(nt);
- 		if (nt->np.dev == dev) {
- 			switch (event) {
- 			case NETDEV_CHANGENAME:
-@@ -2009,7 +1979,6 @@ static int netconsole_netdev_event(struct notifier_block *this,
- 			 * notifier.
- 			 */
- 			queue_work(netconsole_wq, &nt->resume_wq);
--		netconsole_target_put(nt);
- 	}
- 	spin_unlock_irqrestore(&target_list_lock, flags);
- 	mutex_unlock(&target_cleanup_list_lock);
+Could we save a reference to the old program before netvsc_xdp_set() and
+restore it here instead of setting NULL? In patch 3/5
+netvsc_unregister_vf() decides the take-back based on the channels, so
+this matters there too.
 
 -- 
-2.55.0
-
+Regards,
+Kameron
