@@ -1,168 +1,167 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013039.outbound.protection.outlook.com [52.101.72.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B833CD8BD;
-	Tue,  6 Oct 2026 08:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.39
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791275256; cv=fail; b=u8fqLLcWOZoPCg5WK6qmSePpxTmNuEWG5FBaq64PPe1jz9uzKJegtgLx8xpaos+kwmvv7EMtygwU/jgxiueKRKUjPEuvIDrxD37TzPMv+n5etM4bLqFEuzZDStXoIGOYzmSHCcP6HbE/xEzd9U/EvvQTNO1R4jbTcUK2HfeH9Qw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791275256; c=relaxed/simple;
-	bh=3DbZ8RAoeR5MB1WJCoqDb95BcJ3KY0bLdBU1BBVa8QA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WFmQ26IJJMgjt5T/hT9YnBA3mffw1+5CrSFc3cdRLxlNGJ/U0yh4QWZLhGAmZGgu56sLpDdP7UKpFUMQT0N3a3ROmaNRFOw2Xe3lAK4qrmM16EW7xbZPRPAd2sB6AH2/eoafoTWBHkjrE/aszdvuv2d2GYkhrtJnJznF6KZZhRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LJr3YWqv; arc=fail smtp.client-ip=52.101.72.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E45326ED3C;
+	Tue,  6 Oct 2026 08:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791275348; cv=none; b=GXnIrmkT/8Fy/oHmjjIn5sbMSrM5LYWOt/zP1H+hpHktC4GPtjlDOa3Etyw9HtY2vaHTRWfGuciIKS9wRRVSIp7DQHkD3FD67XlfE0B3xa0e9NFM+BUvi/RU5IjWF2IWQxPnWnriJb7K1xPE6ASjT9WWP8ij/V0/5IwPsCsZL0M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791275348; c=relaxed/simple;
+	bh=4E90XbME5YYrCHUynb8Gq04uOMIs5TinNGnJqDgIEo0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VWGXi5gyJFxVdbzx09oWRga0uOrNGXeRDZoL0TEvn+usH1MemIssxlQ4c9Ys85xqcgJRVQhQ9WT/je+4OcSJrGxpNiKVbK65ZL2zPD9TmTcP5PWutHEoICAVGIubQyg5DBb7gh2dyw9wmfdMu2G7SMt2ZCAKKgbmzuaKoYHI3dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=WrTuxpWN; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LJr3YWqv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u40mECQCARlWV5T2ljnlHRJK8JMB1kJR38Fure66RPjDhZUwFXfurAUiLTGeFQXO/amq6hjfGOSktdxFZ1fmlYzfuCi1TJBNa6DxgigE2uEPr0QfKk7M2X/nKXVsbDwhHdkG49QR2r6Qfj7d1Ugpco0vHF4zLEHwuHQlKYqUlyQfvYmm5+frwBsDntT9VhcjUqN6susbgscrWz0doF3oNg4lpWfF6BRuu04fSUjobVWXKA97oeyrKc2lsbgxxEvfx0hqmDYDceMhz5Snc8Xho1qwd2srjfpATgPyhb72C0iM0glwKAvX7p9PNX+GzmIWCKHLymmlQj6jsKglFMFzvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R6UX9FOCxnPERDtfE34v2HJ4irAhAvrxNHsdogmE14I=;
- b=vVlt4zmnKZ6GO4VUQtO6NzUZLqaOH17TX+arj56ZbnKDLc31Heb7DLM6WYy5P+3E9B7RFKMT1XwFKhPG7VM5OUQWSFs0SsmoL8jjnSccdYZ0k7f0TUPiIPA/pkRqS6hzG0fuL9shpK4xWsslUp1cJ+yNtL6B4R57HQssEaxCSflTfiVtO4+20z/phLLsEyI4DWyTlDkvhQUTTSw/KC3PV3N26rSdDuiLefNcFqvL1QzyLh1eFAfptAbAH8AstdvneqY5qi/py83ENb5GnkK6Kh6829OdWmIrV43Z3nWpc24RZSqoHKPA2IF8yxD4gxw/0FL7jti1Tj2FOWLXm3NHfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R6UX9FOCxnPERDtfE34v2HJ4irAhAvrxNHsdogmE14I=;
- b=LJr3YWqviBcfFWm9+qjTk50HmzcuxO51QzVeQn0WlUNBSeIJYA5y1X6Nl7o7TplonetUHTU1W1G33xINK5ojHPYS+S6UvE7n94l/KO0UfeIBHZq+p82pDAvDxYg1CMaOAXlpLJLEAl9OD/bUyEh9Axx4fUDrm5PzZsUwgfbICdxFEWwp+xtnRvCo7eY0mtNVHvvJngZKRsztn3PJs0Bv7MG69yglscogPHqYnMDrPbREbvWUeyanytHcRnJCWu+huDmGV6sityIO9U8J36wPcKkdbzDJ/kpbaCkWG3M/Xlr5POeKhpGfjQPUi+4Xb/GwGGoYtOCg+xrg2JimfxoDJg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from MI9PR04MB019273.eurprd04.prod.outlook.com
- (2603:10a6:290:d3::17) by AMZPR04MB185575.eurprd04.prod.outlook.com
- (2603:10a6:20b:7c2::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Tue, 6 Oct
- 2026 08:27:31 +0000
-Received: from MI9PR04MB019273.eurprd04.prod.outlook.com
- ([fe80::263c:943a:dcb0:29d8]) by MI9PR04MB019273.eurprd04.prod.outlook.com
- ([fe80::263c:943a:dcb0:29d8%5]) with mapi id 15.21.0496.010; Tue, 6 Oct 2026
- 08:27:30 +0000
-Date: Tue, 6 Oct 2026 11:27:26 +0300
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: Josua Mayer <josua@solid-run.com>
-Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Horia =?utf-8?B?R2VhbnTDhMKD?= <horia.geanta@nxp.com>, 
-	Pankaj Gupta <pankaj.gupta@nxp.com>, Gaurav Jain <gaurav.jain@nxp.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Yazan Shhady <yazan.shhady@solid-run.com>, 
-	Jon Nettleton <jon@solid-run.com>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-crypto@vger.kernel.org
-Subject: Re: [PATCH RFC net-next 2/3] crypto: caam/qi2 - skip isolated CPUs
- when setting up queue pairs
-Message-ID: <cozavqeupdtr7cyn33nvtfqoqkw3sop5tffou6753vwg63hgwf@jr6gx236yblx>
-References: <20260930-dpaa2-isolcpus-v1-0-66c13f4fd75b@solid-run.com>
- <20260930-dpaa2-isolcpus-v1-2-66c13f4fd75b@solid-run.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260930-dpaa2-isolcpus-v1-2-66c13f4fd75b@solid-run.com>
-X-ClientProxiedBy: AS4P190CA0052.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:656::24) To MI9PR04MB019273.eurprd04.prod.outlook.com
- (2603:10a6:290:d3::17)
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="WrTuxpWN"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6968SRylC2756064, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1791275308; bh=YTvTHDWQ0MPVFXdmQKE3U9s9hkDXT5kOh2ihQfR5+pc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=WrTuxpWN3KxPc7nwUDcwojj1fJkMhfbBAWUaLKrXmrWN7MUHX4XLozxILBBzO7FDv
+	 kobnoxH6cj6qzJENJh9djb0FNTmTSVdXFQ00kmXu4szYSL+quSDwGcmHBbX9bNOlNP
+	 rCcpy8f+gbJYL/4dOiE51T+xHf36/tLX6DSy+LdAS+erhVqJ7j++EBJ14jqOhDo0ek
+	 Wf4TbgQtbbqIzNzJeUqJFIbytVDbWQNiQDa436I5XyONGvfRYA+yCipJBIjrRMNDgr
+	 Qhc0BoIAi8suGpgqdHUrLLwjV7k1d5daGz7zAhRs+CD+UrbT9lpTESraE9qdJWi/PC
+	 /XEWRU4YorAEg==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6968SRylC2756064
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 6 Oct 2026 16:28:28 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 16:28:21 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::f36f:a844:4916:93f2%9]) with mapi id
+ 15.02.2562.049; Tue, 6 Oct 2026 16:28:21 +0800
+From: Hayes Wang <hayeswang@realtek.com>
+To: Linmao Li <lilinmao@kylinos.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Chih Kai Hsu <hsu.chih.kai@realtek.com>, nic_swsd <nic_swsd@realtek.com>,
+	Birger Koblitz <mail@birger-koblitz.de>, Xiangqian Zhang
+	<zhangxiangqian@kylinos.cn>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH net v2] r8152: Use BMSR to detect the link state
+Thread-Topic: [PATCH net v2] r8152: Use BMSR to detect the link state
+Thread-Index: AQHdVLexra3FlE5swkqMdmzmTHCGJ7bwLnWg
+Date: Tue, 6 Oct 2026 08:28:21 +0000
+Message-ID: <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
+References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
+In-Reply-To: <20261005105249.1281648-1-lilinmao@kylinos.cn>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MI9PR04MB019273:EE_|AMZPR04MB185575:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64463fc6-f9e8-4958-e957-08df2383a9e4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|19092799006|23010399003|18002099003|22082099003|11063799006|4143699003|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	m4GUHkkBIP9YohXJmdxBqzoS3X8t25JI46U8XcE/IOQZoXXcImY65+FNQ29/dZhUDNbsCedZmVBIDO9UzvEPu4osjo+gH7y5p80tMS+RAkqxRDKnBMqPBrzcwDvhMvuwPaAKv/q4es6P0TjnVdXpbUd+kq5B8W/zd4cueGvxu7ZyqpA8TJRQOvQdSj5Kigal1DCqL2o82VeYYnM9KUx7nb4cKo/3rhN7RhUnR23toqhgcx/S1rfhgzfdpUffPHU4vtujmVNAh0WxXY8/BdeZJ1T7VSb4EqbX3khCYsMaXKVW/RUzGceUOumHXWpq6Kch3GqhmKoLj49HDspjpfqOGqx3/hXDk8QU7QvK9pvtyoD9p5t9YpQWqJZLcOR5DiVKHzlxxEdVvHb3Lu8n9cniQnbAEK2MCWrcyRPMg19oNvtubKvXbffaRapQIHymKRVZBhRezrT034X7xfmYnDyiuyPM82arVTgEP+SUto0Hsu/JgiqL8IUPRDPyBb3WDMF2emywWu1ulLDzxllAqxo+IjtOh7tldRDnOyHQW4qdlJ+LwO4Hy6UBz3WADv6m3032x8KsREAgbHlzB+omrgEVagXgiWayZ2lI9sFeiihupRK3cIMZ+YELtlUl3yXkJepdJUtxKzrSiJJxNdm89Pf5ZKAeWxIjw7ksHg9PD28G0q4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MI9PR04MB019273.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(19092799006)(23010399003)(18002099003)(22082099003)(11063799006)(4143699003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?p9CmlnwljFndTQy/nrWXa1Ic/wTmyOY57TNbYFABAGbmDWRANr0SbCTy1KlY?=
- =?us-ascii?Q?Ld04B6FfaCqidL521bOtmIOSf//d02D6FV7g6R7tZWpUzAyAncKqsmyndAZI?=
- =?us-ascii?Q?tcs+xMK6ABMgimIdPpdvVIIileJCKNzuZ0OTb+pRi13rVkTCHfBhbvSIepFA?=
- =?us-ascii?Q?zBIG7pTkwJeSTGGx72FX5zlBZkX3EI3OLVh7F6DUMWixpiKNEttNDL/jPwQK?=
- =?us-ascii?Q?eGwGntlVqXGLBN8vEKlgJFFEwctSudC4EQ2lRc3dhrt4PHiHD9JzeyTqX9GR?=
- =?us-ascii?Q?lIVl2rVHdhivsAEKPvpWsJHOcAMVj9tVSl7ks2e/IZOX6AKCw+oBfzCql4E5?=
- =?us-ascii?Q?DcqCTY5Zh1jmPm03naVJTpYgJD0ozNRquL2kFDn7NO6dNUdRTV1gVUHfjBuF?=
- =?us-ascii?Q?NCrO/1AZU8KvtdeXKfrVxseRZof5/uOgpUFtA4LnksNPWBaOw1qA8Jr0Vs16?=
- =?us-ascii?Q?M6SNPWh0Yex7K8qi5PeDuy2twnB9LzohTNgSXZqvvojQtHCZe2uZmqoPHfnd?=
- =?us-ascii?Q?/PKnp9aS5kFV/WbrP5C6F/uEsxnpmeON0XMwPidld9wDYhI3wGncWVRBvnpr?=
- =?us-ascii?Q?Rl/2bhD9TXZzSChGPTLcF2yyCCuffJK2cIeqOmNds+Xpcgw6tJOaNgNS8ucD?=
- =?us-ascii?Q?4Pe1UFMiYE4FHvy05gU4Fih1WBwxdQAD3BheUWJHhuAJlvz5E9gmX77ijcXI?=
- =?us-ascii?Q?3vyTDyYraWg4aHUPH4CpevL7aZXpjI/EUduPaO2WDh/OrBLmvgTWqMghC6uz?=
- =?us-ascii?Q?e1i6LjnkP5oe3bAytjCEAV4ZNXl4XUJpmoAYarN6aGisTwdVCy3Xxd+YEwBh?=
- =?us-ascii?Q?1WzGvytnXUfJbrx/RuovCPecwPSqmWv8xg8m8SmsRvw32ywRjyEnP9msghar?=
- =?us-ascii?Q?ndcaM5tZGfk0RYtVp+rQzowdLDeYJw5VAk9pOyw9xK7owLixyYvfLqoLy1Q1?=
- =?us-ascii?Q?zC81YCi2TadqSWltXvWizAz+AiB+GSsvNJTBM4zdEGU7pLNSNV2sJlSgtvno?=
- =?us-ascii?Q?jphYngcfmk0kjgMffzb9Y24CzzF7b0c7oEjQROpyvlEsXo7yAVxzCTEn0n+2?=
- =?us-ascii?Q?vvfyYDNcBH6L4M6YC1kIXAgbtbu1quMvjot0wj2LM8FLyX37UyAXI12rKQLQ?=
- =?us-ascii?Q?3NHsbeAucPyt22LN6BFX1R/45Og+rMOH5ZlQ74AcaDrzaOGTxavUBYyaBkz3?=
- =?us-ascii?Q?UyDzWixTEh/BdLXFnkZZR3IEsM2xHIOCjGEPsP9ibx+wIAgn8LquoCWg7qPE?=
- =?us-ascii?Q?QUeGNz5Vuez0rFISjlY8DVdrpY1vobx0YCfdyBpq0D+rxi8gJta1hVveC+1k?=
- =?us-ascii?Q?QlJXSeHDHLMLtDn2mSNTteHrVLVOo84HfZlDdgzN8iHMjydkvTVcTXO+BOyU?=
- =?us-ascii?Q?PVtVJCL8FpHMqS2pz9yklUW2i3FleS5AzALBK+fp6xDhALE+BT3s9UDGB4bJ?=
- =?us-ascii?Q?4AoGGciqenxF3NCIG1SSuh7TA0fr9YSwoU5bwVmsrwW4toHQvZQmvfvW4Lgo?=
- =?us-ascii?Q?1LeVM/iGp99h05JjCSS1zx9OQUb5Lrg7+UlVownkAVhy8Zgnb8d4HAMuTyDT?=
- =?us-ascii?Q?Wh7JiRMpg7sNj/rIGrFqTC3U0fL/0A16wbnnmx4WOVz8kgOfbl25IYoQo0Ro?=
- =?us-ascii?Q?qXiOk1t96QDS0W8WldXS5snai8KDprzQICy07FhzffU99QvBB1YbRYBlTqSR?=
- =?us-ascii?Q?I0bO8P58tF3QmGr0f7BKujpB9kn+0kaHqdzQzy4/ZhrcZzE5vPeU64wv7R3K?=
- =?us-ascii?Q?zU5vFrGf0g=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64463fc6-f9e8-4958-e957-08df2383a9e4
-X-MS-Exchange-CrossTenant-AuthSource: MI9PR04MB019273.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 08:27:30.8651
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OJNW3OjYa4HV4GvI93c7R41Nwx4jD2ZtqF/yyxlg6dLVx0vdTuF/8LLNONnTlV67XBddymI8nAqjVkvoBoG22w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMZPR04MB185575
 
-On Wed, Sep 30, 2026 at 06:54:59PM +0200, Josua Mayer wrote:
-> The driver looks up the affine DPIO and sets up one Rx/Tx queue pair for
-> each online CPU, up to the number of queues. Response notifications and
-> NAPI polling are handled on the DPIO object's assigned CPU. All online
-> may enqueue requests.
-> 
-> When isolcpus=managed_irq is used to reserve CPUs for latency-sensitive
-> applications, those CPUs are expected to be free of routine device
-> interrupts.
-> 
-> The DPIO driver assigns affine CPUs only from the HK_TYPE_MANAGED_IRQ
-> housekeeping mask, leaving isolated CPUs without an affine DPIO. This
-> defers caam qi2 probe indefinitely once DPIO setup reaches an isolated
-> CPU.
-> 
-> Restrict queue pairs, notifications and NAPI polling to the online CPUs
-> in the HK_TYPE_MANAGED_IRQ housekeeping mask, so that isolated CPUs are
-> skipped and don't defer probe. Isolated CPUs may still enqueue requests,
-> with responses handled on housekeeping CPUs.
+Linmao Li <lilinmao@kylinos.cn>
+> Sent: Monday, October 5, 2026 6:53 PM
+[...]
+> r8152 detects carrier from PLA_PHYSTATUS without reading BMSR, so
+> BMSR_LSTATUS can still be latched low when the carrier comes up.
+> Since commit f6f2e946aa4d ("net: mii: Fix the Speed display when the netw=
+ork
+> cable is not connected"), the first speed query after link up can then re=
+port
+> SPEED_UNKNOWN, leaving NetworkManager at 0 Mb/s until the next carrier
+> change.
+>=20
+> Use BMSR_LSTATUS in set_carrier() and rtl8152_runtime_resume(), so the
+> driver consumes the latched link down itself. If the first read still rep=
+orts link
+> down, the next link-up notification triggers another read and brings the =
+carrier
+> up.
+>=20
+> Tested on an RTL8153B with a 6.6-based kernel. In 5 rebinds and 6 cable
+> replugs, the first read returned LSTATUS=3D0, a second link-up notificati=
+on came
+> about 32 ms later, the second read returned
+> LSTATUS=3D1 and the carrier went up; NetworkManager reported 1000 Mb/s.
+> Runtime suspend/resume with the link up did not change the carrier.
 
+I think this patch may introduce a new issue.
 
-Don't you need to also change the for_each_online_cpu() from
-dpaa2_dpseci_setup() to take into account only the housekeeping
-managed_irq cores?
+Our newer ICs do not generate periodic link-status notifications. They gene=
+rate a
+notification only when the link status changes. Therefore, with your patch,=
+ BMSR
+will not be read a second time until the next link-status change.
 
+Best Regards,
+Hayes
 
-Something like:
+> Fixes: f6f2e946aa4d ("net: mii: Fix the Speed display when the network ca=
+ble is
+> not connected")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Linmao Li <lilinmao@kylinos.cn>
+> ---
+> v2:
+> - Fix it in r8152 instead of mii.c, detecting the link from BMSR as
+>   suggested by Andrew Lunn.
+> - Also use BMSR in rtl8152_runtime_resume().
+> v1:
+> https://lore.kernel.org/netdev/20260930113842.2640928-1-lilinmao@kylinos.=
+c
+> n/
+>=20
+> Only tested on an RTL8153B, with a 6.6-based kernel; the changed lines ar=
+e the
+> same in net/main. I could not check whether BMSR_LSTATUS is reliable on t=
+he
+> 2.5G/5G/10G chips handled by this driver.
+> I could not reproduce a link drop that recovers while the device is runti=
+me
+> suspended, so that case is only covered by code inspection.
+>=20
+> r8152_mdio_read() cannot fail today. The pending RTL8157/RTL8159 series
+> makes it return errors, so these two callers will need error handling onc=
+e that
+> is merged.
+>=20
+>  drivers/net/usb/r8152.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c index
+> f61686433031..e3947eb796c5 100644
+> --- a/drivers/net/usb/r8152.c
+> +++ b/drivers/net/usb/r8152.c
+> @@ -6979,11 +6979,8 @@ static void set_carrier(struct r8152 *tp)  {
+>         struct net_device *netdev =3D tp->netdev;
+>         struct napi_struct *napi =3D &tp->napi;
+> -       u16 speed;
+> -
+> -       speed =3D rtl8152_get_speed(tp);
+>=20
+> -       if (speed & LINK_STATUS) {
+> +       if (r8152_mdio_read(tp, MII_BMSR) & BMSR_LSTATUS) {
+>                 if (!netif_carrier_ok(netdev)) {
+>                         tp->rtl_ops.enable(tp);
+>                         netif_stop_queue(netdev); @@ -8653,7 +8650,7
+> @@ static int rtl8152_runtime_resume(struct r8152 *tp)
+>                 set_bit(WORK_ENABLE, &tp->flags);
+>=20
+>                 if (netif_carrier_ok(netdev)) {
+> -                       if (rtl8152_get_speed(tp) & LINK_STATUS) {
+> +                       if (r8152_mdio_read(tp, MII_BMSR) &
+> + BMSR_LSTATUS) {
+>                                 rtl_start_rx(tp);
+>                         } else {
+>                                 netif_carrier_off(netdev);
+> --
+> 2.25.1
 
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -5101,7 +5101,7 @@ static int __cold dpaa2_dpseci_setup(struct fsl_mc_device *ls_dev)
-        }
-
-        i = 0;
--       for_each_online_cpu(cpu) {
-+       for_each_cpu_and(cpu, cpu_online_mask, hk_mask) {
-                u8 j;
-
-                j = i % priv->num_pairs;
-
-
-Ioana
