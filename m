@@ -1,79 +1,263 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA6543DA50;
-	Tue,  6 Oct 2026 14:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092DA48640B
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 14:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791298757; cv=none; b=ZyXTNg7jW7nzVRp5F4h/MC/uyxH+XV+bERVFZS+AScI+YQoDqTcUUTf2ecIKbaJFMf1txb3o+32LLx87EqWzwIOb6c5brBRt/khOf+6Wku8A/xTqcgOjD228y4bOtfFpyxhvJ7jU7RjqLWe6NGD1UzL8yNd68odj8sdrsHGN6cg=
+	t=1791298778; cv=none; b=MDKXNtGk7NsIvJ+NIbWHQO0WqPFhrW6LVGigYdVn2fONEY5bgPekhO+8RRIxpniBc3YI8Ht9pLegfdpgEWWZ+JkRfpEnBtz2OtBOqJKT6k724UxWoaTk+mZ2CZO6UBDLl920IpFmi4hKeeWMaxo3mq07l3nOpRTtk9spodgbs4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791298757; c=relaxed/simple;
-	bh=3TtOgpdNfcERWhvuxkolej/qvi3HiJEgWhC2U8q3FiY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nHqT9ZlzewTEhJ5uHV6a1Aija9yFdNSc+jQbowvNXZbwdOIlV7SUgMe8vp/xFi93yex514CMfP56m3XO69kgS6o6FOdhOGejdG6pQf1kfPbUXEtooYcCvzQczLIxJtzGyMvF+AfODPy1uBNQicOkAm5XicyPfo/Ape696uW6+b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/0HoMZ6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791298778; c=relaxed/simple;
+	bh=a2pGJgyenrOQBcUgU4+aMvSHZwkv/cIvXJyf0CX0F6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FNNZ9mXsvHGwKKz7h7RlE6bnNEKHLGvIyY23hgk6XObuSEbljb4m86lhwu6K74o7zzeOGfpjPcvUhYrbegwl3lIiaZDl506OptOVPSipqRZ6OhKLqT8Nu5WydWpkCPjzhAq9hZ/0pewDVDUxKK/mEMuS7K2xA3hq5OKUOZ+R3ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=VVZUX6Bx; arc=none smtp.client-ip=209.85.160.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/0HoMZ6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E251F0089B;
-	Tue,  6 Oct 2026 14:59:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791298756;
-	bh=sE9n+Px+EvlVqRxDAGYiyarZl/w2LzivOBIjE9KubGg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H/0HoMZ6DqEoU69Pvd5Lq5IzxP1D+5Ti9YNCk7F2ybAvv/GXuH1+90w4ZGXt+qSPx
-	 tPf4sOY+30fRtmc2sJqXC1riw8j2ExanYW6sAIyQ0djkdeq0ky8lHGm/9DJ92G2uP5
-	 deAREonQ9KU5NbRAJYYIBSTCmFxGOX5T5ZwFC3I8+/93JVUcc4CMZ+yDZyipXLbnSN
-	 71CXpbLhYeFU6VjJwQqt0RdZskhVnhuUu6mGSijDt62EwO3v6jTFg58mevpTFC6g8h
-	 igXDHYWV279j4lBTmDSj/7yr5KDZWhVLlcSVyFZ3TuTe1I3Ui4Y+2DQGG7vRu4f7Lq
-	 Z3kYKjwPC6npQ==
-Date: Tue, 6 Oct 2026 15:59:12 +0100
-From: Simon Horman <horms@kernel.org>
-To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] devlink: fix devlink_rel reference leak when notify
- work is pending
-Message-ID: <20261006145912.GI83879@horms.kernel.org>
-References: <20261001042232.222987-1-yanhaishuang@cmss.chinamobile.com>
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="VVZUX6Bx"
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-49e1dbfe15eso341208fac.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 07:59:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1791298773; x=1791903573; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4tI0LY/5mH9k6I/X/x+R0S0p1KLDmL/lVZOe8khheaM=;
+        b=VVZUX6BxrOH5ap4dVh95/WwdcKxlHK4sNY/3R9hnWFh37bX7WVPtrnoq6WFJDL8iHH
+         fa0S56URHS+G1ucb62rrjPE6RPKkKnzDIRPPsbF8DfFzsJUy6p03MZuzCX2eRBOzO0hO
+         DmyrZEIFohvvKxz9/caN8mTIpVFZKtxs0/FH6ed8uVn/sHEhlBiEwvcH3g4XOH+df3nY
+         4owhplpdcdwy0ISvrsyHXJ4dPn50FCzFwz9KeBI5054dhr0YaLs5ajsgR70jaFxVhFzJ
+         NQgHJ7eSXOj3xupfMQLUcGCFoIRlPufWX47YQUkzfJfmwoX9xQaWwjUX9ASNAP8dnbq1
+         Q9Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791298773; x=1791903573;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4tI0LY/5mH9k6I/X/x+R0S0p1KLDmL/lVZOe8khheaM=;
+        b=ZrVmV+vRJn8KNi2rIK7yBNj7tF9TqdM9DkPtxb5IL7thhzNOUK48+X/jqMm6ljhQOQ
+         6t7KfOGlP5llyzpag5e6P9Ks3dNULRuk30eVPrJTM8JP5rw26yjusp+eh8CKJmODObLV
+         BBpny8yQ4UUpNtacSND0eCNVLGm0gXy3/9WnT+3xRKb+GPGBg7BulPLBWXtd/FTAskZA
+         ytV2cPsFp5fbHAhSy+5kvitnmPte+EPYGyTQuq3sgFNFwkyJA+TmYR5109/c8HToBIQX
+         7ULk8YlbqvrqbjaHbBZtAdrOQVMWfCnFurjxReqJ0ynNG8JPBvI1MAYf6HbRwO5g/Ulu
+         GFeQ==
+X-Gm-Message-State: AFuF++lVbKrCEdiMVsfAGmHKuv5+WIjfqI0MjdzVbhK0I4IDDkwDryyO
+	WeMlIO7NFbS0COc1qdXgr1XnX2WFynDBJo5S9isqBUBfMzAZeRZXGLaOe27+XaReeqk=
+X-Gm-Gg: AYBFou12Xy8Non9uamSYFd0RnmGhWZ+nQhlkwQJxbLTwN31LM9HOblzU4RGhvv/ikhC
+	ebNDRyjH0NuWgScrS5PRsmDRqRdSDDRuKwfP/+k1/mE4JdPDaaXmnvjqah8R4Fq26coo6iXewIe
+	0pjSkA9gXGvTG2Q4+brHXpS+6iJ0S4qQO4bqLfNR2LFchM7Ij7/LhwsNACP4EayZJrxMUG9HXy5
+	+HRYmQ4tgPgFLRUlsEGL63gKE1goSJO9AxAs9h/dy2Z8kcGQDjI3TevdA/07W2WhuPd9iMeaGJa
+	17AY9INJJEnmphPx4ayQgM2HHNx7OT7IEOBvpy+FdOc0n5AC7V6Bb++/e9c9pLjbmeGreXgf2TI
+	zUT8Dmg0oSzxheuBfqZuxo7EhbvpN9fPHp9AygMlMhCXYxwIUSF+Ete3hdq1mUIuoZboLm/7/OX
+	I4BeCiuERUonhWIt4tenxPFD3D7hZMUUDDOgat0DoBIP82JAhQK+D/+c2AJzaiR/bfVHbrEhzBI
+	9AeG8DWgMWzn0qMoo/cQLSkwKa2vWpNVeqJdTsTkf2sBuONav4lCKwzBrslYVdq7RsquZt0qERC
+	dcmc7hQVABR0K3pdHjtW7uai
+X-Received: by 2002:a05:6871:110:b0:498:f70a:b54e with SMTP id 586e51a60fabf-4a240515209mr1399607fac.43.1791298773492;
+        Tue, 06 Oct 2026 07:59:33 -0700 (PDT)
+Received: from [10.0.0.192] ([72.170.223.115])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-49e16f00b5asm13145180fac.14.2026.10.06.07.59.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Oct 2026 07:59:32 -0700 (PDT)
+Message-ID: <01d75013-9eae-4ec6-93b5-cc1b2b83b791@kernel.dk>
+Date: Tue, 6 Oct 2026 08:59:22 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261001042232.222987-1-yanhaishuang@cmss.chinamobile.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] io_uring: do not charge the SQ/CQ rings to RLIMIT_MEMLOCK
+To: hengyul@cs.unc.edu, Pavel Begunkov <asml.silence@gmail.com>,
+ io-uring@vger.kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20261006125732.3425762-1-hengyul@cs.unc.edu>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20261006125732.3425762-1-hengyul@cs.unc.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 01, 2026 at 12:22:32PM +0800, Haishuang Yan wrote:
-> devlink_rel_nested_in_notify_work_schedule() takes a reference on the
-> devlink_rel for the notify work and then queues the work, ignoring the
-> return value of schedule_delayed_work(). If the work is already pending,
-> nothing new is queued, the work runs only once and drops only one
-> reference, so the extra one is leaked together with the devlink_rel and
-> its index in devlink_rels.
+On 10/6/26 6:57 AM, hengyul@cs.unc.edu wrote:
+> From: Hengyu Liang <hengyul@cs.unc.edu>
 > 
-> This is easy to hit. devl_register() of a nested instance queues the
-> work, and if the instance is unregistered before the work has run,
-> devlink_rel_put() queues it again while it is still pending. The work
-> also keeps rescheduling itself for as long as the parent devlink lock
-> cannot be taken, which widens the window. Registering and unregistering
-> a nested devlink instance 100 times while holding the parent lock leaks
-> all 100 devlink_rel objects.
+> Commit 8078486e1d53 ("io_uring: use region api for SQ") and commit
+> 81a4058e0cd0 ("io_uring: use region api for CQ") made io_uring_setup()
+> allocate the rings with io_create_region().
 > 
-> The reschedule path in devlink_rel_nested_in_notify_work() has the same
-> problem: if the work was queued again while it was running, the
-> reference it holds is never dropped.
+> However, io_create_region() charges the memory to RLIMIT_MEMLOCK, and
+> the rings had been exempt from that limit since commit 26bfa89e25f4
+> ("io_uring: place ring SQ/CQ arrays under memcg memory limits"). As of
+> now, a user without CAP_IPC_LOCK gets ENOMEM from io_uring_setup() when
+> their rings exceed the limit, which is 8 MiB by default. PostgreSQL
+> developers have already hit this in their io_uring tests [1].
 > 
-> Drop the reference in both places when the work was already pending.
-> The pending work holds its own reference, so this can not be the last
-> one.
+> The issue can be reproduced with a simple liburing program, run as an
+> unprivileged user:
 > 
-> Fixes: c137743bce02 ("devlink: introduce object and nested devlink relationship infra")
-> Assisted-by: LLM
-> Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+>     #include <liburing.h>
+>     #include <stdio.h>
+> 
+>     int main(void)
+>     {
+>             static struct io_uring ring[64];
+>             int i;
+> 
+>             for (i = 0; i < 64; i++)
+>                     if (io_uring_queue_init(4096, &ring[i], 0) < 0)
+>                             break;
+>             printf("%d rings\n", i);
+>             return 0;
+>     }
+> 
+> Before those commits (v6.13), it prints "64 rings". After those commits
+> (v6.14), it prints "21 rings".
+> 
+> This patch makes io_create_region() take the user to charge, and passes
+> no user for the SQ/CQ rings.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Agree that this is a bug, stricter accounting may break use cases.
+However, I think we can solve this simpler, and actually kill more code.
+How about something like the below instead? Only apply accounting to
+user backed memory, which is how it used to work too. Would be great if
+you could take a look and also run your test case against it.
+
+diff --git a/io_uring/memmap.c b/io_uring/memmap.c
+index 48c0eb012412..da2328b52b38 100644
+--- a/io_uring/memmap.c
++++ b/io_uring/memmap.c
+@@ -16,10 +16,8 @@
+ #include "zcrx.h"
+ 
+ static bool io_mem_alloc_compound(struct page **pages, int nr_pages,
+-				  size_t size, gfp_t gfp,
+-				  struct user_struct *user)
++				  size_t size, gfp_t gfp)
+ {
+-	unsigned long nr_compound, extra;
+ 	struct page *page;
+ 	int i, order;
+ 
+@@ -29,22 +27,9 @@ static bool io_mem_alloc_compound(struct page **pages, int nr_pages,
+ 	else if (order)
+ 		gfp |= __GFP_COMP;
+ 
+-	/*
+-	 * get_order() rounds a non power of two size up, so the allocation
+-	 * can hold more pages than the region exposes. Account those too,
+-	 * and leave the compound allocation alone if they do not fit.
+-	 */
+-	nr_compound = 1UL << order;
+-	extra = nr_compound - nr_pages;
+-	if (extra && user && __io_account_mem(user, extra))
+-		return false;
+-
+ 	page = alloc_pages(gfp, order);
+-	if (!page) {
+-		if (extra && user)
+-			__io_unaccount_mem(user, extra);
++	if (!page)
+ 		return false;
+-	}
+ 
+ 	for (i = 0; i < nr_pages; i++)
+ 		pages[i] = page + i;
+@@ -120,15 +105,8 @@ void io_free_region(struct user_struct *user, struct io_mapped_region *mr)
+ 	}
+ 	if ((mr->flags & IO_REGION_F_VMAP) && mr->ptr)
+ 		vunmap(mr->ptr);
+-	if (mr->nr_pages && user) {
+-		unsigned long nr_accounted = mr->nr_pages;
+-
+-		/* a compound region was accounted for the whole allocation */
+-		if (mr->flags & IO_REGION_F_SINGLE_REF)
+-			nr_accounted = 1UL << get_order(io_region_size(mr));
+-
+-		__io_unaccount_mem(user, nr_accounted);
+-	}
++	if ((mr->flags & IO_REGION_F_USER_PROVIDED) && user)
++		__io_unaccount_mem(user, mr->nr_pages);
+ 
+ 	memset(mr, 0, sizeof(*mr));
+ }
+@@ -154,11 +132,12 @@ static int io_region_init_ptr(struct io_mapped_region *mr)
+ }
+ 
+ static int io_region_pin_pages(struct io_mapped_region *mr,
+-			       struct io_uring_region_desc *reg)
++			       struct io_uring_region_desc *reg,
++			       struct user_struct *user)
+ {
+ 	size_t size = io_region_size(mr);
+ 	struct page **pages;
+-	int nr_pages;
++	int nr_pages, ret;
+ 
+ 	pages = io_pin_pages(reg->user_addr, size, &nr_pages);
+ 	if (IS_ERR(pages))
+@@ -166,6 +145,16 @@ static int io_region_pin_pages(struct io_mapped_region *mr,
+ 	if (WARN_ON_ONCE(nr_pages != mr->nr_pages))
+ 		return -EFAULT;
+ 
++	/* pinned user memory is what RLIMIT_MEMLOCK is for */
++	if (user) {
++		ret = __io_account_mem(user, nr_pages);
++		if (ret) {
++			unpin_user_pages(pages, nr_pages);
++			kvfree(pages);
++			return ret;
++		}
++	}
++
+ 	mr->pages = pages;
+ 	mr->flags |= IO_REGION_F_USER_PROVIDED;
+ 	return 0;
+@@ -173,8 +162,7 @@ static int io_region_pin_pages(struct io_mapped_region *mr,
+ 
+ static int io_region_allocate_pages(struct io_mapped_region *mr,
+ 				    struct io_uring_region_desc *reg,
+-				    unsigned long mmap_offset,
+-				    struct user_struct *user)
++				    unsigned long mmap_offset)
+ {
+ 	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN;
+ 	size_t size = io_region_size(mr);
+@@ -185,7 +173,7 @@ static int io_region_allocate_pages(struct io_mapped_region *mr,
+ 	if (!pages)
+ 		return -ENOMEM;
+ 
+-	if (io_mem_alloc_compound(pages, mr->nr_pages, size, gfp, user)) {
++	if (io_mem_alloc_compound(pages, mr->nr_pages, size, gfp)) {
+ 		mr->flags |= IO_REGION_F_SINGLE_REF;
+ 		goto done;
+ 	}
+@@ -230,17 +218,16 @@ int io_create_region(struct io_ring_ctx *ctx, struct io_mapped_region *mr,
+ 		return -EOVERFLOW;
+ 
+ 	nr_pages = reg->size >> PAGE_SHIFT;
+-	if (ctx->user) {
+-		ret = __io_account_mem(ctx->user, nr_pages);
+-		if (ret)
+-			return ret;
+-	}
+ 	mr->nr_pages = nr_pages;
+ 
++	/*
++	 * Only pinned user memory counts against RLIMIT_MEMLOCK, kernel
++	 * allocated regions are memcg accounted through GFP_KERNEL_ACCOUNT.
++	 */
+ 	if (reg->flags & IORING_MEM_REGION_TYPE_USER)
+-		ret = io_region_pin_pages(mr, reg);
++		ret = io_region_pin_pages(mr, reg, ctx->user);
+ 	else
+-		ret = io_region_allocate_pages(mr, reg, mmap_offset, ctx->user);
++		ret = io_region_allocate_pages(mr, reg, mmap_offset);
+ 	if (ret)
+ 		goto out_free;
+ 
+-- 
+Jens Axboe
