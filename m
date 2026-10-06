@@ -1,230 +1,165 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373CE3859E2;
-	Tue,  6 Oct 2026 09:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7648F39D6FA;
+	Tue,  6 Oct 2026 09:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791278044; cv=none; b=YDm7EkQvunzEJJR+Z6Y+FTo7VHMo6Qth5g+EQkhPda4MDBWVDv8luonH4w2RMoIefFxASgRmlKwe4kMfd7QeXCQDNKXp/WXi5ZdjCqKd06JwyqSxVFqnWkFEnm/SafEGmettYDmJ8wRg9Fh7Krhu5YgUQbUZw3DzHdvvXGDzdB4=
+	t=1791278363; cv=none; b=eP2xMyFWnG7FX6Bc7I8vh5CxzKojGC+t68KmHNivORCWCVzYxdBEnRTBjLz9d9fEvfj6frCJfynGtmDWGXqtb/I6F53da/1x740ROyCKVSa2SutQSv8zikSMVSkOSy9gU9pR085FwkK4ml6lSGRGWhazWnY3GSWK7cK6Cp6sPbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791278044; c=relaxed/simple;
-	bh=DrxJkpjzyYGp2CHDwYW5JhpYSnS/x/10mxjjG2cWEhM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fYQpdezI8EI8cyLkijvlSdYbDMDyEpjlTB7BtIw0FKH3FXyQ/UOE2IDKKstnt8JDCI/eQ68fxkj7EntgQmVI8fBbYguleq+9EzGsAOjkqL3MuA7MlL+8elxcyNw5oiuZiU5ZjADFY3O+cis2glNEbrI2PbQzpLMOL7h8BHHcEvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fDkoxYHk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vtmyViQ4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rVjdZGvS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=R8xxy8iS; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1791278363; c=relaxed/simple;
+	bh=O6Fs3kbyDnaoWbsau3W7qu/dEYjB4vE3IXvSrvfZ7EQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=l5te2sjRcqtx+dkf6FeLt5HxkECSXlKmd7Pe0dpmgWGBALVOLXEW4NbfORKOkDqdbTGAq5PICeReG+fMbVXtZR6pOSQG5XwUWZHt3kn2aa9n0S8ro8h/6zC0RmJ1gYglYSFdxl1IAJ91gw+q4uJaoKWnB2qDo4gb90wxzjHlqos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=EzRZ9Kkb; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fDkoxYHk";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vtmyViQ4";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rVjdZGvS";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="R8xxy8iS"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BC42219BB;
-	Tue,  6 Oct 2026 09:13:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791278030; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
-	b=fDkoxYHkVYr4W6YH5yRxqIrHXc73xkhaboCbMmp7NnxECOhN+ygj2bEuXWHiyJjf4bcz25
-	GlYx3gG3NI+koiifofzeISimtBXmpdYjoBl9AkXjldl9V027t7OHggmFD3BNolBpeaPrvB
-	HvJ2vhh5JinSm10f7+LvWSu4vywb2R8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791278030;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
-	b=vtmyViQ4WfXPweEDJ5w+ZsSM5SFwt7aFu3EWSoegOPreAKK2a2T2+sFJ0GQcxfFoD1qHaB
-	3isnzYCxfZhOKzCw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rVjdZGvS;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=R8xxy8iS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791278026; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
-	b=rVjdZGvSE0olqXazD1zG6dWnRSutvJyeQKYMWVEf6GWvAYMZUkExtbMdKyRb5auiZgjyAb
-	gXGBSR7uNdSvnkMINSXuXYNVE/hz5d+nXksnB9oBGu2Kj1Mbp+Ovdd8zVJrMemT5HmWXHr
-	zZ64AlYry1BzcMqIs8xRYsjhhR38OvM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791278026;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
-	b=R8xxy8iSibgvaif20gQv6dsUZb+//Qwx97Yh+RMcUBpJH8DwCYTuamgYwOSJi0/XuYTYqX
-	evqFsO/OncL/4MCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CAE17136F2;
-	Tue,  6 Oct 2026 09:13:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pR6EJsm7xGoXSgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 06 Oct 2026 09:13:45 +0000
-Message-ID: <ade9aa6a-ae47-4894-be43-2f32cc234afc@suse.de>
-Date: Tue, 6 Oct 2026 11:12:40 +0200
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="EzRZ9Kkb"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6969If3pA2775051, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1791278321; bh=O6Fs3kbyDnaoWbsau3W7qu/dEYjB4vE3IXvSrvfZ7EQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=EzRZ9KkbwOKDh5t2X2Y8Ne9Pf2E24QRO6pMglHR0vtBnwMVPyoMvUYZiyJO96tOQu
+	 L1Ke7BZOYdeNa6h/MxFH/HfAtf+hNq8ZFby8aZZ0FE0NzPW2KjUozgqhvEk0hI3Q+a
+	 PfKM9EOYTj0BHyWDNcAUaueQphWbUz2hizHHNgXgOTkrI7/pzO1PCsFV2LqPEfV0KP
+	 AiwaBkYrzTFjP0nY16WyJrW3phxcefAwvHQE/Ct8WY9FnAzJHYYsueEyBfbgAwNVBJ
+	 lSDQvYEitS3fEbA90cOTv6nZip1vxm1nJCw3KW/p1SJMsO9KI2/30eQz5rpNOKxICs
+	 dGaoWV8I/ZMIw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6969If3pA2775051
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 6 Oct 2026 17:18:41 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 17:18:42 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 17:18:41 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Tue, 6 Oct 2026 17:18:41 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: RE: [PATCH net-next v5 1/9] r8152: split r8156_init per chip and add
+ missing init writes
+Thread-Topic: [PATCH net-next v5 1/9] r8152: split r8156_init per chip and add
+ missing init writes
+Thread-Index: AQHdUYTjx30WLQVKjk+ynPGj3AiBTrbuNquAgAIL5tA=
+Date: Tue, 6 Oct 2026 09:18:41 +0000
+Message-ID: <aa4a0fe95052494b9544bdeec8babf9b@realtek.com>
+References: <20261001091144.28191-2-nic_swsd@realtek.com>
+ <179119423934.434549.8623262119068946046@kernel.org>
+In-Reply-To: <179119423934.434549.8623262119068946046@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/16 net-next v3] ipv4: udp: split IPv4 specific logic
- into udp_ipv4.c
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, horms@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, edumazet@kernel.org, davem@davemloft.net,
- johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260930135334.4739-7-fmancera@suse.de>
- <179113455115.434549.17562988532168582470@kernel.org>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <179113455115.434549.17562988532168582470@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TAGGED_RCPT(0.00)[sashiko];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 7BC42219BB
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
 
-
-
-On 10/4/26 7:22 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] When CONFIG_IPV4=n, udp4_gro_complete()
->    (net/ipv4/udp_offload.c) returns -EAFNOSUPPORT for every merged IPv4…
-> 
-> --
-> 
-> ipv4: udp: split IPv4 specific logic into udp_ipv4.c
-> 
-> This commit moves the IPv4-specific UDP socket code out of udp.c and into
-> a new file, udp_ipv4.c. That covers lookup, input/output, multicast
-> delivery and the AF_INET udp_prot. The new file is built only when
-> CONFIG_IPV4 is enabled. Callers in af_inet.c, udp_bpf.c, udp_offload.c and
-> ipv6/udp.c get IS_ENABLED(CONFIG_IPV4) guards.
-> 
->> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
->> index cf07c3c6611a2..bea037d6b4eb7 100644
->> --- a/net/ipv4/udp_offload.c
->> +++ b/net/ipv4/udp_offload.c
->> @@ -958,6 +958,9 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_complete(struct sk_buff *skb, int nhoff)
->>   	const struct iphdr *iph = (struct iphdr *)(skb->data + offset);
->>   	struct udphdr *uh = (struct udphdr *)(skb->data + nhoff);
->>
->> +	if (!IS_ENABLED(CONFIG_IPV4))
->> +		return -EAFNOSUPPORT;
->> +
-> 
-> [Severity: Medium]
-> With CONFIG_IPV4=n, can this make every merged IPv4 UDP GRO packet get
-> dropped silently?
-> 
-> The IPv4 GRO offloads are still registered when IPv4 is disabled.
-> ipv4_offload_init() in af_inet.c still calls udpv4_offload_init() and
-> dev_add_offload(&net_hotdata.ip_packet_offload) with no guard. So
-> inet_gro_receive()->udp4_gro_receive()->udp_gro_receive() still runs for
-> IPv4 UDP packets.
-> 
-> The socket lookup there ends up in the new __udp4_lib_lookup() stub,
-> which returns NULL. Even so, udp_gro_receive() still aggregates:
-> 
-> 	if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
-> 		NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
-> 
-> 	if ((!sk && (skb->dev->features & NETIF_F_GRO_UDP_FWD)) ||
-> 	    (sk && udp_test_bit(GRO_ENABLED, sk)) || NAPI_GRO_CB(skb)->is_flist)
-> 		return call_gro_receive(udp_gro_receive_segment, head, skb);
-> 
-> At flush time, gro_complete()->inet_gro_complete()->udp4_gro_complete()
-> now returns -EAFNOSUPPORT, and gro_complete() in net/core/gro.c frees
-> the whole aggregate:
-> 
-> 	if (err) {
-> 		WARN_ON(&ptype->list == head);
-> 		kfree_skb(skb);
-> 		return;
-> 	}
-> 
-> The WARN_ON doesn't fire because a ptype was found, so all segments are
-> lost with no warning. This would affect an IPv6-only kernel that bridges
-> or forwards IPv4 UDP with NETIF_F_GRO_UDP_FWD or NETIF_F_GRO_FRAGLIST
-> enabled on the ingress device. Inner IPv4 carried in IPv6 tunnels would
-> be hit too.
-> 
-> The fraglist branch and the udp_gro_complete() path don't need IPv4
-> socket state. The only IPv4-only dependency looks like the
-> udp4_lib_lookup_skb reference. Would it work to stub or skip only the
-> lookup, for example with a NULL-returning udp4_lib_lookup_skb when
-> CONFIG_IPV4=n, and keep the rest of udp4_gro_complete()? Or should IPv4
-> UDP GRO receive also be disabled in that configuration, so packets
-> aren't aggregated only to be dropped at completion?
-> 
-> The later patch in the series, "ipv4: make CONFIG_IPV4 boolean", makes
-> this configuration selectable. udp4_gro_complete() and
-> ipv4_offload_init() are unchanged at the end of the series.
-> 
-
-I guess this is a good point. I will look more into it.
-
-pw-bot: cr
-
->>   	/* do fraglist only if there is no outer UDP encap (or we already processed it) */
->>   	if (NAPI_GRO_CB(skb)->is_flist && !NAPI_GRO_CB(skb)->encap_mark) {
->>   		udp_set_len(uh, skb->len - nhoff);
-> 
-> [ ... ]
-> 
-
+PiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3Vu
+ZCAxIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlci4NCj4gDQo+IENyaXRpY2FsOiAw
+IMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAxIMK3IExvdzogMA0KPiANCj4gSWYgeW91IGJlbGlldmUg
+bm9uZSBvZiB0aGUgaXNzdWVzIGFyZSBsZWdpdGltYXRlLCBwbGVhc2UgcmVwbHkgdG8gZWFjaCBp
+c3N1ZSBvZg0KPiBNZWRpdW0gc2V2ZXJpdHkgb3IgaGlnaGVyIGFuZCBleHBsYWluIHdoeSB0aGUg
+QUkgaXMgd3JvbmcuDQo+IElmIGFueSBvZiB0aGVtIGFyZSBsZWdpdGltYXRlIGFuZCB5b3UgcGxh
+biB0byByZXNwaW4sIHBsZWFzZSBsZXQgcGF0Y2h3b3JrDQo+IGtub3cgYnkgaW5jbHVkaW5nICJw
+dy1ib3Q6IGNyIiBhcyBhIHNlcGFyYXRlIGxpbmUgYXQgdGhlIGVuZCBvZiB5b3VyIHJlcGx5IChv
+bmUNCj4gc3VjaCByZXBseSBwZXIgc2VyaWVzIGlzIGVub3VnaCkuDQo+IA0KPiAtIFtNZWRpdW1d
+IFRoaXMgcGF0Y2ggaXMgcHJlc2VudGVkIGFzIHNwbGl0dGluZyByODE1Nl9pbml0KCkgcGVyIGNo
+aXAsDQo+ICAgYnV0IGl0IGFsc28gY2hhbmdlcyBoYXJkd2FyZSBiZWhhdmlvdXIgZm9yIGFsbCBm
+b3VyIGNoaXAgZmFtaWxpZXMsIGFuZOKApg0KPiANCj4gLS0NCj4gDQo+IHI4MTUyOiBzcGxpdCBy
+ODE1Nl9pbml0IHBlciBjaGlwIGFuZCBhZGQgbWlzc2luZyBpbml0IHdyaXRlcw0KPiANCj4gVGhp
+cyBjb21taXQgc3BsaXRzIHRoZSBzaGFyZWQgcjgxNTZfaW5pdCgpIGludG8gc2VwYXJhdGUgaW5p
+dCBmdW5jdGlvbnMgZm9yDQo+IFJUTDgxNTYsIFJUTDgxNTZCLCBSVEw4MTU3IGFuZCBSVEw4MTU5
+LiBJdCBhbHNvIG1vdmVzIHRoZQ0KPiBBVVRPTE9BRF9ET05FIHBvbGxpbmcgaW50byBhIG5ldyB3
+YWl0X2F1dG9sb2FkX2RvbmUoKSBoZWxwZXIuIFdoaWxlDQo+IHNwbGl0dGluZywgaXQgYWRkcyBz
+ZXZlcmFsIG5ldyByZWdpc3RlciB3cml0ZXMgdG8gdGhlIHBlci1jaGlwIGluaXQgcGF0aHMsIGlu
+Y2x1ZGluZw0KPiBjbGVhcmluZyBSWF9FTkRfVFJBTlNGRVJfRU4gb24gUlRMODE1Ny4NCj4gDQo+
+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3VzYi9yODE1Mi5jIGIvZHJpdmVycy9uZXQvdXNi
+L3I4MTUyLmMgaW5kZXgNCj4gPiBhZjNkN2RjYjJmMTQxLi40ZDhmMDgxNWQ3OWQxIDEwMDY0NA0K
+PiA+IC0tLSBhL2RyaXZlcnMvbmV0L3VzYi9yODE1Mi5jDQo+ID4gKysrIGIvZHJpdmVycy9uZXQv
+dXNiL3I4MTUyLmMNCj4gDQo+IFsgLi4uIF0NCj4gDQo+ID4gQEAgLTg0MjEsNzMgKzg0NDQsMjYx
+IEBAIHN0YXRpYyB2b2lkIHI4MTU2X2luaXQoc3RydWN0IHI4MTUyICp0cCkNCj4gDQo+IFsgLi4u
+IF0NCj4gDQo+ID4gICAgICAgc2V0X2JpdChHUkVFTl9FVEhFUk5FVCwgJnRwLT5mbGFncyk7DQo+
+ID4NCj4gPiAtICAgICAvKiBSWCBhZ2dyZWdhdGlvbiAvIDE2IGJ5dGVzIFJYIGRlc2NyaXB0b3IN
+Cj4gPiAtICAgICAgKiBCSVQoMTEpIGlzIHNwZWNpZmljIHRvIFJUTDgxNTksIHdpdGggdW5rbm93
+biBtZWFuaW5nDQo+ID4gLSAgICAgICovDQo+ID4gLSAgICAgaWYgKHRwLT52ZXJzaW9uID09IFJU
+TF9WRVJfMTcpDQo+ID4gLSAgICAgICAgICAgICBvY3Bfd29yZF9jbHJfYml0cyh0cCwgTUNVX1RZ
+UEVfVVNCLCBVU0JfVVNCX0NUUkwsDQo+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBSWF9BR0dfRElTQUJMRSB8IFJYX0RFU0NfMTZCIHwNCj4gQklUKDExKSk7DQo+ID4gLSAgICAg
+ZWxzZSBpZiAodHAtPnZlcnNpb24gPT0gUlRMX1ZFUl8xNikNCj4gPiAtICAgICAgICAgICAgIG9j
+cF93b3JkX2Nscl9iaXRzKHRwLCBNQ1VfVFlQRV9VU0IsIFVTQl9VU0JfQ1RSTCwNCj4gUlhfQUdH
+X0RJU0FCTEUgfCBSWF9ERVNDXzE2Qik7DQo+ID4gKyAgICAgb2NwX3dvcmRfY2xyX2JpdHModHAs
+IE1DVV9UWVBFX1VTQiwgVVNCX1VTQl9DVFJMLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAg
+IFJYX0FHR19ESVNBQkxFIHwgUlhfWkVST19FTik7DQo+IA0KPiBbIC4uLiBdDQo+IA0KPiA+ICtz
+dGF0aWMgdm9pZCByODE1N19pbml0KHN0cnVjdCByODE1MiAqdHApIHsNCj4gDQo+IFsgLi4uIF0N
+Cj4gDQo+ID4gKyAgICAgLyogUlggYWdncmVnYXRpb24gLyAxNiBieXRlcyBSWCBkZXNjcmlwdG9y
+IC8gQnVsayBJbiBFbmQgdHJhbnNmZXIgKi8NCj4gPiArICAgICBvY3Bfd29yZF9jbHJfYml0cyh0
+cCwgTUNVX1RZUEVfVVNCLCBVU0JfVVNCX0NUUkwsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgUlhfQUdHX0RJU0FCTEUgfCBSWF9ERVNDXzE2QiB8DQo+ID4gKyBSWF9FTkRfVFJBTlNGRVJf
+RU4pOw0KPiANCj4gW1NldmVyaXR5OiBNZWRpdW1dDQo+IElzIHRoaXMgYSBmdW5jdGlvbmFsIGZp
+eCBmb3IgUlRMODE1NyB0aGF0IHNob3VsZCBnbyBpbiBhcyBpdHMgb3duIHBhdGNoIHdpdGggYQ0K
+PiBGaXhlczogdGFnPw0KPiANCj4gQmVmb3JlIHRoaXMgcGF0Y2gsIHRoZSBSVExfVkVSXzE2IGJy
+YW5jaCBpbiByODE1Nl9pbml0KCkgY2xlYXJlZCBvbmx5DQo+IFJYX0FHR19ESVNBQkxFIHwgUlhf
+REVTQ18xNkIuIEJJVCgxMSkgd2FzIGNsZWFyZWQgb25seSBmb3IgUlRMX1ZFUl8xNywNCj4gYW5k
+IHRoZSBjb21tZW50IHNhaWQgaXRzIG1lYW5pbmcgd2FzIHVua25vd24uIHI4MTU3X2luaXQoKSBu
+b3cgY2xlYXJzDQo+IFJYX0VORF9UUkFOU0ZFUl9FTiBhcyB3ZWxsLg0KPiANCj4gVGhlIGNvbW1p
+dCBtZXNzYWdlIHNheXMgdGhhdCB3aGlsZSB0aGlzIGJpdCBpcyBzZXQsICJCdWxrLWluIHRyYW5z
+ZmVycyBhcmUNCj4gc3VzcGVuZGVkIiwgYW5kIHRoYXQgInRoZSBkcml2ZXIgbXVzdCBtYW51YWxs
+eSBjbGVhciBpdCB0byByZXN1bWUgQnVsay1pbg0KPiB0cmFuc2ZlcnMiLg0KPiANCj4gVGhhdCBz
+b3VuZHMgbGlrZSBhbiBSWCBzdGFsbCBvbiBSVEw4MTU3IHRoYXQgZ29lcyBiYWNrIHRvIGNvbW1p
+dA0KPiBmZDNjN2QwODBkZjUgKCJyODE1MjogQWRkIHN1cHBvcnQgZm9yIHRoZSBSVEw4MTU3IGhh
+cmR3YXJlIikuIFRoaXMgZml4IGhhcw0KPiBubyBGaXhlczogdGFnIGFuZCBpcyBwYXJ0IG9mIGEg
+cmVmYWN0b3IgdG91Y2hpbmcgYWJvdXQgNDkwIGxpbmVzLCBzbyBpdCBzZWVtcw0KPiB1bmxpa2Vs
+eSB0byByZWFjaCBuZXQgb3Igc3RhYmxlLg0KPiANCj4gTGF0ZXIgcGF0Y2hlcyBpbiB0aGlzIHNl
+cmllcyBkbyBjYXJyeSBGaXhlczogdGFnczogInI4MTUyOiBmaXggdXAgYW5kIGRvd24NCj4gcmVn
+aXN0ZXIgc2V0dGluZ3MgZm9yIFJUTDgxNTYvODE1NkIvODE1Ny84MTU5IiBhbmQgInI4MTUyOiBh
+ZGQNCj4gcnRsODE1N191bmxvYWQgYW5kIHJ0bDgxNTdfY2hhbmdlX210dSIuDQo+IA0KPiBDb3Vs
+ZCB0aGlzIGNoYW5nZSBiZSBzZW50IGFzIGEgc21hbGwgc3RhbmRhbG9uZSBmaXggYWhlYWQgb2Yg
+dGhlIHNwbGl0Pw0KDQpUaGUgaGFyZHdhcmUgdXNlcyB0aGlzIGJpdCB0byBwcmVzZXJ2ZSBwYWNr
+ZXQgaW50ZWdyaXR5IGFjcm9zcyBydW50aW1lDQpzdXNwZW5kL3Jlc3VtZSwgYW5kIGl0IGlzIG5v
+dCBzZWxmLWNsZWFyaW5nLiBIb3dldmVyLCB0aGUgZHJpdmVyIGRvZXNuJ3QNCnVzZSB0aGlzIGJp
+dCBub3c7IHRoaXMgaXMgYSBkZWZlbnNpdmUgY2xlYXJpbmcuDQoNCj4gDQo+IFRoZSBvdGhlciBu
+ZXcgaGFyZHdhcmUgd3JpdGVzIHJhaXNlIHRoZSBzYW1lIHF1ZXN0aW9uLiBUaGUgY29tbWl0IG1l
+c3NhZ2UNCj4gbGlzdHMgdGhlbSwgYnV0IGl0IGRvZXNuJ3Qgc2F5IHdoYXQgcHJvYmxlbSBvciBz
+eW1wdG9tIGVhY2ggb25lDQo+IGZpeGVzOg0KPiANCj4gICAgIFBSRUJPT1RfT1BUSU9OIGFuZCBS
+TVRfV0FLRV9FTiwgY2xlYXJlZCBpbiBhbGwgZm91ciBpbml0IGZ1bmN0aW9ucw0KPiAgICAgcjgx
+NTZiX3UycGh5X2JhY2t1cCgpIHdyaXRpbmcgMHhkM2NlLzB4ZDNkMC8weGQzZDQvMHhkM2Q4LzB4
+ZDNkYw0KPiAgICAgMHhjZjA0IGludGVycnVwdCBtaXRpZ2F0aW9uIGRpc2FibGUgaW4gcjgxNTdf
+aW5pdCgpL3I4MTU5X2luaXQoKQ0KPiAgICAgMHhjZDA2IEJJVCgxMSkgaW4gcjgxNTdfaW5pdCgp
+L3I4MTU5X2luaXQoKQ0KPiAgICAgMHhiOWE2IEJJVCgwKSBhbmQgMHhiOWEyID0gMHgwNDQ4IGlu
+IHI4MTU5X2luaXQoKQ0KPiANCj4gQ291bGQgdGhlc2UgYmUgc3BsaXQgb3V0LCBvciBoYXZlIHRo
+ZWlyIHB1cnBvc2UgZXhwbGFpbmVkPyBJZiBvbmUgb2YgdGhlbQ0KPiBjYXVzZXMgYSByZWdyZXNz
+aW9uLCBhIGJpc2VjdCB3b3VsZCBsYW5kIG9uIHRoaXMgbGFyZ2UgbWl4ZWQgY29tbWl0Lg0KPiAN
+Cj4gcjgxNTZiX2luaXQoKSBhbHNvIG1vdmVzIHRoZSBBVVRPX1NQRUVEVVAgY2xlYXIuIEl0IHVz
+ZWQgdG8gYmUgcGFydCBvZiB0aGUNCj4gVVNCX0ZXX0NUUkwgcmVhZC1tb2RpZnktd3JpdGUgdGhh
+dCByYW4gYWZ0ZXIgdXNiX2VuYWJsZV9scG0oKSBhbmQgdGhlDQo+IGZsb3cgY29udHJvbCBzZXR1
+cDoNCj4gDQo+ICAgICBvY3BfZGF0YSA9IG9jcF9yZWFkX3dvcmQodHAsIE1DVV9UWVBFX1VTQiwg
+VVNCX0ZXX0NUUkwpOw0KPiAgICAgLi4uDQo+ICAgICBvY3BfZGF0YSAmPSB+QVVUT19TUEVFRFVQ
+Ow0KPiAgICAgb2NwX3dyaXRlX3dvcmQodHAsIE1DVV9UWVBFX1VTQiwgVVNCX0ZXX0NUUkwsIG9j
+cF9kYXRhKTsNCj4gDQo+IE5vdyBpdCBydW5zIHJpZ2h0IGFmdGVyIHI4MTUzX3UycDNlbigpOg0K
+PiANCj4gICAgIHI4MTUzX3UycDNlbih0cCwgZmFsc2UpOw0KPiANCj4gICAgIC8qIERpc2FibGUg
+QXV0byBTcGVlZCB1cCAqLw0KPiAgICAgb2NwX3dvcmRfY2xyX2JpdHModHAsIE1DVV9UWVBFX1VT
+QiwgVVNCX0ZXX0NUUkwsIEFVVE9fU1BFRURVUCk7DQo+IA0KPiBUaGF0IGlzIGJlZm9yZSB0aGUg
+TVNDIHRpbWVyLCByODE1NmJfdTJwaHlfYmFja3VwKCksIHBvd2VyLWN1dCwgVVBTIGFuZA0KPiBM
+UE0gc2V0dXAuIElzIHRoaXMgcmVvcmRlcmluZyBpbnRlbmRlZCBmb3IgUlRMODE1NkI/IFRoZSBj
+b21taXQgbWVzc2FnZQ0KPiBkb2Vzbid0IG1lbnRpb24gaXQuDQoNCldpbGwgZml4Lg0KDQo+IA0K
+PiAtLQ0KPiBTYXNoaWtvIEFJIHJldmlldyDCtw0KPiBodHRwczovL25ldGRldi1haS5ib3RzLmxp
+bnV4LmRldi9zYXNoaWtvLyMvcGF0Y2hzZXQvMjAyNjEwMDEwOTExNDQuMjgxOTEtDQo+IDEtbmlj
+X3N3c2QlNDByZWFsdGVrLmNvbQ0KDQpCZXN0IFJlZ2FyZHMsDQpDaGloLUthaQ0K
