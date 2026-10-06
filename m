@@ -1,119 +1,127 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4611941DEE7
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 13:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42EA41D635;
+	Tue,  6 Oct 2026 13:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791294513; cv=none; b=E6vjOlqc0RryTy6ixfSQ4cVs5tm5CEw+Q9VUu1i/kIa9fHZQJP8k93cLAjfQbTmFsTRGS7IskiRQ/OYe8zofWZW0ZatX26Rp+jLeclfdrjtWQHqwA7lU3uwlw8EW0Zw8pybXY3m7EGOsstAc3IvWklm4HJCtAMrNIj1MVB+QDMY=
+	t=1791294687; cv=none; b=h+rE498H7TSCZj2wPuwj+l998WqFkbkYY4orN9VWw5qpQE4Nk99nAdRy2GwP8AeOyNNa+X4d4qqBU5yNBw+uApec+LyHwjAlPZ1CEbn0DLd/pIqnQa2CX67cHI9zsbIxklbXQvFnaw9AQRRA1jkzvJtH3oP3TCTovjXQI1nQHTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791294513; c=relaxed/simple;
-	bh=kMtTkezz8RK0C6SIlG94IbvLyEEsxqh9OTzo4DlPCrU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MB1ezcQozj3/hLwdpqo5cFW+LOTCZXilkCTrj8OqtQNbi7uUZi/+v6ztB/x5LxgLceofaXhgntuD1hTMcVAGEOOn4J0eaxKSfkaVdx6U8A7CdazXsn6v6BEwg7/d8m5L/ExSxaOHyuvd3BLfSjnpAeTxOppQQQv3weW8ElNrdPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=zDL/YGnq; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
+	s=arc-20240116; t=1791294687; c=relaxed/simple;
+	bh=v9lEBvjdaqO6XwdYDIqvh1dxR9AHhNinpBUAg9b7Qhw=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=HTgxM9gbL9i8SdrtyJujH5ptTZhpdFv+TPcZ28NIjVhOZYcgsLMyIuBkVyQe9B5euLTbC9czFIAReU2eksUD4sKy8UhfhkfxiMcSIHa2tgwaqXeVnN2zem4JQ7zfG0jwlh91oWiQFbGLwj8PxsfSrlVLOGaJUOb/NkY2NjRcsTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=hhQPo4EV; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="zDL/YGnq"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2dd76b1361dso19406445ad.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 06:48:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1791294508; x=1791899308; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Xd+YhTvmmDiJasiYfZDfV8qAggwrlgKHI8hk48pv8dg=;
-        b=zDL/YGnqH8YvAHo0vE2booW3iNn8L9i59YIB/gJBLc2H4PWlGJZxGgX0P/sp5ndVsR
-         UxPUwkcIoUbPUSkHdOoDB5MpQ15ma6dr3Ln6b6MSf5KpzEOk7+L2dfxb+YhLCiTlBr3l
-         UCjWHsdQbc1biSstrrsCR/bO+gDkizBulxzxU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791294508; x=1791899308;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Xd+YhTvmmDiJasiYfZDfV8qAggwrlgKHI8hk48pv8dg=;
-        b=f6EojGDwl6KeoGFMVWZAzQoduXD6Y/TDgQYfs1qzdrYBe2SgFrggO4roK4TaRWaY6A
-         uNjGH0yXz0jLUYHydpSJTn0tiIqOH9IdAwMHME+Za1bmN5+LOIw8r1TKOiYiyO1SNqgq
-         8/yAACBXAH7j3XDwCiHE4CARYtvgp2Pet8jEl33AzQQFYjPi5pKcliz/Fu9ek48Y2llA
-         wFjDz3gebss/YaordM/f+znji6ps788fAFOuX6BRB5R916Hm62YZQ2T0PZ4J/9+cfHab
-         nwwKsrCGjfyYXjRLL387qY6fjoKLLnErpKeZW5Kj+bjqTtJLzbRZBbSUQuphTzQl7nG7
-         8w3g==
-X-Forwarded-Encrypted: i=1; AKwUvBxqTjmUPFHWVhYX7EnQShGUYtnbvokJsc0sDDimNNX21/2KioT8GuhzpSEZ40MgUaXUZHBtmYI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJKRuj20/Ivx0n7gxtD8v7U1tBem01YzQ59sAuK+VQC68Tppkqv
-	WZ+nmjv3ZVJnrnAvdjkMv5YpMxg/nLkicLUJG+Gl/0uTj7iEuE63CDOIiQ17iHQSDxg=
-X-Gm-Gg: AYBFou3s6RmpLyhjCZxsPWYPV67vAtFk+M1ecRs5z4X10WsPfgtv2RUl0c1cmIOrL0b
-	gJO/RoyGu3XHyfW+U8va9I3PHUXlpH5lBUWLTOHogRw1DWu5t399ou/J3d9Yep/Q3Pne4v5iolc
-	NVRkkI2mmmd4J4s1X8g957O6nzDx4LeD+phjCDwi1gbMoofPjGSV9e6sQ8aSFxsVRyHgVNg5bK3
-	iRpHPkM/VM20xVO662BTKToAD7cJ63+h4F+d8WbcCgs0Ea0biN/yxQbLm7ITy9xXc+rY4pqONzq
-	bY32Xp6HqcByEDji6k7Yy8UzBKl9DZ6Tg8I5GwM5BMoFf84UUkeODdCfNj9rpfQPwwaTOxUUuSG
-	fVkT57hhqvlaLkS6Srd/4gd7Z5EXke0JtoXu4wxRjEEriyAuNctOKawo2eNhke11g2MZKziu3Jo
-	y01+nYRyIShWXodMbCZrd50Nb3+DKUm60ssei27fvXw5Elikuha1epMKOzi2s66LJMpQ==
-X-Received: by 2002:a17:902:f78c:b0:2da:eb8f:b4e4 with SMTP id d9443c01a7336-2e4e9c29bdbmr98737285ad.7.1791294508455;
-        Tue, 06 Oct 2026 06:48:28 -0700 (PDT)
-Received: from 1c1aead48890 ([49.142.45.25])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e5a5eeca3dsm24227885ad.67.2026.10.06.06.48.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 06:48:27 -0700 (PDT)
-Date: Tue, 6 Oct 2026 13:48:21 +0000
-From: Seongjun Hong <hsj0512@snu.ac.kr>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Mark Bloch <mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net/mlx5: allocate dma pool structs on the pool's NUMA
- node
-Message-ID: <z42vlmle2feb67bdkt6oswrhytfuruznrfnfo7z7caad46sp3j@ms7c7rxs6vfc>
-References: <20261005-net-mlx5-numa-allocate-pool-page-v1-1-01f4283932b4@snu.ac.kr>
- <dd8747e3-5502-44dd-a64b-8d2ad5fae1ea@nvidia.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="hhQPo4EV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791294685; x=1822830685;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=v9lEBvjdaqO6XwdYDIqvh1dxR9AHhNinpBUAg9b7Qhw=;
+  b=hhQPo4EV/JpbIxJ0jtYRCeoDpR80s++ZsaTeA0F5lygaUl3epxNnm1bJ
+   qBxk5Z0aYQ7fQbwPmnT+C77bGOkIuNYShEwSBFwRzOTENEi2D4v9WTYmf
+   tXlcwgIx2xkGBudnMKNXH/TcHVGKxPwgXA1Zh/9oibFwlar8At1HnifQC
+   XRhXldS/palrSIGXVNYrIobjNyt6NdxZu6wrjq8yFcP8tdmIXH6bxVeVu
+   U2bKj8m6toBN9jps4kIuvte/4/2LPNQwZ7ElJ7Y+Jlb47bj4z+q/fgDBE
+   9v+AoDF+S2BM/zE+4UUmoaeFqWfGj+IZsshux2lGTa/IvrxBYZCbP2nST
+   g==;
+X-CSE-ConnectionGUID: +wFIaA0USQyKvtmAKQmJ9w==
+X-CSE-MsgGUID: IYhRJQgaSj+cmdGukXM8WA==
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
+   d="scan'208";a="231742330"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Oct 2026 06:51:24 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 6 Oct 2026 06:51:24 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 6 Oct 2026 06:51:22 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Subject: [PATCH net-next 0/3] net: sparx5: add TAS offload
+Date: Tue, 6 Oct 2026 15:51:05 +0200
+Message-ID: <20261006-sparx5-tas-v1-0-5eef1126dfd5@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dd8747e3-5502-44dd-a64b-8d2ad5fae1ea@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMn8xGoC/x3MMQqAMAxA0atIZgNpwApeRRyKjZqlSlOkIN7d4
+ viG/x8wySoGU/dAlltNz9Tg+g7WI6RdUGMzMLF3RB7tCrkOWIIhUxRmR+NIEVpwZdm0/rMZkhR
+ MUgss7/sBfcsIHGYAAAA=
+X-Change-ID: 20261006-sparx5-tas-20de2210770d
+To: Daniel Machon <daniel.machon@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, Richard Cochran <richardcochran@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, Robert Marko <robert.marko@sartura.hr>
+X-Mailer: b4 0.14.3
 
-On Tue, Oct 06, 2026 at 10:10:06AM +0300, Tariq Toukan wrote:
-> 
-> 
-> On 05/10/2026 16:46, Seongjun Hong wrote:
-> > The mlx5 DMA pool structs (mlx5_dma_pool, mlx5_dma_pool_page and its
-> > block bitmap, and mlx5_frag_buf_node_pools) are allocated without a
-> > node hint, so they land on the node of whichever CPU happens to create
-> > or fill the pool, whiile
-> 
-> nit: typo
-> 
-> > the DMA pages they describe are allocated on
-> > the pool's node.
-> > 
-> > The pool, page and bitmap are dereferenced on every block allocation
-> > and free. Allocate them on the pool's NUMA node as well, so that all
-> > of a pool's state lives on one node.
-> > 
-> 
-> Thanks for the patch.
-> 
-> That is true, but these structs are only used from the control path.
-> That is once per WQ/CQ/EQ or doorbell record at open/close, not per packet.
-> 
-> I doubt we can measure any benefit, so it's just a matter of consistency
-> with the other fields access in data-path.
-> 
-> The API kzalloc_node falls back if node is offline, so it's safe.
-> 
-> No strong motivation, but we can accept it.
-> Please fix the typo and emphasize that these are control-path objects.
-> 
+This series adds offload of the Time Aware Shaper (IEEE 802.1Qbv),
+configured through tc-taprio, on Sparx5 and lan969x, which are both
+served by the sparx5 driver.
 
-Will do, thanks! :)
+In hardware, a TAS schedule is run by a TAS list, which steps through
+gate control list (GCL) entries taken from a pool shared by all ports.
+Sparx5 has 128 lists and 10000 GCL entries, lan969x has 60 lists and
+3000 entries. An idle list is in the ADMIN state. Once started, it is
+PENDING until its base time, then OPERATING. A stopped list is
+TERMINATING until the end of its cycle, and then goes back to ADMIN.
+
+The driver uses two lists per port, so a new schedule can be set up in
+one list while the current one keeps running in the other. When the
+new list reaches its base time, the hardware stops the old one.
+
+The two chips differ in how a list addresses its entries: on Sparx5 a
+list is a contiguous range addressed relative to its base, on lan969x
+it is a linked list addressed by absolute pool index. The driver
+handles both.
+
+Frame preemption is not supported yet, and every queue uses the
+default guard band of 1536 bytes. Making the guard band follow the MTU,
+and taprio queueMaxSDU, are left for a follow-up.
+
+Patch #1 adds the registers used by TAS.
+
+Patch #2 moves the existing TAS link speed configuration to a new
+sparx5_tas.c.
+
+Patch #3 adds the taprio offload.
+
+---
+Daniel Machon (3):
+      net: sparx5: Add registers used by TAS
+      net: sparx5: Move TAS link speed configuration to sparx5_tas.c
+      net: sparx5: Add TAS offload support
+
+ drivers/net/ethernet/microchip/sparx5/Makefile     |   2 +-
+ .../ethernet/microchip/sparx5/lan969x/lan969x.c    |   2 +
+ .../microchip/sparx5/lan969x/lan969x_regs.c        |  10 +
+ .../net/ethernet/microchip/sparx5/sparx5_main.c    |   2 +
+ .../net/ethernet/microchip/sparx5/sparx5_main.h    |  28 +
+ .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 204 ++++++
+ drivers/net/ethernet/microchip/sparx5/sparx5_qos.c |  53 +-
+ drivers/net/ethernet/microchip/sparx5/sparx5_qos.h |   1 -
+ .../net/ethernet/microchip/sparx5/sparx5_regs.c    |  10 +
+ .../net/ethernet/microchip/sparx5/sparx5_regs.h    |  10 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_tas.c | 806 +++++++++++++++++++++
+ drivers/net/ethernet/microchip/sparx5/sparx5_tc.c  |  17 +
+ 12 files changed, 1094 insertions(+), 51 deletions(-)
+---
+base-commit: a5e7d8e446af9803e37a3b6a4d416fb41178348f
+change-id: 20261006-sparx5-tas-20de2210770d
 
 Best regards,
 -- 
-Seongjun Hong
+Daniel Machon <daniel.machon@microchip.com>
+
