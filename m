@@ -1,33 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32CF499F35;
-	Tue,  6 Oct 2026 16:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5784A0907;
+	Tue,  6 Oct 2026 16:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791304078; cv=none; b=h1EO509AeMq4d3iB1XC5jEii9PWHTa5rhp5hQa2WKDdd8qlPYiI+fc3jc3638ih0vwVQHvPLg1BRbxB52GQXxIx2SczrFQb0pw/ydXjlJnGs5favzdI0FkndV1fY6jgO93Jbg3TnIxS1Bxq6Kk9w0uggYiSiazvWbw34r9joV4w=
+	t=1791304233; cv=none; b=APca00id3+CJDy6K7xMOX9gcasCVouMGVHI4p1Dr6RTMh6YTFzUHADrvcltPZzBX9VaGRfMv40toXx863HnNm4UZ50gXu/zERE0ubhuW6O97J4YAnIjC8cvgy1uJGT/1vGnP0cyvTHtQFLn2fMzsx358PXvnbNqexlIJo1UJahQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791304078; c=relaxed/simple;
-	bh=einZpVySWHR7THz/woUWSFbPbcaKQ1JxeslA9nIItWU=;
+	s=arc-20240116; t=1791304233; c=relaxed/simple;
+	bh=J4+Y31h09RyR9dQoIdtiw0yUptjPlghY5+Cr7fTgizo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CtS+zQL6bU08d14QasjbxBQPFHseDMUSjm5+gfruQaygXZDrmqHeS41qjcCGUSNezNNjy6yTUrbcLwoI18SkKGDQ/cssviYDzXEyr4hw+M117jBZ36xjrRCO84kxfnJe3+CrMHiaQ9Hh+zeixMyIYoIg44RLRlQ330fjWlVTaMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JH4Cr+MS; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:Content-Type; b=WV18atjzkPJvQV8dlom/SoWxGf9kEFlIAa+MCNU02RdabTfjsSE58cG9orjLBA3FgDQiLtzEOqz0IeH6anif2mKh0m6vsDWR5YmEZbXcwY0O9JgzX3ktd9Y3r2r3nbkcNELK6mHH00Fcyd+t1EWSSm+UejTPhWAcV+gb67KxrGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=aQeMFmYe; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Ed8pIcmq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0qNLvcfB; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qKpbNtGm; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JH4Cr+MS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49D91F0089B;
-	Tue,  6 Oct 2026 16:27:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791304077;
-	bh=oAdk92A+HQ3nvb4p8Km296vmXq5e9pwl0DRvbbfWM8Y=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JH4Cr+MSu9bsoMSxpDlIA4FxF1DlalnJhCgyNtBA1IvTi09NIrKW1CJipKUuFvfWV
-	 yP8Qg7CFPZm1tiHH/IaUi84lTtdKwY/iu1uJIyowqpGUmgpkG/2vkGM25CEsgNKuK8
-	 xYo262SsdCC9bSeJCJbhD1vrkdUObQdkOHTbvPMa5/LLWeDDZk9DJYSFtPh2wYHi2p
-	 xLIAlm5eig2muBn2rP/l3QnRCegK1IjzQ/P9CHtZLdQeyc5Smb/q7SzFmsYuvnXXIg
-	 7FIzjBOdhh6e6+5/WdqETQthQHYt2KIgJ29PF+haMES6OYUPi7/L03PmJOS8rq+Jo+
-	 90ljtzIiXaXIA==
-Message-ID: <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org>
-Date: Tue, 6 Oct 2026 18:27:47 +0200
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="aQeMFmYe";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Ed8pIcmq";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0qNLvcfB";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qKpbNtGm"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EE26121F75;
+	Tue,  6 Oct 2026 16:30:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791304226; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twFRnoRdRiOMUZTL6tZdobvcNatlGDj+lN0+eQllDyk=;
+	b=aQeMFmYeMpGKXQDUu/xTqXLKZMFO/w5AiMrmCGwJ3yGGmeZOV2r9ibrv/A2Vtjf/5sMfC9
+	7OfGrHCdaXISTZ+kc0xaqTT77mXCO1AZaDmqeJqc4JhVIGykKqvpG9GT6C0UjmRyEltCFB
+	6BaPJra9LmdqNEsYIPzSRLZgVX5gVmY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791304226;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twFRnoRdRiOMUZTL6tZdobvcNatlGDj+lN0+eQllDyk=;
+	b=Ed8pIcmqbtFKbUTPGG82Po+WY48Lc3iyRaKRrfxciBnsPZozHnCqKNa60G3t4102gHrf3y
+	vWHb8iHDfTh57PDg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0qNLvcfB;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qKpbNtGm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791304221; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twFRnoRdRiOMUZTL6tZdobvcNatlGDj+lN0+eQllDyk=;
+	b=0qNLvcfBQ9ogeHDuwMCImhmti9DIs+gNHV/te7mQ+lEgHIHMzDMoYmliam+61KWfoxgf2s
+	yKIEvbOMOm99U+JdH70JBo5paTeAjixirmZsBr2AvmXCkJdBheUbyZ4Rlvr73YJhpIJdye
+	NlokiBw2RTqOYFpsJd/iQlAwuOgWbb0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791304221;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=twFRnoRdRiOMUZTL6tZdobvcNatlGDj+lN0+eQllDyk=;
+	b=qKpbNtGmraLtDeUhDCNRTv2S0nOfNPWLSXQbOTAV6lRlPJ8nBIh/1mPQ+VcVt/wlSWdHXZ
+	t1sVug76Dyf6a6Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4641F13B75;
+	Tue,  6 Oct 2026 16:30:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id lCAYBx0ixWoxLwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 06 Oct 2026 16:30:21 +0000
+Message-ID: <f9180016-cf04-4452-b1d9-5c650c997d4d@suse.de>
+Date: Tue, 6 Oct 2026 18:29:26 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,111 +83,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
- VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
-To: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>,
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: netdev@vger.kernel.org, regressions@lists.linux.dev,
- stable@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com,
- Sasha Levin <sashal@kernel.org>, edumazet@kernel.org
-References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+Subject: Re: [PATCH net-next] bonding: 3ad: remove unused TX state
+To: Timur Stukan <timur.stukan.linux@gmail.com>, jv@jvosburgh.net,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com
+Cc: horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261006103207.68974-1-timur.stukan.linux@gmail.com>
 Content-Language: en-US
-From: Eric Dumazet <edumazet@kernel.org>
-In-Reply-To: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20261006103207.68974-1-timur.stukan.linux@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,jvosburgh.net,lunn.ch,davemloft.net,kernel.org,redhat.com];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[suse.de:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: EE26121F75
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
+On 10/6/26 12:32 PM, Timur Stukan wrote:
+> The sm_tx_state field of struct port and tx_states_t enum
+> were introduced in the initial 802.3ad implementation but
+> have never had any users.
+> The TX machine uses ntt and sm_tx_timer_counter instead.
+> 
+> Remove them.
+> 
+> Signed-off-by: Timur Stukan <timur.stukan.linux@gmail.com>
 
-
-On 10/6/26 13:45, Jan Čermák wrote:
-> Hi,
-> 
-> the Home Assistant OS recently shipped kernel update from 6.18.39 to
-> 6.18.52 which was followed by a bunch of community reports about fatal
-> network breakages [1] which had one thing in common - r8169 driver and
-> configured VLANs. This manifested as network stall early in the setup
-> of the system with dmesg events like this:
-> 
->> r8169 0000:03:00.0 enp3s0: NETDEV WATCHDOG: CPU: 7: transmit queue 0 timed out 6125 ms
->> r8169 0000:03:00.0 enp3s0: rtl_rxtx_empty_cond == 0 (loop: 42, delay: 100).
-> 
-> As there was no change in the r8169 driver itself, I focused on the
-> vlan subsystem, where AI pointed me shortly to this suspect commit in
-> the range: 1517d1996b5236fe69eccd9d253f725e06996eb1 ("vlan: fix
-> skb_under_panic and races when toggling HW VLAN offload"), added in
-> 6.18.51. I'm not referring to the mainline counterpart below for
-> regzbot (447cbe95ebb9) as I can't confirm whether it triggers the bug
-> there as well. FWIW there was another issue [2] with a similar
-> combination recently in the regressions ML but that one seems
-> unrelated, as disabling EEE fixed that issue, and it doesn't fix it
-> here.
-> 
-> I don't have the hardware myself, I asked for testing with this commit
-> reverted, which confirmed that this change indeed started to cause
-> trouble. However, it's obvious that the change itself is not bad, as
-> it fixes another issue and the regression is scoped to very specific
-> hardware/setup combo.
-> 
-> Besides the revert, following workarounds were reported to fix the
-> issue as well:
-> - Disabling TX checksum offload with `ethtool.feature-tx off` in
-> NetworkManager for the connection (HAOS doesn't have ethtool binary,
-> hence this option instead of direct ethtool command)
-> - Enabling REORDER_HDR with `ip link set enp1s0.100 type vlan reorder_hdr on`
-> 
-> Clearly, this needs rather esoteric setup to trigger the bug - I guess
-> most systems set the REORDER_HDR flag by default, however, due to some
-> legacy in the DBus interface that HAOS stack uses to configure the
-> network [3], it was disabled. Anyway, I think that disabling it should
-> not lead to driver breakage as we're seeing.
-> 
-> So far it appears that this only affects RTL8168h/8111h, XID 541 -
-> there isn't any report of another chip/XID combination yet.
-> Unfortunately, as I said above, I don't have the hardware available
-> for testing but I believe I'll find some community members who'll be
-> willing to test a proposed fix for the issue if needed.
-> 
-> [1] https://github.com/home-assistant/operating-system/issues/5019
-> [2] https://lore.kernel.org/regressions/353419280.954808.1790290283530@mail.yahoo.com/
-> [3] https://github.com/home-assistant/supervisor/issues/7248
-> 
-> #regzbot introduced: 1517d1996b5236fe69eccd9d253f725e06996eb1
-> #regzbot link: https://github.com/home-assistant/operating-system/issues/5019
-> 
-> Cheers,
-> Jan
-
-Ok this NIC can not perform tx csum offloads with vlans.
-
-opts[1] only takes TD1_IPv4_CS and TCPHO (Transport Header Offset).
-
-There is no IP header offset field in the descriptor. The MAC assumes 
-the IP header starts immediately at byte 14.
-
-So we need to change vlan_dev_hard_header() to take into account
-vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)
-
-Can you test the following patch?
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
 Thanks!
-
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index 
-cb8f3cdbf1f732c55a8a3d69ab5445988c953205..3a518ff064465e8ab978c66a28bf7df579931256 
-100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -54,7 +54,9 @@ static int vlan_dev_hard_header(struct sk_buff *skb, 
-struct net_device *dev,
-         u16 vlan_tci = 0;
-         int rc;
-
--       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR)) {
-+       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR) &&
-+           !vlan_hw_offload_capable(READ_ONCE(vlan->real_dev->features),
-+                                    vlan->vlan_proto)) {
-                 unsigned int hlen = READ_ONCE(dev->hard_header_len) +
-                                     READ_ONCE(dev->needed_headroom);
-
-
