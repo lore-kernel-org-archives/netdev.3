@@ -1,91 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA53025B0BD;
-	Tue,  6 Oct 2026 20:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0093AB288
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 20:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791317474; cv=none; b=KrTUUaBrXBaBWI/oiR61L7egDkdpnXET3av+20b7p3P/BwO4SKrlcfm27oc4YU/9GWxLuM7J1Oy96+ttcdjwaOTOAjRH0u1VBJxn3MAO7vBOSg2seNuO2yFTWtV7tvdiS9zSBAW+ZQUYDEONJPOzMQn0GGtajut0B5psvx8/I6U=
+	t=1791318163; cv=none; b=fE13+5VB3xSb6QaR1Lp3p7ioyftl5eVelhnelJGVmqFiLb0FzG2Kvw17tdjOMEGXkWmznWQD7oqJnLWOwbSlXrs/fdko11ClElyouerLeWeyRZwk4aZSbFT3Ed14GyFbXs+9ZvRtg0MnywxdZ4xOeWixcPNpctJ4W2KHPhaCaCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791317474; c=relaxed/simple;
-	bh=KEYHCtRqzTlT4CZxuhEBoHbFSPrFYsSAHLugLDMTOOM=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=NyHmMWMEtMQRtBMDNbfuKosG3UkjC0FiznhbtwCujEfYPW5g/BCg1QhbLH0IQIliOfw05i3r7kt8DUJWRydmChgsmTJ3hkMsKb4PudIDZkD+B5ZXsg+zJPfi6uSoqqSJcVWe4uC+HQZAP2tSYKnXjTdnW9Bl7FyIARCoh3711wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N0ly/oFA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791318163; c=relaxed/simple;
+	bh=rFVmQtBwbpZ+hy0N7xXtfJlmmBXLIt2lrMAgZCV0ulc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WG8ZJvJrg2ChnGbWa+xrwUyzHlu/nITLFv1H/1TMf1Hp3esfZwn8fTwrfigSzMV8xQYmk0Y4EpIsmO3bQh9DOtI39QSPCeKZreX/JZe5xsd1OHZkP61pGRyFZTau6fZF5eU1EQWjcSRgH8LnJxL4igTqLcfjJ1e/wWOaLv+Y794=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=zw9DsipY; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N0ly/oFA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3876F1F0089B;
-	Tue,  6 Oct 2026 20:11:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791317473;
-	bh=pKROz/B/m8c1NbQhgj0V5RmwZZKqs3KliH+giSvqQlQ=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=N0ly/oFAa4++y7xp824S/VdlXL6wZS4ZUhpk9xvnG5/8CxNGzHixjMq8CVuK7HSY+
-	 Yf+v1wSvppAzLTEIC4mbBRQ9ndo5bEHeH12ihH+swbxSL0QnDp2Zfbj46QRG2aro4T
-	 94NPEMgG1trAfBv2KFwiMH3q3KsHYG8sp21nNBwIm3inejFgMwx+X8KbsAZ2L2xzgq
-	 iolEcnOnRl8o5Vb+TK74EDvXJg4sGQBmbIRaRmJ0fOEe260UyzZtFo//ypigwd6ypX
-	 cozZBe88HnfKD5Guo/L3tVx+UARu8LXq3i+MLweRLf5fQ93YJMAVPL5ODa6w3Ecu5V
-	 E+lecPX6dxvCg==
-Content-Type: multipart/mixed; boundary="===============3320775570681954549=="
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="zw9DsipY"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e4985211ecso12434595ad.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 13:22:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791318161; x=1791922961; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wZRugNV3JlfxpmndM4rEfelj2/GgiUCrdqXME/BjiTs=;
+        b=zw9DsipYBEc6myITIhwFjiChOmZOjg7lm8TmnQTGywKW3Zt+OK4y6AaFUmdK9mmvMh
+         3wxlT9vOkntD/tHXyJktZ8C5p6YPuE1fcyj8lG0Pu+pqG43hOeeyt7u38j2BdDQkh8nX
+         VcVCYCGj/oCUCDTDq/1Xhu/a5EAQHekW+m2MkzNUXrmOAUwLoXIoZefHAf0CCczCgBeY
+         NYl4RiireUGBX4/w10KZ3gCRBQOwALZLlYMjiTfuK24Sr/cxLnpRDOHs679Cs9bLa+3+
+         6v/IRgEu9047GCsQtM6IzsAel6HUj+flDTIkQ5BheXe55uLfxEPOQ3Ovz/7Cz1iI4Fwa
+         Rc8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791318161; x=1791922961;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wZRugNV3JlfxpmndM4rEfelj2/GgiUCrdqXME/BjiTs=;
+        b=VN1uZW/GousgdTMxqTDbVqGrxxqLsaEc4XwONCcxwD2VhYcWXKYNQobCxkmvPlnxHd
+         WAfaPno7hdC6AJsoh0pwufoCLoDoC9P1Xt+STMU0650JW5i0VyjfTu4veLQK9nA9FQaM
+         fd19BTtWpdflhnn0ps5nbWlg9W1ryL67jBUwwkfzUj+TQ9krwURz0s7ZzcO9g0VY4jWR
+         B4swnMzVzzZm99F1EIw4asB7qbmry85ZeQCROwCos0xQMJNfdr2ScodmOUulGHs5NAAv
+         39NtCDF2DeUfhLcu9DiNFfoX6vQSomwzetXP58PvyJPME3UFJlaypSmrT+Em76vXq5GK
+         A6pQ==
+X-Gm-Message-State: AFq9FYL5ZPyElkrq5r5Lz3InltcrAqH4kDowi4wM2a2ZJVPg9I7EipBg
+	WkwKUAg+wn45tI+ywlAYRCVyjLfIfjZuQ/YsGqSZuisQAYWe0R8U+MmQ/FQkgTJ28jg=
+X-Gm-Gg: AYBFou2Xjco5XoAaAZtIyuRhFS7OokRN82LxQa+tRalUlKyFvdl70zFJKIv7fICO7dM
+	3hzd64Y5SoJ8htk94GETe3BGwh2fYljBgP4l9Qkfrr019Stdhu0/AaOs0Z9ClS1xKsahCUhBUwV
+	m5Ug3g4DUz9I5NDg5c8bgFZfhi8LazyDukdszK/42MLVpNXSrn/DaXHAKKAmyIJoZeOXutv78v+
+	4s4Jv+QrjcDykDKmx3c3rrMiQFoYAa/NxqoK0D7O2nh+/Qx+D2KomC53NqXrAJs1xiYAmJmdjct
+	EVemTUGF9fvLhLDGYevku5IqTS5xERrpL7QjjKGap+KO8GMk/5zjNwX6EmdYTYC/PBdFqwk23MJ
+	DJCuH9vs7aMI7djta0l5ShP4DtsccRrmHwvzHnXNoWuqwmI9mMW5PciPWVSWF0CxBHB/5ptFfE6
+	Eu6QT5RyrCtiTEJ+JP+FQmfE9vJKduk5pnpLjWljhqPDGzzB6rF/Rv/tBx9SzKDCx0fMUA5v3HP
+	uPJPdtLELA=
+X-Received: by 2002:a17:902:ecc6:b0:2df:84e0:902f with SMTP id d9443c01a7336-2e6003b6918mr3976315ad.9.1791318160579;
+        Tue, 06 Oct 2026 13:22:40 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:3::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e604948613sm850485ad.63.2026.10.06.13.22.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 13:22:39 -0700 (PDT)
+Date: Tue, 6 Oct 2026 13:22:37 -0700
+From: Joe Damato <joe@dama.to>
+To: anmory <anmory@protonmail.com>
+Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
+Subject: Re: [RFC net v4 0/4] bnxt_en: Make RING FREE more robust
+Message-ID: <asVYjdbZGMAEck2t@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, anmory <anmory@protonmail.com>,
+	netdev@vger.kernel.org, michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
+References: <VyyrJwrwBZEIGezDRJP8QPxbcsGROaxnmohLCnzNQY6sX5CEt0BK3AEC_0MGBx6OxGf4H5UG_xQcqgtAonwmXLdZ5Bd3INWMsof8Oj6ruqg=@protonmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <72faa93630282ccbafab90b19af73aeeb9c2d4ac58b649fd7afb2f334d148c86@mail.kernel.org>
-In-Reply-To: <20261006192601.1875100-6-kuniyu@google.com>
-References: <20261006192601.1875100-6-kuniyu@google.com>
-Subject: Re: [PATCH v4 bpf-next 05/10] bpf: tcp: Check BPF_SOCK_OPS_TEST_FLAG() after cgroup_bpf_enabled(CGROUP_SOCK_OPS).
-From: bot+bpf-ci@kernel.org
-To: kuniyu@google.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,memxor@gmail.com
-Cc: ameryhung@gmail.com,yonghong.song@linux.dev,john.fastabend@gmail.com,sdf@fomichev.me,edumazet@kernel.org,ncardwell@google.com,willemb@google.com,ukyab@berkeley.edu,cleger@meta.com,kuniyu@google.com,kuni1840@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue,  6 Oct 2026 20:11:11 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <VyyrJwrwBZEIGezDRJP8QPxbcsGROaxnmohLCnzNQY6sX5CEt0BK3AEC_0MGBx6OxGf4H5UG_xQcqgtAonwmXLdZ5Bd3INWMsof8Oj6ruqg=@protonmail.com>
 
---===============3320775570681954549==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, Oct 06, 2026 at 04:43:42PM +0000, anmory wrote:
+> Hi Joe,
+> 
+> we appear to be hitting a very similar issue to the one described in
+> this RFC on two Broadcom BCM57504 systems.
+> 
+> One detail that may be particularly relevant is the ordering in our
+> reproductions: on both systems the AMD-Vi IO_PAGE_FAULT occurs before
+> the NETDEV WATCHDOG / TX timeout.
+> 
+> We originally encountered the problem after updating from Debian
+> 6.12.107-1 to 6.12.111-1.
 
-> bpf: tcp: Check BPF_SOCK_OPS_TEST_FLAG() after cgroup_bpf_enabled(CGROUP_SOCK_OPS).
+BTW there was recently this patch [1] proposed by Eric which helps prevent
+a bug Stefan reported [2].
 
-TL;DR: Nit only: a comment in tcp_set_state() still mentions
-tcp_call_bpf_2arg(), which this patch removes; it may need to name
-tcp_call_bpf_flag() instead.
+I am not sure whether the bug you are hitting is Eric's bug or the bug I am
+chasing.
 
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index fa69961c47d3..5d9d3bcde8f7 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -2994,8 +2994,7 @@ void tcp_set_state(struct sock *sk, int state)
->  	 */
->  	BTF_TYPE_EMIT_ENUM(BPF_TCP_ESTABLISHED);
->
-> -	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_STATE_CB_FLAG))
-> -		tcp_call_bpf_2arg(sk, BPF_SOCK_OPS_STATE_CB, oldstate, state);
-> +	tcp_call_bpf_flag(sk, BPF_SOCK_OPS_STATE_CB, oldstate, state);
->  	bpf_tcp_ops_call(set_state, sk, state);
->
->  	switch (state) {
+Other than explaining how you repro'd the issue, if you want to test Eric's
+patch you could apply his patch to v6.12.111 and see if the issue still
+occurs.
 
-This isn't a bug, but the comment earlier in tcp_set_state() still refers to
-a helper that this patch removes:
+If it stops, it's probably the bug Eric fixed and not the one I'm chasing :)
+but if it continues, it could be what I've been looking for and I'd really
+want to know how you reproduced it, please.
 
-	/* We defined a new enum for TCP states that are exported in BPF
-	 * so as not force the internal TCP states to be frozen. The
-	 * following checks will detect if an internal state value ever
-	 * differs from the BPF value. If this ever happens, then we will
-	 * need to remap the internal value to the BPF value before calling
-	 * tcp_call_bpf_2arg.
-	 */
-
-tcp_call_bpf_2arg() no longer exists after this change.  Should the comment
-now say tcp_call_bpf_flag() instead?
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/37521083031
---===============3320775570681954549==--
+[1]: https://lore.kernel.org/netdev/20261006042153.199444-1-edumazet@kernel.org/
+[2]: https://lore.kernel.org/netdev/20261004122616.56714cbd@nargothrond/
