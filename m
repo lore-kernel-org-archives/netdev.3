@@ -1,104 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59823563F6;
-	Tue,  6 Oct 2026 16:48:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2EC2D2488;
+	Tue,  6 Oct 2026 16:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791305292; cv=none; b=d9asgd6o7wM19komLjIdQbkg5Vx1AETqqMIo1cFC+Z3nxOXaXl66AvgUSoJ60SPgfsjKExcoxjcLiBctivpxSmO01KJwifGpCd3fER7gQNaI3uPzOHE4nQm+lki4ALPfGldqvyhlovh1a+NqTA2Mbxfm82/cqZD0oZDR3TOGo24=
+	t=1791305296; cv=none; b=YcAk+TQNGgSZarIsG2uds+TZdYnV/ixrdWB2yxkPjFn/b5AM3Ie/6L7zSEnkq2woPKJZbdUw1sw37mcdO0A4cLDqSizw+fJYR4UKNiQgUNcSkeslOcLoaOhRMMyE3VBz1XrCYR1r59+Yn3DxkUWduPBX/War1ksTLkRmzZNMVmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791305292; c=relaxed/simple;
-	bh=zXSXQbCwcrgf1rnHXh1JMPBFTzcV1b9TDrQgc1cAtkQ=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HsnnKbFToUshke+Xjk+ZoMvIk5y2OwoOWW6PVwFqlUj953V8c50aQGkR78AWJFqLO981h4amlvkIausVuqhiiCL/n5QyiBESBKO0lrxIbANiHhDHULR3JjPJ7ICT9e2oUIdIDyghH7VH7dit/Npl55N0fh0Y3qLQJgi/We6I6rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqCAdBaQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1791305296; c=relaxed/simple;
+	bh=zN6GZeLsD4ipIyBAsUKJLG8w7put7Yz3aZZIfQOmyqo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mwYTQPhzNquzDNFfbGewB+iZRAFa5m0XAtxn+LQZAUdJvYE/M0odnmLady/bX7yQOr3FEwf1XXt3vk+wWVwf0Kyp2kqKSh0l9dn2vauKrtJ/Hf3iAZtF41YTIk7sQjNMV5FJcic78XJEO7diry03XnE/0oybAd2jNNp0Sm2YaYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MirE2a3D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqCAdBaQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5BEC3C2BCF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MirE2a3D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185CA1F0089B;
 	Tue,  6 Oct 2026 16:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1791305292;
-	bh=zXSXQbCwcrgf1rnHXh1JMPBFTzcV1b9TDrQgc1cAtkQ=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=mqCAdBaQpTJwOVxopFX1srU1QDie+7KetQYBjpIpzE2A+yQA0S3zCN2/9uMtRLBlp
-	 lkqy580VPKJvgR77khlJgzScbBRZ1w4AMdKs4EmBZXdG5Iox8XUHDBsXFHdlDprVAp
-	 Js5KZ6ZzDTzn+q08DIgFGZ2cMylYVS8l3tseQRMs0hSMXQ/VZdJ54WXWx/UiH6yluW
-	 FHcP/E1olL08al5laiMzXe1z5qvcKhEPftR8lcVWEeM3RIMJBWPHGl4IM9g4Fsps1Q
-	 ZNbmB1ONqWUpebI9hRCi+tC72PqEQSrb44dM72iemLavIXfgfPYHpBxv4C1JLOj28Y
-	 0k87OzayhsJVQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 329F5CA5FFC;
-	Tue,  6 Oct 2026 16:48:12 +0000 (UTC)
-From: Kyle Hendry via B4 Relay <devnull+khendry.reliablecontrols.com@kernel.org>
-Subject: [PATCH net-next v3 0/2] net: pcs: rzn1-miic: Validate dtb
- configuration values
-Date: Tue, 06 Oct 2026 09:48:10 -0700
-Message-Id: <20261006-miic-validate-dtb-v3-v3-0-68617b3dca5c@reliablecontrols.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791305295;
+	bh=IPFOHkcIIF4ReC4suyOiiSRI7+Myt5oo+510tjuGmJI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MirE2a3D2LhvM6yBBlMSxvE75REamWzyrmiPT3lryrYCqIxpVxYETGp3tALaWwxw6
+	 Es/VEeVHQujwjaPq03VDRicVy2bfRzpd0S0+Rf4ab69/b8+xI3IYny+bxZRgfiNJyg
+	 wJdDzCdvn71X2xP/72JfjWWlTk3NIcSS7MUFi+83TORyE9Yg4reGCKW7AHk77hxJIk
+	 su5ulVkO582tw/DM8wJhFMVUpS8p4mm6qIx0rDNFo+u1Yhu8ILDBHftGW0qWL2QYV8
+	 Ae/3L+FQDMgp2vZrMglR6IqyfjZUK/6yZqygTy2xlQo8BWtr/pz7jCIfEtKcuccZ0p
+	 i5h4Fz0qitRcA==
+Date: Tue, 6 Oct 2026 17:48:10 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: satishkh@cisco.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	sebaddel@cisco.com
+Subject: Re: [PATCH net-next v2 3/6] enic: recover V2 VF mailbox when PF
+ state is unknown
+Message-ID: <20261006164810.GN83879@horms.kernel.org>
+References: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-3-5962c10061b2@cisco.com>
+ <179105705474.434549.8884325756137736298@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEomxWoC/x3MSwqDMBRG4a3IHfdCHihttyIdxORXL7SpJCEI4
- t4NDr/BOQdlJEGmd3dQQpUs/9hgHx351cUFLKGZjDKDVqrnn4jn6r4SXAGHMnG17Gern0b5SeN
- FLd0SZtnv7UgRhSP2Qp/zvACslybCcAAAAA==
-To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, 
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Kyle Hendry <khendry@reliablecontrols.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791305291; l=1340;
- i=khendry@reliablecontrols.com; s=20260813; h=from:subject:message-id;
- bh=zXSXQbCwcrgf1rnHXh1JMPBFTzcV1b9TDrQgc1cAtkQ=;
- b=+gvUdgGmUhXtWwCRIbXud22BVaXjP4blOyp0hcOw5wX7yqK/y3BIbqys32ea3CA7CiOWi9Q9j
- gOySn5oEgfSCeKdjy/BBUM1hP5HrgABZ9r7kzPLgTGaY6a0VhAy/Xmv
-X-Developer-Key: i=khendry@reliablecontrols.com; a=ed25519;
- pk=gbK6oghz3qBlBiaGCsEzALLOtj5VklmsuolHQNhDV5M=
-X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
- with auth_id=946
-X-Original-From: Kyle Hendry <khendry@reliablecontrols.com>
-Reply-To: khendry@reliablecontrols.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179105705474.434549.8884325756137736298@kernel.org>
 
-This series addresses issues found when reviewing another fix:
-https://lore.kernel.org/netdev/20260915-rzn1-miic-fix-array-v5-1-b7173fd5b97d@reliablecontrols.com/
+On Sat, Oct 03, 2026 at 07:50:54PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 11 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 2 · Medium: 6 · Low: 3
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [High] enic_reset() now has two new error exits, taken when
+>   enic_dev_soft_reset() fails or when the newly added vnic_dev_init()…
+> - [High] The patch adds vf_datapath_open so that "a failed internal reset
+>   cannot stop it twice".
 
-Invalid values from the dtb could cause out of bounds array access. Checking
-the values as they're parsed should prevent this.
+Hi Satish,
 
-Changes in v3:
-- Squash patches changing miic_port_max
-- Change name of miic_port_max to miic_port_last
-- Remove fixes tags
-- Add another check for configuration value of miic-switch-portin
-- Link to v2: https://lore.kernel.org/r/20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com/
+There is an expectation that the author responds to these messages
+in order for the patch-set to proceed.
 
-Changes in v2:
-- Simplify fixes by making miic_port_max the last documented port number
-- Add fixes tags
-- Link to v1: https://lore.kernel.org/r/20260925-miic-validate-dtb-v1-0-3a6db9bb75ec@reliablecontrols.com
+In order to move things a long a bit I've taken a brief look at the two
+issues above (only) and they seem both related to each other and
+legitimate problems.
 
-Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
----
-Kyle Hendry (2):
-      net: pcs: rzn1-miic: Update port numbering for RZ/T2H
-      net: pcs: rzn1-miic: Validate dtb configuration values
+Please also look over these and other issues reported by
+netdev-bot+sashiko@kernel.org for this patchset-set.
 
- drivers/net/pcs/pcs-rzn1-miic.c | 45 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 37 insertions(+), 8 deletions(-)
----
-base-commit: a5e7d8e446af9803e37a3b6a4d416fb41178348f
-change-id: 20261005-miic-validate-dtb-v3-cf31820cb1e9
+For those that are non-issues, please indicate that,
+e.g. by responding to the bot on the ML.
 
-Best regards,
+And please post an updated version that addresses the real,
+non-pre-existing, issues.
+
+Thanks!
+
+> - [Medium] The commit message says the timed-out DMA mapping is left "for
+>   admin-channel teardown to reclaim safely".
+> - [Medium] vf_mbox_recovery_active is a plain bool.
+> - [Medium] vf_mbox_recovery_active stays true for the whole run of the
+>   reset worker, including the time after enic_open() has committed…
+> - [Medium] The patch makes several admin-RQ drop paths trigger full VF
+>   recovery (RX quarantine, carrier off, sends disabled, a soft reset…
+> - [Medium] The new V2 VF error exit in enic_open() (`goto
+>   err_out_dev_disable`) runs after enic_dev_enable() has succeeded, when…
+> - [Medium] The new vnic_dev_init() call in enic_reset() issues CMD_INIT,
+>   or on older firmware CMD_INIT_v1 + CMD_GET_MAC_ADDR + CMD_ADDR_ADD,…
+> - [Low] Concern: the patch has no Fixes: tag even though it fixes V2
+>   mailbox behaviour introduced by commit 1f0c856b596337.
+> - [Low] Concern: the commit message and comments assume a VF MAC/receive-
+>   filter mailbox protocol and a station/filter replay that do not exist…
+> - [Low] Concern: the new enic_reset_addr_lists() calls in enic_open() and
+>   enic_admin_chan_reopen() run __dev_uc_unsync()/__dev_mc_unsync()…
+
 -- 
-Kyle Hendry <khendry@reliablecontrols.com>
-
-
+pw-bot: changes-requested
