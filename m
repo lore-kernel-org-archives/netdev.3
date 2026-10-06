@@ -1,83 +1,58 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cvsmtppost17.nm.naver.com (cvsmtppost17.nm.naver.com [114.111.35.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C783859D3;
-	Tue,  6 Oct 2026 20:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9131D3BCD36
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 20:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.111.35.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791319724; cv=none; b=nA+oMNy6W2aFKjUi5LtwGaJ4ngIXAy3YKlaR1k0WdOkh8HQJ/eboKDSAZ8udKJoL0ri/0OsPAx9IqKOuxgzQAeqIsPf3BuG+Hox474qpi478azdT9Pnrr8+Njkjs4z/XpqujbM9eF5DQXAA8skD9I4r7HEq926GazJnBLWSoif8=
+	t=1791319942; cv=none; b=uFz8ow5ywTL6XsaSysJKuo8CgWO4FvRJJFfO2/qQH2NQvJ37qHwVOpjmhoPFpvIlJmCX6NeYSkeYMdT6c5nuL+mUDqkeO93V/cSYUS+Crp80+u3KmsCxnd3ujWtC1O40LJE0kL+FkwU9SMieX6EkTGWTXcuxcHYUobTE9JC6hFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791319724; c=relaxed/simple;
-	bh=tB0qHnJJHa9piPfqzJkvOTKvaRYSaeMyRFhMHIMkdFs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pBiDGS38dVxcml0PkwNsqHCCcf4uaQqJ92KEY/boYU9Sb3xJVgcVrmj+jqodbCRn0WCS+uv2KOUA5wOVAQVILp7ck8elXXR26GyLtWAe0NjtfBEKV/1EBsEzIYClcRkd+KYloHVv7HVSsncugijcuLGJtTvP5vZ9FAajyOLFJJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=VgCakNKt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=F/9U/Q/6; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Cf3hZmoX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P3gQ93te; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1791319942; c=relaxed/simple;
+	bh=4+EiP65+bvq41LfgEMYvnEnAvMWgqDXCp767t8pZaEU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DHLFLbTsvoucGm6zVwf6SJmlzDnsegMGELuIPOOBGVRKISMephq8r62nhoUl3ET4UxZIjWUl5rr3qhh+JtUhYniIrtNa3Nq3uTnSS3app5f6p+qhJZKWW5Mz69cums9RmckGio/Bb2mEsn/XbmHHGzsEzf3/0YPeRuV40myEgyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=RFD99k4W; arc=none smtp.client-ip=114.111.35.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="VgCakNKt";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="F/9U/Q/6";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Cf3hZmoX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P3gQ93te"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0613C21F72;
-	Tue,  6 Oct 2026 20:48:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791319717; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
-	b=VgCakNKtFP1A4e+W9P2v6GEUIwfkV7xAfnX7kV3mq0zR2PheXK82mphQETy1l86QNICKfX
-	RNazyUpUjjhOenNg0U6TbACsU8w4hYWwK9xI8DTaV2wc+Zisgqce+iIsp2ep+ynoSjAhUO
-	I3Uhcdx2kYFtdzWLuqd8vlmc0qqk4rc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791319717;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
-	b=F/9U/Q/6Qe3Iimo8bmsh7IYVnSyUO3Dn09oFpVfnFBTSsClenM3afDbGZ/sPjqT7uBbyuI
-	HdIhMEZf/qH4LsDg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Cf3hZmoX;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=P3gQ93te
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791319713; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
-	b=Cf3hZmoX9BELsUBFa0geK9LBZ+qZgYTXjtLYyaCk/gWuD+wFx0iM8NIuT+jj43pc1sZQkG
-	WWKpPIiAfZkjpVzylFiFiPiHmaOvJBqlgFhSkPUZM5t55KB8+MrrcNEaCNKohQMPw6gp/W
-	qi3NxXhMrUtYEvxhD46+myEbS3UrIdI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791319713;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=cWm1QfHzzykaWrbfkyEzggECciRPa7kq9IHoGlt8wHI=;
-	b=P3gQ93te75hxqBhXBSAEIG3B5H7xURP/+5cGJu5ECo0ReX2oN4mCCdxM8DnP68roPxb8TE
-	QFKY8xHrc2jJ8cCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60BA4137AC;
-	Tue,  6 Oct 2026 20:48:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QZJsDKBexWonPwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 06 Oct 2026 20:48:32 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	matttbe@kernel.org,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH nft v2] doc: add MPTCP subtypes documentation to man page
-Date: Tue,  6 Oct 2026 22:48:03 +0200
-Message-ID: <20261006204803.11155-1-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="RFD99k4W"
+Received: from cvsendbo025.nm ([10.112.18.59])
+  by cvsmtppost17.nm.naver.com with ESMTP id 8EnAhfqYQfywmYg7fyZGIQ
+  for <netdev@vger.kernel.org>;
+  Tue, 06 Oct 2026 20:52:13 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1791319933; bh=4+EiP65+bvq41LfgEMYvnEnAvMWgqDXCp767t8pZaEU=;
+	h=From:To:Subject:Date:Message-ID:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=RFD99k4WHj8sfxQTNa76PEgxs4gKp1/Gkn8yvq9zMo0uQS1E8gS1HMks8GNHuFYro
+	 xTiMeGfRSvoiEnXLhmOqhOruo1dtXVjTOTMm5RoBTrbJ8kExoH+TbFjvL5RJF1xfl3
+	 PRe9HK4O0A359+2X8nbW5k2URqxyCedkAHGO2cDghHtDjWhCBlkHpNX+hCfWEOSwOW
+	 IH+Pn6FtpwS9ZTWa2KCNCwJGWfrAczG33STEFKbFCniMve1Zn2uaqX7rnbVGiHWFTn
+	 sQPFxGgv0vE9Tp1BswM4G4cElfwrcJ4BAnDeJ8Wf4qqYvEvmkfbMfjQdoSDpNIdkii
+	 AeQri21w0NZdA==
+X-Session-ID: M0sCso7tQtycFRTn8XrBHA
+X-Works-Send-Opt: O9RwpzGdjHmdKHFOMr39Ko3YKHmwKBmwFAbrFxKrKqEmjJkaBd9YKBmm
+X-Works-Smtp-Source: Yqb/KoulFqJZ+HmZKqEX+6E=
+Received: from localhost.localdomain ([115.136.205.4])
+  by cvnsmtp003.nm.naver.com with ESMTP id M0sCso7tQtycFRTn8XrBHA
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Tue, 06 Oct 2026 20:52:12 -0000
+From: sungbyeongchan <tjdqudcks0424@naver.com>
+To: Allison Henderson <achender@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andy Grover <andy.grover@oracle.com>
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] RDS/IB: validate receive completion payload length
+Date: Wed,  7 Oct 2026 05:52:04 +0900
+Message-ID: <20261006205204.1322102-1-tjdqudcks0424@naver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,106 +60,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 0613C21F72
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:mid,suse.de:email,suse.de:dkim];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
 
-In addition, document the limitation when there are multiple MPTCP
-options.
+An RDS/RDMA peer can declare a fragment length larger than the payload
+reported by the receive completion. The receive path attaches the recycled
+receive fragment without validating those lengths, allowing recvmsg() to
+return stale bytes beyond the actual payload.
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Validate data_len against the expected current-fragment length before
+transferring fragment ownership. Disconnect and reconnect on mismatch.
+
+The issue reproduced in two clean QEMU boots. A peer declared 4096 bytes
+while posting only 16 bytes, and a receiver under a different UID obtained
+4080-byte tails from prior messages in all 256 attempts in each boot. With
+this change, the malformed message was not delivered, reconnection
+succeeded, and a subsequent normal 4096-byte message was delivered intact.
+
+Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: sungbyeongchan <tjdqudcks0424@naver.com>
 ---
-v2: added valid MPTCP situations suggested by Matthieu
----
- doc/payload-expression.txt | 41 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ net/rds/ib_recv.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/doc/payload-expression.txt b/doc/payload-expression.txt
-index ceccfdaa..53e92905 100644
---- a/doc/payload-expression.txt
-+++ b/doc/payload-expression.txt
-@@ -805,6 +805,32 @@ TCP option matching also supports raw expression syntax to access arbitrary opti
- [verse]
- *tcp option* *@*'number'*,*'offset'*,*'length'
+diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
+index bd6cb3ffaa571..0daddb108c8a7 100644
+--- a/net/rds/ib_recv.c
++++ b/net/rds/ib_recv.c
+@@ -949,6 +949,15 @@ static void rds_ib_process_recv(struct rds_connection *conn,
+ 		}
+ 	}
  
-+.MPTCP subtypes
-+[options="header"]
-+|============================
-+|Keyword| Description
-+|mp-capable|
-+Multipath capable
-+|mp-join|
-+Join connection
-+|dss|
-+Data sequence signal
-+|add-addr|
-+Add address
-+|remove-addr|
-+Remove address
-+|mp-prio|
-+Change subflow priority
-+|mp-fail|
-+Fallback to single-path TCP
-+|mp-fastclose|
-+Fast close
-+|mp-tcprst|
-+Subflow reset
-+|============================
++	if (data_len != min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE)) {
++		rds_ib_conn_error(conn,
++				  "incoming fragment payload length %u, expected %u; "
++				  "disconnecting and reconnecting\n",
++				  data_len,
++				  min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE));
++		goto done;
++	}
 +
-+Data types can be queried with 'nft describe tcp option mptcp subtype'.
-+
- .IP Options
- [options="header"]
- |==================
-@@ -833,6 +859,21 @@ filter input tcp option sack-perm exists counter
- filter input tcp option maxseg size lt 536
- --------------------
+ 	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
+ 	recv->r_frag = NULL;
  
-+.matching MPTCP suboptions
-+--------------------
-+filter input tcp option mptcp subtype mp-join drop
-+--------------------
-+
-+[NOTE]
-+====================
-+Netfilter currently evaluates only the first MPTCP option found in the TCP
-+header. If a packet contains multiple MPTCP options, a rule attempting to match
-+the second option will never match. Having multiple MPTCP options in the same
-+packet is valid, e.g the Linux MPTCP stack inserts 'remove-addr', 'mp-prio' and
-+'mp-fail' after an MPTCP 'dss' option; 'mp-tcprst' can also be inserted after
-+an 'mp-fastclose'.
-+====================
-+
- .matching IPv6 exthdr
- ---------------------
- ip6 filter input frag more-fragments 1 counter
 -- 
-2.55.0
+2.43.0
 
