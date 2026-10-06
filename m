@@ -1,287 +1,296 @@
-Received: from rcdn-iport-3.cisco.com (rcdn-iport-3.cisco.com [173.37.86.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75623CC32E;
-	Tue,  6 Oct 2026 20:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=173.37.86.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A443914F5
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 20:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791319300; cv=fail; b=VCCKxkdh2jTCy1pXG2WwzSydGi6qBEFQWox7kzV0q3sy2Avbo1TjMdsSV7plHU6Mjrc6ddXhlH07VFb856037t/45pA4/hVoPKS9OKt0Gji3CV58q1fB9zrkH3HYlt69DZv/pI/AC/PLtB1g5NmAhU/kiqYOpVVF2laIcRSSWH4=
+	t=1791319411; cv=pass; b=cVM2idLnA+UzoMuWxCUn+gn+U/lmVPvN1x9UzocjxYUtFizg4gZ7hOdcwKdXCiFnnJnk+5PclVZ1e4GbjDjLYhq7Qrn5saaVdKmDtskq0sQTL1gCCwQOEnnt0k8monHcInXm1fbc7/dDULwxHHaZdxhxNlDhuXHlJLgiSXbHHDY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791319300; c=relaxed/simple;
-	bh=t/LEkTeO2n1Uic4N3jydpKqlJYENq0ltENAdnC33o9g=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=c0esHrH7EuWChKMijHWkd5qOgVqO363R65aEzfd9l7TI4hk0aoczaS2coITqsjAiioYowqoFEwx69175lIqMMPUktRmMbl5BmEzGhnCUjApiednO//71sHTjHQsqn+6EfsuG67m00O/bUVT8g4pCUJrrD9duIUlZB/5O8J8yDXw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=lzf3hldI; arc=fail smtp.client-ip=173.37.86.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	s=arc-20240116; t=1791319411; c=relaxed/simple;
+	bh=XfDOqwl6Iw7dv6BhzcIBSwIFStzO1lcl+rnJERqVgQ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mGTkq5a6ELc/PnCrXt+7Ar5dFtAmDDKKmabEzpQ50ZJF+nn8pHPjWD8J2Tb3SB6IEJmU31qwMoDwmYOIBc8JkFv/LwojcZAn7K6Re05Xg+EyEnAhxkppyxny5SVMNbzKXgBn7w1gQhZ9TLjbsF1Edv6TokqFEO80nIT3RF2KAZU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V5S5XvZg; arc=pass smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="lzf3hldI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V5S5XvZg"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8917c712f32so266632b3a.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 13:43:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791319409; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hJx5MAaAWUMRJCQuvyF5ZBScvWDlfkU0NFI0dl2HbmF1TL6k4DKm5L2RPlF/QMt7TS
+         QPgtEe+YmbexHCbJPh7R/QxKT4GyI5E0ApBVTULlYT4zy36hKB75xhMNl/9cDThb+3bh
+         iTrPo317kvkC5ebVXbP5SxIwnJO9RpbQG2amjM6ZmkqdwIYXAwWIu47g4EuG1HnL3ILd
+         QNpeRy0Lv35d2B4emTIFoXnzp2nFUBEHSmlUTRZCL5Vds2+1zmK+Xtl8C9/9fP5VuBVg
+         hVFraA1Dp0VaiC0yWiYE/ltbG3sb+l8Vv0U3O9FoDztJdFpcDkOpn8XLlMlhpo2pTY6a
+         4+ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pYLtJa497tb3khpaP4kumzUEgLsH3DJmAXssXxTU2u0=;
+        fh=FVWdGp8AlV7AtrHxsMBuel4h1EPxjEu38n+5KZAspQg=;
+        b=sgSk27rtimng6DGkCTQm6vjAOHkhBiV6kPhfgI4J4/VahxjwIOn2uz+EACAMfOzbj2
+         2g38YADUEz9iHt/2CyNpzdZb6vV2z/PrKo8lKMvK9sc7gBZIp3jrZ4W16OhEoMQdy5Mh
+         S0lCccWSkXWWhDFXp9xBEUDixAtrzGF7nftYQuXq09NLW7g53b//VJNg3QI6B3m8Fm1V
+         Z6njKPmDvBXOl/JND5tIHadIhjicmCOQZL5Dgs9CVVOa6qgam7ILg1ahzDXWNfzYYsPu
+         WZgYIRlsGMAefiHXPP/TyJ/mMCpSCUxHQTaayU5+iO2zS7LUO+JJXYMTzlCsOFqJ2OtH
+         VVuQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=3722; q=dns/txt;
-  s=iport01; t=1791319299; x=1792528899;
-  h=message-id:date:from:subject:to:cc:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=qpfHyM7JbIyFbzOmFwhyZaJiq928Br+Fs8XJ7sud/A8=;
-  b=lzf3hldIXr846IF8+vadE8Wv9YWPQursxjLzgmgx8GhzLTCMRR7RI0VK
-   JWYCAWVCGSvQonkNYi9sZ56pWuilgoaDgLhvQcHBgGVBJal2DYTs5lN/M
-   SoIVeI29Bsp3Dv8zxCKuk/6GH5LZN3Hax+ROf/+t37SeMDIylI8Wunoqo
-   EEjK9M/Vd8sJQUSMt0a0rvkLCu3qRMgcrxPSao4ZhfsHinCX5C9KXVarB
-   Lt/p/Rmsegy0ELix4yXU2ESKxMZFWp/wpB/zGSmgH2n7Cl3ZRvKfXxz1Y
-   CnceLuch9x+txEG+YVDabqvM2ltKJ/jLqaAXoVGyw0qF+5pPh6PP8bNEU
-   w==;
-X-CSE-ConnectionGUID: hWPta2pDRBS1Hiqsl+ytZQ==
-X-CSE-MsgGUID: Ocog6AmiSHqaSZ3EKDgNfA==
-X-IPAS-Result: =?us-ascii?q?A0AoAACHXMVq/4z/Ja1aHAEBAQEBAQcBARIBAQQEAQFlg?=
- =?us-ascii?q?RcHAQELAYFtU4IuSYRXg00BAYRMX4ZYgiEDnhoUgWoPAQEBDQEBUQQBAYUFA?=
- =?us-ascii?q?o4JAiY0CQ4BAgQDAgMBAQEBAQEBAQEBAQEKAQEFAQEBAgEHBYEOE4ZckBMBA?=
- =?us-ascii?q?QEDIw8BBS8JCRALDgoCAiYCAjElBhMCAQGCfoJ1AwECrHkCih16gTKBAYR/2?=
- =?us-ascii?q?UmBdBWBCi4BhXGCbQGFeRuEYScbgUlEgTwLgkgxPoQfC4N0gmoEgiKBDJVJU?=
- =?us-ascii?q?ngcA1ksAVUTFwsHBYEjQwOBBiNLBS0dgSMhHRcRHlgbBgUSICpBQ12BWjwjG?=
- =?us-ascii?q?TZ6gQlegSspYAECDhdGLhWCBwKCVIEjAlsCAUlBDgdFUwklQxJHJiIIEgkBE?=
- =?us-ascii?q?xowC4EbODwJKEEXDCBtPTcKCxkEPZFKHoFvD2FbIV8CJmwYHBoBEAE6kwyDN?=
- =?us-ascii?q?Y8TgTWfWoQogWafewYPBC+EBI0UmVeZCKQLhQ0CBAIEBQIQAQEGgWg8gVkzG?=
- =?us-ascii?q?ggbFYMiUxkPjmDPfVk+AQcCBw8CgXOQEYFtAQE?=
-IronPort-PHdr: A9a23:acME1BMe1eh959VqLZYl6nc2WUAX0o4cdiYP4ZYhzrVWfbvmo9LpP
- VfU4rNmi1qaFYnY6vcRk+PNqOigQm0P55+drWoPOIJBTR4LiMga3kQgDceJBFe9LavCZC0hF
- 8MEX1hgl0w=
-IronPort-Data: A9a23:FPojrqA7ArsWABVW/0biw5YqxClBgxIJ4kV8jS/XYbTApD8nhjUDz
- 2UdDTyCbPyCNDP9eIpwYIzg9kIHu8XTxoVrOVdlrnsFo1CmBibm6XV1Cm+qYkt+++WaFBoPA
- /02M4eGcYZsCCCM/n9BC5C5xVFkz6aEW7HgP+DNPyF1VGdMRTwo4f5Zs7ZRbrVA357jXGthh
- fuo+5eBYQf9hWYuWo4pw/vrRC1H7ayaVAww5jTSVdgT1HfCmn8cCo4oJK3ZBxPQXolOE+emc
- P3Ixbe/83mx109F5gSNy+uTnuUiG9Y+DCDW4pZkc/HKbitq+kTe5p0G2M80Mi+7vdkmc+dZk
- 72hvbToIesg0zaldO41C3G0GAkmVUFKFSOuzXWX6aSuI0P6n3TEw8pWEEhsJaEi0N0uIWBX7
- vhbOSw/V0XW7w626OrTpuhEnM8vKozveYgYoHwllWqfBvc9SpeFSKLPjTNa9G5v3YYVQrCEO
- pdfMGY3BPjDS0Un1lM/E5sinfyohXnXeDxDo1XTrq0yi4TW5FEqiua9aIGLJbRmQ+1ylUGX+
- EvD/l/ZGxghBoey6haK1HyF07qncSTTHdh6+KeD3vprhkCDg28eEhsbUXOlrvSjzE2zQdRSL
- woT4CVGha4/6ECmUPHjUBCi5n2JpBgRX5xXCeJS1e2W4rDf7wDcAi0PSSRMLYR98sQ3Xjctk
- FSOmrsFGABSjVFcclrEnp+8pjKpMi9TJmgHDRLohyNfizU/iOnfVi7yc+s=
-IronPort-HdrOrdr: A9a23:HuPSFaqBHuk5cgh1UlmqL7waV5teLNV00zEX/kB9WHVpm5Oj5q
- OTdaUgtSMc1gxxZJhBo7y90We7MAnhHO1OkPUs1NCZLXjbUQqTXf9fBOTZslrd8kHFh5dgPO
- JbAtdD4b7LfCtHZKTBkW2F+r8bqbHtntHL9ILjJjVWPHxXgspbnn9E42igYzZLrUV9dPwEPa
- vZzPBq4xCnfnMaZNm6AH4qY8jvzuegqLvWJTQ9K1oC8gehsROEgYSWL/DOtS1uIw9n8PMP4G
- LFmwv26uGZte2nyhjT7mnX755HstrswNlOCaW3+4Qow3jX+02VjYJaNIGqjXQQmqWC+VwqmN
- 7Dr1MJONly0WrYeiWQrQH20wft/T4y4zu6oGXozEfLkIjcfnYXGsBBjYVWfl/w7Fchhsh11O
- Zu03iCv5RaIBvclGDW5sTOVTttik2oyEBS29I7vjh6a88zebVRpYsQ8Ad8F4oBJjvz7MQdHO
- xnHKjnlYBrWGLfS0qcknhkwdSqUHh2NAyBWFI+tsuc1CUTtGxlzmMDrfZv3ksoxdYYcd1p9u
- 7EOqNnmPVlVckNd59wA+8HXI+eFnHNexTRK2ifSG6XVZ3vA0i96aIf3Y9Fod1DIPczvd8Pcd
- X6IR1lXFcJCgHT4Zbk5uwNzvjPKF/NKggFhPsuoaSRgYeMMIYDARfzOmzGrPHQ1sn3IverEs
- pba6gmS8MLa1GeVrph7knZR4RYL2UYXYk+v9Y2XE/Ln+fwQ7ea79AytJ3oVeHQ+fFOYBKmPk
- c+
-X-Talos-CUID: 9a23:bDj10G4cdrpmTzv4Etss9HEsBsl/alHn5kyJA06hEmIqWaGncArF
-X-Talos-MUID: 9a23:KMenawbXgZpfruBTkDTri29LMcZTw72nM3JWvLYqtO+KHHkl
-X-IronPort-Anti-Spam-Filtered: true
-Received: from rcdn-l-core-03.cisco.com ([173.37.255.140])
-  by rcdn-iport-3.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 06 Oct 2026 20:41:31 +0000
-Received: from rcdn-opgw-4.cisco.com (rcdn-opgw-4.cisco.com [72.163.7.165])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by rcdn-l-core-03.cisco.com (Postfix) with ESMTPS id BC200180005AB;
-	Tue,  6 Oct 2026 20:41:31 +0000 (GMT)
-X-CSE-ConnectionGUID: Jg7O3qqdRGqHkXIRAZuwEw==
-X-CSE-MsgGUID: ef9+by+hQk+Aa0YUgARpAg==
-Authentication-Results: rcdn-opgw-4.cisco.com; dkim=pass (signature verified) header.i=@cisco.com
-X-IronPort-AV: E=Sophos;i="6.27,143,1787011200"; 
-   d="scan'208";a="95158735"
-Received: from mail-westcentralusazon11010062.outbound.protection.outlook.com (HELO CY7PR03CU001.outbound.protection.outlook.com) ([40.93.198.62])
-  by rcdn-opgw-4.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 06 Oct 2026 20:41:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=clP55W1sBexuiygHN6GamNT+fv7xRgT41lM8lh+d8YA21AY1uudGc+NsHk7hZXPuahyEhwwioajkM4PiBm48YqW4b6immfxVtl2thFw7dvob9n+l4HDTeYzMuN3e5I581cjgvhhdmZmZDOL5o//QnjoYD7M9qygyvyZowL2prhTwb+TogLuCzhJl4xAbqgxHiy9ejs2iIGi8U/MQUWJm4/RDxjDGsjHP5S9aMfXafmElIiSSFGdUzsXQOFPwoC9c0mw9e9uEPNc4ysmd7172WhE0oLIStW62Av1CLiSIgzOAPExKOFhd1k8wu0RuxqhZZWCqbLvCViqUK1xLMH+Z2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qpfHyM7JbIyFbzOmFwhyZaJiq928Br+Fs8XJ7sud/A8=;
- b=XZ4fARpUef5njBN/URm4Tcrx/KXewpwMptxor+51rABxN5OYtNPV0CkGF54qEbq7FW0QahqZEfPIT+jGoaQtS5J3GQWhtCjTfooltnDE2nHiCZM8v3buQghX9plKfb1+85CtLjySJ6/7bEj+PK9B12EwBE0as9tQgdU44OyU9Bl5+hWBN+dPmTLS8cewX2IvPkh/GI5IuOyADAXtPOMuF4RkX9vYDIX6g9CE9XDP6fi2JuBuxO7HksyYEwPiMtJ+JNwzvel1MyMqz9roeSZ3oWGMkehGCWXu9ytMVvrNJ/TUmO8ZkmJHyZ985u6Y64zXHkDa553NSH1Wza8IqaTRzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cisco.com; dmarc=pass action=none header.from=cisco.com;
- dkim=pass header.d=cisco.com; arc=none
-Received: from DM3PR11MB8758.namprd11.prod.outlook.com (2603:10b6:0:47::15) by
- SA1PR11MB6967.namprd11.prod.outlook.com (2603:10b6:806:2bb::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Tue, 6 Oct
- 2026 20:41:28 +0000
-Received: from DM3PR11MB8758.namprd11.prod.outlook.com
- ([fe80::a457:7d37:d8f:7340]) by DM3PR11MB8758.namprd11.prod.outlook.com
- ([fe80::a457:7d37:d8f:7340%5]) with mapi id 15.21.0451.026; Tue, 6 Oct 2026
- 20:41:28 +0000
-Message-ID: <79a2a179-0786-4108-a588-97f6aa0a7b74@cisco.com>
-Date: Tue, 6 Oct 2026 13:41:26 -0700
-User-Agent: Mozilla Thunderbird
-From: Satish Kharat <satishkh@cisco.com>
-Subject: Re: [PATCH net-next v2 3/6] enic: recover V2 VF mailbox when PF state
- is unknown
-To: Simon Horman <horms@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Sesidhar Baddela <sebaddel@cisco.com>
-References: <20260929-b4-enic-sriov-v2-vf-receive-control-v2-3-5962c10061b2@cisco.com>
- <179105705474.434549.8884325756137736298@kernel.org>
- <20261006164810.GN83879@horms.kernel.org>
-Content-Language: en-US
-In-Reply-To: <20261006164810.GN83879@horms.kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY3PR03CA0013.namprd03.prod.outlook.com
- (2603:10b6:a03:39a::18) To DM3PR11MB8758.namprd11.prod.outlook.com
- (2603:10b6:0:47::15)
+        d=gmail.com; s=20251104; t=1791319409; x=1791924209; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pYLtJa497tb3khpaP4kumzUEgLsH3DJmAXssXxTU2u0=;
+        b=V5S5XvZgo8p3OD2UQE5HmB3owC4iF6nZhK0gwdQBeSuUzaHaOAmiPhuLeXa2ZRiqgV
+         z57lVVHxrdlCGXD2W9nrUG41BnA7nIwR5YWUv3A6uqcGY+cUNFEBanbaYgdhUfkdZxnz
+         YkIFS4WBrMaR3s93a7ST+8kyJjcOZ7TRhTroav9XXp6EKDcZGjHx1oJIXRvTxOu53HMt
+         BazxFrkgAWzA4a+lVg8RpbHxDVcupTz5B3FGtgFZTZQZI4Kd2KoMfVpwLyA38bxR6IRB
+         9zNWYEfZyMiO7M87dhvBrQOn4umqv7QvW8/7PBULbE0zc7SYfXJJzOKp0ewFcTz3Wffp
+         ZRtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791319409; x=1791924209;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pYLtJa497tb3khpaP4kumzUEgLsH3DJmAXssXxTU2u0=;
+        b=kG8vYnOwZfrQVfIdi21W6AV2+vIATTuWkzF13NTIavjqrAcinCNO+PhUf6389O9zL5
+         9s/2wyiZ9lLdKGa8ugVVrhs+VrBgD9Z7htYfwU38WW5Vwu10u1t3iicRENQqGDthpWhu
+         T6okI3ObscP16F0joHnMH8pyGnFvSNmq89ylDbpkH6wSPJLEjZWO1FTqlBuf8oqNPu27
+         JnYiqxbpvhmJ3cXN6DWHi72pKPw/LrVmdf9M9Xp1Za8htRstiHo893OPhcAzxZuegzhP
+         tlTBeUSc1fd16I9BwgtXaO38GxPnX9ndZj82UVEY93khDIcsMZiIXl93UFUEPXZoThY0
+         DRwA==
+X-Forwarded-Encrypted: i=1; AKwUvBzh15rZIHRfVPflvt15JxdXD9bPttAf+4JeTrZUie7eBj32CNSZWbc7dCojI3IQo6Ytzqle+YE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nI/B89LXokahfYUKiyFmp/7w2TVFsH5qvklJJjB/F0QoI3q5o2
+	ugz5KoLFpTwifmVvtrXzczwPmKYDtzK2FYN2zSqB19D/30XD0g48eTj6nZCP0HZFSsXGF1Bphce
+	ONR7VCZmGNgdWKMB8PYpImZ+iMHwQTwI=
+X-Gm-Gg: AYBFou0fNiq9iUXIqQWWa6OOknR/QyLJeFMPa5D+IXUSBea8M5iWDGcrWZzbK3WtbtN
+	X/tIfvB76ePFfh8flcXwrLYULqUkCKbM88tZoQtDjlfiuIO1+RpTZehYJ9iKr5TLvy+O8X6eKK/
+	qUrU2PJUSebkpujZcgIpCKN+O7M0mIemzdPkOI8LtJTagFPbuOVbRUl1AJBdVYrGf5onVysM6NW
+	AguQZkG/3PAphyNQEMfpN+jlOODxsWgRhFV7PqSzcelgvbLBPv8VR0Z00rgFJcUslGsjuIOSPze
+	4uR+2Fg3RJ0+BtXPrkz4bqTK5t2xbD4gBiMwviJnwzJhkODXXm6cv+3uoOJxkFYSv6EdBejM38t
+	QR+vnWfw+4hnxBSi9od2n4Bkjsza2EgzGCiOS+LJzfT1AhU5d6jiRnw==
+X-Received: by 2002:a05:6a00:32c4:b0:877:d02a:42f2 with SMTP id
+ d2e1a72fcca58-891b1195350mr273315b3a.7.1791319408388; Tue, 06 Oct 2026
+ 13:43:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR11MB8758:EE_|SA1PR11MB6967:EE_
-X-MS-Office365-Filtering-Correlation-Id: b78bb146-5b69-4910-f362-08df23ea326c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|23010399003|1800799024|10067099003|56012099006|11063799006|4143699003|3023799007|6133799003|20046099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	7JnpDYzSC72SUBCHV0DY3AbsjdZqwAsV14ImnkIMQ8BJIKGHqr++F5F3feFraZ7PuxqxlJg0jtH2HC+xaOVKjHIFK1pwsCHO9er9B5JbzkcH8fzp85PtcmX3ommHnsBcrvBcnaFknmlouWLPWUSEKf77Zc057zPXrjPKkTMmsSxDVwSCemSoIQJ6SGB+RaCW3/FK3q1EDOxx13olzbVaGeJ7CVYls4h4Tbn7hK6oxWrmXcgY7AiM2+Eoh5SxFA4qKqur44m5AzMymBQ0CRXRcVZKTjbXT+aJffWN6SGZOgPS4Ei2eW7M9zYT2sG9kzcYFVt/+kchYTguuIiOcwDpDMl+UgSs70vSJGgZXsrRAuCnj+40LO/xnfo4gIQhbEH5jlV//AO5z28PJz2znEy0J5EvEEvwvy4oRm5ebPy5wu8s6aFg3FM03UVb14xWi0BZMVi7+FiZCi4HOMciJrWbFCiicvdTANYy3GvE2TASF0t3+CiZ8iVvFzH18jDTh6iFk6dLANO3f3tjNUdnKbSfYD3wRSVPwxK48OOdti+UhMwb0ZgI2GpsQG4avkdQwP4MNYmf5I+75nS+FsvalGaLyo42h426r1azFpcydPIlYyfjbu1yuKsWuolHtKVarq9n8bs4ahtC8E+ErbFkSexE58tJow9xA7gbgAJDYWHI9p4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR11MB8758.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(10067099003)(56012099006)(11063799006)(4143699003)(3023799007)(6133799003)(20046099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q252YUtWVWpPM2h1RERWSnBuQXk3V2hmMUVoWkVxcU1kSFdOdHJoYlFIcGtZ?=
- =?utf-8?B?TzVtU2FvM1RZSDJsZW8yTnJsdVZDN3BQNEpHelRORE01Z1ZyTEdWbVZZMTJ2?=
- =?utf-8?B?bk1rZjNHMUVFcVV2WE5rWS9PV1J1TFd0NSszanNJNlVxLzhENmxBSWhCMTNy?=
- =?utf-8?B?bm56ZHNRN1ludjhvRFVaOEZiWXBhai9tcHBZeEcwb2YrVFhER0hxUTRlZ0pi?=
- =?utf-8?B?TjFDUVJyWmMwVFN4MUt6ckJ0TFdnek5EVHQwV21GenNTYnd2SWpaMVY2MkRr?=
- =?utf-8?B?MkdsNzBnY0xVaXNRM1dkWXloWkxHamVMUjBISWRFQzlNNmwyZ1ZDMElMNFJq?=
- =?utf-8?B?NGFKeXZ0WWtlbGlmalExMlRvZ1lKNlZjWTJXenRIbWZjc0FoS0pzeWIvVkFj?=
- =?utf-8?B?UXlXQWZTeXlHaTZRT1NxTDgrQWtsQXFlQjh1ZUV1SGNnQjZHTDdNTnpCN2sw?=
- =?utf-8?B?S1NMUVBhWitVVnFleExuUmdBZ1F5Y3BVUW5pRWFRVmNyV08rbGpud3lON2N5?=
- =?utf-8?B?c1lpR3Boc2haMTZVbnREWDNodjNGY2lKZ09TM1dxREdlc281M0tkUkJjdjFm?=
- =?utf-8?B?R3U4NGxXaHMrL3Y0N0dxYTZwVko3TjBUbis2eWNVcVFWNWNwYS9LTUNGcG5K?=
- =?utf-8?B?SlNvQlVIVElOOVNrdFhIYm1Tek8xNmtiNDFCMm9BYnF1TEdsdUJxNG0rOGpH?=
- =?utf-8?B?NFMyRnVDUDY5dGhxajZyczZPSGpOdit2U0NRV05jQUdNVW5GNHBsaWV1dllQ?=
- =?utf-8?B?bzJianR3cXQwZnhvVTJLd0NRUk9lMXBzOFAyNW43bXMyMThXQVdSOWlNQVFj?=
- =?utf-8?B?NDEwK0MzRVRGZFRnUzJLYVJPK1dJUStHV3ZtRTVWR1NhQVFYMlQyeWp2cW9U?=
- =?utf-8?B?RldYZlcraWF3bG55UDV5cG1hcGFEcWx3K2hxQ2dvQ1NSV3JPYVpUelVSSVd4?=
- =?utf-8?B?WmdwaHd0alNvR1RISVRjZTVna25KdVJ4Yy9GOXpzbmtvekVIc25ERUw3Z2p4?=
- =?utf-8?B?L3hHSWNacmFuWnEzbnFCRDh2RnJ4MVhsM2srT2lpR1lIMXp0RC92aWo2OEVQ?=
- =?utf-8?B?ZDc5Z0pkWDU3Y2VIaDVjK2pNdHg1R3NGVzZHRVdSdVF3Q2p0cWJxR3U5aEd4?=
- =?utf-8?B?ZGxMaDdvVzArc0xaQ25zQ3cwc2NCQlVZRzFNdWlRQ2NqZUxDM2NsT0JRQ1pt?=
- =?utf-8?B?TzE5emtTKy94THZFT3doVkFEZEczV00rSmIzOVNkWThEUjY3Y0dTMU9vVVNM?=
- =?utf-8?B?UEZjNmQveEduRjBHTFF6MVBGcG5xbm85WTZndWllMzBOeXQ3TkdScVFQVGNw?=
- =?utf-8?B?a3JVYm02MTFETmgwNU0rZitpOGZSUjJFWE1QZjNvRCs3N0FQWDZNQWF1ZXJ6?=
- =?utf-8?B?UnQrMXN6QVdBN3RNbnRUb0tmaEh1RUJZbjdvWWppRWVUS1Q1N1QzVDZFT3NR?=
- =?utf-8?B?VkU3ckV5alh4V3BuQXVheGkzbjBrbU9uZjAvQVlxUFZRVktsWVRDb0QxVC9X?=
- =?utf-8?B?b2FraW9EUlBMbVZSRW9hM3JoVkRKL3I5VVYxS1YvejdSU0FYZzR1a1JGeGlv?=
- =?utf-8?B?ZFBRd3VTR2hKZUxXQllabkVSQjB2VHp5U09GZzRtclpEaFdGUHVoaGNiWXdx?=
- =?utf-8?B?SWVINnYvK3hoZDFxckJmS3BPZS9yZ05GQndZMUdIYkErWHMzS1U1KzVuQ0x2?=
- =?utf-8?B?Wm9qdWNyOHBmanJlQ0xWVm9SWVhJL1FaS294RFFUMXVUalp0YVBoMW5OQ1FX?=
- =?utf-8?B?NUNXaVJneTYvT2lGc3N5VlFKYnNpeGs4RDJrd0gxbFNKLzZqK3FQV1RSWXgv?=
- =?utf-8?B?cEQxeTFTaDVHVkU0QzhQbnRaaVVqaHNqOVNneUlPZkdIVzl6RGVOejZXMVlj?=
- =?utf-8?B?RGs3eW1seFlwSXZablpiU1VpVWNwN2tST3ExR3ZxdWhnWWdVM3h3STNqYnRk?=
- =?utf-8?B?MUFsNnhiWnZFWGJpcDBOZm8rUlZRdTR0Tk53amZLc01hb3FMZnVSaUdldi9o?=
- =?utf-8?B?RVB3T1VlQzVRQXFSTXZFZFh3bHYvWlp4U25zZ0Zzc0w1MkZHVGphbGx3bk5J?=
- =?utf-8?B?L0NWTXcwRU9VR0pBQnpKNkVlNGtvNzM2QlRYTGh4L1pveHh5aVc2TmxHcGhX?=
- =?utf-8?B?MFBpNTYxSFVoVTcveWh6cGJCck9hVmlENk9kNUkzMGQwNUw5VFRDYVdXY3Ns?=
- =?utf-8?B?Mm9FdHFBZUYrM3JTRFdGU083TTQ5bDY4RDdCOWR1SmVNWW9icktHRTJFaFNU?=
- =?utf-8?B?dkdkZzR4MXFENTljOVJlTEs5ak1VRDBZSDUyR1JOek9lWm5nYnJCall2clZr?=
- =?utf-8?B?MytRMnB4UWRvU2g0NjJqUVgyYzRuUG0yblR4dVlTY09jcjNiSS9DUT09?=
-X-Exchange-RoutingPolicyChecked:
-	t7+hLjSe36HtHK/LfV8lb8N6PL8IquX+WPT6fiIEdwwxnccDGxyLdsI/AxzSg+rD8sammQ6PS8VkjlC7y62xUST5Q9V1mJ2uXRs2JlfaXCuHZhGnDDaj9guGo1jkFqAr3kGTmJGsrnfqxtqHscFVNRVF1daBBEBNpH9buNxmhilXfM8uv7cAm7OokvnwOlxPd0G8KfenWzCe2BMOQxntmdXxufLbkTIaWQKVW7hex0dakuVciAXa6jcS5WQk+OcoavmmcdWWO28zEF5eWkqy66QuN87TYbrwG8H70+Tnb44AsV+tCdYwS7c6YJFMs7xMd7ajUBzd/rfKJi1SKiqEgg==
-X-OriginatorOrg: cisco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b78bb146-5b69-4910-f362-08df23ea326c
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8758.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 20:41:28.7811
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5ae1af62-9505-4097-a69a-c1553ef7840e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N4BmwMsffZebS52UZsrYCSgXqJoZcrk2Tx/n96MX0XaePRDV3TQP2Dl3Dc5vm5Nide9Pcxq2z9nAO6gEIJtv8g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6967
-X-Outbound-Client-TLS: ANONYMOUS;rcdn-opgw-4.cisco.com [72.163.7.165];TLSv1.3;TLS_AES_256_GCM_SHA384;256
-X-Outbound-SMTP-Client: 72.163.7.165, rcdn-opgw-4.cisco.com
-X-Outbound-Node: rcdn-l-core-03.cisco.com
+References: <20261002010449.3689454-1-4ncienth@gmail.com> <179124882160.434549.10169630192303444846@kernel.org>
+In-Reply-To: <179124882160.434549.10169630192303444846@kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 6 Oct 2026 16:43:16 -0400
+X-Gm-Features: AclHuK97XPKuX_Iuayb6nolJMGLhL_ExO0TZyJKCzoxjc8sL4n8F-xIlo7P6KTI
+Message-ID: <CADvbK_ed4ruZjf8CV_jGN=JPkJDHwwZ_9vx+q3zdHnFYiW8dLQ@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: revalidate output stream after association
+ connect wait
+To: netdev-bot+sashiko@kernel.org
+Cc: 4ncienth@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	nhorman@tuxdriver.com, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Simon,
-
-Thanks for taking a look, and apologies for not responding to the 
-Sashiko report sooner.
-
-I agree that both High findings are valid. They are related consequences 
-of the reset and error-unwind handling in this revision: the netdev can 
-remain administratively running after the datapath has been partially 
-stopped, and vf_datapath_open is not sufficient to represent and safely 
-recover that state.
-
-I have reviewed the remaining findings as well and am preparing a new
-revision that addresses the valid, non-pre-existing issues. I will also 
-reply to the Sashiko report with an issue-by-issue disposition for every 
-Medium-or-higher finding, including concrete explanations for findings 
-that do not require a code change.
-
-Please consider v2 superseded. I will post v3 after the updated 
-implementation has completed review and testing.
-
-Thanks,
-Satish
-
-pw-bot: cr
-
-On Tue, Oct 6, 2026 at 5:48 PM Simon Horman <horms@kernel.org> wrote:
-> On Sat, Oct 03, 2026 at 07:50:54PM +0000,
-> netdev-bot+sashiko@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 11 potential
-> > issue(s) to consider.
-> >
-> > Critical: 0 · High: 2 · Medium: 6 · Low: 3
-> >
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchwork
-> > know by including "pw-bot: cr" as a separate line at the end of your reply
-> > (one such reply per series is enough).
-> >
-> > - [High] enic_reset() now has two new error exits, taken when
-> >   enic_dev_soft_reset() fails or when the newly added vnic_dev_init()…
-> > - [High] The patch adds vf_datapath_open so that "a failed internal reset
-> >   cannot stop it twice".
+On Mon, Oct 5, 2026 at 9:07=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
 >
-> Hi Satish,
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
 >
-> There is an expectation that the author responds to these messages
-> in order for the patch-set to proceed.
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 =C2=B7 Low: 0
 >
-> In order to move things a long a bit I've taken a brief look at the two
-> issues above (only) and they seem both related to each other and
-> legitimate problems.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
 >
-> Please also look over these and other issues reported by
-> netdev-bot+sashiko@kernel.org for this patchset-set.
->
-> For those that are non-issues, please indicate that,
-> e.g. by responding to the bot on the ML.
->
-> And please post an updated version that addresses the real,
-> non-pre-existing, issues.
->
-> Thanks!
->
-> > - [Medium] The commit message says the timed-out DMA mapping is left "for
-> >   admin-channel teardown to reclaim safely".
-> > - [Medium] vf_mbox_recovery_active is a plain bool.
-> > - [Medium] vf_mbox_recovery_active stays true for the whole run of the
-> >   reset worker, including the time after enic_open() has committed…
-> > - [Medium] The patch makes several admin-RQ drop paths trigger full VF
-> >   recovery (RX quarantine, carrier off, sends disabled, a soft reset…
-> > - [Medium] The new V2 VF error exit in enic_open() (`goto
-> >   err_out_dev_disable`) runs after enic_dev_enable() has succeeded, when…
-> > - [Medium] The new vnic_dev_init() call in enic_reset() issues CMD_INIT,
-> >   or on older firmware CMD_INIT_v1 + CMD_GET_MAC_ADDR + CMD_ADDR_ADD,…
-> > - [Low] Concern: the patch has no Fixes: tag even though it fixes V2
-> >   mailbox behaviour introduced by commit 1f0c856b596337.
-> > - [Low] Concern: the commit message and comments assume a VF MAC/receive-
-> >   filter mailbox protocol and a station/filter replay that do not exist…
-> > - [Low] Concern: the new enic_reset_addr_lists() calls in enic_open() and
-> >   enic_admin_chan_reopen() run __dev_uc_unsync()/__dev_mc_unsync()…
+> - [High] The patch only partly revalidates state after
+>   sctp_wait_for_connect() in sctp_sendmsg_to_asoc()=E2=80=A6
+> - [Medium] The new -EINVAL in sctp_sendmsg_to_asoc()
+>   (net/sctp/socket.c:1851-1855) is returned only after=E2=80=A6
 >
 > --
-> pw-bot: changes-requested
+>
+> sctp: revalidate output stream after association connect wait
+>
+> This patch adds a check in sctp_sendmsg_to_asoc() after
+> sctp_wait_for_connect() returns, for the message interleaving case. It
+> compares sinfo->sinfo_stream against asoc->stream.outcnt again. The
+> handshake can shrink outcnt and free the ext of removed streams while the
+> socket lock is dropped, and that used to cause a NULL dereference in
+> sctp_outq_tail().
+>
+> > diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> > index 4652fd90d9a6c..394d31cb698e0 100644
+> > --- a/net/sctp/socket.c
+> > +++ b/net/sctp/socket.c
+> > @@ -1848,6 +1848,11 @@ static int sctp_sendmsg_to_asoc(struct sctp_asso=
+ciation *asoc,
+> >                               err =3D -ESRCH;
+> >                               goto err;
+> >                       }
+> > +                     if (unlikely(sinfo->sinfo_stream >=3D
+> > +                                  asoc->stream.outcnt)) {
+> > +                             err =3D -EINVAL;
+> > +                             goto err;
+> > +                     }
+>
+> [Severity: High]
+> Is the bound check enough on its own here? Could the stream's ext still b=
+e
+> NULL when this check passes?
+>
+> The code before the wait checks two things:
+>
+> net/sctp/socket.c:sctp_sendmsg_to_asoc() {
+>     ...
+>         if (sinfo->sinfo_stream >=3D asoc->stream.outcnt) {
+>                 err =3D -EINVAL;
+>                 goto err;
+>         }
+>
+>         if (unlikely(!SCTP_SO(&asoc->stream, sinfo->sinfo_stream)->ext)) =
+{
+>                 err =3D sctp_stream_init_ext(&asoc->stream, sinfo->sinfo_=
+stream);
+>     ...
+> }
+>
+> Only the first check is repeated after sctp_wait_for_connect().
+>
+> While the lock is dropped, INIT-ACK processing can shrink outcnt:
+>
+> sctp_process_init()
+>   sctp_stream_init()
+>     sctp_stream_outq_migrate(stream, NULL, outcnt)
+>       sctp_stream_free_ext()   /* kfree(ext); ext =3D NULL for sid >=3D o=
+utcnt */
+>     sctp_stream_alloc_out()    /* only lowers stream->outcnt */
+>
+> After that, outcnt can be raised again without restoring ext. One way is
+> for the peer to send a RECONF ADD_IN_STREAMS request, either bundled afte=
+r
+> COOKIE-ACK or sent right after it:
+>
+> sctp_sf_do_reconf()
+>   sctp_process_strreset_addstrm_in()
+>     sctp_stream_alloc_out(stream, outcnt, GFP_ATOMIC)
+>     stream->outcnt =3D outcnt;
+>
+> The other way is for another local thread to call
+> setsockopt(SCTP_ADD_STREAMS) while the lock is released:
+>
+> sctp_send_add_streams()
+>   sctp_stream_alloc_out(stream, outcnt, GFP_KERNEL)
+>
+> On that path, outcnt is also not rolled back if sctp_send_reconf() fails.
+This is a separate issue to check.
+
+>
+> sctp_stream_alloc_out() only calls genradix_prealloc(), so the existing
+> entry for the earlier sid keeps ext =3D=3D NULL.
+>
+> When the sender resumes, the new check passes because outcnt has grown
+> back. Then this runs:
+>
+> sctp_primitive_SEND()
+>   sctp_cmd_send_msg()
+>     sctp_outq_tail()
+>       sctp_outq_tail_data()
+>         oute =3D SCTP_SO(&q->asoc->stream, stream)->ext;
+>         list_add_tail(&ch->stream_list, &oute->outq);
+>
+> Doesn't this reach the same NULL ext dereference in sctp_outq_tail() that
+> the commit message describes?
+>
+> Could the full pre-wait validation be repeated after each wait that drops
+> the lock, perhaps in a shared helper? That means the bound check plus the
+> !ext -> sctp_stream_init_ext() step.
+>
+> The existing outcnt-only recheck after sctp_wait_for_sndbuf() seems to
+> have the same gap.
+>
+Please add a helper like:
+
+static int sctp_sendmsg_check_stream(struct sctp_association *asoc,
+                                     struct sctp_sndrcvinfo *sinfo)
+{
+        if (unlikely(sinfo->sinfo_stream >=3D asoc->stream.outcnt))
+                return -EINVAL;
+
+        if (unlikely(!SCTP_SO(&asoc->stream, sinfo->sinfo_stream)->ext))
+                return sctp_stream_init_ext(&asoc->stream, sinfo->sinfo_str=
+eam);
+
+        return 0;
+}
+
+then add or replace the stream checks in these places:
+[1] at the beginning of sctp_sendmsg_to_asoc().
+[2] after sctp_wait_for_sndbuf().
+[3] after sctp_wait_for_connect() in asoc->ep->intl_enable branch.
+
+> [Severity: Medium]
+> What happens to the association when this new -EINVAL is returned?
+>
+> sctp_wait_for_connect() only returns 0 once the asoc is ESTABLISHED. If
+> the association was created in this sendmsg() call, the caller then does:
+>
+> net/sctp/socket.c:sctp_sendmsg() {
+>     ...
+>         err =3D sctp_sendmsg_to_asoc(asoc, msg, msg_len, transport, sinfo=
+);
+>         if (err < 0 && err !=3D -ESRCH && new)
+>                 sctp_association_free(asoc);
+>     ...
+> }
+>
+> This frees a live, established association outside the state machine.
+>
+> No ABORT or SHUTDOWN is sent, so the peer is left with a half-open
+> association. SCTP_MIB_CURRESTAB was incremented in sctp_sf_do_5_1E_ca()
+> and is never decremented.
+>
+> On a TCP-style socket, sctp_cmd_new_state() has already set sk_state to
+> SCTP_SS_ESTABLISHED. It stays there with no association behind it, so
+> later sendmsg() calls fail with -EADDRNOTAVAIL or -EPIPE.
+>
+> The commit message says:
+>
+>     Return
+>     EINVAL if it falls outside the negotiated range.  This matches the pr=
+e-wait
+>     check.
+>
+> The -EINVAL before the wait frees a CLOSED asoc that never associated.
+> This one frees an established asoc. A peer can trigger it just by
+> advertising fewer inbound streams than the chosen sinfo_stream.
+>
+> Failures after the wait from sctp_datamsg_from_user() or
+> sctp_primitive_SEND() already reach the same free path. This patch adds
+> another way into it, and the peer controls that one.
+Please set err =3D -ESRCH; before goto err; for the check [3].
+
+For sctp_datamsg_from_user() and sctp_primitive_SEND(), we should not
+change it now, in case it may break any existing applications.
+
+Thanks.
+
+>
+> Since the association is already established at this point, should this
+> case be handled differently from the pre-wait check?
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20261002010449.3689454-1-4ncienth%40gmail.com
