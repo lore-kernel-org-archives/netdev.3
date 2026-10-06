@@ -1,120 +1,139 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D914C3ACEE3
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 07:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791270632; cv=pass; b=iz2c8pUVMAecSC7CD3EI7SbVMNHtyzrKYftyBmNN5/InwIzAZ0wO7sulmfy020uco2EAjvSHatb5HEcl1BMDXMgHtZBmjo7Fvt6tPV71yx8vTkfXeq3GNAILvUjud3IcBLbLRGHdOAK6XHIpH8RpsTK4ZppxGlN9OCi1ZXqkG/I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791270632; c=relaxed/simple;
-	bh=swDviEAoNYUebctsfW1H636z6Gg9l4LE75WPX7+y2hs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nmUurvLOnAzXJjPq9lykcArfcXkenBo2pOds+jhFh2Ys9YbY8i2BrdMjkD81YknLq/fAlNNmpSYzhgNcUdQ0taPyt/dLJDvP63jkHnbUfs9e9dA7WRpJP0WpTR8as8H0rlbMMkK3DRFAW7n1zWU4LgG80Tw+m125UfuyGElgC/M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ttOhTZLQ; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0F837E5C7;
+	Tue,  6 Oct 2026 07:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791270860; cv=none; b=bovGbQx88ZVUXffSWUBoHb4Bfcl5MIO1dDMOA6eDjc53FdyL4juCcla08S6eqs7yJhfRVHFEsjmoEmziWq3D0lWtfF3gSzjd2PNXIm7aoDZ+tDqG/oZygCiLKF6cx30dUOvKuITzk4UZuC8481uD8gasE8KBOlcbqy38RdBfWss=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791270860; c=relaxed/simple;
+	bh=4zc6tPWf2CmluvVopXlLil2riJGt+YGHE5eilr063QI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ku93Z2zJtXk48Y4DNHrJnmuhkzysywn7ULRnW2G0+t8kXPCX5Ldjsxulhj8s92dtvoD1nkCpXPEqM4kixemYCTP5h3hjX1nh6chyFTRmi4AtpK9FAwUSaGHCU9RHkl0O3y4EHxwOxrAZstW02mgotcsjiMAxtMZ2sS/LnSD3k5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N37O92az; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L5HM//22; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ttOhTZLQ"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6aae147ef9dso7968a12.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 00:10:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791270629; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kqytIViulSj3PGnpmzmeh+3P2HiNPs0HgyldaJ+L6u+1W/ZOsPWWy1jVKpAs9IpmOo
-         kKLIxA5gJ7fo62ffvbXK9Hm98V5i7N78K6Pofe0SXvGzXJdHyCRsfO9lVMQHghJTaT71
-         VR7NyUDpdlglB7kv8PZbYwfb6eJ6o2ZbtPQZsb7ae+PCLabPKbricx32b13tVFzwW87N
-         e2F8JKSCH8gHAhpFTg+V2IVciC9uUL6/UK+kCiYprw0M2lB10JqjMvLmBc8nUXfnELLH
-         drCkM3tKcGXXPLNTYFVy1z6XzrA+0mvigJUL8QDqcW1xCU7sRiqzZ2w1EC0C/4q1FAsy
-         NFbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=swDviEAoNYUebctsfW1H636z6Gg9l4LE75WPX7+y2hs=;
-        fh=2gEN+PFKcGlQO5WxDhyk5R6UImFZ+y6+yAv9TgUuB5A=;
-        b=RE0kKvXg7muDBQa8lE7Nd6SNWyHTEvImKP6HMl7Ap/gZQ0waZEuNMhoO42ExFXCKHZ
-         +k6Ma4zVMxVK7ptvuNR30DVLmEU6ZVuhc1BFGdGY24J4K4z1KtZWvcCMMGBsSUMucGnu
-         H49mv9cePIMP0lBDF1DysndL+PhdWhJReN19WbV4g/OtZ4KgnV877qp+vivSVi+NbmMa
-         VdgMpAyp39j3RcHL2QO/+fyFfD7Q/HL5JFHVgyKDnEcl1qa7kZ9nNaSpGTGw4Sdh5lhy
-         VDHbfuFBZniUWeXzyIsI08UVIOjnLSFBQKImu5z03nS0T8wrnwdgJsDg/9RtmY7ulB/a
-         FeCw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791270629; x=1791875429; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=swDviEAoNYUebctsfW1H636z6Gg9l4LE75WPX7+y2hs=;
-        b=ttOhTZLQEY5uuBpGx7Y4a6pW4fE59EVqjzO55z2aAwvGYzBliFHBkOrS4lVYYRrAIe
-         ieKUv9fV5c6eILop3vQE9BxqKJ1WVHwdg+M7ATTQHk8ZEDQ3cOzNFgSJrwVvkbQ8EWNq
-         gSTqcbCtYJ1evWJfoTBawiGff8N/URQu6jsUOHBT3h/GT1UIiZCf3yDoCnCODBPwfZT3
-         eMiy+5uwmzMhNFlyXdU0M994sQ3U/x//hr87IkrQKqNGCYcjb2MqzpEEGM/A5rHXDLYM
-         jHz1IdyQ01P/3GpGZjC2hWZcVbJpffjR8qk1AOL3tIs/3D/AGacSrR/+1e3Jen7PwhHt
-         6eow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791270629; x=1791875429;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=swDviEAoNYUebctsfW1H636z6Gg9l4LE75WPX7+y2hs=;
-        b=XId0v7CjQYDm96/k3UirRBcq7fLzUGLQ1n6fkvpbOgrhSnSiPabvwsvGbcPwsvwQXZ
-         8c3l/iDrvqyHC+/FxK9Ao+NncZBcyLkAlvSqwXcpgLuyDppcZpdOtnCIzOcucOqfFYPG
-         LOtRsaWck+XCJ5u/jgrA52iRpIsKAN81PjXqtsJWHgtPXwINrM0r+3qBbWOdXS1pc/T6
-         BvLim3xrIc1zKQUXLGfSM+twNdw32yYHKPT6gRkw5EKWogYOz7w5Je0UFqRoB+VKrqSc
-         ht++m4vq9B6s1xNR+vjA/LiuQYVa/GjDjr+uCZOnKiO3RoGYqPWarkQA2aJER5TrAP6u
-         4qwg==
-X-Gm-Message-State: AFq9FYLoaD/22WQCnd4m6bql6twsqfC/LPA0kPgYNeQsWAJKxJdPy2lt
-	vYPumaEWQSv8RI7TwlNPeULvptGHD6FI6XorZF40E1sUrQOrX8bfC+lTJiHRkseHFWCAzxXcO0Y
-	/N5bkkT+s4ReKV126l7g48yjvPYS3BjrR2bkWbnFp
-X-Gm-Gg: AYBFou1C6pAThPUse8uB+iv9PU/7q8VtSAakugOwQRdvUR3Ekx8Wp2mIY3VApUxfo3q
-	fQTWFbfxT+q/WQy6VD/WnR8vlGPODXdrNBw8hn9WhYRB6CdeHK2km8+TySgGF2b/mJRfUyi9QmA
-	bar4PO+/JGtUMOzdm1xEx9MzxTSFqbenwTL6Tf5J99pFDNxzAWpQEDW/7uoKgoVfwHiLlxrIfLF
-	3steiU+ckYKG5OJVAYrR7xX1i0ObxhhlKsFSLHfxr4Atix7D2wwvgQ96ZmONqdhSsLzr4dc8hKf
-	gWWEhgIRyG/hQki0oLBeiOITqmi7bDzN1HPLnUvdHNjr4kiRH7k=
-X-Received: by 2002:aa7:da0c:0:b0:6af:97c0:ce51 with SMTP id
- 4fb4d7f45d1cf-6afdca58f21mr21854a12.13.1791270628368; Tue, 06 Oct 2026
- 00:10:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N37O92az";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L5HM//22"
+Message-ID: <0c59e35928a6e82ebb0151dc64800b543a71a04d.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791270844;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bh87HsnKO/vqAOoOO1PbWh+Dn1+5ssDhnvsF+w73yPQ=;
+	b=N37O92azyBSIjcL1ZLNBfMOEIPyT7zGhCoErXYeiJ4LfA5Kb5KNIBVNSwLoKoriorJHn/2
+	oHKj3mKVSiWPEaCgGPmDJ8j+KCF2f0gsToyR3nCRYxI8AZ7PFqJJn4dPylFmgz+ApN+4+8
+	4gWmeeiez6TRoi4nLYcV0Yi5sSZf4koDYN+yOuPedeP/S6MD5IkIe3Q12orvjp3wHDNjGx
+	hY+AKE89/5DDDVUt8blXXER/2qnoP/3XRUFzmTPR5pqzIeQhHvhDIr3bGtZAvpxH5g0QK7
+	F/uUFTS+VZ1BSxazwQuWv1kj925N3OR6+2ODNs5Z2k0vREDHCNo7cxz3mhzPrw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791270844;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bh87HsnKO/vqAOoOO1PbWh+Dn1+5ssDhnvsF+w73yPQ=;
+	b=L5HM//225V9+0UrFDTDjAhgfO92WL3i59p/xiBesP//HDxq5AOpGau6vzE5K3hxBbnuTuB
+	jhHT2lP1A8ybS4Cg==
+Subject: Re: [PATCH net-next v3 5/8] net: mdio: Add SoC-e SWIP MDIO
+ controller driver
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: sashiko-reviews@lists.linux.dev
+Cc: robh@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
+ Vladimir Oltean <olteanv@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
+Date: Tue, 06 Oct 2026 09:14:02 +0200
+In-Reply-To: <20260924104004.773F61F00899@smtp.kernel.org>
+References: 
+	<20260923-devel-vstrassheim-soce-dsa-ml-v3-0-ddebafcb9ba7@linutronix.de>
+	 <20260923-devel-vstrassheim-soce-dsa-ml-v3-5-ddebafcb9ba7@linutronix.de>
+	 <20260924104004.773F61F00899@smtp.kernel.org>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005201822.3060658-1-sdf@fomichev.me>
-In-Reply-To: <20261005201822.3060658-1-sdf@fomichev.me>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 6 Oct 2026 00:10:16 -0700
-X-Gm-Features: AclHuK_9mrwbKj5FPDFBcTTw9EhGUrGWU1Idbrm2E5hqnsi5uMO4--x8cjtJ5pI
-Message-ID: <CAHS8izM0FkjNM4rwmTjWZwyvjPBNmWCXGnY9eJogpuPWgmJAQg@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: devmem: remove net_iov_area base_virtual
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org, horms@kernel.org, 
-	sdf@fomichev.me, bobbyeshleman@meta.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 5, 2026 at 1:18=E2=80=AFPM Stanislav Fomichev <sdf.kernel@gmail=
-.com> wrote:
->
-> Since commit 083e64a3af77 ("net: devmem: replace gen_pool with
-> freelist"), a binding has a single net_iov_area covering the whole
-> dma-buf, and base_virtual is always 0. Its only reader is
-> net_iov_virtual_addr(), where it adds nothing. io_uring zcrx never
-> uses it.
->
-> Drop the field and the store, and compute the dma-buf offset from the
-> net_iov index alone.
->
-> No functional change. From review feedback on:
-> https://lore.kernel.org/netdev/asPUZ8DPllHd6Yu9@devvm7509.cco0.facebook.c=
-om/
->
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
+On Thu, 2026-09-24 at 10:40 +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issu=
+e(s) to consider:
+> - [High] mdio: null pointer dereference on devm_ioremap failure
+> --
+>=20
+> commit b20b4c686880ab360f1cde6275ae5af3a5306146
+> Author: Vasilij Strassheim <v.strassheim@linutronix.de>
+>=20
+> net: mdio: Add SoC-e SWIP MDIO controller driver
+>    =20
+> This commit adds a driver for the MDIO controller integrated into SoC-e
+> Ethernet switch IP cores. It supports Clause 22 and 45 transactions while
+> managing shared transaction control registers.
+>=20
+> > diff --git a/drivers/net/mdio/mdio-soce.c b/drivers/net/mdio/mdio-soce.=
+c
+> > new file mode 100644
+> > index 0000000000000..59c0b3da483eb
+> > --- /dev/null
+> > +++ b/drivers/net/mdio/mdio-soce.c
+> [ ... ]
+> > +static void __iomem *soce_mdio_iomap(struct device *dev, int index)
+> > +{
+> > +	struct resource res;
+> > +	int ret;
+> > +
+> > +	ret =3D of_address_to_resource(dev->of_node, index, &res);
+> > +	if (ret)
+> > +		return IOMEM_ERR_PTR(ret);
+> > +
+> > +	return devm_ioremap(dev, res.start, resource_size(&res));
+> > +}
+> [ ... ]
+> > +static int soce_mdio_probe(struct platform_device *pdev)
+> > +{
+> > +	struct device *dev =3D &pdev->dev;
+> > +	struct soce_mdio *priv;
+> > +	struct mii_bus *bus;
+> > +
+> > +	bus =3D devm_mdiobus_alloc_size(dev, sizeof(*priv));
+> > +	if (!bus)
+> > +		return -ENOMEM;
+> > +
+> > +	priv =3D bus->priv;
+> > +	priv->data =3D soce_mdio_iomap(dev, SOCE_MDIO_DATA_IOMAP_IDX);
+> > +	if (IS_ERR(priv->data))
+> > +		return PTR_ERR(priv->data);
+> > +
+> > +	priv->ctrl =3D soce_mdio_iomap(dev, SOCE_MDIO_CTRL_IOMAP_IDX);
+> > +	if (IS_ERR(priv->ctrl))
+> > +		return PTR_ERR(priv->ctrl);
+>=20
+> [Severity: High]
+> If devm_ioremap() fails in soce_mdio_iomap(), it returns NULL. Because
+> IS_ERR(NULL) evaluates to false, will this bypass the error check and all=
+ow
+> the driver to proceed with priv->data and priv->ctrl set to NULL?
+>=20
+> If the driver proceeds with NULL pointers, will subsequent PHY accesses=
+=20
+> through soce_mdio_read() and soce_mdio_write() pass those NULL pointers t=
+o=20
+> readl() and writel(), leading to a kernel panic?
 
-Acked-by: Mina Almasry <almasrymina@google.com>
+That's true, I mixed up the APIs. That will be corrected with the
+redesign to MFD.
 
---=20
-Thanks,
-Mina
+
