@@ -1,62 +1,62 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0185381EB4
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 05:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9930638E5DC
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 05:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791263792; cv=none; b=FG+ajvQHYLUV1/dC64ugTqB/Gmwfuwc9MhGZhhWD7cfdtYKSBcEefY2eFqfDKpAEt6u7Xik/8/HfXFcPubAdVe8DQJoswB6XIqVHlRrrF8Y32FfGg2VSkRmu214bi8OsbM6M2hWkc2bqeiSuim2B5T7s4fHhDu6dTxiAP2H8MaI=
+	t=1791263794; cv=none; b=OEKeyK9ZJCWXkjYORv0AyZAxfFBtZHgqcE4AW1w9MuQypKoyRmr9rU7Z27Wu9GZjdzNgwBvPyTFs0QOF3+Q5zqqvlJXukq+siBdxneAicoMcHuqRlKQCSpNBmwhxM8/ikZUamyqhM2jJMAED6fxoCj5WsTGPk1IhrXCT9qHgljo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791263792; c=relaxed/simple;
-	bh=CDywOygPmrlx3R5gRwy722wB/kkMjtMnkgCl3dvZdFw=;
+	s=arc-20240116; t=1791263794; c=relaxed/simple;
+	bh=ySsNflPIiVU4e/VJAHgT4i2UWfIvcR8w6R5BsUuP8Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jA/bJCIFdWR6rGwFKGLgdjFJJEsjg1zpb4ekRsQCM8YmEJY01vruUwzcNCczrHnTRmAhLpljsYT4PH9tjQYQIJVk5d1Zg/zBacoPO7FkRCGwCbpUqjdk/c0EqiJgtuVjoymOh5n16AvurDKW5yQ3uflnvsdv0mWNfNLmu6adZ3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=LHp1/dtZ; arc=none smtp.client-ip=209.85.210.54
+	 MIME-Version; b=FptfNsIklLYVr8N3p5ekTU/QGGpHYxVHuPGH1UlfsI937CyyAn+HiYnlsOJlRx3HqheFLCAe3ae3o1Kwi0X9+bUlH8bJi7eMg7SyYyuW8tH2VgHi1i8yQf/QzNvJvV0zOAU8JDjk5Vy2faqGP6OvI0jgnYXTaHoocW1cR56Hsxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=G/zP6Qsc; arc=none smtp.client-ip=209.85.210.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="LHp1/dtZ"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-821a7bee9b2so376889a34.0
-        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 22:16:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="G/zP6Qsc"
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-82621039b6bso1225419a34.1
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 22:16:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791263789; x=1791868589; darn=vger.kernel.org;
+        d=openai.com; s=google; t=1791263791; x=1791868591; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=MSdwC3NRHxiBT/jc1RHLKkfmkBi6P75t29jHlr5sJqE=;
-        b=LHp1/dtZ2maaQCAJs79MCkKRUDhmVqOfm113xoMEXB1jQeKV0QawfNFnHK73xar+PD
-         pvMC0IWg5Q1pDpkshBYx/OF8kKce1aPhaBOaagDjPwuunGMRt2amFF6y2XOQUL2/dsG0
-         ZJHKrzekQYWxT1N6fBcb/tJS5nVeSarHYLjzg=
+        bh=8aSQ/O3PgDhZ9woaoobq33A5AiSuAlUPvQPd+XWa5fU=;
+        b=G/zP6QscprRwchv8Fm5FJu9YQeilgUg6NfiX3JQ9w1p5NdA1eo5dfEwLHKREqpWA0d
+         KgpFrJokUaRD1WzwampmmDkB/rsKq6fVdx14LY2bSf1G+4usPp+Tf2jElDYkbOXdTD4X
+         Ll6RMeXyMabb2+45+PxQzef68Md4cx9Jym2Oo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791263789; x=1791868589;
+        d=1e100.net; s=20260707; t=1791263791; x=1791868591;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MSdwC3NRHxiBT/jc1RHLKkfmkBi6P75t29jHlr5sJqE=;
-        b=m9BxF4v9Oh4rKTKsPqgd81fjXfEzfiuup05M6d9pUkl0UFdD6ZYfbwwpfqt6F9nnRr
-         oblL7uliWxqnSL3U/HUGTPayXt+8RPdCamNNgavCaUw8yG8/UXIlJrVgWRtrXrQCg4lo
-         +QN5cxGD86XaSqGE/7tUpiNIX+7w828fpGxMiU6TTmXEvzbaqbj5P29b6tJwKowuWL9W
-         M1bHWg12sCQnf15Rf2WeXutSeLQrDPNtuQ2PME/kZTpg9EWEbnsNQo/u9uIfDGHHy0Mo
-         /GLU3fNRn74OcnQ6IKZ6rbvaaTqTzmcD/nD09gdqTfF3UFoEmQNoimeFKyQfJT60oZxY
-         WIew==
-X-Gm-Message-State: AFuF++mcYX6woh0ypXKpvApk9aL94ir8EghdNclfSZXtulmAXCpRbHKW
-	ejtzPk/JG1b9gtbiUfEzNAA/oaJShxXAt3kgVXhdL0UTgy5swHWI+DcNvaVuwshCHBANTkO+Zsh
-	5twu02AOmxQ==
-X-Gm-Gg: AYBFou2cv3yBI70muB/y2vZ4RlGarh7b1y18P+LmEqxblxYfBeFaudUcyuKeNi1jGF4
-	CWaTDJaHKhU9u6kWQyKePTgqKP3M98CUZka8+YEImJ1EtpBBNGhmpDFWV1rPJO0bya5BpwFR5Ii
-	Wn3bT/MVr4FlYtKnlTVY8iAxq1vkBaLnjDF4fvD6cVxgvd3Nss1aED2yF5Va5sfzy4nZ3qgB6BJ
-	mAzuZSeBbFM/COXGSXHIvU4K0oruxIP7nfh1f5+cgp0La4BOo6Snazk8TeDq3b7Zu5+7NV3ZYMm
-	XL1G1rJlhrp/l4OGi1YJHmgX9JUjMi1ZURlai578COTu1IaVd2eSxPVrX7ZerFIdjbuEbYj9Bvt
-	8M4KJOeDEg5xU7pbgZFsabQUWa4tOXjm/iTQNrTiKDKVdgoqI54lI9kIqoAX9kzOU5pIudnQBiB
-	H/ISaGDjyzJAZqGeOjkybZgTT9oTcD1n/dRcCsMDoB4zqttZ/a1Ct71f+GZAWSYrwBqMoiXFJjL
-	sgDCs+rqQ9t9pBP1q7E0AkLjcvjEdMKubayklnRMBWWekQN7nYYPgAclekDbRV9BORUAsNxXcGQ
-	iLnOxnRRt7xhuA==
-X-Received: by 2002:a05:6830:412a:b0:822:1216:d9e2 with SMTP id 46e09a7af769-828a3925be9mr218472a34.14.1791263789511;
-        Mon, 05 Oct 2026 22:16:29 -0700 (PDT)
+        bh=8aSQ/O3PgDhZ9woaoobq33A5AiSuAlUPvQPd+XWa5fU=;
+        b=RGZSnA3pzMgpSqaq0u9g0mDHiH/Pc2JRylR/7m4Xs+cEC+KNd9C2rPN7C8mY4Xuwu6
+         pgkMVvaAlx2OtsbQtBzL7qxCRcoWwWKkEvtyPYx1WAkOTYhU4Ay5ZZEeii37TZVZgTJH
+         sMU7xelzbPPsAq9JrhW1tm9zZp/mi7+xWSmfQaMzX+dV71X/llnzv6MnQ8Y643sE6BkV
+         OMWjsD/PHuo5f5bSKYhJh2ymryUXOH/yvnWXiD7WvIoauVFvYDaXMUDkhWl+SP78f3ZY
+         4QAebENi/y5YnmIGvUqyqbx6hRMFOg6iFUH7wfozaujSke+913WjvGJPv/dtAXvuVWXz
+         en6g==
+X-Gm-Message-State: AFuF++mdbb7Q66em44BYBd7o1iC/xaojMCtsspubvKyj4v/k+KFaJlLN
+	58LnE2HoxBDN7osM4W1pfqOaCpqlJ4NLrPYUfYFrrUVWLFmF1SgUni+cFe9YdeFCmCCb9/m4Idf
+	K3GwGEy09wA==
+X-Gm-Gg: AYBFou26dHmgwpAGS+Cr+6MxsyknDiMoonw6UmN+2fqVzXzYsCoYCBTYj7u8WA4cQfA
+	NF2nb34OcGBAgQNdtleDLdfjOfzsUf2/l3CutGAjk2YdbPcemk+xM90qY+mBA8Q4PoUQSgO2E6h
+	/g93Iug34ZSfEFqYEmsfOABenm2jq4QC2YX9gqoObN0PBN72yVhe+9akOZjWcPIBa4/K6d6NFhj
+	m7m2/skivZHCvJ/Wc1/yoO5bbVoDNKIIWnA3s0puph5mlp6hQdBvmgZ1JwxIo9fPl1vlOiEeq0s
+	fl2smIaenB0w+upcnNEjrTHWCPinkCk4xcsI7pbS9+QqTc2hN3eAAEfEwJNDHgXN91zktmc148j
+	Cnho0WaZoc7xekspDTHMLGCCqrFH1MfoTW+Oa7LYZ+1AKbF4Vf6U5uYg3eC20GorVdV+zfajFqM
+	EXa2N12RMY4WQdGJdHRNnxgMNcReX8croPBFeK+8NGq+FVj8ZtwJZUwEz1SxDc6VJVK4Ifmpve1
+	rii9r9QKgKUVso1F0znIQnqPysB5/MkkpCxQPbtyiiSFHk3gOp26vPTp2hXLgtZkPCmfweMCO6C
+	M7s=
+X-Received: by 2002:a05:6830:6d2d:b0:81f:22fd:6ed5 with SMTP id 46e09a7af769-828a264ee0fmr220570a34.21.1791263791527;
+        Mon, 05 Oct 2026 22:16:31 -0700 (PDT)
 Received: from com-68297.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8281fcce238sm1622898a34.6.2026.10.05.22.16.27
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8281fcce238sm1622898a34.6.2026.10.05.22.16.29
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 05 Oct 2026 22:16:29 -0700 (PDT)
+        Mon, 05 Oct 2026 22:16:31 -0700 (PDT)
 From: nramaswamy@openai.com
 To: netdev@vger.kernel.org
 Cc: Neil Ramaswamy <nramaswamy@openai.com>,
@@ -72,9 +72,9 @@ Cc: Neil Ramaswamy <nramaswamy@openai.com>,
 	Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v2 1/2] tcp: restore RACK list membership when undoing loss
-Date: Mon,  5 Oct 2026 22:15:26 -0700
-Message-ID: <f366f5325d7eb96f0edd999b4f984213743914b8.1791248202.git.nramaswamy@openai.com>
+Subject: [PATCH net v2 2/2] selftests: net: packetdrill: test RACK after partial undo
+Date: Mon,  5 Oct 2026 22:15:27 -0700
+Message-ID: <79f83ccbd303db0a3d7c7afa5c94c7817549bd9c.1791248202.git.nramaswamy@openai.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1791248202.git.nramaswamy@openai.com>
 References: <cover.1791248202.git.nramaswamy@openai.com>
@@ -88,93 +88,77 @@ Content-Transfer-Encoding: 8bit
 
 From: Neil Ramaswamy <nramaswamy@openai.com>
 
-Partial undo can clear the TCPCB_LOST flag on segments already removed
-from RACK's list, which prevents subsequent RACK loss detection, leading
-to segments only being retransmitted after the RTO. Restoring them to
-the RACK list as part of partial undo makes sure we can properly
-reconsider them for fast retransmission in the future.
+Reproduces a partial undo bug where a segment is unmarked as lost but is
+never returned to RACK's timestamp sorted list, which makes it ineligible
+for future fast retransmission.
 
-To do this, we first sort (by transmission time) the segments whose
-TCPCB_LOST flag is being cleared and then linearly insert those back
-into the RACK list, which is sorted by transmission time.
-
-My investigation started from seeing repeated TCP stalls in prod and the
-mitigation that seemed to prevent these stalls was limiting SO_SNDBUF to
-96 KiB. It also seems like others have seen similar symptoms before [1].
-
-[1]
-https://lore.kernel.org/netdev/35A4DDAA-7E8D-43CB-A1F5-D1E46A4ED42E@gmail.com/
-
-Fixes: 043b87d7599e ("tcp: more efficient RACK loss detection")
 Signed-off-by: Neil Ramaswamy <nramaswamy@openai.com>
 Assisted-by: LLM sparse
 ---
- net/ipv4/tcp_input.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ ...tcp_partial_undo-restores-to-rack-list.pkt | 54 +++++++++++++++++++
+ 1 file changed, 54 insertions(+)
+ create mode 100644 tools/testing/selftests/net/packetdrill/tcp_partial_undo-restores-to-rack-list.pkt
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 92bc60716f33..51f04c7474dc 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -69,6 +69,7 @@
- #include <linux/module.h>
- #include <linux/sysctl.h>
- #include <linux/kernel.h>
-+#include <linux/list_sort.h>
- #include <linux/prefetch.h>
- #include <linux/bitops.h>
- #include <net/dst.h>
-@@ -2840,16 +2841,50 @@ static void DBGUNDO(struct sock *sk, const char *msg)
- #endif
- }
- 
-+static int tcp_rack_skb_cmp(void *priv, const struct list_head *a,
-+			    const struct list_head *b)
-+{
-+	const struct sk_buff *skb_a = list_entry(a, struct sk_buff,
-+					       tcp_tsorted_anchor);
-+	const struct sk_buff *skb_b = list_entry(b, struct sk_buff,
-+					       tcp_tsorted_anchor);
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_partial_undo-restores-to-rack-list.pkt b/tools/testing/selftests/net/packetdrill/tcp_partial_undo-restores-to-rack-list.pkt
+new file mode 100644
+index 000000000000..c07a2f8a5cbd
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_partial_undo-restores-to-rack-list.pkt
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Test that a segment unmarked as lost during partial undo is eligible
++// for future fast retransmission.
 +
-+	return tcp_skb_sent_after(tcp_skb_timestamp_us(skb_a),
-+				  tcp_skb_timestamp_us(skb_b),
-+				  TCP_SKB_CB(skb_a)->end_seq,
-+				  TCP_SKB_CB(skb_b)->end_seq);
-+}
++`./defaults.sh`
 +
- static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
- 
- 	if (unmark_loss) {
-+		LIST_HEAD(restored);
- 		struct sk_buff *skb;
- 
- 		skb_rbtree_walk(skb, &sk->tcp_rtx_queue) {
-+			if (TCP_SKB_CB(skb)->sacked & TCPCB_LOST)
-+				list_move_tail(&skb->tcp_tsorted_anchor,
-+					       &restored);
- 			TCP_SKB_CB(skb)->sacked &= ~TCPCB_LOST;
- 		}
-+		if (!list_empty(&restored)) {
-+			struct list_head *pos = &tp->tsorted_sent_queue;
++// Establish a connection with a 100 ms RTT and a 1000-byte payload MSS.
++// Linux subtracts the 12-byte timestamp options from the advertised MSS.
++    0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
 +
-+			/* Ensure lost skbs are added in transmission order */
-+			list_sort(NULL, &restored, tcp_rack_skb_cmp);
-+			while (!list_empty(&restored)) {
-+				struct list_head *entry = restored.next;
++  +.1 < S 0:0(0) win 20000 <mss 1012,sackOK,TS val 1000 ecr 0>
++   +0 > S. 0:0(0) ack 1 <mss 1460,sackOK,TS val 100 ecr 1000>
++  +.1 < . 1:1(0) ack 1 win 20000 <nop,nop,TS val 1100 ecr 100>
++   +0 accept(3, ..., ...) = 4
 +
-+				while (pos->next != &tp->tsorted_sent_queue &&
-+				       !tcp_rack_skb_cmp(NULL, pos->next,
-+						 entry))
-+					pos = pos->next;
-+				list_move(entry, pos);
-+				pos = entry;
-+			}
-+		}
- 		tp->lost_out = 0;
- 		tcp_clear_all_retrans_hints(tp);
- 	}
++// Send A, B, C and D, then E 47 ms after D.
++ +.01 write(4, ..., 1000) = 1000
++   +0 > P. 1:1001(1000) ack 1 <nop,nop,TS val 210 ecr 1100>
+++.001 write(4, ..., 1000) = 1000
++   +0 > P. 1001:2001(1000) ack 1 <...>
+++.001 write(4, ..., 1000) = 1000
++   +0 > P. 2001:3001(1000) ack 1 <...>
+++.001 write(4, ..., 1000) = 1000
++   +0 > P. 3001:4001(1000) ack 1 <...>
+++.047 write(4, ..., 1000) = 1000
++   +0 > P. 4001:5001(1000) ack 1 <...>
++
++// SACK C and E together. RACK marks A, B and D lost. D is old enough
++// to be retransmitted, but this ACK reports only two newly delivered
++// segments, allowing A and B to be retransmitted while D waits.
++ +.12 < . 1:1(0) ack 1 win 20000 <TS val 1280 ecr 100,sack 4001:5001 2001:3001>
++   +0 > P. 1:1001(1000) ack 1 <...>
++   +0 > P. 1001:2001(1000) ack 1 <...>
++   +0 %{
++assert tcpi_ca_state == TCP_CA_Recovery, tcpi_ca_state
++assert tcpi_lost == 3, tcpi_lost
++assert tcpi_retrans == 2, tcpi_retrans
++}%
++
++// Deliver retransmitted B and then the original A. D stays missing,
++// and we ACK through C with A's original timestamp, which is before
++// retransmission started. This triggers partial undo, but D should
++// remain eligible for fast retransmission (critically, the timeout
++// retransmission counter should be 0).
++ +.07 < . 1:1(0) ack 3001 win 20000 <TS val 1350 ecr 210,sack 4001:5001>
++ +0~+.05 > P. 3001:4001(1000) ack 1 <nop,nop,TS val 450 ecr 1350>
++   +0 %{ assert tcpi_retransmits == 0, tcpi_retransmits }%
++
++// Acknowledge all five segments.
++ +.01 < . 1:1(0) ack 5001 win 20000 <nop,nop,TS val 1360 ecr 450>
 -- 
 2.55.0
 
