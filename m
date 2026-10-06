@@ -1,65 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE393222590;
-	Tue,  6 Oct 2026 00:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CD5547062;
+	Tue,  6 Oct 2026 00:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791245851; cv=none; b=XnaprG3rxYGzvZTJOTPb7QKkdKCDrf1nvLq0AiWA8Y0lqtKitW1iJ/IhLEEf361ovm9HSthuwx8PEh8caMH9gsEJTPVZlte2JDtEXtSflxSaYtWp9/yYNaxfr+2MTeAgPMD7W7a5zEX+3SKBLdnS0tArloWWPS+mBFPcirATH0M=
+	t=1791246008; cv=none; b=OyAXL6BPuvjBx9MTOmwUZDZrzFvORU5NyRvaKuBsTFgWjrvTOyP1CtjbSQRrG/kpGeuH9KwvGrFNm9hvv21alfzGDebJkhWeYcg5qMA9E/xpYZ/0PTqKAjU2Br6Yl7KGYljGXXwTkOtNWTTSPYcWo+7NE0deQ79RdItDZJNMGD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791245851; c=relaxed/simple;
-	bh=YfCBZy11AmPwUFv0kkCLdOCxb/nqYvkYuTvhz43gse0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YOANwTIqGtzbCSEOl9nxmnkaV6yD3mnuZCjZ3qnf9zn3GHNmZ312JYgGOMVj6rU6MO5ofYI3IPbKIjSDcAh4e8q8syOCDFnyW3WK0NihdZFIUBiYC2cSpgw1qCc6QyUbhTeo5fAv7st/RiX7P+QxjEJ4ZqMBeTmvXEHgpVVhTc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OijQB2Oa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791246008; c=relaxed/simple;
+	bh=0QgLFJx7qh1jeoXpoQjm+gWrg0zxEdDQUluByRBzoI4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=LymSX0U/ZIR/2zGeao5Hn8pwI8yWvjJGalEUH1H90MTTAxklrhrVwPKqJkfeWDB0blvY/nmcNTjkZH7DJWcfAHduUeJgYrvzPXC7+MXkLpV3xFpdWY+gyjfVId1UwaY2zJYoGLKlI5PMJ+Cdu5mrFqHYjgxmv8yKXM3oth3bnAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUH+7cQM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OijQB2Oa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E531F000FF;
-	Tue,  6 Oct 2026 00:17:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUH+7cQM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC851F000FF;
+	Tue,  6 Oct 2026 00:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791245850;
-	bh=BAbymLWMnqGRppzlXX6fySkA0seOXWrhFUdz4wkHaKM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OijQB2OazLm2xZM2rsZ7K2I+t7rYtXl0lnLHiUiSx/g/N1Rdx2BHryu5VlewYZFSw
-	 6IvDb1dRUd+m1mChQi4Z2YfQbgBAvSneDuccQcCNdH2Odo+FUZbq9ImrPRLPOwzp2s
-	 EnZ6dhCJ67hP79dAS8cs/axaZvxcHaMjl4HFJ+iDgfJi0tpRDbSXukZOTnaRutXAYg
-	 IhdYGgj1jmBNo9kfY7uy82JSEv7G/dpl4FohwFeOV0P6kC8ADGogPH9NiMUvuFiS/d
-	 HzM7P3dDh39QxqAsaaRUWgdb7wg8Fh+gyGMB8C3ebupO6+uBw8Jh9hTX/gPNo2rGk/
-	 IEcAllnyIYmWg==
-Date: Mon, 5 Oct 2026 17:17:29 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 0/2] ipv6: fix address publication races with
- addrconf_ifdown
-Message-ID: <20261005171729.65fda9d6@kernel.org>
-In-Reply-To: <20261005165706.6ca89a76@kernel.org>
-References: <20261004183639.3773498-1-4ncienth@gmail.com>
-	<20261005165706.6ca89a76@kernel.org>
+	s=k20260515; t=1791246006;
+	bh=IVwR6zzcDg7nV42uU1/dBeG+bego9vgJLfPHLUYsOug=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=gUH+7cQMGv3D3fGF8xmmN3/U37aKBQUAuvDvyriH71roGigRkCILZVqBpWZGS7WJ7
+	 KkAJkWJRKM/inPdfFVNUTCbqQoBnrbaYui1YExcCAJkpVgV+7g1Y77jiWV63mMzAI9
+	 YJlrNJcMU9fX4maPr+XUYKyV38m6d6QKAjoZO/6c1e/8Cen942qBExCo5yqFMA8b5k
+	 swQWcu+kzIisQNV2LQjM4ZkkgGNn9eexBhj9vXjgcBGpxI2jC4S1lDavKRAhkDnXxX
+	 JDgU2G1jWTlIbl9FGD6FLBT7jtQ/Dghlwxf6N0GEVAtC+zE2x88alvQiSVU5mMflj/
+	 TRC15eDdSnRIA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4312392667F;
+	Tue,  6 Oct 2026 00:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] selftests: net: Fix minor issues in
+ cork_fragsize.py
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179124600557.1950904.6171696782618709280.git-patchwork-notify@kernel.org>
+Date: Tue, 06 Oct 2026 00:20:05 +0000
+References: <20261001124201.584805-1-alice.kernel@fastmail.im>
+In-Reply-To: <20261001124201.584805-1-alice.kernel@fastmail.im>
+To: Alice Mikityanska <alice.kernel@fastmail.im>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, alice@isovalent.com,
+ sashiko-bot@kernel.org
 
-On Mon, 5 Oct 2026 16:57:06 -0700 Jakub Kicinski wrote:
-> On Mon,  5 Oct 2026 03:36:37 +0900 Daehyeon Ko wrote:
-> > The first patch serializes address publication with device teardown by
-> > taking idev->lock before the address hash lock, as suggested by Ido. It
-> > rechecks both dead and disable_ipv6 before publishing.  
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu,  1 Oct 2026 15:42:01 +0300 you wrote:
+> From: Alice Mikityanska <alice@isovalent.com>
 > 
-> Please slow down. We don't want to see more than 10 outstanding patches
-> from random "LLM people" in the review queue. Please look at your
-> outstanding patches here:
-> https://patchwork.kernel.org/project/netdevbpf/list/?submitter=223024
+> return None is unreachable in check_kernel_config, because the try block
+> always returns a True or False value, and the except block continues the
+> loop. The return None was supposed to be outside the for loop, to make
+> pylint happy by making all the flows of the function return a value
+> explicitly.
+> 
+> [...]
 
-Herm, you seem to also have a tendency to make minor adjustments
-to the subject. Please try to avoid that unless really necessary.
-It breaks the quite naive version tracking kernel.org infra does
-for us.
+Here is the summary with links:
+  - [net-next] selftests: net: Fix minor issues in cork_fragsize.py
+    https://git.kernel.org/netdev/net-next/c/363cf8def362
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
