@@ -1,89 +1,120 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61746459ADC;
-	Tue,  6 Oct 2026 13:05:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E927456E1A
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 13:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791291939; cv=none; b=YdtVNXrJWguFql9VRRomEegNtO8q83yrztw4IpQyeNOd0GCuzF2bmImR6FrNv5zVCUBzHid8rhio19soQCWiBFwgs/0R62GKecwu/VTLy3w10ntRVvHtWOeSGR7SQ5Yk729F565J7MVKg8XZK/JBpjfsQZCcbCBIr/jrGpA3H8w=
+	t=1791291962; cv=none; b=SYUfV5zhICp2xeAotn8qeUqc/nFDeAqR46UNhCXTYeiv++5DHA4oTyEQgpZWtiGusixnUZKAjBNx5ftpnjk7OVFd4Hpujt8OHQpclxpTRhYGLMc6FGtLmA7ua1ZGfxPJ78n0ZmRTpU2oPs7NNhx+NJCqIFH+fPGQ9FmQl4vY6Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791291939; c=relaxed/simple;
-	bh=MGiultBOuqRmL7qBHpb+pJQ73KIxYkC5pkeXcC2F2b8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oZoIkWmnAdtHCs5sU8PvvYNVepRXtE8GEaGPVuL7SjUhH5u9NvdIaJVxn0gjivrTmqDWaCO5t3bYoLDz7v85y6u9jZTqO8XgrT4PiSwrzqyoC0+2XVvWbyFg/3bcVRMpVxXUXbzocjtP6+/Wicq9TlQ9i8q1uZ4aFtbxQ7Yr0F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=30W+rHrM; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791291962; c=relaxed/simple;
+	bh=HvUe+woKYxTyFq5JpxUPzSBOyzzQnXTSKNRusvt4Dg8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XO1UFBFyDy8uH5sbzWBid4rG+63gM2xV09FlR+xMjMq8XJtT6uMvXt0+1Ee/ewQmzWI/ZIqCwOdDjco6zhtEwqD/fCLeMegCBUXj7UhvwGjXmnMfn2+LvFqgsRbD2WOifrFNbtQK7h+WNI6iSLlN+LFEoaeXXV5OX4ViLP27iYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=imUlOl2r; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="30W+rHrM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xSWqE/JaJxUwkDfIRPzTHJ+p4Qo0eZDPBOfDxqG1+xM=; b=30W+rHrMpVQ8icuBWUSutdD2PW
-	u5Lr5PrcwEE69yC5zcgVWMg2VVqHAfHo0cUP+yjozzTw/dhssTII2AdzQ6wnbTDIT3NEZzkbDPSfz
-	i57CKdO1ju1JhjnQx8dJ1pKWgiQx/cOPNdv/+ON2Nvdk8RBmyujhr67s23WsYwmJAUVM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xE4rB-009GRf-2p; Tue, 06 Oct 2026 15:05:21 +0200
-Date: Tue, 6 Oct 2026 15:05:21 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Selvamani.Rajagopal@onsemi.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Piergiorgio Beruto <pier.beruto@onsemi.com>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, Jerry Ray <jerry.ray@microchip.com>
-Subject: Re: [PATCH net-next v8 09/11] net: phy: ncn26000: Support for
- loopback
-Message-ID: <7723127b-a713-4e96-bb63-fb2dc5367560@lunn.ch>
-References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
- <20260928-s2500-mac-phy-support-v8-9-7e011aacc309@onsemi.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="imUlOl2r"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-53391022dc0so5313821cf.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 06:06:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791291960; x=1791896760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OyTMN8bEuKjedpV+taqvE9kUT6xuXuVZaT92D0rX1fE=;
+        b=imUlOl2rJTI8VY0NSEjAo8wIDhedU6i02I6PouW32I0nO/5kEcVINWhCnh9kdgP6QN
+         Sm1RGnMRA5Hp728yd2/tZF5PAJUL2TctrtuZLc51TtMzC9iaudHgqj0t6k7an2ZQRiHy
+         W5qfCQs8jj6ElDzXYbL0/sQyxkCwpGbpRl2+AtdIftpH6GZPEUZ50HQyqKYeDLeZlXme
+         WxjViVaf8BOWENJqeL9JGMvpx5KPM4JvIFbbFQrqRkX25iEAtbZ49rPmQ0S3KZaez/3W
+         xk/uCtxzi0L1O++VkJlUvKiYvpacRCk9dilRGUCnZCyoRIki1yk19d1PaLKr9nCY0Dm8
+         Cj6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791291960; x=1791896760;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OyTMN8bEuKjedpV+taqvE9kUT6xuXuVZaT92D0rX1fE=;
+        b=LE/dRG32i9FCc77jY9vtnEggQkPhMaCfDn6XoTrVLSMOXIa9RkYgCKHr1JjcD5OLS1
+         tP8mQqMvvYUwgbaLF38OBtszXwGwjOVcgH7TG1Y+VZ8oQ8sss1TuL0og77triphBhVKH
+         MsKgTdZXun9LVHA+vw65pWn6+lbPiYQ6+Fgo+mzdJUdVPE/VcL+wBCbkUupack6MXE1V
+         14R6Xdt+o6IZ5Nf7fz3SdWSz2Twrq8j6drvWJrFtFxGEv9NU7mjUzph14bA/mcp9HdKU
+         RdeVEcgjhm6e9yudsDdCReC41hG6Yb3U8ETe/CgXaZUkb+uEdvJP4h2emHFqHLlEvj4h
+         ThVg==
+X-Gm-Message-State: AFuF++lyAaVbHtUq94659VS4UM+cZ02gTRr4Ea+aN/xhPfz7O8JqzKZj
+	3hHr8GKW4Eduk70Rf4PdkC/YjVJU3S4M+pmYOHuvfBhVmv/pZkIkAPBAk7YwHbGsdX18PQ==
+X-Gm-Gg: AYBFou2xkUhVuFmJgAfwFlG4YM61o9xb/sSJGE1cRDWwo6osENAJ4zgOz26Ifmyae/D
+	a28LAiHm+X4m6kSMwJr26tDEE5nYGLC9hD9fb+JpOYMm+K/b7H0hZg1TuUtLCFS5YyqndUePp0Y
+	BB8DviTRR7K62WvcKCZ65NpJdJXwgHdvMgVLb7jB+LYIu6jwvJwMOkQ8KGItWhjTxki1l/LVnN3
+	kT990d4MkBZ/q7Rdx2vPRDDMeu9z4n/TCItw1wxYExTQy8FGN+x/4+1enBfaQh5d01l2RAXsoWW
+	SmDDVvh9XGtnjO/2UCltBa55wIZL/3g8GO7r3Ch47x6cPNReYjWXyCsa+V7IFAyULNSeurZpgn3
+	orZEXh9ZG9lTVbFz5hr3to/p3H/JZullCYSB8LvIkk92jWPyjX+eWZ+qZnuhY7x7tR7RcLuM94o
+	dyepIu+x6VQNWZ7GHR/Slr+g1RSKJUOIgGmsNjuODZdb4IC5iBnv0F8/vY31lhXB9r1ayZWMy19
+	akK
+X-Received: by 2002:a05:620a:4441:b0:93b:e578:5838 with SMTP id af79cd13be357-93e8f20d003mr241476085a.12.1791291959644;
+        Tue, 06 Oct 2026 06:05:59 -0700 (PDT)
+Received: from houminxi ([61.170.182.45])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93cca263708sm1102596585a.31.2026.10.06.06.05.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 06:05:58 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net-next 0/2] netlink: specs: fill in the missing ovs operations
+Date: Tue,  6 Oct 2026 09:05:31 -0400
+Message-ID: <20261006130533.1620706-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260928-s2500-mac-phy-support-v8-9-7e011aacc309@onsemi.com>
+Content-Transfer-Encoding: 8bit
 
-> +/**
-> + * genphy_loopback_fixed_speed - Helper to modify the PHY loopback mode
-> + * without affecting any other settings.
-> + * @phydev: The phy_device struct
-> + * @enable: Flag to enable or disable the PHY level loopback.
-> + * @speed: Speed setting. Not expected to be set. Error if it is set.
+The ovs datapath, vport and flow specs describe families the kernel
+has shipped for a long time, but each one stops short of the write
+commands. ovs_flow has get and new only. The datapath and vport specs
+have no set. Nothing in the tree generates code from these files. A YNL
+client only hits the gap when it tries to send the command.
 
-Naming is hard, and i'm not too sure about this one.
+Name the missing operations and the attributes the kernel handlers
+read. del and set on ovs_flow, set on ovs_datapath and ovs_vport.
 
-fixed_speed could actually mean, fix the PHY to use the given speed.
-It is in fact doing the opposite, the speed is not fixed at all, it is
-left to whatever the device supports. In this case, it just supports a
-single speed, but that is unusual for PHYs.
+The handlers take CAP_NET_ADMIN through GENL_UNS_ADMIN_PERM, and so do
+the new and del commands that were already in the specs. Mark all nine
+write operations uns-admin-perm. get stays open.
 
-Maybe call it genphy_loopback_no_speed()?
+Two requests are rejected for reasons the attribute list cannot say.
+Flow set returns -EINVAL when it carries neither a key nor a ufid.
+Datapath set treats a missing user-features attribute as zero, so it
+clears whatever was set before. Both are in the operation doc.
 
-This helper is also not what most devices actually want to use, since
-it only works if the device does not support autoneg. The "without
-affecting any other settings" is not the best way to describe why you
-would want to use this, not genphy_loopback. Please expand the
-documentation a bit to make it clearer why you would want to use this
-and not genphy_loopback.
+The new, del and set handlers fill a reply, but they send it with
+ovs_notify() to the multicast group. The caller gets an ack, not those
+attributes, so the specs do not list a reply for them. get does, and
+it returns the attributes to the caller.
 
+Checked against a live kernel: flow set and delete, a delete with no
+key that flushes the data path, a datapath set of the masks cache size
+that also clears user features, and a vport set of the upcall pid. A
+vport set that changes the type returns -EINVAL, as the handler does.
 
-	Andrew
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
+---
+Minxi Hou (2):
+  netlink: specs: add ovs_flow del and set operations
+  netlink: specs: add ovs datapath and vport set operations
+
+ Documentation/netlink/specs/ovs_datapath.yaml | 18 ++++++++++++
+ Documentation/netlink/specs/ovs_flow.yaml     | 31 +++++++++++++++++++++
+ Documentation/netlink/specs/ovs_vport.yaml    | 15 ++++++++++
+ 3 files changed, 64 insertions(+)
+
+base-commit: a5e7d8e446af9803e37a3b6a4d416fb41178348f
+-- 
+2.55.0
