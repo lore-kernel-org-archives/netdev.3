@@ -1,177 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E73546C821;
-	Tue,  6 Oct 2026 15:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B4C37FF46
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 15:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791300272; cv=none; b=lcNyUs1RX6m1XvD2FF3BLk+URWSXnwbwFiE6KVRYSWVSNQLeT1bqr+eqcVFOJBPxuM/3hdKPNZnnDVb8KY6XOVESZWDEiFaufb8NSvLdxyMuV2y2nqPdysp8x5kY1kKozirhs1GGa9gjmUiih5Nq84pjIWD4da1soyzFqaQ6Hxs=
+	t=1791300506; cv=none; b=arMcdVOSW15zNQ3vkOmoyrUvKoXy0PO7xkYrYpDwKuZ4zWMwUN62UGRJX3nJ6yEHcJusfpMpY4KJKvtjplt1l2tSD1ViXPNQ0IvT2apBzPIlCd9UnIdYnrLFNiEgLKtx1IW6DGHLveBIVP8dDyrm9cxzPe0+hfckwvHlbdEtG1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791300272; c=relaxed/simple;
-	bh=FLfziQZLPnu6y3z2fWxofxw5KtIfaVhBmkfb5/S3Xb4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iZL1pbyNGFKViU6GA8dU2zdXLgvQYQ5hi2wXKndFQispIj0tNKt9ziprWJZSxuXYMgEfKPkd+5VOLv1vsyUXNK6LEyIUxNZbuhN7PJ2wLH8jqbg+WorSf8FqRe9r3n0s6M76lmk5Wrces1hOzr8EB0dLbnYVCum+gFH9F/RjXjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1sU4RoP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791300506; c=relaxed/simple;
+	bh=BLd0ZSi6AYEzF6Z1S6jhxHqmJ/tVEdxhmTaij18Onuw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kWCa6zpHVMy0iAqM+E1I05yfiARTt2E8xyA/3JZckud2PtBLESoHrGpkyD2U4PSAcq6WnFFkoc9z4nEK62VjfhLZqKWc9y+Q7ptfpR5k0CCtp+dnHjcUTbPrkM0bHKSmjHYu2TEM6fhlhgKuGDQ9aSqUsI2ndohrbyw2WDBGH0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Zge95CWJ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1sU4RoP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9636D1F0089C;
-	Tue,  6 Oct 2026 15:24:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791300270;
-	bh=PVvkiHtxln9Mn3ExYwHOY9OExYSN010VAj8STzkHraI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=N1sU4RoPVLpu9rsKw8RkFOxgwoJSNA3WqTUK/wPxHoAdizPqCusscolEeKXO4COw4
-	 xlBIx68fBBZxApunbKJKSQ7afYlO1DFF86F03aUfSHm9kiBy0JYny9cyplH9FEy4s9
-	 SXtbNFOtKcSRvxIxi1stI/57ov7E5vnt6PVEhYMDHqxGrs6NsOr3upENKGlAUJPG+i
-	 MVcw+n21dVrhAuENXY49G1gYAcJl/xTgDDtS3yUizoJ+75aQHinUMnriirDwSIFv0Z
-	 gqQcms0oN41FzPVCiUfjQeXhLlwmldEDFM9Sq8JAGyllhdOP+TD2DgK6g1in64xwdE
-	 M5EtvSB2Rb+rA==
-From: Chuck Lever <cel@kernel.org>
-Date: Tue, 06 Oct 2026 11:24:02 -0400
-Subject: [PATCH RFC v3 1/5] NFS: name the init_nfs_fs() error labels
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Zge95CWJ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 457331A114B;
+	Tue,  6 Oct 2026 15:28:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1708E60553;
+	Tue,  6 Oct 2026 15:28:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A148B103303AB;
+	Tue,  6 Oct 2026 17:28:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791300495; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=BLd0ZSi6AYEzF6Z1S6jhxHqmJ/tVEdxhmTaij18Onuw=;
+	b=Zge95CWJorrmzM4yUowmuOkxRgpEyfxGYa2/sfKipV7dd+RjsKMy/oaGCJ/mVs5Pzo0eEF
+	QAvqalpkxByxwJKXE5vyKH5kFSUwYu2xwYqM4H22Gg37EqMoVQPaCoVQg1pwSTO1lx6V/3
+	Vlba435uh1H4ftEgJSuP+lH4zK400PqocG4hEyzBxYsnoXtQg5EHCs8c/6zB6t0Ce/IzsS
+	zc24HAe/gkebKe8qWRsgGTXAIxZzqeo6jh5cRaaxVEC8RvbhI9cXK0HSSF2/J6ZyylYtTw
+	sQGayXcUHQwmPGI2afJ4QcT9d7FjSH/TXieM2eordIciOwm0Sdwh2ldqsJ84dg==
+Message-ID: <72e19e46-3a14-4a07-9b50-01e5480bf1a3@bootlin.com>
+Date: Tue, 6 Oct 2026 17:28:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: stmmac: propagate PTP addend and system time
+ programming errors
+To: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>,
+ Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Drew Fustini <fustini@kernel.org>,
+ Jisheng Zhang <jszhang@kernel.org>, linux-riscv@lists.infradead.org
+References: <20260929-stmmac-ptp-added-systime-error-v3-1-ddd6afe936b4@oss.qualcomm.com>
+ <dy5xfj3754wnp3gh2kpoyf3vpx3vfsfhblgbwbwsgts27xqxga@dzb33gt3zgca>
+ <asQcQIh56MV1OJur@lore-desk>
+ <CAEev2e8+fr1tJnSErD+2TtLDw5fGJbQOMcM5eefMnLyFUR+m7w@mail.gmail.com>
+ <asSb3RNcityVg6ia@lore-desk>
+ <CAEev2e8c6hZQQom6NV-URgdSoWiafCcRR3BtA6yxxqy7T-me8g@mail.gmail.com>
+ <asUGoxyJWVcsYBWG@lore-desk>
+ <CAEev2e_+Dcj60Rj2+_UD=3_kNQxLK4rmWTGK-dr-Ve9mGJBARg@mail.gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <CAEev2e_+Dcj60Rj2+_UD=3_kNQxLK4rmWTGK-dr-Ve9mGJBARg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-nfs-mtls-identity-v3-1-58a69fb107cc@kernel.org>
-References: <20261006-nfs-mtls-identity-v3-0-58a69fb107cc@kernel.org>
-In-Reply-To: <20261006-nfs-mtls-identity-v3-0-58a69fb107cc@kernel.org>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>, 
- Sagi Grimberg <sagi@grimberg.me>, Eric Dumazet <edumazet@kernel.org>
-Cc: linux-nfs@vger.kernel.org, keyrings@vger.kernel.org, 
- kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, Chuck Lever <cel@kernel.org>
-X-Mailer: b4 0.16-dev-da966
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2220; i=cel@kernel.org;
- h=from:subject:message-id; bh=FLfziQZLPnu6y3z2fWxofxw5KtIfaVhBmkfb5/S3Xb4=;
- b=owEBbQKS/ZANAwAKATNqszNvZn+XAcsmYgBqxRKqjJYzq8z155Qz9eW2KzYfr33fKWjWGXrC+
- z/nOWKZTeeJAjMEAAEKAB0WIQQosuWwEobfJDzyPv4zarMzb2Z/lwUCasUSqgAKCRAzarMzb2Z/
- l43mD/9Gcicn6SdVyF5GBt06A9c7IdQCIzYrelBebc4k3LSz+vljg9SUw2LtISKuaJkcI3NiCx4
- l9ou/If83HzAOsQecblM9OA01qjVSKQCVoo4iW7J1VcRhdcyjUV+b9iQxIsF9iLr9kXVw6byHz1
- Y0mc03aVrWtjEgIaOoXbHdHG8/1P1HJhc7NfF7h3N7SH+YR4zMdiWLXpT0FxjU/hPk7hu/ojxJm
- w8Z7ftsXgSseQ3HIkaiS8WqFk8woDQfA3+CKBpXM/4zcJvxsOpDz5rvjGTq6zg+IRykePKkYGi/
- catn02IXTPkSuXPozGmC3KovWQLL9gDXBreS8JxX4CX4wawFqcVl8+1qoN/aUUCm0jJzB0zHZaG
- EPm/7yQgirg7+awTv/kdMXCOTUG43rU/gVkGzGRgk46LWaC8635sKIQ4riNl2XABfq065GobcZL
- k7lxrvclkzPpmMKXBfSJ5WQ0JJCs78EHfMkaQyq2Gw3sJs525JAoWAEspN2fe9b08xZzhINuc+w
- xN/k6ao9q3rT7AR0xCs2te5wYqNSR0X0LFJCFGcJudH6uADQ/kPWiKrJr99GMUbUE5vZZ1MTSUe
- UgUuRwVE+eod3Idno0K1ImOc4/OMN3TyhVkkcJ21Muqh70x3EZ3LhmN4BTtH/fXbArxu2DNQNbG
- d3hpvHZMgifW17Q==
-X-Developer-Key: i=cel@kernel.org; a=openpgp;
- fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+X-Last-TLS-Session-Version: TLSv1.3
 
-The unwind labels in init_nfs_fs() are numbered, and the numbering
-already skips out8, so a reader has to count the label block to
-learn what each one undoes. Inserting an init step means either
-renumbering every label below it or leaving the sequence out of
-order, and a goto that picks the wrong number unwinds the wrong
-step.
+Hi,
 
-Name each label for the step it undoes, as coding-style.rst asks.
+On 10/6/26 17:12, Anirudh Srinivasan wrote:
 
-Signed-off-by: Chuck Lever <cel@kernel.org>
----
- fs/nfs/inode.c | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+> Maybe someone more familiar with this board/has used PTP on it before
+> can help out understanding why this is happening. Maybe this is some
+> issue to do with clocks.
 
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 3022454f7698..832923be43a9 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2722,64 +2722,64 @@ static int __init init_nfs_fs(void)
- 
- 	err = nfs_sysfs_init();
- 	if (err < 0)
--		goto out10;
-+		goto err_keyring;
- 
- 	err = register_pernet_subsys(&nfs_net_ops);
- 	if (err < 0)
--		goto out9;
-+		goto err_sysfs;
- 
- 	err = nfsiod_start();
- 	if (err)
--		goto out7;
-+		goto err_pernet;
- 
- 	err = nfs_fs_proc_init();
- 	if (err)
--		goto out6;
-+		goto err_nfsiod;
- 
- 	err = nfs_init_nfspagecache();
- 	if (err)
--		goto out5;
-+		goto err_proc;
- 
- 	err = nfs_init_inodecache();
- 	if (err)
--		goto out4;
-+		goto err_nfspagecache;
- 
- 	err = nfs_init_readpagecache();
- 	if (err)
--		goto out3;
-+		goto err_inodecache;
- 
- 	err = nfs_init_writepagecache();
- 	if (err)
--		goto out2;
-+		goto err_readpagecache;
- 
- 	err = nfs_init_directcache();
- 	if (err)
--		goto out1;
-+		goto err_writepagecache;
- 
- 	err = register_nfs_fs();
- 	if (err)
--		goto out0;
-+		goto err_directcache;
- 
- 	return 0;
--out0:
-+err_directcache:
- 	nfs_destroy_directcache();
--out1:
-+err_writepagecache:
- 	nfs_destroy_writepagecache();
--out2:
-+err_readpagecache:
- 	nfs_destroy_readpagecache();
--out3:
-+err_inodecache:
- 	nfs_destroy_inodecache();
--out4:
-+err_nfspagecache:
- 	nfs_destroy_nfspagecache();
--out5:
-+err_proc:
- 	nfs_fs_proc_exit();
--out6:
-+err_nfsiod:
- 	nfsiod_stop();
--out7:
-+err_pernet:
- 	unregister_pernet_subsys(&nfs_net_ops);
--out9:
-+err_sysfs:
- 	nfs_sysfs_exit();
--out10:
-+err_keyring:
- 	nfs_exit_keyring();
- 	return err;
- }
+Good point, can you give us the full dmesg log of the board booting ?
 
--- 
-2.55.0
+Maxime
 
