@@ -1,255 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from 15.mo584.mail-out.ovh.net (15.mo584.mail-out.ovh.net [91.121.62.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832FD49A3D4;
-	Tue,  6 Oct 2026 15:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BA235C6A7
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 15:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.62.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791298853; cv=none; b=Jieb6zJOF7yhWP3CyjTS0y/jXXZniRnamfZxvPpNknjaKaWmW5TVJwL1X6jlw01yo3uA1kc3txEFewWF6eoIf2p9MC73UKuAIwJbYgFSPMaFq1bPNCtxUS3wCUcWoOE8V+8UQ8xGEChuIi+VdpsEJtaf16kKGTzZrsaqJ11EyD4=
+	t=1791299247; cv=none; b=VSAKeTAg04Goswx03l2Ml2Arza8AAwQLTA6NrfBI9gjNNCFx7nA5kuoVPaZisMWYlyiNp0NgEdZ7JrA3NKIJxe1a2aTxc/W3IfG9GSyMUJhMujTt0e0KIXM41vfUQe/dg5E18scWI0gnMtUxR260txypuluxPikugXyaBm8I1Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791298853; c=relaxed/simple;
-	bh=7g4Smrx8884lwN5v+obe08hYFPCt/AWdmPKUfDj0BEk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U3ukAo3OovQvtnWf4lyk0p7r/skDie+/KqDJMnMOyCZIfabdkHk+mh5flTaKufyy6oKRbyG2TyZYC3An8Az4sxmvcKF1Q5+NpFcLsjUHvz8xSDRUmghGEypThm0RMbQgaAfNfYx9DKs3NNJOIcNx4O4nJbpeYi57/4ot7UMJVSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N27VYqLb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791299247; c=relaxed/simple;
+	bh=JIW4Aq3yzUa7B/q8hox57ai3R8PuvdFw6fcH7xtoSFc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h99NtX00DjODU1MojrTv3mbXJFK+4GfJqyC2AnYWjtPfud4PC3+GmqTEDJqc2eKptXcX9ityA1eI53kc/xLg1bFABtKF8/na1V4rlSLL6B1t5S3Sd08hPGeKJ9XpJYPVOvNNwQdTJiVNMjAY/9TkOonrq73CBLidRLWMDpDagxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com; spf=pass smtp.mailfrom=armadeus.com; dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b=cE0VNAJw; arc=none smtp.client-ip=91.121.62.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armadeus.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N27VYqLb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9712F1F0089D;
-	Tue,  6 Oct 2026 15:00:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791298851;
-	bh=KB01WqDJzhhYagPaxv84HFTqXtdUStrY+p0yDAzY9ZM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=N27VYqLbAtWUglOz9zHsXyDvlI6o3nRkiR02pzWnwyo7Z9b0vcPI31NDWeRamh8SP
-	 QrI+Q6kanL085azGRvz3LE3aZuNI0OyqzNBoWZU1ddSxSpUi29v97jTJUG34DHFGqL
-	 HZL3tbSbs+P6PDX5X363MJlNWQiT7kBZhq7Z+uz8t32GAQXpqqyvZVXe2o/DsPiMf0
-	 GHJWPARG9+EMSsTQLheV+QbPxMImrwc3KPeyM1TTBICRBndbVadVLu9CXywGy3KXlw
-	 RMytU+gPwLhmyxM9gvcfdEYHQxdqd50TNryElh5JjML+YmvagWr7OiVQxvOsHhZBhS
-	 QiAlY5wDws7pA==
-Subject: Re: [PATCH net-next 4/4] net: rmnet: optimize rx handler by replacing
- skb_linearize with pskb_may_pull
-From: netdev-bot+sashiko@kernel.org
-To: koen.vandeputte@citymesh.com
-Cc: netdev@vger.kernel.org, quic_subashab@quicinc.com,
- quic_stranche@quicinc.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, dnlplm@gmail.com,
- linux-kernel@vger.kernel.org
-Date: Tue, 06 Oct 2026 15:00:50 +0000
-Message-ID: <179129885016.434549.7297882654644186322@kernel.org>
-In-Reply-To: <20261002143529.3217189-5-koen.vandeputte@citymesh.com>
-References: <20261002143529.3217189-5-koen.vandeputte@citymesh.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b="cE0VNAJw"
+Received: from director2.ghost.mail-out.ovh.net (unknown [10.110.54.143])
+	by mo584.mail-out.ovh.net (Postfix) with ESMTP id 4hzfJc5Ftdz8S6Z
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 14:48:32 +0000 (UTC)
+Received: from ghost-submission-c7b579475-hsw8h (unknown [10.110.96.185])
+	by director2.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 5FCEFC0D61;
+	Tue,  6 Oct 2026 14:48:32 +0000 (UTC)
+Received: from armadeus.com ([37.59.142.111])
+	by ghost-submission-c7b579475-hsw8h with ESMTPSA
+	id 6AtTDEAKxWr00CEAfbgmAw
+	(envelope-from <sebastien.royen@armadeus.com>); Tue, 06 Oct 2026 14:48:32 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-111S0057d6e6ea9-af38-42ba-8b74-0731f0ba4c98,
+                    00DBEBCA2080E92057B1718008C39CF3BF911D1E) smtp.auth=sebastien.royen@armadeus.com
+X-OVh-ClientIp:88.175.232.176
+Message-ID: <4585ddfd-122f-465d-80b9-c907a530075e@armadeus.com>
+Date: Tue, 6 Oct 2026 16:48:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: dsa: microchip: fix KSZ8765 fiber detection
+To: netdev-bot+sinfo@kernel.org
+Cc: Woojung Huh <woojung.huh@microchip.com>, netdev@vger.kernel.org
+References: <20261006130006.134847-1-sebastien.royen@armadeus.com>
+ <179129640372.2231598.1056441247005614175@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?S=C3=A9bastien_Royen?= <sebastien.royen@armadeus.com>
+In-Reply-To: <179129640372.2231598.1056441247005614175@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+x-ovh-tracer-id: 738590340421989471
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: dmFkZTGxRaL9cxCq5X+8KPeE9IA/Mn6bSHESwwAhqEKKtoMcf5Q8aqr2kijEeMHchoYD2VpX6jQ7N0cLENwfExhmQpItlZCg1H60gf7aCqidEZA4RHDj9FdINK4f4enWJUD+cYqT281aEHtXL8abeeq6mg+Ny9rWaUt8y3p/HQZPxXhnAmWWQhQIV3nkWpiwLmcQCv4Hah4AxN15qH43ZUx3g88fLFhNpjTHWbyORD6TmugZm7Oz6aP4fo6rigi6437sPBretnY2yX6mG7hjMaEdtTXe6HJcyPltU1AOsm2JbXOpqV4qJtMM7z+Syh9LZo2MLFjuWlMZl2NcufH/hsCsJmuJItce5G5269xPHpxQ522MRaDfvh6LIPT7cL4Kp57Gx3XXMcyvm24pOMtS5mdPyL3x5MXAHQM/kj7vdEN+k0bjgzBFbMFQM/7ejKEzGu+sWuNfxlpX7IQuCWGyX1Ya13a9KsbTiRVuvM/VaRkIdAuDi3kMoXbGmyxsdGPF5UEYa0Q0VYPmC6Kbqq6hmNNKm83Eht7IUWj1L7NqY/yJP5N9H6Ec92n8Tch+3BbzxpGD0L8mcsO8HiVVfCFxdjcwMW0rIAiPph+XkOdltTNRd0YpKXOH+Km67vcqw2aT+LV3pKKjZSxhtc+ESHraxg/dh5uWR2czyd+AfHwNEEPz/NQyJg
+DKIM-Signature: a=rsa-sha256; bh=6q3vBRr5JRS8QySM4buQHniPenZqTCE3Qhk4I6/MCvE=;
+ c=relaxed/relaxed; d=armadeus.com; h=From; s=ovhmo103079-selector1;
+ t=1791298112; v=1;
+ b=cE0VNAJwftCNAgpw6u7JoZl7Sc3hq7R6gmYJJaOVdK8iVby2L85GtfG3cqq6ZztjDlpTvJeC
+ Cp8U2Y7eeV+dsdHgbJ1Lrhg1dQsIZ+vd8VuHt/nDtMieK/i0J1JzIf5EsXsqLpsLj1IYHa4tw6x
+ F5+ugcLIcf47FxshphA+IiK9qpJyYI+y79KEl6SXjFvddQpfjxOY25a+bGWW1df+/AX1h8w30Y3
+ 5s3UCvPE00CtJHaDuD9RfpUN+wbh7WuRqqvM3c07mM9/NEuzGzKH9gmm5l98WNa4gMbMf+yNiPC
+ v98geXQIu0qzD4jrCtstkMV6o2Sw1B9ltXPPhHwVp/NMA==
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Le 06/10/2026 à 16:20, netdev-bot+sinfo@kernel.org a écrit :
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>   - How the issue was discovered, e.g. hit in production, hit during
+>     development, syzbot report, manual code inspection, LLM or static
+>     analysis tool scan.
+>
+>   - Whether the issue was actually triggered, or is only theoretical
+>     (e.g. found by code inspection). If it was triggered please include
+>     the symptoms, like the stack trace or error messages.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-Critical: 1 · High: 0 · Medium: 2 · Low: 0
+Hi,
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This issue was discovered when upgrading an embedded device from kernel 5.10 to 6.16.
 
-- [Critical] Regression in rmnet_rx_handler()
-  (drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c:220): the patch…
-- [Medium] The commit message misstates what the RX path needs and what
-  the change does, and it hides that the patch undoes a crash fix.
-- [Medium] Shared skb data modified without copy-on-write for non-linear
-  cloned MAP command packets.
+The device was using a KSZ8765 device tree configuration and the
+corresponding hardware, but during boot the kernel incorrectly detected
+it as a KSZ8795.
 
---
+The issue was reproduced during testing. The relevant boot messages were:
 
-net: rmnet: optimize rx handler by replacing skb_linearize with pskb_may_pull
+     ksz-switch spi0.0: found switch: KSZ8795, rev 0
+     ksz-switch spi0.0: Device tree specifies chip KSZ8765 but found KSZ8795, please fix it!
 
-This patch replaces the unconditional skb_linearize() in rmnet_rx_handler()
-with pskb_may_pull() of sizeof(struct rmnet_map_header). After the change,
-only the 4-byte MAP header is guaranteed to be in the linear area. The goal
-is to avoid copying large aggregated frames on the RX path.
+The fix was then tested manually.
 
-> When receiving large, hardware-aggregated frames
-> (e.g., 16KB or 32KB from USB modems via qmi_wwan),
-> this forces the network stack to allocate a massive
-> contiguous buffer and memcpy the entire scattered payload
-> out of paged memory.
+Thanks,
 
-[ ... ]
-
-> On a slower embedded board, this improves throughput by ~10%.
-
-[Severity: Medium]
-Can the throughput gain come from this change in the qmi_wwan setup?
-skb_linearize() is:
-
-	return skb_is_nonlinear(skb) ? __skb_linearize(skb) : 0;
-
-That makes it a no-op for linear skbs. The usbnet rx_submit() path used by
-qmi_wwan allocates linear skbs with __netdev_alloc_skb().
-
-The only skbs this change affects are non-linear ones. Those are the skbs
-that then reach the linear-only parsers described below.
-
-> This severe performance bottleneck is completely unnecessary
-> because the RX handler only needs to inspect the initial
-> 4-byte MAP header to determine the logical endpoint
-> and route the packet.
-
-Is this description accurate? The same RX path goes on into
-rmnet_map_deaggregate(), rmnet_map_validate_packet_len(),
-rmnet_map_process_next_hdr_packet(), rmnet_map_checksum_downlink_packet()
-and rmnet_map_command(). All of them access the full frame through
-skb->data.
-
-> This preserves the zero-copy architecture for aggregated frames,
-> drastically reducing CPU overhead, cache thrashing,
-> and memory allocations on the RX hotpath.
-
-The aggregated path doesn't look zero-copy. rmnet_map_deaggregate()
-allocates a new skb for each record and copies into it:
-
-drivers/net/ethernet/qualcomm/rmnet/rmnet_map_data.c:rmnet_map_deaggregate() {
-    ...
-	skbn = netdev_alloc_skb(skb->dev, packet_len + RMNET_MAP_DEAGGR_SPACING);
-    ...
-	memcpy(skbn->data, skb->data, packet_len);
-	skb_pull(skb, packet_len);
-    ...
-}
-
-The commit message also leaves out commit d698e6a00a60 ("net: qualcomm:
-rmnet: Fix rx_handler for non-linear skbs"). That commit added this
-skb_linearize() to fix crashes with non-linear skbs. Should it be
-mentioned here?
-
-> diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
-> index 95c3e3934fd3c..a2379df69a6d0 100644
-> --- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
-> +++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_handlers.c
-> @@ -217,7 +217,7 @@ rx_handler_result_t rmnet_rx_handler(struct sk_buff **pskb)
->  	if (!skb)
->  		goto done;
->  
-> -	if (skb_linearize(skb)) {
-> +	if (!pskb_may_pull(skb, sizeof(struct rmnet_map_header))) {
-
-[Severity: Critical]
-Does this bring back the crash fixed by commit d698e6a00a60 ("net:
-qualcomm: rmnet: Fix rx_handler for non-linear skbs")? That commit says:
-
-  There is no guarantee that rmnet rx_handler is only fed with linear
-  skbs, but current rmnet implementation does not check that, leading
-  to crash in case of non linear skbs processed as linear ones.
-
-Now only 4 bytes are guaranteed to be linear. The downstream parsers still
-treat skb->data as covering the whole frame. They check lengths only
-against skb->len, which includes paged and frag_list data.
-
-Non-linear input does happen in-tree. For example, mhi_net_skb_agg() in
-drivers/net/mhi_net.c builds frag_list skbs that end up in rmnet.
-
-With RMNET_FLAGS_INGRESS_DEAGGREGATION:
-
-rmnet_rx_handler()
-  rmnet_map_ingress_handler()
-    rmnet_map_deaggregate()
-      rmnet_map_validate_packet_len()
-          if (skb->len < packet_len)
-              return 0;
-      memcpy(skbn->data, skb->data, packet_len);
-      skb_pull(skb, packet_len);
-
-Won't the memcpy() read past skb->tail into tailroom and skb_shared_info?
-That memory would then be copied into the packet delivered to the stack.
-
-When packet_len > skb_headlen(skb), __skb_pull() would also hit:
-
-	skb->len -= len;
-	if (unlikely(skb->len < skb->data_len)) {
-		...
-		BUG();
-
-The MAPv5 next_hdr at data + sizeof(*maph) in
-rmnet_map_validate_packet_len() is also read without a pull.
-
-Without deaggregation, __rmnet_map_ingress_handler() has similar problems:
-
-- MAPv5: rmnet_map_process_next_hdr_packet() reads next_hdr at
-  skb->data + sizeof(struct rmnet_map_header). Then 4 + 4 bytes are
-  pulled in total, so BUG() fires when the linear head is shorter than
-  8 bytes.
-
-- MAPv4: rmnet_set_skb_proto() reads skb->data[0] after the MAP header
-  has been pulled. rmnet_map_checksum_downlink_packet() dereferences
-  skb->data + len, and len comes from the device-supplied pkt_len. The
-  IPv4/IPv6 helpers also read IP and L4 headers at raw skb->data offsets.
-  Could the CHECKSUM_UNNECESSARY verdict end up computed from
-  out-of-bounds memory?
-
-- skb_trim(skb, len) goes through __skb_trim()->__skb_set_length(). That
-  does WARN_ON(skb_is_nonlinear(skb)) and returns without trimming, so MAP
-  padding and the checksum trailer would reach the IP stack.
-
-With RMNET_FLAGS_INGRESS_MAP_COMMANDS, rmnet_map_command() reads
-cmd->command_name at map_header + 1, and rmnet_map_send_ack() writes:
-
-	cmd = (struct rmnet_map_control_command *)(map_header + 1);
-	cmd->cmd_type = type & 0x03;
-
-Is this an out-of-bounds write when only the MAP header is linear? The
-skb_trim() in rmnet_map_send_ack() would also hit the nonlinear WARN.
-
-The aggregation section of
-Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst also
-says the MAP packets are "delivered to rmnet in a single linear skb".
-
-Would it be better to keep the linearization? The alternative is to make
-every parser frag-aware:
-
-- per-record pskb_may_pull() or skb_copy_bits(), or clone plus
-  pskb_trim(), in deaggregation
-- pulls for the csum header, the trailer and the command
-- pskb_trim() instead of skb_trim()
-
-A single 4-byte pull at the top doesn't seem to be enough.
-
-[Severity: Medium]
-Can this leave the head of a cloned non-linear skb shared when rmnet later
-writes to it?
-
-If a packet tap is active on the real device, packet_rcv() in
-net/packet/af_packet.c sees skb_shared() and queues a skb_clone(). The skb
-that rmnet_rx_handler() then receives is skb_cloned().
-
-Before this patch, skb_linearize() on a non-linear skb went through
-__pskb_pull_tail(), which does:
-
-	if (eat > 0 || skb_cloned(skb)) {
-		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
-				     GFP_ATOMIC))
-
-That gave rmnet a private head. pskb_may_pull(skb, 4) returns early when
-the MAP header is already linear, so the head stays shared.
-
-With RMNET_FLAGS_INGRESS_MAP_COMMANDS and without deaggregation,
-rmnet_map_command()->rmnet_map_send_ack() then does:
-
-	cmd->cmd_type = type & 0x03;
-
-There is no skb_cow() or skb_ensure_writable() before this write. Would
-the packet socket reader then see the captured command request changed
-into an ACK? The netif_tx_lock() taken afterwards doesn't serialize
-against that reader.
-
-The same write already happened for linear cloned skbs before this patch.
-The non-linear cloned case is what this patch adds.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002143529.3217189-1-koen.vandeputte%40citymesh.com
