@@ -1,111 +1,104 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0093AB288
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 20:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F913EC83E
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 20:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791318163; cv=none; b=fE13+5VB3xSb6QaR1Lp3p7ioyftl5eVelhnelJGVmqFiLb0FzG2Kvw17tdjOMEGXkWmznWQD7oqJnLWOwbSlXrs/fdko11ClElyouerLeWeyRZwk4aZSbFT3Ed14GyFbXs+9ZvRtg0MnywxdZ4xOeWixcPNpctJ4W2KHPhaCaCI=
+	t=1791318244; cv=none; b=eHYw8y+yh3l7U3q1XxsSmayOZGcMmxkXxTK3yAnKGOml/vtVOos4tJiOTH9cpVc2ryLJtiUhVC8smRpd2gLHRcEVrSzMad92pBjKTVnnYtWEZ8g+0x9kHmF93DUpHPlF1BtLigcTiNvl5I6hO/32s1W9d5xmiDjMeJ/oPn0oeDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791318163; c=relaxed/simple;
-	bh=rFVmQtBwbpZ+hy0N7xXtfJlmmBXLIt2lrMAgZCV0ulc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WG8ZJvJrg2ChnGbWa+xrwUyzHlu/nITLFv1H/1TMf1Hp3esfZwn8fTwrfigSzMV8xQYmk0Y4EpIsmO3bQh9DOtI39QSPCeKZreX/JZe5xsd1OHZkP61pGRyFZTau6fZF5eU1EQWjcSRgH8LnJxL4igTqLcfjJ1e/wWOaLv+Y794=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=zw9DsipY; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1791318244; c=relaxed/simple;
+	bh=+URRdGUal9XFQLtRU/xlYp4tgr/16QtNmNlu7sM/K8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oATg7QcydKbePBV3ScvOaBkd3+70yQnPrlBHi3dzOV5VGG7JYuxxPvkyfwh340jwEvEXZbgR9MVedELmryv3oTdexNi6JHfgKE8YTh/bc7Mp4ck3eMxTLuZNcPi0m8MwrZ5DYowSsvp+2UcRb2Z1eheOj6CQep7mMwbGGhV/tiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sKXIEpOM; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="zw9DsipY"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e4985211ecso12434595ad.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 13:22:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sKXIEpOM"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-88a627ce016so634297b3a.0
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 13:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791318161; x=1791922961; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wZRugNV3JlfxpmndM4rEfelj2/GgiUCrdqXME/BjiTs=;
-        b=zw9DsipYBEc6myITIhwFjiChOmZOjg7lm8TmnQTGywKW3Zt+OK4y6AaFUmdK9mmvMh
-         3wxlT9vOkntD/tHXyJktZ8C5p6YPuE1fcyj8lG0Pu+pqG43hOeeyt7u38j2BdDQkh8nX
-         VcVCYCGj/oCUCDTDq/1Xhu/a5EAQHekW+m2MkzNUXrmOAUwLoXIoZefHAf0CCczCgBeY
-         NYl4RiireUGBX4/w10KZ3gCRBQOwALZLlYMjiTfuK24Sr/cxLnpRDOHs679Cs9bLa+3+
-         6v/IRgEu9047GCsQtM6IzsAel6HUj+flDTIkQ5BheXe55uLfxEPOQ3Ovz/7Cz1iI4Fwa
-         Rc8A==
+        d=gmail.com; s=20251104; t=1791318241; x=1791923041; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wA3wGwq193kNMSvPv/kcsZwk+hDicBszW8/PKsxbSpc=;
+        b=sKXIEpOM32dHHBnWFueKBaF8VczfDTCDTGoJehyKkTrmWaN9vXtB6BTdITTS6Hj4dw
+         hjikHayK6BN2GsLZbDTYPv5QLuxrYtQLNxuHxJ8CRhFz2dqvfYwg9A11jKdtnOUbge+T
+         izapVKJRAGGKXdf8yucnRo4E2s4ggerRwQEloSCVals0HbWQNrOJE1ZJ+mSdSV240bw0
+         ZW8otmPfwdhhtokInUeToDOZGXGyhus2P2Ysfz8vNekH4lAZ0hUMegvSggDoQ5h+s9KP
+         2JvTdw/APazgPf4Bw5Eag0iaaclsbSu/9FI3xZ6itPy15ayM+VTm541PX4P+0bOsdlRL
+         pfDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791318161; x=1791922961;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wZRugNV3JlfxpmndM4rEfelj2/GgiUCrdqXME/BjiTs=;
-        b=VN1uZW/GousgdTMxqTDbVqGrxxqLsaEc4XwONCcxwD2VhYcWXKYNQobCxkmvPlnxHd
-         WAfaPno7hdC6AJsoh0pwufoCLoDoC9P1Xt+STMU0650JW5i0VyjfTu4veLQK9nA9FQaM
-         fd19BTtWpdflhnn0ps5nbWlg9W1ryL67jBUwwkfzUj+TQ9krwURz0s7ZzcO9g0VY4jWR
-         B4swnMzVzzZm99F1EIw4asB7qbmry85ZeQCROwCos0xQMJNfdr2ScodmOUulGHs5NAAv
-         39NtCDF2DeUfhLcu9DiNFfoX6vQSomwzetXP58PvyJPME3UFJlaypSmrT+Em76vXq5GK
-         A6pQ==
-X-Gm-Message-State: AFq9FYL5ZPyElkrq5r5Lz3InltcrAqH4kDowi4wM2a2ZJVPg9I7EipBg
-	WkwKUAg+wn45tI+ywlAYRCVyjLfIfjZuQ/YsGqSZuisQAYWe0R8U+MmQ/FQkgTJ28jg=
-X-Gm-Gg: AYBFou2Xjco5XoAaAZtIyuRhFS7OokRN82LxQa+tRalUlKyFvdl70zFJKIv7fICO7dM
-	3hzd64Y5SoJ8htk94GETe3BGwh2fYljBgP4l9Qkfrr019Stdhu0/AaOs0Z9ClS1xKsahCUhBUwV
-	m5Ug3g4DUz9I5NDg5c8bgFZfhi8LazyDukdszK/42MLVpNXSrn/DaXHAKKAmyIJoZeOXutv78v+
-	4s4Jv+QrjcDykDKmx3c3rrMiQFoYAa/NxqoK0D7O2nh+/Qx+D2KomC53NqXrAJs1xiYAmJmdjct
-	EVemTUGF9fvLhLDGYevku5IqTS5xERrpL7QjjKGap+KO8GMk/5zjNwX6EmdYTYC/PBdFqwk23MJ
-	DJCuH9vs7aMI7djta0l5ShP4DtsccRrmHwvzHnXNoWuqwmI9mMW5PciPWVSWF0CxBHB/5ptFfE6
-	Eu6QT5RyrCtiTEJ+JP+FQmfE9vJKduk5pnpLjWljhqPDGzzB6rF/Rv/tBx9SzKDCx0fMUA5v3HP
-	uPJPdtLELA=
-X-Received: by 2002:a17:902:ecc6:b0:2df:84e0:902f with SMTP id d9443c01a7336-2e6003b6918mr3976315ad.9.1791318160579;
-        Tue, 06 Oct 2026 13:22:40 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:3::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e604948613sm850485ad.63.2026.10.06.13.22.38
+        d=1e100.net; s=20260707; t=1791318241; x=1791923041;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wA3wGwq193kNMSvPv/kcsZwk+hDicBszW8/PKsxbSpc=;
+        b=oXgs+tHP+FfEnjTkiho3tdWfQNaSDjq6WgCdXNa63NL50CcAiIqWb+QwbyeNyjhhFZ
+         /RL78ITE8dd7yVJxJsGdKg4/QmxZ19/HvLgA12mAr3+fFZg7yL+KNjTx4MtcH7T8ID3X
+         0H4BFdrg0S9Qp2IDjSbAaIAvF1XFj329TZuwKMgCGZ5TQPfOyNk0LOccpaZck1TFq9Xe
+         cAXOTbIAsnCdY5XsOXffmGg9mzKdmu3+vzwddZahnJb95SXK+sE5hk7smpXVUXqRg+al
+         8TrOEwyAQBcBSFoKsezMJRipYtpr2HCvAJL4Pcp+wIQZovgjK9Sk7yWlz/oGYChQw6qh
+         D1yw==
+X-Gm-Message-State: AFuF++lA14+z5ZQBqmeMSZX+2zxNGRjjK1a8O5J8yUZxq1uip3Rbv8ly
+	r17vvw/DB1v+u2D9HvwyO0zLKQH20RwKZg4JRJItOasmzH8+SNjoL/slTDZlQGNj/pQ=
+X-Gm-Gg: AYBFou0+nlYLxfEQygOlRTEoKtWsKKcWFQV6o+YxPu2XWoIqLcXWF4Yle3o5SBIfTaM
+	f88EUfwyTjm6tDNsYR9po2QBRFERZhDG0QyYS8BDQp3c1S1+MGSDq4XHxGhn8MrzwUhK9p2MRt4
+	9ip/+5Fn0HiT2It/kq7XSZcHmPT+X3Y2YqcL2WEp8odBR0DwQwhHX71UYi5KIVclgxJLRC8MCSw
+	n5rzAl3Ls2BAYTCvJQJByacI+nLQEohVfHg67SBeSIXbRbQaozs9v9+iyaXL/4jN+bOmsHJNAnI
+	OQBASR4iQoIr8Z7C03nkHxm2Poa7d8W75Pm93S2HyVGMvEWMMAFJ2RF9COneooJC1o4ByhADMfj
+	GayH95JGcQ1fboqZ8U+eLvJnk0GfiRK1GHH5HVxMlZfbSwAlXZPjhyzl0JyfF4o2xJdbzNc5P14
+	DOwZfL13WHVpeHye3JKIFZF8/ck1YosLtb1F9CRQZScpUTJe6H5hrh8vOKi+eEfSzmlOt5OTsMN
+	CkiS5KHkQ9bHvVrehMR94SlYtq2mntwmgrn
+X-Received: by 2002:a05:6a21:2982:b0:3dd:ff93:a87 with SMTP id adf61e73a8af0-3e1340e0bd3mr138927637.50.1791318241162;
+        Tue, 06 Oct 2026 13:24:01 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661c:1246::1d2:d1])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0a92da735sm383218a12.17.2026.10.06.13.23.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 13:22:39 -0700 (PDT)
-Date: Tue, 6 Oct 2026 13:22:37 -0700
-From: Joe Damato <joe@dama.to>
-To: anmory <anmory@protonmail.com>
-Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
-Subject: Re: [RFC net v4 0/4] bnxt_en: Make RING FREE more robust
-Message-ID: <asVYjdbZGMAEck2t@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, anmory <anmory@protonmail.com>,
-	netdev@vger.kernel.org, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
-References: <VyyrJwrwBZEIGezDRJP8QPxbcsGROaxnmohLCnzNQY6sX5CEt0BK3AEC_0MGBx6OxGf4H5UG_xQcqgtAonwmXLdZ5Bd3INWMsof8Oj6ruqg=@protonmail.com>
+        Tue, 06 Oct 2026 13:24:00 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/2] net: phy: motorcomm: Add cable test support for internal YT861x PHYs
+Date: Wed,  7 Oct 2026 04:23:46 +0800
+Message-ID: <20261006202352.1616626-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VyyrJwrwBZEIGezDRJP8QPxbcsGROaxnmohLCnzNQY6sX5CEt0BK3AEC_0MGBx6OxGf4H5UG_xQcqgtAonwmXLdZ5Bd3INWMsof8Oj6ruqg=@protonmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 06, 2026 at 04:43:42PM +0000, anmory wrote:
-> Hi Joe,
-> 
-> we appear to be hitting a very similar issue to the one described in
-> this RFC on two Broadcom BCM57504 systems.
-> 
-> One detail that may be particularly relevant is the ordering in our
-> reproductions: on both systems the AMD-Vi IO_PAGE_FAULT occurs before
-> the NETDEV WATCHDOG / TX timeout.
-> 
-> We originally encountered the problem after updating from Debian
-> 6.12.107-1 to 6.12.111-1.
+The YT921x switches integrate GbE PHYs of the YT861x family (PHY ID
+0x01e04281) on the switch-internal MDIO bus exposed by the yt921x DSA
+driver. Add a driver entry and TDR cable test support.
 
-BTW there was recently this patch [1] proposed by Eric which helps prevent
-a bug Stefan reported [2].
+v1: https://lore.kernel.org/r/20261004184246.1260426-1-mmyangfl@gmail.com
+ - split into a driver entry patch and a cable test patch
+ - update comments and kconfig
+ - add yt861x_config_init() and apply the auto sleep setting, restore auto
+   sleep when starting the TDR test fails
+ - use separate variables for the TDR status
 
-I am not sure whether the bug you are hitting is Eric's bug or the bug I am
-chasing.
+David Yang (2):
+  net: phy: motorcomm: Add driver entry for internal YT861x PHYs
+  net: phy: motorcomm: Add cable test support for internal YT861x PHYs
 
-Other than explaining how you repro'd the issue, if you want to test Eric's
-patch you could apply his patch to v6.12.111 and see if the issue still
-occurs.
+ drivers/net/phy/Kconfig     |   3 +-
+ drivers/net/phy/motorcomm.c | 151 +++++++++++++++++++++++++++++++++++-
+ 2 files changed, 151 insertions(+), 3 deletions(-)
 
-If it stops, it's probably the bug Eric fixed and not the one I'm chasing :)
-but if it continues, it could be what I've been looking for and I'd really
-want to know how you reproduced it, please.
+-- 
+2.53.0
 
-[1]: https://lore.kernel.org/netdev/20261006042153.199444-1-edumazet@kernel.org/
-[2]: https://lore.kernel.org/netdev/20261004122616.56714cbd@nargothrond/
