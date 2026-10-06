@@ -1,151 +1,165 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010056.outbound.protection.outlook.com [52.101.193.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4063B05AD
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 10:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791284204; cv=none; b=HcyOshE9vAZLUwFyMqY9qc7bfNdSLHkfpSFrnHO7+UMGPSjuFjEhYL6IJFxDz2HnjQVtWXtJHYJmNeFe0uZt1vpQgGn0ndHDETraR+ijx5BgfQAf77mUIXTVBWu9+sJep+xxml7MfvnwfCrNlzZ2bK+8cciG4NZFOl1xhzZ41xA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791284204; c=relaxed/simple;
-	bh=LSuG07DL7mAPTVH9az1Diu30JUobjqfVoqjem5H3Ibg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F8Png6AoIvARTwm/VimLz4HdRJozYFuuPofIh7a1d/F5xDnyH/TjKlMDtvSoVxscOB+oQ3rYKkybRfc2mAzxhbGzzpWa/1tU3hijJ8VqyLComHW6YeAj/haB22b83FLb7A9HTNwsC/i2yT2+9ssAeLXK1B9zWQmZ2nLW6BXvyRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ss0YH7v+; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41081370ADF;
+	Tue,  6 Oct 2026 10:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791284357; cv=fail; b=gzyKldwWuuyz+/nK1oK5Z9hT7g90iWtNr7yKhRmXPYsNyj0BbplXNzuLgxB9sKJ9r5aMxAvcc9ljNfiUBqzWYmbZSRGbFEfFXWGZi/9Eeoy+8ETwV80rO/PGpHM2aiS8kscD3BtKfylMNwldaBGbiVHRaNC68uY/14WHiCyj/TI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791284357; c=relaxed/simple;
+	bh=jvJ1N5FaQMyNkkEIPOVSh4vM+aMw+CdUHEN1ZdjtFZE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UqYFCkSanwTiT2XbofvUihBGzB6NqePUYyYrpaL7QMSdncaLkVl2VOqgxewkz8fws1/HuPHib/02+pZoD5A4lbUv+h/kP8xDYscw/AojLtiG7qlvZENE7kHudGt8Ove8tc6ezE5qho661w670QZjVRkNBFElVAkUE5CiDhF3dE8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=IaydvFNl; arc=fail smtp.client-ip=52.101.193.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ss0YH7v+"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-398a4dcf289so403779a91.2
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 03:56:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791284202; x=1791889002; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NI6ZURTheFOwf7xfJ3T7rNEzU2/d53FWKsUxLaM51H8=;
-        b=ss0YH7v+btHjadIHYpj9zLqBZ3y3UTp1VEjs8amz/iF7FgNR1j4Xjcho9R8yzQ88U+
-         G9eV2W8QbX/gSEHGFk+qJw8mQ/gvGVr+MMTC06CfQrupj3EYQDjhpobl2bev3U9VThlo
-         J845VdMSr2wKOzwsXj9xLrhdybkijIcURYbFy+39A3fiPM7iskeoGWpmhyE9zdSsuH46
-         dWsPUKX6I/uhaJnezblkycTSEBqBY7AfJV6X4hm3pUSVgfPxy5kGvGERJ857L25P29Gq
-         MSfQ1THKaZ/1suJeA5RVN/tJDdFnqQRQYhGky7XYS6K7gKa2oVNZNpVRbP7nEm3roLjE
-         w1aQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791284202; x=1791889002;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NI6ZURTheFOwf7xfJ3T7rNEzU2/d53FWKsUxLaM51H8=;
-        b=lF78dZZvbw6wMyvceRUVjyqTTA7xZvfgxge8brzgjJct5OdGz+rLW9a+HqH8baA8Kv
-         3dAplxP21/bLBJYRo2Raz1nKQiHIKSEpqjABcUym+JJRRogV0qyIT929Cger2u48lpHf
-         JZlHK1bXK+sGp6m1e/M399bbji3bdRlSsEzqfLz4i+NZiYDVkbIRbAOwmC67jtk0DKPf
-         y54OUASvdnaLc6Z9HCzRNPI3rqT4ZvhM97y4TnHSGunRausYvw/pU7L82Whd5Slk83V1
-         d8Z0yVCjsqSdFlYcS+HnpP/V4FvHeXd/EFejfV7bVh6lR1sAc+f6U1fFoaWKCTriywrc
-         BWNQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy1s0eTyeP4m/6H8kfvvue3lR7UlYcrpH1MKlkgYMsAIonlZqTmGANwqL6WjanmJVeKVXTI9fk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJVMLo1eqHswwP/lcSwcE9Ltma0lEgknewT25XTKVSxo0lvtd+s
-	xovxx4CLbyvVHawxS2hMKnzMWv8jYRB45PBxheS0tVGYONyAcDLac6Dq
-X-Gm-Gg: AYBFou0n6bR9MZXV8q0ZeO+fzVdkLiiCCcG4gq10LT495XQP725NoSbGIjuAJkIuQtr
-	TuBO73g1rF5lB3W3eC6dujMxaIZiw+EW1EBUWGbu0W6TvPskBMFrWJYZ2kBbeMvHgvmbx/vMUBH
-	IIoi0pmE2AZa+/Nl+LU2cVNwTu2djahCuq2xAmdIWQWYIfA+FHNFJUROOFox2TRN9bi10ljgAmi
-	pMPAhDDUGapqSdl5vxHGE2JQRxR9juq6jfxbmu0B0/5IakKbVQOWlW9OZXtSboBQyhpv1jBZvm/
-	dpOGHvavRcBdXHBZjmcH+ivhD6rR5wwf3MQ189RWJDIT+fx+0VkKQNER4YJjjsVSwFWbeT0wD3B
-	Uc+/kSebyXXS3zuNnnJ37RZv1K1IM0ZH01LqdCrtgEx32G6OXk+uFFCnUoc4SlhxqwwTDErGG9T
-	UIDv8HKZGMuKEIJ2FcrU3UsfVJrfQFLQ7shqhsKn1AxxWnFK2AZfMmrk2vjcaDNHlrw39HVOmGZ
-	ZbRPtLiIlOmQFNYu4GVv+tHhAkW9gyrZ3GwAEjmZ8nh49XdnWutMq+PbYbuCcue1TfY02JfDLGQ
-	ikF7gPCGUIZJOA==
-X-Received: by 2002:a17:90b:5825:b0:3a4:b0ba:8e4d with SMTP id 98e67ed59e1d1-3a8730e713dmr376259a91.13.1791284202002;
-        Tue, 06 Oct 2026 03:56:42 -0700 (PDT)
-Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a85425eb41sm4735366a91.8.2026.10.06.03.56.37
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 06 Oct 2026 03:56:41 -0700 (PDT)
-From: Tian Xun Ng <luckilystar08@gmail.com>
-To: Emil Tantilov <emil.s.tantilov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	aleksander.lobakin@intel.com,
-	aleksandr.loktionov@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Tian Xun Ng <tianxun.ng@bytedance.com>
-Subject: Re: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down vports on shutdown
-Date: Tue,  6 Oct 2026 18:56:29 +0800
-Message-ID: <20261006105629.7481-1-luckilystar08@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <008a657f-f914-4191-b5c6-0fcc062bf73e@intel.com>
-References: <20260917105205.37561-1-luckilystar08@gmail.com> <20260917105205.37561-2-luckilystar08@gmail.com> <45ffbd03-653c-46fc-b500-07e9b99f295f@intel.com> <20260921032827.32485-2-luckilystar08@gmail.com> <008a657f-f914-4191-b5c6-0fcc062bf73e@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="IaydvFNl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oD7SoWUZtuJ/iyrqczDxR83acpl9xrG2NByQIWg7fAiYFWjcxE5uAEVNGNQWpjnagZvZGmv0HVkLGKJzMfNeUIP/zpktXMJB0XpGRrhvJZvT5JULC5D9Kq3VziImQznZUXTN8EOqBnsS56cRvHjSqqR42hsgGlnp6QeEsFjDQWcUswTlvAGlF9Px7uvU3BvSAhEJ2fMZs9DWO97meK09PT65W5mmkCbxZPUkQwdJhWiwxoJAgc7LyfcC39DrPUWgAQl986RDyfMEaQjBdf8Z9zy1M4ZVmh0+voPHJynyckCYb/t8eOhsMDmOh+z2cKakRZtJsMKwuHgIywHlPeHWRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PktebZg0Soffw0DD0/W5JXBRUhi81XRqGK4iXiBbKOo=;
+ b=L++Y9RekGnfk1ac49CmbnuPZsXabSeH/m+QhcYQh1id+KrH4zXuaK+JBa1i4h17BkgpqO67CEq6vnn/iiNd6VHI4sgPhbtlTedGROQfAYtxV+bm6aGKA6DvgjQ59waMUzvKKSuB1noSqgLnEk7p+GYctvudzGgbXPGXrEkbolfow7iLRr9LTmpiflOmtmbro1xm/fVhSfm4mIVB2QzDiVIGChiWtPlCzEv+/UbbFsvYDE4iHJTP52xkZFGua5wCa7u78jAbLU3LamXzJrNHJsAdhsm17wvQlNiNXseQ28scMruS94lNxHv5WwLlLnCZcHzukvG1qDHsb7e+lt5KotA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PktebZg0Soffw0DD0/W5JXBRUhi81XRqGK4iXiBbKOo=;
+ b=IaydvFNl67AalwdnJsRQedgZ10KWhU5V/XQ3GC2G5ia8hEuK+OUM17oia5dsrHpxf9Y8XoAU+ABhAw2m+gtdTDwtb9Lvw5w4JewCzxSy6pV06wMtNygAL8xcDMSikD+qumh9g5IuG1gtxukf8SQ9+Eo8nRKXNaQSdTI4fwUqWvBbteuVAh9HOotA22tQ6S8zec07YX0bI5u4LERL0/RXfSzZ52+QQgk25LAKvuGXfgV5CjAxJ0QXZHrGWDGZUixCgeqiINGxdCGQ1z1/Bto8OxSK61RYohHeGRytF6I6qVhC5cZQ3P3oP0Gn+B82NCHu6Tzer4ClsOQA5jyep6JJTQ==
+Received: from CY5PR19CA0044.namprd19.prod.outlook.com (2603:10b6:930:1a::24)
+ by CH3PR12MB7497.namprd12.prod.outlook.com (2603:10b6:610:153::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Tue, 6 Oct
+ 2026 10:59:10 +0000
+Received: from SN1PEPF000397B0.namprd05.prod.outlook.com
+ (2603:10b6:930:1a:cafe::53) by CY5PR19CA0044.outlook.office365.com
+ (2603:10b6:930:1a::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Tue, 6
+ Oct 2026 10:59:10 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.161) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SN1PEPF000397B0.mail.protection.outlook.com (10.167.248.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Tue, 6 Oct 2026 10:59:09 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
+ 2026 03:58:41 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 6 Oct
+ 2026 03:58:40 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
+ with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Tue, 6 Oct
+ 2026 03:58:36 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Leon
+ Romanovsky" <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Li RongQing <lirongqing@baidu.com>, Mark Bloch
+	<mbloch@nvidia.com>, Saeed Mahameed <saeedm@mellanox.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Tariq Toukan <tariqt@mellanox.com>, Tariq Toukan
+	<tariqt@nvidia.com>
+Subject: [PATCH net V2] net/mlx5e: Order ICOSQ cc update after CQ doorbell
+Date: Tue, 6 Oct 2026 13:58:20 +0300
+Message-ID: <20261006105820.257208-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397B0:EE_|CH3PR12MB7497:EE_
+X-MS-Office365-Filtering-Correlation-Id: c4d26b33-a0ed-42e4-8b2e-08df2398d961
+X-LD-Processed: 43083d15-7273-40c1-b7db-39efd9ccc17a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|7416014|23010399003|36860700016|13003099007|56012099006|11063799006|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	+4tyLM+yUrfcuDKYoc5Dl3BsQZbi2l3szK5jN2IAoD6k0I5lS+D0sXaPhLMstWwji/nTXns3I9/cm/i4+XlwcPTJ+Cyr1JxjHVWl8wnNHpixUIOa6+/px9V9nvvOooy0RH/1dBLuEG6cHn5SAtA+Hlb2LBwGWNSXB2Pv1gpsQUnvB6DTwUdHMlc21T7pKHu6c23Q6zGt6oJlOWh+iB6O9LnyOWGha2uZD68+wUYBH5SsEEEs/IcczgzRaI8KaydFOdG94Utq0ONBYYTAaunsIWw91RL7jMtUNQVEluwDUqH5i3JCCLP71qJDm7fC8g8kFQSY5aRNmAioAAbVP1vFV2jV/u5zRqU+66GnOqR/FMaEwJ6XNvFB8J5ZJ2CnK+CBElwbldtA31chmBdkgbys8TNUBIH2UPG7dH2osG5Asy5DoCkNNwT/EySeYwWMsoDcj/5tHgC5KHFUupn9NBz4jH7TFStascoKOsSvZNbYwX4YnwB+lTHk3cBT3Y1zCzJcaBOQLDAxCXtv8U9QZd72kutOml451W6/qc0eyA2JHXNDDkmPzFwMzpANBzo9WVaIrzXYAQo8fVY5KPXv9G8eXwny9Qd72ZIxoh/QRpXERc4eJga70xE5gbXKtRzQ53HwXcNZo9Ht+MKAgjL3n6P9i2QiPTCWdBj8VEc5LvtZbpxuURH2NSgtEgnANMxdSE55VEeB3kHQeeiZfvlg3MeMzA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(7416014)(23010399003)(36860700016)(13003099007)(56012099006)(11063799006)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	gA7HHO3j1Aa8ZA5tS5vsc1WAStZhJtbrWHgfqTKp0Ply2hvWFev6ClVgDJi9Jtqy62Gx1jJpAKcWL2u66grrjh42tv8JcWqFgivjCinhbnFcWeF/Pfglm64U/nRMmU3CWWCkbV3Hedp+Ft9DKQeGTE0eYfTcfV13PsokVvIdAmpXczHmlBYuttcqwDnrIV9z+yRBYZeuGO1ltYO0vi/nsY1mxjqw4dh68ohxoSSxPxetlPz00wKXcmZj6mrtoSryv6SlnyVYEjdlPLz3BNSIXSREWzKhIeYinV3A1NLb/ohW75frk0//mwWFiKOEd96D5xXPF9NyaQ2AsENj5rEPRU2ZOKPL/e1I/FTo43BnrHNnEwqPR1yJev5fBilDvdtDS6Vq42UTJk4dUJRCMPz0DFzOyGht5EoEAlbW6ZvsJmgfRHGM0U3trzJQDzH80LIW
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 10:59:09.7454
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4d26b33-a0ed-42e4-8b2e-08df2398d961
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397B0.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7497
 
-On 9/21/2026 2:06 PM, Tantilov, Emil S wrote:
-> In that case wouldn't just the reset on shutdown be sufficient? The FW
-> should clear the resources on reset, which should take care of the stale
-> vports.
+From: Li RongQing <lirongqing@baidu.com>
 
-Sorry for the slow reply; I wanted data before answering. On these
-devices it is not sufficient.
+mlx5e_poll_ico_cq() requires sq->cc to be updated only after
+mlx5_cqwq_update_db_record(), otherwise a CQ overrun may occur.
 
-Same arm64 hosts with two idpf PFs, IOMMU translating so every stray
-write is blocked and logged as an F_TRANSLATION fault, warm reboot in a
-loop, counting boots with idpf faults (always ~19 s in, at the first
-queue reconfiguration):
+The current implementation updates sq->cc before the CQ doorbell
+record, violating this ordering requirement.
 
-  shutdown as in net-queue (mailbox shut first, no reset):    10 of 10
-  same + PF reset after idpf_vc_core_deinit():                 2 of 2
-  same + PF reset, then poll PFGEN_RSTAT for completion:       10 of 10
-  teardown messages delivered, no reset (IDPF_REMOVE_IN_PROG
-  set in idpf_shutdown(), the effect of this patch):           0 of 100
+Update the CQ doorbell record first and use dma_wmb() before updating
+sq->cc. This ensures that the CQ space is released to the device
+before the corresponding ICOSQ consumer index is updated by software.
 
-In the third case the serial console shows the reset happening:
-PFR_STATE goes from 0x2 to 0x1 within the poll on both functions, and
-reading the register mid-reset raises a TLP error on the function, so
-the reset is not being lost to the reboot. The device still has the
-previous kernel's queues afterwards. The reset the next kernel does at
-probe (IDPF_HR_DRV_LOAD) does not clear them either; only the
-disable/destroy messages do.
+Fixes: fd9b4be8002c ("net/mlx5e: RX, Support multiple outstanding UMR posts")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Is a PF reset expected to drop the vport and queue configuration on
-your parts? If it is, this looks like a device firmware issue on our
-side and I will raise it with the vendor. Either way the driver cannot
-rely on it here.
+V2:
+- Resending, after verified.
 
-> If there is some clean way to shortcut the MBX on shutdown then I guess
-> it would be acceptable, but I don't know what a "safe" timeout would be.
-> As you can see the timeouts are already quite long, so you could
-> potentially still bail out on a working CP that just so happens to be
-> busy on the replies.
->
-> Also, consider the case where a reset on the PF will kill the MBX for
-> the VFs associated with it, so a shutdown on such a VF will always end
-> up timing out, since the VF reset is a message to the FW.
+V1:
+https://lore.kernel.org/all/20260820030821.1731-1-lirongqing@baidu.com/
 
-Understood. Given the above, some mailbox traffic on shutdown seems
-unavoidable if the stale queues are to go away. What I would propose for
-v2:
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 7bd0606a5253..903af3b3e779 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -908,10 +908,12 @@ int mlx5e_poll_ico_cq(struct mlx5e_cq *cq)
+ 		} while (!last_wqe);
+ 	} while ((++i < MLX5E_TX_CQ_POLL_BUDGET) && (cqe = mlx5_cqwq_get_cqe(&cq->wq)));
+ 
+-	sq->cc = sqcc;
+-
+ 	mlx5_cqwq_update_db_record(&cq->wq);
+ 
++	/* ensure cq space is freed before enabling more cqes */
++	dma_wmb();
++
++	sq->cc = sqcc;
+ 	return i;
+ }
+ 
 
-  - keep the vport teardown on shutdown, but give those transactions
-    a short shutdown-only timeout, and stop at the first timeout
-    instead of waiting on every remaining message, so a dead CP costs
-    one timeout rather than several minutes;
-  - skip it on a VF, where the PF/CP owns the VF's resources and the
-    mailbox may already be gone;
-  - drop idpf_is_reset_detected() as you suggested, and drop patch 2.
+base-commit: d5a007b9b457c915ab1a53227e8939e4018aa97a
+-- 
+2.44.0
 
-A busy CP that misses the short timeout leaves us where net-queue is
-today, which is no worse than now. Would that be acceptable?
-
-Thanks,
-Tian Xun
