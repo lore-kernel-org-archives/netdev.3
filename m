@@ -1,78 +1,93 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A614238837D
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 22:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7C439021A
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 22:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791326227; cv=none; b=TL4AsH6XnELd57i/JV09RTaRziNagfSKpS4XJk4fbklCKRM7mCX53jqqdcpBZPpzbW8LQWGiF6udeuzwPMtjwuW3+UH87p3qz8GxXTgrsMjI05/+LydKzdbOjCfow5mRHL0y5023LKmZrBTe9H/PtyAaIewdr237d1lfXcJ6UEo=
+	t=1791326275; cv=none; b=PEawf+hfwaCntrQRC36+1xNX7wfDZVN8YZUcyf8DDK2/budZzqSR+bRebJQEnoR/X7tyD08JQ0F9LkLSmhsL2d6FiohRy5u4UahG7u/DLjgi9xIDW9u7N7hSjNj4AkaE0UgfV3MArggslee8BZvVG1GS/86TFdy6hiOabVmjGOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791326227; c=relaxed/simple;
-	bh=8gagy4Br0ffj4FJnMaaU3EPK9gUNhcG5m+wDZFe/L58=;
+	s=arc-20240116; t=1791326275; c=relaxed/simple;
+	bh=LW9atCm9VFD0cTrIJK+qGBXEbKr4PZeE5YdpjeiW/ew=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vm7s35hT75iCZ7tV/Bu3kJVUnWJrGbewZA0gKxdUVcaeqx0z1c9grkWkkcN1Jk6LWUip2FOQhf6H0pNLxy1oRvLf3QSDZgj4m3DyODoCG23cNBwrDdzsjUvIA6RzmyVERHQHu0Xe29FBGcTwlpAk0x77W05AlQ7ybmCNatO5RAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=lNa+5zxJ; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	 Content-Type:Content-Disposition:In-Reply-To; b=Br2OdVBXe8CNd/gpAWd7bydTL0sEjxKjQipRdlnDu8N9H8gbRGCtLbsD67p5CCIgYWLFHx00UI5nQrOBF83b/P4iWhrreicO7UAECtqKCojDSe0tvShwytvyscuquQsRv6ApgwbjFNRFHnfgwpE90gOumK2PWdbnaABHCPeBVGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X0UNl7xq; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kx3dSTNJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="lNa+5zxJ"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc4aa18f9afso1639305a12.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 15:37:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X0UNl7xq";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kx3dSTNJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791326272;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MbgSlPJhc2ANdcXNYY+nH9MC+4qUtrv82MenWaQtLwQ=;
+	b=X0UNl7xqF+M8aSAWAuaDCbn2sorM71zXNfnef2AH+/8bFRNw2uJjnIRRYrvWLvQ21b9HqP
+	iagzFAttmOQYHr9jC9qCcmrADKmSluW3xQf/D/W0c7deZTSBs0/vWoQB++RE92GhxOzXkF
+	GoAcfKqifJgXiTvCReWkAsnnyuxgDxE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-496-SbpdL3KxN4ipBHRieOgVeg-1; Tue, 06 Oct 2026 18:37:51 -0400
+X-MC-Unique: SbpdL3KxN4ipBHRieOgVeg-1
+X-Mimecast-MFC-AGG-ID: SbpdL3KxN4ipBHRieOgVeg_1791326270
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a1721559b4so23887985e9.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 15:37:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791326225; x=1791931025; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1791326270; x=1791931070; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=srtPY9GyX39p5JfD6t/4b1goE6lD3CZxKoKqv9LGd98=;
-        b=lNa+5zxJcBCBdT+qEA0AMyh7KgG3NKVQTTPdWheaa7arwZ0dW1PsBPWnphEMPvJdOy
-         BYlJb/D4N52bvQQu45WDpcC+5WOlNVUADaOzG2aZ4Hu8F5eHi8b4+nKr/coaJO25tJlK
-         8qGGQ9uPJxd383pT7qBFfypIc7DoVbMvJCnMCO3YJW5Ry6DcmQ1jBIbTbs8yXCQwRIlw
-         3w/OifTsyFZ10vbOX0yS3oFE+uibRU0ntIOyF4kDKzwmFGBT9pvx3cbOQHuRWEtSprNp
-         ki7Vaip6QbxfvBTl2XMfEFSr69X9A/Vuu0iGHdT3LvKBj6hPgthPFy1WUxbZFDklNaNS
-         52qQ==
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MbgSlPJhc2ANdcXNYY+nH9MC+4qUtrv82MenWaQtLwQ=;
+        b=kx3dSTNJ5c8MoMTWkHw4/w1XZ7vhk+wXwacD3+TXZtGsAWnY9BIm84oxYAdSlrmvl6
+         sVg529Xk9BCLvD17GYQAB6yEjRj2bqokuPhFYn+z1flfzThQOZ6eaLCMv74+dBprNF1J
+         YFq16ibNLsyFETMTpofxld2jEnjjwglafJGW1YtfRISv9ZTF+l/+s9wdO/yz4qbzC2Ku
+         w76iTQ3M8pC0XPznr+NqN5A1i2g/2rPCGIbel9YU9yJR65terqCbqP2qHqsY38aHzeUC
+         MvBxWBwCesPLKp2SL00anQ/6IfuzZcFmRqnwb3ZKzl1PnTbNu+FE5AykNLy38FlPZpr9
+         8Aow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791326225; x=1791931025;
+        d=1e100.net; s=20260707; t=1791326270; x=1791931070;
         h=in-reply-to:content-disposition:content-type:mime-version
-         :references:mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=srtPY9GyX39p5JfD6t/4b1goE6lD3CZxKoKqv9LGd98=;
-        b=UilN6ZxkQWk9pgGZULnvwjvnxxS/HhkyzK9pRG2WVs9TqAS/2/TuRbxz56WA2ujok1
-         7UXfv0GQlqu8zPfdHjBAfEW7qYuAY0go8KwRgs6kremXibK7OW0tvyC7KiDm9cfqJPmr
-         YF2LYtl7GfcSd5zIpZBvtDFLgUK9ItExdkrP7tLwR7dDEu6TL0UPVuYYQNr32V5HddB8
-         lTg4rcW0IW2pFLq0GODb+78+IdKSDKyQSOwH/h70u67LGK8PvCwm+lC4hPpV7bSyio45
-         qVRWgFyGjwwz9Ge/xQDRE9P2iLzdP5zbEEiIUbOAsXIO5HrppbV8KtN58JhOJJINzM6K
-         rRFQ==
-X-Gm-Message-State: AFuF++lP2o+MFuDUrD9OIRZZnQLl0izS6lEECpeQDB5kZnVReWEXirQK
-	UA74lPWmiPoitCTg8nCGPv6upnYFCmiiulASLzZ2uty7ch+bS2q4tri7Jf2MuNGHBMggjaxlGLE
-	TgThf
-X-Gm-Gg: AYBFou2taCmnuoP5dxwjBt+m6rfWiXqpLHjFuDWTyNQ74jIa0g47sNinDAk09b2phsn
-	JCPOa7ZUJrabztAjKDsFHMW/cxao9ys6QZmbTMoMufI9ZpxqwyXAbQie+1LqF8dLatqX+40m75M
-	C2FvVvQlJesTcC5EbO/ZlC1K0WkzmTku68n5rFb3sj3sucBLU12mOd0d4CmcwBluLDZDmdB1kDD
-	6R0s2vW5s4R5e4AJZK/n7mo1+2gYpM+CfSap0jkizo6BEsDS6skgVj3or9RfGzQUOsZHxwPvXO8
-	fSGG3guFDlD7leciIX/3OOkctx6zNC9GGi/GX8RbxBWyHjTSRDjsfL6IfX2jEUYdvdW/K5REaZD
-	GyZ7u+vEVkWoSjx66cQCe9FKd6FNorkQNPFZJWaXswcARza6JqFNM4wh5qPMp8tzGFlFspa7Vq4
-	CvBA/JFrLjs7u/0eSL32JdkS6/s03mkAbu+3yYDfuiJX0CwdzDyspPmCFtkPK2Qo6IHaTe6Im1D
-	LPS0rsMNkNmDA==
-X-Received: by 2002:a05:6a21:6e84:b0:3d3:adbf:7779 with SMTP id adf61e73a8af0-3e13401b746mr290392637.21.1791326224911;
-        Tue, 06 Oct 2026 15:37:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4b::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0a58225b8sm522976a12.2.2026.10.06.15.37.04
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MbgSlPJhc2ANdcXNYY+nH9MC+4qUtrv82MenWaQtLwQ=;
+        b=bd3Zdw4HkvWtkmmAxHRMF+MdoRKNB8gSu2aBHoKZa0UgcmcMCMOKecn6D736w0tIb6
+         g6+23jLU5HpxVe7T3kUDSC9i/4Y/QqQO6KgN5ayN9pDVHMGiVG8okzV4xPLq1R8Nx9XX
+         BMTtMM5jYYetbJtPoLSViyzgrZqGpqY6hVn9pQoZGXiUoh6hvjQCp7V/sS9tH0vJUw5q
+         CFvg19P8YfT0janFITlHukliPTpbTARSaz3lTb014+xg7VbR3Ze6EXIcYuIzSXyMR86l
+         nQbe68C5OcCTqfo1CY8vxN0wZv70wtTop3gs3YgP1P1oZ+8dC6WZml61SU0Gu4idH5kt
+         8PTg==
+X-Forwarded-Encrypted: i=1; AKwUvBy8PsBnPrW0Z6PlO8NYmZoOxA14PUy/165517mc97+TBv//spRd2XesCMClqpujH4Bv//P88Fg=@vger.kernel.org
+X-Gm-Message-State: AFuF++luFLNPy6xPRwJsbwIE+NemYeVN7uqxWmIiQb+O8MGoPnMOLGS5
+	i5CuUHsKvyCpkCVQ231blwSVz8Xa/F8KxcqSw3PcvsAqJl2DzlPOMrfa952V0+KBaHJi3wfGbGu
+	M2xWa2K/ZDwnJt6brmZNrE7n+srW6KveFKfnziav0MoZHZG54QbEeIJ3SOA==
+X-Gm-Gg: AYBFou3cHCw6vSGsqCx5YDeNzjRpPuBIhqbU6/+tlEmMcCOLpjXN+lEdVF0JzjqeBzU
+	31YV+FgsQg0Cs+CwiVMzWOLDygzTLPs9IbAk8PtbsXyKjqETcXmwnKD0i+N8P9+LiEZSm+oGXtl
+	DakwqM9L/yNd0l+bWAECHEfXc7E2KVWAo1/W3aQXMevIuasHl0iPHa2GhQsubs2DOUNczKjVq1f
+	CnDxrH8vg+vidTp2DfkozJRlv0KFkxvGFleNRgsC40s1ByA692QYWnt7feItc1LBT6+3V0QaKJO
+	JwUeTL6XgxQOjkR2fYgd7oMCcNBzSGSpHs0uQ4/nGuL0+OOAA6aw6Fpr31ldcU+a1GqSFfc=
+X-Received: by 2002:a05:600c:4ece:b0:4a1:7033:5b55 with SMTP id 5b1f17b1804b1-4a18043c431mr3023555e9.21.1791326269807;
+        Tue, 06 Oct 2026 15:37:49 -0700 (PDT)
+X-Received: by 2002:a05:600c:4ece:b0:4a1:7033:5b55 with SMTP id 5b1f17b1804b1-4a18043c431mr3023435e9.21.1791326269231;
+        Tue, 06 Oct 2026 15:37:49 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a178a17ac9sm101729495e9.1.2026.10.06.15.37.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 15:37:04 -0700 (PDT)
-Date: Tue, 6 Oct 2026 15:37:03 -0700
-From: Joe Damato <joe@dama.to>
-To: anmory <anmory@protonmail.com>
-Cc: netdev@vger.kernel.org, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
-Subject: Re: [RFC net v4 0/4] bnxt_en: Make RING FREE more robust
-Message-ID: <asV4D3J7K8FzQO4I@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, anmory <anmory@protonmail.com>,
-	netdev@vger.kernel.org, michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com, linux-kernel@vger.kernel.org
-References: <VyyrJwrwBZEIGezDRJP8QPxbcsGROaxnmohLCnzNQY6sX5CEt0BK3AEC_0MGBx6OxGf4H5UG_xQcqgtAonwmXLdZ5Bd3INWMsof8Oj6ruqg=@protonmail.com>
- <asVYjdbZGMAEck2t@devvm20253.cco0.facebook.com>
- <eXJey19uF3K9zJxeuqly_VAGq8y6AiyexdzLKxv22b7m1Av025Dp-w9cGWDelfFwBqcD-wtUIjtz7p1ZYKwlKeyzd3vHHpdY7U6FGPIrK7M=@protonmail.com>
+        Tue, 06 Oct 2026 15:37:47 -0700 (PDT)
+Date: Tue, 6 Oct 2026 18:37:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	edumazet@google.com
+Subject: Re: [PATCH v3 net 0/3] net: always dissect GSO packets in
+ __virtio_net_hdr_to_skb()
+Message-ID: <20261006183410-mutt-send-email-mst@kernel.org>
+References: <20261001191140.2818991-1-edumazet@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,15 +96,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <eXJey19uF3K9zJxeuqly_VAGq8y6AiyexdzLKxv22b7m1Av025Dp-w9cGWDelfFwBqcD-wtUIjtz7p1ZYKwlKeyzd3vHHpdY7U6FGPIrK7M=@protonmail.com>
+In-Reply-To: <20261001191140.2818991-1-edumazet@kernel.org>
 
-On Tue, Oct 06, 2026 at 10:22:51PM +0000, anmory wrote:
+On Thu, Oct 01, 2026 at 07:11:37PM +0000, Eric Dumazet wrote:
+> This series fixes a bypass of untrusted GSO flow dissection in
+> __virtio_net_hdr_to_skb() when VIRTIO_NET_HDR_F_NEEDS_CSUM is not set,
+> and adds a kselftest covering VLAN-tagged GSO packets without NEEDS_CSUM:
 > 
-> Hi Joe,
-> one important detail I omitted from my previous mail: the affected eth1 interface is an 802.1Q trunk with multiple VLAN subinterfaces.
-> We also use Keepalived VRRP with use_vmac, so virtual MAC interfaces are layered on the VLAN interfaces. Traffic is routed/forwarded through the host and uses conntrack/SNAT before leaving through another physical interface.
-> We are not deliberately toggling VLAN offload during the test. The reproduction so far is simply to boot Debian 6.12.111-1 with this normal network configuration and workload. On one host it reproduced after about 20 minutes; on another it reproduced almost immediately. We have also seen a previous occurrence after several hours, so we do not yet have a deterministic packet-level trigger.
-> Given the VLAN configuration, Eric's patch looks especially relevant. I'll test 6.12.111 with that patch first as you suggested and report whether the failure still reproduces.
+> - Patch 1 fixes __skb_flow_dissect(), which computes key_control->thoff
+>   with min_t(u16, ...). This truncates skb->len and returns a bogus small
+>   transport offset when skb->len modulo 65536 is smaller than the
+>   transport offset. Offsets that do not fit in the u16 thoff now fail the
+>   dissection instead of being silently truncated.
+> 
+> - Patch 2 initializes skb->dev and skb->network_header before calling
+>   virtio_net_hdr_*_to_skb() in tun_get_user(), tun_xdp_one(),
+>   virtnet_receive_done(), and raw_verify_header(), removes the
+>   '&& skb->network_header' condition and the unvalidated
+>   'else if (gso_type)' fallback in __virtio_net_hdr_to_skb(), and moves
+>   virtio_net_hdr_match_proto() after skb_flow_dissect_flow_keys_basic()
+>   so it validates the dissected L3 protocol (keys.basic.n_proto) rather
+>   than the outer L2 protocol.
+> 
+> - Patch 3 adds kselftests in tools/testing/selftests/net/tun.c verifying
+>   that VLAN-tagged (802.1Q) TCPv4 GSO packets without NEEDS_CSUM (both
+>   flags = 0 and flags = VIRTIO_NET_HDR_F_DATA_VALID) are accepted on a
+>   TAP device, that mismatched GSO types and truncated TCP headers without
+>   NEEDS_CSUM are rejected with -EINVAL, and that a 65540-byte frame is
+>   accepted.
+> 
+> v3:
+>  - New patch 1: avoid u16 truncation of skb->len when computing thoff in
+>    __skb_flow_dissect(). Patch 2 makes tun_get_user() dissect IFF_TAP
+>    frames before eth_type_trans(), with skb->len up to 65549 for a GSO
+>    frame carrying a maximal IPv4 packet (Sashiko).
+>  - Patch 3: truncate the TCP header after 10 bytes so that the test
+>    requires the transport offset found by flow dissection, and add a
+>    65540-byte frame test (Sashiko).
+>  - Link to v2: https://lore.kernel.org/netdev/20260928144254.3361044-1-edumazet@kernel.org/
+> 
+> v2:
+>  - Patch 2: drop the pre-dissection virtio_net_hdr_match_proto() check
+>    inside 'if (!skb->protocol)' so VLAN-tagged GSO frames without
+>    NEEDS_CSUM are not rejected before flow dissection (Michael S. Tsirkin).
+>  - Patch 2: clarify the changelog regarding why skb->network_header was 0
+>    in those callers and why skb_reset_mac_header() is dropped in
+>    tun_get_user() for IFF_TUN (Michael S. Tsirkin).
+>  - Patch 3: add selftest in tools/testing/selftests/net/tun.c based on
+>    Michael's reproducer.
+>  - Link to v1: https://lore.kernel.org/netdev/20260927195536.2489079-1-edumazet@google.com/
 
-Seems likely you are hitting the bug Eric just fixed, IMHO. If his patch
-resolves your issue, please let me know.
+
+Not without trepidation about the amount of stuff we are shoving
+into virtio_net_hdr_to_skb which, believe me or not, used to be 50 LOC
+of trivial code in 2019:
+
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+
+> Eric Dumazet (3):
+>   flow_dissector: avoid u16 truncation of skb->len when computing thoff
+>   net: always dissect GSO packets in __virtio_net_hdr_to_skb()
+>   selftests: net: tun: add test for VLAN-tagged GSO without NEEDS_CSUM
+> 
+>  arch/um/drivers/vector_transports.c |   1 +
+>  drivers/net/tun.c                   |  23 +++--
+>  drivers/net/virtio_net.c            |   2 +
+>  include/linux/virtio_net.h          |  60 +++++-------
+>  net/core/flow_dissector.c           |   9 +-
+>  tools/testing/selftests/net/tun.c   | 136 ++++++++++++++++++++++++++++
+>  6 files changed, 186 insertions(+), 45 deletions(-)
+> 
+> -- 
+> 2.56.0.rc1.315.gc6ed9934b7-goog
+
