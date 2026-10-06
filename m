@@ -1,151 +1,157 @@
-Received: from mail-qk1-f225.google.com (mail-qk1-f225.google.com [209.85.222.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB5037C0EC
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 22:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E5120B80B;
+	Tue,  6 Oct 2026 22:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791325748; cv=none; b=drPrgWN8wvZZpl2fPzVqxOdciO+dltRqx2SBmtLy4woPlbcwAuNr6B2Z5xCpKK/0uLb7eveYEZ60IGvSpuV1s2nzGE9n4Q5xxZwLZCZUxcTOGxLUQ12H8rFnSKID383sr3FxeE3axTESH4l9Cw6vVN1cK+DLNtAXag8O+psiHUc=
+	t=1791326144; cv=none; b=kx0IBvGSx+XqsRRe1xxT9rBWpTLTubuGAT7sfw7bTpEM9HaeS1yJKWdrYtCL0KfF6JiQSWsQLSkzCeUk0BWzEhHPMGaIQCq02ub+3lQQdnowV54Dj6selFRhalBQ89zc6t3/AC+Uwy7ijzJ2FOeq/dJFNd9eR4YCY0Nldw0lmGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791325748; c=relaxed/simple;
-	bh=amfp7mHyqZabhxSL/hZCN5n9bHREuWRP+w6hFtOi2yE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FoxDOSeV73tEL67b6dYfYmfbSmskVAxmhkAaQCgBz+Skq++Fa7ltWHdLWwm4/GVIJb//wI1h3p4I4LzKokaAiGOTkRB/cIbonyPMG5EC8srtrNQgDek+WvQW/0obv7ZBObAF3BnzORmZE/adqPuJSqOCSCMWNPFxj0qpmqbs5V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Th3DAJLz; arc=none smtp.client-ip=209.85.222.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1791326144; c=relaxed/simple;
+	bh=XjGxIEExuhJQGEjuLPjHP1TujX1Z4bzMvtz9FuKuSoQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kUYITAzKhLCM4t4hhVTWKjZd9Qx68EQCw2/C+JtqBQSOnTsXLDYngC6zp8CJJpu3L+8ASPNmzD4OLcLgbMgIRALsscSm1F4og7GeIi7kdzF295beN6svQ8Hwh2tT9FghYa7MmPd3FTauEMK9Yc/wCrDdgr/SzHbXI2kshXt3jXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEUpKuLm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Th3DAJLz"
-Received: by mail-qk1-f225.google.com with SMTP id af79cd13be357-93e51d8d400so66749085a.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 15:29:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791325746; x=1791930546;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=ynWpe9m3dsCzibYX37JKm5EyweyzYWy/5JJozPHK9Mw=;
-        b=Hsj9OBGxH40h19SLG8/7PvyhhxIMUH6aNIq8dQ1z75fFVvoWMuqQ1xgfNpvVceeiG/
-         uDKjEU+kNL3tU2ONVaL9CNGmEYZb/pu0RwOtfPscZ47x1DQ8RjeED21oLw45ZP2Xsij7
-         KesnvX7sDr07lKNoS1rbrH07BGAVmoLl5IdgL1+msdLkWDN2p4wh4HeFpCu05BkcneGQ
-         eN3cTW6ASG5GOAQDKnIJ6m/VdCJ9J7UeQDGsTSFCUSj0QdwPJe+pFt21ZsNcmI5tVkwl
-         4R3ZYdZc8kYKwoYExSLM5h+MEGm4jmAigM7PEocAVXo2rYks2S0iOy0PA5EvKHIgMvb/
-         9lNA==
-X-Forwarded-Encrypted: i=1; AKwUvBz/+FZttK5a84Qf/zVj5ZkcBDN9GYzoUqNgLtNP5nikeg2ZgOUYpoyAl3y3djZcsABw8j0hWZo=@vger.kernel.org
-X-Gm-Message-State: AFuF++kPW0X7RoEM1JxpM+Cq4dfleNT5pbJr4sJurS4s08G/Qc5dLv7+
-	R89w+kvUX+O+C6e6IdU1rh28d2DC/dJNRYUsK06EDifvFW5a1Awn8MdOW4+YpCqxjl4NJEq05eH
-	L8uc/5LarkGQw/wFjx47VEIS5k90kA07bzD9D8LAOC5pstGJewGjDUbXr7EBWaK62ACor5/Vtuc
-	gh79zltuflzTIycOOKyp9JrDEs7/FY9j5ptNBnYwUpWeADd9tCGwNYGVKsF4W38bFYB2ALakF+t
-	H1UiDVD/A==
-X-Gm-Gg: AYBFou0bO0F3eYrSbq5/Z/4hiFfoieuYpE7kAmjb0vEujo55a7lpbZyUGTzHuO1R4a9
-	TfJJtVpCxy2+8YetCOzQ8tQm3WHJPFZ2HYnIWpJPy5pe/d9n3CRMuDMX/H0DOEu8nF82n4e3gwP
-	BWvkqr0JrtbJ4XviH+PqjVll4AaPBTv1E7/FGX91TVyfBsm26mbSIzMAegpoAoiHwQ3jAPIAZtD
-	3aELWOhZhA3asnE9I1yo+0Ig4z42OxyCORZUik+sl/fJLbroqS/tE3y7WXU11i7QxsxZcuAcaby
-	th/wPc4OB2RgCqE37hPvW3KkbC8bkv9F4iaMnNZV0J8trIC17X7ycye0yS7V9q6lylYwwLILhqO
-	W7rVaUcxOLLxSWTSLw6GjUJknUXzL7SaObzuJxMfH5/qGyRXbJf4Yn6ArOKXgmln0k7kevx9r4N
-	AfgdYIDVzbYRWoKi5C28v/Ooi7XbgK56fZ/VWm
-X-Received: by 2002:a05:620a:1a27:b0:93e:512c:e7f4 with SMTP id af79cd13be357-93e9b7c673emr77157385a.62.1791325745799;
-        Tue, 06 Oct 2026 15:29:05 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-93e990cbfeasm21310085a.7.2026.10.06.15.29.05
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Oct 2026 15:29:05 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5339253dc3fso73373661cf.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 15:29:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791325745; x=1791930545; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ynWpe9m3dsCzibYX37JKm5EyweyzYWy/5JJozPHK9Mw=;
-        b=Th3DAJLzbKpKTXjBQEniPQrxjfwx1H9J17jQ8IANuAZqAlhtGey9vBP8ZVN9jJfCfZ
-         kKVmoX6x9ffKeJgn2prVKnL3GYVKzcZWaV5Op0zL5agKcLVPwjlQmsOBsGItbwwk4E/R
-         BQpIsKw/PZnNMc65xO3CS980Y1csbMMZxD7/I=
-X-Forwarded-Encrypted: i=1; AKwUvBxbyyGr1zZQsagehznRH8CvtjXxW4/FYc9SILEGiZZbAyruAFR/mI9vCuS9M0ne3QNiZuuea1U=@vger.kernel.org
-X-Received: by 2002:ac8:7e8e:0:b0:535:70c5:d3f with SMTP id d75a77b69052e-535756b7281mr4189311cf.68.1791325745127;
-        Tue, 06 Oct 2026 15:29:05 -0700 (PDT)
-X-Received: by 2002:ac8:7e8e:0:b0:535:70c5:d3f with SMTP id d75a77b69052e-535756b7281mr4189081cf.68.1791325744696;
-        Tue, 06 Oct 2026 15:29:04 -0700 (PDT)
-Received: from [10.14.4.255] ([192.19.161.248])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53572202defsm6081241cf.31.2026.10.06.15.29.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Oct 2026 15:29:03 -0700 (PDT)
-Message-ID: <a1dc7c80-acef-479b-ad03-dc83164d77c2@broadcom.com>
-Date: Tue, 6 Oct 2026 15:29:01 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEUpKuLm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8AB1F0089B;
+	Tue,  6 Oct 2026 22:35:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791326142;
+	bh=Ft96ifXF9GC+FD/wP8b+OMx8w6TpCihQ5+rc3xDFTKk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SEUpKuLmqfShpOI1gt3IQ4UQh9OkNy0Gx6pzphrXc12XVO5RAn+b0QImA9Q1Ta+FQ
+	 6jmH0lwtRVBUDn3MW/pLpETiEFz2MVxKuNO2IkQcb6vf6JhO1y9M+ZiXFZjgNq/e3n
+	 tigWCyLRAAVvYJTkfwr7IaoUGArYE0US5e6OgLM8hJeoodptzf7/9lnvjsPYOFRZnN
+	 +V8vLc+CgCSXVpXHAn5LAbao2f74YEffr9tfNsRbUYbj5Ox+mQ8mjLmsvkP3FdOHjs
+	 V5JEfwreObePxoNyAqB6tCyYW09u3XFRxDNAg/UuhnpIb8Og5az4V/7oS0M2M1St2A
+	 CgjoEAkig5yyg==
+Subject: Re: [PATCH net-next v2 4/7] net: bcmgenet: derive the receive buffer
+ length from the MTU
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
+ pierremarinleclercq88@gmail.com
+Date: Tue, 06 Oct 2026 22:35:41 +0000
+Message-ID: <179132614173.434549.15814997167610844687@kernel.org>
+In-Reply-To: <20261006-nb-genet-mtu-nn-v2-v2-4-c4be21151912@tipi-net.de>
+References: <20261006-nb-genet-mtu-nn-v2-v2-4-c4be21151912@tipi-net.de>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in SW_RESET,
- restore it to SW_RESET
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- edumazet@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
- bcm-kernel-feedback-list@broadcom.com, nb@tipi-net.de,
- florian.fainelli@broadcom.com, opendmb@gmail.com
-References: <20260930230634.3132729-1-justin.chen@broadcom.com>
- <179080972360.31693.266631430009737406@kernel.org>
- <20261001184130.2b7ab18a@kernel.org>
- <897ffc5a-48ad-4516-89f2-0cdac082d7a8@broadcom.com>
- <20261005182721.776af8b8@kernel.org>
-Content-Language: en-US
-From: Justin Chen <justin.chen@broadcom.com>
-In-Reply-To: <20261005182721.776af8b8@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
+Low priority / nit picks for your consideration:
 
-On 10/5/26 6:27 PM, Jakub Kicinski wrote:
-> On Fri, 2 Oct 2026 09:16:15 -0700 Justin Chen wrote:
->> On 10/1/2026 6:41 PM, Jakub Kicinski wrote:
->>> On Wed, 30 Sep 2026 23:08:43 +0000 netdev-bot+sinfo@kernel.org wrote:
->>>> Hi!
->>>>
->>>> This is an automated message. This series looks like a fix, but its
->>>> commit messages seem to be missing some information:
->>>>
->>>>    - How the issue was discovered, e.g. hit in production, hit during
->>>>      development, syzbot report, manual code inspection, LLM or static
->>>>      analysis tool scan.
->>>>
->>>>    - Whether the issue was actually triggered, or is only theoretical
->>>>      (e.g. found by code inspection). If it was triggered please include
->>>>      the symptoms, like the stack trace or error messages.
->>>>
->>>>    - What hardware the change was tested on. For driver fixes please
->>>>      mention the device (and if relevant firmware version) used for
->>>>      testing, or say that the change was not tested on real hardware.
->>>>
->>>> Please do not repost the series just to address the above. Instead,
->>>> reply to this email with the missing information, so that reviewers
->>>> can take it into account. If the series needs another revision for
->>>> other reasons, please include the information in the commit messages
->>>> then.
->>>>
->>>> The evaluation is done by an LLM so it may be wrong, if you think
->>>> that is the case please reply and explain.
->>>
->>> please respond to this
->>
->> The issue was hit in production and I verified the sequence keeps the TX
->> disabled in my standalone test. I tested on an internal development
->> board with bcm77122, but should be reproducible on any genet HW that
->> supports power management.
-> 
-> I obviously meant that you should respond to all the fix info requests.
-> Not just this one in particular.
+- [Low] The patch also changes what bcmgenet_init_tx_ring() writes into
+  each transmit ring's DMA_RING_BUF_SIZE register, and the commit…
 
-Sorry Jakub, I am not understanding what you are asking for. I believe I 
-answered the questions above? Or am I missing something else?
+--
 
-Thanks,
-Justin
+net: bcmgenet: derive the receive buffer length from the MTU
+
+This patch replaces the fixed 2048 byte RX_BUF_LENGTH with
+priv->rx_buf_len. That value comes from an RBUF packet ready threshold
+computed from the MTU, plus the 64 byte status block. It also programs
+the RBUF and TBUF packet ready threshold registers. The TBUF threshold
+is set to its maximum.
+
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index 641d918577d4d..75d1006a35c55 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+
+[ ... ]
+
+> @@ -2623,6 +2641,44 @@ static void bcmgenet_link_intr_enable(struct bcmgenet_priv *priv)
+
+[ ... ]
+
+> +/* A buffer has to hold everything the threshold lets the hardware deliver */
+> +static unsigned int bcmgenet_rx_buf_len(unsigned int mtu)
+> +{
+> +	return sizeof(struct status_64) +
+> +	       bcmgenet_pkt_rdy_thld(mtu) * ENET_THLD_UNIT;
+> +}
+
+[ ... ]
+
+> @@ -2755,7 +2811,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
+>  				  TDMA_FLOW_PERIOD);
+>  	bcmgenet_tdma_ring_writel(priv, index,
+>  				  ((size << DMA_RING_SIZE_SHIFT) |
+> -				   RX_BUF_LENGTH), DMA_RING_BUF_SIZE);
+> +				   priv->rx_buf_len), DMA_RING_BUF_SIZE);
+
+[Severity: Low]
+Is this change to the transmit ring intended? The commit message only
+talks about the receive buffer and the RBUF/TBUF thresholds. It doesn't
+mention that bcmgenet_init_tx_ring() now writes a different value into
+each TDMA ring's DMA_RING_BUF_SIZE register.
+
+Before the patch, the TX rings got the constant 2048. With this patch
+they get priv->rx_buf_len, which bcmgenet_rx_buf_len() computes as:
+
+    sizeof(struct status_64) + bcmgenet_pkt_rdy_thld(mtu) * 16
+
+That is 64 + 2048 = 2112 at the default MTU. The new value includes the
+64 byte RX status block, which only the receive side writes.
+
+This sentence in the commit message reads as if it describes the RX
+page pool buffer only:
+
+    "the buffer only grows by the status block the hardware already
+    wrote."
+
+The TX ring already took its value from an RX-named constant, so this
+coupling is not new. What is new is that it now follows the MTU.
+
+With the later "net: bcmgenet: allow the MTU to be changed" patch in
+this series, every RX buffer resize would also reprogram the TX rings.
+That reaches 3648 on 4K pages and 3904 on 64K pages.
+
+Each TX descriptor carries its own length in len_stat, so this may have
+no functional effect. Should the TX ring keep its own value here? If
+the change is intended, could the commit message say so?
+
+>  
+>  	/* Set start and end address, read and write pointers */
+>  	bcmgenet_tdma_ring_writel(priv, index, start_ptr * words_per_bd,
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+> index 501dd12566936..6444bac168c38 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+
+[ ... ]
+
+> @@ -612,6 +615,7 @@ struct bcmgenet_priv {
+>  	void __iomem *rx_bds;
+>  	struct enet_cb *rx_cbs;
+>  	unsigned int num_rx_bds;
+> +	unsigned int rx_buf_len;
+
+This field is declared with the receive variables, but
+bcmgenet_init_tx_ring() above also uses it to configure the transmit
+rings.
+
+>  	struct bcmgenet_rxnfc_rule rxnfc_rules[MAX_NUM_OF_FS_RULES];
+>  	struct list_head rxnfc_list;
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912%40tipi-net.de
