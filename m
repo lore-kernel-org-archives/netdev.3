@@ -1,83 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC41443C11
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 00:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74807478
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 00:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791244815; cv=none; b=Tcs+rWv1OFJyMCDJ7gLC9A3HNbkfStIBtdb5EQ77SwlmTzFHfgK1KUqYw8/Vz+LvoBg4naI2yX78gvjkbTdEThBjI0oKk8RKAWaUhuALPN/x4ymp3qr4V5ZLHoqW3LIvst9q4STo0WVVUM468ji4wfH3XCIg/niVDLhX/sjKB8Y=
+	t=1791245080; cv=none; b=Xf4aHtdt5y9TTw1YpVNJoBVlyGM7RXUiz61u1AaavD4w8QWS8li0KKzNHTW2dEQD45IIY/DF72l1XQQVeShADa6/P4n8OXCePnethOhYpwBNHXrGRVV55vnMxs3bin+wZCSB/IFsLxcVXpvNMyxnXjvkgPrWtz+90tzKPua4A9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791244815; c=relaxed/simple;
-	bh=K2g7NW5Ha/9swSIrUqqn5D50S0NuAjsZkcyKZgfZah4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZBRCHM4AIyek7cIiDZXEaanLZ3BseOsg2WhWmk4fQ863H288i0iG+0W+CrwkppA2DiE70p5qPgIhWhIVw5BFsB2H3Xg+NM/p9s6cRcM474W091daHXIGStXcu8z1C60sYLXDG7OUBmA7kFrPUvMTMaJcQy/Ury+SzTU7O5/Y1rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mEvbgReN; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mEvbgReN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436F61F00893;
-	Tue,  6 Oct 2026 00:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791244814;
-	bh=dquMfx3KkpejF42u0QazTIb+7JYwllot23pAFeXYGcM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=mEvbgReNcvxHbqbScWB8BaT2nB1O8qnUp2Iu9nyQk/woaPvnuzB4J6T1hlzGm7L0b
-	 UUr1Osyap+NjfRd6ud1tKGDKB6UvAapP9KINhcaloJQbow4sDYaAw49gTQRrvDYaAe
-	 DJqbaa98nLIZZBnKliu/hjRBbewFH6/jkgH6/0OT+m784zMn6xPy9Ugtcv1I3Xrnrz
-	 KVT7PPhtBeUpEY7zoj14Lii9VyFRo5rETckS7xRAxNSED7wCRehNsqMQuetTxVLHvS
-	 4BBGDY9tn5wtOpV30FDtoFGwWV5TJD1NO/A84E1bV+gvxEu0oX5aiOHCkTkHdtx/Y0
-	 n51IBbomVFZHQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A20E392667F;
-	Tue,  6 Oct 2026 00:00:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1791245080; c=relaxed/simple;
+	bh=P2ZLfK5sQH+NFxJaRgE3SKD/e9ahhwg1IfGSDEhQpyE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Wn/HulAtsYz6FyPQiSA8+PRByM7mlNlSsKDkn5YFqgvV1FQQaT2T72uBEKUAITJp0dL/fXBu9IflzmbXC3A7cdcyIgeHlqSTKOkEBlMmwREcyNgMjsWIqB+9il20LDb46K1+teziuvNRcK2n+7YMH84TIfAn6qO49icE8WQsGd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4d2f0f77124so2734364b6e.3
+        for <netdev@vger.kernel.org>; Mon, 05 Oct 2026 17:04:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791245077; x=1791849877;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YZfHvdcoS6BGVaobjlEJFKWcAFbVdkN8rdALLDkhIdI=;
+        b=AugbAIUJcuaJc6VQyzjBIUZMc0TH+JLpPpmdft3yBedmzJmiJsvn0HV2UxZvsByxzY
+         KsQPKeBlBdj7YE53Jtfr3A1ABRkrIC4w5WD0Rfn4QV8Np4OBIOFDOcdNVU1LgB0HMkZZ
+         9Z+97LlbHxbqY/AATcy/Xdk0VALXEKLFjDpMWHDTiW0X/zJfv4yxZ5rfrlodJ5OZH22Z
+         GSphbZs3Yunz+3v1HDZu+huz4sKbYLTDbIreyUkCpdKiahISHsKeLk2M8SNYZOFKY3LF
+         3Ogu6qvKR/kBRkMRBiLh2Dtk3AovGTnpvc4oGCElDPwBjTmIazFi3/Mc57Sckvu/q3fl
+         /DNQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwjuxGuPQSPHvGYX3fBqv4qirxJRqosE/L2u9OrZkkqETcMVdnoiowotqrHOZ1s2xFvhbF74Jw=@vger.kernel.org
+X-Gm-Message-State: AFuF++mDGVF1swOgQU9oa2cZsCiqDn6c5hc1lhqSZvYPyTT2OMIRsrF0
+	t4oWXhBVRMNvirJK9k6li/mxrK9tJwI2UXZZiY4HaVBRtkFDVdU1dgrIBr0x0RKgM0jCEMtfVNh
+	KkvCdW/rIhRrR/UsjVjlpsiE85A/r7jJg0XzCDkS4GV8Eee9iv9J0tH82oS4=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net-next] selftests/net: add SO_RESERVE_MEM test
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179124481277.1944959.10542295544983932360.git-patchwork-notify@kernel.org>
-Date: Tue, 06 Oct 2026 00:00:12 +0000
-References: <20261001192137.309983-1-edumazet@kernel.org>
-In-Reply-To: <20261001192137.309983-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- weiwan@google.com, horms@kernel.org, netdev@vger.kernel.org,
- edumazet@google.com
+X-Received: by 2002:a05:6808:470b:b0:4ec:19e3:4072 with SMTP id
+ 5614622812f47-4f529d205afmr11124559b6e.18.1791245077677; Mon, 05 Oct 2026
+ 17:04:37 -0700 (PDT)
+Date: Mon, 05 Oct 2026 17:04:37 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ac43b15.34119e79.2f92f3.0039.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in cfg80211_ibss_joined
+From: syzbot <syzbot+d0a52209bddfa0948065@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+Hello,
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+syzbot found the following issue on:
 
-On Thu,  1 Oct 2026 21:21:37 +0200 you wrote:
-> Add a kselftest suite covering SO_RESERVE_MEM behavior:
-> - Reject unsupported socket types (UDP/SOCK_DGRAM, UNIX/SOCK_STREAM,
->   SOCK_RAW, MPTCP) with EOPNOTSUPP, for both zero and non-zero values.
-> - Validate bounds (negative values and values > SZ_1G return EINVAL).
-> - Verify reserve adjustments (increase, decrease, page rounding, and
->   reset to 0) and corresponding sk_meminfo[SK_MEMINFO_FWD_ALLOC] changes
->   via getsockopt(SO_MEMINFO).
-> - Exercise cgroup v2 memory.max enforcement returning ENOMEM when the
->   requested reservation exceeds the cgroup limit.
-> - Verify that a child socket returned by accept() starts with a 0
->   reserve even when its parent listener configured a non-zero
->   SO_RESERVE_MEM.
-> - Verify reserve retention across TCP send/receive/ACK cycles.
-> 
-> [...]
+HEAD commit:    7b12c538697f Merge branch 'bpf-fix-objects-stuck-in-free_b..
+git tree:       bpf
+console output: https://syzkaller.appspot.com/x/log.txt?x=16192035580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9d4242cb1c54cdf7
+dashboard link: https://syzkaller.appspot.com/bug?extid=d0a52209bddfa0948065
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-Here is the summary with links:
-  - [v3,net-next] selftests/net: add SO_RESERVE_MEM test
-    https://git.kernel.org/netdev/net-next/c/095dc989f002
+Unfortunately, I don't have any reproducer for this issue yet.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/4306e2a7031b/disk-7b12c538.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4f631dc420c7/vmlinux-7b12c538.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6633caf1195c/bzImage-7b12c538.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d0a52209bddfa0948065@syzkaller.appspotmail.com
+
+wlan1: Creating new IBSS network, BSSID 8d:8d:8d:ff:00:00
+------------[ cut here ]------------
+!bss
+WARNING: net/wireless/ibss.c:72 at cfg80211_ibss_joined+0x3a7/0x5b0 net/wireless/ibss.c:72, CPU#1: kworker/u8:15/6639
+Modules linked in:
+CPU: 1 UID: 0 PID: 6639 Comm: kworker/u8:15 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:cfg80211_ibss_joined+0x3a7/0x5b0 net/wireless/ibss.c:72
+Code: 48 89 da 48 83 c4 18 5b 41 5c 41 5d 41 5e 41 5f 5d e9 fd 81 50 f6 e8 d8 25 8a f6 90 0f 0b 90 e9 0b fd ff ff e8 ca 25 8a f6 90 <0f> 0b 90 eb 5c 44 89 fe 83 e6 01 31 ff e8 b7 2a 8a f6 44 89 f8 83
+RSP: 0018:ffffc90010217570 EFLAGS: 00010293
+RAX: ffffffff8b3db6f6 RBX: 0000000000000001 RCX: ffff888032853e80
+RDX: 0000000000000000 RSI: ffffffff8c6da760 RDI: ffffffff8c6da720
+RBP: ffff888069cc3518 R08: ffffffff907a547f R09: 1ffffffff20f4a8f
+R10: dffffc0000000000 R11: fffffbfff20f4a90 R12: ffff8880561e4ed0
+R13: 0000000000000001 R14: 1ffff1100ac3c9da R15: 0000000000000cc0
+FS:  0000000000000000(0000) GS:ffff888124dcb000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb644e39246 CR3: 0000000059b92000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
+Call Trace:
+ <TASK>
+ __ieee80211_sta_join_ibss+0xdd8/0x1660 net/mac80211/ibss.c:375
+ ieee80211_sta_create_ibss+0x300/0x480 net/mac80211/ibss.c:1287
+ ieee80211_sta_find_ibss net/mac80211/ibss.c:1448 [inline]
+ ieee80211_ibss_work+0xb85/0x1060 net/mac80211/ibss.c:1637
+ cfg80211_wiphy_work+0x29e/0x420 net/wireless/core.c:564
+ process_one_work kernel/workqueue.c:3396 [inline]
+ process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+ worker_thread+0xa47/0xfb0 kernel/workqueue.c:3560
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
