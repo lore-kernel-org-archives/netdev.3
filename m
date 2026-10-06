@@ -1,250 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB0C49E14D
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA71433F8DC
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791307157; cv=none; b=ndlVoYIEv9i+w8jMYwzRjMgr5E7saMHUhMoJ89ASw3rXlvp0KopSE/zW6Wr8IsWVGUMEG8Vp+HiCwc+e9UTBKFdnySaH+xnhHJpngr+Y9oKLZPBBxs+RCVkSpOQYlpjXjUIyU9z6RODqSJLYfuTyOOUV3G4glu85sfKjZibA4E4=
+	t=1791308000; cv=none; b=gAaY38zSgO7h5Xjah673SlnwVwsHvisirMwDV6itn7toQx2pTWi6jRSpwPCwANi/ae971oORv8iq4nY0tuw/0o0gSSlW/DpKBqYWXBIiNMNKzB4lzNp6RXCvprgI4qmloqnYBQh5xNhoZ4Ks56VDKZtwJqyQZoa1EI08EZoI8U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791307157; c=relaxed/simple;
-	bh=ce9RRCKtFccW5QEwYDskod9D4cYO0IwwnQYcshWHp68=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bESCUu8qOgn3R4ECgGC6yy+rvL/aJmE2xK+jMOV+pY7tgQAhd7aXMyEnzkLjHOr91hRpCnerdLoFTZVEJfz11mjIHNx40Ipsj/3RoV3ZoIzv7n5sZIwSBYqXHzZgyqx35XDeaCJMhLvRvRV60/ynt5MYd9tykNqeiwlmrNEvWB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1thEkq2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791308000; c=relaxed/simple;
+	bh=H1lfUv8lZxLYx5JGsjCazmYH2gGjI45FEj2BuG/W9QE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u5Qf/CTgxp8Fa16EdRiJ56TE6PlQkWz3ts/S6SWiVkbLXAJ4uki2w7aFPFJfUckCuGdtu1F5MMwmI7kdl+0Lvm1EWaE7Psl5zEOET/rCzOUMCpZkBZz8X7yfkO6S1KUcWD8ky7PZS4JRuph7Tn7dtJMrPrDHQg/8chu2Q2Z9y7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=Fz9ZY0OR; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1thEkq2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA1C1F0089C;
-	Tue,  6 Oct 2026 17:19:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791307153;
-	bh=ak2e46SqXbf3llfN2+9lEywpP+BOCZrPuH1ohO5lzuA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=L1thEkq2+610aWWRWYSc3wW5IQ1DPpzNIbRx7/6/ohjNstB7K2zciTsoQ27tH0CI8
-	 SOtJ+Kj1g1VWAlx1SxTldoos1JnYMisghq0WaVuKQK9ukOeM3duccsAD5vg4AOhmgq
-	 ChcGH9VI3AFH1dyUHp/M9rz2KoioyS0hVi5nmPnGR2WxbKhDefmDRvVm/a7P0W8iLk
-	 FPp1xI+3VU/RFwdre+y2aQINAaSdTUXfl6x9+x2rz+AN3QVtY/QSUeXQbGJgAiSogD
-	 D9Lq0M0tQppPCtP1dRdugvGoYvN1TO5MDEBNZhl61E7wYT+oHo8Jfz2VH2VK5jxqa/
-	 wCsshxJEVlMXw==
-Subject: Re: [PATCH net-next v3 10/12] net: ethernet: cortina: Validate RX
- fragment lengths
-From: netdev-bot+sashiko@kernel.org
-To: linusw@kernel.org
-Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
- mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Tue, 06 Oct 2026 17:19:12 +0000
-Message-ID: <179130715277.434549.7024559629176712429@kernel.org>
-In-Reply-To: <20261002-gemini-ethernet-fixes-3-v3-10-3e1f25890ae8@kernel.org>
-References: <20261002-gemini-ethernet-fixes-3-v3-10-3e1f25890ae8@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="Fz9ZY0OR"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48af4d4e61fso655295f8f.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 10:33:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1791307997; x=1791912797; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vI/CREtYlaKCf7QQt+Wn+NAvceTNfQIZHGOmhJieQwk=;
+        b=Fz9ZY0ORb1P2pCcSHH1kIlDpttDSuV0LwH7BU5/2eHKThNrWZNBvkRSOlxgq/SzFtK
+         blI+3usjGrdZqS5g1C4lmx5unKWCCZzl3vMmuZwRsBG+OfjqdUooxOddd1bJPorvTdWg
+         sI66JcU5SbRa5kMD81krBkCsv2yqKuL1TMEySu0P2xsVaDv6RmaNO/RQ7XUKvTW8t1y7
+         2G0oizMJNdkmJNECJuT32S9HvkfTqtyhNb12izvha9AuxtNqh046TBNZNL78DRN9Cd4M
+         qU7tC6iaKPQuQ0fCZ0X/eMA2tVtPc7LGIdsBo8CB5tMCNAH9ZexbS2ZIsYV6bPlaIi5x
+         YxKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791307997; x=1791912797;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vI/CREtYlaKCf7QQt+Wn+NAvceTNfQIZHGOmhJieQwk=;
+        b=eQuk6l32LygcSTpHUU1BgO8yeEb2nXeAs2jp00XPikwNDN38XHApHBiwJoTLaAkCnT
+         FnTuMUR/zZuFrr9IaLyj4fXgKCYwv/qWeLKygJoqI/5bX8Ke5PzfkC7G9XS85qgbM+Oq
+         5WuvG0aPnowkiPiyTyd22MEDF300LprT9WYAAdLfR6ZroPDBddL0FChRfFtZyDqNuv+f
+         QIzGdqUSUOEtuxA/JuQfviE+GcNy8+HxYAAOdZ1oeFm0ysd5WAxxQkt7++/M1kp3SvEW
+         kc7f9JE0Y8eZ/J2wEJP5lWuo4TU428HKMB9FqEHhApu1EZEc6i5Uu4qaYOiKuajIEzXT
+         1OHQ==
+X-Gm-Message-State: AFq9FYJH5NIklVgO4mgXkINtv+LXGhXySSjEFA2fE5dvWcK+p2m++XrW
+	K6zi0L5FXIOqq3HqPiLMzjsQnUK2r+fUrpcq1x0TrFTG2LuttQdVcKSt/lOJnTdp54OsGcMkVSF
+	3cioj7U3Nfw==
+X-Gm-Gg: AYBFou1A+Kw7hN2zEj5vT2kOfkzow45fAXTJ1AnVmfCAM9I4btiV5pL8WHTdo77V8+M
+	wy486WgwdYhQXhjoifIgLarf8jrqNxbyMbTf5HwuEtoW2mbpdVneFnR/B27Ani90d60QSX2Dui4
+	GP03yKEvjC2lOjgejjizjTLzajLkqDt/e+m49wVWpLlwwX0s9RpErAgyzyPYFsetg2Nr0IjQLM2
+	CdgP5HvAL63sA1zuUOtY54wSGnDgAufoGTfvMM5a7TD6Fa4kHq1eYY9IC2xOZuNyl4Y0sjaZfxD
+	6rkM+0J+XxBje3VjjFHAzFoBYA+6SV++8ILj3Lfcl7RplC9iYWXbTnDeFzS6jePPho6K0aih/N9
+	z7e/RmqYpB0mkz6n5SF79fYxmBaLeP1pVkcVxmw1g/qIHQBRETRzeSa8H+SC/5YQBqQgeXx+/oT
+	Okh2riyv3asJ5aHwg5IR1JgWMFglAXCfjW+Igf4wt0pxrT7LzpM/nMJAMXX5lhiKozd49T6LMEb
+	iE2HadYIwdhw00=
+X-Received: by 2002:a05:6000:26c6:b0:48b:10c8:2180 with SMTP id ffacd0b85a97d-48c7279001cmr297088f8f.33.1791307997130;
+        Tue, 06 Oct 2026 10:33:17 -0700 (PDT)
+Received: from D90XRJJJNQ ([2a09:bac6:37af:d2::15:413])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c71d1272esm714121f8f.27.2026.10.06.10.33.15
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 06 Oct 2026 10:33:16 -0700 (PDT)
+From: Tianyi Gao <tianyi@cloudflare.com>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	toke@redhat.com,
+	lorenzo@kernel.org,
+	horms@kernel.org,
+	bpf@vger.kernel.org,
+	shuah@kernel.org,
+	hawk@kernel.org,
+	kernel-team@cloudflare.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	linux-kselftest@vger.kernel.org,
+	Tianyi Gao <tianyi@cloudflare.com>
+Subject: [PATCH net 0/2] veth: fix peer NETDEV_XDP_ACT_NDO_XMIT after GRO is toggled while down
+Date: Tue,  6 Oct 2026 18:32:35 +0100
+Message-ID: <20261006173241.65945-1-tianyi@cloudflare.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Toggling GRO on a veth device while it is down leaves its peer's
+NETDEV_XDP_ACT_NDO_XMIT flag stale once the device comes up. XDP
+redirects into the peer are then rejected with -EOPNOTSUPP, or, if GRO
+was turned off, accepted and then dropped with -ENXIO. Patch 1 refreshes
+the peer's flags in veth_open().
 
-Critical: 0 · High: 2 · Medium: 0 (1) · Low: 1
+Patch 2 extends veth.sh to check the peer's flag after GRO is toggled
+while the device is down, in both directions.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Tianyi Gao (2):
+  veth: fix peer NETDEV_XDP_ACT_NDO_XMIT after GRO is toggled while down
+  selftests: net: veth: test peer ndo-xmit after GRO toggle while down
 
-- [High] Inconsistent descriptor lengths can still produce an skb shorter
-  than an Ethernet header, and handing it to GRO causes a NULL…
-- [High] net: gemini: valid perfectly aligned packets are dropped on
-  0-length EOF
-- [Low] The commit message does not say how the issue was discovered or
-  validated, or on what hardware the fix was tested.
+ drivers/net/veth.c                  |  1 +
+ tools/testing/selftests/net/veth.sh | 46 +++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but gmac_rx()
-  adds only the payload length to skb->truesize (`skb->truesize +=…
 
---
-
-net: ethernet: cortina: Validate RX fragment lengths
-
-This commit adds length checks to gmac_rx() so that RX descriptor
-lengths cannot place a fragment outside the posted free queue fragment
-or the backing page. Short initial fragments, frame length underflow and
-zero-length fragments are now dropped instead of being added to the skb.
-
-> Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-> Assisted-by: LLM
-> Signed-off-by: Linus Walleij <linusw@kernel.org>
-
-[Severity: Low]
-Could the commit message say how this issue was found and how the fix was
-tested? Documentation/process/maintainer-netdev.rst asks for this in the
-bug fixes section:
-
-  All bug fixes must state how the issue was discovered and validated,
-  and how the fix was tested.
-
-For hardware drivers, the same section asks for the hardware the fix was
-tested on.
-
-The new checks depend on how the hardware fills buffer_size and
-byte_count. Was this tested on Gemini/SL3516 hardware?
-
-> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index a0186cc4b9436..6b333eb81f9c4 100644
-> --- a/drivers/net/ethernet/cortina/gemini.c
-> +++ b/drivers/net/ethernet/cortina/gemini.c
-
-[ ... ]
-
-> @@ -1771,6 +1772,9 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
->  			if (!skb)
->  				goto err_drop;
->  
-> +			if (frag_len < NET_IP_ALIGN)
-> +				goto err_drop;
-> +
->  			page_offs += NET_IP_ALIGN;
->  			frag_len -= NET_IP_ALIGN;
->  			frag_nr = 0;
-> @@ -1779,15 +1783,26 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
->  			goto err_drop;
->  		}
->  
-> -		if (word3.bits32 & EOF_BIT)
-> +		if (word3.bits32 & EOF_BIT) {
-> +			if (frame_len < skb->len)
-> +				goto err_drop;
->  			frag_len = frame_len - skb->len;
-> +		}
-
-[Severity: High]
-Can inconsistent descriptors still produce an skb shorter than an
-Ethernet header here?
-
-The ETH_ZLEN minimum in gmac_skb_if_good_frame() only applies to the SOF
-descriptor's byte_count. On the EOF descriptor, frame_len comes from that
-descriptor's own word1.bits.byte_count. The only new check on it is
-frame_len < skb->len.
-
-For example:
-
-  SOF descriptor (no EOF bit): buffer_size = 3, byte_count = 60
-    passes gmac_skb_if_good_frame() and frag_len >= NET_IP_ALIGN,
-    appends 1 byte
-  EOF descriptor: byte_count between 2 and 13
-    passes frame_len >= skb->len, the range check and the zero-length
-    check, appends the rest
-
-napi_gro_frags() then receives an skb of 2 to 13 bytes.
-
-napi_frags_skb() cannot pull the 14 byte ethhdr, so it reuses the skb and
-returns NULL:
-
-net/core/gro.c:napi_frags_skb() {
-    ...
-	if (unlikely(!skb_gro_may_pull(skb, hlen))) {
-		eth = skb_gro_header_slow(skb, hlen, 0);
-		if (unlikely(!eth)) {
-			...
-			napi_reuse_skb(napi, skb);
-			return NULL;
-		}
-    ...
-}
-
-napi_gro_frags() then passes that NULL straight on:
-
-net/core/gro.c:napi_gro_frags() {
-	...
-	struct sk_buff *skb = napi_frags_skb(napi);
-	...
-	ret = napi_frags_finish(napi, skb, dev_gro_receive(&napi->gro, skb));
-	...
-}
-
-dev_gro_receive() calls skb_get_hash_raw(skb) on entry. Wouldn't that
-be a NULL dereference in NAPI softirq context?
-
-This crash path existed before this patch. However, the commit message
-says these descriptor inconsistencies are now dropped. Should gmac_rx()
-check that skb->len is at least ETH_HLEN (or ETH_ZLEN) before calling
-napi_gro_frags()? Alternatively, it could check that the EOF frame_len
-matches the SOF frame_len.
-
->  
->  		/* append page frag to skb */
->  		if (frag_nr == MAX_SKB_FRAGS)
->  			goto err_drop;
-> +		if (frag_len > freeq_frag_len -
-> +			       (page_offs & (freeq_frag_len - 1)) ||
-> +		    frag_len > PAGE_SIZE - page_offs)
-> +			goto err_drop;
->  
-> -		if (frag_len == 0 && net_ratelimit())
-> -			netdev_err(netdev, "Received fragment with len = 0\n");
-> +		if (!frag_len) {
-> +			if (net_ratelimit())
-> +				netdev_err(netdev,
-> +					   "Received fragment with len = 0\n");
-> +			goto err_drop;
-> +		}
->  
->  		skb_fill_page_desc(skb, frag_nr, page, page_offs, frag_len);
->  		skb->len += frag_len;
-
-[Severity: High]
-Does this drop complete frames when the EOF descriptor carries no
-payload?
-
-On an EOF descriptor frag_len is recomputed as frame_len - skb->len.
-The earlier descriptors of the chain may already have delivered all
-frame_len bytes. One case is a frame that ends exactly on a free queue
-fragment boundary while the hardware still closes the chain with a
-separate EOF descriptor. Then frag_len is 0 here even though the skb
-already holds the whole frame.
-
-The new goto err_drop then calls napi_free_frags() on that skb and
-counts it in rx_dropped, instead of handing it to napi_gro_frags().
-
-Before this patch, this case only printed the ratelimited "Received
-fragment with len = 0" message, and the frame was still delivered.
-That message suggests the condition has been seen on real hardware.
-If the hardware can emit such descriptors, frames of particular
-lengths would now be lost every time, which can be triggered by remote
-traffic.
-
-Would it be better to treat a zero-length EOF fragment as having
-nothing to append? gmac_rx() could release the page with put_page(),
-skip skb_fill_page_desc(), and still complete the skb with
-napi_gro_frags(). The zero-length check would then need to come before
-the frag_nr == MAX_SKB_FRAGS check. Otherwise a complete frame that
-uses all MAX_SKB_FRAGS slots and is followed by an empty EOF
-descriptor is still dropped.
-
-Was the zero-length case checked against the behaviour of the
-Gemini/SL3516 hardware before turning it into a drop?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the line just after this
-in gmac_rx() adds only the payload length to truesize:
-
-		skb->truesize += frag_len;
-
-Each fragment pins a whole DMA buffer of 1 << freeq_frag_order bytes,
-with its own page reference taken in geth_freeq_post_page():
-
-	frag_len = 1 << geth->freeq_frag_order; /* Usually 2048 */
-
-Doesn't this understate the pinned memory by up to about 2 KiB per
-fragment for socket rmem and GRO accounting? Would adding freeq_frag_len
-here be more accurate?
-
+base-commit: d5a007b9b457c915ab1a53227e8939e4018aa97a
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-gemini-ethernet-fixes-3-v3-0-3e1f25890ae8%40kernel.org
+2.55.0
+
