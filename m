@@ -1,258 +1,261 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5123386C25;
-	Tue,  6 Oct 2026 21:57:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791323859; cv=fail; b=ZqrlXfgkW8gnGfaFMqznRrW1/dwnQxs60hBvMiTeFHyadQyBX3jRCFVt6Khud8pA7E0Di7BS76C8ddYPxJRQUb3AnJphDBonW0AyL4ACwXU0T5kc7V7N34yXnz9314vqPTbyIgitgbjIVYJKlxc+HvD1qaAO9E8x+wGjIX68Zkk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791323859; c=relaxed/simple;
-	bh=UVP1sj2Jc7WC7lDaJUenCUTeRBdaRHZw/7ukygKBXFs=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=k38fs5dsVbEL6IPTnQebGJoYAdED9lN8OBMVbvslSBqfNmzCUL5eBPUNlpozwmGAzUxHwn1zb61bNtRhOhWgXAChATxLjxbZFxJdfqgcKVMW4716ig6lE4Cal9OfCt7OvWnfrRcgvWY6HUkBxu1+CSTNIsqNymhpX8jFtQMOnrg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jz8Q/ZOy; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C974E388878;
+	Tue,  6 Oct 2026 22:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791324007; cv=none; b=W4MLzP1GD5Hv6aAk8Mo96Nn/H/BqhLpto30rzW17m0rlFXWqJkXMlFZn3/zQrU42/loxSLeUm7XBP4FqKl1Gar7+UtJApAs36F5HyaQmEqV+mDCq9F3rdlY/ywuCZSvyGW88OEHsw2zdJnEwXWCr1qx8U9DRSpu0SWwEwqzuzyw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791324007; c=relaxed/simple;
+	bh=brk0PvIILN+5DqrtGOIk4U1m9qBEHZjx6IWEAQIa1Cg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=utq7+91PeSfjHFB9VPsY2DDxkxzK4HjkgQAZSSNhingFsOXf4fBKuvPxog5ksrc1rFDOF02XJ3w5NN4HeBnGcJrnvYrRdovatTxMwZ/lUH8wZgh+hOQVP3vEah/t361kJo5IzekCw4zqTEthcjKz8PHMR/0GPstea1LOZXMN/EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4GcnhcU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jz8Q/ZOy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791323857; x=1822859857;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=UVP1sj2Jc7WC7lDaJUenCUTeRBdaRHZw/7ukygKBXFs=;
-  b=Jz8Q/ZOy/Mta1uW3bKZxKJroTUiaNU9u3ZjjiXJ84RMniKh4vXC0hlDz
-   xh00LpmeZQNhVndCBL1BPGoMgXE/WNz6yaHpQaXtJKa0rQc3gWdRk6eTv
-   SJFtXm23lGiiHxSyJwZHrRkPCmUfr7WEdOLarT6U6FJONpTZGz+neqCYE
-   dcqmI/BF9Panh1SOle6feH2Bv8L+FMaku3+GqRK14LDUWXx97HbYWhyGs
-   1qMTWuoavw4lAJhlJ1oQpEZWE7hE/XvKGkJ7ycztat2LFg0+pFwyWZE7S
-   r5SAE+wU8ASAITSBe+sISouPofcMRa7Rjz7pgONSfUnrangYj3MQf30gF
-   Q==;
-X-CSE-ConnectionGUID: Thpmw0DcRhqGSf8nFbp73g==
-X-CSE-MsgGUID: oxNVqVFYReSQGwesO2T+ww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="72355"
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="72355"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 14:57:36 -0700
-X-CSE-ConnectionGUID: d+K/X1RYRoS9v+U/8xNRJw==
-X-CSE-MsgGUID: hq00iYyvRbyffu/371t+YA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="285178714"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 14:57:36 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 14:57:35 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 14:57:35 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.1) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 14:57:35 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O6hd/B3m97FZQJff7PZluYYdN/rMaQ0nd3gDj5PmsmJTjoXLrmT5sTzsCjayZoOvJAIzmwmKI8JpTM4Qb7qriOCruuJQ9rmp9PztQYC4bMuic376ib0BXoAZfwKKrGWiFynBGz52Ad+HLOSazk7R99cKvFLjKIGXbcVRAos7ieW8sVPTd9CugYCHzqwrNCCGF1MiDIv4jybdJgM7xfNpD9b/vFf39cZPDR0QmPaIW/IC779ZRBY9PWG2Ds681lpyBF8olafDaJzn45UKCZpj13LmA+iZzPrSy5TRNsxuekWLrae4utorJy/DFwtyARKYxZc6ydhQ86cEd2iWN+Uvaw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y7Lkvbx9uCGtnXAWNsrsjZ4JbdQIkr+CCNhQrKgOu3c=;
- b=hrjm40Rrd3sa9TU8FHc9sR5zfwtfJWuFHj1ZXL4+zYvc09piIaaLhSZtvAGVhIxywQfjc8lxruSepq7IuY5g56QMorHU1z7LWf3Md5LE7sixPK9kqzEY1NQAP/sKaVkcYpfyAHFS6Mrq7HLVB30XOEVDCtXdGsug1Xxuo3QBiVdKL3+GaDTINIYc3wcJV0Z34NMn9iVRZO3vnLCpbS/cwgBHNlfNwL579CSwgffO2cnFPJEqM+IPCkyWP5qXWIZlkL0TRljU0ZG4PYl0ezlF6MqXkNlS8PeXfpc4HGh88waHbsys+IcfIwZ4/3Ef1hiBSBgNnyTyMZfbec6Aomwcgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by MW4PR11MB5776.namprd11.prod.outlook.com (2603:10b6:303:183::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Tue, 6 Oct
- 2026 21:57:31 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0451.022; Tue, 6 Oct 2026
- 21:57:31 +0000
-Message-ID: <345a40de-5353-477d-8be2-8c4e6468875e@intel.com>
-Date: Tue, 6 Oct 2026 14:57:28 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] net/mlx5: allocate DMA pool structs on the
- pool's NUMA node
-To: Seongjun Hong <hsj0512@snu.ac.kr>, Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, "Mark
- Bloch" <mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20261006-net-mlx5-numa-allocate-pool-page-v2-1-0dc4c2eb1376@snu.ac.kr>
-Content-Language: en-US
-From: Jacob Keller <jacob.e.keller@intel.com>
-In-Reply-To: <20261006-net-mlx5-numa-allocate-pool-page-v2-1-0dc4c2eb1376@snu.ac.kr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0329.namprd04.prod.outlook.com
- (2603:10b6:303:82::34) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4GcnhcU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504791F0089B;
+	Tue,  6 Oct 2026 22:00:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791324005;
+	bh=JAZHPiWR5j0jM9LKWbiM25hgRJqvybtekBb6aLKSHzo=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=m4GcnhcUYgBwZ6K14h3yjXkKTj+kIYHqfuu5yHLdsAW/rqpjQqgqrwz3dlpq8lRCa
+	 wghyJ334cx1DLRUPJxIFoS2BUuvrOWdNlf6XzfPR1o0KspnjmgUNIDliMzPVvYtECV
+	 3ACnyslLEn/L3qt7mKKPrCry2WYenGbw17OuMj1zDffsNMxOYXghqQyqOtw3yDrDm4
+	 tW9opOQV9SxyFSHPdKuIH6TbV9Hvj2crP3D02yauTPvIk1muxOafItivOzyFAUACWH
+	 XhWvhLy6wteaEuPVuvh3ZOzw48oES5gQHKrG+IlA4+Xllz0A4h8603VNkU6lPox3gc
+	 1kmoEASKNPO9w==
+Message-ID: <4c98eff5-c8c7-43ee-b59a-adb833978816@kernel.org>
+Date: Tue, 6 Oct 2026 23:59:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|MW4PR11MB5776:EE_
-X-MS-Office365-Filtering-Correlation-Id: 259cfee8-ff33-44a9-5c78-08df23f4d1ba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|18002099003|22082099003|921020|10067099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info: bNuNUMKF65+7BvY1nxjLVwC2sV5sSnuObb/EJccwrGgA10RfVRWmzgm8tfNkk9HwDSKM/hjySN7W87TVdL73N8yvFnEWNiIzaN/JMbc3JlUNVXwMErzbFOwwnf0tWIqfXv8b/izvQgctVLajBUBz9tJBTuAFw1i5MfPaGRo4fQRWhqz5j/IFDVJSQajJvSr38q4zFRiUjr64kuw3GL5B1w60bUUvV3IZAjvLJ7dEIEDrwLgoiNwevK9HkxMGI8EFggQLsLYlOMwP6cT6d5AsJf7PvrSyZT1c/3LkQ85zF7BsjN5IN8TVQ6QQULOuHp0c/RB3VnOdW+UICRHIVKCUZ46aFJF86vv69e6fXLn65cc0ZWhB28Jo3gF5HJN5CSs2dLNGcWUayFuv7njjpo6ITo8gBhzCkJJUxL7wDLHt5MzaeFm+9e/oneO0wYrpAaIFeulBhE8fwqGbqp71VYwvST3l/ZZ7cuopCP27F7pwyP4Q6HoJc3P9KIgUDCU0l5BifkPKBLzTAubeAODEAWnQzcx0feiC2l33MfYuCWvOiDmjdYDud50wuCoGgmivRHPdcoSEmoG0UDVLl3NlvDTJFeliH27KGPCykW5VqVscO+NhSUDjRgoHG2IiVEnC/8vD2PvpViso3rjk32vyDlVFE7/BR1MjIrt4KtvHUTfp835Wia7XApZDLBTdSyaxVqvPk0k/HCvVn7k8Hw7O2wHp7w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(18002099003)(22082099003)(921020)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YVBFQ0NNdXRuVlRPOUVSa0ZnYlQveHluNHgvblp5SEphS0JCeFBQK1NPTk1l?=
- =?utf-8?B?WTRjcXRVdGJPenp3eVEwV2hsNWFvRS8xWWk5aGIyaXV4K0RBUkFnYUhMcWNZ?=
- =?utf-8?B?UDhhdnJlcFNLSGxEMHJZUDNWaXVwb1N4d2hodFJ4aFlzTkNIdzN6S2JNOUlP?=
- =?utf-8?B?VmZTY3BCRmVpVkxVLzRyMDJBWnJlQllzZnRCajMybmErZk5xcnIxWkNiUWYv?=
- =?utf-8?B?MlhPYXE5SlNnWGFXN2Ruc2FIeHFpK295Y1BqaGd5TnJWbFE4TFpRQkwvVjRS?=
- =?utf-8?B?Z3hIVEpUQWRUdUx5ZGQvWGk2Ukt5elVHWlVVa1ovN3pOVjdFcmRqbzhTWHhr?=
- =?utf-8?B?N3ZwUWRza3g1WDRqaExjbS9wQ1EvSVNYd3dGaTR6dmljdWVLYVpCNXZVcVFx?=
- =?utf-8?B?NUx5TVlRbEpKV3p4ck85NVVpTURwejJrRjNzM3lDVmM3ZDRLWmx1cHg2c0hD?=
- =?utf-8?B?OUtvQ0ZORzNMbDh0a1JEeEJWUkhVZkhNNEw1L0xXUjdheXZRVExnSU5jZ2Q0?=
- =?utf-8?B?T1BrTmZITS95aTdHNHliQzQ5amNpZlNRUmxmQWNSOFZHMy9sUFVIYWhzbmVy?=
- =?utf-8?B?M25QTzE3R3VJSjNlckZYMmNWTTdiNTJXWkgraldjOStxUHJqdjI3TTVoNkZk?=
- =?utf-8?B?bEVrY1pSTDQ5WVltTEtXVFZMMWRybWYzbkhtZDZqejJaY01QakRFdy9wN1NY?=
- =?utf-8?B?cnltUTJqbGpNcVdMaU4rTkJJSFQyVFN0b0dNNHFOcGtnWFYwbTA3SUh1WHNC?=
- =?utf-8?B?ZFY3L3VsUzdXMnZiNklheEdZS3V6V2dvRlBvSTBFbW5uemVWa3puUFRqMWRL?=
- =?utf-8?B?cGxxL3V6bWNVdE5QZkZjbXRjYkYxVkpmZTVlb1pobkw4dG91d1BCMldwTVlV?=
- =?utf-8?B?TXl4WmFmaTROWWZwQlBML0JiTk1PRXE5YkRNMWhnbHhVaW01SHlNbnBCdlFD?=
- =?utf-8?B?Z0prNXJNNGJKeGZFOCtJT3NhV1pUK1Aray9KajlyWWd1U0t5NDZ2VU9QNXk5?=
- =?utf-8?B?VU9TQ3YrSUlaRFpuaWQyVlJMa3RaKzlqZ281RU0rak9JMi9FWDNRWjdaOTc4?=
- =?utf-8?B?ZG0yWisvdkltM0F0WWZCUUo4UHBkM1BBV1crRkxjemZLSndVZzN5RmxHQnpu?=
- =?utf-8?B?NllQTEVPMjlYZ1oyY3pod1VNZ1N0L0g3SEV4NVFoN0NJMGFrN2lLUEFaWHRp?=
- =?utf-8?B?V0FqanI0b1BIWnZaekZSTlRZTml2NGE1RWRsOS8rd3lWL3JPaUYzMVZEMlNw?=
- =?utf-8?B?cGh5OE52aHFBVVdKOEdCWHkrK1VXdlQ4MlFZMFBxRnVtWkNxTmFYeWdNV2xF?=
- =?utf-8?B?S09BTm11NkxDTzdJZDJyVEdZekprM2VacUE3UTRSWVZ1ZnhZY1VUZ2RQSndu?=
- =?utf-8?B?RncvT092MGdteHUyMU5RY0ljMmJORzVCZ0hFQ3RZb1J2aDdaUkdSOXdLem1u?=
- =?utf-8?B?cS9lUzN5bzEvbHdVTys1NGdabEIxY1k0MEd3bXordlduOTBSTVIwWE9xNmQw?=
- =?utf-8?B?ZnRUV3VtTW9EbE9mUDlSL2U0c0E1bng0OEpPakQzNkxxRTNRUlQ4VlY2aHk4?=
- =?utf-8?B?MSt2TUtBYXgvZzdXaTBPUklqNHViMmZXQzkxVXYvU3VkM2xvWmJsYjVCQ0dw?=
- =?utf-8?B?RStZaEEvSDRyQjkxT2FqOVhLNGRCOGpPbWtmdGlqaWJFQU04VXVUK25aYnJE?=
- =?utf-8?B?MFBmRUZqd0daUVhQWTRPM1dOcmlETVU1emxIVjA0L1RFVktqc1JBWGxkRmRa?=
- =?utf-8?B?eVJadjd3Q2dIUkVXYVlaZEZlWjA5OHdEdUdiTytTWll5ZmZMaXlTdXFyYXox?=
- =?utf-8?B?cjFnbEtUQ3VMR0ZYZXQzV3VDTGtUZndSZitsMGdmWjZHRXBBQ3I4Y0doT3l5?=
- =?utf-8?B?Qm5QMVJHWjM3MjhCeXh2WXdSRmhnU1Q2RzV1ejNVdzI4KzR6bU9qeTgxaGVY?=
- =?utf-8?B?b0F3cVJXMjZJMCt0cW5nclVZeVN0KzVoNUhyRjZTSllOdCtUQTBnQnVRc3VN?=
- =?utf-8?B?VFg0ODVyQnBqYkNKYmRLRVhuZlNHSllOWXhQZ3Q3OEtJUnc3alR5V296cVhh?=
- =?utf-8?B?T2pmMXFPZkFSZzgxa3gzVjBNTmtWQTcyODJ3WDJ0VDV6dHVxWFBUVlpuSDZS?=
- =?utf-8?B?MUJiOWtQcmh3Si8rODN3amZLVm5XTitpdHF6Q1A3L043N2kzbUFsOFVkS2ZN?=
- =?utf-8?B?NktDRmJWUFAxbzZoUzhaSVVtN1R1THprczFlbjF0eDV4Q2hlSHhLb0NpeGhm?=
- =?utf-8?B?MUJndDFVUjZRclJ0RjFESWhDckRIWUROSDk2RTFGR0pVSXhUV1k5MHF1MXFR?=
- =?utf-8?B?M3d1b0w3VFg1QUp0Tzg1MHdtc0FQUStiQnpkamg3MnhFTmxkZGttWnpwbEZq?=
- =?utf-8?Q?CVWEQ/eCbrSYot8Y=3D?=
-X-Exchange-RoutingPolicyChecked: J0qPsg7NHrOeF4ZpkinQ7iN0ckTOdf+SS8wUjaMYtpgi4b6FHIe8VpSkFQQxQH2xWPRhitjZyzjv1RDMSLrmRWBCJ2q6nPK3ExFlNjI9XPowSvKoXm/8/WphH1m+NC37ajDHBHqBI62piWCNwuheHGBskuGOi+kz/Ver14TTXtmk01+MC/dw02FaUVZKGTyn0USgW+xunvHBhyFBAfdDBFMCafLMeAjoG9xDi6eEjrcEIz+rEGlYX6qM/4Dit7KlOHa9M0Twm8PP5iManIqzAW6cauf1E270CeSY6iYEXgPtZe4yJBVuocb1W1kooRekstNpvvoOnnX24D+Yjc6zag==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 259cfee8-ff33-44a9-5c78-08df23f4d1ba
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 21:57:30.9449
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HjqCHp+6t517R2UuJ2iAlW3EnwbqJrCMPmTP4t/fbVpzU85kVUV6RLZgBSVZuM4XJlHjR62/7oi3606Bzd9QYt6sKscXeXocaJ1dlxXLmtk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5776
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
+ VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
+From: Eric Dumazet <edumazet@kernel.org>
+To: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>,
+ Heiner Kallweit <hkallweit1@gmail.com>
+Cc: netdev@vger.kernel.org, regressions@lists.linux.dev,
+ stable@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com,
+ Sasha Levin <sashal@kernel.org>
+References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+ <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org>
+ <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
+ <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 10/6/2026 7:16 AM, Seongjun Hong wrote:
-> The mlx5 DMA pool structs (mlx5_dma_pool, mlx5_dma_pool_page and its
-> block bitmap, and mlx5_frag_buf_node_pools) are allocated without a
-> node hint, so they land on the node of whichever CPU happens to create
-> or fill the pool, while the DMA pages they describe are allocated on
-> the pool's node.
-> 
-> The pool, page and bitmap are dereferenced on every block allocation
-> and free. Allocate them on the pool's NUMA node as well, so that all
-> of a pool's state lives on one node.
-> 
-> These allocations happen on the control path, so the performance gain
-> is expected to be small; the change is mainly for consistency.
-> 
-> Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
-> ---
-> Changes in v2:
-> - fix typo and specify the structs are allocated on the control path
-> - add a prefix net-next to the subject
-> - Link to v1: https://lore.kernel.org/r/20261005-net-mlx5-numa-allocate-pool-page-v1-1-01f4283932b4@snu.ac.kr
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/alloc.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-> index a92cf545bdaf..dcd281c4691d 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/alloc.c
-> @@ -110,7 +110,7 @@ static struct mlx5_dma_pool *mlx5_dma_pool_create(struct mlx5_core_dev *dev,
->  {
->  	struct mlx5_dma_pool *pool;
->  
-> -	pool = kzalloc_obj(*pool);
-> +	pool = kzalloc_node(sizeof(*pool), GFP_KERNEL, node);
 
-This removes all the benefits of kzalloc_obj() here...
 
-But I guess the __alloc_objs API doesn'thave the ability to add a node?
-It seems like we'd benefit from having support for the node parameter..
-but it does seem tricky to add. kzalloc_node_obj() could potentially be
-added. Staring at the implementation I have no idea how complicated that
-would be.
-
-Still, this only really changes two allocations and they're pretty
-obviously correct.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-
->  	if (!pool)
->  		return NULL;
->  
-> @@ -127,19 +127,20 @@ mlx5_dma_pool_page_alloc(struct mlx5_dma_pool *pool)
->  {
->  	int blocks_per_page = BIT(PAGE_SHIFT - pool->block_shift);
->  	struct mlx5_dma_pool_page *page;
-> +	int node = pool->node;
->  
-> -	page = kzalloc_obj(*page);
-> +	page = kzalloc_node(sizeof(*page), GFP_KERNEL, node);
->  	if (!page)
->  		goto err_out;
->  
->  	page->pool = pool;
-> -	page->bitmap = bitmap_zalloc(blocks_per_page, GFP_KERNEL);
-> +	page->bitmap = bitmap_zalloc_node(blocks_per_page, GFP_KERNEL, node);
->  	if (!page->bitmap)
->  		goto err_free_page;
->  
->  	bitmap_fill(page->bitmap, blocks_per_page);
->  	page->buf = mlx5_dma_zalloc_coherent_node(pool->dev, PAGE_SIZE,
-> -						  &page->dma, pool->node);
-> +						  &page->dma, node);
->  	if (!page->buf)
->  		goto err_free_bitmap;
->  
-> @@ -278,7 +279,7 @@ mlx5_frag_buf_node_pools_create(struct mlx5_core_dev *dev, int node)
->  {
->  	struct mlx5_frag_buf_node_pools *node_pools;
->  
-> -	node_pools = kzalloc_obj(*node_pools);
-> +	node_pools = kzalloc_node(sizeof(*node_pools), GFP_KERNEL, node);
->  	if (!node_pools)
->  		return NULL;
->  
+On 10/6/26 20:16, Eric Dumazet wrote:
+> Le mar. 6 oct. 2026 à 19:07, Eric Dumazet <edumazet@kernel.org> a écrit :
+>>
+>> Le mar. 6 oct. 2026 à 18:27, Eric Dumazet <edumazet@kernel.org> a écrit :
+>>>
+>>>
+>>>
+>>> On 10/6/26 13:45, Jan Čermák wrote:
+>>>> Hi,
+>>>>
+>>>> the Home Assistant OS recently shipped kernel update from 6.18.39 to
+>>>> 6.18.52 which was followed by a bunch of community reports about fatal
+>>>> network breakages [1] which had one thing in common - r8169 driver and
+>>>> configured VLANs. This manifested as network stall early in the setup
+>>>> of the system with dmesg events like this:
+>>>>
+>>>>> r8169 0000:03:00.0 enp3s0: NETDEV WATCHDOG: CPU: 7: transmit queue 0 timed out 6125 ms
+>>>>> r8169 0000:03:00.0 enp3s0: rtl_rxtx_empty_cond == 0 (loop: 42, delay: 100).
+>>>>
+>>>> As there was no change in the r8169 driver itself, I focused on the
+>>>> vlan subsystem, where AI pointed me shortly to this suspect commit in
+>>>> the range: 1517d1996b5236fe69eccd9d253f725e06996eb1 ("vlan: fix
+>>>> skb_under_panic and races when toggling HW VLAN offload"), added in
+>>>> 6.18.51. I'm not referring to the mainline counterpart below for
+>>>> regzbot (447cbe95ebb9) as I can't confirm whether it triggers the bug
+>>>> there as well. FWIW there was another issue [2] with a similar
+>>>> combination recently in the regressions ML but that one seems
+>>>> unrelated, as disabling EEE fixed that issue, and it doesn't fix it
+>>>> here.
+>>>>
+>>>> I don't have the hardware myself, I asked for testing with this commit
+>>>> reverted, which confirmed that this change indeed started to cause
+>>>> trouble. However, it's obvious that the change itself is not bad, as
+>>>> it fixes another issue and the regression is scoped to very specific
+>>>> hardware/setup combo.
+>>>>
+>>>> Besides the revert, following workarounds were reported to fix the
+>>>> issue as well:
+>>>> - Disabling TX checksum offload with `ethtool.feature-tx off` in
+>>>> NetworkManager for the connection (HAOS doesn't have ethtool binary,
+>>>> hence this option instead of direct ethtool command)
+>>>> - Enabling REORDER_HDR with `ip link set enp1s0.100 type vlan reorder_hdr on`
+>>>>
+>>>> Clearly, this needs rather esoteric setup to trigger the bug - I guess
+>>>> most systems set the REORDER_HDR flag by default, however, due to some
+>>>> legacy in the DBus interface that HAOS stack uses to configure the
+>>>> network [3], it was disabled. Anyway, I think that disabling it should
+>>>> not lead to driver breakage as we're seeing.
+>>>>
+>>>> So far it appears that this only affects RTL8168h/8111h, XID 541 -
+>>>> there isn't any report of another chip/XID combination yet.
+>>>> Unfortunately, as I said above, I don't have the hardware available
+>>>> for testing but I believe I'll find some community members who'll be
+>>>> willing to test a proposed fix for the issue if needed.
+>>>>
+>>>> [1] https://github.com/home-assistant/operating-system/issues/5019
+>>>> [2] https://lore.kernel.org/regressions/353419280.954808.1790290283530@mail.yahoo.com/
+>>>> [3] https://github.com/home-assistant/supervisor/issues/7248
+>>>>
+>>>> #regzbot introduced: 1517d1996b5236fe69eccd9d253f725e06996eb1
+>>>> #regzbot link: https://github.com/home-assistant/operating-system/issues/5019
+>>>>
+>>>> Cheers,
+>>>> Jan
+>>>
+>>> Ok this NIC can not perform tx csum offloads with vlans.
+>>>
+>>> opts[1] only takes TD1_IPv4_CS and TCPHO (Transport Header Offset).
+>>>
+>>> There is no IP header offset field in the descriptor. The MAC assumes
+>>> the IP header starts immediately at byte 14.
+>>>
+>>> So we need to change vlan_dev_hard_header() to take into account
+>>> vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)
+>>>
+>>> Can you test the following patch?
+>>>
+>>> Thanks!
+>>>
+>>> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+>>> index
+>>> cb8f3cdbf1f732c55a8a3d69ab5445988c953205..3a518ff064465e8ab978c66a28bf7df579931256
+>>> 100644
+>>> --- a/net/8021q/vlan_dev.c
+>>> +++ b/net/8021q/vlan_dev.c
+>>> @@ -54,7 +54,9 @@ static int vlan_dev_hard_header(struct sk_buff *skb,
+>>> struct net_device *dev,
+>>>           u16 vlan_tci = 0;
+>>>           int rc;
+>>>
+>>> -       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR)) {
+>>> +       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR) &&
+>>> +           !vlan_hw_offload_capable(READ_ONCE(vlan->real_dev->features),
+>>> +                                    vlan->vlan_proto)) {
+>>>                   unsigned int hlen = READ_ONCE(dev->hard_header_len) +
+>>>                                       READ_ONCE(dev->needed_headroom);
+>>
+>> Nope, scratch this. I need to spend more time on a proper fix.
 > 
-> ---
-> base-commit: 8b4e7209c842d8cb9516f1f5ef0a88aa2d8831a6
-> change-id: 20261005-net-mlx5-numa-allocate-pool-page-2ee20a04147e
+> It seems this code is not needed anymore, and was the source of many
+> bugs anyway.
 > 
-> Best regards,
+> In modern Linux, core networking already has validate_xmit_vlan() in
+> net/core/dev.c which handles software fallback tag insertion right before
+> ndo_start_xmit when the lower device lacks HW VLAN TX offload.
+> 
+> VLAN_FLAG_REORDER_HDR should be an RX option (controlling vlan_untag()).
+> 
+> I am tempted with this (untested) approach
+> 
+> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+> index cb8f3cdbf1f732c55a8a3d69ab5445988c953205..7c1394ee2a653706c42f1b970e13664583d1cf36
+> 100644
+> --- a/net/8021q/vlan_dev.c
+> +++ b/net/8021q/vlan_dev.c
+> @@ -49,47 +49,14 @@ static int vlan_dev_hard_header(struct sk_buff
+> *skb, struct net_device *dev,
+>                                  unsigned int len)
+>   {
+>          struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+> -       struct vlan_hdr *vhdr;
+> -       unsigned int vhdrlen = 0;
+> -       u16 vlan_tci = 0;
+> -       int rc;
+> -
+> -       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR)) {
+> -               unsigned int hlen = READ_ONCE(dev->hard_header_len) +
+> -                                   READ_ONCE(dev->needed_headroom);
+> -
+> -               if (skb_cow_head(skb, hlen) < 0)
+> -                       return -ENOMEM;
+> -               vhdr = skb_push(skb, VLAN_HLEN);
+> -
+> -               vlan_tci = vlan->vlan_id;
+> -               vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
+> -               vhdr->h_vlan_TCI = htons(vlan_tci);
+> -
+> -               /*
+> -                *  Set the protocol type. For a packet of type ETH_P_802_3/2 we
+> -                *  put the length in here instead.
+> -                */
+> -               if (type != ETH_P_802_3 && type != ETH_P_802_2)
+> -                       vhdr->h_vlan_encapsulated_proto = htons(type);
+> -               else
+> -                       vhdr->h_vlan_encapsulated_proto = htons(len);
+> -
+> -               skb->protocol = vlan->vlan_proto;
+> -               type = ntohs(vlan->vlan_proto);
+> -               vhdrlen = VLAN_HLEN;
+> -       }
+> +       struct net_device *real_dev = vlan->real_dev;
+> 
+>          /* Before delegating work to the lower layer, enter our MAC-address */
+>          if (saddr == NULL)
+>                  saddr = dev->dev_addr;
+> 
+>          /* Now make the underlying real hard header */
+> -       dev = vlan->real_dev;
+> -       rc = dev_hard_header(skb, dev, type, daddr, saddr, len + vhdrlen);
+> -       if (rc > 0)
+> -               rc += vhdrlen;
+> -       return rc;
+> +       return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
+>   }
+> 
+
+Note to testers:
+
+My LLM agreed with the change in vlan_dev_hard_header() (above), but said
+that no change was needed in vlan_dev_hard_start_xmit() (below)
+
+
+>   static inline netdev_tx_t vlan_netpoll_send_skb(struct vlan_dev_priv
+> *vlan, struct sk_buff *skb)
+> @@ -106,8 +73,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct
+> sk_buff *skb,
+>                                              struct net_device *dev)
+>   {
+>          struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+> -       struct vlan_ethhdr *veth = (struct vlan_ethhdr *)(skb->data);
+>          unsigned int len;
+> +       u16 vlan_tci;
+>          int ret;
+> 
+>          /* Handle non-VLAN frames if they are sent to us, for example by DHCP.
+> @@ -115,13 +82,9 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct
+> sk_buff *skb,
+>           * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
+>           * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
+>           */
+> -       if (READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR ||
+> -           veth->h_vlan_proto != vlan->vlan_proto) {
+> -               u16 vlan_tci;
+> -               vlan_tci = vlan->vlan_id;
+> -               vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
+> -               __vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
+> -       }
+> +       vlan_tci = vlan->vlan_id;
+> +       vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
+> +       __vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
+> 
+>          skb->dev = vlan->real_dev;
+>          len = skb->len;
 
