@@ -1,195 +1,220 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9B83E63AE
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 23:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F3A4CCDCB
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 23:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791330609; cv=none; b=S45W0aK8LafIUO36QzBc/BaZ4r43wSKX0758AdXIlV4IrTU9OA6raqiOOHzx0YNHJdGflZPeNax1YS9zqTEBtfhWVwIJKya96dc+DEoDB+ANSlgvyXeBKRmYrE5V/eJpYMi65T5DasORbNYZ3VQvZKSEWuNAp1oiKAHM2NyopI0=
+	t=1791330679; cv=none; b=o0eFml6Vm0J4XKGWeCK6Csoo+SjafeLHNlFf40k2WeW9Zypo1qh5BwgYD+9uUAw0nMZYsIniNHpYiPKB3uXOQPK3jniTfSbpAEncLu8pvsViQTJ+rdnX2vDBrze41BY+N9HhVGaajRqwyxOyNVR1+U2jKmwLVF1gdvxQeC4zZFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791330609; c=relaxed/simple;
-	bh=XzYP3vGPqSJFhA/VBQIqyLMN8XIaEmifsxr03+/yxnw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WSxEEBdpyN44IzQ7WXPD/ICh+hEfmEykRMZY/+gx/Pf+4gupXRwnWJBcL9BCc02CzjKplGiVrvCUI5gWjko6gYUnYFtPDwn/Mzau2PqxMtdRGzDfQ4P1o0vxTgoY7b8Kp0E/ne+hKG1TNAt+4hJ8m5WpTAWnvb6KwDV2kTffn98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M+iyXRSp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bJXc5SaT; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791330679; c=relaxed/simple;
+	bh=EPjqlJfvpd0fno9Mf3dBWpstxKj5CD8GlBCztw4eDpw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=sA/hpBTFEQlUirJBaezcoIVw0yVCBsK7eTa2pSz2D4sEpU299PLHqq7W3P5qOi9n5u0PC0P2DyLpli4pT8PI2uO31YOA+ZDrBg8O+5tPQsdLP+NPtz/vUBFNherYpzXVj4qnsQpjw8AEKoAN3CHeniDZ4wgvvs00w1oL5JXJ2aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GUBD8hz3; arc=none smtp.client-ip=209.85.160.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M+iyXRSp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bJXc5SaT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791330607;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BbVYFAx11ftCNKpUYlehSptFsjph+/37825gxnL+w08=;
-	b=M+iyXRSpynXpItjV/IRLOV0iVDOuICZh/ZKV50OwL93Jtdo8twoM5auv8PlCj0clj+UOAb
-	GclXJxU85gHPLpe6jMhrUAsxb4bw9mOEoL7XWgk6SIAPeEgzRcdRlqXHRRiVxJpx64Qf8O
-	R0cvtHVUzvfnFGu8aXHmm15wTY7+clk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-56BUH8RpNDS_Iw3iwsDgMw-1; Tue, 06 Oct 2026 19:50:05 -0400
-X-MC-Unique: 56BUH8RpNDS_Iw3iwsDgMw-1
-X-Mimecast-MFC-AGG-ID: 56BUH8RpNDS_Iw3iwsDgMw_1791330604
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-495689bfcc8so27353315e9.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 16:50:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GUBD8hz3"
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5339739b343so58574421cf.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 16:51:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791330604; x=1791935404; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BbVYFAx11ftCNKpUYlehSptFsjph+/37825gxnL+w08=;
-        b=bJXc5SaTa9gYZ/hYGrFlEnk4XXAIRJmlghOc3wztBfsU5sJxWIwacXWd3ux2jUX46V
-         nORsEjakGf+1pYWi5gJKSNo5wNGhwJCRs4y+yT3b8HcwYaiUcN80cuhz4pGjN/SmBcF0
-         xYSw3NZSWnzERCssJ12IYw1rJz39W2FKqCTh3JoUJR3iUcD+r+KSnwWAsCFpdAugddag
-         EK/JUr8zgb/2+pbkB7yE4IDfUwNungoDEpRdLxfN/NFgTvYXLEy+jkXEj/W20oMyfCdN
-         lVV0JwMQafIETRftyB9hyeMRnXvW6T2DJQVJUBQ9yT4kerObx3r+Bm1SU1QQ06jAO8kE
-         C40w==
+        d=google.com; s=20251104; t=1791330677; x=1791935477; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3iQnWPJWCktj5578LSdS2f8w0vrsJ1nfZaYjzTcnylc=;
+        b=GUBD8hz3kSpukB5AHfCrHO0b5GqfszXekprCv+gQfCweslciC54QGqjX9aDUKRX1Tm
+         0oInq3TGGYSuKkBmJX9HiDHCcZIEOa5YBjZ1p/ARPT3VyPmUkUYlz6/Kpo/q8rTlaqZI
+         vwO3HPVrXKspMITO/jqvZETxx/QG944BfWSPXZdgQv/cVW5HIJrXFvNVUrGjLu3fd2lj
+         uEz+yEPH2SCmQAIPsuPwX2sf+/7zBSFJsTo+m0S7145iZcM0bVupgIf1rFafbLsPbwLp
+         NDRrm3+W68dmsx6K8VUDvxlNAvMs5eJlstF2hi+8vnrsikrnBKAa146iFo5abuJBPCPw
+         PE3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791330604; x=1791935404;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=BbVYFAx11ftCNKpUYlehSptFsjph+/37825gxnL+w08=;
-        b=OOhH2TxRbPp3F2PbuWJ8yXNeStJHSkQfCvlKfYAnY1EiHtjQEZyWMqktO6/JLewm/I
-         cWDKStSrrwthbFxN0589ISFtaG3T2W6AL3vETQzd9a+iRFw/JqCwHT7FljHeUU+OjPRm
-         u5XbOT4y1jFGXtg35schH+09nfHVbi+A+T9OwpBU1RjDdtFBEy6lJYPaFtOd1Gaky53T
-         HxHoi9SaV65ySQClAhJ6HceqXtWjX+lHh+krnerhTmyOfnfECQdP5czXY6wrFYGxT4xk
-         Bdb9wdPV+tHqbI7YuwAdZw5SqaeyzAX+mF4aCj6sCVYYe9VkGaWirM2HFgcqas6h+8Q5
-         xXkg==
-X-Forwarded-Encrypted: i=1; AKwUvBw1eU7Q0kz5i77/eKEtjXZV3oRhKR7yk23EixlFkS4xKtSbLuyaYQcapcM1iBwyBfw/8vjUoLE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lAchEDN936rZg3utWhj8oPQdl+xuA08AOf/U2dhyoNcd2LeH1r
-	ER2ukOrojTlzS/B5joPTfLRKllL7OteG8kCUgaY8GQAjvG6WpOdNZvriDqGuXz/FxBofNomYLaI
-	3TIuBmNtMpAp3BTDZRKJ0aKHZk8qstmBTODGAtLMkURfcWy0ISWMwtlQQRA==
-X-Gm-Gg: AYBFou1TD2NbPwIXpY92JSS7TSeX3OwxaZa++VOXthJ6tRRjV9fkxbqTCf4wnrFYQZN
-	ey+P4L4M+RgrxcBKDwyxhr60YXuN5OieU6O97RQxE6OW8XSweHKl+OENdnoVfvwmEyKoCIgLz7A
-	/cWXb4mvHPlrTQRHwVRIepr8IyEo0m4IyX7QQwRHvwrcx76To3QmqKlBTn/c/cmt+oNcQ+bMd01
-	weynesHfgw0NPU6jaL4ZcJ8WBqEDRSliCVgiC+f99/AfvwAMmrwasKcnQdDSrPY8p4zlFPLfWV6
-	8NK4U8YI1z5m226Him9RgmkowAzjU/cRaGL1W9+IqF84vqnZXyeBaiSJtJ9EoEQmuwXlt3g=
-X-Received: by 2002:a05:600c:4ecf:b0:4a1:7d08:780e with SMTP id 5b1f17b1804b1-4a1800ca15fmr5367465e9.1.1791330604497;
-        Tue, 06 Oct 2026 16:50:04 -0700 (PDT)
-X-Received: by 2002:a05:600c:4ecf:b0:4a1:7d08:780e with SMTP id 5b1f17b1804b1-4a1800ca15fmr5367075e9.1.1791330603878;
-        Tue, 06 Oct 2026 16:50:03 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17f557bcbsm29287545e9.9.2026.10.06.16.50.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 16:50:02 -0700 (PDT)
-Date: Tue, 6 Oct 2026 19:49:59 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	edumazet@google.com
-Subject: Re: [PATCH v3 net 0/3] net: always dissect GSO packets in
- __virtio_net_hdr_to_skb()
-Message-ID: <20261006194851-mutt-send-email-mst@kernel.org>
-References: <20261001191140.2818991-1-edumazet@kernel.org>
- <20261006183410-mutt-send-email-mst@kernel.org>
- <CAF=yD-K2Lq_TAbN0=vpRZQrcp_R9Vu4E7frixWeBO2ehBQHdiw@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1791330677; x=1791935477;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3iQnWPJWCktj5578LSdS2f8w0vrsJ1nfZaYjzTcnylc=;
+        b=bmFPl5+Hw7m+a8GJS+fKU/uI/1My+UVHwqivDynPxbsnyypR2lVNCzK/Kp71+FcHBA
+         7Vr0H65BXhT/W/WQr5X/Rx0zqbZxXq5HL4LCEiTB59mG9y7/VZY+oFiwVwMo3c3r44oj
+         KiuwJWhqyrYKoNy3YqOhGfe7IlUq8s1hS21r1QrAJWLL9Q+sVrjpbx4u+9xrWkNXh/UH
+         bEu0C+jLb7SeKIEtF2t6nPfbYmk8/LlfRIHMIfu4x9Q37Sx4IbEC2BTKJ6vGmWhdSNxi
+         BMROHqzOo5Jr/1CPsSNgj4VH9b/6wa1GH/KlFO6bGYQ/QJzdZsHoCLe4FBx+8ZpNft77
+         sKJQ==
+X-Gm-Message-State: AFuF++k77OytWHuGHTMRoG8moLTLsiDzYf2V75fiWojS9z7DQ2guMRCH
+	dHkJX15Z8almu3xkmcAb1okZuWBh6b1WqpTg+obpNAh+O+7USKf6SxL1f/UHxEbTAcjLD4TUBp/
+	kf5GCHrXRsRAgVZqog+CxreKc0DYZqjID+xLV9F8EE2vB9wOKt1plCxjMUkGxhHwX7Gl40APVd7
+	LL6YRQLPXuwXjD66/mhlwHOVnLDEzJLK3Y4MnJjHhbHQZ81nqdwsfAXS/nXs2H3fs=
+X-Received: from qtnc5.prod.google.com ([2002:ac8:5185:0:b0:535:3635:8d08])
+ (user=namangulati job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:5cc8:0:b0:532:d36c:7096 with SMTP id d75a77b69052e-535756cd707mr8625191cf.56.1791330676825;
+ Tue, 06 Oct 2026 16:51:16 -0700 (PDT)
+Date: Tue,  6 Oct 2026 23:51:13 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF=yD-K2Lq_TAbN0=vpRZQrcp_R9Vu4E7frixWeBO2ehBQHdiw@mail.gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20261006235113.2394030-1-namangulati@google.com>
+Subject: [PATCH net v3] net: gro_cells: prevent enabling threaded NAPI on gro_cells
+From: Naman Gulati <namangulati@google.com>
+To: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
+Cc: bigeasy@linutronix.de, kuniyu@google.com, 
+	syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com, 
+	Naman Gulati <namangulati@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 06, 2026 at 07:26:46PM -0400, Willem de Bruijn wrote:
-> On Tue, Oct 6, 2026 at 6:38 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > On Thu, Oct 01, 2026 at 07:11:37PM +0000, Eric Dumazet wrote:
-> > > This series fixes a bypass of untrusted GSO flow dissection in
-> > > __virtio_net_hdr_to_skb() when VIRTIO_NET_HDR_F_NEEDS_CSUM is not set,
-> > > and adds a kselftest covering VLAN-tagged GSO packets without NEEDS_CSUM:
-> > >
-> > > - Patch 1 fixes __skb_flow_dissect(), which computes key_control->thoff
-> > >   with min_t(u16, ...). This truncates skb->len and returns a bogus small
-> > >   transport offset when skb->len modulo 65536 is smaller than the
-> > >   transport offset. Offsets that do not fit in the u16 thoff now fail the
-> > >   dissection instead of being silently truncated.
-> > >
-> > > - Patch 2 initializes skb->dev and skb->network_header before calling
-> > >   virtio_net_hdr_*_to_skb() in tun_get_user(), tun_xdp_one(),
-> > >   virtnet_receive_done(), and raw_verify_header(), removes the
-> > >   '&& skb->network_header' condition and the unvalidated
-> > >   'else if (gso_type)' fallback in __virtio_net_hdr_to_skb(), and moves
-> > >   virtio_net_hdr_match_proto() after skb_flow_dissect_flow_keys_basic()
-> > >   so it validates the dissected L3 protocol (keys.basic.n_proto) rather
-> > >   than the outer L2 protocol.
-> > >
-> > > - Patch 3 adds kselftests in tools/testing/selftests/net/tun.c verifying
-> > >   that VLAN-tagged (802.1Q) TCPv4 GSO packets without NEEDS_CSUM (both
-> > >   flags = 0 and flags = VIRTIO_NET_HDR_F_DATA_VALID) are accepted on a
-> > >   TAP device, that mismatched GSO types and truncated TCP headers without
-> > >   NEEDS_CSUM are rejected with -EINVAL, and that a 65540-byte frame is
-> > >   accepted.
-> > >
-> > > v3:
-> > >  - New patch 1: avoid u16 truncation of skb->len when computing thoff in
-> > >    __skb_flow_dissect(). Patch 2 makes tun_get_user() dissect IFF_TAP
-> > >    frames before eth_type_trans(), with skb->len up to 65549 for a GSO
-> > >    frame carrying a maximal IPv4 packet (Sashiko).
-> > >  - Patch 3: truncate the TCP header after 10 bytes so that the test
-> > >    requires the transport offset found by flow dissection, and add a
-> > >    65540-byte frame test (Sashiko).
-> > >  - Link to v2: https://lore.kernel.org/netdev/20260928144254.3361044-1-edumazet@kernel.org/
-> > >
-> > > v2:
-> > >  - Patch 2: drop the pre-dissection virtio_net_hdr_match_proto() check
-> > >    inside 'if (!skb->protocol)' so VLAN-tagged GSO frames without
-> > >    NEEDS_CSUM are not rejected before flow dissection (Michael S. Tsirkin).
-> > >  - Patch 2: clarify the changelog regarding why skb->network_header was 0
-> > >    in those callers and why skb_reset_mac_header() is dropped in
-> > >    tun_get_user() for IFF_TUN (Michael S. Tsirkin).
-> > >  - Patch 3: add selftest in tools/testing/selftests/net/tun.c based on
-> > >    Michael's reproducer.
-> > >  - Link to v1: https://lore.kernel.org/netdev/20260927195536.2489079-1-edumazet@google.com/
-> >
-> >
-> > Not without trepidation about the amount of stuff we are shoving
-> > into virtio_net_hdr_to_skb which, believe me or not, used to be 50 LOC
-> > of trivial code in 2019:
-> 
-> Unfortunately that let through many bad packets and unintentional
-> (ab)uses of the API.
-> 
-> The current state is the result of numerous fixes we had to apply
-> since then to protect the kernel. Generally there are two approaches:
-> 
-> 1. make every reachable path in the kernel robust against unexpected
-> input. Frequently that means checks in the hot path that penalizes all
-> normal traffic, only to catch a bad actor or fuzzer. And it's not
-> straightforward to prove that all reachable paths are protected.
-> 2. strict input validation.
-> 
-> With strict input validation from the start the checks could have been
-> simpler (hindsight is 20/20). Unfortunately, now we are stuck with
-> weird input (GSO without NEEDS_CSUM, skb protocol 0, encapsulation
-> headers, ..) that we now have to work around and try to not break,
-> that may or may not have real users.
-> 
-> This patch actually makes the function simpler. By reducing the
-> differences between the various callers of the function. This is great.
-> 
-> It sucks how complex this function has become, hopefully we can
-> find more such ways of making it simpler. The strict validation itself
-> is a good thing imho.
+gro_cells allocates a per-CPU struct gro_cell with per-CPU queues
+(cell->napi_skbs), per-CPU local_lock_t (cell->bh_lock), and per-CPU
+napi_struct (cell->napi). On !CONFIG_PREEMPT_RT, local_lock_t only
+provides lockdep annotation (and is a complete no-op when
+CONFIG_DEBUG_LOCK_ALLOC is disabled), relying on per-CPU locality and
+disabled BH context for mutual exclusion; it does not provide cross-CPU
+synchronization.
 
+When threaded NAPI is enabled on a device backed by gro_cells (e.g.
+gre0, vxlan, geneve) via sysfs, unbound kernel threads are created for
+each per-CPU NAPI. When gro_cells_receive() on CPU A enqueues a packet
+to cell_A and calls napi_schedule(&cell_A->napi) while holding
+cell_A->bh_lock, the woken kthread can run concurrently on remote CPU B.
 
-Yes indeed. I have a vague idea how to do it: check some
-performance-critical types of packets and for the rest just calculate
-the checksum then and there.
+When CPU B runs gro_cell_poll(&cell_A->napi) and calls
+__local_lock_nested_bh(&cell_A->bh_lock), lockdep detects that the lock
+is already held by CPU A's task and triggers a warning:
 
+  WARNING: CPU: 1 PID: 377 at net/core/gro_cells.c:66 gro_cell_poll
+  DEBUG_LOCKS_WARN_ON(l->owner)
+  CPU: 1 UID: 0 PID: 377 Comm: napi/gre0-0 Not tainted 7.3.0-rc2
+  Call Trace:
+   <TASK>
+   __local_lock_nested_bh include/linux/local_lock_internal.h:92
+   gro_cell_poll+0x5aa/0x6c0 net/core/gro_cells.c:66
+   napi_threaded_poll+0x39b/0x600 net/core/dev.c:7048
+   kthread+0x71e/0x870 kernel/kthread.c:464
+   ret_from_fork+0x5d/0x90 arch/x86/kernel/process.c:167
+   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:264
+   </TASK>
 
+On !CONFIG_PREEMPT_RT kernels without lockdep, concurrent execution of
+__skb_queue_tail() on CPU A and __skb_dequeue() on CPU B without
+cross-CPU locks leads to silent queue corruption.
+
+Virtual per-CPU NAPIs cannot support unbound threaded NAPI. While
+gro_cells also sets NAPI_STATE_NO_BUSY_POLL (which skips napi_hash_add()
+and prevents configuring them via Netlink), NAPI_STATE_NO_BUSY_POLL
+cannot be used to reject threaded NAPI in sysfs because drivers such as
+WireGuard set NAPI_STATE_NO_BUSY_POLL on per-peer NAPIs while running
+them in threaded mode by default.
+
+Introduce NAPI_STATE_PERCPU to mark per-CPU NAPIs that cannot run in
+unbound threaded mode. Set NAPI_STATE_PERCPU in gro_cells_init(), and
+fail early with -EOPNOTSUPP in modify_napi_threaded() and
+netdev_nl_napi_set_config() when trying to enable threaded NAPI on
+NAPI_STATE_PERCPU NAPIs, while still allowing disabling (writing 0) as a
+no-op.
+
+Fixes: 25718fdcbdd2 ("net: gro_cells: Use nested-BH locking for gro_cell")
+Fixes: 29863d41bb6e ("net: implement threaded-able napi poll loop support")
+Reported-by: syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6aad6d7b.0c43d342.320d00.0001.GAE@google.com
+Signed-off-by: Naman Gulati <namangulati@google.com>
+
+---
+v3:
+  - Introduce NAPI_STATE_PERCPU instead of checking
+    NAPI_STATE_NO_BUSY_POLL, which broke sysfs threaded control on
+    WireGuard devices (Jakub, Sashiko).
+  - Only reject enabling threaded mode (val == 1 / threaded != 0) so
+    writing 0 continues to succeed as a no-op (Sashiko).
+  - v2: https://lore.kernel.org/netdev/20260929010058.4063305-1-namangulati@google.com/
+v2:
+  - Check NAPI_STATE_NO_BUSY_POLL in modify_napi_threaded() instead of
+    adding NAPI_STATE_NO_THREADED (Jakub).
+  - v1: https://lore.kernel.org/all/20260918173413.3222413-1-namangulati@google.com/
+---
+ include/linux/netdevice.h | 2 ++
+ net/core/gro_cells.c      | 1 +
+ net/core/net-sysfs.c      | 8 ++++++++
+ net/core/netdev-genl.c    | 6 ++++++
+ 4 files changed, 17 insertions(+)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 87cafc932e9e..eeba45b6a5be 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -433,6 +433,7 @@ enum {
+ 	NAPI_STATE_SCHED_THREADED,	/* Napi is currently scheduled in threaded mode */
+ 	NAPI_STATE_HAS_NOTIFIER,	/* Napi has an IRQ notifier */
+ 	NAPI_STATE_THREADED_BUSY_POLL,	/* The threaded NAPI poller will busy poll */
++	NAPI_STATE_PERCPU,		/* NAPI handler is run per-CPU - incompatible with threaded mode */
+ };
+ 
+ enum {
+@@ -448,6 +449,7 @@ enum {
+ 	NAPIF_STATE_SCHED_THREADED	= BIT(NAPI_STATE_SCHED_THREADED),
+ 	NAPIF_STATE_HAS_NOTIFIER	= BIT(NAPI_STATE_HAS_NOTIFIER),
+ 	NAPIF_STATE_THREADED_BUSY_POLL	= BIT(NAPI_STATE_THREADED_BUSY_POLL),
++	NAPIF_STATE_PERCPU		= BIT(NAPI_STATE_PERCPU),
+ };
+ 
+ enum gro_result {
+diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
+index d8c0a2867120..a321cc005607 100644
+--- a/net/core/gro_cells.c
++++ b/net/core/gro_cells.c
+@@ -92,6 +92,7 @@ int gro_cells_init(struct gro_cells *gcells, struct net_device *dev)
+ 		local_lock_init(&cell->bh_lock);
+ 
+ 		set_bit(NAPI_STATE_NO_BUSY_POLL, &cell->napi.state);
++		set_bit(NAPI_STATE_PERCPU, &cell->napi.state);
+ 
+ 		netif_napi_add(dev, &cell->napi, gro_cell_poll);
+ 		napi_enable(&cell->napi);
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 352173df7578..9876616638cd 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -743,6 +743,7 @@ static ssize_t threaded_show(struct device *dev,
+ 
+ static int modify_napi_threaded(struct net_device *dev, unsigned long val)
+ {
++	struct napi_struct *napi;
+ 	int ret;
+ 
+ 	if (list_empty(&dev->napi_list))
+@@ -751,6 +752,13 @@ static int modify_napi_threaded(struct net_device *dev, unsigned long val)
+ 	if (val != 0 && val != 1)
+ 		return -EOPNOTSUPP;
+ 
++	if (val) {
++		list_for_each_entry(napi, &dev->napi_list, dev_list) {
++			if (test_bit(NAPI_STATE_PERCPU, &napi->state))
++				return -EOPNOTSUPP;
++		}
++	}
++
+ 	ret = netif_set_threaded(dev, val);
+ 
+ 	return ret;
+diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
+index cb18db681640..2e54809fa61a 100644
+--- a/net/core/netdev-genl.c
++++ b/net/core/netdev-genl.c
+@@ -335,6 +335,12 @@ netdev_nl_napi_set_config(struct napi_struct *napi, struct genl_info *info)
+ 		int ret;
+ 
+ 		threaded = nla_get_uint(info->attrs[NETDEV_A_NAPI_THREADED]);
++		if (threaded && test_bit(NAPI_STATE_PERCPU, &napi->state)) {
++			NL_SET_BAD_ATTR(info->extack,
++					info->attrs[NETDEV_A_NAPI_THREADED]);
++			return -EOPNOTSUPP;
++		}
++
+ 		ret = napi_set_threaded(napi, threaded);
+ 		if (ret)
+ 			return ret;
 -- 
-MST
+2.56.0.rc1.315.gc6ed9934b7-goog
 
