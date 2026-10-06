@@ -1,129 +1,254 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010014.outbound.protection.outlook.com [52.101.193.14])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9A3414DF6
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 12:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791290395; cv=fail; b=PHhqDU9JkzJGZ7eoeBtwpG5V5J5vVchTm9zFqeyl/J9rhSanKDdom9lHhJrEkefjzZRDxDw9kg6p/bh3ApvreVs+eonctK05NPtWb/Gn1DRMubGjTMn8Oe6ElN57D1c5DJOaXMLhvMwJtXIOpx/iIeaXOAGeBKNKpRTQby/gXJU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791290395; c=relaxed/simple;
-	bh=El6g/ugILN89fwW3dv+Zv1pWOa8/TFe09I+0C1v7vN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=l4Uajh+3XXoy77eEfXXpVFLcA8/VR85Jh+tWXbwtqivEPzAYc8jjDv3WcQz28YHDzjHP5hFZsiU5d/OPeghDC1nK7bAH8Cou/wcULRmgl30N5hFxSF7M18KKcKstDt40sZs103NACYCq10NjonvILTkzZ6PxTFFxGtq7cU/Q75Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gwD7lVIK; arc=fail smtp.client-ip=52.101.193.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8AC141F346;
+	Tue,  6 Oct 2026 12:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791290455; cv=none; b=Y0DMEYYMAtnlwbf67ODKAkJl6++HIyLicqA104KIyh1bpmy3JBtntMWpL5vFXLBlfalxFnSHXXB1xhsSxpIpUXQGRCDVQ1xyf00jsyGBA2F5TW4hTt+WafCd3+IJ6UTFMwSvX9Tf9AGGpTSlIgSLpH/RVoCKNY5M8sjs8EJSOFU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791290455; c=relaxed/simple;
+	bh=qT8rW/O876G+4Yt+1zDgBgjsJlnol/SEJDrkSKSrFiA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=e6LaeV+csCetJYVwTqqlY9mdL25szoP/bizQvmGWNUeXRia7tjcAxidfgrJDwHRtCLeOfDdenTJj/g+kvtMI1KpyRUQFAQJyqirvgguRxOBx+0KZF5HVB+mQbXSAtoiu6QDKo4mFf2x+yjMLF+Ji8wIjSEcQaPOK49zOpBTV9IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=ofLKih+g; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gwD7lVIK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SdTmmv8zUPnni4sXaLhU93qw49sjWSXJPjIKnLIVCu+4yBvjCHBfWoPLthvluxI3BXkLGwcVnZl+EfHWpKMnozpLNhcZKgrNfTRxnI+nwzmlevfSk/wMDovlm9ryRlJXFNlNmns8JE55/bzXYrqrufEXWm1R/1V4cUfEJ8UDMJOTtSF2AuJmizicTfSPDdTAsbrgrQlrF008aeL7mfHbdQkKcgCULP8p/LAqKdfgZE1W95D1dADh7QB2+9SmI6dCUqf5cD+BQX5pSWaYdw0X1maFN2JnLOo/jxQ903lDT9ZfQNBwHJbJnRsMI6S9ZzJQ6rnlkQp7I6esE7j0I1qWqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=El6g/ugILN89fwW3dv+Zv1pWOa8/TFe09I+0C1v7vN4=;
- b=MmcJ3knYQGUrMgaLpCPp2AKtOMl+I25mlUhlg4srEc7aXxzHj+jBcoh214+3o9cVgrcfxMcDRJvdVv92kEAktCqjwnzC+S5gSk8MtQgt67FucOc9m3Yih1YIMRwmg2FAL5OD/tlNlgF0pyoxiioK7vZrYB0TzVjU5h701znE+so08l9bHDTaw5Huho67o4fRYzHpgHAgZfC6W3zRhfYudMHcW1egnlgZRfHsZf/VVuclPa6Q3bxQ6cKKxVFMcLtxX77djXvW7pWPJMwvxZpqDUfOFDG4vP4LCD3woQ8jCyk6M3L+awRhRZIYwi3VeKd64IYjO+xcBklOc2OdWoHUcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=El6g/ugILN89fwW3dv+Zv1pWOa8/TFe09I+0C1v7vN4=;
- b=gwD7lVIKXpPowxmot/N4IJW6PxJQ/GE78Vyy0oKNRRgy9Z+9vQY7gj2tPnXq/NWjjmKh5d/3aWlR8oTfeH0O+d9gevmT5YHbtxQiq6SWAC0shRqdrYiEQOy7GZe4fuM/ZMk1P7GbVm5EO3zLE/pYMp+08g+07EJzE7PIK7zz0OYd7oH+rBQralwtmQfuqqhzh+FaaKUkj58BL9DcZnN1zLtAivWlR5CQVOXvhBSvSBBvaQyrvxD4oMdtfhPypfbT2cNlbAw7lcxiEZn5GQKKsFjNwqPpchRaN6glnoFO+wXR7XG6SIHb09X250Rj0FRvAZBO7xeRi4NUDSCkoS47Ug==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by DM4PR12MB6160.namprd12.prod.outlook.com (2603:10b6:8:a7::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Tue, 6 Oct
- 2026 12:39:24 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Tue, 6 Oct 2026
- 12:39:23 +0000
-Date: Tue, 6 Oct 2026 15:39:14 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	bridge@lists.linux.dev
-Subject: Re: [PATCH net-next 0/6] net: bridge: fwd optimization cleanups
-Message-ID: <20261006123914.GA752362@shredder>
-References: <20261005143937.877466-1-razor@blackwall.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261005143937.877466-1-razor@blackwall.org>
-X-ClientProxiedBy: TL0P290CA0009.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:5::6)
- To PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="ofLKih+g"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=RMKvOm3tpQtiWc6NdWQkSiodihlG2BC4aWDKz3Ya8dk=; b=ofLKih+gutjQjU5/KhvwKfnewt
+	jumS/SiNOYjtwvY0jswadaA4FWbHB/bdRcT6/iWaws/ndkmmNLEg00DiROFGJNRf7mjNXjC9MGuXa
+	+DVp0JIrXMRV/4TVCHz8CTn014YM/eyMrjDmw+0x+fBIfeL1BGt1iRCbvRHeBehr1UMjowkiVAD64
+	UH0koIHlOqGM4Qd+1dMLhlBdwwVzH6jjQ3ZBGfakgXEZj60ZL0ESWxMtVV3VPmerJN8roeKjoKPiY
+	hX0N3gKEcBLZWTv3Dd62ptlbOaJJ3nQ8gRXcBJOZFmcEGUCoUwSkAQeUQ0iZqL1l5Rxb4BjrH1ODZ
+	B0vmFkAg==;
+Received: from [::1] (port=34840 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xE4TH-0000000FFL6-39cm;
+	Tue, 06 Oct 2026 14:40:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DM4PR12MB6160:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27240c27-7e36-4e34-6545-08df23a6d9c5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	5XFLixJYkL+A4ABNvn5KWyj7V8IAVWRzArn16t/dd8TeWLpV1pe4X44+CsmnltEHx4GXuvb2Lbr/YLNxa9bDReOnRAt94AeWmDEVT/4W4Kt777Qwz7qCsCW+e9rXrFNUC/ENIGJK6FzOACzDWFaGLL5oz2AWNwub6Iuc5z8QnCCXYhN1jgpTyuYHUEIDARKO2EL80ZqSXLp0HwgrISuZzJFXlwn0PlKSvk37prFXJisM6fYfvrJN/f7/r5P9enPG6UaL5CiFEq20KmGN3FhfrbLgBkSx2XlDojBlATVZzDB3yInKOJfOFzcjfvuoJpXxuI8D3ej+9iF7vhgNlMupTsnVPyvAxPUrsf7vjZrAPpPht5BJO2N+Wjmtv6PBostHoz4LT5bJWgaT6jN5JQNa9OgB8giX7uVrafV5dpJj77XJm9CtpJuYHFeejauIipo2y2C//Vy/Btk/JuYrUKJU0zdiW7tMcmc3XSxD79SX7OSocOL7nqS7MmamNI0W3pLNmHEnJRuMZhb9Z7fEBlq8oqsDn60Lu+U9i50UKv6nKoUWtuCj9rfHQXh3gEi4TlU31Svx77f1nf7muah61CFKvB+RAwknuw32cVx48dzmWn4N4xmdB9TaEinENabQAk0Ul0c6VY8wXDZ+x2L/8Kp5MA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fZqfi3YAPGRzbTkKU6HqOZF7QCwam0wAY9e5vc6GRCLxj182tIMa/ssXn6wF?=
- =?us-ascii?Q?8VchQIYsLQF6Z0CAv1bwVTAU6COZC92+u1XaiUv9BEU1I6fELrcmA7jAQHWC?=
- =?us-ascii?Q?FKkbNehE5psOfOcyEpQq98AuBpIh1qRC4juIi+eBf40LJ4W+LW443w3aHjMl?=
- =?us-ascii?Q?RJ2ReqCHiiYLCFhnhEVoDNMYbMA/xJ/F5i9tVDJpri3TyAPJcv73KK3vWml3?=
- =?us-ascii?Q?Nop/JrC1LoApZhn2vjAtqwD71tsPWKRkdmluBeOnZS4AdArV16kNC3LPtpi3?=
- =?us-ascii?Q?df9osSx7y3H5/iOpVgNP9fHH0iCVPG/xvlJbTdubg6IqQuGXUzv3XkLfb0xD?=
- =?us-ascii?Q?zXopSB55BCkt0nXowMB5Ni+G1idoyxOQOVcTFQxKh7FMIrgqUEXO1J5JiaZm?=
- =?us-ascii?Q?ajTQQw+WvkOMPjVkpdm0DbC6WX3n9thc0sjTl1Axy8EsNzjNVS32e4m/VXEW?=
- =?us-ascii?Q?z3zzrIL1ije4+LGz251hGDdynMPypP+0nrC7SPibvZLqkcIGxboNSWCrqROq?=
- =?us-ascii?Q?a3gx5caiBIi4Vml6lYPm86haqnFDCDT0LzYvGL+eEncBM8f+g5HdgPTbD+qe?=
- =?us-ascii?Q?9Cahtxl/rEDEYT8rkft1Cv9WRfKQSYsZV1WhoIsyeyAdJu6JAfo6CHIx9RnF?=
- =?us-ascii?Q?OdKoxG9UD0ix8/poHiQ2F0dgKA0Rr0k1/wQADIVNLKeRUBt6wscqILD6SC5s?=
- =?us-ascii?Q?YZJru1UFzyfPen515iAFwwNftib6AGTZCGfvtcuP4hi11U7Wd4Nrej5ajSQp?=
- =?us-ascii?Q?+h3PMBmAlYH2F8uSeTN4/NtYF1owND9ZXGxdaatUjCH/Fc/+oesRxUalSXKb?=
- =?us-ascii?Q?jH/99hKLFvoyXr23QurktlOPbhQr+3yeG7gooA/F7DHFKCNjnZuzxDIuurFZ?=
- =?us-ascii?Q?ZDheWTIpckdfgArb1mIZMmp+MB2UQwvcpbsI642nfPZywrVhMmhXAizgV9wU?=
- =?us-ascii?Q?JRwrI3enpmBdyUf/5nyv5Sws6/3R7Z6YjXVi1Y+MNrLmVC/RNksgG7uL+QgV?=
- =?us-ascii?Q?FkTXvzspUTg/72JepUWj8nQCoPHHJAlQHH3MD8TROqBZh5b+RmQRU9ql+4sG?=
- =?us-ascii?Q?wbc9Yp33ZkOTwUUCTA7tSH0O9u7y/Kl46jTxbPX6tDdJOosKDyjwswDn+t2G?=
- =?us-ascii?Q?Q6s9UADx7mnJWZpuOof9Tgrk2nMvNwlQlJU6Ec7QwF2g8pXD3LSAQWSNoPHd?=
- =?us-ascii?Q?HndP/DbmLRWwwGzHmMYZgpPL6vd9OnhorYTFAFNTJiZahaclHxTagC7vWBTQ?=
- =?us-ascii?Q?2PnYLq+W5UY2D6jpLvIJavzhxaTv0hoELdDcb57qOMV+1LiT5qI+XIJ9tb5q?=
- =?us-ascii?Q?b7C9pO93knrWDBAkkYeo158ue9s/AaAbI+XFQWs/ePK3ebX4LM9TWZSQfyi5?=
- =?us-ascii?Q?6b0QSW52pbBsQFBG2aso5zhJBlLFg5JKWQOD56+jGomtmmMTBT5q3oD64KhL?=
- =?us-ascii?Q?//ur61gq/WrgJcLUSvEeN2Vv1AsAmFk7HcGL8OwEv8ccX/KK6+elx/3U7MJ8?=
- =?us-ascii?Q?MFMNdtxtXpyZPuWdDtz/1Q3V83qrbCSNhJNGy2u3BsGEHD0wKBy7l8lgCxID?=
- =?us-ascii?Q?u43UGvtcPAOWm2dglV8ZC/xU7BJuKTTOOZCrpWVZBt4FmY/BGsK37BNWmwim?=
- =?us-ascii?Q?ocsHoP0qn5Hldk70tAJX02hHvlCjLKShmRxXEIiXSIXp1ZMeCa+vxSnK2bHz?=
- =?us-ascii?Q?KohoF643g21ZwWgsa3/udBVQMSCEkGI3n/ucHB2bFHvwF4J7?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27240c27-7e36-4e34-6545-08df23a6d9c5
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 12:39:23.8612
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9sGqDhbuJaYfkCrJ12poAiA4iVjc0tEtSp6SVldlIsLq/7nJyFwZoNU5l07Sr+v9dDomtnl/U6iikwIwTN8nJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6160
+Date: Tue, 06 Oct 2026 14:40:36 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] wireguard: noise: reject responses for replaced
+ initiations
+In-Reply-To: <asSo7kefA3IQFpQp@zx2c4.com>
+References: <20261005203555.3552816-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <asQUKTOiEn6GB5sy@zx2c4.com> <asSo7kefA3IQFpQp@zx2c4.com>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <fbeae2e157e335504157b6a6683fb505@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Mon, Oct 05, 2026 at 05:39:31PM +0300, Nikolay Aleksandrov wrote:
-> Hi,
-> This patch-set takes care of the review comments and also does some
-> additional cleanups after the recent forwarding optimizations. The first
-> patch and the fourth take care of Ido's comments[1]. I have folded his
-> suggestion with inlining the pvid helpers which aren't necessary anymore.
-> The second patch takes care of Sashiko's comment[2]. The rest are
-> additional cleanups. No functional changes intended by any of these.
-> For more information please check their commit messages.
+On 2026-10-06 09:53, Jason A. Donenfeld wrote:
+> On Mon, Oct 05, 2026 at 11:18:33PM +0200, Jason A. Donenfeld wrote:
+>> Hi,
+>> 
+>> On Mon, Oct 05, 2026 at 08:35:55PM +0000, Jérémy Jean wrote:
+>> > WireGuard can accept an old handshake response after starting a new
+>> > handshake. This reinstalls old keys and resets transport counters and
+>> > replay state, enabling nonce reuse, replay and packet forgery. This
+>> > breaks confidentiality and integrity guarantees.
+>> >
+>> > Compare ephemeral secrets under the write lock to reject responses for
+>> > replaced initiations.
+>> >
+>> > Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+>> > Cc: stable@vger.kernel.org
+>> > Assisted-by: LLM
+>> > Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
+>> > ---
+>> >  drivers/net/wireguard/noise.c | 8 +++++---
+>> >  1 file changed, 5 insertions(+), 3 deletions(-)
+>> >
+>> > diff --git a/drivers/net/wireguard/noise.c b/drivers/net/wireguard/noise.c
+>> > index 9c0a09bf6c95..88cc9acc7dc7 100644
+>> > --- a/drivers/net/wireguard/noise.c
+>> > +++ b/drivers/net/wireguard/noise.c
+>> > @@ -784,10 +784,12 @@ wg_noise_handshake_consume_response(struct message_handshake_response *src,
+>> >
+>> >  	/* Success! Copy everything to peer */
+>> >  	down_write(&handshake->lock);
+>> > -	/* It's important to check that the state is still the same, while we
+>> > -	 * have an exclusive lock.
+>> > +	/* Check that this is still the initiation we authenticated against,
+>> > +	 * while we have an exclusive lock.
+>> >  	 */
+>> > -	if (handshake->state != state) {
+>> > +	if (handshake->state != state ||
+>> > +	    crypto_memneq(handshake->ephemeral_private, ephemeral_private,
+>> > +			  NOISE_PUBLIC_KEY_LEN)) {
+>> >  		up_write(&handshake->lock);
+>> >  		goto fail;
+>> >  	}
+>> 
+>> Could you describe the flow that you think causes a bug? Trying
+>> to recreate your mental model. Something like this?
+>> 
+>> == thread 1 ==
+>> 
+>> 	down_read(&handshake->lock);
+>> 	state = handshake->state;
+>> 	memcpy(hash, handshake->hash, NOISE_HASH_LEN);
+>> 	memcpy(chaining_key, handshake->chaining_key, NOISE_HASH_LEN);
+>> 	memcpy(ephemeral_private, handshake->ephemeral_private,
+>> 	       NOISE_PUBLIC_KEY_LEN);
+>> 	memcpy(preshared_key, handshake->preshared_key,
+>> 	       NOISE_SYMMETRIC_KEY_LEN);
+>> 	up_read(&handshake->lock);
+>> 
+>> 	if (state != HANDSHAKE_CREATED_INITIATION)
+>> 		goto fail;
+>> 
+>> 	/* e */
+>> 	message_ephemeral(e, src->unencrypted_ephemeral, chaining_key, hash);
+>> 
+>> 	/* ee */
+>> 	if (!mix_dh(chaining_key, NULL, ephemeral_private, e))
+>> 		goto fail;
+>> 
+>> 	/* se */
+>> 	if (!mix_dh(chaining_key, NULL, wg->static_identity.static_private, 
+>> e))
+>> 		goto fail;
+>> 
+>> 	/* psk */
+>> 	mix_psk(chaining_key, hash, key, preshared_key);
+>> 
+>> 	/* {} */
+>> 	if (!message_decrypt(NULL, src->encrypted_nothing,
+>> 			     sizeof(src->encrypted_nothing), key, hash))
+>> 		goto fail;
+>> 
+>> == thread 2 ==
+>> 
+>> 	down_read(&handshake->static_identity->lock);
+>> 	down_write(&handshake->lock);
+>> 
+>> 	if (unlikely(!handshake->static_identity->has_identity))
+>> 		goto out;
+>> 
+>> 	dst->header.type = cpu_to_le32(MESSAGE_HANDSHAKE_INITIATION);
+>> 
+>> 	handshake_init(handshake->chaining_key, handshake->hash,
+>> 		       handshake->remote_static);
+>> 
+>> 	/* e */
+>> 	curve25519_generate_secret(handshake->ephemeral_private);
+>> 	if (!curve25519_generate_public(dst->unencrypted_ephemeral,
+>> 					handshake->ephemeral_private))
+>> 		goto out;
+>> 	message_ephemeral(dst->unencrypted_ephemeral,
+>> 			  dst->unencrypted_ephemeral, handshake->chaining_key,
+>> 			  handshake->hash);
+>> 
+>> 	/* es */
+>> 	if (!mix_dh(handshake->chaining_key, key, 
+>> handshake->ephemeral_private,
+>> 		    handshake->remote_static))
+>> 		goto out;
+>> 
+>> 	/* s */
+>> 	message_encrypt(dst->encrypted_static,
+>> 			handshake->static_identity->static_public,
+>> 			NOISE_PUBLIC_KEY_LEN, key, handshake->hash);
+>> 
+>> 	/* ss */
+>> 	if (!mix_precomputed_dh(handshake->chaining_key, key,
+>> 				handshake->precomputed_static_static))
+>> 		goto out;
+>> 
+>> 	/* {t} */
+>> 	tai64n_now(timestamp);
+>> 	message_encrypt(dst->encrypted_timestamp, timestamp,
+>> 			NOISE_TIMESTAMP_LEN, key, handshake->hash);
+>> 
+>> 	dst->sender_index = wg_index_hashtable_insert(
+>> 		handshake->entry.peer->device->index_hashtable,
+>> 		&handshake->entry);
+>> 
+>> 	handshake->state = HANDSHAKE_CREATED_INITIATION;
+>> 	ret = true;
+>> 
+>> out:
+>> 	up_write(&handshake->lock);
+>> 	up_read(&handshake->static_identity->lock);
+>> 
+>> == thread 1 ==
+>> 
+>> 	down_write(&handshake->lock);
+>> 	/* It's important to check that the state is still the same, while we
+>> 	 * have an exclusive lock.
+>> 	 */
+>> 	if (handshake->state != state) {
+>> 		up_write(&handshake->lock);
+>> 		goto fail;
+>> 	}
+>> 	memcpy(handshake->remote_ephemeral, e, NOISE_PUBLIC_KEY_LEN);
+>> 	memcpy(handshake->hash, hash, NOISE_HASH_LEN);
+>> 	memcpy(handshake->chaining_key, chaining_key, NOISE_HASH_LEN);
+>> 	handshake->remote_index = src->sender_index;
+>> 	handshake->state = HANDSHAKE_CONSUMED_RESPONSE;
+>> 	up_write(&handshake->lock);
+>> 	ret_peer = peer;
+>> 	goto out;
+>> 
+>> And now begin_session is called on the older completed handshake 
+>> rather
+>> than the half-completed newer handshake?
+>> 
+>> Or did you see some other flow?
+> 
+> Okay I think I worked something plausible out:
+> 
+> - two threads begin processing the same response
+> - the first succeeds. the second gets halfway, when it blocks on taking
+>   a lock that a queued initiation has taken
+> - the queued initiation does its thing and resets the state
+> - the second thread resumes and completes the old handshake and
+>   reinstalls keys
+> 
+> I'll continue analyzing real world feasibility, but in all cases, thank
+> you for the patch.
+> 
+> Jason
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Hello Jason,
+
+Thanks for your quick reply. Sorry that I could not answer in time.
+Your analysis is indeed the scenario that I had in mind, yet, the
+second thread does not really have to block, I'd say it can just
+be slow?
+
+As for real world feasibility and impacts, I must admit that
+I have no idea.
+
+Regards,
+Jérémy
