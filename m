@@ -1,128 +1,176 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E38445563B
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 13:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791292962; cv=pass; b=W0rKcgxgZF1uYLPOttDlgI0gsaZ60XhoWzlO7/8ynne24bDVEd2NDSF/7XH7RmTHV8bw/1SEkiN0k7zgJPWRP4lABvhnQQ+fsQLq7243HOmwTpIEtfyvXSFDeJnsIjm+NQjhlvbjyImvBfWDOK/00cl+q5CVDXG5kWjUhuBwY0s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791292962; c=relaxed/simple;
-	bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LO34CgLmffrdWtMCUobhVp/BOL/IIbpNbzmA7xliUiXrg3e5MWKzlzN+2HPEkBZkb0DuHIW06ghupKSjkSp5lLaM+sq85mn8swJ/MbJ2xHkXhWyiSIbb6eo/r1C+pevFl1Aorcr6x4Lr6V7i3x0mhkeWV4Wa2cvH5G46z5vlj/s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz; spf=pass smtp.mailfrom=sairon.cz; dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b=C3bDStSH; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91857459AD9;
+	Tue,  6 Oct 2026 13:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791293071; cv=none; b=Z2+fnO0L6PYc9guYk+fwjMkSjvWMPd/yXw/238aaLXB/3fZyxYNopzEx3OacQNfjYdnMa7oBJnvTdo4etysDPtBqgvcuVQmycTo2i/pAEOzA1AwzMhqTo9vRIo6pgdWifsiGzkbowF7Dx9y9BNHHn7ARuot30FSPyoOkgf8DSK0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791293071; c=relaxed/simple;
+	bh=m+Q0z6sOWMEGT1cG48PY7ZD1vCDWAvdsZRqG86THNwQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lq6zVR+UbcFgJAga3Df8Mqt+k/VpQyiceYIujO5g6LqQlsaNj1W+WstaH+Sc3aX2UitjPp5oUf78CVY4Bj9Dt64lrkUxis6JFogFVI2JoavSVYW/foL0cLg7RAAloiGpLQ+pHCtU8j9QtKLOpdYXlfppcgxPI7sw1uMGPiKtp48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuOP5EDh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="C3bDStSH"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso2039851a91.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 06:22:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791292960; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lOOskfObvZA4fB4ogy3fWWjGif1bjBf/ODCupfrg4zfBTnouLx4zwyUWHjn2+xMom/
-         VwbBnjFMHHIczfymOoOkB8dnJJRL3Awu8rX7jifaVLaDroqhBXjBVQnK+oHis3nNo52s
-         ku2rVwSkF/eJvLoSYe7hWSPXTVM0x2LWC8l5DAJ8+T+18L8vcLUkff7ylXv53UoCIHPF
-         fWCO8RX0KQ75vOb6OGw2QBnsSHZW8ySnpLNGcq2B3nU4NbN+juMM2T2dQhgUBTr6e+pg
-         /esv67yRcHX8HmZbPSrZOMao8ERvXHb4ZfsrS3Y3VZ3/rTbbqPxirghSY/q2MmYRv08n
-         YuEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
-        fh=18sfnFc4RZRsgl1SzB77nsL6tURc5+nqvfGscMXg8zg=;
-        b=Oggq8R6PPUBevCd23Yemjm8dDPGBGnDiZ07gaiFvgfZ8d+XXZyrjuHxPykq3IF/EZL
-         6JysaX6q4amk0k5PUjasur+b+gN4FR5yyDTOaVOKcNCV8EKZ+nKpT4nm3xBP2w/tLDua
-         9r5+vGN9Ev37Z3LFNXqSs2I9eKryWq+xW5jgzBaenvNdohgdnX+HHcBPW2eNxfwlZWP+
-         OI/3jQwWGIj/MW3xj8f8v8IadIgJ0mRuqxdoT/AEERUVbenLfM1vsOhsHxST/ff6iNOA
-         S1XGMfymJzZEwKo4upsEJipvbExV2lSR+bcVDptfNCHm8o030yuLiW8WelElzehLYRwz
-         yRhg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sairon.cz; s=google; t=1791292960; x=1791897760; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
-        b=C3bDStSHSi2Y6QN93laDi+Neb114peOI4Gf37k/3xVquAGQWUuu1LITVaWeZZz5epA
-         1KFsY2ZW22wvgUBcj0Di8WlDviGLUZiS69CMxJyrenYLkpGm9EkV9UX6u3XnmQWzdbi+
-         uNmAXurX0Qk2Vkz4vashdlrNduQHM9qUROVC+6yvHK4ZlqccQAnThuW8JgzvnGnprgG6
-         /q8xnRtoXvGPshdrceNsVp0whdSd23n64p+h7bD4eXSnt6AiGScl7yZkCQbAjIe4wt2L
-         UEDecubxger8g9RoI+/qMxsB4VGUguI161bSL//FzmdtesNL/ZpKYYzv/vWjYjHvbSGK
-         ytTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791292960; x=1791897760;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=2/kY6gI5Yk1xMI1SVYXumnXuSjxWIMRSCwqdkzoU3Bw=;
-        b=JVCzusyi1UDG9rr8+w5g2JUrlYiqIf2X04w8m7P/4J1xtnNaRarC90kSi4wRM5SQnh
-         E0MwPhaadiwA44nyi7U8LLapx4uAyaTonpu8zxeeOi5zHsjRcZcJAL4eizFX2h1xwoHL
-         kSyDCDiNeAEwMxVQSQkINFu+AS/e0xETGapRA6PSqrukShu+/8rYkhvWcTMtcQG/uWHP
-         bwvAuzNLlbXQOPuNNd9H94eiFO9YdEXXeb1rWMQ68oqSJtqgBIGgL4tALvRWAd90Xz8S
-         OSlnUMUpeOY9xDfXtAlXvH42SV4g9Wp+8eVRB6xIK+8oA3vTcncxWOP0lNMTg8+ieHDT
-         crkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwwkmH/STvocFFyh/p7770iXoJWNVoL3/KTwVkryGsLGol0xe3XwlH0BUiq7lyGiD+U6E2Ztuk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIPgEHBODFmWCFmQmW9BF5hkGQFjxJ2WXe1GcHBTL9hNMk2qvUd
-	P6vz2SYwGjiW5VQ9mXZBxBlsUsbFHa673BKv2uGd3JAwIW7ewJH0V2hJqxlL83mHP3RySiNxNWN
-	ELO/glakOnnAWGa+AfP5Gq1fDitzjhTkNyh0js+WiEA==
-X-Gm-Gg: AYBFou2mT15+OcZ75MPvGPOfwPB2vp2F+FhDw0riPkVTH2zihuc0v239BPZaIXKZxVn
-	/SW2qbn3V54QbJcT6nzPMMKqbXRxFiaNfDIUPaz+o4D97rN4Iavu0XKzqh/nqtYj7E4QmfL6tZ3
-	7u/4p4NCeV+zBx9kdURP3zuWErTYZkMZhG/hq/zsiAj+7tvZtmj9/aLKp/b+M9QYId2/VmetYmX
-	J3gbusC3/IK6+uQC5M19m67LvO8WLla3sTQa79CptUwwram1YewepIhWjBKOtE1TKHL6PCQsf7U
-	kPJvez80JVQqT2oVZy+3cJ2ir2vGP5h571MHgqvowu+E2Wzz+ZAOJmLnNMsarSSeaBKSui+RsUA
-	H+DYT+PT46iGBApx142GYkS6aq+03xXmEiA+Q+eo9aV8ZdCKxmPrfc2ztg6qcOrfz9l9CgMdVA/
-	c=
-X-Received: by 2002:a17:90b:3ccd:b0:3a8:878:ebab with SMTP id
- 98e67ed59e1d1-3a80879621cmr5255577a91.35.1791292960306; Tue, 06 Oct 2026
- 06:22:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuOP5EDh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4EE1F000FF;
+	Tue,  6 Oct 2026 13:24:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791293070;
+	bh=76u9YDW7aKiOQkrk/yybh/tScB4dKv9L1ujivE8+las=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DuOP5EDheODNf4/AFDlTAYw+nYmy4Ieq5s6wLw4yZmmzM3wVUzF9UFio40Cw54iKX
+	 tToacGZwZwpAAp6Lbwfel7lvim54fmBt8R2+A+3ZqdAJnskODzeZTnSczp+cRggMCL
+	 MUvYTYgDfE4uURhSfzFPb5nSIDSqfY2oO3fXNpbREmSjcl+gFnsfOwAt11p6W+V+EP
+	 cFo+Cnqmvngkk3pMjWYsdhjRyGLNZ0ctGv96xnF0PKv791p8VVLM+qeLazLX1rqylq
+	 V1gN0Nlu5tTZ3E9zhLTtZx1S9iKkjEGjY8Vd7q4gxBgGQQARdzbj7vI3M2YPk6+FGp
+	 0dwvNAIFXroxA==
+Date: Tue, 6 Oct 2026 08:24:28 -0500
+From: Rob Herring <robh@kernel.org>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	David Wu <david.wu@rock-chips.com>, netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 1/6] dt-bindings: net: pcs: add
+ rockchip,rk3568-xpcs support
+Message-ID: <20261006132428.GA1659963-robh@kernel.org>
+References: <20261005223011.1124347-1-coiaprant@gmail.com>
+ <20261005223011.1124347-2-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
- <f73ca71a-8a22-495c-91a9-12d89968ac2c@leemhuis.info>
-In-Reply-To: <f73ca71a-8a22-495c-91a9-12d89968ac2c@leemhuis.info>
-From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
-Date: Tue, 6 Oct 2026 15:22:13 +0200
-X-Gm-Features: AclHuK-K9pG_NO9KBdAk3iESUwUuT_Z21z8xG2zR0qRYXTeutTuoi2M9aya7o-A
-Message-ID: <CAPa5EdAxXiHKrdrUk2nrbxJzgh_B3jwkTP00+rV0-xk=2vmiiw@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
- VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Eric Dumazet <edumazet@google.com>, Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261005223011.1124347-2-coiaprant@gmail.com>
 
-Hi Thorsten,
+On Tue, Oct 06, 2026 at 06:30:03AM +0800, Coia Prant wrote:
+> Add device tree binding documentation for the Synopsys DesignWare
+> XPCS integrated on the Rockchip RK3568 SoC.
+> 
+> The XPCS is accessed over the APB3 bus and internally connected to
+> a Naneng Combo SerDes PHY.  It supports 1000BASE-X, SGMII, and
+> QSGMII modes, with four MII ports.
+> 
+> The four MII ports are described as ethernet-pcs-mii@N child nodes,
+> consumed by the Rockchip XPCS glue driver later in this series.
+> 
+> phys and phy-names are required because dtbs_check only validates
+> required properties for enabled nodes. The SerDes link is a board-level
+> design choice (combphy1 on some boards, combphy2 on others), so these
+> properties must be provided by the board device tree, not the SoC dtsi.
+> 
+> The CRU reset lines (SRST_XPCS*) are intentionally not described: no
+> in-tree user requests them, and bring-up relies on the PD_PIPE power
+> domain, the SerDes PHY and the in-IP soft reset. They can be added
+> later as optional without breaking ABI.
+> 
+> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+> ---
+>  .../net/pcs/rockchip,rk3568-xpcs.yaml         | 110 ++++++++++++++++++
+>  1 file changed, 110 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> new file mode 100644
+> index 0000000000000..703fcff0e3f70
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> @@ -0,0 +1,110 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/pcs/rockchip,rk3568-xpcs.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Rockchip RK3568 Synopsys DesignWare Ethernet PCS
+> +
+> +maintainers:
+> +  - Coia Prant <coiaprant@gmail.com>
+> +
+> +description: |
+> +  Rockchip RK3568 SoC integrates a Synopsys DesignWare Ethernet Physical
+> +  Coding Sublayer (XPCS).
+> +  The PCS provides an interface between the Media Access Control (MAC)
+> +  and the Physical Medium Attachment (PMA) sublayer through a Media
+> +  Independent Interface (GMII).
+> +
+> +  The XPCS is accessed over the APB3 bus and internally connected to a
+> +  Naneng Combo SerDes PHY.
+> +  It supports 1000BASE-X, SGMII and QSGMII modes.
+> +
+> +  The block contains four MII ports that can be individually enabled and
+> +  routed to one of the Ethernet GMAC controllers via the pcs-handle
+> +  property in the MAC device tree node.
+> +
+> +properties:
+> +  compatible:
+> +    const: rockchip,rk3568-xpcs
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  clocks:
+> +    items:
+> +      - description: APB3 bus interface clock (clk_csr_i), required for register access
+> +      - description: EEE clock (clk_eee_i), required for Energy Efficient Ethernet operation
+> +
+> +  clock-names:
+> +    items:
+> +      - const: csr
+> +      - const: eee
+> +
+> +  phys:
+> +    maxItems: 1
+> +
+> +  phy-names:
+> +    const: serdes
 
-On Tue, 6 Oct 2026 at 15:10, Thorsten Leemhuis
-<regressions@leemhuis.info> wrote:
-> Not my area of expertise, so take the following carefully, as it might
-> send you in the wrong direction:
->
-> There is another issue known for 447cbe95ebb9:
-> Commit 447cbe95ebb9 causes IOMMU DMA faults on macvlan/vlan with bnxt_en
-> https://lore.kernel.org/all/20261004122616.56714cbd@nargothrond/
->
-> A fix for it is under review:
-> bnxt_en: fix DMA mapping length for padded small packets
-> https://lore.kernel.org/all/20261006042153.199444-1-edumazet@kernel.org/
->
-> Is that maybe related?
+You don't really need phy-names if there is only 1 entry.
 
-I hesitate to tell it's completely unrelated, as I don't fully
-understand what breaks in our case, however, I'm quite sure that the
-fix under review won't help in case of this regression, as it's a
-breakage in a completely different ethernet driver from a different
-vendor - bnxt_en doesn't play any role on the affected systems from my
-report. But _maybe_ there will be some clues what should be fixed in
-r8169 in the discussion for the other regression.
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +patternProperties:
+> +  "^ethernet-pcs-mii@[0-3]$":
+> +    type: object
+> +    description:
+> +      One of the four MII ports of the XPCS. The port is linked to an
+> +      Ethernet MAC controller via the pcs-handle property in the MAC's
+> +      device tree node.
+> +
+> +    properties:
+> +      reg:
+> +        description: MII port number.
+> +        enum: [0, 1, 2, 3]
+> +
+> +    required:
+> +      - reg
 
-Thanks,
-Jan
+Why the child nodes? They don't contain anything.
+
+Perhaps that's due to pcs-handle not supporting arg cells to pass the 
+port number? That's about to change[1].
+
+Rob
+
+[1] https://github.com/devicetree-org/dt-schema/pull/198
