@@ -1,45 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A17F2D1907
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 01:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472D11714AA
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 01:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791249334; cv=none; b=GPr5sHKGJyClFzd6lXxj/N9PodgJxK+XGhvXfTETsClr0TbPDZ6ozSKvfP+o/m1+/oO3N4+W2YIXl2d84rZqwGMEcHQWD9dObIFPspwgbpVTohWDJ0GtCYaWDiv+G4XT+5aOOiKWf6jK7McxOv6kurMACf5SZOJ12tB1UmdPhwA=
+	t=1791249805; cv=none; b=PrG1Su9JFTaVhvXG3qAqfKKGjubopPiRZKorACMaN5sz+fMittvzhLb5rvfUY7wAiuFbzl66yZtbgK/rpK0XRnSBHfJGEQ5yZYVBLRo3u00q/p/BtANAaZJMnZzLiAxTkrwC+y5cfMHj193kbUoWEE3f/H8R7GUEGLm/YMTvVrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791249334; c=relaxed/simple;
-	bh=K5pQyqH46zcsDmfRdRd2NPpjNFFoQHxgDiZ0drKaNzw=;
+	s=arc-20240116; t=1791249805; c=relaxed/simple;
+	bh=KgijyQh21u9LJt68yItmbs4m0KNmkUNEPw4VnCwhVec=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hxaNm6gBtkNpBc3U4S0EpKqZKBSyt3MWDeVwheOdsIr2/bMkfM3w+jVvCQiMurVYR2bjS1lsRv7GTDpohscEKpRGw4seDYnAnoewo3I5ZdZbGZYxecSI+nr19ArBJX+OrKqG7HiHpW0sCKUZzBjdDcLh/EKcWZGaXf1eMGyWuyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mftngpvf; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=X3Yum1qkoIBEJUE4CuMYZFdKR2nmoKvIQYcWWSVEmTmAK0CqqL2s0MozfF1Vc8G5ltnL9Vb9oxguW+EoB12U8S8gyx6NFiMXcXggVVeVCv+nohZ7tY9nMAPNG3+53yk4y6j0fM29KKcNla7h4Nveoj9Gi4CUpaWrfzxHRBTq2qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7cQN5Xa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mftngpvf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EB01F000FF;
-	Tue,  6 Oct 2026 01:15:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7cQN5Xa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550CC1F000FF;
+	Tue,  6 Oct 2026 01:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791249333;
-	bh=kPBgOdDUNoeeBwEep8DhqcxRYlVjBw90m7P4orsHwAo=;
+	s=k20260515; t=1791249803;
+	bh=XbmYD6AEzHl6UKm4PAxVqxoifbq6y4Fx2sPcU3YCLCg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mftngpvfKYU20dobvPROjE0T1097WqAB3/JhIdzyGoYkPX5zJquUUuqvygDXypRDN
-	 foQWZfxb4Emyg8sg3Pkj6RGwr2KSQStEyVsiEMcr3mK3G7dkevF79InLDSSOvqlypQ
-	 ZAOaFTAOxpAfQARYeYUbBaadgHx15JudMysTCC7AzvhpR/+vE8qAqJ1+En5jKp1slW
-	 pyAweQhzT7S9toMnjxvueR+hAGCr9dDo4W9zUGbi9E4fMH3IdDAblOxeLQvgN6luo5
-	 mRyoOPpI16w3PiiGaJyjnfdhgB4l5kBH8PZsCTYUOyR+0D+h/CPRPXp3ezc0sqXnKP
-	 WzrtWb9Ra9gNA==
-Date: Mon, 5 Oct 2026 18:15:32 -0700
+	b=k7cQN5XaFdejoQjuj15puthbzoZGOTJS3PJ7tVC89282CVn+JSiGc/q41UbEmmbsD
+	 hMXH2n8kx19CehVYfzGH05TORcjuhTtVDPZHsPyf4Gty/HSiJ5CJTQO7FNA4i9Hlhi
+	 4FZ+CUjr0AqzHEeoNq2P8FzqaPc7tn0CnFwhi0AfoY8j9+T847zQJjqtQZcKZq33km
+	 n791SFCuyY0PHwMj1fL2J4bQnZI68iUAX7W6MQ6IAz0/0sRT/OW2q0py1kzWdS8Agu
+	 OUsJiRO+ajO8xzcepLYQBhlw0qTX6ybNz+TjqqSWU5IeUEvvCCB2Ljwbqqy6RvHQij
+	 tbJNhsh5eq0KQ==
+Date: Mon, 5 Oct 2026 18:23:22 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Naman Gulati <namangulati@google.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, bigeasy@linutronix.de, kuniyu@google.com,
- syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v2] net: gro_cells: prevent enabling threaded NAPI
- on gro_cells
-Message-ID: <20261005181532.49d699bd@kernel.org>
-In-Reply-To: <CAMP57yU6Ghd4AG266kETfq1-o0n86ufRA6+ucZtnMO63YGXfog@mail.gmail.com>
-References: <20260929010058.4063305-1-namangulati@google.com>
-	<179090301201.434549.1629224862256105592@kernel.org>
-	<CAMP57yU6Ghd4AG266kETfq1-o0n86ufRA6+ucZtnMO63YGXfog@mail.gmail.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Richard Cochran <richardcochran@gmail.com>,
+ Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Drew Fustini <fustini@kernel.org>,
+ Jisheng Zhang <jszhang@kernel.org>, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH net v3] net: stmmac: propagate PTP addend and system
+ time programming errors
+Message-ID: <20261005182322.2bc023e8@kernel.org>
+In-Reply-To: <asQcQIh56MV1OJur@lore-desk>
+References: <20260929-stmmac-ptp-added-systime-error-v3-1-ddd6afe936b4@oss.qualcomm.com>
+	<dy5xfj3754wnp3gh2kpoyf3vpx3vfsfhblgbwbwsgts27xqxga@dzb33gt3zgca>
+	<asQcQIh56MV1OJur@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,15 +55,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 1 Oct 2026 18:34:31 -0700 Naman Gulati wrote:
-> This and the below finding both stem from not being able to set
-> threaded = 0. I missed handling this. Wireguard setting threaded napi
-> by default along with NAPI_STATE_NO_BUSY_POLL deffinitely complicates
-> this further. It might become an overengineered fix to tighten the
-> loose sysfs interface when netlink already provides stricter control.
-> It may be a better to just update the gro_cells documentation to state
-> that it does not support threaded napis. May respin accordingly if I
-> cannot find a clean way to tighten this interface.
+On Mon, 5 Oct 2026 23:53:04 +0200 Lorenzo Bianconi wrote:
+> based on the reported error, stmmac_init_tstamp_counter() fails with
+> -ETIMEDOUT. In particular this can occurs if:
+> 
+> stmmac_init_tstamp_counter()
+>  -> stmmac_update_subsecond_increment() -> stmmac_config_addend() -> -ETIMEDOUT
+>  -> stmmac_init_systime() -> -ETIMEDOUT  
+> 
+> I guess we should understand which one is failing and why it is failing.
 
-Ugh. Alright, thanks for trying, seems we have to return to v1-ish
-approach.  Please name the flag PERCPU or something like that.
+I'm going to revert, this shouldn't have been applied to net in 
+the first place. Let's continue the investigation but v4 should
+be tagged with net-next.
