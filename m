@@ -1,103 +1,204 @@
-Received: from 15.mo584.mail-out.ovh.net (15.mo584.mail-out.ovh.net [91.121.62.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BA235C6A7
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 15:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.62.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABAA45C70E;
+	Tue,  6 Oct 2026 15:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791299247; cv=none; b=VSAKeTAg04Goswx03l2Ml2Arza8AAwQLTA6NrfBI9gjNNCFx7nA5kuoVPaZisMWYlyiNp0NgEdZ7JrA3NKIJxe1a2aTxc/W3IfG9GSyMUJhMujTt0e0KIXM41vfUQe/dg5E18scWI0gnMtUxR260txypuluxPikugXyaBm8I1Y4=
+	t=1791299313; cv=none; b=C4cYrPvQ8gsP6ZtVfUA7EQnl+s4jgoTyuFPKN6jRym2u0FF3g3p7WdhPRTCxmO0UBCuH5Z1soDpzLsZuAB6VGSkXFrDWiAtj0qnZ+Y8XlprR+NfwHwGnk7Jam03tKj5EHFsWTpmuZLjYNFyyFlykGyMMBIIGyzUj0SUPgGZTPks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791299247; c=relaxed/simple;
-	bh=JIW4Aq3yzUa7B/q8hox57ai3R8PuvdFw6fcH7xtoSFc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h99NtX00DjODU1MojrTv3mbXJFK+4GfJqyC2AnYWjtPfud4PC3+GmqTEDJqc2eKptXcX9ityA1eI53kc/xLg1bFABtKF8/na1V4rlSLL6B1t5S3Sd08hPGeKJ9XpJYPVOvNNwQdTJiVNMjAY/9TkOonrq73CBLidRLWMDpDagxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com; spf=pass smtp.mailfrom=armadeus.com; dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b=cE0VNAJw; arc=none smtp.client-ip=91.121.62.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armadeus.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armadeus.com
+	s=arc-20240116; t=1791299313; c=relaxed/simple;
+	bh=N0p1f1wDqREWYPMGsm7f6Hg8B90UwV4X9gsX1ydmNGg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Li23YK7dKukRkWAhz60YDAqesnZk71odDejenkHNf17i0mts4kySlO6UuZ/bDRuluIbyjPK9W+003LAVfB5gPa7vQLiXN6zHHt0rPjl8hjlhY7VMPBhWMOQHBm05Rppd0w9FF8kRN38IaTP38IFPeUJyPogZC44dF+oonG+/fmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FetpF4dL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armadeus.com header.i=@armadeus.com header.b="cE0VNAJw"
-Received: from director2.ghost.mail-out.ovh.net (unknown [10.110.54.143])
-	by mo584.mail-out.ovh.net (Postfix) with ESMTP id 4hzfJc5Ftdz8S6Z
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 14:48:32 +0000 (UTC)
-Received: from ghost-submission-c7b579475-hsw8h (unknown [10.110.96.185])
-	by director2.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 5FCEFC0D61;
-	Tue,  6 Oct 2026 14:48:32 +0000 (UTC)
-Received: from armadeus.com ([37.59.142.111])
-	by ghost-submission-c7b579475-hsw8h with ESMTPSA
-	id 6AtTDEAKxWr00CEAfbgmAw
-	(envelope-from <sebastien.royen@armadeus.com>); Tue, 06 Oct 2026 14:48:32 +0000
-Authentication-Results:garm.ovh; auth=pass (GARM-111S0057d6e6ea9-af38-42ba-8b74-0731f0ba4c98,
-                    00DBEBCA2080E92057B1718008C39CF3BF911D1E) smtp.auth=sebastien.royen@armadeus.com
-X-OVh-ClientIp:88.175.232.176
-Message-ID: <4585ddfd-122f-465d-80b9-c907a530075e@armadeus.com>
-Date: Tue, 6 Oct 2026 16:48:31 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FetpF4dL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13531F0089B;
+	Tue,  6 Oct 2026 15:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791299312;
+	bh=2W3RNEnVYCGzFPqg63OJywzypc/QTiWR/0QRs92Quq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FetpF4dLDjLQPjYWIVDdyp6sJOWTAW8m2d/wqsHRGmqDX6p5TVSaj81wLhLBnM4xR
+	 C6CV/F0olerJaRm5EwL0lsjmZoHRScNEjx5M8bajzrP668cyrXPbZuC0J2b0iXsksg
+	 bhATh99T9yZiSC7Ubi+0TwM+OKjiXpaOM3Hb19x5qEjc/b2xJDyYxmyVIijZPtViFu
+	 xigb9BdusvPjV+qF6VwVCVInG7XjL0iuNwas8ds+V7rXn1djd5G+f+7k37cFODbkDy
+	 G+pkkfR8tER0znlKB3bPjMmtWGR85uvKErwC/hDhJoyTG4KMOyHqafrd46BtGsZisV
+	 Suqwun02c/jhA==
+Date: Tue, 6 Oct 2026 10:08:31 -0500
+From: Rob Herring <robh@kernel.org>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	David Wu <david.wu@rock-chips.com>, netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v10 1/6] dt-bindings: net: pcs: add
+ rockchip,rk3568-xpcs support
+Message-ID: <20261006150831.GC2194299-robh@kernel.org>
+References: <20261005223011.1124347-1-coiaprant@gmail.com>
+ <20261005223011.1124347-2-coiaprant@gmail.com>
+ <20261006132428.GA1659963-robh@kernel.org>
+ <96FA84EA-3C0E-4FAC-963F-2A8165538748@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: dsa: microchip: fix KSZ8765 fiber detection
-To: netdev-bot+sinfo@kernel.org
-Cc: Woojung Huh <woojung.huh@microchip.com>, netdev@vger.kernel.org
-References: <20261006130006.134847-1-sebastien.royen@armadeus.com>
- <179129640372.2231598.1056441247005614175@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?S=C3=A9bastien_Royen?= <sebastien.royen@armadeus.com>
-In-Reply-To: <179129640372.2231598.1056441247005614175@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-x-ovh-tracer-id: 738590340421989471
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: dmFkZTGxRaL9cxCq5X+8KPeE9IA/Mn6bSHESwwAhqEKKtoMcf5Q8aqr2kijEeMHchoYD2VpX6jQ7N0cLENwfExhmQpItlZCg1H60gf7aCqidEZA4RHDj9FdINK4f4enWJUD+cYqT281aEHtXL8abeeq6mg+Ny9rWaUt8y3p/HQZPxXhnAmWWQhQIV3nkWpiwLmcQCv4Hah4AxN15qH43ZUx3g88fLFhNpjTHWbyORD6TmugZm7Oz6aP4fo6rigi6437sPBretnY2yX6mG7hjMaEdtTXe6HJcyPltU1AOsm2JbXOpqV4qJtMM7z+Syh9LZo2MLFjuWlMZl2NcufH/hsCsJmuJItce5G5269xPHpxQ522MRaDfvh6LIPT7cL4Kp57Gx3XXMcyvm24pOMtS5mdPyL3x5MXAHQM/kj7vdEN+k0bjgzBFbMFQM/7ejKEzGu+sWuNfxlpX7IQuCWGyX1Ya13a9KsbTiRVuvM/VaRkIdAuDi3kMoXbGmyxsdGPF5UEYa0Q0VYPmC6Kbqq6hmNNKm83Eht7IUWj1L7NqY/yJP5N9H6Ec92n8Tch+3BbzxpGD0L8mcsO8HiVVfCFxdjcwMW0rIAiPph+XkOdltTNRd0YpKXOH+Km67vcqw2aT+LV3pKKjZSxhtc+ESHraxg/dh5uWR2czyd+AfHwNEEPz/NQyJg
-DKIM-Signature: a=rsa-sha256; bh=6q3vBRr5JRS8QySM4buQHniPenZqTCE3Qhk4I6/MCvE=;
- c=relaxed/relaxed; d=armadeus.com; h=From; s=ovhmo103079-selector1;
- t=1791298112; v=1;
- b=cE0VNAJwftCNAgpw6u7JoZl7Sc3hq7R6gmYJJaOVdK8iVby2L85GtfG3cqq6ZztjDlpTvJeC
- Cp8U2Y7eeV+dsdHgbJ1Lrhg1dQsIZ+vd8VuHt/nDtMieK/i0J1JzIf5EsXsqLpsLj1IYHa4tw6x
- F5+ugcLIcf47FxshphA+IiK9qpJyYI+y79KEl6SXjFvddQpfjxOY25a+bGWW1df+/AX1h8w30Y3
- 5s3UCvPE00CtJHaDuD9RfpUN+wbh7WuRqqvM3c07mM9/NEuzGzKH9gmm5l98WNa4gMbMf+yNiPC
- v98geXQIu0qzD4jrCtstkMV6o2Sw1B9ltXPPhHwVp/NMA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <96FA84EA-3C0E-4FAC-963F-2A8165538748@gmail.com>
 
-Le 06/10/2026 à 16:20, netdev-bot+sinfo@kernel.org a écrit :
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->   - How the issue was discovered, e.g. hit in production, hit during
->     development, syzbot report, manual code inspection, LLM or static
->     analysis tool scan.
->
->   - Whether the issue was actually triggered, or is only theoretical
->     (e.g. found by code inspection). If it was triggered please include
->     the symptoms, like the stack trace or error messages.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+On Tue, Oct 06, 2026 at 09:59:49PM +0800, Coia Prant wrote:
+> On October 6, 2026 9:24:28 PM GMT+08:00, Rob Herring <robh@kernel.org> wrote:
+> >On Tue, Oct 06, 2026 at 06:30:03AM +0800, Coia Prant wrote:
+> >> Add device tree binding documentation for the Synopsys DesignWare
+> >> XPCS integrated on the Rockchip RK3568 SoC.
+> >> 
+> >> The XPCS is accessed over the APB3 bus and internally connected to
+> >> a Naneng Combo SerDes PHY.  It supports 1000BASE-X, SGMII, and
+> >> QSGMII modes, with four MII ports.
+> >> 
+> >> The four MII ports are described as ethernet-pcs-mii@N child nodes,
+> >> consumed by the Rockchip XPCS glue driver later in this series.
+> >> 
+> >> phys and phy-names are required because dtbs_check only validates
+> >> required properties for enabled nodes. The SerDes link is a board-level
+> >> design choice (combphy1 on some boards, combphy2 on others), so these
+> >> properties must be provided by the board device tree, not the SoC dtsi.
+> >> 
+> >> The CRU reset lines (SRST_XPCS*) are intentionally not described: no
+> >> in-tree user requests them, and bring-up relies on the PD_PIPE power
+> >> domain, the SerDes PHY and the in-IP soft reset. They can be added
+> >> later as optional without breaking ABI.
+> >> 
+> >> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+> >> ---
+> >>  .../net/pcs/rockchip,rk3568-xpcs.yaml         | 110 ++++++++++++++++++
+> >>  1 file changed, 110 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> >> 
+> >> diff --git a/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> >> new file mode 100644
+> >> index 0000000000000..703fcff0e3f70
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> >> @@ -0,0 +1,110 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/net/pcs/rockchip,rk3568-xpcs.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: Rockchip RK3568 Synopsys DesignWare Ethernet PCS
+> >> +
+> >> +maintainers:
+> >> +  - Coia Prant <coiaprant@gmail.com>
+> >> +
+> >> +description: |
+> >> +  Rockchip RK3568 SoC integrates a Synopsys DesignWare Ethernet Physical
+> >> +  Coding Sublayer (XPCS).
+> >> +  The PCS provides an interface between the Media Access Control (MAC)
+> >> +  and the Physical Medium Attachment (PMA) sublayer through a Media
+> >> +  Independent Interface (GMII).
+> >> +
+> >> +  The XPCS is accessed over the APB3 bus and internally connected to a
+> >> +  Naneng Combo SerDes PHY.
+> >> +  It supports 1000BASE-X, SGMII and QSGMII modes.
+> >> +
+> >> +  The block contains four MII ports that can be individually enabled and
+> >> +  routed to one of the Ethernet GMAC controllers via the pcs-handle
+> >> +  property in the MAC device tree node.
+> >> +
+> >> +properties:
+> >> +  compatible:
+> >> +    const: rockchip,rk3568-xpcs
+> >> +
+> >> +  reg:
+> >> +    maxItems: 1
+> >> +
+> >> +  "#address-cells":
+> >> +    const: 1
+> >> +
+> >> +  "#size-cells":
+> >> +    const: 0
+> >> +
+> >> +  clocks:
+> >> +    items:
+> >> +      - description: APB3 bus interface clock (clk_csr_i), required for register access
+> >> +      - description: EEE clock (clk_eee_i), required for Energy Efficient Ethernet operation
+> >> +
+> >> +  clock-names:
+> >> +    items:
+> >> +      - const: csr
+> >> +      - const: eee
+> >> +
+> >> +  phys:
+> >> +    maxItems: 1
+> >> +
+> >> +  phy-names:
+> >> +    const: serdes
+> >
+> >You don't really need phy-names if there is only 1 entry.
+> >
+> >> +
+> >> +  power-domains:
+> >> +    maxItems: 1
+> >> +
+> >> +patternProperties:
+> >> +  "^ethernet-pcs-mii@[0-3]$":
+> >> +    type: object
+> >> +    description:
+> >> +      One of the four MII ports of the XPCS. The port is linked to an
+> >> +      Ethernet MAC controller via the pcs-handle property in the MAC's
+> >> +      device tree node.
+> >> +
+> >> +    properties:
+> >> +      reg:
+> >> +        description: MII port number.
+> >> +        enum: [0, 1, 2, 3]
+> >> +
+> >> +    required:
+> >> +      - reg
+> >
+> >Why the child nodes? They don't contain anything.
+> >
+> >Perhaps that's due to pcs-handle not supporting arg cells to pass the 
+> >port number? That's about to change[1].
+> >
+> >Rob
+> >
+> >[1] https://github.com/devicetree-org/dt-schema/pull/198
+> 
+> Hi Rob,
+> 
+> Both points make sense.
+> 
+> 1. I'll drop phy-names since there's only a single entry.
+> 
+> 2. For the ethernet-pcs-mii child nodes: you're right that they only
+>    contain 'reg'. The reason I used child nodes is because pcs-handle
+>    arg cells are not available yet -- PR #198 is still open and in
+>    RFC/change-request state.
+> 
+>    The RZN1 MII converter binding does the same thing: it declares
+>    MII ports as subnodes and references the PCS via pcs-handle, until
+>    arg cells land.
+> 
+>    So I'd like to keep the child nodes as a temporary workaround, and
+>    I'll add a note in the binding that this can be simplified once
+>    PR #198 is merged.
 
-Hi,
+Bindings are an ABI. You can't merge the binding then change it. Please 
+comment on the PR that you all need it.
 
-This issue was discovered when upgrading an embedded device from kernel 5.10 to 6.16.
-
-The device was using a KSZ8765 device tree configuration and the
-corresponding hardware, but during boot the kernel incorrectly detected
-it as a KSZ8795.
-
-The issue was reproduced during testing. The relevant boot messages were:
-
-     ksz-switch spi0.0: found switch: KSZ8795, rev 0
-     ksz-switch spi0.0: Device tree specifies chip KSZ8765 but found KSZ8795, please fix it!
-
-The fix was then tested manually.
-
-Thanks,
-
+Rob
