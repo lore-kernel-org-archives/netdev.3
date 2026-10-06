@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64FB456DE1
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 14:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699C747125F
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 14:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791297077; cv=none; b=LH3ymmkUUYITfr/e8e/wIIrqUdTdM59mNSCZb7H9GsKN0o/rovd6GO8YmD/t7aR/EIq09++D8mx1RMiQC94JISecny2m288Rh2npZCmNQ6UYl5QA816YKtxBdTfpUX/ToqZ0/8kZrPMeNlJgWk24SJgQUJFar5Vrq8txw2TxNYo=
+	t=1791297078; cv=none; b=NM1eFBHdiILyjsFmYrzSaoajRSS4r7j/fQQnMbtHsNceuNGa+7Wx7xUd/VXqLNJl2JzUzpq+B1gQ6J5+wd5YrOkxsZ+OLWsyenzhLqMaMdgllNkPb9RycGfEJyTW0qoRheOAjHwfuhZ/EMAxv87qEtRS/Oi+gmP/ExHsjbkfHk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791297077; c=relaxed/simple;
-	bh=yfHQZvCAVD8HAoY2CMhccKGyU5IAToLRAUGY1/Wd2G4=;
+	s=arc-20240116; t=1791297078; c=relaxed/simple;
+	bh=HlXn+FtkBFTqqln/gxeIdzNBdfoXh+AwkX0gwDP1Flk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gWKMzrFK8cSTd/Y2CNx9VxSdfm8syL5tTk9zGV9G5GjlR/Ge6ti1nUk7x8o8MaDdldOTdX+tHlgshX0TzFXfySHvgy3FtPEz/R1M+9LwM7zfBotUXgrFe7/Io8vohzahAZGnwJVyrZcpHt7pdyF/NU9uRP7Lqaf33HsUqM64JqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0mD3RoY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=R7rSh7sx3brcQ1HRUjRhxl9FdmWeh0/rJFD5fatkaOi0Lz7E+5XNmgg+/Xk+/pHYqbg2vHEayYTeYWvKWNMCNl7yLaWi27hBMDTB5iRRfg6zjlszWF4uqE0Ht4VC3gEdk6QwQuS7kXzXLWbLOdifctoVe/dF/D3MrEha5/pf/9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X2JKM5Ys; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0mD3RoY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F78C1F0089C;
-	Tue,  6 Oct 2026 14:31:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X2JKM5Ys"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3D41F0089B;
+	Tue,  6 Oct 2026 14:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791297075;
-	bh=aU6Fshto+Yj/UeByyhutmnVXQ2wvMRFt9x2RVbzeV2U=;
+	s=k20260515; t=1791297077;
+	bh=xEikQtY+9pJcJ2gbkRfEGnrtm/DO5uhTissnAke5xho=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=V0mD3RoYls+uAKTlUj1QzxAXwEROFFQdSCtGsFBIcaPpV++m54Kr1VaUT5Ao8c1aV
-	 GHXalFwPk77FxrLygazR/aSvkCe5oRFV2ZFErgVgrl/9zFuiN5iqQJrX5TmGnQqqia
-	 VVVVchK4yft0KjwS3keMpL6LmcXPQl+NeNv/wvWOsmPcy7yKWtmiA+S0nBp0qVyI0B
-	 ajgkR8psDxsFCE+1INjhuVS3NxP5HmUmZxlSB13G81CtYNo5jSQ7pCOKqfsNXeo3l8
-	 BcYn071aNwBORgTrzShBnE0TUzcnBrda2Z28lFVjY3JGil39LkopHPSmlunurBbcw/
-	 Qm1dFXEMxyRcA==
+	b=X2JKM5YsOqzV63zzsZqTiJiPh5s+ERdS53xXa+8fB0bYAYo6tWcty/D37Yp0a6hF/
+	 9Xru5mI5FHu0IcrUx+ojgxcejbkhU7xg02IFRLiYxtIsLIILIC7ZJbczSihWX0XQBY
+	 ssqOLtmC4K/2oPYPDercb8HXL/xpF8zi2PhfNQ7Spk3C5E69eVwSjpShV1xoAQMXOM
+	 k7MhzwOB7kQctcTuyDATsrTOnx1E9a48rJqXeThL3BNWnTrwP23pCa1VoO6xbfUZR2
+	 OrwNiZoeB6Si0z5NEMkOBjQCb6tGcL9+CUhiqgUKpg3OGEaraiAmu1TN9I2y7Q9pEi
+	 qUXRqSm0e0zNA==
 Subject:
- Re: [PATCH net-next v8 2/8] hsr: Use skb_clone() while adding the HSR header
+ Re: [PATCH net-next v8 3/8] hsr: Add a magic header for sending PTP packets
 From: netdev-bot+sashiko@kernel.org
 To: bigeasy@linutronix.de
 Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
@@ -36,10 +36,10 @@ Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
  pabeni@redhat.com, praneeth@ti.com, pratheesh@ti.com,
  richardcochran@gmail.com, horms@kernel.org, vigneshr@ti.com,
  willemdebruijn.kernel@gmail.com
-Date: Tue, 06 Oct 2026 14:31:13 +0000
-Message-ID: <179129707396.434549.16689509180703800541@kernel.org>
-In-Reply-To: <20261002-hsr_ptp-v8-2-60dabc07e554@linutronix.de>
-References: <20261002-hsr_ptp-v8-2-60dabc07e554@linutronix.de>
+Date: Tue, 06 Oct 2026 14:31:15 +0000
+Message-ID: <179129707549.434549.12538393070496080930@kernel.org>
+In-Reply-To: <20261002-hsr_ptp-v8-3-60dabc07e554@linutronix.de>
+References: <20261002-hsr_ptp-v8-3-60dabc07e554@linutronix.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,173 +61,210 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Because of the switch from __pskb_copy() to skb_clone() +
-  skb_cow_head(), skb_shared_info.meta_len (XDP metadata) of…
-- [Low] The commit message does not mention that the patch changes the
-  header layout of the software-tagged skb in hsr_create_tagged_frame()…
-- [Low] In the software-tagging path, hsr_create_tagged_frame() now gives
-  each slave an skb_clone() whose shinfo (shared, then copied by…
+- [Medium] hsr_dev_xmit() (net/hsr/hsr_device.c) now drops every skb that
+  has skb->protocol == htons(ETH_P_1588) unless the first 14 bytes form…
+- [Medium] hsr_dev_xmit() treats the first 14 bytes of any skb with
+  skb->protocol == ETH_P_1588 as trusted in-band control metadata.
+- [Low] At this commit, the new uAPI fields tx_port and hsr_hdr
+  (include/uapi/linux/hsr_ptp.h) are parsed and checked in…
+- [Low] At this commit, the user-supplied hsr_hdr flag sets mac_len to 20
+  without checking that the inner frame really has an HSR tag at offset…
 
 --
 
-hsr: Use skb_clone() while adding the HSR header
+hsr: Add a magic header for sending PTP packets
 
-This patch changes hsr_create_tagged_frame() to use skb_clone() and then
-skb_cow_head() instead of __pskb_copy(). The goal is to keep
-skb_shared_info, and with it any timestamp request, on the software
-tagging path. The offloaded NETIF_F_HW_HSR_TAG_INS case now returns right
-after the clone.
+This patch adds a uAPI struct, hsr_inline_header. It must sit in front
+of every ETH_P_1588 frame sent through the HSR master device.
+hsr_dev_xmit() checks the magic, reads the requested tx port and the
+"already has HSR header" flag, strips the inline header and passes both
+values to hsr_forward_skb(), which will use them in a later patch.
 
-> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> index 44f6d9c83180a..73bc4b8950071 100644
-> --- a/net/hsr/hsr_forward.c
-> +++ b/net/hsr/hsr_forward.c
-> @@ -342,33 +342,41 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_frame_info *frame,
->  		/* set the lane id properly */
->  		hsr_set_path_id(frame, hsr_ethhdr, port);
->  		return skb_clone(frame->skb_hsr, GFP_ATOMIC);
-> -	} else if (port->dev->features & NETIF_F_HW_HSR_TAG_INS) {
-> -		return skb_clone(frame->skb_std, GFP_ATOMIC);
->  	}
->  
-> -	/* Create the new skb with enough headroom to fit the HSR tag */
-> -	skb = __pskb_copy(frame->skb_std,
-> -			  skb_headroom(frame->skb_std) + HSR_HLEN, GFP_ATOMIC);
-> +	skb = skb_clone(frame->skb_std, GFP_ATOMIC);
+> diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+> index 59df647d2fd45..72347477f4f21 100644
+> --- a/net/hsr/hsr_device.c
+> +++ b/net/hsr/hsr_device.c
+> @@ -223,24 +223,66 @@ static netdev_features_t hsr_fix_features(struct net_device *dev,
 
-[Severity: Low]
-Each per-slave skb now keeps SKBTX_HW_TSTAMP, SKBTX_SW_TSTAMP,
-SKBTX_SCHED_TSTAMP and tskey in its shinfo. However, __skb_clone() leaves
-it without an owning socket:
+[ ... ]
 
-net/core/skbuff.c:__skb_clone() {
-    ...
-	n->sk = NULL;
-	__copy_skb_header(n, skb);
-    ...
-	n->destructor = NULL;
-    ...
-}
-
-Will a slave driver with hardware timestamping enabled now take a TX
-timestamp for this clone, only for __skb_tstamp_tx() to discard it?
-
-net/core/skbuff.c:__skb_tstamp_tx() {
-    ...
-	if (!sk)
-		return;
-    ...
-}
-
-Before this patch, __pskb_copy() did not carry these flags over on the
-software path, so the slaves never saw these requests. Some NICs have only
-a single in-flight TX timestamp slot. On those, a concurrent PTP request on
-the same slave might be skipped.
-
-The later patch "hsr: Assign a socket for cloned skbs" calls
-skb_set_owner_w() only when frame->req_tx_port != HSR_PT_NONE. Ordinary
-traffic sent over hsr0 by a socket with SOF_TIMESTAMPING_TX_HARDWARE would
-still reach this through:
-
-hsr_dev_xmit()->hsr_forward_do()->hsr_create_tagged_frame()->
-    hsr_xmit()->dev_queue_xmit()
-
-The NETIF_F_HW_HSR_TAG_INS path already sent sk-less clones like this
-before the patch. Should the timestamp request flags be cleared on clones
-that have no socket attached?
-
->  	if (!skb)
->  		return NULL;
-> -	skb_reset_mac_header(skb);
->  
-> -	if (skb->ip_summed == CHECKSUM_PARTIAL)
-> -		skb->csum_start += HSR_HLEN;
-> +	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
-> +		return skb;
-> +
-> +	/* Ensure the cloned skb has enough headroom to fit the HSR tag */
-> +	if (skb_cow_head(skb, HSR_HLEN))
-> +		goto err;
->  
->  	movelen = ETH_HLEN;
->  	if (frame->is_vlan)
->  		movelen += VLAN_HLEN;
->  
-> +	/* The entire header area needs to be linear */
-> +	if (!pskb_may_pull(skb, movelen))
-> +		goto err;
-> +
->  	src = skb_mac_header(skb);
->  	dst = skb_push(skb, HSR_HLEN);
->  	memmove(dst, src, movelen);
+> +	skb->dev = master->dev;
+> +	if (skb->protocol == htons(ETH_P_1588)) {
 
 [Severity: Medium]
-Can skb_shared_info.meta_len end up describing the wrong bytes here?
+Does this drop every PTP frame that lacks the new inline header?
 
-skb_clone() shares the shinfo of frame->skb_std. pskb_expand_head() then
-copies both the shinfo and the head contents, so the XDP metadata length is
-kept. __pskb_copy() used a fresh shinfo, so meta_len used to be 0 on this
-path.
+The gate looks only at skb->protocol, so it also catches senders that
+know nothing about struct hsr_inline_header. With a normal Ethernet
+header, the magic check below reads bytes 0-3 of the source MAC. These
+frames then go to the drop label, and only tx_dropped is incremented.
 
-skb_metadata_end() returns skb_mac_header(). This code pushes HSR_HLEN,
-moves only the ETH(+VLAN) header 6 bytes earlier and resets mac_header. As
-a result, the range [mac - meta_len, mac) begins with 6 bytes that are not
-metadata, followed by only the first meta_len - 6 bytes of the original
-metadata. The memmove() also overwrites the last 6 bytes of the original
-metadata with the start of the Ethernet header.
+Before this patch, hsr_forward_skb() forwarded these frames to both
+slaves. Some cases that look affected:
 
-The kernel-doc of pskb_expand_head() says:
+  - AF_PACKET SOCK_DGRAM senders. eth_header() builds the header, so the
+    device MAC sits where the magic is expected.
 
-net/core/skbuff.c:
- *	Note: If you skb_push() the start of the buffer after reallocating the
- *	header, call skb_postpush_data_move() first to move the metadata out of
- *	the way before writing to &sk_buff->data.
+  - PTP frames that an L2 forwarder sends into hsr0, for example with
+    hsr0 as a bridge port via br_add_if(). eth_type_trans() has already
+    set skb->protocol to ETH_P_1588.
 
-__vlan_insert_inner_tag() follows that rule.
+  - PTP sent through a VLAN upper of hsr0. hsr_dev_setup() advertises
+    NETIF_F_HW_VLAN_CTAG_TX, so the tag stays in skb metadata and
+    skb->protocol is still ETH_P_1588.
 
-In RedBox mode, an skb with XDP metadata received on the interlink port
-(generic or native XDP calling skb_metadata_set()) takes this path for
-each slave:
+The commit message says:
 
-hsr_handle_frame()->hsr_forward_skb()->handle_std_frame()->
-    hsr_forward_do()->hsr_create_tagged_frame()
+    Sending PTP packets (ETH_P_1588) via the HSR stack is pointless in its
+    current shape because the requested PTP timestamp is not routed to the
+    sender.
 
-A tc BPF program on slave egress that reads __sk_buff->data_meta would
-then see misaligned and partly overwritten metadata.
+That covers local senders that ask for TX timestamps. Does it also hold
+for transit PTP traffic, or for PTP traffic that doesn't use
+timestamps?
 
-Should this use skb_postpush_data_move(), or clear the metadata with
-skb_metadata_clear() after the clone?
+The commit message calls the header mandatory. It doesn't mention that
+existing senders without the header now lose their traffic.
+hsr_dev_xmit() isn't changed later in the series, so this stays in place.
 
-> +	skb_set_network_header(skb, HSR_HLEN + movelen);
->  	skb_reset_mac_header(skb);
-> +	skb_reset_mac_len(skb);
+> +		struct hsr_inline_header *hsr_opt;
+> +		struct ethhdr *eth_hdr;
+> +		unsigned int hdr_len;
+> +
+> +		BUILD_BUG_ON(sizeof(struct hsr_inline_header) != sizeof(struct ethhdr));
+> +
+> +		/* need to access the magic header */
+> +		if (!pskb_may_pull(skb, sizeof(struct hsr_inline_header)))
+> +			goto drop;
+> +
+> +		hsr_opt = (struct hsr_inline_header *)skb_mac_header(skb);
+> +		if (hsr_opt->magic != htonl(HSR_INLINE_HDR))
+> +			goto drop;
+
+[Severity: Medium]
+Can a remote host provide this control header?
+
+The only check is a constant magic in the source MAC position, and the
+struct maps directly onto dst MAC, src MAC and ethertype.
+
+Some frames are received from the wire and forwarded into hsr0 by tc
+mirred (ingress to egress) or by an OVS output action. They keep
+skb->protocol = ETH_P_1588 from eth_type_trans(). Their first 14 bytes
+are the Ethernet header that the remote sender chose.
+
+Consider a frame with:
+
+  - dst MAC {01 or 02, hsr_hdr, 00, 00, 00, 00}
+  - src MAC {af:48:53:52, 00, 00}
+  - ethertype 0x88f7
+
+It passes this check. The bridge rejects it because the source is
+multicast, but tc mirred and OVS don't. OVS and promiscuous NICs accept
+the crafted destination MAC.
+
+hsr_dev_xmit() then strips those 14 bytes. It sends the inner frame on
+the port the sender picked, with the hsr_hdr flag the sender chose.
+
+The later commit "hsr: Use the port and header information in
+hsr_forward_skb()" makes has_hsr_header skip several steps:
+
+  - hsr_get_node()
+  - hsr_register_frame_in()
+  - sequence number assignment
+  - source MAC substitution in hsr_xmit()
+
+As a result, the frame goes out unchanged with a spoofed source MAC,
+HSR sequence number and path id.
+
+Without this patch, forwarded frames are always re-tagged with the local
+node's sequence number and source MAC. Forwarded ETH_P_HSR frames are
+rejected by the mac_len < sizeof(struct hsr_ethhdr) check, because
+hsr_dev_xmit() sets mac_len to 14.
+
+Could this be used to poison the duplicate-discard tables of other ring
+nodes, so that legitimate traffic from the spoofed node gets dropped?
+
+> +
+> +		has_header = hsr_opt->hsr_hdr;
+> +		tx_port = hsr_opt->tx_port;
+> +		if (tx_port != HSR_PT_SLAVE_A && tx_port != HSR_PT_SLAVE_B)
+> +			goto drop;
+> +
+> +		if (has_header)
+> +			hdr_len = ETH_HLEN + HSR_HLEN;
+> +		else
+> +			hdr_len = ETH_HLEN;
+> +
+> +		/* Ensure the real header after the stripped one can be
+> +		 * accessed
+> +		 */
+> +		if (!pskb_may_pull(skb, sizeof(struct hsr_inline_header) +
+> +				   hdr_len))
+> +			goto drop;
+> +
+> +		eth_hdr = skb_pull(skb, sizeof(struct hsr_inline_header));
+> +		skb_set_network_header(skb, hdr_len);
+> +		skb->protocol = eth_hdr->h_proto;
 
 [Severity: Low]
-The commit message only covers preserving skb_shared_info for timestamps:
+Should hsr_hdr be checked against the inner frame before it is trusted
+here?
 
-    hsr_create_tagged_frame() creates a new skb where the HSR header can be
-    prepended via __pskb_copy(). This does not copy the skb_shared_info part
-    of the original skb so any timestamp request is lost.
+With hsr_hdr set, mac_len becomes ETH_HLEN + HSR_HLEN. Nothing checks
+that eth_hdr->h_proto is really an HSR ethertype.
 
-Could the changelog also mention the header layout changes made here?
+Take a VLAN-tagged frame with an encapsulated ETH_P_HSR and hsr_hdr = 1.
+It gets past this guard in hsr_fill_frame_info(), which would otherwise
+reject it:
 
-With the old code, __pskb_copy() only ran skb_copy_header(), so the
-head-relative offsets were copied unchanged into a buffer with HSR_HLEN
-more headroom. Only mac_header and csum_start were fixed up afterwards.
-That left network_header pointing at the HSR tag, transport_header
-HSR_HLEN bytes too early, and mac_len at 14 (18 with VLAN).
+	if (skb->mac_len < sizeof(struct hsr_ethhdr))
+		return -EINVAL;
 
-With this patch:
+Then hsr_get_skb_sequence_nr() and hsr_set_path_id() read and write the
+tag at mac_header + 14, which is inside the VLAN header, instead of at
+mac_header + 18.
 
-- skb_cow_head()->pskb_expand_head()->skb_headers_offset_update() moves
-  all offsets, which replaces the manual csum_start adjustment.
-- network_header now points past the HSR tag.
-- mac_len becomes 20 (24 with VLAN).
-- A new pskb_may_pull() drop path is added.
+The pskb_may_pull() above keeps these accesses within the linear data.
 
-So the patch fixes the transport_header offset and changes what
-network_header and mac_len mean for these frames. Neither change is
-described in the changelog.
+The later commit "hsr: Use the port and header information in
+hsr_forward_skb()" makes hsr_fill_frame_info() return early when
+has_foreign_header is set. hsr_forward_do() then sends a clone of
+skb_std without calling hsr_set_path_id(). So this affects only this
+intermediate commit.
+
+[ ... ]
+
+> diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> index 73bc4b8950071..4afe9e1d65b7e 100644
+> --- a/net/hsr/hsr_forward.c
+> +++ b/net/hsr/hsr_forward.c
+> @@ -773,7 +773,8 @@ static int fill_frame_info(struct hsr_frame_info *frame,
+>  }
+>  
+>  /* Must be called holding rcu read lock (because of the port parameter) */
+> -void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port)
+> +void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port,
+> +		     enum hsr_port_type tx_port, bool has_hsr_header)
+>  {
+>  	struct hsr_frame_info frame;
+>  
+
+[Severity: Low]
+At this commit, hsr_forward_skb() accepts tx_port and has_hsr_header but
+doesn't use them. The body still does:
+
+	if (fill_frame_info(&frame, skb, port) < 0)
+		goto out_drop;
+
+hsr_forward_do() still sends to both slaves. This patch already exports
+struct hsr_inline_header as uAPI. At this point in the series, a frame
+that asks for a single port is still sent on both ports.
+
+The commit message says the values "will be used later". The follow-up
+commit "hsr: Use the port and header information in hsr_forward_skb()"
+adds frame->req_tx_port and frame->has_foreign_header. It acts on them in
+fill_frame_info(), hsr_fill_frame_info(), hsr_forward_do() and
+hsr_xmit(). So this only matters when bisecting onto this commit.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-hsr_ptp-v8-0-60dabc07e554%40linutronix.de
