@@ -1,217 +1,230 @@
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FF5332621
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 09:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373CE3859E2;
+	Tue,  6 Oct 2026 09:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791277868; cv=none; b=JC4tgRfoeM2xKQbZFpzHL3Px588jd8SvJhrgwwUg5RLVgQQL03OPJylwgibGAvmyE1Me6apxewj3te2cdAebRNXTs188ApKnIa4UQgRD5C3ZSsW3E3bN1fwn6y/vzY0qDpmdCgZTdRWmSHHob+ifQi7V/1r6Fo+klcTXX0/rqL0=
+	t=1791278044; cv=none; b=YDm7EkQvunzEJJR+Z6Y+FTo7VHMo6Qth5g+EQkhPda4MDBWVDv8luonH4w2RMoIefFxASgRmlKwe4kMfd7QeXCQDNKXp/WXi5ZdjCqKd06JwyqSxVFqnWkFEnm/SafEGmettYDmJ8wRg9Fh7Krhu5YgUQbUZw3DzHdvvXGDzdB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791277868; c=relaxed/simple;
-	bh=QSk/c0xFPnxckSA8D/FbrazTD+8/+fmgSsCPpvOdXsA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KQkAFlN3/dYmcprullQlW8vjpcment7KB18+UKUh7Ng9Lh2koxTNyJDmHUAnMpeM1s8TF4utKSQ3LjEJH2mytSl2D3vMxWh+jqiAId5ynTMVIJ58QyiOcr2l46RuE5aWdadz9d01xKrTK3RHiHFSWwkMj6o8AcPe3L++48SCUhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6ddef424972so2447120eaf.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 02:11:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791277865; x=1791882665;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Tm8inQeYXbBmJrsjm+/9U5OYHNYAqX7VnlqX5vcQTFU=;
-        b=MhxiphgVnMsWKXtpwb1G1SuZh3QPe1vgxb1/KCZHv2GInYr/1dQp1+tkZNewwzSEzF
-         BjvB4pjJm2UFEmtsikvuC0QrzDykSdbsoftA+xAjy77lhd6EmvgRLbSRgM5pnXTq2rOD
-         6+24/3bihKaq5Y6/USRGtyfyiUpxe8hEyz9Mdr4DLTQKQ9ZwVmo012Aj7tIgjAPiu+nZ
-         fmTxfk6tPUy+ebfQt49aZP0ejnWxCNePyiCXmLO2Cq2Sa2HWK+Mcb4tGPxqkF3lAIuE6
-         G5j6jOaAUxrEs1t0R0tjXyiABSJSsBOXbI3VAOqV46FuLxh9U6k7mquQc5UEqYTHuDaO
-         MixQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy8b8QdF/rgTDnaYdeaX3ai0qji+TEuQ/L0YFlsHnu/mJvk/4xWL7gOtOZMfX6+DPOyuYvdTDQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++lcRoipRgYYZ/Vem+LjkI7YGpUt6h9iCgwI2vEWeCE7o/o4It8n
-	ujX80diIqFEamMPBG+dexUmrRAC+V40nQTHfXmLay12L2HC4PdgQbXjg72ictCyfJUNUnA==
-X-Gm-Gg: AYBFou1BCQuwzvM5wjT8mZtG5K2nZhyjqLcVO9K7HMO2c/G6MMjC8Z4nySshN7ZTWS1
-	CztBnbeES9fhldL8fVMMYUOBIjb6xkHgHzXq//c12CK2t/Qy8qfswH0540yFFlvcHjaAqaPWmBv
-	F3SKaVzl+jh4MKVn8hnIFuJOFP7fV1IntFLBFLQsxgjESiZDS2SWhalzn8I8vkcDSB6AVMTbrT9
-	/7ucJTKvvrm63daekyOp9NXmCwaZwj01JIhwg2jbb/F+ro6J37eK59xhMJ74r9Y7o/xBTiLJafF
-	827iXkiZuCrqwLoGqNtDjOazEKY2bD4lIPvIzowMOFEf3EeP3+x5BdXUCZyPKiSmqhiF15cfkSi
-	anfOg3d/MUP2/FFF60OIguu1h9+FWdHwxNLrGQx9pVmTkx5NFDWNtkBVVxnLMOshy2QbBv7yYTA
-	OKaoi+su5VJHh8ovnLAG79Q+fzowVkkH+zGc5jOcwiOaJe9BpTGv7qdA7GPJE0zI/UQFz0xhEWg
-	GWDGUtx9wP9vLMWvzWM2n86UmAmIbKwnLAnzglKJedwtIhcunD7gCuqZYN0LXXyDFc=
-X-Received: by 2002:a05:6820:8186:b0:6d9:4d1:5c46 with SMTP id 006d021491bc7-6e5544f4f46mr388559eaf.16.1791277865320;
-        Tue, 06 Oct 2026 02:11:05 -0700 (PDT)
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com. [209.85.167.180])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6e4c366ad5bsm1550878eaf.10.2026.10.06.02.11.04
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Oct 2026 02:11:04 -0700 (PDT)
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4f9b643b13aso1315884b6e.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 02:11:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzOQoxYLjIRiINojB0Gsbl8vhuJFSc/AokS2koQgxHR2M7wwgig8NTCq7cuL06WGMhqH+FYQWQ=@vger.kernel.org
-X-Received: by 2002:a05:690c:e216:10b0:89a:63bc:8be with SMTP id
- 00721157ae682-8b04f45511emr1435597b3.72.1791277525323; Tue, 06 Oct 2026
- 02:05:25 -0700 (PDT)
+	s=arc-20240116; t=1791278044; c=relaxed/simple;
+	bh=DrxJkpjzyYGp2CHDwYW5JhpYSnS/x/10mxjjG2cWEhM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fYQpdezI8EI8cyLkijvlSdYbDMDyEpjlTB7BtIw0FKH3FXyQ/UOE2IDKKstnt8JDCI/eQ68fxkj7EntgQmVI8fBbYguleq+9EzGsAOjkqL3MuA7MlL+8elxcyNw5oiuZiU5ZjADFY3O+cis2glNEbrI2PbQzpLMOL7h8BHHcEvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fDkoxYHk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vtmyViQ4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=rVjdZGvS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=R8xxy8iS; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fDkoxYHk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vtmyViQ4";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="rVjdZGvS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="R8xxy8iS"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BC42219BB;
+	Tue,  6 Oct 2026 09:13:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791278030; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
+	b=fDkoxYHkVYr4W6YH5yRxqIrHXc73xkhaboCbMmp7NnxECOhN+ygj2bEuXWHiyJjf4bcz25
+	GlYx3gG3NI+koiifofzeISimtBXmpdYjoBl9AkXjldl9V027t7OHggmFD3BNolBpeaPrvB
+	HvJ2vhh5JinSm10f7+LvWSu4vywb2R8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791278030;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
+	b=vtmyViQ4WfXPweEDJ5w+ZsSM5SFwt7aFu3EWSoegOPreAKK2a2T2+sFJ0GQcxfFoD1qHaB
+	3isnzYCxfZhOKzCw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rVjdZGvS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=R8xxy8iS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791278026; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
+	b=rVjdZGvSE0olqXazD1zG6dWnRSutvJyeQKYMWVEf6GWvAYMZUkExtbMdKyRb5auiZgjyAb
+	gXGBSR7uNdSvnkMINSXuXYNVE/hz5d+nXksnB9oBGu2Kj1Mbp+Ovdd8zVJrMemT5HmWXHr
+	zZ64AlYry1BzcMqIs8xRYsjhhR38OvM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791278026;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a/JP5/dW09R5F2dsXZl8YQmvtpMPAD0rEIwWS4AD5kE=;
+	b=R8xxy8iSibgvaif20gQv6dsUZb+//Qwx97Yh+RMcUBpJH8DwCYTuamgYwOSJi0/XuYTYqX
+	evqFsO/OncL/4MCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CAE17136F2;
+	Tue,  6 Oct 2026 09:13:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pR6EJsm7xGoXSgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 06 Oct 2026 09:13:45 +0000
+Message-ID: <ade9aa6a-ae47-4894-be43-2f32cc234afc@suse.de>
+Date: Tue, 6 Oct 2026 11:12:40 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261004144046.391444-1-tanure@linux.com> <20261004144046.391444-7-tanure@linux.com>
- <f282770c-2238-4a1b-b811-c0c483fa7681@lunn.ch>
-In-Reply-To: <f282770c-2238-4a1b-b811-c0c483fa7681@lunn.ch>
-Reply-To: tanure@linux.com
-From: Lucas Tanure <tanure@linux.com>
-Date: Tue, 6 Oct 2026 10:05:13 +0100
-X-Gmail-Original-Message-ID: <CAJX_Q+2pw9=+O0V=e_kNR=c5oVeymbViy0XGGuciw4LL2Y_Ctg@mail.gmail.com>
-X-Gm-Features: AclHuK8uuG7S1lotg92U6NQL5L-fFOK6A4NsqpautQX6RPIs4c5SrrUvYH9tz8s
-Message-ID: <CAJX_Q+2pw9=+O0V=e_kNR=c5oVeymbViy0XGGuciw4LL2Y_Ctg@mail.gmail.com>
-Subject: Re: [RFC PATCH 6/6] arm64: dts: amlogic: t7: khadas-vim4: enable the
- ethernet port
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/16 net-next v3] ipv4: udp: split IPv4 specific logic
+ into udp_ipv4.c
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, horms@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@kernel.org, davem@davemloft.net,
+ johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260930135334.4739-7-fmancera@suse.de>
+ <179113455115.434549.17562988532168582470@kernel.org>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <179113455115.434549.17562988532168582470@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TAGGED_RCPT(0.00)[sashiko];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 7BC42219BB
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-On Mon, Oct 5, 2026 at 5:27=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > +&ethmac {
-> > +     status =3D "okay";
-> > +     pinctrl-0 =3D <&eth_pins>, <&eth_rgmii_pins>;
-> > +     pinctrl-names =3D "default";
-> > +
-> > +     /*
-> > +      * The RGMII clock delays are added by the MAC, so the PHY is
-> > +      * asked for the mode that adds none.
-> > +      */
-> > +     phy-mode =3D "rgmii";
-> > +     phy-handle =3D <&external_phy>;
-> > +     amlogic,tx-delay-ns =3D <2>;
-> > +     rx-internal-delay-ps =3D <2000>;
->
-> I agree with Maxime here, rgmii is wrong. We really need to understand
-> what is going on here, especially since you are asking for the MAC to
-> do the usual 2ns, nothing special.
->
-> Is the PHY not actually inserting the correct delay?
-It does. The PHY driver shows both delay bits going from off to on, so
-nothing was strapped and the bootloader did not set them.
 
-I swept the MAC RX clock delay and counted CRC errors, to see where the
-good window is:
 
-  MAC does RX delay, PHY none:  clean 400 .. 3800ps
-  PHY does RX delay, MAC adds:  clean 0 .. 1600ps
+On 10/4/26 7:22 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] When CONFIG_IPV4=n, udp4_gro_complete()
+>    (net/ipv4/udp_offload.c) returns -EAFNOSUPPORT for every merged IPv4…
+> 
+> --
+> 
+> ipv4: udp: split IPv4 specific logic into udp_ipv4.c
+> 
+> This commit moves the IPv4-specific UDP socket code out of udp.c and into
+> a new file, udp_ipv4.c. That covers lookup, input/output, multicast
+> delivery and the AF_INET udp_prot. The new file is built only when
+> CONFIG_IPV4 is enabled. Callers in af_inet.c, udp_bpf.c, udp_offload.c and
+> ipv6/udp.c get IS_ENABLED(CONFIG_IPV4) guards.
+> 
+>> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+>> index cf07c3c6611a2..bea037d6b4eb7 100644
+>> --- a/net/ipv4/udp_offload.c
+>> +++ b/net/ipv4/udp_offload.c
+>> @@ -958,6 +958,9 @@ INDIRECT_CALLABLE_SCOPE int udp4_gro_complete(struct sk_buff *skb, int nhoff)
+>>   	const struct iphdr *iph = (struct iphdr *)(skb->data + offset);
+>>   	struct udphdr *uh = (struct udphdr *)(skb->data + nhoff);
+>>
+>> +	if (!IS_ENABLED(CONFIG_IPV4))
+>> +		return -EAFNOSUPPORT;
+>> +
+> 
+> [Severity: Medium]
+> With CONFIG_IPV4=n, can this make every merged IPv4 UDP GRO packet get
+> dropped silently?
+> 
+> The IPv4 GRO offloads are still registered when IPv4 is disabled.
+> ipv4_offload_init() in af_inet.c still calls udpv4_offload_init() and
+> dev_add_offload(&net_hotdata.ip_packet_offload) with no guard. So
+> inet_gro_receive()->udp4_gro_receive()->udp_gro_receive() still runs for
+> IPv4 UDP packets.
+> 
+> The socket lookup there ends up in the new __udp4_lib_lookup() stub,
+> which returns NULL. Even so, udp_gro_receive() still aggregates:
+> 
+> 	if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
+> 		NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
+> 
+> 	if ((!sk && (skb->dev->features & NETIF_F_GRO_UDP_FWD)) ||
+> 	    (sk && udp_test_bit(GRO_ENABLED, sk)) || NAPI_GRO_CB(skb)->is_flist)
+> 		return call_gro_receive(udp_gro_receive_segment, head, skb);
+> 
+> At flush time, gro_complete()->inet_gro_complete()->udp4_gro_complete()
+> now returns -EAFNOSUPPORT, and gro_complete() in net/core/gro.c frees
+> the whole aggregate:
+> 
+> 	if (err) {
+> 		WARN_ON(&ptype->list == head);
+> 		kfree_skb(skb);
+> 		return;
+> 	}
+> 
+> The WARN_ON doesn't fire because a ptype was found, so all segments are
+> lost with no warning. This would affect an IPv6-only kernel that bridges
+> or forwards IPv4 UDP with NETIF_F_GRO_UDP_FWD or NETIF_F_GRO_FRAGLIST
+> enabled on the ingress device. Inner IPv4 carried in IPv6 tunnels would
+> be hit too.
+> 
+> The fraglist branch and the udp_gro_complete() path don't need IPv4
+> socket state. The only IPv4-only dependency looks like the
+> udp4_lib_lookup_skb reference. Would it work to stub or skip only the
+> lookup, for example with a NULL-returning udp4_lib_lookup_skb when
+> CONFIG_IPV4=n, and keep the rest of udp4_gro_complete()? Or should IPv4
+> UDP GRO receive also be disabled in that configuration, so packets
+> aren't aggregated only to be dropped at completion?
+> 
+> The later patch in the series, "ipv4: make CONFIG_IPV4 boolean", makes
+> this configuration selectable. udp4_gro_complete() and
+> ipv4_offload_init() are unchanged at the end of the series.
+> 
 
-Same window, moved 11 steps. So the PHY gives about 2200ps, and the
-first window is centred at 2100ps. It is right.
+I guess this is a good point. I will look more into it.
 
-Transmit is the broken one. With rgmii-txid the peer sees nothing we
-send.
+pw-bot: cr
 
-What does the
-> datasheet say?
-The A311D2 covers both ways of doing it. Table 5-21, RGMII receive:
+>>   	/* do fraglist only if there is no outer UDP encap (or we already processed it) */
+>>   	if (NAPI_GRO_CB(skb)->is_flist && !NAPI_GRO_CB(skb)->encap_mark) {
+>>   		udp_set_len(uh, skb->len - nhoff);
+> 
+> [ ... ]
+> 
 
-  PHY internal delay on:   needs 1.2ns setup and 1.2ns hold
-  PHY internal delay off:  needs -0.5 .. 0.5ns skew
-
-with a note to check setup/hold when the PHY delay is on, and skew when
-it is off. Table 5-22 does the same for transmit, separate numbers for
-"clock delay added" and "no clock delay added".
-
-So the MAC doing the delay is a documented mode of this SoC.
-
-What it does not say is why the PHY TX delay misses. I asked Khadas
-about the clock trace lengths, no answer yet.
->
-> Also, we have one vendor property and one generic property. Can
-> amlogic,tx-delay-ns be replaced by tx-internal-delay-ps? But that
-> comes later, once we have determined these properties really must be
-> used.
-A new version of the series will have a fix for it. It will prefer the
-generic one.
-One thing to know: that register field is a fraction of the clock
-period, not a time.
-The driver comment says "8ns / 4 * tx_dly_val". A quarter cycle is 2ns
-at 1Gbit and 10ns
-at 100Mbit, so 2000 is only true at gigabit.
->
-> Humm, what is meson8b_init_rgmii_delays() doing?
-It picks the MAC delays from phy-mode alone, with the sense inverted:
-
-  rgmii       MAC adds both delays
-  rgmii-rxid  MAC adds TX
-  rgmii-txid  MAC adds RX
-  rgmii-id    MAC adds none
-
-So the mode that says the delays are internal is the one where the MAC
-switches its own off. It also ignores the *-internal-delay-ps
-properties in those modes. With rgmii-id and both of them set I get:
-
-  phy-mode rgmii-id: tx-delay-ns 2 rx-delay-ps 2000
-    -> PRG_ETH0 delay_config 0x0, PRG_ETH1 cfg_rxclk_dly 0x0
-
-What is
-> phydev->interface in the PHY driver.
-Whatever phy-mode says, dwmac-meson8b.c never rewrites it. Which
-means the MAC and the PHY always split the job:
-
-  rgmii       MAC both    PHY none
-  rgmii-rxid  MAC TX      PHY RX
-  rgmii-txid  MAC RX      PHY TX
-  rgmii-id    MAC none    PHY both
-
-They never both delay the same clock, and never both skip it. So the
-driver is self consistent, it is just labelled backwards from phy.rst.
-That is why the boards using "rgmii" work, and why rgmii-id is the one
-that does not here: it is the mode that hands everything to the PHY.
->
-> Please take a read on:
->
-> https://elixir.bootlin.com/linux/v6.15/source/Documentation/devicetree/bi=
-ndings/net/ethernet-controller.yaml#L287
->
-> and figure out what is going on here, because at a first look, it
-> seems broken.
->
->       Andrew
-It is broken. phy-mode describes the PCB, but dwmac-meson8b.c reads it
-as which chip adds the delay. The labels are backwards, and in rgmii-id
-both *-internal-delay-ps properties are ignored.
-
-I measured each direction with an eye scan. The PHY RX delay is fine,
-about 2200ps. Its TX delay does not work at all, so the MAC must do
-that one.
-
-Fix: in the -id modes each *-internal-delay-ps property means the MAC
-does that delay, and the PHY is told to do the rest:
-
-  both properties    MAC does TX and RX     PHY told rgmii
-  tx property only    MAC does TX                 PHY told rgmii-rxid
-  rx property only    MAC does RX                 PHY told rgmii-txid
-  no property           MAC does nothing          PHY told rgmii-id
-
-Boards without those properties keep today's behaviour, so
-meson8b-odroidc1 and meson8m2-mxiii-plus are untouched.
-
-Vim4 will use phy-mode =3D "rgmii-id" with tx-internal-delay-ps =3D
-<2000>. 935Mbit/s both ways, no CRC errors.
-
-I am sending a v2 with the fix for dwmac-meson8b.c  as its own patch.
-
-Thanks
-Lucas
