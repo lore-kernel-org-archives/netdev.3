@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FC854704E
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 00:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5772874E1;
+	Tue,  6 Oct 2026 00:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791247810; cv=none; b=Ty2/9YzG4zoo63XV55lldpfjkmMizkHty+WQL9fpQI/9FNnbNH+RgvXdr/XzlPHeXYKDJb7Shn6spq96pOaGleJ++oXqtnv9tfdws4mqv60Y2Re7XEekCl/Io0TS6XLMJlNSmE5VFv98AKcmp8SQJqcsY1zcNVe3FGR90TQRQfQ=
+	t=1791247812; cv=none; b=TDqNJ1k8q4ZQSPcetCnLVoWwWHgKVUJSrT1FEPOvTS33CIkksZ1wlMQr+DOXbCw2E/B9XHsiWoJFoRytgwsf7DC/d209KkSP3PRExJ3zZfmgIf5M7LCF5Dyo4tNb2HlfiUo5NcofmX5YZxUODutXvN6/Wl+qQySHyC2TE+kT58U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791247810; c=relaxed/simple;
-	bh=80NqeutT5gGNq1ZVfhRcW3IuZ79iS7yx87itvlec25k=;
+	s=arc-20240116; t=1791247812; c=relaxed/simple;
+	bh=/yoNWR+sE5eU1cxdfMD1qj7e7Iz+HdN2ajbRTz4oGxM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=sdzhgqHW6HMZRV9RTH0W45A5zC1dC+J6EvJ1FgLdHLnCWSAx8xDA5J8mrzU7LFqMDyAx2QPBsS7s++XEcSaMdrc1favUmDau0T7G4VNoh5+Zuqr+Gb87zmL0UaBIJNuJGnWPLVZs60iDbOtV8URbJ5A0izaSgX8j1ewf4K0PuOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oj9dogqZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=I7grOi4HdmssQWes/H0A6ItRlYuLd0F8bnRg21O8pCo9OPqUf+4CLxtFz4Et8XaYIcsFf0hi2VWwC8WVIop0xqCvquFlYHD7fhJ3zRuLW+p6cctNr/5IgPAq7QNYgH/hwihpRh36D1mN00hJl5C1Aaqo0duZz+/OWLuli0kE4uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0Lr76Tp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oj9dogqZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C0E1F000FF;
-	Tue,  6 Oct 2026 00:50:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0Lr76Tp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823731F00893;
+	Tue,  6 Oct 2026 00:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791247809;
-	bh=nwczxQ9fvICRfG0h3rEJO7F4BMVUHAG9xNrV1heXrVU=;
+	s=k20260515; t=1791247810;
+	bh=Ks1YiFjzmFe+TYdtd7qMf4vRgvWQQXYIm6im8ZHjyzM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oj9dogqZKC91eT6hUP1XWDFC93Wa32ndL++A2aphs292/Mht/WqsEHNKcNlQgFjrY
-	 8JqMU19Y0q0yOEXBFJ/jvIyk9C8t3irk7UUfQYvIB3vNqhCID+ETanPeXaduAgmybQ
-	 vlvXU3aLNU6gGyxiGUDr7Vw/2GNxeISllNn2Ga4AQgPpM9vpwI7CdripWMNTkWulUa
-	 kIe4u/fo/3a8EmwCGiPwOaMHP3er39szwsOtkeU2XQRsbU+theES0vFcVYy7irI/TO
-	 GsQ6Xid6WqQMDp4bDo+BF9/H/sC4mBGC/h5VE9BVneX5EuVlNVOK0kAr3pN2+Mgop9
-	 9A/16KSc2YIzw==
+	b=C0Lr76TpguBsL71RnQtuLT8F5R6T78ebV+ljuFPAb9u/NaayyCXQR21DqyAdMN5KH
+	 u5qlvlhDgF1AxcrGHusTwfsTn7p0uMFU+y9CTQmF+CXwZNM05zgpqNUbs8DyfDCKBc
+	 KTvpX8DV2ricUW/D/aRIMAuxxSExvZQ2uvwx89mgnkeRrCMjewybqtdMmJBc+624HC
+	 N1L44jK0GtlRvHcsTblTN8qyt5TNjnsqdciJDleeZ70iHvySTuLkQoMZLf0HN2OqlO
+	 PXE8on2zZ2zpZSOFV/Z9Qa8+lMc9hatjJHMWpj19dvCA2Do5IXWbB4ItGV0CWd/67X
+	 QE175vjuF05AQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F142A392667F;
-	Tue,  6 Oct 2026 00:50:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 77446392667F;
+	Tue,  6 Oct 2026 00:50:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,55 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 1/9] batman-adv: bla: avoid double free after
- failed
- backbone_hash alloc
+Subject: Re: [PATCH net v3 0/2] net: ngbe: fix error handling in resume and
+ open
+ paths
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179124780778.1960739.8553982365608117644.git-patchwork-notify@kernel.org>
-Date: Tue, 06 Oct 2026 00:50:07 +0000
-References: <20260930094558.3723766-2-sw@simonwunderlich.de>
-In-Reply-To: <20260930094558.3723766-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, sashiko-bot@kernel.org
+ <179124780902.1960739.16366418673480841555.git-patchwork-notify@kernel.org>
+Date: Tue, 06 Oct 2026 00:50:09 +0000
+References: <20260930094748.1198085-1-zhangyunfei1@kylinos.cn>
+In-Reply-To: <20260930094748.1198085-1-zhangyunfei1@kylinos.cn>
+To: Zhang Yunfei <zhangyunfei1@kylinos.cn>
+Cc: netdev@vger.kernel.org, jiawenwu@trustnetic.com,
+ mengyuanlou@net-swift.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ aleksandr.loktionov@intel.com, u.kleine-koenig@baylibre.com,
+ weirongguang@kylinos.cn, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, leitao@debian.org
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
-by Sven Eckelmann <sven@narfation.org>:
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 30 Sep 2026 11:45:50 +0200 you wrote:
-> From: Sven Eckelmann <sven@narfation.org>
+On Wed, 30 Sep 2026 17:47:46 +0800 you wrote:
+> Two error-handling fixes for the ngbe PM/open paths.
 > 
-> When batadv_bla_init() fails to initialize the backbone_hash, it is freeing
-> the (previously) allocated claim_hash. The initialization function will
-> then return an error and the net_device initialization will stop. The
-> destructor will be called instead and (indirectly via batadv_mesh_free() ->
-> batadv_bla_free()) will try to free the bat_priv->bla.claim_hash again.
+> ngbe_resume() declared err as u32 and returned 0 unconditionally, so a
+> failed ngbe_reset_hw(), wx_init_interrupt_scheme() or ngbe_open() left
+> the device in netif_device_detach() state with a broken interrupt
+> scheme while the PM core was told the resume succeeded; the reset task
+> bails out on the missing netif_device_present() check, so the device
+> cannot self-heal. Patch 1 fixes the type and propagates all of these
+> errors, making the whole tail of the resume path consistent with the
+> pci_enable_device_mem() failure path at the top, which already reports
+> its error.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/9] batman-adv: bla: avoid double free after failed backbone_hash alloc
-    https://git.kernel.org/netdev/net-next/c/4c0a6a5b7715
-  - [net-next,2/9] batman-adv: tt: clarify kernel-doc for batadv_tt_global_purge_local
-    https://git.kernel.org/netdev/net-next/c/f11712fc3d5f
-  - [net-next,3/9] batman-adv: tt: clarify responsibility for roam flag during removal
-    https://git.kernel.org/netdev/net-next/c/08967c26cc8d
-  - [net-next,4/9] batman-adv: tt: soften kernel-doc for batadv_tt_local_remove_now()
-    https://git.kernel.org/netdev/net-next/c/be66c5ac5485
-  - [net-next,5/9] batman-adv: tt: only queue local del event after successful unlink
-    https://git.kernel.org/netdev/net-next/c/597c0f2f69c0
-  - [net-next,6/9] batman-adv: tt: queue local DEL event under bucket lock
-    https://git.kernel.org/netdev/net-next/c/f95b9f28a9df
-  - [net-next,7/9] batman-adv: tt: queue local DEL event before marking entry as pending
-    https://git.kernel.org/netdev/net-next/c/a6746cb19076
-  - [net-next,8/9] batman-adv: tt: reject VLAN/TT entries before reaching size limit
-    https://git.kernel.org/netdev/net-next/c/85fb027f611b
-  - [net-next,9/9] batman-adv: use assign_bit() where applicable
-    https://git.kernel.org/netdev/net-next/c/d1807b20d548
+  - [net,v3,1/2] net: ngbe: propagate resume errors to the PM core
+    https://git.kernel.org/netdev/net-next/c/6986ff35f5bb
+  - [net,v3,2/2] net: ngbe: clear DRV_LOAD bit when ngbe_open() fails
+    https://git.kernel.org/netdev/net-next/c/7b36b48049f4
 
 You are awesome, thank you!
 -- 
