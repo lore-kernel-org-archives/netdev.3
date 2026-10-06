@@ -1,123 +1,65 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46334AFE17
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 22:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F5D3DAAC3;
+	Tue,  6 Oct 2026 22:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791326941; cv=none; b=LKNH1mnsl4+POnQfL9xa3m5b8M8iSl5UdXTPUygMKUAMRvFUfmU3vmunTzxeK1Qy1DxXTSMItKIavSlSa2PpZS7h3WQkuCW/RwGnXB5IwNXsUpsz8rNL2BB8GWdYeY8ukmSB2aqylTQVoLk9m671rMMqdxsqnMcnvYblJnHJJEQ=
+	t=1791326961; cv=none; b=cYtsPlDoiVXMK1xX9FSLCBRj6ywzYHoMyCnNgK1Hd6F8XiNI+hb8K1w5suX370Bh2JHByGhp6z4jdez1cqSidO+DVPCeBTGFm7mqzObtD2AbsGxvjzes1NTqdjnguL/rD4xE/qqih3LrHBz5vxXnw0YUpO3VW7UxC9l3pORc3gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791326941; c=relaxed/simple;
-	bh=9q/Q6o+ob2o7WEZqJukHlF5j2ofuhypf6s5/8ZliFW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YBQkYPd6tBSBZ7d1QOFXtogblRUL4TYMvoxJxS5LWGUXHhzCJMCrj/YGGckFsGFz+3vuTEQZ/FzmleZpjmf/yrNPr9WyzSOfPnIaW9857QRkTCK37Jgh/VUL72JsB7IgKXRQSoeYZfsrq0jAXp4OehFYr5DBCtvD5FaDrPby62A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=AMFGDjCD; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	s=arc-20240116; t=1791326961; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mQE9ipg9R/PDfBhOtq+rLnchnkGAwDijcxlpUe0G32HIzzCkKAMFlpe/+3b2HTZHCm3EFY8jk4jvPBBpuImlRTld1oiRqeYgnOSLmEFXN1s2/8fRFrHegnsSZSOw5jrOD+4TYoEJylaKuWVXKmgnVkMTdAujfU7iDAjC7PQ44DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLYh4Uv2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="AMFGDjCD"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc4c7fab7b6so2372362a12.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 15:49:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791326940; x=1791931740; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YAIbJYCoaKPFMKMZsiSwU2c25LSNjGe+Dlh96jOlX6g=;
-        b=AMFGDjCDBa75kEEQf9toq9RlFNmk+5GO7lietZHgQm1PcZW55Swy8qYSNSPBQQIHVN
-         clPALjp2VHHuU7eHDxDzMp2snoLLQudcENloE1zUfRrnAws9JQo4yOpmhUZ3NN6vd5fr
-         zfFuf/8jtS1UqY+OelzSAGD3U9eCfzcxeQB8c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791326940; x=1791931740;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YAIbJYCoaKPFMKMZsiSwU2c25LSNjGe+Dlh96jOlX6g=;
-        b=Zu7HSFDwyMZ7HZ3mL5X/m52cRVfcXAklUdVT8NKe4URfecXtRSOODMPGk+xEg4VYH/
-         YJZeUhBoH/p2sF70Z5pm2uz5xIKVTaB0LJEr1TVpjbLqlJAYxVu1Zn27tOQa9XR8mpqI
-         XZm/7QifmajDEgsFB/XAHUd6SPW7/tqcAmgJNpffTbXGfB+WV3OqV77MS9fNHUtF8gvD
-         vwXWHN9mG6Y/rQHbt17RZYE8MuEFZaOHwpvLQ0avsRfjOa1X2WE3UXYD9jbflaA7dZkl
-         HeJgVZmb1QWUNX6HW/kBKHhcret9co7W/KVVS3G4vL9kY9xm/Wj3IcbvIHwboF9OMri+
-         lswA==
-X-Gm-Message-State: AFuF++kwhTkT1k7ZbX6uDI6vVCuKa9b+f32HmaYnPmM6PrkYIfZ1DQ4+
-	ncKhVRleWDrPCMY2aFz+kXFfAiBw19Pq+tpxerXqOuRd+kEcrEtUaN3SP3kfEqXCdX2u5roLyJU
-	LHjrfXdY=
-X-Gm-Gg: AYBFou1b3o3zCHzULTC3ekKNg8CEuw4d2zQDryXyaEwP5XtEd0zWplCN357aKpF9QNx
-	WZzAsJEvUt59ehKUVj5AqNlnqIJtro6sSHHWSIJuG326zVJe5UiPcCTSFNyRNqkA9wq9EUBnXDY
-	1rG4XPM2r46xsedzK3ITBwPOexpb8WWLxfUQRwvLixUQIBIU6F7B6IGXs1jhVU3iAGu2nz507xb
-	tKvMvb+Plyon5jSbI9zqlR1iDoT2ILRAj+YQmAOxsW5QRRuzgn0wlE9/wmsU4gePxrphoJgfDNk
-	r+yx7Ex6FQcNpsf23jO+4o5tvXBhXlHIlomcqshVtovsmGkGtw8aCtE8PAyHN8JhVToAwpPWjxy
-	GyZa33+I6eziYoi+GnyMxxbAxrsi6rxuR5TGgub7RaucQ3C1nSNuk0y3Jq0LVrlDN+wY5aBs8mi
-	PMkwNiD+xneIEpjFfK1DRH7Ma0otmHJbcYpsEc5+x37+/7J4IXnTlbAFjs8sqHCXJ1j0tPiTMiR
-	noc0tMEZSgFihoPWYQ1orFuznXw1/yGXMDpEysPdmkj4eDPLbKVigsZYP49l44aTZWMBN/Z494i
-	5kOAyvZTBg==
-X-Received: by 2002:a05:6870:4409:b0:48f:e0e5:a1fe with SMTP id 586e51a60fabf-4a259655af6mr418975fac.50.1791326557484;
-        Tue, 06 Oct 2026 15:42:37 -0700 (PDT)
-Received: from com-75606.corp.openai.org ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a25700e3easm586986fac.3.2026.10.06.15.42.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 06 Oct 2026 15:42:37 -0700 (PDT)
-From: Kyle Zeng <kylebot@openai.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	outbounddisclosures@openai.com,
-	Kyle Zeng <kylebot@openai.com>
-Subject: [PATCH net] netlink: reset skb headers before unicast and multicast filtering
-Date: Tue,  6 Oct 2026 15:42:32 -0700
-Message-ID: <20261006224232.50724-1-kylebot@openai.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLYh4Uv2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C4A1F0089E;
+	Tue,  6 Oct 2026 22:49:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791326961;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gLYh4Uv2ixBI03BnsDdEJ7tqomrboPu1hMQwqH45jV4n7suTF6m+JNDDfn02L4KLB
+	 /xPrpOCCtFDail/yTdbWGj1gK5iKEOyr5klXKhb/qeoxbWDpxhDz/6ENumrHYu/fvp
+	 8LmhfpRevFunsPdPKOYXi0bJURMLKno34dfaJ6bc2RZfcutLFBC1vxxPZTJE4QnzId
+	 ZU00vtcSmRy0vyx3R6xzmPZZss0IIq7rgZk/XOqxB6t95NCAajM/SPA37E+wPfbsTe
+	 2PTZUlvglbph6uaNCCXOheHCsCkaFRed/dQ3mC3b/qFpkHAhlG3HT9+KhD4eYxShCC
+	 vOoZC7iQxAoxA==
+From: netdev-bot+sinfo@kernel.org
+To: Kyle Zeng <kylebot@openai.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ outbounddisclosures@openai.com
+Subject: Re: [PATCH net] netlink: avoid hashing the network namespace pointer
+Date: Tue, 06 Oct 2026 22:49:20 +0000
+Message-ID: <179132696042.2231598.3001993287250723765@kernel.org>
+In-Reply-To: <20261006224149.50498-1-kylebot@openai.com>
+References: <20261006224149.50498-1-kylebot@openai.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Socket filters can use SKF_NET_OFF and SKF_LL_OFF to read relative to
-an skb's network and MAC headers. Netlink producers may reserve
-headroom without resetting those headers, allowing a receiving socket's
-filter to read data before the initialized message.
+Hi!
 
-For example, IWPM HELLO replies are allocated with dev_alloc_skb(),
-which reserves NET_SKB_PAD bytes. An unprivileged NETLINK_RDMA user can
-attach a classic socket filter and disclose this headroom through the
-length of the delivered reply. The resets in netlink_dump() do not help
-because IWPM sends a separately allocated skb through netlink_unicast().
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Reset both headers before running the receiver's filter in unicast and
-broadcast delivery, as is already done for dump skbs. This also covers
-other netlink producers that reserve headroom without changing their
-allocation or message-building code.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-Fixes: b1153f29ee07 ("netlink: make socket filters work on netlink")
-Assisted-by: Codex:gpt-6-astra
-Signed-off-by: Kyle Zeng <kylebot@openai.com>
----
- net/netlink/af_netlink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 9fdf964224ab..01af3bb144ae 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1363,6 +1363,8 @@ int netlink_unicast(struct sock *ssk, struct sk_buff *skb,
- 	if (netlink_is_kernel(sk))
- 		return netlink_unicast_kernel(sk, skb, ssk);
- 
-+	skb_reset_network_header(skb);
-+	skb_reset_mac_header(skb);
- 	if (sk_filter(sk, skb)) {
- 		err = skb->len;
- 		kfree_skb(skb);
-@@ -1497,6 +1499,8 @@ static void do_one_broadcast(struct sock *sk,
- 		goto out;
- 	}
- 
-+	skb_reset_network_header(p->skb2);
-+	skb_reset_mac_header(p->skb2);
- 	if (sk_filter(sk, p->skb2)) {
- 		kfree_skb(p->skb2);
- 		p->skb2 = NULL;
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
