@@ -1,69 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224D93D9020;
-	Tue,  6 Oct 2026 22:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30CD3B2D0A
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 22:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791326708; cv=none; b=UD24OYIgsWbaFOgqg+2EXbqeGBy/WC2d0jX7NUK+eVvJU/su1O3K5+7V+1qDEIoERhoLKSu3JJpt8GrCTZZ9AmfzyILiiax7g0cVatKg7Df61aQjj22RfLieiwqqY31qx+1/G7ZJeZ+2e2Cmrz+I1Y9TItCwCTCtM/GpKw28/q8=
+	t=1791326709; cv=none; b=uoRqGh1s4RU9EpeRlVwVR1XHYfz9SI4qC4fXETFvrkwK2GE5eeKpz8ndeTPibYBjfoEf7qITl7ONKVFD7r5iMuXbeYp76L94gk9MBy4oqZmPfzmf2X/tl4Qp8VPypzPjJxvWx6UCraw9EgdM/NBuCa7wnR5iGc4Up3iB63T/S5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791326708; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gwiMB154XmSTcswAz1c+nICH3T2gAYaT5K+BNYyDkM8BKegp8zdZk9wqaE75QcQOT69CJrikCNGUJ1gvBV2aSyL6eXpAjCfs0rJvEs9bF0x10nE01rzZv3B5h9P6lpyG7rI0IhTc8Hevk++45tUKW6YAUpASK6mYVXjXsLp+cIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JRt56TZf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791326709; c=relaxed/simple;
+	bh=Po4CubYmpzshj/b95OwHjNpNV2VhSvEGKh2Cuy8eVTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YpRperXos9kPlLqNUYYm5S7U8XwzbJUYKX+hDRm4L4RMFN4prHm1ID7/Vmmsop/L4s6FCU91IRs/rWOMyELAALdmqPaeLBa2zrfG/asWGW9zkLPpKAJBUfYx3AmwQ53ltgNoZ/8fQueeBjNr2njT42IyQLsKCpirhwdyNDdv7mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJGYDNsY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JRt56TZf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E161F0089D;
-	Tue,  6 Oct 2026 22:44:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJGYDNsY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859BC1F0089B;
+	Tue,  6 Oct 2026 22:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791326652;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JRt56TZfdVGUHMpZ795hhhuxEPi16EJHzgB2pK6Czvmgpi23b2x/tWGb82KZBoz9v
-	 6+9UgLzd+PwcrEDpsufFG95+YtlzmJZUwJYIabZ34LNPWYKUljMZ0URzBDnRFS6XB+
-	 Qd+JB2cmPPsv3xSnOZvsYbGP0SAWidr+ChRWu1X/SAgyN8Ifx4LTszU9rGv7+zlpnj
-	 p8RrjExGitQ8o+RSMuLR43DtFVwbVobE/5uMyOJS1LPvbgREEGV20Ecop+TOK08Fgs
-	 v+GXlZS/q2Win9uUSSDnT0+Rln/y02/VAvoB4gfZAGoMGgUF8U/LrReUTFvUd0iTMA
-	 F2yBUWne3dRFQ==
-From: netdev-bot+sinfo@kernel.org
-To: Kyle Zeng <kylebot@openai.com>
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- outbounddisclosures@openai.com
-Subject: Re: [PATCH net] neighbour: stop using device addresses in hashes
-Date: Tue, 06 Oct 2026 22:44:11 +0000
-Message-ID: <179132665174.2231598.17151881719703559262@kernel.org>
-In-Reply-To: <20261006224118.50200-1-kylebot@openai.com>
-References: <20261006224118.50200-1-kylebot@openai.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1791326648;
+	bh=EkrhbIbqd60I6p2DSLDTwk/2TO37DH7Mz6i1AOqruL4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=jJGYDNsYhdvzERg1NK2JsBDOoxDblcqaY6OWRUuYNlH8z3pr5dMOtSa5zIQs/dMUy
+	 sVlZ1eiY9YZTyDMbrX4qz0wN5ohpJwrBWt+slHuQ+4SXN4BMcdwsCsJbkMeTSGbDCG
+	 2Ep3/atnu74/plyr8OeK5+t+maaltTMO4OwHel3GN65h+9cXmkFJB/63m8POFuArhH
+	 4uGoGnqQmzidpNUwPUWB5rtaha+1bN3BiQIMQUCHOTIW8c588ZfBV9USweX0aVRkwx
+	 2tkAZZMbucoVXXQORS7pYnnfxpy3LGf/O0eljzkWsbkJ5ih8TIWF7Eh/yLn/ed8kdh
+	 7pBDrutDzQEFQ==
+Date: Tue, 6 Oct 2026 15:44:07 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Justin Chen <justin.chen@broadcom.com>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ bcm-kernel-feedback-list@broadcom.com, nb@tipi-net.de,
+ florian.fainelli@broadcom.com, opendmb@gmail.com
+Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in
+ SW_RESET, restore it to SW_RESET
+Message-ID: <20261006154407.64ecac6b@kernel.org>
+In-Reply-To: <a1dc7c80-acef-479b-ad03-dc83164d77c2@broadcom.com>
+References: <20260930230634.3132729-1-justin.chen@broadcom.com>
+	<179080972360.31693.266631430009737406@kernel.org>
+	<20261001184130.2b7ab18a@kernel.org>
+	<897ffc5a-48ad-4516-89f2-0cdac082d7a8@broadcom.com>
+	<20261005182721.776af8b8@kernel.org>
+	<a1dc7c80-acef-479b-ad03-dc83164d77c2@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On Tue, 6 Oct 2026 15:29:01 -0700 Justin Chen wrote:
+> On 10/5/26 6:27 PM, Jakub Kicinski wrote:
+> > On Fri, 2 Oct 2026 09:16:15 -0700 Justin Chen wrote:  
+> >> The issue was hit in production and I verified the sequence keeps the TX
+> >> disabled in my standalone test. I tested on an internal development
+> >> board with bcm77122, but should be reproducible on any genet HW that
+> >> supports power management.  
+> > 
+> > I obviously meant that you should respond to all the fix info requests.
+> > Not just this one in particular.  
+> 
+> Sorry Jakub, I am not understanding what you are asking for. I believe I 
+> answered the questions above? Or am I missing something else?
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I mean other threads, immediate example:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+https://lore.kernel.org/all/20260929203400.1588868-1-justin.chen@broadcom.com/
