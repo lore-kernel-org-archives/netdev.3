@@ -1,137 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED423B27F6;
-	Tue,  6 Oct 2026 09:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63A20E023;
+	Tue,  6 Oct 2026 09:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791278440; cv=none; b=HFDPWHtnBrCcO5GPje1a7xTMf5W2tb3wOhce6iMswNZ4i+GutWRkPVJ4S6gcw5mq+myOGkUwOIsEjCp+EzVCNQNq6WWVVKsIsVJEhkOURvySTfdFbe6x42Es71K28nOFNp5lgwjDoBYx9Mlpk9xyl7UZ4i/L5UvxrUxBHPk2tIs=
+	t=1791278626; cv=none; b=P/408mi1bQkSfq9uiFTis+CelkYY4SU7BuxHNrQMy+tuDcR2BWVmACFbHRrM87S0Kefa6RBqApFY5HXJqUJFFMAqoeGLtoJ3sdCPiJUUFCn9duqAzgbheo3665ClqAmqpb5cEfXc4/LGaaUFuVMObYHsh1cCOVh2KKnSR+Y9/tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791278440; c=relaxed/simple;
-	bh=1m3aTK6Z5wncbNPSgJ3TC1n9HxPYagStQRHXEMHg3AM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MXwmSjAgmg8HVKM80nnLISe9efcs0vP95NDunyCKvoTZvI/tJ36qGkojzWOMOHZGjSj9xecHi/psLYgZQb7IC9NnxlG359s1xyOclQ9iosph+NfbEQCYgcuNKpw7eBGj2G8GvThHf+OHRNJ0Z15MLoODcf01M3ddSz7hrhVWV54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVpLBxgf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791278626; c=relaxed/simple;
+	bh=yGXXMeKiOZ+KVCka5I2kJRDPS1o/PlK18aTBWnQLGmc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=dfz5F681oWTtmJmj2RrWGanKgjy7cEDCF1iU8GelcM+zCqgjtktdM6oimt/LjyfFCeFibW0AcHwIP7mtXkJk+rJCPExKrCl7bRn/jSnmJ81mB5MLJ7sdEgTb57yQ03xcMdhok9asVDu/RETmQrcBQ2LhZSe+rWLS0O2+sUBJO+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=c9s502SB; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVpLBxgf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888BE1F008A6;
-	Tue,  6 Oct 2026 09:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791278436;
-	bh=CnyrpAYa14sI6txd4i9BRZdPd5nnZg7VR0kQkLdWkQw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VVpLBxgfM0rONG8Wiwrrt+BhOMXh4zL2IuOALKVYginZxUX/sgl5lHJGPcHCzPhYb
-	 xyIfyzfGeLK/YZIAtGx2FM9tYy89UNeowwgeonbhVtB58jYPR2yraJiEpMbBWJSUcM
-	 uFhrZFhuZ+BXwXQaodLHmPNB+kvd1+oP7enMIKBsad3i0IVDBEDqE0GQGhCq1hJUnb
-	 D2+A7jGE4SpDgT1woYYm1nBOD+7fNCvcyKFOFfjDaaGHCXmx/RMcb3o2Rne/4ggJoC
-	 o06DCfwkWu0JNR7R3YwQ/R5QdgSp6E6dt2UoXzMLA5BsbnK2gc1kQpJJbKrFH4MlAc
-	 tQ1OaEdUcNw4w==
-From: Kees Cook <kees@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-Cc: Kees Cook <kees@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	netdev@vger.kernel.org,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	linux-hardening@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v6 8/8] net: skb: isolate skb data area allocations into a separate bucket
-Date: Tue,  6 Oct 2026 02:20:34 -0700
-Message-ID: <20261006092035.166776-8-kees@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261006092030.got.500-kees@kernel.org>
-References: <20261006092030.got.500-kees@kernel.org>
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="c9s502SB"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6969NJML02776296, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1791278599; bh=yGXXMeKiOZ+KVCka5I2kJRDPS1o/PlK18aTBWnQLGmc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=c9s502SBxauUhDLHE6r+QTKGpsOUirCyP+JktLjQma6rny31nAS/5q5xDEw6S9aib
+	 LsiEOI3BWCOdJl96fGABQTXbTnA+rSRX/Xst3imWORvp1r4o9fl2MRjWAiRsqLZct5
+	 gIPU/lk+IQ0u4DIZYvA/uB8MjvMuMgaGG5kfKnU96OlU6Ikd+69ucxd2L58MA0I/Fa
+	 IYegLXOJACX/zz/vbZxTyzaDeRJOMnk4Zy2OBzPOkoA0iunS6F7aXV342LTS78AklU
+	 nIhMfW90H2xN3sblHxpsZyP0dqtRC68h50Sv9fn679jadWVzE7nRlnFGVK81WtCzL+
+	 Pq09yWBRx2Fsg==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6969NJML02776296
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 6 Oct 2026 17:23:19 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 17:23:19 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 17:23:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Tue, 6 Oct 2026 17:23:08 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: RE: [PATCH net-next v5 2/9] r8152: split RTL_VER_17 into QFN68 and
+ QFN100 package variants
+Thread-Topic: [PATCH net-next v5 2/9] r8152: split RTL_VER_17 into QFN68 and
+ QFN100 package variants
+Thread-Index: AQHdUYTjAkeImQ24PkiPdemOkktlFLbuNqwAgAINqMA=
+Date: Tue, 6 Oct 2026 09:23:07 +0000
+Message-ID: <b3471b4acf7047169eb92258d710e6f5@realtek.com>
+References: <20261001091144.28191-3-nic_swsd@realtek.com>
+ <179119424050.434549.6174729043039044928@kernel.org>
+In-Reply-To: <179119424050.434549.6174729043039044928@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3264; i=kees@kernel.org; h=from:subject; bh=croNj7wGZJutVq0MdlBIPVhcFuxS4L8MSQxkndGPUZM=; b=owGbwMvMwCVmps19z/KJym7G02pJDFlH9iZOsbhvGdjwZt/kH1+3q/4/WHJ8GWfDpJT5Ok/OC SW8kLR63FHKwiDGxSArpsgSZOce5+Lxtj3cfa4izBxWJpAhDFycAjCRXx6MDH0LL/dzTltYrfc+ 6GZ+x5LTld4lV7P9l/OHuu89cDfLoJbhn1ZvG9/Us2n/vislCfxZ7Lvh12nXul8nlY/8903zi5/ 8nwsA
-X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
 
-From: Pedro Falcato <pfalcato@suse.de>
-
-SKB data area allocations (as done from alloc_skb()) use kmalloc().
-These allocations can be variably sized and their contents can be more
-or less controlled from userspace, which makes them useful for attackers
-that want to overwrite a use-after-free'd object from the same kmalloc slab
-(which often just requires the sizes to roughly match into the same kmalloc
-bucket). [0] is an easy example of an exploit that uses netlink skb
-allocation to target another similarly-sized accidentally freed object.
-
-While other mitigations like CONFIG_RANDOM_KMALLOC_CACHES exist, these are
-probabilistic. Use the existing kmem buckets API to further isolate these
-allocations in a guaranteed fashion, when CONFIG_SLAB_BUCKETS=y.
-
-AF_UNIX sets sk_allocation to GFP_KERNEL_ACCOUNT, and those skb data
-areas, the ones most worth isolating, stay in the set, where memcg
-charges them as it would in the general caches. GFP_DMA falls back to
-the general caches, being passed to an skb allocator only by rare
-devices.
-
-Link: https://github.com/google/security-research/blob/master/pocs/linux/kernelctf/CVE-2023-4207_lts_cos_mitigation_2/docs/exploit.md [0]
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
----
- net/core/skbuff.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 966af3beed94..6f6b5f4cb39f 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -586,6 +586,8 @@ struct sk_buff *napi_build_skb(void *data, unsigned int frag_size)
- }
- EXPORT_SYMBOL(napi_build_skb);
- 
-+static kmem_buckets *skb_data_buckets __ro_after_init;
-+
- static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- {
- 	if (!gfp_pfmemalloc_allowed(flags))
-@@ -593,11 +595,12 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
- 	if (!obj_size)
- 		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
- 					     flags, node);
--	return kmalloc_node_track_caller(obj_size, flags, node);
-+	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
-+						    flags, node);
- }
- 
- /*
-- * kmalloc_reserve is a wrapper around kmalloc_node_track_caller that tells
-+ * kmalloc_reserve is a wrapper around a caller-tracked kmalloc that tells
-  * the caller if emergency pfmemalloc reserves are being used. If it is and
-  * the socket is later found to be SOCK_MEMALLOC then PFMEMALLOC reserves
-  * may be used. Otherwise, the packet data may be discarded until enough
-@@ -634,7 +637,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
- 	 * Try a regular allocation, when that fails and we're not entitled
- 	 * to the reserves, fail.
- 	 */
--	obj = kmalloc_node_track_caller(obj_size,
-+	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
- 					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
- 					node);
- 	if (likely(obj))
-@@ -5235,6 +5238,7 @@ void __init skb_init(void)
- 						0,
- 						SKB_SMALL_HEAD_HEADROOM,
- 						NULL);
-+	skb_data_buckets = kmem_buckets_create("skb_data", 0, INT_MAX);
- 	skb_extensions_init();
- }
- 
--- 
-2.55.0
-
+PiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3Vu
+ZCAyIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlci4NCj4gDQo+IENyaXRpY2FsOiAw
+IMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAyICgxKSDCtyBMb3c6IDANCj4gDQo+IElmIHlvdSBiZWxp
+ZXZlIG5vbmUgb2YgdGhlIGlzc3VlcyBhcmUgbGVnaXRpbWF0ZSwgcGxlYXNlIHJlcGx5IHRvIGVh
+Y2ggaXNzdWUgb2YNCj4gTWVkaXVtIHNldmVyaXR5IG9yIGhpZ2hlciBhbmQgZXhwbGFpbiB3aHkg
+dGhlIEFJIGlzIHdyb25nLg0KPiBJZiBhbnkgb2YgdGhlbSBhcmUgbGVnaXRpbWF0ZSBhbmQgeW91
+IHBsYW4gdG8gcmVzcGluLCBwbGVhc2UgbGV0IHBhdGNod29yayBrbm93DQo+IGJ5IGluY2x1ZGlu
+ZyAicHctYm90OiBjciIgYXMgYSBzZXBhcmF0ZSBsaW5lIGF0IHRoZSBlbmQgb2YgeW91ciByZXBs
+eSAob25lIHN1Y2gNCj4gcmVwbHkgcGVyIHNlcmllcyBpcyBlbm91Z2gpLg0KPiANCj4gLSBbTWVk
+aXVtXSBUaGUgY29tbWl0IG1lc3NhZ2Ugc2F5cyB0aGUgc3BsaXQgaXMgbmVlZGVkIGJlY2F1c2Ug
+UUZONjggYW5kDQo+ICAgUUZOMTAwICJuZWVkIGRpZmZlcmVudCBmaXJtd2FyZSBhbmQgYSBwYWNr
+YWdlLXNwZWNpZmljIHUycGh5IGJhY2t1cC3igKYNCj4gLSBbTWVkaXVtXSBJbiBfX3J0bF9nZXRf
+cGtnX2RldCgpIChkcml2ZXJzL25ldC91c2IvcjgxNTIuYyksIHRoZSByZXRyeQ0KPiAgIGxvb3Ag
+YGZvciAoaSA9IDAsIHJldCA9IDA7IGkgPCAzICYmIHJldCAhPSA0OyBpKyspIHJldCA94oCmDQo+
+IA0KPiBQcmUtZXhpc3RpbmcgaXNzdWVzOg0KPiAtIFtNZWRpdW1dIFRoaXMgcHJvYmxlbSB3YXNu
+J3QgaW50cm9kdWNlZCBieSB0aGlzIHBhdGNoLCBidXQgaW4NCj4gICBfX3J0bF9nZXRfaHdfdmVy
+KCkgKGRyaXZlcnMvbmV0L3VzYi9yODE1Mi5jKSB0aGUgYnVmZmVyIGB0bXBgIGlz4oCmDQo+IA0K
+PiAtLQ0KPiANCj4gcjgxNTI6IHNwbGl0IFJUTF9WRVJfMTcgaW50byBRRk42OCBhbmQgUUZOMTAw
+IHBhY2thZ2UgdmFyaWFudHMNCj4gDQo+IFRoaXMgY29tbWl0IHNwbGl0cyBSVExfVkVSXzE3IGlu
+dG8gUlRMX1ZFUl8xN19RRk42OCBhbmQNCj4gUlRMX1ZFUl8xN19RRk4xMDAuDQo+IFRoZSBwYWNr
+YWdlIGlzIGRldGVjdGVkIGJ5IGEgbmV3IF9fcnRsX2dldF9wa2dfZGV0KCkgaGVscGVyIHRoYXQg
+cmVhZHMNCj4gUExBX1BLR19ERVQuIEV2ZXJ5IFJUTF9WRVJfMTcgc3dpdGNoIGNhc2Ugbm93IGhh
+bmRsZXMgYm90aCB2YXJpYW50cywgYW5kDQo+IHI4MTU5X2luaXQoKSBnYWlucyBhIHUycGh5IGJh
+Y2t1cCByZXN0b3JlIHdyaXRlIHRoYXQgb25seSBhcHBsaWVzIHRvIFFGTjY4Lg0KPiANCj4gPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMgYi9kcml2ZXJzL25ldC91c2Ivcjgx
+NTIuYyBpbmRleA0KPiA+IDRkOGYwODE1ZDc5ZDEuLjMwYWY2ZWQzYTYzOGYgMTAwNjQ0DQo+ID4g
+LS0tIGEvZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC91c2Iv
+cjgxNTIuYw0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiBAQCAtMTAxNzIsNyArMTAxOTQsOCBAQCBz
+dGF0aWMgaW50IHJ0bF9md19pbml0KHN0cnVjdCByODE1MiAqdHApDQo+ID4gICAgICAgY2FzZSBS
+VExfVkVSXzE2Og0KPiA+ICAgICAgICAgICAgICAgcnRsX2Z3LT5md19uYW1lICAgICAgICAgPSBG
+SVJNV0FSRV84MTU3XzE7DQo+ID4gICAgICAgICAgICAgICBicmVhazsNCj4gPiAtICAgICBjYXNl
+IFJUTF9WRVJfMTc6DQo+ID4gKyAgICAgY2FzZSBSVExfVkVSXzE3X1FGTjY4Og0KPiA+ICsgICAg
+IGNhc2UgUlRMX1ZFUl8xN19RRk4xMDA6DQo+ID4gICAgICAgICAgICAgICBydGxfZnctPmZ3X25h
+bWUgICAgICAgICA9IEZJUk1XQVJFXzgxNTlfMTsNCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0K
+PiBUaGUgY29tbWl0IG1lc3NhZ2Ugc2F5cyB0aGUgdHdvIHBhY2thZ2VzICJuZWVkIGRpZmZlcmVu
+dCBmaXJtd2FyZSBhbmQgYQ0KPiBwYWNrYWdlLXNwZWNpZmljIHUycGh5IGJhY2t1cC1yZXN0b3Jl
+IHBhdGNoIi4gSG93ZXZlciwgcnRsX2Z3X2luaXQoKSBzdGlsbCBnaXZlcw0KPiBib3RoIFJUTF9W
+RVJfMTdfUUZONjggYW5kIFJUTF9WRVJfMTdfUUZOMTAwIHRoZSBzYW1lIGZpcm13YXJlLA0KPiBG
+SVJNV0FSRV84MTU5XzEgKCJydGxfbmljL3J0bDgxNTktMS5mdyIpLg0KPiANCj4gVGhlIGRyaXZl
+ciBzdGlsbCBoYXMgb25seSBvbmUgODE1OSBmaXJtd2FyZSBkZWZpbmUgYW5kIG9uZQ0KPiBNT0RV
+TEVfRklSTVdBUkUoRklSTVdBUkVfODE1OV8xKS4gVGhlIGxhdGVyIHBhdGNoZXMgaW4gdGhlIHNl
+cmllcywgdXANCj4gdG8NCj4gInI4MTUyOiBlbmFibGUgVVBTIGZvciBSVEw4MTU3IGFuZCBSVEw4
+MTU5IFFGTjY4IiwgZG8gbm90IGNoYW5nZSB0aGlzDQo+IGVpdGhlci4NCj4gDQo+IElzIHBlci1w
+YWNrYWdlIGZpcm13YXJlIHNlbGVjdGlvbiBtaXNzaW5nIGZyb20gdGhpcyBwYXRjaD8gT3Igc2hv
+dWxkIHRoZQ0KPiBjb21taXQgbWVzc2FnZSBkcm9wIHRoZSBjbGFpbSBhYm91dCBkaWZmZXJlbnQg
+ZmlybXdhcmU/DQoNCkkgd2lsbCByZXdvcmQgdGhlIGNvbW1pdCBtZXNzYWdlIHRvIGRyb3AgdGhl
+IGNsYWltLg0KDQo+IA0KPiA+ICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gICAgICAgZGVmYXVs
+dDoNCj4gPiBAQCAtMTAxODIsOSArMTAyMDUsMzggQEAgc3RhdGljIGludCBydGxfZndfaW5pdChz
+dHJ1Y3QgcjgxNTIgKnRwKQ0KPiA+ICAgICAgIHJldHVybiAwOw0KPiA+ICB9DQo+ID4NCj4gPiAr
+c3RhdGljIHUzMiBfX3J0bF9nZXRfcGtnX2RldChzdHJ1Y3QgdXNiX2RldmljZSAqdWRldikgew0K
+PiA+ICsgICAgIHUzMiBwa2dfZGV0ID0gMDsNCj4gPiArICAgICBfX2xlMzIgKnRtcDsNCj4gPiAr
+ICAgICBpbnQgcmV0LCBpOw0KPiA+ICsNCj4gPiArICAgICB0bXAgPSBrbWFsbG9jX29iaigqdG1w
+KTsNCj4gPiArICAgICBpZiAoIXRtcCkNCj4gPiArICAgICAgICAgICAgIHJldHVybiAwOw0KPiA+
+ICsNCj4gPiArICAgICBmb3IgKGkgPSAwLCByZXQgPSAwOyBpIDwgMyAmJiByZXQgIT0gNDsgaSsr
+KQ0KPiA+ICsgICAgICAgICAgICAgcmV0ID0gdXNiX2NvbnRyb2xfbXNnKHVkZXYsIHVzYl9yY3Zj
+dHJscGlwZSh1ZGV2LCAwKSwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICBSVEw4MTUyX1JFUV9HRVRfUkVHUywNCj4gUlRMODE1Ml9SRVFUX1JFQUQsDQo+ID4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUExBX1BLR19ERVQsIE1DVV9UWVBFX1BMQSwN
+Cj4gdG1wLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpemVvZigq
+dG1wKSwNCj4gPiArIFVTQl9DVFJMX0dFVF9USU1FT1VUKTsNCj4gPiArDQo+ID4gKyAgICAgaWYg
+KHJldCA9PSBzaXplb2YoKnRtcCkpIHsNCj4gPiArICAgICAgICAgICAgIGlmIChpICE9IDApDQo+
+ID4gKyAgICAgICAgICAgICAgICAgICAgIGRldl93YXJuKCZ1ZGV2LT5kZXYsDQo+ID4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICJOZWVkZWQgJWQgcmV0cmllcyB0byByZWFkDQo+IHBh
+Y2thZ2VcbiIsDQo+ID4gKyBpKTsNCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBXb24ndCB0
+aGlzIHdhcm5pbmcgZmlyZSBvbiBldmVyeSBzdWNjZXNzZnVsIHJlYWQ/IFRoZSBsb29wIGluY3Jl
+bWVudHMgaSBhZnRlcg0KPiB0aGUgaXRlcmF0aW9uIHRoYXQgc3VjY2VlZHMuIElmIHRoZSBmaXJz
+dCB1c2JfY29udHJvbF9tc2coKSByZXR1cm5zIDQsIGkgaXMgYWxyZWFkeQ0KPiAxIHdoZW4gdGhl
+IGxvb3AgZXhpdHMsIHNvIHRoZSBpICE9IDAgY2hlY2sgaXMgYWx3YXlzIHRydWUuDQoNCkFjdHVh
+bGx5LCBJIHdpbGwgZml4IGl0Lg0KDQo+IA0KPiBUaGUgcHJpbnRlZCBjb3VudCBpcyBhbHNvIG9u
+ZSB0b28gaGlnaDogMSBmb3IgYSBmaXJzdC10cnkgc3VjY2VzcywgMyBmb3IgYSBzdWNjZXNzDQo+
+IG9uIHRoZSB0aGlyZCBhdHRlbXB0Lg0KPiANCj4gVGhlIHZlcnNpb24gcmVhZCBsb29wIGluIF9f
+cnRsX2dldF9od192ZXIoKSBhdm9pZHMgdGhpcyBieSBicmVha2luZyBvdXQgb24NCj4gc3VjY2Vz
+czoNCj4gDQo+ICAgICAgICAgZm9yIChpID0gMDsgaSA8IDM7IGkrKykgew0KPiAgICAgICAgICAg
+ICAgICAgcmV0ID0gdXNiX2NvbnRyb2xfbXNnKC4uLik7DQo+ICAgICAgICAgICAgICAgICBpZiAo
+cmV0ID4gMCkgew0KPiAgICAgICAgICAgICAgICAgICAgICAgICBvY3BfZGF0YSA9IChfX2xlMzJf
+dG9fY3B1KCp0bXApID4+IDE2KSAmDQo+IFZFUlNJT05fTUFTSzsNCj4gICAgICAgICAgICAgICAg
+ICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICB9DQo+ICAgICAgICAgfQ0KPiANCj4g
+ICAgICAgICBpZiAoaSAhPSAwICYmIHJldCA+IDApDQo+ICAgICAgICAgICAgICAgICBkZXZfd2Fy
+bigmdWRldi0+ZGV2LCAiTmVlZGVkICVkIHJldHJpZXMgdG8gcmVhZA0KPiB2ZXJzaW9uXG4iLCBp
+KTsNCj4gDQo+IF9fcnRsX2dldF9od192ZXIoKSBydW5zIGZyb20gYm90aCB0aGUgY2Znc2VsZWN0
+b3IgYW5kIHRoZSBwcm9iZSBwYXRocywgc28gdGhlDQo+IGZhbHNlIHdhcm5pbmcgY2FuIGFwcGVh
+ciBtb3JlIHRoYW4gb25jZSBwZXIgUlRMODE1OSBwbHVnLWluLiBUaGUgY29kZSBpcyBzdGlsbA0K
+PiB0aGUgc2FtZSBhdCB0aGUgZW5kIG9mIHRoZSBzZXJpZXMuDQo+IA0KPiA+ICsNCj4gPiArICAg
+ICAgICAgICAgIHBrZ19kZXQgPSBfX2xlMzJfdG9fY3B1KCp0bXApICYgUEtHX01BU0s7DQo+ID4g
+KyAgICAgfQ0KPiA+ICsNCj4gPiArICAgICBrZnJlZSh0bXApOw0KPiA+ICsgICAgIHJldHVybiBw
+a2dfZGV0Ow0KPiA+ICt9DQo+ID4gKw0KPiA+ICBzdGF0aWMgdTggX19ydGxfZ2V0X2h3X3Zlcihz
+dHJ1Y3QgdXNiX2RldmljZSAqdWRldikgIHsNCj4gPiAgICAgICB1MzIgb2NwX2RhdGEgPSAwOw0K
+PiA+ICsgICAgIHUzMiBwa2dfZGV0ID0gMDsNCj4gPiAgICAgICBfX2xlMzIgKnRtcDsNCj4gPiAg
+ICAgICB1OCB2ZXJzaW9uOw0KPiA+ICAgICAgIGludCByZXQ7DQo+IA0KPiBbU2V2ZXJpdHk6IE1l
+ZGl1bV0NCj4gVGhpcyBpc24ndCBhIGJ1ZyBpbnRyb2R1Y2VkIGJ5IHRoaXMgcGF0Y2gsIGJ1dCB0
+aGUgUExBX1RDUjAgcmVhZCBpbg0KPiBfX3J0bF9nZXRfaHdfdmVyKCkgYWNjZXB0cyBhIHJlcGx5
+IG9mIGFueSBwb3NpdGl2ZSBsZW5ndGg6DQo+IA0KPiAgICAgICAgIHRtcCA9IGttYWxsb2Nfb2Jq
+KCp0bXApOw0KPiAgICAgICAgIC4uLg0KPiAgICAgICAgICAgICAgICAgaWYgKHJldCA+IDApIHsN
+Cj4gICAgICAgICAgICAgICAgICAgICAgICAgb2NwX2RhdGEgPSAoX19sZTMyX3RvX2NwdSgqdG1w
+KSA+PiAxNikgJg0KPiBWRVJTSU9OX01BU0s7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGJy
+ZWFrOw0KPiAgICAgICAgICAgICAgICAgfQ0KPiANCj4ga21hbGxvY19vYmooKSBkb2VzIG5vdCB6
+ZXJvIHRoZSBidWZmZXIuIElmIGEgZmF1bHR5IG9yIG1hbGljaW91cyBkZXZpY2Ugc2VuZHMNCj4g
+b25seSAxIHRvIDMgYnl0ZXMsIGNhbiB0aGUgdXBwZXIgYnl0ZXMgb2YgKnRtcCBzdGlsbCBob2xk
+IGxlZnRvdmVyIGhlYXAgZGF0YSB0aGF0DQo+IHRoZW4gZ2V0cyBkZWNvZGVkIGFzIHRoZSBjaGlw
+IHZlcnNpb24/DQo+IA0KPiBUaGF0IGNvdWxkIG1pc2lkZW50aWZ5IHRoZSBjaGlwLCBvciBsZWFr
+IHVuaW5pdGlhbGl6ZWQgaGVhcCBieXRlcyB0byBkbWVzZw0KPiB0aHJvdWdoIHRoZSAiVW5rbm93
+biB2ZXJzaW9uIDB4JTA0eCIgbWVzc2FnZS4NCj4gDQo+IFRoZSBuZXcgX19ydGxfZ2V0X3BrZ19k
+ZXQoKSBoZWxwZXIgYWxyZWFkeSByZXF1aXJlcyByZXQgPT0gc2l6ZW9mKCp0bXApLg0KPiBXb3Vs
+ZCB0aGUgc2FtZSBjaGVjayBtYWtlIHNlbnNlIGhlcmU/DQo+IA0KPiBbIC4uLiBdDQo+IA0KPiAt
+LQ0KPiBTYXNoaWtvIEFJIHJldmlldyDCtw0KPiBodHRwczovL25ldGRldi1haS5ib3RzLmxpbnV4
+LmRldi9zYXNoaWtvLyMvcGF0Y2hzZXQvMjAyNjEwMDEwOTExNDQuMjgxOTEtMQ0KPiAtbmljX3N3
+c2QlNDByZWFsdGVrLmNvbQ0KDQpCZXN0IFJlZ2FyZHMsDQpDaGloLUthaQ0KDQotLS0NCnB3LWJv
+dDogY3INCg==
