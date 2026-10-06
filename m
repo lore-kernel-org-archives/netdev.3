@@ -1,168 +1,325 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0F23B3BFE
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 12:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FFD42CAE0;
+	Tue,  6 Oct 2026 12:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791290870; cv=none; b=OJlpsNqSTLJnJaVgdmg7c69rXR/1byApijeSLy1p6Ysrlqong7z8wuumEqM7uKcrpUofzDNwxRX+bgLNs65GtDRatl0OV0TnQpJoUv1p1tfSkyfYxNDwHesZrvcjGwyw1mpnM2UGeNp8zygn3x41QNmCjFGpGNi7Wk1oFtvI0DY=
+	t=1791290948; cv=none; b=MsfC31GX2nDSlcoztUGR+yJ4mXbSv1DQwzMD+gjSHlUM3vB4F4G5+pCkPemjQa6xGgz9e6prtwTIr4tRkh27DCBS7Eax/VWlPNtMflnH4zTm9WEo5WUJ55ET34FrLA2raZL35weCbMEk1XGWOGJ9MqkZMHo9PCCVDJ4UbT0nZHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791290870; c=relaxed/simple;
-	bh=8BEd9pOmcZGMI9o1dv26yM8HUC5GCtUJRwGdm5AKk/A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Os+E7v2KACTWgzN8QsNGgsn8MHVmLNL6xxSX5W0TXqU+hl5wdJh54DhLqyukubEXpmDi+gmu9LfB0IPf/DzC67QSvri9aQcSesA/T9oqQJkm5dxKw5jvaiTkSCzAIlmh+dt8PMnGkGb9G5eLIdN3I7YNKMKCzKi+2HRuNikMWbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=Q6T8ZaDG; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1791290948; c=relaxed/simple;
+	bh=bt2Kyyd45F3UQpAxqVewFKugC8GodJpfuF+rBuT+ioc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dRAScBen7QYTHZAk+8zU2coOx/mzoi8S1GI07lLVvyr6jI53i07j7SlxNaBGGel4InBSs4Hfs74PU3nrCscHx+pU0L2oV63MGVFQuzPn7ySiIOBfUqH/ymX6ytyzuwbZNjX1Q0SBZMX9CBkZzg0Ila6PtJo41poNUXbf6FJn2t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=o2urgcrk; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="Q6T8ZaDG"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48c4649b35bso2898270f8f.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 05:47:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1791290863; x=1791895663; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OC5mtqfzbzgIq1/X/NhSCNyVOEfRnsAKjvbmtawFpSk=;
-        b=Q6T8ZaDGBQalq5djdVaWXQdktxralCcEzEHUyls7DfUmEQW2Ra8vNLQ3s2eX5N23p6
-         Z4dBz4/HE8GeAH86foTJ2eYONGtasg7k/6Y/Yh3GV+8vzdbSK1eBReE93iKQvjzfDUf8
-         FHBVG4YjcyQuUOlQb+E/pUMC44QDRbbu4hNHvmMXq0O9bsFubTg4hzXREPsdpEVjysXp
-         BVfjT4wKNhFTWCqmCgGPLa+yEMNLrU9nLH3tmJQFKKwpGPwcTc3+BbfEppAi25b/N0em
-         g884yTzW3QJczyUoM+o8Hf7DotaILrkNsikGHJuV/mrSPV/bpOdFZ+R2521ZXIcr1Wqa
-         hqBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791290863; x=1791895663;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OC5mtqfzbzgIq1/X/NhSCNyVOEfRnsAKjvbmtawFpSk=;
-        b=mAAJ+TwsE6UIQ80X97YObEEduwe80RgbC3Sy0q5OmQJco3uLJY1D5fClNEru5AnR1n
-         V81eMfjs9dUfPxdoKDi2g7Rrryy5BcvTvH5gtA06pFVC2FyHJnpsBWCl2TajJ7ByqCmy
-         S3Yp86rRTp9lJOcih65Cjmd31d5JU15Ppbakdv7iFRyHbJ5Mmw0pSQyU+8rlvQgcyZAB
-         qFcJ0pE1GvHp5te0YsOZEfDlXO94voBxvKjcRX7eAFD9L5VL64MkVZKPXaSaYEQZEkzV
-         WykNN0etxT1APrq24tRlhATNLSwwQQienSmBlpQgbQ8m0jsdrEFUxicgyxvfxkaJx6TH
-         2fSA==
-X-Forwarded-Encrypted: i=1; AKwUvBznMXFcYulOZHFInSHRx/+x6kROOeEUEzMyJ3tvi7lw1huWf5t1Xdu1WcyroY9TIE8bBcAZ3qI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKbctPCkGAlAwxTx7SRtOgiz07Gc8aHW/uRkVtCEEoZqAdq+vhT
-	3sIPMakCmUhCZV83d2yEF3togFQiHNrav4bbjezoNdFraXToTrh9azF3rZM3kkoi5hE=
-X-Gm-Gg: AYBFou0UOd0t1wi2hv3KD+Zf1fMuQ+mj0GAH1al2FBMa1GM4VHypoGznVahAYHlh9pD
-	7mQKLghlyRlGqoZcZz1avCrpqB6fRxpceIlXYBCntqo/kMsJJV7juN9msltBEyNBaZ/vpibBNx3
-	lSarheq1nqKktTuBM4gMxENfjHDABRA8QYOSQElDBz9J43sI4EOSVZMIXMl9JLyO8RNVqEy4R/N
-	73qqMPfME+DbqcuB4bnIItMAfW5KHOAELZYqu0IDx2LIGBnBpHDqTGu3oBvREOFyToI7QPk4Aii
-	ehht0CO7F8NS/AupAWguCaWOzd1x/YyxWXwjCrNGR35ES4FCuGrSV/FhfNtvKarwSHoyAQoUrXK
-	FdeAtPCqOuRRZBPCKOn06evCiu54gECT3+RwfuXdeEDspZqZV2L2IEO39GFipnPNXpHZxj1YRF0
-	vlLpbX/Je/twJtqQZ99SMvVxhzg//bbs1DH7szYO0Pl3DYqlASSw==
-X-Received: by 2002:a05:6000:2510:b0:48b:2a1:dfc1 with SMTP id ffacd0b85a97d-48c6d17d529mr2163808f8f.22.1791290862711;
-        Tue, 06 Oct 2026 05:47:42 -0700 (PDT)
-Received: from remote-01 ([84.17.55.224])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c622b4685sm9722003f8f.41.2026.10.06.05.47.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 05:47:42 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	netdev@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="o2urgcrk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=5YiNPITWqK30Kiy9ZsIp5HIBNcsrtx+hz6EOp6QsdvI=; b=o2
+	urgcrkxx98UQ4nvGw1KmJDCALdhVySQncwHuegOxmEvSHVZp2JbT70ymGZ3iSA72fMPmYyQczCI8m
+	W/KzUS8RSVrcDIMaWmEcWIou6zBjVS973Tnk2no4U3NT+jk/XYNAt+e6LULlUVTycf8zF7Jyax9WV
+	Ow+saoE4kPd4Mm4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xE4ax-009GK2-Gj; Tue, 06 Oct 2026 14:48:35 +0200
+Date: Tue, 6 Oct 2026 14:48:35 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Selvamani.Rajagopal@onsemi.com
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Conor Dooley <conor@kernel.org>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH net-next v6 3/3] net: dsa: let user ports wait for a PHY that probes late
-Date: Tue,  6 Oct 2026 15:47:31 +0300
-Message-ID: <20261006124731.1528963-4-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261006124731.1528963-1-f@lex.la>
-References: <20261006124731.1528963-1-f@lex.la>
+	Piergiorgio Beruto <pier.beruto@onsemi.com>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, Jerry Ray <jerry.ray@microchip.com>
+Subject: Re: [PATCH net-next v8 05/11] net: ethernet: oa_tc6: Support for
+ hardware timestamp
+Message-ID: <89dadff0-d78a-4d4d-8ac2-be299e00ae9b@lunn.ch>
+References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
+ <20260928-s2500-mac-phy-support-v8-5-7e011aacc309@onsemi.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260928-s2500-mac-phy-support-v8-5-7e011aacc309@onsemi.com>
 
-A user port connects its PHY once, when the switch sets up its ports.
-If that PHY needs firmware from the host and its driver is a module not
-loaded yet, the port gets no working PHY for the rest of the uptime.
+> +static bool oa_tc6_req_tx_hwtstamp(struct oa_tc6 *tc6, struct sk_buff *skb)
+> +{
+> +	bool drop = false;
+> +	u8 tsc;
+> +	u8 i;
+> +
+> +	lockdep_assert_held(&tc6->tx_skb_lock);
+> +
+> +	if (!skb || !(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP))
+> +		return drop;
+> +
+> +	if (!tc6->hw_tstamp_enabled)
+> +		goto out;
+> +	if (tc6->ts_config.tx_type != HWTSTAMP_TX_ON) {
+> +		tc6->tx_hwtstamp_lost++;
+> +		goto out;
+> +	}
+> +
+> +	tsc = tc6->ttsc_current_id;
+> +	for (i = 0; i < OA_TC6_TTSCC_REG_ID; i++) {
+> +		if (!(tc6->ts_ttsc_pending & BIT(tsc -
+> +		    OA_TC6_TTSCA_REG_ID)))
+> +			goto slot_found;
 
-Let a switch driver opt its user ports in to phylink waiting for such a
-PHY, and opt in mt7530. Until the PHY attaches, .port_enable sees a NULL
-phy, so the opt-in is per driver: qca8k dereferences that argument, and
-gswip programs the PHY address from it at open, so a late attach leaves
-it wrong until the next open. mt7530 does not use it. Shared ports are
-left out.
+The indentation is a bit off. Generally the whole of BIT(...) would be
+on the next line.
 
-Found on a Keenetic KN-1012 (MT7981B with an MT7531 switch), where the
-EN8811H behind lan4 has its driver on the root filesystem and lan4 was
-lost for the uptime.
+> +		tsc = oa_tc6_next_tsc(tsc);
+> +	}
+> +
+> +	/* All the three slots are waiting for its event. This skb
+> +	 * can't request timestamp. Marking it to be dropped.
+> +	 */
+> +	tc6->tx_hwtstamp_lost++;
+> +	drop = true;
+> +	goto out;
+> +
+> +slot_found:
+> +	tc6->ts_ttsc_pending |= BIT(tsc - OA_TC6_TTSCA_REG_ID);
+> +	tc6->ttsc_current_id = oa_tc6_next_tsc(tsc);
+> +	oa_tc6_tsinfo_tx(skb)->tsc = tsc;
+> +	skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+> +out:
+> +	return drop;
 
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
-Changes in v6: the dsa.h comment says .port_enable must not use its
-phy argument, rather than cope with a NULL one.
+The goto's here are a bit spaghetti code like. Since all out: does is
+return, maybe just use "return true" above.
 
- drivers/net/dsa/mt7530.c | 1 +
- include/net/dsa.h        | 5 +++++
- net/dsa/user.c           | 1 +
- 3 files changed, 7 insertions(+)
+>  static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
+>  {
+> +	u32 regs[OA_TC6_STATUS0_TTSC_REG_COUNT];
+> +	bool ts_valid = !!tc6->ptp_clock;
+>  	u32 value;
+>  	int ret;
+>  
+> -	ret = oa_tc6_read_register(tc6, OA_TC6_REG_STATUS0, &value);
+> +	/* When timestamp is disabled, there is no behavior change
+> +	 * as it reads only STATUS0 register. When enabled,
+> +	 * TTSCA_HIGH..TTSCC_LOW are fetched together with STATUS0
+> +	 * to avoid having to make second SPI transaction. Reading few
+> +	 * extra registers, even it may not be needed every time this
+> +	 * function is called, it is more efficient than making second
+> +	 * SPI transaction, when needed.
+> +	 */
+> +	ret = oa_tc6_read_registers(tc6, OA_TC6_REG_STATUS0, regs,
+> +				    ts_valid ?
+> +				    OA_TC6_STATUS0_TTSC_REG_COUNT : 1);
+>  	if (ret) {
+>  		netdev_err(tc6->netdev, "STATUS0 register read failed: %d\n",
+>  			   ret);
+>  		return ret;
+>  	}
+> +	value = regs[0];
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 7781a63b4e6f..e4c155605e27 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -3548,6 +3548,7 @@ mt7530_probe_common(struct mt7530_priv *priv)
- 	priv->ds->priv = priv;
- 	priv->ds->ops = &mt7530_switch_ops;
- 	priv->ds->phylink_mac_ops = &mt753x_phylink_mac_ops;
-+	priv->ds->phy_may_probe_late = true;
- 	mutex_init(&priv->reg_mutex);
- 	spin_lock_init(&priv->stats_lock);
- 	INIT_DELAYED_WORK(&priv->stats_work, mt7530_stats_poll);
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 5d12191b6f6f..04b151cd52ce 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -455,6 +455,11 @@ struct dsa_switch {
- 	 */
- 	u32			dscp_prio_mapping_is_global:1;
- 
-+	/* Drivers whose .port_enable does not use its phy argument may set
-+	 * this to let user ports wait for a PHY that needs host firmware.
-+	 */
-+	u32			phy_may_probe_late:1;
-+
- 	/* Listener for switch fabric events */
- 	struct notifier_block	nb;
- 
-diff --git a/net/dsa/user.c b/net/dsa/user.c
-index 041f9060c8ef..41075bb74193 100644
---- a/net/dsa/user.c
-+++ b/net/dsa/user.c
-@@ -2661,6 +2661,7 @@ static int dsa_user_phy_setup(struct net_device *user_dev)
- 
- 	dp->pl_config.dev = &user_dev->dev;
- 	dp->pl_config.type = PHYLINK_NETDEV;
-+	dp->pl_config.phy_may_probe_late = ds->phy_may_probe_late;
- 
- 	/* The get_fixed_state callback takes precedence over polling the
- 	 * link GPIO in PHYLINK (see phylink_get_fixed_state).  Only set
--- 
-2.53.0
+I assume there is a #define for register 0? It would be more readable
+to use the name.
 
+> +int oa_tc6_ptp_register(struct oa_tc6 *tc6, struct ptp_clock_info *info)
+> +{
+> +	int ret = 0;
+> +
+> +	/* Not supporting hardware timestamp isn't an error */
+> +	if (!tc6->hw_tstamp_supported)
+> +		return ret;
+> +
+> +	snprintf(info->name, sizeof(info->name), "%s",
+> +		 "OA TC6 PTP clock");
+
+Are names meant to be unique? Have you tested this on a board with
+multiple devices?
+
+
+> +	tc6->ptp_clock = ptp_clock_register(info, &tc6->spi->dev);
+> +	if (IS_ERR(tc6->ptp_clock)) {
+> +		ret = PTR_ERR(tc6->ptp_clock);
+> +		tc6->ptp_clock = NULL;
+> +		dev_err(&tc6->spi->dev, "Registration of %s failed\n",
+> +			info->name);
+> +	}
+> +
+> +	if (tc6->ptp_clock)
+> +		dev_info(&tc6->spi->dev, "%s registered. index %d\n",
+> +			 info->name, ptp_clock_index(tc6->ptp_clock));
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(oa_tc6_ptp_register);
+> +
+> +/**
+> + * oa_tc6_ptp_unregister - Unregisters clock related callbacks
+> + * @tc6: oa_tc6 struct.
+> + */
+> +void oa_tc6_ptp_unregister(struct oa_tc6 *tc6)
+> +{
+> +	if (tc6->ptp_clock) {
+> +		ptp_clock_unregister(tc6->ptp_clock);
+> +		tc6->ptp_clock = NULL;
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(oa_tc6_ptp_unregister);
+> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
+> index 403a9c22b5f1..06fe88f1ed7c 100644
+> --- a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
+> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
+> @@ -18,6 +18,9 @@
+>  #include <linux/wait.h>
+>  #include <linux/phy.h>
+>  
+> +/* Tx timestamp capture register A (high) */
+> +#define OA_TC6_REG_TTSCA_HIGH			(0x10)
+> +
+>  /* Control command header */
+>  #define OA_TC6_CTRL_HEADER_DATA_NOT_CTRL	BIT(31)
+>  #define OA_TC6_CTRL_HEADER_WRITE_NOT_READ	BIT(29)
+> @@ -33,6 +36,7 @@
+>  #define OA_TC6_DATA_HEADER_START_WORD_OFFSET	GENMASK(19, 16)
+>  #define OA_TC6_DATA_HEADER_END_VALID		BIT(14)
+>  #define OA_TC6_DATA_HEADER_END_BYTE_OFFSET	GENMASK(13, 8)
+> +#define OA_TC6_DATA_HEADER_TSC_OFFSET		GENMASK(7, 6)
+>  #define OA_TC6_DATA_HEADER_PARITY		BIT(0)
+>  
+>  /* Data footer */
+> @@ -44,6 +48,8 @@
+>  #define OA_TC6_DATA_FOOTER_START_VALID		BIT(20)
+>  #define OA_TC6_DATA_FOOTER_START_WORD_OFFSET	GENMASK(19, 16)
+>  #define OA_TC6_DATA_FOOTER_END_VALID		BIT(14)
+> +#define OA_TC6_DATA_FOOTER_RTSA_VALID		BIT(7)
+> +#define OA_TC6_DATA_FOOTER_RTSP_VALID		BIT(6)
+>  #define OA_TC6_DATA_FOOTER_END_BYTE_OFFSET	GENMASK(13, 8)
+>  #define OA_TC6_DATA_FOOTER_TX_CREDITS		GENMASK(5, 1)
+>  
+> @@ -70,6 +76,22 @@
+>  
+>  #define OA_TC6_REG_MMS_MASK		GENMASK(19, 16)
+>  
+> +#define OA_TC6_TSTAMP_SZ			8
+> +
+> +#define OA_TC6_TTSCA_REG_ID			1
+> +#define OA_TC6_TTSCB_REG_ID			2
+> +#define OA_TC6_TTSCC_REG_ID			3
+> +
+> +/* STATUS0 and the TTSCA/B/C capture registers are contiguous in MMS 0, so
+> + * they are fetched with a single control transaction while timestamping is
+> + * available.
+> + */
+> +#define OA_TC6_TTSC_REG_OFFSET		(OA_TC6_REG_TTSCA_HIGH - \
+> +					 OA_TC6_REG_STATUS0)
+> +#define OA_TC6_TTSC_REG_COUNT		(2 * OA_TC6_TTSCC_REG_ID)
+> +#define OA_TC6_STATUS0_TTSC_REG_COUNT	(OA_TC6_TTSC_REG_OFFSET + \
+> +					 OA_TC6_TTSC_REG_COUNT)
+> +
+>  /* Internal structure for MAC-PHY drivers */
+>  struct oa_tc6 {
+>  	struct net_device *netdev;
+> @@ -95,6 +117,16 @@ struct oa_tc6 {
+>  	bool prot_ctrl;
+>  	enum oa_tc6_quirk_flag quirk_flags;
+>  	struct gpio_desc *reset_gpio;
+> +	struct hwtstamp_config ts_config;
+> +	struct list_head tx_ts_skb_q;
+> +	struct ptp_clock *ptp_clock;
+> +	bool hw_tstamp_supported;
+> +	bool hw_tstamp_enabled;
+> +	u64 tx_hwtstamp_pkts;
+> +	u64 tx_hwtstamp_lost;
+> +	u64 tx_hwtstamp_err;
+> +	u8 ts_ttsc_pending;
+> +	u8 ttsc_current_id;
+>  };
+>  
+>  enum oa_tc6_header_type {
+> @@ -121,5 +153,8 @@ enum oa_tc6_data_end_valid_info {
+>  	OA_TC6_DATA_END_INVALID,
+>  	OA_TC6_DATA_END_VALID,
+>  };
+> +
+> +void oa_tc6_cleanup_tx_tstamp_skbs(struct oa_tc6 *tc6);
+> +
+>  #endif /* OA_TC6_STD_DEF_H */
+>  
+> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c b/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c
+> new file mode 100644
+> index 000000000000..d83f6ad9373a
+> --- /dev/null
+> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6_tstamp.c
+> @@ -0,0 +1,224 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * OPEN Alliance 10BASE‑T1x MAC‑PHY Serial Interface framework
+> + *
+> + * Author: Selva Rajagopal <selvamani.rajagopal@onsemi.com>
+> + */
+> +
+> +#include <linux/bitfield.h>
+> +#include <linux/iopoll.h>
+> +#include <linux/mdio.h>
+> +#include <linux/phy.h>
+> +#include <linux/oa_tc6.h>
+> +
+> +#include "oa_tc6_std_def.h"
+> +
+> +static int oa_tc6_set_hwtstamp_settings(struct oa_tc6 *tc6,
+> +					const struct hwtstamp_config *ts_cfg)
+> +{
+> +	u32 regs[OA_TC6_REG_INT_MASK0 - OA_TC6_REG_CONFIG0 + 1];
+> +	u32 cfg0, irqm, status0;
+> +	bool disabled;
+> +	int ret;
+> +
+> +	if (tc6->ts_config.flags == ts_cfg->flags &&
+> +	    tc6->ts_config.tx_type == ts_cfg->tx_type &&
+> +	    tc6->ts_config.rx_filter == ts_cfg->rx_filter)
+> +		return 0;
+> +
+> +	spin_lock_bh(&tc6->tx_skb_lock);
+> +	disabled = tc6->disable_traffic;
+> +	spin_unlock_bh(&tc6->tx_skb_lock);
+> +	if (disabled)
+> +		return -EIO;
+> +
+> +	/* CONFIG0, STATUS0 and INT_MASK0 span one register block, so a
+> +	 * single control transaction covers all three.
+> +	 */
+> +	ret = oa_tc6_read_registers(tc6, OA_TC6_REG_CONFIG0, regs,
+> +				    ARRAY_SIZE(regs));
+> +	if (ret) {
+> +		dev_err(&tc6->spi->dev, "Failed to read CFG0 block\n");
+> +		goto out;
+> +	}
+> +
+> +	cfg0 = regs[0];
+
+OA_TC6_REG_CONFIG0 - OA_TC6_REG_CONFIG0?
+
+> +	status0 = regs[OA_TC6_REG_STATUS0 - OA_TC6_REG_CONFIG0];
+> +	irqm = regs[OA_TC6_REG_INT_MASK0 - OA_TC6_REG_CONFIG0];
+
+It then follow the pattern?
+
+   Andrew
