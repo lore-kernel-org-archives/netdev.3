@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DE54A0F06;
-	Tue,  6 Oct 2026 16:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D6D4A263B;
+	Tue,  6 Oct 2026 16:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791304304; cv=none; b=krEGPfw/cvZkT5yMon/scaT1wPYpjmeF4eiKvPX9sqDcgQlNeNfAHiDejiQ2ZSU1Shduw+buvX83A5FDQGQHO0kIzC91UmYx9tSgSx9g6Fse4ZdcLNDdiDhFX83H5qEE5giADViJOsiueyKAIbX+qVTkbZF4ulqEDOLCF0V6IIw=
+	t=1791304306; cv=none; b=eQv7vAVTVkgzijSsq0E17DWwAcRNRCgPbJ1kyoU//BMBdppY4xE/gTYWDas8K1jMyJOprOF5FlzzKh4x6LlRzWvp7xFUQmR6lXV2kPFVHT6rgBlipl6RfOPTbQ2Mals19OwqXQcQQYi5cUjDFZ8ntATBu/oUXJFNYlKNMvSG+vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791304304; c=relaxed/simple;
-	bh=Ia2PAF33SHxpLZgXFy71fnZ5fBK8iPw9HY67a8Vp0JA=;
+	s=arc-20240116; t=1791304306; c=relaxed/simple;
+	bh=VGpo3YNSdRdbX+RP/gKRnDYPeaLBdX/dgKTSFL/IZ7A=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VgG9dVOS9Pj7aZYuUGF4KOVtmEU+pfrmNCdSa4rs8WCoFSOp8yZkEyRrSRK5PECfEIKNbONzQ2iEo4y5Gk41k6ZwJkOTwHcrllIQ5L+eUoXyS9EW75pxr3Z1wYINf0qd4pC55HylPD5DkzJ/o+xkT6AHRstrgHKPyUSsiX5wRo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VwveQMz0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=fAWafOcblKvJOR3fA4j5R6PFN4PdWQOAbJMaY1/AaKHP8wro7Zrt4tZAYTxuXwVhZaZo4ZNjINM04gg/darqHaX7MP/921HmLB8aswKaslLYL75K7Ksr5xN9gf4eAGqdAaDt8dAlpsG/5asstcXVSMBqias9xNF0H5c7fMNxi2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZvF8J5DK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VwveQMz0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1AA1F0089E;
-	Tue,  6 Oct 2026 16:31:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZvF8J5DK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217F61F0089B;
+	Tue,  6 Oct 2026 16:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791304302;
-	bh=PwgSoudEG75onyzQqXceiysP6xzmg+bTPZzQkCqQcCM=;
+	s=k20260515; t=1791304304;
+	bh=lBdRtQZsStubLmMRZaxWdXR9jv+5z2tA6rm0+eMN/68=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VwveQMz0JMQDodbqtVU7rZhmdyLwFj9KzT6+q0Z3StL0txckihpjd2r4hWBvkT8CC
-	 oNd45d1CyxjAdq82NSMM356X0udaA9m/4bGhcG8qFxTGhacyxEx56ejvKzO9MeQUMl
-	 Fx4MmhnlHJvW+GK5qXOUnY3XNtYORl9ma3Ktok6B6SLkm+H10+KcXE/D57mtZ0MtE3
-	 6VN3brPfQpFWH8wNEDCmPvfOtInqdhm3jFKGeZmqENE3ikS6wLWwG7Mdk6aOjBmw3v
-	 l+E50NrhVx9HVSMj+cdXW6ETAU1i+Gtmbtljqbhop44qO2cHRfFPRNuihBZKO0tp2h
-	 cY+A59hJ2cY3A==
-Subject: Re: [PATCH net-next v24 2/3] net: phy: Add support for Template
- Control register for PMA
+	b=ZvF8J5DKOPRkYR08I4NAxmAxRB6dAV9g7alg+iTCtDFmxYu5fmopO99DG3IMftLvy
+	 CgQ0CXUL2J/6vmdKctoWlC5Y7h2qP8lMJsUnAn/ke60RfHuGjIremCYCbF5NuLoeMa
+	 DLDTlLW+MiTucSabzqeqhahJHUUXvA0mLtvLTmLQ/kqkYDvS/fYDpd3nc5/7wjZwZS
+	 MaHBkEjWTdYfx4g4uSEtOIDX9uPjLBip50UXTNL0CEwAwGNJtZSqzQtkCvfp542MFg
+	 kwRWdryCvsCtjwq7jcu2gaVLCVEn7/Vf92r+MWxhyL2oXQZ1QGyyLR4Qd/YanMXHoJ
+	 nKCxJxEZ2R74w==
+Subject: Re: [PATCH net-next v24 3/3] net: phy: Add driver for Motorcomm Quad
+ 2.5GbE phy
 From: netdev-bot+sashiko@kernel.org
 To: kyle.switch@motor-comm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -37,11 +37,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
  jianmin.wang@motor-comm.com
-Date: Tue, 06 Oct 2026 16:31:41 +0000
-Message-ID: <179130430105.434549.5432877862798179173@kernel.org>
-In-Reply-To: <20261002153034.934814-3-kyle.switch@motor-comm.com>
-References: <20261002153034.934814-3-kyle.switch@motor-comm.com>
-X-sashiko-severity: Low
+Date: Tue, 06 Oct 2026 16:31:42 +0000
+Message-ID: <179130430268.434549.16236732059337568756@kernel.org>
+In-Reply-To: <20261002153034.934814-4-kyle.switch@motor-comm.com>
+References: <20261002153034.934814-4-kyle.switch@motor-comm.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,177 +51,347 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 7 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 4 · Low: 3
 
-- [Low] The concern: genphy_c45_template_testmode() in
-  drivers/net/phy/phy-c45.c and the new MDIO_PMA_10GBT_TESTMODE_* UAPI…
-- [Low] genphy_c45_template_testmode() returns -EOPNOTSUPP when test_mode
-  > MDIO_PMA_10GBT_TESTMODE_7.
-- [Low] The new UAPI macro MDIO_PMA_10GBT_TESTMODE_MASK in
-  include/uapi/linux/mdio.h is defined as GENMASK(15, 13).
-- [Low] MDIO_PMA_10GBT_TESTMODE_NORMAL through MDIO_PMA_10GBT_TESTMODE_7
-  are exported in include/uapi/linux/mdio.h as raw, unshifted field…
-- [Low] The concern: genphy_c45_template_testmode() writes PMA register
-  1.132 without checking phydev->pma_extable for 10GBASE-T or NBASE-T…
-- [Low] The concern: genphy_c45_template_testmode() puts the PMA into a
-  link-disrupting test mode without forcing speed, disabling AN, setting…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] yt8824_read_status_paged() sets phydev->speed/duplex to
+  SPEED_UNKNOWN/DUPLEX_UNKNOWN whenever the link is down, even with…
+- [Medium] priv->sds_initialized is set to true after the first
+  successful package SERDES init in yt8824_config_init().
+- [Medium] yt8824_probe() calls phy_package_probe_once(), which
+  permanently sets the package's 'probed' bit via test_and_set_bit()…
+- [Medium] After a negotiation with a 2.5G-capable partner,
+  lp_advertising holds ETHTOOL_LINK_MODE_2500baseT_Full_BIT.
+- [Low] The commit message (three lines for about 1900 added lines)
+  leaves out behaviour a maintainer needs in order to review the driver.
+- [Low] Some kernel-doc does not match the code.
+- [Low] yt8824_config_utp_init_paged() writes the U0/U1 TX resetb bits to
+  0 and later to 1, and pulses YT8824_PLL_DAC_RST 0→1.
 
 --
 
-net: phy: Add support for Template Control register for PMA
+net: phy: Add driver for Motorcomm Quad 2.5GbE phy
 
-This commit adds genphy_c45_template_testmode(), an exported helper that
-programs the 10GBASE-T PMA template test mode field (bits 15:13 of PMA
-register 132). It also adds the register number and the field and value
-definitions to include/uapi/linux/mdio.h.
+This adds support for the Motorcomm YT8824 quad-port 2.5G PHY to the
+existing motorcomm driver. The phy_package helpers are used to reach the
+shared top extended register space. The package mode (internal or
+10G-QXGMII) is read from the PHY package DT node.
 
-> diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-> index 870920311f9a0..c5f5753f7194b 100644
-> --- a/drivers/net/phy/phy-c45.c
-> +++ b/drivers/net/phy/phy-c45.c
-> @@ -1408,6 +1408,29 @@ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable)
+> Add support for Motorcomm YT8824 quad-port 2.5G PHY to the existing
+> motorcomm driver, using the phy_package helpers for the shared top
+> extended register space.
+
+[Severity: Low]
+Could the commit message say more about what the driver does? It is three
+lines long for roughly 1900 added lines.
+
+Five functions put the copper side into PMA template TESTMODE_1, do the
+reset or power change, and then switch back to TESTMODE_NORMAL:
+yt8824_soft_reset(), yt8824_power_on(), yt8824_power_down(),
+yt8824_restore_working_status() and yt8824_config_utp_init_paged().
+
+yt8824_soft_reset()
+    yt8824_utp_set_template_test_mode(phydev, MDIO_PMA_10GBT_TESTMODE_1);
+    ...
+    yt8824_utp_softreset_paged(phydev);
+    ...
+    yt8824_utp_set_template_test_mode(phydev, MDIO_PMA_10GBT_TESTMODE_NORMAL);
+
+This looks like a hardware workaround. However,
+genphy_c45_template_testmode() was added in "net: phy: Add support for
+Template Control register for PMA" as a helper "used for PHY validation".
+
+Could the commit message explain the workaround and why it is needed?
+
+Probe also now requires DT. devm_of_phy_package_join() needs an
+ethernet-phy-package parent with a reg property. Without
+motorcomm,package-mode, yt8824_phy_package_probe_once() returns -EINVAL.
+The two package modes also take quite different init paths.
+
+Could these points be mentioned as well, along with the source of the many
+magic register values in the init sequences?
+
+> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+> index 90a4f86f2758b..1d096d232224b 100644
+> --- a/drivers/net/phy/motorcomm.c
+> +++ b/drivers/net/phy/motorcomm.c
+
+[ ... ]
+
+> @@ -437,6 +684,70 @@ static int ytphy_read_ext_with_lock(struct phy_device *phydev, u16 regnum)
+>  	return ret;
 >  }
->  EXPORT_SYMBOL_GPL(genphy_c45_fast_retrain);
 >  
 > +/**
-> + * genphy_c45_template_testmode - configure template testmode registers
-> + * @phydev: target phy_device struct
-> + * @test_mode: testmode includes Normal to Test mode 7
+> + * ytphy_read_top_ext() - read a PHY's top extended register for YT8824
+> + * @phydev: a pointer to a &struct phy_device
+> + * @regnum: register number to read
 > + *
-> + * Description: Set template testmode include Normal to Test mode 7
-> + *
-> + * Return: 0 on success, or a negative error code on failure (e.g. register
-> + * read/write error).
+> + * Returns: the value of regnum reg or negative error code
 > + */
-> +int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode)
-
-[Severity: Low]
-In this patch by itself, nothing in the tree uses this exported helper or
-the new MDIO_PMA_10GBT_TESTMODE_* defines.
-
-The next patch in the series, "net: phy: Add driver for Motorcomm Quad
-2.5GbE phy", adds the callers in drivers/net/phy/motorcomm.c. They are
-yt8824_utp_set_template_test_mode() and the YT8824 soft reset sequence.
-That looks like the usual split where the API comes before its user.
-
-Would it help to say in the commit message that the user comes in the
-following patch?
-
+> +static int ytphy_read_top_ext(struct phy_device *phydev, u16 regnum)
 > +{
-> +	u16 ctrl;
+> +	int ret;
 > +
-> +	if (test_mode > MDIO_PMA_10GBT_TESTMODE_7)
-> +		return -EOPNOTSUPP;
-
-[Severity: Low]
-Should this be -EINVAL rather than -EOPNOTSUPP?
-
-A test_mode above 7 is a bad argument from the caller. In phylib,
--EOPNOTSUPP usually means the PHY does not support the operation, and
-callers often check for it so they can fall back.
-
-The helper also never checks PMA capability. So it never returns
--EOPNOTSUPP in the case that errno normally describes.
-
-The kernel-doc Return: section above gives only register read/write
-failures as examples. Could it also mention this range check and the errno
-it returns?
-
-Every in-series caller passes a constant between 0 and 7, so this cannot
-be hit today.
-
+> +	lockdep_assert_held(&phydev->mdio.bus->mdio_lock);
+> +	ret = __phy_package_write(phydev, 0, YTPHY_PAGE_SELECT, regnum);
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +	ctrl = FIELD_PREP(MDIO_PMA_10GBT_TESTMODE_MASK, test_mode);
-> +	return phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_10GBT_TESTMODE,
-> +			      MDIO_PMA_10GBT_TESTMODE_MASK, ctrl);
-
-[Severity: Low]
-This writes PMA register 1.132 without checking phydev->pma_extable for
-10GBASE-T or NBASE-T ability. On a PMA without BASE-T ability, could this
-write a reserved or vendor register and still return 0?
-
-This may be intended. genphy_c45_fast_retrain() above also writes
-MDIO_PMA_10GBR_FSRT_CSR without a capability check and leaves that to the
-calling driver.
-
-The only caller in the series is motorcomm.c, which uses it for its own
-YT8824 PHY, and that PHY implements the register.
-
-[Severity: Low]
-A non-normal template test mode disrupts the link. This helper does not
-coordinate with the phylib state machine, and it does not record the mode
-so it can be restored later.
-
-Is the intent that callers handle all of the sequencing, including
-restoring MDIO_PMA_10GBT_TESTMODE_NORMAL?
-
-That would match genphy_c45_loopback() and genphy_c45_fast_retrain(). The
-in-series caller in motorcomm.c does restore NORMAL after TESTMODE_1, on
-both the success path and the err_restore_normal path.
-
-Could the kernel-doc state that callers must do this?
-
+> +	return __phy_package_read(phydev, 0, YTPHY_PAGE_DATA);
 > +}
-> +EXPORT_SYMBOL_GPL(genphy_c45_template_testmode);
+
+[Severity: Low]
+This isn't a bug, but the kernel-doc for ytphy_read_top_ext() and
+ytphy_write_top_ext() says they access "a PHY's top extended register".
+
+Both helpers call __phy_package_read()/__phy_package_write() with offset 0.
+That reaches the package-shared block at the package reg address, not this
+PHY's own address. Writing YT8521_REG_SPACE_SELECT_REG through them
+therefore switches the register space for all four ports.
+
+Could the comments say that?
+
+The kernel-doc for yt8824_restore_working_status() has a similar problem.
+It says "called to do store working status", but the function restores
+state: it sets the template test mode back to NORMAL, and outside internal
+mode it clears SERDES isolate and soft resets the SERDES.
 
 [ ... ]
 
-> diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
-> index 06f4bc3c20c71..353ca13c64fca 100644
-> --- a/include/uapi/linux/mdio.h
-> +++ b/include/uapi/linux/mdio.h
+> @@ -622,15 +933,1165 @@ static int ytphy_set_wol(struct phy_device *phydev, struct ethtool_wolinfo *wol)
 
 [ ... ]
 
-> @@ -320,6 +321,17 @@
->  /* PMA 10GBASE-R Fast Retrain status and control register. */
->  #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
+> +static int yt8824_config_utp_init_paged(struct phy_device *phydev)
+> +{
+
+[ ... ]
+
+> +	ctrl = FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH0, 0);
+> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH1, 0);
+> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH2, 0);
+> +	ctrl |= FIELD_PREP(YT8824_U0_CSR_RESETB_TX_CH3, 0);
+> +	mask  = YT8824_U0_CSR_RESETB_TX_CH0 | YT8824_U0_CSR_RESETB_TX_CH1 |
+> +		YT8824_U0_CSR_RESETB_TX_CH2 | YT8824_U0_CSR_RESETB_TX_CH3;
+> +	ret = ytphy_modify_ext_with_lock(phydev, YT8824_U0_CRS_RESET_REG,
+> +					 mask, ctrl);
+> +	if (ret < 0)
+> +		goto err_restore;
+
+[ ... ]
+
+> +err_restore:
+> +	r = phy_modify(phydev, MII_BMCR, BMCR_PDOWN, 0);
+> +	if (ret >= 0 && r < 0)
+> +		ret = r;
+> +	return ret;
+
+[Severity: Low]
+Suppose an MDIO access fails after the U0/U1 TX resetb bits have been
+cleared, or between the two YT8824_PLL_DAC_RST writes. err_restore only
+clears BMCR_PDOWN in that case.
+
+Is it intended that the TX channels stay held in reset here?
+
+In that case config_init returns an error, and a later phy_init_hw() runs
+the whole sequence again, which deasserts the resets. So this may be fine.
+If it is, a short comment saying so could help.
+
+[ ... ]
+
+> +static int yt8824_config_init(struct phy_device *phydev)
+> +{
+> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
+> +	int ret;
+> +
+> +	mutex_lock(&priv->shared_lock);
+> +	if (priv->package_mode == PHY_INTERFACE_MODE_INTERNAL) {
+> +		ret = yt8824_config_utp_init_paged(phydev);
+> +		if (ret < 0)
+> +			goto err;
+> +	} else {
+> +		if (!priv->sds_initialized) {
+> +			ret = yt8824_extern_config_sds_init_paged(phydev);
+> +			if (ret < 0)
+> +				goto err;
+> +			priv->sds_initialized = true;
+> +		}
+
+[Severity: Medium]
+What resets priv->sds_initialized once the package has lost its register
+state? The only place that sets it to false is
+yt8824_phy_package_probe_once().
+
+config_init is called again from phy_init_hw() in at least two places where
+the hardware may have been reset:
+
+phy_detach_internal()
+    phy_device_reset(phydev, 1);
+...
+phy_attach_direct()
+    phy_init_hw()
+        yt8824_config_init()
+
+mdio_bus_phy_resume()
+    phy_init_hw()
+        yt8824_config_init()
+
+In both cases the shared priv is still alive, because the package is joined
+at probe and sibling PHYs keep their references. So
+yt8824_extern_config_sds_init_paged() is skipped.
+
+In 10G-QXGMII mode, would the package-wide SERDES PLL/CDR/AFE and
+calibration settings then stay at their reset defaults?
+
+[ ... ]
+
+> @@ -3104,6 +4565,450 @@ static int yt8821_resume(struct phy_device *phydev)
+>  	return yt8821_modify_utp_fiber_bmcr(phydev, BMCR_PDOWN, 0);
+>  }
 >  
-> +/* PMA 10GBASE-T Template Test Mode Register*/
-> +#define MDIO_PMA_10GBT_TESTMODE_MASK GENMASK(15, 13) /* Template test mode */
 
-[Severity: Low]
-GENMASK() is defined only for the kernel, in include/linux/bits.h. The
-exported include/uapi/linux/bits.h provides only __GENMASK(),
-__GENMASK_ULL() and __GENMASK_U128(). Also, mdio.h includes only
-<linux/types.h> and <linux/mii.h>.
+[ ... ]
 
-If userspace includes the installed <linux/mdio.h> and uses
-MDIO_PMA_10GBT_TESTMODE_MASK, will it fail to compile because GENMASK is
-undefined?
+> +static int yt8824_read_status_paged(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +	int val;
+> +
+> +	ret = phy8824_page_write_with_lock(phydev, YT8824_RSSR_UTP_SPACE);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = genphy_read_status(phydev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete) {
+> +		ret = genphy_c45_read_lpa(phydev);
+> +		if (ret < 0)
+> +			return ret;
+> +	}
 
-The existing MDIO_AN_C73_* defines in this header have the same problem,
-but this adds another one. Could this use __GENMASK(15, 13) with
-<linux/bits.h> included, as include/uapi/linux/pci_regs.h does, or just
-0xe000?
+[Severity: Medium]
+Can lp_advertising keep a stale ETHTOOL_LINK_MODE_2500baseT_Full_BIT here?
 
-> +#define MDIO_PMA_10GBT_TESTMODE_NORMAL 0x0 /* Template Normal */
-> +#define MDIO_PMA_10GBT_TESTMODE_1 0x1 /* Template TestMode1 */
-> +#define MDIO_PMA_10GBT_TESTMODE_2 0x2 /* Template TestMode2 */
-> +#define MDIO_PMA_10GBT_TESTMODE_3 0x3 /* Template TestMode3 */
-> +#define MDIO_PMA_10GBT_TESTMODE_4 0x4 /* Template TestMode4 */
-> +#define MDIO_PMA_10GBT_TESTMODE_5 0x5 /* Template TestMode5 */
-> +#define MDIO_PMA_10GBT_TESTMODE_6 0x6 /* Template TestMode6 */
-> +#define MDIO_PMA_10GBT_TESTMODE_7 0x7 /* Template TestMode7 */
+When a link with a 2.5G partner goes down or renegotiates,
+genphy_read_status()->genphy_read_lpa() takes its !autoneg_complete branch.
+That branch only clears the clause 22 bits:
 
-[Severity: Low]
-These are unshifted field values. Most other value constants in this
-header are pre-shifted register bits. Examples are
-MDIO_PMA_10GBR_FSRT_ENABLE just above, the MDIO_PMA_10GBT_SWAPPOL_* bits,
-and MDIO_USXGMII_SPD_* under the 0x0e00 mask.
+genphy_read_lpa()
+    mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
+    mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
 
-genphy_c45_template_testmode() shifts these values with FIELD_PREP(), but
-the header does not say they need shifting. If someone writes
-MDIO_PMA_10GBT_TESTMODE_3 directly into register 1.132, wouldn't bits
-15:13 be left at 0 (Normal)?
+genphy_c45_read_lpa() would clear the 10GBT bits, but it only runs when
+autoneg_complete is set. phy_ethtool_ksettings_get() copies lp_advertising
+unchanged, so ethtool would still show a 2.5G-capable link partner.
 
-These names become permanent UAPI. Would it be clearer to pre-shift them,
-or to say in the comment that they are field values for
-MDIO_PMA_10GBT_TESTMODE_MASK?
+rtl822x_read_status() avoids this by clearing the 10GBT bits first.
+
+> +
+> +	if (!phydev->link) {
+> +		phydev->speed = SPEED_UNKNOWN;
+> +		phydev->duplex = DUPLEX_UNKNOWN;
+> +		if (phydev->autoneg == AUTONEG_ENABLE)
+> +			phy_resolve_aneg_pause(phydev);
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+Does this throw away a forced speed and duplex while the link is down?
+
+With autoneg disabled, genphy_read_status() has just reloaded speed and
+duplex from BMCR via genphy_read_status_fixed(). This block then replaces
+them with SPEED_UNKNOWN/DUPLEX_UNKNOWN.
+
+On the next phy_start(), for example after ifdown/ifup or resume, the
+PHY_UP path does:
+
+_phy_start_aneg()
+    phy_sanitize_settings()
+        phy_caps_lookup(SPEED_UNKNOWN, DUPLEX_UNKNOWN, supported, false)
+
+That lookup matches nothing and returns the slowest supported mode. Then
+yt8824_config_aneg()->__genphy_config_aneg()->genphy_setup_forced() would
+program 10/half instead of the forced setting the user chose.
+
+yt8821_read_status() in the same file does not clear speed on link down.
+Could the clearing here be limited to the autoneg case?
+
+[ ... ]
+
+> +static int yt8824_phy_package_probe_once(struct phy_device *phydev)
+> +{
+> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
+> +	struct device_node *np = phy_package_get_node(phydev);
+> +	const char *mode;
+> +
+> +	if (!priv || !np) {
+> +		phydev_err(phydev, "%s: missing shared priv or DT node\n",
+> +			   __func__);
+> +		return -EINVAL;
+> +	}
+> +	/* Initialise shared lock for YT8824 */
+> +	mutex_init(&priv->shared_lock);
+> +	priv->sds_initialized = false;
+> +	priv->package_mode = PHY_INTERFACE_MODE_INTERNAL;
+> +	if (!of_property_read_string(np, "motorcomm,package-mode",
+> +				     &mode)) {
+
+[ ... ]
+
+> +	} else {
+> +		phydev_err(phydev, "missing package-mode in PHY package node.\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+
+[ ... ]
+
+> +static int yt8824_probe(struct phy_device *phydev)
+> +{
+
+[ ... ]
+
+> +	/* Ensure other PHY probes wait for shared mutex initialization. */
+> +	phy_package_lock(phydev);
+> +	if (phy_package_probe_once(phydev)) {
+> +		ret = yt8824_phy_package_probe_once(phydev);
+> +		if (ret) {
+> +			phy_package_unlock(phydev);
+> +			return ret;
+> +		}
+> +	}
+> +	phy_package_unlock(phydev);
+
+[Severity: Medium]
+What happens to the other PHYs in the package when
+yt8824_phy_package_probe_once() fails?
+
+phy_package_probe_once() has already set the probed bit with
+test_and_set_bit(), and nothing clears it later. priv->package_mode has
+also already been set to PHY_INTERFACE_MODE_INTERNAL before
+motorcomm,package-mode is checked.
+
+With async probing, a sibling PHY can join through
+devm_of_phy_package_join() before the failing PHY's devres drops its
+reference. The shared struct then survives. The sibling sees
+phy_package_probe_once() return false, skips the validation, and binds in
+internal mode even though the DT never asked for that.
+
+Would it be better to validate the property before the once bit is
+consumed, so that every PHY in the package fails the same way?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002153034.934814-2-kyle.switch%40motor-comm.com
