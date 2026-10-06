@@ -1,131 +1,701 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAF237269C
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791308933; cv=pass; b=Jb3DdgEcaIVyLZESdPmflE1LFnhu1sATZGYcMWcEhHDMiKC0jmD5NsqiimjIKXAgw6NPRRDrq1wIhCBPu5n9DweBUkHrQ0AcCvqJGWAyZzrNOVUH8zmXOyKxO4ig3tuf+HWCmzgdnk+chj0fi58HSxqx6+SvfpzPj7jzwAM1B70=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791308933; c=relaxed/simple;
-	bh=VRSArwJcRo79n9/mlWVHLIcO/a90TTkXWTwHqj889k4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=li+U2Pr838aX+pkwYR+PH4PaxMmTLa8qyIApn1qAfYtHAlBWPRIhpnc+u7IYWhJRrQyz327LR/ZIkf4UHZM8rD5j38hqM3NK96uy5BpgWqoTRPqMpd4Sy9D8k2f26y8D1YIZNuQWgXdZ5lDuMCwyL22ouYh9W9ZsjNkLAs9x0bY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=DzuzpwTr; arc=pass smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3DB3DEAC0
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791309219; cv=none; b=DU3RWVuyxY+SP/cw/VEVf/EOp+mqqkuTpzDDuZXdUZkKI3N8+E93hmOIaj5uKnaOlge8P8SsDCPyM22QdR2y2BAOagBwE9BBchifCUAdxCFE/aCzea8hfyiBIIC37YZtjx+5nF2sNHwTqz1NG5Frhodq6ms6G7T4N8BztEr5uCU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791309219; c=relaxed/simple;
+	bh=b4/qw+lW+uppQFP2Q+lhkRH2r9aIyttDggWFSzzqiw4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RXAZRJaOvwfgQ3aZgMJi+FD8zNlcuh8aNbOAC+qoW4AyZXwZhIQbNmbyc3U9K6091Ll5jCaZKjBYV9vF4Wl0z418qXs8qk6lwmitkOaxLZRTuEzb0S6S6Dux8D6XmhxPFu72R1mbKaalXSywdj4unos5l5bcL6Lvi2P55HGMMsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=v5X5pRbc; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=n9CU7IAh; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=dpm2JOrk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MfdsRizT; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="DzuzpwTr"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-825572e6701so1462327a34.2
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 10:48:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791308930; cv=none;
-        d=google.com; s=arc-20260327;
-        b=m7vmd2h0aKop2wQvIaTEMusSS7ga1KKW13QkQIkesYg+g3FCy7NcA8leMZwcjDPiI8
-         v3qemIkNC72p+hLHOeV6sSTs88kYy8CJBs4DbaKfYCcgQs87sknx3iIGdTHTYnHfka/N
-         1xYb2PQ4/lnBhhjDUZ8/UyKRezsiy++J7r6TP3mq+Pt0+iN0LXdlDiELXzw2OnR2/wb2
-         vR+NnTro1eMx9lrIzVwHdWhZYXzdzfHgUdvd86tI/WlLdDeorqgjkL61cd5um55JqOQB
-         SguM+bGNKJtyxtNYt/Tgj/EYvcrS9+hq1qVqW23m4wv9SrVUekBDYVYVLIncX4PiJ1Wq
-         NquQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oKkGu4MISHQEsFFjUyIjKXrjUrAiNT5vrF+iXMX4HX0=;
-        fh=hz5IfXCgrojfxpoUBszThL+YoFhutDD5k8ExxlA4QeA=;
-        b=Qcd7lhhD3hCXK5N0UhK0dT5YvJc/YIIpAxnpBNqElDe+b5B4TrtHfW3MBImT5WpPu1
-         PXTT5WBdFeKmbifGmYO3wrApDSMhM2dixPrUchKVKB7njZhdrH9RxlBj7+5UoRvizSyP
-         mQbjt7LQuEe1YctFqCjndFhiPLYMWMOLE0GW/RP7OeiV/5ggXwSFFLfjbvmdNATMNfpw
-         f7rx5NbnQkAwxHNo6PRAxi6QGa5oug1dN44WahleoVpxmvDFzn3xUZK/I/3+2DzOuvup
-         TzetMZ8iZbuNPNlGGITklH/TlVJm4dOts8YImZ4XxkL2yedtFgmsbq2Igy2FYidy1DdU
-         SlKw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1791308930; x=1791913730; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oKkGu4MISHQEsFFjUyIjKXrjUrAiNT5vrF+iXMX4HX0=;
-        b=DzuzpwTrkKtcDnXxD0hn6+9TImm7VEOD/gPZJMllMEnmoAuwr3+WcTob2Gj1ovdhZL
-         eqQSSWC4WpNbmKOjz24kYhbFtsNbDp32zvh/xmzYySlovLdpd+rXQb+4d7z2f5DjXFKT
-         bxEvC+MjpsQgZj3dmWAwy9WD/Q3Fp80YQ0A3vYXYVsY1aUJ94fiexwxEpOq8SFHX1h+h
-         12ZxVGmwdAdfxYorAXNo4fHNKJfr0E2lmk3m82/4bkunhEYRaqHvEIzWftroYAsh0ecg
-         qnXhnvrF4RZ9s4iQMmZDeo32fxyCASjScRVd1sYnpQ+Y8o5g6xmvsmwetNMKYr2qyW2G
-         r+kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791308930; x=1791913730;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oKkGu4MISHQEsFFjUyIjKXrjUrAiNT5vrF+iXMX4HX0=;
-        b=PCO3hTbOL0cUCcP/Vt0kU/dJ8B/8zl0nmgv6o781+hhUXgsGQhxz/5elcQoi/QGnnd
-         sUfNiqWQSoky67BAoV9PL6OZ4wsXjrhzTLlZEsdQsM0yJ3F9HprQGO4rOIO50iutPYuz
-         ZFtIRzk6cTDmx7NoFXWyT4APgjLGXJKN64tRJNYcidNWJOizWIeHJ8aO0vgbfEZPbMNF
-         p++tSwOPrL5XHpJMGNVb9qvPvk/XzVejMcyYew1YGHj83sQac+SfrdMRdIu9n1AqS9Jq
-         lDYl3WVRueGHfQQdxFpWnZP7y7OX5pkIhFOiQzfKalEpd/DozJD/kNvGhT5gboD/+2Aq
-         0KLg==
-X-Gm-Message-State: AFuF++lFuM/ARR0Kjt4e7+vvNXWggT8gr6Z3gG19PKGwBXlc9ej89jZo
-	0L/TxUaOh6c/G5OG3vcQHYZX7dmT0B6jluNWYMgNQbxeBuD4UcwnJdHGcOd0CTMgQ2O7cou+cFl
-	LjbzEzGmOqpvlTAs+W4xMT4JKYU/6bFpQzO0fdsDPc4Ojn2nbvJfFdajKYxYz
-X-Gm-Gg: AYBFou3irvzhweOvg4gf7tc6AFi4EKK9JddW/dLghEtbVysImCZv+6MQtjZrSLF1bpu
-	nEnOJCdFggFj3DL5Nq555NrMw8KXOMfSngTtkgVau1bMHeQIMqqRjK+F5S9rPuT65VxkPDhFfV7
-	M6MydBYQvxe6EGDWfoYungBDcJAJ2ILnafRFJHsY0MYDmTxVdziMynwdQqwaUEO8MhxJ+/Dc9Jr
-	/Ll7J8XVX0i07oC8VyKcGBzaZHC/f3mWSgTcD7Aj6Ej2UNqFfQou2r4nnsCA+U1SZyqgd/SUiDb
-	CNutzas6Qtbw2QsXvhKTFE6aFJyqA10QEXNkji1pjKRiErQiXOgQA+yOI0y8jcbqYpxglLZjE6P
-	MBqylPLDexg==
-X-Received: by 2002:a05:6808:e305:10b0:4f6:a504:1897 with SMTP id
- 5614622812f47-4f6a5042d3fmr7722009b6e.13.1791308930476; Tue, 06 Oct 2026
- 10:48:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="v5X5pRbc";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="n9CU7IAh";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="dpm2JOrk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MfdsRizT"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0927922042;
+	Tue,  6 Oct 2026 17:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791309210; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbDwYf/Om6R/wuRFq2uwe9QAbQeEHUfEK1Dw96dMjfA=;
+	b=v5X5pRbckjFWGh7oNgK6Nwi4V9PxLz6CwwsdwJqCV6aYxmtcRT427byLfLKHcLO/FKtAEF
+	g0q/36XPH010yh5ryhLreuGeXvE3NpNoYEzxASLEbbXnu0T9waQWGwJRt8/r4EzzSEZasa
+	bj5q/3ZIv0iAYZRooyN/ZQfXhc5yNF0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791309210;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbDwYf/Om6R/wuRFq2uwe9QAbQeEHUfEK1Dw96dMjfA=;
+	b=n9CU7IAhJ0OpqaDeC3FBznZerkm3Pp4hb2BHVXIod/e7v6rEN5QOpblZt9PA9XAUxNyVvh
+	ZzXVZROZC/1klKAw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dpm2JOrk;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MfdsRizT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1791309206; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbDwYf/Om6R/wuRFq2uwe9QAbQeEHUfEK1Dw96dMjfA=;
+	b=dpm2JOrkj1UmvLW0UHR69kKUhfKKk2mbeZvm3Cq5z9swBX0Mpfyn66eKZkkhMgc5Rz5emf
+	1eGxCPuKxCQAm1+HS+o0i/co5z2e3+EMCP9FdGS8pSqDBgXntauPGSW5E1WnodW6eqi+dc
+	iuChljqjzIzoDyLUoyFP3vChmnZxIZI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1791309206;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UbDwYf/Om6R/wuRFq2uwe9QAbQeEHUfEK1Dw96dMjfA=;
+	b=MfdsRizTUEshKAX5+Z7PF/7I+0QQMOeRx/vtFG933vEfOsjOVH/o1esLzC9ydRWQDQwWNC
+	reuFpaGHOwJB5gBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 70173133CF;
+	Tue,  6 Oct 2026 17:53:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZQjrDpQ1xWrEBwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 06 Oct 2026 17:53:24 +0000
+Message-ID: <da88c1e3-5445-4c0f-bdab-c7b451d74dd1@suse.de>
+Date: Tue, 6 Oct 2026 19:53:15 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261006173241.65945-1-tianyi@cloudflare.com> <179130839329.2231598.14859340679278349582@kernel.org>
-In-Reply-To: <179130839329.2231598.14859340679278349582@kernel.org>
-From: Tianyi Gao <tianyi@cloudflare.com>
-Date: Tue, 6 Oct 2026 18:48:38 +0100
-X-Gm-Features: AclHuK8tusQKzC0_fjG45JZf9NjrVrFoAQ9mJo_jQw5ddNkxc7dATehHk_JKOlk
-Message-ID: <CAG4wq-eXM-mbZ=WOzL_M3u=yYm2YMoxshCJPjDqT2GB3FL0AbQ@mail.gmail.com>
-Subject: Re: [PATCH net 0/2] veth: fix peer NETDEV_XDP_ACT_NDO_XMIT after GRO
- is toggled while down
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, toke@redhat.com, 
-	lorenzo@kernel.org, horms@kernel.org, bpf@vger.kernel.org, shuah@kernel.org, 
-	hawk@kernel.org, kernel-team@cloudflare.com, ast@kernel.org, 
-	daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next 6/9] ipv6: Use ipv6_neigh_lookup() and
+ friends.
+To: Kuniyuki Iwashima <kuniyu@google.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org,
+ syzbot+5a8857f0b4a0a7b12c62@syzkaller.appspotmail.com,
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Petr Machata <petrm@nvidia.com>, Edward Cree <ecree.xilinx@gmail.com>,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Alexander Aring <alex.aring@gmail.com>,
+ Stefan Schmidt <stefan@datenfreihafen.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>
+References: <20261003212336.1304988-1-kuniyu@google.com>
+ <20261003212336.1304988-7-kuniyu@google.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20261003212336.1304988-7-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_TLS_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[netdev,5a8857f0b4a0a7b12c62];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,syzkaller.appspotmail.com,nvidia.com,blackwall.org,datenfreihafen.org,bootlin.com];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,suse.de:dkim,suse.de:mid,appspotmail.com:email,datenfreihafen.org:email,blackwall.org:email,nvidia.com:email,bootlin.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 0927922042
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-Hi,
+On 10/3/26 11:23 PM, Kuniyuki Iwashima wrote:
+> syzbot reported the splat below in neigh_mark_dead() [0]
+> where tbl->lock was not held while neigh_ifdown() should
+> have acquired one.
+> 
+> This only happens when a neigh_table accidentally has a
+> neighbour from a different netns.
+> 
+> In ip6_finish_output2(), the net argument is the caller's and
+> does not always match dev_net(dev) fetched from dst. (e.g. xfrm)
+> 
+> It is error-prone to require callers to fetch netns and
+> neigh_table and pass it with dev to neigh_lookup(), etc.
+> 
+> Let's replace neigh_lookup() and friends with IPv6 helpers.
+> 
+> Note that __neigh_lookup() is split into ipv6_neigh_lookup()
+> and ipv6_neigh_create().
+> 
+> [0]:
+> debug_locks && !(lock_is_held(&(&n->tbl->lock)->dep_map) != 0)
+> WARNING: net/core/neighbour.c:154 at neigh_mark_dead+0x2fb/0x340 net/core/neighbour.c:154, CPU#0: syz.0.857/9765
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 9765 Comm: syz.0.857 Not tainted syzkaller #0 PREEMPT(full)
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+> RIP: 0010:neigh_mark_dead+0x2fb/0x340 net/core/neighbour.c:154
+> Code: e8 03 42 80 3c 28 00 74 08 48 89 df e8 ee 9a 80 f8 4c 89 33 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc e8 86 95 10 f8 90 <0f> 0b 90 e9 8f fd ff ff 48 c7 c1 80 9a 7a 90 80 e1 07 80 c1 03 38
+> RSP: 0018:ffffc90003726600 EFLAGS: 00010287
+> RAX: ffffffff89b7467a RBX: ffff888022e86000 RCX: 0000000000080000
+> RDX: ffffc900047fa000 RSI: 0000000000003e08 RDI: 0000000000003e09
+> RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000004
+> R10: dffffc0000000000 R11: fffff520006e4cb8 R12: ffff888022e8613c
+> R13: dffffc0000000000 R14: ffff888022e86020 R15: ffff888022e86000
+> FS:  00007f9c30f046c0(0000) GS:ffff888124cc6000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000000000000000 CR3: 0000000076c56000 CR4: 00000000003526f0
+> Call Trace:
+>   <TASK>
+>   neigh_flush_one+0x27c/0x5a0 net/core/neighbour.c:388
+>   neigh_flush_dev net/core/neighbour.c:432 [inline]
+>   __neigh_ifdown+0x1fb/0xc70 net/core/neighbour.c:465
+>   neigh_ifdown+0x1f/0x30 net/core/neighbour.c:487
+>   rt6_disable_ip+0x751/0x7e0 net/ipv6/route.c:5058
+>   addrconf_ifdown+0x155/0x1ad0 net/ipv6/addrconf.c:3892
+>   addrconf_notify+0x1bc/0x1050 net/ipv6/addrconf.c:-1
+>   notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+>   call_netdevice_notifiers_mtu net/core/dev.c:2350 [inline]
+>   netif_set_mtu_ext+0x5ac/0x830 net/core/dev.c:9963
+>   do_setlink+0xa81/0x47a0 net/core/rtnetlink.c:3247
+>   rtnl_setlink+0x578/0x820 net/core/rtnetlink.c:3623
+>   rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7159
+>   netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2572
+>   netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+>   netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1361
+>   netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1916
+>   sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+>   __sock_sendmsg net/socket.c:815 [inline]
+>   sock_write_iter+0x2de/0x3e0 net/socket.c:1266
+>   do_iter_readv_writev+0x612/0x8c0 fs/read_write.c:-1
+>   vfs_writev+0x343/0x990 fs/read_write.c:1058
+>   do_writev+0x154/0x2e0 fs/read_write.c:1104
+>   do_syscall_x64 arch/x86/emlxsw_sp_ul_rif_getntry/syscall_64.c:61 [inline]
+>   do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f9c2ff9e159
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f9c30f04028 EFLAGS: 00000246 ORIG_RAX: 0000000000000014
+> RAX: ffffffffffffffda RBX: 00007f9c30225fa0 RCX: 00007f9c2ff9e159
+> RDX: 0000000000000001 RSI: 00002000000003c0 RDI: 0000000000000004
+> RBP: 00007f9c3003506b R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f9c30226038 R14: 00007f9c30225fa0 R15: 00007ffed3c74808
+>   </TASK>
+> 
+> Fixes: df5f4f372de5 ("ipv6: Replace &nd_tbl with nd_table(net).")
+> Reported-by: syzbot+5a8857f0b4a0a7b12c62@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6abd69a9.80e1c6cc.22483f.0005.GAE@google.com/
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+> v2: Convert __teql_resolve()
+> 
+> Cc: Saeed Mahameed <saeedm@nvidia.com>
+> Cc: Leon Romanovsky <leon@kernel.org>
+> Cc: Tariq Toukan <tariqt@nvidia.com>
+> Cc: Mark Bloch <mbloch@nvidia.com>
+> Cc: Petr Machata <petrm@nvidia.com>
+> Cc: Edward Cree <ecree.xilinx@gmail.com>
+> Cc: Nikolay Aleksandrov <razor@blackwall.org>
+> Cc: Alexander Aring <alex.aring@gmail.com>
+> Cc: Stefan Schmidt <stefan@datenfreihafen.org>
+> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+>   .../mellanox/mlx5/core/en/tc_tun_encap.c      | 13 +++----
+>   .../ethernet/mellanox/mlxsw/spectrum_router.c | 29 ++++++++-------
+>   .../ethernet/mellanox/mlxsw/spectrum_span.c   | 24 ++++++++-----
+>   .../netronome/nfp/flower/tunnel_conf.c        |  4 +--
+>   drivers/net/ethernet/sfc/tc_counters.c        |  5 ++-
+>   drivers/net/vrf.c                             |  4 +--
+>   drivers/net/vxlan/vxlan_core.c                |  6 ++--
+>   include/net/ndisc.h                           |  7 ++--
+>   net/bridge/br_arp_nd_proxy.c                  |  2 +-
+>   net/ieee802154/6lowpan/tx.c                   |  3 +-
+>   net/ipv4/fib_semantics.c                      |  2 +-
+>   net/ipv6/ip6_output.c                         |  2 +-
+>   net/ipv6/ndisc.c                              | 36 ++++++++++++-------
+>   net/ipv6/route.c                              | 11 +++---
+>   net/sched/sch_teql.c                          | 12 ++++++-
+>   15 files changed, 90 insertions(+), 70 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+> index 67c12ca19d59..fe0258375ef6 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+> @@ -439,21 +439,18 @@ void mlx5e_tc_update_neigh_used_value(struct mlx5e_neigh_hash_entry *nhe)
+>   	if (neigh_used) {
+>   		struct net_device *dev = READ_ONCE(nhe->neigh_dev);
+>   		struct net *net = dev_net(dev);
+> -		struct neigh_table *tbl;
+>   
+>   		nhe->reported_lastuse = jiffies;
+>   
+> +		/* find the relevant neigh according to the cached device and
+> +		 * dst ip pair
+> +		 */
+>   #if IS_ENABLED(CONFIG_IPV6)
+>   		if (m_neigh->family != AF_INET)
+> -			tbl = nd_table(net);
+> +			n = ipv6_neigh_lookup(dev, &m_neigh->dst_ip);
+>   		else
+>   #endif
+> -			tbl = arp_table(net);
+> -
+> -		/* find the relevant neigh according to the cached device and
+> -		 * dst ip pair
+> -		 */
+> -		n = neigh_lookup(tbl, &m_neigh->dst_ip, dev);
+> +			n = neigh_lookup(arp_table(net), &m_neigh->dst_ip, dev);
+>   		if (!n)
+>   			return;
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+> index ba8a7a44ce9e..1f4753213b9c 100644
+> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+> @@ -2449,8 +2449,6 @@ static void mlxsw_sp_router_neigh_ent_ipv6_process(struct mlxsw_sp *mlxsw_sp,
+>   						   char *rauhtd_pl,
+>   						   int rec_index)
+>   {
+> -	struct net *net = mlxsw_sp_net(mlxsw_sp);
+> -	struct neigh_table *tbl;
+>   	struct net_device *dev;
+>   	struct neighbour *n;
+>   	struct in6_addr dip;
+> @@ -2464,9 +2462,8 @@ static void mlxsw_sp_router_neigh_ent_ipv6_process(struct mlxsw_sp *mlxsw_sp,
+>   		return;
+>   	}
+>   
+> -	tbl = nd_table(net);
+>   	dev = mlxsw_sp_rif_dev(mlxsw_sp->router->rifs[rif]);
+> -	n = neigh_lookup(tbl, &dip, dev);
+> +	n = ipv6_neigh_lookup(dev, &dip);
 
-I was testing XDP redirect from a physical NIC into a
-veth whose peer is in another network namespace, and found that the
-redirect worked or not depending on the order of enabling GRO on the
-peer and bringing the peer up.
 
-Cheers,
-Tianyi
+Hi Kuniyuki,
 
-On Tue, Oct 6, 2026 at 6:39=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+I have checked Sashiko's feedback [0] and I think it is right.
+
+mlxsw_sp_router_ul_rif_get() can be called with a NULL mlxsw_sp_crif 
+pointer which then would call mlxsw_sp_ul_rif_create() and there during 
+the alloc a rif with a NULL crif is created making this feedback being 
+correct.
+
+I think a simple NULL check here for dev should be enough.
+
+[0] 
+https://sashiko.dev/#/message/20261003212336.1304988-7-kuniyu%40google.com
+
+Thanks!
+
+>   	if (!n)
+>   		return;
+>   
+> @@ -4312,17 +4309,23 @@ mlxsw_sp_nexthop_neigh_lookup(struct mlxsw_sp_nexthop *nh)
+>   	net = dev_net(dev);
+>   
+>   #if IS_ENABLED(CONFIG_IPV6)
+> -	if (nh->family == AF_INET6)
+> -		tbl = nd_table(net);
+> -	else
+> +	if (nh->family == AF_INET6) {
+> +		n = ipv6_neigh_lookup(dev, &nh->gw_addr);
+> +		if (!n) {
+> +			n = ipv6_neigh_create(dev, &nh->gw_addr);
+> +			if (!IS_ERR(n))
+> +				neigh_event_send(n, NULL);
+> +		}
+> +	} else
+>   #endif
+> +	{
+>   		tbl = arp_table(net);
+> -
+> -	n = neigh_lookup(tbl, &nh->gw_addr, dev);
+> -	if (!n) {
+> -		n = neigh_create(tbl, &nh->gw_addr, dev);
+> -		if (!IS_ERR(n))
+> -			neigh_event_send(n, NULL);
+> +		n = neigh_lookup(tbl, &nh->gw_addr, dev);
+> +		if (!n) {
+> +			n = neigh_create(tbl, &nh->gw_addr, dev);
+> +			if (!IS_ERR(n))
+> +				neigh_event_send(n, NULL);
+> +		}
+>   	}
+>   
+>   	return n;
+> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
+> index d34d2040177b..79947f68b10d 100644
+> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
+> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_span.c
+> @@ -235,17 +235,23 @@ static int mlxsw_sp_span_dmac(int family,
+>   	int err = 0;
+>   
+>   #if IS_ENABLED(CONFIG_IPV6_GRE)
+> -	if (family == AF_INET6)
+> -		tbl = nd_table(net);
+> -	else
+> +	if (family == AF_INET6) {
+> +		neigh = ipv6_neigh_lookup(dev, pkey);
+> +		if (!neigh) {
+> +			neigh = ipv6_neigh_create(dev, pkey);
+> +			if (IS_ERR(neigh))
+> +				return PTR_ERR(neigh);
+> +		}
+> +	} else
+>   #endif
+> +	{
+>   		tbl = arp_table(net);
+> -
+> -	neigh = neigh_lookup(tbl, pkey, dev);
+> -	if (!neigh) {
+> -		neigh = neigh_create(tbl, pkey, dev);
+> -		if (IS_ERR(neigh))
+> -			return PTR_ERR(neigh);
+> +		neigh = neigh_lookup(tbl, pkey, dev);
+> +		if (!neigh) {
+> +			neigh = neigh_create(tbl, pkey, dev);
+> +			if (IS_ERR(neigh))
+> +				return PTR_ERR(neigh);
+> +		}
+>   	}
+>   
+>   	neigh_event_send(neigh, NULL);
+> diff --git a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+> index d650d33e3709..27d80ec8e895 100644
+> --- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+> +++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+> @@ -253,7 +253,6 @@ void nfp_tunnel_keep_alive_v6(struct nfp_app *app, struct sk_buff *skb)
+>   #if IS_ENABLED(CONFIG_IPV6)
+>   	struct nfp_tun_active_tuns_v6 *payload;
+>   	struct net_device *netdev;
+> -	struct neigh_table *tbl;
+>   	int count, i, pay_len;
+>   	struct neighbour *n;
+>   	void *ipv6_add;
+> @@ -280,8 +279,7 @@ void nfp_tunnel_keep_alive_v6(struct nfp_app *app, struct sk_buff *skb)
+>   		if (!netdev)
+>   			continue;
+>   
+> -		tbl = nd_table(dev_net(netdev));
+> -		n = neigh_lookup(tbl, ipv6_add, netdev);
+> +		n = ipv6_neigh_lookup(netdev, ipv6_add);
+>   		if (!n)
+>   			continue;
+>   
+> diff --git a/drivers/net/ethernet/sfc/tc_counters.c b/drivers/net/ethernet/sfc/tc_counters.c
+> index 793a562fc1f7..ae6cc6b93864 100644
+> --- a/drivers/net/ethernet/sfc/tc_counters.c
+> +++ b/drivers/net/ethernet/sfc/tc_counters.c
+> @@ -116,9 +116,8 @@ static void efx_tc_counter_work(struct work_struct *work)
+>   					 encap->neigh->egdev);
+>   		else
+>   #if IS_ENABLED(CONFIG_IPV6)
+> -			n = neigh_lookup(nd_table(net),
+> -					 &encap->neigh->dst_ip6,
+> -					 encap->neigh->egdev);
+> +			n = ipv6_neigh_lookup(encap->neigh->egdev,
+> +					      &encap->neigh->dst_ip6);
+>   #else
+>   			n = NULL;
+>   #endif
+> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
+> index 320f3584a43b..79d433f49f80 100644
+> --- a/drivers/net/vrf.c
+> +++ b/drivers/net/vrf.c
+> @@ -614,9 +614,9 @@ static int vrf_finish_output6(struct net *net, struct sock *sk,
+>   
+>   	rcu_read_lock();
+>   	nexthop = rt6_nexthop(dst_rt6_info(dst), &ipv6_hdr(skb)->daddr);
+> -	neigh = __ipv6_neigh_lookup_noref(dst->dev, nexthop);
+> +	neigh = __ipv6_neigh_lookup_noref(dev, nexthop);
+>   	if (unlikely(!neigh))
+> -		neigh = __neigh_create(nd_table(net), nexthop, dst->dev, false);
+> +		neigh = ipv6_neigh_create_noref(dev, nexthop);
+>   	if (!IS_ERR(neigh)) {
+>   		sock_confirm_neigh(skb, neigh);
+>   		ret = neigh_output(neigh, skb, false);
+> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+> index 27b0b6567d52..513779c07621 100644
+> --- a/drivers/net/vxlan/vxlan_core.c
+> +++ b/drivers/net/vxlan/vxlan_core.c
+> @@ -2091,8 +2091,7 @@ static int neigh_reduce(struct net_device *dev, struct sk_buff *skb,
+>   	    ipv6_addr_is_multicast(&msg->target))
+>   		goto out;
+>   
+> -	n = neigh_lookup(nd_table(dev_net(dev)), &msg->target, dev);
+> -
+> +	n = ipv6_neigh_lookup(dev, &msg->target);
+>   	if (n) {
+>   		struct vxlan_rdst *rdst = NULL;
+>   		u8 ha[ETH_ALEN] __aligned(2);
+> @@ -2189,9 +2188,8 @@ static bool route_shortcircuit(struct net_device *dev, struct sk_buff *skb,
+>   		if (!pskb_network_may_pull(skb, sizeof(struct ipv6hdr)))
+>   			return false;
+>   
+> -		tbl = nd_table(dev_net(dev));
+>   		pip6 = ipv6_hdr(skb);
+> -		n = neigh_lookup(tbl, &pip6->daddr, dev);
+> +		n = ipv6_neigh_lookup(dev, &pip6->daddr);
+>   		if (!n && (cfg->flags & VXLAN_F_L3MISS)) {
+>   			union vxlan_addr ipa = {
+>   				.sin6.sin6_addr = pip6->daddr,
+> diff --git a/include/net/ndisc.h b/include/net/ndisc.h
+> index 2fce6fccf55a..91898a2475e7 100644
+> --- a/include/net/ndisc.h
+> +++ b/include/net/ndisc.h
+> @@ -423,11 +423,8 @@ static inline struct neighbour *ip_neigh_gw6(struct net_device *dev,
+>   	struct neighbour *neigh;
+>   
+>   	neigh = __ipv6_neigh_lookup_noref(dev, addr);
+> -	if (unlikely(!neigh)) {
+> -		struct neigh_table *tbl = nd_table(dev_net(dev));
+> -
+> -		neigh = __neigh_create(tbl, addr, dev, false);
+> -	}
+> +	if (unlikely(!neigh))
+> +		neigh = ipv6_neigh_create_noref(dev, addr);
+>   
+>   	return neigh;
+>   #else
+> diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
+> index ba4a63840b21..c23b99517cd5 100644
+> --- a/net/bridge/br_arp_nd_proxy.c
+> +++ b/net/bridge/br_arp_nd_proxy.c
+> @@ -487,7 +487,7 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
+>   		return;
+>   	}
+>   
+> -	n = neigh_lookup(nd_table(dev_net(vlandev)), &msg->target, vlandev);
+> +	n = ipv6_neigh_lookup(vlandev, &msg->target);
+>   	if (n) {
+>   		struct net_bridge_fdb_entry *f;
+>   		u8 ha[ETH_ALEN] __aligned(2);
+> diff --git a/net/ieee802154/6lowpan/tx.c b/net/ieee802154/6lowpan/tx.c
+> index 4f511476b992..b261daedc290 100644
+> --- a/net/ieee802154/6lowpan/tx.c
+> +++ b/net/ieee802154/6lowpan/tx.c
+> @@ -58,9 +58,8 @@ int lowpan_header_create(struct sk_buff *skb, struct net_device *ldev,
+>   		info->daddr.mode = IEEE802154_ADDR_SHORT;
+>   	} else {
+>   		__le16 short_addr = cpu_to_le16(IEEE802154_ADDR_SHORT_UNSPEC);
+> -		struct neigh_table *tbl = nd_table(dev_net(ldev));
+>   
+> -		n = neigh_lookup(tbl, &hdr->daddr, ldev);
+> +		n = ipv6_neigh_lookup(ldev, &hdr->daddr);
+>   		if (n) {
+>   			llneigh = lowpan_802154_neigh(neighbour_priv(n));
+>   			read_lock_bh(&n->lock);
+> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+> index e3bcc25229b0..a98c7670d2ce 100644
+> --- a/net/ipv4/fib_semantics.c
+> +++ b/net/ipv4/fib_semantics.c
+> @@ -617,7 +617,7 @@ static int fib_detect_death(struct fib_info *fi, int order,
+>   	if (likely(nhc->nhc_gw_family == AF_INET))
+>   		n = neigh_lookup(arp_table(net), &nhc->nhc_gw.ipv4, nhc->nhc_dev);
+>   	else if (IS_ENABLED(CONFIG_IPV6) && nhc->nhc_gw_family == AF_INET6)
+> -		n = neigh_lookup(nd_table(net), &nhc->nhc_gw.ipv6, nhc->nhc_dev);
+> +		n = ipv6_neigh_lookup(nhc->nhc_dev, &nhc->nhc_gw.ipv6);
+>   	else
+>   		n = NULL;
+>   
+> diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+> index 10146a57b69e..25fe0ba98b1a 100644
+> --- a/net/ipv6/ip6_output.c
+> +++ b/net/ipv6/ip6_output.c
+> @@ -127,7 +127,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+>   
+>   	if (IS_ERR_OR_NULL(neigh)) {
+>   		if (unlikely(!neigh))
+> -			neigh = __neigh_create(nd_table(net), nexthop, dev, false);
+> +			neigh = ipv6_neigh_create_noref(dev, nexthop);
+>   		if (IS_ERR(neigh)) {
+>   			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTNOROUTES);
+>   			kfree_skb_reason(skb, SKB_DROP_REASON_NEIGH_CREATEFAIL);
+> diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+> index e1cbffaa0ad0..0ed1a619372b 100644
+> --- a/net/ipv6/ndisc.c
+> +++ b/net/ipv6/ndisc.c
+> @@ -947,8 +947,12 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
+>   	 *	update / create cache entry
+>   	 *	for the source address
+>   	 */
+> -	neigh = __neigh_lookup(tbl, saddr, dev,
+> -			       !inc || lladdr || !dev->addr_len);
+> +	neigh = ipv6_neigh_lookup(dev, saddr);
+> +	if (!neigh && (!inc || lladdr || !dev->addr_len)) {
+> +		neigh = ipv6_neigh_create(dev, saddr);
+> +		if (IS_ERR(neigh))
+> +			neigh = NULL;
+> +	}
+>   	if (neigh)
+>   		ndisc_update(dev, neigh, lladdr, NUD_STALE,
+>   			     NEIGH_UPDATE_F_WEAK_OVERRIDE|
+> @@ -998,7 +1002,6 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+>   	struct net *net = dev_net(dev);
+>   	struct ndisc_options ndopts;
+>   	struct inet6_ifaddr *ifp;
+> -	struct neigh_table *tbl;
+>   	struct neighbour *neigh;
+>   	struct inet6_dev *idev;
+>   	u8 *lladdr = NULL;
+> @@ -1063,8 +1066,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+>   		return reason;
+>   	}
+>   
+> -	tbl = nd_table(net);
+> -	neigh = neigh_lookup(tbl, &msg->target, dev);
+> +	neigh = ipv6_neigh_lookup(dev, &msg->target);
+>   
+>   	/* RFC 9131 updates original Neighbour Discovery RFC 4861.
+>   	 * NAs with Target LL Address option can now create a STALE neighbor
+> @@ -1093,7 +1095,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+>   			return reason;
+>   		}
+>   		if (!neigh)
+> -			neigh = neigh_create(tbl, &msg->target, dev);
+> +			neigh = ipv6_neigh_create(dev, &msg->target);
+>   		new_state = NUD_STALE;
+>   	}
+>   
+> @@ -1108,7 +1110,7 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
+>   		if (lladdr && !memcmp(lladdr, dev->dev_addr, dev->addr_len) &&
+>   		    READ_ONCE(net->ipv6.devconf_all->forwarding) &&
+>   		    READ_ONCE(net->ipv6.devconf_all->proxy_ndp) &&
+> -		    pneigh_lookup(tbl, &msg->target, dev)) {
+> +		    pneigh_lookup(nd_table(dev_net(dev)), &msg->target, dev)) {
+>   			/* XXX: idev->cnf.proxy_ndp */
+>   			goto out;
+>   		}
+> @@ -1141,7 +1143,6 @@ static enum skb_drop_reason ndisc_recv_rs(struct sk_buff *skb)
+>   	unsigned long ndoptlen = skb->len - sizeof(*rs_msg);
+>   	struct net_device *dev = skb->dev;
+>   	struct ndisc_options ndopts;
+> -	struct neigh_table *tbl;
+>   	struct neighbour *neigh;
+>   	struct inet6_dev *idev;
+>   	u8 *lladdr = NULL;
+> @@ -1177,8 +1178,12 @@ static enum skb_drop_reason ndisc_recv_rs(struct sk_buff *skb)
+>   			goto out;
+>   	}
+>   
+> -	tbl = nd_table(dev_net(dev));
+> -	neigh = __neigh_lookup(tbl, saddr, dev, 1);
+> +	neigh = ipv6_neigh_lookup(dev, saddr);
+> +	if (!neigh) {
+> +		neigh = ipv6_neigh_create(dev, saddr);
+> +		if (IS_ERR(neigh))
+> +			goto out;
+> +	}
+>   	if (neigh) {
+>   		ndisc_update(dev, neigh, lladdr, NUD_STALE,
+>   			     NEIGH_UPDATE_F_WEAK_OVERRIDE|
+> @@ -1478,9 +1483,14 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
+>   	 *	Process options.
+>   	 */
+>   
+> -	if (!neigh)
+> -		neigh = __neigh_lookup(nd_table(net), &ipv6_hdr(skb)->saddr,
+> -				       skb->dev, 1);
+> +	if (!neigh) {
+> +		neigh = ipv6_neigh_lookup(skb->dev, &ipv6_hdr(skb)->saddr);
+> +		if (!neigh) {
+> +			neigh = ipv6_neigh_create(skb->dev, &ipv6_hdr(skb)->saddr);
+> +			if (IS_ERR(neigh))
+> +				neigh = NULL;
+> +		}
+> +	}
+>   	if (neigh) {
+>   		u8 *lladdr = NULL;
+>   		if (ndopts.nd_opts_src_lladdr) {
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 8baac4d85251..ea9f0a4c34f9 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -218,7 +218,7 @@ struct neighbour *__ip6_dst_neigh_lookup(const struct in6_addr *gw,
+>   	if (n)
+>   		return n;
+>   
+> -	n = neigh_create(nd_table(dev_net(dev)), daddr, dev);
+> +	n = ipv6_neigh_create(dev, daddr);
+>   	return IS_ERR(n) ? NULL : n;
+>   }
+>   
+> @@ -4277,9 +4277,12 @@ static void rt6_do_redirect(struct dst_entry *dst, struct sock *sk, struct sk_bu
+>   	 */
+>   	dst_confirm_neigh(&rt->dst, &ipv6_hdr(skb)->saddr);
+>   
+> -	neigh = __neigh_lookup(nd_table(dev_net(dev)), &msg->target, dev, 1);
+> -	if (!neigh)
+> -		return;
+> +	neigh = ipv6_neigh_lookup(dev, &msg->target);
+> +	if (!neigh) {
+> +		neigh = ipv6_neigh_create(dev, &msg->target);
+> +		if (IS_ERR(neigh))
+> +			return;
+> +	}
+>   
+>   	/*
+>   	 *	We have finally decided to accept it.
+> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+> index 409ce50cc0db..19ccf1a55988 100644
+> --- a/net/sched/sch_teql.c
+> +++ b/net/sched/sch_teql.c
+> @@ -16,6 +16,7 @@
+>   #include <linux/skbuff.h>
+>   #include <linux/moduleparam.h>
+>   #include <net/dst.h>
+> +#include <net/ndisc.h>
+>   #include <net/neighbour.h>
+>   #include <net/pkt_sched.h>
+>   
+> @@ -257,7 +258,16 @@ __teql_resolve(struct sk_buff *skb, struct sk_buff *skb_res,
+>   	if (dst->dev != dev) {
+>   		struct neighbour *mn;
+>   
+> -		mn = __neigh_lookup_errno(n->tbl, n->primary_key, dev);
+> +#if IS_ENABLED(CONFIG_IPV6)
+> +		if (n->tbl->family == AF_INET6) {
+> +			mn = ipv6_neigh_lookup(dev, n->primary_key);
+> +			if (!mn)
+> +				mn = ipv6_neigh_create(dev, n->primary_key);
+> +		} else
+> +#endif
+> +		{
+> +			mn = __neigh_lookup_errno(n->tbl, n->primary_key, dev);
+> +		}
+>   		neigh_release(n);
+>   		if (IS_ERR(mn))
+>   			return PTR_ERR(mn);
+
