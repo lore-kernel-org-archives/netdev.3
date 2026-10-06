@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58F73368A2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59823563F6;
 	Tue,  6 Oct 2026 16:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791305292; cv=none; b=HQUyDl8TIGK03zzsk2laVmbQQiWy6I/YjcM+b8XUrMoXLyzyydtZ0f7S7IlUcLcKTc5WEFiQJJ4QvW7pHRxoywkmYknZrFEVu11cqjAR5e2yT/ketFQRNc/ldMBpsLtL/ijF4PV8mdaI9+2yxWYK5vhRVXca1XvnYHZtkUwXWSA=
+	t=1791305292; cv=none; b=d9asgd6o7wM19komLjIdQbkg5Vx1AETqqMIo1cFC+Z3nxOXaXl66AvgUSoJ60SPgfsjKExcoxjcLiBctivpxSmO01KJwifGpCd3fER7gQNaI3uPzOHE4nQm+lki4ALPfGldqvyhlovh1a+NqTA2Mbxfm82/cqZD0oZDR3TOGo24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791305292; c=relaxed/simple;
-	bh=iNxUTUX7UN203sLEmQVGGlet3XolpEaKqh1jbgSx3hM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=THlCohYqq/a9GCfC2UtSGa1uUYrtsaIAQDEuWyjT85NUTcByhtpiRkgsI0Qf4Ys5n7Si86gar7cvfHBxm/7GVkAQwikXOGUgqrqg1o5uzywberSaJyk6AMwjA3GwiFgSH6NjwGUnoDX6EgMTjZBkicbAINChX+f+eIySPgmleNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmky91BS; arc=none smtp.client-ip=10.30.226.201
+	bh=zXSXQbCwcrgf1rnHXh1JMPBFTzcV1b9TDrQgc1cAtkQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HsnnKbFToUshke+Xjk+ZoMvIk5y2OwoOWW6PVwFqlUj953V8c50aQGkR78AWJFqLO981h4amlvkIausVuqhiiCL/n5QyiBESBKO0lrxIbANiHhDHULR3JjPJ7ICT9e2oUIdIDyghH7VH7dit/Npl55N0fh0Y3qLQJgi/We6I6rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqCAdBaQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmky91BS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 63562C4AF60;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqCAdBaQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5BEC3C2BCF4;
 	Tue,  6 Oct 2026 16:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1791305292;
-	bh=iNxUTUX7UN203sLEmQVGGlet3XolpEaKqh1jbgSx3hM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=mmky91BSo/tCzQQyIl+MUhlBA2UlbBol6IYrii2f3ljljyXL7b9Mvd700gtzhFMOY
-	 J66Qu6JignrWQVNgnLCpdAn4IFXgyjhEy4ZxUuFeFRlMzjLTtNUZp3po3zk1US50Pk
-	 Qi6PAN/1W25ausMb+u9GEKqLOqAN2QQ7Hmg7/9TBFcpC75wFHPUd5YMEkBunY5C6CL
-	 TxURMleIFhyhTb25AQSpgU2/yOziV1tGSgiaq91utqTBYjXaUmkJrrEq9nMEMTkigE
-	 gzGiD0Xp7M1KM3U0vVhFUKHXyLPdGYLo2vIVHHa/ib3JqA57viUuBvUc4+eiPCEwyY
-	 uYzFca0/+5C2A==
+	bh=zXSXQbCwcrgf1rnHXh1JMPBFTzcV1b9TDrQgc1cAtkQ=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=mqCAdBaQpTJwOVxopFX1srU1QDie+7KetQYBjpIpzE2A+yQA0S3zCN2/9uMtRLBlp
+	 lkqy580VPKJvgR77khlJgzScbBRZ1w4AMdKs4EmBZXdG5Iox8XUHDBsXFHdlDprVAp
+	 Js5KZ6ZzDTzn+q08DIgFGZ2cMylYVS8l3tseQRMs0hSMXQ/VZdJ54WXWx/UiH6yluW
+	 FHcP/E1olL08al5laiMzXe1z5qvcKhEPftR8lcVWEeM3RIMJBWPHGl4IM9g4Fsps1Q
+	 ZNbmB1ONqWUpebI9hRCi+tC72PqEQSrb44dM72iemLavIXfgfPYHpBxv4C1JLOj28Y
+	 0k87OzayhsJVQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42B7FCA5FFE;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 329F5CA5FFC;
 	Tue,  6 Oct 2026 16:48:12 +0000 (UTC)
 From: Kyle Hendry via B4 Relay <devnull+khendry.reliablecontrols.com@kernel.org>
-Date: Tue, 06 Oct 2026 09:48:11 -0700
-Subject: [PATCH net-next v3 1/2] net: pcs: rzn1-miic: Update port numbering
- for RZ/T2H
+Subject: [PATCH net-next v3 0/2] net: pcs: rzn1-miic: Validate dtb
+ configuration values
+Date: Tue, 06 Oct 2026 09:48:10 -0700
+Message-Id: <20261006-miic-validate-dtb-v3-v3-0-68617b3dca5c@reliablecontrols.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,9 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-miic-validate-dtb-v3-v3-1-68617b3dca5c@reliablecontrols.com>
-References: <20261006-miic-validate-dtb-v3-v3-0-68617b3dca5c@reliablecontrols.com>
-In-Reply-To: <20261006-miic-validate-dtb-v3-v3-0-68617b3dca5c@reliablecontrols.com>
+X-B4-Tracking: v=1; b=H4sIAEomxWoC/x3MSwqDMBRG4a3IHfdCHihttyIdxORXL7SpJCEI4
+ t4NDr/BOQdlJEGmd3dQQpUs/9hgHx351cUFLKGZjDKDVqrnn4jn6r4SXAGHMnG17Gern0b5SeN
+ FLd0SZtnv7UgRhSP2Qp/zvACslybCcAAAAA==
 To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
  Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
  Russell King <linux@armlinux.org.uk>, 
@@ -55,11 +55,11 @@ To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>,
 Cc: linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Kyle Hendry <khendry@reliablecontrols.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791305291; l=3304;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791305291; l=1340;
  i=khendry@reliablecontrols.com; s=20260813; h=from:subject:message-id;
- bh=s6/3RKxk6IiiYAhYfZef0zPZJb+mPc2/vcFTV9MLxXQ=;
- b=wq5r3+EzGS8MksyQQvg+AARMJS0wr4tSQhISxB17uBqM/hkhjTWx3Zl3229cRPHAKr6ki3/pr
- 4Psmtqv+ysAAVRkUt5HuJ35uFdiRvAj1GHs9Uu2v0VDn4nl8/jiwjSg
+ bh=zXSXQbCwcrgf1rnHXh1JMPBFTzcV1b9TDrQgc1cAtkQ=;
+ b=+gvUdgGmUhXtWwCRIbXud22BVaXjP4blOyp0hcOw5wX7yqK/y3BIbqys32ea3CA7CiOWi9Q9j
+ gOySn5oEgfSCeKdjy/BBUM1hP5HrgABZ9r7kzPLgTGaY6a0VhAy/Xmv
 X-Developer-Key: i=khendry@reliablecontrols.com; a=ed25519;
  pk=gbK6oghz3qBlBiaGCsEzALLOtj5VklmsuolHQNhDV5M=
 X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
@@ -67,90 +67,38 @@ X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
 X-Original-From: Kyle Hendry <khendry@reliablecontrols.com>
 Reply-To: khendry@reliablecontrols.com
 
-From: Kyle Hendry <khendry@reliablecontrols.com>
+This series addresses issues found when reviewing another fix:
+https://lore.kernel.org/netdev/20260915-rzn1-miic-fix-array-v5-1-b7173fd5b97d@reliablecontrols.com/
 
-The port numbers on the RZ/T2H are documented as 0 to 3. Update the info
-structure and change the member name to miic_port_last to be more accurate.
+Invalid values from the dtb could cause out of bounds array access. Checking
+the values as they're parsed should prevent this.
 
-This value was being used as the number of miic registers when setting
-default values. Add logic to get the total port count and loop over that.
+Changes in v3:
+- Squash patches changing miic_port_max
+- Change name of miic_port_max to miic_port_last
+- Remove fixes tags
+- Add another check for configuration value of miic-switch-portin
+- Link to v2: https://lore.kernel.org/r/20260928-miic-validate-dtb-v2-0-1ee3d33748e9@reliablecontrols.com/
+
+Changes in v2:
+- Simplify fixes by making miic_port_max the last documented port number
+- Add fixes tags
+- Link to v1: https://lore.kernel.org/r/20260925-miic-validate-dtb-v1-0-3a6db9bb75ec@reliablecontrols.com
 
 Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
 ---
- drivers/net/pcs/pcs-rzn1-miic.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Kyle Hendry (2):
+      net: pcs: rzn1-miic: Update port numbering for RZ/T2H
+      net: pcs: rzn1-miic: Validate dtb configuration values
 
-diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-index 3aa513467060..31716241b58f 100644
---- a/drivers/net/pcs/pcs-rzn1-miic.c
-+++ b/drivers/net/pcs/pcs-rzn1-miic.c
-@@ -222,7 +222,7 @@ enum miic_type {
-  * @index_to_string: String representations of the index values
-  * @index_to_string_count: Number of entries in the index_to_string array
-  * @miic_port_start: MIIC port start number
-- * @miic_port_max: Maximum MIIC supported
-+ * @miic_port_last: MIIC port last number
-  * @sw_mode_mask: Switch mode mask
-  * @reset_ids: Reset names array
-  * @reset_count: Number of entries in the reset_ids array
-@@ -240,7 +240,7 @@ struct miic_of_data {
- 	const char * const *index_to_string;
- 	u8 index_to_string_count;
- 	u8 miic_port_start;
--	u8 miic_port_max;
-+	u8 miic_port_last;
- 	u8 sw_mode_mask;
- 	const char * const *reset_ids;
- 	u8 reset_count;
-@@ -485,7 +485,7 @@ struct phylink_pcs *miic_create(struct device *dev, struct device_node *np)
- 
- 	miic = platform_get_drvdata(pdev);
- 	of_data = miic->of_data;
--	if (port > of_data->miic_port_max || port < of_data->miic_port_start) {
-+	if (port > of_data->miic_port_last || port < of_data->miic_port_start) {
- 		put_device(&pdev->dev);
- 		return ERR_PTR(-EINVAL);
- 	}
-@@ -523,6 +523,7 @@ EXPORT_SYMBOL(miic_destroy);
- static int miic_init_hw(struct miic *miic, u32 cfg_mode)
- {
- 	u8 sw_mode_mask = miic->of_data->sw_mode_mask;
-+	int num_ports;
- 	int port;
- 
- 	/* Unlock write access to accessory registers (cf datasheet). If this
-@@ -538,7 +539,10 @@ static int miic_init_hw(struct miic *miic, u32 cfg_mode)
- 	miic_reg_writel(miic, MIIC_MODCTRL,
- 			((cfg_mode << __ffs(sw_mode_mask)) & sw_mode_mask));
- 
--	for (port = 0; port < miic->of_data->miic_port_max; port++) {
-+	num_ports = miic->of_data->miic_port_last -
-+		miic->of_data->miic_port_start + 1;
-+
-+	for (port = 0; port < num_ports; port++) {
- 		miic_converter_enable(miic, port, 0);
- 		/* Disable speed/duplex control from these registers, datasheet
- 		 * says switch registers should be used to setup switch port
-@@ -825,7 +829,7 @@ static struct miic_of_data rzn1_miic_of_data = {
- 	.index_to_string = index_to_string,
- 	.index_to_string_count = ARRAY_SIZE(index_to_string),
- 	.miic_port_start = 1,
--	.miic_port_max = 5,
-+	.miic_port_last = 5,
- 	.sw_mode_mask = GENMASK(4, 0),
- 	.init_unlock_lock_regs = true,
- 	.miic_write = miic_reg_writel_unlocked,
-@@ -841,7 +845,7 @@ static struct miic_of_data rzt2h_miic_of_data = {
- 	.index_to_string = rzt2h_index_to_string,
- 	.index_to_string_count = ARRAY_SIZE(rzt2h_index_to_string),
- 	.miic_port_start = 0,
--	.miic_port_max = 4,
-+	.miic_port_last = 3,
- 	.sw_mode_mask = GENMASK(2, 0),
- 	.reset_ids = rzt2h_reset_ids,
- 	.reset_count = ARRAY_SIZE(rzt2h_reset_ids),
+ drivers/net/pcs/pcs-rzn1-miic.c | 45 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 37 insertions(+), 8 deletions(-)
+---
+base-commit: a5e7d8e446af9803e37a3b6a4d416fb41178348f
+change-id: 20261005-miic-validate-dtb-v3-cf31820cb1e9
 
+Best regards,
 -- 
-2.43.0
+Kyle Hendry <khendry@reliablecontrols.com>
 
 
