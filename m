@@ -1,386 +1,241 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A20375AC4
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 11:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CC03DD871
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 11:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791285101; cv=none; b=vBWocGM+mOUjPWBmsPjcUCuT+ydhM7njud40bALiE5UXiyORFDT4QYqrQPstdij+r0qCCBIoGV9IGI8VL5R9XGpKWlNB41876A4BuY9iaxd6WNKbwYvHJUvUld/q+mQyzD2ZetdTM5KEdyXpm99ZUdOiYUGQJLAd1K8ZkUCoh3s=
+	t=1791285838; cv=none; b=lDluHgOuWb4VEBkBnTBzJKHyjcBQGAJKPfyw0vZ8ML7coazP+RHCmfy2Dp5xQUtBu9Th3qH6702k7AAAzliB0pJSd5o5a1GQwHyhn0O8qql4M8Tyf7CZENlWadQad7512vnz7ny77T9GKPOZrUuPNUOB3MadSQZ6Ev3SW3pKr50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791285101; c=relaxed/simple;
-	bh=87GRfdtqLbN68pHQ3bOe7uz4iAFYn8uH5iqeMR10srI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QyMHV6ZryiMH3HxBr+32T3u1FPSqYO1l5kJipsx/g/etpQpy/obo880Zdw36oXLsM/NJvIp4fshH3D9mgIj7Q+ndisQyFwhgJK7xFFSYD0SyAT834mL/O0mptlfm0Kxf30wln/LI7QeMxnMUhYGY7rw9oiih6FqS3BQPye7dnmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmqEVk1Z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791285838; c=relaxed/simple;
+	bh=XdpAnPmZPdfJMv5U124CuZ+lvv41BcjUyVPRFDrgfH0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=baQcxAIf7SEt3NHF8L0wW1SUACvT3YepNVkbIuLyy/ouks6Y9ByOXH9bGOwZT2o3D53dquvDF3deH4hSAVFFyd1C2A9otO46j4WuheNV+F4Z051QfvkIYB3KesZH4TJ/f8DpZXEk/aKrLbpDAaxiDuGIfZgTUd8TDTLgTJyzG7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hu+FLg7i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmqEVk1Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19ED31F000FF;
-	Tue,  6 Oct 2026 11:11:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hu+FLg7i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29C51F008A2
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 11:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791285099;
-	bh=6q80GLIOo4mbZosSnlYuAhDZl1QZK0wGSOYq1WsPag0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YmqEVk1ZzFj/N+86gOCMb1zRFenDeOXuVoY7jVRpEVQC6TbKzos7EUep6bVyiftTd
-	 fxjspMwlryFuaDuKD5UhyTNulf71nBcSTqdT3L0ikdf+mF2BkUY4k722oNQF3Ekky7
-	 C1hKYiJFdUHANgTgpVgCCAM6ZdpArcCwI/RTryBAXKncpYempvnmb8wmt9QEHVkowz
-	 VW4D2z8XYpt7uqaVFZ/bvHmeduyYNwAA3E09RWfy6BSW76bBtdf5KGe3NRyk2h2mMO
-	 B5bpesZJjsL+6jSREJjBM9VeJzFurUTW4RK934GVxeBvwz1ULUxm+4FehyBB7y57C1
-	 HJ1q0M5w7WGHg==
-Subject: Re: [PATCH net] net: stmmac: serialize PTP timestamping configuration
- with priv->lock
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Date: Tue, 06 Oct 2026 11:11:38 +0000
-Message-ID: <179128509861.434549.666442739990534480@kernel.org>
-In-Reply-To:
- <20261002-stmmac-hwtstamp-missing-lock-v1-1-189ce151a624@oss.qualcomm.com>
-References:
- <20261002-stmmac-hwtstamp-missing-lock-v1-1-189ce151a624@oss.qualcomm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791285836;
+	bh=IDroXHxguQo+CybQq2kk/ZUPA2VdUvycoL56+zfLxDY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hu+FLg7i2t7X+Gvv7zjSwsfIK0ePD3+7gCZmtEmo/D2gCjTZ1nVbLJr+RURh0P4Q9
+	 XSjezRUPz2y6rNF3NCMUxu+ixWUpbiyol7/+FkVo3qRCnJowH3xpMWr0QDB4qX3pkD
+	 OH/pm2elW7e0bF8O9R24juwuCe14cV9ArYKXjl/OzTuEOEN2thlklbtRKoDelmOY9T
+	 DoTLHtNMUvYsnIJpa07RBmf6xa//wmU7xZr7KiNNOcpvM51NQfS/mXMW+nJMXg9SHy
+	 bxqUs1lhYiYOTcW95SWsDc3CttgFLuYsf19tiNquvH2NOgjd0Da3OG4Jzv4InskvEI
+	 4gzHfV8tQM2EQ==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4af173320f9so1500507b6e.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 04:23:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzvRxuGQn2AXi3FCwwP26iAp/ibYPjEXZSuNZEU8FVVCHP411sHzwUP8+c3cWGawA/gnGhbAnI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mS0O18O2CIXKI+IwkNiiYpP/lABRH00+9pwyxCl4BW2Ynk0yD6
+	PkGChzrn8rIJoQSiL70DFPnqNAJQBVPRiO9D7R2CCoso2HYVz+5JvrPw+z6EeiOD3Kjmink6D2B
+	8NDEmUJuSklY1xw56h0ba2dwoTNqp5R4=
+X-Received: by 2002:a05:6808:bce:b0:4b9:e5fa:8905 with SMTP id
+ 5614622812f47-4fb40c95755mr1060603b6e.24.1791285836048; Tue, 06 Oct 2026
+ 04:23:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 2 (1) · Low: 1 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The fix is incomplete.
-- [Medium] The tag `Fixes: 4347287b8627 ("net: stmmac: propagate PTP
-  addend and system time programming errors")` names a SHA that does not…
-- [Medium] PTP_TCR and PTP_TAR are still programmed concurrently under
-  two different locks.
-- [Low] In stmmac_hwtstamp_set()
-  (drivers/net/ethernet/stmicro/stmmac/stmmac_main.c), the patch moves…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  stmmac_dl_ts_coarse_set() reprograms PTP_TCR, PTP_SSIR and PTP_TAR and…
-- [Low] This problem wasn't introduced by this patch, but in
-  stmmac_update_subsecond_increment() the rollback is incomplete when…
-
---
-
-net: stmmac: serialize PTP timestamping configuration with priv->lock
-
-This patch takes priv->lock in stmmac_hwtstamp_set() and in
-stmmac_dl_ts_coarse_set(). The goal is to serialize updates to
-systime_flags/tsfupdt_coarse and the PTP_TCR programming between the
-RTNL-held hwtstamp path and the devl_lock-held devlink parameter path. The
-hardware capability check in stmmac_hwtstamp_set() also moves under the
-lock.
-
-> Fixes: 4347287b8627 ("net: stmmac: propagate PTP addend and system time programming errors")
-
-[Severity: Medium]
-Is this the right Fixes target? 4347287b8627 does not seem to resolve in
-the tree. The quoted subject matches 232d49dd4b40, which is the parent of
-this patch.
-
-The race also looks older than that commit. Before 232d49dd4b40,
-stmmac_dl_ts_coarse_set() already did three things under devl_lock only:
-
-- wrote priv->tsfupdt_coarse
-- did a read-modify-write of priv->systime_flags
-- called stmmac_update_subsecond_increment()
-
-Meanwhile stmmac_hwtstamp_set() read tsfupdt_coarse and rewrote
-systime_flags and PTP_TCR under RTNL.
-
-Should this be the following instead?
-
-Fixes: 6920fa0c764d ("net: stmmac: Add a devlink attribute to control timestamping mode")
-
-With that tag, stable trees that have the devlink parameter but not
-232d49dd4b40 would also pick up the fix.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 9741f97fa37a2..a6793054a1796 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -685,14 +685,7 @@ static int stmmac_hwtstamp_set(struct net_device *dev,
->  	u32 snap_type_sel = 0;
->  	u32 ts_master_en = 0;
->  	u32 ts_event_en = 0;
-> -
-> -	if (!(priv->dma_cap.time_stamp || priv->adv_ts)) {
-> -		NL_SET_ERR_MSG_MOD(extack, "No support for HW time stamping");
-> -		priv->hwts_tx_en = 0;
-> -		priv->hwts_rx_en = 0;
-> -
-> -		return -EOPNOTSUPP;
-> -	}
-> +	int ret = 0;
->  
->  	if (!netif_running(dev)) {
->  		NL_SET_ERR_MSG_MOD(extack,
-> @@ -700,13 +693,23 @@ static int stmmac_hwtstamp_set(struct net_device *dev,
->  		return -ENODEV;
->  	}
->  
-> -	netdev_dbg(priv->dev, "%s config flags:0x%x, tx_type:0x%x, rx_filter:0x%x\n",
-> -		   __func__, config->flags, config->tx_type, config->rx_filter);
-> -
->  	if (config->tx_type != HWTSTAMP_TX_OFF &&
->  	    config->tx_type != HWTSTAMP_TX_ON)
->  		return -ERANGE;
->  
-> +	netdev_dbg(priv->dev, "%s config flags:0x%x, tx_type:0x%x, rx_filter:0x%x\n",
-> +		   __func__, config->flags, config->tx_type, config->rx_filter);
-> +
-> +	mutex_lock(&priv->lock);
-> +
-> +	if (!(priv->dma_cap.time_stamp || priv->adv_ts)) {
-> +		NL_SET_ERR_MSG_MOD(extack, "No support for HW time stamping");
-> +		priv->hwts_tx_en = 0;
-> +		priv->hwts_rx_en = 0;
-> +		ret = -EOPNOTSUPP;
-> +		goto unlock;
-> +	}
-> +
-
-[Severity: Low]
-Was moving the capability check intended? It used to be the first check
-in stmmac_hwtstamp_set(). Now it comes after the netif_running() and
-tx_type checks.
-
-The commit message does not mention the move. Userspace sees the
-difference through SIOCSHWTSTAMP and ethtool tsconfig-set, via
-dev_set_hwtstamp_phylib()->ndo_hwtstamp_set():
-
-- On a MAC without timestamping support, a down interface now gets
-  -ENODEV with "Cannot change timestamping configuration while down".
-  It used to get -EOPNOTSUPP with "No support for HW time stamping".
-
-- On such a MAC, an unsupported tx_type such as HWTSTAMP_TX_ONESTEP_SYNC
-  now gets -ERANGE instead of -EOPNOTSUPP.
-
-- On those early returns, hwts_tx_en and hwts_rx_en are no longer
-  cleared.
-
-The serialization does not seem to need the move:
-
-- dma_cap.time_stamp is fixed at probe.
-- adv_ts is written by stmmac_init_timestamping() on the open path
-  without priv->lock, so reading it under the lock does not protect it.
-
-Could the check stay at the top of the function?
-
->  	if (priv->adv_ts) {
->  		switch (config->rx_filter) {
->  		case HWTSTAMP_FILTER_NONE:
-
-[ ... ]
-
-> @@ -859,8 +863,10 @@ static int stmmac_hwtstamp_set(struct net_device *dev,
->  	stmmac_config_hw_tstamping(priv, priv->ptpaddr, priv->systime_flags);
->  
->  	priv->tstamp_config = *config;
-> +unlock:
-> +	mutex_unlock(&priv->lock);
->  
-> -	return 0;
-> +	return ret;
->  }
-
-[Severity: Medium]
-Can the PTP_TCR read-modify-write here still interleave with the PHC
-callbacks in stmmac_ptp.c? Those callbacks take priv->ptp_lock, not
-priv->lock, so neither lock excludes the other.
-
-For example, stmmac_adjust_freq() does:
-
-stmmac_adjust_freq()
-  addend = adjust_by_scaled_ppm(priv->default_addend, scaled_ppm);
-  write_lock_irqsave(&priv->ptp_lock, flags);
-  stmmac_config_addend()
-    writel(addend, ioaddr + PTP_TAR);
-    value = readl(ioaddr + PTP_TCR);
-    value |= PTP_TCR_TSADDREG;
-    writel(value, ioaddr + PTP_TCR);
-
-stmmac_adjust_time()->adjust_systime() does the same with PTP_TCR_TSUPDT.
-stmmac_set_time()->init_systime() does the same with PTP_TCR_TSINIT.
-
-Suppose one of these reads PTP_TCR before config_hw_tstamping() writes it
-here, or in stmmac_dl_ts_coarse_set(), and writes it back afterwards. The
-stale TSCFUPDT and filter bits would then be restored. PTP_TCR would no
-longer match priv->systime_flags and priv->tsfupdt_coarse.
-
-There are two related cases:
-
-- stmmac_adjust_freq() reads priv->default_addend without any lock.
-  During a coarse to fine devlink switch, it could latch a TAR value
-  computed from the old addend.
-
-- For PEROUT, stmmac_enable() passes priv->sub_second_inc and
-  priv->systime_flags to flex_pps_config under ptp_lock only. It could
-  see a mismatched pair.
-
-These PHC paths behaved the same way before this patch. Still, the commit
-message says the configuration is now "updated under a single lock".
-Should the PTP_TCR/PTP_TAR writers in stmmac_ptp.c be covered by the same
-lock?
-
-> @@ -7753,9 +7759,12 @@ static int stmmac_dl_ts_coarse_set(struct devlink *dl, u32 id,
->  {
->  	struct stmmac_devlink_priv *dl_priv = devlink_priv(dl);
->  	struct stmmac_priv *priv = dl_priv->stmmac_priv;
-> -	u32 systime_flags = priv->systime_flags;
-> +	u32 systime_flags;
->  	int ret;
->  
-> +	mutex_lock(&priv->lock);
-> +
-> +	systime_flags = priv->systime_flags;
-
-[Severity: High]
-Does this close the race the commit message describes? The open path
-writes the same state while holding only RTNL:
-
-__stmmac_open()
-  stmmac_setup_ptp()
-    stmmac_init_timestamping()
-      priv->systime_flags = STMMAC_HWTS_ACTIVE | PTP_TCR_TSCFUPDT;
-      priv->tsfupdt_coarse = false;
-      ...
-      stmmac_init_tstamp_counter()
-        stmmac_update_subsecond_increment(priv, priv->systime_flags);
-
-Only stmmac_resume() calls stmmac_init_timestamping() with priv->lock
-held. The devlink param set path does not take RTNL. So devlink (devl_lock
-plus priv->lock) and open (RTNL only) share no lock.
-
-Consider this sequence:
-
-CPU0 (devlink, vbool=true)
-stmmac_dl_ts_coarse_set()
-  systime_flags = priv->systime_flags;
-  programs coarse PTP_TCR/PTP_SSIR/PTP_TAR
-  still inside config_addend()
-
-CPU1 (ip link set up, or an MTU change via stmmac_change_mtu())
-__stmmac_open()->stmmac_setup_ptp()->stmmac_init_timestamping()
-  priv->tsfupdt_coarse = false;
-  programs fine PTP_TCR/PTP_SSIR/PTP_TAR
-
-CPU0
-  stores coarse sub_second_inc and default_addend
-  priv->tsfupdt_coarse = true;
-  priv->systime_flags = systime_flags;  /* coarse */
-
-The software state now says coarse mode while the hardware runs in fine
-mode. The next stmmac_hwtstamp_set() would program PTP_TCR without
-TSCFUPDT on top of the fine-mode SSIR. Would the PHC then advance at twice
-the real rate?
-
-This function also does not check netif_running(). It can program PTP
-registers while stmmac_hw_setup() is resetting the DMA/MAC. It can also
-run while __stmmac_release()->stmmac_release_ptp() is disabling
-clk_ptp_ref.
-
-stmmac_init_timestamping() still reads and writes systime_flags and
-tsfupdt_coarse and calls stmmac_config_hw_tstamping() outside priv->lock.
-Is the "single lock" statement in the commit message accurate in that
-case?
-
->  	if (ctx->val.vbool)
->  		systime_flags &= ~PTP_TCR_TSCFUPDT;
->  	else
-
-[Severity: Medium]
-This problem was not introduced by this patch. After this point,
-stmmac_dl_ts_coarse_set() calls stmmac_update_subsecond_increment(). That
-reprograms PTP_TCR, PTP_SSIR and PTP_TAR and busy-polls TSADDREG. There is
-no netif_running() check, no runtime PM reference and no check that
-clk_ptp_ref is enabled.
-
-The devlink parameter is registered in __stmmac_dvr_probe(), which then
-does:
-
-	/* Let pm_runtime_put() disable the clocks.
-	 * If CONFIG_PM is not enabled, the clocks will stay powered.
-	 */
-	pm_runtime_put(device);
-
-stmmac_release() calls stmmac_release_ptp():
-
-	stmmac_ptp_unregister(priv);
-	clk_disable_unprepare(priv->plat->clk_ptp_ref);
-
-and then pm_runtime_put(). Runtime suspend then gates stmmac_clk and pclk
-through stmmac_pltfr_runtime_suspend()->stmmac_bus_clks_config(priv,
-false).
-
-Running "devlink dev param set ... phc_coarse_adj" on a down interface
-would then do MMIO on a MAC whose bus clock may be gated. Other
-register-access paths in the driver avoid this:
-
-- MDIO, set_mac_address and VLAN add/kill call
-  pm_runtime_resume_and_get() first.
-- stmmac_hwtstamp_set() returns -ENODEV when the interface is down.
-
-On some SoCs, MMIO to a clock-gated peripheral can hang the interconnect
-or raise an external abort. At minimum the write is lost, or TSADDREG
-never clears, which costs a 100 ms atomic busy-poll and returns an error.
-
-The setting would not last anyway. The next open resets it, since
-stmmac_init_timestamping() sets tsfupdt_coarse = false.
-
-> @@ -7768,13 +7777,15 @@ static int stmmac_dl_ts_coarse_set(struct devlink *dl, u32 id,
->  	if (ret) {
->  		NL_SET_ERR_MSG_MOD(extack,
->  				   "failed to reconfigure PTP adjustment");
-> -		return ret;
-> +		goto unlock;
->  	}
-
-[Severity: Low]
-This is a pre-existing issue. Is the rollback in
-stmmac_update_subsecond_increment() complete when stmmac_config_addend()
-fails?
-
-By the time the TSADDREG poll times out, config_addend() has already
-written the new mode's addend to PTP_TAR and issued TSADDREG. The error
-label only restores PTP_TCR and PTP_SSIR:
-
-error:
-	/* Restore previous configuration */
-	stmmac_config_hw_tstamping(priv, priv->ptpaddr, priv->systime_flags);
-	stmmac_config_sub_second_increment(priv, priv->ptpaddr,
-					   priv->plat->clk_ptp_rate, xmac,
-					   NULL);
-
-TSADDREG is not in STMMAC_HWTS_CFG_MASK, so the TCR read-modify-write
-leaves it set. Suppose the pending latch completes later. The accumulator
-would use the rejected mode's addend while TCR/SSIR are back in the old
-mode. priv->default_addend would still hold the old value.
-
-The sibling helper stmmac_restore_subsecond_increment() does reprogram the
-addend on rollback.
-
-Here, stmmac_dl_ts_coarse_set() reports the failure through extack and
-returns an error, but the hardware is left partly changed. This error path
-came from the parent commit 232d49dd4b40.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261002-stmmac-hwtstamp-missing-lock-v1-1-189ce151a624%40oss.qualcomm.com
+References: <cover.1791248202.git.nramaswamy@openai.com> <f366f5325d7eb96f0edd999b4f984213743914b8.1791248202.git.nramaswamy@openai.com>
+ <627cd81c-9824-4d1b-ae47-f7f929a96596@kernel.org>
+In-Reply-To: <627cd81c-9824-4d1b-ae47-f7f929a96596@kernel.org>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Tue, 6 Oct 2026 13:23:44 +0200
+X-Gmail-Original-Message-ID: <CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--he-dR-SAgqiw@mail.gmail.com>
+X-Gm-Features: AclHuK9Cxm4n9Z6ci6iwtPBgh-TQXM8rupzVknHZfA_6PpM4enJvkSaRp7Cx2L0
+Message-ID: <CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--he-dR-SAgqiw@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] tcp: restore RACK list membership when undoing loss
+To: nramaswamy@openai.com, netdev@vger.kernel.org
+Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Yuchung Cheng <ycheng@google.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Le mar. 6 oct. 2026 =C3=A0 08:42, Eric Dumazet <edumazet@kernel.org> a =C3=
+=A9crit :
+>
+>
+>
+> On 10/6/26 07:15, nramaswamy@openai.com wrote:
+> > From: Neil Ramaswamy <nramaswamy@openai.com>
+> >
+> > Partial undo can clear the TCPCB_LOST flag on segments already removed
+> > from RACK's list, which prevents subsequent RACK loss detection, leadin=
+g
+> > to segments only being retransmitted after the RTO. Restoring them to
+> > the RACK list as part of partial undo makes sure we can properly
+> > reconsider them for fast retransmission in the future.
+> >
+> > To do this, we first sort (by transmission time) the segments whose
+> > TCPCB_LOST flag is being cleared and then linearly insert those back
+> > into the RACK list, which is sorted by transmission time.
+> >
+> > My investigation started from seeing repeated TCP stalls in prod and th=
+e
+> > mitigation that seemed to prevent these stalls was limiting SO_SNDBUF t=
+o
+> > 96 KiB. It also seems like others have seen similar symptoms before [1]=
+.
+> >
+> > [1]
+> > https://lore.kernel.org/netdev/35A4DDAA-7E8D-43CB-A1F5-D1E46A4ED42E@gma=
+il.com/
+> >
+> > Fixes: 043b87d7599e ("tcp: more efficient RACK loss detection")
+> > Signed-off-by: Neil Ramaswamy <nramaswamy@openai.com>
+> > Assisted-by: LLM sparse
+> > ---
+> >   net/ipv4/tcp_input.c | 35 +++++++++++++++++++++++++++++++++++
+> >   1 file changed, 35 insertions(+)
+> >
+> > diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> > index 92bc60716f33..51f04c7474dc 100644
+> > --- a/net/ipv4/tcp_input.c
+> > +++ b/net/ipv4/tcp_input.c
+> > @@ -69,6 +69,7 @@
+> >   #include <linux/module.h>
+> >   #include <linux/sysctl.h>
+> >   #include <linux/kernel.h>
+> > +#include <linux/list_sort.h>
+> >   #include <linux/prefetch.h>
+> >   #include <linux/bitops.h>
+> >   #include <net/dst.h>
+> > @@ -2840,16 +2841,50 @@ static void DBGUNDO(struct sock *sk, const char=
+ *msg)
+> >   #endif
+> >   }
+> >
+> > +static int tcp_rack_skb_cmp(void *priv, const struct list_head *a,
+> > +                         const struct list_head *b)
+> > +{
+> > +     const struct sk_buff *skb_a =3D list_entry(a, struct sk_buff,
+> > +                                            tcp_tsorted_anchor);
+> > +     const struct sk_buff *skb_b =3D list_entry(b, struct sk_buff,
+> > +                                            tcp_tsorted_anchor);
+> > +
+> > +     return tcp_skb_sent_after(tcp_skb_timestamp_us(skb_a),
+> > +                               tcp_skb_timestamp_us(skb_b),
+> > +                               TCP_SKB_CB(skb_a)->end_seq,
+> > +                               TCP_SKB_CB(skb_b)->end_seq);
+>
+> Patch LGTM, but perhaps we could avoid the two div_u64() calls here.
+>
+>
+>         return tcp_skb_sent_after(skb_a->skb_mstamp_ns,
+>                                   skb_b->skb_mstamp_ns,
+>                                   TCP_SKB_CB(skb_a)->end_seq,
+>                                   TCP_SKB_CB(skb_b)->end_seq);
+>
+>
+>
+> > +}
+> > +
+> >   static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss=
+)
+> >   {
+> >       struct tcp_sock *tp =3D tcp_sk(sk);
+> >
+> >       if (unmark_loss) {
+> > +             LIST_HEAD(restored);
+> >               struct sk_buff *skb;
+> >
+> >               skb_rbtree_walk(skb, &sk->tcp_rtx_queue) {
+> > +                     if (TCP_SKB_CB(skb)->sacked & TCPCB_LOST)
+> > +                             list_move_tail(&skb->tcp_tsorted_anchor,
+> > +                                            &restored);
+> >                       TCP_SKB_CB(skb)->sacked &=3D ~TCPCB_LOST;
+> >               }
+> > +             if (!list_empty(&restored)) {
+> > +                     struct list_head *pos =3D &tp->tsorted_sent_queue=
+;
+> > +
+> > +                     /* Ensure lost skbs are added in transmission ord=
+er */
+> > +                     list_sort(NULL, &restored, tcp_rack_skb_cmp);
+
+Second thoughts (sorry I am currently attending LPC in Prague, little
+time this week for reviews)
+
+pw-bot: cr
+
+I am quite concerned about calling list_sort() inside
+tcp_undo_cwnd_reduction().
+
+In high-BDP environments (like 100G/200G/400G fabrics), a flow can easily
+have thousands of packets in flight. If a loss burst affects, say, 4000
+skbs:
+
+1. list_sort() will perform ~45,000 comparisons.
+2. With indirect function calls (retpoline cost) and cache misses across
+   1MB+ of sk_buff structures, this can freeze the CPU in SoftIRQ under
+   the socket lock for multiple milliseconds..
+
+We could avoid list_sort() completely by maintaining a second list,
+e.g. tp->tsorted_lost_queue.
+
+Consider the following:
+
+1. When RACK detects loss in tcp_rack_detect_loss(), instead of calling
+   list_del_init(&skb->tcp_tsorted_anchor), move the skb to the lost
+   queue:
+
+--- a/net/ipv4/tcp_recovery.c
++++ b/net/ipv4/tcp_recovery.c
+@@ -101,7 +101,7 @@ static void tcp_rack_detect_loss(struct sock *sk,
+u32 *reo_timeout)
+  remaining =3D tcp_rack_skb_timeout(tp, skb, reo_wnd);
+  if (remaining <=3D 0) {
+  tcp_mark_skb_lost(sk, skb);
+- list_del_init(&skb->tcp_tsorted_anchor);
++ list_move_tail(&skb->tcp_tsorted_anchor, &tp->tsorted_lost_queue);
+  } else {
+
+   Because RACK scans tsorted_sent_queue from oldest to newest, packets
+   appended to tsorted_lost_queue are already guaranteed to be in strictly
+   increasing departure timestamp order.
+
+2. When a packet is retransmitted, tcp_update_skb_after_send() already
+   calls:
+
+   list_move_tail(&skb->tcp_tsorted_anchor, &tp->tsorted_sent_queue);
+
+   So retransmitted packets automatically leave tsorted_lost_queue and
+   re-enter the tail of tsorted_sent_queue in O(1).
+
+3. When a partial undo occurs in tcp_undo_cwnd_reduction(), any
+   un-retransmitted packets remaining in tsorted_lost_queue are already
+   in sorted order.
+
+   Since these lost packets were originally sent prior to any subsequent
+   transmissions in tsorted_sent_queue, restoring them can often be done
+   with an O(1) list splice at the head:
+
+   if (unmark_loss && !list_empty(&tp->tsorted_lost_queue))
+           list_splice_init(&tp->tsorted_lost_queue, &tp->tsorted_sent_queu=
+e);
+
+> > +                     while (!list_empty(&restored)) {
+> > +                             struct list_head *entry =3D restored.next=
+;
+> > +
+> > +                             while (pos->next !=3D &tp->tsorted_sent_q=
+ueue &&
+> > +                                    !tcp_rack_skb_cmp(NULL, pos->next,
+> > +                                              entry))
+> > +                                     pos =3D pos->next;
+> > +                             list_move(entry, pos);
+> > +                             pos =3D entry;
+> > +                     }
+> > +             }
+> >               tp->lost_out =3D 0;
+> >               tcp_clear_all_retrans_hints(tp);
+> >       }
+>
