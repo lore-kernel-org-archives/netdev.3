@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E5120B80B;
-	Tue,  6 Oct 2026 22:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666D437F739;
+	Tue,  6 Oct 2026 22:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791326144; cv=none; b=kx0IBvGSx+XqsRRe1xxT9rBWpTLTubuGAT7sfw7bTpEM9HaeS1yJKWdrYtCL0KfF6JiQSWsQLSkzCeUk0BWzEhHPMGaIQCq02ub+3lQQdnowV54Dj6selFRhalBQ89zc6t3/AC+Uwy7ijzJ2FOeq/dJFNd9eR4YCY0Nldw0lmGw=
+	t=1791326145; cv=none; b=f0WW73jSAiNYPRFx9jYCHp6EGcZEzHbwDI4ANMk0vtbzDcrXontKjIJRNjIilDZkJkyZnuuhgkLMkCDL/ueQ6CKJ5OFjjumuulC5du0+8A1huFh7mdFJNqjzQ0+A0nZj1x6XFVYp2lCaL65fgmugEePD49/ra3NGXAEuUXj0UlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791326144; c=relaxed/simple;
-	bh=XjGxIEExuhJQGEjuLPjHP1TujX1Z4bzMvtz9FuKuSoQ=;
+	s=arc-20240116; t=1791326145; c=relaxed/simple;
+	bh=7/vgQNQINhVeM2HEILSaTkQbjerRyuAlLe9U5Q1+B+s=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kUYITAzKhLCM4t4hhVTWKjZd9Qx68EQCw2/C+JtqBQSOnTsXLDYngC6zp8CJJpu3L+8ASPNmzD4OLcLgbMgIRALsscSm1F4og7GeIi7kdzF295beN6svQ8Hwh2tT9FghYa7MmPd3FTauEMK9Yc/wCrDdgr/SzHbXI2kshXt3jXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEUpKuLm; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=j3qLGNgFTOEv3YD5EG3U0Sf8keio8QKGOf8Wkr426aOLa4233ZKK5eUWTffZlGgNmef+SnPLFzwzP8WWOukhHsMET0tTi38S0a/ZqBtPIaJ/g4bdooHBUp/uLFb7hJrFnBIRSLNWvYPbK6q0AtOIjPtiX3OE/HaVaRmf9ExiHhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6E6z/Vw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEUpKuLm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8AB1F0089B;
-	Tue,  6 Oct 2026 22:35:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6E6z/Vw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CF31F0089C;
+	Tue,  6 Oct 2026 22:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791326142;
-	bh=Ft96ifXF9GC+FD/wP8b+OMx8w6TpCihQ5+rc3xDFTKk=;
+	s=k20260515; t=1791326144;
+	bh=Ei22AxPmszgqDnoECsD/E6gEFH7Nqp440bIHD12NIaE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SEUpKuLmqfShpOI1gt3IQ4UQh9OkNy0Gx6pzphrXc12XVO5RAn+b0QImA9Q1Ta+FQ
-	 6jmH0lwtRVBUDn3MW/pLpETiEFz2MVxKuNO2IkQcb6vf6JhO1y9M+ZiXFZjgNq/e3n
-	 tigWCyLRAAVvYJTkfwr7IaoUGArYE0US5e6OgLM8hJeoodptzf7/9lnvjsPYOFRZnN
-	 +V8vLc+CgCSXVpXHAn5LAbao2f74YEffr9tfNsRbUYbj5Ox+mQ8mjLmsvkP3FdOHjs
-	 V5JEfwreObePxoNyAqB6tCyYW09u3XFRxDNAg/UuhnpIb8Og5az4V/7oS0M2M1St2A
-	 CgjoEAkig5yyg==
-Subject: Re: [PATCH net-next v2 4/7] net: bcmgenet: derive the receive buffer
- length from the MTU
+	b=f6E6z/Vw6hKHm3MsCaAWWG+GeCHGDH/byQDsDuxq80pK6ORzvpfZLjtwFmlgPYyO0
+	 rdKFOXOklzi9F+QGbFOpdlFx1c3Gq2KTREuviVqLGl4FlwEo1a+StNCKXwSBiVLcPI
+	 szdLNwXGeiYXe5zbKqyIABdKfBNU5BOkj0tLUVNMNlGicoRNVjhOesDJREZfosV8oZ
+	 IXXgPCNe8bOiXmDzPl2zuE8CU8XRXQcsgZ1TbqAzdpHyuCDsuqd/+YsA0NauZZoYGj
+	 b0hGCdxJmdkhn2GzaH31CMqA04KdwEaPv+HaoquMI7lhJ6F/Er235O0COX44ELKqfu
+	 nKWPZKqUpFRdg==
+Subject: Re: [PATCH net-next v2 6/7] net: bcmgenet: pad transmit frames out of
+ the packet ready window
 From: netdev-bot+sashiko@kernel.org
 To: nb@tipi-net.de
 Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
@@ -36,11 +36,11 @@ Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
  pierremarinleclercq88@gmail.com
-Date: Tue, 06 Oct 2026 22:35:41 +0000
-Message-ID: <179132614173.434549.15814997167610844687@kernel.org>
-In-Reply-To: <20261006-nb-genet-mtu-nn-v2-v2-4-c4be21151912@tipi-net.de>
-References: <20261006-nb-genet-mtu-nn-v2-v2-4-c4be21151912@tipi-net.de>
-X-sashiko-severity: Low
+Date: Tue, 06 Oct 2026 22:35:43 +0000
+Message-ID: <179132614302.434549.16529107189654383198@kernel.org>
+In-Reply-To: <20261006-nb-genet-mtu-nn-v2-v2-6-c4be21151912@tipi-net.de>
+References: <20261006-nb-genet-mtu-nn-v2-v2-6-c4be21151912@tipi-net.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,108 +50,197 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-- [Low] The patch also changes what bcmgenet_init_tx_ring() writes into
-  each transmit ring's DMA_RING_BUF_SIZE register, and the commit…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] skb_put_padto() in bcmgenet_xmit() appends up to 63 zero bytes
+  after the existing end of the frame.
+- [Medium] The two new error exits in bcmgenet_xmit()
+  (skb_checksum_help() failure and skb_put_padto() failure) jump…
+- [Low] bcmgenet_xmit() gains a software checksum fallback that this
+  commit's message never mentions.
+- [Low] Series ordering leaves one intermediate commit broken.
 
 --
 
-net: bcmgenet: derive the receive buffer length from the MTU
+net: bcmgenet: pad transmit frames out of the packet ready window
 
-This patch replaces the fixed 2048 byte RX_BUF_LENGTH with
-priv->rx_buf_len. That value comes from an RBUF packet ready threshold
-computed from the MTU, plus the 64 byte status block. It also programs
-the RBUF and TBUF packet ready threshold registers. The TBUF threshold
-is set to its maximum.
+This commit pads transmit frames that end just past the TBUF packet ready
+threshold out to 64 bytes past it, to avoid a Tx DMA stall seen on CM4. It
+also lowers the transmit threshold for the MTUs where the longest frame the
+MAC accepts would land in that window. It adds a software checksum fallback
+for CHECKSUM_PARTIAL frames longer than the threshold.
 
 > diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 641d918577d4d..75d1006a35c55 100644
+> index 3e2ebd9a2cc50..e8f86374c7cd8 100644
 > --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 > +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 
 [ ... ]
 
-> @@ -2623,6 +2641,44 @@ static void bcmgenet_link_intr_enable(struct bcmgenet_priv *priv)
-
-[ ... ]
-
-> +/* A buffer has to hold everything the threshold lets the hardware deliver */
-> +static unsigned int bcmgenet_rx_buf_len(unsigned int mtu)
-> +{
-> +	return sizeof(struct status_64) +
-> +	       bcmgenet_pkt_rdy_thld(mtu) * ENET_THLD_UNIT;
-> +}
-
-[ ... ]
-
-> @@ -2755,7 +2811,7 @@ static void bcmgenet_init_tx_ring(struct bcmgenet_priv *priv,
->  				  TDMA_FLOW_PERIOD);
->  	bcmgenet_tdma_ring_writel(priv, index,
->  				  ((size << DMA_RING_SIZE_SHIFT) |
-> -				   RX_BUF_LENGTH), DMA_RING_BUF_SIZE);
-> +				   priv->rx_buf_len), DMA_RING_BUF_SIZE);
+> @@ -2173,6 +2178,31 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		goto out;
+>  	}
+>  
+> +	/* The MAC only inserts a checksum into a frame it holds in full, and
+> +	 * silently drops a longer one, so fall back to software.
+> +	 */
+> +	if (unlikely(skb->len > priv->tx_thld_len) &&
+> +	    skb->ip_summed == CHECKSUM_PARTIAL) {
+> +		if (skb_checksum_help(skb)) {
 
 [Severity: Low]
-Is this change to the transmit ring intended? The commit message only
-talks about the receive buffer and the RBUF/TBUF thresholds. It doesn't
-mention that bcmgenet_init_tx_ring() now writes a different value into
-each TDMA ring's DMA_RING_BUF_SIZE register.
+The commit message covers the padding and the threshold change. Should it
+also mention this software checksum fallback?
 
-Before the patch, the TX rings got the constant 2048. With this patch
-they get priv->rx_buf_len, which bcmgenet_rx_buf_len() computes as:
+In bcmgenet_xmit(), any CHECKSUM_PARTIAL skb longer than priv->tx_thld_len
+now goes through skb_checksum_help() instead of hardware offload. If that
+call fails, the skb is dropped and counted in ring->stats64.dropped.
 
-    sizeof(struct status_64) + bcmgenet_pkt_rdy_thld(mtu) * 16
+bcmgenet_tx_pkt_rdy_thld() also lowers the threshold from 0xf0 (3840 bytes)
+to 0xe0 (3584 bytes) for MTU 3809 and up. So at those MTUs the CPU now
+checksums every full-size frame, which the hardware handled before. In this
+tree that covers MTU 3809..3820, and only on kernels with pages larger than
+4K.
 
-That is 64 + 2048 = 2112 at the default MTU. The new value includes the
-64 byte RX status block, which only the receive side writes.
+The changelog doesn't explain the hardware behaviour claimed in the comment
+("silently drops a longer one") or the new drop path either.
 
-This sentence in the commit message reads as if it describes the RX
-page pool buffer only:
+The last patch in the series, "net: bcmgenet: reassemble jumbo frames from
+status block fragments", does say "anything longer than the threshold falls
+back to software", so the series does disclose it. Could this commit
+describe it too, since this is where the code is added?
 
-    "the buffer only grows by the status block the hardware already
-    wrote."
+> +			BCMGENET_STATS64_INC((&ring->stats64), dropped);
+> +			dev_kfree_skb_any(skb);
+> +			ret = NETDEV_TX_OK;
+> +			goto out;
+> +		}
+> +	}
+> +
+> +	/* Keep the frame out of the window just past the threshold */
+> +	if (unlikely(skb->len > priv->tx_thld_len &&
+> +		     skb->len < priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
+> +		if (skb_put_padto(skb, priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
 
-The TX ring already took its value from an RX-named constant, so this
-coupling is not new. What is new is that it now follows the MTU.
+[Severity: Medium]
+skb_put_padto() appends up to 63 zero bytes after the current end of the
+frame. Can that break protocols that keep their metadata at the tail?
 
-With the later "net: bcmgenet: allow the MTU to be changed" patch in
-this series, every RX buffer resize would also reprogram the TX rings.
-That reaches 3648 on 4K pages and 3904 on 64K pages.
+DSA tail taggers write the egress tag as the last bytes of the frame with
+skb_put(). Examples are ksz9477_xmit(), ksz_common_xmit() and lan937x_xmit()
+in net/dsa/tag_ksz.c, and trailer_xmit() in net/dsa/tag_trailer.c:
 
-Each TX descriptor carries its own length in len_stat, so this may have
-no functional effect. Should the TX ring keep its own value here? If
-the change is intended, could the commit message say so?
+	trailer = skb_put(skb, 4);
+	trailer[0] = 0x80;
+	trailer[1] = dsa_xmit_port_mask(skb, dev);
 
+The DSA core pads short frames itself before tagging, in dsa_user_xmit(),
+so that conduit padding never ends up after a tail tag:
+
+	if (dev->needed_tailroom)
+		eth_skb_pad(skb);
+
+With GENET as the conduit, the switch would read zeros where it expects the
+port mask/override or the 0x80 marker. The real tag bytes would then go out
+on the wire.
+
+PRP has the same problem. prp_fill_rct() puts the RCT last, and
+skb_get_PRP_rct() looks for it at skb_tail_pointer(skb) - HSR_HLEN. With
+zeros appended, the receiver treats the frame as a standard frame and loses
+duplicate discard.
+
+bcmgenet_tx_pkt_rdy_thld() lowers the threshold to 3584 for MTU 3809 and up,
+so 3585..3647 byte frames get padded as well. At the end of the series (max
+MTU 16347), a conduit with a jumbo MTU hits this for any 3841..3903 byte
+frame. A remote peer can steer frame sizes into that range, for example
+with ICMP echo sizes.
+
+The commit message accepts this and says the alternatives are dropping the
+frame or leaving the transmitter stalled. Where the tail is known to carry
+data, for example netdev_uses_dsa() with a tail tagger, would dropping the
+frame be safer than sending it with a corrupted tag?
+
+> +			BCMGENET_STATS64_INC((&ring->stats64), dropped);
+> +			ret = NETDEV_TX_OK;
+> +			goto out;
+
+[Severity: Medium]
+Both new error exits, after skb_checksum_help() and after skb_put_padto(),
+jump to out. That label comes after the doorbell write at the end of
+bcmgenet_xmit():
+
+	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
+		/* Packets are ready, update producer index */
+		bcmgenet_tdma_ring_writel(priv, ring->index,
+					  ring->prod_index, TDMA_PROD_INDEX);
+out:
+	spin_unlock(&ring->lock);
+
+Suppose an earlier skb in the same batch was queued with netdev_xmit_more()
+true. ring->prod_index was advanced and netdev_tx_sent_queue() ran, but
+TDMA_PROD_INDEX was not written.
+
+The last skb of the batch might then fail here, for example on a GFP_ATOMIC
+failure in __skb_pad() or pskb_expand_head(). In that case NETDEV_TX_OK is
+returned without prod_index being published, and dev_hard_start_xmit()
+treats that as the end of the batch.
+
+Would the descriptors already queued then stay unsent until a later xmit
+rings the doorbell? The queue isn't stopped, so the TX watchdog wouldn't
+step in.
+
+The existing exits for bcmgenet_add_tsb() failure and DMA mapping failure
+behave the same way. This patch adds two more paths that do it.
+
+> +		}
+> +	}
+> +
+> +	nr_frags = skb_shinfo(skb)->nr_frags;
+> +
+
+[ ... ]
+
+> @@ -2680,8 +2729,7 @@ static void bcmgenet_set_mtu_regs(struct bcmgenet_priv *priv, unsigned int mtu)
+>  		return;
 >  
->  	/* Set start and end address, read and write pointers */
->  	bcmgenet_tdma_ring_writel(priv, index, start_ptr * words_per_bd,
+>  	bcmgenet_rbuf_writel(priv, thld, RBUF_PKT_RDY_THLD);
+> -	bcmgenet_writel(ENET_THLD_MAX,
+> -			priv->base + priv->hw_params->tbuf_offset +
+> +	bcmgenet_writel(tx_thld, priv->base + priv->hw_params->tbuf_offset +
+>  			TBUF_PKT_RDY_THLD);
+>  }
 
-[ ... ]
+[Severity: Low]
+This one is about the order of the series. Does it leave an intermediate
+commit broken?
 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> index 501dd12566936..6444bac168c38 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+"net: bcmgenet: derive the receive buffer length from the MTU" programs
+TBUF_PKT_RDY_THLD to ENET_THLD_MAX and defers the fix ("A later patch lowers
+it for the few MTUs that need the room").
 
-[ ... ]
+"net: bcmgenet: allow the MTU to be changed" then raises dev->max_mtu to
+ENET_MAX_MTU, which is 3820 on kernels with pages larger than 4K.
 
-> @@ -612,6 +615,7 @@ struct bcmgenet_priv {
->  	void __iomem *rx_bds;
->  	struct enet_cb *rx_cbs;
->  	unsigned int num_rx_bds;
-> +	unsigned int rx_buf_len;
+vlan_dev_change_mtu() lets an 802.1Q device use the full parent MTU. So at
+that commit, a stacked VLAN at MTU 3820 produces 3820 + 14 + 8 = 3842 byte
+frames.
 
-This field is declared with the receive variables, but
-bcmgenet_init_tx_ring() above also uses it to configure the transmit
-rings.
+Frames of that size fall in the 3841..3886 window this patch describes for a
+3840 threshold. And according to the new comment in bcmgenet_xmit(), the MAC
+silently drops a CHECKSUM_PARTIAL frame longer than 3840 bytes.
 
->  	struct bcmgenet_rxnfc_rule rxnfc_rules[MAX_NUM_OF_FS_RULES];
->  	struct list_head rxnfc_list;
+Could this patch, and the threshold logic, be ordered before the max_mtu
+increase? That way a bisect landing on "allow the MTU to be changed" would
+not hit the stalled transmitter.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-nb-genet-mtu-nn-v2-v2-0-c4be21151912%40tipi-net.de
