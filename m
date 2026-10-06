@@ -1,68 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D9437F739;
-	Tue,  6 Oct 2026 20:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8442F3A1D14;
+	Tue,  6 Oct 2026 20:59:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791320114; cv=none; b=Ebq4qsL/uDFFeKQ/WD/Djufxcxvv/PfBuXYjFTB5nziNV/Hr8i0YfuK1r3TBUxcHbk6DxSmawVuHB9Y57APZBUyCbOSkUaq73VtOHIvWb6RqFRTplHFz83Jrp2TCZWTmLeQCmRceWZo7y39x5qTzatvT0qXkEXl4NkzRjo8Ayac=
+	t=1791320350; cv=none; b=ieoT1kapNgQLb4YBi2sqJqVPnfAIfOW8c5ynWaUtZPxZtQmRBF+VKTzlRw6BoAE52VSyxFQzsAQO3eMYT4aaiCj9Q6WGQG+Otqu2h7QiqhETWjNBn8k5XGfppP9V7odYi8rGtYNkG/QNXJQ91jID4YtGIV198OGgOW5YNvMmouY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791320114; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H3bSSSKGP1bUd8ZPU38HrUK+zw3X9Y3YNGcCMA1cU+7yhrqCTFysz5XnlUX/NYnAG//q7/9SxSPkl0H7ZEi3mN/LFQMblW0+ta55QNJMjCLTVhVXnWKayxBf5qdQ75whR3Xa3C6NcNeN8pIkZEeb3Za9Gl5VliDmtm5X9el0E2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dQagaFuq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791320350; c=relaxed/simple;
+	bh=7d1zjRxFeIdFPvWMoMRaES7nqPV52UpcEk3lX5qGjMg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kgepsgXojm/0vHsVie0hK72NSqD9XQSK4pXG0GKBGrLnMI6Zofc2Rv2Ja3rANMsga10zJ5io/kU/ee20NIsFFjMxuWP/x5i+hIi64GeNDzn7EL6rEzksYNq7G1X6jW/Fn8+RS8fVXcULXkqMvIm3sIaYFN/0xCPA2Xp8VaEd1ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=SZBPtfx/; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dQagaFuq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A9B1F0089B;
-	Tue,  6 Oct 2026 20:55:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791320112;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dQagaFuqQLNB9IDq7PyswQEZwFixksVTSJNLbkJ3k3dXZY7XNqJU/c96bflC0wLbj
-	 fBzlRQBVod/008Hw9TdXhnfddMlgkP4qUMOOPWBKVM0Mgmai/8ZKuddiv7ivhXt4kq
-	 y9E6/9IMoiyHCTYQPLCtHq/JHq6vs+OhAmQRkeQ0Mvsn52iUa2piY/br2QFQ8YnHh1
-	 HfOrePE38TXKhidUO4Ue0A+62Uw7r3aZifuF0WQ42iYkKKBwHTZrqgjJvZVhYUYAlq
-	 dINmFBWkWDpjwpLwzIC8yWxZbmz2IvwzSSXg8+bSVM4XGqNj0zraD4RsQFf0G8z/7n
-	 soH/BlNYQtjHA==
-From: netdev-bot+sinfo@kernel.org
-To: sungbyeongchan <tjdqudcks0424@naver.com>
-Cc: Allison Henderson <achender@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Andy Grover <andy.grover@oracle.com>,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] RDS/IB: validate receive completion payload length
-Date: Tue, 06 Oct 2026 20:55:11 +0000
-Message-ID: <179132011155.2231598.14821411537905810702@kernel.org>
-In-Reply-To: <20261006205204.1322102-1-tjdqudcks0424@naver.com>
-References: <20261006205204.1322102-1-tjdqudcks0424@naver.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SZBPtfx/"
+Received: from [192.168.4.134] (unknown [52.172.102.253])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3E38320B7178;
+	Tue,  6 Oct 2026 13:58:05 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3E38320B7178
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791320293;
+	bh=2UIH46eWahkUAhT4XWny8Yeih5us5EgbzPo8Ucycx74=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SZBPtfx/gnoXS2+HW6AkHLs+4fhMcxak+MZ8KRCzfDTZJY5r4xh5pSAu6nriJsy3I
+	 1dfC8JeHrTBae8/0PfwZaHdHp+V+Om/vnnp8gnImzb9TKljOfTr8OXgyXudE4onMTf
+	 3R0vzs67Pq4gaRc9uoTZBGvT38Ky6T0OHW8gUknA=
+Message-ID: <5636487a-31c7-43fb-8b27-a6a98b15200f@linux.microsoft.com>
+Date: Tue, 6 Oct 2026 13:59:05 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [EXTERNAL] [PATCH net-next 0/5] hv_netvsc: make XDP propagation
+ act more like bonding
+To: Haiyang Zhang <haiyangz@microsoft.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: "davem@davemloft.net" <davem@davemloft.net>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>,
+ "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "horms@kernel.org" <horms@kernel.org>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>, Dexuan Cui <DECUI@microsoft.com>,
+ "longli@microsoft.com" <longli@microsoft.com>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "hawk@kernel.org" <hawk@kernel.org>, "andriin@fb.com" <andriin@fb.com>,
+ Saurabh Singh Sengar <ssengar@microsoft.com>
+References: <20261001014131.310771-1-kuba@kernel.org>
+ <LV5PR21MB4704E9960B2B82028F2FB51DCA892@LV5PR21MB4704.namprd21.prod.outlook.com>
+Content-Language: en-US
+From: Kameron Carr <kameroncarr@linux.microsoft.com>
+In-Reply-To: <LV5PR21MB4704E9960B2B82028F2FB51DCA892@LV5PR21MB4704.namprd21.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi!
+On 10/2/2026 12:38 PM, Haiyang Zhang wrote:
+> 
+> Thank you for making this patch set, looks good to me.
+> I will find a teammate to test it.
+> 
+> - Haiyang
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I ran LISA functional tests (T4) in Azure, including XDP related tests
+[1], on the patch set based on v7.3-rc6.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+I did not see any regressions in my testing, but my testing did not
+cover:
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+  * Hibernation scenarios
+  * Kdump tests (not super relevant but worth a note)
+  * Performance (XDP or otherwise)
+  * Scenarios trying to repro issues found in the patches
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+If you are worried about the performance impacts of this patchset, I can
+do a comparison of performance with and without the patches.
+
+Looking at the Sashiko comments, many of them look valid. It is at least
+worth taking another look before merging. I am not providing a review
+sign off, only the results of my regression testing.
+
+[1] https://github.com/microsoft/lisa/tree/main/lisa/microsoft/testsuites/xdp
+
+
+Tested-by: Kameron Carr <kameroncarr@linux.microsoft.com>
+
+-- 
+Regards,
+Kameron
