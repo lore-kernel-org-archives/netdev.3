@@ -1,56 +1,56 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BB14AB1D3
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 19:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C7F4ACC95
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 19:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791314787; cv=none; b=jfiIiTxahEjMzxFF5eg/9Ebt8bjcyqvXKYoFuYtL8eETii6ihegnbh0ndmLjXUmRbqBsvIAGYlu7U/PT9/a9pI+2CY355+1EKulpnDOuSWntekSQbyUvO6zGfN+itYn1ctBfIkDfQCCcl05lTyYCe9F6f90TrbHnwk0oMwpJ9Hw=
+	t=1791314788; cv=none; b=WGiIOFZnHOsjlOkvhxdKGegwcJcsrA10MN+i4r6fMEEO2FvEoxaBxyMwzV9jwyTUU67RlScFFLtPTpUuwgJPWix6fZohg30Sys4FFZTDIq0dVCHtaD8QR5foXkEXY8sxr74nUAOP/CcGyPKw6Jb7F4xjWHBB32OkLjGkxBnmTA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791314787; c=relaxed/simple;
-	bh=9yuFnigQCFlzJ06upnMsOHp/Od+u3UiubkoEfWP0N7U=;
+	s=arc-20240116; t=1791314788; c=relaxed/simple;
+	bh=3bImbomy1Bx+UYI0C3P1Damw8NznuLPk7pmUKe6tdzs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AGj2B4BGDWNE4cGe4koWWVn0VgQeFjmsNntiiG8fiP1QlR13Saqg3rj68itgFbSJFAAZZ8sv3Ia9IY8q+0Hh+7dvJ3fJ7L+3s/NlqcOc/NEkD3LtwZP6Y7I9RqqShCLxAAbPSfvGE6N9Tn3g18e7ABreJsviswpxaHKkHMyIFzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h2Ri19u9; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=gew6Fw8SnuQg+s7+fdhhubMShMEa+RCB0NiscA+r5GmT0g9Z7UrMbDyweBkmx3qyC0AUPzBXMux8AbKlnhe/YArmyvFqNIa3cBgjeHDJMozQ5cSxXLfrC3XPe799PMJ9JJAbgvchqMmpiaxLzPwWT/TqdYLTrQOY0yYKJvhbQxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PatqJMLm; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h2Ri19u9"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1b8088202so2359084a12.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 12:26:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PatqJMLm"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2e564adf782so28219565ad.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 12:26:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791314784; x=1791919584; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791314787; x=1791919587; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kq2NZtEFejmTaEIUH4QfBvTp/c57Pw0XwVcGqB+bQBw=;
-        b=h2Ri19u9kNbgehJBdG3vo0vKweqtuOxTdrwoW5zko5KYp+Mt9qGGVdLtKG6usVNJKF
-         /IqhDQca/sD52b34FAhxlFpernK4nREX95pNyYehvBYfeeHiGdn/hv6dG6qKGC2V9S3k
-         8eOuCnMkTgorIkjQ1Co1XDejd3BEhBgS/vXZWXkHitk1Zl/Sgw8OdY6FPoLYyA8eovGS
-         KAfIm3HO6Wx5O10Pu1sBwHMQn8K8ikLRXtt/WthGHKjYdYO2CrwjeKZC6N5mexbOewdL
-         FWukQ9JSEOpYmlCMhyswIKPsB4xkAzDt2kOM8an42zZuPkLJCJDqInpwMdzvNd+H1Bh5
-         mWjA==
+        bh=n8ceNHOoiaGNrICuagOz0HePQu8nin8rJueIIhtOqUQ=;
+        b=PatqJMLmEPB39SzsN1U6FjNrRG+CpGLuVyIH6mQtwwlXIQClxG4Ktd/GL3YZxg3mYb
+         u3dUbrjiEY8WEes3jLNhTI5sXODyU5ve6dPCgKXjghjNgSLqprx9nHo9hNiiKujJoZNK
+         KUr5EueJ3s8JWZrTqK17kBGFpyt3iocLsCT94KewRJg2YUf9a1IkZxhWeeWCjigMSkig
+         7bnqgt8uqyb6MSMGAsUZsPtvPjhkINNy8Rx2Bu4hHYvONH5F0AedO/AbGLP2Rd1qjpH1
+         yCdfDzv/12Uu7VjHIuPrd1y255onaBLDqPFzOYC3JgcnxWuy6y50fHTAM5OlBcOQx4Zh
+         CP8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791314784; x=1791919584;
+        d=1e100.net; s=20260707; t=1791314787; x=1791919587;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kq2NZtEFejmTaEIUH4QfBvTp/c57Pw0XwVcGqB+bQBw=;
-        b=deYBa/2RRjlvNQUAzbwkHJxB6FGGw2yUbeky/y/KE0gPsnWjncOxYP00KxL/awR/Ti
-         W1if0tFatuiXcCUql8D6L7tJjENKp0Rll5ey+UIwqEeiYYZ3sLugqybhcjuysrPHYTu3
-         4X4OjxQ7PFQa2dLtojFpc+cfS9DuFXL2DkWjZHZKvxwcHcv1KEm7ckrmM5UEjiCY11Bn
-         iOp81w/XGFLvT2EQCEs3Ys1NtbO72+xKbkCzTC2VIrIU58Mdb+EdX1oF1bUszxxnlJyQ
-         CRNTMWbZO4s6AurKpwgOOh0w9XziClC2VqnXZUuPO5Le/kDzZXJfdCVH/CLsj9tMz2Ly
-         cMbA==
-X-Forwarded-Encrypted: i=1; AKwUvBwxHqP1FTj8gUBBjdA5N/sOn81IVeFHqhsDXHdmdwptoqBQAuhyvMb0MPL6DALXPdzTBdwfGHI=@vger.kernel.org
-X-Gm-Message-State: AFuF++klA51C2grGLid0kzToa/iJFY7PTWw5P/6ZTf6R72uHr5WgmqUD
-	ulrGrR100TN9au4nrgdfkmuWzjCiEFM4s9bmRYNPHNZ+B8WT02wJBwNx8zV4MDz2jBVdQOAuZWk
-	FT7HKMw==
-X-Received: from pgp4-n2.prod.google.com ([2002:a05:6a02:62c4:20b0:cc7:9b89:2a72])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3418:b0:3de:53c1:b627
- with SMTP id adf61e73a8af0-3e1340996a6mr41449637.43.1791314783965; Tue, 06
- Oct 2026 12:26:23 -0700 (PDT)
-Date: Tue,  6 Oct 2026 19:24:31 +0000
+        bh=n8ceNHOoiaGNrICuagOz0HePQu8nin8rJueIIhtOqUQ=;
+        b=jHxibFkEEeSI0QPbEfyATQMZCyTLdk3g7W4EaUb+Uc83KZJIxFc0XWC70uIRvYFQRj
+         o9lYv6K0dmLhLCdjZ2kMA7uu2AGK66L17NE8e/aPelunktO64h9QkdB5LF21x2pBhcsw
+         vHI76KDnGTFLIaNsYzrKqfpnUzsBTDaZqDcE1Wp0uwGhJdhmZ19ZSf2NRJafveJvhAzM
+         X0sEHRI0GZhwLMimA3h4kLfBdUNkPlqVN8jlPGW6iUIGL7gW7G1lEzG23d8WY9Zpd5+p
+         asXysy9tf1R6oqTyXT+lx7L+u0BhQukS6mBFOtNJkRIBTCx3qIuRvWpE5cW5NtnuGWLx
+         9Sgw==
+X-Forwarded-Encrypted: i=1; AKwUvBzY6UwU3KfYE8+J9CtcO/s7pNHGRdwg0AkA+bMJn/bvoNzMODoybzSyUsUGlwqNNlv1A7RmjRk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLHtblkIXtZRfvRA7FoooswFDgD+0WC6dzupOaHLXddUGXlMXiw
+	jHc7r5YTww36gpg25WNdhs9ZfH4uosTA7mCfayol3MejioQvFmSfvZge6tH4eXaCFzjaJERAzB0
+	XY17daQ==
+X-Received: from plhe8.prod.google.com ([2002:a17:903:1c8:b0:2e2:cd01:aaca])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d488:b0:2e2:e3aa:7a35
+ with SMTP id d9443c01a7336-2e600500652mr3004675ad.36.1791314786385; Tue, 06
+ Oct 2026 12:26:26 -0700 (PDT)
+Date: Tue,  6 Oct 2026 19:24:34 +0000
 In-Reply-To: <20261006192601.1875100-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261006192601.1875100-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.360.g66cac248cb-goog
-Message-ID: <20261006192601.1875100-6-kuniyu@google.com>
-Subject: [PATCH v4 bpf-next 05/10] bpf: tcp: Check BPF_SOCK_OPS_TEST_FLAG()
- after cgroup_bpf_enabled(CGROUP_SOCK_OPS).
+Message-ID: <20261006192601.1875100-9-kuniyu@google.com>
+Subject: [PATCH v4 bpf-next 08/10] bpf: mptcp: Don't support BPF_TCP_OPS_FLAG_RCVQ.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
@@ -75,407 +74,37 @@ Cc: Amery Hung <ameryhung@gmail.com>, Yonghong Song <yonghong.song@linux.dev>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-BPF_CGROUP_RUN_PROG_XXX() macros guard __cgroup_bpf_run_filter_XXX()
-with cgroup_bpf_enabled().
+The next patch exposes a new kfunc calling __tcp_set_rcvlowat()
+to bpf_tcp_ops.
 
-However, even when no SOCK_OPS prog is attached, callers still
-initialise struct bpf_sock_ops_kern (memset(), etc.) or evaluate
-BPF_SOCK_OPS_TEST_FLAG(), which loads tp->bpf_sock_ops_cb_flags
-from a cold cacheline near the end of struct tcp_sock.
+MPTCP has its own sock->ops->set_rcvlowat() / mptcp_set_rcvlowat(),
+so we should not allow calling __tcp_set_rcvlowat() on MPTCP
+subflows.
 
-Similar to bpf_tcp_ops, let's check cgroup_bpf_enabled() before
-BPF_SOCK_OPS_TEST_FLAG() and struct bpf_sock_ops_kern setup, and
-rename BPF_CGROUP_RUN_PROG_SOCK_OPS{,_SK}() with __ prefix.
+Let's disable BPF_TCP_OPS_FLAG_RCVQ for MPTCP for now.
 
-Since all direct callers of tcp_call_bpf() pass 0 and NULL for
-nargs and args, they can be folded into the new tcp_call_bpf()
-macro.
-
-All callers of tcp_call_bpf_{2,3}arg() check BPF_SOCK_OPS_TEST_FLAG()
-and do not need the return value.  These are replaced with the new
-tcp_call_bpf_flag() macro.
+If needed in the future, bpf_tcp_ops_set_rcvlowat() could be
+extended to properly support MPTCP.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- include/linux/bpf-cgroup.h | 36 ++++++++++--------------
- include/net/tcp.h          | 56 ++++++++++++++++----------------------
- net/ipv4/af_inet.c         |  2 +-
- net/ipv4/tcp.c             |  3 +-
- net/ipv4/tcp_input.c       | 21 ++++++++------
- net/ipv4/tcp_nv.c          |  2 +-
- net/ipv4/tcp_output.c      | 31 +++++++++------------
- net/ipv4/tcp_timer.c       |  6 ++--
- 8 files changed, 69 insertions(+), 88 deletions(-)
+ net/ipv4/bpf_tcp_ops.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 8a75a6cd7309..02ef7f899b3d 100644
---- a/include/linux/bpf-cgroup.h
-+++ b/include/linux/bpf-cgroup.h
-@@ -345,27 +345,19 @@ static inline bool cgroup_bpf_sock_enabled(struct sock *sk,
-  * calling bpf_setsockopt on listener-sk will not make sense anyway,
-  * so passing 'sock_ops->sk == req_sk' to the bpf prog is appropriate here.
-  */
--#define BPF_CGROUP_RUN_PROG_SOCK_OPS_SK(sock_ops, sk)			\
--({									\
--	int __ret = 0;							\
--	if (cgroup_bpf_enabled(CGROUP_SOCK_OPS))			\
--		__ret = __cgroup_bpf_run_filter_sock_ops(sk,		\
--							 sock_ops,	\
--							 CGROUP_SOCK_OPS); \
--	__ret;								\
--})
--
--#define BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops)				       \
--({									       \
--	int __ret = 0;							       \
--	if (cgroup_bpf_enabled(CGROUP_SOCK_OPS) && (sock_ops)->sk) {       \
--		typeof(sk) __sk = sk_to_full_sk((sock_ops)->sk);	       \
--		if (__sk && sk_fullsock(__sk))				       \
--			__ret = __cgroup_bpf_run_filter_sock_ops(__sk,	       \
--								 sock_ops,     \
--							 CGROUP_SOCK_OPS); \
--	}								       \
--	__ret;								       \
-+#define __BPF_CGROUP_RUN_PROG_SOCK_OPS_SK(sock_ops, sk)				\
-+	__cgroup_bpf_run_filter_sock_ops(sk, sock_ops,				\
-+					 CGROUP_SOCK_OPS)
+diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+index 9a6e1c47d7c0..8182037c4269 100644
+--- a/net/ipv4/bpf_tcp_ops.c
++++ b/net/ipv4/bpf_tcp_ops.c
+@@ -347,6 +347,9 @@ __bpf_kfunc int bpf_tcp_ops_set_flags(struct tcp_sock *tp, u32 enable, u32 disab
+ 	if ((enable & disable) || (enable | disable) & ~BPF_TCP_OPS_FLAG_ALL)
+ 		return -EINVAL;
+ 
++	if (sk_is_mptcp((struct sock *)tp) && (enable & BPF_TCP_OPS_FLAG_RCVQ))
++		return -EOPNOTSUPP;
 +
-+#define __BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops)				\
-+({										\
-+	int __ret = 0;								\
-+	typeof(sk) __sk = sk_to_full_sk((sock_ops)->sk);			\
-+	if (__sk && sk_fullsock(__sk))						\
-+		__ret = __cgroup_bpf_run_filter_sock_ops(__sk,			\
-+							 sock_ops,		\
-+							 CGROUP_SOCK_OPS);	\
-+	__ret;									\
- })
+ 	old = READ_ONCE(tp->bpf_tcp_ops_flags);
  
- #define BPF_CGROUP_RUN_PROG_DEVICE_CGROUP(atype, major, minor, access)	      \
-@@ -529,7 +521,7 @@ static inline int cgroup_bpf_struct_ops_attach(struct bpf_map *map,
- #define BPF_CGROUP_RUN_PROG_UDP4_RECVMSG_LOCK(sk, uaddr, uaddrlen) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_UDP6_RECVMSG_LOCK(sk, uaddr, uaddrlen) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_UNIX_RECVMSG_LOCK(sk, uaddr, uaddrlen) ({ 0; })
--#define BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops) ({ 0; })
-+#define __BPF_CGROUP_RUN_PROG_SOCK_OPS(sock_ops) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_DEVICE_CGROUP(atype, major, minor, access) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_SYSCTL(head,table,write,buf,count,pos) ({ 0; })
- #define BPF_CGROUP_RUN_PROG_GETSOCKOPT(sock, level, optname, optval, \
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index b7c0f1a8797a..85b4bfe963d3 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2891,7 +2891,7 @@ static inline void bpf_skops_init_skb(struct bpf_sock_ops_kern *skops,
-  * program loaded).
-  */
- #ifdef CONFIG_BPF
--static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
-+static inline int __tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
- {
- 	struct bpf_sock_ops_kern sock_ops;
- 	int ret;
-@@ -2908,7 +2908,7 @@ static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
- 	if (nargs > 0)
- 		memcpy(sock_ops.args, args, nargs * sizeof(*args));
- 
--	ret = BPF_CGROUP_RUN_PROG_SOCK_OPS(&sock_ops);
-+	ret = __BPF_CGROUP_RUN_PROG_SOCK_OPS(&sock_ops);
- 	if (ret == 0)
- 		ret = sock_ops.reply;
- 	else
-@@ -2916,20 +2916,23 @@ static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
- 	return ret;
- }
- 
--static inline int tcp_call_bpf_2arg(struct sock *sk, int op, u32 arg1, u32 arg2)
--{
--	u32 args[2] = {arg1, arg2};
--
--	return tcp_call_bpf(sk, op, 2, args);
--}
--
--static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
--				    u32 arg3)
--{
--	u32 args[3] = {arg1, arg2, arg3};
-+#define tcp_call_bpf(sk, op)						\
-+({									\
-+	int __ret = 0;							\
-+	if (cgroup_bpf_enabled(CGROUP_SOCK_OPS)) {			\
-+		__ret = __tcp_call_bpf(sk, op, 0, NULL);		\
-+	}								\
-+	__ret;								\
-+})
- 
--	return tcp_call_bpf(sk, op, 3, args);
--}
-+#define tcp_call_bpf_flag(sk, op, ...)					\
-+do {									\
-+	if (cgroup_bpf_enabled(CGROUP_SOCK_OPS) &&			\
-+	    BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), op ## _FLAG)) {		\
-+		u32 __args[] = { __VA_ARGS__ };				\
-+		__tcp_call_bpf(sk, op, ARRAY_SIZE(__args), __args);	\
-+	}								\
-+} while (0)
- 
- static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
- {
-@@ -2938,21 +2941,12 @@ static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
- }
- 
- #else
--static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
--{
--	return -EPERM;
--}
--
--static inline int tcp_call_bpf_2arg(struct sock *sk, int op, u32 arg1, u32 arg2)
-+static inline int tcp_call_bpf(struct sock *sk, int op)
- {
- 	return -EPERM;
- }
- 
--static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
--				    u32 arg3)
--{
--	return -EPERM;
--}
-+#define tcp_call_bpf_flag(sk, op, ...) do { } while (0)
- 
- static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
- {
-@@ -3136,7 +3130,7 @@ static inline u32 tcp_timeout_init(struct sock *sk)
- {
- 	int timeout;
- 
--	timeout = tcp_call_bpf(sk, BPF_SOCK_OPS_TIMEOUT_INIT, 0, NULL);
-+	timeout = tcp_call_bpf(sk, BPF_SOCK_OPS_TIMEOUT_INIT);
- 	timeout = bpf_tcp_ops_call_int(timeout_init, timeout, sk);
- 	if (timeout <= 0)
- 		timeout = TCP_TIMEOUT_INIT;
-@@ -3147,7 +3141,7 @@ static inline u32 tcp_rwnd_init_bpf(struct sock *sk)
- {
- 	int rwnd;
- 
--	rwnd = tcp_call_bpf(sk, BPF_SOCK_OPS_RWND_INIT, 0, NULL);
-+	rwnd = tcp_call_bpf(sk, BPF_SOCK_OPS_RWND_INIT);
- 	rwnd = bpf_tcp_ops_call_int(rwnd_init, rwnd, sk);
- 	if (rwnd < 0)
- 		rwnd = 0;
-@@ -3156,14 +3150,12 @@ static inline u32 tcp_rwnd_init_bpf(struct sock *sk)
- 
- static inline bool tcp_bpf_ca_needs_ecn(struct sock *sk)
- {
--	return (tcp_call_bpf(sk, BPF_SOCK_OPS_NEEDS_ECN, 0, NULL) == 1);
-+	return (tcp_call_bpf(sk, BPF_SOCK_OPS_NEEDS_ECN) == 1);
- }
- 
- static inline void tcp_bpf_rtt(struct sock *sk, long mrtt, u32 srtt)
- {
--	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_RTT_CB_FLAG))
--		tcp_call_bpf_2arg(sk, BPF_SOCK_OPS_RTT_CB, mrtt, srtt);
--
-+	tcp_call_bpf_flag(sk, BPF_SOCK_OPS_RTT_CB, mrtt, srtt);
- 	bpf_tcp_ops_call_flag(rtt, RTT, sk, mrtt, srtt);
- }
- 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index cdcfc7d3c6d2..035c83338e0f 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -226,7 +226,7 @@ int __inet_listen_sk(struct sock *sk, int backlog)
- 		if (err)
- 			return err;
- 
--		tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_LISTEN_CB, 0, NULL);
-+		tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_LISTEN_CB);
- 		bpf_tcp_ops_call(listen, sk);
- 	}
- 	return 0;
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index fa69961c47d3..5d9d3bcde8f7 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2994,8 +2994,7 @@ void tcp_set_state(struct sock *sk, int state)
- 	 */
- 	BTF_TYPE_EMIT_ENUM(BPF_TCP_ESTABLISHED);
- 
--	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk), BPF_SOCK_OPS_STATE_CB_FLAG))
--		tcp_call_bpf_2arg(sk, BPF_SOCK_OPS_STATE_CB, oldstate, state);
-+	tcp_call_bpf_flag(sk, BPF_SOCK_OPS_STATE_CB, oldstate, state);
- 	bpf_tcp_ops_call(set_state, sk, state);
- 
- 	switch (state) {
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 4478d3f3d4b0..f374257013b1 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -146,14 +146,16 @@ EXPORT_SYMBOL_GPL(clean_acked_data_flush);
- #ifdef CONFIG_CGROUP_BPF
- static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
- {
--	bool unknown_opt = tcp_sk(sk)->rx_opt.saw_unknown &&
--		BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk),
--				       BPF_SOCK_OPS_PARSE_UNKNOWN_HDR_OPT_CB_FLAG);
--	bool parse_all_opt = BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk),
--						    BPF_SOCK_OPS_PARSE_ALL_HDR_OPT_CB_FLAG);
- 	struct bpf_sock_ops_kern sock_ops;
-+	const struct tcp_sock *tp;
-+
-+	if (!cgroup_bpf_enabled(CGROUP_SOCK_OPS))
-+		return;
- 
--	if (likely(!unknown_opt && !parse_all_opt))
-+	tp = tcp_sk(sk);
-+	if (!(tp->rx_opt.saw_unknown &&
-+	      BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_PARSE_UNKNOWN_HDR_OPT_CB_FLAG)) &&
-+	    !BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_PARSE_ALL_HDR_OPT_CB_FLAG))
- 		return;
- 
- 	/* The skb will be handled in the
-@@ -176,7 +178,7 @@ static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
- 	sock_ops.sk = sk;
- 	bpf_skops_init_skb(&sock_ops, skb, tcp_hdrlen(skb));
- 
--	BPF_CGROUP_RUN_PROG_SOCK_OPS(&sock_ops);
-+	__BPF_CGROUP_RUN_PROG_SOCK_OPS(&sock_ops);
- }
- 
- static void bpf_skops_established(struct sock *sk, int bpf_op,
-@@ -184,6 +186,9 @@ static void bpf_skops_established(struct sock *sk, int bpf_op,
- {
- 	struct bpf_sock_ops_kern sock_ops;
- 
-+	if (!cgroup_bpf_enabled(CGROUP_SOCK_OPS))
-+		return;
-+
- 	sock_owned_by_me(sk);
- 
- 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
-@@ -195,7 +200,7 @@ static void bpf_skops_established(struct sock *sk, int bpf_op,
- 	if (skb)
- 		bpf_skops_init_skb(&sock_ops, skb, tcp_hdrlen(skb));
- 
--	BPF_CGROUP_RUN_PROG_SOCK_OPS(&sock_ops);
-+	__BPF_CGROUP_RUN_PROG_SOCK_OPS(&sock_ops);
- }
- #else
- static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
-diff --git a/net/ipv4/tcp_nv.c b/net/ipv4/tcp_nv.c
-index f345897a68df..7b0dae23d9aa 100644
---- a/net/ipv4/tcp_nv.c
-+++ b/net/ipv4/tcp_nv.c
-@@ -146,7 +146,7 @@ static void tcpnv_init(struct sock *sk)
- 	 * within a datacenter, where we have reasonable estimates of
- 	 * RTTs
- 	 */
--	base_rtt = tcp_call_bpf(sk, BPF_SOCK_OPS_BASE_RTT, 0, NULL);
-+	base_rtt = tcp_call_bpf(sk, BPF_SOCK_OPS_BASE_RTT);
- 	if (base_rtt > 0) {
- 		ca->nv_base_rtt = base_rtt;
- 		ca->nv_lower_bound_rtt = (base_rtt * 205) >> 8; /* 80% */
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 8770f3084efe..db4fd1825d99 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -476,8 +476,9 @@ static u32 bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
- 	struct bpf_sock_ops_kern sock_ops;
- 	int err;
- 
--	if (likely(!BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk),
--					   BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG)) ||
-+	if (!cgroup_bpf_enabled(CGROUP_SOCK_OPS) ||
-+	    !BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk),
-+				    BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG)||
- 	    !remaining)
- 		return remaining;
- 
-@@ -518,7 +519,7 @@ static u32 bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
- 	if (skb)
- 		bpf_skops_init_skb(&sock_ops, skb, 0);
- 
--	err = BPF_CGROUP_RUN_PROG_SOCK_OPS_SK(&sock_ops, sk);
-+	err = __BPF_CGROUP_RUN_PROG_SOCK_OPS_SK(&sock_ops, sk);
- 
- 	if (err || sock_ops.remaining_opt_len == remaining)
- 		return remaining;
-@@ -543,7 +544,8 @@ static void bpf_skops_write_hdr_opt(struct sock *sk, struct sk_buff *skb,
- 
- 	first_opt_off = tcp_hdrlen(skb) - max_opt_len;
- 
--	if (BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk),
-+	if (cgroup_bpf_enabled(CGROUP_SOCK_OPS) &&
-+	    BPF_SOCK_OPS_TEST_FLAG(tcp_sk(sk),
- 				   BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG)) {
- 		struct bpf_sock_ops_kern sock_ops;
- 		int err;
-@@ -567,7 +569,7 @@ static void bpf_skops_write_hdr_opt(struct sock *sk, struct sk_buff *skb,
- 		sock_ops.remaining_opt_len = max_opt_len;
- 		bpf_skops_init_skb(&sock_ops, skb, first_opt_off);
- 
--		err = BPF_CGROUP_RUN_PROG_SOCK_OPS_SK(&sock_ops, sk);
-+		err = __BPF_CGROUP_RUN_PROG_SOCK_OPS_SK(&sock_ops, sk);
- 		if (!err)
- 			nr_written = max_opt_len - sock_ops.remaining_opt_len;
- 	}
-@@ -1279,16 +1281,10 @@ static unsigned int tcp_established_options(struct sock *sk, struct sk_buff *skb
- 		}
- 	}
- 
--	if (unlikely(BPF_SOCK_OPS_TEST_FLAG(tp,
--					    BPF_SOCK_OPS_WRITE_HDR_OPT_CB_FLAG))) {
--		remaining = MAX_TCP_OPTION_SPACE - size;
--		remaining = bpf_skops_hdr_opt_len(sk, skb, NULL, NULL, 0, opts,
--						  remaining);
--
--		size = MAX_TCP_OPTION_SPACE - remaining;
--	}
--
- 	remaining = MAX_TCP_OPTION_SPACE - size;
-+
-+	remaining = bpf_skops_hdr_opt_len(sk, skb, NULL, NULL, 0, opts,
-+					  remaining);
- 	remaining = bpf_tcp_ops_hdr_opt_len(sk, skb, NULL, NULL, 0, opts,
- 					    remaining);
- 
-@@ -3725,9 +3721,8 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 		err = tcp_transmit_skb(sk, skb, 1, GFP_ATOMIC);
- 	}
- 
--	if (BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_RETRANS_CB_FLAG))
--		tcp_call_bpf_3arg(sk, BPF_SOCK_OPS_RETRANS_CB,
--				  TCP_SKB_CB(skb)->seq, segs, err);
-+	tcp_call_bpf_flag(sk, BPF_SOCK_OPS_RETRANS_CB,
-+			  TCP_SKB_CB(skb)->seq, segs, err);
- 	bpf_tcp_ops_call(retrans, sk, skb, err);
- 
- 	if (unlikely(err) && err != -EBUSY)
-@@ -4355,7 +4350,7 @@ int tcp_connect(struct sock *sk)
- 	struct sk_buff *buff;
- 	int err;
- 
--	tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_CONNECT_CB, 0, NULL);
-+	tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_CONNECT_CB);
- 	bpf_tcp_ops_call(connect, sk);
- 
- #if defined(CONFIG_TCP_MD5SIG) && defined(CONFIG_TCP_AO)
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index 3d49adc51766..00debcba122b 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -286,10 +286,8 @@ static int tcp_write_timeout(struct sock *sk)
- 	tcp_fastopen_active_detect_blackhole(sk, expired);
- 	mptcp_active_detect_blackhole(sk, expired);
- 
--	if (BPF_SOCK_OPS_TEST_FLAG(tp, BPF_SOCK_OPS_RTO_CB_FLAG))
--		tcp_call_bpf_3arg(sk, BPF_SOCK_OPS_RTO_CB,
--				  icsk->icsk_retransmits,
--				  icsk->icsk_rto, (int)expired);
-+	tcp_call_bpf_flag(sk, BPF_SOCK_OPS_RTO_CB,
-+			  icsk->icsk_retransmits, icsk->icsk_rto, (int)expired);
- 	bpf_tcp_ops_call(rto, sk);
- 
- 	if (expired) {
+ 	do {
 -- 
 2.56.0.360.g66cac248cb-goog
 
