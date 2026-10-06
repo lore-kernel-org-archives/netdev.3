@@ -1,117 +1,115 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E613BB695;
-	Tue,  6 Oct 2026 15:44:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBED2FDC20
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 15:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791301468; cv=none; b=ZG6PxeoyATiGAGLRTF5hQ0yEyQEgRm4U+V9+oOkT4fsuUUY9LhbNnX2e89juDvkcWKpHEe3cNJpog3KCszQZfunD+vSdVtJ/8lF2rlv/GdNpvlabf2DIWMsfhZbwu9SjUsmg9b0ZDDz/vIF+kxHay+yfes4GF2cRq5b+d2NqQYs=
+	t=1791301486; cv=none; b=iGXfedNz/1ZxR9i01n0T+alT/N/OxA3FEjx7F5veOJpyFUf68cC+OWL3yuDsXwTBquVU4ZXDixsr8lBSQqsqsHm3JTFzjtUe2/40FUdYpZdnkA6avoSS94JzBODBGz7GEUnVyartMKplE6pbYl4nhX9Wv4KSt+L52sMrSiTCigM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791301468; c=relaxed/simple;
-	bh=/akPqFjBPFk1i0fF17zHYL4oqlB65msOV86aBtJy4xg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=e6AlCAoK8UOVZR0om9KLdUAn7IzHmmoNolIff9k8Xw27gDqAbAfIHCidsd6MI9QHaKxjvL+2GHKiZ/7lbVir0hGMQwq82cZPD4qrJl+i3VgEqqJnQvVvk0j0Dw9rc/9pHaPQFD0S9heTK1uc1IlLYmgE2TVCFm7MWnXX0k0Kg70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=APvjwjp9; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=QPhveSUG; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1791301486; c=relaxed/simple;
+	bh=XsvQjfDkVZa+LETavErrBgkiCBsGQ9uatGPn3tSCDoU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=IvLCOZ56SLpThXHu9VO9AybE/bSBTAEIjd6BRBXC/Cia/lwUdy6ooXjFtrW0Oi2UDXtmkkNhG/oyVO/R9RgBSa+UXXkt4AqHlaEtah59r42uoIFmv9D4jt8ps1QYGy36ko3V/8JWndpNR6rXQyMWcJpXsXZeTBVPuuGlT9N4ckU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBAkUAn/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="APvjwjp9";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="QPhveSUG"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 696FhqXA030345;
-	Tue, 6 Oct 2026 17:43:58 +0200
-Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 765B91228BD;
-	Tue,  6 Oct 2026 17:43:48 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1791301428; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OdK6cwIPlCPet6hLfR7uwhBD0oYQ7PTncgtI8QIo+SM=;
-	b=APvjwjp94Y2KzdF4/TiFIfkGLof61N5HhXDspThV1XQKByYWGpIFEhN4AVoPs5xXSvw8pW
-	pJnmNn3pLKYNYgAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1791301428; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OdK6cwIPlCPet6hLfR7uwhBD0oYQ7PTncgtI8QIo+SM=;
-	b=QPhveSUGTjxu6991vCq4MxLFJZyQQLkRxrf+kF82xofi76IkGCFBwPMCOmFIZ/Mw1vFqY7
-	rDCWz0l7qvTWenQlysre/3TejmKYDHSDKXu5oAbaSL2a6Jor7hLwOY72bYJYEwQGtMgp2X
-	VFc/N9XBCXnH8mOrl6XdLTX59476m9oKQHuRVdmcLCADyVtzxlh8qKtFf1kf22yW9Jyi6R
-	0A5M6Uv5xKuDIquEEH5LjPUcMtMl1vc8JSp8Lk1ycKhVxrnYnswEoOlskNiAX4w/YCGTnW
-	jpm566rsZjUSybQBUfls1SlPhUYSOV75hxcwfhAbJgPtb9hp6eKLZEknmMfxUg==
-Date: Tue, 6 Oct 2026 17:43:48 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Gabriel Goller <g.goller@proxmox.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hangbin.liu@linux.dev, Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH v4] net: ipv6: seg6: report lwtunnel setup errors via
- extack
-Message-Id: <20261006174348.b62a0e824aa8acfbf187e4c5@uniroma2.it>
-In-Reply-To: <20261005140637.644840-1-g.goller@proxmox.com>
-References: <20261005140637.644840-1-g.goller@proxmox.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBAkUAn/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2151F008A3;
+	Tue,  6 Oct 2026 15:44:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791301484;
+	bh=L23Vnl8jFLMACTm1GD6UtjrUX08Zj7ysjYWT62ALUeg=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=JBAkUAn/XE+XVbeybgMEKOywnOp74S2weAgNM4ALb/yq5E+HYfwf6HF4rkUmseYOh
+	 BXMs9B7LkUX/s9/x2l6zfpc31a8wa3QjJ8Y1puSb/XdPOGANSwRCD3K37Hu+WYUerv
+	 2109Aurgb7UmtPwh+oNMNNWSawmh9mOeCPLNj16TWZO31L4ZsfClJwQG7C7LQzAoiQ
+	 GCGeqTsUJlWsPpfZDQFOjrEAHCxEV0XV0o6gduv0t4YdOURqhsB2nVyQ9VZgYWi9j6
+	 HrdpJxK+MZmjjPR8u2Cy0uxV8WAE9+dzIy5zQJlWD0VspkAMuyBkyAaEWeAQkmw+rA
+	 JwXA37cNrC64A==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 10CF4F40068;
+	Tue,  6 Oct 2026 11:44:43 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Tue, 06 Oct 2026 11:44:43 -0400
+X-ME-Sender: <xms:ahfFagfQmMF4H1-HEtLPol9CMTdJ8DvqIxQf03cXT31d_UUD5Aphzg>
+    <xme:ahfFatCw-Wz96rA9knuFo-uKgvk_RhJ4I67olK0cBvUvhZoPa14OZ_tqOXZANUTw7
+    vJ9zw_7DstdCSZo9nyMQuzEcSq780Dt4PPRCppegaeGzZzeRGJS9N0f>
+X-ME-Proxy-Cause: dmFkZTEQPix+upUBUnkRw+jiByjdrgRuJerb+Qyqre2eOJ3UDtIGwvK7dZMWf329ahx7AK
+    y/gu69v4enEx44P34NuDkM2gbSJo2kq24v2kHk4bIn2SaR4h2tE9KFQFUYk6uqrlUo3tHF
+    J75i5McnUJ9C3sr2E48Ag76i1Q2z0RyS8JuNA1aEJMW0GFsrfBPUixkBdUGpfdQjgVT1wP
+    RzKLLPsVt5qFYWBhMhMwNVCuW8N9KCJ8xmWC067MEfkhdRPNd+vmO49EOOpTOaBI0kwZqF
+    ajEn5ffyuXK3vngGCMwEcdSuw16oUexXVfsF+twFHAhPeqJWqoI5GbphCNMazAd4uIEVnk
+    sRNVYy4AcPoP/q7OtTr5qZUtLBoe3yITgzF+OvX9MvHajEezEbrDAyRc87hBiZ3F7IGktL
+    FSrjZdvyh5m7ykRKRB7rGYsMQCfbOnqD2ZlaH1cuOQ+xY13+5dNlivcFFImE5KRVmOkTBU
+    9xDtiA8FCMGKuXnsUDQn6fI65OhW8i0PBzHsVdAfgjihH5gaWo/kmTyFjeOwa+mOt7LNR6
+    VXM7MNWLnH30OLdxnkn71ukOg4u2FfrZDBGG6R/nWHMDI89PWq+vhSeWS04tpykYNRAHQD
+    BA9YBQdPIa5Tq5VlwOfZ2z85s7QDdR8GTOSfFOq5tYjSkDdS82HqjPeHMfqQ
+X-ME-Proxy: <xmx:axfFaufmfTEVbUFz3LLGqM-1YAiq59dTz1VdvcGED66pDxg7id9QBQ>
+    <xmx:axfFalu98NjIrWnaCrLhpzcOxxR77c6RsCKteHfSUlZ8yzkf1d0eTQ>
+    <xmx:axfFaiJVSsBD89UFb1DRBRBbeJ81DYVSRrBIM0gT9rx3FHpf8BXP6w>
+    <xmx:axfFahYZ8maP9mXCpkpmd4Rfu0RoJ-bNt0esG2hY7qk0JD61kWpsfg>
+    <xmx:axfFatm5ZrwT2b-_RSvlQ0hueLJymQz926bo8CLGGN8I-nRtvCBUok4s>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E7376780075; Tue,  6 Oct 2026 11:44:42 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+X-ThreadId: Argu_m54Pkc-
+Date: Tue, 06 Oct 2026 11:44:22 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
+ shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Message-Id: <8cb468b1-0eea-446e-8d22-fa67442f5749@slotpi15m67>
+In-Reply-To: <179124254155.434549.7182507019185765398@kernel.org>
+References: <20261001-tls-follow-on-v2-1-2dd1947bb642@kernel.org>
+ <179124254155.434549.7182507019185765398@kernel.org>
+Subject: Re: [PATCH net-next v2 1/8] tls: bound consecutive no-data records in
+ tls_sw_read_sock()
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
 
-On Mon,  5 Oct 2026 16:06:34 +0200
-Gabriel Goller <g.goller@proxmox.com> wrote:
+On Mon, Oct 05, 2026, netdev-bot+sashiko@kernel.org wrote:
+> > +			if (++nodata >= TLS_RX_NODATA_LIMIT) {
+> > +				/* tls_rx_reader_release() calls
+> > +				 * saved_data_ready(), not the callback a
+> > +				 * consumer installs after the handshake.
+> > +				 */
+> > +				sk->sk_data_ready(sk);
+>
+> [Severity: High]
+> Can this direct call to sk->sk_data_ready() re-enter tls_sw_read_sock()
+> and deadlock on sk_lock.slock?
 
-Hi Gabriel,
+Yes. kcm_attach() accepts a TCP socket that already has TLS_RX set
+up, and strp_data_ready() calls strp_read_sock() directly when the
+socket is not owned by user. From softirq, the nested
+tls_sw_read_sock() finds reader_present set, and sk_wait_event()
+calls release_sock() before it looks at the zero timeout. I have
+not reproduced the deadlock.
 
-thanks for the v4. +1 to Jakub on _MISS. I also have two comments on
-the message text.
+Making the call after tls_rx_reader_release() does not fix it. The
+nested call then acquires the reader, consumes its own 16 empty
+records, and recurses again, so the depth is set by the peer.
 
-> [snip]
->  	switch (tuninfo->mode) {
->  	case SEG6_IPTUN_MODE_INLINE:
-> -		if (family != AF_INET6)
-> +		if (family != AF_INET6) {
-> +			NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
-> +					    "inline mode requires an IPv6 route");
->  			return -EINVAL;
-> +		}
+The notification has to leave the reader's call chain. I'll rework
+it for v3.
 
-This message is also returned for an IPv4 nexthop object, where there
-is no route, for example:
 
-  ip -4 nexthop add id 1 encap seg6 mode inline segs fc00::1 dev dummy0
+> [Severity: Low]
+> Should this be READ_ONCE(sk->sk_data_ready)(sk), as the TCP call sites
+> use?
 
-What about "inline mode requires the IPv6 address family"?
+The direct call goes away with the rework above.
 
-> [snip]
->  	/* verify that SRH is consistent */
-> -	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo), false))
-> +	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo),
-> +			       false)) {
-> +		NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
-> +				    "invalid SRv6 segment routing header");
->  		return -EINVAL;
-> +	}
+pw-bot: cr
 
-A nit: the same header is "SRv6 segment routing header" here and
-"SRv6 SRH" in the other messages of seg6_build_state(). What about
-using the name from the title of RFC 8754 in the extack messages,
-for example:
-
-  "invalid SRv6 segment routing header"
-    -> "invalid IPv6 Segment Routing Header"
-
-Thanks,
-Andrea
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
