@@ -1,182 +1,233 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63A20E023;
-	Tue,  6 Oct 2026 09:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFF52367B8
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 09:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791278626; cv=none; b=P/408mi1bQkSfq9uiFTis+CelkYY4SU7BuxHNrQMy+tuDcR2BWVmACFbHRrM87S0Kefa6RBqApFY5HXJqUJFFMAqoeGLtoJ3sdCPiJUUFCn9duqAzgbheo3665ClqAmqpb5cEfXc4/LGaaUFuVMObYHsh1cCOVh2KKnSR+Y9/tM=
+	t=1791278688; cv=none; b=Xc05JVmv1HKzEQROvhaqnla6BJ6oYsIX6uBt4GM8j19V2O5rLBoqerQvvYN5VhMc/M0PoC9+8ROD5YPKfXjuUaHmkA7LTklmm4vzyrxFldBBYWwFfgIVu/hAj/rg+y3Qm2UQfau28kzq/HZzy8WKD9MCxFhgIFjwZyt8ISwf8aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791278626; c=relaxed/simple;
-	bh=yGXXMeKiOZ+KVCka5I2kJRDPS1o/PlK18aTBWnQLGmc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dfz5F681oWTtmJmj2RrWGanKgjy7cEDCF1iU8GelcM+zCqgjtktdM6oimt/LjyfFCeFibW0AcHwIP7mtXkJk+rJCPExKrCl7bRn/jSnmJ81mB5MLJ7sdEgTb57yQ03xcMdhok9asVDu/RETmQrcBQ2LhZSe+rWLS0O2+sUBJO+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=c9s502SB; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="c9s502SB"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6969NJML02776296, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1791278599; bh=yGXXMeKiOZ+KVCka5I2kJRDPS1o/PlK18aTBWnQLGmc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=c9s502SBxauUhDLHE6r+QTKGpsOUirCyP+JktLjQma6rny31nAS/5q5xDEw6S9aib
-	 LsiEOI3BWCOdJl96fGABQTXbTnA+rSRX/Xst3imWORvp1r4o9fl2MRjWAiRsqLZct5
-	 gIPU/lk+IQ0u4DIZYvA/uB8MjvMuMgaGG5kfKnU96OlU6Ikd+69ucxd2L58MA0I/Fa
-	 IYegLXOJACX/zz/vbZxTyzaDeRJOMnk4Zy2OBzPOkoA0iunS6F7aXV342LTS78AklU
-	 nIhMfW90H2xN3sblHxpsZyP0dqtRC68h50Sv9fn679jadWVzE7nRlnFGVK81WtCzL+
-	 Pq09yWBRx2Fsg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6969NJML02776296
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 6 Oct 2026 17:23:19 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 17:23:19 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS06.realtek.com.tw (10.21.1.56) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 6 Oct 2026 17:23:08 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
- 15.02.2562.049; Tue, 6 Oct 2026 17:23:08 +0800
-From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
-	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
-Subject: RE: [PATCH net-next v5 2/9] r8152: split RTL_VER_17 into QFN68 and
- QFN100 package variants
-Thread-Topic: [PATCH net-next v5 2/9] r8152: split RTL_VER_17 into QFN68 and
- QFN100 package variants
-Thread-Index: AQHdUYTjAkeImQ24PkiPdemOkktlFLbuNqwAgAINqMA=
-Date: Tue, 6 Oct 2026 09:23:07 +0000
-Message-ID: <b3471b4acf7047169eb92258d710e6f5@realtek.com>
-References: <20261001091144.28191-3-nic_swsd@realtek.com>
- <179119424050.434549.6174729043039044928@kernel.org>
-In-Reply-To: <179119424050.434549.6174729043039044928@kernel.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1791278688; c=relaxed/simple;
+	bh=PbO3I5Wzv6Q0HLNgTgjdCNxGPB2wiMT01lvMSgTu2s0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QAHaTuWYBvDC+QWfJ6Iu0tvCzzAbndYh5vC2WBsCJ5MUgWQdNO6d600lhrTGSdPosLOUSEoN8gxMVBG7oQwH5kQXwxuKMMCFpVUJjtWzP73gy4260vpODR+3yLcslmpE55+1PCFXBZqxY33IADBZWC4HVU4OIjPMcp3eG6kUF44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-67694513f2fso284496d50.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 02:24:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791278686; x=1791883486;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jVTxTfkNs+IvzxUmHzgjnWzXGShomJ5y8a1XbauhqO0=;
+        b=qVBaFk0OPFX1E/6vbxbXkubWkkp17Wfo96oAfVxu18ATQ5wk96GbfyC+LT2MKSF1Ua
+         eamw8iwJ+GEzUGyQPtVW5KookMl3HKE7jnQ8gxYmYEQOnE3lWsLHewym1buY3YkUs8W+
+         Iui8e8Jno9pcgXLx+8ZUMNayGD6w4MCW6NyFgwSpmFM+DKDXuy9IKMUz1tegb4yjn5Gf
+         zri1DNwDSkTEWaVqp2dThKGbbR12DIpHo7FwgljPONAPvOj8bvhNdjGuI//h54u3Amsl
+         qdoL9Mw1UhV5RtG0fbksclOT15GqF1LQCmVAMrFesVpYctHG62C4+6Xd3xd1dEu1RpmP
+         +GkA==
+X-Forwarded-Encrypted: i=1; AKwUvBxhSvZK8cwFG4dYpDt4/kuHHFXFXYuEm7HYzoHSbTnkReFsfgWZ+E9DUEPxQ/Fk7g/MA00L8V0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLjne+abWDv9X2lQiRXUrC1eWHtDdmsa1CbopQWgBURlD/P8uZY
+	aqEAQBwG2iOVwQh4bpaKT2PKoS1Kq7oT+XQskXtqNefegBHEP7ZTgq2uCwEYRVSSDnM=
+X-Gm-Gg: AYBFou0Jn4PqatEcDW2jjgyDoVXmJQqVMmj2Ana+4FCDZzosRKLEKElpG6n1WmX54L7
+	2JrWZWJNEyqdkm0JF/v8pb8JDJ/nG6itL4IcTyflolFwNbUlATaTaxlcGkO1PJu3Ne4ubHsKDW4
+	3rTjSzOnajbW30vbA4AW6hJFlULk4saVqIhKJlppjaylJCKlUen+mm9bgPRtXFvPMb9GuPCMTlc
+	aGjaQRy3CwRUfUC7lDi+Tw1OnXnuyjr+JMmco6E9RnjMV5i/Lcr7WqzMw1AjZEnorIDscZi6o/p
+	2pCDT02XQ3hrIkqs1qNbPDRFZuGpxge7Gy9Rze0EiMzu8yQZpUYa4gUcYHLACK75+UxvlL+sO/+
+	qVBo4POig/cyeQAzHewUAyzVL7cTd5yvPtMvFXI3Bb3RTlCFPyL9e0Wzok7O6RPkn3hI0xEbJaN
+	kHrPTXobeHc6uZ6LWKbpRz4cng4L6lJPM6Lu6amajgq5LhUOWevbLYyAcIZHWZF43CsAxVVRp0c
+	cKMp+KywJBfOuF7NWZsFhpl0HvveD3zjHBVjJ3FBSoD6WL1x5q88iwJ40VGnpUWHjU=
+X-Received: by 2002:a05:690e:43c2:b0:676:9144:f15f with SMTP id 956f58d0204a3-678fcde0471mr122785d50.64.1791278685849;
+        Tue, 06 Oct 2026 02:24:45 -0700 (PDT)
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com. [209.85.128.177])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8ae2ed25172sm49966237b3.0.2026.10.06.02.24.44
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Oct 2026 02:24:44 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8ae8607e8afso4820687b3.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 02:24:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxpTFqKx0EGIAicm/UB/095VpkoWzlKc8PYK5UG8SHt1xpx2b/3/IqUB4hfoVvN6WeT5heCuqM=@vger.kernel.org
+X-Received: by 2002:a05:690c:7108:b0:8ae:7fb9:8cb8 with SMTP id
+ 00721157ae682-8b04f3b6667mr2040067b3.17.1791278683947; Tue, 06 Oct 2026
+ 02:24:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261004144046.391444-1-tanure@linux.com> <20261004144046.391444-3-tanure@linux.com>
+ <asN_-5zalENhkdVA@squawk>
+In-Reply-To: <asN_-5zalENhkdVA@squawk>
+Reply-To: tanure@linux.com
+From: Lucas Tanure <tanure@linux.com>
+Date: Tue, 6 Oct 2026 10:24:32 +0100
+X-Gmail-Original-Message-ID: <CAJX_Q+2hD_LTcimHAVhyzgTnp9jYxKKFD2TK5cv9-wLjDh8+wQ@mail.gmail.com>
+X-Gm-Features: AclHuK-bVUCezgDuqipnwl794qiJm9NtCr-yWp4gG5KzmPFjPQMebZJ1Y2LQr9E
+Message-ID: <CAJX_Q+2hD_LTcimHAVhyzgTnp9jYxKKFD2TK5cv9-wLjDh8+wQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/6] dt-bindings: net: amlogic,meson-dwmac: add amlogic,t7-dwmac
+To: Conor Dooley <conor@kernel.org>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-PiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3Vu
-ZCAyIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlci4NCj4gDQo+IENyaXRpY2FsOiAw
-IMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAyICgxKSDCtyBMb3c6IDANCj4gDQo+IElmIHlvdSBiZWxp
-ZXZlIG5vbmUgb2YgdGhlIGlzc3VlcyBhcmUgbGVnaXRpbWF0ZSwgcGxlYXNlIHJlcGx5IHRvIGVh
-Y2ggaXNzdWUgb2YNCj4gTWVkaXVtIHNldmVyaXR5IG9yIGhpZ2hlciBhbmQgZXhwbGFpbiB3aHkg
-dGhlIEFJIGlzIHdyb25nLg0KPiBJZiBhbnkgb2YgdGhlbSBhcmUgbGVnaXRpbWF0ZSBhbmQgeW91
-IHBsYW4gdG8gcmVzcGluLCBwbGVhc2UgbGV0IHBhdGNod29yayBrbm93DQo+IGJ5IGluY2x1ZGlu
-ZyAicHctYm90OiBjciIgYXMgYSBzZXBhcmF0ZSBsaW5lIGF0IHRoZSBlbmQgb2YgeW91ciByZXBs
-eSAob25lIHN1Y2gNCj4gcmVwbHkgcGVyIHNlcmllcyBpcyBlbm91Z2gpLg0KPiANCj4gLSBbTWVk
-aXVtXSBUaGUgY29tbWl0IG1lc3NhZ2Ugc2F5cyB0aGUgc3BsaXQgaXMgbmVlZGVkIGJlY2F1c2Ug
-UUZONjggYW5kDQo+ICAgUUZOMTAwICJuZWVkIGRpZmZlcmVudCBmaXJtd2FyZSBhbmQgYSBwYWNr
-YWdlLXNwZWNpZmljIHUycGh5IGJhY2t1cC3igKYNCj4gLSBbTWVkaXVtXSBJbiBfX3J0bF9nZXRf
-cGtnX2RldCgpIChkcml2ZXJzL25ldC91c2IvcjgxNTIuYyksIHRoZSByZXRyeQ0KPiAgIGxvb3Ag
-YGZvciAoaSA9IDAsIHJldCA9IDA7IGkgPCAzICYmIHJldCAhPSA0OyBpKyspIHJldCA94oCmDQo+
-IA0KPiBQcmUtZXhpc3RpbmcgaXNzdWVzOg0KPiAtIFtNZWRpdW1dIFRoaXMgcHJvYmxlbSB3YXNu
-J3QgaW50cm9kdWNlZCBieSB0aGlzIHBhdGNoLCBidXQgaW4NCj4gICBfX3J0bF9nZXRfaHdfdmVy
-KCkgKGRyaXZlcnMvbmV0L3VzYi9yODE1Mi5jKSB0aGUgYnVmZmVyIGB0bXBgIGlz4oCmDQo+IA0K
-PiAtLQ0KPiANCj4gcjgxNTI6IHNwbGl0IFJUTF9WRVJfMTcgaW50byBRRk42OCBhbmQgUUZOMTAw
-IHBhY2thZ2UgdmFyaWFudHMNCj4gDQo+IFRoaXMgY29tbWl0IHNwbGl0cyBSVExfVkVSXzE3IGlu
-dG8gUlRMX1ZFUl8xN19RRk42OCBhbmQNCj4gUlRMX1ZFUl8xN19RRk4xMDAuDQo+IFRoZSBwYWNr
-YWdlIGlzIGRldGVjdGVkIGJ5IGEgbmV3IF9fcnRsX2dldF9wa2dfZGV0KCkgaGVscGVyIHRoYXQg
-cmVhZHMNCj4gUExBX1BLR19ERVQuIEV2ZXJ5IFJUTF9WRVJfMTcgc3dpdGNoIGNhc2Ugbm93IGhh
-bmRsZXMgYm90aCB2YXJpYW50cywgYW5kDQo+IHI4MTU5X2luaXQoKSBnYWlucyBhIHUycGh5IGJh
-Y2t1cCByZXN0b3JlIHdyaXRlIHRoYXQgb25seSBhcHBsaWVzIHRvIFFGTjY4Lg0KPiANCj4gPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMgYi9kcml2ZXJzL25ldC91c2Ivcjgx
-NTIuYyBpbmRleA0KPiA+IDRkOGYwODE1ZDc5ZDEuLjMwYWY2ZWQzYTYzOGYgMTAwNjQ0DQo+ID4g
-LS0tIGEvZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC91c2Iv
-cjgxNTIuYw0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiBAQCAtMTAxNzIsNyArMTAxOTQsOCBAQCBz
-dGF0aWMgaW50IHJ0bF9md19pbml0KHN0cnVjdCByODE1MiAqdHApDQo+ID4gICAgICAgY2FzZSBS
-VExfVkVSXzE2Og0KPiA+ICAgICAgICAgICAgICAgcnRsX2Z3LT5md19uYW1lICAgICAgICAgPSBG
-SVJNV0FSRV84MTU3XzE7DQo+ID4gICAgICAgICAgICAgICBicmVhazsNCj4gPiAtICAgICBjYXNl
-IFJUTF9WRVJfMTc6DQo+ID4gKyAgICAgY2FzZSBSVExfVkVSXzE3X1FGTjY4Og0KPiA+ICsgICAg
-IGNhc2UgUlRMX1ZFUl8xN19RRk4xMDA6DQo+ID4gICAgICAgICAgICAgICBydGxfZnctPmZ3X25h
-bWUgICAgICAgICA9IEZJUk1XQVJFXzgxNTlfMTsNCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0K
-PiBUaGUgY29tbWl0IG1lc3NhZ2Ugc2F5cyB0aGUgdHdvIHBhY2thZ2VzICJuZWVkIGRpZmZlcmVu
-dCBmaXJtd2FyZSBhbmQgYQ0KPiBwYWNrYWdlLXNwZWNpZmljIHUycGh5IGJhY2t1cC1yZXN0b3Jl
-IHBhdGNoIi4gSG93ZXZlciwgcnRsX2Z3X2luaXQoKSBzdGlsbCBnaXZlcw0KPiBib3RoIFJUTF9W
-RVJfMTdfUUZONjggYW5kIFJUTF9WRVJfMTdfUUZOMTAwIHRoZSBzYW1lIGZpcm13YXJlLA0KPiBG
-SVJNV0FSRV84MTU5XzEgKCJydGxfbmljL3J0bDgxNTktMS5mdyIpLg0KPiANCj4gVGhlIGRyaXZl
-ciBzdGlsbCBoYXMgb25seSBvbmUgODE1OSBmaXJtd2FyZSBkZWZpbmUgYW5kIG9uZQ0KPiBNT0RV
-TEVfRklSTVdBUkUoRklSTVdBUkVfODE1OV8xKS4gVGhlIGxhdGVyIHBhdGNoZXMgaW4gdGhlIHNl
-cmllcywgdXANCj4gdG8NCj4gInI4MTUyOiBlbmFibGUgVVBTIGZvciBSVEw4MTU3IGFuZCBSVEw4
-MTU5IFFGTjY4IiwgZG8gbm90IGNoYW5nZSB0aGlzDQo+IGVpdGhlci4NCj4gDQo+IElzIHBlci1w
-YWNrYWdlIGZpcm13YXJlIHNlbGVjdGlvbiBtaXNzaW5nIGZyb20gdGhpcyBwYXRjaD8gT3Igc2hv
-dWxkIHRoZQ0KPiBjb21taXQgbWVzc2FnZSBkcm9wIHRoZSBjbGFpbSBhYm91dCBkaWZmZXJlbnQg
-ZmlybXdhcmU/DQoNCkkgd2lsbCByZXdvcmQgdGhlIGNvbW1pdCBtZXNzYWdlIHRvIGRyb3AgdGhl
-IGNsYWltLg0KDQo+IA0KPiA+ICAgICAgICAgICAgICAgYnJlYWs7DQo+ID4gICAgICAgZGVmYXVs
-dDoNCj4gPiBAQCAtMTAxODIsOSArMTAyMDUsMzggQEAgc3RhdGljIGludCBydGxfZndfaW5pdChz
-dHJ1Y3QgcjgxNTIgKnRwKQ0KPiA+ICAgICAgIHJldHVybiAwOw0KPiA+ICB9DQo+ID4NCj4gPiAr
-c3RhdGljIHUzMiBfX3J0bF9nZXRfcGtnX2RldChzdHJ1Y3QgdXNiX2RldmljZSAqdWRldikgew0K
-PiA+ICsgICAgIHUzMiBwa2dfZGV0ID0gMDsNCj4gPiArICAgICBfX2xlMzIgKnRtcDsNCj4gPiAr
-ICAgICBpbnQgcmV0LCBpOw0KPiA+ICsNCj4gPiArICAgICB0bXAgPSBrbWFsbG9jX29iaigqdG1w
-KTsNCj4gPiArICAgICBpZiAoIXRtcCkNCj4gPiArICAgICAgICAgICAgIHJldHVybiAwOw0KPiA+
-ICsNCj4gPiArICAgICBmb3IgKGkgPSAwLCByZXQgPSAwOyBpIDwgMyAmJiByZXQgIT0gNDsgaSsr
-KQ0KPiA+ICsgICAgICAgICAgICAgcmV0ID0gdXNiX2NvbnRyb2xfbXNnKHVkZXYsIHVzYl9yY3Zj
-dHJscGlwZSh1ZGV2LCAwKSwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBSVEw4MTUyX1JFUV9HRVRfUkVHUywNCj4gUlRMODE1Ml9SRVFUX1JFQUQsDQo+ID4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUExBX1BLR19ERVQsIE1DVV9UWVBFX1BMQSwN
-Cj4gdG1wLA0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNpemVvZigq
-dG1wKSwNCj4gPiArIFVTQl9DVFJMX0dFVF9USU1FT1VUKTsNCj4gPiArDQo+ID4gKyAgICAgaWYg
-KHJldCA9PSBzaXplb2YoKnRtcCkpIHsNCj4gPiArICAgICAgICAgICAgIGlmIChpICE9IDApDQo+
-ID4gKyAgICAgICAgICAgICAgICAgICAgIGRldl93YXJuKCZ1ZGV2LT5kZXYsDQo+ID4gKyAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICJOZWVkZWQgJWQgcmV0cmllcyB0byByZWFkDQo+IHBh
-Y2thZ2VcbiIsDQo+ID4gKyBpKTsNCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBXb24ndCB0
-aGlzIHdhcm5pbmcgZmlyZSBvbiBldmVyeSBzdWNjZXNzZnVsIHJlYWQ/IFRoZSBsb29wIGluY3Jl
-bWVudHMgaSBhZnRlcg0KPiB0aGUgaXRlcmF0aW9uIHRoYXQgc3VjY2VlZHMuIElmIHRoZSBmaXJz
-dCB1c2JfY29udHJvbF9tc2coKSByZXR1cm5zIDQsIGkgaXMgYWxyZWFkeQ0KPiAxIHdoZW4gdGhl
-IGxvb3AgZXhpdHMsIHNvIHRoZSBpICE9IDAgY2hlY2sgaXMgYWx3YXlzIHRydWUuDQoNCkFjdHVh
-bGx5LCBJIHdpbGwgZml4IGl0Lg0KDQo+IA0KPiBUaGUgcHJpbnRlZCBjb3VudCBpcyBhbHNvIG9u
-ZSB0b28gaGlnaDogMSBmb3IgYSBmaXJzdC10cnkgc3VjY2VzcywgMyBmb3IgYSBzdWNjZXNzDQo+
-IG9uIHRoZSB0aGlyZCBhdHRlbXB0Lg0KPiANCj4gVGhlIHZlcnNpb24gcmVhZCBsb29wIGluIF9f
-cnRsX2dldF9od192ZXIoKSBhdm9pZHMgdGhpcyBieSBicmVha2luZyBvdXQgb24NCj4gc3VjY2Vz
-czoNCj4gDQo+ICAgICAgICAgZm9yIChpID0gMDsgaSA8IDM7IGkrKykgew0KPiAgICAgICAgICAg
-ICAgICAgcmV0ID0gdXNiX2NvbnRyb2xfbXNnKC4uLik7DQo+ICAgICAgICAgICAgICAgICBpZiAo
-cmV0ID4gMCkgew0KPiAgICAgICAgICAgICAgICAgICAgICAgICBvY3BfZGF0YSA9IChfX2xlMzJf
-dG9fY3B1KCp0bXApID4+IDE2KSAmDQo+IFZFUlNJT05fTUFTSzsNCj4gICAgICAgICAgICAgICAg
-ICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICB9DQo+ICAgICAgICAgfQ0KPiANCj4g
-ICAgICAgICBpZiAoaSAhPSAwICYmIHJldCA+IDApDQo+ICAgICAgICAgICAgICAgICBkZXZfd2Fy
-bigmdWRldi0+ZGV2LCAiTmVlZGVkICVkIHJldHJpZXMgdG8gcmVhZA0KPiB2ZXJzaW9uXG4iLCBp
-KTsNCj4gDQo+IF9fcnRsX2dldF9od192ZXIoKSBydW5zIGZyb20gYm90aCB0aGUgY2Znc2VsZWN0
-b3IgYW5kIHRoZSBwcm9iZSBwYXRocywgc28gdGhlDQo+IGZhbHNlIHdhcm5pbmcgY2FuIGFwcGVh
-ciBtb3JlIHRoYW4gb25jZSBwZXIgUlRMODE1OSBwbHVnLWluLiBUaGUgY29kZSBpcyBzdGlsbA0K
-PiB0aGUgc2FtZSBhdCB0aGUgZW5kIG9mIHRoZSBzZXJpZXMuDQo+IA0KPiA+ICsNCj4gPiArICAg
-ICAgICAgICAgIHBrZ19kZXQgPSBfX2xlMzJfdG9fY3B1KCp0bXApICYgUEtHX01BU0s7DQo+ID4g
-KyAgICAgfQ0KPiA+ICsNCj4gPiArICAgICBrZnJlZSh0bXApOw0KPiA+ICsgICAgIHJldHVybiBw
-a2dfZGV0Ow0KPiA+ICt9DQo+ID4gKw0KPiA+ICBzdGF0aWMgdTggX19ydGxfZ2V0X2h3X3Zlcihz
-dHJ1Y3QgdXNiX2RldmljZSAqdWRldikgIHsNCj4gPiAgICAgICB1MzIgb2NwX2RhdGEgPSAwOw0K
-PiA+ICsgICAgIHUzMiBwa2dfZGV0ID0gMDsNCj4gPiAgICAgICBfX2xlMzIgKnRtcDsNCj4gPiAg
-ICAgICB1OCB2ZXJzaW9uOw0KPiA+ICAgICAgIGludCByZXQ7DQo+IA0KPiBbU2V2ZXJpdHk6IE1l
-ZGl1bV0NCj4gVGhpcyBpc24ndCBhIGJ1ZyBpbnRyb2R1Y2VkIGJ5IHRoaXMgcGF0Y2gsIGJ1dCB0
-aGUgUExBX1RDUjAgcmVhZCBpbg0KPiBfX3J0bF9nZXRfaHdfdmVyKCkgYWNjZXB0cyBhIHJlcGx5
-IG9mIGFueSBwb3NpdGl2ZSBsZW5ndGg6DQo+IA0KPiAgICAgICAgIHRtcCA9IGttYWxsb2Nfb2Jq
-KCp0bXApOw0KPiAgICAgICAgIC4uLg0KPiAgICAgICAgICAgICAgICAgaWYgKHJldCA+IDApIHsN
-Cj4gICAgICAgICAgICAgICAgICAgICAgICAgb2NwX2RhdGEgPSAoX19sZTMyX3RvX2NwdSgqdG1w
-KSA+PiAxNikgJg0KPiBWRVJTSU9OX01BU0s7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGJy
-ZWFrOw0KPiAgICAgICAgICAgICAgICAgfQ0KPiANCj4ga21hbGxvY19vYmooKSBkb2VzIG5vdCB6
-ZXJvIHRoZSBidWZmZXIuIElmIGEgZmF1bHR5IG9yIG1hbGljaW91cyBkZXZpY2Ugc2VuZHMNCj4g
-b25seSAxIHRvIDMgYnl0ZXMsIGNhbiB0aGUgdXBwZXIgYnl0ZXMgb2YgKnRtcCBzdGlsbCBob2xk
-IGxlZnRvdmVyIGhlYXAgZGF0YSB0aGF0DQo+IHRoZW4gZ2V0cyBkZWNvZGVkIGFzIHRoZSBjaGlw
-IHZlcnNpb24/DQo+IA0KPiBUaGF0IGNvdWxkIG1pc2lkZW50aWZ5IHRoZSBjaGlwLCBvciBsZWFr
-IHVuaW5pdGlhbGl6ZWQgaGVhcCBieXRlcyB0byBkbWVzZw0KPiB0aHJvdWdoIHRoZSAiVW5rbm93
-biB2ZXJzaW9uIDB4JTA0eCIgbWVzc2FnZS4NCj4gDQo+IFRoZSBuZXcgX19ydGxfZ2V0X3BrZ19k
-ZXQoKSBoZWxwZXIgYWxyZWFkeSByZXF1aXJlcyByZXQgPT0gc2l6ZW9mKCp0bXApLg0KPiBXb3Vs
-ZCB0aGUgc2FtZSBjaGVjayBtYWtlIHNlbnNlIGhlcmU/DQo+IA0KPiBbIC4uLiBdDQo+IA0KPiAt
-LQ0KPiBTYXNoaWtvIEFJIHJldmlldyDCtw0KPiBodHRwczovL25ldGRldi1haS5ib3RzLmxpbnV4
-LmRldi9zYXNoaWtvLyMvcGF0Y2hzZXQvMjAyNjEwMDEwOTExNDQuMjgxOTEtMQ0KPiAtbmljX3N3
-c2QlNDByZWFsdGVrLmNvbQ0KDQpCZXN0IFJlZ2FyZHMsDQpDaGloLUthaQ0KDQotLS0NCnB3LWJv
-dDogY3INCg==
+On Mon, Oct 5, 2026 at 11:46=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> On Sun, Oct 04, 2026 at 03:40:42PM +0100, Lucas Tanure wrote:
+> > The T7 has the same ethernet glue as the G12A, but the controller
+> > reaches DRAM through a pipeline stage that the hardware design inserts
+> > in the bus path. That stage has a gate of its own, which no other membe=
+r
+> > of the family has. Nothing else in Linux claims the gate, so it is
+> > switched off as unused and the port can then no longer complete a
+> > transfer.
+> >
+> > Describing it means a fourth clock, and the fourth clock of the existin=
+g
+> > list is the one driving the timing adjustment logic. The T7 applies the
+> > RGMII RX delay through PRG_ETH1 and never enables that logic, so it has
+> > no use for that clock. Give the T7 a list of its own with the pipeline
+> > gate as the fourth entry, under the same name the SD/eMMC controllers o=
+f
+> > this SoC already use for the equivalent stage on their own bus path. Al=
+l
+> > four entries are required, since the port cannot move data without any
+> > of them.
+> >
+> > The RX delay range is the one the G12A has, since it is the same
+> > register field.
+> >
+> > The compatible pairs the T7 name with the 5.10a Synopsys core the MAC
+> > reports, and with the generic fallback.
+> >
+> > Assisted-by: LLM
+> > Signed-off-by: Lucas Tanure <tanure@linux.com>
+> > ---
+> >  .../bindings/net/amlogic,meson-dwmac.yaml     | 47 +++++++++++++++++++
+> >  1 file changed, 47 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.=
+yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> > index 90ef79161ab1..96118b4d1560 100644
+> > --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> > +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> > @@ -23,6 +23,7 @@ select:
+> >            - amlogic,meson-gxbb-dwmac
+> >            - amlogic,meson-axg-dwmac
+> >            - amlogic,meson-g12a-dwmac
+> > +          - amlogic,t7-dwmac
+> >    required:
+> >      - compatible
+> >
+> > @@ -57,6 +58,47 @@ allOf:
+> >              - const: clkin1
+> >              - const: timing-adjustment
+> >
+> > +  # The T7 applies the RGMII RX delay through PRG_ETH1 and never enabl=
+es the
+> > +  # timing adjustment logic, so it has no timing-adjustment clock. Wha=
+t it does
+> > +  # need is the gate of the pipeline stage the controller reaches DRAM=
+ through.
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            const: amlogic,t7-dwmac
+> > +    then:
+> > +      properties:
+> > +        clocks:
+> > +          items:
+> > +            - description: GMAC main clock
+> > +            - description: First parent clock of the internal mux
+> > +            - description: Second parent clock of the internal mux
+> > +            - description:
+> > +                clock of the pipeline stage inserted in the bus path b=
+etween
+> > +                the controller and the DRAM. Without it, the controlle=
+r cannot
+> > +                complete DMA transfers.
+>
+> Have you checked that this actually works as a limiter to only 4 clocks?
+I have now, and it does limit to four. Adding
+a fifth clock to the board gets rejected:
+
+  ethernet@fdc00000 (amlogic,t7-dwmac): clock-names:
+    ['stmmaceth', 'clkin0', 'clkin1', 'pipeline', 'bogus'] is too long
+
+
+> There's an additionalItems: true in the snps,dwmac.yaml that I don't
+> know if will permit random additional items here.
+There are two checks on clocks and both have to pass: snps,dwmac.yaml
+allows 1 to 10 items, the t7 branch allows exactly 4. The
+additionalItems: true only relaxes the first one, so the second still
+rejects a fifth clock. The "exactly 4" is not something I wrote -
+dt-schema's _fixup_items_size() sets minItems and maxItems from the
+length of the items list.
+
+>
+> Cheers,
+> Conor.
+>
+> > +
+> > +        clock-names:
+> > +          items:
+> > +            - const: stmmaceth
+> > +            - const: clkin0
+> > +            - const: clkin1
+> > +            - const: pipeline
+> > +
+> > +  # Delay definitions for Meson8b and newer (including T7)
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - amlogic,meson8b-dwmac
+> > +              - amlogic,meson8m2-dwmac
+> > +              - amlogic,meson-gxbb-dwmac
+> > +              - amlogic,meson-axg-dwmac
+> > +              - amlogic,meson-g12a-dwmac
+> > +              - amlogic,t7-dwmac
+> > +    then:
+> > +      properties:
+> >          amlogic,tx-delay-ns:
+> >            enum: [0, 2, 4, 6]
+> >            default: 2
+> > @@ -106,6 +148,7 @@ allOf:
+> >            contains:
+> >              enum:
+> >                - amlogic,meson-g12a-dwmac
+> > +              - amlogic,t7-dwmac
+> >      then:
+> >        properties:
+> >          rx-internal-delay-ps:
+> > @@ -143,6 +186,10 @@ properties:
+> >                - amlogic,meson6-dwmac
+> >                - amlogic,meson8m2-dwmac
+> >            - const: snps,dwmac
+> > +      - items:
+> > +          - const: amlogic,t7-dwmac
+> > +          - const: snps,dwmac-5.10a
+> > +          - const: snps,dwmac
+> >
+> >    reg:
+> >      items:
+> > --
+> > 2.56.0
+> >
