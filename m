@@ -1,162 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A46B3E40EF
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89E833939D
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791306494; cv=none; b=l5ojbqsEI3C9crPSVPX9fpFaqOfD21JNiovS2wXqUA7PGerBt6vyS6D9nwy8+ZKOtzGLGvTCoVcs9267SikKhrejClYd6rVno7HBhQYJnZhNTRDFNK9balphEty8jFIsF3Oo9neTWllJ96YefGG94AVhIqlCN21gySFnNOOvtiU=
+	t=1791306639; cv=none; b=rLOtAjfPyMT+U5cuvLBMN2rrmUnPSwA70g0rbG3mCA3OwloQIT9rpz3cE1Ziuphw078jh0G0xWhsOEVfulnTffBSFSlLCHpEQuL2LeaZgEW6ZRqEsg+DgfY/TjudKTjSgb21jqtm7xRqXcjhLztchfbGxdNlmXMtgZBbs67Qd5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791306494; c=relaxed/simple;
-	bh=h36t8Aak3xjosKV7ApMoYWbxB2QuJwp89eihxX+6udg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HnpoiVRP0uU7ZZ7Y8yXHpWE/oDa88CxEIqQH8FIm2Kli2pP2veZvzTLYbQdbXEx3zemMStck/ar3x3+ABj+TqUCsrrLk1Hv8ctlMPYvAQcgTFEg7xZcyOLQb0ffElxyg7swWAqlcn22hETBwkfNEtTtIzJtFjjUG1VS4hRaWCh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hc4neDZG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791306639; c=relaxed/simple;
+	bh=aYGadbtqESaWN4JNrHN0aDg0jSJlyPStQz0QqjpmL6c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rSVljDltMau5aSGFC0RcTqRmDz5I+zdGUVLU0rvEDkxI4DYp6aoHkSGaJ4+DHw0th7zg3i1Qrq7z5HUMoCz3S6hyRBEro3UGe/tkI4ZrrdPqrUxHK+cgLDoLQcbeicgqXb+BdPezTdORnZQz2iRSiSt6SAsprKJW2QputSevw1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=dPkHccQg; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hc4neDZG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3FF1F0089E
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 17:08:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791306493;
-	bh=F2pbNHA6Cquvp7JKUXcGKjJph/y7K4Neid4Wj2Yqaws=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Hc4neDZGtdVMcVKbbm7UStFHija7GxuvXtx8as49HGT/az7/5y59tj2a4QReGnuuD
-	 cqDCUMWAMtKZRWlLAx6PnRR/zHybfoZ3JhdrCrdYW3Bl42yfs1fUH0F3BADTr0LtYx
-	 Mde/NkGzSB5KpMuW5NMdZVG5d2gdOuoObJcy/aK9dCK/+bYsJtfGLSX/lkHsd4bZLq
-	 xiIlknIgUcPByt7+AFZm5kzAL5Wzw+SCt+h9nOkvSHJgHs7azt29lw2KDHApfhQDt1
-	 SHdGcssUiWAasQ89Ae1YG4kuQnPiwJoTvpZBOBReP8NDqXsDUe6nD5scGWEtnyaCju
-	 vsiaP1+ggsuMw==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3a9787a156eso6620421fa.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 10:08:13 -0700 (PDT)
-X-Gm-Message-State: AFq9FYJ3Bo2qTn7XQ+UhA470OWadBR/d2SlLNei/d78vvlz8FP3k8hTK
-	TvvRLRkt6jp/4StFmM/PCwUrq6qUQ08Di1eKkflz0nmDbxvEBcY8cmyRCsipNfaPC4CP0g5nqLE
-	R9axNpQt6ADK/f7QVY8FrNfr/Llouns4=
-X-Received: by 2002:a2e:bc1e:0:b0:3a9:7160:e83e with SMTP id
- 38308e7fff4ca-3a99ad25f3amr5707721fa.8.1791306491341; Tue, 06 Oct 2026
- 10:08:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="dPkHccQg"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-917a2800e83so38481826d6.2
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 10:10:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda.com; s=google; t=1791306637; x=1791911437; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Y9NiyobynJrGhli2ru3ZvHWRYLZ4SyUg0+a0p461rCs=;
+        b=dPkHccQgSnkc9lyHgYKjaXPOjZRBFA2nLcLaKfuxZ+ujRaADFENY32ddvt5MW04lJo
+         xDkZyodPnwriawOQ1T9rd9Tm7GwPydf/dENw5kDtKcYJQXlPg549rfuqqdQuub3iVmBr
+         dencfK1SXezq8nHbrHmDrKGM7eFz+h/PjcQ8l/xQKU9lg3OvhEBchkBc/Eg334dI0aKU
+         AnThIIyQiVdDXpjhKIhJPmrZuncma4apjIaRMWW/QHTeQVfwdScn8E+L2yO40LFeiVlm
+         sXjC/F5V9pfNnP2dD8Mz5OmPu4TfHKrS+RLMudAFyvFYdnLahH7mTyu2pveJK1GFBXNb
+         Vr/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791306637; x=1791911437;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Y9NiyobynJrGhli2ru3ZvHWRYLZ4SyUg0+a0p461rCs=;
+        b=AVsiH8OsYEKNidYFeR97YMw7V4wotPvG2/qrpdjHuNvIGIu1hMrCghn2MFsY3qW/Bk
+         qH3Hfs/KONYhSd0Vv7T7XX9yAowP6T9zjsCiDxuLMU3Sdw3LL8fprICl3COoBtDunyBB
+         3ao6Qn2QtjORj2AZPNQWpdYkTGNm0taaUAKKPSwcXqqKs0fwANd1l61vHv/8xlhX3IV6
+         041yCXd0nc4nWac4Fd+9Ct3A+LfABgN3GBzB8jh9NrePhAQ/y58JbJehwrFh6mWruFQE
+         ThHNdQRN0106kp8yms4awYyqsJh8gfJT72/FwSbmIlVFDt4NxqqzLesib+/Wc5Lzsksi
+         bzzg==
+X-Gm-Message-State: AFq9FYJ1HR7dbZBYDxg9O36lc2mgcQbGJ8bKf3EZAiRKVjG6Y29tqNa+
+	uIaXkQwu9RM57/rP7gY/3lBK/bnXSPxkoDihMtvMlOIp9PzZvWCl9DYkjIaiwatXPjg=
+X-Gm-Gg: AYBFou2hDZHEY0bEB1h1CLHUMIsOdVt8gdavWy3JOT4MKA1U2Nkjge+2FdZUpnJzBGJ
+	cIyHmFyUV8setF7wbkccSm/KXmlajm8tZG+d3Wv0TiXOesDY9Z7KOW1nLxCdc/NrHYVCa6Hw8wB
+	qKbHzsPpv1ibhxqS/woXQcvSO6qBc0X5Dkfky+OWOZtK+66bp2JnvW1xEv1qDtX3OsH4C5zWd4q
+	OWlSPGOzlUBrBhC+TEdgJ5+OWkvdPXWR068gxY0828wn8jrMneE8C4tFX3FQtpotzbQbB/9zR+c
+	x9f+q9TdpZ7fa/efmIZiAvtNYA6xXZXq4fZGaHULXahiFvT4B4WgACiRPVTPuz6vJCMKIp4gyES
+	Q0sdLWsyXWqkabHfu0RgJejS7CNYbTtw4x70aeqLmRLytiEa5CjdPMfBTLB/RyQXvyeA5RbrQql
+	g6jtekDBuvlWjut1xgP1qtxs6v4oWIp3DasswHKKxBEW2FBDDNHp04sBJqjlHl4yIsJUZlDEry8
+	HtUkCj7SqB505g=
+X-Received: by 2002:a05:6214:c27:b0:917:beb6:8114 with SMTP id 6a1803df08f44-9195d0f00b7mr215431006d6.19.1791306636647;
+        Tue, 06 Oct 2026 10:10:36 -0700 (PDT)
+Received: from toxicpanda.com ([153.61.196.241])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-919860889b2sm26433986d6.30.2026.10.06.10.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 10:10:35 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+Subject: [PATCH net-next 0/9] net: skbuff: convert most BUG_ON()s to
+ WARN_ON_ONCE() and an error
+Date: Tue, 06 Oct 2026 17:10:15 +0000
+Message-Id: <20261006-b4-skbuff-bug-on-v1-0-1b4434c5357c@toxicpanda.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
- <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org>
-In-Reply-To: <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Tue, 6 Oct 2026 19:07:55 +0200
-X-Gmail-Original-Message-ID: <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
-X-Gm-Features: AclHuK94qiZU0AD2VKryl24P5rKTJxKe7JjW3M-u_EQacUnswxhPW-YFOySeCss
-Message-ID: <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
- VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
-To: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>, 
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: netdev@vger.kernel.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	nic_swsd@realtek.com, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHgrxWoC/1WNyw6CMBBFf4XM2gnQVER/hbjo1ClUTSF9GBLCv
+ 9viyuV9nbtBYG85wK3awPPHBju7LNpTBXpSbmS0j6xBNKJrm6ZDkhhelIxBSiPODkn0UirZX67
+ iDHm2eDZ2PZADOI7oeI1w/yUh0ZN1LMTSJRUYySunp2K9l5pkfZh/H7DvX10TqvKpAAAA
+X-Change-ID: 20261006-b4-skbuff-bug-on-b2844a487925
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Kaiyuan Zhang <kaiyuanz@google.com>, Mina Almasry <almasrymina@google.com>, 
+ Willem de Bruijn <willemb@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openssh-sha256; t=1791306633; l=3705;
+ i=josef@toxicpanda.com; h=from:subject:message-id;
+ bh=aYGadbtqESaWN4JNrHN0aDg0jSJlyPStQz0QqjpmL6c=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
+ JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QHJHywC4QrO+PoVB+wbiVh5DQJUEYlspEenGrZ+15taqt/9sTCg45iz6/w8NUDX+YA7U+wQc8cB
+ hKrPURPIeCgA=
+X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
+ fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
 
-Le mar. 6 oct. 2026 =C3=A0 18:27, Eric Dumazet <edumazet@kernel.org> a =C3=
-=A9crit :
->
->
->
-> On 10/6/26 13:45, Jan =C4=8Cerm=C3=A1k wrote:
-> > Hi,
-> >
-> > the Home Assistant OS recently shipped kernel update from 6.18.39 to
-> > 6.18.52 which was followed by a bunch of community reports about fatal
-> > network breakages [1] which had one thing in common - r8169 driver and
-> > configured VLANs. This manifested as network stall early in the setup
-> > of the system with dmesg events like this:
-> >
-> >> r8169 0000:03:00.0 enp3s0: NETDEV WATCHDOG: CPU: 7: transmit queue 0 t=
-imed out 6125 ms
-> >> r8169 0000:03:00.0 enp3s0: rtl_rxtx_empty_cond =3D=3D 0 (loop: 42, del=
-ay: 100).
-> >
-> > As there was no change in the r8169 driver itself, I focused on the
-> > vlan subsystem, where AI pointed me shortly to this suspect commit in
-> > the range: 1517d1996b5236fe69eccd9d253f725e06996eb1 ("vlan: fix
-> > skb_under_panic and races when toggling HW VLAN offload"), added in
-> > 6.18.51. I'm not referring to the mainline counterpart below for
-> > regzbot (447cbe95ebb9) as I can't confirm whether it triggers the bug
-> > there as well. FWIW there was another issue [2] with a similar
-> > combination recently in the regressions ML but that one seems
-> > unrelated, as disabling EEE fixed that issue, and it doesn't fix it
-> > here.
-> >
-> > I don't have the hardware myself, I asked for testing with this commit
-> > reverted, which confirmed that this change indeed started to cause
-> > trouble. However, it's obvious that the change itself is not bad, as
-> > it fixes another issue and the regression is scoped to very specific
-> > hardware/setup combo.
-> >
-> > Besides the revert, following workarounds were reported to fix the
-> > issue as well:
-> > - Disabling TX checksum offload with `ethtool.feature-tx off` in
-> > NetworkManager for the connection (HAOS doesn't have ethtool binary,
-> > hence this option instead of direct ethtool command)
-> > - Enabling REORDER_HDR with `ip link set enp1s0.100 type vlan reorder_h=
-dr on`
-> >
-> > Clearly, this needs rather esoteric setup to trigger the bug - I guess
-> > most systems set the REORDER_HDR flag by default, however, due to some
-> > legacy in the DBus interface that HAOS stack uses to configure the
-> > network [3], it was disabled. Anyway, I think that disabling it should
-> > not lead to driver breakage as we're seeing.
-> >
-> > So far it appears that this only affects RTL8168h/8111h, XID 541 -
-> > there isn't any report of another chip/XID combination yet.
-> > Unfortunately, as I said above, I don't have the hardware available
-> > for testing but I believe I'll find some community members who'll be
-> > willing to test a proposed fix for the issue if needed.
-> >
-> > [1] https://github.com/home-assistant/operating-system/issues/5019
-> > [2] https://lore.kernel.org/regressions/353419280.954808.1790290283530@=
-mail.yahoo.com/
-> > [3] https://github.com/home-assistant/supervisor/issues/7248
-> >
-> > #regzbot introduced: 1517d1996b5236fe69eccd9d253f725e06996eb1
-> > #regzbot link: https://github.com/home-assistant/operating-system/issue=
-s/5019
-> >
-> > Cheers,
-> > Jan
->
-> Ok this NIC can not perform tx csum offloads with vlans.
->
-> opts[1] only takes TD1_IPv4_CS and TCPHO (Transport Header Offset).
->
-> There is no IP header offset field in the descriptor. The MAC assumes
-> the IP header starts immediately at byte 14.
->
-> So we need to change vlan_dev_hard_header() to take into account
-> vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)
->
-> Can you test the following patch?
->
-> Thanks!
->
-> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-> index
-> cb8f3cdbf1f732c55a8a3d69ab5445988c953205..3a518ff064465e8ab978c66a28bf7df=
-579931256
-> 100644
-> --- a/net/8021q/vlan_dev.c
-> +++ b/net/8021q/vlan_dev.c
-> @@ -54,7 +54,9 @@ static int vlan_dev_hard_header(struct sk_buff *skb,
-> struct net_device *dev,
->          u16 vlan_tci =3D 0;
->          int rc;
->
-> -       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR)) {
-> +       if (!(READ_ONCE(vlan->flags) & VLAN_FLAG_REORDER_HDR) &&
-> +           !vlan_hw_offload_capable(READ_ONCE(vlan->real_dev->features),
-> +                                    vlan->vlan_proto)) {
->                  unsigned int hlen =3D READ_ONCE(dev->hard_header_len) +
->                                      READ_ONCE(dev->needed_headroom);
+I'm going through and reducing BUG_ON() usage in areas that have created
+the most problems for us.  89 commits in the tree quote "kernel BUG at
+net/core/skbuff.c", 31 of them since 2024, and some of those could be
+triggered from inside a user namespace.
 
-Nope, scratch this. I need to spend more time on a proper fix.
+The first patch is a fix: skb_copy_and_csum_bits() leaves stale bytes
+in a buffer headed for the wire when it hits unreadable frags.  The
+BUG_ON() conversion of the same function needs the same handling, so
+it's here rather than sent separately.
+
+The rest of the series converts 17 of the 19 BUG_ON()s in skbuff.c.
+Each one becomes
+
+	if (WARN_ON_ONCE(cond))
+		<error path>;
+
+where the error path is a failure return the function already has and
+its callers already handle: -EINVAL from pskb_expand_head() and
+skb_segment(), NULL from skb_copy(), 0 from skb_shift(), and so on.
+Each patch says what its error path is and why it's safe.  Anybody who
+wants the old behaviour, syzbot included, gets it with panic_on_warn.
+
+A few don't have an obvious error return:
+
+ - skb_copy_and_csum_bits() zeroes the part of the caller's buffer it
+   couldn't fill instead of leaving stale bytes in it.
+ - skb_copy_and_csum_dev() copies the frame without a checksum.  It
+   also now catches a csum_start before the head and a csum_offset past
+   the end of the frame, which the BUG_ON() missed.
+ - skb_shift()'s second check ran after the shift had been committed.
+   It moves up to just before the commit, where nothing has changed
+   yet, and returns 0 there.
+
+Two BUG_ON()s are left on purpose.  __pskb_pull_tail() and
+skb_pull_rcsum() have callers that can't otherwise fail, so they don't
+check the return.  Some of them would carry on and BUG() somewhere
+else, or push back a pull that never happened.  Those need their
+callers fixed first and will come as separate series.
+skb_over_panic() and skb_under_panic() keep their BUG() as well; that's
+overflow hardening and should stay fatal.
+
+skbuff.o text on x86_64 defconfig grows by 114 bytes.  The fast path
+takes the same branch it does today; the extra bytes are the error
+paths that BUG() used to replace.
+
+Testing: x86_64 defconfig with CONFIG_WERROR boots, and every patch
+builds net/core/skbuff.o on its own with allmodconfig, W=1 and
+CONFIG_DEBUG_NET.  A test module drives 12 of the 17 converted
+BUG_ON()s with a bad argument or a malformed skb, skb_shift() through
+a test-only export.  Each one warns once and returns its documented
+error, and the skbs are left alone.  The same module covers the
+unreadable-frags fix.  test_bpf's skb_segment tests pass.  The other
+five were only reviewed: skb_crc32c() isn't built in defconfig, and
+the four skb_segment() layout checks need a crafted frag_list. Thanks,
+
+Josef
+
+---
+Josef Bacik (9):
+      net: skbuff: don't leave stale bytes in skb_copy_and_csum_bits()
+      net: skbuff: don't BUG() on bad arguments to pskb_expand_head()
+      net: skbuff: don't BUG() on a bad frag_list layout in skb_segment()
+      net: skbuff: don't BUG() when skb_copy_bits() fails in copy helpers
+      net: skbuff: don't BUG() on leftover length in skb_checksum() and friends
+      net: skbuff: don't BUG() on a bad csum_start in skb_copy_and_csum_dev()
+      net: skbuff: don't BUG() on leftover length in skb_copy_and_csum_bits()
+      net: skbuff: don't BUG() on a missing head_frag in skb_zerocopy()
+      net: skbuff: remove the BUG_ON()s from skb_shift()
+
+ net/core/skbuff.c | 98 +++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 77 insertions(+), 21 deletions(-)
+---
+base-commit: 8b4e7209c842d8cb9516f1f5ef0a88aa2d8831a6
+change-id: 20261006-b4-skbuff-bug-on-b2844a487925
+
