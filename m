@@ -1,130 +1,108 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8203C469836
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 13:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE9D455628;
+	Tue,  6 Oct 2026 13:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791293503; cv=none; b=VHZqBFJWY3WONk1EK417ur2sywXXXLq9WVMxLlStGz5TRUdYDwaYcz67ncmRYEaezgBRqVZr/SOAlXBArOKgnp72QLjNawg3tTukG9sejHId/wKsD/bi9UP/GzUthQTEaa5z0Z8pHA1+heAZkyMoATpmaJPAGiQQeyxLAXTlXH8=
+	t=1791293704; cv=none; b=XkmCfQNwJYpU9cMHAou29rwmP8m0HQFZLNSfnoJo872UrxOKyxbGzvAcNZrMhC4wId8ZP6RDvmRUJ5SRIKH44ig3hLwsyp3esmCUYNyfwVy/dU9IWw1LKeuPNwDntXk9O182RCNoo2DR2DARFXb+7DvtWOoLMi3q4c3KyUoL9ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791293503; c=relaxed/simple;
-	bh=hNd6bIyFAvlFxc6hjuFcDqVwVqg86Zvx1YHzqvt4tLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltzIquFX8RIBfxwEgU5stk6Minf57xDQpnrKHRNi91HL8ArIt3qOMf1VqUhSvVXr8xCMrOvjGc6WU9P3NMZR0Oc2Vq5svEylMKsghL1gNnUy4BYZBxoB7daQJ60qS9hS+2ZjDLlqdMivYc55Zfr1cUXhEvltXnkhosJ6s4lvLzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Zla1IiDq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791293704; c=relaxed/simple;
+	bh=MXjHLJMZdTweVhX18r17oAYLlBuq3FbHiuiq03q3ZVk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=fG7pv/AGuUyDVvscLUPHOLCmlwSzIFy6hZKIgXFGD7hpdOuwtlB1gxg+VPLdjFS0SmCzGUj7u9N3z/GxDOcVKrW+cYIjrYjTfcJ7vFlqShB0LRzBqFhM7rEGjldBumlQ5CYqNHpW1A6Lmb2zApI5R4GbX0DR3TOrWxBqwYqhuHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcaxHcLW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zla1IiDq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791293500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HHCKmh+GTex17viqHU7+p3b1kZPrhM46bDIsKbGkEho=;
-	b=Zla1IiDqdAew6rGtKgHcqHCc9lq7pjs0OiaTEDB3wgvDsQgFVuygChmSnlsMt6+Kml8IEd
-	Eq6FGhoUbdIUaRgxLoPGD84Haq/gA++SII44wMAuO8csqtdr9SB/q6NMt5j9QcNC6vzSnf
-	wKN+PUHuBS/8eH5pwHE5oK2/N0HOKdo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-OTKM4QN8Oh-vZU-WiirFxQ-1; Tue,
- 06 Oct 2026 09:31:37 -0400
-X-MC-Unique: OTKM4QN8Oh-vZU-WiirFxQ-1
-X-Mimecast-MFC-AGG-ID: OTKM4QN8Oh-vZU-WiirFxQ_1791293495
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 23CFD193E884;
-	Tue,  6 Oct 2026 13:31:35 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.90])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 77A273001D2A;
-	Tue,  6 Oct 2026 13:31:31 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Seungwon Bae <qotmddnjs@ajou.ac.kr>,
-	stable@vger.kernel.org
-Subject: [PATCH net v12 15/15] rxrpc: fix use-after-free in rxrpc_poke_conn()
-Date: Tue,  6 Oct 2026 14:30:07 +0100
-Message-ID: <20261006133011.531806-16-dhowells@redhat.com>
-In-Reply-To: <20261006133011.531806-1-dhowells@redhat.com>
-References: <20261006133011.531806-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcaxHcLW"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 954D9C4AF63;
+	Tue,  6 Oct 2026 13:35:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1791293704;
+	bh=MXjHLJMZdTweVhX18r17oAYLlBuq3FbHiuiq03q3ZVk=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=kcaxHcLWW/AUAAMW6Ok/D4L1rQBhXGu1GGB9iRtf6/B9iCyIi1OQVbvJrwm0gw+Ax
+	 jhm4geBuaXl+Rev4oMtXxe3QxBcxBNxQzmRwmX4VJDz1WatHBB8crSu1P+0WvCujDH
+	 sUbfwA/+P9C4BMRsI/aG/S5CDYxdlXx3kMgv14KDVkJ2Bp+OXOpyK0Tm2Ng9WpaHBz
+	 KwlM55FgCsGW8BsZNDex/4yLoTuZE9odHOSOPSgOZMIaGc8oiW/0ZxjlzBxwfOv6a9
+	 AOEQk5nbMBXxLEJeTqpBcaZl9taj694dNO/7lLQjrsGh3X/J7o0AAluUpWQjMCy44r
+	 kEpt4KdaE1QgA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75836CA6002;
+	Tue,  6 Oct 2026 13:35:04 +0000 (UTC)
+From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
+Date: Tue, 06 Oct 2026 15:34:52 +0200
+Subject: [PATCH net 3/3] ptp: qoriq: fix support for PTP_EXTTS_REQUEST2
+ ioctl
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-3-b4a161b92832@free.fr>
+References: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
+In-Reply-To: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
+To: Yangbo Lu <yangbo.lu@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Jacob Keller <jacob.e.keller@intel.com>, 
+ Kory Maincent <kory.maincent@bootlin.com>, 
+ Claudiu Manoil <claudiu.manoil@nxp.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, 
+ Clark Wang <xiaoning.wang@nxp.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+ Vincent Jardin <vjardin@free.fr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791293703; l=1341;
+ i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
+ bh=bI02Z3k7XT254gwi64zNOv+zUT6wunV7tGvU62lzDZo=;
+ b=z/FaeWp4UPCP8KJOLLZEahYoJuYfBopSJnSUbYl8Q479lSWpuToWVzswUuSd3zxahwBvO8kMN
+ xuhPw3+AoFKCltg4/nvgeCGCtiZAXa2l4b+g/sRf/h+BmQmLIAEyr4m
+X-Developer-Key: i=vjardin@free.fr; a=ed25519;
+ pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
+X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
+ auth_id=871
+X-Original-From: Vincent Jardin <vjardin@free.fr>
+Reply-To: vjardin@free.fr
 
-From: Seungwon Bae <qotmddnjs@ajou.ac.kr>
+From: Vincent Jardin <vjardin@free.fr>
 
-rxrpc_poke_conn() takes a reference on the connection with no liveness
-check, unlike its sibling rxrpc_queue_conn() which gates on
-atomic_read(&conn->active) >= 0.  The per-connection timer is armed with
-no reference held for it, and rxrpc_put_connection() cancels it with a
-non-synchronous timer_delete() only after the refcount reaches 0.
-refcount_t saturates rather than resurrecting, so the connection can be
-kfree()d while still linked in local->conn_attend_q (nothing in teardown
-unlinks attend_link).  The rxrpc I/O thread then performs a UAF write
-(list_del_init) plus UAF reads and indirect calls through conn->security.
+Commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to
+ptp_clock_info") moved the validation of the external timestamp request
+flags into the PTP core. A driver that does not set
+.supported_extts_flags still accepts the legacy PTP_EXTTS_REQUEST ioctl,
+but every PTP_EXTTS_REQUEST2 request is rejected with -EOPNOTSUPP, since
+the core always adds PTP_STRICT_FLAGS to it
 
-Reproduced on a KASAN + PREEMPT kernel: 56 "refcount_t: addition on 0"
-saturations at load, escalating to
+ptp_qoriq_init() programs TMR_CTRL with ETEP1 and ETEP2 cleared, so the
+timer timestamps the rising edge of its external trigger inputs. Declare
+that, with PTP_STRICT_FLAGS, so that a falling edge request is rejected
+instead of being timestamped on the rising edge.
 
-  BUG: KASAN: slab-use-after-free in rxrpc_io_thread   Write of size 8
-
-AF_RXRPC socket creation (rxrpc_create) has no capability check, so this
-is reachable by an unprivileged user.
-
-Guard rxrpc_poke_conn() with the same liveness/refcount check the sibling
-rxrpc_queue_conn() uses before taking the poke reference, so a connection
-past its last-active point is not poked/requeued after teardown began.
-
-Verified before/after on KASAN+PREEMPT at equal timer volume: 56
-saturations + 15 KASAN reports unpatched vs 0 and 0 patched.
-
-Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
-Signed-off-by: Seungwon Bae <qotmddnjs@ajou.ac.kr>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@vger.kernel.org
+Fixes: 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to ptp_clock_info")
+Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
- net/rxrpc/conn_object.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ptp/ptp_qoriq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 0ece717db0f8..1be50e0c9cee 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -34,7 +34,10 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, enum rxrpc_conn_trace why)
- 	spin_lock_irq(&local->lock);
- 	busy = !list_empty(&conn->attend_link);
- 	if (!busy) {
--		rxrpc_get_connection(conn, why);
-+		if (!rxrpc_get_connection_maybe(conn, why)) {
-+			spin_unlock_irq(&local->lock);
-+			return;
-+		}
- 		list_add_tail(&conn->attend_link, &local->conn_attend_q);
- 	}
- 	spin_unlock_irq(&local->lock);
+diff --git a/drivers/ptp/ptp_qoriq.c b/drivers/ptp/ptp_qoriq.c
+index 76272e5ac5b8..bcd29104effe 100644
+--- a/drivers/ptp/ptp_qoriq.c
++++ b/drivers/ptp/ptp_qoriq.c
+@@ -355,6 +355,7 @@ static const struct ptp_clock_info ptp_qoriq_caps = {
+ 	.n_per_out	= 0,
+ 	.n_pins		= 0,
+ 	.pps		= 1,
++	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
+ 	.adjfine	= ptp_qoriq_adjfine,
+ 	.adjtime	= ptp_qoriq_adjtime,
+ 	.gettime64	= ptp_qoriq_gettime,
+
+-- 
+2.43.0
+
 
