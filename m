@@ -1,285 +1,175 @@
-Received: from mail-pz2-f2.google.com (mail-pz2-f2.google.com [74.125.228.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010021.outbound.protection.outlook.com [52.101.46.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF18F3EC808
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 15:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.2
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791301969; cv=none; b=mKkWb6v2DpJx2dvBREXuum8vFLHjutDq2/jXcLKT+gq0hFsMPVc22nzQwQo2RP43B7xtlByvKUAoXCW8oe2tMsrlfBTFVfTleTJ6wf9kW4H9NP/P9zO0w8zkeDecmfen0kD1YL+n9pnVnIWHPjzvallgUvS1tGIVPHjuaAm13IE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791301969; c=relaxed/simple;
-	bh=aXEIj4YhxFHWSlbikZxZ69RwpFEU6HVG6IcQVjVkR1M=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=o0d9gy8Qu+Ovoika170GA1/h+oMroWWw4/hcF1i4/D7gco1IzWT1v64fOouLA8lQS2W6XtsMpmBj5URhtzyfK0Sb67ntJTPOaFHB7I6fXgiRrKQrQsxEH81LCeCSShHEEWKUwRBC1vwbL4ihzC5u9kW6EbnBnXg2zUV3KGHq++Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eo+j0UGs; arc=none smtp.client-ip=74.125.228.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F7445C71C
+	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 15:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791302196; cv=fail; b=jaDWjHBvbep/sXF62y6oIDcJaKMigesZ93KqaHWY6VMXUMrwm7oalV/SA0QWurU530QqtAEtOl2bVgRbuejBvsFsm86ASimvdugb5p581jf5v0l3jVNjmVb7EJCfAvNhvkC+4rtfJPpXR5tsveZc9PCHNmzYYWxQMZfbhq/FNaU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791302196; c=relaxed/simple;
+	bh=7c5LBemzTn8nUJWEvcTzFnJd3FZor7N8pXeKEw9J5m0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=otI5qQMY9ljcjrPLD+mhpI9XYKjM3EXZWEKvNWBCXuP/DyvHyQJse+AuCLg+IRxxtBlBsbARWrWW7S0JMtzU32aiBIuJzLAIcZ9gXNWsoEai8l110B1NoA5M/TEKJ8KkQBMc58yXffWxgzvDI8a7no5Bny+9C5RTNGCPCxoy3vo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ujglyjgw; arc=fail smtp.client-ip=52.101.46.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eo+j0UGs"
-Received: by mail-pz2-f2.google.com with SMTP id 41be03b00d2f7-ccc451ef3a7so324586a12.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 08:52:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791301967; x=1791906767; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=iCfMB+9jyOng6UjHASMF1if+uXMBv5ni2DoESrOf5F0=;
-        b=eo+j0UGssVt7bm929+QbdBOAqVo6ZOf1hfVhrn9FrI5m1Zb33XY8+cHw8BUkt6YJ50
-         UydZ0F5/ctyGvq2n7CbOUyjYVyEb07+w74+5blCa2s2zBS4nZc/LKbN/se6922eZc1Ng
-         ejHdSbQz6Uk2UU1gcPD8M0YIiLnw0lIliIhQFrXXM/fO4OGdAo4tGv1Uf9hoIcMc6Fs5
-         ObKzXYOmblOBdba8ZbEcHzn8oe8GIzt2NaCc4y7L8PPv8kZ6+gDF4MFALN6wUyw8Bfqj
-         1kPqKb8Q9jp8UD1+OM1M7ktGdPM0GdiOhA+8fjeP6H/wSgQcWoNjJ/7ST23TwvRHQ75C
-         oz4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791301967; x=1791906767;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iCfMB+9jyOng6UjHASMF1if+uXMBv5ni2DoESrOf5F0=;
-        b=aQDr8gA7lHi67KMy17b2TQQEiPVAv4sUrUzCzFOFCtShuA8bGfQHOs4km3pUuBYYHc
-         ue2qTXLB8pMu2AjCTuyddW2Ua2R6Nd8cfuT2DBSzyOXeXaydiC8WkiRBvSM5vGEdmbES
-         mGTAMbyofR4xlSCgT25h/DuWQIbprtU0uAEIi9bHLyGAwAL7NL+JVfZH5zqR2LFwNqXa
-         9p+UZF6q3Gp3W9qLdN477BpN0gv/MuSunAvqzemIaiKGDDwO2/7ka9YT4lx+dPY8uzr/
-         BN+705yKa7mYTOkyJIl4J3JHK0pC3aceiqQx2wLpr/5xfKZoeEhsJs5JePwZRhUWnbYc
-         G5YQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzzokoBrId8MzJcSE5MDw4aj6D9VdVEdPDbXDd2U4xKSupL0qOFK6YBEaQ02vwWzy5RpJd4C4I=@vger.kernel.org
-X-Gm-Message-State: AFuF++lhb1tp4Xre2OCOHTkw7VN5mKoWuRar4bjrXYNLgo+Ai4MnCXJb
-	E8ijfkG8tU6wWqeCnqk0eDrMmfEYzFi+Arv9b/rShhWbLU1o7RB67/kf
-X-Gm-Gg: AYBFou1W2dmPya5+mn4e3Yj9zLpCkQ6CAbrfjUsqBY6jmAsc3JM0/OJgTbIUf5Cahpi
-	Co42YJX6SfOE7Gnwc3JPeO/DCnNovnRVj81tUmCjwBmZdgseviNW+nvltIeWL0NLqcPy0q8w5Tr
-	cJANIvER6PwnNidcUACo86UBPJjHxG0uWiawAbSYgj4nzUplef+jAefPN54mldnsquNeSBQYGsp
-	V4EOwkk3jIoOSel8gLDWFq/sSIO99eZHVi1Q/QPrUEiOP48XZoy5fCtAT9ZqMZIq+9ojgtZmj8M
-	WSTYmNwoN2xIJ5OKNB9HMWUjs4Dw8u6R3+WmBialGiuQoKm2pvAupR6tUQPeQxa8LcjBKNQUdEk
-	fjQEumFBG+bYffkxnG6VmjEQwkGbYvBEQZBtIDJanWylT5Sxi+U0Sg3u5YuFk0qu8VisNsxcKYq
-	H+tyNY22nxev4JFuh+hbljRue6rPTp0m0QE95vzleVCdPNweCSOQd2Dftj8M7YcIerlGc4pitAT
-	l64SU+h
-X-Received: by 2002:a05:6a00:22ca:b0:890:e1ff:3bac with SMTP id d2e1a72fcca58-890e1ff47c8mr1583488b3a.8.1791301967068;
-        Tue, 06 Oct 2026 08:52:47 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-891894f6c0asm184007b3a.33.2026.10.06.08.52.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Oct 2026 08:52:46 -0700 (PDT)
-Date: Tue, 06 Oct 2026 23:52:22 +0800
-From: Coia Prant <coiaprant@gmail.com>
-To: Rob Herring <robh@kernel.org>
-CC: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
- David Wu <david.wu@rock-chips.com>, netdev@vger.kernel.org,
- linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v10_1/6=5D_dt-bindings=3A_?=
- =?US-ASCII?Q?net=3A_pcs=3A_add_rockchip=2Crk3568-xpcs_support?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20261006150831.GC2194299-robh@kernel.org>
-References: <20261005223011.1124347-1-coiaprant@gmail.com> <20261005223011.1124347-2-coiaprant@gmail.com> <20261006132428.GA1659963-robh@kernel.org> <96FA84EA-3C0E-4FAC-963F-2A8165538748@gmail.com> <20261006150831.GC2194299-robh@kernel.org>
-Message-ID: <46337722-9C86-4118-8286-A506B455B23D@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ujglyjgw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=y/S5TZAoc2d55yYs9I2cplWgx4kax9Z6SOkodIWKMXL79aUfWL+bExMyIxW4vShulMjh5tXG4sBl1+MXe/4sGnFTuMOc0HU7t0xCoVELjOFCRjflohG5xf3CiNDmz9+p5+O6nX6g7823m1UPWpYHIzTJKF0VG9lmm/0P5P5Z1f6/EP+E+bCZwdQ+G/mnUz4vtWhtvgPJkfJOWb+p1IAlP2t6JzJId1C/Az7wb7nAGjoaglPcI/GDYa8hjCcaUp20UsdUhbFe8vnK1flZkBAm3WCrpMfJdHlYDe2NS3zcz4MCVJH9Gbw3+L804VRoK6vUHsBZHyL60v2UJT6t6I3vMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ApwcsWdcucWS0ZNwafNTstZE1vtVVMQOtyHrszxcmpI=;
+ b=aG73eUsLnH/klOjLli88cY4P1R+GCdEbR0OcrT5q2UNof/ss/sxf/ADAF8eKkqGezFnOM8276Gd1s3vH/gSZSHbM4l14gDBoFzyeE9whTAzADzWO+jC7VTmh3LNIipOWwq/aS+AH9DHhcx5nTkRqs5wAFnhj9RL1gideQ5AT2VxNDU1vj5UHQwQ/0ADDkCDpaIIfUB10imFgD55oYGS9wg0wKkxoJvqhtYggZbBEfZF6oUh4P1DjQ4h2QXYoYxDS4wX2Li45cycTAhgseNghWaXVSlgY9SzjVjNhx20ydUrVDQm/XE8hWdTGOsV40NQh+xpOrppnPNpUKtTeEj/YeQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ApwcsWdcucWS0ZNwafNTstZE1vtVVMQOtyHrszxcmpI=;
+ b=ujglyjgwhjdJFtQPwaGHNtpgwf1r+ln3WGeIM94JjnPEtpuL3bVFEoOgG01X0H7QH7wDBP8IvIMMrX/SRMf5d/Eo+3qrgam/fv92kpexg2X76OSiScJMqje9D4vN1zQKcTevE4GH/iHYrk/wtnPsL/8sZ6u7hBIi2qsg6CTm8tw9ElJt6iPoj7nDkfOFbwSOUvtY+OxPilz8mS+cXc4TUDEaX6roh6BEStu4+xvOsjlOH5GGrA/V0CZjb+qPfYxUhhZkBj1nD6pNXGfBMNx5bf3OpiK9dQB7GV1uxsp5JSKAADvYFyLtUNEptbyPpgzp1U2ju6pE7YJOBuK9tgU6Ug==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by MN0PR12MB5930.namprd12.prod.outlook.com (2603:10b6:208:37d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Tue, 6 Oct
+ 2026 15:56:30 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Tue, 6 Oct 2026
+ 15:56:30 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	dsahern@kernel.org,
+	horms@kernel.org,
+	petrm@nvidia.com,
+	rostedt@goodmis.org,
+	daniel@iogearbox.net,
+	ferenc@fejes.dev,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net-next 0/3] Report netns cookie in FIB lookup tracepoints
+Date: Tue,  6 Oct 2026 18:54:51 +0300
+Message-ID: <20261006155454.853588-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR2P281CA0120.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9d::13) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MN0PR12MB5930:EE_
+X-MS-Office365-Filtering-Correlation-Id: e3ad62eb-df53-4bfe-a181-08df23c262cb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|10067099003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	LD16dtXk+Jdy1wHSpolY9MihC2Vt8jTXZ0Pk4+J0zQ2Ht0/IUN3zckHHc8bpzr40eiqPFC9A404AlTlzJ8iuZAhObW2ToCW/3GXAoqFlG4PiiWaD1/8ZrdorKbKX1lW6ASkya37YIrLE4fbH4JJeeO7HIBjZK2ZHcH5Z+qtYUVcp+j3utx+SCzN6wyfGIjnJ2+1vy5HJ2pRtIOfTq54Nsg4STz0/cPiGKyNtGfK3uEaOimQEdR+pG8CwgZyQL8YC4X54vV17zZEZkTcFHriDR1On5Mou1duIsryWnDRC6jXSgVzhD8cu+crJLXpmVKwZpY2f/65pmOkZM72iGNusxQqVsZDJQ493uzDzL8PMAoAxkOewqNhbMIbHEkXtHD5SNh1eZavm7d7jKCsmLpaTJsyMDGADznXHwSWtzmBsk1cZ+6qtXO4NfSqlbiNbNG2kkzoTPB1+Y6upftjyHvFQtMOO7YpOt2QRC0tA9cKyoCvPahr96j1Wdsz5Fk+1BUcgQJZF240gXuLG11GERy5ZaqcueaDCDSAOnN2/uQAuaChjZwUcm0YrXrjNJBh1KUqNsb8MWfJDM1R29WE/dwqKQW6Mh94Uu9nWvhcWmJLRRIm3Fz2AhNVs2H2ONBaOCXel974me1a7bFckQnmQrvmIQs4Q/akN2VHIAHD1qBziQGE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WTGJJVFLTARwTiANhFYHc5Jd47fTXHIu5QYdBYh2K13mFMVG6yqFprouM2f0?=
+ =?us-ascii?Q?rT5WSpcjMzj2OMolbNVk5rCTgLR77SeE0H3aBELDYCDQh74Z/YYn6TBXikuB?=
+ =?us-ascii?Q?jIr4RnESoSKhg+vioPhNO+LEwEsXvnWUL7GGuiDhaNcZaUA+s4WJHIyWk2wF?=
+ =?us-ascii?Q?XrhTvxua70kpWO3WRGUM3rpWx4GcQdBv+P89Njki0XflhNcAcwWvX9X100PJ?=
+ =?us-ascii?Q?zLTMQk7zfbBOlY22r5wIfLhjujLiZsZbYbTwmAylIJWJscQuyUNyKPxk2tOs?=
+ =?us-ascii?Q?HLWqykbC7aQPKsvMyaR7AJNwluMHuUDnNI/fZ6PliGpUaVlQ0LdfvZmPq/8p?=
+ =?us-ascii?Q?u6L2+Se3JIb0zGZ2jDzrlBvjGXZmDesfwha3hXFM/aoEyz8nY5YUFBaDmuh2?=
+ =?us-ascii?Q?gCEb/Q7uUbZs/JYGMszYoMtiYWym2eFRF+HR9EZETvKFwTS8namfpwzhFU4S?=
+ =?us-ascii?Q?6e5Z/lvBnPum1StRWyASYUa29gb4lC0GTpsR9Y89lFPKLRkLhVMEK09zPdEU?=
+ =?us-ascii?Q?Z4+f9iSRFTGVDPU8UyPLpkvfgBiVGIQ+jjpWcfjSW/KATzy4kT/qyHIUFzGK?=
+ =?us-ascii?Q?cBNR+o3+5Uf9umfbAwIK6IdAO/R72fY/hxaGOzqi03eLMK2MeWeb9fOUzCOG?=
+ =?us-ascii?Q?21GP7VuIiD8LZkk8d6decH2W8HV0GPNYynLjnGtpy7VDxfxznqEDVtWfVdDo?=
+ =?us-ascii?Q?dEo1Ls2PrHVQ8Gw75kJp6GSbitZ94RrkPfXtFjqG5l21cY/sGdqJeJERREEt?=
+ =?us-ascii?Q?0b3htSh31tnQzowrS0DkRKWysZ85xIGB29IX2tZLbBKGCNDIwpPnQPU1chbh?=
+ =?us-ascii?Q?HpvEU3UTBKIwOkpZNEVVYpG5syCGD5FbhdywK8Zn7/5X/x4/jr6bqGY0abPw?=
+ =?us-ascii?Q?eBquGFUyslwLJKMGRwA3XrLRb/Qjh3htrjr4cgKy6xPjphWfQqPO4tnrdRdA?=
+ =?us-ascii?Q?6s0Sf9oKGJPnSHQ+XrvyVzt1xdfI5m5HvbOG90klhf6NDe0dSf6nj2gFmUJi?=
+ =?us-ascii?Q?IP8I5GkB43uPNsnNPqcJwVR7s/uAUa/OK0T09OlAUBQPuqt1AWZfnOsKaXm/?=
+ =?us-ascii?Q?Rf1ttHCceytoYKfa6NXky5rMNnCGqoFbtPNOTy9DHKR0lNf7u0q0cWhCTs9i?=
+ =?us-ascii?Q?NU9avjy3NERFqnnkNxhROmnpFHr042v9hNQ1iw3wuFONcIFy3RhUgZ0WWOO3?=
+ =?us-ascii?Q?SxVONg0vmxT3fgucIwBO6O+kTw+NvdKHfMYiBE7E0FYruM5R/X9EvJxXhkXA?=
+ =?us-ascii?Q?YhZQI/zzxHDJEghSeg7l6tH64fDpO0FqR2aTtdQTC1qvBUFduC1w9UFlGgmU?=
+ =?us-ascii?Q?g4xLUOJK7pJcfOt3/DtTZh4bSRVQB9Jwep33tcyIsM5JT3JdUoluKn19PEAX?=
+ =?us-ascii?Q?C/SIC8DJSLxp3XO9u55dKsd0tF9X742GBqCnWeJJ3FXa3CGyh2E/v25JtR1U?=
+ =?us-ascii?Q?X3kcfAesqRWBTYYaTB5uVlxgUVvdeKqvuGpEdwhf2+G3R3Man/luKKgEPC8a?=
+ =?us-ascii?Q?klgc13Go2RyB4EPr2hryh7rOFvanqJpCbG13wSSK3OAV+sikN/FgF+hKMGu0?=
+ =?us-ascii?Q?zZaREhxZJzBKVYExfckLfZpJoWGARSZxROqQrHnhlb0Fi2yPJFVRcWrMrNvk?=
+ =?us-ascii?Q?KmeNMFN5FpAKMn+5bPKjMaG02WzGHQdPt3T9FshA4oLaf9ytYumaAlUp9Tqk?=
+ =?us-ascii?Q?urW7Ck1WnTXyaGA0r3YjdzTlVCz0f12HPfjujbWOMvSNC8mR?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3ad62eb-df53-4bfe-a181-08df23c262cb
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Oct 2026 15:56:30.0620
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RMgzCecUn0qJGhvvWLzkJt67m5klgVxJkLlxzg9nIRLQMbbNG2Fo7fCEuGORJTp3xYfzDsCLZkGbu7WRTw98Dg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5930
 
-On October 6, 2026 11:08:31 PM GMT+08:00, Rob Herring <robh@kernel=2Eorg> w=
-rote:
->On Tue, Oct 06, 2026 at 09:59:49PM +0800, Coia Prant wrote:
->> On October 6, 2026 9:24:28 PM GMT+08:00, Rob Herring <robh@kernel=2Eorg=
-> wrote:
->> >On Tue, Oct 06, 2026 at 06:30:03AM +0800, Coia Prant wrote:
->> >> Add device tree binding documentation for the Synopsys DesignWare
->> >> XPCS integrated on the Rockchip RK3568 SoC=2E
->> >>=20
->> >> The XPCS is accessed over the APB3 bus and internally connected to
->> >> a Naneng Combo SerDes PHY=2E  It supports 1000BASE-X, SGMII, and
->> >> QSGMII modes, with four MII ports=2E
->> >>=20
->> >> The four MII ports are described as ethernet-pcs-mii@N child nodes,
->> >> consumed by the Rockchip XPCS glue driver later in this series=2E
->> >>=20
->> >> phys and phy-names are required because dtbs_check only validates
->> >> required properties for enabled nodes=2E The SerDes link is a board-=
-level
->> >> design choice (combphy1 on some boards, combphy2 on others), so thes=
-e
->> >> properties must be provided by the board device tree, not the SoC dt=
-si=2E
->> >>=20
->> >> The CRU reset lines (SRST_XPCS*) are intentionally not described: no
->> >> in-tree user requests them, and bring-up relies on the PD_PIPE power
->> >> domain, the SerDes PHY and the in-IP soft reset=2E They can be added
->> >> later as optional without breaking ABI=2E
->> >>=20
->> >> Signed-off-by: Coia Prant <coiaprant@gmail=2Ecom>
->> >> ---
->> >>  =2E=2E=2E/net/pcs/rockchip,rk3568-xpcs=2Eyaml         | 110 +++++++=
-+++++++++++
->> >>  1 file changed, 110 insertions(+)
->> >>  create mode 100644 Documentation/devicetree/bindings/net/pcs/rockch=
-ip,rk3568-xpcs=2Eyaml
->> >>=20
->> >> diff --git a/Documentation/devicetree/bindings/net/pcs/rockchip,rk35=
-68-xpcs=2Eyaml b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-=
-xpcs=2Eyaml
->> >> new file mode 100644
->> >> index 0000000000000=2E=2E703fcff0e3f70
->> >> --- /dev/null
->> >> +++ b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs=
-=2Eyaml
->> >> @@ -0,0 +1,110 @@
->> >> +# SPDX-License-Identifier: (GPL-2=2E0-only OR BSD-2-Clause)
->> >> +%YAML 1=2E2
->> >> +---
->> >> +$id: http://devicetree=2Eorg/schemas/net/pcs/rockchip,rk3568-xpcs=
-=2Eyaml#
->> >> +$schema: http://devicetree=2Eorg/meta-schemas/core=2Eyaml#
->> >> +
->> >> +title: Rockchip RK3568 Synopsys DesignWare Ethernet PCS
->> >> +
->> >> +maintainers:
->> >> +  - Coia Prant <coiaprant@gmail=2Ecom>
->> >> +
->> >> +description: |
->> >> +  Rockchip RK3568 SoC integrates a Synopsys DesignWare Ethernet Phy=
-sical
->> >> +  Coding Sublayer (XPCS)=2E
->> >> +  The PCS provides an interface between the Media Access Control (M=
-AC)
->> >> +  and the Physical Medium Attachment (PMA) sublayer through a Media
->> >> +  Independent Interface (GMII)=2E
->> >> +
->> >> +  The XPCS is accessed over the APB3 bus and internally connected t=
-o a
->> >> +  Naneng Combo SerDes PHY=2E
->> >> +  It supports 1000BASE-X, SGMII and QSGMII modes=2E
->> >> +
->> >> +  The block contains four MII ports that can be individually enable=
-d and
->> >> +  routed to one of the Ethernet GMAC controllers via the pcs-handle
->> >> +  property in the MAC device tree node=2E
->> >> +
->> >> +properties:
->> >> +  compatible:
->> >> +    const: rockchip,rk3568-xpcs
->> >> +
->> >> +  reg:
->> >> +    maxItems: 1
->> >> +
->> >> +  "#address-cells":
->> >> +    const: 1
->> >> +
->> >> +  "#size-cells":
->> >> +    const: 0
->> >> +
->> >> +  clocks:
->> >> +    items:
->> >> +      - description: APB3 bus interface clock (clk_csr_i), required=
- for register access
->> >> +      - description: EEE clock (clk_eee_i), required for Energy Eff=
-icient Ethernet operation
->> >> +
->> >> +  clock-names:
->> >> +    items:
->> >> +      - const: csr
->> >> +      - const: eee
->> >> +
->> >> +  phys:
->> >> +    maxItems: 1
->> >> +
->> >> +  phy-names:
->> >> +    const: serdes
->> >
->> >You don't really need phy-names if there is only 1 entry=2E
->> >
->> >> +
->> >> +  power-domains:
->> >> +    maxItems: 1
->> >> +
->> >> +patternProperties:
->> >> +  "^ethernet-pcs-mii@[0-3]$":
->> >> +    type: object
->> >> +    description:
->> >> +      One of the four MII ports of the XPCS=2E The port is linked t=
-o an
->> >> +      Ethernet MAC controller via the pcs-handle property in the MA=
-C's
->> >> +      device tree node=2E
->> >> +
->> >> +    properties:
->> >> +      reg:
->> >> +        description: MII port number=2E
->> >> +        enum: [0, 1, 2, 3]
->> >> +
->> >> +    required:
->> >> +      - reg
->> >
->> >Why the child nodes? They don't contain anything=2E
->> >
->> >Perhaps that's due to pcs-handle not supporting arg cells to pass the=
-=20
->> >port number? That's about to change[1]=2E
->> >
->> >Rob
->> >
->> >[1] https://github=2Ecom/devicetree-org/dt-schema/pull/198
->>=20
->> Hi Rob,
->>=20
->> Both points make sense=2E
->>=20
->> 1=2E I'll drop phy-names since there's only a single entry=2E
->>=20
->> 2=2E For the ethernet-pcs-mii child nodes: you're right that they only
->>    contain 'reg'=2E The reason I used child nodes is because pcs-handle
->>    arg cells are not available yet -- PR #198 is still open and in
->>    RFC/change-request state=2E
->>=20
->>    The RZN1 MII converter binding does the same thing: it declares
->>    MII ports as subnodes and references the PCS via pcs-handle, until
->>    arg cells land=2E
->>=20
->>    So I'd like to keep the child nodes as a temporary workaround, and
->>    I'll add a note in the binding that this can be simplified once
->>    PR #198 is merged=2E
->
->Bindings are an ABI=2E You can't merge the binding then change it=2E Plea=
-se=20
->comment on the PR that you all need it=2E
->
->Rob
+The fib:fib_table_lookup and fib6:fib6_table_lookup tracepoints do not
+report the network namespace in which the lookup was performed, so
+lookups performed in different namespaces cannot be told apart. The
+recorded PID does not help either, as lookups in the receive path are
+performed in softIRQ context.
 
-Hi Rob,
+This is a problem, for example, for netns-aware tracers [1] and
+multi-ASIC systems where each ASIC and its ports reside in a separate
+network namespace.
 
-Understood on the ABI point, and I don't want to merge a binding we'd
-have to change later=2E
+This patchset reports the network namespace cookie in both tracepoints,
+as commit 27cb3de7f43a ("net: add net cookie for net device trace
+events") did for the net device tracepoints. This allows filtering
+lookups performed in a specific network namespace, for example:
 
-Could I ask for your guidance on the practical path? This series is
-ready, and I'd like to get it into 7=2E4 if possible, since OpenWrt and
-other distros base their support on LTS kernels=2E Missing this window
-means a long wait for users=2E
+ # perf record -a -e fib:fib_table_lookup --filter 'net_cookie == 12'
 
-Given PR #198 is still open, I see these options:
+The cookie of a given network namespace can be retrieved using "ip netns
+cookie" [2].
 
-1=2E Wait for PR #198, then use pcs-handle =3D <&xpcs 0>=2E My concern is =
-that
-   I have no visibility into its timeline -- it could be weeks or much
-   longer -- and holding the whole binding on that is hard to plan
-   around=2E
+Patch #1 reports the cookie in the IPv6 tracepoint, which is already
+passed the network namespace.
 
-2=2E Keep the child nodes as the final ABI, RZ/N1 style, no planned
-   migration=2E
+Patch #2 passes the network namespace to fib_table_lookup() and from
+there to the IPv4 tracepoint.
 
-3=2E Something else you'd prefer=2E
+Patch #3 reports the cookie in the IPv4 tracepoint.
 
-Which would you recommend? If waiting is the right call, I'll do that,
-but I'd like to understand roughly how long PR #198 is expected to take=2E
+[1] https://lore.kernel.org/netdev/c28ded3224734ca62187ed9a41f7ab39ceecb610.camel@fejes.dev/
+[2] https://lore.kernel.org/netdev/20260923161756.2914560-1-idosch@nvidia.com/
 
-Thanks,
-Coia
+Ido Schimmel (3):
+  ipv6: Report netns cookie in fib6_table_lookup tracepoint
+  ipv4: Pass netns to fib_table_lookup()
+  ipv4: Report netns cookie in fib_table_lookup tracepoint
+
+ include/net/ip_fib.h        | 12 +++++++-----
+ include/trace/events/fib.h  | 12 ++++++++----
+ include/trace/events/fib6.h |  8 ++++++--
+ net/core/filter.c           |  2 +-
+ net/ipv4/devinet.c          |  3 ++-
+ net/ipv4/fib_frontend.c     |  6 ++++--
+ net/ipv4/fib_rules.c        |  2 +-
+ net/ipv4/fib_semantics.c    |  2 +-
+ net/ipv4/fib_trie.c         | 16 +++++++++-------
+ 9 files changed, 39 insertions(+), 24 deletions(-)
+
+-- 
+2.55.0
+
