@@ -1,78 +1,57 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0CB23393E
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 00:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506C5547062;
+	Tue,  6 Oct 2026 00:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791245432; cv=none; b=gkvSyQwjZGoV31pK1mzYsSd0+S16oJcDFtJWzy4l7HeIxh2EX9P2b/AjbkilwEtRDkqhNHBKTkC1oojEGvBgXjgNeIAZ3msS59/yflYfYCtv+R2fcK5Irg5STRxdT9yMpOUpecIcnitTWPmFmNF/LWpEOvtCM8V8laj1rIwdM84=
+	t=1791245550; cv=none; b=jxNlJX3OnGyogFoz1ia8IquwnW9MOQFdmit90XbeI3V+hHReiI161qtLJ1IHsjrw0wOz/rSEE4Ci8Dvn5XJUt7cIgD1ADGpIyr3nSJ89EyW3EAxLc5SXsBwZxvjM0i7ZE8ugp9jGqFkdOnhd4Zf6OCuTUdxag4VL4Fyzfu/9sRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791245432; c=relaxed/simple;
-	bh=p09gLgusBJbnyjx9MOZxQpfDc7xMSlDOWYILZyhOLO8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qfdXAIguCdmwvpL/JtpGiQzzngIuOJ0O3r8gGdXOKJ8FitN6c1f7y8PHvrGWT84rmRgLljbkTQfLIaGgj50Tgg9s+rfVUbFlPrXE85RQbtkr80PI3uaufWej8sTIQVC/ZJ39hDd/gG6KWHi1bGGGhjr9RLkN4NkGBszqONWUVF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B7d+xqpp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791245550; c=relaxed/simple;
+	bh=Uw0oDuIE0X5sYRvlamc7dRR8pxabBSZY9fo0/pu4iqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Lfh/pHqKJZDg0+lil++r+PWWtnSuh4/tccnXKTbBG0zrAAAbK/qfV7JP/fCqN+CYh6nCMggu1WUgg6oJwEWstnkPvOgcErkI2SRNcGkhlvUPxfRSfnLD8kfS6ZmoIyYesvFrWqs8z3VeVRETn5be1mLKkQ0a5D5glsmMb0ceDI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aP5KpEJ7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B7d+xqpp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D4E1F000FF;
-	Tue,  6 Oct 2026 00:10:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aP5KpEJ7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCFA1F000FF;
+	Tue,  6 Oct 2026 00:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791245431;
-	bh=crNKsHM/01ifbYuDRQdI1lbe+GpWO2933vEh51uWzTE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=B7d+xqppxDrmIdbY4RPa2igX/RWmbLqLlQGvylBr6UIsoyo+nNPdGAP70WG6cj/FL
-	 ZoCVjPxeV8CvyNfTTLFPZKXSsKCpXemK9M8Mm1wk0mi07SX7m62u2Dt3twdh248SXt
-	 2Br7qLEn7eBOy0DIEoaarWmdYnseLFqVtOpgw3yaWAjMQYLuLdMrxpOn2xF7GLCEZV
-	 5ZUPuMRj9O3kMEuDsTJZiHMWc02G2nbkGXc7PEXnZm/QJ3l2gbTQY/7qC9qXdaPmZh
-	 tRFKZx5ytEj9WfKOVRfDoutSd9nbOSHssRpV6ayTtIVj4uCM5huxGnhid6RXKVyTM+
-	 DOINwyzJ0N90A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F130E392667F;
-	Tue,  6 Oct 2026 00:10:30 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1791245549;
+	bh=hh0YAnpVp5pjEhF2pMIYgehTbixda9fHaQfAAcQGgHg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aP5KpEJ7af9bGiMNNMAg0fVi99s97tgS5i8QjG6P6GWZi6/vQX8KddEiiyp9KpIAF
+	 xhQnhH+l4h4qpI3FoqzbXFGpLKeNBzDOef/8ISqn/YK+1ZQOmPrzxBCr0/8+D87WFZ
+	 GLmJ7cmi+xMDcZ5VpHQhOpkdX9yq3OnHmrAJdWmXw3RiQju4bfmOoJK6Qh9LqDNegr
+	 lIIXy+skmWckmS5mRJ4hL7TXO4nFzndDNevjGSE/Zl+bFn0evlesXcut0Pfoo5aL9Q
+	 GjRYUZbqmbWn8bisNVXOmslrPEOO+b8G/mIecPQE8sCUadQ89dv33ZW9obhyMdh1+8
+	 QmE6+HBfvG56w==
+Date: Mon, 5 Oct 2026 17:12:27 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, Kuniyuki
+ Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Stephen
+ Hemminger <stephen@networkplumber.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 3/3] tcp_cubic: fix divide by zero and
+ endless loop on bad module params
+Message-ID: <20261005171227.2014f26e@kernel.org>
+In-Reply-To: <20261001112948.322463-4-jiayuan.chen@linux.dev>
+References: <20261001112948.322463-1-jiayuan.chen@linux.dev>
+	<20261001112948.322463-4-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] nfp: flower: remove merge entry when conntrack
- offload
- fails
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179124542952.1947351.14252868477518237942.git-patchwork-notify@kernel.org>
-Date: Tue, 06 Oct 2026 00:10:29 +0000
-References: <20261003.final049.214b9988b1e1f0a7@gmail.com>
-In-Reply-To: <20261003.final049.214b9988b1e1f0a7@gmail.com>
-To: Sang-Hoon Choi <csh0052@gmail.com>
-Cc: oss-drivers@corigine.com, horms@kernel.org, netdev@vger.kernel.org,
- kuba@kernel.org, wentao.jia@corigine.com, lcy8047@gmail.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu,  1 Oct 2026 19:29:43 +0800 Jiayuan Chen wrote:
+> Subject: [PATCH net-next v2 3/3] tcp_cubic: fix divide by zero and endless loop on bad module params
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 02 Oct 2026 19:47:40 +0000 you wrote:
-> nfp_ct_do_nft_merge() inserts nft_m_entry into nft_merge_tb and
-> increments nft_merge_count before calling nfp_fl_ct_add_offload(). If
-> that call fails, the error path removes the entry from its lists and
-> frees it, but leaves the hash entry and count behind.
-> 
-> Remove the hash entry and undo the count increment before freeing
-> nft_m_entry.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] nfp: flower: remove merge entry when conntrack offload fails
-    https://git.kernel.org/netdev/net-next/c/a032c035272a
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+if the LLM Medium severity complaint is true maybe also update 
+the subject? I thought there's an actual div by zero somewhere
+but the commit msg seems to describe the inf loop
