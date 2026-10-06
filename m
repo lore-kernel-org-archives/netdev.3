@@ -1,198 +1,127 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD5049F125
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 16:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D21D3E40EF;
+	Tue,  6 Oct 2026 16:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791302614; cv=none; b=FAssSnowgPPtr//nna4OhDxC4WFncYXhFGq024DaNDzgqvjsjosGO0QDl5J9iOx35yO6aCBto8XQtpMvi+RRxxQYNnPYWW9HWsykd7K8I1vVNaPWLtKaB0f/r47fwKMsRstkTLTKpacFdujYrTMaUAfdsAiHU907xRaWmx7k8DI=
+	t=1791302940; cv=none; b=na9kzQio63jF8HJ5kt0XDllfYm17BcKcWZQZVCbt8shceUVRGuPdVlUXE8TToJrF19T4Ez9aujJbAWjlFhRbbCZRJc+bGvAZcUrou9PbFfDC48mzD8bCsP5+xipCE9UFt7uhik+BwNYmKRiVLKVe3nU4n6nWNH1+LLa+yPXv8ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791302614; c=relaxed/simple;
-	bh=Rau+LzNHWZYAeVn0Lo/gXa5gPyDBw6O3gvc5Y7wY6Gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PU1Gp+ho/AQ59fP5E89xS4jB8TdJWstcE2l+6gVPrXXWNxQDsGcfyXwggmWxklLzVHDYUbXIsMv6bX0AIAudrs9PTkve1k1iljAgz7iR+3leSNijyO1vxpAvdnaiMFjmMiUp7gPS91kckncTZ9pzcltc9Mvh5T+QTd29tLwjnKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qwJ63+pY; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qwJ63+pY"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c2055573c8cso106743366b.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 09:03:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791302610; x=1791907410; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fI0Qv4IQdM0dKZJYz3zc0bdk7ApqZmNSv8l+M7VdwMQ=;
-        b=qwJ63+pYJx5X86dv0BSRyx17BWUMCmybv4dYhCwG5dln7M1QhRGhJmf6wOQZSEAM2m
-         0TdxhHT6c2Z4XzWiGS90L0ZJaUYI6llIZCeMhZwmyLYOMZIG0RQ24eA2Xy5aESSlbmiT
-         Iujm0uvV6/9X27LswlyEriKT4Zag9bEY9Yu5Tt6V8M47OMQhz7uBcT5sz9EfLZHKQ4uj
-         PRoMzCoxI0Qtpih+gJOYTx0i+RwWVqNQXtr3lCgVRRka+wPB3z/y3PwLOJLcC37OpCVg
-         hm82N7Ymp9QxGQyFkM5mAO/nipunaCAwxmdZz9hI5R57gEqed+s9XT1pbglaNTVt/brp
-         +jCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791302610; x=1791907410;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fI0Qv4IQdM0dKZJYz3zc0bdk7ApqZmNSv8l+M7VdwMQ=;
-        b=qQu8FAw8JMYqp2HDV437Bp+f/CMGp+4OPBSs4i7bEuM8//QbQAxVJMDV9zgSPZ7IgX
-         caBgFUsHrOUrrBCBuaNx15gJPeOuxDsNpXv8wNErMYtmMXGy4HHxZJGz+bhwV+jd7qIS
-         VR940W1H4wllxVEs6RsoM5MagaWm3LSAO8TvTw0pZoVz1ayC8NrmkJSZHLrS6yNCNODS
-         4sv00f1oCO6gZv0QWhgdVnd/re1TqiCcZtIa19E1E7XLBZdC2r01KFG5ST+lll6FpSXt
-         f9QmHDLCC0k0REqbtcEWgrjsYR4rJ+7KnlJTLa7tuamD7LKaPb/767aRVnZHE7nRohE2
-         jJPQ==
-X-Gm-Message-State: AFuF++m2KaQ2inxkRiV7oE/HORVYjd6ziP5Dp2c0AF4gM6I01MQ9w/yj
-	bXIOw7DLwim3KCr0w86xxActMKzaXvC/QIF+NgjVixfCgI8SpIDNb2X4u9O7W4h4c8mO2g==
-X-Gm-Gg: AYBFou08dTm2pxIIufgiHgacVXuwS3eGf2zwsRHPrpx9QNr4CMqniyt2rWlExhpt+U7
-	OzL03qkV9qKt2sMJ2tRzohQ9421WUkvIy5bgcnSaCLl6v6zMJa8p6qwQt6nImpIpX+fum/B1Xt4
-	QM1ANYjZ2K48Z68ZKGavOrpSa8dLTZvGTrEssHZKZsfNho4SXG1j+ttRgOQAOSuDsLpcKf1mTuO
-	XE9mhuQobPxLMH6J02jQdG2NILpfRqzfTvo31EmziGIoPOEdK4jhubHhqqj1DNHrgjKyF2OYV0z
-	lf2BEVG0+X21D/iJqOZQVupLaJjc1e13cgaisKy1Tl963SLp2RVA2NFTuTMDYDInB24wEHFPtUU
-	8zyTiRlxCabFMUCTnKqJerztU0if7ybo5DIatYBc8v4d1soRzclNvMIfqAbG/pE8biPCEleCm1D
-	uq3eqstUNxL0jn9IvA/2sLx4GOKFiEIeV8ZkQriWWpStys2MNA3Obd0zfAvrX6vi0J9FH49DRkO
-	kejrMfOeOJOAOv1eye7IM8Ytz8adUhARRmIWXirjFkpNmCol5xAsScIFgxbzYQiUX7DPFqpMgeG
-	icR9i0Ci5/nX6LsMABzrsXo=
-X-Received: by 2002:a17:907:2da4:b0:c2e:2fb6:ff37 with SMTP id a640c23a62f3a-c3169fb09ffmr192558266b.21.1791302610242;
-        Tue, 06 Oct 2026 09:03:30 -0700 (PDT)
-Received: from localhost.localdomain (94-255-221-162.cust.bredband2.com. [94.255.221.162])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3169ff5178sm75256866b.79.2026.10.06.09.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 09:03:29 -0700 (PDT)
-From: Yongzhao Chen <yongzhao.derek@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3] net: phy: qca83xx: read resolved QCA8337 link status
-Date: Tue,  6 Oct 2026 18:03:16 +0200
-Message-ID: <20261006160316.1356-1-yongzhao.derek@gmail.com>
-X-Mailer: git-send-email 2.45.2.windows.1
+	s=arc-20240116; t=1791302940; c=relaxed/simple;
+	bh=a+jfnn4EpxUTdTpHVi2Jp0n2tIf21E2mpQIDZSU7dVk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lFgSNy3ZcIydZb4UHuCKLdB4jPYyiderNvlB2Q9Funfm5G6g42oI0q2WehQzUFkdt4Dsq/dm/HpCh0heZqvHLE65lnV/qBzj0CsF0juZhWP2VEpbwCIIBhai6G7iKIlwnBM1iMGBqnESympWMrlZWAAqiM35vIwGZR76hJAO55g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.2.104] (91.79.33.31) by msexch01.omp.ru (10.188.4.12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 6 Oct
+ 2026 19:08:34 +0300
+Message-ID: <01c2f59d-8e22-434a-9f5b-b69608c3eae2@omp.ru>
+Date: Tue, 6 Oct 2026 19:08:33 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/7] net: ravb: fix resource teardown ordering
+To: jiale yao <19888972804@163.com>
+CC: =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, Paul
+ Barker <paul@pbarker.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Mitsuhiro Kimura
+	<mitsuhiro.kimura.kc@renesas.com>, Claudiu Beznea
+	<claudiu.beznea.uj@bp.renesas.com>, <netdev@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260927144741.1320558-1-yaojiale02@163.com>
+ <20260927144741.1320558-7-yaojiale02@163.com>
+ <3b43b4fb-8479-4eb2-be58-1df6f0f747b9@omp.ru>
+ <12190bf2.18c1.1a0f004c539.Coremail.19888972804@163.com>
+ <b85d8dc9-b787-40e0-bbaf-027df2c3bf49@omp.ru>
+ <222db01f.1264.1a101087434.Coremail.19888972804@163.com>
+Content-Language: en-US
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+In-Reply-To: <222db01f.1264.1a101087434.Coremail.19888972804@163.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 10/06/2026 15:56:59
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 19
+X-KSE-AntiSpam-Info: Lua profiles 206480 [Oct 06 2026]
+X-KSE-AntiSpam-Info: Version: 6.1.1.27
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 127 0.3.127
+ 0884f7b061fa529b810563f359267cd65d2ec05c
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {diag_burst_silent}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 91.79.33.31 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info:
+	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2;omp.ru:7.1.1
+X-KSE-AntiSpam-Info: {Tracking_ip_hunter}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 91.79.33.31
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 19
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/06/2026 15:58:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 10/6/2026 3:38:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-After a QCA8337 SmartSpeed downshift, genphy_read_status() can report
-1000 Mbit/s from the advertised modes when the PHY is running at
-100 Mbit/s. On a Redmi AX5400 running downstream OpenWrt Linux 6.18.52,
-this caused qca8k to program the user-port MAC for 1000 Mbit/s and
-traffic failed. An earlier prototype that read the resolved speed
-from the PHY restored traffic.
+On 10/3/26 12:11 PM, jiale yao wrote:
 
-Wrap genphy_read_status() and use at803x_read_specific_status() to
-replace its speed and duplex result when autonegotiation is complete
-and the link has not stayed up. Resolve pause for the resulting duplex.
-QCA8337's register layout matches the helper (data sheet 80-Y0619-3
-Rev. D, pages 327-328).
+[...]
 
-Keep the generic master/slave read order and the early return for a
-steady autonegotiated link. This avoids additional reads of the
-clear-on-read idle error count in MII_STAT1000. Forced mode continues
-to use BMCR. Report the MDI-X state, but clear mdix_ctrl because this
-driver does not implement MDI-X configuration.
+>> On 9/30/26 4:53 AM, jiale yao wrote:
+>>
+>> [...]
+>>
+>>> Thanks for your review.
+>>
+>>   Top-posting on the kernel MLs is a bad idea... :-)
+>>
+>>> You're right — I'll split this into two patches:
+>>> One patch for the IRQ/netdev ordering issue.
+>>> One patch for the runtime PM resume failure handling.
+>>> I'll use --no-git-fallback next time, sorry for this.
+> 
+> v3 in https://lore.kernel.org/all/20261003085940.493951-7-yaojiale02@163.com/
+> It only addresses the IRQ/netdev teardown ordering issue. The runtime
+> PM resume failure handling has been left unchanged.
 
-Fixes: b3591c2a3661 ("net: dsa: qca8k: Switch to PHYLINK instead of PHYLIB")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Assisted-by: LLM
-Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
----
-v3:
- - Keep genphy_read_status() instead of calling at803x_read_status()
-   followed by genphy_read_master_slave(). This restores the generic
-   MII_STAT1000 read frequency and master/slave-before-LPA order,
-   addressing the idle-error and latched-fault issues raised by Sashiko.
- - Report mdix_ctrl as ETH_TP_MDI_INVALID, including after a steady
-   poll, since QCA8337 has no MDI-X configuration callback.
- - Keep the generic BMCR result in forced mode. QCA8337's resolved-bit
-   behavior in that mode has not been verified.
+   Too bad you forgot to address Niklas' comment this time... :-)
 
-v2: https://lore.kernel.org/netdev/20261003173210.1235-1-yongzhao.derek@gmail.com/
-v1: https://lore.kernel.org/netdev/20260928220749.857-1-yongzhao.derek@gmail.com/
+> I plan to submit the runtime PM fix separately after the patch above
+> has been applied, to avoid conflicts between the two changes, or any
+> other suggestion?
 
-Testing: the source-extraction model passes 26 checks covering speed
-and duplex at the phylib notification boundary, latch-low transitions,
-pause, forced mode, unresolved/reserved status, MDIO errors and the
-three reported issues. The baseline fails the downshift checks; v2
-reproduces the idle-error loss, one-shot MSFAIL ordering difference and
-valid mdix_ctrl report. The MDIO model follows the read-clear and
-saturating-counter definitions in Table 5-352, pages 324-325. An arm64
-W=1 build of qca83xx.o, at803x.o and qcom-phy-lib.o is clean.
+   Yeah, it seems a good idea to address the broken commits in the
+chronological order... However, the fixes seem pretty much orthogonal
+to each other?
 
-v3 has not been tested on hardware. The hardware result above used
-v2's at803x_read_status() plus genphy_read_master_slave() on one board,
-with an Intel igb peer, a two-pair cable and default autonegotiation.
-Ping changed from 0/20 to 20/20 in each direction at resolved 100 Full.
-No idle errors or MSFAIL were injected on hardware; whether MSFAIL can
-remain latched while AN complete is set is still unknown.
+[...]
 
- drivers/net/phy/qcom/qca83xx.c | 37 ++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
-
-diff --git a/drivers/net/phy/qcom/qca83xx.c b/drivers/net/phy/qcom/qca83xx.c
-index bc70ed8efd8..e70da092f42 100644
---- a/drivers/net/phy/qcom/qca83xx.c
-+++ b/drivers/net/phy/qcom/qca83xx.c
-@@ -92,6 +92,42 @@ static int qca83xx_probe(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int qca8337_read_status(struct phy_device *phydev)
-+{
-+	struct at803x_ss_mask ss_mask = {
-+		.speed_mask = AT803X_SS_SPEED_MASK,
-+		.speed_shift = __bf_shf(AT803X_SS_SPEED_MASK),
-+	};
-+	int ret, old_link = phydev->link;
-+
-+	ret = genphy_read_status(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* genphy_read_status() derives speed and duplex from the
-+	 * advertisements, which is wrong after a SmartSpeed downshift.
-+	 * Whenever it has just done so, use what the PHY resolved instead.
-+	 */
-+	if (phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete &&
-+	    !(old_link && phydev->link)) {
-+		phydev->speed = SPEED_UNKNOWN;
-+		phydev->duplex = DUPLEX_UNKNOWN;
-+		phydev->pause = false;
-+		phydev->asym_pause = false;
-+
-+		ret = at803x_read_specific_status(phydev, ss_mask);
-+		if (ret)
-+			return ret;
-+
-+		phy_resolve_aneg_pause(phydev);
-+	}
-+
-+	/* MDI-X configuration is not implemented */
-+	phydev->mdix_ctrl = ETH_TP_MDI_INVALID;
-+
-+	return 0;
-+}
-+
- static int qca83xx_config_init(struct phy_device *phydev)
- {
- 	u8 switch_revision;
-@@ -220,6 +256,7 @@ static struct phy_driver qca83xx_driver[] = {
- 	.flags			= PHY_IS_INTERNAL,
- 	.config_init		= qca83xx_config_init,
- 	.soft_reset		= genphy_soft_reset,
-+	.read_status		= qca8337_read_status,
- 	.get_sset_count		= qca83xx_get_sset_count,
- 	.get_strings		= qca83xx_get_strings,
- 	.get_stats		= qca83xx_get_stats,
-
-base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
--- 
-2.43.0
+MBR, Sergey
 
