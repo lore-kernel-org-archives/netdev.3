@@ -1,71 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBFF2F8E99
-	for <netdev@vger.kernel.org>; Tue,  6 Oct 2026 05:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EADC22425B;
+	Tue,  6 Oct 2026 05:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791264553; cv=none; b=c+r5FiPu/gXVA3OQqnJfgs7tZ2d76iFVJOgncW/Jku5A0L1p7NnjAnSpAmvGi3DJ0/r1ygGBQeKdaUtM4D+afziYCHzG39Ih8QLMHEgf4+jO3mkv/FzS0tncxTHIDRlq2aorlmE5o+MKoxSm+34CsxIRx6EVLFU4XBzykLLlhXM=
+	t=1791265319; cv=none; b=ikkfzRC3e9WsikOGrKHNE4HV/3XjxoAttfQ58hkV8dehAFPbvCIgp2+DMBHAXtQivdvEXpl8sIwoVX7+khDqTehKpzjgU5qqWr45hkBQjFZXdszPtR+rlyeNFXGkQ0Jt8lIiJh+3OSYIFGxINAhf0I0XU7xek1NrY69QEhPyM6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791264553; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GEKXyhAdxtIzn0rdiHVtysPN7BxzLq+eUgBIxQIMYKCrusX5TshBOjZ2GJ/NL6X2U2QYEZTw7G/nza98g8qvTeHRUslX82VNQH7Ydp5YUi99o8uLIdg17grTLGz7gtWsn341SrOwyUxA1iiORm+iizTj7y7Du/GCzPGYL30zl64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXPgHrGh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791265319; c=relaxed/simple;
+	bh=PWHaIG+hpIuWhukDfcDeVqxPTpgjqMFqZCrFjrbSDP4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dA7WRrGxEtqWrcXNFS09VZsGS9aR7MqInD24fRxPAqxru8dHl/1mmVTG7YtBjJA3VF5AbKuXtMhlPXtq1qvQ4xiSolMODA7BEeB1+iw324zQGGBgQ3JZIDAVduS6FD/b6JZIeQl+rgFVZ0rbdkRiI+rY6pW14Xxq7MFZKOWlNt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=AuV0kEBg; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXPgHrGh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322791F000FF;
-	Tue,  6 Oct 2026 05:29:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791264551;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=nXPgHrGhuQQC/TvKg2P+TEg6u4hXB30WCfmTBROc40oRStTzMtHpLs9oD3qCwV1AM
-	 oWWaMqLoATUp6A0qQj9eiLeUARBI1sTsiUTw65z9CWsj9tR6rkTCHBSntu+7GlbssC
-	 HSDfEhnKxpQjvIz9VhzbVrk/rSDay1/ZXL+GDLPu/4VrzH/uAD+NSzG7ZlEAgfVqAV
-	 ZPmjaj11WwSyLlZkE2hOngXNQBPKHrl4kCs20qZSQcnA/S8iCgCDG3u03zaSFFzHZW
-	 Pyw48uEQo/nc6yJMISl9yCJGhHKnri1C5TOfkaTG9SZFQ2GLfE6/a0goKYd79YO+lc
-	 Wcs4gFsH705UQ==
-From: netdev-bot+sinfo@kernel.org
-To: Tung Nguyen <tung.quang.nguyen@est.tech>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@kernel.org, pabeni@redhat.com, jmaloy@redhat.com, horms@kernel.org,
- tipc-discussion@lists.sourceforge.net, Chengfeng Ye <nicoyip.dev@gmail.com>,
- kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH net v2] tipc: fix several race conditions caused by
- tipc_node_write_unlock()
-Date: Tue, 06 Oct 2026 05:29:10 +0000
-Message-ID: <179126455073.2231598.10466102165090932182@kernel.org>
-In-Reply-To: <20261006052312.30382-1-tung.quang.nguyen@est.tech>
-References: <20261006052312.30382-1-tung.quang.nguyen@est.tech>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="AuV0kEBg"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B327A012B;
+	Tue,  6 Oct 2026 07:41:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791265312; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=O7KRJAu4AekxCDbbfQHLexeWodWBOMLMHcaqzIyiIDg=;
+	b=AuV0kEBgvRyRq6PIKlIIdlGoen15xSN9lw6/NKQnozvzTdVDbPqDW7dlLhOUBnSbuIzaBa
+	q/WufE238zElcX2h2DmcP51kXc0++89RtHpF4QmqhvfBabWbfjrpGhUKl0+Vd1IXoLsH2H
+	6/KSCmGW33w8rUwsIv/UbLV7Ss+uBmt5cw9Yehy85dXOdWhDfbWSnBl2DHWku7Ygii2Vig
+	9ygIj5UlhhWY7mNkXovqwpKdeXPioc8kiCOpuWVXVvQVFXGtQKO0xKuQSSc5V6q2y52HtA
+	xu2whDCWHyLkE0/1sSU3+1HgUU6G78PbAvKoe2MLBpoNvBezmjZK/Ql5MINW3Q==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net 0/2] net: macb: fix software FCS handling of shared and
+ requeued skbs
+Date: Tue, 06 Oct 2026 07:41:31 +0200
+Message-Id: <20261006-nb-macb-shared-skb-net-v1-0-a80641479041@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MSQqAMAwAvyI5G+jign5FPLQaNYhVGhFB/LvF4
+ 8DMPCAUmQTa7IFIFwvvIYHOMxgWF2ZCHhODUabSShUYPG5u8CiLizSirB4DnaitroumKa01HlJ
+ 8RJr4/scdJAH69/0AAK+WKm0AAAA=
+X-Change-ID: 20261004-nb-macb-shared-skb-net-13174995332b
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi!
+While testing the genet MTU series I used a Raspberry Pi CM5 (RP1 GEM)
+as pktgen source for the CM4. With clone_skb the CM5 rebooted after a
+few seconds. Further investigation showed that macb_pad_and_fcs()
+appends the FCS in place, so the shared skb grows with every transmit
+until BQL completes more than was queued and dql_completed() hits its
+BUG_ON.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+The same code also modifies the skb before the TX ring check, so a
+NETDEV_TX_BUSY retry gets an skb that was already replaced or grown.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Patch 1 checks the ring first, patch 2 copies shared skbs.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Tested on Raspberry CM5 with pktgen at 60/20000 bytes, clone_skb 0/
+1000, burst 1/32.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+Nicolai Buchwitz (2):
+      net: macb: check TX ring before modifying skb
+      net: macb: copy shared skbs before appending the FCS
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+ drivers/net/ethernet/cadence/macb_main.c | 80 +++++++++++++++++++-------------
+ 1 file changed, 49 insertions(+), 31 deletions(-)
+---
+base-commit: d5a007b9b457c915ab1a53227e8939e4018aa97a
+change-id: 20261004-nb-macb-shared-skb-net-13174995332b
+
+Best regards,
+-- 
+Nicolai Buchwitz <nb@tipi-net.de>
+
