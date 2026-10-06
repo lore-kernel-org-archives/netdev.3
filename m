@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0CC45C715;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFE145C70E;
 	Tue,  6 Oct 2026 13:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791293704; cv=none; b=bNnD6xjUPUsvYNT0vpQJ/tw/krie8pKNGYD1BrYWHdu+xtLkn7UVSB1fv9BeC+ukPApPS460yUrmol63ySKSjT4bX7qYv3/pDL+rZD8FgsTCIQrT4/6fIfFY5kC2hhX0tdF++RTtwa5NGhYK26sJ+HiDn36YXt/WrqY7mqQ9P0E=
+	t=1791293704; cv=none; b=Uldij0BSUEBeDcXsZe6MWotr5u2jBMed/IA93Vwcw+ZWB/txONhD9blu0XoFZAYNCf8QLG1E6SzoT8K9UoIV7jFIbjlBC7NKYNkr2kFlTCv2F1mvlDMsUSuu6UhKh9eQFsQQ2oKoQKYZYJQPdnMPSaUqjCTtyNDVTjWY5pdSRwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791293704; c=relaxed/simple;
-	bh=GCoK0HCJ3SReKIatAVAogwKr5j5eKZs4kvGO4JyFfKw=;
+	bh=DLWabT5aH8RTvB/cmdF02GgTnJCcM8kNS+En6yi3ndE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uXX4rw7G0JOTbIOWufVD5XTT7ltqsyuS8/H8lqizffyiMMYdqAczGBOnbtBb+pPJEJVe0Ad7axiE5Z58Ai1gv5/pRIV3lgk5AqJw9Dofs6GvPqicCPkrLxLZqEAcXelagjQTwH7N0+WotxA5tj7YOov9s/n6fx0AHhKZvcmqXTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MdT/PvzT; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=dt0c2LVS3mjkI9QRUzOrMrAvTZnKmfF9UUCxroA3DMcNeJmEcZ7tzW+atf1pGJoQJuMZRhKaiCHG4buJ46fHnemQuA/7RbhWZ9K8WT6cbqhAWWZPnj6nZRlCg49bnX60Yw1RY4RL/eaPwXUHO7em21jOAOscCGP9WJtRivn+XOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K0tZS5jM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MdT/PvzT"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 72B26C4AF0B;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K0tZS5jM"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 897ECC4AF60;
 	Tue,  6 Oct 2026 13:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1791293704;
-	bh=GCoK0HCJ3SReKIatAVAogwKr5j5eKZs4kvGO4JyFfKw=;
+	bh=DLWabT5aH8RTvB/cmdF02GgTnJCcM8kNS+En6yi3ndE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=MdT/PvzTmUxAiKK2qkqPiDYLzrwfdcudkrfotRhjTflv9R4fnnQqVA64ld90k2jY4
-	 5SW7gbMZuXmdnHzLaQWScn5NCwt4NJPoLenO9uiC2h4sEOz0WTiwZ+mAGviENkt+Pv
-	 6nR1ZMkvnvBDAdvJqiPvZ7x0SgjU/XufZNfbL7o8VB+uyihf9XfEEmg0T/Fuzoaxjo
-	 DV6+j0mk1L+iL8EybJsDhL7jUtbCso2NZ4Pwv9T+uiD8oWwcvk8tnZCK8F36cyEaPs
-	 H10biJ1HY7pVV96un/VczB2chnK9pDglmoU+1Ppi0dL++Czphlg+s+BRXzZ3BNZV9m
-	 GOX9bCMiSdG9A==
+	b=K0tZS5jMYnxrRvgVJPCgQ1EmzyiASz0vpaSzS4LcZZqid9c6qduyCzmZkfuaW0itB
+	 Z1/BztYh6Ngou5GcFSbWUQxM5m7wHX+k/GhTQb0yOPWTVlTsRMBu6Duom0QDAjBptB
+	 SzvC4E1nZbB6I6ghf5ZnK5Ko+vtmrpQI6s+3geJXnz/7RGb8tG0ZaRS1+lRGSwSQTS
+	 Qfbz9dA7IzvZV4Zfq81JvxdNEdwWg/DoKEFMR8p44l601rt/MDMb9XDew66SQFluLC
+	 AFDmohYnv8YDemeH21s27YAuVrA/pzEol92nEKFebOsVIv2OBmHrgbFDmdR9yA1Aku
+	 t/lEKY/U+bo7Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51634CA5FED;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 635BACA5FF0;
 	Tue,  6 Oct 2026 13:35:04 +0000 (UTC)
 From: Vincent Jardin via B4 Relay <devnull+vjardin.free.fr@kernel.org>
-Date: Tue, 06 Oct 2026 15:34:50 +0200
-Subject: [PATCH net 1/3] dpaa2-ptp: fix support for PTP_EXTTS_REQUEST2
+Date: Tue, 06 Oct 2026 15:34:51 +0200
+Subject: [PATCH net 2/3] net: enetc: fix support for PTP_EXTTS_REQUEST2
  ioctl
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-1-b4a161b92832@free.fr>
+Message-Id: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-2-b4a161b92832@free.fr>
 References: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
 In-Reply-To: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
 To: Yangbo Lu <yangbo.lu@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -57,11 +57,11 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>, 
  Vincent Jardin <vjardin@free.fr>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791293703; l=1617;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791293703; l=1458;
  i=vjardin@free.fr; s=20260525; h=from:subject:message-id;
- bh=7iboOTM68ywkt06m8hkuzsd/d1QCyhUx0dOWtEHWzM0=;
- b=ffdclmp3YniLrkAc3yp6+NmdytdM+tT+4/dAeZpgNnYQBYqaRWZR+rcvZyj9F1sGmlsIeZRAc
- 22CkyzT/7tsAIG/PY0xObBeO0L30LCobOOj/9IGVtpW9kEb3F8fqoPI
+ bh=4PIeh40ykqWFUyr4J0o2X526W8LmvANCbTomAJ8JenU=;
+ b=LBsxsSD88oLwy0iwYGdQMn8AqbkPcmNnVq9xadTmTdE7smTpl0XBefIp8RhCkH1mS9CKjfKqJ
+ 0zAM46K/KjhA9QNClS4lKyX609iTE6hNru+T16Fx7ycmtgFuewShNwG
 X-Developer-Key: i=vjardin@free.fr; a=ed25519;
  pk=hppgLeFpGpKOi7LNwGEZ4jOYofJCoGd4Jf1ltAabiLw=
 X-Endpoint-Received: by B4 Relay for vjardin@free.fr/20260525 with
@@ -77,27 +77,24 @@ flags into the PTP core. A driver that does not set
 .supported_extts_flags still accepts the legacy PTP_EXTTS_REQUEST ioctl,
 but every PTP_EXTTS_REQUEST2 request is rejected with -EOPNOTSUPP
 
-On an LX2160A board, linuxptp ts2phc arms the external timestamp channel
-of the 1588 timer with PTP_EXTTS_REQUEST2, gets -EOPNOTSUPP and exits,
-so the PHC cannot be disciplined from an external 1PPS.
-
-ptp_qoriq_init() programs TMR_CTRL with ETEP1 and ETEP2 cleared, so the
-timer timestamps the rising edge of its external trigger inputs. Declare
-that, with PTP_STRICT_FLAGS, so that a falling edge request is rejected
-instead of being timestamped on the rising edge.
+The ENETC timer is the QorIQ 1588 timer, set up by ptp_qoriq_init(), which
+programs TMR_CTRL with ETEP1 and ETEP2 cleared, so it timestamps the
+rising edge of its external trigger inputs. Declare that, with
+PTP_STRICT_FLAGS, so that a falling edge request is rejected instead of
+being timestamped on the rising edge.
 
 Fixes: 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags to ptp_clock_info")
 Signed-off-by: Vincent Jardin <vjardin@free.fr>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c | 1 +
+ drivers/net/ethernet/freescale/enetc/enetc_ptp.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c
-index 4497e3c0456d..ac2b873dcf8e 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c
-@@ -78,6 +78,7 @@ static const struct ptp_clock_info dpaa2_ptp_caps = {
- 	.n_per_out	= 3,
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
+index 162cbc801730..5ffee882d624 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
+@@ -16,6 +16,7 @@ static struct ptp_clock_info enetc_ptp_caps = {
+ 	.n_per_out	= 0,
  	.n_pins		= 0,
  	.pps		= 1,
 +	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
