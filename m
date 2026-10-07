@@ -1,204 +1,105 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB15E39A06B;
-	Wed,  7 Oct 2026 07:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF4341C30F;
+	Wed,  7 Oct 2026 07:43:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791359013; cv=none; b=nN9gmMdv82xeqDlK+S/dp1Z0eQjiqgjEo1OYdZ/SPeUoUmb2OfMvHukKDIlgAZiSMsYsWuhd3vIAK+6lN9Xb0SAnJ3IVX5Gdezx0u9aydkfIGnP6rtiR+hLAebEvw8nOD1ayXinm4JTAPmueIbN0AqS4dM44sxXnaN6u0wXl4Og=
+	t=1791359045; cv=none; b=mUHmlGPyednDRRmnnCPuwGI22tOu58lbY8KzK5Y37SOV6TBNPDFIZLamB5Gx+KZzuJfeQ+ANK7AIdEdL0EZUf8PRxMbkD0DaPNGqzaYGGM51p1tAef0oH2cIFSb9qOx7IFilM1r4Ah3oK4CVOF25JGKpa3C0YkVXKYHy+V6lCf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791359013; c=relaxed/simple;
-	bh=N5rQ1HvkbnGVZXYoYzrUqHL48aCM+AmX0NrPHUy/dKo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M88W+g+UtL/ru/1+w+HCgJxO1X0Zp8IO4gIKuiS/2YfWldu6wIMwArLlp5zorujzOHjuRDQTH1savE/+uGRboJVZQrAZ+nJs8mdJNqx936D28yxGRhwGUf72mcz/Lg8YrmUidrIgMeU+5fplqtzj97ifL/abTvBdkedW0SBrWpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AAwvb6H6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nLbKXV7T; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1791359045; c=relaxed/simple;
+	bh=HnI9Orr9cFzycjkpUEC5RPW2/zW7ejSYjCFK4MnW6ik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hb/aEvQLLG6LtjfMjMwJRVhdKwGeK0jrt5UiwvTsbPieyojcxWE7p8RWvX41YgC5s7ROyTuczj4vhm9fCyKW8m8amOogqcyrdgNTAdTjzFGFAbpODXJ2KAUZHbir9oXp3zvJLwrbaV5a47OnDqELFFZOpO3iruNobHdetCQY2is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFNJjI2H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AAwvb6H6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nLbKXV7T"
-Message-ID: <c1f48a5caa670ece21e73458787a62f97879346f.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791358999;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MXCuBoVHEq47ESs5wsAP5vYQrZJBRcyyNOmcXot4ByI=;
-	b=AAwvb6H6X76pmnw2SFLsGUaUN4Ris2V5y6ufDe3Jy31sBOB2ElOzEBi5YNOZG1RQaRIyHt
-	3WC1JzFmksgBwyuo7/OwgTyPSIc+Ozb2ad1CCW29J/mgA6yvML47NeAcZmgRPXu70bmNzf
-	6CwCPSh2a0Bt/zmPIn2PSQJyys7HnJLYEgRXFB5D1paMW7Vnywt9xJSC2orZTLiw4JqVjB
-	D8VaAYr0XsENVhLciVlH/aYnVE6bElfSlCf9R6zdlVkDJsmc0OFLnfmaftkURVhzQ/PuQG
-	MR1F3xa4LVjSgwgRlXCAxg9GRGCvMykJt75gK698wpyVoLLCYhY+DoiD0P4Gow==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791358999;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MXCuBoVHEq47ESs5wsAP5vYQrZJBRcyyNOmcXot4ByI=;
-	b=nLbKXV7TiIPPRLqQAZcpEEa1KC1ns92ajm6qxmSW/EmDGReOmmGFCoAoRYbpiUlvtlpHso
-	ZreauVAJKTmVviCQ==
-Subject: Re: [PATCH net-next v3 2/8] dt-bindings: net: Add SoC-e SWIP MDIO
- controller
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew@lunn.ch,  olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org,  pabeni@redhat.com, horms@kernel.org,
- linux@armlinux.org.uk, andrew+netdev@lunn.ch,  hkallweit1@gmail.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, martin.kaistra@linutronix.de,
- b.spranger@linutronix.de
-Date: Wed, 07 Oct 2026 09:43:18 +0200
-In-Reply-To: <179051210447.2160803.13761066598804865928@kernel.org>
-References: 
-	<20260923-devel-vstrassheim-soce-dsa-ml-v3-2-ddebafcb9ba7@linutronix.de>
-	 <179051210447.2160803.13761066598804865928@kernel.org>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFNJjI2H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB251F0089C;
+	Wed,  7 Oct 2026 07:43:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791359035;
+	bh=e10A52x8eNlaxr8y/42fRB7ZGuOuiwnvD+s8zuy+cZc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=aFNJjI2HN5zYP+wGvdq0gTjxVQeS58dPwkFtQTceZrRXzlyOa+XZXocBo5oF5MYRM
+	 YHSsXYhSrfT71ShRbctGTD+MMbpSBM8nX8NmTBkLibsieIlhPpguCh8srFcNKvS4au
+	 yF0dryWnvzdlwgmGbyeyCcI2dzscWIwbjPnjGp6kifTj4cGrTdf1XMgY72jAPw4sNB
+	 ZhlFsEldW8scrJa4k3SQghw47/vX6b/T8emjrtp7G1iMNdjv/7qWjHPKQHX7Anczl7
+	 OvNV2kjJe24xgi2Vj4vsBP2rn9QiiJ01rA33xxw8CMOflS3OMjs0HJKfWy4r9gyM/y
+	 ljpC0P91mNLIA==
+Message-ID: <4818da7c-be7e-4f97-b5a3-bee05ada500a@kernel.org>
+Date: Wed, 7 Oct 2026 09:43:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1 1/2] net: netmem: document netmem and memory
+ provider design in comments
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Luigi Rizzo <lrizzo@google.com>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Pavel Begunkov <asml.silence@gmail.com>
+References: <20261005004958.3603059-1-almasrymina@google.com>
+ <20261005004958.3603059-2-almasrymina@google.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20261005004958.3603059-2-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, 2026-09-27 at 12:28 +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->=20
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
->=20
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->=20
-> - [Medium] In soce,swip-mdio.yaml the MDIO controller owns the whole
->   32-bit 'control' register (<0x200 0x4>), which the binding calls the=E2=
-=80=A6
-> - [Low] The only compatible is 'soce,swip-mdio-23-02', and neither the
->   binding nor the commit message explains the '23-02' suffix.
->=20
-> --
->=20
-> dt-bindings: net: Add SoC-e SWIP MDIO controller
->=20
-> This adds a devicetree binding for the MDIO controller built into SoC-e
-> SWIP Ethernet switch IP cores. The controller has a data register region
-> and a shared transaction control and bus selector register. It is the
-> parent bus for an MDIO mux that reaches the external MDIO interfaces.
->=20
-> > diff --git a/Documentation/devicetree/bindings/net/soce,swip-mdio.yaml =
-b/Documentation/devicetree/bindings/net/soce,swip-mdio.yaml
-> > new file mode 100644
-> > index 0000000000000..3cf4bde0508ab
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/soce,swip-mdio.yaml
-> > @@ -0,0 +1,47 @@
->=20
-> [ ... ]
->=20
-> > +description:
-> > +  MDIO controller integrated into SoC-e Ethernet switch FPGA IP cores.
-> > +  The controller accesses multiple external MDIO buses through a mux.
-> > +
-> > +$ref: mdio.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: soce,swip-mdio-23-02
->=20
-> [Severity: Low]
-> What does the 23-02 suffix mean? Neither the binding nor the commit
-> message explains it. It looks like a YY-MM IP release tag. The DSA
-> driver commit in this series mentions testing an MRS 25.01 core.
->=20
-> This MDIO block is part of the larger SWIP switch. It sits at
-> 0x200-0x20f inside the switch register window.
-> Documentation/devicetree/bindings/writing-bindings.rst says:
->=20
->   For sub-blocks/components of bigger device (e.g. SoC blocks) use rather
->   device-based compatible (e.g. SoC-based compatible), instead of custom
->   versioning of that component.
->=20
-> Could the version scheme be documented, or could a device-based
-> compatible be used instead? As it stands, it isn't clear whether each
-> future IP release would need a new compatible.
 
-I will remove this suffix. For a child of MFD "soce,swip-mdio" is
-enough.
 
->=20
-> > +
-> > +  reg:
-> > +    items:
-> > +      - description: MDIO parameter, write data, and read data registe=
-rs
-> > +      - description: Shared MDIO transaction control and bus selection=
- register
->=20
-> [Severity: Medium]
-> Is this the right way to describe the bus selector? This node claims the
-> whole 32-bit control register at <0x200 0x4>, bus selector field
-> included. The binding gives the mux no way to reach that field. There is
-> no #mux-control-cells and no mux child node, even though the description
-> says the buses are reached through a mux.
->=20
-> Later in the series, the example in "dt-bindings: net: dsa: Add SoC-e
-> SWIP switch" covers this with a sibling mdio-mux-mmioreg node:
->=20
-> Documentation/devicetree/bindings/net/dsa/soce,swip.yaml:
->     mdio-mux@202 {
->         ...
->         reg =3D <0x202 0x2>;
->         ...
->=20
-> That range is the upper halfword of the register that mdio@204 already
-> claims as control. The driver commit "net: mdio: Add SoC-e SWIP MDIO
-> controller driver" says the same thing: the selector is bits 26:16, and
-> a generic MMIO MDIO mux manages it through the upper 16-bit halfword.
->=20
-> The result is two sibling nodes with overlapping reg ranges for one
-> hardware register. This only works because neither driver requests its
-> region exclusively. soce_mdio_iomap() in drivers/net/mdio/mdio-soce.c
-> does:
->=20
->     return devm_ioremap(dev, res.start, resource_size(&res));
->=20
-> mdio_mux_mmioreg_switch_fn() also does a plain ioremap() on every
-> switch. If either driver moved to devm_platform_ioremap_resource(),
-> probe would fail with -EBUSY.
->=20
-> Nothing fails with the current series. There is no -EBUSY today. The
-> mux's 16-bit read-modify-write and the 32-bit read-modify-write in
-> soce_mdio_start() are serialized: mdio_mux_read() and mdio_mux_write()
-> hold the parent bus mdio_lock around both switch_fn() and the parent
-> access.
->=20
-> The concern is the DT ABI. Once this binding is merged, moving to a
-> description without overlapping ranges would break compatibility. Two
-> options would avoid the overlap:
->=20
->   - make this controller a mux provider with #mux-control-cells
->   - have the controller register its child buses itself
->=20
-> Would it be better to choose one of these before the binding is merged?
->=20
+On 10/5/26 02:49, Mina Almasry wrote:
+> Clarify the netmem, memory provider, page_pool, and skb fragment design
+> principles in header and code comments:
+> 
+> - Memory providers allocate struct net_iov or struct page, cast them to
+>    netmem_ref, and pass them to page_pool; page_pool, drivers, and the
+>    core stack operate on netmem_ref and must not downcast to page or
+>    net_iov outside dedicated netmem helpers.
+> - Memory providers are not restricted to net_iov and may supply
+>    page-backed netmems.
+> - net_iov is not inherently unreadable; future readable net_iov types
+>    are allowed.
+> - Per-provider logic belongs in memory_provider_ops, and per-netmem-type
+>    logic belongs in netmem helpers.
+> - All frags in an skb must share the same backing netmem memory type,
+>    and skbs with different frag memory types must not be coalesced.
+> 
+> Cc: Luigi Rizzo <lrizzo@google.com>
+> Cc: Björn Töpel <bjorn@kernel.org>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Pavel Begunkov <asml.silence@gmail.com>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
+> ---
+>   include/linux/skbuff.h                  |  4 ++++
+>   include/net/netmem.h                    | 29 ++++++++++++++++---------
 
-Yes. I will address this in the MFD rework.
+./scripts/get_maintainer.pl --file include/net/netmem.h
 
-The MFD parent will register both child devices, with mdio-parent-bus
-connecting the mux to the controller.
+Returns "maintainer:NETWORKING [GENERAL]"
 
-As already mentioned in other thread, this overlap is wrong.
-The MDIO controller will use only the lower 16-bit half of the control
-register through readw()/writew(). The sibling mdio-mux-mmioreg node
-will use the upper half, so the resources will no longer overlap.
+>   include/net/page_pool/helpers.h         | 18 ++++++++++-----
+>   include/net/page_pool/memory_provider.h |  8 +++++++
+>   include/net/page_pool/types.h           |  6 ++---
+>   net/core/skbuff.c                       |  3 +++
+>   6 files changed, 50 insertions(+), 18 deletions(-)
 
-pw-bot: cr
+Changes LGTM.
+
+I suggest that you Mina is added the MAINTAINERS for PAGE POOL.
+And do we want a new section for NETMEM ?
+
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+
