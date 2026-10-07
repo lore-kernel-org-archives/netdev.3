@@ -1,144 +1,117 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E753C8705
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 21:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA5F27E1DC;
+	Wed,  7 Oct 2026 21:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791408832; cv=none; b=Xv+O+6JR/5d/3G0lZHlpPF58z3XxtyjnxqOiGmBGjYrN6eSFEq3eOJJUs4uW/cJdhnr3AT4xlsYkZr7jW7A3y/ucWyBT/dde1BTFDXu3X5SSXJ0HDjO23hhDZqHgycfYkBj+afh5ln1zo6HXXU0HfcpCnyu5Wst1NEfsmn+C6kc=
+	t=1791409674; cv=none; b=itDpNNi78utcstZzRHyjkjJlRwhPKUAhNug6/10tPOGdCjsJGmj+9I4rNWfzJhokJOXov9TqwRQ5hcxHFhM00syXn52BivdS0ArDlRUlDDxoMhAQLTMHN2RA9QPZrECOT/lz0rjL7YazOjJqPEKX6l8MUQKSbfFn8qUY5HhidoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791408832; c=relaxed/simple;
-	bh=0IBrQRHDXpXfEAL+Af3QlRWyyE6vjJo10MeJ6BSZqQU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IZE00TD5pvLW9nLbGGcHLpr+zY1TWwtWVn8erDjXKE2H56WohxEmFEaE+VmF6mUyZdxQ3Niiz/5GxjC/gVlIkEoDuDHwXiBjzLPXlRT7Toib7Ah+gkhPtaJk3AHc2+xUCzSoawQCXrXEPhSCMV15KZ8OzvqDc6HQBvAh5r/feDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=EaZJ/6/g; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1791409674; c=relaxed/simple;
+	bh=iCuEgTy3fWk8SL88SbuVaHRBc8KZTRoMUnGDJiOoXMM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VUv3yIqZGPOtZvOvaj0LOGOdl3LZEivqS2jJvPRMLbpjDQdJyjkR9jWV1hE16N0Xo56uoQuWzAQCpggJndyN9tgr0mTvcXnw+XBaPHIMMlABNR45cuMo09OLzJKd8x9FZwqqtuHQ6zzt+9h5zB1ha7eDg/7QNQLupomvAdBE40E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0zFdIRi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="EaZJ/6/g"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3964dfb5b9aso2466878a91.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 14:33:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1791408830; x=1792013630; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ejNm5zDoqEZOb5AEzB2Og3woE3yReJTHR9Y3jYqn8pg=;
-        b=EaZJ/6/guqGNuHXzHLbR0P+DDXnEm55/KzO4rT9CyzTVl3Y00nc9jL5n5xhQg3rgPu
-         6jeZ9jCcMDdU5RJZaOk41BhHrZ+DnYM1vM0Ssh2dadNR8xgPwMvEHEmC+i3nYJKG7clq
-         KGlB19PZVGyRQh5YbbO3a70F6XmOgnO1z5MTdfeOhFORAbXG2IOx4dJOFl6TempWDsCy
-         7i35AnizM9dYimOoX4uBQx49PyKX+WAXAaYltAO+/CfEOdSPVfxuTivxIoAT2J5CxzOe
-         Wz1v9T3MpP2Xk8Bqqp/+Dzm3NnN1ebfsRjjTwGmUH97IZqCXDysImmeRoF/zsvDINtCI
-         ju3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791408830; x=1792013630;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ejNm5zDoqEZOb5AEzB2Og3woE3yReJTHR9Y3jYqn8pg=;
-        b=27asMi+gMS4qXwzPayFaWhcfYy2k1SSSRcaQmp4T6WUgOvxnC6unTCH/9a+unBqW9G
-         DwgMz0v3ylkeqIGoBgS9+mbqj3g0CD+9ORn2BUufs+KtacMpylnpO6Xv5oGgRQCR4CF3
-         nNRVFINVel6Wq/hMy3IiQZ1IX3bKle+U6NCYzeKPMjkwaEPBGHwOFSXXS1PD7jAqZZOv
-         wK1CMz89kIBnAezcqJpNMkXWBWeuraXC9NfZoYaRV73++6fNR7rRlhwqE6YXrWpoDJxH
-         09C3ImBfcMOm5/wxIl9S1CzPVdLvCIQZaZzts7Dn/HmWB21O1Y9YckMWoMdZjDTlMcKu
-         VjNQ==
-X-Gm-Message-State: AFq9FYIzW18KJ9QMSgtV9vBYktBY/IDDolao7UXTYjlUiX/mLosoBAKI
-	LX2Px9LcZHxe3s08d3pIy1KE33fySE1Jet9Oly8djjVV7PbhuP2S0RqjOYWFtYpKrGo=
-X-Gm-Gg: AYBFou29SAkCwBQF2EIPkfN1+5cB32KzuBug+MFC/4GB1/sVUDuHtpFucyU+7fl54+F
-	9U1Jb/M1UH01hNte/WBd2vJgThyj1lApolKwXg2OYXh/1A3Zlth+GzrmnrUsJbumbtfX4DCMRpM
-	sfkoFmUY0r+B9zWGyEnSyzUMk9DKlTkZHhiDEfmyiHUCP5isb3DJAcXdDESQhHQBdTVgdx+tm7j
-	EpAN/joOIOqjJFL5lObImHUcNXGdt1HowxKVjRAV4i5EL7kcHTUfgjp6sSxXsPl8PL+SVQ+eHiY
-	c9ktrN9siM8c5fxJTBgriulsPNIW9Ig6bSarpIbw6IGmTASA607xApbAY4g0yyqsYUw1eb/Rqoc
-	+994Bv82DH0HrI+sbkLHCzU/UM2xbgbo8b17UYwFP2Jr72mj6IAayVa4TanX2t5Mc2VQvTekTyp
-	jz5QkLlniPmOluQ9Af6I3FN9WC2KNejjegfkBq9NZT9PyXo6tgOjV86ydKm/KeaoCX4ny58gzu1
-	dxz4LFdB1mDjZ774H6WjUbw/AhGBHsM+EUyOAyAPpqPPwOhxFpGy4uTKA==
-X-Received: by 2002:a17:90b:528f:b0:3a0:50bf:d497 with SMTP id 98e67ed59e1d1-3a89f648bc6mr3019099a91.3.1791408830162;
-        Wed, 07 Oct 2026 14:33:50 -0700 (PDT)
-Received: from [192.168.1.106] ([198.8.77.135])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9d94d9bc5sm1220849a91.0.2026.10.07.14.33.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Oct 2026 14:33:49 -0700 (PDT)
-Message-ID: <71f45e7d-6e3d-4b9f-af44-cec354745ea4@kernel.dk>
-Date: Wed, 7 Oct 2026 15:33:43 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0zFdIRi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08F51F000FF;
+	Wed,  7 Oct 2026 21:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791409673;
+	bh=ZZLzBrm9AgpobsusQS1OCG+MADJektCGs465QeVYBJk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=f0zFdIRinkfZRcKlHGvTCQ24VejwnRSrAPssUQij3ZaEtVV9hF57pF0C1BOYlOD9C
+	 Poh7UJ5X8OgR7l6/ujHwqBMQSeUwlEW2yieO51cfYFy21lu8UIYPvYsvyHJHri7lSL
+	 NnmgxDw7eBM9PwX1pu0ARYqaKeJq2UpDBAtn5f+E8DMkRY5SX6BFFQJhemPhA0hZU7
+	 8dapqwbcl1fZ4U9RYPfNEE4Yf2J5v2pIMneMOuV5rlBUW4rHn4hd645v3XXzjzdESa
+	 YWtq4z9a9UhVwrszEzX7atU+LcVa3ZIy1mCffnIH/nmEFirSp2U4Z1CP+1JEAAiXZw
+	 ruq17fWQVZ9AA==
+Subject: Re: [PATCH net v2 1/2] ptp: drain virtual clock sysfs operations
+ before unregistering children
+From: netdev-bot+sashiko@kernel.org
+To: james.hilliard1@gmail.com
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
+ richardcochran@gmail.com, andrew+netdev@lunn.ch, yangbo.lu@nxp.com,
+ edumazet@kernel.org, davem@davemloft.net, linux-kernel@vger.kernel.org
+Date: Wed, 07 Oct 2026 21:47:52 +0000
+Message-ID: <179140967248.434549.15357420235192842364@kernel.org>
+In-Reply-To: <20261005-ptp-vclock-sampling-v2-1-8ed12d4d10af@gmail.com>
+References: <20261005-ptp-vclock-sampling-v2-1-8ed12d4d10af@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring: do not charge the SQ/CQ rings to RLIMIT_MEMLOCK
-To: David Wei <dw@davidwei.uk>, hengyul@cs.unc.edu,
- Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20261006125732.3425762-1-hengyul@cs.unc.edu>
- <01d75013-9eae-4ec6-93b5-cc1b2b83b791@kernel.dk>
- <33f685a9-1140-4b4d-a40d-8250ab93e500@davidwei.uk>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <33f685a9-1140-4b4d-a40d-8250ab93e500@davidwei.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 10/7/26 2:17 PM, David Wei wrote:
-> On 2026-10-06 16:59, Jens Axboe wrote:
->> On 10/6/26 6:57 AM, hengyul@cs.unc.edu wrote:
->>> From: Hengyu Liang <hengyul@cs.unc.edu>
->>>
->>> Commit 8078486e1d53 ("io_uring: use region api for SQ") and commit
->>> 81a4058e0cd0 ("io_uring: use region api for CQ") made io_uring_setup()
->>> allocate the rings with io_create_region().
->>>
->>> However, io_create_region() charges the memory to RLIMIT_MEMLOCK, and
->>> the rings had been exempt from that limit since commit 26bfa89e25f4
->>> ("io_uring: place ring SQ/CQ arrays under memcg memory limits"). As of
->>> now, a user without CAP_IPC_LOCK gets ENOMEM from io_uring_setup() when
->>> their rings exceed the limit, which is 8 MiB by default. PostgreSQL
->>> developers have already hit this in their io_uring tests [1].
->>>
->>> The issue can be reproduced with a simple liburing program, run as an
->>> unprivileged user:
->>>
->>>      #include <liburing.h>
->>>      #include <stdio.h>
->>>
->>>      int main(void)
->>>      {
->>>              static struct io_uring ring[64];
->>>              int i;
->>>
->>>              for (i = 0; i < 64; i++)
->>>                      if (io_uring_queue_init(4096, &ring[i], 0) < 0)
->>>                              break;
->>>              printf("%d rings\n", i);
->>>              return 0;
->>>      }
->>>
->>> Before those commits (v6.13), it prints "64 rings". After those commits
->>> (v6.14), it prints "21 rings".
->>>
->>> This patch makes io_create_region() take the user to charge, and passes
->>> no user for the SQ/CQ rings.
->>
->> Agree that this is a bug, stricter accounting may break use cases.
->> However, I think we can solve this simpler, and actually kill more code.
->> How about something like the below instead? Only apply accounting to
->> user backed memory, which is how it used to work too. Would be great if
->> you could take a look and also run your test case against it.
-> 
-> Tested in a VM and confirmed that with the patch below the reproducer
-> correctly allocates all 64 w/ a 8 MB RLIMIT_MEMLOCK.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Sending out a new set since I haven't heard back, and would be nice to get this fixed. Would be great if you could test those too.
+Low priority / nit picks for your consideration:
 
-> This change is really helpful for me as well, thank you for addressing
-> this Hengyu.
+- [Low] The commit message gives the wrong reason for the
+  is_virtual_clock guard in ptp_vclock_remove_sysfs()…
 
-Indeed!
+--
+
+ptp: drain virtual clock sysfs operations before unregistering children
+
+This commit removes the n_vclocks sysfs attribute at the start of
+ptp_clock_unregister(), before the virtual clock children are walked. Doing
+so blocks new n_vclocks stores and drains any that are already running, so a
+concurrent store can no longer unregister the same child a second time.
+Virtual clocks skip the removal through an is_virtual_clock check.
+
+> diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
+> index dc398c6b75284..53388b1231980 100644
+> --- a/drivers/ptp/ptp_sysfs.c
+> +++ b/drivers/ptp/ptp_sysfs.c
+> @@ -263,6 +263,12 @@ static ssize_t n_vclocks_store(struct device *dev,
+>  }
+>  static DEVICE_ATTR_RW(n_vclocks);
+>  
+> +void ptp_vclock_remove_sysfs(struct ptp_clock *ptp)
+> +{
+> +	if (!ptp->is_virtual_clock)
+> +		device_remove_file(&ptp->dev, &dev_attr_n_vclocks);
+> +}
+
+[Severity: Low]
+This isn't a bug, but the commit message gives what looks like the wrong
+reason for this guard:
+
+  Virtual clocks have no such attribute and must not remove the parent
+  attribute when being deleted by its active store.
+
+When a vclock is deleted from the parent's active store, the path is:
+
+n_vclocks_store()->unregister_vclock()->ptp_vclock_unregister()->
+  ptp_clock_unregister(vclock->clock)->ptp_vclock_remove_sysfs()
+
+Here ptp->dev is the virtual clock's own device, not the parent's.
+device_remove_file() only acts on that device's directory. It cannot reach
+the parent's n_vclocks attribute.
+
+ptp_is_attribute_visible() also never creates the attribute for virtual
+clocks:
+
+	} else if (attr == &dev_attr_n_vclocks.attr ||
+		   attr == &dev_attr_max_vclocks.attr) {
+		if (ptp->is_virtual_clock)
+			mode = 0;
+
+Without the guard, device_remove_file() would just find nothing and
+kernfs_remove_by_name_ns() would return -ENOENT. There is no self-drain of
+the parent's attribute for the guard to prevent.
+
+Could the commit message say instead that the guard only skips a no-op
+removal on virtual clocks, which never have n_vclocks? As written, it
+reads as though the guard is what stops the parent's active store from
+draining itself.
 
 -- 
-Jens Axboe
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005-ptp-vclock-sampling-v2-0-8ed12d4d10af%40gmail.com
