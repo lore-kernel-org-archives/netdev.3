@@ -1,72 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88905418340;
-	Wed,  7 Oct 2026 08:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBA93B7779;
+	Wed,  7 Oct 2026 08:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791363375; cv=none; b=UXq2mHgfcqvtCdZKIF7hTNaiMT5ljuCuSSP2Gg+J0c5NJu657jBwYVuyFGFB9wytp1IDfx0WxAapLveMLtkruemsTMvGbn1oJkZ6HhSJfgG1G/wopL2MTed7GpG+AeyWMx+eqaulNominjjxdjN9/HSa90XIDSRHrcZA1nbxgNQ=
+	t=1791363472; cv=none; b=aSb6A+mzYa11CmtScMfMyPSN7xDxLJHdzJi2AzO+WDZphJN1iHKyqAOceKcxqSuFGtrYtdU/znSDWapE5A8POUgZNNLp9H50LE5gzhVxQZabzFvpRETp+q9vdqjlvD8Jl3mY8YaMcwQlS+uUDmXFY6L7dYMAC/xt5kcDHLduNTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791363375; c=relaxed/simple;
-	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	s=arc-20240116; t=1791363472; c=relaxed/simple;
+	bh=KDVlpvSPGRQwQHIvuNTYp3hQ6fScOFke+387t4yK93w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m2bpGziowGOD4IqwgT/d8yo+SSnd1R1b9V/+Sed5gjNllrChBA6Gn1a7kpzCqKEWqNzwDY4soe99MHpf1rfTINhs5p3J0MXT35HApOURNKIJE3CPcQLyveVcjPldLf8CqFMte+Pdlp4dT8h3/hi7x6mj+iprp/cJTpI2zm7YoLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odVzmI6J; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Du/q6G4YWhLPJrzDJ3Vo0WVrESVFtKxIT9cqozNON7JqlMfzIwlFQz55DlFpjNmjfYIjK/lhqUHNpVrvda72EJ/oRVxHQe+MZGWOV1chXYwYU2OOkjCIsdXAEr+ZRFLXFSiOg8ptcjjxgyVM3O7gDiXbdu8zmm59A189SUIvHDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=rYKzFInG; arc=none smtp.client-ip=111.22.67.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odVzmI6J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4472D1F0089B;
-	Wed,  7 Oct 2026 08:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791363374;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=odVzmI6J3aG13jtfoB+xU8DJnQc2Z73iZZ9UfV9ouNOhz6s2l5yFfnmqmvq2CqzaS
-	 6u0CpkgM+sOIJFkuOot22Cizd4yku7ftPaZ4WN8KrD8Z0L57lPmT2t9kLP6DeMp0jY
-	 IHdUwIz6rJxWy6nr6PFY2mdNxsqruaQuFBE6z2vx1fIKqcH3QXQFM6OcklbMgpON7N
-	 uoV+niBOmxCuiWbGDiAqSja5gr8/LxyFRq3VrQ8qW2WaaHQqsbAV30S3K1/cl0zWOx
-	 4E4fVmuz1bdEoSYORIkyRmYYCURgflxOEWQ6rfikLS38XuJPJtJoHSEVyq3NSGQRpQ
-	 GYwMArtEqrGow==
-From: netdev-bot+sinfo@kernel.org
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Doug Berger <opendmb@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Dave Stevenson <dave.stevenson@raspberrypi.com>,
- Justin Chen <justin.chen@broadcom.com>,
- Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>,
- Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH net-next v3 0/8] net: bcmgenet: support larger MTUs
-Date: Wed, 07 Oct 2026 08:56:12 +0000
-Message-ID: <179136337262.2527009.9220130121409362777@kernel.org>
-In-Reply-To: <20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce@tipi-net.de>
-References: <20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce@tipi-net.de>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="rYKzFInG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=rYKzFInGW8/TIRRucFgfQQsWDavnoFAAjzrgW6/wZ9TdJkDbSUBRHyiCqKe9t5EAjN0nqgc6nUHlE
+	 pQqmNGqIaLRuJnC6di6GOvBhDovCUcMjEnohcjnfY3QYU1of1pr6guohP/t/++9gd9GhgcZfk5fE8N
+	 YhwfhLrJ84DLnoJ0=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76ac60985d69-ac9a2;
+	Wed, 07 Oct 2026 16:57:41 +0800 (CST)
+X-RM-TRANSID:2ee76ac60985d69-ac9a2
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from openEuler-24.03 (unknown[112.22.250.209])
+	by rmsmtp-syy-appsvr02-12002 (RichMail) with SMTP id 2ee26ac609747be-e442e;
+	Wed, 07 Oct 2026 16:57:41 +0800 (CST)
+X-RM-TRANSID:2ee26ac609747be-e442e
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org,
+	Martin Varghese <martin.varghese@nokia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Alice Mikityanska <alice.kernel@fastmail.im>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] bareudp: set the inner protocol to the protocol of the packet
+Date: Wed,  7 Oct 2026 08:49:28 +0800
+Message-ID: <20261007004928.1268339-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <willemdebruijn.kernel.d7c5ac3be7fc@gmail.com>
+References: <willemdebruijn.kernel.d7c5ac3be7fc@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+On Sat, Oct 03, 2026 at 15:01:48 -0400, Willem de Bruijn wrote:
+> (not for this fix patch)
+>
+> optionally tools/testing/selftests/net/bareudp.sh could run a stream
+> test besides/alongside the ping test, to exercise this path (with
+> segmentation offload disabled).
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Thanks for the review. I will extend bareudp.sh with a stream test
+with segmentation offload disabled and send it to net-next once this
+fix is there.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Thanks,
+Haishuang
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
