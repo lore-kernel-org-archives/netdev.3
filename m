@@ -1,64 +1,64 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBFF4AD4BA
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEAC49E134
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791379850; cv=none; b=TVGHctsh+XU34v9Ri6CIP5rTOnn89ileLrMNgpJA5cMP5wXhNBCY3fWOl0TfmzaQTRJqopbwDg+LlFIG1foWSdvbnoK2dwgUPxqyD2CH89X0TBOIfwTvcm2U42VP9bZpgHGWkIJy8cdl407dgL76Ix+zEykbllpjkx1CSrzxdw0=
+	t=1791379857; cv=none; b=HbH05nwuBsO8a+w7S+ArZbPE3d+Fj6NFgI7p5AeP6BWE9tFqSlat7xs6W7NADiyIeM8FgjON3iIqFthCbvvoJh6HMwyE9fupTnCtZ6WrIwfy7m7rGXmq+IBZxVjAmY9nKnN6O+/mzZKNB6zgLBB55Y6wbv0N75Xpf15ptVeWBdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791379850; c=relaxed/simple;
-	bh=OP4UczG7RhbrIKDJVVTqU95XYOsB7aui8QHW4jKbSsY=;
+	s=arc-20240116; t=1791379857; c=relaxed/simple;
+	bh=1ZKsmwhzjd0+CZKksbja61c9gxXZzOLvYNTFmQ+X0AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ep3h0BJ+0ydoqUs47EGbDKD8VmVH8k1NccKvTjc2+l32CKm48cjo0EhDKaeODoIvCUPh2K94UUkdVAlF8kkXQ0hBXMDxywIADK0TaHiAhCPOZjIyRKyXgTGJrGLIZKChvUPPh+NauPe54E4hM/siuA+iQY3TFLDwzy7wPf4Zq24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=btC5rPY/; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version; b=S3Bg4PVwhnmvD7XpM2Gjmb61E8bogngMC1H3FK5kG5iJxsVx3fQKjYyWzs2Tsuzxc2LwwKFnenCbOOgvkRz12aUqBlaaxKohyzHLFIx0C04fsCr66SzMwHYhi7hSPsEQ9jPc56uSHuEgkEDgZAooYgmQ+EB7H4WcJdO9nbt0miM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=Z6RhPZTl; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="btC5rPY/"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49ff680331aso42980775e9.3
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:30:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="Z6RhPZTl"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-49ff680331aso42981745e9.3
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:30:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1791379830; x=1791984630; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1791379834; x=1791984634; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NwCj5wuDGukY1wD/aQvGGuKOC8RlSIeZidaiO4gUwx0=;
-        b=btC5rPY/LKYeM5qgTfzzZKYdk0ZscdLDhorD9QH3N+hBBDgEA2M9iT2xp3MK0sx8S/
-         bukfwR+yNQ61LHqMvHw04b1Iggjmg+E2Vux4bM9WxJEmvtPE3A1kq6bWFYO5KvAWNRPh
-         /55zS5CnomIRTsCkzSEalh5sX4VJ+NEbCyeZpGyGtcMZv2YIAShAClxLMNkWNdQtXvmc
-         7sIGorSZATNraL/DDihrbgTAiEadziK9x7Myo3iGmHRANSYUJwaBd+W/w7GG0V2n3Zsy
-         dhm8vMjQNKLOZIdApP37gq2NdYWkMP0H/BGWGY/Q8CRfv5yl+ecd3o01on5wJM2BIMIB
-         WY+A==
+        bh=sQ2CI3HUMCjNAVkBXSDeX8OI6aVqzPbi2J7N9xHi8nc=;
+        b=Z6RhPZTlUWkJpEFxdMXeCJQKTZp9lRSNpF5VajfUStT2yiVfCvyj6zn8dcUG/fmIHh
+         DimJqF/0CO9aygM8YY9VG6ylncOq/XdIOG90buz/CrtOpXmwwYjdT6KL6EvEvOx89l5j
+         gl+5jBTZR2JlA8vRviETRLA2kP/MqHoibJqSa2bEXZMmGTwLv+N/rWJasd5f1kdsi6CB
+         wQ0GTMqJetXzg3Uc5Ga7QTrVWBVgJ4knfdaAJ3pwPIWqW9ERYkaRTcH8j1DGDsQX5oCp
+         lHdB1RqYFnaaoOTb9vrJ8mkHd35DMqtUgf4RpeTt5Q4ckgZLp/FY0J6pnxDbtTh40p/5
+         arUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791379830; x=1791984630;
+        d=1e100.net; s=20260707; t=1791379834; x=1791984634;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NwCj5wuDGukY1wD/aQvGGuKOC8RlSIeZidaiO4gUwx0=;
-        b=gO2fTwGZeF7yS7iA3Fwf/hc+eDyz1jHl5tiEIq6fLqPLoFW+mvQch3WiGzEIRhZAh2
-         kBxH7UxoYRKrAGTbIjoR5y4mG8CseT3BMFCnuYL1oY2LR0uK2zlKLh40qYWyb5ZCGbVg
-         a/WZQbbXRC6SWre+ivAnz8WqMeZTm2aa5Q0kSyiuC3k4Vk8whNj8jO1qBPp6/oc2s+ra
-         RufxhdEffX1fJlPo0Zx9U26EHFtFcvPN+cUUV/mPKIon13h/NpkBQF0aRQlzAEws+5n0
-         ia8nWEVvWULiYoODD3nvlvBIP0BEy+uXnqb7sQuG8V9ioklkoRY03OSuRwQ7XvFgA8zC
-         ElvQ==
-X-Gm-Message-State: AFuF++kkipbkHXT05OAjct2X2RpaC0BpdbQ8Jm3gYUxTgSlSm5naji+I
-	TCVfPouRj5SZBq7UMcjWOyAt3UagdvwAkbqs91NmxmsapkJrDAYzM6RHtgP8Pt/HZdPh9pLJvDg
-	9lnRCnFWyxySWxJA8T/V+HDEYVcxCjUXCkt2fAMEVm2v3n23OUbQzQzTxvT3AnT1h
-X-Gm-Gg: AYBFou0ZRU3e2QSSr8fFQczulM6Pf6wT8IMOZA1VEFX3FgBYBStgs7aKIjSUz6ieqGT
-	tfqBZC/1MYJgKs6TS3WH0wl9lpTUcw9DXYtbKYSpk/zlApfhDSSE3gl9LIs2oXzMndNNdQmjOWV
-	wK0JDAH+g6JXftfSUFDlX+Rw9OFW8NBPUc+Z3rPbBrRQa/qrwRTHHiJooi5aVmk38nbDeUcre57
-	xhh4NoemXvzueszXARBUqTE+o8iaTml8BkO2lZXpQwueS9xL1NsHFmFybydc7Hl7kBy2l4VTTnH
-	g6MUJRT1u570eLOsMDGSfxuylMLcCzkWzIa99a4Vks9EkuEKBabzVPyk+UDBl7V63Qoq2e+wJ2k
-	C0tBkRNt85GV288S0joeXybLEDTLFospGf4nwj6XjOymKn5b8u9IFcHmLHvyDB62GVT3+uxNX7A
-	2Zj7X3k2SXEsolMP3C8RR7anPn9YDJ6j5Bbf6fg2cOFQCHk2r7K7MZluxSCbxWHpTZVtL/AXpaM
-	cIeYAzb8Kk=
-X-Received: by 2002:a05:600c:8708:b0:4a0:5b:7bc0 with SMTP id 5b1f17b1804b1-4a18066104fmr33841735e9.21.1791379830118;
-        Wed, 07 Oct 2026 06:30:30 -0700 (PDT)
+        bh=sQ2CI3HUMCjNAVkBXSDeX8OI6aVqzPbi2J7N9xHi8nc=;
+        b=VSLOTcidZbIwjMU8b7NpAaIypVm62CiVP3jXs62/fYEA1qkdw3UVOXSb9CQ/xepqdG
+         2Y+e94ll5vY1YW5oPm7OTd1vY36qtNs48BjfpW4HaDwO08cXpxQ3oHG8AYFcJFhpJqnO
+         HJHCAC0oTeU1an0JNX0Vu93G4VgC/LA6v0Q2khm009iKDRaUixzYtn248ErTQlu3gTc5
+         sth7nlFoyQfsrpXJe8tIcp0ESQYDVphj9r/zLRr3RV6snQx+m5/jnJeguZMIoq2XO0ra
+         cBh0h4jZ81DYmg7SlwbiztkzoYpYKHAjxFqCuouRrUBWvHK1EntNr2zv5D1G9ooRlh7i
+         H06Q==
+X-Gm-Message-State: AFuF++mhKd7y09RQjPl+d2srMwb83s5c6tkNaSwVBBze0lPnKp0Svkvo
+	xRinNOPtlWEmng5lRewK0EZ+rRQAHqmkdobsxNMeHabgMo+1x2DnEMzFhpjcizznNAlZjTw+CX6
+	DgIFxCSNq86nDfiCEN6pV0PGB/Pybzdz7VHiVt6kr+ERf30yIFMCQ96Jig+LdnGJq
+X-Gm-Gg: AYBFou3LyRDXEZp2ORVzjAPc0esU4eEwrrQTV1t3/w5It+GwJFCauJvixeH+zsEVG0w
+	H7Gb5iUjpjtaeO0CS872iFqZ5i1++QzkFNPvLogW/kXXDYOjKlx7qvluffPcIVcI7Ls4y73Xyzc
+	4KhIy4BCR8uTIHizvmDZLO5VbwJZWycmKx+hcrSxOWz2M2NcaCRFaJax5XuPEbxZtPC64m+YDco
+	2P3w8TWNj3guSDBvvJQQX+g0e/Ckaoyvv2OLOOpNmMWcKyeRfJnmMv6ZSsptY8gh1SXwBWKlZb4
+	GXsajApJeAPqVqVnDB8n+m9Z+gYxsGO2T3i3eDoQUTZWFeGGBjb353OmHq34Cepsxjiuw9yu/9A
+	GWTibOGAU4M/PsEegnq2OlXVJn41evgym4AvD9J4HP3gbIi1/0s/F1Xw9OR+8LWV3N0CTbGP/sz
+	HMj18aWaRosZxK3cM102B/UJtRuXKQkQp0C0g5bUknAF9Dlz/tT6x2XvqLsyFRHMhp864Hb2W+H
+	EUTGglH9FY=
+X-Received: by 2002:a05:600c:3b0a:b0:4a1:6a10:4dc8 with SMTP id 5b1f17b1804b1-4a1806767f8mr33160245e9.28.1791379834535;
+        Wed, 07 Oct 2026 06:30:34 -0700 (PDT)
 Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:7fc5:5cc8:bac1:5ef3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17a0fc2e4sm150356145e9.3.2026.10.07.06.30.28
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17a0fc2e4sm150356145e9.3.2026.10.07.06.30.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 06:30:29 -0700 (PDT)
+        Wed, 07 Oct 2026 06:30:33 -0700 (PDT)
 From: Antonio Quartulli <antonio@openvpn.net>
 To: netdev@vger.kernel.org
 Cc: Antonio Quartulli <antonio@openvpn.net>,
@@ -69,9 +69,9 @@ Cc: Antonio Quartulli <antonio@openvpn.net>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH net-next 5/7] selftests: ovpn: wait for the TCP server key setup before traffic
-Date: Wed,  7 Oct 2026 15:30:14 +0200
-Message-ID: <20261007133018.1451958-6-antonio@openvpn.net>
+Subject: [PATCH net-next 7/7] MAINTAINERS: ovpn: add Ralf Lici as reviewer
+Date: Wed,  7 Oct 2026 15:30:16 +0200
+Message-ID: <20261007133018.1451958-8-antonio@openvpn.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261007133018.1451958-1-antonio@openvpn.net>
 References: <20261007133018.1451958-1-antonio@openvpn.net>
@@ -83,118 +83,29 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In TCP mode ovpn_add_peer() starts the server side from a background
-subshell that first listens for the incoming connections and then
-installs the data key of every peer. The subshell PID is discarded, so
-nothing synchronizes the test against the key installation.
-
-The sleep 5 that follows does not cover it: it elapses while "listen" is
-still waiting for connections, and the peers only connect in the
-subsequent ovpn_add_peer() iterations, so the key loop starts well after
-that sleep has expired. Until now the test happened to work because of
-the unrelated delays that ran in between.
-
-Record the PID of the background subshell and wait for it once all the
-peers have been registered, which is the earliest point at which
-"listen" can have returned. A peer that was not given a key yet would
-otherwise drop the server-to-client packets and make the first ping
-fail.
+Ralf has authored 39 of the ovpn commits merged so far, second only to
+the maintainer, and is already involved in the review of most changes
+posted to the list. Add him as designated reviewer so that he is CCed
+on incoming patches.
 
 Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+Acked-by: Ralf Lici <ralf@mandelbit.com>
 ---
- tools/testing/selftests/net/ovpn/common.sh    | 39 ++++++++++++++++++-
- .../selftests/net/ovpn/test-close-socket.sh   |  2 +
- tools/testing/selftests/net/ovpn/test.sh      |  2 +
- 3 files changed, 42 insertions(+), 1 deletion(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
-index 2f7851b82343..e33b1fe26522 100644
---- a/tools/testing/selftests/net/ovpn/common.sh
-+++ b/tools/testing/selftests/net/ovpn/common.sh
-@@ -258,12 +258,16 @@ ovpn_add_peer() {
- 		if [ ${1} -eq 0 ]; then
- 			(ip netns exec "${server_ns}" ${OVPN_CLI} listen tun0 \
- 				1 ${M_ID} ${OVPN_TCP_PEERS_FILE} && {
-+				rc=0
- 				for p in $(seq 1 ${OVPN_NUM_PEERS}); do
- 					ip netns exec "${server_ns}" \
- 						${OVPN_CLI} new_key tun0 ${p} \
--						1 0 ${OVPN_ALG} 0 data64.key
-+						1 0 ${OVPN_ALG} 0 data64.key \
-+						|| rc=1
- 				done
-+				exit ${rc}
- 			}) &
-+			OVPN_TCP_KEYS_PID=$!
- 			sleep 5
- 		else
- 			peer_ns="ovpn_peer${1}"
-@@ -281,6 +285,39 @@ ovpn_add_peer() {
- 	fi
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6de1ff058db6..f7ca3177fa27 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20523,6 +20523,7 @@ F:	drivers/irqchip/irq-or1k-*
  
-+# In TCP mode the server accepts the peers and installs their data keys from a
-+# background subshell. "listen" returns once a connection has been accepted for
-+# every entry of the peers file, so the key installation runs after the last
-+# ovpn_add_peer() call. Wait for that subshell before generating any traffic,
-+# otherwise the first packets may race the key installation and get dropped for
-+# lack of a key.
-+#
-+# The wait is bounded: both the accept loop and the subsequent receive in
-+# ovpn-cli are unbounded, so a peer that never connects (for instance when
-+# OVPN_NUM_PEERS is smaller than the number of entries in the peers file) would
-+# otherwise hang the whole test instead of failing.
-+OVPN_TCP_KEYS_TIMEOUT=${OVPN_TCP_KEYS_TIMEOUT:-30}
-+
-+ovpn_wait_tcp_keys() {
-+	local deadline
-+
-+	[ -n "${OVPN_TCP_KEYS_PID:-}" ] || return 0
-+
-+	deadline=$((SECONDS + OVPN_TCP_KEYS_TIMEOUT))
-+	while kill -0 "${OVPN_TCP_KEYS_PID}" 2>/dev/null; do
-+		if [ "${SECONDS}" -ge "${deadline}" ]; then
-+			printf '%s\n' \
-+				"server-side key setup still running after ${OVPN_TCP_KEYS_TIMEOUT}s"
-+			kill "${OVPN_TCP_KEYS_PID}" 2>/dev/null
-+			wait "${OVPN_TCP_KEYS_PID}" 2>/dev/null
-+			return 1
-+		fi
-+		sleep 0.2
-+	done
-+
-+	wait "${OVPN_TCP_KEYS_PID}"
-+}
-+
- ovpn_compare_ntfs() {
- 	local diff_rc=0
- 	local diff_file
-diff --git a/tools/testing/selftests/net/ovpn/test-close-socket.sh b/tools/testing/selftests/net/ovpn/test-close-socket.sh
-index ec9a51bbf3c9..142dc14e2606 100755
---- a/tools/testing/selftests/net/ovpn/test-close-socket.sh
-+++ b/tools/testing/selftests/net/ovpn/test-close-socket.sh
-@@ -37,6 +37,8 @@ ovpn_prepare_network() {
- 		ovpn_cmd_ok "register peer${p} in overlay" ovpn_add_peer "${p}"
- 	done
- 
-+	ovpn_cmd_ok "wait for server-side key setup" ovpn_wait_tcp_keys
-+
- 	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
- 		peer_ns="ovpn_peer${p}"
- 		ovpn_cmd_ok "set peer0 timeout for peer ${p}" \
-diff --git a/tools/testing/selftests/net/ovpn/test.sh b/tools/testing/selftests/net/ovpn/test.sh
-index e2e6ffdd29bb..0762fa83e4b5 100755
---- a/tools/testing/selftests/net/ovpn/test.sh
-+++ b/tools/testing/selftests/net/ovpn/test.sh
-@@ -45,6 +45,8 @@ ovpn_prepare_network() {
- 		ovpn_cmd_ok "register peer${p} in overlay" ovpn_add_peer "${p}"
- 	done
- 
-+	ovpn_cmd_ok "wait for server-side key setup" ovpn_wait_tcp_keys
-+
- 	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
- 		peer_ns="ovpn_peer${p}"
- 		ovpn_cmd_ok "set peer0 timeout for peer ${p}" \
+ OPENVPN DATA CHANNEL OFFLOAD
+ M:	Antonio Quartulli <antonio@openvpn.net>
++R:	Ralf Lici <ralf@mandelbit.com>
+ R:	Sabrina Dubroca <sd@queasysnail.net>
+ L:	openvpn-devel@lists.sourceforge.net (subscribers-only)
+ L:	netdev@vger.kernel.org
 -- 
 2.55.0
 
