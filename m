@@ -1,280 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB1D443E21
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 22:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791412980; cv=none; b=IR0i4WV2KBsZ4I5vRqYnHG4tvUt82o+l1ekbOdKe1wF0/8+EeqlXCddDmm31dzCFsgZ7DjzkO4bambeW8SI8/kmPeoTKpFn9GY1otZppYaFtw2l9fWL60ImAHwtbwx+s2nentBeZ6hG2RvTAsuXUv33sUWpOw3OiGzvBN6G+J0c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791412980; c=relaxed/simple;
-	bh=gD4sPNq1uISypdbnRNd4fHhlz4iXw52HSVyevPd2U2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=q+3MivSlM13t7897vHXtWbLQmoilnDk1gKHEGDFUZGxUnBZbezUyuEzPqkXr1ZsUO6W+jeG5O8t+mo/O5pBjpe137xifGUgWAGh3dLR/Bh2Sjv2eRAZD+uqV1OZbpZn4AxzPx3A0eapGnGS7QCyRvKueVPqVmhxcU89b2B4zYFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TR6e8ygh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T1cIfO7d; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3B138E126
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 22:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791413009; cv=pass; b=ROcGjCIYYUzCOsoU1l0217ZnPHVw8xhwGMy5QKNMZUhq3PwxCBKg0y8Ot7aRERVtIZL6GEByBkRmr1iuoO2Oc+ggO0dcQZzb43awkT3MwNsWsHZM4Hk2iqI+YX6WU1H5h6MMdnzdiZfrYLxaeQwHaUlZeto7eLzb33K6ZcesYLU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791413009; c=relaxed/simple;
+	bh=vDZ3cTwxqjGw1b4UnPK3GokiygaHb1AoW5HXC6qbtc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iKfR+PN4OtOlkjxogxzacRErbZwO3nAnfwjf3mEYEtvBJNumfvMyT3FKiRKbWOeTw36SkgowkQliXVR0ujIj56wO1zoZE0iLk01G8ohsrvL5yZYmi0VVxm72EWcNW0sMU3Zrs9C05VptZy24ASmuY93d/m3zK8BxZKRIN7DlFFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OigA+zYz; arc=pass smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TR6e8ygh";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T1cIfO7d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791412978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=13gxPsURjLzCdi+sDd2xIfT4EKUZ/Mngu1xOwIk0swU=;
-	b=TR6e8ygh+U3eBMOX4Gz+j6TUNiuL9AgUucFx5AfIbLUA3K1qyDAyv2FQteNV4nKZ9NFyx3
-	drlSVemfINSjye/P+rXcrV9atfw5gYcTefDBz07vbfbaNybjHryUqhDyhl8t/qaDPWSrtV
-	tiLg6KoBuLkUq36aBkpEyefXl8E2l5c=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-o89U1FF-NRW_QRhXXoDS7A-1; Wed, 07 Oct 2026 18:42:54 -0400
-X-MC-Unique: o89U1FF-NRW_QRhXXoDS7A-1
-X-Mimecast-MFC-AGG-ID: o89U1FF-NRW_QRhXXoDS7A_1791412974
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a022fee32fso38134735e9.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 15:42:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OigA+zYz"
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-4911df1e196so2271193fac.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 15:43:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791413007; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Qct+1NrKMVbfUIsd5SS7zOs7bbBeEYFdBAr/TSQfe/34s2pio07ZkqhWREpL9R9TP3
+         LkhtfEiNmU8T5EgIXY4LEOvTjm9YU0qDBmo7uAda00kgXuvvQwK0aZpYSkjI4yNjxkTH
+         XjV5avDpm7cMMsr65iZBCiNMCq0klfDHDPAobvXOA7ZSYO+2R3gxgdRkGzK4BQUYuUyL
+         U9ZNw3Gi6ta4Si0S+8hHgGltpljuVX9YQU4f+zsqkgfhv9dKU1XdqID7TYUakGPhW4Y3
+         QEvpX32oaYl0CUeqKR7G+PPlrOVAKUQhUr5vmUvMVfPZTQqKXNPCHpICh2wY6s/KU3vx
+         48vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vDZ3cTwxqjGw1b4UnPK3GokiygaHb1AoW5HXC6qbtc4=;
+        fh=7xoxsJye0dfTNfzmlHtjaUzLp5vGFUkKBz/h76CPQNQ=;
+        b=IMJbRQKXiyrqiLIidvvw7Vs+001XxRHxWVE71a6YiPJ/aC7JhMWrwm4BWmMUoKLqGb
+         4kREwXpKW1peXKqEgPrJRTBkDUmRIpyTG6RbIHJzIe9zQPQTACt0BYGJPW8YenhEGv6c
+         VP7+Ku+1CeAfTcQasUNHxjB7dVY1m9/HJyDSzFSmVDgEhlwwoRlRvCVE0V+jJ3NN3B+E
+         j44ouRVKeGBgwFjhy717D3X/Iif2rGAQPZRxiJnwx4cwxSfaRgP6VkvswWs9gidEQ8b6
+         3jdcbAAO+rO9Md90fTAVcaMw2nV4T3pNJ23zEyvqsDWg3ALKhdBHDqUxcO6St4Zg9fQY
+         axiw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791412973; x=1792017773; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=13gxPsURjLzCdi+sDd2xIfT4EKUZ/Mngu1xOwIk0swU=;
-        b=T1cIfO7dnx8gEKE6L/AgU8I+HZODTob3wHgiHuDuZBeIrWsU5qMm10kkJRjFen9wT4
-         Lk3eedzp+8S9PriXFHUNDreznWU0JiQhMPxaSIUs/zJ0yPSS3gvHTHMbfSNHQBQzKUPO
-         rSKUHifQERAIuB6FO2fLjkAVWPTKPFjmGz8l93mPONVQsAAqgKijMk+NX34FWys5rl/y
-         D0HAyMsHec8Gm6fNqkEAJHomon9YfsywcrMxcX67WbqN9nyY2uZfES017GDtiVVRx9xh
-         LxnLmsYu3MlaZLupCRqfXi+PUriyxS4y/BjtVne7CZkcZSteg0SWupIHhC1iD25ZQwcc
-         uMoQ==
+        d=gmail.com; s=20251104; t=1791413007; x=1792017807; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vDZ3cTwxqjGw1b4UnPK3GokiygaHb1AoW5HXC6qbtc4=;
+        b=OigA+zYz+K9chR+C+fYBjK+k+r8ANl9R33JEU6TO5foZlA2hWZTAs1up1Vn8JmzHgk
+         P6EX5FhHcKj/wpo7NdK3KOKIxPOWBBg6l6e7xnAYFllrFWwbH+sIYClZmhw4njy4VOEs
+         mZ8ssXJ6FbuztDpKYv4+tqZ0QdqJGF4t2hTuDjAujm9YXQucyM02isJdwOZmFcAbMBXp
+         62oES8fA5y7IIao8ULV6QTVp7dFHZlx2iNOANugOr/gAKY83udSm6ttv96tmXlzZ60Ig
+         zD+NW2PcmVQLCRll16B5N3m5KjgM4xHDq4d3o6gRYC6tfhFmvWaSHGcB0oeim9NxGIEs
+         86zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791412973; x=1792017773;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=13gxPsURjLzCdi+sDd2xIfT4EKUZ/Mngu1xOwIk0swU=;
-        b=m2fx5o5YDHnRFmBPYSb4kOVFZVeND/xOy1/gJRKjn2DwhaPo5M0HGJiOyW/L8aPDvq
-         xG0ghTyB+ct+hTdbLr+vIJWO64vunBKJy3UzLkJYsP5dqUIE+Sw1PhTit3TMehfH/xpZ
-         OwzEOvQez8KhQbIluMhUuDCt+p7dmqvtQKFi3FHzaHxVxKxje0nYXsfjr9i/rvY73eGc
-         63btJn6V6fcRxrY4LbX+7Qf3eAPBTWX+qG8NpBqHuFaXvTFCEARMIFr7tobOdGGq3k6C
-         IbbC9okRWHT8H6uecdjET+uCd59aYzXiObynDogr9Tgu6O0UK7GsHIehkAT+IhZghW5c
-         U8Ag==
-X-Forwarded-Encrypted: i=1; AKwUvByYwsnafbrzD0To+qj79jUKsknAPI9GBVPzYlFEMbtw7BWidXAouFXTiy2nJzLSRovlNrdZhCQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kGWC4xwO8w/Aom4zWBVKfGaRZKuVoopLeej9sGg1a2O+IwDgkY
-	t0aPb//ckqoGPPV5eTA9hYQTBbUZuMgLbDGYkOvzkpKrq15Q5Ko6bLsAVCskjQNDds369uDon2Y
-	tph3oMZ2NcZAFKSalQuPps1BTFX87qKMgVswrf27wVYPZj8lIDlRzsP4SRw==
-X-Gm-Gg: AYBFou2+Wali1yiLv22EufymVv+ssNKvCbhwOiImgEhcZcB+SFXN25MELWVXIJ9TfaN
-	rYkr9oJwsgqDLC1fY+mHe1htR82n52M63J/vX8DP+i3PfdbVJe04YpJb/oiBmTdyDb5HvkY7aVD
-	7t0+ZRPbdLL1AWEp4lxzVx+9jgoL++kEXKIaVQhnBVjzh8Gxi/p27e2OiYME2/VuRNHqFhyWhNW
-	ijKi4zaZ35zUzAOjUSTbr+rAWhMyimjtWtbvJW2U2n3x8avRKa5dSFm/Sy6frNIrBgSDZ25wc79
-	JFAS17DwX99vswsurTxitiRDHcM2tISOhDhi1JG3HjAVWdMLAPZLY58+hu9onTLmP0pMKPk=
-X-Received: by 2002:a05:600c:468f:b0:49f:ce78:356d with SMTP id 5b1f17b1804b1-4a1806508edmr61035585e9.30.1791412973479;
-        Wed, 07 Oct 2026 15:42:53 -0700 (PDT)
-X-Received: by 2002:a05:600c:468f:b0:49f:ce78:356d with SMTP id 5b1f17b1804b1-4a1806508edmr61035375e9.30.1791412973041;
-        Wed, 07 Oct 2026 15:42:53 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1843dfb3bsm25148435e9.13.2026.10.07.15.42.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 15:42:51 -0700 (PDT)
-Date: Wed, 7 Oct 2026 18:42:49 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, bridge@lists.linux.dev
-Subject: [PATCH net] ipv4: validate checksum_start before completing checksum
-Message-ID: <0a012b4923e189c4c593ef4f471e5ff0edbe9030.1791412497.git.mst@redhat.com>
+        d=1e100.net; s=20260707; t=1791413007; x=1792017807;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vDZ3cTwxqjGw1b4UnPK3GokiygaHb1AoW5HXC6qbtc4=;
+        b=oegGAFzUdQOmWUW4grRjbXVjN1Gjpyn8ha9zLybNyft7ml/mh7nLSTBcYqaE8tNvlg
+         IdmOIbC4ad/CuOKOSxvpV68hAN6fOhtmdG/zrwaTryDV76buConWn1pDelkf3XNORPMV
+         EsaiE+6jbtZXKgk+WxnaGVCP+lhQ2fKtHNEWBnBTgVEoDhfa5qcEV3WeSKXOGhok//BL
+         qjrq5jlgtz0rf6eNqwGEF0/Whfb/lPpvssXEbkrvzNtwpz4kiuMyGARtzOZOe1KfOSg8
+         MwJV7GJK3BJMe7E2u28XrhTXHGDe5qNHfKKii4bWlH9UMezEa12PtIkxC0GYpFkaN0Kz
+         GiuA==
+X-Forwarded-Encrypted: i=1; AKwUvBxm1wvTzIoh/4ka+21/3KNzQ5F73pCRFEOX8lxKf5fuL1HKZDd/avaloOkdQd1ze72WkLf8H/Y=@vger.kernel.org
+X-Gm-Message-State: AFuF++knPvFjptgXYkXaNJGv2L1fQpE0YFwKn63G3tzpsdZZ/CzDSN3o
+	i3iB4gFmrw/ThlgsbYgT+HzHhimeR32GNV27KzhyDGZU32GMVd/JUgwlrhz+vqnJXQEaak3CweY
+	rDD0NpZw3BcMHxxj4GmzdwCXXaiV3cMM=
+X-Gm-Gg: AYBFou2who58igEdeQF9R0ooNh1vgIYdw2q7qFlykSxYjoxwmAvh93L0L/oVIKtmT5I
+	IW2gxijLBocoyMhjo3Q5u+Dmfj+t1TXeMzU5C7MwSlZ0BvFHWNxTjSBpZh4bkZJqeBwzavtiLsF
+	O6ZjZGF6QGMmkPU4q9IvuF5jxT1LkcFjAxJnBGuXQZgX1tGOwJNuCz5t80L1VvwuSevkYK5XK/A
+	cQXPK7EJPtmlvgLhxYJiFerFhVH0rvZUxj/zDod9VuZWSXcl93Om6t9SLjW/doTmtp8wCcu1oju
+	aooqAhfbwyKMAABl6/HjggM3zB26Sfn8HyNa3uzeQ+K60vYCyMek/tQ=
+X-Received: by 2002:a05:6808:3091:b0:4d5:27da:a496 with SMTP id
+ 5614622812f47-4fc46578fc2mr3900133b6e.48.1791413006632; Wed, 07 Oct 2026
+ 15:43:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
-X-Mutt-Fcc: =sent
+References: <20261006192601.1875100-1-kuniyu@google.com> <20261006192601.1875100-9-kuniyu@google.com>
+In-Reply-To: <20261006192601.1875100-9-kuniyu@google.com>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Wed, 7 Oct 2026 15:43:14 -0700
+X-Gm-Features: AclHuK-zqLiAP0MMvI13NtkINGyxCDygzMNTg_OOEX6e6HDhK58LW_vHwrQA4lg
+Message-ID: <CAMB2axPT7=34UkvddgK-dqvUsagpLWF5pkWp6Xom6PgHd3AP7A@mail.gmail.com>
+Subject: Re: [PATCH v4 bpf-next 08/10] bpf: mptcp: Don't support BPF_TCP_OPS_FLAG_RCVQ.
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-If a packet with bad checksum metadata gets into the ipv4 stack,
-skb_checksum_help can corrupt the network header and cause a bunch of
-mischief.
+On Tue, Oct 6, 2026 at 12:26=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
+m> wrote:
+>
+> The next patch exposes a new kfunc calling __tcp_set_rcvlowat()
+> to bpf_tcp_ops.
+>
+> MPTCP has its own sock->ops->set_rcvlowat() / mptcp_set_rcvlowat(),
+> so we should not allow calling __tcp_set_rcvlowat() on MPTCP
+> subflows.
+>
+> Let's disable BPF_TCP_OPS_FLAG_RCVQ for MPTCP for now.
+>
+> If needed in the future, bpf_tcp_ops_set_rcvlowat() could be
+> extended to properly support MPTCP.
+>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-This was discovered and reported by Paulos, and has been reporoduced
-by others independently since.
-
-We really shouldn't allow such packets in, but as a defence
-in depth measure, let's also check before we complete the checksum.
-
-A more complete validation at input is forthcoming, but needs more work.
-
-Assisted-by: LLM
-Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-Fixes: bfd5f4a3d605 ("packet: Add GSO/csum offload support.")
-Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260922030310.8684-2-habte.yibelo@gmail.com/
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
-
-Lightly tested.
-
- include/net/ip.h                           |  7 +++++++
- net/bridge/netfilter/nf_conntrack_bridge.c | 10 +++++++---
- net/ipv4/ip_output.c                       | 10 +++++++---
- net/netfilter/nfnetlink_queue.c            |  7 +++++++
- net/netfilter/xt_CHECKSUM.c                |  6 +++++-
- net/xfrm/xfrm_output.c                     | 16 +++++++++++-----
- 6 files changed, 44 insertions(+), 12 deletions(-)
-
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 6f602df72ee6..d07c2c573024 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -74,6 +74,13 @@ static inline unsigned int ip_hdrlen(const struct sk_buff *skb)
- 	return ip_hdr(skb)->ihl * 4;
- }
- 
-+static inline int ip_check_csum_start(const struct sk_buff *skb)
-+{
-+	if (unlikely(skb->csum_start < skb->network_header + ip_hdrlen(skb)))
-+		return -EINVAL;
-+	return 0;
-+}
-+
- struct ipcm_cookie {
- 	struct sockcm_cookie	sockc;
- 	__be32			addr;
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 7ecb8a26bfa3..b5444335b86f 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -39,9 +39,13 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 	int err = 0;
- 
- 	/* for offloaded checksums cleanup checksum before fragmentation */
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto blackhole;
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		err = ip_check_csum_start(skb);
-+		if (!err)
-+			err = skb_checksum_help(skb);
-+		if (err)
-+			goto blackhole;
-+	}
- 
- 	iph = ip_hdr(skb);
- 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 74e095b6b7ca..bea79611617f 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -771,9 +771,13 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 	int err = 0;
- 
- 	/* for offloaded checksums cleanup checksum before fragmentation */
--	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--	    (err = skb_checksum_help(skb)))
--		goto fail;
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		err = ip_check_csum_start(skb);
-+		if (!err)
-+			err = skb_checksum_help(skb);
-+		if (err)
-+			goto fail;
-+	}
- 
- 	/*
- 	 *	Point into the IP datagram header.
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index c727668b0c5b..5177e27174e7 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -40,6 +40,7 @@
- #include <linux/udp.h>
- #include <net/gre.h>
- #include <net/gso.h>
-+#include <net/ip.h>
- #include <net/sock.h>
- #include <net/tcp_states.h>
- #include <net/netfilter/nf_queue.h>
-@@ -674,6 +675,12 @@ static int nfqnl_put_bridge(struct nf_queue_entry *entry, struct sk_buff *skb)
- 
- static int nf_queue_checksum_help(struct sk_buff *entskb)
- {
-+	if (entskb->protocol == htons(ETH_P_IP)) {
-+		if (!pskb_network_may_pull(entskb, sizeof(struct iphdr)) ||
-+		    ip_check_csum_start(entskb))
-+			return -EINVAL;
-+	}
-+
- 	if (skb_csum_is_sctp(entskb))
- 		return skb_crc32c_csum_help(entskb);
- 
-diff --git a/net/netfilter/xt_CHECKSUM.c b/net/netfilter/xt_CHECKSUM.c
-index 9d99f5a3d176..1fb0f8118404 100644
---- a/net/netfilter/xt_CHECKSUM.c
-+++ b/net/netfilter/xt_CHECKSUM.c
-@@ -15,6 +15,7 @@
- 
- #include <linux/netfilter_ipv4/ip_tables.h>
- #include <linux/netfilter_ipv6/ip6_tables.h>
-+#include <net/ip.h>
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Michael S. Tsirkin <mst@redhat.com>");
-@@ -25,8 +26,11 @@ MODULE_ALIAS("ip6t_CHECKSUM");
- static unsigned int
- checksum_tg(struct sk_buff *skb, const struct xt_action_param *par)
- {
--	if (skb->ip_summed == CHECKSUM_PARTIAL && !skb_is_gso(skb))
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && !skb_is_gso(skb)) {
-+		if (xt_family(par) == NFPROTO_IPV4 && ip_check_csum_start(skb))
-+			return NF_DROP;
- 		skb_checksum_help(skb);
-+	}
- 
- 	return XT_CONTINUE;
- }
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index e305ba32e356..f1f612cd7b43 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -823,16 +823,22 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
- 	}
- 
- 	if (skb->ip_summed == CHECKSUM_PARTIAL) {
--		err = skb_checksum_help(skb);
--		if (err) {
--			XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
--			kfree_skb(skb);
--			return err;
-+		if (skb->protocol == htons(ETH_P_IP)) {
-+			err = ip_check_csum_start(skb);
-+			if (err)
-+				goto error;
- 		}
-+		err = skb_checksum_help(skb);
-+		if (err)
-+			goto error;
- 	}
- 
- out:
- 	return xfrm_output2(net, sk, skb);
-+error:
-+	XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-+	kfree_skb(skb);
-+	return err;
- }
- EXPORT_SYMBOL_GPL(xfrm_output);
- 
--- 
-MST
-
+Reviewed-by: Amery Hung <ameryhung@gmail.com>
