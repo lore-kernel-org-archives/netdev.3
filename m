@@ -1,75 +1,79 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0513E0081
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:44:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1E63E5A38
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791395095; cv=none; b=W5pxX1yaQcpyE64JsaOl7p6MynFQWNHnUYzN3JRKNXBhNibX6IKE9B5hL2tPZqmnJ9Dfx+JbFf0CP5usZ1AzBLKLb1TO6zmxMDnf35aRtXlevTBZfES1P8gWitlvKphNXvXqhm3B89d9AuY5wVcKd2W7rvGWONFYxgt3FQVeH2E=
+	t=1791395629; cv=none; b=PD8RlgGRfdOy9g7tUpuP+wcL1en508Kv9CEVOwToyPuqbSJ6ObIENG3fT9UI1RFcYhDELmFJ7vbpbLVo8k8z0wT/MBy28EG1QgZB7WEgupCG9fm5ICVvh+j4syhB6plnSQw9UcugnUGP1uYpxuHkJBTZFRBWeZWPKwGj6kn/o5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791395095; c=relaxed/simple;
-	bh=pc5Ae4XMXNmBx9H8gciWl+eQULBxlouB7GIIhqnjQaA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UnmWZfpY7i4OTUFRbi6ZYtAB3pddrfcxor3oT4lEvze5EiY36yHFvbi9yo2BBSORVUeT1fzxlGQYRubdZ1wLBcawLnuwxDRxEYXgYSZD2CMbqtFVIC/kfsl3ZuzfoabH5ggiwWJ7cUD1JH8EMe31zNPe2bydhxM94VNv05+ecqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S513z8oi; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1791395629; c=relaxed/simple;
+	bh=2T8Uml0NShGNDvWiMP4NXducNTo6aIMaISEXdT4NZNo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=brdFyZGeGd3HGxMH2UF1S9rDSrkX5tXsMLYcQ3pOJ4XtQeCVOavJUo2G2IjH0Xb3YCwxOgvhWb/mDbS5bFvGAEGraQmJ3XZXs9Ayfm46d8HfGY40JTgKqAO1dCqQEvMfv2eFNVGAO2L+8rCzuOnba6hkFSyimeTEnerMV90dhTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ADXn2KaD; arc=none smtp.client-ip=74.125.82.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S513z8oi"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-88b8f0a1bcdso1626913b3a.3
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 10:44:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ADXn2KaD"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-34c89609923so2616549eec.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 10:53:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791395091; x=1791999891; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791395628; x=1792000428; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=COSK+hA3alzfROvx4Il2tMQOlgkjSw8oub0vSseZINs=;
-        b=S513z8oiF2o5pcmDawwYyCx3FxgWVvHO4Ffb1cIZW9gWIvlfD+vxz3gb0Qz0pt8Oqz
-         tzBle3cSABOg8LWyvVkDSXuhHG3p1WNq5mvk3u6Pen9b8LY6aecY1IwR3xWcE2NBZyqF
-         Fhl+knrfqqvB8tR5GXCFterV7T4NDrE0KotpXs/LmZoppJkCWZOux8Q2PXrfhKOY83CJ
-         YPHfSbvTsq0yi+I19ST9sryTQy7Efgdqxgatl1456ndtTLsb5Z2i0KTUsF3KBNQ07Int
-         UlFjQEgvfBwC4/27TIn6HXfqCIdg9yUtkNrZyaJJOfntSBy5eZ1c5/eApDlsWlL5J1Hu
-         gk8g==
+        bh=+gmgxmP0+2UXMwCdLFQZo3obMVJ/yu9W4LFjtiv3dxs=;
+        b=ADXn2KaDWP/+D02ixgxH/48YDvW9wiwDGK4bbktJXhuM2Svd1iEJj7/W69UtK/G3nX
+         DF8vSmhusadvvW9nCEX4XdCa5W9hf3ZD67waPhU55YUzvhC6dbrX7E+bvKZnE2r+6wMu
+         yzQv95D4H9r9gQ+vEsR2b7WHtHWmxNtCSZImi9wm1a+n5KlDoNDZv87ez+ktX/Y3RMGw
+         5SWDBfwcVs9to1CdsawSqqG86ubyo/OhVJUPcPe3wpvLUuBTwBPXmy3njam6D3Rjz4eo
+         Q7ca6XX0gOxaF3puKf6G4OMedzsE6LhNpkv4azKtRlOj5rR8xJTNVDvnxqE/79X5AEqu
+         FLkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791395091; x=1791999891;
+        d=1e100.net; s=20260707; t=1791395628; x=1792000428;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=COSK+hA3alzfROvx4Il2tMQOlgkjSw8oub0vSseZINs=;
-        b=KRaZd2uWc3si9gREle+KCBQLudTUhVMIVorqG1nS8QdxUN/RHzi5PI93/sK9e6wZcA
-         QNud0Toov5qGfl/5vfv+tXLc0oZ4e715zDIODYbOxkPSto0KxpNmWVZmH/74GrjED+4n
-         yQeVTZ8BMMW8BewxzA1T6nqOEwucAinTTodBLr7ADuK8RjxzkWAq9YGBRFsVuZz/Orbt
-         TGjsLOdzf46pdZqKEpcNGeSS7OkXK1hFrZvEhHjcs8PPRW7uVQPdXVzFuSUs/YK/VHN4
-         0KNof2FRnMOpeUFbsq5dbsNAsRPvxS3UI6+yP9GMxAnP2YIX7MfsC2sAn2BwBGUnVfEw
-         JuYQ==
-X-Gm-Message-State: AFuF++nCZj1xzNU39wz1OdJiPNAK+lZ5355kg2XCZ/YPFhQrnns+I2pL
-	FZUkezjuMdcruUMMPCXNH0A5psQlcl3x7bbZD9x3oyPFoCdPMdi5XYnDlaYvleo/
-X-Gm-Gg: AYBFou0jdFN7ntJUaSBiep0ql9Hr3WcW47KehR3ix+uaVXPqVN2Ef4HoX4fO4QdJuEB
-	miiEabVI32gFmHk5kJmun23IhbBl6KDGAu0jod5/SP/mDXR8W0bMhACZHg6iKjyx+eZeC1OOwcs
-	aN8+KaMOyM2FS8iu5tI9HN3Ru+ey1wqwkR0AtHrXQ98k1IczdMtvejE+vMvlz5SGikBF43u44l0
-	o7o7wNsN6dTVwA8R/k1tSOUwMqa9EKEYe6UZPpax38Q2HDgCCynRRwQfSuqoMFGDlkO7f8BRRLz
-	LFyIroCHuA19KBQu7ULfGLM9ea2QoKL+BFRB9kok2yW4gRkmK0idrECxKE2hiHCP8iTNz6h96uV
-	DDM4nO6d+m6GrjBTxNVojxMAwFXXOYu29KwFOYk26Pn94dcx8rWg5PJdp5fTuyUauHt+E54gcYb
-	Jq4BGM8FdBiZ5HNXI/JldEOoAKzo0j8u4dBM+pMbiaUSiwiChGTqOCSvmfTCO5aUoD024Nb7RqD
-	9Bm4T8WKenaF55WqVQYWM4cPgKzwzQW8ndhVvZNEBaz4GKXIdUOcFAsIKI5z5i4RNIao93obU3U
-	c5fWxlStpCZOkvnjMYIEAtO68SybiODxpL0ZOTQ+/ILgLHhy2OWFiLMzjlg=
-X-Received: by 2002:a05:6a00:2995:b0:88d:501e:eeb9 with SMTP id d2e1a72fcca58-891b0f8ffa8mr2420530b3a.7.1791395091464;
-        Wed, 07 Oct 2026 10:44:51 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e34])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-892bbf7df7esm616653b3a.57.2026.10.07.10.44.50
+        bh=+gmgxmP0+2UXMwCdLFQZo3obMVJ/yu9W4LFjtiv3dxs=;
+        b=vp69JBNogBNbNdklTr6gpHuxpq9RUjcju8NLhpG1D5225HpfSj9dZFzQkHJfZ0/cAR
+         w6XPDL0byPq2zcxVhR/njf5WRCKpvOEpHVZ8DUZ7duiawNwyQugF0JxJpzlCNVMznb+z
+         GMKbqvLCOZI3So0XROPOgxe+CLYsWqtiQTEN+kRVUGYYIJDUiwo9HzzQXGEjcaX0NzuP
+         xHxsB3zBvM4Ns+LUtuxJp5WbOXmUaYwVGJwnycPblkmnzx8HDs63riZxVIIOE4iuMtrH
+         Zl6Ari8iqBXCWtlN5kPFlSqeRer/CFpvrWPJSeM/vZH2YlzSfqlAjKD0fy+jYq1acuo8
+         A4kA==
+X-Forwarded-Encrypted: i=1; AKwUvBwDXQfMgLt8yUeWj10XE46ipL7L8/DxLXBqpeRExBbew+Ur1qny/C7yPjRulYq9etGbuG1g0L0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJZbgCY38SR3i7f8qUUWnV7NWoLo7hbTMgW+9wbR7VLahBSeIkN
+	gO7R8X4HvtM+IBpoJn2bnL8oNYJRCDiNURmzKIWYE51LvRYDquVXDxas
+X-Gm-Gg: AYBFou0LhEa2Z97S8Eg+8Z3wewu1dtpltMiFTY4ZoBaYWFZhGdNoYo6hGNejsPcILRN
+	RzSiB/wDpIjXIQ0q09QAT0pN6FrnvMMUpZPGg9LROUdSyzgBq/LPWmXFEZ/WN4pgT/idFzMX9UO
+	TqD8f8MQgEZfgKjxtE5cd+7IMTv6o17OAPmrJTbSVNAeeOYzUFyeshvavsutVa8GA62N8wBgDmg
+	SGiHEBKtz0M2SAUG4/Y9zZOZq4MQJB3kG6YX6364oAijLJj2ypB2BB7c5BbsDuI/KAShtDRJaC0
+	kkRs0Pmp7Hb8qcaDI53dSseJyZIFe0SSjslJ8tnv57SaXoi/vhiI277JCaSWwd1bIN7/o7ETmxl
+	k6gUN0/pFkHtj+REzWTxo8bMtauYt5gtZE1N7/CiI/UrTLSFKbhPNzjVt7a5PNCKHk3G9RiNwkY
+	ulBAWP0XGDqGJNcAaze5/+RMX/DBKng0INrfkpoegUGkhTjxa5aD9Uy18cA2YzORlGTCj6qxgBJ
+	D30HOfhY5GyiOqDLmWlR/1T8Hyi2gEE5dcXqCD216bE1homxkrUcxVDXTmQJuezk16VJK0WO6Sp
+	Kyfo5iI4x/cMQku5aKO2TI07rel5MQ==
+X-Received: by 2002:a05:7301:3d12:b0:342:645a:5cf with SMTP id 5a478bee46e88-3515dbd00c9mr4952275eec.1.1791395627340;
+        Wed, 07 Oct 2026 10:53:47 -0700 (PDT)
+Received: from kapoor.iiserb.ac.in ([203.18.51.214])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515af90521sm16129669eec.19.2026.10.07.10.53.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 10:44:50 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Chris Snook <chris.snook@gmail.com>,
+        Wed, 07 Oct 2026 10:53:46 -0700 (PDT)
+From: Arnav Kapoor <kapoorarnav43@gmail.com>
+To: Edward Cree <ecree.xilinx@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next] net: ag71xx: align the IP header behind DSA tags
-Date: Wed,  7 Oct 2026 10:44:49 -0700
-Message-ID: <20261007174449.671416-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.56.0
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org,
+	Arnav Kapoor <kapoorarnav43@gmail.com>
+Subject: [PATCH net-next v2] sfc: fix stale kernel-doc member names in net_driver.h
+Date: Wed,  7 Oct 2026 23:23:34 +0530
+Message-ID: <20261007175338.28683-1-kapoorarnav43@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,87 +82,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The receive buffer offset includes NET_IP_ALIGN to get the IP header
-aligned behind a 14 byte Ethernet header. Most ag71xx devices use DSA
-switches whose tag sits in front of the EtherType, which moves the IP
-header by another 2 bytes. Every access to the IP and TCP headers then
-traps and gets emulated by the unaligned access handler, around 6 times
-per forwarded frame.
+Several kernel-doc comments in net_driver.h describe struct members that
+have since been renamed or removed, and the EFX_MAX_FRAME_LEN() comment
+is separated from the macro by the EFX_FRAME_PAD define. kernel-doc
+reports:
 
-Take the headroom needed by the DSA tagger into account when choosing
-the offset.
+  Excess struct member 'state' description in 'efx_channel'
+  Excess struct member 'state_lock' description in 'efx_channel'
+  Excess struct member 'indir_table' description in 'efx_rss_context'
+  Excess struct member 'irq_rx_mod_step_us' description in 'efx_nic'
+  Excess struct member 'tx_queue' description in 'efx_nic'
+  Excess struct member 'rx_queue' description in 'efx_nic'
+  Excess struct member 'extra_channel_types' description in 'efx_nic'
+  expecting prototype for EFX_MAX_FRAME_LEN(). Prototype was for
+  EFX_FRAME_PAD() instead
 
-TP-Link Archer C7 v2 (qca8k), median of 3 runs, Mbit/s:
+along with "not described" warnings for the renamed members.
 
-                       before   after
-  routed up               743     855
-  routed down             660     749
-  local receive           554     572
+Fix the member names to match the structs, drop the entries for members
+that no longer exist, and move the EFX_FRAME_PAD define above the
+EFX_MAX_FRAME_LEN() comment, documenting its @mtu parameter.
 
-The unaligned instruction counter no longer moves while forwarding.
+kernel-doc -Wall also reports three members that are not described
+because nothing in the driver uses them any more, so remove them rather
+than document them:
+
+  - efx_channel::busy_poll_state, left behind when commit e7fe9491261e
+    ("sfc: get rid of custom busy polling code") removed its users.
+    @state and @state_lock above were its old kernel-doc entries.
+  - efx_tx_queue::flush_outstanding, only used by the Falcon/Siena
+    flush code, which commit 36ff6393292d ("sfc: Move Siena specific
+    files") moved into siena/ with its own copy of the struct.
+  - efx_rx_queue::min_overfill, whose kernel-doc entry and only
+    assignment were removed by commit ecc910f520ba ("sfc: Make the dmaq
+    size a run-time setting (rather than compile-time)").
+
+The warnings were found with scripts/kernel-doc -Wall. I don't have sfc
+hardware; this is compile-tested only.
+
+No functional change.
 
 Assisted-by: LLM
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+Changes in v2:
+- Remove busy_poll_state, flush_outstanding and min_overfill, which are
+  unused, instead of leaving them undocumented (Simon)
+- Use the Assisted-by format from coding-assistants.rst
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index 8a3c689f6825..414d26118d15 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -38,6 +38,7 @@
- #include <linux/reset.h>
- #include <linux/clk.h>
- #include <linux/io.h>
-+#include <net/dsa.h>
- #include <net/selftests.h>
+net_driver.h has further members with no kernel-doc description,
+mostly in struct efx_nic and struct efx_nic_type. Those are in use, so
+I'll document them in a separate patch.
+
+W=1 build of drivers/net/ethernet/sfc/ shows no new warnings.
+
+v1: https://lore.kernel.org/all/20261003055443.144554-1-kapoorarnav43@gmail.com/
+
+ drivers/net/ethernet/sfc/net_driver.h | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
+index 3964b2c56609..71144bb4c6c8 100644
+--- a/drivers/net/ethernet/sfc/net_driver.h
++++ b/drivers/net/ethernet/sfc/net_driver.h
+@@ -314,7 +314,6 @@ struct efx_tx_queue {
+ 	/* Members shared between paths and sometimes updated */
+ 	unsigned int empty_read_count ____cacheline_aligned_in_smp;
+ #define EFX_EMPTY_COUNT_VALID 0x80000000
+-	atomic_t flush_outstanding;
+ };
  
- #define AG71XX_OOM_REFILL	(1 + HZ / 10)
-@@ -1396,6 +1397,24 @@ static void ag71xx_hw_disable(struct ag71xx *ag)
- 	ag71xx_rings_cleanup(ag);
+ #define EFX_TX_CB_ORDER	7
+@@ -431,7 +430,6 @@ struct efx_rx_queue {
+ 	unsigned int max_fill;
+ 	unsigned int fast_fill_trigger;
+ 	unsigned int min_fill;
+-	unsigned int min_overfill;
+ 	unsigned int recycle_count;
+ 	struct timer_list slow_fill;
+ 	unsigned int slow_fill_count;
+@@ -467,8 +465,6 @@ enum efx_sync_events_state {
+  * @irq_moderation_us: IRQ moderation value (in microseconds)
+  * @napi_dev: Net device used with NAPI
+  * @napi_str: NAPI control structure
+- * @state: state for NAPI vs busy polling
+- * @state_lock: lock protecting @state
+  * @eventq: Event queue buffer
+  * @eventq_mask: Event queue pointer mask
+  * @eventq_read_ptr: Event queue read pointer
+@@ -526,9 +522,6 @@ struct efx_channel {
+ 	unsigned int irq_moderation_us;
+ 	struct net_device *napi_dev;
+ 	struct napi_struct napi_str;
+-#ifdef CONFIG_NET_RX_BUSY_POLL
+-	unsigned long busy_poll_state;
+-#endif
+ 	struct efx_buffer eventq;
+ 	unsigned int eventq_mask;
+ 	unsigned int eventq_read_ptr;
+@@ -788,7 +781,7 @@ struct efx_rss_context_priv {
+  * struct efx_rss_context - an RSS context
+  * @priv: hardware-specific state
+  * @rx_hash_key: Toeplitz hash key for this RSS context
+- * @indir_table: Indirection table for this RSS context
++ * @rx_indir_table: Indirection table for this RSS context
+  */
+ struct efx_rss_context {
+ 	struct efx_rss_context_priv priv;
+@@ -881,16 +874,14 @@ struct efx_mae;
+  * @timer_max_ns: Interrupt timer maximum value, in nanoseconds
+  * @irq_rx_adaptive: Adaptive IRQ moderation enabled for RX event queues
+  * @irqs_hooked: Channel interrupts are hooked
+- * @irq_rx_mod_step_us: Step size for IRQ moderation for RX event queues
++ * @irq_mod_step_us: Step size for IRQ moderation for RX event queues
+  * @irq_rx_moderation_us: IRQ moderation time for RX event queues
+  * @msg_enable: Log message enable flags
+  * @state: Device state number (%STATE_*). Serialised by the rtnl_lock.
+  * @reset_pending: Bitmask for pending resets
+- * @tx_queue: TX DMA queues
+- * @rx_queue: RX DMA queues
+  * @channel: Channels
+  * @msi_context: Context for each MSI
+- * @extra_channel_types: Types of extra (non-traffic) channels that
++ * @extra_channel_type: Types of extra (non-traffic) channels that
+  *	should be allocated for this NIC
+  * @mae: Details of the Match Action Engine
+  * @xdp_tx_queue_count: Number of entries in %xdp_tx_queues.
+@@ -1711,8 +1702,11 @@ efx_rx_buf_next(struct efx_rx_queue *rx_queue, struct efx_rx_buffer *rx_buf)
+ 		return rx_buf + 1;
  }
  
-+static unsigned int ag71xx_rx_offset(struct ag71xx *ag)
-+{
-+	unsigned int align = NET_IP_ALIGN;
++#define EFX_FRAME_PAD	16
 +
-+	if (ag71xx_is(ag, AR7100) || ag71xx_is(ag, AR9130))
-+		return NET_SKB_PAD;
-+
-+#if IS_ENABLED(CONFIG_NET_DSA)
-+	/* A tag inserted in front of the EtherType shifts the IP header,
-+	 * compensate for it to avoid unaligned accesses in the stack.
-+	 */
-+	if (netdev_uses_dsa(ag->ndev))
-+		align = (align - ag->ndev->dsa_ptr->tag_ops->needed_headroom) & 3;
-+#endif
-+
-+	return NET_SKB_PAD + align;
-+}
-+
- static int ag71xx_open(struct net_device *ndev)
- {
- 	struct ag71xx *ag = netdev_priv(ndev);
-@@ -1410,6 +1429,7 @@ static int ag71xx_open(struct net_device *ndev)
- 	}
+ /**
+  * EFX_MAX_FRAME_LEN - calculate maximum frame length
++ * @mtu: MTU to calculate the maximum frame length for
+  *
+  * This calculates the maximum frame length that will be used for a
+  * given MTU.  The frame length will be equal to the MTU plus a
+@@ -1726,9 +1720,8 @@ efx_rx_buf_next(struct efx_rx_queue *rx_queue, struct efx_rx_buffer *rx_buf)
+  * Re-clocking by the XGXS on RX can reduce an IPG to 32 bits (half an
+  * XGMII cycle).  If the frame length reaches the maximum value in the
+  * same cycle, the XMAC can miss the IPG altogether.  We work around
+- * this by adding a further 16 bytes.
++ * this by adding a further 16 bytes (EFX_FRAME_PAD).
+  */
+-#define EFX_FRAME_PAD	16
+ #define EFX_MAX_FRAME_LEN(mtu) \
+ 	(ALIGN(((mtu) + ETH_HLEN + VLAN_HLEN + ETH_FCS_LEN + EFX_FRAME_PAD), 8))
  
- 	max_frame_len = ag71xx_max_frame_len(ndev->mtu);
-+	ag->rx_buf_offset = ag71xx_rx_offset(ag);
- 	ag->rx_buf_size =
- 		SKB_DATA_ALIGN(max_frame_len + NET_SKB_PAD + NET_IP_ALIGN);
- 
-@@ -1874,10 +1894,6 @@ static int ag71xx_probe(struct platform_device *pdev)
- 	ndev->min_mtu = 68;
- 	ndev->max_mtu = dcfg->max_frame_len - ag71xx_max_frame_len(0);
- 
--	ag->rx_buf_offset = NET_SKB_PAD;
--	if (!ag71xx_is(ag, AR7100) && !ag71xx_is(ag, AR9130))
--		ag->rx_buf_offset += NET_IP_ALIGN;
--
- 	if (ag71xx_is(ag, AR7100)) {
- 		ag->tx_ring.desc_split = AG71XX_TX_RING_SPLIT;
- 		tx_size *= AG71XX_TX_RING_DS_PER_PKT;
 -- 
-2.56.0
+2.53.0
 
