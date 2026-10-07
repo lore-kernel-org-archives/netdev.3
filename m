@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBFC367B63;
-	Wed,  7 Oct 2026 02:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983B3370D5C;
+	Wed,  7 Oct 2026 02:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791338414; cv=none; b=CsNbgttTpDIwxV61O7Ywzc93JBSWfWzZOPBmrR1TTGP/1j5m2oTp9W+QG/Q7/+AkI8xOGF6eP5xYhg1EP84fDCnPJPwmMHoVu2yrdAYarg5cA8pA+CBxDJPOVtgFWm5aZaaZCmvZuM9egg8f/cZynaKSHW5aca7hA7dkT6O7q4U=
+	t=1791338416; cv=none; b=jSBAqCISn696daaSFGVqyKo2ad+9peNBFo5NmSPTyg99iamYNI8ViCGSDT6+aJPEnsYUS0b+QA6QJn3M3iZ/V958PEPSiDMyYp9THPizDrFWMKXVKkiBVei6DsnwCNyQAZrsWQ8ZL87QrGY2mdKemZ1/btlzIrhSRIQeu8LUBMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791338414; c=relaxed/simple;
-	bh=gi/y+TwF++C1z0Vcaw2AI7M0rCakaR3X6h7YqU4Q0TU=;
+	s=arc-20240116; t=1791338416; c=relaxed/simple;
+	bh=RxepsJxIJWwTuTFbAclQd7kI5CyoAzjQhEqdfyNNiZI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=s0pdfI0JAL82+R02hqiOQwBXu2ObImETJ6wt+TbTl0hE4o0uRHIBV+aq+QZlQhI+bLxTyIL2Q3G20+9UW7hcESHqS80UOjRo6bi00lGVpFP8Ewz93qWc4mtnLoWvlP8pXlzwD/ztA1cnaMRiXxcH7P4Ji4upj8eYS+n9K1T9rWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxIDX2MC; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=rEaFanZwzIFQnK4O4ZqoqwcRCkwtbcU16thhtkbeT6IcgXN2i3xpZmh69Wmrrr12gvWMttegMapl/0iuQxRFl+4BgREW04EPQacZQh81t9fBYbhuuBI7IjGzFtuSn8AL2wSWrv8+0rLO3+hEJxITNygQkoSeioo5zi3o+k5pHp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKv2iQrd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxIDX2MC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD00B1F0089C;
-	Wed,  7 Oct 2026 02:00:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKv2iQrd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417D81F0089B;
+	Wed,  7 Oct 2026 02:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791338412;
-	bh=Q2fydv21AmluA4JaYt0YtWcydZZxhibbgfG0vCj4y+0=;
+	s=k20260515; t=1791338414;
+	bh=0Xz3H5QEivSnJLWldQxKghW6TKfWxi0S9El9nsgr8sY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lxIDX2MCmcr7QCg9pWkHCZ8BvL5AaEX/jpzXupPdf2MEdxuL1wmvGQA1+tGLxhUWo
-	 mikx0ZzlV0H3BUPAl6T4jwE9Fs3Zxk+5Pyhn6Um3b8KFzi7NGri8eLt5V+c2Uwx5wp
-	 dhRdwWe2cyI+MAbhDebjyzLRR2HcJ89fUeFnxgu0QIRTT3xGqgONYEia7LUZ0uF+ah
-	 ZpgpqGML8yG7Q9iiqEPGz9JhsFwggzPjTe48qC7KNvX2WunlNhjWz9gMhAgldkayJ1
-	 Kz+5icOj/CVui+xYyFVR8eph0MJet8/w+Vh+GtHoK8f9dmhbO2Mt3rD6bBx0dxVBKC
-	 x1Mi7UksGrqDw==
+	b=PKv2iQrdMIZT9P3wKu5evMjHOcd8fBc9XPQA7Ah3r98yTrDeKTdfbNaFA56tUyh7W
+	 zXRwBMHBlIQ+51KmUbQn60iVeI3TbRub05wzXPj3fQDgMOPPU6IECk3Om0+Fb6P9it
+	 BEF1HO+n7a07WM1CGAduoF3sHddkuAkJMDCxV8mTi0b1WV2/4eqlP1BeqhnavXTRSl
+	 LtEA/qr0Bs9WDbR/JCa6WGkKwB7AqLD//PZu/TVeb7EqlHdNFaJgNPDjz9nOlB7Vp/
+	 SXpF2IGo4BxBi7VgsMoU0Pz0MrHQlfM1Z2QHqxmjmCgkPCEBtDfmqAvg51mTMg4Qb1
+	 OOYA+fu99Bz8Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B43853806541;
-	Wed,  7 Oct 2026 02:00:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A1173806541;
+	Wed,  7 Oct 2026 02:00:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: devmem: remove net_iov_area base_virtual
+Subject: Re: [PATCH net 0/2] pfcp: fix two bugs in the receive path
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179133841127.2870283.3925575192538703161.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 02:00:11 +0000
-References: <20261005201822.3060658-1-sdf@fomichev.me>
-In-Reply-To: <20261005201822.3060658-1-sdf@fomichev.me>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org, horms@kernel.org,
- sdf@fomichev.me, bobbyeshleman@meta.com, almasrymina@google.com,
- linux-kernel@vger.kernel.org
+ <179133841277.2870283.16508077163700208399.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Oct 2026 02:00:12 +0000
+References: <20260930124818.114224-1-yanhaishuang@cmss.chinamobile.com>
+In-Reply-To: <20260930124818.114224-1-yanhaishuang@cmss.chinamobile.com>
+To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ michal.swiatkowski@linux.intel.com, aleksander.lobakin@intel.com,
+ marcin.szycik@linux.intel.com, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  5 Oct 2026 13:18:22 -0700 you wrote:
-> Since commit 083e64a3af77 ("net: devmem: replace gen_pool with
-> freelist"), a binding has a single net_iov_area covering the whole
-> dma-buf, and base_virtual is always 0. Its only reader is
-> net_iov_virtual_addr(), where it adds nothing. io_uring zcrx never
-> uses it.
+On Wed, 30 Sep 2026 20:48:16 +0800 you wrote:
+> This series fixes two bugs in pfcp_encap_recv(), both introduced when
+> the receive path started filling in PFCP tunnel metadata.
 > 
-> Drop the field and the store, and compute the dma-buf offset from the
-> net_iov index alone.
+> Patch 1 fixes a metadata_dst leak when iptunnel_pull_header() fails
+> after tun_dst has been allocated.
+> 
+> Patch 2 makes sure the SEID is in the linear area before it is read, so
+> that a short packet with the S flag set cannot make the driver read
+> beyond the end of the packet data.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: devmem: remove net_iov_area base_virtual
-    https://git.kernel.org/netdev/net-next/c/7d3e5984d0fc
+  - [net,1/2] pfcp: fix metadata_dst leak in pfcp_encap_recv()
+    https://git.kernel.org/netdev/net-next/c/d065de29c919
+  - [net,2/2] pfcp: make sure the SEID is linear before reading it
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
