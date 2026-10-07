@@ -1,108 +1,178 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C693EB80E;
-	Wed,  7 Oct 2026 18:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269A33F412C
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:38:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791397991; cv=none; b=tLiRXkSWgsxNlBrKxtLZN0UWoPQr2n4EqnoTOaMs4/yr20N5GxbxBWAuA8jIjmMNmhli1M3Y9nY1s313wIKBLKCyRbtFRBkY4JqFcRS5wFArUo/HP7UgWvZwI5y9UQq57AdOpFY42Io8xXJZOwR5u/bsFmAIY72DhdFUGEGY+kY=
+	t=1791398307; cv=none; b=ivuAJt5HK+am6TSvKC9DyLvfJirHwA4e2K1Z2qCvrJrVD36Dg/2VqSwDvCXY9gLoQ13u5TbOlKRUlhbaDRZVr+ogJRARQuauVGybhcEAAUTleqIP3OYNpM7QM4qYLKlUBAl0bul9AMUqCZUDOUAVd4yS7o3gkFSV94ft+IoageQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791397991; c=relaxed/simple;
-	bh=IrHem+qcZdg7O3mkd/kbCHY0FVwKgcWMCKdi3X9qIoU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MLob+1tcvWlG1ugyBEEwUtsB4cRFfPlGBkZDAHbBegqjGPl0tJCtBGHTX/CnyF5TWebrzCV/UBmhk/EI56aAXcFOR5giUDV07yfjskw+hL6DK8AY3DfvDxWLTUZPuBEWknZoftQP3NILS1X/IrWEf2rGyOzV5HAF9d184B8S730=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0SuPaxNt; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791398307; c=relaxed/simple;
+	bh=JpBMAw+tGIDULMwd1xZavj6lhXlGClcjwk1vQb+S4gE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CT8Ne7yMHwFVERI2l9ATnIjokhOAGb2S5NjOquvgeSLIKiTOCr9RIO9mRBOOmP9TKxiRF+7aFE9JAgqvLY9ldI+54fqp8tgNXOkKMA7YXZSIN2sEUGUnMop+EkiRsmiZsnSTttK/zBkEjBSKAgVWH1LcVthn4irBsLSNYz+Lnc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nnfd5wRv; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0SuPaxNt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=bA1Tyu08pBfCHkqfVoKs1WHfW1LeJHm5dUdedfcw7is=; b=0S
-	uPaxNt/vCCuu7MdtJDS+918gtrDICn2cOkDC3jELsQg7udTEo0dJJ1fCy7AKVgx8WTTqVo2MlEAub
-	Xi7TvzUGejx/NwLPyWVpGmz7xTJcLW6b9KL0wn/TGLJA4p1l5Cma/Lf1K/C2INK6a1pZXbaTF2/mx
-	LLbwUTS3xdszLBQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xEWRk-009VAD-PW; Wed, 07 Oct 2026 20:32:56 +0200
-Date: Wed, 7 Oct 2026 20:32:56 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev-bot+sinfo@kernel.org,
-	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nnfd5wRv"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-91054f537ccso23792866d6.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:38:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791398305; x=1792003105; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HCXCiQO584QO3eX/a3eFjBSu6WZdPOZ9HmP0EKIExx4=;
+        b=Nnfd5wRv2WQ84t0Fe15SC017vnuyTYj7NKUhEJ+Uu7d5ytBLt9mt3F3vozgmbEo3bw
+         nhb22s8Cj8wOXYi0izqSUxBgiyj0iFXDYReMm61RzGqNUNnS7qsT5kDQLEFWAMvcZWiX
+         2cCrZUlHUSxL4RYdkf/+toxns7xJtBXEOG961Sl1GnyGoZzeCJ9/QCIMaOi9y9/+vVJD
+         YkZvaR4bPm19pHSbvNZ2joziY/KBejKzA7i6aQzWzSwZE1LcR/wLoTaNc3N1NWpimZhj
+         wjIiHDrgew3xvcVSlb/xHtXUmgCr7yyYqQPBuFDJZ2FkQ6Y2Vug1MCoue3yDruHLtV5a
+         +8MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791398305; x=1792003105;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HCXCiQO584QO3eX/a3eFjBSu6WZdPOZ9HmP0EKIExx4=;
+        b=IMiFWw20oZ4LEY7o73Nv2VlruvBPUGoSyihsH/stDAn0hejEA2lQR9DEST7kg4bo1K
+         0uB78sbb/8vlbNBmeXwaq4HHRt0gZNK3yrSXFRj/mGVZm5WTYRnNBUuS8rkvxcYMhbgp
+         h6T1hJeLx1FZHkWwYFLcG6ND0H9zo/D+/eZFiWh4WubNihIGZLWImvdngZ6fXfV6mzaN
+         StTounrQFpDQQZ3N676b26rETEk8Ju7gQYEBxJJTOm+LN0ecdIIiNfQZeKJIz7YFS7mK
+         CogVRUN1FO4cteKXMGd9pYqPgRQxlNeDADY6WZAGiJ/243nZABAxV4lh+oT6kqysfPVL
+         u2ag==
+X-Gm-Message-State: AFuF++l1k6PpbxNyW7V9b0ItlBtd4gOZNaJ31adWaV0ePmUTwj8VkIlU
+	GimHys96MChahPPve3XsPxGF12vfzNurjPL+JjVGsrpossluNYBfdlPavnGtCk4w
+X-Gm-Gg: AYBFou1UXnmVaWQcYn5m1O7YLLAmLo+bz3DjlQm5C0LIJriAseStwZBcKH8AqZKw6RO
+	HtVkfMHiCINPOZMZAfEmC7m10kXgFcPBENleIUWzNjfsifX5DlRJiofzocGSP4WbI3K4YQlRKBX
+	3eKUVfjKPnNY46dPlipIVu5RqNgeTqjz4WvHZ/4Zi7Fu9UzWQv/YhYCGLDsASFXS6qBpBbnYLQE
+	zWtCrJ1PocnGU8Ry7a6cfCT2g51OcJCmHV8k+GLRCa4w7VAmp2g1N59VNAiHlRZhRtteDKjR/+k
+	Yy40BsBtiBPpPDGAr+UHohgUy/x2V21ro4GB92poeZG9m8J1nW/aUkqGSPnYxBq5Ue98vfaKdpn
+	49bVaeCVCe0BqGavxWgDem1NwWtIq3+SHIMnpmgQX9jor1uHbNtUYAjZiqpHrFJR4zzXTUzbeLN
+	yM4Cl147ZwcL26cvrauj7YnwwsAMgiYX9z55Q3c1zdbx2cq6E/ENt4DL0MN7YAfcF5w1KUs2sLw
+	i8waLE5jHNFKMAxQ47OznfHnREab4VAmRu/S/ILbQTidV396T00L1TTivYavodmku0Lvl9PYlar
+	Wffjc4r1G6R9hDQEMR60keCV9wVZb6ZfJoSH5hk4vXsrt39n
+X-Received: by 2002:a05:6214:1d01:b0:912:d20:9b1c with SMTP id 6a1803df08f44-91997560269mr60576826d6.0.1791398304797;
+        Wed, 07 Oct 2026 11:38:24 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-919973a87c3sm25516746d6.42.2026.10.07.11.38.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 11:38:24 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: stmmac: unwind the WoL IRQ after a safety
- IRQ request failure
-Message-ID: <98a7f952-37cd-4886-acb2-e87743e51fba@lunn.ch>
-References: <20261006-stmmac-irq-unwind-v2-1-194591c87460@gmail.com>
- <179127056620.2231598.8882282421523696709@kernel.org>
- <CADvTj4orth=RYtb78ND1rdiYh2yb6d+TjZt5ohK_-+1mnVpqfQ@mail.gmail.com>
- <20261006155214.63c5cb5b@kernel.org>
- <CADvTj4obBNgR4w3BW4-gCU-=LUxesQdTRN=EdWTcx7VznFi4kA@mail.gmail.com>
- <e7fea95d-1ce2-4c5a-891d-5e5899931329@lunn.ch>
- <CADvTj4pm8fbgGDiyXVHubnM93qOey7o18O+MDU68MSisXVvHtw@mail.gmail.com>
- <f304ee6d-bbc2-4f76-964a-998c3febb8dc@lunn.ch>
- <CADvTj4pniuLUzsHP_kv03rFUkUD87PD9yVZ=HnW0CsZX78OxLQ@mail.gmail.com>
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rosen Penev <rosenp@gmail.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v3] net: emac: mal: replace devm_request_irq with request_irq to fix probe error race
+Date: Wed,  7 Oct 2026 11:38:21 -0700
+Message-ID: <20261007183821.928263-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADvTj4pniuLUzsHP_kv03rFUkUD87PD9yVZ=HnW0CsZX78OxLQ@mail.gmail.com>
 
-On Wed, Oct 07, 2026 at 11:00:50AM -0600, James Hilliard wrote:
-> On Wed, Oct 7, 2026 at 6:46 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > On Tue, Oct 06, 2026 at 07:27:05PM -0600, James Hilliard wrote:
-> > > On Tue, Oct 6, 2026 at 6:57 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> > > >
-> > > > On Tue, Oct 06, 2026 at 05:17:20PM -0600, James Hilliard wrote:
-> > > > > On Tue, Oct 6, 2026 at 4:52 PM Jakub Kicinski <kuba@kernel.org> wrote:
-> > > > > >
-> > > > > > On Tue, 6 Oct 2026 01:14:52 -0600 James Hilliard wrote:
-> > > > > > > > Please do not repost the series just to address the above. Instead,
-> > > > > > > > reply to this email with the missing information, so that reviewers
-> > > > > > > > can take it into account. If the series needs another revision for
-> > > > > > > > other reasons, please include the information in the commit messages
-> > > > > > > > then.
-> > > > > >
-> > > > > > Please make sure you read this paragraph, to the end.
-> > > > >
-> > > > > How much detail should I be including?
-> > > >
-> > > > We want to decide should the patch go to net, because it is a real
-> > > > problem which bothers somebody. Or is it a theoretical problem which
-> > > > will never happen, so we might want net-next, or maybe /dev/null.
-> > >
-> > > I mean, it's in an error handling pathway that could be hit if there's
-> > > an -ENOMEM error on an IRQ-action allocation.
-> >
-> > ENOMEM does not happen for small allocations.
-> >
-> > https://lwn.net/Articles/627419/
-> >
-> > So at first glance, this seems totally theoretical, it will never
-> > happen. So net-next, no need for a Fixes tag, etc.
-> 
-> It looks like there might be a few other ways to hit this cleanup pathway,
-> not sure how plausible this is in practice however.
+devm_request_irq() is a managed resource: the IRQ is not freed until
+devres_release_all() runs after the probe function returns.  In the
+probe error path, free_netdev(mal->dummy_dev) and dcr_unmap() execute
+while the IRQ is still live.  If the shared IRQ fires during cleanup,
+the handler accesses unmapped DCR registers (crash) or the already-
+freed dummy_dev (use-after-free).
 
-So lets go for net-next. If anybody hits this for real, we can
-backport the change to stable.
+Switch to plain request_irq() with per-IRQ error labels that tear down
+only the IRQs that were successfully registered, and add the matching
+free_irq() calls in mal_remove().
 
-	 Andrew
+Fixes: 14f59154ff0b ("net: ibm: emac: mal: use devm for request_irq")
+Assisted-by: LLM
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ v3: add Reviewed-by and fix Assisted-by.
+ v2: rebase and add tested comment
+ drivers/net/ethernet/ibm/emac/mal.c | 43 +++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
+
+diff --git a/drivers/net/ethernet/ibm/emac/mal.c b/drivers/net/ethernet/ibm/emac/mal.c
+index 42027665f2a9..236603a381bc 100644
+--- a/drivers/net/ethernet/ibm/emac/mal.c
++++ b/drivers/net/ethernet/ibm/emac/mal.c
+@@ -665,26 +665,26 @@ static int mal_probe(struct platform_device *ofdev)
+ 		hdlr_rxde = mal_rxde;
+ 	}
+ 
+-	err = devm_request_irq(&ofdev->dev, mal->serr_irq, hdlr_serr, irqflags,
+-			       "MAL SERR", mal);
++	err = request_irq(mal->serr_irq, hdlr_serr, irqflags,
++			  "MAL SERR", mal);
+ 	if (err)
+ 		goto fail2;
+-	err = devm_request_irq(&ofdev->dev, mal->txde_irq, hdlr_txde, irqflags,
+-			       "MAL TX DE", mal);
++	err = request_irq(mal->txde_irq, hdlr_txde, irqflags,
++			  "MAL TX DE", mal);
+ 	if (err)
+-		goto fail2;
+-	err = devm_request_irq(&ofdev->dev, mal->txeob_irq, mal_txeob, 0,
+-			       "MAL TX EOB", mal);
++		goto fail_serr_irq;
++	err = request_irq(mal->txeob_irq, mal_txeob, 0,
++			  "MAL TX EOB", mal);
+ 	if (err)
+-		goto fail2;
+-	err = devm_request_irq(&ofdev->dev, mal->rxde_irq, hdlr_rxde, irqflags,
+-			       "MAL RX DE", mal);
++		goto fail_txde_irq;
++	err = request_irq(mal->rxde_irq, hdlr_rxde, irqflags,
++			  "MAL RX DE", mal);
+ 	if (err)
+-		goto fail2;
+-	err = devm_request_irq(&ofdev->dev, mal->rxeob_irq, mal_rxeob, 0,
+-			       "MAL RX EOB", mal);
++		goto fail_txeob_irq;
++	err = request_irq(mal->rxeob_irq, mal_rxeob, 0,
++			  "MAL RX EOB", mal);
+ 	if (err)
+-		goto fail2;
++		goto fail_rxde_irq;
+ 
+ 	/* Enable all MAL SERR interrupt sources */
+ 	set_mal_dcrn(mal, MAL_IER, MAL_IER_EVENTS);
+@@ -703,6 +703,14 @@ static int mal_probe(struct platform_device *ofdev)
+ 
+ 	return 0;
+ 
++ fail_rxde_irq:
++	free_irq(mal->rxde_irq, mal);
++ fail_txeob_irq:
++	free_irq(mal->txeob_irq, mal);
++ fail_txde_irq:
++	free_irq(mal->txde_irq, mal);
++ fail_serr_irq:
++	free_irq(mal->serr_irq, mal);
+  fail2:
+ 	dma_free_coherent(&ofdev->dev, bd_size, mal->bd_virt, mal->bd_dma);
+  fail_dummy:
+@@ -729,6 +737,13 @@ static void mal_remove(struct platform_device *ofdev)
+ 
+ 	mal_reset(mal);
+ 
++	/* Free IRQs before freeing resources they access */
++	free_irq(mal->serr_irq, mal);
++	free_irq(mal->txde_irq, mal);
++	free_irq(mal->txeob_irq, mal);
++	free_irq(mal->rxde_irq, mal);
++	free_irq(mal->rxeob_irq, mal);
++
+ 	free_netdev(mal->dummy_dev);
+ 
+ 	dcr_unmap(mal->dcr_host, 0x100);
+-- 
+2.56.0
+
