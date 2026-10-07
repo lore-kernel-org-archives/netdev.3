@@ -1,97 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF943793A9
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 23:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791415210; cv=none; b=r9RnsCsk+vUAOxQN4jjKNqI38UZsQgKJQhpY9wryEKa8LVDPGRIsay5m4HRtMNNKOsjmWCCupwcFU4n1OGGP0+jy5T8CVfc5QZ7yFmw2xOz0z9pMBO/MX03CM55+ogaefiCf2L3YHGe7BMPlBwE+PxQnsea4IKD7BFhvBea5Tsw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791415210; c=relaxed/simple;
-	bh=2nzEQ/qPnaxf696OHNHW7k8oCmrSCoZmZG2kIRE9r4g=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TpgxkzNqus9KvHE/CNUdN59rtmfHMvV9Z9c1o/a4nNXn/YOF0m6IgldTxCr4p6U2IEJnSEAdeCYTnct7fBBVRKOI3zlPyn9PoQBJl1iWUjkAitb2xcfXlMbW0/qA9kYblCvSVM48rI9m+AdP95fARwwIV75daeIEUL3wh7MWY/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ekz3976T; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC083793A9
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 23:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791415333; cv=pass; b=M9WG6oG5ATBH6UZKggRvJmdrCtC+M8i98Op3mUhwTbKBXWe/GZcMwEYoHBqhquF0Y4aWMUPGfRtgx99fI5/4LlJRdWmyVuVpsmo4DqyUB46vhdoKbX4WT544NYDO6tqj9AHrpwHk04PJEZMl8HQKqj+c9LnuwprhdtAZL3hSHn0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791415333; c=relaxed/simple;
+	bh=HiqG8AVCq1Z3K5J4ljs1aq2aJn6IW98a+B5RG4+qpRI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rqv0jv7L5309A3Yio/APIpDNVfSisdqYHa/uFxM7uUcShvTmh9Y72LGl0kiw6LtHCZkI9tjGQSGCZ0zkLXaSHOv4XO2Kwicnit03iXDKP3oZmw0l3StsoH/PlPc+sTW11w+gIToT5L3Ai2CUAc6Nt/f1RjNNnT2cJmePHla2ScQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WPvt1N5i; arc=pass smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ekz3976T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451F01F000FF;
-	Wed,  7 Oct 2026 23:20:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791415209;
-	bh=5QbNXBI+pXmh3/sqA+xyeSzy0dk0D6uj6mnnfL7Nb0Y=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Ekz3976TttDpgHgaAOQdFjc70DMukjMxnPW4GB3OgMbZEWmt8VFzABq99xwrQssSX
-	 u6YI6WseIXyqLBjeuGWRkwc1fve8QSWJTL12kPlNeLr/QXsfW4YY4XIc9Bkau/rMtJ
-	 1TsOcdVbAGCwYHdoYip5E7g0xrEOglwlUs6G/v6y/Z3z3pZyBULXXza5fRPxN2ewrT
-	 oKHXDMoyzFvg0WS3gKxMUkxWrjbVpx9IXndINJ7LOpwOxl588pxTnYPu9r01To5E0z
-	 OVO3k6EjLLEpNgBweK9SyReDOVw5j6ofn88Mou1FSLZ9TGmWSrMzGCUeZk1vEsr169
-	 ULtGHtap+ZmTQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2873809A08;
-	Wed,  7 Oct 2026 23:20:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WPvt1N5i"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3282db206d3so12663391eec.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 16:22:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791415331; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KAfqNKfzxtzZoji+zr6qH17rtFcTIqJ7H/ByayeKs6t8LzJ1cnxFX9YAH0UTNQIAVY
+         EFzaLOxwOu6OYuIkuOJaqx+bZJReRrXoTP81hhI+zcQyUShjhVhGpCjpJW1t6bSTZQgq
+         dkn7RsGuGI6oAshareUoEjbia27GZtMBmYIqGIT9dVEMDs7PLsOHE2XPI4wpGKhZY2oX
+         n8djdMZzcKArnwgSR6/LaooWucK/DzHRod+rAd+a5Xck1Sk+0SE8EA+Eck3eiKiguT7X
+         /3MJi0GoVgyLEKGe4AK6NFofmN+XYuCtlOF0Nr+MI9MZ9vHFBd5xC0SHsmyXAprSUUJQ
+         R3jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=prskCRIuYR+XX8F5YqRlwpvMCkHISXsdKM8mbnGxz2U=;
+        fh=ajvN7kIo/0F2eOcU+ZOK+83ejWp0QUwQYUS7eR27iEU=;
+        b=M7wfPkqZQ/swC/wObZKnbYOvVNP1kznFMNEKsPhgoZlIg7uSMbWjpP35nuYOApMQRn
+         OSCBmx1qr8cfC8cfICgylPtQgS2OZpKBzJVl6nfkJloFM+K5h0upEdJU6IqDSuQr5r9F
+         IqpN/a0ro0j5M4b76m70YoUwKBn323Y9fiSmyLQiAB2HlSOe9RQ7dmGZJI+jKOHaYzDm
+         TtPJxn9y08kl1Wv53shOZ0Ts6hT32CJ11YNRnT68mcaSU62Edwqi6DM+wyd4l8eQPQ6c
+         +gpmlldfmO7jHD4rxsBwwlkkswvjjL5R8VG3lLUUZkyKOuAnqPPNp+gsJBNT4yWnP1xO
+         BeFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791415331; x=1792020131; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=prskCRIuYR+XX8F5YqRlwpvMCkHISXsdKM8mbnGxz2U=;
+        b=WPvt1N5iKX6ZjGfV5bB4O9c9Gtf9I+slPSTYptr3KXquMUI50tlXWTlL7oSf9xi+iy
+         yGTstoN3YmWKG8YEGR7DHwHkG/J1CIsy1e9Hm9RUnopVu+eV001pbgAhNJTG1HSGtu9+
+         gjc0kSbYkgbDYt1vqoEPYc3OPw3R09UyRyhh17IyU3RaRLhpT8avZup49uUPPx5QFBgw
+         qYZ93IpOv816JWiQRMrtDa6dRrGzZNhqzQ+6M+Q9iztvJ9samfuOtFrHUKi0EITmPXsh
+         NWQcgBXTk/cPYh8avEELQEeHTY2jUNuOuaMx0sILDtWmtXSs9DryHzOtM83CznxhW7X1
+         1dzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791415331; x=1792020131;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=prskCRIuYR+XX8F5YqRlwpvMCkHISXsdKM8mbnGxz2U=;
+        b=Peh4A+Ohp9qZeySQZgIh8qT4vGjJ1vTudSVSXTaFhUPMba34xTMxSwf33ohdgu269Q
+         yOUBi/jCNnVufzTDiKDgM3aS6ZSOipyECjuCl6IhgVtrQ3BQQT3oMSfOGxaN6/iRl5Rh
+         LpzH+uVIJIt7ivAzA1g1rzgOFPUfS0PYQx7uZ4fBqhVHln1bdnfYS/mwBnNGOnbkT9lv
+         NG71ypQ/cKHMl42UqX64Ow3gmLjFjmAbqhkVYUAGd3UEouGUKoKQhzDvKHCKKtk+jgVD
+         n9Y0noxx1JYgCXdknCsuAX+4gaZSZBl/dbV57f87x5V3vLpKPY8JuKbSYqH2wv4KGH5+
+         Im/Q==
+X-Forwarded-Encrypted: i=1; AKwUvByal9j0R0P8EzhEDWZD2iTg6BmUbwL/yk3yCCb3u5DeLg1F6he1TXZ+j3M7Uz5lw1nMkZUroc0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mEbRM6LLdXueI1wNb0OSWBV/oFn0k1NdEudJtHnTPhGPG7j99R
+	0dGpUgkYl919BzDWPWbgezukPLhCqbukr9qznE1cbAEDJq3cA+pixc5ABUl3gBhu8E+JR+hOFEh
+	TjhtbsSj0Sd9ajv1JKQbdCai08iLVLAOJUHL9tnDY
+X-Gm-Gg: AYBFou0UB/n61ICStD7Z7OrpiBER7Xqjb3qbjXoQuYq+pShiSnPdTT5Ut4/78q9Dke+
+	B98yECNm2Q4wXUGeGLaBb/lzbt9dKUU9cMHaS9sGeuiD3hy836b/PBfgJISu+ZdOEu6G2tX7+9n
+	wjDZlDv6m/HqTuSGwqhIPVFI/6ND9J5051ua7gTXN/fd5s5NitQ9sv+cD6933GnQToUUHBe0IyN
+	+TUzoZvUuJmzruzC3V2COraxtAybSct5TH9Cna24RVGfzJWgINJnA/f3W5ekE67UGDLyvHFTYiu
+	j6jghtcYRBuVskxoIQqMdjftNLq3odAxeoJSRIPdPkBm9lBGw1jZYVb0boc2msWENBDDaEYtLK0
+	olxpBudApVHK2WSHRGp8RbDeW2o8A1fcmWDQQJzLIF0Exy2dTViRBNnUGo+VTvr2It1vs6RdUsT
+	aAztlXBXCqxT7u9KF13LRF2zRZokyaHP1nQlo=
+X-Received: by 2002:a05:7300:f78e:b0:351:679e:ba2a with SMTP id
+ 5a478bee46e88-351679ebac1mr3190407eec.23.1791415330456; Wed, 07 Oct 2026
+ 16:22:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net-next 0/9] neighbour: Add IPv4/IPv6-specific
- wrappers
- for neigh_lookup() and friends.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179141520806.3731241.1254224400062933385.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 23:20:08 +0000
-References: <20261003212336.1304988-1-kuniyu@google.com>
-In-Reply-To: <20261003212336.1304988-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com,
- horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org
+References: <20261006192601.1875100-1-kuniyu@google.com> <20261006192601.1875100-10-kuniyu@google.com>
+ <CAMB2axOLGbeYatQ8=XNmZH1PUmigRdz7qKxwZngt6U4FCmdQzg@mail.gmail.com>
+In-Reply-To: <CAMB2axOLGbeYatQ8=XNmZH1PUmigRdz7qKxwZngt6U4FCmdQzg@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 7 Oct 2026 16:21:58 -0700
+X-Gm-Features: AclHuK82upe5Al7QcZBohwpUxhHT6jCeGNSyHxlFXHnLXVMJkE7hHINjz_ruQp4
+Message-ID: <CAAVpQUApCBTdHQDjf0NRXhE55fcg0wtmjGz9yEuQhsbQ8xm3rw@mail.gmail.com>
+Subject: Re: [PATCH v4 bpf-next 09/10] bpf: tcp: Add kfunc to adjust sk->sk_rcvlowat.
+To: Amery Hung <ameryhung@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Emil Tsalapatis <emil@etsalapatis.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Wed, Oct 7, 2026 at 4:06=E2=80=AFPM Amery Hung <ameryhung@gmail.com> wro=
+te:
+>
+> On Tue, Oct 6, 2026 at 12:26=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.=
+com> wrote:
+> >
+> > bpf_tcp_ops.{enqueue,dequeue}_rcvq() were added to parse skb and
+> > adjust sk->sk_rcvlowat dynamically to suppress unnecessary wakeups.
+> >
+> > Let's add a new kfunc to set sk->sk_rcvlowat.
+> >
+> > Negative values are clamped to INT_MAX, consistent with SO_RCVLOWAT.
+> >
+> > For enqueue_rcvq(), wakeup is set to false because:
+> >
+> >   * tcp_data_ready() is always called after the hooks in
+> >     tcp_queue_rcv() and tcp_ofo_queue().
+> >
+> >   * when tcp_fastopen_add_skb() is called for TFO SYN, the socket is
+> >     not yet accept()ed, and when called for TFO SYN+ACK, the socket
+> >     is woken up by sk->sk_state_change() anyway.
+> >
+> > For dequeue_rcvq(), wakeup is set to true because tcp_data_ready()
+> > is not called in that path.
+> >
+> > An alternative would be to support bpf_setsockopt() for these
+> > hooks.
+> >
+> > However, that approach involves excessive conditionals and an
+> > unnecessary memcpy(), costs we do not want to pay for every skb
+> > in the TCP fast path.
+> >
+> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+> > Tested-by: Cl=C3=A9ment L=C3=A9ger <cleger@meta.com>
+> > Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+> > ---
+> >  net/ipv4/bpf_tcp_ops.c | 46 ++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 46 insertions(+)
+> >
+> > diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
+> > index 8182037c4269..2ba73dd6c52c 100644
+> > --- a/net/ipv4/bpf_tcp_ops.c
+> > +++ b/net/ipv4/bpf_tcp_ops.c
+> > @@ -361,12 +361,31 @@ __bpf_kfunc int bpf_tcp_ops_set_flags(struct tcp_=
+sock *tp, u32 enable, u32 disab
+> >         return 0;
+> >  }
+> >
+> > +__bpf_kfunc int bpf_tcp_ops_set_rcvlowat(struct sock *sk, int rcvlowat=
+,
+> > +                                        const struct bpf_prog_aux *aux=
+)
+> > +{
+>
+> Is there a reason this takes struct sock * instead of struct tcp_sock
+> *, like bpf_tcp_ops_set_flags() in patch 2?
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+It also works, but bpf prog needs to cast sk to tcp_sock.
 
-On Sat,  3 Oct 2026 21:23:13 +0000 you wrote:
-> syzbot reported that ip6_finish_output2() could pass tbl and dev
-> from different netns to neigh_create().
-> 
-> When namespacifying neigh_table, I chose to resolve neigh_table
-> in callers to minimise changes, but it turned out to be error-prone.
-> 
-> This series adds IPv4/IPv6-specific helpers for neigh_lookup()
-> and neigh_create() that always fetch the netns from dev to fix
-> the problem.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v2,net-next,1/9] ipv4: Rename ipv4_neigh_lookup() to ipv4_dst_neigh_lookup().
-    https://git.kernel.org/netdev/net-next/c/07cc2b151a26
-  - [v2,net-next,2/9] ipv6: Rename ip6_neigh_lookup() to __ip6_dst_neigh_lookup().
-    https://git.kernel.org/netdev/net-next/c/3e33cdcf54ee
-  - [v2,net-next,3/9] ipv4: Add wrappers for neigh_lookup() and neigh_create().
-    https://git.kernel.org/netdev/net-next/c/33ea2463c432
-  - [v2,net-next,4/9] ipv6: Add wrappers for neigh_lookup() and (__)?neigh_create().
-    https://git.kernel.org/netdev/net-next/c/616b2143f901
-  - [v2,net-next,5/9] mlxsw: spectrum: Resolve neigh_table right before neigh_lookup().
-    https://git.kernel.org/netdev/net-next/c/98071355ffc9
-  - [v2,net-next,6/9] ipv6: Use ipv6_neigh_lookup() and friends.
-    https://git.kernel.org/netdev/net-next/c/0e59523b440c
-  - [v2,net-next,7/9] ipv4: Use ipv4_neigh_lookup() and friends.
-    https://git.kernel.org/netdev/net-next/c/f2f25d59f56a
-  - [v2,net-next,8/9] neighbour: Remove __neigh_lookup() and __neigh_lookup_errno().
-    https://git.kernel.org/netdev/net-next/c/29ff0101dc00
-  - [v2,net-next,9/9] neighbour: Check n->parms->tbl under tbl->lock in ___neigh_create().
-    https://git.kernel.org/netdev/net-next/c/023753192e3c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+This patch is straightforward and rather patch 2 has a
+reason to enforce bpf tcp_sk helper use in cgroup hooks.
