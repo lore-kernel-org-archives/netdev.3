@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9951F34887B;
-	Wed,  7 Oct 2026 02:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3757349CD1;
+	Wed,  7 Oct 2026 02:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791338407; cv=none; b=Nr2D/L9V7y9+dE+hE/qbm06d7OerlltX+6pjlic7UW+pgQu70JL/nh55XG3efqrsdqyYnsWndWxGZgiCPOVjMKGS0Z5nl74PrmMr5VZnVbKRmCxTiOKfRVdelcmk10KONfh6O1wdIrVOhUaYjIYMXFNUHQBn+lCFiC1FlA+eA3E=
+	t=1791338412; cv=none; b=Q/ImbflylSG0rh5ZhB3uNc/A94Cz5HIivmFLoXIf1kyfBgJvNm25gi9kYFCGsOM1VHHRfmh+Uj3TQC5UoQTet5LEnq+bT8ylWaJtLO5mEKWJgJhqyB/fv7RRYxuFCGP3kjhgNqGmc6DR0/2uxfsbITS6iDXimmvvggo5GeBSCfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791338407; c=relaxed/simple;
-	bh=+7GZyBwjjkp/XWYyQFUyf+F6zz1V8VBgMYQJYf1vQIU=;
+	s=arc-20240116; t=1791338412; c=relaxed/simple;
+	bh=Dxu8iyB9bO2CCybEnMoz37q3zH9EXx6ks0OFR2jheKs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UUCcNrK4kC1PBZ0axHptV28LfVsbgwSjh5vTEcy5mQ/5sR9osJtElBoxkTvEIzaphsrdMqrmv+TbAN2i+E+ZZakVSVseiMo+opEpVyebSdFqdYGS+yWCWtcZ4NIGaoAgOCvKZhnTDXSAbMkO/ezHolTIRDddqSiQ/XvhQofXjdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUPDZUfJ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=iP8xd7RssDWosW+mY6rhzQlsQCyOgB/acOyH7iR1nmcN66UA8tgUN/5gJ8CRQ+vO6cOKH4giFSdIc0PNnal6rbolr+6vKnBpGWDY9kMFRhUqkilA7kvkeXucAphNJOZLbJy4eWEmdpXPGnTZ3alDUzFRbqoQakPwcFuHNZpxCJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1NmfhZi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUPDZUfJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482341F0089D;
-	Wed,  7 Oct 2026 02:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1NmfhZi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441501F0089B;
+	Wed,  7 Oct 2026 02:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791338406;
-	bh=ynfy+x7S7qe20n2+IN65ww5pUKi5Zp1qsbKofnBMBQY=;
+	s=k20260515; t=1791338411;
+	bh=+EKihp7a19oBNhixihCzWnrfCDt899n1DotDhXMENqk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=FUPDZUfJDjg/gP7l+/q5FqITLxePXD76l7eacENUJRZ8O+h9PNOjvZTEHplp7PSZJ
-	 dnK8vrtUHOOw2jybj6i5ZaS0pOsFaoC2hLq8MtIihH+t1xqN6WpxPswB1JIKX+TyRX
-	 UyIpCRuJI6ixjmYEOd/symcHr8hk+Z+2hLliHDf2V/hpVTOhc2btiKLDCGLAzdjpu0
-	 CbROxft4XVjHAoRDeAqAnIrQdrrAnFvKxHl2+KzTuU0XY6fXXMfv9ZcVlBUtXjVm2o
-	 3H288q+WSJDGwsRFG2/51StWEVwtiZeRQE3keI2/gpzcjod3+nMeSYcRBOXiQa8AB9
-	 xY0KfHYp8AoQA==
+	b=i1NmfhZimQDYchRrnvIJ1tlOf71PZnMdrnrphvPf10Y9kdYX+ob6zLp1hz3CM4TLz
+	 YgHbWq8YhD85lv2nw8dCPVPhcpgJQniucMn5d8wWsCIhcIb2g+bDcoHVlywaCA8TjZ
+	 BfWozZs0cboZjQJXJWcnJVgNVj3s71i0S6me8dJNtAFXrshY4OArBtobhwj5TBpHxW
+	 twsif3vrfFAVfScJ84u6FGBO1MPZqu10KVPFijTLA+dJRip7q1X7PARc+fKc8nP0v8
+	 nNuk4lGmCAJY+euYzFMYXltcJpGXVO7nKRWytg3Dx0OGsx0GVj1lBquJxo6m6akLX3
+	 LD7rfEtEUI21Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A26A3806541;
-	Wed,  7 Oct 2026 02:00:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A4AB3806541;
+	Wed,  7 Oct 2026 02:00:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] pfcp: fix two bugs in the receive path
+Subject: Re: [pull-request] mlx5: Move data direct infrastructure to mlx5_core
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179133840503.2870283.6220566218471653405.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 02:00:05 +0000
-References: <20260930124818.114224-1-yanhaishuang@cmss.chinamobile.com>
-In-Reply-To: <20260930124818.114224-1-yanhaishuang@cmss.chinamobile.com>
-To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- michal.swiatkowski@linux.intel.com, aleksander.lobakin@intel.com,
- marcin.szycik@linux.intel.com, linux-kernel@vger.kernel.org
+ <179133840977.2870283.2399297226648277008.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Oct 2026 02:00:09 +0000
+References: <20261004064921.213888-1-tariqt@nvidia.com>
+In-Reply-To: <20261004064921.213888-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ cratiu@nvidia.com, dtatulea@nvidia.com, edumazet@google.com, gal@nvidia.com,
+ jgg@ziepe.ca, leonro@nvidia.com, linux-kernel@vger.kernel.org,
+ leon@kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ saeedm@nvidia.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This pull request was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 30 Sep 2026 20:48:16 +0800 you wrote:
-> This series fixes two bugs in pfcp_encap_recv(), both introduced when
-> the receive path started filling in PFCP tunnel metadata.
+On Sun, 4 Oct 2026 09:49:21 +0300 you wrote:
+> Hi,
 > 
-> Patch 1 fixes a metadata_dst leak when iptunnel_pull_header() fails
-> after tun_dst has been allocated.
+> The following pull-request contains common mlx5 updates
+> for your *net-next* tree.
+> Please pull and let me know of any problem.
 > 
-> Patch 2 makes sure the SEID is in the linear area before it is read, so
-> that a short packet with the S flag set cannot make the driver read
-> beyond the end of the packet data.
+> Find more details below [1].
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] pfcp: fix metadata_dst leak in pfcp_encap_recv()
-    (no matching commit)
-  - [net,2/2] pfcp: make sure the SEID is linear before reading it
-    https://git.kernel.org/netdev/net/c/23609bce9e1d
+  - [pull-request] mlx5: Move data direct infrastructure to mlx5_core
+    https://git.kernel.org/netdev/net-next/c/8e37d7bec796
 
 You are awesome, thank you!
 -- 
