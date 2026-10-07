@@ -1,46 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270C53F329A;
-	Wed,  7 Oct 2026 18:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962F1430CCA
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791397488; cv=none; b=lWPc5IUyAClgcYIyFRlxnmMSQpi+jiBbDr4vbVhyLHCpuHwN/tCPbVtAX/BhcuZFbOljDj3BzQECGRvuL8qaFQS7zEyTwIQISVUYT4qGLvpgo6uG1BHWGypvXpZOCHbnamWQW19t3pIz3C9Bnn5CI4oidtp49A/PHMWMRI+vs5E=
+	t=1791397556; cv=none; b=tVohH37XwB69WGvVQzotbZlZhE1AdqyxFhKXSHG8il2xEWzPi+yIE3NMX242d4CBGRJJXjTO3L/HypwNxEyMauDLCjE2OOiYAD5BEs2eaI5+M+AgRiEj3EuEWYM+h1v4P+ssrSCGjY2h2fHxiAv4h7Jbb9URkyN7RKjRuc0W73Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791397488; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
+	s=arc-20240116; t=1791397556; c=relaxed/simple;
+	bh=f7LJdPPGst2ABs92k8Y6jLvaVz3FtBc2OPOggR7SA68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EV6GnhUdmqhtLT7FvOWeBHrnaUS7BCIC9PEMBP1UitVf0Vj9MRtRZmJHcQHh6cT0/4spMhN7JJ3XkCM/98wE03fRsyNkdIMtLrflh5hxZbJLx42uZqpP0rkHZBniUZ994U55lJ4RlkYvdTmidwX1MrYHf+yC76EnlbQLPVQC/4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fXfjNm+i; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=OPvbbnpP4zJlMScL3NYWgbAsVUutHv3hrh5CwSKXDeRKWRt1xfnMYs74bTehgBuroecizzW28d2z5DJFCGIVk0nH/dHqN2A3q6r+zpwVTLVC8nn7F+M4R3WvTaX75AfjJ0g9jDzMunsAwwD1Fp7CeMsbaffEKNrP/vwHGFFzviQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=arjY9/+A; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fXfjNm+i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2281A1F000FF;
-	Wed,  7 Oct 2026 18:24:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791397486;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fXfjNm+iUKESkR4wrdiVAosUCEHCcIZSMhXZFAc4Mq/gauKW1EK886AElR2+Jxu88
-	 yKYRmsIsnnwfVTMn1iKuFqzA/oOvzDMPd7u4WObl9nthiCLHmztDUTBZVvNUQ4ngaU
-	 VHR4cwq3loCpecfVTATB2Ugiwvs5jqvyHvO+fbdHR4SXe7Hmv5Lfj8m27PkvpW3Kkw
-	 gm/PdMTzNiTNpQS3WMJ/TV3zttQFnxqasQu/S0xu24y6wBtU1R6Nb1c8UFoGpsM1z5
-	 N6FIhvuycBWgFRGAC8SQNk+ejvUIr01uyC82RvJb9XwUkmipqGzuWfDmQpRsZfL/Xb
-	 nSHI2ra+blpEg==
-From: netdev-bot+sinfo@kernel.org
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Michael Stapelberg <michael@stapelberg.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4] net: phy: marvell: keep WOL_EIE across interrupt
- reconfiguration
-Date: Wed, 07 Oct 2026 18:24:45 +0000
-Message-ID: <179139748566.2527009.10663595607133766847@kernel.org>
-In-Reply-To: <20261007182112.821061-1-rosenp@gmail.com>
-References: <20261007182112.821061-1-rosenp@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="arjY9/+A"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-93cc31c18ebso132227185a.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:25:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda.com; s=google; t=1791397553; x=1792002353; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oBM/k3W16ZFa2deUK8cxyFeMvcY1i1trfri8zjFob3U=;
+        b=arjY9/+AY0dpa26u7lqWEUACwzz9Uwp2AB3yWYLNfMjRepiN02R3Z8EE97/KXMfIdV
+         b3WnT6Yu+PS78L/ZAV5OWPMf9+JVMphp68mhlFGcm9voLQQYqu1/iVgAxY/Y6NAojx53
+         dwep0EyVBmHKgg/1+TtQCRboJwNP4XtY7S2Sb9sAgdeNo3nr3zWY04MVC8eblTGJaqKt
+         +r0fOtRAPddZZQEp7vQ00z3dqV6ayv5mZiQwG+LNGEmWI+OwvJKr81ELSNo47Ym0DBRI
+         1A2msykTh0eCKUHbe4IWZp3pV7lwCGX73wbfnBq3yzLHg/rOCM46uuCNgH4+xiRvxQZL
+         Zmjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791397553; x=1792002353;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oBM/k3W16ZFa2deUK8cxyFeMvcY1i1trfri8zjFob3U=;
+        b=gvS5Acv4H/QNNub8Lj9ApzUj/nDamsWZlh2HyOlecvnq2mbavYjozBXTBdTHV+/ACf
+         8ZbQGcRUxiL+heK13hvQPNepAxOnunjUrI90QcVWfssjG+t8lr+XLSlVXg5S7IOHJiBz
+         nHtl5e8Ctc8Kj2LLS5ZQLBhdQqGf34/YTVKS2S9xanmEndLHxkWgLkrDSH9xa/EFM+6o
+         HHBwWfU9a1oY5gmZPkMeNexaU5LtWZ4osG4kq8DB60iZi8iUQ/uWnLXuga8Ck9JyZ+eJ
+         tw1bR0PLNNWstVSrvoQM8hj3VODMmHltd09Ygb8GY28vfUaWqfLapgcW2r9qpzPwyRMa
+         fWSw==
+X-Forwarded-Encrypted: i=1; AKwUvBwdZkSAgk7yQi0kaF+CY+Ot/vSqx53bcxeyHbhcgOwCp+hLyTjLMZC2YDKdjbPd5lrRTavgb40=@vger.kernel.org
+X-Gm-Message-State: AFuF++lCws0KR45XKLLkH6tVzzqmdAolCj7bK7xMfZDu5YQ/BzzYFZnv
+	NdQ5Lv4UlRFrAMPBJ4dvAGdglGhDCYk21QV3Bc0B1QvfSHtenkUhi8hmt5lwWybD3eQ=
+X-Gm-Gg: AYBFou2YY/jCMItFcAh5LKweC6hsJBcwoyZpdlW6Ts7NxvVQEQNtSIScvhlIATqHfrR
+	ZOz1F6/C8pzDK9ItpjpqhcyUw4mLV/oDcX3HtgPFlLViWkfksFCm3aKC0O8E7hsuDySZ/Mtnp2f
+	X9yVdlHz0gyKevb6p259dSmhPLxGA45FvhM1+Au6upSIksOcYRAgOy5K4/rV+VIoEsBpoIRFFP1
+	AkoayBVjxcy6h+39RYTyXnz7pMedS8TZsiNdj0OHe7C8FBOmkcZpqGCo11B5wXRnSt8iGIHz7Ng
+	aMBUuLxj24/g8hMrgZJBsCmVYf3bTpd4SeE+Qwj8s3CF40NsdNyG8K5/XpG/zXpOmz0MnuYMcmz
+	Fzybi+opNJ5xHf2LlR1fLs5PvM7eGM5tB6kpL+al2jtXO5JzMiQtEPH8NpROQAwbj6iqac1h5dq
+	bNC1uMpLvBoIiUls0Dzz4g4Qze74AlbGtuXIILDGXjyoe/HGJskE6QDXybFwlkbInUSgaPvV4rM
+	YyqLB94g9RCt7w=
+X-Received: by 2002:a05:620a:84ca:b0:93b:ebd8:9147 with SMTP id af79cd13be357-93e9b71e80cmr544420185a.18.1791397553212;
+        Wed, 07 Oct 2026 11:25:53 -0700 (PDT)
+Received: from toxicpanda.com ([153.61.196.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93e99157d6asm278314085a.23.2026.10.07.11.25.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 11:25:51 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>,
+ Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: skbuff: don't leave stale bytes in
+ skb_copy_and_csum_bits()
+Date: Wed, 07 Oct 2026 18:25:08 -0000
+Message-ID: <179139750821.4.9072526328443780658@toxicpanda.com>
+In-Reply-To: <179139448190.2527009.17897220638829712578@kernel.org>
+References:
+ <20261007-b4-skb-copy-csum-stale-bytes-v1-1-adbbde033fb3@toxicpanda.com>
+ <179139448190.2527009.17897220638829712578@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -49,20 +85,24 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hi!
+On Wed, Oct 07, 2026 at 05:34:41PM +0000, netdev-bot+sinfo@kernel.org wrote:
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Found during development.  I was converting the BUG_ON()s in skbuff.c
+[1], and the conversion of the leftover-length BUG_ON() in
+skb_copy_and_csum_bits() zeroes the part of the caller's buffer it
+couldn't fill.  An LLM review of that change pointed out that the
+existing unreadable-frags early return in the same function leaves the
+buffer unfilled.  I confirmed it by reading the code and with a test
+module that marks a nonlinear skb unreadable.  It hasn't been hit in
+production that I know of.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+[1] https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com/
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Thanks,
+Josef
