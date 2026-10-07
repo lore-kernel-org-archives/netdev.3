@@ -1,391 +1,387 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB70B3446A6
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791392852; cv=fail; b=FlFPjCTwzFOmojYgqdZNV5wfBy0ppNMnxeusIUcgvzoUhTJmycVWZzK7ghTzrLhN5SYpcobIrIRKnHco39C6/hZuGkj8HDyoPJoMiqomV/BtUHSFmqho2MzS6FR+nlBG/0s06Ql3JTZxg+DLJ1+o0/X/9XULDv4h28Vkwo/UpBg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791392852; c=relaxed/simple;
-	bh=4D0vt6H6y+0gwqecUz0ff5ClTB0f5vMvFAZUfrihse4=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=uJdO02jcauqNhCjtuqkcfcbms2usNjRhjxN8smIR0q6NUSWuW5GTRxs1oCFGhQDwJ9XxuqwmsQcI+3bykXJi+gGyNrdLpbUCAN1QdTBmt7B6TEbYxgar5C4ZBR7F7BKL21W2hrNAYFkY6MwbCjH4QQ5P2sVEn0LEKyyVyHDQNPg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MTWqPL4F; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244BD43F8CB;
+	Wed,  7 Oct 2026 17:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791393211; cv=none; b=kUB8z/GWfe07QtTrG9b8mgl3Q5t4gYRedMcyERWRpRI9YQcMKeMvYIG2gUWpq7uklpcaVZ3nR49WO6tO0yorhXuowqMgWg7GwHwJRncmEKGU+Sz24Gae2pwbEmrjPFDyoFmcoOuYbGKyEhpc3+r0dCnoiR0FgQgItRxIqQdXYrE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791393211; c=relaxed/simple;
+	bh=CCSFW0V5Im3/8+9tq8ECAONKGXdwaUbyPl92jUu8pYo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PaHXzc8MUGQI7CVLRMiXgaCP0Q9Kvd3CJPX2P6mMDsuZaz+bp5uSiQ3y1Z6qcKz5IdHUofelOJ396CVJsGqv4qOYie4SwaQ9rWu6Ww/3QmZ/GK81iX5F1tta5pdIq9KMuBYesM81urEyjb1+seC/K6L64UwUiXLMZWeIy+CXzyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=lN/CYq64; arc=none smtp.client-ip=212.42.244.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MTWqPL4F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791392851; x=1822928851;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=4D0vt6H6y+0gwqecUz0ff5ClTB0f5vMvFAZUfrihse4=;
-  b=MTWqPL4FQVAbeYGS7Pmoxr5j7AIPVSZQH4Ebdlqs6oMGbjHBvlx2/xE2
-   5jA4VIU+VrSmAb4rST/dT6Uwm1JCGsm68cqOJufW6xyUcUsySjLQ6Kryb
-   fas5+OMxzRAUGEtAuvdVt/kRgWM/4nUHY3YbT9pYIL09h5eCSbfk4P+Ut
-   j2AQxAYuMCrBMQrJjM5qn8eg4542/IE3Uh2YYFWxtky1ZXWar4+gVkMmT
-   GH9fOA2LvcETLhIuLJMaHIuh//v3fpPRfNL5IE1IWHPORu7EF9c7Tsew1
-   VrN5x4GvqIjQYSlJtT8HIXuqsSNYd1WyZm836BSza2utSxJfTB8FpafiM
-   w==;
-X-CSE-ConnectionGUID: 0vjvq2M+REOMGLi8gyEdkA==
-X-CSE-MsgGUID: GSmXeCw7RkSWBV3yq90cUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="168634"
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="168634"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 10:07:30 -0700
-X-CSE-ConnectionGUID: R+L6tETqTWGewB5rtWPJoQ==
-X-CSE-MsgGUID: MlxTms/aQEii5XauvFxC0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="303767743"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 10:07:30 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 7 Oct 2026 10:07:29 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 7 Oct 2026 10:07:29 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.51) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 7 Oct 2026 10:07:27 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iznMjSBNFUckJ7t6qpVyaLyvR+2W9BaWzXLHaNiqU1Dms5HsBjEo0tUjJL+9P/Zh5SGYeM5P+zs/jVd8r78ay1bLeoirSicnHFMBnjrS48N0yfhRLd/SCcpukTW7nQ2ttgJ0sAt421QyBEw7uC1GnVT5dXqloKNxCFPfbOrn4KCvXp40+TKDL9I30QP2u90M9JqHupQMEtNyQHoOIxRQVmfB4Er9xSrqYtdMAdxAiRp6JJy5lcgkTrMrYyWh+VadVn6D5U24UiXBGgd3CEa7CDqG4HJ1r2ldDKcSKxhttE1/oBq6FdzcHr735mS1rnK65JHmKyyqkd0491ppK+iROQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mhMMiBl5KVs7uXNAq0btGciH7773EviivWJ8JBUlfz8=;
- b=OxoPYgC8g15mW4ZswmHn2AbR4I0Ju4BYJ2pUrmxb1/BgpVkGKXMJJXt8LXjEeiJ8V9DOenCNnebrO1+QVNMQUbtaGIaCReP0MqSt6/FMFZhab/c79UVW39ZmHFEKl2x/TR3jsxfJArgsZT/XPsAOKKiV/zwP6TPEe37A7ZFFcGD1veOigWI6PClEjD+4kc1AQAUXWxqBnhhl62uAFPTb18/Z3fWTaDmQXj9i2lKG0xYWNv8hs9vngwNu5hydpK84guisoSraltfKP3Pb0eoSwEUaK/L56DvX9BhG43VsjCPM5GJFMMtQ7pemC9TkE3uwo1rwJcQ7CGFTFXDRLZqBOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5) by DM3PPFF2E67D388.namprd11.prod.outlook.com
- (2603:10b6:f:fc00::f60) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
- 2026 17:07:25 +0000
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b]) by SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b%6]) with mapi id 15.21.0496.015; Wed, 7 Oct 2026
- 17:07:25 +0000
-Message-ID: <a9d7c483-b34c-4b5c-8951-c9f1bb1c1f81@intel.com>
-Date: Wed, 7 Oct 2026 10:07:23 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2] idpf: keep the mailbox up while tearing down
- vports on shutdown
-To: Tian Xun Ng <luckilystar08@gmail.com>, <intel-wired-lan@lists.osuosl.org>
-CC: <netdev@vger.kernel.org>, <anthony.l.nguyen@intel.com>,
-	<przemyslaw.kitszel@intel.com>, <aleksander.lobakin@intel.com>,
-	<aleksandr.loktionov@intel.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, Tian Xun Ng <tianxun.ng@bytedance.com>,
-	"decot@google.com" <decot@google.com>
-References: <20261007055741.30629-1-luckilystar08@gmail.com>
-Content-Language: en-US
-From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
-In-Reply-To: <20261007055741.30629-1-luckilystar08@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0085.namprd04.prod.outlook.com
- (2603:10b6:303:6b::30) To SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5)
+	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="lN/CYq64"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1791392888; bh=CCSFW0V5Im3/8+9tq8ECAONKGXdwaUbyPl92jUu8pYo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lN/CYq64fKKrJH02SDBP4rXCwg9SDKTaPJegz/z7/p6bDPi3IY4lP8td4SrNfrp/I
+	 v64NyvynOzyzaTx/NWXztfLkuQdcWV3lKAbLeAwPfc1edgrktxgGyIHj5iyI506E2W
+	 iiErkMwSV7c3Sk5bHU4E4EZ5ccSFY7562cJfBaRzHjrSm8DJoz0htaArb8RtQJ3PDs
+	 j+EZ/LxwODZpJRHYSwhBrSlqB8s2qUkPemhCfLbbB8POdjdJgZF+deKv6qVchg6VEJ
+	 lHe0g20/8tcr609umHR9qs1j9F0rz1Ne4HmJh8f7mDFfjJmDGOgicDr1WEs/tQXQZF
+	 Rgxupzv2PVpCw==
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <t.martitz@fritz.com>)
+	id 6ac67c77-c83a-7f0000032729-7f000001a3d0-1
+	for <multiple-recipients>; Wed, 07 Oct 2026 19:08:07 +0200
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Wed,  7 Oct 2026 19:08:07 +0200 (CEST)
+From: Thomas Martitz <t.martitz@fritz.com>
+To: Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Thomas Martitz <t.martitz@fritz.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v6 1/1] macvlan: allow source mode devices along with passthru
+Date: Wed,  7 Oct 2026 19:06:37 +0200
+Message-ID: <20261007170638.2086790-3-t.martitz@fritz.com>
+In-Reply-To: <20261007170638.2086790-1-t.martitz@fritz.com>
+References: <20261007170638.2086790-1-t.martitz@fritz.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR11MB186312:EE_|DM3PPFF2E67D388:EE_
-X-MS-Office365-Filtering-Correlation-Id: a510aed0-178e-4987-ba1f-08df2495756a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|23010399003|22082099003|18002099003|6133799003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: 148dSEMkvGrmmyE45Klk5OdzTffwzS4Z8WWHxgY/I8BvATlDW3NuzGpfqvm91Y3AWRetbh05RWufxTtG3sJMmFsMBrQD13G5IgGYt20fTpoCxZNG7hwmgrtwnCl/SFBwNg0snP3jp1CWQnXbWKHuil6XgtR2OaS0OgLlvSA254dPOrpjJ+cWKh+abUuL20Lwe6YDGTGdZE5l/adiLSE0CGW6IgRObkzlgCrXHLidLQ0Gl9A6C4x9j8n+GPoGGil0xsMeA0O2VpF/nmFy90pfMqjwMiwuq+5EX/sx25E/ZcqvLGt58z8jwcNkrjSTWnRFhV5XHuIu3xHYRUPq7S8SWTHaEf2O51CwhYc8luYSJcTLZF87Hjmyx5Vv+kNWePWSNkLk9v6VOZH7XLt4McxRV/TAIxcfZmcL5394By9PGKMvzB//DROoO9Tdh22FrYDLJq0E78A/q0q4OkmmNJE7LDQIE0VCeGTgqin/s3ALrY2f9edtDPhMwHozGiYppCsKpmVANayCZ3AeGT5QQ1vLmSO6AEw8RKaCVeZ2zNBrldkm/zZrpb66nNqmYvu38D9IoH5POCMVHHpsXrudvji2cWdxY2gnkdwBnOv83ubyQ9EM38Tene8l4PgQiYalyknT63QbNlBRei5F42NG8XsTzHwcTBtmIoo4kFjk2tIfe1g=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB186312.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(23010399003)(22082099003)(18002099003)(6133799003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YUszSlRpdEZlVXd2bXZYYkhvc2FvcjVIK3dHVWxma3owMkRpNzFGeGUvRVdi?=
- =?utf-8?B?UDVFanNGdkRuZ09PaDZPY0hjbFlTR2crNjVLVHdkZ1R5ZXFMbzRjMEV4b2VG?=
- =?utf-8?B?V1FGRTdHaTNsVTFIUTF6MmJDM2Y4YktxMnRvOEhHQVpEY1Zlc3NjSTU1K0pR?=
- =?utf-8?B?eGhlNjB5bE1yb1VaVVdnMWM0MmtJa2cyeWhZY2hjZ3pqalBEanpNc2s3KzBM?=
- =?utf-8?B?TlhZZnlkYkhucUlaZmIvSWdKeHkwU0VVNVgwS3Zib2JLaTRPdDVycmVVVFA4?=
- =?utf-8?B?M05GZHJJMURlTk55UlMrcnhYUHZIcnJ5WTRMaEZhZEp3NGxXaDgwOEFVKzRp?=
- =?utf-8?B?Wk02enpCK20wU05VMHRobytBL1RBaHVobWZnMnUzdlJaQ29nMEZtcHFUWSs2?=
- =?utf-8?B?SkJ6T3NMQlNQaVFpZjgzT2tndjBCbFdScVlwY05jUzdVL2dPWjZ0Yi9jL1VU?=
- =?utf-8?B?VFJXOE00N1RJYXlRZHFwL1dVL3ZGUXBSM1ByTXZQc2Uzc0lNTzJxYWw3UThH?=
- =?utf-8?B?L3lzL2dtYnBUWFdyM2k1UTZCSlM2enAxeG9TNlZRM0d1MzVsbEkvc0t3OWE3?=
- =?utf-8?B?ZFM3Z1lmV1EvYisyc3pDQThRODJIZE9JMzdBanJiS0ZsT0N3N3V0RXNyZXUx?=
- =?utf-8?B?UWpvaVBFYkh3YlhYNmNlV1R3VkVJclZIYzJ6MlplNlZtK05OZVRxZHEyaERl?=
- =?utf-8?B?Tzh1Sm80dWVpamlwSExUV3ZXWFVmWTVuVWg0ZkxrekZVYW8wS3Z1cGh0Uzht?=
- =?utf-8?B?K3ZSNmJaa3Y1aWt0cDNUN0RpV0lyZjdLREdqQzBmN0EraXJ0YUVHMFdPRFpM?=
- =?utf-8?B?WEJ3TmNxcWM0bXRmejUza3ozOGNQQ0dHakxGOWhlaWs0YnhqZCtXMURacmhq?=
- =?utf-8?B?NkMrWnlTK093MlQzNEhHb2RXQ1BqR21VTDhxQnJuSVB6dzZDWU9pZ21JWTBI?=
- =?utf-8?B?R2UrcyswNkNqelVLL1hwbEJpYXk5L3FWR09UMjhTZjlMZ2xSZWczSlhKb2Ew?=
- =?utf-8?B?VHF2QW9ZdlY0UUFMMWFNMzg0WjhvM1dFQWp3MHg5TzVoWjV1dlluZDJJaW5B?=
- =?utf-8?B?M3pSdG9EbjFHOVMyckd4SWNxVE14c1l1aUNlZVV4bkd2aUFNcS9xMXI4TTJi?=
- =?utf-8?B?TUJNa0g4WGg5OUdxejBOSTlmVjlNM1lrSWo3VGlWTTlqNlAvaUJ5bTFrYStP?=
- =?utf-8?B?bzFBYW5RdEpkdXBMSkdnZmE5YjIxcmZOcTlVeHlVVXY5Y1E0UXU2YVBzN3Vx?=
- =?utf-8?B?dTJYM1U0cGxnUTRrdE9TVXk3enhmS3BXSS8xbDBSTnZPSjJ3ZG9hOHFsMnJT?=
- =?utf-8?B?UlI1TW1RRklwVmhvV2tFaWJ5KzFNNkV2Q1cvWUNZc2FOanFsS2t0UDdPdTB5?=
- =?utf-8?B?V0VYcXZvWCtRaTlTWFdvL1JpZHNFenBpVTY0a0hCZGNzSUNMQ2EwaG4xOW54?=
- =?utf-8?B?dTRDSWdkY2NyaXBicFNScVA2ZWxBNnZMTFBJUWhhV2kxcGhIdk15QWM3TklZ?=
- =?utf-8?B?c2EwZDI4RjM4YTZ6Qno2ZFRyWkcwNzN5M3ZTVkJubU83YmZ5Y1NSTWpyczUy?=
- =?utf-8?B?b043cit4SlViMmRhbUt1THc1MzBJRUZyUzVXVGRPZTVJNkpERlZGVHhWb3J5?=
- =?utf-8?B?VFVXckhRNkN3VlZwTmc1ZnppZUVsblhKNy9ZcUo4SkErRExBM1ErRnJTZDJZ?=
- =?utf-8?B?WGJGeDlEOVB0SDQ5S0ZxZHhnQW1aUW5MRnBVQy83Tk5UK1JkU0tNSExsUFhB?=
- =?utf-8?B?UHlFRHpaNTBkZWNYOG5tODdGdWpIK2dERm43VTNaTzR1clRJSkpXRUVDQkJn?=
- =?utf-8?B?cmNUNktQTENVYVIxbUZuVXkrTStzKzExMzFkWFNRUWJISXBFZTdha1NtdmZx?=
- =?utf-8?B?elcyYU5PUjcrNDM4R2c1cU1sWkJBRnZiYnNDS0hrVkJ0R1ZvWHp2UXRlVm1Y?=
- =?utf-8?B?OElIa3dOUktscU9HVEEvVHFpTEo0VGl5dGluNzcxTXhaTmhsT0xaZjF2OWpR?=
- =?utf-8?B?QjIwblU1VFNuNDZKVGtvZEoxc0VyTmlNS2lqZmJkdU9GaEx1K1RrOHJ6SkRI?=
- =?utf-8?B?Z2RRRGFZNXhIOUNBQkJIcm9UTGZKRUFqRVREZ1BuU1M1dlUzbTlNYXdmRXZC?=
- =?utf-8?B?cGl0OFFpc0praWFUZ2czcUliVXErMkk1d3UrQVA0cmxVQjlsaTZmQ1hST0kz?=
- =?utf-8?B?dnhTdmFHL25EV0JPSUZZR2NsOXA2SWtOUDJ3TnRSckxaTFVFSDVyWEhFK2tm?=
- =?utf-8?B?YjgvbkdwZlRmRUdoMWNJaks0MEJXc2gwNFJQM3V6L1NFY3N3VldhL2hrRFRu?=
- =?utf-8?B?a29YNDlVOWdWT2k3a0ZZbHlnRlJ3MkxUcHlzQTN3eXJUSzRCb2ZLUTE3VTZ0?=
- =?utf-8?Q?dBujvNOaH0cFDbwE=3D?=
-X-Exchange-RoutingPolicyChecked: cIbs93pcTcFhXYFGti7ZoJd8V3Yy4UHVsvXe9Zn791FOCp2wTj3a03jsoH9gwTsz8MmrH1XcuT8eWS/N3QfTBJO35qQpMEcBk+2NLEwH1HngBfTIquc8eBnPMTOLa0P/I3g3MWq0GSUQ1LMRqDN2Fp62tzVhYWIO5/OhaeJf8tE+sNLhw7plrFGPbqhf6MxcjhJksWYm0akk/odUKAdL/Lcsdv6dLIvG2XLuc7NoHJ//PDDegaagcJdg4E8urTor7fJ/u+6A/ep0BcNlkCVtsrQN2xM76Kfp6JrAr79xyXVuxuL455r4laFf9EJAKbmc+nblzbN/6Sjut1rdoa0LlQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: a510aed0-178e-4987-ba1f-08df2495756a
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB186312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 17:07:24.9925
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wkTpbkA0bQlxAGU30VpRFf4Pw0RAtq00k/oTHS0Nv4uARVWyRpqSa6XyS20WjS/Fk/PRwArtaphGES4zAKcyRKdgm+cIPhtL1y/InKkf33Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFF2E67D388
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-purgate-ID: 149429::1791392887-26FA7455-0E57C2D1/0/0
+X-purgate-type: clean
+X-purgate-size: 11496
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-02  mail-id: 1CE4FA08AB  external: no
 
+This allows for configurations where there are a few
+known senders in the system (e.g. multiple SoCs on the same
+board) along with unlimited external senders.
 
+The source mode devices represent the known senders while
+all external senders terminate on passthru device.
 
-On 10/6/2026 10:57 PM, Tian Xun Ng wrote:
-> From: Tian Xun Ng <tianxun.ng@bytedance.com>
-> 
-> Since commit 4c9106f4906a ("idpf: fix adapter NULL pointer dereference
-> on reboot"), idpf_shutdown() calls idpf_vc_core_deinit() directly instead
-> of idpf_remove(), so IDPF_REMOVE_IN_PROG is not set on shutdown.
-> idpf_vc_core_deinit() uses that flag to decide when to shut the virtchnl
-> transaction manager down. Without it, libie_ctlq_xn_shutdown() runs
-> before idpf_deinit_task() tears the vports down, so every message sent
-> during that teardown (disable vport, disable queues, destroy vport)
-> fails at once. The device is never told to stop its queues and keeps
-> them enabled, with the ring addresses of the kernel that is going away.
-> 
-> After a warm reboot, the first queue reconfiguration of a port that has
-> not been opened yet (udev setting the MTU) sends VIRTCHNL2_OP_DEL_QUEUES.
-> The device then drains the queues it still considers live and writes
-> SW_MARKER TX completions to the previous kernel's completion rings. With
-> the IOMMU translating, those writes fault about 19 s into every such
-> boot:
-> 
->    arm-smmu-v3 arm-smmu-v3.12.auto: event: F_TRANSLATION client: 0006:01:00.0 sid: 0x30100 ssid: 0x0 iova: 0x3ef60840 ipa: 0x0
-> 
-> In IOMMU pass-through mode they land on pages the new kernel has already
-> reused, which shows up as "pagealloc: memory corruption" with
-> page_poison=1 and as crashes in unrelated code without it.
-> 
-> A function reset on shutdown does not help on these devices: with a PF
-> reset issued in idpf_shutdown() and PFGEN_RSTAT polled until the reset
-> completed, every warm reboot still faulted, and the reset the next
-> kernel issues at probe does not clear the queues either. Delivering the
-> teardown messages does.
-> 
-> Set IDPF_REMOVE_IN_PROG in idpf_shutdown(), as idpf_remove() does, so
-> that the vports are destroyed while the mailbox is still up. So that an
-> unresponsive control plane cannot hold up a reboot, give each mailbox
-> transaction during shutdown a 2 s timeout instead of 60 s, and fail the
-> remaining ones at once after the first timeout. If the function has
-> already been reset, for instance a VF whose PF went down first,
-> idpf_is_reset_detected() fails them without waiting.
-> 
-> Tested on two arm64 (64K pages) servers, each with two idpf PFs, with
-> this change backported to a 6.17 kernel and the IOMMU translating: no
-> faults in 25 warm reboots, against a fault on every warm reboot
-> without it. Each PF's teardown took about 1.2 s for six mailbox
-> transactions; the slowest, VIRTCHNL2_OP_DEALLOC_VECTORS, took about
-> 300 ms. To stand in for a control plane that does not reply, the driver
+Although you can still receive packets on the lower device
+without the need for the passthru vlan device, there
+are use cases where you need additional packet processing
+in the pipeline that hooks via rx_handler. With this the
+rx_handler can be attached to the passthru device while
+macvlan itself remains attached to the lower device.
 
-I'd probably bump this to 500ms to be sure. It's good that you measured 
-the slowest in your environment, but there is no guarantee that would be 
-the same elsewhere.
+We use this to use the same physical link for inter-SoC
+networking and external networking. Some of our chips
+have no other viable link for inter-SoC traffic.
 
-> was also built to skip sending mailbox messages during shutdown: the
-> first transaction timed out after 2 s, the rest failed at once, the
-> teardown took 2.8 s per PF, and every reboot faulted again.
-> 
-> Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
-> ---
-> v2:
-> - Drop patch 2 (function reset on shutdown). On a VF it queued
->    VIRTCHNL2_OP_RESET_VF and then freed the mailbox, and on these devices
->    a PF reset does not clear the stale queues anyway (numbers in the v1
->    thread).
-> - Set IDPF_REMOVE_IN_PROG in idpf_shutdown() instead of changing the
->    condition in idpf_vc_core_deinit(); no new idpf_is_reset_detected()
->    call (Emil).
-> - Bound the shutdown teardown: 2 s per transaction instead of 60 s, and
->    fail the remaining ones at once after the first timeout (Emil). 2 s is
->    about six times the slowest teardown transaction measured here.
-> - No VF special case, unlike what I suggested in the thread: a VF whose
->    PF has been reset already fails fast through the existing
->    idpf_is_reset_detected() check in idpf_send_mb_msg(), and a VF with a
->    working mailbox leaves queues behind on a warm reboot just like a PF.
->    Not tested on a VF; I have no VF setup.
-> - Compile-tested on net-queue dev-queue (W=1, allmodconfig and
->    allyesconfig, no new warnings); runtime-tested as the 6.17 backport
->    described above.
-> 
-> v1: https://lore.kernel.org/all/20260917105205.37561-1-luckilystar08@gmail.com/
-> 
->   drivers/net/ethernet/intel/idpf/idpf.h        |  4 +++
->   drivers/net/ethernet/intel/idpf/idpf_main.c   |  7 +++++
->   .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 28 ++++++++++++++++---
->   .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  1 +
->   4 files changed, 36 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-> index 470bc23c8..5d2e8a346 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf.h
-> +++ b/drivers/net/ethernet/intel/idpf/idpf.h
-> @@ -88,6 +88,8 @@ enum idpf_state {
->    * @IDPF_REMOVE_IN_PROG: Driver remove in progress
->    * @IDPF_MB_INTR_MODE: Mailbox in interrupt mode
->    * @IDPF_VC_CORE_INIT: virtchnl core has been init
-> + * @IDPF_SHUTDOWN_IN_PROG: Driver shutdown in progress
-> + * @IDPF_SHUTDOWN_XN_TIMEOUT: A mailbox transaction timed out during shutdown
->    * @IDPF_FLAGS_NBITS: Must be last
->    */
->   enum idpf_flags {
-> @@ -97,6 +99,8 @@ enum idpf_flags {
->   	IDPF_REMOVE_IN_PROG,
->   	IDPF_MB_INTR_MODE,
->   	IDPF_VC_CORE_INIT,
-> +	IDPF_SHUTDOWN_IN_PROG,
-> +	IDPF_SHUTDOWN_XN_TIMEOUT,
+Signed-off-by: Thomas Martitz <t.martitz@fritz.com>
+---
+ drivers/net/macvlan.c | 146 +++++++++++++++++++++++++++---------------
+ 1 file changed, 93 insertions(+), 53 deletions(-)
 
-In general we try to avoid adding new flags as they tend to spread 
-accross the code in weird ways. I think we can replicate the logic in 
-your patch without the need for introducing new flags.
-
->   	IDPF_FLAGS_NBITS,
->   };
->   
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-> index 129bccaa6..fa27ee1cd 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-> @@ -196,6 +196,13 @@ static void idpf_shutdown(struct pci_dev *pdev)
->   
->   	cancel_delayed_work_sync(&adapter->serv_task);
->   	cancel_delayed_work_sync(&adapter->vc_event_task);
-> +
-> +	/* Destroy the vports while the mailbox is still up, so that the
-> +	 * device stops its queues before the next kernel reuses their memory.
-> +	 * A reset does not clear them on every device.
-> +	 */
-> +	set_bit(IDPF_SHUTDOWN_IN_PROG, adapter->flags);
-> +	set_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
-
-Case in point, now we have an overlap with SHUTDOWN_IN_PROG and 
-REMOVE_IN_PROG, with the shutdown logic depending on the side effects of 
-REMOVE_IN_PROG. I did a rough draft, keeping your logic and I think we 
-should be able to avoid the new flags by introducing a global variable 
-adapter->vc_xn_timeout_ms and set it based on the flow we're in, like in 
-this spot instead of the above, something like:
-
-+	adapter->vc_xn_timeout_ms = IDPF_VC_XN_SHUTDOWN_TIMEOUT_MSEC;
-+	set_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
-
-followed with the error logic in idpf_send_mb_msg() that allows us to 
-bail early.
-
-Thanks,
-Emil
-
->   	idpf_vc_core_deinit(adapter);
->   	idpf_deinit_dflt_mbx(adapter);
->   
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> index 1caf52706..5f5d72671 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> @@ -190,22 +190,38 @@ static void idpf_prepare_ptp_mb_msg(struct idpf_adapter *adapter, u32 op,
->    * Cleanup the mailbox queue entries of the previously sent message to
->    * unmap and release the buffer.
->    *
-> + * During shutdown each transaction gets a short timeout, and once one of
-> + * them times out the rest fail at once, so that an unresponsive control
-> + * plane cannot hold up a reboot.
-> + *
->    * Return: 0 if the request was successful, -%EBUSY if reset is detected
-> - *	   or Tx control queue is full, other negative error code on failure.
-> + *	   or Tx control queue is full, -%ETIMEDOUT if a transaction already
-> + *	   timed out during shutdown, other negative error code on failure.
->    */
->   int idpf_send_mb_msg(struct idpf_adapter *adapter,
->   		     struct libie_ctlq_xn_send_params *xn_params,
->   		     void *send_buf, size_t send_buf_size)
->   {
-> +	bool shutdown = test_bit(IDPF_SHUTDOWN_IN_PROG, adapter->flags);
->   	struct libie_ctlq_msg ctlq_msg = {};
-> +	int err = 0;
->   
-> -	if (idpf_is_reset_detected(adapter)) {
-> +	if (idpf_is_reset_detected(adapter))
-> +		err = -EBUSY;
-> +	else if (shutdown && test_bit(IDPF_SHUTDOWN_XN_TIMEOUT, adapter->flags))
-> +		err = -ETIMEDOUT;
-> +
-> +	if (err) {
->   		if (!libie_cp_can_send_onstack(send_buf_size))
->   			kfree(send_buf);
->   
-> -		return -EBUSY;
-> +		return err;
->   	}
->   
-> +	if (shutdown)
-> +		xn_params->timeout_ms = min_t(u64, xn_params->timeout_ms,
-> +					      IDPF_VC_XN_SHUTDOWN_TIMEOUT_MSEC);
-> +
->   	idpf_prepare_ptp_mb_msg(adapter, xn_params->chnl_opcode, &ctlq_msg);
->   	xn_params->ctlq_msg = ctlq_msg.opcode ? &ctlq_msg : NULL;
->   
-> @@ -217,7 +233,11 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter,
->   
->   	idpf_mb_clean(xn_params->ctlq, false);
->   
-> -	return libie_ctlq_xn_send(xn_params);
-> +	err = libie_ctlq_xn_send(xn_params);
-> +	if (err == -ETIMEDOUT && shutdown)
-> +		set_bit(IDPF_SHUTDOWN_XN_TIMEOUT, adapter->flags);
-> +
-> +	return err;
->   }
->   
->   /**
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-> index 5d27805ff..b0809d149 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-> @@ -7,6 +7,7 @@
->   #include <linux/net/intel/virtchnl2.h>
->   
->   #define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
-> +#define IDPF_VC_XN_SHUTDOWN_TIMEOUT_MSEC	2000
->   
->   struct idpf_adapter;
->   struct idpf_netdev_priv;
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index afad90b9222a2..4af10cc517993 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -83,6 +83,11 @@ static inline void macvlan_set_passthru(struct macvlan_port *port)
+ 	port->flags |= MACVLAN_F_PASSTHRU;
+ }
+ 
++static inline void macvlan_clear_passthru(struct macvlan_port *port)
++{
++	port->flags &= ~MACVLAN_F_PASSTHRU;
++}
++
+ static inline bool macvlan_addr_change(const struct macvlan_port *port)
+ {
+ 	return port->flags & MACVLAN_F_ADDRCHANGE;
+@@ -217,8 +222,7 @@ static bool macvlan_addr_busy(const struct macvlan_port *port,
+ 	 * currently in use by the underlying device or
+ 	 * another macvlan.
+ 	 */
+-	if (!macvlan_passthru(port) && !macvlan_addr_change(port) &&
+-	    ether_addr_equal_64bits(port->dev->dev_addr, addr))
++	if (ether_addr_equal_64bits(port->dev->dev_addr, addr))
+ 		return true;
+ 
+ 	if (macvlan_hash_lookup(port, addr))
+@@ -637,7 +641,7 @@ static int macvlan_open(struct net_device *dev)
+ 	struct net_device *lowerdev = vlan->lowerdev;
+ 	int err;
+ 
+-	if (macvlan_passthru(vlan->port)) {
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+ 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
+ 			err = dev_set_promiscuity(lowerdev, 1);
+ 			if (err < 0)
+@@ -712,7 +716,7 @@ static int macvlan_stop(struct net_device *dev)
+ 	dev_uc_unsync(lowerdev, dev);
+ 	dev_mc_unsync(lowerdev, dev);
+ 
+-	if (macvlan_passthru(vlan->port)) {
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+ 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
+ 			dev_set_promiscuity(lowerdev, -1);
+ 		goto hash_del;
+@@ -737,17 +741,18 @@ static int macvlan_sync_address(struct net_device *dev,
+ 	struct macvlan_dev *vlan = netdev_priv(dev);
+ 	struct net_device *lowerdev = vlan->lowerdev;
+ 	struct macvlan_port *port = vlan->port;
++	bool passthru_dev = vlan->mode == MACVLAN_MODE_PASSTHRU;
+ 	int err;
+ 
+ 	if (!(dev->flags & IFF_UP)) {
+ 		/* Just copy in the new address */
+ 		eth_hw_addr_set(dev, addr);
+ 	} else {
+-		/* Rehash and update the device filters */
+-		if (macvlan_addr_busy(vlan->port, addr))
+-			return -EADDRINUSE;
++		if (!passthru_dev) {
++			/* Rehash and update the device filters */
++			if (macvlan_addr_busy(vlan->port, addr))
++					return -EADDRINUSE;
+ 
+-		if (!macvlan_passthru(port)) {
+ 			err = dev_uc_add(lowerdev, addr);
+ 			if (err)
+ 				return err;
+@@ -757,7 +762,7 @@ static int macvlan_sync_address(struct net_device *dev,
+ 
+ 		macvlan_hash_change_addr(vlan, addr);
+ 	}
+-	if (macvlan_passthru(port) && !macvlan_addr_change(port)) {
++	if (passthru_dev && !macvlan_addr_change(port)) {
+ 		/* Since addr_change isn't set, we are here due to lower
+ 		 * device change.  Save the lower-dev address so we can
+ 		 * restore it later.
+@@ -781,14 +786,17 @@ static int macvlan_set_mac_address(struct net_device *dev, void *p)
+ 	if (ether_addr_equal(dev->dev_addr, addr->__data))
+ 		return 0;
+ 
++	if (macvlan_addr_busy(vlan->port, addr->__data))
++		return -EADDRINUSE;
++
+ 	if (READ_ONCE(vlan->mode) == MACVLAN_MODE_PASSTHRU) {
+ 		macvlan_set_addr_change(vlan->port);
++		/* macvlan_sync_address() via netdev notifier,
++		 * to keep passthru and lower in sync.
++		 */
+ 		return dev_set_mac_address(vlan->lowerdev, addr, NULL);
+ 	}
+ 
+-	if (macvlan_addr_busy(vlan->port, addr->__data))
+-		return -EADDRINUSE;
+-
+ 	return macvlan_sync_address(dev, addr->__data);
+ }
+ 
+@@ -800,7 +808,7 @@ static void macvlan_change_rx_flags(struct net_device *dev, int change)
+ 	if (dev->flags & IFF_UP) {
+ 		if (change & IFF_ALLMULTI)
+ 			dev_set_allmulti(lowerdev, dev->flags & IFF_ALLMULTI ? 1 : -1);
+-		if (!macvlan_passthru(vlan->port) && change & IFF_PROMISC)
++		if (READ_ONCE(vlan->mode) != MACVLAN_MODE_PASSTHRU && change & IFF_PROMISC)
+ 			dev_set_promiscuity(lowerdev,
+ 					    dev->flags & IFF_PROMISC ? 1 : -1);
+ 
+@@ -979,7 +987,26 @@ static void macvlan_uninit(struct net_device *dev)
+ 
+ 	macvlan_flush_sources(port, vlan);
+ 	port->count -= 1;
+-	if (!port->count)
++
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
++		/* If the lower device address has been changed by passthru
++		 * macvlan, put it back.
++		 *
++		 * Caution: This triggers NETDEV_CHANGEADDR on
++		 * the lower device. But we're in the green because
++		 * the passthru interface is already off the list.
++		 */
++		if (!ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
++			struct sockaddr_storage ss;
++
++			ss.ss_family = port->dev->type;
++			memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
++			dev_set_mac_address(port->dev, &ss, NULL);
++		}
++		macvlan_clear_passthru(port);
++	}
++
++	if (port->count == 0)
+ 		macvlan_port_destroy(port->dev);
+ }
+ 
+@@ -1054,7 +1081,7 @@ static int macvlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
+ 	/* Support unicast filter only on passthru devices.
+ 	 * Multicast filter should be allowed on all devices.
+ 	 */
+-	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
++	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
+ 		return -EOPNOTSUPP;
+ 
+ 	if (flags & NLM_F_REPLACE)
+@@ -1079,7 +1106,7 @@ static int macvlan_fdb_del(struct ndmsg *ndm, struct nlattr *tb[],
+ 	/* Support unicast filter only on passthru devices.
+ 	 * Multicast filter should be allowed on all devices.
+ 	 */
+-	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
++	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
+ 		return -EOPNOTSUPP;
+ 
+ 	if (is_unicast_ether_addr(addr))
+@@ -1268,7 +1295,6 @@ static int macvlan_port_create(struct net_device *dev)
+ 		return -ENOMEM;
+ 
+ 	port->dev = dev;
+-	ether_addr_copy(port->perm_addr, dev->dev_addr);
+ 	INIT_LIST_HEAD(&port->vlans);
+ 	for (i = 0; i < MACVLAN_HASH_SIZE; i++)
+ 		INIT_HLIST_HEAD(&port->vlan_hash[i]);
+@@ -1310,18 +1336,6 @@ static void macvlan_port_destroy(struct net_device *dev)
+ 		kfree_skb(skb);
+ 	}
+ 
+-	/* If the lower device address has been changed by passthru
+-	 * macvlan, put it back.
+-	 */
+-	if (macvlan_passthru(port) &&
+-	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
+-		struct sockaddr_storage ss;
+-
+-		ss.ss_family = port->dev->type;
+-		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
+-		dev_set_mac_address(port->dev, &ss, NULL);
+-	}
+-
+ 	kfree(port);
+ }
+ 
+@@ -1523,15 +1537,6 @@ int macvlan_common_newlink(struct net_device *dev,
+ 	}
+ 	port = macvlan_port_get_rtnl(lowerdev);
+ 
+-	/* Only 1 macvlan device can be created in passthru mode */
+-	if (macvlan_passthru(port)) {
+-		/* The macvlan port must be not created this time,
+-		 * still goto destroy_macvlan_port for readability.
+-		 */
+-		err = -EINVAL;
+-		goto destroy_macvlan_port;
+-	}
+-
+ 	vlan->lowerdev = lowerdev;
+ 	vlan->dev      = dev;
+ 	vlan->port     = port;
+@@ -1544,12 +1549,32 @@ int macvlan_common_newlink(struct net_device *dev,
+ 	if (data && data[IFLA_MACVLAN_FLAGS])
+ 		vlan->flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+ 
++	/* Only 1 macvlan device can be created in passthru mode. There may be
++	 * additional source mode devices but nothing else at the moment.
++	 *
++	 * First check if adding a source mode device to an existing passthru vlan.
++	 */
++	if (macvlan_passthru(port) && vlan->mode != MACVLAN_MODE_SOURCE) {
++		/* The macvlan port must be not created this time,
++		 * still goto destroy_macvlan_port for readability.
++		 */
++		err = -EINVAL;
++		goto destroy_macvlan_port;
++	}
++
++	/* Now check if adding a passthru device to an existing set of source mode
++	 * devices.
++	 */
+ 	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+-		if (port->count) {
+-			err = -EINVAL;
+-			goto destroy_macvlan_port;
++		struct macvlan_dev *p;
++
++		list_for_each_entry(p, &port->vlans, list) {
++			if (p->mode != MACVLAN_MODE_SOURCE) {
++				err = -EINVAL;
++				goto destroy_macvlan_port;
++			}
+ 		}
+-		macvlan_set_passthru(port);
++		ether_addr_copy(port->perm_addr, lowerdev->dev_addr);
+ 		eth_hw_addr_inherit(dev, lowerdev);
+ 	}
+ 
+@@ -1581,7 +1606,12 @@ int macvlan_common_newlink(struct net_device *dev,
+ 	if (err)
+ 		goto unregister_netdev;
+ 
+-	list_add_tail_rcu(&vlan->list, &port->vlans);
++	/* macvlan_handle_frame expects the (one and only) passthru device first. */
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
++		list_add_rcu(&vlan->list, &port->vlans);
++		macvlan_set_passthru(port);
++	} else
++		list_add_tail_rcu(&vlan->list, &port->vlans);
+ 	update_port_bc_queue_len(vlan->port);
+ 	netif_stacked_transfer_operstate(lowerdev, dev);
+ 	linkwatch_fire_event(dev);
+@@ -1652,19 +1682,23 @@ static int macvlan_changelink(struct net_device *dev,
+ 	if (data && data[IFLA_MACVLAN_MODE]) {
+ 		set_mode = true;
+ 		mode = nla_get_u32(data[IFLA_MACVLAN_MODE]);
+-		/* Passthrough mode can't be set or cleared dynamically */
+-		if ((mode == MACVLAN_MODE_PASSTHRU) !=
+-		    (vlan->mode == MACVLAN_MODE_PASSTHRU))
+-			return -EINVAL;
+-		if (vlan->mode == MACVLAN_MODE_SOURCE &&
+-		    vlan->mode != mode)
+-			macvlan_flush_sources(vlan->port, vlan);
++		if (mode != vlan->mode) {
++			/* Passthrough mode can't be set or cleared dynamically,
++			 * regardless of existing source interfaces. Furthermore, source
++			 * interfaces can't switch modes within a passhtrough port.
++			 */
++			if (mode == MACVLAN_MODE_PASSTHRU ||
++			    macvlan_passthru(vlan->port))
++				return -EINVAL;
++			if (vlan->mode == MACVLAN_MODE_SOURCE)
++				macvlan_flush_sources(vlan->port, vlan);
++		}
+ 	}
+ 
+ 	if (data && data[IFLA_MACVLAN_FLAGS]) {
+ 		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+ 		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
+-		if (macvlan_passthru(vlan->port) && promisc) {
++		if (vlan->mode == MACVLAN_MODE_PASSTHRU && promisc) {
+ 			int err;
+ 
+ 			if (flags & MACVLAN_FLAG_NOPROMISC)
+@@ -1897,8 +1931,14 @@ static int macvlan_device_event(struct notifier_block *unused,
+ 		vlan = list_first_entry_or_null(&port->vlans,
+ 						struct macvlan_dev,
+ 						list);
+-
+-		if (vlan && macvlan_sync_address(vlan->dev, dev->dev_addr))
++		/* Validate the interface mode again because we're potentially
++		 * triggered upon removal of the passthru interface. In which
++		 * case it is already off the list (and has restored the lower
++		 * device mac already).
++		 */
++		if (!vlan || vlan->mode != MACVLAN_MODE_PASSTHRU)
++			return NOTIFY_DONE;
++		if (macvlan_sync_address(vlan->dev, dev->dev_addr))
+ 			return NOTIFY_BAD;
+ 
+ 		break;
+-- 
+2.55.0
 
