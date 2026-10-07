@@ -1,96 +1,69 @@
-Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BB047C0FC;
-	Wed,  7 Oct 2026 09:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378D147D45B;
+	Wed,  7 Oct 2026 09:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791366713; cv=none; b=MfKW2n5KmbV9rDz744AbKxvK5VDdAuqhprhfSMqbamqbPQQ9wpkcCpXtyBtwxcQo3qoTGdchHOPXIId5vq7j+K/leARhkZmrLBw1unqT6KC9WYUDqidJTc2JLYQMuyjwkVQBrsy7UOmpK8WQ9aAD+n7GvR5OBy+C0aH1ZwzGROs=
+	t=1791366867; cv=none; b=Y8ZmQWcpEtuBd71w4CwVxGfcoz0wh8VSDfVFgo4AfKDzGp8EwrK/rFmQ1xFy5rOJDunErpT/5mJchpwOer6QadCSgpeyMrUwRIJPAVb2fMQusMFVxHyY9oCTqc4BPhTugZxo7x3IRgOpIPAFKZUd1I/lc1inffEBhEK2qXMeVOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791366713; c=relaxed/simple;
-	bh=YpmZSeHdx0gjci48tJqrrtCGp9fQ95iGiN/kNL2LXF8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LAmaKeAEq5fM2UE+2rroc3U4xZpmfo9dRP6TkbMZt9U1TbtVkWWfJGqj/ud0kFgVvW/GYblsSSHf1DgopDr2oCONrHBhJRveapOBJ+fpIHSjUkO72PnX1Ce6TdfASwrI3A5cQgJzASB+EGLVn9tmKn7mUd0/+1HB/ooSiywKVng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=WiTl/0xd; arc=none smtp.client-ip=111.22.67.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+	s=arc-20240116; t=1791366867; c=relaxed/simple;
+	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ax7ydheT35UqwM0kNEUGwxJmlw8R2Ecwooqkh/Tleyg86zLFRWGLxDanh6HKli9KxdDG7OP1p3DNVFDABZ7z1+meiaA6FsIfefwHiJcPmjIEFYAyywispz2GRMB7jNi/ZbhILQqz99gwVW7QzmT716rYMUZ4ZDnbcfNGP96yuvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StYG7fGz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="WiTl/0xd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=WiTl/0xd9r+XdumNmRJmphALYwhWHIJFIL73ZDByuA4JDGZORAlxgvvcUT5B5oy4Txna2mCB3Qalf
-	 ELv1vcwZpeShRpFy9VvE1k7SE956BgJJp6DXlCTW2HQ3Bw0ZDc9aRW7wa7F9fxauMCR6yWCoF8Lnli
-	 BmH69Vb8q2hleQus=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app01-12001 (RichMail) with SMTP id 2ee16ac61625551-86ca0;
-	Wed, 07 Oct 2026 17:51:33 +0800 (CST)
-X-RM-TRANSID:2ee16ac61625551-86ca0
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from openEuler-24.03 (unknown[112.22.250.209])
-	by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee96ac6161a04d-e490c;
-	Wed, 07 Oct 2026 17:51:33 +0800 (CST)
-X-RM-TRANSID:2ee96ac6161a04d-e490c
-From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-To: netdev@vger.kernel.org
-Cc: Alice Mikityanska <alice.kernel@fastmail.im>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-Subject: [PATCH net] selftests: net: big_tcp_tunnels: Fix the IPv6 route change
-Date: Wed,  7 Oct 2026 09:47:31 +0800
-Message-ID: <20261007014731.1277055-1-yanhaishuang@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StYG7fGz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D141F0089B;
+	Wed,  7 Oct 2026 09:54:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791366856;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=StYG7fGzl2oFdJzZbSyQfq3kGjCR3jtCS830YAn+PzsVoXK7CX1K+kMbvctL3xy2S
+	 gypMaZrd8WvVLFC1PCS7zQxL4rju9oX40VLf55waft7OUQw/IGpkI8G4yFhIjDj2Pp
+	 AKz0S5NQlKLm1H6aWrEX57l2xWDg8jhmXfeYxVX7wmv1oi1HXaVmfYKy7i2yiGBPVU
+	 thCGnSa2yHoMnUy91ul8s7UYq8siAGkixKqZhlIcWsuSeajKwLa6+YGeapMf+yoIZO
+	 XhHv2wpF754gV79saWcGjrSI41qD0UuGa0fbr6oQQ6noZbuesHUONjNHrd8MiD9/X3
+	 Yi5rxlW2pf/Wg==
+From: netdev-bot+sinfo@kernel.org
+To: Hui Peng <benquike@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Xin Long <lucien.xin@gmail.com>,
+ Vlad Yasevich <vyasevich@gmail.com>, Neil Horman <nhorman@tuxdriver.com>,
+ Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3] sctp: copy zeroed stats to user in
+ sctp_getsockopt_pr_streamstatus() when !streamoute
+Date: Wed, 07 Oct 2026 09:54:15 +0000
+Message-ID: <179136685553.2527009.11350015706759524936@kernel.org>
+In-Reply-To: <20261007095128.1370109-1-benquike@gmail.com>
+References: <20261007095128.1370109-1-benquike@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-On slow machines, do_test() raises initcwnd on the route into the tunnel
-with "ip route change". For IPv6 traffic this fails with:
+Hi!
 
-  RTNETLINK answers: No such file or directory
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-The IPv6 prefix route of the tunnel address has metric 256, while
-"ip -6 route change" without a metric looks for a route with the default
-metric 1024, so nothing is changed. The test still passes, but without
-the larger initcwnd it is meant to use.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Pass the metric of the prefix route.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-Fixes: 1d62b83fb751 ("selftests: net: Fix slow configurations in big_tcp_tunnels.sh")
-Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
----
- tools/testing/selftests/net/big_tcp_tunnels.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh b/tools/testing/selftests/net/big_tcp_tunnels.sh
-index cc0875e52fb9..fb43fed824e3 100755
---- a/tools/testing/selftests/net/big_tcp_tunnels.sh
-+++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
-@@ -145,7 +145,8 @@ do_test() {
- 			    route change 192.168.2.0/24 dev tun0 initcwnd 100
- 		else
- 			ip -netns "$CLIENT_NS" -6 \
--			    route change 2001:db8::2:0/112 dev tun0 initcwnd 100
-+			    route change 2001:db8::2:0/112 dev tun0 initcwnd 100 \
-+			    metric 256
- 		fi
- 	else
- 		ip netns exec "$CLIENT_NS" \
--- 
-2.43.0
-
-
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
