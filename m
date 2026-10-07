@@ -1,79 +1,80 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461B0430CCA
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991EF4D5997
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791395908; cv=none; b=Rm/tFp7v+v2TTpC79P3mak/cy/dLznRVz8pL5WObNDhghTtdeBNrvNg9cJwdCBmi4rqv8ZITJPgOPDGymmiukbZuTO7UhMqvZEmsNUJq7vtMBVLNKSxFR4opbnwYVuAE8eo8L3/GJx/NL/JF3gvEBD5WUOUktcsXx0kpRpb+r0o=
+	t=1791396200; cv=none; b=UL5RoCM8hI4BxzJt3gxrwBMTUaamV+cY1cvt/jWEYDG3ajwTUwl9alU+1c9Ww8ndlI1t8N0NDvPySBbzc+V5K2MBnBXdmzZesg9QPJhZfGHesQRXPntrW6PM/duqPgOqCK4ANM1v1gJpBs8HPPjNJS3IzhuAVIA5IqkWcTLibeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791395908; c=relaxed/simple;
-	bh=Mp07QHO3Rs8Udlyr/Za9T3j9vLxUxD8S3ynso79mBTE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CPWJxE7/bCXjPTb7Oq3RcApn+vTKdg669rpNQX3fEDSwSmUZwPufVEuw4Qr/ZhlqGdoM1UTYwupzLAt7Z9VrahOSXtrQr5WxvCCz7oUoHRCemm5WLbGHAu88/UwXQtMoXc54wdhxOGQFWLaDBB7+4zJ7SRn06f2AdgVuBtSxLaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A6vJR+i9; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791396200; c=relaxed/simple;
+	bh=Ltv/RLIwQoMYY8n388CV2rbSvSpwVLlUtRxsUfEVhTk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EcPj/hyLgniGeIHy7Jr+f0O4dS2SuEru4Q64th1xfcMVC1BX1GrZ2Qi0jJzDUSitrW5RwyDZjat+UU5zd/U1ZGjEx7GB+4DqtCt2ddItYKZ73IDjWJjlB2lW/Rd32SOW3gruEdpefZJhTQNqoZgbBPKIyoCiWudaPqYxjqbMkUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai; spf=pass smtp.mailfrom=nuro.ai; dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b=hCJxI8Qj; arc=none smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A6vJR+i9"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8ac8a2ac52bso26983647b3.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 10:58:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b="hCJxI8Qj"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-14fd9dafb0dso1799570c88.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791395906; x=1792000706; darn=vger.kernel.org;
+        d=nuro.ai; s=google; t=1791396197; x=1792000997; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Oey5yCw08dubStuWszvMPd3Sd2g9hpqjq3h1IrdDEpU=;
-        b=A6vJR+i921YQ/xL/X13Kxm2CFHZQH+8O7QbBjR86RsQgx594XfBqxM9ysPc1Dbr0Hm
-         6j2QI4Twj8j8CAq9e86YRvztriVmRzKQw/Bi74vWEL2Fh4JXa6/DR+OS5vYNiuGXZrNN
-         4bXAqTI5UvWrLM9lce2iekbEghEndyeK3CcgsBkT8wd6feW1dwYI9Wniariws+SoO56S
-         cBZZ1lp08mSLSogVNBci/VjvuT+2Zy/wTzClx6Oovb5/osR561HyL6gxWQ68K05HKddA
-         /JYWQRAAuqbOsu+1NbHBol07j0qZq6HVyB+80mFjxGuADqHTJq5xhJkYCytV4o0QxO+C
-         ghdQ==
+        bh=qgm5+nCeTJXdCx0TLpkqzAsPIchFKXrgB4ZQJsFcySE=;
+        b=hCJxI8QjVL5mROnMaZi+vhsDYn2eYHFtPqTf3hXZW/FtMlLpxfcA6mvu/HkC0POiJA
+         EchUvCvUmPcXPDpQXB0qguwK7UKVLzlEa9YzNHIT+Qz3mcNgruj5mAtQokuCu8S8WOpk
+         MzfpGKzbwbh1lOFfAQnZdGVTSWS1Oz3SA+Q+J1fBd5ePi0gr0M2Ft2cJJDNlMaO9hYQH
+         OlT9JcxU7x87SpEqYKAZhUEDx2p4w7TO2xjGdO8pjeh8IXnfMQuD+B1+6xrSbKYuJM24
+         4ZcbNIo7IKUvejxooHWDbhUDGTzWtrne+dOIouIub3/vqYKt8O4/ysYg3wdKGiFSJ4xr
+         9FXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791395906; x=1792000706;
+        d=1e100.net; s=20260707; t=1791396197; x=1792000997;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Oey5yCw08dubStuWszvMPd3Sd2g9hpqjq3h1IrdDEpU=;
-        b=q1TOW1KMPETWE37XlXWtxAG8xJH3e6QpQ+YUqlkAWgndJPi+Z1n5qbAyNhKz133Qz6
-         El5EF5s5avSoSpxPE8xzQjB05nfisoAudvMUZPdInmhZvp52ns8S4KCqjBmdQklDZqpn
-         Dx+9CyWMsNPa8xGUcXhT71cXZkvJ7dF8MRaBiz52+LZwzglkQq2pcPE6+gTRXxUB3Uav
-         2vq3nKVU+h7e2+fK9XArHjRu9gehMuvUOTazQULZ7NEG7GBX269L6u6nxayPeKFBtREA
-         0aGhMSA02LFzuGbr7KUY88GLHVjlt+7ftW2iV83u6FmFXF9oDKFPCi7alS8rffjmk9rO
-         +H6Q==
-X-Gm-Message-State: AFuF++lLYVawmQ4CyFiK/DU4VWLQ0Ou84mKqjTALwHIAa9RIacnfJkIK
-	KejqHCkWLo4jfS5gioekpZ3Hq9pmLuijldE+CRurusljyCqTyO3mWHMjTrknoQ==
-X-Gm-Gg: AYBFou0rvSguqDUIOsWIS+HRXUfY9W7AMcyKlG/MEObxoXgyJe9kz4hqq6AFFu6RcIS
-	04y+u6DracnCO3cCV3YX7IoqX4q6rwnU85u61W+L2mGt5pSjBsB/c5rePcrPLWjjh3xnFvdD3A0
-	lb7XMIX1+HMfBR7Uuw80KOE6QwcAJgaeU9K+FHOc7jFomzyp8AI5Qldzoq38CeM4MnwnZ1dFD3v
-	fpwn0U1IZfSLDm1mjMzkBqad+cloULmb4S1epAbqDpIH66fWTbraulBP5jAFWvfgsZbW7et8Bdd
-	C4IPe8HE1VLLquUEEOemmuGd8ACVVLcVGprpEUPWyTMrXR1Zpjdr+EbAKSFMNB57JBi/1Aw+ujD
-	kuRFHDHd0hzaaoFwtWCvKiBEfM0sLjOrEHAY2COmPKKs13Bg0R3sEnTMLZ5JM17TNetZXzacUXl
-	kAiXc/37HOl9uOEJdiIZ5XIzGFVQpJPPVmuyQNQBqQxYVvkD2G9A/2Ay3MnivGftYB20Cccedv2
-	904pLc6a7/r2TgLRAuPlUPrhXdOs6ez7v+zjHrDd+dm+YvWtMApG5ufESR43TXK365HPn9OmxJi
-	6YPWMELwnxGpOBh4KASRXt8z9XlZUcMjM3HO6QMdDlzgVSioOVdaQ08XjkXV
-X-Received: by 2002:a05:690c:2606:b0:8a4:af9c:2612 with SMTP id 00721157ae682-8af720b8ad1mr42562147b3.23.1791395906148;
-        Wed, 07 Oct 2026 10:58:26 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b05abd093asm11174257b3.37.2026.10.07.10.58.25
+        bh=qgm5+nCeTJXdCx0TLpkqzAsPIchFKXrgB4ZQJsFcySE=;
+        b=wA7umyZs4syOy81lqaOXUaKwFlbzTL4CjIqJvrvqhW2WNwOgim+vLcdsjaX+RgthhV
+         4p4/+5s6cOLJ11AxyhH9lChCgBFmFZ+GWV81PYfIiZI3bWs59AYiWeXrWSflksv09Yjd
+         6l9LZdlhLMUkKXQanpNhogb0CysCsyuazPUWku17AgYXffCdhS1Ah3QXvtYHorkdLCoC
+         TCXwYHsjUCppMlxl5JMx/cszkkTaHG+Qa/i2bhQKfVvF98KxpaDJlcOT7qPJYr06e8FT
+         pUEk9VMAfG8QndPMC698BKZz2X6Uc7Xs0tHVt8Qmn5bW8Qz4lteFtw6BX4Pl3fkw/7Ih
+         IYzQ==
+X-Gm-Message-State: AFuF++mEY3+VYMiJodbixNIP/Hs5ldmJFB7DtyIO8TIzBlq9Etzvgn2H
+	D6qDAxwBzJvsEbrZGtnAbURXvvCTBkMsaDVme/x4pBAH2xH9qN8iJGo+1qidQPINLE1wYcRnSnm
+	Mcek+ftKHaKt0jo68L40/kn49gcG2GKVE7Hj1KGXm5+z0o2pFsgHRywcf3JkWnb4vTPNbYy60n0
+	Qqmg28k5i/3SlW5gpGfXxlPcmJYqm+0CfQg6gGFg==
+X-Gm-Gg: AYBFou3W6VFkq/XhQKAfnjWG9yisPJW1HVSehNg2KgskoAYzyHFbxhTBZhcOrNEsF9/
+	GnTc9PTMuCiADrFfbdajoYJTy5nkUOtlvr27YFwCVEqHXeEQHbqKbnb4yzK1sKqGfSt4kUlGM2g
+	faoK0raPonvSzB8BEzw5+1E/FLgqMp+Om5qG/KzNC1YIcmcYgyV31w50gQGDU6upKG3jE6no3yK
+	4tMxud218pxsvqC7PenBDz/DG9+ZpXc30vG9eIDWbVVzFMZzt7Uk6W+o50P/LNLOZshXivFCx9w
+	MI4zI5vw64PQa7KeaFtHeUDfKx4MZzdoAoe3BZagLnPUbCyx4csrXWJiepnoUila7kSGwmRpwwo
+	QtlRxSqIeZsbgxTREDVEPsoJiKWuUQ6w3tIiVcN7+IvNarv8I+1+jFQhbcTc3y1wDTET9NkbSdu
+	8NXqYM7E2KyVrfjkMFAhRsxvEyVu8kTSUIiXePFFvF0IAqFqp/ph4y1w2Yo/wrSvr4XlsoC7opH
+	s8Xinc2cEs=
+X-Received: by 2002:a05:7023:a56:20b0:148:4522:560c with SMTP id a92af1059eb24-16205bcce04mr3445142c88.11.1791396196809;
+        Wed, 07 Oct 2026 11:03:16 -0700 (PDT)
+Received: from jkain-desktop.corp.nuro.team ([64.124.43.154])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1616602b33asm7842425c88.3.2026.10.07.11.03.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 10:58:25 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+        Wed, 07 Oct 2026 11:03:16 -0700 (PDT)
+From: Joseph Kain <jkain@nuro.ai>
 To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
+Cc: edumazet@kernel.org,
+	davem@davemloft.net,
 	kuba@kernel.org,
-	edumazet@google.com,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	mst@redhat.com,
-	liuhangbin@gmail.com,
-	wei.fang@nxp.com,
-	Willem de Bruijn <willemb@google.com>,
-	Junnan Zhang <zhangjn_dev@163.com>
-Subject: [PATCH net] net/packet: call packet_parse_headers after virtio_net_hdr_to_skb
-Date: Wed,  7 Oct 2026 13:57:30 -0400
-Message-ID: <20261007175816.3138556-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.56.0.360.g66cac248cb-goog
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Joseph Kain <jkain@nuro.ai>
+Subject: [PATCH net] net: do not let defer_count outlive an empty defer_list
+Date: Wed,  7 Oct 2026 11:00:56 -0700
+Message-ID: <20261007180056.1394868-1-jkain@nuro.ai>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,129 +83,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+__skb_defer_free_flush() can leave defer_count at or above skb_defer_max
+with an empty defer_list. That state is absorbing: every producer then
+takes the nodefer path without queueing, so the list never refills, and
+the flush keeps returning early without clearing. Deferred freeing stays
+off for that (cpu, node) until reboot, and cross-CPU frees fall back to
+the page allocator, which is the contention deferral exists to avoid.
 
-SOCK_RAW packet sockets incorrectly drop VLAN-tagged GSO packets
-without VIRTIO_NET_HDR_F_NEEDS_CSUM.
+Two changes from commit 844c9db7f7f5 ("net: use llist for sd->defer_list")
+combine to produce it.
 
-packet_parse_headers() sets skb->protocol to VLAN but advances
-skb->network_header past the VLAN tags. virtio_net_hdr_to_skb()
-then flow dissects these packets, which parses the network header as a
-VLAN tag, and fails.
+skb_attempt_defer_free() now increments before testing the limit and does
+not undo the increment when it rejects, so a rejected free leaves the
+counter raised with nothing queued.
 
-Call packet_parse_headers() after virtio_net_hdr_to_skb() instead.
+The flush clears defer_count before llist_del_all() rather than together
+with it under defer_lock as it did before. A remote producer that queues
+between the two has its skb drained by that same llist_del_all() but its
+increment retained, so the counter drifts upward until it reaches the
+limit.
 
-This matches tun_get_user() and tap_get_user() and thus simplifies
-overall complexity.
+Neither needs PREEMPT_RT. The drift needs no preemption at all: the
+flush normally runs in NAPI poll on the CPU that owns the list, while
+skb_attempt_defer_free() only ever defers to a remote CPU, so producers
+cannot be excluded by disabling preemption on the flusher. PREEMPT_RT
+only widens the window, because local_bh_disable() does not disable
+preemption, so the flusher can be scheduled out between the clear and
+the drain.
 
-Commit 01fdecc0480d ("net: packet: fix wrong transport_header when
-sending VLAN-tagged frame") fixed the same issue for the transport
-header probe in packet_parse_headers(). That probe is now skipped if
-virtio_net_hdr_to_skb() already set the transport header, avoiding a
-redundant dissection.
+The latch is also reachable with no race at all:
 
-Implementation details:
-- Do not set skb->protocol to the RX wildcard ETH_P_ALL. SOCK_RAW then
-  derives it from the link layer header, as before. SOCK_DGRAM now
-  leaves it 0, or derives it from gso_type for GSO with NEEDS_CSUM.
-- Keep virtio_net_hdr_set_proto() last, so that the link layer protocol
-  takes priority over gso_type.
+  sysctl -w net.core.skb_defer_max=1    # frees increment, then reject
+  sysctl -w net.core.skb_defer_max=128  # does not recover
 
-Reported-by: Junnan Zhang <zhangjn_dev@163.com>
-Closes: https://lore.kernel.org/netdev/20260821085722.24036-1-zhangjn_dev@163.com/
-Fixes: dfed913e8b55 ("net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
+skb_defer_max has .extra1 = SYSCTL_ZERO and no .extra2, so 1 is settable.
+0 is safe, because proc_do_skb_defer_max() flips skb_defer_disable_key
+and the producer returns before incrementing, but that guard covers 0
+only. Recovering from the latched state needs a skb_defer_max above the
+accumulated count, which an operator has no way to determine.
 
+Drain before clearing, so the error can only under-read, is bounded by
+the producers in flight, and self-heals on the next flush. Clear the
+counter on the empty-list path as well, so no count can outlive an empty
+list and an already-stranded counter recovers.
+
+llist_empty() has already loaded that cache line, so the added read is
+free; the unlikely() keeps the store off the hot path, where it would
+otherwise bounce the line against remote producers.
+
+Found on an arm64 PREEMPT_RT system running the two commits backported to
+6.1. With skb_defer_max lowered, defer_count reached 788,888 on one host
+and 122,399 on another with the list empty throughout, and restoring the
+default did not re-enable deferral.
+
+Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
+Signed-off-by: Joseph Kain <jkain@nuro.ai>
 ---
+ net/core/dev.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-This was discovered through the report linked in the Closes: tag.
-
-Also independently reported by LLM code reviews as pre-existing issue,
-and verified with a reproducer.
----
- net/packet/af_packet.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 6ff16eef24f4..52ae3d875e97 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1943,8 +1943,7 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
- 	/* On TX skb->data is the L2 header; anchor it for all socket types. */
- 	skb_reset_mac_header(skb);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 18dc88990510..043a7f9166a9 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6938,10 +6938,13 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
+ 	struct llist_node *free_list;
+ 	struct sk_buff *skb, *next;
  
--	if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
--	    sock->type == SOCK_RAW)
-+	if (!skb->protocol && sock->type == SOCK_RAW)
- 		skb->protocol = dev_parse_header_protocol(skb);
+-	if (llist_empty(&sdn->defer_list))
++	if (llist_empty(&sdn->defer_list)) {
++		if (unlikely(atomic_long_read(&sdn->defer_count)))
++			atomic_long_set(&sdn->defer_count, 0);
+ 		return;
+-	atomic_long_set(&sdn->defer_count, 0);
++	}
+ 	free_list = llist_del_all(&sdn->defer_list);
++	atomic_long_set(&sdn->defer_count, 0);
  
- 	skb_probe_transport_header(skb);
-@@ -2614,7 +2613,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 	struct page *page;
- 	int err;
- 
--	skb->protocol = proto;
-+	if (proto != htons(ETH_P_ALL))
-+		skb->protocol = proto;
- 	skb->dev = dev;
- 	skb->priority = sockc->priority;
- 	skb->mark = sockc->mark;
-@@ -2678,8 +2678,6 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
- 	if (unlikely(!skb->len))
- 		return -EINVAL;
- 
--	packet_parse_headers(skb, sock);
--
- 	return tp_len;
- }
- 
-@@ -2919,9 +2917,13 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
- 			}
--			virtio_net_hdr_set_proto(skb, &vnet_hdr);
- 		}
- 
-+		packet_parse_headers(skb, po->sk.sk_socket);
-+
-+		if (has_vnet_hdr)
-+			virtio_net_hdr_set_proto(skb, &vnet_hdr);
-+
- 		uarg = kmalloc(sizeof(*uarg), GFP_KERNEL);
- 		if (unlikely(!uarg)) {
- 			if (likely(len_sum > 0))
-@@ -3122,7 +3124,8 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 		goto out_free;
- 	}
- 
--	skb->protocol = proto;
-+	if (proto != htons(ETH_P_ALL))
-+		skb->protocol = proto;
- 	skb->dev = dev;
- 	skb->priority = sockc.priority;
- 	skb->mark = sockc.mark;
-@@ -3131,16 +3134,18 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 	if (unlikely(extra_len == 4))
- 		skb->no_fcs = 1;
- 
--	packet_parse_headers(skb, sock);
--
- 	if (vnet_hdr_sz) {
- 		err = virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le());
- 		if (err)
- 			goto out_free;
- 		len += vnet_hdr_sz;
--		virtio_net_hdr_set_proto(skb, &vnet_hdr);
- 	}
- 
-+	packet_parse_headers(skb, sock);
-+
-+	if (vnet_hdr_sz)
-+		virtio_net_hdr_set_proto(skb, &vnet_hdr);
-+
- 	err = packet_xmit(po, skb);
- 
- 	if (unlikely(err != 0)) {
+ 	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
+ 		prefetch(next);
 -- 
-2.56.0.360.g66cac248cb-goog
+2.55.0
 
