@@ -1,293 +1,194 @@
-Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4318.protonmail.ch (mail-4318.protonmail.ch [185.70.43.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741994A4407
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 14:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791382933; cv=pass; b=nQi8DbfMCyUlMC8rPml3pSAEeeF4J7qb4bxo/PsehxB5AydeTRASuhzVs2HvnO54hBdXY/VvhNHA5+/YF1KL+5oo6p+BOrtrDAOIm1rM3HN6W/Dy7/i4YDUuOPuZRygWChquEFiCAFm8IutsIFMNV3opXdHxkcOhL9O4YHkTSSI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791382933; c=relaxed/simple;
-	bh=MJsKIawVXjsmFhZJhsUaSCOnlwobYF89f5Ga0V+6nTU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YbNlFqjNFNYLr4eFKdHS8z2IA0/sttJiDDU7arZL770rVa5W4FJsGPM6FSdIFoOR9VLE0+YPZt76vyZUrxaPQTeM4s1knjyoBIZX/DueVxFGL99deFvnaTu8tZS58idyyHPCqQawY3J2Y8+ON0y15D0LzlQZOi1rWRLAvVKpPkA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KgFyidqg; arc=pass smtp.client-ip=74.125.224.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8F24AFE25
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 14:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791383021; cv=none; b=Ncq5mkWTuqksNYWHU8lQx8cIaKhP5iRgectzRZyz5xYTB8V77+E42EzqVE9w0WndWUG9n9ymwMtluiZOHLvAmCM3mTTrqwiZHcgKxdkOs4iVq6dbG414F/rYSTu1uGbav838R0exL5lew74F8v2vR9580+s2NZ/qJKcjr67dKCs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791383021; c=relaxed/simple;
+	bh=oYXoLrdTkTd0h40+YUgpg1Qo8zbefCTY0JHGfDFS4c4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r0ZTYOyrBzt/4mMfkvE3JU5Rl6SI+Gtu6G6U+uI+V2lEcmPAEZSZ+bmVC6+ex5eZH5228FKOaV2PnOF5ggenmnig4NpGqWNT/ayFn7kzXABJRDNSY3AFpjKK5STkd2ijaivgxO1zFo7F2lAr7HT4CR+bbGuGsc5qS1C3w0KgN6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=WjI4GP59; arc=none smtp.client-ip=185.70.43.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KgFyidqg"
-Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-6776efd4ff1so2205016d50.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 07:22:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791382923; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JCnGkC1pPhgapYqGp2eY7fTZRokCCtpzfoneEUMHfiof4zD077VVmpjvoamApw19Q9
-         +9grTwDfKzAauXLaw8G8NxMcUD/PVXbj3BM6pZfH/ZvmHHniHe4Y1/qJBzNpN4N9SQQS
-         7NhqPzK+qgTwnlvJQdnypV8tNheQ4HVnetTXYrLE51C1eqFndhJvQMtNIigfT3z5c+GE
-         fmV01ADcbIRKeVDmd+6Z3z31dB/DNCAj1bPHi6Fj7eb8B4abe4wE5fHd5maAx1Wh6qUA
-         uU3X966QC/c5rMXtvh7iLqdalg9YGmgZwdGGopsptiFI3uoVfhwj5OpKIaecBGdv2Uaj
-         bQ4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2cJffw6eGB5EOl6vnbpaCrfAjHs5zJAqvpLEIF2jfeo=;
-        fh=5AhT052GabHOWkkuFtzMGNrCAICacIKhsCi/CfLq/B0=;
-        b=aSacUpif8qVQv08raPbeflfyVKFd+QZzfXJ2dCr5MuFSiNpAjqHkFTaHlk1X27Uzj4
-         8c7YUJTcPZ/8CxbmUpNG6tcJI2zr16VD+d23wqZ9HfEfQDUvfInQaaxNmRnSKSXjFzFb
-         6wErLF1b9Mc3QPKY/rt3LYfwrao/pXWNVJJ/dHuC+ip5wfEU56sbcC6eH8N9387rqTsY
-         BA4nABvGyBfRxQDAWg2yR1460PF0tbxVO8LAsOk6Qxx1L83wWbRFxikLO9lDDjPG3wGp
-         ETA7VhHCGK2LXvvnIjCWfG6xjGrOOGe7DpkcJoJP0v2k5gwKIDpvYrOB+bBFZpflGIrc
-         YHug==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791382923; x=1791987723; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2cJffw6eGB5EOl6vnbpaCrfAjHs5zJAqvpLEIF2jfeo=;
-        b=KgFyidqgPQ38o0gfvurwobzkQLYYheIPEuO3baPbXyZ2XUvveOhxhxFZLJjV6mFUOY
-         UE2rBchkzQg7fwyrEoM5Qr2YvgB0THNrFL14sSURiMByF6AXg5SRz0CbjdRuRUyKVxkc
-         SlwsE9LwovZeSJTyx7qYlY8i1Kx759Zd/y2gSTufXm2LwB/I6EdMi5/3ckUCXb6A7sSG
-         rlVsUQ/3SSiB7bMPy+2bSLzABXBR6J5Wpd7T64Tw6J4rKD7LuPfvhbalBKmBSsbsTYmd
-         sGy3TIPh4c0yBpm8Ro5KyVdb+vlA+3ugKpC+1bj6YN7AginKCYQfbbG+TLy5Jyw2Hyi4
-         zcZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791382923; x=1791987723;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2cJffw6eGB5EOl6vnbpaCrfAjHs5zJAqvpLEIF2jfeo=;
-        b=rzOG4xAyfDGmeMnfYtMVsyfdNGAPZ5U5+2p9e+EkGwA6pfTcaNDWoCnc4TZNY+L3oV
-         fgzHV98M4znZbkXoNAUKAciZqab36htdoPsqf04nlCM5IslSVubuUZBaM4AqFAMM67rO
-         zMlZ6XDHpcEN6TFT3SwT4wbhoQy0uQXDCKYQgHuBAmkJiHDF683O2guodUb++j6hPGhy
-         HX5IWUzoe6GB0cDjiozMt2BbuoqGybWJ6vJxXE/E3D24rzS04qzmmMC2yt0signqI+rY
-         CWSxkh2itWq7zgnW8uVdgvNZSteJMrWsriPSQomgp5DBgkiJ1yoUyA6sKdfRXgMLGUAj
-         CCTw==
-X-Forwarded-Encrypted: i=1; AKwUvBy+QCP09HtbyPEjF/sSCyeXRsWPdk/i/iItW7FB9E5/XOvF1GzvDYKlRtK5UrHt0VBZAcsWfRo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI2BeQ8tYW8XN9nbQpH3ICknqblWzcPU+imDr6plOUJ5/c/jgE7
-	imT+ivIyWfrDLZ0Qmtj0UDpZLxFQ+wY0ACzoDJioedduHOQJ4oAUKFFV+51/cvUfEh+7PQsYm/x
-	C+RzSOv5d+kOGDNgb/Y6NbDMJPjaLCvs=
-X-Gm-Gg: AYBFou25tvs1BDzrzHE+S/DaOdDsmg6cVxWRgf8f2PJ/cNT3DvaNVuWUPvDKq5vkfQk
-	lpZ/ym6lLL1ijyjJZ0UJYriI9UhvmYCeRcTgl/+gNYU/SAU6mcvNarkvCKGQjCRhotG88gqQ9rx
-	+TmHdUwoR16WhXUrDh1H30lGu40ujk9nBvkiBaNhb6yDySqj39Jm91NmDNnqJobc18aNxK77Rwl
-	L48YwMhpjJCM0UiUJWPLfp+IZkfydudj3KLBEC0tLX/GQL0RLY8d8tuFNc3bZfLHHWCfPE4LEKZ
-	fhBf+l+AahVOKOhrOoFlY1LMKh6UcxCmunI6/6aD2SsFNnjvQNd+VrdZwBV5T6p1CJwU0ZHwMUb
-	WwXL3941tuX4PqDl+UCte3Ypg2yWPaR8FEIpB9dkVjk6W2g01BL2Yqs8nZ8Pb72ZB+gendLMQnj
-	u+
-X-Received: by 2002:a53:acc8:0:20b0:676:8c21:8a85 with SMTP id
- 956f58d0204a3-6790a0f6a33mr1186320d50.3.1791382922957; Wed, 07 Oct 2026
- 07:22:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="WjI4GP59"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail; t=1791382996; x=1791642196;
+	bh=d5FGahR9PvKzLDMtnQjDw7usLNYzSs3HujkuIcflyxY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=WjI4GP59dbx9vQkK1MmCqJsi1RriQGm6E1DGFgJFQ77G5Ka1X5iDLbwDPDtPuCfKy
+	 PHa28N0C6RzN1NNqllen177E2/yRI8RaHjuC1Df9ngpHuTttjQMGcxVr6zBS75mSgL
+	 O0jtnuLTB69F/W1bxyA2Yq9EQMFkNYpjOFJ0HismHagkE4tIrwhSATcZLOVNGKkbwz
+	 t0beeDnKfmHjRVKiid3uftk+xmWjXTZ0UsvxT/7bt368A0FiYHi+YOSdi5ybWUs9cT
+	 U4MBbL4xg8tA85mlKLFQQfQiFn8oaa6Su3z6LJ7zImMkJ/accAE/vlPRMqGNQzG6vu
+	 3mNHKGECKGJSw==
+Date: Wed, 07 Oct 2026 14:23:10 +0000
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Vladimir Oltean <olteanv@gmail.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Edward Adam Davis <eadavis@qq.com>, Davide Caratti <dcaratti@redhat.com>, dsahern@kernel.org, stephen@networkplumber.org, sashiko-bot@kernel.org
+Subject: Re: [PATCH net-next 2/2] net/sched: act_gate: cap the number of scheduling entries
+Message-ID: <zR5nw2jDMQyPpLOwFEjqH163vEcob8SUKgVslSD8tVjZRwXoPHJlj-dC55-C5KVsAvHn5wh8GnilJVH1C7KedPw0dsy4oZlbOTew01T7qbo=@1g4.org>
+In-Reply-To: <QDISC-H19Z.v2.20261007062551-3@mojatatu.com>
+References: <QDISC-H19Z.v2.20261007062551@mojatatu.com> <QDISC-H19Z.v2.20261007062551-3@mojatatu.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 04e3fa0abcb5dfb4a277103e21d547b96ee97c13
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261001191140.2818991-1-edumazet@kernel.org> <20261006183410-mutt-send-email-mst@kernel.org>
- <CAF=yD-K2Lq_TAbN0=vpRZQrcp_R9Vu4E7frixWeBO2ehBQHdiw@mail.gmail.com>
- <20261006194851-mutt-send-email-mst@kernel.org> <CAF=yD-KeGZFmcb4v1PMjhTZghTQgtCwSQqejne8qad0W5KaJBQ@mail.gmail.com>
- <20261006201729-mutt-send-email-mst@kernel.org> <CAF=yD-Lz9KSJ8Z8Fz8EF_+nmN5ea9k00sweQvvR74HpGCGwVSA@mail.gmail.com>
- <20261007035758-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261007035758-mutt-send-email-mst@kernel.org>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Wed, 7 Oct 2026 10:21:25 -0400
-X-Gm-Features: AclHuK9ZIYNAUWORHw9JTzctI_z7hbwCtdAmEM8ci8H3DknDZtTfg2-kziMuSYw
-Message-ID: <CAF=yD-+Dy7vueCqdsLEkcibopXHaxTZ6D0cRek6KeFu4_s-hLQ@mail.gmail.com>
-Subject: Re: [PATCH v3 net 0/3] net: always dissect GSO packets in __virtio_net_hdr_to_skb()
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Willem de Bruijn <willemb@google.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	edumazet@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 7, 2026 at 4:04=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->
-> On Tue, Oct 06, 2026 at 08:30:50PM -0400, Willem de Bruijn wrote:
-> > On Tue, Oct 6, 2026 at 8:18=E2=80=AFPM Michael S. Tsirkin <mst@redhat.c=
-om> wrote:
-> > >
-> > > On Tue, Oct 06, 2026 at 08:13:43PM -0400, Willem de Bruijn wrote:
-> > > > On Tue, Oct 6, 2026 at 7:50=E2=80=AFPM Michael S. Tsirkin <mst@redh=
-at.com> wrote:
-> > > > >
-> > > > > On Tue, Oct 06, 2026 at 07:26:46PM -0400, Willem de Bruijn wrote:
-> > > > > > On Tue, Oct 6, 2026 at 6:38=E2=80=AFPM Michael S. Tsirkin <mst@=
-redhat.com> wrote:
-> > > > > > >
-> > > > > > > On Thu, Oct 01, 2026 at 07:11:37PM +0000, Eric Dumazet wrote:
-> > > > > > > > This series fixes a bypass of untrusted GSO flow dissection=
- in
-> > > > > > > > __virtio_net_hdr_to_skb() when VIRTIO_NET_HDR_F_NEEDS_CSUM =
-is not set,
-> > > > > > > > and adds a kselftest covering VLAN-tagged GSO packets witho=
-ut NEEDS_CSUM:
-> > > > > > > >
-> > > > > > > > - Patch 1 fixes __skb_flow_dissect(), which computes key_co=
-ntrol->thoff
-> > > > > > > >   with min_t(u16, ...). This truncates skb->len and returns=
- a bogus small
-> > > > > > > >   transport offset when skb->len modulo 65536 is smaller th=
-an the
-> > > > > > > >   transport offset. Offsets that do not fit in the u16 thof=
-f now fail the
-> > > > > > > >   dissection instead of being silently truncated.
-> > > > > > > >
-> > > > > > > > - Patch 2 initializes skb->dev and skb->network_header befo=
-re calling
-> > > > > > > >   virtio_net_hdr_*_to_skb() in tun_get_user(), tun_xdp_one(=
-),
-> > > > > > > >   virtnet_receive_done(), and raw_verify_header(), removes =
-the
-> > > > > > > >   '&& skb->network_header' condition and the unvalidated
-> > > > > > > >   'else if (gso_type)' fallback in __virtio_net_hdr_to_skb(=
-), and moves
-> > > > > > > >   virtio_net_hdr_match_proto() after skb_flow_dissect_flow_=
-keys_basic()
-> > > > > > > >   so it validates the dissected L3 protocol (keys.basic.n_p=
-roto) rather
-> > > > > > > >   than the outer L2 protocol.
-> > > > > > > >
-> > > > > > > > - Patch 3 adds kselftests in tools/testing/selftests/net/tu=
-n.c verifying
-> > > > > > > >   that VLAN-tagged (802.1Q) TCPv4 GSO packets without NEEDS=
-_CSUM (both
-> > > > > > > >   flags =3D 0 and flags =3D VIRTIO_NET_HDR_F_DATA_VALID) ar=
-e accepted on a
-> > > > > > > >   TAP device, that mismatched GSO types and truncated TCP h=
-eaders without
-> > > > > > > >   NEEDS_CSUM are rejected with -EINVAL, and that a 65540-by=
-te frame is
-> > > > > > > >   accepted.
-> > > > > > > >
-> > > > > > > > v3:
-> > > > > > > >  - New patch 1: avoid u16 truncation of skb->len when compu=
-ting thoff in
-> > > > > > > >    __skb_flow_dissect(). Patch 2 makes tun_get_user() disse=
-ct IFF_TAP
-> > > > > > > >    frames before eth_type_trans(), with skb->len up to 6554=
-9 for a GSO
-> > > > > > > >    frame carrying a maximal IPv4 packet (Sashiko).
-> > > > > > > >  - Patch 3: truncate the TCP header after 10 bytes so that =
-the test
-> > > > > > > >    requires the transport offset found by flow dissection, =
-and add a
-> > > > > > > >    65540-byte frame test (Sashiko).
-> > > > > > > >  - Link to v2: https://lore.kernel.org/netdev/2026092814425=
-4.3361044-1-edumazet@kernel.org/
-> > > > > > > >
-> > > > > > > > v2:
-> > > > > > > >  - Patch 2: drop the pre-dissection virtio_net_hdr_match_pr=
-oto() check
-> > > > > > > >    inside 'if (!skb->protocol)' so VLAN-tagged GSO frames w=
-ithout
-> > > > > > > >    NEEDS_CSUM are not rejected before flow dissection (Mich=
-ael S. Tsirkin).
-> > > > > > > >  - Patch 2: clarify the changelog regarding why skb->networ=
-k_header was 0
-> > > > > > > >    in those callers and why skb_reset_mac_header() is dropp=
-ed in
-> > > > > > > >    tun_get_user() for IFF_TUN (Michael S. Tsirkin).
-> > > > > > > >  - Patch 3: add selftest in tools/testing/selftests/net/tun=
-.c based on
-> > > > > > > >    Michael's reproducer.
-> > > > > > > >  - Link to v1: https://lore.kernel.org/netdev/2026092719553=
-6.2489079-1-edumazet@google.com/
-> > > > > > >
-> > > > > > >
-> > > > > > > Not without trepidation about the amount of stuff we are shov=
-ing
-> > > > > > > into virtio_net_hdr_to_skb which, believe me or not, used to =
-be 50 LOC
-> > > > > > > of trivial code in 2019:
-> > > > > >
-> > > > > > Unfortunately that let through many bad packets and unintention=
-al
-> > > > > > (ab)uses of the API.
-> > > > > >
-> > > > > > The current state is the result of numerous fixes we had to app=
-ly
-> > > > > > since then to protect the kernel. Generally there are two appro=
-aches:
-> > > > > >
-> > > > > > 1. make every reachable path in the kernel robust against unexp=
-ected
-> > > > > > input. Frequently that means checks in the hot path that penali=
-zes all
-> > > > > > normal traffic, only to catch a bad actor or fuzzer. And it's n=
-ot
-> > > > > > straightforward to prove that all reachable paths are protected=
-.
-> > > > > > 2. strict input validation.
-> > > > > >
-> > > > > > With strict input validation from the start the checks could ha=
-ve been
-> > > > > > simpler (hindsight is 20/20). Unfortunately, now we are stuck w=
-ith
-> > > > > > weird input (GSO without NEEDS_CSUM, skb protocol 0, encapsulat=
-ion
-> > > > > > headers, ..) that we now have to work around and try to not bre=
-ak,
-> > > > > > that may or may not have real users.
-> > > > > >
-> > > > > > This patch actually makes the function simpler. By reducing the
-> > > > > > differences between the various callers of the function. This i=
-s great.
-> > > > > >
-> > > > > > It sucks how complex this function has become, hopefully we can
-> > > > > > find more such ways of making it simpler. The strict validation=
- itself
-> > > > > > is a good thing imho.
-> > > > >
-> > > > >
-> > > > > Yes indeed. I have a vague idea how to do it: check some
-> > > > > performance-critical types of packets and for the rest just calcu=
-late
-> > > > > the checksum then and there.
-> > > >
-> > > > That sounds promising.
-> > > >
-> > > > Checksumming is only one of the risks. Segmentation is another.
-> > >
-> > > Same approach for segmentation would be great but how do we know how =
-to
-> > > segment at input?
-> >
-> > gso_type?
-> >
-> > The main issue I see is that we do not have a way to then process the
-> > chain of segs. So maybe we cannot realistically do it at this stage.
->
-> I mean, there are what, 8 callers of this? That's much less of
-> a brain surgery than carefully calculating offsets within packets
-> as far as I am concerned.
+On Wednesday, October 7th, 2026 at 5:29 AM, Jamal Hadi Salim <jhs@mojatatu.=
+com> wrote:
 
-We can definitely take a stab.
+> parse_gate_list() accepts _any number_ of TCA_GATE_ONE_ENTRY elements.
+> The only bound/cap is the enclosing nlattr u16 nla_len (~5460
+> minimal 12-byte entries). Each entry is a separate GFP_ATOMIC
+> allocation, and the dump of a large list grows one action's reply well
+> past NLMSG_GOODSIZE.
+>=20
+> The bugs:
+> 1. A single gate can make tcf_dump_walker() silently truncate
+> "tc actions ls"
+> 2. Lack of capping has been demonstrated to be exploitable to
+> create an OOM through amplification of RTM_GETACTION replies.
+>=20
+> So we need to provide an upper bound cap of TCA_GATE_ONE_ENTRY elements.
+>=20
+> Some context:
+> The gate action offloads through FLOW_ACTION_GATE. The offload
+> interface passes the priority, base time, cycle time, cycle-time
+> extension, the complete entry count and an array holding each entry's
+> gate state, interval, IPV and maximum-octet value. The in-tree SJA1105
+> DSA driver forwards that complete list to sja1105_vl_gate() without any
+> entry cap check, and composes every supplied entry into the hardware
+> schedule table.
+>=20
+> Act gate challenges:
+> SJA1105 and SJA1110 are two device families in the one sja1105 driver.
+> They expose different schedule-table capacities: SJA1105 provides up to
+> 1024 schedule entries and SJA1110 up to 4096. These are total table
+> capacities shared with other schedules, so they are upper bounds, not a
+> guaranteed per-action budget. Software gate actions with _a lot more_
+> entries install and serialize today, so a low cap would reject working
+> configurations and would look like a UAPI breakage; but an infinite size
+> of entries is a bogus choice; 65 entries is the boundary configuration
+> verified during this work.
+>=20
+> Netlink Challenges:
+> Netlink attributes record their total size, including the four-byte
+> header, in a 16-bit nla_len, so a nested attribute can describe at most
+> 65532 bytes. A minimal accepted input entry is 12 bytes, which puts the
+> max we can fit at roughly 5460 entries; a dumped entry occupies 36 bytes,
+> or 40 bytes when it carries the gate-open flag.
+> 1024 entries therefore serialize to 36868-40964 bytes, which fits
+> inside one nested attribute, while a 4096-entry schedule would need
+> roughly 144-160 KiB which _cannot fit_ at the moment due to the 16bit
+> length.
+>=20
+> Note, Note: This represents challenges primarily with netlink.
+>=20
+> The Cap:
+> Cap the list at 1024 entries. This value is based on the existing
+> SJA1105 schedule-table capacity and preserves the verified 65-entry
+> configuration while providing a substantial headroom, and keeps the
+> complete gate list inside the current 16-bit TLV format. It
+> deliberately declines to expose SJA1110's 1025-4096 range through
+> an interface that cannot serialize it, and deliberately rejects
+> software-only schedules above 1024.
+>=20
+> This is an operational cap on a configuration the uAPI accepted before,
+> so it is net-next hardening; if we made this a stable backport then
+> it would start rejecting gate configurations that install today (even
+> though those settings would be totally bogus).
+>=20
+> Caveat Emptor:
+> While this patch fixes the binding of per-action storage and the dump
+> amplification; it does not by itself fix tcf_dump_walker() truncation
+> whose skb is smaller than the reply for such an action (for example the
+> kernel clamps a dump skb via netlink_recvmsg()/netlink_dump() to
+> SKB_WITH_OVERHEAD(32768), so "tc actions ls" is already truncated below
+> the 1024 this cap admits, and you cannot dump the top of the range
+> without changing iproute2 code)
+> It also does not remove generic netlink receive-queue amplification.
+> A companion iproute2 change can enumerate actions with a terse dump and
+> then fetch each one with an indexed RTM_GETACTION.
+>=20
+> Conditions to recreate the bug:
+> Cap net admin with CONFIG_NET_ACT_GATE=3Dy. Install a gate
+> action with 1025 or more minimal TCA_GATE_ONE_ENTRY elements over a raw
+> netlink RTM_NEWACTION request. The cap rejects the list with -E2BIG and
+> an extack naming the limit; 1024 entries install and an indexed
+> RTM_GETACTION returns a well-formed reply.
+>=20
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> ---
+>  net/sched/act_gate.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>=20
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index 14801c604bd9..d8e8c2356bd5 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
+> @@ -18,6 +18,17 @@
+>=20
+>  static struct tc_action_ops act_gate_ops;
+>=20
+> +/* A netlink attribute records its total length, including the 4-byte
+> + * header, in a u16 nla_len, so one nested attribute can describe at mos=
+t
+> + * 65532 bytes. tcf_gate_dump() emits each schedule entry as 36 bytes, o=
+r
+> + * 40 with the gate-open flag, so 1024 entries serialize to 36868-40964
+> + * bytes and still fit a single TCA_GATE_ENTRY_LIST nest, while 4096 wou=
+ld
+> + * need ~144-160 KiB and cannot be represented. 1024 is also the schedul=
+e
+> + * table capacity of SJA1105 (SJA1110 provides 4096). Cap the entry list
+> + * at 1024.
+> + */
+> +#define GATE_ENTRIES_MAX=091024
+> +
+>  static ktime_t gate_get_time(struct tcf_gate *gact)
+>  {
+>  =09ktime_t mono =3D ktime_get();
+> @@ -277,6 +288,14 @@ static int parse_gate_list(struct nlattr *list_attr,
+>  =09=09=09continue;
+>  =09=09}
+>=20
+> +=09=09if (i >=3D GATE_ENTRIES_MAX) {
+> +=09=09=09NL_SET_ERR_MSG_FMT(extack,
+> +=09=09=09=09=09   "Too many schedule entries, at most %u are supported",
+> +=09=09=09=09=09   GATE_ENTRIES_MAX);
+> +=09=09=09err =3D -E2BIG;
+> +=09=09=09goto release_list;
+> +=09=09}
+> +
+>  =09=09entry =3D kzalloc_obj(*entry, GFP_ATOMIC);
+>  =09=09if (!entry) {
+>  =09=09=09NL_SET_ERR_MSG(extack, "Not enough memory for entry");
+> --
+> 2.43.0
+>=20
+>=20
 
-Another option is to convert from an untrusted GSO packet
-(SKB_GSO_DODGY) into a GSO packet that has been validated
-through the software segmentation check. The
+If I remember correctly, act_gate was/is not fully taking into account how =
+much size it actually
+needs for dumps. Has this been fixed or worked around already? Sorry, I'd b=
+een meaning to swing=20
+back to this. I'll try to get caught up today.
 
-```
-        if (skb_gso_ok(skb, features | NETIF_F_GSO_ROBUST)) {
-                /* Packet is from an untrusted source, reset gso_segs. */
+https://lore.kernel.org/stable/20260130134220.305757-1-p@1g4.org/
 
-                skb_shinfo(skb)->gso_segs =3D DIV_ROUND_UP(skb->len, mss);
-
-                segs =3D NULL;
-                goto out;
-        }
-```
-
-Path in tcp_gso_segment (and similar for USO). Packets still only
-go through software segmentation once, which all these untrusted
-packets do (__virtio_net_hdr_to_skb always sets SKB_GSO_DODGY).
-
-A variant of that is to convert from untrusted GSO to trusted chain
-of segments that are very cheap to segment later, SKB_GSO_FRAGLIST.
-
-But just changing the callers to loop over segs[] can certainly be
-done too.
+Thanks,
+Paul
