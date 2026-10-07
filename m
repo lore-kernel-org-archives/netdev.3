@@ -1,81 +1,147 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f6.google.com (mail-wm2-f6.google.com [74.125.225.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD2147D454;
-	Wed,  7 Oct 2026 13:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3522A4848BE
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791378113; cv=none; b=HXf1E0gVuuxlunL7V6B9OYmmkq+378loZSPRvdLmQ0I7ekblnb37hJNqVISYQjuGbqGrT1ecC4PjafTjIIFPtYnom98GEg1RfvIqspVI2GrskdQY4aodgsmp+y7PfMuFOgF0Gf4COJgzjfLjQ95g48KcPnnU+NNYHcsPpCWSBGQ=
+	t=1791378262; cv=none; b=bizAkqfE9qiKHUH9XsRA4IlVbr/uf/gyhVmWMrIaCvBLWcBtpG6aRxKCiLe1Voux3bXeFYGka97v4dQzQCikB7nO85IehxZczB7+SND5ttjApVjgkqlurLZfOS45wuIw8bSHnvw0lAKWCCpoq61Kdv0AJVyqm4DnTSIBGz4pgBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791378113; c=relaxed/simple;
-	bh=O0EtaeY/6At1FiwpxnWcfkDfEcMW6xZEaO6fINS23AM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mNKriBR9dcM99b2DltaEO+0I+ayJQslSNCjAQRlOv/XXQWuFAfY4Sn2wlbRiyTdFLpI81YZfS4MOmFlrzFYytma0A0yncKDPJuWX2BoQH6lB74H0ly1YSbaWtNBmtBivECTeiqvnUvtq5u5HD/lPoytgUwNDbTDgGnqHamG7/Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zU5ZvP25; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791378262; c=relaxed/simple;
+	bh=Xeblf6RefeP4xLbOLjn3rcWi09bg/RvtTBMwTZjkW2c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oUjeH5h9HkYvBudqNMZQcQlUGCPR1GVRLfcK6uZIjMHukMoesOYU2OS+ye/WsI+t2Q8JiLcjykqkLstMCZMsOcHZMjhsBuRsllPNKi1LkOijTve1CUi4qvdk6bgozAcjFsTtcOpWQf/Q68zFAZaueiAQrnaFQXnY9xdFMb0AQwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B5sepHvx; arc=none smtp.client-ip=74.125.225.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zU5ZvP25"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6YP3nrzHNBPV4laVHmTWlcL0xqJ7r23M87T5OozmfTM=; b=zU5ZvP25ND/Pnn0/1VuaJCdY08
-	UffRk45r/0Ba3w0c/7bsl2unFhNjUeFg2U6bjfHSZQJ2YWsy5NRyJ0lHPQf/MGkB1x1tfw2JhHfqv
-	A6/GJqeHG0rX5ehWSZOIH50Z9Nqq1h5uwQKXKf/XKsPTMyi4U8RPjpSiNQSlK+gCOSjw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xERGy-009SZ2-8w; Wed, 07 Oct 2026 15:01:28 +0200
-Date: Wed, 7 Oct 2026 15:01:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Lucas Tanure <tanure@linux.com>
-Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B5sepHvx"
+Received: by mail-wm2-f6.google.com with SMTP id 5b1f17b1804b1-49fe4ca1052so8287765e9.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:04:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791378250; x=1791983050; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Wtfk6Lo3EsHBs+T8tzPIBV8ntCV/DDfwOlEBXJdzuvY=;
+        b=B5sepHvxgzc1zxlfj1WMRiYgxAZxttvlQTIWHk0duXAP4JDWGKhZqOdMC7E6MFtzxp
+         K5Rask59t9Zkes7lsqtbhExe39gIqjG0kVQgKSY3z0BakMdB/tHio5TrrK+sssqo+Egl
+         aqLZgNlUhPcMYY4kDqSg1nEe7G6MThoVZcFmmjGKiidr2kLFsWuPskJn9LJWi8SDVv0d
+         L1Lzlsye5bDonyMZBfygcACFw6hDnGotAMpznMZrCN00rShkrJREXtErNajzCA4qg5zq
+         GGXk/ILuwiyC+GCNViZcNd7sW+9yN+xHhz/l4BLguHS7VNLwy4GkTKrO15OeUGgA450b
+         hp+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791378250; x=1791983050;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Wtfk6Lo3EsHBs+T8tzPIBV8ntCV/DDfwOlEBXJdzuvY=;
+        b=Y+JTO+3nfhE+sko02Q/fRA6Slsjk8chkafFmOciHfsfiXCpHNFXJ4RiZOTeKG/sb47
+         uVZzt80KwVCCjZJ4dzSfOxsVwNZfBrvzoiSJlgXL27uIdBqb+BkzfmWjeg2zFjAy+8K2
+         Lde7lmlv21NX5Evx43niBZIp0TOo+Lq3J18RPp1N5CFopwXWgMdmt40k+vjfWV2f9cpz
+         +V63h9S68BHU+qv8Vcwv3BVdjooL344vUFN9pMX+1jmO9/UFE1NzpLMrDv8HopwW6ne7
+         +OkXcbGU51BhvBMP2ZW5Xw/AqVA5++ESV0BF6fsyaxaMOcv9+FTNcpS0sdmjhGY6EigL
+         2oXA==
+X-Forwarded-Encrypted: i=1; AKwUvBxXkYchh4ISBHOE8672qh1HjsvZ+gX86VeVLq09LTgitV5IcQqtFwZbQvhMCvE4QtinOv+Kq0Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++lQF2uiATo8vhiRlewhKSdGGDPNCLxUSLrwpXD731l3FtCu9zUX
+	u+ZMCSFKo5CvMzjtmFjI04R1H+955YCMOAl89HnWA4xFaI+2cA1u88nO
+X-Gm-Gg: AYBFou3MaaTCfVdKqg8SUH35arxlwRPPe7WTWKbUkZ+KQAaTJ/zYVXlghEahQ0Ur+qg
+	HI15olipT7juzqJ4BVe3FrzH5O2s0KX6Uf0Ph0cNR6FgMpY1+ClLl82My78zkeaZ51iRm7nYbcY
+	G05QiH7PEbgxAV0dPUD+dkMTej9ICCxf9kxGzSk4mjVm6miV+DMgENZV79Dw2zavCofnbdFguqP
+	3sSmO2lRplMMvKUfNeJulAjPoNTof5LirQbhyLYsupuRXU0HOQeHQeNRyrSDaGOZyjx7Mlg5kLF
+	0uFVG3edbbVkKWDQ5RvsbPANBEogTSTavINXUoairTOmISXYYgg1JDoWBrLrNLFkzOO0bWT2Sd8
+	Gn/wnWGFgJOkyzd6FAv2v2NKjavcinbkIfwtTuGP4a4oRpY0KdrTgwnqDTE0876G8UIym0kSsfL
+	TZ9HcEDkYzdpVT44Ps+WDLWxQmR/tcxCoXd3PkrcJCOLrYRP++aRCMYG6rEPOPecgSJm9S9mDJS
+	Y0Yjfo08XGibslb
+X-Received: by 2002:a05:600c:c166:b0:49f:ce73:5e94 with SMTP id 5b1f17b1804b1-4a18065ab85mr38007345e9.34.1791378249855;
+        Wed, 07 Oct 2026 06:04:09 -0700 (PDT)
+Received: from localhost.localdomain ([78.40.184.2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17f4482c4sm120825195e9.0.2026.10.07.06.04.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 06:04:07 -0700 (PDT)
+From: Roman Demidov <roman.demidov.nn@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Roman Demidov <roman.demidov.nn@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Zi Shen Lim <zlim.lnx@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Song Liu <songliubraving@fb.com>,
+	Yonghong Song <yhs@fb.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/7] Add ethernet support for the Amlogic T7
-Message-ID: <d23dfdf3-5837-459f-afd6-6c198a05c13c@lunn.ch>
-References: <20261007082627.63807-1-tanure@linux.com>
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10/5.15] bpf, arm64: Fix off-by-one in check_imm signed range check
+Date: Wed,  7 Oct 2026 16:03:54 +0300
+Message-ID: <20261007130355.119579-1-roman.demidov.nn@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261007082627.63807-1-tanure@linux.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 07, 2026 at 09:26:20AM +0100, Lucas Tanure wrote:
-> The T7 pairs a Synopsys gigabit MAC with the same glue registers the
-> G12A has, but nothing described it. This adds the binding, the driver
-> support and the device tree nodes, and enables the port on the Khadas
-> VIM4.
-> 
-> Unlike the G12A, the controller reaches DRAM through a pipeline stage
-> with a gate of its own, sys_ampipe_eth. Nothing else claims it, so
-> clk_disable_unused switches it off and transfers stop.
-> 
-> v2 changes the RGMII delays, after review. phy-mode describes the
-> board, not which chip adds the delay, so this board is rgmii-id.
-> dwmac-meson8b did the opposite, and ignored the *-internal-delay-ps
-> properties. Patch 1 fixes that. The VIM4 needs it because the RTL8211F
-> transmit delay does not work here.
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-What is special about the RTL8211F?
+commit 1dd8be4ec722ce54e4cace59f3a4ba658111b3ec upstream.
 
-     Andrew
+check_imm(bits, imm) is used in the arm64 BPF JIT to verify that
+a branch displacement (in arm64 instruction units) fits into the
+signed N-bit immediate field of a B, B.cond or CBZ/CBNZ encoding
+before it is handed to the encoder. The macro currently tests for
+(imm > 0 && imm >> bits) || (imm < 0 && ~imm >> bits) which admits
+values in [-2^N, 2^N) — effectively a signed (N+1)-bit range. A
+signed N-bit field only holds [-2^(N-1), 2^(N-1)), so the check
+admits one extra bit of range on each side.
+
+In particular, for check_imm19(), values in [2^18, 2^19) slip past
+the check but do not fit into the 19-bit signed imm19 field of
+B.cond. aarch64_insn_encode_immediate() then masks the raw value
+into the 19-bit field, setting bit 18 (the sign bit) and flipping
+a forward branch into a backward one. Same class of issue exists
+for check_imm26() and the B/BL encoding. Shift by (bits - 1)
+instead of bits so the actual signed N-bit range is enforced.
+
+Fixes: e54bcde3d69d ("arm64: eBPF JIT compiler")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
+Link: https://lore.kernel.org/r/20260415121403.639619-2-daniel@iogearbox.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Roman Demidov <roman.demidov.nn@gmail.com>
+---
+Backport fix for CVE-2026-53036
+
+ arch/arm64/net/bpf_jit_comp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index e98fe8c006cc..b67764f8a5f1 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -494,8 +494,8 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
+ 	int ret;
+ 
+ #define check_imm(bits, imm) do {				\
+-	if ((((imm) > 0) && ((imm) >> (bits))) ||		\
+-	    (((imm) < 0) && (~(imm) >> (bits)))) {		\
++	if ((((imm) > 0) && ((imm) >> ((bits) - 1))) ||		\
++	    (((imm) < 0) && (~(imm) >> ((bits) - 1)))) {	\
+ 		pr_info("[%2d] imm=%d(0x%x) out of range\n",	\
+ 			i, imm, imm);				\
+ 		return -EINVAL;					\
+-- 
+2.53.0
+
