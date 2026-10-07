@@ -1,158 +1,164 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671F73F076E
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0513E0081
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791394597; cv=none; b=VTvS35cdN7g3KOpsZUcxGF1AtYb2BAiSM5/jw5Bz9a09BOQxZPdJnwEArrXKj8I1JvQxpM/AtypjtWeSSJOE1/9F9CLGgPvu02OCMBNitishkzfyhWHjYDC+vLU0f7RwlXQURqra79OZi6/jXWwAR4YIrO9qntvldn+6WRagE7Q=
+	t=1791395095; cv=none; b=W5pxX1yaQcpyE64JsaOl7p6MynFQWNHnUYzN3JRKNXBhNibX6IKE9B5hL2tPZqmnJ9Dfx+JbFf0CP5usZ1AzBLKLb1TO6zmxMDnf35aRtXlevTBZfES1P8gWitlvKphNXvXqhm3B89d9AuY5wVcKd2W7rvGWONFYxgt3FQVeH2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791394597; c=relaxed/simple;
-	bh=cOHqmVUhQvoYFpyRXKtzKiBJLjArGS2XQUGFfv+fWvk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WNuCPoD6INKi6m6m57h+d//Et5J9rGTF5AFT1CGY7nFIvlUgkFPFps67TZspwQh67HkRnDGfuc2w53FnP9LvvUPBiN0QnlDEUZwycCiipzPyDClepC9xmNK2KPaNoQFHKufNzIV1KPaSuoYpEIXi67ogNuAJ/jVC6xLtIy9rn+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=YF9MdMYj; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	s=arc-20240116; t=1791395095; c=relaxed/simple;
+	bh=pc5Ae4XMXNmBx9H8gciWl+eQULBxlouB7GIIhqnjQaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UnmWZfpY7i4OTUFRbi6ZYtAB3pddrfcxor3oT4lEvze5EiY36yHFvbi9yo2BBSORVUeT1fzxlGQYRubdZ1wLBcawLnuwxDRxEYXgYSZD2CMbqtFVIC/kfsl3ZuzfoabH5ggiwWJ7cUD1JH8EMe31zNPe2bydhxM94VNv05+ecqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S513z8oi; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="YF9MdMYj"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-917a707f37eso22249256d6.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 10:36:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S513z8oi"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-88b8f0a1bcdso1626913b3a.3
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 10:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1791394591; x=1791999391; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/VlqFGo0rooEVFXp50d0ZL1DlxYf9r8iYztQPM4wKJk=;
-        b=YF9MdMYjpLm3iKfZm6d0lgdj2UmhSpx0CS6j+VW++75LfcaJ6CUr/nO7G4kalUFd4F
-         xFVD1vqSMbiqFNNyPnaqGi8J/2NFk5L6OqCxKFnymPiacyEkTI0vbC7PEB7hRscpewME
-         hqhgjSpSQQBCM2r1RSe7sZQJFZkd8JkruyCAuik7RjOPglzbWerAJQhqJFwd5qXOeMQP
-         PPJdOUKs7H2mwTFoPvCNM3s5LSB/1M8uNJRxDJLlVMxNg9PkmIKOHX9PIe7CO4NnvRi6
-         stiY6YDYPj3rFrTxQKADl5B+sszWr71p6H/Lws1vn4OT9y1h609JBy7csQAe4I346k/X
-         a16A==
+        d=gmail.com; s=20251104; t=1791395091; x=1791999891; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=COSK+hA3alzfROvx4Il2tMQOlgkjSw8oub0vSseZINs=;
+        b=S513z8oiF2o5pcmDawwYyCx3FxgWVvHO4Ffb1cIZW9gWIvlfD+vxz3gb0Qz0pt8Oqz
+         tzBle3cSABOg8LWyvVkDSXuhHG3p1WNq5mvk3u6Pen9b8LY6aecY1IwR3xWcE2NBZyqF
+         Fhl+knrfqqvB8tR5GXCFterV7T4NDrE0KotpXs/LmZoppJkCWZOux8Q2PXrfhKOY83CJ
+         YPHfSbvTsq0yi+I19ST9sryTQy7Efgdqxgatl1456ndtTLsb5Z2i0KTUsF3KBNQ07Int
+         UlFjQEgvfBwC4/27TIn6HXfqCIdg9yUtkNrZyaJJOfntSBy5eZ1c5/eApDlsWlL5J1Hu
+         gk8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791394591; x=1791999391;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/VlqFGo0rooEVFXp50d0ZL1DlxYf9r8iYztQPM4wKJk=;
-        b=UgU6liFvOexNMuEHxAcActUmeTTzZca5OGG0IJ3ZAKhxdKJP6wLhKS3HiEmNjKH1Vq
-         qqmjnzF2ugLkEFMGr2t7j9p+p9wqRYuVnd31N0K7X38s+66RulCNm6CDu+SvRnskpuZB
-         JFxkr0au0NvQtUEMFPFzKg7NLWV2okXfKCQKnf+90L9+srPYGDJKvXUybBMT70HiQZwy
-         H1hovkCH3nqi1QsgqvrzurbO+UthCceTAiVNZmFeb1VuL7EMVfsW4cnTS7kbnGsVujBU
-         RgEWg9+lXl0W2oIZ5M2V+PnYzZWtD1QEB82zPslx3mlPfaJV+ivx1kdnRGI2uYmYMF/X
-         +mCw==
-X-Gm-Message-State: AFq9FYIF8hmltFqafj5ycwZZVkF64xn0cqA4oCuoZFO3a5Tb80gyHobd
-	T46j3zyav8l24o4Khka+PoTsR8CsQcjBSb68a1nLOztOtVoq7V1BFFo0P2hVsmqoqho=
-X-Gm-Gg: AYBFou0LhEnj/c2Ej837/6ddUcq25GhsPajMyEKDAZx3d0MrPuD9lykj+7YbVJi5bWt
-	Hnuy+zbGa9ytS5i3ThNrpF23qxw9v5zOZuffBCcdU73lcNqUBRMVcdNyxWcK9DTE5aBAaFFfzpA
-	i7RMV4OOvj2ckyABSi8EGy/Ket1VpmqKO/jkXDyxh+Sukl5E4jOkUvMY8g5+BhB2MPG4dw7WUU/
-	88rbga//AdSm85hUyIlDeL3CNFwrjvZhQIEYweFv1gzWPscwJ83Pv3zwB021XjHKGjpwIISIDbr
-	vEceZ0U83nxLSmzWyptrfHX6igVF0SaM93boRzZ6JVpw9nI3F4VWahw9TjoBtAIyNP35OkChnp2
-	XM6XjP7ekyhzeHZgwH9yli5rvvbq+H2VOQ6bQNDCPu/b1luzmrMxjuxi6pz4LNCbe/xh+xACJrh
-	GOj/F14NJ3xt509e8OVqTat7FDRE/ys9vRKnXqIjCU7RUC10nJqd2TNoxTCmsk3QzAvbxJmvcFA
-	ZJ9v30sL6+z0zo=
-X-Received: by 2002:a05:6214:27ef:b0:914:4511:9271 with SMTP id 6a1803df08f44-91997829f28mr49446246d6.22.1791394590326;
-        Wed, 07 Oct 2026 10:36:30 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91996cb6108sm25287516d6.13.2026.10.07.10.36.29
+        d=1e100.net; s=20260707; t=1791395091; x=1791999891;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=COSK+hA3alzfROvx4Il2tMQOlgkjSw8oub0vSseZINs=;
+        b=KRaZd2uWc3si9gREle+KCBQLudTUhVMIVorqG1nS8QdxUN/RHzi5PI93/sK9e6wZcA
+         QNud0Toov5qGfl/5vfv+tXLc0oZ4e715zDIODYbOxkPSto0KxpNmWVZmH/74GrjED+4n
+         yQeVTZ8BMMW8BewxzA1T6nqOEwucAinTTodBLr7ADuK8RjxzkWAq9YGBRFsVuZz/Orbt
+         TGjsLOdzf46pdZqKEpcNGeSS7OkXK1hFrZvEhHjcs8PPRW7uVQPdXVzFuSUs/YK/VHN4
+         0KNof2FRnMOpeUFbsq5dbsNAsRPvxS3UI6+yP9GMxAnP2YIX7MfsC2sAn2BwBGUnVfEw
+         JuYQ==
+X-Gm-Message-State: AFuF++nCZj1xzNU39wz1OdJiPNAK+lZ5355kg2XCZ/YPFhQrnns+I2pL
+	FZUkezjuMdcruUMMPCXNH0A5psQlcl3x7bbZD9x3oyPFoCdPMdi5XYnDlaYvleo/
+X-Gm-Gg: AYBFou0jdFN7ntJUaSBiep0ql9Hr3WcW47KehR3ix+uaVXPqVN2Ef4HoX4fO4QdJuEB
+	miiEabVI32gFmHk5kJmun23IhbBl6KDGAu0jod5/SP/mDXR8W0bMhACZHg6iKjyx+eZeC1OOwcs
+	aN8+KaMOyM2FS8iu5tI9HN3Ru+ey1wqwkR0AtHrXQ98k1IczdMtvejE+vMvlz5SGikBF43u44l0
+	o7o7wNsN6dTVwA8R/k1tSOUwMqa9EKEYe6UZPpax38Q2HDgCCynRRwQfSuqoMFGDlkO7f8BRRLz
+	LFyIroCHuA19KBQu7ULfGLM9ea2QoKL+BFRB9kok2yW4gRkmK0idrECxKE2hiHCP8iTNz6h96uV
+	DDM4nO6d+m6GrjBTxNVojxMAwFXXOYu29KwFOYk26Pn94dcx8rWg5PJdp5fTuyUauHt+E54gcYb
+	Jq4BGM8FdBiZ5HNXI/JldEOoAKzo0j8u4dBM+pMbiaUSiwiChGTqOCSvmfTCO5aUoD024Nb7RqD
+	9Bm4T8WKenaF55WqVQYWM4cPgKzwzQW8ndhVvZNEBaz4GKXIdUOcFAsIKI5z5i4RNIao93obU3U
+	c5fWxlStpCZOkvnjMYIEAtO68SybiODxpL0ZOTQ+/ILgLHhy2OWFiLMzjlg=
+X-Received: by 2002:a05:6a00:2995:b0:88d:501e:eeb9 with SMTP id d2e1a72fcca58-891b0f8ffa8mr2420530b3a.7.1791395091464;
+        Wed, 07 Oct 2026 10:44:51 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-892bbf7df7esm616653b3a.57.2026.10.07.10.44.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 10:36:29 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Wed, 07 Oct 2026 17:36:07 +0000
-Subject: [PATCH net-next v2 8/8] net: skbuff: remove the BUG_ON()s from
- skb_shift()
+        Wed, 07 Oct 2026 10:44:50 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Chris Snook <chris.snook@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] net: ag71xx: align the IP header behind DSA tags
+Date: Wed,  7 Oct 2026 10:44:49 -0700
+Message-ID: <20261007174449.671416-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261007-b4-skbuff-bug-on-v2-8-b9a5f732895b@toxicpanda.com>
-References: <20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com>
-In-Reply-To: <20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1791394570; l=2315;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=cOHqmVUhQvoYFpyRXKtzKiBJLjArGS2XQUGFfv+fWvk=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QKvo7jLUt/Uh4c6yB2BExknoMr7WR6kKP9E8FPiHlgT7ctnX82eh4pVdQ+xX9F2Xqv/Or77tWZE
- BYH+maOhZ+gY=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+Content-Transfer-Encoding: 8bit
 
-skb_shift() has two BUG_ON()s.  The first fires if the caller asks to
-shift more than @skb holds.  Nothing has been touched yet, and returning
-0 already means "shifted nothing", which the TCP callers handle by
-falling back.  Return 0, with a DEBUG_NET_WARN_ON_ONCE() for debug
-kernels.
+The receive buffer offset includes NET_IP_ALIGN to get the IP header
+aligned behind a 14 byte Ethernet header. Most ag71xx devices use DSA
+switches whose tag sits in front of the EtherType, which moves the IP
+header by another 2 bytes. Every access to the IP and TCP headers then
+traps and gets emulated by the unaligned access handler, around 6 times
+per forwarded frame.
 
-The second fires if the frags run out before @shiftlen does, but it
-only checks after the shift has been committed to both skbs, when
-there's nothing left to back out to.  The loop that builds the new frag
-layout only writes @tgt's frag slots past its nr_frags, and the one
-branch that modifies @skb's frags also finishes the shift.  So if the
-loop ends with bytes still left to shift, nothing visible has changed
-yet.  That's the same state the MAX_SKB_FRAGS bail-out inside the loop
-returns 0 from.  Move the check up to just before the commit and
-return 0 there the same way.
+Take the headroom needed by the DSA tagger into account when choosing
+the offset.
+
+TP-Link Archer C7 v2 (qca8k), median of 3 runs, Mbit/s:
+
+                       before   after
+  routed up               743     855
+  routed down             660     749
+  local receive           554     572
+
+The unaligned instruction counter no longer moves while forwarding.
 
 Assisted-by: LLM
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- net/core/skbuff.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/atheros/ag71xx.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 629de22d98e4..7d23c2d10550 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4331,7 +4331,10 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *skb, int shiftlen)
- 	int from, to, merge, todo;
- 	skb_frag_t *fragfrom, *fragto;
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index 8a3c689f6825..414d26118d15 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -38,6 +38,7 @@
+ #include <linux/reset.h>
+ #include <linux/clk.h>
+ #include <linux/io.h>
++#include <net/dsa.h>
+ #include <net/selftests.h>
  
--	BUG_ON(shiftlen > skb->len);
-+	if (unlikely(shiftlen > skb->len)) {
-+		DEBUG_NET_WARN_ON_ONCE(1);
-+		return 0;
-+	}
+ #define AG71XX_OOM_REFILL	(1 + HZ / 10)
+@@ -1396,6 +1397,24 @@ static void ag71xx_hw_disable(struct ag71xx *ag)
+ 	ag71xx_rings_cleanup(ag);
+ }
  
- 	if (skb_headlen(skb))
- 		return 0;
-@@ -4411,6 +4414,14 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *skb, int shiftlen)
- 		}
++static unsigned int ag71xx_rx_offset(struct ag71xx *ag)
++{
++	unsigned int align = NET_IP_ALIGN;
++
++	if (ag71xx_is(ag, AR7100) || ag71xx_is(ag, AR9130))
++		return NET_SKB_PAD;
++
++#if IS_ENABLED(CONFIG_NET_DSA)
++	/* A tag inserted in front of the EtherType shifts the IP header,
++	 * compensate for it to avoid unaligned accesses in the stack.
++	 */
++	if (netdev_uses_dsa(ag->ndev))
++		align = (align - ag->ndev->dsa_ptr->tag_ops->needed_headroom) & 3;
++#endif
++
++	return NET_SKB_PAD + align;
++}
++
+ static int ag71xx_open(struct net_device *ndev)
+ {
+ 	struct ag71xx *ag = netdev_priv(ndev);
+@@ -1410,6 +1429,7 @@ static int ag71xx_open(struct net_device *ndev)
  	}
  
-+	/* The frags ran out before shiftlen did.  Nothing has been committed
-+	 * yet, so back out.
-+	 */
-+	if (unlikely(todo > 0)) {
-+		DEBUG_NET_WARN_ON_ONCE(1);
-+		return 0;
-+	}
-+
- 	/* Ready to "commit" this state change to tgt */
- 	skb_shinfo(tgt)->nr_frags = to;
+ 	max_frame_len = ag71xx_max_frame_len(ndev->mtu);
++	ag->rx_buf_offset = ag71xx_rx_offset(ag);
+ 	ag->rx_buf_size =
+ 		SKB_DATA_ALIGN(max_frame_len + NET_SKB_PAD + NET_IP_ALIGN);
  
-@@ -4428,8 +4439,6 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *skb, int shiftlen)
- 		skb_shinfo(skb)->frags[to++] = skb_shinfo(skb)->frags[from++];
- 	skb_shinfo(skb)->nr_frags = to;
+@@ -1874,10 +1894,6 @@ static int ag71xx_probe(struct platform_device *pdev)
+ 	ndev->min_mtu = 68;
+ 	ndev->max_mtu = dcfg->max_frame_len - ag71xx_max_frame_len(0);
  
--	BUG_ON(todo > 0 && !skb_shinfo(skb)->nr_frags);
+-	ag->rx_buf_offset = NET_SKB_PAD;
+-	if (!ag71xx_is(ag, AR7100) && !ag71xx_is(ag, AR9130))
+-		ag->rx_buf_offset += NET_IP_ALIGN;
 -
- onlymerged:
- 	/* Most likely the tgt won't ever need its checksum anymore, skb on
- 	 * the other hand might need it if it needs to be resent
-
+ 	if (ag71xx_is(ag, AR7100)) {
+ 		ag->tx_ring.desc_split = AG71XX_TX_RING_SPLIT;
+ 		tx_size *= AG71XX_TX_RING_DS_PER_PKT;
 -- 
-2.55.0
+2.56.0
 
