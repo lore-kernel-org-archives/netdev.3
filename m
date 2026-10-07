@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E02D3D7D69;
-	Wed,  7 Oct 2026 05:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E3E3D4125
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791349206; cv=none; b=WD+PWzx6316sCLGwiP5BDAezRP8LgF0LjEw4NeJpHpMl5Or639tMo07sXzoe2pjHVHIQre8nxih9nPNBlLtm3BYoe0N+gP0sqJXdga8nR25XtjGX1jaQoapMcj7J029tE7IASuPHoLEStwBCYCnUIuyyvLV5PgKJVZDHRcG7GaQ=
+	t=1791349218; cv=none; b=FFxyvZa9HP52E6kPsCuZZq5ji6kFtgGlXdxE6sXGoe07kAHGgOtFbvhvABirovJ+oui4di5l5ayT8wenXKO5cr/rje5AbKeejhA9QceTRTmaw70xntw2/kVLWjMoew7gW/sgX01Rs/sj2Xv1xP2ARTSwB5+K0rQ+px7LNTyAWVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791349206; c=relaxed/simple;
+	s=arc-20240116; t=1791349218; c=relaxed/simple;
 	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WrKt8NrCjyWd7gEly7cAXPMRi9BMDVD6za+MK7AXkFWCZtMQXKe8N/cyJh4qtqvgBzEu/RU7MfElp0yv6miX1K6qOf3l6lgxRR0+ufqbbD/B4rx1DUOYo9GJd9ZQNhQerbC4mGOVzr6UGfdsX6zwiClGKPdf5g7gRJ2JH07U8xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPPtI7F2; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=VxnvOewiqoYhncXTVngQ7UrjFBNN0s9Ua5mghumkWwtYwTnaWlF+mo2czF3XaczkYCGQAwKTOe75dAxA/5ZfgKyCKHnSKQHJ2h8WZ0se3hkd0RCjbDKO+DzmsVWEzMIuPS9hq8PyKuuTwH5T922eLbuUysKLiSbC6BTWHOVuUzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uh9g+aPT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPPtI7F2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC431F0089B;
-	Wed,  7 Oct 2026 05:00:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uh9g+aPT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9331F0089B;
+	Wed,  7 Oct 2026 05:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791349202;
+	s=k20260515; t=1791349212;
 	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EPPtI7F2gyA76eZuBBvcSPzeGSkLbeGq9bO8HSAVYVBhMWSuyz23ExXwtx+rkO9u+
-	 oxN7+OZXNomYrUpzESG5PpXpnqdGkTFOR4iAUn/pNNbRtTUzdNA9oJsj2SLIiCVcKX
-	 11lsPxOiAVj/xbjVNKKfDwMoIQNXywouLbTpfry/bR+3NsQLwzGhVTvSwJKlwiyb3X
-	 EyQl/QH3PdaBQxyTh6t4MHrOg/CzLfpXyT3TofpCosaz2Bedid159LIY6x9+RprUfm
-	 E1VlsuuKC+KXg+tJDc7EKGOmBBAkiiCEQsX8msnsG12+QLDrAz2mU5CakI52BbmyzA
-	 ifyfWRtgJh5cw==
+	b=Uh9g+aPT8cjmLDgmt32p38no31mi9DQuf4+rAKC9tQkEM1sIzboL7aQWEdEdmQnqy
+	 xf723cGCBEr7hzh6QV8eTrQCr0USIOtgBL6ViXyFCdxXGWD8GZCh8TOnDZxbXjffXt
+	 aS7vBIXo9f8zH/XRCL3iu3xGwmwLhWXvRIvp3iDKwY+mJ/clVSs3Vq6ovfIEmMzCrj
+	 e04Mr+VuKrJozZ639ssCoDJk0/pn9My/QBnqx0xbbhcI1LqiZpdDtZIG9HeT51UdlI
+	 g4AyM9+hyCL/RDyzkG9dFZDPte5QqcHh4zTaijhjYXDzZeE9r6X9IwC/i9KtlK4T2a
+	 fhDgEiDggHMgQ==
 From: netdev-bot+sinfo@kernel.org
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Amit Cohen <amcohen@nvidia.com>,
- Roopa Prabhu <roopa@nvidia.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] ipv4: do not warn on route notification size race
-Date: Wed, 07 Oct 2026 04:59:59 +0000
-Message-ID: <179134919973.2527009.18433178993344012690@kernel.org>
-In-Reply-To: <20261007045410.3806739-1-4ncienth@gmail.com>
-References: <20261007045410.3806739-1-4ncienth@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+Subject: Re: [PATCH net] flow_dissector: avoid u16 truncation of hlen in
+ bpf_flow_dissect()
+Date: Wed, 07 Oct 2026 05:00:11 +0000
+Message-ID: <179134921160.2527009.6970913813334453403@kernel.org>
+In-Reply-To: <20261007045616.445596-1-edumazet@kernel.org>
+References: <20261007045616.445596-1-edumazet@kernel.org>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
