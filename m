@@ -1,147 +1,99 @@
-Received: from mail-wm2-f6.google.com (mail-wm2-f6.google.com [74.125.225.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3522A4848BE
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E5E49D5B1;
+	Wed,  7 Oct 2026 13:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791378262; cv=none; b=bizAkqfE9qiKHUH9XsRA4IlVbr/uf/gyhVmWMrIaCvBLWcBtpG6aRxKCiLe1Voux3bXeFYGka97v4dQzQCikB7nO85IehxZczB7+SND5ttjApVjgkqlurLZfOS45wuIw8bSHnvw0lAKWCCpoq61Kdv0AJVyqm4DnTSIBGz4pgBQ=
+	t=1791378384; cv=none; b=oJ/iYKJbrHT6kL2Eml2jv/imHzyamfG1m5h1yocnQacz6db/+INbQink9Qk6BsMOChx9ls+ekW/vgJbh80UnNWdfTp63ZoVrMostQ8fr9JrN+zatX2ikZ+qCKGce/HHGy+PKH/xgTfICZmuWBJqM2mSZ2YyKGnWMgepnNEG9dOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791378262; c=relaxed/simple;
-	bh=Xeblf6RefeP4xLbOLjn3rcWi09bg/RvtTBMwTZjkW2c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oUjeH5h9HkYvBudqNMZQcQlUGCPR1GVRLfcK6uZIjMHukMoesOYU2OS+ye/WsI+t2Q8JiLcjykqkLstMCZMsOcHZMjhsBuRsllPNKi1LkOijTve1CUi4qvdk6bgozAcjFsTtcOpWQf/Q68zFAZaueiAQrnaFQXnY9xdFMb0AQwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B5sepHvx; arc=none smtp.client-ip=74.125.225.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791378384; c=relaxed/simple;
+	bh=4YJ9Fqv+a1prb8DIM4jaQKEQUeWO3GSzk37YSQ+zLO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lRc6xb6vPPFUEkaYpDDTQzWh6po+J8EAQXl8C8paTTrez0kvGoFKOMZ7TGUF0+4+yocB84TimvDVnoIZ3KCmOWcN18nwEDY9FZbtli6YXNu34n+UBrddayeiRtxOaO+6NzumVDRqUKWC5khSI8wvQVOv+qxy8knGzllWHMbwBAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vxCdmjaO; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B5sepHvx"
-Received: by mail-wm2-f6.google.com with SMTP id 5b1f17b1804b1-49fe4ca1052so8287765e9.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:04:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791378250; x=1791983050; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Wtfk6Lo3EsHBs+T8tzPIBV8ntCV/DDfwOlEBXJdzuvY=;
-        b=B5sepHvxgzc1zxlfj1WMRiYgxAZxttvlQTIWHk0duXAP4JDWGKhZqOdMC7E6MFtzxp
-         K5Rask59t9Zkes7lsqtbhExe39gIqjG0kVQgKSY3z0BakMdB/tHio5TrrK+sssqo+Egl
-         aqLZgNlUhPcMYY4kDqSg1nEe7G6MThoVZcFmmjGKiidr2kLFsWuPskJn9LJWi8SDVv0d
-         L1Lzlsye5bDonyMZBfygcACFw6hDnGotAMpznMZrCN00rShkrJREXtErNajzCA4qg5zq
-         GGXk/ILuwiyC+GCNViZcNd7sW+9yN+xHhz/l4BLguHS7VNLwy4GkTKrO15OeUGgA450b
-         hp+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791378250; x=1791983050;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Wtfk6Lo3EsHBs+T8tzPIBV8ntCV/DDfwOlEBXJdzuvY=;
-        b=Y+JTO+3nfhE+sko02Q/fRA6Slsjk8chkafFmOciHfsfiXCpHNFXJ4RiZOTeKG/sb47
-         uVZzt80KwVCCjZJ4dzSfOxsVwNZfBrvzoiSJlgXL27uIdBqb+BkzfmWjeg2zFjAy+8K2
-         Lde7lmlv21NX5Evx43niBZIp0TOo+Lq3J18RPp1N5CFopwXWgMdmt40k+vjfWV2f9cpz
-         +V63h9S68BHU+qv8Vcwv3BVdjooL344vUFN9pMX+1jmO9/UFE1NzpLMrDv8HopwW6ne7
-         +OkXcbGU51BhvBMP2ZW5Xw/AqVA5++ESV0BF6fsyaxaMOcv9+FTNcpS0sdmjhGY6EigL
-         2oXA==
-X-Forwarded-Encrypted: i=1; AKwUvBxXkYchh4ISBHOE8672qh1HjsvZ+gX86VeVLq09LTgitV5IcQqtFwZbQvhMCvE4QtinOv+Kq0Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++lQF2uiATo8vhiRlewhKSdGGDPNCLxUSLrwpXD731l3FtCu9zUX
-	u+ZMCSFKo5CvMzjtmFjI04R1H+955YCMOAl89HnWA4xFaI+2cA1u88nO
-X-Gm-Gg: AYBFou3MaaTCfVdKqg8SUH35arxlwRPPe7WTWKbUkZ+KQAaTJ/zYVXlghEahQ0Ur+qg
-	HI15olipT7juzqJ4BVe3FrzH5O2s0KX6Uf0Ph0cNR6FgMpY1+ClLl82My78zkeaZ51iRm7nYbcY
-	G05QiH7PEbgxAV0dPUD+dkMTej9ICCxf9kxGzSk4mjVm6miV+DMgENZV79Dw2zavCofnbdFguqP
-	3sSmO2lRplMMvKUfNeJulAjPoNTof5LirQbhyLYsupuRXU0HOQeHQeNRyrSDaGOZyjx7Mlg5kLF
-	0uFVG3edbbVkKWDQ5RvsbPANBEogTSTavINXUoairTOmISXYYgg1JDoWBrLrNLFkzOO0bWT2Sd8
-	Gn/wnWGFgJOkyzd6FAv2v2NKjavcinbkIfwtTuGP4a4oRpY0KdrTgwnqDTE0876G8UIym0kSsfL
-	TZ9HcEDkYzdpVT44Ps+WDLWxQmR/tcxCoXd3PkrcJCOLrYRP++aRCMYG6rEPOPecgSJm9S9mDJS
-	Y0Yjfo08XGibslb
-X-Received: by 2002:a05:600c:c166:b0:49f:ce73:5e94 with SMTP id 5b1f17b1804b1-4a18065ab85mr38007345e9.34.1791378249855;
-        Wed, 07 Oct 2026 06:04:09 -0700 (PDT)
-Received: from localhost.localdomain ([78.40.184.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17f4482c4sm120825195e9.0.2026.10.07.06.04.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 06:04:07 -0700 (PDT)
-From: Roman Demidov <roman.demidov.nn@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Roman Demidov <roman.demidov.nn@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Zi Shen Lim <zlim.lnx@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Song Liu <songliubraving@fb.com>,
-	Yonghong Song <yhs@fb.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vxCdmjaO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=dM8Ub3SEr1kn1ORAaVqDqRmpkV1kv8aYkI640BFSIsY=; b=vxCdmjaO7QZi+Fum3RHxWGGW/O
+	f3nVrVz45O9O7GHhJuuD1yk6uNnxxTwSBzklwEg/niuUSTt0Ipxes2p8OYbLsTbhbWG2Z1ANWpMsH
+	1JZ9L3YdexYCnlV9dajqVdpTLndChmSFUBehbecdg8sNwAbYViijrq6DaqpPNE7+LVPs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xERLO-009Scc-Ku; Wed, 07 Oct 2026 15:06:02 +0200
+Date: Wed, 7 Oct 2026 15:06:02 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lucas Tanure <tanure@linux.com>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10/5.15] bpf, arm64: Fix off-by-one in check_imm signed range check
-Date: Wed,  7 Oct 2026 16:03:54 +0300
-Message-ID: <20261007130355.119579-1-roman.demidov.nn@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 3/7] dt-bindings: net: amlogic,meson-dwmac: add
+ amlogic,t7-dwmac
+Message-ID: <ba762ae7-db95-41da-bb77-b72b85b68334@lunn.ch>
+References: <20261007082627.63807-1-tanure@linux.com>
+ <20261007082627.63807-4-tanure@linux.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261007082627.63807-4-tanure@linux.com>
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+On Wed, Oct 07, 2026 at 09:26:23AM +0100, Lucas Tanure wrote:
+> The T7 has the same ethernet glue as the G12A, but the controller
+> reaches memory through a pipeline stage that this SoC inserts in the
+> bus path. That stage has a gate of its own, which no other member of
+> the family has, and nothing else in Linux claims it. It is therefore
+> switched off as unused, and the port can then no longer finish a
+> transfer.
+> 
+> Describing it needs a fourth clock, and the fourth clock of the
+> existing list drives the timing adjustment logic, which the T7 never
+> uses. So the T7 gets a list of its own with the gate in that place,
+> under the name the SD and eMMC controllers already use.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Lucas Tanure <tanure@linux.com>
+> ---
+>  .../bindings/net/amlogic,meson-dwmac.yaml     | 47 +++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> index 90ef79161ab1..96118b4d1560 100644
+> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
+> @@ -23,6 +23,7 @@ select:
+>            - amlogic,meson-gxbb-dwmac
+>            - amlogic,meson-axg-dwmac
+>            - amlogic,meson-g12a-dwmac
+> +          - amlogic,t7-dwmac
 
-commit 1dd8be4ec722ce54e4cace59f3a4ba658111b3ec upstream.
+Since you are adding a new compatible, lets cleanly fix up the RGMII
+delay mess for this compatible. Skip all the existing code touching
+RGMII delays and add new code which is invoked when this compatible is
+seen.
 
-check_imm(bits, imm) is used in the arm64 BPF JIT to verify that
-a branch displacement (in arm64 instruction units) fits into the
-signed N-bit immediate field of a B, B.cond or CBZ/CBNZ encoding
-before it is handed to the encoder. The macro currently tests for
-(imm > 0 && imm >> bits) || (imm < 0 && ~imm >> bits) which admits
-values in [-2^N, 2^N) — effectively a signed (N+1)-bit range. A
-signed N-bit field only holds [-2^(N-1), 2^(N-1)), so the check
-admits one extra bit of range on each side.
-
-In particular, for check_imm19(), values in [2^18, 2^19) slip past
-the check but do not fit into the 19-bit signed imm19 field of
-B.cond. aarch64_insn_encode_immediate() then masks the raw value
-into the 19-bit field, setting bit 18 (the sign bit) and flipping
-a forward branch into a backward one. Same class of issue exists
-for check_imm26() and the B/BL encoding. Shift by (bits - 1)
-instead of bits so the actual signed N-bit range is enforced.
-
-Fixes: e54bcde3d69d ("arm64: eBPF JIT compiler")
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Link: https://lore.kernel.org/r/20260415121403.639619-2-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Roman Demidov <roman.demidov.nn@gmail.com>
----
-Backport fix for CVE-2026-53036
-
- arch/arm64/net/bpf_jit_comp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-index e98fe8c006cc..b67764f8a5f1 100644
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -494,8 +494,8 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
- 	int ret;
- 
- #define check_imm(bits, imm) do {				\
--	if ((((imm) > 0) && ((imm) >> (bits))) ||		\
--	    (((imm) < 0) && (~(imm) >> (bits)))) {		\
-+	if ((((imm) > 0) && ((imm) >> ((bits) - 1))) ||		\
-+	    (((imm) < 0) && (~(imm) >> ((bits) - 1)))) {	\
- 		pr_info("[%2d] imm=%d(0x%x) out of range\n",	\
- 			i, imm, imm);				\
- 		return -EINVAL;					\
--- 
-2.53.0
-
+	Andrew
