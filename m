@@ -1,62 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F77838E126;
-	Wed,  7 Oct 2026 23:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9C6419315;
+	Wed,  7 Oct 2026 23:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791415346; cv=none; b=aBI361C7+bBYN/pt7Ig3Yk3d/xm8MzijTTBFdf2BBhU+pkH1CQsx5y1Z/DcbtHyfxgoYIS6IADh3JfcDi6r8ygTi6zeW4Mk2MXuKfgVu8j5LIEp9C5RM036ItTLPA/k40XAOrEitkDK18KAYgyVAGvMgHiwXaujIyks2tPpE4Hg=
+	t=1791415813; cv=none; b=sa4sVnhXwv0Why4Z3KbKjXgLNG1XBkgt4IHlyazJjATuDzZoRKXG8t6qXG9xd1Nm62FAVb4DTUPwdi9/CnHgjf+N8+8nPrLp7B2SY+mwqUyoB9wrxHHqoX2hMcknYzOKVQuZWTPGGbFxEcudfFRbw7+frbMgy7GjC5Xf5x8roWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791415346; c=relaxed/simple;
-	bh=T+XgGCouqWyeejAZ+QB9EzFvLl90wS15UA8DGxcdXU8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GDtqo/wCGunqrDbULbl/9kyChBoHp0+Tlo5fAQNelxyJuHGO11esTzs2a938y7l9+qnP2fEsHVE0POMrIQBOCNTD04f4Wydvhglx5lYxLb1WUuIsM40PdZ2wLGJmKB/QnLLzv6Aiq2pqpHLxEYOV02/2+7G5F0z4iiLhizrgqeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kl5XrGw9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791415813; c=relaxed/simple;
+	bh=VHZAgTRouiaUkKjWo4HplGeWMWN8PjRFD3Ae3DIsFcc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ktOUedLZlDoqceQKo1XU2ZZpHtrMYLHNdznznlUxGBvs4+uELwD7DCNhl49UbldzdxzK8Ad6qq+jmFrgdXbLT/Rm/FUiZXYUvUQkN2SZN2aFBeEyL7b6tyeliqVziaX9eaAe4A9R0fk7LaniGSk/MLeBDiNshXGtbX/Qo3vIjHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DOlt18E0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kl5XrGw9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CD31F000FF;
-	Wed,  7 Oct 2026 23:22:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DOlt18E0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C301F000FF;
+	Wed,  7 Oct 2026 23:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791415344;
-	bh=RMeFJnMlfIuJqILm/Nb6Tk+8rOJGRsDm66e/mn9XIsw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kl5XrGw9pq6zRCBSzf3XFP8Ibi2jHgovpg2LSeZcQ1+O6pCKWEqfI3oMZrGDuKHed
-	 CO9KYtvEQfFTPYZ0eeNF7CFXq2ZmAhLTjzQDVKxc/ivXK5gWzBqVAtt5C00zc9jTVZ
-	 1Fck8BsEBW5bCEm59RN9zY38o0pnMrCtwcdpOy+xZ3wQS0xx5VF38qNiHDAxN/Xpdr
-	 YygX/7t5JIaBFA1truiSW0W57ogkxvB60sKV7DLv5fV/JcyMqjLPCIk0MGBFQNE5zT
-	 trxJgO6BKbFOxn3s+nKh2XLM2OmVbY6QB+rb93eP0mMFGXZrBXZFNI2P87wj/C++V9
-	 c9DNMXgqI6R2w==
-Date: Wed, 7 Oct 2026 16:22:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, richardcochran@gmail.com, linux@armlinux.org.uk,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pvalerio@redhat.com,
- nb@tipi-net.de, vladimir.kondratiev@mobileye.com,
- gregory.clement@bootlin.com, benoit.monin@bootlin.com,
- tawfik.bayouk@mobileye.com, thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH net-next v10 1/8] net: macb: introduce macb_context
- struct for buffer management
-Message-ID: <20261007162223.595dee2e@kernel.org>
-In-Reply-To: <179115680422.434549.3193325311731249627@kernel.org>
-References: <20261001-macb-context-v10-1-beb541bbb7df@bootlin.com>
-	<179115680422.434549.3193325311731249627@kernel.org>
+	s=k20260515; t=1791415809;
+	bh=UnWprGdsd1NbeiDvfh0t32/tyVH77xuaT9ndMymh3/w=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=DOlt18E0yeHXZjbEvfWhcmMyn9f9KwXYNd6hjetyE5OWfoKp3KDBugddRLQcEqUyd
+	 acu5fy8c11LpDgbnrS4YGrBkd6cOTq5R6ZqT+rZDQg9npUVAyNHVsld4zSwBZbvus2
+	 f6kGdVReaLOu+SKkWlNWJ8E2pSFP/SF8U6g7MzZwLjhMs+H+8rstqtfqy7Ja7B5XtX
+	 N95QgccF1yofYYfCuUmJYPbvMt6dgcf2DHq8RetSgjR7VPpWi8X9jqN/BSBN2Eha36
+	 ihw6RfF6wuUpWnxkMc56hDPrLpKEjDQzI2eTD888zIqG3m4Z5thT/65SkcEdsMjWGU
+	 WVF3UzjGchRVA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3893809A08;
+	Wed,  7 Oct 2026 23:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [GIT PULL] wireless-2026-10-07
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179141580803.3733694.16381283704813319926.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Oct 2026 23:30:08 +0000
+References: <20261007205143.464714-3-johannes@sipsolutions.net>
+In-Reply-To: <20261007205143.464714-3-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-On Sun, 04 Oct 2026 23:33:24 +0000 netdev-bot+sashiko@kernel.org wrote:
-> - [Medium] The NAPI poll handlers read the context after
->   napi_complete_done(), and nothing stops that context from being freed=
-=E2=80=A6
+Hello:
 
-Looks legit at the surface. I was going to try to double check and
-then realized the series no longer applies :S
---=20
-pw-bot: cr
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed,  7 Oct 2026 22:49:59 +0200 you wrote:
+> Hi,
+> 
+> So ... I pushed back as hard as I could, and Felix reduced
+> by ~25 patches, and I told everyone I need to get fixes much
+> earlier in the cycle.
+> 
+> Nevertheless, I ended up with 25 fixes (not counting merges).
+> Hope that's OK, otherwise we'll try to whittle it down more.
+> 
+> [...]
+
+Here is the summary with links:
+  - [GIT,PULL] wireless-2026-10-07
+    https://git.kernel.org/netdev/net/c/fd4e7f113729
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
