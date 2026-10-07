@@ -1,279 +1,178 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010065.outbound.protection.outlook.com [52.101.61.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D78B4854EB;
-	Wed,  7 Oct 2026 14:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791383659; cv=none; b=FuNU/W43Pzh7XjsIsps+3JfbSC1Gzx5+upj6BfXEwXoqZtSMVm7dXo2T6648sWlAwR151DaFRLfsjS6dkDpxMiH5MgohDvkU64PiowIvXefgbpofFRH45vE4uKXyWgZ1zby/M7PRWMJ4yvyUeicTUMXyL0RdSVat481v2QYy/iY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791383659; c=relaxed/simple;
-	bh=d/Kl65sXPl3XG58MSRvKyvhLdGwm1MEO15ONeq3TPBU=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UpnCMvAxn92hmXrz4ApTz+Kd1r4iiC6M5LoChQzITHZTIBkFMNt9uaLB7eM7y93z4daeoFSXXEPQZnhGDZ6566xS67SHZsgbM/xLqtkyars9a4sBVVS8SXNRR8lJD0mTUWPPg0WiG1QsQOpr0LQnVBHV92+D2sxYLrzJPh8W3pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Z0sUZh9K; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26FE3B05A0;
+	Wed,  7 Oct 2026 14:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791383783; cv=fail; b=OsDL/QSSjD4bcR+P4lzvKCJ5Ulxm2Vy6+xImPdEOvA9YNefBBSoEaZOS9ZS7XtTK8aquxtyNbd9fM2CbR/7iS+xMx0HSGLB689G/Qmt6HQBq0pRGLEVbyc/FpopjmwdBjxJj8upgE0/EXw2GK69ulWXd5UvclMimCWQOoAQ9S08=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791383783; c=relaxed/simple;
+	bh=TqdrBH4+xgUUy2NfpT5NOHGnrpniR2+79w4ruGmlgak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=R9y1E8MJ0cGgXA0YfAK9a7vYFsfvXKIYoUSRyUlfgP1oc3nCt8IOXJhi7P8MMEukIyH9wJMtzqq/8xMaYcMVWEjMvSd/t+OqPSAazsJXLB40TbDlZzqVeySR6L2NIMJEAwpODa+3H8+AA5FLfgnZSK+9InYecmR4HPt0X90CR7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BpePxC0t; arc=fail smtp.client-ip=52.101.61.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Z0sUZh9K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1791383660; x=1822919660;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=d/Kl65sXPl3XG58MSRvKyvhLdGwm1MEO15ONeq3TPBU=;
-  b=Z0sUZh9KN3Jqr2bd9TmF68XLkiofqln/B9rwB6eFSdPYw0KaVfX957CX
-   PlCy+F9ix8pKtjMonl/Op/6agqrmIaeFuBGr7wVQeJOckPuh473hvud7q
-   2yogA9OEnYLsmkjylvvD68Z+WmlAhDbZwzjSk1iNPkf/MkZOhR0rUHTK9
-   0pxPltfqmdie2TIOqu5ljABDeabUy+GAf0MZ0rgrNGbM/L6qPps3HW4r7
-   wxFc8NGAvSOM4wyazqfFLVT3OXHZAtQciBruJ6tYSTp9JQH/rfc7o/gou
-   9UF4/7+DYRfSkRUx0IKphJleuo+WDj201Fg5BbPMtP2QtgDYxlGAoIvS2
-   w==;
-X-CSE-ConnectionGUID: w3g1qPF4THS/flpQzowRVg==
-X-CSE-MsgGUID: bzbRljVgTHm/71K7UOdV1g==
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="231796935"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Oct 2026 07:34:19 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 7 Oct 2026 07:34:13 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 7 Oct 2026 07:34:09 -0700
-Message-ID: <02cce6979c4902e75f2f9b94621f2f81e82b879a.camel@microchip.com>
-Subject: Re: [PATCH net-next v13 2/9] dt-bindings: net: lan9645x: add
- LAN9645X switch bindings
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <robh@kernel.org>,
-	<krzk+dt@kernel.org>, <conor+dt@kernel.org>, <woojung.huh@microchip.com>,
-	<linux@armlinux.org.uk>, <Steen.Hegelund@microchip.com>,
-	<daniel.machon@microchip.com>, <geert+renesas@glider.be>,
-	<magnus.damm@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-renesas-soc@vger.kernel.org>
-Date: Wed, 7 Oct 2026 16:34:09 +0200
-In-Reply-To: <179097565632.434549.4502209637975152299@kernel.org>
-References: <20260929-dsa_lan9645x_switch_driver_base-v13-2-827c2d3617f2@microchip.com>
-	 <179097565632.434549.4502209637975152299@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BpePxC0t"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g1nILJU2LXkKkRQ2DmUBDW5okBRWCU6XsnlBgk76LQCzo6NqUA9/UIR9AiuwX+d0K76P982NtsyUfSVXLTOnb/k5m0yPov48ysYWNUrhWMGKKn31ZPCgd3+Y9VvTRfiheNqrlIaRKSemajJLL7gQCX0hE9UsRO5d+1wynSYEwnphxt3cxH0lXE189msYwZyIym3WFgZcVd92KkugITuKr6nvAHFVbrXMJtIA/YbL+ZOdIrK5alyxIhQfcLFC7XflVrYB944jE/w9nBuUhuccaKZnPXUBq7N7wkGxK32hT2xb58qE0vBwh+vdCCfPJ0IxWJ3lWjfeSKjDS83VIlcECA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y7izSAUx3sH7WUIKNcvXRcMatvVlJ1avgKS6Jy0ppRg=;
+ b=oSR3Xf8GW7ik3iHFE+U0uX/+a5y9fRm9htX375CqVxHYbJoZIzCYrs5Ct8jUX9e5nlMcNMHv7IFdhhd3Sq5wgOzJTeRtxfDXtZnr25GyV+LZZuD08jk/TyT6k66ulkf2LAtTVyvbBYJqzRv9TaL0aOt5ULG0wmcqe/CRE/wpkKNRgdhjHKTZ/sfeM/fccCiFFImksMkKb24Lw2PQ2qRbjNG1dpxnWbcdIsRrJfiC67ULTWWGkgdqnttR47b7HbTwzhJvq2ArA9gMNM2oIaboAjFbVwGEnPWwD9bz6cakFsP7lRsjoX+hq5O5c87A07OFgBVzFpfP8p9jgzUOByBNDA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y7izSAUx3sH7WUIKNcvXRcMatvVlJ1avgKS6Jy0ppRg=;
+ b=BpePxC0tDX2MiQQo1Bi9uGZdwXaAWCiYERfEeOmkpc6SFrK7sPTlQd6uasNaEkpkFipG41nMwiVGKavyPT3t6T6illJ3OpAsosjK6BZV4uCjn0Rt29Alz0C+TitIeWdrDT4nY3TLnqG0TAy5mZiSnfFe6p65b9kecaf0AaQXfVG2JCYAafgH1+LCpxgOvF3Ff0wI3QbacE0hlIQmhZuMJJylnjzHIvByNB5CNRE6CEOdppzgdvClNtmtVF2CiPb26ygH6pr40f7ZmPZf+gVDm8ISizxOrLhtJqMChjAuPpC4kOrSOiZEf/GHdHTdZ1Y5ApMhCs/n1XiT4IU4b3e5CA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB7954.namprd12.prod.outlook.com (2603:10b6:806:344::7)
+ by SJ0PR12MB7083.namprd12.prod.outlook.com (2603:10b6:a03:4ae::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 7 Oct
+ 2026 14:35:54 +0000
+Received: from SN7PR12MB7954.namprd12.prod.outlook.com
+ ([fe80::2567:531c:cdb8:f544]) by SN7PR12MB7954.namprd12.prod.outlook.com
+ ([fe80::2567:531c:cdb8:f544%3]) with mapi id 15.21.0451.026; Wed, 7 Oct 2026
+ 14:35:54 +0000
+Date: Wed, 7 Oct 2026 17:35:38 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Yiming Qian <yimingqian591@gmail.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, bridge@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: bridge: don't under-estimate the VLAN tunnel
+ info size
+Message-ID: <20261007143538.GA1103897@shredder>
+References: <20261007055939.63100-1-yimingqian591@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261007055939.63100-1-yimingqian591@gmail.com>
+X-ClientProxiedBy: FR2P281CA0115.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9d::17) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB7954:EE_|SJ0PR12MB7083:EE_
+X-MS-Office365-Filtering-Correlation-Id: afca9e8e-e9d9-499b-35b2-08df24804aa0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|23010399003|11063799006|56012099006|6133799003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Sz6Pk+RvMb9VZT5fiAMzGGg7KOcRfQOefiop500vvv5sP6yzyy/7/s18iUhyhuiFaW/sfZ2GHaEU3O2zb4Q9mVUdf169t3w4LnaG0JutaC2c9BebCoCvFQMdsAzKTnfAQQ4INkf9M9rJctcW1EDUm0BjpAYs/REy9cLv4jUyv84axCNd33tlDpE3LB9Zec8IXulZMIm+wezITPOfQvXTC/5OUuZ9rAYJZpg1nLWfCLA0223lyNtUq+Mb1P3v4FZUoGUt2WKLOBilUGZzJffRg8IdzyDQjxgK/RbFqsNQZCpiwXwCW25CH2brmXM4tkVU+EAX4TdCjlFQE82Idtj9U3ORAnXN9Lv0YLrnQ6EawYI+qfp4+52vqdN3KXcv/rH0HBSss+BUHHfMLpGsjoRVUcAsruE1pWqdaIxQx2rVRXR3X2f2Rf+io/u+68qWgCKipRQenUbp6lZm3bEMJqujdyVi5ODh4SMwRpFzVZRIJ87kdJrDBciobCfkNn+Q2Q9elFTezqZ1HCyuEz5/x28pWhbc1TwACnUSfe/SavZXnuWwHWKBa0f9t7gPSmY9iqL5rBy+b2e4UJMLuaeS0xmRBT0h7zSAGGHN8Fhr2NyKIHcYB+FqBwTgCFzm17XRWXej8OWKIOoYhKeyq6Wi/qIBlDOjWzZn95zN2W5k+6h7shg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB7954.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(23010399003)(11063799006)(56012099006)(6133799003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZlhiZXNCUVN1b3M0bndvcGN0b0E1R2t3OUlCd1lER1c4c1MwaFU5QTlNODZj?=
+ =?utf-8?B?K0h3TmFqRU13cHI0MTJtdlRnS0MwMUY5Z0ljZ2xhSEF2S2dZUGJPajFGQ0lR?=
+ =?utf-8?B?VVVkOGhVd1IrMEE0R3dUMlkvcHNLcWQxNkFMSE5BMVdYZStDVDZxZWJyWnRF?=
+ =?utf-8?B?TVczQUw2S21KZGQzcmk5U2lNc0duazBUcjljTWRoMksxaTZSWHhmWVVoTjRr?=
+ =?utf-8?B?aElCV0EyLzhMUW4rYitWaGs4T3dHck5ESm5wcHg2eHAzb0twSEhFVWpkSWla?=
+ =?utf-8?B?VkdVZFgyeC9SNTF2QzNFem1VSUVQOUROR0hHNkw0djJlSGF0MktGMWVHNnNl?=
+ =?utf-8?B?NUFMZkxjc0tyajVXbExtVm41anFETHp4Vko2VFlnb0lLcHFPTGxGSlB6M0xZ?=
+ =?utf-8?B?QzFoejJSZCtPQUNURDJMVjgvYlNrMWppbVZ1c1QvVEZyVUQ1WVRTZ3Y4b2hx?=
+ =?utf-8?B?VDdwdDJuWG8xWkNEUnE5V1E1aWRQT1o2RFNVZm82dWw4YWViMmxFeVNYWHZa?=
+ =?utf-8?B?dnJEVnZsTlI2bFA0Z0dUVjBFRjBDcGllcW1wajZhbjM5TDVZQXpMOVBkRUNO?=
+ =?utf-8?B?NDhBeVZtbUM2QURyaUxreDFaRHVJL0FucnJ3Q3hQTFRjenpoUy9PTEgzU3RK?=
+ =?utf-8?B?U2xlb3M3MmtjU3dyNm9qT3dTRWtuWDEvb24zRi9KNEYyVXVKekxCRHR1Z0NH?=
+ =?utf-8?B?enVNa2FmVEVBd3RqVlg3WnB1Q3NYNlZkY2Nod3h4THRIdVJLRXE1YS93UGFM?=
+ =?utf-8?B?MzQyNHZ2VThOSk91L0FEbFZlRXZoTmV1eW9TQS9DZWpOMi9EOThBTXhKeXpu?=
+ =?utf-8?B?NEJoYm1wQzlHNHNOQ2lGUGZ1a1llNkFsU2ZtSGpGczR4N2Eyb1V6b081R1lJ?=
+ =?utf-8?B?bG5uam5GejRoMmxkUmNFWUtqZEhwM05XZDhJVzV3c2hoemdoZGtlM0IzSis1?=
+ =?utf-8?B?LzJTZmpuUjZTb0xaaFRWN0lUUjJKNjhQZW83M1hmRVVacWNMaVpid045WU1M?=
+ =?utf-8?B?OERZT3hNUXE0TWhwdXF5MzFTbE5vOFlQQ2puLys4UnRydXJqclMyQkdnQXFO?=
+ =?utf-8?B?Q2p4L2dXZ2VlN09peE4wazcvZHBjeDdMWE1pMjUwL3FFY2pCVEhySDZaTWNn?=
+ =?utf-8?B?K2pja2l6Yk1UalN5c3FtcTY3V2tiQUlDSnVWMFRyZlhoRHc2cWM4eStERE5Y?=
+ =?utf-8?B?RVpUcXAzVktmRnVXcTRBT1FGQVlPeldqNWJMVktMdlVCK3BTOVk0SEh1dU1Y?=
+ =?utf-8?B?Z21sTFQvdGlzbkNzUzlVNzJpK3RaVU1xWGJibm1RY3Y0L1Uxdk5XZVBaMXBY?=
+ =?utf-8?B?MVF1ZUdyaTNUaXdKTzdWRUlDdHZ2THljUUlBUlVKY2FGVkJ5SmZYaDhQZXc3?=
+ =?utf-8?B?cmxXMmEvQ0J2aXZKcGxDaTN6aXZPK0ViR1h3K25mTVREWTU5aHdCaXZUcEZX?=
+ =?utf-8?B?TFlSRTdlckJFNUxxNWpzSTNZRS95UW0zdHVGZ3ExS2QrQkRHZFd3U3k3Rm9p?=
+ =?utf-8?B?cWhoamEvcU5nUkhlZTVFMlRUWFVIajRhZjVGczBUOVp3M0dENlc3RTVpRitB?=
+ =?utf-8?B?bzFYUExUOEY1SkM5QXJ2akdwa0VORWFqN0hseXNNZ0xCNnVlT24wL1IrMFpQ?=
+ =?utf-8?B?RFpWZTBTVkJKVC85cDdQTFVIODIyR3pNL0pkdmRvSk45QU5MZEtwVEN1Tmdt?=
+ =?utf-8?B?R2pxMzF4Y1VrWTQ0TGQvZTR3UFBJMVZQUE0wc0VGWi9IRnJZYTRoSml5bUMx?=
+ =?utf-8?B?ckdhRSs4NWVteXRkZGJ0eHg3TmhxcFE4RVYwQjF2Y2x0WFVnV1NvZXR4MVBu?=
+ =?utf-8?B?YW91eDZkUlhmN1gvZ2JMU1pHRDFoc2JNeFFhY3JSNnB0Z0Uwd1huTllocUVD?=
+ =?utf-8?B?aU82cGpIUGNkV0pnMEViNFV1Q25ZVjllSUtONk9Xa3dDelJndTJIT2xTazlr?=
+ =?utf-8?B?L2lrdTkxeHdjVjN0dXQ2L09SMmdrb21ZeWpteGlmaW52RERLam1tV0tZcXcx?=
+ =?utf-8?B?SjkyNUdEdzhrcE93NWFldHlBQktGeFFWd05ZbExVL1UyTnpENWxZbkJKMXA0?=
+ =?utf-8?B?U25JMEdPSnBkUzYya3dGZFhzTHRzOUxQdjZQQitSOGE0NXJHdmdYUUkxWXlP?=
+ =?utf-8?B?N1pQL1dqQ0FCZ2lxenN2OExna2l4Z1g0Zk84S0RmYW8zbkhQUlBXbnR2Z3lG?=
+ =?utf-8?B?TzkzMzMrclpha3B4c1JjaUtkK0NqMDVzV0JrTnhZNUVERWJLa1g2Y1JjWVl0?=
+ =?utf-8?B?WW9QbG4zODRHUmJxL0Vvd3l0TUJ0YXBKb2Y1a0padmtMeW5VTzNXTDY1RUxm?=
+ =?utf-8?B?QU1nbWRDU2Y1elRMdERwbjJUUHNsMWF1RUlKMC9FU3FKeXUxYXU3dz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: afca9e8e-e9d9-499b-35b2-08df24804aa0
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 14:35:54.1930
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PLuOARUc2vEsQTv14s2wTjn0ICy+cTAkIzcFy1tB529n2TNAKKvNKI8RvqmAWGDKwGaKBM2L1JbyYEHK2IlkIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7083
 
-On Fri, 2026-10-02 at 21:14 +0000, netdev-bot+sashiko@kernel.org wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->=20
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 2
->=20
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->=20
-> - [Medium] The binding makes rx/tx-internal-delay-ps on the MAC-side
->   switch port nodes an on/off switch for the full 2 ns RGMII delay=E2=80=
-=A6
-> - [Low] The per-port pattern "^(ethernet-)?port@[0-8]$" in
->   properties/ethernet-ports does not actually limit ports to the 9=E2=80=
-=A6
-> - [Low] The subject "dt-bindings: net: lan9645x: add LAN9645X switch
->   bindings" does not follow=E2=80=A6
->=20
-> --
->=20
-> dt-bindings: net: lan9645x: add LAN9645X switch bindings
->=20
-> This commit adds a DT binding for the Microchip LAN9645x DSA switch. The
-> smallest SKU, microchip,lan96455s-switch, is the fallback compatible. The
-> switch register targets are described through reg and reg-names, followin=
-g
-> mscc,vsc7514-switch.yaml.
->=20
-> > dt-bindings: net: lan9645x: add LAN9645X switch bindings
->=20
-> [Severity: Low]
-> This isn't a bug, but the subject doesn't match what
-> Documentation/devicetree/bindings/submitting-patches.rst asks for. That f=
-ile
-> says "Repeating "binding" again should also be avoided". Its example form=
- is
-> "dt-bindings: iio: adc: Add ROHM BD79100G".
->=20
-> The file lives under net/dsa/, so the usual prefix is "dt-bindings: net: =
-dsa:".
-> Something like "dt-bindings: net: dsa: Add Microchip LAN9645x switch" wou=
-ld
-> fit better.
->=20
+On Wed, Oct 07, 2026 at 05:59:37AM +0000, Yiming Qian wrote:
+> br_info_notify() sizes the notification skb with br_nlmsg_size() and then
+> fills it with br_fill_ifinfo().  If the fill does not fit, br_info_notify()
+> does WARN_ON(err == -EMSGSIZE) because that is supposed to mean a bug in
+> br_nlmsg_size().
+> 
+> br_nlmsg_size() (via br_get_link_af_size_filtered() and
+> br_get_vlan_tunnel_info_size()) only accounts for the VLANs that have a
+> tunnel mapping at that moment, while br_fill_vlan_tunnel_info() emits an
+> attribute for every VLAN that has one by the time it runs.  br_info_notify()
+> also runs without RTNL (e.g. from br_forward_delay_timer_expired()), so
+> tunnel mappings added or removed under RTNL between the size calculation and
+> the fill make the fill need more room than was reserved:
+> 
+>   WARNING: net/bridge/br_netlink.c:660 at br_info_notify+0x13f/0x150
+>   ...
+>   Call Trace:
+>    <IRQ>
+>    br_forward_delay_timer_expired+0x1b3/0x1f0
+>    call_timer_fn+0x2d/0xd0
+>    __run_timer_base+0x5ba/0x7d0
+>    run_timer_softirq+0x31/0x60
+>    handle_softirqs+0x17f/0x570
+>   ...
+>   Kernel panic - not syncing: kernel: panic_on_warn set ...
+> 
+> Size the tunnel info for the maximum number of attributes that
+> br_fill_vlan_tunnel_info() can emit for the VLAN group instead of for the
+> mappings that are currently installed.  Consecutive VIDs with consecutive
+> tunnel IDs are compressed into two attributes, so the fill never emits more
+> attributes than there are usable VLANs, which keeps br_nlmsg_size() an upper
+> bound of what the fill needs.
+> 
+> Fixes: efa5356b0d97 ("bridge: per vlan dst_metadata netlink support")
+> Cc: Yiming Qian <yimingqian591@gmail.com>
+> Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
 
-I will retitle.
+br_info_notify() is inherently racy when called without RTNL. Better to
+just remove the WARN_ON() in br_info_notify(). Blaming commit
+b7853d73e39b ("bridge: add vlan info to bridge setlink and dellink
+notification messages") seems appropriate.
 
-> > diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,lan964=
-55s-switch.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,lan96=
-455s-switch.yaml
-> > new file mode 100644
-> > index 0000000000000..9deb7a427804f
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/dsa/microchip,lan96455s-swi=
-tch.yaml
->=20
-> [ ... ]
->=20
-> > +  ethernet-ports:
-> > +    type: object
-> > +    additionalProperties: true
-> > +    patternProperties:
-> > +      "^(ethernet-)?port@[0-8]$":
->=20
-> [Severity: Low]
-> Does this pattern actually restrict port nodes to the 9 hardware ports
-> (dev0..dev8)?
->=20
-> ethernet-ports has additionalProperties: true, so nodes that don't match
-> "^(ethernet-)?port@[0-8]$" are not rejected here. The inherited
-> dsa.yaml#/$defs/ethernet-ports and ethernet-switch.yaml both accept any
-> "^(ethernet-)?port@[0-9a-f]+$" node through dsa-port.yaml.
->=20
-> So a node like ethernet-port@9 { reg =3D <9>; ... } or ethernet-port@a pa=
-sses
-> dt_binding_check and dtbs_check. It also skips the local RGMII delay
-> constraints. The problem only shows up at probe time:
->=20
-> net/dsa/dsa.c:dsa_switch_parse_ports_of() {
->     ...
->                 if (reg >=3D ds->num_ports) {
->                         dev_err(ds->dev, "port %pOF index %u exceeds num_=
-ports (%u)\n",
->                                 port, reg, ds->num_ports);
->     ...
-> }
->=20
-> Should the schema reject port nodes outside 0-8?
->=20
-> > +        type: object
-> > +        description: Ethernet switch ports
-> > +        additionalProperties: true
-> > +
-> > +        allOf:
-> > +          - if:
-> > +              properties:
-> > +                phy-mode:
-> > +                  contains:
-> > +                    enum:
-> > +                      - rgmii
-> > +                      - rgmii-rxid
-> > +                      - rgmii-txid
-> > +                      - rgmii-id
-> > +            then:
-> > +              properties:
-> > +                rx-internal-delay-ps:
-> > +                  $ref: "#/$defs/internal-delay-ps"
-> > +                tx-internal-delay-ps:
-> > +                  $ref: "#/$defs/internal-delay-ps"
->=20
-> [ ... ]
->=20
-> > +$defs:
-> > +  internal-delay-ps:
-> > +    description:
-> > +      Disable the delay line using 0 ps, or enable the 2000 ps delay. =
-The
-> > +      delay line is not tunable, so no other phase can be selected.
-> > +    enum: [0, 2000]
-> > +    default: 0
->=20
-> [Severity: Medium]
-> Is it intended that rx/tx-internal-delay-ps on the MAC side port nodes tu=
-rns
-> the full 2 ns RGMII delay on and off, for all four rgmii phy-modes?
->=20
-> Documentation/devicetree/bindings/net/ethernet-controller.yaml says these
-> MAC node properties "should be used to indicate fine tuning performed by =
-the
-> MAC. The values expected here are small. A value of 2000ps, i.e 2ns, and =
-a
-> phy-mode of 'rgmii' will not be accepted by Reviewers."
->=20
-> The same document says that when the MAC adds the delay, it "must modify =
-the
-> phy-mode it passes to the PHY, removing the delay it has added. Failure t=
-o
-> remove the delay will result in a non-functioning link."
->=20
-> This schema accepts phy-mode =3D "rgmii-id" together with
-> rx-internal-delay-ps =3D <2000>. In the driver later in this series,
-> lan9645x_parse_mac_delay() in lan9645x_port.c only checks for 0 or 2000.
-> lan9645x_rgmii_dll_config() in lan9645x_phylink.c then enables the delay =
-line
-> directly from the parsed value:
->=20
-> drivers/net/dsa/microchip/lan9645x/lan9645x_phylink.c:lan9645x_rgmii_dll_=
-config() {
->     ...
->         HSIO_DLL_CFG_DLL_ENA_SET(p->rx_internal_delay) |
->         HSIO_DLL_CFG_DELAY_ENA_SET(p->rx_internal_delay),
->     ...
-> }
->=20
-> Nothing there checks phy-mode or removes the delay from the interface tha=
-t
-> phylink passes to the PHY.
->=20
-> Take port 7 or 8 with a phy-handle, phy-mode "rgmii-id" and
-> rx-internal-delay-ps =3D <2000>. Wouldn't the MAC and the PHY each add 2 =
-ns,
-> leaving a DT that passes validation with a link that doesn't work?
->=20
-> The example also uses phy-mode =3D "rgmii" on the CPU port. For any RGMII=
- mode
-> other than 'rgmii-id', ethernet-controller.yaml says it "is probably wron=
-g"
-> unless justified.
->=20
-
-Dismissed. This follows the binding model introduced for sja1105 in
-commit ac41ac81e331 ("dt-bindings: net: dsa: sja1105: add
-{rx,tx}-internal-delay-ps") and used by microchip,lan937x.yaml since
-commit 8926d94e5c50, which also restricts the values to 0 and 2000 ps.
-The MAC delay lines are configured only from rx/tx-internal-delay-ps,
-independently of phy-mode and of whether the port uses a PHY or a
-fixed-link, and phy-mode is passed unmodified to the PHY. The hardware
-has a fixed 2 ns delay line, 0 and 2000 are the only values it can
-express. For the CPU port, phy-mode "rgmii" with a fixed-link matches
-the sja1105 and lan937x examples.
-
-> > +
-> > +examples:
->=20
-> [ ... ]
->=20
-> > +            ethernet-port@7 {
-> > +                reg =3D <7>;
-> > +                ethernet =3D <&cpu_host_port>;
-> > +                phy-mode =3D "rgmii";
->=20
-> [ ... ]
->=20
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260929-dsa_lan9645x_switch_driver_base-v13-0-827c2d3617f2%40microchip=
-.com
-
+Note: "don’t repost your patches within one 24h period"
+https://docs.kernel.org/next/process/maintainer-netdev.html
