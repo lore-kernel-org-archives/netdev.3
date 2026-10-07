@@ -1,518 +1,199 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012030.outbound.protection.outlook.com [52.101.48.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36DA3FD960
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791399408; cv=none; b=IeCD79qYqVSN6szUpiYwtSgGJyLk7/+ALGBl76Ld4tcX7C1ECncBTRfWPyjKEARAEmwZyowCnDtInvyjwZaC/h/RyPNhKXdvdKDsIUDBxyydvawYEibzova7xjuGJQyB6TtoEIEJ6/jYVS0pJu6iey81nvkBGLGMTPi2ROpS9Nw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791399408; c=relaxed/simple;
-	bh=vLInWXHZzviqWQ27RVDsMpzKgdnAlGLLXXLkOY3TKo4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D0fgOIt5JDcGtHSb5Qj7eI/B42WjLRYy0UxRcQ3Q6dm9Mpr56Vdk6zGLNNjqcAc3todPWsRWxwLaeKPqCovDPbUllSYrUmRncvVzfW0fW24JKUyqBpGhHJv9Ux+Tw5aLyokyX+xDNuE0L3b4Cq2dftTbH7t69WRXS4ZINu/AAAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JUdFi4wB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TkZa2YTD; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D233F44E4;
+	Wed,  7 Oct 2026 18:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791399500; cv=fail; b=cNrBuFxcUKcwuuUauvki8orVdNAP2HkTYfPA0MM8MfohmikjsBfWOrK7nr5G5vc3SMJneuoD/ZBjqc/1YT27OPRz+tPzeubzYZGgWe8KRdUWcdv06XUM2PEu8VfemUgEf9e0Tjh3EfGdKGIRcvhUIXeIjwbTrR4znPHwf4njik0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791399500; c=relaxed/simple;
+	bh=9J/lPyvYen4M8J54xHbxx37ISBrL9ISY+UE/c3LtloY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=UrgGvyFrS1yGlrBi4a0BULTZeHTZ6I2d2umuVPuR4/gDXKAMS/07U8OzTppjVfrTa9OJR/8ei5QWal9kGJ4oH0Z44JkwEslHYAypknKm/V7iUD2vTKOcvfIJjK4JPjSJmpIgb4zrF01Z7YI/bJl75mBuDFGmZv1wpph6nDqG/xg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oAOhUaJw; arc=fail smtp.client-ip=52.101.48.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JUdFi4wB";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TkZa2YTD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791399405;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FdJ0yl4Y7a517Zh171Ufd/qnh/YUt3oPd6EQX5MGSs8=;
-	b=JUdFi4wB+SlWYGDd6dsZWEIZ2SCor8DjtswLngJAM9lVyg7g+eMhvLaDJ4MWVAqK3G6fk7
-	2hPsR7b4gXisf1YXhbLe2wFqie48cqsVkL22N43knStsYL5Hf8bp9RS20wK/HC1+Vg26By
-	c2SrOrhJJLsgvRlz0WOVgc0M/19Lo2A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-261-30YuusurNh-oU9FzVvjDpA-1; Wed, 07 Oct 2026 14:55:52 -0400
-X-MC-Unique: 30YuusurNh-oU9FzVvjDpA-1
-X-Mimecast-MFC-AGG-ID: 30YuusurNh-oU9FzVvjDpA_1791399351
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-48c427421f6so2938994f8f.2
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:55:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791399351; x=1792004151; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FdJ0yl4Y7a517Zh171Ufd/qnh/YUt3oPd6EQX5MGSs8=;
-        b=TkZa2YTDoSuAvBN7UAAWeSDgyq48zeGum3HQGBD2dJMiMaWkt+MDFCQtIyMlNlqlpH
-         XC6pgNRDRpFP+AB+DCHVKKx4z5awou4ADNNG/qrAL3Rb5kM2OUrPXTiccTy8SJEKcLn7
-         WxDYmhiXYNTPDiELSPBw4yQrlIsOPpFNEjNxEO5YUDFL/QE2Mnf4ktWxtE0gy718jxwf
-         hPhlo+/lb92UsOtwDgAbSvBu4yzg8d4kAytZEFSvt/Hq+2+IwC3Rcx2k5T/sonwNS8lA
-         qfbZ5iNYN/3BpBwVl8o8UQkP07tZwwy3t9uXbWJkxTXySAhYT36S3hdiJNp1Qg/IjDUG
-         1exg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791399351; x=1792004151;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FdJ0yl4Y7a517Zh171Ufd/qnh/YUt3oPd6EQX5MGSs8=;
-        b=J+fuhPZZIIBUA6rgBeo+Tckql9rWSNQ5aGDXbM5ZF9kBeCdjDSTJ1z8++Kw58SeQxW
-         1ZDlxKlBefW3+SLZ578JaUVcvxK5TkcRLK5yvLjRJp8KayA7scpXesnfimIIr32E2ho+
-         wuoBPNFWXyAgsFbfkwiZfbmX1haNKAmBlrVq3w9+NIP0rhtGajz+gizhVMGY7cgImcZQ
-         3rdyTZhASjxPMh87phlAd/7fBquMlFSyA7/dilPJI4vVEtlR70ZpDv3Z7HMoRo/+4aVz
-         6LMBb5RtE3vOndr42Wn00HK7umfxmH91Wyxskam14h58suZ35GFuu/5+8Ue6WMxZyt6A
-         YvYg==
-X-Forwarded-Encrypted: i=1; AKwUvBxmTNPUihJsVHy5s2Fn4Nzx2RVcVX5J003iQi0OHhKwui+kafTDe+F5ApdJ92pFweSb2Uq/788=@vger.kernel.org
-X-Gm-Message-State: AFuF++mD0ljrrOhtg/theUl0aL6PRxGbXXg26O6WG8U901y7GtN7ek4m
-	DuaVqtmBvR3tdQQK3VvBgRKSgAhaD2pc07dnOAwwJI6lXdwb1lrKiKueCRHGSRAB1x1t5pjEb0Y
-	yK+ik9HHL4dYTldtn66a34KGw2dqrj2YpfaJXpY+SL5B6FA4zYmFploLm9w==
-X-Gm-Gg: AYBFou0p5efz2bysHvDe6QGY0YoTZX0npA8dOVUzh+Teno6cfwIX/J3T3xwdV0X1f1h
-	b9ZIXogfEcV+k/tL3udnbSSI/Saoof2s0qKALvUSfOGdmodtAx+eXB6VpbvTB+x7AJFOAkmBCid
-	OzZhxAizjYdMGjOoV41nB3IgQv6sihhMYZuFq4R9m9+wP0l6OELdEuF649cFZEajSt3k8uud9KG
-	8IgXSV5AC4pf/H48af1qDEtQLGrPXs+yC9AMlO3xO79nnbpET16AlC51CXSGqG2CacOQMQyyv4P
-	6Y9vN/VbAJZG9oN/3NzQ0d/xAMAjgHBNNDMgGBv63sbvBISKgk7Y6uchBzWIGzXkrPKVe8fwLA=
-	=
-X-Received: by 2002:a05:600c:3e0a:b0:4a1:6c79:fd31 with SMTP id 5b1f17b1804b1-4a180459354mr49839065e9.12.1791399351184;
-        Wed, 07 Oct 2026 11:55:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e0a:b0:4a1:6c79:fd31 with SMTP id 5b1f17b1804b1-4a180459354mr49838785e9.12.1791399350752;
-        Wed, 07 Oct 2026 11:55:50 -0700 (PDT)
-Received: from [192.168.2.75] ([46.175.183.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18044c970sm47111245e9.4.2026.10.07.11.55.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Oct 2026 11:55:49 -0700 (PDT)
-Message-ID: <2a263f32-82a9-42b7-8aeb-8ac51a801fd9@redhat.com>
-Date: Wed, 7 Oct 2026 20:55:48 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oAOhUaJw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=diZe8xMi+e34p5RL6niL23UveGkQrUEYa26x3TOMPCmP4ozgYk/E28DKDbTPinLvi83fJYpzcj+TAJ7GgwlcWecFxaqkE5a8C30QEChebjluqbY+mSh0KUpM8R6wQTLtiiUo1VRFg62/0uY7XFiYNlx+N/ZyGFiUPieuSN3tjrC6NOmF+dM/sqTXg5O3jTZFAjKYm5+trirsg4PNmodkYGtHpaBS2YpuMsFfr+Ol0jlxeutWPe2v1dcPbg3C5i5DpGLN+2/zWx3ESP2b3wniQZGZ8XCv88epqjSHTwh5ia7lCDht7cQKV97rSBAhQGWsQLxwoee9Se6yVBDfso9rbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UNTBad831l2/inXBznQ/GDVm005QmSgHz3Tz5Ypc0nM=;
+ b=yexhBcshC0G8/zr0FjJ71emRCWXHUbnJYW/cGvwBrBScvvHrZ9YTwf2O/5KJgz4TyONrmSZJsyqrf80W6Xx1AJUaQw2VZwMcc7i2mN+cljCKLN1gYEIDLKcvqbwyN/joXkFHYKbsRR7ogXjgKeB9sEWFR8pvd+glvKrOfqU1lTTIPlCH55JX8Vegvfcep/k3A2NTP8CyTpM/z/IZ6CuS2p3yMlANCvD5DZk2omE4Pl5ke4LrhStFNG+v3KxL85/QKZ3qJvRTInAtozUi2KOuImmdsdRxSLqWLisPWxWk2nF3S48IrH2xTG0iqpKfbyTkGqa6JSSQtiCqL7fNcku18g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UNTBad831l2/inXBznQ/GDVm005QmSgHz3Tz5Ypc0nM=;
+ b=oAOhUaJwuoucyKU2DqH2tdp7FV8JBqCfJ8HRFB7m/0BPMSUiD88gFhXJsSMEetz5zkV76OIKlJUDxbN8XkI6QyF7rmeQx7OyB6uqBwcWb1SaEUwZiBAbXMVlbkSK5Gks7HH9yMPfnhut3hX0GUBonw5i6+X3qdBh56civHQUBa5dhimIaZUiMh8VC2OeUbeDm0JHHhcw0lMX+cejvSrD6Pb0GnjkS9aCAmczu6brxO4nogWbr+p80eWLiAV6FQbKYIZuNplAJXNjWRNIhoqpDbHt6LuCzpAZADXNUyd6NawYZBe8aufu2nXtMcw/YPvwyMX2xldFLT4s5Z7i72Mv5A==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com (2603:10b6:8:c5::21) by
+ SA1PR12MB8723.namprd12.prod.outlook.com (2603:10b6:806:385::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Wed, 7 Oct
+ 2026 18:58:10 +0000
+Received: from DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33]) by DS0PR12MB6486.namprd12.prod.outlook.com
+ ([fe80::88a9:f314:c95f:8b33%6]) with mapi id 15.21.0496.010; Wed, 7 Oct 2026
+ 18:58:09 +0000
+Message-ID: <038a4b64-3f7d-47f7-9ba9-a962c265e0e8@nvidia.com>
+Date: Wed, 7 Oct 2026 14:58:04 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 16/17] rcu: assert static storage for RCU sync and SRCU
+ definitions
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
+ Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+ Christoph Lameter <cl@gentwo.org>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Kees Cook
+ <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Thomas Gleixner <tglx@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+ Valentin Schneider <vschneid@redhat.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>, Mike Rapoport <rppt@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+ virtualization@lists.linux.dev, linux-rt-devel@lists.linux.dev,
+ llvm@lists.linux.dev, Yury Norov <yury.norov@gmail.com>
+References: <20260915030336.1192299-1-ynorov@nvidia.com>
+ <20260915031334.1194975-11-ynorov@nvidia.com>
+ <20261007184105.GA3837481@joelbox> <asaUECwON5PS98M8@yury>
+Content-Language: en-US
+From: Joel Fernandes <joelagnelf@nvidia.com>
+In-Reply-To: <asaUECwON5PS98M8@yury>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN8PR04CA0051.namprd04.prod.outlook.com
+ (2603:10b6:408:d4::25) To DS0PR12MB6486.namprd12.prod.outlook.com
+ (2603:10b6:8:c5::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 4/4] dpll: zl3073x: notify sibling pin when shared
- output config changes
-Content-Language: en-US
-To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
-Cc: Min Li <min.li@microchip.com>, Vadim Fedorenko
- <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-References: <20261006153116.347497-1-ivecera@redhat.com>
- <20261006153116.347497-5-ivecera@redhat.com>
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20261006153116.347497-5-ivecera@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB6486:EE_|SA1PR12MB8723:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf668440-b0e8-43fb-bf25-08df24a4ee0f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|23010399003|10067099003|56012099006|3023799007|4143699003|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	421eAfrguhnyzMb5VnpgE8yWymDanFTnxgGUExLCMmwXuI4rTJlW8Px7jH1giYUmKNFdjnArWNOuIaorrI1YwaTWGPoHdDvXH5A4OAVEE0Hyzo3L4FKULLXFmd8BIpY52YJ27HFCJzg2zoWrvHkf8D/z3+cKkkSH8+UvOlEXOsuq55VuK2a0YXpGhu0x18CGPDn60HKnnYqsSqyLeQz0T0I0ntbL8BNiqaV82kPVAuaQRn5ajmZSdRKqPhBSqdXDpeNi2Q6zQ8Hvqw2lq2iQaBzH6OpceovjXrusQ8lNAJQfgNVxwlPciyrvgR1PaBFkuPqZd+MEuMIk/SrUL9n5+L5wPEU4gzeWji22KRVFjH6IzjGph8i7mszT0u+xk5ULaWyChK+xkTBIePPg+wttscAE/f5dCeJevwQG5zgQbQNJ+5BwvE56hKZbnCGC8/z/4BKpqUuVUoNao402zH8dyfAQ+Gh3A3ega/1DOOgqtSzmWUeM4XjovCcvmXA4bjfhRkyxhdnX8YRiCkg8Fwwx+HKtuAI7Tl4P/t1M23GyN17euY0lTBTuTC0zLg/mUEEMwo/F0PnQLkvg0DWLEeOSmg7A+vSRolCAr4VDk7dsoLHOwMdZVgvL+UPJB7Wc2/xeJrS9bxhwt5pt3pChueFIqYtK+dulAxdW3rPfzY8nzY8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB6486.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(23010399003)(10067099003)(56012099006)(3023799007)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U21QRUt6UXA4QktJV2Y3a2Z6dTlDdDNRQkVQMER0bnB2YWwyWW9mdU13MVZx?=
+ =?utf-8?B?anBNYWpHWlZpODVIaXp4S1Y4UGgrN0k0c2lzcUUyeHVWSXpjOFR3TWpvR3Bx?=
+ =?utf-8?B?aERqYitFT0lyRi9NVStwcFlacytQNVA3QUpVVFl4NVFkV0oycTFoUnVOTFFW?=
+ =?utf-8?B?bWxnb0VWRzc4VDJxdHpwK2hmREZlZWVaVTdsWnI1OUJCcVZLeGlPWEdGcmli?=
+ =?utf-8?B?anZ2dmc1Y0U2eGE5eWNuMS9TeGU1YXYvM2EvS24wdkRoalNMQXNsa25KUEFF?=
+ =?utf-8?B?ajJLK2JEdDQ4K0xyM0ozTHpaSTJ1ZE1OMHNEYlJzN2lEamk4UmtwU2xFYXRy?=
+ =?utf-8?B?RkJkU3ZhZysyMHMzNTZoT1hmOTIxUUlVVlBHbHJ6am5VbTFQSCt6bGNxckFW?=
+ =?utf-8?B?S01ENFlyV1N3bmx1a0pObEVPSHI3N2ZwOHp4emFpYWlJMmxxY3ltR2U0bFFi?=
+ =?utf-8?B?clMrdFJsRHo4ZW96b2piek81TVFjQkw0bXI4ZzNrblpOeTlXRXZJWk4wVG5E?=
+ =?utf-8?B?bGc0VkNCMlFBNW9uNzFGK0hMT0JHRWgzQlRxOGM2K3N4ZjkyaS9BTHorQ09y?=
+ =?utf-8?B?WjNyZzRYcjBnNXVGQ2lyTEpERW5rZCszZjVjT1ZkZEV4emdZZlZuNlBFTjJW?=
+ =?utf-8?B?QjBMY2NCK2oyTHJnV2l4ekZmL2w3VjcyYUZEVDJGSUNpQm11VDZnS3ZDSUNE?=
+ =?utf-8?B?NStVdDFicVdJRHVlc2ZRbE1lVFBYb0YxaHFLWVgvT2orYkJVbjZEY05XSU9Y?=
+ =?utf-8?B?UTcvQXA2R0ZoWEJkaHpDSnVWU1E3UldZQVErYjN5MDQ1Ykk1VllZVHN6RmlY?=
+ =?utf-8?B?MDRvNndZSXRRZFUvSkJWZ1ZiMXhJMEhSckZKQkM4ZThxSUE3aExhMkNzTWM0?=
+ =?utf-8?B?bS9mdStWR09XSDgwMi9CYWdnamhTK0FTZGdMc3ZUaFBzYVl5K3A2aHdzcG1k?=
+ =?utf-8?B?SGZibCthTnU2SEd3blhPT3hSbUxXUVBLTmhmSU1ISFY2SkdmWmJOVXpPRXFk?=
+ =?utf-8?B?Q1YvZllGS0FoYk80VXhWTm9yUUZWOFo5YWFhdXlOK3AzQ0Q3TmdWamw0ckFl?=
+ =?utf-8?B?OXdiejVXMUV0TGJseGJXUDkrWVdIYlRjcVkxL3Q3NFFERGNzUEpiOU14Yk5P?=
+ =?utf-8?B?OERPTm4xaGxGZDdld0M5ZnJvVExiNytzYWhkU1JHcnZwbmpkaEFVOUxSaHc5?=
+ =?utf-8?B?UVdFNnVHa1R3UkxnN3p1RUNEam1EYmV4MzE3b3o1Y0tBcUVIQWtzY294ZnJQ?=
+ =?utf-8?B?WmFmVmRiQ01aR3BOZHRIOVowQmxyVFlhVEUwZXpnYzZ1TWJWNGtOUUFqR1JU?=
+ =?utf-8?B?cnJCU3QzM3ZvMU9TaWdrVmFKRmtvZDJtRTJ1U0YvS2VySUs4YWlFUE5lbWll?=
+ =?utf-8?B?TkFJODEwNVg4M0lqekV6bHp4ajRSY3FEVFpidS9rM2trZEQxL0NnbVNtU3g1?=
+ =?utf-8?B?b2ZUdno4dm5zbUdKUlk4aFlpcFhtUFBJaWlaeXF2eGI4YTAremJibTVTRk9n?=
+ =?utf-8?B?a2c2cjJZdWNiYU5WMWpsY3UxZ3Q4L3A0L2lMMVhTd2YyZTUxWEgrL1FKcUR0?=
+ =?utf-8?B?WjVqVE9BQi9JMlBRNHozZVF4R1NlMElFa09XS3laeE1DTjZONWI5Z0llTmJ5?=
+ =?utf-8?B?K1RFaThOVmNWUmpGeU91SU5XNEpJUUQ2alZoMHRzQ2lkcmMycWFsaURZWFIy?=
+ =?utf-8?B?VHh6c01tVGgzdm52WlllRGJTY2VTbG42K21lcHdPSFZaNmhDWXlnMkt4OEZl?=
+ =?utf-8?B?dElBaFlOd0JRWXRwOWFyRGZsb1oxcm1IVWYvS1V3bVBmTDBlOFM1b2RaQmxD?=
+ =?utf-8?B?KzRmelNNVGNuZ095NHpvYy9aSlcxUWJjdFpkSWNUek1LK000VkowU2s0OTBp?=
+ =?utf-8?B?bDVOOUJUVGxIQVVIaUN2ZkVFdkJyVGlsNWtJSGZ5aWlyOElrVkFETnF6M0Zj?=
+ =?utf-8?B?cldUT1p1ZXFMdThXdDdJOVdnUWl0amd2cVhPMjVBY3ZNRFlQRUR2Y2dXL3p6?=
+ =?utf-8?B?TVhlbTlIQUpqNDdrZk8wNGh2Q05ubU1QM0swL0Jlc2lMR0pWZGpqQ1RCemhn?=
+ =?utf-8?B?cUZHdDVyeHZRdit2Yll0eGcvcVFMRkFZci9FVWJ5UmxualNuYlJnclcxTWZz?=
+ =?utf-8?B?Q29LZUxOMmVseXJYUTRvRGRhaCtVZzBMQUJhR2ZJVVRrRzg1KzJ4UmNlbTQ0?=
+ =?utf-8?B?Z2RvaUVmQlkzZDdLMWMzSW5qTE54VmhMZ3BYR3hDbVlhOHFMYndsTk9jOEpW?=
+ =?utf-8?B?ZktibUZoeXVKSm1pNVRHeGpMOE5mL0c2UUcySk1nKzl6TCtFN1N1dEorQVdR?=
+ =?utf-8?B?SmVkUFYxbkRwSk43TFpMelp3M1A0eWxaWmZXYnJTOS81dWI2aXZWUT09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf668440-b0e8-43fb-bf25-08df24a4ee0f
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB6486.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 18:58:09.8614
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pWeCOYfpw2qqy3ftpTMrz04yc6pmjptUYgQ/QNA12Fn2ybkYus4tgKDiPvUCa1kWIWsaP2xssmwjFW+gm8wsGg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8723
 
 
 
-On 10/6/26 5:31 PM, Ivan Vecera wrote:
-> Each zl3073x output has a P-pin and an N-pin that share a single HW
-> output and, outside N-pin divide mode, share the output's divisor,
-> clock type, esync period/width and phase compensation registers.
-> Changing one of these settings through one pin's dpll_pin therefore
-> also changes the other (sibling) pin's effective configuration, but
-> only the pin the change was requested on gets a dpll_pin_change_ntf()
-> notification - userspace listening on the sibling pin is never told
-> its frequency, esync configuration or phase adjustment changed.
+On 10/7/2026 2:48 PM, Yury Norov wrote:
+> On Wed, Oct 07, 2026 at 02:41:05PM -0400, Joel Fernandes wrote:
+>> On Mon, Sep 14, 2026 at 11:13:31PM -0400, Yury Norov wrote:
+>>> DEFINE_RCU_SYNC() contains a statically initialized wait queue. SRCU
+>>> static definitions similarly rely on persistent lockdep keys and, in
+>>> Tiny SRCU, a statically initialized work item.
+>>>
+>>> Add ASSERT_STATIC_STORAGE() to DEFINE_RCU_SYNC(), both Tree SRCU
+>>> __DEFINE_SRCU() variants and Tiny SRCU's common DEFINE_SRCU() declaration.
+>>> This covers the non-static FAST and FAST_UPDOWN wrappers too. Tiny SRCU's
+>>> explicitly static declarations already enforce the required duration.
+>>> The existing per-CPU restrictions on Tree SRCU declarations still apply.
+>>>
+>>> Assisted-by: OpenAI Codex
+>>> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+>>
+>> All the changes make sense to me. I'm ok with carrying this for -rcu 7.5
+>> unless you want to take it.
+>>
+>> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
 > 
-> This was found by code inspection rather than triggered at runtime: a
-> dpll pin-get on the sibling pin returns the correct current values, but
-> because no change notification is emitted for it, userspace is never
-> told that its configuration changed asynchronously through the other
-> pin.
-> 
-> Add zl3073x_dpll_output_pin_sibling_get() to look up the other pin of
-> an output pair, and use it in frequency_set() (for the non-N-divided
-> signal formats, where the output divisor is shared), esync_set() and
-> phase_adjust_set() to notify the sibling pin, if it is registered,
-> whenever the shared HW state actually changes.
-> 
-> The three callbacks are switched from guard(mutex) to explicit
-> mutex_lock()/mutex_unlock() with goto-based unwinding, because the
-> notification must run after zldpll->lock is released: the notification
-> re-enters the pin get callbacks, which take zldpll->lock again, so
-> calling it under the lock would deadlock. The DPLL subsystem's own
-> dpll_lock is still held across the callback, so the __ (lock-held)
-> notification variant is used.
-> 
-> The sibling lookup walks the zldpll->pins list, so the list membership
-> has to match the DPLL registration state. dpll_pin_register() publishes
-> a pin (and P is registered before N) before it used to be added to the
-> list, and teardown detached the whole list before unregistering any
-> pin, so a sibling that is registered - and thus reachable by a PIN_SET
-> on the other pin - could be missing from the list and never notified.
-> Add the pin to the list before dpll_pin_register() and remove it only
-> after dpll_pin_unregister(), both under zldpll->lock, and assert the
-> lock in the lookup helper. A pin that is transiently on the list while
-> not registered is harmless: __dpll_pin_change_ntf() is a no-op for a
-> pin that is not available, and the sibling cannot be freed under the
-> lookup because the freeing goes through dpll_pin_unregister(), which
-> takes dpll_lock that the notification path holds.
-> 
-> Fixes: 634ca2cb06d2 ("dpll: zl3073x: Add support to get/set esync on pins")
-> Fixes: ce26d7ca50a5 ("dpll: zl3073x: Add support to get/set frequency on pins")
-> Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
-> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-> ---
->   drivers/dpll/zl3073x/dpll.c | 187 ++++++++++++++++++++++++++++--------
->   1 file changed, 146 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-> index 65107b4cc4f8..9c678acc3e77 100644
-> --- a/drivers/dpll/zl3073x/dpll.c
-> +++ b/drivers/dpll/zl3073x/dpll.c
-> @@ -123,6 +123,8 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
->   {
->   	struct zl3073x_dpll_pin *pin;
->   
-> +	lockdep_assert_held(&zldpll->lock);
-> +
->   	list_for_each_entry(pin, &zldpll->pins, list) {
->   		if (zl3073x_dpll_is_input_pin(pin) &&
->   		    zl3073x_input_pin_ref_get(pin->id) == ref_id)
-> @@ -132,11 +134,39 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
->   	return NULL;
->   }
->   
-> +/**
-> + * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
-> + * @pin: output pin whose sibling is sought
-> + *
-> + * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
-> + * single HW output. Looks up the other pin of the pair, if it is
-> + * registered as a dpll_pin on this DPLL.
-> + *
-> + * Return: pointer to sibling pin, or NULL if it is not registered
-> + */
-> +static struct zl3073x_dpll_pin *
-> +zl3073x_dpll_output_pin_sibling_get(struct zl3073x_dpll_pin *pin)
-> +{
-> +	struct zl3073x_dpll_pin *sibling;
-> +
-> +	lockdep_assert_held(&pin->dpll->lock);
-> +
-> +	list_for_each_entry(sibling, &pin->dpll->pins, list) {
-> +		if (!zl3073x_dpll_is_input_pin(sibling) &&
-> +		    sibling->id == (pin->id ^ 1))
-> +			return sibling;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
->   static struct zl3073x_dpll_pin *
->   zl3073x_dpll_nco_pin_get(struct zl3073x_dpll *zldpll)
->   {
->   	struct zl3073x_dpll_pin *pin;
->   
-> +	lockdep_assert_held(&zldpll->lock);
-> +
->   	list_for_each_entry(pin, &zldpll->pins, list) {
->   		if (zl3073x_dpll_is_nco_pin(pin))
->   			return pin;
-> @@ -899,12 +929,14 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
->   	struct zl3073x_dpll *zldpll = dpll_priv;
->   	struct zl3073x_dev *zldev = zldpll->dev;
->   	struct zl3073x_dpll_pin *pin = pin_priv;
-> +	struct zl3073x_dpll_pin *sibling = NULL;
->   	const struct zl3073x_synth *synth;
->   	struct zl3073x_out out;
->   	u32 synth_freq;
->   	u8 out_id;
-> +	int rc;
->   
-> -	guard(mutex)(&zldpll->lock);
-> +	mutex_lock(&zldpll->lock);
->   
->   	out_id = zl3073x_output_pin_out_get(pin->id);
->   	out = *zl3073x_out_state_get(zldev, out_id);
-> @@ -913,12 +945,14 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
->   	 * for N-division is also used for the esync divider so both cannot
->   	 * be used.
->   	 */
-> -	if (zl3073x_out_is_ndiv(&out))
-> -		return -EOPNOTSUPP;
-> +	if (zl3073x_out_is_ndiv(&out)) {
-> +		rc = -EOPNOTSUPP;
-> +		goto unlock;
-> +	}
->   
->   	if (!freq) {
->   		zl3073x_out_esync_disable(&out);
-> -		return zl3073x_out_state_set(zldev, out_id, &out);
-> +		goto commit;
->   	}
->   
->   	/* Get attached synth frequency */
-> @@ -927,9 +961,24 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
->   
->   	/* Enable 1PPS eSync for this pin frequency */
->   	zl3073x_out_esync_enable(&out, synth_freq / out.div);
-> -
-> +commit:
->   	/* Commit output configuration */
-> -	return zl3073x_out_state_set(zldev, out_id, &out);
-> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
-> +	if (rc)
-> +		goto unlock;
-> +
-> +	/* The clock type, esync period and esync width are all shared by
-> +	 * both pins of the output pair, so the sibling pin's esync
-> +	 * configuration changes too and userspace has to be notified.
-> +	 */
-> +	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-> +unlock:
-> +	mutex_unlock(&zldpll->lock);
-> +
-> +	if (!rc && sibling)
-> +		__dpll_pin_change_ntf(sibling->dpll_pin);
-> +
-> +	return rc;
->   }
->   
->   static int
-> @@ -959,12 +1008,14 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->   	struct zl3073x_dpll *zldpll = dpll_priv;
->   	struct zl3073x_dev *zldev = zldpll->dev;
->   	struct zl3073x_dpll_pin *pin = pin_priv;
-> +	struct zl3073x_dpll_pin *sibling = NULL;
->   	const struct zl3073x_synth *synth;
->   	u32 new_div, synth_freq;
->   	struct zl3073x_out out;
->   	u8 out_id;
-> +	int rc;
->   
-> -	guard(mutex)(&zldpll->lock);
-> +	mutex_lock(&zldpll->lock);
->   
->   	out_id = zl3073x_output_pin_out_get(pin->id);
->   	out = *zl3073x_out_state_get(zldev, out_id);
-> @@ -977,7 +1028,8 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->   	/* Check signal format */
->   	if (!zl3073x_out_is_ndiv(&out)) {
->   		/* For non N-divided signal formats the frequency is computed
-> -		 * as division of synth frequency and output divisor.
-> +		 * as division of synth frequency and output divisor, which
-> +		 * is shared by both pins of the output pair.
->   		 */
->   		out.div = new_div;
->   
-> @@ -1002,7 +1054,16 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->   		}
->   
->   		/* Commit output configuration */
-> -		return zl3073x_out_state_set(zldev, out_id, &out);
-> +		rc = zl3073x_out_state_set(zldev, out_id, &out);
-> +		if (rc)
-> +			goto unlock;
-> +
-> +		/* The other pin's frequency changed too - it has to be
-> +		 * notified about the change.
-> +		 */
-> +		sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-> +
-> +		goto unlock;
->   	}
->   
->   	if (zl3073x_dpll_is_p_pin(pin)) {
-> @@ -1017,18 +1078,10 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->   		u32 rem;
->   
->   		out.esync_n_period = div_u64_rem(prod, new_div, &rem);
-> -		if (rem != 0) {
-> -			NL_SET_ERR_MSG_FMT(extack,
-> -					   "OUT%uN freq must divide OUT%uP freq",
-> -					   out_id, out_id);
-> -			return -EINVAL;
-> -		}
-> -		if (out.esync_n_period < 2) {
-> -			NL_SET_ERR_MSG_FMT(extack,
-> -					   "OUT%uN freq must be less than OUT%uP freq",
-> -					   out_id, out_id);
-> -			return -EINVAL;
-> -		}
-> +		if (rem != 0)
-> +			goto err_n_nondiv;
-> +		if (out.esync_n_period < 2)
-> +			goto err_n_toohigh;
->   
->   		/* Update the output divisor */
->   		out.div = new_div;
-> @@ -1046,25 +1099,36 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->   		u64 rem, prod = frequency * out.div;
->   
->   		out.esync_n_period = div64_u64_rem(synth_freq, prod, &rem);
-> -		if (rem != 0) {
-> -			NL_SET_ERR_MSG_FMT(extack,
-> -					   "OUT%uN freq must divide OUT%uP freq",
-> -					   out_id, out_id);
-> -			return -EINVAL;
-> -		}
-> -		if (out.esync_n_period < 2) {
-> -			NL_SET_ERR_MSG_FMT(extack,
-> -					   "OUT%uN freq must be less than OUT%uP freq",
-> -					   out_id, out_id);
-> -			return -EINVAL;
-> -		}
-> +		if (rem != 0)
-> +			goto err_n_nondiv;
-> +		if (out.esync_n_period < 2)
-> +			goto err_n_toohigh;
->   	}
->   
->   	/* For 50/50 duty cycle the divisor is equal to width */
->   	out.esync_n_width = out.esync_n_period;
->   
->   	/* Commit output configuration */
-> -	return zl3073x_out_state_set(zldev, out_id, &out);
-> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
-> +unlock:
-> +	mutex_unlock(&zldpll->lock);
-> +
-> +	if (!rc && sibling)
-> +		__dpll_pin_change_ntf(sibling->dpll_pin);
-> +
-> +	return rc;
-> +err_n_nondiv:
-> +	NL_SET_ERR_MSG_FMT(extack,
-> +			   "OUT%uN freq must divide OUT%uP freq",
-> +			   out_id, out_id);
-> +	rc = -EINVAL;
-> +	goto unlock;
-> +err_n_toohigh:
-> +	NL_SET_ERR_MSG_FMT(extack,
-> +			   "OUT%uN freq must be less than OUT%uP freq",
-> +			   out_id, out_id);
-> +	rc = -EINVAL;
-> +	goto unlock;
->   }
->   
->   static int
-> @@ -1103,10 +1167,12 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
->   	struct zl3073x_dpll *zldpll = dpll_priv;
->   	struct zl3073x_dev *zldev = zldpll->dev;
->   	struct zl3073x_dpll_pin *pin = pin_priv;
-> +	struct zl3073x_dpll_pin *sibling = NULL;
->   	struct zl3073x_out out;
->   	u8 out_id;
-> +	int rc;
->   
-> -	guard(mutex)(&zldpll->lock);
-> +	mutex_lock(&zldpll->lock);
->   
->   	out_id = zl3073x_output_pin_out_get(pin->id);
->   	out = *zl3073x_out_state_get(zldev, out_id);
-> @@ -1115,7 +1181,21 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
->   	out.phase_comp = phase_adjust / pin->phase_gran;
->   
->   	/* Update output configuration from mailbox */
-> -	return zl3073x_out_state_set(zldev, out_id, &out);
-> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
-> +	if (rc)
-> +		goto unlock;
-> +
-> +	/* The phase compensation register is shared by both pins of the
-> +	 * output pair, so the sibling pin's phase adjustment changes too.
-> +	 */
-> +	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-> +unlock:
-> +	mutex_unlock(&zldpll->lock);
-> +
-> +	if (!rc && sibling)
-> +		__dpll_pin_change_ntf(sibling->dpll_pin);
-> +
-> +	return rc;
->   }
->   
->   static int
-> @@ -1739,6 +1819,13 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
->   	else
->   		ops = &zl3073x_dpll_output_pin_ops;
->   
-> +	/* Add the pin to the list before registering it with the DPLL core so
-> +	 * that it is findable as a sibling as soon as the core publishes it.
-> +	 */
-> +	mutex_lock(&zldpll->lock);
-> +	list_add(&pin->list, &zldpll->pins);
-> +	mutex_unlock(&zldpll->lock);
-> +
->   	/* Register the pin */
->   	rc = dpll_pin_register(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
->   	if (rc)
-> @@ -1750,6 +1837,9 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
->   	return 0;
->   
->   err_register:
-> +	mutex_lock(&zldpll->lock);
-> +	list_del(&pin->list);
-> +	mutex_unlock(&zldpll->lock);
->   	dpll_pin_put(pin->dpll_pin, &pin->tracker);
->   err_pin_get:
->   	pin->dpll_pin = NULL;
-> @@ -1784,6 +1874,13 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
->   	/* Unregister the pin */
->   	dpll_pin_unregister(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
->   
-> +	/* Remove the pin from the list only after it has been unregistered so
-> +	 * that a still-registered pin is always findable as a sibling.
-> +	 */
-> +	mutex_lock(&zldpll->lock);
-> +	list_del(&pin->list);
-> +	mutex_unlock(&zldpll->lock);
-> +
->   	dpll_pin_put(pin->dpll_pin, &pin->tracker);
->   	pin->dpll_pin = NULL;
->   
-> @@ -1803,9 +1900,11 @@ zl3073x_dpll_pins_unregister(struct zl3073x_dpll *zldpll)
->   {
->   	struct zl3073x_dpll_pin *pin, *next;
->   
-> +	/* Unregister each pin before removing it from the list so that a
-> +	 * still-registered pin is always findable as a sibling.
-> +	 */
->   	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
->   		zl3073x_dpll_pin_unregister(pin);
-> -		list_del(&pin->list);
->   		zl3073x_dpll_pin_free(pin);
->   	}
->   }
-> @@ -1918,16 +2017,24 @@ zl3073x_dpll_nco_pin_register(struct zl3073x_dpll *zldpll)
->   		goto err_pin_get;
->   	}
->   
-> +	/* Add the pin to the list before registering it with the DPLL core so
-> +	 * that the list reflects the DPLL registration state.
-> +	 */
-> +	mutex_lock(&zldpll->lock);
-> +	list_add(&pin->list, &zldpll->pins);
-> +	mutex_unlock(&zldpll->lock);
-> +
->   	rc = dpll_pin_register(zldpll->dpll_dev, pin->dpll_pin,
->   			       &zl3073x_dpll_nco_pin_ops, pin);
->   	if (rc)
->   		goto err_register;
->   
-> -	list_add(&pin->list, &zldpll->pins);
-> -
->   	return 0;
->   
->   err_register:
-> +	mutex_lock(&zldpll->lock);
-> +	list_del(&pin->list);
-> +	mutex_unlock(&zldpll->lock);
->   	dpll_pin_put(pin->dpll_pin, &pin->tracker);
->   err_pin_get:
->   	pin->dpll_pin = NULL;
-> @@ -1979,8 +2086,6 @@ zl3073x_dpll_pins_register(struct zl3073x_dpll *zldpll)
->   			zl3073x_dpll_pin_free(pin);
->   			goto error;
->   		}
-> -
-> -		list_add(&pin->list, &zldpll->pins);
->   	}
->   
->   	/* Register NCO virtual input pin */
+> Thanks Joel, carrying it with the RCU branch is the preferred route IMO.
+Ok, applying this patch for -rcu 7.5, thanks!
 
-Reviewed-by: Petr Oros <poros@redhat.com>
+thanks,
+
+Joel Fernandes
 
