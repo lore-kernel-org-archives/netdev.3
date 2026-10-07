@@ -1,482 +1,132 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013068.outbound.protection.outlook.com [40.93.196.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6068443C0F
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791379858; cv=none; b=sPp4xc+or2P7HGu3rhzDvDRTXAtdx6PPGgpl3Yq+7ssvW6039sCscNHU+ysOlRZ+Hc6uwKDahwtMNIeeD6J8T74Nju89VIi+zAQPj5Bo9IxhM6YGbcgUB2xISCRMlwId8dDprRiduN8wj2Q+KU7deyfPeKWOMzgh5cl93wz2knM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791379858; c=relaxed/simple;
-	bh=A+ePr2uCpRmJ5CuFRbbVI6lM5XoQp261IietRp3BMX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfKstoTwjNePiu6JNSk3u8B6YtW05JglzYtoSlh5S45tUnRtCB/lZbgQaZXQXo6nZ3ezjXzU4qiw8TA+w3szxHs7+D0KBIvr5GPwbk4NMuwKtL2zdZg2LKd8P5vzDBs01EJ28sUR3WWLqH5MezKf/YFAf9pGqXszQCtt+oQGFPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=f1xcV1IR; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9054B1D03;
+	Wed,  7 Oct 2026 13:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791381051; cv=fail; b=mQklrERs7UPQ+J6FLtOJerfAf1cp6ZVMc/JFz2Sm7HBbZbHZC61Mg1PUaGoGY0BblyGGUfwKmwSffF+kC4KIkupDXeuGqgukDKJAWAMsn9RE96zvhxjSQrQm29s60oGOofTQMEhik6UG1IKOzS7ARrUTjAarUiFbNUXD2z+48yM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791381051; c=relaxed/simple;
+	bh=YskEpnkH4Xk6zPy5y03UkAzgCLQF6r1CSpSlxN1Hbck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=A2DfhuB/0IBS4hoNYP08ypB2BGK0t22O/fWPwv91ID2WRVeJsEfmEBt5fQDveiey9HkpjRHdBTSNeq4PDPUJAfa1uJQ2C8XxKu/NZkgA8eVIQBV5Qix6Kje8p8eFlyU9SmKQaD/vhLydfIkOUJKYfh6Y3EU8EDFpQ5wqPRI5BC8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ue9tn/lr; arc=fail smtp.client-ip=40.93.196.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="f1xcV1IR"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a168355946so16921125e9.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:30:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1791379833; x=1791984633; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3OWPBhBdV3eTtxs4GNyCWHeQCUbIaphkLFzrThd9A6Q=;
-        b=f1xcV1IROwTvyDQDHZQry7U+bJOzMZjOYaVwRkGwqsm+vIq0+RqwIye2NglGg+igd+
-         GuWTCnINAZI0iOHj/oFlu7Z33QRr0ut0wCQPyvkDbpgF9/zxxn9SeHtRgHkMrjkk72uG
-         0s9cIey9KExbIi4+I1Tlotx2JlGfz+ZrpWZU0vn+4pPtQ54tzkLy+truOQIhvBUqPDt0
-         qEA0IfC+gNAUt0ix4ig8FmbaK6kxzzepG3V/LVmXX2SjovPRHbTjq+WQQmVcMXbg3Oq4
-         J7fCFmxg1+MEvTjuJ1zbZGuAxG3rCKyx/OXPviwFlkVsSgV8Efbu9etW3ugcWIKkUjiA
-         F4kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791379833; x=1791984633;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3OWPBhBdV3eTtxs4GNyCWHeQCUbIaphkLFzrThd9A6Q=;
-        b=x+tUEm0gCJ9PUtWg3C3MOPhHlKrhuen7cjFFSVV8KjgSYJ7J2zLGsMmFc8tmiAp6EK
-         JhsPQ4WQ2XYc13Fft0ZxzW9EGIW1E49KRwGswBxITv+zlOkkpaEZAifxdLz71xE9/zEc
-         h3iHH+40DOCa6vhIUAmzPiRaHbtcfnA89aVJxtykgHYlV+4sb14xhcBeDrNtIi8qX8jg
-         q9o2ZlEEfXXfvSGWKDrLgWMED2DUTd4rxTQvLbXw12pGAfEJlGmi3Vof0VpmSEm5uVTc
-         ukatsbdhIMpDDmOgp4UTfL3KK7pgTQD2G1/MYMyT4ELELpRpMgvCEulYM25X3Fl6QNGf
-         tgYA==
-X-Gm-Message-State: AFuF++l1AYBVNv92XusiJJ8NoPgiu0CjhvIJ8GNarkNwK/BaU5Y3kk3T
-	eQsrsgPYBSw/gEqAZydG5/Ln9zA2A2Ctwz9p/en4ITtVwB7zaLg6qyjsF+0tmcPvL0gRaNIrcv+
-	4YrTSEe5o8dkXWUL2PIZ4vMXXfp5HQ1fOKEbh/z/7jtxhhW9q97gArti2It3kv9X3
-X-Gm-Gg: AYBFou3cChmIYQxf8LKSijw+clupQh2GLBkdoQlIrJZlIFa2aFgklqI+nD0POgrSHZC
-	RiSFnCUwsU6X4eQCsIS81qxknkB7BLGcTY1/I1qcMQTOULgXsL7wTXb8qla0zJtfvAGF3SJCsGc
-	nW5Tk25qtY9AyB93mbe1HONXzznwloLQbWottASx2prs4q0lB5te3dunJ6hhWQSdHd1irhxKje9
-	vKcNvYMs174IknKdE0eKJfgWDimz2y8cKrW/brFtzR5eKpQvgPQ7iiicZ/6DHtUCtbeuOSh8e50
-	0R817FxSUqWSVq5wZm3gH04tvFr7ioPsm+lHywEWaailSn2UEYnF0GqqLsOMjBwfq/SDi2EqQ/i
-	vaEENhNvI3vkwzjZJLi9b2X2FY7exvM8BFSlWd/JnmSKaq7i08Rv3Wl0yR/uZd8+wSw/PTPr5ky
-	LZIjwhoRsGWLfJiVDjHdHYl8HinRr5ug35+Sa9rBeS7k4LpCCkHOdG549WyRhv3Reqgv+17yunJ
-	fyZpf/6Wj8=
-X-Received: by 2002:a05:600c:3b2a:b0:49e:69ff:c6b1 with SMTP id 5b1f17b1804b1-4a180650423mr31170475e9.31.1791379832538;
-        Wed, 07 Oct 2026 06:30:32 -0700 (PDT)
-Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:7fc5:5cc8:bac1:5ef3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17a0fc2e4sm150356145e9.3.2026.10.07.06.30.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 06:30:31 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Ralf Lici <ralf@mandelbit.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Antonio Quartulli <antonio@openvpn.net>
-Subject: [PATCH net-next 6/7] ovpn: send peer object along with PEER_DEL_NTF
-Date: Wed,  7 Oct 2026 15:30:15 +0200
-Message-ID: <20261007133018.1451958-7-antonio@openvpn.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261007133018.1451958-1-antonio@openvpn.net>
-References: <20261007133018.1451958-1-antonio@openvpn.net>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ue9tn/lr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EnbtNcSXIb3UjFabXjnpA1iuk0nLQh3YJWk5Lfuhh5DHSo8/sawuNA6zxg0yqQ34CzhO+kOsIREPiuf1P3xiGHCClgVcEs1HaKUjl5RgPUJ9lTHjLdqOAtrIw0smF3NXlNUOpS5yC+wPh3FRw2odpw7eXUNvp51j3EJ7zAymUR0/qJit3sjNfUditCQ3yDtHaSXz1yAUL361mWc3kq+Zy8xK6ifD7XjDbIYE3UMLLqXuzo96CK4WVHSyigPItnAEuu2rvwO0d8aAgBbRCXdrgyoL8enyX2p9j8d1pNCndSBUF5aMjvHOrStkMWSBNpGkZMjmRzE+2KrPYSWstb+PGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YskEpnkH4Xk6zPy5y03UkAzgCLQF6r1CSpSlxN1Hbck=;
+ b=jKoO8Yzitq+xDN19pxasQ21+vwltZCgEw76xxH1ZmPptqiWo4TbVFgs8Sxzyc4SnBVRKK87KgOAy02A0VvD6Rk2CKcQwE5UhQKI/Mf6o4gF/BxtTvdgcnm6bp/xSN77J56lO2MAqfAkmR4B3NK+ApceYwWrlaMceVeTdSJim7TmfWg7wvTwYvKwdFP5OYXRH/7Q6dmmXt31ky3yrh1saqqxVR4H20XoN0CPMTZnDS8FdWv8HYoynI6o4By6+2BWCxFtMQ8LyC1zYMgrKPA7xKPBWm0L00z0kAp2kxmCcprftkIVoM+dedVKkI1gy4/S0lBIcomgC/Lw8fE3+AVDBVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YskEpnkH4Xk6zPy5y03UkAzgCLQF6r1CSpSlxN1Hbck=;
+ b=Ue9tn/lr33at9x0bRXYc5FBaPPgJQ6obpZo/kCV/4V5nyo9Jc+oYYGzHjU3sr88av4f9Q42jsdpS8FaxTkZYU+jcP04Aa7FV+dOaykfFwtxcU/DqmxI88W1VTh6WBPL33Yrl0tTzq3QGbDHmabmFksIBGAYD1/Wv+jP6iFNFcAXV7ylX53HWeAjx45wCARcwMLxWHcufwaobT9tOCgQaGTaxv9RL6P8F6qBDYeWoXsxoHcvtBlItJH4yJj1v6Zqd0JV6lYFLS2dA6Yh5tXqE8JuUO+zm0kiYMIu2hPtNgWBte4+UbfhnklwCpwpB9fJaPz24/NjpgG3ji4x6LdnVew==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by IA1PR12MB9523.namprd12.prod.outlook.com (2603:10b6:208:595::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
+ 2026 13:50:37 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Wed, 7 Oct 2026
+ 13:50:37 +0000
+Date: Wed, 7 Oct 2026 16:50:26 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Abdul Wasey <w453y.me@gmail.com>
+Cc: netdev@vger.kernel.org, razor@blackwall.org, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, horatiu.vultur@microchip.com,
+	bridge@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 0/3] net: bridge: cfm: notify userspace on
+ CFM config changes
+Message-ID: <20261007135026.GA1066611@shredder>
+References: <20261005043822.3106580-1-w453y.me@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261005043822.3106580-1-w453y.me@gmail.com>
+X-ClientProxiedBy: FR3P281CA0128.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:94::10) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|IA1PR12MB9523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d314a04-8b5f-4dea-24ce-08df2479f75e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|22082099003|18002099003|10067099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	xArf7El9SHw7b4sI0So07QzP4Z0rHpU64eNxyS2g9UB+5pJmYKP0H4LaWphukxHNox+7D95NgD5E9CnWI0IpKHHKddNyIlGmXidKo94iDw0CUJWIumBNoFtmKozC80shoJpRuv7ykwGGFQ3bOaSmsXeP/MrzndyxBX/UmRXJKRbwf5XA+cZVMDepK3Wdv5g1F2hWgYJeeCU3Ge4oXlkprUs5Q1bTJp9Na4m0mCGX2UwvnaxmzVK2wHdDmueWKuu1dx20eEhjeR1XPA6CALWUWh3gO7oJJ7+45LeK2OVLyCbLr93fuRHc6Duv4KS96YueEmyr080FJwYydvVTW8k3dBKP58/T66qPgWcvVmqOro0PiR4qRxdzgnaT/eDcUvNJy7WaXfeA1fhX36QrkbsriPYkqfmr/uu5zKQM5+Em3fKbEDyzoznfUa9ehXuKVRvOE1UO6E3l+UhB5Hbmp415LJcNbgz5GK9kP6EmYMu4EYVGf6Ts3AxYEM77tuV8sMdNR/bExtqKYVwUeZm6Mibn5PBlY3wjCYgOgP+1UbawYFJbQc/GVYDRS84FqK20feA7JIyRELnUxxl+RLBIFYnGDvwtWZfh53ctVjziv31D7LhdZLTdQaXvE4Ot3YANFVaPrPQkE+7YpCQJwZeT7aJ2RViYRTtBGr1UvIl5guOqaoI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(22082099003)(18002099003)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?76JWU3F9FJ294z7gPaxW3dR1xPDdtEqBAFf0IAtfUj6LUk1awsQ2OnZzQx3Q?=
+ =?us-ascii?Q?Poasx3nDC4gF3H8cMGCqLlMiw6Pgrm7baHpW7Lyh3Zkf7iCLFjOJLoYO9mVE?=
+ =?us-ascii?Q?KtWDl+2ZJdbkN8pNET8ziAvgYAmdMrufc8dIx5QxjtqzaIWRQZv9EUEXIw1K?=
+ =?us-ascii?Q?2aa9QOkUAY4xM5Oz5F93k6vvMhODNdRt5UuyYhs99ujjGIogsRFEHMWvnexI?=
+ =?us-ascii?Q?2sl+Bihr1UzEQnmf0gep1TgBoFEPrcMfr75ltdyv4lcttNpkSJ3YkkJvLVm5?=
+ =?us-ascii?Q?msqrrFeEEdF3J+67+Ysd4ivelCPgD0jkwUqrbYuymDyOPd65d4Cag9IU4fIs?=
+ =?us-ascii?Q?lDFhyK2CJZjtFAr0hM111a4hUVYd1aODCbVWOxT06lWG4oRR1Ve7MeUzIFQu?=
+ =?us-ascii?Q?oWv2RYNSyOnifmb/p2T3jw/7WikiYvDvGz29DGzm9w90duQo6VTkwjzKOayz?=
+ =?us-ascii?Q?rb9gOPd1YH5nTEbnhWNv5gOOvlhg76IvHlFGur6M13x6ojrRIrJT33y0/D/0?=
+ =?us-ascii?Q?4o2vEDTXJgI1/QAkLl2Dvr0ujAfSw8SewjJCbSPe9MjYfFNPa3tG8YgVN11D?=
+ =?us-ascii?Q?fvLDHVVS20R8F6Baudwa7FbGj/7KX8nRmX+uoqbRXcCyAs6eojh5Di/mn55l?=
+ =?us-ascii?Q?rI6p9LhnbFbY74WK5I2RjSi6CnawMFk4yMj/3KIu35OX++hLt5J6QJ5f4Y16?=
+ =?us-ascii?Q?VsLTxmaUhgprWnc057QHV3Vz5Sz+MhfIKCW9TZNuHbMpK+DcM08mwdJXkOJN?=
+ =?us-ascii?Q?fnFw18LSekkt0+kIRA+/tvz3S50Cp49CN18mwMy/ePqdXuRBRub3+iuRfvTa?=
+ =?us-ascii?Q?vIdXJjuV9vorLlfaNFosebeK045RED/BC+yVt9BC6BK/vt42As+t+q6NWP1f?=
+ =?us-ascii?Q?mqdo8jHM3lLed5NG6aR810X26w5ffQ/Ie3vouwhFqkTMdDsJrsEvVEPoj319?=
+ =?us-ascii?Q?etAx7EWNGtaFHV8o6krlwXwFQi4r0WDKsiBi0aERVBU5yiM+hVufuyewQiPC?=
+ =?us-ascii?Q?dteUGvnmBDNmueD7tWRGXTWr5QnsUqSBswZa72Fjq0N9Y72qx/dK0DVLguZV?=
+ =?us-ascii?Q?sAzYqpCbiQ+rJbQd7RXcr2AlUavyMfP8FFuKROJWmhchd7zOAy0JV7DtXj8l?=
+ =?us-ascii?Q?MhFcwIj9Tgu8Vnamrayb65Oy/AhS5/H34+nxwLkU8/IQhw61gmLa53ZuZG7w?=
+ =?us-ascii?Q?qs65r0nhw9EHtw8Mn+n20N6ziMBHjd0Y/Fn8Yihau2+eI25gfr9Mp7qhV2vI?=
+ =?us-ascii?Q?EmQWZedkukUuYKR8ao7UeT5ZDqB7h5nUTGlk/uvQve7MMDt1wvSbmcUfNTYk?=
+ =?us-ascii?Q?LQNnmICSnaTeHK2w8hlfqsTemhUsU43auvvQ3f9JdXs5qS6JM9rHVG8m7QMz?=
+ =?us-ascii?Q?brWv+Kh3NwkpKcOoVJBScrBs9ca59k91fSVwYqxwzXC6Dr+hYRsPteAtyq8A?=
+ =?us-ascii?Q?eaYn9D1HyykkHQAUajnv3FdSHBCpEl0q7e9iOkKSrPkIocmPwjSQFpwbdIOK?=
+ =?us-ascii?Q?l58wCdehxjON6q/683y+lEP+XHeKyTMA80bQ7J3ABEi40M8XGCHEU1/ykdHl?=
+ =?us-ascii?Q?Hx3N1OVUoOVKMLdTNaxpYjiZqhA2TwUzysUee30miz+6m+Vrg+HpryH1gOqv?=
+ =?us-ascii?Q?g0ypdpicX4Ng6sDUYIQpoqnI5pxrU6SjWHms/jiz7Kji7ACw6fX2SGYpCIpt?=
+ =?us-ascii?Q?TC7yCPnUZyirbb/EoQDg/6UTnubX+0BNu3L+eIFhQbWjSJva?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d314a04-8b5f-4dea-24ce-08df2479f75e
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 13:50:37.0914
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VohInD8zVGvkiOej6+g8qEAj+OSPMfGvk5wVLsSFOwNBNsfZP6dbaU+156iyXzSMldnf5n60i1HW3Q5DPlWZnA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9523
 
-From: Ralf Lici <ralf@mandelbit.com>
+On Mon, Oct 05, 2026 at 04:38:19AM +0000, Abdul Wasey wrote:
+> CFM status changes are sent to userspace, config changes are not, so
+> the only way to see a MEP being created, a peer added or CCM
+> transmission started is to poll RTM_GETLINK. Patch 3 adds the
+> notification. Patches 1 and 2 fix the two problems the AI review found
+> in v1.
 
-OpenVPN userspace needs the final statistics of a disconnecting peer,
-but there is currently no way to obtain them. PEER_DEL_NTF carries only
-the peer id and the delete reason, and a PEER_GET issued in response to
-the notification cannot recover the counters either: ovpn_peer_remove()
-unlinks the peer from the lookup tables before emitting the
-notification, so ovpn_peer_get_by_id() no longer finds it and the
-request fails with -ENOENT.
+Given [1], I don't see a reason to review / apply this series. Will add
+a deprecation warning to CFM and MRP.
 
-Include a peer snapshot directly in PEER_DEL_NTF, using the same peer
-object format returned by PEER_GET. This makes the last known counters
-available to userspace at the only point where they can still be read,
-and removes the need for a follow-up request per deleted peer.
-
-Update the ovpn selftest notification fixtures to validate the new
-payload while normalizing timing-dependent counters.
-
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
----
- drivers/net/ovpn/netlink.c                    | 60 ++++++++++++-------
- tools/testing/selftests/net/ovpn/common.sh    | 49 ++++++++++++++-
- .../selftests/net/ovpn/json/peer0-float.json  | 12 ++--
- .../net/ovpn/json/peer0-symm-float.json       | 10 +++-
- .../selftests/net/ovpn/json/peer0-symm.json   |  7 ++-
- .../selftests/net/ovpn/json/peer0.json        | 12 ++--
- .../selftests/net/ovpn/json/peer1-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer1.json        |  2 +-
- .../selftests/net/ovpn/json/peer2-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer2.json        |  2 +-
- .../selftests/net/ovpn/json/peer3-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer3.json        |  2 +-
- .../selftests/net/ovpn/json/peer4-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer4.json        |  2 +-
- .../selftests/net/ovpn/json/peer5-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer5.json        |  2 +-
- .../selftests/net/ovpn/json/peer6-symm.json   |  2 +-
- .../selftests/net/ovpn/json/peer6.json        |  2 +-
- 18 files changed, 122 insertions(+), 52 deletions(-)
- mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
- mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm.json
-
-diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
-index 5432bc2eb8e8..15b6d99474b9 100644
---- a/drivers/net/ovpn/netlink.c
-+++ b/drivers/net/ovpn/netlink.c
-@@ -626,27 +626,15 @@ int ovpn_nl_peer_set_doit(struct sk_buff *skb, struct genl_info *info)
- 	goto unlock;
- }
- 
--static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
--			     const struct ovpn_peer *peer, u32 portid, u32 seq,
--			     int flags)
-+static int ovpn_nl_fill_peer(struct sk_buff *skb, const struct genl_info *info,
-+			     const struct ovpn_peer *peer)
- {
- 	const struct ovpn_bind *bind;
- 	struct ovpn_socket *sock;
- 	int ret = -EMSGSIZE;
--	struct nlattr *attr;
- 	__be16 local_port;
--	void *hdr;
- 	int id;
- 
--	hdr = genlmsg_put(skb, portid, seq, &ovpn_nl_family, flags,
--			  OVPN_CMD_PEER_GET);
--	if (!hdr)
--		return -ENOBUFS;
--
--	attr = nla_nest_start(skb, OVPN_A_PEER);
--	if (!attr)
--		goto err;
--
- 	rcu_read_lock();
- 	sock = rcu_dereference(peer->sock);
- 	if (!sock) {
-@@ -654,7 +642,7 @@ static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
- 		goto err_unlock;
- 	}
- 
--	if (!net_eq(genl_info_net(info), sock_net(sock->sk))) {
-+	if (info && !net_eq(genl_info_net(info), sock_net(sock->sk))) {
- 		id = peernet2id_alloc(genl_info_net(info),
- 				      sock_net(sock->sk),
- 				      GFP_ATOMIC);
-@@ -665,26 +653,26 @@ static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
- 	rcu_read_unlock();
- 
- 	if (nla_put_u32(skb, OVPN_A_PEER_ID, peer->id))
--		goto err;
-+		return -EMSGSIZE;
- 
- 	if (nla_put_u32(skb, OVPN_A_PEER_TX_ID, peer->tx_id))
--		goto err;
-+		return -EMSGSIZE;
- 
- 	if (peer->vpn_addrs.ipv4.s_addr != htonl(INADDR_ANY))
- 		if (nla_put_in_addr(skb, OVPN_A_PEER_VPN_IPV4,
- 				    peer->vpn_addrs.ipv4.s_addr))
--			goto err;
-+			return -EMSGSIZE;
- 
- 	if (!ipv6_addr_equal(&peer->vpn_addrs.ipv6, &in6addr_any))
- 		if (nla_put_in6_addr(skb, OVPN_A_PEER_VPN_IPV6,
- 				     &peer->vpn_addrs.ipv6))
--			goto err;
-+			return -EMSGSIZE;
- 
- 	if (nla_put_u32(skb, OVPN_A_PEER_KEEPALIVE_INTERVAL,
- 			peer->keepalive_interval) ||
- 	    nla_put_u32(skb, OVPN_A_PEER_KEEPALIVE_TIMEOUT,
- 			peer->keepalive_timeout))
--		goto err;
-+		return -EMSGSIZE;
- 
- 	rcu_read_lock();
- 	bind = rcu_dereference(peer->bind);
-@@ -732,14 +720,39 @@ static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
- 			 atomic64_read(&peer->link_stats.tx.bytes)) ||
- 	    nla_put_uint(skb, OVPN_A_PEER_LINK_TX_PACKETS,
- 			 atomic64_read(&peer->link_stats.tx.packets)))
-+		return -EMSGSIZE;
-+
-+	return 0;
-+err_unlock:
-+	rcu_read_unlock();
-+	return ret;
-+}
-+
-+static int ovpn_nl_send_peer(struct sk_buff *skb, const struct genl_info *info,
-+			     const struct ovpn_peer *peer, u32 portid, u32 seq,
-+			     int flags)
-+{
-+	struct nlattr *attr;
-+	int ret = -EMSGSIZE;
-+	void *hdr;
-+
-+	hdr = genlmsg_put(skb, portid, seq, &ovpn_nl_family, flags,
-+			  OVPN_CMD_PEER_GET);
-+	if (!hdr)
-+		return -ENOBUFS;
-+
-+	attr = nla_nest_start(skb, OVPN_A_PEER);
-+	if (!attr)
-+		goto err;
-+
-+	ret = ovpn_nl_fill_peer(skb, info, peer);
-+	if (ret < 0)
- 		goto err;
- 
- 	nla_nest_end(skb, attr);
- 	genlmsg_end(skb, hdr);
- 
- 	return 0;
--err_unlock:
--	rcu_read_unlock();
- err:
- 	genlmsg_cancel(skb, hdr);
- 	return ret;
-@@ -1273,7 +1286,8 @@ int ovpn_nl_peer_del_notify(struct ovpn_peer *peer)
- 	if (nla_put_u32(msg, OVPN_A_PEER_DEL_REASON, peer->delete_reason))
- 		goto err_cancel_msg;
- 
--	if (nla_put_u32(msg, OVPN_A_PEER_ID, peer->id))
-+	ret = ovpn_nl_fill_peer(msg, NULL, peer);
-+	if (ret < 0)
- 		goto err_cancel_msg;
- 
- 	nla_nest_end(msg, attr);
-diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
-index e33b1fe26522..08bb36ba3c80 100644
---- a/tools/testing/selftests/net/ovpn/common.sh
-+++ b/tools/testing/selftests/net/ovpn/common.sh
-@@ -19,9 +19,52 @@ OVPN_VERBOSE=${OVPN_VERBOSE:-0}
- 
- export OVPN_ID_OFFSET=$(( 9 * (OVPN_SYMMETRIC_ID == 0) ))
- 
--OVPN_JQ_FILTER='map(if type == "array" then .[] else . end) |
--	map(select(.msg.peer | has("remote-ipv6") | not)) |
--	map(del(.msg.ifindex)) | sort_by(.msg.peer.id)[]'
-+# Peer delete notifications include traffic counters whose values depend on
-+# timing. zero_attr() sets a counter to zero only when that counter is present,
-+# so missing stats still fail the comparison. zero_peer_stats is just the list
-+# of counters to normalize. normalize_peer_del_ntf applies that to peer-del-ntf
-+# messages and drops transport endpoint details, while leaving other
-+# notifications unchanged.
-+OVPN_JQ_FILTER='
-+	def zero_attr(key):
-+		if has(key) then .[key] = 0 else . end;
-+
-+	def zero_peer_stats:
-+		zero_attr("vpn-rx-bytes") |
-+		zero_attr("vpn-rx-packets") |
-+		zero_attr("vpn-tx-bytes") |
-+		zero_attr("vpn-tx-packets") |
-+		zero_attr("link-rx-bytes") |
-+		zero_attr("link-rx-packets") |
-+		zero_attr("link-tx-bytes") |
-+		zero_attr("link-tx-packets");
-+
-+	# Peers also float over IPv6 while the tests run, but those events are
-+	# not deterministic in number or ordering and have never been part of
-+	# the fixtures: the filter used to drop every notification carrying a
-+	# remote-ipv6. That blanket rule cannot be used anymore now that
-+	# peer-del-ntf embeds the full peer object, so drop IPv6 floats only.
-+	def drop_ipv6_float:
-+		select(.name != "peer-float-ntf"
-+		       or (.msg.peer | has("remote-ipv6") | not));
-+
-+	def normalize_peer_del_ntf:
-+		if .name == "peer-del-ntf" then
-+			.msg.peer |= (
-+				del(.["remote-ipv4"], .["remote-ipv6"],
-+				    .["remote-ipv6-scope-id"], .["remote-port"],
-+				    .["local-ipv4"], .["local-ipv6"],
-+				    .["local-port"]) |
-+				zero_peer_stats
-+			)
-+		else . end;
-+
-+	map(if type == "array" then .[] else . end) |
-+	map(del(.msg.ifindex)) |
-+	map(drop_ipv6_float) |
-+	map(normalize_peer_del_ntf) |
-+	sort_by(.msg.peer.id)[]'
-+
- OVPN_LAN_IP="11.11.11.11"
- 
- declare -A OVPN_TMP_JSONS=()
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-float.json b/tools/testing/selftests/net/ovpn/json/peer0-float.json
-index 682fa58ad4ea..9711f2cf9cf6 100644
---- a/tools/testing/selftests/net/ovpn/json/peer0-float.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer0-float.json
-@@ -1,9 +1,9 @@
- {"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 1, "remote-ipv4": "10.10.1.3", "remote-port": 1}}}
- {"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 2, "remote-ipv4": "10.10.2.3", "remote-port": 1}}}
- {"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 3, "remote-ipv4": "10.10.3.3", "remote-port": 1}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 10, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 11, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 12, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 13, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 14, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 15, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json b/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-deleted file mode 120000
-index e31a5bd59863..000000000000
---- a/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-+++ /dev/null
-@@ -1 +0,0 @@
--peer0-float.json
-\ No newline at end of file
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json b/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-new file mode 100644
-index 000000000000..c94dcc81c80e
---- /dev/null
-+++ b/tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
-@@ -0,0 +1,9 @@
-+{"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 1, "remote-ipv4": "10.10.1.3", "remote-port": 1}}}
-+{"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 2, "remote-ipv4": "10.10.2.3", "remote-port": 1}}}
-+{"name": "peer-float-ntf", "msg": {"ifindex": 0, "peer": {"id": 3, "remote-ipv4": "10.10.3.3", "remote-port": 1}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 1, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 2, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 3, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 4, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 5, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 6, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm.json b/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-deleted file mode 120000
-index 57a163048eed..000000000000
---- a/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-+++ /dev/null
-@@ -1 +0,0 @@
--peer0.json
-\ No newline at end of file
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0-symm.json b/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-new file mode 100644
-index 000000000000..2899913ea064
---- /dev/null
-+++ b/tools/testing/selftests/net/ovpn/json/peer0-symm.json
-@@ -0,0 +1,6 @@
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 1, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 2, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 3, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 4, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 5, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 6, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer0.json b/tools/testing/selftests/net/ovpn/json/peer0.json
-index 7c46a33d5ecd..fff2a86b41ab 100644
---- a/tools/testing/selftests/net/ovpn/json/peer0.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer0.json
-@@ -1,6 +1,6 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5}}}
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 10, "vpn-ipv4": "5.5.5.2", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 11, "vpn-ipv4": "5.5.5.3", "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 12, "vpn-ipv4": "5.5.5.4", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 13, "vpn-ipv4": "5.5.5.5", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 14, "vpn-ipv4": "5.5.5.6", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 15, "vpn-ipv4": "5.5.5.7", "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer1-symm.json b/tools/testing/selftests/net/ovpn/json/peer1-symm.json
-index 5da4ea9d51fb..41b358e1be51 100644
---- a/tools/testing/selftests/net/ovpn/json/peer1-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer1-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 1, "tx-id": 1, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer1.json b/tools/testing/selftests/net/ovpn/json/peer1.json
-index 1009d26dc14a..6332709d2a88 100644
---- a/tools/testing/selftests/net/ovpn/json/peer1.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer1.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 10}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 10, "tx-id": 1, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer2-symm.json b/tools/testing/selftests/net/ovpn/json/peer2-symm.json
-index 8f6db4f8c2ac..b1840bf979e8 100644
---- a/tools/testing/selftests/net/ovpn/json/peer2-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer2-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 2, "tx-id": 2, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer2.json b/tools/testing/selftests/net/ovpn/json/peer2.json
-index 44e9fad2b622..431427e4eb53 100644
---- a/tools/testing/selftests/net/ovpn/json/peer2.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer2.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 11}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "userspace", "id": 11, "tx-id": 2, "keepalive-interval": 60, "keepalive-timeout": 120, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer3-symm.json b/tools/testing/selftests/net/ovpn/json/peer3-symm.json
-index bdabd6fa2e64..f9ab2a15dd9f 100644
---- a/tools/testing/selftests/net/ovpn/json/peer3-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer3-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 3, "tx-id": 3, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer3.json b/tools/testing/selftests/net/ovpn/json/peer3.json
-index d4be8ba130ae..4f9522a664ee 100644
---- a/tools/testing/selftests/net/ovpn/json/peer3.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer3.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 12}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 12, "tx-id": 3, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer4-symm.json b/tools/testing/selftests/net/ovpn/json/peer4-symm.json
-index c3734bb9251b..b41ab838a304 100644
---- a/tools/testing/selftests/net/ovpn/json/peer4-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer4-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 4, "tx-id": 4, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer4.json b/tools/testing/selftests/net/ovpn/json/peer4.json
-index 67d27e2d48ac..7d6b3c8af0e4 100644
---- a/tools/testing/selftests/net/ovpn/json/peer4.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer4.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 13}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 13, "tx-id": 4, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer5-symm.json b/tools/testing/selftests/net/ovpn/json/peer5-symm.json
-index 46c4a348299d..962def1ec16f 100644
---- a/tools/testing/selftests/net/ovpn/json/peer5-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer5-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 5, "tx-id": 5, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer5.json b/tools/testing/selftests/net/ovpn/json/peer5.json
-index ecd9bd0b2f37..963dc74cdaa6 100644
---- a/tools/testing/selftests/net/ovpn/json/peer5.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer5.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 14}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 14, "tx-id": 5, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer6-symm.json b/tools/testing/selftests/net/ovpn/json/peer6-symm.json
-index aa30f2cff625..3ff352fae60f 100644
---- a/tools/testing/selftests/net/ovpn/json/peer6-symm.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer6-symm.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 6, "tx-id": 6, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
-diff --git a/tools/testing/selftests/net/ovpn/json/peer6.json b/tools/testing/selftests/net/ovpn/json/peer6.json
-index 7fded29c5804..0db187f3af18 100644
---- a/tools/testing/selftests/net/ovpn/json/peer6.json
-+++ b/tools/testing/selftests/net/ovpn/json/peer6.json
-@@ -1 +1 @@
--{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 15}}}
-+{"name": "peer-del-ntf", "msg": {"ifindex": 0, "peer": {"del-reason": "expired", "id": 15, "tx-id": 6, "keepalive-interval": 3, "keepalive-timeout": 3, "vpn-rx-bytes": 0, "vpn-rx-packets": 0, "vpn-tx-bytes": 0, "vpn-tx-packets": 0, "link-rx-bytes": 0, "link-rx-packets": 0, "link-tx-bytes": 0, "link-tx-packets": 0}}}
--- 
-2.55.0
-
+[1] https://lore.kernel.org/netdev/20261006134441.3696739-1-w453y.me@gmail.com/
