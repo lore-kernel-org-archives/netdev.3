@@ -1,79 +1,77 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A833F3C2B92
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88723F12CB
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791352674; cv=none; b=NlhFs0/qkEF9HhQw5JBey+NnaO0wSPKe202vDVacOl8xgeO0E5s8Lm+6M5fEwbjZMbfo/dtS3u0TrQ32ausDGYGNMU+3exiMZbRbCJzf8ObbG8frOKVTGlMyF/WtCej9shGDfb1Lm+7bk78Wpc0pSX0XJStFHudy0vz6HkqIPTs=
+	t=1791352791; cv=none; b=HL7Alg6imzh9JX7L3ZQkof20bOPh3rmbuF1uHUfdv8OYVbB7vQmT+E5hb9SSvIZ2GWBJCafIxhKPMhc9S5qEskqm+OrD/+iMRkkNIls5eM6sjURyDjlwny3Dr6+9V2t5RGjG2Jnf1+G3a0nKhhr2/RPmncNf8tjBIxfpUoE7vbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791352674; c=relaxed/simple;
-	bh=TqiIMhaSlGlhCFFLwhmwFqqGF2ZLQjcu6mp35BSNzM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ayuylk/bJ1M5uGqJevt6kKTRYEbyutqEJJhIX8gL2VyK+/FM6C9abA6RTUgQE1nB1qBx6SYGPEjz3dsRKsF3C+NNSYSR+ul3ZTl4RxR2pdqff+7hCuJvGXk30j+/Is5zBfrerRlKur9YDldHL3niilkA06neB1J4wyy5AGZ4Jcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBoZ4h5x; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1791352791; c=relaxed/simple;
+	bh=MwBpIpYrSPFxTbkIfoUADmu1fef0nYoc+dMugb5PlAc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dgIkPpiICrBnPOLloAHOvxl9IOeBfh6+qFltNV3FUvMwg0L4XCPv8iwUVXW4H9dI/3lrNoOcrWB7IpMaPlRzL3tv8yq0M+XCwjZNZMP+Pu2tr8vwvyHSSPUlUDIvwlVm09TugnfSbZHdWRxSeFfkQaxl7G/6OOJwqVc/aBLiqgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQt5wOXp; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBoZ4h5x"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-398a5aad413so2855052a91.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 22:57:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQt5wOXp"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3a02551822eso1462092a91.1
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 22:59:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791352672; x=1791957472; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791352790; x=1791957590; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ikOwxns0VmdI3pIxqCsYIX0nHfPqhedZNBgRsLYW1pU=;
-        b=MBoZ4h5xm8fuI6lj5lg9dvO1beTJ4zT/brEZkX234Zne7SV+0yCL1M4QqAeiWA/rAX
-         0TICV8UbRoGBVSGeTJ5AwDfuWyoygAu7qIubcRhG+jZE1KXhbqG8RefMwyiIDX0C9N4p
-         TAyH6/Q9bHAuvn5c4c46uds35qLPwoSa0T5/mnqOpnNEc9snJTLSDhClvfyeSSarldrz
-         LxC1OO/VWgxNYqEDuqTCtgVXuxGa+HZ53IYfutAVc39BSGN/IxNKoBFFVd+aIhw0jZjZ
-         2Qb+Tws9I3RpVaj92qHWsje4+FMP89c6T7kYZjRJ0Y3NIfoaxFhMuirkIGexTrZAubBm
-         VbzA==
+        bh=VkYzG21Yn8djlHNaCJzAzQuNMZXAhnyVeMJo3kZ+SUo=;
+        b=NQt5wOXpjN4PoBhqVjEWssTEgk9yJ22Ifc/O0WLGiJYRW0e+nB318BRulWXSmxmgDu
+         nULli7hzFqlY0rVZefz+JuXMtT2NKZGjJyRyqQWnGiUuUpOKVKO/mMkvaQRsiBKUsMuJ
+         9Y8pjrm8dtB0wNpquz74bUX58/ISGpaClRXGAxTiOdggaeWoL9UXrkCXlwXiQvJcmfcF
+         7Gpyy0+wa92PoB0LjmJMw3cjimcLrTT5afn9aJtphpZ3HxzLSvE2UYPf8PLuwuE7TOQb
+         o4shEUCiGVHRQuNBq3lRef3Qf4ADXubyGJCqgv/nVh0nnJZ3zwmWlTXZozD8qYN+Y75c
+         00Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791352672; x=1791957472;
+        d=1e100.net; s=20260707; t=1791352790; x=1791957590;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ikOwxns0VmdI3pIxqCsYIX0nHfPqhedZNBgRsLYW1pU=;
-        b=YiWhL0ducas903/Rv+H5xN1vsLeIDoKj3sUZTeB3MnKgqT5z1LOEI9gdqg00K/JfB1
-         DepIEp+moA2ERdChlBd5zoCuKHNAYLNDhD/XGbwQV3OhegUHdY8ra5Ymw3JWPfLHCrxk
-         loWnNnXp2m3QxPW3PLXZYy2n+ZupEDd9eClIVB0Z8dbB9dheItQ/iiXRiFUbleYbi/IH
-         UFMFScSS9IvTnA2Y3EM6eWq9oPJo0X5lXSo5A/zVarwJpaJvCPzmpkm36t2pkpGV0N3h
-         L7HnMaRZkTVpuy035uO5vf3MCSIETmaWvzxUKn21YejeVSdTi5wWanbd2c+VtTl6trJJ
-         54ag==
-X-Gm-Message-State: AFq9FYLXZA/rR3l6btHML6DtJPzUpYJxbHxt64QBSo5zO3Gns3i5cUe2
-	YxN2/vb3/pJhGkf9tBA96mGzJ6BW8MKsH8FsHLFkzVm/mqEy+lwGaXva
-X-Gm-Gg: AYBFou1wulUDtwyvacZYyT8PyG1EJezPAnqao22BJStJBP5DAWYVKIZQxEYfgLegXF4
-	nG8+JaeN+Cu0JywLp8NnNF2kx6R+XtLoCOQ0HAYwE1VzOCuZH0Jk2fpsv7moo1hzrzZAZ4p3WJN
-	rTXwBABN7Pe+rqTPowIMI+PTYbRpGMmU++AcxiUeI7jOLEEQpso4ATTUtuIVDtDkqceATyVOPqu
-	15/6pdN+QquCUwDU5LVJ4cMjSlCkcmELAJOvhqECjnJ3BIjhaqD9H1Ouf9vdJsYzAq1YLREiEkg
-	DMrE1BnpDZOgYywFxwobb9Wwox4daZ5A68cfWN4RjICUDe7vpHi756JIHP0RvJfPkgYfIgjaqcP
-	MLgPfqjlY+dSt2LQDn5xw/HnPT1huNqkoCX2xbbOYHDYXeiZi2FuF5BT2GrI2Ete56NdVjV3jLz
-	f/Tj86O+ysU+Isn3qeUBJhUraykh3ru6nJW/uqZ8Zs2vE2EiiJTcfQkNygwIups3Gjeiit9V59d
-	Y15M7f8KmHT36/36JK0c7whyd6mSVxZeK4IJzKgo2ZNhrLbJrn6vDz9LpSkV0xV7xlUsGrnzP4A
-	48QBjp/lO3o5lQ==
-X-Received: by 2002:a17:90b:4fc5:b0:3a7:db88:3495 with SMTP id 98e67ed59e1d1-3a8a1d5b8fcmr1120154a91.52.1791352671922;
-        Tue, 06 Oct 2026 22:57:51 -0700 (PDT)
-Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e60d0b0e2esm3051775ad.7.2026.10.06.22.57.47
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 06 Oct 2026 22:57:51 -0700 (PDT)
-From: Tian Xun Ng <luckilystar08@gmail.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	aleksander.lobakin@intel.com,
-	aleksandr.loktionov@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Tian Xun Ng <tianxun.ng@bytedance.com>
-Subject: [PATCH iwl-net v2] idpf: keep the mailbox up while tearing down vports on shutdown
-Date: Wed,  7 Oct 2026 13:57:41 +0800
-Message-ID: <20261007055741.30629-1-luckilystar08@gmail.com>
+        bh=VkYzG21Yn8djlHNaCJzAzQuNMZXAhnyVeMJo3kZ+SUo=;
+        b=BlS/4lK5LU1gyZnOl14EjLbLF/d+pW+qXYOnAoAOkMC8B1I+WyanIImjmPoPQiT38i
+         fzk1xIysbEReX661QNMK+EQH0dt1hn8OM+27T2rD3XtgD+A2cQmKwSVNHHrD7zhQvNOC
+         uYDXFmzUhA0f2ft4BvHT7l7hf84jFXcjnhUt8ZjdHM+cub8lc4QL7uZeaFof4eqnl22U
+         s3b7XZbpNtIRPTmQnYckvtgKXZSw6IoHtEDnr8LUKhlCOPYRn3eU8JBnB0P9qzIqfuqk
+         7FjtFIb89icru0WXmh2tmsQUI9Orlwj3IHua4ecJr0Op9avgOo41lwxLJkgdssmDCzRe
+         B0SQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwMRDSed0L1UHTUxB4cOooDGy+3cjKDcomA3CUZ+h0ro27v8J2O3+IZXdc0EJuz9r0KUJs7ddA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwYQqgtKp6gwGNSyNnh3ig7jIpwsI9mcKQ2ewLQ5I6ffYmRFOi
+	y2fI8ejCT9G+B2EQGp2pxVRrXWDL4p7TIaJJTXEL5Bp8VPnGU0u7NTEG2U3oy7qxkHFtCg==
+X-Gm-Gg: AYBFou0FNliN+2adACgH/hQJHHN6n0ABws6I2GzJ3jHmvvmWt7pIjAtFR+1H+pHFzSr
+	rX79KLVtLB+15aZT4IUmMLe6xRqMuVli3pv458tMgpgiHsRKErOC4/zmLzKS9YalSRCM0GplH7C
+	RS3Mv+cJa19lzVVuORPb+Vo38nXybZjxzg3k8wAkyt9vZ9yS5CwInv6Alcvi2Elcwmy/Am+OmaQ
+	mZxzcaRFsnedHkfUbZEh27IpF1hdKH7lJiNy0duV94OTGNjzKYmTRYS1tuimtlw4/qlOmx53WeF
+	W/G9CTgj3o+FKciXYfpIp81by8Z6bJA6CgIkzPOvrL2pMhl862A5clM3KHXVYGyCnvz+8bt3pRp
+	rHm4htivAYgLsmbGpItdLdlwn9N6UmdMVS3ESkJWlgEUT0n0wllYPCfr6vpFzVR7V5O1uvLiBHa
+	6eaI/I0axuR6UT+RA7Gdep2jxZOcfLOY+VqSQyX11xfhViAEIgzK6pKr8i3pieu5c3nP9vvSSe9
+	YzMGPcovramzMvn1DfwQBR4cpc=
+X-Received: by 2002:a17:90b:3949:b0:3a0:b12f:b51b with SMTP id 98e67ed59e1d1-3a854636ecbmr3123635a91.40.1791352789882;
+        Tue, 06 Oct 2026 22:59:49 -0700 (PDT)
+Received: from kfuzz ([202.120.234.33])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd0a8b0616esm884856a12.6.2026.10.06.22.59.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 22:59:49 -0700 (PDT)
+From: Yiming Qian <yimingqian591@gmail.com>
+To: Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	bridge@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yiming Qian <yimingqian591@gmail.com>
+Subject: [PATCH net] net: bridge: don't under-estimate the VLAN tunnel info size
+Date: Wed,  7 Oct 2026 05:59:37 +0000
+Message-ID: <20261007055939.63100-1-yimingqian591@gmail.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -83,199 +81,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Tian Xun Ng <tianxun.ng@bytedance.com>
+br_info_notify() sizes the notification skb with br_nlmsg_size() and then
+fills it with br_fill_ifinfo().  If the fill does not fit, br_info_notify()
+does WARN_ON(err == -EMSGSIZE) because that is supposed to mean a bug in
+br_nlmsg_size().
 
-Since commit 4c9106f4906a ("idpf: fix adapter NULL pointer dereference
-on reboot"), idpf_shutdown() calls idpf_vc_core_deinit() directly instead
-of idpf_remove(), so IDPF_REMOVE_IN_PROG is not set on shutdown.
-idpf_vc_core_deinit() uses that flag to decide when to shut the virtchnl
-transaction manager down. Without it, libie_ctlq_xn_shutdown() runs
-before idpf_deinit_task() tears the vports down, so every message sent
-during that teardown (disable vport, disable queues, destroy vport)
-fails at once. The device is never told to stop its queues and keeps
-them enabled, with the ring addresses of the kernel that is going away.
+br_nlmsg_size() (via br_get_link_af_size_filtered() and
+br_get_vlan_tunnel_info_size()) only accounts for the VLANs that have a
+tunnel mapping at that moment, while br_fill_vlan_tunnel_info() emits an
+attribute for every VLAN that has one by the time it runs.  br_info_notify()
+also runs without RTNL (e.g. from br_forward_delay_timer_expired()), so
+tunnel mappings added or removed under RTNL between the size calculation and
+the fill make the fill need more room than was reserved:
 
-After a warm reboot, the first queue reconfiguration of a port that has
-not been opened yet (udev setting the MTU) sends VIRTCHNL2_OP_DEL_QUEUES.
-The device then drains the queues it still considers live and writes
-SW_MARKER TX completions to the previous kernel's completion rings. With
-the IOMMU translating, those writes fault about 19 s into every such
-boot:
+  WARNING: net/bridge/br_netlink.c:660 at br_info_notify+0x13f/0x150
+  ...
+  Call Trace:
+   <IRQ>
+   br_forward_delay_timer_expired+0x1b3/0x1f0
+   call_timer_fn+0x2d/0xd0
+   __run_timer_base+0x5ba/0x7d0
+   run_timer_softirq+0x31/0x60
+   handle_softirqs+0x17f/0x570
+  ...
+  Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-  arm-smmu-v3 arm-smmu-v3.12.auto: event: F_TRANSLATION client: 0006:01:00.0 sid: 0x30100 ssid: 0x0 iova: 0x3ef60840 ipa: 0x0
+Size the tunnel info for the maximum number of attributes that
+br_fill_vlan_tunnel_info() can emit for the VLAN group instead of for the
+mappings that are currently installed.  Consecutive VIDs with consecutive
+tunnel IDs are compressed into two attributes, so the fill never emits more
+attributes than there are usable VLANs, which keeps br_nlmsg_size() an upper
+bound of what the fill needs.
 
-In IOMMU pass-through mode they land on pages the new kernel has already
-reused, which shows up as "pagealloc: memory corruption" with
-page_poison=1 and as crashes in unrelated code without it.
-
-A function reset on shutdown does not help on these devices: with a PF
-reset issued in idpf_shutdown() and PFGEN_RSTAT polled until the reset
-completed, every warm reboot still faulted, and the reset the next
-kernel issues at probe does not clear the queues either. Delivering the
-teardown messages does.
-
-Set IDPF_REMOVE_IN_PROG in idpf_shutdown(), as idpf_remove() does, so
-that the vports are destroyed while the mailbox is still up. So that an
-unresponsive control plane cannot hold up a reboot, give each mailbox
-transaction during shutdown a 2 s timeout instead of 60 s, and fail the
-remaining ones at once after the first timeout. If the function has
-already been reset, for instance a VF whose PF went down first,
-idpf_is_reset_detected() fails them without waiting.
-
-Tested on two arm64 (64K pages) servers, each with two idpf PFs, with
-this change backported to a 6.17 kernel and the IOMMU translating: no
-faults in 25 warm reboots, against a fault on every warm reboot
-without it. Each PF's teardown took about 1.2 s for six mailbox
-transactions; the slowest, VIRTCHNL2_OP_DEALLOC_VECTORS, took about
-300 ms. To stand in for a control plane that does not reply, the driver
-was also built to skip sending mailbox messages during shutdown: the
-first transaction timed out after 2 s, the rest failed at once, the
-teardown took 2.8 s per PF, and every reboot faulted again.
-
-Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
+Fixes: efa5356b0d97 ("bridge: per vlan dst_metadata netlink support")
+Cc: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Yiming Qian <yimingqian591@gmail.com>
 ---
-v2:
-- Drop patch 2 (function reset on shutdown). On a VF it queued
-  VIRTCHNL2_OP_RESET_VF and then freed the mailbox, and on these devices
-  a PF reset does not clear the stale queues anyway (numbers in the v1
-  thread).
-- Set IDPF_REMOVE_IN_PROG in idpf_shutdown() instead of changing the
-  condition in idpf_vc_core_deinit(); no new idpf_is_reset_detected()
-  call (Emil).
-- Bound the shutdown teardown: 2 s per transaction instead of 60 s, and
-  fail the remaining ones at once after the first timeout (Emil). 2 s is
-  about six times the slowest teardown transaction measured here.
-- No VF special case, unlike what I suggested in the thread: a VF whose
-  PF has been reset already fails fast through the existing
-  idpf_is_reset_detected() check in idpf_send_mb_msg(), and a VF with a
-  working mailbox leaves queues behind on a warm reboot just like a PF.
-  Not tested on a VF; I have no VF setup.
-- Compile-tested on net-queue dev-queue (W=1, allmodconfig and
-  allyesconfig, no new warnings); runtime-tested as the 6.17 backport
-  described above.
+ net/bridge/br_netlink_tunnel.c | 44 ++++++++++++----------------------
+ 1 file changed, 15 insertions(+), 29 deletions(-)
 
-v1: https://lore.kernel.org/all/20260917105205.37561-1-luckilystar08@gmail.com/
-
- drivers/net/ethernet/intel/idpf/idpf.h        |  4 +++
- drivers/net/ethernet/intel/idpf/idpf_main.c   |  7 +++++
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 28 ++++++++++++++++---
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  1 +
- 4 files changed, 36 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index 470bc23c8..5d2e8a346 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -88,6 +88,8 @@ enum idpf_state {
-  * @IDPF_REMOVE_IN_PROG: Driver remove in progress
-  * @IDPF_MB_INTR_MODE: Mailbox in interrupt mode
-  * @IDPF_VC_CORE_INIT: virtchnl core has been init
-+ * @IDPF_SHUTDOWN_IN_PROG: Driver shutdown in progress
-+ * @IDPF_SHUTDOWN_XN_TIMEOUT: A mailbox transaction timed out during shutdown
-  * @IDPF_FLAGS_NBITS: Must be last
-  */
- enum idpf_flags {
-@@ -97,6 +99,8 @@ enum idpf_flags {
- 	IDPF_REMOVE_IN_PROG,
- 	IDPF_MB_INTR_MODE,
- 	IDPF_VC_CORE_INIT,
-+	IDPF_SHUTDOWN_IN_PROG,
-+	IDPF_SHUTDOWN_XN_TIMEOUT,
- 	IDPF_FLAGS_NBITS,
- };
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index 129bccaa6..fa27ee1cd 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -196,6 +196,13 @@ static void idpf_shutdown(struct pci_dev *pdev)
- 
- 	cancel_delayed_work_sync(&adapter->serv_task);
- 	cancel_delayed_work_sync(&adapter->vc_event_task);
-+
-+	/* Destroy the vports while the mailbox is still up, so that the
-+	 * device stops its queues before the next kernel reuses their memory.
-+	 * A reset does not clear them on every device.
-+	 */
-+	set_bit(IDPF_SHUTDOWN_IN_PROG, adapter->flags);
-+	set_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
- 	idpf_vc_core_deinit(adapter);
- 	idpf_deinit_dflt_mbx(adapter);
- 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index 1caf52706..5f5d72671 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -190,22 +190,38 @@ static void idpf_prepare_ptp_mb_msg(struct idpf_adapter *adapter, u32 op,
-  * Cleanup the mailbox queue entries of the previously sent message to
-  * unmap and release the buffer.
-  *
-+ * During shutdown each transaction gets a short timeout, and once one of
-+ * them times out the rest fail at once, so that an unresponsive control
-+ * plane cannot hold up a reboot.
-+ *
-  * Return: 0 if the request was successful, -%EBUSY if reset is detected
-- *	   or Tx control queue is full, other negative error code on failure.
-+ *	   or Tx control queue is full, -%ETIMEDOUT if a transaction already
-+ *	   timed out during shutdown, other negative error code on failure.
-  */
- int idpf_send_mb_msg(struct idpf_adapter *adapter,
- 		     struct libie_ctlq_xn_send_params *xn_params,
- 		     void *send_buf, size_t send_buf_size)
- {
-+	bool shutdown = test_bit(IDPF_SHUTDOWN_IN_PROG, adapter->flags);
- 	struct libie_ctlq_msg ctlq_msg = {};
-+	int err = 0;
- 
--	if (idpf_is_reset_detected(adapter)) {
-+	if (idpf_is_reset_detected(adapter))
-+		err = -EBUSY;
-+	else if (shutdown && test_bit(IDPF_SHUTDOWN_XN_TIMEOUT, adapter->flags))
-+		err = -ETIMEDOUT;
-+
-+	if (err) {
- 		if (!libie_cp_can_send_onstack(send_buf_size))
- 			kfree(send_buf);
- 
--		return -EBUSY;
-+		return err;
- 	}
- 
-+	if (shutdown)
-+		xn_params->timeout_ms = min_t(u64, xn_params->timeout_ms,
-+					      IDPF_VC_XN_SHUTDOWN_TIMEOUT_MSEC);
-+
- 	idpf_prepare_ptp_mb_msg(adapter, xn_params->chnl_opcode, &ctlq_msg);
- 	xn_params->ctlq_msg = ctlq_msg.opcode ? &ctlq_msg : NULL;
- 
-@@ -217,7 +233,11 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter,
- 
- 	idpf_mb_clean(xn_params->ctlq, false);
- 
--	return libie_ctlq_xn_send(xn_params);
-+	err = libie_ctlq_xn_send(xn_params);
-+	if (err == -ETIMEDOUT && shutdown)
-+		set_bit(IDPF_SHUTDOWN_XN_TIMEOUT, adapter->flags);
-+
-+	return err;
+diff --git a/net/bridge/br_netlink_tunnel.c b/net/bridge/br_netlink_tunnel.c
+index e7eceab5b515d..74627323711c1 100644
+--- a/net/bridge/br_netlink_tunnel.c
++++ b/net/bridge/br_netlink_tunnel.c
+@@ -35,39 +35,25 @@ bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
+ 	return (be32_to_cpu(tunid_curr) - be32_to_cpu(tunid_last)) == 1;
  }
  
- /**
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-index 5d27805ff..b0809d149 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-@@ -7,6 +7,7 @@
- #include <linux/net/intel/virtchnl2.h>
+-static int __get_num_vlan_tunnel_infos(struct net_bridge_vlan_group *vg)
++/* Upper bound of the number of IFLA_BRIDGE_VLAN_TUNNEL_INFO attributes that
++ * br_fill_vlan_tunnel_info() can emit for @vg.
++ *
++ * br_info_notify() is also called without RTNL (e.g. from the STP timers), so
++ * the set of VLANs that have a tunnel mapping can change between the size
++ * calculation done by br_nlmsg_size() and the actual fill.  Account for the
++ * maximum instead of the currently used mappings: consecutive VIDs with
++ * consecutive tunnel IDs are compressed into two attributes, so the fill never
++ * emits more attributes than there are usable VLANs in the group.
++ */
++static int __get_max_num_vlan_tunnel_infos(struct net_bridge_vlan_group *vg)
+ {
+-	struct net_bridge_vlan *v, *vtbegin = NULL, *vtend = NULL;
++	struct net_bridge_vlan *v;
+ 	int num_tinfos = 0;
  
- #define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
-+#define IDPF_VC_XN_SHUTDOWN_TIMEOUT_MSEC	2000
+-	/* Count number of vlan infos */
+ 	list_for_each_entry_rcu(v, &vg->vlan_list, vlist) {
+ 		/* only a context, bridge vlan not activated */
+-		if (!br_vlan_should_use(v) || !v->tinfo.tunnel_id)
+-			continue;
+-
+-		if (!vtbegin) {
+-			goto initvars;
+-		} else if ((v->vid - vtend->vid) == 1 &&
+-			   vlan_tunid_inrange(v, vtend)) {
+-			vtend = v;
+-			continue;
+-		} else {
+-			if ((vtend->vid - vtbegin->vid) > 0)
+-				num_tinfos += 2;
+-			else
+-				num_tinfos += 1;
+-		}
+-initvars:
+-		vtbegin = v;
+-		vtend = v;
+-	}
+-
+-	if (vtbegin && vtend) {
+-		if ((vtend->vid - vtbegin->vid) > 0)
+-			num_tinfos += 2;
+-		else
+-			num_tinfos += 1;
++		if (br_vlan_should_use(v))
++			num_tinfos++;
+ 	}
  
- struct idpf_adapter;
- struct idpf_netdev_priv;
+ 	return num_tinfos;
+@@ -81,7 +67,7 @@ int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg)
+ 		return 0;
+ 
+ 	rcu_read_lock();
+-	num_tinfos = __get_num_vlan_tunnel_infos(vg);
++	num_tinfos = __get_max_num_vlan_tunnel_infos(vg);
+ 	rcu_read_unlock();
+ 
+ 	return num_tinfos * __get_vlan_tinfo_size();
 -- 
-2.50.1 (Apple Git-155)
+2.34.1
 
