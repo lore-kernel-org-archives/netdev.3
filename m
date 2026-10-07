@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778D572602
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 01:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9402832FA14
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 01:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791337808; cv=none; b=LPRENLPXcmAFq/aTfJuRoQZAmRDwEP/k7dbX6nergRD3HbJQx/2mCuXnb/Bozxf3CclzpDlc8f87p3CDJ1udPDdePFx9KAmHvHqUUm6X1mgsfaNJo0zVmJ7vAFprlDeuDhXzbMoNhAX4ond+xZ+SbtiOXuYUgJ20w3HjYj9WiD4=
+	t=1791337819; cv=none; b=nDLYJ1iOCpAYG/uYTCFeYi2WReAqRREdzwxLf1pLQy9jm8H0LK+bOP9rzlDOLKphG/lc1LR8j+xBuSNxg7PLrjMLvMUTxC6tDd+ZwJKmGhX3wGBMubNB866cCQLLjCHKRhkW+vSa7qyDiM0+jwU90fez6Nd1QiVOtnTAFl/gZBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791337808; c=relaxed/simple;
-	bh=3oqClTsbLTQpCFmYDCapkKGSH8UqjsgecKKh4I0pbJI=;
+	s=arc-20240116; t=1791337819; c=relaxed/simple;
+	bh=3JhVysWpaIUfrwa4s5zECBFVb7JNdYq7vbBgyKZKPQk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=d4cOBiDUAIJ+s742Oa4s7yv7TrlSn2rxMcjuT6lBVT1mXrZkPWS0d0P0D6Ohq58oTeV2Shze6w6XePJ18cf4XhYXCn6KWXS2y0z7CNlI1RsYrTK5zl5yA4V2pQ9+ik1ViMQ2FNlPiNiXk2E26smKHRFL/OFTpxyaDlgL+Znz37g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5a2qX6v; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=JgD/rn9tvGF7iNXxhI63KMZ6NBv/BFtfJB3ulfibUpZsTEOM99zM9/p1jcNkvq2wBcuoO8PFcjYs/zhHGl2SpA69t/Dq/38lMkYgsrXPd9EN59OhCNYmWYf30Lm6d9jHAlFed/pNkd4gOe1g5Ba7GAFpnYsznKScPHMGAK+ldFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QdU9GQqT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5a2qX6v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBE51F0089B;
-	Wed,  7 Oct 2026 01:50:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QdU9GQqT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438261F0089B;
+	Wed,  7 Oct 2026 01:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791337807;
-	bh=y601YrjcsW8gJ2/InPRMHcxzGu9BxJNLhNP79l8bHSc=;
+	s=k20260515; t=1791337818;
+	bh=BrkZOTL74TlyGeWV9aNrfQVEDcZHOkWS7l8q6TdbQvo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=P5a2qX6vLUNqTZ8p+utEQQH6THNaAgsBgJP60UDojiVu9bCXckX2PoB3lWOkwRM7A
-	 UDU7YSuWQ1ujxWMA5pLXlHI+yjlzAFSo2yT2lQHmwBfVhuuQWBQZVkyCRmrM+8M935
-	 cY67hUvPL7j4uFp7HP1uDDcL2OHAJJrK5Dtw1s7NRNvX+Z64X132n4to1jTUwQGJQ6
-	 e49g85aP1K34VKoQqKSwXX5AKzbDqbG1rQH8cAIHz61ixo5dOcytvbDYDjITs9+ee0
-	 +WmPvDcCDs0DNGgqSNoC09XTlYF/dIp8nNogzSxlBpkxS9mHCInDIfG0OcnHO2JVHM
-	 5xes+awWbNEtQ==
+	b=QdU9GQqTHr6qjW8axYZr9kBN3XrDcZzB5NydL6qvl2Em4BX1JZ0rAL0NdIJ+bPTWc
+	 pIL1FFqdQX3xtucfZpV8HSQVjklLKYlI6xNZTub5Rmww6r6ztFn+MmeEw0Q0ttFuqk
+	 8GeQW061ZmcOjFZ80yvFDKAyYCS5nmHDpo+ewgPF6HwUnuVgF6djau7OZ+KOglArGk
+	 cDjj41oMZ0zI+lMi/NIUy89xi/r9vFOOyU0K1wooHXKR0lYyprKe/yarf5n90Rr5C1
+	 LcTvs8mMVjsUt27cPvBGwQ2I+VYT21fctEwxi0i9oFetengYoQP/+Dkhkdoi8OO36x
+	 xCi469ePG+KIw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F15F53806541;
-	Wed,  7 Oct 2026 01:50:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A13C3806541;
+	Wed,  7 Oct 2026 01:50:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in SW_RESET,
- restore it to SW_RESET
+Subject: Re: [PATCH net v2] net: bcmasp: fix lost TX wakeup race with lockless
+ queue API
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179133780553.2868218.10622066484644676462.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 01:50:05 +0000
-References: <20260930230634.3132729-1-justin.chen@broadcom.com>
-In-Reply-To: <20260930230634.3132729-1-justin.chen@broadcom.com>
+ <179133781679.2868218.8600482716741136005.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Oct 2026 01:50:16 +0000
+References: <20260929203400.1588868-1-justin.chen@broadcom.com>
+In-Reply-To: <20260929203400.1588868-1-justin.chen@broadcom.com>
 To: Justin Chen <justin.chen@broadcom.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
- bcm-kernel-feedback-list@broadcom.com, nb@tipi-net.de,
- florian.fainelli@broadcom.com, opendmb@gmail.com
+Cc: netdev@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@kernel.org,
+ davem@davemloft.net, andrew+netdev@lunn.ch, florian.fainelli@broadcom.com,
+ nb@tipi-net.de
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 30 Sep 2026 16:06:34 -0700 you wrote:
-> When the revised suspend/resume sequence was introduced this led to an edge
-> case where the TX is left disabled in the following sequence.
+On Tue, 29 Sep 2026 13:34:00 -0700 you wrote:
+> netif_stop_queue() in bcmasp_xmit() raced with netif_wake_queue() in
+> bcmasp_tx_poll(): a reclaim landing between the ring-full check and
+> the stop call left the queue stopped despite free descriptors,
+> hanging TX until timeout.
 > 
-> 1. phy link is down, so UMAC is held in reset and then network interface
->    is WoL enabled
-> 2. Enter suspend, bcmgenet_wol_power_down_cfg() enables UMAC_RX since MAC
->    is in SW_RESET
-> 4. Enter resume, UMAC_RX is left enabled. Since we only enable UMAC_TX
->    and UMAC_RX in SW_RESET. The UMAC_TX is never enabled again on link up.
+> Switch to netif_txq_maybe_stop()/netif_txq_completed_wake() (the
+> lockless TX queue API, which also brings in BQL), replace
+> tx_spb_ring_full() with a live bcmasp_tx_avail() count.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: bcmgenet: if UMAC was suspended in SW_RESET, restore it to SW_RESET
-    https://git.kernel.org/netdev/net/c/5857e5a196b0
+  - [net,v2] net: bcmasp: fix lost TX wakeup race with lockless queue API
+    https://git.kernel.org/netdev/net-next/c/ea311fea3236
 
 You are awesome, thank you!
 -- 
