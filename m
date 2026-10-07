@@ -1,83 +1,42 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB103803DB
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 04:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0EE3806AD
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 04:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791348932; cv=none; b=dpmrfFWYl93O/r/PKZHksGB4h6/qJdlb/ZUmtt7UetJKPk6F4dK4TgYF3yt+Q898vvMIjxOTkIO9Dl88scekdA63vmqOQKfR/fHba2WjB/R2oCqTrHlRWungeflzlXS0hbeVmuEDFJ2iyaJbiikaUMVLsI0KKTDBu2K1n2jhb+4=
+	t=1791348984; cv=none; b=TwoOM8JGtJCYyxl3uhB4lUyOQPrh2s2X0/pRu6xw5FJiqE98P2Wf6sbtg/OqSkmmaquJFq2s6y6nwcXFUJ35AxlQDr53OZeoNh/2VW/ptqQdhD4UWPF2FOu3JtGQmnDM7f+z8Jngk2Vlbxt2KK8fLvsIogLmVvk2cxJKre9sXzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791348932; c=relaxed/simple;
-	bh=Nhv3V2PEZv9DaIywRXpuQSuo3SZq1+RM/crAjovCZI4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ujDpEwKrr89zVuZSk44yWWzwdwtsxTvyxQawi3q55clFpVciwtkDCZ9LFzl2tcPzboKHhcHW48MbZIOeC+LewPvQy9ygZ5WqaXsdtWS/hhEa6kBdQpIKt916hDVh/abRc/fx7TdrFSmfClcf13bpA/hEfpRy7FeZabejqgr4Z6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nv1p8xdO; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791348984; c=relaxed/simple;
+	bh=YTagIdj57CL+e7tWVBMZ7SdBEgUALkTRuRZewf5gHBQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l376+5yJexJux97zEkNqgOdVt01PuVga8UxOKm0AC9ohQ3naGJxRiQUcLkApURcRxfDrZ4G0cDbnFzLfICMd43moH3WSqIKnsqM1XmRHoJ46pJ+gTpGV3b+HMSdt/M+kp3uNAe8xX473x0dq2Yjh3egshGMRykGQMX0H5TNTpmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDD8xJW1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nv1p8xdO"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48870973bddso840818f8f.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 21:55:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791348929; x=1791953729; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=b3BMYKHdF12goXCIRPvU4kuoDtK1ZjXLgJnPKF5B85U=;
-        b=nv1p8xdOrJSa+fS4UFEPMKCZObdcb3VEA4/dpjO8cn+D/m1KHvU9dk6/9GtrymYrr2
-         oYrncpqYUTMy//jC9et2PLN+bNT5GgGtUvogFSZsMBZ9ygumJEUOTOKUOO4skQN/lanA
-         Q1n88xUpUJXPx9GICSvP8EUpE9twC48OJBBUlj1zqAx/Iwzvz/wmVVKY7nhz0f+XYnA7
-         SLK7/kNjOnYkWhoSWoV/lMGqnzYQ0Pf6Onmc3qT7rBKqMJ+XqxrQXXXMtg6+xUrwU9Td
-         kRCaqenkx+DI44JFC/VO5MT/mU3GLWnUQpoRNJ94JKDdHjtx/sdN9CIO6+TfqdBO8TDV
-         8i/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791348929; x=1791953729;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=b3BMYKHdF12goXCIRPvU4kuoDtK1ZjXLgJnPKF5B85U=;
-        b=IHpEWud/UbwdvMBgKI1NZ9rCmHJjEOdP70GZHapLfyNPdoyedpTmuvvSL464Ft7zIC
-         xEpwj5JcQb7fdOQj8ORo/ycpK0x23N++Bv/Bmmzfhsd68eOb7OWFq9Sd6dk4f69XKR43
-         8BXjB/vOcb9OAv2h3DS7s9W8dBBXqX9q6ZcnXxPvQrzs50JnFg9J+xnZ2gqFbjBOgckk
-         7MtIVCn1XGqqHaLet8G3zEm3Gk3m9ddSI/rR/xkoGhPMkc7X6uq/WfyExzfBONbVaWWy
-         aX5gXz8bXRFRjfpSW0oNLdS7q2sJEE2h7o3z80U41Oh8Zi1YnF2dxiltoQ2/F9ZwyiuF
-         nbxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwG23IjRkCMOWnHNbxr/I0Ol18CocnMHNTOkazJW9unq48CiLO0q1dmMo7ShM20cY5cAJUgWbs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIJjnn13JACT0WD4CxEKpJiTCj4hDL0r+AmS49vKSdhgic9Pf3C
-	uE9tN3ATUTTt44nKFYi0Jo/0/d9sIC4xgShGseBnwHBLq+eSaKnaB+ytn6qkrUL2Wk0=
-X-Gm-Gg: AYBFou3w75ZDgyQeUeJGK6BgJ+7ClHghoHVCTy6oOoygR0K+7URfR7lYxEyF2k3h9R7
-	q90LR+qz1fYyhLWUYYetWYftbtZsZmzdRbZiM0ReIbnxNMfj8vE50IkDPmgl6QGsWUqykQSjgG8
-	sQYc2nxA8w9bHSNRwCQ2ohEifC5/a92VPLnY8vFt5D8r7qb+QcR2SN1cR4psPRLmHqB2VDkiBYM
-	zOZ1cfOiKN6LLqNtyLLs3eVdUZezdyRG6o62ttrSi/i693d8FRZlSzwajJHn79suF75vlB7uWzu
-	xAC4pY+QUwVbXBUh+hdcGl8ursnoPr6g46fPXKc35+5Nq0M6ZCckj5vanBh7k66KIACGIIdVVJJ
-	1pkDpju5pSa0me/HinzmRAlf/j+b/+bc4ctKyzDIco/t3qa9uU9gKeobO51oR+ZZSL1O+xTgrZ5
-	q+2Mdhi0ciQ1nAw+MVrjAziUrBE2teznZYlArGA3sgiIgwAqZ/vsz/KsYHi3KOuSA=
-X-Received: by 2002:a5d:658c:0:b0:48c:4a62:9b31 with SMTP id ffacd0b85a97d-48c72749bbemr1719860f8f.5.1791348929426;
-        Tue, 06 Oct 2026 21:55:29 -0700 (PDT)
-Received: from kali ([169.224.126.44])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c75b56537sm888360f8f.59.2026.10.06.21.55.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 21:55:28 -0700 (PDT)
-From: Ali Firas <alishmery18@gmail.com>
-To: pabeni@redhat.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDD8xJW1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47361F0089B;
+	Wed,  7 Oct 2026 04:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791348983;
+	bh=mAbTuNvk8mupf6rlBIZU/8xZA92Zs8tRmAuD+dQdpO4=;
+	h=From:To:Cc:Subject:Date;
+	b=nDD8xJW1GWFAFWcy0kKgZwXiUOe5dg9SMEiSZJapUSn1sr8cFyT6CAhqMLO0619rJ
+	 W+bi5iR/kCnrMh4j2kz9lihexwTZukxDxBrxl+YzFQt26uIbLUDc+4Z3d5nAmhJRmQ
+	 RM7ACntDZ04dMef0k2T1XVIDEAv3AtNMO/YRqzHBRbtonwLs9dbHlDp5k3bslizlDk
+	 F8VwJehs/JN//t+YmX58uBEv/uDYqHV6iQ9VHG/3+YH8vVYds9jQrAwlz1o4z+BANB
+	 9FBsKUXmVbMqSrWCSCPGr+fbwTm8q8ZtfEDi+dSkjnQRwlHYatADksuX31DDYgS9/K
+	 4Jv4MCwmuqx6w==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Willem de Bruijn <willemb@google.com>,
+	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	idosch@nvidia.com
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	razor@blackwall.org,
-	roopa@nvidia.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 0/6] vxlan: vnifilter: bound a single request and account per-VNI memory
-Date: Wed,  7 Oct 2026 07:54:34 +0300
-Message-ID: <20261007045434.499651-1-alishmery18@gmail.com>
+	Eric Dumazet <edumazet@kernel.org>
+Subject: [PATCH net] flow_dissector: avoid u16 truncation of hlen in bpf_flow_dissect()
+Date: Wed,  7 Oct 2026 06:56:15 +0200
+Message-ID: <20261007045616.445596-1-edumazet@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <7913b40f-f7d2-41ec-acb2-1edc7f2b833c@redhat.com>
-References: <7913b40f-f7d2-41ec-acb2-1edc7f2b833c@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,26 +45,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On 10/1/26 13:45, Paolo Abeni wrote:
-> Sashiko complain WRT partial accounting of patch 5/6 looks legit.
+bpf_flow_dissect() sanitizes the offsets returned by the BPF program
+with clamp_t(u16, ..., hlen).
 
-Agreed. A VNI that carries a remote also creates an FDB entry, an rdst
-and a per-CPU dst cache, none of them accounted. v4 accounts those
-allocations on the vnifilter path, passing gfp down rather than flipping
-the shared helper, so the learning path keeps plain GFP_ATOMIC.
+If hlen is bigger than 65535, the upper bound is truncated before
+the comparison. For instance, with hlen == 65536, both nhoff and
+thoff are forced to zero, even if the program returned sane values.
 
-> Also it would make sense to reword a bit the commit message of patch 1 and
-> 2 to reflect the above.
+This is the same class of bug as the one fixed in commit 99bda1ecbd56
+("flow_dissector: avoid u16 truncation of skb->len when computing
+thoff"). That fix does not cover the BPF path, because
+__skb_flow_dissect() returns early when a BPF flow dissector
+handles the packet.
 
-Will do.
+struct bpf_flow_keys stores nhoff and thoff as u16, so cap hlen
+to U16_MAX before clamping.
 
-v4 will also bound the dump per nlmsg rather than per entry, per
-Sashiko's note on patch 4: a device holding 8192 contiguous VNIs can
-still dump as one message that replay refuses.
+Found by sashiko while reviewing the commit above.
 
-On the Fixes: tag asked for on patch 2 -- Jakub asked for net-next
-without one, so I am not adding it:
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Assisted-by: LLM
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+---
+ net/core/flow_dissector.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  https://lore.kernel.org/netdev/20260921150904.65a704eb@kernel.org/
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 27d8a01bc92306ff043389b4fde2d24af97d3106..1be6c739e3c718b4561195a20e49cc3911874af1 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1023,6 +1023,8 @@ u32 bpf_flow_dissect(struct bpf_prog *prog, struct bpf_flow_dissector *ctx,
+ 
+ 	result = bpf_prog_run_pin_on_cpu(prog, ctx);
+ 
++	/* bpf_flow_keys offsets are u16: do not let @hlen be truncated. */
++	hlen = min_t(int, hlen, U16_MAX);
+ 	flow_keys->nhoff = clamp_t(u16, flow_keys->nhoff, nhoff, hlen);
+ 	flow_keys->thoff = clamp_t(u16, flow_keys->thoff,
+ 				   flow_keys->nhoff, hlen);
+-- 
+2.53.0
 
-pw-bot: cr
