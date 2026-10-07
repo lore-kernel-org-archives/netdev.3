@@ -1,94 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04E648BD35
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 11:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68CF48D864
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 11:23:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791371360; cv=none; b=Zo0wisD7rf5ySaMZA3yXx1xFO8CJChfRVmih6mlILkQJxzz3ce07Tk6JDPqB2DOLnUK8UA1daVh5wl99D49H35OBA83kVLPeJ4UG/PDL/T2fCa+lwmslHrh3YXn9Ba5fmxQORLufsLeenvCIzu41NWVu4+4LifmIhA5LlZpYDtA=
+	t=1791372205; cv=none; b=rxSepAA7qUBkIoBbeR3yfPw5CGNxeyTi4VaHLMb/luddLdifsv+NVMBXRj1BrZeTPV8UG8iuikbimTP8VpgZJSSV5jUzsa0Gw2YRtaPGC81aWsnfmYhvEcCK1zKpYu5pz4vrZ7MhE8x9dk5/EcmOBKER9pPVm6qh7imhUyX9YVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791371360; c=relaxed/simple;
-	bh=8DMF6Po5NeZA8sUTTWo7qUUSIMLASB7Oi6OlVRLSVIw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qWi7h3n10IgQkPW5izQeEzlqXcOpmIlpa/VClL7OGWqX8wl1JWyPM4mKzFiZZ6EqDnJUuuEvFhyH3cKrJMNoydQGNotJkvR9aqgw+lHnH/mgI2PAOYmDHVyl+UfKlBmrv6iYBc6t5Obsu9CB+j1LxU2cDdo7kYul/Pe6gUO2jNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv9T7oVi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791372205; c=relaxed/simple;
+	bh=h8d/UDxIiosp7oKyeZyf8gbt0wo0wMFoYO35PxF2CZg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pGNWxW2ydr/TsctW+3e5qKMSINpTJ6qFNnVYXe0bd0Zduu+AdTm2JdiZWFWWvzIkB2+s/xeKfXjU1ONio6bqRhuNLU969dVLEvkLLXcXRPphbSGXEsKnSqApSKQXUPOhL1ALs+DqJrlFSR/E7yS/TXyWv6GiQTIUBTjfacJ2ftY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BX2s35zm; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mv9T7oVi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CBC1F0089C
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 11:09:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791371341;
-	bh=8DMF6Po5NeZA8sUTTWo7qUUSIMLASB7Oi6OlVRLSVIw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=mv9T7oViAMazSBuj98f9jRH/SyozP1SKPkyKixqgQW8bP6Vt3/uACgNtzToftwkKr
-	 M6vq9Uf83i/YwEPLC0JlPR+u90+POzNqKPzfQg5u4zuj2dQQbc7nCSRTzEqk7vLpPR
-	 2khhUEr25IhOcBMPRfOWfkngYT9RDon/ENRzpQrPrIfbON0f1BcetnzQbtpZdpTwp6
-	 RboHB7NAGuxbXInAmbLd2TBWfcRKnoJF+lV5IYwODz7I1uPKt1Nhp1jn47PvMAMf0k
-	 kdn+W5owQeDRkS/7nFtTrCmtnLie2nBCpo9/HtxX+cZdg9wZbW7OVvP0HhLkBWxHky
-	 STlE02hZ4VHiw==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-49dd13a91d0so1237237fac.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 04:09:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw9ZJSN2O4mMBpLWXydzulZrtKP2ziEHxHK4AfGoRL5ZUHjrxPCQmVY8bLQLuSony6n9qTtVLE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLsxq9wpe9A0aJoUKkZJ1Rh2Fd1XVvIkPB4mNFkIjD/heCLp2jO
-	K4Oe6EXa3MiVp4yG/TWb5Pqnku1Nv9jnLV9xyfSz2RwM0SRLGYYXHpDsrsBV0QZiRehaic/9CkL
-	zus62u0D0PD8rZ1in9ccjwsj6Q469vPY=
-X-Received: by 2002:a05:6870:6127:b0:491:4a20:8ab8 with SMTP id
- 586e51a60fabf-4a259504734mr1896973fac.28.1791371339997; Wed, 07 Oct 2026
- 04:08:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BX2s35zm"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id CE30C1A1152;
+	Wed,  7 Oct 2026 11:23:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 91A8E6074B;
+	Wed,  7 Oct 2026 11:23:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 90EDF11D5011B;
+	Wed,  7 Oct 2026 13:22:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791372180; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=PvKbS35WCOo741y4COP9Dw8++nPpWhukTi3m3k0URa4=;
+	b=BX2s35zmkef7Sd0hozR3MEerPUh9PNugMMxhrJSYacDtHw6B6CaRddr7h/Vj4ELoYsW2PX
+	dNfWX5KT0tPIYItO/7rQaJOqTGzOHCcAxzfznmT2WeF8PmBUBNiGlDXCjgSp7H8kba0se7
+	bAX0oUvspDTjjIc3zY6v2GBf1PMzIuzoWI/mn7RCgtg7efTOgMYjJDvHqIXA4PLsDrdOnf
+	bL/bxb7yDYjl0Gyz4KPA0uLBvD0RfrprksbARuYMz+KXXL+gvZBBDbedjC3D2MHsRrsyL1
+	QcuG5IvKuwJPX2GbuKjw74wU7rms2yhkwyB5NYbReYAdv1Lq9dJ9/ugjJqNvNw==
+Message-ID: <a259892d-1b6b-4caa-82d3-ba24efd5a409@bootlin.com>
+Date: Wed, 7 Oct 2026 13:22:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005145430.12777c2c@nargothrond> <2026-10-06-1-daily-reply-0020-bnxt-en-vlan-447cbe95@kernel.org>
- <cce34174-a70a-4e59-9c35-fd74309b0fb5@leemhuis.info>
-In-Reply-To: <cce34174-a70a-4e59-9c35-fd74309b0fb5@leemhuis.info>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 7 Oct 2026 13:08:48 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqSoLb9kdXwdJHH2P55+9214aRRcP-61tdKBhRTK7z70g@mail.gmail.com>
-X-Gm-Features: AclHuK_Mya-mXIp8BY93pJkwUEfPaM34qzfLZGG1BzLxjhDODa9HqPyHdCQr-2k
-Message-ID: <CAL4WiiqSoLb9kdXwdJHH2P55+9214aRRcP-61tdKBhRTK7z70g@mail.gmail.com>
-Subject: Re: [REGRESSION] Commit 447cbe95ebb9 causes IOMMU DMA faults on
- macvlan/vlan with bnxt_en
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Sasha Levin <sashal@kernel.org>, =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>, 
-	Michael Chan <michael.chan@broadcom.com>, Joe Damato <joe@dama.to>, netdev@vger.kernel.org, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, regressions@lists.linux.dev, 
-	stable@vger.kernel.org, Stefan Fleischmann <sfle@kth.se>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Linux)
+Subject: Re: [PATCH net 0/3] net: freescale: fix PTP_EXTTS_REQUEST2 for QorIQ
+ 1588
+To: vjardin@free.fr, Yangbo Lu <yangbo.lu@nxp.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Jacob Keller <jacob.e.keller@intel.com>,
+ Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, Ioana Ciornei <ioana.ciornei@nxp.com>
+References: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
+From: Kory Maincent <kory.maincent@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20261006-for-upstream-qoriq-ptp-extts-flags-v1-0-b4a161b92832@free.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Le mer. 7 oct. 2026 =C3=A0 12:35, Thorsten Leemhuis
-<regressions@leemhuis.info> a =C3=A9crit :
->
-> On 10/6/26 23:35, Sasha Levin wrote:
-> >> I'm testing the patch on v6.18.55, and it looks good so far. 5 hours a=
-nd
-> >> counting without any issues.
-> >
-> > Thanks for the bisect. The root cause is the bnxt_en small-packet paddi=
-ng
-> > and DMA length bug Eric Dumazet identified, not 447cbe95ebb9 ("vlan: fi=
-x
-> > skb_under_panic and races when toggling HW VLAN offload") itself, so we
-> > will not revert the vlan fix. Once Eric's "bnxt_en: fix DMA mapping len=
-gth
-> > for padded small packets" lands in mainline, we will backport it to all
-> > affected stable trees.
->
-> FWIW, better wait a little longer till a fix for another regression
-> 447cbe95ebb9 exposed in another driver is fixed, too:
-> https://lore.kernel.org/all/CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTB=
-PgPG7w@mail.gmail.com/
->
 
-Different issue, and already fixed.
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20261007073027.459868-=
-1-edumazet@kernel.org/
+On 10/6/26 15:34, Vincent Jardin via B4 Relay wrote:
+> Since commit 7c571ac57d9d ("net: ptp: introduce .supported_extts_flags
+> to ptp_clock_info"), the PTP core rejects every PTP_EXTTS_REQUEST2
+> request for a driver that does not set .supported_extts_flags. The three
+> users of the QorIQ 1588 (dpaa2-ptp, enetc, ptp_qoriq),
+> so linuxptp ts2phc cannot arm their external timestamp inputs.
+> 
+> The timer timestamps the rising edge only, since ptp_qoriq_init() clears
+> ETEP1 and ETEP2. Each patch declares PTP_RISING_EDGE | PTP_STRICT_FLAGS
+> for one driver.
+> 
+> Patch 1 fixes the failure seen on an LX2160A board.
+> Patches 2 and 3 are build-tested/code review only.
 
-This different bug fix will not fix the pre-existing bugs in bnxt_en.
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
 
-> Ciao, Thorsten
->
+Thank you!
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
+
