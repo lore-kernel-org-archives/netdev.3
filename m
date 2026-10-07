@@ -1,102 +1,121 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983F435838E
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A102C2EEE8C
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791350653; cv=none; b=GCy0hxPB/cXgpBgEn2tJlBbnSn2Jh4pq4x3/UekOTqKY8/ZCbEjrM3tr0k2tfgZvogx3pakKWX3fcUX8Uxi6ZjhMaPc/5vGtjWMU9y7iETKlKlXXb588OGFfGlfpVBX8rfNUnXl3dIWwNAHTTk/7VeVsO24999uKShmJUNzBAig=
+	t=1791351246; cv=none; b=qrTsHBJNscMkgru+SjQ1kfA7foI444qKx+kRVrFSqLEfYrR14KL8daSoP837WaKgRGmZULQIDFZrEXzUEtZPtXcqqhFcN+kNeQu74xg7yQwJpLD77xPJaR0FuXc4Nq0u5pesYBF82RMGoNVGcHoJ7KZ06J245yhR2JuGeinT7Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791350653; c=relaxed/simple;
-	bh=yBxhH1X8FwRDNynk9/Cf8yfzteLxe/rZbDYYuZW3AA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uyvc84z43BWvOqVujspQjJu9STjLAqC67+ZjrFeYgEcEzksppg2UBULFLwzr3oxVGp3ltQtWwGuKm9Jf0jz1IEqm0YIwvVx2xU+W1vuETZGjjd3ls8dn+ucPCgT3Rvdg8txFWC05+X7o4ccIhLKRj6US9vv3M1F63uG2Lbuy5ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=exrT79PJ; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	s=arc-20240116; t=1791351246; c=relaxed/simple;
+	bh=hM+mVkh6DUzaqlord+pHR4V4IOsuNvgQla3p6Gy7mJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ikTUdnLvtegSH+/0cmPWIJNYcG4IovPTcSiHYg7YJuVegBFXZHGnLXK9U52MCZHvXf26maZMzko/9OvmpSygmmzp+WUg0tVae98MiIs+60NLyMsRFlTNzQ0KWT6cDAg+tlPB9HLSjSun8l2A99hu+Z8ZP3eTab2u+Nhid+bTswc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AsW67gp+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="exrT79PJ"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-8253bc5a613so2530279a34.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 22:24:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791350651; x=1791955451; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nSsHXzg/zAiuljQrmabDi2S1XxlM4/g5SvdsTjxLDkA=;
-        b=exrT79PJafB4ahJeTPpuAHZZPWNNrBccMsjPXvqBmCyjSxT86AQCaxLfnsQ9QJWbcr
-         F0RocTo+5uOm9mFaTlMn4SG1VEY4kFPDZrvcd/7x8MsTopkg+rAytffZPvfJUQ7iSXsR
-         wC1XRt5EJ5t8qU5q3Vdi2qgSEVbACLGYqYmzo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791350651; x=1791955451;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nSsHXzg/zAiuljQrmabDi2S1XxlM4/g5SvdsTjxLDkA=;
-        b=TVR4f7HJD/mI4zSK6HKxl/jLtG1Y1rLgnQn0crO9qMISA3R9p7XSaqAVCZhTO+zGLW
-         BUKxHpzSRF4bKga3pDqLufDaImuuxPLY4pfy3h1Rgr7FAWUme8e7C/j++qa3NRK8Zu31
-         rIZHjW+Dq91wLK+95MkK1eYRPLrZjTpO473rHPy9nPDhgreU/PyJZ7Zgp8U0dC6IIEcz
-         JZYf9kYgRbAlexGYY7tSUT8PLfRmzjFaEuED2g/9+WnTotRrsaGDwohHnFQrGtp+aop0
-         nNKvjE4nhMo1TNhb8WhbQVOpMvef0wmB+xfH6rwQCa1XXwnGfeLk4HIOpZekdhqv7u+a
-         yxxw==
-X-Gm-Message-State: AFuF++m88P3kEVfv0Jpz7CqBh3wa6K/RydTv/yyYtrrxkJ/rNv7g8/fv
-	jqZX85Zq4YGFYUiEYnuAkdcqkh3gNU0TE8U7WE9WSZsa1A86bvsEiWEwkQSzWm7ASYg=
-X-Gm-Gg: AYBFou2D35kNhDpvePjMVorgAat5CTcIPp5tnGGJcTNbXvbxn3hYDbRT1QgqaBFgVXs
-	3jjl9qWWRxvwVMz1SFN7iMzg/9854sMTAFYjBIby0roRihWw8wOTRdOEOToCpi+p2QMw98gk72e
-	EYvKl781qR4In98BzbbsnHKXAd56Ff8AttA2CMhjfUnceAKLdU6M0LF92BvdRqRDZ01hbDiUOj4
-	hbvvh1b+t7SgiG1ti+Dr9YAF+bvTAfKMnO69RdSuIdu/z1MZajKlz/pCfGon4dKMToFtw4zyYHa
-	fVP7bdcmpEOt6iusXeXkr9OPs3Vc2ytkfb3+gyu2fs2Rdb0L5eR8iQnmUD69fSPDsQV/hO015QC
-	RrvPEQm94HVxEm0sA3NTJtPqccJh72LBZlkXR6ppt0tSJUSq7SDEr7LAVpda1VvIgbBIGdlJo9H
-	4G5zuYMjh2JP4hStkVAv6HSb1RiRSoySUZdLTWPeMbf410maqi3XRlTmzuQVNMolfpyBwdiLb6x
-	gKUa6Kx43DDi1HrtkLV4OhoXVkLPd8CHVhs2sOgDRZGZy7NTk+I64DhmpSi0gBZ
-X-Received: by 2002:a05:6830:2302:b0:81a:9522:f007 with SMTP id 46e09a7af769-82ace793d07mr2045456a34.5.1791350651470;
-        Tue, 06 Oct 2026 22:24:11 -0700 (PDT)
-Received: from com-75606 ([199.47.143.7])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-82ad9ef4a8esm1882490a34.1.2026.10.06.22.24.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 22:24:11 -0700 (PDT)
-Date: Tue, 6 Oct 2026 22:24:07 -0700
-From: Kyle Zeng <kylebot@openai.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, outbounddisclosures@openai.com
-Subject: Re: [PATCH net] netlink: avoid hashing the network namespace pointer
-Message-ID: <asXXd4Xb8yCZFIqy@com-75606>
-References: <20261006224149.50498-1-kylebot@openai.com>
- <179132696042.2231598.3001993287250723765@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AsW67gp+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791351243;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hM+mVkh6DUzaqlord+pHR4V4IOsuNvgQla3p6Gy7mJI=;
+	b=AsW67gp+vhfBBEfo+hEpjwmkYm/33gdNzUefsT1QJ+ZWcFLNzOcArGMKN0zliMAcav5Ou4
+	JN5rAGRq/PpVDD7QWDRRJASgZ3OcmQ10u3MAJX89Xta5OebVLr6I8w4WWkKwSdtX++gtOw
+	XLx5/2c+TmQ+DlDOctm3w3glgUzAN78=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-EKSvvjZpMYijab3Y5pu8bA-1; Wed,
+ 07 Oct 2026 01:33:59 -0400
+X-MC-Unique: EKSvvjZpMYijab3Y5pu8bA-1
+X-Mimecast-MFC-AGG-ID: EKSvvjZpMYijab3Y5pu8bA_1791351237
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 53C551844BD9;
+	Wed,  7 Oct 2026 05:33:57 +0000 (UTC)
+Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 14D3E180057E;
+	Wed,  7 Oct 2026 05:33:52 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: jacob.e.keller@intel.com
+Cc: aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	netdev-bot+sashiko@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	rafal.romanowski@intel.com,
+	sdf@fomichev.me
+Subject: Re: [PATCH net v2 1/3] i40e: skip unnecessary VF reset when setting trust
+Date: Wed,  7 Oct 2026 07:33:49 +0200
+Message-ID: <20261007053351.17571-1-jtornosm@redhat.com>
+In-Reply-To: <e1d160d5-7f70-4e41-8632-8a749e356e9b@intel.com>
+References: <e1d160d5-7f70-4e41-8632-8a749e356e9b@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179132696042.2231598.3001993287250723765@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Tue, Oct 06, 2026 at 10:49:20PM +0000, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Hi Jacob,
 
-I have a PoC for this issue and the symptom is that it can lead to
-information leak (kernel text pointer).
+> Since the usual case is going to be a situation where we don't expect
+> to exceed these limits, couldn't this check be expanded so we would
+> still reset in the case where the filters need to be removed? I guess
+> its overkill and maybe we accept the extra filters.
 
-Best,
-Kyle
+I think accepting the extra filters in this rare case is a reasonable
+trade-off. In the usual case the VF will be well within the untrusted
+limits (bonding setup typically adds 1-2 MAC filters). The reset adds
+~10 second delay, so we only want it when truly necessary.
+
+> This doesn't address the case where filters have MAC addresses
+> different from the admin-set MAC? I am not sure if that still leaves
+> a security hole or not.
+
+The PF enforces the admin-set MAC restriction on every new add request
+from an untrusted VF (i40e_check_vf_permission() rejects it). Existing
+filters with different MACs remain in hardware, but the VF cannot add
+new ones. I think this is not a security hole: the filters were
+legitimately installed while the VF was trusted, and the VF cannot
+escalate from this state.
+
+> This is an intentional change that I think should at least be called
+> out in the commit message. This *does* mean a VF which was previously
+> trusted could remain exceeding its untrusted limit in perpetuity
+> until it resets or self-removes the filters.
+>
+> That does mean the VF will technically violate the trusted boundary,
+> but it can't get worse, and it was previously accepted while under
+> trust. I think.
+>
+> I think this is acceptable, but we may want to clarify the
+> functionally changed behavior here so that it is clear.
+
+Agreed, this is an intentional trade-off that was considered during
+development. As you say, the VF cannot make it worse, and the filters
+were accepted while trusted. And of course, a VF reset cleans
+everything up completely. If you think it would be helpful, I can send
+a follow-up adding a comment in the code documenting this trade-off.
+
+Thanks
+
+Best regards
+José Ignacio
+
