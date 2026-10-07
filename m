@@ -1,95 +1,104 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6E53D1ABD;
-	Wed,  7 Oct 2026 13:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E054756B3
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791378867; cv=none; b=g6JGtHCPiAonF8NGXYENUITh17dHUBFJk9UE8PBuH4+zgUuA5pvrczl3yOHG3jpnbzCOsWSVkCE/p13ePRTnXt+8pMgVoKz40szprme3bdlm6zXt1FYkLD0/wCAtc/eZSarTgkPM7NDwq2XYbElaFMqCgi0RPWpaWuG3SVq04vk=
+	t=1791379062; cv=none; b=tbKh+S/E76CMk6LB+P+WROK4PUA20Q9Q4CtCU++WS30JNDpm0NJ5hUpromSNpe66/PmsLVYQ6VeS6+A38vvq+GJwDOt9fk56+E/Q4rwm9lIuvN57HBW6qA+jamK+A7PFqcoaQ0yBsjynO46DxvtK2yxYJI3h9wojJ1935avQ9Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791378867; c=relaxed/simple;
-	bh=eKwbDkO4+HnyjyvoGYwD9VulbmzTXzBokVQuiWHlvAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A9hKSXxePaD575YV3Nd2Xv6apRvshKmZOokGLgBzgJzzKwvpgtGY7NUgRJ3TdIt/jkVqdJRZNoIjH3+jqjXFoIm4YvZxWo1Uv45PA7hqnyBlmKcwmP/hND4FFnWOg4Rh9D8+04qh2PdzKyAOiYQpfZAajHh+S5/9rCQErRsR5+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XerqC5BY; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791379062; c=relaxed/simple;
+	bh=GBieW81vtvpmXqSVtcDYAZ5IaVeL8YPqrEmju8wJE9g=;
+	h=Message-ID:Date:From:To:Subject; b=b9kUbnH9ItuWa3Uf0QP1SBRB3SqSZmosytffWJcaarxSsM/Ea+ZsRZhwuzO5YfZjWwQg1PrdmGhz2NvnsTIA52e30UhDfACEfeyvTpTLLxP80v0v5/uBJueZzx3ziAIuht3Tu67ivVx1iS522Bwy3sjeAyWrMF57MZVXQ+f/bxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hraRwd4J; arc=none smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XerqC5BY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=Im4V+Rt/IisH7q38IS8cEegphTQYou0EBsEjpW96IHI=; b=Xe
-	rqC5BYl0o29eW7OAYhFXxw8MBPIeqnXXPfjjRJiwnEUMrE+LaDbyVMA/v9qv30oJ/qvgxUKzjKgG0
-	hDqeE6up/i7eu8Ha8sycwt0qk5xL5kyD6Nhp+Tuia+8sSp4YR6n7aaFrynb6BtLSOgBR1Lqz/BvAX
-	PnrivrWwm2e3o0A=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xERTB-009Sm4-Kf; Wed, 07 Oct 2026 15:14:05 +0200
-Date: Wed, 7 Oct 2026 15:14:05 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Robert Marko <robert.marko@sartura.hr>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, hkallweit1@gmail.com, lxu@maxlinear.com,
-	michael@walle.cc, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	luka.perkov@sartura.hr
-Subject: Re: [PATCH 4/5] dt-bindings: net: maxlinear: add MxL86211C lane
- mapping support
-Message-ID: <c05a0966-35e5-4a81-8da5-8c24734a9ee2@lunn.ch>
-References: <20260930122305.293686-1-robert.marko@sartura.hr>
- <20260930122305.293686-4-robert.marko@sartura.hr>
- <20261001-splendid-athletic-coot-1bbbb6@quoll>
- <CA+HBbNEOiAw+_zzQco13nNzUPdGUgo+kjcRzLFEA4LmnzF8_=A@mail.gmail.com>
- <a2bcd146-0462-4ab1-b7be-93d6b4e05056@lunn.ch>
- <CA+HBbNGUbR3KeZMaWoBqEqMLMkELMLxuL4taCcOG7V03VsuUEw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hraRwd4J"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-141395927feso2708851c88.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:17:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791379053; x=1791983853; darn=vger.kernel.org;
+        h=subject:to:from:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=GBieW81vtvpmXqSVtcDYAZ5IaVeL8YPqrEmju8wJE9g=;
+        b=hraRwd4JUkS18ep1pdmG8lEBXSBj/CqlPDf7l3Y2sHHc7DmoxhSkcqriXUeJyNmXab
+         jpy60xMCFTCVMgfT3B7dMVrKzMCPn9MHtXcUxBtlTGxZfY7gKL3kxFLmj1rYcvdS6Kc1
+         ybeNF8IceE6kZGM1HwRls/kRjPKJgwo6ArTRkcOfmBSbwVkNZKdJvJm7MfAJb1oClKvt
+         IBYDoVjLzZ+sPFThdeBK4k6d28zo+88M/hx+ACGtIZwt9FTvW6wcuVoVDJayHwVxOFXv
+         g5MyHJvJAUJGYSfxekCjKO68DtAVi/i/Mt9S6KrYF52OfPvUxlloMjRoc0CWG9p9SfOS
+         DGPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791379053; x=1791983853;
+        h=subject:to:from:date:message-id:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=GBieW81vtvpmXqSVtcDYAZ5IaVeL8YPqrEmju8wJE9g=;
+        b=P1/+t4vel/49sBG77JUdYfh8Tey//YqmkLRFYqn/ioqSrz939JVBiGg7ira17CdrWg
+         SD6qDi9C5XgDr4k42+hyFbAil/fDRZfWHxj7iVARh53UqrhDes9LV6/n9O5qqgk2a8Pn
+         55prbxIhyvpsmsukOHt+gy0ieaOjEi9JmQaDl+YGaBWLBdNLRi/fpjenrAQetqHNpACe
+         NyXNit8lucq+UXHa6iO0m99GjlKfQkjTtA9lDUVfvstWqEOUrsucpm+3ATVkwbkjUctb
+         YifboVZv2KgEsDr8PDi9XVoWhHA4DvP4FUmlTSDCj9abtghnfShPwSZslHrHuSxvaZKD
+         6EHA==
+X-Gm-Message-State: AFuF++lzqq8DfOLChqhAVV5nt1IPAL0eBgwUxTCVVN4g5KSjzrh9OACE
+	oTACjlU+zU6PEdCtPmEpx42u+qBa/OHmeqgHsgCnPIJp/0PAqgfcil37HXr0HWxV
+X-Gm-Gg: AYBFou2mjv71wk+ZnHUmHjriChgMkCk00LPEunulDon1Yi8PPP3udMZ3yqg4Yr5LFvd
+	gxWMilZ+n2P+ZCztWI3YPE0zJAil+vqUeau1m/H6UKyrcQjkVsyFL7GdPgn0VOB4Qn1X/biC1RQ
+	31i7Sm3zPVGqn7Y9/gr1rwDLs94cID7JoByBnNUjCRuQnXacVgAUHJnuc+eSnpUAnxUVJx1V6pU
+	yrfiSI3ijENsID60geXsnzPA0bVlIgg/kyZNHL51D2n3RrsRdgSV1YMISPZWq94NCy7nAXS7Qfh
+	eeZ+UH5Rsn5iW4UEreYtcjNCSGH0/nsE5qFSl4cgjDRiVxKJTBL5RKny2gv/9JB+0ago2uEaJJB
+	kZQCLtNqqI17q9YNyzRGfILqinxMs46sKCjoDuVVpd61A8BJXCTo0k1pxN1M2bGoCqg9CUpVhpS
+	PwDgq3grEw3MTLZKJzhk+jss6hXurbJQq4GIAL7Ooq5aB2N+SXVG5x3CleotYwSrSliAdhlYYIo
+	4fnt7OLFvN7GCDq8xs=
+X-Received: by 2002:a05:7022:c86:b0:14d:3c0c:79ea with SMTP id a92af1059eb24-162044c055bmr1960592c88.8.1791379052503;
+        Wed, 07 Oct 2026 06:17:32 -0700 (PDT)
+Received: from localhost ([43.157.147.134])
+        by smtp.gmail.com with UTF8SMTPSA id a92af1059eb24-1616980c3b7sm6556621c88.16.2026.10.07.06.17.31
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Oct 2026 06:17:32 -0700 (PDT)
+Message-ID: <6ac6466c.a0fc269c.182c2d.fc12@mx.google.com>
+Date: Wed, 07 Oct 2026 06:17:32 -0700 (PDT)
+From: PayPal Service <j39920017@gmail.com>
+X-Google-Original-From: PayPal Service
+To: netdev@vger.kernel.org
+Subject: Renewal Completed | $394.21 | Ref: I-JJMHDU8TBVPUXO
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+HBbNGUbR3KeZMaWoBqEqMLMkELMLxuL4taCcOG7V03VsuUEw@mail.gmail.com>
 
-On Wed, Oct 07, 2026 at 10:49:01AM +0200, Robert Marko wrote:
-> On Thu, Oct 1, 2026 at 2:33 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > > > +++ b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> > > > > @@ -22,6 +22,21 @@ allOf:
-> > > > >
-> > > > >      then:
-> > > > >        properties:
-> > > > > +        maxlinear,lane-asp-map:
-> > > > > +          description: |
-> > > > > +            Mapping of the physical TPI lanes A through D to the PHY's
-> > > > > +            analog signal processing lanes (ASPs). The array index identifies
-> > > >
-> > > > Are there other lanes as well? Not ASP? What sort? data-lanes does not
-> > > > fit here?
-> > >
-> > > Hi,
-> > > I tried to keep it similar to the datasheet, but looking back, a more
-> > > appropriate
-> > > name would be ASP instances instead of lanes.
-> > >
-> > > I am not sure if data-lanes describe what it is fully but I am open to ideas.
-> >
-> > Analogue front end ports? Or even just analogue from ends?
-> >
-> > I do get what you mean with your current description, but i have more
-> > domain knowledge than your average DT writer.
-> 
-> If analog front ends are fine with you I would like to use that in
-> next revision.
-> Mybe keep the "(ASP)" so that anybody looking at datasheet knows immediately?
+Dear netdev,
 
-That is O.K. with me.
+Your PayPal Service subscription is scheduled for renewal, and a payment of 394.21 USD will be processed within the next 24 hours for another year of service.
 
-     Andrew
+Renewal Details:
+
+Service: Bitcoin
+
+Account: netdevHello netdev,
+
+Thank you for your recent purchase with PayPal Service.
+We’re confirming that your payment has been successfully received via PayPal.
+
+Transaction Details
+Date: 2026-10-07
+Transaction ID: I-M73FEV6B5KH2RW4G4
+Payment Method: Pay.Pal
+Amount Charged: $394.21 USD
+Item: Bitcoin
+Quantity: 0.05 BTC
+Total: $394.21 USD
+
+A confirmation receipt has been sent to your registered email address: netdev@vger.kernel.org.
+
+If you have any questions or need assistance, feel free to contact our support team at +1-845-682-9283.
+You may also view your order or manage preferences by logging into your account.
+
+Merchant: netdev
+Shipping/Billing Address: 44 Amerson St Anniston Al 36201 United States
+
+Thank you for choosing PayPal Service.
+
+Best regards,
+The PayPal Service Team
