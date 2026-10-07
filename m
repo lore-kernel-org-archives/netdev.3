@@ -1,162 +1,190 @@
-Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36D937F01B
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F4649C4DE
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791399086; cv=none; b=cKFonELwN4xRxN4XE6eabzu+FT6/cBHou2RdCk1LjrzQ+UoL/1jnFqexzWdPVwJ5NExmaddqtXCnpkuuP3UmG9KDGyI9aLsCcZFG4d6cg9fGQMmVREsy5d+OVNffV3FYLpQOsXU5pEcQUvCSpiKb01yqp4LRCwBa//yMU2/0rm0=
+	t=1791399099; cv=none; b=Fzb9lAiOKrl/lqKIwF4eNTJVE7vGUDCBroo9Uemwl+NMQiqTM0zYMpbzdhqmJ2+aVBfV4FWJUx1Chw7EFmuGGQkre+o45leUFXHHmj+XbwYQf+h745U/7tRIrh2HDqROigxe0ZT6FDAlOYwxVhi6kHHoWcI6j1dyvQplnfuLtJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791399086; c=relaxed/simple;
-	bh=ooFE7wgNH86QzW50A74Hxs0eR/QZYfgdmjGkzqzYeSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d2JIU6zS2ak3Q7xD2d8yQ7MJwQKl3DlDQ2BEjua9uCcVcVbibrD+eIFwZrnRkDr7smnomNG92LxLwGtjUNYcx14JnflEoyoy7tfLGGm5JJ47BbgsBPq81F/0haPRpzO5/TM+Ihs5X2OGsffS7Rvffxdn0B8CdPoI9D82l+vKtMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UYU9wJxU; arc=none smtp.client-ip=74.125.227.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791399099; c=relaxed/simple;
+	bh=Rd7qMrZIL9VNqVwVYSWHvzG4ceRUBMjVn1LbhvOWWHQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DZ+lv+w0FDMF1vxGeHV7AUa1LpOqdkPJ2m5FAEN1+qAoGN6fE8xoMKbozeDtCa0lkJ0mW4pcTqC7S6BAuV3ogBKQgGuHKYn9M1rstEzJ4tT0eMPPy5xbPepCa3lDnGB40tV/aLe+FgjfUL+/3e+xYrXNZLyiKHFNh5W44PUEYjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XA9AOoJD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=N+PfVIzo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UYU9wJxU"
-Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-3964e7720afso1544658a91.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:51:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XA9AOoJD";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="N+PfVIzo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791399097;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TXsJrdMn+N59pnyS3VP8BExu6tp+oaLWpwNwDbsGihY=;
+	b=XA9AOoJDa7sXmgJ1rBJI1edLTqYgVHKVvkHfDBDJyjSVbkjNUI+d0a22sYdxF0kvcD7pBr
+	N74HAlYlQlWQXCZW0cA8WqEb91VlrLBNA+k55kI46esQlo/s6j73egusFvFLykY/2/FA6v
+	H37Qz7LUnKcK82gR+yAmdTjVVevb2OY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-411-YtUM0OeMPEKfTLquMUm2gw-1; Wed, 07 Oct 2026 14:51:33 -0400
+X-MC-Unique: YtUM0OeMPEKfTLquMUm2gw-1
+X-Mimecast-MFC-AGG-ID: YtUM0OeMPEKfTLquMUm2gw_1791399092
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e6b5c5f44so66721825e9.2
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:51:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791399084; x=1792003884; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=X71f5KGOL/rbhedaUKsgXlp/Wmx4B13NNF0vqiORCgc=;
-        b=UYU9wJxUW8RQY34jHuYGL+FPkvRW3Y1QTJlT6kUlCrIKZ33cSWo37k3aZJPIEtPbcS
-         iw31KIb2d+7FQI6Q+ZziZA55y7RM/YrMwHbRxH8BqMBoyUcShZ4ZfkMWHVbQ+XZpRnO7
-         M/0YLM/npZ2WdSIoKh+PS2kUsACPPJ2gqrCKu2b9ItB+d5Z9UiM2tk/t5feiZX86VWDJ
-         /29KL+C4+nsdKLD4pRCtndiKyMRN0640JoEA2+ShJ992wRIaEvV5kw2v2J/Vh2uDfxq5
-         REn95bUX+yA8WeYzTuZseAyGP+ynjCnUpz61kzeLC+LQ2odxjZQXnB/6ug7iF0uI0VUG
-         j1SA==
+        d=redhat.com; s=google; t=1791399092; x=1792003892; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TXsJrdMn+N59pnyS3VP8BExu6tp+oaLWpwNwDbsGihY=;
+        b=N+PfVIzoQTCw//hxs84wOFbnqyOiuHq/hl7D1dPJXAYb1ur/RtLcQ6YblDKpDd3np6
+         dgSxrf+CoFkxoD+1H8q7DyEPVfsBbF5cjr2XU8RJ0htie0X1YC13wGpdG+L/Y1nwabaf
+         MvNuwTTsUohC6Gl9fxk1Ht9f+can/97ynhHpqLG5yqYgacLSH3WmHgLyms7W2r+4/8ge
+         Rv8vL+lky1PmReD4A64pmbQ0PrGSYpkEG5XH3JXO2oboJjAVr7ur1CJhuZrZQASZm286
+         OiUghaaLtf3Iz9xrR4mjFTwDMWXIXO/H/8j7IpJFMvcccQLr1ZrL76CU4/1JxVGqQK0d
+         PjsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791399084; x=1792003884;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=X71f5KGOL/rbhedaUKsgXlp/Wmx4B13NNF0vqiORCgc=;
-        b=vYaXxLspC27tYRD4392V/B2xuWZLtmGKKJ1AzJ3EGRWbJY/73XUNhpuIzbqsRGM3fu
-         X4QA23ycQS1EyPemTx104vWn+8g1F1+lWBcPBuYMEEv71K03vKwlsDqD0vn2d7W0vuLj
-         Peshr/Kzl9T23wpGNOY6ToZoxGkT/DTtG5jACktBT+lIhvHQ/LAI6PMeFsx5KOw2fVD4
-         dmwPkTgM0eeRs8zlBfM+btgQ1zifJTtMw0Nug1QyZ1HZStbr3vojomJ7OJEzS2JC6B4X
-         wRcuEKKSqho3wWiDrNKjBVtDKp9cbP9U/AqRebM/Kg39uNRuOGKcZlo2z7EM+YLX2EuJ
-         5v4w==
-X-Gm-Message-State: AFq9FYLVU5vvx1q0AzKdWDN5VB3UgfasK89m4ioPY2udJJC01hjXBLCu
-	1Nq7UlpO4pynJbrn9W8wQT1i11vEzkPzQvNpPwGSY8rFw96aS9S0TqXQ
-X-Gm-Gg: AYBFou2Q6klh+d6vaO8ZMyu3Uy7oUUVC1SJG1wyrWjb+GJkTUsNT7MhlxBIiK4JlEt0
-	PPZiXKKPQzqvoPydCa/5sw4c0kp1+REaYhy5q0joCJ1i8BwAxQPl0sQKpb/LAUNrB8udMBO4Tf6
-	WrOalht8kSAol0ThNh7AqvoAxLmr98WCRAf/25Hn0yCfiI0eXnrE+LFFCjrWYNbseph4bD+kn9r
-	5/iIqW/6i3/5Bdx3Z1gTB4ot8DCorcgnuneiIZJ2cCWsv5PgxU8ME/MRNtOGoVWWk5/lem9v9Gx
-	HWAdSkQEIhHo+NYACFGac4/+k4Aqz/s1ERo/5zN9aoTRN8BkFACablM9ymTmwfohDz43W4cgP1t
-	Of47dylAL4/xLsvlQ0lHZ4YstmUBq4Vzopl5lTLJfo/qdIrOucjHOPTELZN5bK/yRhdbtzIdalf
-	tdQapOAPXUzDO5FGeioXG/H9PI2s98uIVYCuOQExuf6xsSGmJV38CEx6U7imFIGuP8
-X-Received: by 2002:a17:90b:1812:b0:3a4:b061:2765 with SMTP id 98e67ed59e1d1-3a8a072a80dmr2823533a91.15.1791399083918;
-        Wed, 07 Oct 2026 11:51:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:4e::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9f1a23c82sm754330a91.1.2026.10.07.11.51.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 11:51:23 -0700 (PDT)
-Date: Wed, 7 Oct 2026 11:51:19 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Eric Dumazet <edumazet@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Subject: Re: [PATCH net v2] xsk: freeze deferred pool teardown without
- blocking unregister
-Message-ID: <asaTvPO05EpmUEgN@devvm7509.cco0.facebook.com>
-References: <20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com>
+        d=1e100.net; s=20260707; t=1791399092; x=1792003892;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TXsJrdMn+N59pnyS3VP8BExu6tp+oaLWpwNwDbsGihY=;
+        b=y2/pFUkR6De/kcEyEmEA3zunCTzXhaK/pmKepnl0Bar5aoGoz6RU5HjLcXczPUDyVq
+         5LFEDXTHdpH1utwRXMzPaAVt+a/8337l4XujH/YrW3gqVB/jTtSaov/h5/lQWcU3OgFG
+         O1WFV+RW38gOuYMeAKEtp65qGb3f0Qvn9oeQJmgdxMl8YJKcZdRM5JvQHDslY9+XJdSm
+         nZ7kLjT++WdJrl7FMnvacMYPP128sZJ+E62agT/4ku8wrhi9C/uqXMGX7CBCP6E3+oxT
+         NUlovNCCz+QsvwhVxS/hjRABAn8hsMcxiXUYCNKOfpeA5bHhUua+CqpHY4YbSpg6+mNX
+         eLCg==
+X-Forwarded-Encrypted: i=1; AKwUvBxzz4cwqbEhecXvAoEdL4ytZecXefCSkF9iqBWvWQ9ENCu+BRSxw0EkUGamMYBMK47jiqGOUcA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mToNqSGNUGDa59Mufjh8SVa1iMD6jaD7EGIcmcCMBW2hWTHRkL
+	JyBAlIn6Qk77kbzMTdzNNrnT3nbmU5zPilZyVgh6+nB4lxvdSOrPte0ZRzL/zaTBh6fGNfx8Da9
+	Np+ABwvjhUTlBIzBZweqer4V+2SZg0ArfHF5MqWlAToTZeZ+KCKNXMyB87g==
+X-Gm-Gg: AYBFou0HDllNXhCMLsFq5FDwM4s3gWU1LcTMULni7+7lQJlIEKvBAKU5wZdznHGAVtC
+	PRSDcCA4fqRBgAPI6F8N2nkkg4ark8NwBgeO07TwKnQvZCtIxLll1IE+670zsvhxI4IuMLBACof
+	RXwy1P+LvrRYj1G2BhWf3qSTNrB6QSCIYLwNRTHfFXmWvs1aFckvrl6uFrTs2NxgLcmoEAcZud0
+	TTM4gjUhT6+9mOIuN0UFootj44qhBnVLw27/601zNfaP2fuIG5QoYQ8cxR6Aq9ZarHUPFsFqWAB
+	YimmWwI3MUIt2+ehxmhNreBD6xTtquLMe6Oixaex+hRz/J/noHJRSOl1kjCQGyCNx2XjaOqbdw=
+	=
+X-Received: by 2002:a05:600c:821a:b0:4a0:1e68:d28d with SMTP id 5b1f17b1804b1-4a180303f9cmr53468885e9.6.1791399092531;
+        Wed, 07 Oct 2026 11:51:32 -0700 (PDT)
+X-Received: by 2002:a05:600c:821a:b0:4a0:1e68:d28d with SMTP id 5b1f17b1804b1-4a180303f9cmr53468495e9.6.1791399092075;
+        Wed, 07 Oct 2026 11:51:32 -0700 (PDT)
+Received: from [192.168.2.75] ([46.175.183.46])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1843dfb3bsm11458295e9.13.2026.10.07.11.51.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Oct 2026 11:51:31 -0700 (PDT)
+Message-ID: <d4ece13f-6f4b-4eda-8175-b857fe48a5f2@redhat.com>
+Date: Wed, 7 Oct 2026 20:51:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 1/4] dpll: zl3073x: reject output frequencies with
+ too small divisor
+Content-Language: en-US
+To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
+Cc: Min Li <min.li@microchip.com>, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>,
+ Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+References: <20261006153116.347497-1-ivecera@redhat.com>
+ <20261006153116.347497-2-ivecera@redhat.com>
+From: Petr Oros <poros@redhat.com>
+In-Reply-To: <20261006153116.347497-2-ivecera@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 10/05, James Hilliard wrote:
-> Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
-> not frozen during system sleep, so that callback can run after a
-> device has suspended and gated its clocks. Use system_freezable_wq
-> so running destruction finishes before device suspend and new work
-> waits until process thaw.
+
+
+On 10/6/26 5:31 PM, Ivan Vecera wrote:
+> The output divider has to be at least 2. In N-pin divide mode the
+> per-output divider must be 2 or more and the N-pin is divided once more
+> (also by 2 or more), so the N-pin needs an effective divisor of at least
+> 4.
 > 
-> Keep assigned pools visible to NETDEV_UNREGISTER independently of
-> the socket list. A released socket has already left that list, but
-> its final pool put can queue destruction after workqueues freeze.
-> A resume-time unregister would then wait for a device reference
-> whose release cannot run until the resume completes.
+> zl3073x_pin_check_freq() only checked that an output frequency divides the
+> synth frequency, so it accepted frequencies that would require a smaller
+> divisor. Reject them: require a divisor of at least 2 for normal outputs
+> and the P-pin of N-divided outputs, and 4 for the N-pin. Also reject a
+> zero frequency, which would otherwise divide by zero.
 > 
-> Track assigned pools per netdev under RTNL and detach remaining pools
-> after the notifier socket walk, including copy-mode pools. This also
-> covers leased queues without scanning pools from unrelated devices or
-> network namespaces. Remove the entry on assignment failure and normal
-> teardown. The deferred worker still owns the pool and later observes
-> the cleared device pointer, avoiding a second driver detach or put.
-> 
-> The lifetime problem was identified by code inspection of the deferred
-> release and system-sleep paths.
-> 
-> Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> Fixes: a99a9f0ebdaa ("dpll: zl3073x: Read DPLL types and pin properties from system firmware")
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 > ---
-> Changes in v2:
-> - Track assigned pools per netdev instead of scanning a global pool list.
-> - Keep deferred releases visible across queue changes and queue leases.
-> - Rebase onto current net.
-> - Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
+>   drivers/dpll/zl3073x/prop.c | 29 ++++++++++++++++++++++-------
+>   1 file changed, 22 insertions(+), 7 deletions(-)
 > 
-> To: "David S. Miller" <davem@davemloft.net>
-> To: Eric Dumazet <edumazet@kernel.org>
-> To: Jakub Kicinski <kuba@kernel.org>
-> To: Paolo Abeni <pabeni@redhat.com>
-> To: Simon Horman <horms@kernel.org>
-> To: Andrew Lunn <andrew+netdev@lunn.ch>
-> To: Magnus Karlsson <magnus.karlsson@intel.com>
-> To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> To: Stanislav Fomichev <sdf@fomichev.me>
-> To: Alexei Starovoitov <ast@kernel.org>
-> To: Daniel Borkmann <daniel@iogearbox.net>
-> To: Jesper Dangaard Brouer <hawk@kernel.org>
-> To: John Fastabend <john.fastabend@gmail.com>
-> To: Björn Töpel <bjorn@kernel.org>
-> Cc: netdev@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: bpf@vger.kernel.org
-> ---
->  include/linux/netdevice.h   |  5 +++++
->  include/net/xsk_buff_pool.h |  3 +++
->  net/xdp/xsk.c               |  5 +++++
->  net/xdp/xsk_buff_pool.c     | 25 ++++++++++++++++++++++++-
->  4 files changed, 37 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 3cff2174dc03..72091938f6e6 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-> @@ -2545,6 +2545,11 @@ struct net_device {
->  	/* protected by rtnl_lock */
->  	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
->  
-> +#ifdef CONFIG_XDP_SOCKETS
-> +	/** @xsk_pools: assigned AF_XDP pools, protected by rtnl_lock */
+> diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
+> index ac9d41d0f978..a4bdc3878590 100644
+> --- a/drivers/dpll/zl3073x/prop.c
+> +++ b/drivers/dpll/zl3073x/prop.c
+> @@ -22,7 +22,8 @@
+>    * The function checks the given frequency is valid for the device. For input
+>    * pins it checks that the frequency can be factorized using supported base
+>    * frequencies. For output pins it checks that the frequency divides connected
+> - * synth frequency without remainder.
+> + * synth frequency without remainder and that the resulting divisor is within
+> + * the range supported by the hardware.
+>    *
+>    * Return: true if the frequency is valid, false if not.
+>    */
+> @@ -30,7 +31,7 @@ static bool
+>   zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
+>   		       u8 id, u64 freq)
+>   {
+> -	if (freq > U32_MAX)
+> +	if (!freq || freq > U32_MAX)
+>   		goto err_inv_freq;
+>   
+>   	if (dir == DPLL_PIN_DIRECTION_INPUT) {
+> @@ -41,18 +42,32 @@ zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
+>   		if (rc)
+>   			goto err_inv_freq;
+>   	} else {
+> -		u32 synth_freq;
+> -		u8 out, synth;
+> +		const struct zl3073x_out *out;
+> +		u32 synth_freq, div, min_div, rem;
+> +		u8 out_id, synth;
+>   
+>   		/* Get output pin synthesizer */
+> -		out = zl3073x_output_pin_out_get(id);
+> -		synth = zl3073x_dev_out_synth_get(zldev, out);
+> +		out_id = zl3073x_output_pin_out_get(id);
+> +		synth = zl3073x_dev_out_synth_get(zldev, out_id);
+>   
+>   		/* Get synth frequency */
+>   		synth_freq = zl3073x_dev_synth_freq_get(zldev, synth);
+>   
+>   		/* Check the frequency divides synth frequency */
+> -		if (synth_freq % (u32)freq)
+> +		div = div_u64_rem(synth_freq, freq, &rem);
+> +		if (rem)
+> +			goto err_inv_freq;
+> +
+> +		/* The output divisor has to be at least 2. For the N-pin of an
+> +		 * N-divided output the effective divisor also includes the N
+> +		 * divider (>= 2), so the minimum is 4.
+> +		 */
+> +		out = zl3073x_out_state_get(zldev, out_id);
+> +		if (zl3073x_out_is_ndiv(out) && zl3073x_is_n_pin(id))
+> +			min_div = 4;
+> +		else
+> +			min_div = 2;
+> +		if (div < min_div)
+>   			goto err_inv_freq;
+>   	}
+>   
 
+Reviewed-by: Petr Oros <poros@redhat.com>
 
-Can we mark this as being ops protected (net_device::lock) ?
-xp_clear_dev calls netdev_lock_ops, but xp_assign_dev
-has netdev_assert_locked_ops_compat, so maybe there needs to be a bit more
-care. We don't want to add new ASSERT_RTNL if possible (and extend new
-netdev lock semantics).
-
-The rest looks good.
