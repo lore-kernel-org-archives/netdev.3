@@ -1,146 +1,91 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E5E1EE7C6
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 20:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4543E49C0;
+	Wed,  7 Oct 2026 20:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791404607; cv=none; b=M3SKvotCwYFo/eAlbl+PIIiMdBKhRu9E/sicB7bNJhu0iiwUxQK0EVQH82TvdzM/FkNGHm0jr7KfncYrThQ0B+ZJyQBz7ucxpBZMFMKZGIYWTOdRsGDNzGC6e5aBQWQIjuZpkNtn7sE9NCJWZ/LGOIrBGJge9eQkhyTfZ7d3THY=
+	t=1791405357; cv=none; b=am137OxuS2r5Ha/MEhjxWCYKcQB6FTsfGwe5OU4nihJ7t7Zjd9J+X/478f7XolAcztcsh5+mjCtz9i0hht9KVxD0HYqZ0FAclb4n7PavboMlNCqfUr8G/wZBTTm9casr+tRkffn718XK2YJfWUrxQgSrIfC5HqHdQhn4qcxnjrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791404607; c=relaxed/simple;
-	bh=3jt+5FtRz6e1tCgCtwGri+4Lp4PI5u1JFl8ZGDIJdbM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jel5P2XS/GU45dXa1wUQvtWz+NVm/Qn44fPYO7muoLifvZ00obNTruu3MSueYKM5l1WGjDH+KZTWWrNzRGcAXaPQwVxSPaRQNwUZlO0juAT0An7Etg7KzI2lnjj4dIgQ8cX/41lrE312tEKgK0VpXZvjyA2IsHc5MVB8Gi79UUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A76Aehfs; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791405357; c=relaxed/simple;
+	bh=CrQMPQuIrP3UT/xnSnr7TdUvHO25V4vTzGjDeiouuHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LLq7bOAJp3dmg2pqvVYLzen3jP4hVTGmHYaXJxle3VXv2Vducjg2GMs3+e2QUWQoskMiIw7HP4ra36ZWNdXGgm0uZiZGR15hdapQhdOFqIJ7Vu8NikX+uV4+3kz+lytO12+XJZtwOBdaT2wZDlEORv2sL9RRYJXMUXgYQSjTcd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAnTrrZ9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A76Aehfs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64281F008A0
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 20:23:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAnTrrZ9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAFC1F000FF;
+	Wed,  7 Oct 2026 20:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791404606;
-	bh=a47jPiOkL7aWI9ip0LbLLz0CKtkQQBrXCYrRxSS2YLQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=A76AehfsEYL3HheyeK8R64HIHOvrBGn8yjRvPTang8fqSq4MCB2CcMAjsFtvArsZt
-	 6AMijk40wAF6JmAX/xRflRIXL5GoLNe5yDa3DZOdLJuwl/ydz+kk1Q4tdBLGtU7FjS
-	 7+qjPlpFMqpNZiSQUyNj2bEY6gSwKblSgv3zxbL0SfGIPS0NYyIjKq32aISN1iIr5q
-	 RET4k40TwecuFfQ6WEZFcbJ3sjAdfqTTRc9fR27sQPVC/vAtoQ/Z/9mFn+DjsqFUbC
-	 wG/r+ChmqTCkYOJExj2K7uJKSZHRRJolvhNAaZHsWFjUfThxnlVCRjXcecg5NgcFhu
-	 tSI5JHQbQy1XQ==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-49e08af5fd4so2027083fac.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 13:23:26 -0700 (PDT)
-X-Gm-Message-State: AFq9FYLZ8gzBtdrvWx2lbfwwu3Gvbdhc2JdvR/8znhkZugj0uI4yfG4d
-	Ef8FDvJlD0n+/DdJd1gIzLMt/P7xtsUM4rk8n48tkR/rSzci57WUfwg6LfiaD46QJF84kGOzwwl
-	0GQMl0BbiCQa6ZD5lpIzn3AzdeeSd4sY=
-X-Received: by 2002:a05:6871:c8ce:b0:492:d8bd:949d with SMTP id
- 586e51a60fabf-4a2591dda52mr3103729fac.2.1791404605866; Wed, 07 Oct 2026
- 13:23:25 -0700 (PDT)
+	s=k20260515; t=1791405356;
+	bh=iBnT7QbK9u0Gs8c95AjLx+P8e034rEiTzbi8S3Cwpwc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EAnTrrZ9FBxijRk+eVs2T8pzlvv92TXfyUbTV4OOYhJre5ukKSsgV9PDEl3ZM+B/D
+	 UohnG4dEbUub4MM3HZ38Jz8NzciIgVZ3pdUwgnYDSHNfCyok4rFESVz8jIPMAOt+lm
+	 dLJi2vVZjTU6/qHvBm1tgWJ5EH9e6YdQCeJgHq57YAs7cqBq9Bu2WMWUiaYh+CFRoj
+	 kDX9aClQniHp9CYj9DR1YS1/4rwJcuF7H5sDiaNL3ZG/MiyEpfTNQBayP8HMjRxGEP
+	 VTC5XO9OIp2tx4YpIPk5+pAQ737aGag1CtbkztZTAz3ll2Rl2Z/egQvBmn+7T+ZbIy
+	 XKqbZAf0OIRNw==
+Date: Wed, 7 Oct 2026 15:35:55 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+	Josua Mayer <josua@solid-run.com>,
+	Eric Dumazet <edumazet@google.com>, Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	pierluigi.p@variscite.com, Sascha Hauer <s.hauer@pengutronix.de>,
+	Joseph Guo <qijian.guo@nxp.com>,
+	Stefan Eichenberger <eichest@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, Conor Dooley <conor+dt@kernel.org>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Subject: Re: [PATCH v4 05/13] dt-bindings: net: micrel: Fix RMII clock select
+ property type
+Message-ID: <179140535486.208329.1445143309084105314.robh@kernel.org>
+References: <cover.1790693249.git.stefano.r@variscite.com>
+ <9a0f70dc168278a484bb336835bf2e419a9d089d.1790693249.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261007180056.1394868-1-jkain@nuro.ai>
-In-Reply-To: <20261007180056.1394868-1-jkain@nuro.ai>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Wed, 7 Oct 2026 22:23:14 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipPRh_=aWcHF1+JuKQno8AR-V1bf=yDfgaPQbTDvsOWSw@mail.gmail.com>
-X-Gm-Features: AclHuK86Q3lEDlVLZ6eCmdvtc6y2K46nwVmAQ0ck-jGa06hCicXz3-obsFcTwL0
-Message-ID: <CAL4WiipPRh_=aWcHF1+JuKQno8AR-V1bf=yDfgaPQbTDvsOWSw@mail.gmail.com>
-Subject: Re: [PATCH net] net: do not let defer_count outlive an empty defer_list
-To: Joseph Kain <jkain@nuro.ai>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de, 
-	clrkwllms@kernel.org, rostedt@goodmis.org, linux-rt-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9a0f70dc168278a484bb336835bf2e419a9d089d.1790693249.git.stefano.r@variscite.com>
 
-Le mer. 7 oct. 2026 =C3=A0 20:03, Joseph Kain <jkain@nuro.ai> a =C3=A9crit =
-:
->
-> __skb_defer_free_flush() can leave defer_count at or above skb_defer_max
-> with an empty defer_list. That state is absorbing: every producer then
-> takes the nodefer path without queueing, so the list never refills, and
-> the flush keeps returning early without clearing. Deferred freeing stays
-> off for that (cpu, node) until reboot, and cross-CPU frees fall back to
-> the page allocator, which is the contention deferral exists to avoid.
->
-> Two changes from commit 844c9db7f7f5 ("net: use llist for sd->defer_list"=
-)
-> combine to produce it.
->
-> skb_attempt_defer_free() now increments before testing the limit and does
-> not undo the increment when it rejects, so a rejected free leaves the
-> counter raised with nothing queued.
->
-> The flush clears defer_count before llist_del_all() rather than together
-> with it under defer_lock as it did before. A remote producer that queues
-> between the two has its skb drained by that same llist_del_all() but its
-> increment retained, so the counter drifts upward until it reaches the
-> limit.
 
-This is not cumulative: the next flush finding a non-empty list resets
-the counter. To get stuck, (skb_defer_max - 1) increments must land
-between the clear and the drain of a single flush. With small limits this
-needs nothing special, but with the default of 128 the flusher has to be
-interrupted or preempted at that point. Please reword this part and the
-"needs no preemption at all" paragraph.
+On Tue, 29 Sep 2026 17:17:32 +0200, Stefano Radaelli wrote:
+> From: Stefano Radaelli <stefano.r@variscite.com>
+> 
+> The binding describes micrel,rmii-reference-clock-select-25-mhz as a
+> boolean. dt-schema requires properties ending in -mhz to contain an
+> unsigned integer value. A bare property therefore produces a
+> property-units.yaml type warning.
+> 
+> Describe 25 MHz selection as <1> and keep the property restricted to
+> KSZ8021, KSZ8031, KSZ8081 and KSZ8091 PHYs, which have the RMII
+> reference clock select bit. The driver checks only for the property
+> presence, so this does not change runtime behavior.
+> 
+> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+> ---
+>  .../devicetree/bindings/net/micrel.yaml       | 27 ++++++++++++++-----
+>  1 file changed, 20 insertions(+), 7 deletions(-)
+> 
 
->
-> Neither needs PREEMPT_RT. The drift needs no preemption at all: the
-> flush normally runs in NAPI poll on the CPU that owns the list, while
-> skb_attempt_defer_free() only ever defers to a remote CPU, so producers
-> cannot be excluded by disabling preemption on the flusher. PREEMPT_RT
-> only widens the window, because local_bh_disable() does not disable
-> preemption, so the flusher can be scheduled out between the clear and
-> the drain.
->
-> The latch is also reachable with no race at all:
->
->   sysctl -w net.core.skb_defer_max=3D1    # frees increment, then reject
->   sysctl -w net.core.skb_defer_max=3D128  # does not recover
->
-> skb_defer_max has .extra1 =3D SYSCTL_ZERO and no .extra2, so 1 is settabl=
-e.
-> 0 is safe, because proc_do_skb_defer_max() flips skb_defer_disable_key
-> and the producer returns before incrementing, but that guard covers 0
-> only. Recovering from the latched state needs a skb_defer_max above the
-> accumulated count, which an operator has no way to determine.
->
-> Drain before clearing, so the error can only under-read, is bounded by
-> the producers in flight, and self-heals on the next flush. Clear the
-> counter on the empty-list path as well, so no count can outlive an empty
-> list and an already-stranded counter recovers.
->
-> llist_empty() has already loaded that cache line, so the added read is
-> free; the unlikely() keeps the store off the hot path, where it would
-> otherwise bounce the line against remote producers.
->
-> Found on an arm64 PREEMPT_RT system running the two commits backported to
-> 6.1. With skb_defer_max lowered, defer_count reached 788,888 on one host
-> and 122,399 on another with the list empty throughout, and restoring the
-> default did not re-enable deferral.
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
-Not sure if this paragraph is needed?
-
-Lowered to which value? Have you seen this with the default?
-
-If the value was 0, note that kernels without commit 08dc30de1a40
-("net: add skb_defer_disable_key static key"), i.e. 6.18 to 7.0, have the
-same issue as your skb_defer_max=3D1 example: setting 0 and restoring the
-previous value leaves deferral disabled. This is worth mentioning, since
-0 is the documented way to turn the feature off.
-
-Please send a v2 with these changes (but please wait ~24 hours before V2)
-
->
-> Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
-> Signed-off-by: Joseph Kain <jkain@nuro.ai>
-
-This is your first linux contribution, are you sure you have not used an LL=
-M?
-
-( See Assisted-by: LLM) tag in Documentation/process/coding-assistants.rst
-
-pw-bot: cr
