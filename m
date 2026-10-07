@@ -1,94 +1,89 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD284E0B6E;
-	Wed,  7 Oct 2026 18:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E134737E2F9;
+	Wed,  7 Oct 2026 18:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791397788; cv=none; b=kEGSkB0gaGaQn+iMpnAko4lT+dAMS6VWWBgvDao6vXh9ImXJ2bDAnaPBtYcpR944Z3Jb6tJWcRzbfNII+aQqejFCq1gkmduaFtKX+WBhdh5O+GuopPegpYMEtbvlnpjvKPWOyM7kKTUd11n+IWeudwYwmIIdYJ+dJ553fFVPNgg=
+	t=1791397812; cv=none; b=YOZBPBNra70eClFChYXsSwohN2XEMC9XnOJ2jFutCvHzVuMmfxr8oaHDMS681sPGaUyDNydqr5FijxIiljCfMNHgDgNmjIEbW6PJ770Oo++QVIIWWtnXNrPFIELVmdoZLcogJYMzPTpDjs+Ns2UhPBb1srQb28tH9akzDvXfC/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791397788; c=relaxed/simple;
-	bh=zSw4MvkKTAyxu2Chr4JiaTHB9/UhfdQZiXE9PiL5x9Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aB8ALA7jhVSHoL+lwvXxTdWC3cPWvYUZ2oVct4ZwZ4S/QBistfZYzvD8nsrz580ufaHn/l2J1ZHElrvJLujlFzSPkeHfEcGp6cfLQDU9FLP6fd7by/HxPN4npqTiRNH24RsVMV179QeFKV9tD/ZXBjdOtGPbdWqgMbdJRT3teGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=LwzuGWoN; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1791397812; c=relaxed/simple;
+	bh=xWC25x4xH0iLUvtj4YPbwHZyVM6sp7MPWnevj1rn5F4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AK/OwyEtKnkiWVgsSnznOYvU3i5wzmhp9knFvlI6p+jYDMGY7e+sl85uHVPN6VQKCJZs+171PZBUQqJmPDATHvB8m64cmmbdixQT0WbpcH0q61Ddo3gxhYOS+07Wrste5PpvSZTJqKPObitnc+mRWW5Ljh8O6KccM40XsOv/6EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=v76pyrGv; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="LwzuGWoN"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2101EA154E;
-	Wed,  7 Oct 2026 20:29:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791397783; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+vwzImBllyc3KkMfgkhrOwCBUwVrLqdZ+ruuZlAUn4g=;
-	b=LwzuGWoNsgTkxuu+VoKQ2EDZKSS4AXl1JK/uAQ7DmkdAgXNErOy9H2t1+mSO6fqWGwzesb
-	hlfHio3Lolq8R69IG/jBZEAF8jgRHBktf1HHA31KxMti4X+vyc+3arr2OmYKrfRB3/iM5I
-	Gh+Y1j3gRBrbWuaPf64nqp5XInEiYy/7eK0sUVkNkIJPz9MLspsQCj2sDOm4V0CLUV732N
-	YiyLxnvWcLLlN67YRiHSbRyReJnAH5fZESJcandycRY63SKtPl1C9r2ECzvU6WVJ3aDf9g
-	f0t6PoCh+T4CHtcBTmHU+vsBHpsLeCIdk30ZuSqAV/7XnH6UXI96+nY0BMIh6g==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Wed, 07 Oct 2026 20:29:24 +0200
-Subject: [PATCH net-next 3/3] net/mlx5e: use skb_share_check() in the
- loopback selftest hook
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="v76pyrGv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sBNBpZixlBU4GxqSEXrG8hNTzC/ZM2X1DZIQCPTIlb8=; b=v76pyrGvWVEF5gRes0UyRmEggY
+	u7Hg+t1v7zJwaV+Ep9Yr+llRzFOO/75GqRA62jOPv4GEm0tg6Tzv+sAd2/2iWPKBRZQfZ2gU24VzB
+	blkpUNxJkD8LB0ZGfqLwytQAg30xBNuOL2oD/Md050NNU99ZxnUQOUBvxU5+XLrSD74U=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xEWOn-009V7T-UJ; Wed, 07 Oct 2026 20:29:53 +0200
+Date: Wed, 7 Oct 2026 20:29:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Piergiorgio Beruto <Pier.Beruto@onsemi.com>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	Jerry Ray <jerry.ray@microchip.com>
+Subject: Re: [PATCH net-next v8 10/11] onsemi: s2500: Add driver support for
+ S2500 MAC-PHY
+Message-ID: <bc2ffbe6-f258-4b9a-9377-c9d47b45c947@lunn.ch>
+References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
+ <20260928-s2500-mac-phy-support-v8-10-7e011aacc309@onsemi.com>
+ <1203b096-456b-45b0-9c2c-bbea2b0098b6@lunn.ch>
+ <CH0PR02MB786708E230F4E1AF3B0882E383942@CH0PR02MB7867.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261007-nb-net-selftest-shared-net-v1-3-458369bfa1ba@tipi-net.de>
-References: <20261007-nb-net-selftest-shared-net-v1-0-458369bfa1ba@tipi-net.de>
-In-Reply-To: <20261007-nb-net-selftest-shared-net-v1-0-458369bfa1ba@tipi-net.de>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Jose Abreu <Jose.Abreu@synopsys.com>, Saeed Mahameed <saeedm@nvidia.com>, 
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
- Leon Romanovsky <leon@kernel.org>, Dragos Tatulea <dtatulea@nvidia.com>, 
- Alexei Lazar <alazar@nvidia.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org, 
- Nicolai Buchwitz <nb@tipi-net.de>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CH0PR02MB786708E230F4E1AF3B0882E383942@CH0PR02MB7867.namprd02.prod.outlook.com>
 
-The loopback hook gets a shared skb when another ETH_P_IP handler is
-bound to the device. skb_linearize() on a non-linear frame then hits
-BUG_ON(skb_shared()).
+On Wed, Oct 07, 2026 at 06:27:05PM +0000, Selvamani Rajagopal wrote:
+> 
+> > -----Original Message-----
+> > From: Andrew Lunn <andrew@lunn.ch>
+> > Sent: Tuesday, October 6, 2026 6:54 AM
+> > Subject: Re: [PATCH net-next v8 10/11] onsemi: s2500: Add driver support for S2500 MAC-PHY
+> > 
+> > 
+> > 
+> > > + /* RX bytes is a 64-bit value that is stored in two regs */
+> > > + *(data++) += ((u64)*rptr) | (((u64)*(rptr + 1)) << 32);
+> > 
+> > Is it guaranteed by the hardware these two words are read atomically?
+> 
+> 
+> Yes. When OCTETSRXL (lower 32 bits) register is read, OCTETSRXLH (higher bits) are sampled and stored in the register.
 
-Call skb_share_check() before linearizing the skb.
+Great. Maybe add a comment saying this.
 
-Fixes: 95b9606b15bb ("net/mlx5: Extend Ethtool loopback selftest to support non-linear SKB")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-index 1dcdb86690bb..8eb9a9469549 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-@@ -166,6 +166,10 @@ mlx5e_test_loopback_validate(struct sk_buff *skb,
- 	struct udphdr *udph;
- 	struct iphdr *iph;
- 
-+	skb = skb_share_check(skb, GFP_ATOMIC);
-+	if (!skb)
-+		goto out;
-+
- 	if (skb_linearize(skb))
- 		goto out;
- 
-
--- 
-2.53.0
-
+	Andrew
