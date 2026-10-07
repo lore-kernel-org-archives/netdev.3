@@ -1,155 +1,108 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C174BB29A
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 15:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BC83815F3;
+	Wed,  7 Oct 2026 15:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791385225; cv=none; b=Efgd9zW85hfDHjNQa8pDHf1V/HwR/Wmwh+QZEvweOm7cUG74K5pgbZJNSFp1iDpqv46gON92JsUvlzwOSQABSKXGAXzr6XI/+olyxtxPhs4mK3Guz/wK6VktRe4amdKzbHv99pojDnsW6Ufwx7LtAKC6Akag8a0Yc7ZBLatUdao=
+	t=1791385420; cv=none; b=jzqFZXRD797U6FlT4T7CYtrh+/L5vtrXugSCopQinTw7RTQwhBhQYbUw+V5lQ1QTL82w4Zc03abL9GlJcR6w4vFOSeWeTZOZVUTHs5BQAezhaJs3GbKr8dZfHhhlgIyhisFgcrGYHXAj/AvPQ4Gjo16ziwqiWoutgP/6JG0phe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791385225; c=relaxed/simple;
-	bh=G76zBPF5TjpzhHP008Ppuq7rGi4Oh3NJr3mZdHZ6BbI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GUd9+pgeQ5hfgSPyikpPivT4T8HihuoMnWk8oQpRBRNlKooFntMK7OvyuQIOw7qS2mVi3/+O4+vU0+NA/5ElkCqfhv+GSTx/chAH7sGYc+lg20JSzimho9zzYmsrdg2bQVVD1x9MDKlRvwFm0y8uYgAXjxUMIgUsBksi4L4P/Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cIU6WXoY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2/1+t7zz; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=cIU6WXoY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2/1+t7zz; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1791385420; c=relaxed/simple;
+	bh=bRxyAyeMyuT8X1aAIHRubCtQCl/UpGFQpunpCnzKtNs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=mkQecn7BaGe/0zoCSfj2EJ/yiwkcj/qwR12KNymWGnBSBpfVL74WsOL23bwZjm4C5pvc+EmfM+v/vh7JZ3SRk/K6W2fiWin4MderZtcbRxkcdXwhrt1RaQR4gETajmASBABixy7+xgjduokiVK+djiPUB7UzfuumIvJJ5xXpFP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=V3+qzj3I; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cIU6WXoY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2/1+t7zz";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="cIU6WXoY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2/1+t7zz"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3028E1F38E;
-	Wed,  7 Oct 2026 15:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791385205; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w80dgYPSS45qRc1JEm1pGFFYGt+E5Kke5+EAa6khtW0=;
-	b=cIU6WXoY6rhLxnTSY+62ldSCqQfK/qCQCAYuE5UAVbdUCqLMmj9jBrqI355ze5SScKu5i4
-	PZVKkLfP05prp9s4nDEGoWW8AZIcihTiXfgJjptG5VZQaAfcl1/u4Tp4+9j0iAen+Ogvbu
-	WMG5KVRBsMvftUahmaEV89FUpxUQoMc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791385205;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w80dgYPSS45qRc1JEm1pGFFYGt+E5Kke5+EAa6khtW0=;
-	b=2/1+t7zzBDES/TXMw2j1UCi1Ywva5bUQGV7GaVNo7J2dgtwdskRod6Y69KEkXPjxJ41meq
-	kPfmnHSxT4PVtMDQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1791385205; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w80dgYPSS45qRc1JEm1pGFFYGt+E5Kke5+EAa6khtW0=;
-	b=cIU6WXoY6rhLxnTSY+62ldSCqQfK/qCQCAYuE5UAVbdUCqLMmj9jBrqI355ze5SScKu5i4
-	PZVKkLfP05prp9s4nDEGoWW8AZIcihTiXfgJjptG5VZQaAfcl1/u4Tp4+9j0iAen+Ogvbu
-	WMG5KVRBsMvftUahmaEV89FUpxUQoMc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1791385205;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w80dgYPSS45qRc1JEm1pGFFYGt+E5Kke5+EAa6khtW0=;
-	b=2/1+t7zzBDES/TXMw2j1UCi1Ywva5bUQGV7GaVNo7J2dgtwdskRod6Y69KEkXPjxJ41meq
-	kPfmnHSxT4PVtMDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6231F13354;
-	Wed,  7 Oct 2026 15:00:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RQ8RD3RexmplbwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 07 Oct 2026 15:00:04 +0000
-Message-ID: <41e10839-ec8d-4509-a6b2-45e009b9232c@suse.de>
-Date: Wed, 7 Oct 2026 16:59:09 +0200
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="V3+qzj3I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791385413; x=1822921413;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=bRxyAyeMyuT8X1aAIHRubCtQCl/UpGFQpunpCnzKtNs=;
+  b=V3+qzj3IfCtl1x/BmNx52rZEG86asodQsl3Ta5VpuHuCwaSBMFjjCRGt
+   xuI3pxzPuczcBdAq4AriQ5WoCjvH+dq8YpXydq3WcxJl6FtvIEfYVKUpv
+   KXrEpMR+WNVYwhTLtEr0JFA9XotboxkZh5/ksG1BcL9EVDHTmT1Na6Twk
+   Mo3Z4bfpqyiNXAurynrnoRkH8ikGCeow3SyJFhXtMv0DOd6s6Xshs7h/5
+   sieLNnN/KLWfm2SytMPXLdZ62ZOoV4ZhNhlmoncMXZmXe1LM79iN9hzch
+   usTbkI5bRwoDpu8jDNz1XdoRnPAi4wE/SIgoDlExGn1alAE7DoupV2zBF
+   Q==;
+X-CSE-ConnectionGUID: lFivHuwqSOyVpuk07g+c1A==
+X-CSE-MsgGUID: s4qJiHJATZuOqn//qTJG4g==
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
+   d="scan'208";a="296120675"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Oct 2026 08:03:33 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 7 Oct 2026 08:03:32 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 7 Oct 2026 08:03:30 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Date: Wed, 7 Oct 2026 17:03:15 +0200
+Subject: [PATCH net] net: sparx5: free the matchall entry on destroy
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 0/9] net: skbuff: convert most BUG_ON()s to
- WARN_ON_ONCE() and an error
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Josef Bacik <josef@toxicpanda.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Kaiyuan Zhang <kaiyuanz@google.com>, Mina Almasry <almasrymina@google.com>,
- Willem de Bruijn <willemb@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-References: <20261006-b4-skbuff-bug-on-v1-0-1b4434c5357c@toxicpanda.com>
- <willemdebruijn.kernel.140f4eac91ab3@gmail.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <willemdebruijn.kernel.140f4eac91ab3@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-Spam-Score: -2.79
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.79 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	TAGGED_RCPT(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_TO(0.00)[gmail.com,toxicpanda.com,davemloft.net,kernel.org,redhat.com,google.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+Message-ID: <20261007-sparx5-matchall-kfree-net-v1-1-c8918685b337@microchip.com>
+X-B4-Tracking: v=1; b=H4sIADNfxmoC/x2MSwqEQAwFryJZG2h1/OBVxEV00hrUVtIignj3C
+ bMsXr16ILIKR2iTB5QvibIHgyxNYJwpTIzyNYbc5VXmXI3xIL1L3Oi0fV1x8cqMgU8kT8M4FL4
+ qmw/Y/1D2cv/bHZgA/fv+AI1UnnFwAAAA
+X-Change-ID: 20261007-sparx5-matchall-kfree-net-afabcb3f6584
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, Kees Cook <kees@kernel.org>
+X-Mailer: b4 0.14.3
 
-On 10/7/26 4:48 PM, Willem de Bruijn wrote:
-> Josef Bacik wrote:
->> I'm going through and reducing BUG_ON() usage in areas that have created
->> the most problems for us.  89 commits in the tree quote "kernel BUG at
->> net/core/skbuff.c", 31 of them since 2024, and some of those could be
->> triggered from inside a user namespace.
->>
->> The first patch is a fix: skb_copy_and_csum_bits() leaves stale bytes
->> in a buffer headed for the wire when it hits unreadable frags.  The
->> BUG_ON() conversion of the same function needs the same handling, so
->> it's here rather than sent separately.
->>
->> The rest of the series converts 17 of the 19 BUG_ON()s in skbuff.c.
->> Each one becomes
->>
->> 	if (WARN_ON_ONCE(cond))
->> 		<error path>;
-> 
-> Good idea. I was thinking of doing exactly this sweep after addressing
-> one case recently in commit ee1972def665 ("net: downgrade BUG_ON
-> EIOCBQUEUED in sock_sendmsg_nosec")
-> 
-> Instead of WARN_ON_ONCE, which still triggers a panic on systems with
-> panic_on_warn, DEBUG_NET_WARN_ON_ONCE?
+sparx5_tc_matchall_replace() allocates a struct sparx5_mall_entry for
+every offloaded matchall filter and adds it to sparx5->mall_entries.
+sparx5_tc_matchall_destroy() removes the entry from the list, but never
+frees it, so the entry of every deleted mirror and goto matchall filter
+is leaked.
 
-I agree with using DEBUG_NET_WARN_ON_ONCE at least for paths that can be 
-triggered from userspace. I did something similar in Netfilter subsystem 
-not so long ago.
+Free the entry after unlinking it.
+
+The leak was discovered by an AI code review agent, and reproduced with
+kmemleak on a lan969x EV board (EV23X71A) by repeatedly adding and
+deleting matchall mirror and goto filters. With the fix, kmemleak no
+longer reports the leak.
+
+Fixes: 1ede4acf045c ("net: sparx5: add bookkeeping code for matchall rules")
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+---
+ drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c
+index 702257979462..146d7f28e8f3 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c
+@@ -160,6 +160,7 @@ static int sparx5_tc_matchall_destroy(struct net_device *ndev,
+ 	}
+ 
+ 	list_del(&entry->list);
++	kfree(entry);
+ 
+ 	return err;
+ }
+
+---
+base-commit: 23609bce9e1de525d1d0e73fc68c6e7971d0b49e
+change-id: 20261007-sparx5-matchall-kfree-net-afabcb3f6584
+
+Best regards,
+-- 
+Daniel Machon <daniel.machon@microchip.com>
+
