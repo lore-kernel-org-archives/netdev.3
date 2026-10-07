@@ -1,134 +1,469 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7154E3259
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 19:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791400166; cv=none; b=OMACns7qcxw4WGCEosXXsuL73j1/h6AmQS6p5BPG33dOHli2DkEoobV2fUrTZzocKm1Mr7RbGSVU9ycm7Wgm9XPHbLKdFMj+MUGFjveUsPyu2fYPMGbUY41Gj2k9wZEhW4R2ycEmWtIh5w126ChXyz1eisPKT+nqHE9KKBjOK94=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791400166; c=relaxed/simple;
-	bh=vVSqOGp2wx/0qJVjAsSbH5oTy4Gpsm8b9+BCotcy5AA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4LoBtlcT2QVmnflpt1NzJVeUsNdRtcVbc4uBB+viBNKe1emXDlBF5MHGoa6QdGZHrSGB/5zG2sBngKfG2N7uHuMlNpN5YIEjJYCZsE4ez31BPvVUwE/+IVCew/DJZtOmqLu3ASmxyVY123JjT6uNqNKmAc+GCWlpLQV8wBsgd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UyKU9oV/; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342653F412C
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 19:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791400296; cv=pass; b=BSOf8OJxh5irkhBnoJ6lnx3M9vhTdQ3aM6sMQckNxKymv5dYHeVA9edRqhHoa0oh6StT4o3ahNR2iZevzSaA7ZNDNmhVGJ7/Fr8pJhBlyuWTYrPs0sJDpyYsieFxnPuW12mI90pmfHwf1QdNoMNTZAAL61tnz5I2pfvKsPoT/kE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791400296; c=relaxed/simple;
+	bh=Uq+eWqyZKvJSNIM97AyXs9y1buFMWnLvNK6oWzLSQrE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kFM852i94iPKUH9ojCHPyhYGYc6MpwAO4+4SCkUemY9PEZJLla8AmTgUl4EwteG0+Fdl0H9tuZs7GlMW3y2QN8rhF8+Mag9Bu8AgG/oazLJw+MwLvfCaBkdhsUx65Ltz6qfVeB5R/07fjXm6GOfdmkqHW+uOrrZfC4oe4aIHGpo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WUu7bHst; arc=pass smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UyKU9oV/"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-97ca72f2cd9so1132518241.2
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 12:09:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WUu7bHst"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-88b7d853b11so2252444b3a.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 12:11:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791400293; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iq/G/DydstNZrVGXV1COMi7+HjqSbeZn1JJKXg3QWjVl/yIw0p9s3MTiCz+/3CPXJK
+         Jf100xmtV73D65661rMit3+v5GFMpF02aJjMyxd0ISmkAUF0DHencfxjH/MY6zN3ilaU
+         921ZOYbaP00duD71VrOzY730BBfkZwi8ZwUaxmd6k0bA5nOdRAHfKfz8kS8UmFtObPkI
+         LupMatfIsQQBdNwfw8AOLhmkvVPF5tjhdk8uos5n1JEKovFjO0Qjt3qG3lU3YGSCHHjo
+         qKimOUlpHe3taTMfYdDiihgJTAo0ZoFBKe8Ru3oX/DqfN8J+WJGKU6/owxrg408BLfR5
+         Z6ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KIvA3hMcUdZD52MC6T9uWgxqmVRzVjTIoN5FN/ouXGg=;
+        fh=FcywtlDZoDkM4edKsFlp1mDZyBkJFKZZqzJffsc2CVg=;
+        b=WhhPAjw/x1dgaCD7bdAl/QfgWJHq49KbCUkw+yydCLW+233k7P0ZP9xhdZidUJv/8v
+         TfVzUBxF8k8x5WbCAssSfk9mWyodrH9Ab96WAOFLMI04hHJ1+27SZhOyQhwuCKFKHKJF
+         14h8y3Ox27JavjXCrdbm+Q8+ksCiyq9IZbaR/W8arsHIeXDWWEMh2iW0NozietytwKen
+         AHHAhHcGy0LbyhfMgaR2DSsDu9Y4wYqsW6h9Atd6GTAuvl8JUyMSeYSQ70ksQI7RYcVf
+         xrrnnraMiB94eXsL7sYShJL+CcrxYfEhoyUtfmSmfbYHK3/2bU8zhm8eYD7qgnWH4q0e
+         JZMw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791400165; x=1792004965; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3XGvHahoLRouhu1JIBcDAOTwzFgHXehCkZsR1IWSJgU=;
-        b=UyKU9oV/Skj6omKIj79jVBpXFg+ATjDAhM9sqCUH9n7N5aK52iQU92wyj/ba8d5V4A
-         S0zg7dUjAV6GAyUZWdQJaly3O91FpSYaNiL+BIO05/eGEEU1aA0iY18E5QjhonwDRVqC
-         2RNfUEvuSB58m5AxmJlT2oIdzZXLYabSU8gb4OAgmFCwJ3cOcQjEnW9xeW5yhGJ6qk0+
-         NOkBOn7Yx6d87Vuen2T8VFNR1vRfvw0/OvpuXf8DIiOUgG0cn6v+5sW1logY/xmMAN7V
-         10Mza0jE1vixG8/LbiHHKSr3bqIH9aS6Ct27KVNk9TvCcFVJe3Houcp6+C9RQI+BqFKP
-         JEBQ==
+        d=gmail.com; s=20251104; t=1791400293; x=1792005093; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KIvA3hMcUdZD52MC6T9uWgxqmVRzVjTIoN5FN/ouXGg=;
+        b=WUu7bHstC9KvTsH6iBR7YkdKHufMTFbi2lmsN5L8zhbqJnjZkG3JC0/KNudhISLPsk
+         5ZDM6MYxEzXCm5SISae4RXGmzj1jZrPGo98Jqk1bejyuuLnBEpExPwrRch4iWVvem4Gg
+         4VkhUegeGdj5+ebuAfoYoDMxN8QL9UBE34FkJOFi90gUumm4CxIPt+T9z4JFk7Op4hz9
+         4DSfn4nUG6aLzyWyC5E2qPXeyN4OGT2nPHlklahdS3y9x6TrMInWTC96yqnUjqQ/pzjF
+         +Fb23ohTOb2mN2Hfvgn7S3bwh41Odd2fX+wRwLX/Yf7jxo8vcN2ERwJg+kYyAnbYJ2ki
+         kxUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791400165; x=1792004965;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3XGvHahoLRouhu1JIBcDAOTwzFgHXehCkZsR1IWSJgU=;
-        b=rC9J7Mi0zktVV8tRIyXwAxkGx3JtB/zJFi5GYRUDWRT0HRspv+qyvtd/h+G93ECDRK
-         L38hPAIpNSQD+Ov4R48Uk9jo7pV30Gu7SXH7Bfix44U/fSgE5KVj+68X2e64r8n5boID
-         xf9LUdlPAmoaw5ZdjHpHJyXpTPddAz5Z3DtOzlz9thmheuCTzUdltzG7uBncTUGkjNmC
-         wyXRRoXwOA3JUSb1l83QiU4gNkJ3IDPZP8f0S2yq7n8dbW5G3lEHcudjG1qyeWbStmhy
-         YNLLqZ4PTk/DQYLRSGDP6Ux0tY3PxJjlmx8FpETqgKI7P5OdB9vky3lnUCqNCFw1Zv8M
-         jlAg==
-X-Forwarded-Encrypted: i=1; AKwUvBzyxRaSfN0kZDq+qqLWBReorErMQCZY64O1frFlwzBhtNyqZxsxbACX8H0Bvu1PVumxRtEG9eY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJQQ+s4OMqzxxL7wOrxQErn0arls0dPZgbrYjY0u2ykWgzFN43a
-	MxkQhDprvOKCGva753VLwhTttPp2vipWgMpLQTAMj03kRnZCcRKWiV2k
-X-Gm-Gg: AYBFou1bdT+/CK4JW+dp1mGsw6bBZorJihvrcu4UvOPlBfoa0bCCydb4PeO3LXOoV31
-	FOhz/F6JwEqA/eqLeK1AFGmdz2+Lq/6/knrANYW0kBJ5vOVuQ3scDD4+hzUF4V2zz7HB8e+q7kD
-	7+ZL3lwRWBRseVQrBhJ1IjkNg88U7jrfgb9pBOgGCb71ngiqNqd89oroxh2Z5SIqNLjHonJszaV
-	mennbYzha/J0rrc6Pto/YfFrhppmFa3dAD75kZ6S4UtaXphUpYGiy/XkArCgVLX1bUGydAOcJ3r
-	yMqbK/8Dq8euc5tSGoA3f2P+nkbhCzu5rgSEXWv5ejpwcOolzWwndn8uBsiit19Bc0uMIsZms15
-	iwxp0pTz3TaX6MRHkqZSwFe9d6T8694Z5lgzIjazn3BY/lvynvZ0I4D+NW2tSlygIEXemrAkoj7
-	8xioGafBc844MG8yI+dO/Ag8Cb1Xcnd6j0irVBmFtffd2kfW4Pcp1pSUF7fuq7VDk/oW6uylGzE
-	oK02asKqN6EDKl4Fd0=
-X-Received: by 2002:a05:6102:688f:b0:7bc:1de3:39b0 with SMTP id ada2fe7eead31-7ca38f28c27mr1016377137.32.1791400164748;
-        Wed, 07 Oct 2026 12:09:24 -0700 (PDT)
-Received: from emedev.tailf75c28.ts.net ([74.244.222.41])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7ca218138c6sm2456787137.12.2026.10.07.12.09.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 12:09:24 -0700 (PDT)
-From: Emerson Busson <emersonbusson@gmail.com>
-To: mhklinux@outlook.com
-Cc: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH v2 14/14] hv: netvsc: use kvzalloc for device state
-Date: Wed,  7 Oct 2026 16:07:52 -0300
-Message-ID: <20261007190752.336426-15-emersonbusson@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261007190752.336426-1-emersonbusson@gmail.com>
-References: <20261007190752.336426-1-emersonbusson@gmail.com>
+        d=1e100.net; s=20260707; t=1791400293; x=1792005093;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KIvA3hMcUdZD52MC6T9uWgxqmVRzVjTIoN5FN/ouXGg=;
+        b=HBnpmH2rdWF8PWSb6++Tg23gez8DE9uH4Vqx3YXp4owSJ5+7nci6TJFdcLkKrww5da
+         DMgTcM6IHrZXd/fJrMncsA8uYLHkfVRSpXZu5C5lRIrOgedF6PwCVOHT9+tyyD1WsPWV
+         D/+rlTN5pHq+1N+naXRQJb/ByxOqIEo38D+YHrl6uUyGqfeHU3LBlMnX6v4GDKpCKGt4
+         oGpMS2+vya53+RcHbb/NvbvVLceYWaQjLMrDqWveYV9NUFiOrrHWnoIc1q6pyt88lgwY
+         EapTrm9MT8vYbarQHnaAFqW17mLd46J4TO6XA/pEKs2ms/+QEoXXW/155/As8sfywU+4
+         JudQ==
+X-Gm-Message-State: AFuF++kGtRDvvfp/QNIp6s1vk9DlfG5GipLU9z9Bgm8IQFAK7Ni0QBpM
+	AAzFDKFS+vxXSNbITLMmeGXBKXtNeFhv5O1jMjP2IbAr/UdBZsi3yijCQ4+/sFughIuEQvkhPcV
+	316oQblYMFaEjgAqywWJ0V2pf95EZ1Bo=
+X-Gm-Gg: AYBFou38eQd4MOnCLuLKouARPcCEf1hqWL5U1v4FX0owd9N5+cCVM3GW3+xOWTAfDq5
+	0K34LzymbI8HGpWFJBx3JMFALRxZNhdXn+rozMNzg3sCvT1k+L+UdKKuqC+8Qww6/hODYFKUydO
+	cDjxFE/TbciyCjpT25McR1erbFeIQd6XPJdg0rDjf/AxRtrUr8AT1RgSytUuz0CMJA8gxHWccOc
+	JeMJjKQClbS+wVujmAlHyxEzx4et7AMmIRtCeTjud7bvNS/hNZv+nVeWCuoj44WUsLfB4QP0VBc
+	u9q9L458Tbh4WdvfUDofPIyBxNjpRD6kJ53B4MMAO3ptfBkPeIPHj0GN4NHWHwyIoZyCupsy9aa
+	Fx+JSKgRACw4T/RTswO9U20bfumq3M5P6dCdYXAjfSTujwQOrLvELv54TsCwSGJLijKE9K28/GH
+	GYlQBMwlHMK7pr
+X-Received: by 2002:a05:6a21:394b:b0:3e0:c2be:5b71 with SMTP id
+ adf61e73a8af0-3e134061fc9mr2682854637.29.1791400293376; Wed, 07 Oct 2026
+ 12:11:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <ab05ff56b186e6aa6fcef9ad292b79e7ab8d5020.1791227050.git.lucien.xin@gmail.com>
+ <179133511349.434549.8476083447465312043@kernel.org>
+In-Reply-To: <179133511349.434549.8476083447465312043@kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Wed, 7 Oct 2026 15:11:21 -0400
+X-Gm-Features: AclHuK8wx5QvJWTuIEr0cxNSBa7WL00bfKIgEfBuSjmBXOBZiQvO3Vk6f_HL3EE
+Message-ID: <CADvbK_fEQk5M8V+A-WE=_g6PPhD27QwqM4+_-cHmjP8j-JKijQ@mail.gmail.com>
+Subject: Re: [PATCH net-next v16 08/15] quic: add path management
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net, 
+	kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
+	metze@samba.org, mbuhl@openbsd.org, tfanelli@redhat.com, hepengtao@xiaomi.com, 
+	dreibh@simula.no, linux-cifs@vger.kernel.org, pc@manguebit.org, 
+	linkinjeon@kernel.org, tom@talpey.com, kernel-tls-handshake@lists.linux.dev, 
+	chuck.lever@oracle.com, jlayton@kernel.org, steved@redhat.com, hare@suse.de, 
+	aahringo@redhat.com, dhowells@redhat.com, matttbe@kernel.org, 
+	mail@johnericson.me, xiyou.wangcong@gmail.com, alibuda@linux.alibaba.com, 
+	jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net, 
+	marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com, 
+	mef@scarletmail.rutgers.edu, paul@jakma.org, kuniyu@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-alloc_net_device() allocates the fixed-channel netvsc_device with
-kzalloc_obj(). The runtime fragmentation drill reaches this allocation
-from netvsc_device_add(): windows-2025 reports an order-7 allocation
-failure with about 99 MiB free, while windows-latest stalls at channel
-open until the guest timeout.
+On Tue, Oct 6, 2026 at 9:05=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 9 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 4 =C2=B7 Low: 4
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] Pending UDP tunnel socket releases are not tied to netns
+>   teardown, so they can write to freed per-netns memory.
+> - [Medium] quic_udp_sock_create() does not keep an explicitly disabled
+>   IPV6_V6ONLY setting.
+> - [Medium] A dual-stack QUIC socket can reuse an existing IPv6-only UDP
+>   tunnel socket.
+> - [Medium] quic_udp_sock_create() ignores IP_FREEBIND (and
+>   IP_TRANSPARENT) set on the QUIC socket.
+> - [Medium] quic_path_bind() uses two different ideas of 'owner' when
+>   deciding who may share a tunnel.
+> - [Low] quic_path_bind() reads sk->sk_uid and us->sk->sk_uid with plain
+>   loads, bypassing the sk_uid() accessor in include/net/sock.h:2162-2166.
+> - [Low] The commit message contradicts the code it adds.
+> - [Low] The quic_path_detect_alt() comment says it 'Returns true if a new
+>   alternate path was detected and updated' and that it 'updates the=E2=80=
+=A6
+> - [Low] quic_path_pl_toobig() prints its u32 pmtu argument with "ptb:
+>   %d".
+>
+> --
+>
+> quic: add path management
+>
+> This patch adds struct quic_path_group and struct quic_path to manage up
+> to two paths per connection. Each path is backed by a UDP tunnel socket
+> that can be shared, is wrapped in quic_udp_sock and is kept in a global
+> hash table. It adds bind, unbind, swap and alternate path detection
+> helpers, plus basic PLPMTUD state handling for probes, acks and ICMP
+> Packet Too Big messages.
+>
+> > - quic_path_pl_send(): state transition and pmtu update after sending a
+> >   probe packet.
+>
+> [Severity: Low]
+> Is "after sending" accurate here? The kernel-doc for quic_path_pl_send()
+> added in this same patch says:
+>
+>  * Called right before sending a probe packet in QUIC Path MTU Discovery.
+>
+> The v16 changelog says the "after" wording was inaccurate, but only the
+> code comment was updated.
+>
+> The probe_count / QUIC_MAX_PROBES accounting assumes the call comes befor=
+e
+> transmission. A caller that follows the commit text would be off by one.
+>
+> Several lasting changes are described only in the changelog below the
+> "---" line:
+>
+>   - the module-wide quic_wq workqueue and its init/exit handling
+>   - the path_seq seqcount write side in quic_path_swap(), plus
+>     quic_path_init()
+>   - the port sharing policy in quic_path_bind(): same uid reuse,
+>     -EADDRINUSE for a different uid, -EAGAIN during teardown, and
+>     CAP_NET_BIND_SERVICE for privileged ports
+>
+> Could these go into the commit message itself?
+>
+> > - quic_path_detect_alt(): Determine if a packet is using an alternative
+> >   path, used for connection migration.
+>
+> quic_path_detect_alt() also writes the candidate addresses into path[1].
+> This description doesn't say so.
+>
+> > diff --git a/net/quic/path.c b/net/quic/path.c
+> > new file mode 100644
+> > index 0000000000000..b6bea7d2f2673
+> > --- /dev/null
+> > +++ b/net/quic/path.c
+> > @@ -0,0 +1,593 @@
+>
+> [ ... ]
+>
+> > +static struct quic_udp_sock *quic_udp_sock_create(struct sock *sk,
+> > +                                               union quic_addr *a)
+> > +{
+>
+> [ ... ]
+>
+> > +     quic_udp_conf_init(sk, &udp_conf, a);
+> > +     err =3D udp_sock_create(net, &udp_conf, &sock);
+> > +     if (err) {
+> > +             pr_debug("%s: failed to create udp sock\n", __func__);
+> > +             kfree(us);
+> > +             return ERR_PTR(err);
+> > +     }
+>
+> [Severity: Medium]
+> Is an IPV6_V6ONLY of 0 on the QUIC socket kept when the tunnel is created=
+?
+>
+> quic_v6_udp_conf_init() passes the QUIC socket's setting:
+>
+>     conf->ipv6_v6only =3D ipv6_only_sock(sk);
+>
+> udp_sock_create6() only acts on it when the flag is true:
+>
+>     if (cfg->ipv6_v6only) {
+>         err =3D ip6_sock_set_v6only(sock->sk);
+>
+> Otherwise the new kernel socket keeps the default it got in
+> inet6_create():
+>
+>     sk->sk_ipv6only =3D READ_ONCE(net->ipv6.sysctl.bindv6only);
+>
+> Take a netns with net.ipv6.bindv6only=3D1 and a QUIC socket that sets
+> IPV6_V6ONLY to 0 and binds [::]:P. It gets an IPv6-only UDP tunnel.
+> quic_path_bind() succeeds, but IPv4 packets would never reach the
+> socket.
+>
+> This stays latent until quic_path_bind() gets a caller.
+>
+> [Severity: Medium]
+> Can IP_FREEBIND or IP_TRANSPARENT on the QUIC socket have any effect
+> here? udp_port_cfg has no freebind field, and quic_v4_udp_conf_init()
+> copies only:
+>
+>     conf->family =3D AF_INET;
+>     conf->local_ip.s_addr =3D a->v4.sin_addr.s_addr;
+>     conf->local_udp_port =3D a->v4.sin_port;
+>     conf->bind_ifindex =3D sk->sk_bound_dev_if;
+>
+> udp_sock_create4() and udp_sock_create6() bind the new kernel socket
+> right away. __inet_bind() then checks inet_can_nonlocal_bind() against
+> that new socket's own flags:
+>
+>     return READ_ONCE(net->ipv4.sysctl_ip_nonlocal_bind) ||
+>         test_bit(INET_FLAGS_FREEBIND, &inet->inet_flags) ||
+>         test_bit(INET_FLAGS_TRANSPARENT, &inet->inet_flags);
+>
+> Assume ip_nonlocal_bind=3D0. A QUIC socket sets IP_FREEBIND through
+> quic_setsockopt()->quic_common_setsockopt()->ip_setsockopt() and binds a
+> non-local address. Whenever a new tunnel has to be created,
+> quic_path_bind() would then return -EADDRNOTAVAIL.
+>
+> The patch notes say quic_get_user_addr() will accept such an address
+> based on that flag. That check and this bind would disagree.
+>
+> [ ... ]
+>
+> > +static void quic_udp_sock_put(struct quic_udp_sock *us)
+> > +{
+> > +     /* The UDP socket may be freed in atomic RX context during connec=
+tion
+> > +      * migration; defer the release to a workqueue.
+> > +      */
+> > +     if (refcount_dec_and_test(&us->refcnt))
+> > +             queue_work(quic_wq, &us->work);
+> > +}
+>
+> [Severity: High]
+> Can this deferred release run after the netns pernet exit methods have
+> freed per-netns state?
+>
+> quic_destroy_sock()
+>   quic_path_unbind()
+>     quic_path_set_udp_sk(path, NULL)
+>       quic_udp_sock_put()
+>         queue_work(quic_wq, &us->work)
+>
+> The QUIC user socket is then freed and drops its active netns
+> reference. If that was the last one, cleanup_net() runs the pernet exit
+> methods.
+>
+> quic_net_exit() doesn't flush quic_wq or wait for this namespace's
+> pending releases. Nothing orders quic_wq against the netns cleanup
+> workqueue.
+>
+> So quic_udp_sock_put_work() could run after sock_inuse_exit_net() has
+> done:
+>
+>     free_percpu(net->core.prot_inuse);
+>
+> If udp_child_hash_entries is set, it could also run after
+> udp_pernet_table_free() has freed net->ipv4.udp_table. The work then
+> reaches:
+>
+> quic_udp_sock_put_work()
+>   udp_tunnel_sock_release()
+>     sock_release()
+>       inet_release()
+>         udp_lib_close()
+>           sk_common_release()
+>             udp_lib_unhash()
+>               sock_prot_inuse_add(net, sk->sk_prot, -1);
+>
+> That writes to the freed percpu area and takes hslot spinlocks in the
+> per-netns udp_table.
+>
+> This is a separate issue from the lifetime of struct net. The passive
+> reference held by kernel sockets keeps the struct net allocation alive.
+> It doesn't stop the pernet exit methods from freeing these per-netns
+> pieces.
+>
+> Other kernel UDP tunnel users such as vxlan, geneve, tipc and rxrpc
+> release their kernel sockets from pernet exit. Later in the series,
+> quic_net_ops still has only .init and .exit, and quic_net_exit() is
+> unchanged.
+>
+True.
 
-This object is guest-private control-plane metadata, not DMA backing.
-Use kvzalloc_obj() so the allocation can fall back to vmalloc when a
-high-order kmalloc cannot be satisfied. Zero initialization is preserved.
-The RCU workqueue cleanup uses kvfree() to release either backing.
+I was expecting one netns refcnt held until udp_tunnel_sock_release().
 
-Rollback trigger: revert if channel setup fails with vmalloc capacity
-available or teardown leaves netvsc_device allocations outstanding.
+It looks better and clearer to fix it by holding one netns refcnt for
+quic_udp_sock than releasing their kernel sockets from pernet exit.
 
-Signed-off-by: Emerson Busson <emersonbusson@gmail.com>
----
- drivers/net/hyperv/netvsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks.
 
-diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-index 0d017f836b9e..8ea7c993baac 100644
---- a/drivers/net/hyperv/netvsc.c
-+++ b/drivers/net/hyperv/netvsc.c
-@@ -144,7 +144,7 @@ static void __free_netvsc_device(struct netvsc_device *nvdev)
- 		vfree(nvdev->chan_table[i].mrc.slots);
- 	}
- 
--	kfree(nvdev);
-+	kvfree(nvdev);
- }
- 
- static void free_netvsc_device(struct work_struct *w)
-@@ -171,7 +171,7 @@ static struct netvsc_device *alloc_net_device(void)
- {
- 	struct netvsc_device *net_device;
- 
--	net_device = kzalloc_obj(struct netvsc_device);
-+	net_device = kvzalloc_obj(struct netvsc_device);
- 	if (!net_device)
- 		return NULL;
- 
--- 
-2.43.0
-
+> [ ... ]
+>
+> > +     hlist_for_each_entry(us, &head->head, node) {
+> > +             if (net !=3D sock_net(us->sk))
+> > +                     continue;
+> > +             if (a) {
+> > +                     if (quic_cmp_sk_addr(us->sk, &us->addr, a) &&
+> > +                         us->bind_ifindex =3D=3D quic_get_dev_if(sk, a=
+))
+> > +                             return us;
+>
+> [Severity: Medium]
+> Could a dual-stack QUIC socket end up sharing an IPv6-only tunnel here?
+> When both addresses are AF_INET6 wildcards, quic_v6_cmp_sk_addr()
+> returns:
+>
+>     if (ipv6_addr_any(&addr->v6.sin6_addr))
+>         return ipv6_addr_any(&a->v6.sin6_addr);
+>
+> ipv6_only_sock() is only checked when the address families differ.
+>
+> Suppose QUIC socket A with IPV6_V6ONLY=3D1 creates a tunnel on [::]:P.
+> QUIC socket B, same uid, with IPV6_V6ONLY=3D0, then binds [::]:P. B reuse=
+s
+> A's v6-only tunnel and quic_path_bind() returns 0.
+>
+> IPv4 lookups skip ipv6_only_sock() sockets, so B would never receive
+> IPv4 traffic. The same bind on plain UDP sockets would have failed with
+> EADDRINUSE.
+>
+> [ ... ]
+>
+> > +             us =3D quic_udp_sock_lookup(sk, a, port);
+> > +             if (us) {
+> > +                     if (!uid_eq(sk->sk_uid, us->sk->sk_uid)) {
+> > +                             mutex_unlock(&head->lock);
+> > +                             return -EADDRINUSE;
+> > +                     }
+>
+> [Severity: Medium]
+> Are these two uids measuring the same owner? The tunnel's sk_uid comes
+> from the kernel socket created in quic_udp_sock_create():
+>
+> udp_sock_create()->sock_create_kern()
+>   sock_alloc():
+>       inode->i_uid =3D current_fsuid();
+>   sock_init_data():
+>       sk_uid taken from SOCK_INODE(sock)->i_uid
+>
+> So the tunnel owner is the fsuid of the task calling bind() at that
+> time. sk->sk_uid on the QUIC socket comes from its own inode at socket()
+> time and is updated by fchown().
+>
+> The two differ in any of these cases:
+>
+>   - the QUIC fd was passed over SCM_RIGHTS
+>   - the QUIC fd was fchown()ed
+>   - the task changed fsuid between socket() and bind()
+>
+> Then a socket owned by the original owner gets a spurious -EADDRINUSE.
+> Sockets whose sk_uid matches the first binder's fsuid are allowed to
+> share.
+>
+> [Severity: Low]
+> This isn't a bug, but should these reads use the sk_uid() accessor? It
+> is documented as paired with the WRITE_ONCE() in sockfs_setattr(), and
+> quic_v4_flow_route() and quic_v6_flow_route() already use it. Without
+> it, KCSAN would report a concurrent fchown() on the QUIC fd:
+>
+>     if (!uid_eq(sk_uid(sk), sk_uid(us->sk))) {
+>
+> [ ... ]
+>
+> > +/* Detects and records a potential alternate path.
+> > + *
+> > + * If the new source or destination address differs from the active pa=
+th, and
+> > + * alternate path detection is not disabled, the function updates the =
+alternate
+> > + * path slot (path[1]) with the new addresses.
+> > + *
+> > + * This is typically called on packet receive to detect new possible n=
+etwork
+> > + * paths (e.g., NAT rebinding, mobility).
+> > + *
+> > + * Returns true if a new alternate path was detected and updated, fals=
+e
+> > + * otherwise.
+> > + */
+> > +bool quic_path_detect_alt(struct quic_path_group *paths, union quic_ad=
+dr *sa,
+> > +                       union quic_addr *da, struct sock *sk)
+> > +{
+>
+> [ ... ]
+>
+> > +     if (!quic_path_saddr(paths, 1)->v4.sin_port)
+> > +             quic_path_set_saddr(paths, 1, sa);
+> > +
+> > +     if (!quic_cmp_sk_addr(sk, quic_path_saddr(paths, 1), sa))
+> > +             return false;
+> > +
+> > +     if (!quic_path_daddr(paths, 1)->v4.sin_port)
+> > +             quic_path_set_daddr(paths, 1, da);
+> > +
+> > +     return quic_cmp_sk_addr(sk, quic_path_daddr(paths, 1), da);
+> > +}
+>
+> [Severity: Low]
+> Does the comment match the return value? path[1].saddr and daddr are
+> only written while their sin_port is still 0.
+>
+> If path[1] is already filled in and simply matches (sa, da), this
+> returns true even though nothing new was detected or updated.
+>
+> [ ... ]
+>
+> > +u32 quic_path_pl_toobig(struct quic_path_group *paths, u32 pmtu,
+> > +                     bool *reset_timer)
+> > +{
+> > +     u32 pathmtu =3D 0;
+> > +
+> > +     pr_debug("%s: paths: %p, state: %d, pmtu: %d, size: %d, ptb: %d\n=
+",
+> > +              __func__, paths, paths->pl.state, paths->pl.pmtu,
+> > +              paths->pl.probe_size, pmtu);
+>
+> [Severity: Low]
+> This isn't a bug, but pmtu is a u32 taken from the remote ICMP or ICMPv6
+> Packet Too Big message. Should this be "ptb: %u"? Values above INT_MAX
+> would print as negative numbers.
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/cover.1791227050.git.lucien.xin%40gmail.com
