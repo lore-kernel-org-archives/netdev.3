@@ -1,34 +1,33 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9134119F4;
-	Wed,  7 Oct 2026 12:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3D33BD64A;
+	Wed,  7 Oct 2026 12:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791377950; cv=none; b=eTRFaPv3alse+ITMLay8hGAWQV8klQYdm3RFnR+entKFdNlRcPZ/24YuDy7NFckOvS5HZinvkPnUzD2wo0tVRW8JWs7J5s+yHzWu2c0+yjb7W1qMK4g/zsaIk5CInRFiBh90QsaNm6GE2o2yI4AfSct+uRG7HdZCJJR2UkWqvw8=
+	t=1791377970; cv=none; b=swQbe3ezpgjAmaF8kHjEiShh625JHuwdkumylGi8HBXLHLXBLZ+MdSludZRK6gdN7B0TqBTNLj4BFhwg1JZHXua7fxAHfTQxBKu1kw8awBe0eloKprprpShxMfUZXlsjzTDsndAgpwe2GoIeKbgDFu5sJnYr8SZxXDTBPR4cP/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791377950; c=relaxed/simple;
-	bh=+kkXSvARqBuIPk51iikd65Qr/EZXshestNAOYzM8V24=;
+	s=arc-20240116; t=1791377970; c=relaxed/simple;
+	bh=dwR3gHAwZrUlbJdpWYscVbEmULgrTOfq08+7cc5P/XM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=llf3pqW0/K6/KGtVQD/Au+UyveDPSdwGigrVYWfaGl1PbG6TA4eSW+RVauVtvx1CTQ7YpOM8HXnHybSZcrHvl9Vg/tE5WeOenQ+3LhEExJkvKbvoKXC3buv2ZsP7wIJj6p2cn/3UReztnaJXNyeOHWGq8fYZOfx0FvZ4TLRJZs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GgeYpCqx; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ups1lwlSld16GqMOS7M2iVpRJs3XiNz/qdPswbWgFcTiU74RyGfVuLGJTJSRUgjY8ZDxlF36wBWIBwlTbEOfoysuGHgRfYLGTtDup9lX7P/kY7Po131hNcMpQVL96dSe7AHqamMqxND09s2yDjSeUjjPZiq2/x7m3WSWhRSR+jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZgvNs+7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GgeYpCqx"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=T3camnU/lQ0FiLPLT54GfqCHA8eBvYKjiIgqqnJuiMM=; b=GgeYpCqx6vVbAicUTaq+SmGAet
-	CFUrMHMusDYreTpleL9EiZHXIHHb2GYU67zocRi/EvjcrpzLcC3w56wut6arqEW1GBNwfFsOZXD5T
-	6mv9OlTP8DokfBtlohEtmjtXl+eRjI4u7PM71d+HnVQ1oT8o5/6bqnfGLloIqTOHOdh4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xEREJ-009SWB-TM; Wed, 07 Oct 2026 14:58:43 +0200
-Date: Wed, 7 Oct 2026 14:58:43 +0200
-From: Andrew Lunn <andrew@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZgvNs+7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0F51F0089B;
+	Wed,  7 Oct 2026 12:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791377959;
+	bh=dwR3gHAwZrUlbJdpWYscVbEmULgrTOfq08+7cc5P/XM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EZgvNs+7KV/3y0yBb6ZoBJJqh7YzO3nfMCDqmPeXmK6DaiouIQDadghSTjRcACi/2
+	 HULuc2RxEc57Jmnn1ubL3ISW1lJuwmn57sn7FBi+jTg+O7todNEnVPgrNxrx88jiDd
+	 qtRzaDSQ4TaYVExYFgs292X5lRCcIKyyUa+WuXBEn/1yL2s9gdUdRQ2ASfVZKQ5w0D
+	 zVnTuBh+7A0Jft/lWl2gRN9v5KT6E0uzKmqcGjcqWiDb0Qa6Fa7ac5dwFDbNOBFaR/
+	 Ab5fXSFarOAzb/0/W6y4mzhhILxd5DFaBruQV47oogqVwU+K65XMH80aq+UD5LzvHW
+	 ljFjw3fnmLC/w==
+Date: Wed, 7 Oct 2026 13:59:11 +0100
+From: Conor Dooley <conor@kernel.org>
 To: Lucas Tanure <tanure@linux.com>
 Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -47,34 +46,66 @@ Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
 	netdev@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/7] net: stmmac: dwmac-meson8b: let the
- controller apply the RGMII delays
-Message-ID: <ecd9cfed-10b2-4e82-a67e-3d4c49579058@lunn.ch>
+Subject: Re: [RFC PATCH v2 3/7] dt-bindings: net: amlogic,meson-dwmac: add
+ amlogic,t7-dwmac
+Message-ID: <20261007-634979008f45ea7ff444d41b@squawk>
 References: <20261007082627.63807-1-tanure@linux.com>
- <20261007082627.63807-2-tanure@linux.com>
+ <20261007082627.63807-4-tanure@linux.com>
+ <asYWEwjFO8g50o1i@squawk>
+ <CAJX_Q+3nHRH--pJHxv6PqwpVYTdFAqG1bQdB5=DT6jgLsFKO=Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Zbkq0YzkpeyE441M"
 Content-Disposition: inline
-In-Reply-To: <20261007082627.63807-2-tanure@linux.com>
+In-Reply-To: <CAJX_Q+3nHRH--pJHxv6PqwpVYTdFAqG1bQdB5=DT6jgLsFKO=Q@mail.gmail.com>
 
-On Wed, Oct 07, 2026 at 09:26:21AM +0100, Lucas Tanure wrote:
-> RGMII needs a delay on each of its two clocks. A board can get it from
-> the length of its tracks, from the PHY, or from the controller.
-> "rgmii-id" in the device tree says the delay is added inside the chips
-> but not which chip adds it, and the generic tx-internal-delay-ps and
-> rx-internal-delay-ps properties name the controller.
-> 
-> This driver ignored those properties. In the "-id" modes it switched
-> its own delays off and left the whole job to the PHY, so a board that
-> asks the controller for one of them does not get it, and a board whose
-> PHY cannot supply that delay has no usable link at all.
+--Zbkq0YzkpeyE441M
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Linux currently has no PHY device which cannot add delays. So this is
-pretty much a non issue.
+On Wed, Oct 07, 2026 at 11:34:54AM +0100, Lucas Tanure wrote:
+> On Wed, Oct 7, 2026 at 10:51=E2=80=AFAM Conor Dooley <conor@kernel.org> w=
+rote:
+> >
+> > On Wed, Oct 07, 2026 at 09:26:23AM +0100, Lucas Tanure wrote:
+> > > The T7 has the same ethernet glue as the G12A, but the controller
+> > > reaches memory through a pipeline stage that this SoC inserts in the
+> > > bus path. That stage has a gate of its own, which no other member of
+> > > the family has, and nothing else in Linux claims it. It is therefore
+> > > switched off as unused, and the port can then no longer finish a
+> > > transfer.
+> > >
+> > > Describing it needs a fourth clock, and the fourth clock of the
+> > > existing list drives the timing adjustment logic, which the T7 never
+> > > uses. So the T7 gets a list of its own with the gate in that place,
+> > > under the name the SD and eMMC controllers already use.
+> > >
+> > > Assisted-by: LLM
+> > > Signed-off-by: Lucas Tanure <tanure@linux.com>
+> >
+> > Didn't I ack the previous version?
+> Sorry, I didn't receive one.
 
-       Andrew
+Hmm, thought I had sent one.
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
+
+--Zbkq0YzkpeyE441M
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasZCCgAKCRB4tDGHoIJi
+0o/uAQDH6PB4FUDRgOVLQKFmYjwcQt2CXCVjVxTNOzUqkxslCQEAyqjDGZUbFb3t
+Rx4Z3kIt/JfIveShRWhBuUi6Iqkvrgc=
+=rJrd
+-----END PGP SIGNATURE-----
+
+--Zbkq0YzkpeyE441M--
