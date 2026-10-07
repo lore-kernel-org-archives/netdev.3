@@ -1,84 +1,69 @@
-Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E84F4ACC72;
-	Wed,  7 Oct 2026 14:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.60.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A144A0933;
+	Wed,  7 Oct 2026 14:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791383933; cv=none; b=NHZLkicua5QxAkx+FXaItj1SXHvH89Go/En+TTHaUlr1mhULlNHYYXLrLkmogJUtxRr+BJvVhpgPHUqeYUBWFSNwUiAF95jrTJIiCtqNErTIXmwFiEwOVh186aaW4oro5VIb9H7zK7CVpF1thxlzgHBvdKDMpfkY88htQYbJKms=
+	t=1791384227; cv=none; b=lSjcms0ZkqgTOk8FhMFBpwA9NNNvJW4JBkskUegddMxjsb3su2nmCWFZ4nUb/IgcfIAeFC6MN/1vfGETur7arDqTlzwbEqz71fgEv0o0a8XxB2h6sU8SR71UUyPM//pDHWbKZ518V5kMnJbiCb+UlWYmynTXn/w3Pjtz+T/QZUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791383933; c=relaxed/simple;
-	bh=WOO3OT/UjjR6FkEWqCSZYJZ7+5qVJqaycE609tUHtgI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MId9lTNfqMo6m0LMBrGxqc9AuLhxV8Et/xTHMZn8D+eT+A+UYt2b5zaYslZ+xDTtTfMzCh9Qd7e6cVZpakb/2TdRpTg9DOaMWcmEt1ww0T4QJyL4gTCTFkMfEsQ4Tp1ZC+QaxJ6D1hVUhWc/biQD/iiXzzHXs0zxtPl/3OGt2GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr; spf=pass smtp.mailfrom=corp.free.fr; dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.b=F9WrEnX+; arc=none smtp.client-ip=212.27.60.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
+	s=arc-20240116; t=1791384227; c=relaxed/simple;
+	bh=827yZvSZ/Jw+AMaGWjJpgib56Mzmme9pcgLVZJYOhY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uGNSJDPXDHI3EyvzXicOlFtUe7f2emg30uhuJSUTI357r9uhQJB4E9zx0nsnZHvoXQgTxfLMmpgg2ideLEGTZTuNEbP05OHaTDT0xZG+iY+8XTTDbXq0KzWJTilD8zVThUAcUHBg1l1zz+WZ39GuzitUKVRccXBZUo7+cNcjANU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3e2CJCx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.b="F9WrEnX+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
-	t=1791383918; bh=WOO3OT/UjjR6FkEWqCSZYJZ7+5qVJqaycE609tUHtgI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9WrEnX+DZsUqzHxxnteVpF6/RmUUcGTj5OvMwWpAs/XzRMEiQqz8xFX2NBmLF8Sn
-	 CVWO+RCYEMlA9WYOtgTuTl2UVQO9+0RpoFfmhwmSf8bsXnKS5PN2bV9v2N0BqKtEWC
-	 ah3K/OfQVVfQNWiB5ntmaXcj1cfVy5VF3YoMdmtj3AnqLLTM4Ud97DJA2XvB08hNoR
-	 z7DtW+DgHOQl4i852yBgYqCPgoT+4kr+kn77BAcPvnRXYcY0TJnMc3XG/x2hCZ+OWN
-	 teOryrZyrYBdBJ8dJJKvu1Pj/0zTnBKdff/Ms+3cMbkOMg/1PpwMfuOAZO+/QbRa3k
-	 kbejUbOpN0wdg==
-Received: from lnxos-dev.home (82-66-150-212.subs.proxad.net [82.66.150.212])
-	by rcs.proxad.net (Postfix) with ESMTPSA id 6329244C1115;
-	Wed,  7 Oct 2026 16:38:38 +0200 (CEST)
-From: Alexandre Cassen <acassen@corp.free.fr>
-To: Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3e2CJCx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36641F000FF;
+	Wed,  7 Oct 2026 14:43:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791384221;
+	bh=V/D11OxCCnESrHwXZaHU+AwMeE1zzfD9xs9fv1amivk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=h3e2CJCxevs003Ycc7FtKTgkOsd7ffontnosLwg+qh3RPVmijoQPUimAWURmGEAJU
+	 TuPhjYuGA35p1r5+QxhFusHprWIeH3ZmTWPNqPQAphW0hhn5+9YE9GufL7nao1oSOS
+	 bu/x6w1W0bpWaMul1TSNnaUc7+olnjYZARbQGcHSkLSq/xOCulSy2JK3kpdOsM19AK
+	 XuW7ILs5UyPd2K40up25FYZfWbEkWKdKxY4s4qfwNTErAZW/am6YeVHJn7WzkvB3d0
+	 OQKUIn6ALP5dISnEaZKEMh6dGhUoO/5DeWBy4LUTTBOw1N8LVSenNWU+F8f2C7pfkF
+	 yMSuMKx803Ylw==
+Date: Wed, 7 Oct 2026 15:43:34 +0100
+From: Simon Horman <horms@kernel.org>
+To: Frank.Li@oss.nxp.com
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH net 1/2] net/mlx5: HWS, release L2 to L3 tunnel reformats to their own pool
-Date: Wed,  7 Oct 2026 16:38:22 +0200
-Message-ID: <20261007143830.1733583-2-acassen@corp.free.fr>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261007143830.1733583-1-acassen@corp.free.fr>
-References: <20261007143830.1733583-1-acassen@corp.free.fr>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank Li <Frank.Li@nxp.com>, Yicong Hui <yiconghui@gmail.com>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, vkoul@kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 1/1] net: ethernet: micrel: ks8842: use
+ dmaengine_submit() instead of ->tx_submit()
+Message-ID: <20261007144334.GR83879@horms.kernel.org>
+References: <20261002193022.168248-1-Frank.Li@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261002193022.168248-1-Frank.Li@oss.nxp.com>
 
-L2 to L3 tunnel reformats are now released to the el2tol3tnl pools.
+On Fri, Oct 02, 2026 at 03:30:19PM -0400, Frank.Li@oss.nxp.com wrote:
+> From: Frank Li <Frank.Li@nxp.com>
+> 
+> Replace direct dma_async_tx_descriptor->tx_submit() calls with the
+> proper dmaengine_submit() API wrapper.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Fixes: aecd9d1020e3 ("net/mlx5: fs, add HWS packet reformat API function")
-Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
----
- drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi Frank,
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
-index 5a172c572a68..44b311b4532d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
-@@ -1398,8 +1398,8 @@ static void mlx5_cmd_hws_packet_reformat_dealloc(struct mlx5_flow_root_namespace
- 						    pr_data->data_size);
- 		break;
- 	case MLX5_REFORMAT_TYPE_L2_TO_L3_TUNNEL:
--		pr_pool = mlx5_fs_get_pr_encap_pool(dev, &hws_pool->el2tol2tnl_pools,
--						    MLX5HWS_ACTION_TYP_REFORMAT_L2_TO_TNL_L2,
-+		pr_pool = mlx5_fs_get_pr_encap_pool(dev, &hws_pool->el2tol3tnl_pools,
-+						    MLX5HWS_ACTION_TYP_REFORMAT_L2_TO_TNL_L3,
- 						    pr_data->data_size);
- 		break;
- 	case MLX5_REFORMAT_TYPE_L3_TUNNEL_TO_L2:
--- 
-2.43.0
+Is there a back-story to this change?
+Is it part of something larger?
 
+In face value it looks like a cleanup to an unmaintained driver.
+And if so, I'm not sure it's worth the churn.
