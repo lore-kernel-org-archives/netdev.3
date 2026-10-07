@@ -1,148 +1,579 @@
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010051.outbound.protection.outlook.com [52.101.56.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BED23E5A20
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 16:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791391818; cv=fail; b=uRjD6HtyrMWAvYzdAThlheDhOBJEpVpvRzDK2BrdkOf54h58L0C6gKOQ4+jKP6SkW0y6mLHlLYO7mcLd5RojPin4NTOGLbeNFlLEwKj6hetGWLdcxEo44nz4jF/zgw8sut06WVaQ1KlbMrrbAOcLt8/rQqIUfH8vx0OEFychGEA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791391818; c=relaxed/simple;
-	bh=CXz7k0g1YTqfaK87oV/qdy+QSKaFfmD3dk48H4Y7R7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AJL/GQ/lk4P/y4Kx4vsC4QPBnQGObE+GEnZB4TfNc0up4uNGa0DM+n1UTtr9EYgLYDGFP9gSHFTIPNaxIQVtsMrKUj+hYifGCnWtKnZJ08ZvwcB5QzHHzcy7h6TDWEtmC6jmlExjvtbh0vNvg01/TQNgO+Vipkoa1CtCFzjlCtA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lBdRIZDO; arc=fail smtp.client-ip=52.101.56.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50F0287247;
+	Wed,  7 Oct 2026 16:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791392140; cv=none; b=nK/Dlqi+U43PT+3LQzNcvpnfCP+opkZrkj6XV4X9oQdMCFi1lY1z3nIRnbv0d7BnPchU/Itr+79xnck4sJ1k+Q/669YAJWh6q5uFOC9WAeW/BAMB/Bi6jFh0vF5edH8Nmb2K/brzJK3yvRgLVpKSTTT+VlKjUX+Fg24roncSXw0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791392140; c=relaxed/simple;
+	bh=FDB+npaB7MhQozd7hd7WmSU1Tnruwbn+5BFVrdFZ950=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gfyesdQBoaO/ej9WmC0pnri4pGbalRSt+nwH7sTswN5BNuEuLUkgNHLHcz3ZU9r0GE4rhKU4gu3Et4VRM9Z+nO3JqiXJMNuIZdFXGvsejJLNlsaQTJaTAy2nDE81/nwtWehcrr1btKZh/r5oDMJlMLnXeA9L27MskxYzrIJISIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=NpNzSqOa; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lBdRIZDO"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NTPo92/vYSrER48Q26HtiwB4GBNz0pLNUuCZc7iqzvCROLSJJvOT8C7FubnYaE5zsSHGg2qxyLCQ1dJTgakccz0dpCgwyqALMcf8oX6tCGgcwuT1WqxgEP5fH8rube6nMgNdWtbNUIPTJtNuooZVT3e6hwRbKC6O7CvdnfABf9QrLe3ZPmzYohCBHkBZ4b9e4vKwFtS6WQLWelL94sy+xjbPWnShRdJKGip70tfB0C870AojNqnY/Ipvij+R2Sn8ffL27PPAz4+eo1rROlg3+1dATVvzWXTHHneTfyzNPoUQYZf4s5hXUBzBot1gO1M9Q9jkPT5PYwIiTlBUklY6jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GszwjXJ+TYfAcYKZC+GGd/qMsKxqeUvB/7SqBg4ziWQ=;
- b=ewAXoadaM/CLPzYYDJ03sfWyrdXdXN8Gg7IVsXT40AVrl03PJFg4UMG3k41hcRVnTGtEXA4HWd+WV3udQXWUnc19mmZKt16y//eqgrGH0oSqroregcxa/3iDg3J7nM3+ymBPwot+SrK60MhDvA1VpUzklFVasKugFGzXHIkD0C/Eu3qgxk1pMB9zeUzGjgNT42u6BtHcTiJR8RCw13+DbrMn5kKaE6C62Z094CUaRJR7mGtrvEdQpu+Nw/ldPPKWIbnQBGsIa6h7cEzAHWTiOEfQbJHY7eiHI45w2ksBkL/M23I6/G81Rdm77TlLFMZik5KBwwIAS6CcUV55a1kW3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GszwjXJ+TYfAcYKZC+GGd/qMsKxqeUvB/7SqBg4ziWQ=;
- b=lBdRIZDOm/8+33EpQx9+xdJMdzxwWxuKGBncs0Vy0VZNj4kH3l1ffIOTOinnodsKR0NhDlqxBjPOna5GazTm4FA0W5J08gt6f+thiAGsDlHLCx3ug+U19QmfMt5zHG3fTpfSHCHQ+wCbEQ+/EMUj3URpYbLjiMhyxnUZyLTjDu+ucchCAsXxBbqv4dbM18bRsVkNWvYplFUxfcbNpI+K8KwTUYqVvAkHwjTUMZcDeVNi3IFCWSSUh7C/s7tzIil1MnzxTkUR39/HzloSZyB3E4ddHpMkVyZ1DnXPeJKZkc9VnUORvSPr97ZsHzlPsiQt260gsQPxLXGhEt0aewfONw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SN7PR12MB7954.namprd12.prod.outlook.com (2603:10b6:806:344::7)
- by IA3PR12MB773567.namprd12.prod.outlook.com (2603:10b6:208:706::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Wed, 7 Oct
- 2026 16:50:15 +0000
-Received: from SN7PR12MB7954.namprd12.prod.outlook.com
- ([fe80::2567:531c:cdb8:f544]) by SN7PR12MB7954.namprd12.prod.outlook.com
- ([fe80::2567:531c:cdb8:f544%3]) with mapi id 15.21.0451.026; Wed, 7 Oct 2026
- 16:50:15 +0000
-Date: Wed, 7 Oct 2026 19:50:00 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 net-next 0/9] neighbour: Add IPv4/IPv6-specific
- wrappers for neigh_lookup() and friends.
-Message-ID: <20261007165000.GA1177153@shredder>
-References: <20261003212336.1304988-1-kuniyu@google.com>
- <20261007093555.66e9194f@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261007093555.66e9194f@kernel.org>
-X-ClientProxiedBy: FR3P281CA0206.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a5::10) To SN7PR12MB7954.namprd12.prod.outlook.com
- (2603:10b6:806:344::7)
+	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="NpNzSqOa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1791392116; bh=FDB+npaB7MhQozd7hd7WmSU1Tnruwbn+5BFVrdFZ950=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NpNzSqOaMvIU/3oijVwXPJmQ/8v+SeOZnkQRLDbiXGKmdHhL31fRnWzwpCc/bfwfr
+	 1JV2PCNwi+fDTC1Y6VnfUUl2JEx09XScHigXvXNuFBDrXbZYYbFtPpzuKh8r2OLWxB
+	 iJQ8T2NXk6C8NnpIS5TZIPr4HtgE9Gv1YirPL4LWft6z52oQJYR6lLaRLQynII3hOO
+	 v6tPZdzQ2XDT01CkvRJZ3xl2rgsR7PR/aWAXFyi4ezfHa2EU27r5kebY8ROKd6Ia0r
+	 +vANOJJ5WoXPCyAT8lcVZipovnafy9tjHgRRxkaaTTPuzssYQRSHZTyd+8GZoIPghQ
+	 deS1MyS4aYUJg==
+Received: from [212.42.244.71] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <t.martitz@fritz.com>)
+	id 6ac67974-23c8-7f0000032729-7f0000019184-1
+	for <multiple-recipients>; Wed, 07 Oct 2026 18:55:16 +0200
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Wed,  7 Oct 2026 18:55:16 +0200 (CEST)
+Message-ID: <f9780706-f0e5-41e6-b206-af0a5873aa88@fritz.com>
+Date: Wed, 7 Oct 2026 18:55:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB7954:EE_|IA3PR12MB773567:EE_
-X-MS-Office365-Filtering-Correlation-Id: 35412393-d218-40c3-f3cb-08df24930f6f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|11063799006|4143699003|10067099003|56012099006|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	Zl+8HmbWC3h58BT8p4nz2xZyG8HlpRaSJfDmIhfsFuqJbrkv4szZHLFhca51cy1V8hfENaPbmrMI/CeJo3Tx3j1KhfU3FOjmgYRTg5B1gbxATUK/KUmMmt54wpGLrLOvIWTImzEKGcjd73wsUI/3Go4bOrKQAkQOBMI9xhtGmqoG0VMQOBXqFGqwJp6z44KYkd3Kc4puuamWJi64rmbUnbcMwNxfu4Zj501BOKr+tdIUSVA1No8PrJnHnOh46sLk6QeUO8O2RmqgvoX8z1V9tpEBZRugapqiC4OiwM2hfBuRAmNHEjmTQ5nkMjZu9v7tRkF9xvBQzGHN1gwqhN4bLAm0elA1ZaAqiV0PGGwTN/NreltZnlfHmhaZcLqrnfaVw8tnBGejTKd5to1TuE9XOrujANrn98jBczOqa/KbHblkxABnKWZuFjdmJZsOxO88ZJvbfthZvIpJgjcyUH3XXueMqX8AwDzUu7V1bz3Lj4H9GmT8HNQmzRRmvNHrAbmctuM9lLSGtllytOcEMcbaRJjuaP/dRQ3C1qBXgFSiw27yhBTF1uDTBRtigNML3GxSVQ68Id4buXXbw2M4YEg0Se1DfalrhHOOcIo7F6CgBNPndJGBVLzcCHhX/dRyrzEao8QonTaYenYJsosmfrVvS12hkeH/L6Y7DYEnsk2Q3hg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB7954.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(11063799006)(4143699003)(10067099003)(56012099006)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vQoBJVDcOoESK/U0qqZ5+LfNanxCmInANQSARnvu7ByyeIp9SwiEJT/Y045Z?=
- =?us-ascii?Q?bwIHjQps5lLh//pCDn+gjwbOsjEf/PuZq9EzxaTD7dY7qLVkMNR/QPXqsigo?=
- =?us-ascii?Q?JtDa0nne7Wkaxe2rwAV2YtGQh4gK9xvfSwNe9NMFX07JZCiy/nYW5V3tE+I7?=
- =?us-ascii?Q?rHiRwVSC8OxhFRnuxBOex29XqMXGdfMSXfk/ovr8jY1RtR7a0Ga8J3LSE4Sc?=
- =?us-ascii?Q?rj5Qf/oEXG7xyX3IdW/Xh8ehScoS9Bvh5erE3s3FOVoLdzd6ykDm2pCpzUQ9?=
- =?us-ascii?Q?BkCWOF3Q9Dn01L1JqYP7kKfgrw1aT2LTcjgsa9Len5QZz2Cu21xB3NrCCgit?=
- =?us-ascii?Q?uqxTtHRElFOiIGoSKCoMnzvIg52p8hiFzWjGqyfmcx5sFumBGHH/b6fjalbk?=
- =?us-ascii?Q?E989yl5arbXP7x+iFpkchPYYJiDyZYJn5wa9k9R5Qk50IhJDDvyprbaw+UMF?=
- =?us-ascii?Q?hfa5Yoda3+xzNg+nViDBFWqQDI9kWsTHWMXwrCQld6kAdqURV8qEz0Z3Xrow?=
- =?us-ascii?Q?zI+Glz5HqxdsvbLLu22yY5+52MqEMBdcYkhifQgwCKUoULbAVKGyAtGFLDoT?=
- =?us-ascii?Q?/cXUNB4frCnmledpm+3KvhjnxpTpgYKAkjOlccwms1mzvZGCRrmipNr1GS4j?=
- =?us-ascii?Q?gv+KlAOx9sNoBmvetF0VWsFfKRWp1zT2oDYXyumM3cCJWJbpzMj7bXrOgteX?=
- =?us-ascii?Q?lNZcK9EYbYMSDB6cAU3sI9BI3b4WsguIkYs2IdzAXixdzEyqIQAO0Q3WFAhm?=
- =?us-ascii?Q?P5vz8ItuyxFZ/J4ePNzMZwH9wK9kYIz8PYoQ1ijNeNvSJ35LJviZ0ZZ9D5I+?=
- =?us-ascii?Q?QWcjNFSLPNB5SNWA+OdAvO6J37v4CTgQF4jP0M/NsvS02+ef3Hf2y10OniZU?=
- =?us-ascii?Q?E00RZ0aErCxBbEwIX0HA4YhvXAwP+mtH8sy2b8O0Qwm2tKfw3a1NeulmxLI4?=
- =?us-ascii?Q?ZTYO+mjSGWqAXqCXYIkSzEaleqV2uLeTb/Cd50fsDruA7eDZEVYf4LgsXUPh?=
- =?us-ascii?Q?DIyOOFp1GK7tToHB7l3LbY9lWbTjEx673zKZM1BxeiaDX21SS7SgGey3sBIX?=
- =?us-ascii?Q?NLtevzqwKCG1UMm2DZy1JiicFlazRXNCP3D6lf3BIALcZ+fbhov2GAHX61Oi?=
- =?us-ascii?Q?oKV4oH/qbHkhQREGyEJemgNo+yRiKn9tH1QHi00jKmwrpVV8xGuGo9J5e6nr?=
- =?us-ascii?Q?fA0FKnWUZ0INCrexS2vrfDRzYocgNFAoQMgJ/ZaV7uTMo1LX6ltjd1Rp7BJE?=
- =?us-ascii?Q?nMymy7qYWLps73XipWYhV340NLjUf+G22VjAeY14IySvM7w57pz9yoyRZ3TU?=
- =?us-ascii?Q?yY2s1QeoVTUvgrJeW5MUxu2JPSZCko0vs+wgJEJEwNHCDdRp575RnJU9xhp2?=
- =?us-ascii?Q?r4WtgLiZfHG1+76E9vvIXPi3B5Ur+5dea4fVWSn3naSHoK3nESJmOEsZizRa?=
- =?us-ascii?Q?U42wJmktlnF2GKf6H8saAVijG09u3JblD3eMu/ro67KrVGOHkLFa9eSztClw?=
- =?us-ascii?Q?knaJ1/nwOOdaC90EttHN6113prtRT5D7iwc4IYtdA9hrZj22wx7qC1Dr9/dg?=
- =?us-ascii?Q?46LViyvtSKWJUP1bYpdYeUcZMFDqdvkmW3yb7BeU4DRLcpy3ynA+z1iAJWvl?=
- =?us-ascii?Q?ofi75mFL2L+Yao+c7sg9ZTa29wXZ8M9FeiJF6G71OgOgupC0t/3Bi77l7EyR?=
- =?us-ascii?Q?F87/+xJ8oBuywyrUzhyYuVHmQpJ1OcM8wFgcatg4TZcZLwqr?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35412393-d218-40c3-f3cb-08df24930f6f
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB7954.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 16:50:15.0062
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 00D5aV+nbUfJhIPFwUxcdGCzTo4Za2blOyv+9Q09Hhe0kwS7DTZpOAJKdzu4ucoK5Elkw7YRR6pFawhmojJYzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR12MB773567
+Subject: Re: [PATCH v5 1/1] macvlan: allow source mode devices along with
+ passthru
+To: Simon Horman <horms@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260917101044.2654867-1-t.martitz@fritz.com>
+ <20260921092359.91614-1-horms@kernel.org>
+Content-Language: de-DE
+From: Thomas Martitz <t.martitz@fritz.com>
+In-Reply-To: <20260921092359.91614-1-horms@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-purgate-ID: 149429::1791392116-19FC3FA4-9C6B6684/0/0
+X-purgate-type: clean
+X-purgate-size: 19535
+X-Notice: Whitelisted
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-03  mail-id: 9F25DA008E  external: no
 
-On Wed, Oct 07, 2026 at 09:35:55AM -0700, Jakub Kicinski wrote:
-> On Sat,  3 Oct 2026 21:23:13 +0000 Kuniyuki Iwashima wrote:
-> > syzbot reported that ip6_finish_output2() could pass tbl and dev
-> > from different netns to neigh_create().
-> > 
-> > When namespacifying neigh_table, I chose to resolve neigh_table
-> > in callers to minimise changes, but it turned out to be error-prone.
-> > 
-> > This series adds IPv4/IPv6-specific helpers for neigh_lookup()
-> > and neigh_create() that always fetch the netns from dev to fix
-> > the problem.
-> > 
-> > Along the way, the confusing and now mostly redundant helpers
-> > __neigh_lookup() and __neigh_lookup_errno() are converted and
-> > removed.
+Hello,
+
+I took a few free slots during LPC 2026 to address
+the concerns raised by AI review, almost all of which were
+valid.
+
+I also expanded my local test suite to catch all of these.
+
+I'll post v6 in shortly.
+
+m 21.09.26 um 11:23 schrieb Simon Horman:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917101044.2654867-1-t.martitz@fritz.com?part=1
+> ---
+> macvlan: allow source mode devices along with passthru
 > 
-> Ido, David, thoughts?
-> The unusual (for Ido) silence makes me suspicious :)
+> This allows one passthru macvlan to coexist with source mode macvlans on
+> the same lower device, by converting several per-device decisions from the
+> port wide MACVLAN_F_PASSTHRU flag to vlan->mode and by moving the lower
+> device MAC restore from macvlan_port_destroy() into macvlan_uninit().
+> 
+> A few questions about the conversion below.
+> 
+>> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+>> index afad90b9222a2..76c11e5260334 100644
+>> --- a/drivers/net/macvlan.c
+>> +++ b/drivers/net/macvlan.c
+>> @@ -83,6 +83,11 @@ static inline void macvlan_set_passthru(struct macvlan_port *port)
+>>  	port->flags |= MACVLAN_F_PASSTHRU;
+>>  }
+>>  
+>> +static inline void macvlan_clear_passthru(struct macvlan_port *port)
+>> +{
+>> +	port->flags &= ~MACVLAN_F_PASSTHRU;
+>> +}
+>> +
+>>  static inline bool macvlan_addr_change(const struct macvlan_port *port)
+>>  {
+>>  	return port->flags & MACVLAN_F_ADDRCHANGE;
+>> @@ -217,8 +222,7 @@ static bool macvlan_addr_busy(const struct macvlan_port *port,
+>>  	 * currently in use by the underlying device or
+>>  	 * another macvlan.
+>>  	 */
+>> -	if (!macvlan_passthru(port) && !macvlan_addr_change(port) &&
+>> -	    ether_addr_equal_64bits(port->dev->dev_addr, addr))
+>> +	if (ether_addr_equal_64bits(port->dev->dev_addr, addr))
+>>  		return true;
+>>  
+>>  	if (macvlan_hash_lookup(port, addr))
+>> @@ -637,7 +641,7 @@ static int macvlan_open(struct net_device *dev)
+>>  	struct net_device *lowerdev = vlan->lowerdev;
+>>  	int err;
+>>  
+>> -	if (macvlan_passthru(vlan->port)) {
+>> +	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+>>  		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
+>>  			err = dev_set_promiscuity(lowerdev, 1);
+>>  			if (err < 0)
+> 
+> [Severity: High]
+> 
+> macvlan_open() and macvlan_stop() are converted to the per-device
+> vlan->mode test here, but macvlan_change_rx_flags() still keys off the
+> port flag:
+> 
+> drivers/net/macvlan.c:macvlan_change_rx_flags() {
+> 	if (dev->flags & IFF_UP) {
+> 		if (change & IFF_ALLMULTI)
+> 			dev_set_allmulti(lowerdev, dev->flags & IFF_ALLMULTI ? 1 : -1);
+> 		if (!macvlan_passthru(vlan->port) && change & IFF_PROMISC)
+> 			dev_set_promiscuity(lowerdev,
+> 					    dev->flags & IFF_PROMISC ? 1 : -1);
+> 	}
+> }
+> 
+> Once a passthru device exists the port flag is set for every sibling, so
+> live IFF_PROMISC transitions of a source mode macvlan are dropped, while
+> macvlan_open() and macvlan_stop() still take and release the lower device
+> promiscuity reference based on dev->flags.
+> 
+> Can this unbalance lowerdev->promiscuity?
+> 
+>   ip link add pt link eth0 type macvlan mode passthru
+>   ip link add src0 link eth0 type macvlan mode source
+>   ip link set src0 promisc on
+>   ip link set src0 up	  macvlan_open() -> dev_set_promiscuity(lowerdev, 1)
+>   ip link set src0 promisc off	  macvlan_change_rx_flags() skips the -1
+>   ip link set src0 down	  macvlan_stop() sees IFF_PROMISC clear, no -1
+> 
+> That leaks a +1 on the physical device. The reverse order (up without
+> promisc, promisc on while up, then down) issues an unmatched
+> dev_set_promiscuity(lowerdev, -1), and __dev_set_promiscuity() computes
+> 0 + (-1) as 0xFFFFFFFF, takes the "flags = old_flags | IFF_PROMISC"
+> branch and returns 0, so the device stays pinned promiscuous with no
+> error reported. If the passthru device held the only reference, the count
+> instead reaches 0, IFF_PROMISC is cleared and the hardware filter is
+> reprogrammed while the passthru macvlan still needs it.
+> 
+> Before this patch a passthru port could hold no other device, so the port
+> wide test in macvlan_change_rx_flags() was equivalent to the per-device
+> one. Should that call site be converted too?
 
-Too many other patches to review...
+Makes sense, I'll follow up with that change.
 
-The series looks good to me:
+> 
+>> @@ -712,7 +716,7 @@ static int macvlan_stop(struct net_device *dev)
+>>  	dev_uc_unsync(lowerdev, dev);
+>>  	dev_mc_unsync(lowerdev, dev);
+>>  
+>> -	if (macvlan_passthru(vlan->port)) {
+>> +	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+>>  		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
+>>  			dev_set_promiscuity(lowerdev, -1);
+>>  		goto hash_del;
+>> @@ -737,17 +741,18 @@ static int macvlan_sync_address(struct net_device *dev,
+>>  	struct macvlan_dev *vlan = netdev_priv(dev);
+>>  	struct net_device *lowerdev = vlan->lowerdev;
+>>  	struct macvlan_port *port = vlan->port;
+>> +	bool passthru_dev = vlan->mode == MACVLAN_MODE_PASSTHRU;
+>>  	int err;
+>>  
+>>  	if (!(dev->flags & IFF_UP)) {
+>>  		/* Just copy in the new address */
+>>  		eth_hw_addr_set(dev, addr);
+>>  	} else {
+>> -		/* Rehash and update the device filters */
+>> -		if (macvlan_addr_busy(vlan->port, addr))
+>> -			return -EADDRINUSE;
+>> +		if (!passthru_dev) {
+>> +			/* Rehash and update the device filters */
+>> +			if (macvlan_addr_busy(vlan->port, addr))
+>> +					return -EADDRINUSE;
+>>  
+>> -		if (!macvlan_passthru(port)) {
+>>  			err = dev_uc_add(lowerdev, addr);
+>>  			if (err)
+>>  				return err;
+> 
+> [Severity: Medium]
+> 
+> The macvlan_addr_busy() call used to run for the passthru device as well,
+> and its macvlan_hash_lookup() half caught collisions with siblings on the
+> same port. Moving it inside "if (!passthru_dev)" drops that check for the
+> passthru device.
+> 
+> Can a passthru device now take the address of a live source mode sibling?
+> macvlan_set_mac_address() returns before its own busy check:
+> 
+> drivers/net/macvlan.c:macvlan_set_mac_address() {
+> 	if (READ_ONCE(vlan->mode) == MACVLAN_MODE_PASSTHRU) {
+> 		macvlan_set_addr_change(vlan->port);
+> 		return dev_set_mac_address(vlan->lowerdev, addr, NULL);
+> 	}
+> 
+> 	if (macvlan_addr_busy(vlan->port, addr->__data))
+> 		return -EADDRINUSE;
+> 
+> so with pt (passthru) and src0 (source) both up, "ip link set pt address
+> <src0 mac>" reprograms the lower device and comes back through
+> macvlan_device_event() -> macvlan_sync_address() with passthru_dev true,
+> where nothing validates it anymore.
+> 
+> Both macvlans then end up hashed under the same address, and src0 can no
+> longer be brought up because macvlan_addr_busy() now compares against
+> port->dev->dev_addr unconditionally:
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+I'll move the macvlan_addr_busy() check in macvlan_set_mac_address() up 
+so that passthru devices are covered as well. That should catch if 
+a passthru interface (and consequently the lower device) is assigned the same
+mac as one of the existing source interfaces.
+
+
+> 
+> drivers/net/macvlan.c:macvlan_open() {
+> 	err = -EADDRINUSE;
+> 	if (macvlan_addr_busy(vlan->port, dev->dev_addr))
+> 		goto out;
+> 
+>> @@ -757,7 +762,7 @@ static int macvlan_sync_address(struct net_device *dev,
+>>  
+>>  		macvlan_hash_change_addr(vlan, addr);
+>>  	}
+>> -	if (macvlan_passthru(port) && !macvlan_addr_change(port)) {
+>> +	if (passthru_dev && !macvlan_addr_change(port)) {
+>>  		/* Since addr_change isn't set, we are here due to lower
+>>  		 * device change.  Save the lower-dev address so we can
+>>  		 * restore it later.
+>> @@ -979,7 +984,26 @@ static void macvlan_uninit(struct net_device *dev)
+>>  
+>>  	macvlan_flush_sources(port, vlan);
+>>  	port->count -= 1;
+>> -	if (!port->count)
+>> +
+>> +	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+>> +		/* If the lower device address has been changed by passthru
+>> +		 * macvlan, put it back.
+>> +		 *
+>> +		 * Caution: This triggers NETDEV_CHANGEADDR on
+>> +		 * the lower device. But we're in the green because
+>> +		 * the passthru interface is already off the list.
+>> +		 */
+>> +		if(!ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
+>> +			struct sockaddr_storage ss;
+>> +
+>> +			ss.ss_family = port->dev->type;
+>> +			memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
+>> +			dev_set_mac_address(port->dev, &ss, NULL);
+>> +		}
+>> +		macvlan_clear_passthru(port);
+>> +	}
+>> +
+>> +	if (port->count == 0)
+>>  		macvlan_port_destroy(port->dev);
+>>  }
+> 
+> [Severity: High]
+> 
+> The restore now runs at passthru device lifetime, but the matching save
+> into port->perm_addr is still done once at port creation:
+> 
+> drivers/net/macvlan.c:macvlan_port_create() {
+> 	ether_addr_copy(port->perm_addr, dev->dev_addr);
+> 
+> and it is only refreshed while a passthru device already exists:
+> 
+> drivers/net/macvlan.c:macvlan_device_event() {
+> 	case NETDEV_CHANGEADDR:
+> 		if (!macvlan_passthru(port))
+> 			return NOTIFY_DONE;
+> 
+> Since a port can now be created by, and outlive, source mode only devices,
+> can this write a stale address onto the lower device?
+> 
+>   ip link add src0 link eth0 type macvlan mode source
+> 	  macvlan_port_create() saves eth0 mac A into port->perm_addr
+>   ip link set eth0 address B
+> 	  macvlan_device_event() returns NOTIFY_DONE, perm_addr stays A
+>   ip link add pt link eth0 type macvlan mode passthru
+> 	  accepted now, eth_hw_addr_inherit() gives pt mac B
+>   ip link del pt
+> 	  macvlan_uninit() sees B != A and sets eth0 back to A
+> 
+> eth0 ends up with an address the macvlan never installed. Should
+> port->perm_addr be re-captured next to the eth_hw_addr_inherit() call in
+> macvlan_common_newlink() when the passthru device is created?
+
+The suggestion is spot-on, I think. I came to the same conclusion.
+
+Actually the remembering the lowerdev mac in port->perm_addr
+can be moved as it's only needed once there is a passthru interface,
+and never for regular vepa/source/bridge combinations.
+
+> 
+> Two related questions on the same block:
+> 
+> macvlan_uninit() is also reached from the register_netdevice() and
+> netdev_upper_dev_link() failure paths in macvlan_common_newlink(), for a
+> passthru device that never touched the lower MAC. Does the restore fire
+> there too?
+
+With the above change the the MAC addresses are in sync within
+macvlan_common_newlink().
+
+> 
+> macvlan_clear_passthru() clears MACVLAN_F_PASSTHRU but not
+> MACVLAN_F_ADDRCHANGE. In a port that now survives the passthru device, can
+> a stale addr change bit be observed by the next passthru device created on
+> that port?
+
+The MACVLAN_F_ADDRCHANGE is cleared eagerly by macvlan_sync_address().
+It is only set during the chain
+set_mac_address(passthrough, addr)
+-> dev_set_mac_address(lowerdev, addr)
+-> macvlan_device_event()
+-> macvlan_sync_address()
+
+It is always clear in macvlan_unit().
+
+
+> 
+> [Severity: Low]
+> 
+> These are not bugs, but checkpatch will complain about a few things
+> introduced here:
+> 
+>   if(!ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
+> 
+> missing space after if.
+> 
+> In macvlan_sync_address() the return is indented by two extra tabs:
+> 
+> 		if (macvlan_addr_busy(vlan->port, addr))
+> 				return -EADDRINUSE;
+> 
+> In macvlan_common_newlink() the if branch has braces and the else branch
+> does not. There is also a typo, "passhtrough", in the new
+> macvlan_changelink() comment, and some of the new comment lines run past
+> 80 columns.
+> 
+
+Will be fixed.
+
+> [ ... ]
+> 
+>> @@ -1310,18 +1334,6 @@ static void macvlan_port_destroy(struct net_device *dev)
+>>  		kfree_skb(skb);
+>>  	}
+>>  
+>> -	/* If the lower device address has been changed by passthru
+>> -	 * macvlan, put it back.
+>> -	 */
+>> -	if (macvlan_passthru(port) &&
+>> -	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
+>> -		struct sockaddr_storage ss;
+>> -
+>> -		ss.ss_family = port->dev->type;
+>> -		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
+>> -		dev_set_mac_address(port->dev, &ss, NULL);
+>> -	}
+>> -
+>>  	kfree(port);
+>>  }
+>>  
+>> @@ -1523,15 +1535,6 @@ int macvlan_common_newlink(struct net_device *dev,
+>>  	}
+>>  	port = macvlan_port_get_rtnl(lowerdev);
+>>  
+>> -	/* Only 1 macvlan device can be created in passthru mode */
+>> -	if (macvlan_passthru(port)) {
+>> -		/* The macvlan port must be not created this time,
+>> -		 * still goto destroy_macvlan_port for readability.
+>> -		 */
+>> -		err = -EINVAL;
+>> -		goto destroy_macvlan_port;
+>> -	}
+>> -
+>>  	vlan->lowerdev = lowerdev;
+>>  	vlan->dev      = dev;
+>>  	vlan->port     = port;
+>> @@ -1544,12 +1547,31 @@ int macvlan_common_newlink(struct net_device *dev,
+>>  	if (data && data[IFLA_MACVLAN_FLAGS])
+>>  		vlan->flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+>>  
+>> +	/* Only 1 macvlan device can be created in passthru mode. There may be
+>> +	 * additional source mode devices but nothing else at the moment.
+>> +	 *
+>> +	 * First check if adding a source mode device to an existing passthru vlan.
+>> +	 */
+>> +	if (macvlan_passthru(port) && vlan->mode != MACVLAN_MODE_SOURCE) {
+>> +		/* The macvlan port must be not created this time,
+>> +		 * still goto destroy_macvlan_port for readability.
+>> +		 */
+>> +		err = -EINVAL;
+>> +		goto destroy_macvlan_port;
+>> +	}
+>> +
+>> +	/* Now check if adding a passthru device to an existing set of source mode
+>> +	 * devices.
+>> +	 */
+>>  	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+>> -		if (port->count) {
+>> -			err = -EINVAL;
+>> -			goto destroy_macvlan_port;
+>> +		struct macvlan_dev *p;
+>> +
+>> +		list_for_each_entry(p, &port->vlans, list) {
+>> +			if (p->mode != MACVLAN_MODE_SOURCE) {
+>> +				err = -EINVAL;
+>> +				goto destroy_macvlan_port;
+>> +			}
+>>  		}
+>> -		macvlan_set_passthru(port);
+>>  		eth_hw_addr_inherit(dev, lowerdev);
+>>  	}
+>>  
+>> @@ -1581,7 +1603,12 @@ int macvlan_common_newlink(struct net_device *dev,
+>>  	if (err)
+>>  		goto unregister_netdev;
+>>  
+>> -	list_add_tail_rcu(&vlan->list, &port->vlans);
+>> +	/* macvlan_handle_frame expects the (one and only) passthru device first. */
+>> +	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+>> +		macvlan_set_passthru(port);
+>> +		list_add_rcu(&vlan->list, &port->vlans);
+>> +	} else
+>> +		list_add_tail_rcu(&vlan->list, &port->vlans);
+> 
+> [Severity: Low]
+> 
+> This isn't a bug as far as I can tell, but the ordering here is the
+> reverse of initialise-then-publish: macvlan_set_passthru() makes
+> macvlan_handle_frame() take the passthru branch before the device is on
+> port->vlans. On teardown the mirror window exists too, since
+> macvlan_dellink() does list_del_rcu() while the flag is only cleared later
+> in macvlan_uninit().
+> 
+> I could not find a functional consequence, because the reader bails out in
+> both windows:
+> 
+> drivers/net/macvlan.c:macvlan_handle_frame() {
+> 	if (macvlan_passthru(port))
+> 		vlan = list_first_or_null_rcu(&port->vlans,
+> 					      struct macvlan_dev, list);
+> 	else
+> 		vlan = macvlan_hash_lookup(port, eth->h_dest);
+> 	if (!vlan || READ_ONCE(vlan->mode) == MACVLAN_MODE_SOURCE)
+> 		return RX_HANDLER_PASS;
+> 
+> and rtnl is held across register_netdevice() and this list_add_rcu(), so
+> the device cannot be up in the creation window. Would publishing the list
+> entry before setting the flag, and using READ_ONCE()/WRITE_ONCE() on
+> port->flags which macvlan_handle_frame() reads from softirq context, be
+> preferable anyway?
+> 
+>>  	update_port_bc_queue_len(vlan->port);
+>>  	netif_stacked_transfer_operstate(lowerdev, dev);
+>>  	linkwatch_fire_event(dev);
+>> @@ -1652,19 +1679,23 @@ static int macvlan_changelink(struct net_device *dev,
+>>  	if (data && data[IFLA_MACVLAN_MODE]) {
+>>  		set_mode = true;
+>>  		mode = nla_get_u32(data[IFLA_MACVLAN_MODE]);
+>> -		/* Passthrough mode can't be set or cleared dynamically */
+>> -		if ((mode == MACVLAN_MODE_PASSTHRU) !=
+>> -		    (vlan->mode == MACVLAN_MODE_PASSTHRU))
+>> -			return -EINVAL;
+>> -		if (vlan->mode == MACVLAN_MODE_SOURCE &&
+>> -		    vlan->mode != mode)
+>> -			macvlan_flush_sources(vlan->port, vlan);
+>> +		if (mode != vlan->mode) {
+>> +			/* Passthrough mode can't be set or cleared dynamically,
+>> +			 * regardless of existing source interfaces. Furthermore, source
+>> +			 * interfaces can't switch modes within a passhtrough port.
+>> +			 */
+>> +			if (vlan->mode == MACVLAN_MODE_PASSTHRU ||
+>> +			    macvlan_passthru(vlan->port))
+>> +				return -EINVAL;
+>> +			if (vlan->mode == MACVLAN_MODE_SOURCE)
+>> +				macvlan_flush_sources(vlan->port, vlan);
+>> +		}
+>>  	}
+
+I think the change makes sense anyway, to ensure
+the passthru interface is first in the list once the passthru
+flag is set port-wide.
+
+
+> 
+> [Severity: High]
+> 
+> The old condition rejected both directions of a passthru transition. The
+> new one only rejects leaving passthru (vlan->mode == MACVLAN_MODE_PASSTHRU)
+> and any mode change inside an already-passthru port
+> (macvlan_passthru(vlan->port)). On a port that has no passthru device, is
+> switching a device into passthru still rejected?
+> 
+>   ip link add m0 link eth0 type macvlan mode vepa
+>   ip link set m0 up
+>   ip link set m0 type macvlan mode passthru
+> 
+> macvlan_validate() accepts MACVLAN_MODE_PASSTHRU, neither arm of the new
+> test matches, and the tail of macvlan_changelink() commits it:
+> 
+> 	if (set_mode)
+> 		WRITE_ONCE(vlan->mode, mode);
+> 
+> MACVLAN_F_PASSTHRU is never set and the device is never moved to the list
+> head, so the comment right above the check ("Passthrough mode can't be set
+> or cleared dynamically") and the invariant documented at the list_add_rcu()
+> above no longer hold. Since this patch keys the per-device paths off
+> vlan->mode, that device now behaves as passthru where it matters:
+> 
+>   ip link set m0 address <x>	macvlan_set_mac_address() takes the
+> 				passthru branch and calls
+> 				dev_set_mac_address(vlan->lowerdev, ...)
+> 
+> IFLA_MACVLAN_MODE has no rtnl_dev_link_net_capable() check on the lower
+> device netns, unlike IFLA_MACVLAN_BC_QUEUE_LEN and IFLA_MACVLAN_BC_CUTOFF,
+> and netif_set_mac_address() performs no namespace capability check, so can
+> CAP_NET_ADMIN in the netns owning a delegated macvlan rewrite the lower
+> device MAC this way?
+> 
+>   ip link set m0 down		macvlan_stop() takes the passthru branch,
+> 				skipping dev_uc_del() and the allmulti
+> 				release, and issues an unmatched
+> 				dev_set_promiscuity(lowerdev, -1)
+> 
+> macvlan_uninit() would then also rewrite the lower MAC from
+> port->perm_addr, and macvlan_fdb_add()/macvlan_fdb_del() start accepting
+> unicast filters. Meanwhile macvlan_handle_frame() still uses the hash path
+> because the port flag stayed clear, so the device reports passthru but does
+> not receive as passthru.
+> 
+> Should the "mode == MACVLAN_MODE_PASSTHRU" half of the old test be kept?
+> 
+
+Yes, indeed.
+
+
+>>  
+>>  	if (data && data[IFLA_MACVLAN_FLAGS]) {
+>>  		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+>>  		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
+>> -		if (macvlan_passthru(vlan->port) && promisc) {
+>> +		if (vlan->mode == MACVLAN_MODE_PASSTHRU && promisc) {
+>>  			int err;
+>>  
+>>  			if (flags & MACVLAN_FLAG_NOPROMISC)
+> 
+> [ ... ]
+
+
+-- 
+Thomas Martitz <t.martitz@fritz.com>
+FRITZ! Technology GmbH, Berlin (Germany)
