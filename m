@@ -1,158 +1,123 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE4E3939DA
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 08:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791362953; cv=pass; b=PtW+AwApkADIgduGeqKBBrCLwKO+f4tHlR9Ge092L2NX1txQPQNGfWb5ntQSEkfD0pWftlhTp5WH+nqX/Fa79vxD+hursAiDOS2g9o+MdcAZSUgly7TXgp29zoEp7eK6xUdRndMwaDJSSKLLJ3L6PMSzex3WDTa9GSh3qOyJu3Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791362953; c=relaxed/simple;
-	bh=PN6EPY1yryWW+YLFcjEUwHC1lGp1pOZRRH3avkGam3w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E7roEkiAEoxVmPMU5bcmcJIKLLsM9xp7PZDhFmUKMS7CBZ61p8uiH2zJlEpxG/Mp185+VvBScg1licyz2/pgK2ezqFdWnm8RBizIP8lYEObEwJyEOzsEshvwr54tBwXJXFMrx+mB2dlGaSJZju3bMZ0yyxQzl/Qmck5oAYEOumc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr; spf=pass smtp.mailfrom=sartura.hr; dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b=tXr3ugRo; arc=pass smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sartura.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sartura.hr
+Received: from cmccmta4.chinamobile.com (cmccmta4.chinamobile.com [111.22.67.137])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3D73CAE7F;
+	Wed,  7 Oct 2026 08:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.137
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791363065; cv=none; b=Sw9WO5d+JPnWvruK42nXKfO6JiV5Kf7HkE2AagGaRmghF5F35RGS9B0bfI7PSQRnOR5y2KkRUE/xOVUdHg0Wuq0iTmN86QR17vKuggyb/9dAbsX9uYCotc452uRW/5MmoVVyFpbdTnH3t8fcOctRjdn2OuHYQk5bXOlOZlTMcQ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791363065; c=relaxed/simple;
+	bh=Sdm7fx+CqbHL0mnic7CuiQulX6tV0v32Bd0YOeucSqI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gpiJSMaa7ysPPM3iObhAGw32b8DOxoz6qByWT6vQFYCYBM5kAENC2gdir6QUVTrf1WHWIOu9z5OzZGJSMv3g7HzPeq1aRGyKTJe5TFEv7RYJ0q4VOke66VMWXmRgAAgPy3OHsrqx9SctSVMdcSYSt1gA+TefQUD4fcDMSBzLuU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=c7BeIgB4; arc=none smtp.client-ip=111.22.67.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sartura.hr header.i=@sartura.hr header.b="tXr3ugRo"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2d6d28aa26cso19359475ad.2
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 01:49:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791362952; cv=none;
-        d=google.com; s=arc-20260327;
-        b=I4T8lOmPRFIhcJx/Mkh5FhrmmuYWooV/5oX6GT2bt0elr/at4ETdvRiAMo/j67Rvkq
-         BXhaXxT23qMLlVcXM7p6HcyKYNFc++etjJWVFiwb/RJHGgyVqGqyYnBfgmm+/xMA8d2B
-         o3hOaD3wqBDxvTsMChYTQjEMUl8fAZTGxb7qT4W4s6WLvT5hkKZtjxcxe5clesYLLvUP
-         yJzKS/0c9trgFjQVtix9QTfwX5BfblFCCrrLkP87AqFKCtpMD6a9/Bi/lLS+sjIpZdk8
-         dWRjqWeMmYPnjp0+hq50L1EI21LWYnBnCQzP5qmT+cWsjYrHpaxGoYM69QJdP0iveeSi
-         j1Ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7mWXlw8htwSt3nqOewVTDtCFW9iqaV8AEvbO4v+RrdY=;
-        fh=sGDOPBtEudTWFRw+nowOmKmZU4L6eJkzULalwnma2Dg=;
-        b=Kn5HoJBYiPLqwotu7KhqSn8J0XLoGGfQkzVJYG27OMSPkN1TvWXTdPZMPTglzWK1mw
-         9MMT6O9yupMoPHfikjDFIxaEsIuMYREv1t7evMyZRBaco9OAhnukWcaCtrjmsUCUnHXW
-         mQ64IhjTzXnyFuL1hZMZAXjVL33Wh8QiYWF0KqJWXsNpXdmUYoGucksrCwg1NkltMCTg
-         KAZBwEenkPQqH2M856pBJLkxw4OJ2MyKhviuFlPMdC+UoHv9qdGWv5T7IuPvIotivgrt
-         W1djaHOdAxdomH8a0L9O8h0vc30PsYTJHNUKCi4BGPwBsilaL68kaD+jNecOIn7SbOoa
-         NOtA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="c7BeIgB4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sartura.hr; s=sartura; t=1791362952; x=1791967752; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7mWXlw8htwSt3nqOewVTDtCFW9iqaV8AEvbO4v+RrdY=;
-        b=tXr3ugRoKe0hWT7LoaR2jZI9AFLFM8Ywg/XZtlv5uoGFG0/X5kVrerfFtPFhrztc9Y
-         zXfZT1at1usZPohxymMMcmCWZrPioA0jzhtvI1Crs7WHaJnGN51lzo+n+r2OwSmH3crM
-         KLpUN40rXDWUqYg2498yA5PhCbMBYiUZGeKnS0nnembaYf609Ug64r/OFN9G1hanDYfF
-         2b75T4pUHs9kPBZKJl5XdT2k02epCtfvXg00a3NOSA3RlxzyPMgvAerdwygXVXYS2A3t
-         C4AjsXtMH6K/bfW0Xg7utkV2l26mAhGI/cRRFPnDa9WhWIrkQ01CN2AAdBS1WCku+vjr
-         qc4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791362952; x=1791967752;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7mWXlw8htwSt3nqOewVTDtCFW9iqaV8AEvbO4v+RrdY=;
-        b=JBnaH4wFxQUX5YbV9P1Bs5Fbdcw82CXCoPpERgYJraxf8hP5N7BT4oOFjJjsWDSN/C
-         25JbaKUa9V6wBxWbIsMcv3Dlda0Y8o4IbpdO3hTNpT6mQwV82bWsJtuDEAoIRiCnsiLr
-         6LdSf1z5DIE9SLBOboLLkWOyKawn6DxoaZ6f7YMp/bJXRbsDFWi754lTDuxLFMvuQLJE
-         9wiGlTj/vtZADWqT2aX+Bu9oJyGlxBdSgERqV3QXvpDDNYEGUNjjsyr2XMFQ7Gfn6jYu
-         wSDpZ7MQeyRgSbjxQBbdDjgqltJh+vuNWc5HLUvf7SQ25BUHNxP95oJrHesPHjRkWpRt
-         ObWg==
-X-Forwarded-Encrypted: i=1; AKwUvByv5N13PY5nV7Q6lcgYmAtPjn82mRyqz/xaaWwvlqOf/c+hUdibVMcPznHl16kzufuzYIOBF2U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKOrsY0X19C9VPJaZt0agh9Z+d4GSOoRy65SHYoT0Thwv6IHgD4
-	k2qB5BRknVXxQBpQsBAYveSZ5QrBJ2TqThdQiuGuTzEGtw+kQxQ9n0u8jzTDEdrqceqf44sqX+1
-	R8k35mG1odtx4X2jDMooY5dom2mBNnN73033ur4N/1w==
-X-Gm-Gg: AYBFou3xcpjOlMcSST6iodW7LAz9iWMqHm+gYQRk/LNXyiVS1BDp7WYEiSSjL3KVWmB
-	g8v2JCoN3pysvwk3ebLImic1qc6fQEbZ8sBeFEkv6XQnffr65R1T1ioHUSlJfUqARUuzdz5UaQK
-	Va/O6PUuZEzw+hNBfX6+Dd2/WNmDN7ezyV0n6YTghgZTSiaDVYxp0vIcnNVmz6xTgrrEI8Ib72A
-	KaAyO5CPxubr1vsNk5rRc1jMBoJgpIYmzfIWTVqqKH4l6fQIYrQVIV3ONKS7bF+KzA9IRw4OXIw
-	jxq09LGqYpwUUyunmlcVu71ZSyVYArhQbMs9c4RzWR+Uev07323bkkY1cME9WBdxW/d5Qh0TuQo
-	AOmq32wtsrW7vzBV/n11pJMlVPuGOuBvC1vY=
-X-Received: by 2002:a17:903:2a8f:b0:2e2:cbf9:c250 with SMTP id
- d9443c01a7336-2e5ffaf23cemr14312045ad.5.1791362951863; Wed, 07 Oct 2026
- 01:49:11 -0700 (PDT)
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=c7BeIgB4RRp46rdiqS38xX0sl2s0tKmq8DMleOZFR8N6tmAoxCqbe/qwBj1kTSLtOFH1DNOWy8NG+
+	 3Rcp3QJQ2e0d3Ntj27SG6GR/UqDylbAsjEHLRfQRr5ZuwtYhCwA+uoV2iKKTjUtRYcLnhQHWEmN57D
+	 I0pu8FRw0vGLhTKk=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee46ac607ebb87-4ad88;
+	Wed, 07 Oct 2026 16:50:52 +0800 (CST)
+X-RM-TRANSID:2ee46ac607ebb87-4ad88
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from openEuler-24.03 (unknown[112.22.250.209])
+	by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee36ac607df4de-dd28c;
+	Wed, 07 Oct 2026 16:50:52 +0800 (CST)
+X-RM-TRANSID:2ee36ac607df4de-dd28c
+From: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+To: netdev@vger.kernel.org
+Cc: Breno Leitao <leitao@debian.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Guillaume Nault <gnault@redhat.com>,
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Subject: [PATCH net v3] net: fix NULL dereference in skb realloc fault injection devname filter
+Date: Wed,  7 Oct 2026 08:41:58 +0800
+Message-ID: <20261007004158.1266795-1-yanhaishuang@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260930122305.293686-1-robert.marko@sartura.hr>
- <20260930122305.293686-4-robert.marko@sartura.hr> <20261001-splendid-athletic-coot-1bbbb6@quoll>
- <CA+HBbNEOiAw+_zzQco13nNzUPdGUgo+kjcRzLFEA4LmnzF8_=A@mail.gmail.com> <a2bcd146-0462-4ab1-b7be-93d6b4e05056@lunn.ch>
-In-Reply-To: <a2bcd146-0462-4ab1-b7be-93d6b4e05056@lunn.ch>
-From: Robert Marko <robert.marko@sartura.hr>
-Date: Wed, 7 Oct 2026 10:49:01 +0200
-X-Gm-Features: AclHuK9tvJ8qSGCNxCy6EHx93K-on75TQ8ncLTFdBZaNwxDWm7pb3b5jo-_JQ6A
-Message-ID: <CA+HBbNGUbR3KeZMaWoBqEqMLMkELMLxuL4taCcOG7V03VsuUEw@mail.gmail.com>
-Subject: Re: [PATCH 4/5] dt-bindings: net: maxlinear: add MxL86211C lane
- mapping support
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, hkallweit1@gmail.com, 
-	lxu@maxlinear.com, michael@walle.cc, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	luka.perkov@sartura.hr
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 1, 2026 at 2:33=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > > > +++ b/Documentation/devicetree/bindings/net/maxlinear,gpy2xx.yaml
-> > > > @@ -22,6 +22,21 @@ allOf:
-> > > >
-> > > >      then:
-> > > >        properties:
-> > > > +        maxlinear,lane-asp-map:
-> > > > +          description: |
-> > > > +            Mapping of the physical TPI lanes A through D to the P=
-HY's
-> > > > +            analog signal processing lanes (ASPs). The array index=
- identifies
-> > >
-> > > Are there other lanes as well? Not ASP? What sort? data-lanes does no=
-t
-> > > fit here?
-> >
-> > Hi,
-> > I tried to keep it similar to the datasheet, but looking back, a more
-> > appropriate
-> > name would be ASP instances instead of lanes.
-> >
-> > I am not sure if data-lanes describe what it is fully but I am open to =
-ideas.
->
-> Analogue front end ports? Or even just analogue from ends?
->
-> I do get what you mean with your current description, but i have more
-> domain knowledge than your average DT writer.
+When a device name filter is set in
+/sys/kernel/debug/fail_skb_realloc/devname, should_fail_net_realloc_skb()
+compares it with skb->dev->name without checking skb->dev first.
 
-If analog front ends are fine with you I would like to use that in
-next revision.
-Mybe keep the "(ASP)" so that anybody looking at datasheet knows immediatel=
-y?
+skb_might_realloc() is called from pskb_may_pull(), pskb_trim() and
+pskb_trim_rcsum(), which also run on skbs that are not associated with
+a device. One example is a netlink broadcast to a listener with a socket
+filter attached, which goes through sk_filter_trim_cap(). With the
+filter set, such an skb makes the kernel oops:
 
-Anyway, I am flexible.
+  KASAN: null-ptr-deref in range [0x0000000000000118-0x000000000000011f]
+  pc : strncmp+0x50/0xf0
+  lr : skb_might_realloc+0x58/0xa0
+  Call trace:
+   strncmp+0x50/0xf0 (P)
+   skb_might_realloc+0x58/0xa0
+   sk_filter_trim_cap+0x6a0/0x928
+   do_one_broadcast+0x35c/0xb20
+   netlink_broadcast_filtered+0x1a4/0x328
+   netlink_sendmsg+0x724/0xa58
 
-Regards,
-Robert
->
->         Andrew
+The fault is meant to be injected on network interfaces, so skip skbs
+that are not associated with a device. Without a device name filter,
+such skbs are no longer reallocated either.
+
+Fixes: 12079a59ce52 ("net: Implement fault injection forcing skb reallocation")
+Suggested-by: Breno Leitao <leitao@debian.org>
+Assisted-by: LLM
+Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+---
+v3:
+- Fix the list of functions that call skb_might_realloc() in the commit
+  message (Sashiko). No code change.
+- Post as a new thread, v2 was sent as a reply to v1 by mistake.
+v2: https://lore.kernel.org/netdev/20261001182813.353004-1-yanhaishuang@cmss.chinamobile.com/
+- Return early for skbs without a device, as suggested by Breno. Such
+  skbs are now skipped whether or not a device name filter is set.
+- Tested on arm64 (QEMU) with KASAN: the netlink broadcast reproducer no
+  longer oopses with devname set, the devname filter still injects on
+  the selected device, and without a filter skbs without a device are
+  skipped while skbs on a device are still reallocated.
+v1: https://lore.kernel.org/netdev/20260930122013.110284-1-yanhaishuang@cmss.chinamobile.com/
+
+ net/core/skb_fault_injection.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/core/skb_fault_injection.c b/net/core/skb_fault_injection.c
+index 4235db6bdfad..63a397f76113 100644
+--- a/net/core/skb_fault_injection.c
++++ b/net/core/skb_fault_injection.c
+@@ -18,6 +18,9 @@ static bool should_fail_net_realloc_skb(struct sk_buff *skb)
+ {
+ 	struct net_device *net = skb->dev;
+ 
++	if (!net)
++		return false;
++
+ 	if (skb_realloc.filtered &&
+ 	    strncmp(net->name, skb_realloc.devname, IFNAMSIZ))
+ 		/* device name filter set, but names do not match */
+-- 
+2.43.0
 
 
 
---=20
-Robert Marko
-Staff Embedded Linux Engineer
-Sartura d.d.
-Lendavska ulica 16a
-10000 Zagreb, Croatia
-Email: robert.marko@sartura.hr
-Web: www.sartura.hr
