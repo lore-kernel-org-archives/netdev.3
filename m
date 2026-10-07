@@ -1,72 +1,74 @@
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8368F49D5BD
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 15:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2114B0E4B
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 15:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791386736; cv=none; b=f7s76/DqFFaBRO4d6l7v5NbF9lyQ/WNpUK0mW7OEBVYMyHeeVLkjkkyNevNySgEO9c+2eMiYEDFEugNWEwswZiGZZH1qC4nhP11KgXZOueopButTlifLki8v4nGdPyKbKf9FFlsY7v8so32a6+/FpWMuZOQ0QcIWVY1axS1FMsU=
+	t=1791386760; cv=none; b=ZyAtTn0UxH1gweWivc542NEtmrF4CA7wh0YMMzUxOKiewMwC73t4wrNtLAwu/onkcXa/HNWpydiBJu/vkt6KfpKQ4THUAwmAL6CEv8RhIXAg2WsI6I6mY5MdW1tXvEO6T5y7chJf4cgOlBRTkfVEs0ht3XBRmnCVKXiLr37BHaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791386736; c=relaxed/simple;
-	bh=0AXZLLdm2ohwknzhkA9ri9/N1AJi8Gxcob1bx4Ao6b0=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=rAhUPwAbhu3ggVoTeGnRva6rpl5Lg4Yaxp17cTLqHH+Oy3Cbm6R8pjOkJLraB3ypTxVZ4q/rS07pmMQn6jVHJnUSuAHa1uuHb9c0vjZVd3VIcNnX4ZQ+78PduHg4ktqxWRw4m7kF5sj1hus61ud4WQylVLGKwtEnc99SS4nCpz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QB2g6D/z; arc=none smtp.client-ip=74.125.82.178
+	s=arc-20240116; t=1791386760; c=relaxed/simple;
+	bh=N6Mwje/jk5LkEVovjy6c4cdZNQ2w3u+xqBwLIGCWajE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=gzK0vLtW+2shN+FTUhIm1lBJrYW0c05etAs0+dvR7/Xpe9xcMpa7dKQ7zP9e1yD/NlLWH4YzulACLaI58vZMkUCJTNQbJhjES5vReHm1ECUF2e46eDk0YI0sdQHHv7Z12Fjxx+yeIsfmMRg1aOqC+eM3RTc6kot346ganNiUag0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hk8IwTG2; arc=none smtp.client-ip=74.125.82.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QB2g6D/z"
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-35115b52125so2426168eec.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 08:25:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hk8IwTG2"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-3515f9a5d25so2050835eec.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 08:25:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791386728; x=1791991528; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791386753; x=1791991553; darn=vger.kernel.org;
         h=mime-version:content-transfer-encoding:content-type:message-id:date
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SORwsxYnw8/qhwz5bddns+yWORRA8bOX7YyK5JS+Vw4=;
-        b=QB2g6D/zrVmkVp/nSjZp6USnipgf5c+eYYiNyJJwScpJaOqTpNtqJlkkatojJyGpnd
-         327Hhn/RASfaviUny2HSrsUd/W4jQh6fP26EqsEVKNq2kfdo2dqMxvU0+DPS4oWKMkHs
-         bYk93UC14AmpW7bvmnbfPiOmiQDX2Ua9z2oEFlX4w6xn0RuFthhfh/q5HmCeJiAngc2X
-         8/THZdIC4ptTpunddj27ZPOOdjHJr+A5V7jBoGO3mjf6cnHUO7eC9wPb2Y8JcDgroqmK
-         XBVP5hO7qMjrnZ5jKU5swRuAV+YjU6ctGT5pMrJFKBRsfoUz5GQXabRNDU+iUTkyXnwa
-         sirg==
+        bh=r5LK61z8EbTq0+O4wcf4iS1SXssqVs9NYokbeiW5mo0=;
+        b=Hk8IwTG2SvkVjlZRIKp4PHnWIJTUHCcReTUvDmkuaFiFu4vZnjm85YHyPDC7P86eaR
+         NiH065m5EyFv9e5rzppvR/hbTIHkBm9YsqlUEYFupqP8M7cuhAy21YStdkgC3MRXNEua
+         sBeS7fyaQiRQogX6xfcRE8cGRri8bjx6gLm8biAQN1bE2Vv+RetMr7xM+a2OPWOjXC58
+         Ch6lvjmYFxaYrZ0N2xtoBn9Fyb66RQ6YxIeafbeRqeVNUCxEj0GUmki04KktntNEuCe3
+         XigkyJUqhIJuEy+mV2873amZr/ARidCDrO4UNRzkCbnOTnxSs0PAFa72nVjvoSNcishe
+         F+vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791386728; x=1791991528;
+        d=1e100.net; s=20260707; t=1791386753; x=1791991553;
         h=mime-version:content-transfer-encoding:content-type:message-id:date
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=SORwsxYnw8/qhwz5bddns+yWORRA8bOX7YyK5JS+Vw4=;
-        b=eYteHycOav7x1luBFNpOHt6LG+0jO6gWpR7Sluj+FTj8wDovsaKRN4cYh5QWKq8Alt
-         5Ila08H1rR7djIEDhUofC54Ubl0fXUS4XXXCh9q8qbgrbjJGHA81QaT/3QxettT27b0s
-         tB1vxIVMnYd4N0hZyetqrjVC8XebqpHdXFxTu94k+dqsfiWF5m3wOyopQZuQo+eWLCCX
-         SAwvScMTKoiSoWio/QDwLRY/hBwcwS2Xr1sFgjoZ/gG2lddSOCAVs3iQXBoM8eiRQyKj
-         Tv8ya9QmIPkOzhYPeieyIDl2zvA73Jk2GyZtolYH8J+zHYK4WEEU/5Kv7N5Gtw4Mu91f
-         mJHw==
-X-Forwarded-Encrypted: i=1; AKwUvBzaFHgV+dzUfM4I/JbUVaw4u4jtwCoLdDv84/k/Xv2SDv9Av90/DdB/EOBC6Yp4waVMtD+djcE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIMw/MW5Bm5SlKPQE68EMhMnrZ/6C1a7aPKd4oC8oL3gm3DN72Z
-	s7kht3RHcCWpbof5gZ64otWC3/Jk8/EhMvM5ZDOaGNHG1wyiCqlkFzam
-X-Gm-Gg: AYBFou3WrE+rHZEBcdMknEKg00EpAYfH7aslJX4xWAsQjNBGggiUbberyjCQra1SBxa
-	wg6YeICz2IVlPPDTMPs2MgM9ssuJCDz1l0s9arJU7J3DBC2foW1vNfRxlycGYeSBo99S/SG1eWV
-	XOvneMM90TYg4Ou9Oi72vwyKAfZhHR+HkmPXghv1PK9qLiK6FuWAPpt4DP4QXXQTN5MCf9Uzsph
-	qYyPeubFejqdXQx+bqIn0hB83C8UGZ+8IpywPL4zMCQ8UPVTUjiXbWi68cTUpdHues5m5jlwHqr
-	/nS36euExY5+lZpErhzkKm8bSQ8f55NKYrJZnhOBNSduhVri54e/upIuWyIJdxHezUUNYXUebMl
-	Hkmoa9FzNMlfvs56+TFJLw3nFeRLZtcwXaPiGb2660Af7E7UjtnCNkR/+rx5vOiSjYXJg6eeI50
-	lHaZBNfKCA1YnLCp5aSN2qosUI4bNalCQ6xWGTB1TCDytyxVrtSZn17g2n+3R86Q53kku/3f5/k
-	+ml6HD/8rlHXCcA6D0D42oYYCFLP0pgMJk0J0iNP25csCT43xD+ByLef5UPC01EXOS1sdpqBwLB
-	3Ej/OR3TYOIMlG/ZYa4+59rBobdJXOG3K5qg5MC0JOCarrj23wWA
-X-Received: by 2002:a05:693c:83dc:20b0:33b:b0c8:73d2 with SMTP id 5a478bee46e88-3515dc54535mr3042630eec.3.1791386727534;
-        Wed, 07 Oct 2026 08:25:27 -0700 (PDT)
+        bh=r5LK61z8EbTq0+O4wcf4iS1SXssqVs9NYokbeiW5mo0=;
+        b=aBp07ewQAhh08A1Y1dsb1Xc3Rcc+8E2S1rvGdYywSR5yFtE/6fQ8CTEqInwRuXVA3W
+         OMIuJg55SeQQngNfNch1mQSH1EF7DX0OnQW4QT/8NURmfyOfIAjt+tdsb8n/BaOMhbDb
+         ncNcBNojpd6yQsAKTlvmsGAEInoNL03JVxPhzSYvpkWpRfOKEx6BhpVBLJAGAp5IqRBa
+         BuLAhkzlmEVk+t50lhatztlqdILTqTmF7ny7iS0e0eubDb1Al8H2nlO6+prN7akVDd7u
+         1pwXs0cPH236e5rDR41f95gvBy1F/adEp/fMGB0MRjD9uezzM4j2ILHEceOKj/0NTCUw
+         Gzaw==
+X-Forwarded-Encrypted: i=1; AKwUvBwDhlrVht/CfnXJfsBWyidh+kSDGw7ZpSF2JQfBxIx2tAF4Q8bCajX9M/zjBqZnBOnRBcAhJRw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJO+kDpnBnlIYUY46ihuVZDiEtY1BxltqyCWJlnRm7JumU03kEp
+	YLVozQYQeWY4r/m5C/zYWt4m2wakIcnNHw9UQKa0SMTBK9Hpr7H2Zwz7
+X-Gm-Gg: AYBFou2Hdu0qyTW0AVQliEUSiRiHrSvrw/+FkoHXBPQ0qXYAgHd7BIm4ngq5M3197b7
+	xMVjPniy9JJ/CszL+UykfcJpnUuCgmZZgyk35Hari1qKdNbJB17KRP+ttTynbdHh4Xy+ES47+Ot
+	hdjiN7DFcfajcVzegElr+VdgEcVts+0aokFm/RYSYHECrb19MOi01xFaUabF+g38aytiHCyyUlK
+	EWmmt893pz0vsArFP/O6dzzZJjt4g/PM0ZMKts54+r3cn4at7jUDn7lSWKnxNeq8WtQ2duAADIV
+	/1b/X57uQ2q/VE3v+QlqDrkvf3lPzALHbkugQvTa3uAneYqUXF8NsaFXBw7LGcFMnvct2OKOAG2
+	Kg4JCNLCbhY+n7SUussQpW/oBCoGyIS8eiF1lFF7S9hHXpitJg1PdQ65UplzMKeGxE6Y7IOU23i
+	acgZn26YJsFB6SQ2cUpXkTWEb7fvztfG6GYhHyTn4wnfsJ55UR6hYo5U3qrcj5yir7hMyZr3+jD
+	+RH7qiFIBwtMy5NtnuMfJJ0sCGZUBbu40unma0QEkO0mL8qlS4Gsv1rCjXsgx7OhKX+dsc/6dxt
+	lTY6ts5couqH5s3XMRNLmjOR+YtY0Ngva+LwEGDIz17Cu0TpOzQR
+X-Received: by 2002:a05:7300:e9cc:10b0:34c:1692:f2d0 with SMTP id 5a478bee46e88-3515dd8201dmr3203304eec.8.1791386734242;
+        Wed, 07 Oct 2026 08:25:34 -0700 (PDT)
 Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([95.173.223.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515af26f10sm9234416eec.13.2026.10.07.08.25.23
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515af26f10sm9234416eec.13.2026.10.07.08.25.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 08:25:26 -0700 (PDT)
+        Wed, 07 Oct 2026 08:25:33 -0700 (PDT)
 From: Joas Antonio dos Santos <joasantonio108@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org
-Subject: [PATCH nf] netfilter: nf_conntrack_sip: only honour Via: port in
- original direction
+To: Paul Moore <paul@paul-moore.com>
+Cc: David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-security-module@vger.kernel.org
+Subject:
+ [PATCH net] calipso: update payload_len when removing the CALIPSO option
 Date: Wed, 07 Oct 2026 12:25:00 -0300
-Message-ID: <179138670045.80227.4002052840715926590@gmail.com>
+Message-ID: <179138670045.80227.16292613517250896744@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -76,60 +78,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-The Cisco phone workaround in process_sip_request() records the port
-from the topmost Via: header in ct_sip_info->forced_dport whenever the
-Via address matches the sender of the current request and the port
-differs from the sender's source port.  nf_nat_sip() then rewrites the
-UDP destination port of every reply-direction packet to that value.
+calipso_skbuff_delattr() removes the CALIPSO option from the hop-by-hop
+extension header, or the whole extension header if CALIPSO is its only
+option, and pulls the skb by the removed length.  It never updates
+ipv6hdr->payload_len, so after a successful removal the header still
+claims the original length.
 
-The check is performed for requests in both directions.  For a request
-arriving in the reply direction, ct->tuplehash[dir].tuple.src is the
-remote peer's own address and port, so the remote side can trivially
-satisfy the condition with a Via: line of the form
+calipso_skbuff_setattr() already adjusts payload_len by the length it
+adds; the delete path was missed.
 
-  Via: SIP/2.0/UDP <own-address>:<any-port>
+This is reached on the forward path when a packet carrying CALIPSO is
+sent to a destination mapped to an unlabeled NetLabel domain.  The
+forwarded packet then has a payload_len larger than its real payload
+by the removed length (8 to 264 bytes), and the receiver drops it as
+truncated.
 
-and force forced_dport to a port of its choosing.  From then on,
-packets it sends on this flow are delivered to the NATed host at that
-port instead of the port the NAT mapping was created for, which bypasses
-the port restriction normally enforced by the NAT mapping.
+Adjust payload_len after the header is moved.
 
-The workaround is only meant for phones behind the NAT router, i.e.
-requests in the original direction.  Restrict it accordingly.
-
-Fixes: 7266507d8999 ("netfilter: nf_ct_sip: support Cisco 7941/7945 IP phones")
+Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
 Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
 Assisted-by: Claude:claude-opus-5-5
 ---
-Tested on 602042bf29f6 (arm64, QEMU) with client -> router -> server
-network namespaces; the router runs nft masquerade and a "sip" ct helper
-on udp/5060.  The client sends an OPTIONS request from port 5060; the
-server answers with a request carrying "Via: SIP/2.0/UDP <server>:4444"
-and then a plain UDP payload on the same flow.
+Found by code review.  Compile-tested only (arm64, W=1); not runtime-tested.
 
-  before: client receives both datagrams on port 4444
-  after:  client receives both datagrams on port 5060
+ net/ipv6/calipso.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- net/netfilter/nf_conntrack_sip.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index 64bc440b1..ef655a0bb 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1586,8 +1586,14 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
- 	 * router for one of these phones, save the port number from the
- 	 * Via: header so that nf_nat_sip can redirect the responses to
- 	 * the correct port.
-+	 *
-+	 * Only honour the Via: port for requests coming from the phone,
-+	 * i.e. in the original direction.  The remote peer must not be
-+	 * able to pick the destination port of packets delivered to the
-+	 * NATed host.
- 	 */
--	if (ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
-+	if (dir == IP_CT_DIR_ORIGINAL &&
-+	    ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
- 				    SIP_HDR_VIA_UDP, NULL, &matchoff,
- 				    &matchlen, &addr, &port) > 0 &&
- 	    port != ct->tuplehash[dir].tuple.src.u.udp.port &&
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index c6a34334e..c072eca50 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1428,6 +1428,9 @@ static int calipso_skbuff_delattr(struct sk_buff *skb)
+ 		skb_pull(skb, delta);
+ 		memmove((char *)ip6_hdr + delta, ip6_hdr, size);
+ 		skb_reset_network_header(skb);
++		ip6_hdr = ipv6_hdr(skb);
++		ip6_hdr->payload_len =
++			htons(ntohs(ip6_hdr->payload_len) - delta);
+ 	}
+ 
+ 	return 0;
