@@ -1,75 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A181238398D
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 23:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791417014; cv=none; b=AmhWAtAjHdl6Z87t6QqOw3PE061YDmrxJVL8WPYYtSY1mxD4rEsH68xz6KedDRP2zltcYdpsJpJQki4KdRlN8tTLQyg5sdpN7V/z6LUSwXXi7xl4h61heeAWjTAdwx7+niYQ5tFdaUKCVLedZwzGu8R6CRc2bARX8es76A/z1mY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791417014; c=relaxed/simple;
-	bh=YKagJWl42UFgT9MwyMMC3/PIZ8WGba91UhnZjCm4F08=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NZpWZWJbPX7tnA0hgXT47mjtZ2wbRexcEJYBWK24a3hObwjC5UDz0aaYswk1G6ntp5uKS5EZv2Fped8ycpjC4zEfI/RPKoxc7qtL909DCLFngCiOskq1+VPKtE4DMJMOzKubwiBPBG3Ugc2VW/5zh2wRseXiO2nsaTu3ko2ss/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hk7ufrIu; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED4D371053;
+	Wed,  7 Oct 2026 23:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791417304; cv=pass; b=RKZhGahPkvIIH+802SEWlW+G8t9Gduiw3bDbUmMqgKXHkO4I5TE4aKk3F5WDrYgEyLF4Ednq1AjPob5PCu/fFyESIKbr3OXIt9Ov/6gn+sWCj5RJL7GABDxKx5guJrTD7Qd+26b5tR6IpSB3L/l7YJZQB9RsZwc/1/A//QmIcQM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791417304; c=relaxed/simple;
+	bh=E6RcB5CiT08ttxDbgubS06G4yIp+Whv55XN3uzJFr+g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Uf6WoK2YEtOX2J5TExEcIvaY4hycPtUdf7dn7FHpl/rYoiqPaHTMX5p1AMRybTxwNQxSlEBMvPgkqixOrL6VBNyAxXiwrmui/jhajW5fjvFzHJIg0EAbmOg3wnPpUmhcpC2kXNqZEtJeYbmOunc5WnlDX84V5q/X+AXskGUqohY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv; spf=pass smtp.mailfrom=iav.lv; dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b=RePklWXq; arc=pass smtp.client-ip=136.143.169.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hk7ufrIu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9401F00893;
-	Wed,  7 Oct 2026 23:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791417011;
-	bh=9huMJS2omXifPcdMUrkqZdPguZWo4m5ZDQAWUb6MUeQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hk7ufrIuPENrwVL7FsquZxa75B0G+yPxdhOnjrNp9Tgb2gvD1dCLasNU4L1MDVCFD
-	 f5cIqkY0S71zsuytBHnzZRJB9yfth490k0tDpIIbv3Jw0l2cRZmKNG5jJOlb+Fxeqt
-	 jKhPxvVbOw1S7jQKaPCCUx7mYA9igsSCilZh5l+zGKdpyVyQ1mXKTXlYAtJF7eiRiJ
-	 eZ+EX5glSEUb4GAesp6SGo+IBuVyctb1P3NMkn8ohhNks/egYBbIAyQQX7u+B08gB9
-	 xwIBvcX9AUNzYl6dR9YaGFOMZOF4x5Q+i2sjXseXggBZV1/i7umCW/dlEsLq8ozVt2
-	 /7rS4rQ6SwZlg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7756B3809A08;
-	Wed,  7 Oct 2026 23:50:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b="RePklWXq"
+ARC-Seal: i=1; a=rsa-sha256; t=1791417284; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=jsY5r7vFEL21347tqU3QcjIn3q7SW8VSH2oNbdXUGinMGFQgCEHL5JnhhAyucFhFRRRc+4IRY9PGi3NXbzfxyi3lZywPgdi5vsH8KJYEkMUWJfWvyY7L90EVDcQpiIgo+NPYqDKeAE4rmAdhODPM+YHegupg30It8UDk4b+Gk6w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1791417284; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=E6RcB5CiT08ttxDbgubS06G4yIp+Whv55XN3uzJFr+g=; 
+	b=KDpsh4NUmvM00fl5wbLIPATyPjsVYBakBezFgmH47GZx48iOc3huacYn7oj4F0pqX34LzzvX7JEtAPNZGrm3T6QIp+C3KhIYq/FrSaMX/1xRBxnxRjrfm+40fZLB9sKI/txC7TGNgnS3kC6dBBbMfAOOp4RMK6FJYvEjx29zFEw=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iav.lv;
+	spf=pass  smtp.mailfrom=iav@iav.lv;
+	dmarc=pass header.from=<iav@iav.lv>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791417283;
+	s=zoho; d=iav.lv; i=iav@iav.lv;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=E6RcB5CiT08ttxDbgubS06G4yIp+Whv55XN3uzJFr+g=;
+	b=RePklWXq5Msqwzez6R4WgZ2y9UFEnyWApFcg1+ilSgdYSjfNVictAeJFb6LtcKDL
+	BjUKQZnWGtuk+ATpGv8dBxONMZLiv+iLeyX0vwseLSCErPplmgVVSNecOv5S21leQdd
+	vtdRpNU2EAUYYvru5iXy/9peSQRP7F3wujRjiQ58=
+Received: by smtp.zoho.eu with SMTPS id 179141728018592.3187470738884;
+	Thu, 8 Oct 2026 01:54:40 +0200 (CEST)
+From: Igor Velkov <iav@iav.lv>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Michael Stapelberg <michael@stapelberg.de>, linux-kernel@vger.kernel.org,
+ Igor Velkov <iav@iav.lv>
+Subject: Re: [PATCH net v4] net: phy: marvell: keep WOL_EIE across interrupt
+ reconfiguration
+In-Reply-To: <20261007182112.821061-1-rosenp@gmail.com>
+References: <20261007182112.821061-1-rosenp@gmail.com>
+Date: Thu, 08 Oct 2026 02:54:25 +0300
+Message-ID: <179141726511.545895.12266951911761895501@iav.lv>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] sfc: handle rhashtable walk errors in mport lookup
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179141701002.3739009.18146882524432057763.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 23:50:10 +0000
-References: <20261003.final089.e0910b3ffb849fe4@gmail.com>
-In-Reply-To: <20261003.final089.e0910b3ffb849fe4@gmail.com>
-To: Sang-Hoon Choi <csh0052@gmail.com>
-Cc: ecree.xilinx@gmail.com, netdev@vger.kernel.org, linux-net-drivers@amd.com,
- alejandro.lucero-palau@amd.com, lcy8047@gmail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Tested-by: Igor Velkov <iav@iav.lv>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Helios4 (Armada 388, 88E1512), 7.2.9. With this patch WOL_EIE stays set
+over 3 link down/up cycles, "wol d" clears it, and a magic packet on a
+running board is a handled interrupt. Without it, WOL_EIE is lost on the
+first down/up, survives "wol d", and the magic packet is an unhandled
+interrupt.
 
-On Fri, 02 Oct 2026 19:47:40 +0000 you wrote:
-> rhashtable_walk_next() can return ERR_PTR(-EAGAIN) when the table is
-> resized. efx_mae_lookup_mport() currently dereferences that value as an
-> mport descriptor.
-> 
-> Skip error values and continue the walk, as the other rhashtable walkers
-> in this driver already do.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] sfc: handle rhashtable walk errors in mport lookup
-    https://git.kernel.org/netdev/net-next/c/2a1359aa651f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+--
+Igor Velkov
