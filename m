@@ -1,43 +1,43 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E5E49D5B1;
-	Wed,  7 Oct 2026 13:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE9647CC8C;
+	Wed,  7 Oct 2026 13:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791378384; cv=none; b=oJ/iYKJbrHT6kL2Eml2jv/imHzyamfG1m5h1yocnQacz6db/+INbQink9Qk6BsMOChx9ls+ekW/vgJbh80UnNWdfTp63ZoVrMostQ8fr9JrN+zatX2ikZ+qCKGce/HHGy+PKH/xgTfICZmuWBJqM2mSZ2YyKGnWMgepnNEG9dOc=
+	t=1791378482; cv=none; b=iaw8wEyAB6rggo/a86Ra1C6kqxW0cESP5l+DHEu7fD0HAo9+K8k/7uKxPCb9kBad4lh2fTJl9g4y+DU9GrAMphThzUeUgv8sXtLY8rIHFumft5VGRO2fNZSFt1GhJ9NYOMBPC7WQjeZR12PmxkbGX2w0k2eFOLQCQAEDJ/TJ3kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791378384; c=relaxed/simple;
-	bh=4YJ9Fqv+a1prb8DIM4jaQKEQUeWO3GSzk37YSQ+zLO0=;
+	s=arc-20240116; t=1791378482; c=relaxed/simple;
+	bh=rcJJmr6UkaVaH3hf3Hr6Zl18UQZS8c38mNXAiMvdzyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lRc6xb6vPPFUEkaYpDDTQzWh6po+J8EAQXl8C8paTTrez0kvGoFKOMZ7TGUF0+4+yocB84TimvDVnoIZ3KCmOWcN18nwEDY9FZbtli6YXNu34n+UBrddayeiRtxOaO+6NzumVDRqUKWC5khSI8wvQVOv+qxy8knGzllWHMbwBAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vxCdmjaO; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=L3sE3qTCSIJ/h7m/ftai9+MsjeBP2BHvJvdUkiPsUxuCPTQs8VOpPqmNgBPOtSqE5cvmgnqEQLPMbyzE0+Sg3EHRy91VXOX1M9IpmjjnXxuaxPmTcCZYm8eZuZtkzVA4Qcq/fS9R15vK+mvs6zw1xZez+lNJdNhOBWXPbUW5iUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bsVEMzM0; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vxCdmjaO"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bsVEMzM0"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=dM8Ub3SEr1kn1ORAaVqDqRmpkV1kv8aYkI640BFSIsY=; b=vxCdmjaO7QZi+Fum3RHxWGGW/O
-	f3nVrVz45O9O7GHhJuuD1yk6uNnxxTwSBzklwEg/niuUSTt0Ipxes2p8OYbLsTbhbWG2Z1ANWpMsH
-	1JZ9L3YdexYCnlV9dajqVdpTLndChmSFUBehbecdg8sNwAbYViijrq6DaqpPNE7+LVPs=;
+	bh=8w/4mogQP7NjT3W1Df21Pjp1DKD/NsiEZgMQYQygdxE=; b=bsVEMzM0Sv/E2aebn1rJLn6sNv
+	MHp3d7OXh7rqbnXFnR17Fo3kl1yRMwzXEIzSETJ9y5TRHpCSo0lbqhL17WdAKZOLsBfdF6rGvpakW
+	PZN7g07PJCUm913G1LhIzajk1wJER8Azlaw8PsfveBRL3Fd1vBvGvyC1526+mJIlEcuo=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1xERLO-009Scc-Ku; Wed, 07 Oct 2026 15:06:02 +0200
-Date: Wed, 7 Oct 2026 15:06:02 +0200
+	id 1xERMy-009Sey-Iy; Wed, 07 Oct 2026 15:07:40 +0200
+Date: Wed, 7 Oct 2026 15:07:40 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Lucas Tanure <tanure@linux.com>
-Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Lucas Tanure <tanure@linux.com>, xianwei.zhao@amlogic.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
 	Kevin Hilman <khilman@baylibre.com>,
 	Jerome Brunet <jbrunet@baylibre.com>,
 	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
@@ -49,9 +49,10 @@ Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
 	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
 Subject: Re: [RFC PATCH v2 3/7] dt-bindings: net: amlogic,meson-dwmac: add
  amlogic,t7-dwmac
-Message-ID: <ba762ae7-db95-41da-bb77-b72b85b68334@lunn.ch>
+Message-ID: <565e4b5d-4539-436d-8183-df183a9fde5e@lunn.ch>
 References: <20261007082627.63807-1-tanure@linux.com>
  <20261007082627.63807-4-tanure@linux.com>
+ <c70d918e-7944-4229-b997-7f07d924125a@linaro.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,40 +61,14 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261007082627.63807-4-tanure@linux.com>
+In-Reply-To: <c70d918e-7944-4229-b997-7f07d924125a@linaro.org>
 
-On Wed, Oct 07, 2026 at 09:26:23AM +0100, Lucas Tanure wrote:
-> The T7 has the same ethernet glue as the G12A, but the controller
-> reaches memory through a pipeline stage that this SoC inserts in the
-> bus path. That stage has a gate of its own, which no other member of
-> the family has, and nothing else in Linux claims it. It is therefore
-> switched off as unused, and the port can then no longer finish a
-> transfer.
+> > +      properties:
+> >           amlogic,tx-delay-ns:
 > 
-> Describing it needs a fourth clock, and the fourth clock of the
-> existing list drives the timing adjustment logic, which the T7 never
-> uses. So the T7 gets a list of its own with the gate in that place,
-> under the name the SD and eMMC controllers already use.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Lucas Tanure <tanure@linux.com>
-> ---
->  .../bindings/net/amlogic,meson-dwmac.yaml     | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> index 90ef79161ab1..96118b4d1560 100644
-> --- a/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/amlogic,meson-dwmac.yaml
-> @@ -23,6 +23,7 @@ select:
->            - amlogic,meson-gxbb-dwmac
->            - amlogic,meson-axg-dwmac
->            - amlogic,meson-g12a-dwmac
-> +          - amlogic,t7-dwmac
+> Do we still want to support the vendor property on t7 ?
 
-Since you are adding a new compatible, lets cleanly fix up the RGMII
-delay mess for this compatible. Skip all the existing code touching
-RGMII delays and add new code which is invoked when this compatible is
-seen.
+No. As part of cleaning up the RGMII delays, this can be made invalid
+for this device.
 
-	Andrew
+    Andrew
