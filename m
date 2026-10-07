@@ -1,469 +1,178 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from usb-smtp-delivery-120.mimecast.com (usb-smtp-delivery-120.mimecast.com [170.10.151.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342653F412C
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 19:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791400296; cv=pass; b=BSOf8OJxh5irkhBnoJ6lnx3M9vhTdQ3aM6sMQckNxKymv5dYHeVA9edRqhHoa0oh6StT4o3ahNR2iZevzSaA7ZNDNmhVGJ7/Fr8pJhBlyuWTYrPs0sJDpyYsieFxnPuW12mI90pmfHwf1QdNoMNTZAAL61tnz5I2pfvKsPoT/kE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791400296; c=relaxed/simple;
-	bh=Uq+eWqyZKvJSNIM97AyXs9y1buFMWnLvNK6oWzLSQrE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kFM852i94iPKUH9ojCHPyhYGYc6MpwAO4+4SCkUemY9PEZJLla8AmTgUl4EwteG0+Fdl0H9tuZs7GlMW3y2QN8rhF8+Mag9Bu8AgG/oazLJw+MwLvfCaBkdhsUx65Ltz6qfVeB5R/07fjXm6GOfdmkqHW+uOrrZfC4oe4aIHGpo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WUu7bHst; arc=pass smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F264E0B8E
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 19:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.151.120
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791400732; cv=none; b=fdWdEHsYxBE9F/2PQDhVZxlls3IxOjvIylcjqXy1ZrN+chuvCi8hsJ6hgZdgdMUhIdWMkV0TDRqOtMDH+eJy9RMbwHxCjPY+9oPDEiijZbHRyNgelM1xiL1jPVKoeX5OAe3tVKNHX+dz6UE3zDoC73L8+Pl+6iIIfriIQOTQxfY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791400732; c=relaxed/simple;
+	bh=NDOqaiCPZbmVDpM4T5ChpCMdzxGghgTgZqLBFn6F0fw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=iVSFxioERrTozVoLdVmUEYzf66K6DJTWgGhnizmsQaYzMqVkBUFxX31k2AQtPLdEB83eC+IqTUqBXwyqp1mEC5+XuSNh6X0Pb6JJU4Rtgh7ranZOAU9Cl5uyglKxhovtHWDV+zJN9iTeTnn2yYdanZLmPQlwyXFA4FLDSK/ntog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com; spf=pass smtp.mailfrom=onsemi.com; dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b=TRgRJ2/k; arc=none smtp.client-ip=170.10.151.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=onsemi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onsemi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WUu7bHst"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-88b7d853b11so2252444b3a.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 12:11:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791400293; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iq/G/DydstNZrVGXV1COMi7+HjqSbeZn1JJKXg3QWjVl/yIw0p9s3MTiCz+/3CPXJK
-         Jf100xmtV73D65661rMit3+v5GFMpF02aJjMyxd0ISmkAUF0DHencfxjH/MY6zN3ilaU
-         921ZOYbaP00duD71VrOzY730BBfkZwi8ZwUaxmd6k0bA5nOdRAHfKfz8kS8UmFtObPkI
-         LupMatfIsQQBdNwfw8AOLhmkvVPF5tjhdk8uos5n1JEKovFjO0Qjt3qG3lU3YGSCHHjo
-         qKimOUlpHe3taTMfYdDiihgJTAo0ZoFBKe8Ru3oX/DqfN8J+WJGKU6/owxrg408BLfR5
-         Z6ag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KIvA3hMcUdZD52MC6T9uWgxqmVRzVjTIoN5FN/ouXGg=;
-        fh=FcywtlDZoDkM4edKsFlp1mDZyBkJFKZZqzJffsc2CVg=;
-        b=WhhPAjw/x1dgaCD7bdAl/QfgWJHq49KbCUkw+yydCLW+233k7P0ZP9xhdZidUJv/8v
-         TfVzUBxF8k8x5WbCAssSfk9mWyodrH9Ab96WAOFLMI04hHJ1+27SZhOyQhwuCKFKHKJF
-         14h8y3Ox27JavjXCrdbm+Q8+ksCiyq9IZbaR/W8arsHIeXDWWEMh2iW0NozietytwKen
-         AHHAhHcGy0LbyhfMgaR2DSsDu9Y4wYqsW6h9Atd6GTAuvl8JUyMSeYSQ70ksQI7RYcVf
-         xrrnnraMiB94eXsL7sYShJL+CcrxYfEhoyUtfmSmfbYHK3/2bU8zhm8eYD7qgnWH4q0e
-         JZMw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791400293; x=1792005093; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=KIvA3hMcUdZD52MC6T9uWgxqmVRzVjTIoN5FN/ouXGg=;
-        b=WUu7bHstC9KvTsH6iBR7YkdKHufMTFbi2lmsN5L8zhbqJnjZkG3JC0/KNudhISLPsk
-         5ZDM6MYxEzXCm5SISae4RXGmzj1jZrPGo98Jqk1bejyuuLnBEpExPwrRch4iWVvem4Gg
-         4VkhUegeGdj5+ebuAfoYoDMxN8QL9UBE34FkJOFi90gUumm4CxIPt+T9z4JFk7Op4hz9
-         4DSfn4nUG6aLzyWyC5E2qPXeyN4OGT2nPHlklahdS3y9x6TrMInWTC96yqnUjqQ/pzjF
-         +Fb23ohTOb2mN2Hfvgn7S3bwh41Odd2fX+wRwLX/Yf7jxo8vcN2ERwJg+kYyAnbYJ2ki
-         kxUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791400293; x=1792005093;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=KIvA3hMcUdZD52MC6T9uWgxqmVRzVjTIoN5FN/ouXGg=;
-        b=HBnpmH2rdWF8PWSb6++Tg23gez8DE9uH4Vqx3YXp4owSJ5+7nci6TJFdcLkKrww5da
-         DMgTcM6IHrZXd/fJrMncsA8uYLHkfVRSpXZu5C5lRIrOgedF6PwCVOHT9+tyyD1WsPWV
-         D/+rlTN5pHq+1N+naXRQJb/ByxOqIEo38D+YHrl6uUyGqfeHU3LBlMnX6v4GDKpCKGt4
-         oGpMS2+vya53+RcHbb/NvbvVLceYWaQjLMrDqWveYV9NUFiOrrHWnoIc1q6pyt88lgwY
-         EapTrm9MT8vYbarQHnaAFqW17mLd46J4TO6XA/pEKs2ms/+QEoXXW/155/As8sfywU+4
-         JudQ==
-X-Gm-Message-State: AFuF++kGtRDvvfp/QNIp6s1vk9DlfG5GipLU9z9Bgm8IQFAK7Ni0QBpM
-	AAzFDKFS+vxXSNbITLMmeGXBKXtNeFhv5O1jMjP2IbAr/UdBZsi3yijCQ4+/sFughIuEQvkhPcV
-	316oQblYMFaEjgAqywWJ0V2pf95EZ1Bo=
-X-Gm-Gg: AYBFou38eQd4MOnCLuLKouARPcCEf1hqWL5U1v4FX0owd9N5+cCVM3GW3+xOWTAfDq5
-	0K34LzymbI8HGpWFJBx3JMFALRxZNhdXn+rozMNzg3sCvT1k+L+UdKKuqC+8Qww6/hODYFKUydO
-	cDjxFE/TbciyCjpT25McR1erbFeIQd6XPJdg0rDjf/AxRtrUr8AT1RgSytUuz0CMJA8gxHWccOc
-	JeMJjKQClbS+wVujmAlHyxEzx4et7AMmIRtCeTjud7bvNS/hNZv+nVeWCuoj44WUsLfB4QP0VBc
-	u9q9L458Tbh4WdvfUDofPIyBxNjpRD6kJ53B4MMAO3ptfBkPeIPHj0GN4NHWHwyIoZyCupsy9aa
-	Fx+JSKgRACw4T/RTswO9U20bfumq3M5P6dCdYXAjfSTujwQOrLvELv54TsCwSGJLijKE9K28/GH
-	GYlQBMwlHMK7pr
-X-Received: by 2002:a05:6a21:394b:b0:3e0:c2be:5b71 with SMTP id
- adf61e73a8af0-3e134061fc9mr2682854637.29.1791400293376; Wed, 07 Oct 2026
- 12:11:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=onsemi.com header.i=@onsemi.com header.b="TRgRJ2/k"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onsemi.com;
+	s=mimecast20250127; t=1791400717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NDOqaiCPZbmVDpM4T5ChpCMdzxGghgTgZqLBFn6F0fw=;
+	b=TRgRJ2/kbDQuXUMKJdA1qw3FmYXRj6OvfkAUigFx2JhrNLpHuIdaJYnZ2ObAMlG/UA3OQC
+	AbyxCuvez4fIwuDZws1hsswgIgi/C2C9jKl0EA54hnCVxJBppHWltge2TAnGvCm8Z6/l/5
+	8gJruiV+QQyKX2DTyJbpcB6a5l74vu03VePbVOc9vZSYELnvval3LJ6oeml8+IDKU00KY+
+	3CwtfKjNcs359qQJQXDquiggHdOwphRL1YNxCGv1wc7OfZ7kiQg3bvXSOe6sf2TXupmz0q
+	EziohFxgJyMRo6ILN0aFtlaC/MctE6zuovez6A4xJo/mDsrIPneJ71SJj4V9kw==
+Received: from BN8PR05CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11011065.outbound.protection.outlook.com [52.101.57.65])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id usb-mta-69-r_Z81386PimpFZJIG2ZKfA-1; Wed,
+ 07 Oct 2026 12:18:33 -0700
+X-MC-Unique: r_Z81386PimpFZJIG2ZKfA-1
+X-Mimecast-MFC-AGG-ID: r_Z81386PimpFZJIG2ZKfA_1791400709
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com (2603:10b6:610:110::22)
+ by CO1PR02MB8633.namprd02.prod.outlook.com (2603:10b6:303:15c::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
+ 2026 19:18:27 +0000
+Received: from CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e]) by CH0PR02MB7867.namprd02.prod.outlook.com
+ ([fe80::d722:d686:a9cb:6c2e%6]) with mapi id 15.21.0496.015; Wed, 7 Oct 2026
+ 19:18:27 +0000
+From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Piergiorgio Beruto <Pier.Beruto@onsemi.com>, Parthiban
+ Veerasooran <parthiban.veerasooran@microchip.com>, Simon Horman
+	<horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Richard
+ Cochran <richardcochran@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, Jerry Ray <jerry.ray@microchip.com>
+Subject: RE: [PATCH net-next v8 09/11] net: phy: ncn26000: Support for
+ loopback
+Thread-Topic: [PATCH net-next v8 09/11] net: phy: ncn26000: Support for
+ loopback
+Thread-Index: AQHdT5hHC3WxVOTR3EuDzLOt+jRFQrbwh36AgAH0P7A=
+Date: Wed, 7 Oct 2026 19:18:27 +0000
+Message-ID: <CH0PR02MB786718710AA0CD5A00D17D0683942@CH0PR02MB7867.namprd02.prod.outlook.com>
+References: <20260928-s2500-mac-phy-support-v8-0-7e011aacc309@onsemi.com>
+ <20260928-s2500-mac-phy-support-v8-9-7e011aacc309@onsemi.com>
+ <7723127b-a713-4e96-bb63-fb2dc5367560@lunn.ch>
+In-Reply-To: <7723127b-a713-4e96-bb63-fb2dc5367560@lunn.ch>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH0PR02MB7867:EE_|CO1PR02MB8633:EE_
+x-ms-office365-filtering-correlation-id: b2a85bd0-2bda-468c-57e1-08df24a7c3bd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014|23010399003|38070700021|56012099006|5023799004|4143699003|11063799006|10067099003|18002099003|22082099003
+x-microsoft-antispam-message-info: ruuxG2bGjr0qoQS16jbDtL/RWgbAccJVeYG60xNwhOJKaDGGJEWwFwlXvgQ6it4BgriY5XbbfTcS2lO35h8R+g2bNq1nYzjsLi0bqUSy/hZhbT2rXw6l+DXO9w1BRQ6TVflu/cU7B7TW/NxFMhOb4qrcobzy4aEJJOZq9AHI8I8UD57krn/uHTz0Wy6mQ5d6rkotpEikTb/jNsvgj4+Mc79L9mZ4kXMLC1tw4j40mOfVfY7A3gSf1rcOZJnZE/6qv6dWuu0vUO7mA5zZZfIIdf52j6WcYUwuunhrhleYFUTnLvKZcsZuVD8jEdArQWJ52mRyvTp732U7AonUV9qG6tng0AuHgtAUupRzuFoUeA6vw2azwo25Fvzq1F6IJ3O3Ro0GuEuac50CU5yt5TyAUiNKh4xcLU8UEctTqIxcBfXkp9OXX02l6UBOJCUMqYXuunrY45tLzNjLBqovlRYPxc8bLvJUia9eZ/c83kFod/V7L07O/9tz84hBlUmnsvhXksfhI7OOaYFt3FOPRksH21TQQjHdj4Br+1iZxfgmnXrlMCXISsJGsLeLmNVNO3CCo+3Q5cchGylEJ8nJRVqOWVeW+s7JAdjOUT/TE44oRjnzSTb5fXC6GOe0gEEWSyZakDKgyA8Vz9RZroCXvIsqAXCDB7/ml3GRXPGInDZCGvXDTXdDA8WBqRuQvv5NMja+0jdXBr5G6KanSTJ/PiaCAqTOU8Y1rpTBXqeln5yaf7I=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR02MB7867.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(23010399003)(38070700021)(56012099006)(5023799004)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?M1lMb3NYcyticTJwQldGaVZDSytrRjRVbXVhalpjOVVoNFNXcEE0bndENmd5?=
+ =?utf-8?B?WGx2SVNtU1p5OUJlL0MyNUVlVm9NWGkxbE91VDd2QlRnS2twTDZjZ2pndnFF?=
+ =?utf-8?B?R1krUitaa0ZJblRmbVZPT2J6c2RrdUJVdFg1NlFsYzJ3NmhPN29kRURpY0tX?=
+ =?utf-8?B?bkdHN0FGcEJqNktZdjdqdHRmVHN0RURyZ3VPK3hybHFUNXJzZERGT0NFOUhz?=
+ =?utf-8?B?VjBoQUw4QnpJcVJkdHJLcm8zVlVWQ1V1NHl6aWErTFdUM1QwZDdlZTgyMEZ1?=
+ =?utf-8?B?U2NNWncyUVdjd0lKbVhqTVp3SFoyR2xqd0RYMUJrakYzVnQzNTI2T3VmaEtF?=
+ =?utf-8?B?L09jZytvSGQ1TkRIWXBqVTRVU1dkOFdWeDBkTUt0Wkc5K01IT3YzR0YzblRu?=
+ =?utf-8?B?ZmNNWHhuKy84ZVdicnhwbytUVDF5ZmExZ2trRXoxU1pnTXpmeHIvUVNaayty?=
+ =?utf-8?B?UXBwRG5UMGZyb2pyOWlFU3FxM0dNTzduYnp5ZEx1Tk56cVQ0SjRaVitYYlA0?=
+ =?utf-8?B?NDhZQXQ1MDEvMEptaGZzWE0xT3BTeXljMWxsOHZnVWZNWkJqT25KNzlQcC9n?=
+ =?utf-8?B?aG1BalRWQjZIZzJpdXorQUFWMy9YL0dzd0I2NlhEL216WDZkTW9lY3FQYzUz?=
+ =?utf-8?B?WHNmVkVEZU5uLzk5S1BveGxaMXRycmRmc2NTdGxJSHlMYnNhdlhEU1pZUUVP?=
+ =?utf-8?B?TEVjaVcydURYWnI5SWo3U2hBK0NmV3VRNkMzUmtXSGhBdFlRdDJLazRNaUxh?=
+ =?utf-8?B?Ri9iS2YwaUlieXRUampHcXRqeTlhWTVIcXFyOGs3ZTU1akl2RE1ndDZhbk9E?=
+ =?utf-8?B?V2JBa3RMV3g3SmxQcW9LTC8zRWJlRHhIWVFYTnpTSTlUVTYzZVZoL3hUb3lV?=
+ =?utf-8?B?bUlUZ2Uwb1ZQdTJqc0ZjczljSndYS3ZOblJDUEtad3lPN3JvektGKzdBdTg1?=
+ =?utf-8?B?RnVDUTRGOXUwNGR1T01KNkd4bUhzSFMrbEdyNnZLMWJZVytLMlB3MlBOZHNl?=
+ =?utf-8?B?aS91c2RZK1UvYUZzamVZS2ozSXR4LzhUNDZtQzNvZU5LYzJxelIyNXNQQzhz?=
+ =?utf-8?B?UHBRcFVWZTZsL054TGNHdWdBbVQwcGsyL2w4L1ZDT1FBK2krLzg3Z1UrQWxz?=
+ =?utf-8?B?MUZXeERFWDJkUmNVbElpdzVmYkhCYnpuTEYzcThFS2dmU0RGSkx4MTJvbEhn?=
+ =?utf-8?B?bjdJNWc3MHJISHF4VDlGd3dLT24wTXpjYlZFZHFrL0xpTGNMa3lkUVYwZm5x?=
+ =?utf-8?B?ckYwSzZOWk5meGRBeStjcmFmcjdSMjl5ZFVFa1hXQ1VrYzZPMFA5UVR0c0lI?=
+ =?utf-8?B?TElmN0FwS1BoSE5JL1UyUHBpelZnU3Jsakc1ZlE2S2NFSXFjTEFsZkVhTkdB?=
+ =?utf-8?B?S0MrNzZDMmw5UFZqaVhnZU01NUpKN0t0R05ybUFrVTlSVWlVV24vWEZNUmFV?=
+ =?utf-8?B?Zy9qaWZaNXhxU0ZOYzA1bEhidEE1UVkwWnlaOGxNQWlLSUoySENVMStYRmV4?=
+ =?utf-8?B?UytTaHg5QUZ5S1JmdkNFY2lQdVVYY25QaEtDdTh0ampZaUxYRFl5RG51alpY?=
+ =?utf-8?B?LzNNK0xXcEg4TVZBSWpQaG1OemY2ZXEyVmNvWHl4ZWVBU083TmRmTFBjS1RH?=
+ =?utf-8?B?azVpRjRiOUsvWWQzdkNRRHZLSVB0S2RkTUxSVTFLYkh3bW9jOUM2TUxQUzJ3?=
+ =?utf-8?B?bkh3STMxN3ZRVHdCQjYvSGpvTWgvVHJ3Z2xtVzEwUzBQNGxzRFhUdXFOY25D?=
+ =?utf-8?B?VitNOW5weVdrZVhnM1RqRkpnak1iRDVnU3VkK2MwVTJxa1ZZWDVJbG1ETDZH?=
+ =?utf-8?B?WGUvNHg2Szk0a3BFNlcrTDlLY0hWeGQ4b09XZUpSNVFuMEZKQXUvWjhJOTd4?=
+ =?utf-8?B?K1huSW5HblVTdXpNa29KOHU1OThFNGxpcjVPb1I1MFNacGVaQVV1Nms3RkNN?=
+ =?utf-8?B?V2tLbUF4QXd1M042UVYwcjhvTlpyeVRON0pIamZnaThsK2taU0JkbmwrSU5Y?=
+ =?utf-8?B?YlJqckFvaERXaWFsUkNWNW45c3RJMHRXSVNMNStXbThQMjRSN2NyeklnMkUv?=
+ =?utf-8?B?bVp1ZjdWeG5CQ2JSMWxXdHM3Vld1QkhQOW1xTGpaQitGeEpuTllDcUs2SjRN?=
+ =?utf-8?B?bDluL1BlRGlXK2NNQksvc0FwbVB1d0hxRzlVY0FrS010VHhmRzk1bkNTdTJp?=
+ =?utf-8?B?U0U5c0FXTFdFOUhvVGtxeFJ3WmxGd2t3M3d4M0lMbXM0dmkvZkExVnI2NXJk?=
+ =?utf-8?B?Q0ZUZVdIMHZveXVxZWFnb0Q3NEpDSmxJTCtkandUTGZYWDNtNFBvRnEyRHNQ?=
+ =?utf-8?B?eEllakNQMUZ0NWtuMkQ1NmhybnN1VGRMRC9VdDM4RjM4eDFja25jSURuQU15?=
+ =?utf-8?Q?gJQ+gk9/hYbrEkPY=3D?=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ab05ff56b186e6aa6fcef9ad292b79e7ab8d5020.1791227050.git.lucien.xin@gmail.com>
- <179133511349.434549.8476083447465312043@kernel.org>
-In-Reply-To: <179133511349.434549.8476083447465312043@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 7 Oct 2026 15:11:21 -0400
-X-Gm-Features: AclHuK8wx5QvJWTuIEr0cxNSBa7WL00bfKIgEfBuSjmBXOBZiQvO3Vk6f_HL3EE
-Message-ID: <CADvbK_fEQk5M8V+A-WE=_g6PPhD27QwqM4+_-cHmjP8j-JKijQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v16 08/15] quic: add path management
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net, 
-	kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
-	metze@samba.org, mbuhl@openbsd.org, tfanelli@redhat.com, hepengtao@xiaomi.com, 
-	dreibh@simula.no, linux-cifs@vger.kernel.org, pc@manguebit.org, 
-	linkinjeon@kernel.org, tom@talpey.com, kernel-tls-handshake@lists.linux.dev, 
-	chuck.lever@oracle.com, jlayton@kernel.org, steved@redhat.com, hare@suse.de, 
-	aahringo@redhat.com, dhowells@redhat.com, matttbe@kernel.org, 
-	mail@johnericson.me, xiyou.wangcong@gmail.com, alibuda@linux.alibaba.com, 
-	jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net, 
-	marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com, 
-	mef@scarletmail.rutgers.edu, paul@jakma.org, kuniyu@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Exchange-RoutingPolicyChecked: vRTGI7RLY7RgXtWXmXTjpUU0t11qu/fJDcBC1k2yoxzMR/s2iMD1jcINBO+oN8ftNJ+qz5NpkHjmG6Hv0jmRBf+j4/WWHKwvi11nFmoT7wuwAYQaMsrQi6i+xp+vvm+90gs+/IGAB9/SzePL3brf9SHtXtvQpouZgozpkMNQIyDQYsu4HSer9P6RO7lI+uhI+vI6G4D2vSoTqBgYNXWKIs0uxQYkar4WveCmFdP1ZNbXMJtwe4Ud8JsAYCvRXE3Zj0BxJqzLGrqEcrj5o/KrRvToPssP9JwjbyFL9Hzas3/DlwYXwsfwwqhfnUgBm0fWGo8WSNkmF7dSfcpBdsL1Uw==
+X-OriginatorOrg: onsemi.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR02MB7867.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b2a85bd0-2bda-468c-57e1-08df24a7c3bd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Oct 2026 19:18:27.1746
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 04e1674b-7af5-4d13-a082-64fc6e42384c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: vPj6RoLnuBByDoLMOG8p8Y2T0wDgrvmN9vYk6bjhbZb7GZ0wUyvpd1nW7Uqn1EV0QaP3VI55PxqhQEro+UHnQlKXMhP5hAdr72Zp72xeZ4Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR02MB8633
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: rmHmr9nyyfUUFaM0xDpOBJwDlgvI4-QUNH4-SC1wgBw_1791400709
+X-Mimecast-Originator: onsemi.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Tue, Oct 6, 2026 at 9:05=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 9 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 4 =C2=B7 Low: 4
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] Pending UDP tunnel socket releases are not tied to netns
->   teardown, so they can write to freed per-netns memory.
-> - [Medium] quic_udp_sock_create() does not keep an explicitly disabled
->   IPV6_V6ONLY setting.
-> - [Medium] A dual-stack QUIC socket can reuse an existing IPv6-only UDP
->   tunnel socket.
-> - [Medium] quic_udp_sock_create() ignores IP_FREEBIND (and
->   IP_TRANSPARENT) set on the QUIC socket.
-> - [Medium] quic_path_bind() uses two different ideas of 'owner' when
->   deciding who may share a tunnel.
-> - [Low] quic_path_bind() reads sk->sk_uid and us->sk->sk_uid with plain
->   loads, bypassing the sk_uid() accessor in include/net/sock.h:2162-2166.
-> - [Low] The commit message contradicts the code it adds.
-> - [Low] The quic_path_detect_alt() comment says it 'Returns true if a new
->   alternate path was detected and updated' and that it 'updates the=E2=80=
-=A6
-> - [Low] quic_path_pl_toobig() prints its u32 pmtu argument with "ptb:
->   %d".
->
-> --
->
-> quic: add path management
->
-> This patch adds struct quic_path_group and struct quic_path to manage up
-> to two paths per connection. Each path is backed by a UDP tunnel socket
-> that can be shared, is wrapped in quic_udp_sock and is kept in a global
-> hash table. It adds bind, unbind, swap and alternate path detection
-> helpers, plus basic PLPMTUD state handling for probes, acks and ICMP
-> Packet Too Big messages.
->
-> > - quic_path_pl_send(): state transition and pmtu update after sending a
-> >   probe packet.
->
-> [Severity: Low]
-> Is "after sending" accurate here? The kernel-doc for quic_path_pl_send()
-> added in this same patch says:
->
->  * Called right before sending a probe packet in QUIC Path MTU Discovery.
->
-> The v16 changelog says the "after" wording was inaccurate, but only the
-> code comment was updated.
->
-> The probe_count / QUIC_MAX_PROBES accounting assumes the call comes befor=
-e
-> transmission. A caller that follows the commit text would be off by one.
->
-> Several lasting changes are described only in the changelog below the
-> "---" line:
->
->   - the module-wide quic_wq workqueue and its init/exit handling
->   - the path_seq seqcount write side in quic_path_swap(), plus
->     quic_path_init()
->   - the port sharing policy in quic_path_bind(): same uid reuse,
->     -EADDRINUSE for a different uid, -EAGAIN during teardown, and
->     CAP_NET_BIND_SERVICE for privileged ports
->
-> Could these go into the commit message itself?
->
-> > - quic_path_detect_alt(): Determine if a packet is using an alternative
-> >   path, used for connection migration.
->
-> quic_path_detect_alt() also writes the candidate addresses into path[1].
-> This description doesn't say so.
->
-> > diff --git a/net/quic/path.c b/net/quic/path.c
-> > new file mode 100644
-> > index 0000000000000..b6bea7d2f2673
-> > --- /dev/null
-> > +++ b/net/quic/path.c
-> > @@ -0,0 +1,593 @@
->
-> [ ... ]
->
-> > +static struct quic_udp_sock *quic_udp_sock_create(struct sock *sk,
-> > +                                               union quic_addr *a)
-> > +{
->
-> [ ... ]
->
-> > +     quic_udp_conf_init(sk, &udp_conf, a);
-> > +     err =3D udp_sock_create(net, &udp_conf, &sock);
-> > +     if (err) {
-> > +             pr_debug("%s: failed to create udp sock\n", __func__);
-> > +             kfree(us);
-> > +             return ERR_PTR(err);
-> > +     }
->
-> [Severity: Medium]
-> Is an IPV6_V6ONLY of 0 on the QUIC socket kept when the tunnel is created=
-?
->
-> quic_v6_udp_conf_init() passes the QUIC socket's setting:
->
->     conf->ipv6_v6only =3D ipv6_only_sock(sk);
->
-> udp_sock_create6() only acts on it when the flag is true:
->
->     if (cfg->ipv6_v6only) {
->         err =3D ip6_sock_set_v6only(sock->sk);
->
-> Otherwise the new kernel socket keeps the default it got in
-> inet6_create():
->
->     sk->sk_ipv6only =3D READ_ONCE(net->ipv6.sysctl.bindv6only);
->
-> Take a netns with net.ipv6.bindv6only=3D1 and a QUIC socket that sets
-> IPV6_V6ONLY to 0 and binds [::]:P. It gets an IPv6-only UDP tunnel.
-> quic_path_bind() succeeds, but IPv4 packets would never reach the
-> socket.
->
-> This stays latent until quic_path_bind() gets a caller.
->
-> [Severity: Medium]
-> Can IP_FREEBIND or IP_TRANSPARENT on the QUIC socket have any effect
-> here? udp_port_cfg has no freebind field, and quic_v4_udp_conf_init()
-> copies only:
->
->     conf->family =3D AF_INET;
->     conf->local_ip.s_addr =3D a->v4.sin_addr.s_addr;
->     conf->local_udp_port =3D a->v4.sin_port;
->     conf->bind_ifindex =3D sk->sk_bound_dev_if;
->
-> udp_sock_create4() and udp_sock_create6() bind the new kernel socket
-> right away. __inet_bind() then checks inet_can_nonlocal_bind() against
-> that new socket's own flags:
->
->     return READ_ONCE(net->ipv4.sysctl_ip_nonlocal_bind) ||
->         test_bit(INET_FLAGS_FREEBIND, &inet->inet_flags) ||
->         test_bit(INET_FLAGS_TRANSPARENT, &inet->inet_flags);
->
-> Assume ip_nonlocal_bind=3D0. A QUIC socket sets IP_FREEBIND through
-> quic_setsockopt()->quic_common_setsockopt()->ip_setsockopt() and binds a
-> non-local address. Whenever a new tunnel has to be created,
-> quic_path_bind() would then return -EADDRNOTAVAIL.
->
-> The patch notes say quic_get_user_addr() will accept such an address
-> based on that flag. That check and this bind would disagree.
->
-> [ ... ]
->
-> > +static void quic_udp_sock_put(struct quic_udp_sock *us)
-> > +{
-> > +     /* The UDP socket may be freed in atomic RX context during connec=
-tion
-> > +      * migration; defer the release to a workqueue.
-> > +      */
-> > +     if (refcount_dec_and_test(&us->refcnt))
-> > +             queue_work(quic_wq, &us->work);
-> > +}
->
-> [Severity: High]
-> Can this deferred release run after the netns pernet exit methods have
-> freed per-netns state?
->
-> quic_destroy_sock()
->   quic_path_unbind()
->     quic_path_set_udp_sk(path, NULL)
->       quic_udp_sock_put()
->         queue_work(quic_wq, &us->work)
->
-> The QUIC user socket is then freed and drops its active netns
-> reference. If that was the last one, cleanup_net() runs the pernet exit
-> methods.
->
-> quic_net_exit() doesn't flush quic_wq or wait for this namespace's
-> pending releases. Nothing orders quic_wq against the netns cleanup
-> workqueue.
->
-> So quic_udp_sock_put_work() could run after sock_inuse_exit_net() has
-> done:
->
->     free_percpu(net->core.prot_inuse);
->
-> If udp_child_hash_entries is set, it could also run after
-> udp_pernet_table_free() has freed net->ipv4.udp_table. The work then
-> reaches:
->
-> quic_udp_sock_put_work()
->   udp_tunnel_sock_release()
->     sock_release()
->       inet_release()
->         udp_lib_close()
->           sk_common_release()
->             udp_lib_unhash()
->               sock_prot_inuse_add(net, sk->sk_prot, -1);
->
-> That writes to the freed percpu area and takes hslot spinlocks in the
-> per-netns udp_table.
->
-> This is a separate issue from the lifetime of struct net. The passive
-> reference held by kernel sockets keeps the struct net allocation alive.
-> It doesn't stop the pernet exit methods from freeing these per-netns
-> pieces.
->
-> Other kernel UDP tunnel users such as vxlan, geneve, tipc and rxrpc
-> release their kernel sockets from pernet exit. Later in the series,
-> quic_net_ops still has only .init and .exit, and quic_net_exit() is
-> unchanged.
->
-True.
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBBbmRyZXcgTHVubiA8YW5kcmV3
+QGx1bm4uY2g+DQo+IFNlbnQ6IFR1ZXNkYXksIE9jdG9iZXIgNiwgMjAyNiA2OjA1IEFNDQo+IFRv
+OiBTZWx2YW1hbmkgUmFqYWdvcGFsIDxTZWx2YW1hbmkuUmFqYWdvcGFsQG9uc2VtaS5jb20+DQo+
+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggbmV0LW5leHQgdjggMDkvMTFdIG5ldDogcGh5OiBuY24yNjAw
+MDogU3VwcG9ydCBmb3IgbG9vcGJhY2sNCj4gDQo+IA0KPiBOYW1pbmcgaXMgaGFyZCwgYW5kIGkn
+bSBub3QgdG9vIHN1cmUgYWJvdXQgdGhpcyBvbmUuDQo+IA0KPiBmaXhlZF9zcGVlZCBjb3VsZCBh
+Y3R1YWxseSBtZWFuLCBmaXggdGhlIFBIWSB0byB1c2UgdGhlIGdpdmVuIHNwZWVkLg0KPiBJdCBp
+cyBpbiBmYWN0IGRvaW5nIHRoZSBvcHBvc2l0ZSwgdGhlIHNwZWVkIGlzIG5vdCBmaXhlZCBhdCBh
+bGwsIGl0IGlzDQo+IGxlZnQgdG8gd2hhdGV2ZXIgdGhlIGRldmljZSBzdXBwb3J0cy4gSW4gdGhp
+cyBjYXNlLCBpdCBqdXN0IHN1cHBvcnRzIGENCj4gc2luZ2xlIHNwZWVkLCBidXQgdGhhdCBpcyB1
+bnVzdWFsIGZvciBQSFlzLg0KPiANCj4gTWF5YmUgY2FsbCBpdCBnZW5waHlfbG9vcGJhY2tfbm9f
+c3BlZWQoKT8NCg0KDQpTdXJlLiBJIGNvdWxkbid0IGNvbWUgdXAgYmV0dGVyIG5hbWluZy4gVGhh
+dCdzIHdoeSBJIGNhbWUgdXAgd2l0aA0KZml4ZWRfc3BlZWQgYXMgUEhZIGhhcyBpdHMgc3BlZWQg
+Zml4ZWQgYXQgMTBtYnBzLg0KDQpXaWxsIHJlcGxhY2UgZml4ZWRfc3BlZWQgd2l0aCBub19zcGVl
+ZC4NCg0KPiANCj4gVGhpcyBoZWxwZXIgaXMgYWxzbyBub3Qgd2hhdCBtb3N0IGRldmljZXMgYWN0
+dWFsbHkgd2FudCB0byB1c2UsIHNpbmNlDQoNClRydWUuIEFzIHlvdSBjb3VsZCBzZWUsIHdlIGNv
+dWxkIGZpbmQgb25seSBvbmUgb3RoZXIgdmVuZG9yIChkcDgzODY3LmMpIHJlcXVpcmUgDQpsb29w
+YmFjayBzZXR0aW5nIHdpdGhvdXQgc2V0dGluZyBzcGVlZC4gQWN0dWFsbHksIHlvdSBmb3VuZCB0
+aGlzIGNvZGUuDQoNCkFsc28gaW50ZXJlc3RpbmcgdG8gbm90ZSB0aGF0IGFtb25nIHRoZSB0d28g
+dmVuZG9ycyB3aG8gaGF2ZSBPQSBUQzYgUEhZIGRyaXZlciwgDQpvbmUgaXMgc3VwcG9ydGluZyBN
+QUMgbGV2ZWwgbG9vcGJhY2sgKGFkaW4xMTQwLXBoeS5jKSBhbmQgd2hpbGUgdGhlIG90aGVyICht
+aWNyb2NoaXAtdDFzLmMpDQppcyB5ZXQgdG8gYWRkIGxvb3BiYWNrIHN1cHBvcnQgLiBXZSBhcmUg
+dXNpbmcgTUlJIGxldmVsIGxvb3BiYWNrLiBNYXkgYmUsIHdlIGNvdWxkIGdldCB0aGlzDQphbGln
+bmVkIGxhdGVyLg0KDQo+IHdvdWxkIHdhbnQgdG8gdXNlIHRoaXMsIG5vdCBnZW5waHlfbG9vcGJh
+Y2suIFBsZWFzZSBleHBhbmQgdGhlDQo+IGRvY3VtZW50YXRpb24gYSBiaXQgdG8gbWFrZSBpdCBj
+bGVhcmVyIHdoeSB5b3Ugd291bGQgd2FudCB0byB1c2UgdGhpcw0KPiBhbmQgbm90IGdlbnBoeV9s
+b29wYmFjay4NCg0KV2lsbCBkby4NCg0KPiANCj4gDQo+IEFuZHJldw0KDQo=
 
-I was expecting one netns refcnt held until udp_tunnel_sock_release().
-
-It looks better and clearer to fix it by holding one netns refcnt for
-quic_udp_sock than releasing their kernel sockets from pernet exit.
-
-Thanks.
-
-> [ ... ]
->
-> > +     hlist_for_each_entry(us, &head->head, node) {
-> > +             if (net !=3D sock_net(us->sk))
-> > +                     continue;
-> > +             if (a) {
-> > +                     if (quic_cmp_sk_addr(us->sk, &us->addr, a) &&
-> > +                         us->bind_ifindex =3D=3D quic_get_dev_if(sk, a=
-))
-> > +                             return us;
->
-> [Severity: Medium]
-> Could a dual-stack QUIC socket end up sharing an IPv6-only tunnel here?
-> When both addresses are AF_INET6 wildcards, quic_v6_cmp_sk_addr()
-> returns:
->
->     if (ipv6_addr_any(&addr->v6.sin6_addr))
->         return ipv6_addr_any(&a->v6.sin6_addr);
->
-> ipv6_only_sock() is only checked when the address families differ.
->
-> Suppose QUIC socket A with IPV6_V6ONLY=3D1 creates a tunnel on [::]:P.
-> QUIC socket B, same uid, with IPV6_V6ONLY=3D0, then binds [::]:P. B reuse=
-s
-> A's v6-only tunnel and quic_path_bind() returns 0.
->
-> IPv4 lookups skip ipv6_only_sock() sockets, so B would never receive
-> IPv4 traffic. The same bind on plain UDP sockets would have failed with
-> EADDRINUSE.
->
-> [ ... ]
->
-> > +             us =3D quic_udp_sock_lookup(sk, a, port);
-> > +             if (us) {
-> > +                     if (!uid_eq(sk->sk_uid, us->sk->sk_uid)) {
-> > +                             mutex_unlock(&head->lock);
-> > +                             return -EADDRINUSE;
-> > +                     }
->
-> [Severity: Medium]
-> Are these two uids measuring the same owner? The tunnel's sk_uid comes
-> from the kernel socket created in quic_udp_sock_create():
->
-> udp_sock_create()->sock_create_kern()
->   sock_alloc():
->       inode->i_uid =3D current_fsuid();
->   sock_init_data():
->       sk_uid taken from SOCK_INODE(sock)->i_uid
->
-> So the tunnel owner is the fsuid of the task calling bind() at that
-> time. sk->sk_uid on the QUIC socket comes from its own inode at socket()
-> time and is updated by fchown().
->
-> The two differ in any of these cases:
->
->   - the QUIC fd was passed over SCM_RIGHTS
->   - the QUIC fd was fchown()ed
->   - the task changed fsuid between socket() and bind()
->
-> Then a socket owned by the original owner gets a spurious -EADDRINUSE.
-> Sockets whose sk_uid matches the first binder's fsuid are allowed to
-> share.
->
-> [Severity: Low]
-> This isn't a bug, but should these reads use the sk_uid() accessor? It
-> is documented as paired with the WRITE_ONCE() in sockfs_setattr(), and
-> quic_v4_flow_route() and quic_v6_flow_route() already use it. Without
-> it, KCSAN would report a concurrent fchown() on the QUIC fd:
->
->     if (!uid_eq(sk_uid(sk), sk_uid(us->sk))) {
->
-> [ ... ]
->
-> > +/* Detects and records a potential alternate path.
-> > + *
-> > + * If the new source or destination address differs from the active pa=
-th, and
-> > + * alternate path detection is not disabled, the function updates the =
-alternate
-> > + * path slot (path[1]) with the new addresses.
-> > + *
-> > + * This is typically called on packet receive to detect new possible n=
-etwork
-> > + * paths (e.g., NAT rebinding, mobility).
-> > + *
-> > + * Returns true if a new alternate path was detected and updated, fals=
-e
-> > + * otherwise.
-> > + */
-> > +bool quic_path_detect_alt(struct quic_path_group *paths, union quic_ad=
-dr *sa,
-> > +                       union quic_addr *da, struct sock *sk)
-> > +{
->
-> [ ... ]
->
-> > +     if (!quic_path_saddr(paths, 1)->v4.sin_port)
-> > +             quic_path_set_saddr(paths, 1, sa);
-> > +
-> > +     if (!quic_cmp_sk_addr(sk, quic_path_saddr(paths, 1), sa))
-> > +             return false;
-> > +
-> > +     if (!quic_path_daddr(paths, 1)->v4.sin_port)
-> > +             quic_path_set_daddr(paths, 1, da);
-> > +
-> > +     return quic_cmp_sk_addr(sk, quic_path_daddr(paths, 1), da);
-> > +}
->
-> [Severity: Low]
-> Does the comment match the return value? path[1].saddr and daddr are
-> only written while their sin_port is still 0.
->
-> If path[1] is already filled in and simply matches (sa, da), this
-> returns true even though nothing new was detected or updated.
->
-> [ ... ]
->
-> > +u32 quic_path_pl_toobig(struct quic_path_group *paths, u32 pmtu,
-> > +                     bool *reset_timer)
-> > +{
-> > +     u32 pathmtu =3D 0;
-> > +
-> > +     pr_debug("%s: paths: %p, state: %d, pmtu: %d, size: %d, ptb: %d\n=
-",
-> > +              __func__, paths, paths->pl.state, paths->pl.pmtu,
-> > +              paths->pl.probe_size, pmtu);
->
-> [Severity: Low]
-> This isn't a bug, but pmtu is a u32 taken from the remote ICMP or ICMPv6
-> Packet Too Big message. Should this be "ptb: %u"? Values above INT_MAX
-> would print as negative numbers.
->
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/cover.1791227050.git.lucien.xin%40gmail.com
