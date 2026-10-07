@@ -1,134 +1,136 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34041391845
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 10:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791368054; cv=pass; b=M0jx/f4ZH1UgX1IMShof4SXOm9ulI1qOJk5UYW0FHfX3FB1P/0O2k99ExMris5Jjq8cd8urqFxANBtQmsPwyyLx8VGD/EFKMiGSCEAsn7bVckmJgcJXSwSnZVwnBqaWcd56mNlziuaIFCJWuy3nAyxN+uKnaHcBwaYvH04S4I7A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791368054; c=relaxed/simple;
-	bh=WsuaFOJA3QfGOIybaFoCOFur8n07QvAggdyEOm1UsEo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=akfYDbVf/S5pdqzhrQLzZEaKqvMcsZtv841QReT3UfYmcmuziMZVs9iOw8gZ2YbWRdbIpBL1trZg0s4QBajqBnnCSma6evdiuRyFpMcBpGr2hjDXtWm7MqKWL1wbjLkE+g8QdfqP9UGeTVnqd6oT3EVfOEfmQZzuzYx2LyYsHgw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=c7/HPRmv; arc=pass smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920D34749DD
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 10:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791368428; cv=none; b=W6s/Ez3+5+q8+liqESdirdWKhUoMZN9ISwl+2cOVmg8iDPNZQahdDO6yGuf/86LAVVQdV/xvAGnR39ZfrCYkKdH92vzvqHzuG1OqqYkmGVNWrygbBMspJvX/yv8Yf1JhlcpC9ecIOKQJbdysyJ+5esI924Fhtj2dTZ62EXMKgWw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791368428; c=relaxed/simple;
+	bh=rFAvUO4Y/vcYHM1X2jKNJMuKbU0DG4p6en3YHWz9DUE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S7c9gH2kBjrR7IEUQ+6uHDXgPXKatwXuF/0mRM06Gcm5bjygFSZZdaLrxneF2O7RzfgJJa0+pjBwq6p2lq04g2khMCKwz54w1sSslud3r/G7lOlQNpITNVfQpdFPEBt7BozqYTt9Hrz2+xOIsQyY4G+SxBYa4/g/0x7y8VFOZkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h8giNJUB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jy9wEEPh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="c7/HPRmv"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc7cc8aafe6so777377a12.3
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 03:14:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791368044; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dCAD4Thc8ovn+Xk+d6MwjSv9yYoz2rn4BYtGfrIXo4Nw9AWODSQ5VCmb0G3YJPWMpB
-         h5wBD3qTznT9NJkN16OzmcWJ7TlCyGBPRhf4fN8zlw29BAMcA71i55RrT2LyIgGs0Mgs
-         cbLDoPPm4YI/36027sVdiH7Ut8VHZwd3fqZUKTrZCQjVfTyD/+NJvwwl58llr/vqiuUB
-         /TgqxKMeclxLgoOU5O5VADAAG7dVtG8nDv1pfU4qnPVa/dDSaNRU1fi9dSzQXYEKksy7
-         AS9KY3nr1z9vJ3urQryqpUIrqbBa/TjKgzvCa+3f85fihE/TPN2pyUTRponJROEyn/z3
-         WzMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EDY5pGh9vkzmlGXT8oGSOIFOutoB19sXEcV1QjJMB6M=;
-        fh=XrLiMricT4TXmfbU/Dyrksi4NfGUSUR3mvMxv7+E5fM=;
-        b=CWtbrGm8Eha8TDrowdUfu+LKHsTRFS2KbBWPYWnuaRNdfmyinTq+vlHcH56OaNFvGe
-         hjmJrZzvEPN4bCrnfzrJzjN3vshDgLt89kYCOXv+SGmTrc0bNMQi8EbLZjRu3bcpQbys
-         0NKtKwM8Mo7nYGZ6z8FoD4hvHOquNRLs49HqJWZCf473ADyRzYNdI3h2tabR9eE/aPc6
-         ryKDpfodyBS/EsUHMQW9UIZJWNg2yrDT5algo+5VPo4CLSR3igwXNJoDYj3Euw4Bos7D
-         nYg1EQsUrG3dimdkDClRoi3+tYDosCK/lu6V73j0Cw6I+XuMMzeJOHyh60/FOqz7mOxU
-         eunw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h8giNJUB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jy9wEEPh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791368419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rFAvUO4Y/vcYHM1X2jKNJMuKbU0DG4p6en3YHWz9DUE=;
+	b=h8giNJUBhVEGNxmVHQEdH54c/XlTcssKwhioOE5d/U1cAyDY4GxPGceWzDr8Ky+3iYD0/5
+	MOYJspt8dxLVLdZVq78zvm5eCLD9+pqIbfpO826e6jp84ckILBYAbEsBbq1xNORsFUP+Xh
+	QehnUMnGMevch55qTkF86cWZzl+ga7A=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-pJ3JXMq3OsalSzKQlgAJoA-1; Wed, 07 Oct 2026 06:20:18 -0400
+X-MC-Unique: pJ3JXMq3OsalSzKQlgAJoA-1
+X-Mimecast-MFC-AGG-ID: pJ3JXMq3OsalSzKQlgAJoA_1791368417
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c2939083cefso460770766b.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 03:20:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791368044; x=1791972844; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EDY5pGh9vkzmlGXT8oGSOIFOutoB19sXEcV1QjJMB6M=;
-        b=c7/HPRmvaFsgQ3nT9KveBgXEF0t2l53xsK/09iGalPxnJsZYTuFPZ9FfZjMXWP4xpP
-         N5QEYRhMzbyhhytF77hTiOHjXPqpb3EsTXtzDhZe5Xeq4Ud60BhxklArrfNcCo9kxJVl
-         4ssDG94LRn4kDjNJHcRtDmVv07O7jPTB2JwkI=
+        d=redhat.com; s=google; t=1791368417; x=1791973217; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rFAvUO4Y/vcYHM1X2jKNJMuKbU0DG4p6en3YHWz9DUE=;
+        b=Jy9wEEPhwMeUmcZ30M+B2K96pMC9WI6L7uHAEjEAwj0swcHEWs7CK7QdKicyqVvdB4
+         2V/dF5LfbrEDP1nAOdQOLQxAaAHd9b9G3DzSa8FzjxpGVM59No+cHmbfvYSAkZoFh69k
+         XzTe8K6y6fns9egJyTOUn+9FSDUfgVWWymeF6tXJIZi5VhWfSPYvunB1GJux7+1wGgKS
+         QccKXwWqreY+4ulNQkzj1GR8DeuGHsAde4VYJ5h4FOsDh1kpgKWlE0z6LYyX/nLh3Y8r
+         FIz9+4v7jZVDZrFisTLZs0fw8nfxE6v1qK7qRZb5HVSqQhWi1pnxv3kFCacAOsAg4A5D
+         mTsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791368044; x=1791972844;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1791368417; x=1791973217;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EDY5pGh9vkzmlGXT8oGSOIFOutoB19sXEcV1QjJMB6M=;
-        b=CS/L5AOPu6r/99sjZ/pk+PQxXUFbwoAzDUCSyPtEY8mEOsvWhQc3n6KqNopwXhFsoV
-         IPasTyeNuUrc1UYwZ6eO44Z+EyNuoC1LT/Ox3vkabYtmKwXESyFr2XXzoYxt7h8znAYR
-         Ho6F61fRSdihhsyPKSwQjeNWP9caCKynOmFbONK5mFOqarYMDmzEWYsM9zs0WegFFKaR
-         zxb0a84kx8CLQJ7AxvtM88UnB9e0gkUK5YmI/qKSlTPg++edSI0RKrbTIQmjn2/sZ1+t
-         tKyL3y75fzw2KrzNoxjTP6fR0CJGIcOGqmGHUN4eqCnwGuuTJfmGgvJ0IV4QYnkDALwC
-         VssA==
-X-Gm-Message-State: AFuF++nZRrqwQnabQslAqXtC0S7HTBp+/X5uBXpHcxApONwf0KuIhAht
-	nRieDEMRa52Et/K4cE8Tl0kwwSC9EFQAnN1gwSfDkl/2+pL8m+WdEiXhrs4K1Sgsmzy03g65sEM
-	gei0xEP9CUCTOP9R1cWvoxm4Kzlj2mos+/7nlaWKR
-X-Gm-Gg: AYBFou0YHF6J1/V7ULBB4ddNHwwkN/j9hW5e6S/an85VE/i9WDQC/mynV5mQzHnX4k2
-	Gc9AK1PAyV5LpcaHvTSei6RIMpgVkNhNkM/KPO6x7MQOiA5w7X+VIv6GMUkmVbW5r38Ox50/zrJ
-	e4yDeJ3bmJczgtme6NtPLj2+Vd3xkVUv1fYARirLpjw7uAi3h83gB2npMwCN7qDS7Lb5TgElqiX
-	M8yoWoWcjsayipw2MQUE0JgjkV8TpLrYC/chaEIg2qaMVHgKCo56+YC607e2R5sGejhwDX4vDgP
-	iM55rB7eTehs2Ee909yKRaTRcNg2RbpPYgRvsH10ARDzIEPdNLJ9K5/MF/4n0w4nQgBxZLSXasx
-	hwpbA4JLryZXNyLR8dk8ToJftRgQhaJeaiA==
-X-Received: by 2002:a05:6a00:4fc6:b0:881:d48e:7138 with SMTP id
- d2e1a72fcca58-891b1193567mr1317212b3a.4.1791368044277; Wed, 07 Oct 2026
- 03:14:04 -0700 (PDT)
+        bh=rFAvUO4Y/vcYHM1X2jKNJMuKbU0DG4p6en3YHWz9DUE=;
+        b=dkNR9Zf71BA4LbQN05ZJeZ2Qs9KcxTp4mBg6TBykr6/xNNUQasBNlvbCF8Ml43O8AQ
+         1g+skHahqTacJ50FysNUfCyAMqHjXpOAZxAan2t3GBQ7khBjGi4lBJA2eYOy9mS6w2TC
+         gU7H1l+PlZd8Wv7E+XCgE/9/Q8gzrvZItjK8sA06jrCXk76/CN7yGgeCSXh6XVwV1WOp
+         0hP+6C4AM16OZ2O1MENpKsS7mzQQX1b4MFw1xSf30aR5f6QXTgjqvc0RWTsriWSsQVD9
+         F8Yn9G3D29RLSwmWTCJj8MvP77GwbbaLYM9KM/JjmaWetd743VxS5/39hTNFf5lcNEEO
+         tYvg==
+X-Forwarded-Encrypted: i=1; AKwUvBy+1/xjxQD2rx5qjxSt1LWjdfOORghSG2WEKsfbM5EV5BI8JpgoS5bGBNP3n2NsPvOJ5HyAK2A=@vger.kernel.org
+X-Gm-Message-State: AFuF++lQGHcC0KTkp+TwoCt6Y1bp6LwcYLMG0wMEeIjkW7pduS2mkFmd
+	lLdap1ViRWr4IHle3BbQKHUcLdAuvWLFfhQ5gFsvyyRulc8aTlTeJHvlQII9nH5dJ19/6K7u9c/
+	nl72Xg+AhNVNAaoH0Vk3VvcmFOSeewAi/hyHkmlxAHyofA5Gs6kMr6YPrpw==
+X-Gm-Gg: AYBFou0VDeXo5voKjHyJ5s5PK6K8CxVcZaoHWDq4EmIMaHOA2pxV9GRpSo600gSXxM9
+	KkHKfFtBXqjHEBcI7CIdbFDb4mGWgQTWMPrTDt2dBEgjHb/XF4TIiTtB6rJ2/xfd5oSz4RgAOvL
+	s1iw/Zf5meovU3+Q0Q8n1XUTGun5lZ6L6/z1Up29zlKmP2NFMLwo8gfKLwC5rRl996Iq53LMp6M
+	Mk7z4o0Og7YkcOj84865EzFwe76foNkUgfCmsYvbdHPY675FFGMDFU9Tso0Rn6Yeqzh8qvpWuyV
+	7nHC1RscajHPngov1Ytbs+YC04Q2JOajLMaQr1jQW6hODIhpm9f1p3cNFZ1ZjrMDBghKx1JGqRi
+	F7398hJHABXE+eIMwuzdDAlG4
+X-Received: by 2002:a17:906:f592:b0:c29:d31f:7d6a with SMTP id a640c23a62f3a-c317bf67d52mr155718366b.35.1791368416958;
+        Wed, 07 Oct 2026 03:20:16 -0700 (PDT)
+X-Received: by 2002:a17:906:f592:b0:c29:d31f:7d6a with SMTP id a640c23a62f3a-c317bf67d52mr155715166b.35.1791368416617;
+        Wed, 07 Oct 2026 03:20:16 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c317c32af4fsm81250166b.63.2026.10.07.03.20.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 03:20:15 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id D29F7A4CB6C; Wed, 07 Oct 2026 12:20:13 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Tianyi Gao <tianyi@cloudflare.com>, netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, lorenzo@kernel.org, horms@kernel.org,
+ bpf@vger.kernel.org, shuah@kernel.org, hawk@kernel.org,
+ kernel-team@cloudflare.com, ast@kernel.org, daniel@iogearbox.net,
+ john.fastabend@gmail.com, sdf@fomichev.me,
+ linux-kselftest@vger.kernel.org, Tianyi Gao <tianyi@cloudflare.com>
+Subject: Re: [PATCH net 1/2] veth: fix peer NETDEV_XDP_ACT_NDO_XMIT after
+ GRO is toggled while down
+In-Reply-To: <20261006173241.65945-2-tianyi@cloudflare.com>
+References: <20261006173241.65945-1-tianyi@cloudflare.com>
+ <20261006173241.65945-2-tianyi@cloudflare.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Wed, 07 Oct 2026 12:20:13 +0200
+Message-ID: <87cxtlu80y.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-BA27.v4.20261001193440@mojatatu.com> <20261006153043.GM83879@horms.kernel.org>
-In-Reply-To: <20261006153043.GM83879@horms.kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Wed, 7 Oct 2026 06:13:52 -0400
-X-Gm-Features: AclHuK-6LfpAyzZ2sADy3SuT_HqRXqU-iqNXOJEoXzvGEd9JTb0nrG_AEBvSCLU
-Message-ID: <CAM0EoMk=RKMafa0tCUmcjFvm3_f=wGZoNAoy8q=i_r8zR2x_6w@mail.gmail.com>
-Subject: Re: [PATCH net-next v4] net/sched: cap the accounted backlog before
- it can wrap
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Victor Nogueira <victor@mojatatu.com>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>, 
-	moeller0@gmx.de, cake@lists.bufferbloat.net, Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 6, 2026 at 11:30=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Fri, Oct 02, 2026 at 03:44:31AM -0400, Jamal Hadi Salim wrote:
->
-> ...
->
-> > diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
->
-> ...
->
-> > @@ -1712,18 +1738,24 @@ static struct cake_tin_data *cake_select_tin(st=
-ruct Qdisc *sch,
-> >       return &qd->tins[tin];
-> >  }
-> >
-> > -static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
-> > -                      struct sk_buff *skb, int flow_mode, int *qerr)
-> > +/* Run the optional external classifier. Returns true when the packet =
-was
-> > + * consumed by a terminal TC action (reason in *qerr); else *flow/*hos=
-t
->
-> FYI:
->
-> W=3D1 builds complain that the line above has a '/*' embedded in a commen=
-t.
-> This is likely why Sashiko NIPA didn't run for this series.
+Tianyi Gao <tianyi@cloudflare.com> writes:
 
-Thanks for catching this Simon. We don't run W=3D1 - already overwhelmed
-as it is with the flood. Do you think we should?
+> A veth device advertises NETDEV_XDP_ACT_NDO_XMIT only if its peer has an
+> XDP program attached or GRO enabled, that is, only if the peer will have
+> NAPI to receive the frames.
+>
+> veth_set_features() updates the peer's flag when GRO is toggled, but
+> returns early if the device is down, and veth_open() only refreshes the
+> flags of the device being opened. Toggling GRO while the device is down
+> therefore leaves the peer's flag stale after the device comes up.
+>
+> If GRO was enabled while down, the device comes up with NAPI but the
+> peer does not advertise NDO_XMIT, and devmap rejects redirects to the
+> peer with -EOPNOTSUPP. If GRO was disabled while down, the device comes
+> up without NAPI but the peer still advertises NDO_XMIT, so redirects are
+> accepted and then dropped in veth_xdp_xmit() with -ENXIO.
+>
+> Commit 7a6102aa6df0 ("veth: Update XDP feature set when bringing up
+> device") made veth_open() refresh the device's own flags. Refresh the
+> peer's flags there too. The peer's flag depends on this device's XDP
+> program and GRO setting, not on whether the peer is up, so it is
+> correct to set it even if the peer is down.
+>
+> Fixes: 8267fc71abb2 ("veth: take into account peer device for NETDEV_XDP_=
+ACT_NDO_XMIT xdp_features flag")
+> Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
 
-cheers,
-jamal
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-> ...
