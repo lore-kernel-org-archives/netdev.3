@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0558296BAF;
-	Wed,  7 Oct 2026 00:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956842A1BF;
+	Wed,  7 Oct 2026 00:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791333614; cv=none; b=I/OUCb7FkZ/oN9+b1EtPqKaMsEgfeelfPCinQPGhmVi42ogVLOYr/4dsIAore6/gVdf5mNFdZUMjoJgOriQiBjEojb7jjdlNJIvPHTp4PyKSwRX223+IXhbRnuwqC6+mmOLayGo0ecajAvOzOckBFaow73xEMpHwLHMsDgN5wy4=
+	t=1791334208; cv=none; b=VP04bLNlRvPrYjteIqATAGWDTtzjvlCxh5p78t6bCTzitUUBesSh/4XHMstY3EMDAbA2mmfXe0TEHQzT1Hn0aiV49yUYhf5cI1jjcsbRLiykEgIGvSXtDjSiwW9cQIESO4m1azqL+H6Mw50UXyD2kaPS6AS4OqzpcnzSvNLJTU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791333614; c=relaxed/simple;
-	bh=eKf9xsbTDbWvaU4egHpIPhvP0YzQX3RKRMqad0ZCFZw=;
+	s=arc-20240116; t=1791334208; c=relaxed/simple;
+	bh=5/jXB2pTOVdmgaZNXJkIYNmL3HlV//TPCiz/d0KW9d8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=I0oPE1on4eR8NQRTUpoM4toUDAMT1ga6V7/7qeBse+FQrA7oESuzwp7w6WbXDVL10A5+cMFoGGx5r1WoXdpNUVNpm82WCXijxChY0bFOsYShPXQEPJt8+L+rfUZ9UOwAGNtZQED6RJWWzUWLHTBQiPNa4K2XvOy9ZEbHVzL9Bz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBRLO4HW; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=eCMBBfd/TL5BkHPfit/gxc9PaFiGiNTghEkigHAiOy9DG6WB3nwZmlJgbdVeRzWhtd1K02En47O2Ykm+xhp5kscCirSThKnXcRh6ea45TBBh9SN8ERNegjl/TuX+zVj/SkpxYQqc0CJNS4nTTe3L/mlcktN8aTwUjMRDqv7PAoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eDns6IDJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBRLO4HW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065881F0089B;
-	Wed,  7 Oct 2026 00:40:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eDns6IDJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA4A1F0089C;
+	Wed,  7 Oct 2026 00:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791333613;
-	bh=uIfI3EKVVS67AtbGylghRcmwN8dPTKMq9dbk+JnPzKs=;
+	s=k20260515; t=1791334207;
+	bh=PcIFA4BP48kfw7mcjRNkpIPLNqDGoegboBr0PH1YYpc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=oBRLO4HWyP+G/cTB5p0l5szM6S+g5n4e04Z4h0WXYoxB5d43mcXooBAG6vu2xhUTt
-	 o/fa9eAtYciyvcE97+WuoZY4PA1YOsEPfzMzvfRiCldHnnqZaRqdzp4eFKWBnFfWJK
-	 HKiG/RkQBfre5rWrIKFQ4VmJfD4uTGHE+777gV2OBsV1x1dxHeGzBQbuWkU3FFTXr7
-	 se3teq9/X5EOAXk5oc1aKaI/xvh+2B87mn+5E8MSBXvXTW1mtAy7S1dhfWhV14B/9/
-	 UN1QgS2PH5cT45XZkJlIjH7RzrOMwkmMnHfK/dCqoTV3b1e5R6BX+7tXoTQ+4QYd8M
-	 fdAhmkB3ElgZg==
+	b=eDns6IDJB6CogwBhlNZ0/9NCn/JVHrNP5Z70yDGCJRaVraqVYqfxsDYaFcBu9xczZ
+	 Ne2ApcIXSgsQXbTrM70OMNA8h9FSFuWx+pxo/YiwvDKhYfwvTsbKYfMcKUbYWk1McY
+	 huduA1qL0uJfTAI/NrYM0hAAw5domLJqDdaJcQZp1nAN+Ff4xAqEFN7eMMHdpw3CIa
+	 2A8/hp3/XygesvgTL/JPqIqr+dmr4NlzBSLVZJVcpcW4Eiqj7GKNfvdd3GLWxenqQ3
+	 g+2ckd0PEhEFw0Op+mJjfIaPc5AsrrSRgCwWxv/jChxntQeXbikH5I3a42PFUpq5K1
+	 dAC8EhvifCilQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F13AB3806541;
-	Wed,  7 Oct 2026 00:40:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774B43806541;
+	Wed,  7 Oct 2026 00:50:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: devmem: use page_pool_put_netmem_bulk
+Subject: Re: [GIT PULL] bluetooth 2026-10-05
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179133361153.2844451.4477572064762956408.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 00:40:11 +0000
-References: <20261001224054.1525365-1-kaifengw@google.com>
-In-Reply-To: <20261001224054.1525365-1-kaifengw@google.com>
-To: Kaifeng Wang <kaifengw@google.com>
-Cc: netdev@vger.kernel.org, almasrymina@google.com, edumazet@google.com,
- kuniyu@google.com, pabeni@redhat.com, willemb@google.com,
- davem@davemloft.net, kuba@kernel.org, horms@kernel.org, sdf@fomichev.me,
- linux-kernel@vger.kernel.org
+ <179133420628.2847663.15335893484734356127.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Oct 2026 00:50:06 +0000
+References: <20261005194436.3594085-1-luiz.dentz@gmail.com>
+In-Reply-To: <20261005194436.3594085-1-luiz.dentz@gmail.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This pull request was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  1 Oct 2026 22:40:54 +0000 you wrote:
-> Instead of looping over napi_pp_put_page() and repeatedly acquiring the
-> page_pool producer lock in sock_devmem_dontneed(), use
-> page_pool_put_netmem_bulk() to return the netmem references in batches.
+On Mon,  5 Oct 2026 15:44:36 -0400 you wrote:
+> The following changes since commit 848a7a91c7f03675d3bd8db6f7721cbf9cb50e21:
 > 
-> This reduces the number of lock acquisitions on the page pool ring
-> producer lock when releasing user tokens.
+>   Bluetooth: hci_core: Serialize SCO and ISO scheduling with teardown (2026-09-28 11:00:20 -0400)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-10-05
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] net: devmem: use page_pool_put_netmem_bulk
-    https://git.kernel.org/netdev/net-next/c/388e1d3a179f
+  - [GIT,PULL] bluetooth 2026-10-05
+    https://git.kernel.org/netdev/net/c/c5c4e1701059
 
 You are awesome, thank you!
 -- 
