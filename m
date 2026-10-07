@@ -1,168 +1,235 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1855E1D5174
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 12:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791377616; cv=pass; b=Mb+p75NnKuj0i2jJgQbPXxbq9Fh8UjD3O8BAe9dktESRNZfkZPUcR5oMBxxQuYhmKlP1aGkipmk9YiS5gh32xGZl5e+ggLMLMwc9kzxMm3ISUfglD27ZZOWLMar0YaKJSAr5UhvWt6sp7AeCr+YEtBb2Os0Uib/3t/SHB1VBM4c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791377616; c=relaxed/simple;
-	bh=7o8IHTHMGS/voyHQzhmgvEE338B91PLKSiRWBKqVlo4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QWDC1REBiOUEpo6JUwPrVv1DwmUDJxvsNAWi/m5cdqaTDyBjsGSS0L5XH2x8omDc0Gj3Vs2qx8hZ45BDgMqgwKHm6UPLUvWIw2l1Drw5YtHcAqhJWdoTA2At4t9UCMIO9ArI/df3nHnOVoSCgsHPbEGZqZKbFP4PrGN19mLffYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PIxG2N49; arc=pass smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BEE3D47BF;
+	Wed,  7 Oct 2026 12:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791377623; cv=none; b=WM3s3C1UrTHldWpUwtODKgfW9QtKLtf7g3p5Hn6sKKUlq8XSJutKDHYocyEZcV9/uKcerW7H2Cpn9YX8GsaiaPxI/sHjMJsKDER91bd4XYjERT8WQALfHi9FtY7MorZp/uWLoZrfhtQs8UU2qURwZJWOqr0XYUBUEdzD5Xn6c2A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791377623; c=relaxed/simple;
+	bh=9cPNyRHGG2WmvFE7FD4D24TAmZAqJuJz5eqk8zSTrv8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FeROu8a+0msJF1dxyiq6O4iBimSUtRVAaDWKA33EYcQYovtS1RE4iPykHeL8qdgs2sJ3Hin+7mUPqCh98+Mr4jh8ka1Y+e0h8mpo1ZOva3TGkkuerG085nJ/2Z5+DHWaKylsJuT/Ro6hHJDNjIZov/CTewFyJWQ4+6JEopuNtco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=mFyUo4Iv; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PIxG2N49"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-ccc7a6070b4so911398a12.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 05:53:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791377608; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kmh9xMcWPL12YQjPHdaiAwVNgOq8zJZtHI76WG+YnFLNi4fI3GDcHrOB0xBXyZvt2w
-         06cSgEGy4pchc6d9MasSWi5dt1l9PfvncuNfpdQHT18PmbTNGcPk6Xk/MxjI4SrEyLQe
-         yJxlTF7fsrIF54jstA4+IQ4IPRj37RKDpPcU9QXMUcbjWRua8sUPhSCACDk1OFpXGZP+
-         Im+Xh7La1EkMGal60b/CaDZe5ovOEvWKCBlBTAGGKZWlYNVDQctZkCOrnmbe4C9tesN+
-         W2QWjok7tZ9YBG0u0aNFGbgmRUTaqyyo2KOab110lsFbkm+aFvToHlJz4IqaCUw9tCqZ
-         6ibw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bvmAYJ9uVcHWwdsdUVnTxzhHRQGok8mw2i6i7B3HO9M=;
-        fh=Zo2qOUpSN20g9EUblC4lmnAocDD2BZWLdFpMKDFUbaE=;
-        b=oPMdrqkkuFDAxM6mkOnNS0Sw1PduUd0EkMvsbnDEoiFoiCo3DEUiIbkjK4hpiQUU2i
-         6CbEP+dGCPa/doEuh1g9dDoM7r4SudVZApfKNQTG/yZsDkMMb2ODIR7/qocaLymtcZFf
-         oLB7HHGWg2rhUQPN483AZiOcd5ubaSvoRcogc35QAf/QZ6DqGacVcwSiud0DHmao07ne
-         etv4e+SuhQhxGa67cOskcmkYq4CzmZ529rKgZ9vdy4692+o6tR/HgprAEjMgqUQRxWga
-         3lWh3xXjvXsM2OknAAHkBGClpweUd5znTRkBZtAg/TE6BpifenWqU5KYVPz3W96NTa70
-         qoqQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791377608; x=1791982408; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bvmAYJ9uVcHWwdsdUVnTxzhHRQGok8mw2i6i7B3HO9M=;
-        b=PIxG2N49285eXSYCZn2gLCqbp8bjI59uxYeCx2TPVnB5M0DbL482ZZcECgaviONelM
-         eEEhQLo0LzSIvpd40MbL6Jq774G3ddQ5daIuSeyaEpVYvxNWS79+jgzJuP3Yzz7ZRcy0
-         gjYMa9CKknD99XA6mq5iOskjJ5jdMtDrd+OffKAvyWhWtX0yetE3KOIPYWs9hHJrqdTm
-         QHqUFyxtwgGT1J985bMrIsoyps/R08+1Jv4QJg17QJWFMrwWhc8IN68dGUIKCaQ8MDPy
-         47zjW2m1Ftde0iIMMJu2UyOdbFtZF4gza3fBOcFbFJlniC8WsAD9yqO1lDRyTdDqzpdb
-         4o3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791377608; x=1791982408;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bvmAYJ9uVcHWwdsdUVnTxzhHRQGok8mw2i6i7B3HO9M=;
-        b=H3PRGZWZj5wgIs1BggqQ/kLX1VsLks/qqvxIKxV3s9t8BtO40tIyD91NlPnXerc+VK
-         cLUec1FoVEy1dZ79l8FWwG0R+CA9RtbzLCgv9wC4W8JTvKDS7bF+WlKImMZmDwD13QPU
-         BMDbg5qc4QIy9WnvVo4Z70eqhDD219CicrWCk8rkDAFiTAfmaFoMqt7CFzuz3dOPhS7O
-         pDXK29Dl8KJG5B4L7ujfAiEQwntOeDZQ57JQHSeMiwzsW/Log0UQ8xY6AulXVU28NM5f
-         HnvHYgTPSte3IIQ+OcXrOAWPHErvmPWMYKLSLpL+cusFC+i3PNI0ASRtSG68XTPvGNRw
-         jxPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz8W/8xl1Gyy2/MfOjqiCRpCJOpLH0KIcIq5EadAax2gYnxCUjDFGaFl3+5yifNzeng7Mn9djM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kR1SAt9YWO9G/opZAp8EFSsJGerRs4guOIvpx36Qj1k6bV9qQj
-	KKYpkKMtYzz+4ZW2bkEBZ+a7ikFnqm/NtK1UdZ1RcQ+V3/rBVrrYX3yGs/0FrqtCeM0TapSBy5F
-	ugqJNGLcY2iK/8tWHtN2Cf3pyvOc0q3U=
-X-Gm-Gg: AYBFou3I4TTIH6mO6ANdoFO1TO5gsvF3lUOe7kQr1DzcyjpPYj93pgjt/itamFy7fK0
-	ke2a89BFLzEo+kxXC0q11fYTortSRxBwAKz1NNcF7W/nTaSnMGVQPYAJUSBpX+POZA54sBW3596
-	+WYxKZPt040dqBtiX4jw63hzxScO27DJwj7YIRVBejb2w7hxpjLoENQzVJo4saccqzuvQaBlQO3
-	k8qTlFTRRJBVG4u+qIFsX0EY/rzONzzJ4lEeEKqBXYUYfnoXHhfrqHKw/4e7IJlOiVBo/qgfkmZ
-	NngVepTymROv8z3PMPeicNNU0pFa7SYSyNkiVhRy4D5CB+yhJtBV/50dLU0NaL6b2VbAweGVbss
-	hqdVuWECdflGIVxa5K/qW78dn45e3nopI/SLus1HvPJjsmV7tJIR5+GD9HBUimDP2
-X-Received: by 2002:a05:6a21:394b:b0:3de:b0cc:b0ed with SMTP id
- adf61e73a8af0-3e134043d29mr1761808637.18.1791377608192; Wed, 07 Oct 2026
- 05:53:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="mFyUo4Iv"
+Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
+	by linux.microsoft.com (Postfix) with ESMTPSA id DC8CE20B7166;
+	Wed,  7 Oct 2026 05:52:36 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DC8CE20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791377558;
+	bh=pgXXnsxbosFwljyh+v9NmPF4yFb98y3x90Qgy6et6YA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mFyUo4IvqOg+G1TYdkFWFRcW2cgrsBhxgO5PLj8sXYeFF82tXzp4/vKeYEf/uRsn8
+	 TggdHiK8ylLWtpdLbZrQ00/hmDdsCyG0xPilTMyk9837cph/CmJvcQETH11A7xk0mH
+	 VkK5N8qxB4go+I4FnjwCuvoYQstRHBzTZL22O380=
+From: Wei Hu <weh@linux.microsoft.com>
+To: Long Li <longli@kernel.org>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Kees Cook <kees+treewide@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Manish Awasthi <mawasthi@linux.microsoft.com>,
+	Wei Hu <weh@microsoft.com>
+Subject: [PATCH net-next v6 0/4] net: mana: concurrent HWC requests and dynamic queue depth
+Date: Wed,  7 Oct 2026 12:53:26 +0000
+Message-ID: <cover.1790665894.git.weh@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261007095128.1370109-1-benquike@gmail.com>
-In-Reply-To: <20261007095128.1370109-1-benquike@gmail.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Wed, 7 Oct 2026 08:53:16 -0400
-X-Gm-Features: AclHuK_HAnf8AxibDk4DcYXebRklfeO2nu44MIRw5S2vZVI5Uo2hAuf7krbvADw
-Message-ID: <CADvbK_dOXrS+3JnqmRyssAJQ0v+WLig-i8Nk-M65Qg51AtskvA@mail.gmail.com>
-Subject: Re: [PATCH net v3] sctp: copy zeroed stats to user in
- sctp_getsockopt_pr_streamstatus() when !streamoute
-To: Hui Peng <benquike@gmail.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vlad Yasevich <vyasevich@gmail.com>, 
-	Neil Horman <nhorman@tuxdriver.com>, Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, 
-	netdev@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 7, 2026 at 5:51=E2=80=AFAM Hui Peng <benquike@gmail.com> wrote:
->
-> When an SCTP stream output extension structure (streamoute) has not yet
-> been allocated, sctp_getsockopt_pr_streamstatus() sets the local stack
-> variables params.sprstat_abandoned_unsent =3D 0 and
-> params.sprstat_abandoned_sent =3D 0, but then immediately jumps to 'out:'=
-,
-> bypassing copy_to_user(). As a result, when an uninitialized user buffer
-> is passed to getsockopt(SCTP_PR_STREAM_STATUS), the kernel returns
-> success (0) without copying the zeroed stats back to user space, leaving
-> uninitialized data in the user buffer.
->
-> Refactor the !streamoute check into an if-else chain so that when
-> streamoute is NULL, params is zeroed and falls through to copy_to_user(),
-> copying the zeroed stats to user space and setting retval =3D 0 once befo=
-re
-> returning.
->
-> Tested in QEMU against Linux 7.3.0-rc3 using an uninitialized
-> sctp_prstatus user struct passed to getsockopt(SCTP_PR_STREAM_STATUS) on =
-a
-> freshly created stream: on the unfixed kernel the user struct contains
-> uninitialized stack garbage; whereas with this fix applied, getsockopt()
-> copies zeroed stats into user space and returns 0.
->
-> Fixes: f952be79cebd ("sctp: introduce struct sctp_stream_out_ext")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Xin Long <lucien.xin@gmail.com>
-> Assisted-by: LLM
-> Signed-off-by: Hui Peng <benquike@gmail.com>
-> ---
-> Changes in v3:
-> - Re-target subject tag from [PATCH net-next v2] to [PATCH net v3].
-> - Fix Fixes: tag SHA to f952be79cebd ("sctp: introduce struct sctp_stream=
-_out_ext")
->   as suggested by Simon Horman and Xin Long.
->
-> Changes in v2:
-> - Re-target subject tag to [PATCH net-next v2].
-> - Remove redundant retval =3D 0 assignment in !streamoute block and fall
->   through to copy_to_user() as suggested by Paolo Abeni and Xin Long.
->
->  net/sctp/socket.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
->
-> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-> index a2235905d2ee..bc5b78ab589a 100644
-> --- a/net/sctp/socket.c
-> +++ b/net/sctp/socket.c
-> @@ -7568,9 +7568,5 @@ static int sctp_getsockopt_pr_streamstatus(struct s=
-ock *sk, int len,
->         if (!streamoute) {
->                 params.sprstat_abandoned_unsent =3D 0;
->                 params.sprstat_abandoned_sent =3D 0;
-> -               retval =3D 0;
-> -               goto out;
-> -       } else if (policy =3D=3D SCTP_PR_SCTP_ALL) {
-> +       } else if (policy =3D=3D SCTP_PR_SCTP_ALL) {
->                 params.sprstat_abandoned_unsent =3D 0;
->                 params.sprstat_abandoned_sent =3D 0;
-> --
-> 2.47.3
-V2 is already applied by netdev maintainer with the Fixes tag fixed.
+This series picks up Long Li's v5 MANA Hardware Channel (HWC) work,
+addresses its review findings, and retains its four-patch feature lineage.
+Safety changes required by concurrency and repeated HWC reinitialization
+are folded into the patch which owns each behavior rather than posted as a
+separate fixes series.
 
-We can drop this one now.
+I have taken over follow-up upstreaming from Long. Long remains the author
+of every patch, his existing sign-off is preserved, and I added mine for
+the changes and submission custody.
 
-Thanks.
+Patch 1 prepares HWC ownership for safe reinitialization. It serializes
+complete shared-memory transactions, tracks possible PF ownership,
+retains mappings after an unacknowledged destroy, fences the HWC EQ before
+releasing CQ state, and safely publishes and withdraws the HWC CQ table.
+
+Patch 2 gives each slot independent completion state, withdraws caller
+storage before sender return, handles the response-versus-timeout race,
+and prevents depth-one slot reuse after a genuine timeout.
+
+Patch 3 adds concurrent requests with bounded admission, serialized SQ
+posting, separate sender/response ownership, stale-response quarantine,
+coherent timeout updates, private setup publication, and sender draining.
+
+Patch 4 rebuilds the depth-one bootstrap queues at validated depths from 2
+through 128. It validates both reports, message limits and doorbells,
+keeps the untouched bootstrap channel for depth one or reports above 128,
+and restores fresh bootstrap queues after a failed rebuild only when
+teardown was acknowledged.
+
+Generic Ethernet/RDMA CQ callback refcounting and generic service-work
+versus device-lifecycle serialization are independent pre-existing work
+and are intentionally excluded. Malformed-RX handling, duplicate-success
+correlation, and broad device-controlled allocation/timeout policy caps
+also remain separate follow-ups.
+
+Changes in v6 (v5 -> v6):
+ - Keep the four-patch v5 structure while folding review-required HWC
+   ownership, teardown, timeout, publication and fallback safety into
+   their owning feature patches.
+ - Serialize complete ESTABLISH_HWC and DESTROY_HWC shared-memory
+   transactions. Record possible PF ownership before MMIO submission and
+   clear it only after DESTROY_HWC is acknowledged.
+ - Retain PF-visible queues after an indeterminate destroy. Fence the
+   dedicated HWC EQ and withdraw its CQ from dispatch without freeing the
+   mappings, then retry teardown before assigning fresh queues.
+ - Destroy the HWC EQ before CQ and completion state. Release-publish the
+   CQ table and wait for IRQ-side RCU readers before freeing it, without
+   adding per-completion refcount operations.
+ - Withdraw the caller's response buffer before return and quarantine a
+   timed-out slot until its late response arrives or teardown cancels it.
+ - Return -EBUSY for healthy slot pressure and reserve -ETIMEDOUT for an
+   admitted request which receives no response.
+ - Publish slots under the inflight lock, protect response state with the
+   per-slot lock, and retain sender/response references until both sides
+   finish.
+ - Synchronize hwc_timeout updates and publish the HWC only after queues,
+   admission state, caller contexts and the direct EQ test are ready.
+ - Replace the goto-heavy request and channel-creation flows called out in
+   review with focused admission, submission, wait, build, validation,
+   rebuild and fallback helpers.
+ - Treat reported depth as a maximum: rebuild exactly for 2 through 128,
+   retain untouched bootstrap queues for 1 or above 128, and require the
+   rebuilt report to repeat the selected depth.
+ - Enforce directional request/response maxima against both the report
+   and allocated buffers. Rebuild only for exact 4096-byte reports while
+   permitting bootstrap operation for other nonzero maxima.
+ - Validate BAR page geometry and every stored doorbell. Invalidate the
+   old HWC doorbell before re-establishment and suppress MMIO while the
+   invalid sentinel is present, without adding full validation to each
+   data-path doorbell ring.
+ - Remove the proposed capability bit because driver-version
+   advertisement occurs after HWC establishment and cannot negotiate
+   creation-time behavior.
+ - Preserve current net-next behavior which always uses the
+   hardware-reported dest_vrq_id and dest_vrcq_id.
+
+Changes in v5 (v4 -> v5):
+ - Shortened comments and documented the existing error paths in patches
+   1 and 2.
+ - Rejected apparent success from a response accepted before request
+   submission.
+ - Guarded CQ unpublication when establishment failed before cq_table
+   allocation.
+ - Required successful retry teardown before creating fresh bootstrap
+   queues after an initial destroy failure.
+
+Changes in v4 (return to net-next after the v3 split):
+ - Reworked the feature series into four standalone patches for handover,
+   per-slot completion state, concurrency and dynamic depth.
+ - Added bounded admission, guarded sender accounting, timeout quarantine,
+   queue-depth bounds, message-buffer sizing and rebuild validation.
+ - Reset routing IDs for each establish and rejected a missing doorbell.
+
+Changes in v3 (v2 -> net v3, historical fixes-only posting):
+ - Split the combined series after maintainer feedback, posting fixes to
+   net and deferring concurrency and dynamic depth.
+ - Added response-buffer withdrawal and stale-response handling.
+ - Removed pcie_flr() teardown fallback and retained resources after an
+   unacknowledged destroy.
+
+Changes in v2 (v1 -> v2):
+ - Bounds-checked the SGE pointer derived from inline OOB size.
+ - Protected active-sender accounting and drained senders during
+   teardown and failure exits.
+ - Rebased on net-next e354f7d60f14.
+
+v1:
+ - Combined CQ-table lifetime, queue sizing, RX validation, teardown,
+   concurrent-request and dynamic-depth work in seven patches.
+
+Validation:
+ - All four patches pass diff-check and strict checkpatch.
+ - Every patch passes targeted GCC 13 and Clang 18 W=1 MANA
+   Ethernet/RDMA builds on base c66d93e68728.
+ - Sparse and Smatch add no diagnostics over that current-base baseline.
+ - Release kernel 7.3.0-rc4-mana-hwc-v6-4p-g7065a269bba5 booted via
+   one-time GRUB entries on two Azure MANA VMs.
+ - Each VM passed 32-worker control stress, queue resizing from 8 to 4
+   and back, MTU/link changes, three standalone PCI remove/rescan cycles,
+   and two further cycles while control queries ran concurrently.
+ - MANA rebound, peer connectivity recovered, and both RDMA links
+   returned ACTIVE after every cycle. No new MANA error, timeout, warning,
+   UAF, refcount, RCU, lockdep, KASAN or KCSAN report appeared.
+ - Fresh safe-kernel and four-patch 16-stream TCP receive throughput was
+   24.338 and 24.337 Gbit/s respectively. Concurrent control stress
+   measured 24.339 Gbit/s.
+ - Four-stream 64-byte UDP sustained the requested 399.986 Mbit/s on both
+   kernels; loss was 0.812% on the fresh safe baseline and 0.041% on the
+   four-patch kernel.
+ - RDMA devices and links remained active. ib_write_bw reproduced the
+   environment baseline status 21 / syndrome 0x1c6.
+ - The request, timeout, rebuild, fallback, message-limit and shared-
+   memory state machines are unchanged from the previously injected
+   depth/message/doorbell/destroy/response fault tests. Fresh runtime
+   additionally exercised the new HWC-specific CQ publication path.
+ - Both VMs were finally rebooted to the known-good
+   7.3.0-rc5-mana-vmtest-g72d3fcf802c4 kernel with the safe saved_entry,
+   empty next_entry, active MANA/RDMA and a 24.347 Gbit/s smoke test.
+
+v5:
+https://lore.kernel.org/all/20260908035201.402424-1-longli@microsoft.com/
+v4:
+https://lore.kernel.org/all/20260901200018.3194525-1-longli@microsoft.com/
+v3:
+https://lore.kernel.org/all/20260803234355.636038-1-longli@microsoft.com/
+v2:
+https://lore.kernel.org/all/20260721234339.1476932-1-longli@microsoft.com/
+v1:
+https://lore.kernel.org/all/20260715032942.3945317-1-longli@microsoft.com/
+
+Long Li (4):
+  net: mana: prepare HWC ownership for safe reinitialization
+  net: mana: give each HWC message slot its own completion state
+  net: mana: support concurrent HWC requests
+  net: mana: add dynamic HWC queue depth with reinit path
+
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 129 ++-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 928 +++++++++++++++---
+ .../net/ethernet/microsoft/mana/shm_channel.c |  58 +-
+ include/net/mana/gdma.h                       |  14 +
+ include/net/mana/hw_channel.h                 |  56 +-
+ include/net/mana/shm_channel.h                |  10 +-
+ 6 files changed, 1000 insertions(+), 195 deletions(-)
+
+
+base-commit: c66d93e68728cfb5f40b40d0f24129d7768faf43
+-- 
+2.43.0
