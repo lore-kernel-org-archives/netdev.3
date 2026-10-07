@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87916192B75;
-	Wed,  7 Oct 2026 01:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90833242B2;
+	Wed,  7 Oct 2026 01:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791334809; cv=none; b=gTdT8+OXz2WYJwrVFfltTdTUUQKgl8HQLdWK3W51N4rSh1rdl2hJM4bDpGeJyAHK9Y1znWkUQIA3AIVFX4tl91aq+OcXpaf+ZR+OW8srCXdQY/3xHyPRy+fhE5XT6spu0GJ8sjDPvaYWp6BuyJR6udizRjRtrDh6TExcNBaxIi4=
+	t=1791334810; cv=none; b=GnHuOFdlgzeDSrxqgNvU+ZN0+jIuBXpnAE1GtRNFeFdtmSNofnFacYGGRfWvuJ+v8Rlntwu0uueqP/uFoXr8jTGYiEMNevkGUWeji5MDZ3tClE9PcgOfBG8eLhNf3pAqeKAATuE4EB8qnivqpw/GWV7dK5rVYuJJ18XS/9dCvz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791334809; c=relaxed/simple;
-	bh=JUA5xsbq0QK/OZqJfUOvPB03AgParYJpaWlgnS2iyjE=;
+	s=arc-20240116; t=1791334810; c=relaxed/simple;
+	bh=D+xBKRIaENSbRFifckQwzLmJ5l2aAjZ0NW6cWBKSG3Q=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=DsTJufhIGS0lFB/EOGE9LkMQUZxTBD5yQrojRzStZcgB9hJNuMo/HJi6PWNroJ/iHRPf012Wwus9CG0s8M/wjMgkwvtpeUNtUz0mVmMjaRWmOg2nvElqIgGttZLCEG+PN8y5ucbGlQqFWfph1i1L5ZlRYD+vi3gv7JEfRjvP1OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9B7hgzg; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=hoRPGUgDiDbpRksRwsDqv3fGlBh/A5YNbhwr5ujt5TMbWPqT6Ke2dLfXQxfC3gI3tuNwqqwx2w1UeID10N9guAED4EpF6OVi5msIc833hx5KsBco9TkumbmFB7aT9m3J/ZTnD23CVCEjvy8ayI1LSY1c6/L92NRn31B0+ffuLpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyL5FY7m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9B7hgzg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064781F0089B;
-	Wed,  7 Oct 2026 01:00:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyL5FY7m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837E31F0089C;
+	Wed,  7 Oct 2026 01:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791334808;
-	bh=WgyeKo20gE9PIwcT9MRnf9cAGj+iWAor5gvBCeDjRVk=;
+	s=k20260515; t=1791334809;
+	bh=Yx/wstz8ZIVYVV4REYd9UpnZaMvU8O3AS3Fzl9EAhZU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=k9B7hgzg58n1e7UHZohDkva59A5B+UnIIeqsOd+zMCI5ow4o8r6zigrbrxmQKwt36
-	 WlsHtJjUDibp/kCX6hkCwbc5rBbz1YXjMJBG7kNJ+av8MMW5MkJRLmFAEdG2oho4Jn
-	 Ulyl4f3RYAyZHQ2zZrDHX0SMzhDA8d3S4X8k+1FNtZoHfmH6inU9F+/Jtj38P95UcK
-	 dkH4r2mXYlGBvK6IQizByXIPWEAkzzmBOEpChNTE1rFvJRm5obfWUmPhEzP6lhr+vd
-	 Y14v6MQR18ZP2/5GU5kYBpvsQ2r//T848BqMrbip/+FAoj03fSnD0M3fS0AhZHWYI5
-	 Fl/Z9b15rTXVQ==
+	b=HyL5FY7myZ4jIpZ9uspML0sJQPLLRBvkdt/9xAHdDxryZAuVqX9b6OGqBLZtWni/5
+	 MrHpcc5BF5uWbBUE5phWejZDe3Ru+xRqtQ4AR8ETmnv8BgH/3FZLph76OxNzLzkmwl
+	 fu2bpQzzEpREnGt+FKhgWiVe7bwdH7OsaOM/nhqujcN34XuqmLkMVy1ImjCAQXwwxm
+	 euabTLH5E1YpoEPozE9pgVSytGf+Xrrf2NkOOzS+o5kTOjCkhDQ/iMpw2lxqN5mvAO
+	 RY4mbM/6oLMIpJHKItpSaO/TJw4OcrbCWCJVVHNmKIgpkjiXKLC9HzSMdV1w4jDuK5
+	 KDZ1HeuCzc/hA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F138E3806541;
-	Wed,  7 Oct 2026 01:00:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773173806541;
+	Wed,  7 Oct 2026 01:00:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3 0/3] net: dsa: qca8k: fix MDIO error handling
+Subject: Re: [PATCH net-next v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179133480677.2850681.12615149653260744241.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 01:00:06 +0000
-References: <20261003172405.342-1-yongzhao.derek@gmail.com>
-In-Reply-To: <20261003172405.342-1-yongzhao.derek@gmail.com>
-To: Yongzhao Chen <yongzhao.derek@gmail.com>
-Cc: netdev@vger.kernel.org, ansuelsmth@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, john@phrozen.org, linux-kernel@vger.kernel.org
+ <179133480802.2850681.15148271717862694854.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Oct 2026 01:00:08 +0000
+References: <20261004174739.36179-1-umangpokhriyall@gmail.com>
+In-Reply-To: <20261004174739.36179-1-umangpokhriyall@gmail.com>
+To: Umang Pokhriyal <umangpokhriyall@gmail.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat,  3 Oct 2026 19:24:01 +0200 you wrote:
-> This series fixes qca8k MDIO error-handling bugs found by code
-> inspection and the Sashiko review of v1 [1]. I am not aware of reports
-> of actual MDIO failures, so v3 targets net-next without Fixes tags, as
-> Andrew requested [2].
+On Sun,  4 Oct 2026 23:17:38 +0530 you wrote:
+> tun sets IFF_DETACH_QUEUE in the flags returned by TUNGETIFF when the
+> queue is detached, since commit 3d407a80b62f ("tun: Report whether the
+> queue is attached or not"). tap does not, so userspace cannot tell a
+> detached macvtap or ipvtap queue from an attached one.
 > 
-> The patches propagate register and PHY access errors, skip MASTER_EN
-> cleanup after a failed page select, invalidate the uncertain page cache,
-> and return management Ethernet busy-wait errors so MDIO fallback can run.
-> They apply directly to net-next; the separate qca8k MTU series depends on
-> the write-error propagation provided here.
+> Cloud Hypervisor ran into this when checking queue state on macvtap.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3,1/3] net: dsa: qca8k: propagate MDIO errors
-    https://git.kernel.org/netdev/net-next/c/d11306ac2689
-  - [net-next,v3,2/3] net: dsa: qca8k: do not clear MASTER_EN after a failed page select
-    https://git.kernel.org/netdev/net-next/c/2fc23f832e30
-  - [net-next,v3,3/3] net: dsa: qca8k: fail mgmt Ethernet MDIO access on busy wait errors
-    https://git.kernel.org/netdev/net-next/c/fe0811dd1a33
+  - [net-next,v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
+    https://git.kernel.org/netdev/net-next/c/60b5268444a1
 
 You are awesome, thank you!
 -- 
