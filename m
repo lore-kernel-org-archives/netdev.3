@@ -1,211 +1,163 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8343B3502A7
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 01:43:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791337429; cv=pass; b=clO48XUOBsTRe5Crcr/steuOaEATVagEl5KMj/kmOCb235f47wByyVc0VdS/GClGc1NQnHr45CbJNnm41tiqykI+8rZGkuaomcNngIY+O5ZHZxVNvftYe/5ADusS2aEttBgrOg9tPX09+BAv6PlM+uszcp1O5Ds9B8B+sg/4g4Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791337429; c=relaxed/simple;
-	bh=MBWdR1GxlvvVqaEyNujZIDbcJb/clAS5HIycWC0LYf4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cj8yTO5CBYS7nrvwsUKaz6WaDrwtxnVOuB4yu4B3B1ZlttBEa6g0JtoDDid4oLom27q04FD54u1oja7NS8Zq+zxVMMtwW08FHY5s7S/Jcz0ZEdHJQiqy6LTEONCW7e7sck6aEI78X+4AMygksIVLwsXPHwnQAgPUZoRj/VI92Rw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=VIy4kl8K; arc=pass smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2D21A3029
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 01:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791337694; cv=none; b=apPpoGWdLZxSsrOWtsqcQQXcUxFByenNT+bys3uA84Dsh5iCaiqcmz+0VZLaBGbTARL2zXVP81JhwKaIZrb64og+PuOnOtdXpUiGTcwAFxrLgz+2DQQkjUeH/m5E2cYtpn4CNg0XKWGqvuk2JjKyWE8oF3VpPsNs69kPbtl/a8M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791337694; c=relaxed/simple;
+	bh=f91kVa1SnteaYVPhRYgPS0d0Msq8i52Kp/zORt7FXgw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pzoV+Acv0FE4aomS7WP0mbfHmIqokLz7bIBBf0VVb6LbcPNQhlKRr/Ji1b6Z8kA3GynjCrp6gNYBXh0bIPv0CM/PHkZ+eVg42yfjuj1OmuePZu3kQyyUKbbuqwlkvYDNveQrOTVN9hN7TvoMhBBDN8tmeqSf6hcSenfkhTki+gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Twbw23fF; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="VIy4kl8K"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso15453915e9.0
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 18:43:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791337426; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SMiBxoVDIEbqUUq3NlKRuWahm3DyV3111d7lnY69D722Uf7I6NUqxqKLqUxmzF0aQT
-         24+P0y2Z2euOfVJHnOU0xZPUR4JFescsB5cgRhxkasAvrKdM33EjrxmdpGTTxL0FGJ07
-         jRtvOuwOoNYrGHD0E5EsXr9OHTp47FMVreCFRv5Rcw+73923BVii6FlwfyzL8quWc4bE
-         +Wjv/vvakxVgtZOFQio/3MjoV6g/zOCvA6BMNvdNm7k6SPXj/ejYlLuOLro+ndULM8Sz
-         l+mzpJaNPJ7nfmUNg9NqcLIIuVTo4byuOSai7f6QUnohisGW0sbGCVwv75U9M9xWHe9M
-         xptA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Z2R0isuQWmYfjmDBBvPENUql08JMDQxxwrQkmjzWgTc=;
-        fh=0Z6DA0bp0dRNTLFsg/QoA7ysMvN4y38kEuuW+sDIJlA=;
-        b=gXhM1C1k4OePf5VGL+IOalR3M1+ShQMhVW8MLcCEbRlQSXS809VfzJeW1pvFTtpvwI
-         iRRorvZwSkKF/dZfpuxxIMqawRIHc2946ngagIytDlh9yTZMBb/8dWhVcE1MkR19iRP8
-         xNDR4hxiQOYepm6MzTUeFp1Axck0oRlA3Xe4MjTvYgSVQoRcZv2mE3yNVpPAzHUbu/bH
-         scftM734nESvwmJZNIGsRpnFqE0UpUIKuJf28Uarst+xy0UVWp5RuFIppEfxYq+NiMQH
-         iwkGt7QxEP/kqamyKjFul3P5Duxzf5mIfI33J1kUS+YrzaeUlCjJpQ8PCMxQuqOMvx5b
-         Altg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Twbw23fF"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3a4a7eb86a4so1064948a91.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 18:48:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=octane.security; s=google; t=1791337426; x=1791942226; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Z2R0isuQWmYfjmDBBvPENUql08JMDQxxwrQkmjzWgTc=;
-        b=VIy4kl8K9nyYoJ4xTaIvuOA3XJmxtego6NP/Ovxz2YwHq14dsATF9Xh4SapdlJs+CQ
-         /x09sWIL4C0wt3+QbNVyKeMrZziS2GNd/ysyZG87MI5kC/yRzi477L5C3V6tCTwvleye
-         X+wb+N2Ala64VzrjYlOCm+rToIPHHRhctloxc93rgGhabklyurVXeah5ZJpfg8l0nPJY
-         y+h8I8t51fp8wJj4dhBV8CVjtPZQY3YUeChHLeJ0q2KDG+3fxuM5qyyyUnwuxJuHSGOF
-         wAbWM7BiabaQjuWnhDnfVcBuoDGOcBr7PSdFMjFFtxU0cQbfZjEH0tUhAqAbrM4TPksA
-         9sew==
+        d=gmail.com; s=20251104; t=1791337692; x=1791942492; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sG3CdAIWHpBKyehkdlkkQ/ER3qu8k3On1q5+xe+2nI0=;
+        b=Twbw23fFXO7VtbsyuIYvBvMhSCBSB4ZFtZooQkBDMR2m04CQW6v8x3YFECZ/pjSOtd
+         UKSZrW8Ub8o6tql6x24eUiEX2ZZTU8m3+v6k0405QR7hDLk49V/VuADLbf/rwVi5z/Gt
+         wDjCA2LWBOTuynmQCdK6jdtIySAUasGAUi1MU8c6zu3B7wkSFIUdODdQYrZ4cFF23/Vv
+         utLrPzXPhDmK5IIUfr1HbcIGb4QV2EY18nwSiadnnzdJ10A3js+de6LQ0QIa5zTZGfoi
+         vI29h6xtUJz9RWdNVrl76WKp0PnZKevBTjxvT7pfC/DPYikfLBp2Z6e3KzRaREo2Wd/9
+         e0BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791337426; x=1791942226;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Z2R0isuQWmYfjmDBBvPENUql08JMDQxxwrQkmjzWgTc=;
-        b=tkymVFn8AwgVBigCppE+tGKhV6H9qleCHt6M5juw4g8EztQ9CPfO1Y1XDEVMC9jR/m
-         ooy5fNukibIl9icu6KPb8X2b5HXsGaFMJfpKsa+y5nE7BdncGP/LUuB706Jwci9eOnBM
-         PYp5h07wRb18Bf/B+2f+KxQ137Ytw++EI0l8tM3+CWKdVta4Jta+cJKJVgOdRjxew5Hi
-         N3rTF0LhhvJW/bi1rC7fJvzikrpE3CNBgpMlmEWvqM3MZceAxFuycYsCaSpt6N5dOoLB
-         zn6nBOaEhH92s0BiqC0kZm23lgCcZpFvyVqqhtd7Rrv25Rvcu7KPdC9TS7oJcIFX0Zr0
-         6viA==
-X-Gm-Message-State: AFuF++kmXM4bjGTaBMEv2inzNvFLTy+m1FUy6IDKqh35VZ5ORyrIcDOC
-	yKbeqB24TqY9jGbYnSo1mwm5xmJH01UhwxQaHFlybMVe7wafINolWwfTNXnYUzBCvNkOiMj362Y
-	kUgrrzppdomITEl4h1dM/C93/mEiUN2vCzDqE2DF+ZA==
-X-Gm-Gg: AYBFou3WMlFN+w17F3PQKJ4k9mKGPYIaIBfvhTLP2JZ2ijgfnpT/lmLShKgL4g1kOTy
-	viJJfFwfs+Cz3beurllvgNcyoO1WFkIX/TUSGKpi5I4I5n4ZuZIHqnRPxlfXymDVW7vfVYVEkYK
-	dNh7Iu2LR31hvzL2pVJXBD2k4L4mqRKbu5I/OCdvprtIlGezO9M6hBa9JQ7tGC35UFfPzodGmSe
-	h7e7/4wDzilcWl8IAp9ax2bufbnuJFxPNSpK2qbtZzKdx0vfI+rIp3c4dppRxIQmzunoHtjqcXk
-	HXcwQUReCWUp5SWHpHOp37gytYsSMgXvv/s+TOTPXJWrQKUKJL1w/YGreH98kiyU+vcYpoPAwL6
-	z85iTRTB7BJWG8DLz4XgyT/ECbiLfY1jP9TyuR+m8Jjo=
-X-Received: by 2002:a05:600c:3f0b:b0:4a0:ec5:46d9 with SMTP id
- 5b1f17b1804b1-4a180080187mr8701305e9.0.1791337425901; Tue, 06 Oct 2026
- 18:43:45 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791337692; x=1791942492;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sG3CdAIWHpBKyehkdlkkQ/ER3qu8k3On1q5+xe+2nI0=;
+        b=GKUPqMhuEfyQ9xAjI/b+lcI8SkhfAmf8Cvtvyt6DzVjZ20Plon44Erl6FIZC5tkwr8
+         Kuf5+VcmvP8ce5DUZgJT4QduOM5Myo2t0ZzvwNPbXyyxZvPpPqzXrFwiGQuSt156+U+u
+         Cp4rkaa5Vv1dUo2hWY9uIuHyGYLRDC97cdw2tRycMq5oRWj0yqzsBr4Wl0e8dOskeG4o
+         /tuZGkyprt7HvnfyJN8a2214aYd5hATBhNm4W9qaNKr8nD2mHr2WUlDRanE1n01nRBmL
+         /TNCsaeN7m6YagfZmBW/WInC93r4wge+mR0pEXAB7KdkBrEDLQxhtVLzAj5zHeWipKaO
+         FlBA==
+X-Forwarded-Encrypted: i=1; AKwUvBy9yxy8nteEu5pEkPW0/hoM4qa0/TxxI3XVQxOVeTx5ukwF3koYb8+CR6Oi4882fB84Z6OfKuI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIxpDpUN7cWzvYB0RZWemGPHxT4FRu9FyFZ1t+25w+HKn93WKFl
+	ZyKx70Vcz1gHGalmxm0S2iyE/R3NZxpvLGsHDK5d1Y440OKfGDNdwLeILFHNkvPv
+X-Gm-Gg: AYBFou1crp8aWPlb3NGaeWhyA303AihLomohC7LLsCbJAZ54wqyXq5uRR5wXszTbxq6
+	TSK1axQeY1NT/d4A98VsJrJsbJD2YpBnE9APLpgfpqP1FupvKfZlMETQYs8H//5IsYQkxeoHFVx
+	lsBJSsgNVpo30mWlJxarg2dHAbr0UafNK5XRbCwRSYkuWDQGPsj+8cWdpOQUrl4gW7Z8NqcZpxb
+	o+c30/1mHsSprcb28SbfTtzIOSKOiYQiGH57STmvuTUxyWUzgRPW8qBt0Wtk+AJpZm/o7jqMBVY
+	IEOAoxuCNSFCR4613JwIi1593rEvWgoDkAFloM2B229Neadd5Nm0+ul4SMO01KdxFXwtNu0t3bR
+	CoFTmJwTq4ykNwRCU1kCU39zjfob+q9PBHD7y2Z5BoY00w3YCmgEbRqxwy0kAT2qgEHbI2SiIes
+	LP6kw8B4WsoPN7HANm9pRAWvo4NWlBPgFL0DYGwK12E0OTrgi8nR/8va5PsXu7R3Kny2xamrH72
+	tdzxrL+TBs=
+X-Received: by 2002:a17:90b:134c:b0:3a4:ef4a:4f12 with SMTP id 98e67ed59e1d1-3a8a1c12ec1mr592405a91.61.1791337691999;
+        Tue, 06 Oct 2026 18:48:11 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a8a5f778fasm442161a91.3.2026.10.06.18.48.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 18:48:11 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: pablo@netfilter.org,
+	fw@strlen.de
+Cc: phil@nwl.cc,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	4ncienth@gmail.com
+Subject: [PATCH net v3] netfilter: conntrack: avoid recursive master destruction
+Date: Wed,  7 Oct 2026 10:48:02 +0900
+Message-ID: <20261007014802.2615503-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261006125720.81227-1-shubham@octane.security> <661e8b900c97d701382af26462bead7277eaa41f.camel@kernel.org>
-In-Reply-To: <661e8b900c97d701382af26462bead7277eaa41f.camel@kernel.org>
-From: Shubham Antil <shubham@octane.security>
-Date: Wed, 7 Oct 2026 07:13:34 +0530
-X-Gm-Features: AclHuK8z21OahSGKxZJkHHl4QwGCa6UFLpgcI58u5NRwTzLJWRTQgLKYVsOlN_Y
-Message-ID: <CAEBzjKEFZdKWHa5puYH6dKvaesCf-KGmZ+Z=fFECRi_0PhiY_A@mail.gmail.com>
-Subject: Re: [PATCH net] net/rds: ib: drop fragments shorter than the
- header-declared length
-To: Allison Henderson <achender@kernel.org>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, Giovanni Vignone <gio@octane.security>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Allison,
+A conntrack holds a reference to its master. Userspace can build an
+unbounded acyclic chain through ctnetlink. Expectation producers can do the
+same: an nft ct expectation can attach its helper to an unconfirmed
+expected child and arm the next expectation with that child as master. The
+H.323 Q.931 helper can also propagate itself through call-forwarding
+expectations.
 
-Thanks very much =E2=80=94 I'll carry your Reviewed-by on the next revision=
-:
+When only child-held references remain, destroying the leaf calls
+nf_ct_put() on its master. If that was the final reference, nf_ct_put()
+recurses into nf_ct_destroy(). Repeating this at each level exhausts the
+task stack and panics.
 
-Reviewed-by: Allison Henderson <achender@kernel.org>
+Nested expectations are existing helper semantics, and CTA_TUPLE_MASTER
+was introduced for conntrackd state replication. Avoid per-producer
+restrictions. Decrement the master's refcount directly, then free the
+current conntrack. If the refcount reached zero, continue destroying the
+master in the same invocation. This preserves existing constructors while
+bounding stack use.
 
-And no objection at all to crediting the earlier private report:
+Fixes: 5faa1f4cb5a1 ("[NETFILTER]: nf_conntrack_netlink: add support to related connections")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/179127347858.434549.11821822167265441355@kernel.org
+Assisted-by: LLM
+Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
+---
+v3:
+- restore iterative destruction after Sashiko identified nft expectation
+  paths that bypass v2
+- document conntrackd compatibility and expectation producers
+- do not carry Florian's v2 Reviewed-by to the changed patch
+v2: https://patch.msgid.link/20261002165601.1754467-1-4ncienth@gmail.com
+- replace v1 with ctnetlink entry-point restrictions
+v1: https://patch.msgid.link/20261001180224.1018290-1-4ncienth@gmail.com
 
-Reported-by: sungbyeongchan <tjdqudcks0424@naver.com>
+The source reproducer remains available privately on request. V3 has the same
+code and stable patch-id 033ffbf1094d as v1. Code-identical earlier net and
+exact v6.12.105 6,000-entry userns runs reclaimed every conntrack without a
+crash marker. On fresh net 0984ebc63179, nf_conntrack_core.o builds W=1 clean.
+The patch applies to current net, Torvalds, net-next, linux-next, v7.3-rc5 and
+v6.12.105. Strict checkpatch is clean. allyesconfig and allmodconfig W=1 were
+not run.
 
-This bug was found and reported by our team at Octane Security. Would
-it be okay if we add Reported-by tags for the people on our side who
-reported it along with the first reporter in the V2 patch?
+ net/netfilter/nf_conntrack_core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-Reported-by: Shubham Antil <shubham@octane.security>
-Reported-by: Giovanni Vignone <gio@octane.security>
-Reported-by: Robert van Eijk <robert@octane.security>
-Reported-by: Paolo Gentry <paolo@octane.security>
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index d0d9e5ea84a095..0ce6141b3dfd70 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -592,6 +592,10 @@ static void warn_on_keymap_list_leak(const struct net *net)
+ void nf_ct_destroy(struct nf_conntrack *nfct)
+ {
+ 	struct nf_conn *ct = (struct nf_conn *)nfct;
++	struct nf_conn *master;
++	bool destroy_master;
++
++again:
+ 
+ 	WARN_ON(refcount_read(&nfct->use) != 0);
+ 
+@@ -610,10 +614,17 @@ void nf_ct_destroy(struct nf_conntrack *nfct)
+ 	 */
+ 	nf_ct_remove_expectations(ct);
+ 
+-	if (ct->master)
+-		nf_ct_put(ct->master);
++	master = ct->master;
++	destroy_master = master &&
++		refcount_dec_and_test(&master->ct_general.use);
+ 
+ 	nf_conntrack_free(ct);
++
++	if (destroy_master) {
++		ct = master;
++		nfct = &ct->ct_general;
++		goto again;
++	}
+ }
+ EXPORT_SYMBOL(nf_ct_destroy);
+ 
+-- 
+2.55.0
 
-I'm happy to send a v2 with everything folded in - your Reviewed-by,
-sungbyeongchan's Reported-by and ours. Just let me know which you
-prefer.
-
-Thanks again,
-Shubham Antil
-
-On Wed, Oct 7, 2026 at 6:43=E2=80=AFAM Allison Henderson <achender@kernel.o=
-rg> wrote:
->
-> On Tue, 2026-10-06 at 18:27 +0530, Shubham Antil wrote:
-> > rds_ib_process_recv() accepts an incoming RDS/IB fragment once the
-> > receive completion reports at least an RDS header
-> > (data_len >=3D sizeof(struct rds_header)).  It then trusts the
-> > header-declared total message length h_len: for the first fragment of
-> > a message it stores be32_to_cpu(hdr->h_len) in ic->i_recv_data_rem,
-> > and rds_ib_inc_copy_to_user() later copies up to h_len bytes from the
-> > fragment pages to userspace on recvmsg().
-> >
-> > The number of payload bytes actually received into the fragment page is
-> > data_len (after subtracting the header), but it is never checked agains=
-t
-> > the amount the fragment is accounted to contribute to the message,
-> > min(i_recv_data_rem, RDS_FRAG_SIZE).  A fragment whose header advertise=
-s
-> > a larger h_len than the payload it delivers is still linked onto the
-> > reassembly list.  The fragment page comes from the per-CPU receive cach=
-e
-> > and is not zeroed, so rds_ib_inc_copy_to_user() then copies up to h_len
-> > bytes to the PF_RDS reader, including the uninitialized tail the receiv=
-e
-> > never wrote.
-> >
-> > Reject a fragment that carries fewer payload bytes than it is accounted
-> > to contribute before linking it onto the reassembly list.
-> >
-> > The issue is reproducible under KMSAN with two hosts over rdma_rxe
-> > (Soft-RoCE); the same reproducer confirms the fix stops it.
-> >
-> > Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
-> > Assisted-by: Claude:claude-opus-4-8
-> > Signed-off-by: Shubham Antil <shubham@octane.security>
->
-> Hi Shubham,
->
-> Thanks for working on this.  This patch looks good to me, you can add my =
-rvb:
-> Reviewed-by: Allison Henderson <achender@kernel.org>
->
-> Also, this bug was found and reported privately by another contributor, w=
-hom I had
-> counseled to send a patch publicly before I had noticed this one.
-> https://lore.kernel.org/netdev/20261006205204.1322102-1-tjdqudcks0424@nav=
-er.com/
->
-> I find that patches equivalent, and this patch was posted first. But I wo=
-uld like to apply
-> the reported by tag since sungbyeongchan was the first to report it.
-> Reported-by: sungbyeongchan <tjdqudcks0424@naver.com>
->
-> Thank you both for working on this bug!
-> Allison
->
-> > ---
-> >  net/rds/ib_recv.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
-> > index bd6cb3ffa..fee77b6d7 100644
-> > --- a/net/rds/ib_recv.c
-> > +++ b/net/rds/ib_recv.c
-> > @@ -949,6 +949,15 @@ static void rds_ib_process_recv(struct rds_connect=
-ion *conn,
-> >               }
-> >       }
-> >
-> > +     /* h_len must be backed by the payload actually received (data_le=
-n),
-> > +      * else the unwritten frag-page tail is copied to userspace.
-> > +      */
-> > +     if (data_len < min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE)) {
-> > +             rds_ib_conn_error(conn,
-> > +                     "fragment shorter than header-declared length; fo=
-rcing reconnect\n");
-> > +             goto done;
-> > +     }
-> > +
-> >       list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
-> >       recv->r_frag =3D NULL;
-> >
->
