@@ -1,203 +1,132 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011034.outbound.protection.outlook.com [40.93.194.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CDA38656C;
-	Wed,  7 Oct 2026 08:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791361514; cv=fail; b=Njsle2Z/LwKKNID4lWH0WuS8pZemf+dzNZTa9cjglfHzcDD1ZxVOSeWq/BpMct7kq4OeuuOcPos3GcqOVK/CSxkwFCZzOCzu/8qBJMVUiQflej1iTEzJO9CpQklSyu7sp1hiy2bOxl1b0SKtZcRdaqiyGV3A+P2Q30CZi7vWb4k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791361514; c=relaxed/simple;
-	bh=HNSbLcowLDSM/A/uy6NoofoVuzjjWqpK4+MRnWbchug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FXqhPu+FOheUATmxWJ9L55zB/+ZxzSTXxEBRDl3Z0FvboInn/lf9ZBr+ILkzGhpvB2dy5DRGg8HgIhNGvkajuJtKximQgjVSIv31ZrHlGS9tFtEVBFWKxXMI+RiA5SEZc1wZ338SH6uM7Ll+Fa9FyWgIpOPD3doCUv/OBnS1U8o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ec2BP0k9; arc=fail smtp.client-ip=40.93.194.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ec2BP0k9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rbk5Rj3JxKT/RW4Mzvg5+u+wbpPnxDYDamu2luTE0N37c6pbkiKn934IZ3UQOZ1eGCTqgOyZxMtpfroh2Tt13tCDXSoT5FcKsP74hBHScFDFQwgO/Um/rNg8IdTKFY7DpwaX5Pud2sFsCbQK87/OULYdL/fGhbKbpwGRUgxv/06H26hpKRS5DPsTu5UWig2laDp69VuQIwXt0k2vOhCpQ/lYReGK1p9N1WUfcBaPtfjFk+JVpl8p4ONVvnP84cybQdrxQhju930UhgTpVif5IaU2FshGBb0FVcSUqR8bplCHhK3PPj83I6obVLQeXbdwLUInowZkI6IOJXFoJzuKlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0kauH6+bLFyKGR47A1p1k1Y8c0DIwmntvt9lsNdEqYk=;
- b=PN+lfaq2OIrNmQtftrwtrc18W3G4eu8IYCmlXTSOXEna3OxPtEcLEbNlx0mD7KybGl//90rSaghO9YpVjdYDr2Q2ZAinorh0RZC5QmUaBHCcQoGWJKzXxRNBv9ERMZOUW4Vv1UH/PHj1n3Vb8biDkaPXz1YgFAH/WAvfA72+v7CDR6V9F5JhZeQK18pdgNySDOl4uuN/bgHNXK+DaPj1DvdPAcxzelJ2ODWKogsKa4HCIr9GEbq7RUQc9Jy+/gWQLtDxGBeHzaW+5so+NMtqLdGJg0sOFvpK6VSjw9derld3xFnahdt1FarnQGsjon3ZPu1MaoOQVgF6sOYjG23zmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0kauH6+bLFyKGR47A1p1k1Y8c0DIwmntvt9lsNdEqYk=;
- b=ec2BP0k9s+hpefXL3gr7QmNUt+n5kbyDEXyVBVpnifRxulezmEcq0QbpRMUCVAHkUohbQkB0QQmc3DRwhprxOsSwNWwh6V+Ki7X2hg16jVnLbWOPJZVpuFk4OidJ6mgJVndF32UyjnT76GfYvvo/b8rFN8gqJzBabeedurBZm8dc8crIeN8JTnipaOmzSq66X1jm2Ex1Eejf+Cv7R06j/ZPMHc8MDgidIqXZ56URQQAhCkfIeH0SDYoENUmlwLBk16TTVRtTQ6TTZJk+2V1sF63xto6VrXpFtZoPOIGITlH/9l61wcrsKkqiWxUFT+BHyXDqg+fv2wiP9m5sJqb3VQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by LV5PR12MB9754.namprd12.prod.outlook.com (2603:10b6:408:305::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 7 Oct
- 2026 08:25:10 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0451.026; Wed, 7 Oct 2026
- 08:25:10 +0000
-Date: Wed, 7 Oct 2026 11:25:00 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Kyle Zeng <kylebot@openai.com>, edumazet@kernel.org
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, dsahern@kernel.org,
-	outbounddisclosures@openai.com
-Subject: Re: [PATCH net] neighbour: stop using device addresses in hashes
-Message-ID: <20261007082500.GA918849@shredder>
-References: <20261006224118.50200-1-kylebot@openai.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006224118.50200-1-kylebot@openai.com>
-X-ClientProxiedBy: FR4P281CA0106.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:bb::10) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2A4442397
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 08:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791361592; cv=none; b=emuBXNbzDEMctVQ1E4UWuKnOlEzqShLMFbtm0EiwwVD/lGiyzAXrT1aSyetNIMYQO+5iG/3jbKctKPysfiQkmtvDIBnSZtwaBLmQTlMBV/p7E4uOhZTtbq6DU+PGa3B5RjWLyhWTswhDy/RqOgHcshlB3jHu+fTc+qd04Q3KzG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791361592; c=relaxed/simple;
+	bh=jV4OzbU2f3KQRrFlwjDb/XPZqUZlJnIHXEWJ2uji73w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TdPrL73W3WzN/iv/YbxrjwIHdK+rTDDsJOnxuv9yFGj+ALD37UpVlU5pYSs9DWOid3gOtGYZVUrUYVwKbiFlFv57S4HKV8lGWy7v+Iw3xYmFRNYfq06J8trrEEZ7V/gJjffRuqeCkL8ClEUJZIA1B1/RDc6ZetAV5UYi3bsWP2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48c4649b35bso3779937f8f.3
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 01:26:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791361589; x=1791966389;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GBaPp0u4Tgsx6RoTaJszoIAhk3SQlcR8pT28TWFVYik=;
+        b=jt7H3896JA3w2HflmVEWXJqcSVRLqR6KybcBDbgdcxg+XVfvGfKbMmQVoJFlKWuV+D
+         9RWYVgY2ZwIe85rsvN68OhOdQKqor9qseqAK44n8uq8lTle7oOlJ0DLhx3TqAIpl0CS5
+         icHYy6wmuN6hFhe92qdBwQx+6IGA3kQb9niaarGUeRjY/um0gPCuVdD6xCPqI7qqyKyr
+         /t1zLc0EYOXtENQIugK6SKYIioPbQqt4DSRfx0VQ+fjKTTmx8gWHWVBnbZVwcC4LlUMo
+         R3jkgv+ruammTBBUhGwq9p8JDomh62fTeCNAxly0wfo0Ev4sM7Rnr4Px5ZviFs/6pirZ
+         QMIw==
+X-Gm-Message-State: AFq9FYIbf/TzVSbkM+0h7wBvL4P/v/Wsu15NZaT7C+Pa/kgEa5UMzoRk
+	63zMLiRQ3sY/ySayyHiu9NeCM4eX0rS1t7kD0rP9K1W7jNDMx4NOh/FG
+X-Gm-Gg: AYBFou1WjodBOn8laoZkXil/FRDTDY7DKswC4q53WLOLWvypeZslEcO9z9BV2F3NS7E
+	bBthiZ8mJM+EIF/kD5jo5v0527Dxc6EkIxc3DNpEduj46xnUHsdfDlPjuRIu8BQ62dCygxcyEVt
+	KGWr/pNfBdaoEqkt5BegkO0nXsr8pvaghjDm7ULKBwCZupLP0NHpomk+1TlOuAThL6GcNuml0av
+	Zp9w+87dIHcts0FqofkuPzjHZXVfJew/FavrLBrIx2XdZ3K+1wYlbNPNB23xgxsdXHTLBlRGZ+D
+	3CYCCo16SZ5Ad43NGjwJ8esvZnRHkI1ZwdGngc9z6HNdFSuDgzPy4kVf5/R6an8XMW4Qw7q7Yy+
+	cDxgAO0YC/3FHa7zmrZG9+QrXLefITNSScv6yKx3xktQICQ2/vhjt6rU5CGE79hqFQlnB0LXsTT
+	493iF7loEj5KUzlyk9UBkHg3nHQNDRn0fXTwM1NwpZDetHFTUtV6vV6/HcggI3iQRoQz2SLN1Ds
+	ZWi2sNkPuBKEkkT6fnaOT4XkuzSxpzbiSHXDtSxOp/95Q==
+X-Received: by 2002:a05:6000:178e:b0:48c:5358:f999 with SMTP id ffacd0b85a97d-48c7289d900mr2748455f8f.37.1791361589094;
+        Wed, 07 Oct 2026 01:26:29 -0700 (PDT)
+Received: from threads.localdomain ([84.70.176.222])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c71d3b502sm4251370f8f.52.2026.10.07.01.26.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 01:26:28 -0700 (PDT)
+From: Lucas Tanure <tanure@linux.com>
+To: xianwei.zhao@amlogic.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH v2 0/7] Add ethernet support for the Amlogic T7
+Date: Wed,  7 Oct 2026 09:26:20 +0100
+Message-ID: <20261007082627.63807-1-tanure@linux.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|LV5PR12MB9754:EE_
-X-MS-Office365-Filtering-Correlation-Id: 51df8c1f-f4ac-4034-5131-08df244c807e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|366016|6133799003|18002099003|22082099003|10067099003|4133799003|3023799007|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	Ek+aErikL37PhORmxc7kfO8mZqEDJDIkhQupXVZb5QW5YGXliX/nPHaPpBD5szoDER0pR1jKcpkmm1EoFjLF2aMMpdmsHzgT9Equxvyz2erTwsZLsk18adGSJjTimw+5jjVqHTGVD7vZnYDITBirglMb9XERT/LgS3p6PjbmaQ8r4V3xQZItoPIOKYY/mRzDCG6flIKS4kyEVQMIf5t2NS10o6WftsPwJTDz6bwkQurRKmZGqOna38Tj1I40RHjxw3cSWFaQDqIFvLS6jTRfCAvVaPabSFfpW4Edr657LJFvKDSkhv83TlNTVTfccdZlj6J7tr11Ef/jSoa/CX83FKUp3OAZM8ReMkdquVxdRlioKPniEBZl3JCtqXoj16lNoKNgDVkGjcYLE9A8eR69EwhUXcX3SOadG+x1lR0MFffRtxsMgs13nQlU1ZIyyd2YItFVP8Wn9Cvg00aSCRSu4kQQp1l3pUIRgtB58ducnS9P0IIvJ/Tqd9d4upwF7mtqR06stpJEJcG4aV9p9TIMIC4sd6kMkKMopOd84TiMp4SJENacG2v/mvDjEAJ+xuPexOGPM0Aa7FWGXviddms5SJ5UEHIe3/DxkvQzEHkXHVtTEfpOxjQ8KkwaeDzN95niMjE5kGtyRxzFPnnNyddk/gCYksX5R8l12z1oTHmFzBs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(6133799003)(18002099003)(22082099003)(10067099003)(4133799003)(3023799007)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?g9J49EHWFMZCTC+VX7NeqD74zc0QxReqNgK5Fl9vlu+wb9GSoIXhYifFNvzs?=
- =?us-ascii?Q?1N9xX2C+EJxqtSh48aG2Z8D3dnDNVB/XrEloFWzyumxhdWLSxcjLZdwNuYQ6?=
- =?us-ascii?Q?4PSLcpS7VFQXJqtqa8TGJdoxfwHVTwY6C1JcALzTNF7Mv0Y2/+yEs8067WjV?=
- =?us-ascii?Q?8q42zwKZjB48tTPC9t9WvdmWVo6o0PrUnxBHBdQBG6Bkj7lL+YH8w7h8GgTr?=
- =?us-ascii?Q?ZjsDvfJeAzy/5/6clu1En28E7LV31d9njkMahSPloOKFWXQ9GckP072ik9Mq?=
- =?us-ascii?Q?CIZhlYG/Lzi7nIAt9IQSdxPoSLN5Tc4U60B2QyuUFDS9FeZHjtvaeEg8q6Qo?=
- =?us-ascii?Q?Zg+K5sMdbr8YSKZGthkZn7DoLHKUUahlzWM1OGZzJfJQbSBkiVyIhi6p2+1Q?=
- =?us-ascii?Q?n+mAgYyrFiS400c/qcT6z2TT1uoUoS7S6Gbn6EcKWPmDTMceynReXAv2RYyj?=
- =?us-ascii?Q?G1Fe7duMT9fYSD7EZmi2WdE6LXfuUZWVObgjCWyjtFzfmjWYZS93fivRzyMm?=
- =?us-ascii?Q?Llx8E3NcgKdXPTA50WZP/VQ2/oRdMtUD+ls0XkI9MvAmxMFJYlLrpajHFX7S?=
- =?us-ascii?Q?pXuMPVvoYEliQ6Xq0jpo7zYAnRgVzMNGa6eQtorfaEbEM7vCwMjFNIjUK13c?=
- =?us-ascii?Q?7Kml1wcDZuNAXSBDTYGdgFlsvH613vHq6OoBYxlQqW7ZNnURpOmEuV3jmErp?=
- =?us-ascii?Q?8phRfBg6kXOyVo6YHt4E09S/02MEHdGZ9fI0qrPaKnGbitk8EbIK+eBck+Rd?=
- =?us-ascii?Q?4JDavbX1k7va/1GSMsWZ2kreXM2qeo11iAzp1tRZXlBEvc9zgwGkT8Id44oK?=
- =?us-ascii?Q?929cjbMrsTUdTVOqBSdo33uqAhQJp09DaKKQDVT6FFfp8jy13IyVVBj73xcz?=
- =?us-ascii?Q?vePRi+AMw2/V0Xz1xr22ZrtRpD4X01EC1mp2Q8DddnkgmgZGg5jSi5rAP666?=
- =?us-ascii?Q?/byS2/drwZglUZfZ/GdgQYVbesYJzp4tPYzvU2BpY0oo25qeBBkAxPVfX0A8?=
- =?us-ascii?Q?/2lP9UfG+qwIdah4ZrKVflinPKua4d4r8dU9pjAlAhOGA5AmkhIIxxh9gGXT?=
- =?us-ascii?Q?2RCcg6+N0ipFKoQ5OtSKEp9S4nPcJGwJoKIvp5iUX6mH0Ha8/JP+Q6DvknSy?=
- =?us-ascii?Q?IM7LwaByrT8rIxENe9p8jm7gjMkHIiEtORhoeVr8ORaPRZUT4M3uqoPse3ug?=
- =?us-ascii?Q?4LetwHM5xpPgyLtCB3KMjBE1uUUan7UUZn6Adpa4J4YAvB43f8RZT3RWjxu9?=
- =?us-ascii?Q?FaFKoshmh3XMHKf6I1DnzM3Jm2SxjPIGjMfBOjmUnhSOGauoRn26eyVN+cma?=
- =?us-ascii?Q?pPaeJwt0yE1caDi3MfMkk+GyIo29aPr3xyBlgQUvbdc2ehsVK/LZUv+/QtNN?=
- =?us-ascii?Q?5/89cMQpvugM2Lo1MgW8aR7ktHOSFILt+rlmC0axt+0ApnV9tWuo5V7HDZ3x?=
- =?us-ascii?Q?z/Zlc7/e8LRV1GGqthwjTmbqZQ8N/CVnwwmqJyRp6uzba8VH52KgD2o/wv0l?=
- =?us-ascii?Q?voGAG0ajCpqrUCQHM2movR6jNJsqNQYCG9rjVLbimkvaxwSrFn9AnpSxoC7M?=
- =?us-ascii?Q?LL2S3mpKQwXryioE9MoZDY7ygX6IgYuooETCztIEcwJ2SAA0LQLI648Pmfxw?=
- =?us-ascii?Q?Gz1tZ/7MtelG1P3o+kwJWZnFRb0KWYim9A0uEuki+9/dPwr7tRCoLTJos3fk?=
- =?us-ascii?Q?IWJL/Z/MkIBE/3a/BZBq1Y3IOrm6DEL76J5hRQiaJCUn992f?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 51df8c1f-f4ac-4034-5131-08df244c807e
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 08:25:10.4074
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: popHk7ulvtg8jI0392LAYctqU4jfBVqUjG+fqd2ylkvzva8mOHW0rbWf6/Ad9TBcgBTl1WrGeePQaeEg4zzJAg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV5PR12MB9754
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 06, 2026 at 03:41:18PM -0700, Kyle Zeng wrote:
-> RTM_GETNEIGHTBL exposes the live hash multiplier and bucket mask. For
-> ARP, that multiplier is applied to the IPv4 key XOR hash32_ptr(dev).
-> Since hash32_ptr() merely folds the address, timing chosen-key misses
-> through the unprivileged SIOCGARP ioctl can reveal the folded address
-> of the loopback net_device. NDISC uses the same address-dependent
-> first hash term.
-> 
-> Give each net_device an independent random neighbour hash discriminator
-> at allocation time and use it in both protocol hashes. Keep it immutable
-> so that lookups, insertion and rehashing agree even if the device's
-> ifindex or network namespace changes. This retains the cross-namespace
-> hash distribution that motivated using the device pointer, without
-> putting a kernel address into the observable hash. A dedicated value
-> also avoids making a salt used by unrelated network hashes observable.
-> 
-> The existing NDTA_CONFIG fields and neighbour key comparisons can stay
-> unchanged. Update the net_device cacheline documentation and assertions
-> for the new read-mostly field.
-> 
-> Fixes: b14f243a42c7 ("net: Dont use ifindices in hash fns")
-> Assisted-by: Codex:gpt-6-astra
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> ---
->  Documentation/networking/net_cachelines/net_device.rst | 1 +
->  include/linux/netdevice.h                              | 2 ++
->  include/net/arp.h                                      | 3 +--
->  include/net/ndisc.h                                    | 3 +--
->  net/core/dev.c                                         | 4 +++-
->  5 files changed, 8 insertions(+), 5 deletions(-)
+The T7 pairs a Synopsys gigabit MAC with the same glue registers the
+G12A has, but nothing described it. This adds the binding, the driver
+support and the device tree nodes, and enables the port on the Khadas
+VIM4.
 
-Eric,
+Unlike the G12A, the controller reaches DRAM through a pipeline stage
+with a gate of its own, sys_ampipe_eth. Nothing else claims it, so
+clk_disable_unused switches it off and transfers stop.
 
-Given [1], do you think this should be targeted at net-next?
+v2 changes the RGMII delays, after review. phy-mode describes the
+board, not which chip adds the delay, so this board is rgmii-id.
+dwmac-meson8b did the opposite, and ignored the *-internal-delay-ps
+properties. Patch 1 fixes that. The VIM4 needs it because the RTL8211F
+transmit delay does not work here. Boards declaring neither property
+are unaffected.
 
-In net-next the neighbour tables are per-netns, so we can return to
-hashing based on the device index instead of its pointer. Something like
-[2].
+Tested on next-20261002 with "clk: meson: t7: keep the memory fabric
+clocks running" (clk-meson-next) on top, needed before any DMA on this
+SoC works: 935Mbit/s both ways for 30s, no CRC error in 2.59M frames.
 
-[1] https://lore.kernel.org/netdev/CAL4WiiqWwV+8JaYjsHrWDvoSt8Ng01xs9Orv4xhRpFAvhMnD6w@mail.gmail.com/
-[2]
-diff --git a/include/net/arp.h b/include/net/arp.h
-index e932def63d62..9e583624f5b2 100644
---- a/include/net/arp.h
-+++ b/include/net/arp.h
-@@ -4,7 +4,6 @@
- #define _ARP_H
- 
- #include <linux/if_arp.h>
--#include <linux/hash.h>
- #include <net/neighbour.h>
- 
- static inline struct neigh_table *arp_table(struct net *net)
-@@ -15,7 +14,7 @@ static inline struct neigh_table *arp_table(struct net *net)
- static inline u32 arp_hashfn(const void *pkey, const struct net_device *dev, u32 *hash_rnd)
- {
- 	u32 key = *(const u32 *)pkey;
--	u32 val = key ^ hash32_ptr(dev);
-+	u32 val = key ^ dev->ifindex;
- 
- 	return val * hash_rnd[0];
- }
-diff --git a/include/net/ndisc.h b/include/net/ndisc.h
-index 96e3bb6e83af..a97be2e69409 100644
---- a/include/net/ndisc.h
-+++ b/include/net/ndisc.h
-@@ -54,7 +54,6 @@ enum {
- #include <linux/types.h>
- #include <linux/if_arp.h>
- #include <linux/netdevice.h>
--#include <linux/hash.h>
- 
- #include <net/neighbour.h>
- 
-@@ -355,7 +354,7 @@ static inline u32 ndisc_hashfn(const void *pkey, const struct net_device *dev, _
- {
- 	const u32 *p32 = pkey;
- 
--	return (((p32[0] ^ hash32_ptr(dev)) * hash_rnd[0]) +
-+	return (((p32[0] ^ dev->ifindex) * hash_rnd[0]) +
- 		(p32[1] * hash_rnd[1]) +
- 		(p32[2] * hash_rnd[2]) +
- 		(p32[3] * hash_rnd[3]));
+Overlaps with Xianwei Zhao's "[PATCH v2 0/3] t7: add some nodes for
+Amlogc t7.", which defines amlogic,t7-dwmac with the axg fallback and
+three clocks. My board reports Synopsys ID 0x51, DWMAC_CORE_5_10, and
+does not survive the clock sweep without the pipeline gate. I will drop
+or rebase whatever overlaps once we agree. Patch 2 is the oneOf rewrite
+Conor asked for there.
+
+Changes since v1:
+ - new patch 1: honour tx-internal-delay-ps and rx-internal-delay-ps in
+   the rgmii-*id modes, and pass the PHY whatever delay is left over
+ - vim4: phy-mode rgmii -> rgmii-id, and amlogic,tx-delay-ns plus
+   rx-internal-delay-ps replaced by tx-internal-delay-ps = <2000>.
+   Neil's Reviewed-by dropped from this one, the change is not cosmetic
+
+Lucas Tanure (7):
+  net: stmmac: dwmac-meson8b: let the controller apply the RGMII delays
+  dt-bindings: net: amlogic,meson-dwmac: list the compatible
+    combinations
+  dt-bindings: net: amlogic,meson-dwmac: add amlogic,t7-dwmac
+  net: stmmac: dwmac-meson8b: add support for the Amlogic T7
+  arm64: dts: amlogic: t7: add the ethernet pinctrl nodes
+  arm64: dts: amlogic: t7: add the ethernet controller
+  arm64: dts: amlogic: t7: khadas-vim4: enable the ethernet port
+
+ .../bindings/net/amlogic,meson-dwmac.yaml     | 77 ++++++++++++----
+ .../amlogic/amlogic-t7-a311d2-khadas-vim4.dts | 22 +++++
+ arch/arm64/boot/dts/amlogic/amlogic-t7.dtsi   | 87 +++++++++++++++++++
+ .../ethernet/stmicro/stmmac/dwmac-meson8b.c   | 65 +++++++++++++-
+ 4 files changed, 234 insertions(+), 17 deletions(-)
+
+-- 
+2.56.0
 
