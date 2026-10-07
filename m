@@ -1,291 +1,139 @@
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3348D3AAF4C
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 02:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9211026B2AD;
+	Wed,  7 Oct 2026 03:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791341305; cv=pass; b=XSsoGqeKmXucfgD7Yj3ZvJ4FJlR+KMftFTjZeb1PTRtqrUz/jRrddSsIFzlahunOVrmov3vFAELDtF65lU+/x5M7wQMmgyyzRB+v36BdzyCD3tPRUD+MthqM8Qgw9cHMtwT1J0KKVaXl/uz/OPttQksi0fS9Q5ppYc9xAiFILgk=
+	t=1791342914; cv=pass; b=WzX5hhybOLfEjAD7KC14PHNrZMmq8L2Asu4AjN0agh1w9wRPfI1iUlp9EPFcZEDriKxTbExiUNDVpMQk+RJCA5z9QrkxOqwCJa8toag6A+S0h2NIDUETCichHLA2kPfbl0jUQgtUnp3rR1kzBksRivjIZYoWWUGbkbugsFK37BA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791341305; c=relaxed/simple;
-	bh=Pol2x2aR+ztfSV8OAuK2uGHcpqU+lgY9bEO0kITZYg8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R01bAMxOimtgcF8y6lA+YNt8blNvYDGQLrgwitcfNK43XGbIi9kbLfvaQ4W3fJwK1tkrP4i2LzhJKd28hmAEkDbXj3L3sI5mfnIjp4XhxKv9PcTRJzFV3rCUJyXCacdiuTga4WjUb2njYrKSEj3KrJpdovPWxmZt5B9LPfBVXmE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GVPlaxs+; arc=pass smtp.client-ip=74.125.82.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1791342914; c=relaxed/simple;
+	bh=5nMR08qKE40Q34lJ2LndaTZDYNEPY1AYkH9+9D58Ekg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J48VfVk9QJcZhRRkum5dfyyzhU9UNFhm+Yaf2GAn11XQkuDWhlSuT+ZpOwmCKjw+FtWgc4ov25mW+Cb9XHk9yuoAPJx0aviJqe1ToIg6cGJ8TBr9yGmSscC9lm0vK8E0cCthJ92VW/HMJl3kP21AqW5OyWBIQyKFpVZkql03HFE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv; spf=pass smtp.mailfrom=iav.lv; dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b=KF6vx3TO; arc=pass smtp.client-ip=136.143.169.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GVPlaxs+"
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-35154cb9de2so1410574eec.1
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 19:48:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791341302; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UwIkUHdP4FZc/Bz1hLLMc7BNL3nhcsS3FikmhtAHMV14P+ZrT4be2xvzW7R5KR16I0
-         DyrGl30JhBP+e2um5MLeRM1g05WH0qOMAbwCdm+lLUw2ScURnDARUdl8NExguujVwGZT
-         1Eb2i3vLasobFSrdM37JOA9nBI8r6gjQHu0+bTgsFPq9/o5yUKobKK/q1KTXcUUVzA52
-         To+fNSHCIdxcctG/sBOPTBjDzPjRZckLWywcoNJ9Ef1Le1Zkp1b6bMFCwLql2ZzzPVRX
-         6OXja7jrVBjU2qqKXT2wx7ZCNPfYhjLw7oW1qzyV87w2oVTi0K3yn4OLXeF5ILsOdQjh
-         p+CQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sHy1JYFdoI2r/bttA4e6UY6RBQWw0EiOqXBwtjtNkw8=;
-        fh=WHE78e7xdq56Nt6w7Es/uG4wXZD3NTPSSzkEWt34SjU=;
-        b=ZtkvjQyub9tnO3RloW4vxj1GIsrMxmta9JLiDR/pznVd3ed0cNxvlAoOWS82xzrig4
-         nSs6/y+7/92aCrir/1PIz+NvvgoG9LKyksI1EJ0ztU+QsdrNwJmbqF9xpW5/VSARFWvi
-         GzfiMtcI2+a4+cecLWPCKSlJq8U8XCHgmnxkBHYktncOdsSQhy10WJlcflXTB4h7CJt4
-         UBUi0D/oqb9RDSokxpiA1AWxCYSyvqNMuaIywgqj/GSb3YjrqRYQFlJDUVhS46PvLhqZ
-         +BGE+7ZLJWhlk6H93q4KGdIpStgQahVT9VJe3dAG5TlaAzTZ5dJHL0ckB6fssRz20ok/
-         uQQA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791341302; x=1791946102; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sHy1JYFdoI2r/bttA4e6UY6RBQWw0EiOqXBwtjtNkw8=;
-        b=GVPlaxs+DS/sNjcL9tnKt90ejYEEgqLfP0MWOvpHM8KxljKtYLLw9hVvuORoGD24XN
-         xMUiKfFRMZ4qZw48CkK2OUrOmvstzWYUGNSHdEswMTIrL/XvqXML9a7lN28Vz6/HoOAT
-         UzvUjkLLI/6rqqdGrLFvHnniVBu10H/Y68vb+FmEJQrleC3/NU+SEy0EkaJTQlymUr44
-         nzsjToE2WmJrCVOO20gp46GWQEAiQHMnJQyRHRy+/o36tQ5TLFedL6ziNun3DHekZ1nw
-         giubKcYm8z5rVzI2IFSUJA3GoI594T3daEg+rPqogrjUrl2oGnVGxREGwHaHlNOT7QSd
-         I8FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791341302; x=1791946102;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sHy1JYFdoI2r/bttA4e6UY6RBQWw0EiOqXBwtjtNkw8=;
-        b=DMV2ZZtvjXmUc9mMB6qx8ISFpnMlCp5B5uQ9IgtPnJdZOjvp7OA0hkgkPxom+WSBUq
-         hyEVfFxjHcEvYqUuhpkMLQ0ZpoDpXts+HzOInlkcrsXm6k1l/eIfbkY9VG5shvMshCFy
-         XngjbdOg+s3EF4FExPcU+HeuiBNvGCHHAuzMKnKX44sOrFm+OP2b3JDICIpSMCbjABKC
-         o5NMPVEn8dJTuCA89tCMo259r70M+w6+dVbNsczpLXmagTBUyCLfQInBvJ2W3yeHf8Nx
-         +fdgzcxNbgegeNK1S2AsyKnS89vUeyP749hMuFYoWWVSlnlHy3XSZdSpGNaMOAMxvzFT
-         K2tw==
-X-Forwarded-Encrypted: i=1; AKwUvBwsmAHYtwhjePTxuIu92AwGMtZaRDsOJ406Wo2ue3MFKsYLuZhSe2cUs0sx2HmSr0VdvsAUitY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kevn4oEBrCzK1445AbgFz156m3Ce0mdQlLILQg2yoRbY/oiq8m
-	NeRDhXTFDZOlQp0cxPxk798ioaUUW9Jo9El4aaWkoI35ixjwtV+K/NrTW5cdwaBL1U1Gsz+Cj5k
-	bmRG0QoWNVHohRRGl6BFfho6CgLzBJDI0eQnjdVYt
-X-Gm-Gg: AYBFou0rnZZ7zps8LyfdPVgB6nmpB+tvLM+FYr0GneCd1Y6xq+eKDQiiwGBS7AlYCAs
-	WjB73mQvZE3hr8GKR+SP3nJnpRo3NwmLBUuOheDhvUqHQjKn9ZnC6QWm1tvJKsBDqMOfCqKhoTM
-	bYiVGo8kqywfvaOplpT6ticOTfa0rHDXIyxkGWAbwOAYtz9D0jYw4fUDATQQWasrrPCFmWw3ppH
-	odd91yThyipp7ZViwlwTRnE3FpA6uSo9kLhO2HaoY1C59RrmQzjCnzZDj7vmz3b9+JkY/9e8JWI
-	fYFfAQrVl0MSVYzD6xbSSfUdCekj2DmyzF6Z49YD/vQfS6jq8j5RXVPi05ap4b5Uf4cFkwBpHy3
-	0m90E+j3NkEd11IZYRsTKML7/wFZrCTY0J4U0oIv8H1bZrsTISqFehsDDfEUX96nvc60SKq5FiM
-	eO8vvF7pn5NGWLLjSSdBtybMVMXJmurO9h/w==
-X-Received: by 2002:a05:7022:f50c:b0:13d:974:a2c6 with SMTP id
- a92af1059eb24-162041de438mr586698c88.7.1791341301323; Tue, 06 Oct 2026
- 19:48:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b="KF6vx3TO"
+ARC-Seal: i=1; a=rsa-sha256; t=1791342883; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=Cznt3eby3evqFmTaqFMX61fH9TCqMrewryqZ0ZIa0guwBKiL57NvRHiXDMoS8Yy+FIPiw3RIqylETPrZFBBh8fCzB1FnmuAIu2pvU5lrXesEpoI2h/9WxN1u6s82LU6JxaA0Qxgg9lUi7TZbTSs7yceacl3EJB1eeD4yWcvDD5k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1791342883; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1lEvJX1E303KGewRVMWUi6HWA6+DV9DZawsuOsQIsn8=; 
+	b=KHc6n8lKadRmoC+boJGfigKcUgEU6vVTrhQCLHvp4wUhsCKQqtJ+56l9svWtx6JsyZhf6sTxhcSfYCKhKw8/qXVlt4yOU/381k3KdKxSFpEunz7HgoD6MnVCIDC5EdiWyhXhfKNZgyhd7WCKOs3CCcOGhqZtZWaqVGnM+zqBG5g=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=iav.lv;
+	spf=pass  smtp.mailfrom=iav@iav.lv;
+	dmarc=pass header.from=<iav@iav.lv>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791342883;
+	s=zoho; d=iav.lv; i=iav@iav.lv;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=1lEvJX1E303KGewRVMWUi6HWA6+DV9DZawsuOsQIsn8=;
+	b=KF6vx3TOUhUkD5heJM/WrFAuygkhXbZJsimKwXsJNHSzb0F7xfhUZDJbIU1BGhWv
+	16RpHMeRHp+bx//q3FOG1GgwmoPe0xp3tcBP2MtP/q69jPVtWa9eCPOKqZTYHhMLU/f
+	vZJ/VGtYfBKpNo9HG3L0VFmXMvDF4OyJYu3/angc=
+Received: by smtp.zoho.eu with SMTPS id 1791342880666265.053555662332;
+	Wed, 7 Oct 2026 05:14:40 +0200 (CEST)
+From: Igor Velkov <iav@iav.lv>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] net: stmmac: mask the MAC interrupt while resume resets the MAC
+Date: Wed,  7 Oct 2026 06:14:38 +0300
+Message-ID: <20261007031438.3179966-1-iav@iav.lv>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261006192601.1875100-1-kuniyu@google.com> <20261006192601.1875100-5-kuniyu@google.com>
- <CAMB2axM8+eW=jiDgV4EHgCxXpzZDdj3PVZc-8hZ9_3bMWMMDYg@mail.gmail.com>
-In-Reply-To: <CAMB2axM8+eW=jiDgV4EHgCxXpzZDdj3PVZc-8hZ9_3bMWMMDYg@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 6 Oct 2026 19:48:09 -0700
-X-Gm-Features: AclHuK-b4xtcvLSySTGi8doGUlPhLvVZt8LyR1rIaCDcdYBbjAPE6iawj02D-e0
-Message-ID: <CAAVpQUD5eBzZJ3+1y+HbPhDf0q9juZc9g8v5J_ghHssEg2wXwg@mail.gmail.com>
-Subject: Re: [PATCH v4 bpf-next 04/10] bpf: tcp: Guard fast-path
- bpf_tcp_ops_call() under per-socket flag.
-To: Amery Hung <ameryhung@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 6, 2026 at 4:25=E2=80=AFPM Amery Hung <ameryhung@gmail.com> wro=
-te:
->
-> > +++ b/net/ipv4/tcp_input.c
-> > @@ -210,6 +210,11 @@ static void bpf_skops_established(struct sock *sk,=
- int bpf_op,
-> >
-> >  static void bpf_tcp_ops_parse_hdr(struct sock *sk, struct sk_buff *skb=
-)
-> >  {
-> > +       const struct tcp_sock *tp;
-> > +
-> > +       if (!cgroup_bpf_enabled(CGROUP_TCP_SOCK_OPS))
-> > +               return;
-> > +
-> >         switch (sk->sk_state) {
-> >         case TCP_SYN_RECV:
-> >         case TCP_SYN_SENT:
-> > @@ -217,7 +222,12 @@ static void bpf_tcp_ops_parse_hdr(struct sock *sk,=
- struct sk_buff *skb)
-> >                 return;
-> >         }
-> >
-> > -       bpf_tcp_ops_call(parse_hdr, sk, skb);
-> > +       tp =3D tcp_sk(sk);
-> > +
-> > +       if ((tp->rx_opt.saw_unknown &&
-> > +            BPF_TCP_OPS_TEST_FLAG(tp, PARSE_HDR_OPT_UNKNOWN)) ||
-> > +           BPF_TCP_OPS_TEST_FLAG(tp, PARSE_HDR_OPT_ALL))
->
-> nit:        ^ missing a space
+stmmac_resume() resets the MAC in stmmac_hw_setup(). On dwmac1000 the
+reset sets GMAC_INT_MASK to 0, which unmasks every core interrupt, until
+dwmac1000_core_init() writes the mask again. Since commit 2e2c878a3141
+("net: stmmac: remove SGMII/RGMII/SMII interrupt handling") nothing on
+the RGMII path reads GMAC_RGSMIIIS (only the PCS code does), so RGSMIIIS
+stays pending behind the mask from the first link change on, and the
+reset lets it through. The line storms:
 
-this indentation is correct.
+  dwmac_dma_interrupt: unexpected status 04000000
 
->
-> > +               __bpf_tcp_ops_call(parse_hdr, sk, skb);
-> >  }
-> >
-> >  static __cold void tcp_gro_dev_warn(const struct sock *sk, const struc=
-t sk_buff *skb,
-> > diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-> > index 3ac465513bf5..8770f3084efe 100644
-> > --- a/net/ipv4/tcp_output.c
-> > +++ b/net/ipv4/tcp_output.c
-> > @@ -581,8 +581,8 @@ static void bpf_skops_write_hdr_opt(struct sock *sk=
-, struct sk_buff *skb,
-> >          * writer's bytes). The writer finds the append point by scanni=
-ng from
-> >          * first_opt_off + nr_written to the first NOP.
-> >          */
-> > -       bpf_tcp_ops_call(write_hdr_opt, sk, skb, req, syn_skb, synack_t=
-ype,
-> > -                        first_opt_off + nr_written);
-> > +       bpf_tcp_ops_call_flag(write_hdr_opt, WRITE_HDR_OPT, sk, skb, re=
-q,
-> > +                             syn_skb, synack_type, first_opt_off + nr_=
-written);
-> >  }
-> >  #else
-> >  static u32 bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
-> > @@ -613,11 +613,13 @@ static u32 bpf_tcp_ops_hdr_opt_len(struct sock *s=
-k, struct sk_buff *skb,
-> >  {
-> >         unsigned int remaining_out =3D remaining, reserved;
-> >
-> > -       if (!remaining)
-> > -               return 0;
-> > +       if (!cgroup_bpf_enabled(CGROUP_TCP_SOCK_OPS) ||
-> > +           !BPF_TCP_OPS_TEST_FLAG(tcp_sk(sk), WRITE_HDR_OPT)||
->
-> nit: missing a space before ||
+A register dump at the first message on ODROID-HC4 showed it:
 
-oops, due to last minute edit :/
+  core int_status 00000001 int_mask 00000000 pmt 00000000 rgsmiiis 0000000d
 
->
-> > +           !remaining)
-> > +               return remaining;
-> >
-> >         /* bpf_tcp_ops_reserve_hdr_opt() reserves space via remaining_o=
-ut */
-> > -       bpf_tcp_ops_call(hdr_opt_len, sk, skb, req, syn_skb, synack_typ=
-e, &remaining_out);
-> > +       __bpf_tcp_ops_call(hdr_opt_len, sk, skb, req, syn_skb, synack_t=
-ype, &remaining_out);
-> >
-> >         reserved =3D remaining - remaining_out;
-> >         if (!reserved)
-> > @@ -1193,8 +1195,9 @@ static unsigned int tcp_established_options(struc=
-t sock *sk, struct sk_buff *skb
-> >                                         struct tcp_key *key)
-> >  {
-> >         struct tcp_sock *tp =3D tcp_sk(sk);
-> > -       unsigned int size =3D 0;
-> >         unsigned int eff_sacks;
-> > +       unsigned int remaining;
-> > +       unsigned int size =3D 0;
-> >
-> >         opts->options =3D 0;
-> >         opts->bpf_opt_len =3D 0;
-> > @@ -1224,10 +1227,10 @@ static unsigned int tcp_established_options(str=
-uct sock *sk, struct sk_buff *skb
-> >          * left.
-> >          */
-> >         if (sk_is_mptcp(sk)) {
-> > -               unsigned int remaining =3D MAX_TCP_OPTION_SPACE - size;
-> >                 bool has_ts =3D opts->options & OPTION_TS;
-> >                 int opt_size;
-> >
-> > +               remaining =3D MAX_TCP_OPTION_SPACE - size;
-> >                 opts->mptcp.drop_ts =3D 0;
-> >
-> >                 opt_size =3D mptcp_established_options(sk, skb, remaini=
-ng, has_ts,
-> > @@ -1244,7 +1247,8 @@ static unsigned int tcp_established_options(struc=
-t sock *sk, struct sk_buff *skb
-> >
-> >         eff_sacks =3D tp->rx_opt.num_sacks + tp->rx_opt.dsack;
-> >         if (unlikely(eff_sacks)) {
-> > -               const unsigned int remaining =3D MAX_TCP_OPTION_SPACE -=
- size;
-> > +               remaining =3D MAX_TCP_OPTION_SPACE - size;
-> > +
-> >                 if (likely(remaining >=3D TCPOLEN_SACK_BASE_ALIGNED +
-> >                                         TCPOLEN_SACK_PERBLOCK)) {
-> >                         opts->num_sack_blocks =3D
-> > @@ -1277,22 +1281,18 @@ static unsigned int tcp_established_options(str=
-uct sock *sk, struct sk_buff *skb
-> >
-> >         if (unlikely(BPF_SOCK_OPS_TEST_FLAG(tp,
-> >                                             BPF_SOCK_OPS_WRITE_HDR_OPT_=
-CB_FLAG))) {
-> > -               unsigned int remaining =3D MAX_TCP_OPTION_SPACE - size;
-> > -
-> > +               remaining =3D MAX_TCP_OPTION_SPACE - size;
-> >                 remaining =3D bpf_skops_hdr_opt_len(sk, skb, NULL, NULL=
-, 0, opts,
-> >                                                   remaining);
-> >
-> >                 size =3D MAX_TCP_OPTION_SPACE - remaining;
-> >         }
-> >
-> > -       if (cgroup_bpf_enabled(CGROUP_TCP_SOCK_OPS)) {
-> > -               unsigned int remaining =3D MAX_TCP_OPTION_SPACE - size;
-> > -
-> > -               remaining =3D bpf_tcp_ops_hdr_opt_len(sk, skb, NULL, NU=
-LL, 0, opts,
-> > -                                                   remaining);
-> > +       remaining =3D MAX_TCP_OPTION_SPACE - size;
-> > +       remaining =3D bpf_tcp_ops_hdr_opt_len(sk, skb, NULL, NULL, 0, o=
-pts,
-> > +                                           remaining);
-> >
-> > -               size =3D MAX_TCP_OPTION_SPACE - remaining;
-> > -       }
-> > +       size =3D MAX_TCP_OPTION_SPACE - remaining;
->
-> This static-key check is not redundant unless
-> bpf_tcp_ops_hdr_opt_len() is inlined. In my build,
-> tcp_established_options() unconditionally calls the out-of-line
-> helper, so sockets pay the call/prologue cost even when no bpf_tcp_ops
-> is attached.
+The mask is written by the resume thread itself. When that thread runs
+on the CPU that takes the MAC interrupt, the storm starves it and the
+board hangs until a watchdog reset or a soft-lockup panic; on another
+CPU the storm ends after a few interrupts.
 
-Interesting, I guess you don't use FDO ?
+Disable the interrupt line around stmmac_hw_setup(). This matches
+open(), which resets the MAC before it requests the interrupt; resume
+resets it with the line live. The window sits under rtnl_lock(), which
+stmmac_reset_subtask() also takes, so the reset task cannot free and
+request the interrupt between the disable and the enable. If the setup
+fails, it may not have written the mask: mask the core interrupts before
+enabling the line.
 
-On my FDO build, even tcp_established_options() is inlined
-to __tcp_transmit_skb() and both bpf_tcp_ops_hdr_opt_len()
-and bpf_tcp_ops_hdr_opt_len() are NOPs as expected.
+Wake-on-LAN resume with the resume thread on the CPU that takes the MAC
+interrupt, 7.3-rc5: without this patch the storm hit the first resume
+on Helios64 (dwmac-rk) twice, ROCK Pi 4A (dwmac-rk) once and ODROID-HC4
+(dwmac-meson8b) twice. With the thread on another CPU and no patch, the
+storm printed at most 3 messages per resume in 30 resumes. 7.3-rc6 with
+this patch: no storm in 10 resumes on ODROID-HC4, 10 on Helios64 with
+the GMAC kept powered across suspend (an Armbian patch) and 10 on
+Helios64 with mainline dwmac-rk plus "net: phy: postpone PHY interrupts
+during sleep with MAC-managed PM"; int_mask read 00000001 after the
+glue resume and before stmmac_hw_setup() in all 30.
 
-    ffffffff8224a511: 41 bc 28 00 00 00     movl    $0x28, %r12d
-   # remaining =3D MAX_TCP_OPTION_SPACE (40)
-    ffffffff8224a517: 45 29 ec              subl    %r13d, %r12d
-   # remaining -=3D size
-    ffffffff8224a51a: 0f 1f 44 00 00        nopl    (%rax,%rax)
-   # bpf_skops_hdr_opt_len()
-    ffffffff8224a51f: 44 89 64 24 78        movl    %r12d, 0x78(%rsp)
-   # remaining_out =3D remaining
-    ffffffff8224a524: 0f 1f 44 00 00        nopl    (%rax,%rax)
-   # bpf_tcp_ops_hdr_opt_len()
+Fixes: 2e2c878a3141 ("net: stmmac: remove SGMII/RGMII/SMII interrupt handling")
+Assisted-by: LLM
+Signed-off-by: Igor Velkov <iav@iav.lv>
+---
+v3:
+- disable the line only around stmmac_hw_setup(), under rtnl_lock() and
+  priv->lock, not for the whole resume (Sashiko)
+- mask the core interrupts if stmmac_hw_setup() fails (Sashiko)
+- results with this window on 7.3-rc6, including Helios64 with mainline
+  dwmac-rk
+v2: https://lore.kernel.org/r/20261002043558.1302590-1-iav@iav.lv
+v1: https://lore.kernel.org/r/20260930-stmmac-irq-shut-v1-1-104d1a1dcb28@iav.lv
 
-I will add a static inline function and move both
-cgroup_bpf_enabled() there and reuse it in 3 places.
-(same for bpf_tcp_ops_parse_hdr())
+Build-tested on net: allmodconfig and allyesconfig with W=1, no new
+warnings.
 
-Then, the unnecessary movl will also disappear.
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b837e8e27a35..6091dc2d4ab4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -8361,7 +8361,15 @@ int stmmac_resume(struct device *dev)
+ 	stmmac_free_tx_skbufs(priv);
+ 	stmmac_clear_descriptors(priv, &priv->dma_conf);
+ 
++	/* On dwmac1000 the MAC reset unmasks every core interrupt until the
++	 * mask is written again; we keep a pending status bit from storming.
++	 */
++	disable_irq(ndev->irq);
+ 	ret = stmmac_hw_setup(ndev);
++	/* A failed setup can stop before it writes the mask. */
++	if (ret < 0)
++		stmmac_mac_irq_modify(priv, ~0U, 0);
++	enable_irq(ndev->irq);
+ 	if (ret < 0) {
+ 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+ 		stmmac_legacy_serdes_power_down(priv);
+-- 
+2.43.0
+
