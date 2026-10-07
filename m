@@ -1,156 +1,132 @@
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E563290D1
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 23:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791414399; cv=pass; b=oOhwFevIxMdNEC0zrL1Qtuy2kHFgvr4Q0W5KHhgvJ1XrGM9iwwAfic6mduyjkNqiVOChHjmWQCMFpNJEOsQ98/DBFTS3vZKc/WS9OAgfGeeQZxmSP2Q0GnZ9jGwV36nFBG7bcJCkEK53rPOQBgnWYSNlL7IE98DBvOzUgQzBfpE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791414399; c=relaxed/simple;
-	bh=EnvvshmgbGSgmvOAQQYj95OI1ypuk+0YI22QHqVZUZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FSI/knNvnqoqQnmbwtsAqUbNe3Q09Hny8HTyTnAQ3RNBiC1/j4HDyo5Q1i4KP5S2kbYFOsYAIjKyv6NJDFuInp7ZuEeyjGJbnqXYoMBkmKq14Dd2rdhTwu/GX25m2ry1UYg75piSyYVQsFETCUasRNhDcU07dHVLecZzk859TvE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PUyyrPcG; arc=pass smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B804189DD
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 23:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791414852; cv=none; b=OXMxKzMW8NJ0pLoDRmToQj4pGOjZmQlcZJf0qwyUc2WdVo+v/LHI3G1VU8KBG3j25TWJuLC5fTczCedDZAjmibrb1F5r28iyGXGFfq+NZ90eRVqzoIdIP44+Q9qdJ6S1QLbG9FNJmmSF6EdrIRZRR/Ej5q8bvVfA4+Iuvt9dB7Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791414852; c=relaxed/simple;
+	bh=GWK1/hPiqJ9JVmSM2O9wvZMuEFkzJcNqHbTrXfCjbH4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KtyW4V4UwFdyPZU6cxrUKmRN6ek0p+soUXnazKmYJwQGocbYDI5irgMF3e0ZUDEAgXUEBOk+AxDGA1pmE/8To6Z7G9A6acfLQrgPrJnxfbKzgYKR0Sp0DesOyB48F1+WBtXGsXRPwRyqFJgCO47eP35BVY+uBTe/SGHuskC8XD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Xc8CiWcz; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PUyyrPcG"
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-4f59e61f295so1606555b6e.3
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 16:06:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791414397; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eWGGxRe7FVuiV8sJIPKhMxkJ2jWwcD85T7qCb3+2abMemwAOUhxzAbHJCunM9gSZNC
-         8C5pJcN3dSKHPV8WPoF6zZqi8J75tAl2wbd+VAfK0Z26uX1JHHPOjHCBJ36mxscDZLhn
-         yh9f/V+zAJty/+cz49XkNEROtn6Y45yCwejcm+mTbOo1m6xbq+cmsdzocbsC9pbO2k0x
-         13QuHcLOgETdvX6BfSCaFXeamkAeqStZdaYURGIswMMtLMYQheanlWx/SLLuZdA7Dhx9
-         1C5V95cx42lcmWWTA/ymM3m3GOn8qPAh0fmY8doMMZi9U0Kb4UQHL7C4h7iksPGbBEAY
-         YMvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bFgc6Xa0HunmUOCklAqPECBS03DSMGCin3KVDvL2wI0=;
-        fh=bA9KlzdNihZdOAI21B51cNIPVjjyvpIBQLga7luG/R4=;
-        b=NxQGe4Q8p9tOqQR1RxjGjyVwBSuApkUmEehhlcP6LRKk9fbx6jOpEQBy4EnFkhNMZr
-         o11WQHUzsYX0tLhadgXmY4lcxk10P9UbjLBc8TIeVf2Cybx/eUej0PksgDICf1XPmcj5
-         BY1m5vnkCSuSCUARMW3oya5nwc6A9lWvcYMjGRZeEWs9dWbYycAPGYK/ZAXh79s9tHkc
-         WLCgy0THehyyDjZFc5aJCN4CO6AQq/q3ns7Kw13bWYoX70OjZ9HtzApPDlAIdJTWhPYv
-         i3sQ0ajxOVlpBBL6wz2zd1YKKUHbEQ02U/C+dabCwtmCmt9nnlV6Q9uUOzsodn+8srvP
-         vYQg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Xc8CiWcz"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-398b3c37877so1589403a91.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 16:14:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791414397; x=1792019197; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bFgc6Xa0HunmUOCklAqPECBS03DSMGCin3KVDvL2wI0=;
-        b=PUyyrPcGsmGngBy6k64QNb63RefIMBfG6zIc4s3O7MlIlsewNXO3rCLbKjWi3NZqyt
-         oM9no60NswYdJEaNLzI3II/geq8yH4RKuO0SocnfLhYiz5wsL4f39YVTM5xrofpzM6L9
-         2J9zxfAzAFX2qegN3qWYvZBlWe61OajX7CUzKT7FgL7zCZs91KKJuQhDVnKDljzaHc5N
-         3nR+MN57QiPLw1TORAc2wC267HqEn9vcMOoMbMisIKMOLh4idcxJnSmqOM9jx/CkaeXs
-         X7S4taCeXFkasMr8MhuNPi8f+NGBEvmXAmRq1/HkRua6DOc2EZUZOUMY4eRLDV2yc5gn
-         Yerg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791414397; x=1792019197;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791414850; x=1792019650; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:mail-followup-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bFgc6Xa0HunmUOCklAqPECBS03DSMGCin3KVDvL2wI0=;
-        b=SUv3fA/7joDZktPyVKEH0kR+r7zZreupPYRs+lM+RWKZWmaNH/aPNiFvVB7xgfbPYb
-         kdSRV2jfwtFBdxQl7I/1D5rGszHa33kbrE4YmPakROAiKObhRxPN5URRttKCklwAfe2W
-         GmZGLHZ+YkXFTChucfxHIx21+tArudaAldcAXmIttln+nbN+FbRsCFYdFNQhLcrrQV8a
-         iYbOTLPudcqlU2e+G0zHVvjzqjK8SrKN2l8WZDKblmuPZ6e1aa9xqpC2Zrsr7Pe4DqL6
-         LSBjuQhfXl6EOMFMFhPLWYu4wajMtuhi+tJtgl4xx98FOebtcDJBbRV3p6ElkmSDDm6P
-         rqnQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxK50kUR9YdCumaf+BhtJfQbVS/l2J/abcULJau63u29ewr8uxbjuKfp5bnOXQy9bBS16j4wLk=@vger.kernel.org
-X-Gm-Message-State: AFuF++kMyndxPe4jiTYkxvppX5W9YHj4yZaCe7t71xexSFX5ivaK4Wu0
-	oOPyUiZrMKk/8SyuLjFNPyi+MEvi5UqRbXuqV41NwxHsmLJMJGYUiw/L2xGdmfuFLZ/StAg94dX
-	xXgBZzvMKLuXoDVOWVIZAx95VCeM9qcs=
-X-Gm-Gg: AYBFou1+njzOYCazNmUEkrFxQ+JTRw4MMXL2k/FOaJ7cRz5sT9SSUazZy/jPPm7IaYt
-	dk6RnEQKaHW2fiIhyhtXdSKAghDVR4C9+wq5h0Mbm85z+/q14/nlBCdRzo4w3EzjbAshA87XEa/
-	lwKIdhd+2C4ljTB0nWYPa5GSqVIu+yHpzkNx/bSKo2atxYgBc/YXxCvm/9xr4AFLUTbJcKX0TPB
-	hlb/Z+KONUBmPvHBdKBv9RbGrLzWrWgec2665DM8djrC5Db6Db78QDlL2insuTORfFtLjmYbJPz
-	NAQHzNHMSpADKZuE7TJeyqsYaVwlP2yXGUrPDMnQhwLczPPUyz1rxkI=
-X-Received: by 2002:a05:6808:e85:b0:4d6:93c3:1af4 with SMTP id
- 5614622812f47-4fc47fbb12dmr3546235b6e.63.1791414397006; Wed, 07 Oct 2026
- 16:06:37 -0700 (PDT)
+        bh=UWBMI7VK8tYYnaeyXBuzp13VimQ/VNPvrb7PAoXYqUY=;
+        b=Xc8CiWczE4kz2NHYWkrd4MD+V6nlTDWCjKrmklUgIjOYHrXHMjnlo6mMpjHbWd4Lrn
+         EEnBRjEU5/0mYhVaO8sZBxBeLIYXRu9EjrnDoM81vjWm81FKL+eIs+EMxrgjevHf/I2T
+         iZ0n9BEiHiG8yrbNQ5XUpPIJoG8NKK/p6zUClmKEqgvtA5uAHhvrwTps8HgaUqFT49DS
+         nuuKNB1SaoN+AHP9vkoNithQ9319NDS5cn/omwew3Bnjd0odYHafhtSqG3qD6zsmGrUV
+         oIbATNRGstCHAqKdOdALO8JfRR6VwZOpMwT28oQv2+ZCw9YktmK1f1W9zp3GH+eDrBww
+         jtTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791414850; x=1792019650;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:mail-followup-to:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UWBMI7VK8tYYnaeyXBuzp13VimQ/VNPvrb7PAoXYqUY=;
+        b=AqL/SqmNzYSUMOkBVs3fobRGM3TVHbbqu3BowJed3bznyQMMCP7W6ev5ZLh5lDXxL/
+         f+O/GjVuW7L8jVnNvujdA3RHAggauYDQFsr4C1rsE29WaDesAU/8WQr89ytz1zLqubAT
+         6vD36UGycEDi5gJLzlYOUPU8OB9JREmwd/LzFPTCbBdBDjKrIjUB+2Uft71+MEPVLCh5
+         SLgYgl3dVFdJatYkimyKZCMUCL6EOzY3kf+kcc3emtYBQpART2g1djCL70yEUfSA9Gib
+         ESVwzGYNkeZxqsjLTp6enyypmpjZ3p17nDNG0LgqAtxoS/mMN+Xr3/WakXInJC85wWdO
+         gRYg==
+X-Forwarded-Encrypted: i=1; AKwUvBzKgzBfHQREstfiRIHHleftRg0NvT5K4+11+XPSCkLpeM6VuPMFEUcYv+IFm0S9NbxaHW4+pfI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKO3P01xRNNQnqwrZxME24cupt2JnwpZHbY7BoFX5165Lp0Hm5q
+	RKUvZxRdIlC+lNuTQN06xqaLfCTP7bWra58b1uLRrmp78+qL83gGB9M7M3dkUa2ii1A=
+X-Gm-Gg: AYBFou1LN7HEwkE9T8UQAIaRDmro66mlRRfX30S8FwlVFI90ElyquBYNnEVvAqROnYx
+	X9zXcLoCUoiWEwqBM+XYTD7e9WiIYOFrDToZtrc56tNgzKQafZdcICGHtVWm3U1qRfUsNa0TaAC
+	8STygcMwf5aUNE3l1u5JYW+vAHtoL8k7j4PQ9szRTejghwFKgVJEh6cNwpTfYQwkZC9Agkh0Suk
+	Hd5n3mLKx9W84g3UPzuFR0y6VhiRn//O9eTMz8SIB2cBLWvLG2pfPFDnWUKf+BBpelB4kN0ByMe
+	WHWqKIO5QQjWykQnfLjCRFT0dcc3rCZ14GSOFDDAVAEsYqKefFe/ll+qotn0xLplu2+25zCYGYa
+	80FOSH/yqKa6YNx4Np0Gre00FXAe3i5UReWDsGKFiTVwabcFbqk+eTvDH54g43Yvaheoy7pVoKZ
+	eyOsB43OAX5DkXUdABGjq2u3juTW55rBwXraiC97zRRNjCPJT7lqbcwaI94o149PHME2AZ1p9SC
+	I+eej8NDzE=
+X-Received: by 2002:a17:90b:3902:b0:39e:6a7e:ee18 with SMTP id 98e67ed59e1d1-3a8a1af09bamr2823154a91.36.1791414849905;
+        Wed, 07 Oct 2026 16:14:09 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9d94ef876sm1461469a91.0.2026.10.07.16.14.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 16:14:09 -0700 (PDT)
+Date: Wed, 7 Oct 2026 16:14:08 -0700
+From: Joe Damato <joe@dama.to>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: Eric Dumazet <edumazet@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	stable@vger.kernel.org, Stefan Fleischmann <sfle@kth.se>,
+	Eric Dumazet <edumazet@google.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Bernhard Schmidt <berni@debian.org>
+Subject: Re: [PATCH v3 net] bnxt_en: fix DMA mapping length for padded small
+ packets
+Message-ID: <asbSQH/P6izz9HcM@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	stable@vger.kernel.org, Stefan Fleischmann <sfle@kth.se>,
+	Eric Dumazet <edumazet@google.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Bernhard Schmidt <berni@debian.org>
+References: <20261007051747.455273-1-edumazet@kernel.org>
+ <CACKFLi=iNjxDPyzgGwj6YG-dc+OfoAo8TxFkAVE3QRV524z6Ow@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261006192601.1875100-1-kuniyu@google.com> <20261006192601.1875100-10-kuniyu@google.com>
-In-Reply-To: <20261006192601.1875100-10-kuniyu@google.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Wed, 7 Oct 2026 16:06:26 -0700
-X-Gm-Features: AclHuK8EIBBvyKTE1JSHvVhz8LqGQYZ8HmQ0k4B7XhTAoNdBmoS0E8pU-kNmXGQ
-Message-ID: <CAMB2axOLGbeYatQ8=XNmZH1PUmigRdz7qKxwZngt6U4FCmdQzg@mail.gmail.com>
-Subject: Re: [PATCH v4 bpf-next 09/10] bpf: tcp: Add kfunc to adjust sk->sk_rcvlowat.
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	Emil Tsalapatis <emil@etsalapatis.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACKFLi=iNjxDPyzgGwj6YG-dc+OfoAo8TxFkAVE3QRV524z6Ow@mail.gmail.com>
 
-On Tue, Oct 6, 2026 at 12:26=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
->
-> bpf_tcp_ops.{enqueue,dequeue}_rcvq() were added to parse skb and
-> adjust sk->sk_rcvlowat dynamically to suppress unnecessary wakeups.
->
-> Let's add a new kfunc to set sk->sk_rcvlowat.
->
-> Negative values are clamped to INT_MAX, consistent with SO_RCVLOWAT.
->
-> For enqueue_rcvq(), wakeup is set to false because:
->
->   * tcp_data_ready() is always called after the hooks in
->     tcp_queue_rcv() and tcp_ofo_queue().
->
->   * when tcp_fastopen_add_skb() is called for TFO SYN, the socket is
->     not yet accept()ed, and when called for TFO SYN+ACK, the socket
->     is woken up by sk->sk_state_change() anyway.
->
-> For dequeue_rcvq(), wakeup is set to true because tcp_data_ready()
-> is not called in that path.
->
-> An alternative would be to support bpf_setsockopt() for these
-> hooks.
->
-> However, that approach involves excessive conditionals and an
-> unnecessary memcpy(), costs we do not want to pay for every skb
-> in the TCP fast path.
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-> Tested-by: Cl=C3=A9ment L=C3=A9ger <cleger@meta.com>
-> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-> ---
->  net/ipv4/bpf_tcp_ops.c | 46 ++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
->
-> diff --git a/net/ipv4/bpf_tcp_ops.c b/net/ipv4/bpf_tcp_ops.c
-> index 8182037c4269..2ba73dd6c52c 100644
-> --- a/net/ipv4/bpf_tcp_ops.c
-> +++ b/net/ipv4/bpf_tcp_ops.c
-> @@ -361,12 +361,31 @@ __bpf_kfunc int bpf_tcp_ops_set_flags(struct tcp_so=
-ck *tp, u32 enable, u32 disab
->         return 0;
->  }
->
-> +__bpf_kfunc int bpf_tcp_ops_set_rcvlowat(struct sock *sk, int rcvlowat,
-> +                                        const struct bpf_prog_aux *aux)
-> +{
+On Wed, Oct 07, 2026 at 03:58:31PM -0700, Michael Chan wrote:
+> On Tue, Oct 6, 2026 at 10:17 PM Eric Dumazet <edumazet@kernel.org> wrote:
+> 
+> > Fix this by using skb_put_padto(skb, BNXT_MIN_PKT_SIZE) in
+> > bnxt_start_xmit(), before skb_shinfo(skb)->nr_frags is sampled,
+> > because padding might linearize the skb.
+> > This ensures skb->len and skb_headlen(skb) reflect the padded size so
+> > that dma_map_single() maps the full buffer and the descriptor length is
+> > consistent. This also removes the temporary 'pad' variable and masking logic.
+> >
+> > The padding is done after the SW USO branch, otherwise
+> > bnxt_sw_udp_gso_xmit() would account the padding as UDP payload
+> > and send it in extra segments.
+> >
+> > Note that SW USO segments are still not padded: with IPv4, a segment
+> > carrying less than 10 bytes of UDP payload (small gso_size, or a short
+> > last segment) is sent as a frame shorter than BNXT_MIN_PKT_SIZE.
+> > This is a separate issue, left for a followup patch.
+> >
+> > Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Stefan Fleischmann <sfle@kth.se>
+> > Closes: https://lore.kernel.org/netdev/20261004122616.56714cbd@nargothrond/
+> > Assisted-by: LLM
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> 
+> v3 looks perfect to me for non SW USO packets.  Thanks.
 
-Is there a reason this takes struct sock * instead of struct tcp_sock
-*, like bpf_tcp_ops_set_flags() in patch 2?
+FWIW: Once Eric's patch is in, I'll try to come up with a SW USO fix.
+Thanks Eric for facing off with sashiko.
