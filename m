@@ -1,72 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AD0339365;
-	Wed,  7 Oct 2026 01:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487481C861D;
+	Wed,  7 Oct 2026 01:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791335412; cv=none; b=nDScuOHyFofnR2OSSuEIQReMkeKkw0ZkQbrnr9jHETjSmgQtJI+Q3mExc/p5pstdJcDwYjsFhCOjYcEd36MNv0U7/eqyTxLgN840FUAJ9G9NgQzzkrelh57UoLOXevIAYvUwMbM+jfFJXIKWwVw1jNI0ULDLegJg391DY+znYNU=
+	t=1791335600; cv=none; b=GbdhcR3NPJyOzJMPkdOitQAxAV8gaN5+DFfbxZm/y18egWwdjvy0ZNzLf/H2lz0CHG2vJ4jcF5YSsp+cmGgfHTF0ACoiDKBXMdv+xbYO2794gVCf97PfNywMqSp40dsdO6r5bjEZHQ18QCijb+GvKURhIaSKBiqcQZY7ZYG83yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791335412; c=relaxed/simple;
-	bh=XPB4Bef5mEDoL3CPpGYEZuWSAZzO//y5yoTnCnXiseo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n8PZyou9ToaSSZGvY6OTLkOpCTE0z186gGjwJwcbSRkgHfAKIvQLuk8TWGE0CK7S2X3CoG8kH/ieABlUY7CKsCpWxx9KNG+A/Ncxm2H07YhsylSYAHovI58Tb+eU8vywgRQ38x5qf+YCZAERjjVPenSN5IO7WAweGHjgANDA8d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLi7npim; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791335600; c=relaxed/simple;
+	bh=DBFA5sFC9WD+opKlW7ITYJCAfHENnpaiqVEyIAbo2BQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nsl7Kbl8tEhW47ZD5goO9hdIWYtT9Ehg1iBgp2yc9Av9xNDWGVnQ7Dc8EbNffjYtqd04i/887jOkCveDDZt3L6yCCxrkVBwGB+uZggQ+Sz3eMR8kdKaixQqP+T6DwYMdKPfYSVcLbkH64djKetmnSmhJ2Ack+Ttu81Fr8AO/AsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RbiTx7b5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLi7npim"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD081F0089C;
-	Wed,  7 Oct 2026 01:10:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RbiTx7b5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573361F0089B;
+	Wed,  7 Oct 2026 01:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791335411;
-	bh=74b5fbEAIa4ZR39VRG/iTMgUBsDcbZMPv3K1PI+Hn7U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BLi7npim/kWoNScJTpdEj/6A8XXQf8BBwBlw6fcB0DfulqlB4/q+zve7r3B43deuX
-	 m2fhWv8JRuXxAGIlmg5y/EUHPjobvbLI/iP9FhK3rLKKqzRbpXeNgFLiwx20KmjXUe
-	 5vaqZBGk0+TLEMsyPDVFbLSrLMN2Zkjy4vQqguvn+u/WwPIlIfsKHAJ35yvmDXeeMa
-	 B49GJx7afCkW8I+MAZoQ04NVA4TcrLDDFQOXkLscFuAq9AQQU1zvUD4B1rRCuWdv8H
-	 HDsG8sG69N7Zq9Rl0QUdnoO49dZU1XEr3kb3WqfnhsoxS3afImILWtBRBmKOlcrlPS
-	 jzTI8vThUNdNw==
-Date: Tue, 6 Oct 2026 18:10:09 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: James Hilliard <james.hilliard1@gmail.com>
-Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, Paolo Abeni
- <pabeni@redhat.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Serge Semin <fancer.lancer@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Nicolai Buchwitz <nb@tipi-net.de>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: stmmac: unwind the WoL IRQ after a safety
- IRQ request failure
-Message-ID: <20261006181009.5c4fe5b5@kernel.org>
-In-Reply-To: <CADvTj4obBNgR4w3BW4-gCU-=LUxesQdTRN=EdWTcx7VznFi4kA@mail.gmail.com>
-References: <20261006-stmmac-irq-unwind-v2-1-194591c87460@gmail.com>
-	<179127056620.2231598.8882282421523696709@kernel.org>
-	<CADvTj4orth=RYtb78ND1rdiYh2yb6d+TjZt5ohK_-+1mnVpqfQ@mail.gmail.com>
-	<20261006155214.63c5cb5b@kernel.org>
-	<CADvTj4obBNgR4w3BW4-gCU-=LUxesQdTRN=EdWTcx7VznFi4kA@mail.gmail.com>
+	s=k20260515; t=1791335598;
+	bh=qjyKuDRA86Hk/S2fjOT5ttpFNeWmESp7ej6Do7qKEUQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RbiTx7b5M3wwKXtYVAXET5krPtmPJM+sCxjwAfCox8DNFG96mj24oc0GAUq23xNgt
+	 OMLzkfnuQz4oebYTQylWcA2Q6dZS7GrOLcixh9Kdw72k0NUOJQoyTNJC6MU6aeBsad
+	 sAIppy1iP3Z4sd6sJpT6Qno+bE3+sUJUPq+2YDuRfpukMymrYhbeT9BxgOYKCQoNYq
+	 RxZNlrEQFm852jGifXLqbmYnhOSqcc1UT9/2jcoyNIwfaTzwfXOLhvrtTLTq+7ukZp
+	 sy4BZM72XVnv6XhottcVuPh6rGdJjLrsqB7/oWThxRA4Mg5Mv4XLNW4w8XKmbvsvzQ
+	 ynxWaGqPfk9kw==
+Message-ID: <c1efb25a93739dfe2c16828bbcdc9bd7535850c1.camel@kernel.org>
+Subject: Re: [PATCH net] RDS/IB: validate receive completion payload length
+From: Allison Henderson <achender@kernel.org>
+To: sungbyeongchan <tjdqudcks0424@naver.com>, "David S . Miller"
+	 <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	 <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	 <horms@kernel.org>, Andy Grover <andy.grover@oracle.com>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org
+Date: Tue, 06 Oct 2026 18:13:17 -0700
+In-Reply-To: <20261006205204.1322102-1-tjdqudcks0424@naver.com>
+References: <20261006205204.1322102-1-tjdqudcks0424@naver.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Tue, 6 Oct 2026 17:17:20 -0600 James Hilliard wrote:
-> > Please make sure you read this paragraph, to the end.  
-> 
-> How much detail should I be including? I had previously been told to try
-> and keep commit message more terse[0] and this info didn't seem particularly
-> useful.
+On Wed, 2026-10-07 at 05:52 +0900, sungbyeongchan wrote:
+> An RDS/RDMA peer can declare a fragment length larger than the payload
+> reported by the receive completion. The receive path attaches the recycle=
+d
+> receive fragment without validating those lengths, allowing recvmsg() to
+> return stale bytes beyond the actual payload.
+>=20
+> Validate data_len against the expected current-fragment length before
+> transferring fragment ownership. Disconnect and reconnect on mismatch.
+>=20
+> The issue reproduced in two clean QEMU boots. A peer declared 4096 bytes
+> while posting only 16 bytes, and a receiver under a different UID obtaine=
+d
+> 4080-byte tails from prior messages in all 256 attempts in each boot. Wit=
+h
+> this change, the malformed message was not delivered, reconnection
+> succeeded, and a subsequent normal 4096-byte message was delivered intact=
+.
+>=20
+> Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: sungbyeongchan <tjdqudcks0424@naver.com>
 
-Not sure how to answer this. Just think for a second -
-if the information was not particularly useful, would we be asking 
-for it over and over?
+Hi Sungbyeongchan,
 
-> Should I put this info below the --- separator so it doesn't end up in the
-> final commit or something like that?
+Thanks for sending this, and for following up on the earlier feedback so
+quickly.  However, I realized after I sent it that another contributor had
+already publicly sent an equivalent fix earlier today, and the convention i=
+s
+to take the first correct patch on the list.
+https://lore.kernel.org/netdev/20261006125720.81227-1-shubham@octane.securi=
+ty/
 
-In the commit message, please, it will also be very useful
-to people backporting from upstream to various downstream kernels.
+So no need to follow up with the sashiko review, and I apologize for the
+miss-communication, but I will ask your Reported-by tag to be applied since=
+ you
+were the first to report the same bug. This was a solid find, and the repro=
+duction
+was very well done. Please continue to send RDS fixes as you find them.
+
+Thank you!
+Allison
+
+> ---
+>  net/rds/ib_recv.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>=20
+> diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
+> index bd6cb3ffaa571..0daddb108c8a7 100644
+> --- a/net/rds/ib_recv.c
+> +++ b/net/rds/ib_recv.c
+> @@ -949,6 +949,15 @@ static void rds_ib_process_recv(struct rds_connectio=
+n *conn,
+>  		}
+>  	}
+> =20
+> +	if (data_len !=3D min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE)) {
+> +		rds_ib_conn_error(conn,
+> +				  "incoming fragment payload length %u, expected %u; "
+> +				  "disconnecting and reconnecting\n",
+> +				  data_len,
+> +				  min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE));
+> +		goto done;
+> +	}
+> +
+>  	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
+>  	recv->r_frag =3D NULL;
+> =20
+
