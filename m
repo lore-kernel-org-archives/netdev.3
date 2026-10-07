@@ -1,36 +1,35 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E251C4503E4;
-	Wed,  7 Oct 2026 08:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F3D46985D;
+	Wed,  7 Oct 2026 08:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791363116; cv=none; b=mfOP0uC+IQfgMMRvsKrsmMYME5qDEk/2Ks5v2pnO1yXbV3lU0cCqvY5AIAPo50a+VL8RZeBieAhXxpl7gW+3ocbutERwQMYN3UdHWFtKV8CsjLvETC55zN+YniEPCIiJyXb70dJY9WCw9jymi0y32VjG4NIXdOlgx+2ZqpJ2Vrk=
+	t=1791363119; cv=none; b=R0Gb+EbJce1hMoIwNhZRUa7gFNP3D3jV5tS78/auqx9Z3nb0n91ztsH+tV9TnVSbpRxdehgparSaH0KKhUglpaLhhp5Acm8nZMFdNDKne3Gu82Cs2P0BDnzwrN3dbbzZjav473LSs8SHZHTIUfSid8EPoT8ExkkUb9j/JsJUjfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791363116; c=relaxed/simple;
-	bh=cFOzzudVAcpIU7mQ3ZbBkWrtOr4wyt8UCOlfnqZ7fOU=;
+	s=arc-20240116; t=1791363119; c=relaxed/simple;
+	bh=XOjPIN7Tpc/561S8JXjXBPa/Jlq/JXNn4+F/UargJ90=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M/Vbb+F6WFMgkmMj4Rf4jNMCHAo51gf06ipqEEffru9w0pxHzISm/ge5cFHjbTkj+rI/lYQKMcJ/EV1oM8YwNlg4Np2K32auTQAMJGs/H0xZoa4irDzhzi7cc8Q6W6jrG7S824jvjA9aDpHz/At+9SPVtsLbAp80BzlVQTswFhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=dEjvZHw+; arc=none smtp.client-ip=194.13.80.246
+	 In-Reply-To:To:Cc; b=YJ0EFzpmRdMURyraMOQm4Q8ooeKYWDqsvUKgYniLXPG82JS0nBZ6yJCgsI2LdYUID2BG2oQ4J1DjC1T6BIrZ4jAjCBjDY8My0ahfdSq5wa4C56NujoMjDjRAZhPUYdUQ8H8wQhJ57ViK2TvZb6uOfiwNn/THGFg3IJl49FbH9Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=KhWEmJ4Y; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="dEjvZHw+"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8BCAFA1543;
-	Wed,  7 Oct 2026 10:51:50 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="KhWEmJ4Y"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3A5CBA1551;
+	Wed,  7 Oct 2026 10:51:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791363111; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1791363114; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=wUu0f8/2KvHZ0v6WxQXMKgdRUNW5dZTs0nAPztRZaGQ=;
-	b=dEjvZHw+j6ZlLeftQgBik3fVv513rSgMzOKD4KVlJel3qI5OpCoXY54eCmvDJ8plWkSGXt
-	xsKROSCB0OhAziORRSMLQg5uVyoxoXAaqyId4tpKipkb/SaD1zWdd+CuROYby/VWfylaTR
-	Sveusuv71EEFLBTgVSaJcupsCPcEt7bUnU5NUbC7zKDs5PJkArG0DgDZVGH/FmWxf5PXfi
-	aejHkKZYCb0npjDsnyR6bEG9lySGrK54omBOMyas4Cv1fyc5yj/6cS5dOkG0phZ1l8BbQL
-	HfbXknvkj2PjGgEfU4yx3VGp1WX9t0YCo597Ga5Pf4YlB53FyahvhYPXRA1i6Q==
+	bh=AhxdxoZEO1uHW3WVLFGddDH0kg4MQA2LczGFpGzv9wg=;
+	b=KhWEmJ4YlcvUksOeuri0VOHiCEhT4aEErZEHJnG7iwyxe0E9VjvmuCU7XADRPdcrsYJBac
+	aCT0CUI+ErSZIAcZal5PZAQA2lEYnkXlHhxW6qVJCokPqo9thpfLekfj6t9bNMBT7FMm98
+	DfkWXDUOBr2VzJNSfnB98L16HM6MJP1LLcAVyiz6jh+EPzDGLyq3gSNEC7d93khrSRgUte
+	vdiEzX9YNb918VUIg3TZdRJDG8Bey1lk1IozUnlQPyk9VlPYk0mnh60kDxRQmKkVtEGsL1
+	SMohwjzpJLKAJlj92lhNCrj70exAmioDU8SACAL2aCnlDZhHbGmJQVIfxL3Fjg==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Wed, 07 Oct 2026 10:51:24 +0200
-Subject: [PATCH net-next v3 1/8] net: bcmgenet: ring the doorbell when the
- last frame of a batch is dropped
+Date: Wed, 07 Oct 2026 10:51:30 +0200
+Subject: [PATCH net-next v3 7/8] net: bcmgenet: allow the MTU to be changed
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261007-nb-genet-mtu-nn-v2-v3-1-74a796c019ce@tipi-net.de>
+Message-Id: <20261007-nb-genet-mtu-nn-v2-v3-7-74a796c019ce@tipi-net.de>
 References: <20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce@tipi-net.de>
 In-Reply-To: <20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>, 
@@ -56,83 +55,172 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-bcmgenet_xmit() only writes the producer index at the end of a batch. The
-error exits return before that write. If the dropped frame was the last of
-an xmit_more batch, the frames queued before it stay in the ring until the
-next transmit. The queue is still running, so the watchdog does not fire.
+The driver never sets dev->max_mtu, so the MTU is stuck at ETH_DATA_LEN.
 
-Write the producer index on those exits too.
+One descriptor reaches as far as the packet ready threshold, so derive the
+maximum from it. The threshold registers are 8 bit in units of 16 bytes and
+want a multiple of the 256 byte burst size. A descriptor is one page and
+also holds skb_shared_info behind the frame. On 4K pages the page is the
+tighter limit and leaves 3564 bytes. That includes room for a VLAN tag so a
+VLAN interface can run at the parent MTU.
 
-Fixes: ddd0ca5d60b3 ("net: bcmgenet: add support for xmit_more")
+Resize the buffers and rewrite the registers in place. The PHY keeps
+running and the link stays up.
+
+A failed allocation retries at the previous size. If that fails too, take
+the interface down. Running on rings that were never allocated is worse.
+
+Suggested-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Link: https://github.com/raspberrypi/linux/issues/5561
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 83 +++++++++++++++++++++++++-
+ drivers/net/ethernet/broadcom/genet/bcmgenet.h |  1 +
+ 2 files changed, 83 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 4c9db2f9fc25..06ec8c211dd7 100644
+index 17c8318c2038..6d21ac2d78d5 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2119,6 +2119,15 @@ static void bcmgenet_hide_tsb(struct sk_buff *skb)
- 	__skb_pull(skb, sizeof(struct status_64));
+@@ -84,6 +84,12 @@
+ 				      ENET_THLD_MAX * ENET_THLD_UNIT, \
+ 				      ENET_THLD_PAGE_LEN)
+ 
++/* Largest MTU that fits one descriptor, with room for a VLAN tag so a VLAN
++ * interface can use the parent MTU.
++ */
++#define ENET_MAX_MTU		(ENET_THLD_MAX_LEN - GENET_RBUF_ALIGN - \
++				 ETH_HLEN - VLAN_HLEN)
++
+ /* Tx/Rx DMA register offset, skip 256 descriptors */
+ #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
+ #define DMA_DESC_SIZE		(WORDS_PER_BD(priv) * sizeof(u32))
+@@ -3547,6 +3553,7 @@ static int bcmgenet_open(struct net_device *dev)
+ 
+ 	bcmgenet_netif_start(dev, true);
+ 
++	priv->datapath_up = true;
+ 	netif_tx_start_all_queues(dev);
+ 
+ 	return 0;
+@@ -3605,7 +3612,11 @@ static int bcmgenet_close(struct net_device *dev)
+ 
+ 	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
+ 
+-	bcmgenet_netif_stop(dev, false);
++	/* A failed MTU change can have torn the datapath down already */
++	if (priv->datapath_up) {
++		bcmgenet_netif_stop(dev, false);
++		priv->datapath_up = false;
++	}
+ 
+ 	/* Really kill the PHY state machine and disconnect from it */
+ 	phy_disconnect(dev->phydev);
+@@ -3853,6 +3864,71 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
+ 	return 0;
  }
  
-+static void bcmgenet_tx_kick(struct bcmgenet_priv *priv,
-+			     struct bcmgenet_tx_ring *ring,
-+			     struct netdev_queue *txq)
++static int bcmgenet_change_mtu(struct net_device *dev, int new_mtu)
 +{
-+	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
-+		bcmgenet_tdma_ring_writel(priv, ring->index,
-+					  ring->prod_index, TDMA_PROD_INDEX);
++	struct bcmgenet_priv *priv = netdev_priv(dev);
++	unsigned int old_mtu = dev->mtu;
++	int ret;
++
++	if (!netif_running(dev)) {
++		WRITE_ONCE(dev->mtu, new_mtu);
++		priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
++		return 0;
++	}
++
++	/* The watchdog trips on an idle queue once the rings are gone */
++	netif_device_detach(dev);
++
++	/* Only the buffers and the MTU registers change, leave the PHY up */
++	bcmgenet_netif_stop(dev, false);
++	priv->datapath_up = false;
++
++	WRITE_ONCE(dev->mtu, new_mtu);
++	priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
++	bcmgenet_set_mtu_regs(priv, new_mtu);
++
++	ret = bcmgenet_init_dma(priv, true);
++	if (ret) {
++		/* Retry the size that was allocated a moment ago */
++		WRITE_ONCE(dev->mtu, old_mtu);
++		priv->rx_buf_len = bcmgenet_rx_buf_len(old_mtu);
++		bcmgenet_set_mtu_regs(priv, old_mtu);
++		if (bcmgenet_init_dma(priv, true)) {
++			/* Nothing left to run on. Take the interface down so
++			 * that close and suspend do not tear it down twice.
++			 */
++			netdev_err(dev, "failed to restore MTU %u, closing\n",
++				   old_mtu);
++			netif_close(dev);
++
++			/* Mark the device present again, __dev_open()
++			 * refuses a detached one. The queues stay stopped
++			 * because the interface is down by now.
++			 */
++			netif_device_attach(dev);
++			return ret;
++		}
++	}
++
++	bcmgenet_hfb_restore(priv);
++	bcmgenet_netif_start(dev, false);
++
++	/* bcmgenet_netif_start() only restores the link interrupt */
++	if (bcmgenet_has_mdio_intr(priv))
++		bcmgenet_intrl2_0_writel(priv, UMAC_IRQ_MDIO_EVENT,
++					 INTRL2_CPU_MASK_CLEAR);
++
++	/* A link event latched while the interrupts were off is gone. Internal
++	 * PHYs on GENET v1-v4 are not polled, so resync the state machine.
++	 */
++	phy_mac_interrupt(dev->phydev);
++
++	priv->datapath_up = true;
++	netif_device_attach(dev);
++
++	return ret;
 +}
 +
- static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
-@@ -2155,10 +2164,8 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+ static const struct net_device_ops bcmgenet_netdev_ops = {
+ 	.ndo_open		= bcmgenet_open,
+ 	.ndo_stop		= bcmgenet_close,
+@@ -3864,6 +3940,7 @@ static const struct net_device_ops bcmgenet_netdev_ops = {
+ 	.ndo_set_features	= bcmgenet_set_features,
+ 	.ndo_get_stats64	= bcmgenet_get_stats64,
+ 	.ndo_change_carrier	= bcmgenet_change_carrier,
++	.ndo_change_mtu		= bcmgenet_change_mtu,
+ };
  
- 	/* add the Transmit Status Block */
- 	skb = bcmgenet_add_tsb(dev, skb, ring);
--	if (!skb) {
--		ret = NETDEV_TX_OK;
--		goto out;
--	}
-+	if (!skb)
-+		goto drop;
+ /* GENET hardware parameters/characteristics */
+@@ -4217,7 +4294,11 @@ static int bcmgenet_probe(struct platform_device *pdev)
+ 	/* Mii wait queue */
+ 	init_waitqueue_head(&priv->wq);
+ 	bcmgenet_hfb_init(priv);
++
++	/* v1 cannot program the thresholds, so it stays at the default MTU */
+ 	priv->rx_buf_len = bcmgenet_rx_buf_len(dev->mtu);
++	if (!GENET_IS_V1(priv))
++		dev->max_mtu = ENET_MAX_MTU;
+ 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
  
- 	for (i = 0; i <= nr_frags; i++) {
- 		tx_cb_ptr = bcmgenet_get_txcb(priv, ring);
-@@ -2183,7 +2190,6 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 		if (ret) {
- 			priv->mib.tx_dma_failed++;
- 			netif_err(priv, tx_err, dev, "Tx DMA map failed\n");
--			ret = NETDEV_TX_OK;
- 			goto out_unmap_frags;
- 		}
- 		dma_unmap_addr_set(tx_cb_ptr, dma_addr, mapping);
-@@ -2225,10 +2231,7 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (ring->free_bds <= (MAX_SKB_FRAGS + 1))
- 		netif_tx_stop_queue(txq);
+ 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index ac1d0aab5d75..a4933a5d3823 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -632,6 +632,7 @@ struct bcmgenet_priv {
+ 	unsigned autoneg_pause:1;
+ 	unsigned tx_pause:1;
+ 	unsigned rx_pause:1;
++	unsigned datapath_up:1;
  
--	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
--		/* Packets are ready, update producer index */
--		bcmgenet_tdma_ring_writel(priv, ring->index,
--					  ring->prod_index, TDMA_PROD_INDEX);
-+	bcmgenet_tx_kick(priv, ring, txq);
- out:
- 	spin_unlock(&ring->lock);
- 
-@@ -2245,6 +2248,10 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	dev_kfree_skb(skb);
-+drop:
-+	/* The dropped frame may have been the last one of the batch */
-+	bcmgenet_tx_kick(priv, ring, txq);
-+	ret = NETDEV_TX_OK;
- 	goto out;
- }
- 
+ 	/* MDIO bus variables */
+ 	wait_queue_head_t wq;
 
 -- 
 2.53.0
