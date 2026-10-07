@@ -1,60 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB542334374;
-	Wed,  7 Oct 2026 01:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B67733A6F2
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 01:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791336781; cv=none; b=JjY0Bcq7KN6kaYuNp8kr0ZQ9hho2KRaXBOGtJL+KCz+0d6yBmbth6p2eFJZA67RV2dmRbENQyHE8b5LlKVSObjjYL0JG34J1lZ3lVy+EDyWyf0SaGIE+1CT9LqODelL1k6mY0itwOp7tIGO2dhHewOn00+HtOvb7OA5bzEuuT9I=
+	t=1791336792; cv=none; b=FajAfuj28DggIHw9eaf2THWxKCN0NTKNykXeu7n341GqwVNP9lSbAhyA7hnM9TzzyUdx0NJ4BBwYWj7szr84X98uaoVjiR5X1nP5ps2DkEnJRb2YdiYLAtYdg1SUgD11Lb+6J7RdDSFttDZy2Mr5hVqm+cXRrR9d+zZYdsA71tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791336781; c=relaxed/simple;
-	bh=YP05KzIeagJ2youbYmtiU2EaIbEeJCuofif7wFVzynI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qNBwYeu7m9+dXrTN9M2nzTm9W67gVBY+IqDaHDXO+6wjY+5ZQ6odSFF1P6DXMnW/m2442HuQ2kNfnTBn89OtF97pWBSG64CMkit1xCut+5EYqVdWLrdCvJmvPvYssZzRmcvvY2XaYYBdz6hrQz30PRrRZwSP/dlZ5u9OKHn8YQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K756IldR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791336792; c=relaxed/simple;
+	bh=yT4qk//tC5xJd5Q78Wf4BjrbWUdWEvx1U2HF6URaQYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KiSFR+gNnRnMh4hxOl94wS+FwNN7G14f+aT//ruYYkAR161yoCuG2VYLlZ5FDVzLNdRS1IgkAYkCZCPWi3CEY7Oq2/TpU7AVXb7tqisNlrdiywMm6Gi3dSsgrmgO+CB3CCjlqGnb8cvIky9S/FTmybpYYbaO9UV1Qw4ROsdk4QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fC4jiT5R; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K756IldR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3C11F0089B;
-	Wed,  7 Oct 2026 01:33:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791336780;
-	bh=LCgCNrcUTPh0ubv0G7P0dQu6mDrcyG6IEo2IPGK3xaA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=K756IldRHlywZZzVr6QneZ3kWboAJxhMvtr0ds8D74BRzW8bqGc4XpeFYznacHsRN
-	 axB9CLQQg+uhzcwQRNDhIGGNwmFRExxVvOpMc9+RUpSnbnvwh43sf8vYkw7ci+I1ye
-	 w3XWJjfGA2bGwr691LkFm/LA8nBq3+bfZXWv4fGXQSgSOn6jYvESxklhlad0PIn7Y4
-	 gXLMcUcP4enUMX+Ps02T17ygW5oUK7tuXsMvLqZV/Gb6CW2QtmCmSUHG4KIxsCs7lm
-	 f18GwDzS/Aoo2xbnSDXoYbYY2XkFU/xT9zTyey1IwgNDnCp2vKXu8EQa6npntfp496
-	 e4xv4uf+wIWFQ==
-Date: Tue, 6 Oct 2026 18:32:59 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: netdev@vger.kernel.org, Hyunwoo Kim <imv4bel@gmail.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v3] strparser: make sure __strp_recv isn't running
- before tearing down the parser
-Message-ID: <20261006183259.02cc66b5@kernel.org>
-In-Reply-To: <425d9d926709b542ed5331110c19fee4aee1f28d.1791206940.git.sd@queasysnail.net>
-References: <425d9d926709b542ed5331110c19fee4aee1f28d.1791206940.git.sd@queasysnail.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fC4jiT5R"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2dd9cbb661bso10637505ad.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 18:33:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791336790; x=1791941590; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Kt3VjxAsGdSe7dCl89WOHYsP0HUrLZc3A78+p+uWquA=;
+        b=fC4jiT5R6+4CtccnjJz79W3VL4sYdkWB87WBVTVWsmwTdsPDvwyzlQ6Tx3G7G3ZMjT
+         MXw+0hsEpLVcpuerGXlg/9zzmLv+BPJ84Pf/uLNfIRvcCsYj+lmJfg4a2tveAqaM40SE
+         DNxrCQ9V7WLOHTj0RA0HNtAPZoyL/ZOWZxgZ1cHgAYX0XRn6Lylclc0oK7tjNILG7MuC
+         cT4LbVN6ZbAVTRRCqThsmdzc1cZLeB4mvPPGTZF1XL3fGLWYGmfDTzeBMniZE+dpz2Xc
+         zD/8eNSG+q+DRK5QPt2l/kLyG8PZtAVSsmD72VgVeed+JimrcOqxQ8mkidjRtccEskIc
+         INUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791336790; x=1791941590;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Kt3VjxAsGdSe7dCl89WOHYsP0HUrLZc3A78+p+uWquA=;
+        b=Y1hsbZNusjBeOwzFN48w5kEv0Aa9Ux5TCVCu1MRaelfMFx/Rig5xwGFP8M1Zynwo93
+         4mMghsKIVlXKDuIopBScFT05aeGUw6/261uKDs4yDFoEaC+g7cvQzkabDALEnqAWn0qZ
+         mFTHxNLTvOiaM4nAcsyNfqdfSLwAFiHmwUQQD+qRGV3BpbYGRQuAGyvGswXPfDKzrXR0
+         ZSzB0SMOaaSGJ8cVMkFQD1PF8RM3l9AtaDX5ufxGuemsfVvVh7wq/eBjo+yeoNQtUyVQ
+         zCJ8Njf9mjwVbIo0NVP+pQdJs5Qtu4K2CjhNsOcIsbBxqJf+MHbaq2ok8v238BGLerPk
+         OYyw==
+X-Forwarded-Encrypted: i=1; AKwUvBwfAZz7iTOBFl1bSuaVzWyX2pQlm+fhsnlA9RbrcPqXUHSz7MnRsJmCF68Szfyed2YiS9DTzvY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL6l4bDsxIw+HSPHWfQMJ2en00z8Coa271YSPd48z4a3ABjg7fw
+	3BHEHkTF7gcyLR8vOH9zSi7klRLCgkKPUtUlXgbuQ9rrlQp2ekiUVlIU
+X-Gm-Gg: AYBFou09xzJwM2sarlYwE1086z9sAlyQmDJBQjYxEKHm/FVLYrJptrOysVmn1Cf+aV3
+	zSwYk0odPsafu12V8XaVbZaNnlVe/3cHwFWwOE0OZk/GBp7EsEJAqn8VhRZCKhiwuRZ1XtEiy80
+	vkjB+53Tq8R+AvQu8Fk+ShjUVfYGli2NRdXv0xkEgrY/hI9+ljwvG/gTmYY0dFuQMA9h02m3Eo6
+	96aNLk2a1qWwkea33F6wHXzaf/+BEpppXHw9SHu1mrj9JWiswVa3ZYNV0VhevBqOrDNApy3mx6g
+	bsjgBSrqdJTM2ShPVeKFwqw7j9sWVRdqm3ifGmlUceViNFZ5QGA4BguOkaI719k7pJjqxGx+J3Z
+	abIghEfU1331PdB9SwdE7fJKV4Q46YRExWKuY697fWg+HcNfj63E7x60hcUkCk8VtS95r49qvWC
+	Iuj3bZH2pgtZppBYzppAWpWaA4O/SsumU6El9e498JsPQCOZQxZXPd3ZuQclw82W3OOs5cc75Gq
+	4tuv66HNv5Y
+X-Received: by 2002:a17:903:1b24:b0:2e2:ca04:fdae with SMTP id d9443c01a7336-2e6003c35admr8419835ad.30.1791336790576;
+        Tue, 06 Oct 2026 18:33:10 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e604852079sm2958395ad.60.2026.10.06.18.33.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 18:33:10 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	kuba@kernel.org
+Subject: Re: [PATCH v2 net] netfilter: conntrack: reject nested ctnetlink master chains
+Date: Wed,  7 Oct 2026 10:33:01 +0900
+Message-ID: <20261007013301.2524415-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <179127347858.434549.11821822167265441355@kernel.org>
+References: <20261001180224.1018290-1-4ncienth@gmail.com> <20261002165601.1754467-1-4ncienth@gmail.com> <179127347858.434549.11821822167265441355@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon,  5 Oct 2026 15:50:02 +0200 Sabrina Dubroca wrote:
-> -	u32 stopped : 1;
-> -	u32 paused : 1;
-> -	u32 aborted : 1;
-> -	u32 interrupted : 1;
-> -	u32 unrecov_intr : 1;
-> +	u8 stopped;
-> +	u8 paused;
-> +	u8 aborted;
-> +	u8 interrupted;
-> +	u8 unrecov_intr;
+Thanks for the review.  All three points are valid.
 
-I gotta say, wish you held off on the cleanups a little longer 
+The nft ct expectation object can attach its internal helper to an
+unconfirmed expected child, then arm the next expectation with that child
+as master.  I confirmed a bounded four-entry chain through this path, and
+current net retains the same unchecked transition.  An nft helper followed
+by IPCTNL_MSG_EXP_NEW can repeat in the same way.  The H.323 Q.931
+call-forwarding path also propagates its helper without a depth bound.
+
+The CT_NEW compatibility concern is valid as well.  CTA_TUPLE_MASTER was
+introduced for conntrackd replication, so rejecting nested helper-created
+state changes that interface.
+
+V2 is therefore incomplete and should not be applied.  I have reworked the
+replacement to make master destruction stack-safe while preserving nested
+expectation semantics.
+
+pw-bot: cr
