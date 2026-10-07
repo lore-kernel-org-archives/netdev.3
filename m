@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636FD35F619;
-	Wed,  7 Oct 2026 23:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A181238398D
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 23:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791417011; cv=none; b=TJDqBd4ZdO8oThKEJNhWBcDAMMcyyOt6hS3fXMXLIoeJVngj1wTws2zZXwU6S1B4EYk1DrHbl/Uibf67D1554yWcZyI+ikuBRQftaj3WgxKEgFjbNFjOJTuLcBxBtNFt++ktpxurW3AsmhI6dO+0N6sZpiLKkoH9dE+thVUtu+E=
+	t=1791417014; cv=none; b=AmhWAtAjHdl6Z87t6QqOw3PE061YDmrxJVL8WPYYtSY1mxD4rEsH68xz6KedDRP2zltcYdpsJpJQki4KdRlN8tTLQyg5sdpN7V/z6LUSwXXi7xl4h61heeAWjTAdwx7+niYQ5tFdaUKCVLedZwzGu8R6CRc2bARX8es76A/z1mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791417011; c=relaxed/simple;
-	bh=JbTztyFIvqyGePww5m+R077nd7Bl6c8uT21VweUddOc=;
+	s=arc-20240116; t=1791417014; c=relaxed/simple;
+	bh=YKagJWl42UFgT9MwyMMC3/PIZ8WGba91UhnZjCm4F08=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rik41ZOxv0aHWg41Ac7XVrih+xgFJdKqznnXz4bmVGDm2o7jrc3kiM0hSMU6VyLRuAYTt3Em9LVzhpSRIfoFdwp1eAeiozRXTh6DkJG9YxWTfd43pCSQSNrwMXUSzbFYj61QKEKo807SlkQWAO3TZ136Ks57Wthp0RInlIZbC7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lz3wT1G8; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=NZpWZWJbPX7tnA0hgXT47mjtZ2wbRexcEJYBWK24a3hObwjC5UDz0aaYswk1G6ntp5uKS5EZv2Fped8ycpjC4zEfI/RPKoxc7qtL909DCLFngCiOskq1+VPKtE4DMJMOzKubwiBPBG3Ugc2VW/5zh2wRseXiO2nsaTu3ko2ss/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hk7ufrIu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lz3wT1G8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066981F000FF;
-	Wed,  7 Oct 2026 23:50:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hk7ufrIu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9401F00893;
+	Wed,  7 Oct 2026 23:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791417010;
-	bh=FHCZ4jzwq0SUmQozvYYGYAytoGKzCG0emXp6tqpGgyg=;
+	s=k20260515; t=1791417011;
+	bh=9huMJS2omXifPcdMUrkqZdPguZWo4m5ZDQAWUb6MUeQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=lz3wT1G8q9z5RJ/SDn2oaMdKQM2Vl5EmX+Qf7Ylp54t23KDdaI4wOAEQV6+v7AS2b
-	 dT4W57fzc0vsz5l5NMrWHqVFudXzsZnlU+a9Blxc43+31LlECwRpQvDT8SLeWSgiVB
-	 mrKv4uJyKkb3iHmDa0WOS71FeBJTCaBeYm2ZdrutCDJ2kwd01cKcOO7mFGqsKWdpbT
-	 1m8r8XL4zRiYC5aJtfIYzd2Kik5POV9wXAkQu5WsRLKqvOoqiYOQ0S3qzFS5YS66C9
-	 xq97vHNziboxK4utu2JTwPuPt3TMkahLbwryEuBSrXyNKr0FBq4t05NKLSBBgLZA3b
-	 ijaNEy+lRlieA==
+	b=hk7ufrIuPENrwVL7FsquZxa75B0G+yPxdhOnjrNp9Tgb2gvD1dCLasNU4L1MDVCFD
+	 f5cIqkY0S71zsuytBHnzZRJB9yfth490k0tDpIIbv3Jw0l2cRZmKNG5jJOlb+Fxeqt
+	 jKhPxvVbOw1S7jQKaPCCUx7mYA9igsSCilZh5l+zGKdpyVyQ1mXKTXlYAtJF7eiRiJ
+	 eZ+EX5glSEUb4GAesp6SGo+IBuVyctb1P3NMkn8ohhNks/egYBbIAyQQX7u+B08gB9
+	 xwIBvcX9AUNzYl6dR9YaGFOMZOF4x5Q+i2sjXseXggBZV1/i7umCW/dlEsLq8ozVt2
+	 /7rS4rQ6SwZlg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F14BC3809A08;
-	Wed,  7 Oct 2026 23:50:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7756B3809A08;
+	Wed,  7 Oct 2026 23:50:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v5] net: axienet: do not report TX completions as NAPI
- work
+Subject: Re: [PATCH net] sfc: handle rhashtable walk errors in mport lookup
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179141700857.3739009.7908196051581049456.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 23:50:08 +0000
-References: <20261004065930.1004953-1-maimon.sagi@gmail.com>
-In-Reply-To: <20261004065930.1004953-1-maimon.sagi@gmail.com>
-To: Sagi Maimon <maimon.sagi@gmail.com>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- suraj.gupta2@amd.com, radhey.shyam.pandey@amd.com, michal.simek@amd.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- robert.hancock@calian.com, sean.anderson@linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+ <179141701002.3739009.18146882524432057763.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Oct 2026 23:50:10 +0000
+References: <20261003.final089.e0910b3ffb849fe4@gmail.com>
+In-Reply-To: <20261003.final089.e0910b3ffb849fe4@gmail.com>
+To: Sang-Hoon Choi <csh0052@gmail.com>
+Cc: ecree.xilinx@gmail.com, netdev@vger.kernel.org, linux-net-drivers@amd.com,
+ alejandro.lucero-palau@amd.com, lcy8047@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun,  4 Oct 2026 09:59:30 +0300 you wrote:
-> axienet_tx_poll() reclaims every completed TX descriptor in one pass:
-> it passes lp->tx_bd_num to axienet_free_tx_chain() as the descriptor
-> limit, and @budget is only used as the napi_consume_skb() bulk-free
-> hint.  It then returns the number of packets reclaimed, which is bounded
-> by the ring size rather than by the budget, so the poll can report more
-> work than it was given.  This was seen after TX completion interrupts
-> had not been taken for a while and a full ring was reclaimed at once:
+On Fri, 02 Oct 2026 19:47:40 +0000 you wrote:
+> rhashtable_walk_next() can return ERR_PTR(-EAGAIN) when the table is
+> resized. efx_mae_lookup_mport() currently dereferences that value as an
+> mport descriptor.
+> 
+> Skip error values and continue the walk, as the other rhashtable walkers
+> in this driver already do.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v5] net: axienet: do not report TX completions as NAPI work
-    https://git.kernel.org/netdev/net-next/c/f9d58127380a
+  - [net] sfc: handle rhashtable walk errors in mport lookup
+    https://git.kernel.org/netdev/net-next/c/2a1359aa651f
 
 You are awesome, thank you!
 -- 
