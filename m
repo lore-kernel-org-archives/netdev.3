@@ -1,77 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90833242B2;
-	Wed,  7 Oct 2026 01:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767A7322A;
+	Wed,  7 Oct 2026 01:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791334810; cv=none; b=GnHuOFdlgzeDSrxqgNvU+ZN0+jIuBXpnAE1GtRNFeFdtmSNofnFacYGGRfWvuJ+v8Rlntwu0uueqP/uFoXr8jTGYiEMNevkGUWeji5MDZ3tClE9PcgOfBG8eLhNf3pAqeKAATuE4EB8qnivqpw/GWV7dK5rVYuJJ18XS/9dCvz4=
+	t=1791334932; cv=none; b=Hr8mT0iDwyxUrWTq1MuSXUTIQx/vi9dAkKueORwuWH5iGLM+P8rUPSjIND8iHbAT0HDwNq4ct71pDS6cj6CgAM0kooI1Y3nQW2EfOUQTJCjFfo5eXI2y1+C9k0YfT5YwmYStcuovuT9o8XO7aZtTnQlEA00EETSMLHtC14893fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791334810; c=relaxed/simple;
-	bh=D+xBKRIaENSbRFifckQwzLmJ5l2aAjZ0NW6cWBKSG3Q=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hoRPGUgDiDbpRksRwsDqv3fGlBh/A5YNbhwr5ujt5TMbWPqT6Ke2dLfXQxfC3gI3tuNwqqwx2w1UeID10N9guAED4EpF6OVi5msIc833hx5KsBco9TkumbmFB7aT9m3J/ZTnD23CVCEjvy8ayI1LSY1c6/L92NRn31B0+ffuLpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyL5FY7m; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791334932; c=relaxed/simple;
+	bh=hxg+ABCJKg5Cxlenlv/t44xBi/bN/C7juasdDgFDgVE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZD+oAOKX9xIk+YonV7VJAXRcRJhiZdOupzZPGBj5JSpU5ShZ6jhY5/+wDJiwLexA+Cwye2D2BTfjR2pgxNMrpOAHR56kXxHyGVYlhX4lkv2sngB+Dy7+NStF8l8bWi1E20mXilm+gNDrFB/mBSGem+BIces3c/aSyV3X1cMF8XQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kp4PDKnq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyL5FY7m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837E31F0089C;
-	Wed,  7 Oct 2026 01:00:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kp4PDKnq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CD21F0089B;
+	Wed,  7 Oct 2026 01:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791334809;
-	bh=Yx/wstz8ZIVYVV4REYd9UpnZaMvU8O3AS3Fzl9EAhZU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=HyL5FY7myZ4jIpZ9uspML0sJQPLLRBvkdt/9xAHdDxryZAuVqX9b6OGqBLZtWni/5
-	 MrHpcc5BF5uWbBUE5phWejZDe3Ru+xRqtQ4AR8ETmnv8BgH/3FZLph76OxNzLzkmwl
-	 fu2bpQzzEpREnGt+FKhgWiVe7bwdH7OsaOM/nhqujcN34XuqmLkMVy1ImjCAQXwwxm
-	 euabTLH5E1YpoEPozE9pgVSytGf+Xrrf2NkOOzS+o5kTOjCkhDQ/iMpw2lxqN5mvAO
-	 RY4mbM/6oLMIpJHKItpSaO/TJw4OcrbCWCJVVHNmKIgpkjiXKLC9HzSMdV1w4jDuK5
-	 KDZ1HeuCzc/hA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 773173806541;
-	Wed,  7 Oct 2026 01:00:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1791334931;
+	bh=lIYw+68tQBShUC14SvVeLSwO6mPbK9HrG575Az8p2gU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Kp4PDKnqo0J/23bLkqvFzfL2HTVDM+J0OhbzRkl6j4JFVXuGpPZl2qDYtJNFP0E3V
+	 elaZYc4UVq8kPA7aqfl+O+zxL7FGKx39ifPnVWV5u30r/ZK4hUbNLjBEBNlnD89G5x
+	 UCc0ku32G9WCAlbz4IFvufJ4PxBDtBrkpwOg4Qfpa9FkNCQy2HiYvGi6/b3zFSdOLN
+	 BBe2VPTrZRtJ0iAw27nBYi7DDr3Ru/YUo1CejoXZzFLSk45YWGMV1kGUSlAf7vd9em
+	 Bv10bBQJixf3jRerI0oVvge40ctZfZVWcLBAFsHO+gbss9MQyYNHGy08Z4Z6Ksigj8
+	 f0pEiw5W6xIqg==
+Date: Tue, 6 Oct 2026 18:02:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Sagi Maimon <maimon.sagi@gmail.com>
+Cc: Joe Damato <joe@dama.to>, netdev@vger.kernel.org,
+ radhey.shyam.pandey@amd.com, michal.simek@amd.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ daniel@iogearbox.net, jacob.e.keller@intel.com, suraj.gupta2@amd.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] net: axienet: free outstanding TX buffers in
+ axienet_dma_bd_release()
+Message-ID: <20261006180210.03a15e52@kernel.org>
+In-Reply-To: <CAMuE1bGXcNwKKX1firkq6eEzymkrDOp8PnnowMzz97SibtpoSQ@mail.gmail.com>
+References: <20261004083759.1016519-1-maimon.sagi@gmail.com>
+	<asQ1pF9AAqOiEo3r@devvm20253.cco0.facebook.com>
+	<CAMuE1bGXcNwKKX1firkq6eEzymkrDOp8PnnowMzz97SibtpoSQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179133480802.2850681.15148271717862694854.git-patchwork-notify@kernel.org>
-Date: Wed, 07 Oct 2026 01:00:08 +0000
-References: <20261004174739.36179-1-umangpokhriyall@gmail.com>
-In-Reply-To: <20261004174739.36179-1-umangpokhriyall@gmail.com>
-To: Umang Pokhriyal <umangpokhriyall@gmail.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Tue, 6 Oct 2026 06:44:55 +0300 Sagi Maimon wrote:
+> Agreed on the helper.  As on v2, I kept the fix minimal for net, and
+> will send the helper to net-next once this has reached it, with both
+> axienet_dma_bd_release() and axienet_dma_err_handler() using it.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun,  4 Oct 2026 23:17:38 +0530 you wrote:
-> tun sets IFF_DETACH_QUEUE in the flags returned by TUNGETIFF when the
-> queue is detached, since commit 3d407a80b62f ("tun: Report whether the
-> queue is attached or not"). tap does not, so userspace cannot tell a
-> detached macvtap or ipvtap queue from an attached one.
-> 
-> Cloud Hypervisor ran into this when checking queue state on macvtap.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v2] tap: report IFF_DETACH_QUEUE in TUNGETIFF
-    https://git.kernel.org/netdev/net-next/c/60b5268444a1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Let's do this now, trying to keep fixes small is a bit of 
+an anti-pattern
