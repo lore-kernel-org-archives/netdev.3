@@ -1,198 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076273F106B;
-	Wed,  7 Oct 2026 05:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369E63CF209
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791350277; cv=none; b=CuallLui1Aoivw26VJj5v6kbsx5QxF/JviZ5rgmmp6REBQLEVZ6U3SZ2WDB6EkLSkfWIrH0BJJ4B2/ROgw9v5RcYO7c2pzRCLn1Kto4K+CnImPsxV3U2V9HU2ppzf9srPgBxeXuIlPrGFl1Pf0SigKVCwwXVQ9o2gjbhDHhyK5M=
+	t=1791350361; cv=none; b=Tvm7qkbNYCxagFHFKe1yoZaieBFFTJxaGNliN+X1pOai53hyZLuh84AcR4g21qOqv3H7ZP8xqG1lctBasReTM2kYFKu0BNtoSGnUkTIuvv5N72ynBp2bMUc+NQXezEslWhrWkz3ZMrN6+5dp0C9ClURn9r7mdkHC0KHFYJOfmAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791350277; c=relaxed/simple;
-	bh=17kHsZVFDJaDgq4ZoesnTXclcE6KyY3pqgFwnXY9K1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Prf1h0UIE9kM6yMlKH7AlIBocXd7UZhUen/Rb1IKkb9tWLK2QKogg+Z1Cvzq60xtGSGLux6+sEm7CN1iWArLfUOVj3nUDaACeCMcW8OMEjCTHJGM0hDoXYWHvXmk2YWp6uXAUYRzhIVoN7DEs/kNQNHRD4kKQ7C3IbL7t3zL+yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPU/A5o6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791350361; c=relaxed/simple;
+	bh=OCVM79OQ0gYHLdaqQv8qta6+bNhKB2aLceUH39dnv34=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ffLIvuaJq5ytEfQQFsf7KubI+xZtp4jYPfYrJqZqI+8/lJWuJ9RykmF96S3fyAZptqIVsOsUu1IDwwCk+XaHT5LtK0I988pr6W3heARLQHpO56zhXZjagDnCO/eF4qeFJM/tk6oJ3Nm2EYeN8MIAHSUA+iR8ZuoZ0a9RWpuUA+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=MJnAVkv3; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPU/A5o6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F9D1F0089B;
-	Wed,  7 Oct 2026 05:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791350275;
-	bh=qGlE0Dn055LtZkP2Rtvhwa3S6kVWWIlyJ/2Lm3KPA+k=;
-	h=From:To:Cc:Subject:Date;
-	b=BPU/A5o6V0g1snSniqH9SEIE2hKSBpjFE/dpT6qnu/qEROfZEWtfiXZUndfk/LlLi
-	 hsSLdtKQvq9VPpTpFF0jrUKl7vPyeaH2HnMWyObuEceCojrrRPLxs6f5WOxPndiyiW
-	 3kwV/ALsm/bBpNIhaCJZ+WlQ3wEqIrUGsKQjXtUN9tdLPQoW/sHLxOHaTsHU+w1zTf
-	 Ok22uMrEO7GmjqzsbC0J9jDke8cAwz3mgzXytlAd2oGI0y4tm1ABTPa0FC1IVHaJV1
-	 9xCGX442wBJQPXRk0KckpXKcbn/ynYV2M/U3883ZSO8Jnpa3dEm8NS1986JiFZj8fs
-	 tWKDyrKuu+2NQ==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	stable@vger.kernel.org,
-	Stefan Fleischmann <sfle@kth.se>,
-	Eric Dumazet <edumazet@google.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Bernhard Schmidt <berni@debian.org>,
-	Joe Damato <joe@dama.to>
-Subject: [PATCH v3 net] bnxt_en: fix DMA mapping length for padded small packets
-Date: Wed,  7 Oct 2026 07:17:47 +0200
-Message-ID: <20261007051747.455273-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="MJnAVkv3"
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-821a7bee9b2so1463551a34.0
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 22:19:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1791350359; x=1791955159; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pvmYYDXmzG7/tPrvhQnEVOtEDgOCZa7hCTXN0in/KSA=;
+        b=MJnAVkv3rGDGDc49dVr0im6dT1j1btosb3E53khR4ShjFRzmUNBRLp1U6L3mfh5sZ8
+         5zGXB9sxLwJu6Bxx8tyi6o1pwqdnbx4DbukvOYImXH3VQttpqYpGaPFjUQWPsNtvzQ9u
+         fzAJs6WvnsK4mSfl6IAP9byQLe0ptyYSs19Ww=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791350359; x=1791955159;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pvmYYDXmzG7/tPrvhQnEVOtEDgOCZa7hCTXN0in/KSA=;
+        b=QsnnWfNlyhprNRXjCQVuVfc/EjXBESdkCd/MCe0UFu+dUdlsIzV+8l1M4jVn79WV3W
+         9D4X74slh9E2IUHlPbi6jTcHxas2qtb99KjASqB4t85EWDJuKKbkeU6nXS2E5yHifMHx
+         tUggcGB6LxgTz8hyP/92l8SNx2tmWMcMDjULC9OElOPEChi7/Q5MQJVB6YtGcSP02rpm
+         D005M79LC3zlyxwjjkhIRdvbQud8w0K+kRVGZw5I4Ot/bhPMlBN/ob9gkMDDrDTxTGtS
+         du9oQUsqPcsQKafcyLyMdSvQ0kc+0S2hl/29T1dlUySMjHqIRpyJWClCwLCLqyILdS1D
+         5GVg==
+X-Gm-Message-State: AFuF++n9aUb84WUw518Of9oOmPdhcwXZNkAB72PEsJ5M8SQN6iIogHcj
+	7VV2xd18N6O/rlQW3PB5gLmCJLcJwhv/i6x1FuXVndz1dyvqBhrnfKkNdEGOlC8Sx9Y=
+X-Gm-Gg: AYBFou3s0t7oK2MWK+YyW58aorwNVjpLSFvqigUJKBTdIyegmG9A+lx+AkEG0bv0gm9
+	hlAYXcQyHtpBXwPyweE/UWeqNo/Dbhtc3Svx8Po3I6im0CU7oi7zNsxHMS3dMrPYmgLiYgmawzE
+	9r2nIj7FNsq+DnLWar/ZOvNuyMPaWy0Oorz63hUdtDHLv2zvwbjZUhkGbhNopsX5raUYiXz7iGr
+	ZTV6reNLKcugUCbnTRpc5re9Nz3kRUK6YV/3OWXfQovo/G6nWaC87kAoKGKVylfnpdlKiCKMLfF
+	lmRsm516RKeb8nZSbWZmFrrNorUC3ooLktHtVvt9D6VwriAothjYXS/IsMHG+IkRv7bplS/KUUJ
+	9/DOZCWYlyGIqi3MZPnVnvzE7aAuqB3VET802+0Quqc7Hx9Kr+p33Epm7SNgH3Asr+EH3sNMpu7
+	jzK01XL3ePxf+haA4xspayRUMKpkZwnDN8vMvORCzDDfom4ZqZBh8+sbJScEnvbF3WOyMSOt32m
+	vyBigriwdrzyOoFDR/p0JciJl0DR59scppuzAyxIBpmw31u95PopA==
+X-Received: by 2002:a05:6820:16a6:b0:6b5:ec3f:497b with SMTP id 006d021491bc7-6e7a65d5476mr1120525eaf.22.1791350359028;
+        Tue, 06 Oct 2026 22:19:19 -0700 (PDT)
+Received: from com-75606 ([199.47.143.7])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6e7947969bfsm1375269eaf.13.2026.10.06.22.19.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2026 22:19:18 -0700 (PDT)
+Date: Tue, 6 Oct 2026 22:19:15 -0700
+From: Kyle Zeng <kylebot@openai.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, outbounddisclosures@openai.com
+Subject: Re: [PATCH net] netlink: reset skb headers before unicast and
+ multicast filtering
+Message-ID: <asXWUz2NAm8bWF6D@com-75606>
+References: <20261006224232.50724-1-kylebot@openai.com>
+ <179132731939.2231598.7844526000530570814@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179132731939.2231598.7844526000530570814@kernel.org>
 
-Stefan Fleischmann reported Intel IOMMU DMA Read faults on BCM57412
-NetXtreme-E NICs when transmitting packets on VLAN/macvlan interfaces:
+On Tue, Oct 06, 2026 at 10:55:19PM +0000, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+> 
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+> 
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-  DMAR: [DMA Read NO_PASID] Request device [18:00.0] fault addr 0xfc499000
-        [fault reason 0x06] PTE Read access is not set
-  bnxt_en 0000:18:00.0 eno1np0: Abandoning msg {0xb4 0x41a} len: 0 due to firmware status: 0x2000001
-  ...
-  NETDEV WATCHDOG: eno1np0 (bnxt_en): transmit queue 0 timed out
+I have a PoC for this issue and the symptom is that it can lead to
+information leak.
 
-The fault address (0xfc499000) is on an exact 4KB page boundary,
-pointing to a DMA read buffer overrun.
-
-In bnxt_start_xmit(), packets smaller than BNXT_MIN_PKT_SIZE (52 bytes),
-such as 42-byte untagged ARP frames, are padded:
-
-    if (length < BNXT_MIN_PKT_SIZE) {
-        pad = BNXT_MIN_PKT_SIZE - length;
-        if (skb_pad(skb, pad))
-            goto tx_kick_pending;
-        length = BNXT_MIN_PKT_SIZE;
-    }
-
-    mapping = dma_map_single(&pdev->dev, skb->data, len, DMA_TO_DEVICE);
-    ...
-    dma_unmap_len_set(tx_buf, len, len);
-
-However, 'len' was initialized earlier to skb_headlen(skb) (e.g. 42 bytes)
-and is left unadjusted after padding. Consequently, dma_map_single() and
-dma_unmap_len_set() map and track only 42 bytes.
-
-Later, the hardware TX buffer descriptor is programmed with the padded length:
-
-    txbd->tx_bd_len_flags_type =
-        cpu_to_le32(((len + pad) << TX_BD_LEN_SHIFT) | flags |
-                    TX_BD_FLAGS_PACKET_END);
-
-The NIC DMA engine is thus instructed to read 52 bytes from a region where
-only 42 bytes were DMA-mapped. If skb->data ends near the boundary of a 4KB
-page (within 'pad' bytes of the next page), the hardware DMA read overruns
-into the unmapped adjacent page, triggering an IOMMU fault.
-
-This issue was exposed after commit 447cbe95ebb9 ("vlan: fix skb_under_panic
-and races when toggling HW VLAN offload") because reserving extra VLAN
-headroom rounded LL_RESERVED_SPACE from 48 up to 64 bytes, shifting skb->data
-offsets and potentially causing small frames to land right against page
-boundaries.
-
-Fix this by using skb_put_padto(skb, BNXT_MIN_PKT_SIZE) in
-bnxt_start_xmit(), before skb_shinfo(skb)->nr_frags is sampled,
-because padding might linearize the skb.
-This ensures skb->len and skb_headlen(skb) reflect the padded size so
-that dma_map_single() maps the full buffer and the descriptor length is
-consistent. This also removes the temporary 'pad' variable and masking logic.
-
-The padding is done after the SW USO branch, otherwise
-bnxt_sw_udp_gso_xmit() would account the padding as UDP payload
-and send it in extra segments.
-
-Note that SW USO segments are still not padded: with IPv4, a segment
-carrying less than 10 bytes of UDP payload (small gso_size, or a short
-last segment) is sent as a frame shorter than BNXT_MIN_PKT_SIZE.
-This is a separate issue, left for a followup patch.
-
-Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
-Cc: stable@vger.kernel.org
-Reported-by: Stefan Fleischmann <sfle@kth.se>
-Closes: https://lore.kernel.org/netdev/20261004122616.56714cbd@nargothrond/
-Assisted-by: LLM
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
-Cc: Michael Chan <michael.chan@broadcom.com>
-Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Bernhard Schmidt <berni@debian.org>
-Cc: Joe Damato <joe@dama.to>
----
-v3: Pad after the SW USO branch (Sashiko)
-v2: Move skb_put_padto() earlier (Sashiko)
-    https://lore.kernel.org/netdev/20261006042153.199444-1-edumazet@kernel.org/
-v1: https://lore.kernel.org/netdev/20261005023812.130639-1-edumazet@kernel.org/
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 25 +++++++++++------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d7728d0c5b6e63ee72de9dea54426bb4c8b7a9fc..631c759b3752b29c1a649eedb08f8bbc9f37a607 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -486,7 +486,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	struct netdev_queue *txq;
- 	int i;
- 	dma_addr_t mapping;
--	unsigned int length, pad = 0;
-+	unsigned int length;
- 	u32 len, free_size, vlan_tag_flags, cfa_action, flags;
- 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
- 	struct pci_dev *pdev = bp->pdev;
-@@ -536,6 +536,16 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		return rc < 0 ? NETDEV_TX_BUSY : NETDEV_TX_OK;
- 	}
- 
-+	/* Pad after the SW USO branch: bnxt_sw_udp_gso_xmit() would
-+	 * otherwise account the padding as UDP payload.
-+	 * Must be done before skb_shinfo(skb)->nr_frags is sampled,
-+	 * because skb_put_padto() might linearize the skb.
-+	 */
-+	if (skb_put_padto(skb, BNXT_MIN_PKT_SIZE)) {
-+		/* SKB already freed. */
-+		goto tx_kick_pending;
-+	}
-+
- 	free_size = bnxt_tx_avail(bp, txr);
- 	if (unlikely(free_size < skb_shinfo(skb)->nr_frags + 2)) {
- 		/* We must have raced with NAPI cleanup */
-@@ -672,14 +682,6 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- normal_tx:
--	if (length < BNXT_MIN_PKT_SIZE) {
--		pad = BNXT_MIN_PKT_SIZE - length;
--		if (skb_pad(skb, pad))
--			/* SKB already freed. */
--			goto tx_kick_pending;
--		length = BNXT_MIN_PKT_SIZE;
--	}
--
- 	mapping = dma_map_single(&pdev->dev, skb->data, len, DMA_TO_DEVICE);
- 
- 	if (unlikely(dma_mapping_error(&pdev->dev, mapping)))
-@@ -759,10 +761,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 		txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
- 	}
- 
--	flags &= ~TX_BD_LEN;
--	txbd->tx_bd_len_flags_type =
--		cpu_to_le32(((len + pad) << TX_BD_LEN_SHIFT) | flags |
--			    TX_BD_FLAGS_PACKET_END);
-+	txbd->tx_bd_len_flags_type |= cpu_to_le32(TX_BD_FLAGS_PACKET_END);
- 
- 	netdev_tx_sent_queue(txq, skb->len);
- 
--- 
-2.53.0
-
+Best,
+Kyle
