@@ -1,68 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A102C2EEE8C
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B5035C6BA;
+	Wed,  7 Oct 2026 05:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791351246; cv=none; b=qrTsHBJNscMkgru+SjQ1kfA7foI444qKx+kRVrFSqLEfYrR14KL8daSoP837WaKgRGmZULQIDFZrEXzUEtZPtXcqqhFcN+kNeQu74xg7yQwJpLD77xPJaR0FuXc4Nq0u5pesYBF82RMGoNVGcHoJ7KZ06J245yhR2JuGeinT7Sc=
+	t=1791351264; cv=none; b=FtaKWkLnSBfYouFkb3qsC7Zbsta6sn+zfmZeL3Gp+q14unYMNUCYTMlqyWnh4t8BPzOJ7nWA/AYb9vixQz3aY08O1rPBLLgsMnf9aaEm1mRSTKMjvi396sCQE+i0dK1xo3KQSqsevv1XpsibFy3JDHKLQAOUJpnjDWEg7sauFL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791351246; c=relaxed/simple;
-	bh=hM+mVkh6DUzaqlord+pHR4V4IOsuNvgQla3p6Gy7mJI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ikTUdnLvtegSH+/0cmPWIJNYcG4IovPTcSiHYg7YJuVegBFXZHGnLXK9U52MCZHvXf26maZMzko/9OvmpSygmmzp+WUg0tVae98MiIs+60NLyMsRFlTNzQ0KWT6cDAg+tlPB9HLSjSun8l2A99hu+Z8ZP3eTab2u+Nhid+bTswc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AsW67gp+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791351264; c=relaxed/simple;
+	bh=xyjZnBApJh1Pg/RZkDZQCAwfYmoEf1X5Cjwmtu80k8A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=AW/KP/2HF3pGgoc18ZV/b/WsgigQk6rohsZ3R8rWXaYFFPiu8hmUFK6e0bHvlokMaa887C6ENLYhPpYogTUYF82Cch096qC3aZeXo1NhEAdsA+h9NdELpYgjUNepXxW7wJzwJHo5drQ+8PAdHkakuKKe1KCS3rRjNlRWwUmRhdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jG+OzBpU; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AsW67gp+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791351243;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hM+mVkh6DUzaqlord+pHR4V4IOsuNvgQla3p6Gy7mJI=;
-	b=AsW67gp+vhfBBEfo+hEpjwmkYm/33gdNzUefsT1QJ+ZWcFLNzOcArGMKN0zliMAcav5Ou4
-	JN5rAGRq/PpVDD7QWDRRJASgZ3OcmQ10u3MAJX89Xta5OebVLr6I8w4WWkKwSdtX++gtOw
-	XLx5/2c+TmQ+DlDOctm3w3glgUzAN78=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-EKSvvjZpMYijab3Y5pu8bA-1; Wed,
- 07 Oct 2026 01:33:59 -0400
-X-MC-Unique: EKSvvjZpMYijab3Y5pu8bA-1
-X-Mimecast-MFC-AGG-ID: EKSvvjZpMYijab3Y5pu8bA_1791351237
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 53C551844BD9;
-	Wed,  7 Oct 2026 05:33:57 +0000 (UTC)
-Received: from jtornosm-thinkpadp1gen7.rmtes.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 14D3E180057E;
-	Wed,  7 Oct 2026 05:33:52 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: jacob.e.keller@intel.com
-Cc: aleksandr.loktionov@intel.com,
-	andrew+netdev@lunn.ch,
-	anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	jtornosm@redhat.com,
-	kuba@kernel.org,
-	netdev-bot+sashiko@kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com,
-	rafal.romanowski@intel.com,
-	sdf@fomichev.me
-Subject: Re: [PATCH net v2 1/3] i40e: skip unnecessary VF reset when setting trust
-Date: Wed,  7 Oct 2026 07:33:49 +0200
-Message-ID: <20261007053351.17571-1-jtornosm@redhat.com>
-In-Reply-To: <e1d160d5-7f70-4e41-8632-8a749e356e9b@intel.com>
-References: <e1d160d5-7f70-4e41-8632-8a749e356e9b@intel.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jG+OzBpU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=MQx9JXZA88cBn8283aVngoS/qRY5gYd6ZRe8OYcIRqk=;
+	b=jG+OzBpUB8rPVauyQjjSGIYzhWjLKampbH21p3auWoWTFpMUKV/0IrL+JdTbzh
+	u9GWTsZw3W1QVf9jFIO5SBO/WWHBluh6Z4023Z/X0My0UitHmqRSlDP3mh6Noqws
+	Bp/s9Jg4AbkEAk4U9TJLSrV1Zg5S0jqIUoMjx4+HGEWso=
+Received: from u2.. (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3xxp_2cVqlGm3Cw--.16818S2;
+	Wed, 07 Oct 2026 13:32:48 +0800 (CST)
+From: taozj888@163.com
+To: theo.lebrun@bootlin.com
+Cc: taozijin <taozj888@163.com>,
+	stable@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jeff Garzik <jeff@garzik.org>,
+	Haavard Skinnemoen <hskinnemoen@atmel.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v4] net: macb: rate limit netdev error info print in the data path
+Date: Wed,  7 Oct 2026 05:32:11 +0000
+Message-Id: <20261007053211.572073-1-taozj888@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,51 +50,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-CM-TRANSID:_____wD3xxp_2cVqlGm3Cw--.16818S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFWrAry3tw18ZF1rGr1xXwb_yoWrJr1xpa
+	yUA3s8Ww4kJr47Aas7tr10yF1rZr98tryUWrWkKw1Yqw15Zr90gFWagryY9FW8Gas3A3WF
+	yF1UZFZFka1kZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziFoGJUUUUU=
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3gCiamrF2YBOBgAA3o
 
-Hi Jacob,
+From: taozijin <taozj888@163.com>
 
-> Since the usual case is going to be a situation where we don't expect
-> to exceed these limits, couldn't this check be expanded so we would
-> still reset in the case where the filters need to be removed? I guess
-> its overkill and maybe we accept the extra filters.
+Now the MACB ethernet driver print the netdev error information
+directly by netdev_err(), which would lead to a large number of
+error information print if there was a significant number of
+error or just jumbo packets exceeding the MTU received when booting.
+For example, it would print a large number of:
 
-I think accepting the extra filters in this rare case is a reasonable
-trade-off. In the usual case the VF will be well within the untrusted
-limits (bonding setup typically adds 1-2 MAC filters). The reset adds
-~10 second delay, so we only want it when truly necessary.
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+...
 
-> This doesn't address the case where filters have MAC addresses
-> different from the admin-set MAC? I am not sure if that still leaves
-> a security hole or not.
+in gem_rx() by received a large number of packets without
+RX_EOF flag set, especially with unknown packet
+type that would penetrate the hardware offload for the IP packets.
 
-The PF enforces the admin-set MAC restriction on every new add request
-from an untrusted VF (i40e_check_vf_permission() rejects it). Existing
-filters with different MACs remain in hardware, but the VF cannot add
-new ones. I think this is not a security hole: the filters were
-legitimately installed while the VF was trusted, and the VF cannot
-escalate from this state.
+The unlimited prints here would greatly bother and delay
+the system booting process unless the source stop sending
+packets since they occupy the console output bandwidth and
+other processes have to wait for the completion of printing those
+messages.
 
-> This is an intentional change that I think should at least be called
-> out in the commit message. This *does* mean a VF which was previously
-> trusted could remain exceeding its untrusted limit in perpetuity
-> until it resets or self-removes the filters.
->
-> That does mean the VF will technically violate the trusted boundary,
-> but it can't get worse, and it was previously accepted while under
-> trust. I think.
->
-> I think this is acceptable, but we may want to clarify the
-> functionally changed behavior here so that it is clear.
+So rate limit the netdev error information print in the receive
+and transmit data path.
 
-Agreed, this is an intentional trade-off that was considered during
-development. As you say, the VF cannot make it worse, and the filters
-were accepted while trusted. And of course, a VF reset cleans
-everything up completely. If you think it would be helpful, I can send
-a follow-up adding a comment in the code documenting this trade-off.
+Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Cc: stable@vger.kernel.org
 
-Thanks
+Signed-off-by: Zijin Tao <taozj888@163.com>
+---
+Changes since v1:
 
-Best regards
-José Ignacio
+v4:
+
+- Update the commit message for the target fix id to 89e5785fc8a6
+as suggested by Nicolai Buchwitz<nb@tipi-net.de>
+- Update the patch with the changelog added in the patch itself
+
+v3:
+
+- add this change log since v2 missing it
+- drop the blank line between the assignment sentence and the commit
+  info
+
+v2:
+
+- update the commit message with the reason why the unlimit prints would
+  bother/delay booting process
+- update the commit message with the Fix commit id provided which is
+  suggested by Théo Lebrun<theo.lebrun@bootlin.com>
+- update the commit message with what packet type would trigger the
+  error printings more easily.
+
+v1:
+
+- initial commit
+
+ drivers/net/ethernet/cadence/macb_main.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 8e5c034dc3a4..ca60960bec36 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		count++;
+ 
+ 		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
+-			netdev_err(bp->netdev,
+-				   "not whole frame pointed by descriptor\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+ 		}
+ 		skb = queue->rx_skbuff[entry];
+ 		if (unlikely(!skb)) {
+-			netdev_err(bp->netdev,
+-				   "inconsistent Rx descriptor chain\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "inconsistent Rx descriptor chain\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+@@ -1829,7 +1829,8 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		unsigned long flags;
+ 		u32 ctrl;
+ 
+-		netdev_err(bp->netdev, "RX queue corruption: reset it\n");
++		if (net_ratelimit())
++			netdev_err(bp->netdev, "RX queue corruption: reset it\n");
+ 
+ 		spin_lock_irqsave(&bp->lock, flags);
+ 
+@@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
+ 
+ 	if (status & MACB_BIT(HRESP)) {
+ 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+-		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
++		if (net_ratelimit())
++			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+ 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
+ 	}
+ 
+-- 
+2.34.1
 
