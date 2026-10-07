@@ -1,110 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85683CC323;
-	Wed,  7 Oct 2026 15:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8368F49D5BD
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 15:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791386534; cv=none; b=GBcce3NblT8nz5Blaxrctkjgi5tSlwbcZiEy2BmUxefFZew57LDBlzK44oC7v7c4HrQveAd2rYsAH5xixPqnKsjzjK60vauYCDuNoinr+MpWXrR9U55Kz0WdNfIU8x00uPg7solsrZyMKs0awoeSye318Mj5DCgoZQO2edMoNDA=
+	t=1791386736; cv=none; b=f7s76/DqFFaBRO4d6l7v5NbF9lyQ/WNpUK0mW7OEBVYMyHeeVLkjkkyNevNySgEO9c+2eMiYEDFEugNWEwswZiGZZH1qC4nhP11KgXZOueopButTlifLki8v4nGdPyKbKf9FFlsY7v8so32a6+/FpWMuZOQ0QcIWVY1axS1FMsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791386534; c=relaxed/simple;
-	bh=xneb9de67g/zQpN8KvDJVfJi8Ni6Shft0/cTpp/tlfw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p2Gsv+klzdo18hEjv8twpNAA5tgM37Dirs5qs9+PKzQYWQmmlB5LmPeDgpZ/yNY/YJy6oPDKy80/xEMQdWoJwprz2nBATxLMjx1Hl88ozOy6irBlyd0Gn69YvEcZS9G9LeVp0+uXnQqW9lKCSduL82uHHAfSOVtcZIVPt6sW++M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJ1yW1PD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791386736; c=relaxed/simple;
+	bh=0AXZLLdm2ohwknzhkA9ri9/N1AJi8Gxcob1bx4Ao6b0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=rAhUPwAbhu3ggVoTeGnRva6rpl5Lg4Yaxp17cTLqHH+Oy3Cbm6R8pjOkJLraB3ypTxVZ4q/rS07pmMQn6jVHJnUSuAHa1uuHb9c0vjZVd3VIcNnX4ZQ+78PduHg4ktqxWRw4m7kF5sj1hus61ud4WQylVLGKwtEnc99SS4nCpz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QB2g6D/z; arc=none smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJ1yW1PD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167071F000FF;
-	Wed,  7 Oct 2026 15:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791386530;
-	bh=jgeXfWY/7QFIRQsY6WO+2PJ/DzNrLa7cA9ZWSAgL5Y8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aJ1yW1PDfpO28AIbMX1jNLKh+xQq6LxBLKFrUv42Y05G6RBi7JwGuIweIHppJ1NMG
-	 T6JM3pkDWis9+vykuou3utRuXFT0kYrWTCPZf/jOwrx7Zdj9Dqaq+4GFnNVyqFRolw
-	 AukOf7O8vAoAkgeNvh1ekOprOfz4ZZ6dVSwqMvkWHxR6yl/DNz7/MZSVaDjkVYuWpj
-	 WL3Sf+JEU/HLucD1V+2QezbMuAKqKLsfgHalO4oj+LjQD1a/y1q2jalaCAlOkM6YXY
-	 bAKVnkVfs4mM5TvNea9x1DZP3S3EZOqAKRCZPn3y6hme2R7/P7bf26KaJPks31huZ6
-	 tBypkr6mssP6w==
-Date: Wed, 7 Oct 2026 16:22:05 +0100
-From: Simon Horman <horms@kernel.org>
-To: Arnav Kapoor <kapoorarnav43@gmail.com>
-Cc: Edward Cree <ecree.xilinx@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-net-drivers@amd.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] sfc: fix stale kernel-doc member names in
- net_driver.h
-Message-ID: <20261007152205.GU83879@horms.kernel.org>
-References: <20261003055443.144554-1-kapoorarnav43@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QB2g6D/z"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-35115b52125so2426168eec.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 08:25:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791386728; x=1791991528; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SORwsxYnw8/qhwz5bddns+yWORRA8bOX7YyK5JS+Vw4=;
+        b=QB2g6D/zrVmkVp/nSjZp6USnipgf5c+eYYiNyJJwScpJaOqTpNtqJlkkatojJyGpnd
+         327Hhn/RASfaviUny2HSrsUd/W4jQh6fP26EqsEVKNq2kfdo2dqMxvU0+DPS4oWKMkHs
+         bYk93UC14AmpW7bvmnbfPiOmiQDX2Ua9z2oEFlX4w6xn0RuFthhfh/q5HmCeJiAngc2X
+         8/THZdIC4ptTpunddj27ZPOOdjHJr+A5V7jBoGO3mjf6cnHUO7eC9wPb2Y8JcDgroqmK
+         XBVP5hO7qMjrnZ5jKU5swRuAV+YjU6ctGT5pMrJFKBRsfoUz5GQXabRNDU+iUTkyXnwa
+         sirg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791386728; x=1791991528;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SORwsxYnw8/qhwz5bddns+yWORRA8bOX7YyK5JS+Vw4=;
+        b=eYteHycOav7x1luBFNpOHt6LG+0jO6gWpR7Sluj+FTj8wDovsaKRN4cYh5QWKq8Alt
+         5Ila08H1rR7djIEDhUofC54Ubl0fXUS4XXXCh9q8qbgrbjJGHA81QaT/3QxettT27b0s
+         tB1vxIVMnYd4N0hZyetqrjVC8XebqpHdXFxTu94k+dqsfiWF5m3wOyopQZuQo+eWLCCX
+         SAwvScMTKoiSoWio/QDwLRY/hBwcwS2Xr1sFgjoZ/gG2lddSOCAVs3iQXBoM8eiRQyKj
+         Tv8ya9QmIPkOzhYPeieyIDl2zvA73Jk2GyZtolYH8J+zHYK4WEEU/5Kv7N5Gtw4Mu91f
+         mJHw==
+X-Forwarded-Encrypted: i=1; AKwUvBzaFHgV+dzUfM4I/JbUVaw4u4jtwCoLdDv84/k/Xv2SDv9Av90/DdB/EOBC6Yp4waVMtD+djcE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIMw/MW5Bm5SlKPQE68EMhMnrZ/6C1a7aPKd4oC8oL3gm3DN72Z
+	s7kht3RHcCWpbof5gZ64otWC3/Jk8/EhMvM5ZDOaGNHG1wyiCqlkFzam
+X-Gm-Gg: AYBFou3WrE+rHZEBcdMknEKg00EpAYfH7aslJX4xWAsQjNBGggiUbberyjCQra1SBxa
+	wg6YeICz2IVlPPDTMPs2MgM9ssuJCDz1l0s9arJU7J3DBC2foW1vNfRxlycGYeSBo99S/SG1eWV
+	XOvneMM90TYg4Ou9Oi72vwyKAfZhHR+HkmPXghv1PK9qLiK6FuWAPpt4DP4QXXQTN5MCf9Uzsph
+	qYyPeubFejqdXQx+bqIn0hB83C8UGZ+8IpywPL4zMCQ8UPVTUjiXbWi68cTUpdHues5m5jlwHqr
+	/nS36euExY5+lZpErhzkKm8bSQ8f55NKYrJZnhOBNSduhVri54e/upIuWyIJdxHezUUNYXUebMl
+	Hkmoa9FzNMlfvs56+TFJLw3nFeRLZtcwXaPiGb2660Af7E7UjtnCNkR/+rx5vOiSjYXJg6eeI50
+	lHaZBNfKCA1YnLCp5aSN2qosUI4bNalCQ6xWGTB1TCDytyxVrtSZn17g2n+3R86Q53kku/3f5/k
+	+ml6HD/8rlHXCcA6D0D42oYYCFLP0pgMJk0J0iNP25csCT43xD+ByLef5UPC01EXOS1sdpqBwLB
+	3Ej/OR3TYOIMlG/ZYa4+59rBobdJXOG3K5qg5MC0JOCarrj23wWA
+X-Received: by 2002:a05:693c:83dc:20b0:33b:b0c8:73d2 with SMTP id 5a478bee46e88-3515dc54535mr3042630eec.3.1791386727534;
+        Wed, 07 Oct 2026 08:25:27 -0700 (PDT)
+Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([95.173.223.137])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515af26f10sm9234416eec.13.2026.10.07.08.25.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 08:25:26 -0700 (PDT)
+From: Joas Antonio dos Santos <joasantonio108@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org
+Subject: [PATCH nf] netfilter: nf_conntrack_sip: only honour Via: port in
+ original direction
+Date: Wed, 07 Oct 2026 12:25:00 -0300
+Message-ID: <179138670045.80227.4002052840715926590@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261003055443.144554-1-kapoorarnav43@gmail.com>
 
-On Sat, Oct 03, 2026 at 11:24:41AM +0530, Arnav Kapoor wrote:
-> Several kernel-doc comments in net_driver.h describe struct members that
-> have since been renamed or removed, and the EFX_MAX_FRAME_LEN() comment
-> is separated from the macro by the EFX_FRAME_PAD define. kernel-doc
-> reports:
-> 
->   Excess struct member 'state' description in 'efx_channel'
->   Excess struct member 'state_lock' description in 'efx_channel'
->   Excess struct member 'indir_table' description in 'efx_rss_context'
->   Excess struct member 'irq_rx_mod_step_us' description in 'efx_nic'
->   Excess struct member 'tx_queue' description in 'efx_nic'
->   Excess struct member 'rx_queue' description in 'efx_nic'
->   Excess struct member 'extra_channel_types' description in 'efx_nic'
->   expecting prototype for EFX_MAX_FRAME_LEN(). Prototype was for
->   EFX_FRAME_PAD() instead
-> 
-> along with "not described" warnings for the renamed members.
-> 
-> Fix the member names to match the structs, drop the entries for members
-> that no longer exist, and move the EFX_FRAME_PAD define above the
-> EFX_MAX_FRAME_LEN() comment, documenting its @mtu parameter.
-> 
-> No functional change.
-> 
-> Assisted-by: Claude:claude-opus-5-5
-> Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
-> ---
-> Comment-only change (plus moving a #define above the comment), checked
-> with scripts/kernel-doc; W=1 build of drivers/net/ethernet/sfc/ shows no
-> new warnings.
-> 
->  drivers/net/ethernet/sfc/net_driver.h | 16 +++++++---------
->  1 file changed, 7 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/sfc/net_driver.h b/drivers/net/ethernet/sfc/net_driver.h
-> index 3964b2c56609..76b48f96ec62 100644
-> --- a/drivers/net/ethernet/sfc/net_driver.h
-> +++ b/drivers/net/ethernet/sfc/net_driver.h
-> @@ -467,8 +467,6 @@ enum efx_sync_events_state {
->   * @irq_moderation_us: IRQ moderation value (in microseconds)
->   * @napi_dev: Net device used with NAPI
->   * @napi_str: NAPI control structure
-> - * @state: state for NAPI vs busy polling
-> - * @state_lock: lock protecting @state
+The Cisco phone workaround in process_sip_request() records the port
+from the topmost Via: header in ct_sip_info->forced_dport whenever the
+Via address matches the sender of the current request and the port
+differs from the sender's source port.  nf_nat_sip() then rewrites the
+UDP destination port of every reply-direction packet to that value.
 
-Hi Arnav,
+The check is performed for requests in both directions.  For a request
+arriving in the reply direction, ct->tuplehash[dir].tuple.src is the
+remote peer's own address and port, so the remote side can trivially
+satisfy the condition with a Via: line of the form
 
-I agree that neither state nor state_lock exist in struct efx_channel.
-But while checking that I noticed that it seems the documentation
-for @busy_poll_state is missing.
+  Via: SIP/2.0/UDP <own-address>:<any-port>
 
-Could you ask your AI friend to audit that aspect too?
+and force forced_dport to a port of its choosing.  From then on,
+packets it sends on this flow are delivered to the NATed host at that
+port instead of the port the NAT mapping was created for, which bypasses
+the port restriction normally enforced by the NAT mapping.
 
->   * @eventq: Event queue buffer
->   * @eventq_mask: Event queue pointer mask
->   * @eventq_read_ptr: Event queue read pointer
+The workaround is only meant for phones behind the NAT router, i.e.
+requests in the original direction.  Restrict it accordingly.
 
-...
+Fixes: 7266507d8999 ("netfilter: nf_ct_sip: support Cisco 7941/7945 IP phones")
+Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+Assisted-by: Claude:claude-opus-5-5
+---
+Tested on 602042bf29f6 (arm64, QEMU) with client -> router -> server
+network namespaces; the router runs nft masquerade and a "sip" ct helper
+on udp/5060.  The client sends an OPTIONS request from port 5060; the
+server answers with a request carrying "Via: SIP/2.0/UDP <server>:4444"
+and then a plain UDP payload on the same flow.
+
+  before: client receives both datagrams on port 4444
+  after:  client receives both datagrams on port 5060
+
+ net/netfilter/nf_conntrack_sip.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index 64bc440b1..ef655a0bb 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -1586,8 +1586,14 @@ static int process_sip_request(struct sk_buff *skb, unsigned int protoff,
+ 	 * router for one of these phones, save the port number from the
+ 	 * Via: header so that nf_nat_sip can redirect the responses to
+ 	 * the correct port.
++	 *
++	 * Only honour the Via: port for requests coming from the phone,
++	 * i.e. in the original direction.  The remote peer must not be
++	 * able to pick the destination port of packets delivered to the
++	 * NATed host.
+ 	 */
+-	if (ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
++	if (dir == IP_CT_DIR_ORIGINAL &&
++	    ct_sip_parse_header_uri(ct, *dptr, NULL, *datalen,
+ 				    SIP_HDR_VIA_UDP, NULL, &matchoff,
+ 				    &matchlen, &addr, &port) > 0 &&
+ 	    port != ct->tuplehash[dir].tuple.src.u.udp.port &&
