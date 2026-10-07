@@ -1,117 +1,63 @@
-Received: from tpecef21.compal.com (exmail3.compal.com [59.120.207.196])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F8E5B206;
-	Wed,  7 Oct 2026 07:43:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=59.120.207.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB15E39A06B;
+	Wed,  7 Oct 2026 07:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791358987; cv=none; b=GTbc60LcDe2s0wBygmpZCsfq4j+kZg+g+Zhb8sI5sgezR1w4valiadjh3eScWNIOg1z8LOv13eoQ6i5vgM07tXLRE8/Zi1pwnQVDp1SMhzoFQeubf/0OfAvRoDOjQtnhLOj6s79iWA77KXeFP1GWhKWbcHs4DT8EGz8hD0oEm/Q=
+	t=1791359013; cv=none; b=nN9gmMdv82xeqDlK+S/dp1Z0eQjiqgjEo1OYdZ/SPeUoUmb2OfMvHukKDIlgAZiSMsYsWuhd3vIAK+6lN9Xb0SAnJ3IVX5Gdezx0u9aydkfIGnP6rtiR+hLAebEvw8nOD1ayXinm4JTAPmueIbN0AqS4dM44sxXnaN6u0wXl4Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791358987; c=relaxed/simple;
-	bh=wqxFuqPylaUS1LXc+FHFuUQaNSePIvD5zwAoA2qmKOI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aWJ7GT+KI0zdUjC6CAW2ZSSrYDXcAhiR5R3jiIwYaD3h3G62bbLkYtHcunbMmKlGT0PW5P42/JdIO19CsIe2rDUmC+Pbe05JwskdxfwMQjh7yDVJZhIfo3URMMoeGZwKbJ+lkXDTZQV0c4tmNUiLg1i7p1gd9BHgM6ba1oYkeSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com; spf=pass smtp.mailfrom=compal.com; arc=none smtp.client-ip=59.120.207.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=compal.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=compal.com
-X-UUID: b76af376c22211f1b2470fb4f881575f-20261007
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.20,REQID:a9e13632-4abf-465c-8623-73c6d3a175e0,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:291e20b,CLOUDID:18104dfd-c023-4c3d-8087-71be3f81564e,B
-	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|110|111|836|865|888|898,TC:-5,
-	Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:n
-	il,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b76af376c22211f1b2470fb4f881575f-20261007
-Received: from sdmg12.sdbg.compal.com [(10.113.168.10)] by tpecef21.compal.com
-	(envelope-from <jackbb_wu@compal.com>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 430474169; Wed, 07 Oct 2026 15:42:58 +0800
-X-UUID: b57019d4c22211f1a9f9c99e036204b4-20261007
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.15,REQID:d4ed7548-1c97-47f8-a774-33b185806792,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:e276073,CLOUDID:db267256-66df-4ed9-ba9a-e32623d07625,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102|110|111|836|865|888|
-	898,TC:-5,Content:0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS
-	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
-	RC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b57019d4c22211f1a9f9c99e036204b4-20261007
-Received: from sdbmbx11.tpe.compalcomm.com [(10.113.2.135)] by sdmg12.sdbg.compal.com
-	(envelope-from <jackbb_wu@compal.com>)
-	(Compal Mail Service with TLSv1.2 ECDHE-RSA-AES128-SHA 128/128)
-	with ESMTP id 1315189451; Wed, 07 Oct 2026 15:42:55 +0800
-Received: from SDBMBX13.tpe.compalcomm.com (10.113.2.137) by
- SDBMBX11.tpe.compalcomm.com (10.113.2.135) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Wed, 7 Oct 2026 15:42:53 +0800
-Received: from SDBMBX13.tpe.compalcomm.com ([fe80::d3a3:2665:d306:e36a]) by
- SDBMBX13.tpe.compalcomm.com ([fe80::d3a3:2665:d306:e36a%11]) with mapi id
- 15.02.2562.043; Wed, 7 Oct 2026 15:42:53 +0800
-From: "Wu. JackBB (GSM)" <JackBB_Wu@compal.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "loic.poulain@oss.qualcomm.com" <loic.poulain@oss.qualcomm.com>,
-	"ryazanov.s.a@gmail.com" <ryazanov.s.a@gmail.com>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"wen-zhi.huang@mediatek.com" <wen-zhi.huang@mediatek.com>,
-	"shi-wei.yeh@mediatek.com" <shi-wei.yeh@mediatek.com>,
-	"Minano.tseng@mediatek.com" <Minano.tseng@mediatek.com>,
-	"matthias.bgg@gmail.com" <matthias.bgg@gmail.com>,
-	"angelogioacchino.delregno@collabora.com"
-	<angelogioacchino.delregno@collabora.com>, "horms@kernel.org"
-	<horms@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>, "Yu. Robert (GSM)"
-	<robert_yu@compal.com>, "Chang. Jeff (GSM)" <Jeff_Chang@compal.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-mediatek@lists.infradead.org"
-	<linux-mediatek@lists.infradead.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v9 2/6] net: wwan: t9xx: Add control plane transaction
- layer
-Thread-Topic: [PATCH v9 2/6] net: wwan: t9xx: Add control plane transaction
- layer
-Thread-Index: AQHdVi92CCkXrAbMD0Sm9T9DLl0WdA==
-Date: Wed, 7 Oct 2026 07:42:53 +0000
-Message-ID: <a742cc87225c4faeb288032b19ee7fe0@compal.com>
-References: <20260930-t9xx_driver_v1-v9-2-3248b9256956@compal.com>,<179110515297.434549.13978731531634280399@kernel.org>
-In-Reply-To: <179110515297.434549.13978731531634280399@kernel.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tm-as-product-ver: SMEX-14.0.0.3239-9.1.2019-30242.005
-x-tm-as-result: No-10--11.516100-8.000000
-x-tmase-matchedrid: TS/yG7dSaeIuv++HU7VXryRFbfQbCufdN0X64jGy2dZJTOxleK2tZuZd
-	NI5cmL7EsYqOZUHi5O+REYy4Kg5qG1PMBVDvxMolGG92L3YEEC5lA1b7yNeDy2Q68uvIXW1erf8
-	wz4ESzw8mU9XoXRWM6whejRXOq4Wu2SDCYhxkuA8nDrpxCH9HlxvlZxq14kYA8mB4uBzst3zyvS
-	e8Im+It52CWWcsc9G2eqHcSQLZw+WTSX0ss3g67VZB3ebKuqDZNIT72OEr+MihLyngtWA7kEN3O
-	J0Jv5josaRxslIYMb1VWWiPV6/GV6EW6WHtEhY9CqJ0RbJ3bb1qsngdQNC7B3vXWVrbHZDJWiYJ
-	b0MO1BmEizXChXdpjKRl3NoCwksl+f1v71xAsKSmuS2h5T5tPhE+ekmiD9TP8gZH2u1Mu0BT1iZ
-	2rzURygkcl33Ur3ZsZ0QO3a9gW7eZBafbv3rGvoWEan0Y08OtN/wwc82rdwQSCDdzAMeX/T9TGs
-	4C8xEFcYO7LzLWqS4ibGdC+CRqLVYHXldrySG2zv7Ee4WB+8PZzcYLrduMvDAzk4iHqLcpoJ5CW
-	l63ULR02BvmJZL/xA==
-x-tm-as-user-approved-sender: No
-x-tm-as-user-blocked-sender: No
-x-tmase-result: 10--11.516100-8.000000
-x-tmase-version: SMEX-14.0.0.3239-9.1.2019-30242.005
-x-tm-snts-smtp: 9FA824996A4421DD2595263C526FC5A78337750C22B7152F709394DC17E592A52000:8
-Content-Type: text/plain; charset="big5"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1791359013; c=relaxed/simple;
+	bh=N5rQ1HvkbnGVZXYoYzrUqHL48aCM+AmX0NrPHUy/dKo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M88W+g+UtL/ru/1+w+HCgJxO1X0Zp8IO4gIKuiS/2YfWldu6wIMwArLlp5zorujzOHjuRDQTH1savE/+uGRboJVZQrAZ+nJs8mdJNqx936D28yxGRhwGUf72mcz/Lg8YrmUidrIgMeU+5fplqtzj97ifL/abTvBdkedW0SBrWpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AAwvb6H6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nLbKXV7T; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AAwvb6H6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nLbKXV7T"
+Message-ID: <c1f48a5caa670ece21e73458787a62f97879346f.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791358999;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MXCuBoVHEq47ESs5wsAP5vYQrZJBRcyyNOmcXot4ByI=;
+	b=AAwvb6H6X76pmnw2SFLsGUaUN4Ris2V5y6ufDe3Jy31sBOB2ElOzEBi5YNOZG1RQaRIyHt
+	3WC1JzFmksgBwyuo7/OwgTyPSIc+Ozb2ad1CCW29J/mgA6yvML47NeAcZmgRPXu70bmNzf
+	6CwCPSh2a0Bt/zmPIn2PSQJyys7HnJLYEgRXFB5D1paMW7Vnywt9xJSC2orZTLiw4JqVjB
+	D8VaAYr0XsENVhLciVlH/aYnVE6bElfSlCf9R6zdlVkDJsmc0OFLnfmaftkURVhzQ/PuQG
+	MR1F3xa4LVjSgwgRlXCAxg9GRGCvMykJt75gK698wpyVoLLCYhY+DoiD0P4Gow==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791358999;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MXCuBoVHEq47ESs5wsAP5vYQrZJBRcyyNOmcXot4ByI=;
+	b=nLbKXV7TiIPPRLqQAZcpEEa1KC1ns92ajm6qxmSW/EmDGReOmmGFCoAoRYbpiUlvtlpHso
+	ZreauVAJKTmVviCQ==
+Subject: Re: [PATCH net-next v3 2/8] dt-bindings: net: Add SoC-e SWIP MDIO
+ controller
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ andrew@lunn.ch,  olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org,  pabeni@redhat.com, horms@kernel.org,
+ linux@armlinux.org.uk, andrew+netdev@lunn.ch,  hkallweit1@gmail.com,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, martin.kaistra@linutronix.de,
+ b.spranger@linutronix.de
+Date: Wed, 07 Oct 2026 09:43:18 +0200
+In-Reply-To: <179051210447.2160803.13761066598804865928@kernel.org>
+References: 
+	<20260923-devel-vstrassheim-soce-dsa-ml-v3-2-ddebafcb9ba7@linutronix.de>
+	 <179051210447.2160803.13761066598804865928@kernel.org>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -119,48 +65,140 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-VGhhbmtzIGZvciB0aGUgcmV2aWV3Lg0KDQpPbiBTdW4sIDQgT2N0IDIwMjYgMTc6MTI6MDAgKzA4
-MDAgbmV0ZGV2LWJvdCtzYXNoaWtvQGtlcm5lbC5vcmcgd3JvdGU6DQo+IFRoaXMgaXNuJ3QgYSBi
-dWcsIGJ1dCBhdCB0aGlzIHBvaW50IGluIHRoZSBzZXJpZXMgbm90aGluZyBjYWxscw0KPiBtdGtf
-Y3RybF9pbml0KCkgb3IgbXRrX2N0cmxfZXhpdCgpLiBUaGF0IG1lYW5zOg0KWy4uLl0NCj4gVGhl
-IHN1YmplY3Qgc2F5cyAiQWRkIGNvbnRyb2wgcGxhbmUgdHJhbnNhY3Rpb24gbGF5ZXIiLCBidXQg
-dGhpcyBwYXRjaA0KPiBvbmx5IGFkZHMgc3RydWN0dXJlcyBhbmQgaGVscGVycyB0aGF0IG5vdGhp
-bmcgY2FuIHJlYWNoIHlldC4NClsuLi5dDQo+IENvdWxkIHRoZXNlIGhlbHBlcnMgYW5kIHRoZSBp
-bmNsdWRlIG1vdmUgaW50byB0aGUgcGF0Y2ggdGhhdCBhZGRzIHRoZWlyDQo+IGNhbGxlcnM/IE90
-aGVyd2lzZSwgY291bGQgdGhlIHN1YmplY3Qgc2F5IHRoYXQgdGhpcyBwYXRjaCBvbmx5IGFkZHMg
-dGhlDQo+IHNjYWZmb2xkaW5nPw0KDQpXaWxsIGZpeCBpbiB2MTAsIHRoZSBzZWNvbmQgd2F5OiB0
-aGUgc3ViamVjdCBiZWNvbWVzICJuZXQ6IHd3YW46IHQ5eHg6DQpBZGQgY29udHJvbCBwbGFuZSB0
-cmFuc2FjdGlvbiBsYXllciBmcmFtZXdvcmsiLCBhbmQgdGhlIGNvbW1pdCBtZXNzYWdlDQpnYWlu
-cyBhIGxpbmUgbmFtaW5nIHRoZSBwYXRjaCB3aGVyZSB0aGUgY2FsbGVycyBhcnJpdmUuDQoNClRo
-YXQgbGlmdHMgaW50byB0aGUgc3ViamVjdCB3aGF0IHRoZSBtZXNzYWdlIGJvZHkgYWxyZWFkeSBz
-YXlzIHRocmVlDQp0aW1lcyAtICJJbnRyb2R1Y2UgdGhlIGNvbnRyb2wgcGxhbmUgYW5kIHRyYW5z
-YWN0aW9uIGxheWVyIGZyYW1ld29yayIsDQoiaW5pdGlhbGl6YXRpb24gZW50cnkgcG9pbnRzIHRo
-YXQgc3Vic2VxdWVudCBwYXRjaGVzIGJ1aWxkIHVwb24iLCAiVGhlDQphY3R1YWwgRE1BIGVuZ2lu
-ZSBhbmQgVFgvUlggc2VydmljZSBpbXBsZW1lbnRhdGlvbnMgYXJlIGFkZGVkIGluDQpzdWJzZXF1
-ZW50IHBhdGNoZXMiLiAgSXQgaXMgbm90IGEgbmV3IGNsYWltLCBvbmx5IG9uZSB0aGF0IHdhcyBp
-bnZpc2libGUNCnVubGVzcyB5b3UgcmVhZCBwYXN0IHRoZSBzdWJqZWN0IGxpbmUuDQoNCj4gVGhp
-cyBpc24ndCBhIGJ1ZywgYnV0IG10a19jdHJsX2luaXQoKSBhbGxvY2F0ZXMgY3RybF9ibGsgd2l0
-aA0KPiBkZXZtX2t6YWxsb2MoKSwgYW5kIG10a19jdHJsX2V4aXQoKSBvbmx5IGNsZWFycyBtZGV2
-LT5jdHJsX2Jsay4gU3VwcG9zZQ0KPiBpbml0IGFuZCBleGl0IHJhbiBtb3JlIHRoYW4gb25jZSB3
-aGlsZSB0aGUgZGV2aWNlIHN0YXllZCBib3VuZC4gRWFjaA0KPiBtdGtfY3RybF9pbml0KCkgY2Fs
-bCB3b3VsZCBhZGQgYW5vdGhlciBkZXZyZXMgYWxsb2NhdGlvbiBhbmQgb3ZlcndyaXRlDQo+IG1k
-ZXYtPmN0cmxfYmxrIHdpdGhvdXQgZnJlZWluZyB0aGUgb2xkIGJsb2NrLg0KWy4uLl0NCj4gV291
-bGQgaXQgaGVscCB0byBhZGQgYSBjb21tZW50IHNheWluZyBtdGtfY3RybF9pbml0KCkgbWF5IG9u
-bHkgcnVuIG9uY2UNCj4gcGVyIGJpbmQ/IFRoYXQgd291bGQga2VlcCBhIGZ1dHVyZSByZXNldCBw
-YXRoIGZyb20gY2FsbGluZyBpdCBhZ2Fpbi4NCg0KV2lsbCBmaXggaW4gdjEwIHdpdGggdGhlIGNv
-bW1lbnQgeW91IHN1Z2dlc3QsIG9uIG10a19jdHJsX2luaXQoKToNCg0KICAgIC8qIE1heSBvbmx5
-IHJ1biBvbmNlIHBlciBiaW5kLiAgVGhlIGN0cmxfYmxrIGFsbG9jYXRpb24gaXMgZGV2cmVzDQog
-ICAgICogbWFuYWdlZCBhbmQgaXMgcmVsZWFzZWQgYXQgdW5iaW5kLCBub3QgYnkgbXRrX2N0cmxf
-ZXhpdCgpLg0KICAgICAqLw0KDQo+IFRoaXMgaXNuJ3QgYSBidWcsIGJ1dCBub3RoaW5nIGFzc2ln
-bnMgY3RybF9ibGstPnRyYW5zIGluIHRoaXMgcGF0Y2guDQpbLi4uXQ0KPiBtdGtfY3RybF9wbGFu
-ZS5oIGlzIGEgZ2VuZXJpYyBoZWFkZXIsIGJ1dCBpdCBuYW1lcyB0aGUgcGNpZS1vbmx5IHN0cnVj
-dA0KPiBtdGtfY3RybF90cmFucy4gSXQgZG9lcyBub3QgaW5jbHVkZSBvciBmb3J3YXJkLWRlY2xh
-cmUgdGhlIGhlYWRlciB0aGF0DQo+IGRlZmluZXMgaXQuDQpbLi4uXQ0KPiBDb3VsZCB0aGUgY3Ry
-bF9od19wcml2IG1lbWJlciBiZSBhZGRlZCBoZXJlIGRpcmVjdGx5PyBUaGF0IHdvdWxkIGF2b2lk
-DQo+IGFkZGluZyBhIHRyYW5zIG1lbWJlciB0aGF0IGlzIHJlbW92ZWQgb25lIHBhdGNoIGxhdGVy
-Lg0KDQpXaWxsIGZpeCBpbiB2MTAsIGV4YWN0bHkgdGhhdDogc3RydWN0IG10a19jdHJsX2JsayBp
-cyBpbnRyb2R1Y2VkIHdpdGgNCnZvaWQgKmN0cmxfaHdfcHJpdiBpbnN0ZWFkIG9mIHN0cnVjdCBt
-dGtfY3RybF90cmFucyAqdHJhbnMuICBUaGUgbWVtYmVyDQppcyB0aGVuIG5vdCByZW5hbWVkIG9u
-ZSBwYXRjaCBsYXRlciwgYW5kIHRoZSBnZW5lcmljIGhlYWRlciBzdG9wcyBuYW1pbmcNCmEgUENJ
-ZS1vbmx5IHR5cGUsIHdoaWNoIGl0IHNob3VsZCBub3QgaGF2ZSBkb25lLg0KDQoNClRoYW5rcywN
-CkphY2s=
+On Sun, 2026-09-27 at 12:28 +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>=20
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
+>=20
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>=20
+> - [Medium] In soce,swip-mdio.yaml the MDIO controller owns the whole
+>   32-bit 'control' register (<0x200 0x4>), which the binding calls the=E2=
+=80=A6
+> - [Low] The only compatible is 'soce,swip-mdio-23-02', and neither the
+>   binding nor the commit message explains the '23-02' suffix.
+>=20
+> --
+>=20
+> dt-bindings: net: Add SoC-e SWIP MDIO controller
+>=20
+> This adds a devicetree binding for the MDIO controller built into SoC-e
+> SWIP Ethernet switch IP cores. The controller has a data register region
+> and a shared transaction control and bus selector register. It is the
+> parent bus for an MDIO mux that reaches the external MDIO interfaces.
+>=20
+> > diff --git a/Documentation/devicetree/bindings/net/soce,swip-mdio.yaml =
+b/Documentation/devicetree/bindings/net/soce,swip-mdio.yaml
+> > new file mode 100644
+> > index 0000000000000..3cf4bde0508ab
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/net/soce,swip-mdio.yaml
+> > @@ -0,0 +1,47 @@
+>=20
+> [ ... ]
+>=20
+> > +description:
+> > +  MDIO controller integrated into SoC-e Ethernet switch FPGA IP cores.
+> > +  The controller accesses multiple external MDIO buses through a mux.
+> > +
+> > +$ref: mdio.yaml#
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: soce,swip-mdio-23-02
+>=20
+> [Severity: Low]
+> What does the 23-02 suffix mean? Neither the binding nor the commit
+> message explains it. It looks like a YY-MM IP release tag. The DSA
+> driver commit in this series mentions testing an MRS 25.01 core.
+>=20
+> This MDIO block is part of the larger SWIP switch. It sits at
+> 0x200-0x20f inside the switch register window.
+> Documentation/devicetree/bindings/writing-bindings.rst says:
+>=20
+>   For sub-blocks/components of bigger device (e.g. SoC blocks) use rather
+>   device-based compatible (e.g. SoC-based compatible), instead of custom
+>   versioning of that component.
+>=20
+> Could the version scheme be documented, or could a device-based
+> compatible be used instead? As it stands, it isn't clear whether each
+> future IP release would need a new compatible.
+
+I will remove this suffix. For a child of MFD "soce,swip-mdio" is
+enough.
+
+>=20
+> > +
+> > +  reg:
+> > +    items:
+> > +      - description: MDIO parameter, write data, and read data registe=
+rs
+> > +      - description: Shared MDIO transaction control and bus selection=
+ register
+>=20
+> [Severity: Medium]
+> Is this the right way to describe the bus selector? This node claims the
+> whole 32-bit control register at <0x200 0x4>, bus selector field
+> included. The binding gives the mux no way to reach that field. There is
+> no #mux-control-cells and no mux child node, even though the description
+> says the buses are reached through a mux.
+>=20
+> Later in the series, the example in "dt-bindings: net: dsa: Add SoC-e
+> SWIP switch" covers this with a sibling mdio-mux-mmioreg node:
+>=20
+> Documentation/devicetree/bindings/net/dsa/soce,swip.yaml:
+>     mdio-mux@202 {
+>         ...
+>         reg =3D <0x202 0x2>;
+>         ...
+>=20
+> That range is the upper halfword of the register that mdio@204 already
+> claims as control. The driver commit "net: mdio: Add SoC-e SWIP MDIO
+> controller driver" says the same thing: the selector is bits 26:16, and
+> a generic MMIO MDIO mux manages it through the upper 16-bit halfword.
+>=20
+> The result is two sibling nodes with overlapping reg ranges for one
+> hardware register. This only works because neither driver requests its
+> region exclusively. soce_mdio_iomap() in drivers/net/mdio/mdio-soce.c
+> does:
+>=20
+>     return devm_ioremap(dev, res.start, resource_size(&res));
+>=20
+> mdio_mux_mmioreg_switch_fn() also does a plain ioremap() on every
+> switch. If either driver moved to devm_platform_ioremap_resource(),
+> probe would fail with -EBUSY.
+>=20
+> Nothing fails with the current series. There is no -EBUSY today. The
+> mux's 16-bit read-modify-write and the 32-bit read-modify-write in
+> soce_mdio_start() are serialized: mdio_mux_read() and mdio_mux_write()
+> hold the parent bus mdio_lock around both switch_fn() and the parent
+> access.
+>=20
+> The concern is the DT ABI. Once this binding is merged, moving to a
+> description without overlapping ranges would break compatibility. Two
+> options would avoid the overlap:
+>=20
+>   - make this controller a mux provider with #mux-control-cells
+>   - have the controller register its child buses itself
+>=20
+> Would it be better to choose one of these before the binding is merged?
+>=20
+
+Yes. I will address this in the MFD rework.
+
+The MFD parent will register both child devices, with mdio-parent-bus
+connecting the mux to the controller.
+
+As already mentioned in other thread, this overlap is wrong.
+The MDIO controller will use only the lower 16-bit half of the control
+register through readw()/writew(). The sibling mdio-mux-mmioreg node
+will use the upper half, so the resources will no longer overlap.
+
+pw-bot: cr
