@@ -1,74 +1,73 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010058.outbound.protection.outlook.com [52.101.193.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C4B24886E
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791351874; cv=none; b=kfPLRGbqz8Y+8UR4z8u/vv2h3rxWsIaKmV3AgsqS6mzW/+SxStkynr8+e06/3ReSi7wRvWaPzLPJNkS//LMTn2G0FNhdToqGVvzZbypJBNzWjCfQ7vHOaohrmY3mSwacXli9Xi6tfziEj9sBBV/jWrQmzbVIVVyzyRZ/I5U9KvA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791351874; c=relaxed/simple;
-	bh=0Ogw8BtodmC5Ix5C8J/zAjlS7sfRNaRzfBzPc4lLIIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oNFtuyKiQB+wF+5E8yOLGvxN0VYDIdn/OKkQcDw0hWzW0ywHd+PNNoV20vrJ4AnIMI6zYoFla0q9fPuyV2Hk3MJMlphFbQ7kMsncPgC970+/jxqFqn3KFMHoHi2/fKDbojdwxsoR4sUZFgdZoQJA85rc6yFEod2tVBZtzwoBf2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUMnXOxi; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729BE1DFDA1;
+	Wed,  7 Oct 2026 05:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.58
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791352141; cv=fail; b=pMW4SCJ/eJifNL5oG7XOcIVQUKTzD14JXU8f5kRkYG0+sovfsJ293CwOLuo6RcNqjaTjwTBSg8/Rav6aRCCLkluhFAbY1yVd8YEVhegxsLgK2o1DNpY57eX6BBg50XaQQ8wJjtVELsUnu5l9UQSljfwA0Ba7Lvdl9rrIqEKTLik=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791352141; c=relaxed/simple;
+	bh=Gj23Hx0vB6JwuZ/NQkY4i5AojyhEQguMuf8KDd8fjbE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LbATn4c+aM/GaLX2EoHXVyEdacM0sl3n8KbtT8C3jvMnoJjK/5MpRIHv+vENKaStnt77lXVaHN+NfnIaIwOPbvClPOCQ9fMqJYDzeh5DUqlsW5TvpvFl2OEdlnHA0sgw9pNHm/GiRkI2mXjE3OYQIK3wLdnSeGIEjhvzXR/2kJs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=npMmpVgI; arc=fail smtp.client-ip=52.101.193.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUMnXOxi"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3a706146559so1304251a91.2
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 22:44:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791351872; x=1791956672; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=daz3eZUr/IMYFuGgbc7Ro1q4cyp0U5dHFhBK7vBFCxE=;
-        b=QUMnXOxiB/9M/d1nLjhE6zeHOF9EMCFsB16bcPn4ulDusppRUfBULsHrB0744NLiAu
-         Bz6p5K4E1oJTAeAHUTsGrEfopktN2/TADnjHLOmhvTfmIzaMMVWBmq2nFVRNpfxUr5o5
-         y9IX7ekCoXXrvrN2YTZS8ORDQFsOK3lfG3EuTogCPxghe814oqeGjYEe0f3ozE0lNhdP
-         IPcZ4lC72byaQ0CF4V4zBSCx+fSyKajRdBINZtS40byD0EZUkclTvPV42FWJTqLCgPzW
-         4/DUAMK5Yaz7Su48QjQDmcNF8UAuBzi2Xq+DEmgsz8r70ze3JSkp3xxBVyN3+7YhRuwk
-         d57A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791351872; x=1791956672;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=daz3eZUr/IMYFuGgbc7Ro1q4cyp0U5dHFhBK7vBFCxE=;
-        b=uXIuVf4Pr+8xApZQZtsAJO5mEFkTb123EYEMyv4tkDEbY9SAdNlNHS09ECVYP105lL
-         lGXd4V8asFdfzEe1fLVT4FNpK94VFJRe9N96jQA4dTy3MWPJn/JfGk2n3O8OIU/RxEdz
-         MUQb8+ZJSBd9qDduRkXw0agpLhnBxKlYsVOslzHUetG6pxgPDK9N8xSHp8UvHkAfsyMf
-         DpcN7+RoCSQ0y1NnSLvXAWI4gdiKpCzc7IOy9g80mze2jLiNTLYDUQSUGCAPsX78roJV
-         4D8yw1CJQN8GNKJjQDyPkHC/GvBq1IayDpmXb5JTA6lZ8aESgwIhVuAVRJu586BpdA1+
-         IYGg==
-X-Gm-Message-State: AFq9FYL8i3/7x39bULMZWJckpuHwtXEz7mGxnOum/F0SSlYvX821IIPD
-	00wP/sjMxg0K8YpEoFB6O6vRNF1uATihHDUjhNyMXp1jekg93s9i6M6i
-X-Gm-Gg: AYBFou2riHweaHnBqXxQBv2Xp00hZp1vTlHZPiUGv1rdKBtAqaqufPVn4Ybd+iRxjMA
-	gKXV7izAZQz8tGimnSsgpFLajQDljmujI12Ogt6HTokA5a80w9R457LxVaOi6lYSZNsUIMOrFcL
-	W7NijMcBm2M39oD5/mUVGpCpp+HpI1JnxFx9+1wb/k7jXjH4BqMm3lFeJcc28FaY/A4wyKMHG62
-	W85TWQN9j2XmKuDFKIzdxUcv8wGDjDmO11Rsp9yDx7pplqnsXkeqPnLFPBuHIDgOQkDw4Fw0JWX
-	pYeRASJLy+9n5xYddXoBSWMwyw8pGVKq+4769UogS9fDQCZ/XnDqA2jQt30l1Mk4aM7VJti8qfd
-	IisAkv/YvY3isvALz36a6wk/c2vUEramvGHaujVZ9rfiDK5TBTrk3T8jtFopL/kB6l9MEc+lrsB
-	YdDxwsN+H+We4dU9tI3UaVHVjdCI0f7k6Ek7T++XM3sruH0VXFl8hsM8q08xNCvexe0JU4sOJz0
-	eWpcRUYIdlqjFem5Y/tmloS4dnrAEAylg==
-X-Received: by 2002:a17:90b:1344:b0:3a7:f45:5cb4 with SMTP id 98e67ed59e1d1-3a8a0ba9767mr1087881a91.26.1791351872273;
-        Tue, 06 Oct 2026 22:44:32 -0700 (PDT)
-Received: from obadmin-Precision-3680.atlascopco.group ([167.103.3.1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a89b3a2b36sm3161155a91.9.2026.10.06.22.44.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 22:44:31 -0700 (PDT)
-From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-To: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/net: test tcp_rmem lower bound
-Date: Wed,  7 Oct 2026 11:15:08 +0530
-Message-ID: <20261007054508.1059927-1-sahaj123.sc@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="npMmpVgI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hSm0xMiLMQ6tQlllwzQYd6QdeKx9ILu7rAjl2S0iEbLaebrktV+0/XOOQKeXpyY8zAIjBBpnkmEf2q3OifrYFD2fNNxKQcWYAGLtDaMJmN3l13Qm1wuyvdjC7gBEB3O9yV2Sf//JGmUCfydZnPyzX56tCf9PDVmwEpTuggvA0d+HGAD93P6uAoPhMtUK8g81pWbU6b9ZtGqA6RmDqWzFMUk5uUkWm8bJeKPLS8bMvO6zXOGmndkmQyyNG5zuqtbGaiRNg9nELf9mZY5eheL1XteFLLuh+DDn0oDpdlDlfYWh86O0R4b2dbQHV82UI/4OhUoY0wANyq/0Rqjo0exo5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=A+y6WpFaqquTAyp4n/98ZdRYvChT3qqeDCQJSzzxC4U=;
+ b=WYutH78lhFEDQx+MfbGPiGGC59Z2fmnrhLoc+JNprEbPSMuewXYuqYcjnur7zMhCe5vzXY8V1tD/IL0yf4VzU3emOioGRTTnpzGp+XoG4aM5Sws7dG0/ZdrhwrLzpoCN9wgbqwyBoenklTAm+6hGFMa/WpcFZHG8tBXY+HtD54YkKLOlSzacegPipJhSO7LgZe/Cs+QtKvISs4J0MOMASSQPx30egfZWglKoB3FeAYcRvRkHeBb0ejtIgYzQ0vmDLYR3Y/RRHhm0p311RHKyeneFJA4QeNmhpQnerugbVbRopbIHg3IRcWEN0WBRr4kX/36nwFfM5fbEPUbgMVw18Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=A+y6WpFaqquTAyp4n/98ZdRYvChT3qqeDCQJSzzxC4U=;
+ b=npMmpVgInfZ+hljhZYfIdNlj777MqUTOm3FBqEOiK9gdu7jjTjqZepaVIT+s36l6SP8X7vexaSP/wgfpbqrtTCV/dUH2WxaICcs/YnTXC3PZZRWoefAG5hrOKm4sgmvTTJkr7BkzoFDkgtFp8GCWdEPuIwI/r7xVYS9k3PziueY=
+Received: from DS1P222CA0019.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:44b::7) by
+ CY5PR12MB6623.namprd12.prod.outlook.com (2603:10b6:930:41::20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.23; Wed, 7 Oct 2026 05:48:56 +0000
+Received: from CY7PEPF000000EA.namprd04.prod.outlook.com
+ (2603:10b6:8:44b:cafe::16) by DS1P222CA0019.outlook.office365.com
+ (2603:10b6:8:44b::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Wed, 7
+ Oct 2026 05:48:56 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CY7PEPF000000EA.mail.protection.outlook.com (10.167.247.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.14 via Frontend Transport; Wed, 7 Oct 2026 05:48:55 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
+ 2026 00:48:53 -0500
+Received: from xhdvineethc40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Wed, 7 Oct 2026 00:48:49 -0500
+From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Michal Simek
+	<michal.simek@amd.com>, Harini Katakam <harini.katakam@xilinx.com>, "Florian
+ Fainelli" <f.fainelli@gmail.com>, Kedareswara rao Appana <appanad@xilinx.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <vineeth.karumanchi@amd.com>, <git@amd.com>
+Subject: [PATCH net v2 0/2] net: phy: xilinx-gmii2rgmii: Fix PHY data ownership and removal
+Date: Wed, 7 Oct 2026 11:18:42 +0530
+Message-ID: <20261007054844.529363-1-vineeth.karumanchi@amd.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -77,130 +76,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY7PEPF000000EA:EE_|CY5PR12MB6623:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5120395a-826a-431f-d95f-08df2436accb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|7416014|23010399003|82310400026|1800799024|921020|13003099007|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Gd2Z3LIRtQ2oP0IEL2McFEY04XEWZ5rt0H+G64iWIh2iOA5K+vcKB0OaMSChIjQj+1PKiw+W8T8Xtp4T4nRYSeJ4U8u/bBInruf7gME4iaFvxuylS7JvpZ1zdUUl/tyY0ujXw7OnMPbmnfQvJ9o+nOQNjCVcvMu3aKZ0qss3DFXVIPGXbBiOkpEHzki1Br1l2E8VwTR1+kDhmGQSiF3V5jetixIW+oDZzZ89Hmj28TKyFF9TCOGOoXhtSABSwKpIdBLhgIYbCyX9fBMkQPCT0k9g0jmEBuFudwvdXE59WaJAnqjVxfV0WB4Am2KX3kuEYw94SftjODiZazUl07GFzYe4pPYjSLPLJWR8XzE5KXW1dgw3ykYNKOpvjd3cq74JsiAqhoB6kCjhMiS+4ujgP5AhYphwkoe1FylR4/G6n0YzSUgxsCSA0IH96X1KZ48fV+IG+ma+EkgPrVKSRud7tDKtU31QKaVRznSjz5vdLT8JIxXmUxEKzUwqxTwJe+Qqa5zAWap43gOe+qnjVWqPEaXK7fZSNHSmB+O38Oqjmb0wK+cAN6pC2UCFmmVWOfc1H3AOrE9xTtyim3dXbSSQ0OgNPgSKh4UG6PQ2tJx1J5AfHsfJMAp9Skt+/t0ykBG1fc9fahKdAQtuhtJU4MgM3nZJ6OW6vQAELj0/dHWJ6QEpCDOMtHPBG2WREReACtX5ElknLRE1+lrkaPAfRBjOK7twyhOTkbrOKuRsk/MZBuKCY4Gisyt2ZQaOlO6ghpFA
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(7416014)(23010399003)(82310400026)(1800799024)(921020)(13003099007)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	JpxAPN7zKATCBIVG8n5MQlAPy7LtqDtriOcFkFb9Dahxr7yqo6oizGir2qBj90xSCKBV1hzXuaHN5NQVR7Mm3/YH+MNg40XpYZjl0omkeKnhgX2sbIM1AaxyQHAi6By0DwsCJ+xdU+rgFMsXOGo+c+ucoGZtp4Tri4ZilADoRB327e8H1wnRDV8KjloKxOlX2krA3MPmfIAea0fgM18L16D+W3BjiR9S+x9HzsSIIoNAl5ODUFV9vQbeDTfUtSEc0Sj0f8lIgvj23GNZW7M/LlZhsrEFVhehpuiJeZN0aofCm/X0PuRGHkSA97pETp8ymfX59SHbekblrH9EVZjNF4McohiDndbbYY4MlRgFz/F5RWIgGCaVZf47LQg0TsBl8ocWupMdGb7W2aOkVp91xZEFIcsC51/feUzuVxw1BTtG5cMMEnNwPUIBvk13k+e5
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 05:48:55.4878
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5120395a-826a-431f-d95f-08df2436accb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY7PEPF000000EA.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6623
 
-Exercise a tcp_rmem default below 4096 and verify that it is rejected.
-A tiny default can make TCP receive-window accounting space zero and
-trigger a divide-by-zero when the receive buffer grows.
+The Xilinx GMII-to-RGMII converter copies the attached PHY driver and
+replaces its read_status and set_loopback callbacks. This series addresses
+two problems in that arrangement: overwriting driver data belonging to
+the external PHY, and leaving phydev->drv pointing at freed converter
+memory after converter removal.
 
-Run the test in a fresh network namespace and verify that rejection
-leaves the setting unchanged.
+Patch 1 retrieves the converter private data from its embedded phy_driver
+using container_of_const(), preserving the external PHY's MDIO driver-data
+field. It fixes the overwrite introduced by commit 168f7a161608 ("net: phy:
+gmii2rgmii: Dont use priv field in phy device").
 
-Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
----
- tools/testing/selftests/net/.gitignore     |  1 +
- tools/testing/selftests/net/Makefile       |  1 +
- tools/testing/selftests/net/tcp_rmem_min.c | 78 ++++++++++++++++++++++
- 3 files changed, 80 insertions(+)
- create mode 100644 tools/testing/selftests/net/tcp_rmem_min.c
+Patch 2 stores private data on the converter's own MDIO device and adds a
+remove callback. It restores the original PHY driver under phydev->lock
+only if the converter's copy is still installed, and releases the reference
+acquired by of_phy_find_device(). This addresses the stale pointer observed
+during PHY state-machine polling after converter-only unbind. The missing
+removal cleanup dates back to commit f411a6160bd4 ("net: phy: Add
+gmiitorgmii converter support"). Apply the patches in order.
 
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index dacd36ed8455..44de061e3eef 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -48,6 +48,7 @@ tcp_fastopen_backup_key
- tcp_inq
- tcp_mmap
- tcp_port_share
-+tcp_rmem_min
- tfo
- timestamping
- tls
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 590b33e16d9f..595f0e6c38b0 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -198,6 +198,7 @@ TEST_GEN_PROGS := \
- 	so_incoming_cpu \
- 	tap \
- 	tcp_port_share \
-+	tcp_rmem_min \
- 	tls \
- 	udp_splice_checksum \
- # end of TEST_GEN_PROGS
-diff --git a/tools/testing/selftests/net/tcp_rmem_min.c b/tools/testing/selftests/net/tcp_rmem_min.c
-new file mode 100644
-index 000000000000..dd2305d7e599
---- /dev/null
-+++ b/tools/testing/selftests/net/tcp_rmem_min.c
-@@ -0,0 +1,78 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <sched.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include "kselftest.h"
-+
-+#define TCP_RMEM_PATH "/proc/sys/net/ipv4/tcp_rmem"
-+
-+static int read_tcp_rmem(char *buf, size_t size)
-+{
-+	int fd = open(TCP_RMEM_PATH, O_RDONLY | O_CLOEXEC);
-+	ssize_t len;
-+
-+	if (fd < 0)
-+		return -1;
-+
-+	len = read(fd, buf, size - 1);
-+	close(fd);
-+	if (len < 0)
-+		return -1;
-+
-+	buf[len] = '\0';
-+	return 0;
-+}
-+
-+int main(void)
-+{
-+	/* tcp_rmem is min, default, max; keep min valid and lower the default. */
-+	static const char invalid_default[] = "4096 1 6291456";
-+	char before[128], after[128];
-+	ssize_t len;
-+	int fd, write_errno;
-+
-+	ksft_print_header();
-+	ksft_set_plan(1);
-+
-+	if (unshare(CLONE_NEWNET)) {
-+		if (errno == EPERM || errno == EACCES)
-+			ksft_exit_skip("network namespace unavailable\n");
-+		ksft_exit_fail_perror("unshare(CLONE_NEWNET)");
-+	}
-+
-+	if (read_tcp_rmem(before, sizeof(before)))
-+		ksft_exit_fail_perror("read tcp_rmem before write");
-+
-+	fd = open(TCP_RMEM_PATH, O_WRONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		ksft_exit_fail_perror("open tcp_rmem");
-+
-+	len = write(fd, invalid_default, sizeof(invalid_default) - 1);
-+	write_errno = errno;
-+	close(fd);
-+
-+	if (len >= 0) {
-+		ksft_test_result_fail("tcp_rmem accepted a default below 4096\n");
-+		ksft_finished();
-+	}
-+	if (write_errno != EINVAL && write_errno != ERANGE) {
-+		errno = write_errno;
-+		ksft_exit_fail_perror("write tcp_rmem");
-+	}
-+
-+	if (read_tcp_rmem(after, sizeof(after)))
-+		ksft_exit_fail_perror("read tcp_rmem after rejected write");
-+	if (strcmp(before, after)) {
-+		ksft_test_result_fail("tcp_rmem changed after rejecting invalid input\n");
-+		ksft_finished();
-+	}
-+
-+	ksft_test_result_pass("tcp_rmem rejects a default below 4096\n");
-+	ksft_finished();
-+}
+Changes in v2:
+- Patch 1: unchanged.
+- Patch 2: restore the original PHY driver only if phydev->drv still
+  points to the converter's copy.
+- Patch 2: update the comment and commit message to describe serialization
+  against PHY callbacks that hold phydev->lock.
+
+Link to v1: https://lore.kernel.org/netdev/20261001074718.3944521-1-vineeth.karumanchi@amd.com/
+
+Vineeth Karumanchi (2):
+  net: phy: xilinx-gmii2rgmii: Avoid overwriting PHY drvdata
+  net: phy: xilinx-gmii2rgmii: Restore PHY driver on remove
+
+ drivers/net/phy/xilinx_gmii2rgmii.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
+
+
+base-commit: 23609bce9e1de525d1d0e73fc68c6e7971d0b49e
 -- 
 2.43.0
 
