@@ -1,48 +1,48 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD73D3BED46;
-	Wed,  7 Oct 2026 09:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CF343551D;
+	Wed,  7 Oct 2026 09:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791365715; cv=none; b=N6LjQLEWp667MR+fbfLi6eVuOOYfpDvssfTZb8U+OsLsN/OtPbLIHO4f/rxPHUnNQSHS4yrKh0B+XhyFMVv3VbZH4Xyyaz/7NaSzygXToPEG/g/OTfqTDTONeTYMrEa78nIht0VsHid6q8gQBpg9k7jADEQcRvWyrnh5NFdmKjQ=
+	t=1791365723; cv=none; b=Cn/vS9LnSxll6F4KTwq3QGkx2KMa0kmzfdWz/PRd9zFgZPnwUocL7yuwaxnqOgMtZIPwHW0kq6co3zW7a4gLnZt9BCP4XV6+9DMo6uuK0akOAAO+Q+3xtkW8qIRt0YF3JywNQe/FlvZXTxfnu2nDHux6UDBpG5KkoLHC3G/pvFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791365715; c=relaxed/simple;
-	bh=x33GYcxgD4o9EsetcPnw3Fs+SZymPq6pfIO67pnt/WM=;
+	s=arc-20240116; t=1791365723; c=relaxed/simple;
+	bh=1wjj8SkEDC2opjYTtIkRlUdnHarqkS6kTWy7QDSFG44=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bjtA8h2/Bp2Ph4xq3aUT0kwJQpZexDp7ZMpMhbnirgFNX4wtqdTBrIG8dCZy2iXpRPO9D2Un48EmIM+7g5MVJsfW86oAGMoFDQn7vShv8NEgooapb7I7zRJ1nWrjePS6qK0XcuZ6aZ5x9HKJ3eB0h5ZX5MmeOH7f2JVtSz/QqhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=eIIFdKEM; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=fFUByfB50pVRnUqP7M1+BUIFi/fRZrwWlSwfIy1K5QzGF4s8NZEZ2HrT1UgZYexKB9c2bXxAKvcfmRhZufEJTRVH2tNmMAjsR1MNjAeQHqt+SWey9HR/pF4dAfMl6XKkuNDc70dvM8k53grtUXVxQBFprF2INPJUOkSBt5EpFdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=yEfgSHrB; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="eIIFdKEM"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="yEfgSHrB"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id AB07E207E3;
-	Wed,  7 Oct 2026 11:35:00 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 8FB852082B;
+	Wed,  7 Oct 2026 11:35:09 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id bTEAd_uf5Alu; Wed,  7 Oct 2026 11:35:00 +0200 (CEST)
+ with ESMTP id x5mLv4iBdrqT; Wed,  7 Oct 2026 11:35:09 +0200 (CEST)
 Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 2499C207D1;
-	Wed,  7 Oct 2026 11:35:00 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2499C207D1
+	by mx1.secunet.com (Postfix) with ESMTPS id DE6DF207B3;
+	Wed,  7 Oct 2026 11:35:08 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com DE6DF207B3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1791365700;
-	bh=3Ihi1xxngT4BprpFxHTgTxKDTub8tuB/XUvhORPDom0=;
+	s=202301; t=1791365708;
+	bh=cNTZ2A7uaNfK6zWi+crV4PFigYwEp+LkrACYyeIm3VI=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=eIIFdKEMWZ2Gbz0O7/7msgWa4xME4Q5AsZGlnNy8oxz5RJlmDgE1vM7tKnA6kiKkx
-	 utfwbm2eRRCyE2Y3SaH2Fz7i/r9PbEecClorLcFp75/UofwFWieUnQNyR95/Y/dp6/
-	 27vHuby1/vwO+KzLpMDwaZeOK48rxWzWC25TkNOQIgqRel3ZXlrL9Eae96FK609RsS
-	 xcUBW6RyV2I8LyGHep4TznMhj5KlKT99JXu3HoZELCB50JZ9XKewGYvmwwyyS9pP6j
-	 tCo0VMqQ6AMoD6OuytQH1JeuFvP23CH173Ur8uflNROLq2mKdrNuBQJoZEKqbogdDo
-	 Q/E54nVdKfJDw==
+	b=yEfgSHrBMHzneI4ElfuOLJkOijdrewz+0baVkszoP8uOMSYOQVFe6BDgNwzJDnTqw
+	 Dzhuzs0Gqgd9wbg/jhowgl/WYSb1HGn7QKMXVkAcxN9vjaTJFavVuXiMEAPUDgk02I
+	 m2TaCjEaRDdCX98mORX7jTdGvI+sCgzc6MCffTOGbTJSlFwLDdNOLbn7H01tUpbEEr
+	 kyITvy1MLLR4SQicy+FifjyLfNYCC8A9riRJM1Ogec/jbuIQObwmq6YzSHrNiue1OW
+	 L8DBkYSP61Q1SHQGjHxxYvnNroMNfezizV4ZOvIZgiv7s25enBeBrOUmuboEceoVkT
+	 7omt/dNqNjpgg==
 Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
  (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 7 Oct
- 2026 11:34:58 +0200
+ 2026 11:35:08 +0200
 From: Antony Antony <antony.antony@secunet.com>
 To: Antony Antony <antony.antony@secunet.com>, Steffen Klassert
 	<steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
@@ -54,9 +54,9 @@ CC: Sabrina Dubroca <sd@queasysnail.net>, <netdev@vger.kernel.org>, Yan Yan
 	<evitayan@google.com>, Tobias Brunner <tobias@strongswan.org>, Florian
  Westphal <fw@strlen.de>, <linux-doc@vger.kernel.org>,
 	<stable+noautosel@kernel.org>
-Subject: [PATCH ipsec v5 2/9] xfrm: state: reject mark with bits outside its mask on ALLOCSPI
-Date: Wed, 7 Oct 2026 11:34:50 +0200
-Message-ID: <migrate-state-fixes-v5-2-d9d3d794553d@secunet.com>
+Subject: [PATCH ipsec v5 3/9] xfrm: policy: reject mark with bits outside its mask on add
+Date: Wed, 7 Oct 2026 11:35:00 +0200
+Message-ID: <migrate-state-fixes-v5-3-d9d3d794553d@secunet.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <migrate-state-fixes-v5-0-d9d3d794553d@secunet.com>
 References: <migrate-state-fixes-v5-0-d9d3d794553d@secunet.com>
@@ -72,32 +72,51 @@ Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-02.secunet.de
  (10.32.0.172)
 
-Like state add and policy add in this series, ALLOCSPI rejects a mark
-whose value has bits outside its mask.
+Same issue as states: an invalid mark/mask is silently truncated on
+insert, so GETPOLICY and DELPOLICY can no longer find the policy by
+id. Reject it instead.
 
-Fixes: bd55775c8dd6 ("xfrm: SA lookups signature with mark")
+The mark is no longer sanitized on policy insert.
+
+Fixes: 0b91fda3a1f0 ("xfrm: Sanitize marks before insert")
 Cc: <stable+noautosel@kernel.org> # avoid breaking existing userspace ABI
 Signed-off-by: Antony Antony <antony.antony@secunet.com>
 ---
+v4->v5: drop the now redundant mark sanitize in xfrm_policy_insert()
 v3->v4: added this patch
 ---
- net/xfrm/xfrm_user.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/xfrm/xfrm_policy.c | 3 ---
+ net/xfrm/xfrm_user.c   | 3 +++
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index f6f40ba713d5..0f6fcea28bcd 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -1575,9 +1575,6 @@ int xfrm_policy_insert(int dir, struct xfrm_policy *policy, int excl)
+ 	struct xfrm_policy *delpol;
+ 	struct hlist_head *chain;
+ 
+-	/* Sanitize mark before store */
+-	policy->mark.v &= policy->mark.m;
+-
+ 	spin_lock_bh(&net->xfrm.xfrm_policy_lock);
+ 	chain = policy_hash_bysel(net, &policy->selector, policy->family, dir);
+ 	if (chain)
 diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 0723d791b8b7..6b53373168b0 100644
+index 6b53373168b0..c1571c7a2315 100644
 --- a/net/xfrm/xfrm_user.c
 +++ b/net/xfrm/xfrm_user.c
-@@ -1916,6 +1916,9 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
- 
- 	x = NULL;
- 
-+	err = verify_mark(attrs, extack);
+@@ -2307,6 +2307,9 @@ static int xfrm_add_policy(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (err)
+ 		return err;
+ 	err = verify_sec_ctx_len(attrs, extack);
 +	if (err)
-+		goto out_noput;
- 	mark = xfrm_mark_get(attrs, &m);
++		return err;
++	err = verify_mark(attrs, extack);
+ 	if (err)
+ 		return err;
  
- 	if (attrs[XFRMA_IF_ID])
 
 -- 
 2.47.3
