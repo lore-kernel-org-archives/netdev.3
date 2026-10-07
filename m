@@ -1,103 +1,71 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B67733A6F2
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 01:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838A317A2F6
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 01:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791336792; cv=none; b=FajAfuj28DggIHw9eaf2THWxKCN0NTKNykXeu7n341GqwVNP9lSbAhyA7hnM9TzzyUdx0NJ4BBwYWj7szr84X98uaoVjiR5X1nP5ps2DkEnJRb2YdiYLAtYdg1SUgD11Lb+6J7RdDSFttDZy2Mr5hVqm+cXRrR9d+zZYdsA71tU=
+	t=1791337087; cv=none; b=C2CCsFvhCYH0/nNYRtUoiHZ1yBPK7pv3zs+D1i1hwrJCUrE93CE836DcMousQHEsLNC0/n5ua/zqWrNlzi51Iu9+BTkXosCEA1+u5YwUMNg+tx8sHpM8o2NzpuYkVVYsottd3zKS2/G0arsKBvIFHV2NK/BMBr9OevFL97Ahd/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791336792; c=relaxed/simple;
-	bh=yT4qk//tC5xJd5Q78Wf4BjrbWUdWEvx1U2HF6URaQYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KiSFR+gNnRnMh4hxOl94wS+FwNN7G14f+aT//ruYYkAR161yoCuG2VYLlZ5FDVzLNdRS1IgkAYkCZCPWi3CEY7Oq2/TpU7AVXb7tqisNlrdiywMm6Gi3dSsgrmgO+CB3CCjlqGnb8cvIky9S/FTmybpYYbaO9UV1Qw4ROsdk4QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fC4jiT5R; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791337087; c=relaxed/simple;
+	bh=1Q/KOcJs5etq/nzIcZQAPMnD8CA9HapaqYjT6YeRf6k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mka8GZ14DqOJWlmR/exkoWdN2/9yMKso3rPoTjGzu4MGvtqmx6eUwqQo5WTiJAaBMkx2BC4iMwhIx7qQMoG3zvo2OffXg7cYvAL24WpfU+OzKBi7qcHBnDnRgusLFsrmY2PLBNR4Lq6U+4QzFu40v0Z9z6r1Cj4oKJLb7b8mowY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MCDW5Udp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fC4jiT5R"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2dd9cbb661bso10637505ad.3
-        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 18:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791336790; x=1791941590; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Kt3VjxAsGdSe7dCl89WOHYsP0HUrLZc3A78+p+uWquA=;
-        b=fC4jiT5R6+4CtccnjJz79W3VL4sYdkWB87WBVTVWsmwTdsPDvwyzlQ6Tx3G7G3ZMjT
-         MXw+0hsEpLVcpuerGXlg/9zzmLv+BPJ84Pf/uLNfIRvcCsYj+lmJfg4a2tveAqaM40SE
-         DNxrCQ9V7WLOHTj0RA0HNtAPZoyL/ZOWZxgZ1cHgAYX0XRn6Lylclc0oK7tjNILG7MuC
-         cT4LbVN6ZbAVTRRCqThsmdzc1cZLeB4mvPPGTZF1XL3fGLWYGmfDTzeBMniZE+dpz2Xc
-         zD/8eNSG+q+DRK5QPt2l/kLyG8PZtAVSsmD72VgVeed+JimrcOqxQ8mkidjRtccEskIc
-         INUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791336790; x=1791941590;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Kt3VjxAsGdSe7dCl89WOHYsP0HUrLZc3A78+p+uWquA=;
-        b=Y1hsbZNusjBeOwzFN48w5kEv0Aa9Ux5TCVCu1MRaelfMFx/Rig5xwGFP8M1Zynwo93
-         4mMghsKIVlXKDuIopBScFT05aeGUw6/261uKDs4yDFoEaC+g7cvQzkabDALEnqAWn0qZ
-         mFTHxNLTvOiaM4nAcsyNfqdfSLwAFiHmwUQQD+qRGV3BpbYGRQuAGyvGswXPfDKzrXR0
-         ZSzB0SMOaaSGJ8cVMkFQD1PF8RM3l9AtaDX5ufxGuemsfVvVh7wq/eBjo+yeoNQtUyVQ
-         zCJ8Njf9mjwVbIo0NVP+pQdJs5Qtu4K2CjhNsOcIsbBxqJf+MHbaq2ok8v238BGLerPk
-         OYyw==
-X-Forwarded-Encrypted: i=1; AKwUvBwfAZz7iTOBFl1bSuaVzWyX2pQlm+fhsnlA9RbrcPqXUHSz7MnRsJmCF68Szfyed2YiS9DTzvY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL6l4bDsxIw+HSPHWfQMJ2en00z8Coa271YSPd48z4a3ABjg7fw
-	3BHEHkTF7gcyLR8vOH9zSi7klRLCgkKPUtUlXgbuQ9rrlQp2ekiUVlIU
-X-Gm-Gg: AYBFou09xzJwM2sarlYwE1086z9sAlyQmDJBQjYxEKHm/FVLYrJptrOysVmn1Cf+aV3
-	zSwYk0odPsafu12V8XaVbZaNnlVe/3cHwFWwOE0OZk/GBp7EsEJAqn8VhRZCKhiwuRZ1XtEiy80
-	vkjB+53Tq8R+AvQu8Fk+ShjUVfYGli2NRdXv0xkEgrY/hI9+ljwvG/gTmYY0dFuQMA9h02m3Eo6
-	96aNLk2a1qWwkea33F6wHXzaf/+BEpppXHw9SHu1mrj9JWiswVa3ZYNV0VhevBqOrDNApy3mx6g
-	bsjgBSrqdJTM2ShPVeKFwqw7j9sWVRdqm3ifGmlUceViNFZ5QGA4BguOkaI719k7pJjqxGx+J3Z
-	abIghEfU1331PdB9SwdE7fJKV4Q46YRExWKuY697fWg+HcNfj63E7x60hcUkCk8VtS95r49qvWC
-	Iuj3bZH2pgtZppBYzppAWpWaA4O/SsumU6El9e498JsPQCOZQxZXPd3ZuQclw82W3OOs5cc75Gq
-	4tuv66HNv5Y
-X-Received: by 2002:a17:903:1b24:b0:2e2:ca04:fdae with SMTP id d9443c01a7336-2e6003c35admr8419835ad.30.1791336790576;
-        Tue, 06 Oct 2026 18:33:10 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e604852079sm2958395ad.60.2026.10.06.18.33.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Oct 2026 18:33:10 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	kuba@kernel.org
-Subject: Re: [PATCH v2 net] netfilter: conntrack: reject nested ctnetlink master chains
-Date: Wed,  7 Oct 2026 10:33:01 +0900
-Message-ID: <20261007013301.2524415-1-4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <179127347858.434549.11821822167265441355@kernel.org>
-References: <20261001180224.1018290-1-4ncienth@gmail.com> <20261002165601.1754467-1-4ncienth@gmail.com> <179127347858.434549.11821822167265441355@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MCDW5Udp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80E41F0089B;
+	Wed,  7 Oct 2026 01:38:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791337086;
+	bh=q+q9CxwZyoZFVTt1wzj2eQJlP+VcEUlWimtLQHNtGIw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MCDW5UdpIsv43jlq/vyPr3+RGprMpdXiraczdv1+553/geT4bE0dfVBJbxFh1/9eA
+	 GrAiu72QoVljuXoQ2U16OlRi/eCnYzCWjKT9BijYE05X1M6cQpN2tahnr5hh4UpQCj
+	 QjfyYHarIEVWbeWimUOPIPV5P0/D9qWP2jrK8T81G/HIenaVEfjmC0W8/nSX2JPvVb
+	 RR1wMBFBQaDqQkIIcca4R8hhzDjeiCFTixfOkUcZVVOMxG1AIIqRILJHbvDLty7G0F
+	 aNCTUaLOgAHmEFUV1Z/BpTh3gK3AEKRnmyQSGCU0qtc4nx87EM+IABVBg4QmBqVhGp
+	 bip1G8v8PNwNQ==
+Date: Tue, 6 Oct 2026 18:38:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Justin Chen <justin.chen@broadcom.com>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ bcm-kernel-feedback-list@broadcom.com, nb@tipi-net.de,
+ florian.fainelli@broadcom.com, opendmb@gmail.com
+Subject: Re: [PATCH net v2] net: bcmgenet: if UMAC was suspended in
+ SW_RESET, restore it to SW_RESET
+Message-ID: <20261006183805.125a09fa@kernel.org>
+In-Reply-To: <61e7e89a-c04f-4700-8387-5cbe776460ba@broadcom.com>
+References: <20260930230634.3132729-1-justin.chen@broadcom.com>
+	<179080972360.31693.266631430009737406@kernel.org>
+	<20261001184130.2b7ab18a@kernel.org>
+	<897ffc5a-48ad-4516-89f2-0cdac082d7a8@broadcom.com>
+	<20261005182721.776af8b8@kernel.org>
+	<a1dc7c80-acef-479b-ad03-dc83164d77c2@broadcom.com>
+	<20261006154407.64ecac6b@kernel.org>
+	<61e7e89a-c04f-4700-8387-5cbe776460ba@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thanks for the review.  All three points are valid.
+On Tue, 6 Oct 2026 16:05:48 -0700 Justin Chen wrote:
+> >> Sorry Jakub, I am not understanding what you are asking for. I believe I
+> >> answered the questions above? Or am I missing something else?  
+> > 
+> > I mean other threads, immediate example:
+> > 
+> > https://lore.kernel.org/all/20260929203400.1588868-1-justin.chen@broadcom.com/  
+> 
+> Hmmmm. Looks like those missing info emails didn't hit my inbox. They 
+> were sent as I can see them on kernel lore... Let me see what happened 
+> there. Florian submitted more patches, but these should be the only two 
+> inflight from me. But yes, I will answer on the bcmasp patch as well.
 
-The nft ct expectation object can attach its internal helper to an
-unconfirmed expected child, then arm the next expectation with that child
-as master.  I confirmed a bounded four-entry chain through this path, and
-current net retains the same unchecked transition.  An nft helper followed
-by IPCTNL_MSG_EXP_NEW can repeat in the same way.  The H.323 Q.931
-call-forwarding path also propagates its helper without a depth bound.
-
-The CT_NEW compatibility concern is valid as well.  CTA_TUPLE_MASTER was
-introduced for conntrackd replication, so rejecting nested helper-created
-state changes that interface.
-
-V2 is therefore incomplete and should not be applied.  I have reworked the
-replacement to make master destruction stack-safe while preserving nested
-expectation semantics.
-
-pw-bot: cr
+Thanks. I wonder if it's something about Broadcom email filters or we're
+running afoul of gmail(?) with the rate of these automatic requests :(
