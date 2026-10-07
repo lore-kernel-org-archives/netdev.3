@@ -1,85 +1,85 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271104825C1
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C06D4E1C7F
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791399286; cv=none; b=l3yYCFKXf7vtSqtOFtWjakAGOaW2HFs8aWu7uxNSVIOWEH0bhmOjcrzCskms5M6xORYV5kg5l8z9Kkq8p/cirN+On9icr/b9KPrnDQVmMPVtrLWi8tvIIAdIPYG4DyZIkG39ikQgb/ZVvdYqMSxZCgjCjbfekP/kc3lIaxB0cCo=
+	t=1791399339; cv=none; b=K7fq7vD/4L1rnt7pnacxrmke/7TUGXa8jvwKBzIp0VJz8ZXcU//Ksc2KKFwfuR32Yomp4FMuzmU0Ac0OrP8D/fBDPByPV9JHrsv3mKlK/IVt4FP4egvTR2B8+R6dTOVrTcB4N0jhA0w6aXM5klnfgudS0ob9vd4BILHwbQNCffg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791399286; c=relaxed/simple;
-	bh=AK42eznXKQ8vp4qoeFBNkSEXkAz6wgJrds1tKvWlwmE=;
+	s=arc-20240116; t=1791399339; c=relaxed/simple;
+	bh=uu3JqeXMG5UefUJQhmZbsoi7zLbrkvzE3trJopZIyAQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cQr8g+H5gJHqxhyDJPZMCQrkYe9E6iK40UxwmoYluE37gVB2LZbu0Nap0C+6T2IIesTA8dk1akrLWXTAai9j9UFWbMRJpGzr20KZbocH17NzvP0U/Ytwv+Q+cQqUzUbiWyUXFJArz47KO3Ltfdn3E/6oWdhIzVzBkjhzUqASPXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQkuip6X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QugDWpLe; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=YoGzXCzElOnCg6k6Kzj/M2v34QZHvLACsx7GV9OZHL3wp0Rv991TSFtdDzqvG5TDZwG0UkAzAUPD+p4EWytLvgfZgwB4mCHeYBPY8D5GCuGgOXsTpnF02yAf7fXUraVaGb8IA3vvbU5X1NWp3PWsEAeVtsXrcZ9+x5dMsWA5S7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ELfD4F8x; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sILQRoFd; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQkuip6X";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QugDWpLe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ELfD4F8x";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sILQRoFd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791399284;
+	s=mimecast20190719; t=1791399332;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=i/1Vqte/TZjvdrxy/PBXWIQttCIUhwAGvoe9ObRme4U=;
-	b=XQkuip6XTvmknplbQJJmc3c8Xpn7pTBonSE+w4cY7aYFNi5HgfSY4LRoQ/M4yv5tk8XPsO
-	vWG6wXuCk/cI0OTV2fj8Omsa/I5cGZ2Axlnegz77EF3QItQKZs2Zrqj7Pqcn0QzQLfaZK5
-	J5n8Hh8hX9hK6KcqJeVipVPbqf1Z4+Q=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=g8Xbta3BKJJZV2ZdH9m9Ms9T8qVfphnBRdOND2h8Bsc=;
+	b=ELfD4F8x2MujP0yuB9rQp1Ilch8Zp935YLimOFPwd3IjDuKRiHkk5i+Z8X8a9juicycVPg
+	z9+5b16LBUVkf/rY4nheYi41glKdiCsrJ+6Bvyoj9Hk4QWRda5jQ+VZFpAe47nr1ciKGx0
+	NNGELVg2c6Ef4clWoo7PrJrWhBWrulA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-505-_G8OYdd0Pua9iJqMyM77PQ-1; Wed, 07 Oct 2026 14:54:42 -0400
-X-MC-Unique: _G8OYdd0Pua9iJqMyM77PQ-1
-X-Mimecast-MFC-AGG-ID: _G8OYdd0Pua9iJqMyM77PQ_1791399281
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-47f2de3ba47so3115066f8f.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:54:42 -0700 (PDT)
+ us-mta-498-96tNIw0HNi-obj0qXelMpA-1; Wed, 07 Oct 2026 14:55:31 -0400
+X-MC-Unique: 96tNIw0HNi-obj0qXelMpA-1
+X-Mimecast-MFC-AGG-ID: 96tNIw0HNi-obj0qXelMpA_1791399330
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48c415561aaso2831935f8f.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791399281; x=1792004081; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1791399330; x=1792004130; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:from:references
          :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i/1Vqte/TZjvdrxy/PBXWIQttCIUhwAGvoe9ObRme4U=;
-        b=QugDWpLepm+/C8jlpSnmtnnM47uPqpcMMbIUWd8pHtC4IeAFhruq4a25zyJBuwYv/X
-         Lnn2nd0TA9j+EFELBq2VgA2KIXeSvfazsA08Q1xcj8EtqHFQvOTuvvEi5CFv1aTxqohD
-         LM52mcj3mMkElD/3YPBg9dT32GpTxQFiTdxPeHYNTjgNAn/XQM32IKOLlpxKEGBTEMmq
-         ++lLCDMfHxLivLZXGhj6X8tztDeTgHpEWGz1WJrjWoSo9QFB74VyD01G3rUhuh92qPN+
-         4XxHCN3RibPRskNKL6PKwEvUBWPxHAeofhzWtnGNAivOej/Gslz4zdp37GH7MUnGccTG
-         2yCw==
+        bh=g8Xbta3BKJJZV2ZdH9m9Ms9T8qVfphnBRdOND2h8Bsc=;
+        b=sILQRoFd+YQBu7Ng35xxNTiy5dWcUIChZ6ByQwB8vrJ3DPH6iVjI8NcTKnu2vJw+eJ
+         y9UbOHB2VySOAKFDGCqM+yUdjfzAKJYSdtRaPruF1rlTM64m1AqQEssg4eyP7qaqltHs
+         hgmvzoQuyCri17CBk920cXRxU/JXPVkYr153GO+3x/vve0zsCuuNzoAyL4VOHC7xClNN
+         iVgW5eUq1rhCi9od+h+YmaDdifeKEROcNHHwlZGP/RBg9OwdLJOmQKQaZlk53T41ogvj
+         HEeXp4o5CmncQmHKOdgcSJ8uU3VagukJBfgKLn2psoh8uNkgKbKsU2ryhhGuM2NmNKC4
+         Tcjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791399281; x=1792004081;
+        d=1e100.net; s=20260707; t=1791399330; x=1792004130;
         h=content-transfer-encoding:content-type:in-reply-to:from:references
          :cc:to:content-language:subject:user-agent:mime-version:date
          :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=i/1Vqte/TZjvdrxy/PBXWIQttCIUhwAGvoe9ObRme4U=;
-        b=o9u/wXxYAi9utP41arI2HkVDtuEDPEFRpwYTnl9VL7Y8wN6CRqRA/UPxgh1SO5GuGC
-         mPkIahHtUM4L9AfIUz5vb8eeUURBrVa+O6y0Srbn3yV7K/Uut83OUNffOeWLQhFPKl0t
-         3zsZaQ9QUkh/fT3kE4hTeM7wfojHzsqijNcxm7IUkiH4RZTkSHniYFDAFpLuujcMp3gd
-         qGxEqGjzGsSHUTcSdlZ0Ov6FOsfjtfYyf/Zk7pj/p1VecZhDaJjwvUPp3tKbgn/wRi2g
-         9CEBaI8hrRo91nbeJBu/p8s68ET2RFQSJJ59s9xvbzmziv0Wt74cFKV9cURbzo8wkdrR
-         SguA==
-X-Forwarded-Encrypted: i=1; AKwUvBwXC7Sk9cq6GnDjMW7Yt+Fr/7vJ4tPsUhRjqnFvbIx7jaeGilyWbJIsHgHqO+EdKxyyDT1jW0c=@vger.kernel.org
-X-Gm-Message-State: AFuF++kJDXs8TocuuBWA9LKCLmoBFqwcXtxocAZWsqiXIaZCYsRtYrfs
-	l2+p9D9yF8ZuyfcebQ9iDUlkTWXrbO6ZfOK7qyA8YQq3iRt58EJe/L/UrZ2Uj5GJq/DmXME8RS5
-	dkFbeMcZ+4QzP/gBpnfEeKIXPhaPOn36J2Dak55IrSsZdGJhiJ6yFq3M7Ww==
-X-Gm-Gg: AYBFou3D07zn39YExuNbVr4UlvcFOZMzp4YGttxAT5LE3/hN1rgd/Sr1w3v+9gJ+4/v
-	C/ZdvIqsh5OKH6OtINPg2y446xtKiGlPZbeeV0FVPBmDcPDJkZRu+V4UNdhRnAzX6MUd1zlhnbY
-	PWs9+KrRGLUL2XJH2bdVmYCojo52WmbzFFQifB8oftTcSnQw0wOWwpV8Mjcz5S0bPlYw47rqqLi
-	e88/tsvD6thaSPpioSjCWDF1PJ8LVcabUnqLnsypV2KJq7atL7BFJKhm/LLJGFRNkClehsRIe5o
-	CPw03aOq5PuNcfh/BRrRYdddCsoQyX7hdSHrBUiVfag8I2NqSxuq+f4qvz1+ZoJMUyJVk+jXHg=
+        bh=g8Xbta3BKJJZV2ZdH9m9Ms9T8qVfphnBRdOND2h8Bsc=;
+        b=MJK04PqRXhwuWsOubhKW13VIRFZf2ErmVVUZ67czgdt2P4hucD9g1j69p/RHNjJ7yB
+         2PKwGkTOOanmQrw5U0mHSQhG7xH/mZso1zF1ovtYagfUXb24TsqaiLAdoiVIXvVOCjr1
+         5lJpRPxqmy8d45dnnS/IHzRvSO8XEulaIUssAQOgBNH52wMecbNvBADwe/J1spso4C7H
+         nXfyOMOYtCaiBwj+fmsi02DeVhoAgijt8dDThLXNTQxhxjEweuTn7LZ7p8cIHziFrI5n
+         9Hrv0RUjeG6ldOYxcjVTmhd9Nv8kE+0d34gylG8DtPwT9vDhuhH924sPWCAaf07Zi7BT
+         YIjA==
+X-Forwarded-Encrypted: i=1; AKwUvBzIxMlHMuD5Q4S1FcSzdCY6XQ/ErDp9mL8A3C6LEFGIs4VEwWERT+v2X4ISbZuKFrzGwURjR5g=@vger.kernel.org
+X-Gm-Message-State: AFuF++kq0TAEnpiV585pn/neyuuIh2xig3KY+9k8pH+OCBfptdTuWn2O
+	5IpyltfFGfExTzGXvCX1QHMivHr5IWSNZvoFpjRAq9TxuMPKYXPIFBMUXFgJKctWkEQglYmTvuR
+	xCgPpP1FAwasPK8H4ZrI1V9GqOZDYtVVdjmQ4fbD92jhQEvTtHW3UEgDV0Q==
+X-Gm-Gg: AYBFou2/cCgoF6MuioiwR135nYbjUnv86w66zNeDbIVTPsJf6+q4IT331SuZfX2i55n
+	hYlwkdA2W951mCIDCDm1Upcuqu5CCH2qLddOqyn8xb2QR28psZ/fSHw8LhIzTCnE/+dez7/Tpf2
+	9OccuavAA5Rzxc6EVvlzesYwDOtvj9hvEkOsICfhhKpHtpKlttkbP6u+T7zsOadbTlvVbffiLKj
+	MCZ/wT7JwCKBlsUv+NEEOfwBek5oRjlSjMeG6tsOIZGuWwC4SIsxoJPmXXC7GRA6YEHX1HcbA3j
+	eVpXpn5GeII7voOMbMPmRCamB3FHifdAhgpJg0Vi+1JCK6MNG1mAIi+5FRRNis/e0jOwefhFwA=
 	=
-X-Received: by 2002:a05:600c:64c6:b0:49f:fe90:de63 with SMTP id 5b1f17b1804b1-4a180455e85mr59169875e9.28.1791399281244;
-        Wed, 07 Oct 2026 11:54:41 -0700 (PDT)
-X-Received: by 2002:a05:600c:64c6:b0:49f:fe90:de63 with SMTP id 5b1f17b1804b1-4a180455e85mr59169625e9.28.1791399280814;
-        Wed, 07 Oct 2026 11:54:40 -0700 (PDT)
+X-Received: by 2002:a05:600c:64c9:b0:4a0:25d5:e853 with SMTP id 5b1f17b1804b1-4a180648c64mr52096575e9.35.1791399329776;
+        Wed, 07 Oct 2026 11:55:29 -0700 (PDT)
+X-Received: by 2002:a05:600c:64c9:b0:4a0:25d5:e853 with SMTP id 5b1f17b1804b1-4a180648c64mr52096235e9.35.1791399329359;
+        Wed, 07 Oct 2026 11:55:29 -0700 (PDT)
 Received: from [192.168.2.75] ([46.175.183.46])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18445b6b9sm9971375e9.8.2026.10.07.11.54.38
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17fc664d5sm38007745e9.0.2026.10.07.11.55.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Oct 2026 11:54:39 -0700 (PDT)
-Message-ID: <dc22a7d0-e42b-4ef4-b0e9-b5210b31eb6c@redhat.com>
-Date: Wed, 7 Oct 2026 20:54:38 +0200
+        Wed, 07 Oct 2026 11:55:26 -0700 (PDT)
+Message-ID: <3a161f4f-2cd2-4f04-9b1e-4f94e5183786@redhat.com>
+Date: Wed, 7 Oct 2026 20:55:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,8 +87,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 2/4] dpll: zl3073x: make embedded sync follow the
- output carrier frequency
+Subject: Re: [PATCH net v3 3/4] dpll: zl3073x: reject inexact frequencies for
+ N-divided outputs
 Content-Language: en-US
 To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
 Cc: Min Li <min.li@microchip.com>, Vadim Fedorenko
@@ -98,233 +98,94 @@ Cc: Min Li <min.li@microchip.com>, Vadim Fedorenko
  Prathosh Satish <Prathosh.Satish@microchip.com>,
  Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
 References: <20261006153116.347497-1-ivecera@redhat.com>
- <20261006153116.347497-3-ivecera@redhat.com>
+ <20261006153116.347497-4-ivecera@redhat.com>
 From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20261006153116.347497-3-ivecera@redhat.com>
+In-Reply-To: <20261006153116.347497-4-ivecera@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 10/6/26 5:31 PM, Ivan Vecera wrote:
-> Changing an output pin's frequency did not update its embedded sync
-> (eSync) configuration. The eSync period and width are computed relative
-> to the carrier:
+> For N-divided outputs the P-pin and N-pin share the output divisor and
+> the N-pin frequency is synth_freq / (div * esync_n_period). The frequency
+> set helper computed esync_n_period with a truncating division and only
+> rejected a zero result, so a frequency that does not divide evenly was
+> silently rounded. Setting the P-pin could then shift the N-pin frequency
+> too (e.g. 600 MHz synth, div=60, period=10 gives P=10 MHz, N=1 MHz;
+> setting P to 2.5 MHz moves N to 1.25 MHz).
 > 
->      esync_n_period = out_freq / esync_freq
->      esync_n_width  = div / 2
-> 
-> Once zl3073x_dpll_output_pin_frequency_set() changes div, both values no
-> longer match the new carrier, so the embedded sync runs at the wrong
-> frequency and duty cycle. Worse, if the new carrier is <= 1 Hz then
-> esync_get() returns -EOPNOTSUPP (out_freq <= 1), hiding the stale ESYNC
-> mode so the user can no longer turn it off - it is stuck on.
-> 
-> This was hit during development: after changing an output pin's
-> frequency the embedded sync output stopped working correctly, as
-> confirmed on an oscilloscope - it ran at the wrong frequency and duty
-> cycle because the eSync period and width still matched the old carrier.
-> For a new 1 Hz carrier esync_get() returned -EOPNOTSUPP, leaving eSync
-> enabled with no way to disable it.
-> 
-> Factor the eSync handling into zl3073x_out_esync_{is_enabled,enable,
-> disable}() helpers and reuse them from esync_get()/esync_set(), then
-> adjust the eSync parameters in the output frequency change path for
-> non-N-divided outputs after updating div/width:
-> 
-> - If the new frequency is 1 Hz, disable eSync. It cannot work at a 1 Hz
->    carrier and esync_get() hides it, so it must be cleared rather than
->    left stuck on.
-> - Otherwise, if eSync is active, recompute its period and width for the
->    new carrier keeping the 1 Hz eSync frequency.
-> 
-> As a side effect of reusing the helpers, esync_get() now reports the
-> driver's eSync model - a 1 Hz frequency and a 25% pulse - from the clock
-> type when eSync is enabled, instead of deriving the values from the
-> cached esync_n_period/esync_n_width registers. The driver only ever
-> programs a 1 Hz / 25% eSync, so this matches what esync_set() configures
-> and keeps get and set symmetric. A configuration the driver did not
-> establish - a non-1 Hz eSync left in flash or by an older kernel, or the
-> truncated duty cycle of an odd divider - is therefore reported as the
-> nominal 1 Hz / 25% rather than its exact register values.
-> 
-> N-divided outputs are left untouched: there esync_n_period is the N
-> divider and eSync is not supported anyway.
+> Check the division remainder and reject the request if it is not exact,
+> and require esync_n_period >= 2 so the N-pin frequency stays below the
+> P-pin one.
 > 
 > Fixes: ce26d7ca50a5 ("dpll: zl3073x: Add support to get/set frequency on pins")
-> Fixes: 634ca2cb06d2 ("dpll: zl3073x: Add support to get/set esync on pins")
 > Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 > ---
->   drivers/dpll/zl3073x/dpll.c | 68 ++++++++++++++++---------------------
->   drivers/dpll/zl3073x/out.h  | 36 ++++++++++++++++++++
->   2 files changed, 66 insertions(+), 38 deletions(-)
+>   drivers/dpll/zl3073x/dpll.c | 37 +++++++++++++++++++++++++++++++------
+>   1 file changed, 31 insertions(+), 6 deletions(-)
 > 
 > diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-> index f2e137475b40..7c997966c3c3 100644
+> index 7c997966c3c3..65107b4cc4f8 100644
 > --- a/drivers/dpll/zl3073x/dpll.c
 > +++ b/drivers/dpll/zl3073x/dpll.c
-> @@ -852,7 +852,7 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
->   	struct zl3073x_dpll_pin *pin = pin_priv;
->   	const struct zl3073x_synth *synth;
->   	const struct zl3073x_out *out;
-> -	u32 synth_freq, out_freq;
-> +	u32 synth_freq;
->   	u8 out_id;
+> @@ -1007,15 +1007,28 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
 >   
->   	guard(mutex)(&zldpll->lock);
-> @@ -864,38 +864,28 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
->   	 * for N-division is also used for the esync divider so both cannot
->   	 * be used.
->   	 */
-> -	if (zl3073x_out_is_ndiv(out))
-> +	if (zl3073x_out_is_ndiv(out) || !pin->esync_control)
->   		return -EOPNOTSUPP;
->   
->   	/* Get attached synth frequency */
->   	synth = zl3073x_synth_state_get(zldev, zl3073x_out_synth_get(out));
->   	synth_freq = zl3073x_synth_freq_get(synth);
-> -	out_freq = synth_freq / out->div;
->   
-> -	if (!pin->esync_control || out_freq <= 1)
-> +	/* The esync is not supported for 1 Hz base frequency */
-> +	if (synth_freq / out->div <= 1)
->   		return -EOPNOTSUPP;
->   
->   	esync->range = esync_freq_ranges;
->   	esync->range_num = ARRAY_SIZE(esync_freq_ranges);
->   
-> -	if (zl3073x_out_clock_type_get(out) != ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC) {
-> -		/* No need to read esync data if it is not enabled */
-> +	if (zl3073x_out_esync_is_enabled(out)) {
-> +		esync->freq = 1;
-> +		esync->pulse = 25;
-> +	} else {
->   		esync->freq = 0;
->   		esync->pulse = 0;
-> -
-> -		return 0;
->   	}
->   
-> -	/* Compute esync frequency */
-> -	esync->freq = out_freq / out->esync_n_period;
-> -
-> -	/* By comparing the esync_pulse_width to the half of the pulse width
-> -	 * the esync pulse percentage can be determined.
-> -	 * Note that half pulse width is in units of half synth cycles, which
-> -	 * is why it reduces down to be output_div.
-> -	 */
-> -	esync->pulse = (50 * out->esync_n_width) / out->div;
-> -
->   	return 0;
->   }
->   
-> @@ -926,32 +916,17 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
->   	if (zl3073x_out_is_ndiv(&out))
->   		return -EOPNOTSUPP;
->   
-> -	/* Update clock type in output mode */
-> -	if (freq)
-> -		zl3073x_out_clock_type_set(&out,
-> -					   ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC);
-> -	else
-> -		zl3073x_out_clock_type_set(&out,
-> -					   ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL);
-> -
-> -	/* If esync is being disabled just write mailbox and finish */
-> -	if (!freq)
-> +	if (!freq) {
-> +		zl3073x_out_esync_disable(&out);
->   		return zl3073x_out_state_set(zldev, out_id, &out);
-> +	}
->   
->   	/* Get attached synth frequency */
->   	synth = zl3073x_synth_state_get(zldev, zl3073x_out_synth_get(&out));
->   	synth_freq = zl3073x_synth_freq_get(synth);
->   
-> -	/* Compute and update esync period */
-> -	out.esync_n_period = synth_freq / (u32)freq / out.div;
-> -
-> -	/* Half of the period in units of 1/2 synth cycle can be represented by
-> -	 * the output_div. To get the supported esync pulse width of 25% of the
-> -	 * period the output_div can just be divided by 2. Note that this
-> -	 * assumes that output_div is even, otherwise some resolution will be
-> -	 * lost.
-> -	 */
-> -	out.esync_n_width = out.div / 2;
-> +	/* Enable 1PPS eSync for this pin frequency */
-> +	zl3073x_out_esync_enable(&out, synth_freq / out.div);
->   
->   	/* Commit output configuration */
->   	return zl3073x_out_state_set(zldev, out_id, &out);
-> @@ -1009,6 +984,23 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->   		/* For 50/50 duty cycle the divisor is equal to width */
->   		out.width = new_div;
->   
-> +		/* The embedded sync period and width are computed relative to
-> +		 * the output carrier so they have to be adjusted to follow the
-> +		 * new frequency.
-> +		 */
-> +		if (zl3073x_out_esync_is_enabled(&out)) {
-> +			if (frequency == 1) {
-> +				/* Disable eSync if the new frequency is 1 Hz */
-> +				zl3073x_out_esync_disable(&out);
-> +			} else {
-> +				/* Update esync period and width according to
-> +				 * the new frequency.
-> +				 */
-> +				zl3073x_out_esync_enable(&out,
-> +							 synth_freq / out.div);
-> +			}
+>   	if (zl3073x_dpll_is_p_pin(pin)) {
+>   		/* We are going to change output frequency for P-pin but
+> -		 * if the requested frequency is less than current N-pin
+> -		 * frequency then indicate a failure as we are not able
+> +		 * if the requested frequency is less or equal than current
+> +		 * N-pin frequency then indicate a failure as we are not able
+>   		 * to compute N-pin divisor to keep its frequency unchanged.
+>   		 *
+>   		 * Update divisor for N-pin to keep N-pin frequency.
+>   		 */
+> -		out.esync_n_period = (out.esync_n_period * out.div) / new_div;
+> -		if (!out.esync_n_period)
+> +		u64 prod = mul_u32_u32(out.esync_n_period, out.div);
+> +		u32 rem;
+> +
+> +		out.esync_n_period = div_u64_rem(prod, new_div, &rem);
+> +		if (rem != 0) {
+> +			NL_SET_ERR_MSG_FMT(extack,
+> +					   "OUT%uN freq must divide OUT%uP freq",
+> +					   out_id, out_id);
+>   			return -EINVAL;
 > +		}
-> +
->   		/* Commit output configuration */
->   		return zl3073x_out_state_set(zldev, out_id, &out);
->   	}
-> diff --git a/drivers/dpll/zl3073x/out.h b/drivers/dpll/zl3073x/out.h
-> index 660889c57bff..d2b8b4eb5a76 100644
-> --- a/drivers/dpll/zl3073x/out.h
-> +++ b/drivers/dpll/zl3073x/out.h
-> @@ -134,4 +134,40 @@ static inline u8 zl3073x_out_synth_get(const struct zl3073x_out *out)
->   	return FIELD_GET(ZL_OUTPUT_CTRL_SYNTH_SEL, out->ctrl);
->   }
+> +		if (out.esync_n_period < 2) {
+> +			NL_SET_ERR_MSG_FMT(extack,
+> +					   "OUT%uN freq must be less than OUT%uP freq",
+> +					   out_id, out_id);
+> +			return -EINVAL;
+> +		}
 >   
-> +static inline bool zl3073x_out_esync_is_enabled(const struct zl3073x_out *out)
-> +{
-> +	u8 clock_type = zl3073x_out_clock_type_get(out);
+>   		/* Update the output divisor */
+>   		out.div = new_div;
+> @@ -1030,9 +1043,21 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
+>   		 *
+>   		 * Update divisor for N-pin
+>   		 */
+> -		out.esync_n_period = div64_u64(synth_freq, frequency * out.div);
+> -		if (!out.esync_n_period)
+> +		u64 rem, prod = frequency * out.div;
 > +
-> +	return clock_type == ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC;
-> +}
-> +
-> +static inline
-> +void zl3073x_out_esync_enable(struct zl3073x_out *out, u32 base_freq)
-> +{
-> +	/* Period is expressed as the number of output divider clock cycles.
-> +	 * So for 1 Hz the period is equal to base frequency.
-> +	 */
-> +	out->esync_n_period = base_freq;
-> +
-> +	/* Half of the period in units of 1/2 synth cycle can be represented by
-> +	 * the output_div. To get the supported esync pulse width of 25% of the
-> +	 * period the output_div can just be divided by 2. Note that this
-> +	 * assumes that output_div is even, otherwise some resolution will be
-> +	 * lost.
-> +	 */
-> +	out->esync_n_width = out->div / 2;
-> +
-> +	/* Update the clock type */
-> +	zl3073x_out_clock_type_set(out, ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC);
-> +}
-> +
-> +static inline
-> +void zl3073x_out_esync_disable(struct zl3073x_out *out)
-> +{
-> +	/* Just update the clock type. The eSync period and width are
-> +	 * ignored for this clock type.
-> +	 */
-> +	zl3073x_out_clock_type_set(out, ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL);
-> +}
-> +
->   #endif /* _ZL3073X_OUT_H */
+> +		out.esync_n_period = div64_u64_rem(synth_freq, prod, &rem);
+> +		if (rem != 0) {
+> +			NL_SET_ERR_MSG_FMT(extack,
+> +					   "OUT%uN freq must divide OUT%uP freq",
+> +					   out_id, out_id);
+>   			return -EINVAL;
+> +		}
+> +		if (out.esync_n_period < 2) {
+> +			NL_SET_ERR_MSG_FMT(extack,
+> +					   "OUT%uN freq must be less than OUT%uP freq",
+> +					   out_id, out_id);
+> +			return -EINVAL;
+> +		}
+>   	}
+>   
+>   	/* For 50/50 duty cycle the divisor is equal to width */
 
 Reviewed-by: Petr Oros <poros@redhat.com>
 
