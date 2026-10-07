@@ -1,130 +1,161 @@
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA1942E8F0
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 22:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01FA376BF2
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 22:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791412712; cv=pass; b=OfN3K37WC6NXYfXZGL2idng3K+sP7I0+fOSgtjzzF5mHrETK8M5bQHa4oIv1cALOjYfjJNow2N4+Sc1OF0iQdT0Qcw3AtwcVIxD2/S7YZuT1kJKkfBvenPOf1CUS01Z4Ec6EE+bzwo2En5JSJVj8SQYtX9BO1AQGZQ+VKYDc/cM=
+	t=1791412754; cv=pass; b=iN0vDZ/sWJ2lan/8EV8qf1EGsLTvqEwDeX7ofW0f7qjVBIX3VfjT2R2FzKvsOpgfmzcafccF853BuxQ3EuEvq8LREvTwjuXgoZwACEWJeULxwlXegLw8g6GN7O7gqFw/e6GOu+jvxgr2CVu0DTsdV8fb65PyzB9vRqhqWsD9ses=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791412712; c=relaxed/simple;
-	bh=JAEnd7RTYfgtqTDPsV5I82Kbf/tGt183J2FPTli0shQ=;
+	s=arc-20240116; t=1791412754; c=relaxed/simple;
+	bh=9YE+7SdzL12MMmsZnHCxlOKS1BjhAcA2JVU3YT1VOZU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jYS8lbnHaC+hEy+QzFkfn38PctPTNXS7eRLf5ZwRoiIx/NZkvYYbcbBXHuvAtL6KaLRaXxdz1TJR01sXS0e2eriTYTE8bFQ+U2V8mBtehsL1UisycbvCyBjl46oJ/wLmeTvuRPo6GVigP226vT5mpDLIt/ZHc/CF0+Leay7eXjE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LnNGPZLy; arc=pass smtp.client-ip=209.85.167.174
+	 To:Cc:Content-Type; b=NsOKW5TFfZtQfc8p18GtjyX65mvcYMkQ64uoGL/S8JvvIcaGeK5Zgww4yIQ5YIy65U8DpCsbvseFJ6FhCRN1KqUPse0pWNUleMR+Lgsu0WWyEfDfOR+C+1QV+heQjouy20Qs2feumOXi77W5NOYPCqps3BHjIlcIWr30QAFi4Ag=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lfY1veIk; arc=pass smtp.client-ip=209.85.128.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LnNGPZLy"
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-4b1ba286f6bso72544b6e.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 15:38:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791412708; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lfY1veIk"
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8acda240937so23583957b3.3
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 15:39:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791412752; cv=none;
         d=google.com; s=arc-20260327;
-        b=jTKIIRwFE11WIOnEz7347NqZdaPkLOB+9+ftHdlF6oo7nL8AwMeywI2Re8FHlowdD9
-         E3HR+P0hFVSASfNYGz/UkU7vN9/5Yyb6tulGmDDck3cauXh91xESQ3l1QSIj25Y/Ttv2
-         fqFiPyhHjaG7m06y8pvJtjo5VuYIFSfdOB2FR794CXUj5FRmyBkUoRUTFIZROcnj5ur2
-         q5TCn9MGGZMFBJKIrNyIiRR64iV+4TyKgewrRWQL1gYaiSz7v98phenQg+TCSK82fUFw
-         ud5BHKrQdruue5bf5uHfHnbPX75U9Zj456B8M0E2rxOuWBcOLeL7BIamnVoaNAafuxQY
-         aNBw==
+        b=XZHQ2nE3LkHKDvdH+e1nUIvGW1N2hNW7w88T8zFudjTbY/Z1F3kKM8XR5LIJ0scps8
+         gybT0b/aRtOjvrnpcNtADqfNhk8G0VraroGQGmcsSxqnCkM+MhqTgfnPmsIIY/aEkvrJ
+         9dFElEquBBpm5S+CFwOHFzidPpUW7fWfLpaND/xcuLhfg1UGSh3MXvDC0NarXd6KUtT+
+         dHC3w+2PNrwbjDlnrA3vBAkl0LXb9qPyzV4z6AKWc90eVFw11B9voGa9tnK/talvpbgb
+         Wt12ucpOpgJGl5xJsDI6EozzaDjv2GMtg+4dWsLnS+9dLWsuiEFDelo/kqfOgVGhBNJG
+         AJWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=0radvBLf82v1mE7u1BEv9JCaS3DV3MO4aUccMt6BE4A=;
-        fh=tImXcy9HtOaTW7zt0sRz3JsP86YbU5F6TWQCDrTQ+XU=;
-        b=m6lDVxKPeXCzHaw0Y93T49DtPW9hP25lINn+JlNgevoqOQ4GzdkI8mwKvXBltcEX/O
-         ikJh5Kfc3opIjDeZPxU6KbKkukuBVf8x5BNkOhnWHTNFwYFJElGKXpAPUsnlL4t1bfOj
-         sEddjB3Bt1ERgl2gQgCa9sdlDGALiNEKowldWEd5vZ/KBY7rcuzpmPJqRVbJVy1COoWG
-         7Cls+JEj1hDL8L5qVjM8GkOsO/tzsp9hMZD0ghU4N++mUmY6Z1OQa68/bZ5rSBzn8XFs
-         QV3bwJ95lbaPq7brDryKRpFYFEV/43y/v4Ovl96CnoUTtD8nnINc/RexWUFV0wn+Hafg
-         hOKQ==;
+        bh=DYEXY0B5hFYJk51zihosshCLsKJqV7W2dSbnFA/pTAg=;
+        fh=prAcYyk7LBQZ2PBeU1QLCT/hpa9EVwGiCIQoO6FZLfk=;
+        b=mDp4G/oCdEXpGVYTU9TO50KZG9kjeWjR0Ms3iqZU3NrHiIsZgVZxmsw+B4UoWkCL6l
+         T8KgRf6j3RbfkuHalJxP+MZ0jthz1KdNb/gRjZsvVxB0IzJwatK3yMSkanlb6+BrAlj0
+         ol9k1O7NA6bASY5hm8V1U/KTVSrOtvLyiHh4OJo3FYLdWwlGozcni9T6H8FIFkGF7kQq
+         3JskEbulefMy2Fla9eq+iVt01m6fzL1o+7p4PBbA27TRKhg5KptLODn6hbUfwVAfsC1c
+         dLiEEyqN3kxINq1vx19kwuxqTtaVMG8AnCDPUrefDbKmUoxiW5Vo2gUnQNXBljEOVX1i
+         zhKg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791412708; x=1792017508; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791412752; x=1792017552; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0radvBLf82v1mE7u1BEv9JCaS3DV3MO4aUccMt6BE4A=;
-        b=LnNGPZLy/Y/UNQxwmR4rR0/zvX0pcv0HbRGP305xVXBB/Jk0pplrAuPiBRpf4xpj+E
-         Z8QwMlZjEKRsNA4ZDwnFejcuUr0KaxJ+PgUjzBedrUeMktRX97GWzPlfyUuVLilFkqBa
-         mgmgO69Ol9pCSKNxptiRWTxMrUt1bZsgGo3TsrDpONIGIOOXAxGVwcRu7DHjYk+2eT8d
-         q/aN1gCp/AlG8c0DVHJY3rD1PjH7RIl/tjrFrNDecbCPhAsqsRwc9LlpPSa0peBzqnzt
-         Y/pCDUKspi7UqzxUlwt9pLBQlR04yZxF7q5lyc7tzlkXK8H6+USe8U589Ht9b1Ogd79h
-         9I9g==
+        bh=DYEXY0B5hFYJk51zihosshCLsKJqV7W2dSbnFA/pTAg=;
+        b=lfY1veIkAl4DofviDZGs8oI4gfHKbRnFqWIEubWYY5tOHLAmBoJzEYDxZ/mexzS41L
+         /tGOS4p4X5p5CBs+NuYKY+2/RaFOK5cTeelROGS5V8sFyfIUp5e/LIckVI5tDfijg2j8
+         xxfiyRdPILw0RG+lwK3pT2CwEs2+Qh+Vn4X5+bLL91dR8/X5edjObiCVlwIdsHcv0KBQ
+         H1sYQRB9QUIp+X+gkMvSeDb7q2U4G2N/l3S55NF6wJs8Zv8bKvuJXGm4u91GIo+dm0fn
+         eIZ8Gxduw2oEGfiDnMCt5GZg8+LIP/N/yAvoUUYSpzjLohq2U8zzSKpXx48tbfRnTV/i
+         QZqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791412708; x=1792017508;
+        d=1e100.net; s=20260707; t=1791412752; x=1792017552;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0radvBLf82v1mE7u1BEv9JCaS3DV3MO4aUccMt6BE4A=;
-        b=n4nCuFOSHxNOxgcoS47zDGABdmL8myq5m6yWbOszXvDvf7npiX1EvmZPRBs5iZ4jMT
-         PuyHQW+tTojiK76aSqXagMhwrwDGpfkH4HOsmluJsM9Q75buSMltos+g7XvTF+EI0clB
-         BmR2IW23EHpRGTHXd1pq5QSk2TdZbcv0L7Pmv3AmpYNK/Vb+vHRIqhOFkJxEVQf3ez/k
-         JRqtox7TE2unRBoQ/iJ94PmCU5HEb/D4N7+PoY9x/XltE2/CvgKUq5mugJrPxRgHRrlg
-         ASIlJl5S4u2fBWiXB3Tl+vvIg9phwkNrEtlwD0rrZOd9yAsEBUdJRQBVz4fiAlia0Zgj
-         9aFw==
-X-Forwarded-Encrypted: i=1; AKwUvBwkpioNtOVe5S06loUtDF9xwEhAlzYrQHOm/lqbStV9r2lGC9C9+2n6nS+2wifeLZdNhTfCVec=@vger.kernel.org
-X-Gm-Message-State: AFuF++lr3IE3ksYS1N7SAzXxar6mNk0bRTQ3LAUfskgcTWRJqiD24xJf
-	sc2LVxq3XljAX2EqEYiWGacGSuz8iGv+cN84mhyvI/jIMHNCgQ68oHtro0tJuVwMsxxcBgbhgSu
-	tn1IVOo+xrcNVFtrG1H7l3Mg469p341Q=
-X-Gm-Gg: AYBFou0C5VzfqxBLbkZasJ0fryu17kfdk1owBGuWy6sP+yo6SsgGz0oivJEN9ZIqr+i
-	Q+0NtMJGwJnNsxtDCMjocQtsOkMJYM4oSmxjH7aCs0QCd9B0+c41Cd1NmaiIdJfnXnFe0A4zDsZ
-	smPghqRjayoLI1TXs8ZeXN9mw43O4Cnz6UEIElOXIMO1d/wv5UJ6i6EqW0zCzUUyfyFRm7qXlqD
-	j+GjF3Bqc9D6IcwuGbNmkPz6JSs+Vif65Qdw+1Xk2lGYBEnYn2JGFjpcA61OTr4VWi6SxziGCbO
-	FaU3q6F8GRPJGr7TTNH+Sp1uBtU0Bkanbj5ZEJFZGxiFLpYquul1e7M=
-X-Received: by 2002:a05:6808:1a21:b0:4ca:9850:4dd8 with SMTP id
- 5614622812f47-504b57bbd0emr473506b6e.10.1791412708033; Wed, 07 Oct 2026
- 15:38:28 -0700 (PDT)
+        bh=DYEXY0B5hFYJk51zihosshCLsKJqV7W2dSbnFA/pTAg=;
+        b=kwAHPIJUgrUgZz9wVxd6N19O68MEopipdTC8SONcdYii1OlE4D3yfOjB/guyADJuRJ
+         WBiKyc68QAdoc4Ve6PnbkIx6pGIiqAYtA1DbUb4Ijo1nBYAbY0ofx0Izt/6A1zQheVaM
+         5EEZotN4ggLoJBJo2mDpjy6GqHDQjZWGHk/JxAyGRCqIT6zHL/H9GthJHXmkyXVLfeOg
+         j9SVHbZGvNmtXbCYyq7kJKLV5qgkt2wtZXI/u9VrypB48HOda5ke+OjGL83AyiIQ3X5r
+         jDqTKhEaXWV/3IWRkDSV/8GmOsm52FnvUorjpmA7F4usYYrNCsjepBQlHN+OGtZyPV3u
+         2FpA==
+X-Gm-Message-State: AFq9FYKFaYSo5S5b8nJBQB9YL0frCoBLLAi6Y5hoOqKejvqfkWdi5H2S
+	U3JaZrJtCTQjGkTxA3JXRGIS+32cLVapeqYq4vAG737lYPnLoq2r2SD1DFA/VI9825OddbUEG7v
+	f6Af4NoZ4lsm6Zr1ztIDAlrFYayuP3y4=
+X-Gm-Gg: AYBFou17LZQXu1CT0TKQC3BIX2BoXN8p7Frg8L2yDRDdnW9U/2aHYhxfSXM+OzhOhJB
+	3SgSWF+RiU8lmAOYRcr+MEaDJNmhZknUKT4rrLM2sMS3F6KcWk70uqBx8++0M00A154OMEBRThf
+	I4UihMm4wHmG5D9DQ2XY/eLn7EAjLy6HPoQ9J99Jar72Z7YVu31EIvIQdJYpQgXu7RwCU9MjQ1q
+	T8pajM32xbbStHUL4Alsri/FO93lOkxVY0cQx1lA8SURVJY38P22d5C/hXSjaey1cGdpdz+1YNj
+	QNgJRB1Mwz8L4kWfE9j8TDfTU7WOVm8DwYv409ktYgpT5oPOn1CByc4TWC5fA6l1JEvetCRiZv/
+	Eivzwd+ec3pSj9+5O2VHzw9dEt1TLj/a61Oqd2FRVnzNHm+78MKCVg/jL+7y6+QpsP3298chI4v
+	A=
+X-Received: by 2002:a05:690e:d0a:b0:679:a58:163b with SMTP id
+ 956f58d0204a3-6790a58268cmr1634598d50.35.1791412751554; Wed, 07 Oct 2026
+ 15:39:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261006192601.1875100-1-kuniyu@google.com> <20261006192601.1875100-6-kuniyu@google.com>
-In-Reply-To: <20261006192601.1875100-6-kuniyu@google.com>
-From: Amery Hung <ameryhung@gmail.com>
-Date: Wed, 7 Oct 2026 15:38:15 -0700
-X-Gm-Features: AclHuK_lWBEeBv6ps7ou-Z4Pk4-NURj4G_TRRW1ryhPrH584Hce6fOGQe4jabJ4
-Message-ID: <CAMB2axM17PR+6k9jyW+J+599in1zbnrV=vRxx_qBwYBmShF28Q@mail.gmail.com>
-Subject: Re: [PATCH v4 bpf-next 05/10] bpf: tcp: Check BPF_SOCK_OPS_TEST_FLAG()
- after cgroup_bpf_enabled(CGROUP_SOCK_OPS).
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Tenzin Ukyab <ukyab@berkeley.edu>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@meta.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
+References: <20261007163819.3041710-1-willemdebruijn.kernel@gmail.com> <20261007175957-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20261007175957-mutt-send-email-mst@kernel.org>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Wed, 7 Oct 2026 18:38:33 -0400
+X-Gm-Features: AclHuK9_coDhnO3XH0BEgQZ_YinL5GPdy0h9l8h1EUlVkCnpmjT-9HARaxV3vWE
+Message-ID: <CAF=yD-+ZROFbKoQrgz5kGVXZyCQkvDb_gVv1dLCKTbT31sAQyg@mail.gmail.com>
+Subject: Re: [PATCH net] net: extend virtio_net_hdr csum_start checks to VLAN,
+ IPv6 and IP options
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
+	andrew+netdev@lunn.ch, jasowangio@gmail.com, 
+	Willem de Bruijn <willemb@google.com>, Paulos Yibelo <habte.yibelo@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 6, 2026 at 12:26=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
+On Wed, Oct 7, 2026 at 6:03=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
+wrote:
 >
-> BPF_CGROUP_RUN_PROG_XXX() macros guard __cgroup_bpf_run_filter_XXX()
-> with cgroup_bpf_enabled().
+> On Wed, Oct 07, 2026 at 12:36:59PM -0400, Willem de Bruijn wrote:
+> > From: Willem de Bruijn <willemb@google.com>
+> >
+> > __virtio_net_hdr_to_skb() validates hdr->csum_start against nh_min_len:
+> >
+> >     if (skb_transport_offset(skb) < nh_min_len)
+> >         return -EINVAL;
+> >
+> > Extend the check to account for the link layer header including VLAN
+> > tags, IPv4 options, and IPv6 other than VIRTIO_NET_HDR_GSO_TCPV6.
+> >
+> > Payload, gso_type and skb->protocol can come from userspace, so cannot
+> > be trusted to be consistent, or correct.
+> >
+> > Therefore:
+> > - For Ethernet packets (ARPHRD_ETHER), parse from ETH_HLEN and
+> >   eth_hdr(skb)->h_proto, advancing past any VLAN tags with
+> >   __vlan_get_protocol().
+> > - For non-Ethernet packets, use skb_network_offset(skb) as nhoff and
+> >   infer the L3 protocol from iph->version at skb->data + nhoff.
+> > - If skb->protocol is set and disagrees with the protocol parsed from
+> >   the packet, enforce the minimum header length of both.
+> > - For non-IP protocols, require only nhoff + nh_min_len. No in-tree
+> >   non-IP protocol generates CHECKSUM_PARTIAL itself. They only carry it
+> >   when encapsulating IP (e.g., MPLS), in which case csum_start lies
+> >   beyond an inner IP header.
+> >
+> > Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > Link: https://lore.kernel.org/netdev/20260922030310.8684-2-habte.yibelo=
+@gmail.com/
+> > Fixes: 49d14b54a527 ("net: test for not too small csum_start in virtio_=
+net_hdr_to_skb()")
+> > Co-developed-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > Signed-off-by: Paulos Yibelo <habte.yibelo@gmail.com>
+> > Signed-off-by: Willem de Bruijn <willemb@google.com>
 >
-> However, even when no SOCK_OPS prog is attached, callers still
-> initialise struct bpf_sock_ops_kern (memset(), etc.) or evaluate
-> BPF_SOCK_OPS_TEST_FLAG(), which loads tp->bpf_sock_ops_cb_flags
-> from a cold cacheline near the end of struct tcp_sock.
->
-> Similar to bpf_tcp_ops, let's check cgroup_bpf_enabled() before
-> BPF_SOCK_OPS_TEST_FLAG() and struct bpf_sock_ops_kern setup, and
-> rename BPF_CGROUP_RUN_PROG_SOCK_OPS{,_SK}() with __ prefix.
->
-> Since all direct callers of tcp_call_bpf() pass 0 and NULL for
-> nargs and args, they can be folded into the new tcp_call_bpf()
-> macro.
->
-> All callers of tcp_call_bpf_{2,3}arg() check BPF_SOCK_OPS_TEST_FLAG()
-> and do not need the return value.  These are replaced with the new
-> tcp_call_bpf_flag() macro.
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> This doesn't fix all the issues, or does it?
 
-Reviewed-by: Amery Hung <ameryhung@gmail.com>
+It does not.
+
+> If not, I am confused why we
+> are doing this piecemeal approach. I thought we agreed to
+>
+> a. validate some basic things about the checksum in the core ip stack
+>
+> b. in virtio, validate specific checksum values
+>    and for anything else, fill in the checksum and fragment then
+>    and there
+
+I understood differently. That the fixes are cumulative, addressing
+different packet types.
+
+I like your approach of doing checksum calculation early, in
+__virtio_net_hdr_to_skb. I figured that was a follow-up targeting
+net-next, eventually.
+
+I can drop this if you want to send that instead.
