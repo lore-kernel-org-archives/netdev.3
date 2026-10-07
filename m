@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1421F3EA66;
-	Wed,  7 Oct 2026 04:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651243C1D62;
+	Wed,  7 Oct 2026 04:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791346582; cv=none; b=OqRIMWwTodPEmL1/IDg10Rqip3I4w3R1mrw3+zr+ccdiTFqn2GXNepWhtZZtU/IldcqPpJe/0usvs1sV/87a8w/HwBJX9hSArJ0fYOclpaO8rJoQzwZQxHFwGL9NSZdpmDxZ1RjRrtTl5dwYVdYsMj6l2wR97bBdy9Pfra5JW+c=
+	t=1791346961; cv=none; b=BhbnVXoeST8o+g8yw2pyH3FBUw2W1WBl0Vq6ofAwzmdLQOsfwjA+EHGE79EiAkBTNo5AEFMyiS6qKRfs5mGH2Cn6lnu59sAV9bc4e+Kn9/7AZa5FUBllW2y2VUZ6WO6p6GBeJIBlgTg6L9SpeOUj1UuzIBTD+9XCC+K7ao1Adhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791346582; c=relaxed/simple;
-	bh=/vyd/FQLF6/bsjJPkbsGohKU2hqKKx1TlXPt6tpTKgc=;
+	s=arc-20240116; t=1791346961; c=relaxed/simple;
+	bh=Byx5e0MZF3e+6UdiiYp/Wzz+q5hiDT6L1Ft++XEQ0PQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jAg88ZITV/S3xLLPIPNsH4y8NJv8fTotulWW5Fz4NkYIVtY6ltstiy/DQDTrcq0ea9zw2NRO/HVbIdLAWpKAFKEHAMi2YlrTsezIsBeaD3Yr3HD1229pfaDi7Fl1l4lZ3T5XHFp2Rg5DBdUDfOYfoAuDt9HEk+036YYtn64XvgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ot9cGFfN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=o7zILfemFAAptsk0oUpfir56T2BRM/sNX/QwuWX7SzOyvZe4d4fsc2h9lwYeoY7RAle63vpnWYOPdFJulkbz7D3aNF/lu+tUj8lOZK7VmjLp7MoFqK8aa5g8V34JXA9T97U5BrSPgftoQtgicms1OR13mxZMvfnvAYYupZnMsMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qx+YJLYi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ot9cGFfN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6CF1F0089B;
-	Wed,  7 Oct 2026 04:16:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qx+YJLYi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3E71F0089B;
+	Wed,  7 Oct 2026 04:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791346580;
-	bh=DK2RY7seVzGda+su9QWy1XsAt86ArzDgwrkeksorEhQ=;
+	s=k20260515; t=1791346959;
+	bh=/nAdc4Y9g0Ft3unXJ2Op8GBWhN8QQGcJL7acZdLT7vA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ot9cGFfN02SxuwdxRsXTp0fwvHp5ysnrL0exlrMZngMlBHW0zYR1kFhnnwnazLnCL
-	 iNL1KtYdfbb6eeL+GmI2+tUaEoarLGPECFGR8NibMEP9Ql6d2u+XekVrTDptlAZux4
-	 FxaFfpbFRbWHU0/eL/0LNC5ACOvpLe+83sM/dKQ+DDJ09S8QxfxjLdJl6K2QiDrnVG
-	 xKHtDLuit4fLC+dINlbDToatEfErHRj6PememGXGL9usR7CFvqgugDskp2hZdRfI7l
-	 4LRB/0f6bKSSgUH1MVOrMop0HyiR+DmcpGxOUDHA61IMa4DHSekx2JFc3Ao9OshjeK
-	 qYkMIj9nBX/dw==
+	b=Qx+YJLYicNQwfEoBSnafgZxvFitXFnG0h9QIQIUt2M1ID2cZApojMl51DURBo75tv
+	 hoxFaqJfOjkGniQrLi/DfZUGlKWQ/UOzSC5Umtay5MKbrewV42tVJma8ViROfLa9+R
+	 Hi57rLJ+FdSgD1qkbeyS20ZANCv6lKGm72zBCNcORIJ1pGNe0hYvvk/XKibbp6s7LG
+	 gvWQ45bxLMFgU6Nxm+1eXIZ6C4dCLxgerGwBhvUCFy9tAOZbDuaMX/qta+OArv77CM
+	 hE4XQgFhnomXOxIxSODOMFTJeDYIwK0mHZbKdTIiL+0RPeL1XSHX94uFvWZHupqOQx
+	 tNQEu6yDy7UPw==
 Subject:
- Re: [PATCH net] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+ Re: [PATCH v2 net] bnxt_en: fix DMA mapping length for padded small packets
 From: netdev-bot+sashiko@kernel.org
-To: xinsheng.zhu.ny@gmail.com
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, oliver@neukum.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
-Date: Wed, 07 Oct 2026 04:16:19 +0000
-Message-ID: <179134657946.434549.14071341559835135672@kernel.org>
-In-Reply-To: <20261005041525.49111-1-xinsheng.zhu.ny@gmail.com>
-References: <20261005041525.49111-1-xinsheng.zhu.ny@gmail.com>
-X-sashiko-severity: High
+To: edumazet@kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org, sfle@kth.se,
+ edumazet@google.com, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ andrew+netdev@lunn.ch, berni@debian.org
+Date: Wed, 07 Oct 2026 04:22:37 +0000
+Message-ID: <179134695789.434549.53526916334276884@kernel.org>
+In-Reply-To: <20261006042153.199444-1-edumazet@kernel.org>
+References: <20261006042153.199444-1-edumazet@kernel.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,126 +59,123 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] In cdc_ncm_init() (drivers/net/usb/cdc_ncm.c:527-529), the new
-  check `if (err != sizeof(ctx->ncm_parm)) { dev_err(...); return err;…
-- [Low] The patch makes any GET_NTB_PARAMETERS response shorter than 28
-  bytes fatal to bind (cdc_ncm_bind_common() -> error2 -> -ENODEV).
-- [Low] The commit message describes a defect: cdc_ncm_init() only
-  checked `err < 0`, so initialization continued with an incomplete…
+- [Medium] Regression in the software UDP GSO path.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but the sister
+  bnge driver has the same stale-fragment ordering bug that the bnxt v2…
 
 --
 
-net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+bnxt_en: fix DMA mapping length for padded small packets
 
-This patch changes the GET_NTB_PARAMETERS check in cdc_ncm_init() from
-err < 0 to an exact-length comparison against sizeof(ctx->ncm_parm). The
-goal is to reject short responses instead of continuing initialization
-with zero-filled NTB parameters.
+This patch moves short-frame padding in bnxt_start_xmit() to the top of
+the function and uses skb_put_padto(). As a result, skb_headlen() now
+includes the pad when the linear head is DMA-mapped. This fixes the IOMMU
+read faults that happened when the TX BD length was larger than the
+mapped length.
 
-> Require the return value to equal sizeof(ctx->ncm_parm), consistent with
-> the existing exact-length check for GET_MAX_DATAGRAM_SIZE in
-> cdc_ncm_set_dgram_size().
->
-> Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+Closes: https://lore.kernel.org/netdev/20261004122616.56714cbd@nargothrond/
 
-[Severity: Low]
-This isn't a bug, but this fixes the unchecked response length in
-cdc_ncm_init(). Should it carry a Fixes: tag pointing at the commit that
-added the err < 0 check, so stable backporters can follow it?
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> index d7728d0c5b6e6..7f379f21fe465 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 
-> diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-> index 35db38cb3e4a2..66f40f0d9c273 100644
-> --- a/drivers/net/usb/cdc_ncm.c
-> +++ b/drivers/net/usb/cdc_ncm.c
-> @@ -524,7 +524,7 @@ static int cdc_ncm_init(struct usbnet *dev)
->  			      |USB_RECIP_INTERFACE,
->  			      0, iface_no, &ctx->ncm_parm,
->  			      sizeof(ctx->ncm_parm));
-> -	if (err < 0) {
-> +	if (err != sizeof(ctx->ncm_parm)) {
+[ ... ]
 
-[Severity: Low]
-With this check, any response shorter than sizeof(ctx->ncm_parm) now makes
-bind fail. There is no fallback, and the wLength the device reports is not
-used.
+> @@ -507,6 +507,11 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	txr = &bp->tx_ring[bp->tx_ring_map[i]];
+>  	prod = txr->tx_prod;
+>  
+> +	if (skb_put_padto(skb, BNXT_MIN_PKT_SIZE)) {
+> +		/* SKB already freed. */
+> +		goto tx_kick_pending;
+> +	}
+> +
 
-Before this patch, short responses were accepted. The zero-filled fields
-were then sanitized by cdc_ncm_fix_modulus(), by
-cdc_ncm_check_rx_max()/cdc_ncm_check_tx_max(), and by the
-tx_max_datagrams == 0 default.
+[Severity: Medium]
+Does moving the pad ahead of the SW USO branch change what
+bnxt_sw_udp_gso_xmit() puts on the wire?
 
-The commit message calls this "consistent with the existing exact-length
-check for GET_MAX_DATAGRAM_SIZE in cdc_ncm_set_dgram_size()". That check
-is not fatal, though:
+Before this patch, padding only ran at normal_tx:, after the SW USO branch
+had already returned. So bnxt_sw_udp_gso_xmit() always got the unpadded
+skb.
 
-	if (err != sizeof(max_datagram_size)) {
-		dev_dbg(&dev->intf->dev, "GET_MAX_DATAGRAM_SIZE failed\n");
-		goto out;
-	}
+Now a UDP GSO skb shorter than 52 bytes is padded first. On devices
+without BNXT_FLAG_UDP_GSO_CAP it then goes here:
 
-No device that sends a short response has been identified. That makes
-this a compatibility question, not confirmed breakage. Is it intended that
-these responses now cause a probe failure for cdc_ncm, cdc_mbim and
-huawei_cdc_ncm, which all share this bind path?
+	if (skb_is_gso(skb) &&
+	    (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) &&
+	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP)) {
+		int rc = bnxt_sw_udp_gso_xmit(bp, txr, txq, skb);
 
->  		dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
->  		return err; /* GET_NTB_PARAMETERS is required */
-                        ^^^
+bnxt_sw_udp_gso_xmit() in bnxt_gso.c then computes:
+
+	total_payload = skb->len - hdr_len;
+	num_segs = DIV_ROUND_UP(total_payload, mss);
+
+This counts the zero pad as UDP payload. tso_build_hdr() builds
+iph->tot_len and the UDP length from the segment payload, and the NIC
+fills in valid checksums. Would the receiver then accept the pad bytes as
+real UDP data?
+
+For example, Ethernet 14 + IPv4 20 + UDP 8 + 2 bytes of data is 44 bytes.
+With gso_size=1 that is padded to 52. total_payload goes from 2 to 10, so
+10 datagrams are sent instead of 2, and eight of them carry only zeros.
+
+An unprivileged UDP socket can trigger this by setting UDP_SEGMENT to a
+small gso_size and sending a few bytes over IPv4.
+
+Also, BNXT_MIN_PKT_SIZE is a per-frame minimum. Padding the super-packet
+still leaves the individual SW USO segments (for example 43 bytes)
+shorter than that.
+
+Should the pad be skipped for skb_is_gso() skbs, or applied after the SW
+USO branch?
 
 [Severity: High]
-What happens when the device ends the GET_NTB_PARAMETERS data stage with
-a zero-length packet? usbnet_read_cmd() then returns 0. Does this branch
-log "failed GET_NTB_PARAMETERS" and still return 0, which the caller reads
-as success?
+This isn't a bug introduced by this patch, but the sister bnge driver
+seems to have the ordering problem that this v2 placement avoids for
+bnxt. In bnge_start_xmit() in drivers/net/ethernet/broadcom/bnge/bnge_txrx.c,
+the frag count is read before padding:
 
-__usbnet_read_cmd() passes the usb_control_msg() length through unchanged:
+	last_frag = skb_shinfo(skb)->nr_frags;
+	...
+	tx_buf->nr_frags = last_frag;
+	...
+	if (eth_skb_pad(skb))
+		goto tx_kick_pending;
 
-drivers/net/usb/usbnet.c:__usbnet_read_cmd() {
-    ...
-	err = usb_control_msg(dev->udev, usb_rcvctrlpipe(dev->udev, 0),
-			      cmd, reqtype, value, index, buf, size,
-			      USB_CTRL_GET_TIMEOUT);
-	if (err > 0 && err <= size) {
-    ...
-	return err;
-}
+A nonlinear skb shorter than ETH_ZLEN has skb_tailroom() of 0. In that
+case __skb_pad() goes through pskb_expand_head() and skb_linearize().
+That pulls the frag data into the head, drops the frag page references
+and sets nr_frags to 0.
 
-cdc_ncm_bind_common() only treats a non-zero return as a failure:
+bnge_start_xmit() then keeps using the stale last_frag:
 
-	if (cdc_ncm_init(dev))
-		goto error2;
+	flags = (len << TX_BD_LEN_SHIFT) | TX_BD_TYPE_LONG_TX_BD |
+		TX_BD_CNT(last_frag + 2);
+	...
+	for (i = 0; i < last_frag; i++) {
+		frag = &skb_shinfo(skb)->frags[i];
+		...
+		mapping = skb_frag_dma_map(bd->dev, frag, 0, len,
+					   DMA_TO_DEVICE);
 
-So bind would continue, but the rest of cdc_ncm_init() never runs.
-SET_CRC_MODE and SET_NTB_FORMAT are never sent. ctx->is_ndp16,
-ctx->tx_max_datagrams, ctx->max_ndp_size and ctx->timer_interval all keep
-their zero values from the kzalloc.
+Can this DMA-map frag pages that the skb no longer holds a reference to?
+If so, the NIC would send the frag data twice and read pages that may
+already be freed or recycled, such as page_pool pages.
 
-With ctx->tx_max_datagrams == 0, this loop in cdc_ncm_fill_tx_frame()
-never runs:
+Two ways to get such skbs are AF_PACKET TX_RING SOCK_RAW frames and
+forwarded small packets whose payload stayed in a frag after
+pskb_trim_rcsum().
 
-	for (n = ctx->tx_curr_frame_num; n < ctx->tx_max_datagrams; n++) {
+As a separate fix, would it make sense to call eth_skb_pad() before
+nr_frags is read in bnge_start_xmit(), the same way this patch does for
+bnxt?
 
-Each incoming skb then goes to the "free up any dangling skb" block, gets
-freed and is counted in tx_dropped.
-
-On the RX side, is_ndp16 is 0, so cdc_ncm_rx_fixup() calls
-cdc_ncm_rx_verify_nth32(). The device was never sent SET_NTB_FORMAT, so it
-is still using its default NTB16 format.
-
-With CDC_NCM_FLAG_NDP_TO_END set, kzalloc(ctx->max_ndp_size) with a size
-of 0 returns ZERO_SIZE_PTR. That passes the NULL check in
-cdc_ncm_bind_common(), so the problem is not caught there either.
-
-Before this patch, a zero-length response went through the full
-initialization with sanitized defaults. Isn't this a regression for the
-zero-length case? Short reads of 1 to 27 bytes do fail bind, but only
-because the positive byte count is non-zero.
-
-Should this branch return a negative errno for short reads? For example:
-
-	return err < 0 ? err : -EIO;
-
->  	}
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005041525.49111-1-xinsheng.zhu.ny%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006042153.199444-1-edumazet%40kernel.org
