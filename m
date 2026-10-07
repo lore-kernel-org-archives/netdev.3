@@ -1,138 +1,179 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035AF38758D
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791379522; cv=pass; b=qxl3poODo5Jxmv9qmLT/uZk5CxyQ6JDCUpfisR3Xo68KX3K4/8b/d/t0dJr5JgUAK5Yur4sDE4DmuFEUPW0L3bbvvHBJMfgBItgzd42Ce6QIM1zPT0XLYJAM0Ko0/j6gCryT2wiZP9ocWyIJWpgcDU7V+06BaH7+nWwUe3+Qk5U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791379522; c=relaxed/simple;
-	bh=r4+e5uMoZNj7ZCkw8C4enM+dD5yuNoZmNknGMAbiFK8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kBDDuI2Mub8zCRIT9TcM4+aWNJTzvnqkOKM0yxfV1FTUf7HQzaVtzEs6NeCYnkMxt4LZSHnjY1UUX9YQaglN/yJizV690zbukPYvbnwYrsEQs3UBXU7BvghwheEZsgsP/znebyUOKDoQ873BZi8cHWHxAheKTPP9Z9cYDwVaiTU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XK+mHN/m; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D0544C4FF
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 13:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791379840; cv=none; b=ggNWaWqHaYqjvTEM4WkvpHw4u7L2btEKtDMxPEpk/YG6g8iy0Qo21rEGBAb+4GKSb9FewEWo9B2mQXvy9hm1mv64jPisYhQFbju1AcitK0WELMVbpPKYivjmc9GqxvccfJrLsKstx6EQa2YnH6UckjczNa/NGlK0kvmsQ72Jjn8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791379840; c=relaxed/simple;
+	bh=DNujO+s/4oUYQtk/x33NTycnd/C5CiEkkHon67/9YDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P0vDDOiG/fjzXbNeI3aiPBrnDcKvr4w0VjgeTQYvgCkn+VJWVRoc+IAtphv9tLcQRNL59DFAfVfCNKUrnxuuEdWlLIIut6UV6UdFd0r30nkgllqHIargypyZt0uEL12HfuFSRjaLChC5CCCOq1lNqNDhqH/2q+1iX/MZQDMhEp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=ZowMYgSE; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XK+mHN/m"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6ab0140ecb2so13116a12.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:25:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791379502; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kqiS52J/nfMLWopaNAcPt9YFnE8lJX26X2drpfS9QLPk2HzPtra1KiVN3CP8goWfPg
-         CNwQJRIlJjLfaO0+28GhnZhyFKWFx2tUavw9C6ONutPPy9NZiIBDPG6VQh7bMxfRCtnZ
-         xFNX2begcMXKASGdWDt9W2yKvOfdlWXBDSFUVUMvdTQQYrJzSuv2tiLYTUTc1Y0P4XAT
-         oqPIram1sBFjjQypXdQNKq22swA2Xh2QBeJAN2ACYE/lC8lHwcFIWjqnpggNmYrf6j/T
-         EF1hnVEJWPNYl29/gLrt0CRTv31mgs38/GkCBcSQMmEsdxk1+WDIBhHxW5E4gTGVISTr
-         p0Xg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=s+dZR8dpXP94j/qSyFaGO59voLN46gwiqCeuh+llQbw=;
-        fh=UqHuQBL8RLyaHBgUNCqXqIDpRAhwDKgmt8Ulw0e3mvM=;
-        b=lX97LgSDo9Zb+XODoSOYe+5aKgLX/bconooxq0PtyHuXBvUxjhZ5d7ejSzE3HubQT0
-         tdl81U6Q6mf3275zYwD9iBaWUjjC2HMRzbDZZ/sbafTlmOUah0x5/9xO/kDQSF5v/YBw
-         R98XCXISLlXSIz17BeYBThKnfG+mUHVL2SlkRsaHh1IifyGvJfsT9BmUOElkMZCJjQUt
-         60yOZ0hm5z8HslQ1yxCsAdGWsZ285z7mmK6LCLvp12eX2KAvRiN52AgCIZyWRW8IaN6c
-         6epwatQz4A8QUyurk/8KpI50I4aZ/NnxlCEhtLcK0PYikdIkxcp2+3VAKcDn1d8oOAZC
-         yclA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="ZowMYgSE"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48b02b1b4cfso1273511f8f.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 06:30:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791379502; x=1791984302; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=s+dZR8dpXP94j/qSyFaGO59voLN46gwiqCeuh+llQbw=;
-        b=XK+mHN/m7/8PWCczVBf6jI9GNg8P5wIcvPEWJiSQ39whhXyU16GXTZxtoHP4bZILwF
-         fbzHnnyusPhBuPJ9aPzAptHzCjJiIWe6m+y7N14H953mreW1xMYqR3xO/W2B+VOvIf97
-         q0d9cy36G0RfmdM35f/Y7jTmLS+9/HGIb3r1n8nWrmNBa3ossJ0ioKWjk+qynEmXPxML
-         5JhIvkmtbXxt2eJhBiUJT4omnSlWdkqLc8sbShJDKATk0jtb99o3Umc5A17uTfjCgjRN
-         vDNhBbZe6+FH3YtQUYuhVDLis/gSgDVmOLZ6E5NlYr9OZyeL5mI1xj8GdKLCjrG5hnB3
-         xhLw==
+        d=openvpn.net; s=google; t=1791379821; x=1791984621; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fvt8xB7JGat4M1zYcEgruvQVOA1rcBfHjyL4Um00UNc=;
+        b=ZowMYgSE7rwsJPRikgzuoesdGY17ABgu2ICOnAynJq4wwEeypYHPLYBi501XnMicOU
+         EQ30dPzztg/BicYBj8FjIr530kktALYQz2/S3JDO/9UulbJdduSGxxfJSNgIWum8wyDy
+         cW/bUdxz2UQw59hso4vv0sYltCk+H36Gj9R8heq+ylHsU/D08JctEijSr7e+yFkl5wnb
+         y/K1LEqx7dVsBmYaJR3pE9EUWPHtcinIo2/v7JfFeDTdbFyKBCVnQU1UY++A5DYWKgEm
+         YpEGRgk2xLQxdgtvWcWjN3G5N8TuouqaNDOq4dxadJUcjE7m+f0nWCEjCimsjI/85RvQ
+         MUMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791379502; x=1791984302;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=s+dZR8dpXP94j/qSyFaGO59voLN46gwiqCeuh+llQbw=;
-        b=pHt2WTZC9GZrWl1AW0Z6RsOcPXjSUvPRXkbBLz1uuGveDUMtQnvcGMl7Pm8f13qDlR
-         TrIpzWe8m4nqgb4NB3wafkH1j7d5c/icnHaghVU8//M9UhyGdkVk8lH99X8EUg2e6LgH
-         rpZvLKpVwrQiul4HuU8BgULNssJUk4OVyMBi5WpqMYI53+A/rsguhCfjAmfwqovuYJo4
-         d430dVRaZvpKmgkPHu71/sHUPOG0+AhhzfGMkFCooQuIE6bARi8w1T5ujK6VMKKyB0g+
-         /k6U5acUV3ajjAlZnQO+Alj7orsZ/kBfnvRxU8oGQYkbV8ku4nf6UTSU+UVdfuZkbUy7
-         FCLA==
-X-Forwarded-Encrypted: i=1; AKwUvBwhBWwIBAI1q33QzdeZexsoM/mbSatBVql6P1dDfbLx0pWL9S+a4tXkpLQKsGcU/pE52MuzVXE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIgt4ZLDWu9OgIBfpgLNRkIUA4fD77l2oOz5dgjBqI2HBilO0PL
-	pYWO9Cpg+dCjMva7l5qIYz5xkFU+nKiak9XWaiX52tk5RCNIprnwjFJ/Ir3yB7XOcNZ4AFVa7G4
-	UGm1PNq21M7juctLfBQnwS52oqT8rrjx3JdK6cNgid3C2qJjQOdSO3DS5gpo=
-X-Gm-Gg: AYBFou2T9WAoQSWYTAEMuEkYmBNGGTUlyiKG/J39LNQGOUV6eWdfESGT7GBR5WKoWvF
-	ES/5qR59RkwHs2KGYRzDKyN+vlcb2QGxT04H/ys/wuieS/ToSxZlAXlIgIjjbxWzhLrkOJCfoxj
-	Yle2JcMh2WIu9JNn/9LBVspxu2ycrlSc6JqwsTfTQjRMEyenOK2pFC8D+Di9uy0fnED0uTPmezF
-	ccLfjQhvaqlTv4fZsINLmsPDD5ijefJOLFi8GhCqoGIg496ebe/+gPD2YJ3ZcyZJ4IJpQMcfLLZ
-	OuFYWgDAw01zwcWBh2DQAYuuFmpxfXvNNo7VXPNihKnlgAVFIe97CpHOMOu6ioFlU8DcBKiTvWi
-	VMLZhKNdUYPL9omYeRKZtVeoBIgT5ey84NjgsmGThD3c9Mw==
-X-Received: by 2002:aa7:d651:0:b0:6a7:ef64:8a12 with SMTP id
- 4fb4d7f45d1cf-6afdce59686mr112735a12.10.1791379501100; Wed, 07 Oct 2026
- 06:25:01 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791379821; x=1791984621;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fvt8xB7JGat4M1zYcEgruvQVOA1rcBfHjyL4Um00UNc=;
+        b=2M5dZ/L3sfxFvmGJmhkTGkbJTlE3UKuhTKYxUlo5F27iZ2PSKaLLJT8csOXwLoYP+8
+         VuL1eyZcj4P/VbMdoh96Smq99fQgmlyrUtftyndnEvnd8BJbPjIOmz8F0k/bwuotbHTA
+         +02zQywCpgatqXSGjRkTELCoPl9kXgZLPz67bz9F/kYEZUNL6XgoGGof6/l61NIVUxjM
+         cFPmqHkAsZm36e4WRi50BxJqB/KQ4r8ZCKgnTtzP2SQ74U/7KyuoZQe5o8symXH2LJff
+         kIlzSe2pm08fnri8zSULb5A8V0s7rDl+23i7qEyCda+M+KfSDM4PNowOhVz12pgnewgy
+         H84A==
+X-Gm-Message-State: AFuF++lv6zsC0uXfB5uB0BV7jIdSv2tbWXii25BRAjS0zYWVuFwzvyJG
+	3rRGTsI5NteFYRjXqNdyeHOeATlkQ3ExuyRZJHw1B/r+zcktZM08nbmKgbX190gcmvHkTX4NEj6
+	U4xzExRiTDrVsADd4zGIVcd0x/MVJnOMut6wR2Io1qEAp/KEklDWbS1c925JLpADU
+X-Gm-Gg: AYBFou0c8lUMmEIcKh3fN9FUNbf4rSt4sQX3G/4XJQxLH8h9SIvSxD0pGCyJpCFoBG5
+	0VbBdFU6OoNOQNJ+d5nXqMkAFIvIiOkRHkHERFI74Nso0D1qxi6VCCQRYl9e0ULSxvqi6Zp3ZGR
+	Icn6lF2HH82tjk3m0gVYKw0hXuXZUqr2CJ/OPM8btfged4dLuhplYydbuxTyjIcZSAlKvWT3g/I
+	AKe4PAiGCbAcUo0GoEc2EjDIgst1gNWUhDSGOPzUcVhH4DqfglLskp95UXAYkzkl3ldbkvLwSQQ
+	0qNOWul7JDgULhjHR7iBceX6l15SEbcFZyd9GeU6jRMHIxYJ+Ymyyg4vtJDyi2J/8z9zHq2HCXS
+	t5nVCKhCxYNGcSz5CD73opjODESVPqnxJkMJR5ANPapnhvZ7Z5zIm3u99TQiHRs2IRb8HyVqUmY
+	hi8kTTQclrOQCeyVK7neNEpYLK4Ljkv31k99aX6rnpx5S3ZXMSvXc9f/ymMwwgZisTJ1TXHNjk7
+	FlbrOlt7dE=
+X-Received: by 2002:a05:600c:154c:b0:4a1:6282:1cf3 with SMTP id 5b1f17b1804b1-4a18043b284mr40569725e9.9.1791379821198;
+        Wed, 07 Oct 2026 06:30:21 -0700 (PDT)
+Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:7fc5:5cc8:bac1:5ef3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17a0fc2e4sm150356145e9.3.2026.10.07.06.30.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 06:30:20 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: netdev@vger.kernel.org
+Cc: Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net-next 0/7] pull request: ovpn 2026-10-07
+Date: Wed,  7 Oct 2026 15:30:09 +0200
+Message-ID: <20261007133018.1451958-1-antonio@openvpn.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261001112948.322463-1-jiayuan.chen@linux.dev>
- <20261001112948.322463-4-jiayuan.chen@linux.dev> <20261005171227.2014f26e@kernel.org>
- <8a8241c4-0e41-4ddd-aeef-b9ecb4f55d3a@linux.dev>
-In-Reply-To: <8a8241c4-0e41-4ddd-aeef-b9ecb4f55d3a@linux.dev>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Wed, 7 Oct 2026 09:24:36 -0400
-X-Gm-Features: AclHuK_1-cUyFKx6jZtZU4vlXGTcJYuoZ3KG5mU-35Npv3ExhuQay5q_SWlPEsg
-Message-ID: <CADVnQykSb=trXtxeC1zMDYH7naS_w0h7hkN=v2RSJqe3z0OyxQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/3] tcp_cubic: fix divide by zero and endless
- loop on bad module params
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	Eric Dumazet <edumazet@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Stephen Hemminger <stephen@networkplumber.org>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 7, 2026 at 2:49=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.dev=
-> wrote:
->
->
-> On 10/6/26 8:12 AM, Jakub Kicinski wrote:
-> > On Thu,  1 Oct 2026 19:29:43 +0800 Jiayuan Chen wrote:
-> >> Subject: [PATCH net-next v2 3/3] tcp_cubic: fix divide by zero and end=
-less loop on bad module params
-> > if the LLM Medium severity complaint is true maybe also update
-> > the subject? I thought there's an actual div by zero somewhere
-> > but the commit msg seems to describe the inf loop
->
->
->
-> Hi Kuba, sorry for the delay.
->
-> The LLM is talking about (cwnd * beta_scale) wrapping, which needs
-> cwnd >=3D 33M packets, way past the 1M limit this code documents. So
-> the loop fix is fine.
->
-> The div by zero is real: beta =3D=3D 1024 in "/ (BICTCP_BETA_SCALE - beta=
-)"
-> and bic_scale =3D=3D 0 in do_div(), both at init. The new range check in
-> this patch rejects both, I just did not say "divide by zero" in the
-> commit message.
->
-> Want me to spell this out in the commit message? I can also add the
-> READ_ONCE() Eric mentioned in the same respin.
+Hi all!
 
-Yes, please spell that out in the commit message, and please also add
-the READ_ONCE() Eric mentioned in the same respin.
+Here is v3 of the ovpn batch for net-next, rebased on current net-next.
 
-Thanks,
-neal
+It is mostly cleanup. The one functional change is that PEER_DEL_NTF now
+carries the same peer object returned by PEER_GET: a disconnecting
+peer's final counters were not reachable before, because
+ovpn_peer_remove() unlinks the peer before emitting the notification.
+The selftests get TCP_NODELAY on ovpn-cli's TCP sockets and proper
+synchronization against the server-side key setup. Ralf is added to
+MAINTAINERS as ovpn reviewer.
+
+Changes since v2:
+* 5/7: the wait on the server-side key setup was unbounded, and the
+  subshell only reported the status of the last new_key. Bound the wait
+  and report a failure from any peer.
+* 6/7: the notification filter used to drop every message carrying a
+  remote-ipv6, which also dropped the IPv6 float events. Those are not
+  deterministic and are not in the fixtures, so letting them through
+  made the notification check fail at random. Drop them again, this time
+  only for peer-float-ntf.
+
+Both were reported by sashiko on v2. The second one was making roughly
+15% of the selftest runs fail, so it is worth having before this lands.
+With it, 33 consecutive script runs are clean.
+
+Please pull or let me know of any issue!
+
+Thanks a lot,
+	Antonio
+
+The following changes since commit 6e23f90f2b8c3ea3bf904f86f3ed06bf2844b4bc:
+
+  Merge branch 'net-consolidate-devmem-net_iov-freelist-and-dma-handling' (2026-09-29 15:41:35 +0200)
+
+are available in the Git repository at:
+
+  https://github.com/OpenVPN/ovpn-net-next.git tags/ovpn-net-next-20261007
+
+for you to fetch changes up to e724d2ebb9519ce89ceadcd136ca6f2b9e404a32:
+
+  MAINTAINERS: ovpn: add Ralf Lici as reviewer (2026-10-06 02:24:31 +0200)
+
+----------------------------------------------------------------
+Included changes:
+* add Ralf Lici as ovpn reviewer
+* include the peer object in the PEER_DEL notification
+* wait for the server-side key setup before generating TCP traffic in
+  selftests
+* enable TCP_NODELAY on TCP sockets in selftests
+* drop redundant peer NULL checks in the crypto post functions
+* remove the unused work field from struct ovpn_socket
+* fix the documented return value of ovpn_bind_from_sockaddr()
+
+----------------------------------------------------------------
+Antonio Quartulli (2):
+      selftests: ovpn: wait for the TCP server key setup before traffic
+      MAINTAINERS: ovpn: add Ralf Lici as reviewer
+
+Karl Mehltretter (1):
+      ovpn: Fix the return value in ovpn_bind_from_sockaddr() kernel-doc
+
+Marco Baffo (2):
+      ovpn: remove redundant peer NULL checks in crypto post functions
+      selftests: ovpn: enable TCP_NODELAY on TCP sockets
+
+Ralf Lici (2):
+      ovpn: remove unused work field from struct ovpn_socket
+      ovpn: send peer object along with PEER_DEL_NTF
+
+ MAINTAINERS                                        |   1 +
+ drivers/net/ovpn/bind.c                            |   2 +-
+ drivers/net/ovpn/io.c                              |   6 +-
+ drivers/net/ovpn/netlink.c                         |  60 +++++++-----
+ drivers/net/ovpn/socket.h                          |   2 -
+ tools/testing/selftests/net/ovpn/common.sh         | 108 +++++++++++++++++----
+ .../selftests/net/ovpn/json/peer0-float.json       |  12 +--
+ .../selftests/net/ovpn/json/peer0-symm-float.json  |  10 +-
+ .../selftests/net/ovpn/json/peer0-symm.json        |   7 +-
+ tools/testing/selftests/net/ovpn/json/peer0.json   |  12 +--
+ .../selftests/net/ovpn/json/peer1-symm.json        |   2 +-
+ tools/testing/selftests/net/ovpn/json/peer1.json   |   2 +-
+ .../selftests/net/ovpn/json/peer2-symm.json        |   2 +-
+ tools/testing/selftests/net/ovpn/json/peer2.json   |   2 +-
+ .../selftests/net/ovpn/json/peer3-symm.json        |   2 +-
+ tools/testing/selftests/net/ovpn/json/peer3.json   |   2 +-
+ .../selftests/net/ovpn/json/peer4-symm.json        |   2 +-
+ tools/testing/selftests/net/ovpn/json/peer4.json   |   2 +-
+ .../selftests/net/ovpn/json/peer5-symm.json        |   2 +-
+ tools/testing/selftests/net/ovpn/json/peer5.json   |   2 +-
+ .../selftests/net/ovpn/json/peer6-symm.json        |   2 +-
+ tools/testing/selftests/net/ovpn/json/peer6.json   |   2 +-
+ tools/testing/selftests/net/ovpn/ovpn-cli.c        |  23 +++++
+ .../selftests/net/ovpn/test-close-socket.sh        |   2 +
+ tools/testing/selftests/net/ovpn/test.sh           |  56 +++++------
+ 25 files changed, 225 insertions(+), 100 deletions(-)
+ mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm-float.json
+ mode change 120000 => 100644 tools/testing/selftests/net/ovpn/json/peer0-symm.json
