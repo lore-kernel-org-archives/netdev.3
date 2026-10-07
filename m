@@ -1,147 +1,210 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DC940E8C1
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461B0430CCA
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 17:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791395874; cv=none; b=JKQqY+2HwmfQSWAGH/WSb7zPOsQ7UFooinZ8APrRt+TOIuvEuhnfaHNWV+wfKxmXk5pBANYxSHFFiRgDL38EKbu8cB1Ut1IIIcHIOQwiiCnNvarXkV4Gogd8oe13YXpiayZrtaIIzJ2wgpuO8MpQXB/KAnVWw1MCMMF9bMaBPbA=
+	t=1791395908; cv=none; b=Rm/tFp7v+v2TTpC79P3mak/cy/dLznRVz8pL5WObNDhghTtdeBNrvNg9cJwdCBmi4rqv8ZITJPgOPDGymmiukbZuTO7UhMqvZEmsNUJq7vtMBVLNKSxFR4opbnwYVuAE8eo8L3/GJx/NL/JF3gvEBD5WUOUktcsXx0kpRpb+r0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791395874; c=relaxed/simple;
-	bh=8siqpym+SZiWtWrY6ilp/qzOSB35ebH+f54wdBWICCI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bK0ovAJCB0vsEKPq5qw4gtOAUReidFnGW7J+sF8MYJGP7IfMYN4UBW0IMKw0Blepzvm9wF3p0XfsH0ke+awiA2yyuQll+1AkgpyakjEWOKiUAHLXa8mFWwk5qg9mgT7V4YyT8NV/sWPFZZVI7xnM5HrAPdBQk5507SSN3ktkV58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=CE0s4oES; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	s=arc-20240116; t=1791395908; c=relaxed/simple;
+	bh=Mp07QHO3Rs8Udlyr/Za9T3j9vLxUxD8S3ynso79mBTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CPWJxE7/bCXjPTb7Oq3RcApn+vTKdg669rpNQX3fEDSwSmUZwPufVEuw4Qr/ZhlqGdoM1UTYwupzLAt7Z9VrahOSXtrQr5WxvCCz7oUoHRCemm5WLbGHAu88/UwXQtMoXc54wdhxOGQFWLaDBB7+4zJ7SRn06f2AdgVuBtSxLaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A6vJR+i9; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="CE0s4oES"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5351e6a2230so16441471cf.3
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 10:57:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A6vJR+i9"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8ac8a2ac52bso26983647b3.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 10:58:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1791395872; x=1792000672; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=MAJHQ2Wkik4PqvnpAIT0i+1papDfY48uBw0Kb6tIGEA=;
-        b=CE0s4oESOVFEMLAQh0Hs+ZqLhK2zgAsvQLcId26VH/B07Ql62bqi021mS/FZYC9P4R
-         vQcSRWs7Rf/K1tZS5PttSrOhYz5JEBLeW83GwMHjz3fYmiwV9HI/tCYc/hTytX9j+pcJ
-         j7dTDtoNtrOwL4G8AAt600jm+wxa5rCbE/NVO52T3Ta+SQ6j9nOlDSJ3ghIC7iA+7CSZ
-         puPL5rx+g6+KmoCXu5e9Jv/Ba0RznjEVojpeyw63tlA/CGHj9o/tG33FU3r3nfRjG1t6
-         7OHOfXHMP9SbE9o83nUpgmIvgnyD0IEKzcLx01DTTJLzDRYUsm6G6aLWpWBpUr2vKpY1
-         OkxA==
+        d=gmail.com; s=20251104; t=1791395906; x=1792000706; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Oey5yCw08dubStuWszvMPd3Sd2g9hpqjq3h1IrdDEpU=;
+        b=A6vJR+i921YQ/xL/X13Kxm2CFHZQH+8O7QbBjR86RsQgx594XfBqxM9ysPc1Dbr0Hm
+         6j2QI4Twj8j8CAq9e86YRvztriVmRzKQw/Bi74vWEL2Fh4JXa6/DR+OS5vYNiuGXZrNN
+         4bXAqTI5UvWrLM9lce2iekbEghEndyeK3CcgsBkT8wd6feW1dwYI9Wniariws+SoO56S
+         cBZZ1lp08mSLSogVNBci/VjvuT+2Zy/wTzClx6Oovb5/osR561HyL6gxWQ68K05HKddA
+         /JYWQRAAuqbOsu+1NbHBol07j0qZq6HVyB+80mFjxGuADqHTJq5xhJkYCytV4o0QxO+C
+         ghdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791395872; x=1792000672;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=MAJHQ2Wkik4PqvnpAIT0i+1papDfY48uBw0Kb6tIGEA=;
-        b=Nl/sbTHWzue4a9pvs2JUziM9UvH1xT+zP3bUAbTnXGOyRxAEiECqND22khe4aZPV/7
-         eZiUqM4DuExyS4sqxv+cpy0bwwPuDDU75CuwoY7e0NUyCN1ib/kdc5nc+xFGASuFSX1c
-         cWyU+kwd+hp11V2JdeO3uuUEiN6EFrIHxaeoa7Bvh6IFRSQ0MWs21Er1/rE90qBkivMo
-         AZ6dFKMYbzdHGHylNtlk32/XpEU6NSvbYHEERy+BFmWPO0ypS5UbBYsf7QY8ldKvqfGD
-         699dspMfc03D1Ns+44AJ50I270FiC+JH5M/yLCnn9VHXK4WmECWITfj0vwfV+aFybgPD
-         96MA==
-X-Forwarded-Encrypted: i=1; AKwUvBxQsoIplkUyc1+2LvfVtJZOW/dy2GLciuDfzvDaCzVX1VFN+R5IW4zCZRmjS5PsbzPCrRcgpZU=@vger.kernel.org
-X-Gm-Message-State: AFuF++muFDBee3zfjFHgvk1YGoRjVv7oxlqUPNFhcWf7ewaiOUYYEq1f
-	7f4sKs2qWUggWsioshxd4Oten7SRfMRpzOK9rnUl+P795NQTrDkQbKIVAVEWldPNOe4=
-X-Gm-Gg: AYBFou0wEl8KIsoyRlXM/NpXUL43BfVum6leo6Amsps0W0P9sc8JIHAgpLBi0w83XAl
-	xrVv1jJENIpO/HbrpCmWcAa5HzMsGdfx3xJOAPb/NfREeYqzZXHrunmTFJD8ixbRTcevlcwIOm0
-	8NM7aG046Qdpj5NAieVXany6N0L0KCLK4XU9IV5vMSMVJo9b8kEUdUoba3mqetVhU/kRzJTEteq
-	csyagiN7RunpnZtRJMw78Wi42ahey++4IIbC9TVVuZqkX1QvSK+GcyGkF09CyOCChh6gIzZpQc5
-	7YDJ7F9/ZuvGsMMwopkN2mQMopIu7qTR3bqDX/u4X+1YyYv5ukR2ZQE+zj3bLDl33ErpoaRZSBQ
-	MU/PyU2DyrETPhxPidAX4ZtvqGqJcH3dbyj9ZtNj3wiurIxDuOfPbWEeF1b027983PYJryauhkG
-	PKXqBu6hGkyuZJvuNCuu1LTfJKNAe3HNB98F4peRPUBItRbYx1ecqsn+uhxjQXW47v1WmpmnY8+
-	EeoWckH5+EwaZY=
-X-Received: by 2002:a05:620a:890c:b0:93e:5b69:fa8 with SMTP id af79cd13be357-93e9b80d367mr562281185a.66.1791395871851;
-        Wed, 07 Oct 2026 10:57:51 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.251])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93e991fe1a1sm269754085a.43.2026.10.07.10.57.51
+        d=1e100.net; s=20260707; t=1791395906; x=1792000706;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Oey5yCw08dubStuWszvMPd3Sd2g9hpqjq3h1IrdDEpU=;
+        b=q1TOW1KMPETWE37XlXWtxAG8xJH3e6QpQ+YUqlkAWgndJPi+Z1n5qbAyNhKz133Qz6
+         El5EF5s5avSoSpxPE8xzQjB05nfisoAudvMUZPdInmhZvp52ns8S4KCqjBmdQklDZqpn
+         Dx+9CyWMsNPa8xGUcXhT71cXZkvJ7dF8MRaBiz52+LZwzglkQq2pcPE6+gTRXxUB3Uav
+         2vq3nKVU+h7e2+fK9XArHjRu9gehMuvUOTazQULZ7NEG7GBX269L6u6nxayPeKFBtREA
+         0aGhMSA02LFzuGbr7KUY88GLHVjlt+7ftW2iV83u6FmFXF9oDKFPCi7alS8rffjmk9rO
+         +H6Q==
+X-Gm-Message-State: AFuF++lLYVawmQ4CyFiK/DU4VWLQ0Ou84mKqjTALwHIAa9RIacnfJkIK
+	KejqHCkWLo4jfS5gioekpZ3Hq9pmLuijldE+CRurusljyCqTyO3mWHMjTrknoQ==
+X-Gm-Gg: AYBFou0rvSguqDUIOsWIS+HRXUfY9W7AMcyKlG/MEObxoXgyJe9kz4hqq6AFFu6RcIS
+	04y+u6DracnCO3cCV3YX7IoqX4q6rwnU85u61W+L2mGt5pSjBsB/c5rePcrPLWjjh3xnFvdD3A0
+	lb7XMIX1+HMfBR7Uuw80KOE6QwcAJgaeU9K+FHOc7jFomzyp8AI5Qldzoq38CeM4MnwnZ1dFD3v
+	fpwn0U1IZfSLDm1mjMzkBqad+cloULmb4S1epAbqDpIH66fWTbraulBP5jAFWvfgsZbW7et8Bdd
+	C4IPe8HE1VLLquUEEOemmuGd8ACVVLcVGprpEUPWyTMrXR1Zpjdr+EbAKSFMNB57JBi/1Aw+ujD
+	kuRFHDHd0hzaaoFwtWCvKiBEfM0sLjOrEHAY2COmPKKs13Bg0R3sEnTMLZ5JM17TNetZXzacUXl
+	kAiXc/37HOl9uOEJdiIZ5XIzGFVQpJPPVmuyQNQBqQxYVvkD2G9A/2Ay3MnivGftYB20Cccedv2
+	904pLc6a7/r2TgLRAuPlUPrhXdOs6ez7v+zjHrDd+dm+YvWtMApG5ufESR43TXK365HPn9OmxJi
+	6YPWMELwnxGpOBh4KASRXt8z9XlZUcMjM3HO6QMdDlzgVSioOVdaQ08XjkXV
+X-Received: by 2002:a05:690c:2606:b0:8a4:af9c:2612 with SMTP id 00721157ae682-8af720b8ad1mr42562147b3.23.1791395906148;
+        Wed, 07 Oct 2026 10:58:26 -0700 (PDT)
+Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b05abd093asm11174257b3.37.2026.10.07.10.58.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 10:57:51 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Wed, 07 Oct 2026 17:57:32 +0000
-Subject: [PATCH net] xen/netfront: don't leak the skb when
- xennet_fill_frags() fails
+        Wed, 07 Oct 2026 10:58:25 -0700 (PDT)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	andrew+netdev@lunn.ch,
+	mst@redhat.com,
+	liuhangbin@gmail.com,
+	wei.fang@nxp.com,
+	Willem de Bruijn <willemb@google.com>,
+	Junnan Zhang <zhangjn_dev@163.com>
+Subject: [PATCH net] net/packet: call packet_parse_headers after virtio_net_hdr_to_skb
+Date: Wed,  7 Oct 2026 13:57:30 -0400
+Message-ID: <20261007175816.3138556-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.56.0.360.g66cac248cb-goog
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261007-b4-xen-netfront-fill-frags-leak-v1-1-a8a01ff9cd52@toxicpanda.com>
-X-B4-Tracking: v=1; b=H4sIAAyIxmoC/32NQQ6DIBREr2L+uj+ipZD0Ko0LwI/SEjRAGxPj3
- Qt23+W8zMzbIVF0lODe7BDp45JbQgndpQEzqzARurFk6FkvOsYkao4bBQyUbVxCRuu8RxvVlNC
- TeuH1Jo2SXIwkNJSXNZJ122l4QFnB8IPprZ9kcv2uNa0SoY4qmLkiv7aatyf8Z4Pj+AJbKHhWw
- gAAAA==
-X-Change-ID: 20261007-b4-xen-netfront-fill-frags-leak-357ca746de6b
-To: Juergen Gross <jgross@suse.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: xen-devel@lists.xenproject.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1791395867; l=1952;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=8siqpym+SZiWtWrY6ilp/qzOSB35ebH+f54wdBWICCI=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QKPBUTwP/hi5b4ZMT7RDyKAACyTKaU+F86iAtqdwrk+vWoZzfHOvsW0aj2tgmsgdCJbxvHAP8g7
- hKN5N3lq1pwY=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+Content-Transfer-Encoding: 8bit
 
-When a response chain has more slots than fit in the skb's frags,
-xennet_fill_frags() returns an error and xennet_poll() jumps to its
-error path.  That path moves what's left on tmpq to errq to be freed,
-but the skb being filled was already dequeued from tmpq, so it's never
-freed.  Each chain that overflows leaks the skb and the pages attached
-to it as frags, and the backend decides how many slots it sends.
+From: Willem de Bruijn <willemb@google.com>
 
-Put the skb back on tmpq before taking the error path, like the
-xennet_set_skb_gso() failure just above it does.
+SOCK_RAW packet sockets incorrectly drop VLAN-tagged GSO packets
+without VIRTIO_NET_HDR_F_NEEDS_CSUM.
 
-Fixes: ad4f15dc2c70 ("xen/netfront: don't bug in case of too many frags")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+packet_parse_headers() sets skb->protocol to VLAN but advances
+skb->network_header past the VLAN tags. virtio_net_hdr_to_skb()
+then flow dissects these packets, which parses the network header as a
+VLAN tag, and fails.
+
+Call packet_parse_headers() after virtio_net_hdr_to_skb() instead.
+
+This matches tun_get_user() and tap_get_user() and thus simplifies
+overall complexity.
+
+Commit 01fdecc0480d ("net: packet: fix wrong transport_header when
+sending VLAN-tagged frame") fixed the same issue for the transport
+header probe in packet_parse_headers(). That probe is now skipped if
+virtio_net_hdr_to_skb() already set the transport header, avoiding a
+redundant dissection.
+
+Implementation details:
+- Do not set skb->protocol to the RX wildcard ETH_P_ALL. SOCK_RAW then
+  derives it from the link layer header, as before. SOCK_DGRAM now
+  leaves it 0, or derives it from gso_type for GSO with NEEDS_CSUM.
+- Keep virtio_net_hdr_set_proto() last, so that the link layer protocol
+  takes priority over gso_type.
+
+Reported-by: Junnan Zhang <zhangjn_dev@163.com>
+Closes: https://lore.kernel.org/netdev/20260821085722.24036-1-zhangjn_dev@163.com/
+Fixes: dfed913e8b55 ("net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+
 ---
-I found this while testing an unrelated netfront fix under QEMU's KVM
-Xen emulation, with QEMU's xen_nic backend changed to spread frames
-over more RX slots than netfront can fit.  kmemleak reported one
-unreferenced skb from xennet_alloc_rx_buffers() for every frame that
-overflowed.  With this patch the overflowing frames still take the
-error path, and kmemleak no longer finds any skbs left behind by them.
 
-Thanks,
-Josef
+This was discovered through the report linked in the Closes: tag.
+
+Also independently reported by LLM code reviews as pre-existing issue,
+and verified with a reproducer.
 ---
- drivers/net/xen-netfront.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index 2ed673649c48..e8675bdca595 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -1338,8 +1338,10 @@ static int xennet_poll(struct napi_struct *napi, int budget)
- 		skb->data_len = rx->status;
- 		skb->len += rx->status;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 6ff16eef24f4..52ae3d875e97 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1943,8 +1943,7 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
+ 	/* On TX skb->data is the L2 header; anchor it for all socket types. */
+ 	skb_reset_mac_header(skb);
  
--		if (unlikely(xennet_fill_frags(queue, skb, &tmpq)))
-+		if (unlikely(xennet_fill_frags(queue, skb, &tmpq))) {
-+			__skb_queue_head(&tmpq, skb);
- 			goto err;
-+		}
+-	if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
+-	    sock->type == SOCK_RAW)
++	if (!skb->protocol && sock->type == SOCK_RAW)
+ 		skb->protocol = dev_parse_header_protocol(skb);
  
- 		if (rx->flags & XEN_NETRXF_csum_blank)
- 			skb->ip_summed = CHECKSUM_PARTIAL;
-
----
-base-commit: 23609bce9e1de525d1d0e73fc68c6e7971d0b49e
-change-id: 20261007-b4-xen-netfront-fill-frags-leak-357ca746de6b
+ 	skb_probe_transport_header(skb);
+@@ -2614,7 +2613,8 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	struct page *page;
+ 	int err;
+ 
+-	skb->protocol = proto;
++	if (proto != htons(ETH_P_ALL))
++		skb->protocol = proto;
+ 	skb->dev = dev;
+ 	skb->priority = sockc->priority;
+ 	skb->mark = sockc->mark;
+@@ -2678,8 +2678,6 @@ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+ 	if (unlikely(!skb->len))
+ 		return -EINVAL;
+ 
+-	packet_parse_headers(skb, sock);
+-
+ 	return tp_len;
+ }
+ 
+@@ -2919,9 +2917,13 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+-			virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 		}
+ 
++		packet_parse_headers(skb, po->sk.sk_socket);
++
++		if (has_vnet_hdr)
++			virtio_net_hdr_set_proto(skb, &vnet_hdr);
++
+ 		uarg = kmalloc(sizeof(*uarg), GFP_KERNEL);
+ 		if (unlikely(!uarg)) {
+ 			if (likely(len_sum > 0))
+@@ -3122,7 +3124,8 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 		goto out_free;
+ 	}
+ 
+-	skb->protocol = proto;
++	if (proto != htons(ETH_P_ALL))
++		skb->protocol = proto;
+ 	skb->dev = dev;
+ 	skb->priority = sockc.priority;
+ 	skb->mark = sockc.mark;
+@@ -3131,16 +3134,18 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
+ 	if (unlikely(extra_len == 4))
+ 		skb->no_fcs = 1;
+ 
+-	packet_parse_headers(skb, sock);
+-
+ 	if (vnet_hdr_sz) {
+ 		err = virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le());
+ 		if (err)
+ 			goto out_free;
+ 		len += vnet_hdr_sz;
+-		virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 	}
+ 
++	packet_parse_headers(skb, sock);
++
++	if (vnet_hdr_sz)
++		virtio_net_hdr_set_proto(skb, &vnet_hdr);
++
+ 	err = packet_xmit(po, skb);
+ 
+ 	if (unlikely(err != 0)) {
+-- 
+2.56.0.360.g66cac248cb-goog
 
