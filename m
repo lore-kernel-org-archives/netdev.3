@@ -1,197 +1,162 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012066.outbound.protection.outlook.com [40.107.200.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f6.google.com (mail-pj2-f6.google.com [74.125.227.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AB62CCB5;
-	Wed,  7 Oct 2026 18:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791398939; cv=fail; b=H2c+Uhg8e8xsXDd9G/DkWrNMHfZQMURTsQMfv4NC/+Mwj723HOvrYA04VqTX9xAFILrAdQMQknGPfZCB4frmOXBa4Xh7fXH/d/UL3WXSWe5XoZGBBz32HqHH1F3rOgnaOaBZBQIt1CzQ2WH/2ynZMA6UfmhDtZDGB3UssjMq9+E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791398939; c=relaxed/simple;
-	bh=jfgcnb6I1g1KI33fYmGy74CdZkFh+54vRMsLKM+l3ek=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rNNe1Qc/tFtWRMRCO120y2LD3qRxK116RFD2KuoVrAj8WS7B00w37Eco9YdyTIRztQm+7rAFv9cT2/P+uVtrUNZ9fNfePUuqIiz8wQMlKOr5/SinXR1ZHO9IWFn7ZYRjDoaa8tHJlGsDxrJLRm6I6WbsOZyulIhHi8mWoIkszfs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H/Q9//CT; arc=fail smtp.client-ip=40.107.200.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36D937F01B
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 18:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.134
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791399086; cv=none; b=cKFonELwN4xRxN4XE6eabzu+FT6/cBHou2RdCk1LjrzQ+UoL/1jnFqexzWdPVwJ5NExmaddqtXCnpkuuP3UmG9KDGyI9aLsCcZFG4d6cg9fGQMmVREsy5d+OVNffV3FYLpQOsXU5pEcQUvCSpiKb01yqp4LRCwBa//yMU2/0rm0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791399086; c=relaxed/simple;
+	bh=ooFE7wgNH86QzW50A74Hxs0eR/QZYfgdmjGkzqzYeSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d2JIU6zS2ak3Q7xD2d8yQ7MJwQKl3DlDQ2BEjua9uCcVcVbibrD+eIFwZrnRkDr7smnomNG92LxLwGtjUNYcx14JnflEoyoy7tfLGGm5JJ47BbgsBPq81F/0haPRpzO5/TM+Ihs5X2OGsffS7Rvffxdn0B8CdPoI9D82l+vKtMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UYU9wJxU; arc=none smtp.client-ip=74.125.227.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H/Q9//CT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pmZAc4qsz3q7181vMa56valegysIj5kA5BScVoZzGRGKzj9PxFghvv1d5nkNHeUdfUtlbhwZGWyNC1hU4dHZ29GbLShC7JUzLi+rQ7c/iV9PoqvFpRMMU1cSQcp/nyaTjzxj1phOZ7AkGQKXrDmJKlb2rgwqHKEmgK2lJfRtQ+bqXASN0wIFH82/BiUsZYEQ5RBG40U2PXxmIElu54J5NEX1JFkNdVCMYfO/tnqLqo4G9XOLLh3jRYHPaqyzAyNsmCdt/vn6FuYxvJZtU90g79svmoffwjl75fC2ryfyCmaedAMpJUFLyOOih3dCJvPZy0U1KIGX1n1UHUGB2ytc5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1TLWJ1MdRWJxyEFOFCT26/MStZZHKoVEXtYBpaT3o6s=;
- b=XSVnbWgr+MV0JC5pb79ASXHAx07I/isrSkA14sCsaRVOX3u1ypnW9fTylG02ThRuuspbtXS8akD4S6Z+FttBieLs8tqPAUVgYDDacqnKUEnMmZOJVGHadmwNf4nkBiR9sJYD7uwrpg8NoPoYkI7IbZpzFLoYxjUMb8RCwhs+XJAYoNt78eyT4WvkNKbCOe5LKRT1vp6h65LWYBCUWVKI8/zoaU++19UobzqZJZvZatOUCgSnJNxW70jPcwElIYT9HBPdGomiis/M80htXqks8k/WTKl77ykx1hzbRbipFyNSdjOeFLuT05xmrNTMKkdW8vKBT2unFsd+4T7tEowTRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1TLWJ1MdRWJxyEFOFCT26/MStZZHKoVEXtYBpaT3o6s=;
- b=H/Q9//CTn5AJ4q8kisdsp8esX3lOE6Vl6rrvYd7WqBbqrN42BrRNb+Onx3jmCRmGbo7vdxe6i58O1mP+BIwTO/Ll3535XCksqiycho/jZlx2I5earV/JaoZJZ7gr3PYRSpseZ3UQLCNzZSw+XwJSYVHxxHI1vFi4ne/gN7/ganBDgm9p9iJbstLKW4vzSN7FoBCTe+nIAXXSnqB1+wenRvWnmdUxYQ8RIKWhwdTW4Qx/GtxSCi2xF4kFDxvyr3tcGqE5oPSwpjAT/+NRhkWvkol5ZJS2tEqomoeWmKj7drYifdje6C/EB0RxddNr9O4ReUlL1FtHkVohT100kGQHPw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com (2603:10b6:408:20c::21)
- by PH6PR12MB128275.namprd12.prod.outlook.com (2603:10b6:510:3da::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Wed, 7 Oct
- 2026 18:48:51 +0000
-Received: from LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286]) by LV3PR12MB9356.namprd12.prod.outlook.com
- ([fe80::1c36:31b4:c420:6286%5]) with mapi id 15.21.0496.015; Wed, 7 Oct 2026
- 18:48:51 +0000
-Date: Wed, 7 Oct 2026 14:48:48 -0400
-From: Yury Norov <ynorov@nvidia.com>
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
-	Kees Cook <kees@kernel.org>,
-	Joel Granados <joel.granados@kernel.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	rcu@vger.kernel.org, virtualization@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev, llvm@lists.linux.dev,
-	Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 16/17] rcu: assert static storage for RCU sync and SRCU
- definitions
-Message-ID: <asaUECwON5PS98M8@yury>
-References: <20260915030336.1192299-1-ynorov@nvidia.com>
- <20260915031334.1194975-11-ynorov@nvidia.com>
- <20261007184105.GA3837481@joelbox>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261007184105.GA3837481@joelbox>
-X-ClientProxiedBy: SJ2PR07CA0018.namprd07.prod.outlook.com
- (2603:10b6:a03:505::22) To LV3PR12MB9356.namprd12.prod.outlook.com
- (2603:10b6:408:20c::21)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UYU9wJxU"
+Received: by mail-pj2-f6.google.com with SMTP id 98e67ed59e1d1-3964e7720afso1544658a91.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 11:51:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791399084; x=1792003884; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=X71f5KGOL/rbhedaUKsgXlp/Wmx4B13NNF0vqiORCgc=;
+        b=UYU9wJxUW8RQY34jHuYGL+FPkvRW3Y1QTJlT6kUlCrIKZ33cSWo37k3aZJPIEtPbcS
+         iw31KIb2d+7FQI6Q+ZziZA55y7RM/YrMwHbRxH8BqMBoyUcShZ4ZfkMWHVbQ+XZpRnO7
+         M/0YLM/npZ2WdSIoKh+PS2kUsACPPJ2gqrCKu2b9ItB+d5Z9UiM2tk/t5feiZX86VWDJ
+         /29KL+C4+nsdKLD4pRCtndiKyMRN0640JoEA2+ShJ992wRIaEvV5kw2v2J/Vh2uDfxq5
+         REn95bUX+yA8WeYzTuZseAyGP+ynjCnUpz61kzeLC+LQ2odxjZQXnB/6ug7iF0uI0VUG
+         j1SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791399084; x=1792003884;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=X71f5KGOL/rbhedaUKsgXlp/Wmx4B13NNF0vqiORCgc=;
+        b=vYaXxLspC27tYRD4392V/B2xuWZLtmGKKJ1AzJ3EGRWbJY/73XUNhpuIzbqsRGM3fu
+         X4QA23ycQS1EyPemTx104vWn+8g1F1+lWBcPBuYMEEv71K03vKwlsDqD0vn2d7W0vuLj
+         Peshr/Kzl9T23wpGNOY6ToZoxGkT/DTtG5jACktBT+lIhvHQ/LAI6PMeFsx5KOw2fVD4
+         dmwPkTgM0eeRs8zlBfM+btgQ1zifJTtMw0Nug1QyZ1HZStbr3vojomJ7OJEzS2JC6B4X
+         wRcuEKKSqho3wWiDrNKjBVtDKp9cbP9U/AqRebM/Kg39uNRuOGKcZlo2z7EM+YLX2EuJ
+         5v4w==
+X-Gm-Message-State: AFq9FYLVU5vvx1q0AzKdWDN5VB3UgfasK89m4ioPY2udJJC01hjXBLCu
+	1Nq7UlpO4pynJbrn9W8wQT1i11vEzkPzQvNpPwGSY8rFw96aS9S0TqXQ
+X-Gm-Gg: AYBFou2Q6klh+d6vaO8ZMyu3Uy7oUUVC1SJG1wyrWjb+GJkTUsNT7MhlxBIiK4JlEt0
+	PPZiXKKPQzqvoPydCa/5sw4c0kp1+REaYhy5q0joCJ1i8BwAxQPl0sQKpb/LAUNrB8udMBO4Tf6
+	WrOalht8kSAol0ThNh7AqvoAxLmr98WCRAf/25Hn0yCfiI0eXnrE+LFFCjrWYNbseph4bD+kn9r
+	5/iIqW/6i3/5Bdx3Z1gTB4ot8DCorcgnuneiIZJ2cCWsv5PgxU8ME/MRNtOGoVWWk5/lem9v9Gx
+	HWAdSkQEIhHo+NYACFGac4/+k4Aqz/s1ERo/5zN9aoTRN8BkFACablM9ymTmwfohDz43W4cgP1t
+	Of47dylAL4/xLsvlQ0lHZ4YstmUBq4Vzopl5lTLJfo/qdIrOucjHOPTELZN5bK/yRhdbtzIdalf
+	tdQapOAPXUzDO5FGeioXG/H9PI2s98uIVYCuOQExuf6xsSGmJV38CEx6U7imFIGuP8
+X-Received: by 2002:a17:90b:1812:b0:3a4:b061:2765 with SMTP id 98e67ed59e1d1-3a8a072a80dmr2823533a91.15.1791399083918;
+        Wed, 07 Oct 2026 11:51:23 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4e::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a9f1a23c82sm754330a91.1.2026.10.07.11.51.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 11:51:23 -0700 (PDT)
+Date: Wed, 7 Oct 2026 11:51:19 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Eric Dumazet <edumazet@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>
+Subject: Re: [PATCH net v2] xsk: freeze deferred pool teardown without
+ blocking unregister
+Message-ID: <asaTvPO05EpmUEgN@devvm7509.cco0.facebook.com>
+References: <20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9356:EE_|PH6PR12MB128275:EE_
-X-MS-Office365-Filtering-Correlation-Id: a396da15-a4f7-4b3b-a3e0-08df24a3a0d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|10070799003|56012099006|10067099003|11063799006|4143699003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	KDvQAR4Tikl9QVR7IiWze66MK/tXUt/krHiLIfyhhoLpIfS3uhXoultbUznj8cM5dIOUgU/FOBLMklrj934iG1XUT7mADecPJR+PsA/O0XRwj8LckbtP7xbDAIOcklyXZJA1d9pzZ82MjiQm8EmoTcL0vy3zTbnjiKWWwLvTPTuWsNGEKRajujZoGfSf+XkfJCyrWZUunu++0SsHnVFS5PCDD/u3V6k43pbhYmb1OwTCyz76PLdPMGD9qAn+PaS4BohtrdgHpauzh8YDRfsmECKO+upsCl1fmCKaW79c+FkbUYrA6QBESSPaI3qG6Yh69CEpnet0F9rv4uW7m+wVlIKXPmWE7IiwdHFmrF8D6o5lloBRFzpMcL8XipmwNw7s8wtE4JpCVqHYIgtU/BLQntBW+QF1GTz0Cdbfxp4ArrU+gvW3RHlm48umLeFAS2oyfvHxt/WLlP/B9JXg+5gk01tIP7iciZQmgambF4oFnAlvkxAa6AkFqteRbzArC7DZRbJ/zaWcMziF0rBrQY1qUKbb5nFvNomTBbQOShndPP14qqPCY4d9mOav9zCJ+IhTQLu8SxZGL7fH5Rcsb9qgO+YpGgX0tz82nEOl/56ymaBwXNqQdhufgSQtHIIgkA7sKIAC03egriRKIu7BRdVIg2NLZSas2L1O6nazPGXqi8g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9356.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(10070799003)(56012099006)(10067099003)(11063799006)(4143699003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?h9O8M/w8AtSP/T9mlaUoHJcLX5Ah64EXpLBJOt9mqnR1FLj6s19OZozKBkMK?=
- =?us-ascii?Q?umZru4xKGzWRIeQho6SEEiVDg+y6QOwPVXN9BJDEyPHNvarOD6eiLbqqh1af?=
- =?us-ascii?Q?JwCKyXfHTW0SbF8XxidDrGor/6V1umonJMX626ZDa8HqZtqQnhxFfbvsyoDM?=
- =?us-ascii?Q?VtCcCyn1xhfH5vjKPMbiaevlLXkL3MDCQO/MY2nwhd47ylXt3ttelgExBPbo?=
- =?us-ascii?Q?bxYQ/YXjQPG9V+TzkdjC6owvlsrovQYufAAc3bPkSrsTv6gkCCTDlmmYKZFt?=
- =?us-ascii?Q?36IeVI/rRs0tKnOsqvb+xgb2HAC4rOw6qFIwULu2SNxPW2TjBp1OqShJ0sYQ?=
- =?us-ascii?Q?GYQHA42jKbrmmeg6tzoXNlNxaKMBWIucbmnCCJJ/th3tr/3/LheHYw0gR83d?=
- =?us-ascii?Q?ePuW9CdfOS7AZWYhay/yRtpLioUPZWELIcp/GU2aJ9c03khJAS+H27FVwWPl?=
- =?us-ascii?Q?ivtS0CIkoE0YrLFSC/bIPl8aaIbelu8JYpPNHQFy+Lh888N8JHTGg2Jjr80S?=
- =?us-ascii?Q?27oWX5gR7ALT14m7shVG0Sv8dtRvSatxmjS1Z6isQ1wWO+vOtrQl2HnehXP4?=
- =?us-ascii?Q?2RVc9Exkmxxgq8c2sj+GZuTfKYDOHE69neOs8pdT2VqSfExEGkT1uG69a67H?=
- =?us-ascii?Q?fTNQL4Mf5mzck74480zajwoE63PKv3tDMZnnkbLsqPcoVMGMA19PwTP6Ud71?=
- =?us-ascii?Q?p9bAQX91MaN8U2fHwg0QnpfsdsdNHo9MMALOdg1w+DoX20BdBNaBqIp7K1gm?=
- =?us-ascii?Q?6vr/5lCXh00JF0TE6TecERbhoQeDnAOEd7E+G/48DoE+Vt833rCsgy6b2RCY?=
- =?us-ascii?Q?EMHhBRIMLaIczKyL1H5++Jp/3vLn/EfG8neBU5ReiN4kh6DYY7alSoDxVT/2?=
- =?us-ascii?Q?hYMOydLIipcRlJrAZb2OijtYywdVw1usTFPKELCkwgLSbxpuc+tATnAkGSFn?=
- =?us-ascii?Q?gxK+J1SPFDkWT9GKeAYP9LRqkO6whSVQJMOy0gYji+VOFge/ggNUwZrhwe7K?=
- =?us-ascii?Q?5TDE9crCeJOQrUKLjskF4m7VQgT6WDl1xeznG3z73GIN0iGbfQjY4ggCkQ87?=
- =?us-ascii?Q?GApqy0ruHJQDVxdmmDVZViKQlGob4+PfgrkhbTy6J1VHx4JbjzwsJn4foxsn?=
- =?us-ascii?Q?WLqGOABioI3EeT6flkMs4t4s8gW/Fp9Z/hStS9P/eF2lTtCF2zJB7ryHNbq1?=
- =?us-ascii?Q?SJUs3mUMcbE9xVSrA9FBKW06fluFgkN+8oY0De3lmidUHaikyKVVSomiaqfz?=
- =?us-ascii?Q?Agy3cWfFxG8uZ7QmO23ryp/rv+TjOoQOqc/Aa81H6wM4mAkG5eGpwQOJDftY?=
- =?us-ascii?Q?vnBSZQH9XwomvICxk0tExnOUVq25ZFdoSjHIFccJofKJvlAUwX1a3lpGrGHC?=
- =?us-ascii?Q?Tt8bS0s8YS+7Zfq0s8N+VA+RU1pGEz3hyXW01S7psnbwJGlWlqqQeaKAWewd?=
- =?us-ascii?Q?I/hncHiz09py7sUk0AUr8GRA8QtiiCS4stxCm1FZcHgnropXa8nixnzwzkOd?=
- =?us-ascii?Q?u94AF61rzyxCW5e4nQtkqYE+3Ar4yE3rfY/QFwA66iom9R3rGAKFZ+Po/sMy?=
- =?us-ascii?Q?ov5MtUhYt1LYHaDNNiLfgdVD3bSsgfWIB4BIiAGigE/ohLTeHooX/zxb2FnN?=
- =?us-ascii?Q?du4viVLxglKVvCxyj0q2WX4ndTZcHmSdIbTeLTmXn672zXAcT7VSndPVykzX?=
- =?us-ascii?Q?17GBfn16T8yAUBlte0/17eXveGYmLU1GjnWGLx9CdTGb8rsT5IPfnibfAoli?=
- =?us-ascii?Q?6Z74VkoXAnF3++qcCBbEBBfcERfUfez1nHPkudtQkTOTCLon2OGD?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a396da15-a4f7-4b3b-a3e0-08df24a3a0d8
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9356.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2026 18:48:50.8547
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fBdMVg25g9plnw+DwKb8dvV4L+eeS+3dT5j90auJwUwxkKgMCJzLqPZB236yu7T4jyktGSFM0LtpiTBlyWbalg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH6PR12MB128275
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com>
 
-On Wed, Oct 07, 2026 at 02:41:05PM -0400, Joel Fernandes wrote:
-> On Mon, Sep 14, 2026 at 11:13:31PM -0400, Yury Norov wrote:
-> > DEFINE_RCU_SYNC() contains a statically initialized wait queue. SRCU
-> > static definitions similarly rely on persistent lockdep keys and, in
-> > Tiny SRCU, a statically initialized work item.
-> > 
-> > Add ASSERT_STATIC_STORAGE() to DEFINE_RCU_SYNC(), both Tree SRCU
-> > __DEFINE_SRCU() variants and Tiny SRCU's common DEFINE_SRCU() declaration.
-> > This covers the non-static FAST and FAST_UPDOWN wrappers too. Tiny SRCU's
-> > explicitly static declarations already enforce the required duration.
-> > The existing per-CPU restrictions on Tree SRCU declarations still apply.
-> > 
-> > Assisted-by: OpenAI Codex
-> > Signed-off-by: Yury Norov <ynorov@nvidia.com>
+On 10/05, James Hilliard wrote:
+> Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
+> not frozen during system sleep, so that callback can run after a
+> device has suspended and gated its clocks. Use system_freezable_wq
+> so running destruction finishes before device suspend and new work
+> waits until process thaw.
 > 
-> All the changes make sense to me. I'm ok with carrying this for -rcu 7.5
-> unless you want to take it.
+> Keep assigned pools visible to NETDEV_UNREGISTER independently of
+> the socket list. A released socket has already left that list, but
+> its final pool put can queue destruction after workqueues freeze.
+> A resume-time unregister would then wait for a device reference
+> whose release cannot run until the resume completes.
 > 
-> Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
+> Track assigned pools per netdev under RTNL and detach remaining pools
+> after the notifier socket walk, including copy-mode pools. This also
+> covers leased queues without scanning pools from unrelated devices or
+> network namespaces. Remove the entry on assignment failure and normal
+> teardown. The deferred worker still owns the pool and later observes
+> the cleared device pointer, avoiding a second driver detach or put.
+> 
+> The lifetime problem was identified by code inspection of the deferred
+> release and system-sleep paths.
+> 
+> Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> ---
+> Changes in v2:
+> - Track assigned pools per netdev instead of scanning a global pool list.
+> - Keep deferred releases visible across queue changes and queue leases.
+> - Rebase onto current net.
+> - Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
+> 
+> To: "David S. Miller" <davem@davemloft.net>
+> To: Eric Dumazet <edumazet@kernel.org>
+> To: Jakub Kicinski <kuba@kernel.org>
+> To: Paolo Abeni <pabeni@redhat.com>
+> To: Simon Horman <horms@kernel.org>
+> To: Andrew Lunn <andrew+netdev@lunn.ch>
+> To: Magnus Karlsson <magnus.karlsson@intel.com>
+> To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+> To: Stanislav Fomichev <sdf@fomichev.me>
+> To: Alexei Starovoitov <ast@kernel.org>
+> To: Daniel Borkmann <daniel@iogearbox.net>
+> To: Jesper Dangaard Brouer <hawk@kernel.org>
+> To: John Fastabend <john.fastabend@gmail.com>
+> To: Björn Töpel <bjorn@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: bpf@vger.kernel.org
+> ---
+>  include/linux/netdevice.h   |  5 +++++
+>  include/net/xsk_buff_pool.h |  3 +++
+>  net/xdp/xsk.c               |  5 +++++
+>  net/xdp/xsk_buff_pool.c     | 25 ++++++++++++++++++++++++-
+>  4 files changed, 37 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index 3cff2174dc03..72091938f6e6 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -2545,6 +2545,11 @@ struct net_device {
+>  	/* protected by rtnl_lock */
+>  	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
+>  
+> +#ifdef CONFIG_XDP_SOCKETS
+> +	/** @xsk_pools: assigned AF_XDP pools, protected by rtnl_lock */
 
-Thanks Joel, carrying it with the RCU branch is the preferred route IMO.
 
-Thanks,
-Yury
+Can we mark this as being ops protected (net_device::lock) ?
+xp_clear_dev calls netdev_lock_ops, but xp_assign_dev
+has netdev_assert_locked_ops_compat, so maybe there needs to be a bit more
+care. We don't want to add new ASSERT_RTNL if possible (and extend new
+netdev lock semantics).
+
+The rest looks good.
