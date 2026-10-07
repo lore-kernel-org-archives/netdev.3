@@ -1,94 +1,281 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C1322157B;
-	Wed,  7 Oct 2026 05:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A833F3C2B92
+	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 05:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791352591; cv=none; b=aVfiWuobps/UVE08BBhKVdas6aYmkBa/WpAArlNE0l7rIKRjkTeQIFNAxmRp5PCjXAhrtVhU2cfoVdfKxWjXgVe/zhOECnKX1Dr00B8IXTdEUR7iGNoQe3w/oyuqnRUGAYu3OSoH3io3F0nkZgMWCLYOBYYcYfOvLSrDEA2NKbA=
+	t=1791352674; cv=none; b=NlhFs0/qkEF9HhQw5JBey+NnaO0wSPKe202vDVacOl8xgeO0E5s8Lm+6M5fEwbjZMbfo/dtS3u0TrQ32ausDGYGNMU+3exiMZbRbCJzf8ObbG8frOKVTGlMyF/WtCej9shGDfb1Lm+7bk78Wpc0pSX0XJStFHudy0vz6HkqIPTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791352591; c=relaxed/simple;
-	bh=mJktbMKqkWI+drqysq4fvT3ON0LQDXK0FthOfNETKSQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=eGyF2JimdpeqbP6CU6r9F41VKj1ELLOtPQ2GXxI86Om44pG0X0uj310DpHPtWjiW6AIf09sxn8Z5a920B+Hm6PFAMq25LG1+Nykpu01c91r05y1bh1GW5uSQadcSe/5IS+itL6Vf/IV5vd5TDgb9rcR+ZMC8M8UB9qcDkvxrkI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=JTA6umid; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1791352674; c=relaxed/simple;
+	bh=TqiIMhaSlGlhCFFLwhmwFqqGF2ZLQjcu6mp35BSNzM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ayuylk/bJ1M5uGqJevt6kKTRYEbyutqEJJhIX8gL2VyK+/FM6C9abA6RTUgQE1nB1qBx6SYGPEjz3dsRKsF3C+NNSYSR+ul3ZTl4RxR2pdqff+7hCuJvGXk30j+/Is5zBfrerRlKur9YDldHL3niilkA06neB1J4wyy5AGZ4Jcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBoZ4h5x; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="JTA6umid"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=mJktbMKqkWI+drqysq4fvT3ON0LQDXK0FthOfNETKSQ=; b=J
-	TA6umidfbnDe6XzwB2s8epAmcjjHPTuUeMfOHmJVXhkWZw9eXbYmHWNIjV1brUZy
-	L9QpCmzLOUB6zZaBiLWw1JIyouGJXkSXfvu98LoLK8dUvX2/Pb+6I62govDCRfZC
-	KPjfFt3X0HaaEKpQ6jXiLGhHZ4Ma3BjjGSuAe8bqs4=
-Received: from taozj888$163.com ( [2409:8a20:22c4:8eb0:343f:2daa:6f8d:39d4]
- ) by ajax-webmail-wmsvr-40-135 (Coremail) ; Wed, 7 Oct 2026 13:55:13 +0800
- (CST)
-Date: Wed, 7 Oct 2026 13:55:13 +0800 (CST)
-From: taozj888  <taozj888@163.com>
-To: "Jacob Keller" <jacob.e.keller@intel.com>
-Cc: theo.lebrun@bootlin.com, "Conor Dooley" <conor.dooley@microchip.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>,
-	"Haavard Skinnemoen" <hskinnemoen@atmel.com>,
-	"Jeff Garzik" <jeff@garzik.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list" <linux-kernel@vger.kernel.org>
-Subject: Re:Re: [PATCH net v3 0/1] brief description about the patch and its
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <d69249a8-210f-405d-9cd5-715245fecb8c@intel.com>
-References: <20261004133916.559956-1-taozj888@163.com>
- <d69249a8-210f-405d-9cd5-715245fecb8c@intel.com>
-X-NTES-SC: AL_Qu2SA/+evU0q5SCRbekfm04bju07UMu2v/4l2Y9SOp9wjB7o6gYwQ19jPl3k/tKrLyeSrye4aDhI+M53XaxnWb8MjAo8Xe02rpUtbjWyl3VrIg==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBoZ4h5x"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-398a5aad413so2855052a91.3
+        for <netdev@vger.kernel.org>; Tue, 06 Oct 2026 22:57:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791352672; x=1791957472; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ikOwxns0VmdI3pIxqCsYIX0nHfPqhedZNBgRsLYW1pU=;
+        b=MBoZ4h5xm8fuI6lj5lg9dvO1beTJ4zT/brEZkX234Zne7SV+0yCL1M4QqAeiWA/rAX
+         0TICV8UbRoGBVSGeTJ5AwDfuWyoygAu7qIubcRhG+jZE1KXhbqG8RefMwyiIDX0C9N4p
+         TAyH6/Q9bHAuvn5c4c46uds35qLPwoSa0T5/mnqOpnNEc9snJTLSDhClvfyeSSarldrz
+         LxC1OO/VWgxNYqEDuqTCtgVXuxGa+HZ53IYfutAVc39BSGN/IxNKoBFFVd+aIhw0jZjZ
+         2Qb+Tws9I3RpVaj92qHWsje4+FMP89c6T7kYZjRJ0Y3NIfoaxFhMuirkIGexTrZAubBm
+         VbzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791352672; x=1791957472;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ikOwxns0VmdI3pIxqCsYIX0nHfPqhedZNBgRsLYW1pU=;
+        b=YiWhL0ducas903/Rv+H5xN1vsLeIDoKj3sUZTeB3MnKgqT5z1LOEI9gdqg00K/JfB1
+         DepIEp+moA2ERdChlBd5zoCuKHNAYLNDhD/XGbwQV3OhegUHdY8ra5Ymw3JWPfLHCrxk
+         loWnNnXp2m3QxPW3PLXZYy2n+ZupEDd9eClIVB0Z8dbB9dheItQ/iiXRiFUbleYbi/IH
+         UFMFScSS9IvTnA2Y3EM6eWq9oPJo0X5lXSo5A/zVarwJpaJvCPzmpkm36t2pkpGV0N3h
+         L7HnMaRZkTVpuy035uO5vf3MCSIETmaWvzxUKn21YejeVSdTi5wWanbd2c+VtTl6trJJ
+         54ag==
+X-Gm-Message-State: AFq9FYLXZA/rR3l6btHML6DtJPzUpYJxbHxt64QBSo5zO3Gns3i5cUe2
+	YxN2/vb3/pJhGkf9tBA96mGzJ6BW8MKsH8FsHLFkzVm/mqEy+lwGaXva
+X-Gm-Gg: AYBFou1wulUDtwyvacZYyT8PyG1EJezPAnqao22BJStJBP5DAWYVKIZQxEYfgLegXF4
+	nG8+JaeN+Cu0JywLp8NnNF2kx6R+XtLoCOQ0HAYwE1VzOCuZH0Jk2fpsv7moo1hzrzZAZ4p3WJN
+	rTXwBABN7Pe+rqTPowIMI+PTYbRpGMmU++AcxiUeI7jOLEEQpso4ATTUtuIVDtDkqceATyVOPqu
+	15/6pdN+QquCUwDU5LVJ4cMjSlCkcmELAJOvhqECjnJ3BIjhaqD9H1Ouf9vdJsYzAq1YLREiEkg
+	DMrE1BnpDZOgYywFxwobb9Wwox4daZ5A68cfWN4RjICUDe7vpHi756JIHP0RvJfPkgYfIgjaqcP
+	MLgPfqjlY+dSt2LQDn5xw/HnPT1huNqkoCX2xbbOYHDYXeiZi2FuF5BT2GrI2Ete56NdVjV3jLz
+	f/Tj86O+ysU+Isn3qeUBJhUraykh3ru6nJW/uqZ8Zs2vE2EiiJTcfQkNygwIups3Gjeiit9V59d
+	Y15M7f8KmHT36/36JK0c7whyd6mSVxZeK4IJzKgo2ZNhrLbJrn6vDz9LpSkV0xV7xlUsGrnzP4A
+	48QBjp/lO3o5lQ==
+X-Received: by 2002:a17:90b:4fc5:b0:3a7:db88:3495 with SMTP id 98e67ed59e1d1-3a8a1d5b8fcmr1120154a91.52.1791352671922;
+        Tue, 06 Oct 2026 22:57:51 -0700 (PDT)
+Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e60d0b0e2esm3051775ad.7.2026.10.06.22.57.47
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 06 Oct 2026 22:57:51 -0700 (PDT)
+From: Tian Xun Ng <luckilystar08@gmail.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksander.lobakin@intel.com,
+	aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Tian Xun Ng <tianxun.ng@bytedance.com>
+Subject: [PATCH iwl-net v2] idpf: keep the mailbox up while tearing down vports on shutdown
+Date: Wed,  7 Oct 2026 13:57:41 +0800
+Message-ID: <20261007055741.30629-1-luckilystar08@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <66801d4d.16ab.1a114ee2256.Coremail.taozj888@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:hygvCgD3_6DB3sVqCRIcAA--.14498W
-X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3QHzu2rF3sGTOAAA3P
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
 
-CgoKCgoKCgoKCgoKCgpIaSBKYWNvYjoKClRoYW5rcy4KWmlqaW4gVGFvCgpBdCAyMDI2LTEwLTA3
-IDA1OjIzOjMzLCAiSmFjb2IgS2VsbGVyIiA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29tPiB3cm90
-ZToKPk9uIDEwLzQvMjAyNiA2OjM5IEFNLCB0YW96ajg4OEAxNjMuY29tIHdyb3RlOgo+PiBGcm9t
-OiB0YW96aWppbiA8dGFvemo4ODhAMTYzLmNvbT4KPj4gCj4+IAo+PiBUaGlzIHBhdGNoIGlzIHRp
-dGxlZCBhczoKPj4gICBuZXQ6IG1hY2I6IHJhdGUgbGltaXQgbmV0ZGV2IGVycm9yIGluZm8gcHJp
-bnQgaW4gdGhlIGRhdGEgcGF0aAo+PiAKPj4gQ2hhbmdlcyBzaW5jZSB2MToKPj4gCj4+IHYzOiAK
-Pj4gLSBhZGQgdGhpcyBjaGFuZ2UgbG9nIHNpbmNlIHYyIG1pc3NpbmcgaXQKPj4gLSBkcm9wIHRo
-ZSBibGFuayBsaW5lIGJldHdlZW4gdGhlIGFzc2lnbm1lbnQgc2VudGVuY2UgYW5kIHRoZSBjb21t
-aXQKPj4gICBpbmZvCj4+IAo+PiB2MjoKPj4gCj4+IC0gdXBkYXRlIHRoZSBjb21taXQgbWVzc2Fn
-ZSB3aXRoIHRoZSByZWFzb24gd2h5IHRoZSB1bmxpbWl0IHByaW50cyB3b3VsZAo+PiAgIGJvdGhl
-ci9kZWxheSBib290aW5nIHByb2Nlc3MKPj4gLSB1cGRhdGUgdGhlIGNvbW1pdCBtZXNzYWdlIHdp
-dGggdGhlIEZpeCBjb21taXQgaWQgcHJvdmlkZWQgd2hpY2ggaXMKPj4gICBzdWdnZXN0ZWQgYnkg
-VGiopm8gTGVicnVuPHRoZW8ubGVicnVuQGJvb3RsaW4uY29tPgo+PiAtIHVwZGF0ZSB0aGUgY29t
-bWl0IG1lc3NhZ2Ugd2l0aCB3aGF0IHBhY2tldCB0eXBlIHdvdWxkIHRyaWdnZXIgdGhlCj4+ICAg
-ZXJyb3IgcHJpbnRpbmdzIG1vcmUgZWFzaWx5Lgo+PiAKPj4gdjE6Cj4+IAo+PiAtIGluaXRpYWwg
-Y29tbWl0Cj4+IAo+Cj5Gb3Igc2luZ2xlIHBhdGNoZXMsIGl0IGlzIHR5cGljYWwgdG8gc2VuZCB0
-aGlzIGFzIHBhcnQgb2YgdGhlIHNhbWUKCj5tZXNzYWdlIGJlbG93IHlvdXIgY29tbWl0IG1lc3Nh
-Z2Ugd2l0aCAnLS0tJy4KCgpPSywgSSB3aWxsIGFkZCB0aGUgY2hhbmdlbG9nIGluIHRoZSBjb21t
-aXQgbWVzc2FnZSBiZWxvdyAnLS0tJyBpbiB0aGUgbmV4dCBwYXRjaC4+Cj5UbyBtYWtlIHRoYXQg
-ZWFzaWVyIHRvIGhhbmRsZSwgaWYgeW91IHVzZSBnaXQgZm9ybWF0LXBhdGNoIGFuZCBnaXQKPnNl
-bmQtZW1haWwgeW91IGNhbiB1c2UgLS1hbm5vdGF0ZSB3aXRoIGdpdCBzZW5kLWVtYWlsIHRvIGlu
-c2VydCB0aGUKPmNvbnRlbnRzIGJlZm9yZSBzZW5kaW5nIHRoZSBlbWFpbC4gSWYgeW91IHVzZSBi
-NCwgaXQgd2lsbCBhdXRvbWF0aWNhbGx5Cj5nZW5lcmF0ZSB0aGUgY29ycmVjdCBmb3JtYXQgZnJv
-bSBpdHMgY292ZXIgbGV0dGVyIGFuZCB0aGUgaW5kaXZpZHVhbCBwYXRjaC4KPgo+SWYgeW91IGRv
-IHNlbmQgYSBzdGFuZGFsb25lIGNvdmVyIGxldHRlciwgdGhlIHN1YmplY3Qgd291bGQgYmUgYmV0
-dGVyIGFzCj5qdXN0IHJlcGVhdGluZyB0aGUgc3ViamVjdCBmb3IgdGhlIGluZGl2aWR1YWwgcGF0
-Y2guCj4KPkkgZG9uJ3QgcmVjYWxsIGlmIG5ldGRldiBoYXMgYW55IGVuZm9yY2VkIG9yIGVuY29k
-ZWQgcG9saWN5IGhlcmUsIHNvCj50aGlzIGlzIGp1c3QgYSBjb21tZW50IHRvIGhvcGVmdWxseSBo
-ZWxwIGVhc2UgZnV0dXJlIGNvbnRyaWJ1dGlvbnMuCj4KPlRoYW5rcywKPkpha2UKPgo+PiBCZXN0
-IFJlZ2FyZHMsCj4+IAo+PiBaaWppbiBUYW8KPj4gIGRyaXZlcnMvbmV0L2V0aGVybmV0L2NhZGVu
-Y2UvbWFjYl9tYWluLmMgfCAxNCArKysrKysrKy0tLS0tLQo+PiAgMSBmaWxlIGNoYW5nZWQsIDgg
-aW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKPj4gCg==
+From: Tian Xun Ng <tianxun.ng@bytedance.com>
+
+Since commit 4c9106f4906a ("idpf: fix adapter NULL pointer dereference
+on reboot"), idpf_shutdown() calls idpf_vc_core_deinit() directly instead
+of idpf_remove(), so IDPF_REMOVE_IN_PROG is not set on shutdown.
+idpf_vc_core_deinit() uses that flag to decide when to shut the virtchnl
+transaction manager down. Without it, libie_ctlq_xn_shutdown() runs
+before idpf_deinit_task() tears the vports down, so every message sent
+during that teardown (disable vport, disable queues, destroy vport)
+fails at once. The device is never told to stop its queues and keeps
+them enabled, with the ring addresses of the kernel that is going away.
+
+After a warm reboot, the first queue reconfiguration of a port that has
+not been opened yet (udev setting the MTU) sends VIRTCHNL2_OP_DEL_QUEUES.
+The device then drains the queues it still considers live and writes
+SW_MARKER TX completions to the previous kernel's completion rings. With
+the IOMMU translating, those writes fault about 19 s into every such
+boot:
+
+  arm-smmu-v3 arm-smmu-v3.12.auto: event: F_TRANSLATION client: 0006:01:00.0 sid: 0x30100 ssid: 0x0 iova: 0x3ef60840 ipa: 0x0
+
+In IOMMU pass-through mode they land on pages the new kernel has already
+reused, which shows up as "pagealloc: memory corruption" with
+page_poison=1 and as crashes in unrelated code without it.
+
+A function reset on shutdown does not help on these devices: with a PF
+reset issued in idpf_shutdown() and PFGEN_RSTAT polled until the reset
+completed, every warm reboot still faulted, and the reset the next
+kernel issues at probe does not clear the queues either. Delivering the
+teardown messages does.
+
+Set IDPF_REMOVE_IN_PROG in idpf_shutdown(), as idpf_remove() does, so
+that the vports are destroyed while the mailbox is still up. So that an
+unresponsive control plane cannot hold up a reboot, give each mailbox
+transaction during shutdown a 2 s timeout instead of 60 s, and fail the
+remaining ones at once after the first timeout. If the function has
+already been reset, for instance a VF whose PF went down first,
+idpf_is_reset_detected() fails them without waiting.
+
+Tested on two arm64 (64K pages) servers, each with two idpf PFs, with
+this change backported to a 6.17 kernel and the IOMMU translating: no
+faults in 25 warm reboots, against a fault on every warm reboot
+without it. Each PF's teardown took about 1.2 s for six mailbox
+transactions; the slowest, VIRTCHNL2_OP_DEALLOC_VECTORS, took about
+300 ms. To stand in for a control plane that does not reply, the driver
+was also built to skip sending mailbox messages during shutdown: the
+first transaction timed out after 2 s, the rest failed at once, the
+teardown took 2.8 s per PF, and every reboot faulted again.
+
+Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
+---
+v2:
+- Drop patch 2 (function reset on shutdown). On a VF it queued
+  VIRTCHNL2_OP_RESET_VF and then freed the mailbox, and on these devices
+  a PF reset does not clear the stale queues anyway (numbers in the v1
+  thread).
+- Set IDPF_REMOVE_IN_PROG in idpf_shutdown() instead of changing the
+  condition in idpf_vc_core_deinit(); no new idpf_is_reset_detected()
+  call (Emil).
+- Bound the shutdown teardown: 2 s per transaction instead of 60 s, and
+  fail the remaining ones at once after the first timeout (Emil). 2 s is
+  about six times the slowest teardown transaction measured here.
+- No VF special case, unlike what I suggested in the thread: a VF whose
+  PF has been reset already fails fast through the existing
+  idpf_is_reset_detected() check in idpf_send_mb_msg(), and a VF with a
+  working mailbox leaves queues behind on a warm reboot just like a PF.
+  Not tested on a VF; I have no VF setup.
+- Compile-tested on net-queue dev-queue (W=1, allmodconfig and
+  allyesconfig, no new warnings); runtime-tested as the 6.17 backport
+  described above.
+
+v1: https://lore.kernel.org/all/20260917105205.37561-1-luckilystar08@gmail.com/
+
+ drivers/net/ethernet/intel/idpf/idpf.h        |  4 +++
+ drivers/net/ethernet/intel/idpf/idpf_main.c   |  7 +++++
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 28 ++++++++++++++++---
+ .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  1 +
+ 4 files changed, 36 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index 470bc23c8..5d2e8a346 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -88,6 +88,8 @@ enum idpf_state {
+  * @IDPF_REMOVE_IN_PROG: Driver remove in progress
+  * @IDPF_MB_INTR_MODE: Mailbox in interrupt mode
+  * @IDPF_VC_CORE_INIT: virtchnl core has been init
++ * @IDPF_SHUTDOWN_IN_PROG: Driver shutdown in progress
++ * @IDPF_SHUTDOWN_XN_TIMEOUT: A mailbox transaction timed out during shutdown
+  * @IDPF_FLAGS_NBITS: Must be last
+  */
+ enum idpf_flags {
+@@ -97,6 +99,8 @@ enum idpf_flags {
+ 	IDPF_REMOVE_IN_PROG,
+ 	IDPF_MB_INTR_MODE,
+ 	IDPF_VC_CORE_INIT,
++	IDPF_SHUTDOWN_IN_PROG,
++	IDPF_SHUTDOWN_XN_TIMEOUT,
+ 	IDPF_FLAGS_NBITS,
+ };
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+index 129bccaa6..fa27ee1cd 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_main.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+@@ -196,6 +196,13 @@ static void idpf_shutdown(struct pci_dev *pdev)
+ 
+ 	cancel_delayed_work_sync(&adapter->serv_task);
+ 	cancel_delayed_work_sync(&adapter->vc_event_task);
++
++	/* Destroy the vports while the mailbox is still up, so that the
++	 * device stops its queues before the next kernel reuses their memory.
++	 * A reset does not clear them on every device.
++	 */
++	set_bit(IDPF_SHUTDOWN_IN_PROG, adapter->flags);
++	set_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
+ 	idpf_vc_core_deinit(adapter);
+ 	idpf_deinit_dflt_mbx(adapter);
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 1caf52706..5f5d72671 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -190,22 +190,38 @@ static void idpf_prepare_ptp_mb_msg(struct idpf_adapter *adapter, u32 op,
+  * Cleanup the mailbox queue entries of the previously sent message to
+  * unmap and release the buffer.
+  *
++ * During shutdown each transaction gets a short timeout, and once one of
++ * them times out the rest fail at once, so that an unresponsive control
++ * plane cannot hold up a reboot.
++ *
+  * Return: 0 if the request was successful, -%EBUSY if reset is detected
+- *	   or Tx control queue is full, other negative error code on failure.
++ *	   or Tx control queue is full, -%ETIMEDOUT if a transaction already
++ *	   timed out during shutdown, other negative error code on failure.
+  */
+ int idpf_send_mb_msg(struct idpf_adapter *adapter,
+ 		     struct libie_ctlq_xn_send_params *xn_params,
+ 		     void *send_buf, size_t send_buf_size)
+ {
++	bool shutdown = test_bit(IDPF_SHUTDOWN_IN_PROG, adapter->flags);
+ 	struct libie_ctlq_msg ctlq_msg = {};
++	int err = 0;
+ 
+-	if (idpf_is_reset_detected(adapter)) {
++	if (idpf_is_reset_detected(adapter))
++		err = -EBUSY;
++	else if (shutdown && test_bit(IDPF_SHUTDOWN_XN_TIMEOUT, adapter->flags))
++		err = -ETIMEDOUT;
++
++	if (err) {
+ 		if (!libie_cp_can_send_onstack(send_buf_size))
+ 			kfree(send_buf);
+ 
+-		return -EBUSY;
++		return err;
+ 	}
+ 
++	if (shutdown)
++		xn_params->timeout_ms = min_t(u64, xn_params->timeout_ms,
++					      IDPF_VC_XN_SHUTDOWN_TIMEOUT_MSEC);
++
+ 	idpf_prepare_ptp_mb_msg(adapter, xn_params->chnl_opcode, &ctlq_msg);
+ 	xn_params->ctlq_msg = ctlq_msg.opcode ? &ctlq_msg : NULL;
+ 
+@@ -217,7 +233,11 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter,
+ 
+ 	idpf_mb_clean(xn_params->ctlq, false);
+ 
+-	return libie_ctlq_xn_send(xn_params);
++	err = libie_ctlq_xn_send(xn_params);
++	if (err == -ETIMEDOUT && shutdown)
++		set_bit(IDPF_SHUTDOWN_XN_TIMEOUT, adapter->flags);
++
++	return err;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index 5d27805ff..b0809d149 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -7,6 +7,7 @@
+ #include <linux/net/intel/virtchnl2.h>
+ 
+ #define IDPF_VC_XN_DEFAULT_TIMEOUT_MSEC	(60 * 1000)
++#define IDPF_VC_XN_SHUTDOWN_TIMEOUT_MSEC	2000
+ 
+ struct idpf_adapter;
+ struct idpf_netdev_priv;
+-- 
+2.50.1 (Apple Git-155)
+
