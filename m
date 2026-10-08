@@ -1,149 +1,230 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179A4493D3B
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 10:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED17497B87
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 10:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791456119; cv=none; b=Oqa6vdCZkqT0OA7Eu5D7SuCxbwZtgTgq60i8J+OGd5U7D7PXtuce6ep0CC5DZABeZAh9LG19mVrqO8T/I718SIAFx3b9S8y1Oyn6E7CeQI4fvi/TDblF1MPOXwyyXyLBxtraw0Tb+hGC0tqGlrAUbdocUOt6g42hSqzr+gscg34=
+	t=1791456273; cv=none; b=nNxhtUid/OGS4HSwBWifxUC4ALaAkyyn8MO1MPedP9r2qdYi45sceR7txzcnS+ofVkwLgmwDg+X5d3nVDz1xdjOK/4wF91dnsaS9toJxzWdG3ibua/BF9E++1NJ+hsV0992tu9N0XSoWIH6T78AJbTFES0jM0UwZa0/CVM7TwDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791456119; c=relaxed/simple;
-	bh=dmxbpcI7wG34mVa0PJLGCfU2OrIF55TL7walDwNeMNQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b0YXXyQMZN+ODPUH8TlGlTt5k7wO9SCEjixywxP8cCPMhjL/SaOBidQgY4bO9q0qifHDYYlce2W8W6YUo4wqhaB66o/eBKE9uNuJpJbxyMRQz3Sh5hmpmgfqAcGAcWVDwgwU431fJGa17f1Hcb1Rje4ioyw4PNis6A+Jk72qsTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 35FD121C08;
-	Thu,  8 Oct 2026 10:41:56 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 422F51339F;
-	Thu,  8 Oct 2026 10:41:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Zqn6BHNzx2r/TgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 08 Oct 2026 10:41:55 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: dev@openvswitch.org,
-	jesse@nicira.com,
-	aatteka@nicira.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@kernel.org,
-	davem@davemloft.net,
-	i.maximets@ovn.org,
-	echaudro@redhat.com,
-	aconole@redhat.com,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
-Subject: [PATCH net v3] net: openvswitch: validate transport header presence in set_ipv6_addr
-Date: Thu,  8 Oct 2026 12:41:35 +0200
-Message-ID: <20261008104135.4722-1-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1791456273; c=relaxed/simple;
+	bh=pMgnqGcde/SwwPKJtvVswrako2l+SSNbRA1ku+oZGVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DiQPFOc4dr3cba3W4CojgNiLPXmXnB9QhUShaHLTX3NpeibMOrXum5dWNsG1G7VForp3HR+mjUsgPH6HzpoYiQ2a+UtOLINeKjV3ty2pP4eG8M09Ol4g5jjzuS6ncbig7wXk0Z6D0O0Oz/3IhT3Rku9VomcXymgxmC0ViJsfP70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eETlY2kf; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eETlY2kf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FD61F000FF;
+	Thu,  8 Oct 2026 10:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791456271;
+	bh=ppeChgaMvunB6XgC1qGnigzxCgeUt+TprCEG6p5AB3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eETlY2kfse6I2eGjGA24SQVia+0ytpI+iYCoTyt07EMIonZpZYRpIWHF0qg2xfgz9
+	 6hJsFUHK+AIKpdbMDdO302AoQ8/iYGEAj6Ui7FlC/cz2DopM4xu5H7yCBQJLmKlm5S
+	 Mh/KjmObXnBkehSoG+22wvg8kZ8+NDBv1+VvpMnuFODKJy+bHHpl8mLsXGU1vqLOC9
+	 kAUMrOuiTW0zBnL8rhWTPzJHQv9mPhtjTYBo5RQOncSaL5sdGPS12mn3Afj3iGHvES
+	 ECnIl7Pwt89D0ykj9E/h3OXzR26p2KwSUW/fyyPxS7pQp6sIbq5taqofBH4vJN7IVY
+	 NnFG9PMTb6cHQ==
+Date: Thu, 8 Oct 2026 12:44:29 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: SAYANTAN NANDY <sayantann11@gmail.com>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, bread.hsu@airoha.com,
+	sayantan.nandy@airoha.com
+Subject: Re: [PATCH net] net: airoha: keep PPE offload when NPU refuses flow
+ stats
+Message-ID: <asd0DfMSLLGu_vbK@lore-desk>
+References: <20261008094828.15458-1-sayantann11@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=Unknown lua;
-	unknown reason
-X-Spamd-Result: default: False [0.00 / 50.00];
-	TAGGED_RCPT(0.00)[4cc63fcfb3845e149969]
-X-Spamd-Bar: /
-X-Rspamd-Queue-Id: 35FD121C08
-X-Rspamd-Pre-Result: action=no action;
-	module=Unknown lua;
-	unknown reason
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: 0.00
-X-Spam-Flag: NO
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="L4dpZ7G5dt+qFFf/"
+Content-Disposition: inline
+In-Reply-To: <20261008094828.15458-1-sayantann11@gmail.com>
 
-When executing IPv6 address rewrite actions on IPv6 fragments,
-set_ipv6_addr() calls update_ipv6_checksum(). If parse_ipv6hdr()
-processes a non-first IPv6 fragment, it sets key->ip.proto to
-NEXTHDR_FRAGMENT and returns early without calling
-skb_set_transport_header().
+--L4dpZ7G5dt+qFFf/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-update_ipv6_checksum() unconditionally evaluates skb_transport_offset()
-on entry before checking l4_proto.  Because skb->transport_header is
-uninitialized, this triggers a warning under CONFIG_DEBUG_NET=y although
-it is completely harmless.
+On Oct 08, SAYANTAN NANDY wrote:
+> From: Chad Monroe <chad@monroe.io>
+>=20
+> With flow stats enabled, PPE offload setup requests flow statistics
+> from the NPU. If the running NPU firmware does not support flow
+> counters, the request fails and the current setup path aborts PPE
+> offload.
+>=20
+> Treat flow statistics as an optional capability so that a failure to
+> set up the counters does not prevent normal PPE offload. Record
+> whether flow statistics are available and continue PPE initialization
+> when the NPU refuses the flow-statistics request.
+>=20
+> Also treat a zero NPU statistics address returned by the firmware as a
+> refusal. A zero address does not provide a usable counter region and
+> must not be passed to the address mapping path.
+>=20
+> When flow statistics are unavailable, PPE continues to operate
+> without NPU flow counters while retaining normal offload functionality.
+>=20
+> This combines the original SmartRG/Airoha fixes for:
+> - keeping PPE offload active when the NPU refuses flow statistics
+> - treating a zero NPU statistics address as a flow-statistics refusal
+>=20
+> Based on the original SmartRG/Airoha work by Chad Monroe:
+> 5ce96ab ("SDG-9458: keep PPE offload when NPU refuses flow stats")
+> 0ad8528 ("SDG-9458: airoha: treat a zero NPU stats address as a refusal")
+> Fixes: b81e0f2b58be ("net: airoha: Add FLOW_CLS_STATS callback support")
+> Signed-off-by: Chad Monroe <chad@monroe.io>
+> Signed-off-by: SAYANTAN NANDY <sayantann11@gmail.com>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.h  |  1 +
+>  drivers/net/ethernet/airoha/airoha_npu.c  |  8 ++++++++
+>  drivers/net/ethernet/airoha/airoha_ppe.c  | 20 +++++++++++++-------
+>  drivers/net/ethernet/airoha/airoha_regs.h |  2 ++
+>  4 files changed, 24 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index 8277c1c87bb3..bd5a94fce843 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -617,6 +617,7 @@ struct airoha_ppe {
+> =20
+>  	void *foe;
+>  	dma_addr_t foe_dma;
+> +	bool flow_stats;
 
-Fix this by returning early in update_ipv6_checksum() if l4_proto is
-NEXTHDR_FRAGMENT. This avoids reading the uninitialized transport offset
-for fragments while preserving the debug warning for any other protocol
-where the transport header is unexpectedly missing.
+I agree naming is hard, but I guess we could a more meaningful name, like f=
+low_stats_cap. What do you think?
 
-See the syzbot trace:
+> =20
+>  	struct rhashtable l2_flows;
+> =20
+> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
+net/airoha/airoha_npu.c
+> index 4d3195eb00f7..b32a01dbe06b 100644
+> --- a/drivers/net/ethernet/airoha/airoha_npu.c
+> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
+> @@ -450,6 +450,14 @@ static int airoha_npu_ppe_stats_setup(struct airoha_=
+npu *npu,
+>  	if (err)
+>  		goto out;
+> =20
+> +	/* The firmware reports success with a zero address when its SRAM
+> +	 * pool has no room left for the counters.
+> +	 */
+> +	if (!ppe_data->stats_info.npu_stats_addr) {
 
-!skb_transport_header_was_set(skb)
-WARNING: ./include/linux/skbuff.h:3075 at skb_transport_header include/linux/skbuff.h:3075 [inline], CPU#1: syz-executor463/5635
-WARNING: ./include/linux/skbuff.h:3075 at skb_transport_offset include/linux/skbuff.h:3250 [inline], CPU#1: syz-executor463/5635
-WARNING: ./include/linux/skbuff.h:3075 at update_ipv6_checksum net/openvswitch/actions.c:361 [inline], CPU#1: syz-executor463/5635
-WARNING: ./include/linux/skbuff.h:3075 at set_ipv6_addr+0x462/0x660 net/openvswitch/actions.c:399, CPU#1: syz-executor463/5635
-[...]
-RIP: 0010:skb_transport_header include/linux/skbuff.h:3075 [inline]
-RIP: 0010:skb_transport_offset include/linux/skbuff.h:3250 [inline]
-RIP: 0010:update_ipv6_checksum net/openvswitch/actions.c:361 [inline]
-RIP: 0010:set_ipv6_addr+0x462/0x660 net/openvswitch/actions.c:399
-[...]
-Call Trace:
- <TASK>
- set_ipv6 net/openvswitch/actions.c:531 [inline]
- do_execute_actions+0x557e/0x8600 net/openvswitch/actions.c:1366
- ovs_execute_actions+0xde/0x520 net/openvswitch/actions.c:1592
- ovs_packet_cmd_execute+0xb4f/0xf10 net/openvswitch/datapath.c:705
- genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
- genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2572
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1916
- sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
+can it really happen? I guess dmam_alloc_coherent() in airoha_ppe_init()
+should fail in this case, right?
 
-Reported-by: syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4cc63fcfb3845e149969
-Fixes: 3fdbd1ce11e5 ("openvswitch: add ipv6 'set' action")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
-v3: drop the redundant comment introduced in v2
----
- net/openvswitch/actions.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+> +		err =3D -ENOSPC;
+> +		goto out;
+> +	}
+> +
+>  	npu->stats =3D devm_ioremap(npu->dev,
+>  				  ppe_data->stats_info.npu_stats_addr,
+>  				  size);
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
+net/airoha/airoha_ppe.c
+> index 92611802801e..fbc200614de3 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+> @@ -37,10 +37,7 @@ static const struct rhashtable_params airoha_l2_flow_t=
+able_params =3D {
+> =20
+>  static int airoha_ppe_get_num_stats_entries(struct airoha_ppe *ppe)
+>  {
+> -	if (!IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS))
+> -		return -EOPNOTSUPP;
+> -
+> -	if (airoha_is_7583(ppe->eth))
+> +	if (!ppe->flow_stats)
+>  		return -EOPNOTSUPP;
+> =20
+>  	return PPE_STATS_NUM_ENTRIES;
+> @@ -144,6 +141,10 @@ static void airoha_ppe_hw_init(struct airoha_ppe *pp=
+e)
+>  	sram_ppe_num_data_entries =3D
+>  		PPE_RAM_NUM_ENTRIES_SHIFT(sram_ppe_num_data_entries);
+> =20
+> +	if (ppe->flow_stats)
+> +		airoha_fe_rmw(eth, PSE_FC_CFG, PSE_PORT6_SHARE_DIS,
+> +			      FIELD_PREP(PSE_PORT6_SHARE_DIS, 0));
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index dc5ff859f114..27152bca8a8c 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -358,7 +358,12 @@ static void set_ip_addr(struct sk_buff *skb, struct iphdr *nh,
- static void update_ipv6_checksum(struct sk_buff *skb, u8 l4_proto,
- 				 __be32 addr[4], const __be32 new_addr[4])
- {
--	int transport_len = skb->len - skb_transport_offset(skb);
-+	int transport_len;
-+
-+	if (l4_proto == NEXTHDR_FRAGMENT)
-+		return;
-+
-+	transport_len = skb->len - skb_transport_offset(skb);
- 
- 	if (l4_proto == NEXTHDR_TCP) {
- 		if (likely(transport_len >= sizeof(struct tcphdr)))
--- 
-2.55.0
+can you please provide more details about it, why is it needed?
+Moreover, I guess you could use airoha_fe_clear() here.
 
+> +
+>  	for (i =3D 0; i < eth->soc->num_ppe; i++) {
+>  		airoha_fe_wr(eth, REG_PPE_TB_BASE(i),
+>  			     ppe->foe_dma + sram_tb_size);
+> @@ -1456,10 +1457,13 @@ static int airoha_ppe_offload_setup(struct airoha=
+_eth *eth)
+>  	if (ppe_num_stats_entries > 0) {
+>  		err =3D npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
+>  					      ppe_num_stats_entries);
+> -		if (err)
+> -			goto error_npu_put;
+> +		if (err) {
+> +			dev_warn(eth->dev,
+> +				 "NPU firmware refused flow stats setup (%d), offload runs without f=
+low counters\n",
+> +				 err);
+
+can you please try to respect the 79 column width? (I still have old habits=
+ :))
+
+> +			ppe->flow_stats =3D false;
+> +		}
+>  	}
+> -
+>  	airoha_ppe_hw_init(ppe);
+>  	airoha_ppe_foe_flow_stats_reset(ppe, npu);
+> =20
+> @@ -1608,6 +1612,8 @@ int airoha_ppe_init(struct airoha_eth *eth)
+>  	ppe->dev.priv =3D ppe;
+>  	ppe->eth =3D eth;
+>  	eth->ppe =3D ppe;
+> +	ppe->flow_stats =3D IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS) &&
+> +			  !airoha_is_7583(eth);
+> =20
+>  	ppe_num_entries =3D airoha_ppe_get_total_num_entries(ppe);
+>  	foe_size =3D ppe_num_entries * sizeof(struct airoha_foe_entry);
+> diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethe=
+rnet/airoha/airoha_regs.h
+> index 442b48c9b991..aee06c058586 100644
+> --- a/drivers/net/ethernet/airoha/airoha_regs.h
+> +++ b/drivers/net/ethernet/airoha/airoha_regs.h
+> @@ -72,6 +72,8 @@
+>  #define PSE_CFG_OQ_RSV_MASK		GENMASK(13, 0)
+> =20
+>  #define PSE_FQ_CFG			0x008c
+> +#define PSE_FC_CFG			0x0098
+> +#define PSE_PORT6_SHARE_DIS		BIT(22)
+>  #define PSE_FQ_LIMIT_MASK		GENMASK(14, 0)
+> =20
+>  #define REG_FE_PSE_BUF_SET		0x0090
+> --=20
+> 2.43.0
+>=20
+
+--L4dpZ7G5dt+qFFf/
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCasd0DQAKCRA6cBh0uS2t
+rI3DAQCJEYqwZbG09imlqcP8csRXcbM0x1oms2fJsLLPEpWlJgEAxlcAuv/T0Mt7
+o5uxomI18N33uhxLEDUgzJWR/SMHfAs=
+=MHTr
+-----END PGP SIGNATURE-----
+
+--L4dpZ7G5dt+qFFf/--
