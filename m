@@ -1,301 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFBB42E409;
-	Thu,  8 Oct 2026 22:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791497033; cv=none; b=CyQ/qNtA6MfaK9riNKjoAraz9EbXz7Vgn5NomZBuYlF2U4+KLHslqwBjnRKrk+r+aZPNjwumvoyC7LDOLn3guIKT8zTsL2yxAP1zWVFFNQ/zrLWQ96ahnOpHbJaoAKpST40Upx6UnWO/hLZ7NyXNMrakg/GJffOuSokMFeC02eM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791497033; c=relaxed/simple;
-	bh=uW8xAq+kT2uPydbaHnpoUJnrC1uhobnhX2n7DLwq9lg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UiZuxJWdjyFdJHyYDcUtPRg6fH8MSXpyqdr87qqAd+0VJvK/8XEk2jPz2ApS1RKfvAhA5Eeoxo/ZoI/BNb8WzPO5JmMyWpFRJPW2blKxrAOFT3mQJ6kszS+/BMQKbDupDCXH8N+70RqSc8MRYuG3d3aIfzVdaspfrxsZWFZWx0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCj+nDv2; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BDA3BB130
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 22:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791497065; cv=pass; b=VBbICu8npUr8SbooBgkAhmniYX0y5jPJRClyKDQi7jMXr4RLY9L9SHITWrIRNQ/2gQmMavzET5XBwObKdJmC4XDt6kyS2y6rUjnEQYGeaJm35EVXEhDzNbZ5DRVMTVvgEveN/OS2LBEB/XQ/DnmZ5FfSHGv7/bRpt4OSNeBRZp8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791497065; c=relaxed/simple;
+	bh=H1VfG90/T60F1s1IQvp8e9YAaTZrGbwa+1vrRytR/zY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XktTCNTijChiKb8YYjZKxBERYQkT9k3iuRIF4ywjErcF21yKMNMsUJ+LhJ4Sorr6i72S2Uih0+2/s6/CBqEC3IQxAl27hvhk74e1sPh689w71rpO/+S191pyhy0yjSi3dJXt8iGP9PgL7ru4pqFizd3+Wn5Z3JYl9UwYtir2j+s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jg3P38gq; arc=pass smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCj+nDv2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2541F00893;
-	Thu,  8 Oct 2026 22:03:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791497031;
-	bh=H71LY/qIbTaE4K5cPQ97cERMkdFiBj3SwCKAC1VMl+M=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PCj+nDv2YmDOdsMFw+WZEOpdWpjlN4DMYZXmVZLatIJI5R7WUPdVyH5ZHqbaYIovu
-	 687QvEU2vAIm+2D834BQJjjH6054bK2ZjCP1Gvsc3Se9so10tADXZd4rp8V/dyRcGJ
-	 dkcPiBVr+1uS0RBP0bfFi9DmNCIfH6DXhr6RQsE3ou6SWLdiwoa3JRJ8WbFYa8cSij
-	 Cru2bidItoVHNBD+lPH2ltgjfX5R8wlyKIMdd/5Oh03XXbdQqFo70f7VTCWpFWlrMg
-	 SOIqjjnhzqWPjAEAtGkOshYFHMjqe1BYFq0MNEnWFl0CIZNACGQT5hqn6i6FrWxSKY
-	 EpJ7GJn+yjzZQ==
-Subject: Re: [PATCH net-next v4 2/2] net: stmmac: rework stmmac_rx to support
- XDP rx multi-buff
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Date: Thu, 08 Oct 2026 22:03:49 +0000
-Message-ID: <179149702992.434549.11258705725205285914@kernel.org>
-In-Reply-To: <20261006-stmmac-rx-mb-v4-2-efa4ca974e3d@oss.qualcomm.com>
-References: <20261006-stmmac-rx-mb-v4-2-efa4ca974e3d@oss.qualcomm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jg3P38gq"
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-823545ce223so4823699a34.2
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 15:04:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791497063; cv=none;
+        d=google.com; s=arc-20260327;
+        b=s26qfLf68OGE2oLEhDFLLj1ks5E1r9m4Bt723Q7NatgJcviriJm0/pLqhFJtZYWBSp
+         84TdTro3jPUelhBAHJUFtiJI1krA0t5MmGx6YPrleUlm21DyOL+5F/XgyE4Ok09CbpwM
+         Sp+jEF0EqPJY4Sys6q1chhlsW02WgEMB+xBQ3Jy5lAzAAAOKohJn0xcrmgFs0z3aQZ87
+         eDokgD88a9Z0DJSpnqpbHPlBdSfYC9tGf/A4567EWpg0Kh4QQXK36dQVT4ZsRRNwkBRL
+         UBBC4uEV1gVUO3fTCSJIZekX+o1+DvNGW4N4VhzILIIud8nSLlBIl1BUJPlCjk0YTH0w
+         6ifw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QLvQWX/AxDS4mt8U2SDRfRCCqUWlEBt2LTxbKx75mPQ=;
+        fh=TnihM15kYdalBfMufEe9OopMK7uzpRYBcvprYXJtzRo=;
+        b=n0u6MX2GiLpQimo8dIuftzLzL39mJxO62PcgeSRNYDy6u7nDlsfmEYAUzyJ5e/sgrv
+         m9dDPzsSh1KclgzJHSRRHTTyp2LPlIXENSVbeMzi/N7EwLaQoQTCW0W5IWUd3sF7dBAT
+         gnbXtp/nZtF/Y8u+ZVSqmW2js3qvrv2TnNYYYIHaOyTu5E7lEqJTeY+jEE/pvLmomtUQ
+         gAegOb3oDxBcFHmQwcR3/SToCn7iHEhTTxJHDqQcnYfiMVUnQSlEu+MvG331BvZXdf2s
+         BiknlExrE816mH7DuqMB57FfqHzKJjpK4R6YQo38N4NhtJIUhdlSPYHYI2MWYBRFoxKT
+         oGmw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791497063; x=1792101863; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QLvQWX/AxDS4mt8U2SDRfRCCqUWlEBt2LTxbKx75mPQ=;
+        b=Jg3P38gqPX797V+eWn9E3fSeYBOC+f96bQh6EHIHPPbxV4FDF7ONRgqQFYguv5hG91
+         xRnBY/f98jT0ZdHs2pRgOe851k+AYTVYUf0U1BUUUtJNOams9dt+XqzOAYMXvSRM1rOW
+         9leexZB+n18WvoEEyMu2sADPvPKZo/O5teWhN+Anrzrcz5lqdstfaulv1uvyJhrJYyUm
+         9b5c9N10fwVb/MTpnawYVNg0mCWQAtZlOYFY+kwssMgyBgeWHgpv0/fDkCEoAwKqN2xL
+         mhDOVVFDTloOC9GrmRNryfabrYN8IngcI9Ti6gohLR1At6c7BBkRA0YKaGfPWwsi9PsC
+         3aNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791497063; x=1792101863;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QLvQWX/AxDS4mt8U2SDRfRCCqUWlEBt2LTxbKx75mPQ=;
+        b=JSx5SXesvZFcMPSPCSgc/obsndC0ZyE/GiFeWGaUVgjeDP+hg4gtHfXrZgaWpth/CI
+         pchEHPEdHkhJFxqwzqLVKLMRhnS8dZhH6gpNYTnlApT6QD+UwXX2dj1SgS8FFhnZCNkI
+         p7b7V+Dv5haVf34nyR8GRGCdskbqawvAHGKiuONM2keUHtUpFw3tnIcN1W5SfNf7oci0
+         h340aoFwAWmmskjv6tIWKBPy4mNOn9ra43FrFbEqfTa8CSUmaki/Hn6kkt8jBpsPMMP+
+         0frxOqVDbXfnfIGP9Skv6iUjCibloeKlppp0osswdAKt112FYBCy/L6hxYYwuzKS5y7M
+         I2jw==
+X-Gm-Message-State: AFuF++kUgXTkwk9QZH+EwEBpBssoL9CqCcawQzxQDW2HvmexZUiNlWso
+	/1+KMnmVrU7OdlJYHPMGIn++lC0/dxYQLKGqWjvT0jjWel9PnQIbtQMOSEzCrPOlaRUBO6nLKI7
+	GJyYadBS/TtyCKUJyBP3qxfhOnf+np085ZldpmjPZ
+X-Gm-Gg: AYBFou380QHxXZ7PAWmUeO2YVZ1iyUWguNWlI8hM1NcQdKZoJxfD1IIRyHaMMf8/SFL
+	KgmmJ2opTwMFGgn5DQF9yzf+tgaeSSAQ6lwvZjtZKSkB70OS2xRnKrtAKJJCVBX666zZvqXY8dq
+	Gs5j8/iPDzJfTCE/NDAwql89GjfbFf/oKX8erflEXWHLMVsN0cebVuS4fsrpHh4Uj6gTwglZ9/6
+	sFd4Jt6ej8EHrGpEFiPJ0O72zc7Xhr1DgAFZufpboONduZQ2L27HFx2R4jgzp4Ab1fnr2+xxPMm
+	oAPh9bwqgYx19IjSznT70MR5cHaMj6TVpMkwNuDD7vWxh3j/E3/HRDdoNPEQ71nQKgIDXo0iMGi
+	qV83i1PDkYmHOJg==
+X-Received: by 2002:a05:6808:4f21:b0:4fb:a7f3:420d with SMTP id
+ 5614622812f47-4fc461697f8mr6349091b6e.48.1791497062305; Thu, 08 Oct 2026
+ 15:04:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261005214002.3226574-1-kaifengw@google.com> <7f377853-ae56-450b-889b-688ec335e81c@gmail.com>
+In-Reply-To: <7f377853-ae56-450b-889b-688ec335e81c@gmail.com>
+From: Kaifeng Wang <kaifengw@google.com>
+Date: Thu, 8 Oct 2026 15:04:11 -0700
+X-Gm-Features: AclHuK-XBiCo8MEasct3DpaRxKEb0yXtyqWVf5dHL0yESstGRBWSjN8kwHz5AtA
+Message-ID: <CAKkY-qO=bNnyyUg_2FM+s5Gt3mW4+_ony2Bp8kRsYUcHrXcv5A@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: reject devmem tx with fastopen and repair
+To: Pavel Begunkov <asml.silence@gmail.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com, 
+	kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, almasrymina@google.com, willemb@google.com, 
+	kaiyuanz@google.com, sdf@fomichev.me, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+> Is it enough to check tp->repair only once, at the top of the function?
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
+Agreed. As Stan and Pavel suggested, I will move the `if (binding)`
+checks directly into the Fast Open and `tp->repair` branches in v2.
+pw-bot: cr
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch advertises NETDEV_XDP_ACT_RX_SG, and stmmac_rx() now
-  gives the XDP program a multi-buffer xdp_buff.
-- [Medium] XDP programs loaded without BPF_F_XDP_HAS_FRAGS
-  (prog->aux->xdp_has_frags == false) now receive multi-buffer…
-- [Low] The rework quietly fixes a live RX bug in the previous
-  stmmac_rx() for multi-descriptor frames when XDP is attached.
-- [Low] The new stmmac_build_skb() computes metasize = xdp->data -
-  xdp->data_meta and calls skb_metadata_set(skb, metasize).
-
---
-
-net: stmmac: rework stmmac_rx to support XDP rx multi-buff
-
-This commit reworks stmmac_rx() so that all descriptors of a frame are
-collected into one xdp_buff. The XDP program then runs on the full,
-possibly fragmented, packet, and on XDP_PASS the skb is built from that
-xdp_buff. The in-progress xdp_buff is kept in rx_q->state across NAPI
-polls, the FCS is stripped with a new stmmac_xdp_shrink_tail() helper,
-and NETDEV_XDP_ACT_RX_SG is advertised.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 28e9f8438f93f..742866466526e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-
-[ ... ]
-
-> @@ -5758,6 +5763,118 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
-
-[ ... ]
-
-> +static struct sk_buff *stmmac_build_skb(struct xdp_buff *xdp)
-> +{
-> +	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
-> +	u32 metasize = xdp->data - xdp->data_meta;
-> +	struct sk_buff *skb;
-> +	u8 num_frags = 0;
-> +
-> +	if (unlikely(xdp_buff_has_frags(xdp)))
-> +		num_frags = sinfo->nr_frags;
-> +
-> +	skb = napi_build_skb(xdp->data_hard_start, xdp->frame_sz);
-> +	if (!skb)
-> +		return NULL;
-> +
-> +	skb_mark_for_recycle(skb);
-> +	skb_reserve(skb, xdp->data - xdp->data_hard_start);
-> +	skb_put(skb, xdp->data_end - xdp->data);
-> +	if (metasize)
-> +		skb_metadata_set(skb, metasize);
-
-[Severity: Low]
-This isn't a bug, but the skb_metadata_set() call changes behavior, and
-the commit message doesn't list it.
-
-The old XDP_PASS path (napi_build_skb() + skb_reserve() + skb_put()) never
-set the skb metadata length. Metadata written with bpf_xdp_adjust_meta()
-was therefore dropped. With this patch it is carried into the skb, and
-TC/BPF programs can read it through data_meta.
-
-Could this be added to the list of changes in the commit message?
-
-[ ... ]
-
-> @@ -5873,121 +5996,89 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
->  		buf2_len = stmmac_rx_buf2_len(priv, p, status, len);
->  		len += buf2_len;
->  
-> -		/* ACS is disabled; strip manually. */
-> -		if (likely(!(status & rx_not_ls)))
-> -			len -= ETH_FCS_LEN;
-> -
-> -		if (!skb) {
-> -			unsigned int pre_len, sync_len;
-> -
-> -			/* Each frame starts here: reset the FCS handling */
-> -			fcs_stripped = false;
-> -
-> +		if (!frames) {
->  			dma_sync_single_for_cpu(priv->device, buf->addr,
->  						buf1_len, dma_dir);
->  			net_prefetch(page_address(buf->page) +
->  				     buf->page_offset);
->  
-> -			if (stmmac_xdp_is_enabled(priv) && !buf2_len) {
-> -				buf1_len -= ETH_FCS_LEN;
-> -				fcs_stripped = true;
-> -			}
-> -
-
-[ ... ]
-
-> -			/* For Not XDP_PASS verdict */
-> -			if (IS_ERR(skb)) {
-> -				unsigned int xdp_res = -PTR_ERR(skb);
-> -
-> -				if (xdp_res & STMMAC_XDP_CONSUMED) {
-> -					page_pool_put_page(rx_q->page_pool,
-> -							   virt_to_head_page(ctx.xdp.data),
-> -							   sync_len, true);
-> -					buf->page = NULL;
-> -					rx_dropped++;
-> -					goto next;
-> -				} else if (xdp_res & (STMMAC_XDP_TX |
-> -						      STMMAC_XDP_REDIRECT)) {
-> -					xdp_status |= xdp_res;
-> -					buf->page = NULL;
-> -					goto next;
-> -				}
-> -			}
-> -		}
-
-[Severity: Low]
-Does this rework also fix an existing RX bug for multi-descriptor frames
-when XDP is attached?
-
-In the old stmmac_rx(), XDP ran on the first buffer only. After a
-CONSUMED, TX or REDIRECT verdict, the goto next above reset in_progress
-and skb even when rx_not_ls was still set on that descriptor. The next
-continuation descriptor was then handled as the start of a new frame,
-so XDP ran on mid-frame payload.
-
-The removed !buf2_len branch also subtracted ETH_FCS_LEN from a first
-buffer that was not the last one. That dropped 4 bytes from the middle of
-the frame, and setting fcs_stripped skipped the final pskb_trim().
-
-The commit message says frames like this do reach this path with XDP
-enabled, but it calls the change groundwork. Could the commit message
-describe the old behavior? Could a minimal fix with a Fixes: tag also be
-sent, so that stable kernels get it?
-
-[ ... ]
-
-> +		skb = stmmac_xdp_run_prog(priv, &ctx.xdp);
-> +		/* Due xdp_adjust_tail: DMA sync for_device
-> +		 * cover max len CPU touch
-> +		 */
-> +		sync_len = ctx.xdp.data_end - ctx.xdp.data_hard_start;
-> +		sync_len = max(sync_len, pre_len);
-> +
-> +		/* For Not XDP_PASS verdict */
-> +		if (IS_ERR(skb)) {
-> +			unsigned int xdp_res = -PTR_ERR(skb);
-> +
-> +			if (xdp_res & STMMAC_XDP_CONSUMED) {
-> +				stmmac_xdp_put_buff(rx_q, &ctx.xdp, sync_len,
-> +						    true);
-> +				rx_dropped++;
-> +			} else if (xdp_res & (STMMAC_XDP_TX |
-> +					      STMMAC_XDP_REDIRECT)) {
-> +				xdp_status |= xdp_res;
-> +			}
-
-[Severity: High]
-What happens on XDP_TX now that ctx.xdp can carry frags?
-
-stmmac_xdp_xmit_back() converts the buffer with
-xdp_convert_buff_to_frame(). That keeps the frags flag but sets
-xdpf->len to the linear head only. The frame is then passed to
-stmmac_xdp_xmit_xdpf() with no xdp_frame_has_frags() check, and that
-function programs a single descriptor:
-
-stmmac_xdp_xmit_xdpf() {
-    ...
-	dma_sync_single_for_device(priv->device, dma_addr,
-				   xdpf->len, DMA_BIDIRECTIONAL);
-    ...
-	stmmac_set_tx_dma_last_segment(tx_q, entry);
-    ...
-	stmmac_prepare_tx_desc(priv, tx_desc, 1, xdpf->len,
-			       csum, priv->descriptor_mode, true, true,
-			       xdpf->len);
-    ...
-}
-
-No descriptor points at the fragment pages, and they are never synced for
-the device. A frame that spans several RX buffers would therefore be sent
-truncated to its first buffer. Nothing leaks, because the fragments are
-freed on TX completion, but the data on the wire is wrong.
-
-The EST check in the same function only compares the linear length:
-
-	    xdpf->len > priv->est->max_sdu[queue]) {
-
-So an oversized multi-buffer frame would also get past the max_sdu limit.
-
-GMAC_CORE_INIT in dwmac4.h always sets GMAC_CONFIG_JE. With the default
-1536 byte buffers, a remote sender can produce such frames even at MTU
-1500.
-
-Should XDP_TX drop frames with frags, by returning STMMAC_XDP_CONSUMED,
-until stmmac_xdp_xmit_xdpf() can chain one descriptor per fragment?
-
-The ndo_xdp_xmit path in stmmac_xdp_xmit() has the same single-descriptor
-limitation, but that code was already there before this patch.
-
-[ ... ]
-
-> @@ -8022,6 +8121,7 @@ static int __stmmac_dvr_probe(struct device *device,
->  	ndev->hw_features = NETIF_F_SG | NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
->  			    NETIF_F_RXCSUM;
->  	ndev->xdp_features = NETDEV_XDP_ACT_BASIC | NETDEV_XDP_ACT_REDIRECT |
-> +			     NETDEV_XDP_ACT_RX_SG |
->  			     NETDEV_XDP_ACT_XSK_ZEROCOPY;
-
-[Severity: Medium]
-With RX_SG advertised, what stops programs loaded without
-BPF_F_XDP_HAS_FRAGS from receiving multi-buffer xdp_buffs?
-
-stmmac_xdp_set_prog() in stmmac_xdp.c only checks the MTU:
-
-stmmac_xdp_set_prog() {
-    ...
-	if (prog && dev->mtu > ETH_DATA_LEN) {
-    ...
-}
-
-It never checks prog->aux->xdp_has_frags. stmmac_rx() also calls
-stmmac_xdp_run_prog() on ctx.xdp whether or not it has frags.
-
-GMAC4 always enables jumbo frames, so the MTU limit does not keep out
-frames longer than one RX buffer. A single-buffer program would decide
-the verdict for the whole frame after seeing only data..data_end. On
-XDP_PASS, payload the program never inspected goes up the stack. On
-XDP_TX, the frame is truncated as described above.
-
-Other RX_SG drivers handle this case. mvneta, bnxt, ice, mlx5 and ionic
-reject such programs at attach time. aq_ring.c and fbnic_txrx.c drop such
-frames at runtime. For example, aq_ring.c does:
-
-    if (xdp_buff_has_frags(xdp) && !prog->aux->xdp_has_frags)
-        goto out_aborted;
-
-Should stmmac do the same for programs that are not frags-aware?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-stmmac-rx-mb-v4-0-efa4ca974e3d%40oss.qualcomm.com
+On Thu, Oct 8, 2026 at 5:54=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.c=
+om> wrote:
+>
+> On 10/5/26 22:40, Kaifeng Wang wrote:
+> > tcp_sendmsg_locked() enforces that devmem TX can only proceed if the
+> > zero-copy path is active and a valid dmabuf binding exists. However,
+> > subsequent branches in tcp_sendmsg_locked() can still intercept the
+> > message before it reaches the devmem zero-copy loop:
+> >
+> > 1. TCP Fast Open (MSG_FASTOPEN or DEFER_CONNECT):
+> >     If TCP_FASTOPEN_CONNECT is set, the socket may have a valid dst wit=
+h
+> >     NETIF_F_SG (so zc =3D=3D MSG_ZEROCOPY and binding is present), but
+> >     tcp_sendmsg_fastopen() -> tcp_send_syn_data() will use
+> >     copy_page_from_iter() to byte-copy from the iterator. Since iov_bas=
+e
+> >     represents dma-buf offsets rather than user virtual addresses, this
+> >     misinterprets offsets as user pointers and copies arbitrary user me=
+mory
+> >     into the SYN packet.
+> >
+> > 2. TCP repair mode:
+> >     If tp->repair is enabled with TCP_RECV_QUEUE, tcp_send_rcvq() simil=
+arly
+> >     calls skb_copy_datagram_from_iter(), byte-copying from the iterator=
+.
+> >
+> > Neither path supports or makes sense for devmem transmission. Reject de=
+vmem
+> > sends if Fast Open or repair mode is active.
+> >
+> > This pre-existing issue was identified by Sashiko AI review on commit
+> > 125755776bc6 ("tcp: reject non zerocopy devmem tx") and has not been
+> > hit in production.
+> >
+> > Fixes: 125755776bc6 ("tcp: reject non zerocopy devmem tx")
+> > Fixes: bd61848900bf ("net: devmem: Implement TX path")
+> > Signed-off-by: Kaifeng Wang <kaifengw@google.com>
+> > ---
+> >   net/ipv4/tcp.c | 4 +++-
+> >   1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> > index 87ef6d5cbfeb..225e758c194a 100644
+> > --- a/net/ipv4/tcp.c
+> > +++ b/net/ipv4/tcp.c
+> > @@ -1169,7 +1169,9 @@ int tcp_sendmsg_locked(struct sock *sk, struct ms=
+ghdr *msg, size_t size)
+> >                       zc =3D MSG_SPLICE_PAGES;
+> >       }
+> >
+> > -     if (!sockc_err && sockc.dmabuf_id && (zc !=3D MSG_ZEROCOPY || !bi=
+nding)) {
+> > +     if (!sockc_err && sockc.dmabuf_id &&
+> > +         (zc !=3D MSG_ZEROCOPY || !binding || tp->repair ||
+> > +          (flags & MSG_FASTOPEN) || inet_test_bit(DEFER_CONNECT, sk)))=
+ {
+>
+> It becomes unhandy, and taking into account the issue Stan commented
+> about, I think it'd make sense to do the checks under the repair and
+> fast open "ifs".
+>
+> if (((1 << sk->sk_state) & ~(TCPF_ESTABLISHED | TCPF_CLOSE_WAIT)) &&
+>      !tcp_passive_fastopen(sk)) {
+>         if (binding) // fail;
+> }
+>
+> if (unlikely(tp->repair)) {
+>         if (binding) // fail;
+> }
+>
+> --
+> Pavel Begunkov
+>
