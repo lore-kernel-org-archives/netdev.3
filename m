@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F94C480DEC;
-	Thu,  8 Oct 2026 09:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF95B47D477;
+	Thu,  8 Oct 2026 09:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791452415; cv=none; b=QYim1yrG0ijHOtqHefyEY3o7UEDzHRfaNI94SEu5xlCN6UDyhna91W/6Xwyukmc7yprsn5PsmbSYpipftCyk/y+KA+0WRWq3TKCZLnOJpKn8X6CCM4atA8fp3ppNsYS7X2VsRTrPOIdnaOT79uXCheSiwlbBig+PG5uOMzK0Yl0=
+	t=1791452417; cv=none; b=m7EG9jutHrbfyzqPCdVTpA5g/zE4VXkc7+nGzGVYxfbXGySRD/q0hXheNLX2a0QEO2RyLwfxGX2wOoZP2btRAb0Oy3QB8vAGfrGqiu8ZOEY7vYKZUIQw+v4ErO2NIfyd0KlRT+ozRB6SFOe3L8uDJ6Zf5WnXxq7ycmHMyZMEF7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791452415; c=relaxed/simple;
-	bh=GCQojUv1DY4mrewi2t9AhowzpkOd6UZ3EXwLQFLuPRE=;
+	s=arc-20240116; t=1791452417; c=relaxed/simple;
+	bh=/MxfPTNzQ7r7Rak+uLL0rYxFu+P+OADBjczhqv+99IY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=muxzJj0mFHhtz0ATIcWSHU5HjwDkO2nC+OdSocGf5KrtEwxyzRM6Fmskhnx6RB+4fFsxD8cvKzaqcWJWarYDZOu7B8hI7XVPWNRc1dtnrilhPSXZ4N4qram6clM9puUu6AQ9fkWNVKmTcOGywnNSmrku2fhM7xbSHvCjf6WqXR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIJEjOtA; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=AzrSiRIxvVApVb7X53VKNsIChFkWwK7OwYR3gDlqveLCiNANuhGISxDVCvnq5MrwhqueDulLYvqorDNWx6NczDdtzwRkpl8LgcNLOJs6x7mB93L6Ij5lQu7Rn5REzoWbU+cOTTjg8ozT5TDAAoR++8nK6y8Iv070MTnB0NjGi54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7whQAW8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIJEjOtA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EBE1F000FF;
-	Thu,  8 Oct 2026 09:40:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7whQAW8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5251F00893;
+	Thu,  8 Oct 2026 09:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791452414;
-	bh=+ik3PHp+piofcVAGeBneTQR00S8udk9xZ2pedCIUsM4=;
+	s=k20260515; t=1791452415;
+	bh=da5K52sQCw+Wj6QVlsFLkEn9GQr3SSszWxbYORTZG0o=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kIJEjOtA69ORbHzkECokuZMeYA0Tkh+gUCTPn6Y/IbaBh/l0+MiL3VuNoBwTeDDqh
-	 SGnyW5WlT/khJei1M7GTpZHLJgQxb/kkRgxJbW8GsBuvUd0UqK1SWBKG6MMyit+sw3
-	 ClO6ea4QsN9A/fblkH05vTcMywi4qB0T1d2bbgKP7cREjLPP78zG+xXqnfk1154iE+
-	 C19ACR07CUZWYrd8ABbvfiN4Mf2imOo0P+ibUG1f7ZHWjsonHD2sk6gZjfvMKwzwjY
-	 /rJszx14OpONBTVC4hS2VY7MfBihtJpg1y+dYm7fRr5MkG/FDgKfOPwdwTTxSXNgQ7
-	 Gb6jTY9oLOf3g==
-Subject: Re: [PATCH net-next v3 5/8] net: bcmgenet: derive the receive buffer
- length from the MTU
+	b=Z7whQAW8INUC5Cu75y8hK2qEb3GuKt6fgxl7vFWNuQaQ15Ikj23kByDwupW6Q15jU
+	 5SQ+M2laFUKT3773ovHba4S25MB+/ClEDTdJgZCppu/gDqCiWVK/j1bKgMLm9Q4Uys
+	 HdCpAeQBcR2P8lpKDS7h7QKX6PRXrMYufEdMhrvc+484Mk8wzskYPDNWnbwgjW3L1x
+	 zGvLWPvMoQK9rFI6rHqtGrLb+toILH7v+LY0dtPYhY8wXQm/Y77Odv6LS6XTfgSXKD
+	 StMeG+rMKQU3uLOr2nss07716sI9GFyBAwQZJQK6ZMYJeV1SO9xd5Z1eJwZqjWiFgu
+	 QOmT9T2NXeLiQ==
+Subject: Re: [PATCH net-next v3 6/8] net: bcmgenet: pad transmit frames out of
+ the packet ready window
 From: netdev-bot+sashiko@kernel.org
 To: nb@tipi-net.de
 Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
@@ -36,10 +36,10 @@ Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
  pierremarinleclercq88@gmail.com, f.fainelli@gmail.com
-Date: Thu, 08 Oct 2026 09:40:13 +0000
-Message-ID: <179145241305.434549.6513642342117691943@kernel.org>
-In-Reply-To: <20261007-nb-genet-mtu-nn-v2-v3-5-74a796c019ce@tipi-net.de>
-References: <20261007-nb-genet-mtu-nn-v2-v3-5-74a796c019ce@tipi-net.de>
+Date: Thu, 08 Oct 2026 09:40:14 +0000
+Message-ID: <179145241435.434549.3651092628869076790@kernel.org>
+In-Reply-To: <20261007-nb-genet-mtu-nn-v2-v3-6-74a796c019ce@tipi-net.de>
+References: <20261007-nb-genet-mtu-nn-v2-v3-6-74a796c019ce@tipi-net.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,98 +61,125 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In bcmgenet_set_mtu_regs()
-  (drivers/net/ethernet/broadcom/genet/bcmgenet.c), UMAC_MAX_FRAME_LEN…
+- [Medium] In bcmgenet_xmit()
+  (drivers/net/ethernet/broadcom/genet/bcmgenet.c), any frame whose…
+- [Low] The commit message describes the transmit stall (Tx DMA will not
+  halt, bcmgenet_init_dma() fails, the interface cannot be reopened) as…
 
 --
 
-net: bcmgenet: derive the receive buffer length from the MTU
+net: bcmgenet: pad transmit frames out of the packet ready window
 
-This commit computes the RBUF packet ready threshold from the MTU and
-derives the receive buffer length from it, replacing the fixed 2048 byte
-RX_BUF_LENGTH. UMAC_MAX_FRAME_LEN and the TDMA flow period are now also
-derived from the MTU, and the TBUF threshold is programmed at its maximum.
+This patch picks a lower transmit packet ready threshold for MTUs where
+the longest frame would end just past it. It pads frames that end within
+64 bytes past the threshold so they clear the window. Frames longer than
+the threshold that ask for checksum offload get their checksum computed
+in software.
+
+> A frame that ends a few bytes past the transmit packet ready threshold
+> stops the transmitter as soon as a shorter frame follows. Tx DMA then
+> refuses to halt, so every later bcmgenet_init_dma() fails and the interface
+> cannot be opened again.
+
+[Severity: Low]
+
+Can this stall happen at this commit? genet does not set max_mtu or
+provide ndo_change_mtu yet, so the MTU stays capped at the ether_setup()
+default:
+
+net/ethernet/eth.c:ether_setup() {
+    ...
+	dev->max_mtu		= ETH_DATA_LEN;
+    ...
+}
+
+With an MTU of 1500, ENET_MAX_FRAME_LEN(mtu) - ETH_FCS_LEN stays well
+below 3840. bcmgenet_tx_pkt_rdy_thld() therefore returns ENET_THLD_MAX
+and tx_thld_len is 3840. Neither new branch in bcmgenet_xmit() can then
+be reached.
+
+The message does say "Nothing below an MTU of 3809 is affected". The new
+code only becomes reachable with the later "net: bcmgenet: allow the MTU
+to be changed" patch.
+
+Could the message say that nothing reaches this code until the MTU limit
+is raised later in the series?
 
 > diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 83ffc4a2a2a72..4a4b0c46f8986 100644
+> index 4a4b0c46f8986..17c8318c20388 100644
 > --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 > +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 
 [ ... ]
 
-> @@ -2630,6 +2648,44 @@ static void bcmgenet_link_intr_enable(struct bcmgenet_priv *priv)
+> @@ -2176,6 +2181,29 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		goto out;
+>  	}
+>  
 
 [ ... ]
 
-> +/* Program the MTU dependent registers. Call with the MAC disabled. */
-> +static void bcmgenet_set_mtu_regs(struct bcmgenet_priv *priv, unsigned int mtu)
-> +{
-> +	u32 thld = bcmgenet_pkt_rdy_thld(mtu);
-> +
-> +	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN(mtu), UMAC_MAX_FRAME_LEN);
+> +	/* Keep the frame out of the window just past the threshold */
+> +	if (unlikely(skb->len > priv->tx_thld_len &&
+> +		     skb->len < priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
+> +		if (skb_put_padto(skb, priv->tx_thld_len + ENET_TX_SAFE_MARGIN)) {
+> +			BCMGENET_STATS64_INC((&ring->stats64), dropped);
+> +			goto drop;
+> +		}
+> +	}
 
 [Severity: Medium]
 
-Will this drop standard size frames once the MTU is lowered?
+What happens here when the GENET is the conduit for a DSA switch that
+uses a tail tag? By the time the skb reaches bcmgenet_xmit(), the tagger
+has already written the tag into the last bytes of the frame. This
+skb_put_padto() then appends zeros after the tag.
 
-Before this patch, UMAC_MAX_FRAME_LEN was always 1536. Now it is
-ENET_MAX_FRAME_LEN(mtu), which is mtu + 36, and nothing keeps it from
-going lower.
+The DSA core pads before tagging so that the conduit never has to add
+bytes after a tail tag:
 
-The commit message says:
-
-  The MTU is still fixed at ETH_DATA_LEN
-
-Only the upper bound is fixed, though. bcmgenet does not override
-min_mtu, so ether_setup() still allows any MTU from 68 up to 1500:
-
-net/ethernet/eth.c:ether_setup() {
+net/dsa/user.c:dsa_user_xmit() {
     ...
-	dev->min_mtu		= ETH_MIN_MTU;
-	dev->max_mtu		= ETH_DATA_LEN;
+	if (dev->needed_tailroom)
+		eth_skb_pad(skb);
     ...
 }
 
-This commit has no ndo_change_mtu, so __netif_set_mtu() only updates
-dev->mtu. The next open or full resume then writes the smaller value:
+For KSZ9477-class switches the tag holds the egress port mask, the
+priority, and the override bit for link-local frames:
 
-init_umac()
-  bcmgenet_set_mtu_regs(priv, priv->dev->mtu)
-    bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN(mtu), UMAC_MAX_FRAME_LEN)
+net/dsa/tag_ksz.c:ksz9477_xmit() {
+    ...
+	if (is_link_local_ether_addr(hdr->h_dest))
+		val |= KSZ9477_TAIL_TAG_OVERRIDE;
 
-Take an MTU below about 1482, for example 1400 for a tunnel overlay, or
-1280. Full size 1514/1518 byte frames from LAN peers would then be over
-the MAC limit. They would get DMA_RX_LG and be dropped in
-bcmgenet_desc_rx():
+	*tag = cpu_to_be16(val);
+    ...
+}
 
-	if (dma_flag & DMA_RX_LG)
-		u64_stats_inc(&stats->length_errors);
-	...
-	page_pool_put_full_page(ring->page_pool, rx_page,
-				true);
+lan937x_xmit() also always sets LAN937X_TAIL_TAG_VALID.
 
-Before this patch, the MAC accepted these frames whatever the MTU was.
-Full size UDP, broadcast, multicast or forwarded traffic that used to be
-received would now be lost.
+After padding, would the switch read an all-zero tag in place of these
+fields, with the real tag left inside the payload? HSR/PRP RCT trailers
+look like they would be corrupted the same way.
 
-This still happens at the end of the series. The later commit "net:
-bcmgenet: allow the MTU to be changed" adds bcmgenet_change_mtu(), which
-applies the smaller limit straight away on a running interface.
+The commit message says these protocols "see the zeros instead". The
+switch, though, would read the zeros as forwarding instructions: no port
+mask, no override bit and no valid bit. Depending on the switch, the
+frame could be dropped, forwarded by address lookup or flooded, whatever
+egress port the host chose. That could break standalone port isolation,
+and link-local frames would lose their forced egress port.
 
-That later commit does fix two related cases here. One is the stale,
-too-small limit left after raising the MTU on a running interface. The
-other is the WoL fast resume mismatch between TDMA_FLOW_PERIOD and
-UMAC_MAX_FRAME_LEN.
+This path opens up once later patches in the series raise max_mtu. If a
+user port MTU is raised above roughly 3806, dsa_user_change_mtu() calls
+dev_set_mtu(conduit, new_conduit_mtu), which moves the conduit into the
+MTU range that has the window. After that, whoever sends the traffic
+decides whether a frame lands in the window, for example through the UDP
+datagram size, IP fragment tails, or forwarded traffic.
 
-Would it work to program max(mtu, ETH_DATA_LEN) into UMAC_MAX_FRAME_LEN,
-and to update the commit message to match?
-
-> +
-> +	/* GENET v1 maps other registers at these offsets */
-> +	if (GENET_IS_V1(priv))
-> +		return;
-
-[ ... ]
+Instead of padding after the trailer, would it be safer to check
+netdev_uses_dsa() here and drop the frame? Another option would be to
+refuse conduit MTUs that reach the window.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce%40tipi-net.de
