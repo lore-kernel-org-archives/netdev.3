@@ -1,164 +1,173 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799F4497B81
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1B449E5DE;
+	Thu,  8 Oct 2026 12:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791463789; cv=none; b=fvb5oiGBD/+5aXSeiVI0IJsRfNoCz+1/AY7PUjOknUEs+nAyXzRVNQXzA/NdhbkTw1Hszf1xe2eUMGiKXJlERx9hS0fGo51/qVobe+RSCHsM1mV+paVoju01qEYBilieS+OjK1aNx/Sjj20zrrfo0HVO53DkyrcnIgf3giU/hnA=
+	t=1791463901; cv=none; b=WyDWHY3orQPLPYW7cl6XN7p/sSnWwsaXzLIUYfwS7D2wepIbxx+wKQXiwCyhtBnkW9WDpDXjcb28GBbVuXG/OzKYQhypul+r/h9mrAz7Iqc1n6bn7d8AcqKgtxEjAdN6GjjSZI2ZRCTPtad3uOSUr/OvHgb3vEzf+M3Hon9VMjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791463789; c=relaxed/simple;
-	bh=B8O4UyYWgKHjCyiEvWQaDVeXppuTnbg4pu4xhsW+PqI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=afRFbSr56qxSdzDZDAHjVIsSEuzN5zwkIeGVUaSgjPsYse1memxyIFkwKzRKs0x8jYp1ttSS2T4oRDK2fbFFKJck24Wu5gggX45ihZL52prFgKb+pBNhDL9+a/D1n7KIldvAMEvs6hJnWRt933FqJlX82oKixkT8G9VT3b7SSGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=QU2PqQAX; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
+	s=arc-20240116; t=1791463901; c=relaxed/simple;
+	bh=aJ9YmxBBm4ORrS2YgmUXD0ShPzanXx/nReB3KypFgIo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jPu2aUzkSlhzY+XotkOqiRzIh9QWJgsjJ9XsQ+SqkLdpibm4TIa6rL4BMKDcVSYjTCz+ExdvxMHFiDuicNDx98+HUH0kHWV6ZuzJjlkI2u2iioGuowB6DIan3NxrNu98CuqwHqrf/vtjiPR4o6ViqHv55AqzsyuMyGl5n2rbpd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oqlV/79E; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=66s1G752; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="QU2PqQAX"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15354aa70e8so1572025c88.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=octane.security; s=google; t=1791463787; x=1792068587; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Aw49x50i74crGqe52PxPoi4v9QJFpR0yZ1MGPQQ+JH8=;
-        b=QU2PqQAXbY0/Xx88zUSVelSV7Hcx4Ugt71ZgsD+PMsQkp3+EgDS1kUlbJ1M7441+W/
-         ewXvtSK15+rVc1OHtXG+kNoqYAAfPKkLZNQ60c7HDqAiD58dewNM5/0TxaxdKT3oVtnm
-         EEFUxmEO8CHMUVwRP7gMoEINkYVMXCLe+4wV4SCE4SwCHLX4SmS5Cg0lcmy3SWAK0vuS
-         1+a/xPMnq1sNJ7Zj9it1e7ZiO9NUkq17/99Ifk0UQ56II6xpueZ3V0OY2pRTxNnsACZ1
-         Z2j/K9IYT65Uh8WfHr5QMB51J4bFfGbWryCyFTmZQhcQwosV20DAGXhRNCRdJYdW39Sp
-         i69w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791463787; x=1792068587;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Aw49x50i74crGqe52PxPoi4v9QJFpR0yZ1MGPQQ+JH8=;
-        b=Ry5Bk4gQpZj9tTJm1dldBW8LzZaN7OrVlWkn1SYybWLhDcOFL4kZPFXcrSpw1lCluw
-         lWx7LQs+eY4c70y85U1SvryhsNlDnKmOUUcmiCiYvfqeku/r+3n7CAUQfMb2zinzfIkp
-         YYhx7JDaWyhIvwrTTNJClAiNx25SmG3wQo1QWkGMDByg3jtOsBaPcfQ97LQNK5zkCVRz
-         1JR3vY5hBq5RrfPQ5N3Mzy1a34fZ/jVbhEhB52PsN4ZfAuHSSWk0oi7nmXBOxZH/VLkl
-         vQCghOGX/Uj1yu8ysbIWDM+dv+WD7+qKdC4yn6wEVk7du9Zw5Y2YWnQEVjlcMjfhP73z
-         rl5Q==
-X-Gm-Message-State: AFuF++lVSAbuWM0BBfeM1bd8b5Ae8FBQVwqkAL/d+jU+DbxATzh4twDn
-	DclfSwm1j2vE3Vo/IPTTtnkH8ucptlIhgSaro0qDDdYCSrmD0aXwFBoA1jSl1KbPQpVI1nEcyB8
-	eysLo
-X-Gm-Gg: AYBFou3oBDWvn8rYlXrDLn4cjQAMuWHhugpVdwh0TMBxgzp/Oscd/KRZ8OdGdGvOeuS
-	wsvfPJmngJWmctXYU69bYyH4UrUeWvuy1TmQRZhspGjg4UzB7HothwTACNGxDSEyx/3tHxSzZXj
-	97/EO8h6Gry4zTwARAUH0dxxG9Jsz4PB2/Mj7shJL9J24+VYVCM2qINUX2lWTWwf542kG9vj9N1
-	4DbA7ZeYzK528kHVDjoHpUc2u3L+NnnXbOJcifYAnhABzE09s5aaSVu8kp7ZtpqxTpN/AWeL/NY
-	0gFuaLZ/1kuPMxh1RCReB+dsXPjzvmgmTiTQiTKxmr9mgFBkL3ky6WG88RhdyUO41OXfNOT8Avc
-	L0V5KHIXGWouydNaBuYymMgkPnyPQaRDBXv5vLBzdLYvICaynj0iUqr9XOqCB2ks7uAiGgLqupe
-	MbTSEckg3UCAyHqT79RZpJoHAIRiD5Tk/xsDCdKBOlt4KvyjhLQRMqanvAgolQENS6nPhXQuzjK
-	iJPhuPFDuOxNvmVFpDsYXdLMkOOvUc1pdr7vTtWmedk3E1N5ZJJ/JDHP9A6NsJfoD+nZA7uib78
-	7JAOOAhfUpk6Ow==
-X-Received: by 2002:a05:701b:2419:b0:168:3243:c911 with SMTP id a92af1059eb24-1683243ccb8mr540174c88.37.1791463787193;
-        Thu, 08 Oct 2026 05:49:47 -0700 (PDT)
-Received: from localhost.localdomain ([103.207.175.177])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1630180f6a5sm11100896c88.22.2026.10.08.05.49.43
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 08 Oct 2026 05:49:46 -0700 (PDT)
-From: Shubham Antil <shubham@octane.security>
-To: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: Allison Henderson <achender@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Giovanni Vignone <gio@octane.security>,
-	sungbyeongchan <tjdqudcks0424@naver.com>
-Subject: [PATCH net v3] net/rds: ib: zero the unwritten tail of a short receive fragment
-Date: Thu,  8 Oct 2026 18:19:40 +0530
-Message-ID: <20261008124940.13371-1-shubham@octane.security>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oqlV/79E";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="66s1G752"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791463896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MZHTc2XGNHdP9T9wX+Y/zZCgi5wtLXlmsEo+S/aR7wI=;
+	b=oqlV/79ErOldFxJBOdcaqgayLC1WO3eZpEN29TjkzEPG9yeDcs8gdtjc9MkzQWX1rpGAWk
+	5vi1xpgk3Vu29SzvFR/YejSai7+xU+PeowDuSFokRn7V/m9fbPhEE8aD+5s7FuhungAkLX
+	HbMeJzHdfeFwKXAwhxM9oFyIg9qr6KkOXcTYSQrNU0lGd9Oti6U/PMz4VlLFd7hZ73XuGI
+	82EUKS5Vy66VsQFjY+IbiWKRR0dUJir3mAfeslMBlFvb8dnf93cctKMh7opMm7fNgSu+ME
+	kQ9P8AjA8Gnw9mHgh0AlA1WbZXK+0MVp25/90RaD4W2RFUdz+FXaeyBjC8xmjQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791463896;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MZHTc2XGNHdP9T9wX+Y/zZCgi5wtLXlmsEo+S/aR7wI=;
+	b=66s1G752KnxZk6pqlIIlWCpoYLU30j4kYu9SQMwYjN5bZI5zizQmsN1mZI+ECsY0yN9TCZ
+	GNos/tFHRSHOzTDQ==
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Song Yoong Siang
+ <yoong.siang.song@intel.com>, Noor Azura Ahmad Tarmizi
+ <noor.azura.ahmad.tarmizi@intel.com>, Mohd Faizal Abdul Rahim
+ <faizal.abdul.rahim@intel.com>, Ong Boon Leong <boon.leong.ong@intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] net: stmmac: Stop Tx queue when
+ (en|dis)abling XSK pools
+In-Reply-To: <asdcORsu7HNfAZBb@boxer>
+References: <20261005-stmmac_xsk_crashes-v2-0-46c60cba6421@linutronix.de>
+ <20261005-stmmac_xsk_crashes-v2-2-46c60cba6421@linutronix.de>
+ <asdcORsu7HNfAZBb@boxer>
+Date: Thu, 08 Oct 2026 14:51:35 +0200
+Message-ID: <8733ugqrs8.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-rds_ib_process_recv() accepts an RDS/IB fragment once the receive
-completion reports at least an RDS header, and then trusts the
-header-declared message length h_len: rds_ib_inc_copy_to_user() later
-copies up to h_len bytes from the fragment pages to userspace on
-recvmsg().
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-When a fragment carries fewer payload bytes than h_len accounts for, the
-bytes between the end of the received payload and h_len are read from the
-unwritten tail of the fragment page.  That page comes from the per-CPU
-receive cache and is not zeroed, so recvmsg() returns stale page contents
-to userspace.
+Hi Maciej,
 
-Zero the unwritten tail of a short fragment page on receipt, so the copy
-can only ever return received payload or zeros.  Fragments that fill the
-page are unaffected.
+On Thu Oct 08 2026, Maciej Fijalkowski wrote:
+> On Mon, Oct 05, 2026 at 09:09:33AM +0200, Kurt Kanzenbach wrote:
+>> When enabling or disabling XSK pools in parallel to Tx traffic, kernel
+>> crashes occur. For VLAN tagged frames that happens in stmmac_xmit() ->
+>> dwmac4_set_vlan_tag() and for normal frames in stmmac_xmit() ->
+>> dwmac4_set_addr(). Both of these functions access the Tx DMA descriptors.
+>>=20
+>> The XDP pool (en|dis)ablement frees and reallocates the Tx DMA resources:
+>>=20
+>>  stmmac_disable_tx_queue:
+>>    __free_dma_tx_desc_resources
+>>=20
+>>  stmmac_enable_tx_queue:
+>>    __alloc_dma_tx_desc_resources
+>>    __init_dma_tx_desc_rings
+>>=20
+>> NAPI is disabled during that allocation window, but the Tx queue is not
+>> stopped. Therefore, add the stopping of the Tx queue during the enabling
+>> and disabling of XSK pools. Update trans_start when stopping the queue
+>> to avoid spurious watchdog timeouts.
+>>=20
+>> The issue can be easily reproduced by:
+>>=20
+>>  1. Run iperf
+>>  2. Run application which opens an AF_XDP/ZC socket
+>>=20
+>> Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
+>> Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+>> ---
+>>  drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c | 14 ++++++++++++++
+>>  1 file changed, 14 insertions(+)
+>>=20
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c b/drivers/=
+net/ethernet/stmicro/stmmac/stmmac_xdp.c
+>> index d7e4db7224b0..883bd3fe8089 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
+>> @@ -6,6 +6,16 @@
+>>  #include "stmmac.h"
+>>  #include "stmmac_xdp.h"
+>>=20=20
+>> +static void stmmac_xdp_stop_tx_queue(struct stmmac_priv *priv, u16 queu=
+e)
+>> +{
+>> +	struct netdev_queue *nq =3D netdev_get_tx_queue(priv->dev, queue);
+>> +
+>> +	__netif_tx_lock_bh(nq);
+>> +	txq_trans_cond_update(nq);
+>> +	netif_tx_stop_queue(nq);
+>> +	__netif_tx_unlock_bh(nq);
+>> +}
+>> +
+>>  static int stmmac_xdp_enable_pool(struct stmmac_priv *priv,
+>>  				  struct xsk_buff_pool *pool, u16 queue)
+>>  {
+>> @@ -36,6 +46,7 @@ static int stmmac_xdp_enable_pool(struct stmmac_priv *=
+priv,
+>>  	if (need_update) {
+>>  		napi_disable(&ch->rx_napi);
+>>  		napi_disable(&ch->tx_napi);
+>> +		stmmac_xdp_stop_tx_queue(priv, queue);
+>
+> FWIW you can look at what I did at ice driver (ice_qp_dis()) where I used
+> a bigger hammer here; I think updating trans_start is kinda a workaround.
+>
+> https://lore.kernel.org/netdev/20240708221416.625850-1-anthony.l.nguyen@i=
+ntel.com/
+>
 
-Confirmed under KMSAN: without this change recvmsg() returns stale
-frag-page bytes and KMSAN flags an uninitialised copy in
-rds_ib_inc_copy_to_user(); with it the same over-read returns zeros and
-KMSAN is clean.
+Actually, trans_start is already updated by netif_tx_stop_queue(). I'd
+just remove txq_trans_cond_update() for next version.
 
-Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
-Reported-by: sungbyeongchan <tjdqudcks0424@naver.com>
-Closes: https://lore.kernel.org/netdev/20261006205204.1322102-1-tjdqudcks0424@naver.com/
-Reported-by: Shubham Antil <shubham@octane.security>
-Reported-by: Giovanni Vignone <gio@octane.security>
-Reported-by: Robert van Eijk <robert@octane.security>
-Reported-by: Paolo Gentry <paolo@octane.security>
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Shubham Antil <shubham@octane.security>
----
-v3:
- - Zero the unwritten fragment tail instead of dropping the connection.
-   A zero-copy send with a small iovec segment can legitimately produce a
-   non-final fragment shorter than RDS_FRAG_SIZE, so the v2 length check
-   could force a reconnect on well-formed traffic; zeroing the tail avoids
-   that while still keeping uninitialised bytes out of recvmsg().
-   (Raised by the Sashiko review.)
- - Drop Reviewed-by, since the approach changed.
-v2:
- - Add Reported-by (sungbyeongchan, first to report, and the Octane
-   Security reporters).
- net/rds/ib_recv.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Thanks,
+Kurt
 
-diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
-index bd6cb3ffa..9695c7f24 100644
---- a/net/rds/ib_recv.c
-+++ b/net/rds/ib_recv.c
-@@ -35,6 +35,7 @@
- #include <linux/slab.h>
- #include <linux/pci.h>
- #include <linux/dma-mapping.h>
-+#include <linux/highmem.h>
- #include <rdma/rdma_cm.h>
- 
- #include "rds_single_path.h"
-@@ -949,6 +950,19 @@ static void rds_ib_process_recv(struct rds_connection *conn,
- 		}
- 	}
- 
-+	/* The device wrote only data_len bytes into this recycled fragment
-+	 * page.  Zero the unwritten tail so a later rds_ib_inc_copy_to_user(),
-+	 * which copies up to the peer-declared h_len, cannot hand stale page
-+	 * contents to userspace.
-+	 */
-+	if (data_len < RDS_FRAG_SIZE) {
-+		void *frag = kmap_local_page(sg_page(&recv->r_frag->f_sg));
-+
-+		memset(frag + recv->r_frag->f_sg.offset + data_len, 0,
-+		       RDS_FRAG_SIZE - data_len);
-+		kunmap_local(frag);
-+	}
-+
- 	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
- 	recv->r_frag = NULL;
- 
--- 
-2.43.0
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmrHkdcTHGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgmJBD/oCmsRqLOaLWkOVSVG1QP9cmCBH00WQ
+LRmmxbFk4UDutQJxHN4bezt5EZ6eJqvCf5WM/uI9WkyMlA65QMEm96UbHmGYhY/O
+2fdXL7X5W2wpY31IcZ15svH39ow99M+z+Qa7bOaZVMrZxaWWvyHEhv+qUESR4ot/
+lYvobo99/AorlX8Urfb/e+x3r1NCOXZJz5IIXq+9L4sAby16gJdQtvfvDdmfdN8Y
+Fr8DxMII4MoRHHcPjvMYxbYaAaGSDaK/H61e6DODTrRMCHE4322KkjMSqx/KxCBH
+zvXeMsqkWlnSTM0srBGuszFy/9kfOKWyk68q44fhuefGOaBv2xB8ZBGt8Xoz4aqq
+Mip7UslQqXVVjZCJfbUnH+zwcaJBIJA3QOQT0HebM5unR7YZDCPPc/oCL6q66G0Q
+Z61H3lzDorpXGBUUindVQvB4XLWkO6xOagPLN0Nu3fuHDIqirxrPYpSko3K3xKg/
+AsLDTMAGIKG29OoSOjlikRm+6gbkXtiH4E82IJWem/IWiQsrtXj27FHPkoWivHKJ
+oLhS9/3kWsoqO0VExHQLlh6/HTIH8358JForUyGvFLJzJxGGQVpjzmlKRfXplF9W
+th4/Y3yHhPZ16SPgDUFl6oKAQPXlUjbamJqkdbvHCUJ4zKtj2j3x6fDeYh3xN/Bk
+8c5IpCJvzgpfJQ==
+=3nkW
+-----END PGP SIGNATURE-----
+--=-=-=--
