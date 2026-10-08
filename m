@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C8234389F;
-	Thu,  8 Oct 2026 18:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99274C4F69;
+	Thu,  8 Oct 2026 18:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791485415; cv=none; b=CAn8Y4OirvBJtIJgmnSz3e2T48+1NLT6FHfivmuRiYEUQHb9OOHNzU6eRmMraac1MJ/or9+uPFPDSZ/1s/4zDBmmFYwXYAURMReicwspbRFp/K5N13oWzo9jXGRs4PPA+87kSrSEtOIfwtaqmlAbK/HU8t4aNnZNz3aqVP8Zpbo=
+	t=1791485415; cv=none; b=fzQ8YpppK7WS36aOuqGiiICQ/6zckQGYjxNcpUgaBY2TzRoWcUiEdb1Ed7e9f6vqG0MZE7mlDOmCeZhquW8flY7SaZP00sfoBCwQCqXdASvBLWZc0oOL1uHuib+ApFGqQMN85Vw5Zw7WZTBSNR9Ghr0r84giRN4nOZBpJ3Yv7hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791485415; c=relaxed/simple;
-	bh=5pfvzFO/Fi0mmTPQ1blRdVg4J5LACr+hhCgwJTNY8RI=;
+	bh=ngZiPFjVCInN0a7DMiqtmTuciWagZL2I2Wkxfr+I5Xc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=s/Ccp3J77aDUjY5d7Ilj3L9BM0PLMOg+sZsT/K6B3IreBc6cbEv2EW6mbCUEssQDFKhueuWENE1PKS81t5UAdeExmYUQlBySQz78POKfNz9nH1xU+S/3BtJKYO0jeSj3zOYm/zhXBlrmmEDEPBJr0zn8A/3LV/WVyTX5dpJ1iqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyhfeZez; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=UjDazt0kvPKXT9qPwXxukGjrr1iK9yrBFC/pdKhXwP/FGX3QqvTnwntJwL9un5dPtTIUDSL7V6OFDMOzYvbrxNEEwFu8tROjnxvgKqxKYYirIruy+GHdstmCv51MoM3H3c1y/UGk4xtnjlUYFYAnAXY/DajGgwOivFvQSL9nEaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mh1mQ6Oo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyhfeZez"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0837D1F000FF;
-	Thu,  8 Oct 2026 18:50:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mh1mQ6Oo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809771F00893;
+	Thu,  8 Oct 2026 18:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791485413;
-	bh=5GwZ2Y35+w8NOWA7NSPq6sL5WvDJSFiy4R1e3fLPzEg=;
+	s=k20260515; t=1791485414;
+	bh=pmry3YDty3lArcuGan9FsXp54o5p5qJgi78oNfIItuI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kyhfeZezy9ojs8Yrp5slxHRLsvfq5OVkB+q7hUzq9x7vPzYwxBA13cwBlb+UFHEuZ
-	 cx4JqgJmo1zGz/HM1ra8dkXGt6U3a+q6JGiSZP/gcutV5WEmDqbbBRt7qnhaxtuOFE
-	 HtZB2GAn2UKqi27g9AtNobc+zUtWm0xSmMsqEalV8xEPklU/GIIfUPhfT/oVc/8ymr
-	 J1uceFxJoQRLAM1n2K2YXQDs0L0yfaVcSpbygKpz1C9b0WXOlP+vry2ASXcjgkKSgX
-	 LDiFeNaLv5pDRrOVg06+xPXCcBr/21vuOeOgsCICJBqnIf+C+lS1xQgrxOwqrK+e5I
-	 nXTcLp6d79npw==
+	b=mh1mQ6OoZYAHZ5zhqEMLIZw1L2lHiQyBFK38fUrG+43U4Mcn47S/V88S7GYPBdkCH
+	 +VlV+rk2IyEhNcDK3U6jJYGyMkHdz+Rs2Bjipo4vO0QqeR8cA63WDuzBPuhJLKUjh+
+	 curJr94aEjwxaxHqyMjrhb5iLlqdoKBR/HHZREVbpFt/cysy3CB62/KSuNBKF38kee
+	 sG6v03eUP1ZnX2+tPeziIlUkm3F6El/7RIYP+IMkYduZusw1RWauWDvFnYCiWmYvA7
+	 3r381/TAKsJsX5zDyK5TFEl08asG/kicvxQ8oRlkgA2l41M3HSzoral+vg2oqM+UHw
+	 5x2slw1cAy0hQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1461380CEC8;
-	Thu,  8 Oct 2026 18:50:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7751D380CEC8;
+	Thu,  8 Oct 2026 18:50:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,55 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] net: macb: fix software FCS handling of shared
- and
- requeued skbs
+Subject: Re: [PATCH net v2] vsock: Fix memory leak in
+ vmci_transport_recv_dgram_cb()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179148541151.391001.6091516917596389045.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 18:50:11 +0000
-References: <20261006-nb-macb-shared-skb-net-v1-0-a80641479041@tipi-net.de>
-In-Reply-To: <20261006-nb-macb-shared-skb-net-v1-0-a80641479041@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- claudiu.beznea@tuxon.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179148541301.391001.8349992685770043645.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Oct 2026 18:50:13 +0000
+References: <20261008144046.90853-1-Ilia.Gavrilov@infotecs.ru>
+In-Reply-To: <20261008144046.90853-1-Ilia.Gavrilov@infotecs.ru>
+To: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, georgezhang@vmware.com,
+ dtor@vmware.com, acking@vmware.com, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ lvc-project@linuxtesting.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 06 Oct 2026 07:41:31 +0200 you wrote:
-> While testing the genet MTU series I used a Raspberry Pi CM5 (RP1 GEM)
-> as pktgen source for the CM4. With clone_skb the CM5 rebooted after a
-> few seconds. Further investigation showed that macb_pad_and_fcs()
-> appends the FCS in place, so the shared skb grows with every transmit
-> until BQL completes more than was queued and dql_completed() hits its
-> BUG_ON.
+On Thu, 8 Oct 2026 14:41:17 +0000 you wrote:
+> During the closure of a datagram socket, the vmci_transport_recv_dgram_cb()
+> function may be called, which will add the packets
+> to the socket's backlog; then, after the receive queue is cleared,
+> the __release_sock() function will move the packet back from the socket's
+> backlog to the receive queue, which will lead to a memory leak.
+> 
+> sock_close
+>   __sock_release
+>     __vsock_release
+>       // take ownership by user-space
+>       lock_sock_nested
+>       sock_set_flag(sk, SOCK_DEAD)
+>       vmci_transport_release
+>                                       vmci_dispatch_dgs
+>                                         vmci_datagram_invoke_guest_handler
+>                                           vmci_transport_recv_dgram_cb
+>                                             sk_receive_skb
+>                                               if (!sock_owned_by_user(sk))
+>                                                   [...]
+>                                          (!)  else if sk_add_backlog()
+>                                                   [...]
+>   (!) skb_queue_purge(&sk->sk_receive_queue)
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net: macb: check TX ring before modifying skb
-    https://git.kernel.org/netdev/net/c/6b48ed85ae0c
-  - [net,2/2] net: macb: copy shared skbs before appending the FCS
-    https://git.kernel.org/netdev/net/c/9151d6c42799
+  - [net,v2] vsock: Fix memory leak in vmci_transport_recv_dgram_cb()
+    https://git.kernel.org/netdev/net/c/7c24a4e87e21
 
 You are awesome, thank you!
 -- 
