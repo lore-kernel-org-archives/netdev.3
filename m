@@ -1,192 +1,192 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4383B14D7;
-	Thu,  8 Oct 2026 10:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8D63E8351
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 10:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791454492; cv=none; b=QCMtTeMALzYJbxgEiVykB6LYgHRSmWcmEHa61JOURzOwjScd4/Qy4wPc5E088Pgbu1i7JTz72zGWIKCfjhVP5MpY5ErYO5C0phQQgE1WMbJuqsuqEebBJzvtJBqrWjvo61CTctsa4MfXbFTnNBIkcx4KVJ3emEwKUv6FU0e+cOw=
+	t=1791454596; cv=none; b=qPsgEr5COlPsUNOhBnv97Hnrjv/+UitV3h9HP90mmSWmf1vy4DFtHXNRJbeza7QzTWyjXvEUa2BsrbI3IbGgcDWRUWfRaHCVRB4+RJvNLsJEgs4HV6Z4eykfPwr/FfJnDCnb8u4E87RlfmrrYPp6nfcyw1PGw2seS26wpMOPr88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791454492; c=relaxed/simple;
-	bh=mb+knxQeWrLQpgSQvPFgzD84aJw7bFwp6tZ2hcWcGGo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nip8d9qAeHZLgryh9VHi+dtIruoBrdXTWKelJD1wSy96G20fPgX1rP/yuz17XOFcfPJsF5afSBLjqV2GqyTblOb3ZNnQjSvAIVM9WCuRAhXBR4oJbPDl9Y87trKEq63EKm5JROW7HgvBLZJAEbLpzW8nr12E2nkcbAuSacoxzMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DmDHRn5C; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791454596; c=relaxed/simple;
+	bh=U28lcf97/CjhFUZfOOidZjKnIealHaMgfzCpUp3Xteo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ayXQ0DKKpT76gvNTJvcdyS7qd1Q87BbGmRxB8/OOzaK+RFNCU5mGiScE6aU3mrKEHxYYorVHSQfLB6gh3hAsHlql9M0/KrTwsgYIqLHmUMER4fEAv608NtxC51f2raXGlvahxiggRFXLbYCV2bMjhywPfc9lGhCtrNEoE1fM1EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h10LyY86; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CNYSTWqR; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DmDHRn5C"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 32D551A1196;
-	Thu,  8 Oct 2026 10:14:42 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EFE5B60341;
-	Thu,  8 Oct 2026 10:14:41 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C50410333874;
-	Thu,  8 Oct 2026 12:14:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791454480; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=mdRZrJtN9FgdZCPO3nME/34pN1D6OmSnqjEe0tYXdVE=;
-	b=DmDHRn5CPrt/BbOThmCBjnAmlKyqU3XDz6zCOs0/WG5jeiwuZRNwtdARLhor8mGpKXY/xy
-	UUdQUvpw8i8nR+GfitrKZkypI3S1FlaPf9x9cijrs89n7nfMQLLTchQA25kw/uxI2aenOp
-	8Mafjhf8QH0ka1ZPYz/sS6lsGUge9/VF8dpF3CV1Qj+HnrbWdTkRzpzyBJD0WFvv/IBO18
-	dJuFjfmteEw2F1O59bnMnh/gBUQ0BRwX/1wcYV9lKujGo8WbUv/rxruhLC3ay5kmzcWqu4
-	eu06kzZl+6x4o4N10U896lHWeQ3wgdtyI0xNs2SPDB3iNmAFh1PEYXYG7LGRtg==
-Message-ID: <bea80b7e-3d44-4662-b3b2-e97a7f903aa9@bootlin.com>
-Date: Thu, 8 Oct 2026 12:14:31 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h10LyY86";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CNYSTWqR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791454593;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SP1f9UNmtX0LiVyYf6TXLIff3crRsFq13nTHi/mc7ek=;
+	b=h10LyY86fDG5Nbyl6UjwuVY08cz7sbCv160hdZtHQvABXdM4gQKKvrE7jUp9/JUP+v07K9
+	gCjF7t4cIIcIsXRAeDGWmazGRGbLyew/25RhdEt4Wwf0CL5kTMeLuQeumPP3xPNw9jihg7
+	jASGcRTKEpShSKjEamYZ48aU1gvPWFA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-SjAJMbGsPSS2E4VBPLuLAg-1; Thu, 08 Oct 2026 06:16:30 -0400
+X-MC-Unique: SjAJMbGsPSS2E4VBPLuLAg-1
+X-Mimecast-MFC-AGG-ID: SjAJMbGsPSS2E4VBPLuLAg_1791454589
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a1721559b4so39499385e9.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 03:16:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791454589; x=1792059389; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SP1f9UNmtX0LiVyYf6TXLIff3crRsFq13nTHi/mc7ek=;
+        b=CNYSTWqRtI89N19CDwGDuwrlHmyMNd9dhnGNRpd2bx073GHh7YBifA83CRJExn4GQR
+         wsK/TPuitMXQY6I4VvpTNFmdzQ2IVkADQSelzdN2gpBzsdejzirzSa7h+JdhGb2STbNk
+         jr3wSlwv4HWxEbXoq24kL16/Exumtj0D9eEMoZd61eQYjNNwaHl4U3DQzXR+CQ2JCEbm
+         g7LHB/9TaL2eg6elZh1/CUDrJiLCHjMvJ6c+cEjzOhRjuXgjuuICNyMfOzj4cVFGrfEH
+         fREHFzFovSo7y0tdLgi+ONnOw7jCN1s7jWnN6KMz7JVGtB4Q6T6bCpf2N6l+5Gpfk/ED
+         dtSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791454589; x=1792059389;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SP1f9UNmtX0LiVyYf6TXLIff3crRsFq13nTHi/mc7ek=;
+        b=RUuWw77Jos8v+97gAPYwbIwKISLl3zTLig720rCEisYBpvY8Y16fkPDyVfhtCz26ys
+         xU9CUqhHxm3AegbM23wM3NN22kkr37MNWdtTspQbweCWxrJ06f9MsM9LVojFzlJnQpHn
+         Iy/0BbfZediKYa4B8VCR7vu/nKU1Wa7KjUwj/PWFSlkjED78zvWrDshghH5B5D2AVi8l
+         Eb2r/GN2xQKsbfg2x7NO5Jd+1p5F1NBFJHjar7VhJAD+8676DBl5SbzMJPO3aW1pv5lF
+         tgxeOsTKRDpvA/3u390Nnri/pTNHTWxvsi8ChBxspEgAvPLI4xDku/fFvydK66SK7wb+
+         5YCA==
+X-Forwarded-Encrypted: i=1; AKwUvBy23WyFfe1IF3UbYW+eY7zjxYX+G52L91liqHAkKKL4wZXZVmxXdpVWzPpwDHCN6Qp9X4S04l8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mFxkT6vRRZv9qCCTvxZHZKZ+l9DRozmbMxxaJoLTy4GymN7c1Y
+	kaMGFf2YpZAauU4S23fbQJM+FFUlYH3MkPmv3Ncf0tt5ACVB4LPR1wlC9rvllpmSIpCH7FYLISS
+	FnXScxq89CIyHuUnWj9CbC4vcHtjKHnBUMIB23m6aW+tWp2UBSGdkMUW4lQ==
+X-Gm-Gg: AYBFou3xZAtKyF77tQrbirO79sWnDdfWGDzNf5QprAmoqltQHlQfhfr1P2/mhWFPIkk
+	5E/jYvL+U198YK8dI6ipHYHiVyhsI192nqQjiB/OiZOfT4W9X0ct65eI446Z8ZUYf239n7o3gRZ
+	2+M9LeXcHYxVPDI0H9FMeynUFjhuCX2I/UrnLjDUwbq0CVgrGn/lt64K8mfUEvek2ZgCIGEDAYr
+	IeD45nMNqq4MGkvI/W69OU4pgaieLrRp+PhMCRW9kxAphk5ZH3yqaROpKoN2Sk2mvBuTD6ER34o
+	taR+pgY5sCYmYcEoz2munW95JlCpmWCvK1T6Clk6bpXQ4VtTL5Wegao3weu/KMpaBm9k+vJ7QIe
+	OQ2C6cuFcJDNi7vSUwfcx0om/BdEs
+X-Received: by 2002:a05:600c:3e0a:b0:4a1:6c0c:ab93 with SMTP id 5b1f17b1804b1-4a18045995fmr80697505e9.28.1791454588764;
+        Thu, 08 Oct 2026 03:16:28 -0700 (PDT)
+X-Received: by 2002:a05:600c:3e0a:b0:4a1:6c0c:ab93 with SMTP id 5b1f17b1804b1-4a18045995fmr80696665e9.28.1791454588042;
+        Thu, 08 Oct 2026 03:16:28 -0700 (PDT)
+Received: from sgarzare-redhat (90-181-163-241.rco.o2.cz. [90.181.163.241])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1843d1ea0sm60309235e9.8.2026.10.08.03.16.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 03:16:27 -0700 (PDT)
+Date: Thu, 8 Oct 2026 12:16:25 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	George Zhang <georgezhang@vmware.com>, Dmitry Torokhov <dtor@vmware.com>, Andy King <acking@vmware.com>, 
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: Re: [PATCH net] vsock: Fix memory leak in
+ vmci_transport_recv_dgram_cb()
+Message-ID: <asds3RsjgMTh8OFj@sgarzare-redhat>
+References: <20261007143716.1984702-1-Ilia.Gavrilov@infotecs.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] net: stmmac: dwxgmac2: enable L2 split header
- support
-To: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Hongmei Xu <hongmei.xu@oss.qualcomm.com>,
- Abhishek Chauhan <abhishek.chauhan@oss.qualcomm.com>,
- Sarosh Hasan <sarosh.hasan@oss.qualcomm.com>
-References: <20261007183905.2582759-1-sagar.cheluvegowda@oss.qualcomm.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261007183905.2582759-1-sagar.cheluvegowda@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261007143716.1984702-1-Ilia.Gavrilov@infotecs.ru>
 
-Hi,
+On Wed, Oct 07, 2026 at 02:37:47PM +0000, Ilia Gavrilov wrote:
+>During the closure of a datagram socket, the vmci_transport_recv_dgram_cb()
+>function may be called, which will add the packets
+>to the socket's backlog; then, after the receive queue is cleared,
+>the __release_sock() function will move the packet back from the socket's
+>backlog to the receive queue, which will lead to a memory leak.
+>
+>sock_close
+>  __sock_release
+>    __vsock_release
+>      // take ownership by user-space
+>      lock_sock_nested
+>      sock_set_flag(sk, SOCK_DEAD)
+>      vmci_transport_release
+>                                      vmci_dispatch_dgs
+>                                        vmci_datagram_invoke_guest_handler
+>                                          vmci_transport_recv_dgram_cb
+>                                            sk_receive_skb
+>                                              if (!sock_owned_by_user(sk))
+>                                                  [...]
+>                                         (!)  else if sk_add_backlog()
+>                                                  [...]
+>  (!) skb_queue_purge(&sk->sk_receive_queue)
+>
+>      release_sock
+>        __release_sock
+>          // move all packets from the backlog
+>          // to the receive queue
+>   (!)    sk_backlog_rcv
+>            vsock_queue_rcv_skb
+>            [...]
+>              __sock_queue_rcv_skb
+>                if (!sock_flag(sk, SOCK_DEAD))
+>                  // Since the socket is "dead", the function will not
+>                  // be called
+>                  sk->sk_data_ready(sk)
+>        sock_release_ownership(sk);
+>        sock_put
+>
+>Add a receive queue cleanup in the socket destructor to fix this.
+>
+>syzkaller report:
+>
+>unreferenced object 0xffff8880117bfb80 (size 240):
+>  comm "irq/56-vmw_vmci", pid 205, jiffies 4295064448 (age 73.992s)
+>  hex dump (first 32 bytes):
+>    78 dc 26 1e 80 88 ff ff 78 dc 26 1e 80 88 ff ff  x.&.....x.&.....
+>    00 00 00 00 00 00 00 00 c0 da 26 1e 80 88 ff ff  ..........&.....
+>  backtrace:
+>    [<ffffffff82be8d97>] __alloc_skb+0x287/0x330 net/core/skbuff.c:505
+>    [<ffffffffa114bcbd>] vmci_transport_recv_dgram_cb+0xbd/0x210 [vmw_vsock_vmci_transport]
+>    [<ffffffffa05072c6>] vmci_datagram_invoke_guest_handler+0x366/0x450 [vmw_vmci]
+>    [<ffffffffa050ad75>] vmci_dispatch_dgs+0x235/0x490 [vmw_vmci]
+>    [<ffffffffa050b025>] vmci_interrupt+0x55/0x290 [vmw_vmci]
+>    [<ffffffff8137ad2b>] irq_thread_fn+0x8b/0x1a0 kernel/irq/manage.c:1205
+>    [<ffffffff8137c7ae>] irq_thread+0x28e/0x530 kernel/irq/manage.c:1314
+>    [<ffffffff81253dd6>] kthread+0x2e6/0x3a0 kernel/kthread.c:376
+>    [<ffffffff81004392>] ret_from_fork+0x22/0x30 arch/x86/entry/entry_64.S:295
+>
+>Found by InfoTeCS on behalf of Linux Verification Center
+>(linuxtesting.org) with Syzkaller.
+>
+>Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+>Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+>---
+> net/vmw_vsock/af_vsock.c | 1 +
+> 1 file changed, 1 insertion(+)
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 9b71479a2b29..fbafd882a12c 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -1048,6 +1048,7 @@ static void vsock_sk_destruct(struct sock *sk)
+> {
+> 	struct vsock_sock *vsk = vsock_sk(sk);
+>
 
-On 10/7/26 20:39, Sagar Cheluvegowda wrote:
-> XGMAC2 doesn't program the MAC extended configuration registers
-> needed for L2 header splitting when split-header mode is enabled,
-> so tagged AV packets can't use the split-header path. Configure
-> split mode (SPLM) and header saving (SAVE_EN) in XGMAC_EXT_CFG1,
-> extending the dwmac4 sequence added by commit d10f1a4e44c3 ("net:
-> stmmac: Programming sequence for VLAN packets with split header")
-> to XGMAC2.
-> 
-> Also fix the RX header-length calculation for split-header
-> descriptors. Per the XGMAC2 descriptor format, RDES3's L34T and
-> L2T fields are only valid on the last descriptor (LD set); on a
-> non-last descriptor they can hold stale write-back data from a
-> previous packet. Read the header length from RDES2[9:0] directly
-> for non-last descriptors, and only consult L34T/L2T on the last
-> descriptor: RDES2[9:0] for IP packets (L34T set) and RDES2[9:2]
-> for non-IP packets (L2T set).
-> 
-> Finally, disable the variable-length preamble when L2 splitting
-> is enabled. A variable-length preamble shifts the position of the
-> Ethernet header, making the L2 split offset non-deterministic.
-> 
-> Co-developed-by: Abhishek Chauhan <abhishek.chauhan@oss.qualcomm.com>
-> Signed-off-by: Abhishek Chauhan <abhishek.chauhan@oss.qualcomm.com>
-> Co-developed-by: Sarosh Hasan <sarosh.hasan@oss.qualcomm.com>
-> Signed-off-by: Sarosh Hasan <sarosh.hasan@oss.qualcomm.com>
-> Signed-off-by: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
-> ---
-> v2:
->   - Add XGMAC_CONFIG1_SPLM_MASK and use it in XGMAC_CONFIG1_SPLM()
-> v1: https://lore.kernel.org/netdev/20260922232116.889630-1-sagar.cheluvegowda@oss.qualcomm.com/
-> 
->  drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h       |  8 ++++++++
->  drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c | 12 +++++++++++-
->  drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c   | 10 ++++++++++
->  3 files changed, 29 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> index f8ab347f7b5b..fb29dd489714 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> @@ -167,6 +167,12 @@
->  #define XGMAC_HW_FEATURE4		0x0000012c
->  #define XGMAC_HWFEAT_EASP		BIT(4)
->  #define XGMAC_HWFEAT_PCSEL		GENMASK(1, 0)
-> +#define XGMAC_EXT_CFG0			0x140
+nit: maybe a comment here referring to vmci datagram could be nice to 
+have if you send a v2. In any case, also this version is fine to me:
 
-Let's keep it coherent and use 0x00000140
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-> +#define XGMAC_EXT_CFG0_VPRE		BIT(8)
-> +#define XGMAC_EXT_CFG1			0x00000144
-> +#define XGMAC_CONFIG1_SAVE_EN		BIT(24)
-> +#define XGMAC_CONFIG1_SPLM_MASK		GENMASK(9, 8)
-> +#define XGMAC_CONFIG1_SPLM(v)		FIELD_PREP(XGMAC_CONFIG1_SPLM_MASK, v)
->  #define XGMAC_MAC_DPP_FSM_INT_STATUS	0x00000150
->  #define XGMAC_MAC_FSM_CONTROL		0x00000158
->  #define XGMAC_PRTYEN			BIT(1)
-> @@ -434,6 +440,7 @@
->  #define XGMAC_RDES2_L4FM		BIT(28)
->  #define XGMAC_RDES2_L3FM		BIT(27)
->  #define XGMAC_RDES2_HL			GENMASK(9, 0)
-> +#define XGMAC_RDES2_NONIPHL		GENMASK(9, 2)
->  #define XGMAC_RDES3_OWN			BIT(31)
->  #define XGMAC_RDES3_CTXT		BIT(30)
->  #define XGMAC_RDES3_IOC			BIT(30)
-> @@ -441,6 +448,7 @@
->  #define XGMAC_RDES3_CDA			BIT(27)
->  #define XGMAC_RDES3_RSV			BIT(26)
->  #define XGMAC_RDES3_L34T		GENMASK(23, 20)
-> +#define XGMAC_RDES3_L2T			GENMASK(19, 16)
->  #define XGMAC_RDES3_ET_LT		GENMASK(19, 16)
->  #define XGMAC_L34T_IP4TCP		0x1
->  #define XGMAC_L34T_IP4UDP		0x2
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> index 6719ac6e395b..65ac5403ec58 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
-> @@ -292,8 +292,18 @@ static int dwxgmac2_get_rx_hash(struct dma_desc *p, u32 *hash,
->  
->  static void dwxgmac2_get_rx_header_len(struct dma_desc *p, unsigned int *len)
->  {
-> -	if (le32_to_cpu(p->des3) & XGMAC_RDES3_L34T)
-> +	u32 rdes3 = le32_to_cpu(p->des3);
-> +
-> +	/* when FD=1 and LD=0, HL is RDES2[9:0] */
-> +	if (!(rdes3 & XGMAC_RDES3_LD)) {
-> +		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
-> +		return;
-> +	}
-> +
-> +	if (rdes3 & XGMAC_RDES3_L34T)
->  		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
-> +	else if (rdes3 & XGMAC_RDES3_L2T)
-> +		*len = (le32_to_cpu(p->des2) & XGMAC_RDES2_NONIPHL) >> 2;
->  }
->  
->  static void dwxgmac2_set_sec_addr(struct dma_desc *p, dma_addr_t addr, bool is_valid)
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> index ff83858ebc1f..0a9c787305a4 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-> @@ -561,6 +561,16 @@ static void dwxgmac2_enable_sph(struct stmmac_priv *priv, void __iomem *ioaddr,
->  	value |= XGMAC_CONFIG_HDSMS_256; /* Segment max 256 bytes */
->  	writel(value, ioaddr + XGMAC_RX_CONFIG);
->  
-> +	value = readl(ioaddr + XGMAC_EXT_CFG1);
-> +	value |= XGMAC_CONFIG1_SPLM(1);
-> +	value |= XGMAC_CONFIG1_SAVE_EN;
-> +	writel(value, ioaddr + XGMAC_EXT_CFG1);
-> +
-> +	/* Disable variable preambles to keep the L2 split offset deterministic. */
-> +	value = readl(ioaddr + XGMAC_EXT_CFG0);
-> +	value &= ~XGMAC_EXT_CFG0_VPRE;
-> +	writel(value, ioaddr + XGMAC_EXT_CFG0);
-> +
->  	value = readl(ioaddr + XGMAC_DMA_CH_CONTROL(chan));
->  	if (en)
->  		value |= XGMAC_SPH;
-
-The rest looks good to me :)
-
-Maxime
+>+	__skb_queue_purge(&sk->sk_receive_queue);
+> 	/* Flush MSG_ZEROCOPY leftovers. */
+> 	__skb_queue_purge(&sk->sk_error_queue);
+>
+>-- 
+>2.47.3
+>
 
