@@ -1,194 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4DD37FF53;
-	Thu,  8 Oct 2026 03:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647F036F8EE;
+	Thu,  8 Oct 2026 03:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791430282; cv=none; b=jZhLjal5X8w72wm5pWX1mTaVTKVwHcuxexXndawb9jhfrK5mfWwEKkKpw/I9W8ILBgvdfm5cfbTU8bSd40pnyR4qbxHVdl553gMtxyLJ4Eg8PefQ6QcKoQwSD5jb1QsrJtFlDwceevorUTob9zXqMHURVuCHcaXiT+WRVqnUolU=
+	t=1791430312; cv=none; b=CoBiw5EfQFF4Br7XhXgXQPJawGsDycBqt96PpRS5rOi5ZRP3XB+JuiPw8MmKsjJDK/AEFxomNzsrYDr4c/wF9mZtDOn/zx+ZZ7hZVj2TLPlrXBh7s2G2857S6XyAS3QnRGCRH7UGQClYgVKYraZegbcWwGafXFIEfUiNCOmGS68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791430282; c=relaxed/simple;
-	bh=Rsk8qalhAFrI7bNXjDuRHfYdKBM4cNyRHBGNeCntXgU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gge6VBwg/0Q/ylsYr2ugsWkz4PWU9f9pz5BuKJ2pKQfsZjcmGzaEDEdjXuFargoLrYmMF4LucFmy80/k5sOHQprf1P3ESNPg0Xd9lQVjPXQ6kwFw+3AtYWA6crGGNQxRr/lYCQT31h0E8FS5xhYofSqfDJrVh+02Pm9vbGnCFOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuTyKB8P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791430312; c=relaxed/simple;
+	bh=rRI2gizuOkmzDt3UCHT/ENcaMAQoOw3qqbRu6ckEfz8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=bbJaBpn6eaYIu5vl//QYq3i96h0aiIcqS1mrDATVPGuroDBmcer+JR7rCD1qPy8KLxMe5VjU1sYXzS9rLzgMB5/elr/wtGYz93QvfzfCZo/QgI5nAemuEmKimepFocaqCZhEmgVJNZFIOZikuHpCmUGwvEA/nuVGZOU+7O1r1jI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V7gFcyOY; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuTyKB8P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AA01F000FF;
-	Thu,  8 Oct 2026 03:31:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791430280;
-	bh=doKya4TAuwuHLjF27X1lAAmDyISiCJjGAuVsJzbKKn8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SuTyKB8PKCpuXQRpNNMteStsvgdrrTq2oVSPKL1hgKIngWsnJNqMsCeOMPeokbN3J
-	 +zzkePmdsXkyx29wm5SIejSGty1eVdM8tJXkuJwxrwbi+ki0Sir7RWcrD33lQJNjpG
-	 DbuZXEhScB1+Crbc+ehCF6MXNxJqPwTzc55mFDWNR6ca8ChFRG8ycFsH7yE1J6tWfX
-	 Yo3eKm9IYYhAZ+n7MqeGhZk8oH32Ou7W3btRNvGo6SUZ/dSeLawd1ApR4KZY09Yi/O
-	 LoZ8BxVw1v6vIHiLyPfJtxgN4NrgFt3QlDivG8m8mJrBGScsdyaHuo1+kiuk8omp0e
-	 LtI8yrqJImX4Q==
-Subject:
- Re: [PATCH net-next 4/4] net: ethernet: qualcomm: ppe: Add IPQ5332 support
-From: netdev-bot+sashiko@kernel.org
-To: mail@tk154.de
-Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, horms@kernel.org,
- corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- quic_leiwei@quicinc.com, quic_suruchia@quicinc.com, quic_pavir@quicinc.com,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Date: Thu, 08 Oct 2026 03:31:18 +0000
-Message-ID: <179143027873.434549.15034517641240789690@kernel.org>
-In-Reply-To: <20261005152915.101780-5-mail@tk154.de>
-References: <20261005152915.101780-5-mail@tk154.de>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V7gFcyOY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
+	Message-ID; bh=rRI2gizuOkmzDt3UCHT/ENcaMAQoOw3qqbRu6ckEfz8=; b=V
+	7gFcyOY6EVQ2wgR5l+PqYHAG+j77FsRXhEvhlbhksRWHsDLjl/LfXAAT90SqS68F
+	LLPky08R+i3u9mK6M4N7DNwtQDyzpSvFqVbDOdLGi8u6D1q91MpNhOmG1cbVgtS0
+	M5J9Kdu60hSzZppemIuqt2e0mDkFLBu7U84jlR20mI=
+Received: from taozj888$163.com ( [2409:8a20:22c3:d7b0:cce8:b35f:dfc7:fd77]
+ ) by ajax-webmail-wmsvr-40-118 (Coremail) ; Thu, 8 Oct 2026 11:30:24 +0800
+ (CST)
+Date: Thu, 8 Oct 2026 11:30:24 +0800 (CST)
+From: taozj888  <taozj888@163.com>
+To: =?GBK?Q?Th=A8=A6o_Lebrun?= <theo.lebrun@bootlin.com>
+Cc: stable@vger.kernel.org, "Conor Dooley" <conor.dooley@microchip.com>,
+	"Andrew Lunn" <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Eric Dumazet" <edumazet@google.com>,
+	"Jakub Kicinski" <kuba@kernel.org>,
+	"Paolo Abeni" <pabeni@redhat.com>, "Jeff Garzik" <jeff@garzik.org>,
+	"Haavard Skinnemoen" <hskinnemoen@atmel.com>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list" <linux-kernel@vger.kernel.org>
+Subject: Re:Re: [PATCH net v4] net: macb: rate limit netdev error info print
+ in the data path
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
+ 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
+In-Reply-To: <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
+References: <20261007053211.572073-1-taozj888@163.com>
+ <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
+X-NTES-SC: AL_Qu2SA/iYv0op4iKeY+kfm04bju07UMu2v/4l2Y9SOp9wjDDp5gA9U11FN3vbyviEOzq8qyWnYgl32+5QQatlb5MJzNhTQU+YBErd1idYAWYRfA==
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:digvCgD3_y5QDsdq_blTAA--.1610W
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3hAk62rHDlAehwAA3r
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
-
-Low priority / nit picks for your consideration:
-
-- [Low] On IPQ5332, the comment in ppe_clock_init_and_reset() (ppe.c
-  lines 187-190) is no longer true.
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the patch
-  depends on it.
-
---
-
-net: ethernet: qualcomm: ppe: Add IPQ5332 support
-
-This patch adds qcom,ipq5332-ppe match data to the PPE driver: a 200 MHz
-PPE clock, four interconnect paths and three ports. It also adds IPQ5332
-specific BM/QM limits, thresholds and scheduler arbitration tables, and
-reuses the IPQ9574 scheduler resource table for ports 0-2.
-
-> diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe.c b/drivers/net/ethernet/qualcomm/ppe/ppe.c
-> index 0ef72c20364be..69e970db4a78b 100644
-> --- a/drivers/net/ethernet/qualcomm/ppe/ppe.c
-> +++ b/drivers/net/ethernet/qualcomm/ppe/ppe.c
-
-[ ... ]
-
-> @@ -65,6 +89,14 @@ static const struct icc_bulk_data ipq9574_icc_data[] = {
->  	},
->  };
->  
-> +static const struct ppe_plat_data ipq5332_ppe_data = {
-> +	.soc_cfg = &ipq5332_soc_config,
-> +	.icc_data = ipq5332_icc_data,
-> +	.ppe_clk_rate = 200000000,
-
-[Severity: Low]
-This isn't a bug, but now that IPQ5332 goes through
-ppe_clock_init_and_reset(), is the comment there still accurate?
-
-drivers/net/ethernet/qualcomm/ppe/ppe.c:ppe_clock_init_and_reset() {
-    ...
-	/* The PPE clocks have a common parent clock. Setting the clock
-	 * rate of "ppe" ensures the clock rate of all PPE clocks is
-	 * configured to the same rate.
-	 */
-	clk = devm_clk_get(dev, "ppe");
-    ...
-}
-
-In this series, the qcom,ipq9574-ppe.yaml binding requires a fifth clock
-for qcom,ipq5332-ppe. It is described as "PPE sleep clock from GCC" and
-does not share the NSSCC parent of the other PPE clocks.
-
-devm_clk_bulk_get_all_enabled() enables that clock at its own rate. Only
-"ppe" gets clk_set_rate().
-
-Could the comment be updated so it no longer claims that all PPE clocks
-end up at the same rate?
-
-> +	.num_icc = ARRAY_SIZE(ipq5332_icc_data),
-> +	.num_ports = 3,
-> +};
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-> index 65ac6c0841d5a..91e6ee9524a60 100644
-> --- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-> +++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-
-[ ... ]
-
-> @@ -264,6 +298,30 @@ static const struct ppe_qm_queue_config ipq9574_ppe_qm_queue_config[] = {
->  	},
->  };
->  
-> +/* IPQ5332 unicast and multicast queue thresholds. */
-> +static const struct ppe_qm_queue_config ipq5332_ppe_qm_queue_config[] = {
-
-[ ... ]
-
-> +	{
-> +		/* QM settings for multicast queues 256 to 299. */
-> +		.queue_start	= 256,
-> +		.queue_end	= 299,
-> +		.prealloc_buf	= 0,
-> +		.ceil		= 50,
-> +		.weight		= 0,
-> +		.resume_offset	= 18,
-> +		.dynamic	= false,
-> +	},
-> +};
-
-[Severity: Medium]
-This is a pre-existing issue, but do these multicast thresholds ever reach
-the hardware? ppe_config_qm() indexes the multicast admission control
-table with the global queue ID:
-
-drivers/net/ethernet/qualcomm/ppe/ppe_config.c:ppe_config_qm() {
-    ...
-	} else {
-		reg = PPE_AC_MULTICAST_QUEUE_CFG_TBL_ADDR +
-		      PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC * queue_id;
-    ...
-}
-
-The multicast config table is a separate table with 44 entries:
-
-#define PPE_AC_MULTICAST_QUEUE_CFG_TBL_ADDR	0x84a000
-#define PPE_AC_MULTICAST_QUEUE_CFG_TBL_ENTRIES	44
-#define PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC	0x10
-
-With that indexing, queue 256 maps to 0x84b000 and queue 299 maps to
-0x84b2b0. Both addresses are past the end of the table at 0x84a2c0 and
-before PPE_AC_GRP_CFG_TBL_ADDR (0x84c000).
-
-The debugfs code for the matching multicast counter table subtracts the
-unicast entry count first:
-
-drivers/net/ethernet/qualcomm/ppe/ppe_debugfs.c:ppe_queue_counter_get() {
-    ...
-			int mq_offset = i - PPE_AC_UNICAST_QUEUE_CFG_TBL_ENTRIES;
-    ...
-}
-
-If that is the intended indexing, neither these IPQ5332 values (ceil 50,
-resume_offset 18) nor the IPQ9574 ones are ever written. The real
-multicast entries keep their reset values, and the read-modify-write
-cycles hit undocumented QM addresses instead.
-
-This looks like it goes back to commit 806268dc7efd ("net: ethernet:
-qualcomm: Initialize PPE queue management for IPQ9574").
-
-Should ppe_config_qm() use queue_id - PPE_AC_UNICAST_QUEUE_CFG_TBL_ENTRIES
-as the multicast table index?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005152915.101780-1-mail%40tk154.de
+CgoKCgoKSGkgVGhlbzoKCgpQbGVhc2Ugc2VlIG15IGNvbW1lbnRzIGlubGluZS4KCgpUaGFua3Ms
+CgoKWmlqaW4gVGFvCgoKCgoKQXQgMjAyNi0xMC0wNyAxNzozMzowMywgIlRoqKZvIExlYnJ1biIg
+PHRoZW8ubGVicnVuQGJvb3RsaW4uY29tPiB3cm90ZToKPkhlbGxvIHRhb3pqODg4LAo+Cj5JIHdh
+cyByZXZpZXdpbmcgeW91ciBwYXRjaCBidXQgeW91IHNlbnQgVjQgYXQgdGhlIHNhbWUgdGltZSEK
+Pgo+T24gV2VkIE9jdCA3LCAyMDI2IGF0IDc6MzIgQU0gQ0VTVCwgIHdyb3RlOgo+PiBGcm9tOiB0
+YW96aWppbiA8dGFvemo4ODhAMTYzLmNvbT4KPgo+V2UgbmVlZCBmdWxsIG5hbWVzIGluIGtlcm5l
+bCBwYXRjaGVzLCB5b3UgaGF2ZSB0aGF0IGluIHlvdXIKPlNpZ25lZC1vZmYtYnkuCj4KPj4gTm93
+IHRoZSBNQUNCIGV0aGVybmV0IGRyaXZlciBwcmludCB0aGUgbmV0ZGV2IGVycm9yIGluZm9ybWF0
+aW9uCj4+IGRpcmVjdGx5IGJ5IG5ldGRldl9lcnIoKSwgd2hpY2ggd291bGQgbGVhZCB0byBhIGxh
+cmdlIG51bWJlciBvZgo+PiBlcnJvciBpbmZvcm1hdGlvbiBwcmludCBpZiB0aGVyZSB3YXMgYSBz
+aWduaWZpY2FudCBudW1iZXIgb2YKPj4gZXJyb3Igb3IganVzdCBqdW1ibyBwYWNrZXRzIGV4Y2Vl
+ZGluZyB0aGUgTVRVIHJlY2VpdmVkIHdoZW4gYm9vdGluZy4KPj4gRm9yIGV4YW1wbGUsIGl0IHdv
+dWxkIHByaW50IGEgbGFyZ2UgbnVtYmVyIG9mOgo+Pgo+PiBtYWNiIFBIWVQwMDM2OjAwIGV0aDA6
+IG5vdCB3aG9sZSBmcmFtZSBwb2ludGVkIGJ5IGRlc2NyaXB0b3IKPj4gbWFjYiBQSFlUMDAzNjow
+MCBldGgwOiBub3Qgd2hvbGUgZnJhbWUgcG9pbnRlZCBieSBkZXNjcmlwdG9yCj4+IC4uLgo+Pgo+
+PiBpbiBnZW1fcngoKSBieSByZWNlaXZlZCBhIGxhcmdlIG51bWJlciBvZiBwYWNrZXRzIHdpdGhv
+dXQKPj4gUlhfRU9GIGZsYWcgc2V0LCBlc3BlY2lhbGx5IHdpdGggdW5rbm93biBwYWNrZXQKPj4g
+dHlwZSB0aGF0IHdvdWxkIHBlbmV0cmF0ZSB0aGUgaGFyZHdhcmUgb2ZmbG9hZCBmb3IgdGhlIElQ
+IHBhY2tldHMuCj4+Cj4+IFRoZSB1bmxpbWl0ZWQgcHJpbnRzIGhlcmUgd291bGQgZ3JlYXRseSBi
+b3RoZXIgYW5kIGRlbGF5Cj4+IHRoZSBzeXN0ZW0gYm9vdGluZyBwcm9jZXNzIHVubGVzcyB0aGUg
+c291cmNlIHN0b3Agc2VuZGluZwo+PiBwYWNrZXRzIHNpbmNlIHRoZXkgb2NjdXB5IHRoZSBjb25z
+b2xlIG91dHB1dCBiYW5kd2lkdGggYW5kCj4+IG90aGVyIHByb2Nlc3NlcyBoYXZlIHRvIHdhaXQg
+Zm9yIHRoZSBjb21wbGV0aW9uIG9mIHByaW50aW5nIHRob3NlCj4+IG1lc3NhZ2VzLgo+Pgo+PiBT
+byByYXRlIGxpbWl0IHRoZSBuZXRkZXYgZXJyb3IgaW5mb3JtYXRpb24gcHJpbnQgaW4gdGhlIHJl
+Y2VpdmUKPj4gYW5kIHRyYW5zbWl0IGRhdGEgcGF0aC4KPj4KPj4gRml4ZXM6IDg5ZTU3ODVmYzhh
+NiAoIltQQVRDSF0gQXRtZWwgTUFDQiBldGhlcm5ldCBkcml2ZXIiKQo+PiBDYzogc3RhYmxlQHZn
+ZXIua2VybmVsLm9yZwo+Cj5XaGF0IGhhcHBlbmVkPyBUaGlzIGRvZXNuJ3QgbWF0Y2ggeW91ciBk
+aXNjdXNzaW9uIHdpdGggTmljb2xhaS4KCj5odHRwczovL2xvcmUua2VybmVsLm9yZy9uZXRkZXYv
+M2UxNTE1ZTE2MmQwODRlMjIwMGVlYWE2MDc0YmZiYWZAdGlwaS1uZXQuZGUvCgoKQFRoZW8sIGlu
+IHRoZSBsaW5rIHRoYXQgeW91IHByb3ZpZGVkLCBOaWNvbGFpIHN1Z2dlc3RlZCB0byB1c2UgdGhl
+IGNvbW1pdCBpZCAKIjRkZjk1MTMxZWE4MCIsIGFuZCB0aGUgb3JpZ2luYWwgdGV4dCBpcyBxdW90
+ZWQgYmVsb3c6CiIKCj4+Pj4gRml4ZXM6IDg5ZTU3ODVmYzhhNiAoIltQQVRDSF0gQXRtZWwgTUFD
+QiBldGhlcm5ldCBkcml2ZXIiKQo+Pj4gCj4+PiBJTUhPIHRoZSBjb3JyZWN0IHRhZyBpcyA0ZGY5
+NTEzMWVhODAgKCJuZXQvbWFjYjogY2hhbmdlIFJYIHBhdGggZm9yCj4+PiBHRU0iKT8KPj4+IEF0
+IGxlYXN0IHRoZSBnZW1fcngoKSBtZXNzYWdlcyB3ZXJlIGludHJvZHVjZWQgaGVyZS4KPj4gCj4+
+IFRoZSBwYXRjaCB1c2VkIHRvIHRvdWNoIG1hY2Jfc3RhcnRfeG1pdCgpLCB3aGljaCBleHBsYWlu
+cyB3aHkgSSB0b2xkCj4+IFppamluIHRvIHRhcmdldCB0aGUgaW5pdGlhbCBjb21taXQgb24gcHJl
+dmlvdXMgcmV2aXNpb24uCj4+IAo+IE9LLCBJIHdpbGwgc3RpbGwgdXNlIHRoZSBpbml0aWFsIGNv
+bW1pdCBpbmRpY2F0ZWQgYnkgVGhlby4KClBsZWFzZSByZS1yZWFkIFRoqKZvJ3MgcmVwbHk6IGhl
+IG9ubHkgc3VnZ2VzdGVkIHRoZSBpbml0aWFsCmJlY2F1c2UgdjEgYWxzbyB0b3VjaGVkIG1hY2Jf
+c3RhcnRfeG1pdCgpLiB2MiBkb2Vzbid0IGFueW1vcmUsCjg5ZTU3ODVmYzhhNiBpcyBubyBsb25n
+ZXIgdGhlIHJpZ2h0IHRhcmdldC4gUGxlYXNlIHVzZToKCkZpeGVzOiA0ZGY5NTEzMWVhODAgKCJu
+ZXQvbWFjYjogY2hhbmdlIFJYIHBhdGggZm9yIEdFTSIpCiIKU28gSSBjaGFuZ2VkIHRoZSBjb21t
+aXQgaWQgZnJvbSAiODllNTc4NWZjOGE2IiB0byAiNGRmOTUxMzFlYTgwIgppbiB0aGUgdjQgcGF0
+Y2gsIGFuZCBzb21lYm9keSBzdWdnZXN0ZWQgdG8gc2V0IHRoZSBjaGFuZ2Vsb2cganVzdAppbiB0
+aGUgcGF0Y2ggYmVsb3cgaXRzICItLS0iIHBhcnQgaWYgdGhlcmUgaXMgb25seSBqdXN0IDEgcGF0
+Y2gsIGJ1dApub3QgaW4gdGhlIGNvdmVyLWxldHRlciwgc28gSSBhZGRlZCB0aGUgY2hhbmdsb2cg
+aW4gdGhlIHY0IHBhdGNoLgoKCklmIHlvdSBkaWRuJ3QgYWdyZWUgdGhlIGNoYW5nZXMgaW4gdGhl
+IHY0IHBhdGNoIEkgd291bGQgbGlrZSB0byBqdXN0IGFiYW5kb24KaXQsIG9yIEkgd2lsbCBzZW5k
+IGEgdjUgcGF0Y2ggdG8gcmVzdG9yZSB0byB0aGUgY29udGVudHMgb2YgdGhlIHYzIHBhdGNoIHdp
+dGgKdGhlIGNoYW5nZWxvZyBhZGRlZCBpbiB0aGUgcGF0Y2ggaXRzZWxmLgoKCkZvciB0aGUgYXV0
+b3JzaGlwLCBJIHdvdWxkIGxpa2UgdG8gdXNlIHRoZSAiWmlqaW4gVGFvIDx0YW96ajg4OEAxNjMu
+Y29tPiIgZm9yIGFsbApwYXJ0cyBpbiB0aGUgcGF0Y2ggKGZvciB0aGUgc2lnbmVkLW9mZi1ieSBh
+bmQgRnJvbSkuCgo+Cj5UTERSLCBiZWNhdXNlIHRob3NlIHRocmVhZHMgYXJlIGEgbWVzczoKPiAt
+IHdoeSBkcm9wIHN0YXJ0X3htaXQgZGlmZj8KPiAtIGZpeCB5b3VyIHBhdGNoIGF1dG9yc2hpcAo+
+IC0gY2hlY2sgeW91ciBjaGFuZ2Vsb2chCj4gLSBjaGVjayB5b3VyIGZpeGVzIQo+Cj5UaGFua3Ms
+Cj4KPi0tCj5UaKimbyBMZWJydW4sIEJvb3RsaW4KPkVtYmVkZGVkIExpbnV4IGFuZCBLZXJuZWwg
+ZW5naW5lZXJpbmcKPmh0dHBzOi8vYm9vdGxpbi5jb20K
