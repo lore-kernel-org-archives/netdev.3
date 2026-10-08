@@ -1,119 +1,155 @@
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AD43AE1BC
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967B3370AE7
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791494427; cv=none; b=bQR5kXGgazMe4p+hh12rICK2jfi/DuzIJBDle/8J/zsUUaVINiYfN8PTrFzJUtA0biqQox3GAE/rjhpDY1F1Mqi+U+rVPv0V49B5Kg/vT37PGMwmphiknQ8nMXEMCKaAW8ADMQ5RGvCNN93ZLOyTJikciflo/U+lwaLrlxq5A+Q=
+	t=1791494573; cv=none; b=ZbI42q8b3CipBbahIfkSCMx8jT0mugR+dByfE7P2CURxqumnUhELsz5FoGdBLwdn9rc8M4hXLQvzeESxtIsIdgJey15W0lHVr8SFpnEdazQiQ27EWMN+JdZNOPgDwFUYov2OSG7aBvIbQazGuBEuxZ3gDJxKRabG0ICxYq55l+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791494427; c=relaxed/simple;
-	bh=ZmRkpa96nlrJCixWgwASI4DUbhP3Ms77eFQ2CQkARmI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uEUZOrH2YpuT1ErnhriI+CjJs+xKh6Cms2GG63PlrPgOlwomQQh8b3rLmkrq0M4dGZo19hNTXiN9uie0dr6WhMgebC//dVWuwe0vhD7fO1nAxUXRU4JVyq8XK/+NLGxGj2c37F5IuxQsUj81GtEDkcPh1ZPnYOLgX3ru6r/3JJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=RPu3hBrW; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
+	s=arc-20240116; t=1791494573; c=relaxed/simple;
+	bh=mHr9kL6c9c9jQ9Ezno5PwYLxEmO1oPHDA6nExjQ2TEY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rWr2AMNOJvlILYyhwkLiOqzOsTLz8a3neTlGY/xgiYYUERXNjzvt6bduChnye9ffz+rCRVTWyRahVrR2n5V56fBYSkjmCLEqe/QyCx6W7o55T83IQPRNQqh9m9fiMhjHrXRq00c1HXEaSXhiWwUFDdJedyow9d+qCiJVSV4Znnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PxtAUWBv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=b4CPNJL6; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="RPu3hBrW"
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-825b40f8a26so1706836a34.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 14:20:25 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PxtAUWBv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="b4CPNJL6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791494571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TiSgCerODuxHYBFuZnaguDkUChHNNGy3RQpSlctnVCM=;
+	b=PxtAUWBvqkBRcjIsjJa9U4IRhTf9xS3rf5g11XCDDJLOmEyv82yVCCDLYGMsYHm/Dm+nWx
+	RGktAumtVUZwL+J/i4MtsYPofbO7+/rNhOsIl4NqnZIN7bEIVPZFWByC87IlpD+PS7mFFh
+	y7yzd9C2JFteBO/SjLPrm8OkG5qcHH0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-589-9zgfsTLIORmIvRrnJOz3Cw-1; Thu, 08 Oct 2026 17:22:48 -0400
+X-MC-Unique: 9zgfsTLIORmIvRrnJOz3Cw-1
+X-Mimecast-MFC-AGG-ID: 9zgfsTLIORmIvRrnJOz3Cw_1791494567
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48c437ae7dbso927342f8f.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 14:22:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791494424; x=1792099224; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EcuCJfZ9Fs3HAtWAzguUXStL6q8t6MptiYwiyeKGOkM=;
-        b=RPu3hBrW407ubjSyb8jNZk609/4L1kJdimyhfh6WWwIpX/G5nhjtZbq0213qdU5qVu
-         v3hdJN38E7B1rR0VVIBVoY5Qao6ii75ApKGxQ6bebVl9iBOqsOXOxHdopZbxjeTWVAZq
-         xaoIMkMboQFXmhlhSijjNvgdfcE+sBnjsCMb0=
+        d=redhat.com; s=google; t=1791494567; x=1792099367; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TiSgCerODuxHYBFuZnaguDkUChHNNGy3RQpSlctnVCM=;
+        b=b4CPNJL6hR6TokI8RoN5RNhuKf+DBnY91ODYJOLCHYUs3fNysqgd2tE08Otx2MlvbU
+         d9gnNpX4KUMgLP9kXW0KNtOu6dcs+InMoH6had+Hj3nnYAS++HDwQzBL/WyxuFrBKyfp
+         yHFLUsng9xnIMdHHVKHP5Hcq3aAWpOJ5v+95Gw7g3SebUYIT5UQJpF9gqRi7kBCg8LPk
+         ixklSPOfrM+kfqQXPi3nFCAoQI4E8vnNQQYyT3UcTQfdkZxj+LJCsy+4hB/PHmanLLgx
+         PlAX0DmWTf9xVY+yAO9g6Imkwv+L2EwXRMG3TPZElftnGlMMMx64hSpaR+fobHgc+/7u
+         tLxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791494424; x=1792099224;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EcuCJfZ9Fs3HAtWAzguUXStL6q8t6MptiYwiyeKGOkM=;
-        b=I7JZh0RkI7v0haxw31n282ubh7jcV480sgR8gIO+mAqc63SABPbpJp8mrzgzU+s7yj
-         nfhAKqBLOayLmNlmsmC3Gcfxcx1xXPHrYRM1sSUE4EFWK3fAed91ckxxmnd/SeIwxMt5
-         XJfvK6BSwmICRRaRlbZK4EwfmA8s8CzHIsU7KdSFvXut6L9xC2FVA/kg3mNIJ13bLLJG
-         4jNFPy3TzcGWps/oATPQO1tYuUWCfEaEkBUIUi50eOE123D/Wt1kp/v+eFCg3C9BR7XR
-         pidsD8y1fX8I0P/1PNZjkZjly602141HPtwVVnCbz0Bp4bjjfGLl5OS3pofb4N37muQF
-         TT5A==
-X-Forwarded-Encrypted: i=1; AKwUvBy4C4ApNpFYVl08+Rt7qy53EwJoqAakuIuJlmCgPgsVro91bGV0QsUag6+hyBOBSFS07s7ZvMM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mlUT5w1/no08xwW7Ipg+OPpt29fgFUlnFvPmCiDmMlm5Ima3Dy
-	eJTQUL1PiJ3snoKHeZwncPPu2iZ5MDeAz82+G9WQrVllG71s+dcf3B4dmfN9a8+M64pSwnT7iGG
-	s8g0y6IOimg==
-X-Gm-Gg: AYBFou0+buNviqHyFIllcR7hYSDH6yIfd4F2BgOa7Dd8O/xmYvoGUktmXW2LU7Fa8cf
-	230Ry+vYclVnyw3/P41Hw4AarwvX4P3YurHvakw+i/Nh7PEty5h8UvvZdK29xJ9KuK1vT9RWhtu
-	S5VRxMiOW7SKgaYlDR6jc1LW85EtqET4YmsHNTMyVC+87n/EQCfvSmOeDjGuzm9l7N2C7TZ/x0h
-	ST1jrHmUPqJSBjFeyD1RRq7P6BFvcVExxA7Zo5wYU9fyBUYcdzsMcunxqrXVfajaZ/lDVdnrOCu
-	5sGm//3IgloVYWRWxX7M2JcrvGpnreAkgFmSQ2R/vUTxFDMV5ZlmyETQ1Hj2vDpaz4aCf9A2ga3
-	bQtukI/dLUnegGER7LZH+3/BhK0FOEC9ODKr6veAlo8PXiZPcTa9U8/ZkWTKkorsUrnSDqE0snT
-	vfG44Nass9/1zprRcx/snVJqwdJTOps1hgLANRfqNll4+4w90KwbwvoAekZG8wSXCpGAoCDZaBj
-	LA2Ni2+uH/8YhlEltU3jGhH5y3fZCu+QvHFPzQQrSoa5KL6rtIFEifEq4GLcBJ7GaO8cowuHaF5
-	86sB8P2jlSuugA==
-X-Received: by 2002:a05:6830:6a14:b0:823:25c3:30a0 with SMTP id 46e09a7af769-82acfbb6d47mr8023946a34.18.1791494424614;
-        Thu, 08 Oct 2026 14:20:24 -0700 (PDT)
-Received: from com-68297.corp.openai.org ([199.47.143.0])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8303a328dccsm117624a34.22.2026.10.08.14.20.22
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 08 Oct 2026 14:20:24 -0700 (PDT)
-From: nramaswamy@openai.com
-To: Neal Cardwell <ncardwell.sw@gmail.com>
-Cc: Neil Ramaswamy <nramaswamy@openai.com>,
-	edumazet@kernel.org,
-	davem@davemloft.net,
-	horms@kernel.org,
-	jiayuan.chen@linux.dev,
-	kuba@kernel.org,
-	kuniyu@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	ncardwell@google.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	ycheng@google.com
-Subject: Re: [PATCH net v2 1/2] tcp: restore RACK list membership when undoing loss
-Date: Thu,  8 Oct 2026 14:20:01 -0700
-Message-ID: <20261008212007.11619-1-nramaswamy@openai.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261006141300.1722466-1-ncardwell.sw@gmail.com>
-References: <CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--he-dR-SAgqiw@mail.gmail.com> <20261006141300.1722466-1-ncardwell.sw@gmail.com>
+        d=1e100.net; s=20260707; t=1791494567; x=1792099367;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=TiSgCerODuxHYBFuZnaguDkUChHNNGy3RQpSlctnVCM=;
+        b=WrMPrqmtNiH0zbg+DAY147XeS00PBVNScX+0FF+OnjytxoWeeHZQceqiTFXzjyAAez
+         DQq1bvXf9F4AtmTA9o8zFi4XTC19pq9mosnGXZqEGX+Ga9mSvxfzrVHfaRU9igyzbFeM
+         +DnDE2ipDKoJX/ANqGTarY3HcVFBYwoOzJ9dLuw6bFqWobyhr757Uhcl736WEzGHxYTt
+         v5I22SxwdFmg1b9HepznJxMhddn7XJDrNbTHbhpkbr5nHdHUhd1qGlFMjZWNxP4qw7a7
+         UiWfcxdHYGXgfpbGb/TsfBZ+GQnfK3WGNFPKVReqADLYBijz2l6hZfAhkkB4/J16K5rV
+         fJlg==
+X-Forwarded-Encrypted: i=1; AKwUvBwGyBafiW0b9GESmXoYIQwPBgZK7SwTJmxRvv6WeU7wKqj8gDaj1j9rMRDHQKZ15QHUbBkeltQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIxA+NxU6Nzw+Y5lZDqSA0AUelIRb++EGG6ODf46OHWEQyHSpoc
+	GQVzfJSxsH2Aqr437K9QkqqZwaPyAGY2zCYj+6bP9w4+oEpKIP1pVk4booS5iVzMDnQUXzCAs92
+	DXEh/eE+x5jf/fGJ+4gECaQlJGLlxcZ5an5wLjGhclipUv/O7e6nBNTKmJw==
+X-Gm-Gg: AYBFou38QppC3ZK5a8GLKNVVmgPE407ydkMCv3/my3OV4umjvePqtgtD7uXjkbeFYXv
+	15J8i+/kGlXouIiF3GuWMJPINYbEhnT8Dw14oK8+r7F/IFuqDJUXTihQaZO7BVuAvxvZsgQQ0WX
+	tRVJKErZib0DQnSFAUgPArVDNP8lDgm+A2nYvHc4OtODa5hAvtu5PpQwP0zSoPN3NZATZO/STgc
+	45qFwBZN8uU5g4zAIzrXriVdC9ojlBbN+m9DBUoQk/PhvK39BuSEnLYvd50jio+RZIOLKo6wnOQ
+	l6WTFN3RYmSKAjT6RpHuYtHjmqp3zxBhRYNLu4BI0tPDGRUj0PlipKcy6hFD+j1jYxNPKzw=
+X-Received: by 2002:a05:6000:4683:b0:48c:4a62:9b31 with SMTP id ffacd0b85a97d-48db9c24c46mr196698f8f.5.1791494566880;
+        Thu, 08 Oct 2026 14:22:46 -0700 (PDT)
+X-Received: by 2002:a05:6000:4683:b0:48c:4a62:9b31 with SMTP id ffacd0b85a97d-48db9c24c46mr196666f8f.5.1791494566341;
+        Thu, 08 Oct 2026 14:22:46 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dba1be42esm114482f8f.5.2026.10.08.14.22.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 14:22:45 -0700 (PDT)
+Date: Thu, 8 Oct 2026 17:22:42 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+	pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+	jasowangio@gmail.com, willemb@google.com, habte.yibelo@gmail.com
+Subject: Re: [PATCH net] net: extend virtio_net_hdr csum_start checks to
+ VLAN, IPv6 and IP options
+Message-ID: <20261008172119-mutt-send-email-mst@kernel.org>
+References: <20261007163819.3041710-1-willemdebruijn.kernel@gmail.com>
+ <179148831819.434549.14553358529954439471@kernel.org>
+ <willemdebruijn.kernel.18efe47d2170f@gmail.com>
+ <20261008165313-mutt-send-email-mst@kernel.org>
+ <CAF=yD-+S83OzhObTKBKvqGayBCzCEeOpF5pO4b7=oFF-mxgwcg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAF=yD-+S83OzhObTKBKvqGayBCzCEeOpF5pO4b7=oFF-mxgwcg@mail.gmail.com>
 
-From: Neil Ramaswamy <nramaswamy@openai.com>
+On Thu, Oct 08, 2026 at 05:06:30PM -0400, Willem de Bruijn wrote:
+> On Thu, Oct 8, 2026 at 4:55 PM Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > On Thu, Oct 08, 2026 at 04:04:16PM -0400, Willem de Bruijn wrote:
+> > > netdev-bot+sashiko@ wrote:
+> > > > Thank you for your contribution! Sashiko AI review found 3 potential
+> > > > issue(s) to consider.
+> > > >
+> > > > Critical: 0 · High: 2 · Medium: 1 · Low: 0 (1)
+> > > >
+> > > > If you believe none of the issues are legitimate, please reply to each
+> > > > issue of Medium severity or higher and explain why the AI is wrong.
+> > > > If any of them are legitimate and you plan to respin, please let patchwork
+> > > > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > > > (one such reply per series is enough).
+> > > >
+> > > > - [High] The fix leaves the UDP-tunnel path, virtio_net_hdr_tnl_to_skb()
+> > > >   in include/linux/virtio_net.h, with the same weakness it removes from…
+> > > > - [High] virtio_net_hdr_thoff_valid() decides whether skb->data starts
+> > > >   with an Ethernet header only from `skb->dev->type == ARPHRD_ETHER`…
+> > > > - [Medium] On the non-ARPHRD_ETHER branch, virtio_net_hdr_thoff_valid()
+> > > >   leaves proto = 0 and then guesses the L3 protocol from the version…
+> > >
+> > > All comments look valid and require a respin. Any revision will take
+> > > them into account.
+> > >
+> > > Based also on the previous conversation in this thread, will review the
+> > > approach. Updated in patchwork to changes requested.
+> >
+> >
+> > But let's agree who works on this, please. Have a bunch of stuff on my
+> > plate so if it is you, I'm very happy and will just criticise :)
+> 
+> Do you agree with my suggested revision that just drops the checksum
+> offload request for weird packets?
+> 
+> Or do you want to investigate your suggestion to skb_checksum_help those here?
+> 
+> I can't estimate yet how easy/hard that will prove to be. Can
+> prototype, but no guarantee that it's a fruitful approach.
+> 
+> The next few days I'll be OOO, so next week at the earliest.
+> 
+> We agree that this is not urgent, correct. So can do some prototyping.
 
-Hi Neal and Eric,
+Oh I have a prototype. Quite ugly atm.
 
-Thanks for the detailed replies. Neal's approach is much cheaper than my
-original patch on a few UML microbenchmarks that I ran.
+-- 
+MST
 
-I'm not entirely sure I understand Eric's usage of "often" when he mentioned
-the O(1) list splice, but the metrics that I've collected from my particular
-repro seem to suggest that Neal and Yuchung's assumption about LOST but not 
-EVER_RETRANS segments holds in the cases I captured, so I'd be happy with that
-approach.
-
-(One super nit on the runtime complexity of it: in the comment for
-tcp_tsorted_relink_skb we say that it's O(1) amortized time, but I think it's
-more that during partial undo all relink calls together traverse the RACK list
-at most once.)
-
-For Neal's fix, I also did write up a small packetdrill that shows that segments
-that are already retransmitted and then marked LOST are not added back to the
-RACK list during partial undo, as intended. Happy to contribute that if useful
-for explicitly documenting that this is behavior we are okay with.
-
-How would you like to move forward here? Do you want me to fold this into a v3
-patch with attribution tags or do you want to send a new patch yourself?
-
-Neil
