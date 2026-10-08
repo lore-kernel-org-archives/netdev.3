@@ -1,163 +1,243 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA911F936
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791425463; cv=pass; b=mpWemOE8ZkbQjEkgEyccfnLygSPui+pMZq9nFFX//4KEVYu2yA64+FPEiVvWCr2YmNZ1QC9H0x16ZNuYcYvKsDn5skhMDabUNGzfsIyJ+dBnS5ek7AaoAGrhUMjnm+4AzGQx9IPTDqDCeUl4RjSG7pV046emXpiZ84Ws6wyIoWo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791425463; c=relaxed/simple;
-	bh=tRcdTjRQ5UTW4DHDrkJ/ooF5c3DO+DoLfJDkOdlVFZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LcvRjdqoRblzzZehdb9mkZ0ZTtn/ut+/QUPUDdurnOIohI2nCErwpF3LFKa99YcOMj+C2UDbtgISrNSQtQ0GePK1A/cS+49ykH5JjgRIbRQyIybf9umWmHCxmQkzPyERGlbTOeRuU8NHc8oeDcBEH9+lrMK+AOLOdXEsToI798M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I5EMnMyN; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6269F35E937;
+	Thu,  8 Oct 2026 02:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791425487; cv=none; b=LWWf2mvjHT2L0YSxp36Ug/dnPjdq81FYP/n0rmLWvO/DYmcGO7Wu9b0vBL4W5FmxlElVkll9+Dp8dw83FgghXNb7Qz6VWqYUra30xz6bmF+lPFGUnhW1+y741mS2iZ77ZaaCu2y9BvZQwBAxJXXQGAlVb9+uvjXu3aqX6eES1UU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791425487; c=relaxed/simple;
+	bh=uFtT+Ifev96/Hk3PMzFpqZn2k08/EJB4SOvcNCm1vhc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=J3uiGhHEdYrgvf/3YyPZRR07IprHS1npgyZgpEE29Jt5x2gyUpCcTq9q+AsH12YAnb+Q/KAB+6EhuTu4RZCmGK2lcB66l1TtWoZP5ebuYPeXsulsVCQGbuiGN+FxR85ZM9+TFGUL3dTlsVSRM+tcyrmprRMEFR6XYvc2nQThesw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTZO9LVY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I5EMnMyN"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6ab0140ecb2so6245a12.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 19:11:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791425460; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Wdcpr8UEYqgjgs2c4fgRtDiqouk+wyGY8MlbXkF2ClUd/4Y0cWLslAnUlAfqWIh/hA
-         95uQxgSqneVY9CvRMUBihah8BZ7VSKtgj2XJqO2ZqLJkSd1aJFj+MhI3KB840C9bKMwR
-         BFGswWrbMfmpQ/cn4BNfqUXLOzEBTw4Ql1xhg4/9KYLTZ7RVzm+xtHyHqCxPY4sEa4av
-         lNAkHVQ4eIgQhKsG87LaI1q9d2qkmSgOj1fhXm+NxVz2HSLj+GUXeBvvtM88oa3TRFul
-         eCjaARIwU/8eCJreLfLxBp1vXcGPKFX0+gELUIv1fKx0d+axQZM+0YBX7XYOpCm27tWH
-         u7sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mlmGRFd0U28wTy12oRP1z3Eel/hj8TBM+KWP2O4byi8=;
-        fh=2t+T//Ymg9/pKVFtBLNioe907x2NXGHt3aQLwTAKpVE=;
-        b=pkxWQbJzqT0Ze8jIs78g+a5UvCZ0sT56n26XtiKBjDqiOGqRILiUG0srFbgeBrZrYp
-         S+5+8eMfpqEplyfuY6yHA4Eogmfe5i4MaC/yTiYn9oRuoHaPS+4W2RxkXMF6eIrRSqES
-         w5MlpdNdNMZuDXQL1v9jaXJxxQ+igr4JRPPn2OFB244Hr7egzs/vf+aqYtrxsDtFTxCI
-         XpVWI33IF13aJr1Yl5lNrfKz6F4So6sKy5UHKuNPNrO+I87fIiqBP1By/NJxsHygO6zZ
-         5LamcRKWlkhX/nO6NzZGBknyU8JZSgGD0W3dfzr/4JkhKn9B4onNoCrxA6RQ23LGdysJ
-         uCkQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791425460; x=1792030260; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mlmGRFd0U28wTy12oRP1z3Eel/hj8TBM+KWP2O4byi8=;
-        b=I5EMnMyNwBCKYJCIs/h/xX5KJX7bNOo+0PYb/stAlNBfJvn0JC3k7SszWWtFHhFvYd
-         SM7dt9heTzBwPrZ1vDo3sHVqhR80CEMXtwz47ChBpq26B2UigRNdecmZzLDeZyv/ZtsE
-         hc39fNd5I31Ovznoj7Tg9K36yVoKOFP33RXXE1Bv66dprnTHKRMgKwNltJTgSCNOW97f
-         cXYiWHV9xkjWyChFDxTCeDUWBEWOx/z7E4xDKwQWbSSkNXr8OBuWhrcnjug7eNy+u3bc
-         +tAoxIu71q81QrEQabZtLrMcrStAES/XYJu73LVcuAcAfLKkk1c8fO/XR8NVNgrDhGBP
-         NcwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791425460; x=1792030260;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mlmGRFd0U28wTy12oRP1z3Eel/hj8TBM+KWP2O4byi8=;
-        b=NszP6Ij8wt1kIOFe4K371UxieHVdQDHISjobYAa0ZIRj3Yz5vWPJvNI6VfQ/PeWD/Z
-         X8IHauEsJau1+JRHo14nFP2dFrzrbSOgr4sOK6r6kZfbktAk5rPTyLGpwh8PePglp335
-         1delpNva12s71KdiYh0Zbb4nn++g91k6PtH421ySc69sgd0JQ0bR4q+BfUvIMHJD29BR
-         nTaR/eujH6tzWb7zbmysXAvr+ya7O9g3lkwIdiPYE8sPY/LiZG55AbGLVqdYhvyb+ZfY
-         FZ5VWeDP4jByZvBOERrjoooTTFVNEjZX6o89Qmx5OaeyKCYjYzqDb47ts8UJx8AoZI/C
-         v0jA==
-X-Gm-Message-State: AFq9FYLp3ZrtuTHtM3rG34rc0kbN1AezLDQJNfGQf6zKrmTeQ81P1EQr
-	9BfGPWhKijR5selaI3v51YWipomqa3UJ9Brvx5GR/5Zz+5ci21+uJ/QDcr3njuGlYHLFi6KYeTY
-	m+rxDKsIVI4BIKS3qjbhfKTLIePxvYqu8lKhnsIzm
-X-Gm-Gg: AYBFou1aS4f3jtA47Ou5yVtHWmWiLLbZ3KSOiwD243s0SHiB9Emxf/EJfcUcbsxT+a/
-	e0/FK3uvbV/OErmp+fvxniM/2OqdbPVah6J2EqujIKAzQG7iHP9E1GNFiKBQz2tCav1zJW4/TGq
-	64vw+Neua3DbOyL/HIR9QSaTisXjy3wLJv1+KwxKnhHQGEXs6L1wivh4HH/M2Lujzx87mqGiPow
-	SWlEIK8zG5UIU/XthCEE44eJ7BGJKGg6jAcSMkd6qtgdh5LZGXxjXeSKVW5SU0Jc+r5JQZMyyJh
-	eXNz3JANQ9xywVuNcT9StZL+B7FcKvKh4HcubT+v9dVP+rgJup2DbA==
-X-Received: by 2002:a05:6402:46c3:b0:6af:97a9:224a with SMTP id
- 4fb4d7f45d1cf-6b01174ca66mr37674a12.2.1791425460145; Wed, 07 Oct 2026
- 19:11:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTZO9LVY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5BF1F000FF;
+	Thu,  8 Oct 2026 02:11:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791425486;
+	bh=LXU/lfnWHIzbLacZI4okX/vyHub6eGJ3gZWMFgpVO7E=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=VTZO9LVYpKkEziqtIQVslvzf2K/ZWiP/V2gOU4jEc5H7cvLylcZdlf36ylsjF8Wfk
+	 j6hiStXXd+vb+32KDGI7WwpBcaE6Qhqq5S49HrhWzH38lv0s4ev0soRAptmksa4k6q
+	 qgQ5fkk/9OsevA+a7pyWlun5ea6mEZzCEidVR9oKvW5ve2D73UzMWdnRnNDVhF2RyA
+	 1n1eiEKJTG3T8OgGuq8mUyuEQNoASD9KFdypJo61m70qkGjuw75IprWS+8O0XcbDLU
+	 ANhx0a94nczMBGzSesfIZ/qGgLffCWdc5qt0aeFjq3sFMbaqrCUBnxCzG4mJh6Bysb
+	 ycce9Dfsi53wA==
+Subject: Re: [PATCH net v2] net: Don't allow disabling napi kthread mode while
+ napi instances are disabled
+From: netdev-bot+sashiko@kernel.org
+To: maxime.chevallier@bootlin.com
+Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ linux@armlinux.org.uk, kuniyu@google.com, sdf.kernel@gmail.com,
+ thomas.petazzoni@bootlin.com, alexis.lothore@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 08 Oct 2026 02:11:24 +0000
+Message-ID: <179142548474.434549.4875313383372623036@kernel.org>
+In-Reply-To: <20261006141119.85562-1-maxime.chevallier@bootlin.com>
+References: <20261006141119.85562-1-maxime.chevallier@bootlin.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005004958.3603059-1-almasrymina@google.com>
- <20261005004958.3603059-2-almasrymina@google.com> <4818da7c-be7e-4f97-b5a3-bee05ada500a@kernel.org>
-In-Reply-To: <4818da7c-be7e-4f97-b5a3-bee05ada500a@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 7 Oct 2026 19:10:48 -0700
-X-Gm-Features: AclHuK98bUqu0UNfrer7PsXheWlbUfZxQHPGdS03OVcyzs99X4ytv2QdoZrorac
-Message-ID: <CAHS8izOmh+cjHsF9X39=Gxsw-wMHNrkxBD9OTPApVw=P43Cfbg@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 1/2] net: netmem: document netmem and memory
- provider design in comments
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Luigi Rizzo <lrizzo@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Pavel Begunkov <asml.silence@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 7, 2026 at 12:43=E2=80=AFAM Jesper Dangaard Brouer <hawk@kernel=
-.org> wrote:
->
->
->
-> On 10/5/26 02:49, Mina Almasry wrote:
-> > Clarify the netmem, memory provider, page_pool, and skb fragment design
-> > principles in header and code comments:
-> >
-> > - Memory providers allocate struct net_iov or struct page, cast them to
-> >    netmem_ref, and pass them to page_pool; page_pool, drivers, and the
-> >    core stack operate on netmem_ref and must not downcast to page or
-> >    net_iov outside dedicated netmem helpers.
-> > - Memory providers are not restricted to net_iov and may supply
-> >    page-backed netmems.
-> > - net_iov is not inherently unreadable; future readable net_iov types
-> >    are allowed.
-> > - Per-provider logic belongs in memory_provider_ops, and per-netmem-typ=
-e
-> >    logic belongs in netmem helpers.
-> > - All frags in an skb must share the same backing netmem memory type,
-> >    and skbs with different frag memory types must not be coalesced.
-> >
-> > Cc: Luigi Rizzo <lrizzo@google.com>
-> > Cc: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
-> > Cc: Stanislav Fomichev <sdf@fomichev.me>
-> > Cc: Pavel Begunkov <asml.silence@gmail.com>
-> > Signed-off-by: Mina Almasry <almasrymina@google.com>
-> > ---
-> >   include/linux/skbuff.h                  |  4 ++++
-> >   include/net/netmem.h                    | 29 ++++++++++++++++--------=
--
->
-> ./scripts/get_maintainer.pl --file include/net/netmem.h
->
-> Returns "maintainer:NETWORKING [GENERAL]"
->
-> >   include/net/page_pool/helpers.h         | 18 ++++++++++-----
-> >   include/net/page_pool/memory_provider.h |  8 +++++++
-> >   include/net/page_pool/types.h           |  6 ++---
-> >   net/core/skbuff.c                       |  3 +++
-> >   6 files changed, 50 insertions(+), 18 deletions(-)
->
-> Changes LGTM.
->
-> I suggest that you Mina is added the MAINTAINERS for PAGE POOL.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-I'm thrilled to be considered and more than happy to help.
+Critical: 0 · High: 1 · Medium: 2 · Low: 1
 
-> And do we want a new section for NETMEM ?
->
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I'm fine either way.
+- [High] The fix is incomplete.
+- [Medium] The new guard in netif_set_threaded()
+  (net/core/dev.c:7352-7354) treats NAPI_STATE_NPSVC as meaning 'this…
+- [Medium] After this patch, writing 0 to /sys/class/net/<iface>/threaded
+  (or calling netif_set_threaded()/dev_set_threaded() with 0) returns…
+- [Low] The commit message gets the hang mechanism wrong.
 
---=20
-Thanks,
-Mina
+--
+
+net: Don't allow disabling napi kthread mode while napi instances are disabled
+
+This patch makes netif_set_threaded() return -EBUSY for a request to
+disable threaded mode when any NAPI instance with a kthread has
+NAPI_STATE_NPSVC set. The patch uses that bit to mean the instance is
+disabled. The goal is to avoid a hang in napi_stop_kthread() when threaded
+mode is turned off on a down interface whose driver added its NAPIs at
+probe time.
+
+> Trying to disable the napi threaded state while the napi instance is
+> disabled will hang forever in napi_stop_kthread(), as it waits for
+> NAPIF_STATE_SCHED_THREADED to clear.
+
+[Severity: Low]
+Is this the right loop? On a disabled NAPI, SCHED is set and
+SCHED_THREADED is clear. That means the hang is in the first wait loop of
+napi_stop_kthread():
+
+net/core/dev.c:napi_stop_kthread() {
+    ...
+		if ((val & NAPIF_STATE_SCHED_THREADED) ||
+		    !(val & NAPIF_STATE_SCHED)) {
+			new = val & (~(NAPIF_STATE_THREADED |
+				       NAPIF_STATE_THREADED_BUSY_POLL));
+		} else {
+			msleep(20);
+			continue;
+		}
+    ...
+}
+
+The second loop is the one that waits for SCHED_THREADED to clear. It
+would exit right away, but the code never gets there.
+
+The real blocking condition is that napi_disable() or netif_napi_add()
+leaves SCHED set, and only napi_enable_locked() can clear it. That
+function needs the netdev lock, which the caller already holds.
+
+Could the description be updated to match? With the right root cause it
+is easier to see whether other paths reach the same state (see the
+rollback comment below).
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index e76762e29360e..83237591cfe85 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -7347,6 +7347,12 @@ int netif_set_threaded(struct net_device *dev,
+>  				}
+>  			}
+>  		}
+> +	} else {
+> +		list_for_each_entry(napi, &dev->napi_list, dev_list) {
+> +			if (napi->thread &&
+> +			    test_bit(NAPI_STATE_NPSVC, &napi->state))
+
+[Severity: Medium]
+Can NAPI_STATE_NPSVC be set here on a NAPI that is enabled? The bit is
+documented as a netpoll servicing flag:
+
+include/linux/netdevice.h:
+	NAPI_STATE_NPSVC,		/* Netpoll - don't dequeue from poll_list */
+
+poll_one_napi() sets it for a short time around the poll, without holding
+the netdev instance lock:
+
+net/core/netpoll.c:poll_one_napi() {
+	if (test_and_set_bit(NAPI_STATE_NPSVC, &napi->state))
+		return;
+	...
+	work = napi->poll(napi, 0);
+	...
+	clear_bit(NAPI_STATE_NPSVC, &napi->state);
+}
+
+netpoll_poll_dev() only takes ni->dev_lock with down_trylock(), and
+nothing serializes it against netif_set_threaded().
+
+Suppose netconsole or bonding is polling the device when 0 is written to
+/sys/class/net/<iface>/threaded. Would this return -EBUSY even though
+every NAPI is enabled and disabling would be safe?
+
+A disabled NAPI always has NPSVC set. The reverse doesn't hold: NPSVC
+being set does not mean the NAPI is disabled.
+
+> +				return -EBUSY;
+
+[Severity: Medium]
+Does this change the documented behaviour of
+/sys/class/net/<iface>/threaded? For drivers that add their NAPIs at probe
+time, writing 0 now fails with -EBUSY on any down interface. Enabling has
+no matching check:
+
+  ip link set eth0 down
+  echo 1 > /sys/class/net/eth0/threaded   (succeeds, creates kthreads)
+  echo 0 > /sys/class/net/eth0/threaded   (-EBUSY until link up)
+
+Drivers that call netif_threaded_enable() at probe, such as atl1c and
+ravb, cannot leave threaded mode before the first link-up. Drivers whose
+NAPIs are added but never enabled can never leave it.
+
+Documentation/ABI/testing/sysfs-class-net says the attribute lets the
+user "enable/disable threaded mode for all napi belonging to this device,
+without the need to do device up/down", and it lists no error cases.
+
+Should that document be updated? Alternatively, should enabling be
+refused in the same state so the two directions behave the same way?
+
+The V2 changelog note ("just don't allow setting the napi threaded mode
+while interface is down") doesn't match the code either. The code only
+refuses disabling.
+
+> +		}
+>  	}
+>  
+>  	WRITE_ONCE(dev->threaded, threaded);
+
+[Severity: High]
+Can the same hang still be reached through the rollback in the enable
+path? The new check only runs in the else branch, which handles an
+explicit disable. In the if (threaded) branch, napi_kthread_create() can
+succeed for some NAPIs and then fail for a later one:
+
+net/core/dev.c:netif_set_threaded() {
+	if (threaded) {
+		list_for_each_entry(napi, &dev->napi_list, dev_list) {
+			if (!napi->thread) {
+				err = napi_kthread_create(napi);
+				if (err) {
+					threaded = NETDEV_NAPI_THREADED_DISABLED;
+					break;
+				}
+			}
+		}
+	}
+    ...
+	list_for_each_entry(napi, &dev->napi_list, dev_list)
+		WARN_ON_ONCE(napi_set_threaded(napi, threaded));
+    ...
+}
+
+kthread_run() in napi_kthread_create() can fail with -ENOMEM. It can
+also fail with -EINTR if a fatal signal reaches the writer during the
+killable wait in kthread creation.
+
+When that happens, threaded becomes DISABLED and napi_set_threaded(napi,
+0) runs on every listed NAPI without the NPSVC check. Some NAPIs may be
+disabled but have a thread (SCHED and NPSVC set, SCHED_THREADED clear).
+The thread may have been created moments earlier in the same loop, or
+left over from before.
+
+Each of those NAPIs would go into napi_stop_kthread() and spin in the
+first msleep(20) loop with the netdev lock held. Only napi_enable_locked()
+can clear SCHED, and it needs the same lock.
+
+The first way to reach this is on a driver that adds its NAPIs at probe
+time (the mvpp2 case from the commit message), when a kthread creation
+fails part-way through:
+
+  ip link set eth0 down
+  echo 1 > /sys/class/net/eth0/threaded
+
+The second is a probe-time netif_threaded_enable() after
+netif_napi_add(). For example, ravb_probe() adds the RAVB_BE and RAVB_NC
+NAPIs and then calls netif_threaded_enable(). If creating the second
+kthread fails, would probe hang here?
+
+Would it be better to handle disabled NAPIs in the stop path itself,
+napi_stop_kthread() or napi_set_threaded(), rather than only guarding the
+explicit disable branch?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006141119.85562-1-maxime.chevallier%40bootlin.com
