@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200373AE71F;
-	Thu,  8 Oct 2026 17:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE0F48E0D9
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 17:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791481812; cv=none; b=S9o3ri3Y3WQZeoA8C8GH8+ttvH6VsInb0K9CNQMSGUooOJhZs3/EObs311vJciRbK20UrMRgCeRFgzwCUPyr+bQ+NEXEIKdIQ+NMKB9RD1Ln0N9MEyskS3gz0QCCkko7oSZftSNPSUodctxS9KwBUJm6TWP39xyvue6oOFC0KPs=
+	t=1791481813; cv=none; b=tEH5cF3bOVoku/alm/kOiBiL+Qmj/wlc3SknBp4Ef6rU5MSwrR3py704wJFLg6yv74VIWJGDOcrdaEvRWtXIdJPgAfsAFtUmKeYEBSFyeCNGESU1PxeNWD4dPOxkYchgXY2CJY1b6RYyvwOq/h2CuM+U3IEr1n/9b3U5WgkCHEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791481812; c=relaxed/simple;
-	bh=zQchMxpAvB7T7YI3jIpw79/wii+H/Qg4ZBTV2TTBpb0=;
+	s=arc-20240116; t=1791481813; c=relaxed/simple;
+	bh=7BHFFvOSJU4MqQUd1EemO2SqvVBGODpP3Y+xiMnCjRQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=FyUiGPH55IBx2PTzW9Ski6aCl8RyHjpidSerMd/lIK1cRM2tj/0CzlRIQqggSsRloX5MRXRP+Px8nQvrMm8Jhx+TU9nZIxtdKQcKqv1IBaQewIEHRcMyTmQSJZKrY/iQB5qXai0oQsczNKi40Rq3nOivWzbxng38+fSykb5A5e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBxActu8; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=pAoSIE4SzMatKjEOw1Zz+S1GhsnASjkfGZ5Wa79JsU1AQj7+3/H1LM0JjlKqF2CLEmfZnbQfmrhthqzqzuqomWlOCrDbg1rwWBOEEk0+mtTzO1tyxpplgJtzfVP5KnMch+mns8ilV5nrQt6KbHYFvXWjIZEwobMCyCbZqIMDots=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ACedMp/9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBxActu8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5941F000FF;
-	Thu,  8 Oct 2026 17:50:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ACedMp/9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D9A1F000FF;
+	Thu,  8 Oct 2026 17:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791481810;
-	bh=ro6bjvj+CfvhTH6Zl53WSSb6TekZ0Krn/oFKfWb09Sw=;
+	s=k20260515; t=1791481812;
+	bh=vVv4DMBU1wv8m2fRK4AguP+Twq3BTT78cIhOEGPMj24=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=SBxActu8x4Ys6uY0u+5FvaH+jlzr5lIETq3JnLmZLRho2N/6mq0fZ8giEfxO6GoVn
-	 v4zanbcB33xUosSg0sUuNwDYwSVTnokq4M1D8Ri8r1b8TvUmkZlEndcoYiEyQjivz1
-	 HZaH4Dk3cX2IpaQvHjoCTXYYgr5tjGqRy3nOwpllf9kSyJrN5ujp493vqN7CIfHlUo
-	 kekgE6exFp8v2lPoaZD2nNkqBF9nW/5VicgXsNgspjgTPoLMv2o4V7lTXnDzzBFjSS
-	 UaiQdjNhvJffzyFOYBlrlbQa6rzT5FjiOu27ECQ1SGuSjoWWWFgxNxkVorrLLR9Xl5
-	 Ou9dVjOnBYaJw==
+	b=ACedMp/9hfqSmDUYWGtGchOB26aOIP8bp7xWWHPbz8MU0f2rP2HCfC0VmJ9wLmi0e
+	 6U6uFlWARdQsRjxG0Iw3gexASqCVt7VuH2GddjNdqaBfTEleVobQu2uQ0YtTPFlHyf
+	 a+liBp7/Rf9HaBWGbFYRtUiZgPuxWFd7MjKdC2zIMdvUcRutgu/8ukJbEr7FC2fKk9
+	 8tpqCYMkAXfUOKd0grr4jI6E8IJcP1QVx1Q3djaHwDibqQ4L8/1wVzHpKxXK8OHJ+f
+	 0lM5oF3Z5YamhHqP25IfqX6Zc0kPfxufqUTjqCuKB6eXEQ7nWpPb+AG+bsQ6KFFSK2
+	 Xy1EEfFQ9Jadw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4426380AAFF;
-	Thu,  8 Oct 2026 17:50:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2F3380AAFF;
+	Thu,  8 Oct 2026 17:50:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] veth: fix peer NETDEV_XDP_ACT_NDO_XMIT after GRO
- is
- toggled while down
+Subject: Re: [PATCH net v2] net: dsa: microchip: fix KSZ8765 fiber detection
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179148180926.369078.12761159008899596056.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 17:50:09 +0000
-References: <20261006173241.65945-1-tianyi@cloudflare.com>
-In-Reply-To: <20261006173241.65945-1-tianyi@cloudflare.com>
-To: Tianyi Gao <tianyi@cloudflare.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, toke@redhat.com,
- lorenzo@kernel.org, horms@kernel.org, bpf@vger.kernel.org, shuah@kernel.org,
- hawk@kernel.org, kernel-team@cloudflare.com, ast@kernel.org,
- daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me,
- linux-kselftest@vger.kernel.org
+ <179148181077.369078.6504817076934431520.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Oct 2026 17:50:10 +0000
+References: <20261007080557.15719-1-sebastien.royen@armadeus.com>
+In-Reply-To: <20261007080557.15719-1-sebastien.royen@armadeus.com>
+To: Sebastien Royen <sebastien.royen@armadeus.com>
+Cc: woojung.huh@microchip.com, netdev@vger.kernel.org, nb@tipi-net.de
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  6 Oct 2026 18:32:35 +0100 you wrote:
-> Toggling GRO on a veth device while it is down leaves its peer's
-> NETDEV_XDP_ACT_NDO_XMIT flag stale once the device comes up. XDP
-> redirects into the peer are then rejected with -EOPNOTSUPP, or, if GRO
-> was turned off, accepted and then dropped with -ENXIO. Patch 1 refreshes
-> the peer's flags in veth_open().
+On Wed,  7 Oct 2026 10:05:57 +0200 you wrote:
+> The KSZ8765 is similar to the KSZ8795 but has two fiber ports.
 > 
-> Patch 2 extends veth.sh to check the peer's flag after GRO is toggled
-> while the device is down, in both directions.
+> KSZ8_PORT_STATUS_0 is used to detect fiber mode. It is currently
+> defined as 0x08, which is the Global Control 6 MIB Control register
+> and has bit 7 defined as Flush Counter.
+> 
+> Set KSZ8_PORT_STATUS_0 to 0x18, which is the Port 1 Status 0 register
+> where bit 7 is the Fiber Mode bit.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] veth: fix peer NETDEV_XDP_ACT_NDO_XMIT after GRO is toggled while down
-    https://git.kernel.org/netdev/net/c/3f090039995f
-  - [net,2/2] selftests: net: veth: test peer ndo-xmit after GRO toggle while down
-    https://git.kernel.org/netdev/net/c/c017800af5c7
+  - [net,v2] net: dsa: microchip: fix KSZ8765 fiber detection
+    https://git.kernel.org/netdev/net/c/fc13ba44da19
 
 You are awesome, thank you!
 -- 
