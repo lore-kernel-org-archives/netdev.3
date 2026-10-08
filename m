@@ -1,89 +1,82 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386EF4A091D
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6800745A288
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791464418; cv=none; b=ZOgtrnToakYOM9w9CgEgiae6ajv480Fg6FtugpIjPiQdgrBJhStg8XaNJeQX6QbZRmpkhSn64vvEEuaokWQV8f4GsNb4HeUetwqtARPuJyUDPYUWaRMLpRqB782PzPSThQvyvH4tRL82nAzIC7BNY/c55WluAWuOtSauDCxCEQE=
+	t=1791464497; cv=none; b=NkX1olDxjsii534GLscqRSCu/3BOBwXx96GHC6E2Mu7z613h/B6fMXIMCuwbO+48mvVVzNqJ70ljrOPWRmty3Uw1iXjN9OAF61rQ3IH8oitYFLbsa7cwV1ofcXw2PlEMVxgivf7L8aYPWO74jKJrDPLIDE6YPsK9ZqCAH2xUnbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791464418; c=relaxed/simple;
-	bh=7mcO4IJ0qvNbPE87EW+lwG4kqnPNldps9fmnc96NRYc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ZlzMmAjcxHP4n41LSmcMLv8qbyCpyZ6R6GIQ5QsNU5YzFavNE3hWGm7FkBVtB7hlswOPRcx8hmc99+BQPrquU5kSupDZmIcn/ul5C5y3edEFQjOCw8K6IFnnok2NGdHdUqnR7r6oafWfZ2ysEeCMagnlhcRq2Q3OWs9+pWzarPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GD7jwf92; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791464497; c=relaxed/simple;
+	bh=rMoypnZJptpPafATEXzeovpVPUE3s8bEGp7sRAx+n1o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L4K6wo4oFvMfquQ+vbQIy4gizvMMenNLtbMTMAu7G4SDd2/WwekrBAxYQxSrpkU9MhDFKy9hZQdcIbLwyY2cRBsR1M8AApqERwNHsYLRjmlhW9TyInE6Uiox5ICI0/bI7o/VyCJHOe982g6z/lX1yBrsP8l5TvM7/zjCR4jYTUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=aPb3vZWM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GD7jwf92"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 93D064E411A1;
-	Thu,  8 Oct 2026 13:00:13 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 603D460341;
-	Thu,  8 Oct 2026 13:00:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E0E74103302B9;
-	Thu,  8 Oct 2026 14:59:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791464412; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=oSZG6dmnuIR+9apVNS7t5YXATSgltycCVix57s1onZY=;
-	b=GD7jwf92tDHnef84bIJbxwWQsZ6qaiGak1sPQbw1PlsHrfs0uRaQ+38alGnxOFcY9O0im7
-	9nEA0xfhezl/zMRnR/Y6jVAOL31d4S8pGG+v08eY7oTmyz9bypmP4rGQF3LnbtNUSBiwbU
-	gTrxCdGMpiMkZYNGAwKPrm/ww4R1J4bGeROmVNulcMQfIm+L/URrcMdiCDULdWGM47HX9u
-	FAdXSF154TOUIrZxPRpcRi1E467DOZKmem900HKi3fgk+X5hIxT+b/w+OZokDjCYNI0nIr
-	gv4PODjglaROZpmgyqtWQjh+5GdjYayeiD0U+oltWv11GPYTWJR2rAJvPdlCSA==
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="aPb3vZWM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883721F000FF;
+	Thu,  8 Oct 2026 13:01:35 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=aPb3vZWM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1791464489;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=x98hyHg+zPp2DiI02gtM72w/f432J4nKmEQOrk+v2A4=;
+	b=aPb3vZWMKbWtOuIalcejmPXNOJ3MRc1oAW7vWEaNvqDPdQsvqh99uZORFeFHP7FxN9xLFU
+	XYODklSMVzL8Yjxl27Mq9rv67L8nlUBjU0Fst/WDP1XLfDm7FYb2VRPcJ+66wKb9B41brf
+	p/cingv3woKgxtLx7RfTWbDEOa5hSQ4=
+Received: 
+	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 0b3a4eab (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 8 Oct 2026 13:01:29 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: [PATCH net 0/3] WireGuard fixes for 7.3-rc7
+Date: Thu,  8 Oct 2026 14:59:13 +0200
+Message-ID: <20261008130124.724119-1-Jason@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 08 Oct 2026 14:59:55 +0200
-Message-Id: <DLZH4LPJ36YW.1CP7RL0J77DHN@bootlin.com>
-Subject: Re: [PATCH net v4] net: macb: rate limit netdev error info print in
- the data path
-Cc: <stable@vger.kernel.org>, "Conor Dooley" <conor.dooley@microchip.com>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Jeff
- Garzik" <jeff@garzik.org>, "Haavard Skinnemoen" <hskinnemoen@atmel.com>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, "open list"
- <linux-kernel@vger.kernel.org>
-To: "taozj888" <taozj888@163.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261007053211.572073-1-taozj888@163.com>
- <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
- <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
-In-Reply-To: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hello Zijin,
+Hi Jakub,
 
- - I'll stop replying inline because you seem to be having issues with
-   your mailer. Please fix it to ease the discussion.
+This series contains two important WireGuard fixes and one trivial
+cleanup.
 
-   See here how your email looks:
-   https://lore.kernel.org/netdev/63731290.3f0c.1a1198fe993.Coremail.taozj8=
-88@163.com/
+1) Remove an unused variable.
 
- - Your V4 commit message says "Fixes: 89e5785fc8a6" but that is wrong
-   with the current patch, it shold use 4df95131ea80. I don't
-   understand why you are talking about the changelog at the same time,
-   this is unrelated.
+2) Stop zeroing out skb->tstamp_type when encapsulating packets, so that
+   fq behaves correctly, from Ramses de Norre.
 
- - You skipped over explaining why your dropped the start_xmit diff.
+3) Make sure handshake state isn't swapped out while locks are
+   released, reported by Jérémy Jean.
 
-I'll have to stop reviewing if you skip over parts of the messages.
-I gave you a TLDR and you skipped over the first bulletpoint.
+Please apply these.
 
 Thanks,
+Jason
 
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+
+Jason A. Donenfeld (2):
+  wireguard: noise: remove unused variable
+  wireguard: noise: reject response consumption after intermediate
+    initiation
+
+Ramses de Norre (1):
+  wireguard: queueing: preserve tstamp_type when encapsulating packet
+
+ drivers/net/wireguard/noise.c    | 9 ++++-----
+ drivers/net/wireguard/queueing.h | 2 ++
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+-- 
+2.56.0
 
