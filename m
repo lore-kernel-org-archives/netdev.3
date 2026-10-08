@@ -1,204 +1,112 @@
-Received: from mta1.migadu.com (out-10.mta1.migadu.com [95.215.58.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cvsmtppost28.nm.naver.com (cvsmtppost28.nm.naver.com [114.111.35.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2F346AED3
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB29D41D12C
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.111.35.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791447893; cv=none; b=V5SwS3NEUBAHAilI/yZHW9S7oqkyxbdje8NJjKcrVliA6L0LS5fLlGS7c5s8VdIFaDl5bhnw/Tf2GSerVGsALr1ED1XVC0d8+wSmbi4Ej/9TVC2kyeprL0Sio7VyHfUtQz4EvjAhg4hthhesLQfcwV0jP676gCtALYPEPPZA75o=
+	t=1791447937; cv=none; b=SI6ndUQF4J+h9bG0JqxrjCZGRbu5mAguStu2rRkB6cMwxaJeLkqRibwZFMNLAZWvHmc88EwkxhUVxlTCoSBl5hgyQcgz2EyTsPCEYQscCgA1IOGAd167A9FpV9i0cYMb5yKcz5qdNEHFDGlmoESXR1sL146NlBEIJw3VFFXO08E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791447893; c=relaxed/simple;
-	bh=EbHs7K1T+/vilbmfudzzAC+MPoJtTsQqpujfi+eh+ck=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NotaVXbbT2tA04Prk/eVvw7yZU2WIInlv/kW0in6VwmiLxQlTdaU2BuId0fZR0MoJc3DvCLkDXwdh5fD83khVtRg1y8/Tig6/I1NZN7BVmBk0rujrR5L5M1opkPzE5NYf+p/RwXLIXX92WafIryQ9QFs8B5XGo//DZ4iI29JNCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rsGc/RPe; arc=none smtp.client-ip=95.215.58.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791447937; c=relaxed/simple;
+	bh=ZaFNBI9fd7vodGbEU+jo7hQ4HNN89K1CXiQN6lAy+bQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OeqgIvxwLupr50yci77Utolt2zTLwUdwwuojFG2qm8Zh3a6YS25vFhYT0vxgZ4r6Xxvs5BTFHEWnxZwPeFVt7CO1NEu9/IpDcUuk2tP0fB7H9K7kpO/qx1lVBxMo/1sOb3n55GQNgTPS0oj2e4fwsWoFfHhCC2pABP7ZEw3+MUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=K7IvSy2A; arc=none smtp.client-ip=114.111.35.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rsGc/RPe"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=EbHs7K1T+/vilbmfudzzAC+MPoJtTsQqpujfi+eh+ck=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791447890; v=1; x=1792052690;
- b=rsGc/RPeDXbaAAQ6dezRbgzoyo9oDIFrKLCBdoWzNLzEfOi9rMNJ7FhB1naaWnWTmaZPcuLC
- bEzjBHfX0Cn5DTov8mFcNrWNqN7gPJbEmLSWI44mHUT+gX3CgfRVyBysuoj5my2Zt6F4NR6RmXh
- IOxYuSnmaH/80RaymKLidZJQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id 5a9963d51d860ade;
-	Thu, 08 Oct 2026 08:24:50 +0000
-X-Mizu-Trace-ID: 5a9963d51d860ade
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Thu, 08 Oct 2026 16:24:06 +0800
-Subject: [PATCH net-next v4 6/6] netlink: specs: rt-route: describe
- seg6-local attrs
+	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="K7IvSy2A"
+Received: from cvsendbo009.nm ([10.112.18.55])
+  by cvsmtppost28.nm.naver.com with ESMTP id 8Hf3iLyTQc2cPfxxJJFJSQ
+  for <netdev@vger.kernel.org>;
+  Thu, 08 Oct 2026 08:25:27 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1791447927; bh=ZaFNBI9fd7vodGbEU+jo7hQ4HNN89K1CXiQN6lAy+bQ=;
+	h=From:To:Subject:Date:Message-ID:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=K7IvSy2AtKHHmxUke2+l9vyeIVLtlt9LoE274rcp7j4uu+XjQ0JvWElKJn9OYRK0Q
+	 KHhv6ex91KySgxHGx1jdi+dRMvvPtuGgr/Qn1j5zuQRNd/nwO9tl2G2se7xvdw4QaU
+	 Oc1NduyHDlgNnwtZS8J2hCg9epLmkBt96u2sVqZ0jrZRoN+TrL95ob5QKVZYH3VbCF
+	 nOt5S9TFahcJSRE1aFvhMZehiFhnaD5m4lW0NcJu+QnFH02p4eLI2pXrrP9O1GuhIw
+	 yNGYfKcMGSpqIVU/m+c1ZXC1luO7bVan8aeT4Vd5uBSHelo44DOADaEXe2dguv/l1V
+	 aTb7fTNEdqUrQ==
+X-Session-ID: whKhY+sxTCOwLYicnlopUw
+X-Works-Send-Opt: OlewpzGdjHmdKHFOMr39Ko3YKHmqjAudFqM9KqMqFxIYkEljxBmwjAg=
+X-Works-Smtp-Source: XqYwFAulFqJZ+HmXKoE9+6E=
+Received: from localhost.localdomain ([115.136.205.4])
+  by cvnsmtp005.nm.naver.com with ESMTP id whKhY+sxTCOwLYicnlopUw
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Thu, 08 Oct 2026 08:25:27 -0000
+From: Sung Byeongchan <tjdqudcks0424@naver.com>
+To: Manivannan Sadhasivam <mani@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net] qrtr: make repeated lookups from one client idempotent
+Date: Thu,  8 Oct 2026 17:25:18 +0900
+Message-ID: <20261008082518.347350-1-tjdqudcks0424@naver.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-ynl_rt_encap-v4-6-4ed2ccf7f949@kylinos.cn>
-References: <20261008-ynl_rt_encap-v4-0-4ed2ccf7f949@kylinos.cn>
-In-Reply-To: <20261008-ynl_rt_encap-v4-0-4ed2ccf7f949@kylinos.cn>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@kernel.org>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+The QRTR name service counts every NEW_LOOKUP request as a new global row,
+even when one client repeats the same service and instance tuple. An
+unprivileged local socket can fill all 128 rows with duplicates and prevent
+an independent observer from registering a lookup.
 
-Add SEG6 local actions enums, seg6-local-flv-ops flags.
+Reuse an existing tuple owned by the same node and port. Continue through
+the listing path so a repeated request retains its notification semantics
+without consuming another global row.
 
-Replace binary bpf/counters/flavors in seg6-local with
-nested seg6-local-bpf, seg6-local-cnt and seg6-local-flv.
+An isolated AF_QIPCRTR test blocked an independent observer in all three
+baseline runs. The observer succeeded in all three patched runs. The
+127-row boundary, repeated-listing, and socket-close recovery controls
+retained their expected behavior.
 
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+The demonstrated impact is bounded local cross-socket service denial. No
+memory corruption or privilege escalation was observed.
+
+This change was prepared with assistance from OpenAI Codex. I reviewed the
+source change, test results, and this commit message.
+
+Fixes: 5640227d9a21 ("net: qrtr: ns: Limit the maximum number of lookups")
+Assisted-by: OpenAI Codex
+Signed-off-by: Sung Byeongchan <tjdqudcks0424@naver.com>
 ---
- Documentation/netlink/specs/rt-route.yaml | 93 ++++++++++++++++++++++++++++++-
- 1 file changed, 90 insertions(+), 3 deletions(-)
+ net/qrtr/ns.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
-index 82e59af56ecd..48d1659f20f3 100644
---- a/Documentation/netlink/specs/rt-route.yaml
-+++ b/Documentation/netlink/specs/rt-route.yaml
-@@ -116,6 +116,45 @@ definitions:
-       - rpl
-       - ioam6
-       - xfrm
-+  -
-+    name: seg6-local-actions
-+    type: enum
-+    name-prefix: seg6-local-action-
-+    enum-name:
-+    entries:
-+      - unspec
-+      - end
-+      - end-x
-+      - end-t
-+      - end-dx2
-+      - end-dx6
-+      - end-dx4
-+      - end-dt6
-+      - end-dt4
-+      - end-b6
-+      - end-b6-encap
-+      - end-bm
-+      - end-s
-+      - end-as
-+      - end-am
-+      - end-bpf
-+      - end-dt46
-+  -
-+    name: seg6-local-flv-ops
-+    type: enum
-+    name-prefix: seg6-local-flv-op-
-+    enum-name:
-+    entries:
-+      -
-+        name: unspec
-+      -
-+        name: psp
-+      -
-+        name: usp
-+      -
-+        name: usd
-+      -
-+        name: next-csid
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index bcb090ee79d49..ae0dc2474e5e9 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -547,6 +547,14 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 	if (from->sq_node != qrtr_ns.local_node)
+ 		return -EINVAL;
  
- sub-messages:
-   -
-@@ -490,6 +529,7 @@ attribute-sets:
-       -
-         name: action
-         type: u32
-+        enum: seg6-local-actions
-       -
-         name: srh
-         type: binary
-@@ -513,16 +553,19 @@ attribute-sets:
-         type: u32
-       -
-         name: bpf
--        type: binary
-+        type: nest
-+        nested-attributes: seg6-local-bpf
-       -
-         name: vrftable
-         type: u32
-       -
-         name: counters
--        type: binary
-+        type: nest
-+        nested-attributes: seg6-local-cnt
-       -
-         name: flavors
--        type: binary
-+        type: nest
-+        nested-attributes: seg6-local-flv
-   -
-     name: rpl-iptunnel
-     name-prefix: rpl-iptunnel-
-@@ -618,6 +661,50 @@ attribute-sets:
-         type: string
-         checks:
-           max-len: 256
-+  -
-+    name: seg6-local-bpf
-+    name-prefix: seg6-local-bpf-
-+    attr-max-name: seg6-local-bpf-prog-max
-+    attributes:
-+      -
-+        name: prog
-+        type: u32
-+      -
-+        name: prog-name
-+        type: string
-+        checks:
-+          max-len: 256
-+  -
-+    name: seg6-local-cnt
-+    name-prefix: seg6-local-cnt-
-+    attributes:
-+      -
-+        name: pad
-+        type: pad
-+      -
-+        name: packets
-+        type: u64
-+      -
-+        name: bytes
-+        type: u64
-+      -
-+        name: errors
-+        type: u64
-+  -
-+    name: seg6-local-flv
-+    name-prefix: seg6-local-flv-
-+    attributes:
-+      -
-+        name: operation
-+        type: u32
-+        enum: seg6-local-flv-ops
-+        enum-as-flags: true
-+      -
-+        name: lcblock-bits
-+        type: u8
-+      -
-+        name: lcnode-fn-bits
-+        type: u8
++	list_for_each_entry(lookup, &qrtr_ns.lookups, li) {
++		if (lookup->sq.sq_node == from->sq_node &&
++		    lookup->sq.sq_port == from->sq_port &&
++		    lookup->service == service &&
++		    lookup->instance == instance)
++			goto notify;
++	}
++
+ 	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
+ 		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
+ 		return -ENOSPC;
+@@ -562,6 +570,7 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+ 	list_add_tail(&lookup->li, &qrtr_ns.lookups);
+ 	qrtr_ns.lookup_count++;
  
- operations:
-   enum-model: directional
-
++notify:
+ 	memset(&filter, 0, sizeof(filter));
+ 	filter.service = service;
+ 	filter.instance = instance;
 -- 
-2.55.0
+2.43.0
 
