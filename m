@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E3E23ED60;
-	Thu,  8 Oct 2026 02:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B39B13D886;
+	Thu,  8 Oct 2026 02:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791425519; cv=none; b=FvayIv+xtR4XXkqjb8sEsrxZvd3AJa7VUaoNqmR8/TR0Bk4jg7aD1tosz6Xk+KOTqioF6TX0YmbKKu8NWVcE8IyQuPK7wlv8dYG7LLquzaEZvpZAzvOz8DeK2JAVGYJN4ILxR0BTs61mixmGZjKK0ksNvlmmEwHqvswHa1cxppM=
+	t=1791425824; cv=none; b=FManvZEl2dk//OzgPTjM9Ydp1wExnLCrKu0ERjlJbAmMpogbrUJw6ApOc9AIsh87amdN0UWnMi1LMHIpYiQB/WugmFo5biiU5WHViZwEGx1w2mOXhiwXFRRqsZ5AW3cxymG8h/RjZyn4z2qaDrWzLlnqk11drCJhbbHmQ/q3Jhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791425519; c=relaxed/simple;
-	bh=dwHZ+zl8f8S1pCPSvYKAqLhAGM8j4M+6vY4lhGl3BQQ=;
+	s=arc-20240116; t=1791425824; c=relaxed/simple;
+	bh=5Igza3zbL8DsL8iZkd4iOPUqt5mfV9bwMscd7jEwYAs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lcsCQB8nrGUmyXjeVj5MvOEgxIArRWezVFhcX/YMFWBZsy4W78TezsZRivqNCuFEH9IsHq/UqraijxlomNOO64ze0ueEH191cDSpoixpoejRhPcbl1fxtuinndxi1cTUAC9PUJHQaR/cm1r9d+ciCLllb8xqlYII6Zgitrb21MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFnpiqbw; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=vCHDMAN4jr2lRkXXYf+VQqPCxxpfKcB3wCZhfTzx+QdktUdqfrHwDj+3T98U2roqRkXg0u7AVjgCaXCg+8ir1nZHXO9QqbwFWsqm2nd+g+TUAUKiCBVD+UyxE+dzavliDQi4bX2WzAm72TKVVhh3lOtT/Tnx1utrxd6iS5AZXTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/HC2Kpz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFnpiqbw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF3A1F000FF;
-	Thu,  8 Oct 2026 02:11:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/HC2Kpz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1219B1F000FF;
+	Thu,  8 Oct 2026 02:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791425518;
-	bh=hC1mQXi1Vh4HTeCnZZQKB24ijAQWGz5zdCkOZPsfHw8=;
+	s=k20260515; t=1791425822;
+	bh=09TxWdiMFYWRVecDe6e1P2wuubcsPRofkfD/tSUrqmI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PFnpiqbw4DDye1XR95b4EffWLDyZzVoquqgD9JO3oz1IFukqcAXkU+BxbWR8CKT1R
-	 NWrbxgCbKTzyTjFJ713cojImo0BYGvjVlabJfFJCARyYBYxTHYfnm3q4hmMDvTmL8I
-	 q3V+kr89GcjCqwkBI0dL4tdPsgxxjouSzM2lCi1jvu5MJqUMtb+PJrHtZqWd4qO318
-	 UsEYBMqEMDFYUrigqHCMsGMbpBX+Hyw9fPKo6slWSM3LkuE3+s8R8SCwXkBQwd+Px8
-	 Q4PVK/dOtGW1K8Ms2Z8gD2xAW5ss8xWbrnNC+psXRNRp6Obb8y+Y7BRNokCWEZl9DI
-	 3U8+VgRTLB+Tw==
-Date: Wed, 7 Oct 2026 19:11:57 -0700
+	b=A/HC2KpzGBA5D2N0yCzmSAuzt5ZQdDMcx96SL6btyOfx+IZb7c516v5ZE1cJGC5wS
+	 ChUpUGmgxixRUGj81V5Spef75LvsUIpgoAsEOPAOZ7+c2XIzVnxLXdukGUbBIiEodh
+	 PUhqOQ0CZJnOOhZShCImDd2y5NqTZPfxoT3WAcbvgDP7JhLLDfGEPz/8fdP7n6yx4n
+	 L4qNqhvlRnbW3AOnrfEDDmmtT+MQn7++yb99DYUZnyQjH66bKcoI/aIoLPTAiOnmcX
+	 QoIIS39vDVU5t12COaa5ms2vcLGlNmCnW4iw26eVKMoi0l0wPwJlNx6om1aDn2EKhz
+	 tMPxQmpCmXxsA==
+Date: Wed, 7 Oct 2026 19:17:01 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston
- <matt@codeconstruct.com.au>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, netdev@vger.kernel.org, Geert Uytterhoeven
- <geert@linux-m68k.org>, Brendan Higgins <brendan.higgins@linux.dev>, David
- Gow <david@davidgow.net>, Rae Moar <raemoar63@gmail.com>,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3] net: mctp: Make flow KUnit coverage an
- explicit opt-in
-Message-ID: <20261007191157.0fd327ba@kernel.org>
-In-Reply-To: <20261002212058.25117-1-kmehltretter@gmail.com>
-References: <20261002212058.25117-1-kmehltretter@gmail.com>
+To: "D . Wythe" <alibuda@linux.alibaba.com>, Dust Li
+ <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>,
+ Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu
+ <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>
+Cc: Chengfeng Ye <nicoyip.dev@gmail.com>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net/smc: serialize clcsock access with its
+ release
+Message-ID: <20261007191701.078bfbc1@kernel.org>
+In-Reply-To: <20261003183325.2289707-1-nicoyip.dev@gmail.com>
+References: <20261003183325.2289707-1-nicoyip.dev@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,46 +52,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  2 Oct 2026 23:20:58 +0200 Karl Mehltretter wrote:
-> MCTP_TEST selects MCTP_FLOWS, so KUNIT_ALL_TESTS builds flow support and
-> SKB_EXTENSIONS even when no transport needs them. KUnit's style guide
-> says tests should not select otherwise unused functionality. The CRC
-> and crypto library tests use explicit ENABLE_ALL_FOR_KUNIT options for
-> full coverage.
-> 
-> Remove the selection from MCTP_TEST. The core suite remains available
-> without flows; its two flow cases use their existing skip paths. Add
-> MCTP_ENABLE_ALL_FOR_KUNIT to opt into full coverage, and enable it in
-> all_tests.config and a dedicated net/mctp/.kunitconfig. Both profiles
-> run the flow cases without a hardware transport.
-> 
-> A plain MCTP_TEST=y configuration without the opt-in now skips those
-> two cases. This is the coverage cost of leaving otherwise unused flow
-> support disabled.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> ---
-> Changes in v3:
-> - Keep the core suite available without MCTP_FLOWS; a plain MCTP_TEST=y
->   configuration now skips only the two flow cases.
-> - Add MCTP_ENABLE_ALL_FOR_KUNIT to retain full coverage in
->   all_tests.config and a focused net/mctp/.kunitconfig.
-> - Drop the Fixes tag because this changes test configuration rather
->   than fixing a runtime MCTP bug.
-> 
-> v2: https://lore.kernel.org/r/20260928205352.30502-1-kmehltretter@gmail.com/
-> v1: https://lore.kernel.org/r/20260925192510.93840-1-kmehltretter@gmail.com/
-> 
-> Validation: The MCTP KUnit suites were built with GCC 15.2 and booted
-> under QEMU 10.2.1 on an isolated source export from net-next
-> 014d795c7383, with the changed Kconfig files copied from 071876fd5048.
-> Without the opt-in, mctp-sock passed 5/5 tests and mctp-route passed
-> 21/23 tests with two expected flow-case skips. With the opt-in, both
-> suites passed all 5 and 23 tests, respectively. On the full
-> 071876fd5048 tree, the new net/mctp/.kunitconfig resolves all requested
-> symbols and selects MCTP_FLOWS and SKB_EXTENSIONS.
+On Sun,  4 Oct 2026 02:33:25 +0800 Chengfeng Ye wrote:
+> Link-group termination can release the CLC socket through
+> smc_close_active_abort() while the SMC socket is still open, for example
+> after shutdown(SHUT_WR). A file reference keeps the SMC socket alive but
+> does not prevent this asynchronous release of its CLC socket.
 
-I don't think this is worth applying
--- 
-pw-bot: reject
+SMC maintainers, please review
