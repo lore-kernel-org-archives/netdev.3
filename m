@@ -1,233 +1,851 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A72D41CB2E;
-	Thu,  8 Oct 2026 07:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2793E411C
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 07:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791444738; cv=none; b=OgYqY0qrkgk8xCrivlDk0BA4nMxCNJ930IYkXEmloguPPrEicGUgakk+wiLJD08YLyb9osbLvtIofwGUX43u8dWdATzvWG+/5ZqDlfWoPCHQxsL7nF03Mej8LyZtSIn42Lxnxnug4xUjkBbd+GXa9synss0js9PZD0vUcFAen6c=
+	t=1791445395; cv=none; b=iKYakdECtMIcNPvgFP3eNAOnfV0LH4jbPpbAWW5uhixxVBVPeVtivy+aJrgEx2Pad7afuQchnEDTrkIdKzLMl8+6MINjIeKzVOJ2paACbTqp1vNa1/x4xNDC2Bq3c2EQDtwTVQ8Z4Uy+cTjZScCAW/Zx0FRYyi6MOMx8K/Vhf1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791444738; c=relaxed/simple;
-	bh=1H5ao11OpqcDBK1gtnGjlc3WEjMqPTLmxmkaQFoAt6M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CG/Oq5gmpXVUShEojGnFaoRx+1cye/SoNtWaEZpdfdip9lDLxkbiF4phQXLH4pCrJN7i5vBACUaIR+cZGeQUL3+/65BYykYCZT0IW/NOQe8ElVa8Ub2L9k86b90muyOFkV/cnSbica4VssiIqv/I6RazfR0+2rt+CLQ/7qGESmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JwWTbJkF; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791445395; c=relaxed/simple;
+	bh=IpgkZARQjc+zREphOgy2dgK4OVeN7RCgXEh4Q2RTg0I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nD3AdUQ3kro3Z/NIbfejPAWMXSRSVKDDInaRf9R+zMf4Lw7+osH1trb7wQU0UPz/V9VEteRh86MIIEgWiDmbhxghOmB+J0H3CTKpu9O5PMsiYsHRhja+rBWLm6Y0d+H9jeGGKtv9fNrJxxED5ssWLRwQUd4WpG5ZHcOFbw5BM5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=KuF1rXWR; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JwWTbJkF"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6984Zdfl2735873;
-	Thu, 8 Oct 2026 07:32:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=454br6
-	3ae/7yeUKzAmFzQqTylu9PzF1I1saksy/sCCA=; b=JwWTbJkFv1J6gdALgWEr8J
-	9x/VkUvzrxuwLk2euPnU83b6Q1r+ClApiuSmVY0yLKaw+8Dv2av0E6jtNcdlLBVG
-	51ssM87r7YS1xk+CcUcvQ6581S92bTzqKS7eDu6SGOXReXwY81IV9yjWU0u7j6Ks
-	OsJSWcN25F6rGUgKeBnpLatt8TdPOE5Vk6+zs5iSGaUeOYh/tUfXpxLnKyywx9Z5
-	emKm4rNc12odDV0bl2bZs0mfIGLEsCYsXBCF7q6MITwthY7b8uZae+t/baAV0NXp
-	w9gIcPUgyA7TFQ/K7LuMRHQazuV9wBoUPxnK6iOG/MYGE7T4Ad2DMdg9Xb3iPWiw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xjw24kw-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 07:31:59 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6987IXkr3107263;
-	Thu, 8 Oct 2026 07:31:58 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h58ek6ckx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 07:31:58 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6987VvuL33554990
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Oct 2026 07:31:57 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3564D58069;
-	Thu,  8 Oct 2026 07:31:57 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DC055805D;
-	Thu,  8 Oct 2026 07:31:51 +0000 (GMT)
-Received: from [9.124.217.43] (unknown [9.124.217.43])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Oct 2026 07:31:50 +0000 (GMT)
-Message-ID: <4bb7f15e-2cd8-4598-9bab-1ea5f5d2bb59@linux.ibm.com>
-Date: Thu, 8 Oct 2026 13:01:49 +0530
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="KuF1rXWR"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-917a97b39e8so37785536d6.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 00:43:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1791445390; x=1792050190; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tC2oYR+jas9z9IN4cDGhisWld2oMkckUvsoycIlRals=;
+        b=KuF1rXWRoldPglOmdGwaBBtviikSWSV2F8coajlyN8kmLoZGB+fD0iRR+PYRdz7uTv
+         Vh3enulXSVX4aRPbYTFRIjntl/cUnVyr7i72zD28P9eYtl9GthcYw7pkoH0yrJbqiknS
+         pmGsTnRlJb6/hITUo3pcODK2N841AkRxrNtNs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791445390; x=1792050190;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tC2oYR+jas9z9IN4cDGhisWld2oMkckUvsoycIlRals=;
+        b=p+Dj/AZQxcsAVlLTJVHUHSKFXsQ32Agwf38hbHW+dw3JrUvCak6CXfqJ+7GSzHcvOe
+         RBNkPqKXPYSga1sXGTYilimA7yYvjb4/YgtLWFvkl+5jeqI9VUJvpAoBhHQIyVw2F8Wl
+         Cokc2txiZElLUMaTUtCz5scrTMjFdrj3o8JksMM2jLjzJ8Z0AUfQnWXO4bfBs79lEObT
+         3yRzKu16eI3zY9n9NdjefJ3IkKmMJMUOr0dXEY0CxdBj+iGRVD8sdiHE2RGva1tQLiMm
+         kZypyRAJ0fGOjxPYyrDVBKb3YUx83UpC0Y/SIXTISmKGGNLJ4w7ga3bzO9uPTIvp0mCw
+         xGXQ==
+X-Gm-Message-State: AFq9FYJJVgyrr/LDa/9kEzdn7VKiUjEbE1r11FBEukrdqXVdK3DNnTs1
+	5HZrd8fmUCjBSXZ9f15h2FhY9aqgTg4NJas2H+LlZoCR2DTQv7qNj0C76LiHrLqfPNXyB/FkCDs
+	BsgnREQ==
+X-Gm-Gg: AYBFou2LdyRpexqT7mGnxfOl4I6WSPWB8jHGDDzGh04JExkzKa/bDnV0NCxh4Qk96PU
+	dT5yQIf59jTeLo9SuXZmfVKoscPrDQp4bH+a6KPRfeJVWkQT2jWAxG8Saeb1FFsOR42dbx8g+gR
+	PtzlZflmOlYywQmKZepxspekacTVonaNiiuWfY91TN7xwOa1VasYEfaxMqK4PLPAukWWANBcuQK
+	75avPY/ihS8RuZrAna2WT8xgznqtP/xXGDTPAZM6B/O7Epye65I+m61nK3wxQvgOf6hwucON5xJ
+	9Ywc5YtHHF/H10SaYiNzkzKIZ2s0TeCG8SGz1UrkhoTxBW5g85FtJPk9ZB00jRrs/0EIX27aORC
+	OOPUCqX9F04BBo35I33HVpm9bdTWKa/zltMWtF2H8UvIxr1CXzH1vQqDBhSqrvmAp8KcoLeDPUs
+	YfyN2UhDqbfX5asj7wh21QugDIeJJNhRPpfJDqLiVPuoPL6tSl/fgOxSLmE3RaTvoOoohZcjjsi
+	SvgdHV9OvkZVqYxpFNfAd73Ybr3vRJWrnGZKatxOzx495sNSQ==
+X-Received: by 2002:ad4:5dcd:0:b0:915:e9af:3144 with SMTP id 6a1803df08f44-91997831dbamr84841536d6.26.1791445389841;
+        Thu, 08 Oct 2026 00:43:09 -0700 (PDT)
+Received: from majuu.waya ([184.147.180.207])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91997d66da0sm37823986d6.39.2026.10.08.00.43.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 00:43:09 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	moeller0@gmx.de,
+	cake@lists.bufferbloat.net,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net-next v5] net/sched: cap the accounted backlog before it can wrap
+Date: Thu,  8 Oct 2026 03:42:55 -0400
+Message-Id: <QDISC-BA27.v5.20261007171509@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net/smc: serialize clcsock access with its release
-To: Chengfeng Ye <nicoyip.dev@gmail.com>,
-        "D . Wythe" <alibuda@linux.alibaba.com>,
-        Dust Li
- <dust.li@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20261003183325.2289707-1-nicoyip.dev@gmail.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20261003183325.2289707-1-nicoyip.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: q2F9IXGVQIzMayWxBpIM2DNicJHxAFlJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA4MDAyOCBTYWx0ZWRfX9E8vBci6Wzuc
- kwn5Viq5UEJF8uwiBEXR3KBfcoZL3Ta5L0W0fHl4WlY39l342qg+AIwN8Qh5kR19j1JKvqKDOUf
- sQCLX0a93Pnrca4eAmzljObUJDE6iYdYQcKf9PR8RytmhosqCx2Sx+QW3h1NuseVD6D5xYsi6CQ
- ZF8hdQpmYrutbf7/wh6CQe3NKHxUYxczgOIHGTWi1kvm0KJ3olO3PJw9pkivPYwJodKKr5Ua3jE
- vr+gG6yblN46J+amero0HpNOco/itA97DBKXK1YhGKLU2ukWS3gS6f3P3G0fjrPREVEHEPk1ZNa
- aEvbe0QYjWf0nMx5rOBwVnmMvTO36XZm6QySkGRewpGzUMEx/6cfvwvpmPFF+Ecz04u/NlcIMSX
- o1hx5u7xnZctYTcjdHxbOYkUHSDhrBVRGoQfOqbO5JXLQNeKbLVMvlrl417mClBgDAMfte8lIU4
- ou3X3Rbt4oQBysBJxEg==
-X-Authority-Analysis: v=2.4 cv=cIt1IVeN c=1 sm=1 tr=0 ts=6ac746ef cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=SRrdq9N9AAAA:8 a=8oSq24xotcjpyH-63FsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA4MDAyOCBTYWx0ZWRfX+SGf45hTQ8B+
- 1wuQQ9RpTsjT7K53v9IVJzYoi2fOU/rfQBzAWgatVw1XnYTAiySMuvV884vUxUpMETMN6ZGBHnU
- tcY2SU7NDR7WuSQN7kMGOtDKyksxscw=
-X-Proofpoint-ORIG-GUID: xlM9j_tYAlyiAIR9UZ92kv-f7uKfOZjY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-08_02,2026-10-06_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 malwarescore=0 priorityscore=1501 adultscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 phishscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610080028
 
+This is a follow-up to an issue found by Sashiko (nipa) during review of
+commit d9ebd8f9aa8b ("net/sched: fq_codel: clamp default quantum and
+mtu"), part of the quantum/mtu overflow series merged as a687f2ae995f.
+Clamping the per-flow quantum and the CoDel mtu does not bound the
+accounted backlog, so the per-flow backlog wrap the review flagged
+remained.
 
+fq_codel, cake, codel, pie, fq_pie and dualpi2 account every enqueued
+packet's stab-adjusted length into a 32-bit sch->qstats.backlog.
+fq_codel/codel use it to decide if they should drop a packet at dequeue;
+cake uses it to prune the longest-flow heap from per-flow backlogs; pie
+and fq_pie use it to make early drop decisions and dualpi2 decides
+must_drop() on it. RED can decide on a child's backlog based on it.
+A crafted tc size table (TC_STAB) inflates qdisc_pkt_len() up to
+QDISC_PKT_LEN_MAX (1 MiB), so a few thousand packets wrap the counter
+mod 2^32. The AQM then reads a small backlog and makes the wrong drop
+decision, and the dequeue-side subtractions keep the counter corrupt.
 
-On 04/10/26 12:03 am, Chengfeng Ye wrote:
-> Link-group termination can release the CLC socket through
-> smc_close_active_abort() while the SMC socket is still open, for example
-> after shutdown(SHUT_WR). A file reference keeps the SMC socket alive but
-> does not prevent this asynchronous release of its CLC socket.
-> 
-> smc_getname() can race the pointer removal and sock_release(). The same
-> missing lifetime synchronization affects smc_set_keepalive(), diagnostic
-> address copying and an in-flight SMC-R CDC receiver. smc_shutdown() can
-> also reach its final CLC shutdown after its close helper drops the socket
-> lock and a concurrent abort closes the socket. Holding the SMC socket
-> lock alone is insufficient because CLC release runs outside that lock.
-> 
-> KASAN reported the getname failure:
-> 
->   BUG: KASAN: slab-use-after-free in smc_getname+0x19e/0x1b0
->   Read of size 8 at addr ffff888109abb4e0 by task poc/103
->   Call Trace:
->    smc_getname+0x19e/0x1b0
->    do_getsockname+0xe5/0x170
->    __sys_getsockname+0x8c/0x100
-> 
->   Allocated by task 95:
->    sock_alloc_inode+0x1e/0x280
->    sock_alloc+0x3d/0x240
->    __sock_create+0x7e/0x430
->    smc_create+0x121/0x240
-> 
->   Freed by task 0:
->    kmem_cache_free+0xcc/0x340
->    rcu_core+0x50a/0x1850
-> 
->   Last potentially related work creation:
->    evict+0x446/0x6c0
->    smc_clcsock_release+0xa8/0xd0
->    smc_close_active_abort+0x26a/0x3a0
->    __smc_lgr_terminate.part.0+0x137/0x2e0
+In fq_codel the wrapped value is worse than a wrong drop: a wrapped
+q->backlogs[idx] can leave fq_codel_drop()'s strict '>' scan selecting
+idx 0 while flow 0 is empty, so dequeue_head() dereferences a NULL
+flow->head. The wrap is what the reproducer below observes; the NULL
+dereference is derived from code inspection (it needs flows >= 2, flow 0
+empty, and another flow's counter back at exactly 0 mod 2^32 with the
+qdisc at its drop trigger).
 
-Hi Chengfeng,
+Fix:
+Drop at enqueue once the stored backlog is within QDISC_MAX_BACKLOG
+(U32_MAX - QDISC_PKT_LEN_MAX) of the wrap point, the largest backlog one
+more stab-clamped packet cannot wrap. Test the stored backlog itself via
+qdisc_backlog_at_max() rather than adding the incoming packet's length,
+so there is no per-enqueue 64-bit add and the 1 MiB headroom already
+reserved by QDISC_MAX_BACKLOG is not counted twice. The bound is exact for
+every producer: a stab-clamped length is capped by QDISC_PKT_LEN_MAX, and
+the stabless GSO producer is capped by qdisc_pkt_len_segs_init() (the
+SPLIT_GSO path additionally re-checks its segment sum). This follows the
+existing bfifo approach, which bounds bytes against the accounted
+length; gred is a precedent only in WRED mode, where it bounds the
+aggregate, while non-WRED gred bounds each virtual queue. The fixed
+qdiscs' limits are packet counts or otherwise do not bound the aggregate
+bytes. pfifo, reachable standalone or grafted as RED's or SFB's child,
+is fixed too because RED reads a child's backlog into red_calc_qavg().
+RED's guard bounds only the primary enqueue: a child that segments a GSO
+skb (tbf, netem) still grows the parent aggregate through
+qdisc_tree_reduce_backlog()'s unclamped byte delta, left to a separate
+change.
 
-Thanks for the KASAN report and the fix. The UAF in smc_getname is real
-and needs to go to net and stable. However, I think the v2 approach of
-adding a new spinlock and extending clcsock_release_lock to cover more
-readers is treating symptoms rather than the root cause. Let me explain
-what I think should happen instead. What to keep from your patch.
+fq_codel and cake both expose an optional external classifier whose
+terminal TC actions (STOLEN/QUEUED/TRAP/SHOT) consume the packet without
+enqueuing it. The ceiling check runs after that classifier and its
+terminal result, but before flow-hash/shaper state, so a redirect, trap
+or police action keeps working while the backlog sits at the ceiling,
+and a packet about to be dropped still does not disturb the flow hash.
+Only a packet admitted past the check mutates a flow: for fq_codel the
+guard precedes fq_codel_hash(); for cake the guard precedes both the key
+extraction and the split-GSO segmentation, so the flow/host keys
+are taken from the packet as received rather than from a segment whose
+encapsulated headers skb_gso_segment() may have rewritten. CAKE's
+set-associative resolution, which writes q->tags[], the flow host
+indices, the way counters and the host bulk-flow counts, runs only once
+the packet is admitted. fq_codel's external filter selects a flow only
+when the result's minor is nonzero and no larger than flows_cnt; a
+matched filter that supplied no class ID (classid 0) is the no-flow
+result and the packet is dropped, as before.
 
-Please send a v3 with only the smc_getname fix:
+CAKE's SPLIT_GSO path accounts the sum of the segment lengths, which a
+stab recomputes from skb->len and can exceed the pre-split
+qdisc_pkt_len(). The list is summed before any segment is linked and
+rejected as a whole before any flow state is resolved: the flow/host keys
+are computed from the unsegmented packet, but the set-associative
+resolution that commits q->tags[], the flow host indices, the way
+counters and the host bulk-flow counts runs only after the whole
+segment-sum admission test passes. A packet rejected by that test
+therefore leaves no persistent state behind. The whole list is dropped
+via to_free so the tail segment's sock_wfree() never runs under the qdisc
+lock. A fraglist GSO is the exception: skb_segment_list() returns the
+original skb as the list head carrying an extra reference, so segs ==
+skb; dropping the caller's reference and queueing the list once avoids
+self-linking *to_free, which would otherwise free the same skb repeatedly
+in the deferred teardown.
 
-int smc_getname(struct socket *sock, struct sockaddr *addr,
-		int peer)
-{
-	struct smc_sock *smc;
-+	int rc = -EBADF;
+Conditions to recreate the bug: CAP_NET_ADMIN in a user namespace;
+CONFIG_NET_SCH_FQ_CODEL=y.
 
-	if (peer && (sock->sk->sk_state != SMC_ACTIVE) &&
-	    (sock->sk->sk_state != SMC_APPCLOSEWAIT1))
-		return -ENOTCONN;
+  ip tuntap add tun0 mode tun
+  ip link set tun0 txqueuelen 32 up
+  ip addr add 10.99.0.1/24 dev tun0
+  tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
+      fq_codel flows 1 limit 20000 ecn
+  # hold the tun fd open without reading (IFF_BACKPRESSURE) so the qdisc
+  # backlog persists, then send 6000 packets. At 4096 resident 1 MiB
+  # packets the counter wraps; the unfixed kernel then reports a wrapped
+  # backlog for 5969 resident packets, the fixed one drops at the ceiling.
 
-	smc = smc_sk(sock->sk);
+  # RED with a grafted packet-limited child reads the child's backlog the
+  # same way; the default bfifo child is byte-limited and safe, pfifo is
+  # packet-limited:
+  tc qdisc add dev tun0 root handle 1: stab overhead 2000000000 \
+      red limit 1000000000 min 5000 max 10000 avpkt 1000 burst 32 ecn
+  tc qdisc add dev tun0 parent 1:1 handle 30: pfifo limit 100000
 
--	return smc->clcsock->ops->getname(smc->clcsock, addr, peer);
-+	mutex_lock(&smc->clcsock_release_lock);
-+	if (smc->clcsock)
-+		rc = smc->clcsock->ops->getname(smc->clcsock, addr, peer);
-+	mutex_unlock(&smc->clcsock_release_lock);
-+	return rc;
-}
+  # a terminal action at the ceiling: fill the queue as above, then
+  #   tc filter add dev tun0 parent 1: protocol ip prio 1 matchall \
+  #       action trap
+  # and send more packets; the trap action's stats must advance.
 
-That is 4 lines against the confirmed KASAN-reported UAF, uses
-infrastructure that already exists (clcsock_release_lock is already held
-by smc_clcsock_release() when it frees clcsock, and already initialized
-in smc_sk_init()), and is a clean candidate for stable. Nothing else
-from v2 is needed for this specific bug.
+Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/netdev/20260818101130.16203-1-jhs@mojatatu.com/
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818101130.16203-1-jhs@mojatatu.com
+Link: https://lore.kernel.org/netdev/CANn89iLfMJV7ancKH1Gjzzm7ZUG-gKcrczkJjJEWN5sCuWd-ug@mail.gmail.com/
+Link: https://lore.kernel.org/netdev/CANn89i+GOFH_8g+vSV0jUj0aBqLYVWuFOrHuDggZu9kPC_m6tQ@mail.gmail.com/
+Link: https://lore.kernel.org/netdev/CANn89i+99jPh7JjZf=G3Ouaom2tuOtAEiHUf2MEsRdVPd=nz4w@mail.gmail.com/
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-BA27.v3.20260929142417%40mojatatu.com
+Link: https://lore.kernel.org/netdev/20261006153043.GM83879@horms.kernel.org/
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+v5 Considered Comments from Simon (and nipa on v3):
+  - cake: the cake_tcf_classify() block comment had an embedded "/*"
+    ("else *flow/*host"), which trips a -Wcomment / W=1 build warning.
+    Simon Horman reported it on v4 and noted it likely suppressed the
+    Sashiko nipa review; reworded to drop the nested comment.
+  - cake: reword the same comment so it no longer says the function
+    returns true for "a matched no usable flow" result (Sashiko nipa v3
+    Low): cake_tcf_classify() returns true only for a terminal TC action;
+    a matched-but-unusable classid leaves the overrides at 0 and the
+    packet is hashed as before (fq_codel_classify() differs).
+  - commit log: soften the claim that the 1 MiB headroom always bounds a
+    single packet (Sashiko nipa v3 High).
 
-Drop the clcsock_lock spinlock, the CDC change, the diag change, the
-shutdown change, the connect-abort change, and the smc_accept_dequeue
-change. Those races are real but I will address them with a proper
-structural fix as Me & Dust Li have already discussed on LKML in August[1].
+v4  fold the Sashiko nipa v3 review:
+  - cake: compute the flow/host hash keys from the packet as received
+    (before skb_gso_segment(), which can rewrite an encapsulated GSO
+    packet's headers to the inner ones), but defer the set-associative
+    resolution that writes q->tags[], the flow host indices, the way
+    counters and the host bulk-flow counts until after the split-GSO
+    segment-sum admission check, so a packet rejected by that check
+    commits no flow state.
+  - cake: in the split-GSO rejection, handle a fraglist GSO (whose
+    skb_segment_list() returns the original skb as the list head with an
+    extra reference, segs == skb) by dropping the caller's reference and
+    queueing the list once, instead of calling __qdisc_drop_all() and
+    qdisc_drop_reason() on the same skb, which self-linked *to_free.
 
-Why the other races exist and what the right fix is
+v3  fold the v2 review (Eric Dumazet) and Sashiko gemini v2:
+  - Test the stored backlog via qdisc_backlog_at_max() instead of
+    (u64)backlog + qdisc_pkt_len() > QDISC_MAX_BACKLOG: no double-count
+    of the reserved 1 MiB headroom, no per-enqueue 64-bit add.
+  - cake: run the external classifier first, honor its terminal TC
+    actions, then the ceiling check, then the hash and the shaper state;
+    the SPLIT_GSO segment sum is checked before any flow/host state is
+    committed and the list is deferred to to_free rather than freed
+    under the qdisc lock.
+  - fq_codel: run the external classifier (terminal actions honored)
+    first, then the ceiling check before fq_codel_hash(); document the
+    fq_codel_drop() NULL flow->head consequence.
+  - pfifo: same ceiling guard, since RED reads a (graftable) child's
+    backlog and SFB's default child is pfifo.
 
-Every race in your v2 — keepalive, CDC, diag, shutdown, the
-connect-abort path — has the same root cause: clcsock can be freed while
-the SMC socket is still alive. Several close paths call
-sock_release(clcsock) before the SMC socket's own refcount reaches zero:
+v2 approach rewrite per list discussion of v1:
+  v1 approached the wrap by widening the per-flow backlog counters to
+  u64. Eric Dumazet rejected the framing ("Storing 4GB in a qdisc is
+  absolutely insane") and asked for a drop at enqueue once the backlog
+  approaches the wrap point. Sebastian Moeller noted tc-stab is the
+  generic overhead-accounting mechanism, so the fix must not penalize
+  normal stab use.
+  v2 replaces the u64 widening with an enqueue-side pre-check against
+  QDISC_MAX_BACKLOG and drops with QDISC_DROP_OVERLIMIT. No counter is
+  widened, so the 32-bit sch->qstats.backlog the AQM reads can no longer
+  wrap. Same-pattern siblings fixed in one patch: fq_codel, cake, codel,
+  pie, fq_pie, dualpi2, RED.
+ include/net/pkt_sched.h   |   1 -
+ include/net/sch_generic.h |  15 +++
+ net/core/dev.c            |   8 ++
+ net/sched/sch_cake.c      | 198 ++++++++++++++++++++++++++++----------
+ net/sched/sch_codel.c     |  16 +--
+ net/sched/sch_dualpi2.c   |   1 +
+ net/sched/sch_fifo.c      |   6 ++
+ net/sched/sch_fq_codel.c  |  57 ++++++++---
+ net/sched/sch_fq_pie.c    |   3 +-
+ net/sched/sch_pie.c       |   3 +-
+ net/sched/sch_red.c       |   6 ++
+ 11 files changed, 241 insertions(+), 73 deletions(-)
 
-1) smc_close_active_abort() — for PEERCLOSEWAIT*, PROCESSABORT,
-APPFINCLOSEWAIT states
-2) smc_close_passive_work() — when the passive close work transitions to
-SMC_CLOSED
-3) __smc_release() — when sk_state == SMC_CLOSED
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index 90d3e7943b19..18a419cd9d94 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -12,7 +12,6 @@
+ 
+ #define DEFAULT_TX_QUEUE_LEN	1000
+ #define STAB_SIZE_LOG_MAX	30
+-#define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
+ 
+ struct qdisc_walker {
+ 	int	stop;
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 1acaadb3e2cf..43a3e1e9ee89 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -915,6 +915,21 @@ static inline unsigned int qdisc_pkt_len(const struct sk_buff *skb)
+ 	return qdisc_skb_cb(skb)->pkt_len;
+ }
+ 
++#define QDISC_PKT_LEN_MAX	(1 << 20)	/* 1 MiB */
++
++/* Largest accounted backlog one more maximum-size packet cannot wrap
++ * the 32-bit sch->qstats.backlog past.
++ */
++#define QDISC_MAX_BACKLOG	(U32_MAX - QDISC_PKT_LEN_MAX)
++
++/* Backlog close enough to U32_MAX that one more packet could wrap it.
++ * A packet-limited qdisc must drop at enqueue when this holds.
++ */
++static inline bool qdisc_backlog_at_max(const struct Qdisc *sch)
++{
++	return READ_ONCE(sch->qstats.backlog) > QDISC_MAX_BACKLOG;
++}
++
+ static inline unsigned int qdisc_pkt_segs(const struct sk_buff *skb)
+ {
+ 	u32 pkt_segs = qdisc_skb_cb(skb)->pkt_segs;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index f587645e930a..e6ac94c61ea0 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4268,6 +4268,14 @@ static enum skb_drop_reason qdisc_pkt_len_segs_init(struct sk_buff *skb)
+ 		qdisc_skb_cb(skb)->pkt_segs = gso_segs;
+ 	}
+ 	qdisc_skb_cb(skb)->pkt_len += (gso_segs - 1) * hdr_len;
++	/* (gso_segs - 1) * hdr_len can exceed QDISC_PKT_LEN_MAX for a dodgy
++	 * GSO skb, so clamp the producer the same way a size table is
++	 * clamped (__qdisc_calculate_pkt_len()). The accounted backlog stays
++	 * within one stab-clamped packet of U32_MAX and cannot wrap.
++	 */
++	qdisc_skb_cb(skb)->pkt_len = min_t(unsigned int,
++					   qdisc_skb_cb(skb)->pkt_len,
++					   QDISC_PKT_LEN_MAX);
+ 	return SKB_NOT_DROPPED_YET;
+ }
+ 
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index dc93267029e7..6484c4fa0ccc 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -706,19 +706,33 @@ static u16 cake_get_flow_quantum(struct cake_tin_data *q,
+ 		get_random_u16()) >> 16;
+ }
+ 
+-static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+-		     int flow_mode, u16 flow_override, u16 host_override)
++struct cake_hash_keys {
++	u32 srchost_hash;
++	u32 dsthost_hash;
++	u32 flow_hash;
++};
++
++/* Compute the flow/host hash keys from the packet as received. Must run
++ * before skb_gso_segment(), which rewrites an encapsulated GSO packet's
++ * headers to the inner ones and would change the keys. Reads only the skb
++ * and commits no qdisc state, so it may run before admission is known.
++ */
++static void cake_hash_keys(const struct sk_buff *skb, int flow_mode,
++			   u16 flow_override, u16 host_override,
++			   struct cake_hash_keys *out)
+ {
+ 	bool hash_flows = (!flow_override && !!(flow_mode & CAKE_FLOW_FLOWS));
+ 	bool hash_hosts = (!host_override && !!(flow_mode & CAKE_FLOW_HOSTS));
+ 	bool nat_enabled = !!(flow_mode & CAKE_FLOW_NAT_FLAG);
+-	u32 flow_hash = 0, srchost_hash = 0, dsthost_hash = 0;
+-	u16 reduced_hash, srchost_idx, dsthost_idx;
+ 	struct flow_keys keys, host_keys;
+ 	bool use_skbhash = skb->l4_hash;
+ 
++	out->flow_hash = 0;
++	out->srchost_hash = 0;
++	out->dsthost_hash = 0;
++
+ 	if (unlikely(flow_mode == CAKE_FLOW_NONE))
+-		return 0;
++		return;
+ 
+ 	/* If both overrides are set, or we can use the SKB hash and nat mode is
+ 	 * disabled, we can skip packet dissection entirely. If nat mode is
+@@ -753,50 +767,70 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
+ 	switch (host_keys.control.addr_type) {
+ 	case FLOW_DISSECTOR_KEY_IPV4_ADDRS:
+ 		host_keys.addrs.v4addrs.src = 0;
+-		dsthost_hash = flow_hash_from_keys(&host_keys);
++		out->dsthost_hash = flow_hash_from_keys(&host_keys);
+ 		host_keys.addrs.v4addrs.src = keys.addrs.v4addrs.src;
+ 		host_keys.addrs.v4addrs.dst = 0;
+-		srchost_hash = flow_hash_from_keys(&host_keys);
++		out->srchost_hash = flow_hash_from_keys(&host_keys);
+ 		break;
+ 
+ 	case FLOW_DISSECTOR_KEY_IPV6_ADDRS:
+ 		memset(&host_keys.addrs.v6addrs.src, 0,
+ 		       sizeof(host_keys.addrs.v6addrs.src));
+-		dsthost_hash = flow_hash_from_keys(&host_keys);
++		out->dsthost_hash = flow_hash_from_keys(&host_keys);
+ 		host_keys.addrs.v6addrs.src = keys.addrs.v6addrs.src;
+ 		memset(&host_keys.addrs.v6addrs.dst, 0,
+ 		       sizeof(host_keys.addrs.v6addrs.dst));
+-		srchost_hash = flow_hash_from_keys(&host_keys);
++		out->srchost_hash = flow_hash_from_keys(&host_keys);
+ 		break;
+ 
+ 	default:
+-		dsthost_hash = 0;
+-		srchost_hash = 0;
++		out->dsthost_hash = 0;
++		out->srchost_hash = 0;
+ 	}
+ 
+ 	/* This *must* be after the above switch, since as a
+ 	 * side-effect it sorts the src and dst addresses.
+ 	 */
+ 	if (hash_flows && !use_skbhash)
+-		flow_hash = flow_hash_from_keys(&keys);
++		out->flow_hash = flow_hash_from_keys(&keys);
+ 
+ skip_hash:
+ 	if (flow_override)
+-		flow_hash = flow_override - 1;
++		out->flow_hash = flow_override - 1;
+ 	else if (use_skbhash && (flow_mode & CAKE_FLOW_FLOWS))
+-		flow_hash = skb->hash;
++		out->flow_hash = skb->hash;
+ 	if (host_override) {
+-		dsthost_hash = host_override - 1;
+-		srchost_hash = host_override - 1;
++		out->dsthost_hash = host_override - 1;
++		out->srchost_hash = host_override - 1;
+ 	}
+ 
+ 	if (!(flow_mode & CAKE_FLOW_FLOWS)) {
+ 		if (flow_mode & CAKE_FLOW_SRC_IP)
+-			flow_hash ^= srchost_hash;
++			out->flow_hash ^= out->srchost_hash;
+ 
+ 		if (flow_mode & CAKE_FLOW_DST_IP)
+-			flow_hash ^= dsthost_hash;
++			out->flow_hash ^= out->dsthost_hash;
+ 	}
++}
++
++/* Resolve the keys from cake_hash_keys() into the set-associative flow
++ * table. Mutates q->tags[], the flow host indices, the way counters and
++ * the host bulk-flow counts, so run only after admission.
++ */
++static u32 cake_hash_resolve(struct cake_tin_data *q,
++			     const struct cake_hash_keys *keys, int flow_mode)
++{
++	u32 flow_hash = keys->flow_hash, srchost_hash = keys->srchost_hash,
++	    dsthost_hash = keys->dsthost_hash;
++	u16 reduced_hash, srchost_idx, dsthost_idx;
++
++	/* Duplicate of the guard in cake_hash_keys(): the original single
++	 * cake_hash() returned 0 here, short-circuiting both halves. Without
++	 * it the flowblind path would commit set-associative state it never
++	 * touched before.
++	 */
++	if (unlikely(flow_mode == CAKE_FLOW_NONE))
++		return 0;
+ 
+ 	reduced_hash = flow_hash % CAKE_QUEUES;
+ 
+@@ -1712,18 +1746,25 @@ static struct cake_tin_data *cake_select_tin(struct Qdisc *sch,
+ 	return &qd->tins[tin];
+ }
+ 
+-static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
+-			 struct sk_buff *skb, int flow_mode, int *qerr)
++/* Run the optional external classifier. Returns true when a terminal TC
++ * action consumed the packet (reason in *qerr); otherwise *flow and *host
++ * hold the filter's overrides (0 if none) and the packet is hashed as
++ * before.
++ */
++static bool cake_tcf_classify(struct Qdisc *sch, struct sk_buff *skb,
++			      u16 *flow, u16 *host, int *qerr)
+ {
+ 	struct cake_sched_data *q = qdisc_priv(sch);
+ 	struct tcf_proto *filter;
+ 	struct tcf_result res;
+-	u16 flow = 0, host = 0;
+ 	int result;
+ 
++	*flow = 0;
++	*host = 0;
++
+ 	filter = rcu_dereference_bh(q->filter_list);
+ 	if (!filter)
+-		goto hash;
++		return false;
+ 
+ 	*qerr = NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+ 	result = tcf_classify_qdisc(skb, filter, &res, false);
+@@ -1737,17 +1778,15 @@ static u32 cake_classify(struct Qdisc *sch, struct cake_tin_data **t,
+ 			*qerr = NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
+ 			fallthrough;
+ 		case TC_ACT_SHOT:
+-			return 0;
++			return true;
+ 		}
+ #endif
+ 		if (TC_H_MIN(res.classid) <= CAKE_QUEUES)
+-			flow = TC_H_MIN(res.classid);
++			*flow = TC_H_MIN(res.classid);
+ 		if (TC_H_MAJ(res.classid) <= (CAKE_QUEUES << 16))
+-			host = TC_H_MAJ(res.classid) >> 16;
++			*host = TC_H_MAJ(res.classid) >> 16;
+ 	}
+-hash:
+-	*t = cake_select_tin(sch, skb);
+-	return cake_hash(*t, skb, flow_mode, flow, host) + 1;
++	return false;
+ }
+ 
+ static void cake_reconfigure(struct Qdisc *sch);
+@@ -1758,22 +1797,87 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
+ 	struct cake_sched_data *q = qdisc_priv(sch);
+ 	int len = qdisc_pkt_len(skb), ret;
++	u16 flow_override, host_override;
++	struct sk_buff *segs = NULL;
++	struct cake_hash_keys keys;
+ 	struct sk_buff *ack = NULL;
+ 	ktime_t now = ktime_get();
+ 	struct cake_tin_data *b;
+ 	struct cake_flow *flow;
+ 	bool same_flow = false;
++	u64 slen = 0;
+ 
+-	/* choose flow to insert into */
+-	idx = cake_classify(sch, &b, skb, q->config->flow_mode, &ret);
+-	if (idx == 0) {
++	/* Classify first so terminal TC actions (STOLEN/QUEUED/TRAP/SHOT)
++	 * keep working at the ceiling; carry the overrides to
++	 * cake_hash_keys().
++	 */
++	if (cake_tcf_classify(sch, skb, &flow_override, &host_override, &ret)) {
+ 		if (ret & __NET_XMIT_BYPASS)
+ 			qdisc_qstats_drop(sch);
+ 		__qdisc_drop(skb, to_free);
+ 		return ret;
+ 	}
++
++	/* Drop before hash/shaper state so a rejected packet disturbs
++	 * neither; the QDISC_MAX_BACKLOG margin leaves room for one more
++	 * stab-clamped packet (SPLIT_GSO re-checks its segment sum below).
++	 */
++	if (unlikely(qdisc_backlog_at_max(sch))) {
++		qdisc_qstats_overlimit(sch);
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
++	}
++
++	/* Tin selection and key extraction must run on the unsegmented skb:
++	 * skb_gso_segment() rewrites an encapsulated GSO packet's headers to
++	 * the inner ones, changing the keys. Neither commits state.
++	 */
++	b = cake_select_tin(sch, skb);
++	cake_hash_keys(skb, q->config->flow_mode, flow_override,
++		       host_override, &keys);
++
++	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
++		struct sk_buff *nskb, *seg;
++		netdev_features_t features = netif_skb_features(skb);
++
++		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
++		if (IS_ERR_OR_NULL(segs))
++			return qdisc_drop(skb, sch, to_free);
++
++		/* The split path accounts the segment sum, not the
++		 * stab-adjusted qdisc_pkt_len(), so the top check does not
++		 * bound it. Sum the list and reject it whole.
++		 */
++		skb_list_walk_safe(segs, seg, nskb)
++			slen += seg->len;
++
++		if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG)) {
++			qdisc_qstats_overlimit(sch);
++			/* skb_gso_segment() moved the sock_wfree destructor
++			 * to the tail segment; defer the whole list to
++			 * to_free, never free it under the qdisc lock.
++			 *
++			 * Fraglist GSO is the exception: skb_segment_list()
++			 * returns the original skb as the head with an extra
++			 * ref (segs == skb), so drop the caller's ref and
++			 * queue the list once, or the two drops self-link it.
++			 */
++			if (unlikely(segs == skb)) {
++				tcf_set_qdisc_drop_reason(skb,
++							  QDISC_DROP_OVERLIMIT);
++				consume_skb(skb);
++				return qdisc_drop_all(segs, sch, to_free);
++			}
++			__qdisc_drop_all(segs, to_free);
++			return qdisc_drop_reason(skb, sch, to_free,
++						 QDISC_DROP_OVERLIMIT);
++		}
++	}
++
++	/* Admitted: resolve the keys and commit flow/shaper state. */
++
++	idx = cake_hash_resolve(b, &keys, q->config->flow_mode);
+ 	tin = (u32)(b - q->tins);
+-	idx--;
+ 	flow = &b->flows[idx];
+ 
+ 	/* ensure shaper state isn't stale */
+@@ -1800,28 +1904,22 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	if (unlikely(len > b->max_skblen))
+ 		WRITE_ONCE(b->max_skblen, len);
+ 
+-	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
+-		struct sk_buff *segs, *nskb;
+-		netdev_features_t features = netif_skb_features(skb);
+-		unsigned int slen = 0, numsegs = 0;
+-
+-		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
+-		if (IS_ERR_OR_NULL(segs))
+-			return qdisc_drop(skb, sch, to_free);
++	if (segs) {
++		struct sk_buff *nskb, *seg;
++		unsigned int numsegs = 0;
+ 
+-		skb_list_walk_safe(segs, segs, nskb) {
+-			skb_mark_not_on_list(segs);
+-			qdisc_skb_cb(segs)->pkt_len = segs->len;
+-			qdisc_skb_cb(segs)->pkt_segs = 1;
+-			cobalt_set_enqueue_time(segs, now);
+-			get_cobalt_cb(segs)->adjusted_len = cake_overhead(q,
+-									  segs);
+-			flow_queue_add(flow, segs);
++		skb_list_walk_safe(segs, seg, nskb) {
++			skb_mark_not_on_list(seg);
++			qdisc_skb_cb(seg)->pkt_len = seg->len;
++			qdisc_skb_cb(seg)->pkt_segs = 1;
++			cobalt_set_enqueue_time(seg, now);
++			get_cobalt_cb(seg)->adjusted_len = cake_overhead(q,
++									 seg);
++			flow_queue_add(flow, seg);
+ 
+ 			qdisc_qlen_inc(sch);
+ 			numsegs++;
+-			slen += segs->len;
+-			q->buffer_used += segs->truesize;
++			q->buffer_used += seg->truesize;
+ 			WRITE_ONCE(b->packets, b->packets + 1);
+ 		}
+ 
+diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
+index a1ba2e355f2d..ff7e72989dfc 100644
+--- a/net/sched/sch_codel.c
++++ b/net/sched/sch_codel.c
+@@ -116,15 +116,17 @@ static struct sk_buff *codel_peek(struct Qdisc *sch)
+ static int codel_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			       struct sk_buff **to_free)
+ {
+-	struct codel_sched_data *q;
++	struct codel_sched_data *q = qdisc_priv(sch);
+ 
+-	if (likely(qdisc_qlen(sch) < sch->limit)) {
+-		codel_set_enqueue_time(skb);
+-		return qdisc_enqueue_tail(skb, sch);
++	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely(qdisc_backlog_at_max(sch))) {
++		WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
+ 	}
+-	q = qdisc_priv(sch);
+-	WRITE_ONCE(q->drop_overlimit, q->drop_overlimit + 1);
+-	return qdisc_drop_reason(skb, sch, to_free, QDISC_DROP_OVERLIMIT);
++
++	codel_set_enqueue_time(skb);
++	return qdisc_enqueue_tail(skb, sch);
+ }
+ 
+ static const struct nla_policy codel_policy[TCA_CODEL_MAX + 1] = {
+diff --git a/net/sched/sch_dualpi2.c b/net/sched/sch_dualpi2.c
+index 4947def7c49e..5c746e9b60cd 100644
+--- a/net/sched/sch_dualpi2.c
++++ b/net/sched/sch_dualpi2.c
+@@ -392,6 +392,7 @@ static int dualpi2_enqueue_skb(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct dualpi2_skb_cb *cb;
+ 
+ 	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely(qdisc_backlog_at_max(sch)) ||
+ 	    unlikely((u64)q->memory_used + skb->truesize > q->memory_limit)) {
+ 		qdisc_qstats_overlimit(sch);
+ 		if (skb_in_l_queue(skb))
+diff --git a/net/sched/sch_fifo.c b/net/sched/sch_fifo.c
+index 1b6388d50967..d5e5cd49377d 100644
+--- a/net/sched/sch_fifo.c
++++ b/net/sched/sch_fifo.c
+@@ -29,6 +29,9 @@ static int bfifo_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ static int pfifo_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			 struct sk_buff **to_free)
+ {
++	if (unlikely(qdisc_backlog_at_max(sch)))
++		return qdisc_drop(skb, sch, to_free);
++
+ 	if (likely(sch->q.qlen < READ_ONCE(sch->limit)))
+ 		return qdisc_enqueue_tail(skb, sch);
+ 
+@@ -43,6 +46,9 @@ static int pfifo_tail_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	if (unlikely(READ_ONCE(sch->limit) == 0))
+ 		return qdisc_drop(skb, sch, to_free);
+ 
++	if (unlikely(qdisc_backlog_at_max(sch)))
++		return qdisc_drop(skb, sch, to_free);
++
+ 	if (likely(sch->q.qlen < READ_ONCE(sch->limit)))
+ 		return qdisc_enqueue_tail(skb, sch);
+ 
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index e6c87a32950f..7c52acf201c6 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -73,22 +73,34 @@ static unsigned int fq_codel_hash(const struct fq_codel_sched_data *q,
+ 	return reciprocal_scale(skb_get_hash(skb), q->flows_cnt);
+ }
+ 
+-static unsigned int fq_codel_classify(struct sk_buff *skb, struct Qdisc *sch,
+-				      int *qerr)
++/* Run the optional external classifier. Returns true when the caller must
++ * drop (a terminal TC action consumed the packet, or the result carried no
++ * class ID); the reason is then in *qerr. Else *idx is the 1-based flow
++ * index, or *do_hash asks the caller to use fq_codel_hash().
++ */
++static bool fq_codel_classify(struct sk_buff *skb, struct Qdisc *sch,
++			      unsigned int *idx, bool *do_hash, int *qerr)
+ {
+ 	struct fq_codel_sched_data *q = qdisc_priv(sch);
+ 	struct tcf_proto *filter;
+ 	struct tcf_result res;
+ 	int result;
+ 
++	*idx = 0;
++	*do_hash = false;
++
+ 	if (TC_H_MAJ(skb->priority) == sch->handle &&
+ 	    TC_H_MIN(skb->priority) > 0 &&
+-	    TC_H_MIN(skb->priority) <= q->flows_cnt)
+-		return TC_H_MIN(skb->priority);
++	    TC_H_MIN(skb->priority) <= q->flows_cnt) {
++		*idx = TC_H_MIN(skb->priority);
++		return false;
++	}
+ 
+ 	filter = rcu_dereference_bh(q->filter_list);
+-	if (!filter)
+-		return fq_codel_hash(q, skb) + 1;
++	if (!filter) {
++		*do_hash = true;
++		return false;
++	}
+ 
+ 	*qerr = NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+ 	result = tcf_classify_qdisc(skb, filter, &res, false);
+@@ -101,13 +113,16 @@ static unsigned int fq_codel_classify(struct sk_buff *skb, struct Qdisc *sch,
+ 			*qerr = NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
+ 			fallthrough;
+ 		case TC_ACT_SHOT:
+-			return 0;
++			return true;
+ 		}
+ #endif
+-		if (TC_H_MIN(res.classid) <= q->flows_cnt)
+-			return TC_H_MIN(res.classid);
++		if (TC_H_MIN(res.classid) > 0 &&
++		    TC_H_MIN(res.classid) <= q->flows_cnt) {
++			*idx = TC_H_MIN(res.classid);
++			return false;
++		}
+ 	}
+-	return 0;
++	return true;
+ }
+ 
+ /* helper functions : might be changed when/if skb use a standard list_head */
+@@ -188,17 +203,33 @@ static int fq_codel_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct fq_codel_sched_data *q = qdisc_priv(sch);
+ 	unsigned int idx, prev_backlog, prev_qlen;
+ 	struct fq_codel_flow *flow;
+-	int ret;
++	bool do_hash = false;
+ 	unsigned int pkt_len;
+ 	bool memory_limited;
++	int ret;
+ 
+-	idx = fq_codel_classify(skb, sch, &ret);
+-	if (idx == 0) {
++	/* Classify first so terminal TC actions (STOLEN/QUEUED/TRAP/SHOT)
++	 * keep working at the ceiling; only hashing is deferred below.
++	 */
++	if (fq_codel_classify(skb, sch, &idx, &do_hash, &ret)) {
+ 		if (ret & __NET_XMIT_BYPASS)
+ 			qdisc_qstats_drop(sch);
+ 		__qdisc_drop(skb, to_free);
+ 		return ret;
+ 	}
++
++	/* Drop before hashing so a rejected packet disturbs no flow hash;
++	 * the QDISC_MAX_BACKLOG margin leaves room for one more stab-clamped
++	 * packet.
++	 */
++	if (unlikely(qdisc_backlog_at_max(sch))) {
++		q->drop_overlimit++;
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
++	}
++
++	if (do_hash)
++		idx = fq_codel_hash(q, skb) + 1;
+ 	idx--;
+ 
+ 	codel_set_enqueue_time(skb);
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index 5982847df8f8..394f015cec36 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -155,7 +155,8 @@ static int fq_pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	memory_limited = q->memory_usage > q->memory_limit + skb->truesize;
+ 
+ 	/* Checks if the qdisc is full */
+-	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
++	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely(qdisc_backlog_at_max(sch))) {
+ 		q->stats.overlimit++;
+ 		goto out;
+ 	} else if (unlikely(memory_limited)) {
+diff --git a/net/sched/sch_pie.c b/net/sched/sch_pie.c
+index 3b7863ffd284..9e38f38ce923 100644
+--- a/net/sched/sch_pie.c
++++ b/net/sched/sch_pie.c
+@@ -89,7 +89,8 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct pie_sched_data *q = qdisc_priv(sch);
+ 	bool enqueue = false;
+ 
+-	if (unlikely(qdisc_qlen(sch) >= sch->limit)) {
++	if (unlikely(qdisc_qlen(sch) >= sch->limit) ||
++	    unlikely(qdisc_backlog_at_max(sch))) {
+ 		WRITE_ONCE(q->stats.overlimit, q->stats.overlimit + 1);
+ 		goto out;
+ 	}
+diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
+index d7598214270b..e3a254f9dbdf 100644
+--- a/net/sched/sch_red.c
++++ b/net/sched/sch_red.c
+@@ -76,6 +76,12 @@ static int red_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	unsigned int len;
+ 	int ret;
+ 
++	if (unlikely(qdisc_backlog_at_max(sch))) {
++		qdisc_qstats_overlimit(sch);
++		return qdisc_drop_reason(skb, sch, to_free,
++					 QDISC_DROP_OVERLIMIT);
++	}
++
+ 	q->vars.qavg = red_calc_qavg(&q->parms,
+ 				     &q->vars,
+ 				     child->qstats.backlog);
+-- 
+2.43.0
 
-Every access site that can race with those releases is then forced to
-take clcsock_release_lock and check if (!smc->clcsock). Your v2 adds a
-second lock on top of this for the BH/atomic readers that cannot take a
-mutex. This complexity is unnecessary because none of those early paths
-actually need to destroy the socket — they only need to stop it.
-tcp_abort() and kernel_sock_shutdown() are sufficient for that, and both
-are safe to call more than once. sock_release() is the exception: it
-frees memory and must happen exactly once.
-
-The fix is to move that single sock_release() call to smc_destruct() —
-the sk->sk_destruct callback that fires from __sk_free() when the last
-sock reference drops. At that point no concurrent user can exist:
-
-1) fd users are gone: smc_release() calls sock_orphan() before dropping
-its reference, so no file descriptor can reach the socket after that point
-2) workqueue contexts (close_work, smc_listen_work) hold a sock_hold()
-and therefore keep smc_destruct() from running while they are active
-3) accept-queue entries hold a sock_hold() via smc_accept_enqueue() for
-the same reason
-
-This gives us a simple invariant: clcsock is non-NULL for the entire
-lifetime of the SMC socket. With that invariant every reader becomes
-trivially safe — no lock needed, no NULL check needed, the race
-condition simply cannot occur.
-
-[1] https://lore.kernel.org/netdev/ao5bB9OCbJ5PQbEp@linux.alibaba.com/
