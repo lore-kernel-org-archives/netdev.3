@@ -1,54 +1,54 @@
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F79372071
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 03:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5BA35E936
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 03:40:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791430795; cv=none; b=UQZ3Dww7NskGc9BtxNDq6H9MuY+bCjIr8r3uj9HKRsZ5L8waptFL0HjWM3+az2IGRtL464cuD+IaD2ZYj8CkZESMp+QsklvBbMvgNlQtqMljzKniQLlR76q8fpC7A06Ld6gPT5K4zOvOyLkpswr6k4gtRKRUsIHTPA1leHCsKGY=
+	t=1791430831; cv=none; b=dF4I0v/0HzdYq6xwPWnF7ZmtkSJG1LumYSDxS1IV38R/8CsKQV4VT2/qK6hJwj6l1AHcDqd1calBuHBPtmHE5CPcAWEnorTBWqMr6MxHvi0MhXkOyWSiWb4oa5KKYl2Ft/eRH1q8otcXZp83CopuhXGglsOPCEB4L45nuaIquIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791430795; c=relaxed/simple;
+	s=arc-20240116; t=1791430831; c=relaxed/simple;
 	bh=hrTmsIBbiGmKQOjn02ezrfotZmF8vX/5RB2XjzX5QhA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UlIJIobDn0jDzFHCRk8QHAaOfuRHzetsmS6YAmZbJicBO0rypSQymSZ6CRqkWCzXb62XcMIWliBuCsMXE3fSvHELHPXOIvrDEl51zyi/14/7cZeQA5nAN7NYP/yamd7sBpDSXlNFhTUggS5o/7ettX6fe9JDkJ2/BhEZLo8klqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dKC5um8E; arc=none smtp.client-ip=74.125.82.198
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pcawrbsg5+iBWLNKaQomOjqbcY6+yI6UKYIc+4Inn8pD1DWdM20MWcksU6600dW/iW6i5vo+YR0zy0CYigOdYqx2cAPKg7lU6o95GoISe50umW/qT87GFUPfWeca7bubO6pECqsSFGDW3rJ2TU+TJv52gLUqlozNB4JTNwdb2KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LHkkdScq; arc=none smtp.client-ip=74.125.82.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dKC5um8E"
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-3510d0baf63so9800795eec.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 20:39:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LHkkdScq"
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-351788121cfso1477678eec.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 20:40:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791430793; x=1792035593; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791430829; x=1792035629; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
         bh=4HwPYJFKEdiyX4935OotxW9r3+hcqkRnlBB6xoiIvRU=;
-        b=dKC5um8Ew0EXtAKrVMiXwo4lW77Hz2kS+RTvXq2Btwh4ln2TT8Lejy+sr/grZvUDOK
-         vDdMNzJOZeAkHkVjEaiClyEIdUpv4bVwah55/4L3hwBWIqqTPcVBWO+rNcpDtaezG2fa
-         IXI8+7SeKx838OC0pv6TNHIdq/SU/YmFlFXhK5L6ohHYGPxGSVpd5TQWH+gNrpx+Dn/V
-         dCben5B3osaDM0cyQsxIgqIZZ5CorKNcxCgNn59e0UrKVpcMBSLw+C4A940viSDSV6x2
-         ljp47MXnt6evOYgsxQloCnvUlMBQ6a+1f3Vm8RK95BAPrfvGdCKlFvqiOIi83zUiCLMM
-         SyMA==
+        b=LHkkdScq6uzXozHIJBnIIMqQ2J9jfS7swumkyAo5RqEuQVt2AA02IoWv5W0c6gf4ka
+         pSMnD52fZDDt0BGXA5gfIGzdCGFyGxgplzCP90TxkejQqR5FmDp/xLERenEHSy0RGVOr
+         S/0lAcZay5ejr9Aw9DV6VziDGJL2KC3jRNn/0PJzYvvIQgvxgKzQewjjlRvNkVWZAEL3
+         MM/+Or2NfoPP6PKOcSpflvVfP+BPPklocVBbBoV+KFCsb5PNI+qTtgiQBZ7qiMGbhvED
+         +2r45tKK4b704c80tb7dmQX4UrgGYanuZ7tiWd4wM8Bq8W7IRM59fDe/1nmd/4nKlb4H
+         Pl2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791430793; x=1792035593;
+        d=1e100.net; s=20260707; t=1791430829; x=1792035629;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
         bh=4HwPYJFKEdiyX4935OotxW9r3+hcqkRnlBB6xoiIvRU=;
-        b=P6EQfhjVFvzYZNmMhVND5zOw6JAQPelQLOK9uONCZnLmcuhWgmCSGGgIEF7PvnXj/S
-         snflvRwGj0fGTihFZ5cZBGIFRaFM6+wKVsfR08C/DBBocNEvLvKlfDYUM3hPA7LxTafQ
-         JSk0f7RMyb+Cl9PcDwaDMW2Ofk0GGloH6w4yvFSQK0l+MBmofj3WUh3oM8p6tCvRYvTX
-         8OmGQ82fjkCp6cugMUmsYFtW933MMXtmt2Z8r/Qu2Qkq03BtOk0YOer+e2NuUhsqDea+
-         taBkyUHWNNk1PCK5mlr6ucnEesTWsmGNbx09ei5RWTvC1F3bKoNZJAjCNIFF0A94CB88
-         V0vg==
-X-Forwarded-Encrypted: i=1; AKwUvBybkA51uG/57Hi18G3iPJGkiyAEkFumf0bev0WpUiQMrSBIFXFMpDRqjLBqf7ffxuvFWGDOrCs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI1HC/98dBRMDsQhed39iahN6ePvDnd/RCgvv1fJ4thX/hj+IKr
-	VIP6j6UXsCtmYAkuM6E7QqhHQ8mek5yPCcr9GRFE/50ZF6NLS0sBVxxwZJCIlIzo7LYoHKeDzgH
-	xX4G8gfaP/92QPUbtKMivmDm22A==
-X-Received: from dyblz13.prod.google.com ([2002:a05:7301:160d:b0:34b:8a3f:5aaf])
+        b=Nl9vb4Ln/ZzAki2jJ4d50I9mqk0QJtJM+FW4S2cIo8ZnaDAWPiUlTwohzNDVgAnJVN
+         AIpjxWP/nQJRI3/rffuZJmk0caYtAvmFXfPxDQLxYLOvFuEGJFKkTUzv6BLgpfXcd6h7
+         ByehlfpA2I7x+Rqdp++bLRF12FuFfWmda6UMDGRI56DSOWv1lseosdVWYxOD21QtR/Y+
+         3r+XNhNuBq0vRW8lK2TLvV5vMPOHlK/n3qXoBnxDLl3BBbSsZOyv7ZpsZ8RdFo5npplv
+         LloXJUf22zRXQLfwIGzhpSPyoRax6vajtKD/nCCLRniptGmFuHBNAahgDSD0j1wUMiu4
+         cfcw==
+X-Gm-Message-State: AFq9FYKouYjohrCfEhzaD8Mnb7CTga1m9M0irF3cBfQmSbXuziKWOyWS
+	YRlQDJa/41repBbhHiN3pL+VRdMqmohRztGUaeX+I+lrGTHSq1/UD/olZXf6ilfyLLJW84ZtRqE
+	raYa71NueIf9FTiXBXcKR5gQfVF05sX73MaTFZ2kWLG82z6AuccmwDakCKHMkQfctPOldoAGIjs
+	7eNFTCKaN/ERWHOTDNxPKn5VQ5V2HIDRDkokMQ1xvyPsCzXNq99ZHeH579wNDB3eM=
+X-Received: from dybmn3.prod.google.com ([2002:a05:7300:d203:b0:351:79dd:52dd])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:8809:20b0:351:68ca:62ac with SMTP id 5a478bee46e88-35168ca688cmr3181178eec.37.1791430792793;
- Wed, 07 Oct 2026 20:39:52 -0700 (PDT)
-Date: Thu,  8 Oct 2026 03:39:26 +0000
+ 2002:a05:7301:8617:b0:351:11aa:5d5b with SMTP id 5a478bee46e88-3515dde8bbbmr4820551eec.19.1791430828091;
+ Wed, 07 Oct 2026 20:40:28 -0700 (PDT)
+Date: Thu,  8 Oct 2026 03:40:27 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,16 +56,16 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261008033952.1399670-1-almasrymina@google.com>
+Message-ID: <20261008034027.1403188-1-almasrymina@google.com>
 Subject: [PATCH net v1] net: devmem: prevent mixing fragments from different bindings
 From: Mina Almasry <almasrymina@google.com>
-To: Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: netdev@vger.kernel.org, Kaiyuan Zhang <kaiyuanz@google.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Mina Almasry <almasrymina@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Ralf Lici <ralf@mandelbit.com>
+	Bobby Eshleman <bobbyeshleman@meta.com>, Antonio Quartulli <antonio@openvpn.net>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Ralf Lici <ralf@mandelbit.com>
 Content-Type: text/plain; charset="UTF-8"
 
 validate_xmit_unreadable_skb() only inspects shinfo->frags[0] and
