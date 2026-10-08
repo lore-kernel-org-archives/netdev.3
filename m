@@ -1,53 +1,68 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mta1.migadu.com (out-190.mta1.migadu.com [95.215.58.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEE53BBFC4;
-	Thu,  8 Oct 2026 07:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38F33BD25E
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 07:10:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791442994; cv=none; b=AsTSMOGJ4kl5w9iewdrUQDKFGx82OZD3H1rtYVZLGa4/US7dlng/ufCom6hIMYZlq2ib6fCnYCFTYNY/Km5/BjD1uLPgD5hkGLBD3PkIFuZOy7DpRxRa8AH0ulbeGb2aeSjC111+Ob7InmChWi4bC6XPO1lt4BJEqdY4UToRTgE=
+	t=1791443411; cv=none; b=gq4eJR43fBr4L+Hqri/3g0tBECYd989wqiXhgU5Po21RKnS4VfuZL6BmLPUO50dTfrxC2zYpMlumNRRtBkLAG/c0IYwnm/i40NHfgGR76z6kEL/7WYeWyd3Vm6hyyLEdzw/R7PMaGvkZoGcmv2Ah1ssHjhf7SQip+CrLZoQdWJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791442994; c=relaxed/simple;
-	bh=SL9bTUfn/hx2Qb3HKpr2J7B+rY/psLMm6SxP2dKw5nU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VpZdRmRqwgIVlHT8cJcP+Bscmz66IebqMxFogLLpW1p8e41cBmhgKODVFYHKubppPvmpPrS9+WL7E//h4pbpCuI+NM7A5oOPUHFF9gGn1fhDqTvONRCo0Tim6nm75cg52g7Wvag8cEPA7yuoELX7WVqpPxpW4gjzhHtDn2kQwK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=uXjspZud; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1791443411; c=relaxed/simple;
+	bh=YntmXF+RyEpeQNyhd9YG+Hc6Sc4QDta4QnwxtcdIPHY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PFHjW+I80CaBk34+Qb5rlNhgIeFf/8p2zI0yFw1GN7ZRtflcMvqAPrZBPf0jLu8HcaUUjBa8nyrhw+n/otrmTP9p94ncLGYuQ+ncWuuhKjTJ6RUhm/ApE8OB8OHdvGkc+UYL4icpaTSvi4Kr+Qcse8ltNJhhWczdhp46G4mNaus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nNfVAN73; arc=none smtp.client-ip=95.215.58.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="uXjspZud"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6986vOqrD281931, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1791442645;
-	bh=LETy6hp2X+5wWgTIxpGnGUUbTjpXUSM/PHd01b6dAsk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=uXjspZud6YCPWefn2fHc5RRkFL8nXQhTr8YPE7TU8YM/TIFk3FBByhRftxwpU6+a3
-	 Hj3O3O7bGAe2KRE1dHkgKiJ61eD5R8JQRK0tQ4OGUUUI/c8Xumt6cDtZ7tCmRz0NLp
-	 0d7wjuBeQVf5ZEEzN1+JjT++g39D1zHHLly+Gl8U9iWh9+S8czbPnuOvhRvDkK5LV3
-	 5dOcMerrVAwVl/cBJuiSxCCCH69F6F7683AdzSzTUn/XAwFqCgBxpdyjrsw1mHWqi2
-	 LZvAwQLn4PKhwNVdO0WIMY8QwPWTwBswMehckVJ/x/CGoHHPyIf4slIUrqxzaZ/e9R
-	 l2ntfdFdSao1A==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6986vOqrD281931
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 8 Oct 2026 14:57:25 +0800
-Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 14:57:25 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
- (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 8 Oct 2026 14:57:25 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux@armlinux.org.uk>, Javen Xu <javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v16 0/7] r8169: add RSS support for RTL8127
-Date: Thu, 8 Oct 2026 14:57:15 +0800
-Message-ID: <20261008065722.1026-1-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nNfVAN73"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=YntmXF+RyEpeQNyhd9YG+Hc6Sc4QDta4QnwxtcdIPHY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791443407; v=1; x=1792048207;
+ b=nNfVAN739+hYX1f6Uvoggy40MGs9O80Q+uehWTdOabWm7j14cdLz5enum6S9OjNCbymRU02y
+ 30mCcXBmgV1p995s0Ql2pZlrAkZMdVTXvXm0wbZO12t1Bo7/dA9yv5l6B3dG/6CoeW5FdXCb+3L
+ VcgCTvWDhJBZPLsaGK1PzrAo=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id bbda05475c7c12b7;
+	Thu, 08 Oct 2026 07:10:04 +0000
+X-Mizu-Trace-ID: bbda05475c7c12b7
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Roman Gushchin <roman.gushchin@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Shuah Khan <shuah@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Barry Song <baohua@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next v3] selftests/bpf: Add bpf_proactive_reclaim test
+Date: Thu,  8 Oct 2026 15:09:27 +0800
+Message-ID: <20261008070928.113530-1-hui.zhu@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,57 +70,232 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-This patch series adds RSS (Receive Side Scaling) support for the r8169
-ethernet driver, specifically for RTL8127 (RTL_GIGA_MAC_VER_80).
+bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
+unlike a write to memory.reclaim, does not retry until the goal is
+reached.
 
-RSS enables packet distribution across multiple receive queues, which can
-significantly improve network throughput on multi-core systems by allowing
-parallel processing of incoming packets.
+Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
+and check that the result is positive but well below the request: one
+pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
+4K and 64K page kernels.
 
-Key features:
-- Multi-queue RX support (up to 8 queues)
-- MSI-X interrupt with vector mapping
-- Dynamic queue configuration via ethtool (-L)
-- RSS hash computation for flow classification
+The test deliberately covers only the kfunc itself. A full example of
+the intended asynchronous use, where a BPF program watches one cgroup's
+workingset refaults and reclaims another one from bpf_wq callbacks, is
+maintained out of tree at [1], released under GPLv2.
 
-Experiments:
-Platform: AMD Ryzen Embedded R2514 with Radeon Graphics(4 Cores/8 Threads)
-Arch: x86_64
-Test command: 
-  Server: iperf3 -s
-  Client: iperf3 -c 192.168.2.1 -P 20 -t 3600
-Monitor: mpstat -P ALL 1
+Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
+is not built at all.
 
-Before this patch (Without RSS):
-  Throughput: Unstable, fluctuating between 3.76 Gbits/sec and
-  8.2 Gbits/sec.
-  CPU Usage: A single CPU core is fully occupied with softirq reaching 
-  up to 96%.
+[1] https://github.com/teawater/memcg-async-reclaim
 
-After this patch (With RSS enabled):
-  Throughput: Stable at 9.42 Gbits/sec.
-  CPU Usage: The traffic load is evenly distributed across multiple CPU
-  cores. The maximum softirq on a single core dropped to 63%.
-  
-Other Experiments:
-Link: https://lore.kernel.org/netdev/0A5279953D81BB9C+f50c9b49-3e5d-467f-b69a-7e49ed223383@radxa.com/
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+Changelog:
+v3:
+According to the comment of Barry, use write() + fsync() to charge the
+page cache instead of ftruncate() + read().
+According to the comment of AI, skip instead of fail when no regular
+filesystem is available for the workload file.
+v2:
+According to the comment of Alexei, remove the samples/bpf sample patch.
+Ship it out-of-tree as a standalone project.
 
-Javen Xu (7):
-  r8169: prepare for multi irqs and napi
-  r8169: refactor RX path to prepare for multi-queue
-  r8169: add support for new interrupt mapping
-  r8169: prepare for new interrupt mapping
-  r8169: add support and enable rss
-  r8169: move struct ethtool_ops
-  r8169: add get_channel support for ethtool
+ tools/testing/selftests/bpf/config            |   1 +
+ .../bpf/prog_tests/memcg_proactive_reclaim.c  | 127 ++++++++++++++++++
+ .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
+ 3 files changed, 162 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+ create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
 
- drivers/net/ethernet/realtek/r8169_main.c | 1122 ++++++++++++++++++---
- 1 file changed, 973 insertions(+), 149 deletions(-)
-
+diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
+index 2b883b388f90..5621ef94ad7e 100644
+--- a/tools/testing/selftests/bpf/config
++++ b/tools/testing/selftests/bpf/config
+@@ -57,6 +57,7 @@ CONFIG_LIRC=y
+ CONFIG_LIVEPATCH=y
+ CONFIG_LWTUNNEL=y
+ CONFIG_LWTUNNEL_BPF=y
++CONFIG_MEMCG=y
+ CONFIG_MODULE_SIG=y
+ CONFIG_MODULE_SRCVERSION_ALL=y
+ CONFIG_MODULE_UNLOAD=y
+diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+new file mode 100644
+index 000000000000..53426833366c
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
+@@ -0,0 +1,127 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <test_progs.h>
++#include <limits.h>
++#include <linux/magic.h>
++#include <sys/statfs.h>
++#include <unistd.h>
++
++#include "cgroup_helpers.h"
++#include "memcg_proactive_reclaim.skel.h"
++
++#define CG_PATH "/memcg_proactive_reclaim"
++
++/*
++ * Large enough that a single reclaim pass cannot come close to it, so that
++ * "reclaimed less than was asked for" is not page-size noise: one pass is
++ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
++ * on 64K pages.
++ */
++#define FILE_SIZE (32 * 1024 * 1024UL)
++#define BUF_SIZE (64 * 1024)
++
++struct reclaim_args {
++	__u64 cgroup_id;
++	__u64 size;
++};
++
++/*
++ * The data file has to sit on a regular filesystem: tmpfs pages are charged
++ * as shmem, so whether they can be reclaimed at all depends on swap being
++ * available. /tmp is tmpfs on many systems, and test_progs is routinely run
++ * from a tmpfs working directory, so both candidates need the check.
++ */
++static const char *workload_dir(void)
++{
++	static const char * const dirs[] = { "/tmp", "." };
++	struct statfs st;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(dirs); i++)
++		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
++		    st.f_type != RAMFS_MAGIC)
++			return dirs[i];
++
++	return NULL;
++}
++
++void test_memcg_proactive_reclaim(void)
++{
++	struct memcg_proactive_reclaim *skel = NULL;
++	struct reclaim_args args = {};
++
++	LIBBPF_OPTS(bpf_test_run_opts, opts,
++		    .ctx_in = &args,
++		    .ctx_size_in = sizeof(args));
++
++	char data_file[PATH_MAX];
++	static char buf[BUF_SIZE];
++	__u64 cgroup_id;
++	const char *dir;
++	off_t off;
++	int cg_fd = -1, data_fd = -1, err;
++
++	/*
++	 * Both candidate directories can be tmpfs (initramfs-based CI, for
++	 * instance). That is an environment limitation, not a test failure.
++	 */
++	dir = workload_dir();
++	if (!dir) {
++		test__skip();
++		return;
++	}
++
++	snprintf(data_file, sizeof(data_file),
++		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
++	data_fd = mkstemp(data_file);
++	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
++		return;
++
++	cg_fd = cgroup_setup_and_join(CG_PATH);
++	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
++		goto out;
++
++	cgroup_id = get_cgroup_id(CG_PATH);
++	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
++		goto out;
++
++	skel = memcg_proactive_reclaim__open_and_load();
++	if (!ASSERT_OK_PTR(skel, "open_and_load"))
++		goto out;
++
++	/* Charge FILE_SIZE of clean page cache to the cgroup. */
++	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
++		if (!ASSERT_EQ(write(data_fd, buf, sizeof(buf)),
++			       (ssize_t)sizeof(buf), "write"))
++			goto out;
++	if (!ASSERT_OK(fsync(data_fd), "fsync"))
++		goto out;
++
++	args.cgroup_id = cgroup_id;
++	args.size = FILE_SIZE;
++	skel->bss->reclaimed = 0;
++	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
++				     &opts);
++	if (!ASSERT_OK(err, "test_run"))
++		goto out;
++	if (!ASSERT_EQ(opts.retval, 0, "retval"))
++		goto out;
++
++	/*
++	 * A single call is a single bounded pass: it reclaims something, but
++	 * stops well short of the requested size instead of retrying until the
++	 * goal is reached the way a write to memory.reclaim does.
++	 */
++	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
++	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
++
++out:
++	if (skel)
++		memcg_proactive_reclaim__destroy(skel);
++	if (cg_fd >= 0)
++		close(cg_fd);
++	if (data_fd >= 0) {
++		close(data_fd);
++		unlink(data_file);
++	}
++	cleanup_cgroup_environment();
++}
+diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
+new file mode 100644
+index 000000000000..b551192526fc
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++
++struct reclaim_args {
++	__u64 cgroup_id;
++	__u64 size;
++};
++
++/* Signed, because bpf_test_run_opts.retval is a __u32. */
++__s64 reclaimed;
++
++SEC("syscall")
++int memcg_proactive_reclaim(struct reclaim_args *ctx)
++{
++	struct mem_cgroup *memcg;
++	struct cgroup *cgrp;
++
++	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
++	if (!cgrp)
++		return 0;
++
++	memcg = bpf_get_mem_cgroup(&cgrp->self);
++	if (memcg) {
++		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
++		bpf_put_mem_cgroup(memcg);
++	}
++	bpf_cgroup_release(cgrp);
++
++	return 0;
++}
++
++char _license[] SEC("license") = "GPL";
 -- 
 2.43.0
 
