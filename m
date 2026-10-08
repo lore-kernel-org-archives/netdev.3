@@ -1,45 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FAB302CD5;
-	Thu,  8 Oct 2026 05:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0993644C4
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 05:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791437729; cv=none; b=dKbVqaZj4gf37sC3bmqJ5x6qZMmsmErw2hWDIUNMfUCE8P1aTVWL5JDgWoe1nqCUOeJ2G9dwrOcsVOjQtqCyLhCROQRCn/ehTEgNsxN43jIZbNCEKnxvMfLxr2EBZQFlZsaGOgOZhc98kJCmJgS8ZmmzT9AD0SWq1yaaZikMcMs=
+	t=1791437753; cv=none; b=Za6ryZPRoQtl3ahPXQx6jCbrVjPEZViL5mjywdhTXDFWWD65fDh4WnQer3x0D4HWUfp3/qAxY1qelE49PqvCTWcbHknNrt/VN1YK1qiIDmi/a6kVc3N5kQINIXwiCIImQj/1zAthR7N6cZwQoZriBORIPiA+J88j0u6rXeoPQ/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791437729; c=relaxed/simple;
-	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	s=arc-20240116; t=1791437753; c=relaxed/simple;
+	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=skEAXn1PShPCMDVi8uzsDoPcs21ERG3yyvODXqOlZ+cTcB8LRUPUsKNv6N+S2wVmvq04EarhNh0JqO7ZIkefc0ARu6W6n+ssLl1MV1m4C4RDvq841p87I78aKl6Rlve8yTGPCEEWwV9jVGojK2VmGbSeQb4egt1U5agVv2baTag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdGgphG6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=akd3lARkDmwePIZlrtVrbo5vD7kBo8wbd3zuds18rg0kyxla7ysM2AsOaE491vm8D5Cn8zYsWgXcfOPii7BXdCbzzo9Fv3/v3ux5V1xVHHlwHUxZfuCejsL/BfR6TQaoCCn9/qrCjMLhvkfbQBSVwas/K0vxKqUHVmbYs/xvJFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfWuOhrp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdGgphG6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E992E1F000FF;
-	Thu,  8 Oct 2026 05:35:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfWuOhrp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDCC1F000FF;
+	Thu,  8 Oct 2026 05:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791437728;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
+	s=k20260515; t=1791437752;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IdGgphG655rhoUCUd7JI6pz+mwKuCtFWpi5E/e/JWfos28A1dfaONdP0azJKrwKed
-	 W2pclOnLV+J/HyYQsWleQyQOANnyK/MUqcoq7u/feHdOCn5tWEY8orMfMmw7BjEiL7
-	 Aw0pp8n7R5DWKVhXHylyn/Kd+Iab22ZuGgoAT1R6KTBzWieBnb+DbLrl0QeR1PacHP
-	 SC591Gbqn1DkVWgYEyjWtrHxynimVzzoZ5mZzUhhP0OMVHoyG1gFVUsUIh/cM4KvGg
-	 c4Ik1f1GlKHdf2UNy7wDBw/2cvMVMnV4bCUzJJXIRz/MZ1A8Uzcwg+bJrrIqk0qIc9
-	 jSltAGmPiT9Ew==
+	b=KfWuOhrp92jq2hHr5zjQbrhBCDzszLSECaZ1IeJxJLO/npUeQa/lGZrdOrufpRLhq
+	 JW3/UQbk2gFULZOqXotQ0KAe89W1HRpXuh3yrzgWXj8SybWjHPS0O6zhkkFAtevnNf
+	 84/9QeCFR3Oe6whEV9t0mhnGuOOQR9QAIy2stQm6kwBf/zPMOA3OI5HF7FQ3Br8tm2
+	 y34I0X1/fGafLXwfS1CeY88x9PDutIqq4ACAM/rbbW1SNMkxYAN3Ocy36Him6DNzXS
+	 oftA8S0Gzv+LMjS2xbc0Fo123XXsijI8mxI15AsI/3VsRoyZBvK5e7oOUFFE067APm
+	 0VYhuMDzn5LAw==
 From: netdev-bot+sinfo@kernel.org
-To: Daehyeon Ko <4ncienth@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Amit Cohen <amcohen@nvidia.com>,
- Roopa Prabhu <roopa@nvidia.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 0/2] ipv4/ipv6: do not warn on route notification
- size races
-Date: Thu, 08 Oct 2026 05:35:27 +0000
-Message-ID: <179143772749.2527009.14262632794282802688@kernel.org>
-In-Reply-To: <cover.1791423190.git.4ncienth@gmail.com>
-References: <cover.1791423190.git.4ncienth@gmail.com>
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: linux-afs@lists.infradead.org, netdev@vger.kernel.org, dhowells@redhat.com,
+ marc.dionne@auristor.com, davem@davemloft.net, edumazet@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai, root@tr0jan.top
+Subject: Re: [PATCH net v8 0/1] rxrpc: fix encap_rcv skb accounting exhaustion
+Date: Thu, 08 Oct 2026 05:35:51 +0000
+Message-ID: <179143775146.2527009.3109321224299351978@kernel.org>
+In-Reply-To: <cover.1791428529.git.zihanx@nebusec.ai>
+References: <cover.1791428529.git.zihanx@nebusec.ai>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -55,9 +51,9 @@ Hi!
 This is an automated message. This series looks like a fix, but its
 commit messages seem to be missing some information:
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
