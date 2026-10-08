@@ -1,152 +1,209 @@
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F128392836
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791496092; cv=pass; b=cNQ7pgO6sPmeFJ/yIVRPWkoTYxfVACn9wImtKR9KNue40HKJYSzu8u6oMDGrQ2j41y1M8j/wmvK7W4NHpqB47mJ9HVGICXN44pgFBwfZ7H3q994kBvIXq6rxchOvH8vnez404GC2wONiswc2GJaCkImwRDOIjdqxon3LsS3iTMw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791496092; c=relaxed/simple;
-	bh=d/cxQi5bl2KO3QA7Ge7jeOTx9NRmHL08KKAX7/aHZBM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T3L8YnbEqvfPha7S0cyVW/9om0Xj6kd5l9b5r6AOwVNWfE7qY6qTngpMuJewE1+3/uSE3PTMTO1WvOoa+w5p5nD0jP9AB37NB09Br1YcSjRCNmaBOINIPX9N6yZHQ74j15pQmnopvbVHsmi9roy40Ngis2ToA8sSPH8VFxvpHiA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i4XOrfKH; arc=pass smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4842C3F787E
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:57:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791496640; cv=none; b=ibVIchxC40HGcaNFO+GE958199QberPw323bqv5yrODi32lhLcMeYltigCtZD9POx3DZtJ9Im0/s8cVGGfpzWg/c2P+Jqnb4HAnvdEFoWEVJ8PpV8l7nKxWqs4abJwxTETRECtSZPQ7ouQhtHQLHyPTBvBIuedTeU+fEFy0dZI8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791496640; c=relaxed/simple;
+	bh=SRNne2Uq2vtiXubaejgQn7ljtYQMoFHnV+qBWMsYxMI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=niv0zmnMQUerR+t29ZXwU5hnx+EBRIFXzICWHqbr2gUb+gtsxvBi8BH48pTuRFXkL/vAC8jr/CRULeR8uHSGE+9vOBl/jr95XyGrzGotrIGuReCUv68F0lDtfIPl/6PDuqNzWpCZblDuG4WqgMmxA3dXP3CbIpGjDRUT5L1LTZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QUweq7Ro; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i4XOrfKH"
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5337fa12431so60591cf.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 14:48:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791496090; cv=none;
-        d=google.com; s=arc-20260327;
-        b=k4xjVQ0A1CEPPjcRr0BKY+OUl8B3EbwzZJZ17n/8+ELK97L6gKiaMKNypdI/j5Vbeu
-         4IJCbqA81ePDC1lE7jYwvHr0IwSyD7QlghUIT3n/ihoqZdmT+2H50/HIVFnU3RiZUhjX
-         5MEEwBNfWHFMVthVnNMN4DQQukoZfNBJABg35hp+pm2GL57WIpJtcrsM/mGdu7kR1ACt
-         9lMgosZyIH41ijCY/oKa/SitJLiMF/deGiXDmbzzw85rZ1J7jI/HKqzOs0wBfDfazQW+
-         iisWZjENHhKteUiTFY4UAStDodjzQkAtTdUVRnffUsRuu9rqGesSSrP8M0lRnhBMeIU0
-         w2Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=d/cxQi5bl2KO3QA7Ge7jeOTx9NRmHL08KKAX7/aHZBM=;
-        fh=I8Xp3XkiK44TjJzmSELyb8/U1BYoXlwYEmDO/OCkMyg=;
-        b=jKkTJcKf9Pe/23YepaqnqA1a39PcD23N8YJMF0FSNC57DO45GQFWxpjg9Sm7R/wkJf
-         9WZa4L/brNaj3soTVlxkwcabBDhLCrk1mR2FlLJQd7YygnX4e04gn8EZypEIt13Le5/6
-         VWRZqK6JiKugyDcEHCMaKHMmc81x99FgWLTAk1RAqPA2SLjnETyg2bYT38PGEJS/qm6g
-         8jMalNS0YOKKmSdQbli2ydTmTLDk9mfEXu3N0ZDgxx8EGMoVEuejYp+HDNJFVDlA4SIL
-         WRTORRhICnZY2lyVIDb9H5A8wzeF5Gcw8gCHJktYXLlOAm/oA7DFX52ljHDywzrcxp+v
-         o8VA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791496090; x=1792100890; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=d/cxQi5bl2KO3QA7Ge7jeOTx9NRmHL08KKAX7/aHZBM=;
-        b=i4XOrfKH4Z7wonh8hJEW2LlWuFXiwMClZcHlU+QZ+Ln/cvdTrcyrUybMAY43wcUmJF
-         W0hxPjxHnNSlpqLJTyjIBNJnd2eDSgbVmJxgxfZ1LQakFV6wx84N7GHh3dkXEW4bSfgp
-         4x4aaWZQHvZg95WZsyWNIs3jo4gk87htFQYARWHzT4GagqbaU0mT+Boct6mCoQjxpO2O
-         nZZAZPLg7fcUoCk1JatmzCekIszCYakd6a9wA+zJNNOIy/NpSt0PFAawsXOrmlTMfZvC
-         Lgs+JPzpvKhUvjnGTqiLFR7h/N33LazRvRK8vAinLdNh6Is/IQc6ncHfIhfr8aSxVXlZ
-         aJAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791496090; x=1792100890;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d/cxQi5bl2KO3QA7Ge7jeOTx9NRmHL08KKAX7/aHZBM=;
-        b=n7mC7bh2FyahcxGUR1MdU6eX3CgBtI7w3jfDz6mZY3ziL/UdJpmfjKFREd7/vy6VXN
-         ktxy422GBVEKL/vXlL5IZ9Q/7KUzZr9bxa4mb6kXf/WOPXK+DzKT1WaZTKq/x59ayPw9
-         3mE5h5zlUbPpRPE0TXW8vnsda7LznYAxGaJDI51PmbRCESC7IDEr48NY0GTyZzK/VkUz
-         8OLbFk4PFnyh4oiUq8aDSQXU2yPGiBtzsGl5tb6IT6UiFrM4eqlH+NQSci/2CYnGs99w
-         8VJmQYHjlwyew4qlBuBrGOPSpU4WDRg+xImNxWMCK+ro+BNQLA9qgP15K9PS7AcOmp/4
-         FRAw==
-X-Forwarded-Encrypted: i=1; AKwUvBywD0m7+hY7IZvp5ez9Fx2s059ihFHUK5W89acZRdXZEKZ1wOmUH1KSveio9si6lDj88lbfO8M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKYW6R6uFiCFBJ+QuG+Fg17tgl7UVEttVQFtIl2IbirLM0rkTH+
-	KOnv4O6z7H3kJn7OEve2oI4kwbwNKO3PSVeIqWUueeslz+PmHsql+354xHqR1zI0B7I3tHeQkPg
-	edx7yw9wgE9xZC8Ez9KGnPvK4FrBtOSM2fRoPZFRq
-X-Gm-Gg: AYBFou391GBKGfIfCuYLpQcgH7QOZesuv7APw+8n7zME27iVKE6+P6FPwCDwMDPLe2l
-	TvGHcwDK4WgjedgNkKlAbct8XktQvsOklWr2VZXlyhUF9I57ohINg4moLZNZ3pO8CPpT3gTOgB8
-	eqGK5focOJW7+DMFmGftnmB/Yhwrg1eMZ0FzYhB8nOIZ2X5tdqW63N9N9WFeGKnUGkOrMwUa9gJ
-	db3EqdbvWo6ANVetfKNLc6Y9WeygpUzB7ZSK5YtsjB/dOCYG/9PDa/JyT8xOAmgxD0ydJ82i9w7
-	GafJaGGL4efqSmCnR5Ny8a5S03YvFs/Gt/3wEYGkdLs69MjBGEAgHR3gxZfMdZFr0cyF3f3MjqB
-	cCch9p9cIaKQl7j2r68hGx5KHdyMa3otK3lHh++3Px8oU
-X-Received: by 2002:a05:622a:5793:b0:532:9220:a9ae with SMTP id
- d75a77b69052e-5359e455c40mr1433461cf.6.1791496089446; Thu, 08 Oct 2026
- 14:48:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QUweq7Ro"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791496639; x=1823032639;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=SRNne2Uq2vtiXubaejgQn7ljtYQMoFHnV+qBWMsYxMI=;
+  b=QUweq7Ro6DLT2nl3byWSNIrZ80IgxDPVd38OAupLng2suzIJoGg5+D2z
+   XQW/LX5108KUwjtRydWDJ265YsvaJKYSg93mrqz0c7/xPAKcRQ3XY22BG
+   EgEpi2q/pOkzNJrWSE18WSvOZoa7NVPtw5HBP/TmWTljVO1RB12mXCziV
+   KzSajrxGFLWLoCjlF48zRA/UMBVkJ/i0DOKYKhVAXuG7rKQ0IIF4ANEJJ
+   j4eYSWIXX73PfU66hmvYMRhh+sbOXbQ6etsp1fuMXx+8xwkpkxIOqRSqF
+   Aq7P5c4ru9G59zoR2hrkgC1+tmrjFyWVdZbBcxHLtcfMwFcTxxNh0ALIS
+   g==;
+X-CSE-ConnectionGUID: dFikIkmwQL6KLwgWW4g7YQ==
+X-CSE-MsgGUID: oGhKboW+TGeHPZVrPnPDgQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="294623"
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="294623"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 14:57:17 -0700
+X-CSE-ConnectionGUID: osd4p9opSqaqC1CLjfRKAA==
+X-CSE-MsgGUID: mv5m+mMTRVqZrCYNe4wREA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="150397"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa003.jf.intel.com with ESMTP; 08 Oct 2026 14:57:16 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Jacob Keller <jacob.e.keller@intel.com>,
+	anthony.l.nguyen@intel.com,
+	maciej.machnikowski@intel.com,
+	przemyslaw.korba@intel.com,
+	grzegorz.nitka@intel.com,
+	sergey.temerkhanov@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	poros@redhat.com,
+	richardcochran@gmail.com,
+	horms@kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Alexander Nowlin <alexander.nowlin@intel.com>
+Subject: [PATCH net v2 01/15] ice: fix removal of PTP timestamp tracker during reset
+Date: Thu,  8 Oct 2026 14:55:58 -0700
+Message-ID: <20261008215614.1987250-2-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20261008215614.1987250-1-anthony.l.nguyen@intel.com>
+References: <20261008215614.1987250-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--he-dR-SAgqiw@mail.gmail.com>
- <20261006141300.1722466-1-ncardwell.sw@gmail.com> <20261008212007.11619-1-nramaswamy@openai.com>
-In-Reply-To: <20261008212007.11619-1-nramaswamy@openai.com>
-From: Neal Cardwell <ncardwell@google.com>
-Date: Thu, 8 Oct 2026 17:47:52 -0400
-X-Gm-Features: AclHuK9JwqNAnKKUmQkb5nbkkVlAY3vgd5ysmdQybG9TDCTGPUW7dr1Q1zAJXag
-Message-ID: <CADVnQy=X6-=dBQ5xjt5r5cEnjvEWjYPxg+vn3nH481r4kFc96g@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] tcp: restore RACK list membership when undoing loss
-To: nramaswamy@openai.com
-Cc: Neal Cardwell <ncardwell.sw@gmail.com>, edumazet@kernel.org, davem@davemloft.net, 
-	horms@kernel.org, jiayuan.chen@linux.dev, kuba@kernel.org, kuniyu@google.com, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, shuah@kernel.org, 
-	ycheng@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Oct 8, 2026 at 5:20=E2=80=AFPM <nramaswamy@openai.com> wrote:
->
-> From: Neil Ramaswamy <nramaswamy@openai.com>
->
-> Hi Neal and Eric,
->
-> Thanks for the detailed replies. Neal's approach is much cheaper than my
-> original patch on a few UML microbenchmarks that I ran.
->
-> I'm not entirely sure I understand Eric's usage of "often" when he mentio=
-ned
-> the O(1) list splice, but the metrics that I've collected from my particu=
-lar
-> repro seem to suggest that Neal and Yuchung's assumption about LOST but n=
-ot
-> EVER_RETRANS segments holds in the cases I captured, so I'd be happy with=
- that
-> approach.
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-Great! Thanks for checking those.
+Commit 7a25fe5cd5fb ("ice: stop destroying and reinitalizing Tx tracker
+during reset") intended to modify the PTP reset flow of the driver so that
+it stopped calling ice_ptp_reset_tx_tracker() during teardown and stopped
+calling ice_ptp_init_tx_*() during rebuild.
 
-> (One super nit on the runtime complexity of it: in the comment for
-> tcp_tsorted_relink_skb we say that it's O(1) amortized time, but I think =
-it's
-> more that during partial undo all relink calls together traverse the RACK=
- list
-> at most once.)
+Unfortunately, the commit only removed the calls to ice_ptp_init_tx_*().
+This fixed a memory leak in PF reset. However, now a CORE, GLOBAL, or EMP
+reset will leave the device unable to initiate Tx timestamp requests
+indefinitely.
 
-Sure, OK. :-)
+In practice the CORE and GLOBAL resets rarely happen in production
+environments, while EMP resets happen after a firmware update that is often
+followed by a platform reboot. This explains why this has not been caught
+until now. However, it is trivial to verify by triggering the reset from
+userspace via ethtool. For ice the following command will trigger a GLOBAL
+reset:
 
-> For Neal's fix, I also did write up a small packetdrill that shows that s=
-egments
-> that are already retransmitted and then marked LOST are not added back to=
- the
-> RACK list during partial undo, as intended. Happy to contribute that if u=
-seful
-> for explicitly documenting that this is behavior we are okay with.
+  $ ethtool --reset eno8303np0 irq-shared dma-shared filter-shared \
+                               offload-shared ram-shared mac-shared phy-shared
 
-Sounds great. Please include that new test as another follow-on patch.
-I agree that test would be useful to document this behavior and ensure
-the expected things happen (and no bad things happen) in that case.
+Remove the call of ice_ptp_release_tx_tracker() from
+ice_ptp_prepare_for_reset(), to keep the tracker memory in place so that
+timestamping can resume after a reset.
 
-> How would you like to move forward here? Do you want me to fold this into=
- a v3
-> patch with attribution tags or do you want to send a new patch yourself?
+During review of a previous version of this change, sashiko pointed out
+that the teardown flows for ice_ptp_init() and ice_ptp_release() could
+potentially leak the PTP timestamp tracker.
 
-Please feel free to send out a v3 patch with attribution tags.
+Fix ice_ptp_init() so that it allocates the tracker before adding the port
+to the port list, and properly calls ice_ptp_release_tx_tracker() as part
+of its cleanup on error. Ensure the ps_lock mutex isn't destroyed until the
+PF has been cleared from the port list.
 
-Thanks!
-neal
+Fix ice_ptp_release() so that it handles the cleanup if PTP is in the
+error state by cancelling the kworker items and releasing the Tx tracker as
+appropriate.
+
+This was found by Sashiko review during feedback for an unrelated change,
+and iterated based on further feedback from Sashiko after the initial fix
+to remove the call to ice_ptp_release_tx_tracker();
+
+Closes: https://sashiko.dev/#/patchset/20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858%40intel.com?part=8
+Closes: https://lore.kernel.org/netdev/20260916011213.1632286-1-kuba@kernel.org/
+Fixes: 7a25fe5cd5fb ("ice: stop destroying and reinitalizing Tx tracker during reset")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 29 ++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index eaec36ab6ae3..fe21cee4f9de 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -2939,8 +2939,6 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
+ 		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
+ 
+-	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+-
+ 	/* Disable periodic outputs */
+ 	ice_ptp_disable_all_perout(pf);
+ 
+@@ -3347,13 +3345,13 @@ void ice_ptp_init(struct ice_pf *pf)
+ 		}
+ 	}
+ 
+-	err = ice_ptp_setup_pf(pf);
++	err = ice_ptp_init_port(pf, &ptp->port);
+ 	if (err)
+-		goto err_exit;
++		goto err_destroy_ps_lock;
+ 
+-	err = ice_ptp_init_port(pf, &ptp->port);
++	err = ice_ptp_setup_pf(pf);
+ 	if (err)
+-		goto err_clean_pf;
++		goto err_release_tx_tracker;
+ 
+ 	/* Start the PHY timestamping block */
+ 	ice_ptp_reset_phy_timestamping(pf);
+@@ -3365,14 +3363,17 @@ void ice_ptp_init(struct ice_pf *pf)
+ 
+ 	err = ice_ptp_init_work(pf, ptp);
+ 	if (err)
+-		goto err_exit;
++		goto err_clean_pf;
+ 
+ 	dev_info(ice_pf_to_dev(pf), "PTP init successful\n");
+ 	return;
+ 
+ err_clean_pf:
+-	mutex_destroy(&ptp->port.ps_lock);
+ 	ice_ptp_cleanup_pf(pf);
++err_release_tx_tracker:
++	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
++err_destroy_ps_lock:
++	mutex_destroy(&ptp->port.ps_lock);
+ err_exit:
+ 	/* If we registered a PTP clock, release it */
+ 	if (pf->ptp.clock) {
+@@ -3399,12 +3400,20 @@ void ice_ptp_release(struct ice_pf *pf)
+ 		return;
+ 
+ 	if (pf->ptp.state != ICE_PTP_READY) {
+-		mutex_destroy(&pf->ptp.port.ps_lock);
+-		ice_ptp_cleanup_pf(pf);
++		if (pf->ptp.kworker) {
++			kthread_cancel_delayed_work_sync(&pf->ptp.work);
++			if (pf->hw.mac_type == ICE_MAC_GENERIC)
++				kthread_cancel_delayed_work_sync(&pf->ptp.port.ov_work);
++			kthread_destroy_worker(pf->ptp.kworker);
++			pf->ptp.kworker = NULL;
++		}
+ 		if (pf->ptp.clock) {
+ 			ptp_clock_unregister(pf->ptp.clock);
+ 			pf->ptp.clock = NULL;
+ 		}
++		ice_ptp_cleanup_pf(pf);
++		ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
++		mutex_destroy(&pf->ptp.port.ps_lock);
+ 		return;
+ 	}
+ 
+-- 
+2.47.1
+
