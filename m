@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003AE49B5B5
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2724A5EC7
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791466324; cv=none; b=cvcWuh//8kxWMJPq6qr37nucON5uU9E7A8BIdELS1OOfBrngbJh966XNcCzYX/+TFTjcvTHHY+DSOeivmttYt3rYnnq9xpLwC+DEGYTsC1VGnhPtjHn1sNW3uFQFOMQAk6qV75kAhbYpJZveFsfaLNE7KC2qK/z2XbMxpmRuAvw=
+	t=1791466325; cv=none; b=rl+QaM46IMn59Y0EGVZNXJl6I4Xy7sHpYhytIUkj0MVsk92P8oSfN0llu5az7TKSdDzSKngBudVdXWHZeUbvfTGo/Nw+GFMGNW0zzjEWAT5fdWKU/bsnxn8nq7AP2oE9DvJfTfI07E5Jc/2lep9W66bN2wx73FHssfkoncyo2Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791466324; c=relaxed/simple;
-	bh=5BdrxS2NUFskphH3SEPgBTZUqGTY1jv2z8ZNt2gK00s=;
+	s=arc-20240116; t=1791466325; c=relaxed/simple;
+	bh=aMGBOYnLziJBnBXFla1AxQz2fx68e3Q/L8iR+wQbwzE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cpHxZRfyb13dMVW1Spl2mpGz45M4mQjZoKIOnyfOZmKmtj8SRB3DdI9FOR3zdqzpBEfsfy/oeCDMKmWZ4Mi9Y7nCYNzKb9tyd22u+TiiAVtt4mnOg06+UOrMmLnWhmnzhqxtZWuAmZemucS6or1znIIBqCB4ND5M0xi1G406+NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikXhzKfv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=uAbhaAKJ/NK94JrVYMTIsKaFeVR8kZwx8f7lpM2bmm/8vzMtRqoaZnvpj1Lz5Y4fM14pR2LXHEIVCukVtQDRR/luFsuO0cU6sueUK8Hrq06tMtvn2DlTa0w9wXNza04IhP6Y7KWSpTONZuyXm8VBVcXY0HzouquFL+2u2d/ljxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CYbcDZWC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikXhzKfv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AB41F00893;
-	Thu,  8 Oct 2026 13:32:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CYbcDZWC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEFC1F00898;
+	Thu,  8 Oct 2026 13:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791466322;
-	bh=+IpHwHkHX9m4DL9ItwWczMMtQuSR2uOWxvTdUifQfAs=;
+	s=k20260515; t=1791466323;
+	bh=VzzuPkgG0JMnQXdM43Na441ljBk5hLmBaUoGNX+eXWk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ikXhzKfvmuu3LKPCfoZmL8CHsIhxjt/Rxp4505ScaXsRKENzxh4/VZGDz1/k5mW1F
-	 rcHAKxttoNEAFIFCIpUS56aKztHmHF+waGOz1TqVSyaQCvJrkBYuwdCoRDdBuTbCTT
-	 IYsv5y8uLPnwt4y9OrQ6V+bN1HU/xYQto6O4sitHbyhVgGKAfE341ioq5ucEtMqO5W
-	 82gSemugBGdfX6N4c17kco6GGHIJzdZTonK6hil/7cTttXjMeTXW4yi6myWfB/RwYP
-	 XhFOXCNGiVDj+YMqFYKgzWB4VT7ZpLHuA7JfvmCTcrWR2Bxlti3cb+qGJP059QGvpY
-	 IJ2UHdo+lhLRA==
-Subject: Re: [PATCH net-next 5/7] selftests: ovpn: wait for the TCP server key
- setup before traffic
+	b=CYbcDZWCKIMmiPhAw8UwmCJTIadq0hzUENGbbDc8Lo3WOfc9XjvIIN8dhHmXYeVNJ
+	 aWdzS2FVC3o5qi6UWvtfFRw7yT0CEd0yMeY+iiMIVpyMZQAbLVGt0ShCCZhfuc9I+J
+	 vJmoAgXsYSQJ4IGKC4pPUF4gHH4vPhiK9W/GSeRVfVAUusbMWy/q3P+h2S0g5nbZCi
+	 HDMJbeo/7Tp0cGI+7DI+0GvrfRIuqolMmOCROE/MJ6NnjbnAWqckNZMRx+J6sf1+Ox
+	 dXEiuzWGfoeHE5XO+9VtR8NPEIz+L7IHxX1aKYm056amY0ZxQfYOdnVzdZ/nczEe7u
+	 8bwsb8BzCvDjw==
+Subject:
+ Re: [PATCH net-next 6/7] ovpn: send peer object along with PEER_DEL_NTF
 From: netdev-bot+sashiko@kernel.org
 To: antonio@openvpn.net
 Cc: netdev@vger.kernel.org, ralf@mandelbit.com, sd@queasysnail.net,
  kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
  davem@davemloft.net, edumazet@google.com
-Date: Thu, 08 Oct 2026 13:32:01 +0000
-Message-ID: <179146632153.434549.6066824763324113429@kernel.org>
-In-Reply-To: <20261007133018.1451958-6-antonio@openvpn.net>
-References: <20261007133018.1451958-6-antonio@openvpn.net>
-X-sashiko-severity: Low
+Date: Thu, 08 Oct 2026 13:32:02 +0000
+Message-ID: <179146632270.434549.899167774520008786@kernel.org>
+In-Reply-To: <20261007133018.1451958-7-antonio@openvpn.net>
+References: <20261007133018.1451958-7-antonio@openvpn.net>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,158 +47,124 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-- [Low] The new failure path for server-side key setup gives no hint of
-  its cause.
-- [Low] Claim: the patch fixes a race in the ovpn TCP selftest, in the
-  backgrounded `listen && { new_key loop }` subshell plus `sleep 5` in…
-- [Low] Claim: in ovpn_wait_tcp_keys() (common.sh lines 301-319),
-  OVPN_TCP_KEYS_PID is a bare number that is never initialised or…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] This patch makes ovpn_nl_peer_del_notify()
+  (drivers/net/ovpn/netlink.c:1289) call ovpn_nl_fill_peer(msg, NULL,…
+- [Low] The updated ovpn selftest only checks that the new PEER_DEL_NTF
+  counters exist, not their values.
 
 --
 
-selftests: ovpn: wait for the TCP server key setup before traffic
+ovpn: send peer object along with PEER_DEL_NTF
 
-In TCP mode, ovpn_add_peer() spawns a background subshell that accepts the
-peers and installs their data keys. This commit records that subshell's PID.
-A new helper, ovpn_wait_tcp_keys(), polls the PID with a bounded timeout. It
-is called from test.sh and test-close-socket.sh once all peers are
-registered.
+This commit moves the PEER_GET attribute filling into a new helper,
+ovpn_nl_fill_peer(), and calls it from ovpn_nl_peer_del_notify(). As a
+result, PEER_DEL_NTF now carries the full peer object, including the
+final traffic counters. The selftest fixtures are updated, and the jq
+filter normalizes counters and endpoint attributes before comparing.
 
-> Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+> diff --git a/drivers/net/ovpn/netlink.c b/drivers/net/ovpn/netlink.c
+> index 5432bc2eb8e80..15b6d99474b99 100644
+> --- a/drivers/net/ovpn/netlink.c
+> +++ b/drivers/net/ovpn/netlink.c
 
-[Severity: Low]
-This might not matter, but should this patch have a Fixes: tag?
+[ ... ]
 
-The backgrounded "listen && { new_key loop }" construct comes from commit
-959bc330a439 ("testing/selftests: add test tool and scripts for ovpn
-module"). It was later reworked in 7c29665a3a3c.
+> @@ -1273,7 +1286,8 @@ int ovpn_nl_peer_del_notify(struct ovpn_peer *peer)
+>  	if (nla_put_u32(msg, OVPN_A_PEER_DEL_REASON, peer->delete_reason))
+>  		goto err_cancel_msg;
+>  
+> -	if (nla_put_u32(msg, OVPN_A_PEER_ID, peer->id))
+> +	ret = ovpn_nl_fill_peer(msg, NULL, peer);
+> +	if (ret < 0)
+>  		goto err_cancel_msg;
 
-However, the commit message says the race was latent:
+[Severity: High]
+Does this expose PEER_GET data to unprivileged listeners?
 
-> Until now the test happened to work because of
-> the unrelated delays that ran in between.
+The notification is sent with genlmsg_multicast_netns() to
+OVPN_NLGRP_PEERS. That group has no capability flag:
 
-The delay that hid it seems to be the tcpdump setup plus the sleep 0.3 in
-ovpn_run_basic_traffic(). The previous patch in this series ("selftests:
-ovpn: enable TCP_NODELAY on TCP sockets") moved that delay under the
-UDP-only branch.
+drivers/net/ovpn/netlink-gen.c:
+static const struct genl_multicast_group ovpn_nl_mcgrps[] = {
+	[OVPN_NLGRP_PEERS] = { "peers", },
+};
 
-If the race only shows up within this series, leaving out the tag is
-probably fine.
+The generic netlink socket is created with NL_CFG_F_NONROOT_RECV. The
+only permission check on join is in genl_bind():
 
-> diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
-> index 2f7851b823436..e33b1fe265221 100644
-> --- a/tools/testing/selftests/net/ovpn/common.sh
-> +++ b/tools/testing/selftests/net/ovpn/common.sh
-> @@ -258,12 +258,16 @@ ovpn_add_peer() {
->  		if [ ${1} -eq 0 ]; then
->  			(ip netns exec "${server_ns}" ${OVPN_CLI} listen tun0 \
->  				1 ${M_ID} ${OVPN_TCP_PEERS_FILE} && {
-> +				rc=0
->  				for p in $(seq 1 ${OVPN_NUM_PEERS}); do
->  					ip netns exec "${server_ns}" \
->  						${OVPN_CLI} new_key tun0 ${p} \
-> -						1 0 ${OVPN_ALG} 0 data64.key
-> +						1 0 ${OVPN_ALG} 0 data64.key \
-> +						|| rc=1
->  				done
-> +				exit ${rc}
->  			}) &
-> +			OVPN_TCP_KEYS_PID=$!
-
-[Severity: Low]
-If this subshell fails, where does the output of listen and new_key go?
-
-ovpn_add_peer 0 runs under ovpn_cmd_ok "register peer0 in overlay". At
-that point ovpn_cmd_run() has already sent stdout/stderr to a temporary
-file:
-
-ovpn_cmd_run() {
+net/netlink/genetlink.c:genl_bind() {
     ...
-	output_file=$(mktemp)
-	if "$@" >"${output_file}" 2>&1; then
+		if ((grp->flags & GENL_MCAST_CAP_NET_ADMIN) &&
+		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+			ret = -EPERM;
     ...
-	rm -f "${output_file}"
-	return "${ret}"
 }
 
-The backgrounded subshell inherits those descriptors. The file is deleted as
-soon as ovpn_add_peer 0 returns, so anything ovpn-cli writes after that goes
-to an unlinked inode.
+So any process in the socket's netns can join "peers". OVPN_CMD_PEER_GET
+(do and dump) is marked GENL_ADMIN_PERM, but the same data now reaches
+that group on every peer deletion. The data includes tx-id, VPN
+IPv4/IPv6, remote and local address/port, keepalive settings and all
+eight vpn/link rx/tx counters.
 
-With this patch, a listen or new_key failure is now a hard error reported
-through ovpn_wait_tcp_keys(). The log would only show:
+Before this change, PEER_DEL_NTF carried only ifindex, peer id and
+del-reason.
 
-  wait for server-side key setup: command failed with rc=1: ovpn_wait_tcp_keys
+Should the "peers" group be marked cap-net-admin in
+Documentation/netlink/specs/ovpn.yaml, with netlink-gen.c regenerated so
+it gets GENL_MCAST_CAP_NET_ADMIN? Another option would be to send the
+extended payload on a separate privileged group.
 
-It would contain no ovpn-cli error text and no failing peer id. Setting
-OVPN_VERBOSE=1 doesn't help either, because the verbose dump in
-ovpn_cmd_run() runs before the subshell has written anything.
-
-Could the subshell output go to a dedicated log file, printed when
-ovpn_wait_tcp_keys() fails?
-
->  			sleep 5
->  		else
->  			peer_ns="ovpn_peer${1}"
-
-[ ... ]
-
-> @@ -281,6 +285,39 @@ ovpn_add_peer() {
+>  
+>  	nla_nest_end(msg, attr);
+> diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
+> index e33b1fe265221..08bb36ba3c806 100644
+> --- a/tools/testing/selftests/net/ovpn/common.sh
+> +++ b/tools/testing/selftests/net/ovpn/common.sh
 
 [ ... ]
 
-> +OVPN_TCP_KEYS_TIMEOUT=${OVPN_TCP_KEYS_TIMEOUT:-30}
+> +OVPN_JQ_FILTER='
+> +	def zero_attr(key):
+> +		if has(key) then .[key] = 0 else . end;
 > +
-> +ovpn_wait_tcp_keys() {
-> +	local deadline
-> +
-> +	[ -n "${OVPN_TCP_KEYS_PID:-}" ] || return 0
-> +
-> +	deadline=$((SECONDS + OVPN_TCP_KEYS_TIMEOUT))
-> +	while kill -0 "${OVPN_TCP_KEYS_PID}" 2>/dev/null; do
-> +		if [ "${SECONDS}" -ge "${deadline}" ]; then
-> +			printf '%s\n' \
-> +				"server-side key setup still running after ${OVPN_TCP_KEYS_TIMEOUT}s"
-> +			kill "${OVPN_TCP_KEYS_PID}" 2>/dev/null
+> +	def zero_peer_stats:
+> +		zero_attr("vpn-rx-bytes") |
+> +		zero_attr("vpn-rx-packets") |
+> +		zero_attr("vpn-tx-bytes") |
+> +		zero_attr("vpn-tx-packets") |
+> +		zero_attr("link-rx-bytes") |
+> +		zero_attr("link-rx-packets") |
+> +		zero_attr("link-tx-bytes") |
+> +		zero_attr("link-tx-packets");
 
 [Severity: Low]
-This is likely minor. OVPN_TCP_KEYS_PID is never initialized at file scope
-and never cleared after the wait. It is only set in ovpn_add_peer(), for
-peer 0 in TCP mode.
+This isn't a bug, but this filter only checks that the counters are
+present, not their values.
 
-Could a value inherited from the environment make a UDP run poll an
-unrelated process here and then send it SIGTERM on timeout? It could also
-make the final wait fail with 127.
+ovpn_compare_ntfs() runs both the expected fixtures and the received
+output through this filter before the diff. The fixtures hard-code
+every counter to 0, so the test would still pass if the kernel sent
+zero, stale or swapped counters.
 
-There is a related question about PID reuse. Once bash reaps the subshell
-during the sleep 0.2, kill -0 and kill are working on a bare number.
+ovpn_run_basic_traffic() in test.sh sends traffic to every peer before
+deletion:
 
-In practice:
+    ping -qfc 100 -w 3 5.5.5.$((p + 1))
 
-- each test runs as its own process
-- the variable isn't exported
-- ovpn_wait_tcp_keys() is called once per process
-- cyclic PID allocation makes reuse within 0.2s unlikely at normal pid_max
-  values
-
-So if anything is needed, initializing OVPN_TCP_KEYS_PID= at the top of
-common.sh and clearing it after the wait might be enough.
-
-> +			wait "${OVPN_TCP_KEYS_PID}" 2>/dev/null
-> +			return 1
-> +		fi
-> +		sleep 0.2
-> +	done
-> +
-> +	wait "${OVPN_TCP_KEYS_PID}"
-> +}
+So the counters should always be non-zero at that point. Would a check
+such as .[key] |= (. > 0) work here, with true in the fixtures? That
+would catch counters that are reset or not filled in.
 
 [ ... ]
 
