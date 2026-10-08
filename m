@@ -1,220 +1,79 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273CD37D10A
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 01:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791424311; cv=pass; b=P0EpMSabhD0Je7HAV0f44H5HnIwTEE5Uk995TabOC1Bn0oxB75lBTyl7c3/YCehko28c/A/ZsYubimIM8Q1CGWQDolOLgCLFrMTxUDOuJHVHgXIBmk38I/XbJXEJ+Lpz7kv3VBV9Nshu19g8xT7E/zcXXjfwxE48C8LIBKx6NSA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791424311; c=relaxed/simple;
-	bh=mHy1hYNfLYf8HboALp2RXqTAvR4x9VzZDrNkBtBzrj4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PZ0ugL3AF/bJ5KPAa+zyRLg/WvNuR9Skyjm+h4ZMsMOef9bzLbazSxP5nDFeO332KJEfsibG+yRWVgZhEnUbv4EnoWxZ2FzS2WlzmEr9dNxHwYF3O7E6jtLlnzQnKiZjpKG4QrcNxp430mReCnRDubIu6cq/s7K/IlPuMBIZuWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EpVb5+zF; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F0337AA79;
+	Thu,  8 Oct 2026 01:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791424650; cv=none; b=UE3lNM9wtAasSYHRuupE8tO1pC6chI6QjHQVVF2NCR5/dLOrWTF4FaZQ6zFFdGWLKRjU8qpnXMVNSiBzDQQy3n+0vZOLI5vArIEK6a0oV4jmor/1C6Uy2zsL8OMVXC0pu25E2GcxVfQfIsXrm6HzzdmP7+5o85Rv9zN4gHXvFGY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791424650; c=relaxed/simple;
+	bh=bwDRfHmL+0pbMnJR1GsK7JFfccS9jDbWsMhcIV6pmxs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IzWLK7BxJptBrE7eQ4ERl0LHQw3R0GXwVUmaz/FQ0DjezckqttDZJmOL2MBH5fSo0Kmnz4aQsQkyoX6kVk4YwB8v+/zBmIfaMrbTUJ0W+i8kUJ/Bx2XMVkwAufEdxpg7+Vjz7s67Zr0zdEDj4Aa1K8m0PVNBqqOoASWC0Gq4758=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWFzYyQq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EpVb5+zF"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a9a2cfe1d4so12998391fa.2
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 18:51:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791424308; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TAV7YST9aqBOIrfM2w8AB9FyjlZX80jXC/KH+81dp19733BmlQGu0uo5qf7wnMfSlH
-         oL0BFabiQRRjevCWFnHBLwaWM0LZ97NgrVu+P82Bm7YQjFP+DrfsnhFPRe4YuBotkILx
-         PP3aDm75HzaXh0lOVNT7HITq7KThJGQ15l6N4Bzyva0PhLrJZoqkoNYJSjv3ZKKWHEKw
-         r+4yM2Af6XYFOpF73LDy3RoWoFMtwO5ZiA6hxGZ/R2VO+Tc0poEaRUBxd9PIhUEms2pn
-         VM3ANnkQn82V+AD5qQ8YWwWl2xPFaiCTKAwZkgVQnFkYfyQ42F9g6jivpCe/HpQhi+GJ
-         yxXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=axDNfEaKpBNUafTexjltXvW8jUqInU0yDMsNDS8+aYA=;
-        fh=aS0R4AxlHBcRqpKtZHtHWfUxKEZRtkLhw2FbrY9B+XI=;
-        b=jxWdMICcxI50LmT2WNbVjF7Dc9clLuRjTzMlv25lGPjOx5QtPgcoLaJeCu3MbEuKMH
-         OURcPkXGvyTcO4Y4niiTsp+W0zOqLonkq90nUOZXB8xp0C/TTVtbLzoQYVcQxjAuzsXX
-         Doqcq3fLY4FBvJu5vqjzCS9+30hxmbQG9FAHSFFiS13CW4Huq/tv5DVYhK7KIDzEAnlJ
-         IFfjejtOd27hOUYIuT+cPBKd742ZL1GYf8xYYXenytZ1dHYhR9AQmuswFrd3LAD5+Keb
-         n5N7r6IF7ysEMPG7RhBMGKMfKRhJG54Czp7l2cF+A+k4M6st2FOKL0DQ5DIBx+4ScKZD
-         mVXg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791424308; x=1792029108; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=axDNfEaKpBNUafTexjltXvW8jUqInU0yDMsNDS8+aYA=;
-        b=EpVb5+zFuMnwzfKlWr9fCa6Pu/DmtTmaF8kEtx6rZi5xvVIqSHvYX4coYUu3j6EDzP
-         STf1rEjbY/D4IZdQoneYf98dmi6WgsRh18xIvLOS24QkBviXjvmqy/+sLOebbm0OhP33
-         7Do5bt4QHv0oO1x2mIZRTnjeI141k9PLJig1WnoUpGoMas4C5zJ+rddg0f23oRFSBEGe
-         1MEQiFuyiicuzn9V1svDlnr4G0jqCMJQJKFAydaEEdA6AfJeRHM0jO74Nrv8HXl0O8gl
-         +kU7061AdP03BocmIrWANDbrbxQdLhQqgapOMQEpsN9tIWpjfAj/f7tZ86BpOjIL9WQ3
-         W1aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791424308; x=1792029108;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=axDNfEaKpBNUafTexjltXvW8jUqInU0yDMsNDS8+aYA=;
-        b=JiwzibN+e4nTKK5st/lLukoo1e8niyZ73Px6Qjf6tSoNGAnalTv8/bZ0ldXt9GRt9y
-         HCfYGT6X62IUUrd3c5SnBg/q8SAVs/vhJx0Z+KrIGGEEf7rAecTOpLXc5UsoAb/UQboX
-         Dmfy1A1fVit/kFOofyzoZXTUyZ28jSMoz820SGMyrUbbb7KjLnUPJScAAS1eeOjPLlVt
-         +MIKuMt8XOUAS2iB9HEVWO36JCqEmg9FLcXULj1/R8G6UNoNmLEHSSDTQza6kFdK7ASU
-         nZAd8uACF2qLAeT41LfVKTRZxHuIm3UctLF4GuQMbx8m1TCEfqJxVZ+CADqFQImegvzy
-         YN9g==
-X-Gm-Message-State: AFq9FYLV55R9YopyHvkwHolc8RY5I2qyQiDc5zGiw6Idd6LhtQu9qdpP
-	AiqRKtFg5ddEyzVRZ9ICi+NxKNBHaxmB4FMm2kSwawQq/gQWLePSQ8EL0I7dCwrWMJBdGYohnyy
-	ItGtWGQwGVG3sv6p3PzhfCYoqqFIvCIE=
-X-Gm-Gg: AYBFou1zgKSORDlFWBHgBEQ0u6g6w6NhPzN/qlTbJ5allR6aGOwjJpDahEkQGUlbJw7
-	JLdlcPbKaamLGQRbkiQKDQiuDYg1z0Rrwi3Smm/IVl7CsONLNb3JD9kQIsQTxTFgIjfnhQAVTc2
-	t+DzVbc6HsOieDIQd6Xsswq8FAkQQAmgBj4uLLzUuL0XatPRXwb/tvPh9hhopJaxPQ5rQTeCL0F
-	gzhIzggH2TYARlfp6DupkkRRkdyItzILKeKlsF6q3QS+R5c0kAaj+pjQePNTVcMfMRNJO7os4J1
-	Wo0HmpGyOqR8WseA7ACf29O8xvakV5QfP/gsc5DbAtokpse7qULhbziaaTj1p3mjK6F2M0s=
-X-Received: by 2002:a05:651c:a212:10b0:3a9:9f8b:7911 with SMTP id
- 38308e7fff4ca-3a9a2d30c3bmr6229221fa.28.1791424307884; Wed, 07 Oct 2026
- 18:51:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWFzYyQq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783F11F000FF;
+	Thu,  8 Oct 2026 01:57:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791424649;
+	bh=cyaBNpcWG/sN/H/GV35qpL+l/NWPhdj0dPzl1NaiBHg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=NWFzYyQq8o/+WvrLyKjRlVhFoRbgI+Tjgo2xAmC4AOFqO1Ij/QPHRJlShg0cPpeyZ
+	 B5bhOd4JOHQfv7j36CdlRIG1JZqABSJiety8It+M6BgRdZmbQv6J6tjjLfcO2xtrtX
+	 9d7te4Xw8qOfZJ43JC7eC0I7oDI/h3KKkYcFQDC3QLlGUqr5bTWp/I6KGOiXWZGoyh
+	 eiGZ1BtDKqB+CfBOQss+JTsaPIRFsF8/uOpaDiAdKjgszWUZ+bT4PdkysAcMpUeCpe
+	 uXzsDH/Rp23D3H65GoWfLveDSb+9kvpJQX0fFwlqLQjqFB78FSM3Xy5mXNdz5nUyfK
+	 8mqyyhzIebSUQ==
+Date: Wed, 7 Oct 2026 18:57:27 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@kernel.org,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org, Ding Meng
+ <meng.ding@siemens.com>, florian.bezdeka@siemens.com, p@1g4.org,
+ tkusters@aweta.nl, jiayuan.chen@linux.dev, pulehui@huawei.com,
+ vinicius.gomes@intel.com, maciej.fijalkowski@intel.com,
+ magnus.karlsson@intel.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
+ bpf@vger.kernel.org, richardcochran@gmail.com, dima.ruinskiy@intel.com,
+ stable@vger.kernel.org, Aleksandr Loktionov
+ <aleksandr.loktionov@intel.com>, Piotr Kwapulinski
+ <piotr.kwapulinski@intel.com>
+Subject: Re: [PATCH net 1/6] igc: Fix RX HW timestamp reporting when
+ NET_RX_BUSY_POLL is disabled
+Message-ID: <20261007185727.68180ce3@kernel.org>
+In-Reply-To: <20261001222443.3500206-2-anthony.l.nguyen@intel.com>
+References: <20261001222443.3500206-1-anthony.l.nguyen@intel.com>
+	<20261001222443.3500206-2-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260929064742.576651-1-liushike123@gmail.com>
- <179066487225.31693.13001631968601791232@kernel.org> <CAL9mPHsf_10zX4Z_2WFHNJob7Tkfnaw6sp03q2+ujnTygn1Ucg@mail.gmail.com>
- <CAL9mPHuyOrK4WN4ZSWRFSYWpeTQBGjqXLDiy_Wr9AtEahL9KYw@mail.gmail.com>
-In-Reply-To: <CAL9mPHuyOrK4WN4ZSWRFSYWpeTQBGjqXLDiy_Wr9AtEahL9KYw@mail.gmail.com>
-From: shike liu <liushike123@gmail.com>
-Date: Thu, 8 Oct 2026 09:51:36 +0800
-X-Gm-Features: AclHuK8_27azU1CeyvfqOiVJ6y7v9RzdtGB-k40TFQNVY_vcIlwqkH_ABsVJ3XM
-Message-ID: <CAL9mPHut_XjQMQpq0L8tuTs6D2oZwbgDE3VkFbY1fXG_n8H5qw@mail.gmail.com>
-Subject: Re: [RFC net-next 0/2] tipc: notify pending connects of peer node loss
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, jmaloy@redhat.com, tung.quang.nguyen@est.tech, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, shuah@kernel.org, tipc-discussion@lists.sourceforge.net, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On Thu,  1 Oct 2026 15:24:34 -0700 Tony Nguyen wrote:
+> When CONFIG_NET_RX_BUSY_POLL is deactivated, fetching RX HW timestamps
+> from the NIC no longer works as expected, often resulting in incorrect
+> or negative values such as "HW raw -121948.050407424".
+> 
+> This occurs because disabling CONFIG_NET_RX_BUSY_POLL disables the
+> SKB NAPI mapping in __skb_mark_napi_id(). Consequently, get_timestamp()
+> fails to perform its driver lookup, and the igc driver's struct
+> net_device_ops::ndo_get_tstamp is never invoked.
+> 
+> Instead, get_timestamp() falls back to use shhwtstamps(skb)->hwtstamp,
+> a field that the driver has not populated. This results in incorrect
+> timestamps.
+> 
+> Fix this by populating the hwtstamp field with the correct timestamp
+> in the default timer when CONFIG_NET_RX_BUSY_POLL is disabled.
+> The "igc_adapter" is passed to igc_construct_skb() to enable
+> igc_ptp_rx_pktstamp() to access the necessary adapter details for
+> adjusting the timestamp.
 
-  I would like to clarify the next step for this RFC series.
-
-  The issue was observed on actual network devices operating in a
-  cluster. I have provided the discovery background in this thread.
-  The same selftest produced 8 passes and 10 failures on the unmodified
-  base, and all 18 tests passed with the series applied.
-
-  I have not received technical feedback on the approach yet. Since
-  this fixes an observed connection setup failure, would net be the
-  preferred target rather than net-next?
-
-  I have not yet reliably identified the original introducing commit
-  for a Fixes tag. I would appreciate guidance on that point and on
-  whether to proceed with a non-RFC submission.
-
-  Regards,
-  liushike
-
-shike liu <liushike123@gmail.com> =E4=BA=8E2026=E5=B9=B49=E6=9C=8830=E6=97=
-=A5=E5=91=A8=E4=B8=89 10:08=E5=86=99=E9=81=93=EF=BC=9A
->
-> The issue was first observed on actual network devices operating in a
->   cluster. The client was waiting in connect() for the server to accept t=
-he
->   connection. When contact with the peer node was lost, the pending
->   connect did not return promptly and instead continued waiting for its
->   connection timeout.
->
->   I subsequently investigated the TIPC connection setup and node-loss
->   paths with LLM assistance. The analysis showed that pending connects
->   were not registered in the peer node's conn_sks list, so
->   node_lost_contact() did not notify them. The initial report came from
->   the observed device failure, rather than an LLM or static-analysis scan=
-.
->
->   I then reproduced the behavior using the same final selftest on the
->   unmodified base kernel and on that base with this series applied, in
->   x86_64 QEMU/KVM guests. The tests use two network namespaces connected
->   by veth pairs and disable TIPC Ethernet bearers to simulate loss of
->   connectivity.
->
->   On the unmodified kernel, 8 tests passed and 10 failed. With the series
->   applied, all 18 tests passed, covering SOCK_STREAM and SOCK_SEQPACKET.
->   The node-loss cases check completion within two seconds and the
->   expected EHOSTUNREACH error.
->
->   I will include this discovery background in the commit message if a
->   revised series is needed. I am not reposting the series solely for this
->   clarification.
->
->   Regards,
->   liushike
->
-> shike liu <liushike123@gmail.com> =E4=BA=8E2026=E5=B9=B49=E6=9C=8830=E6=
-=97=A5=E5=91=A8=E4=B8=89 10:01=E5=86=99=E9=81=93=EF=BC=9A
-> >
-> > Hi,
-> >
-> >   > - How the issue was discovered, e.g. hit in production, hit during
-> >   >   development, syzbot report, manual code inspection, LLM or static
-> >   >   analysis tool scan.
-> >
-> >   The issue was first observed on actual network devices operating in a
-> >   cluster. The client was waiting in connect() for the server to accept=
- the
-> >   connection. When contact with the peer node was lost, the pending
-> >   connect did not return promptly and instead continued waiting for its
-> >   connection timeout.
-> >
-> >   I subsequently investigated the TIPC connection setup and node-loss
-> >   paths with LLM assistance. The analysis showed that pending connects
-> >   were not registered in the peer node's conn_sks list, so
-> >   node_lost_contact() did not notify them. The initial report came from
-> >   the observed device failure, rather than an LLM or static-analysis sc=
-an.
-> >
-> >   I then reproduced the behavior using the same final selftest on the
-> >   unmodified base kernel and on that base with this series applied, in
-> >   x86_64 QEMU/KVM guests. The tests use two network namespaces connecte=
-d
-> >   by veth pairs and disable TIPC Ethernet bearers to simulate loss of
-> >   connectivity.
-> >
-> >   On the unmodified kernel, 8 tests passed and 10 failed. With the seri=
-es
-> >   applied, all 18 tests passed, covering SOCK_STREAM and SOCK_SEQPACKET=
-.
-> >   The node-loss cases check completion within two seconds and the
-> >   expected EHOSTUNREACH error.
-> >
-> >   I will include this discovery background in the commit message if a
-> >   revised series is needed. I am not reposting the series solely for th=
-is
-> >   clarification.
-> >
-> >   Regards,
-> >   liushike
-> >
-> > <netdev-bot+sinfo@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8829=E6=97=
-=A5=E5=91=A8=E4=BA=8C 14:54=E5=86=99=E9=81=93=EF=BC=9A
-> >>
-> >> Hi!
-> >>
-> >> This is an automated message. This series looks like a fix, but its
-> >> commit messages seem to be missing some information:
-> >>
-> >>  - How the issue was discovered, e.g. hit in production, hit during
-> >>    development, syzbot report, manual code inspection, LLM or static
-> >>    analysis tool scan.
-> >>
-> >> Please do not repost the series just to address the above. Instead,
-> >> reply to this email with the missing information, so that reviewers
-> >> can take it into account. If the series needs another revision for
-> >> other reasons, please include the information in the commit messages
-> >> then.
-> >>
-> >> The evaluation is done by an LLM so it may be wrong, if you think
-> >> that is the case please reply and explain.
+looks like a driver workaround for a generic problem
+a better fix is likely needed here
