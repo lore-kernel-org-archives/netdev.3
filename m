@@ -1,355 +1,343 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49998347FC0
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791449643; cv=none; b=LF5C44okB5lgiiEsCRKXeWjfmpH90XVxstBeZuLTwYeOLrspZNR9iGnhaO5A1WOtIm4pwW6GIjAc7t+37GSU888Ry4MnNDYmTedfmvVldaye9m8XoNcdqOSQaw+5Cm5JfFah5oVyYy4762AKtNP7wMDrfxCYOQeGMgp3bK8zoQk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791449643; c=relaxed/simple;
-	bh=HLefPmBX47EFFJEHrgtmj8lWN4k9/YgWGOGt+gyhx2M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N73wI+7wFwOSXt0bYkg+Csm2bjP02ssGofxCMPXAOBOrteAPPGOSMqgthUUQIbtFs7KxGUtd6h3faUqaQ5E721M/oohAwPPQtKRHIfwWZOZOgN4SEShh0vrLGwu7O3ChpIngW36fNQiw7ciSTM/1yxZV2Nap1FtehYnNFZMexJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVa7RWp0; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED473B9922
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791449931; cv=pass; b=k2KvgY6gycqh9gsGYmx+enuiZjTMJTpef6h6Onbtyo2DElug5VKK3gRT1PG6nGHjpWFsI2aMDP5zoWWjoP+yPjNkVuS+b11qzkRnbiAC6ltCpT1I58SO0w5iwPNFXgGGZaiy9jt2LZmD0bm/V4qY5OCOjnAPffZN4FFVRj3aqec=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791449931; c=relaxed/simple;
+	bh=iGhry8OSy5NpUf/OudCWP+OhrPgRkmkd2lyoQM640zk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ggOge0jbQtY0gH7hY0ek5Sh39XhP871nmc19X6fWgS7U/RR3E7gDnLiFNAedqL28AyNeYzRFF50bH0oWbOTdUrPm3ecHFTITIOD1IGwSpBjK0LT6FOm0ILIJy2bayuL67BorZSyOnAHD9j0D25xC3w7bDjrfgPv1MSAQstBbTN0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/mrppHW; arc=pass smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVa7RWp0"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-351775aa1c0so897243eec.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 01:53:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/mrppHW"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-535853983f0so9765731cf.2
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 01:58:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791449928; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sNll/+Y2QhCPd+j9kP7eIqAe6MTD3L0A3/UHS0gPpZF9yrc8AJNydKWBXOnZk9cdmQ
+         0uinnIzG1epAlb8S/Ia7YxN5toBmTQJ3Mp5BXUt29nltel3ZN+P+X4CGiAEIIGKg0fgf
+         rUCq3p1ZjDwIhzGG22QLcVkaYj5HtKF3IqpchPOOZZnx7Qntj7Rvv50XDk18Z49vZeh+
+         6LyIbjmcG3Znbsz5epyZ/Yinbo94PFIBNtxzO8J0WVNIzoflT7q+A0olFUWtjp0mbVJG
+         DPMJeEO/kCGXmVRvbLHbevtnMmuBXj/g01F+JYEL9PWYwFmj+D8twULC3myh888hTr9l
+         ggCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=f6WGTpJs/XXXD3HACG4yE9wcBHyQvNNrKktD1oYCass=;
+        fh=WrcdMP/Lht6P4BMZA6nITh7W/GOq93K14vFbP3i84u0=;
+        b=CgSd/MIt2ogmrBVS4wXpPF7/eunUO9woWIa9fzMCNNARbVrhNa4fbOTXdtXznKKISW
+         Q4S5SkreZ5f04jjS8gP28jp/3LmZyawmq7+JtugTCndwp9qSLXkZhl8Vti+SWKrHhTQf
+         OjkWRZb973dqYu2PLl6RuHaS46KTLNHocRNMgYWIBRCK4GGq/L0J9VFt7qOMfROynEgb
+         CcxFuqgis2mzmnsHK8cnuDggwT0Z759KBoH5FkXur7tugiZ7sWCwE8C1yql6XKBcetnz
+         1bdDT2U6BslqYv8OMJyr3VrHX8NblVlytTT6r9BciNIDfxL4WxlHQ6CaUPngpnZvIIw8
+         HgvA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791449638; x=1792054438; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cBRVu1PhaTpNiCczbgliHEJdpmg0aCx3TB2VjXS+OlY=;
-        b=kVa7RWp0GbHwFZfi7LWMMuslV835wg93nsDbsItGFiC5KeHpXtQjeeO+mCQeUwiSEy
-         mEVGxtlYpi233BPtwQIhL6+9sqbKEiPBOaFTdehwWIKClh6M9LMNFShJm0RZzCt0uE7r
-         IArxxO/zctFDfRvigNxsuD9b+WAimwWmIvCabn0FURFkg/mnRdSSfMmEOdn23136xFut
-         d2m3a5Pds7fLa90nFiKV2ZLQ8I0DgwxDFMVENc6b3Qi8de0ER8x+BZhyyEzn3I0DNg6w
-         tyozLMjVi18b4cgSMmifkkh3LGBos1YMRPBmn6OoaQjw5IxQYE+Vr8pud39qKACCl7lN
-         EBGg==
+        d=gmail.com; s=20251104; t=1791449928; x=1792054728; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=f6WGTpJs/XXXD3HACG4yE9wcBHyQvNNrKktD1oYCass=;
+        b=k/mrppHWHh45MEVr5E2/8aU06otdklFCqFyMBV8Rj8BKpZ6b8PsFu0rJhFrgGO2Iq9
+         1xcls0/op5jgGRP1J4ukYvyZK4grAnnG84CeNmL1IpDoq5ICYZsr4FM3ZEkWnDm1/D+B
+         EFUEiTtdYl3Y4eFZ/Rwp88WLvibenwPvUfsb/NyZYHucm/axs323J11xrfdEBmsG7PMZ
+         B+o5Omb3EW67VyuM9m7BYQlSJ4ciNKamW87wknCagz1U6z5Iqadaa4j9xdH8/Lxex0WC
+         TyuRocEjnVyQqFXSMKTJX2MMc91ze9iiz2FFhhA8BtbNer7NmXKUabtnuW2JvgkDcNYw
+         6RBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791449638; x=1792054438;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cBRVu1PhaTpNiCczbgliHEJdpmg0aCx3TB2VjXS+OlY=;
-        b=i/zPbRx/tNiep7nBovDx2m6T3IUk1ORFvJw4zayDRJdHgsbaqfdZyi5yKl3niasin6
-         39G1PNKaO9q6/8gbkVzbjVXQ8h06R+P9PMz6fY0ito1Bu7GITCqSRG/dtx9qfV8zpBou
-         1aGDq9I+oifwyOBiEE9mT3+hwfkS5DV9BWQ9Y88hnNmXC6b69JFOuRxzGwulK8ThB1mB
-         6ADVj2inOtpLHHGVjiix83kqeVOjL3AuNKI9Nbld0p6514x4ejNGCESpvFFFcYSFoyPa
-         6qP8scHTDQW8CvyOnHdbPwxoYkTzbtQGx3BCbqkhxvoKs1P5rRJ//D0Roj+YGneoFgt3
-         Xn4Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzBmKOgWt3oaOWXeG93goh5uiXkwRRgvXLOy6Bc/J4kn5TTekccN96fyRQA5vM1vxSwNP6z7oY=@vger.kernel.org
-X-Gm-Message-State: AFuF++m5NZEGdzivaS8te4UOfAMxmbI4nSMp/5WnTl2Kqg4d4m3loLRi
-	LRS9eGY6if5WbGbBQ/htqM2/EWmLe9c4RGLbvjyfjVVwkaXlMZyzX+Od6l9SWLWc
-X-Gm-Gg: AYBFou1e2RKfjRTkpxUjAUBb6PpK+4RiFcz0J9iLib/XbSWbgzMw64zJTMlq2vJuFTF
-	DKDGSvcRKL8UIEdzhZqBmj2cvdNUO08E9a0gJtaez11boIXi4I6f/UlDSUh61brB+M9WGWeWeGM
-	ifBvvRshVw0g+9QgYRcV74PFvIc2+jGaHO49nR9ekBZo8h1ZA83ddMXC4wTM/1WQQ/KmzRJMSc4
-	ATmkAnBBKx44lZ9gdt/ol4qc3+Po0A8f67LA4jYHaxFOoWTOPsnJOVBkVlQJpqz9C0rlTPnqz1C
-	tOk6BdyWDcjlMNVn07K5TSFpcFtUoxU/fi+5/ramUiQ4A+BEAXbcr8fICE2NrKrbctVtkhFu7sj
-	hc1e9eKge9NJeRdJCrasZNf3H7soFtxZlc6VqjXm9AGo2e9E2lZ56JTjoR3tZzlAo4QQ4faFlAm
-	D+cNsuBfL4RObqZYnU5y+4LW+FucINYeqpXAotKr9Nvaz4+g9b2ck5Eog0IUZ9TuzpFcPNkMUwr
-	WrOj+CUnoJXpDllLkYlSnSSAeM=
-X-Received: by 2002:a05:7301:6186:10b0:351:27f0:e411 with SMTP id 5a478bee46e88-3515de5a17fmr5307836eec.20.1791449638121;
-        Thu, 08 Oct 2026 01:53:58 -0700 (PDT)
-Received: from obadmin-Precision-3680.atlascopco.group ([167.103.3.1])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515af26f10sm16351759eec.13.2026.10.08.01.53.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 01:53:57 -0700 (PDT)
-From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH] selftests/net: test generic-netlink policy dump operation ID
-Date: Thu,  8 Oct 2026 14:24:34 +0530
-Message-ID: <20261008085434.3681647-1-sahaj123.sc@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1791449928; x=1792054728;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=f6WGTpJs/XXXD3HACG4yE9wcBHyQvNNrKktD1oYCass=;
+        b=CA3sq2zAu650MTDTuvdE+Ki5RGWCFHcPjPhUAe1tDSVGqEtlYiXp+mk5yCIfLoUAZ9
+         Hm0zq876UHnvqj6XgQk+7SY1A/+mhz4/zKpt6k2cDpI1nCUqGQzrVdBtpl9zvSBW4rZj
+         P+J75x6LaSDX8lZromjOD3NP+evnbv1+/5M60jdx4x4a/Wlw8IxIMcHXHdwuMt0nOpx4
+         N1CYUW63K4CWnl613chIcRXWxr0vnjmcAmgf0wHPiZmLmBry/KlFY8tkpAnqpbzco1kc
+         bUmgX0TXN6xBAVs044ETyZ3pem+6JQdulnkOE2UjLrq+B2xcTH6BSKILaS5MUfJtF2lN
+         u0pg==
+X-Forwarded-Encrypted: i=1; AKwUvBwe+LIbxmijdyWjTVbrrUV9Aayvc1mkcAROYZqMrhmwT6raiU+3ayDHT/XjOmDw0BlIS3+zoog=@vger.kernel.org
+X-Gm-Message-State: AFuF++lplhaZkVZXmAChRC2ZwKV3B6BTZxypW3ukT+DGML2hrYXbW/vE
+	q8Brny309sZ7iFmLg22xDVmzkyisGV86tNA+ZU5ALBiQGszPsJXHilG1voNYy2Ir5uIq3FjP7rM
+	22A5LSzyDVKLNH3Nj494r349Be/8FRHvdFplyIKE=
+X-Gm-Gg: AYBFou341nKSuMDWX1WIdlbi5gEO5f/YTG8T5iw2njP2NLcSdauj9pVWRscHw9Rm1nh
+	WdHb/TPUDtZhmboVyvc/QscjpQj3MSNibj7SngZmj4SEXT2Mxa7Y4QyGujP6WcuSmqoCm5SBUuM
+	yPjlIQkZMyVTjka6yuuBjKqoYWmfmAo/bThBKvZafguvnQ7AfCrSMbcHBag7goC/w1qW8/bO3RS
+	lhx7P8PfnhfdSvLa50GHBbKI9RBgEgg5S/7WuZPhU1uZbQdBYnjRTqHiOcGguI2IALJ587CNCfb
+	fm8UqQkKFuqoDlotQMOgl4od7Uth9cPR8nIEg6I24lDQUFzbqNh3fHLl
+X-Received: by 2002:a05:622a:309:b0:535:198f:9cb3 with SMTP id
+ d75a77b69052e-53575571eeamr93171101cf.29.1791449927990; Thu, 08 Oct 2026
+ 01:58:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1788800732.git.caoruide123@gmail.com> <f66560e3-b821-4e70-980b-d3a6252a022d@kernel.org>
+In-Reply-To: <f66560e3-b821-4e70-980b-d3a6252a022d@kernel.org>
+From: Ruide Cao <caoruide123@gmail.com>
+Date: Thu, 8 Oct 2026 16:58:37 +0800
+X-Gm-Features: AclHuK_2TFbmDoxBsmcfKlZVfWVsNVYNJp20EISwQYaGbvpGPwk0ZZDKLioHjuE
+Message-ID: <CACveakRhBR6RiGMO8Ur0V_N1SfNk3__h6g+EbkcYu=9kdBGYsg@mail.gmail.com>
+Subject: Re: [PATCH net v6 0/2] mptcp: fix request migration ownership
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Ren Wei <weir@nebusec.ai>, netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+	geliang@kernel.org, martineau@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	ncardwell@google.com, kuniyu@google.com, daniel@iogearbox.net, kafai@fb.com, 
+	kylebot@openai.com, david.lee@trailofbits.com, vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Check that a generic-netlink policy dump reports the requested command's
-operation ID rather than zero.
+Hi Matthieu,
 
-Request the policy for CTRL_CMD_GETPOLICY from the control family and
-verify that the response contains operation ID 10. Register the test as
-a generated net selftest and ignore its built binary.
+Thank you for taking care of this. I've opened the packetdrill PR:
 
-Tested: reproduces the missing operation ID on 7.0.0-34-generic and
-passes on fixed 7.3.0-rc6-00063-g0c2669a9f4a1 in QEMU.
+https://github.com/multipath-tcp/packetdrill/pull/207
 
-Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
----
- tools/testing/selftests/net/.gitignore        |   1 +
- tools/testing/selftests/net/Makefile          |   1 +
- .../selftests/net/netlink_policy_dump_opid.c  | 223 ++++++++++++++++++
- 3 files changed, 225 insertions(+)
- create mode 100644 tools/testing/selftests/net/netlink_policy_dump_opid.c
+Thanks,
+Ruide
 
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index dacd36ed8455..5fa1c6024672 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -20,6 +20,7 @@ ipv6_fragmentation
- log.txt
- msg_zerocopy
- netlink-dumps
-+netlink_policy_dump_opid
- nettest
- proc_net_pktgen
- psock_fanout
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 590b33e16d9f..09960735cb1a 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -186,6 +186,7 @@ TEST_GEN_PROGS := \
- 	icmp_rfc4884 \
- 	ipv6_flowlabel_mgr \
- 	ipv6_fragmentation \
-+	netlink_policy_dump_opid \
- 	proc_net_pktgen \
- 	reuseaddr_conflict \
- 	reuseport_bpf \
-diff --git a/tools/testing/selftests/net/netlink_policy_dump_opid.c b/tools/testing/selftests/net/netlink_policy_dump_opid.c
-new file mode 100644
-index 000000000000..4b53a8853109
---- /dev/null
-+++ b/tools/testing/selftests/net/netlink_policy_dump_opid.c
-@@ -0,0 +1,223 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <errno.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <string.h>
-+#include <sys/socket.h>
-+#include <unistd.h>
-+
-+#include <linux/genetlink.h>
-+#include <linux/netlink.h>
-+
-+#include "kselftest.h"
-+
-+#define REQUEST_SIZE 128
-+#define REPLY_SIZE 4096
-+
-+struct genl_request {
-+	struct nlmsghdr nlh;
-+	struct genlmsghdr genl;
-+	char attrs[REQUEST_SIZE];
-+};
-+
-+static int add_attr(struct genl_request *request, size_t size, uint16_t type,
-+		    const void *data, size_t data_size)
-+{
-+	size_t offset = NLMSG_ALIGN(request->nlh.nlmsg_len);
-+	size_t attr_size = NLA_HDRLEN + data_size;
-+	size_t aligned_size = NLA_ALIGN(attr_size);
-+	struct nlattr *attr;
-+
-+	if (offset + aligned_size > size)
-+		return -E2BIG;
-+
-+	attr = (struct nlattr *)((char *)request + offset);
-+	attr->nla_len = attr_size;
-+	attr->nla_type = type;
-+	memcpy((char *)attr + NLA_HDRLEN, data, data_size);
-+	memset((char *)attr + attr_size, 0, aligned_size - attr_size);
-+	request->nlh.nlmsg_len = offset + aligned_size;
-+
-+	return 0;
-+}
-+
-+static int next_attr(const char **cursor, size_t *remaining,
-+		     struct nlattr **attr)
-+{
-+	size_t length, aligned_length;
-+
-+	if (!*remaining)
-+		return 0;
-+	if (*remaining < NLA_HDRLEN)
-+		return -EBADMSG;
-+
-+	*attr = (struct nlattr *)*cursor;
-+	length = (*attr)->nla_len;
-+	if (length < NLA_HDRLEN || length > *remaining)
-+		return -EBADMSG;
-+	aligned_length = NLA_ALIGN(length);
-+	if (aligned_length > *remaining)
-+		return -EBADMSG;
-+
-+	*cursor += aligned_length;
-+	*remaining -= aligned_length;
-+	return 1;
-+}
-+
-+static int find_op_id(const struct nlattr *op_policy, bool *found)
-+{
-+	const char *cursor = (const char *)op_policy + NLA_HDRLEN;
-+	size_t remaining = op_policy->nla_len - NLA_HDRLEN;
-+	struct nlattr *attr;
-+	int ret;
-+
-+	while ((ret = next_attr(&cursor, &remaining, &attr)) > 0) {
-+		if ((attr->nla_type & NLA_TYPE_MASK) == CTRL_CMD_GETPOLICY)
-+			*found = true;
-+	}
-+
-+	return ret;
-+}
-+
-+static int parse_policy_message(const struct nlmsghdr *nlh, bool *found)
-+{
-+	const char *cursor = (const char *)nlh + NLMSG_LENGTH(GENL_HDRLEN);
-+	size_t remaining = nlh->nlmsg_len - NLMSG_LENGTH(GENL_HDRLEN);
-+	struct nlattr *attr;
-+	int ret;
-+
-+	while ((ret = next_attr(&cursor, &remaining, &attr)) > 0) {
-+		if ((attr->nla_type & NLA_TYPE_MASK) == CTRL_ATTR_OP_POLICY) {
-+			ret = find_op_id(attr, found);
-+			if (ret < 0)
-+				return ret;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+static int check_policy_dump(int fd)
-+{
-+	struct genl_request request = {
-+		.nlh = {
-+			.nlmsg_len = NLMSG_LENGTH(GENL_HDRLEN),
-+			.nlmsg_type = GENL_ID_CTRL,
-+			.nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP | NLM_F_ACK,
-+			.nlmsg_seq = 1,
-+		},
-+		.genl = {
-+			.cmd = CTRL_CMD_GETPOLICY,
-+			.version = 1,
-+		},
-+	};
-+	char reply[REPLY_SIZE];
-+	const __u16 family_id = GENL_ID_CTRL;
-+	const __u32 op = CTRL_CMD_GETPOLICY;
-+	bool found_op = false;
-+	struct sockaddr_nl kernel = {
-+		.nl_family = AF_NETLINK,
-+	};
-+	ssize_t sent;
-+	int ret;
-+
-+	ret = add_attr(&request, sizeof(request), CTRL_ATTR_FAMILY_ID,
-+		       &family_id, sizeof(family_id));
-+	if (ret)
-+		return ret;
-+	ret = add_attr(&request, sizeof(request), CTRL_ATTR_OP,
-+		       &op, sizeof(op));
-+	if (ret)
-+		return ret;
-+
-+	sent = sendto(fd, &request, request.nlh.nlmsg_len, 0,
-+		      (struct sockaddr *)&kernel, sizeof(kernel));
-+	if (sent < 0)
-+		return -errno;
-+	if (sent != request.nlh.nlmsg_len)
-+		return -EIO;
-+
-+	for (;;) {
-+		ssize_t received = recv(fd, reply, sizeof(reply), 0);
-+		size_t offset = 0;
-+
-+		if (received < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			return -errno;
-+		}
-+
-+		while (offset + NLMSG_HDRLEN <= received) {
-+			struct nlmsghdr *nlh = (struct nlmsghdr *)(reply + offset);
-+			size_t aligned_length;
-+
-+			if (nlh->nlmsg_len < NLMSG_HDRLEN ||
-+			    nlh->nlmsg_len > received - offset)
-+				return -EBADMSG;
-+			if (nlh->nlmsg_seq != 1) {
-+				offset += NLMSG_ALIGN(nlh->nlmsg_len);
-+				continue;
-+			}
-+			if (nlh->nlmsg_type == NLMSG_ERROR) {
-+				int error;
-+
-+				if (nlh->nlmsg_len < NLMSG_LENGTH(sizeof(error)))
-+					return -EBADMSG;
-+				error = *(int *)NLMSG_DATA(nlh);
-+				if (error)
-+					return error;
-+			} else if (nlh->nlmsg_type == NLMSG_DONE) {
-+				if (nlh->nlmsg_flags & NLM_F_DUMP_INTR)
-+					return -EINTR;
-+				return found_op ? 0 : -ENOENT;
-+			} else if (nlh->nlmsg_type == GENL_ID_CTRL) {
-+				if (nlh->nlmsg_len < NLMSG_LENGTH(GENL_HDRLEN))
-+					return -EBADMSG;
-+				ret = parse_policy_message(nlh, &found_op);
-+				if (ret < 0)
-+					return ret;
-+			}
-+
-+			aligned_length = NLMSG_ALIGN(nlh->nlmsg_len);
-+			if (aligned_length > received - offset)
-+				return -EBADMSG;
-+			offset += aligned_length;
-+		}
-+	}
-+}
-+
-+int main(void)
-+{
-+	struct sockaddr_nl local = {
-+		.nl_family = AF_NETLINK,
-+	};
-+	int fd, ret;
-+
-+	ksft_print_header();
-+	ksft_set_plan(1);
-+
-+	fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_GENERIC);
-+	if (fd < 0)
-+		ksft_exit_fail_perror("opening generic-netlink socket");
-+	if (bind(fd, (struct sockaddr *)&local, sizeof(local))) {
-+		close(fd);
-+		ksft_exit_fail_perror("binding generic-netlink socket");
-+	}
-+
-+	ret = check_policy_dump(fd);
-+	if (close(fd) && !ret)
-+		ret = -errno;
-+	if (ret == -ENOENT) {
-+		ksft_test_result_fail("missing policy op id %u\n",
-+				      CTRL_CMD_GETPOLICY);
-+	} else if (ret) {
-+		errno = -ret;
-+		ksft_test_result_fail("GETPOLICY dump failed: %s\n",
-+				      strerror(errno));
-+	} else {
-+		ksft_test_result_pass("policy dump identified command id %u\n",
-+				      CTRL_CMD_GETPOLICY);
-+	}
-+	ksft_finished();
-+}
--- 
-2.43.0
-
+Matthieu Baerts <matttbe@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=887=E6=
+=97=A5=E5=91=A8=E4=B8=89 02:05=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Hi Ren, Ruide,
+>
+> On 08/09/2026 18:41, Ren Wei wrote:
+> > TCP request migration clones pending requests with inet_reqsk_clone(). =
+Some
+> > MPTCP request fields carry ownership which cannot be duplicated by a pl=
+ain
+> > byte copy.
+> >
+> > For MP_JOIN requests, subflow_req->msk holds a socket reference. The cl=
+one
+> > inherits the pointer without acquiring its own reference, so the origin=
+al
+> > and cloned requests can drop the same reference. Patch 1 lets the clone=
+d
+> > request acquire a reference while verifying that the original request s=
+till
+> > owns the same msk.
+> >
+> > For MP_CAPABLE requests, token_node belongs to the original request and=
+ is
+> > hashed in the token table. Copying the node gives the clone invalid has=
+h
+> > state. Patch 2 moves token ownership under the bucket lock and makes to=
+ken
+> > acceptance and destruction tolerate an already moved token.
+>
+> Thank you for your patience. It looks like we were waiting for Clashiko
+> report, but it didn't get processed for some unknown reason, sorry about
+> that.
+>
+> The patches look good to me, I suggest taking them in the MPTCP tree,
+> and I will send them later on.
+>
+> Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>
+> (...)
+>
+> > // poc for MP_JOIN:
+>
+> Thank you for the PoCs using packetdrill! Do you mind creating a PR to
+> add them in the MPTCP fork, please:
+>
+>   https://github.com/multipath-tcp/packetdrill/
+>
+> (if it is an issue, please tell me, I can add them later)
+>
+> >
+> > // Minimal reproducer for a stale subflow_req->msk after reqsk migratio=
+n.
+> > --tolerance_usecs=3D200000
+>
+> Usually, 100000 is used. Do you need more?
+>
+> > --non_fatal=3Dpacket
+>
+> Why do you need this?
+> > `sysctl -q net.mptcp.enabled=3D1
+>
+> This one is not needed, you can use '../common/defaults.sh' instead.
+>
+> > sysctl -q net.ipv4.tcp_migrate_req=3D1
+> > sysctl -q net.ipv4.tcp_synack_retries=3D1`
+> >
+> > // Listener A and the owning MPTCP connection.
+> > +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) =3D 3
+> > +0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
+> > +0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) =3D 0
+> > +0     bind(3, ..., ...) =3D 0
+> > +0     listen(3, 8) =3D 0
+> >
+> > +0.0   <  addr[caddr0] > addr[saddr0]  S   0:0(0)         win 65535  <m=
+ss 1460, sackOK, TS val 1000 ecr 0,    nop, wscale 8, mpcapable v1 flags[fl=
+ag_h] nokey>
+>
+> (When validating the listener side, you can drop the TCP TS options,
+> except if you do need them, clearer with less options)
+>
+> > +0.0   >                               S.  0:0(0)  ack 1             <m=
+ss 1460, sackOK, TS val 1000 ecr 1000, nop, wscale 8, mpcapable v1 flags[fl=
+ag_h] key[skey]>
+> > +0.1   <                                .  1:1(0)  ack 1  win 256    <n=
+op, nop, TS val 1000 ecr 1000, mpcapable v1 flags[flag_h] key[ckey=3D2, ske=
+y]>
+> > +0     accept(3, ..., ...) =3D 4
+> >
+> > // Make the MPTCP socket fully established so it accepts MP_JOIN.
+> > +0.1   <                               P.  1:3(2)  ack 1  win 256    <n=
+op, nop, TS val 1001 ecr 1000, mpcapable v1 flags[flag_h] key[skey, ckey] m=
+pcdatalen 2, nop, nop>
+> > +0.0   >                                .  1:1(0)  ack 3             <n=
+op, nop, TS val 1001 ecr 1001, dss dack8=3D3 dll=3D0 nocs>
+> >
+> > // Leave exactly one MP_JOIN request half-open.
+> > +0.1   <  addr[caddr1] > addr[saddr0]  S   0:0(0)         win 65535  <m=
+ss 1460, sackOK, TS val 2000 ecr 0,    nop, wscale 8, mp_join_syn address_i=
+d=3D1 token=3Dsha256_32(skey)>
+> > +0.0   >                               S.  0:0(0)  ack 1             <m=
+ss 1460, sackOK, TS val 2000 ecr 2000, nop, wscale 8, mp_join_syn_ack addre=
+ss_id=3D0 sender_hmac=3Dauto>
+> >
+> > // Listener B joins the reuseport group, then A is closed. The next req=
+uest
+> > // timer clones and migrates the half-open MP_JOIN request to B.
+> > +0.1   socket(..., SOCK_STREAM, IPPROTO_MPTCP) =3D 5
+> > +0     setsockopt(5, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
+> > +0     setsockopt(5, SOL_SOCKET, SO_REUSEPORT, [1], 4) =3D 0
+> > +0     bind(5, ..., ...) =3D 0
+> > +0     listen(5, 8) =3D 0
+> > +0     close(3) =3D 0
+> >
+> > // Wait past the first SYN+ACK RTO, then release the owning MPTCP socke=
+t.
+> > +1.5   setsockopt(4, SOL_SOCKET, SO_LINGER, {onoff=3D1, linger=3D0}, 8)=
+ =3D 0
+> > +0     close(4) =3D 0
+> >
+> > // The migrated request expires on its next timer and its destructor us=
+es msk.
+> > +4.0   `true`
+> >
+> > ------------------------------
+> > crash log of MP_JOIN> [  280.449259] [      C0] BUG: KASAN: slab-use-af=
+ter-free in
+> subflow_req_destructor (net/mptcp/subflow.c:45)
+>
+> If such calltrace is on public ML, please, next time, include this in
+> the commit message instead (without the prefixes between []). I will
+> amend it in the commit message.
+>
+> (...)
+> > MP_CAPABLE packetdrill reproducer:
+> >
+> > // Reproducer for MP_CAPABLE request token ownership during TCP req mig=
+ration.
+> > //
+> > // The first listener owns the request created by the MP_CAPABLE SYN.  =
+A second
+> > // SO_REUSEPORT listener is added only after that SYN, then the first l=
+istener is
+> > // closed.  The SYN+ACK retransmission timer migrates the request to th=
+e second
+> > // listener, and a later request timer destroys the migrated request.
+> > //
+> > // On a vulnerable kernel, inet_reqsk_clone() raw-copies token_node.  T=
+he clone
+> > // is not the token table owner, so destroying the migrated request tri=
+ggers the
+> > // MPTCP token ownership bug.
+> > --tolerance_usecs=3D250000
+> >
+> > +0     `sysctl -q net.mptcp.enabled=3D1`
+> > +0     `sysctl -q net.ipv4.tcp_migrate_req=3D1`
+> > +0     `sysctl -q net.ipv4.tcp_synack_retries=3D2`
+> > +0     `sysctl -q net.ipv4.tcp_timestamps=3D1`
+> > +0     `sysctl -q kernel.panic_on_warn=3D0`
+> > +0     `sysctl -q kernel.panic_on_oops=3D0`
+> > +0     `ip tcp_metrics flush all >/dev/null 2>&1 || true`
+> > +0     `tc qdisc replace dev tun0 root pfifo >/dev/null 2>&1 || true`
+>
+> You probably only require tcp_migrate_req=3D1 here, after
+> ../common/defaults.sh.
+>
+> > +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) =3D 3
+> > +0     setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
+> > +0     setsockopt(3, SOL_SOCKET, SO_REUSEPORT, [1], 4) =3D 0
+> > +0     getsockopt(3, SOL_TCP, TCP_IS_MPTCP, [1], [4]) =3D 0
+> > +0     bind(3, ..., ...) =3D 0
+> > +0     listen(3, 1) =3D 0
+> >
+> > +0       <  S   0:0(0)         win 32792  <mss 1000, sackOK, nop, nop, =
+nop, wscale 7, mpcapable v1 flags[flag_h] nokey>
+> > +0       >  S.  0:0(0)  ack 1             <mss 1460, nop, nop, sackOK, =
+nop, wscale 9, mpcapable v1 flags[flag_h] key[skey]>
+>
+> "wscale 9" is "strange". Note that you can launch tests with run_all.py,
+> e.g.
+>
+>   # ./packetdrill/run_all.py -lv mptcp/<subdir>/<test>.pkt
+>
+> > +0     socket(..., SOCK_STREAM, IPPROTO_MPTCP) =3D 4
+> > +0     setsockopt(4, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
+> > +0     setsockopt(4, SOL_SOCKET, SO_REUSEPORT, [1], 4) =3D 0
+> > +0     getsockopt(4, SOL_TCP, TCP_IS_MPTCP, [1], [4]) =3D 0
+> > +0     bind(4, ..., ...) =3D 0
+> > +0     listen(4, 1) =3D 0
+> >
+> > +0     close(3) =3D 0
+> >
+> > // Let the retransmission timer migrate the request to fd 4 and let the=
+ migrated
+> > // request expire.  On vulnerable kernels its raw-copied token_node is =
+not the
+> > // token-table owner, so the request timer trips the token owner assert=
+ion.
+> > +8.0   `true`
+>
+> If you set `sysctl -q net.ipv4.tcp_synack_retries=3D0`, can you reduce
+> this to 2 seconds instead of 8?
+>
+> > +0     close(4) =3D 0
+> >
+> > ------------------------------
+> > decoded warning from MP_CAPABLE reproducer:
+>
+> Same here, I will add it in the commit messages.
+>
+> > [  314.661418] [      C2] ------------[ cut here ]------------
+> > [  314.661636] [      C2] WARNING: net/mptcp/token.c:364 at mptcp_token=
+_destroy_request+0x2b0/0x330, CPU#2: swapper/2/0
+> > [  314.661931] [      C2] CPU: 2 UID: 0 PID: 0 Comm: swapper/2 Not tain=
+ted 7.2.0-rc5-00353-gc27e36054537 #10 PREEMPT(full)
+> > [  314.662092] [      C2] RIP: 0010:mptcp_token_destroy_request (build/=
+../net/mptcp/token.c:364 (discriminator 1))
+> > [  314.663001] [      C2] Call Trace:
+> > [  314.663043] [      C2]  <IRQ>
+> > [  314.663107] [      C2]  subflow_v4_req_destructor (build/../net/mptc=
+p/subflow.c:694)
+> > [  314.663213] [      C2]  __reqsk_free (build/../net/ipv4/inet_connect=
+ion_sock.c:906)
+> > [  314.663325] [      C2]  reqsk_timer_handler (build/../include/net/re=
+quest_sock.h:137 build/../net/ipv4/inet_connection_sock.c:1147)
+> > [  314.663762] [      C2]  call_timer_fn (build/../kernel/time/timer.c:=
+1748)
+> > [  314.668915] [      C2] ---[ end trace 0000000000000000 ]---
+>
+> Cheers,
+> Matt
+> --
+> Sponsored by the NGI0 Core fund.
+>
