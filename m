@@ -1,140 +1,122 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A18423A66;
-	Thu,  8 Oct 2026 07:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79D63BCD20
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 07:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791445497; cv=none; b=C9C0Wm8kM5FSa5bvMyqk4FmPavq1wHnu2f4ZQJ0HcbQR92d0SvjtJ3NXR7tNg5cnZPqySvdBSgvpg76Gjv9rZsnuyjPKYwtZVDyn+VLKeeYuwxSP2i+XPyiARrQnoVrYnu/dzCubNM8pHe7A9Aa5s63Jux9ZcM3HbjRyDN87EHw=
+	t=1791445649; cv=none; b=IwbDLVlfj96AnVs1v47UVg7cbDg4olo7SrEsCOhl9FgUARHF1/AJ+H7Fl3LwyiFS5ioaYyfHvaSI/QR8/Na2Vuj5hGU4KgV8k/cXLSrU5hvtXrtdws7o5iopR0ObRxE+49SQdY+OWV4bl1oNJAI3TvlYXGoVISr2Oc88Mcq3yMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791445497; c=relaxed/simple;
-	bh=SX8aHBZ+Jvm6rjNABPl//Et/ydQ+AprwhtNg3ayxDFM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tDBkODA0fCy6FxLf5uZwAJbyPYa4tTdtKbCe2Ti2Os5byHH860BnlUeXAnL5vyc4PpwNO61sdjNi8vP/Aw0L21fcC0MBCGm8xNTOS0s6lchub/iMhleWUkfIiENxd8PfHhdeDCp5Tz2MPxCVQLI7er5kuHA85qlgl+EfAG0WS2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fTtjHnj7; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1791445649; c=relaxed/simple;
+	bh=DIgcsq7P3eZ1Zya7mMAQnHJvPn97VbVOugUdCmf9Gf4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qs96AA3SsjtPZjSbgOjDoBK5QqPYz1RhvARV2RDz0ZwG+5oO2dgXzuDNQ/WC2JJtmEqCownirG6z3UOQfG4O/ZjvTMl/UBplz57u6lRPO5Tw6tnqc5Qz4GaCSLvY1/s6u2FWp5zbQcVGKU5u0GvHCjWFme61MkczU7Phi3vSQMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=RyX1r+Ep; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fTtjHnj7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=RAFFMHXt9hKqc6DeNIeiFUmCqfwK92D95q9EzUKD8ns=;
-	t=1791445493; x=1792655093; b=fTtjHnj7tRQ1b//azj+cLa6f6XdxR3GAw/FmIcOSuy+GQc7
-	sMthauipDJswEjzTLacGpw7bUzd+3wdbJMTx9RAsBQKh1rRWmMDXh2Cpv6fwzWjtQfoi03H5JQg5a
-	HWJmWYOwRNN++coZeAdFzHQ+Pbajk8GD9uCYACFgDZiazi0VKz9Mpfv2lr8lAkQvt5inJlHv4ZL71
-	jPB03jllmlP5VMXiNpVB0OBbHTFB2igCDt6CuXQKNCBWnTaJt2w62lG3rixa0ikPNjWwAK7bVy992
-	39UuvnPxYLoTvV8011VEO1h3K15nrhZ1sMwgd/XO7fVC7QtCe+Rch47nO3kJ4BSA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1xEio6-000000099KQ-11jF;
-	Thu, 08 Oct 2026 09:44:50 +0200
-Message-ID: <2688563455012eb80063ae014f78230b10a14710.camel@sipsolutions.net>
-Subject: Re: [GIT PULL] wireless-next-2026-10-07
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kuniyuki Iwashima <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Date: Thu, 08 Oct 2026 09:44:49 +0200
-In-Reply-To: <CAAVpQUATko2Oig53r1+VHe+4Y3fFeX1xOw5RAnXtUAGwvQoB5A@mail.gmail.com> (sfid-20261008_040528_485050_028310B5)
-References: <20261007205827.467974-3-johannes@sipsolutions.net>
-	 <20261007163616.1088d364@kernel.org>
-	 <CAAVpQUATko2Oig53r1+VHe+4Y3fFeX1xOw5RAnXtUAGwvQoB5A@mail.gmail.com>
-	 (sfid-20261008_040528_485050_028310B5)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="RyX1r+Ep"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-53391786e55so37086931cf.2
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 00:47:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1791445646; x=1792050446; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vwXYbtbP0rsT/5VE/hMx/9ZCnE8bQ7naz2qj5NwTE8Q=;
+        b=RyX1r+Ep/dyMn51oeSGgYcVIr9bf2uCc+NXX5/XjOKbiHGgDyXjpDvVTiD3UO5HNeQ
+         dEzDRqvriFsSEQJQ4L5PtWvPnHKDgh30u44/nboGcjgktCw1d5E5EdzWTQQfppFCwgsm
+         wJhj2uu/GLY/pmioTlZL7Nt/rZB8LC0sLfzFw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791445646; x=1792050446;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vwXYbtbP0rsT/5VE/hMx/9ZCnE8bQ7naz2qj5NwTE8Q=;
+        b=R7Lb+JqAxiONolLHEsrNaMA7IRRHuMHxUR/DhfDe8BN4a8qc5lMx8+ayhktyRbwMmx
+         5vSN28SV5fCfUb00RZZvvBgYyJN9JV9kVFuJXXAxwh42kFzM+6EpOYY94hh4nJhz8FgL
+         aKJ7SULYo8lDTBSDGrYeqYqo1o6qeYTM94Z5YCrWpbKCQsrMmtD2/7ju/ZGkJwiuLu2b
+         sMSA+dNw1J1X5gEmUpIUvnyD1cabU5/5X+J1tga85LI7SlC5ILmv63sBYzLHHBmMV4Q3
+         ZJf+z5+j0c/Bt1U9f+ifQjW6g3I6V0JD0ocpNKG/0YB5TyS/0hsGOVy2FsgRxjhV2J+x
+         P1PA==
+X-Gm-Message-State: AFuF++l2PUbYSv8zaSB12CHu9V1lE2dcrN/vSScgqH4UaKkcsuQIQA3A
+	svDywpmOuUP9RTvxeYYaOQgfJJMuUVF4g9dRnE4Q+WJtXc/Y3LVk5kAjAfOy8w6pxgVjB9hblS7
+	sVsnT5Q==
+X-Gm-Gg: AYBFou27wkNdrbRur0H33rYr+wQEQH2tzh10hwdk5t507vSPyKxhL8w1gMirsRZWuDb
+	6zT5MQYYQomblqrqxC3g5FDrsueeydFb663K7uE27NsqbbkSbNdBJcfBXBmnslYTCdzi9wdB7tT
+	RGC5OwtyslvaaiMeTeayGJZN2VkWQsdsaZOedn0wL6pEla0KAtlN1CuVvBlSDnL0Wxo0/HqtwOg
+	TzqEgmIVg6p2vXJzAtZGOvqP+mmfd3eTtmSCFPodVwl+A4n8pXLITLQSje+rtixE99PJZzxGBKT
+	clAV8Pt9PD5rvb9469gj3Rekw5UtK1Kxm3wZa1WL2QrbPMM4lv4Wvs6FLZLxHTFlPcnWacjNuVj
+	M7FFnkf3BvII25fpaIAt5ugBNC2jowN5PRMLKAoOoH3EEt5hu2do9etSOmE9txJRKl+hpLesCwd
+	TF3zVlmQ+iG6eNasxTBm6HYJsXcHT02CAoum8oD5VDvKErTiD4UCJJPS+yUW/GYqdJszxbichfd
+	BMnFjXbX6OgwSj+Y7vljQIdV96fXudg23SCN1nU+1CIEU8ygQ==
+X-Received: by 2002:a05:622a:30e:b0:532:9f90:3f71 with SMTP id d75a77b69052e-53574c96022mr80233171cf.0.1791445646290;
+        Thu, 08 Oct 2026 00:47:26 -0700 (PDT)
+Received: from majuu.waya ([184.147.180.207])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5357213f3dcsm38253961cf.17.2026.10.08.00.47.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 00:47:25 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	cake@lists.bufferbloat.net,
+	Victor Nogueira <victor@mojatatu.com>,
+	sashiko-bot@kernel.org
+Subject: [PATCH net-next 0/4] net/sched: sch_cake: fixes for accounting and reconfiguration
+Date: Thu,  8 Oct 2026 03:47:08 -0400
+Message-Id: <QDISC-5RTM.v1.20261007130704@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-Hi Kuniyuki,
+Four independent fixes in the CAKE qdisc.  Three are follow-ups to the
+autorate reconfiguration work around commit 7cbfb180945c ("net/sched:
+sch_cake: fix autorate reconfiguration throttling") and the 32-bit
+admission-counter wraps fixed in gred/bfifo/plug by commit 4c660ee8c809
+("net: sched: fix 32-bit backlog wrap in gred, bfifo and plug enqueue");
+the fourth is a dead-code cleanup found while auditing the dump path.
 
-On Wed, 2026-10-07 at 19:05 -0700, Kuniyuki Iwashima wrote:
-> On Wed, Oct 7, 2026 at 4:36=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
-rote:
-> >=20
-> > On Wed,  7 Oct 2026 22:57:00 +0200 Johannes Berg wrote:
-> > > Nothing much going on in wireless-next. However, next time
-> > > I hope to land my RTNL-redux series which will (almost)
-> > > completely wean the wireless stack off the RTNL, except in
-> > > places where we need it for netdev register/unregister/etc.
->=20
-> That's great !
->=20
-> We saw a wifi driver holding RTNL long on Android.
+Patch 1 serializes a 'tc qdisc change' with the datapath's autorate
+update under the qdisc lock, so the netlink writer and the autorate
+writer can no longer lose the configured rate; rate_bps becomes
+atomic64_t so the 64-bit store is atomic on 32-bit machines too.
 
-Well, _that_ mostly shouldn't have happened for a long time (since
-5.12), though I actually learned yesterday that some android drivers
-went to implement things with private ioctls because they (thought they)
-needed the RTNL ... so, Android, take with a bag of salt.
+Patch 2 propagates the backlog reduction of the reconfigure-time tin
+purge to classful parents, so a CAKE leaf under HTB no longer leaves the
+purged packets in the parent's qlen/backlog forever.
 
-> Also, I hope we could remove the long comment in __rtnl_unlock().
+Patch 3 widens buffer_used and buffer_max_used to u64.  The u32
+accumulator wraps once the resident truesize passes 2^32, bypassing the
+over-limit drop loop while the configured limit is a u32 attribute.
 
-Couldn't we remove that today, by just __rtnl_unlock() in that place in
-cfg80211? But it's not exported, for good reason, presumably.
+Patch 4 drops an unreachable 'nla_nest_end() < 0' error check: the
+helper never returns a negative value.
 
-But that's also irrelevant, because indeed after my patchset cfg80211
-doesn't do that any more:
-https://lore.kernel.org/linux-wireless/20261006100655.2687533-21-johannes@s=
-ipsolutions.net/
+All four are hardening for net-next (no Fixes:, no Cc: stable): the
+counter wrap, the missing parent-backlog propagation and the
+reconfiguration race all predate any contract we could anchor a
+regression on.  Patches 1-2 were reported by Sashiko (gemini) and patch
+3 comes from the gred 32-bit-wrap family; patch 4 is a static cleanup.
 
-> > > I need to see what's going on with the per-netns mutex now,
-> > > can we already use that instead?
->=20
-> Do you mean moving net->rtnl_mutex out of Kconfig ?
+Jamal Hadi Salim (4):
+  net/sched: sch_cake: serialize reconfiguration with the datapath
+  net/sched: sch_cake: reduce parent backlog when clearing a tin
+  net/sched: sch_cake: widen buffer_used to u64
+  net/sched: sch_cake: drop dead nla_nest_end() error check
 
-I have no idea what I'm talking about ;-)
+ net/sched/sch_cake.c | 60 +++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 22 deletions(-)
 
-> Recently, I've been converting the first-class rtnetlink handlers
-> with dedicated locks, but others not worth the effort will simply
-> replace rtnl_lock() with rtnl_net_lock().
->=20
-> rtnl_net_lock() still acquires rtnl_lock(), but if we always compile
-> net->rtnl_mutex, using __rtnl_net_lock() for the latter should be
-> okay.
+-- 
+2.43.0
 
-OK so I (likely naively) thought the idea was that most things like
-netdev registration/unregistration eventually move to rtnl_net_lock()?
-Here are the places that still take RTNL in wifi after the patchset
-above:
-
- - suspend/resume (not entirely sure - it goes to hw restart maybe)
- - hw restart (can unregister netdevs on failures)
- - rate control init in mac80211 (but that can be removed easily)
- - netdev registration
- - netdev unregistration
- - rfkill, to call dev_close()
- - wiphy registration/unregistration (might be possible to disentangle
-   now)
- - network namespace destruction/exit
- - wiphy naming, but that can move to cfg80211_mtx now
- - some netlink dumps (related to the naming?)
- - testmode/vendor ... I guess we can't get rid of that,
-   but no upstream drivers should have much here
- - interface/wdev start/stop
- - netns moves
-
-(and a couple of places I should just fix).
-
-So mostly that's relatively short-lived (like the wiphy naming stuff) or
-related to network/netns maintenance where I'm not sure.
-
-Thanks!
-
-johannes
-
->=20
->=20
-> >=20
-> > That's a Kuniyuki question (cced). I've been trying to move
-> > HW drivers out of rtnl_lock and under netdev->lock.
-> > Most of the rtnl_lock contention I've seen in prod at Meta
-> > is in init_net
->=20
-> FWIW, I've still seen contention while creating/removing containers.
