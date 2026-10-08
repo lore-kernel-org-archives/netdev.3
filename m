@@ -1,52 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from aer-iport-7.cisco.com (aer-iport-7.cisco.com [173.38.203.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820C54C77BC;
-	Thu,  8 Oct 2026 14:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADADB39CD1C;
+	Thu,  8 Oct 2026 14:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.38.203.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791471275; cv=none; b=Acd2xcoipaP+voIFLwfC4FGh+JTBHjKrMQj2laSYLgAfGr8hOjpRCebHGkzNSy+qkjToVQIhYlTFGUrbvJ6bM7U91pRLKQ4MkFzumyERkD+n3R9Jl4jiYhvQluz39v1dFR+uH4WS3FuTWL+UOhC31/wZQxb7BtpaMILiK1TZWRA=
+	t=1791471537; cv=none; b=HDW7t+HlL8dTQPgJm/RNWryBRz7yyjLpb1hFXbUqQGzypnCfKi7w8eIz2pv9Ve/Hc2iudaDDiUajZW7UHse27+z8xH5/pZdBE7LAxooIZeJqpsTAzz4e8vAUYWyWtV/f/i863PomnY+fjgRSpMopSyRJFXjn0KoPUpvCGzEdFKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791471275; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ObD/O/800tnQSs2Ypd2sWTv28aE5rAPvFTyOFYz1A8o0cVd1Urb9EZMBCEseAq+GZE7c3Mt/oKwmYnpO8zoKM2PsJdBW7tVtDHzH13WAQEZuM2ccONUS7DVhCjyFZbALZ1fujtxe7uKOxBMXB8IJnBF4KBORZslDaXs5Nl/BxxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EoIzxkPU; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791471537; c=relaxed/simple;
+	bh=hJ2I5vYzdbSxVTVsdXaLzetNMTQBd4ITGn8MLEysKyQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=oq47gB4Xm22EyzoC6/bhpemVMs802/fwpL9ltk2X3KFI6B8O/vpwXF1IPxLfbE2shsipYecntBMeTgCI0WnHWMsfJCfcv6R+tO42Dxo1Kcuw+NDVHaCgbBPIXuOn31aC/j6rpPrIPOj95EiidZg4qRJavynUnt/1R6F9QlRjKzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b=VITYrUzm; arc=none smtp.client-ip=173.38.203.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EoIzxkPU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2501F000FF;
-	Thu,  8 Oct 2026 14:54:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791471268;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EoIzxkPUgogaxwEZ2p7NA5OxPZoODM6gidderU9MBF0NLEcuLoTMSfJ2mBSOR2uHD
-	 5YYegl/htA0rbm9cyEfVIKTUmcr4yFY7XRHIHuL7oM6lQz3ULlGft0+4muXQPi/gTv
-	 u5EsCyWK6rt3mphl8JnbZj7CQ8FAwnHRbumjNZ9YAA+fJG9+GaLR0BsbdauFq3ARbE
-	 bxsRQByBzKyCktim1Hia73u0UFAdXyPpP7/PL6jCMnxLCWf65Vuo0qJDRq2ygZM2Qt
-	 tTDt1bmzJaeI/x0g9yRHFH3Fq6XHW/f+f4WzqBSedtCOaMJD+Z87R0/qEPsRKJUg2l
-	 BtF9iunBiTM9w==
-From: netdev-bot+sinfo@kernel.org
-To: Luo Jie <jie.luo@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Lei Wei <quic_leiwei@quicinc.com>,
- Suruchi Agarwal <quic_suruchia@quicinc.com>,
- Pavithra R <quic_pavir@quicinc.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com
-Subject: Re: [PATCH net-next 00/11] net: ethernet: qualcomm: ppe: Add support
- for IPQ5424 SoC
-Date: Thu, 08 Oct 2026 14:54:26 +0000
-Message-ID: <179147126645.2527009.13829110581548714861@kernel.org>
-In-Reply-To: <20261008-qcom_ipq5424_ppe-v1-0-16caf43e44ee@oss.qualcomm.com>
-References: <20261008-qcom_ipq5424_ppe-v1-0-16caf43e44ee@oss.qualcomm.com>
-Auto-Submitted: auto-generated
+	dkim=pass (2048-bit key) header.d=cisco.com header.i=@cisco.com header.b="VITYrUzm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=797; q=dns/txt;
+  s=iport01; t=1791471530; x=1792681130;
+  h=from:to:cc:subject:date:message-id:
+   content-transfer-encoding:mime-version;
+  bh=wdpHghFpagSQYRq4D0vjJG/cXP4Qz9M5eYw+X20gVi4=;
+  b=VITYrUzmMTUAdavvnN8HUztnSErqgqdFvm0cyQvPt5ep1PbkLY31vTSz
+   QT6ySX/0JoeSNuL9SNs4OdLQ82CP4WOcLkYIOhttMDEEoTCvdxfD5C87b
+   dHCOb9mP4ih/+PiT8+y2BnHYX1SW84630ftYBgu+8kT/JEnrkNc+lERu4
+   DKzcqY0uatjWnF6vBbhkSIP1AuJd2q7QtSMjCse6m2zKSAywkW7ORFZIu
+   eAzb/sGmcvS5ya+4qWQ/QfWs+c/XboRkFuLINdfXP4AOPec50Y24UQ9pl
+   gJ2Jox0a7xDg4O+RJj09cx1FXfzIw2sU9oLAnP9v7N/FTu4BeFQh83l1o
+   A==;
+X-CSE-ConnectionGUID: sjNnxS0jTn2KCxFGGwYmUA==
+X-CSE-MsgGUID: +UaxRFFAR6aFngd5HyqvhQ==
+X-IPAS-Result: =?us-ascii?q?A0AiEQDurcdq/81K/pBaHAEBATwBAQQEAQECAQEHAQGBZ?=
+ =?us-ascii?q?QKDSmBDSQSEU4NPrj8PAQEBDxQCLg0EAQGBUQGDM44OAiY3Bg4BAgQDAgMBA?=
+ =?us-ascii?q?QEBAQEBAQEBAQEKAQEFAQEBAgEHBYEOE4ZPDZAVJ1Y1AiYCSCmDA4J0AxG6c?=
+ =?us-ascii?q?nqBMoEBhH7ZSoFuBoEfLgGIXgGBcYQIG4RhJxuBSUSBFTKIR4MOgmoEgiKBD?=
+ =?us-ascii?q?JVpCYFBHANZLAFVExcLBwVhgQUDgQZuMh2BIz4XL1gbBgWBHYEJBBOCFiMZN?=
+ =?us-ascii?q?nqBCV6BKylgARAXgQmCBwKCVIIAAgFJQQ4HRVMJJUMSRyYiCBIJARMaMAuBG?=
+ =?us-ascii?q?zg8CShBFwxRbT03FRkEPZFmHoQagRgCKZgVjV+heoQojCKVVDOEBI0UhkeTE?=
+ =?us-ascii?q?C6YWo4KmzmBfiYrgS4zGggbFXgFBlaBShJAGQ+XN8cIRTQBOgEBBwIHDgMLg?=
+ =?us-ascii?q?WiRfgEB?=
+IronPort-Data: A9a23:N6+Rkq5tuUperoAzFVrk1AxRtEHGchMFZxGqfqrLsTDasY5as4F+v
+ mMbWzvXOvmCNGvxL41zbIri/BlQsMPcnNJgHVZv/ntjZn8b8sCt6fZ1gavT04J+CuWZESqLO
+ u1HMoGowPgcFyGa+1H1dOex9RGQ7InQLpLkEunIJyttcgFtTSYlmHpLlvUw6mJSqYDR7zil5
+ 5Wo/KUzBHf/g2QqazpMu/rawP9SlK2aVA0w7wRWic9j5Dcyp1FNZLoDKKe4KWfPQ4U8NoaSW
+ +bZwbilyXjS9hErB8nNuu6TnpoiG+O60aCm0xK6aoD66vRwjnVaPpUTaJLwXXxqZwChxLid/
+ jniWauYEm/FNoWU8AgUvoIx/ytWZcWq85efSZSzXFD6I0DuKxPRL/tS4E4eJo8+/PZMWWNy8
+ 6Y7AyAjQT+ctueL6efuIgVsrpxLwMjDNY4F/3UlxjbDALN+HdbIQr7B4plT2zJYasJmRKqCI
+ ZBENXwwMFKaO0An1lQ/UPrSmM+qmn77dzBEgFmUvqEwpWPUyWSd1ZCzaYqKIYfXGq25mG7bm
+ 2vWxUrXKytEPfKZxjbY0mO1mO/2yHaTtIU6UefQGuRRqF6OzGU7CxAMU1a/5/6jhSaWV85WN
+ 1EQ9yMGq7Yz+E2iCNL6WnWQpnOYshMCc8RfHvd86wyXzKfQpQGDCQAsVSJIYtgrnNE5SCZs1
+ VKTmd7tQzt1v9WopWm1/7qO6Df3Mi8PICpaOWkPTBAO5J/op4RbYg/zc+uP2ZWd1rXdcQwcC
+ RjTxMTir93/VfI26pg=
+IronPort-HdrOrdr: A9a23:N9D5GK3E6hGeSz463GUYpQqjBIYkLtp133Aq2lEZdPWaSKClfq
+ eV7ZcmPH7P6Ar5N0tPpTntAsO9qBDnhPxICOsqXItKNTOO0ACVxepZgrcKrQeMJwTOsshAyK
+ xnb69yTPf0DVR8kILGxTPQKadE/DFCm5rY4ts3CBxWPGVXV50=
+X-Talos-CUID: 9a23:Z+BHy2M/avqAm+5DQytB8l4vQsIZdCf+52f+DGCnOGNUYejA
+X-Talos-MUID: =?us-ascii?q?9a23=3AIIFx8wwd/L/IGvmXQUei+ARYiaqaqOeTAVA3v7s?=
+ =?us-ascii?q?vgZeNGyp/N2q9nS2pQrZyfw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.27,146,1787011200"; 
+   d="scan'208";a="61873357"
+Received: from aer-l-core-04.cisco.com ([144.254.74.205])
+  by aer-iport-7.cisco.com with ESMTP/TLS/TLS_AES_256_GCM_SHA384; 08 Oct 2026 14:57:38 +0000
+Received: from localhost (unknown [10.190.0.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by aer-l-core-04.cisco.com (Postfix) with ESMTPS id 0AF7D180001C2;
+	Thu,  8 Oct 2026 14:57:37 +0000 (GMT)
+From: Jerome Tollet <jtollet@cisco.com>
+To: stable@vger.kernel.org
+Cc: netdev@vger.kernel.org, kuba@kernel.org, dtatulea@nvidia.com
+Subject: [stable] Please consider two mlx5e AF_XDP refill fixes
+Date: Thu, 08 Oct 2026 16:56:54 +0200
+Message-ID: <179147141500.99533.12861786180147681790@cisco.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -55,29 +82,30 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Outbound-Client-TLS: ANONYMOUS;unknown [10.190.0.162];TLSv1.3;TLS_AES_256_GCM_SHA384;256
+X-Outbound-SMTP-Client: 10.190.0.162, [10.190.0.162]
+X-Outbound-Node: aer-l-core-04.cisco.com
 
-Hi!
+Hi,
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Could you please pick up these two upstream fixes for the affected
+stable trees, including 7.2.y, 6.18.y and 6.12.y?
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+  e01620844c5c88b6fcf819d171df8e3976a0e76f
+  net/mlx5e: Prevent stale XSK buffer release on refill retry
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+  63811edf512584c946e5e96b100e9e280703bbb5
+  net/mlx5e: Prevent stale XSK buffer release on MPWQE refill retry
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Both are in mainline since 7.3-rc2 and carry Fixes and Cc: stable tags.
+They prevent repeated release of stale AF_XDP buffers after RX refill
+failures, causing silent UMEM ownership errors.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+I checked 7.2.9, 6.18.55, 6.12.112 and their stable queues: neither fix
+is present. Please let me know if backport adjustments are needed.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Original series:
+https://lore.kernel.org/netdev/20260824141645.23700-1-jtollet@cisco.com/
+
+Thanks,
+Jerome
