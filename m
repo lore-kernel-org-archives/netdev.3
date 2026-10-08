@@ -1,96 +1,96 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EAE31F99A
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 05:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0B42D0617
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 05:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.177
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791435832; cv=pass; b=ouBncbCV4X6vjmFpOLkElGV5A9lgi50g5gDkKaZHEtvitHyxp4Hq0nzVz6tzuspyTOI0QgzP1DRVu/OPplkSCDMDph7Pz+XVvU5PMHraNRUpBb0ZZr4vNoG5J7qnMzAIup+Pwh93k6Pmo7CuER+3FD4IyXotSnSVGlwVyzp8Ll8=
+	t=1791435971; cv=pass; b=ixzu3a+BS+28RNvrP7/lBGDqeIHJr8cozXysUssXR2e17ww5CKbAxoTltr8ivLxqQKkJ8ZRY15fGd1kIh91YwK374Qws/uH+DPMZe1Xf3J/SikW17mDECyUK3RBlp6q1bkwJVkVCQFWsU4crOAwKMS/CAtyNjJRPq2vDecl3qqo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791435832; c=relaxed/simple;
-	bh=GjoeoU74ZYSuGHxDYSGRd9MIPo/RtdO0E0uOpCYv/0Q=;
+	s=arc-20240116; t=1791435971; c=relaxed/simple;
+	bh=DhPFUP+norEZwv0KY7wpIyhM3OFW00KpZAcEkkSv3Ro=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=inSJDGoVJgOWVPB2+vuDqNZjryuLkhdHJatL7ympFnqFrXjAo1SsEoIdbNB9QfGnb6L6aOESRMTDT2knnOLK+Q6RuDlGrXorxnXPzIUnlV419waOFM2iSa6y0AGeHgYNCu3YAyFUkNKBEqqGsPy8HUU3GRWnLwQ742B2yXJNJYE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A+0M9OkH; arc=pass smtp.client-ip=74.125.82.49
+	 To:Cc:Content-Type; b=dylr/Qciq/vUlqXJWv2thhsPnmhfFKqOKkmkshM2nRdzqzVSnQB/C1SkhPAPXtQ/KuJIlZ7Oarj/TIsw/tGgTcxxjrWv3EY7vwmEH1clqu2tXNGo/6iCacZdvfeYTNKWdhHF0k4/NXNVcEjFgK5agckZDGXGno0COAUdtVXNOxM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j2fWoIcZ; arc=pass smtp.client-ip=74.125.82.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A+0M9OkH"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-150f88d22aeso1779111c88.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 22:03:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791435830; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j2fWoIcZ"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-3515f9a5d25so3575666eec.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 22:06:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791435969; cv=none;
         d=google.com; s=arc-20260327;
-        b=YczVRbc7wdardhP1C6rEh3H7/57e5xDCT9f+IqqKleo1wB+9zmmQj2xgN86/UyaHpU
-         ZAEMonNPABeVMSZC+L9MBxXhEA+ASoAqJ55QG45URFuY+sSlqbPR6gcaUu40zCgQM7vP
-         eZI1ytqvsLLVbcK6k5aqKNaYZeOW+rR6/Rh4VALJYTBl6brKVu+ku6EdNQANkAUaBASb
-         EhHaqMP3V5JofJvTE6DfpAU8HQ4CEvYjHtgVoZjz4CgyFcJhet5NTRxoaE8nFz3X74w4
-         exd0TyHrUq43O2Ud+eEd30qB+lS+ioFJDGOMEWRNOkGcBFzkoF5G9CpoMJLKB0pPLfiO
-         jAIQ==
+        b=n26VK4Gi5AM4hsM+8XmWaUgl3TB82vMjtTNNJNM5rJz6UrV7hb2mY9CYXNeOKSVymK
+         OLzscLwmQwhseQr3Sg7Qwnfv5c/LICJ1q8IZiQg+HEHnN/JCWVwVjKub7eNkYGbTxbef
+         /Z/ifsGDMIAR2Jh+1l0cWQ2KFPdTzcVrbv5HAzCr3LxQQEq9lqa3XTzjpRZqwRpcCYPg
+         XX/HRKtaq953UhYHxPUDUGWh9Klc6FX2U+LBzMe+zbmPsQLyyzs3XSee61vzd45yyeQM
+         F0SrF02dHElZFtAEibqkFThy0M9v5GJq0w9HCif1od/QQ4os4NS6j2rloUOnK9oZLI0n
+         cAMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GjoeoU74ZYSuGHxDYSGRd9MIPo/RtdO0E0uOpCYv/0Q=;
-        fh=Xwq6gnj6QBlVVwY5EdpQVDYGBRx8NytafnEPrug/xCI=;
-        b=fKWFsgWUR3jM9Fr1WNhRwZdSd77AP0RG2M1nNDmdHX5/YnUxqy9EufpG4c8eykBIVX
-         +m2dMqlDn/lTXRxpeC+ebyHKGjDeDz7IX95oCoXW/PfKkVDyQwgKBbqfsgxpON9RKbT/
-         4DehGeGVPiZZ9i3YVqYA+4qR6SWJUhRDQT+2M/h7Nn/Ajow+Gx/ZM3FwbQH8vlR8zpqd
-         SDkqwIEAtaQEZPNEgLxMTUiDtOouilJXx63CJ8wvVS/gZ0QkDgwTYXpqxJeEd/rUeVHv
-         yzQi1SiZCEN3XTaf/zeiR/LQzLAwXv/HkYxa23w6q4lvsVYzbGkUTNwo9iJvsp0cAk2Q
-         O4Gg==;
+        bh=DhPFUP+norEZwv0KY7wpIyhM3OFW00KpZAcEkkSv3Ro=;
+        fh=SAqbRJyZOEK7HxG5gBRdqpmoiVGiHY4s3DusrMdCmSk=;
+        b=qax9iGRGxoaovD62von/j5ShWhi8olx+/LZo2lg4SPeIu6HTEZTNtTTrmBZETrEgN9
+         5WbEKJArX10sxsTz5U9oah4UPpmHudqpkm4TqZkGuHOl0NA9D2v0bLglsaeK78/R0rFn
+         37S67fMm0abYOjdXx23dY5Hvdvl6RdicQwQh0lQQzjKtNlswB7JIBCLPISaRIoIDpeBQ
+         EatxyAVocYEOUqc/GhJuoayHRCBzGoB28J+Os4B9cPpRYY0NleZ5sRtFV9uUg4cWKJJG
+         TnQTo3xqA34403GZJ0zYBmpo6ZkE7DbDB4Fqf3zyXle6LcFnktW759vIn906N1gjm4jn
+         tHXQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791435830; x=1792040630; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791435969; x=1792040769; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GjoeoU74ZYSuGHxDYSGRd9MIPo/RtdO0E0uOpCYv/0Q=;
-        b=A+0M9OkHhp9Tget2ZYLxzNjBw36MSmHXwSc8DDzeiBAdV+dUNLENoF5uHiJdbjcGF9
-         yP/F6UGOnOrROR/xL4TQwndA2vtxAKyGRI1oi1ecVNAnfmdhdtMucv/gGgbzkRtY2xzD
-         ao9CagdV79GkOtCnM1V5zBWOAdRvVRxceA66HV9LKiUUTSSQW3g+OB8wsZk5zq9M+6q5
-         IdXPkIh1uaDX1c0XnNaKXiMDGWMl/eFGbIdTslViMbo6z9LgT1vYuuomm4tLdH9FIRUV
-         KZLzhChlzrYsSs+LHWOVHlfdB3Wiwr/B3VJc1j0EMTaq4ihqQHF8oTJJ/v4qZBKQxGZH
-         Mr0Q==
+        bh=DhPFUP+norEZwv0KY7wpIyhM3OFW00KpZAcEkkSv3Ro=;
+        b=j2fWoIcZS/tDBrGxb0MRjhLY0LdvvVptsmSDXaXMwBeCzA5hDXnCAaYF/lm6r9+xuY
+         DTHA0LJChgow5DQ9Lemfb1vFhXjc4Q5v+n7/pyXlbRJe4XPffgvtkfE+vX/ryzh/Gem+
+         3h6YAgR4QSyr6aelvtGrmdcWAhCzrSCD8HsboXZ7A0bKSAC0UMOHxsVO12fLYUs5p2lm
+         Lds9w1I3labq7J/wU29kPvvOfEk0PiINsOhAl4RpNAjf3FRBnZwsjD3wxLgHIKe/KI0v
+         sP0lY3tZ+WZ3t+F18SrZ055ABY+NUHiXIhn4dsVsP5hf+fYYbje6CBbDBIxjfk0M+FIx
+         Dt0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791435830; x=1792040630;
+        d=1e100.net; s=20260707; t=1791435969; x=1792040769;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GjoeoU74ZYSuGHxDYSGRd9MIPo/RtdO0E0uOpCYv/0Q=;
-        b=Qt9UyuwlQyXb/vUSSVNUYybgP8w71LaLL0H1MoGUnFIjU67NrPgdelykndn0+Dnsrn
-         bts1Prt2/nKiwIYn5mlfzc5VEEEMn4ig5rTp3LZdVAluEn8yQy4+Ur3ZUDaMOktsIwt5
-         nMYERUxVaiGG8R/aRgktVAZdlHXlms6HTWarTeXGDJecMwZskSODgcUGOZHCQIh0zz+R
-         F9fn59SE5phpfgOoak08Lr2k394vM5KTiG+zlSgyEusjnIarFcfPPQAaAFd2PupKvpu0
-         jZ4tIXTBHrZkql5mv4b8rf8scpS7JkgrLhKGUEbJT9rQ6yZj6H+G8OJ+xaumu4mLv2cY
-         JdGA==
-X-Forwarded-Encrypted: i=1; AKwUvBxxjj6CUH1XrWvWQGnsw/d+0pJnu7p303TgnruL3SeQ6w1xtqRwjBYuvz8BgsSl/pk4nqeN6w4=@vger.kernel.org
-X-Gm-Message-State: AFuF++l1ZSqAVQke45bjcA7GXOXE5k/7BSV/X2BQ2Ccfd9yh+81Dsb2Z
-	snAp5pV85qZmwPh54sP2uxEVKmhsRlu/NnZB/sBitQhzrSl1mH+d2hprVhJUJ6hLHLbtDEdIWpI
-	k3NzFpA+5cpKbBci3aIKxh8Rt6mvQPpqF7+C1Z3pW
-X-Gm-Gg: AYBFou0SyXfUWW6N8+aXVp7ZM1MHrVRbhCtxzzDa/vy0WyiQpc6k4Rch75xYwrwVlg/
-	voYfEo+z6EJmil/Rvy13QR2kRHh6wQnvR5vm8DBArLUyID8wZxdTmgW8KbXgb1p4nep4THtHTZm
-	/dhPmdHop5Ewj2wE1QGdK6b7hzMU+hcf+JDKRDARWAjGQ2d8+UvpKdr2/dSUAxwIUVVAAsTAczq
-	XXZX8ZuHatrtHNJ50R8MaNOd/O4Py/C20QvrIXnBEgvD3lDDvsIA9M6YlaRuk+5xh2ptLCGUS6i
-	WDK50k6av/Kh0jxDkHqhPmFeSL2yRvHJs/aQtYPyhA+4TEgAWtC49v510r3t6ZvkTfo7OJ8trIv
-	jBVHufV5qgLn0dPtolYJ2WWnLOkQOJenUxgVfQgACyhydficbzv+paUmd8NmAeRweUBan750VPY
-	FFjkALyp2v8k9MSk8NXnu++ZEC
-X-Received: by 2002:a05:701b:2602:b0:161:3942:c07f with SMTP id
- a92af1059eb24-1620a9a5ad6mr5199767c88.47.1791435829062; Wed, 07 Oct 2026
- 22:03:49 -0700 (PDT)
+        bh=DhPFUP+norEZwv0KY7wpIyhM3OFW00KpZAcEkkSv3Ro=;
+        b=DtiEVfyfEHDeK/jzY2HIth8OoXBlNQPc3G4uNX9cLw/my5lNIM6YpRVMSnslXwtXYL
+         DsEiAVuhpEBDjuE7CPsma/d/oyxM0tC3K6CDutDo3DBhSQpN+sin5eCAjX3nUO7YP7To
+         5GxJKULDP5rW0B+pUOlb45lsPUx0yDDyTVzix4v2mXGVEeDs3o/YXBn8sNgTnWXxk/NZ
+         68pH/y1HInzqTyQItxXNmWCph+HMOV8ekbIcUpqhLbNub+fo7cvwDGIGSVdymDCkJoQl
+         67AxI73rzTwj4l9eNf7911bvHCs5qQ+d4XksKfzwiiAsCXKIuSjcRWAPr5vTYzRXFPDq
+         r9eA==
+X-Forwarded-Encrypted: i=1; AKwUvBzYUeqaetg9YCI04SH0yBr60K2qkV+Barci6d5gkmRerKPkcqMfKe7HuI7FXNdFf2F86cBj1Yo=@vger.kernel.org
+X-Gm-Message-State: AFuF++nJ+G3Mp+tY7Oj6IrDwd/+cWMqWO8zI7lX3lCt1bIeW/u40DIZ+
+	KIYHCfdOc9EqpUoRGc7eU7kIW8YksTspqyUicpHWXlZEMMj7pX95iiii9656lgOxf5FNuons6nQ
+	3UzsHhwY0j521njCCTI0YXVIk9Ou/KuyM/l52HyYM
+X-Gm-Gg: AYBFou3Hj1uL2GlbWu5MtgC5UToWZG4YOGuNsT+xPeFGldgs4P048peY4Qs97GCV0YT
+	gzufqesucjZzFvzUxonxPmsL31S5XN8rgJCPXjQKC69SVlBkmlPTFCq0qtppJo3hxYhVSwHzxH1
+	A1cR3BQq9iKZuDOn6sJu7ti5k7ha9hLGsaVEwNF/PSQ3/GrlKSMOYxVCxAcn04x/wx4bR1HshYZ
+	ajaXkfZDnXeajr17/ywWQgs8rWzkhnCmHoCcuH+CddrcgnKS8/77rXt0kJlQG0FiWeGCeDyGQlG
+	IFOKorsn/rwCATD5JxXOzYlRT080hg/U6JkHqcblZBkvbS17VhlN9oVaPaCbmA/NAeDj7xHiJHg
+	i+Hv79lTEiD2AzxY1hArFs3iRqf/ByEKTH5+Kge4LFLRGxrNIhP+KMJo38g2/CIfEPMgyBRJ942
+	VYdcapIoE8aHvdSE6h+TaGxvFX
+X-Received: by 2002:a05:7022:7e8d:b0:145:287:ce91 with SMTP id
+ a92af1059eb24-162059dc702mr5384569c88.14.1791435968320; Wed, 07 Oct 2026
+ 22:06:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005-work-unix-passpidfd-v4-0-350183b6e02a@amutable.com> <20261005-work-unix-passpidfd-v4-4-350183b6e02a@amutable.com>
-In-Reply-To: <20261005-work-unix-passpidfd-v4-4-350183b6e02a@amutable.com>
+References: <20261005-work-unix-passpidfd-v4-0-350183b6e02a@amutable.com> <20261005-work-unix-passpidfd-v4-8-350183b6e02a@amutable.com>
+In-Reply-To: <20261005-work-unix-passpidfd-v4-8-350183b6e02a@amutable.com>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 7 Oct 2026 22:03:37 -0700
-X-Gm-Features: AclHuK8bNKhRRVOZdGlnqbecyJoiNU6TF2RIFHGHC-yiG-BKj77USuxK7OP9UOM
-Message-ID: <CAAVpQUCK-AAQWMP3nM4maaHAVE1hvh8Dt0yLBhq9V_d9CVETEg@mail.gmail.com>
-Subject: Re: [PATCH v4 04/10] selftests/net: SO_PASSPIDFD_THREAD
+Date: Wed, 7 Oct 2026 22:05:56 -0700
+X-Gm-Features: AclHuK-LcxOkOXzytf3Rr7yhTplfpto8Gsq6TYrBSnMDE5_TeVNBitGO6FALDu0
+Message-ID: <CAAVpQUCGbFYwbJ9GjTTFr79Z5-NqQ8_V=_hE=iRRSGf4Vr5w3Q@mail.gmail.com>
+Subject: Re: [PATCH v4 08/10] selftests/net: SO_PEERPIDFD_THREAD
 To: Andrew Halaney <andrew@amutable.com>
 Cc: Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
 	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
@@ -101,15 +101,15 @@ Cc: Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 5, 2026 at 8:09=E2=80=AFAM Andrew Halaney <andrew@amutable.com>=
+On Mon, Oct 5, 2026 at 8:10=E2=80=AFAM Andrew Halaney <andrew@amutable.com>=
  wrote:
 >
 > From: Christian Brauner <brauner@kernel.org>
 >
-> Extend the af_unix scm_pidfd selftest with SO_PASSPIDFD_THREAD tests.
+> Add tests for SO_PEERPIDFD_THREAD.
 >
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> Co-developed-by: Andrew Halaney <andrew@amutable.com>
+> Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
 > Signed-off-by: Andrew Halaney <andrew@amutable.com>
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
