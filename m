@@ -1,122 +1,67 @@
-Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCFF339399;
-	Thu,  8 Oct 2026 18:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15964F3938;
+	Thu,  8 Oct 2026 18:23:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791483297; cv=none; b=IDH7w5QfL+4mQykocfVf0anHpsjdWKdva8iXf5PUiwkcUcXRVCQbReqW1kBFdo2ZXxwnNho9wTkvKY++PIKFtm/qiP7bwHQX5V4efUb28kH9BNiG90KdUjOtFvWp7skHA50/W1FdQTO8FvolD00RYnvfG+Dolz0PKPa9lXi5jdg=
+	t=1791483801; cv=none; b=ukGpuXs5KkGnaODOXTBwvF8J4pxwPSCqOLRgjtOs/yux7A5BTokWSxQ8Lrnkgub7E9YeMNRl6+VEdrM4eC21CeTuVUPzMlfnIHUxRVE+5A5uk7SnDnUORS+su/hDbUNJyp2ZXLdXuNgXm+YBhXWM9qbCKEHs8nPBp77ONGhdy14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791483297; c=relaxed/simple;
-	bh=qR5BnTBaQnbBv+3i5ZX12qxKoVcwZ+J1+uyZdL+dP9U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JUQzuTCCM5/5Txc/LcZ23x7HCwCG9GW/d76ojpaPbYkKXR+kg3/Xhtl6CAZaVoR2tHjFNme5gSc2kA02cebABmpXn0oD8cSPF4cqkQ0W4E7s7XwWWisIsO2+kkp3QgTUvajYWtdWWSkuGVYh32vZIpdUBpb9SjQUm6SqEa10LOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=dyStMKwP; arc=none smtp.client-ip=51.159.188.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
+	s=arc-20240116; t=1791483801; c=relaxed/simple;
+	bh=voJiBKDo6TtLO+YJAosyPC30c8P4HYREUemQBZdTb8w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FciryHIK9ht9iyRhJF/9CrSr/E1WKqgAeTZOGPhj66JdyM9tKrMdQg3/5bXMd2MOfzTgsALCBOJTXBJ8RbY2rKoowOCx112R389UwtkvwKJymsvrlSDBOE9Pu9TzEVn2h5wQgkW5GpVf+urGThVfmgK5BIgH5lFtTKdN/GIVUdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XGr/rzFk; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="dyStMKwP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Sender:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=8gcCbqmu2rTClPFAHfTZZJOSvVGZqAXvL5XQElcT8kI=; b=dyStMKwPz0561YnQueJAJJXoVv
-	NDEvq0NI4hlD3KyiI5upCSxNw1BbZCo4jJsCzbpK9PykKDQyEeULIY3Tw6CEHz1AKh1XnXPIm0r52
-	ig5fYkJ8PPf+oyXHHQg08QEobFxVC4QEjtQZELFvZtraC92V5yTosgZ5dDJtaHYVMcravEIXcYpBH
-	0lMTnKky8ioNMue7/1htH6+1T4v/WOVsiy5xAuO44uZ3eqNIsxIH8ldL6pAz+kXVlKLFWypAf9MmD
-	4Ie2cVM94quU/2j8un92YT+GE1d89WIw56Fh08TvRgU6SZsA9jrGvJ20p2d1p2yrN/DmWKsAATbml
-	7G7d9DLQ==;
-Received: from [151.115.150.205] (port=54770 helo=gepetto..)
-	by pf-012.whm.fr-par.scw.cloud with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <Jeremy.Jean@oss.cyber.gouv.fr>)
-	id 1xEsdp-0000000HGdw-0RU1;
-	Thu, 08 Oct 2026 20:14:53 +0200
-From: =?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <Jeremy.Jean@oss.cyber.gouv.fr>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net/sched: fix use-after-free in __tcf_action_put()
-Date: Thu,  8 Oct 2026 18:13:49 +0000
-Message-ID: <20261008181348.527035-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XGr/rzFk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Wq0FegSrzp/3imzFWJvCAVCalZW0JrXU0E954419sPE=; b=XGr/rzFkf1pHzA2G2/ykP2+JET
+	94pd12J3hx3ceJFyhWO/nqivUA3kctWRJw8GZmDOlTFP1AWzvfhl74+YuY0jqrTE6vH+cBsMx/uLy
+	+C4o9Q5OowPSBGYp4bOiK5n4dRNAgDrl4ZIBnBl51USU/EpqgCPqH+ommTRP5hjTLj4E=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xEsll-009fsi-LK; Thu, 08 Oct 2026 20:23:05 +0200
+Date: Thu, 8 Oct 2026 20:23:05 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Haotian Zhang <vulab@iscas.ac.cn>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Daney <david.daney@cavium.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: mdio: mdio-mux: fix device_node reference leak on
+ success
+Message-ID: <ed1aa3e6-05a8-4843-ba32-8b2612099b00@lunn.ch>
+References: <20261008175612.2748920-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
-X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
-X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261008175612.2748920-1-vulab@iscas.ac.cn>
 
-__tcf_action_put() decrements the reference count before decrementing the
-binding count. Another thread can free the action between these operations,
-causing the binding-count update to access freed memory. KASAN reports it
-as:
+On Fri, Oct 09, 2026 at 01:56:12AM +0800, Haotian Zhang wrote:
+> mdio_mux_init() obtains a reference to the parent bus device_node with
+> of_parse_phandle() when no mux_bus is passed in. All error paths release
+> it through err_parent_bus, but the success path at the end of the
+> function returns without calling of_node_put(). of_mdio_find_bus() only
+> takes a reference to the embedded struct device, so the device_node
+> reference is leaked for every multiplexer that probes successfully.
 
-  BUG: KASAN: slab-use-after-free in __tcf_action_put+0x327/0x340
-  Write of size 4 at addr ff11000000d46420 by task tc-put-pause/64
+What would happen if the parent bus was to go away?
 
-Hold the action IDR mutex across both counter updates and IDR removal,
-keeping cleanup outside the lock.
+    Andrew
 
-Fixes: 16af6067392c ("net: sched: implement reference counted action release")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Jérémy Jean <Jeremy.Jean@oss.cyber.gouv.fr>
 ---
-
-Change in v2:
-- Invert the condition of the test.
-
-v1: https://lore.kernel.org/all/20260930211839.620410-2-Jeremy.Jean@oss.cyber.gouv.fr/
-
- net/sched/act_api.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
-
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index e45a63be397c..9eb1dec14cb1 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -372,9 +372,10 @@ static int __tcf_action_put(struct tc_action *p, bool bind)
- {
- 	struct tcf_idrinfo *idrinfo = p->idrinfo;
- 
--	if (refcount_dec_and_mutex_lock(&p->tcfa_refcnt, &idrinfo->lock)) {
--		if (bind)
--			atomic_dec(&p->tcfa_bindcnt);
-+	mutex_lock(&idrinfo->lock);
-+	if (bind)
-+		atomic_dec(&p->tcfa_bindcnt);
-+	if (refcount_dec_and_test(&p->tcfa_refcnt)) {
- 		idr_remove(&idrinfo->action_idr, p->tcfa_index);
- 		mutex_unlock(&idrinfo->lock);
- 
-@@ -382,9 +383,7 @@ static int __tcf_action_put(struct tc_action *p, bool bind)
- 		return 1;
- 	}
- 
--	if (bind)
--		atomic_dec(&p->tcfa_bindcnt);
--
-+	mutex_unlock(&idrinfo->lock);
- 	return 0;
- }
- 
--- 
-2.47.3
-
+pw-bot: cr
