@@ -1,52 +1,51 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2219B3C0607;
-	Thu,  8 Oct 2026 03:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52323C3F73;
+	Thu,  8 Oct 2026 03:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791431494; cv=none; b=M2tFkGJN+bdvTj7jOtSI/BBRJTQTZZPAj5l36jU1cYJfUTTybKEcrKEOUUlB4arGbxwbYf8cEalFs6XwBo898wqsvozF8WfyLaOb51p8GRBnmAo2rh8ieXElfY68+AkAIIt/rcig2fDlewmHFV9e5Ht1G3EgSTe9omaN1NFt5Gc=
+	t=1791431495; cv=none; b=Ol29BS5kuQRiE0kd8NoGmVTP5AopD3eyisI+U2fYGgybzCPRjDmdqDG2oMFjKe+YxqBHDvlNu9KXOvrNtvPaVEIDNFYFc/2GaYT4a1NzakvK7W8xHOFxXXSK/RTR6nKlGWOlFLK+GX5WvVeSFlX5IwDIJsD5BMdj39rZChdjEr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791431494; c=relaxed/simple;
-	bh=Sc7f5tlanyF+0QE5ytrPrvjjjT06sBtTTmuFLh5jKGA=;
+	s=arc-20240116; t=1791431495; c=relaxed/simple;
+	bh=75+Qk3xqFqT8LEzTBVWxvqO16VwVZ0tK22I4tlMGSH8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M52xGcilRBYBr4lgHFPKj0kgHStyRks/Qvisbzm+ZjkfsvlQwmNqOjbt+KXQ9zOM079a+/0Y0c9sHEr1h6LEuP+9UO6KVuEQAcS7yQdsVzCMxr2IzvPh49VVhzsMhmueMcr9XWcNiUxmgdC/FAqR837jhx2ZtUys+o/4YiuGqpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=HqmvjceR; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=OVWsf3P5; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=R3P2RIU208nohaI9dvT/Hk96ChsRgXX9jW2XE4Mw9nc/1N+av0RenLGgoE3O69csB5MpyP3gw3OPc4BaAoCP2MKUFxsNcSV4KcKT7fSOF8moLC3OWcy9S7aTVyJuhKhO2F7eLfVzyJ9pZPGFxaKHSKlHIqb8VaB9Umu9PtW8I2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=iI1URVKM; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=1+3nMFY0; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="HqmvjceR";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="OVWsf3P5"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="iI1URVKM";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="1+3nMFY0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791431489;
-	bh=Sc7f5tlanyF+0QE5ytrPrvjjjT06sBtTTmuFLh5jKGA=;
+	s=default; t=1791431492;
+	bh=75+Qk3xqFqT8LEzTBVWxvqO16VwVZ0tK22I4tlMGSH8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=HqmvjceRV4RIvdPMWxZxE7a4QSl5eM3aXVPApDihn2PPJDOrvvRnxvNm1l3dc9Yqb
-	 Wm8QIvtkw4TbP+OM7o5Aa6sNsI3+WtMx+jiZyq4xcUiGHqoTBxzk5X0qMOeu6/DuZj
-	 s+nLINSHpTpuyhzpK7EOQDrus5n8V/K3sFZtki7v+ESrm+GJiwgqVyGqhMvMGcQtxt
-	 qvMnJxdLTWpnacQ45J7gHqMH0taEvoxuoikibx7CY1daF9+6dFgRsxeM8LA3BhG/ea
-	 Rq5zLV+PZ/1x+fTIHoWmefzDAD/zmKWAXf3mboDosQlI9IlOO2ik6P9n/FK/JL8Drn
-	 279WO35ulVvNg==
+	b=iI1URVKMZhhf1RbOcaEO3JeTrYSfkuJputgR/5EjJYDWbrAsarpy0tftKQI5JZtSz
+	 RqDlOmFKZOgZXrnB46WznhA9Kvgwrm2/RNoCBReZX7R0SjcCoL/04VPqHkBNLGM3ZD
+	 +hLL7CGw2aZN9m2glwSeaPvtaUKtwUPk/ju7hNSUc4+tzyXBfRnAgP0/POUYOXgwZz
+	 nAwBWdgMKgbPw913O+YbiB/YrGQVamI9WJTbx8X7VLqHcv8anyH0VmR8AgUMFDI+Yb
+	 p3kvA5umn3lQARVdaAMpkg93lEAjjHtQP9N+TcthGFkVVVsbMONlKgH+THHxbKKIk1
+	 F83khpBaNYYrg==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 8C9D847285; Thu,  8 Oct 2026 03:51:29 +0000 (UTC)
+	id 1A001470CF; Thu,  8 Oct 2026 03:51:32 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791431478;
-	bh=Sc7f5tlanyF+0QE5ytrPrvjjjT06sBtTTmuFLh5jKGA=;
+	s=default; t=1791431479;
+	bh=75+Qk3xqFqT8LEzTBVWxvqO16VwVZ0tK22I4tlMGSH8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=OVWsf3P5oe69Xj6+cdbUfPz3tp8lQ9sWM2MkBU1y9NUGUQMJvFcZxd7lUqCFCeZmP
-	 MOsmMgzS7u63RM7UCPx1PeVTcsxGCKfsvVYuaXWy95BZ7ueU5F370RGddArglWrsK7
-	 hyLZBRZqhVBtpY0sTeGnAGNy8J4yy3g8pRfsB3hfpNjDGxigvqa0OaTCf7zHuUxueK
-	 SZ3gBjkG5sHrQNrbgrD3PQFFrqjYkfbK4RrsTECgwxGIwLKAJQehtXKmOysav22wQ2
-	 v3pyLTYKiri+LpW/epENM1ko56iERD5reZUl+taPk9aFY2duNGwUrQuH9iZLbhoxIs
-	 N/Dj2aBiwmLFQ==
+	b=1+3nMFY0Q4xm+66PGiZsLAup/wGFpKHXW+xfMzKEtwddz5dlNEXBszAtV5mQ75mTV
+	 AA3g/hKA67z3Tytz1VNxOB0f0AJTPtA85Ye4dnYjsg7m9jzldMGQnw474n/ONmK5nV
+	 og30LI7mKxHdikBVPh4H2gV/K/ITFBw862V2n7GCoiZtSG8RO8b0gJVnxWha+UNUA9
+	 sxJHlWtKA9P1iUzv97k3hLZQ9u+11hhUtkvrOiBAwxG22XmQo/0rcKGJ7CXpky1Nm3
+	 sZWX3QY7RWZdRMfAGeU9ZdRnrVs+S1Ym3+zcYIr19c0HCUBAjhxRw1JdZsEHsLLyfj
+	 yA6xeE9C6GpBw==
 Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id D5D1F47278;
-	Thu,  8 Oct 2026 03:51:17 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 730DF470D0;
+	Thu,  8 Oct 2026 03:51:19 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Thu, 08 Oct 2026 05:51:13 +0200
-Subject: [PATCH net-next v18 07/13] ax88179_178a: Add VLAN offload support
- for AX88179A
+Date: Thu, 08 Oct 2026 05:51:16 +0200
+Subject: [PATCH net-next v18 10/13] ax88179_178a: Add ethtool get_drvinfo
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +54,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-ax88179a-v18-7-6fa1d4c40422@birger-koblitz.de>
+Message-Id: <20261008-ax88179a-v18-10-6fa1d4c40422@birger-koblitz.de>
 References: <20261008-ax88179a-v18-0-6fa1d4c40422@birger-koblitz.de>
 In-Reply-To: <20261008-ax88179a-v18-0-6fa1d4c40422@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -67,207 +66,52 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
  linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
  Jianhui Xu <neuromoments@gmail.com>, 
- Birger Koblitz <mail@birger-koblitz.de>
+ Birger Koblitz <mail@birger-koblitz.de>, Nicolai Buchwitz <nb@tipi-net.de>
 X-Mailer: b4 0.14.2
 
-The AX88179A-based chips support VLAN offload. Add configuration
-support in netdev_ops. Features supported are:
-NETIF_F_HW_VLAN_CTAG_TX, NETIF_F_HW_VLAN_CTAG_RX
-and NETIF_F_HW_VLAN_CTAG_FILTER.
+Add ax88179a_get_drvinfo() as implementation of get_drvinfo, in order
+to provide information about the device firmware.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Error-checking fixes Suggested-by: Jianhui Xu <neuromoments@gmail.com>
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/usb/ax88179a_devices.c | 152 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 151 insertions(+), 1 deletion(-)
+ drivers/net/usb/ax88179a_devices.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/drivers/net/usb/ax88179a_devices.c b/drivers/net/usb/ax88179a_devices.c
-index c41d9c2dc737a3bbebd4dd969de244ba7a4b3a11..bdc67cbc17287e2969b36430c672887ee63d18ec 100644
+index e9913a7c703905c9422405c8158bf068f1d94083..4ba2b85a5ce6f95dfb182c67667e0565d02877b4 100644
 --- a/drivers/net/usb/ax88179a_devices.c
 +++ b/drivers/net/usb/ax88179a_devices.c
-@@ -258,6 +258,88 @@ static const struct ethtool_ops ax88179a_ethtool_ops = {
- 	.get_ts_info		= ethtool_op_get_ts_info,
- };
- 
-+static int ax88179a_vlan_rx_kill_vid(struct net_device *net, __be16 proto, u16 vid)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+	u8 vlan_ctrl;
-+	int ret = 0;
-+	u16 reg16;
-+	u8 reg8;
-+
-+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+	vlan_ctrl = reg8;
-+
-+	/* Address */
-+	reg8 = (vid / 16);
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_ADDRESS, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Data */
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_RD;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+	reg16 &= ~(1 << (vid % 16));
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_WE;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int ax88179a_vlan_rx_add_vid(struct net_device *net, __be16 proto, u16 vid)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+	u8 vlan_ctrl;
-+	int ret = 0;
-+	u16 reg16;
-+	u8 reg8;
-+
-+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+	vlan_ctrl = reg8;
-+
-+	/* Address */
-+	reg8 = (vid / 16);
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_ADDRESS, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Data */
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_RD;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+	reg16 |= (1 << (vid % 16));
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0, 2, 2, &reg16);
-+	if (ret < 0)
-+		return ret;
-+
-+	reg8 = vlan_ctrl | AX_VLAN_CONTROL_WE;
-+	ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL, 1, 1, &reg8);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static void ax88179a_mdio_unregister(struct ax88179_data *data)
- {
- 	mdiobus_unregister(data->mdio);
-@@ -517,6 +599,69 @@ static int ax88179a_mii_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
- 	return phylink_mii_ioctl(data->phylink, rq, cmd);
+@@ -235,6 +235,20 @@ static int ax88179a_resume(struct usb_interface *intf)
+ 	return usbnet_resume(intf);
  }
  
-+static int ax88179a_set_features(struct net_device *net, netdev_features_t features)
++static void ax88179a_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *info)
 +{
-+	struct usbnet *dev = netdev_priv(net);
-+	netdev_features_t changed;
-+	int ret;
-+	u8 tmp;
++	struct ax88179_data *priv = netdev2data(net);
 +
-+	changed = net->features ^ features;
++	/* Inherit standard device info */
++	usbnet_get_drvinfo(net, info);
++	if (priv->chip_version < AX_VERSION_AX88179A)
++		return;
 +
-+	ret = ax88179_set_features(net, features);
-+	if (ret)
-+		return ret;
-+
-+	if (changed & NETIF_F_HW_VLAN_CTAG_FILTER) {
-+		if (features & NETIF_F_HW_VLAN_CTAG_FILTER) {
-+			for (int i = 0; i < 256; i++) {
-+				/* Address */
-+				tmp = i;
-+				ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_ADDRESS,
-+						  1, 1, &tmp);
-+				/* Data */
-+				ax88179_write_u16(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_DATA0,
-+						  2, 0);
-+			}
-+			ret = ax88179_read_cmd(dev, AX_ACCESS_MAC,
-+					       AX88179A_VLAN_ID_CONTROL, 1, 1, &tmp);
-+			if (ret < 0)
-+				return ret;
-+			tmp |= AX_VLAN_CONTROL_VFE | AX_VLAN_CONTROL_WE;
-+			ret = ax88179_write_cmd(dev, AX_ACCESS_MAC,
-+						AX88179A_VLAN_ID_CONTROL, 1, 1, &tmp);
-+			if (ret < 0)
-+				return ret;
-+		} else {
-+			ret = ax88179_read_cmd(dev, AX_ACCESS_MAC,
-+					       AX88179A_VLAN_ID_CONTROL, 1, 1, &tmp);
-+			if (ret < 0)
-+				return ret;
-+			tmp &= ~(AX_VLAN_CONTROL_VFE | AX_VLAN_CONTROL_WE);
-+			ret = ax88179_write_cmd(dev, AX_ACCESS_MAC,
-+						AX88179A_VLAN_ID_CONTROL, 1, 1, &tmp);
-+			if (ret < 0)
-+				return ret;
-+		}
-+	}
-+
-+	if (changed & NETIF_F_HW_VLAN_CTAG_RX) {
-+		ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL,
-+				       1, 1, &tmp);
-+		if (ret < 0)
-+			return ret;
-+		if (features & NETIF_F_HW_VLAN_CTAG_RX)
-+			tmp |= AX_VLAN_CONTROL_VSO;
-+		else
-+			tmp &= ~AX_VLAN_CONTROL_VSO;
-+		ret = ax88179_write_cmd(dev, AX_ACCESS_MAC, AX88179A_VLAN_ID_CONTROL,
-+					1, 1, &tmp);
-+		if (ret < 0)
-+			return ret;
-+	}
-+	return 0;
++	snprintf(info->fw_version, sizeof(info->fw_version), "%d.%d.%d.%d",
++		 priv->fw_version[0], priv->fw_version[1],
++		 priv->fw_version[2], priv->fw_version[3]);
 +}
 +
- static const struct net_device_ops ax88179a_netdev_ops = {
- 	.ndo_open		= usbnet_open,
- 	.ndo_stop		= usbnet_stop,
-@@ -527,6 +672,9 @@ static const struct net_device_ops ax88179a_netdev_ops = {
- 	.ndo_set_mac_address	= ax88179_set_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_eth_ioctl		= ax88179a_mii_ioctl,
-+	.ndo_set_features	= ax88179a_set_features,
-+	.ndo_vlan_rx_add_vid	= ax88179a_vlan_rx_add_vid,
-+	.ndo_vlan_rx_kill_vid	= ax88179a_vlan_rx_kill_vid,
- };
+ static void ax88179a_bulkin_config(struct usbnet *dev, u8 link_sts, u8 speed, bool full_duplex)
+ {
+ 	struct ax88179_data *ax179_data = dev->driver_priv;
+@@ -340,6 +354,7 @@ static int ax88179a_set_eee(struct net_device *net, struct ethtool_keee *edata)
+ }
  
- static int ax88179a_bind(struct usbnet *dev, struct usb_interface *intf)
-@@ -612,9 +760,11 @@ static int ax88179a_bind(struct usbnet *dev, struct usb_interface *intf)
- 		dev->mii.supports_gmii = 1;
- 
- 	dev->net->features |= NETIF_F_SG | NETIF_F_IP_CSUM |
--			      NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO;
-+			      NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO |
-+			      NETIF_F_HW_VLAN_CTAG_TX;
- 
- 	dev->net->hw_features |= dev->net->features;
-+	dev->net->hw_features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_CTAG_FILTER;
- 
- 	dev->net->vlan_features = NETIF_F_SG | NETIF_F_IP_CSUM |
- 				  NETIF_F_IPV6_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO;
+ static const struct ethtool_ops ax88179a_ethtool_ops = {
++	.get_drvinfo            = ax88179a_get_drvinfo,
+ 	.get_link		= ethtool_op_get_link,
+ 	.get_msglevel		= usbnet_get_msglevel,
+ 	.set_msglevel		= usbnet_set_msglevel,
 
 -- 
 2.47.3
