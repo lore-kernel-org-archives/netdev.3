@@ -1,79 +1,84 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7834D3CBE8F
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587CA3D0C1D
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791486688; cv=none; b=scP9bqQaqDsOTQ1ARMm6kd4Ksr2mIb6q204AO3pZIWicEeFEa8HKvtc7gnVKYaeUwc5BX9X78tCSKf/tIZ4Jn7BuVU1lbnRf8qq4cYbFk1bbBLk0x1rCV85UHkMDVCiQMQUAthVenkDflf2z7c/I9oT0lnds01G0/Bg5tuPk4F8=
+	t=1791486691; cv=none; b=bQcdIOLKRuJ7Oyi7hVroFDBHLj6GsPImtU5+VNZpFSVs5/9SygMNwGYdylLmBpmvVA8vTVHdZK5aWCp/HqswsC3kV6vpsepfoWVmj0WzS842gXk4d+wUUNwHFG8nYnsAI1tZHJ0uMiVDQC1Fu6yI0169GrdcTQHgdb59nsmllLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791486688; c=relaxed/simple;
-	bh=NykIrWd2AdW8Yh66jl/kLhWwWN/LxKTYIMH1WlGPx5k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o7pIuHGjl1ni80wQ4YsmVSiz+A5opOnXItQOFt9d44+hocZpUJhiQY/gu8l13caFfdyde7H/4S5vnDbpJymcGcpQKjsZUDd0XRU11JkHEGakv2mX9kzZki5VCsYeY1wnVV90e0ft1gH+CqTTSv/P01ws6ABPAEeQB9IMxQCxft0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=aJEQBS/z; arc=none smtp.client-ip=209.85.215.181
+	s=arc-20240116; t=1791486691; c=relaxed/simple;
+	bh=cbC2XhUsTJLB6BZt5mpJ/2DzTETC0/qixQ2p6zN/2zs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Av6hY5Lid8wPD1veL08efj1V84QY95+1FarrNE6gLOFelhBlHB44bF/+HpOIh8o7K1zGN84ufGNAC/vjUNayuXgvHKitk/sAUTnxCDHxsMksCd0UApnXKRMxOznc7JFpYIDNAydkMy685mSj7opAF7IoXwgk4v5CKSr9KS1zFZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=otkVz3cm; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="aJEQBS/z"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc1d57602e8so1590087a12.3
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 12:11:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="otkVz3cm"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e831e86ebfso3187625ad.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 12:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791486684; x=1792091484; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SRsY0YEhwi4khCIfQ4VbXvpst8B4Uox65hBINmu+18I=;
-        b=aJEQBS/zJqZuvSqE2jLVQ/FgsTKj8mgElBY4hk7vQrdCyY390UDUMLyOviwgVTWqu/
-         ddDWb2yl2D9SQ3JFVCMva+OLvFJ5Q5WhPxLyoMFHxLMAAReCB3RFUHv/t/nPoE7zSY0Q
-         01R2bODUzkS52fBscTFmLhlIWNbd6Hr0cDoZ51GDfeBLxeUkBP0I/Fz41ghKzhU/T3VD
-         pQCM8364GZ1rZa9mMyLNMyd6K/+QKNYXJhkml+yeSQA5zSRlOxrsR/EhZatPMWIjADN+
-         yxS7Vf/CEib/tRdNfzHdwURpWlRHiLSKBKWrNqgx4aEYIMMqD+yecofd/Kw39yi9PHZ7
-         h41A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791486684; x=1792091484;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791486686; x=1792091486; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SRsY0YEhwi4khCIfQ4VbXvpst8B4Uox65hBINmu+18I=;
-        b=XUDDVVpYGzAw7JBr67veAONgvQSih7ei04yTZXSZagKEIGQhX52MeF0/BZBQZ5etnR
-         QJtqXJzM+o+qytBMcnPyiBG37GLX9yzOfHWds0iRgx6oCJY9YRi9ik9PYdFVuZRIUaka
-         4r/EkybenledynWaBIXqgAMy4ZgaihamCYZ4UdI/FS+25yd92PBwlSfzJHQy1moMobJ6
-         VPzRsDnPT2UHX4GM56kC5DOA9TjDsO7RwiS9ZaR7B6ZXuIYGtIS5N63rHxklDGJatWJM
-         0VFt4SStCJFEkzQS1HqRleKAKcjFHdlarIzE2/iw8C5N2jPv2TQZTvwGuaBLxexJyS/j
-         XSKA==
-X-Gm-Message-State: AFq9FYJhZ8rXAmHl5H6sAvpEqHMglYB0zMl98igeyF61gM6XN7whFMcg
-	x8DW1/RdTv36rs/fuO8nYsD2yvLbaEO+IBSmjg1jt0ptg2tSwERHxWeKTZKcGsktHzaj5qsELKE
-	10Q9t
-X-Gm-Gg: AYBFou0ZWhkP2ZmfU75vvjgcMMx1mkZ3VJeYW+jODh/PFIqK93U8kR3eT1QAFxROz+O
-	OqqYvTBi6XY+gT4aOr5mOATwQ+2auxXqTxCPp6QT2msyQmHKCuHMeOyblaDRS4ArS3goFVGYJmA
-	TTR4eTHjtvBiHhOB7IJ7GnXdYcXH4NYFJ26QNSNPhiP4O1rz0TZm4GW7T0n5VflUDe5gnkxuTfv
-	pH/DhLME6HCSa/s/oQrmjgH5D4mriCYd5JMUNR/43+Koe94/DFemm4iMm+1m+ZKTYi9LBbpRa6Z
-	jKtoLmjx5V0H3SglQX/0LfV8L1l3F1rCRaEtqMVsufcqn8jaQDybXhhwCjgCXOnQlVjAL34wJbn
-	L5YBkmAT3T/XiTzzXKeVt77tExsuP9gCu7GxRejFELz8OCbpv5B+as6cO9hC6kcUzPDJUiymRAx
-	+6S6qJI3hqdst19H9CKLjgGEbguQTcRFLOf0SAcNXl4wVP9uKS5Fd930SXySmwvOwPCNbdN70Ea
-	l2KPo+hNBNihnbO4gai4F8=
-X-Received: by 2002:a17:90b:164d:b0:3ab:413:49b6 with SMTP id 98e67ed59e1d1-3ab04135113mr2199094a91.41.1791486684425;
-        Thu, 08 Oct 2026 12:11:24 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:58::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab36de3678sm36899a91.17.2026.10.08.12.11.23
+        bh=Q4Zz1mpKCSKqZegwUQ0D/3xMtgVn99v1wjaeCbwZBKw=;
+        b=otkVz3cmCwkNBsvGx1tg7bGrIBdHHSKfcsf26FB8VBGsBcWSwljXMztNU3GGSG2rz8
+         8R6zVST94PPpRitPDSpyHkzq2Djq1UPvgFWEkzp9raoPuh52sMYIN3T/sgX1EFvOTJXO
+         UN4DKj169Yrkiss5/+VqzZz/cwL5JBBYAcUVjWrN9kjH1ABC9rc+RwyWKhzIixb68nEh
+         aLW9r9ulC2qBosvXaqvzbmQSeee2IlDzAwuvXFcMXI5jOTGlNWQPiDzZSxL3WOMqTliN
+         hr07VYNuUC5wxUiG6QEwYj3kfm5eLWsAf9MSQUhL0kvRdWYLr2pe89+kdg4ELOc/K/Y8
+         0i/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791486686; x=1792091486;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Q4Zz1mpKCSKqZegwUQ0D/3xMtgVn99v1wjaeCbwZBKw=;
+        b=OYcOQdfVf+N2zNLEIriwJV7q+cbHHLtgI8tHJcq3nhB5qO48pLbmn7SVOYF239OjtT
+         XrUDIzYs64bnTKa4NLZY3NG+2CCR7OWg1Mj+QiTkkCwlpe03tRA8q0mMOeDBNnvC2yzW
+         Z0IFTQ1vFa0xe7lw0LckLYi3HeKFPndCQM2LCbFvopLczQ37ZXCBBictMU1LOZGsZ1CZ
+         NqgM4x7tU4nLn1rnF1twZ+RWqMhFlj0zTZwlQaft3E8H1c6/VKNaTkTbZpJkXYOKHccZ
+         asQuJW0W+I/GSMzaDrpNR0IGgA16oB1v6FTOECjo1Jq2QZvTkfKJ+qu/fEhyWkP8qPvm
+         8Mfg==
+X-Gm-Message-State: AFq9FYJ0Dtsw1ymCXFrp0vMxO0iTGW1rCyVhy7ljXGfY/PLlwvF2PsoD
+	yJYQBuPg1pqcS++2W6AVtDsniRRquBBIchB/Wiy2EDWF5gAzB+pIuAb6UrOCwfiwYNeUTnubOsY
+	fQIXs
+X-Gm-Gg: AYBFou07eCRM79HQg6setTGn18BtabpMuu652d7xgC+PzxxZQvkxsWQbaSpYqxUCllJ
+	0sDgxm3DKYZX6bwuNDegt1JtEPTb7ibSOLmneNGixBn7XRS8P9yz7RGWV1tZrtf73EPQ9/qBB9q
+	RBpv8fWL4fHmdm6w3ukaX0JqCvHjCg8FR1ZO2kZK5H/lGi0RMuzANj82eOlV5G/8pF1lBHUDAqW
+	9MDXsydXgqwmz4Jk6SWhuly2BKxijx7Ro34WwBILxyAyWhXb8vGTnU5UDZlUOQ4DfHjZAKVe3Xg
+	XuORaKsCb/aJPvw6NcIcrmTgvUih2X9oIkNGSxAwOnasqj1o95oP/6L/r4Iy2Cxu6M7h2T43d0z
+	bMU4Min+NCq9052R3M0bXFqgQEFQ7BwUSICkJcNQd31xaMiFYGaNxPTzDVGZhO8ZCQvDFvJqJgt
+	5QpqnLo2rEaUGslUcmqmJDG7yyeZFSZQbzQvxv07rTS0aGhAe1B8zKebvuf8eVGs0Qr6PcBEMyH
+	PqzaGuWRplN
+X-Received: by 2002:a17:903:2984:b0:2df:99e6:9448 with SMTP id d9443c01a7336-2e6005fe110mr46098885ad.61.1791486686444;
+        Thu, 08 Oct 2026 12:11:26 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5f::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e83cceadf3sm762855ad.45.2026.10.08.12.11.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 12:11:23 -0700 (PDT)
+        Thu, 08 Oct 2026 12:11:25 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+To: netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: edumazet@google.com,
 	horms@kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
 	linux-kernel@vger.kernel.org,
 	Joe Damato <joe@dama.to>,
-	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net 0/2] bnxt_en: Fix SW USO padding
-Date: Thu,  8 Oct 2026 12:11:10 -0700
-Message-ID: <20261008191114.3736826-1-joe@dama.to>
+	stable@vger.kernel.org
+Subject: [PATCH net 1/2] bnxt_en: Add helper to fill SW USO payload BDs
+Date: Thu,  8 Oct 2026 12:11:11 -0700
+Message-ID: <20261008191114.3736826-2-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261008191114.3736826-1-joe@dama.to>
+References: <20261008191114.3736826-1-joe@dama.to>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,42 +87,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Greetings:
+Move the code that fills a payload BD and its software ring entry in
+bnxt_sw_udp_gso_xmit() into a helper, bnxt_sw_gso_data_bd().
 
-As a followup to Eric's fix a51d233ccd48 ("bnxt_en: fix DMA mapping length
-for padded small packets") which fixes padding for normal TX, this series
-fixes padding for SW USO.
+No functional change. A following patch uses the helper to add a pad BD
+to short SW USO segments.
 
-There are two cases I try to address:
+Cc: stable@vger.kernel.org
+Signed-off-by: Joe Damato <joe@dama.to>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c | 33 ++++++++++++-------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
-  1. The last segment could be shorter than BNXT_MIN_PKT_SIZE. So, add an
-     extra BD if needed to pad to that minimum.
-  2. The gso_size is so small that every segment would be shorter than
-     BNXT_MIN_PKT_SIZE (under 10 bytes with IPv4). This seems exceedingly
-     unlikely, but just in case, it is handled by clearing the GSO features
-     for these skbs so the stack segments them.
-
-Patch 1 is a small refactor to move code into a helper that patch 2 uses to
-avoid duplicating code.
-
-I ran this on a bnxt machine and re-ran the uso.py test and it passed, but
-the existing uso.py test doesn't test this specific case, so running the
-test was more of a regression test.
-
-Thanks,
-Joe
-
-Joe Damato (2):
-  bnxt_en: Add helper to fill SW USO payload BDs
-  bnxt_en: Pad short SW USO segments to BNXT_MIN_PKT_SIZE
-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 12 ++++
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c | 56 ++++++++++++++-----
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h | 15 +++++
- 3 files changed, 70 insertions(+), 13 deletions(-)
-
-
-base-commit: 6d25ffca055a77787c21a36b66c253f76239411b
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+index 6c1060fa2ea5..ef04c9d08066 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+@@ -31,6 +31,26 @@ static u32 bnxt_sw_gso_lhint(unsigned int len)
+ 		return TX_BD_FLAGS_LHINT_2048_AND_LARGER;
+ }
+ 
++static struct tx_bd *bnxt_sw_gso_data_bd(struct bnxt *bp,
++					 struct bnxt_tx_ring_info *txr,
++					 u16 prod, dma_addr_t addr,
++					 unsigned int len)
++{
++	struct tx_bd *txbd = &txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
++	struct bnxt_sw_tx_bd *tx_buf = &txr->tx_buf_ring[RING_TX(bp, prod)];
++
++	txbd->tx_bd_haddr = cpu_to_le64(addr);
++	txbd->tx_bd_len_flags_type = cpu_to_le32(len << TX_BD_LEN_SHIFT);
++	txbd->tx_bd_opaque = 0;
++
++	dma_unmap_addr_set(tx_buf, mapping, addr);
++	dma_unmap_len_set(tx_buf, len, 0);
++	tx_buf->skb = NULL;
++	tx_buf->is_sw_gso = 0;
++
++	return txbd;
++}
++
+ /* Transmit an skb requiring software UDP segmentation.
+  *
+  * Returns 1 if the skb was queued and new BDs were produced, 0 if the skb
+@@ -181,15 +201,10 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
+ 		while (tso_dma_map_next(&map, &dma_addr, &chunk_len,
+ 					&mapping_len, seg_payload)) {
+ 			prod = NEXT_TX(prod);
+-			txbd = &txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
++			txbd = bnxt_sw_gso_data_bd(bp, txr, prod, dma_addr,
++						   chunk_len);
+ 			tx_buf = &txr->tx_buf_ring[RING_TX(bp, prod)];
+ 
+-			txbd->tx_bd_haddr = cpu_to_le64(dma_addr);
+-			dma_unmap_addr_set(tx_buf, mapping, dma_addr);
+-			dma_unmap_len_set(tx_buf, len, 0);
+-			tx_buf->skb = NULL;
+-			tx_buf->is_sw_gso = 0;
+-
+ 			if (mapping_len) {
+ 				if (last_unmap_buf) {
+ 					dma_unmap_addr_set(last_unmap_buf,
+@@ -204,10 +219,6 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
+ 			}
+ 			last_unmap_buf = tx_buf;
+ 
+-			flags = chunk_len << TX_BD_LEN_SHIFT;
+-			txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
+-			txbd->tx_bd_opaque = 0;
+-
+ 			seg_payload -= chunk_len;
+ 		}
+ 
 -- 
 2.53.0-Meta
 
