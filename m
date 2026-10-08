@@ -1,123 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D7E43933F;
-	Thu,  8 Oct 2026 22:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0B9441633
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 22:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791497450; cv=none; b=LUqLBDhMsEiL5+VCmSw9uJK5z4IwSBBXQbJ8QzfwgXdVL5Moy4XC6BqGV5szslwzpv6sMyuy6OKCcDlEpMPObsDRBgSBf1X4u1CibBpgXsPMvbue5WFpWNj3HtIyfFeOWadN7TJ1lyHQH+Zt5T1LNRlaIUxpVUFJFz2H1kBlXeI=
+	t=1791497614; cv=none; b=OTB0PNAzSqv0Stjmj7XxyklP87TbI65O+kDC35sNWTXkCtgQ3HZLiaUJMsIOmfpIjLVNtPoGtJ4mAuJ/jZwqFHzFgXJEj8dnhwbzpNmI8zEUB0T/Rea20Ky/C4n1b8iICtET4pjGi86ImEh6TfVqfGX959P4NNXDcR6635QykjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791497450; c=relaxed/simple;
-	bh=2I+EmY3mbtv7VjjzqsO0KGbYkgiqcaiXpFxLJFltkLE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TsMNK3X1bmB66b5tX4SdB8txYqubxLWxsgEh1nMIq3/DPzFR/EuXHEmS/GyRSMXdyle1NH7NkazF7G4jDgQHznQFalijB1Kqvbrk66YZuhhBOMKyN8vZvd8T2mbenHdJIT5d2gmGOC0uanmO0XF2lyB04fNQp+cmVZiEngIA2F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uR9B8sQS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1791497614; c=relaxed/simple;
+	bh=XhbvqjOdjhVKjaUTw6zflrPNgueBqC/aiLfFiC3naJY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y9ZvQXirTvjMn1ZZkcFp6hXlKisdTC28kkCujD70ovbP9Fhotunbm2n+SqYknCG6IEkJevYSR9z5kU+MEzdrbKwIBu3ONZEFVWJVlscZVPptsxEkheiYYO1D69ZbfBeEjQWH7qwAUP/9mNmRQM/U+qPWLvQW943DcjVIpv6+CwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q8qgeY0z; arc=none smtp.client-ip=74.125.227.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uR9B8sQS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BADC3C2BCF5;
-	Thu,  8 Oct 2026 22:10:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1791497449;
-	bh=2I+EmY3mbtv7VjjzqsO0KGbYkgiqcaiXpFxLJFltkLE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=uR9B8sQSVjcMexdckCbpwVObH+grZkrx9dCvBKNXOS6sV8Vn0gy9uQsuHkoKrfQy5
-	 31hYmZtMNeXNO79iMf4RVzjKkJH2c4QOIfQkO9yF6Mnqhhyb/wnsdPb7XcI0wVXsCs
-	 BTYKKDMX5q/46Yl3OMjls8uSCZGO6NKpKwVkTZvRqA6t2EiNu1lC54IWJDg9K/Lk9+
-	 HmfdjB0tg0RmdguhRTYG2Bc5pPdFckftfbUnUSE9lroOL3sYHxQakOALJh3Mhjrbsu
-	 hyDHQ3r8JkzkDaArOAXebXcqlceJX3/Luj9fqU6HgcSsxF7KUXOeJT22HUV9FpNjyf
-	 eVCXuksAe7uQw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A37FECA6016;
-	Thu,  8 Oct 2026 22:10:49 +0000 (UTC)
-From: =?utf-8?q?Dani=C3=ABl_Trujillo_via_B4_Relay?= <devnull+datrujillo.nvidia.com@kernel.org>
-Date: Thu, 08 Oct 2026 22:10:49 +0000
-Subject: [PATCH net] ipv4: fib_trie: prevent speculative out-of-bounds
- child access
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q8qgeY0z"
+Received: by mail-pj2-f8.google.com with SMTP id d9443c01a7336-2e609985789so8921685ad.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 15:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791497612; x=1792102412; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wR6B1DFYSH6KdPY/ts+nWKN+fn4/J9gqpkYviWx1rk0=;
+        b=Q8qgeY0zhMbaeiJHpdP5JltSzND6Rijq+U/cRwVd5f9NqZPLpS6Da5DZsCZUKf7rfO
+         uPM1mXY1iGXmryRnT8FnJaLFqcA0kjShFr7+wx2QKss+5l8XaxNIWuGeH+GNI0HWaws5
+         j9t63WxZc38wX30FUAR5cABtBNCruLJI5pmc4sFqtL2co133g18UZmezAq78L15Iq+8R
+         JuW7sySL3Efws4SchAvE0Il45p9PFTLCABdeC0WDKDdsJWaaygtJ5uGU2Ju1ArJ6NRV4
+         5eFnoEI7N3IrMo2KNoIKeLoswMMgXkG+7yQKYMs9QXVPGCPuKBjgnTZ82NtbzhG3ekQP
+         SbHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791497612; x=1792102412;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wR6B1DFYSH6KdPY/ts+nWKN+fn4/J9gqpkYviWx1rk0=;
+        b=us7IhGkmIku6/nkIItuot9AHmKH1eWHbS6aSQ9myhj24I82NiOigPsPHkMZ3F9cHtI
+         Zl+KdH1tt22g+l/SdBcU+WzhbYQo/8CrAIMKVws/Sh8pOGWk8fV3uSArmnzvO7v1PCG9
+         VMjQI6KE41kJQhUWbgWLXGy7LKI5RUe3lwvfl/ieBB5JSK0eDPgcZ31nyjHzyO0NhMHK
+         5EpHFgT8mjsmjFs9zUbLq/SlB095le9im/giv5V2wnWwRRIbx6CsaDmqQN4E09Crcxrs
+         C0m7ww7OwKp4ohqoJFAO55A96uq4ucpiVQlhnGTFSDvdh2WyWjSqpi7CH+i7OA8lqpDl
+         JjEA==
+X-Gm-Message-State: AFq9FYJpPDqi1Dq/B0n1OrkiwSfB2mAhTQ9X0Cm4CcQzliu8BnPlN1I6
+	jmpRScO/OKL01NpNWLCUMUn3yTcsYifp+cF+fKgnklLF5A2iU+3Z2Hpm
+X-Gm-Gg: AYBFou1H5PEQgJsPSZlZkOU2cRocZdzDTd+0MJn+bkscOFn9FotAyvYJlvvTA0SuOwS
+	E9mWZ+QpJ+nS7XHIlrE9SVv6UxcCbQ0zqWZPIWlXpM5nwJbwl1RhUwZU2zpaDU1RI2E43L1PvlK
+	9L2ltaF0pL+F6uLJ7bVb7MyVvdDmo7KRvN1zZtVtENKt+lIlsKOsE8OazZrIBPC7z3BSaxQil9W
+	yCdetkvuaiiKQQ2AHN94lgHXr5znajUBYad4kyFbq9GrD0BBDR7vLOqsWGCbjGZd2zfZVSYmJe0
+	cHqQjZy0YXfI6ptIQdX4RcCvrVV+CvtGHC5uhPUdVw6YMCSQ+ScO5wMQdJpcJUhmEcT4yZltWau
+	JetRDtkOFFJ1Yf+K0zmpAgCvjHjVjP6J5319t9mQTE0/MosA6UM1wJBC7LDsTqc6omhkMbBeq5y
+	mfs8sOkFq12pTvYtd66gb2sAWuu4YK0aykzEer70FCiz1vDylH8K2ScIIeUxPAj4fP
+X-Received: by 2002:a17:903:19e7:b0:2e6:1a6c:abcd with SMTP id d9443c01a7336-2e84280a68fmr108075ad.3.1791497612535;
+        Thu, 08 Oct 2026 15:13:32 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:55::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422b8c57sm337035ad.53.2026.10.08.15.13.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 15:13:31 -0700 (PDT)
+Date: Thu, 8 Oct 2026 15:09:56 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Luigi Rizzo <lrizzo@google.com>, 
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, Pavel Begunkov <asml.silence@gmail.com>
+Subject: Re: [PATCH net-next v2 0/2] net: netmem: document design principles
+ and intended direction
+Message-ID: <asgUroVsxJq7gut1@devvm7509.cco0.facebook.com>
+References: <20261008023030.1089616-1-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20261008-fib-trie-nospec-v1-1-fa18726d485e@nvidia.com>
-X-B4-Tracking: v=1; b=H4sIAOgUyGoC/yWMwQqDMBAFf0XeuQsxoIb+SvFQ17XdHqJkowjiv
- ze2xxmYOWCSVAz36kCSTU3nWKC+VeD3M76EdCwM73xbOxdo0oFySSjOtghTw13rfOAgHaNUS5J
- J99/xgSgZ/V/aOnyE8/XCeX4BztmtWHgAAAA=
-X-Change-ID: 20261008-fib-trie-nospec-5c76028c8e7c
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Alexander Duyck <alexander.h.duyck@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?Dani=C3=ABl_Trujillo?= <datrujillo@nvidia.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791497449; l=1811;
- i=datrujillo@nvidia.com; s=20261008; h=from:subject:message-id;
- bh=xnFr+ktZBjHYJMb2dgrr672XmryMDvsweL3LbYJlrKI=;
- b=QAIQxu04rBsFZ4Fxj+43aqwMG1AkLo/JzAr74GzYjH648cOjifagKJGv9Z2KIMVti4++R5V3l
- /eM9rxWRIKUBvPsm4W0RllZ8H1X8B5SEr9fTvgVPZmfC0wq1gOJB7EE
-X-Developer-Key: i=datrujillo@nvidia.com; a=ed25519;
- pk=AP24zUwENFy2geglpKJAA8oaT41tkteCL9hTWGd88rs=
-X-Endpoint-Received: by B4 Relay for datrujillo@nvidia.com/20261008 with
- auth_id=1128
-X-Original-From: =?utf-8?q?Dani=C3=ABl_Trujillo?= <datrujillo@nvidia.com>
-Reply-To: datrujillo@nvidia.com
+In-Reply-To: <20261008023030.1089616-1-almasrymina@google.com>
 
-From: Daniël Trujillo <datrujillo@nvidia.com>
+On 10/08, Mina Almasry wrote:
+> Because the networking stack and drivers are only partially converted to
+> netmem_ref and current memory providers only supply unreadable net_iovs,
+> automated code review and analysis tools (such as LLMs) frequently infer
+> the wrong architectural invariants from existing code. Specifically,
+> they often assume that page_pool's struct page APIs are primary rather
+> than legacy wrappers, that memory providers always imply net_iov, that
+> net_iov is inherently unreadable, or that callers should branch on or
+> downcast netmem_ref directly.
+> 
+> Document the intended netmem, memory provider, page_pool, and skb
+> fragment design principles concisely in the relevant headers, code
+> comments, and netmem documentation so both developers and automated
+> tools follow the intended abstractions. This series adds comments and
+> documentation rather than performing a large refactor all at once, so
+> that future incremental changes nudge the codebase in the intended
+> direction.
+> 
+> This reflects my mental model of the netmem, page_pool, and memory
+> provider architecture; I welcome feedback and disagreements,
+> particularly from major contributors to page_pool and memory providers.
+> 
+> Cc: Luigi Rizzo <lrizzo@google.com>
+> Cc: Björn Töpel <bjorn@kernel.org>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Pavel Begunkov <asml.silence@gmail.com>
+> ---
+> v2:
+> - Document both current implementation status (memory providers currently
+>   supply net_iov, and net_iov is currently unreadable) and target design
+>   principles, and clarify that new code should generalize existing
+>   limitations as much as possible (Stanislav Fomichev).
 
-fib_table_lookup() checks the child index against the bounds before
-passing it to get_child_rcu().
-
-The index is derived from the lookup key, which in turn is derived from
-flp->daddr. A userspace process can therefore influence the index by
-triggering lookups for chosen destination IPv4 addresses.
-
-If this bounds check is mispredicted as in-bounds, an out-of-bounds index
-can be transiently passed to get_child_rcu(). The value loaded beyond the
-child array is then treated as a node pointer. The next loop iteration
-dereferences that transient pointer through get_cindex(), causing a
-page-table walk whose cache footprint can leak (parts of) the pointer.
-
-Sanitize the index with array_index_nospec() before accessing the child
-array.
-
-Fixes: 9f9e636d4f89 ("fib_trie: Optimize fib_table_lookup to avoid wasting time on loops/variables")
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniël Trujillo <datrujillo@nvidia.com>
----
- net/ipv4/fib_trie.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 248514dce0cd..bd8a368c5502 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -61,6 +61,7 @@
- #include <linux/export.h>
- #include <linux/vmalloc.h>
- #include <linux/notifier.h>
-+#include <linux/nospec.h>
- #include <net/net_namespace.h>
- #include <net/inet_dscp.h>
- #include <net/ip.h>
-@@ -1474,6 +1475,7 @@ int fib_table_lookup(struct fib_table *tb, const struct flowi4 *flp,
- 			cindex = index;
- 		}
- 
-+		index = array_index_nospec(index, 1ul << n->bits);
- 		n = get_child_rcu(n, index);
- 		if (unlikely(!n))
- 			goto backtrace;
-
----
-base-commit: 37f12441f557468a56c1e27790413aa78c82afa2
-change-id: 20261008-fib-trie-nospec-5c76028c8e7c
-
-Best regards,
---  
-Daniël Trujillo <datrujillo@nvidia.com>
-
-
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
