@@ -1,105 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574173932C4
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F59F204C31
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 20:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791489510; cv=none; b=cGvpSktXzeH9V5vd2qwYsONlyYLI0B0+/lqhcZ72OgpUPtMDBp0uaUAmsXcun8EjH1MdKcS8ZainS4mBLYhqAigRFQan0jdRLmjBIx6GX+OH5+Dm+cY2Lvg1qbaWhehW+ZVjcrkHmT7+X48s1XOdQXBZRDXuiuCwLgdOqTHe8DM=
+	t=1791489859; cv=none; b=Ss/Wu1tNgdbt4vEgNeBLUPpInhwgWOIPt7h64HQ2aYEeyOiTD0M7f4VO+kS3qMwkMlGMX2Ds+Q4n9Tk8TldNKsTd3XYeWgNPqS7H3POC7wsqZGWOwWkCbiw2WGchn30tyqYGmkmpIPFsZSU2XFoCr624Danx+kYERyu7o6BNVng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791489510; c=relaxed/simple;
-	bh=hcwMIGp/ItvbKuWskirhr0jAfYMcYkEhubcSn70VxP4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nc4PpiPKu0yn2LEWyyCLRUjDk5WzjiHKQvR2jyUxI8NE/pbZt/vpMiJXl38THP+CUhwoQ6moV3igsa9KW5TE3yOOxj0pMFY9mteFRdt3SslFDs2x6mLocTu63zKvx+mvnqggFjzdORIU8wvj7elJdIRRxkZ9TnTKaposv7ez4s4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=byk0fhLu; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791489859; c=relaxed/simple;
+	bh=F8CqbwTHoHgm12PJoNzhNGXIopUNfIFq6/dL7SAV0f4=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=jBlHk4+AxopYljUCOn1Wb1wzwGKjDhdi8OEIQzafIosg5gUTB0bZyjcXO/AYfALe7AKq5m6oFEivsftEzlBoPMVGI8u1bRE5fbEoq9cUD6CMO6KcD+xZbMb25JTQTSeLQTTZqNANK15QgP+DOErx+iuLI9UCb/pOVOmnLaqTbV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IvPH58rc; arc=none smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="byk0fhLu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C1E1F00893
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:58:28 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=byk0fhLu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1791489507;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hcwMIGp/ItvbKuWskirhr0jAfYMcYkEhubcSn70VxP4=;
-	b=byk0fhLuwV0E+h+PsDqR2rhg9zYLjnlAcw1tlE+kaEhBdJ8YBwhDRVXU/bZvOfh0Js/DtA
-	L8/XmYUGJrm1i0xqQrDRpwEsp7N/94tsdrK+BtS60v9cVR/7hjrMTBb8fbR2oV7qhkkc8X
-	W9n3bxNUuBgsyBFzS0Rrafbxg77l1BI=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 4f432833 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <netdev@vger.kernel.org>;
-	Thu, 8 Oct 2026 19:58:26 +0000 (UTC)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c2e8e738ae0so536130666b.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 12:58:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxe9B/TVsOH8pRJuNKbvHdUG26t2APDB6qK1iMnWwdaEtYcuH460BUghUxVVrdnsMHUzUTOm3s=@vger.kernel.org
-X-Gm-Message-State: AFuF++lpkzBs4UY1yUyiCzVyzggG1KysTgFYPqEFndx03FOOr5ZvU1p6
-	epXF7r1ptALAOOt5QgpGs2yQOcgSU2XoUMoDnC1gP0EUXUFYiNEED1Q4zXFVZp2tpN/0bFCf+9q
-	l/xDyT31wRfVlwLXeJaGdbaWLJZ9Qmj4=
-X-Received: by 2002:a17:907:d516:b0:c2a:cf73:63fe with SMTP id
- a640c23a62f3a-c317bb4a7aemr611808266b.6.1791489504577; Thu, 08 Oct 2026
- 12:58:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IvPH58rc"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6714595153cso998108d50.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 13:04:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791489857; x=1792094657; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=2YzNoUbrYduJ7gMJ5zej9CY6dmwvGZhQGWMXIuJPX0c=;
+        b=IvPH58rcMKMdp4cHenQddX4iQ+c5AXUC64feyuf+WA+KHm6XwiJabY7RPC+jm72are
+         JTwYfMNN3FuHVkYfYaG940XWV03kSCJp7wHSGrgti5Ht+CZXM4lR88X5Z4c6WS2aUa6i
+         Kpt5uzea+4rUN3DhmP0zzDZEvR5kribn1wkg8Of9bTBXxUVuZJKjWHQUukN77HFWbyNN
+         JSl66KcaFvbFFbUnOhxBvkWOlN0FlJWa28S7KJ6dmSByUX3v1Sr16arf9gtT/ip6uUDx
+         n/rlwGvSN/7gpYn2aqpoXhrUJF94N6nNJvbEcViwsL/saP9Yvti1i/LQQTuy50Q03K55
+         SQ+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791489857; x=1792094657;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2YzNoUbrYduJ7gMJ5zej9CY6dmwvGZhQGWMXIuJPX0c=;
+        b=wH2RYCKWlR5h+57LIDdAzoBeXTQyvm6QpZS8pp9JDl7R2x6P97qYMVa/PaQDlhp311
+         UIKkq4TmHyQ33w6Q9JRiV8XmsIOvR9HFPvx91621lWW6J6nmGfVO5/7mEzfVqcbpkTJQ
+         ivwshUIFnWdy2AJunQImlHrBkfnpWGU6+FIho8MCssz2OM3hMFeLRQ8xjLj+qCKZFdaC
+         +w3EijT6Pau5kfaYf4qifb10tM9E3lP4yp1t9V878R04oIdbX0W32r/1r7K90WT4Vqxg
+         iewltrMPa53OuV0rDAH2xLHtdnPXebuobFc3JOHyVVFPBGqgOIY+kHSWCG1uGOhtE0B+
+         5f+g==
+X-Gm-Message-State: AFq9FYKHMQ8SOMybxGQAHOi6T+s+1EjUbiA5HYLyoMngqI+5G5O/nHTx
+	Eg/Ki7/2tjrvL7jex9AwgQ3w0KrepB5DKq8dEWLZwb19LjDIAzPQwVQC
+X-Gm-Gg: AYBFou30DFpbDcq3tGPo5pMbZoseYEte5Dk58xhXZ1BMd3xxxL0kTEPuBoPvRSvKgHL
+	fVYqG/CPVSHbxKyyD+Nl13qYFrd561hg9wmMRDZDzZWnrDe6WwauvUjslXdP09+iKEEJ4o3frkP
+	ExjxQt5zjFEY2+8Uw44cDv2kquV8zYTIhAE35n7Tjdt2IzJqxbUnVYpObPuxjkEh8Zb9WBV/yoK
+	5MBgSPr/Rut/kG152Wk1fdOXN4iWY26WS+uDsvvAEq222dBO2lMZEECTJEFDq/67zcp8RCMaIYw
+	aQkKKwWwDfVlsFiaaHeO3w53nLBk03GPR8aoIXKwpvDGK/H3ZlGxUNtPnlEI9xL7/rk/NAMpasv
+	Z9bSVaMA0ZYHXwGy/k5IXTCiGmi6gJusDc17Avx67tHWHjJu7VbZm4AQxxlChLlsa6MXvnai4jx
+	23E4f25boBhLLM/dMGtJfTbIsdTSY1Z6eIF55w7WVAHAES/OWo+t1GEWaACcQ00QW1GBZm5BbpH
+	xoAk0FHtbBkBlOytk0Y2hVkLW+OM7HaabvHCbN5U2Q9Fyx9ey7mgKET6QIz2a0F/vMrcYT3Tk1I
+	5LdxcmCJilFhQj8QN3BsiunX+kvstTL6QiaqRA==
+X-Received: by 2002:a05:690e:124d:b0:677:c5b9:8f2e with SMTP id 956f58d0204a3-67923217533mr1215806d50.35.1791489857324;
+        Thu, 08 Oct 2026 13:04:17 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-679356a9402sm38162d50.14.2026.10.08.13.04.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 13:04:16 -0700 (PDT)
+Date: Thu, 08 Oct 2026 16:04:16 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev-bot+sashiko@kernel.org, 
+ willemdebruijn.kernel@gmail.com
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ andrew+netdev@lunn.ch, 
+ mst@redhat.com, 
+ jasowangio@gmail.com, 
+ willemb@google.com, 
+ habte.yibelo@gmail.com
+Message-ID: <willemdebruijn.kernel.18efe47d2170f@gmail.com>
+In-Reply-To: <179148831819.434549.14553358529954439471@kernel.org>
+References: <20261007163819.3041710-1-willemdebruijn.kernel@gmail.com>
+ <179148831819.434549.14553358529954439471@kernel.org>
+Subject: Re: [PATCH net] net: extend virtio_net_hdr csum_start checks to VLAN,
+ IPv6 and IP options
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008124106.665014-1-Jason@zx2c4.com> <willemdebruijn.kernel.cf8fec88827c@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.cf8fec88827c@gmail.com>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Thu, 8 Oct 2026 21:58:13 +0200
-X-Gmail-Original-Message-ID: <CAHmME9r+O=3i4JP94P0-gFwghfWtD=vLa1g3KB-LvW+xFbJWHA@mail.gmail.com>
-X-Gm-Features: AclHuK-nMRR4vDW6p8Uf5Up3EywswkHru31OUDV8tShUhR4s3Srh0YZqfW9UwsA
-Message-ID: <CAHmME9r+O=3i4JP94P0-gFwghfWtD=vLa1g3KB-LvW+xFbJWHA@mail.gmail.com>
-Subject: Re: [PATCH net] udp_tunnel: drop packets when hibernating
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: rafael@kernel.org, lenb@kernel.org, pavel@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, linux-pm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	=?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <jeremy.jean@oss.cyber.gouv.fr>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Willem,
+netdev-bot+sashiko@ wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> =
 
-On Thu, Oct 8, 2026 at 8:37=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
-> Jason A. Donenfeld wrote:
-> > The kernel's various networking applications keep churning away after
-> > userspace is frozen during hibernation, even as a memory snapshot is
-> > being made. This can lead many network applications to an inconsistent
-> > state, replaying packets and cryptographic state changes. For example,
-> > on wireguard, there's the possibility of this sequence:
-> >
-> > 1) hibernating begins
-> > 2) handshake state cleared
-> > 3) keypairs cleared
-> > 4) new handshake round trip completes
-> > 5) machine memory is snapshotted
-> > 6) packet is sent using new keypair
-> > 7) machine is restored to state (5)
-> > 8) packet is sent using new keypair
-> >
-> > The idea is to prevent (6) from happening, especially if (6) and (8)
-> > contain different data, but the same key and nonce. Presumably the same
-> > issue applies to other users of udp_tunnel too.
-> >
-> > Fix this by just dropping sending and receiving packets during the
-> > hibernation sequence.
->
-> A few high level questions:
->
-> If the issue is reuse of key + nonce during send, why include receive
-> side functions? Specifically tunnel (encap_rcv) functions.
+> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 1 =C2=B7 Low: 0 (1)
+> =
 
-Because I suppose (4) probably shouldn't be possible after (1). I
-explicitly clear the result of (4) in a PM notifier. It seems wrong
-for that to then be violated after. Similarly, userspace doesn't get
-packets after that point either.
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchw=
+ork
+> know by including "pw-bot: cr" as a separate line at the end of your re=
+ply
+> (one such reply per series is enough).
+> =
 
-> Is this a problem specific to UDP tunnels?
+> - [High] The fix leaves the UDP-tunnel path, virtio_net_hdr_tnl_to_skb(=
+)
+>   in include/linux/virtio_net.h, with the same weakness it removes from=
+=E2=80=A6
+> - [High] virtio_net_hdr_thoff_valid() decides whether skb->data starts
+>   with an Ethernet header only from `skb->dev->type =3D=3D ARPHRD_ETHER=
+`=E2=80=A6
+> - [Medium] On the non-ARPHRD_ETHER branch, virtio_net_hdr_thoff_valid()=
 
-The stateless nature makes it more poignant there.
+>   leaves proto =3D 0 and then guesses the L3 protocol from the version=E2=
+=80=A6
+
+All comments look valid and require a respin. Any revision will take
+them into account.
+
+Based also on the previous conversation in this thread, will review the
+approach. Updated in patchwork to changes requested. =
