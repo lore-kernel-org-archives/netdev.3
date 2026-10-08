@@ -1,124 +1,177 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB771AF4E9
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 05:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482BD1DDFE;
+	Thu,  8 Oct 2026 05:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791437391; cv=none; b=kWG9CUh4EmyoLDObME67YhXm6H7W8sFHkJatuOb4j2OLskc4WgJ2NoWWzWGTKdu3LjvutwMASIznwGB48iwrwlGrv9f/Y7KfpZhMIkDIOtRTdqVaMkaidBarox/SsJNFd+1F2pEuP1BrUGQPUqrVluC4zPsUvAmaJGsRZ45MpHI=
+	t=1791437550; cv=none; b=u04fWTMNY4gESQtQabdMmS4qy8/eE4oUfHI/1XfWfNNJYwIpUWl9PSBDZfAGbEQagH0F8/tOynfCvwZutjEyV1EYCdgFqGMAWoS5nF8gFoJayTodaEOLVmnm4NKf7G8zS+UFr3FlLzb3lc5jC+ijzydra/JBifnP8cmUzfVlkF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791437391; c=relaxed/simple;
-	bh=/5UFvdGu+OHYF/gq3sfGR7CGH984AqlEKoEyR9gRllI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+LT0o2vMMoxZDnjLqkYP52d7dBbqD/Emdj0u9p4iEtFT9Rr8ymS1Q8eLZadw+Z5pqnNWZwDArWEr6Z78aROscVwxIlb8kO2Oo5AE6WlC17nyIDbUNCUOh71dMGvmAZGBRY/ELJSIYfTcPvYXlnE7mrb2/eti7SafO3Rk3CXBaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cx2POZGW; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791437550; c=relaxed/simple;
+	bh=2JygiM1G+vO8exb9T5VYnbVLjrDyKoenYUudXz4Vzew=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ud33ULRogEc2+4QbmgXQj6m1lOLU7bPnikkOLIOtNtc3ngfcG08PHsKn9FkPY39hLZtU1jQaf9xcBF7gKuXh5vWG5b6X4eKyFWqm8Ak2JdnCPMvO0Pf1fIyOHI5kf3lYeGzwA7dCTiJstuFivFi1f+vvRnHXFseNXzKVED9aaUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pwz7EEo3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cx2POZGW"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3aacde0cc0fso223093a91.2
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 22:29:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791437390; x=1792042190; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hGoxhrVVZ8PQS4Uszm5/WMaB7d9N6tEh6N4uLXjChtk=;
-        b=cx2POZGW4juE5ZREcHGfS9DFLnqJdjwDAFri2IGuU12/suTgZyF+ULheLf/KL7+RCz
-         FbDGJoAo/CMYCjXO49fNDq+YeswQiwxofhZrf033XFLo+s88bos/CntbkVyuEaOpFgM7
-         UW9mPgsai+7dzd4Gjy104M1Y4Ri3DtgUrM/iu1er9MNfHDQJmb+IS6pa8RW/oQz2+jrB
-         vC/BBFuQKgHxL8FGaCRBewPV4RejuZBhXPenYar5/NYsUVe9oDDofbjv7RSkyoQcvOHj
-         fsoUk2qWoGJgy0HuniT0eIGTrZxV+H4yvORfbl3ubgPM6e1dGWaDdZk1BXTUzKJaYNp4
-         CEvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791437390; x=1792042190;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hGoxhrVVZ8PQS4Uszm5/WMaB7d9N6tEh6N4uLXjChtk=;
-        b=GOgLprBtN4b9+T+C4gs2d3k1yVkfR+vqxQv7H7FaIoIKJwPBusbFUA/1Ecyq9Zjjys
-         DgsOqyshONOuefFkcliiCHbKgRQp/eIGtYCjUTmRxwUqDdqPyqoe3xiMUxKWZPZQ9qmy
-         v3gKhDFuCd79VXpa/iBacjDSsNm/px7jPppf1XXw5aPGCBuSdtWLZZmsuSRjbGUjTExA
-         /azuYRk1uvaha0Sb2Gcg99ONhIttvybNACAOelOXQnO5SVnY4s84RmoOVWKBJ2oDYm58
-         9T+rKa/1fa8eCBiClNYIfeNAaYl+j75O9Tow2AsMwDuZpiJIawHSqAcJ8mJymjDvg+T2
-         asAA==
-X-Forwarded-Encrypted: i=1; AKwUvByNL23IDvdUO5lX8SeqshvltcAZHHru89rdZw7gB6gAVc7fgAj02s+/8V8rQKEwU4q7XMvyVfY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIbbf/3Sa8JV5Xpc9TNx6LmlmNWjkGJZ5z5lTWsukPj48Zg1gIJ
-	brBE6KtXxqnUKgnntON2wr5dFnE3T1Tc1QTBmLGJsgXncW44E7YckxJOeNMf2/Hz
-X-Gm-Gg: AYBFou0aceVCllz+W3Z5ocs/oXJ2K8Sv44FE0T5HAJIjpmnWaJVGDm7LtcCevA0M1bP
-	/h6Lub1WVSrJGvYEDDc+shR060s0Lg4k+kDPV8LOEAOrCU4IJcYLqcNu3g05E9rtQpy13UpI7Es
-	F/3Nsl6nX3N0i6yXqa6lDhQT5VjiiSp8yByvQdt4zyfzIF75OjtPNSroWunFzH/TXkGwA898XxD
-	lw8jUGQG9ziWSSrKISYWsdqevxoZDfUHEZ8/v2cjbxkLH8Xz74UOWrJZlhiB6GEKSzF0ixI5v2d
-	rB67bnfl2q6CXnopd676PptNk4AQAm7/1oOXO+fCVMPigep1WCYVFaqh++Bl4pfNhicmc5QMyEr
-	1wJxRMoI5YonPIhrnff/85RspfYg9xeebGOsUhW29bgeSDayvbp5ex6B3eQM4g5/Iaa+qaYPsjd
-	sdGgu92nofaLFM2uz/CBwBAYZS3P6r+gCM2bw3EUszW8qLnZ5IL1lZxUeiixYPY/evLORdzDh8f
-	Uy07R/NUIg=
-X-Received: by 2002:a17:90b:3b4a:b0:3a4:adf9:5d38 with SMTP id 98e67ed59e1d1-3a89f674ce1mr3395846a91.4.1791437389813;
-        Wed, 07 Oct 2026 22:29:49 -0700 (PDT)
-Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a89dcc4e04sm3758223a91.1.2026.10.07.22.29.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 22:29:49 -0700 (PDT)
-From: Daehyeon Ko <4ncienth@gmail.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Roopa Prabhu <roopa@nvidia.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daehyeon Ko <4ncienth@gmail.com>
-Subject: [PATCH net v2 2/2] ipv6: do not warn on route notification size race
-Date: Thu,  8 Oct 2026 14:29:23 +0900
-Message-ID: <4012604727e5ba80b69ccd4d08796511397ddaef.1791423190.git.4ncienth@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <cover.1791423190.git.4ncienth@gmail.com>
-References: <cover.1791423190.git.4ncienth@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pwz7EEo3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642FF1F000FF;
+	Thu,  8 Oct 2026 05:32:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791437548;
+	bh=W4npfQHU2o6ILTB4UAPnCODJ/YM+ygUK+JIihM2xnzU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Pwz7EEo3slvwRrTLftj8pt+6W62SOBTroeFZAeUMdh9LTp70PybXGPHvsg0HnlYMg
+	 wP4dWXqLe3f41lYMt/VnA7sBup6pmP7eS2W0MaOBQgIeszOoEgtKc/KDBXGMfIAom4
+	 MYIDMcfKptA/SwJOxuK5xlDKU3OmGiYbd+onyUD06cIvGnTlcVhgVZg2P6MwD8iNGG
+	 8ydu5phRGjuPXiJTV/Mx3cRz08HjYxb26k3icoYtIcD+8RNXh4mAUrJHR2X9+GnItg
+	 hxSoZK3w/H3mVgyE4oI5dDS3O8Mj4nl6BqYH180EtyCpW9p0v9dn/4hAQL0oWRj93h
+	 6oThBOZPvuNGw==
+Subject: Re: [PATCH net-next 1/2] seg6: skip the route refcount in
+ seg6_lookup_any_nexthop()
+From: netdev-bot+sashiko@kernel.org
+To: yuya.kusakabe@gmail.com
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 08 Oct 2026 05:32:27 +0000
+Message-ID: <179143754793.434549.1782243550071194894@kernel.org>
+In-Reply-To: <20261005-seg6-lookup-noref-v1-1-092e84774e80@gmail.com>
+References: <20261005-seg6-lookup-noref-v1-1-092e84774e80@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-fib6_info_hw_flags_set() sizes the skb with rt6_nlmsg_size() and later
-fills it with rt6_fill_node().  With nexthop compatibility mode enabled,
-a concurrent replacement can grow the group between these independent
-snapshots.  rt6_fill_node() can then legitimately return -EMSGSIZE, so
-the warning does not prove a sizing bug.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Remove the warning.  The existing error path still frees the skb and
-reports the error to listeners.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-Fixes: 907eea486888 ("net: ipv6: Emit notification when fib hardware flags are changed")
-Reported-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/netdev/20261007114003.GA1011260@shredder/
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
----
- net/ipv6/route.c | 2 --
- 1 file changed, 2 deletions(-)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 153ce16628c1e1..a5e955e56e794f 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -6509,8 +6509,6 @@ void fib6_info_hw_flags_set(struct net *net, struct fib6_info *f6i,
- 	err = rt6_fill_node(net, skb, f6i, NULL, NULL, NULL, 0, RTM_NEWROUTE, 0,
- 			    0, 0, RT_DEL_REASON_UNSPEC);
- 	if (err < 0) {
--		/* -EMSGSIZE implies BUG in rt6_nlmsg_size() */
--		WARN_ON(err == -EMSGSIZE);
- 		kfree_skb(skb);
- 		goto errout;
- 	}
+- [High] After this patch, the exported helper
+  seg6_lookup_nexthop()/seg6_lookup_any_nexthop()…
+
+--
+
+seg6: skip the route refcount in seg6_lookup_any_nexthop()
+
+This patch makes seg6_lookup_any_nexthop() look up input and table routes
+with RT6_LOOKUP_F_DST_NOREF. When the route is not on the uncached list,
+it attaches the result with skb_dst_set_noref(). The commit message
+assumes every caller runs inside the receive path's RCU read-side section.
+
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 0c3d1be7f1299..4bde3669d0dda 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -342,6 +342,7 @@ seg6_lookup_any_nexthop(struct sk_buff *skb, struct in6_addr *nhaddr,
+>  		fl6.flowi6_flags = FLOWI_FLAG_KNOWN_NH;
+>  
+>  	if (!tbl_id && !oif) {
+> +		flags |= RT6_LOOKUP_F_DST_NOREF;
+>  		dst = ip6_route_input_lookup(net, skb->dev, &fl6, skb, flags);
+>  	} else if (tbl_id) {
+>  		struct fib6_table *table;
+
+[ ... ]
+
+> @@ -372,10 +374,14 @@ seg6_lookup_any_nexthop(struct sk_buff *skb, struct in6_addr *nhaddr,
+>  		rt = net->ipv6.ip6_blk_hole_entry;
+>  		dst = &rt->dst;
+>  		dst_hold(dst);
+> +		flags &= ~RT6_LOOKUP_F_DST_NOREF;
+>  	}
+>  
+>  	skb_dst_drop(skb);
+> -	skb_dst_set(skb, dst);
+> +	if ((flags & RT6_LOOKUP_F_DST_NOREF) && !dst->rt_uncached_list)
+> +		skb_dst_set_noref(skb, dst);
+> +	else
+> +		skb_dst_set(skb, dst);
+>  	return dst->error;
+>  }
+
+[Severity: High]
+The commit message says the helper is called "either directly from the
+seg6local input handler or from a netfilter okfn". Does that also hold for
+the BPF callers in net/core/filter.c?
+
+bpf_push_seg6_encap() ends with:
+
+net/core/filter.c:bpf_push_seg6_encap() {
+    ...
+	return seg6_lookup_nexthop(skb, NULL, 0);
+}
+
+LWT_IN programs get there through bpf_lwt_push_encap() with
+BPF_LWT_ENCAP_SEG6 or BPF_LWT_ENCAP_SEG6_INLINE. lwt_in_prog_ops also sets
+.test_run = bpf_prog_test_run_skb. In that path, bpf_test_run() runs the
+program on the same skb for every iteration. Between iterations it can
+drop RCU and reschedule:
+
+net/bpf/test_run.c:bpf_test_timer_continue() {
+    ...
+	if (need_resched()) {
+		/* During iteration: we need to reschedule between runs. */
+		t->time_spent += ktime_get_ns() - t->time_start;
+		bpf_test_timer_leave(t);
+		cond_resched();
+		bpf_test_timer_enter(t);
+	}
+    ...
+}
+
+With RT6_LOOKUP_F_DST_NOREF, ip6_pol_route() no longer takes a reference
+on pcpu or exception routes. Either kind can now stay on the skb as a
+noref dst through that window.
+
+Suppose the route is released during that window, either by a route
+delete or replace (fib6_nh_release_dsts() -> dst_release() -> call_rcu)
+or by exception aging. Can the next iteration then read the freed dst
+before a new lookup replaces it? A few examples:
+
+bpf_get_route_realm()
+    dst_tclassid(skb)
+        reads skb_dst(skb)->tclassid
+
+bpf_lwt_push_encap(BPF_LWT_ENCAP_SEG6)
+    bpf_push_seg6_encap()
+        seg6_do_srh_encap()
+            __seg6_do_srh_encap()
+                struct dst_entry *dst = skb_dst(skb);
+                struct net_device *dev = dst_dev(dst);
+                struct net *net = dev_net(dev);
+
+bpf_lwt_push_encap(BPF_LWT_ENCAP_SEG6_INLINE) with an HMAC TLV
+    skb_dst_dev_net(skb)
+
+Before this patch, skb_dst_set() always attached a refcounted dst, so the
+dst stayed valid across iterations.
+
+The follow-up patch in the series ("seg6: skip the route refcount in
+seg6local IPv4 lookups") only changes input_action_end_dx4_finish() and
+input_action_end_dt4(). It does not touch filter.c, so the problem is
+still there at the end of the series.
+
+Would it make sense to keep a refcounted dst for the BPF callers? One
+option is skb_dst_force() in bpf_push_seg6_encap(). Another is to limit
+the NOREF lookup to seg6local's own input actions and leave the shared
+exported helper alone.
+
+The declarations of seg6_lookup_nexthop() in include/net/seg6.h and
+seg6_lookup_any_nexthop() in include/net/seg6_local.h also don't mention
+that the attached dst is now valid only inside the caller's RCU read-side
+section.
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005-seg6-lookup-noref-v1-0-092e84774e80%40gmail.com
