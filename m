@@ -1,53 +1,52 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A28648164A;
-	Thu,  8 Oct 2026 09:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BB148381A;
+	Thu,  8 Oct 2026 09:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791450384; cv=none; b=rLB5LhKSt38ATGt0ibGdMK3mwJ8nP+OlEaufzDdfWCO0fTOuytiKyaD1xaEW2AHWyQE8Ley5CPzTbKuG3sQ5XlyIzRzwaMY0J7O5dZfp/3yisUNpVEru+R651hcVDf+yMcAcG6bjNb0Q1bxhAIkvUiRv5awpNPs/cBBi0l9rKlM=
+	t=1791450386; cv=none; b=o8SPZAkFpRsFOYBynh+4t/DgrS2YR/BVszEnGPeKP6xajxuO7HJzm++2QqUASxS2vcZ+yBhrHQvsMEWbPXMX1dcx2fnhyTRf5DwPQhGjupaK9VzSpGD6mPvTkUrg2CAZxgmwgi7N98HXDsSTN86KSUDnZKnecbtoD6Qf/xDe7OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791450384; c=relaxed/simple;
-	bh=7Yne1oFCz76TNjGx6dxUFFYGrRkAat4H8J+ruMEKKn8=;
+	s=arc-20240116; t=1791450386; c=relaxed/simple;
+	bh=u1bIm+4hgRzhdSlt+9T2PwfMZbKDNeQyq9DGRrhXaIs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=aQuY44ZjMRUOThfCQ+Hm/9eH4rTnB7nXxt6+FF3t+FcvuyV3Kd8+Pg2okJbYAO0QyGI5Xv3OpZ8/De8OZnu4VjC0y4fiilh+CWDzPHPm1mSURlVo7pUiv7Iv29j8xHKmf8+QByJM+FWbEsDoslSf2fMU+YAt7vusqjk2e/H7qRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=e9alyqEx; arc=none smtp.client-ip=68.232.153.233
+	 In-Reply-To:To:CC; b=MakGR2LNQ3Q+A7ia+tBZwDd6MMQ4bEaQpczGMwP3sq8LJrH8scFvYvrXQSp3ggWj+M0eh6+gshdVN5OQ1vqc3H9CyK8UzIp0MbqZAnB8Usnj7yJqSzFysA45t/QFDBLjU4weQIy58LeV3Pp8I6SwHU5/4ln0qN8zXCQtACTR6ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=kGKAwl2w; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="e9alyqEx"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="kGKAwl2w"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1791450376; x=1822986376;
+  t=1791450372; x=1822986372;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=7Yne1oFCz76TNjGx6dxUFFYGrRkAat4H8J+ruMEKKn8=;
-  b=e9alyqExKRpFOLxMPZkgKxMc+EDOk3GG0pARqJZYc8eA+MuxpxZzuC+c
-   /1CmNo9dACkVaq4M66HglkeiBq0Cp/TYR94g9ccm74oMcCqSQ/BI8pEzb
-   xuxqPMyt7H7sUNWlJ5LSG7tY3/IYYhtumwQThgkXQ1CUT0DHCGlY4yeY8
-   luJVDcGjFvfl4YTvclt/muT6bz0KMNNK7L/Mg2XI6uvU06TUWV5z8MOxJ
-   xKsCy12qV79q/Oe7IYy722MPf6E7T23XQ9EwiYGTS0mr/HWZNBFK8ciZk
-   BnwRMyiKoMKmZ0Muow6qKUCOcmE2M6+16d4v4Xv0j5Ld18/4wSz5vTO8j
-   w==;
-X-CSE-ConnectionGUID: bYzkkGyMTbOOykQXAIRR7g==
-X-CSE-MsgGUID: gdV/5hMjQHO6zwbmuk26tg==
+  bh=u1bIm+4hgRzhdSlt+9T2PwfMZbKDNeQyq9DGRrhXaIs=;
+  b=kGKAwl2wKWHDfozwvZFrLdB6YtjNkEAiFQJbTiW+Vx3bywbVNbRaYwEt
+   iPb93RtzGok4yr/sYYSK2OlEtknCixACNVFH96N2dryrLJASHethKUR4N
+   irFvIXWQXOum5IYwDHOc18kwJ+WvI3AeBFah5KzNNYQqys9NeqOySpiqq
+   +pm4gGGeg3OhricnKRTxk5Duuw0SxiqABa2H+n2kjv8wz18Fy1BxK9WTy
+   o2i5tyGI0A0AgvS0Se0WblU/gMPyKjzTXxxsv+0zLqzkj937tzydPh/1m
+   qdQmLoWXFS+fU8eHwN6p+ggWwzP6Inu0Rn5rGf0zg7jzgNdFph+MD26q9
+   A==;
+X-CSE-ConnectionGUID: GMVioQLFRdW6v6G4K5gJAA==
+X-CSE-MsgGUID: jkSn5UaqTJS64ihBHBeODQ==
 X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="75049274"
+   d="scan'208";a="64742981"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Oct 2026 02:06:15 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 02:06:11 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 8 Oct 2026 02:06:14 -0700
+ 15.2.2562.49; Thu, 8 Oct 2026 02:06:10 -0700
 Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex04.mchp-main.com
  (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Thu, 8 Oct 2026 02:06:10 -0700
+ Transport; Thu, 8 Oct 2026 02:06:06 -0700
 From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
 	<jensemil.schulzostergaard@microchip.com>
-Date: Thu, 8 Oct 2026 11:05:25 +0200
-Subject: [PATCH net-next v14 6/9] net: dsa: lan9645x: add mac table
- integration
+Date: Thu, 8 Oct 2026 11:05:24 +0200
+Subject: [PATCH net-next v14 5/9] net: dsa: lan9645x: add vlan support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20261008-dsa_lan9645x_switch_driver_base-v14-6-3d2a72661213@microchip.com>
+Message-ID: <20261008-dsa_lan9645x_switch_driver_base-v14-5-3d2a72661213@microchip.com>
 References: <20261008-dsa_lan9645x_switch_driver_base-v14-0-3d2a72661213@microchip.com>
 In-Reply-To: <20261008-dsa_lan9645x_switch_driver_base-v14-0-3d2a72661213@microchip.com>
 To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
@@ -76,571 +75,726 @@ CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
 	<jensemil.schulzostergaard@microchip.com>
 X-Mailer: b4 0.15-dev
 
-Add MAC table support, and dsa fdb callback integration. The mactable is
-keyed on (vid,mac) and each row has 4 buckets. A mac table entry
-typically points to a PGID index, the first 9 of which represent a front
-port.
+Add VLAN support for VLAN-aware and VLAN-unaware bridges.
 
-Mac table entries for L2 multicast will use a PGID containing a group
-port mask. For IP multicast entries in the mac table a trick is used,
-where the group port mask is packed into the MAC data, exploiting the
-fact that the top bits are fixed, and that the number of switch ports is
-small enough to fit in the redundant bits.
+VID 4095 (HOST_PVID) is reserved and used internally as the port
+VLAN for standalone (non-bridged) ports so their FDB domain is
+isolated from bridged traffic.
 
-Therefore, we can avoid using sparse PGID resources for IP multicast
-entries in the mac table.
+VID 0 is used internally as the port VLAN for VLAN-unaware bridge ports
+(UNAWARE_PVID).
+
+The VLAN table and the per port VLAN configuration are serialized with
+fwd_domain_lock, since .port_setup runs without rtnl held.
+
+There are two chip limitations. Only one egress-untagged VLAN is
+supported on a port that also has tagged VLANs. The rewriter can exempt
+a single PORT_VID from tagging, so adding a second untagged VLAN
+alongside tagged ones is rejected with -EBUSY.
+
+Both TPIDs are recognized as VLAN tags unconditionally. There is no per
+port control to classify one TPID as tagged while treating the other as
+untagged customer data.
+
+Only bridge vlan_protocol 802.1Q is offloaded. DSA does not pass
+SWITCHDEV_ATTR_ID_BRIDGE_VLAN_PROTOCOL to drivers, so an 802.1ad bridge
+cannot be refused, and the classifier does not honour it.
+
+S-tag and C-tag are always treated as interchangeable. Full C-component
+conformance would need S-tagged frames treated as untagged by a VLAN
+aware bridge, dropped on a port without a pvid and classified to the
+pvid on a port with one.
+
+Of those, only the drop is expressible, through
+ANA_DROP_CFG.DROP_S_TAGGED_ENA. The reclassification needs the VCAP to
+match on tag type and overwrite the classified VID, see
+ocelot_update_vlan_reclassify_rule().
+
+We program neither, since dropping without reclassifying is less
+consistent than treating both tag types alike.
 
 Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
 Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
 ---
 Changes in v14:
-- Only forget a CPU port host entry when no other database still uses
-  the same MAC table key, including databases of a different type.
+- Use TAG_NO_UNAWARE instead of TAG_ALL on ports with only tagged
+  VLANs, so frames injected with classified VID 0 are not tagged.
 
 Changes in v12:
-- Log a failure from lan9645x_mact_flush() in port_fast_age(), which
-  returns void and cannot propagate it.
-- Fix a comment to name PGID_CPU rather than the CPU port module.
-- Move this patch before bridge support, so .port_fast_age exists when
-  port_stp_state_set() is introduced.
-- Give lan9645x_mact_learn() a cpu_copy argument, and drop
-  lan9645x_mac_ports_use_cpu() and the wrapper that used it to derive
-  the flag from the encoded mac. The helper could only return false,
-  since its one caller passes ENTRYTYPE_LOCKED, and the mdb path needs
-  the flag passed in rather than derived.
-- Bound the CMD_GET_NEXT walk in lan9645x_mact_dsa_dump() at the mac table
-  size plus one, derived from ANA_MACTINDX. Log and return -EIO on overrun.
-- lan9645x_mact_dsa_dump(): leave automatic ageing enabled during the
-  GET_NEXT walk, as it does not disturb the walk, and toggling ageing
-  resets the timer.
-- lan9645x_teardown(): deinit the mac table before fwd_domain_lock.
-- Spell the mac argument as mac[ETH_ALEN] and the vid as unsigned int.
+- Serialize the VLAN table with fwd_domain_lock, and assert it in the
+  lan9645x_vlan.c entry points. .port_setup runs outside rtnl, so a
+  registered user port can be bridged while a later port is still being
+  set up.
+- Move this patch before bridge support. It now carries bridge_mask,
+  fwd_domain_lock and lan9645x_port_is_bridged().
+- Move lan9645x_vlan_clear_hostmode() to the bridge patch, together with
+  its only caller.
+- Describe the untagged VLAN limit, and why S-tag and C-tag are treated
+  as interchangeable.
+- Say that only bridge vlan_protocol 802.1Q is offloaded.
+- lan9645x_teardown(): destroy fwd_domain_lock before the NPI port deinit,
+  so teardown unwinds in reverse order of setup.
+- Drop the six unused lan9645x_vlan bitfields.
+- Spell VLAN in upper case in the two dev_err() strings.
+- Split the extack in lan9645x_vlan_port_add_vlan(). The condition also
+  fires when a tagged VLAN is added to a port with several untagged ones,
+  where there is no native VLAN to report.
 
 Changes in v8:
-- Pass lan9645x into lan9645x_mac_ports_use_cpu() and reference the CPU
-  port module as lan9645x->num_phys_ports instead of CPU_PORT.
+- Use lan9645x->num_phys_ports instead of CPU_PORT for the CPU port
+  module, and reword the portmask comment.
 
 Changes in v5:
-- lan9645x_mac_init returns error on table init timeout
-- add comment about skipping LOCKED entries on fdb dump
+- switch -EBUSY to -EINVAL for vlan add/del in the reserved range.
+- remove reserved HSR vlan
+- update commit message
 
 Changes in v4:
-- remove mac_entries list and just do direct IO to mac table from
-  fdb_add/fdb_del
+- fix clear HOST_PVID vlan membership when a port joins a bridge
+- explicit default value write to tag type register for untagged frames
+- use lan_rmw for ANA_DROP_CFG
+- add comment for error path in lan9645x_vlan_hw_wr
+- use dsa_switch_for_each_user_port to iterate ports
 
 Changes in v3:
-- avoid mac add/del dealloc when mac table writes fail
-- add mact_lock to change ageing time
-- dealloc all mac_entries on deinit
-- dsa_dump returns mac table timeout error
+- use SET register macros in vlan_hw_wr
+- add vlan id bounds check to vlan_del
+- return vlan_hw_wr timeout err on init
+- move cpu vlan action after bounds check
 
 Changes in v2:
-- use a single lock for hw and sw
-- remove unused row struct field and define
-- remove list element INIT_LIST_HEAD
-- consistent use of err vs ret
-- remove mutex_lock in init
-- use empty initializer { 0 } -> {}
-- do not move fwd_domain_lock init to this unit
-- add newline to dev_* log statements
+- redesign based on selftests which rely on changing vlan_default_pvid.
+  Our HW limitations were too forward. Following Vladimirs changes to
+  ocelot VLAN implementation, we now dynamically change egress tag
+  configuration, allowing more states.
+- selftests are passing, except an expected failure w.r.t ctag/stag
+  conformance, which is a hw limitation.
 ---
  drivers/net/dsa/microchip/lan9645x/Makefile        |   1 +
- drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c  | 268 +++++++++++++++++++++
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.c | 123 ++++++++++
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  27 +++
- 4 files changed, 419 insertions(+)
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.c |  69 ++++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  32 ++
+ drivers/net/dsa/microchip/lan9645x/lan9645x_port.c |   6 +
+ drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c | 402 +++++++++++++++++++++
+ 5 files changed, 510 insertions(+)
 
 diff --git a/drivers/net/dsa/microchip/lan9645x/Makefile b/drivers/net/dsa/microchip/lan9645x/Makefile
-index e049114b3563..70815edca5b9 100644
+index 7cc0ae0ada40..e049114b3563 100644
 --- a/drivers/net/dsa/microchip/lan9645x/Makefile
 +++ b/drivers/net/dsa/microchip/lan9645x/Makefile
-@@ -2,6 +2,7 @@
- obj-$(CONFIG_NET_DSA_MICROCHIP_LAN9645X) += mchp-lan9645x.o
- 
- mchp-lan9645x-objs := \
-+	lan9645x_mac.o \
- 	lan9645x_main.o \
+@@ -6,3 +6,4 @@ mchp-lan9645x-objs := \
  	lan9645x_npi.o \
  	lan9645x_phylink.o \
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
-new file mode 100644
-index 000000000000..50ce1378b9da
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_mac.c
-@@ -0,0 +1,268 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#include "lan9645x_main.h"
-+
-+#define CMD_IDLE		0
-+#define CMD_LEARN		1
-+#define CMD_FORGET		2
-+#define CMD_AGE			3
-+#define CMD_GET_NEXT		4
-+#define CMD_INIT		5
-+#define CMD_READ		6
-+#define CMD_WRITE		7
-+#define CMD_SYNC_GET_NEXT	8
-+
-+/* The chip has 2048 * 4 = 8192 total entries in the mac table */
-+#define MACT_ROWS		(FIELD_MAX(ANA_MACTINDX_M_INDEX) + 1)
-+#define MACT_BUCKETS		(FIELD_MAX(ANA_MACTINDX_BUCKET) + 1)
-+#define MACT_ENTRIES		(MACT_ROWS * MACT_BUCKETS)
-+#define MACT_GET_NEXT_MAX	(MACT_ENTRIES + 1)
-+
-+static int lan9645x_mac_wait_for_completion(struct lan9645x *lan9645x,
-+					    u32 *maca)
-+{
-+	u32 val = 0;
-+	int err;
-+
-+	lockdep_assert_held(&lan9645x->mact_lock);
-+
-+	err = lan9645x_rd_poll_timeout(lan9645x, ANA_MACACCESS, val,
-+				       ANA_MACACCESS_MAC_TABLE_CMD_GET(val) ==
-+				       CMD_IDLE);
-+	if (err)
-+		return err;
-+
-+	if (maca)
-+		*maca = val;
-+
-+	return 0;
-+}
-+
-+static void lan9645x_mac_select(struct lan9645x *lan9645x,
-+				const unsigned char mac[ETH_ALEN],
-+				unsigned int vid)
-+{
-+	u64 maddr = ether_addr_to_u64(mac);
-+
-+	lockdep_assert_held(&lan9645x->mact_lock);
-+
-+	lan_wr(ANA_MACHDATA_VID_SET(vid) |
-+	       ANA_MACHDATA_MACHDATA_SET(upper_32_bits(maddr)),
-+	       lan9645x,
-+	       ANA_MACHDATA);
-+
-+	lan_wr(lower_32_bits(maddr),
-+	       lan9645x,
-+	       ANA_MACLDATA);
-+}
-+
-+static int __lan9645x_mact_forget(struct lan9645x *lan9645x,
-+				  const unsigned char mac[ETH_ALEN],
-+				  unsigned int vid,
-+				  enum macaccess_entry_type type)
-+{
-+	lockdep_assert_held(&lan9645x->mact_lock);
-+
-+	lan9645x_mac_select(lan9645x, mac, vid);
-+
-+	lan_wr(ANA_MACACCESS_ENTRYTYPE_SET(type) |
-+	       ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_FORGET),
-+	       lan9645x,
-+	       ANA_MACACCESS);
-+
-+	return lan9645x_mac_wait_for_completion(lan9645x, NULL);
-+}
-+
-+int lan9645x_mact_forget(struct lan9645x *lan9645x,
-+			 const unsigned char mac[ETH_ALEN], unsigned int vid,
-+			 enum macaccess_entry_type type)
-+{
-+	int err;
-+
-+	mutex_lock(&lan9645x->mact_lock);
-+	err = __lan9645x_mact_forget(lan9645x, mac, vid, type);
-+	mutex_unlock(&lan9645x->mact_lock);
-+
-+	return err;
-+}
-+
-+static int __lan9645x_mact_learn(struct lan9645x *lan9645x, int port,
-+				 const unsigned char mac[ETH_ALEN],
-+				 unsigned int vid,
-+				 enum macaccess_entry_type type,
-+				 bool cpu_copy)
-+{
-+	lockdep_assert_held(&lan9645x->mact_lock);
-+
-+	lan9645x_mac_select(lan9645x, mac, vid);
-+
-+	lan_wr(ANA_MACACCESS_VALID_SET(1) |
-+	       ANA_MACACCESS_DEST_IDX_SET(port) |
-+	       ANA_MACACCESS_MAC_CPU_COPY_SET(cpu_copy) |
-+	       ANA_MACACCESS_ENTRYTYPE_SET(type) |
-+	       ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_LEARN),
-+	       lan9645x, ANA_MACACCESS);
-+
-+	return lan9645x_mac_wait_for_completion(lan9645x, NULL);
-+}
-+
-+int lan9645x_mact_learn(struct lan9645x *lan9645x, int port,
-+			const unsigned char mac[ETH_ALEN], unsigned int vid,
-+			enum macaccess_entry_type type, bool cpu_copy)
-+{
-+	int err;
-+
-+	mutex_lock(&lan9645x->mact_lock);
-+	err = __lan9645x_mact_learn(lan9645x, port, mac, vid, type, cpu_copy);
-+	mutex_unlock(&lan9645x->mact_lock);
-+
-+	return err;
-+}
-+
-+int lan9645x_mact_flush(struct lan9645x *lan9645x, int port)
-+{
-+	int err;
-+
-+	mutex_lock(&lan9645x->mact_lock);
-+	/* MAC table entries with dst index matching port are aged on scan. */
-+	lan_wr(ANA_ANAGEFIL_PID_EN_SET(1) |
-+	       ANA_ANAGEFIL_PID_VAL_SET(port),
-+	       lan9645x, ANA_ANAGEFIL);
-+
-+	/* Flushing requires two scans. First sets AGE_FLAG=1, second removes
-+	 * entries with AGE_FLAG=1.
-+	 */
-+	lan_wr(ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_AGE),
-+	       lan9645x,
-+	       ANA_MACACCESS);
-+
-+	err = lan9645x_mac_wait_for_completion(lan9645x, NULL);
-+	if (err)
-+		goto mact_unlock;
-+
-+	lan_wr(ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_AGE),
-+	       lan9645x,
-+	       ANA_MACACCESS);
-+
-+	err = lan9645x_mac_wait_for_completion(lan9645x, NULL);
-+
-+mact_unlock:
-+	lan_wr(0, lan9645x, ANA_ANAGEFIL);
-+	mutex_unlock(&lan9645x->mact_lock);
-+	return err;
-+}
-+
-+int lan9645x_mac_init(struct lan9645x *lan9645x)
-+{
-+	u32 val;
-+	int err;
-+
-+	/* Clear the MAC table */
-+	lan_wr(ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_INIT), lan9645x,
-+	       ANA_MACACCESS);
-+
-+	err = lan9645x_rd_poll_timeout(lan9645x, ANA_MACACCESS, val,
-+				       ANA_MACACCESS_MAC_TABLE_CMD_GET(val) ==
-+				       CMD_IDLE);
-+	if (err) {
-+		dev_err(lan9645x->dev, "MAC table clear timeout\n");
-+		return err;
-+	}
-+
-+	mutex_init(&lan9645x->mact_lock);
-+	return 0;
-+}
-+
-+void lan9645x_mac_deinit(struct lan9645x *lan9645x)
-+{
-+	mutex_destroy(&lan9645x->mact_lock);
-+}
-+
-+int lan9645x_mact_dsa_dump(struct lan9645x *lan9645x, int port,
-+			   dsa_fdb_dump_cb_t *cb, void *data)
-+{
-+	u8 mac[ETH_ALEN] __aligned(2);
-+	u32 mach, macl, maca;
-+	int err = 0;
-+	u64 addr;
-+	int iter;
-+	u16 vid;
-+	u8 type;
-+
-+	mutex_lock(&lan9645x->mact_lock);
-+
-+	/* The aging filter works both for aging scans and GET_NEXT table scans.
-+	 * With it, the HW table iteration only stops at entries matching our
-+	 * filter. Since DSA calls us for each port on a table dump, this helps
-+	 * avoid unnecessary work.
-+	 *
-+	 * Setup agefilter on our port
-+	 */
-+	lan_wr(ANA_ANAGEFIL_PID_EN_SET(1) |
-+	       ANA_ANAGEFIL_PID_VAL_SET(port),
-+	       lan9645x, ANA_ANAGEFIL);
-+
-+	lan_wr(0, lan9645x, ANA_MACHDATA);
-+	lan_wr(0, lan9645x, ANA_MACLDATA);
-+
-+	type = ENTRYTYPE_NORMAL;
-+
-+	for (iter = 0; iter < MACT_GET_NEXT_MAX; iter++) {
-+		/* CMD_GET_NEXT returns the smallest entry ordered above the one
-+		 * left in the registers.
-+		 * We rely on mach, macl and type being set correctly in
-+		 * the registers from previous round, vis a vis the GET_NEXT
-+		 * semantics, so locking entire loop is important.
-+		 */
-+		lan_wr(ANA_MACACCESS_MAC_TABLE_CMD_SET(CMD_GET_NEXT) |
-+		       ANA_MACACCESS_ENTRYTYPE_SET(type),
-+		       lan9645x, ANA_MACACCESS);
-+
-+		err = lan9645x_mac_wait_for_completion(lan9645x, &maca);
-+		if (err)
-+			break;
-+
-+		if (ANA_MACACCESS_VALID_GET(maca) == 0)
-+			break;
-+
-+		type = ANA_MACACCESS_ENTRYTYPE_GET(maca);
-+		mach = lan_rd(lan9645x, ANA_MACHDATA);
-+		macl = lan_rd(lan9645x, ANA_MACLDATA);
-+
-+		/* Only dynamic entries are surfaced through the user port dump.
-+		 * ENTRYTYPE_LOCKED entries are already reported by the bridge
-+		 * master's ndo_fdb_dump as NTF_MASTER, so we avoid duplicating
-+		 * them as NTF_SELF.
-+		 * Entries toward the host (NTF_SELF) have DEST_IDX == PGID_CPU
-+		 * and are filtered out by the DEST_IDX check.
-+		 */
-+		if (ANA_MACACCESS_DEST_IDX_GET(maca) == port &&
-+		    type == ENTRYTYPE_NORMAL) {
-+			addr = (u64)ANA_MACHDATA_MACHDATA_GET(mach) << 32 |
-+			       macl;
-+			u64_to_ether_addr(addr, mac);
-+			vid = ANA_MACHDATA_VID_GET(mach);
-+			if (vid > VLAN_MAX)
-+				vid = 0;
-+
-+			err = cb(mac, vid, false, data);
-+			if (err)
-+				break;
-+		}
-+	}
-+
-+	if (iter == MACT_GET_NEXT_MAX) {
-+		dev_err(lan9645x->dev,
-+			"MAC table walk on port %d did not terminate\n", port);
-+		err = -EIO;
-+	}
-+
-+	/* Remove aging filters */
-+	lan_wr(0, lan9645x, ANA_ANAGEFIL);
-+
-+	mutex_unlock(&lan9645x->mact_lock);
-+
-+	return err;
-+}
+ 	lan9645x_port.o \
++	lan9645x_vlan.o \
 diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-index 6818b91f4bed..c55161f8baff 100644
+index c7de3836e696..6818b91f4bed 100644
 --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
 +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
 @@ -74,6 +74,7 @@ static void lan9645x_teardown(struct dsa_switch *ds)
  {
  	struct lan9645x *lan9645x = ds->priv;
  
-+	lan9645x_mac_deinit(lan9645x);
- 	mutex_destroy(&lan9645x->fwd_domain_lock);
++	mutex_destroy(&lan9645x->fwd_domain_lock);
  	lan9645x_npi_port_deinit(lan9645x, lan9645x->npi);
  }
-@@ -160,6 +161,9 @@ static int lan9645x_setup(struct dsa_switch *ds)
  
- 	mutex_init(&lan9645x->fwd_domain_lock);
- 	err = lan9645x_vlan_init(lan9645x);
+@@ -157,6 +158,11 @@ static int lan9645x_setup(struct dsa_switch *ds)
+ 		return err;
+ 	}
+ 
++	mutex_init(&lan9645x->fwd_domain_lock);
++	err = lan9645x_vlan_init(lan9645x);
 +	if (err)
 +		goto err_mutex;
-+	err = lan9645x_mac_init(lan9645x);
- 	if (err)
- 		goto err_mutex;
++
+ 	/* Link Aggregation Mode: NETDEV_LAG_HASH_L2 */
+ 	lan_wr(ANA_AGGR_CFG_AC_SMAC_ENA |
+ 	       ANA_AGGR_CFG_AC_DMAC_ENA,
+@@ -288,6 +294,11 @@ static int lan9645x_setup(struct dsa_switch *ds)
+ 		 lan9645x->num_phys_ports - lan9645x->num_port_dis);
  
-@@ -360,6 +364,119 @@ static int lan9645x_port_vlan_del(struct dsa_switch *ds, int port,
- 	return err;
+ 	return 0;
++
++err_mutex:
++	mutex_destroy(&lan9645x->fwd_domain_lock);
++	lan9645x_npi_port_deinit(lan9645x, lan9645x->npi);
++	return err;
  }
  
-+static void lan9645x_port_fast_age(struct dsa_switch *ds, int port)
+ static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
+@@ -296,6 +307,59 @@ static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
+ 	lan9645x_phylink_get_caps(ds->priv, port, config);
+ }
+ 
++static int lan9645x_port_vlan_filtering(struct dsa_switch *ds, int port,
++					bool enabled,
++					struct netlink_ext_ack *extack)
 +{
++	struct lan9645x *lan9645x = ds->priv;
++	struct lan9645x_port *p;
++
++	/* DSA core does not call this for the CPU port */
++	p = lan9645x_to_port(lan9645x, port);
++	mutex_lock(&lan9645x->fwd_domain_lock);
++	p->vlan_aware = enabled;
++	lan9645x_vlan_port_apply(p);
++	mutex_unlock(&lan9645x->fwd_domain_lock);
++
++	return 0;
++}
++
++static int lan9645x_port_vlan_add(struct dsa_switch *ds, int port,
++				  const struct switchdev_obj_port_vlan *vlan,
++				  struct netlink_ext_ack *extack)
++{
++	struct lan9645x *lan9645x = ds->priv;
++	struct lan9645x_port *p;
++	bool pvid, untagged;
 +	int err;
 +
-+	err = lan9645x_mact_flush(ds->priv, port);
-+	if (err)
-+		dev_err(ds->dev, "Flushing MAC table on port %d returned %pe\n",
-+			port, ERR_PTR(err));
++	p = lan9645x_to_port(lan9645x, port);
++	pvid = !!(vlan->flags & BRIDGE_VLAN_INFO_PVID);
++	untagged = !!(vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED);
++
++	mutex_lock(&lan9645x->fwd_domain_lock);
++	err = lan9645x_vlan_port_add_vlan(p, vlan->vid, pvid, untagged, extack);
++	mutex_unlock(&lan9645x->fwd_domain_lock);
++
++	return err;
 +}
 +
-+static int lan9645x_fdb_dump(struct dsa_switch *ds, int port,
-+			     dsa_fdb_dump_cb_t *cb, void *data)
++static int lan9645x_port_vlan_del(struct dsa_switch *ds, int port,
++				  const struct switchdev_obj_port_vlan *vlan)
 +{
-+	return lan9645x_mact_dsa_dump(ds->priv, port, cb, data);
-+}
-+
-+static struct net_device *lan9645x_db2bridge(struct dsa_db db)
-+{
-+	switch (db.type) {
-+	case DSA_DB_PORT:
-+	case DSA_DB_LAG:
-+		return NULL;
-+	case DSA_DB_BRIDGE:
-+		return db.bridge.dev;
-+	default:
-+		return ERR_PTR(-EOPNOTSUPP);
-+	}
-+}
-+
-+static u16 lan9645x_fdb_vid(u16 vid, const struct dsa_db *db)
-+{
-+	return vid ? vid : lan9645x_vlan_unaware_pvid(db->type == DSA_DB_BRIDGE);
-+}
-+
-+static bool lan9645x_db_equal(const struct dsa_db *a, const struct dsa_db *b)
-+{
-+	if (a->type != b->type)
-+		return false;
-+
-+	switch (a->type) {
-+	case DSA_DB_PORT:
-+		return a->dp == b->dp;
-+	case DSA_DB_LAG:
-+		return a->lag.dev == b->lag.dev;
-+	case DSA_DB_BRIDGE:
-+		return a->bridge.num == b->bridge.num;
-+	}
-+
-+	return false;
-+}
-+
-+static bool lan9645x_host_addr_shared(struct dsa_port *dp,
-+				      const struct list_head *addrs,
-+				      const unsigned char *addr, u16 vid,
-+				      const struct dsa_db *db)
-+{
-+	u16 hw_vid = lan9645x_fdb_vid(vid, db);
-+	struct dsa_mac_addr *a;
-+
-+	lockdep_assert_held(&dp->addr_lists_lock);
-+
-+	list_for_each_entry(a, addrs, list) {
-+		if (ether_addr_equal(a->addr, addr) &&
-+		    !lan9645x_db_equal(&a->db, db) &&
-+		    lan9645x_fdb_vid(a->vid, &a->db) == hw_vid)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static int lan9645x_fdb_add(struct dsa_switch *ds, int port,
-+			    const unsigned char *addr, u16 vid,
-+			    struct dsa_db db)
-+{
-+	struct net_device *br = lan9645x_db2bridge(db);
-+	struct dsa_port *dp = dsa_to_port(ds, port);
 +	struct lan9645x *lan9645x = ds->priv;
-+	int dest;
++	struct lan9645x_port *p;
++	int err;
 +
-+	if (IS_ERR(br))
-+		return PTR_ERR(br);
++	p = lan9645x_to_port(lan9645x, port);
 +
-+	if (dsa_port_is_cpu(dp) &&
-+	    lan9645x_host_addr_shared(dp, &dp->fdbs, addr, vid, &db))
-+		return 0;
++	mutex_lock(&lan9645x->fwd_domain_lock);
++	err = lan9645x_vlan_port_del_vlan(p, vlan->vid);
++	mutex_unlock(&lan9645x->fwd_domain_lock);
 +
-+	dest = dsa_port_is_cpu(dp) ? PGID_CPU : port;
-+
-+	return lan9645x_mact_learn(lan9645x, dest, addr,
-+				   lan9645x_fdb_vid(vid, &db),
-+				   ENTRYTYPE_LOCKED, false);
-+}
-+
-+static int lan9645x_fdb_del(struct dsa_switch *ds, int port,
-+			    const unsigned char *addr, u16 vid,
-+			    struct dsa_db db)
-+{
-+	struct net_device *br = lan9645x_db2bridge(db);
-+	struct dsa_port *dp = dsa_to_port(ds, port);
-+	struct lan9645x *lan9645x = ds->priv;
-+
-+	if (IS_ERR(br))
-+		return PTR_ERR(br);
-+
-+	if (dsa_port_is_cpu(dp) &&
-+	    lan9645x_host_addr_shared(dp, &dp->fdbs, addr, vid, &db))
-+		return 0;
-+
-+	return lan9645x_mact_forget(lan9645x, addr, lan9645x_fdb_vid(vid, &db),
-+				    ENTRYTYPE_LOCKED);
++	return err;
 +}
 +
  static const struct dsa_switch_ops lan9645x_switch_ops = {
  	.get_tag_protocol		= lan9645x_get_tag_protocol,
  
-@@ -378,6 +495,12 @@ static const struct dsa_switch_ops lan9645x_switch_ops = {
- 	.port_vlan_filtering		= lan9645x_port_vlan_filtering,
- 	.port_vlan_add			= lan9645x_port_vlan_add,
- 	.port_vlan_del			= lan9645x_port_vlan_del,
+@@ -309,6 +373,11 @@ static const struct dsa_switch_ops lan9645x_switch_ops = {
+ 	/* MTU  */
+ 	.port_change_mtu		= lan9645x_change_mtu,
+ 	.port_max_mtu			= lan9645x_get_max_mtu,
 +
-+	/* MAC table integration */
-+	.port_fast_age			= lan9645x_port_fast_age,
-+	.port_fdb_dump			= lan9645x_fdb_dump,
-+	.port_fdb_add			= lan9645x_fdb_add,
-+	.port_fdb_del			= lan9645x_fdb_del,
++	/* VLAN integration */
++	.port_vlan_filtering		= lan9645x_port_vlan_filtering,
++	.port_vlan_add			= lan9645x_port_vlan_add,
++	.port_vlan_del			= lan9645x_port_vlan_del,
  };
  
  static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
 diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-index c61efd115aaa..9721a77276e5 100644
+index 3a4abedafa2c..c61efd115aaa 100644
 --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
 +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-@@ -177,6 +177,19 @@ struct lan9645x_vlan {
- 	    untagged: 9; /* ports 0-8 */
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/dsa/lan9645x.h>
+ #include <linux/if_bridge.h>
++#include <linux/if_vlan.h>
+ #include <linux/regmap.h>
+ #include <net/dsa.h>
+ 
+@@ -171,6 +172,11 @@ enum lan9645x_vlan_port_tag {
+ 	LAN9645X_TAG_ALL = 3,
  };
  
-+/* MAC table entry types.
-+ * ENTRYTYPE_NORMAL is subject to aging.
-+ * ENTRYTYPE_LOCKED is not subject to aging.
-+ * ENTRYTYPE_MACV4 is not subject to aging. For IPv4 multicast.
-+ * ENTRYTYPE_MACV6 is not subject to aging. For IPv6 multicast.
-+ */
-+enum macaccess_entry_type {
-+	ENTRYTYPE_NORMAL = 0,
-+	ENTRYTYPE_LOCKED,
-+	ENTRYTYPE_MACV4,
-+	ENTRYTYPE_MACV6,
++struct lan9645x_vlan {
++	u32 portmask: 10, /* ports 0-8 + CPU port module */
++	    untagged: 9; /* ports 0-8 */
 +};
 +
  struct lan9645x {
  	struct device *dev;
  	struct dsa_switch *ds;
-@@ -192,6 +205,7 @@ struct lan9645x {
- 	u16 bridge_mask; /* Mask for bridged ports */
- 	/* lock forwarding configuration and vlan table */
- 	struct mutex fwd_domain_lock;
-+	struct mutex mact_lock; /* serialize mac table register access */
+@@ -182,7 +188,15 @@ struct lan9645x {
+ 	u8 num_phys_ports;
+ 	struct lan9645x_port **ports;
  
++	/* Forwarding Database */
++	u16 bridge_mask; /* Mask for bridged ports */
++	/* lock forwarding configuration and vlan table */
++	struct mutex fwd_domain_lock;
++
  	int num_port_dis;
++
++	/* VLAN entries */
++	struct lan9645x_vlan vlans[VLAN_N_VID];
+ };
  
-@@ -377,4 +391,17 @@ int lan9645x_vlan_port_add_vlan(struct lan9645x_port *p, u16 vid, bool pvid,
- int lan9645x_vlan_port_del_vlan(struct lan9645x_port *p, u16 vid);
- void lan9645x_vlan_set_hostmode(struct lan9645x_port *p);
+ struct lan9645x_port {
+@@ -190,6 +204,9 @@ struct lan9645x_port {
  
-+/* MAC table: lan9645x_mac.c */
-+int lan9645x_mact_flush(struct lan9645x *lan9645x, int port);
-+int lan9645x_mact_learn(struct lan9645x *lan9645x, int port,
-+			const unsigned char mac[ETH_ALEN], unsigned int vid,
-+			enum macaccess_entry_type type, bool cpu_copy);
-+int lan9645x_mact_forget(struct lan9645x *lan9645x,
-+			 const unsigned char mac[ETH_ALEN], unsigned int vid,
-+			 enum macaccess_entry_type type);
-+int lan9645x_mac_init(struct lan9645x *lan9645x);
-+void lan9645x_mac_deinit(struct lan9645x *lan9645x);
-+int lan9645x_mact_dsa_dump(struct lan9645x *lan9645x, int port,
-+			   dsa_fdb_dump_cb_t *cb, void *data);
+ 	u8 chip_port;
+ 
++	bool vlan_aware;
++	u16 pvid;
++
+ 	bool rx_internal_delay;
+ 	bool tx_internal_delay;
+ };
+@@ -238,6 +255,11 @@ static inline struct lan9645x_port *lan9645x_to_port(struct lan9645x *lan9645x,
+ 	return lan9645x->ports[port];
+ }
+ 
++static inline bool lan9645x_port_is_bridged(struct lan9645x_port *p)
++{
++	return p->lan9645x->bridge_mask & BIT(p->chip_port);
++}
++
+ static inline struct regmap *lan_tgt2rmap(struct lan9645x *lan9645x,
+ 					  enum lan9645x_target t, int tinst)
+ {
+@@ -345,4 +367,14 @@ void lan9645x_phylink_get_caps(struct lan9645x *lan9645x, int port,
+ 			       struct phylink_config *c);
+ void lan9645x_phylink_port_down(struct lan9645x *lan9645x, int port);
+ 
++/* VLAN lan9645x_vlan.c */
++int lan9645x_vlan_init(struct lan9645x *lan9645x);
++u16 lan9645x_vlan_unaware_pvid(bool is_bridged);
++void lan9645x_vlan_port_apply(struct lan9645x_port *p);
++int lan9645x_vlan_port_add_vlan(struct lan9645x_port *p, u16 vid, bool pvid,
++				bool untagged,
++				struct netlink_ext_ack *extack);
++int lan9645x_vlan_port_del_vlan(struct lan9645x_port *p, u16 vid);
++void lan9645x_vlan_set_hostmode(struct lan9645x_port *p);
 +
  #endif /* __LAN9645X_MAIN_H__ */
+diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
+index 4d2d922bacba..2571380f2c02 100644
+--- a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
++++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
+@@ -162,5 +162,11 @@ int lan9645x_port_setup(struct dsa_switch *ds, int port)
+ 		ANA_PORT_CFG_PORTID_VAL,
+ 		lan9645x, ANA_PORT_CFG(p->chip_port));
+ 
++	if (p->chip_port != lan9645x->npi) {
++		mutex_lock(&lan9645x->fwd_domain_lock);
++		lan9645x_vlan_set_hostmode(p);
++		mutex_unlock(&lan9645x->fwd_domain_lock);
++	}
++
+ 	return 0;
+ }
+diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c
+new file mode 100644
+index 000000000000..751da5337536
+--- /dev/null
++++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_vlan.c
+@@ -0,0 +1,402 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* Copyright (C) 2026 Microchip Technology Inc.
++ */
++
++#include "lan9645x_main.h"
++
++#define VLANACCESS_CMD_IDLE		0
++#define VLANACCESS_CMD_READ		1
++#define VLANACCESS_CMD_WRITE		2
++#define VLANACCESS_CMD_INIT		3
++
++struct lan9645x_vlan_port_info {
++	int untagged;
++	int tagged;
++	u16 untagged_vid;
++};
++
++/* Calculate VLAN state of a port, across all VLANS. */
++static void lan9645x_vlan_port_get_info(struct lan9645x *lan9645x, int port,
++					struct lan9645x_vlan_port_info *info)
++{
++	u16 vid;
++
++	info->untagged = 0;
++	info->tagged = 0;
++	info->untagged_vid = 0;
++
++	for (vid = 1; vid <= VLAN_MAX; vid++) {
++		struct lan9645x_vlan *v = &lan9645x->vlans[vid];
++
++		if (!(v->portmask & BIT(port)))
++			continue;
++
++		if (v->untagged & BIT(port)) {
++			info->untagged++;
++			info->untagged_vid = vid;
++		} else {
++			info->tagged++;
++		}
++
++		/* VLAN composition is invalid, so break early. */
++		if (info->untagged > 1 && info->tagged)
++			break;
++	}
++}
++
++static int lan9645x_vlan_wait_for_completion(struct lan9645x *lan9645x)
++{
++	u32 val;
++
++	return lan9645x_rd_poll_timeout(lan9645x, ANA_VLANACCESS, val,
++					ANA_VLANACCESS_VLAN_TBL_CMD_GET(val) ==
++					VLANACCESS_CMD_IDLE);
++}
++
++static int lan9645x_vlan_hw_wr(struct lan9645x *lan9645x, u16 vid)
++{
++	struct lan9645x_vlan *v = &lan9645x->vlans[vid];
++	bool cpu_dis = !(v->portmask & BIT(lan9645x->num_phys_ports));
++	u32 val;
++	int err;
++
++	val = ANA_VLANTIDX_VLAN_PGID_CPU_DIS_SET(cpu_dis) |
++	      ANA_VLANTIDX_V_INDEX_SET(vid);
++
++	lan_wr(val, lan9645x, ANA_VLANTIDX);
++	lan_wr(ANA_VLAN_PORT_MASK_VLAN_PORT_MASK_SET(v->portmask),
++	       lan9645x, ANA_VLAN_PORT_MASK);
++	lan_wr(ANA_VLANACCESS_VLAN_TBL_CMD_SET(VLANACCESS_CMD_WRITE),
++	       lan9645x, ANA_VLANACCESS);
++
++	/* The VLAN access engine completes in a fixed ~1us vs the polling
++	 * timeout of 100_000 us. A timeout here therefore likely means the
++	 * register bus itself is dead, not that the VLAN op failed. There is no
++	 * meaningful recovery at runtime, so this function logs via dev_err()
++	 * and runtime callers discard the return value. Only
++	 * lan9645x_vlan_init() treats this as fatal so that probe fails early
++	 * on a broken bus.
++	 */
++	err = lan9645x_vlan_wait_for_completion(lan9645x);
++	if (err)
++		dev_err(lan9645x->dev, "VLAN set mask failed\n");
++
++	return err;
++}
++
++u16 lan9645x_vlan_unaware_pvid(bool is_bridged)
++{
++	return is_bridged ? UNAWARE_PVID : HOST_PVID;
++}
++
++static u16 lan9645x_vlan_port_get_pvid(struct lan9645x_port *port)
++{
++	bool is_bridged = lan9645x_port_is_bridged(port);
++
++	if (is_bridged && port->vlan_aware)
++		return port->pvid;
++	else
++		return lan9645x_vlan_unaware_pvid(is_bridged);
++}
++
++/* Dynamically choose the egress tagging mode based on the port vlan state:
++ *
++ * Standalone:
++ * TAG_NO_PVID_NO_UNAWARE with PORT_VID=HOST_PVID. This avoids leaking the
++ * internal HOST_PVID tag on ingress mirrored frames while leaving normal
++ * egress frames untagged.
++ *
++ * Bridged, VLAN-aware:
++ *  - N untagged, 0 tagged: TAG_DISABLED
++ *  - 1 untagged, N tagged: TAG_NO_PVID_NO_UNAWARE
++ *  - 0 untagged, N tagged: TAG_NO_UNAWARE
++ *
++ * Bridged, VLAN-unaware:
++ *   TAG_DISABLED
++ */
++static void
++lan9645x_vlan_port_apply_egress(struct lan9645x_port *p,
++				struct lan9645x_vlan_port_info *info)
++{
++	struct lan9645x *lan9645x = p->lan9645x;
++	enum lan9645x_vlan_port_tag tag_cfg;
++	u16 port_vid = UNAWARE_PVID;
++
++	if (!lan9645x_port_is_bridged(p)) {
++		tag_cfg = LAN9645X_TAG_NO_PVID_NO_UNAWARE;
++		port_vid = HOST_PVID;
++	} else if (p->vlan_aware) {
++		struct lan9645x_vlan_port_info _info;
++
++		if (!info) {
++			lan9645x_vlan_port_get_info(lan9645x, p->chip_port,
++						    &_info);
++			info = &_info;
++		}
++
++		if (info->untagged == 1 && info->tagged) {
++			tag_cfg = LAN9645X_TAG_NO_PVID_NO_UNAWARE;
++			port_vid = info->untagged_vid;
++		} else if (info->untagged) {
++			tag_cfg = LAN9645X_TAG_DISABLED;
++		} else {
++			tag_cfg = LAN9645X_TAG_NO_UNAWARE;
++		}
++	} else {
++		tag_cfg = LAN9645X_TAG_DISABLED;
++	}
++
++	/* TAG_TPID_CFG encoding:
++	 *
++	 * 0: Use 0x8100.
++	 * 1: Use 0x88A8.
++	 * 2: Use custom value from PORT_VLAN_CFG.PORT_TPID.
++	 * 3: Use PORT_VLAN_CFG.PORT_TPID, unless ingress tag was a C-tag
++	 *    (EtherType = 0x8100)
++	 *
++	 * Use 3 and PORT_VLAN_CFG.PORT_TPID=0x88a8 to ensure stags are not
++	 * rewritten to ctags on egress.
++	 */
++	lan_rmw(REW_TAG_CFG_TAG_TPID_CFG_SET(3) |
++		REW_TAG_CFG_TAG_CFG_SET(tag_cfg),
++		REW_TAG_CFG_TAG_TPID_CFG |
++		REW_TAG_CFG_TAG_CFG,
++		lan9645x, REW_TAG_CFG(p->chip_port));
++
++	lan_rmw(REW_PORT_VLAN_CFG_PORT_TPID_SET(ETH_P_8021AD) |
++		REW_PORT_VLAN_CFG_PORT_VID_SET(port_vid),
++		REW_PORT_VLAN_CFG_PORT_TPID |
++		REW_PORT_VLAN_CFG_PORT_VID,
++		lan9645x, REW_PORT_VLAN_CFG(p->chip_port));
++}
++
++static void lan9645x_vlan_port_apply_ingress(struct lan9645x_port *p)
++{
++	struct lan9645x *lan9645x = p->lan9645x;
++	u16 pvid;
++	u32 val;
++
++	pvid = lan9645x_vlan_port_get_pvid(p);
++
++	/* Default vlan to classify for untagged frames (may be zero), and set
++	 * their tag type to C-tag.
++	 */
++	val = ANA_VLAN_CFG_VLAN_VID_SET(pvid) |
++	      ANA_VLAN_CFG_VLAN_TAG_TYPE_SET(0);
++	if (p->vlan_aware)
++		val |= ANA_VLAN_CFG_VLAN_AWARE_ENA_SET(1) |
++		       ANA_VLAN_CFG_VLAN_POP_CNT_SET(1);
++
++	lan_rmw(val,
++		ANA_VLAN_CFG_VLAN_VID |
++		ANA_VLAN_CFG_VLAN_AWARE_ENA |
++		ANA_VLAN_CFG_VLAN_POP_CNT |
++		ANA_VLAN_CFG_VLAN_TAG_TYPE,
++		lan9645x, ANA_VLAN_CFG(p->chip_port));
++
++	val = 0;
++	if (p->vlan_aware && !pvid)
++		/* If port is vlan-aware and tagged, drop untagged and priority
++		 * tagged frames.
++		 */
++		val = ANA_DROP_CFG_DROP_UNTAGGED_ENA_SET(1) |
++		      ANA_DROP_CFG_DROP_PRIO_S_TAGGED_ENA_SET(1) |
++		      ANA_DROP_CFG_DROP_PRIO_C_TAGGED_ENA_SET(1);
++
++	lan_rmw(val,
++		ANA_DROP_CFG_DROP_UNTAGGED_ENA |
++		ANA_DROP_CFG_DROP_PRIO_S_TAGGED_ENA |
++		ANA_DROP_CFG_DROP_PRIO_C_TAGGED_ENA,
++		lan9645x, ANA_DROP_CFG(p->chip_port));
++}
++
++void lan9645x_vlan_port_apply(struct lan9645x_port *p)
++{
++	lockdep_assert_held(&p->lan9645x->fwd_domain_lock);
++
++	lan9645x_vlan_port_apply_ingress(p);
++	lan9645x_vlan_port_apply_egress(p, NULL);
++}
++
++static struct lan9645x_vlan *lan9645x_vlan_port_modify(struct lan9645x_port *p,
++						       u16 vid, bool pvid,
++						       bool untagged)
++{
++	struct lan9645x_vlan *v = &p->lan9645x->vlans[vid];
++
++	if (untagged)
++		v->untagged |= BIT(p->chip_port);
++	else
++		v->untagged &= ~BIT(p->chip_port);
++
++	if (pvid)
++		p->pvid = vid;
++	else if (p->pvid == vid)
++		p->pvid = 0;
++
++	return v;
++}
++
++static int lan9645x_vlan_cpu_add(struct lan9645x_port *p, u16 vid)
++{
++	struct lan9645x_vlan *v = &p->lan9645x->vlans[vid];
++
++	v->portmask |= BIT(p->lan9645x->num_phys_ports) | BIT(p->chip_port);
++	lan9645x_vlan_hw_wr(p->lan9645x, vid);
++
++	return 0;
++}
++
++int lan9645x_vlan_port_add_vlan(struct lan9645x_port *p, u16 vid, bool pvid,
++				bool untagged, struct netlink_ext_ack *extack)
++{
++	struct lan9645x *lan9645x = p->lan9645x;
++	struct lan9645x_vlan_port_info info;
++	struct lan9645x_vlan old_vlan;
++	struct lan9645x_vlan *v;
++	u16 old_pvid;
++
++	lockdep_assert_held(&lan9645x->fwd_domain_lock);
++
++	/* Kernel VLAN core adds vid 0, which collides with our UNAWARE_PVID.
++	 * Hardware needs no entry for it: basic VLAN classification replaces a
++	 * VID of 0 with VLAN_CFG.VLAN_VID, keeping the frame's PCP and DEI, so
++	 * a priority tagged frame is classified to the port pvid. Ports with no
++	 * pvid instead drop it, see lan9645x_vlan_port_apply_ingress().
++	 */
++	if (!vid)
++		return 0;
++
++	if (vid > VLAN_MAX) {
++		NL_SET_ERR_MSG_MOD(extack, "VLAN 4095 reserved");
++		return -EINVAL;
++	}
++
++	if (p->chip_port == lan9645x->npi)
++		return lan9645x_vlan_cpu_add(p, vid);
++
++	old_vlan = lan9645x->vlans[vid];
++	old_pvid = p->pvid;
++
++	v = lan9645x_vlan_port_modify(p, vid, pvid, untagged);
++	v->portmask |= BIT(p->chip_port);
++
++	lan9645x_vlan_port_get_info(lan9645x, p->chip_port, &info);
++
++	if (info.untagged > 1 && info.tagged) {
++		*v = old_vlan;
++		p->pvid = old_pvid;
++		if (untagged)
++			NL_SET_ERR_MSG_MOD(extack,
++					   "Port with egress-tagged VLANs cannot have more than one egress-untagged VLAN");
++		else
++			NL_SET_ERR_MSG_MOD(extack,
++					   "Port with more than one egress-untagged VLAN cannot have egress-tagged VLANs");
++		return -EBUSY;
++	}
++
++	lan9645x_vlan_hw_wr(lan9645x, vid);
++	lan9645x_vlan_port_apply_ingress(p);
++	lan9645x_vlan_port_apply_egress(p, &info);
++
++	return 0;
++}
++
++static int lan9645x_vlan_cpu_del(struct lan9645x_port *p, u16 vid)
++{
++	struct lan9645x_vlan *v = &p->lan9645x->vlans[vid];
++
++	v->portmask &= ~(BIT(p->lan9645x->num_phys_ports) |
++			 BIT(p->chip_port));
++	lan9645x_vlan_hw_wr(p->lan9645x, vid);
++
++	return 0;
++}
++
++int lan9645x_vlan_port_del_vlan(struct lan9645x_port *p, u16 vid)
++{
++	struct lan9645x *lan9645x = p->lan9645x;
++	struct lan9645x_vlan *v;
++
++	lockdep_assert_held(&lan9645x->fwd_domain_lock);
++
++	if (!vid)
++		return 0;
++
++	if (vid > VLAN_MAX)
++		return -EINVAL;
++
++	if (p->chip_port == lan9645x->npi)
++		return lan9645x_vlan_cpu_del(p, vid);
++
++	v = lan9645x_vlan_port_modify(p, vid, false, false);
++	v->portmask &= ~BIT(p->chip_port);
++	lan9645x_vlan_hw_wr(lan9645x, vid);
++	lan9645x_vlan_port_apply(p);
++
++	return 0;
++}
++
++void lan9645x_vlan_set_hostmode(struct lan9645x_port *p)
++{
++	lockdep_assert_held(&p->lan9645x->fwd_domain_lock);
++
++	p->vlan_aware = false;
++	p->lan9645x->vlans[HOST_PVID].portmask |= BIT(p->chip_port);
++	lan9645x_vlan_hw_wr(p->lan9645x, HOST_PVID);
++	lan9645x_vlan_port_apply(p);
++}
++
++int lan9645x_vlan_init(struct lan9645x *lan9645x)
++{
++	u32 all_phys_ports, all_ports;
++	struct dsa_port *dp;
++	u16 vid;
++	int err;
++
++	all_phys_ports = GENMASK(lan9645x->num_phys_ports - 1, 0);
++	all_ports = all_phys_ports | BIT(lan9645x->num_phys_ports);
++
++	/* Clear VLAN table, by default all ports are members of all VLANS */
++	lan_wr(ANA_VLANACCESS_VLAN_TBL_CMD_SET(VLANACCESS_CMD_INIT),
++	       lan9645x, ANA_VLANACCESS);
++
++	err = lan9645x_vlan_wait_for_completion(lan9645x);
++	if (err) {
++		dev_err(lan9645x->dev, "VLAN clear table failed\n");
++		return err;
++	}
++
++	for (vid = 1; vid < VLAN_N_VID; vid++) {
++		err = lan9645x_vlan_hw_wr(lan9645x, vid);
++		if (err)
++			return err;
++	}
++
++	/* Set all the ports + cpu to be part of HOST_PVID and UNAWARE_PVID */
++	lan9645x->vlans[HOST_PVID].portmask = all_ports;
++	err = lan9645x_vlan_hw_wr(lan9645x, HOST_PVID);
++	if (err)
++		return err;
++
++	lan9645x->vlans[UNAWARE_PVID].portmask = all_ports;
++	err = lan9645x_vlan_hw_wr(lan9645x, UNAWARE_PVID);
++	if (err)
++		return err;
++
++	/* Configure the CPU port module to be vlan aware */
++	lan_wr(ANA_VLAN_CFG_VLAN_VID_SET(UNAWARE_PVID) |
++	       ANA_VLAN_CFG_VLAN_AWARE_ENA_SET(1) |
++	       ANA_VLAN_CFG_VLAN_POP_CNT_SET(1),
++	       lan9645x, ANA_VLAN_CFG(lan9645x->num_phys_ports));
++
++	/* Set vlan ingress filter mask to all ports */
++	lan_wr(all_ports, lan9645x, ANA_VLANMASK);
++
++	dsa_switch_for_each_user_port(dp, lan9645x->ds) {
++		lan_wr(0, lan9645x, REW_PORT_VLAN_CFG(dp->index));
++		lan_wr(0, lan9645x, REW_TAG_CFG(dp->index));
++	}
++
++	return 0;
++}
 
 -- 
 2.52.0
