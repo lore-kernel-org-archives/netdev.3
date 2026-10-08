@@ -1,237 +1,272 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0EE48A2D7
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791461881; cv=pass; b=sxw1QGBixhe7Kq1QTlys4QFYfNM0LMeD4Lv49MMsMBwLrXq88EhJuRlFcB7fx6vLQOBKYR8vS0uggRhY8ZqlupZPQjchul41JFT2GgqdIqprAbXD0HCOwWY+bqR+pghpBu23edYTf5tLu13UX8cY0Kz0VOskNsJRHv4POkeQuNM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791461881; c=relaxed/simple;
-	bh=ynlE/SWWrcsYw4ABHbPbxqg7K6Zct9W6Wy47ALFH99U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O2caAKBhkL41ppK4oJ1yFa2SIXBD4rZKQXP3ImjB6PeCMuiU2KXzWS8DjEyme+CKhZuinWTwQ9tK1E4tjUo8OTlSZ75bNby/3b8aNu9mAhOn82gmqri4IszoIe5kUiTmoaJ/I5vnV8hB0qNHLCTXJDOxCy0UniVASf3TWUv1too=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Z6hhbRpG; arc=pass smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Z6hhbRpG"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-868b3248b2cso2252534b3a.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:17:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791461879; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ozFDl5WW2soB1orUm/sv4O9xqnhluL4kKfcWxhRIM708WTMFloZBU5gQk561lRiTbt
-         DTKgHL0wp+8axevnAfrMledgRE8U2DfZfGylsgvY5bQe4ibL4murjsFPm3oP7VFDF0/Q
-         i6ZccxtX6e0ltMritiARHhy/XcNXRvHiP2cpSTvoq9dGjNRDrxjbMEW4LGnfLmmuk9IU
-         MB3RZR8g54uG6YOwkw5DFjW8vTtulXtxnNBkM3F0eVnAIthyKyD//7c12nTfDvUnVnMF
-         qjWxgPJzAu8/LAo5j64bSvBbK3qNGBlS+nQjk+oMX0P08Vi/2MZqtE9RdPHJ4JuzM2mn
-         jb8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=M2WT0JKZwEDOLnPzaszKYQRsSbuzXXJG5MpcBlmWQp8=;
-        fh=/KNHanBKvb0UpdGuR+44c0O9Rlfl/GH50TXZciVvwTQ=;
-        b=ZJyyKfIek/WftGVJii0sw132nyqnSRkBRq/6U3poVskerjovmbExpudfUylNoYuIat
-         tkvVJ4FIkgBrIsjo6/iJUxKvdkv61VGtCzwhoiJBcJpVN9/1+7/ODRPOGRUnFe1g88hr
-         gaRcjHW071jXNH5DQ4JBTEyJxdD4vivWMHaAAIXTs9nV2XKF8Rvm78RfRFSHtoPM08Bd
-         JMAGjKC7GTXzK+D+V+yQv91IdPmGsFJO2TK0tI4ZDS3DIxcdEJUQU040XYKiuljRAYWz
-         ENxzZC9OxQXOu11V24EsM+EkawGd5bNiUcpBZDUYi53hvz9QfRzg/JTeRmGOMYHxh/lZ
-         +VfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791461879; x=1792066679; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=M2WT0JKZwEDOLnPzaszKYQRsSbuzXXJG5MpcBlmWQp8=;
-        b=Z6hhbRpGyZqhOUyjKZQ3GdGPuvo4e0wG/Z9PPZCOEgZYJvv1d+72dV1UwT6upoNvRy
-         vbQ398+1sQARzLefViL2C0Y8n8aLGM3x2AQ/G0g7xnMAvL5EewGde+ioBew+yyrAccfY
-         5nTO/uKnYNXdohf0S2Xsq32qbfK7biQaeqYRQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791461879; x=1792066679;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=M2WT0JKZwEDOLnPzaszKYQRsSbuzXXJG5MpcBlmWQp8=;
-        b=e+u/wYPBiga4EBLffPZpVa/oOCsgkVQ/q5rogza1Twh2jwYxDIqkXoMaSf7p33EGJy
-         eNfyvKn2+YZ541kcBKDV7YKfvVTWHKyQNG5DQVX5csNsvxN1yutFrNPoiU+UFoRuSxn1
-         eA4zLl1Yw4+neazRy7jWxHMYvN7FUxk7ty+T1bG1xP/Z1Zx976EyT5LsHXM8ms7nSXBG
-         iYVOH0f4IatuCHe4K3bW12+8f1gdKkwD7FFjAVOSc7WOwOebXqg2ifxRekGBpX0WErO+
-         nKL/128RNbX9yoLC5aX/4ZH/AbS5wCa+93Ian8edyDDixG/bx8c75YoUyldxACkHN05v
-         2lRA==
-X-Gm-Message-State: AFuF++kBHM0+YZCf8pE+AZPyATaYxbicNKEhzURxiliiVmP7c9RwHQQD
-	fDvp2//gH0070EHJM9nvrDkVDJ1K7FnS8TqCXba6Xt9pwgekgVn3VU/XvoMvQ+LwM8tfL68c3/0
-	PZKJcH/qcn5J7OYf7PvNA5TBGc3RI9826gJFC7hpV
-X-Gm-Gg: AYBFou0BzWDGpb8mOYweM7O4cuYSmD7BAxT6H3+uED3dekewA3B1pouPspV9iUcjN2a
-	HblCO7nqMep6oROlvzRrzEjWmttuifWIvRROFicyc4c7fjP+ss+hgNEXAH4W30CEUji586femiY
-	Fmwu2VwVCPfCNXtKA2dhZINSxdD3CGFTOX0SwTGhnOIDdDqKysuthTyQJ8z9D7tTF83/0N0igJW
-	kwyKjECqpMzQzpcr7+yNxCIrCMVdMXKM/sDM1EuLaMh6sbfFWQhGa/HDq/L9vyKY4RhayKF6YlT
-	KSGDW2A/0Dg/sj6Xcg8QUyaPCHs24FRcvA3g0YXDFNXWQlOQc2JgiBSbrNz19Hq73r28q6VnIrk
-	9aEcSCPsyB5aT26X+zh4qzNtwIHmQABFBNb42XI8=
-X-Received: by 2002:a05:6a00:37c4:b0:892:597f:37d8 with SMTP id
- d2e1a72fcca58-892597f3814mr3610084b3a.15.1791461879228; Thu, 08 Oct 2026
- 05:17:59 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD10B49A3C6
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791462283; cv=none; b=W3f01dW2oG7LLBTSvyLk+s/hJIv/95OSlwo0fugBoWZEuqn6CPHL2aINO6Pxy/JZXlMyeVF0yaKnQU9cBwZyOMDckpzQGuHPoaBee0K8yWR1Y0kpGZig3dVTOXI+Vp79Ed5H7zNU43R9aODsJokdOZso7nz4q2+txJVxAzSVp84=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791462283; c=relaxed/simple;
+	bh=f3EouvrWJbt7wR32vpuwzyhzCjzrq7NAPQlDV/CetpI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=phVJspZ/CwoRnBqK8+xo2jlFfiX2dRbksbkfACRulP5AsL9drd3PPIvMrnX5q2K487F49zqRocSVz/YbyM0+Bku2LE6KEUJI3X0a+YoxTKzZkgaLM2E3WUHavmL3h6m0NUW1nW1JMm4skdjTEtN5aa6nwGIgnsXD2kKPhFnwbNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E4D1B219A7;
+	Thu,  8 Oct 2026 12:24:39 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 053781339F;
+	Thu,  8 Oct 2026 12:24:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id VIMDM4aLx2rRPgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Thu, 08 Oct 2026 12:24:38 +0000
+Message-ID: <b877c0b9-1e1e-4860-b35a-9a27524bea3e@suse.de>
+Date: Thu, 8 Oct 2026 14:24:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-BA27.v5.20261007171509@mojatatu.com> <87a4oottcj.fsf@toke.dk>
-In-Reply-To: <87a4oottcj.fsf@toke.dk>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 8 Oct 2026 08:17:47 -0400
-X-Gm-Features: AclHuK8XNtFRNjRvxFCSTrhybiQzTRjawx2i8ZtjcIlPD2lhimmqpObukZNvn8k
-Message-ID: <CAM0EoMmYEr4DLrjuM5hdPR5Lf1c=mU6WNpYydbzkGnWjqFxMrw@mail.gmail.com>
-Subject: Re: [PATCH net-next v5] net/sched: cap the accounted backlog before
- it can wrap
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Victor Nogueira <victor@mojatatu.com>, moeller0@gmx.de, cake@lists.bufferbloat.net, 
-	Sashiko <sashiko-bot@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: openvswitch: do not set transport header
+ on later IPv4 fragments
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, blp@nicira.com,
+ joe@wand.net.nz, jesse@nicira.com, horms@kernel.org, pabeni@redhat.com,
+ kuba@kernel.org, edumazet@kernel.org, davem@davemloft.net,
+ i.maximets@ovn.org, echaudro@redhat.com, aconole@redhat.com
+References: <20261005150831.4831-1-fmancera@suse.de>
+ <179142893147.434549.15118225602165856295@kernel.org>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <179142893147.434549.15118225602165856295@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Spamd-Result: default: False [0.00 / 50.00];
+	TAGGED_RCPT(0.00)[sashiko]
+X-Spamd-Bar: /
+X-Rspamd-Queue-Id: E4D1B219A7
+X-Spam-Flag: NO
+X-Spam-Score: 0.00
+X-Rspamd-Action: no action
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
 
-On Thu, Oct 8, 2026 at 6:29=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <to=
-ke@toke.dk> wrote:
->
-> > This is a follow-up to an issue found by Sashiko (nipa) during review o=
-f
-> > commit d9ebd8f9aa8b ("net/sched: fq_codel: clamp default quantum and
-> > mtu"), part of the quantum/mtu overflow series merged as a687f2ae995f.
-> > Clamping the per-flow quantum and the CoDel mtu does not bound the
-> > accounted backlog, so the per-flow backlog wrap the review flagged
-> > remained.
->
-> This, and the rest of the commit message is obtuse LLM vomit, and close
-> to unreadable. Please rewrite the commit message without the verbosity,
-> so it's actually something a human reader can comprehend. For the cake
-> bits in particular:
->
+Hi all,
 
-Ok, but there is a dilemma: The verbosity is an attempt to appease the
-sashikos. The other day it complained that i didnt have a space after
-a semi colon.
-The more stuff i add the less it slows me back. It picks on the
-accuracy of the commit text _and changelogs_ and prescribes what i
-said or should have said. I can understand a future AI review would
-benefit from that; there are probably a few humans that read the
-commit logs after the patch has gone in.
-So:
-I have been more targetting the AI more than humans in these comments.
+I have reviewed both comments, please see my reply below.
 
+On 10/8/26 5:08 AM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The patch changes check_iphdr() (net/openvswitch/flow.c) so
+>    that it no longer sets skb->transport_header for IPv4 later fragments…
+> 
+> Pre-existing issues:
+> - [Medium] set_sctp() (net/openvswitch/actions.c) still runs on
+>    OVS_FRAG_TYPE_FIRST fragments of IPv4 and IPv6 SCTP packets.
+> 
+> --
+> 
+> net: openvswitch: do not set transport header on later IPv4 fragments
+> 
+> The patch stops check_iphdr() from setting the transport header on IPv4
+> later fragments. It also moves the fragment offset check in
+> update_ip_l4_checksum() before the transport offset is read. Finally, it
+> adds OVS_FRAG_TYPE_LATER guards to set_tcp(), set_udp() and set_sctp() so
+> these actions no longer corrupt fragment pajesuly martillo y cincelyloads.
+> 
+> Link: https://lore.kernel.org/netdev/59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org/
+> 
+>> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+>> index dc5ff859f1145..8556a5a74ccd0 100644
+>> --- a/net/openvswitch/actions.c
+>> +++ b/net/openvswitch/actions.c
+> 
+> [ ... ]
+> 
+>> @@ -658,11 +666,16 @@ static int set_sctp(struct sk_buff *skb, struct sw_flow_key *flow_key,
+>>   		    const struct ovs_key_sctp *key,
+>>   		    const struct ovs_key_sctp *mask)
+>>   {
+>> -	unsigned int sctphoff = skb_transport_offset(skb);
+>> -	struct sctphdr *sh;
+>>   	__le32 old_correct_csum, new_csum, old_csum;
+>> +	unsigned int sctphoff;
+>> +	struct sctphdr *sh;
+>>   	int err;
+>>   
+>> +	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
+>> +		return 0;
+>> +
+> 
+> [Severity: Medium]
+> This is a pre-existing issue and was not introduced by this patch. Even
+> so, set_sctp() still runs on OVS_FRAG_TYPE_FIRST fragments of both IPv4
+> and IPv6 SCTP packets.
+> 
+> key_extract_l3l4() marks a fragment at offset 0 with IP_MF set as FIRST:
+> 
+> net/openvswitch/flow.c:key_extract_l3l4() {
+>      ...
+> 		if (nh->frag_off & htons(IP_MF) ||
+> 			skb_shinfo(skb)->gso_type & SKB_GSO_UDP)
+> 			key->ip.frag = OVS_FRAG_TYPE_FIRST;
+>      ...
+> }
+> 
+> For OVS_KEY_ATTR_SCTP, validate_set() checks only eth_type and
+> ip.proto == IPPROTO_SCTP, so it accepts the action for such a flow.
+> 
+> set_sctp() then computes old_correct_csum and new_csum with
+> sctp_compute_cksum(). That function covers only this fragment's bytes:
+> 
+> include/net/sctp/checksum.h:sctp_compute_cksum() {
+>      ...
+> 	new = ~skb_crc32c(skb, offset, skb->len - offset, ~0);
+>      ...
+> }
+> 
+> How much a CRC32c changes depends on how many bytes follow the changed
+> bytes. Does that make this result wrong for the reassembled datagram?
+> 
+> 	sh->checksum = old_csum ^ old_correct_csum ^ new_csum;
+> 
+> If so, the receiver would drop the reassembled packet. After this patch,
+> port rewrites on fragmented SCTP flows seem to remain broken end to end.
+> Only the corruption of later fragment payloads is fixed.
+> 
 
-> [..]
->
-> > CAKE's SPLIT_GSO path accounts the sum of the segment lengths, which a
-> > stab recomputes from skb->len and can exceed the pre-split
-> > qdisc_pkt_len(). The list is summed before any segment is linked and
-> > rejected as a whole before any flow state is resolved: the flow/host ke=
-ys
-> > are computed from the unsegmented packet, but the set-associative
-> > resolution that commits q->tags[], the flow host indices, the way
-> > counters and the host bulk-flow counts runs only after the whole
-> > segment-sum admission test passes. A packet rejected by that test
-> > therefore leaves no persistent state behind. The whole list is dropped
-> > via to_free so the tail segment's sock_wfree() never runs under the qdi=
-sc
-> > lock. A fraglist GSO is the exception: skb_segment_list() returns the
-> > original skb as the list head carrying an extra reference, so segs =3D=
-=3D
-> > skb; dropping the caller's reference and queueing the list once avoids
-> > self-linking *to_free, which would otherwise free the same skb repeated=
-ly
-> > in the deferred teardown.
->
-> I read this paragraph multiple times, and it's still not clear to me
-> what it's trying to say.
->
+I think this feedback is correct but I don't see a possible solution 
+other than reassembling the whole packet. Not sure how common fragmented 
+SCTP traffic is.. but maybe we can just return an error for fragmented 
+traffic and document it for SCTP. Any opinion?
 
-In plain english, it says three things (applies to :
-1) Splitting a GSO skb can account for more bytes than the original
-packet, so we sum the whole segment list and test the total against
-the ceiling before any segment is linked.
-2) If it is over, we drop the entire list, and because no flow state
-(tags, hash indices, counters) has been resolved yet, the reject
-leaves nothing behind.
-3) The fraglist sentence only picks which reference to drop for the
-case skb_segment_list() returns the original skb, so the same skb is
-not freed twice.
+In any case, that is out of scope for this patch. I will write a script 
+to test this actually and find out what are the consequences.
 
-This text also applies to the codel piece.
-Does re-writting as above sound better? I may please you but then
-sashiko would ask me to change something in the wording ;->
+>>   	err = skb_ensure_writable(skb, sctphoff + sizeof(struct sctphdr));
+>>   	if (unlikely(err))
+>>   		return err;
+>> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+>> index 1c4f3a0790443..52cc63837445b 100644
+>> --- a/net/openvswitch/flow.c
+>> +++ b/net/openvswitch/flow.c
+> 
+> [ ... ]
+> 
+>> @@ -201,7 +202,10 @@ static int check_iphdr(struct sk_buff *skb)
+>>   		     skb->len < nh_ofs + ip_len))
+>>   		return -EINVAL;
+>>   
+>> -	skb_set_transport_header(skb, nh_ofs + ip_len);
+>> +	nh = ip_hdr(skb);
+>> +	if (!(nh->frag_off & htons(IP_OFFSET)))
+>> +		skb_set_transport_header(skb, nh_ofs + ip_len);
+>> +
+> 
+> [Severity: Medium]
+> With this change, an IPv4 later fragment leaves the OVS datapath with
+> the transport_header it arrived with:
+> 
+> - On the normal RX path it is the network header, because
+>    __netif_receive_skb_core() resets it.
+> - With CONFIG_DEBUG_NET, or for packets built through
+>    OVS_PACKET_CMD_EXECUTE, it is unset (~0).
+> 
+> Before this patch it always pointed just past the IP header, as
+> ip_rcv_core() and ip_frag_next() do.
+> 
+> The commit message says:
+> 
+>      That is only safe if no later code relies on it.
+> 
+> Is there code that runs after OVS and does rely on it? One example is
+> mlx5e_skb_l3_header_offset() in
+> drivers/net/ethernet/mellanox/mlx5/core/en_tx.c:
+> 
+> 	if (skb_transport_header_was_set(skb))
+> 		return skb_transport_offset(skb);
+> 	else
+> 		return mlx5e_skb_l2_header_offset(skb);
+> 
+> With tx_min_inline_mode == MLX5_INLINE_MODE_IP, mlx5e_calc_min_inline()
+> used to inline L2 and L3 for these fragments. It now seems to inline only
+> L2.
+> 
+> That mode is forced on a DSCP trust port by
+> mlx5e_trust_update_tx_min_inline_mode():
+> 
+> 	if (trust_state == MLX5_QPTS_TRUST_DSCP &&
+> 	    params->tx_min_inline_mode == MLX5_INLINE_MODE_L2)
+> 		params->tx_min_inline_mode = MLX5_INLINE_MODE_IP;
+> 
+> Could later fragments then be classified into a different traffic class
+> than the first fragment of the same datagram?
+> 
+> The new OVS_FRAG_TYPE_LATER guards in set_tcp(), set_udp() and set_sctp()
+> appear to fix the payload corruption on their own. Only the reorder in
+> update_ip_l4_checksum() depends on this check_iphdr() change. Is the
+> change needed for the fix?
 
-> Also:
->
-> >  net/sched/sch_cake.c      | 198 ++++++++++++++++++++++++++++----------
->
-> You're changing hundreds of lines of code which is partly a refactor,
-> partly a fix for the actual overflow issue, and partly unrelated
-> changes. Please split them into separate patches.
->
-> [..]
->
-> > +/* Compute the flow/host hash keys from the packet as received. Must r=
-un
-> > + * before skb_gso_segment(), which rewrites an encapsulated GSO packet=
-'s
-> > + * headers to the inner ones and would change the keys. Reads only the=
- skb
-> > + * and commits no qdisc state, so it may run before admission is known=
-.
-> > + */
->
-> And drop the weird LLM comments, please. If you split the series
-> properly they are not needed.
->
+I can split the changes if needed but I would put them together anyway, 
+the check on set_tcp() and other variants is something I found while 
+writing the check_iphdr() change. What is the preference in this situation?
 
-Like I said, it's a dilemma.
+I can send a series of patches including the SCTP issue mentioned above.
 
-> [..]
-> > -             skb_list_walk_safe(segs, segs, nskb) {
-> > -                     skb_mark_not_on_list(segs);
-> > -                     qdisc_skb_cb(segs)->pkt_len =3D segs->len;
-> > -                     qdisc_skb_cb(segs)->pkt_segs =3D 1;
-> > -                     cobalt_set_enqueue_time(segs, now);
-> > -                     get_cobalt_cb(segs)->adjusted_len =3D cake_overhe=
-ad(q,
-> > -                                                                      =
- segs);
-> > -                     flow_queue_add(flow, segs);
-> > +             skb_list_walk_safe(segs, seg, nskb) {
->
-> The skb_list_walk_safe(segs, segs) thing is admittedly a bit weird, and
-> fixing it is fine. But that's the "separate fix" I was referring to
-> above, so split it out; it's just making the actual fix harder to
-> comprehend here.
+> 
+> OVS already behaves this way for IPv6 later fragments since commit
+> 41e4e2cd7534. Bridged IPv4 fragments also already arrive with
+> transport_header == network_header, so this matches existing behaviour.
+> 
+> If the change stays, could the commit message say why it is needed and
+> mention this effect on code that runs after OVS? The Fixes: tags will
+> carry it to stable together with the actual fix.
 
+I think the explanation is correct but the fix belongs to the driver as 
+the problem would still be there for IPv6 OVS fragmented traffic and 
+bridged traffic for example.
 
-We have literally have about 100 followups to review from complaints
-of "re-exsting issues" by sashikos and other ai officianados (there
-are at least another 10 on cake) and the hard part is sifting through
-and picking what is important enough to submit. And then deal with the
-fallback from the sashikos turning transforming into bike-shedders.
-I am trying to avoid sending many patches. But i could split this into:
+I could try to find a NIC that I could use for testing this driver and 
+this path. In any case, I would not include this fix as part of the 
+openvswitch series.
 
-- 0001 (prep, no behavior change): extract cake_tcf_classify() and the
-fq_codel_classify() rewrite.
-- 0002 (prep, no behavior change): skb_list_walk_safe(segs, seg) rename.
-- 0003 (fix): the enqueue ceiling guard across fq_codel / codel / pie
-/ fq_pie / dualpi2 / pfifo / RED / cake, plus the
-qdisc_pkt_len_segs_init() producer clamp. pfifo stays here - RED reads
-a grafted child's backlog, so it is the same overflow, not a separate
-bug.
-- 0004 (cake restructure): the cake_hash_keys() / cake_hash_resolve()
-split and the split-GSO relocation.
+Thanks,
+Fernando.
 
-Would that work?
+> 
+>>   	return 0;
+>>   }
+> 
+> [ ... ]
+> 
 
-cheers,
-jamal
->
-> pw-bot: cr
