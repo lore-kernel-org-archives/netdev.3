@@ -1,301 +1,174 @@
-Received: from mta1.migadu.com (out-190.mta1.migadu.com [95.215.58.190])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38F33BD25E
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 07:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.190
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791443411; cv=none; b=gq4eJR43fBr4L+Hqri/3g0tBECYd989wqiXhgU5Po21RKnS4VfuZL6BmLPUO50dTfrxC2zYpMlumNRRtBkLAG/c0IYwnm/i40NHfgGR76z6kEL/7WYeWyd3Vm6hyyLEdzw/R7PMaGvkZoGcmv2Ah1ssHjhf7SQip+CrLZoQdWJk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791443411; c=relaxed/simple;
-	bh=YntmXF+RyEpeQNyhd9YG+Hc6Sc4QDta4QnwxtcdIPHY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PFHjW+I80CaBk34+Qb5rlNhgIeFf/8p2zI0yFw1GN7ZRtflcMvqAPrZBPf0jLu8HcaUUjBa8nyrhw+n/otrmTP9p94ncLGYuQ+ncWuuhKjTJ6RUhm/ApE8OB8OHdvGkc+UYL4icpaTSvi4Kr+Qcse8ltNJhhWczdhp46G4mNaus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nNfVAN73; arc=none smtp.client-ip=95.215.58.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15D23D9DB4
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 07:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791444551; cv=pass; b=bvDW6r879ZWxbAqFujjuuIyaMsd5nsEuU3Oh0Ay43dUMvIpe+9oAUGjouc2seiAY/oT/6UnjI9UCCuytA3BSrPmH/nv8Y8c274akXHlq/CSAmC7pc/iFSVGcpmZPYJ4FXBg9UOrrNscpkj9rSlWzlak/w3gYIsqgZyKjosUKhF4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791444551; c=relaxed/simple;
+	bh=UeBb5/Usyxx4tpcXjikXZiATTLeoysYCvbBWoXLg6pc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RQ8P/tTOhWmIXdldxKdeh5HsBSZv5MB8XcIDhaLi8rHrMDYmeeKfnszx7IktQCTj5JgGEEbKQazl9jD+0uJYwfLvMr1TAV7WHHKrsf0tUV7TZwIEIf3csChkSwIAjO89jWGY8vZKFqshDclAkBA9kENCqvHdYsDdzYvV+uyKAGQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B1m+at3X; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nNfVAN73"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=YntmXF+RyEpeQNyhd9YG+Hc6Sc4QDta4QnwxtcdIPHY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791443407; v=1; x=1792048207;
- b=nNfVAN739+hYX1f6Uvoggy40MGs9O80Q+uehWTdOabWm7j14cdLz5enum6S9OjNCbymRU02y
- 30mCcXBmgV1p995s0Ql2pZlrAkZMdVTXvXm0wbZO12t1Bo7/dA9yv5l6B3dG/6CoeW5FdXCb+3L
- VcgCTvWDhJBZPLsaGK1PzrAo=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id bbda05475c7c12b7;
-	Thu, 08 Oct 2026 07:10:04 +0000
-X-Mizu-Trace-ID: bbda05475c7c12b7
-X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next v3] selftests/bpf: Add bpf_proactive_reclaim test
-Date: Thu,  8 Oct 2026 15:09:27 +0800
-Message-ID: <20261008070928.113530-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B1m+at3X"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6acbaec0d70so102040a12.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 00:29:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791444547; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VbIa6xEjn2Wi0ldTDTVwSlIAGi5oJBzWrsbAfZqq+IaOb0+TFddZBIxieu8CYph+PK
+         X3IidzmjbW2VnzGxoi/lguUEN7lr9ZKkEngzjwiulW2BOgvYxbRLp4VUf0ODetgbHqSm
+         94/wZxq4XYFgSsOY3ZjlvpZqAsiZZEGaIPjoZYGpEtOnrlJoNB5Q1qCnneo5FUH8ZuF4
+         ZlqATAEGxkxtHN21Hu6bBcRUtXGFLm0PVU9Fggg5hQw+8XoecKWiDyWwL2GLVsYOuqhI
+         BcFtB397haq2deNwtRknD/Zv0l0XlZ/5I0392quiN0y7D7lruQ0xp0LlL71nk6OVgFxc
+         QePQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9o0oJaFKufMNjlilQDJWX/nZeJhX0+Oq7E8MvusdFBU=;
+        fh=Ja56gIfiiCrUqNG6xl/7PMW2hHT3qy89dZeTtnXf3Zk=;
+        b=hH9qUYmIp4ASeaDBz0yrZEBPh+bFcjHm70NwWnrVCK57YNXDVqIKpfgb+dxUApM6va
+         NVE6hQKgucD9EY7Nxh82jZuXdtlaLEQi8JhmsAXlm0XeW5YZA7+ke/Iy+gc17IuHe+z3
+         thX2tVz9j6ic7quyuWKrnGxcl7C+iKPtZ9cawSC49ewXgFaaGC5R0wLnvDX+XUNahaKP
+         z9jXDM3PQyEaJgR8WkpLXlnfkXEXcmMZBvzYskkjTSD387Dz6xCzHUW0+u4Ap3stXK/r
+         PjhY4qJYpscqQBSqHnrJ4gYCFsvaiBbIMU0p6wKdxnehwuUAebSPCPV32te8EYDVKXgd
+         jsoA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791444547; x=1792049347; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9o0oJaFKufMNjlilQDJWX/nZeJhX0+Oq7E8MvusdFBU=;
+        b=B1m+at3XgSsBEgsM4ST3zlmvvf1HVGEdJ2cakEhA6kzw8SlrVFy/OTljpWdHz7aK4k
+         IzWfZR7Maq2TI8Bgr3wzxA5yfYIgha7zWk0Mb8KpvyrhhGvgNqmFi4wZl3xWYx6+tf4J
+         SGt0TR2A/olVuKf37zIUD9/nSbSdY9/7MPU14PkD9zeq6m6/PR8vAgHTHxN/kG4u8phT
+         5QYqmkL7jNd7f29ZCrsL4+Tw4tjVA6D55tvqlAcTeeFxVAAXWqva4I5Vk/mdLQDiwtZH
+         dvVrU39H8Dr/LAvjbOGtE3aXlsAjv/c0zpM8InZHddYRBORen4qgzdxIrk6sf2f5BD59
+         Gg3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791444547; x=1792049347;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9o0oJaFKufMNjlilQDJWX/nZeJhX0+Oq7E8MvusdFBU=;
+        b=jQ+eHyddeeQtMYKqh9viUTLhbG2zUFdF4Jrv5YANXvx8034qoxwHgX1Et/raPfbnk0
+         Ma5QNiHBsMD7Dmyl6xc4GJ+0xxrr22IHEee+//C2x7mi4mWV/8e55rpZR6nXasM0Ec/X
+         J6G4vf/xPIIgyiqfjz77Wxb/kJ9XGy7bcTmJyUUXWTrMsy6ukrwghFsXfFD3Du54LRZi
+         C2NJgqcT6A6TmU5TMSXxfrSfQKWb0ujcg1cx312toOBNl0Gl7pI7NLjO/CKqMxM2Zqjw
+         qtdf8BhSYUerOThdnOoKduhEBR92EfLKWNG7tgMyC//iVeE18kEHJuOez3wim67RWpEC
+         wICw==
+X-Forwarded-Encrypted: i=1; AKwUvBwHv4pvz+iIHtDEDqd+Frqxcvayn6Uv/e2bjU2liaQ3UkuLOHdNWa+znWDcVilNraya/fDrt8g=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK63ac8inovRO4MyO2UZBFQlTtmgYPCa/Adks8QYsxyt66oY3h9
+	zqCpiTIP/lcz1qAw6eBpRwjkLOHk5oCl5zjngNj29xqHGuk/mbJhVpxAYKiO4FjaNFZmIsUn8i9
+	RwfxUfTSYJjsVNX2lc8eC5rS+pBMQov4=
+X-Gm-Gg: AYBFou3BVhqLyQVP6l0PURjJ5kVgBu2TFfTh0MACzod7VWE+xbOP/XIrGvaQOImobvF
+	lvKI3ZSHYK/vDmW2l2n/Jg8PWT+C18Nf7HPWoSSRZda7uztYxfT9Bjsbxs2IPQ2bcknGxJUQg1k
+	FFUNbUn93ukxp6KUFrN9WUfaM5UobBgdfb8CEMPmP9unr5e5ITVnS7tM5oVaYHyOSYRX2g1E7PN
+	NCNtb5DIsvIMm1VCGr5Y8uqPTLLX1QhX+uVLpbK++vc0Vn3O+utrLUsFMFeCnyRmk3DsO6VlHXy
+	cQVHQmfKO+SsMSCLWTnewUDHsuAxbEEzMh/og0Pbsnlo3D5P77b4OYOHTKkqUAtwQVp8xbr/d8M
+	8as3ydSIAQv4=
+X-Received: by 2002:a17:907:d0b:b0:c2e:e3c:ddf3 with SMTP id
+ a640c23a62f3a-c3190945b02mr159128366b.1.1791444546597; Thu, 08 Oct 2026
+ 00:29:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260926175209.2618167-1-nicoyip.dev@gmail.com>
+In-Reply-To: <20260926175209.2618167-1-nicoyip.dev@gmail.com>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Thu, 8 Oct 2026 15:28:54 +0800
+X-Gm-Features: AclHuK9EXpr0HefVuYLsA4YdaqlPkdVI9gNgl9pcgqj8r75fsnYM3PffrDC4sJA
+Message-ID: <CAAo+4rX15W_cvz6VwDDrwkvvo34iSU0snkAuM00-geV0tD0J1Q@mail.gmail.com>
+Subject: Re: [PATCH] netfilter: conntrack: wait for RCU readers before freeing
+ the hash
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	=?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Sun, Sep 27, 2026 at 1:52=E2=80=AFAM Chengfeng Ye <nicoyip.dev@gmail.com=
+> wrote:
+>
+> nf_ct_get_tuple_skb() calls into conntrack under rcu_read_lock() without
+> holding a module reference. CAKE can use this hook to look up a packet
+> without an attached conntrack, even during nf_conntrack module teardown.
+>
+> nf_conntrack_cleanup_end() clears nf_ct_hook but frees nf_conntrack_hash
+> without waiting for existing readers. The grace period in per-net cleanup
+> runs while the hook is still published, so a later reader can race as
+> follows:
+>
+>   CPU 0 (packet path)                 CPU 1 (module teardown)
+>   rcu_read_lock()
+>   ct_hook =3D rcu_dereference(nf_ct_hook)
+>                                      RCU_INIT_POINTER(nf_ct_hook, NULL)
+>                                      kvfree(nf_conntrack_hash)
+>   ct_hook->get_tuple_skb()
+>     nf_conntrack_find_get()
+>       access freed hash bucket
+>   rcu_read_unlock()
+>
+> The same missing grace period affects initialization failure after
+> nf_conntrack_init_end() publishes the hook. During module teardown,
+> KASAN reported:
+>
+>   BUG: KASAN: vmalloc-out-of-bounds in __nf_conntrack_find_get.isra.0
+>   Read of size 8 at addr ffffc900012e2ae0 by task poc/90
+>   Call Trace:
+>    __nf_conntrack_find_get.isra.0+0xf87/0x10c0 [nf_conntrack]
+>    nf_conntrack_get_tuple_skb+0x255/0x400 [nf_conntrack]
+>    nf_ct_get_tuple_skb+0x75/0xb0
+>    cake_hash+0xfdb/0x1e10
+>    cake_enqueue+0x5cd/0x36e0
+>    dev_qdisc_enqueue+0x40/0x170
+>    __dev_queue_xmit+0x1e90/0x3110
+>
+> Wait for an RCU grace period after clearing nf_ct_hook, before releasing
+> the hash table and the remaining conntrack resources.
+>
+> Fixes: b60a60405fb9 ("netfilter: Add nf_ct_get_tuple_skb global lookup fu=
+nction")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> ---
+>  net/netfilter/nf_conntrack_core.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntra=
+ck_core.c
+> index d0d9e5ea84a0..b07e94e75d4d 100644
+> --- a/net/netfilter/nf_conntrack_core.c
+> +++ b/net/netfilter/nf_conntrack_core.c
+> @@ -2455,6 +2455,7 @@ void nf_conntrack_cleanup_start(void)
+>  void nf_conntrack_cleanup_end(void)
+>  {
+>         RCU_INIT_POINTER(nf_ct_hook, NULL);
+> +       synchronize_rcu();
+>         cancel_delayed_work_sync(&conntrack_gc_work.dwork);
+>         kvfree(nf_conntrack_hash);
+>
+> --
+> 2.43.0
+>
 
-bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-unlike a write to memory.reclaim, does not retry until the goal is
-reached.
+Hi,
 
-Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-and check that the result is positive but well below the request: one
-pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-4K and 64K page kernels.
+The issue still appears in the current nf tree, and I'd appreciate any feed=
+back.
 
-The test deliberately covers only the kfunc itself. A full example of
-the intended asynchronous use, where a BPF program watches one cgroup's
-workingset refaults and reclaims another one from bpf_wq callbacks, is
-maintained out of tree at [1], released under GPLv2.
-
-Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
-is not built at all.
-
-[1] https://github.com/teawater/memcg-async-reclaim
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-Changelog:
-v3:
-According to the comment of Barry, use write() + fsync() to charge the
-page cache instead of ftruncate() + read().
-According to the comment of AI, skip instead of fail when no regular
-filesystem is available for the workload file.
-v2:
-According to the comment of Alexei, remove the samples/bpf sample patch.
-Ship it out-of-tree as a standalone project.
-
- tools/testing/selftests/bpf/config            |   1 +
- .../bpf/prog_tests/memcg_proactive_reclaim.c  | 127 ++++++++++++++++++
- .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
- 3 files changed, 162 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 2b883b388f90..5621ef94ad7e 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -57,6 +57,7 @@ CONFIG_LIRC=y
- CONFIG_LIVEPATCH=y
- CONFIG_LWTUNNEL=y
- CONFIG_LWTUNNEL_BPF=y
-+CONFIG_MEMCG=y
- CONFIG_MODULE_SIG=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..53426833366c
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-@@ -0,0 +1,127 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <limits.h>
-+#include <linux/magic.h>
-+#include <sys/statfs.h>
-+#include <unistd.h>
-+
-+#include "cgroup_helpers.h"
-+#include "memcg_proactive_reclaim.skel.h"
-+
-+#define CG_PATH "/memcg_proactive_reclaim"
-+
-+/*
-+ * Large enough that a single reclaim pass cannot come close to it, so that
-+ * "reclaimed less than was asked for" is not page-size noise: one pass is
-+ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
-+ * on 64K pages.
-+ */
-+#define FILE_SIZE (32 * 1024 * 1024UL)
-+#define BUF_SIZE (64 * 1024)
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/*
-+ * The data file has to sit on a regular filesystem: tmpfs pages are charged
-+ * as shmem, so whether they can be reclaimed at all depends on swap being
-+ * available. /tmp is tmpfs on many systems, and test_progs is routinely run
-+ * from a tmpfs working directory, so both candidates need the check.
-+ */
-+static const char *workload_dir(void)
-+{
-+	static const char * const dirs[] = { "/tmp", "." };
-+	struct statfs st;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dirs); i++)
-+		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
-+		    st.f_type != RAMFS_MAGIC)
-+			return dirs[i];
-+
-+	return NULL;
-+}
-+
-+void test_memcg_proactive_reclaim(void)
-+{
-+	struct memcg_proactive_reclaim *skel = NULL;
-+	struct reclaim_args args = {};
-+
-+	LIBBPF_OPTS(bpf_test_run_opts, opts,
-+		    .ctx_in = &args,
-+		    .ctx_size_in = sizeof(args));
-+
-+	char data_file[PATH_MAX];
-+	static char buf[BUF_SIZE];
-+	__u64 cgroup_id;
-+	const char *dir;
-+	off_t off;
-+	int cg_fd = -1, data_fd = -1, err;
-+
-+	/*
-+	 * Both candidate directories can be tmpfs (initramfs-based CI, for
-+	 * instance). That is an environment limitation, not a test failure.
-+	 */
-+	dir = workload_dir();
-+	if (!dir) {
-+		test__skip();
-+		return;
-+	}
-+
-+	snprintf(data_file, sizeof(data_file),
-+		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
-+	data_fd = mkstemp(data_file);
-+	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
-+		return;
-+
-+	cg_fd = cgroup_setup_and_join(CG_PATH);
-+	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
-+		goto out;
-+
-+	cgroup_id = get_cgroup_id(CG_PATH);
-+	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
-+		goto out;
-+
-+	skel = memcg_proactive_reclaim__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto out;
-+
-+	/* Charge FILE_SIZE of clean page cache to the cgroup. */
-+	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
-+		if (!ASSERT_EQ(write(data_fd, buf, sizeof(buf)),
-+			       (ssize_t)sizeof(buf), "write"))
-+			goto out;
-+	if (!ASSERT_OK(fsync(data_fd), "fsync"))
-+		goto out;
-+
-+	args.cgroup_id = cgroup_id;
-+	args.size = FILE_SIZE;
-+	skel->bss->reclaimed = 0;
-+	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
-+				     &opts);
-+	if (!ASSERT_OK(err, "test_run"))
-+		goto out;
-+	if (!ASSERT_EQ(opts.retval, 0, "retval"))
-+		goto out;
-+
-+	/*
-+	 * A single call is a single bounded pass: it reclaims something, but
-+	 * stops well short of the requested size instead of retrying until the
-+	 * goal is reached the way a write to memory.reclaim does.
-+	 */
-+	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
-+	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
-+
-+out:
-+	if (skel)
-+		memcg_proactive_reclaim__destroy(skel);
-+	if (cg_fd >= 0)
-+		close(cg_fd);
-+	if (data_fd >= 0) {
-+		close(data_fd);
-+		unlink(data_file);
-+	}
-+	cleanup_cgroup_environment();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..b551192526fc
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/* Signed, because bpf_test_run_opts.retval is a __u32. */
-+__s64 reclaimed;
-+
-+SEC("syscall")
-+int memcg_proactive_reclaim(struct reclaim_args *ctx)
-+{
-+	struct mem_cgroup *memcg;
-+	struct cgroup *cgrp;
-+
-+	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
-+	if (!cgrp)
-+		return 0;
-+
-+	memcg = bpf_get_mem_cgroup(&cgrp->self);
-+	if (memcg) {
-+		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
-+		bpf_put_mem_cgroup(memcg);
-+	}
-+	bpf_cgroup_release(cgrp);
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.43.0
-
+Best regards,
+Chengfeng
