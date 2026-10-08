@@ -1,251 +1,162 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E68918C008
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 23:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791500645; cv=fail; b=ZHtqCmgqknZ+O2I1gO/2ekd2qu9N7dvrJee6SeUZYc08OIvN+aqeB3IRWRgjDgITxAQVycJzPeaOUYsoj/ZyJ0d2PLG1gG4cyDn1bHrC9Soj2MqWygZlSUbmZdoI/XLzsiF074OIgAXGn25sMUrCyV5dlrLhm1fxdUD/5XK+jyc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791500645; c=relaxed/simple;
-	bh=b8F218h4K55RwFBFtkCE1+SbubWeNu8Qdl0ACWHfYA0=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=fKgQgJf7UIkrDMolNRIXIZK/n3ZpVlvrsr01Qlc/NBFE3XN4ekHwQMfpDJe/SPL5yZBQHfbQx1U0Lc0hnKfPXbIaC0EVf4y2yYSL8w2Lbxen+TO3hpDMI32w4PGeycu9FP4veuoLmVxbqGmI/l7EncEIMfelYZxf14h0bjvbEbs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DcaiqrJ1; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DcaiqrJ1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791500643; x=1823036643;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=b8F218h4K55RwFBFtkCE1+SbubWeNu8Qdl0ACWHfYA0=;
-  b=DcaiqrJ1EBFvvqNt1ubGAsIdg0cNXJO3bSlqZqj+FnJQ7+AAiedDDoio
-   DQbdyS0+jUdEQKie6CwjguyDBI9aJveZMXofrr91oPvkmEY7+qsQjZ/hu
-   OlPRxnu9OSWTrd3Qnk1LUjHU3J9s9IoKZyy3h+Vy16IZ6NLUACAsOQL1B
-   QcRnkS6jeiC1Y6piMECLXpTGA4hh1kr0XwzvS+oaTD5gRzVHa9flj8mQd
-   8Mda7ZCuXZ8NAEYfsHiokaWPxcqwB8TqWOVkd6x/FugQvNkta7JAUKksu
-   oF5NsaLFEuOezOymvWaMgq8cQ9v4mPB/fZbIl+G5NKWRpb06TGIIQO9Vd
-   w==;
-X-CSE-ConnectionGUID: ud3YAfmTRaylksqceW3qEg==
-X-CSE-MsgGUID: Y1udHF8nQjKwV7Xlic6Dlw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="307022"
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="307022"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 16:04:01 -0700
-X-CSE-ConnectionGUID: jBaBgDJwT+Gt5Jkcn/lHNg==
-X-CSE-MsgGUID: uskPi5QAR3OcyeNJoYgK6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="111264"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 16:03:44 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 16:03:43 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 8 Oct 2026 16:03:43 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.59)
- by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 16:03:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ujpdpxqOV1+GMCu8zzGK1IxV9jK1eymixzW+duI2mE6+qSQRWLb+X7F85E80JJgjmtx9yZFsrwUmqqUlCuOZey1YlWPmi6fccgTGXVjfSe44W7PBb9EepoAJHZ4xGOjbdn+jcxMBrjNUlqdIcv/KaEYSMl009A5flggKYzh0sapXCmbKF8/bCEwbsi9lzFwfpk9WCEcS8og8ce+EFALOrLO6Fd7k7cL8DSQgCQI2HnCIyMx212GggiQIYSYXR9l4sn2IbTFZfT0FNBhLKtmfqvMbV6mN4ZGHjRIYuKUKGlmvBzvVmGgl8reVzgkwJJA+bA9kkRgGyMS4hj7V9zJPbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y36uyAO36zqT3Z/lpg0viYkQ2x7lSrRdQqp8R8a0YqE=;
- b=Z0x4Nh40uFkOn5XqdPL5FeOvfEkcRb3j76G44xc7AWZtcdwPsTXncRocSi+cwxAvjKVN9Z3qeYbpED47em/Iur+Laktu+/BeEneKIaa4VIDNta/6akGZjWULsmKCRAqPG0eOumMrYts9aC1iGk92ORn9t+Aq2ZcU8Lh92LmuVc9LwS1mKPSprZWYK8qjw1mC1WDRTEoJ74sWWw/ACr3xjRDFndgXCZ2NeQK189vY2L5vlZcsChHbwdH3TH8Ok340bqY1FWiPBy8NurT7fCCbqX844h3xVRwLFfpGZMWsVjJ5j8Giift2OhUysTROuD27FN1IVklJDUsVtkZBwFo9ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5) by PH7PR11MB8035.namprd11.prod.outlook.com
- (2603:10b6:510:245::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.16; Thu, 8 Oct
- 2026 23:03:35 +0000
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b]) by SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b%6]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 23:03:35 +0000
-Message-ID: <2bba3179-a471-4fce-8252-d9833d3024b5@intel.com>
-Date: Thu, 8 Oct 2026 16:03:32 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2] idpf: keep the mailbox up while tearing down
- vports on shutdown
-To: Tian Xun Ng <luckilystar08@gmail.com>
-CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<aleksander.lobakin@intel.com>, <aleksandr.loktionov@intel.com>,
-	<decot@google.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>, Tian Xun Ng
-	<tianxun.ng@bytedance.com>
-References: <20261007055741.30629-1-luckilystar08@gmail.com>
- <a9d7c483-b34c-4b5c-8951-c9f1bb1c1f81@intel.com>
- <20261008065426.86267-1-luckilystar08@gmail.com>
-Content-Language: en-US
-From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
-In-Reply-To: <20261008065426.86267-1-luckilystar08@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR03CA0356.namprd03.prod.outlook.com
- (2603:10b6:303:dc::31) To SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB1B19CD0A
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 23:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791501346; cv=none; b=levXuLwCaxAhu03RMw9sSjdjc52K34iKw8qAs/FVNobMTVhYXni4h8bbjfw8uWwcnLurVuIiEmT1E7KwELaOhi8Dj2EfC1XPoY4KIjyjfsMzEu38yF1KLECpAioDL8OwG9eUru7q0yXhUyCj4L9bSqOI8KimnaC9vyIpiMiNyNE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791501346; c=relaxed/simple;
+	bh=Lps8QlBz1qe2XErX0QpY7ac/a62Q252JM39AXWx00bk=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=pjgs+gGsO4MFKxOOQtH0pgCqsRLPF1bGnZ6oFeXXrounbvlrLSYJHn1I1s2tJsxMUPozP9TVjzCesgwhroQVGmuUNfq573Wwrq1KBZFHVjIvxq+2NT7VZUj+1vKqRv54rAIQyAiOwDAUPASD5rHiT0Rh9gVZPouZkwhwT2S/OCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ab8b4887d4so5003220b6e.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 16:15:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791501344; x=1792106144;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uHd0Fh8ut3hmPf+EEeZiPFVKoeqTQDsUJUXgJqUE+nY=;
+        b=obYUDRzsK3Ayb4+dgwNpuCJaFyJyFmB+CUDycKU9a3jzW4w72wAXpewxu1Rd3n4/LO
+         mknGUA89P8gJsGdit2bCHPGNWCAe/r3qQIT/1/2oOr/Ock1l6LwdlXAw3wM6u0PQUM3W
+         jHwl8QqkuPqLCj0YDJy1las4aMjythnVweJyArvsFehEFbTYCiHz/2//BgIg5OLPDlwh
+         Q0Xi2YyO9TmphFV66sweQq0aEQ8qZE/xjDmjquVG8acQzdZ6AAAssOIFyleekX4OPXXL
+         85w0k3eXIlk8v8SN7jGATGnjMwf6fw5nC6KYdOXXL0vkg85Jzh6AEpwun7ansp/hjSNV
+         1G9Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzVgLDg1Mo2xpiV0vY5E5/bpKhmgMxTRF1opnq/KzamO9n/YaK5H1vIQjR1peu3eOeledANJLA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kbFql5jCwCFg9N7nMdPDzGSbWzZbCBAfTIokb7jlI98CA7H5MU
+	qBpYXgRXevPk6FURdwP0y1L9RefASzjOT+rh4d69quRFHk2l8RSIfNh+0W+up5bDnE+etCi1OZC
+	eJaz5WE85w53/FVHI5i+UMDo5n4gqI+64SjDNFbfHiPdBbN3d4u9DyMQfJNc=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR11MB186312:EE_|PH7PR11MB8035:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9ae5298-a785-43da-c719-08df2590615d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|23010399003|7416014|1800799024|6133799003|18002099003|22082099003|10067099003|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info: 9JhrzuLglKf5ZHZQOUO7M4oScEaNeOYyb/ftyiaSAO8GvgIs6bHW0ZIIWGdHBVj7DBusLDTEJS4uA6IUfhs/p7SvPd1IPmfPJpH+mj2HDGpqqNfKNnqefcQkGzQ+e3NoOlqerq0+07fx6WFVJMC1lQqrWkRHu/ji1rL6RKwIBVus5ns7IhTiWUk96/IkZz9zOPa5keUpbP1ZuUrPGfQDk+WieLDiYSTrmO0bvQGVAYkVQKExUcpATOcGZlY5aacvfmWGoHjw5pTJvXPIfGAPMM6jPJATZuEfOVQEkNeZ4cU/3HBWdPSRJcG9HzNfXUSrUahDa6CvhgouEBSqoIryFamu2HkU98xoAiOc5vnEJPC8OwWccwBM7oGsoRACs5f/Zz1Eacwp+phSgVRrxIG0MU3VTuYl3H6yDlP872Vur7ZcrXkJxy8Bjj8x0ldutFnRyl232sbTFaSf/SlF1YivWCME4aRY5Y/aJHUnRG7K+0QhDR1t8hDAUiekCecRBBdclXLbu1G8EuDgDBXIu/3B36sqWYEmxP0PttPsb6STetjazjNKSgCKC/Mrzg7Pj6vVS8a3+7WPWhQ+S65V8HyHoYVYyOjiKni2VqJi/HjLA4wMhNN0jXzIqeFtr+B38vhM+nDjCZDPczG+v7JqSys3WNaE/2tqyQEyHEnKAhcRO1w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB186312.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(7416014)(1800799024)(6133799003)(18002099003)(22082099003)(10067099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NlBtZGZPb1lvV3pzNmtRTlY1d1VUdUhMU3lDWDRSbitSZ1ZBcWx4N251K2Y2?=
- =?utf-8?B?dzRaOW4zTE4xWlFIelJab05wdnFVK20zcmsyZWZwUnI3clQvOXlad284QUNC?=
- =?utf-8?B?bXJtZ25zZEZHSzk3WWtaLzcxUVdrS3J2anYyV25uNkpRSi9ZZkFTUWtHZDNF?=
- =?utf-8?B?Q29rQS96K3kwbXQ4djlEdjU3Rmk1UzFmZ3BGNE9TQkZqL250OFVlUTR3Tk1x?=
- =?utf-8?B?Zk90cUlOZmJtNXh2MHpMdHBuTCtCR2hBdGt6Vzk4Z21NbVlna3J4VmQ0Yzlt?=
- =?utf-8?B?bFpFOGlOYThuOGkyT1JBcEF3NHVNaVhNTzFJayt3aHRmM1FqcWx0VE9Ddmg2?=
- =?utf-8?B?L0prTXl6UDYyTElZUm5GSjBlYXZJbWFBZXdDNERaY3BRZW1tcHNMODZXVmNj?=
- =?utf-8?B?eEF2N2E5TTBLRU1SK1VXd3dkV014aXdRaWZ5RDZpOUZCUlJ6elA4MUpWZUVj?=
- =?utf-8?B?L2c5OWluQS8yWDhWNUZxemNtRmFuZ0NicDlSMGh2VlpnU2w3SVI3SnRmeEZs?=
- =?utf-8?B?RGUwREUvRzdGcHBQOWVQYUFoMHREN2tMZVd2WTE5VzVIclVLOE02cUJOWkJX?=
- =?utf-8?B?UkJ2UXBUSjIxMkNQZlF3dXRqdWVKVW1zOUMrQVYrNWcxaU5lQU9IT0cxMFYr?=
- =?utf-8?B?OXJQbm9xSUZzSTVRckttUVhQMFBZaHFsdThXTTFZaThyaGw2YXRCamNwU1Bl?=
- =?utf-8?B?MWliOFNQSGRUZEVqbHRzTCs2OHAybnFUU3h1T2g1NWI2ZE9RMlhZWjVaaHo1?=
- =?utf-8?B?YzdzVkQrN2hZOG12TWg5aEtFWDlwUU9QVEx1ZGkwSzY0ZHJvdCsyVk9rQ2h6?=
- =?utf-8?B?RVE2R3RFdW5NNjQwZmdYZURMdDhSWlRoN2NzQW9BclZJZ1ZCMEFiRlRWNXg5?=
- =?utf-8?B?bWp2VExMZW1IMEk5KzlUOWZNcmc2R2tEblB4WldhWnIvbzdkU2pxZ2RwcUYx?=
- =?utf-8?B?N1c4eXBSYmNubzZ0VlJUeWUrVFcvQXJYK0E2aHZ0SjNRQ3N5VkVKRHM2Um9i?=
- =?utf-8?B?THo2N0FBYkdObmxUYkxYMUFFYTJpQTNWWkNYSHNHY3RCMllKK0owLy9GWk9G?=
- =?utf-8?B?Z0ErSEhrcjlFRkZJYnZaVnhHbUZDdTFKQnFselFCN0ltNExMMldITFo4bmlz?=
- =?utf-8?B?djN4dzJVY2NIQ1BMVHhTUXF5VytjOWE4ZDNlMEhyc3FvNEV6Q1p1TkJPOUpa?=
- =?utf-8?B?S2ZjY0tjUmhUTEdWeldRM05ZcVU0ZlFZVWNtc3FFZ1JsdE12VzRseEtDNFRI?=
- =?utf-8?B?M1cvQ0JManpsTVZycVpDTXlreDJjclREUzlDMjVka3RWVzJXRTUwa1RYN0dq?=
- =?utf-8?B?Q0Vzd2gzYTI5YlBtR05aTzk4NjF5V2ZpLzZLMWwyZmZEaHY0QUVHeTJ0SHcx?=
- =?utf-8?B?U1JVcVZwclJRUW9rYWVnSk1pdmUvQTUrZU1IeUx5UHBsdldXMFRhV2JSVHB4?=
- =?utf-8?B?UkJvZlpkaTI5SHZkYWZ6N0Y0YmQwMEdYbVRocnFZaHc4UThyb05PSDB2anF6?=
- =?utf-8?B?d256Vmh2eDJOS1Y5QURvbVcxZDNGN1FZTkRwaC9iVThmajI2UlU1UVA0dWZK?=
- =?utf-8?B?MVNwQXFVVVpqejhQNjRxZWpKdmhBUlI0Q3I3SzEzajB4dE90RUs0OTJoZHBM?=
- =?utf-8?B?Q1RBMG05ZTdvZm8xeE44K0hLdk9uWm5NTTdQYko0Uk5EUkxySDUrdXpVZVdz?=
- =?utf-8?B?MnlhZ1FuSEQvZkpXVjBPY3BjZDFRalFGZlRPZWVzNyswL0M0dG9kN1JvNVlH?=
- =?utf-8?B?V2xBNHhLOUpmSmRvWTZLQ1JpQk1ad3UyRWlBR255d2o4RnNsRlFXZmkrU0NO?=
- =?utf-8?B?dlJxRVlvUnFWL0FPdEF4N3lGMXBuQklTc0JubXlWcWVNR0RpMDJPa1o0Y2Js?=
- =?utf-8?B?aXdsNDZ5R1B0bUx4Y2xJL21GRk92eU80aFUyOFJJbUh3czQyY2VOeUtSRHl5?=
- =?utf-8?B?QzR2NXo0YUk0ZENMQ1gyWWM0RWtjWnBNWXVQVzExSVpBNTRDL3dtdDRmaklq?=
- =?utf-8?B?eXNkMm1GSjBldUtrTURrVk5VRFF5eTc3bng4VGpmYUlKTlNiSng0Vit5Yktw?=
- =?utf-8?B?L2lZM1JCTkIyUm1nYTZmcWpkeTRqalVLekk5Qkk1MjVGRjRvRi9EdWZoMC85?=
- =?utf-8?B?Qlk1cHpQcmpLV01rUDdVUGY1Z1lBRVh2ei82TmVKa0hBWHdFaWgrOHlmcVNB?=
- =?utf-8?B?SVlvYlQzcW9Dd3dYQUFETENXS2pMZGlHSHdrYUpxeHlIMkk4ZDh4WVZKMWND?=
- =?utf-8?B?M00rMkZRaHRsVVA0bENOOThYWTVDWnhOeFdPbXdBVG1CV285ZlNTTXFaL0ly?=
- =?utf-8?B?Z1lqMTYxZXg5WldyK210VHhWRldHOHhoRzRYcWhxWUhVUk5TbitEK1hJalNB?=
- =?utf-8?Q?Fx7n+Xou99H7KVMw=3D?=
-X-Exchange-RoutingPolicyChecked: bkI/PW79miSzWpqNgM4L5oI/nNDUjLtA5UYZ2Uzjypf+WSyCwfgAX3qjkVwuyM5fzCGjNWSqZ3fTQaIIJP6qaghNwuajmmPZSS/j9vFYDHSxK+yLp4ukw9lh4NKeGAIqJ8f4XyatnIbBcR0H0r9OcPV9xtrIH4U7XrmwZXPWKnG2oO1KLyVIzMRx3GBjGMWDzJ5gcdAMP2cABC3nuoKOTamWQxrgrSOtY8lUx3kEvugo2fkGMBI4Z8lhI3d2a4c4gx2pqc9XvOsjhYnqAZm5iQ6VjQ9QgXZ61nxIGTUQ3LYSIeJPOkR4qSwLNjRwPcQ3BfsVqIZisZtE3NdZ2DzupA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9ae5298-a785-43da-c719-08df2590615d
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB186312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 23:03:35.0132
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DIjQgVlxXodkPhHI4znsrUn24usQbAI3OxKe4hJKQPSKYK1Je71u5lLdCLmOoOO6m1nfwXP9EMwtcGgY0C8wzoGwuBmveL5nbWIsB+WxX9k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8035
-X-OriginatorOrg: intel.com
+X-Received: by 2002:a05:6808:508c:b0:4b9:e5fa:8a14 with SMTP id
+ 5614622812f47-50c509541b4mr182482b6e.25.1791501344020; Thu, 08 Oct 2026
+ 16:15:44 -0700 (PDT)
+Date: Thu, 08 Oct 2026 16:15:44 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ac82420.a150a118.27e199.001f.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in vmxnet3_probe_device (2)
+From: syzbot <syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com>
+To: andrew+netdev@lunn.ch, bcm-kernel-feedback-list@broadcom.com, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	ronak.doshi@broadcom.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    7b63ef2d55f2 Merge tag 'for-7.3-rc6-tag' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=130dc00d580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=7d1b274ca9837366
+dashboard link: https://syzkaller.appspot.com/bug?extid=8eed6f83440ecdaf4be6
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-7b63ef2d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/673ec6e10d5d/vmlinux-7b63ef2d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/8a9e8d61edce/bzImage-7b63ef2d.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8eed6f83440ecdaf4be6@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+vmxnet3 0000:00:00.0: rejecting DMA map of vmalloc memory
+WARNING: ./include/linux/dma-mapping.h:532 at dma_map_single_attrs include/linux/dma-mapping.h:531 [inline], CPU#0: syz.0.0/5317
+WARNING: ./include/linux/dma-mapping.h:532 at vmxnet3_probe_device+0xab8/0x2e70 drivers/net/vmxnet3/vmxnet3_drv.c:4047, CPU#0: syz.0.0/5317
+Modules linked in:
+CPU: 0 UID: 0 PID: 5317 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:dma_map_single_attrs include/linux/dma-mapping.h:531 [inline]
+RIP: 0010:vmxnet3_probe_device+0xb32/0x2e70 drivers/net/vmxnet3/vmxnet3_drv.c:4047
+Code: 89 ff e8 81 3f f6 fa 4d 8b 2f eb 15 e8 47 bd 83 fa 41 bf 04 00 00 00 41 b6 03 eb 7d e8 37 bd 83 fa 48 89 df 4c 89 f6 4c 89 ea <67> 48 0f b9 3a 48 8b 04 24 48 05 88 c4 00 00 49 89 c6 48 c1 e8 03
+RSP: 0018:ffffc9000e5f77c0 EFLAGS: 00010246
+RAX: 1ffff1100004141a RBX: ffffffff91881d70 RCX: dffffc0000000000
+RDX: ffff888000bca960 RSI: ffffffff90a9b020 RDI: ffffffff91881d70
+RBP: ffffc9000e5f7950 R08: 0000000000000003 R09: 0000000000000000
+R10: dffffc0000000000 R11: ffffed10000414b3 R12: 0000000000000001
+R13: ffff888000bca960 R14: ffffffff90a9b020 R15: ffff88800020a0d0
+FS:  00007f8c16ac66c0(0000) GS:ffff88808b0b4000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8c1695d9d0 CR3: 0000000013a35000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ local_pci_probe drivers/pci/pci-driver.c:354 [inline]
+ pci_call_probe drivers/pci/pci-driver.c:416 [inline]
+ __pci_device_probe drivers/pci/pci-driver.c:478 [inline]
+ pci_device_probe+0x48e/0xd10 drivers/pci/pci-driver.c:512
+ call_driver_probe drivers/base/dd.c:-1 [inline]
+ really_probe+0x254/0xae0 drivers/base/dd.c:706
+ __driver_probe_device+0x1e8/0x360 drivers/base/dd.c:868
+ device_driver_attach+0xe0/0x1d0 drivers/base/dd.c:1203
+ bind_store+0x1d0/0x220 drivers/base/bus.c:267
+ kernfs_fop_write_iter+0x3a4/0x540 fs/kernfs/file.c:345
+ new_sync_write fs/read_write.c:595 [inline]
+ vfs_write+0x612/0xba0 fs/read_write.c:687
+ ksys_write+0x150/0x270 fs/read_write.c:739
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f8c15b9e199
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f8c16ac5fe8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007f8c15e25fa0 RCX: 00007f8c15b9e199
+RDX: 000000000000000c RSI: 0000200000000240 RDI: 0000000000000006
+RBP: 00007f8c16ac6050 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007f8c15e26038 R14: 00007f8c15e25fa0 R15: 00007ffcf58e7438
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	89 ff                	mov    %edi,%edi
+   2:	e8 81 3f f6 fa       	call   0xfaf63f88
+   7:	4d 8b 2f             	mov    (%r15),%r13
+   a:	eb 15                	jmp    0x21
+   c:	e8 47 bd 83 fa       	call   0xfa83bd58
+  11:	41 bf 04 00 00 00    	mov    $0x4,%r15d
+  17:	41 b6 03             	mov    $0x3,%r14b
+  1a:	eb 7d                	jmp    0x99
+  1c:	e8 37 bd 83 fa       	call   0xfa83bd58
+  21:	48 89 df             	mov    %rbx,%rdi
+  24:	4c 89 f6             	mov    %r14,%rsi
+  27:	4c 89 ea             	mov    %r13,%rdx
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	48 8b 04 24          	mov    (%rsp),%rax
+  33:	48 05 88 c4 00 00    	add    $0xc488,%rax
+  39:	49 89 c6             	mov    %rax,%r14
+  3c:	48 c1 e8 03          	shr    $0x3,%rax
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-On 10/7/2026 11:54 PM, Tian Xun Ng wrote:
-> On 10/7/2026 10:07 AM, Tantilov, Emil S wrote:
->> I did a rough draft, keeping your logic and I think we
->> should be able to avoid the new flags by introducing a global variable
->> adapter->vc_xn_timeout_ms and set it based on the flow we're in
-> 
-> Thanks, that works well. v3 is ready along those lines: no new flags,
-> adapter->vc_xn_timeout_ms set to the default at probe and to 500 ms in
-> idpf_shutdown() right before IDPF_REMOVE_IN_PROG, and idpf_send_mb_msg()
-> caps each transaction with it and sets it to 0 after the first
-> shortened transaction times out, so the rest fail at once.
-> 
-> Backported to our 6.17 kernel (two arm64 servers, two PFs each, IOMMU
-> translating): no faults in 30 warm reboots. The slowest teardown
-> message is still DEALLOC_VECTORS at ~300 ms, sent after DESTROY_VPORT;
-> the queue-related ones took at most 158 ms. With the driver made to
-> skip sending the teardown messages, the first one timed out at ~500 ms,
-> the rest failed immediately, and every reboot faulted again.
-> 
-> Before I post it, two things it exposes that I would like your view on:
-> 
-> 1. Setting IDPF_REMOVE_IN_PROG on shutdown also moves
->     libie_ctlq_xn_shutdown() after idpf_ptp_release() and
->     idpf_deinit_task(), as on remove. mbx_task keeps running in that
->     window, so an async PTP Tx timestamp reply can reach
->     idpf_ptp_get_tx_tstamp_async_handler() after
->     idpf_ptp_release_vport_tstamp() has freed tx_tstamp_caps. Remove has
->     the same window today; shutdown would now have it too. An unmatched
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-If I understand correctly, this is referring to possible UAF in the ptp 
-release logic ... I can't say for sure, since I don't have your patch, 
-but I think it is a valid concern. Your previous patch would have the 
-same effect, so I don't believe this to be new (as result of the 
-refactor) and would be an existing bug in idpf_remove().
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-BTW, I should mention here, you need to set IDPF_REMOVE_IN_PROG before 
-cancelling the tasks in idpf_shutdown() to make sure the event task is 
-not re-queued.
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
->     VIRTCHNL2_OP_EVENT (link change) has a similar window against the
->     vport being freed, which exists on shutdown already.
-> 
->     One way to close it without new flags: once IDPF_REMOVE_IN_PROG is
->     set, cancel_delayed_work_sync() and requeue mbx_task, and have the
->     PTP callback and idpf_recv_event_msg() return early when the bit is
->     set; matched replies are still consumed, so the teardown is not
->     affected. I can send that as a prerequisite patch, but I cannot
->     exercise the PTP part here (PTP init returns -EOPNOTSUPP on our
->     parts). Would you prefer that, or to handle it separately?
-> 
-> 2. A transaction that is already waiting when shutdown starts keeps its
->     own timeout. For example a GET_STATS from stats_task, which is only
->     cancelled in idpf_deinit_task(), can still hold shutdown for up to
->     60 s with a dead control plane, where the early xn shutdown used to
->     wake it. Fixing that would need a way in libie to expire waiting
->     transactions, so I would note it in the commit message rather than
->     claim a hard bound. Does that sound right?
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-Yea, I think solving this issue in general would probably require 
-changes in controlq. For the purpose of this patch limiting the delay 
-within reason for the more practical cases is good enough.
-
-Another thing to note, in your previous patch you had a comment:
-+	/* Destroy the vports while the mailbox is still up, so that the
-+	 * device stops its queues before the next kernel reuses their memory.
-+	 * A reset does not clear them on every device.
-+	 */
-
-The last sentence is incorrect - a reset must clear the vport(s) state. 
-This patch is still warranted as we would like the driver to gracefully 
-signal the destruction of vports, however documenting FW bug as a fact 
-is not OK.
-
-Thanks,
-Emil
-
-> 
-> Thanks,
-> Tian Xun
-
+If you want to undo deduplication, reply with:
+#syz undup
