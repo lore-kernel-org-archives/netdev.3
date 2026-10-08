@@ -1,283 +1,308 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FFF43D515
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 11:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791459654; cv=fail; b=aTuXCz2H9fluN+wOBgS4CP5m6pOckNo1oQYme4kRpJEOwaDO5MvaMOCak4M+GWgAK3cT096BPQtbHwjPvWJW7ITBRDj+gSpz44S+fq0VcJAfn3dcCrp6Zl+rLZ+ixklMmfAbRHYD1zH6i672kaMxhZGu3gUMGDUUki5ykhnq/G0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791459654; c=relaxed/simple;
-	bh=yi+bahb5cvkVhjFhBcrU0NN47xz+lJjEJBA6ngUI3VI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jlBN9/+NUwu1OZ6+apVh4vMpi+xm/bmuCyshItO9DaIqz6NotDb5l1sW6dTPggGxJFvLIUfkXd+T7g4UhTZS7+w+0qJJC/ddplgu0d+/bCaa8cQ+m3M0mjnUBIjgddToqKKRZsXl6fk8G5asxVMAxexdmjLTzkcHCd8shp4zhrc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QrEaOXxV; arc=fail smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B6544AB6E;
+	Thu,  8 Oct 2026 11:49:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791460163; cv=none; b=R655yi57t21Eer9GiszWgRG9SdIPGWuot1WKJwQnHIE9ykT4YeMAAIq8+6M1a51OYDwcUURy2uuV/ycrMiC2dwU+wa2/kv0qvFL+Y1uDD9tgrD+h+PJQoDMBHo3IsUrJT4I3OSm0Xn3Hb5bQ0NCTgNcMDfxCb6OQLzvq5cYZbVQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791460163; c=relaxed/simple;
+	bh=uzhmh6n6PBDWtQyWA6kFxsjPUX+Py+M/JsXEQ79VokU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nUFta/wpQZXYiF77ohFuhxbd+X48byIoE1G66qAwwnnP8orlF67hUegVNz1Yr5CF7pNn9dDqtfiMF8E7ZQJddLegaNfGGnyBe/ExGelFg/GEPb/pjjgffngl4I+mRad3Rwfklkz03cc1J333Ds+kZKVBNlv7P3wgioroIN1MbHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DORtvTt/; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QrEaOXxV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DORtvTt/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791459653; x=1822995653;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=yi+bahb5cvkVhjFhBcrU0NN47xz+lJjEJBA6ngUI3VI=;
-  b=QrEaOXxVjSh/akfUWcOVdzGC06/p13kNHf1iE6I4jUt4lq5mlKQasE2V
-   RF3sMXSRGgdKZLzuP9q7CieCaiG0qjkxlGGQmhSrHPJb12U5FT2Tz6QH4
-   o+GlBEH8dFSe86eu30mkoHvXcHOkn0/+ND8PBat7SOmNE60rtVuPW7II+
-   qgmfuTHAnndmw9+HKp0ar+S3Iaf1g8nu2zSBUoW9UUX/O6aVbZUS1auI5
-   S7nhlY+9qHP3ofL6o/0g3NjwL2F+b9n3zfxxlVIzF7z+HngHg6JJNcfaq
-   WBmoa4R/X9S3NfNoN34TCx8EUOrjii1LXMzhGAVFNi0ft/ZmvXhtzzo0m
-   g==;
-X-CSE-ConnectionGUID: jc2DdzJ1R1Gv0gsFMehz/Q==
-X-CSE-MsgGUID: dIYVtPRaS8C6kc6Kl5vPng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="237682"
+  t=1791460161; x=1822996161;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uzhmh6n6PBDWtQyWA6kFxsjPUX+Py+M/JsXEQ79VokU=;
+  b=DORtvTt/VHv4vYsVKrXUmnVlue8n6Gz4xPfznEsHReS/jtHMi52ta1Qq
+   bFeQPOuFrBgl5ZBWzhGFUjusC8NhtbBW3VSUwBL9AsGHWNhvYFZkcF3mW
+   hzx/sGxyOGO0i0XuK9eecOBza0ylF+XHNtkjJyGFA9kRmP/AaBaPSZ4Df
+   b9e1gnUUU4019Kfr3Zqt7WW2t//WbjhMnE+RzItTkyRH7/L1J5M0ej7Ug
+   dt9oJfsALBMUQxD48Ijh5WtRvOZTjNP8c1fBTCedRN0QiJloXq0BVj2gK
+   gVf0d1+hQeaAuGyoRmKm/fiixKO+q5eA0OMh5pDQDL8Pug9Yg/rzYvZtX
+   Q==;
+X-CSE-ConnectionGUID: J+Xz/egHT4ydRges2aDy3w==
+X-CSE-MsgGUID: 8VeLTarLRCOP2gyhNR9vvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="124913"
 X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="237682"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 04:40:53 -0700
-X-CSE-ConnectionGUID: RBCF1PuLS6idJWY7V49slw==
-X-CSE-MsgGUID: RCzDnYFqS6eBiVLBmcsY2w==
+   d="scan'208";a="124913"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 04:49:21 -0700
+X-CSE-ConnectionGUID: I1Iy84zgQ2y6w7+C7A6EvA==
+X-CSE-MsgGUID: ZsHbtpG2Q5Kck481/puahQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="136088"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 04:40:53 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 04:40:52 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 8 Oct 2026 04:40:52 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.19) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 04:40:50 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uxwlpfSqJr/V3WgIFTFf57ViMk4NaXUos7Is0Sa1L7CI4ZkeRqjGubwaBTWCuOV1GAA3fp8JOmQV4moqlqmQ6rTFSMnhl++nStj6axXUfLYpuCzFR6+8Zmu62lDggsYzN8LwYGzk0IqBJFIlBitj6k+rAKyAFPDMiao19i2YG+gsnOoH8k6V0wHx21Yi504mgqJzHIDRXiZXFq8h721LW3OGr8M5+aDAVYMakXgbtvgKZ0SXcUy2M03jD3nSspXWyNUUh46iqWI5WKGOMgrQSvTC8H12e3UnPZQPtQ1aWVeonSQYAEmgRkw0IF58IjEDijNUrQ9qKPpbTitisKI6Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eomsP7sNOzgpfSb/Bf2MqBqaKaBANho+gTtC1jl7dcA=;
- b=tWR4tSrlKL7ohsM/VuYd3UNfHgv/VqIN737SGVtIcaiExoRp+sSHcg+iLvRr7SH4cu3Cd1OfM5Rw9C3UZkDyFQO0ZXu7NRZkcBoly/H38wMjxN0pUxqzSiVGgC6rUB+TJ+UtkENIIlIo6hVU607yEew1H7+jCmIUE+KYiiIy/0aJ6vbQDgcaKk6oI5wEQQLz8Dmw6DvYtsohMFOYuiLPwlOKy6NoJum5pfFb5AtGnc2FF3XEqhpfrylGz4FBmZyeV1MGMbqlQltHkkzgLAY8I7WUx5/OV3AQF3ARqnyVykwAtNlAH58k7FNEpvyf/SYCXtXHDp811oeZAVUUPkIFDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS4PPFA424F92C2.namprd11.prod.outlook.com
- (2603:10b6:f:fc02::41) by MW4PR11MB5909.namprd11.prod.outlook.com
- (2603:10b6:303:168::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 11:40:23 +0000
-Received: from DS4PPFA424F92C2.namprd11.prod.outlook.com
- ([fe80::760a:25b:30eb:6d7c]) by DS4PPFA424F92C2.namprd11.prod.outlook.com
- ([fe80::760a:25b:30eb:6d7c%8]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
- 11:40:23 +0000
-From: "Kwapulinski, Piotr" <piotr.kwapulinski@intel.com>
-To: "mheib@redhat.com" <mheib@redhat.com>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "jiri@resnulli.us"
-	<jiri@resnulli.us>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "corbet@lwn.net" <corbet@lwn.net>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>
-Subject: RE: [Intel-wired-lan] [PATCH 2/2 net-next, v2] i40e: add devlink
- parameter for Flow Director ATR sample rate
-Thread-Topic: [Intel-wired-lan] [PATCH 2/2 net-next, v2] i40e: add devlink
- parameter for Flow Director ATR sample rate
-Thread-Index: AQHdAX2CY1rk5SbAWEqbDrU6DiSbI7b0MA5g
-Date: Thu, 8 Oct 2026 11:40:22 +0000
-Message-ID: <DS4PPFA424F92C2A514E86DEFCC7C5A5BFDF3932@DS4PPFA424F92C2.namprd11.prod.outlook.com>
-References: <20260621125644.253844-1-mheib@redhat.com>
- <20260621125644.253844-2-mheib@redhat.com>
-In-Reply-To: <20260621125644.253844-2-mheib@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS4PPFA424F92C2:EE_|MW4PR11MB5909:EE_
-x-ms-office365-filtering-correlation-id: da9517f5-35ab-4683-352b-08df2530f03c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|38070700021|56012099006|4143699003|11063799006|10067099003|22082099003|18002099003;
-x-microsoft-antispam-message-info: A1w0CmKs3H1LlUhl6lDvhXV22D/sOXJGOqsAfsg9VQkz2PLz618oE2i9aHEswJ/iET0nFvCXQdV+CqHpDrwyYIfXuXXPBYULGdufGYqwMqXKiB3rSFvCcIOhUuUTGzScFZtZAhJ5pArwBHZ6UB212vmJh5KXHlaTnfD00feA3pcWjBED+qAPXtDGPpOIOfuvGflKJhnnRBc2h/4TQzxIp35cjIX5cYCHonz4pN7tzTfkVDBNlHPIBMum6bhCupXQCGfmAGWiPCf4iZBh0U84NfPblWwQU6OzBUXS/Qdhd1kbmpxfZ6Va5/V8FoeGNmKZxF/xKDXs7pIpNse0CTHBsqRFyIdXM/FrIHosZ84bPvybCQq7jOfPCF/clF0OITxp7daCqW2HoXD6X3swBlKmJKH97LSuc8doipyBR8ocd/NH9dTYuph8O9R/CQZrDuvEhMsiEx7clitm5HHWBxpsAAO09BQICQbzwIYYnSWoCgU3LclYLtSbsRLOgnH/drSOL8Q2M4Kefa1vJpS+0Bx7wr2EQKB4lShtuuOsKcX9wEx5XWEEbYia0JcCpo5Iol1EaAhjoS2CajYyvq5O7gIX1FCAHt1MdrxaIQ9kO3XzzifvaUyBPDEbmdqkOap+06lYg55+kCdHPyFL/zjAa06PWqUQkVhBB2PJ5f6A1gyC3gmOxy8DKTl4jsls8K/V9a5GzPQXZlu7lJ+EMaqPdNZXJYL3rR/xTa43uWN1lhmmrJk=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PPFA424F92C2.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(38070700021)(56012099006)(4143699003)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GoGa8wCJUkmb2xaRTD3A0sNRGpejdJS5xGy4j6+z0dMxyLmHpo6uzIRV+/rE?=
- =?us-ascii?Q?K9w5xw7uLRQ9xn+VPnrMkEOy7VOKTpZMehFbXbnDeUtG0R2VOwcjF/g7QA6l?=
- =?us-ascii?Q?H5ljKvbnNEUJg19UsB2EVn+JcOClst3CLDrGUKx1OQERtTOY1bjadOM5uR//?=
- =?us-ascii?Q?nCEC7YBwmdmeFDx9RFdjEifvCGmMbQCU1faG/B8Lugy0rr9LWUmx7Vqklt1N?=
- =?us-ascii?Q?HFzVbQIG2MQ83td511trb3nuYHWlMyqVX/TLUvEzC/rm+zML0SR105sf7nW6?=
- =?us-ascii?Q?lrCcO9HBHps76pijCBSYnPu0aYCVourXKg0+BsSNVnmvB57CECFfAlEtZOyS?=
- =?us-ascii?Q?S+2UiLxOZGZjhv8FboytbbHWmarp+fBq4MC2jqx7QeDVDhjfaxURzTz1+onL?=
- =?us-ascii?Q?UE4TueHsEE9OIbgGdTg92E/SD0jR6WgYcqVMeIZsLuolmfsg18sRpPpP2Vq8?=
- =?us-ascii?Q?cIZuahrIYOv4TGL9QYu+fqdU6JkPnWeVpQRrjbAGp0JFcsegH5G+4tFKmqAY?=
- =?us-ascii?Q?Sz8x+Z5G2V2iA2PABCFiZk0CDxKSenzchDZv/Fjtme0GXMwKkvPj/I5w3jvY?=
- =?us-ascii?Q?FRvpyotbRMv+9iwYam6VgG/RAqmIKuGFDaXVxq1slNTNdRvQ8qgaAWeRJlkh?=
- =?us-ascii?Q?w64tNa2ps72z0tOVPqzXmuU70JdDhkbqstbakanTcTLoK0BLE6Q+C9mLeDMr?=
- =?us-ascii?Q?Hs4YaoCnQ/cAT4ahH6DyFLdTAb5ooW3sIvc7Z/K8zuQOxRAvdWeT4+4/fNCo?=
- =?us-ascii?Q?pxPjHFXnC/ObfMKFN7Wqgjs9RrEiuTWufNr1a2hlA9cL4vE0cntCLfBCsZHg?=
- =?us-ascii?Q?lynLBVzaa3PI1bb7RpRulvJ9Wjff5F1SNgb203FhdomV2utqQVW7bfgXRpxt?=
- =?us-ascii?Q?EKWyAUITmGFcj3Qyx/oJWqGApBZVTjFiTn7AS8LGLBHZkM0x5DGKAuDqDn1r?=
- =?us-ascii?Q?QvCFEn+ghMUyXmo5Z1T+FWBKgHOde1jiOInR6xV1mfOEjTgzZoVG6so8UWcr?=
- =?us-ascii?Q?5WaD5Jzc5Ydl5AVS1Xjdxy/6yRDKNIMViv5MP9Z4QfwI4yTWxwL/YWFk2yLp?=
- =?us-ascii?Q?anMB14YiUTRO0X7Yaitlu7OXWDJTqq0lhN23TutxeEJz29mKnpGz03PwwOOH?=
- =?us-ascii?Q?4cTWkso5kYHiiHnYJp99qs1gb5bNy4qnXR0bGmWstCfKJINDLxOmBFme1h92?=
- =?us-ascii?Q?hKnMTTguSNsbpxzgNQzyLZnOXPlCy2ZCCrcU0cQ5Asy8DBfnNxgKWhT41f9a?=
- =?us-ascii?Q?GxT/P1Jo58psle8YKYBMMXxif/DC1P97xazSfm7gIFxdN/STcvhsMQ+/cFnY?=
- =?us-ascii?Q?E8Mq7Yjonp1dV22crEmmvShoZU5/6Oz1HECsdwI4cDvDYk9CYd1K3JAv6ZRx?=
- =?us-ascii?Q?+dD6uLsQsmE8J0xqwOwFGuZhu1oG3qdoXLi/raPddZk3bbYL4J3doezCEVao?=
- =?us-ascii?Q?6Re2247Xutv6S+dydEGC7cwo3KK06Mox4QcF4OBbgfNa7goGH2FSm3abZQbC?=
- =?us-ascii?Q?+EuQLus8qU3F5VM62QrMlV5conhOcYA6SZja59TyiyEd/QbMhymGaPRFWuuk?=
- =?us-ascii?Q?eGB4YPyWAz8kYjD05fhLr+EpJyJtTpBEYdf/8A+g7IkJyHjwxCEN0TzVyUpb?=
- =?us-ascii?Q?ewjk7g9Cah/48ZTtyXKdBhlvisMIr2t8kEPBT/lz7evUG/yJdEK3cYiQAcXi?=
- =?us-ascii?Q?dmakmlBU5w5ODjI0kuPxI2xmuC6uqkbdkhU1faDvBy3gWuWWjaG9MY5NRB2/?=
- =?us-ascii?Q?xjD0Og52NA=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+   d="scan'208";a="467087"
+Received: from boxer.igk.intel.com ([10.102.20.173])
+  by orviesa010.jf.intel.com with ESMTP; 08 Oct 2026 04:49:19 -0700
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	stfomichev@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	tushar.vyavahare@intel.com,
+	kerneljasonxing@gmail.com,
+	bjorn@kernel.org,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH v2 net-next 00/14] selftests: net: migrate AF_XDP test suite over to net
+Date: Thu,  8 Oct 2026 13:48:55 +0200
+Message-Id: <20261008114909.734364-1-maciej.fijalkowski@intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: nqHgJoTi6g/RnRgFtOR/KxSRtHaXUKXKnMHLc6IHkmiHgWFJy7flKYEEhAY2/WLKF17PWKTXn8bftDsTLxN2iljqMNiumPZ5yxzkLbPlWUgtbCOLgFVieNjSiXk/54Lr60tvwb8yqRIQ++zL20Z6W2YFuE4Gby938WilGhJEQtNHS7b84i9JnQSMKFVgZ2QZr0HUJAywbuC0QAw1F6eoVryYUOg80zagcb3SGmgT7TIZhI/VObMs9oV0f1aWKUem0bbZKneNL0VUfaorZ0iCnIzTRweV2yrks/t+iyk+A6LohlHe4xM8/ruDOmwpfy9tXlxYTMSDeC74eWNTzO2s/A==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS4PPFA424F92C2.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: da9517f5-35ab-4683-352b-08df2530f03c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Oct 2026 11:40:22.8912
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /l6J6On0CTt3xWh+e9tbJ/X8ktpXSEm5Bpy9clKpNduXSjtXfesESPhvdKhVfJKCSvOb7wu3fcGNqIm1Jisw+y8b0HBTLiZ6yD974FfLjjg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5909
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
->>-----Original Message-----
->>From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of J=
-iayuan Chen
->>Sent: Friday, June 26, 2026 10:39 AM
->>To: netdev@vger.kernel.org
->>Cc: Jiayuan Chen <jiayuan.chen@linux.dev>; Nguyen, Anthony L <anthony.l.n=
-guyen@intel.com>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Andre=
-w Lunn <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric=
- Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abe=
-ni <pabeni@redhat.com>; Jeff Garzik <jgarzik@redhat.com>; Bruce Allan <bruc=
-e.w.allan@intel.com>; intel-wired-lan@lists.osuosl.org; linux-kernel@vger.k=
-ernel.org
->>Subject: [Intel-wired-lan] [PATCH net] e1000e: fix IRQ leak when request_=
-irq() fails in e1000_request_msix()
->>
->>An internal syzbot instance reported the warning below.
->>
->>comedi (comedi_parport) lets userspace request_irq() an arbitrary IRQ num=
-ber and can thus grab one of e1000e's MSI-X vectors. When
->>e1000_request_msix() then fails partway through, it returned without free=
-ing the vectors it had already requested; pci_disable_msix() later tears th=
-ose descriptors down while their irqaction is still attached, leaking the /=
-proc/irq entry.
->>
->>Free the already requested IRQs on the error path.
->>
->>genirq: Flags mismatch irq 28. 00200000 (eth1-tx-0) vs. 00200000 (comedi_=
-parport)
->>
->>remove_proc_entry: removing non-empty directory 'irq/27', leaking at leas=
-t 'eth1-rx-0'
->>WARNING: fs/proc/generic.c:742 at remove_proc_entry+0x436/0x560, CPU#3: i=
-p/445 Modules linked in:
->>CPU: 3 UID: 0 PID: 445 Comm: ip Not tainted 7.1.0+ #284 PREEMPT
->>RIP: 0010:remove_proc_entry (fs/proc/generic.c:742 (discriminator 4))
->>PKRU: 55555554
->>Call Trace:
->><TASK>
->>unregister_irq_proc (kernel/irq/proc.c:406) free_desc (kernel/irq/irqdesc=
-.c:482) irq_free_descs (kernel/irq/irqdesc.c:874 kernel/irq/irqdesc.c:865) =
-irq_domain_free_irqs (kernel/irq/irqdomain.c:1917)
->>msi_domain_free_locked.part.0 (kernel/irq/msi.c:1619 kernel/irq/msi.c:164=
-5) msi_domain_free_irqs_all_locked (kernel/irq/msi.c:1632) pci_msi_teardown=
-_msi_irqs (drivers/pci/msi/irqdomain.c:28) pci_free_msi_irqs (drivers/pci/m=
-si/msi.c:925) pci_disable_msix (drivers/pci/msi/api.c:200 drivers/pci/msi/a=
-pi.c:193) e1000_request_irq (drivers/net/ethernet/intel/e1000e/netdev.c:202=
-8)
->>e1000e_open (drivers/net/ethernet/intel/e1000e/netdev.c:4681)
->>__dev_open (net/core/dev.c:1702)
->>netif_change_flags (net/core/dev.c:9806)
->>do_setlink.isra.0 (net/core/rtnetlink.c:3207 (discriminator 1)) rtnetlink=
-_rcv_msg (net/core/rtnetlink.c:7068) netlink_rcv_skb (net/netlink/af_netlin=
-k.c:2556)
->>
->>Fixes: 4662e82b2cb4 ("e1000e: add support for new 82574L part")
->>Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->>Assisted-by: Claude:claude-opus-4-8
->>---
->> drivers/net/ethernet/intel/e1000e/netdev.c | 13 +++++++++----
->> 1 file changed, 9 insertions(+), 4 deletions(-)
->>
->>diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/eth=
-ernet/intel/e1000e/netdev.c
->>index 808e5cddd6a9..19b9823c5679 100644
->>--- a/drivers/net/ethernet/intel/e1000e/netdev.c
->>+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
->>@@ -2099,7 +2099,7 @@ void e1000e_set_interrupt_capability(struct e1000_a=
-dapter *adapter)  static int e1000_request_msix(struct e1000_adapter *adapt=
-er)  {
->> 	struct net_device *netdev =3D adapter->netdev;
->>-	int err =3D 0, vector =3D 0;
->>+	int err =3D 0, vector =3D 0, i;
->Thank you for the patch.
->I'd suggest to declare 'i' right in the loop, besides:
->Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
->
->>=20
->> 	if (strlen(netdev->name) < (IFNAMSIZ - 5))
->> 		snprintf(adapter->rx_ring->name,
->>@@ -2111,7 +2111,7 @@ static int e1000_request_msix(struct e1000_adapter =
-*adapter)
->> 			  e1000_intr_msix_rx, 0, adapter->rx_ring->name,
->> 			  netdev);
->> 	if (err)
->>-		return err;
->>+		goto err_free;
->> 	adapter->rx_ring->itr_register =3D adapter->hw.hw_addr +
->> 	    E1000_EITR_82574(vector);
->> 	adapter->rx_ring->itr_val =3D adapter->itr; @@ -2127,7 +2127,7 @@ stati=
-c int e1000_request_msix(struct e1000_adapter *adapter)
->> 			  e1000_intr_msix_tx, 0, adapter->tx_ring->name,
->> 			  netdev);
->> 	if (err)
->>-		return err;
->>+		goto err_free;
->> 	adapter->tx_ring->itr_register =3D adapter->hw.hw_addr +
->> 	    E1000_EITR_82574(vector);
->> 	adapter->tx_ring->itr_val =3D adapter->itr; @@ -2136,11 +2136,16 @@ sta=
-tic int e1000_request_msix(struct e1000_adapter *adapter)
->> 	err =3D request_irq(adapter->msix_entries[vector].vector,
->> 			  e1000_msix_other, 0, netdev->name, netdev);
->> 	if (err)
->>-		return err;
->>+		goto err_free;
->>=20
->> 	e1000_configure_msix(adapter);
->>=20
->> 	return 0;
->>+
->>+err_free:
->>+	for (i =3D vector - 1; i >=3D 0; i--)
->>+		free_irq(adapter->msix_entries[i].vector, netdev);
->>+	return err;
->> }
->>=20
->> /**
->>--
->>2.43.0
+v1: https://lore.kernel.org/netdev/20261001202124.692591-1-maciej.fijalkowski@intel.com/
+v1 -> v2:
+- Rebase on net-next; NIPA could not apply v1 (Stanislav)
+- Patch 9: fail TX when RX exits with packets in flight instead of
+  continuing until the case timeout
+- Patch 10: use the full packet length for IPv4/UDP headers in verbatim
+  multi-buffer streams
+- New patch 11: in hardware mode, the XDP programs redirect only the
+  UDP/IPv4 test flow and pass all other traffic to the stack, so the
+  link under test no longer has to carry the test traffic alone
+  (Stanislav)
+- Patch 13: besides an SSH remote, xsk.py supports the peer port of the
+  same host in a network namespace (REMOTE_TYPE=netns), which is how
+  NIPA sets up its E810 and X710 pairs. The control channel then runs
+  over the tested link to REMOTE_V4, and DUT TX cases also take their
+  queue out of RSS: the DUT TX socket fills no RX buffers, so its
+  zero-copy queue would drop the control traffic (Stanislav)
+- Patches 13 and 14: drop XSK_STATIC and link xskxceiver dynamically,
+  like the other networking selftest helpers; a remote with an older
+  libc can run its own build with XSK_REMOTE_DEPLOY=0
+- Patch 4: remove a partially written skeleton header when bpftool
+  fails, so a later build does not take it as up to date
+- Patch 5: skip xskxceiver also when bpftool is in PATH but does not
+  run, not only when it is missing
+- Patch 14: document both remote types and the traffic filter
 
-Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+
+Heads-up for ice: to reserve a queue, xsk.py updates only the RSS
+indirection table over ethtool netlink. On ice this also turns on
+symmetric Toeplitz hashing, and restoring the table afterwards fails.
+The fix, "ice: keep the RSS hash function on indirection-only updates",
+goes to iwl-net separately [0]. Without it, the first case that takes a
+queue out of RSS fails in its cleanup, and the table stays modified.
+
+
+Hi,
+
+This work moves the AF_XDP test suite over to selftests/net and adds
+a hardware test on top of the python-based drv-net infrastructure.
+Since a non-zero effort went into implementing xskxceiver's (not so
+great testing app name) test cases, we did not want to completely
+abandon it and start everything from scratch within different infra.
+However, hooking it up to the networking CI will allow us to run
+cyclic tests on real HW; before that, all of our HW tests were manual
+local runs.
+
+Tests were based on a process with two threads responsible for the RX
+and TX paths, whereas the new infra expects two separate processes for
+the DUT and remote side, where each side has either rx or tx role.
+
+To satisfy this requirement, this series makes each xskxceiver endpoint
+a process of its own, so that the RX and TX sides of a case can run on
+different hosts, and adds drivers/net/hw/xsk.py, which runs the existing
+test cases with the DUT in zero-copy mode against an SKB-mode xskxceiver
+on a remote host or on the peer port of the same host in a network
+namespace. The veth test keeps its cases and moves with the
+engine from selftests/bpf to selftests/net.
+
+ZC tests used to expect a single NIC in loopback mode, with both
+sockets on one of its queues sharing a UMEM. Now we step away from it:
+the DUT and the remote are separate interfaces, on two hosts or on one
+host with the remote in a namespace, and an ntuple rule steers
+the test traffic to the AF_XDP queue.
+
+The remote endpoint is xskxceiver in SKB mode rather than a plain
+socket, so both ends keep sharing the packet stream generation and
+validation of the existing cases. This reduces the need for remote
+interface being a NIC from narrow set of NICs that are AF_XDP ZC
+capable.
+
+This implies that during the test run only one side is actually
+exercised, so let's introduce the concept of direction per test case.
+For example, this means SEND_RECEIVE in XSK_HW_RX will test
+ice_clean_rx_irq_zc() routine and in XSK_HW_TX the ice_xmit_zc().
+
+BPF's 'test_progs -t xsk' is removed, as well as single interface mode,
+which was used for ZC tests. BPF CI therefore no longer runs the
+xskxceiver cases. test_xsk.sh is kept, as it is the only run that needs
+no hardware and not all tests are currently covered by the HW test side.
+We can decide whether to keep the delta test cases, drop them or somehow
+enable within HW tests.
+
+Thread-based approach had a pacing mechanism that was a simple in-flight
+packet counter updated within critical section by both ends.
+Process-based way now is going to do this pacing via xsk_peer.
+
+xsk_peer, the control channel, carries three fixed-size messages: READY
+is the barrier between steps, PROGRESS tells TX how many packets RX has
+consumed so that TX does not overrun the RX UMEM, and ABORT stops the
+peer after a failure.
+
+test_xsk_case_defs.h lists each case with the DUT directions.
+xskxceiver builds its test table from that file, and xsk.py parses it to
+make the variants ksft_variants() named rx_<case> and tx_<case>, so -l,
+-t and -T work as for any other test.
+
+
+Patches 1-3 prepare the split. Patch 1 moves the endpoint work out of
+the pthread entry points. Patches 2 and 3 drop the single-interface
+loopback mode and the test_progs wrapper, which runs both endpoints as
+threads of test_progs; neither can work with one endpoint per process.
+Nothing else runs a subset of the cases, so patch 3 also merges the
+cases that the wrapper left out into the main list.
+
+Patch 4 adds a generic rule for BPF skeletons to net/bpf.mk, as Jakub
+suggested in the review of the xdp_features move [1]; xskxceiver is
+its first user. If that series lands first with the same rule, this
+patch can be dropped.
+
+Patch 5 moves the engine, its XDP program and the veth launcher to
+selftests/net. xsk.py needs xskxceiver, and a drv-net test can only
+rely on net/lib: the selftests build pulls net/lib in for net,
+drivers/net and drivers/net/hw, while it skips selftests/bpf by
+default. The veth test is software-only, so it goes to selftests/net,
+as the drv-net README asks. selftests/bpf keeps building xsk.c from
+its new place for xdp_hw_metadata and the xdp_metadata test.
+
+Patches 6-9 split the engine. The interface capabilities move into one
+struct, so that a process can mirror them for the endpoint it does not
+own (6). main() is split into setup, run and cleanup (7). xskxceiver
+runs one case per invocation, and test_xsk.sh owns the mode x case
+matrix (8). Finally, the RX and TX endpoints become separate processes
+that meet over a small TCP control channel (9).
+
+Patch 10 adds the xskxceiver options that a two-host run needs, and
+patch 11 lets the XDP programs pass traffic other than the test flow to
+the stack in hardware mode. Patch 12 moves the case list into
+test_xsk_case_defs.h, so that xsk.py can read it as well, and patch 13
+adds xsk.py on top of them. Patch 14 documents both setups.
+
+
+Known issues:
+- Every case pays for process start-up, XDP attach and detach and, on
+  hardware, its remote commands. We used to configure resources once
+  and then execute the whole test suite; it doesn't seem to be
+  CI-friendly and it is preferred to have each case's resource
+  management separated; that on the other hand increases the
+  execution time of the whole test suite.
+
+- With a netns remote, the control channel shares the tested link, so
+  DUT TX cases also take their queue out of RSS; a one-channel DUT
+  skips them, as it skips the RX cases.
+
+- The control channel is unauthenticated TCP, and the remote endpoint
+  listens on all addresses while its case runs.
+
+- Both endpoints get only the case number, and the control channel
+  does not check that they run the same case. By default xsk.py
+  copies the DUT's xskxceiver to the remote; it is configurable via
+  XSK_REMOTE_DEPLOY at net.config.
+
+- busy-poll testing happens to be done via -b passed to xsk.py, however
+  i am not sure if CI uses args, we might add a shell wrapper over
+  python script ;) or it could be embedded within the cases list
+  generation.
+
+- Not on hardware yet:
+ * BIDIRECTIONAL, which needs both directions set up in one case; i
+   think it should be removed as we sort of achieve the bi-directional
+   coverage via introduced XSK_HW_{R,T}X, and it currently does not fit
+   our KISS-policy on remote side;
+ * XDP_SHARED_UMEM, whose XDP program picks the socket by the synthetic
+   MAC address of the veth test;
+ * STAT_RX_DROPPED, STAT_RX_FULL, STAT_FILL_EMPTY, XDP_DROP_HALF,
+   XDP_METADATA_COPY_MULTI_BUFF, the XDP_ADJUST_TAIL, TX_QUEUE_CONSUMER,
+   TEARDOWN, HW_SW_MIN_RING_SIZE and HW_SW_MAX_RING_SIZE.
+
+[0]: https://lore.kernel.org/netdev/20261007200311.730443-1-maciej.fijalkowski@intel.com/T/#u
+[1]: https://lore.kernel.org/netdev/20260925161547.1b57b653@kernel.org/
+
+Thanks,
+Maciej
+
+Maciej Fijalkowski (14):
+  selftests: xsk: factor endpoint work out of pthread wrappers
+  selftests: xsk: drop the single-interface loopback mode
+  selftests/bpf: drop the test_progs AF_XDP wrapper
+  selftests: net: add a generic rule for BPF skeletons
+  selftests: xsk: move the AF_XDP test suite to selftests/net
+  selftests: xsk: collect interface capabilities in struct xsk_caps
+  selftests: xsk: split xskxceiver main() into setup, run and cleanup
+  selftests: xsk: run one test case per xskxceiver invocation
+  selftests: xsk: run the RX and TX endpoints in separate processes
+  selftests: xsk: add a hardware mode to xskxceiver
+  selftests: xsk: pass non-test traffic to the stack in hardware mode
+  selftests: xsk: share test case definitions with hardware runner
+  selftests: drv-net: test AF_XDP zero-copy with an SKB peer
+  selftests: xsk: document generic and hardware endpoint runs
+
+ Documentation/networking/af_xdp.rst           |   6 +-
+ MAINTAINERS                                   |   4 +-
+ tools/testing/selftests/bpf/.gitignore        |   1 -
+ tools/testing/selftests/bpf/Makefile          |  29 +-
+ tools/testing/selftests/bpf/network_helpers.c |  48 --
+ tools/testing/selftests/bpf/network_helpers.h |   2 -
+ tools/testing/selftests/bpf/prog_tests/xsk.c  | 170 -----
+ tools/testing/selftests/bpf/xskxceiver.c      | 479 -------------
+ .../testing/selftests/drivers/net/README.rst  |   7 +
+ .../testing/selftests/drivers/net/hw/Makefile |   1 +
+ tools/testing/selftests/drivers/net/hw/config |   1 +
+ tools/testing/selftests/drivers/net/hw/xsk.py | 417 +++++++++++
+ tools/testing/selftests/net/Makefile          |   2 +
+ tools/testing/selftests/net/bpf.mk            |   6 +
+ tools/testing/selftests/net/config            |   1 +
+ tools/testing/selftests/net/lib/.gitignore    |   2 +
+ tools/testing/selftests/net/lib/Makefile      |  36 +-
+ .../testing/selftests/net/lib/xsk/README.rst  | 138 ++++
+ .../prog_tests => net/lib/xsk}/test_xsk.c     | 621 ++++++++++--------
+ .../prog_tests => net/lib/xsk}/test_xsk.h     | 121 ++--
+ .../net/lib/xsk/test_xsk_case_defs.h          |  57 ++
+ .../selftests/{bpf => net/lib/xsk}/xsk.c      |  86 ++-
+ .../selftests/{bpf => net/lib/xsk}/xsk.h      |   6 +
+ .../testing/selftests/net/lib/xsk/xsk_peer.c  | 280 ++++++++
+ .../testing/selftests/net/lib/xsk/xsk_peer.h  |  19 +
+ .../{bpf => net/lib/xsk}/xsk_xdp_common.h     |   0
+ .../lib/xsk/xsk_xdp_progs.bpf.c}              |  39 ++
+ .../selftests/net/lib/xsk/xskxceiver.c        | 654 ++++++++++++++++++
+ .../{bpf => net/lib/xsk}/xskxceiver.h         |   0
+ .../selftests/{bpf => net}/test_xsk.sh        | 186 +++--
+ .../selftests/{bpf => net}/xsk_prereqs.sh     |  64 +-
+ 31 files changed, 2382 insertions(+), 1101 deletions(-)
+ delete mode 100644 tools/testing/selftests/bpf/prog_tests/xsk.c
+ delete mode 100644 tools/testing/selftests/bpf/xskxceiver.c
+ create mode 100755 tools/testing/selftests/drivers/net/hw/xsk.py
+ create mode 100644 tools/testing/selftests/net/lib/xsk/README.rst
+ rename tools/testing/selftests/{bpf/prog_tests => net/lib/xsk}/test_xsk.c (85%)
+ rename tools/testing/selftests/{bpf/prog_tests => net/lib/xsk}/test_xsk.h (67%)
+ create mode 100644 tools/testing/selftests/net/lib/xsk/test_xsk_case_defs.h
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xsk.c (91%)
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xsk.h (95%)
+ create mode 100644 tools/testing/selftests/net/lib/xsk/xsk_peer.c
+ create mode 100644 tools/testing/selftests/net/lib/xsk/xsk_peer.h
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xsk_xdp_common.h (100%)
+ rename tools/testing/selftests/{bpf/progs/xsk_xdp_progs.c => net/lib/xsk/xsk_xdp_progs.bpf.c} (75%)
+ create mode 100644 tools/testing/selftests/net/lib/xsk/xskxceiver.c
+ rename tools/testing/selftests/{bpf => net/lib/xsk}/xskxceiver.h (100%)
+ rename tools/testing/selftests/{bpf => net}/test_xsk.sh (57%)
+ rename tools/testing/selftests/{bpf => net}/xsk_prereqs.sh (53%)
+
+-- 
+2.43.0
