@@ -1,72 +1,56 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A28A3ABD82;
-	Thu,  8 Oct 2026 16:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD473ABD82;
+	Thu,  8 Oct 2026 16:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791478530; cv=none; b=uj/82SB3JRIzAcYTVnT2/U9Nho+oYs7JvNzxY7zs8qjrl2EIKJ+JhGFsh2PIqwYCTZUxWu8soC8lXjKtPtcaxt2dmKuPTvyzxt2IJy+o3jc2yGHarLAj88FkZveN7xIyTuHwyr/Ftmp5/QP6eteEgqNMeEa03D/gwEllVi995DQ=
+	t=1791478550; cv=none; b=Q1FR5Z6j6/AjcgBmFRi80eQtPLy3zUG80QNyLN8JmqzM4R6byZPJOUijlrWy9Jh0cPxAjJ15mjASGHEgsQiEf8nvyXcMf3d58H3MjQgBf9UE2pXS1tXac6Yn4Cvh0CUUmxdsdd0dinctQYZSIlMBpxY6IMASsFxMvGUx14OnPUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791478530; c=relaxed/simple;
-	bh=M+C7oa0qlOXJuKMG7trryJofZicerOzbBwHwVAwaveU=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=O5XUe8B8ouEu1G+JBdb4OaLfyHEjxdNtS2kLHBnZRiMOc+wYxAr9ZSGTB/yRq8NewakQ1Nd1I0jzIlbvwzb1lUlARp3okAYoTKyE3x+yKugaoFoc7VOlMOrQgHyaDXD4KhGYd3SP6ObGwxH2mz6/qAbPyjPlIDAitUHltInySxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ndVOvjF0; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1791478550; c=relaxed/simple;
+	bh=r5pTeXtoGmILx2vCFJoRaJuWw6ziwqGO2Zvw2fGLP6o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ifnobDaS0Ex/HUQfY/lZY0sFqnAjvR0HhShm1SbLSexmGWxuA1STsy28zc6z2deVkFQKYzv1R+4ZACwk20CE58I3vO64UGCV35AB3BK3TCocIlyBixzjxjOjQo6t7UpQnG8sf4T/m7hVQ+QTn9hm64chnj+iaCjnYLUhlXoHwM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuQvn5oq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ndVOvjF0"
-Received: from [100.64.161.192] (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 69E0C20B7166;
-	Thu,  8 Oct 2026 09:54:31 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 69E0C20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1791478471;
-	bh=wQpKVuFoBgYqlY1J3u33QmU+YvSK+kPYfJmYVLlAMbE=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=ndVOvjF0v5TjpIIKUCxIa7aFyX0OMDq+YZ5w3ISFZAd14VRUi/6WhSqfZS6WB8JH9
-	 6zeboYeJJ6Hs+Ws8K54eL33IYMLRT+JW7P8DcUuseXIe7htN07hEPxMwD8ct8DJYVT
-	 yTJTI9wkW7Sa/LsTqC18qAXPT0ajckF/vgw/+A8E=
-Message-ID: <28fe612a-e91b-4825-bb8c-f34c893c2dec@linux.microsoft.com>
-Date: Thu, 8 Oct 2026 09:55:27 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuQvn5oq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A91F1F000FF;
+	Thu,  8 Oct 2026 16:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791478548;
+	bh=sISNpZcPe6lT5r/ToETeX+ofwSBrJe4Ww5pF//kWQH0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=iuQvn5oq9ewiqe7NFLqK8p0ShUtAcXrttWGHZLKvGc7VxFWD7+3PWaelBGzsyLYQA
+	 fHqXgfP//Y5WDMVpR43LZ9mstzfStHI4NywHHljKXgMGFytE1IJQOGQT2I0WVFKqvo
+	 5uiP3GYsPD8Vo/zuXt9jGnQKLsEiwnlryBF2Rojp6vCp6eo7MfX3m9ALwsoq8huvej
+	 EBhASl93JX4rDSEdntrBj/RaYn5YCFEcJKQ3HuhODHwRy80ths0uOSJMPpw9ta4UVb
+	 zODfN3KSqUoKt0rIuAH5g2kOgajNMFldCx+rW1ySD+M4WNqD5+KpZQi7NQM7KW0/gm
+	 6l6xtivvBR6Lg==
+Date: Thu, 8 Oct 2026 09:55:47 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: yongzhao.derek@gmail.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, george.moussalem@outlook.com,
+ hzyitc@outlook.com, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] net: phy: qcom: at803x: Apply IPQ5018 analog
+ settings at probe
+Message-ID: <20261008095547.6715b24e@kernel.org>
+In-Reply-To: <179106246893.434549.12601361985639254046@kernel.org>
+References: <20261002210408.730-1-yongzhao.derek@gmail.com>
+	<179106246893.434549.12601361985639254046@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: mhklinux@outlook.com, easwar.hariharan@linux.microsoft.com,
- kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 0/14] hv: vmbus: make rings and host-visible buffers
- survive buddy fragmentation
-To: Emerson Busson <emersonbusson@gmail.com>
-References: <20261007190752.336426-1-emersonbusson@gmail.com>
-From: Easwar Hariharan <easwar.hariharan@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <20261007190752.336426-1-emersonbusson@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 10/7/2026 12:07, Emerson Busson wrote:
-> This series moves VMBus ring backing to the chunk allocator and keeps the
-> allocation, GPADL ownership, and mapping references together. It preserves
-> the exported four-argument interfaces while allowing the private allocation
-> paths to carry ownership and sharing policy.
-> 
-> A review of the original vzalloc fallback noted that CCA and TDX guests
-> without a paravisor need direct-map page transitions. This revision uses
-> contiguous chunks for buffers that must be host-shared, transitions each
-> page through page_address(), and combines the chunks with vmap(). Ordinary
-> guest-private buffers retain vzalloc-style allocation.
-> 
+On Sat, 03 Oct 2026 21:21:08 +0000 netdev-bot+sashiko@kernel.org wrote:
+> - [Medium] ipq5018_probe() (drivers/net/phy/qcom/at803x.c) calls
+>   reset_control_reset(priv->rst) at line 1135.
 
-Can you provide a link to the v1 of this changeset and this "original vzalloc
-fallback" review? And a changelog and motivation for this series?
-
-<snip>
-
-Thanks,
-Easwar (he/him)
+Please answer the AI feedback / question
