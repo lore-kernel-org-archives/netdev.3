@@ -1,83 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7053AE6E6;
-	Thu,  8 Oct 2026 18:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6DA37207D;
+	Thu,  8 Oct 2026 18:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791482415; cv=none; b=qH+/ZZRK6MvcRJX52M6YYaEXv2sao0qFAO0x76fLBpMHa+OXY3V+ldPJxYi9UU4C17dpV9PZ4JfsV1L8Rm3YqT8UrKCQ+7lgAlkielYRlgJ3y29D4LkIB+tz14uiE/uFTXrJiMh7je1O6+FwBEYDoNkqTlCHu1OWjBbWNyzN8t4=
+	t=1791482593; cv=none; b=Sk7ZJ43EOj//Ru9oaBhwUjWAj+OwwmjB7NiXnT/hEoTGZMNk+aZeHwoD2hU8z0hSrviP6GY0pWYKszPyT96ie1Yj05PGXUUarLFjttr4pUtUeP8HHRxG7gyEUkIET1ABpf6/kpH9zNxk/YSns78zW/HLso2m2rwBwXC3a4Vyce8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791482415; c=relaxed/simple;
-	bh=2CjK0K2b986h6JRaq/CyXMkZyrPEGgtobGFzaN11A38=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rfyjObtsASwtocE08k4qwNWMCCCfyBDnDzo/Yw3oZLIbfkjSn2EVUdIiIyuE6BFVGcYM6YwJQQQPKIX+YdVlm/lS7/OnI4a4fR73gbVb53+Hj9mCS8aJ4fpBkg97BtED1Ms0w0hV6sY3D3suh2DHEQK/5xhsoP8xQVSD0vRR8wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OsNajnK2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791482593; c=relaxed/simple;
+	bh=Zzl70P+RGux/UwfMrnelaaTuxjCeRO/kek2Z5ohISAc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TiXrIs998b+/nKn/XWBW8yMEUmn4igCI76Pfvk6O65ifbhrHSsxc6Tpab+4r7r6WhfUnPQE+5Px6CZGQsHC1Zw4WVvK4Y+foEJInnD0TCrVzOtlTcMjc5a0VNroLKjbHcOsdBp5p1i9PsRquGal+aQOexwo5vzCfdQM9xVYOfSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKdoaXPr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OsNajnK2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8E11F000FF;
-	Thu,  8 Oct 2026 18:00:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKdoaXPr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C091F000FF;
+	Thu,  8 Oct 2026 18:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791482413;
-	bh=nU1749sScYR3U2UNU/EtGIVwIs0uZeZqOSt1JX3BzNI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=OsNajnK2WzSYdh33X1cP9pQT/YNF0GCFpdzckEQCqf0VMAZLjAhJXVwmfq6zxX2z5
-	 foFpmo/SkRnQDIeF29e5lOZ513PoYFD1mvTy3Zwho5nIzpqcEJuUhtcTgj7S9h9zDO
-	 DXF6P2szDyI5kPwxhH1eUWNeuyRHW1iO80vQw15HZdIKPnAn/KvZHQDs8wPFXJN9zw
-	 EtFeYUA2ZHOxdYybrAFoiGkpQrVjaZY0S3wLsy6obDSLN25XaNF2EuIo3YNOQYmutU
-	 oRmtunma738gBCB1DU0DT4t6V124xzQylBhRXBwLzOihJnn80/g+uUddLNpYD4PT71
-	 AvWdLPZSLoQzQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B447B380CEC8;
-	Thu,  8 Oct 2026 18:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1791482592;
+	bh=Zzl70P+RGux/UwfMrnelaaTuxjCeRO/kek2Z5ohISAc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XKdoaXPrfG2co/uUU69wo21lDZVEJhQZCAoKg53vKPqSyV6sWhKCJQi4iAdvcKcLQ
+	 7wSg2g7ZbWoa2ZQk/NH7P2P7dwt0SYKTHVWzUmnaI3Pp9bDb4bvTwmeg7r0azaPn7I
+	 KVVT1hZwZC7HTC0E32JkH4uFXE8Q2F7P3cw8v1A88zuTyGjo1zTDEw7YYMMECmSUSd
+	 LNvpo/TEmBCyXitmF7e53lVJUp+LMeXQ5Bs2ra0uv7ShBSvl04wT1dDNvGJdwqvgso
+	 0hrAj96s10Quq62osYXJIuBE6Ceac2gPU+bhCGNEfMz+O6z8//0UtNPCLSFPBfV1mo
+	 mKWkPj5CH7XSw==
+Date: Thu, 8 Oct 2026 11:03:11 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?w5ZtZXI=?= Mete Kaya <omermetekaya0@gmail.com>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org, oneukum@suse.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] usbnet: fix EVENT_RX_PAUSED race in
+ usbnet_skb_return()
+Message-ID: <20261008110311.6c93f25d@kernel.org>
+In-Reply-To: <6cf2ac60-a9e6-4a2d-a7a5-7535441485a3@gmail.com>
+References: <20261007220311.113827-1-omermetekaya0@gmail.com>
+	<179141094859.2527009.4935200551311639225@kernel.org>
+	<20261008084012.53e34d5f@kernel.org>
+	<6cf2ac60-a9e6-4a2d-a7a5-7535441485a3@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/4] vxlan: generalize and refine drop reasons
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179148241226.372666.5348049606508908025.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 18:00:12 +0000
-References: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
-In-Reply-To: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
-To: Anton Danilov <littlesmilingcloud@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Thu, 8 Oct 2026 18:47:07 +0300 =C3=96mer Mete Kaya wrote:
+> On 10/8/26 18:40, Jakub Kicinski wrote:
+> > Hi, please answer these questions, and try to include the answers in
+> > the commit msg of future submissions. =20
+>=20
+> Hi, I couldnt add reported-by tag when it comes from sashiko,
+> should I include the answers under the "---" for future submissions?
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+In the main body is better, this is very useful info for risk / benefit
+analysis for backporters.
 
-On Mon,  5 Oct 2026 23:14:13 +0300 you wrote:
-> This series makes two vxlan drop reasons generic, so that other tunnels
-> can report the same conditions with them, and makes the reasons vxlan
-> reports for two other failures more precise.
-> 
-> Patch 1 renames VXLAN_INVALID_HDR and VXLAN_VNI_NOT_FOUND to
-> TUNNEL_INVALID_HDR and TUNNEL_NOT_FOUND. Their values stay the same;
-> the names vxlan drops are reported with change.
-> 
-> [...]
+Single sentence like this seems suitable here:
 
-Here is the summary with links:
-  - [net-next,1/4] vxlan: rename the drop reasons for use by other tunnels
-    https://git.kernel.org/netdev/net-next/c/7629d6db839f
-  - [net-next,2/4] ip_tunnel: make __iptunnel_pull_header() return a drop reason
-    https://git.kernel.org/netdev/net-next/c/6c0509aa8900
-  - [net-next,3/4] vxlan: report the drop reason of __iptunnel_pull_header()
-    https://git.kernel.org/netdev/net-next/c/0518c33e1d7e
-  - [net-next,4/4] vxlan: report a circular route as SKB_DROP_REASON_RECURSION_LIMIT
-    https://git.kernel.org/netdev/net-next/c/d476bb7c0efd
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Discovered by Sashiko, not triggered, not tested on real HW.
