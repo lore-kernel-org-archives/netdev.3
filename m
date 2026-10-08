@@ -1,171 +1,176 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815AA44A3E7
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 11:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791459334; cv=pass; b=b/aDDU3w/3I0HGWvGq4BHSJAnpbGaucYPXn5fkx/KrKUp+S3WL8CGyMM60I9XAZkmuFnqVg0WDmdSu9ukIEeN0f8L70iRs6e6H3ciUR1eTwL/TcPlwgNg5qtjCj53mpuhHTrYMJJtIquzKhvO3fDfP0h8/MGOOhLyX1LBYJ6sgg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791459334; c=relaxed/simple;
-	bh=qwS80d1Sq3GZmTtrcuSn4QH3WH9VVgg1Y27sZBwjsZ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bN5fAnv2NIU9by3lRR3nyqqkAZGB+cUAN3tTyXnqalTweRZNdol3kuvccUNTp+oJn5zq7NUPzf93knEEy9t6X0gODPf2zuzajD6GkAGa0X5AehuFCX9Ih23iFm+0CGZVwT1Uj0G4VQKPfcUo2MRyC3xTvnRIaVdNHMROvrQYq6E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz; spf=pass smtp.mailfrom=sairon.cz; dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b=gftZ58rR; arc=pass smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0658B3ACEF9
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 11:38:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791459526; cv=none; b=dKAVnBzT5Drij//tTt+vJ6+hAs4MgW8YQ3V6sifsntqhVjN/GYjKXETaEr+TEoGIwK8VHFOxKj6z6+hZXeIcGb1Ybbge/FnmFHums/oGZPHi3NP46fTDhy5OqeYqwhfn5kuds2/r3fj4XC2cDJ9iRAWunEP+HxGU6LqwKOuvRnw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791459526; c=relaxed/simple;
+	bh=e2R2F+bxPfa9rNjsfHkceAkJMBHp6bogcOxLhvPSdsY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EWoDBPcPLJvEVzxyso+1F156EnQjJm0ttGeTc3t8P0d3Y+I9TiQuVrNIeSLt0+TC7eJ79Cb4EmrqQ0ScTclpv17H9kIac0cENL1OSZX4UROLz93oPpmCsqsP9SNe1XuzWY8LGc8+s0U5JhGALa11Oy/DjQS9zYccjgmXn+wnrI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=pqMS52wR; arc=none smtp.client-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="gftZ58rR"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2df8c28a0b1so17494955ad.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 04:35:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791459333; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eQ1M9n9ZObb4/ufUvDDtJqXKmnka5i6xFS3nvcbpMrjs2llThf7OhsWXtOPrEelHF1
-         Y/sx9jhjdrCyCUiG3cu9Ea7qyRZ07o5j3lSBCWO2s7eBFiFy8aJfyCYo8bUwIyZDk6o4
-         WwHq8iy6agn6mWNNmAWXYx6YL4go0bDYGj/F2G8FYh+D3SRlagk9yDKWVXEiY/TuQzDP
-         g6Cd55UZ2IORPyq8k03wdq9v0I0SPI7lj+TXAEFsvzuEKDABzwBwEQqHzjTRqYL4zzNY
-         ryfHs3GhCZpipNn0/tBuKi7m8lB/EnKxOE2FAFRNZHjBk7LXWsYs3Ck3F6U8Tg2k5kch
-         7CcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=WJ0j6cOAzgWtBhqKOpMaIaa9HpzVeoPjmiPtw080gpM=;
-        fh=qiDQYUlgz59nkG7bA/bYtNJ6DbYJBQgMM+3iJLk8VuU=;
-        b=T++vaoqE6L80TS+YrJyjErKA58JdiVULJ+ZG3nnrIPjaWdFQHLMAIMYgSlPVlmgEBP
-         FmvDSqeIQP0letR9A51MIBD8Wlda7+hPVelzIvnM+55S4gq7Rh2I5WZfxRdep0tmwZG1
-         pVo/AYTH+V0Ct2Ro2P0Se+Qh6fbr2OQtfi4fOGkc22E2NiIgxosq7pRakspnjj1jeA2e
-         uM29GuyjrXOzswNWO/t/66cf5lEv6V0utNR7jOi1C3XlpORiExvX2Wd7nKkqo86s0LZu
-         TFfnnG8Iu2qOmmDuae4spU+oTIR5M4jd/oTjXBq4u7Es4y9nQ1fggTnJ3krxAOhTFwjI
-         cVmA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sairon.cz; s=google; t=1791459333; x=1792064133; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WJ0j6cOAzgWtBhqKOpMaIaa9HpzVeoPjmiPtw080gpM=;
-        b=gftZ58rRoGgxYAhe/FtQZh1dcTPnEdH+TN2L0gEXc7m23OeyFfJpNQXJmFdIZe+KRi
-         zJ23HbEsI7DOK0Q/o33dU/IIhhPwiRle9yp7tj7o3Vhf4twFcVq8Ng1kahSWPotI3jJQ
-         Yv/wvg0wAk1tk7mPaUZiJ5UPBA0twGgWEPfzkYM9fFBa3L42nRxARrbeCyrt6KAn1O65
-         u9gO5kqc78DrJJtGqAxnXOi6MoHKhsNdibo4u4Vc9DDMr/WpweRN8CO2s8jvSMIAbWXy
-         3lEi5zbQGwu76BgGqFg6YmoWznorm0qdJLMADp8mBnTLmcnhvo1BkodEKz1hbq9RIYGt
-         td4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791459333; x=1792064133;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=WJ0j6cOAzgWtBhqKOpMaIaa9HpzVeoPjmiPtw080gpM=;
-        b=xSzzAicseX185nyVabrTUPvdXumqqkv+jKsT1VEG/UsNbX0dEJE913gy2yfa6Ka+qe
-         OtByBPlgVX4cqTweSY/O3MY10knn/ng2Q/oYUFf8ZDfwCDPgqRlDVuUHCqeFMgmVqBZU
-         oY0H0O6UQpZMSD5qfeJvOzAVzrkQJWQe5qANisPkACsF3N9odbt9S0DIL6SFzCALbrig
-         0EapDKmReT/xipWrS3xsqU8RSEffxDJqfvOXGSm8CT/EQ6hptJCekw0RkI6JCtF9Mjp6
-         ReHunQbOPzH1xg8fCwA/LzPxSuHYIPxRsx9+0vvh0W4amCnBuStdOqT7Rj9qMHClQZgS
-         hANg==
-X-Forwarded-Encrypted: i=1; AKwUvBzpmEzQaTL3eOaOoS0XlWHCjEp4XdULXAbvhyt+KVB9ANXBYwWbprczLfV1MNDTHbzv2NGfjEU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKIh3WJdnVXVzbTK7G3S6l7qgmuAHCgf35I512fgL5LnmXs7U/J
-	0sPjaBNF19V5CVHzrYvpmymTfGGMri9RReUYCnP++OxOZdoddCSyzoNHKh6jEtSz1w0QWwbnS+x
-	YsA3fMIhCZL5cLEvH7a5K2hVob/BhDlTeapBFxUHRHg==
-X-Gm-Gg: AYBFou2cXsMB3VTaRb42KOeEnGPSXJIa3fWbA2uv+fd50JEgn56PifSN547hrsFoO1s
-	JbUq+W7le6BG3asHxkcG7ZvtmJ3twhdCS6jVRKS+DgTMNMacCvR1J0gFvjne3pfNHS6FhbhKzKF
-	dKRZzFRJ2+bbLBhNrt+Rcufuv2Y64RhZV69DG0cJa0gV98AP9PcRq7kSsqGOLsyd3XEViFqxvKD
-	Yb99e5NdXp0cAP2HmMN+s9vzHVUyKWzLyp8kUgUa+Magwx9VS5tALZ+5+seVGhzWoWLFDGjEJbB
-	r2wqkOQJ0JjgnXWZSsWYzoCUIMq9bOFLdGx2n1p/rNULVSWhr1+LzDq/QwmqOBr750DffViymrr
-	5vnVAOtPpzDP9zcuOW84hUQD8SJ/4fID4O8hbAV9lL7qtBDzRjnc+fE9k3cxbNlrXO9mM7inTly
-	A=
-X-Received: by 2002:a17:902:f78f:b0:2e8:b51:a94a with SMTP id
- d9443c01a7336-2e80b51ab89mr14161265ad.60.1791459332533; Thu, 08 Oct 2026
- 04:35:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="pqMS52wR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-13eddc7e57; t=1791459524;
+ bh=w/4NCG7kO+1Lg1lX0GRRnrrR/i8EniXv76w5YxnCieU=;
+ b=pqMS52wR+rPTXGE0MyHqdY4xlNRMAEMvBe6kBC63YM4CEWqa+YncLtDPHETygx61i2B4D61Nh
+ Z15XUG5V+qDXjeVstfOhPejktUn9a+XNUsO8wWpnVS/MD3H8N861Ylb7m0DNzCJfY+X+34PboNq
+ WR+gu9LovlOTlQ2kbaQcEv0=
+X-Forward-Email-ID: 6ac780c243adf4c8339af8de
+X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 2.18.3
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <360cc518-22f3-4afd-b62b-21c1d7b2ba87@ovn.org>
+Date: Thu, 8 Oct 2026 13:38:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
- <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org> <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
- <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com> <4c98eff5-c8c7-43ee-b59a-adb833978816@kernel.org>
-In-Reply-To: <4c98eff5-c8c7-43ee-b59a-adb833978816@kernel.org>
-From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
-Date: Thu, 8 Oct 2026 13:35:05 +0200
-X-Gm-Features: AclHuK_tvli5e8RZKmXkQP-Qa8CuMz9cFdX9rYwTM6ujlWxZGIxES2B32YmtH_I
-Message-ID: <CAPa5EdDk+HuVP0H1+iqOcHDHZnfdika5WOQcgSaMtfRFWzqZ+Q@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
- VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: openvswitch: validate transport header
+ presence in set_ipv6_addr
+To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
+Cc: dev@openvswitch.org, horms@kernel.org, pabeni@redhat.com,
+ kuba@kernel.org, edumazet@kernel.org, davem@davemloft.net,
+ i.maximets@ovn.org, echaudro@redhat.com, aconole@redhat.com,
+ syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
+References: <20261008104135.4722-1-fmancera@suse.de>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20261008104135.4722-1-fmancera@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Eric,
+On 10/8/26 12:41 PM, Fernando Fernandez Mancera wrote:
+> When executing IPv6 address rewrite actions on IPv6 fragments,
+> set_ipv6_addr() calls update_ipv6_checksum(). If parse_ipv6hdr()
+> processes a non-first IPv6 fragment, it sets key->ip.proto to
+> NEXTHDR_FRAGMENT and returns early without calling
+> skb_set_transport_header().
+> 
+> update_ipv6_checksum() unconditionally evaluates skb_transport_offset()
+> on entry before checking l4_proto.  Because skb->transport_header is
+> uninitialized, this triggers a warning under CONFIG_DEBUG_NET=y although
+> it is completely harmless.
+> 
+> Fix this by returning early in update_ipv6_checksum() if l4_proto is
+> NEXTHDR_FRAGMENT. This avoids reading the uninitialized transport offset
+> for fragments while preserving the debug warning for any other protocol
+> where the transport header is unexpectedly missing.
+> 
+> See the syzbot trace:
+> 
+> !skb_transport_header_was_set(skb)
+> WARNING: ./include/linux/skbuff.h:3075 at skb_transport_header include/linux/skbuff.h:3075 [inline], CPU#1: syz-executor463/5635
+> WARNING: ./include/linux/skbuff.h:3075 at skb_transport_offset include/linux/skbuff.h:3250 [inline], CPU#1: syz-executor463/5635
+> WARNING: ./include/linux/skbuff.h:3075 at update_ipv6_checksum net/openvswitch/actions.c:361 [inline], CPU#1: syz-executor463/5635
+> WARNING: ./include/linux/skbuff.h:3075 at set_ipv6_addr+0x462/0x660 net/openvswitch/actions.c:399, CPU#1: syz-executor463/5635
+> [...]
+> RIP: 0010:skb_transport_header include/linux/skbuff.h:3075 [inline]
+> RIP: 0010:skb_transport_offset include/linux/skbuff.h:3250 [inline]
+> RIP: 0010:update_ipv6_checksum net/openvswitch/actions.c:361 [inline]
+> RIP: 0010:set_ipv6_addr+0x462/0x660 net/openvswitch/actions.c:399
+> [...]
+> Call Trace:
+>  <TASK>
+>  set_ipv6 net/openvswitch/actions.c:531 [inline]
+>  do_execute_actions+0x557e/0x8600 net/openvswitch/actions.c:1366
+>  ovs_execute_actions+0xde/0x520 net/openvswitch/actions.c:1592
+>  ovs_packet_cmd_execute+0xb4f/0xf10 net/openvswitch/datapath.c:705
+>  genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
+>  genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
+>  netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2572
+>  genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+>  netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1361
+>  netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1916
+>  sock_sendmsg_nosec+0x14e/0x190 net/socket.c:800
+> 
+> Reported-by: syzbot+4cc63fcfb3845e149969@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=4cc63fcfb3845e149969
+> Fixes: 3fdbd1ce11e5 ("openvswitch: add ipv6 'set' action")
+> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> ---
+> v3: drop the redundant comment introduced in v2
+> ---
+>  net/openvswitch/actions.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+> index dc5ff859f114..27152bca8a8c 100644
+> --- a/net/openvswitch/actions.c
+> +++ b/net/openvswitch/actions.c
+> @@ -358,7 +358,12 @@ static void set_ip_addr(struct sk_buff *skb, struct iphdr *nh,
+>  static void update_ipv6_checksum(struct sk_buff *skb, u8 l4_proto,
+>  				 __be32 addr[4], const __be32 new_addr[4])
+>  {
+> -	int transport_len = skb->len - skb_transport_offset(skb);
+> +	int transport_len;
+> +
+> +	if (l4_proto == NEXTHDR_FRAGMENT)
+> +		return;
+> +
+> +	transport_len = skb->len - skb_transport_offset(skb);
+>  
+>  	if (l4_proto == NEXTHDR_TCP) {
+>  		if (likely(transport_len >= sizeof(struct tcphdr)))
 
-On Wed, 7 Oct 2026 at 00:00, Eric Dumazet <edumazet@kernel.org> wrote:
-> Note to testers:
->
-> My LLM agreed with the change in vlan_dev_hard_header() (above), but said
-> that no change was needed in vlan_dev_hard_start_xmit() (below)
->
+Thanks!
 
-I'll need the patch applied to 6.18.y for testing, as I can't test it
-personally and I want to provide testers with the same kernel/system
-version as before just with minimal changes. So do I understand
-correctly that the patch below is what you want to get tested, no
-changes in vlan_dev_hard_start_xmit()?
-
-Regards,
-Jan
-
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index 560521cf596e..67648152add8 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -49,42 +49,14 @@ static int vlan_dev_hard_header(struct sk_buff
-*skb, struct net_device *dev,
-                                unsigned int len)
- {
-        struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
--       struct vlan_hdr *vhdr;
--       unsigned int vhdrlen = 0;
--       u16 vlan_tci = 0;
--       int rc;
--
--       if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
--               vhdr = skb_push(skb, VLAN_HLEN);
--
--               vlan_tci = vlan->vlan_id;
--               vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
--               vhdr->h_vlan_TCI = htons(vlan_tci);
--
--               /*
--                *  Set the protocol type. For a packet of type ETH_P_802_3/2 we
--                *  put the length in here instead.
--                */
--               if (type != ETH_P_802_3 && type != ETH_P_802_2)
--                       vhdr->h_vlan_encapsulated_proto = htons(type);
--               else
--                       vhdr->h_vlan_encapsulated_proto = htons(len);
--
--               skb->protocol = vlan->vlan_proto;
--               type = ntohs(vlan->vlan_proto);
--               vhdrlen = VLAN_HLEN;
--       }
-+       struct net_device *real_dev = vlan->real_dev;
-
-        /* Before delegating work to the lower layer, enter our MAC-address */
-        if (saddr == NULL)
-                saddr = dev->dev_addr;
-
-        /* Now make the underlying real hard header */
--       dev = vlan->real_dev;
--       rc = dev_hard_header(skb, dev, type, daddr, saddr, len + vhdrlen);
--       if (rc > 0)
--               rc += vhdrlen;
--       return rc;
-+       return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
- }
-
- static inline netdev_tx_t vlan_netpoll_send_skb(struct vlan_dev_priv
-*vlan, struct sk_buff *skb)
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
