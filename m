@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405B0421247
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EB2419304
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791496642; cv=none; b=rHwTExWhZkotvsO7uVZGzmj0Iv6/ZFc5stm72hr6b60V0M1LF9sMGW2EG1o7IiLxw2AMic4vMVEciB+6AY+trZjcY3aZjJmItWZvpWEje0rM+BgfG/4OQl6jLMJD9NxkUKGn0Sb7faXFuR3gUSbMykH07dKxp6tJ41Hw9Pqnfpg=
+	t=1791496642; cv=none; b=FfkQtQUULBBnT5qeBYteXEGJsD5mSPTKfMiYiO+01A3YZRwlfesovYmivQWV+SE2DXGmSU3ZHWf75Q9R0lMpfJM20+dneFA1UmlVcErJ9s3kjo3vC4p6l1ebFVQ2JJT1Ee+vBXn9E6pCkccBnNLkOfDiggCVvwFhUwk2gF0/qyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791496642; c=relaxed/simple;
-	bh=axgVRcvtyGKCPjvVZIlbQ/NJDnXGjWuWoRKZlMU/PiQ=;
+	bh=7+9wfRtDak+xZW+K1hZGTkZE1Hg4uzA9L6EeVYX/HlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkVSLHt0xSiXmrrIavdymRpM96zL/aqK6MERY2084ONdceQIgzBPzjph42+s3jENvtmUjjTNAiG8MrMbKyI6PbuJYy1GoayiRFHiwo7OzN4iurRPj6kxtx9PDAnPkOroix74SVWsbdTkY13+1WRiS1/HkiiQHal6AEVwc5w1vZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SO0yuhG+; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=ORyG45epuhNYFYQqKQKWYTVC9SpyZxFwgYUppsCwm+CKkmalWx/7piseX6ISfc38EcObLF93imiBdf2yqHQDqJPHhFe+olBpxw1d64xqUOIrwUT8N7YQ/golLSJ+OKt5M7h44X/OzBnuUsvtmdfH8h4gPYGNyBGXs+wYDowl31k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fI/CKlWE; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SO0yuhG+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fI/CKlWE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791496641; x=1823032641;
+  t=1791496640; x=1823032640;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=axgVRcvtyGKCPjvVZIlbQ/NJDnXGjWuWoRKZlMU/PiQ=;
-  b=SO0yuhG+12gG5pqC049eOr2n70RqnqKVUwFr7w2QdjU1yaEA8yh+k+Bt
-   pIytZ4aJ7eVopdUhFOWp02cTceKD0dirupxutExv1WWmH9U7c8x9nfMhf
-   I2fSEw7j0k84FT1tF3X8/QNqX+xFnc623qp/yFT3b7ZlXgmQ2V/q2rl5K
-   pFQoOTMeGuV6bR/TAvjFUQ23Jzpl1JAkyf/zuyxGhEOc9ZigYavfcT/Qd
-   r5dNJa/kSaCeRZbHVU91K2TaZf4wlO2hsR0sm8Bxcv5YhTKBXOXffJ9ff
-   v/tass9BaKSNe+EaGMCfVKVRITyWJ/eyWP/TV6nws4j+/+xcJKUbndGNs
+  bh=7+9wfRtDak+xZW+K1hZGTkZE1Hg4uzA9L6EeVYX/HlQ=;
+  b=fI/CKlWEDHRdx0eiQgthNlEGXE3gqvsfwTN7+nI7715pVjs49DAIh5+B
+   XZeLwV0vBTArtKD0nF6LkGgRkHeh5kb+pgVI3ZtT+TQygkokZ+Xbpz8cE
+   lkg4W2fCv9x67i4HKbTbH4uuk0RObsG/3WEAJTog5ljiXHbVv7VlTTH9Q
+   DMHPl+2OyYH9xE8TbWrSfE3F0Lai/rWKIJqDOkfkIXKObwvlPQoMq2jQf
+   9hh15yA7kyf6Om2RdCOIDHnQd8yW3sIeH6ds/7WklVdtVtCtZScwQC3Gp
+   ZuDwOuQ+xartTosNghowux0HXHOrUlMqZcmsDeHVNBo//xaKLuEarlyPr
    A==;
-X-CSE-ConnectionGUID: 4kd5bnzOSkeY0pRQY7qk6A==
-X-CSE-MsgGUID: 7hrTSK8nQaiutfdDnezNTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="294634"
+X-CSE-ConnectionGUID: J6mzYaK8Tdi4zyAlk8/EsQ==
+X-CSE-MsgGUID: qvefD/13TG6Bf7vacxeO+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="294628"
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="294634"
+   d="scan'208";a="294628"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
   by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 14:57:17 -0700
-X-CSE-ConnectionGUID: eVMuEUT7Tl+UNxEmVNfBRQ==
-X-CSE-MsgGUID: 9z6s4m0nQrmRHF4q5BgrZQ==
+X-CSE-ConnectionGUID: 0woJ8DH5S12TbNN0oUD1Rg==
+X-CSE-MsgGUID: mQOZ5+A3SIaQnU1L4d1qUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="150404"
+   d="scan'208";a="150400"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa003.jf.intel.com with ESMTP; 08 Oct 2026 14:57:16 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -61,9 +61,9 @@ Cc: Jacob Keller <jacob.e.keller@intel.com>,
 	richardcochran@gmail.com,
 	horms@kernel.org,
 	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net v2 03/15] ice: fix PHY port restart serialization
-Date: Thu,  8 Oct 2026 14:56:00 -0700
-Message-ID: <20261008215614.1987250-4-anthony.l.nguyen@intel.com>
+Subject: [PATCH net v2 02/15] ice: use reference counting and SRCU for PTP port access
+Date: Thu,  8 Oct 2026 14:55:59 -0700
+Message-ID: <20261008215614.1987250-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20261008215614.1987250-1-anthony.l.nguyen@intel.com>
 References: <20261008215614.1987250-1-anthony.l.nguyen@intel.com>
@@ -77,323 +77,402 @@ Content-Transfer-Encoding: 8bit
 
 From: Jacob Keller <jacob.e.keller@intel.com>
 
-The ice_port_phy_restart() function is responsible for restarting a PHY
-port, primarily after a link transition. PHY ports must also all be
-restarted after a reset, and the E822 devices also restart the PHY after
-the .settime64 operation.
+The ice adapter structure maintains a list of ports associated with the
+adapter. This is used for supporting PTP, where the clock owner must handle
+many operations that require access to the PTP port structures of the
+associated PFs.
 
-If a PHY restart occurs concurrently with a link transition, it is possible
-that the link state read could be re-ordered such that the link transition
-would start the PHY but a concurrent restart (such as from .settime64)
-could see the old link state and decide it must stop the PHY.
+This is implemented using a linked list and a mutex. This sort of works,
+but a few places within the code do not acquire the mutex when iterating
+the list. This includes ice_ptp_flush_all_tx_tracker(),
+ice_ptp_restart_all_phy(), and ice_ptp_prepare_rebuild_sec().
 
-This occurs because the restart procedure depends on the link state value
-but setting that value is not serialized with the per-port ps_lock. A
-following fix for E825 is going to modify the .setttime64 to also correctly
-restart the PHY timers, opening the E825 device to a race between
-.settime64 and a concurrent link change.
+Fixing this is tricky, especially since it is not clear if we can simply
+acquire the lock around the complete iterations.
 
-To avoid this, we need to ensure that the port link_up field is set within
-the same critical section as the restart procedure. This way we ensure that
-the end result is the PHY programmed to the correct state.
+The pattern of use for the port list is read-mostly with modifications only
+happening during PF initialization when elements are inserted. This
+typically only happens during early boot, though a PF could in principle be
+removed or loaded at arbitrary times via bind and unbind operations.
 
-Additionally note that the PHY restart procedure already cannot run
-concurrently across two ports. The procedure requires executing timer
-commands which in turn require the PTP hardware semaphore.
+The use of a mutex does mean the driver can sleep while holding it, but it
+still creates complicates with lock ordering and prevents iterating the
+list in any code path that *can't* sleep.
 
-Thus, to simplify the locking behavior, convert the per-port ps_lock to a
-single mutex in the ice_adapter. Acquire this in ice_ptp_restart_all_phy(),
-and hold it while calling ice_ptp_port_phy_stop() and
-ice_ptp_port_phy_restart().
+Instead, use SRCU primitives for the port linked list, along with a
+reference count on the port. The kref reference counter ensures that a PF
+will have a valid lifetime and not be removed until the reference is
+released. Note that this change focuses solely on the port list and does
+not make an effort to resolve access to ctrl_pf, which is currently being
+investigated by another developer.
 
-The ice_ptp_link_change() function now acquires the port lock for the
-entire change. This ensures that the link state is set under lock. Note the
-function does also acquire the dplls.lock for E825 devices. This ordering
-is safe because the other callers of dplls.lock do not acquire the
-ps_lock.
+Use of sleepable RCU is required because we often iterate the PTP port list
+and perform operations that might sleep. Attempts at implementing regular
+RCU have thus far not proven to be acceptable.
 
-The switch to a single lock for the adapter instead of one per port is
-easier to reason about. It also could be a first step in a plan to replace
-the PTP hardware semaphore completely, which is under investigation for the
-future.
+The remove path first removes the port from the list, and we use
+kref_get_unless_zero to ensure that such ports are skipped when iterating
+the list. This ensures that once a port starts removing we will drop
+references and no longer be able to acquire new ones. This avoids loop
+iterations chaining together to indefinitely block removal.
 
-This fixes one of the issues reported by Sashiko during a previous review
-of this series, linked here as the Closes tag.
+The ice_ptp_release_port_srcu() function is used as the release function for
+the kref_put() call. This uses wake_up_var() to wake the removing thread.
+The waiting thread will block until the final reference has been removed,
+then it will use synchronize_srcu() to ensure any outstanding SRCU critical
+sections have had the necessary grace period.
 
-Closes: https://lore.kernel.org/netdev/20260916011228.1632848-1-kuba@kernel.org/
-Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
+This flow ensures that accesses to ports via the adapter port list will
+remain valid until both the SRCU critical sections have ended and all the
+references to the ports have been dropped. Strictly speaking, SRCU alone
+might be sufficient for existing code paths, but the reference count allows
+the option for passing a pointer to the port on to other functions if
+necessary in the future.
+
+Fixes: e800654e85b5 ("ice: Use ice_adapter for PTP shared data instead of auxdev")
+Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_adapter.c |  3 +
- drivers/net/ethernet/intel/ice/ice_adapter.h |  4 ++
- drivers/net/ethernet/intel/ice/ice_ptp.c     | 58 ++++++++++----------
- drivers/net/ethernet/intel/ice/ice_ptp.h     |  2 -
- 4 files changed, 36 insertions(+), 31 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_adapter.c |  17 ++-
+ drivers/net/ethernet/intel/ice/ice_adapter.h |  16 ++-
+ drivers/net/ethernet/intel/ice/ice_ptp.c     | 121 ++++++++++++++-----
+ drivers/net/ethernet/intel/ice/ice_ptp.h     |   4 +
+ 4 files changed, 116 insertions(+), 42 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index 536923b6ae97..572862fcd247 100644
+index 2dc3629d6d0f..536923b6ae97 100644
 --- a/drivers/net/ethernet/intel/ice/ice_adapter.c
 +++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -77,6 +77,8 @@ static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
- 	spin_lock_init(&adapter->ports.lock);
- 	INIT_LIST_HEAD(&adapter->ports.list);
+@@ -6,6 +6,7 @@
+ #include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/srcu.h>
+ #include <linux/xarray.h>
+ #include "ice_adapter.h"
+ #include "ice.h"
+@@ -54,11 +55,18 @@ static unsigned long ice_adapter_xa_index(struct pci_dev *pdev)
+ static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
+ {
+ 	struct ice_adapter *adapter;
++	int err;
  
-+	mutex_init(&adapter->ps_lock);
+ 	adapter = kzalloc_obj(*adapter);
+ 	if (!adapter)
+ 		return NULL;
+ 
++	err = init_srcu_struct(&adapter->ports.srcu);
++	if (err) {
++		kfree(adapter);
++		return NULL;
++	}
 +
+ 	adapter->index = ice_adapter_index(pdev);
+ 	spin_lock_init(&adapter->ptp_gltsyn_time_lock);
+ 	spin_lock_init(&adapter->txq_ctx_lock);
+@@ -66,18 +74,19 @@ static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
+ 		mutex_init(&adapter->cpi_phy_lock[i]);
+ 	refcount_set(&adapter->refcount, 1);
+ 
+-	mutex_init(&adapter->ports.lock);
+-	INIT_LIST_HEAD(&adapter->ports.ports);
++	spin_lock_init(&adapter->ports.lock);
++	INIT_LIST_HEAD(&adapter->ports.list);
+ 
  	return adapter;
  }
  
-@@ -87,6 +89,7 @@ static void ice_adapter_free(struct ice_adapter *adapter)
+ static void ice_adapter_free(struct ice_adapter *adapter)
+ {
+-	WARN_ON(!list_empty(&adapter->ports.ports));
++	WARN_ON(!list_empty(&adapter->ports.list));
+ 	for (int i = 0; i < ARRAY_SIZE(adapter->cpi_phy_lock); i++)
  		mutex_destroy(&adapter->cpi_phy_lock[i]);
- 
- 	cleanup_srcu_struct(&adapter->ports.srcu);
-+	mutex_destroy(&adapter->ps_lock);
+-	mutex_destroy(&adapter->ports.lock);
++
++	cleanup_srcu_struct(&adapter->ports.srcu);
  
  	kfree(adapter);
  }
 diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
-index 0b01c7f5cf0d..5f39166795b6 100644
+index 4f695f32da3d..0b01c7f5cf0d 100644
 --- a/drivers/net/ethernet/intel/ice/ice_adapter.h
 +++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
-@@ -40,6 +40,7 @@ struct ice_port_list {
-  * @txq_ctx_lock: Spinlock protecting access to the GLCOMM_QTX_CNTX_CTL register
-  * @cpi_phy_lock: Per-PHY mutex serializing CPI REQ/ACK transactions.
-  *               Index 0 = PHY0, index 1 = PHY1. Used on E825C devices.
-+ * @ps_lock: Mutex to serialize PHY port start/stop across adapter.
-  * @ctrl_pf: Control PF of the adapter
-  * @ports: Ports list
-  * @index: 64-bit index cached for collision detection on 32bit systems
-@@ -53,6 +54,9 @@ struct ice_adapter {
- 	/* Serialize CPI REQ/ACK transactions per PHY (E825C only) */
- 	struct mutex cpi_phy_lock[ICE_E825_MAX_PHYS];
+@@ -17,15 +17,19 @@ struct ice_pf;
+ /**
+  * struct ice_port_list - data used to store the list of adapter ports
+  *
+- * This structure contains data used to maintain a list of adapter ports
++ * This structure contains data used to maintain a list of adapter ports.
++ * Writers modifying the list *must* acquire the lock, and use SRCU safe list
++ * operations. Readers should use srcu_read_lock() on the provided domain.
+  *
+- * @ports: list of ports
+- * @lock: protect access to the ports list
++ * @list: list of ports
++ * @lock: protect write access to the list
++ * @srcu: Sleepable RCU domain for this adapter
+  */
+ struct ice_port_list {
+-	struct list_head ports;
+-	/* To synchronize the ports list operations */
+-	struct mutex lock;
++	struct list_head list;
++	/* To synchronize write operations on the port list */
++	spinlock_t lock;
++	struct srcu_struct srcu;
+ };
  
-+	/* For serializing PHY port start/stop sequences */
-+	struct mutex ps_lock;
-+
- 	struct ice_pf *ctrl_pf;
- 	struct ice_port_list ports;
- 	u64 index;
+ /**
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 94a66e9d8c05..adc5308baefc 100644
+index fe21cee4f9de..94a66e9d8c05 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1191,6 +1191,8 @@ static void ice_ptp_wait_for_offsets(struct kthread_work *work)
- /**
-  * ice_ptp_port_phy_stop - Stop timestamping for a PHY port
-  * @ptp_port: PTP port to stop
-+ *
-+ * Context: must hold the adapter ps_lock.
-  */
- static int
- ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
-@@ -1200,7 +1202,7 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
- 	struct ice_hw *hw = &pf->hw;
- 	int err;
+@@ -1,6 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /* Copyright (C) 2021, Intel Corporation. */
  
--	mutex_lock(&ptp_port->ps_lock);
-+	lockdep_assert_held(&pf->adapter->ps_lock);
- 
- 	switch (hw->mac_type) {
- 	case ICE_MAC_E810:
-@@ -1222,8 +1224,6 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
- 		dev_err(ice_pf_to_dev(pf), "PTP failed to set PHY port %d down, err %d\n",
- 			port, err);
- 
--	mutex_unlock(&ptp_port->ps_lock);
--
- 	return err;
++#include <linux/rculist.h>
++#include <linux/srcu.h>
++#include <linux/wait_bit.h>
+ #include "ice.h"
+ #include "ice_lib.h"
+ #include "ice_trace.h"
+@@ -673,20 +676,33 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+ 	pf->ptp.tx_hwtstamp_good += tstamp_good;
  }
  
-@@ -1234,6 +1234,8 @@ ice_ptp_port_phy_stop(struct ice_ptp_port *ptp_port)
-  * Start the PHY timestamping block, and initiate Vernier timestamping
-  * calibration. If timestamping cannot be calibrated (such as if link is down)
-  * then disable the timestamping block instead.
-+ *
-+ * Context: must hold the adapter ps_lock.
-  */
- static int
- ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
-@@ -1244,11 +1246,11 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
- 	unsigned long flags;
- 	int err;
- 
-+	lockdep_assert_held(&pf->adapter->ps_lock);
++static void ice_ptp_release_port_srcu(struct kref *ref)
++{
++	wake_up_var(ref);
++}
 +
- 	if (!ptp_port->link_up)
- 		return ice_ptp_port_phy_stop(ptp_port);
+ static void ice_ptp_tx_tstamp_owner(struct ice_pf *pf)
+ {
++	struct ice_port_list *ports = &pf->adapter->ports;
+ 	struct ice_ptp_port *port;
++	int srcu_idx;
  
--	mutex_lock(&ptp_port->ps_lock);
--
- 	switch (hw->mac_type) {
- 	case ICE_MAC_E810:
- 	case ICE_MAC_E830:
-@@ -1290,8 +1292,6 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
- 		dev_err(ice_pf_to_dev(pf), "PTP failed to set PHY port %d up, err %d\n",
- 			port, err);
+-	mutex_lock(&pf->adapter->ports.lock);
+-	list_for_each_entry(port, &pf->adapter->ports.ports, list_node) {
++	srcu_idx = srcu_read_lock(&ports->srcu);
++	list_for_each_entry_srcu(port, &ports->list, list_node,
++				 srcu_read_lock_held(&ports->srcu)) {
+ 		struct ice_ptp_tx *tx = &port->tx;
  
--	mutex_unlock(&ptp_port->ps_lock);
--
- 	return err;
- }
- 
-@@ -1310,12 +1310,13 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
- 
- 	ptp_port = &pf->ptp.port;
- 
--	/* Update cached link status for this port immediately */
-+	mutex_lock(&pf->adapter->ps_lock);
+-		if (!tx || !tx->init)
++		if (!tx->init)
++			continue;
 +
- 	ptp_port->link_up = linkup;
++		if (!kref_get_unless_zero(&port->ref))
+ 			continue;
  
- 	/* Skip HW writes if reset is in progress */
- 	if (pf->hw.reset_ongoing)
--		return;
-+		goto out_unlock;
- 
- 	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825 &&
- 	    test_bit(ICE_FLAG_DPLL, pf->flags)) {
-@@ -1358,17 +1359,20 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
- 	case ICE_MAC_E810:
- 	case ICE_MAC_E830:
- 		/* Do not reconfigure E810 or E830 PHY */
--		return;
-+		break;
- 	case ICE_MAC_GENERIC:
- 		ice_ptp_port_phy_restart(ptp_port);
--		return;
-+		break;
- 	case ICE_MAC_GENERIC_3K_E825:
- 		if (linkup)
- 			ice_ptp_port_phy_restart(ptp_port);
--		return;
-+		break;
- 	default:
- 		dev_warn(ice_pf_to_dev(pf), "%s: Unknown PHY type\n", __func__);
+ 		ice_ptp_process_tx_tstamp(tx);
++
++		kref_put(&port->ref, ice_ptp_release_port_srcu);
  	}
-+
-+out_unlock:
-+	mutex_unlock(&pf->adapter->ps_lock);
+-	mutex_unlock(&pf->adapter->ports.lock);
++	srcu_read_unlock(&ports->srcu, srcu_idx);
  }
  
  /**
-@@ -1434,18 +1438,11 @@ static int ice_ptp_cfg_phy_interrupt(struct ice_pf *pf, bool ena, u32 threshold)
- 	}
+@@ -806,10 +822,19 @@ ice_ptp_mark_tx_tracker_stale(struct ice_ptp_tx *tx)
+ static void
+ ice_ptp_flush_all_tx_tracker(struct ice_pf *pf)
+ {
++	struct ice_port_list *ports = &pf->adapter->ports;
+ 	struct ice_ptp_port *port;
++	int srcu_idx;
+ 
+-	list_for_each_entry(port, &pf->adapter->ports.ports, list_node)
++	srcu_idx = srcu_read_lock(&ports->srcu);
++	list_for_each_entry_srcu(port, &ports->list, list_node,
++				 srcu_read_lock_held(&ports->srcu)) {
++		if (!kref_get_unless_zero(&port->ref))
++			continue;
+ 		ice_ptp_flush_tx_tracker(ptp_port_to_pf(port), &port->tx);
++		kref_put(&port->ref, ice_ptp_release_port_srcu);
++	}
++	srcu_read_unlock(&ports->srcu, srcu_idx);
  }
  
--/**
-- * ice_ptp_reset_phy_timestamping - Reset PHY timestamping block
-- * @pf: Board private structure
-- */
--static void ice_ptp_reset_phy_timestamping(struct ice_pf *pf)
--{
--	ice_ptp_port_phy_restart(&pf->ptp.port);
--}
--
  /**
-  * ice_ptp_restart_all_phy - Restart all PHYs to recalibrate timestamping
-  * @pf: Board private structure
-+ *
-+ * Context: acquires the adapter ps_lock
+@@ -1424,16 +1449,22 @@ static void ice_ptp_reset_phy_timestamping(struct ice_pf *pf)
   */
  static void ice_ptp_restart_all_phy(struct ice_pf *pf)
  {
-@@ -1453,6 +1450,8 @@ static void ice_ptp_restart_all_phy(struct ice_pf *pf)
- 	struct ice_ptp_port *port;
- 	int srcu_idx;
+-	struct list_head *entry;
++	struct ice_port_list *ports = &pf->adapter->ports;
++	struct ice_ptp_port *port;
++	int srcu_idx;
  
-+	mutex_lock(&pf->adapter->ps_lock);
+-	list_for_each(entry, &pf->adapter->ports.ports) {
+-		struct ice_ptp_port *port = list_entry(entry,
+-						       struct ice_ptp_port,
+-						       list_node);
++	srcu_idx = srcu_read_lock(&ports->srcu);
++	list_for_each_entry_srcu(port, &ports->list, list_node,
++				 srcu_read_lock_held(&ports->srcu)) {
++		if (!kref_get_unless_zero(&port->ref))
++			continue;
+ 
+ 		if (port->link_up)
+ 			ice_ptp_port_phy_restart(port);
 +
- 	srcu_idx = srcu_read_lock(&ports->srcu);
- 	list_for_each_entry_srcu(port, &ports->list, list_node,
- 				 srcu_read_lock_held(&ports->srcu)) {
-@@ -1465,6 +1464,8 @@ static void ice_ptp_restart_all_phy(struct ice_pf *pf)
- 		kref_put(&port->ref, ice_ptp_release_port_srcu);
++		kref_put(&port->ref, ice_ptp_release_port_srcu);
  	}
- 	srcu_read_unlock(&ports->srcu, srcu_idx);
-+
-+	mutex_unlock(&pf->adapter->ps_lock);
++	srcu_read_unlock(&ports->srcu, srcu_idx);
  }
  
  /**
-@@ -3303,8 +3304,6 @@ static int ice_ptp_init_port(struct ice_pf *pf, struct ice_ptp_port *ptp_port)
+@@ -2694,19 +2725,28 @@ static bool ice_port_has_timestamps(struct ice_ptp_tx *tx)
+ 
+ static bool ice_any_port_has_timestamps(struct ice_pf *pf)
  {
- 	struct ice_hw *hw = &pf->hw;
++	struct ice_port_list *ports = &pf->adapter->ports;
++	bool have_tstamps = false;
+ 	struct ice_ptp_port *port;
++	int srcu_idx;
  
--	mutex_init(&ptp_port->ps_lock);
--
- 	switch (hw->mac_type) {
- 	case ICE_MAC_E810:
- 	case ICE_MAC_E830:
-@@ -3404,14 +3403,16 @@ void ice_ptp_init(struct ice_pf *pf)
+-	scoped_guard(mutex, &pf->adapter->ports.lock) {
+-		list_for_each_entry(port, &pf->adapter->ports.ports,
+-				    list_node) {
+-			struct ice_ptp_tx *tx = &port->tx;
++	srcu_idx = srcu_read_lock(&ports->srcu);
++	list_for_each_entry_srcu(port, &ports->list, list_node,
++				 srcu_read_lock_held(&ports->srcu)) {
++		if (!kref_get_unless_zero(&port->ref))
++			continue;
  
- 	err = ice_ptp_init_port(pf, &ptp->port);
- 	if (err)
--		goto err_destroy_ps_lock;
-+		goto err_exit;
- 
- 	err = ice_ptp_setup_pf(pf);
- 	if (err)
- 		goto err_release_tx_tracker;
- 
- 	/* Start the PHY timestamping block */
--	ice_ptp_reset_phy_timestamping(pf);
-+	mutex_lock(&pf->adapter->ps_lock);
-+	ice_ptp_port_phy_restart(&ptp->port);
-+	mutex_unlock(&pf->adapter->ps_lock);
- 
- 	/* Configure initial Tx interrupt settings */
- 	ice_ptp_cfg_tx_interrupt(pf);
-@@ -3429,8 +3430,6 @@ void ice_ptp_init(struct ice_pf *pf)
- 	ice_ptp_cleanup_pf(pf);
- err_release_tx_tracker:
- 	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
--err_destroy_ps_lock:
--	mutex_destroy(&ptp->port.ps_lock);
- err_exit:
- 	/* If we registered a PTP clock, release it */
- 	if (pf->ptp.clock) {
-@@ -3470,7 +3469,6 @@ void ice_ptp_release(struct ice_pf *pf)
- 		}
- 		ice_ptp_cleanup_pf(pf);
- 		ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
--		mutex_destroy(&pf->ptp.port.ps_lock);
- 		return;
- 	}
- 
-@@ -3487,8 +3485,10 @@ void ice_ptp_release(struct ice_pf *pf)
- 
- 	kthread_cancel_delayed_work_sync(&pf->ptp.work);
- 
-+	mutex_lock(&pf->adapter->ps_lock);
- 	ice_ptp_port_phy_stop(&pf->ptp.port);
--	mutex_destroy(&pf->ptp.port.ps_lock);
-+	mutex_unlock(&pf->adapter->ps_lock);
+-			if (ice_port_has_timestamps(tx))
+-				return true;
+-		}
++		if (ice_port_has_timestamps(&port->tx))
++			have_tstamps = true;
 +
- 	if (pf->ptp.kworker) {
- 		kthread_destroy_worker(pf->ptp.kworker);
- 		pf->ptp.kworker = NULL;
++		kref_put(&port->ref, ice_ptp_release_port_srcu);
++
++		if (have_tstamps)
++			break;
+ 	}
++	srcu_read_unlock(&ports->srcu, srcu_idx);
+ 
+-	return false;
++	return have_tstamps;
+ }
+ 
+ bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
+@@ -2890,14 +2930,18 @@ void ice_ptp_queue_work(struct ice_pf *pf)
+ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+ 					enum ice_reset_req reset_type)
+ {
+-	struct list_head *entry;
++	struct ice_port_list *ports = &pf->adapter->ports;
++	struct ice_ptp_port *port;
++	int srcu_idx;
+ 
+-	list_for_each(entry, &pf->adapter->ports.ports) {
+-		struct ice_ptp_port *port = list_entry(entry,
+-						       struct ice_ptp_port,
+-						       list_node);
++	srcu_idx = srcu_read_lock(&ports->srcu);
++	list_for_each_entry_srcu(port, &ports->list, list_node,
++				 srcu_read_lock_held(&ports->srcu)) {
+ 		struct ice_pf *peer_pf = ptp_port_to_pf(port);
+ 
++		if (!kref_get_unless_zero(&port->ref))
++			continue;
++
+ 		if (!ice_is_primary(&peer_pf->hw)) {
+ 			if (rebuild) {
+ 				/* TODO: When implementing rebuild=true:
+@@ -2909,7 +2953,10 @@ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+ 				ice_ptp_prepare_for_reset(peer_pf, reset_type);
+ 			}
+ 		}
++
++		kref_put(&port->ref, ice_ptp_release_port_srcu);
+ 	}
++	srcu_read_unlock(&ports->srcu, srcu_idx);
+ }
+ 
+ /**
+@@ -3084,11 +3131,11 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+ 		return -ENODEV;
+ 
+ 	INIT_LIST_HEAD(&ptp->port.list_node);
+-	mutex_lock(&pf->adapter->ports.lock);
++	kref_init(&ptp->port.ref);
+ 
+-	list_add(&ptp->port.list_node,
+-		 &pf->adapter->ports.ports);
+-	mutex_unlock(&pf->adapter->ports.lock);
++	spin_lock(&pf->adapter->ports.lock);
++	list_add_rcu(&ptp->port.list_node, &pf->adapter->ports.list);
++	spin_unlock(&pf->adapter->ports.lock);
+ 
+ 	/* Seed the per-PHY Tx reference clock usage map for this port.
+ 	 * Only meaningful on E825 (other MAC types don't expose tx-clk
+@@ -3110,13 +3157,23 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+ 
+ static void ice_ptp_cleanup_pf(struct ice_pf *pf)
+ {
++	struct ice_port_list *ports = &pf->adapter->ports;
+ 	struct ice_ptp *ptp = &pf->ptp;
++	struct kref *ref;
+ 
+-	if (pf->hw.mac_type != ICE_MAC_UNKNOWN) {
+-		mutex_lock(&pf->adapter->ports.lock);
+-		list_del(&ptp->port.list_node);
+-		mutex_unlock(&pf->adapter->ports.lock);
+-	}
++	if (pf->hw.mac_type == ICE_MAC_UNKNOWN)
++		return;
++
++	spin_lock(&ports->lock);
++	list_del_rcu(&ptp->port.list_node);
++	spin_unlock(&ports->lock);
++
++	ref = &ptp->port.ref;
++	kref_put(ref, ice_ptp_release_port_srcu);
++
++	wait_var_event(ref, !kref_read(ref));
++
++	synchronize_srcu(&ports->srcu);
+ }
+ 
+ /**
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-index da2003ba3bb0..27ea502b7576 100644
+index c4b0da7ce20e..da2003ba3bb0 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.h
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -143,7 +143,6 @@ struct ice_ptp_tx {
-  * @ref: reference counter for use with adapter ports list
+@@ -5,6 +5,8 @@
+ #define _ICE_PTP_H_
+ 
+ #include <linux/ptp_clock_kernel.h>
++#include <linux/rculist.h>
++#include <linux/kref.h>
+ #include <linux/kthread.h>
+ 
+ #include "ice_ptp_hw.h"
+@@ -138,6 +140,7 @@ struct ice_ptp_tx {
+  * and determine when the port's PHY offset is valid.
+  *
+  * @list_node: list member structure
++ * @ref: reference counter for use with adapter ports list
   * @tx: Tx timestamp tracking for this port
   * @ov_work: delayed work task for tracking when PHY offset is valid
-- * @ps_lock: mutex used to protect the overall PTP PHY start procedure
-  * @link_up: indicates whether the link is up
-  * @tx_fifo_busy_cnt: number of times the Tx FIFO was busy
-  * @port_num: the port number this structure represents
-@@ -155,7 +154,6 @@ struct ice_ptp_port {
- 	struct kref ref;
+  * @ps_lock: mutex used to protect the overall PTP PHY start procedure
+@@ -149,6 +152,7 @@ struct ice_ptp_tx {
+  */
+ struct ice_ptp_port {
+ 	struct list_head list_node;
++	struct kref ref;
  	struct ice_ptp_tx tx;
  	struct kthread_delayed_work ov_work;
--	struct mutex ps_lock; /* protects overall PTP PHY start procedure */
- 	bool link_up;
- 	u8 tx_fifo_busy_cnt;
- 	u8 port_num;
+ 	struct mutex ps_lock; /* protects overall PTP PHY start procedure */
 -- 
 2.47.1
 
