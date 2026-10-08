@@ -1,273 +1,221 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010045.outbound.protection.outlook.com [52.101.61.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9F54F5E0;
-	Thu,  8 Oct 2026 13:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791466254; cv=fail; b=VlEUunM6ZR+wuRoTCI19hqrSLEHufRqknv7E9mqbDDzPRjPKUc8OJYondiYJv96eqUKLXfe7fX/nRz0G6az5yeXi8C6PZkKCbuJFla/Qqr6jy5bRiGF927BtTak3XpLb5oHJrMCbMuQqumG0k3wvxcPhuItfzBBv3/F7uDql3fo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791466254; c=relaxed/simple;
-	bh=ErseU2Hs9f4zFRiJs0Lz1hU/ZYWnjBZMqHuunNE1YpQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qyHcV1IYmrdT5wR+YLDhU8vnuFXMr78Bd79IUUGT1OCWOX/DCYZP4F8PvqvpcLaupgzqbV5PfjJWYbBVmQ17+7QeCFam6ot/5rkuXramX2X2PJAEpyXSz2VJWCX4FI0eeWhLAb71cGalxj1jH27eKWZVqpfQyiUMWzkSLG1vsG8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Mi9XxZ2c; arc=fail smtp.client-ip=52.101.61.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938DC49B5B5;
+	Thu,  8 Oct 2026 13:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791466319; cv=none; b=OjLQoJCFWlkeZIRaj9H34oebG8Cl1Dp+5JBCkysBX7Lum7edfVp2qBfuDA8OGdn6GLxa9mxd7DWF31XJSBxZtYf9VOu8vIaztUqv4GhUb8HPC9+1JGYYpI/6qpbQAYhxUwxkmHLfhqu66zRGxUDw1FUQAfaLIvaDv6FGhJDivV8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791466319; c=relaxed/simple;
+	bh=IzBjr1E1bCvEVJ3DmEgW6YXI7zv5VhZXUqK+GJjb3P4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=X+3IZq4M/5JEnvfKr3Q/jmRodlci2s7ykN5W3fdsA/N/S0QOf6QxTJssMAdGN7fG/usWkq3rZT8wpwCC2ISW4dJLrvt1fTDvXpAO45d1BIV/EJ7pMMlCk+J3GrFeM17u8gYGJLnDH859BdosIJNBgo2aa04k54noIJJhOli5J7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/FybsXu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Mi9XxZ2c"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oB6T+94GkmYRs8oVvF+ESWPqXedHUeV0MX5RV9g69shrlmQpp5fsIqcgQk++btpQCbV/TdqUhZknNQT6nyOI10T16a0bzNlblv3esRW5WQCLnUfUSA7JdKiqXZrhNNLtwGwDdChka7UThrteTn2zPMpv53ik62xDcrOhuO7OXzLZJMBdWExbExF52sczn/jTuME3fs4WY1RXM1gHkenIuAkqg8aFhtKZgJkF04AbOGpUy2tQC1L7TPY2izaSy/eeTTbVddPYo4YDpi/u53wIeopk4nINegvA7PvtUYiuDSlEaoKG0uy6FNhnskReCYNwiT0Nik2pSMIpKoYKw9bFBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oi/Kp6hjYuJeTB0O3SPuc62eW3ZNWRcWKND5hNdJ33k=;
- b=keVFtH46fkPTEzIWrnL4nbJFk+vQBhiF+EduURLSijf0uApoAikY/H5qQB8OLLYtzhMJWNakiLAT3W4cvLca2Cp1wFn3jiyqiDHEB3oFhAQrQwwulc4NuTQwZtvZvVg4Os+1fDsaFWlSJ2dkzCCbQRJKS69e8X96StnfhywowRZ5oiya11Bi9RQFk5wPCSptOGK20R3MH5830g4Pdgh4NVD2o0gApKRLaGU7rzRxwTJsn7Zy6bZrRcjnsSXA6P3EV+NXAas+F5Aw4am+ndQ8HRntIeBG5cxIBJx8Zotb0o3605wgu3AXeyEarQCFPB7g0lp/pZheVG/6zlu5ppn8Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oi/Kp6hjYuJeTB0O3SPuc62eW3ZNWRcWKND5hNdJ33k=;
- b=Mi9XxZ2cuvaBxlL74hwWl08V9gUCqisVabe4pMKWoyZqiRnbwWqexaANKICiYWswW7peEgmFQnXywd6q5OUv3Imo/IAABCZesGjEVtdbsraMW5ir/MM5K/xpAx5c8GR3FRfHk011xZaWRQ43jNTvNCjOtzZTSjz19bVs3u3GqpNj+I0dORaIX3g26X72FxRfSikvl4p+Is4+uccYdZ/dl4cBehqVm/oyRJHnRVxor1PHvBxkpNbvfwbloJXi7qKvW48b5OAQPkg8M7ey/9ktyGb8s2+4tDnUDHA1O54aATwxmKMXD/SSvlq+zIKwFwQ+5FWemiB2T/NoX/WlvQuKIQ==
-Received: from PH1PEPF0001330A.namprd07.prod.outlook.com (2603:10b6:518:1::19)
- by SJ1PR12MB6099.namprd12.prod.outlook.com (2603:10b6:a03:45e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Thu, 8 Oct
- 2026 13:29:54 +0000
-Received: from SJ5PEPF000001D1.namprd05.prod.outlook.com
- (2a01:111:f403:c902::f) by PH1PEPF0001330A.outlook.office365.com
- (2603:1036:903:47::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.9 via Frontend Transport; Thu, 8
- Oct 2026 13:29:53 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SJ5PEPF000001D1.mail.protection.outlook.com (10.167.242.53) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.496.14 via Frontend Transport; Thu, 8 Oct 2026 13:29:53 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 8 Oct
- 2026 06:29:33 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 8 Oct
- 2026 06:29:33 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.7)
- with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Thu, 8 Oct
- 2026 06:29:26 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Bobby Eshleman <bobbyeshleman@meta.com>, Byungchul Park
-	<byungchul@sk.com>, Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu
-	<cratiu@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman
-	<gal@nvidia.com>, Jacob Keller <Jacob.e.keller@intel.com>, Kees Cook
-	<kees@kernel.org>, Leon Romanovsky <leon@kernel.org>, open list
-	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark Bloch
-	<mbloch@nvidia.com>, Matt Fleming <mfleming@cloudflare.com>, Mina Almasry
-	<almasrymina@google.com>, Nikolay Aleksandrov <razor@blackwall.org>, "Saeed
- Mahameed" <saeedm@nvidia.com>, Shivaji Kant <shivajikant@google.com>, "Simon
- Horman" <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, "Stanislav
- Fomichev" <sdf.kernel@gmail.com>, Tariq Toukan <tariqt@nvidia.com>, William
- Tu <witu@nvidia.com>, Yue Haibing <yuehaibing@huawei.com>, Bobby Eshleman
-	<bobbyeshleman@gmail.com>
-Subject: [PATCH net-next 09/10] net: devmem: add netdev_has_dmabuf_binding() helper
-Date: Thu, 8 Oct 2026 16:28:14 +0300
-Message-ID: <20261008132815.654147-10-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20261008132815.654147-1-tariqt@nvidia.com>
-References: <20261008132815.654147-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/FybsXu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696741F000FF;
+	Thu,  8 Oct 2026 13:31:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791466318;
+	bh=YIvDPaOD+8x8ASTWI9FmPb2ebvUMocupjWhOxXiGsT4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=U/FybsXuRaPylDa5xPg56icmLN9OViBMwPS8zpuaYoevz2q9WMVulUL1GGVidVSdJ
+	 7JQ3da+++w0Oq+eEU4/3Rs5kSJ2OcNZknRQd61hE6+/zBbS2cPTBI1T/72oDriPjkq
+	 gPlprf/ugDXByqFl2KfKWcIKotmHSAUlXReNQd0OITmy429wUAm+RRB8EvyonyQuCr
+	 neiRcgtW0kzQjWSIlGTcZxH3b5T/Fj6eJf4i0CFzuAFhdZ4i49t8K37ikfRmThAjc+
+	 C63DwU+1xipP2Bn9RgogNDsheTTMwlAK1S/1DLu0fiZtYgKMVdatZNuvlUAqd2H5ov
+	 CfaLiuWQe/big==
+Subject: Re: [PATCH] nfc: nci: drain rx_wq before cmd_wq on unregister
+From: netdev-bot+sashiko@kernel.org
+To: yogeshgaur.83@gmail.com
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, ian.ray@gehealthcare.com,
+ oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+ebbbf06f152da8ea4716@syzkaller.appspotmail.com
+Date: Thu, 08 Oct 2026 13:31:56 +0000
+Message-ID: <179146631693.434549.10968955013781183787@kernel.org>
+In-Reply-To: <20261005102849.486-1-yogeshgaur.83@gmail.com>
+References: <20261005102849.486-1-yogeshgaur.83@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001D1:EE_|SJ1PR12MB6099:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ddd5f25-39b4-4b14-dc3b-08df25403cdf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|82310400026|7416014|36860700016|23010399003|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	IlxiH1rxDM/bNKaO0XqxqSxFDWQZXPT5zRyaa4tb5/8lCATtpfy236vUVMBsOP6Zzh7Fe6Y0+uFoNtdoPCQKYE4L2jRycP+Bxx0TRBIx/SCkw4AD7iV1lMmpM5C+3TL/d4BsI8wLIhy9n0RKX7wZ3CtMMfY2JyT0pvPfv2UQ/BItU+Ltrn/cA7b0CF6KiF6jOhHYjza9BGmgynG2o8PHluvwTj1Lzr0O3FWIUlLmtKuWYutLBrhzSwSxVsQH7uIyrn41R4DQfBoxW6AEgDCXXabA6/I8FjoGwVyLf8olIxoFFXgPXFTK87EdzZQ9pH0/56YhuVlNX4/vX3Xw4/zvkcFnqgBFzaxHeLpdvvyXYxsgvl7rSWYmRmuP2dGkiMGwIx608SjLFstIN03JRN6Pi9yZfCFY12SJPsY04vcaz7kEKyUI+rDNyN8I4UhJ71ydwe+gY0XFaeHHRwNR0pUTAsn2V0HW4K2WcLjt1SM7GTCve4iznqIIS1rIrIb/E04qCYId/oNq1stgfU+XjCD/DlhB98J1uCrHyTTaWglfasa/qJr2a5nqPcBVwQDX1HnRp17Ow3a9Y4gHKrq5+bc9alaSDEOXZQUY1WQD3lgH09CBuVki9D2gW+l3GsW2MumZni98dk2VWZ3erexMjSq444Tpa6Bk5FIDwY1YWMVrZp7yU/3ac/RuOJYteN4fQjbgiq10PXOF9pGpK95nHbnCew==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(1800799024)(82310400026)(7416014)(36860700016)(23010399003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	UFHVEUrhk72Y7wBOUlls3Fdcwe9bgTxJnlx/trJkADE3mazqcikL74IOgxzPWQ8CTkcFFO1ExkeOPPfQV7/YwdyG9ZqzhJug59Lw7CUOuVPuA59IQsAZqiKPRE6O8gzddEHwZ1BFrJmKjWI9cgktsQnblF9OQiln9DjcxGE26bgAhrm9ukgNFzl/7s9OxIXfXgdE7CSjtwbi7eJMZoLxHD6dTnzLV6Xhw1mkZfX8KJ12LjTjByJ+JNkenSHc2pZZiTwAFcDy0paU6a5aC8Rtt428QbtKOmHe7QxE0y2HyOJj18VPTuZlPZKS0VjfCYuKRVd5E4qEH7n6LWU6cdZGQ9heZnjBsDjv5ffNEb14MQNJqrjbAQcrD8/eyfmgYNdqpHxZg0EFMrOT3b5yMS51VY2bUxYQBrmjHTxBaNkEwCGdIonTNcuevyDfsBhQjKb6
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 13:29:53.9037
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ddd5f25-39b4-4b14-dc3b-08df25403cdf
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001D1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6099
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Currently there is no way to check whether a dmabuf is bound on a TX
-queue. RX side has netif_rxq_has_unreadable_mp() which gives a hint
-of it.
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-To help with that, add a helper to check whether a devmem dmabuf
-binding may still be in use on a given netdev, optionally filtered by
-the DMA device the dmabuf was mapped against.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-A binding can outlive its xarray slot: it can still be referenced by
-in-flight TX skbs, whose DMA mappings are only valid for the device the
-dmabuf was attached to. Reporting such a binding as gone would let a
-driver swap the DMA device out from under those skbs. For this reason,
-track bindings for their whole lifetime on a new list.
+- [High] The new teardown order in nci_unregister_device() does not cover
+  a deferred producer of tx_work: the NCI-HCI msg_rx_work, which runs on…
+- [High] nci_recv_frame() (net/nfc/nci/core.c:1360-1368) tests
+  NCI_UP/NCI_INIT without a lock, then calls skb_queue_tail(&ndev->rx_q)…
 
-This API is necessary for the upcoming support of data direct in mlx5e.
+Pre-existing issues:
+- [High] This problem was not introduced by this patch, but
+  nxp_nci_i2c_remove() calls nxp_nci_remove() before…
 
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- include/net/netmem.h | 23 +++++++++++++++++++++++
- net/core/devmem.c    | 30 ++++++++++++++++++++++++++++++
- net/core/devmem.h    |  2 ++
- 3 files changed, 55 insertions(+)
+--
 
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index 0cc8572f62ca..8bcf44f43d17 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -387,16 +387,39 @@ static inline unsigned long netmem_get_dma_addr(netmem_ref netmem)
- 	return netmem_to_nmdesc(netmem)->dma_addr;
- }
- 
-+struct net_device;
-+
- #if defined(CONFIG_NET_DEVMEM)
- static inline bool net_is_devmem_iov(const struct net_iov *niov)
- {
- 	return niov->type == NET_IOV_DMABUF;
- }
-+
-+/**
-+ * netdev_has_dmabuf_binding - is there a dmabuf binding for a
-+ * given @dev and @dma_dev
-+ *
-+ * @dev: netdev to check bindings
-+ * @dma_dev: dma device to check, when NULL it will not be checked
-+ *
-+ * A binding is reported until its last reference is dropped, which can be
-+ * long after the user unbound it: net_iovs of a TX binding can still be
-+ * queued in flight, with DMA mappings that are only valid for @dma_dev.
-+ *
-+ * Return: true if a binding is found under @dev and possibly @dma_dev
-+ */
-+bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dma_dev);
- #else
- static inline bool net_is_devmem_iov(const struct net_iov *niov)
- {
- 	return false;
- }
-+
-+static inline bool netdev_has_dmabuf_binding(struct net_device *dev,
-+					     struct device *dma_dev)
-+{
-+	return false;
-+}
- #endif
- 
- void __get_netmem(netmem_ref netmem);
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index 07c62e2e3088..173d66d1cb6e 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -25,6 +25,9 @@
- 
- static DEFINE_XARRAY_FLAGS(net_devmem_dmabuf_bindings, XA_FLAGS_ALLOC1);
- 
-+static DEFINE_SPINLOCK(net_devmem_live_bindings_lock);
-+static LIST_HEAD(net_devmem_live_bindings);
-+
- static const struct memory_provider_ops dmabuf_devmem_ops;
- 
- static struct net_iov *net_iov_free_pop(struct net_iov_area *area,
-@@ -63,6 +66,10 @@ void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
- {
- 	struct net_devmem_dmabuf_binding *binding = container_of(wq, typeof(*binding), unbind_w);
- 
-+	spin_lock(&net_devmem_live_bindings_lock);
-+	list_del(&binding->live_list);
-+	spin_unlock(&net_devmem_live_bindings_lock);
-+
- 	if (binding->freelist)
- 		WARN(binding->free_count != binding->area.num_niovs,
- 		     "destroying dmabuf binding with outstanding net_iovs: total=%zu, free=%u",
-@@ -321,6 +328,10 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 
- 	list_add(&binding->list, &priv->bindings);
- 
-+	spin_lock(&net_devmem_live_bindings_lock);
-+	list_add(&binding->live_list, &net_devmem_live_bindings);
-+	spin_unlock(&net_devmem_live_bindings_lock);
-+
- 	return binding;
- 
- err_free_niovs:
-@@ -357,6 +368,25 @@ struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id)
- 	return binding;
- }
- 
-+bool netdev_has_dmabuf_binding(struct net_device *dev, struct device *dma_dev)
-+{
-+	struct net_devmem_dmabuf_binding *binding;
-+	bool found = false;
-+
-+	spin_lock(&net_devmem_live_bindings_lock);
-+	list_for_each_entry(binding, &net_devmem_live_bindings, live_list) {
-+		if (dev == READ_ONCE(binding->dev) &&
-+		    (!dma_dev || binding->attachment->dev == dma_dev)) {
-+			found = true;
-+			break;
-+		}
-+	}
-+	spin_unlock(&net_devmem_live_bindings_lock);
-+
-+	return found;
-+}
-+EXPORT_SYMBOL_GPL(netdev_has_dmabuf_binding);
-+
- void net_devmem_get_net_iov(struct net_iov *niov)
- {
- 	net_devmem_dmabuf_binding_get(net_devmem_iov_binding(niov));
-diff --git a/net/core/devmem.h b/net/core/devmem.h
-index 1cec10f0257c..eadf6df38687 100644
---- a/net/core/devmem.h
-+++ b/net/core/devmem.h
-@@ -54,6 +54,8 @@ struct net_devmem_dmabuf_binding {
- 	 */
- 	struct list_head list;
- 
-+	struct list_head live_list;
-+
- 	/* rxq's this binding is active on. */
- 	struct xarray bound_rxqs;
- 
+nfc: nci: drain rx_wq before cmd_wq on unregister
+
+This patch changes the teardown order in nci_unregister_device(). It
+first shuts down cmd_timer and data_timer with timer_shutdown_sync().
+It then destroys rx_wq before cmd_wq and tx_wq, so rx_work can no
+longer queue cmd_work on a cmd_wq that is already draining.
+
+> diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+> index 73e3a96470ace..aa417f863f967 100644
+> --- a/net/nfc/nci/core.c
+> +++ b/net/nfc/nci/core.c
+> @@ -1329,8 +1329,13 @@ void nci_unregister_device(struct nci_dev *ndev)
+>  
+>  	nci_close_device(ndev);
+>  
+> -	destroy_workqueue(ndev->cmd_wq);
+> +	/* cmd_work and tx_work re-arm these, and they queue cmd/rx work */
+> +	timer_shutdown_sync(&ndev->cmd_timer);
+> +	timer_shutdown_sync(&ndev->data_timer);
+> +
+> +	/* rx_work queues cmd_work and tx_work, so drain rx_wq first */
+>  	destroy_workqueue(ndev->rx_wq);
+
+[Severity: High]
+The commit message says "the driver can still deliver frames through
+nci_recv_frame() until it has stopped calling it". Does anything order
+that producer against destroy_workqueue(ndev->rx_wq) here?
+
+nci_recv_frame() tests the flags without a lock, then queues rx_work:
+
+net/nfc/nci/core.c:nci_recv_frame() {
+	if (!ndev || (!test_bit(NCI_UP, &ndev->flags) &&
+	    !test_bit(NCI_INIT, &ndev->flags))) {
+		kfree_skb(skb);
+		return -ENXIO;
+	}
+
+	/* Queue frame for rx worker thread */
+	skb_queue_tail(&ndev->rx_q, skb);
+	queue_work(ndev->rx_wq, &ndev->rx_work);
+	...
+}
+
+Suppose a driver thread passes the flag test before nci_close_device()
+clears the flags with ndev->flags &= BIT(NCI_UNREG), and is then delayed
+before queue_work(). Two outcomes look possible:
+
+- It calls queue_work() while destroy_workqueue(rx_wq) is draining. That
+  gives the same "cannot queue" warning.
+- It calls queue_work() after destroy_workqueue(rx_wq) has returned.
+  That uses the freed workqueue_struct.
+
+This looks reachable with nfcmrvl i2c. The remove path:
+
+nfcmrvl_i2c_remove()
+  nfcmrvl_nci_unregister_dev()
+    nci_unregister_device()
+
+runs while the devm-managed threaded IRQ is still registered. The IRQ
+thread, nfcmrvl_i2c_int_irq_thread_fn()->nfcmrvl_nci_recv_frame()->
+nci_recv_frame(), shares no lock with the remove path.
+
+nxp-nci does not seem to be affected by this race.
+nxp_nci_remove() holds info->info_lock across nci_unregister_device(),
+and the IRQ thread takes the same lock.
+
+Would this need a core-side gate around the flag test and queue_work()?
+Or should drivers be required to stop RX before they call
+nci_unregister_device()?
+
+> +	destroy_workqueue(ndev->cmd_wq);
+>  	destroy_workqueue(ndev->tx_wq);
+>  
+>  	list_for_each_entry_safe(conn_info, n, &ndev->conn_info_list, list) {
+
+[Severity: High]
+Does this ordering cover the NCI-HCI msg_rx_work? It runs on system_wq
+and can also queue tx_work.
+
+When rx_work handles a data packet on the HCI connection, the callback
+installed by nci_hci_dev_session_init() defers non-response HCP
+messages:
+
+nci_rx_work()
+  nci_rx_data_packet()
+    nci_add_rx_data_frag()
+      nci_data_exchange_complete()
+        nci_hci_data_received_cb()
+          schedule_work(&ndev->hci_dev->msg_rx_work);
+
+msg_rx_work then always sends a reply:
+
+nci_hci_msg_rx_work()
+  nci_hci_hcp_message_rx()
+    nci_hci_cmd_received()
+      nci_hci_send_data()
+        nci_send_data()
+          queue_work(ndev->tx_wq, &ndev->tx_work);
+
+Neither nci_close_device() nor nci_unregister_device() flushes or
+cancels msg_rx_work. conn_info_list is only emptied after the
+destroy_workqueue() calls, so nci_send_data() still finds the HCI
+connection.
+
+The window is narrower than it first looks.
+nci_data_exchange_complete() only runs the callback if
+test_and_clear_bit(NCI_DATA_EXCHANGE) succeeds. nci_close_device()
+clears that bit, and nfc_unregister_rfkill() sets shutting_down, which
+stops the bit from being set again. So the work can't be newly
+scheduled during the rx_wq drain.
+
+But msg_rx_work might have been scheduled before nci_close_device() and
+still be pending or running here. Could it then queue tx_work while
+tx_wq is draining, or after destroy_workqueue(ndev->tx_wq) has freed it?
+
+Later, nci_free_device()->nci_hci_deallocate() calls
+kfree(ndev->hci_dev). That happens while msg_rx_work and msg_rx_queue
+may still be in use.
+
+Should hci_dev->msg_rx_work be cancelled or flushed after rx_wq is
+drained and before cmd_wq and tx_wq are destroyed?
+
+[Severity: High]
+This isn't a bug introduced by this patch. While looking at callers of
+nci_unregister_device(), I noticed that the nxp-nci i2c remove path
+frees the nci_dev before it frees the IRQ:
+
+drivers/nfc/nxp-nci/i2c.c:nxp_nci_i2c_remove() {
+	...
+	nxp_nci_remove(phy->ndev);
+	free_irq(client->irq, phy);
+}
+
+nxp_nci_remove() calls nci_unregister_device() and nci_free_device(),
+and phy->ndev is never cleared. If the IRQ fires before free_irq(),
+nxp_nci_i2c_irq_thread_fn() does:
+
+	info = nci_get_drvdata(phy->ndev);
+	...
+	mutex_lock(&info->info_lock);
+
+Is this a use-after-free read of the freed nci_dev? The read happens
+before the info->mode check. So switching the controller to
+NXP_NCI_MODE_COLD beforehand doesn't prevent it.
+
+Would freeing or disabling the IRQ before nxp_nci_remove() fix this?
+
 -- 
-2.44.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005102849.486-1-yogeshgaur.83%40gmail.com
