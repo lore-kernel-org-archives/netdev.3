@@ -1,33 +1,33 @@
-Received: from mta0.migadu.com (out-66.mta0.migadu.com [91.218.175.66])
+Received: from mta0.migadu.com (out-73.mta0.migadu.com [91.218.175.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A7145FFAC
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 09:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810B6255F28
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 09:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791451624; cv=none; b=eSZxDWPo2NlFWW3m7gFdUDNiBYGXRjgsfAqHeNVNy1eJbvo342YmPnuZC6J+Yw7prNNgrzQP5XQxxQcWJIRQkD7e/jbvCKDdN5eBRlfB03hBvdkTi4ENIIKQeDKTQvLkES6fkhgHfFxvb8auMROOzkZG1jgXF+W54oWcifoe3l0=
+	t=1791451636; cv=none; b=PteNXblGHA24KxuqySm3GVwtdVW1FRibHQ7PMV2Ap/xPDjpnWsLBh9Q3ipY4ZJzPDv+7V+8hYWC8czxH6RrBuD+J9O1LS/ScDWUxZw912kjyljNSCj9D1YMwsRjupPs5Oa2PdY0z3BNnYi6f7ukEpRTeOD0xUUGFL9xGXUi9AS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791451624; c=relaxed/simple;
-	bh=7yL4qrMCuyL6ygaKf+SrIIVVAH6fByn5OEDJoKtVjU8=;
+	s=arc-20240116; t=1791451636; c=relaxed/simple;
+	bh=0ck5ithvBGW93geJPgrByTIMhkEmXEuMFvvikU8cDTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbTb5rpB5s5BDsrxpPiS/NumsyHTsvLxeXs6nvEVJGfGBGthIdAf07ZYAcD/r88iK+QBvzDMXPVhvPdAyALpSbLVhbr34uCqyof2uw/EoA5XjhVMbvSrPvATLFcHNqlC23bPneFSkMalWBq3xIcUJe9EnQICMDSjSyAcGFRpYxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=llpDJGfn; arc=none smtp.client-ip=91.218.175.66
+	 MIME-Version; b=NEjp9dz4d2o6DtxnRYH46ZLniG6pFVu7rLxJytm9XNfRkyPCoy8aQ8td19pOzSHam3ToAt5qyq9mw7gnX62FoM9rR4UAuPaKlb+1N2b9IXRI4jydqeTTzM5b/38Q2uQ+CPMbak5ZjMyClvPEOYXUeO8y44JOiCp/7WTsoVFWU3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=f87V4bNJ; arc=none smtp.client-ip=91.218.175.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="llpDJGfn"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="f87V4bNJ"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=7yL4qrMCuyL6ygaKf+SrIIVVAH6fByn5OEDJoKtVjU8=;
+DKIM-Signature: a=rsa-sha256; bh=0ck5ithvBGW93geJPgrByTIMhkEmXEuMFvvikU8cDTI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791451620; v=1; x=1792056420;
- b=llpDJGfn42hJiKvUf6qq1/WOd/PIB7tEEzwp4wO/Vp559/tzJtPN4gXMxKRC+fbzP69EJ4h7
- yUQYQ2i4LWA59yMUSSzc4PszP6nJ9tQCUSYsbHJ+3ECUcuD0Ca+yhMY+lS/rskuVhDrjRdnp/Mu
- h5aXNBOq6nIJUFLELf11oCgM=
+ t=1791451632; v=1; x=1792056432;
+ b=f87V4bNJLD/R0RMDumoF7+sIPkzZ+ehtlGn1A9WEYjv35RdDqyC6nio8i4ZbA/CR2l1mhjBd
+ jUTa2lMz5jW76sMp5poFs3diGPOSYxqGg0sZyf0TjiDbX+3lgL3N0TNotZJXJyf4q5Oej6J1Tun
+ zGj9HxltqtsAJREUjjk6/oZA=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 200700132b88561a;
-	Thu, 08 Oct 2026 09:27:00 +0000
-X-Mizu-Trace-ID: 200700132b88561a
+Received: by smtp.migadu.com with ESMTPS id b42e9c1b4e4dd29c;
+	Thu, 08 Oct 2026 09:27:12 +0000
+X-Mizu-Trace-ID: b42e9c1b4e4dd29c
 X-Migadu-Flow: FLOW_OUT
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: netdev@vger.kernel.org
@@ -43,9 +43,9 @@ Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Simon Horman <horms@kernel.org>,
 	Stephen Hemminger <stephen@networkplumber.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 1/3] tcp_bic: fix divide by zero on max_increment == 0
-Date: Thu,  8 Oct 2026 17:26:34 +0800
-Message-ID: <20261008092641.140777-2-jiayuan.chen@linux.dev>
+Subject: [PATCH net-next v3 2/3] tcp_hybla: fix divide by zero on rtt0 == 0
+Date: Thu,  8 Oct 2026 17:26:35 +0800
+Message-ID: <20261008092641.140777-3-jiayuan.chen@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261008092641.140777-1-jiayuan.chen@linux.dev>
 References: <20261008092641.140777-1-jiayuan.chen@linux.dev>
@@ -57,12 +57,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-max_increment is how many packets cwnd can grow per RTT, so 0 makes
-no sense, and bictcp_update() divides by it.
+rtt0 is the reference RTT in ms, so 0 makes no sense, and
+hybla_recalc_param() divides by it right from hybla_init().
 
-Reject values below 1 when the parameter is written.
+Reject values below 1 when the parameter is written. Also cap it at
+U32_MAX / USEC_PER_MSEC, since rtt0 * USEC_PER_MSEC can wrap to 0 on
+32-bit. An rtt0 above that (about 71 minutes) makes no sense anyway.
 
-Fixes: 83803034f423 ("[TCP]: Add TCP BIC congestion control module.")
+Fixes: 835b3f0c0d7e ("[TCP]: Add TCP Hybla congestion control module.")
+Fixes: 740b0f1841f6 ("tcp: switch rtt estimations to usec resolution")
 Reported-by: VEGA <vega@nebusec.ai>
 Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 Reviewed-by: Eric Dumazet <edumazet@kernel.org>
@@ -70,41 +73,36 @@ Reviewed-by: Eric Dumazet <edumazet@kernel.org>
 No __MODULE_PARM_TYPE() on purpose, same as dctcp_shift_g in
 tcp_dctcp.c. It only changes the type suffix modinfo prints.
 ---
- net/ipv4/tcp_bic.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_hybla.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_bic.c b/net/ipv4/tcp_bic.c
-index 65444ff142413..27d2e38ff7932 100644
---- a/net/ipv4/tcp_bic.c
-+++ b/net/ipv4/tcp_bic.c
-@@ -27,15 +27,25 @@
- 					  */
+diff --git a/net/ipv4/tcp_hybla.c b/net/ipv4/tcp_hybla.c
+index abd7d91807e54..b9b482180d30b 100644
+--- a/net/ipv4/tcp_hybla.c
++++ b/net/ipv4/tcp_hybla.c
+@@ -26,8 +26,20 @@ struct hybla {
+ };
  
- static int fast_convergence = 1;
--static int max_increment = 16;
-+static unsigned int max_increment = 16;
- static int low_window = 14;
- static int beta = 819;		/* = 819/1024 (BICTCP_BETA_SCALE) */
- static int initial_ssthresh;
- static int smooth_part = 20;
- 
-+static int max_increment_set(const char *val, const struct kernel_param *kp)
+ /* Hybla reference round trip time (default= 1/40 sec = 25 ms), in ms */
+-static int rtt0 = 25;
+-module_param(rtt0, int, 0644);
++static unsigned int rtt0 = 25;
++
++static int rtt0_set(const char *val, const struct kernel_param *kp)
 +{
-+	return param_set_uint_minmax(val, kp, 1, INT_MAX);
++	/* avoid rtt0 * USEC_PER_MSEC overflow */
++	return param_set_uint_minmax(val, kp, 1, U32_MAX / USEC_PER_MSEC);
 +}
 +
-+static const struct kernel_param_ops max_increment_ops = {
-+	.set = max_increment_set,
++static const struct kernel_param_ops rtt0_ops = {
++	.set = rtt0_set,
 +	.get = param_get_uint,
 +};
 +
- module_param(fast_convergence, int, 0644);
- MODULE_PARM_DESC(fast_convergence, "turn on/off fast convergence");
--module_param(max_increment, int, 0644);
-+module_param_cb(max_increment, &max_increment_ops, &max_increment, 0644);
- MODULE_PARM_DESC(max_increment, "Limit on increment allowed during binary search");
- module_param(low_window, int, 0644);
- MODULE_PARM_DESC(low_window, "lower bound on congestion window (for TCP friendliness)");
++module_param_cb(rtt0, &rtt0_ops, &rtt0, 0644);
+ MODULE_PARM_DESC(rtt0, "reference rout trip time (ms)");
+ 
+ /* This is called to refresh values for hybla parameters */
 -- 
 2.43.0
 
