@@ -1,214 +1,355 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C181472F78;
-	Thu,  8 Oct 2026 08:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49998347FC0
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791449626; cv=none; b=ErK3sFJMMxrVvXy9kT3wE2ONCtU3VUFza/GRf5vEY7M0y+f1jhIPglxgwummMyQMHroEMKUn4CXagZ9KK2TdpgYVdLZLUwIORFwiljcpr11DSwYdE1m/guxl4990uPF7p+8KsZGRP3FKIr9g3ZMirvi3A1BR/wQJlJW+ZZJpEd8=
+	t=1791449643; cv=none; b=LF5C44okB5lgiiEsCRKXeWjfmpH90XVxstBeZuLTwYeOLrspZNR9iGnhaO5A1WOtIm4pwW6GIjAc7t+37GSU888Ry4MnNDYmTedfmvVldaye9m8XoNcdqOSQaw+5Cm5JfFah5oVyYy4762AKtNP7wMDrfxCYOQeGMgp3bK8zoQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791449626; c=relaxed/simple;
-	bh=O3YnTtbd10Xw9sLF9/frn1oBli2TWFOYF+69kuWOGAQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VZJ30OgKgpaZ2uxdywZ4Bpd88opcz0mz22MQowdfXbK+FWcN97LJCgw7pwuPz22Vr/kmcoz9UCULTSRdpNyxKXSYHrRh8HMvRzD29iDsYDIcUdK+ERq/rWtmonwmEYaa0ne3kVI/DajkzjEzoSyzVENgm7ILgF2KwucomeamYK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=U13CQPwD; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791449643; c=relaxed/simple;
+	bh=HLefPmBX47EFFJEHrgtmj8lWN4k9/YgWGOGt+gyhx2M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N73wI+7wFwOSXt0bYkg+Csm2bjP02ssGofxCMPXAOBOrteAPPGOSMqgthUUQIbtFs7KxGUtd6h3faUqaQ5E721M/oohAwPPQtKRHIfwWZOZOgN4SEShh0vrLGwu7O3ChpIngW36fNQiw7ciSTM/1yxZV2Nap1FtehYnNFZMexJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kVa7RWp0; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="U13CQPwD"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6987Zbav731290;
-	Thu, 8 Oct 2026 08:53:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=yCaVqR
-	c9yjueH1hFzVHbm+BxIaJ3wN3cQfVAJe78FX0=; b=U13CQPwDK8MQKGtwN1EIBt
-	VpZ2M5+3kmu+1U9A1ehMofwC2NySsm3QwhBMeZl54kFRmyVNTXkBpgBQrFgvuhb0
-	OKD/kcWTr6yv0iXjZmZpnIXCR7vLMdzTsXqLaFlbaaHQKv6/vWb2TM4gkVK65vbg
-	Cj4DYX/TBiEC+B8BjvV9CF8tHjWNvJg4GAYq9JSzmJnrzy1wnFVTFsGY6t7YFVSJ
-	W2IIaZkuQzu814T2sQ8eTrs3GMQiolm19+f7dyTD5D+F79RopHwU5KY1X/NEm3le
-	OrUk7N60t/uDXPWnkFlJq7SOO5tZ0HASy5wpzlRXh8WnTkJRbB3vdAAkm6S/trCg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xjvj9jg-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 08:53:38 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6987XMQo3111519;
-	Thu, 8 Oct 2026 08:53:38 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h5s34u5fp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 08:53:38 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6988rbFQ49348886
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Oct 2026 08:53:37 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C9E158090;
-	Thu,  8 Oct 2026 08:53:37 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B6B45807C;
-	Thu,  8 Oct 2026 08:53:31 +0000 (GMT)
-Received: from [9.124.217.43] (unknown [9.124.217.43])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Oct 2026 08:53:31 +0000 (GMT)
-Message-ID: <b70659c4-c1c1-4e73-b67b-0b1ad3dc61ef@linux.ibm.com>
-Date: Thu, 8 Oct 2026 14:23:29 +0530
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kVa7RWp0"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-351775aa1c0so897243eec.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 01:53:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791449638; x=1792054438; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cBRVu1PhaTpNiCczbgliHEJdpmg0aCx3TB2VjXS+OlY=;
+        b=kVa7RWp0GbHwFZfi7LWMMuslV835wg93nsDbsItGFiC5KeHpXtQjeeO+mCQeUwiSEy
+         mEVGxtlYpi233BPtwQIhL6+9sqbKEiPBOaFTdehwWIKClh6M9LMNFShJm0RZzCt0uE7r
+         IArxxO/zctFDfRvigNxsuD9b+WAimwWmIvCabn0FURFkg/mnRdSSfMmEOdn23136xFut
+         d2m3a5Pds7fLa90nFiKV2ZLQ8I0DgwxDFMVENc6b3Qi8de0ER8x+BZhyyEzn3I0DNg6w
+         tyozLMjVi18b4cgSMmifkkh3LGBos1YMRPBmn6OoaQjw5IxQYE+Vr8pud39qKACCl7lN
+         EBGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791449638; x=1792054438;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cBRVu1PhaTpNiCczbgliHEJdpmg0aCx3TB2VjXS+OlY=;
+        b=i/zPbRx/tNiep7nBovDx2m6T3IUk1ORFvJw4zayDRJdHgsbaqfdZyi5yKl3niasin6
+         39G1PNKaO9q6/8gbkVzbjVXQ8h06R+P9PMz6fY0ito1Bu7GITCqSRG/dtx9qfV8zpBou
+         1aGDq9I+oifwyOBiEE9mT3+hwfkS5DV9BWQ9Y88hnNmXC6b69JFOuRxzGwulK8ThB1mB
+         6ADVj2inOtpLHHGVjiix83kqeVOjL3AuNKI9Nbld0p6514x4ejNGCESpvFFFcYSFoyPa
+         6qP8scHTDQW8CvyOnHdbPwxoYkTzbtQGx3BCbqkhxvoKs1P5rRJ//D0Roj+YGneoFgt3
+         Xn4Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzBmKOgWt3oaOWXeG93goh5uiXkwRRgvXLOy6Bc/J4kn5TTekccN96fyRQA5vM1vxSwNP6z7oY=@vger.kernel.org
+X-Gm-Message-State: AFuF++m5NZEGdzivaS8te4UOfAMxmbI4nSMp/5WnTl2Kqg4d4m3loLRi
+	LRS9eGY6if5WbGbBQ/htqM2/EWmLe9c4RGLbvjyfjVVwkaXlMZyzX+Od6l9SWLWc
+X-Gm-Gg: AYBFou1e2RKfjRTkpxUjAUBb6PpK+4RiFcz0J9iLib/XbSWbgzMw64zJTMlq2vJuFTF
+	DKDGSvcRKL8UIEdzhZqBmj2cvdNUO08E9a0gJtaez11boIXi4I6f/UlDSUh61brB+M9WGWeWeGM
+	ifBvvRshVw0g+9QgYRcV74PFvIc2+jGaHO49nR9ekBZo8h1ZA83ddMXC4wTM/1WQQ/KmzRJMSc4
+	ATmkAnBBKx44lZ9gdt/ol4qc3+Po0A8f67LA4jYHaxFOoWTOPsnJOVBkVlQJpqz9C0rlTPnqz1C
+	tOk6BdyWDcjlMNVn07K5TSFpcFtUoxU/fi+5/ramUiQ4A+BEAXbcr8fICE2NrKrbctVtkhFu7sj
+	hc1e9eKge9NJeRdJCrasZNf3H7soFtxZlc6VqjXm9AGo2e9E2lZ56JTjoR3tZzlAo4QQ4faFlAm
+	D+cNsuBfL4RObqZYnU5y+4LW+FucINYeqpXAotKr9Nvaz4+g9b2ck5Eog0IUZ9TuzpFcPNkMUwr
+	WrOj+CUnoJXpDllLkYlSnSSAeM=
+X-Received: by 2002:a05:7301:6186:10b0:351:27f0:e411 with SMTP id 5a478bee46e88-3515de5a17fmr5307836eec.20.1791449638121;
+        Thu, 08 Oct 2026 01:53:58 -0700 (PDT)
+Received: from obadmin-Precision-3680.atlascopco.group ([167.103.3.1])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515af26f10sm16351759eec.13.2026.10.08.01.53.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 01:53:57 -0700 (PDT)
+From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH] selftests/net: test generic-netlink policy dump operation ID
+Date: Thu,  8 Oct 2026 14:24:34 +0530
+Message-ID: <20261008085434.3681647-1-sahaj123.sc@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] net/smc: protect clcsock lifetime in smc_getname
-To: Chengfeng Ye <nicoyip.dev@gmail.com>,
-        "D . Wythe" <alibuda@linux.alibaba.com>,
-        Dust Li
- <dust.li@linux.alibaba.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>
-Cc: Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20261008084444.787449-1-nicoyip.dev@gmail.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20261008084444.787449-1-nicoyip.dev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: agaMw4ZeHjn_ip_txaBPouXLAjfGHefl
-X-Proofpoint-ORIG-GUID: f9Z4xotu3fH-_uc5RIHv87pvYPVXRxqn
-X-Authority-Analysis: v=2.4 cv=FoOQbGrq c=1 sm=1 tr=0 ts=6ac75a12 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=slhZEP1NsPBYwTPRAy0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA4MDAzNCBTYWx0ZWRfXzFN9isecd6OQ
- mt9jAmc/pDedw9fwnVBTLcAakBF/tSqxahfg1zL2h6og6qWSpYyvh9H4R3fmMxBkX71LDwN33tR
- jyMdjydcqlTHrMCNvmNyk6qHeMaGHzw=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA4MDAzNCBTYWx0ZWRfX7KCiUly/dDUz
- 3DtblOTSwHiwrUDAe7xgYQNiiesIbd0Bx7Eaakscf9DZK+zZpcAwnxGPc4YX0sIS4f//e7JRG7Y
- TN42s1DIP+d1uwz/jb4i2qCV3KqpIgD0LlJlMk1cLsnUFVvAMbrJx3wBU1n5Kv2EI5T4zzI7eec
- NkX4AdspB2ZKZhN/na1jJspOmXLzAQ3k1tzaYdXlvxZNryxlZiYVHXBIGxMWZ2SuQMy1priaiGJ
- 7/a3gvs6Tjg0XeNiTMb081IBkBbOy6RKJoP87H7s2oC263gMsp2Htmg55VJaZx2el/2Ua+xPpos
- Em9sloNcw86brVzr82RBPhTafjQ3kDiw7TO0SBRssb2vYSiNYTwvDLlX8TkXIuexQIfVFqB4T3/
- QtvHMs30gyt3NfJ1HyRxb8hRQGcB7cvtgySNUFtRPWPlsvoXUCvypIUBoE6lfpG+x0aUyQ9kTfG
- VrRJ2wE4o7Osj9ACpzA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-08_03,2026-10-06_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610080034
+Content-Transfer-Encoding: 8bit
 
+Check that a generic-netlink policy dump reports the requested command's
+operation ID rather than zero.
 
+Request the policy for CTRL_CMD_GETPOLICY from the control family and
+verify that the response contains operation ID 10. Register the test as
+a generated net selftest and ignore its built binary.
 
-On 08/10/26 2:14 pm, Chengfeng Ye wrote:
-> smc_getname() dereferences smc->clcsock without holding
-> clcsock_release_lock. Link-group termination can release the CLC socket
-> through smc_close_active_abort() while the SMC socket is still open,
-> for example after shutdown(SHUT_WR).
-> 
-> A getsockname() caller can load smc->clcsock, then the termination worker
-> can clear the pointer and call sock_release() before the caller accesses
-> clcsock->ops or invokes getname(). This causes a use-after-free; if the
-> worker clears the pointer before the load, it causes a NULL dereference.
-> The syscall's file reference keeps the SMC socket alive but does not
-> prevent asynchronous release of its CLC socket.
-> 
-> KASAN reported the following with test-only timing instrumentation:
-> 
->   BUG: KASAN: slab-use-after-free in smc_getname+0x19e/0x1b0
->   Read of size 8 at addr ffff888109abb4e0 by task poc/103
->   Call Trace:
->    smc_getname+0x19e/0x1b0
->    do_getsockname+0xe5/0x170
->    __sys_getsockname+0x8c/0x100
-> 
->   Allocated by task 95:
->    sock_alloc_inode+0x1e/0x280
->    sock_alloc+0x3d/0x240
->    __sock_create+0x7e/0x430
->    smc_create+0x121/0x240
-> 
->   Freed by task 0:
->    kmem_cache_free+0xcc/0x340
->    rcu_core+0x50a/0x1850
-> 
->   Last potentially related work creation:
->    evict+0x446/0x6c0
->    smc_clcsock_release+0xa8/0xd0
->    smc_close_active_abort+0x26a/0x3a0
->    __smc_lgr_terminate.part.0+0x137/0x2e0
-> 
-> Hold clcsock_release_lock across the pointer check and the getname()
-> callback to serialize with smc_clcsock_release(). Return -EBADF if the
-> CLC socket has already been released, preserving the existing peer
-> state check and the callback's return value otherwise.
-> 
-> Fixes: b03faa1fafc8 ("net/smc: postpone release of clcsock")
-> Cc: stable@vger.kernel.org
-> Assisted-by: GPT-6.1-Sol
-> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-> ---
-> Changes in v3:
-> - Limit the fix to smc_getname(), as requested by Mahanta. The code
->   change is identical to v1 and uses the existing release mutex.
-> - Drop the new clcsock_lock and the other v2 changes. Mahanta will
->   address the other readers through the broader CLC lifetime changes
->   discussed with Dust Li.
-> - Rebase onto current net/main; keep the stable Cc.
-> 
-> Review:
-> https://lore.kernel.org/r/4bb7f15e-2cd8-4598-9bab-1ea5f5d2bb59@linux.ibm.com/
-> v2:
-> https://lore.kernel.org/r/20261003183325.2289707-1-nicoyip.dev@gmail.com/
-> v1:
-> https://lore.kernel.org/r/20260926180404.2721010-1-nicoyip.dev@gmail.com/
-> 
-> Validation: W=1 builds of net/smc/ passed with IPv6 enabled and disabled.
-> The KASAN excerpt is the original report; no runtime test was run for v3.
-> 
->  net/smc/af_smc.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-> index e9f93b3ab435b..8b3ee70f8433f 100644
-> --- a/net/smc/af_smc.c
-> +++ b/net/smc/af_smc.c
-> @@ -2784,6 +2784,7 @@ int smc_getname(struct socket *sock, struct sockaddr *addr,
->  		int peer)
->  {
->  	struct smc_sock *smc;
-> +	int rc = -EBADF;
->  
->  	if (peer && (sock->sk->sk_state != SMC_ACTIVE) &&
->  	    (sock->sk->sk_state != SMC_APPCLOSEWAIT1))
-> @@ -2791,7 +2792,11 @@ int smc_getname(struct socket *sock, struct sockaddr *addr,
->  
->  	smc = smc_sk(sock->sk);
->  
-> -	return smc->clcsock->ops->getname(smc->clcsock, addr, peer);
-> +	mutex_lock(&smc->clcsock_release_lock);
-> +	if (smc->clcsock)
-> +		rc = smc->clcsock->ops->getname(smc->clcsock, addr, peer);
-> +	mutex_unlock(&smc->clcsock_release_lock);
-> +	return rc;
->  }
->  
->  int smc_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
-> 
-> base-commit: 6d25ffca055a77787c21a36b66c253f76239411b
+Tested: reproduces the missing operation ID on 7.0.0-34-generic and
+passes on fixed 7.3.0-rc6-00063-g0c2669a9f4a1 in QEMU.
 
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+---
+ tools/testing/selftests/net/.gitignore        |   1 +
+ tools/testing/selftests/net/Makefile          |   1 +
+ .../selftests/net/netlink_policy_dump_opid.c  | 223 ++++++++++++++++++
+ 3 files changed, 225 insertions(+)
+ create mode 100644 tools/testing/selftests/net/netlink_policy_dump_opid.c
+
+diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
+index dacd36ed8455..5fa1c6024672 100644
+--- a/tools/testing/selftests/net/.gitignore
++++ b/tools/testing/selftests/net/.gitignore
+@@ -20,6 +20,7 @@ ipv6_fragmentation
+ log.txt
+ msg_zerocopy
+ netlink-dumps
++netlink_policy_dump_opid
+ nettest
+ proc_net_pktgen
+ psock_fanout
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 590b33e16d9f..09960735cb1a 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -186,6 +186,7 @@ TEST_GEN_PROGS := \
+ 	icmp_rfc4884 \
+ 	ipv6_flowlabel_mgr \
+ 	ipv6_fragmentation \
++	netlink_policy_dump_opid \
+ 	proc_net_pktgen \
+ 	reuseaddr_conflict \
+ 	reuseport_bpf \
+diff --git a/tools/testing/selftests/net/netlink_policy_dump_opid.c b/tools/testing/selftests/net/netlink_policy_dump_opid.c
+new file mode 100644
+index 000000000000..4b53a8853109
+--- /dev/null
++++ b/tools/testing/selftests/net/netlink_policy_dump_opid.c
+@@ -0,0 +1,223 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <errno.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <string.h>
++#include <sys/socket.h>
++#include <unistd.h>
++
++#include <linux/genetlink.h>
++#include <linux/netlink.h>
++
++#include "kselftest.h"
++
++#define REQUEST_SIZE 128
++#define REPLY_SIZE 4096
++
++struct genl_request {
++	struct nlmsghdr nlh;
++	struct genlmsghdr genl;
++	char attrs[REQUEST_SIZE];
++};
++
++static int add_attr(struct genl_request *request, size_t size, uint16_t type,
++		    const void *data, size_t data_size)
++{
++	size_t offset = NLMSG_ALIGN(request->nlh.nlmsg_len);
++	size_t attr_size = NLA_HDRLEN + data_size;
++	size_t aligned_size = NLA_ALIGN(attr_size);
++	struct nlattr *attr;
++
++	if (offset + aligned_size > size)
++		return -E2BIG;
++
++	attr = (struct nlattr *)((char *)request + offset);
++	attr->nla_len = attr_size;
++	attr->nla_type = type;
++	memcpy((char *)attr + NLA_HDRLEN, data, data_size);
++	memset((char *)attr + attr_size, 0, aligned_size - attr_size);
++	request->nlh.nlmsg_len = offset + aligned_size;
++
++	return 0;
++}
++
++static int next_attr(const char **cursor, size_t *remaining,
++		     struct nlattr **attr)
++{
++	size_t length, aligned_length;
++
++	if (!*remaining)
++		return 0;
++	if (*remaining < NLA_HDRLEN)
++		return -EBADMSG;
++
++	*attr = (struct nlattr *)*cursor;
++	length = (*attr)->nla_len;
++	if (length < NLA_HDRLEN || length > *remaining)
++		return -EBADMSG;
++	aligned_length = NLA_ALIGN(length);
++	if (aligned_length > *remaining)
++		return -EBADMSG;
++
++	*cursor += aligned_length;
++	*remaining -= aligned_length;
++	return 1;
++}
++
++static int find_op_id(const struct nlattr *op_policy, bool *found)
++{
++	const char *cursor = (const char *)op_policy + NLA_HDRLEN;
++	size_t remaining = op_policy->nla_len - NLA_HDRLEN;
++	struct nlattr *attr;
++	int ret;
++
++	while ((ret = next_attr(&cursor, &remaining, &attr)) > 0) {
++		if ((attr->nla_type & NLA_TYPE_MASK) == CTRL_CMD_GETPOLICY)
++			*found = true;
++	}
++
++	return ret;
++}
++
++static int parse_policy_message(const struct nlmsghdr *nlh, bool *found)
++{
++	const char *cursor = (const char *)nlh + NLMSG_LENGTH(GENL_HDRLEN);
++	size_t remaining = nlh->nlmsg_len - NLMSG_LENGTH(GENL_HDRLEN);
++	struct nlattr *attr;
++	int ret;
++
++	while ((ret = next_attr(&cursor, &remaining, &attr)) > 0) {
++		if ((attr->nla_type & NLA_TYPE_MASK) == CTRL_ATTR_OP_POLICY) {
++			ret = find_op_id(attr, found);
++			if (ret < 0)
++				return ret;
++		}
++	}
++
++	return ret;
++}
++
++static int check_policy_dump(int fd)
++{
++	struct genl_request request = {
++		.nlh = {
++			.nlmsg_len = NLMSG_LENGTH(GENL_HDRLEN),
++			.nlmsg_type = GENL_ID_CTRL,
++			.nlmsg_flags = NLM_F_REQUEST | NLM_F_DUMP | NLM_F_ACK,
++			.nlmsg_seq = 1,
++		},
++		.genl = {
++			.cmd = CTRL_CMD_GETPOLICY,
++			.version = 1,
++		},
++	};
++	char reply[REPLY_SIZE];
++	const __u16 family_id = GENL_ID_CTRL;
++	const __u32 op = CTRL_CMD_GETPOLICY;
++	bool found_op = false;
++	struct sockaddr_nl kernel = {
++		.nl_family = AF_NETLINK,
++	};
++	ssize_t sent;
++	int ret;
++
++	ret = add_attr(&request, sizeof(request), CTRL_ATTR_FAMILY_ID,
++		       &family_id, sizeof(family_id));
++	if (ret)
++		return ret;
++	ret = add_attr(&request, sizeof(request), CTRL_ATTR_OP,
++		       &op, sizeof(op));
++	if (ret)
++		return ret;
++
++	sent = sendto(fd, &request, request.nlh.nlmsg_len, 0,
++		      (struct sockaddr *)&kernel, sizeof(kernel));
++	if (sent < 0)
++		return -errno;
++	if (sent != request.nlh.nlmsg_len)
++		return -EIO;
++
++	for (;;) {
++		ssize_t received = recv(fd, reply, sizeof(reply), 0);
++		size_t offset = 0;
++
++		if (received < 0) {
++			if (errno == EINTR)
++				continue;
++			return -errno;
++		}
++
++		while (offset + NLMSG_HDRLEN <= received) {
++			struct nlmsghdr *nlh = (struct nlmsghdr *)(reply + offset);
++			size_t aligned_length;
++
++			if (nlh->nlmsg_len < NLMSG_HDRLEN ||
++			    nlh->nlmsg_len > received - offset)
++				return -EBADMSG;
++			if (nlh->nlmsg_seq != 1) {
++				offset += NLMSG_ALIGN(nlh->nlmsg_len);
++				continue;
++			}
++			if (nlh->nlmsg_type == NLMSG_ERROR) {
++				int error;
++
++				if (nlh->nlmsg_len < NLMSG_LENGTH(sizeof(error)))
++					return -EBADMSG;
++				error = *(int *)NLMSG_DATA(nlh);
++				if (error)
++					return error;
++			} else if (nlh->nlmsg_type == NLMSG_DONE) {
++				if (nlh->nlmsg_flags & NLM_F_DUMP_INTR)
++					return -EINTR;
++				return found_op ? 0 : -ENOENT;
++			} else if (nlh->nlmsg_type == GENL_ID_CTRL) {
++				if (nlh->nlmsg_len < NLMSG_LENGTH(GENL_HDRLEN))
++					return -EBADMSG;
++				ret = parse_policy_message(nlh, &found_op);
++				if (ret < 0)
++					return ret;
++			}
++
++			aligned_length = NLMSG_ALIGN(nlh->nlmsg_len);
++			if (aligned_length > received - offset)
++				return -EBADMSG;
++			offset += aligned_length;
++		}
++	}
++}
++
++int main(void)
++{
++	struct sockaddr_nl local = {
++		.nl_family = AF_NETLINK,
++	};
++	int fd, ret;
++
++	ksft_print_header();
++	ksft_set_plan(1);
++
++	fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_GENERIC);
++	if (fd < 0)
++		ksft_exit_fail_perror("opening generic-netlink socket");
++	if (bind(fd, (struct sockaddr *)&local, sizeof(local))) {
++		close(fd);
++		ksft_exit_fail_perror("binding generic-netlink socket");
++	}
++
++	ret = check_policy_dump(fd);
++	if (close(fd) && !ret)
++		ret = -errno;
++	if (ret == -ENOENT) {
++		ksft_test_result_fail("missing policy op id %u\n",
++				      CTRL_CMD_GETPOLICY);
++	} else if (ret) {
++		errno = -ret;
++		ksft_test_result_fail("GETPOLICY dump failed: %s\n",
++				      strerror(errno));
++	} else {
++		ksft_test_result_pass("policy dump identified command id %u\n",
++				      CTRL_CMD_GETPOLICY);
++	}
++	ksft_finished();
++}
+-- 
+2.43.0
 
