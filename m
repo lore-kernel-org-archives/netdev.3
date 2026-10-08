@@ -1,92 +1,36 @@
-Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A2643FD0B
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 17:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AD83B38B9;
+	Thu,  8 Oct 2026 17:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791482013; cv=none; b=q/Muz4zgiA6I10V+h0ZDBHAMH7PebkO7l33sfv3mQppiRTHEnabCcm3/VieGRXr1IJGA2oWfhEmhoJ4fvQWaeRkUsiMJ94mgzglx/4Sser1S1Q/XAQSWDi2Ci0CXvDb+x+T2H7v/GINVqTEYvi33NvpuNqA6tuzHAUlPxmgmCu0=
+	t=1791482183; cv=none; b=JuSXYkjEG1yunPJQAgH/Mmh/jqTrcXBjeujypJHTYNGmde9VDa6J5Z5hHK9tD3NbhqRj18AaYw7hBJV6RN98w9BIwXUtx0DHJ1EYLliWj8Bs0dwzp5BwQFf8EyTLVUTj5Ut7rGGmpkahwEMtWrE4/I3M7Tey8sU6aie8/HBSVPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791482013; c=relaxed/simple;
-	bh=77hqLc9J7JNzbmg7AMorhPOB16l5fiuXalMgNBngkQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXWLO9Ex2KNMlFU0uSK3sFTlbwmobHQ2Hy1dj++w64FfCreQnJQdSyVXXkneHhCZVopHh7Fy4YgyBL88msvnG+9ySmLBlmDws3hJESkey6qlFHOpEYMD7CXd5/9fRlHLe/eP73UBWW023NfDk7FYd3wvEen4L4WbtrD1qdbi3BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U6F464ud; arc=none smtp.client-ip=74.125.227.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U6F464ud"
-Received: by mail-pj2-f7.google.com with SMTP id 98e67ed59e1d1-39e501442e2so2084894a91.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 10:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791482011; x=1792086811; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yY8SyQWcSYsDi8cm3rA+aW2F8vWLi9p/feyMtYn7Pcg=;
-        b=U6F464udNz7sAkBvHjW/0IKodXHDHrUra980xqWG7jHcPKRn97ZGLK38uhsIxr6Ady
-         2N3zhlr3Mi++REofXu3KX3v37Lhhmc1Fuhwoa2gIBd8jJpTRMgxT/c2wGcDs7SM6Ogn/
-         EcfjwhZRCYESzkZa0bWnnwheVxPhdGmL9IVB+jzleqVf+qukmbvPTV5uUu80vEkJh2Zw
-         PBc7O2ORvTld2g1fxmi+UurxtUgYRrCoriv+hjpPCTAJs0Hg+OkNuWQkjiDbldKSqmdr
-         3nkTSoWzMlKSsQp2hzloZDw6/TdV2lTvAuJCx29y6XzfYjCqJcanS6Ei2lCya6AM+Hey
-         bi6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791482011; x=1792086811;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yY8SyQWcSYsDi8cm3rA+aW2F8vWLi9p/feyMtYn7Pcg=;
-        b=TX7soEFigKsczbPL4nOPr+G8wk66Rm4Iq8zf+A7eMUFAEWVsmhSo8iuI/ToJjTH5H5
-         eMjUZUkM+RPHslWi8rasMYO+xQQSJXim1UjlXJ1L8IMx34uRlv4Kqe/tioeM2G4mQcaI
-         mxNc40uzbCGdwf3NrRNZaCtqmuK2QPwufkJ08spPm1xrFPzKoEZUSAwIQYz7kGKdrknW
-         tpgOPOBEcCB8JUn5tnO4ckILxvRvC29zMMpR8iuVnz8jB0KG3+1H5+Shzka4GX5V9ViH
-         6em62zG2IxWIzsxNR5o3JEdOdANGzZHjwDa95cdPh2My3AzmEXYdnqHVzJ+qtH5N6cIz
-         rK9A==
-X-Forwarded-Encrypted: i=1; AKwUvBxwUXjr/UiTfCqMyBVlZkB5U7OeVdnFgsNmG4DOjY8xo0fStorSP24ylkEet8INFlScSzWM1nU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJkRa+f3rD3GOxRcj9d5F70Rb45yfjaUW3cceIx/8KYrR2RBUlU
-	YBRUgRncPHXyZuMUXztbO6Xt0Dgx3mewweTxbb81aHTvjAuEUDpnxBeV
-X-Gm-Gg: AYBFou1M72+W6+VEuJEiR0tyU5GTeybfV9/g3rkU6XVNKjkKLxkD4KZCbJ0zxjyx1yP
-	MiOG/ZHa23vHU2v+9Zq9Zfg8pxWc1p92vP3o+Kjb96RhBt9m7ZnYAijXRAnc0IKNMkmM1dm46M0
-	rMYasKI6dO0F0ogyF87GrIwSLnLHE7UZC2Cxen8dwofx4OMfGPE4hbG9CcHep6pkhmdOXPxpfN5
-	YdUZ6QH1b3joeZCKtnm91+py7LXX5neYD0BBF0bjrTVn+tJgDHsjaB9c3CR43CY3VQHw57WtTcC
-	snbl1UvbBIc4u5l5zNg+9XNyHn1+d/Np27KWjW75Wsj9Xdrs38T/kk9/G8O7TTxKm9JJTUVMEMp
-	XLBuEMQouIRjk0r1yNg5UKANiDDTB+Bg3jYbG79GQKkUV1aY8B2VguoTzRQsngqrcEX/fBg4Ekg
-	/vEi7C6YHe1cXcAS0Pkv6GT7cGbbIKWpxlq9scemERD0JQJ/T2pZ9c7e/4QAF8c06xjA3tojfx5
-	hKaah8=
-X-Received: by 2002:a17:90b:534f:b0:3a8:59d3:5317 with SMTP id 98e67ed59e1d1-3a8a0cd4b4emr5164503a91.32.1791482011331;
-        Thu, 08 Oct 2026 10:53:31 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab3277c459sm144332a91.16.2026.10.08.10.53.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 10:53:30 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	s=arc-20240116; t=1791482183; c=relaxed/simple;
+	bh=edzsBnnHxbYxOo3OoR0PdT/k6aGpP3sirb68mDkhhgg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MEFFQ5MCpJUF7UtGnQ+dP4HrozJjBZN+7VK6fuxqN2BgJmhqULQ2S2bWzV8nnaI+Abd5RAv+2hr+HcYp1a96sEVTm9VEGfB1Sa7HL/lgoafHcaA5rpkXZfaZi1rkIxm9xLQ3hRqeZ3z5U/o+aTVGS+m2wEXl8H3sbIqHrasyiXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fc87d0ffb700.home.arpa (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowACnsD452cdqBN4PCg--.12700S2;
+	Fri, 09 Oct 2026 01:56:09 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
-	David Wu <david.wu@rock-chips.com>,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Coia Prant <coiaprant@gmail.com>
-Subject: [PATCH net-next v11 6/6] MAINTAINERS: add entry for Rockchip XPCS driver
-Date: Fri,  9 Oct 2026 01:52:00 +0800
-Message-ID: <20261008175225.3375274-7-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261008175225.3375274-1-coiaprant@gmail.com>
-References: <20261008175225.3375274-1-coiaprant@gmail.com>
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Daney <david.daney@cavium.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: mdio: mdio-mux: fix device_node reference leak on success
+Date: Fri,  9 Oct 2026 01:56:12 +0800
+Message-Id: <20261008175612.2748920-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,38 +38,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACnsD452cdqBN4PCg--.12700S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GrWfXFy3XF15WF18CF17KFg_yoWkGrg_Gr
+	n7Wr97Cw18GFsFyw47Cr4Sv393KFnruFWxWFsI9a98J393AF1UCr1DuwnxJ348CrWak3W5
+	Cr1DJF4UX342gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVAYjsxI4VWkKwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
+	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
+	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
+	cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I
+	8E87Iv6xkF7I0E14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kI
+	c2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
+	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
+	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
+	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
+	0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
+	VjvjDU0xZFpf9x07b52NNUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAAOA2rHpfV2UAAAsa
 
-Add a MAINTAINERS entry for the Rockchip RK3568 XPCS platform driver
-and its device tree binding.
+mdio_mux_init() obtains a reference to the parent bus device_node with
+of_parse_phandle() when no mux_bus is passed in. All error paths release
+it through err_parent_bus, but the success path at the end of the
+function returns without calling of_node_put(). of_mdio_find_bus() only
+takes a reference to the embedded struct device, so the device_node
+reference is leaked for every multiplexer that probes successfully.
 
-Include the relevant mailing lists (netdev and linux-rockchip) so that
-future patches are properly distributed.
+Release parent_bus_node before returning from the success path.
 
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Fixes: 0ca2997d1452 ("netdev/of/phy: Add MDIO bus multiplexer support.")
+Assisted-by: DeepSeek-V4.1-Flash
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
 ---
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/mdio/mdio-mux.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 65e8a4b5c90b1..2f0f46eabcf54 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -23757,6 +23757,15 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/sound/rockchip,rk3576-sai.yaml
- F:	sound/soc/rockchip/rockchip_sai.*
+diff --git a/drivers/net/mdio/mdio-mux.c b/drivers/net/mdio/mdio-mux.c
+index fe0e46bd7964..fe752120e27b 100644
+--- a/drivers/net/mdio/mdio-mux.c
++++ b/drivers/net/mdio/mdio-mux.c
+@@ -240,6 +240,7 @@ int mdio_mux_init(struct device *dev,
+ 	}
+ 	if (pb->children) {
+ 		*mux_handle = pb;
++		of_node_put(parent_bus_node);
+ 		return 0;
+ 	}
  
-+ROCKCHIP XPCS DRIVER
-+M:	Coia Prant <coiaprant@gmail.com>
-+L:	netdev@vger.kernel.org
-+L:	linux-rockchip@lists.infradead.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
-+F:	drivers/net/pcs/pcs-xpcs-rk.c
-+F:	include/linux/pcs/pcs-xpcs-rk.h
-+
- ROCKER DRIVER
- M:	Jiri Pirko <jiri@resnulli.us>
- L:	netdev@vger.kernel.org
 -- 
-2.47.3
+2.25.1
 
