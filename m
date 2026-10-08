@@ -1,65 +1,77 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABC497B9C;
-	Thu,  8 Oct 2026 11:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D65046DFF6
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 11:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791460200; cv=none; b=HLerb2NhIAQIFqd5Z+eIdSaph/jxhXc67rMq4R4ryY6qFt27O11ob/0NpYKhZrOoY5e045TrfdtkZArynjNJwdpamFp1D173yYGJOZMXqK/QXkvqqgukJMGjoZvuXIGaGrtmV4150xcrgnMuQPiZCVR4yGgOWd4+L5ZMJS/KUYg=
+	t=1791460303; cv=none; b=PFZWzzTpt5/IQizpbgPTSKjXrN3I5Nr01/rzlRA6VRCixwMv5t9fnruvkRYMv40jh98mbl0fJ4Awrm4g5tb2dxOfUB0m8JnylbVP9FBegiiwRgy1oVdBDVJ+P2cLMbEItBeHqj9fYpfx3stT+e/O998wra2Yx86A5u7nI0XmdWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791460200; c=relaxed/simple;
-	bh=H7bNyL0va2wCATyZvvTa8GjB7pDXZRPuGjnFDuDfalg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DMLnZzwL7YtfdeF1P0KSQzGVQIZToeDu3LycqaotfTp43qB2mk2qn1IsJkEE0u8CAs/XxjJFIe4PCj82zt0bo63p3oItiue/8MZJ2wRJUQUAeXieFF96bRcVj8T18RlStM8p6t3+ZbZmsPntMbt/RpUFuewp6YzHhWd7797pQO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BQwtTxY1; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791460303; c=relaxed/simple;
+	bh=HKYesztoZud9Nk3d36K4QAwPUgNiD8VsgAIOJLZJMwI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TFTCtxFtLPqwJ9Pq+zVSE7HhDPVYhMwZj/sIipFc7SDlD/xAeo6U0FpyF0I3hePSUz+1tPGgJLUHcvnhC4p6CYoZSfzda+69xupMSPrsOfXdSoUG8gpS+RQT5x85utIAj8tIMHwFvLpOAt108HZh5GvoVAK89zj0j78dKnmXc+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YMeuYeoI; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BQwtTxY1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791460196; x=1822996196;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=H7bNyL0va2wCATyZvvTa8GjB7pDXZRPuGjnFDuDfalg=;
-  b=BQwtTxY1QDYlXYDN+W9/BYZTTpsgdNiHrfAzkpceZQ7LNs4qq50W6nlK
-   zPyPjxe3/A4H1WZxWbkkm4icacf6J063lYS1xgXPXhc01WTqaGy0lGyfC
-   XhcUa5ln6oTbYFZwZa971MRYO328NlzyPSvHdPdI20vwPByNPuuwaseVB
-   x4b2TZO62TTmVhTOz0j/I9ZUCVQLb3Ai1TotUPL7cpqNrojs3VcHn7fOJ
-   YIt3pjtfbBnrclNhc809ZNolwnvNRT03FoCQ5C3PHfFB7Bi2YIxqslleI
-   PWERS+id22xEANPl9I3cErv0WsvKGezVReSoDy3nY34SA/sCCdNaQACbK
-   Q==;
-X-CSE-ConnectionGUID: uC03/XPSQLKQmU5fkNsHmA==
-X-CSE-MsgGUID: brLitjKeTl6fCVNSv5NVGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="124994"
-X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="124994"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 04:49:55 -0700
-X-CSE-ConnectionGUID: PEsEAi1rRpeC/40JCEvZ5w==
-X-CSE-MsgGUID: 8f4/pnUuTQmhyfj3JsdCNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="467213"
-Received: from boxer.igk.intel.com ([10.102.20.173])
-  by orviesa010.jf.intel.com with ESMTP; 08 Oct 2026 04:49:53 -0700
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	stfomichev@gmail.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YMeuYeoI"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c2e62319cfaso526182266b.2
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 04:51:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791460299; x=1792065099; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=H+FDGOW/u+KiRKHRknQe57Swy2AN4nRD52/L+SlCLfc=;
+        b=YMeuYeoInZcBSHfWk8hPKxDhlvBOb4KTPc3NlSFc0UCVZE6CHkdmwLavNvcATuqcvQ
+         i8i4JxKqefJzJSgASNAmxQ2pCVDjoYVG8HhLOnZ5Kb1y3bXN4ldXP7W9PP8Cw5NzEEcX
+         jjolPbbqAhZX/NGD7ep9fKJtk66o8Ke6q3MzQSBEeoae7iQ2RKCBUDAU8bs9jZ5y5HHU
+         kG+ZtRwEswVrQnFjisImEOUToeJmngrsPIW91oRtZv6coKm/4KHOlTjUX0qxZ9AUBs/Z
+         sJNlO+23XuowmbhZLA8vdHFQYTQXWZdFXlTK/zzoZH6ohia0Ju220V0TzEaNOcVam5Ku
+         xHWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791460299; x=1792065099;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H+FDGOW/u+KiRKHRknQe57Swy2AN4nRD52/L+SlCLfc=;
+        b=Gzl3X8jg+Fo6/TVslnB5b2wLXVTM75uVAG917nYbnAIwD1ToPuSwfKO48ALXnNzWOH
+         UMwF0bceP68Hzfy6QOm1/sIlFEgmxhXqhnlKjbDhFPjd8Qowon0oALeKwfCElX02SUFT
+         beWYT61ij8FFv3qoA7FcTD6o1FvNdyUfmuDxwiClSnksPhnAhD+Es1rMbQa3STDHMbyi
+         rd/O+DPo57qCk4ltT0ep2TlMzWd6ZGs/RlgT/nmPn1RXn2I0aKQABHu9GCA+aUDwtXT5
+         DwPEC30KtZUEm5KmDY3Ry6m4F42K9/Qwp1SXGUPx7xSdHGdDzhn//F5mIErRuUF6WyW1
+         AJaA==
+X-Forwarded-Encrypted: i=1; AKwUvBwgyhzWrECwZQbwnIWIA91nq6ozddvYlPG/mNUofIOpIWYF8Yo4YopScY7w4Nhrh1xGWKXyHB8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nMRkryHOUR72Ev9wbr97vCfHCMM7RAbdKQCWHjB+AkAyQ2BMMd
+	0qNWS+w8KZDM9PeqQhI8W80jM9Ry44s5phqPKBR7AtXHWexWikESKcz0
+X-Gm-Gg: AYBFou0U5OiWJaN3QzbRKDOfdISXPUltKoPAsSZdQosfs38l5EVZcfHEUlb2s4poULw
+	adM2U/msRLqGNxA1TDBeUKTWe8r9nahqYKnDnPCOj2ZS0BHbwyGe6O3ff13PBnvV5iw57R86Y3+
+	QpMpQxr4xSN68jq3y1po/3DcaYRUhWYfdGZIAEQkiu65nYbjFr7mIyZm4kZqlnAptOeGKWZUVQ0
+	R6H7WCJ5KWtvmgfVQAfzoK64ULyYni9DaUZFPQWH+gXbxzfzBCO4NQ9/oOh78dyq/w4tSz9Dc41
+	wXPXqphQ8N6uwUMFZYilEquYX+dMOexC8nf/TVq9doRk+mHNO2tyXp+/jL5g+4P0PLyIspQpNJp
+	HU0Fge4Vz+m8TGC5OmQd1AjjkgIW8TXWnn14ZBCQ1jQsTTRA77iI915H7u0Ik/5p3Xbw0D/ByRp
+	l6UiuLRDseZ6adHfgsAxb7ZC8N3GFGKe2BuVxmaLB+fqlfIv1y6twC2Leb5QlwSxtO2j3UzlUCI
+	vBvVoKeUo9kyy0q4K34WQ==
+X-Received: by 2002:a17:907:3da8:b0:c2e:3d17:5259 with SMTP id a640c23a62f3a-c317c132f17mr525725166b.41.1791460298499;
+        Thu, 08 Oct 2026 04:51:38 -0700 (PDT)
+Received: from theodors-laptop.. ([5.255.118.7])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c317c2fcf7fsm209626166b.51.2026.10.08.04.51.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 04:51:37 -0700 (PDT)
+From: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+To: edumazet@kernel.org,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	tushar.vyavahare@intel.com,
-	kerneljasonxing@gmail.com,
-	bjorn@kernel.org,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH v2 net-next 13/14] selftests: drv-net: test AF_XDP zero-copy with an SKB peer
-Date: Thu,  8 Oct 2026 13:49:08 +0200
-Message-Id: <20261008114909.734364-14-maciej.fijalkowski@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20261008114909.734364-1-maciej.fijalkowski@intel.com>
-References: <20261008114909.734364-1-maciej.fijalkowski@intel.com>
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+Subject: [PATCH net v2] tcp: do not send a SYNACK to a broadcast or multicast address
+Date: Thu,  8 Oct 2026 14:49:42 +0300
+Message-Id: <20261008114942.1376889-1-theodorlarionov@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,542 +80,216 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Run each hardware AF_XDP case as a separate DUT and remote xskxceiver
-pair. The DUT endpoint uses zero-copy mode and the remote endpoint uses
-SKB mode, without negotiating remote capabilities. The cases, and the
-DUT direction each of them covers, come from test_xsk_case_defs.h and
-become KTAP variants named <rx|tx>_<case>, so -t and -T select them as
-for any other ksft_variants() test.
+tcp_v4_conn_request() drops a SYN sent to a broadcast or multicast
+address. The SYNACK route has no such check. A SYN with a multicast
+source address can reach a listener when it is looped back with its
+dst attached: ip_rcv_finish_core() then skips ip_route_input_noref()
+and its martian source check. A raw IP_HDRINCL socket sending to a
+local address does this, as does re-injection by nft dup or the
+iptables TEE target.
 
-Use the networking selftest Python helpers for remote execution, process
-lifetime, deferred restoration, TAP variants and random control ports.
-Each case sets up only what its DUT direction needs and undoes it with
-defer() when it ends: RX cases take the last DUT queue out of RSS and
-steer the test UDP flow to it, TX cases steer the flow to queue 0 on the
-remote, where its SKB-mode socket is bound, and UNALIGNED cases reserve
-hugepages on both hosts. A setup failure therefore skips only the cases
-that need that setup: a one-channel DUT still runs the TX cases and a
-remote without ntuple filters still runs the RX ones.
+If the SYN destination is an address on a non-loopback device and the
+source is a group joined there (such as 224.0.0.1), the SYNACK route
+has RTCF_MULTICAST and RTCF_LOCAL set, and ip_build_and_send_pkt()
+sends it through ip_mc_output(). skb->sk of a SYNACK is the request
+socket, so sk_mc_loop() reads inet_flags past the end of it:
 
-xsk.py -b runs the cases as test_xsk_busy_poll instead, like the
-busy-poll pass of test_xsk.sh. The DUT endpoint then busy polls, and
-each case sets napi_defer_hard_irqs and gro_flush_timeout on the DUT to
-the values test_xsk.sh uses on veth, so that SO_PREFER_BUSY_POLL keeps
-the device IRQs masked, and restores them when it ends. The remote
-endpoint does not busy poll.
+BUG: KASAN: slab-out-of-bounds in sk_mc_loop+0x111/0x170
+Read of size 8 at addr ffff88800f2b7f10 by task repro-raw/470
+Call Trace:
+ <IRQ>
+ sk_mc_loop+0x111/0x170
+ ip_mc_output+0x355/0x930
+ ip_build_and_send_pkt+0xb87/0xc50
+ tcp_v4_send_synack+0x500/0x6f0
+ tcp_conn_request+0x2135/0x2d90
+ tcp_v4_conn_request+0xa5/0x210
+ tcp_rcv_state_process+0x136e/0x6920
+ tcp_v4_do_rcv+0x339/0xb10
+ tcp_v4_rcv+0x34ab/0x3ab0
+ ip_protocol_deliver_rcu+0x6e/0x3e0
+ ip_local_deliver_finish+0x34d/0x510
+ ip_local_deliver+0x1bc/0x310
+ ip_rcv+0x390/0x410
+ __netif_receive_skb_one_core+0x199/0x1e0
+ process_backlog+0x239/0x680
+ __napi_poll+0xb5/0x650
+ net_rx_action+0x980/0xd60
+ handle_softirqs+0x17f/0x590
+ do_softirq+0x3f/0x60
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0x66/0x80
+ __dev_queue_xmit+0xa65/0x3520
+ ip_finish_output2+0xb00/0x16f0
+ ip_output+0x2ad/0x4a0
+ raw_sendmsg+0x245b/0x28e0
+ inet_sendmsg+0x121/0x150
+ __sys_sendto+0x450/0x4e0
+ do_syscall_64+0xf6/0x500
+ </TASK>
 
-Each remote command costs an SSH login, so the runner keeps them few. It
-adds a steering rule first and checks ntuple-filters only if the NIC
-refuses the rule, and it starts the DUT endpoint once the remote
-endpoint prints on stderr that it listens, instead of polling the remote
-for the port. The endpoints detach their XDP programs and restore the
-MTU when they exit, and the runner does so for them only after one fails
-or is killed. Only the deployed remote binary, the DUT zero-copy check
-and the idle MTU of the remote link are shared between cases. The remote
-link is not checked again, as a remote endpoint replaces an XDP program
-that an earlier one left behind.
+Allocated by task 470:
+ inet_reqsk_alloc+0x97/0x6f0
+ tcp_conn_request+0x4c6/0x2d90
+ tcp_v4_conn_request+0xa5/0x210
 
-xsk.py runs the xskxceiver built by net/lib, which drv-net already pulls
-in as an install dependency, and deploys it to the remote.
-XSK_REMOTE_BIN names a remote path to copy it to instead, or, with
-XSK_REMOTE_DEPLOY=0, an already installed binary. XSK_REMOTE_SUDO runs
-the remote commands through sudo -n, and XSK_UDP_PORT overrides the port
-of the test flow.
+The buggy address belongs to the object at ffff88800f2b7d60
+ which belongs to the cache request_sock_TCP of size 312
+The buggy address is located 120 bytes to the right of
+ allocated 312-byte region [ffff88800f2b7d60, ffff88800f2b7e98)
 
-The remote is either another host over SSH or the peer port of the DUT
-host in a network namespace, as on the drv-net setups that loop two
-ports of one NIC back to back. With SSH, the control channel connects to
-the SSH host. A namespace is reached only over the tested link, so the
-control channel connects to REMOTE_V4 there and relies on the XDP
-programs passing non-test traffic to the stack. The DUT TX socket fills
-no RX buffers, so its zero-copy queue drops what it receives; with a
-namespace remote, DUT TX cases therefore also take that queue out of RSS
-so the control connection does not land on it.
+Apply the same check to the SYNACK route in inet_csk_route_req().
 
-Add xsk.py to TEST_PROGS and to the AF_XDP entry in MAINTAINERS, and
-CONFIG_XDP_SOCKETS to the drv-net config.
-
-Assisted-by: LLM
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Fixes: ca6fb0651883 ("tcp: attach SYNACK messages to request sockets instead of listener")
+Suggested-by: Eric Dumazet <edumazet@kernel.org>
+Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
 ---
- MAINTAINERS                                   |   1 +
- .../testing/selftests/drivers/net/hw/Makefile |   1 +
- tools/testing/selftests/drivers/net/hw/config |   1 +
- tools/testing/selftests/drivers/net/hw/xsk.py | 417 ++++++++++++++++++
- tools/testing/selftests/net/lib/Makefile      |   2 +-
- 5 files changed, 421 insertions(+), 1 deletion(-)
- create mode 100755 tools/testing/selftests/drivers/net/hw/xsk.py
+v2:
+- Reject broadcast/multicast SYNACK routes in inet_csk_route_req() (Eric Dumazet).
+- Describe how the SYN reaches the listener; add KASAN splat and repro.
+v1: https://lore.kernel.org/netdev/20261008100423.1256884-1-theodorlarionov@gmail.com/
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0baa0d037c73..c170ea3267c9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -29778,6 +29778,7 @@ F:	include/net/xsk_buff_pool.h
- F:	include/uapi/linux/if_xdp.h
- F:	include/uapi/linux/xdp_diag.h
- F:	net/xdp/
-+F:	tools/testing/selftests/drivers/net/hw/xsk.py
- F:	tools/testing/selftests/net/*xsk*
- F:	tools/testing/selftests/net/lib/xsk/
+Reproducer (unprivileged, user + network namespace):
+
+// gcc -O2 -static -o repro repro.c && ./repro
+#define _GNU_SOURCE
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <netinet/in.h>
+#include <sched.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+#define LOCAL_ADDR "10.0.0.1"	/* address of dummy0 */
+#define MCAST_SRC  "224.0.0.1"	/* all-hosts, joined on every interface */
+#define PORT       20000
+
+static void die(const char *m) { perror(m); exit(1); }
+
+static void wr(const char *path, const char *buf)
+{
+	int fd = open(path, O_WRONLY);
+
+	if (fd < 0 || write(fd, buf, strlen(buf)) < 0)
+		die(path);
+	close(fd);
+}
+
+static void run(const char *cmd)
+{
+	if (system(cmd))
+		fprintf(stderr, "failed: %s\n", cmd);
+}
+
+static uint16_t csum(const uint8_t *p, int len)
+{
+	uint32_t s = 0;
+	int i;
+
+	for (i = 0; i + 1 < len; i += 2)
+		s += (p[i] << 8) | p[i + 1];
+	if (i < len)
+		s += p[i] << 8;
+	while (s >> 16)
+		s = (s & 0xffff) + (s >> 16);
+	return ~s;
+}
+
+int main(void)
+{
+	char map[64];
+	int uid = getuid(), gid = getgid();
+
+	if (unshare(CLONE_NEWUSER | CLONE_NEWNET))
+		die("unshare");
+	wr("/proc/self/setgroups", "deny");
+	snprintf(map, sizeof(map), "0 %d 1", uid);
+	wr("/proc/self/uid_map", map);
+	snprintf(map, sizeof(map), "0 %d 1", gid);
+	wr("/proc/self/gid_map", map);
+
+	run("ip link set lo up");
+	run("ip link add dummy0 type dummy");
+	run("ip addr add " LOCAL_ADDR "/24 dev dummy0");
+	run("ip link set dummy0 up");
+
+	int l = socket(AF_INET, SOCK_STREAM, 0);
+	struct sockaddr_in a = {
+		.sin_family = AF_INET,
+		.sin_port = htons(PORT),
+	};
+	if (l < 0 || bind(l, (struct sockaddr *)&a, sizeof(a)) || listen(l, 128))
+		die("listen");
+
+	int raw = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
+	if (raw < 0)
+		die("raw socket");
+
+	uint8_t pkt[40] = { 0 }, ph[32];
+	uint32_t saddr = inet_addr(MCAST_SRC), daddr = inet_addr(LOCAL_ADDR);
+
+	pkt[0] = 0x45;			/* IPv4, ihl 5 */
+	pkt[3] = sizeof(pkt);		/* tot_len */
+	pkt[8] = 64;			/* ttl */
+	pkt[9] = IPPROTO_TCP;
+	memcpy(pkt + 12, &saddr, 4);
+	memcpy(pkt + 16, &daddr, 4);
+	pkt[22] = PORT >> 8;		/* dport */
+	pkt[23] = PORT & 0xff;
+	pkt[32] = 5 << 4;		/* doff */
+	pkt[33] = 0x02;			/* SYN */
+	pkt[34] = 0x40;			/* window */
+
+	for (int i = 0; i < 100; i++) {
+		uint16_t c, sport = 10000 + i;
+		struct sockaddr_in to = {
+			.sin_family = AF_INET,
+			.sin_addr.s_addr = daddr,
+		};
+
+		pkt[20] = sport >> 8;
+		pkt[21] = sport & 0xff;
+		pkt[36] = pkt[37] = 0;
+		memcpy(ph, pkt + 12, 8);	/* pseudo header */
+		ph[8] = 0;
+		ph[9] = IPPROTO_TCP;
+		ph[10] = 0;
+		ph[11] = 20;
+		memcpy(ph + 12, pkt + 20, 20);
+		c = csum(ph, sizeof(ph));
+		pkt[36] = c >> 8;
+		pkt[37] = c & 0xff;
+		if (sendto(raw, pkt, sizeof(pkt), 0, (struct sockaddr *)&to, sizeof(to)) < 0)
+			die("sendto");
+	}
+	sleep(1);
+	return 0;
+}
+
+ net/ipv4/inet_connection_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 6a30f1138454..aa928015cd14 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -779,6 +779,9 @@ struct dst_entry *inet_csk_route_req(const struct sock *sk,
+ 		goto no_route;
+ 	if (opt && opt->opt.is_strictroute && rt->rt_uses_gateway)
+ 		goto route_err;
++	/* Never send a SYNACK to a broadcast or multicast destination. */
++	if (rt->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
++		goto route_err;
+ 	rcu_read_unlock();
+ 	return &rt->dst;
  
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 18ce235a77f8..02e48e74f6c6 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -52,6 +52,7 @@ TEST_PROGS = \
- 	uso.py \
- 	vlan.py \
- 	xdp_metadata.py \
-+	xsk.py \
- 	xsk_reconfig.py \
- 	#
- 
-diff --git a/tools/testing/selftests/drivers/net/hw/config b/tools/testing/selftests/drivers/net/hw/config
-index c6c2b64bb712..f28335170d6b 100644
---- a/tools/testing/selftests/drivers/net/hw/config
-+++ b/tools/testing/selftests/drivers/net/hw/config
-@@ -26,4 +26,5 @@ CONFIG_UDMABUF=y
- CONFIG_USER_NS=y
- CONFIG_VLAN_8021Q=m
- CONFIG_VXLAN=y
-+CONFIG_XDP_SOCKETS=y
- CONFIG_XFRM_USER=y
-diff --git a/tools/testing/selftests/drivers/net/hw/xsk.py b/tools/testing/selftests/drivers/net/hw/xsk.py
-new file mode 100755
-index 000000000000..a33d4af869c7
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/xsk.py
-@@ -0,0 +1,417 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+"""AF_XDP zero-copy hardware tests with an SKB-mode XSK peer."""
-+
-+import re
-+import shlex
-+import subprocess
-+import sys
-+import time
-+from pathlib import Path
-+
-+from lib.py import (EthtoolFamily, KsftFailEx, KsftNamedVariant, KsftSkipEx,
-+                    NetdevFamily, NetDrvEpEnv, bkg, cmd, defer, ethtool,
-+                    fd_read_timeout, ip, ksft_exit, ksft_pr, ksft_run,
-+                    ksft_variants, rand_port)
-+
-+CASE_TIMEOUT = 120
-+LISTEN_TIMEOUT = 30
-+NR_HUGEPAGES = 32
-+SKIP_CODE = 4
-+XSK_BIN = (Path(__file__).parent / "../../../net/lib/xskxceiver").resolve()
-+XSK_CASES = XSK_BIN.parent / "xsk/test_xsk_case_defs.h"
-+
-+
-+def _hardware_cases():
-+    defs = XSK_CASES.read_text()
-+    entries = re.findall(r"(?m)^XSK_TEST_CASE\((\w+),\s*\w+,\s*([^)]+)\)", defs)
-+    if not entries or len(entries) != defs.count("XSK_TEST_CASE("):
-+        raise KsftFailEx(f"cannot parse {XSK_CASES}")
-+    variants = []
-+    for test_id, (name, hw) in enumerate(entries):
-+        flags = {flag.strip() for flag in hw.split("|")}
-+        if not flags <= {"0", "XSK_HW_RX", "XSK_HW_TX"}:
-+            raise KsftFailEx(f"invalid hardware directions for {name}: {hw}")
-+        variants += [KsftNamedVariant(f"{d}_{name.lower()}", name, d, test_id)
-+                     for d in ("rx", "tx") if f"XSK_HW_{d.upper()}" in flags]
-+    return variants
-+
-+
-+def _netns_remote(cfg):
-+    return cfg.env.get("REMOTE_TYPE") == "netns"
-+
-+
-+def _control_addr(cfg):
-+    """An SSH remote is reached over its management link. A netns remote is
-+    reached only over the tested link, where the XDP programs pass the
-+    control connection to the stack."""
-+    if _netns_remote(cfg):
-+        return cfg.remote_addr_v["4"]
-+    return cfg.remote.name.rpartition("@")[2]
-+
-+
-+def _root_cmd(command, host=None, sudo=False, **kwargs):
-+    if sudo:
-+        command = "sudo -n " + command
-+    return cmd(command, host=host, **kwargs)
-+
-+
-+def _remote_binary(cfg, local_binary):
-+    binary = cfg.env.get("XSK_REMOTE_BIN")
-+    if not binary:
-+        return cfg.remote.deploy(local_binary)
-+    if cfg.env.get("REMOTE_TYPE") != "ssh":
-+        raise KsftSkipEx("XSK_REMOTE_BIN requires the SSH remote backend")
-+    if cfg.env.get("XSK_REMOTE_DEPLOY", "1") == "0":
-+        result = cmd(f"test -x {shlex.quote(binary)}", host=cfg.remote,
-+                     fail=False)
-+        if result.ret:
-+            raise KsftSkipEx(f"remote xskxceiver is not executable: {binary}")
-+        return binary
-+    upload = binary + ".upload"
-+    cmd(["scp", "-q", str(local_binary), f"{cfg.remote.name}:{upload}"],
-+        shell=False)
-+    cmd(f"mv -f {shlex.quote(upload)} {shlex.quote(binary)}",
-+        host=cfg.remote)
-+    return binary
-+
-+
-+def _remote_sudo(cfg):
-+    return cfg.env.get("XSK_REMOTE_SUDO", "").lower() not in ("", "0", "false")
-+
-+
-+def _restore_mtu(ifname, mtu, host=None, sudo=False):
-+    actual = ip(f"link show dev {shlex.quote(ifname)}", json=True,
-+                host=host)[0]["mtu"]
-+    if actual == mtu:
-+        return
-+    _root_cmd(f"ip link set dev {shlex.quote(ifname)} mtu {mtu}",
-+              host=host, sudo=sudo)
-+
-+
-+def _reserve_hugepages(host=None, sudo=False):
-+    have = int(cmd("sysctl -n vm.nr_hugepages", host=host).stdout)
-+    if have >= NR_HUGEPAGES:
-+        return
-+    _root_cmd(f"sysctl -qw vm.nr_hugepages={NR_HUGEPAGES}", host=host,
-+              sudo=sudo, fail=False)
-+    got = int(cmd("sysctl -n vm.nr_hugepages", host=host).stdout)
-+    if got != have:
-+        defer(_root_cmd, f"sysctl -qw vm.nr_hugepages={have}", host=host,
-+              sudo=sudo)
-+    if got < NR_HUGEPAGES:
-+        raise KsftSkipEx(f"only {got}/{NR_HUGEPAGES} hugepages available")
-+
-+
-+def _prefer_busy_poll(ifname):
-+    """SO_PREFER_BUSY_POLL keeps the device IRQs masked between busy polls
-+    only while napi_defer_hard_irqs and gro_flush_timeout are set. Use the
-+    values that test_xsk.sh sets on veth."""
-+    for knob, value in (("napi_defer_hard_irqs", "2"),
-+                        ("gro_flush_timeout", "200000")):
-+        path = Path("/sys/class/net", ifname, knob)
-+        orig = path.read_text(encoding="utf-8").strip()
-+        if orig != value:
-+            path.write_text(value, encoding="utf-8")
-+            defer(path.write_text, orig, encoding="utf-8")
-+
-+
-+def _feature_state(ifname, feature, host=None):
-+    """Read an ethtool -k feature. Parse the text output, as older ethtool
-+    versions can't print -k as JSON."""
-+    output = ethtool(f"-k {shlex.quote(ifname)}", host=host).stdout
-+    match = re.search(rf"^{re.escape(feature)}:\s+(on|off)(.*)$", output,
-+                      re.MULTILINE)
-+    if not match:
-+        raise KsftSkipEx(f"ethtool does not report {feature} on {ifname}")
-+    return {"active": match[1] == "on", "fixed": "[fixed]" in match[2]}
-+
-+
-+def _steer_udp(ifname, port, queue, host=None, sudo=False):
-+    dev = shlex.quote(ifname)
-+    rule = f"ethtool -N {dev} flow-type udp4 dst-port {port} action {queue}"
-+    # Look at ntuple-filters only once the rule is refused, as every command
-+    # on the remote costs a round trip.
-+    added = _root_cmd(rule, host=host, sudo=sudo, fail=False)
-+    if added.ret:
-+        ntuple = _feature_state(ifname, "ntuple-filters", host)
-+        if not ntuple["active"]:
-+            if ntuple["fixed"]:
-+                raise KsftSkipEx("NIC does not support ntuple filters")
-+            _root_cmd(f"ethtool -K {dev} ntuple-filters on", host=host,
-+                      sudo=sudo)
-+            defer(_root_cmd, f"ethtool -K {dev} ntuple-filters off",
-+                  host=host, sudo=sudo)
-+            added = _root_cmd(rule, host=host, sudo=sudo, fail=False)
-+    if added.ret:
-+        ksft_pr(repr(added))
-+        raise KsftSkipEx(f"cannot steer UDP flow to queue {queue} on {ifname}")
-+    match = re.search(r"ID (\d+)", added.stdout)
-+    if not match:
-+        raise KsftFailEx(f"cannot identify new ntuple rule: {added.stdout}")
-+    defer(_root_cmd, f"ethtool -N {dev} delete {match[1]}", host=host,
-+          sudo=sudo)
-+
-+
-+def _reserve_queue(cfg):
-+    """Move the last RX queue out of default RSS and return it."""
-+    header = {"dev-index": cfg.ifindex}
-+    channels = cfg.ethnl.channels_get({"header": header})
-+    count = (channels.get("combined-count") or 0) + (channels.get("rx-count") or 0)
-+    if count < 2:
-+        raise KsftSkipEx("RX queue isolation needs at least two channels")
-+    queue = count - 1
-+
-+    try:
-+        rss = cfg.ethnl.rss_get({"header": header})
-+        saved = list(rss["indir"])
-+    except Exception as exc:
-+        raise KsftSkipEx(f"cannot read RSS indirection table: {exc}") from exc
-+    if queue in saved:
-+        updated = [0 if entry == queue else entry for entry in saved]
-+        try:
-+            cfg.ethnl.rss_set({"header": header, "indir": updated})
-+        except Exception as exc:
-+            raise KsftSkipEx(f"cannot reserve RX queue in RSS: {exc}") from exc
-+        defer(cfg.ethnl.rss_set, {"header": header, "indir": saved})
-+        actual = cfg.ethnl.rss_get({"header": header}).get("indir")
-+        if actual != updated:
-+            raise KsftSkipEx("NIC did not remove the reserved queue from RSS")
-+    return queue
-+
-+
-+def _reserve_rx_queue(cfg, port):
-+    """Reserve an RX queue outside RSS and steer the test UDP flow to it."""
-+    queue = _reserve_queue(cfg)
-+    _steer_udp(cfg.ifname, port, queue)
-+    return queue
-+
-+
-+def _case_args(cfg, name):
-+    if name != "TOO_MANY_FRAGS":
-+        return []
-+    try:
-+        info = cfg.netnl.dev_get({"ifindex": cfg.ifindex})
-+    except Exception as exc:
-+        raise KsftSkipEx(f"cannot query DUT fragment limit: {exc}") from exc
-+    max_frags = info.get("xdp-zc-max-segs", 0)
-+    if max_frags <= 1:
-+        raise KsftSkipEx("DUT does not advertise multi-buffer zero-copy")
-+    return ["--max-frags", str(max_frags)]
-+
-+
-+def _idle_mtu(ifname, host=None):
-+    """Return the MTU of a link that has no XDP program attached."""
-+    info = ip(f"link show dev {shlex.quote(ifname)}", json=True, host=host)[0]
-+    if "xdp" in info:
-+        raise KsftSkipEx(f"{ifname} already has an XDP program")
-+    return info["mtu"]
-+
-+
-+def _remote_idle_mtu(cfg):
-+    """Look at the remote link once. Every case leaves its MTU as it found
-+    it and an endpoint replaces a program left behind by an earlier case,
-+    so looking again would only add a round trip to each case."""
-+    if not hasattr(cfg, "xsk_remote_mtu"):
-+        cfg.xsk_remote_mtu = _idle_mtu(cfg.remote_ifname, cfg.remote)
-+    return cfg.xsk_remote_mtu
-+
-+
-+def _detach_xdp(ifname, mode, host=None, sudo=False):
-+    """A killed endpoint leaves its XDP program behind; name the mode, as a
-+    bare "xdp off" only detaches driver mode on a native-XDP NIC."""
-+    info = ip(f"link show dev {shlex.quote(ifname)}", json=True, host=host)[0]
-+    if "xdp" not in info:
-+        return
-+    _root_cmd(f"ip link set dev {shlex.quote(ifname)} {mode} off", host=host,
-+              sudo=sudo)
-+
-+
-+def _wait_remote_listen(remote, port):
-+    """Read the remote endpoint's stderr up to the line it prints once it
-+    listens, as polling its sockets would cost a round trip per try. Return
-+    what was read and whether that line came."""
-+    line = f"Listening for XSK peer on port {port}\n".encode()
-+    fd = remote.proc.stderr.fileno()
-+    head = b""
-+    deadline = time.monotonic() + LISTEN_TIMEOUT
-+    while line not in head:
-+        try:
-+            data = fd_read_timeout(fd, max(deadline - time.monotonic(), 0))
-+        except TimeoutError:
-+            break
-+        if not data:
-+            break
-+        head += data
-+    return head.decode(), line in head
-+
-+
-+def _require_zc(cfg):
-+    if not hasattr(cfg, "xsk_zc"):
-+        xdp_features = cfg.netnl.dev_get({"ifindex": cfg.ifindex})["xdp-features"]
-+        cfg.xsk_zc = "xsk-zerocopy" in xdp_features
-+    if not cfg.xsk_zc:
-+        raise KsftSkipEx("NIC does not advertise AF_XDP zero-copy")
-+
-+
-+def _remote_test_binary(cfg):
-+    if not hasattr(cfg, "xsk_remote_bin"):
-+        cfg.xsk_remote_bin = _remote_binary(cfg, XSK_BIN)
-+    return cfg.xsk_remote_bin
-+
-+
-+def _udp_port(cfg):
-+    port = int(cfg.env.get("XSK_UDP_PORT", "42567"))
-+    if not 1 <= port <= 65535:
-+        raise KsftFailEx("XSK_UDP_PORT must be from 1 to 65535")
-+    return port
-+
-+
-+def _setup_case(cfg, name, direction, port, busy_poll):
-+    """Set up what this case alone needs; defer() undoes it when it ends.
-+    Return the DUT queue and the fallbacks for what the endpoints undo."""
-+    sudo = _remote_sudo(cfg)
-+    local_mtu = _idle_mtu(cfg.ifname)
-+    remote_mtu = _remote_idle_mtu(cfg)
-+    if "UNALIGNED" in name:
-+        _reserve_hugepages()
-+        _reserve_hugepages(cfg.remote, sudo)
-+    if busy_poll:
-+        _prefer_busy_poll(cfg.ifname)
-+
-+    if direction == "rx":
-+        queue = _reserve_rx_queue(cfg, port)
-+    else:
-+        # The DUT TX socket fills no RX buffers, so its zero-copy queue drops
-+        # what it receives. The control connection of a netns remote shares
-+        # the link, so keep that queue out of RSS.
-+        queue = _reserve_queue(cfg) if _netns_remote(cfg) else 0
-+        _steer_udp(cfg.remote_ifname, port, 0, cfg.remote, sudo)
-+
-+    # Undo what a failed or killed endpoint may leave behind. Defers run in
-+    # reverse, so the XDP programs, which can cap the MTU, are detached first.
-+    fallbacks = [
-+        defer(_restore_mtu, cfg.ifname, local_mtu),
-+        defer(_restore_mtu, cfg.remote_ifname, remote_mtu, cfg.remote, sudo),
-+        defer(_detach_xdp, cfg.ifname, "xdpdrv"),
-+        defer(_detach_xdp, cfg.remote_ifname, "xdpgeneric", cfg.remote, sudo),
-+    ]
-+    return queue, fallbacks
-+
-+
-+def _udp_args(cfg, direction, port):
-+    if direction == "rx":
-+        src, dst = cfg.remote_addr_v["4"], cfg.addr_v["4"]
-+    else:
-+        src, dst = cfg.addr_v["4"], cfg.remote_addr_v["4"]
-+    return ["--udp-src", src, "--udp-dst", dst, "--udp-port", str(port)]
-+
-+
-+def _case_result(local, remote):
-+    if local and local.stdout:
-+        ksft_pr(local.stdout, line_pfx="dut|")
-+    if local and local.stderr:
-+        ksft_pr(local.stderr, line_pfx="dut|")
-+    if remote.stdout:
-+        ksft_pr(remote.stdout, line_pfx="remote|")
-+    if remote.stderr:
-+        ksft_pr(remote.stderr, line_pfx="remote|")
-+    if local is None:
-+        raise KsftFailEx("remote XSK endpoint did not listen on the control "
-+                         f"port, exit {remote.ret}")
-+    if local.ret == SKIP_CODE or remote.ret == SKIP_CODE:
-+        raise KsftSkipEx("AF_XDP case unsupported by one endpoint")
-+    if local.ret or remote.ret:
-+        raise KsftFailEx(f"DUT exit {local.ret}, remote exit {remote.ret}")
-+
-+
-+def _run_local(args):
-+    local = cmd(args, background=True, shell=False, fail=False)
-+    try:
-+        local.process(terminate=False, fail=False, timeout=CASE_TIMEOUT)
-+    except subprocess.TimeoutExpired as exc:
-+        local.proc.kill()
-+        local.process(terminate=False, fail=False)
-+        raise KsftFailEx(f"DUT case timed out after {CASE_TIMEOUT}s") from exc
-+    return local
-+
-+
-+def _run_endpoints(cfg, local_args, remote_args, control_port, fallbacks):
-+    local = None
-+    remote = bkg(shlex.join(remote_args), host=cfg.remote, exit_wait=True,
-+                 fail=False)
-+    try:
-+        head, listening = _wait_remote_listen(remote, control_port)
-+        if listening:
-+            local = _run_local(local_args)
-+            remote.process(terminate=False, fail=False, timeout=10)
-+    finally:
-+        if remote.ret is None:
-+            remote.process(terminate=True, fail=False)
-+    # _wait_remote_listen() took the start of stderr off the pipe.
-+    remote.stderr = head + remote.stderr
-+    if local and {local.ret, remote.ret} <= {0, SKIP_CODE}:
-+        # Both endpoints detached XDP and restored the MTU when they exited.
-+        for fallback in fallbacks:
-+            fallback.cancel()
-+    _case_result(local, remote)
-+
-+
-+def test_xsk(cfg, name, direction, test_id, busy_poll=False):
-+    cfg.require_ipver("4")
-+    sync_addr = _control_addr(cfg)
-+    udp_port = _udp_port(cfg)
-+    _require_zc(cfg)
-+    remote_bin = _remote_test_binary(cfg)
-+    case_args = _case_args(cfg, name)
-+    queue, fallbacks = _setup_case(cfg, name, direction, udp_port, busy_poll)
-+
-+    udp_args = _udp_args(cfg, direction, udp_port)
-+    control_port = rand_port()
-+    remote_args = [str(remote_bin), "-i", cfg.remote_ifname,
-+                   "--hw", "--listen", "-m", "skb",
-+                   "-t", str(test_id),
-+                   "-e", "tx" if direction == "rx" else "rx",
-+                   "-p", "0.0.0.0", "-P", str(control_port), *udp_args,
-+                   "--peer-mac", cfg.dev["address"], "--queue", "0", *case_args]
-+    if _remote_sudo(cfg):
-+        remote_args = ["sudo", "-n"] + remote_args
-+    local_args = [str(XSK_BIN), "-i", cfg.ifname, "--hw", "-m", "zc",
-+                  "-t", str(test_id), "-e", direction,
-+                  "-p", sync_addr, "-P", str(control_port), *udp_args,
-+                  "--peer-mac", cfg.remote_dev["address"],
-+                  "--queue", str(queue), *case_args]
-+    if busy_poll:
-+        local_args.append("-b")
-+    _run_endpoints(cfg, local_args, remote_args, control_port, fallbacks)
-+
-+
-+def test_xsk_busy_poll(cfg, name, direction, test_id):
-+    """Run a case with the DUT endpoint busy polling."""
-+    test_xsk(cfg, name, direction, test_id, busy_poll=True)
-+
-+
-+def main():
-+    # ksft_run() rejects options it does not know, so take -b out first.
-+    busy_poll = "-b" in sys.argv[1:]
-+    if busy_poll:
-+        sys.argv.remove("-b")
-+    test = test_xsk_busy_poll if busy_poll else test_xsk
-+    variants = ksft_variants(_hardware_cases())(test)
-+
-+    if any(arg in ("-h", "-l") for arg in sys.argv[1:]):
-+        ksft_run(cases=[variants])
-+        return
-+    if not XSK_BIN.exists():
-+        print(f"1..0 # SKIP {XSK_BIN} was not built")
-+        sys.exit(SKIP_CODE)
-+    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-+        cfg.ethnl = EthtoolFamily()
-+        cfg.netnl = NetdevFamily()
-+        ksft_run(cases=[variants], args=(cfg,))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
-diff --git a/tools/testing/selftests/net/lib/Makefile b/tools/testing/selftests/net/lib/Makefile
-index 15353021cecf..8e65327b8831 100644
---- a/tools/testing/selftests/net/lib/Makefile
-+++ b/tools/testing/selftests/net/lib/Makefile
-@@ -34,7 +34,7 @@ include ../../lib.mk
- 
- include ../bpf.mk
- 
--# AF_XDP test engine used by net/test_xsk.sh.
-+# AF_XDP test engine shared by net/test_xsk.sh and drivers/net/hw/xsk.py.
- XSK_DIR := xsk
- XSK_BPF_OBJ := $(OUTPUT)/xsk_xdp_progs.bpf.o
- XSK_SKEL := $(OUTPUT)/xsk_xdp_progs.skel.h
+
+base-commit: 6d25ffca055a77787c21a36b66c253f76239411b
 -- 
-2.43.0
+2.34.1
 
