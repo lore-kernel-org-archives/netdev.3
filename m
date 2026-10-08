@@ -1,138 +1,150 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283384E534A
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 15:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB414E534A;
+	Thu,  8 Oct 2026 15:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791473498; cv=none; b=D2tXDI9sJfD+L7i61NdRX6QRBWPMxYgCndnn1cITTDDTIgo3NalZXx+4x0JVuSRZuehWkiPPThm7Gajk6nUTMyvn8heAMEJ3BjXetQIJevwyfQhanj6W7QE3CcHogVZqcy8Om4Y+kMvoZzz+xW1rxQ6f0ZDTmSL3colJJL0M3d8=
+	t=1791473504; cv=none; b=lSUP+nCZE7UAGJ7b7318UOiRbPrgjQYHNSnCOGC9WtKbN90sJ4vMMABmjf4FRmQi6G5c4xkHkewOBViS0rSJ+4E3DnK90hMgvjsaYjkJVfuVcKvG6b/7h/tM3zvQpLi7mxcRcaF/8DNmsqRfw43c0q2gmH3Iyhfv+cM5trD/L0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791473498; c=relaxed/simple;
-	bh=HFvTJwDmAn+TXH8HyVkJOIjEbUDFBFuINyH6StAGw3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KJMFlfRNkBhO1LB/4btWkb/VrqYAJiTi7m1WDWob07i3OkToVjVpI2Xvz9w2CUqUktkoD2RfkVIemtz7cd9qZ/qB7bwnUfiukvvEnC9tjMG8IawU/ITvq+k5WoNNNThVu+Gky5Tvo3z0FPPZWc9HeT3sesUXgLjs7pOok0IJ1N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=sY6uUaJ+; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1791473504; c=relaxed/simple;
+	bh=oKq3LCIVxlEANL5mRyYb815Z8ciFvkq79Mo9KztKqx4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WYO8LsFQUc57yy3oVL1OVmx+YQxuypZH1UuJxtNF6qcfEZDr8CPgvC9VLxaoOuguCYQcWDFJIfwTRDTgqwwDs2UgqEMImkZ0kxl5uVvjbbzeBSXAnemqvdJ6peS668ogVx5u54MU285CcwHpWwxAE/F0HHWHYwqiyKnZDjDH8ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oo/yIYzx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="sY6uUaJ+"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a161d9b8c7so23589605e9.3
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 08:31:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1791473494; x=1792078294; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hmRkJrFy7UYNSRUq22nOk7LyP+X+ALUnS3ucJY6ilFU=;
-        b=sY6uUaJ+nLxk9DyH39nhdwGNGP8yOpwEJ11SdFVLT3h5gf1MuWCAPj5qU7QGUGPhRI
-         h/TrT2BDuFoHG6jKKiC+hBqksBe7a9nD5x0WHpkb/PzRCll3KjJKOnUU31lNeiMR8Y2x
-         05Vmshl63IzOYT6xQgu4AUVGWq9a8uYMNJAajLtFkvbvXV2Y0BP9EliuXPAo17vLdzhz
-         B7ARDMEMpreSCUkQCQX3/BWjVUWc1cvOiDVwqNJePs9lR010IwwzAQWJcWMmeykBfdXo
-         n9s6pLvq4GlU1ZdB08/AuRezA7Qk76ap2YLI/sHnbfE1VfCp1TMYKMcZ0QwulytqPPpk
-         5AIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791473494; x=1792078294;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hmRkJrFy7UYNSRUq22nOk7LyP+X+ALUnS3ucJY6ilFU=;
-        b=PhDLo/voVgWU9vHcqx6m2Yk+Cxr93c+xy7jERUMzWt6sCdUIiDYzXAN0ojHVGgffak
-         ub6jiC4tvc6G5wrUU0BTKn4nGXIQ2JRvRdimHUmWrjbfJWqAGxManOCUtLhXRyxSxYab
-         0swXn4TpIt3hqdiQ4zfJ/nQTqIEFZJj5pRVrh2jYQ1WrOyHzCz9t+t2duJLh3ov2CF/k
-         sey/lpzi983wR3zrKlRyrjWFgCZZwkl8dQq1r0IAAESvO9ZPaGGpsb3vJkqYAgwr71UK
-         zdf0dGIgUL5Gm0SAfmZPPP2etq1EiNV5qV9b5lUd/QkB05poGpKRorZjx5Y9cOddHE5R
-         NMXA==
-X-Forwarded-Encrypted: i=1; AKwUvBwDLl5Hjb15iZTlhV1LouCSlJW5zcNh6cAoH8w7J2KhHb/1e9VkHQPUHjA+U132BVr2wmC54qc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mtVuIp3aLX91JQioKCVTvoCPLXAH8h6T0E3MoD+we3sAWuufpg
-	P/Psnk2l3t/RIsSLFJfmNnYK6ACjC5RpRN+EzuGahF6ZatQY4Vhq6nCLwTRzQ3obDXU=
-X-Gm-Gg: AYBFou3aUnAKVJluVwt0NaL+q7obgTInoM7nGIUC9Pwfi7gKmFGH2jDB7zzVAucfiex
-	D6qqctC0ERaIQ26EVkGcNQEHRok1n94Mh1zgYBCA3YKyzsyCPgZjvVC9+nc2T1oiJyjRsBzX2Mv
-	yqkbfKgneYcZAJTTRZPCOmz35MgaFavmo3gYqDEMAh9PiUceQH4/pGjIGyxXzO0EVUr7qSYt7vR
-	Jl4Hvm1otHBVcs/TJWQx5tADP6SPfYAgKu09h4JPLehT1hKRPWRQoOeg9VAh1e6WPcqgTKl1Q2p
-	ur1NH+wSSgnhJINrQtjM6aExzltJgpKpvL7oXNN7RIbTKDIJGioUN0+mteXvmpGbVs/U8+NZhTK
-	fGn26ba6/CHIrD+IlzwTCjBmtvzR5/GQkYfj+rl99Mqc3+8Y5mMOFvrzyaF88qhp0yvh7HoDH7w
-	PMfaVT2eSM0+yBpSz4AqBFDe59HShvzmltOBVdvqQyWSJYIGZ56wtEtOfgt0PEkbI48oqdkcFiV
-	YH1bKvE7GcdsxUVjvwQ8IUuL6cWijqtLmsLC01MXXlUnEs8G6Pv3Ad/X33mfsOlwp4Qlf6/CwcY
-	3/F+nC2C/53iC7COBsEGOAX0QTO8wxALXzQCB0EGD59aYczIqvz4MoCGIX4=
-X-Received: by 2002:a05:600c:810c:b0:4a1:7e76:d02f with SMTP id 5b1f17b1804b1-4a180424680mr108117585e9.14.1791473493755;
-        Thu, 08 Oct 2026 08:31:33 -0700 (PDT)
-Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1842abfbdsm74991645e9.4.2026.10.08.08.31.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 08:31:33 -0700 (PDT)
-Date: Thu, 8 Oct 2026 16:31:30 +0100
-From: Daniel Thompson <daniel@riscstar.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Vladimir Oltean <olteanv@gmail.com>, Furong Xu <0x1207@gmail.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	Davide Caratti <dcaratti@redhat.com>
-Subject: Re: [PATCH net-next v5 3/3] net: stmmac: add tc mqprio hw queue
- priority offload
-Message-ID: <ase3UrUehtLY6b_5@aspen.lan>
-References: <20261006-stmmac-mqprio-prio-offload-v5-0-d7da93419784@oss.qualcomm.com>
- <20261006-stmmac-mqprio-prio-offload-v5-3-d7da93419784@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oo/yIYzx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CB11F000FF;
+	Thu,  8 Oct 2026 15:31:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791473502;
+	bh=dJ+dI6fVl0ppHHe5Erg5+7zCijhVgWIpo/k6OR0FjDs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Oo/yIYzxTW+k/cVURWxWXc417qbyMxV3LEU9s6d8Z3OWG1FS9l1g4tdPLMF2/Kiw6
+	 nYnYN16j5P1TWsVtZpjlOAHpw0zBTNBpEm+Pcl1wg5whKUHIqZu1Hc7FiyrDqSVpuw
+	 /MzDYJaEJkNFDe3Gx4VSVnVQbhsZlsf2iMbCUFfUm7tztYj9q0jK4DgXIbb/d7qfBp
+	 GTMOnLQrphst+qof2os1CUhS0TxryQ6Xh6eay2WZkzXP4VDAfa1jbKFe8pqeMmvWcJ
+	 1HF2kuRUJ9thxcQSG89Hy915C4iJGr+H7Tag9zptm+njcFFDC/ZdjGApwk2kSbk0js
+	 2J5qZpaUP3Vgw==
+Subject: Re: [PATCH net v3 1/4] dpll: zl3073x: reject output frequencies with
+ too small divisor
+From: netdev-bot+sashiko@kernel.org
+To: ivecera@redhat.com
+Cc: netdev@vger.kernel.org, min.li@microchip.com, vadim.fedorenko@linux.dev,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, kuba@kernel.org,
+ Prathosh.Satish@microchip.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Thu, 08 Oct 2026 15:31:41 +0000
+Message-ID: <179147350175.434549.6966003929996681994@kernel.org>
+In-Reply-To: <20261006153116.347497-2-ivecera@redhat.com>
+References: <20261006153116.347497-2-ivecera@redhat.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006-stmmac-mqprio-prio-offload-v5-3-d7da93419784@oss.qualcomm.com>
 
-On Tue, Oct 06, 2026 at 12:46:27PM +0200, Lorenzo Bianconi wrote:
-> Implement the offload of the tc mqprio hw queue priority in the stmmac
-> driver. When the mqprio qdisc is configured in channel mode, the MTL TX
-> scheduler is switched to strict priority, and the PSTQX/PSTC priority
-> bitmask of each TX queue is programmed from the set of frame priorities
-> mapped to the owning traffic class (qopt->prio_tc_map).
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
+
+Low priority / nit picks for your consideration:
+
+- [Low] In N-div output mode, the new probe-time check in
+  zl3073x_pin_check_freq() (drivers/dpll/zl3073x/prop.c) only requires…
+
+--
+
+dpll: zl3073x: reject output frequencies with too small divisor
+
+This patch tightens zl3073x_pin_check_freq() so output pin frequencies
+from firmware must divide the synth frequency with a divisor of at
+least 2. For the N-pin of an N-divided output the minimum is 4. It also
+rejects a zero frequency so the division cannot be by zero.
+
+> diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
+> index ac9d41d0f978e..a4bdc3878590f 100644
+> --- a/drivers/dpll/zl3073x/prop.c
+> +++ b/drivers/dpll/zl3073x/prop.c
+
+[ ... ]
+
+> @@ -41,18 +42,32 @@ zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
+
+[ ... ]
+
+>  		/* Check the frequency divides synth frequency */
+> -		if (synth_freq % (u32)freq)
+> +		div = div_u64_rem(synth_freq, freq, &rem);
+> +		if (rem)
+> +			goto err_inv_freq;
+> +
+> +		/* The output divisor has to be at least 2. For the N-pin of an
+> +		 * N-divided output the effective divisor also includes the N
+> +		 * divider (>= 2), so the minimum is 4.
+> +		 */
+> +		out = zl3073x_out_state_get(zldev, out_id);
+> +		if (zl3073x_out_is_ndiv(out) && zl3073x_is_n_pin(id))
+> +			min_div = 4;
+> +		else
+> +			min_div = 2;
+> +		if (div < min_div)
+>  			goto err_inv_freq;
+
+[Severity: Low]
+For N-divided outputs, the new check compares the effective divisor
+only against the synth. It does not look at the shared output divider
+(out->div). Does that let an N-pin frequency pass this filter even
+though no valid N divider exists for it?
+
+In this patch, zl3073x_dpll_output_pin_frequency_set() in
+drivers/dpll/zl3073x/dpll.c computes the N divider with a truncating
+division and only rejects a result of 0:
+
+drivers/dpll/zl3073x/dpll.c:zl3073x_dpll_output_pin_frequency_set() {
+    ...
+	} else {
+		...
+		out.esync_n_period = div64_u64(synth_freq, frequency * out.div);
+		if (!out.esync_n_period)
+			return -EINVAL;
+	}
+    ...
+}
+
+Take a 1 GHz synth with P-pin divider 10:
+
+  N-pin request of 100 MHz: div = 10 >= 4, so it passes here.
+  esync_n_period then works out to 1, and that is committed to
+  hardware.
+
+  N-pin request of 40 MHz: div = 25 >= 4, so it also passes.
+  esync_n_period is truncated from 2.5 to 2. The output runs at
+  50 MHz, but the call reports success.
+
+The P-pin branch has the same truncation and zero-only check:
+
+		out.esync_n_period = (out.esync_n_period * out.div) / new_div;
+		if (!out.esync_n_period)
+			return -EINVAL;
+
+The later commit in this series, "dpll: zl3073x: reject inexact
+frequencies for N-divided outputs", fixes this. It adds remainder
+checks and esync_n_period >= 2 checks to both branches, and returns
+-EINVAL with an extack message.
+
+After that commit, one gap remains. Some frequencies have an effective
+divisor that cannot be split into out_div >= 2 times n_div >= 2, such
+as synth/5. They still appear in freq_supported, but setting them is
+rejected. Since this check is necessary but not sufficient, should the
+commit message or the comment say so?
+
+>  	}
 >
-> The channel mode offload requires the DCB hw feature and a 1:1 TC to TX
-> queue mapping, with a single queue per TC. Configurations with AVB queues
-> are rejected, since forcing strict priority conflicts with the CBS
-> algorithm. The CBS offload is refused while the strict-priority scheduler
-> is active, and so is a channel count change that would enable an AVB
-> queue.
 
-I don't think these CBS offload checks are necessary. It's quite reasonable
-to mix strict priority on low priority queues with CBS on higher
-priority queues.
-
-In fact on the hardware I have (TC956x) the lower priority queues don't
-implement CBS so mixing AVB and DCB queuing (whether SP or ETS) isn't
-just reasonable, it's pretty much unavoidable when using CBS!
-
-As a concrete example of combining mqprio and CBS, the following works well on
-TC956x (when I tested an older version of your patch):
-
---- cut here ---
-tc qdisc replace dev eth0 handle 100 parent root mqprio num_tc 4 \
-    map  0  0  0  0  0  1  2  3  0  0  0  0  0  0  0  0 \
-    queues 1@0 1@1 1@2 1@3 mode channel hw 1
-
-# No CBS for TxQ1 means we can't offload this (h/ware stays in SP mode)
-tc qdisc replace dev eth0 parent 100:2 handle 102: cbs \
-    idleslope 800000 sendslope -1700000 hicredit 494 locredit -1049 \
-    offload 0
-
-tc qdisc replace dev eth0 parent 100:3 handle 103: cbs \
-    idleslope 400000 sendslope -2100000 hicredit 247 locredit -1296 \
-    offload 1
-
-tc qdisc replace dev eth0 parent 100:4 handle 104: cbs \
-    idleslope 200000 sendslope -2300000 hicredit 124 locredit -1419 \
-    offload 1
---- cut here ---
-
-
-Daniel.
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006153116.347497-1-ivecera%40redhat.com
