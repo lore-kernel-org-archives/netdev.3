@@ -1,67 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-228.mta1.migadu.com [95.215.58.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D713B637E;
-	Thu,  8 Oct 2026 08:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75D64657C6
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:24:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791447593; cv=none; b=ARMQG84AiOg6ujdZ1E4Th5UdkI7hS7IRfqZu6Ky/cIiMtqKTEdJQt9yAqwpelcNSZMAU0A9qHHHAm1pFXYpxZUbWStZ+ZCsLw3+C6f4qaswJ72/pFMhZ7ZPn4QgmqlJ/BJQbJIgKCMwSdHEMjNH+tO42qNsb7TT8cttnsAy5/aQ=
+	t=1791447857; cv=none; b=P6wpIyBp8+l8Q8UQT1l3YfidOnQ4OimI5H/n4ivvvf/mJFh+Taq72kfQ6fbOdXKOuKDrKX2WA95nCsj803WZtHxKfefkOA5HcbdghVwLfXEvCzORGz2T94jwXZF5Xkn8/n+g76MmpcEGeV27uHxjItXGe1H2r40EWj2Peir5SDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791447593; c=relaxed/simple;
-	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MPykw4MdyO60A6LcAA7s/jMuwsQXcdIZg1t6oeLkfzmmNSs9HKmkCV7rE0wuDN00apuQob9PId7tocnLcvV0tF2CGEXMvjtrefV3P2UVln2Sv3bRCRG4uPzTbFjsXYBdabwNgImtGNvoL/f2+asPaLnLN3Q2xYz2TeA+/UG9G48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i99qalnN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791447857; c=relaxed/simple;
+	bh=RMx7jFiL65ZDGqd0DZ1v3Z2cM1AED/E0YCu2i1HQI2g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=t0TTnHYKZ4qSfe6S8q2BHktEO9UYRPUh7ocUofLU+MQ+z2MnCP36FEVfjOptME9TDcdwe0kmARbqYSpc5SyDZW23a6Hh/r/RLCK7DMj89/r5/Ur19Q9aIDWbwl0vvctGKUCC9bE/7TGvtbHfg54MqfS6pnLBXvk7fk3UBC+ayHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z5PWxaKo; arc=none smtp.client-ip=95.215.58.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i99qalnN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6FB1F000FF;
-	Thu,  8 Oct 2026 08:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791447592;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i99qalnNu1vDUlYenDAfjMkyj6hUz7KwTSNeII8EXcOPSkAsbHI1uvzI+xRjocABN
-	 LQWzAMa/PqeWWpDLM5gRsIOQhiNEusmtnbBQYL9mzvU4LQkFGvNMOZ1x9UemzNn1gT
-	 1RHimFcDTqdAYx6oH3DcFi8dJaC1uKH7WpYFDGWubH/MkIpuoqcQ+9yLO8ZiPc0/za
-	 G2h7fpffdRGUUBJQEU7mLT58EOWM9kWInZD1u95gEi5V5O+OrEasi4f5luHtY4SfQT
-	 11qSTy/5Iuhr9Xh0h5hoiSKUwQo6Q1tgheAy8Nq9q7heD+DW/VuoP4knspt2GgK3bB
-	 pE7S9w/XUqI8g==
-From: netdev-bot+sinfo@kernel.org
-To: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
- nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch,
- mail@birger-koblitz.de
-Subject: 
- Re: [PATCH net-next v6 0/10] r8152: refactor and extend RTL8157/8159 support
-Date: Thu, 08 Oct 2026 08:19:51 +0000
-Message-ID: <179144759170.2527009.1294478643756602720@kernel.org>
-In-Reply-To: <20261008081556.47901-1-nic_swsd@realtek.com>
-References: <20261008081556.47901-1-nic_swsd@realtek.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z5PWxaKo"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=RMx7jFiL65ZDGqd0DZ1v3Z2cM1AED/E0YCu2i1HQI2g=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791447851; v=1; x=1792052651;
+ b=Z5PWxaKoUGC06vBDipjkB1hzJU599uR5aNvbDcZNRB8flcIZVd0xVGne2xYUkhmfnsZRNI9+
+ wWJLjhYJ7M4FK0rDRhun9W4mrBaOuHfKo0e4MlMvLDZBEZ1VQfPf7YPx6qRDF4LB04RLUu1TPHu
+ VslM51st0uHq/Ov3EtUqsmFw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id e009485256980d37;
+	Thu, 08 Oct 2026 08:24:11 +0000
+X-Mizu-Trace-ID: e009485256980d37
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Subject: [PATCH net-next v4 0/6] netlink: add lwtunnel encap sub-message
+ support to rt-route
+Date: Thu, 08 Oct 2026 16:24:00 +0800
+Message-Id: <20261008-ynl_rt_encap-v4-0-4ed2ccf7f949@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XNQQqDMBCF4auUrJsySeyoXfUepYimYw2VKEkQR
+ bx7g92oXT6G75+ZeXKGPLudZuZoMN50No7kfGK6Ke2buHnFzSRIhBwyPtm2cKEgq8ueK5GAAFU
+ pzEoWSe+oNuOaezBLgVsaA3vGS2N86Ny0/hnEev8lRbpPDoIDr6uKkDCDayrun6k1tvMXbdfSI
+ DdawkHLqDViUipKJdb4p9VGq6NWUScCUEtR5UTpTi/L8gWfnqhaLwEAAA==
+X-Change-ID: 20260908-ynl_rt_encap-3140103b368a
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@kernel.org>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-Hi!
+This series adds YNL sub-message support for lwtunnel encap data in
+the rt-route netlink family, and describes the tunnel-specific
+attribute sets that were previously opaque binary blobs.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+The kernel currently emits encap_type after the encap payload nest,
+but YNL sub-message parsing needs the selector (encap_type) first to
+dispatch on the correct attribute set. Patch 1 reorders the kernel
+output, and patch 2 teaches the YNL C code generator to convert enum
+selectors to their string form for sub-message dispatch.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+Patches 3-6 extend the rt-route YAML spec.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Tested with ynl selftest and checked with following cmds
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+ # modprobe ila
+ # modprobe xfrm_interface
+ # ip addr add 10.1.0.1/24 dev lo
+ # ip link add geneve1 type geneve id 1 remote 10.1.0.2 ttl 64
+ # ip link set geneve1 up
+ # ip route add 10.1.0.0/24 dev lo encap mpls 100 via 10.1.0.254
+ # ip route add 1.1.1.0/24 encap ip id 1 geneve_opts 1:1:1212121234567891,2:2:1212121234567892,3:3:1212121234567893 dst 10.1.0.2 dev geneve1
+ # ip route add 2001:db8:3::/64 dev lo encap ila 1:2:3:4 csum-mode no-action ident-type luid hook-type output
+ # ip route add 2001:db8:4::/64 dev lo encap ip6 id 1 dst 2001:db8::5 src 2001:db8::1 hoplimit 64
+ # ip route add 2001:db8:5::/64 dev lo encap seg6 mode inline segs 2001:db8::1
+ # ip route add 2001:db8:6::/65 dev lo encap seg6local action End flavors psp,next-csid lblen 32 nflen 16
+ # ip route add 2001:db8:7::/65 dev lo encap bpf in ob /tmp/kself/net/lib/xdp_dummy.bpf.o sec xdp
+ # ip route add 2001:db8:8::/64 dev lo encap rpl segs 2001:db8::1
+ # ip route add 2001:db8:9::/64 encap ioam6 trace prealloc type 0x800000 ns 0 size 4 dev lo
+ # ip route add 2001:db8:10::/64 dev lo encap xfrm if_id 100
+ # ip route show
+ 1.1.1.0/24  encap ip id 1 src 0.0.0.0 dst 10.1.0.2 ttl 0 tos 0
+        geneve_opts 1:1:1212121234567891,2:2:1212121234567892,3:3:1212121234567893 dev geneve1 scope link
+ 10.1.0.0/24  encap mpls  100 via 10.1.0.254 dev lo
+ # ip -6 route show
+ 2001:db8:3::/64  encap ila  1:2:3:4  csum-mode no-action  ident-type luid  hook-type output dev lo metric 1024 pref medium
+ 2001:db8:4::/64  encap ip6 id 1 src 2001:db8::1 dst 2001:db8::5 hoplimit 64 tc 0 dev lo metric 1024 pref medium
+ 2001:db8:5::/64  encap seg6 mode inline segs 2 [ 2001:db8::1 :: ] dev lo metric 1024 pref medium
+ 2001:db8:6::/65  encap seg6local action End flavors psp,next-csid lblen 32 nflen 16 dev lo metric 1024 pref medium
+ 2001:db8:7::/65  encap bpf in xdp_dummy.bpf.o:[xdp] dev lo metric 1024 pref medium
+ 2001:db8:8::/64  encap rpl segs 1 [ 2001:db8::1 ] dev lo metric 1024 pref medium
+ 2001:db8:9::/64  encap ioam6 freq 1/1 mode inline trace prealloc type 0x800000 ns 0 size 4 dev lo metric 1024 pref medium
+ 2001:db8:10::/64  encap xfrm if_id 100 dev lo metric 1024 pref medium
+ # ./tools/net/ynl/pyynl/cli.py --family rt-route --dump getroute > /tmp/route_dump.json
+
+All the result looks good.
+
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+Changes in v4:
+- patch 02: include check `not self.selector.is_external()` for enum selectors,
+            return error when enum lookup failed. (sashiko, Jakub)
+- patch 04: set geneve options to binary due to the different format between
+            request and dump (sashiko)
+- patch 05: set max-len for lwt-bpf-prog-name (sashiko)
+- patch 06: fix seg6-local-flv-ops type and name prefix (sashiko)
+- Link to v3: https://lore.kernel.org/r/20260930-ynl_rt_encap-v3-0-4106c21b9ee7@kylinos.cn
+
+Changes in v3:
+- patch 02: return local_vars and define new helpers is_enum_val and
+  get_enum_name (Jakub Kicinski)
+- patch 03: alphabet order for header files in Makefile (Jakub Kicinski)
+  set byte-order for ila-attrs. ILA_ATTR_IDENTIFIER is not used, so no
+  need to set byte-order. (sashiko)
+- patch 04: add multi-attr: true for geneve opts (sashiko)
+- patch 05: remove lwt-bpf-prog from seg6 local, add a seg6 specific one
+  in patch 06 (sashiko)
+- patch 06: add seg6-local-bpf and seg6-local-flv-ops. Set enum-as-flags
+  for seg6-local-flv-ops, set max-len for seg6-local-bpf-prog-name (sashiko)
+- Link to v2: https://lore.kernel.org/r/20260920-ynl_rt_encap-v2-0-c664a3e726f6@kylinos.cn
+
+Changes in v2:
+- Patch 1: Check ops->fill_encap before setting encap_type_attr
+- Patch 2: Get string in generated sub-message parser and check it before reference
+- Patch 3-4: set byte-orders and max-len
+- Patch 5: include lwtunnel.h
+- Link to v1: https://lore.kernel.org/r/20260917-ynl_rt_encap-v1-0-fbbe6e680571@kylinos.cn
+
+---
+Hangbin Liu (6):
+      net: lwtunnel: change encap fill order
+      tools: ynl: convert enum selector to string for sub-message parsing
+      netlink: specs: rt-route: add lwtunnel encap sub-message support
+      netlink: specs: rt-route: describe lwtunnel IP options
+      netlink: specs: rt-route: describe lwt BPF program options
+      netlink: specs: rt-route: describe seg6-local attrs
+
+ Documentation/netlink/specs/rt-route.yaml | 430 +++++++++++++++++++++++++++++-
+ net/core/lwtunnel.c                       |  35 +--
+ tools/net/ynl/Makefile.deps               |   9 +-
+ tools/net/ynl/pyynl/ynl_gen_c.py          |  34 ++-
+ 4 files changed, 484 insertions(+), 24 deletions(-)
+---
+base-commit: 8df0638138d3e0344fd1fb36cf2d1ca1cf5028f0
+change-id: 20260908-ynl_rt_encap-3140103b368a
+
+Best regards,
+-- 
+Hangbin Liu <liuhangbin@kylinos.cn>
+
