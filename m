@@ -1,120 +1,192 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647F036F8EE;
-	Thu,  8 Oct 2026 03:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F79372071
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 03:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791430312; cv=none; b=CoBiw5EfQFF4Br7XhXgXQPJawGsDycBqt96PpRS5rOi5ZRP3XB+JuiPw8MmKsjJDK/AEFxomNzsrYDr4c/wF9mZtDOn/zx+ZZ7hZVj2TLPlrXBh7s2G2857S6XyAS3QnRGCRH7UGQClYgVKYraZegbcWwGafXFIEfUiNCOmGS68=
+	t=1791430795; cv=none; b=UQZ3Dww7NskGc9BtxNDq6H9MuY+bCjIr8r3uj9HKRsZ5L8waptFL0HjWM3+az2IGRtL464cuD+IaD2ZYj8CkZESMp+QsklvBbMvgNlQtqMljzKniQLlR76q8fpC7A06Ld6gPT5K4zOvOyLkpswr6k4gtRKRUsIHTPA1leHCsKGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791430312; c=relaxed/simple;
-	bh=rRI2gizuOkmzDt3UCHT/ENcaMAQoOw3qqbRu6ckEfz8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=bbJaBpn6eaYIu5vl//QYq3i96h0aiIcqS1mrDATVPGuroDBmcer+JR7rCD1qPy8KLxMe5VjU1sYXzS9rLzgMB5/elr/wtGYz93QvfzfCZo/QgI5nAemuEmKimepFocaqCZhEmgVJNZFIOZikuHpCmUGwvEA/nuVGZOU+7O1r1jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=V7gFcyOY; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1791430795; c=relaxed/simple;
+	bh=hrTmsIBbiGmKQOjn02ezrfotZmF8vX/5RB2XjzX5QhA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UlIJIobDn0jDzFHCRk8QHAaOfuRHzetsmS6YAmZbJicBO0rypSQymSZ6CRqkWCzXb62XcMIWliBuCsMXE3fSvHELHPXOIvrDEl51zyi/14/7cZeQA5nAN7NYP/yamd7sBpDSXlNFhTUggS5o/7ettX6fe9JDkJ2/BhEZLo8klqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dKC5um8E; arc=none smtp.client-ip=74.125.82.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="V7gFcyOY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=rRI2gizuOkmzDt3UCHT/ENcaMAQoOw3qqbRu6ckEfz8=; b=V
-	7gFcyOY6EVQ2wgR5l+PqYHAG+j77FsRXhEvhlbhksRWHsDLjl/LfXAAT90SqS68F
-	LLPky08R+i3u9mK6M4N7DNwtQDyzpSvFqVbDOdLGi8u6D1q91MpNhOmG1cbVgtS0
-	M5J9Kdu60hSzZppemIuqt2e0mDkFLBu7U84jlR20mI=
-Received: from taozj888$163.com ( [2409:8a20:22c3:d7b0:cce8:b35f:dfc7:fd77]
- ) by ajax-webmail-wmsvr-40-118 (Coremail) ; Thu, 8 Oct 2026 11:30:24 +0800
- (CST)
-Date: Thu, 8 Oct 2026 11:30:24 +0800 (CST)
-From: taozj888  <taozj888@163.com>
-To: =?GBK?Q?Th=A8=A6o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: stable@vger.kernel.org, "Conor Dooley" <conor.dooley@microchip.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>, "Jeff Garzik" <jeff@garzik.org>,
-	"Haavard Skinnemoen" <hskinnemoen@atmel.com>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list" <linux-kernel@vger.kernel.org>
-Subject: Re:Re: [PATCH net v4] net: macb: rate limit netdev error info print
- in the data path
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
-References: <20261007053211.572073-1-taozj888@163.com>
- <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
-X-NTES-SC: AL_Qu2SA/iYv0op4iKeY+kfm04bju07UMu2v/4l2Y9SOp9wjDDp5gA9U11FN3vbyviEOzq8qyWnYgl32+5QQatlb5MJzNhTQU+YBErd1idYAWYRfA==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dKC5um8E"
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-3510d0baf63so9800795eec.1
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 20:39:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791430793; x=1792035593; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4HwPYJFKEdiyX4935OotxW9r3+hcqkRnlBB6xoiIvRU=;
+        b=dKC5um8Ew0EXtAKrVMiXwo4lW77Hz2kS+RTvXq2Btwh4ln2TT8Lejy+sr/grZvUDOK
+         vDdMNzJOZeAkHkVjEaiClyEIdUpv4bVwah55/4L3hwBWIqqTPcVBWO+rNcpDtaezG2fa
+         IXI8+7SeKx838OC0pv6TNHIdq/SU/YmFlFXhK5L6ohHYGPxGSVpd5TQWH+gNrpx+Dn/V
+         dCben5B3osaDM0cyQsxIgqIZZ5CorKNcxCgNn59e0UrKVpcMBSLw+C4A940viSDSV6x2
+         ljp47MXnt6evOYgsxQloCnvUlMBQ6a+1f3Vm8RK95BAPrfvGdCKlFvqiOIi83zUiCLMM
+         SyMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791430793; x=1792035593;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4HwPYJFKEdiyX4935OotxW9r3+hcqkRnlBB6xoiIvRU=;
+        b=P6EQfhjVFvzYZNmMhVND5zOw6JAQPelQLOK9uONCZnLmcuhWgmCSGGgIEF7PvnXj/S
+         snflvRwGj0fGTihFZ5cZBGIFRaFM6+wKVsfR08C/DBBocNEvLvKlfDYUM3hPA7LxTafQ
+         JSk0f7RMyb+Cl9PcDwaDMW2Ofk0GGloH6w4yvFSQK0l+MBmofj3WUh3oM8p6tCvRYvTX
+         8OmGQ82fjkCp6cugMUmsYFtW933MMXtmt2Z8r/Qu2Qkq03BtOk0YOer+e2NuUhsqDea+
+         taBkyUHWNNk1PCK5mlr6ucnEesTWsmGNbx09ei5RWTvC1F3bKoNZJAjCNIFF0A94CB88
+         V0vg==
+X-Forwarded-Encrypted: i=1; AKwUvBybkA51uG/57Hi18G3iPJGkiyAEkFumf0bev0WpUiQMrSBIFXFMpDRqjLBqf7ffxuvFWGDOrCs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI1HC/98dBRMDsQhed39iahN6ePvDnd/RCgvv1fJ4thX/hj+IKr
+	VIP6j6UXsCtmYAkuM6E7QqhHQ8mek5yPCcr9GRFE/50ZF6NLS0sBVxxwZJCIlIzo7LYoHKeDzgH
+	xX4G8gfaP/92QPUbtKMivmDm22A==
+X-Received: from dyblz13.prod.google.com ([2002:a05:7301:160d:b0:34b:8a3f:5aaf])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:8809:20b0:351:68ca:62ac with SMTP id 5a478bee46e88-35168ca688cmr3181178eec.37.1791430792793;
+ Wed, 07 Oct 2026 20:39:52 -0700 (PDT)
+Date: Thu,  8 Oct 2026 03:39:26 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:digvCgD3_y5QDsdq_blTAA--.1610W
-X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC3hAk62rHDlAehwAA3r
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261008033952.1399670-1-almasrymina@google.com>
+Subject: [PATCH net v1] net: devmem: prevent mixing fragments from different bindings
+From: Mina Almasry <almasrymina@google.com>
+To: Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, Pavel Begunkov <asml.silence@gmail.com>, 
+	Ralf Lici <ralf@mandelbit.com>
+Content-Type: text/plain; charset="UTF-8"
 
-CgoKCgoKSGkgVGhlbzoKCgpQbGVhc2Ugc2VlIG15IGNvbW1lbnRzIGlubGluZS4KCgpUaGFua3Ms
-CgoKWmlqaW4gVGFvCgoKCgoKQXQgMjAyNi0xMC0wNyAxNzozMzowMywgIlRoqKZvIExlYnJ1biIg
-PHRoZW8ubGVicnVuQGJvb3RsaW4uY29tPiB3cm90ZToKPkhlbGxvIHRhb3pqODg4LAo+Cj5JIHdh
-cyByZXZpZXdpbmcgeW91ciBwYXRjaCBidXQgeW91IHNlbnQgVjQgYXQgdGhlIHNhbWUgdGltZSEK
-Pgo+T24gV2VkIE9jdCA3LCAyMDI2IGF0IDc6MzIgQU0gQ0VTVCwgIHdyb3RlOgo+PiBGcm9tOiB0
-YW96aWppbiA8dGFvemo4ODhAMTYzLmNvbT4KPgo+V2UgbmVlZCBmdWxsIG5hbWVzIGluIGtlcm5l
-bCBwYXRjaGVzLCB5b3UgaGF2ZSB0aGF0IGluIHlvdXIKPlNpZ25lZC1vZmYtYnkuCj4KPj4gTm93
-IHRoZSBNQUNCIGV0aGVybmV0IGRyaXZlciBwcmludCB0aGUgbmV0ZGV2IGVycm9yIGluZm9ybWF0
-aW9uCj4+IGRpcmVjdGx5IGJ5IG5ldGRldl9lcnIoKSwgd2hpY2ggd291bGQgbGVhZCB0byBhIGxh
-cmdlIG51bWJlciBvZgo+PiBlcnJvciBpbmZvcm1hdGlvbiBwcmludCBpZiB0aGVyZSB3YXMgYSBz
-aWduaWZpY2FudCBudW1iZXIgb2YKPj4gZXJyb3Igb3IganVzdCBqdW1ibyBwYWNrZXRzIGV4Y2Vl
-ZGluZyB0aGUgTVRVIHJlY2VpdmVkIHdoZW4gYm9vdGluZy4KPj4gRm9yIGV4YW1wbGUsIGl0IHdv
-dWxkIHByaW50IGEgbGFyZ2UgbnVtYmVyIG9mOgo+Pgo+PiBtYWNiIFBIWVQwMDM2OjAwIGV0aDA6
-IG5vdCB3aG9sZSBmcmFtZSBwb2ludGVkIGJ5IGRlc2NyaXB0b3IKPj4gbWFjYiBQSFlUMDAzNjow
-MCBldGgwOiBub3Qgd2hvbGUgZnJhbWUgcG9pbnRlZCBieSBkZXNjcmlwdG9yCj4+IC4uLgo+Pgo+
-PiBpbiBnZW1fcngoKSBieSByZWNlaXZlZCBhIGxhcmdlIG51bWJlciBvZiBwYWNrZXRzIHdpdGhv
-dXQKPj4gUlhfRU9GIGZsYWcgc2V0LCBlc3BlY2lhbGx5IHdpdGggdW5rbm93biBwYWNrZXQKPj4g
-dHlwZSB0aGF0IHdvdWxkIHBlbmV0cmF0ZSB0aGUgaGFyZHdhcmUgb2ZmbG9hZCBmb3IgdGhlIElQ
-IHBhY2tldHMuCj4+Cj4+IFRoZSB1bmxpbWl0ZWQgcHJpbnRzIGhlcmUgd291bGQgZ3JlYXRseSBi
-b3RoZXIgYW5kIGRlbGF5Cj4+IHRoZSBzeXN0ZW0gYm9vdGluZyBwcm9jZXNzIHVubGVzcyB0aGUg
-c291cmNlIHN0b3Agc2VuZGluZwo+PiBwYWNrZXRzIHNpbmNlIHRoZXkgb2NjdXB5IHRoZSBjb25z
-b2xlIG91dHB1dCBiYW5kd2lkdGggYW5kCj4+IG90aGVyIHByb2Nlc3NlcyBoYXZlIHRvIHdhaXQg
-Zm9yIHRoZSBjb21wbGV0aW9uIG9mIHByaW50aW5nIHRob3NlCj4+IG1lc3NhZ2VzLgo+Pgo+PiBT
-byByYXRlIGxpbWl0IHRoZSBuZXRkZXYgZXJyb3IgaW5mb3JtYXRpb24gcHJpbnQgaW4gdGhlIHJl
-Y2VpdmUKPj4gYW5kIHRyYW5zbWl0IGRhdGEgcGF0aC4KPj4KPj4gRml4ZXM6IDg5ZTU3ODVmYzhh
-NiAoIltQQVRDSF0gQXRtZWwgTUFDQiBldGhlcm5ldCBkcml2ZXIiKQo+PiBDYzogc3RhYmxlQHZn
-ZXIua2VybmVsLm9yZwo+Cj5XaGF0IGhhcHBlbmVkPyBUaGlzIGRvZXNuJ3QgbWF0Y2ggeW91ciBk
-aXNjdXNzaW9uIHdpdGggTmljb2xhaS4KCj5odHRwczovL2xvcmUua2VybmVsLm9yZy9uZXRkZXYv
-M2UxNTE1ZTE2MmQwODRlMjIwMGVlYWE2MDc0YmZiYWZAdGlwaS1uZXQuZGUvCgoKQFRoZW8sIGlu
-IHRoZSBsaW5rIHRoYXQgeW91IHByb3ZpZGVkLCBOaWNvbGFpIHN1Z2dlc3RlZCB0byB1c2UgdGhl
-IGNvbW1pdCBpZCAKIjRkZjk1MTMxZWE4MCIsIGFuZCB0aGUgb3JpZ2luYWwgdGV4dCBpcyBxdW90
-ZWQgYmVsb3c6CiIKCj4+Pj4gRml4ZXM6IDg5ZTU3ODVmYzhhNiAoIltQQVRDSF0gQXRtZWwgTUFD
-QiBldGhlcm5ldCBkcml2ZXIiKQo+Pj4gCj4+PiBJTUhPIHRoZSBjb3JyZWN0IHRhZyBpcyA0ZGY5
-NTEzMWVhODAgKCJuZXQvbWFjYjogY2hhbmdlIFJYIHBhdGggZm9yCj4+PiBHRU0iKT8KPj4+IEF0
-IGxlYXN0IHRoZSBnZW1fcngoKSBtZXNzYWdlcyB3ZXJlIGludHJvZHVjZWQgaGVyZS4KPj4gCj4+
-IFRoZSBwYXRjaCB1c2VkIHRvIHRvdWNoIG1hY2Jfc3RhcnRfeG1pdCgpLCB3aGljaCBleHBsYWlu
-cyB3aHkgSSB0b2xkCj4+IFppamluIHRvIHRhcmdldCB0aGUgaW5pdGlhbCBjb21taXQgb24gcHJl
-dmlvdXMgcmV2aXNpb24uCj4+IAo+IE9LLCBJIHdpbGwgc3RpbGwgdXNlIHRoZSBpbml0aWFsIGNv
-bW1pdCBpbmRpY2F0ZWQgYnkgVGhlby4KClBsZWFzZSByZS1yZWFkIFRoqKZvJ3MgcmVwbHk6IGhl
-IG9ubHkgc3VnZ2VzdGVkIHRoZSBpbml0aWFsCmJlY2F1c2UgdjEgYWxzbyB0b3VjaGVkIG1hY2Jf
-c3RhcnRfeG1pdCgpLiB2MiBkb2Vzbid0IGFueW1vcmUsCjg5ZTU3ODVmYzhhNiBpcyBubyBsb25n
-ZXIgdGhlIHJpZ2h0IHRhcmdldC4gUGxlYXNlIHVzZToKCkZpeGVzOiA0ZGY5NTEzMWVhODAgKCJu
-ZXQvbWFjYjogY2hhbmdlIFJYIHBhdGggZm9yIEdFTSIpCiIKU28gSSBjaGFuZ2VkIHRoZSBjb21t
-aXQgaWQgZnJvbSAiODllNTc4NWZjOGE2IiB0byAiNGRmOTUxMzFlYTgwIgppbiB0aGUgdjQgcGF0
-Y2gsIGFuZCBzb21lYm9keSBzdWdnZXN0ZWQgdG8gc2V0IHRoZSBjaGFuZ2Vsb2cganVzdAppbiB0
-aGUgcGF0Y2ggYmVsb3cgaXRzICItLS0iIHBhcnQgaWYgdGhlcmUgaXMgb25seSBqdXN0IDEgcGF0
-Y2gsIGJ1dApub3QgaW4gdGhlIGNvdmVyLWxldHRlciwgc28gSSBhZGRlZCB0aGUgY2hhbmdsb2cg
-aW4gdGhlIHY0IHBhdGNoLgoKCklmIHlvdSBkaWRuJ3QgYWdyZWUgdGhlIGNoYW5nZXMgaW4gdGhl
-IHY0IHBhdGNoIEkgd291bGQgbGlrZSB0byBqdXN0IGFiYW5kb24KaXQsIG9yIEkgd2lsbCBzZW5k
-IGEgdjUgcGF0Y2ggdG8gcmVzdG9yZSB0byB0aGUgY29udGVudHMgb2YgdGhlIHYzIHBhdGNoIHdp
-dGgKdGhlIGNoYW5nZWxvZyBhZGRlZCBpbiB0aGUgcGF0Y2ggaXRzZWxmLgoKCkZvciB0aGUgYXV0
-b3JzaGlwLCBJIHdvdWxkIGxpa2UgdG8gdXNlIHRoZSAiWmlqaW4gVGFvIDx0YW96ajg4OEAxNjMu
-Y29tPiIgZm9yIGFsbApwYXJ0cyBpbiB0aGUgcGF0Y2ggKGZvciB0aGUgc2lnbmVkLW9mZi1ieSBh
-bmQgRnJvbSkuCgo+Cj5UTERSLCBiZWNhdXNlIHRob3NlIHRocmVhZHMgYXJlIGEgbWVzczoKPiAt
-IHdoeSBkcm9wIHN0YXJ0X3htaXQgZGlmZj8KPiAtIGZpeCB5b3VyIHBhdGNoIGF1dG9yc2hpcAo+
-IC0gY2hlY2sgeW91ciBjaGFuZ2Vsb2chCj4gLSBjaGVjayB5b3VyIGZpeGVzIQo+Cj5UaGFua3Ms
-Cj4KPi0tCj5UaKimbyBMZWJydW4sIEJvb3RsaW4KPkVtYmVkZGVkIExpbnV4IGFuZCBLZXJuZWwg
-ZW5naW5lZXJpbmcKPmh0dHBzOi8vYm9vdGxpbi5jb20K
+validate_xmit_unreadable_skb() only inspects shinfo->frags[0] and
+assumes all fragments in an unreadable skb belong to that same devmem
+binding. However, tcp_sendmsg_locked() only checks that readability
+matches the presence of a binding (skb_frags_readable(skb) != !binding),
+allowing consecutive sendmsg() calls with different dmabuf bindings to
+collapse into the same skb and bypass per-device and unbind checks in
+validate_xmit_unreadable_skb().
+
+Add net_devmem_skb_binding() to query the binding associated with an
+skb, reuse it in validate_xmit_unreadable_skb(), and check in
+zerocopy_fill_skb_from_devmem() that existing fragments match the target
+binding.
+
+Fixes: bd61848900bff ("net: devmem: Implement TX path")
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Bobby Eshleman <bobbyeshleman@meta.com>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ net/core/datagram.c |  2 +-
+ net/core/dev.c      | 14 ++++----------
+ net/core/devmem.h   | 23 +++++++++++++++++++++++
+ 3 files changed, 28 insertions(+), 11 deletions(-)
+
+diff --git a/net/core/datagram.c b/net/core/datagram.c
+index 173b5d97bd409..ed8f1045f3cca 100644
+--- a/net/core/datagram.c
++++ b/net/core/datagram.c
+@@ -712,7 +712,7 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+ 	size_t virt_addr, size, off;
+ 	struct net_iov *niov;
+ 
+-	if (i && skb_frags_readable(skb))
++	if (i && net_devmem_skb_binding(skb) != binding)
+ 		return -EFAULT;
+ 
+ 	/* Devmem filling works by taking an IOVEC from the user where the
+diff --git a/net/core/dev.c b/net/core/dev.c
+index e76762e29360e..ad2b587dfee27 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4054,8 +4054,7 @@ static struct sk_buff *sk_validate_xmit_skb(struct sk_buff *skb,
+ static struct sk_buff *validate_xmit_unreadable_skb(struct sk_buff *skb,
+ 						    struct net_device *dev)
+ {
+-	struct skb_shared_info *shinfo;
+-	struct net_iov *niov;
++	struct net_devmem_dmabuf_binding *binding;
+ 
+ 	if (likely(skb_frags_readable(skb) ||
+ 		   dev->netmem_tx == NETMEM_TX_NO_DMA))
+@@ -4064,14 +4063,9 @@ static struct sk_buff *validate_xmit_unreadable_skb(struct sk_buff *skb,
+ 	if (dev->netmem_tx == NETMEM_TX_NONE)
+ 		goto out_free;
+ 
+-	shinfo = skb_shinfo(skb);
+-
+-	if (shinfo->nr_frags > 0) {
+-		niov = netmem_to_net_iov(skb_frag_netmem(&shinfo->frags[0]));
+-		if (net_is_devmem_iov(niov) &&
+-		    READ_ONCE(net_devmem_iov_binding(niov)->dev) != dev)
+-			goto out_free;
+-	}
++	binding = net_devmem_skb_binding(skb);
++	if (binding && READ_ONCE(binding->dev) != dev)
++		goto out_free;
+ 
+ out:
+ 	return skb;
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index 4a293a7d1149c..8c74037633ae8 100644
+--- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -10,6 +10,7 @@
+ #ifndef _NET_DEVMEM_H
+ #define _NET_DEVMEM_H
+ 
++#include <linux/skbuff.h>
+ #include <net/netmem.h>
+ #include <net/netdev_netlink.h>
+ 
+@@ -118,6 +119,22 @@ net_devmem_iov_binding(const struct net_iov *niov)
+ 	return net_devmem_iov_to_chunk_owner(niov)->binding;
+ }
+ 
++static inline struct net_devmem_dmabuf_binding *
++net_devmem_skb_binding(const struct sk_buff *skb)
++{
++	const struct skb_shared_info *shinfo = skb_shinfo(skb);
++	const struct net_iov *niov;
++
++	if (skb_frags_readable(skb) || !shinfo->nr_frags)
++		return NULL;
++
++	niov = skb_frag_net_iov(&shinfo->frags[0]);
++	if (!niov || !net_is_devmem_iov(niov))
++		return NULL;
++
++	return net_devmem_iov_binding(niov);
++}
++
+ static inline u32 net_devmem_iov_binding_id(const struct net_iov *niov)
+ {
+ 	return net_devmem_iov_binding(niov)->id;
+@@ -243,6 +260,12 @@ net_devmem_iov_binding(const struct net_iov *niov)
+ {
+ 	return NULL;
+ }
++
++static inline struct net_devmem_dmabuf_binding *
++net_devmem_skb_binding(const struct sk_buff *skb)
++{
++	return NULL;
++}
+ #endif
+ 
+ #endif /* _NET_DEVMEM_H */
+
+base-commit: 6d25ffca055a77787c21a36b66c253f76239411b
+-- 
+2.56.0.385.gd3acb90ef8-goog
+
