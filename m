@@ -1,248 +1,186 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010020.outbound.protection.outlook.com [52.101.85.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC46438034
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:33:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791466390; cv=none; b=u8f/DgTHd/gtQILELY47uLIY96SdGiDVNTujIEdNK8uX/JR5ISpfsKnxG8piWkfG4tuaGUCoHwPBxpbnMEtDnVOxdKU6vJNejiPqzb1thTNy27+e5r22Jdk6w0oWAhhAOUYyYdrVSPSAkcI635w1qxbaxjYMNfU4o480687hpWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791466390; c=relaxed/simple;
-	bh=vWf07tfvgfXqq9x5vPvFNxiioX3rP0NNTwrPBMXf0a8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k4Yb01w4SWr8A4jv4WyV6KPjrj1w8twD2iS6rMcUWQUrPEJ4p15ITy8EAaQbEFUUx8ko+J1e5tt/485ePKVFy3XWieuMWoe1jab4tOMPiYenfqWgD2DNNrLelEMQ2MjeckerTZPOBXbIFh8m30Nbl47i2H6n7uxx3FP3lqVpa10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/Hf8mED; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E5249B1E1
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791466439; cv=fail; b=LUa7/1fYaK90D+f62H6SKVwhLE13ksMCdfZ33abxmh+vKr+NV64ryXCynMkcyRGQUNgiLQ495isjuj47US0pc1pKRKxn5xU1gR9kdd8gE/GhrmuO5DB+3nzHcRrhTAYHEO6e/CPK3VNNl958gGGmglAX10TP018stp908ckgv0M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791466439; c=relaxed/simple;
+	bh=41v4S6uGg9as/qubn4wKHX9XPf9uNrCHoYj4HiofT4Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PyQ9dKbiVS05JDb8P9f84ASTvK2YRFr8MxcdjI0hf20E09DXpK0NoZCbCaVcpddh51sl1EJihDWUMO8lL3dhEhQ7cUSat1NBZPcdK47618SwmSiICu85hXFXy+XlTxdUJBdR+UjXWSpp/a79DtgT7Z7erciC6hRX6pmlDi8Tomo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MNse3T/9; arc=fail smtp.client-ip=52.101.85.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/Hf8mED"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-88aea027391so2747708b3a.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 06:33:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791466389; x=1792071189; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cIIQ0NNMwq4KqCvPXSeyFJb/IFn6XyVFmklAzgkrN6k=;
-        b=T/Hf8mEDCZ8fl80LgRVM73sVbbgj7TQ08Nqu5Jm3LQWVuqtZ2SCcb/aVsM1j+ZEEce
-         el2sqRx6mhWTqrd94yfrh9TIxWNiy/N2L2B92QSnIChhHuzvlOu/YYgz/uBz8H6eCibu
-         Idx5zkZ83cUSJ69nGDWp8XEY9Uiao8/Gzve53Q7KYqJqI13TwwFyLjIGg5KqWPjvpjgV
-         tQ9RO2bYlaICv/wUy1BTiRpXesnpcjQakh4YZPrxMwM74TIKAba8RBUy2FYBk3VcIwyk
-         UaNtDhSamA4SqtmOm7pvtO2ez9YWNKT7cr9ze5TEkFNdDJZSNmU/+JImS2yoS4YxdPPt
-         WFsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791466389; x=1792071189;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cIIQ0NNMwq4KqCvPXSeyFJb/IFn6XyVFmklAzgkrN6k=;
-        b=2ULXOeZPt4r2VoVv22g8aYv2lPvJlQArc1chWgD5eoLoafuIsBBvjqYor3YN14hDS0
-         Jj8JUMHJIhR6DU5DaYZBr5Rs+OApFxsUH7L5ExhDfHY9CibOuxvdC0wI0Lm7+Ta7Dll+
-         5nGX8b10cI+A0/56U/9C57sq6GbWrzoH+K4xKCgvTb81rzx3O6vbHOykcTkLb3eZf/c9
-         qZlaKg9zNyi/UgZbNCUODqr7RXs5VTuQKFyZr+a1NvfG4mMnuCt5vKvKOngYfVJx69dy
-         /SjerY9ehHjrZKnwpHdV9onjH9JNeGUynano/IDxvM3tbsUCeHlbxWSkQEwdPOu/X9V5
-         p5/g==
-X-Forwarded-Encrypted: i=1; AKwUvBzSFV5SnO2Zmtd5BRLj7Ajg44dDN6U5Oz1o0e1s2xAvW8EhzG532C5wZIeo7h4waK5WqJWtFbc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lgqoOwUa2R0Lo3jb60wC241z0st5b5ZkApVwp9lKBg2K7K5o7z
-	tOGpGGd0hAyfNNmrEwpUPg5Yt5ViUX1MBfpnJGGxhRB8SKGm3Vz/Jc+i
-X-Gm-Gg: AYBFou0zYcUlT+4CAfgrg+csYmhNBUtF1Godw1/oZ9AmXHqrds6c1cnJhQSMV4p1PGi
-	+PGZQAR5fFvOBTfn/sIKqp+oa+Ost1LnuVksTOZWIphSo1IMs8043pWYTmy+DTUe1FLKs61Ciyj
-	53LE7yOYERUroyPlbXETbERNqbELySCJrZqyJ6A7WJ7yPwUUH7RQxG/2tRw/W4VLzsAIoVSfvMX
-	JVAdcCVCgmLCABYRCXfirILM1VQPESiz8cQVHOanhZG5QRfNaSfpvo7SpRuFc2vE0pzstY/5vTm
-	ywgftrx2xD3iqPsPn5hsfS6qFoZl4vkDnmn32LQx34nNRkXUHNYs4AfhzF043tilYrL5CD4iufW
-	FMIVlbV39JWiRijFoaeNjJC7H1P7fEAzssICb2tckHhrfCjX8JY0U4ICOWeSQ3n3ldtNTeENKzv
-	MWht34kS7QJBBohJCVY97pIUSZnmqCiRwtkgeeOEPtpjiuT93VQGTL886tydtjryL0VWhYJp1EU
-	KD5Sd0SQWhdo46I2qaMr7WhyJm1HyplwKtDB00=
-X-Received: by 2002:a05:6a00:4098:b0:87a:3144:8c4c with SMTP id d2e1a72fcca58-891b54cd522mr4832798b3a.59.1791466388432;
-        Thu, 08 Oct 2026 06:33:08 -0700 (PDT)
-Received: from localhost.localdomain ([2409:891f:1a45:888f:ce2:7571:bd00:d119])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-892b87f259fsm1656626b3a.3.2026.10.08.06.33.03
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 08 Oct 2026 06:33:07 -0700 (PDT)
-From: Chuang Wang <nashuiliang@gmail.com>
-To: 
-Cc: Chuang Wang <nashuiliang@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v10] net: reduce ARFS flow updates by checking LLC affinity
-Date: Thu,  8 Oct 2026 21:32:44 +0800
-Message-ID: <20261008133252.3750-1-nashuiliang@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MNse3T/9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uneltb+o04uXicviE4GmYYHiyIcdpSju6RWi82PnDzCT+VedqoHC8y+bZqc/4YC3bSs7IaRpC3t93rEL9QOwXftt5C2QUYFL12UJCW9pnbAJya+CnZKbUTgX7tWvyhI47204czFfe+2KtDqm+NtCbA7a34Vv1PWMS797vE+VgM4NLtnQxgH2ww1ZYAvdZHTX5zJvoyKLNhkeTO0b9HeAWHaiiI1n+2yP4H9WSHGr47BFHkBdCVlJ3XvFJqSa2r/r5BrYxWmuPlEmr98DmEgPj6cekr0lqR1MitGtPAcb0R879gBIJJUbMsUSB7Jp2zQbW+YINbui2WhorOm7X1vnSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Joz7RNQmGAQ6qWojBdbw5EpXciYZYqYcfnD/1GCylx4=;
+ b=jaO9ec61T8m1GcoGPTxE1f8KI/9VQbE4lJ0jJUYBwuMTU8bsu/cn7a5CxpR+wHThNCGVdaQDJiZpzTcsc7XKZVadvWJevp9RY6082XTms4tlAyyVEkvBtna4yiy/w8pOc5ML6eYapT9FXfxWv5XqdzBEsftdV8pNhpk0UnPpbuUanJffFedLI34NHN/ISivgsjKeMzx2ElSMFviTagfPz/1qEMn862DVQg7oNaukqFFXB1Wqj4hSRcqYlWQ+pDyz0PpTj0MuWF/gm4i2kYEdbzZENjKCqDuWiYicJc1HJCBJ7CTrO5D0porfTRDceCSI8TPci76c1KlEiA9VIASgow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Joz7RNQmGAQ6qWojBdbw5EpXciYZYqYcfnD/1GCylx4=;
+ b=MNse3T/93voCw3HUUrOo4hy5lHLHW8+yi9wnCSzB8JYFwV1FEhb71/7AuzOPGBB7Nfj2b7p55DZEN9uam7Req/2SAx/2KeTNQ5mPDIUNCVCw04m8WqhZS/LNjQrWopvN0oIcJXSWIUzOWd0x93EQykBI1WvOJsuWGqyfzrPOhrw5uDRkYh8zE7vNEIQkpF6bZuPB6u/KUWTaCzYmMOZTOv6VKtEl/0LjsCKd3vPcgKVtuUVXfEIXtkrMFv5EENscfSgU8tk0OxK34ic8kmDxEJ7yS7zlFlGZ2QruAbQxSn2pED3SL1Rbgogo1wszasy6bmAce3ItBMnb4YnyVGLd1w==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DS0PR12MB8070.namprd12.prod.outlook.com (2603:10b6:8:dc::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
+ 2026 13:33:53 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.015; Thu, 8 Oct 2026
+ 13:33:53 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@kernel.org,
+	dsahern@kernel.org,
+	horms@kernel.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	daniel@iogearbox.net,
+	petrm@nvidia.com,
+	ferenc@fejes.dev,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net-next v2 0/3] Report netns cookie in FIB lookup tracepoints
+Date: Thu,  8 Oct 2026 16:31:55 +0300
+Message-ID: <20261008133158.1438907-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR3P281CA0022.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1c::10) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS0PR12MB8070:EE_
+X-MS-Office365-Filtering-Correlation-Id: af587ba9-4243-4c01-0159-08df2540cb77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|10067099003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	kU+UbJG1VWy2iLuNW1AKh158ovF472xCVE3UZCotlARSvvDC60xt+HnlFUO+F/cTVjg6Q4RCC/3mgLIAQHVkTiQs6/VbXXE6gfDlLqp7r6CsdF93YZnha35aqaKwy46MkAq2cG621kfkDkzyHOxSOoBv5iLDxP10hUGLCxdgLKVLhrIZ3VGH+oYnz52YWPwVRfdUpKiJUtlMebbVftLlLiEiwk1mOWOUyVu6yA4QMqtCq08BODCsY4hZerpxGa0qhSm1pExGb/P7XmRSHDg9z5hRteBai92aZtxf+tTRPJfR8w0LJoAjnfCC7FKyUPm+nLSHh+/DFmEYqYODm0Qn/n4u9n/fN/sv9iF+vCAe4Qq9Dsva+/5ZKNqKycdwxYKkIlVFXg3PY4l7o6Gy0mDYccRyIK/vlQNeTZBNbYoStDO0v6c2QP/FD7vHuuZ+R8PBCDhV4uSIEEttCNu5lMTelF5FYA8guHwmI/X03Iczv8VOyLmVgpNwJXBYQKFlxgE9rltXeCXaA9ugccJLnqZ/1vjIALNVcL47pl8hp2yp6nVYf1HHqzjLfhGIFzsUWFyPH7h1hjKsFquwdRzTrFjSHatZvCG2NBePBp6cQa5a0IiTGBFRsSXScA2yY6SPKXNvr7NfhJk4GckQxfR591tIpTGEgYyKAN/qKqhh8z9BRRc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(10067099003)(18002099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?g2Q21jWFBCMIZvDOaJoPStkCbsQZ4qXP9aqjCWS5hh6nQ24znvnegBaKW91a?=
+ =?us-ascii?Q?1khD0sTvQny3OaENlqFv193kRYvFceNucCABd55cXwJXJdzup/2KLqerSglV?=
+ =?us-ascii?Q?wYlAOtD4PU/3anSLwMw80J9lZfBq+I0YIeqsvCLifyLJ5wDOvRgLFVwHukTj?=
+ =?us-ascii?Q?LRLrIwdU4rAwVoI5e7TZkVqw0v0HjL2WtzRUXBV10E46b9YdCR3UXVZ+oRso?=
+ =?us-ascii?Q?uTqzfAAEbRP3J8CYnoxFeg+panIJeRpyJg6v3Sp+ZeYoRP2CQZastAFekkZh?=
+ =?us-ascii?Q?kPihGZemt4iFkcKxVexJrSHXJtglq2dwclBSMfi6WfdyPUF/BPE7Wol0RDut?=
+ =?us-ascii?Q?NlvXqpHi24+n3cujD7GFP+eueUxUDZY7Iz6Uzue8U8OHCG4sqQu5AdVvrkx8?=
+ =?us-ascii?Q?WmzgqXHReQEcr8f8xgOBIHAezsY8GuQEXtFKkZ7MK24GjcsqfANQJp8WOwrr?=
+ =?us-ascii?Q?nGJGmvWoZvH6IvCSZVxuUbQ6ptFUTvWT7xdyMqJ1ivy76AAmLFJuW/6qGKhC?=
+ =?us-ascii?Q?jIfCUTiRdVzHrGOd5+QK16z//ZB/0aF+jCDbvmxnLLUbzd25rBkgTokaBKL6?=
+ =?us-ascii?Q?A6wZPFZhcoltJ2p+qQYSH47RCk2GOmwmob78/gV/nPTgGIWES4kikyInnqoh?=
+ =?us-ascii?Q?fV/K/MEk4nKJMGtmSoIDm9lLKkddMGbeHxsMQCCYeQ00g6aRxu9pFXj9u5uR?=
+ =?us-ascii?Q?YJO4+Il2eIugNya8MZUmitF3iKS7KI4+Ao76vN4+BTOQg0hwN9TZIVCCmE0w?=
+ =?us-ascii?Q?It1AE0V/vGq0uGcMgDF9kvxNUI+z8OLFY1vRhTEy7j3ovY0PI3Ee1Pb2N36g?=
+ =?us-ascii?Q?/vQ4UIZWEAep00brCAFTtKvXD0mfkpFsymB4U3CzHWsqUMORWT+FHUMmPZ9w?=
+ =?us-ascii?Q?U+Nah2RlpDNAUIW6Ya8UB+X+TPSIuPVGerPrvz3bXLGQqyk30vGgfiqt6eFf?=
+ =?us-ascii?Q?fVkAWb0UQICAsRJM2UIKvaiz9Tw4sfBjvFoy3VwQQ/AbNdPJZt/dsihcmRJU?=
+ =?us-ascii?Q?mOZjamP6SSitBSF0t5L6qPAUWCcJUdZgKYtR8SiZv+UtQDggA/OglFMhegpX?=
+ =?us-ascii?Q?isnLnGNE/ZDsBX7DXYU1ebpxTdGD/te3FfbDI/ogE0HzAigYEm2aGgKNjcMg?=
+ =?us-ascii?Q?1tlF5ceHkC2K07g5/F8Tho/wEXDIELIQmaW2Es6YOaaezF/oRzNRmso3vh53?=
+ =?us-ascii?Q?Eid6LMJUg3T4a8xfMy0wlNSTrCUhuBCOM27V92ODhCjkgQ1z08xtLj0qoMhN?=
+ =?us-ascii?Q?epMThQxl2cQ28OPXAbohA6gxXDsOFi4q/rJA6NIQJS6PhrCZsK1xCmUgb6kQ?=
+ =?us-ascii?Q?ycH9J5cvbd/r3xhg6ad0KO0M1Mtdrv2TLGIQyUJDGHXQjf0VFpcE4Hyv6emC?=
+ =?us-ascii?Q?MrBUtu4mvaCyNV3mBc4xVppT9rSzqHv++Ry8JC+B42i/sMOZlwAMNsP8i0G1?=
+ =?us-ascii?Q?A06TKHqX19ijTjQLTo70ayxiL3S9Q4vIUrEDJJ7c+f88tmJoBulj76ohqBKE?=
+ =?us-ascii?Q?4VbGi5QHLRTjYCulHhsEnH4dKGNflZk617/Dnaw0NgugNRoLvJnFJ6D058Fn?=
+ =?us-ascii?Q?pydK3AG0/5/9gWV9a+2jG1aU1vk9MtfowExw/jeF3T9ckAdIplWVruYnaAcB?=
+ =?us-ascii?Q?bgIXO5w5CibzeNpnWNguPeLUqrNFooz5VWr3UNvDGjEXEiJvnwIRh/uhYwxF?=
+ =?us-ascii?Q?zPJUQEwX4hKkzHrsIqSTxj/I+wJc6qh2G4z7dNePm6SSfj+r9CNbJ6pCw02F?=
+ =?us-ascii?Q?3TY0aYmsyQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: af587ba9-4243-4c01-0159-08df2540cb77
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 13:33:53.4194
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uPLZ71bBUC7lZEb7PwIjFy7Gm7OnkxB61V6U/IfNKyBSjfLi/2xns7cLd1PLALNBlnJeXbMqmYYPDF8irjjwBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8070
 
-The current implementation of rps_record_sock_flow() updates the flow
-table every time a socket is processed on a different CPU. In high-load
-scenarios, especially with Accelerated RFS (ARFS), this triggers
-frequent flow steering updates via ndo_rx_flow_steer.
+The fib:fib_table_lookup and fib6:fib6_table_lookup tracepoints do not
+report the network namespace in which the lookup was performed, so
+lookups performed in different namespaces cannot be told apart. The
+recorded PID does not help either, as lookups in the receive path are
+performed in softIRQ context.
 
-For drivers like mlx5 that implement hardware flow steering, these
-constant updates lead to significant contention on internal driver locks
-(e.g., arfs_lock). In high-load scenarios, this contention often
-becomes a performance bottleneck that outweighs the steering benefits.
+This is a problem, for example, for netns-aware tracers [1] and
+multi-ASIC systems where each ASIC and its ports reside in a separate
+network namespace.
 
-This patch introduces a cache-aware update strategy: the hardware
-steering update is skipped when the flow's previous target CPU and the
-new one share the same Last Level Cache (LLC), as cache locality for
-the application is preserved either way. The per-queue flow bookkeeping
-(rflow->cpu) is still updated, so RFS keeps steering packets to the CPU
-the application is running on, and subsequent packets take the fast
-path in get_rps_cpu() (tcpu == next_cpu). A new sysctl,
-net.core.rps_feat_llc_affinity, is added to toggle this feature
-(default: off).
+This patchset reports the network namespace cookie in both tracepoints,
+as commit 27cb3de7f43a ("net: add net cookie for net device trace
+events") did for the net device tracepoints. This allows filtering
+lookups performed in a specific network namespace, for example:
 
-Performance Test Results:
-The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
-with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
+ # perf record -a -e fib:fib_table_lookup --filter 'net_cookie == 12'
 
-rpc_press Commands:
+The cookie of a given network namespace can be retrieved using "ip netns
+cookie" [2].
 
-  for i in {1..8}; do
-    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
-    -server=<IP>:8000 -input='{"message":"hello"}'
-    -qps=0 -thread_num=512 -connection_type=pooled &
-  done
+Patch #1 reports the cookie in the IPv6 tracepoint, which is already
+passed the network namespace.
 
-Monitor mlx5e_rx_flow_steer frequency:
+Patch #2 passes the network namespace to fib_table_lookup() and from
+there to the IPv4 tracepoint.
 
-  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
+Patch #3 reports the cookie in the IPv4 tracepoint.
 
-Frequency of mlx5e_rx_flow_steer (via funccount[2]):
+v2:
+* Patch #2: Make the network namespace the last argument of the
+  fib:fib_table_lookup tracepoint. I kept the tags since the change is
+  minimal.
 
-  Before: ~200,000 counts/sec
-  After:       ~10 counts/sec (reduced by ~99%)
+v1:
+https://lore.kernel.org/netdev/20261006155454.853588-1-idosch@nvidia.com/
 
-These results demonstrate that filtering updates by LLC affinity
-significantly reduces driver lock contention and improves overall
-CPU efficiency under heavy network load.
+[1] https://lore.kernel.org/netdev/c28ded3224734ca62187ed9a41f7ab39ceecb610.camel@fejes.dev/
+[2] https://lore.kernel.org/netdev/20260923161756.2914560-1-idosch@nvidia.com/
 
-[1] https://github.com/apache/brpc/
-[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
+Ido Schimmel (3):
+  ipv6: Report netns cookie in fib6_table_lookup tracepoint
+  ipv4: Pass netns to fib_table_lookup()
+  ipv4: Report netns cookie in fib_table_lookup tracepoint
 
-Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
----
-v9 - v10:
-- Move the LLC check from rps_record_sock_flow() into set_rps_cpu()
-  by Eric Dumazet
-- Drop the sock_rps_record_flow_hash()/sock_rps_record_flow() exports,
-  which are no longer needed.
-v6 -> v9:
-- simplify code and fix errors in AI submissions by Simon Horman
-v5 -> v6:
-- remove the multi-check 'old_val == new_val' by Xuan Zhuo
-- fix 'modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko] undefined!' by kernel
-  test robot
-- fix 'tcp.c:(.text+0x3e90): undefined reference to `sock_rps_record_flow'' by kernel test
-  robot
-v4 -> v5: fix 'modpost: "rps_llc_check" [net/sctp/sctp.ko] undefined!' by kernel test robot
-v3 -> v4: add rps_llc_check by Eric Dumazet
-v2 -> v3: patch net -> net-next by Jakub Kicinski
-v1 -> v2: add rps_feat_llc_affinity; add brpc tests
- include/net/rps.h          |  1 +
- net/core/dev.c             | 23 +++++++++++++++++++++--
- net/core/sysctl_net_core.c |  7 +++++++
- 3 files changed, 29 insertions(+), 2 deletions(-)
+ include/net/ip_fib.h        | 12 +++++++-----
+ include/trace/events/fib.h  | 13 +++++++++----
+ include/trace/events/fib6.h |  8 ++++++--
+ net/core/filter.c           |  2 +-
+ net/ipv4/devinet.c          |  3 ++-
+ net/ipv4/fib_frontend.c     |  6 ++++--
+ net/ipv4/fib_rules.c        |  2 +-
+ net/ipv4/fib_semantics.c    |  2 +-
+ net/ipv4/fib_trie.c         | 14 ++++++++------
+ 9 files changed, 39 insertions(+), 23 deletions(-)
 
-diff --git a/include/net/rps.h b/include/net/rps.h
-index e33c6a2fa8bb..65d1fc43f8b5 100644
---- a/include/net/rps.h
-+++ b/include/net/rps.h
-@@ -12,6 +12,7 @@
- 
- extern struct static_key_false rps_needed;
- extern struct static_key_false rfs_needed;
-+extern struct static_key_false rps_feat_llc_affinity;
- 
- /*
-  * This structure holds an RPS map which can be of variable length.  The
-diff --git a/net/core/dev.c b/net/core/dev.c
-index f587645e930a..8b046100525a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5122,6 +5122,7 @@ struct static_key_false rps_needed __read_mostly;
- EXPORT_SYMBOL(rps_needed);
- struct static_key_false rfs_needed __read_mostly;
- EXPORT_SYMBOL(rfs_needed);
-+struct static_key_false rps_feat_llc_affinity __read_mostly;
- 
- static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
- {
-@@ -5160,7 +5161,7 @@ static bool rps_flow_is_active(struct rps_dev_flow *rflow,
- 
- static struct rps_dev_flow *
- set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
--	    struct rps_dev_flow *rflow, u16 next_cpu, u32 hash)
-+	    struct rps_dev_flow *rflow, u16 old_cpu, u16 next_cpu, u32 hash)
- {
- 	if (next_cpu < nr_cpu_ids) {
- 		u32 head;
-@@ -5179,6 +5180,24 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
- 		    !(dev->features & NETIF_F_NTUPLE))
- 			goto out;
-+
-+		/*
-+		 * RPS LLC Affinity Feature:
-+		 * Reduce RFS/ARFS flow updates by checking LLC affinity.
-+		 *
-+		 * Frequent flow table updates can trigger constant hardware steering
-+		 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-+		 * contention on driver internal locks (like mlx5's arfs_lock).
-+		 *
-+		 * This strategy only updates the flow record if it migrates across LLC
-+		 * boundaries. This minimizes expensive hardware updates while
-+		 * preserving cache locality for the application.
-+		 */
-+		if (static_branch_unlikely(&rps_feat_llc_affinity) &&
-+		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
-+			cpus_share_cache(old_cpu, next_cpu))
-+			goto out;
-+
- 		rxq_index = cpu_rmap_lookup_index(dev->rx_cpu_rmap, next_cpu);
- 		if (rxq_index == skb_get_rx_queue(skb))
- 			goto out;
-@@ -5308,8 +5327,8 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		    (tcpu >= nr_cpu_ids || !cpu_online(tcpu) ||
- 		     ((int)(READ_ONCE(per_cpu(softnet_data, tcpu).input_queue_head) -
- 		      rflow->last_qtail)) >= 0)) {
-+			rflow = set_rps_cpu(dev, skb, rflow, tcpu, next_cpu, hash);
- 			tcpu = next_cpu;
--			rflow = set_rps_cpu(dev, skb, rflow, next_cpu, hash);
- 		}
- 
- 		if (tcpu < nr_cpu_ids && cpu_online(tcpu)) {
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 473c162736d6..6043ccb52cff 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -560,6 +560,13 @@ static struct ctl_table net_core_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= rps_sock_flow_sysctl
- 	},
-+	{
-+		.procname	= "rps_feat_llc_affinity",
-+		.data		= &rps_feat_llc_affinity.key,
-+		.maxlen		= sizeof(rps_feat_llc_affinity.key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key
-+	},
- #endif
- #ifdef CONFIG_NET_FLOW_LIMIT
- 	{
 -- 
-2.47.3
+2.55.0
 
