@@ -1,46 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53777411FBE;
-	Thu,  8 Oct 2026 23:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157092DD5F6;
+	Thu,  8 Oct 2026 23:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791503048; cv=none; b=S8euWvC0L5+YaFH1g+MwFE0S++Q7qjTCUlflGtRG0Nz7qNSUz7yWWveUXBL5Ql87Az+b45gYUSqpijBzzDv390nkOFMxk2EDEMn5U9rfCZuT9gpMDWAridRb7Mlj87fUPnZNJ70TzUjXgk8m8wsvZf9uEXUuTaXDZWo6bOmh5To=
+	t=1791503358; cv=none; b=Noy9tCBxKIM//ouDfcu3PvzRChUI8v93JJn5kTxvp9IApknfiEI2pvBE/dpWtYHO8+ZDE9Gsx47h28GcD4NavLNFWICC7tVzUCyGlLDZCe+ScldigvgvRVd0UdHb7VE7sJn4fJqOcfcW8yLCWNj+uCiaTLSPZSvXie8CImsbisA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791503048; c=relaxed/simple;
-	bh=/kt30oE5DuE+U/9nZxME8FtofxwkMOZ+kkTZhY7CtMc=;
+	s=arc-20240116; t=1791503358; c=relaxed/simple;
+	bh=kvd8Wdqg7MXOv7eKgOr1HM24rJGeO1gL3nSxcIOcaX8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n0AogF1Vrrsqe/9eHZaN5eH+7iIeSiWPyZ42j1iAZGfhaxT8aaK2oblCt4Pwo6cU1QEDXeNqlgD11XGEB91Q8w5BWRf1s35oHvxP9iaqGfGkfNj1Q+OyzlnlgsXIR7JM66Ogas8cxVMPzpuK3UUzwqtGwHPlT2Sie27Bd+4D5bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKF3K9zh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=th0VoF4lsVt41xfAehfCoFUQNRd3cT9FdEjnISlzsLCYjNAq3YonXiZdnL9fTqICN3u5XK39qQHKLUkbBJxqdYKa1/rrCEVRorsQ5JCDhKgxnVBJO/9yr6xIFroGY+0uFXH2yib4bDC/QQ3ngI/x8iR70J1K6a3zeBly7aoss+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPpxfuSC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKF3K9zh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8673C1F000FF;
-	Thu,  8 Oct 2026 23:44:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPpxfuSC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9359F1F000FF;
+	Thu,  8 Oct 2026 23:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791503046;
-	bh=ipeer+bQKmXXmZjTWk1tt8rZQdtLvz9OSjoAqHF1Ha8=;
+	s=k20260515; t=1791503357;
+	bh=0Mga/Cp2RNkPq/r+Fvql3rpWViZY0lp0vp3ozmjghD8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hKF3K9zh/iJVBT1pVrWIk3PlZeh/D4OHKXJx/PB6jMgcFAZx7vHpuOCNi1r3rqckn
-	 /Dz79t52oQeQpY9jMnAl6SXjvGdYeZ2bbnr++PZI3ZdhlDp3nXXef3Fb0EAXULaeiD
-	 s4sC7xY4mn2z9CDYm+ty7dTRLNg6SDhSSFTsU6+uGWTaPFcfMbMZftMoyKHs+2OQRk
-	 IDzRe/hY3eFjUD/bl1xjZAImDURN0FFrClEHV35SX3QSH//kxdztxu2mAPsOHBfRf7
-	 hEFAmWVVxDxJdgyrTery1sRFfJfksNLyY04vXE7Og23laVggOgW7yxLhOgNdf/Rdgw
-	 hqTVWRHBXkkjw==
-Date: Thu, 8 Oct 2026 16:44:05 -0700
+	b=oPpxfuSCZI7QDZJn92O/gXRAyMwDyGzrzBQpUMXOdpr2meBNflTFNRXNlI3UXgFq6
+	 6LB1Ao1UYjypW+D6q2JH3GAevcO6r6L2+brDdTO+Jy9dZIzbeSzItPPrU8bnZEGTHa
+	 b5K+za2jsuSk33witaTFMg5JJsr70d07NH9C+khYsZTmUk2VZ9RGa1kNcglzwAf7vq
+	 oNQhLf6FqWyyF8Anjup11sYKewgv/U0Iq39uHIawbLjAHWsHt9ainFcJ1j0VJqYt4I
+	 tgN+f714hPQg0t5x1nhMOMQ9t05f7ZX5+UtV0rtl7J2gvTqKFeZEm1IdSyfwwR620k
+	 4SlDNh4aq4+yA==
+Date: Thu, 8 Oct 2026 16:49:17 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org>
-Cc: quanyeyang@proton.me, John Fastabend <john.fastabend@gmail.com>, Sabrina
- Dubroca <sd@queasysnail.net>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Jakub Sitnicki <jakub@cloudflare.com>, Jiayuan
- Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] net: annotate lockless writes to
- sk->sk_err
-Message-ID: <20261008164405.06bf2cbf@kernel.org>
-In-Reply-To: <20261003-tls-fix-sk-kcsan-err-v2-2-e939a2ebdd56@proton.me>
-References: <20261003-tls-fix-sk-kcsan-err-v2-0-e939a2ebdd56@proton.me>
-	<20261003-tls-fix-sk-kcsan-err-v2-2-e939a2ebdd56@proton.me>
+To: netdev-bot+sinfo@kernel.org
+Cc: Chengfeng Ye <nicoyip.dev@gmail.com>, davem@davemloft.net,
+ edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net v4] net: pin protocol module before inet socket
+ allocation
+Message-ID: <20261008164917.384b8e96@kernel.org>
+In-Reply-To: <179096305349.1402591.6316561110428507255@kernel.org>
+References: <20261002173844.3537111-1-nicoyip.dev@gmail.com>
+	<179096305349.1402591.6316561110428507255@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,21 +48,12 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 03 Oct 2026 21:44:29 -0700 Quanye Yang via B4 Relay wrote:
-> diff --git a/net/strparser/strparser.c b/net/strparser/strparser.c
-> index a23f4b4dfc67..e5d5d755e532 100644
-> --- a/net/strparser/strparser.c
-> +++ b/net/strparser/strparser.c
-> @@ -57,7 +57,7 @@ static void strp_abort_strp(struct strparser *strp, int err)
->  		struct sock *sk = strp->sk;
->  
->  		/* Report an error on the lower socket */
-> -		sk->sk_err = -err;
-> +		WRITE_ONCE(sk->sk_err, -err);
->  		sk_error_report(sk);
->  	}
+On Fri, 02 Oct 2026 17:44:13 +0000 netdev-bot+sinfo@kernel.org wrote:
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-This chunk doesn't apply any more, please wait a day (for net->net-next
-merge), then rebase & repost.
--- 
-pw-bot: cr
+You have to answer the bot's question.
