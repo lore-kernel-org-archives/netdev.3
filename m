@@ -1,77 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B19848032C
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDA64908DF
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791463643; cv=none; b=UCW2tyr0vZJbkLkCKII6RAmQ6JfKcF1i3xXXNwKDYJpzSfFt0lbYxPUKBzJLzoh6KdPMCmETopqV8/FiEncJnqnT83bUYdUbbGSukQXPKi7FQqCpgfuaLV4Ss04dE3YYyih7d8Rnpd4Qv57iosss5JhJBpQctNd4E2RBPajouuc=
+	t=1791463710; cv=none; b=iitSC34h5oAHFW65efl4+4UBAVrarzX+eMbYWS2VezBQblENYBiqcgv+4YilfIbgT41ygSR4hCVusXJfWQZSnRvQSyD06bTLSuu8h7zs2WPWteD1kDzz2wN3KP6Z5WUjQ6n6RVdMv2Fck0drD2ExusULfr/WnG3ZjL1hZSL6Fq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791463643; c=relaxed/simple;
-	bh=LlMO6iQODPUl//akDACh6iLTLYAzcsIkYiJxJNtBM6Q=;
+	s=arc-20240116; t=1791463710; c=relaxed/simple;
+	bh=0qVZtYkdvaSfqGduovy6JP1HIfFfoNJIptyO8s7H45w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YEpseqzNE1z1QbN5fyOritV3OGBOv1TzaZuGjc6aKq0tupzaq+aoC4gxBnIzWfC97QDR/fxQADpeiY8ujvcqOfOFTxeu75VV3TH3VnB3KABNodUXNzQ8PWHb/3N5i2TrS13f40bdjIwqXiU/s7jvafskZiPeF1w1bN2CoOZJ7aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=KhzO33ny; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=hYrBGsq+/Fe0WZoK+HkdSrBRtSGNixKPMwkddoi406V/k+fTzocIWeRDZwboiUyhVQk05EQseG4HFV93Cur1DcX9vtG5R+T3kkH/lNa6KO4aaxhA63hAzzUlDsXFVeDopv0+srceqdYVBysas02oU0adhjm9ckDlVidoLmdVmYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpV1eMLI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="KhzO33ny"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A692A1F00899
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:47:21 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=KhzO33ny
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1791463638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oxDOQiXRdTnPHTu6HRM1AHIJABx+3lat/A0hYbuPbLI=;
-	b=KhzO33nybonBlNRJLBIBENyzXSq++HOjT7obPD9vEDGQThqzbzUGjpGRvYNkkXR5DVmM0f
-	nys1Dfo6vMrUzBQJStS7drTEvh16xEXLR81plcmv3/uoHV2BKtwIkLFQnPtfprZm+sMfvQ
-	lNZmLxKUdmFOCgX3Phoz8sGUavIgGPU=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 8e64cadd (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
-	for <netdev@vger.kernel.org>;
-	Thu, 8 Oct 2026 12:47:18 +0000 (UTC)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c3156e7705cso608596766b.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:47:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzwzMG7339f1R8erLAMcYTuX5Promh/NO2WkLbbob8BCflnd8Q9kb6Z5XQm0ARG7ehyIeRwnXg=@vger.kernel.org
-X-Gm-Message-State: AFuF++naP/bHjaEi1+hL6Fx3H6CtPxXIEplrHB+LbUO9TNdFa3jZeo7n
-	BJo6QeRrUG2LHIy20GoqftLdE97VjieFwgY8+/dAZ0FiIP99hRyP33tmRMA98fvC5+5RzxJt2HL
-	lMRacM7gORBgyKCVTLb7eXTwERlM7tWk=
-X-Received: by 2002:a17:907:6ea8:b0:c2a:704c:8c8e with SMTP id
- a640c23a62f3a-c317bd901cdmr531801466b.11.1791463636243; Thu, 08 Oct 2026
- 05:47:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpV1eMLI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD1E1F00893
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:48:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791463708;
+	bh=0qVZtYkdvaSfqGduovy6JP1HIfFfoNJIptyO8s7H45w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LpV1eMLI0QnNGCXbQX9y50FCd+ZCJOzTO0NQioPZ/+pso267rsXVJF3x3LGehnYW/
+	 K7kdTwX/eTK24wodE81ZTLSeiZcv82V+BYt56Wl5g1OlZr+cTTCQU2/lO24CPBat2i
+	 YYPjV28cEbIq+mpkGjxOJ6AelcV1pZMspAxNEJm8SxcequbLBqa+qhyX+vS/TGO67B
+	 XkBNLCRVFxuo4RlxqXFH9bqtEcWoiOIUzTnyNb9yKBD8aaM3STk9/21F0ZoFtfvbO2
+	 MEccLa8o9NKsqS872XPuGLpIrFsBx2sIWrExRNxEBLGhP/5shAB6TTQV3+4xpissYK
+	 qVD28ouH0cp4A==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-46556b9e02cso464911fac.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:48:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy/30Jzt8MzZIAT3/Cg7BIoUlFJO3xclJeY8y+YfeqU/26NdcixFsZw8/986CNH4GMWq75KQlk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mXx1xEu7EXzOCjmr2B4wkAjg7jPI0wRFAoAb/ywdRZv3Ukn0Lb
+	yJM/okfqkCqU9D3pRFfV5TI4mSbazSv7CTTXSWT8qOZM1mHXgALjgRAqL4Flt8os+cYdfocBhJm
+	P8kdrDd7bykvVSPJ0QW2ag0JjYEPn1Jc=
+X-Received: by 2002:a05:6870:e997:b0:48f:a8b6:19d3 with SMTP id
+ 586e51a60fabf-4a28045b5bemr1459726fac.2.1791463708287; Thu, 08 Oct 2026
+ 05:48:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008124106.665014-1-Jason@zx2c4.com> <179146356621.2527009.11001901701574636880@kernel.org>
-In-Reply-To: <179146356621.2527009.11001901701574636880@kernel.org>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Thu, 8 Oct 2026 14:47:04 +0200
-X-Gmail-Original-Message-ID: <CAHmME9rypRmL0tA-20vJumRBckpbzEaBXdE+xhMqi5M5OKPFhg@mail.gmail.com>
-X-Gm-Features: AclHuK96wsj5ZjuVQ3gcwk4j3i0Tl8rQf2A9V50RB91AIzVaSRqAPpdX4EdBA54
-Message-ID: <CAHmME9rypRmL0tA-20vJumRBckpbzEaBXdE+xhMqi5M5OKPFhg@mail.gmail.com>
-Subject: Re: [PATCH net] udp_tunnel: drop packets when hibernating
-To: netdev-bot+sinfo@kernel.org
-Cc: rafael@kernel.org, lenb@kernel.org, pavel@kernel.org, 
-	willemdebruijn.kernel@gmail.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-pm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	=?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <jeremy.jean@oss.cyber.gouv.fr>
+References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+ <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org> <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
+ <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com>
+ <4c98eff5-c8c7-43ee-b59a-adb833978816@kernel.org> <CAPa5EdDk+HuVP0H1+iqOcHDHZnfdika5WOQcgSaMtfRFWzqZ+Q@mail.gmail.com>
+In-Reply-To: <CAPa5EdDk+HuVP0H1+iqOcHDHZnfdika5WOQcgSaMtfRFWzqZ+Q@mail.gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Thu, 8 Oct 2026 14:48:16 +0200
+X-Gmail-Original-Message-ID: <CAL4WiipSpufpdo-AWoNEJta-puLQ5hMyPn2xcjwg4vg67PNoyA@mail.gmail.com>
+X-Gm-Features: AclHuK_D8yngICniNIB7imCy2NJMcxGSlGHrPp5HcoKJPk8-kK9ST_uLJsCbP9s
+Message-ID: <CAL4WiipSpufpdo-AWoNEJta-puLQ5hMyPn2xcjwg4vg67PNoyA@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
+ VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
+To: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com, 
+	Sasha Levin <sashal@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 8, 2026 at 2:46=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote:
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+Le jeu. 8 oct. 2026 =C3=A0 13:35, Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz> a=
+ =C3=A9crit :
 >
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+> Hi Eric,
+>
+> On Wed, 7 Oct 2026 at 00:00, Eric Dumazet <edumazet@kernel.org> wrote:
+> > Note to testers:
+> >
+> > My LLM agreed with the change in vlan_dev_hard_header() (above), but sa=
+id
+> > that no change was needed in vlan_dev_hard_start_xmit() (below)
+> >
+>
+> I'll need the patch applied to 6.18.y for testing, as I can't test it
+> personally and I want to provide testers with the same kernel/system
+> version as before just with minimal changes. So do I understand
+> correctly that the patch below is what you want to get tested, no
+> changes in vlan_dev_hard_start_xmit()?
+>
 
-Yea, I really have no idea. That's for J=C3=A9r=C3=A9my to elucidate.
+This is the current patch under review :
+https://lore.kernel.org/netdev/20261008123812.554729-1-edumazet@kernel.org/=
+T/#u
 
-Jason
+Thanks.
