@@ -1,184 +1,316 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF28438026;
-	Thu,  8 Oct 2026 10:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A7F3BB133;
+	Thu,  8 Oct 2026 11:02:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791456713; cv=none; b=A3ggcOxQZOCipSk4rd8la5Z/thMwIcJQYA8wYgAXWsMtsX+/oX80zEc664i1IFMR2YybSVfaAFd6WXrxA2gpARl1jf7AVeztoDXjRQzFi+fqX6rBkmfHcFMk/LANe4eXs9RPuqbnkHMRri9IdTmvzPpQikJ8yniwHVTXXTqBHio=
+	t=1791457359; cv=none; b=qyQCb6+ngui4tYGzHuX8+4/KP5VZHT++vj8euuv7f0xouhu0dlv0poq5bmXb7RHE+9I7TPqwF8O2EODGnYr1Anl0QYQOLOcU9couW2c7FOy0q3RibQlW5KLJIgsq1eFZWYIM2TbfXM63f0X6mg0LujzGL2T9uUE8LwEmMinOAf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791456713; c=relaxed/simple;
-	bh=IgSi8ze2FTXdDie611B60zd8rg52AoQub9eV5+WPkrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f43ZcxJJ1gyPaVimEJa85kk7E4HieDUZi+wRYA045T1onMgOqwQ4z8VFEWrOXkltgRCdQ5QdUmhqkYLMri4eJGQV3F6Dog3S/coVW5FEZGf5oW+vGOJKBqSj175MS9J2Do1sCLdNs/kHQiq3txECI5A6FPngWseHfqGLp8NfI08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=N0ewA1g2; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1791457359; c=relaxed/simple;
+	bh=cA1/qTyrizotSdyjYFq5EvDJy8AvLphPYCzZtYLUz/0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KwMODNFsvuLyxzHyUhK9237N0ZUDiUudDYyXZi5NbwNLG0OD+NQzd9Q+OYFMdHGnSrAZ5ROjY30F1S1ryPzckKUIogRo7FBKvUjOm0NntlVUqxYJ3iM9oK3lLd+WoVDcBsP0LHhnJ/Wk/oAnj8Jm6iINW3vPjk+AP8ZGOnhKl6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DD0mAYGC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="N0ewA1g2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1791456700;
-	bh=4emq/40xD4/yc1153ChVOKdV9NbDgEhWISmsRkHHXCM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N0ewA1g2OlAd2GMDP6e283JMJ8CdzYV+EWrO0PIsyow5bBGrckEOqIUXXB2l6MZry
-	 7GAARP08XU6e7rq5d8RiemZNVVSYQyl6z3g/O9S8FGtuzXiADx7GHNU8kLxC1GmZhM
-	 5w4nWTS6qHdvfLi3PF0nNK6kHfnYf/BHSjXCF7OVXs3q3oNOiE5vYgrX79q/c1Aggs
-	 0tbD392lKNRSltJ7Uqd6Tf8+tEn/rgQtN1qqoQwAzCvutF4xej8gzT0EAbsxrgu++m
-	 wOeexIguqAUdCsKyLf/bmkpigOhaUNXwigqAPemcqks5bY9NMxTsnmqgBPnjo6WRVF
-	 1DARJUkHjvd2w==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 60B6F60055;
-	Thu,  8 Oct 2026 12:51:40 +0200 (CEST)
-Date: Thu, 8 Oct 2026 12:51:37 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Guo Zihao <guozh23@xiaopeng.com>
-Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, bridge@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] netfilter: ebtables: ebt_802_3: check the LLC
- fields before reading them
-Message-ID: <asd1uX2tWn9LtsUT@chamomile>
-References: <20261008024539.4106699-1-guozh23@xiaopeng.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DD0mAYGC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C27F1F000FF;
+	Thu,  8 Oct 2026 11:02:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791457358;
+	bh=hSn9I5hyWGPWbXQTaJKZRICemtTPKOmDhjSWyzwmKLU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DD0mAYGC1sPDSraT/bkKPGKi+Ynlwx+NDiIAreGvMO8OZJQ4dDFK6uxcz1keiu1x2
+	 CzrYQTnA+GMHKcFqQzTSgG+86gqJuuYj6nhJj5IqAS3L95yeExI3+2UZBdDLqwxmGA
+	 R71dY3O6hN8cFTgAW68ymHFGIsVOLQ0dpCG/jWAItadVB3174ZX2rwXfX3FWU//HQs
+	 kJPQ6/s3MKTdWEeuMMfegY3NXg+KsO0UYAXSLOkSJGm9DjWWC+fO/W0m5LtLNc2SM6
+	 oT8ZTjh/kFdTmm3d50PK8D4rj4XuEmvSJfH0CDLCyvkLLJTlBjRCb+HdFq5nCCQVGB
+	 7uKCMc01QMURQ==
+Subject:
+ Re: [PATCH net] net/mlx5: Attach late uplink netdev to loaded representors
+From: netdev-bot+sashiko@kernel.org
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, cratiu@nvidia.com,
+ dtatulea@nvidia.com, gal@nvidia.com, jgg@ziepe.ca, jianbol@nvidia.com,
+ jiri@resnulli.us, leon@kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, mbloch@nvidia.com, saeedm@nvidia.com,
+ shayd@nvidia.com
+Date: Thu, 08 Oct 2026 11:02:36 +0000
+Message-ID: <179145735679.434549.4674299238253522487@kernel.org>
+In-Reply-To: <20261006110219.257714-1-tariqt@nvidia.com>
+References: <20261006110219.257714-1-tariqt@nvidia.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261008024539.4106699-1-guozh23@xiaopeng.com>
 
-On Thu, Oct 08, 2026 at 10:45:39AM +0800, Guo Zihao wrote:
-> ebt_802_3_mt() derives the frame pointer from skb_mac_header() and reads
-> the LLC fields through it without making sure that those bytes are
-> available at all. ebtables guarantees that the Ethernet header is linear,
-> but nothing between the receive path and this match pulls the LLC header,
-> so a frame that carries nothing past the 14-byte Ethernet header is read
-> past the linear area.
-> 
-> Also, ebt_802_3_mt() does not need to look at every LLC field for every
-> rule. A SAP-only rule reads only dsap and ssap, and a rule without any
-> SAP or TYPE constraint selects frames by their 802.3 length field alone,
-> which ebt_basic_match() has already handled. Reading the type field there
-> was wasted work and could not be checked against anything.
-> 
-> Go through skb_header_pointer() with the mac header offset, which handles
-> frames whose LLC header is not in the linear area, and require only the
-> bytes each rule actually examines:
-> 
->  - no SAP or TYPE constraint: nothing to look at, match right away;
->  - SAP-only rule: dsap/ssap, at machdr + 14..15;
->  - TYPE rule: the whole union, at machdr + 14..23, which also covers the
->    control byte that selects between the ui and ni views of the union.
-> 
-> A frame too short to hold the fields a rule examines now fails to match
-> that rule. The previous hotdrop approach was dropped because ebtables
-> legacy only honors hotdrop when every match of the rule so far has
-> matched, so returning false is the only behaviour both front-ends agree
-> on. Users who want truncated 802.3 frames dropped can match 802.3 alone.
-> 
-> Discovered by a static-analysis scan of net/; confirmed by code
-> inspection of the receive path and the ebtables core. Not triggered in
-> testing; no runtime report is available.
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-If no reproducible crash, then this has to be targeted at nf-next.
+Critical: 0 · High: 1 · Medium: 2 · Low: 2
 
-And llc support has been removed from the kernel IIRC.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reviewed-by: Liu Chao <liuc63@xiaopeng.com>
-> Signed-off-by: Guo Zihao <guozh23@xiaopeng.com>
-> ---
->  net/bridge/netfilter/ebt_802_3.c | 47 +++++++++++++++++++++++++-------
->  1 file changed, 37 insertions(+), 10 deletions(-)
-> 
-> diff --git a/net/bridge/netfilter/ebt_802_3.c b/net/bridge/netfilter/ebt_802_3.c
-> index 68c2519bd..1a67376d1 100644
-> --- a/net/bridge/netfilter/ebt_802_3.c
-> +++ b/net/bridge/netfilter/ebt_802_3.c
-> @@ -9,32 +9,59 @@
->   *
->   */
->  #include <linux/module.h>
-> +#include <linux/stddef.h>
->  #include <linux/netfilter/x_tables.h>
->  #include <linux/netfilter_bridge/ebtables.h>
->  #include <linux/skbuff.h>
->  #include <uapi/linux/netfilter_bridge/ebt_802_3.h>
->  
-> -static struct ebt_802_3_hdr *ebt_802_3_hdr(const struct sk_buff *skb)
-> -{
-> -	return (struct ebt_802_3_hdr *)skb_mac_header(skb);
-> -}
-> -
->  static bool
->  ebt_802_3_mt(const struct sk_buff *skb, struct xt_action_param *par)
->  {
->  	const struct ebt_802_3_info *info = par->matchinfo;
-> -	const struct ebt_802_3_hdr *hdr = ebt_802_3_hdr(skb);
-> -	__be16 type = hdr->llc.ui.ctrl & IS_UI ? hdr->llc.ui.type : hdr->llc.ni.type;
-> +	struct ebt_802_3_hdr _frame;
-> +	const struct ebt_802_3_hdr *frame;
-> +	unsigned int hlen;
-> +	__be16 type;
-> +
-> +	/* Without SAP or TYPE constraints the match only selects 802.3
-> +	 * frames, which ebt_basic_match() has already decided from the
-> +	 * ethertype/length field. Nothing in the LLC header is read.
-> +	 */
-> +	if (!(info->bitmask & (EBT_802_3_SAP | EBT_802_3_TYPE)))
-> +		return true;
-> +
-> +	/* Only the dsap/ssap pair is examined for a SAP-only rule; the
-> +	 * type field (and the control byte that selects between the ui
-> +	 * and ni views of the union) is needed for a TYPE rule alone.
-> +	 */
-> +	hlen = sizeof(_frame);
-> +	if (!(info->bitmask & EBT_802_3_TYPE))
-> +		hlen = offsetof(struct ebt_802_3_hdr, llc.ui.ctrl);
-> +
-> +	/* skb->data sits past the Ethernet header on the receive path, so
-> +	 * the frame starts at a negative offset from skb->data. Pass the
-> +	 * mac header offset so the check follows the frame wherever the
-> +	 * hook reset the mac header, and covers paged frames too. A frame
-> +	 * too short to hold the LLC fields simply does not match; users
-> +	 * who want such frames dropped can match 802.3 alone.
-> +	 */
+- [High] New error-path use-after-free in the attach path.
+- [Medium] mlx5_ib_vport_uplink_rep_attach_netdev() always sets the
+  uplink IB port's netdev to the rep's own ETH netdev, via…
+- [Medium] The attach path now writes the uplink ETH rep's rpriv->netdev
+  while the rep is already REP_LOADED and VF reps may be live.
+- [Low] mlx5_eswitch_attach_uplink_netdev() runs on every pass of
+  mlx5_eswitch_reload_reps_blocked(), not only after…
+- [Low] _mlx5e_probe() calls mlx5_core_uplink_netdev_set(mdev, netdev),
+  which now queues the reload-reps work.
 
-I don't think it is worth to add so many comments in the code for
-this, the skb_header_pointer() call plus what you can retrieve via
-'git annotate' is sufficient to document why this
-skb_header_pointer() is needed.
+--
 
-> +	frame = skb_header_pointer(skb, skb_mac_offset(skb), hlen, &_frame);
-> +	if (!frame)
-> +		return false;
->  
->  	if (info->bitmask & EBT_802_3_SAP) {
-> -		if (NF_INVF(info, EBT_802_3_SAP, info->sap != hdr->llc.ui.ssap))
-> +		if (NF_INVF(info, EBT_802_3_SAP, info->sap != frame->llc.ui.ssap))
->  			return false;
-> -		if (NF_INVF(info, EBT_802_3_SAP, info->sap != hdr->llc.ui.dsap))
-> +		if (NF_INVF(info, EBT_802_3_SAP, info->sap != frame->llc.ui.dsap))
->  			return false;
+net/mlx5: Attach late uplink netdev to loaded representors
+
+This commit adds an attach_uplink_netdev rep op that runs from the
+reload-reps work. It covers the case where the uplink netdev appears only
+after the uplink representor was loaded. ETH re-runs the uplink load to
+switch profile and set rpriv->netdev, and IB redoes ib_device_set_netdev().
+
+> diff --git a/drivers/infiniband/hw/mlx5/ib_rep.c b/drivers/infiniband/hw/mlx5/ib_rep.c
+> index 65d8767d1830c..f9931a94157aa 100644
+> --- a/drivers/infiniband/hw/mlx5/ib_rep.c
+> +++ b/drivers/infiniband/hw/mlx5/ib_rep.c
+> @@ -273,10 +273,34 @@ mlx5_ib_vport_rep_unload(struct mlx5_eswitch_rep *rep)
 >  	}
+>  }
 >  
->  	if (info->bitmask & EBT_802_3_TYPE) {
-> -		if (!(hdr->llc.ui.dsap == CHECK_TYPE && hdr->llc.ui.ssap == CHECK_TYPE))
-> +		type = frame->llc.ui.ctrl & IS_UI ? frame->llc.ui.type :
-> +						    frame->llc.ni.type;
-> +		if (!(frame->llc.ui.dsap == CHECK_TYPE &&
-> +		      frame->llc.ui.ssap == CHECK_TYPE))
->  			return false;
->  		if (NF_INVF(info, EBT_802_3_TYPE, info->type != type))
->  			return false;
-> -- 
-> 2.50.1
-> 
+> +static int
+> +mlx5_ib_vport_uplink_rep_attach_netdev(struct mlx5_core_dev *mdev,
+> +				       struct mlx5_eswitch_rep *rep)
+> +{
+> +	struct mlx5_ib_dev *dev = mlx5_ib_rep_to_dev(rep);
+> +	struct net_device *ndev;
+> +	int i;
+> +
+> +	/* Shared FDB slave uplinks share the master's IB device. */
+> +	if (!dev)
+> +		return 0;
+> +
+> +	ndev = mlx5_ib_get_rep_netdev(rep->esw, rep->vport);
+> +	if (!ndev)
+> +		return -ENODEV;
+
+[Severity: Low]
+Should this return -ENODEV in the scenario the patch targets?
+
+mlx5_eswitch_attach_uplink_netdev() runs on every pass of
+mlx5_eswitch_reload_reps_blocked(). That work is also queued by
+mlx5_eswitch_register_vport_reps_locked() whenever ETH or IB rep ops
+register, not only after mlx5_core_uplink_netdev_set() reports a netdev.
+
+Suppose eth is unbound in legacy mode and switchdev is then entered. The
+ETH uplink rep is REP_LOADED with rpriv->netdev == NULL. When the IB rep
+registers, the reload work loads the IB uplink rep and calls this op.
+mlx5_ib_get_rep_netdev()->mlx5_eswitch_get_proto_dev()->
+mlx5e_vport_rep_get_proto_dev() returns NULL, and the core logs:
+
+    E-Switch: Failed to attach uplink netdev to rep type 1, err(-19)
+
+This repeats on each reload-reps pass until eth is bound again. Would
+returning 0 for a missing netdev be more appropriate here?
+
+The commit message says the op is "run from the existing reload-reps work
+once mlx5_core_uplink_netdev_set() reports a netdev". The comment in
+struct mlx5_eswitch_rep_ops says something similar. The call in
+mlx5_eswitch_reload_reps_blocked() does not depend on that condition,
+though.
+
+> +
+> +	for (i = 0; i < dev->num_ports; i++)
+> +		if (dev->port[i].rep == rep)
+> +			return ib_device_set_netdev(&dev->ib_dev, ndev, i + 1);
+
+[Severity: Medium]
+Can this overwrite a netdev that LAG picked for this port?
+
+This always sets the uplink IB port to the rep's own ETH netdev and does
+not check for an existing association. For SR-IOV active-backup LAG,
+lag_event() in drivers/infiniband/hw/mlx5/main.c points the uplink port
+at the netdev carried by MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE.
+That can be the peer's lower netdev:
+
+    old_ndev = ib_device_get_netdev(ibdev, portnum + 1);
+    ret = ib_device_set_netdev(ibdev, ndev, portnum + 1);
+
+mlx5_eswitch_attach_uplink_netdev() calls this op for any REP_LOADED
+uplink on every reload-reps pass. Those passes are queued at eth probe
+and at rep ops registration, and the devl_trylock() retry in
+esw_wq_handler() can delay them.
+
+Suppose a pass runs after LAG has picked a different lower netdev. Would
+it replace that choice, so RDMA reports the wrong netdev until the next
+lower-state event?
+
+> +
+> +	return 0;
+> +}
+> +
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+> index 88a170e40bd93..19812bf6a8306 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+> @@ -1490,10 +1490,24 @@ mlx5e_vport_uplink_rep_load(struct mlx5_core_dev *dev, struct mlx5_eswitch_rep *
+>  	rpriv->netdev = netdev;
+>  	err = mlx5e_netdev_change_profile(netdev, dev,
+>  					  &mlx5e_uplink_rep_profile, rpriv);
+> +	if (err)
+> +		rpriv->netdev = NULL;
+
+[Severity: High]
+Can this leave the netdev pointing at a freed rpriv?
+
+An error from mlx5e_netdev_change_profile() does not always mean the
+profile change was rolled back. When mdev->state is
+MLX5_DEVICE_STATE_INTERNAL_ERROR:
+
+    if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR) {
+        mlx5e_netdev_init_profile(netdev, mdev, new_profile, new_ppriv);
+        set_bit(MLX5E_STATE_DESTROYING, &priv->state);
+        return -EIO;
+    }
+
+The netdev is left with priv->profile = &mlx5e_uplink_rep_profile and
+priv->ppriv = rpriv, while rpriv->netdev is now cleared.
+
+On the path through mlx5e_vport_uplink_rep_attach_netdev(),
+mlx5_eswitch_attach_uplink_netdev() only logs the failure. The ETH rep
+stays REP_LOADED. On the next unload, such as health recovery removing
+the eth-rep aux device, mlx5e_vport_rep_unload() takes this branch:
+
+    if (!netdev) {
+        ppriv = rpriv;
+        goto free_ppriv;
+    }
+    ...
+free_ppriv:
+    kvfree(ppriv); /* mlx5e_rep_priv */
+
+That frees rpriv without calling mlx5e_vport_uplink_rep_unload(), so
+mlx5e_netdev_attach_nic_profile() never runs.
+
+On recovery, mlx5e_resume()->_mlx5e_resume()->mlx5e_attach_netdev()
+calls profile->init_tx, which is mlx5e_init_rep_tx():
+
+    struct mlx5e_rep_priv *rpriv = priv->ppriv;
+    ...
+    err = mlx5e_rep_neigh_init(rpriv);
+    ...
+    if (rpriv->rep->vport == MLX5_VPORT_UPLINK) {
+
+Would this read and write the freed mlx5e_rep_priv? If rpriv->netdev had
+stayed set, the unload path would have restored the NIC profile instead.
+
+mlx5_enter_error_state() can set INTERNAL_ERROR asynchronously while the
+attach work runs. The load path already had a similar kvfree-after-EIO
+pattern, but the new attach caller and the new NULL assignment add
+another way to reach it.
+
+>  	mlx5_uplink_netdev_put(dev, netdev);
+>  	return err;
+>  }
+>  
+> +static int
+> +mlx5e_vport_uplink_rep_attach_netdev(struct mlx5_core_dev *dev,
+> +				     struct mlx5_eswitch_rep *rep)
+> +{
+> +	struct mlx5e_rep_priv *rpriv = mlx5e_rep_to_rep_priv(rep);
+> +
+> +	if (rpriv->netdev)
+> +		return 0;
+> +
+> +	return mlx5e_vport_uplink_rep_load(dev, rep);
+
+[Severity: Medium]
+Is it safe to rewrite rpriv->netdev here while the uplink rep is already
+REP_LOADED and VF reps may be live?
+
+Before this patch, rpriv->netdev was only set inside ops->load. That
+happened before the REP_LOADED transition that
+mlx5_eswitch_get_proto_dev() checks.
+
+On this path, mlx5e_vport_uplink_rep_load() publishes rpriv->netdev
+first. mlx5e_netdev_change_profile() then detaches, cleans up and memsets
+netdev_priv() before re-initializing it. On error the pointer goes back
+to NULL.
+
+The writer holds devlink and reps_lock. TC offload on VF reps holds
+neither when it reads the uplink proto dev, and it dereferences the
+result without a NULL check. For example, in get_route_and_out_devs():
+
+    uplink_dev = mlx5_eswitch_uplink_get_proto_dev(esw, REP_ETH);
+
+    rcu_read_lock();
+    uplink_upper = netdev_master_upper_dev_get_rcu(uplink_dev);
+
+and in mlx5e_route_lookup_ipv4_get():
+
+    attr->fl.fl4.flowi4_oif = uplink_dev->ifindex;
+
+parse_mirred() in en/tc/act/mirred.c does the same.
+
+Could a flower rule added on a VF rep while the attach work runs see a
+netdev whose priv is zeroed mid-change (priv->mdev == NULL in
+mlx5e_is_uplink_rep())? Could it see the NULL written after a failed
+change? Nothing such as READ_ONCE() or WRITE_ONCE() orders this pointer.
+
+The NULL dereference in the window before eth is rebound comes from
+6b4be64fd9fe and is pre-existing. What this patch adds is the uplink
+profile changing while VF reps are loaded and handling TC.
+
+> +}
+> +
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> index 5f28d906c35b6..ab93c807b58ce 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+> @@ -278,6 +278,9 @@ void mlx5_core_uplink_netdev_set(struct mlx5_core_dev *dev, struct net_device *n
+>  	mlx5_blocking_notifier_call_chain(dev, MLX5_DRIVER_EVENT_UPLINK_NETDEV,
+>  					  netdev);
+>  	mutex_unlock(&dev->mlx5e_res.uplink_netdev_lock);
+> +
+> +	if (netdev)
+> +		mlx5_esw_offloads_uplink_netdev_attach(dev);
+
+[Severity: Low]
+This queues the reload-reps work from inside _mlx5e_probe(), and probe
+keeps using priv afterwards:
+
+    mlx5_core_uplink_netdev_set(mdev, netdev);
+    mlx5e_params_print_info(mdev, &priv->channels.params);
+
+When probe comes from a sysfs bind, the core devlink lock is not held.
+esw_wq_handler() can then devl_trylock() and run
+mlx5e_netdev_change_profile() on another CPU. That runs
+mlx5e_detach_netdev(), profile->cleanup() and mlx5e_priv_cleanup() before
+re-initializing priv.
+
+Does the read of priv->channels.params race with that teardown? The
+visible effect seems limited to wrong values in the informational log
+line, but it is still a data race on priv.
+
+>  }
+>  
+>  void mlx5_core_uplink_netdev_event_replay(struct mlx5_core_dev *dev)
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006110219.257714-1-tariqt%40nvidia.com
