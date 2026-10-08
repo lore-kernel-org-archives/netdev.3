@@ -1,263 +1,187 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16602439328;
-	Thu,  8 Oct 2026 22:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9879D43F4CD
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 22:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791497107; cv=none; b=JJEUm4BLdExf+Rchm3eI6mNiqdU3Q6IMvwDTh7wBUsTKMDycwEk/XFJjWPJEcdj6zTd9UBgZxz7wy5mxfApnlRwgbJmgrsGT8NEXkXIpJtB1KTD0IY+CNJY+u+eLr30WBHl0WevlKvGQ6vrZy5F46iWZ3yii/83XWi68Sm9gTb8=
+	t=1791497380; cv=none; b=DtVtGxGoqLpV/0xQv+B4oIbTOKJpkYWRw42p6wxl6WXo3ZCKcxKA92pBdOfPy8qg9iEPjMDfNytkkg329LYhUBbxP9c9lw3KMEujJvOmT11E00wnDYAgR5W/pMDFjpHYu1UxzNiybSswoDoSFjnTQRahe9b0i4UWz7dFiH9k3UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791497107; c=relaxed/simple;
-	bh=whDHzBrcOJnbcmH7UyWA/+cj9G/KyYiM1IY6AvZbTxI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ixwu8BU7iPdTg8b0iOLd/oNHlV6DyJtBkSuEKepG+buZ3nY30cmKGXArE7GOvDlo/QjrWqbVIOuym02j3+V/LRJYmESz2HhAF3k8F2Ghqgon7xCbYDzX6DqorgEP0sBZbjLFFzCe7ZTuRT/4dmf8HLfN5jP0gW6h68xuuN7rcv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jV07AHcX; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791497380; c=relaxed/simple;
+	bh=8k95RK6Zf52oGbmUpDyrJ6APv7VVAvduP/WK/ehltQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fiJEEd6IU2GabTDvKx1KQgUi+FjydWPIQF0dlwRcRhh51+Z9xC59nfTL5g8lLUAklJsQKz3Sco9hk+PjUYUqSxh1B1yCACUMAtOJH2H6Fy6KZhaWSGQinxmF90M23LIr9LSkcNJlFbyIQxV7obKg28V8Okz78zraeCfPyKSUMQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai; spf=pass smtp.mailfrom=nuro.ai; dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b=Kcnjjl+0; arc=none smtp.client-ip=209.85.160.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jV07AHcX"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 698L5oxf2443821;
-	Thu, 8 Oct 2026 22:04:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IHKgAB
-	gdFPhYFQF1m+PcsfFtt5k4tAnlDwgAPavZFF4=; b=jV07AHcXjDvxKhdi0KPs/W
-	wY5WogHt90YIrR/v9u5LNttEkLljIa6weuIex+ik1jDxEDRvjY2ZbG+AlBQphbYB
-	9TxamdBZG8xuN58Vo5DZwO4SzS0aHK2YGWxpJRUM//kJ7HLGoB7qbNzjKje+3pMu
-	Sr7DdqwCYasxz06gXsaHPOw80oRpbN7njK/UZPDciayJlB0DbqMF4KdmHA3rjSPX
-	mX1bs+8dCI3KhBuNfcunjGKOJDVmyQBfbOiMYMg0vr3hOHIxkH3QDXl/fjw6BLve
-	CE2xXms6Qu0A/yUeKy8nj43NaZsJqpvxMwGi/gpJ8kGs6Cx++UKlPpss2XYdHCOg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h5xjvpcsn-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 22:04:40 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 698L2XrE4079100;
-	Thu, 8 Oct 2026 22:04:40 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h6hsngd28-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Oct 2026 22:04:40 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 698M4cmP6160906
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 8 Oct 2026 22:04:38 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 140E958066;
-	Thu,  8 Oct 2026 22:04:38 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F1AC558054;
-	Thu,  8 Oct 2026 22:04:34 +0000 (GMT)
-Received: from [9.67.84.15] (unknown [9.67.84.15])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  8 Oct 2026 22:04:34 +0000 (GMT)
-Message-ID: <55aa1573-770e-4f56-8465-5258dad862fc@linux.ibm.com>
-Date: Thu, 8 Oct 2026 15:04:34 -0700
+	dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b="Kcnjjl+0"
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-4949f037131so1945349fac.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 15:09:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nuro.ai; s=google; t=1791497375; x=1792102175; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W6q2ZgKyEielHB9fMBeVKRfxouhNXO4dRwouPOAg0k8=;
+        b=Kcnjjl+0e9NfQtjEwjvSVZ/NklLQF5Efi2XlsKnJ6AgxJIqYfLfOVtyzAJF0pVf6l1
+         fPonOh2QDO4dm1r6HJx4ksCpVtQbUKzNg+ZZvGh6APmEXt2eGG2OJ8ewZ2qCEQqVVxOP
+         r8OifMVTRaO7rNTuVGjcL1UIRe32OCuP6YpdTwRmNh6DacXwF2NRx9icFsfeArXUPIay
+         e7fH9DaTz0z2+B9ShRO6vbvykoCE8BiQGThNPxAprX2Y5B3hL0YzFEHbKnLWYSilgUyV
+         IcAzmhFzBEOa5eNyyn4x8ILSdSpm8134yjYQOz7HAvnQfCyz75UbSH7Cut3zzFprLkkz
+         bDtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791497375; x=1792102175;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=W6q2ZgKyEielHB9fMBeVKRfxouhNXO4dRwouPOAg0k8=;
+        b=ZUoS5+If/4h3tDYROrTWspb4bkRLvGGUiy+fjfmyGtMuY8kDR1VKLYvhBQDXUTqdYM
+         L65LLjhhvzVi18Euj1zquCRrOZjVcZWkUaD3ssVAHcno+HDgDoBtotxBCurnVMmQ2Tw3
+         CN/7PligjEnigoV04pMwV25A4rPGu2kLbjgTOLTeAvtcGlqy3h1JMElSOtsVw3FtakKD
+         7VRsCOo3r/rdhz6/Dt6a1NTGlwkTVw492Le2KOORDicJ3r1I/stBfq7r0Rk3hW6xK6j+
+         fTjGVkoajviaybGLo2+/PVIBcMlfXBo4SiNOjzsUxbXPY3oZV6TToOq7M3oS5+95eXy0
+         kAlQ==
+X-Gm-Message-State: AFq9FYKpJk9CSlp05FMkPLUncmJ5JlXvAAbXSpanYfTxDCmRb4DuZf4W
+	wI6DnQCwijg6qi/6teS+NrqsmHRR5yWio1mv6eS+lzwYrebepTR11w3y9SLN6T0BC3IoxAgYnYr
+	xuHnohAX7SSOCQzsi3LN3epW3LeO1nsOjTwmnpPaiR6ozBbAwDXNW7Txo/JAm4G/pL0mielYSZX
+	50YU730//CNc9zSNBrlRyDSKzRqNEpFzMIuRXvNg==
+X-Gm-Gg: AYBFou0DYvJ2qd8jgLHrOARgXS2rRoak/gAUr3yU/HmVp3+hcU8SbkqLaUZrsJQoX2i
+	xYkiSFNAcdzTDZyrvq8DS+dA6F8MZOb4Nq7G2uFoOnGw6IyS7oILtyDiVyrBvn6ztDytq0dkxBm
+	Dojj3CPCCiKd8EzblmmFWN9OvhuouCTegO0rxmouWJK4ulhzU5pt8hHprD4SRu/lBtkF1ty80uo
+	09211ESqeyHSXG6KcQslwmvdF154U42Uosm0rcTLEzREQcZ7tqUcfuST3MNiinp0nuJFlulDOCr
+	HW04U3i3oD/gyh/V5iRV+NRkKAAvI5A/r4bhKJV7J1pbESljxcZYQMAaSLmdEqNLx90u1VxQFEA
+	LHurLOF8J0aPLGwFLdVJnzlhgaF8a0RRo1wn9r4w/KbAwi9ixJQpyPtK4v7mQ4QCIyNL+3EaBTa
+	8iqogLxQnk75AfVBBtJKq26VxV+94Cvnz5Js/RpRxRU15QoWb75irqJDH7M+ptRBQpi+K/4aC2b
+	kHnVGxn2jU=
+X-Received: by 2002:a05:7301:78ca:b0:351:750d:dd3b with SMTP id 5a478bee46e88-3537dde75a7mr339836eec.4.1791496985629;
+        Thu, 08 Oct 2026 15:03:05 -0700 (PDT)
+Received: from jkain-desktop.corp.nuro.team ([64.124.43.154])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cacb5e9sm920601eec.20.2026.10.08.15.03.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 15:03:05 -0700 (PDT)
+From: Joseph Kain <jkain@nuro.ai>
+To: netdev@vger.kernel.org
+Cc: edumazet@kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Joseph Kain <jkain@nuro.ai>
+Subject: [PATCH net v2] net: do not let defer_count outlive an empty defer_list
+Date: Thu,  8 Oct 2026 15:02:56 -0700
+Message-ID: <20261008220256.1844072-1-jkain@nuro.ai>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 4/8] ibmveth: step past bad RX correlators
- instead of spinning or oopsing
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, horms@kernel.org, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, nnac123@linux.ibm.com, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-        ritesh.list@gmail.com, sshegde@linux.ibm.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-        pabeni@redhat.com, stephen@networkplumber.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <26003e69cff6824798d289d67c163f868bfbefc1.1791178212.git.mmc@linux.ibm.com>
- <179149372321.434549.3176990477501610987@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <179149372321.434549.3176990477501610987@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: 4GWNH2G5VheRFm8OT2F56i1JPVU5_hcs
-X-Proofpoint-ORIG-GUID: 49WTNBN92ZaJ99uLXvjwoKzQ4vkCVbNB
-X-Authority-Analysis: v=2.4 cv=FoOQbGrq c=1 sm=1 tr=0 ts=6ac81379 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=tBi60Mc56AIRnD212JMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA4MDA4NiBTYWx0ZWRfX0G1jKPVN0EWJ
- I4UBLp8r7ZOgNxEJNrQ3mTYEbXrOxhbH1BAtKFspymPqqA+la5+ai5DJw+ACldjZQ+xJxNEgMZU
- f4tqHMqBMpTpPaQEE5VIXKrpDQN+rPY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA4MDA4NiBTYWx0ZWRfX1EOuWF0oDm6r
- MrfDfcgz5HtSQTwmYMzn26G1pwWoEYiToKfoU1VPUCAC6WPQZH21lBIJLnQauvdhRXsOMXMgG8t
- kQLuEJG7iB/154y1BV1nmaQtH+FPZgeycjU7nX3T2f8uBKazzvA8cIir2RTD1WE6hysuVM3Tgd4
- 57Jx+VCyf/7+YmyXi1llA4pHCpshgSYwXnpXf/RBRzEHxiJ1mWgTFIg/SmEu0h2e8fbDvIDv/1a
- lyp54Gg8izdRS+aaw3VlNu1ECIn1LSLFDixe+WlLBr8aDBzw/ANy386PidMJnETkdtqFQeYt/v6
- O45ULlQJ836x2QJC8kFjtOl4oFAzJQ4qjwmbFX/6bzt/J9mWOJ5WBzQIIlQKr5qScxjDATDo2lK
- NBOOOlHUVfblEd2J7NGpS1Vv01AO157yOSGONMkWhr6XlgQFbWwmKgWhthnCtmM0xDi7DO/s5rI
- Sd7mV8xseHtq2LyT2KA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-08_07,2026-10-08_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
- adultscore=0 priorityscore=1501 spamscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610020000 definitions=main-2610080086
 
+__skb_defer_free_flush() can leave defer_count at or above skb_defer_max
+with an empty defer_list. That state is absorbing: every producer then
+takes the nodefer path without queueing, so the list never refills, and
+the flush keeps returning early without clearing. Deferred freeing stays
+off for that (cpu, node) until reboot, and cross-CPU frees fall back to
+the page allocator, which is the contention deferral exists to avoid.
 
-On 10/8/26 2:08 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [High] net: NAPI list corruption and panic on bad RX correlator
->
-> Pre-existing issues:
-> - [Medium] Not introduced by this patch, but ibmveth_poll() takes the
->    frame offset (flags & IBMVETH_RXQ_OFF_MASK, up to 0xFFFF) and length…
->
-> --
->
-> ibmveth: step past bad RX correlators instead of spinning or oopsing
->
-> This patch moves RX correlator validation into one helper. The helper also
-> rejects pools that have no skbuff array, such as inactive pools. On a bad
-> slot, ibmveth_poll() now advances the RX ring, counts the drop in
-> rx_dropped and schedules a reset, and it logs with a ratelimited
-> netdev_err() instead of WARN_ON(). The patch also adds and extends KUnit
-> cases for these paths.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index d269599f5a990..3bac6cabbbb4c 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->
->> @@ -1515,12 +1556,19 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
->>   				if (rx_flush)
->>   					ibmveth_flush_buffer(skb->data,
->>   						length + offset);
->> -				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, true)))
->> +				rc = ibmveth_rxq_harvest_buffer(adapter, true);
->> +				if (unlikely(rc)) {
->> +					dev_kfree_skb_any(new_skb);
->> +					netdev->stats.rx_dropped++;
->>   					break;
->> +				}
->>   				skb = new_skb;
->>   			} else {
->> -				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, false)))
->> +				rc = ibmveth_rxq_harvest_buffer(adapter, false);
->> +				if (unlikely(rc)) {
->> +					netdev->stats.rx_dropped++;
->>   					break;
->> +				}
->>   				skb_reserve(skb, offset);
->>   			}
->>   
-> [Severity: High]
-> Now that the ring is advanced before each of these break statements,
-> can ibmveth_poll() leave the loop with descriptors still pending and
-> go down the completion path before the budget is used up?
->
-> After the break, frames_processed is below budget, so poll calls
-> napi_complete_done(), re-enables the interrupt with h_vio_signal() and
-> then finds ibmveth_rxq_pending_buffer() true for the next slot. It
-> calls napi_schedule() and jumps to restart_poll without resetting
-> frames_processed.
->
-> If the restarted loop then uses the rest of the budget, ibmveth_poll()
-> returns budget after it has already rescheduled itself. The NAPI core
-> expects a driver that consumes its whole budget to leave the NAPI
-> state alone.
->
-> In net_rx_action(), __napi_poll() catches this and only prints the
-> "Budget exhausted after napi rescheduled" warning. However,
-> busy_poll_stop() calls __napi_schedule() whenever poll returns
-> budget. Would that put napi->poll_list on the per-CPU poll list a
-> second time and corrupt it?
->
-> A burst of traffic right behind a single bad correlator would be
-> enough to get there.
->
-> The !ibmveth_rxq_buffer_valid() recycle path already keeps looping
-> after it harvests a slot. Now that the ring is advanced on every
-> error, is there still a reason to break here rather than continue
-> with the next slot?
->
-> The same restart_poll sequence can already return budget today if a
-> burst arrives right after the interrupt is re-enabled. Should the
-> restart also avoid returning the full budget once napi_schedule()
-> has succeeded?
-*
+Two changes from commit 844c9db7f7f5 ("net: use llist for sd->defer_list")
+combine to produce it.
 
+skb_attempt_defer_free() increments before testing the limit and does not
+undo the increment when it rejects, so a rejected free leaves the counter
+raised with nothing queued.
 
-Yes. Those paths already advance the ring, so the break is wrong.
+The flush clears defer_count before llist_del_all() rather than together
+with it under defer_lock as it did before. A remote producer that queues
+between the two has its skb drained by that same llist_del_all() but its
+increment retained.
 
-The respin continues and counts the slot against the budget.
+That part is not cumulative: any later flush finding a non-empty list
+clears the counter again, so lost increments do not build up across
+flushes. Reaching the limit takes skb_defer_max - 1 queued increments
+inside a single clear-to-drain window. At a small skb_defer_max that
+needs nothing special. At the default of 128 the flusher has to be
+interrupted or preempted between those two lines for long enough, which
+is where PREEMPT_RT matters: local_bh_disable() does not disable
+preemption there, so the flusher can be scheduled out at that point.
 
-The re-arm can do the same thing on a normal burst. Once
+Once the counter is stuck at or above the limit with an empty list,
+nothing lowers it again, and that half needs no race at all:
 
-napi_schedule() has succeeded, the poll will not return budget.
+  sysctl -w net.core.skb_defer_max=1    # frees increment, then reject
+  sysctl -w net.core.skb_defer_max=128  # does not recover
 
-*
-> [Severity: Medium]
-> This is a pre-existing issue, not one introduced by this patch. The patch
-> hardens ibmveth_poll() against bad correlators from PHYP, so should the
-> frame offset and length from the same RX descriptor be checked as well?
->
-> ibmveth_poll() reads both values straight from the queue entry:
->
->      int length = ibmveth_rxq_frame_length(adapter);
->      int offset = ibmveth_rxq_frame_offset(adapter);
->
-> offset is flags_off & IBMVETH_RXQ_OFF_MASK, so it can be up to 0xFFFF.
-> length is a full be32. Neither is compared against
-> rx_buff_pool[pool].buff_size.
->
-> On the rx_copybreak path:
->
->      skb_copy_to_linear_data(new_skb,
->                              skb->data + offset,
->                              length);
->
-> Can this read past the end of the RX buffer? If so, nearby heap memory
-> would be copied into a packet that is passed up the stack.
->
-> On the non-copybreak path:
->
->      skb_reserve(skb, offset);
->      ...
->      skb_put(skb, length);
->
-> If offset + length is too large, would this reach skb_over_panic() and
-> BUG() in softirq context?
->
-> As with the bad correlator case, this can only happen if PHYP reports an
-> offset or length larger than the buffer it was given.
-*
+skb_defer_max has .extra1 = SYSCTL_ZERO and no .extra2, so 1 is settable.
+From v7.1 on, 0 is safe because proc_do_skb_defer_max() flips
+skb_defer_disable_key and the producer returns before incrementing. On
+6.18 through 7.0, which carry the llist conversion but not commit
+08dc30de1a40 ("net: add skb_defer_disable_key static key"), setting 0 and
+restoring the previous value strands the counter the same way -- and 0 is
+the documented way to turn the feature off. Recovering needs a
+skb_defer_max above the accumulated count, which an operator has no way
+to determine.
 
-Offset and length should be checked too. The respin drops a frame
+Drain before clearing, so the error can only under-read, is bounded by
+the producers in flight, and self-heals on the next flush. Clear the
+counter on the empty-list path as well, so no count can outlive an empty
+list and an already-stranded counter recovers.
 
-that does not fit the pool. That has not shown up in the field, so
+llist_empty() has already loaded that cache line, so the added read is
+free; the unlikely() keeps the store off the hot path, where it would
+otherwise bounce the line against remote producers.
 
-it has no additional Fixes: tag.
+Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Joseph Kain <jkain@nuro.ai>
+---
+v2:
+ - Reworded the drift description: it is not cumulative, since any later
+   flush finding a non-empty list clears the counter again. Reaching the
+   limit takes skb_defer_max - 1 queued increments inside a single
+   clear-to-drain window, and said where PREEMPT_RT actually matters
+   (Eric Dumazet).
+ - Noted that 6.18..7.0 strand the counter via skb_defer_max=0, the
+   documented way to disable the feature, since they carry the llist
+   conversion but not 08dc30de1a40 (Eric Dumazet).
+ - Dropped the paragraph describing where this was first reproduced
+   (Eric Dumazet).
+ - Added Assisted-by.
 
-pw-bot: cr
+Built for x86_64 and arm64, with and without CONFIG_PREEMPT_RT. On
+v7.3-rc6 with skb_defer_max=1 and a cross-CPU TCP load, defer_count
+reached 1918118 unpatched and did not recover when the default was
+restored; with this patch it peaked at 1.
 
-Thanks,
+v1: https://lore.kernel.org/netdev/20261007180056.1394868-1-jkain@nuro.ai/
+ net/core/dev.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Mingming
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 18dc88990510..043a7f9166a9 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6938,10 +6938,13 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
+ 	struct llist_node *free_list;
+ 	struct sk_buff *skb, *next;
+ 
+-	if (llist_empty(&sdn->defer_list))
++	if (llist_empty(&sdn->defer_list)) {
++		if (unlikely(atomic_long_read(&sdn->defer_count)))
++			atomic_long_set(&sdn->defer_count, 0);
+ 		return;
+-	atomic_long_set(&sdn->defer_count, 0);
++	}
+ 	free_list = llist_del_all(&sdn->defer_list);
++	atomic_long_set(&sdn->defer_count, 0);
+ 
+ 	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
+ 		prefetch(next);
+-- 
+2.55.0
 
-*
