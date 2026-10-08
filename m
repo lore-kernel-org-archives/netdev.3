@@ -1,86 +1,34 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3BA3AFD1D
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 16:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E583ABD80;
+	Thu,  8 Oct 2026 16:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791478381; cv=none; b=hSr1bxbYkLdB2xSQ6ynQFIkB2S8/fDdBy9QTEaGu8ec/DM9TAi1AfHsHlGbaq2oYXia4N1+E5q7zUcJ9lcHZTnmqc9wPz5L6duKxSNfYV+mAv2x4Qu6SsyzTQfPQIs16Kx6BQ+hZmvuOkDwSMc17/moVgdywLRMlj/6HMqTkngA=
+	t=1791478417; cv=none; b=psnyCs2cvHxRlXZDLinjFfCEVRUqRMkK2JwY/oOEaR9+KwAM5AQ7hikR6UtfW4b7rwiOecUBSepM0cJsgLhzpRxW3kG4TurblraIlsh+kkv62DS/2QwVGe9qu2qe0gTu2ttBKzJTpid0LB+y9sUSYggHJKRS//aooHWj7O7AmxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791478381; c=relaxed/simple;
-	bh=K0v/ha8FuVFLJOV7NM+u9GAXy6iGXOQu/S71aMmoIZY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tt8aZR3GxOaElcL+7J1QlcMbmd9IgT8ovXHoy1h57xJfUytAo6u96dEsFrSP8LtWeqanhdHyHQ8jUJUrFtck/ktUKF0IudxsUiTViMnkvT6ibBqt9hxdA3aSxUzj4cHqHmYl/VDlO7bTrLj/Mj435qhzr3zZvNGN4Rx31YnqBlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=aYYRI477; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="aYYRI477"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93e4f0d7d77so461286485a.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 09:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1791478378; x=1792083178; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=f5pOddU8U8Oh/2KTma9N3+HMOEKnqqX5XS4uN84yG5s=;
-        b=aYYRI477EUPQtPfH1BujYGuEeDTzXYgoCxZ+5n5/VaPX5NEKH4L6XsdaA2aerx28sR
-         2HtOSBHxKEofKo/ivkMvrTxMumU+VYWtkhUYguFyS9TxmXKGwQGdmIo+iszdIF98y24b
-         gHlUllarjrOHUrQEwqXNCP5KnJRkQ4kxwnPd2Ywaa94gx0HWCfMguyJfaRnF3V7E5/JN
-         lQ4rdVW+i3CbLf47HVVe/OSm+CsdEh9U7sQGn/AqwX/FNq5HLQiVqTeWXTfRpZCQg2xU
-         ZEva7L4NBLNdL0H/dU9A65Qr4EDkoJtBs1cvAwEtjRlrZ4qFF6m+eoCQJqIGGLGdgrAP
-         +BSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791478378; x=1792083178;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f5pOddU8U8Oh/2KTma9N3+HMOEKnqqX5XS4uN84yG5s=;
-        b=JTTKc4MUZkMKK3rDtasIjkqo46ahJds8r+xMaqedz+6WIMvu1GPy5PnBdaoW1euLVZ
-         ShUVL1KtllXXcXBpsqLCze1bjpquI+AqxbFI/qRkuw+9VRi0wxkikI+7tWSmGSfRQUxI
-         A+3jbYFsRZo+FxPzVkBKa4LhPY6durvWOqR1YGQHF+t/DxwUW+7kvDtdDwilbU+1CSTV
-         aiqXT+vbKkC0jqnLnA1jJc7hILH0YAnrKR7myJ8MSjtg+2tsojq2k+fh++7Z2ADLWIfz
-         8mUG1CEp19YM0HvYVBgd6xO+KsIuYYHqSbHcO0FH6mdMZtfYMkrqlH8LI9kqYprp06OA
-         GhVQ==
-X-Gm-Message-State: AFuF++neIa6g+vgS1w16ZaXjHKryld4SOxJ6ZdcFqXvMcnfhOUWtOvAV
-	yD5VYZ0ezG+TecTAg6Aig/4V4sjJXTPx5w+GAmUffVPdimh1aekamhwmXOls6pxdQHFUf14W9J3
-	RIwt5AV9myuU=
-X-Gm-Gg: AYBFou1Gl26wRam/iWWrdSza7WpDTxK/whf86dsPq+4Bj/4OUQWZsWB1YrtNJv4poN/
-	E/AzUCk6bm2wv1YOGO/d1XrdnFChu0cHSGiem2gerkgdxJB4M/eSv4bxyhkXh6utzuZnaY7mrkg
-	OGxCP4D/+RYOeq/AvA/S9eEQcCTM5OtTLB9rutaUWnh6iaJJA0J/uy3EF6yyg2TpQfMa9rUBVke
-	Tfq1H7L6UwyMvcTxYrItINSVKD5vMT91fgjmZ68hV66lZQBpGKDYeDkYtbs26ky6MgCTMk56SbN
-	RTvUtw2ShYCm6knAlc/UOTR7I4GO+oDNkKXkFZZXdKFYIsdJoXbMSj1yUpEQ1heBY6D1U12V+5s
-	kjeXRkStyVLWfG1zP/0deOD8o7/DZphHjg+DD0t/O8sOTN85mSdrKwKb8u+XDTxBKy+5hQ4gst7
-	F2QQrJg10MErWziF8Oa6wvYy6LlarA+X2worVC8dJHY3raRwjWvjsq68Z/AnFwSHybr3VQvxxFH
-	tvdwkJB
-X-Received: by 2002:a05:620a:17a1:b0:939:2b7c:34d1 with SMTP id af79cd13be357-93eaadc6856mr544323785a.15.1791478377683;
-        Thu, 08 Oct 2026 09:52:57 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([191.222.220.30])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93e9914f7e0sm519467285a.19.2026.10.08.09.52.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 09:52:57 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: netdev@vger.kernel.org,
-	edumazet@kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	joe@wand.net.nz,
-	ast@kernel.org,
-	kafai@fb.com,
-	vega@nebusec.ai,
-	fmancera@suse.de,
-	petalzu987@gmail.com,
-	weir@nebusec.ai
-Subject: [PATCH net v3 1/1] ipv6: defrag: orphan skb before queuing
-Date: Fri,  9 Oct 2026 00:52:31 +0800
-Message-ID: <5c396b7011168cd98b9812df4d6bbd00a96048e7.1791008591.git.petalzu987@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1791008591.git.petalzu987@gmail.com>
-References: <cover.1791008591.git.petalzu987@gmail.com>
+	s=arc-20240116; t=1791478417; c=relaxed/simple;
+	bh=CHrg/5nhW8ZoRHnxM/UpD41foj63PkOKAilIxgokRvQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B5Ug2756HkiD1POTe3d71GUx0+a0IfU47gFWMi1RhJser6i24zRitfNbbTS7lLA1J95SqYFNx19wh4LWTCK+PHn23ANkUwyO0PLNU1Q/PHbUmk1uNT6UnscjMZmGAB22oqeHOCCNhbUJpqOTZcedQZHq44aBuakNhQ4sx/bm7yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fc87d0ffb700.home.arpa (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowAAHED6FysdqbYoOCg--.13658S2;
+	Fri, 09 Oct 2026 00:53:25 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Josua Mayer <josua@solid-run.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: mvmdio: fix clk reference leak in orion_mdio_probe()
+Date: Fri,  9 Oct 2026 00:53:28 +0800
+Message-Id: <20261008165328.2702289-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,49 +36,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAHED6FysdqbYoOCg--.13658S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tFyfJr1rKr1fZFy8try7Jrb_yoW8Cr17pa
+	yvgFyYy3yxJFyUW3WkXa18ZFyF9a1fta4fGryayanY9343GryxZr93GrW0vrWUJFWkCw4a
+	qr1UAa1xZ3WDZr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkSb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l
+	42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJV
+	WUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAK
+	I48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F
+	4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY
+	6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUqHqcDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRUOA2rHpDliXAAAsf
 
-From: Zixuan Chai <petalzu987@gmail.com>
+orion_mdio_probe() calls of_clk_get() with index ARRAY_SIZE(dev->clk)
+purely to test whether the device tree declares more clocks than the
+driver supports.  of_clk_get() takes a reference on the returned clk,
+but the return value is only checked with IS_ERR() and never released,
+so both the clk reference and the clk allocated by alloc_clk() are leaked
+whenever the DT node has more than four clocks.
 
-IPv4 and nf_conntrack fragment queues orphan skbs before returning
--EINPROGRESS, but ip6_frag_queue() leaves the socket association intact.
+Store the returned clk in a local variable and release it with clk_put()
+after emitting the warning.
 
-Commit 18685451fc4e ("inet: inet_defrag: prevent sk release while still in
-use") moved skb_orphan() into ip_frag_queue() and nf_ct_frag6_queue(), but
-missed ip6_frag_queue().
-
-Without orphaning, inet_frag_reasm_finish() clears fp->sk on frag_list
-skbs but leaves fp->destructor set to sock_pfree. Freeing the reassembled
-skb then calls sock_pfree() with a NULL socket. A socket using
-SOCK_RCU_FREE may also be released while its fragment is queued, leaving a
-stale socket pointer; this is a second consequence of the same missing
-orphan.
-
-Orphan the skb before returning -EINPROGRESS so the queued fragment no
-longer retains the socket association or destructor.
-
-Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
+Fixes: ea664b1bdc19 ("net: mvmdio: print warning when orion-mdio has too many clocks")
+Assisted-by: DeepSeek-V4.1-Flash
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
 ---
- net/ipv6/reassembly.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/marvell/mvmdio.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index 05c51f669754..a7964125c764 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -232,6 +232,7 @@ static int ip6_frag_queue(struct net *net,
- 	}
+diff --git a/drivers/net/ethernet/marvell/mvmdio.c b/drivers/net/ethernet/marvell/mvmdio.c
+index 2ccb8c8f5feb..17537142be6d 100644
+--- a/drivers/net/ethernet/marvell/mvmdio.c
++++ b/drivers/net/ethernet/marvell/mvmdio.c
+@@ -286,6 +286,7 @@ static int orion_mdio_probe(struct platform_device *pdev)
+ 	struct resource *r;
+ 	struct mii_bus *bus;
+ 	struct orion_mdio_dev *dev;
++	struct clk *clk;
+ 	int i, ret;
  
- 	skb_dst_drop(skb);
-+	skb_orphan(skb);
- 	return -EINPROGRESS;
+ 	type = (uintptr_t)device_get_match_data(&pdev->dev);
+@@ -338,11 +339,13 @@ static int orion_mdio_probe(struct platform_device *pdev)
+ 			clk_prepare_enable(dev->clk[i]);
+ 		}
  
- insert_error:
+-		if (!IS_ERR(of_clk_get(pdev->dev.of_node,
+-				       ARRAY_SIZE(dev->clk))))
++		clk = of_clk_get(pdev->dev.of_node, ARRAY_SIZE(dev->clk));
++		if (!IS_ERR(clk)) {
+ 			dev_warn(&pdev->dev,
+ 				 "unsupported number of clocks, limiting to the first "
+ 				 __stringify(ARRAY_SIZE(dev->clk)) "\n");
++			clk_put(clk);
++		}
+ 
+ 		if (type == BUS_TYPE_XSMI)
+ 			orion_mdio_xsmi_set_mdc_freq(bus);
 -- 
-2.34.1
+2.25.1
+
