@@ -1,126 +1,113 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE6A34A3BF
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 07:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC9C2F5A2D;
+	Thu,  8 Oct 2026 07:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791445659; cv=none; b=niRuZOuo1XsrZJR7HPFHJlZ0Zi+XFoElooyc0mZIbDInUmYvIcHdaCzEgX1aiQ/4MkgrOd+nzToZ4VyiEmz6eOtlioB638Slqinnpx9Yiz0XX2lklVF5gYJVX/Jx/3IKxCEt639Hjq++WMdVoAsF99Zo6KRKvsl5srcdcuyp5Oc=
+	t=1791445827; cv=none; b=u5H0fM7swqES2uXj8k9BLLhcoZ1QkyxHq5mO7AiaFJBnOTF6eYJ0Ywiga2u25oXhCXJJ7NA7yvLE1VcK4deQXt7maLbFJUVohzF1P6b13ww0sGI0w35zQ+sW2VfwbqXJcq5RLRCKNkL1kAHIg2l9Ut+gb+Aly6JmrhVlMNCqcbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791445659; c=relaxed/simple;
-	bh=c8U72Avkq333DsqD9ebaP4WB+h80LMguvXOyTKQuRls=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WKyr/URAAIZTjQhp34O6AWgDreLqaPRlsJJh79S0uiitX9jRjMCCGTEuFbuGpAP32Uqo+PemeTXp+Vk78aIDBksknShFfucwL6gSIzsQZbv/TeFljVxOFpfmArrItRZOMqOJz+VJv+D0QfUCBnrJMkEbNuegXsBu0XyxRaJq8UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=A+/miluq; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1791445827; c=relaxed/simple;
+	bh=HQTuKbcr56OWHudZYA/YmaZ399YGEzYzUHLXmXCYRyk=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=FDiGY1hRPBEerf7mdTPlNrgt5qKwO61TXt/uOVnFYfvnCsiVpMTulQ2s5+vA/6IYA8WE8+BfeM4nCEHKLBBUJaBpw5EPDe8MRmJ/OIEJ21QjWT6Kw/0naclwaYxuJhxSe618FcxSYQ4E58rPX5x9IItO/I+2Yp+qaYlEaud2hhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=g3P/M1+m; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="A+/miluq"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-533930955a4so25595641cf.3
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 00:47:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791445657; x=1792050457; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=l6FZSSbwSezRp+l5hlW6gyTNpXrpjcdpoGWNZxGhEuk=;
-        b=A+/miluqCDNEiHmLgCtYoXX0uKBGqHcjEwGZv5s53if45CiEEjZgWxrqAMEXbkGIk7
-         +Q7Gz8kkZDKw6lc0RCXRiy4SoutPvJeDSzDNfrXJFP696a+5T9yiXFv+xNopxhBBGvMq
-         pk9A++lV2fDLUNQWEtXhAhQ9m2Ud/630p4BBg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791445657; x=1792050457;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l6FZSSbwSezRp+l5hlW6gyTNpXrpjcdpoGWNZxGhEuk=;
-        b=AcwVvFKeHHefsfm56uGdAOJ29Xq0xQx2rMquQeKrARQhsx7B1TBNsoUSa4gw4PuuDI
-         7eNDUqlKcT5dzfcl2aQqBqGmKRqOMr56AjtrNkzCX+O1HQkrZmZ8L2pvZwbFqy9BKj/y
-         0Z9e+5frLqh7RnM9G2xY/3njFrWCws5c0SOi5PrQ5HsDT5np8/7cNZTuxCjKtoUYvj90
-         NVGoY+5R9ztrYC0UYjk+BD58uYgeXU1YV+Dkj9VVXWzEaKNAEPKwqEK8L4/0KChLMUjz
-         QwMx3KCCWg+cQsoG0KOLDm4UOAGArIOouyaOtYNo+enL+NNSoTNcLErjDHNfgXJEt4Aj
-         wNpg==
-X-Gm-Message-State: AFuF++ns1a042fSANUulrFFD/kb9vynyuyLoloqHcaP8Nhth9n2rVQBd
-	OL20YWAK1n8nWbApnZpoPqMzsi5//QxyRdkkk/qKvOWPEsotRKzH+lNF32MwxmoJBsvZzYGca+X
-	fPRnVsg==
-X-Gm-Gg: AYBFou1ZIjQxw20zth3sODsBd74SqBT+v/ejPZ1h1V06A1L/ujvI8mExfeLdQXd8v/K
-	aRrIspdgsyQjM0e5R28OM4sgpuTPgkkNuZYHclIohgfHzupfSTyVUvtq9dxPtqOgK9quMRmc6QY
-	xyN8X6oJFDbhZ0wth9bwZ/VbuazOdxZyUmEgCrEEnOX/9FCZyBQ2j1nMpLVFSUyD2BzM1fOYfyo
-	a9wtr9R098Wkbc+QiIYTl3EDeNxj9Bny2TzR5coj7YRcWgOeRrPjVJMT6pwkJigAYAWfqjF2Pln
-	/22bddrGmuAwSSqB7crVHwCY4s1RElxAEq7ynAgUjL/xcLXF8A3l3LTdReSkAWv1ZMRN4xqdAFi
-	+vUIf8ma5Bk3mRtffV+yQPSKbBkX2/oOSToRqGFFDTIck7E2ZPW839yEaG03x9fj4Cjg8BR1Uhn
-	fgswTR7wCsP3bzi52vXUxehep6bQfnlLsX0uBdxEMBLeBF1P9aOauiDpQl9qCcxBgqwgsqJ90wf
-	xCzlkRHgsQikLNIJFzBrxcvpsmu2uhhxL9DUnFds2UBuhSpLg==
-X-Received: by 2002:ac8:570d:0:b0:535:2e3b:6885 with SMTP id d75a77b69052e-5357560d7eamr85925811cf.48.1791445656785;
-        Thu, 08 Oct 2026 00:47:36 -0700 (PDT)
-Received: from majuu.waya ([184.147.180.207])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5357213f3dcsm38253961cf.17.2026.10.08.00.47.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 00:47:35 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	cake@lists.bufferbloat.net
-Subject: [PATCH net-next 4/4] net/sched/sch_cake: drop dead nla_nest_end() error check
-Date: Thu,  8 Oct 2026 03:47:12 -0400
-Message-Id: <QDISC-5RTM.v1.20261007130704-5@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-5RTM.v1.20261007130704@mojatatu.com>
-References: <QDISC-5RTM.v1.20261007130704@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="g3P/M1+m"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ECF85A05A6;
+	Thu,  8 Oct 2026 09:50:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791445821; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=IOlVfgfP6cReZbjYOfgC3BBrEq2xqxmMoSO9wrismZA=;
+	b=g3P/M1+mF5kD6hBkOKBHZoxyAkWBu+lPEehfpH8Rfpa8IeuT01zbhtt2OIcMvlGT98DBTJ
+	mzKrkXcSERT8siNk7rc7F/R0nFwU+bUw0mqwCpGPbF4nQlYQkhO21ikv+5CCgIkO+DchRz
+	lYjBWRCRkysI/X54d24qzdZTcCBC6Q646g9JGx4cia9H5nqCzPT9Sw17PM3w4JvLrd+oqL
+	fHqI27x30xOdrFnmUxzAs/QJnVrexuuFVGmTRnNzAnrrL+wbGn/GcPiBkXElSE0KCh9R0g
+	IX1a8v3l7+Ss2INEO/rpI7uGMu+ll3P9r1gyx9p2q+LK0jzDf9X1msBmi0cREQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Thu, 08 Oct 2026 09:50:19 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Kurt Kanzenbach <kurt@linutronix.de>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
+ <edumazet@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Song Yoong Siang
+ <yoong.siang.song@intel.com>, Noor Azura Ahmad Tarmizi
+ <noor.azura.ahmad.tarmizi@intel.com>, Mohd Faizal Abdul Rahim
+ <faizal.abdul.rahim@intel.com>, Ong Boon Leong <boon.leong.ong@intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] net: stmmac: Disable NAPI before stopping Tx
+ queues in stmmac_xdp_release()
+In-Reply-To: <20261005-stmmac_xsk_crashes-v2-1-46c60cba6421@linutronix.de>
+References: <20261005-stmmac_xsk_crashes-v2-0-46c60cba6421@linutronix.de>
+ <20261005-stmmac_xsk_crashes-v2-1-46c60cba6421@linutronix.de>
+Message-ID: <bd26a838deb15b560419d1e4a33d838b@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-cake_dump_class_stats() closes the TCA_STATS_APP nest with
+Hi Kurt
 
-	if (nla_nest_end(d->skb, stats) < 0)
-		return -1;
+On 5.10.2026 09:09, Kurt Kanzenbach wrote:
+> Attaching an XDP program while Tx traffic is running results in kernel
+> crashes in stmmac_xmit() -> dwmac4_set_addr().
+> 
+> Loading an XDP program tears down and reallocates all DMA resources via
+> stmmac_xdp_release() and stmmac_xdp_open(). stmmac_xdp_release() stops
+> the Tx queues before disabling NAPI:
+> 
+>  stmmac_xdp_release:
+>    netif_tx_disable
+>    stmmac_disable_all_queues
+>    ...
+>    free_dma_desc_resources
+> 
+> A Tx NAPI poll may still be in flight at that point. stmmac_tx_clean()
+> takes the Tx queue lock, reaps completed descriptors and wakes the 
+> queue
+> again when it observes it stopped with enough descriptors available.
+> Nothing stops the queue afterwards, so the Tx path resumes while
+> free_dma_desc_resources() releases the descriptor rings underneath it.
+> 
+> On non-coherent platforms dma_free_coherent() tears down the vmalloc
+> mapping of the descriptors, so the subsequent stmmac_xmit() faults on 
+> an
+> unmapped address instead of corrupting memory silently.
+> 
+> Disable NAPI first and stop the Tx queues afterwards, which is the 
+> order
+> already used by __stmmac_release().
+> 
+> The issue can be easily reproduced by:
+> 
+>  1. Run iperf
+>  2. Run application which opens an AF_XDP/ZC socket
+> 
+> Assisted-by: Claude:claude-opus-5
+> Fixes: 77711683a504 ("net: stmmac: ensure tx function is not running in 
+> stmmac_xdp_release()")
+> Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
 
-nla_nest_end() never returns a negative value: it has a single
-`return skb->len;` and no error path (that is why the overflow-aware
-nla_nest_end_safe() helper was later added). The '< 0' test can never
-be true, so the 'return -1' is unreachable dead code.
+> [...]
 
-Drop the check and close the nest with the bare statement, matching the
-sibling cake nests in the same file.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # stm32mp215
 
-This issue was discovered while fixing a bug on the gate action, see:
-https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
-
-Conditions to recreate the bug:
-- not runtime observable: the issue is found by inspection.
-
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
- net/sched/sch_cake.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 4caf9718c9bd..124f552023f8 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -3211,8 +3211,7 @@ static int cake_dump_class_stats(struct Qdisc *sch, unsigned long cl,
- 						       READ_ONCE(flow->cvars.drop_next))));
- 		}
- 
--		if (nla_nest_end(d->skb, stats) < 0)
--			return -1;
-+		nla_nest_end(d->skb, stats);
- 	}
- 
- 	return 0;
--- 
-2.43.0
-
+Thanks,
+Nicolai
