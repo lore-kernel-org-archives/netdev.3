@@ -1,116 +1,151 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F9F3B7760
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BE5438034
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791465374; cv=none; b=AgmqQDY5zRRilOTCG/0O20Sxgs6tOX8q5BiSKyZlKgo4gha3xtmNw4PnYKtSueLVOsFZjM8GDbFWZJL88o2OGhBonLeo0phVEMBUKwqBqVtPfzZV3HyxPH6E+cSYyceX2dVf5pC/7JcUCjhfheG7tWHvQRkHMoIIsnY6SA8Jfls=
+	t=1791465537; cv=none; b=uRYdhFaCTRSeeUOvqpEg6SZrNySoOky8m87FNDBhoUf8gz9a0eGtDWoPyXG4OIU265jBwXZmnFmEMQzoWm0v3941Iqfp+Ish7yD/wsx5E8KY3k2l10bbtm6mpYiCAqwcCbsMyk46PSWZdDAfED/c7r481Mdm+pInN95IVINy8kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791465374; c=relaxed/simple;
-	bh=HVsdYcrVLHwgm2tiuQB0eYQnmVjqYmrBVemtB3z+PLU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Mo69g/RsEzBYOG3G7qs+kEfa+AYKIWLNe5y0XiWfbBdVMqnAROTlo9qCpz56sJsS6MiBJNm+RENgwEwI42Ros5IAy/+BXcUmfi4zNzZ/c3hq0/UiziDyd/+CfpUWWVI2Q62CX+SBVo8lvS4TodCBFsWZbzX4v2FlVONoMUPK3qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6e4ThNj; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791465537; c=relaxed/simple;
+	bh=LnSzBzXooCsCe5WXqqTunrRYQ3XjE1Rh+jAjJ8DETtc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nk9KhvNF3rKQZSRojfhsnB2gjslx3w6Yb9wo4frHV2UiJq01AXZuvceZ5iA/JKi23KJvPXwB1BdRkuT4YbX/QlQ9olkUQ8CBFD90IhCAUm6NuyMlCx39rkKIXERjIZZn4CXYN0w69OqgJdly1Xr1dCwi2nDzB8tsc3HV8XrIQ94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M83yVHtM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PgaRPHX5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6e4ThNj"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a16c399641so29830685e9.2
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 06:16:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M83yVHtM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PgaRPHX5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791465534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vtdV3wLKtPAzjm/w0DmkFenOgTDJUitz5K0GdmCiFi4=;
+	b=M83yVHtMEqaKdUzoxths18B/mh/FuUErN2dwCr773WGukUS1YD+omCmLhPLj7l45W7GH98
+	4DZ2/10rBRLGh5hN7N8a5LNmqECnP/rxGuO2maxPG1oRB9+eoIngOagGM14Ut7clw5h/dv
+	WKra23DR0e1XSOEwThr6EOmOVtdjc34=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-86-UkVdhcE_NKWfrmJqIhQ4Rg-1; Thu, 8 Oct 2026 13:18:53 +0000
+X-MC-Unique: UkVdhcE_NKWfrmJqIhQ4Rg-1
+X-Mimecast-MFC-AGG-ID: UkVdhcE_NKWfrmJqIhQ4Rg_1791465532
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a1813fea7dso24317495e9.2
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 06:18:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791465371; x=1792070171; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EPbwtLRW4N85gv2W9SRzwrK8xu8sUVynb6/UPNoN4L0=;
-        b=c6e4ThNjnlV5w49A0OkbmTx0yBzydXTov4/VeqiJ34pUWoLx+gfqo7s1Lb4Dytoe1Q
-         N3D5uVzdPw85UAdJsEFxisiUnCUxUFDryDkoNTuOAZB6iYH6lH8fz4cEbeGb+2FAKV5n
-         91A+dEhVrWZh297COSJg6tf9WVgDjO6uUVTtmiX/5jYB9v0sx5Y5rnXJjWB3C75+qFYs
-         RNxiPebO53AAa7CCXt72qV+MJijX8aiDZprIMyqd+rKa1xKXuS6LmWCgnEAkW/E8Fzbh
-         r7uIpoDkpu7UiWktQxoOQ1+Oc+1kWXCeiyEKVdqh8u6naC48CgXuLdaNA9CROnXX8i7W
-         tYBw==
+        d=redhat.com; s=google; t=1791465532; x=1792070332; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vtdV3wLKtPAzjm/w0DmkFenOgTDJUitz5K0GdmCiFi4=;
+        b=PgaRPHX5bXL63Ye02IMHQaAR4LVolwthW8YzfQvLkg6lwvo5H2tIMUCgiOem1jedOF
+         ommxvvofYjHWpgXlnNyEF/oj68TIqO4l3e4OX3f4lszDsRspAJ7uXG84CjpoLAjaEMbZ
+         kgfLmRyyyDb3rdtXS0ccN134BYwzwBI0kqyBRgwwNqj1w6V77l6VA1zx0dHGdYRUeQvt
+         H3ver9oh7i+7gOM9izZjbbPJvBW++9uV/OGGNDzBwNyLZjVzRFC3zQYwEW/VntZnnaki
+         5Psqp8WuaZxKXT9Xo3CXTwlebUzxdqWtWAqcMNTThbdOQ7mZmU/Kqzh0Bs3lWAE+/Pzd
+         tN7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791465371; x=1792070171;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791465532; x=1792070332;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EPbwtLRW4N85gv2W9SRzwrK8xu8sUVynb6/UPNoN4L0=;
-        b=Aux52FEl8dfAOPic/fUF2c4rR2X83kmCgRGj6saZoTSbf4PAlQWrlVRhiLp3MOOzfB
-         4D+DP3hhaJE5dNC6Jiw56dRaCaGfv46RJP6msMAIaMfRryirCg4ZLdZDYJKKO5Wh7xFd
-         zjEbGccMGT1CyTjsQJNTCQktlOb8rzW64E3SSaP1JKPcLocOGBIP/YND6L1M2sNkaygr
-         YGJm5rWsTW0ZT6QZbkhxNIDuMNdbS1KPje/FhBbHCN+ZCNOCREb5cREcIlO6KyYliGxO
-         068LunOb3myDsHxQxs4AASlxRoHwRfJlkV6xNL50iF+73elNB4t03C2HNqkTnkcUu3T0
-         bROg==
-X-Forwarded-Encrypted: i=1; AKwUvBwQReimvmCRLpPILRzeDIHMj1sqCSN/bMq9QHJGu2MZR7NfQ6npCgGmUpuEhGMLgyhfrUDmfD0=@vger.kernel.org
-X-Gm-Message-State: AFuF++nDwaz/o3iXu2h7BM3WljWvSX7/bzC0Bbh9dszs+cLiVHm2qdNX
-	7rZKhn6T7uDF6cxr77Z1ZGd0lGVuoLUX8BSjT5UydvG3OF+eVSsEISyY
-X-Gm-Gg: AYBFou3N9c0avzZQ1h6DIDcFbIM4HgzJIiLXV2Qi0w5ZIXN7gdWnBrZ4JubEkHTIk0I
-	ZGs8iHXWvxVQhbVmhNmxd/NVDEt+T80ynlWRWuYY1mHZKMVWnDZU2UH9SRl4X0KqlAo+PZNoA8h
-	K0T+IMvsiIo428mWYUi+V7skK4mcj6QBvmOi0gwcc3O56CzApAsCgfUOzeMvRUMR/8nkRTliymD
-	A60ZvotXBtjw6oKNnlXyx7CtV1Yn/59eo5xup75o0UziqMxyCROPc+VRP2EaXdFaa4iwyNczwSD
-	mRrJsrcd2pY3Yfy7kYtQeXBFW10Qu8bjBO/h4O0cMBdqEFlB45ZcSCNQcGDwQd7FTWQduBCWCRv
-	rPmAlOkTplNFsSWco+Q8vY4YzgKHiu0iG9zMDwLyecfbBZdkHQL75yCxv7Vz4govdo+X4OiTASb
-	tUsN25lh2IyMmT/g0XZfx4kInCkxMcx1+f9M4kAHes0zRLJwMrfpg/n//lnzqPAxh3CaImh7Pb2
-	K9J3TygOHjwnZy822AkX8decmcFDXRuMz/T32iGpZAv6FB8vEPI6zkfR/lURccKVzrTqJ6Wd4kI
-	GSNlGKFbN8T5lo49DqJScGoS1L3RdgXqmaoKKmBZeJIBSpQc
-X-Received: by 2002:a05:600c:c16d:b0:4a1:7bd4:d07d with SMTP id 5b1f17b1804b1-4a18067f68cmr96298625e9.34.1791465370753;
-        Thu, 08 Oct 2026 06:16:10 -0700 (PDT)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a17f493761sm221691685e9.2.2026.10.08.06.16.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Oct 2026 06:16:09 -0700 (PDT)
-Message-ID: <6fbab5ad-e95b-4a19-a59e-4a1ec9a4f225@gmail.com>
-Date: Thu, 8 Oct 2026 14:16:00 +0100
+        bh=vtdV3wLKtPAzjm/w0DmkFenOgTDJUitz5K0GdmCiFi4=;
+        b=DmPQ2nPJa4kn+6/nE/xen8dSzFszio/Na/pWZH0uv5AdSYd+AadlDr9rDXWvbzvMW4
+         o7RbVbFASQXErPuyOqYa++aBa8q/07XFr0ruF+7mzEb6fDlIxFtI0Lqao4MkRdNsraeB
+         ktHw9d+i5gv5raU6DiNvQvgnULTDX/ffo+OeF42RzgsB8F1PcffhXKRcGBhv+4vXGXzV
+         ssQ9ZH1lhvvSZXeJGgc5I2AwqeGyj1hDRP9asUqBYfUbnpLx/3yjhXS1ZS3wWB1wOeOF
+         15VS86/YlTFqAcvVe8f/gvi6nUtmvVZRjUK9W53pd8NmntJk/mAqbxbG7wHAFvPilWX3
+         smTw==
+X-Gm-Message-State: AFuF++lFcljfpdRVOTd2nrYdWecYToo22BzG7YCQM7Ukar962Uzc76ez
+	BlzbD2N3Njjxgq4HwcpwwT5gsjnV2DmTTrvDmrLzVOJh8nASVHJ1QoIQ8ClWWPGW5qqF38Sf22G
+	0TQ31aFcpTD2dDr4+hPXRjm1lYOzuETi0qqiBPRO0laUvRjMGe61yg93c+aPV6MiBx2wB
+X-Gm-Gg: AYBFou1UGGCfmRoEl7vv2f899VW502OC8imIftrJ3tPqweycNG3bLAUd9DKQdOkxJk2
+	zQsQXXZldpyI/BKAeLaCRf/2FQ81SQHDGCpfqUADqIIsn27zZJ0I+jU0JJa9TasIcfMB1PkfbCA
+	RVfuf13BVwAhkVa9DRC+eK1BIsxMaN3U6UFsOINohGAYUDKGMVnqoFLVYMqE1YvihYTpHQxBVtg
+	xj2ySGOrsOSAuH7O53Z/J2V/zTS54BcSTvosZrwlbcY4jSDIMZwOEcS4xNipugGilI4cHQMovyy
+	RhZ3ee5NMG1SnLLHut1VdF/Spf+aArfafLZqrkqSjIxNncKOA8H8th5dcmcVWnG8is1zGIHRKmE
+	0+ngzi+Ui22excWCDu13XyVTl51t4UMGr
+X-Received: by 2002:a05:600c:6099:b0:4a0:1fb9:2f51 with SMTP id 5b1f17b1804b1-4a18043be70mr99628725e9.14.1791465532216;
+        Thu, 08 Oct 2026 06:18:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:6099:b0:4a0:1fb9:2f51 with SMTP id 5b1f17b1804b1-4a18043be70mr99628345e9.14.1791465531873;
+        Thu, 08 Oct 2026 06:18:51 -0700 (PDT)
+Received: from mheib-thinkpadp16vgen1.rmtil.csb ([216.128.14.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1843e3356sm62947465e9.14.2026.10.08.06.18.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 06:18:51 -0700 (PDT)
+From: mheib@redhat.com
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Mohammad Heib <mheib@redhat.com>
+Subject: [PATCH iwl-next v5 0/2] i40e: add runtime-tunable ATR sample rate
+Date: Thu,  8 Oct 2026 16:18:22 +0300
+Message-ID: <20261008131824.248508-1-mheib@redhat.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v1] net: devmem: prevent mixing fragments from
- different bindings
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: Mina Almasry <almasrymina@google.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>,
- Kaiyuan Zhang <kaiyuanz@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>,
- Ralf Lici <ralf@mandelbit.com>
-References: <20261008033952.1399670-1-almasrymina@google.com>
- <36d9e570-15d8-4a2d-aafb-3ee6e5681205@gmail.com>
-Content-Language: en-US
-In-Reply-To: <36d9e570-15d8-4a2d-aafb-3ee6e5681205@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/8/26 14:03, Pavel Begunkov wrote:
-> On 10/8/26 04:39, Mina Almasry wrote:
->> validate_xmit_unreadable_skb() only inspects shinfo->frags[0] and
->> assumes all fragments in an unreadable skb belong to that same devmem
->> binding. However, tcp_sendmsg_locked() only checks that readability
->> matches the presence of a binding (skb_frags_readable(skb) != !binding),
->> allowing consecutive sendmsg() calls with different dmabuf bindings to
->> collapse into the same skb and bypass per-device and unbind checks in
->> validate_xmit_unreadable_skb().
->>
->> Add net_devmem_skb_binding() to query the binding associated with an
->> skb, reuse it in validate_xmit_unreadable_skb(), and check in
->> zerocopy_fill_skb_from_devmem() that existing fragments match the target
->> binding.
-> 
-> Looks good
-> 
-> Pavel Begunkov <asml.silence@gmail.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-Oops, should be reviewed-by
+This series makes the Flow Director ATR sample rate configurable at
+runtime through a devlink parameter.
 
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+On systems with many queues and high-rate TCP workloads, the fixed
+default sampling interval can cause frequent Flow Director
+reprogramming and TCP packet reordering. The optimal interval depends
+on the workload and system configuration.
+
+Patch 1 moves atr_sample_rate from per-ring to PF level, since it is
+a global policy. It also triggers a PF reset when re-enabling ATR via
+ethtool private flags so that fd_ena is reprogrammed in the TX queue
+HW context.
+
+Patch 2 exposes atr_sample_rate as a devlink runtime parameter so
+administrators can tune it without rebuilding the driver.
+
+Testing with iperf3 -t 60 showed ~7k TCP reordering events at the
+default sample rate (20). Setting atr_sample_rate to 10000 reduced
+reordering to ~769 (~90% reduction).
+
+Changes since v4:
+- Folded the PF reset patch into patch 1 for bisect cleanliness
+  (was patch 3/3 in v4)
+- Skip PF reset when FD_SB (ntuple) already holds fd_ena high,
+  avoiding unnecessary traffic disruption
+- Fix LLDP EEXIST path to not drop unrelated reset requests
+  (reset_needed &= ~REBUILD_FLAG instead of = 0)
+- Flush existing ATR entries when setting atr_sample_rate to 0 via
+  devlink, so stale filters do not persist on devices without HW
+  ATR eviction
+- Documentation: clarify that the sampling interval is per Tx queue
+  and counts TCP packets only; fix formatting
+
+Mohammad Heib (2):
+  i40e: move ATR sample rate from ring to PF level
+  i40e: add devlink parameter for Flow Director ATR sample rate
+
+ Documentation/networking/devlink/i40e.rst     | 21 +++++++++
+ drivers/net/ethernet/intel/i40e/i40e.h        |  1 +
+ .../net/ethernet/intel/i40e/i40e_devlink.c    | 46 +++++++++++++++++++
+ .../net/ethernet/intel/i40e/i40e_ethtool.c    | 12 ++++-
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |  9 ++--
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   |  6 ++-
+ drivers/net/ethernet/intel/i40e/i40e_txrx.h   |  3 +-
+ 7 files changed, 87 insertions(+), 11 deletions(-)
 
 -- 
-Pavel Begunkov
+2.56.0
 
