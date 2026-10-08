@@ -1,284 +1,472 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E813CC9EA
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D423CFF72
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791488320; cv=none; b=RLzotzVkI+eD6lZBoceA9L9pKSgWNVMW1HM58iPSJHsZLFLA4mTdz4x0BOq9k6mJVpiALAySIB8edZZj8yzcarCf7KEFa2wpUThkok/1SOJgvTG5L0zEpypoCEUnpQr5m4B2nSZpOXJC+4QHL9E6SD/lREazjrzCNdh+F8ce63o=
+	t=1791488420; cv=none; b=QOpqKQNHeMmMNPFoYyIQ8LIhuGOLLTedULV2o+1yBUeP0hfxmGJ4kdwOrjNglehdpcV0J7dKWhocp2+4Bblmw2AOPX8X5bTH8yA/gTxujmOEW9kHB3ZjMcWOHubPqBjE2FpHFh9eonuEdP2FxCWdCrYxarpn//arexx1KRj3si8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791488320; c=relaxed/simple;
-	bh=JSegWhceC5zEbs7JwtymVlbfLeIUzgBl37l/+yW6jwk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G9oK4kHfdGkUxAmApkyKw7rswUfskRliqMBw6dEOqx4XLVMHQUaefUNwwlbdrhptdUde7oyRe1IifbduhzukUW0z3zkWJupofuzcIod6gdAggUyfU5uoJ21T23xPjn4sBYAM8L0ak9loaIgjRtQPfvuAXLQUB2THLsE3pbGsPIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULlHbaeo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791488420; c=relaxed/simple;
+	bh=0HFFrqRbwfK7HkUxzr89XIm72WWQMqt3zCOjR1SIXvY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BNeqnihNnrsbPzPpuWVtUI9/fWcbo9hip9G1wC4MGh6IIlmdjdv7nnhL6iEHlKV4RlLZfmxkgj9Fic3FfFLT3wQrcATg9oE/5pKNoh6DL4VRoGmSEFUih2ExOvt03a8p1qJ+/tRoWjBcTGu0WMXF1G2w16tKeuLdcvMuIVF+63I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=At197tKh; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULlHbaeo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959F51F00893;
-	Thu,  8 Oct 2026 19:38:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791488319;
-	bh=hr5uCWkWqNn7NxLmlKAVhoxgcpQvmc92VW1DkbGsRtY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ULlHbaeoRWnN+AqxscMEhjT9paFSTIhioemOvd6O6qhtMigmTKetKUwxp753Y16AG
-	 WcAXTFaq0WzQwLg6hy7dglwMMNlyjH39M1UawJRiWQ19n8OBdOakhDjPZrtLc2lTrr
-	 tPkeZCHKFZ39XTfv32Um08Mql/Wkm3vEG1XTpiMZYBtxlycM76z/Y7la6j5RpCNhBX
-	 aqwLVFrrBipBI/YyhUoYeigSg14TwIFirno+0r+bZnIlMDhhRSeCAvVCVHbmy9mSa3
-	 MUiRAYkt8IcsfA5TBzWgrum4C9/2WjWfLZiL4gXbpDoiwTE0LFvraYNNNxkPnhMdFU
-	 6StVaLTIqvLGg==
-Subject: Re: [PATCH net] net: extend virtio_net_hdr csum_start checks to VLAN,
- IPv6 and IP options
-From: netdev-bot+sashiko@kernel.org
-To: willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, mst@redhat.com, jasowangio@gmail.com,
- willemb@google.com, habte.yibelo@gmail.com
-Date: Thu, 08 Oct 2026 19:38:38 +0000
-Message-ID: <179148831819.434549.14553358529954439471@kernel.org>
-In-Reply-To: <20261007163819.3041710-1-willemdebruijn.kernel@gmail.com>
-References: <20261007163819.3041710-1-willemdebruijn.kernel@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="At197tKh"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a022fee0caso33106855e9.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 12:40:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791488415; x=1792093215; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fU3eKDw5HrigqKS3lfMy85hLViyXx2yevkh3+N1gsQY=;
+        b=At197tKhNtJKJu8nHHImtdIhm76+Po9V8tBojMBADewwQIjnnLPHCFbq/jRa8EsDsE
+         1kuO1jUAmg1kme/Z02/Kr2zi/R6IYbv1Bft/6166KRQ2t/k5uq6O5SCt+LRCLabgC10D
+         aX+hBGcqeZRbwtU96xw662Mgsn0IwhKJIetjpyo+pMhlPesWcIIv/0ROi1WRdLEX4AJY
+         iLXJdr+dkxJPqRaBhRUPhrjCGQgUAiQNWjdulZh512ZFJTXrNugNipdrAS3iJo0ecbSx
+         jBjxE44YFYSHQD9az8fzIDHtagAUOkZbCiK0h45xxDPnusASApoK5ypnvKMEE4pytARz
+         XnSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791488415; x=1792093215;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fU3eKDw5HrigqKS3lfMy85hLViyXx2yevkh3+N1gsQY=;
+        b=eX/8FSymPWuNzz8TXePrDENov7G6lxIh0EWCR+zE/AWmuJk948DBpKSkkYR/f/GUFS
+         vnEs7e6yFy6M3eiYTcQPZZainu8ureTkzG8lDqFhNCGRNOedo5XVrNImyMZR/UvJGbxe
+         XyuQzBvCZ7kmRj5qM2FjDWIlOIw0NKvxBnA5dzdzZs8SZrsFoT53fXarQDk24+0URmHc
+         tW9U9FLdV0mhzu6zPg3fbBEPCo8A87rjHurdOF8E84Pnd5XZXAUZdgZ1eCYzWDc4sk68
+         nlQndN+nrFSBVN0ZbdkOCW5IdsOIKp+clcUZwuLEDW6VfjHZg53+1TpI5Ed+8XwPK2Tw
+         yoQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzRKr/WIKDlNlNG8zaXczmge7dV3mMze31o55Nj2BpLgx3PCMbubmhgn3xODh4ok0zU6o5z00A=@vger.kernel.org
+X-Gm-Message-State: AFuF++kxNfduqE5hk3K3FHb6h8LV7nZ+0dDA3UbMkWkmW7p9sAtGTJF5
+	g/JgGg6tVho4LGBANEW2W5DtPl/FHwfNTQGm0wJ5mOcNmeWx3YhLIgt2
+X-Gm-Gg: AYBFou3Dpyb5f90qnpXVyLxH37TEgRM78t+/xEDoEZ3tSNg//8QOm4Y6+3rYlxUm4XS
+	K1GuZA0CpvWDoS8k399vgZF/Q6BzYZCBaAj9CVokiSiATZfT7qzCYWwWqFM1tfbqbOgf/u8bh00
+	xUQRlAEG8qy0qUnGKTp1ubCuKQWifgw1IjExjtHuQGo4gMK92WGo/Z9uE/RljH+sNUcTbshKapT
+	Pori2GPZlKHpK99kP3GTuaGKbgleFerMVC0dEAOcn7HBeguBXuLtQwTR4PT7SA3CzKgqVp10o3f
+	jglB9lzTg9l7qvNOhPKQhJP5Uv8LomgcWKgr8IaZQNvZeUlzZmuZRUYsxS6ptqfu0OhA0SvANEK
+	8iqqbm4pz/PXOVtlmcSIxOTqXRwjnVgBkxQ+OiOTq38K9wf0WQFBbxJ492UB4cDhGV//Teyagw6
+	1kTaZrzBDg+Q3hZWIC+BvHtk+AoIyCkEKSSC07JuVVgzldjXoPbvC0NqKEzXjo2Lr6cY3mUS8Od
+	iN63ebESPa0KXGKCPfV7DkbbA6BKfBZeSbnyjPI6xLvJWzBQ1P/nioZ6xGXKZ9sbOardLobx14K
+	fGExGKBZlsO438u4n2q1ng==
+X-Received: by 2002:a05:600c:8b8b:b0:4a0:1c10:12ee with SMTP id 5b1f17b1804b1-4a1800d41c1mr107383655e9.3.1791488414203;
+        Thu, 08 Oct 2026 12:40:14 -0700 (PDT)
+Received: from Lord-Beerus.station ([31.27.155.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18c1e33d2sm1419065e9.0.2026.10.08.12.40.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 12:40:13 -0700 (PDT)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: pierluigi.p@variscite.com,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Joseph Guo <qijian.guo@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Mehmet Fide <mehmet.fide@screeningeagle.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Maud Spierings <maudspierings@gocontroll.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Stefan Eichenberger <eichest@gmail.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH v5 00/13] ARM: dts: imx6ul: Extend VAR-SOM-6UL and add DART-6UL support
+Date: Thu,  8 Oct 2026 21:37:40 +0200
+Message-ID: <cover.1791487179.git.stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+VAR-SOM-6UL already has mainline support on the Concerto-Board with
+i.MX6UL and i.MX6ULL. This series extends that support with additional
+module configurations, the Symphony-Board carrier and i.MX6ULZ variants.
+It also adds support for DART-6UL on VAR-6ULCustomBoard with i.MX6UL,
+i.MX6ULL and i.MX6ULZ.
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0 (1)
+The 90 new DTBs describe reference configurations with alternative
+storage, wireless and audio assemblies. These choices change the devices
+connected to the same SoM interfaces and require different controller,
+pin or device-node descriptions: eMMC versus NAND, SD card versus SDIO
+wireless, and the available wireless modules and audio codecs. They do
+not enumerate every possible combination of fitted and unfitted optional
+peripherals. The four existing Concerto DTBs remain available with their
+original names and compatible strings.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reuse and extend the existing modular VAR-SOM-6UL DTSI files, including
+the separate Ethernet, SD card, SAI2, Broadcom and LVDS descriptions.
+Retain kernel-managed Broadcom power/reset sequencing and Bluetooth,
+and preserve the existing LVDS graph and panel timings. A small DART
+wrapper selects its PWM1 backlight connection. The display files are
+not included by i.MX6ULZ boards, which lack a display controller.
 
-- [High] The fix leaves the UDP-tunnel path, virtio_net_hdr_tnl_to_skb()
-  in include/linux/virtio_net.h, with the same weakness it removes from…
-- [High] virtio_net_hdr_thoff_valid() decides whether skb->data starts
-  with an Ethernet header only from `skb->dev->type == ARPHRD_ETHER`…
-- [Medium] On the non-ARPHRD_ETHER branch, virtio_net_hdr_thoff_valid()
-  leaves proto = 0 and then guesses the L3 protocol from the version…
+The existing Concerto boards gain a 3.3 V ADC reference, I2C GPIO bus
+recovery, an external touchscreen description and an explicit WM8904
+codec and sound card. SoC-specific wrappers place the SNVS pins under
+the appropriate IOMUX controller.
+Extract the eMMC description without changing its pinctrl states, and
+update its consumers in the same patch. The shared Ethernet files use
+the PHY reset timing validated by Variscite: 10 ms asserted and a
+100 ms wait after deassertion, for existing and new Concerto variants.
 
-Pre-existing issues:
-- [Low] This problem wasn't introduced by this patch, but UML's
-  raw_verify_header() (arch/um/drivers/vector_transports.c:213) discards…
+The Micrel binding change in patch 5 is needed by the Ethernet PHY
+descriptions in this series. The existing boolean definition of
+micrel,rmii-reference-clock-select-25-mhz conflicts with the dt-schema
+unit check for properties ending in -mhz. The binding now accepts <1>
+for 25 MHz selection and limits the property to the applicable PHYs.
+Patch 4 changes the Micrel driver to test for property presence without
+warning about the numeric value. This preserves its runtime behavior.
 
---
+Patches 1-3 document the board compatibles for each SoC. Patches 4-5
+update the Micrel driver and binding. Patches 6-9 extend the module,
+audio, storage/wireless and carrier descriptions, updating existing
+Concerto users alongside the corresponding changes. Patch 10 shares
+the PHY reference clock and updates the PHY properties. Patches 11-13
+add the new board DTS files together with their Makefile targets.
 
-net: extend virtio_net_hdr csum_start checks to VLAN, IPv6 and IP options
+v4->v5:
+ - Rebase onto 31f9ec9f3873.
+ - Clarify that VAR-SOM-6UL support is extended, while DART-6UL support
+   is new, and explain the scope of the 90 additional DTBs.
+ - Reuse the existing modular VAR-SOM-6UL files instead of replacing
+   them. Update existing consumers in the same patches as the changes
+   to their shared descriptions, rather than in a later conversion patch.
+ - Retain the kernel-managed Broadcom regulator, MMC power sequence
+   and Bluetooth node. Rename the Wi-Fi file to identify Broadcom and
+   add keep-power-in-suspend.
+ - Preserve the original LVDS graph and panel timings. Move the panel
+   node into its existing option file, add the DART PWM1 wrapper and
+   omit display files on i.MX6ULZ.
+ - Reuse the original SAI2 file for both codec options. Extract eMMC
+   with its default, 100 MHz and 200 MHz pinctrl states intact, and
+   reuse the existing SD card option.
+ - Correct IW61x pinctrl to match GPIO5_IO02 and GPIO5_IO06, and use
+   SoC-specific SNVS pinctrl locations for the existing Concerto boards.
+ - Keep Ethernet options separate. Share the PHY reference clock for
+   Symphony and apply the validated reset timing to all Concerto variants.
+ - Order the new i.MX6ULZ fallback compatibles as fsl,imx6ulz followed
+   by fsl,imx6ull; leave the existing EVK and BSH entries unchanged.
+ - Collect Reviewed-by tags for the i.MX6UL and i.MX6ULL board bindings
+   and an Acked-by tag for the Micrel binding.
 
-This patch replaces the fixed nh_min_len check on csum_start in
-__virtio_net_hdr_to_skb() with a new helper, virtio_net_hdr_thoff_valid().
-On ARPHRD_ETHER devices the helper parses the Ethernet header and any VLAN
-tags. On other devices it uses skb_network_offset(). It then checks the
-transport offset against the IPv4 IHL and the IPv6 header length.
+v3->v4:
+ - Split the board binding by SoC, keep the existing Concerto compatibles
+   while adding new variants, and use the binding's items/enum style.
+ - Drop the redundant -board suffix from new Concerto and Symphony
+   compatibles; keep the SoM options before the carrier name.
+ - Add each SoC's sorted DTB Makefile targets alongside its board DTS
+   files, replacing the separate Makefile patch.
 
-Link: https://lore.kernel.org/netdev/20260922030310.8684-2-habte.yibelo@gmail.com/
+v2->v3:
+ - Add a Micrel driver fix before the binding change so the numeric
+   RMII clock select property does not cause a warning at PHY probe.
+ - Specify the 3.3 V ADC reference supply voltage on both modules.
+ - Share identical storage and wireless option DTSI files between the
+   VAR-SOM-6UL and DART-6UL, and drop unused address and size cells from
+   the IW61x SDIO host.
+ - Move the Symphony Type-C interrupt pinctrl to the SoC-appropriate
+   IOMUX controller, specify falling-edge interrupts for the Type-C
+   controller and touchscreens, and disable the actual backlight node
+   on the i.MX6ULZ Concerto-Board.
+ - Update board includes for the shared option files and sort the
+   Variscite DTB targets in the Makefile.
 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index d6466f96cdd00..6a30f58d9d65f 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-> @@ -48,6 +48,52 @@ static inline int virtio_net_hdr_set_proto(struct sk_buff *skb,
->  	return 0;
->  }
->  
-> +static inline bool virtio_net_hdr_thoff_valid(const struct sk_buff *skb,
-> +					      unsigned int nh_min_len)
-> +{
+v1->v2:
+ - Share the WM8904 codec description between VAR-SOM-6UL and DART-6UL,
+   keeping the DART-specific microphone routing in a small wrapper.
+ - Consolidate the identical WM8731 descriptions into one shared DTSI
+   and update the board includes.
 
-[ ... ]
+Stefano Radaelli (13):
+  dt-bindings: arm: fsl: Add Variscite i.MX6UL board variants
+  dt-bindings: arm: fsl: Add Variscite i.MX6ULL board variants
+  dt-bindings: arm: fsl: Add Variscite i.MX6ULZ board variants
+  net: phy: micrel: Check RMII clock select property presence
+  dt-bindings: net: micrel: Fix RMII clock select property type
+  ARM: dts: imx6ul: Extend VAR-SOM-6UL and add DART-6UL files
+  ARM: dts: imx6ul: Add Variscite WM8904 and WM8731 support
+  ARM: dts: imx6ul: Add Variscite storage and wireless options
+  ARM: dts: imx6ul: Extend Variscite carrier board descriptions
+  ARM: dts: imx6ul: Share Variscite PHY clock and update PHY options
+  ARM: dts: imx6ul: Add Variscite i.MX6UL board variants
+  ARM: dts: imx6ull: Add Variscite i.MX6ULL board variants
+  ARM: dts: imx6ulz: Add Variscite i.MX6ULZ board variants
 
-> +	if (skb->dev->type == ARPHRD_ETHER) {
-> +		if (unlikely(thoff < ETH_HLEN))
-> +			return false;
-> +		nhoff = ETH_HLEN;
-> +		proto = eth_hdr(skb)->h_proto;
-> +		if (eth_type_vlan(proto)) {
-> +			proto = __vlan_get_protocol(skb, proto, &nhoff);
-> +			if (!proto)
-> +				return false;
-> +		}
-> +	} else {
-> +		nhoff = skb_network_offset(skb);
-> +	}
+ .../devicetree/bindings/arm/fsl.yaml          | 122 +++++++-
+ .../devicetree/bindings/net/micrel.yaml       |  27 +-
+ arch/arm/boot/dts/nxp/imx/Makefile            |  92 +++++-
+ ...x6ull-var-dart-6ulcustomboard-sd-card.dtsi |  31 ++
+ ...mx6ul-imx6ull-var-dart-6ulcustomboard.dtsi | 240 +++++++++++++++
+ .../imx/imx6ul-imx6ull-var-dart-wm8904.dtsi   |  17 ++
+ .../dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi  | 207 +++++++++++++
+ .../dts/nxp/imx/imx6ul-imx6ull-var-emmc.dtsi  |  64 ++++
+ .../dts/nxp/imx/imx6ul-imx6ull-var-nand.dtsi  |  63 ++++
+ ...imx6ul-imx6ull-var-som-symphony-board.dtsi | 275 ++++++++++++++++++
+ .../imx/imx6ul-imx6ull-var-wifi-iw61x.dtsi    |  43 +++
+ .../nxp/imx/imx6ul-imx6ull-var-wm8731.dtsi    |  50 ++++
+ .../nxp/imx/imx6ul-imx6ull-var-wm8904.dtsi    |  68 +++++
+ .../imx/imx6ul-var-dart-6ulcustomboard.dtsi   |  18 ++
+ ...l-var-dart-emmc-sd-card-6ulcustomboard.dts |  21 ++
+ ...art-emmc-sd-card-wm8731-6ulcustomboard.dts |  21 ++
+ ...var-dart-emmc-wifi-brcm-6ulcustomboard.dts |  21 ++
+ ...t-emmc-wifi-brcm-wm8731-6ulcustomboard.dts |  21 ++
+ ...ar-dart-emmc-wifi-iw61x-6ulcustomboard.dts |  21 ++
+ .../nxp/imx/imx6ul-var-dart-lvds-panel.dtsi   |  30 ++
+ ...l-var-dart-nand-sd-card-6ulcustomboard.dts |  21 ++
+ ...art-nand-sd-card-wm8731-6ulcustomboard.dts |  21 ++
+ ...var-dart-nand-wifi-brcm-6ulcustomboard.dts |  21 ++
+ ...t-nand-wifi-brcm-wm8731-6ulcustomboard.dts |  21 ++
+ ...ar-dart-nand-wifi-iw61x-6ulcustomboard.dts |  21 ++
+ .../arm/boot/dts/nxp/imx/imx6ul-var-dart.dtsi |  44 +++
+ .../dts/nxp/imx/imx6ul-var-som-common.dtsi    | 103 +++----
+ .../imx/imx6ul-var-som-concerto-board.dtsi    |  38 +++
+ .../imx/imx6ul-var-som-concerto-common.dtsi   |  67 ++---
+ .../nxp/imx/imx6ul-var-som-concerto-full.dts  |   7 +-
+ .../dts/nxp/imx/imx6ul-var-som-concerto.dts   |   7 +-
+ ...ul-var-som-emmc-sd-card-concerto-board.dts |  22 ++
+ ...ul-var-som-emmc-sd-card-symphony-board.dts |  20 ++
+ ...som-emmc-sd-card-wm8731-concerto-board.dts |  22 ++
+ ...som-emmc-sd-card-wm8731-symphony-board.dts |  20 ++
+ ...-var-som-emmc-wifi-brcm-concerto-board.dts |  22 ++
+ ...-var-som-emmc-wifi-brcm-symphony-board.dts |  20 ++
+ ...m-emmc-wifi-brcm-wm8731-concerto-board.dts |  22 ++
+ ...m-emmc-wifi-brcm-wm8731-symphony-board.dts |  20 ++
+ ...var-som-emmc-wifi-iw61x-concerto-board.dts |  22 ++
+ ...var-som-emmc-wifi-iw61x-symphony-board.dts |  20 ++
+ .../dts/nxp/imx/imx6ul-var-som-enet1.dtsi     |   6 +-
+ .../dts/nxp/imx/imx6ul-var-som-enet2.dtsi     |  26 +-
+ .../nxp/imx/imx6ul-var-som-lvds-panel.dtsi    |  24 ++
+ ...ul-var-som-nand-sd-card-concerto-board.dts |  22 ++
+ ...ul-var-som-nand-sd-card-symphony-board.dts |  20 ++
+ ...som-nand-sd-card-wm8731-concerto-board.dts |  22 ++
+ ...som-nand-sd-card-wm8731-symphony-board.dts |  20 ++
+ ...-var-som-nand-wifi-brcm-concerto-board.dts |  22 ++
+ ...-var-som-nand-wifi-brcm-symphony-board.dts |  20 ++
+ ...m-nand-wifi-brcm-wm8731-concerto-board.dts |  22 ++
+ ...m-nand-wifi-brcm-wm8731-symphony-board.dts |  20 ++
+ ...var-som-nand-wifi-iw61x-concerto-board.dts |  22 ++
+ ...var-som-nand-wifi-iw61x-symphony-board.dts |  20 ++
+ .../boot/dts/nxp/imx/imx6ul-var-som-sd.dtsi   |  10 +
+ .../imx/imx6ul-var-som-symphony-board.dtsi    |  96 ++++++
+ ...ifi.dtsi => imx6ul-var-som-wifi-brcm.dtsi} |   1 +
+ arch/arm/boot/dts/nxp/imx/imx6ul-var-som.dtsi |  13 +
+ .../imx/imx6ull-var-dart-6ulcustomboard.dtsi  |  18 ++
+ ...l-var-dart-emmc-sd-card-6ulcustomboard.dts |  21 ++
+ ...art-emmc-sd-card-wm8731-6ulcustomboard.dts |  21 ++
+ ...var-dart-emmc-wifi-brcm-6ulcustomboard.dts |  21 ++
+ ...t-emmc-wifi-brcm-wm8731-6ulcustomboard.dts |  21 ++
+ ...ar-dart-emmc-wifi-iw61x-6ulcustomboard.dts |  21 ++
+ ...l-var-dart-nand-sd-card-6ulcustomboard.dts |  21 ++
+ ...art-nand-sd-card-wm8731-6ulcustomboard.dts |  21 ++
+ ...var-dart-nand-wifi-brcm-6ulcustomboard.dts |  21 ++
+ ...t-nand-wifi-brcm-wm8731-6ulcustomboard.dts |  21 ++
+ ...ar-dart-nand-wifi-iw61x-6ulcustomboard.dts |  21 ++
+ .../boot/dts/nxp/imx/imx6ull-var-dart.dtsi    |  44 +++
+ .../imx/imx6ull-var-som-concerto-board.dtsi   |  38 +++
+ .../nxp/imx/imx6ull-var-som-concerto-full.dts |   7 +-
+ .../dts/nxp/imx/imx6ull-var-som-concerto.dts  |   7 +-
+ ...ll-var-som-emmc-sd-card-concerto-board.dts |  22 ++
+ ...ll-var-som-emmc-sd-card-symphony-board.dts |  20 ++
+ ...som-emmc-sd-card-wm8731-concerto-board.dts |  22 ++
+ ...som-emmc-sd-card-wm8731-symphony-board.dts |  20 ++
+ ...-var-som-emmc-wifi-brcm-concerto-board.dts |  22 ++
+ ...-var-som-emmc-wifi-brcm-symphony-board.dts |  20 ++
+ ...m-emmc-wifi-brcm-wm8731-concerto-board.dts |  22 ++
+ ...m-emmc-wifi-brcm-wm8731-symphony-board.dts |  20 ++
+ ...var-som-emmc-wifi-iw61x-concerto-board.dts |  22 ++
+ ...var-som-emmc-wifi-iw61x-symphony-board.dts |  20 ++
+ ...ll-var-som-nand-sd-card-concerto-board.dts |  22 ++
+ ...ll-var-som-nand-sd-card-symphony-board.dts |  20 ++
+ ...som-nand-sd-card-wm8731-concerto-board.dts |  22 ++
+ ...som-nand-sd-card-wm8731-symphony-board.dts |  20 ++
+ ...-var-som-nand-wifi-brcm-concerto-board.dts |  22 ++
+ ...-var-som-nand-wifi-brcm-symphony-board.dts |  20 ++
+ ...m-nand-wifi-brcm-wm8731-concerto-board.dts |  22 ++
+ ...m-nand-wifi-brcm-wm8731-symphony-board.dts |  20 ++
+ ...var-som-nand-wifi-iw61x-concerto-board.dts |  22 ++
+ ...var-som-nand-wifi-iw61x-symphony-board.dts |  20 ++
+ .../imx/imx6ull-var-som-symphony-board.dtsi   |  96 ++++++
+ .../arm/boot/dts/nxp/imx/imx6ull-var-som.dtsi |  15 +-
+ .../imx/imx6ulz-var-dart-6ulcustomboard.dtsi  |  18 ++
+ ...z-var-dart-emmc-sd-card-6ulcustomboard.dts |  21 ++
+ ...art-emmc-sd-card-wm8731-6ulcustomboard.dts |  21 ++
+ ...var-dart-emmc-wifi-brcm-6ulcustomboard.dts |  21 ++
+ ...t-emmc-wifi-brcm-wm8731-6ulcustomboard.dts |  21 ++
+ ...ar-dart-emmc-wifi-iw61x-6ulcustomboard.dts |  21 ++
+ ...z-var-dart-nand-sd-card-6ulcustomboard.dts |  21 ++
+ ...art-nand-sd-card-wm8731-6ulcustomboard.dts |  21 ++
+ ...var-dart-nand-wifi-brcm-6ulcustomboard.dts |  21 ++
+ ...t-nand-wifi-brcm-wm8731-6ulcustomboard.dts |  21 ++
+ ...ar-dart-nand-wifi-iw61x-6ulcustomboard.dts |  21 ++
+ .../boot/dts/nxp/imx/imx6ulz-var-dart.dtsi    |  51 ++++
+ .../imx/imx6ulz-var-som-concerto-board.dtsi   |  38 +++
+ ...lz-var-som-emmc-sd-card-concerto-board.dts |  21 ++
+ ...lz-var-som-emmc-sd-card-symphony-board.dts |  21 ++
+ ...som-emmc-sd-card-wm8731-concerto-board.dts |  21 ++
+ ...som-emmc-sd-card-wm8731-symphony-board.dts |  21 ++
+ ...-var-som-emmc-wifi-brcm-concerto-board.dts |  21 ++
+ ...-var-som-emmc-wifi-brcm-symphony-board.dts |  21 ++
+ ...m-emmc-wifi-brcm-wm8731-concerto-board.dts |  21 ++
+ ...m-emmc-wifi-brcm-wm8731-symphony-board.dts |  21 ++
+ ...var-som-emmc-wifi-iw61x-concerto-board.dts |  21 ++
+ ...var-som-emmc-wifi-iw61x-symphony-board.dts |  21 ++
+ ...lz-var-som-nand-sd-card-concerto-board.dts |  21 ++
+ ...lz-var-som-nand-sd-card-symphony-board.dts |  21 ++
+ ...som-nand-sd-card-wm8731-concerto-board.dts |  21 ++
+ ...som-nand-sd-card-wm8731-symphony-board.dts |  21 ++
+ ...-var-som-nand-wifi-brcm-concerto-board.dts |  21 ++
+ ...-var-som-nand-wifi-brcm-symphony-board.dts |  21 ++
+ ...m-nand-wifi-brcm-wm8731-concerto-board.dts |  21 ++
+ ...m-nand-wifi-brcm-wm8731-symphony-board.dts |  21 ++
+ ...var-som-nand-wifi-iw61x-concerto-board.dts |  21 ++
+ ...var-som-nand-wifi-iw61x-symphony-board.dts |  21 ++
+ .../imx/imx6ulz-var-som-symphony-board.dtsi   |  30 ++
+ .../arm/boot/dts/nxp/imx/imx6ulz-var-som.dtsi |  51 ++++
+ drivers/net/phy/micrel.c                      |   2 +-
+ 131 files changed, 3952 insertions(+), 142 deletions(-)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcustomboard-sd-card.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-6ulcustomboard.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart-wm8904.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-dart.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-emmc.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-nand.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-som-symphony-board.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-wifi-iw61x.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-wm8731.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-var-wm8904.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-6ulcustomboard.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-emmc-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-lvds-panel.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-nand-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-nand-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-dart.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-concerto-board.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-emmc-wifi-iw61x-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-nand-wifi-iw61x-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ul-var-som-symphony-board.dtsi
+ rename arch/arm/boot/dts/nxp/imx/{imx6ul-var-som-wifi.dtsi => imx6ul-var-som-wifi-brcm.dtsi} (98%)
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-6ulcustomboard.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-dart.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-concerto-board.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-emmc-wifi-iw61x-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-nand-wifi-iw61x-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ull-var-som-symphony-board.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-6ulcustomboard.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-emmc-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-sd-card-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-brcm-wm8731-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart-nand-wifi-iw61x-6ulcustomboard.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-dart.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-concerto-board.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-emmc-wifi-iw61x-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-sd-card-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-brcm-wm8731-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-concerto-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-nand-wifi-iw61x-symphony-board.dts
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som-symphony-board.dtsi
+ create mode 100644 arch/arm/boot/dts/nxp/imx/imx6ulz-var-som.dtsi
 
-[Severity: High]
-Does skb->dev->type reliably tell us what framing is at skb->data?
 
-For tun, IFF_TUN/IFF_TAP decides the framing in tun_get_user(). TUNSETLINK
-lets the fd owner set dev->type to any value while the device is down:
-
-drivers/net/tun.c:__tun_chr_ioctl() {
-    ...
-	case TUNSETLINK:
-    ...
-			tun->dev->type = (int) arg;
-    ...
-}
-
-That seems to allow two cases.
-
-Case 1: an IFF_TAP device with dev->type != ARPHRD_ETHER. tun_get_user()
-calls skb_set_network_header(skb, ETH_HLEN). skb->protocol is still 0,
-because eth_type_trans() only runs after tun_vnet_hdr_tnl_to_skb().
-
-The helper then takes the else branch with nhoff = 14 and does no VLAN
-parsing. For an 802.1Q frame, data[14] is the TCI, and its top nibble is
-the PCP/DEI bits chosen by the sender.
-
-If that nibble is not 4 or 6, only thoff >= 34 is enforced. The real IPv4
-header starts at offset 18 and can run to offset 78 with options. Doesn't
-that leave the VLAN case open?
-
-Case 2: an IFF_TUN device with dev->type == ARPHRD_ETHER. Here skb->data
-starts at the L3 header (skb_reset_network_header()). The helper still
-parses it as Ethernet, with nhoff = ETH_HLEN and h_proto taken from bytes
-12-13 of the IP header, which is the source address.
-
-A valid IPv4/TCP packet with csum_start = 20 now fails
-thoff < nhoff + nh_min_len (20 < 34). An IPv6 packet with csum_start = 40
-also fails (40 < 54). The old check accepted both. Is this a regression for
-such setups?
-
-Could the caller pass in the framing, instead of the helper relying on
-dev->type?
-
-> +
-> +	if (unlikely(thoff < nhoff + nh_min_len))
-> +		return false;
-> +
-> +	iph = (const void *)(skb->data + nhoff);
-> +	if (!proto) {
-> +		if (iph->version == 4)
-> +			proto = htons(ETH_P_IP);
-> +		else if (iph->version == 6)
-> +			proto = htons(ETH_P_IPV6);
-> +	}
-> +
-> +	if (proto == htons(ETH_P_IP) || skb->protocol == htons(ETH_P_IP)) {
-> +		if (unlikely(iph->ihl < 5))
-> +			return false;
-> +		nh_min_len = max_t(u32, iph->ihl * 4, nh_min_len);
-> +	}
-
-[Severity: Medium]
-Should the version nibble guess be skipped when skb->protocol already
-names a non-IP protocol?
-
-The commit message says:
-
-  - For non-IP protocols, require only nhoff + nh_min_len. No in-tree
-    non-IP protocol generates CHECKSUM_PARTIAL itself. They only carry it
-    when encapsulating IP (e.g., MPLS), in which case csum_start lies
-    beyond an inner IP header.
-
-Take IFF_TUN without IFF_NO_PI and with pi.proto = ETH_P_MPLS_UC.
-tun_get_user() calls skb_reset_network_header() and sets
-skb->protocol = pi.proto. So nhoff = 0, and data[0] is the top byte of
-the MPLS label.
-
-For labels 0x40000-0x4FFFF, iph->version reads as 4 and iph->ihl reads as
-label bits 15..12. ihl < 5 is rejected outright. ihl >= 7 requires
-thoff >= 28, so a valid MPLS + IPv4/TCP packet with csum_start = 24 is
-rejected.
-
-For labels 0x60000-0x6FFFF, the version reads as 6 and nh_min_len becomes
-40, so csum_start = 24 fails as well.
-
-The old check accepted these packets. Should proto be guessed from the
-version only when skb->protocol is 0, ETH_P_IP or ETH_P_IPV6?
-
-[ ... ]
-
-> @@ -104,7 +150,7 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->  
->  		if (!skb_partial_csum_set(skb, start, off))
->  			return -EINVAL;
-> -		if (skb_transport_offset(skb) < nh_min_len)
-> +		if (!virtio_net_hdr_thoff_valid(skb, nh_min_len))
->  			return -EINVAL;
-
-[Severity: High]
-Does the UDP tunnel path get the same coverage? Before it calls into here,
-virtio_net_hdr_tnl_to_skb() still checks its offsets only against fixed
-lengths:
-
-include/linux/virtio_net.h:virtio_net_hdr_tnl_to_skb() {
-    ...
-	outer_l3min = ETH_HLEN + virtio_l3min(outer_isv6);
-
-	inner_th = __virtio16_to_cpu(little_endian, hdr->csum_start);
-	inner_nh = le16_to_cpu(vhdr->inner_nh_offset);
-	outer_th = le16_to_cpu(vhdr->outer_th_offset);
-	if (outer_th < outer_l3min ||
-	    inner_nh < outer_th + sizeof(struct udphdr) ||
-	    inner_th < inner_nh + inner_l3min)
-		return -EINVAL;
-
-	/* Let the basic parsing deal with plain GSO features. */
-	ret = __virtio_net_hdr_to_skb(skb, hdr, true,
-				      hdr->gso_type & ~gso_tunnel_type);
-    ...
-	skb->transport_header = outer_th + skb_headroom(skb);
-    ...
-}
-
-For tunnel packets, csum_start is inner_th. virtio_net_hdr_thoff_valid()
-checks it only against the outer L2/L3 headers, so inner_th can still point
-inside inner IPv4 options.
-
-After that, skb->transport_header is overwritten with outer_th, which was
-only checked against the fixed 34/54. Two examples:
-
-  - an 802.1Q tagged outer frame, with outer IPv4 at bytes 18..38
-  - an untagged outer IPv4 header with ihl = 15, at bytes 14..74
-
-In both, outer_th = 34 passes and the outer transport header ends up
-inside the outer IP header.
-
-There are two ways to reach this:
-
-  tun_get_user()->tun_vnet_hdr_tnl_to_skb()->virtio_net_hdr_tnl_to_skb()
-  when vnet_hdr_sz >= TUN_VNET_TNL_SIZE
-
-  virtnet_receive_done()->virtio_net_hdr_tnl_to_skb()
-  when rx_tnl is negotiated
-
-Should the tunnel path get the same VLAN and IP option handling? If not,
-should the commit message say that this path is not covered?
-
-[Severity: Low]
-This is a pre-existing issue, not one introduced by this patch.
-raw_verify_header() in arch/um/drivers/vector_transports.c ignores the
-return value of virtio_net_hdr_to_skb():
-
-	skb_set_network_header(skb, ETH_HLEN);
-	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian());
-	return 0;
-
-vector_legacy_rx() and vector_mmsg_rx() only drop the packet on a negative
-return. So if skb_partial_csum_set() succeeds and
-virtio_net_hdr_thoff_valid() then fails, the skb is still delivered. It
-arrives as CHECKSUM_PARTIAL with a transport header inside L3.
-
-The old nh_min_len check was ignored in the same way. The vnet header here
-comes from the host kernel's packet socket, not from untrusted input.
-
-Should raw_verify_header() pass the error up so the new check applies to
-this caller?
-
->  
->  		nh_min_len = skb_transport_offset(skb);
-
-[ ... ]
-
+base-commit: 31f9ec9f38735f42e1f0ba57347c420e56b99824
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007163819.3041710-1-willemdebruijn.kernel%40gmail.com
+2.47.3
+
