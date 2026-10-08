@@ -1,104 +1,106 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1EC40F721;
-	Thu,  8 Oct 2026 12:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B875B3C7E1D
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791460861; cv=none; b=JVp0LM6KA89a5iSN+9y8r++oiYUp3tkM0v/iblUH9gOW8RLQ5nUebG69QgjjNoi5lEnnyL5ig1LjI9r2h/DOq5z9l1TcqQkcLl6+muuVEWn564F2SyH0fSy02aYY5KzP/u61pusODU0ClQzS6N5t1eTQDFLBABtbmtKjnK9+YaE=
+	t=1791461015; cv=none; b=k3MrMjRbi4FhfZwkz0qDjVenAJNPF+JsJ5YNInPI+/iCsIchngZ/vKV1NqWmcMfsNxJN7/9AeOdGILqTHCNS/0d6/+1RYAPDa/SWi5uIZqY6KZQg64jZ5VL2evwtV+bRkWkUftGSUEJO0w+YKi13HLeJT2dbPSBJmTicSasU5Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791460861; c=relaxed/simple;
-	bh=Hb36kFskHaahcRk8dek5fMrGjCsoNlLRLItDtpm6Gcs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PRWulxks33PpeN4Em7QP1j3FdwiqiSUt454gkNM0HpKJ0DKduEOUIGghNLCidyRnmRKEmnY4NB//Ee+/fWt+w0uFkuljBiO9+LLcAPsV79g3+sKipPMgsUgU/z8N5qgcUmYZTmR2f5Y3MQheQiG/KjT2cxOszVqm8/VEmRMoxj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VdjRRaQ5; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VdjRRaQ5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=oShXdMoEXBcIjF76ZeZ7Tr5vt14coB3TSGREebLKc08=; b=VdjRRaQ5tZWcg3nN2EDWsu/mht
-	IBAfs/Xj0fw+ojMXtiG1W/bP9eEpNUsrEmS6bsuJcLicn3CnFGoWNg6fYLVkaBr8wgmp2Ly5CNPHQ
-	CeoQV5ylVLGjPjOLDNDpBBBl+qvxc9vQDLQg34hS2ApMjhUXVWJmJnN6RbhMBVDkG1oQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xEmni-009cUo-7M; Thu, 08 Oct 2026 14:00:42 +0200
-Date: Thu, 8 Oct 2026 14:00:42 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Po-Yu Chuang <ratbert@faraday-tech.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: =?utf-8?B?5Zue6KaGOiBbUEFUQw==?= =?utf-8?Q?H?= net-next v2 3/6]
- net: ftgmac100: Enable AST2700 RMII support
-Message-ID: <3eff4d4c-7376-4fc1-983e-396ccda08ef8@lunn.ch>
-References: <20261006-support_ast2700-v2-0-36de51fb8066@aspeedtech.com>
- <20261006-support_ast2700-v2-3-36de51fb8066@aspeedtech.com>
- <268b6bc5-40a5-47b4-99a2-68d9f56b359a@lunn.ch>
- <SEYPR06MB513454E3CF42CCB62402E7F59D932@SEYPR06MB5134.apcprd06.prod.outlook.com>
+	s=arc-20240116; t=1791461015; c=relaxed/simple;
+	bh=OYGEaUQOc84tn+UWAjYrfHv+cxmGpTCjaaEPswNuzZY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sh9R40a6cPIdfy8jJA1qXlWIC0YcxOi4wqmw0bdWUFb0bo3L+UV0HTyyXnYm8t0LniG13seLLl7Rvk/QWTOzgdK+32e8qLuOMNlh49xkkdusctgyODHUoJjxyWoWBZxR9DWy3jzZfA21efmDSco9k6I+2m+x/Q159xGKQCoRpFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+Authentication-Results: mail.toke.dk; dkim=none
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, "David S .
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, cake@lists.bufferbloat.net, Victor Nogueira
+ <victor@mojatatu.com>, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net-next 1/4] net/sched/sch_cake: serialize
+ reconfiguration with the datapath
+In-Reply-To: <CAM0EoMk2nKEaywg0fa6bwKxdAH8kp7dKfxHq2unZi=Qd7HBttg@mail.gmail.com>
+References: <QDISC-5RTM.v1.20261007130704@mojatatu.com>
+ <QDISC-5RTM.v1.20261007130704-2@mojatatu.com> <875wzctsky.fsf@toke.dk>
+ <CAM0EoMk2nKEaywg0fa6bwKxdAH8kp7dKfxHq2unZi=Qd7HBttg@mail.gmail.com>
+Date: Thu, 08 Oct 2026 14:03:10 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87se2gs8ld.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SEYPR06MB513454E3CF42CCB62402E7F59D932@SEYPR06MB5134.apcprd06.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> The applications of device tree in ftgmac100 have 'use-ncsi', 'fixed-link'/'phy-handle'
-> and legacy mdio probing for AST2400/2500.
-> 
-> The 'use-ncsi' will bind a fixed-link phy device on speed 100 and RMII, so it will include
-> phydev for netdev.
-> The 'fixed-link' also bind a fixed-link phy device for phydev in netdev.
-> The 'phy-handle' will return the actual phy device instance for phydev.
-> The legacy mdio method also returns phydev if the MAC node includes mdio in dts
-> and find the phy device by mdc/mdio.
-> 
-> Therefore, in the current code, the devices tree does not include 'phy-handle', 'use-ncsi', 
-> 'fixed-link and 'mdio' properties, the ftgmac100_probe_dt() still returns 0 as success at the 
-> end, and the phydev in netdev will be NULL.
-> 
-> All applications in ftgmac100 must get the phy device handle, regardless of the actual
-> phy device or the virtual fixed-link phy device.
-> 
-> I would like to add a patch to adjust the ftgmac100_probe_dt(), once the
-> device tree lacks one of them will return the corresponding error or no device error to 
-> make probing failed.
+Jamal Hadi Salim <jhs@mojatatu.com> writes:
 
-You cannot cause regressions with existing device, e.g.
+> On Thu, Oct 8, 2026 at 6:29=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <=
+toke@toke.dk> wrote:
+>>
+>> > The qdisc is left with autorate disabled but with the estimate install=
+ed
+>> > instead of X.  On 32-bit machines the unlocked 64-bit rate_bps store is
+>> > also not atomic, so a reader can observe a torn rate.  iproute2 reaches
+>> > this because parsing 'bandwidth X' sets autorate =3D 0 and emits both
+>> > TCA_CAKE_BASE_RATE64 and TCA_CAKE_AUTORATE.
+>> >
+>> > Commit the parsed configuration and reconfigure while holding the same
+>> > qdisc lock that serializes the datapath, so the netlink writer and the
+>> > autorate writer can no longer interleave.  Make rate_bps an atomic64_t
+>> > so a 64-bit rate update is atomic on 32-bit machines as well, and keep
+>> > the READ_ONCE()/WRITE_ONCE() annotations for the remaining lockless
+>> > readers (cake_config_dump(), which runs without the lock, and the
+>> > cake_mq shared config, which readers observe under different child
+>> > locks).
+>>
+>> So atomic_t.txt has this section:
+>>
+>> "SEMANTICS
+>> ---------
+>>
+>> Non-RMW ops:
+>>
+>> The non-RMW ops are (typically) regular LOADs and STOREs and are canonic=
+ally
+>> implemented using READ_ONCE(), WRITE_ONCE(), smp_load_acquire() and
+>> smp_store_release() respectively. Therefore, if you find yourself only u=
+sing
+>> the Non-RMW operations of atomic_t, you do not in fact need atomic_t at =
+all
+>> and are doing it wrong."
+>>
+>>
+>> So AFAICT, we don't need atomic_t, we just need READ/WRITE_ONCE()
+>> annotations?
+>>
+>
+> hrm. actually, the sch_tree_lock() already protects cake_change(): it
+> commits the parsed config and reconfigures together with the datapath
+> under the same qdisc lock, so the netlink writer and the autorate
+> store can no longer interleave. So the atomic64_t was never needed for
+> the lost update.
+>
+> on the atomic_t.txt point you pointed out: rate_bps takes only non-RMW
+> ops, so per SEMANTICS it should be a plain u64 with
+> READ_ONCE()/WRITE_ONCE(). I'll drop the atomic64_t.
+>
+> The only lockless readers left are cake_config_dump() (cosmetic) and
+> the cake_mq shared config, which a child reads while holding a
+> different child's lock than the parent writes it under - on 32-bit
+> READ_ONCE() on a u64 can tear there. It's an advisory rate that
+> self-corrects on the next sync interval, so best-effort is fine.
+>
+> I will resend a v2 with rate_bps as u64 + READ/WRITE_ONCE. Let's wait
+> for Sashiko first - it will always find something to complain about.
 
-aspeed-ast2500-evb.dts
+SGTM.
 
-&mac0 {
-        status = "okay";
-
-        pinctrl-names = "default";
-        pinctrl-0 = <&pinctrl_rgmii1_default &pinctrl_mdio1_default>;
-};
-
-No phy-handle, no use-ncsi.
-
-So enforcing these must be limited to 2700.
-
-It looks like you can test that some sort of PHY has been found. But
-then please remove all tests which check that phydev is not NULL. And
-include a good commit message why this is safe and will not cause
-regressions.
-
-	Andrew
+-Toke
