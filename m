@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691434E56F3;
-	Thu,  8 Oct 2026 15:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC494E73A4;
+	Thu,  8 Oct 2026 15:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791473506; cv=none; b=Mm+TynMzHJf77QnAVIdDpeliAKXU5CNYO5DdGLbPIOKf/s9uwusbgL+v/Ef+cV3qxK5VURU+Ul9hM80A5sybBX+2SkuAyzKVu5/hlG+LN+tddY6x9EejLaUPPC78klXRrTM8C9qgJcoiGU2bFxYyg7D3FY6HHtnlcWoM+xkVxs4=
+	t=1791473507; cv=none; b=r1zfqoalbIO9hYAfZYPUVlq71nShgMMJ4y9gdDAvGmf8dM4a5bsARavvuN4sNFt881jMnepZyQDF0ccqxRrHvrFI4ltqaQcHru3VehSh90cg7LwLNT28njkhPONHbzxq7By6kwQdj2Oa0fbEI6Y6r0x7kZ/37iUMj110oGuNMK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791473506; c=relaxed/simple;
-	bh=s7JYSSbolPjcLrEe+uyU4I5N0qa7rT56REy8Bv620ok=;
+	s=arc-20240116; t=1791473507; c=relaxed/simple;
+	bh=jDH5s6UK7sCe0QaYUrl6cP3J/9H/VXWTV7euB8UqE2k=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=McwJXSViZuMKimVJJYWOSgLGqfzT/KpeKlPJz8hS1PN7bdK3klqNtvAuieVt5Whop0meBJ0i4koI8RE9FKA6cjD1VP83kg+pxUrrmKHo6vD18rIu/RzmutEyJX5LbZA5XKhNt7I59vRmArbBZd6rDD2TarHnJMsF4Ko+szSJ9kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEHXPD2s; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=WcO32x/dPKqEltoVQFzm8HC+9IyDIvwyNq+smnOIyF0P82Be30Wrh3kypOTc0Cy69uXgD3e+IrArU6WnG95pNlG2zC1RnZfoKsQ5YSOd9MNGjBkBUwYb7mqtGJqSXqUdJVqcSpp/Zh2wghHIuj4nIy1Q3n650Fld1TUlVY6bqUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nfncSyRU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEHXPD2s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875BA1F000FF;
-	Thu,  8 Oct 2026 15:31:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nfncSyRU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989511F00898;
+	Thu,  8 Oct 2026 15:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791473505;
-	bh=ZxfDaV7DGTAgP65N6JD5OKXuET1MCkNz3egCKmQS+Qw=;
+	s=k20260515; t=1791473506;
+	bh=jMB7zgmiitN7L/EjhTpwo0HXq/xVNdDVYk0RppFAIZs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EEHXPD2sf7IOrGjPekQUHHZG2BcBTTky+ncsKH7ArHp8Jia0QEafB+AI8+WC3BnE4
-	 IIZ5xioxAwV6myNuYau6XKFgW83VxgrKhIqO2MXgNumuG1ACvyLpaT09Sg+B+z6771
-	 y0ra2L5DGRfYg0X+/SUVk5OicOtRhDIY7RepQ+xJi4YSdcRAKBG16+KVpvcqr4AZEG
-	 I89IP5HyLpnUbbFNHpKOszORDoZLEhq90Nl3b6RHJIXygctNO1rKIgaGBR9703L4OM
-	 ZQ+PELBn5TUYE8EwmYw83fSNPnZMdVsYfb1P6VwFGn4hDwvqHFibcbxj52TvUMwNNQ
-	 p69xjnhTMu4ow==
-Subject: Re: [PATCH net v3 3/4] dpll: zl3073x: reject inexact frequencies for
- N-divided outputs
+	b=nfncSyRUN4TzTx7xtiCUvwZ4ImalRkMXuXGK26pFqoHSjlfBlX1S2v4Sd6MACPCh0
+	 Q1tp/m7egoYIqnNDsO7BZaOmEZ6JzZXth9ip7Zd987ztRBT63bOiJYcxJ6Dqdfv+d6
+	 vxJLrd+2US5dRzjcBs1+WttBX0onp+Ll2kPX5DsBWzilScZlQyDEg5aHvh4LmlUyE2
+	 FC51P/7iYk2osAH7ynfyig2J0d67nD3czWwC8Byc6B5YwwolTroQKiF24ss2e6FRfZ
+	 nKDYnWPhKNItcufgnQtmi9/r3jWDRhnlDPqFIaLiG4826jWMWY3Bmy80YIren07C9x
+	 0FdPlBE5Zxvtg==
+Subject: Re: [PATCH net v3 4/4] dpll: zl3073x: notify sibling pin when shared
+ output config changes
 From: netdev-bot+sashiko@kernel.org
 To: ivecera@redhat.com
 Cc: netdev@vger.kernel.org, min.li@microchip.com, vadim.fedorenko@linux.dev,
  arkadiusz.kubalewski@intel.com, jiri@resnulli.us, kuba@kernel.org,
  Prathosh.Satish@microchip.com, pabeni@redhat.com,
  linux-kernel@vger.kernel.org
-Date: Thu, 08 Oct 2026 15:31:44 +0000
-Message-ID: <179147350412.434549.10496013315426964523@kernel.org>
-In-Reply-To: <20261006153116.347497-4-ivecera@redhat.com>
-References: <20261006153116.347497-4-ivecera@redhat.com>
-X-sashiko-severity: Medium
+Date: Thu, 08 Oct 2026 15:31:45 +0000
+Message-ID: <179147350520.434549.16772916744710272674@kernel.org>
+In-Reply-To: <20261006153116.347497-5-ivecera@redhat.com>
+References: <20261006153116.347497-5-ivecera@redhat.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,155 +48,167 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0 (1)
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] In the P-pin branch of zl3073x_dpll_output_pin_frequency_set()
-  (drivers/dpll/zl3073x/dpll.c:1016-1031), the patch widens the product…
-
-Pre-existing issues:
-- [High] A privileged netlink request for frequency 0 can reach the
-  unchecked division `new_div = synth_freq / (u32)frequency;` in…
-- [Low] The four NL_SET_ERR_MSG_FMT() calls this patch adds to
-  zl3073x_dpll_output_pin_frequency_set() (drivers/dpll/zl3073x/dpll.c,…
+- [Low] The commit message describes the old teardown incorrectly.
+- [Low] The documentation for zl3073x_dpll_output_pin_sibling_get() does
+  not match its code, and the commit message's safety claim is only…
 
 --
 
-dpll: zl3073x: reject inexact frequencies for N-divided outputs
+dpll: zl3073x: notify sibling pin when shared output config changes
 
-This patch changes zl3073x_dpll_output_pin_frequency_set() to check the
-division remainder when it computes esync_n_period for N-divided outputs.
-A request is rejected if it does not divide evenly or if the N-pin
-frequency would not stay below the P-pin frequency. Both failure cases
-get new extack messages.
+The P and N pins of a zl3073x output share the divisor, clock type,
+esync and phase compensation registers. This patch adds a sibling
+lookup helper and sends a change notification to the sibling pin from
+frequency_set(), esync_set() and phase_adjust_set(). It also changes
+the order of list_add()/list_del() on zldpll->pins relative to DPLL
+pin registration, and does both under zldpll->lock.
 
 > diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-> index 7c997966c3c33..65107b4cc4f82 100644
+> index 65107b4cc4f82..9c678acc3e777 100644
 > --- a/drivers/dpll/zl3073x/dpll.c
 > +++ b/drivers/dpll/zl3073x/dpll.c
-> @@ -1007,15 +1007,28 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
-
-[Severity: High]
-This is a pre-existing issue, but can a frequency of 0 reach the division
-at the top of zl3073x_dpll_output_pin_frequency_set()?
-
-	new_div = synth_freq / (u32)frequency;
-
-zl3073x_dev_output_pin_freq_get() uses integer division, so a sub-Hz
-output reads back as 0 Hz. For example, with a 600 MHz synth, an N-divided
-output, div=60 and esync_n_period=20000000, N is 0.5 Hz and is reported
-as 0. zl3073x_out_state_fetch() only rejects zero divisors.
-
-zl3073x_pin_props_get() in drivers/dpll/zl3073x/prop.c then always
-registers the current frequency as supported. This bypasses the !freq
-check in zl3073x_pin_check_freq():
-
-	ranges[0] = (struct dpll_pin_frequency)DPLL_PIN_FREQUENCY(curr_freq);
-
-Suppose firmware also lists 1 Hz for that N-pin. A CAP_NET_ADMIN user can
-set the N-pin to 1 Hz and then request 0 Hz:
-
-dpll_pin_freq_set()
-  dpll_pin_is_freq_supported(0)   -> true, ranges[0] is {0, 0}
-  freq != old_freq (1)
-  ops->frequency_set(..., 0, ...)
-    zl3073x_dpll_output_pin_frequency_set()
-      synth_freq / (u32)0
-
-The division happens before any of the new remainder checks run.
-
-There may be a similar path through a non N-divided output with
-div > synth_freq, where P reads as 0 Hz. The DPLL_A_PIN_FREQUENCY policy
-is a plain NLA_U64 with no range. This code is unchanged at the end of
-the series.
-
-Would rejecting a zero frequency here, or in dpll_pin_freq_set(), make
-sense?
-
->  
->  	if (zl3073x_dpll_is_p_pin(pin)) {
 
 [ ... ]
 
-> -		out.esync_n_period = (out.esync_n_period * out.div) / new_div;
-> -		if (!out.esync_n_period)
-> +		u64 prod = mul_u32_u32(out.esync_n_period, out.div);
-> +		u32 rem;
+> @@ -132,11 +134,39 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
+>  	return NULL;
+>  }
+>  
+> +/**
+> + * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
+> + * @pin: output pin whose sibling is sought
+> + *
+> + * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
+> + * single HW output. Looks up the other pin of the pair, if it is
+> + * registered as a dpll_pin on this DPLL.
+> + *
+> + * Return: pointer to sibling pin, or NULL if it is not registered
+> + */
+> +static struct zl3073x_dpll_pin *
+> +zl3073x_dpll_output_pin_sibling_get(struct zl3073x_dpll_pin *pin)
+> +{
+> +	struct zl3073x_dpll_pin *sibling;
 > +
-> +		out.esync_n_period = div_u64_rem(prod, new_div, &rem);
-
-[Severity: Medium]
-Is the 64-bit quotient silently truncated when it is stored in the u32
-out.esync_n_period?
-
-mul_u32_u32() widens prod, but the result of div_u64_rem() is narrowed
-before the rem and < 2 checks run. Those checks never see the upper bits.
-
-For example, take a 600 MHz synth with div=12 and
-esync_n_period=0x80000001 read from hardware (P=50 MHz, N about 0.023 Hz).
-Requesting P=100 MHz gives new_div=6:
-
-    prod     = 0x80000001 * 12 = 0x60000000C
-    quotient = 0x60000000C / 6 = 0x100000002, rem = 0
-    (u32)    = 2
-
-Both checks pass, and zl3073x_out_state_set() commits div=6 and
-esync_n_period=2. The N-pin then jumps from about 0.023 Hz to 50 MHz.
-The commit message says this patch prevents that kind of N-pin shift.
-
-zl3073x_out_state_fetch() only rejects a zero esync_n_period, so it
-accepts this state from hardware. The driver's own N-pin path cannot
-create it, but EEPROM or firmware can.
-
-Could the quotient be kept in a u64 temporary, with values above U32_MAX
-rejected before the assignment? This code is unchanged at the end of the
-series.
-
-> +		if (rem != 0) {
-> +			NL_SET_ERR_MSG_FMT(extack,
-> +					   "OUT%uN freq must divide OUT%uP freq",
-> +					   out_id, out_id);
->  			return -EINVAL;
-> +		}
+> +	lockdep_assert_held(&pin->dpll->lock);
+> +
+> +	list_for_each_entry(sibling, &pin->dpll->pins, list) {
+> +		if (!zl3073x_dpll_is_input_pin(sibling) &&
+> +		    sibling->id == (pin->id ^ 1))
+> +			return sibling;
+> +	}
+> +
+> +	return NULL;
+> +}
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but do the new extack messages
-(here and in the N-pin branch) ever reach userspace?
+Does this kernel-doc match what the helper does? It says NULL is
+returned when the sibling is not registered. The loop only checks list
+membership, direction and id.
 
-The only caller, dpll_pin_freq_set(), sets its own message whenever
-frequency_set() fails:
+This patch makes zl3073x_dpll_pin_register() and
+zl3073x_dpll_nco_pin_register() add the pin to zldpll->pins before
+dpll_pin_register(). It also makes zl3073x_dpll_pin_unregister()
+remove the pin only after dpll_pin_unregister(). During those windows
+the helper can return a pin that is not registered.
 
-drivers/dpll/dpll_netlink.c:dpll_pin_freq_set() {
-    ...
-	if (ret) {
-		NL_SET_ERR_MSG_FMT(extack,
-				   "frequency set failed for dpll_id:%u",
-				   dpll->id);
-		return ret;
-	}
-    ...
-}
+esync_set(), frequency_set() and phase_adjust_set() then pass that pin
+directly to __dpll_pin_change_ntf(), whose kernel-doc says:
 
-NL_SET_ERR_MSG_FMT() writes into the same extack->_msg_buf and points
-extack->_msg at it again. Userspace therefore gets only the generic
-message. The driver text shows up only in the netlink_extack tracepoint.
-The core still overwrites the message at the end of the series.
+ * @pin: registered pin pointer
 
-A smaller point: in the P-pin branch the remainder check runs before the
-< 2 check. If the requested P frequency is below the current N frequency
-(new_div > esync_n_period * div), the quotient is 0 and rem equals prod.
-That case gets "must divide" instead of "must be less than". Would
-checking esync_n_period < 2 first give the more accurate message?
+The window looks reachable. zl3073x_dpll_register() registers the DPLL
+device before its pins, so a PIN_SET on the P pin can run while the N
+pin's dpll_pin_register() waits on dpll_lock. On teardown, the N pin is
+unregistered while the P pin is still available.
+
+The commit message also says:
+
+  A pin that is transiently on the list while
+  not registered is harmless: __dpll_pin_change_ntf() is a no-op for a
+  pin that is not available
+
+Is that accurate? Only dpll_pin_event_send() checks
+dpll_pin_available(). dpll_pin_notify() runs first and calls the
+in-kernel notifier chain without any check:
+
+__dpll_pin_change_ntf()
+    dpll_pin_notify(pin, pin->clock_id, DPLL_PIN_CHANGED);
+        call_dpll_notifiers(action, &info);
+    return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
+
+So an in-kernel DPLL_PIN_CHANGED event can be sent for a pin that is
+not registered. Nothing in the tree seems to be affected today: the
+only in-tree notifier, ice_dpll_pin_notify(), ignores actions other
+than CREATED and DELETED.
+
+Should the kernel-doc and the commit message be corrected? The other
+option is to check that the sibling is actually registered before it
+is notified.
 
 [ ... ]
+
+> @@ -1784,6 +1874,13 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
+>  	/* Unregister the pin */
+>  	dpll_pin_unregister(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
+>  
+> +	/* Remove the pin from the list only after it has been unregistered so
+> +	 * that a still-registered pin is always findable as a sibling.
+> +	 */
+> +	mutex_lock(&zldpll->lock);
+> +	list_del(&pin->list);
+> +	mutex_unlock(&zldpll->lock);
+> +
+>  	dpll_pin_put(pin->dpll_pin, &pin->tracker);
+>  	pin->dpll_pin = NULL;
+>  
+> @@ -1803,9 +1900,11 @@ zl3073x_dpll_pins_unregister(struct zl3073x_dpll *zldpll)
+>  {
+>  	struct zl3073x_dpll_pin *pin, *next;
+>  
+> +	/* Unregister each pin before removing it from the list so that a
+> +	 * still-registered pin is always findable as a sibling.
+> +	 */
+>  	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
+>  		zl3073x_dpll_pin_unregister(pin);
+> -		list_del(&pin->list);
+>  		zl3073x_dpll_pin_free(pin);
+>  	}
+>  }
+
+[Severity: Low]
+The commit message says:
+
+  and teardown detached the whole list before unregistering any
+  pin, so a sibling that is registered - and thus reachable by a PIN_SET
+  on the other pin - could be missing from the list and never notified.
+
+Does this describe the old teardown correctly? Before this patch,
+zl3073x_dpll_pins_unregister() already unregistered each pin before
+removing it from the list:
+
+	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
+		zl3073x_dpll_pin_unregister(pin);
+		list_del(&pin->list);
+		zl3073x_dpll_pin_free(pin);
+	}
+
+drivers/dpll/zl3073x/ has no list_splice() or similar call on this
+list. A pin that was still registered therefore stayed on zldpll->pins
+during teardown.
+
+The list and the registration state only got out of step at
+registration time, because dpll_pin_register() ran before list_add().
+On the teardown side, this hunk mainly moves list_del() under
+zldpll->lock, which the new lockdep-asserted lookup needs.
+
+Could the commit message describe what the teardown change actually
+does?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006153116.347497-1-ivecera%40redhat.com
