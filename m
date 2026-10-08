@@ -1,223 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B053D3D11
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9588049504A
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:38:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791463099; cv=none; b=YvQLU+hsO9b8FwIexPNFf8+yWsEEMzSXPpOV9zGelMl+8kdqFnohlvBqPIaboazpLwG5sNluroQA18ApXKm0DmoA9QO3PrpkLBaglXo5kgWywj2mkonMj3THDvNg8xqF0kBAbwszGaKTDjS3nDng9OpHpgXwHCaRTor4uLqQoNQ=
+	t=1791463126; cv=none; b=Kd91WoMoBbRLC9STDbM7xtEEcQrP1KESY4Jp//1AF6B1ShXBTtlpTE/SD1PnONccLp6jcmEUdhqIXZkCd8kYGxVflIb5CgcQiSj8v51xJbdUc2rRua+HEzfrhzKVNwpNV1MGRds9Qja1h71GE68DzivVuERgLp2GAGBCPOS0ju8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791463099; c=relaxed/simple;
-	bh=uaUgrtOhSdZnks9Rln5dnaL/6PCnkPqMWWVsQqsqfJk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uVz+Wvw1bMmXQo+j0Txwk/hd2fvLtf8jyEubyeTSdnQ7wob/IRCt/rlvthteZUqvQG9zMD1QOG2k5hdcug4fZ2lqgoIHDMOkYWsgfJ3gAy2YBu2ChYPNRDF4RFUbakrlKORgT1PrfrVjC7u/pG2cwcxTT4576r65usVzhNC2Yig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZCxk2F3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791463126; c=relaxed/simple;
+	bh=URwSaekjnL1nbkUOtrm8l0o3BrCK4LvgZ73eX1K8SxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PoPjdTYEAapxzMbEXHip/rSZNE5vkaCVi5LHz28fvaYwb0mA6tnS/yR88ydv9ALFik+/xoZ4cjR9EBTugju0qKSRDWsrS9APlGLup66pU92S/dmXiXvrC0KXyvieBBWQMXjQO20Ysjyr+yeFajAABeCa1Y7STjL7pTEVj9BGUP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=N87hV25A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZBmvmHeI; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZCxk2F3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6421F000FF;
-	Thu,  8 Oct 2026 12:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791463097;
-	bh=g7qot7RPgEaAHaBfRpgw0bEL/W8bOXpb51ThKc8rtGE=;
-	h=From:To:Cc:Subject:Date;
-	b=EZCxk2F38f6VhJKlgmFwjBgDqb7SOzNgbSLq2TuiLyDueq5lwR3/fix3CeHToylu8
-	 8zihmvBSboKeh4VRULSxmbVjlxmKUpJrda+M0phSqzILy2B3XRT8Bx3/5bkdmUnLZM
-	 OKoTiz3dF9y3oXu6uH0XD7yd3dSmc6ZdiKn6Ex/GyZOFdbntPEMABaWAyuB2m/Sy76
-	 UmYGYr7d+CAB0aYMDSETwHOWOY8G+aihirNi2+xAERbQbRKpFjZIqXFs0dN0+lyEtK
-	 FhSYfBFfOOkIy1/3iAmCqqi5159WfcISJ6YKFyhj3hpyPmJTvvHqchSA6Yh4ikvQ6z
-	 8H/kwlR/wev/g==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	sairon <sairon@users.noreply.github.com>,
-	hitchin999 <hitchin999@users.noreply.github.com>,
-	Stefan Agner <stefan@agner.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Subject: [PATCH v2 net] vlan: do not insert the vlan header in vlan_dev_hard_header()
-Date: Thu,  8 Oct 2026 14:38:11 +0200
-Message-ID: <20261008123812.554729-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="N87hV25A";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZBmvmHeI"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id D5DF3EC018C
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:38:43 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 08 Oct 2026 08:38:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1791463123; x=1791549523; bh=dh9WPB4TTDrILJK1OPNo3Cx5BDd3OlvG
+	/87qurPFaiw=; b=N87hV25ANVjI69iN1groJQ4aXS9z2Z1sQM39wwnUhUCfPQ2G
+	489PHELW7GBGBJx/ViGM37YHIZTrnb5GgRiU+JeY/cVZskEk8zW/ionsXbzh+jwY
+	R9Enh1h779xGcb3iMu5aBwROpYnXcif4BAmG4iY0lATN5+q0chPqbVlEqbtrW05v
+	uKcrXtpQge7lSUQ/UiN/n+N+YteZg5z+WM6FJppvoJNqFdl9nAzboEThg0gxdoMZ
+	ZL7sUhNYAwRNBdIXpQaFczLLTRDKSVqYtSVExFqhi/6n0GR4ytTv/UGTC2J1ZcAl
+	ea60TouvyTD4GI8flJLiDLrcykVaWwoAh5Doog==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791463123; x=
+	1791549523; bh=dh9WPB4TTDrILJK1OPNo3Cx5BDd3OlvG/87qurPFaiw=; b=Z
+	BmvmHeI33myprkcOqsuQnKUGWmB6DGOdzCxfpYbHh8zOqhfj9dyMkUuO4Tm9X4yH
+	HTyI3l63Mk6HoiEFLd22hx+3w7blDNYWz6OVVyQfMq58JzYtxl6zbxamNoi+CjKJ
+	f5P5ovkVKD5GzoHFmIDPgSHYfsezhkKR5Hu0xUu81qDNJPXFyhqr9lSNrK3m8JrO
+	OnNJWpags/Mk5VKdtCvP6azx9qAOU6UFtHxr8KueCIsdkVyr8s7Vgzg0bIC4rkOP
+	LEFz/NBX5OH7bFBP2GpT9A07NSE8hCp9Dms8FjcPxUjCeSVhsJbbMP0hP7L66mwS
+	hsLYrCZ6mhPALeW6ooX1Q==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=queasysnail.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791463123; d=queasysnail.net;
+	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm3:rsa-sha256:ZQ4tc6Jq8jn/TjP2J3s/KZwvtItbkmYvVmAq4uv394CRsFE
+	u9MJZIxxwEPo+7ezOF9k7HFytsp2Vh80mbtORBzlCKw0OFrHab8Dwt4IU/B8XVuj
+	ecx19rlc4yMcIAzc24YxFT/vOre680OIIMMBQer6yrMoTNhqVyBRzej1flYwHiWg
+	ggQTcA/elAdE0wq4Bp5VdlD+zbtQjSzNn+kzgUbMii2U8UnuqEFpwQSm10tDD38e
+	Ba+I13P8qXgSoPZTTR+/8BfZVW0UoSmv2Hetl3ygaMb18/+/KWdKVEFBYy4eMkhl
+	a+UJxwnG+YWov0irGF5udV4U2oBlK6pBt5gFiFA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-disposition,content-transfer-encoding,
+	content-type,date,feedback-id,from,in-reply-to,message-id,
+	mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:puR7D5QmmaHowrW40k4DNSJ3lz956z5v17i4ZXoCn0g=:URwSaekjnL1nbkUOtrm8l0o3BrCK4LvgZ73eX1K8SxA=;
+X-ME-Sender: <xms:0o7HavuRKhcHOkYzWDcz2vFJGvtx9qJPPEjhiwjYWul5j5RH6mf7LA>
+    <xme:0o7Hap31ESs6UAxEogoLRUqIbscvbsy5OxJWi1lNDARnb0O4vCEqavFCy0CglYQxa
+    TnqHr6KXqelY08T63BetsofG8VMjLdLi4NZswJJmkC5QKr47te5xczi>
+X-ME-Received: <xmr:0o7HarTfC9yhOFZwExXMzJm3kIVk1PxWSZlKmjYC7ru0NeQ5JF3HsQCpHBc>
+X-ME-Proxy-Cause: dmFkZTEECNTjd/hKOLiIyIHohdObXdhDZod88zeg2NIAdyr626iHyIBahS3jQa4X7JZTmT
+    EQhWRbjleN8+H6iRXP2di62rVH6/46yHmlI6GzHWc/bJV+lLvaOb1ias6oS6UhVU0YsCQ1
+    CHq+/ZSBkIHe8HPFHgvitKIbqBGouCos5e1TrzTtd1EIsHeK6WbsB6107k0jzW2Vv4RkBs
+    9VuxmV0Bx0Sv5sq1JmVDUD8/GXn29WhDeUCoKwNwYvyqDcMuMaybd5Js/TqKNoWOpEfjIv
+    OR818v77huR8NoXOJW9BEwR3/nuqbvKVTjviFC1DNLF5pGFqU3p9K9Qer33Mo92ZKBx1N1
+    9oVMKtKlWpJtBxd/rwzLnBcLrVPDaMchSo/eRE0voWzEsgnH9LGsJLAnTA4iT3KhvO7Zru
+    DTqggReUbiWmeXhq/ZEXgfJLL15Lg4eok/CvD6cheS9tnu5rqoVPh3WYeFJcZySSbYefTx
+    bZI8WhysveTQtsYXZUHGRVdjkAbcWewWYLXtoeuMVUMTOrJJOrlzUjODeD9AuEaYt8db0d
+    1TjWqKZk+2zTJcAHSCkXirsQER3y7BYwRTA0AON3F/rEYAzHjvGhHfkkiEPe41tM0GpVlJ
+    ZvduNirgreP6ez9Z0DVm3zv5vvbObkxu27CADIByCfkoyuXvegJP7fxTTIrA
+X-ME-Proxy: <xmx:0o7Hatt1MurExZwC9vhVPgVK3asB7zH2s7unX6-ky3b7farAmwyYRw>
+    <xmx:0o7HahL273vJfBhXAte-yywpPnyoHuutV_M-ayNXInamyNN0R9oTfw>
+    <xmx:0o7Hape7WX7wKX9Ma8u5e8FMC2WA3Mh77hqzuX_uzQfJI0AM-SqlrQ>
+    <xmx:0o7HarUr6AXgP7ijPobNQJIN7TpQX388Ah7iWMAKTPuAftI0mS14kw>
+    <xmx:047HanT0Lcst7TbqQRqODuYzfQYaYIxfakfptZYqMrz1vMk0z5QrwARI>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Oct 2026 08:38:42 -0400 (EDT)
+Date: Thu, 8 Oct 2026 14:38:40 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+	herbert@gondor.apana.org.au, stable@vger.kernel.org,
+	yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
+	bird@lzu.edu.cn, ronbogo@outlook.com, zylzyl2333@gmail.com,
+	n05ec@lzu.edu.cn, eulgyukim@snu.ac.kr, jjy600901@snu.ac.kr,
+	kuba@kernel.org
+Subject: Re: [PATCH ipsec] xfrm: espintcp: reorder operations within
+ espintcp_init_sk
+Message-ID: <aseO0MuammN_z0he@krikkit>
+References: <dcb164e6a1064fcd32c2e72fd9ee918dd1427f15.1790617484.git.sd@queasysnail.net>
+ <179085931198.434549.11976738723347461302@kernel.org>
+ <asXrPCMX747L5_tq@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <asXrPCMX747L5_tq@secunet.com>
 
-Commit 447cbe95ebb9 ("vlan: fix skb_under_panic and races when toggling
-HW VLAN offload") replaced vlan_passthru_header_ops with vlan_header_ops
-unconditionally to avoid lockless data races when modifying
-hard_header_len dynamically under RTNL.
+2026-10-07, 08:48:28 +0200, Steffen Klassert wrote:
+> On Thu, Oct 01, 2026 at 12:55:11PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider.
+> > 
+> > Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> > 
+> > If you believe none of the issues are legitimate, please reply to each
+> > issue of Medium severity or higher and explain why the AI is wrong.
+> > If any of them are legitimate and you plan to respin, please let patchwork
+> > know by including "pw-bot: cr" as a separate line at the end of your reply
+> > (one such reply per series is enough).
+> > 
+> > - [High] The patch does not fully close the race it targets.
+> > 
+> > --
+> > 
+> > xfrm: espintcp: reorder operations within espintcp_init_sk
+> > 
+[...]
+> Sabrina, do you plan to update this one?
 
-Prior to that commit, vlan devices on top of a real device capable of
-HW VLAN TX offload used vlan_passthru_header_ops, which never inserted
-the 802.1Q header in the frame. vlan_header_ops was only used when the
-real device had no such offload.
+Sorry Steffen, too much stuff happening at the same time and this one
+was a bit complex. Let's see if the AI is happy with v2.
 
-However, vlan_dev_hard_header() retained its legacy path:
-
-	if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
-		...
-		vhdr = skb_push(skb, VLAN_HLEN);
-		...
-	}
-
-With vlan_header_ops used unconditionally, creating a VLAN with
-reorder_hdr=off (as done by Home Assistant OS / NetworkManager when
-flags are omitted over D-Bus) causes vlan_dev_hard_header() to push
-an in-band 802.1Q header in software, even if the real device supports
-HW VLAN TX offload.
-
-This is a regression for r8169 users (Realtek RTL8168h), who report
-transmit queue timeouts (NETDEV WATCHDOG): this NIC stalls when asked
-to offload checksum and/or TSO for frames carrying an in-band tag.
-
-Reverting the blamed commit, disabling TX checksum offload (which
-also disables TSO), or setting reorder_hdr=on were all reported to
-work around the issue.
-
-This insertion is also inconsistent with dev->hard_header_len, which
-does not account for VLAN_HLEN.
-
-The in-band insertion is not needed: validate_xmit_vlan() inserts the
-tag in software right before ndo_start_xmit() when the real device
-lacks HW VLAN TX offload.
-
-Remove it, and make vlan_dev_hard_start_xmit() always set the hwaccel
-tag. The (veth->h_vlan_proto != vlan->vlan_proto) test it used to skip
-tagging with reorder_hdr=off only made sense together with the
-insertion in vlan_dev_hard_header(). Without it, stacked VLANs (Q-in-Q)
-and AF_PACKET SOCK_DGRAM frames using ETH_P_8021Q would lose our tag.
-
-The TX path now behaves as it always did with reorder_hdr=on (the
-default). VLAN_FLAG_REORDER_HDR only controls whether vlan_do_receive()
-reinserts the tag on RX.
-
-Note that AF_PACKET SOCK_RAW users of a reorder_hdr=off VLAN building
-frames that already carry our tag will now send them double tagged,
-as they would with reorder_hdr=on.
-
-Fixes: 447cbe95ebb9 ("vlan: fix skb_under_panic and races when toggling HW VLAN offload")
-Reported-by: sairon <sairon@users.noreply.github.com>
-Reported-by: hitchin999 <hitchin999@users.noreply.github.com>
-Reported-by: Stefan Agner <stefan@agner.ch>
-Closes: https://github.com/home-assistant/operating-system/issues/5019
-Closes: https://lore.kernel.org/netdev/CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com/
-Assisted-by: LLM
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
----
-v2: Always set the hwaccel tag in vlan_dev_hard_start_xmit(): with the
-    (veth->h_vlan_proto != vlan->vlan_proto) test kept, the outer tag was
-    lost for Q-in-Q and SOCK_DGRAM ETH_P_8021Q with reorder_hdr=off
-    (reported by sashiko).
-v1: https://lore.kernel.org/netdev/20261007073027.459868-1-edumazet@kernel.org/
-
- net/8021q/vlan_dev.c | 60 ++++++++------------------------------------
- 1 file changed, 11 insertions(+), 49 deletions(-)
-
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index c949c6a829456c2f75d6c514b35a85ff64c493d8..bd98c191a66f96acc958f52e6fae2337b410ef3b 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -35,11 +35,15 @@
- #include <linux/netpoll.h>
- 
- /*
-- *	Create the VLAN header for an arbitrary protocol layer
-+ *	Create the hard header for an arbitrary protocol layer
-  *
-  *	saddr=NULL	means use device source address
-  *	daddr=NULL	means leave destination address (eg unresolved arp)
-  *
-+ *  The VLAN tag is not inserted here: vlan_dev_hard_start_xmit() sets
-+ *  the hwaccel tag, and the core inserts it in software if the real
-+ *  device can not.
-+ *
-  *  This is called when the SKB is moving down the stack towards the
-  *  physical devices.
-  */
-@@ -49,47 +53,14 @@ static int vlan_dev_hard_header(struct sk_buff *skb, struct net_device *dev,
- 				unsigned int len)
- {
- 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
--	struct vlan_hdr *vhdr;
--	unsigned int vhdrlen = 0;
--	u16 vlan_tci = 0;
--	int rc;
--
--	if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
--		unsigned int hlen = READ_ONCE(dev->hard_header_len) +
--				    READ_ONCE(dev->needed_headroom);
--
--		if (skb_cow_head(skb, hlen) < 0)
--			return -ENOMEM;
--		vhdr = skb_push(skb, VLAN_HLEN);
--
--		vlan_tci = vlan->vlan_id;
--		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
--		vhdr->h_vlan_TCI = htons(vlan_tci);
--
--		/*
--		 *  Set the protocol type. For a packet of type ETH_P_802_3/2 we
--		 *  put the length in here instead.
--		 */
--		if (type != ETH_P_802_3 && type != ETH_P_802_2)
--			vhdr->h_vlan_encapsulated_proto = htons(type);
--		else
--			vhdr->h_vlan_encapsulated_proto = htons(len);
--
--		skb->protocol = vlan->vlan_proto;
--		type = ntohs(vlan->vlan_proto);
--		vhdrlen = VLAN_HLEN;
--	}
-+	struct net_device *real_dev = vlan->real_dev;
- 
- 	/* Before delegating work to the lower layer, enter our MAC-address */
- 	if (saddr == NULL)
- 		saddr = dev->dev_addr;
- 
- 	/* Now make the underlying real hard header */
--	dev = vlan->real_dev;
--	rc = dev_hard_header(skb, dev, type, daddr, saddr, len + vhdrlen);
--	if (rc > 0)
--		rc += vhdrlen;
--	return rc;
-+	return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
- }
- 
- static inline netdev_tx_t vlan_netpoll_send_skb(struct vlan_dev_priv *vlan, struct sk_buff *skb)
-@@ -106,22 +77,13 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
- 					    struct net_device *dev)
- {
- 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
--	struct vlan_ethhdr *veth = (struct vlan_ethhdr *)(skb->data);
- 	unsigned int len;
-+	u16 vlan_tci;
- 	int ret;
- 
--	/* Handle non-VLAN frames if they are sent to us, for example by DHCP.
--	 *
--	 * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
--	 * OTHER THINGS LIKE FDDI/TokenRing/802.3 SNAPs...
--	 */
--	if (vlan->flags & VLAN_FLAG_REORDER_HDR ||
--	    veth->h_vlan_proto != vlan->vlan_proto) {
--		u16 vlan_tci;
--		vlan_tci = vlan->vlan_id;
--		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
--		__vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
--	}
-+	vlan_tci = vlan->vlan_id;
-+	vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
-+	__vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
- 
- 	skb->dev = vlan->real_dev;
- 	len = skb->len;
 -- 
-2.53.0
-
+Sabrina
