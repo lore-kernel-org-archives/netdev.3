@@ -1,142 +1,224 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9588049504A
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F028F493631
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791463126; cv=none; b=Kd91WoMoBbRLC9STDbM7xtEEcQrP1KESY4Jp//1AF6B1ShXBTtlpTE/SD1PnONccLp6jcmEUdhqIXZkCd8kYGxVflIb5CgcQiSj8v51xJbdUc2rRua+HEzfrhzKVNwpNV1MGRds9Qja1h71GE68DzivVuERgLp2GAGBCPOS0ju8=
+	t=1791463127; cv=none; b=bL4JVH5JzVnccjB5FCEr67a5xd7wMG/CjDCXY19WkQAXvA6xcCleQaYV/BEC5hTvVIMgxryVEO20jJFB8ShwyHyW8Y5u+7tO8jyS8ALPzSEtUF+/8yV6gFlRR5nAe0cU2K4/Z24eSws+rNqdELBecv3//5s/x3bbTZGvArIGutM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791463126; c=relaxed/simple;
-	bh=URwSaekjnL1nbkUOtrm8l0o3BrCK4LvgZ73eX1K8SxA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PoPjdTYEAapxzMbEXHip/rSZNE5vkaCVi5LHz28fvaYwb0mA6tnS/yR88ydv9ALFik+/xoZ4cjR9EBTugju0qKSRDWsrS9APlGLup66pU92S/dmXiXvrC0KXyvieBBWQMXjQO20Ysjyr+yeFajAABeCa1Y7STjL7pTEVj9BGUP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=N87hV25A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZBmvmHeI; arc=none smtp.client-ip=103.168.172.148
+	s=arc-20240116; t=1791463127; c=relaxed/simple;
+	bh=HvZwkFCoeV5GI6+iNVm2QGed0Fo9DmQBkL/U2ReMVyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sWJVlrdwL8BPEgfonwTfLaJEA2FFbG6QOL7wPuprQEbw5lCASdzkkKadWruz0IsNsbyw/6GXf/x/VOSMBSEDcgJnrGCeZrCO1EnGUp9ez1PIHNSfluyULJ1zOoEbMZEgKbjzyzPtkBEc7tx6PTu5p75TiRrCpwX+p3x8/CBtSII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=E5tJZt/w; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PQKwNh4S; arc=none smtp.client-ip=103.168.172.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="N87hV25A";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZBmvmHeI"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id D5DF3EC018C
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:38:43 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 08 Oct 2026 08:38:43 -0400
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="E5tJZt/w";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PQKwNh4S"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E98C714000EC
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:38:42 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Thu, 08 Oct 2026 08:38:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1791463123; x=1791549523; bh=dh9WPB4TTDrILJK1OPNo3Cx5BDd3OlvG
-	/87qurPFaiw=; b=N87hV25ANVjI69iN1groJQ4aXS9z2Z1sQM39wwnUhUCfPQ2G
-	489PHELW7GBGBJx/ViGM37YHIZTrnb5GgRiU+JeY/cVZskEk8zW/ionsXbzh+jwY
-	R9Enh1h779xGcb3iMu5aBwROpYnXcif4BAmG4iY0lATN5+q0chPqbVlEqbtrW05v
-	uKcrXtpQge7lSUQ/UiN/n+N+YteZg5z+WM6FJppvoJNqFdl9nAzboEThg0gxdoMZ
-	ZL7sUhNYAwRNBdIXpQaFczLLTRDKSVqYtSVExFqhi/6n0GR4ytTv/UGTC2J1ZcAl
-	ea60TouvyTD4GI8flJLiDLrcykVaWwoAh5Doog==
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm3; t=1791463122; x=1791549522; bh=GkjjC4FBsK
+	V8Ux5QRToA75o2Y2OzewDUHKtEUXAOvlI=; b=E5tJZt/w7hLyL5M5/0LOiyyWxe
+	msWXHQAMtbhZCujL/Ikc7xc4x7dC4d6ahX62EDfb1KAN8kGxydqq8vPfmgGJoElB
+	k8N6f9KfhCcts/mhg7r/rn7Ndq2y8JGc+s0nmwfd50miC71X6a6N+4lyPM9WsAmN
+	XUNqGN654S4TswR0xaI+zNjRF2FnX4P6awlgxr1HzH7l4RTHk5E5l9onH04kB89Q
+	wZSjefgixxmEUhXUola3Ow3NZ6pWJ1GPrZXeZlMIo890Oo6Ks1vbzxo4f72JnrQ9
+	iKaW5yRMghnVQMYOkypa9gNXlglHsKOjtUXjSpmgDsOnA1ObjCegxZJx+frg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791463123; x=
-	1791549523; bh=dh9WPB4TTDrILJK1OPNo3Cx5BDd3OlvG/87qurPFaiw=; b=Z
-	BmvmHeI33myprkcOqsuQnKUGWmB6DGOdzCxfpYbHh8zOqhfj9dyMkUuO4Tm9X4yH
-	HTyI3l63Mk6HoiEFLd22hx+3w7blDNYWz6OVVyQfMq58JzYtxl6zbxamNoi+CjKJ
-	f5P5ovkVKD5GzoHFmIDPgSHYfsezhkKR5Hu0xUu81qDNJPXFyhqr9lSNrK3m8JrO
-	OnNJWpags/Mk5VKdtCvP6azx9qAOU6UFtHxr8KueCIsdkVyr8s7Vgzg0bIC4rkOP
-	LEFz/NBX5OH7bFBP2GpT9A07NSE8hCp9Dms8FjcPxUjCeSVhsJbbMP0hP7L66mwS
-	hsLYrCZ6mhPALeW6ooX1Q==
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791463122; x=1791549522; bh=GkjjC4FBsKV8Ux5QRToA75o2Y2OzewDUHKt
+	EUXAOvlI=; b=PQKwNh4S7U86Whj857SFVqeNiPJYbjZWBX1dPu/rcQrAPqtX85a
+	Cw9RVqD6lJjC6VfEOP2aSWoI5XJejwtgF9ClZrBocJbifaNTrdbD8VQPNeRHZRAD
+	T0p8n/RWi0ftIi0x8JZxPrg8UewR/iKoSf69HooJ6hb+5j3cbrlYOTmPI6/d1WVS
+	gNqsMBFFvsk92///CSw2a8CnIFWDhMFLsjhLp18GEruZVjx5xzdkcGwcuoEVcq+n
+	x8K5oCs0yKHlejO/0VHdWDRMHztPIpMXykZWa/FZxSxQs0Byyi8y/rYCYiUugCQm
+	5JaHCAhLT1ZVLqYKbsewJQ88yPSl5vm5N1w==
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
 	action=sign d=queasysnail.net a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791463123; d=queasysnail.net;
+DKIM2-Signature: i=1; m=1; t=1791463122; d=queasysnail.net;
 	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
 	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm3:rsa-sha256:ZQ4tc6Jq8jn/TjP2J3s/KZwvtItbkmYvVmAq4uv394CRsFE
-	u9MJZIxxwEPo+7ezOF9k7HFytsp2Vh80mbtORBzlCKw0OFrHab8Dwt4IU/B8XVuj
-	ecx19rlc4yMcIAzc24YxFT/vOre680OIIMMBQer6yrMoTNhqVyBRzej1flYwHiWg
-	ggQTcA/elAdE0wq4Bp5VdlD+zbtQjSzNn+kzgUbMii2U8UnuqEFpwQSm10tDD38e
-	Ba+I13P8qXgSoPZTTR+/8BfZVW0UoSmv2Hetl3ygaMb18/+/KWdKVEFBYy4eMkhl
-	a+UJxwnG+YWov0irGF5udV4U2oBlK6pBt5gFiFA==;
+	s=fm3:rsa-sha256:RYVJvKOPGpFlRr8tGv0cd+js00nl6bg/hhYBvJ3AfiFOZdq
+	Xx2F1mJNgSxQMKCXbI6HT0qoxKNQg3MQP4a3iPj+8ydBuIjn7OJ2Z5bmBST0Hwzz
+	6iQbUD3xsio7jNV66WsGHUdKblWg5Je00HBWcwrKFdNUH5G9S7GpxYGIXOJI98wl
+	8UJX+TyIt0jhSaCk3X3VoSEXIjuMYr6kWPSjrgngP4MsiSW5oG06OJHycSY34CUr
+	uG/vTB277r0LDmsVEF3knkPUjDG7+H7dx/g6PrFOAbG1eCEYeRCiqXV3sNQTHRZX
+	b8TcLs/QLOkxFluwEx4/UFStIlEwGMlwasT3l5w==;
 X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
 	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=13;
-	hn=cc,content-disposition,content-transfer-encoding,
-	content-type,date,feedback-id,from,in-reply-to,message-id,
-	mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:puR7D5QmmaHowrW40k4DNSJ3lz956z5v17i4ZXoCn0g=:URwSaekjnL1nbkUOtrm8l0o3BrCK4LvgZ73eX1K8SxA=;
-X-ME-Sender: <xms:0o7HavuRKhcHOkYzWDcz2vFJGvtx9qJPPEjhiwjYWul5j5RH6mf7LA>
-    <xme:0o7Hap31ESs6UAxEogoLRUqIbscvbsy5OxJWi1lNDARnb0O4vCEqavFCy0CglYQxa
-    TnqHr6KXqelY08T63BetsofG8VMjLdLi4NZswJJmkC5QKr47te5xczi>
-X-ME-Received: <xmr:0o7HarTfC9yhOFZwExXMzJm3kIVk1PxWSZlKmjYC7ru0NeQ5JF3HsQCpHBc>
-X-ME-Proxy-Cause: dmFkZTEECNTjd/hKOLiIyIHohdObXdhDZod88zeg2NIAdyr626iHyIBahS3jQa4X7JZTmT
-    EQhWRbjleN8+H6iRXP2di62rVH6/46yHmlI6GzHWc/bJV+lLvaOb1ias6oS6UhVU0YsCQ1
-    CHq+/ZSBkIHe8HPFHgvitKIbqBGouCos5e1TrzTtd1EIsHeK6WbsB6107k0jzW2Vv4RkBs
-    9VuxmV0Bx0Sv5sq1JmVDUD8/GXn29WhDeUCoKwNwYvyqDcMuMaybd5Js/TqKNoWOpEfjIv
-    OR818v77huR8NoXOJW9BEwR3/nuqbvKVTjviFC1DNLF5pGFqU3p9K9Qer33Mo92ZKBx1N1
-    9oVMKtKlWpJtBxd/rwzLnBcLrVPDaMchSo/eRE0voWzEsgnH9LGsJLAnTA4iT3KhvO7Zru
-    DTqggReUbiWmeXhq/ZEXgfJLL15Lg4eok/CvD6cheS9tnu5rqoVPh3WYeFJcZySSbYefTx
-    bZI8WhysveTQtsYXZUHGRVdjkAbcWewWYLXtoeuMVUMTOrJJOrlzUjODeD9AuEaYt8db0d
-    1TjWqKZk+2zTJcAHSCkXirsQER3y7BYwRTA0AON3F/rEYAzHjvGhHfkkiEPe41tM0GpVlJ
-    ZvduNirgreP6ez9Z0DVm3zv5vvbObkxu27CADIByCfkoyuXvegJP7fxTTIrA
-X-ME-Proxy: <xmx:0o7Hatt1MurExZwC9vhVPgVK3asB7zH2s7unX6-ky3b7farAmwyYRw>
-    <xmx:0o7HahL273vJfBhXAte-yywpPnyoHuutV_M-ayNXInamyNN0R9oTfw>
-    <xmx:0o7Hape7WX7wKX9Ma8u5e8FMC2WA3Mh77hqzuX_uzQfJI0AM-SqlrQ>
-    <xmx:0o7HarUr6AXgP7ijPobNQJIN7TpQX388Ah7iWMAKTPuAftI0mS14kw>
-    <xmx:047HanT0Lcst7TbqQRqODuYzfQYaYIxfakfptZYqMrz1vMk0z5QrwARI>
+	action=mi-m=1; hc=9;
+	hn=cc,content-transfer-encoding,date,feedback-id,from,
+	message-id,mime-version,subject,to;
+Message-Instance: m=1; h=sha256:5OFAjD7/CCbsT49d7xFSSryg8h+OnFuDovR2QJbPSY4=:HvZwkFCoeV5GI6+iNVm2QGed0Fo9DmQBkL/U2ReMVyI=;
+X-ME-Sender: <xms:0Y7HaoZAS7UT1l7ootFUPG1r9WnCv1VzB6n-1hM2Nr4GaaGve13--Q>
+    <xme:0Y7Hau0qIctyT-YubncnJJAF3hUqUGHw9sLwtvRujIcY9s_01TkEvVZhMf8TZOZzE
+    hVgzQ4rmSgXQ7sIxiYx2YLoxpX941rX5x_ck0ew5tH05FkE131b0uyS>
+X-ME-Received: <xmr:0Y7HamdIF-pS4pHj-bft9gxf-yvUKrKADdMp2JJ5oq_wtLD5uJK1Z9dvUrw>
+X-ME-Proxy-Cause: dmFkZTEKFr6KtOFZV3gNLwAF75zo+BUBPvIqX5QRVsRRZO5vz2RNl4OuG2jmNMAUad96Q4
+    yCIDDZh0qKm1DiWsmUOV/R8LNzfEM8A4bz0jOMvesU+OpcQK558N26maSvlz7x5lZOdHCM
+    3r1xscgEYqBAAYkPhgaPNqkSkUWMgfGG/bP1k14b/wkk+qWzGOAf3gs6q9Ou2Ye0CGaWUK
+    umb0s5/OXi6GBrbcLv+nyGWZDkW2dklCQ23/PVnOFRB70rER9aHkaIDFxLE2DGxzKQTQaD
+    0WmPc05M6e4XiRV5zt3p0nSwmw1fj7o3wdxGjm2kK+2vAY4kpCJKPD8EJcEwqKIdrmi8tS
+    UW0V+mYn/l/XU2Re+0TDnabn2/z+HmupXAwfsIDavZ/V72a7rBxBq0NsGWwnwtSp5+YVP0
+    lVFHChZjiJgPKCwluRyC+WUkPJbQvexN1iwt08G+6kn5iKhnrQR1Y170fC41NU3JXFbwH/
+    jD4k4BUtTEN6IQtdFXMc/HOSthct/EqCahvQomzNmURzZhYk64xS8NTd/G/otYgb1fMiwU
+    6bTvJY5LueTaEYZsnBy7xMhDjVQr0J3VHW+eVOtqE+i3DB0l3kWgpALiAtFBNhu7858Rkz
+    +IYNcJHD2BoGMIxNv+e2y4Tk2WMeMdGNeh2Tgiz9ple9crYQDlj7957fHqgw
+X-ME-Proxy: <xmx:0Y7HanFEF8Oij96kKEJdDrtCHLkxxnfNmQU1RdVErWx54BQ_ib1QeA>
+    <xmx:0Y7Hav08pLF55ToiVUFSBbzmIZvZRatGll-LtlOMuY9UAv_3F7MEFQ>
+    <xmx:0Y7HavlvllbDu2TO-fSrMoonbyj5kR-yEMKwkm3vQcnnmtk0DhbADw>
+    <xmx:0Y7Hav8fSWPCxtzOXiYKez8pEMhW_6BIouZ2vCogEe8ptfeWF2FBEA>
+    <xmx:0o7HartEe0IuFewKrS484TGqZcynxGaiqclPiMgUmTi32Xk9YvinHOSJ>
 Feedback-ID: i934648bf:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 Oct 2026 08:38:42 -0400 (EDT)
-Date: Thu, 8 Oct 2026 14:38:40 +0200
+ 8 Oct 2026 08:38:40 -0400 (EDT)
 From: Sabrina Dubroca <sd@queasysnail.net>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
-	herbert@gondor.apana.org.au, stable@vger.kernel.org,
-	yuantan098@gmail.com, yifanwucs@gmail.com, tomapufckgml@gmail.com,
-	bird@lzu.edu.cn, ronbogo@outlook.com, zylzyl2333@gmail.com,
-	n05ec@lzu.edu.cn, eulgyukim@snu.ac.kr, jjy600901@snu.ac.kr,
-	kuba@kernel.org
-Subject: Re: [PATCH ipsec] xfrm: espintcp: reorder operations within
- espintcp_init_sk
-Message-ID: <aseO0MuammN_z0he@krikkit>
-References: <dcb164e6a1064fcd32c2e72fd9ee918dd1427f15.1790617484.git.sd@queasysnail.net>
- <179085931198.434549.11976738723347461302@kernel.org>
- <asXrPCMX747L5_tq@secunet.com>
+To: netdev@vger.kernel.org
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sabrina Dubroca <sd@queasysnail.net>
+Subject: [PATCH ipsec v2] xfrm: espintcp: reorder operations within espintcp_init_sk
+Date: Thu,  8 Oct 2026 14:38:32 +0200
+Message-ID: <41fee34088a7ae150f255493b40f54ecbdc300df.1791462408.git.sd@queasysnail.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <asXrPCMX747L5_tq@secunet.com>
 
-2026-10-07, 08:48:28 +0200, Steffen Klassert wrote:
-> On Thu, Oct 01, 2026 at 12:55:11PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider.
-> > 
-> > Critical: 0 · High: 1 · Medium: 0 · Low: 0
-> > 
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchwork
-> > know by including "pw-bot: cr" as a separate line at the end of your reply
-> > (one such reply per series is enough).
-> > 
-> > - [High] The patch does not fully close the race it targets.
-> > 
-> > --
-> > 
-> > xfrm: espintcp: reorder operations within espintcp_init_sk
-> > 
-[...]
-> Sabrina, do you plan to update this one?
+When enabled on a socket, espintcp sets the socket callbacks to its
+own before it has finished setting up its context and published it as
+icsk_ulp_data. Any one of those callbacks that gets called before will
+dereference a NULL icsk_ulp_data.
 
-Sorry Steffen, too much stuff happening at the same time and this one
-was a bit complex. Let's see if the AI is happy with v2.
+Fix this by reording the operations, and add memory barriers to ensure
+callers will have a struct espintcp_ctx available. Add a few
+WRITE_ONCE/READ_ONCE too while we're there.
 
+Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+Cc: stable@vger.kernel.org
+Reported-by: Yuan Tan <yuantan098@gmail.com>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Reported-by: Peihan Liu <ronbogo@outlook.com>
+Reported-by: Yilin Zhu <zylzyl2333@gmail.com>
+Reported-by: Ren Wei <n05ec@lzu.edu.cn>
+Reported-by: Eulgyu Kim <eulgyukim@snu.ac.kr>
+Reported-by: Jaeyoung Chung <jjy600901@snu.ac.kr>
+Link: https://lore.kernel.org/all/c30b645074a1b379e0f7fe297f917c66137d9964.1778464688.git.zylzyl2333@gmail.com/
+Link: https://lore.kernel.org/all/20260819155349.3555804-1-jjy600901@snu.ac.kr
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+---
+v2: more barriers and READ/WRITE once according to the ai review
+v1: https://lore.kernel.org/all/dcb164e6a1064fcd32c2e72fd9ee918dd1427f15.1790617484.git.sd@queasysnail.net/
+
+ include/net/espintcp.h |  5 +++--
+ net/xfrm/espintcp.c    | 43 +++++++++++++++++++++++++-----------------
+ 2 files changed, 29 insertions(+), 19 deletions(-)
+
+diff --git a/include/net/espintcp.h b/include/net/espintcp.h
+index c70efd704b6d..7cad3c6822df 100644
+--- a/include/net/espintcp.h
++++ b/include/net/espintcp.h
+@@ -34,7 +34,8 @@ static inline struct espintcp_ctx *espintcp_getctx(const struct sock *sk)
+ {
+ 	const struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+-	/* RCU is only needed for diag */
+-	return (__force void *)icsk->icsk_ulp_data;
++	/* pairs with smp_wmb() in espintcp_init_sk() */
++	smp_rmb();
++	return (__force void *)READ_ONCE(icsk->icsk_ulp_data);
+ }
+ #endif
+diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+index 3e72b9f067b9..4052ae5bbb2e 100644
+--- a/net/xfrm/espintcp.c
++++ b/net/xfrm/espintcp.c
+@@ -434,7 +434,9 @@ static void espintcp_destruct(struct sock *sk)
+ 
+ bool tcp_is_ulp_esp(struct sock *sk)
+ {
+-	return sk->sk_prot == &espintcp_prot || sk->sk_prot == &espintcp6_prot;
++	const struct proto *prot = READ_ONCE(sk->sk_prot);
++
++	return prot == &espintcp_prot || prot == &espintcp6_prot;
+ }
+ EXPORT_SYMBOL_GPL(tcp_is_ulp_esp);
+ 
+@@ -466,34 +468,41 @@ static int espintcp_init_sk(struct sock *sk)
+ 
+ 	__sk_dst_reset(sk);
+ 
+-	strp_check_rcv(&ctx->strp);
+ 	skb_queue_head_init(&ctx->ike_queue);
+ 	skb_queue_head_init(&ctx->out_queue);
++	INIT_WORK(&ctx->work, espintcp_tx_work);
++
++	ctx->saved_data_ready = sk->sk_data_ready;
++	ctx->saved_write_space = sk->sk_write_space;
++	ctx->saved_destruct = sk->sk_destruct;
++
++	/* avoid using task_frag */
++	sk->sk_allocation = GFP_ATOMIC;
++	sk->sk_use_task_frag = false;
++
++	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
++
++	/* pairs with smp_rmb() in espintcp_getctx() */
++	smp_wmb();
++
++	WRITE_ONCE(sk->sk_data_ready, espintcp_data_ready);
++	WRITE_ONCE(sk->sk_write_space, espintcp_write_space);
++	sk->sk_destruct = espintcp_destruct;
+ 
+ 	if (sk->sk_family == AF_INET) {
+-		sk->sk_prot = &espintcp_prot;
+-		sk->sk_socket->ops = &espintcp_ops;
++		WRITE_ONCE(sk->sk_prot, &espintcp_prot);
++		WRITE_ONCE(sk->sk_socket->ops, &espintcp_ops);
+ 	} else {
+ 		mutex_lock(&tcpv6_prot_mutex);
+ 		if (!espintcp6_prot.recvmsg)
+ 			build_protos(&espintcp6_prot, &espintcp6_ops, sk->sk_prot, sk->sk_socket->ops);
+ 		mutex_unlock(&tcpv6_prot_mutex);
+ 
+-		sk->sk_prot = &espintcp6_prot;
+-		sk->sk_socket->ops = &espintcp6_ops;
++		WRITE_ONCE(sk->sk_prot, &espintcp6_prot);
++		WRITE_ONCE(sk->sk_socket->ops, &espintcp6_ops);
+ 	}
+-	ctx->saved_data_ready = sk->sk_data_ready;
+-	ctx->saved_write_space = sk->sk_write_space;
+-	ctx->saved_destruct = sk->sk_destruct;
+-	sk->sk_data_ready = espintcp_data_ready;
+-	sk->sk_write_space = espintcp_write_space;
+-	sk->sk_destruct = espintcp_destruct;
+-	rcu_assign_pointer(icsk->icsk_ulp_data, ctx);
+-	INIT_WORK(&ctx->work, espintcp_tx_work);
+ 
+-	/* avoid using task_frag */
+-	sk->sk_allocation = GFP_ATOMIC;
+-	sk->sk_use_task_frag = false;
++	strp_check_rcv(&ctx->strp);
+ 
+ 	return 0;
+ 
 -- 
-Sabrina
+2.55.0
+
