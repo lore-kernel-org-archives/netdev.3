@@ -1,109 +1,119 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB82B44C65C;
-	Thu,  8 Oct 2026 21:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AD43AE1BC
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791494317; cv=none; b=gYl0a2YqqHwUXkehXzQAbf74bfpmwim9uveWSJc7SKcNcn84KvLDJDt8VOjjcn3dzKAKMnv+mR91l7BoFCCbnLAPVKrMyDZh24R9q7gIeEx86zMPPjPreg41wVQvFUx340DrbHcQSxQiuumdHNRNa/pVtfyp5lJ1sdJJFvVfvUM=
+	t=1791494427; cv=none; b=bQR5kXGgazMe4p+hh12rICK2jfi/DuzIJBDle/8J/zsUUaVINiYfN8PTrFzJUtA0biqQox3GAE/rjhpDY1F1Mqi+U+rVPv0V49B5Kg/vT37PGMwmphiknQ8nMXEMCKaAW8ADMQ5RGvCNN93ZLOyTJikciflo/U+lwaLrlxq5A+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791494317; c=relaxed/simple;
-	bh=O0xRsH1+GO6yWhQ5iXZ2vAKeNw+97F5kBSTCSn41Z/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QtICxEIiETJq+w+B2Z3oP1FDXQcKM+RblJrt1QOcJG8OdaEsh+76Wh+qx66x5p5L9jNU6PFvhC39xX7Qewjl1TuVROsq9ESYf8dfywASwnEvlcRFf3RjQdCUlL9NDLe2VaQFqfm9G2mOCTmkUyQJbgU+KPf3/SFmzba/dEse6xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FBVpopMu; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791494427; c=relaxed/simple;
+	bh=ZmRkpa96nlrJCixWgwASI4DUbhP3Ms77eFQ2CQkARmI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uEUZOrH2YpuT1ErnhriI+CjJs+xKh6Cms2GG63PlrPgOlwomQQh8b3rLmkrq0M4dGZo19hNTXiN9uie0dr6WhMgebC//dVWuwe0vhD7fO1nAxUXRU4JVyq8XK/+NLGxGj2c37F5IuxQsUj81GtEDkcPh1ZPnYOLgX3ru6r/3JJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=RPu3hBrW; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FBVpopMu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791494312; x=1823030312;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=O0xRsH1+GO6yWhQ5iXZ2vAKeNw+97F5kBSTCSn41Z/k=;
-  b=FBVpopMugj6wK50YlmOjPaEHaXWPgfFsqTrBx8fGkqxdOsAIRL7p/e6F
-   7IrzqItzDLESgH9jfNs2x/vTURLNLYFeT/+CY4uzMRovEtCvwWvzcvkBC
-   slvlLgyOxWMPS4qL+c6IzH9sM66nBfUOj4SvBPwajRiUNtbrEQmzEjPg8
-   WTdWqlNWhotPSZT6IwUSXf3ffQ59HGyGlnlxuYaDI6YRf+q9XIlXlMw88
-   xiwKMZ00nlH2tjyFlamK8CrC1bJud4tz0z3ZSIRSGzXYV9wJzLoCumOus
-   l9TDTRlNUxqnRu+3UT45ph/5z/yb9gJrfRKFuVTF+YoUqgw1feQg22qKG
-   Q==;
-X-CSE-ConnectionGUID: tG5cIJLqQYKyuOpJs4VdoA==
-X-CSE-MsgGUID: hywWNRGWS6y2lGDXFIz0pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="400590"
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="400590"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 14:18:32 -0700
-X-CSE-ConnectionGUID: 4Of94Tx2QvWMINYkF7txHw==
-X-CSE-MsgGUID: rN9904TAR1SK1l6dJmhGMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="144384"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 08 Oct 2026 14:18:27 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xEvVQ-000000004tk-1vnJ;
-	Thu, 08 Oct 2026 21:18:24 +0000
-Date: Fri, 9 Oct 2026 05:17:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Emerson Busson <emersonbusson@gmail.com>, mhklinux@outlook.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, kys@microsoft.com,
-	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 02/14] hv: vmbus: validate chunk buffer allocation and
- cleanup
-Message-ID: <202610090551.ezkWePE5-lkp@intel.com>
-References: <20261007190752.336426-3-emersonbusson@gmail.com>
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="RPu3hBrW"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-825b40f8a26so1706836a34.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 14:20:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1791494424; x=1792099224; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EcuCJfZ9Fs3HAtWAzguUXStL6q8t6MptiYwiyeKGOkM=;
+        b=RPu3hBrW407ubjSyb8jNZk609/4L1kJdimyhfh6WWwIpX/G5nhjtZbq0213qdU5qVu
+         v3hdJN38E7B1rR0VVIBVoY5Qao6ii75ApKGxQ6bebVl9iBOqsOXOxHdopZbxjeTWVAZq
+         xaoIMkMboQFXmhlhSijjNvgdfcE+sBnjsCMb0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791494424; x=1792099224;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EcuCJfZ9Fs3HAtWAzguUXStL6q8t6MptiYwiyeKGOkM=;
+        b=I7JZh0RkI7v0haxw31n282ubh7jcV480sgR8gIO+mAqc63SABPbpJp8mrzgzU+s7yj
+         nfhAKqBLOayLmNlmsmC3Gcfxcx1xXPHrYRM1sSUE4EFWK3fAed91ckxxmnd/SeIwxMt5
+         XJfvK6BSwmICRRaRlbZK4EwfmA8s8CzHIsU7KdSFvXut6L9xC2FVA/kg3mNIJ13bLLJG
+         4jNFPy3TzcGWps/oATPQO1tYuUWCfEaEkBUIUi50eOE123D/Wt1kp/v+eFCg3C9BR7XR
+         pidsD8y1fX8I0P/1PNZjkZjly602141HPtwVVnCbz0Bp4bjjfGLl5OS3pofb4N37muQF
+         TT5A==
+X-Forwarded-Encrypted: i=1; AKwUvBy4C4ApNpFYVl08+Rt7qy53EwJoqAakuIuJlmCgPgsVro91bGV0QsUag6+hyBOBSFS07s7ZvMM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mlUT5w1/no08xwW7Ipg+OPpt29fgFUlnFvPmCiDmMlm5Ima3Dy
+	eJTQUL1PiJ3snoKHeZwncPPu2iZ5MDeAz82+G9WQrVllG71s+dcf3B4dmfN9a8+M64pSwnT7iGG
+	s8g0y6IOimg==
+X-Gm-Gg: AYBFou0+buNviqHyFIllcR7hYSDH6yIfd4F2BgOa7Dd8O/xmYvoGUktmXW2LU7Fa8cf
+	230Ry+vYclVnyw3/P41Hw4AarwvX4P3YurHvakw+i/Nh7PEty5h8UvvZdK29xJ9KuK1vT9RWhtu
+	S5VRxMiOW7SKgaYlDR6jc1LW85EtqET4YmsHNTMyVC+87n/EQCfvSmOeDjGuzm9l7N2C7TZ/x0h
+	ST1jrHmUPqJSBjFeyD1RRq7P6BFvcVExxA7Zo5wYU9fyBUYcdzsMcunxqrXVfajaZ/lDVdnrOCu
+	5sGm//3IgloVYWRWxX7M2JcrvGpnreAkgFmSQ2R/vUTxFDMV5ZlmyETQ1Hj2vDpaz4aCf9A2ga3
+	bQtukI/dLUnegGER7LZH+3/BhK0FOEC9ODKr6veAlo8PXiZPcTa9U8/ZkWTKkorsUrnSDqE0snT
+	vfG44Nass9/1zprRcx/snVJqwdJTOps1hgLANRfqNll4+4w90KwbwvoAekZG8wSXCpGAoCDZaBj
+	LA2Ni2+uH/8YhlEltU3jGhH5y3fZCu+QvHFPzQQrSoa5KL6rtIFEifEq4GLcBJ7GaO8cowuHaF5
+	86sB8P2jlSuugA==
+X-Received: by 2002:a05:6830:6a14:b0:823:25c3:30a0 with SMTP id 46e09a7af769-82acfbb6d47mr8023946a34.18.1791494424614;
+        Thu, 08 Oct 2026 14:20:24 -0700 (PDT)
+Received: from com-68297.corp.openai.org ([199.47.143.0])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8303a328dccsm117624a34.22.2026.10.08.14.20.22
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 08 Oct 2026 14:20:24 -0700 (PDT)
+From: nramaswamy@openai.com
+To: Neal Cardwell <ncardwell.sw@gmail.com>
+Cc: Neil Ramaswamy <nramaswamy@openai.com>,
+	edumazet@kernel.org,
+	davem@davemloft.net,
+	horms@kernel.org,
+	jiayuan.chen@linux.dev,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ncardwell@google.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	ycheng@google.com
+Subject: Re: [PATCH net v2 1/2] tcp: restore RACK list membership when undoing loss
+Date: Thu,  8 Oct 2026 14:20:01 -0700
+Message-ID: <20261008212007.11619-1-nramaswamy@openai.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261006141300.1722466-1-ncardwell.sw@gmail.com>
+References: <CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--he-dR-SAgqiw@mail.gmail.com> <20261006141300.1722466-1-ncardwell.sw@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261007190752.336426-3-emersonbusson@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Emerson,
+From: Neil Ramaswamy <nramaswamy@openai.com>
 
-kernel test robot noticed the following build errors:
+Hi Neal and Eric,
 
-[auto build test ERROR on char-misc/char-misc-testing]
-[also build test ERROR on char-misc/char-misc-next char-misc/char-misc-linus linus/master v7.3-rc6 next-20261008]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks for the detailed replies. Neal's approach is much cheaper than my
+original patch on a few UML microbenchmarks that I ran.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Emerson-Busson/hv-vmbus-convert-ring-backing-through-the-chunk-allocator/20261007-160739
-base:   char-misc/char-misc-testing
-patch link:    https://lore.kernel.org/r/20261007190752.336426-3-emersonbusson%40gmail.com
-patch subject: [PATCH v2 02/14] hv: vmbus: validate chunk buffer allocation and cleanup
-config: i386-randconfig-1005-20261008 (https://download.01.org/0day-ci/archive/20261009/202610090551.ezkWePE5-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261009/202610090551.ezkWePE5-lkp@intel.com/reproduce)
+I'm not entirely sure I understand Eric's usage of "often" when he mentioned
+the O(1) list splice, but the metrics that I've collected from my particular
+repro seem to suggest that Neal and Yuchung's assumption about LOST but not 
+EVER_RETRANS segments holds in the cases I captured, so I'd be happy with that
+approach.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610090551.ezkWePE5-lkp@intel.com/
+(One super nit on the runtime complexity of it: in the comment for
+tcp_tsorted_relink_skb we say that it's O(1) amortized time, but I think it's
+more that during partial undo all relink calls together traverse the RACK list
+at most once.)
 
-All errors (new ones prefixed by >>):
+For Neal's fix, I also did write up a small packetdrill that shows that segments
+that are already retransmitted and then marked LOST are not added back to the
+RACK list during partial undo, as intended. Happy to contribute that if useful
+for explicitly documenting that this is behavior we are okay with.
 
->> ld.lld: error: undefined symbol: kunit_unary_assert_format
-   >>> referenced by vmbus_buffer_test.c:48 (drivers/hv/vmbus_buffer_test.c:48)
-   >>>               drivers/hv/vmbus_buffer_test.o:(vmbus_ring_fallback_order_zero_test) in archive vmlinux.a
-   >>> referenced by vmbus_buffer_test.c:49 (drivers/hv/vmbus_buffer_test.c:49)
-   >>>               drivers/hv/vmbus_buffer_test.o:(vmbus_ring_fallback_order_zero_test) in archive vmlinux.a
-   >>> referenced by vmbus_buffer_test.c:61 (drivers/hv/vmbus_buffer_test.c:61)
-   >>>               drivers/hv/vmbus_buffer_test.o:(vmbus_buffer_failed_teardown_leaks_test) in archive vmlinux.a
-   >>> referenced 3 more times
+How would you like to move forward here? Do you want me to fold this into a v3
+patch with attribution tags or do you want to send a new patch yourself?
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Neil
