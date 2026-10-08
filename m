@@ -1,240 +1,188 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900DD3D1A9A
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791486692; cv=none; b=NjHTG0KdXf3T5ov5nHwY0cJaT7bygghHpEfpiX0PVk+MZHPkCv64s1ZS0qU2XTriCJM6itutrLOszR13NrgaS6kZBLmtAkxUjpWDUeieFtJRxBSujDk1CbElgpLoJdMofFcRxrkV0JnXdl/+WeUYxnzMqjslo9H6e26LdqitC34=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791486692; c=relaxed/simple;
-	bh=Q6yoQ9eq4EkttbxLXSnMpOXhkceDsmsGDV2AbKMifxo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nk9a42VlsG2OSsh9A8qchwuFH08wI9ioGvqQ5ftswp6H7Eif56nXcL2O/2oUAkeyz8ZpeROfyleMToIKpkwB53Vf37ODcxejS/OYq2EA8t12KafJOAbk5Opga6UNE2hpADCi2o76QQolFdUI2iHicX4/Fm+5agh5UA9RY226AlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=li+iiRSD; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817E8348C63
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791486969; cv=pass; b=hEhBDAhlPpLjcbVhacmhf4GvItaRbcppDpCcSEA2n+YUQ8CUUsDbCaYEPQsVn3DrZ+g5q9gX6SQKvuheNA9q5kNnsXLEriY3tkJlLv17ICiAlRZ0H/IjJRSnUiMCVuy4874LeUpctneTjeCkD8O+KErvMvlsfit8+9f+ZR3QGPs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791486969; c=relaxed/simple;
+	bh=K5Lzp/jJC9s1zl3hyzvLKMRSNcWeuGGp7Gp8oRt5eRI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T0FqHnqxwyKb5POKk2zMye2MFg+FzFv+NikaZnCvFX1kKEHOcY2V/ucn0dEwt6nyq5V7gXcfMdnkQbbV2F9sMDnyTHqmVyDkp5d0+VjQUtsRsNv03xIUzlbMzma1xDSrVuPlU2YIgtUnKZkTmjMnrMe/iGRyj4IbGKDXOJIC3BE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SIjPqiW2; arc=pass smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="li+iiRSD"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-885cd98d226so555683b3a.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 12:11:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SIjPqiW2"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3a777d4f321so30026841fa.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 12:16:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791486965; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sJYwkvCul8ZJhiec87tPwZaHwg+tcRea029EC4M2ea95J1UH/nB2GG+o0WlLLwkxNw
+         aN/OsJ0gb9ZxLX3TUsIBOkns64jeJ/eMYuUs1DxgEnZ3v6NGA754/NSZwSp1r6SjV4mu
+         1fHSHsiSn9v32u1OFW2S/kGLltC2aBGSPY77lH26niUf0nFRmprArzArAoAT8y3vIWK/
+         y9PWyXacujdRiouMa+i6KgurQjJ6EcxDdXyFsR3FCB5SC44DEGyhYyXqygLLkHiDAy+l
+         Og6rSjhxN/U6nQvjIWLdIs+Vd/rXlc/RZCuTKVILHWQdsjZl43UGMxZxlln1kISOpo+4
+         W3IA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vHNgfkuwp3jFs7mDECGk1Qye3hSH8mafgl8fIqaQf2c=;
+        fh=0whuMXPYJONK9iFMQ2By/H1fS6MXgOQRIqO8CNqnAgw=;
+        b=a8OaT1BtvBeiq9BVb8ZExQKuoI0wBsguk9nz1dtEDbBRUu74kCWZy48e5fo6QnwQ0a
+         sEsyG9+OvvtCY5uMVI8uJdAEiN4eGzu4fgroQI5mnbIPUhROh/5c5VilOaWc3u2dJf2k
+         BdQFkjJ/oCzp9o4s1wIyxx8zNxMfSRWxQN+o5akZHU+neGN3Aj3zyZyiv2/MTK8L+LEz
+         0jaCsxRowKZTQh01QQYUcATLBVVwRVuNZ/b8f6B/siF8vM+jmQCuxO1zYfVfukjAJtsV
+         of26/fX77Pex+3WfV0PfIc9G0ihVGl5x0CkkrTJWURsBd2lXVxIP3EZj1xOIWlRu6igl
+         JyHg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791486689; x=1792091489; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cRF2kQq5QIZ3bh8wQOV3pq+jZ04dVySkSP0ciDDkwhY=;
-        b=li+iiRSD3wkAlZBI9SALOYwUjdowhaBwrKrQHAcNay5PinVdjqlo8DRRqXVGiSk8Z1
-         wTJneYqT/gU8MmQZr7UZ4lnRLB9XX0+6JZ8W+aGB+CgjuP0w3bqaLb1+4yuprCYBU80I
-         6qqmuDq6cLyfek8COIJAqnNlT/qtneVFi0nonGjyRoM0Gb9wuhNUThhcVWAzGmPN4Mfi
-         h1C2oVzZa0CU5iis5y3oqXKGGUgjOCv6DQckbziJQKF1hkUb6JP9uDpsf6MrrwD6544f
-         oApffqDPoqgaeBrUhtRNsqKPsY3/5e8Rew/Qws24RDriTcuaHgVLINLqg/sJKlo42rjl
-         RVFg==
+        d=google.com; s=20251104; t=1791486965; x=1792091765; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vHNgfkuwp3jFs7mDECGk1Qye3hSH8mafgl8fIqaQf2c=;
+        b=SIjPqiW258jkLCEAMGeTh/xiMEMS+VqcxARxVOdX64oFJXbBKBptE0zcJBUJs+azEQ
+         257u7b0dg/NGcoDyb4A/LTwGtpZjozI4fLs5mJypal7D49UgtoZV31R+gbQaKpqxgsx5
+         UZvRHPD4NyXL09+cexuMjMXeKH0lyegGs9Gv50xkEzgQSfA4UDygmfe/tkBSAQey5cHM
+         ZNEW7L6jukNOyf7I9q7dqudktgfqvPjwRzoVfG0E0dsXuBLUz/o0FPx1gxvXgNWWBseL
+         c/taudb8FK52JKtbGBsQcghG/+m8bLuVT8e3f8O6dLiwlSRR2dq4NHSaA0wZeEaB6/Gw
+         gbyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791486689; x=1792091489;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cRF2kQq5QIZ3bh8wQOV3pq+jZ04dVySkSP0ciDDkwhY=;
-        b=OJr/7HpJBtibkS3f8YkU0/myu3TYtUNybDS0+8Svn15R4DUZ7o8NckPHEzQf0+9uoh
-         P998ZC+9XcOZAJ2Q38MrM7FOsrm2ztHpFilalzIGVhoupajSCSHkkJZujH0/5hI50iTj
-         t4hHQ5wU3s1nNxrCX0krEDmRnht1nxAijfNVg13UXvlI8ve/fPTDZ63njyMyfMaoiSrw
-         3F5J/ixnyPlX664apo92omOZAHGlDgxQeDBH1Wuvr3k7zuE0C9uJZij7ul1DmAqgDrYg
-         9h2C/Gsl0Vul24QOb46amFhu7rGPLBFGUz6uR4haLu8R0kqFqa2Ux+/rOzTyAw6p7qwe
-         /T9w==
-X-Gm-Message-State: AFuF++mht9EzSS/AIhT2OpOVRMZIh+Hn91yvyyw1gt/tjvqeC6zun4Rx
-	yNifIgjM7sdDVWfXrSRWEgUYJ8XgCwZ2qfLbcPVfFfVUslC+u5jnA1BiStC+/WNhHdEgMviv5Pr
-	pcYM6
-X-Gm-Gg: AYBFou1gkZHDGMDGpoq39R7ekqtFasCQREFWjZLM/3it+ZVVFRF0A4i7e0qAJD9S9xP
-	xnjDMHdQ5mQqbK2ASCdEQGe1jA9GkmtgKajvwnk7QQ30x7HEelOc6GkZ3tmp5s5mCfLXxfoidcv
-	4/COOKHM6AH2GP6dq640+s/gkYG6IEuBZNPpl+UZFe2bwh6qPXXe+txGZsGEEDmw2f/lzgfFe/X
-	ZM8Imyc/FDf+ED+eaB94UV+Z/LnbI5zLX3FwG2agHtVigUtZj8iaKLTNQ9kAGFgaazz7RvqaytF
-	+Vcr9oz/G1Vg6oSbgZz3uXEPNjBFQ/DD8LpO1f2eYCjmtmZFkk/4dxeJqLHz0pPSxSqxgIv+aeJ
-	6nDccB4h2/K6mHTlhCsjrTc2DJaFSglFzEw05SDKowbCSjcYf6ozDyTy9dtZSrCm6h8GS680bWI
-	dJALA2Kld5ip5n+Xg4xfZyYvbeyYWnEUwrvAdTzVAPkPqxlw/4BlSF87ANq412rfjn3/dTb9OP6
-	UYEXzAf/k3w
-X-Received: by 2002:a05:6a00:88e:b0:854:b3d3:8631 with SMTP id d2e1a72fcca58-8969540571bmr177761b3a.12.1791486688789;
-        Thu, 08 Oct 2026 12:11:28 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:41::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c44a405dsm34246b3a.49.2026.10.08.12.11.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 12:11:28 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Joe Damato <joe@dama.to>
-Cc: edumazet@google.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] bnxt_en: Pad short SW USO segments to BNXT_MIN_PKT_SIZE
-Date: Thu,  8 Oct 2026 12:11:12 -0700
-Message-ID: <20261008191114.3736826-3-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261008191114.3736826-1-joe@dama.to>
-References: <20261008191114.3736826-1-joe@dama.to>
+        d=1e100.net; s=20260707; t=1791486965; x=1792091765;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vHNgfkuwp3jFs7mDECGk1Qye3hSH8mafgl8fIqaQf2c=;
+        b=X7fIit653dQoDPp/0s42v4v3rbF6YSuTcLfSdf7WmppEoYKTqb6fjMNjwvpq6zc6zI
+         uOblalwGgdGRclvVSiNBGFOhfJ1Y0Db3cNh1PgDpRUPUVySFcQVBR12cDc3ead18r0QS
+         NUdxhKuyjsq35G8mC1bu6MBoOlGd0iQLqU0yyRNDQzIGxpWcWFtQMSDi31Q9gZj+HiPk
+         LD2JfAH3OPEYVX4GWUkYymQMIJUpzwTQXcK7Xe0xHcUEfMLXrJm0foaxKr7JqxzUTJF6
+         9uQ6uBRtGcS60V+sV1K9zZ/G8nLpF8QvaG20rXqnfN66re3ty7J7tMyj/wqe4CmQAq7Y
+         acmw==
+X-Forwarded-Encrypted: i=1; AKwUvBz5jzuggg0pC3B2xkIHpbLj5aiO9pJ25FKObo9bi6QWPpnVIWmIBNVHJGYYnRPBckHxinKA6PI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJUmOskis67+Wb1MvqRnnrKYDLxgs2uqTItP+t0MoDXIimRmEFM
+	68eZS8LjwJow3L5NXqJ1GGSidKRSHKv0W1iZZc1M30kg9ZNNFXWJQ15Qb8cEvljklG/uBsoC8F6
+	zF8ZoMMjujyYFtIJEMdQNu6rkBgKHPwtBWdVwnmli
+X-Gm-Gg: AYBFou2irNyTnuc5mVgqbVucAVNSDBXQXtwnR9mlLTwZCv9Q7h96MLemxDOV/HJ8djA
+	qyS31dxmrsbO2ANt9UsHvOGdmTOhKQFyYzvxDvMehRBNdf+rEj6vbxWIq3OYfHttjNGa+nB0IrH
+	yKjixJ+X1F/RSDymLeqt3q17B4WM5QfYfB4zv/GXhsGi6yLeZJg1rB1iQtgmmbQ+mAulUdEZwPH
+	8ZEhBZGie30NWBR8pKyYPft0Mf/eTqKKR6NjYhgblOD9iuY/CFgYHhyWS6+0rzq2+LhysiXmnPl
+	m+ceMB9Id/n6U4ivoq9+UxDT5s0PwoobkdbCBK0vuAPURO9hXbbqLLLlooXoLMHwPouxckopy1v
+	SuohrfMqX5wmfpzU97Im+RGhry/hb6kZOQfn1TuC3Eg==
+X-Received: by 2002:a2e:a7c1:0:b0:3a9:849c:b169 with SMTP id
+ 38308e7fff4ca-3a9a2ccce5emr14774661fa.26.1791486964690; Thu, 08 Oct 2026
+ 12:16:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261008173334.2881475-1-brianvv@google.com>
+In-Reply-To: <20261008173334.2881475-1-brianvv@google.com>
+From: Li Li <boolli@google.com>
+Date: Thu, 8 Oct 2026 12:15:51 -0700
+X-Gm-Features: AclHuK8hC5pBINOHNd6sNHM56enXqSpYjYbwB1ohtsEoxneiKD6Ai1AkI3QhDQY
+Message-ID: <CAODvEq4UbfswP9fQdbjOvwiDE2bopLPxiBHr-5+e40p=OVpkrA@mail.gmail.com>
+Subject: Re: [iwl-net PATCH] idpf: wait for the reset completed state in idpf_check_reset_complete()
+To: Brian Vazquez <brianvv@google.com>
+Cc: Brian Vazquez <brianvv.kernel@gmail.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org, Madhu Chittim <madhu.chittim@intel.com>, 
+	Pavan Kumar Linga <pavan.kumar.linga@intel.com>, Joshua Hay <joshua.a.hay@intel.com>, 
+	Shailendra Bhatnagar <shailendra.bhatnagar@intel.com>, 
+	Sridhar Samudrala <sridhar.samudrala@intel.com>, linux-kernel@vger.kernel.org, 
+	David Decotigny <decot@google.com>, Emil Tantilov <emil.s.tantilov@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Each SW USO segment is hdr_len + seg_payload bytes. With IPv4, hdr_len
-is 42 bytes, so a segment carrying less than 10 bytes of UDP payload is
-sent shorter than BNXT_MIN_PKT_SIZE. This happens with a short last
-segment (e.g. gso_size 1400 and 1405 bytes of payload) or with a
-gso_size below 10 bytes.
+Reviewed-by: Li Li <boolli@google.com>
 
-Fix the short last segment in bnxt_sw_udp_gso_xmit(): zero the pad
-bytes after the header in the segment's inline header slot and add a
-pad BD pointing at them after the payload BDs. Only the last segment
-can need padding, and its pad BD fits within the existing bound in
-bds_needed and BNXT_SW_USO_MAX_DESCS, since payload BDs are at most
-num_segs + nr_frags.
 
-If gso_size itself is too small, every segment would need a pad BD,
-exceeding the descriptor bound. This case is unlikely, so
-bnxt_features_check() clears GSO features for these skbs and the stack
-segments them instead; bnxt_start_xmit() then pads each segment.
-
-Fixes: cc5d90667db8 ("net: bnxt: Implement software USO")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joe Damato <joe@dama.to>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 12 ++++++++++
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c | 23 +++++++++++++++++--
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h | 15 ++++++++++++
- 3 files changed, 48 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 15a8349ccf7b..d766dd469797 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -14268,6 +14268,18 @@ static netdev_features_t bnxt_features_check(struct sk_buff *skb,
- 	u8 *l4_proto;
- 
- 	features = vlan_features_check(skb, features);
-+
-+	/* SW USO pads at most the last segment; let the stack segment skbs
-+	 * where every segment would be shorter than BNXT_MIN_PKT_SIZE.
-+	 */
-+	if (skb_is_gso(skb) &&
-+	    (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) &&
-+	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP) &&
-+	    bnxt_sw_gso_pad_len(skb_transport_offset(skb) +
-+				sizeof(struct udphdr),
-+				skb_shinfo(skb)->gso_size))
-+		features &= ~NETIF_F_GSO_MASK;
-+
- 	switch (vlan_get_protocol(skb)) {
- 	case htons(ETH_P_IP):
- 		if (!skb->encapsulation)
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-index ef04c9d08066..f87e02ef3033 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-@@ -82,11 +82,14 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 	if (unlikely(num_segs <= 1))
- 		goto drop;
- 
-+	if (unlikely(bnxt_sw_gso_pad_len(hdr_len, mss)))
-+		goto drop;
-+
- 	/* Upper bound on the number of descriptors needed.
- 	 *
- 	 * Each segment uses 1 long BD + 1 ext BD + payload BDs, which is
- 	 * at most num_segs + nr_frags (each frag boundary crossing adds at
--	 * most 1 extra BD).
-+	 * most 1 extra BD). The last segment may need 1 pad BD.
- 	 */
- 	bds_needed = 3 * num_segs + skb_shinfo(skb)->nr_frags + 1;
- 
-@@ -133,12 +136,14 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 		dma_addr_t dma_addr;
- 		struct tx_bd *txbd;
- 		struct udphdr *uh;
-+		unsigned int pad;
- 		void *this_hdr;
- 		int bd_count;
- 		bool last;
- 		u32 flags;
- 
- 		last = (i == num_segs - 1);
-+		pad = bnxt_sw_gso_pad_len(hdr_len, seg_payload);
- 		offset = slot * TSO_HEADER_SIZE;
- 		this_hdr = txr->tx_inline_buf + offset;
- 		this_hdr_dma = txr->tx_inline_dma + offset;
-@@ -156,10 +161,18 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 			iph->check = 0;
- 		}
- 
-+		/* Pad bytes follow the header in the inline slot. Zero them
-+		 * so stale header bytes from an earlier packet are not sent.
-+		 */
-+		if (pad)
-+			memset(this_hdr + hdr_len, 0, pad);
-+
- 		dma_sync_single_for_device(&pdev->dev, this_hdr_dma,
--					   hdr_len, DMA_TO_DEVICE);
-+					   hdr_len + pad, DMA_TO_DEVICE);
- 
- 		bd_count = tso_dma_map_count(&map, seg_payload);
-+		if (pad)
-+			bd_count++;
- 
- 		tx_buf = &txr->tx_buf_ring[RING_TX(bp, prod)];
- 		txbd = &txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
-@@ -222,6 +235,12 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 			seg_payload -= chunk_len;
- 		}
- 
-+		if (pad) {
-+			prod = NEXT_TX(prod);
-+			txbd = bnxt_sw_gso_data_bd(bp, txr, prod,
-+						   this_hdr_dma + hdr_len, pad);
-+		}
-+
- 		txbd->tx_bd_len_flags_type |=
- 			cpu_to_le32(TX_BD_FLAGS_PACKET_END);
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-index 77d9af97cc22..5916ee08c0e6 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-@@ -19,10 +19,25 @@
-  * Each segment: 1 long BD + 1 ext BD + payload BDs.
-  * Total payload BDs across all segs <= num_segs + nr_frags (each frag
-  * boundary crossing adds at most 1 extra BD).
-+ * The last segment may need 1 pad BD (see bnxt_sw_gso_pad_len()).
-  * So: 3 * max_segs + MAX_SKB_FRAGS + 1 = 3 * 64 + 17 + 1 = 210.
-  */
- #define BNXT_SW_USO_MAX_DESCS	(3 * BNXT_SW_USO_MAX_SEGS + MAX_SKB_FRAGS + 1)
- 
-+/* Bytes of padding needed to bring a segment carrying @seg_payload bytes
-+ * up to BNXT_MIN_PKT_SIZE, or 0 if no padding is needed.
-+ */
-+static inline unsigned int bnxt_sw_gso_pad_len(unsigned int hdr_len,
-+					       unsigned int seg_payload)
-+{
-+	unsigned int len = hdr_len + seg_payload;
-+
-+	if (len < BNXT_MIN_PKT_SIZE)
-+		return BNXT_MIN_PKT_SIZE - len;
-+	else
-+		return 0;
-+}
-+
- static inline u16 bnxt_inline_avail(struct bnxt_tx_ring_info *txr)
- {
- 	return BNXT_SW_USO_MAX_SEGS -
--- 
-2.53.0-Meta
-
+On Thu, Oct 8, 2026 at 10:33=E2=80=AFAM Brian Vazquez <brianvv@google.com> =
+wrote:
+>
+> PFGEN_RSTAT[1:0] / VFGEN_RSTAT[1:0] (PFR_STATE / VFR_STATE) encode the
+> function reset progress as a 2-bit state, not a flag:
+>
+>   00b - reset in progress
+>   01b - reset completed, written by the control plane
+>   10b - function active, written by the control plane once the function
+>         has completed VIRTCHNL2_OP_VERSION
+>   11b - reserved
+>
+> idpf_check_reset_complete() tests (reg_val & rstat_m) as a boolean, with
+> rstat_m =3D GENMASK(1, 0), so any non-zero state is taken as "completed",
+> although only 01b carries that meaning.
+>
+> That only works if hardware moves the field to 00b as soon as the reset
+> is triggered. On the devices tested it does not: PFSWR transitions
+> PFR_STATE to 00b only when the field currently reads 01b. When the
+> function is active (10b) the field keeps its value until the control
+> plane finishes the reset and writes 01b, which takes a few hundred
+> milliseconds.
+>
+> Consequently, on a hard reset of an active function
+> (IDPF_HR_FUNC_RESET) the first poll sees 10b, returns immediately, the
+> driver re-creates the mailbox and sends VIRTCHNL2_OP_VERSION while the
+> reset is still being processed. The control plane tears the mailbox
+> down underneath it, VERSION is never answered, and the driver sits in a
+> 60 second virtchnl timeout (-ETIME) before going through a second hard
+> reset which then succeeds.
+>
+> Make idpf_check_reset_complete() wait for the state to be exactly 01b.
+> This is the stricter reading of the register definition and it does not
+> depend on how the field got to its current value: functions that are
+> still in progress (00b) or active (10b) keep polling until the control
+> plane reports completion.
+>
+> Fixes: 8077c727561a ("idpf: add controlq init and reset checks")
+> Signed-off-by: Brian Vazquez <brianvv@google.com>
+> ---
+>  drivers/net/ethernet/intel/idpf/idpf.h     | 2 ++
+>  drivers/net/ethernet/intel/idpf/idpf_lib.c | 3 ++-
+>  2 files changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/etherne=
+t/intel/idpf/idpf.h
+> index 470bc23c844c..ce8a1bd0ec8b 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf.h
+> +++ b/drivers/net/ethernet/intel/idpf/idpf.h
+> @@ -166,6 +166,8 @@ struct idpf_netdev_priv {
+>         spinlock_t stats_lock;
+>  };
+>
+> +#define IDPF_RSTAT_COMPLETE            0x01
+> +
+>  /**
+>   * struct idpf_reset_reg - Reset register offsets/masks
+>   * @rstat: Reset status register
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/eth=
+ernet/intel/idpf/idpf_lib.c
+> index 2c148377540c..a827e0fa67c8 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> @@ -1870,7 +1870,8 @@ static int idpf_check_reset_complete(struct idpf_ad=
+apter *adapter,
+>                  * register for us yet and 0xFFFFFFFF is not a valid valu=
+e for
+>                  * the register, so treat that as invalid.
+>                  */
+> -               if (reg_val !=3D 0xFFFFFFFF && (reg_val & reset_reg->rsta=
+t_m))
+> +               if (reg_val !=3D 0xFFFFFFFF &&
+> +                   (reg_val & reset_reg->rstat_m) =3D=3D IDPF_RSTAT_COMP=
+LETE)
+>                         return 0;
+>
+>                 usleep_range(5000, 10000);
+> --
+> 2.56.0.385.gd3acb90ef8-goog
+>
