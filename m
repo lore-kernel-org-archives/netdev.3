@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92CA3E49FD
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A080B30F927
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791464908; cv=none; b=tQJkC4G/69vGnJlQL70/a83ccOBqrocSqOm0ojExPUJaQoME6qVEuo8GQshOrZwjiOyivNmgmoSyz737QtnE8xmrwhnCshmSbp32ME7dfIo1QqCxjKqYVGZCDYiai8tWOkIsvVl8CRbnmFhR2cyso8lXVyzcHxjU7qHKqypW8KY=
+	t=1791464909; cv=none; b=HR5/pWKPCvEVTCzjbLvMu1GBYFIZtwcerqhETdh96QENV3wreYn8FHMvEarrho6Hsxyd7oNVDQcrwkQFNMgkQk35ouP8rKodrUPepS6NY11ZrLTAYcvyi9WjFlm52sHZ+iE1PiwrU1cqv/VJwkJ64LmsjBFUrEBYRfMWnRo/Yfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791464908; c=relaxed/simple;
-	bh=rrCdbGy2HWi77U6J+dFLIXwWOT9FIhvwTJIBF6aMefU=;
+	s=arc-20240116; t=1791464909; c=relaxed/simple;
+	bh=FvTTw3c8YnEObnepAFxBPxaSe4Jxqfg7EaIeRDExcu4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T7xVSUHqIDKNDRP1A5b8fHczQXYmFUduNKCUeZcDUV3cCPuqZqvSyotuD0eLr6yif9N6PsJYXuTiJRaWlUTP4G3xPv9TVV0vASlpVJQZsLACoPHzlyBlC0bbDfpuoZK+f3HWmB4P86a5sotRAOphx0wyc/CcCMgFtl+qkp7cg68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZT7nG5K0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=nnfFAOSEVffaNM6pbXKSJnr9Tlgs+sWeobP9hNtBQTSAMI1cW8jJNXrvvW3P1DiArUs71LN/P1yPe4wEBTdTBM05yMLI6HcVOzoJgF+AWq1Mr1o3bgL9ukPnmizW/mhVf27j4qcNIkr/3yG5JfTLMLEbh+A1UPS2Fd9i0nOa/yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfKa433W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZT7nG5K0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9681F000FF;
-	Thu,  8 Oct 2026 13:08:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfKa433W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4831F00893;
+	Thu,  8 Oct 2026 13:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791464907;
-	bh=xH17uW5oA5P29CQTXJgT98vWYbSkAQUrujAA7n+afLU=;
+	s=k20260515; t=1791464908;
+	bh=MRiRljMudPyKGe4bzGUVNpykzDW7hQs9REq+MjQnx8E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZT7nG5K0DN1O6ukBrDjACM5FqWkMrAj4cuv1Ojhz2CMdvRwTbnitKSV0p7qQVPY0Q
-	 Pl8IEg1FNHSqIgTX52KUCv/xApDvZkQULI+Ne0gCFF0HAevIy6eIPAzCKRJGpWXtje
-	 c2XwPHQk602dE/Xhru82WxT1UEI4sMZYjPWp9G2Fm7/Cw3Bp00ZV0DBL6z+pepho4/
-	 yUCZEtZ7PE5bO2CdwJIJo3CEbITa27Ocns8aFnvTkROcfiCwSC2PIqWlJZXM2sB5FM
-	 3rwRUSoj2b+bqZrvNMraMn4qfKzZ9xWJ1UH5XHy64nQCljBg7EDsEDXpkiYdERvres
-	 qSvKxTIYEmH+Q==
-Subject:
- Re: [PATCH net-next 1/2] netlink: specs: add ovs_flow del and set operations
+	b=gfKa433W/aEjEwmWPzt03/F3LXP91a+QU1qHW3us5VWVsQg8h36HUKK9NiH5iXUdn
+	 KH01uHGydKIAnswFAz6cYU+z8awfpoDLYfOLa+5R413enOWdPtxxsgMbV8b2NlawEk
+	 eRMu1GYiDSHRRgm4sk90G5pQ2dJisdukAAZlW1v7C5XaG5y96J5WDsYSVR3NMbdR65
+	 HLItHlGRQVWHtUc483wPdtm2eA+fazkRwnq2XlVHqcCs+GRoSwTQ3zZY5IqRjzblkf
+	 xrGphyEd5W5OWUGksaKzYLBjNc1Q3/RLadYjkoMKNKSy9EMNxAsj24EHwa0uxLXn3F
+	 iNZiW1Uuy324A==
+Subject: Re: [PATCH net-next 2/2] netlink: specs: add ovs datapath and vport
+ set operations
 From: netdev-bot+sashiko@kernel.org
 To: houminxi@gmail.com
 Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org
-Date: Thu, 08 Oct 2026 13:08:26 +0000
-Message-ID: <179146490651.434549.2629505929025835263@kernel.org>
-In-Reply-To: <20261006130533.1620706-2-houminxi@gmail.com>
-References: <20261006130533.1620706-2-houminxi@gmail.com>
+Date: Thu, 08 Oct 2026 13:08:27 +0000
+Message-ID: <179146490766.434549.3687648802927081770@kernel.org>
+In-Reply-To: <20261006130533.1620706-3-houminxi@gmail.com>
+References: <20261006130533.1620706-3-houminxi@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,10 +46,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -57,174 +57,159 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The new `set` op in Documentation/netlink/specs/ovs_flow.yaml
-  lists `probe` as a request attribute.
-- [Low] The new `del` op in Documentation/netlink/specs/ovs_flow.yaml
-  lists only key, ufid and ufid-flags.
-- [Low] The new `del` and `set` ops in ovs_flow.yaml declare only
-  `do.request`: no `reply`, and no op with `notify: del`/`notify: set`.
-- [Low] The `set` op doc says: "The kernel rejects the request with
-  -EINVAL when it carries neither a key nor a ufid." Together with the…
+- [Medium] The new vport `set` op in
+  Documentation/netlink/specs/ovs_vport.yaml lists only name, type,…
+- [Low] The new vport `set` op lists `options` as a request attribute,
+  but ovs_vport_cmd_set() returns -EOPNOTSUPP whenever…
+- [Low] The new datapath `set` doc says only that a missing user-features
+  attribute is treated as zero and clears the features.
 
 --
 
-netlink: specs: add ovs_flow del and set operations
+netlink: specs: add ovs datapath and vport set operations
 
-This patch adds del and set operations to the ovs_flow YNL spec. It also
-marks new, del and set with uns-admin-perm. It lists the request
-attributes each command reads.
+This adds the set operation, which the kernel already registers, to the
+ovs_datapath and ovs_vport YNL specs. It also marks new, del and set in
+both specs with the uns-admin-perm flag.
 
-> diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
-> index 951837b72e1d2..87984bf1fac4b 100644
-> --- a/Documentation/netlink/specs/ovs_flow.yaml
-> +++ b/Documentation/netlink/specs/ovs_flow.yaml
+> diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
+> index f7b3671991e6c..9c33d6a2f05db 100644
+> --- a/Documentation/netlink/specs/ovs_datapath.yaml
+> +++ b/Documentation/netlink/specs/ovs_datapath.yaml
 
 [ ... ]
 
-> @@ -995,6 +996,36 @@ operations:
->              - ufid
->              - mask
->              - actions
-> +    -
-> +      name: del
-> +      doc: Delete one flow, or every flow in the data path
-> +      value: 2
-> +      attribute-set: flow-attrs
+> @@ -149,10 +150,27 @@ operations:
+>        doc: Delete existing OVS data path
+>        value: 2
+>        attribute-set: datapath
 > +      flags: [uns-admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - key
-> +            - ufid
-> +            - ufid-flags
-
-[Severity: Low]
-Should probe be listed here too? ovs_flow_cmd_del() reads it:
-
-net/openvswitch/datapath.c:ovs_flow_cmd_del() {
-	...
-	bool log = !a[OVS_FLOW_ATTR_PROBE];
-	bool ufid_present;
-
-	ufid_present = ovs_nla_get_ufid(&ufid, a[OVS_FLOW_ATTR_UFID], log);
-	...
-}
-
-log is then passed to ovs_nla_get_ufid() and ovs_nla_get_match().
-
-The commit message says "Name the attributes each command reads", and the
-set op in this patch does list probe.
-
-C YNL only generates setters for request attributes that are listed. As a
-result, a C client cannot mark a delete as a feature probe to suppress
-the kernel's error logging.
-
-[Severity: Low]
-Neither del nor set describes a reply or a notification. Does the kernel
-send messages for these commands that the spec doesn't cover?
-
-ovs_flow_cmd_del() uses ovs_flow_cmd_fill_info() to build an
-OVS_FLOW_CMD_DEL message. It carries the deleted flow's key, ufid, mask,
-stats, actions, used and tcp-flags.
-
-ovs_flow_cmd_set() builds an OVS_FLOW_CMD_SET message with
-ovs_flow_cmd_build_info(). Both handlers send through ovs_notify(), gated
-by ovs_must_notify():
-
-net/openvswitch/datapath.c:ovs_must_notify() {
-	return info->nlhdr->nlmsg_flags & NLM_F_ECHO ||
-	       genl_has_listeners(family, genl_info_net(info), group);
-}
-
-A client may set NLM_F_ECHO to get the final stats of a deleted flow, or
-subscribe to the ovs_flow mcast group. In both cases the spec gives it
-nothing to decode these messages with.
-
-The existing new op and the ovs_datapath and ovs_vport specs have the
-same gap, so this follows existing practice in the OVS specs. Still, the
-new ops describe less than the kernel sends. Could a reply or notify
-description be added for del and set?
-
+>        do:
+>          request:
+>            attributes:
+>              - name
 > +    -
 > +      name: set
 > +      doc: |
-> +        Modify an existing flow. The kernel rejects the request with
-> +        -EINVAL when it carries neither a key nor a ufid.
-
-[Severity: Low]
-Is this doc complete? The request list below includes both ufid and
-actions, so the doc reads as though a ufid alone is enough for any set.
-
-After the key/ufid check, ovs_flow_cmd_set() calls
-ovs_nla_init_match_and_action(). That function rejects actions without a
-key, even when a ufid is present:
-
-net/openvswitch/datapath.c:ovs_nla_init_match_and_action() {
-	...
-	if (a[OVS_FLOW_ATTR_ACTIONS]) {
-		if (!a[OVS_FLOW_ATTR_KEY]) {
-			OVS_NLERR(log,
-				  "Flow key attribute not present in set flow.");
-			error = -EINVAL;
-			goto error;
-		}
-	...
-}
-
-A set that carries only a ufid works for stats or clear updates. One that
-replaces actions always gets -EINVAL. Could the doc say that a key is
-required when actions are supplied?
-
+> +        Modify an existing OVS data path. The kernel treats a missing
+> +        user-features attribute as zero and clears the previously set
+> +        features.
 > +      value: 4
-> +      attribute-set: flow-attrs
+> +      attribute-set: datapath
 > +      flags: [uns-admin-perm]
 > +      do:
 > +        request:
 > +          attributes:
-> +            - key
-> +            - ufid
-> +            - mask
-> +            - actions
-> +            - ufid-flags
-> +            - clear
-> +            - probe
+> +            - name
+> +            - user-features
+> +            - masks-cache-size
+> +            - per-cpu-pids
 
-[Severity: Medium]
-Should probe be declared as type: flag in flow-attrs? The attribute set
-currently has:
+[Severity: Low]
+Should the doc also say how per-cpu-pids depends on user-features?
 
-        name: probe
-        type: binary
+In ovs_dp_change() the new features are assigned unconditionally. The
+pids are applied only when that same request turns on per-cpu dispatch:
 
-The kernel policy treats it as a flag:
+net/openvswitch/datapath.c:ovs_dp_change() {
+    ...
+	dp->user_features = user_features;
 
-net/openvswitch/datapath.c:flow_policy[] = {
-	...
-	[OVS_FLOW_ATTR_CLEAR] = { .type = NLA_FLAG },
-	[OVS_FLOW_ATTR_PROBE] = { .type = NLA_FLAG },
-	...
+	if (dp->user_features & OVS_DP_F_DISPATCH_UPCALL_PER_CPU &&
+	    a[OVS_DP_ATTR_PER_CPU_PIDS]) {
+		/* Upcall Netlink Port IDs have been updated */
+		err = ovs_dp_set_upcall_portids(dp,
+						a[OVS_DP_ATTR_PER_CPU_PIDS]);
+    ...
 }
 
-validate_nla() in lib/nlattr.c rejects an NLA_FLAG attribute that carries
-any payload:
+Take a set request with name and per-cpu-pids where user-features is
+missing or lacks OVS_DP_F_DISPATCH_UPCALL_PER_CPU, for example because
+per-cpu dispatch was already on. The kernel clears or changes the
+features, ignores the pids without an error, and returns success.
 
-	case NLA_FLAG:
-		if (attrlen > 0)
-			goto out_err;
+The spec lists per-cpu-pids as if it could be set on its own. The doc
+covers only the user-features half of this coupling.
 
-Before this patch no op listed probe in a request, so the mismatch was not
-visible. Now that set lists it, C YNL codegen will emit a pointer plus
-length binary setter for probe. Any non-empty payload makes the whole
-OVS_FLOW_CMD_SET fail policy validation with -EINVAL.
+> diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
+> index fa975f8821b6c..63a0a41a11997 100644
+> --- a/Documentation/netlink/specs/ovs_vport.yaml
+> +++ b/Documentation/netlink/specs/ovs_vport.yaml
 
-In Python YNL, passing "probe": true goes to the binary branch of
-_add_attr() in tools/net/ynl/pyynl/lib/ynl.py. That branch raises
-YnlException('Unknown type for binary attribute ...'), while the flag
-branch would accept the value.
+[ ... ]
 
-Could probe be changed to type: flag, the same as clear?
+> @@ -165,6 +167,19 @@ operations:
+>              - netnsid
+>              - upcall-stats
+>        dump: *vport-get-op
+> +    -
+> +      name: set
+> +      doc: Modify an existing OVS vport
+> +      value: 4
+> +      attribute-set: vport
+> +      flags: [uns-admin-perm]
+> +      do:
+> +        request:
+> +          attributes:
+> +            - name
 
->  
+[Severity: Medium]
+Should port-no be in this request list as well?
+
+ovs_vport_cmd_set() finds the vport with lookup_vport(). That function
+accepts either the name or the port number plus the datapath ifindex
+from the header:
+
+net/openvswitch/datapath.c:lookup_vport() {
+    ...
+	} else if (a[OVS_VPORT_ATTR_PORT_NO]) {
+		u32 port_no = nla_get_u32(a[OVS_VPORT_ATTR_PORT_NO]);
+    ...
+		dp = get_dp(net, ovs_header->dp_ifindex);
+    ...
+}
+
+The UAPI comment for enum ovs_vport_attr in
+include/uapi/linux/openvswitch.h also says that for requests other than
+new, "dp_idx from the &struct ovs_header plus %OVS_VPORT_ATTR_PORT_NO
+determine the vport". The del op in this same spec already lists
+port-no.
+
+YNL code generation builds the request struct from this list. Without
+port-no, a generated client can only modify a vport by name, not by
+datapath ifindex plus port number. Does that only partly fix the
+problem the commit message describes, that "a YNL client could not
+modify an existing datapath or vport"?
+
+> +            - type
+> +            - options
+
+[Severity: Low]
+Is it useful to list options here? ovs_vport_cmd_set() rejects it every
+time:
+
+net/openvswitch/datapath.c:ovs_vport_cmd_set() {
+    ...
+	if (a[OVS_VPORT_ATTR_OPTIONS]) {
+		/* There are no vport types that support legacy options. */
+		err = -EOPNOTSUPP;
+		goto exit_unlock_free;
+	}
+    ...
+}
+
+The vport_policy entry is also marked "/* Unused. */".
+
+The commit message says the kernel "rejects options", but the op doc
+only says "Modify an existing OVS vport". Generated clients therefore
+get a setter for an attribute that always fails with -EOPNOTSUPP.
+
+Could options be dropped from the set request? Or could the doc say
+that it is always rejected, and that a type different from the
+vport's current type gets -EINVAL?
+
+> +            - upcall-pid
+>
 >  mcast-groups:
 >    list:
 
