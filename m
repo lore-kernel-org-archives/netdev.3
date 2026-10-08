@@ -1,432 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9725751A135;
-	Tue, 13 Oct 2026 17:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DF4534440
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791914230; cv=none; b=NNuGXeAzXT5NYY8Gub0XSBCKWLHfWs8X6GwvYWEW4+lb2ZUEpqH6Ahm5AVyDFgDsvDjrMHHb6N9qjgpU4QCoxc2TnGGIiMQAF7dkrcpjkyO36Y1cIAgQJCDTD7NNDud/Y76v//RCjAEojvYk/zrv3+pVKSW30PGiRZ9Uyp7Cd8M=
+	t=1791914234; cv=none; b=IZFZscF7k+WLiLJj9FPfOeYbNxZRD0y98OqE9h2KB2xm4X/CupajNsSpg3QbrSCBhJ5d6JtUXQNVJeEJvhil36RuvCSloUTtuckTD3CqceFfYyp1E18szrHJAjRhOMntAEN3GRZCiT5ijNTnP6E0X7S4RBdwvDTE/iO8b9cuZyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791914230; c=relaxed/simple;
-	bh=lybs1dAwbY2sgj6xUu3y4NJZamtFYGNXvwp75VqlUTo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qyJ5J/f0SBtQUhY9Ecd8dA2D1BRQjSpuqpCISdppqFNMLD/sZqix9dwZPuTZ80yWNYt9bqgxBZ7QV74oitIIzsS4t+cYYhNPQ6aBXRBxQwfMnTTqWeEOi5qYungr60/9Fwzx414PgGdwQCiwPwQc5ANM4AU9tAH+Xu+78d2FLAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLAxm8dr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791914234; c=relaxed/simple;
+	bh=UWPvnjOv63k2n4GV31aTm5MT/9h1TqVy/TiyOQxup1w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GBIUfbjgiRZLWpNCMTyfFPFfZzsiDvroYYRhf2t7ZK5JYrFUCgrCXEL3p3oMvijzbXJt0R8p7L2ya4g05w7s4KDYi+9JObfG6ci0/tGuKMy07Jc7sjAbMkLC+3UsFihhZpgjpRFtJw3zxS20PVvXpdgSMVipbLq/G4CD6E4Iqkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=XAeU0AW6; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLAxm8dr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7E91F00893;
-	Tue, 13 Oct 2026 17:57:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791914228;
-	bh=QWPl86BnnWgdNeW77g8OTK+3MbbNoQOJ9dGmvrji/fE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=TLAxm8drzXyj4fQU+O7fNfKLN1ieGyZSsvf5whT+cl9/lQK1mo6LET9tTpAr0vDAy
-	 O39Bi9pRZZjOLDih3vdUbPrS51BDNE4ZjwMEarMi4r/43WF/7o2+K8fAD6PuD1bAZI
-	 gSRBlCn+Cz7fCMFXZYUMzmovOkw+qUVi7IYsjzjuBaGEjAYDOWXfOY3K7XLzHnIvkC
-	 Q/DantxPY/aEd9+7Jj1KF0eZQYbmtBfN7Axt+x4kwobyl2iN+Y9lz90jdpRmI6K1py
-	 cxRollIBxJh/UhEO+8EFgy1WQF0tByBKRs3U9KWpjJFVNqHFgA56BVGk74WC2yrR5v
-	 1bi8as9IugnAA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 13 Oct 2026 19:56:41 +0200
-Subject: [PATCH net-next 4/4] selftests: mptcp: convert iptables to
- nftables for mptcp_join.sh
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="XAeU0AW6"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7579DC653FA
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:58:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D44FF60362
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:57:11 +0000 (UTC)
+Received: by mail.galae.net (Postcow, from userid 0)
+	id 4B0EE11D718A4; Tue, 13 Oct 2026 19:51:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791914231; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=2KrY5bcaWM/iCHC3nc2lc6IZhhlnFZhRjcHEfSOffhc=;
+	b=XAeU0AW697oBR3wZ0XhC/T1qjWL4FxMkLkAxclZEsxZCehTDXS3nfLd/2jTYN7NjbqZhI1
+	7VswTvYnsnmZ2ABuegmIh0HysHc7NCHiUkk6pmJpwVRi2gshCQEybXpSGry+pWoLu65Mdc
+	My1VQr/tA3+T52xcL4rUVsWW/k1mOjLJ7Qdp+4E4Ubt85WZCu9sJTqea3lByeK/6zweKPh
+	XC2dSg6kYIICGh9fupR2UVL6uX1WCtbPJ9Wey3Ps6ceXhPC+A4UMHBnK3VcGpkGLPh+RTr
+	dqjeiVz2VDu5sip2y3L0XCC+UHY6MINqfcU6/6lxeAZ2MJLIMNMdQgWfHeFFjQ==
+Authentication-Results: mail.galae.net;
+	none
+Message-ID: <bfc0027a-932e-42f3-93b3-49ab5474abd6@bootlin.com>
+Date: Thu, 8 Oct 2026 11:04:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261013-net-next-mptcp-misc-feat-7-4-part2-v1-4-1181e5d2fda4@kernel.org>
-References: <20261013-net-next-mptcp-misc-feat-7-4-part2-v1-0-1181e5d2fda4@kernel.org>
-In-Reply-To: <20261013-net-next-mptcp-misc-feat-7-4-part2-v1-0-1181e5d2fda4@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Christoph Paasch <cpaasch@openai.com>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Hangbin Liu <liuhangbin@kylinos.cn>, Shuah Khan <shuah@kernel.org>, 
- linux-kselftest@vger.kernel.org, bpf@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12474; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=EKSAtJwkMdEMRkn7XXmBnP4n2J6mE5cDkhWz4p88n7M=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLLOFTwzc6p4tMXcaIb/5sdviw9VTuN+bvtrqdnk1NeNY
- nyM7lMvd5SyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEzkbCIjw4uGnLP2whE7eluu
- fuf6bLzmqeTJIvPO++bvWr5NDvY9q8LI8KVXTjz42/67lkqiy8p/PV//QC8sp2iC1C439xPv4ve
- +ZwMA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 1/3] net: rss: Require indir table size or
+ hash key size to support RSS
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev-bot+sashiko@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ linux@armlinux.org.uk, lorenzo.bianconi@oss.qualcomm.com, nb@tipi-net.de,
+ jitendra.vegiraju@broadcom.com, thomas.petazzoni@bootlin.com,
+ alexis.lothore@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, pbrobinson@gmail.com, joe@dama.to
+References: <20261002142806.1299041-2-maxime.chevallier@bootlin.com>
+ <179121059086.434549.5364767976780818051@kernel.org>
+ <d6e61c8b-cd3d-43fe-b4ac-19ff5d790b0f@bootlin.com>
+ <20261006163349.61c738e8@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20261006163349.61c738e8@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: None
+X-Rspamd-Queue-Id: 4B0EE11D718A4
+X-Spamd-Result: default: False [2.39 / 30.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	DATE_IN_PAST(1.00)[128];
+	MIME_GOOD(-0.10)[text/plain];
+	BAYES_HAM(-0.01)[44.02%];
+	RCVD_COUNT_ZERO(0.00)[0];
+	BCC(0.00)[];
+	TAGGED_RCPT(0.00)[sashiko,netdev];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[bootlin.com:s=dkim];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	MAILCOW_DOMAIN_HEADER_FROM(0.00)[bootlin.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	URIBL_BLOCKED(0.00)[localhost:rdns,localhost:helo,bootlin.com:mid];
+	FREEMAIL_CC(0.00)[kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,gmail.com,foss.st.com,armlinux.org.uk,oss.qualcomm.com,tipi-net.de,broadcom.com,bootlin.com,vger.kernel.org,lists.infradead.org,st-md-mailman.stormreply.com,dama.to];
+	TO_DN_SOME(0.00)[]
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+Hi Jakub,
 
-During conversion, we retain the same table and chain names used by the
-original iptables/ip6tables setup, so rule output is identical to the
-former iptables/ip6tables output. Add new function init_nftables so we
-only do nft table setup when test need set nft rules.
+On 10/7/26 01:33, Jakub Kicinski wrote:
+> On Tue, 6 Oct 2026 09:59:29 +0200 Maxime Chevallier wrote:
+>>> [Severity: Medium]
+>>> rss_get_data_alloc() is shared by RSS_GET, RSS_SET and RSS_CREATE. Does
+>>> this drop flow-hash reporting for devices that have ->get_rxfh but report
+>>> 0/0 sizes?  
+>>
+>> Yes it does, that's the intended behaviour here. RSS bits are all optional,
+>> but does it make sense to report hashing params when the indirection table
+>> is size 0 and key len is 0 ?
+> 
+> Not sure if there's an implementation in the tree but 
+> it's possible to implement poor man's RSS on strict
+> power-of-2 queue set with some hashing built into the
+> Rx engine, without a key. We'd still want to control
+> which fields are hashed in this case.
+> 
+> In the Netlink API we combine the two so we'd break this?
 
-Unlike iptables, nftables cannot match rules based on their full
-specification. Since endpoint_tests is the only test that delete rules,
-which inserts and deletes rules one by one. Flushing the table
-directly is safe and easier than using nft_handle.
+Hmm I wasn't aware of that :( I guess the safe choice is to check on -EOPNOTSUPP
+for .get_rxfh() + 0-len indir table / 0-size key and skip the device during the
+dump instead of returning early ?
 
-The cBPF bytecode matching MPTCP add‑addr is replaced with native nft
-matching using "tcp option mptcp subtype add-addr". But the RM_ADDR
-suboption is added after the MPTCP DSS option, and nft is unable to
-handle this because it stops parsing further TCP options once it matches
-the first one. We therefore use hard-coded offsets to match the RM_ADDR
-suboption.
-
-The config file adds CONFIG_NFT_NUMGEN (replaces iptables statistic nth),
-CONFIG_NFT_REJECT and CONFIG_NFT_REJECT_INET for reject‑related rules.
-Remove other unneeded configs.
-
-Remove the iptables/ip6tables check in mptcp_lib.sh since no script use
-it now.
-
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
-To: Shuah Khan <shuah@kernel.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: bpf@vger.kernel.org
-v2:
- - Remove more unused kconfigs. (Clashiko)
- - Use offset to match RM_ADDR, instead of "mptcp subtype". (Clashiko)
----
- tools/testing/selftests/net/mptcp/config        |  15 +--
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 158 ++++++++++--------------
- tools/testing/selftests/net/mptcp/mptcp_lib.sh  |   2 +-
- 3 files changed, 72 insertions(+), 103 deletions(-)
-
-diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
-index bb9c4c97c620..6a96cfbbc461 100644
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -1,12 +1,7 @@
- CONFIG_INET_DIAG=m
- CONFIG_INET_MPTCP_DIAG=m
--CONFIG_IP6_NF_FILTER=m
--CONFIG_IP6_NF_TARGET_REJECT=m
- CONFIG_IP_ADVANCED_ROUTER=y
- CONFIG_IP_MULTIPLE_TABLES=y
--CONFIG_IP_NF_FILTER=m
--CONFIG_IP_NF_MANGLE=m
--CONFIG_IP_NF_TARGET_REJECT=m
- CONFIG_IPV6=y
- CONFIG_IPV6_MULTIPLE_TABLES=y
- CONFIG_KALLSYMS=y
-@@ -19,17 +14,13 @@ CONFIG_NET_CLS_FW=m
- CONFIG_NETFILTER=y
- CONFIG_NETFILTER_ADVANCED=y
- CONFIG_NETFILTER_NETLINK=y
--CONFIG_NETFILTER_XTABLES=m
--CONFIG_NETFILTER_XTABLES_LEGACY=y
--CONFIG_NETFILTER_XT_MATCH_BPF=m
--CONFIG_NETFILTER_XT_MATCH_LENGTH=m
--CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
--CONFIG_NETFILTER_XT_TARGET_MARK=m
- CONFIG_NET_SCH_INGRESS=m
- CONFIG_NET_SCH_NETEM=m
- CONFIG_NF_TABLES=m
- CONFIG_NF_TABLES_INET=y
--CONFIG_NFT_COMPAT=m
-+CONFIG_NFT_NUMGEN=m
-+CONFIG_NFT_REJECT=m
-+CONFIG_NFT_REJECT_INET=m
- CONFIG_NFT_SOCKET=m
- CONFIG_NFT_TPROXY=m
- CONFIG_SYN_COOKIES=y
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 18ce7136a2b0..f4d8afaeda4f 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -26,8 +26,6 @@ capout=""
- cappid=""
- ns1=""
- ns2=""
--iptables="iptables"
--ip6tables="ip6tables"
- timeout_poll=30
- timeout_test=$((timeout_poll * 2 + 1))
- capture=false
-@@ -99,41 +97,16 @@ unset add_addr_tx_nr
- unset add_addr_echo_tx_nr
- unset add_addr_drop_tx_nr
- 
--# generated using "nfbpf_compile '(ip && (ip[54] & 0xf0) == 0x30) ||
--#				  (ip6 && (ip6[74] & 0xf0) == 0x30)'"
--CBPF_MPTCP_SUBOPTION_ADD_ADDR="14,
--			       48 0 0 0,
--			       84 0 0 240,
--			       21 0 3 64,
--			       48 0 0 54,
--			       84 0 0 240,
--			       21 6 7 48,
--			       48 0 0 0,
--			       84 0 0 240,
--			       21 0 4 96,
--			       48 0 0 74,
--			       84 0 0 240,
--			       21 0 1 48,
--			       6 0 0 65535,
--			       6 0 0 0"
--
--# IPv4: TCP hdr of 48B, a first suboption of 12B (DACK8), the RM_ADDR suboption
--# generated using "nfbpf_compile '(ip[32] & 0xf0) == 0xc0 && ip[53] == 0x0c &&
--#				  (ip[66] & 0xf0) == 0x40'"
--CBPF_MPTCP_SUBOPTION_RM_ADDR="13,
--			      48 0 0 0,
--			      84 0 0 240,
--			      21 0 9 64,
--			      48 0 0 32,
--			      84 0 0 240,
--			      21 0 6 192,
--			      48 0 0 53,
--			      21 0 4 12,
--			      48 0 0 66,
--			      84 0 0 240,
--			      21 0 1 64,
--			      6 0 0 65535,
--			      6 0 0 0"
-+# nft cannot process the RM_ADDR option because it stops parsing after matching
-+# the first DSS option. Use hard-coded byte offsets to match RM_ADDR messages.
-+# A tcpdump capture of the RM_ADDR message looks like:
-+#  [TCP header: 20 bytes] [nop] [nop] [timestamp: 10 bytes]
-+#  [MPTCP DSS: 12 bytes] [MPTCP RM_ADDR: 4 bytes]
-+#
-+# - TCP Data Offset (12 x 4 = 48 bytes)
-+# - DSS (TCP[32] x 8) kind (MPTCP 0x1e), length (0x0c) and subtype (2)
-+# - RM_ADDR (TCP[44] x 8) kind (MPTCP 0x1e), variable length and subtype (4)
-+RM_ADDR_OFFSETS="tcp doff 12 @th,256,20 == 0x1e0c2 @th,352,8 == 0x1e @th,368,4 == 4"
- 
- init_partial()
- {
-@@ -184,6 +157,26 @@ init_shapers()
- 	done
- }
- 
-+init_nftables()
-+{
-+	local netns table
-+	for netns in "$ns1" "$ns2"; do
-+		for table in ip ip6; do
-+			ip netns exec "$netns" nft -f - <<-EOF
-+				add table $table filter
-+				add chain $table filter INPUT \
-+					{ type filter hook input priority filter; policy accept; }
-+				add chain $table filter OUTPUT \
-+					{ type filter hook output priority filter; policy accept; }
-+
-+				add table $table mangle
-+				add chain $table mangle OUTPUT \
-+					{ type route hook output priority mangle; policy accept; }
-+			EOF
-+		done
-+	done
-+}
-+
- cleanup_partial()
- {
- 	rm -f "$capout"
-@@ -196,7 +189,7 @@ init() {
- 
- 	mptcp_lib_check_mptcp
- 	mptcp_lib_check_kallsyms
--	mptcp_lib_check_tools ip tc ss "${iptables}" "${ip6tables}"
-+	mptcp_lib_check_tools ip tc ss nft
- 
- 	sin=$(mktemp)
- 	sout=$(mktemp)
-@@ -380,24 +373,18 @@ reset_with_cookies()
- # $1: test name
- reset_with_add_addr_timeout()
- {
--	local ip="${2:-4}"
--	local tables
-+	local ip="${2:-}"
- 
- 	reset "${1}" || return 1
--
--	tables="${iptables}"
--	if [ $ip -eq 6 ]; then
--		tables="${ip6tables}"
--	fi
-+	init_nftables
- 
- 	# set a maximum, to avoid too long timeout with exponential backoff
- 	ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=1
- 
--	if ! ip netns exec $ns2 $tables -A OUTPUT -p tcp \
--			-m tcp --tcp-option 30 \
--			-m bpf --bytecode \
--			"$CBPF_MPTCP_SUBOPTION_ADD_ADDR" \
--			-j DROP; then
-+	if ! ip netns exec "$ns2" nft add rule \
-+			ip"$ip" filter OUTPUT meta l4proto tcp \
-+			tcp option mptcp subtype add-addr \
-+			drop; then
- 		mark_as_skipped "unable to set the 'add addr' rule"
- 		return 1
- 	fi
-@@ -449,22 +436,14 @@ setup_fail_rules()
- 	check_invert=1
- 	validate_checksum=true
- 	local i="$1"
--	local ip="${2:-4}"
--	local tables
-+	local ip="${2:-}"
- 
--	tables="${iptables}"
--	if [ $ip -eq 6 ]; then
--		tables="${ip6tables}"
--	fi
--
--	ip netns exec $ns2 $tables \
--		-t mangle \
--		-A OUTPUT \
--		-o ns2eth$i \
--		-p tcp \
--		-m length --length 150:9999 \
--		-m statistic --mode nth --packet 1 --every 99999 \
--		-j MARK --set-mark 42 || return ${KSFT_SKIP}
-+	init_nftables
-+	ip netns exec "$ns2" nft add rule \
-+		ip"$ip" mangle OUTPUT oifname ns2eth$i \
-+		meta l4proto tcp \
-+		meta length 150-9999 numgen inc mod 99999 1 \
-+		meta mark set 42 || return ${KSFT_SKIP}
- 
- 	tc -n $ns2 qdisc add dev ns2eth$i clsact || return ${KSFT_SKIP}
- 	tc -n $ns2 filter add dev ns2eth$i egress \
-@@ -510,16 +489,15 @@ reset_with_tcp_filter()
- 	reset "${1}" || return 1
- 	shift
- 
-+	init_nftables
-+
- 	local ns="${!1}"
- 	local src="${2}"
- 	local target="${3}"
- 	local chain="${4:-INPUT}"
- 
--	if ! ip netns exec "${ns}" ${iptables} \
--			-A "${chain}" \
--			-s "${src}" \
--			-p tcp \
--			-j "${target}"; then
-+	if ! ip netns exec "$ns" nft add rule ip filter "${chain}" \
-+			ip saddr "${src}" meta l4proto tcp "${target,,}"; then
- 		mark_as_skipped "unable to set the filter rules"
- 		return 1
- 	fi
-@@ -4313,12 +4291,15 @@ userspace_tests()
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
- 
-+		init_nftables
- 		# force quick loss
- 		ip netns exec $ns2 sysctl -q net.ipv4.tcp_syn_retries=1
--		if ip netns exec "${ns1}" ${iptables} -A INPUT -s "10.0.1.2" \
--		      -p tcp --tcp-option 30 -j REJECT --reject-with tcp-reset &&
--		   ip netns exec "${ns2}" ${iptables} -A INPUT -d "10.0.1.2" \
--		      -p tcp --tcp-option 30 -j REJECT --reject-with tcp-reset; then
-+		if ip netns exec "${ns1}" nft add rule ip filter INPUT \
-+				ip saddr "10.0.1.2" meta l4proto tcp \
-+				tcp option mptcp exists reject with tcp reset &&
-+		   ip netns exec "${ns2}" nft add rule ip filter INPUT \
-+				ip daddr "10.0.1.2" meta l4proto tcp \
-+				tcp option mptcp exists reject with tcp reset; then
- 			wait_event ns2 MPTCP_LIB_EVENT_SUB_CLOSED 1
- 			wait_event ns1 MPTCP_LIB_EVENT_SUB_CLOSED 1
- 			chk_subflows_total 1 1
-@@ -4393,7 +4374,7 @@ endpoint_tests()
- 		chk_subflow_nr "after new reject" 2
- 		chk_mptcp_info subflows 1 subflows 1
- 
--		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
-+		ip netns exec "${ns2}" nft flush chain ip filter OUTPUT
- 		pm_nl_del_endpoint $ns2 3 10.0.3.2
- 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
- 		wait_mpj 3
-@@ -4402,12 +4383,10 @@ endpoint_tests()
- 
- 		# To make sure RM_ADDR are sent over a different subflow, but
- 		# allow the rest to quickly and cleanly close the subflow
--		local ipt=1
--		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
--			-p tcp -m tcp --tcp-option 30 \
--			-m bpf --bytecode \
--			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
--			-j DROP || ipt=0
-+		local nft=1
-+		ip netns exec "${ns2}" nft insert rule ip filter OUTPUT \
-+			ip saddr 10.0.1.2 meta l4proto tcp \
-+			"${RM_ADDR_OFFSETS}" drop || nft=0
- 		local i
- 		for i in $(seq 3); do
- 			pm_nl_del_endpoint $ns2 1 10.0.1.2
-@@ -4420,7 +4399,7 @@ endpoint_tests()
- 			chk_subflow_nr "after re-add id 0 ($i)" 3
- 			chk_mptcp_info subflows 3 subflows 3
- 		done
--		[ ${ipt} = 1 ] && ip netns exec "${ns2}" ${iptables} -D OUTPUT 1
-+		[ "${nft}" = 1 ] && ip netns exec "${ns2}" nft flush chain ip filter OUTPUT
- 
- 		mptcp_lib_kill_group_wait $tests_pid
- 
-@@ -4480,20 +4459,19 @@ endpoint_tests()
- 		chk_mptcp_info subflows 2 subflows 2
- 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
-+		init_nftables
- 		# To make sure RM_ADDR are sent over a different subflow, but
- 		# allow the rest to quickly and cleanly close the subflow
--		local ipt=1
--		ip netns exec "${ns1}" ${iptables} -I OUTPUT -s "10.0.1.1" \
--			-p tcp -m tcp --tcp-option 30 \
--			-m bpf --bytecode \
--			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
--			-j DROP || ipt=0
-+		local nft=1
-+		ip netns exec "${ns1}" nft insert rule ip filter OUTPUT \
-+			ip saddr 10.0.1.1 meta l4proto tcp \
-+			"${RM_ADDR_OFFSETS}" drop || nft=0
- 		pm_nl_del_endpoint $ns1 42 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "after delete ID 0" 2
- 		chk_mptcp_info subflows 2 subflows 2
- 		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
--		[ ${ipt} = 1 ] && ip netns exec "${ns1}" ${iptables} -D OUTPUT 1
-+		[ "${nft}" = 1 ] && ip netns exec "${ns1}" nft flush chain ip filter OUTPUT
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
- 		wait_mpj 4
-@@ -4555,7 +4533,7 @@ endpoint_tests()
- 		pm_nl_flush_endpoint $ns2
- 		pm_nl_flush_endpoint $ns1
- 		wait_rm_addr $ns2 0
--		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
-+		ip netns exec "${ns2}" nft flush chain ip filter OUTPUT
- 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
- 		wait_mpj 1
- 		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-index 20853d0198ff..e1c8c6fd8820 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -535,7 +535,7 @@ mptcp_lib_check_tools() {
- 				exit ${KSFT_SKIP}
- 			fi
- 			;;
--		"iptables"* | "ip6tables"* | "jq")
-+		"jq")
- 			if ! "${tool}" -V &> /dev/null; then
- 				mptcp_lib_pr_skip "Could not run all tests without ${tool}"
- 				exit ${KSFT_SKIP}
-
--- 
-2.55.0
-
+Maxime
