@@ -1,61 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.67.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B39B13D886;
-	Thu,  8 Oct 2026 02:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33773254BD
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.67.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791425824; cv=none; b=FManvZEl2dk//OzgPTjM9Ydp1wExnLCrKu0ERjlJbAmMpogbrUJw6ApOc9AIsh87amdN0UWnMi1LMHIpYiQB/WugmFo5biiU5WHViZwEGx1w2mOXhiwXFRRqsZ5AW3cxymG8h/RjZyn4z2qaDrWzLlnqk11drCJhbbHmQ/q3Jhc=
+	t=1791425985; cv=none; b=ZbxVIgUgGXwNc7sZHdx+guH+OQGvlQs+wu0pT+hvqxSoQdxpz8wIGP3s9CaXqOJwBbZsFYfMxMWiQF2qgXwE+ImtCYAmq8Go6piE4hT4X7J9qMhlMllxxN+gQ4Nu+DjV+4P7pO+1WlTS0XNQpGQpSUACHk/k5bOTFhu7L3Wx7pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791425824; c=relaxed/simple;
-	bh=5Igza3zbL8DsL8iZkd4iOPUqt5mfV9bwMscd7jEwYAs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vCHDMAN4jr2lRkXXYf+VQqPCxxpfKcB3wCZhfTzx+QdktUdqfrHwDj+3T98U2roqRkXg0u7AVjgCaXCg+8ir1nZHXO9QqbwFWsqm2nd+g+TUAUKiCBVD+UyxE+dzavliDQi4bX2WzAm72TKVVhh3lOtT/Tnx1utrxd6iS5AZXTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/HC2Kpz; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/HC2Kpz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1219B1F000FF;
-	Thu,  8 Oct 2026 02:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791425822;
-	bh=09TxWdiMFYWRVecDe6e1P2wuubcsPRofkfD/tSUrqmI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=A/HC2KpzGBA5D2N0yCzmSAuzt5ZQdDMcx96SL6btyOfx+IZb7c516v5ZE1cJGC5wS
-	 ChUpUGmgxixRUGj81V5Spef75LvsUIpgoAsEOPAOZ7+c2XIzVnxLXdukGUbBIiEodh
-	 PUhqOQ0CZJnOOhZShCImDd2y5NqTZPfxoT3WAcbvgDP7JhLLDfGEPz/8fdP7n6yx4n
-	 L4qNqhvlRnbW3AOnrfEDDmmtT+MQn7++yb99DYUZnyQjH66bKcoI/aIoLPTAiOnmcX
-	 QoIIS39vDVU5t12COaa5ms2vcLGlNmCnW4iw26eVKMoi0l0wPwJlNx6om1aDn2EKhz
-	 tMPxQmpCmXxsA==
-Date: Wed, 7 Oct 2026 19:17:01 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "D . Wythe" <alibuda@linux.alibaba.com>, Dust Li
- <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>,
- Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu
- <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>
-Cc: Chengfeng Ye <nicoyip.dev@gmail.com>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net/smc: serialize clcsock access with its
- release
-Message-ID: <20261007191701.078bfbc1@kernel.org>
-In-Reply-To: <20261003183325.2289707-1-nicoyip.dev@gmail.com>
-References: <20261003183325.2289707-1-nicoyip.dev@gmail.com>
+	s=arc-20240116; t=1791425985; c=relaxed/simple;
+	bh=fc0KXrehR5Sr7rQ6yaeikP0wkAMjDA0pmbo3OuvWUE4=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S3xPiJjjsB/vqHZFKGkj4cH3uAGbNtmI3xQl4ULor1X8X2oBlzecnsuzjQzWF5Z+WifCagQywH/SRm1l+6qB4tz1TQezm9nT69a+dD8ZyDHLlpgoVK1NtGqMUbEjTsJH4O1CnxbYm+D9HFu9ZGQR9fkc4rr79mJZ7dQXTTDpLD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=114.132.67.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid:tivesync9t1791425954t422328f7
+Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [36.24.116.16])
+X-QQ-SSF:0000000000000000000000000000000
+From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
+X-BIZMAIL-ID: 2444343616977155017
+To: "'Jakub Kicinski'" <kuba@kernel.org>
+Cc: <netdev@vger.kernel.org>,
+	"'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
+	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Eric Dumazet'" <edumazet@google.com>,
+	"'Paolo Abeni'" <pabeni@redhat.com>,
+	"'Jacob Keller'" <jacob.e.keller@intel.com>,
+	"'Kees Cook'" <kees@kernel.org>,
+	"'Chenguang Zhao'" <zhaochenguang@kylinos.cn>,
+	"'Russell King \(Oracle\)'" <rmk+kernel@armlinux.org.uk>,
+	"'Maciej Fijalkowski'" <maciej.fijalkowski@intel.com>,
+	"'Simon Horman'" <horms@kernel.org>
+References: <20260924020149.30800-1-jiawenwu@trustnetic.com>	<20260924020149.30800-2-jiawenwu@trustnetic.com> <20260929184852.364dd9e6@kernel.org>
+In-Reply-To: <20260929184852.364dd9e6@kernel.org>
+Subject: RE: [PATCH net v2 1/3] net: libwx: keep NGBE OCP cards MAC enabled
+Date: Thu, 8 Oct 2026 10:19:13 +0800
+Message-ID: <0eac01dd56cb$698a3d00$3c9eb700$@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: zh-cn
+Thread-Index: AQHFw784voQWFmvhZ36tPTMrlP+NdAGAvuvMAQYrQD63DdbtkA==
+X-QQ-SENDSIZE: 520
+Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: ODcDgdcDagQKEFt1Nftp86ahx8cG8D7URo35Sr8fEm3lvsBU1gtZjL4V
+	3hW6rprYm/nJPhcDUsxBEKKRmjsWWdpUGnSjebhMft1iyUUr2apjZi5TrP0CwylDU3IMexu
+	Hv5BEU8MfVL7MLwhnSrTDbGhLRWg8l+XcOoJRtqhSjEBYKaDGSf10mLQuHPQsxfZXqhTaqH
+	WAuO+2GH/pFa5Ka7refrX4XC3ZeznrlaoTtUYTh41JEorfcfwQRvkPC1yOi+p5B6BNf6ZS2
+	y+SDcuJYMQQCmQ8YRL2GyRU8cJ86DZtvwuP2iFQTS/Nx9REnobVMFSyceWNVc5nVcD4Upjt
+	UfDqZbvboXMi6i8mF2rO94h7VRN63mF9lNJm/3+HBqev7xEQsx1yWxEttN/PzclmDqZL0i3
+	pUeUff5nxwsQMDPh6CgnX9wnHe7J+JKvr8looVLLfv3rfCZlCQLoRHK5vCrUO9XLCC+sd6c
+	l4mHJ6v8yHokA9y88LSWXEBL3+nhfHI/2pb/zplDYz+Wo3T2DWc6VGDQeNUwn8gpsRAjgY3
+	WHFvlhse3Wsj0XsHaDpSTZ6Vl2aCVkg7eBI3IYEgsVOXgl+hdR1THXbRKOtd1JAmqsS1cWR
+	O1BHojocDU1OMAsB6UUotnDOSRXSBWAH76fFV6QtNxdHbx9lys9auglCA0aCaTJHam49tzY
+	NT5v8I+jWJfR1N5+oqSSPtZq/mminTCv4Rd7Q2pK8bHWEIbp7PSy2Q2B3llo7kD1297Ba76
+	02mmsyczUqoKC2p6Z1GaqBQxVSnM7O92rrGgkHQJX2gaMBDLIf1T6y33GUUic2ZaMLVbJt0
+	PtOqKIEtFYNvRedGR+gSptP1G94t7HjryaQptDmwOPxRLsYKfoYzBWZQDIv6LACnikIg/iY
+	SzVnRUcpsf5OFVG6WCsLt5dvvMNfXsmCkLxdH9fWLLIz2da7CaY/i9vDf1V5JciPEOdLdLZ
+	8jUxrySSvuMYgU2ThhQ0TSvYrHBR6IYDGwKASIlqtT8PSGKUH59wuFEDJxKD3XBekoHdYay
+	b3fcazp9yiwd3pte1RtAO4qkXuVtcxNN3JWIHkCwTnAyCN1hDq5L0jVg58iUw=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-On Sun,  4 Oct 2026 02:33:25 +0800 Chengfeng Ye wrote:
-> Link-group termination can release the CLC socket through
-> smc_close_active_abort() while the SMC socket is still open, for example
-> after shutdown(SHUT_WR). A file reference keeps the SMC socket alive but
-> does not prevent this asynchronous release of its CLC socket.
+On Wed, Sep 30, 2026 9:49 AM, Jakub Kicinski wrote:
+> On Thu, 24 Sep 2026 10:01:47 +0800 Jiawen Wu wrote:
+> >  		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+> > -		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
+> > +		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP) ||
+> > +		      (wx->mac.type == wx_mac_em && (wx->subsystem_device_id & 0xFF) == 0x40))) {
+> 
+> This condition looks way too magical for upstream
+> 
+> Add some wx_has_ncsi() helper and add it there?
+> At least then the meaning is clear, here it's next to WOL, no idea what
+> it's supposed to mean.
 
-SMC maintainers, please review
+I had planned to fix this issue temporarily, and unify to use 'wx->ncsi_enabled'
+in a later net-next patch. Looks like I'm messing things up. I'll fix it all in V3.
+
+
+
