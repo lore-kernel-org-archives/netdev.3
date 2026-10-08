@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F2626158B;
-	Thu,  8 Oct 2026 03:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11BE372071;
+	Thu,  8 Oct 2026 03:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791430278; cv=none; b=Dpr70VY+wVBHc+Ar4Z0ztBmsP8K2+/keDzXWrh79Mk0f6Q2xYiD9SKYvBcFPruQ/kqaAyhtX5zeFEjeXQi2nGrbHIs1b7F5DZslkSklSyCyvUIZrhDPQvnMF37ZsstbsqfmKhtXFMfxOuBzTFw9gjpZjlqOr1nTa+qjMzm1L1GA=
+	t=1791430279; cv=none; b=E/fEET7F8zleytgY05D6SIteFdV7yyESj7nsDorZ4WpYKgnpksloVkU3eXQE6AHmeDLsRarrvYa9uD4LY0tIPzEm9ZGdlFame+25gsp8TJAQDm19ddjsok6h+PJGzHfGUEpsRiwmzrh6BKV5ZuAesmBLfMr28vtb1S/q2W1twko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791430278; c=relaxed/simple;
-	bh=aTBV22tb5rCe4fmyv+Cz8akZ7WXnE+6J/Dlj0OCzqFY=;
+	s=arc-20240116; t=1791430279; c=relaxed/simple;
+	bh=jGnf4YTTbgp3pyVWYzvtTpjTWilXRuuOmq4er15KPj4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MuxR5a5+eRi7b6uTisU2w9FaSNCnYLHH/1RCNS675ALU6zbpPpVf8SwJ8H2F6x84lZXYuEQ2eF/mSKJ6VsUdLXSqHyy+eRCNmvGRoHITbP+3KuCIZ87CPjcIPkWZ+GUa+6eozLLuFddtSFySZbB0wBmifcGlMe6eo3n8BkiP07M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jgJueFK9; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ltUUO7OmJ3Gvox+Mv5guvE6/hcoaX2JJ5CDDvduSVKQr2CLAzaigGHUpj5EXdlKAS1xJGzX/9tFNKuSRGO1RHS2Obk50vF2B8iB810hisyJI1R5GzYs6gQz5W0jXa4rrbfEBZeqwbZVGmK01V8C/7m6+fjFCcpTpGDq7PgqUHHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNCCewUn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jgJueFK9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9EC1F000FF;
-	Thu,  8 Oct 2026 03:31:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNCCewUn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604BF1F00893;
+	Thu,  8 Oct 2026 03:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791430276;
-	bh=MAdIzT5K3jeSj8cPsQf4M6G1Hao344SAaHz8q1wewsU=;
+	s=k20260515; t=1791430278;
+	bh=4PImF/bcS4wg1Tz3UGd/A5bh6Tl7WV37bYZRssHDge0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jgJueFK9r4q/rS0YTMEyGxKdNMDB2fRnYkWd7rcKxdarcJuzXxzam2mDMVb3LK4jh
-	 Dkw+rTlbvjW2aVvhbQ7Hw7fZ02Eoyu3T3gL331rF9Wel+/eBpX0YeibKIo+pTJMhMY
-	 /2V+/AcoIzevPV396ECQT+7zH2i0d051IwjAW5bI+WP1C1ZjAH0h2kP8lR1XATc+ky
-	 LUT6i0D5qMJlNWAI3lfoOc+Fr/wYtiQlONHOfdaCdtGLXYBt9AYf7kanocJYuuR4VW
-	 hxKu5LAgZquv9x4qHxe0ykGDZRExYW644mUMbsDLCbvrQClLaZbuZi1a5GqtQlpi07
-	 eSwiyv/ScZxCQ==
-Subject: Re: [PATCH net-next 2/4] dt-bindings: net: qcom,ipq9574-ppe: Tighten
- ethernet port node constraints
+	b=dNCCewUnYkD6yVPU35QbYs1ZhKJZtHu/g6xm9yOkpbF/+5gpSHNEO0gaClqOIjFlH
+	 +I+cQ8tVvw4Q1TYJXSyNRkdnmlZ0aAB4UFZZIaLEzS6uI3il+egKrKwr5+FeJ9s4rk
+	 Gv+AyELZvu9Cr58VU6ngInh/i778blWf6ZFSmR0u5Gv6Y2HQC0qAPfHCvUY/ghfXvl
+	 LKVeDN/cvC+yEwueD9cOZr2FWHt8WIzut10SQ9JPwZ2k8tqFvK5ecVXCveERJpKerE
+	 9XBdspsKZvIZCvNylx1c2yT60oN5evOJkdxkOToODhYIrd6cQoIcwHF8UEIhhzTYh8
+	 UTe36DoyZezuQ==
+Subject: Re: [PATCH net-next 3/4] dt-bindings: net: qcom,ipq9574-ppe: Add
+ IPQ5332 support
 From: netdev-bot+sashiko@kernel.org
 To: mail@tk154.de
 Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, andrew+netdev@lunn.ch,
@@ -37,11 +37,11 @@ Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, andrew+netdev@lunn.ch,
  quic_leiwei@quicinc.com, quic_suruchia@quicinc.com, quic_pavir@quicinc.com,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Date: Thu, 08 Oct 2026 03:31:15 +0000
-Message-ID: <179143027505.434549.14985682962873043848@kernel.org>
-In-Reply-To: <20261005152915.101780-3-mail@tk154.de>
-References: <20261005152915.101780-3-mail@tk154.de>
-X-sashiko-severity: High
+Date: Thu, 08 Oct 2026 03:31:16 +0000
+Message-ID: <179143027694.434549.10144875217597591854@kernel.org>
+In-Reply-To: <20261005152915.101780-4-mail@tk154.de>
+References: <20261005152915.101780-4-mail@tk154.de>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,88 +51,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] This patch only closes off the `ethernet-ports` spelling of the
-  port container.
-- [Low] The commit fixes schema-validation defects already present in the
-  binding, but it has no `Fixes:` tag.
+- [Low] The IPQ5332 port limits (`"^ethernet-port@[3-6]$": false` and
+  `reg: maximum: 2`) apply only under the `ethernet-ports` container…
 
 --
 
-dt-bindings: net: qcom,ipq9574-ppe: Tighten ethernet port node constraints
+dt-bindings: net: qcom,ipq9574-ppe: Add IPQ5332 support
 
-This patch drops the stray '+' from the ethernet-port node pattern in the
-qcom,ipq9574-ppe binding, so only single-digit unit addresses match. It
-also gives the ethernet-ports container type: object and
-additionalProperties: false, plus explicit #address-cells and #size-cells
-constraints.
+This adds the qcom,ipq5332-ppe compatible to the IPQ9574 PPE binding. It
+adds an optional GCC sleep clock and a second EDMA reset, and lowers the
+minimum interconnect and EDMA interrupt counts. New per-SoC if/then blocks
+constrain those counts, and limit IPQ5332 to ethernet-port@1 and
+ethernet-port@2.
 
-> Also restrict the ethernet-ports object to its declared properties.
-> Without this, nodes outside the port pattern are accepted through the
-> generic ethernet-switch schema.
->
-> Signed-off-by: Til Kaiser <mail@tk154.de>
-
-[Severity: Low]
-This fixes validation problems that have been in the binding since it was
-added. Should it carry a Fixes: tag?
-
-Both the unclosed ethernet-ports block and the "^ethernet-port@[1-6]+$"
-pattern come from this commit:
-
-Fixes: 1898fc572118 ("dt-bindings: net: Add PPE for Qualcomm IPQ9574 SoC")
+Link: https://lore.kernel.org/r/20240829082830.56959-7-quic_varada@quicinc.com
+Link: https://lore.kernel.org/r/20240110112059.2498-3-quic_luoj@quicinc.com
 
 > diff --git a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> index 6d0b21a10732a..1a78e2c82b90c 100644
+> index 1a78e2c82b90c..29dd34210ac89 100644
 > --- a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
 > +++ b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> @@ -174,8 +174,17 @@ properties:
->        - interrupt-names
+
+[ ... ]
+
+> @@ -238,6 +255,65 @@ required:
 >  
->    ethernet-ports:
-> +    type: object
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      '#address-cells':
-> +        const: 1
-> +      '#size-cells':
-> +        const: 0
-> +
->      patternProperties:
-> -      "^ethernet-port@[1-6]+$":
-> +      "^ethernet-port@[1-6]$":
+>  allOf:
+>    - $ref: ethernet-switch.yaml
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: qcom,ipq5332-ppe
+> +    then:
 
-[Severity: High]
-This closes off the ethernet-ports container. Can the same nodes still get
-through if the container is named ports instead?
+[ ... ]
 
-The binding pulls in the generic schema:
+> +        ethernet-ports:
+> +          patternProperties:
+> +            "^ethernet-port@[1-2]$":
+> +              properties:
+> +                reg:
+> +                  maximum: 2
+> +            "^ethernet-port@[3-6]$": false
 
-    allOf:
-      - $ref: ethernet-switch.yaml
+[Severity: Low]
+Is the IPQ5332 port limit enforced when the node uses "ports" as the
+container name instead of "ethernet-ports"?
 
-ethernet-switch.yaml accepts either container name, and accepts any
-port@ or ethernet-port@ child with a hex unit address:
+The new constraints only apply under ethernet-ports. The binding also
+pulls in ethernet-switch.yaml through allOf, and that schema accepts
+either container name:
 
-    '^(ethernet-)?ports$':
-      type: object
-      unevaluatedProperties: false
-      ...
-      patternProperties:
-        '^(ethernet-)?port@[0-9a-f]+$':
-          type: object
-          description: Ethernet switch ports
+Documentation/devicetree/bindings/net/ethernet-switch.yaml:
+    patternProperties:
+      '^(ethernet-)?ports$':
+        ...
+        patternProperties:
+          '^(ethernet-)?port@[0-9a-f]+$':
+            type: object
     ...
     oneOf:
       - required:
@@ -140,45 +123,31 @@ port@ or ethernet-port@ child with a hex unit address:
       - required:
           - ethernet-ports
 
-qcom,ipq9574-ppe.yaml has no ports entry, and it does not list
-ethernet-ports under its top-level required: list. Because ports is
-evaluated through the allOf $ref, the top-level unevaluatedProperties:
-false does not reject it either.
+The referenced schema evaluates "ports", so the top-level
+unevaluatedProperties: false in qcom,ipq9574-ppe.yaml does not reject it.
+The PPE binding also does not list ethernet-ports in its required list.
 
-So it looks like a PPE node like this would still validate:
+So an IPQ5332 node like this would seem to pass dt_binding_check:
 
     ports {
         #address-cells = <1>;
         #size-cells = <0>;
-        port@7 { };
-        ethernet-port@11 { };
+        ethernet-port@3 {
+            reg = <3>;
+        };
     };
 
-None of the PPE per-port constraints apply to that node. That covers the
-reg 1..6 range, the required clocks/clock-names/resets/reset-names, the
-unevaluatedProperties: false on the port node, and the new single-digit
-pattern.
+That would not match the commit message, which says IPQ5332 takes "only
+ethernet-port@1 and ethernet-port@2".
 
-That means the case described in the commit message, "nodes outside the
-port pattern are accepted through the generic ethernet-switch schema", can
-still happen.
+The same gap already lets nodes skip the shared per-port clocks and resets
+requirements for IPQ9574. The earlier patch in this series that tightened
+the port node constraints also covered only ethernet-ports.
 
-The later patch in this series, "dt-bindings: net: qcom,ipq9574-ppe: Add
-IPQ5332 support", also constrains only ethernet-ports in its IPQ5332
-if/then block. That includes the "^ethernet-port@[3-6]$": false rule, so
-ports { port@3 { }; } would also get past the IPQ5332 port-count limit.
+Would it make sense to forbid ports (for example ports: false), require
+ethernet-ports, or apply the constraints to both spellings?
 
-Other bindings with per-port constraints match '^(ethernet-)?ports$', so
-both spellings are covered. Examples are dsa/qca8k.yaml,
-dsa/mediatek,mt7530.yaml, dsa/microchip,ksz.yaml and dsa/nxp,sja1105.yaml.
-
-Could this binding do the same? Another option would be to forbid the
-other spelling with ports: false, and add ethernet-ports to the top-level
-required: list.
-
->          type: object
->          unevaluatedProperties: false
->          $ref: ethernet-switch-port.yaml#
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005152915.101780-1-mail%40tk154.de
