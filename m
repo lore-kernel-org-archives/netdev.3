@@ -1,56 +1,52 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B392A45FFAA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36F54582CB;
 	Thu,  8 Oct 2026 08:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791447411; cv=none; b=Cfi4uD4pTgJ6KuEYikiHa97zkCY/iL+Buqh8DCwBrUoUd1kKoc+bnS75V5CpGblvOnZRgDR2CmofgTVfPumz9D1ADynZfdlsfTDxP3T06lOA7evwEhZ8daeB5Wu+beoqcYGZxASEONIy3yhVCqDqgpgfG8EwHKyaWOvk3qt7j64=
+	t=1791447411; cv=none; b=CMDKWTRzxDw8KRJDuwhYh/yHDH4IPVg+8pSv6VehWWsVV63QRQmqrhvRaxb1o1nQk6d5QpSsuA3OQy0g5jpszvZgZzTewsAunH4Kp7pvx8bw3b5t9yDDNZDUo9XJISUl7s0mCbiP4P4tC3S177GQl2za3nUQHJZvRlnci4QmTmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791447411; c=relaxed/simple;
-	bh=3sLjreaTtSttWpGI6EYpQrzYXxc2yHEes4HX0OvwCEs=;
+	bh=h0rQ9E/kBNieMany/jKn94VWj/cybMtwREDQEiDMcWg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DZuLYw/ux0eLG1bQoaKgfUmwzOYuY3d9mQ2437LtPFMvRkwb1E+tYUonGw81ZT7qDGBBvqhC/9xTUR4THLcJFy/Yo7nsNl7rUGg8XAgJxa6qCPojJtxXdPsZ34mOSQkJoaxTA9aGqUXvCbEf5WQL0DJelpl8HQm/oF5EpYiGULc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=fdOnXoqE; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=t2/TN8zoRpww4YwqGT8DywfOsEWhwWJJwdQswUWBrZQLldxa4GJ+4dwSdHcUOub3tLa4lyJPYU9oGkG1A/+Iez6EGt407zhfK71SV9eoeZhh3VT7obqqUZDVfGTYdb7GX7MUMMdG7xyr3ALVjA1w+tqenRD9rdd1bZREfbE3n+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=FQHAQn9s; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="fdOnXoqE"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6988G30R0315557, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="FQHAQn9s"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6988G5mgC315459, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1791447363; bh=IVEIWUOtEnHkZ39bxSMEPaTPxB++l4Ki5PqgMjX4rnY=;
+	t=1791447365; bh=dl/PSvr6rBEjLte3TGpj7FjEXO9dc/1lpx2SXzsil0Y=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=fdOnXoqEjHARizlP+PHCo9GW0qXoYQwGrHDz0fNcGZJWkDu6yzuYppxS8lPARKUzN
-	 7NFi4g2Q95Ow75I3ui3h8pNMsibTfaM+BEi2vZaJTunzOv0sXRmn2/2fobupq+Jzu9
-	 SzyLgfWlCrN72HPxe5aDZonEaRblHrNwWfrgvJoKbzynSa3rm5P9Gh/EFaU1tlO6gr
-	 TjwdCYsMqvdLXacUomjU6JRa9T838IsD0uxmU+SHrImPGo5x5Fe7rYpeWTFl0LYjKz
-	 KuTuTGAfm7LmKmhvTi+pqZXraKgSsboellXy+Udl8OhuSrFNnXHmTecC4Bi2GrskdS
-	 h0Mkc5CZAH1Yg==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6988G30R0315557
+	b=FQHAQn9s5psIeb27ZYnqbAW5dIMqSsvj/YVLBImCTG63ZEVE4SmCFdZw2Gof3SD4F
+	 LNsWsS7j/aYnz5eR/MBIvJUjX6E2trhuxUARJGjeQjvQI+fkJe1Wjr1d8F35t1bfaY
+	 wzOnnPvSHrYmbWD6UakvUCW3jbeJhSSg8H11LaIUQpFe+obXgvp1L+AQagPuhpQRUs
+	 TY1T45hfEEVFGhjwyLZpg1NnTisSK9SGF7rxlS7JAGJEgRzcRIlLjcZqGShyhym0cJ
+	 KHTGcjcxFPGyMRVV8OH6fJFcz7RKvtkDlcJ04NP/HkE04GT4rKaMieB3NdLpfOUm6C
+	 2DxcRmtSmLIYw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6988G5mgC315459
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 8 Oct 2026 16:16:03 +0800
+	Thu, 8 Oct 2026 16:16:05 +0800
 Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 16:15:59 +0800
-Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
- RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 16:15:59 +0800
+ 15.2.2562.49; Thu, 8 Oct 2026 16:16:00 +0800
 Received: from fc44.realtek.com.tw (172.22.241.7) by
  RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server id
- 15.2.2562.49 via Frontend Transport; Thu, 8 Oct 2026 16:15:59 +0800
+ 15.2.2562.49 via Frontend Transport; Thu, 8 Oct 2026 16:16:00 +0800
 From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 To: <davem@davemloft.net>, <kuba@kernel.org>
 CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
 	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
 	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
 	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>, <mail@birger-koblitz.de>
-Subject: [PATCH net-next v6 01/10] r8152: split r8156_init per chip and factor out wait_autoload_done
-Date: Thu, 8 Oct 2026 16:15:47 +0800
-Message-ID: <20261008081556.47901-2-nic_swsd@realtek.com>
+Subject: [PATCH net-next v6 06/10] r8152: split r8157_hw_phy_cfg into RTL8157 and RTL8159 variants
+Date: Thu, 8 Oct 2026 16:15:52 +0800
+Message-ID: <20261008081556.47901-7-nic_swsd@realtek.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261008081556.47901-1-nic_swsd@realtek.com>
 References: <20261008081556.47901-1-nic_swsd@realtek.com>
@@ -63,630 +59,334 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-RTL8156, RTL8156B, RTL8157 and RTL8159 shared a single r8156_init(),
-gated by a dense set of tp->version range checks. That made the init
-sequence hard to follow.
+r8157_hw_phy_cfg() served both RTL8157 (VER_16) and RTL8159
+(VER_17_QFN68/QFN100) via a tp->version switch inside a single
+function, but per the datasheet RTL8159's PHY tuning differs from
+RTL8157's in more than the per-version blocks already captured.
 
-Split r8156_init() into one function per chip family:
-- r8156_init  (VER_10/11)
-- r8156b_init (VER_12/13/15)
-- r8157_init  (VER_16)
-- r8159_init  (VER_17)
+Split it into r8157_hw_phy_cfg() (VER_16 only) and a new
+r8159_hw_phy_cfg() (VER_17_QFN68/QFN100), each with its own copy of
+the shared prologue/epilogue. rtl_ops_init() assigns each one to its
+own chips only. Per the datasheet, RTL8159 diverges from RTL8157 in
+this split in several ways:
 
-Also factor the repeated "poll PLA_BOOT_CTRL for AUTOLOAD_DONE" loop
-into wait_autoload_done(), reusing read_poll_timeout() instead of the
-500 * msleep(20) busy loops. r8152b_init(), r8153_init(),
-r8153b_init(), r8153c_init(), r8153b_ups_en() and r8153c_ups_en() are
-converted to use it too.
+- RTL8159 doesn't need EEE disabled before reprogramming PHY
+  parameters, so r8159_hw_phy_cfg() drops the rtl_eee_enable(tp,
+  false) call that r8157_hw_phy_cfg() keeps.
+- Since EEE isn't forced off up front, r8159_hw_phy_cfg() ends with
+  rtl_eee_enable(tp, tp->eee_en) instead of only enabling EEE when
+  eee_en is set, so the configured state is applied in both
+  directions.
+- RTL8159's EEE clock-divider and 0xa5ea encoding differ from
+  RTL8157's: r8159_hw_phy_cfg() clears EN_10M_CLKDIV (ups_info.
+  _10m_ckdiv = false) instead of setting it, and clears an extra bit
+  (BIT(2)) of 0xa5ea.
+- "Disable bypass_turn_off_clk_in_aldps" (0xd3c8 BIT(0)) is needed by
+  both chips, so it moves from the VER_17-only switch case into the
+  shared prologue and now also runs for RTL8157.
 
-wait_autoload_done() only reports failure (nonzero) when
-RTL8152_INACCESSIBLE is set; a plain AUTOLOAD_DONE timeout is logged
-but otherwise treated as success, same as every one of the loops it
-replaces, which only bailed out early on RTL8152_INACCESSIBLE and
-otherwise fell through to the rest of the init sequence. The two
-failure modes are not equivalent: once RTL8152_INACCESSIBLE is set,
-generic_ocp_read()/generic_ocp_write() short-circuit to -ENODEV
-without touching the device, so returning early costs nothing. A plain
-timeout means the device is still reachable, so skipping the rest of
-the bring-up would leave real hardware state half-configured.
+Newly added PHY tuning parameters for RTL8159:
+- shorten CLKS latency
+- CMP_Timer on MP_Timer=333
+- spdchg_pga1_lpf_cap
+- ENET PLL jitter improvement
 
-No functional change intended.
+Moreover, change sram2 0x8ffe[15:0] = 0xf450 to 0xf4ff.
+
+Along the way, add sram2_set_bits()/sram2_clr_bits() helpers
+mirroring the existing sram_set_bits()/sram_clr_bits(), and use the
+named OCP_POWER_CFG/EN_10M_PLLOFF/EN_ALDPS_PLLOFF macros in place of
+the raw "ocp_reg_set_bits(tp, 0xa430, BIT(0) | BIT(1))".
 
 Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 ---
- drivers/net/usb/r8152.c | 424 +++++++++++++++++++++++++++-------------
- 1 file changed, 288 insertions(+), 136 deletions(-)
+ drivers/net/usb/r8152.c | 168 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 137 insertions(+), 31 deletions(-)
 
 diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index af3d7dcb2f141..30543c5799232 100644
+index 17162df4826a4..673be55453ef0 100644
 --- a/drivers/net/usb/r8152.c
 +++ b/drivers/net/usb/r8152.c
-@@ -4172,6 +4172,23 @@ static u16 r8153_phy_status(struct r8152 *tp, u16 desired)
- 	return data;
+@@ -655,6 +655,7 @@ enum spd_duplex {
+ /* OCP_POWER_CFG */
+ #define EEE_CLKDIV_EN		0x8000
+ #define EN_ALDPS		0x0004
++#define EN_ALDPS_PLLOFF         0x0002
+ #define EN_10M_PLLOFF		0x0001
+ 
+ /* OCP_EEE_CONFIG1 */
+@@ -1964,6 +1965,16 @@ static void sram2_write_w0w1(struct r8152 *tp, u16 addr, u16 clear, u16 set)
+ 	ocp_reg_write(tp, OCP_SRAM2_DATA, data);
  }
  
-+static int wait_autoload_done(struct r8152 *tp)
++static void sram2_set_bits(struct r8152 *tp, u16 addr, u16 set)
 +{
-+	u16 ocp_data;
-+	int ret;
-+
-+	ret = read_poll_timeout(ocp_read_word, ocp_data,
-+				test_bit(RTL8152_INACCESSIBLE, &tp->flags) ||
-+				(ocp_data & AUTOLOAD_DONE),
-+				20000, 10 * USEC_PER_SEC, false, tp,
-+				MCU_TYPE_PLA, PLA_BOOT_CTRL);
-+
-+	if (ret)
-+		dev_err(&tp->intf->dev, "autoload done timeout\n");
-+
-+	return test_bit(RTL8152_INACCESSIBLE, &tp->flags) ? -ENODEV : 0;
++	sram2_write_w0w1(tp, addr, 0, set);
 +}
 +
- static void r8153b_ups_en(struct r8152 *tp, bool enable)
++static void sram2_clr_bits(struct r8152 *tp, u16 addr, u16 clear)
++{
++	sram2_write_w0w1(tp, addr, clear, 0);
++}
++
+ static void r8152_mdio_clr_bit(struct r8152 *tp, u16 addr, u16 clear)
  {
- 	if (enable) {
-@@ -4190,16 +4207,8 @@ static void r8153b_ups_en(struct r8152 *tp, bool enable)
- 				  UPS_FORCE_PWR_DOWN);
+ 	int data;
+@@ -8131,11 +8142,14 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_PHY_PWR, PFM_PWM_SWITCH);
  
- 		if (ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0) & PCUT_STATUS) {
--			int i;
--
--			for (i = 0; i < 500; i++) {
--				if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--					return;
--				if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
--				    AUTOLOAD_DONE)
--					break;
--				msleep(20);
--			}
-+			if (wait_autoload_done(tp))
-+				return;
+ 	/* Advanced Power Saving parameter */
+-	ocp_reg_set_bits(tp, 0xa430, BIT(0) | BIT(1));
++	ocp_reg_set_bits(tp, OCP_POWER_CFG, EN_10M_PLLOFF | EN_ALDPS_PLLOFF);
  
- 			tp->rtl_ops.hw_phy_cfg(tp);
+ 	/* Disable ALDPS force mode */
+ 	ocp_reg_clr_bits(tp, 0xa44a, BIT(2));
  
-@@ -4227,16 +4236,8 @@ static void r8153c_ups_en(struct r8152 *tp, bool enable)
- 				  UPS_FORCE_PWR_DOWN);
++	/* Disable bypass_turn_off_clk_in_aldps */
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
++
+ 	switch (tp->version) {
+ 	case RTL_VER_16:
+ 		/* XG_INRX parameter */
+@@ -8151,7 +8165,7 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x8078, 0xff00, 0x3000);
  
- 		if (ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0) & PCUT_STATUS) {
--			int i;
--
--			for (i = 0; i < 500; i++) {
--				if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--					return;
--				if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
--				    AUTOLOAD_DONE)
--					break;
--				msleep(20);
--			}
-+			if (wait_autoload_done(tp))
-+				return;
- 
- 			tp->rtl_ops.hw_phy_cfg(tp);
- 
-@@ -7225,22 +7226,14 @@ static void r8152b_init(struct r8152 *tp)
- static void r8153_init(struct r8152 *tp)
- {
- 	u32 ocp_data;
--	int i;
- 
- 	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
- 		return;
- 
- 	r8153_u1u2en(tp, false);
- 
--	for (i = 0; i < 500; i++) {
--		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
--		    AUTOLOAD_DONE)
--			break;
--
--		msleep(20);
--		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--			break;
--	}
-+	if (wait_autoload_done(tp))
+ 		/* green mode */
+-		sram2_write_w0w1(tp, 0x89e9, 0xff00, 0);
++		sram2_clr_bits(tp, 0x89e9, 0xff00);
+ 		sram2_write_w0w1(tp, 0x8ffd, 0xff00, 0x0100);
+ 		sram2_write_w0w1(tp, 0x8ffe, 0xff00, 0x0200);
+ 		sram2_write_w0w1(tp, 0x8fff, 0xff00, 0x0400);
+@@ -8257,12 +8271,85 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x807c, 0xff00, 0x5000);
+ 		sram2_write_w0w1(tp, 0x809d, 0xff00, 0x5000);
+ 		break;
++	default:
++		break;
++	}
++
++	if (rtl_phy_patch_request(tp, true, true))
 +		return;
- 
- 	r8153_phy_status(tp, 0);
- 
-@@ -7341,22 +7334,13 @@ static void r8153_init(struct r8152 *tp)
- 
- static void r8153b_init(struct r8152 *tp)
- {
--	int i;
--
- 	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
- 		return;
- 
- 	r8153b_u1u2en(tp, false);
- 
--	for (i = 0; i < 500; i++) {
--		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
--		    AUTOLOAD_DONE)
--			break;
--
--		msleep(20);
--		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--			break;
--	}
-+	if (wait_autoload_done(tp))
-+		return;
- 
- 	r8153_phy_status(tp, 0);
- 
-@@ -7411,8 +7395,6 @@ static void r8153b_init(struct r8152 *tp)
- 
- static void r8153c_init(struct r8152 *tp)
- {
--	int i;
--
- 	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
- 		return;
- 
-@@ -7425,15 +7407,8 @@ static void r8153c_init(struct r8152 *tp)
- 
- 	ocp_word_set_bits(tp, MCU_TYPE_USB, 0xcbf0, BIT(1));
- 
--	for (i = 0; i < 500; i++) {
--		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
--		    AUTOLOAD_DONE)
--			break;
--
--		msleep(20);
--		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--			return;
--	}
-+	if (wait_autoload_done(tp))
-+		return;
- 
- 	r8153_phy_status(tp, 0);
- 
-@@ -8330,90 +8305,205 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
- 	set_bit(PHY_RESET, &tp->flags);
- }
- 
--static int r8159_wait_backup_restore(struct r8152 *tp)
-+static void r8156_init(struct r8152 *tp)
- {
--	u32 ocp_data;
++
++	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL4, EEE_SPDWN_EN);
++
++	ocp_reg_w0w1(tp, OCP_DOWN_SPEED, EN_EEE_100 | EN_EEE_1000, EN_10M_CLKDIV);
++
++	tp->ups_info._10m_ckdiv = true;
++	tp->ups_info.eee_plloff_100 = false;
++	tp->ups_info.eee_plloff_giga = false;
++
++	ocp_reg_set_bits(tp, OCP_POWER_CFG, EEE_CLKDIV_EN);
++	tp->ups_info.eee_ckdiv = true;
++
++	rtl_phy_patch_request(tp, false, true);
++
++	rtl_green_en(tp, test_bit(GREEN_ETHERNET, &tp->flags));
++
++	ocp_reg_clr_bits(tp, 0xa428, BIT(9));
++	ocp_reg_clr_bits(tp, 0xa5ea, BIT(0) | BIT(1));
++	tp->ups_info.lite_mode = 0;
++
++	if (tp->eee_en)
++		rtl_eee_enable(tp, true);
++
++	r8153_aldps_en(tp, true);
++	r8152b_enable_fc(tp);
++
++	set_bit(PHY_RESET, &tp->flags);
++}
++
++static void r8159_hw_phy_cfg(struct r8152 *tp)
++{
 +	u16 data;
- 
--	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
--	if (!(ocp_data & PCUT_STATUS))
--		return 0;
-+	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+		return;
- 
--	return poll_timeout_us(ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_GPHY_CTRL),
--			       ocp_data & BACKUP_RESTRORE, 200, 20000, false);
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP, EN_ALL_SPEED);
 +
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_SPEED_OPTION, 0);
++	r8156b_wait_loading_flash(tp);
 +
-+	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION, BYPASS_MAC_RESET);
-+
-+	r8153b_u1u2en(tp, false);
-+
-+	if (wait_autoload_done(tp))
-+		return;
++	ocp_word_test_and_clr_bits(tp, MCU_TYPE_USB, USB_MISC_0, PCUT_STATUS);
 +
 +	data = r8153_phy_status(tp, 0);
-+	if (data == PHY_STAT_EXT_INIT)
++	switch (data) {
++	case PHY_STAT_EXT_INIT:
++		rtl8152_apply_firmware(tp, true);
++		ocp_reg_clr_bits(tp, 0xa466, BIT(0));
 +		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
++		break;
++	case PHY_STAT_LAN_ON:
++	case PHY_STAT_PWRDN:
++	default:
++		rtl8152_apply_firmware(tp, false);
++		break;
++	}
 +
 +	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
 +
++	r8153_aldps_en(tp, false);
++
 +	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
-+
-+	r8153_u2p3en(tp, false);
-+
-+	/* MSC timer = 0xfff * 8ms = 32760 ms */
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_MSC_TIMER, 0x0fff);
-+
-+	/* U1/U2/L1 idle timer. 500 us */
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
-+
-+	r8153b_power_cut_en(tp, false);
-+	r8156_ups_en(tp, false);
-+	r8153_queue_wake(tp, false);
-+	rtl_runtime_suspend_enable(tp, false);
-+
-+	if (tp->udev->speed >= USB_SPEED_SUPER)
-+		r8153b_u1u2en(tp, true);
-+
-+	usb_enable_lpm(tp->udev);
-+
-+	r8156_mac_clk_spd(tp, true);
-+
-+	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
-+			  PLA_MCU_SPDWN_EN);
-+
-+	if (rtl8152_get_speed(tp) & LINK_STATUS)
-+		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS,
-+				  CUR_LINK_OK | POLL_LINK_CHG);
-+	else
-+		ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS, CUR_LINK_OK,
-+			      POLL_LINK_CHG);
-+
-+	set_bit(GREEN_ETHERNET, &tp->flags);
-+
-+	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-+			  RX_AGG_DISABLE | RX_ZERO_EN);
-+
-+	ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_BMU_CONFIG, ACT_ODMA);
-+
-+	r8156_mdio_force_mode(tp);
-+	rtl_tally_reset(tp);
-+
-+	tp->coalesce = 15000; /* 15 us */
- }
++	WARN_ON_ONCE(data != PHY_STAT_LAN_ON);
  
--static void r8156_init(struct r8152 *tp)
-+static void r8156b_init(struct r8152 *tp)
- {
- 	u32 ocp_data;
- 	u16 data;
--	int i;
- 
- 	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
- 		return;
- 
--	if (tp->version == RTL_VER_16 || tp->version == RTL_VER_17) {
--		ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xcffe, BIT(3));
--		ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(0));
--	}
++	/* PFM mode */
++	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_PHY_PWR, PFM_PWM_SWITCH);
++
++	/* Advanced Power Saving parameter */
++	ocp_reg_set_bits(tp, OCP_POWER_CFG, EN_10M_PLLOFF | EN_ALDPS_PLLOFF);
++
++	/* Disable ALDPS force mode */
++	ocp_reg_clr_bits(tp, 0xa44a, BIT(2));
++
++	/* Disable bypass_turn_off_clk_in_aldps */
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
++
++	switch (tp->version) {
+ 	case RTL_VER_17_QFN68:
+ 	case RTL_VER_17_QFN100:
+-		/* Disable bypass turn off clk in ALDPS */
+-		ocp_byte_clr_bits(tp, MCU_TYPE_PLA, 0xd3c8, BIT(0));
 -
- 	ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP, EN_ALL_SPEED);
+ 		/* Power level tuning
+ 		 * test mode power level
+ 		 */
+@@ -8272,22 +8359,35 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram_write_w0w1(tp, 0x81ae, 0xff00, 0x0f00);
+ 		sram_write_w0w1(tp, 0x81b9, 0xff00, 0xb900);
+ 		/* normal link TX filter */
+-		sram2_write_w0w1(tp, 0x83b0, 0x0e00, 0);
+-		sram2_write_w0w1(tp, 0x83c5, 0x0e00, 0);
+-		sram2_write_w0w1(tp, 0x83da, 0x0e00, 0);
+-		sram2_write_w0w1(tp, 0x83ef, 0x0e00, 0);
++		sram2_clr_bits(tp, 0x83b0, 0x0e00);
++		sram2_clr_bits(tp, 0x83c5, 0x0e00);
++		sram2_clr_bits(tp, 0x83da, 0x0e00);
++		sram2_clr_bits(tp, 0x83ef, 0x0e00);
++
++		ocp_reg_w0w1(tp, 0xbf38, 0x01f0, 0x0160);
++		ocp_reg_w0w1(tp, 0xbf3a, 0x001f, 0x0014);
++		/* shorten CLKS latency */
++		ocp_reg_clr_bits(tp, 0xbf28, BIT(14) | BIT(13));
++		ocp_reg_clr_bits(tp, 0xbf2c, BIT(15) | BIT(14));
++		/* CMP_Timer on MP_Timer=333
++		 * GPHY OCP 0xbf28 bit[0] = 0x1
++		 * GPHY OCP 0xbf28 bit[6:1] = 0x3
++		 * GPHY OCP 0xbf28 bit[12:7] = 0x3
++		 */
++		ocp_reg_w0w1(tp, 0xbf28, 0x1fff, 0x0187);
++		ocp_reg_w0w1(tp, 0xbf2a, 0x3f, 0x03);
  
--	if (tp->version < RTL_VER_16)
--		ocp_write_word(tp, MCU_TYPE_USB, USB_SPEED_OPTION, 0);
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_SPEED_OPTION, 0);
+ 		/* AFE power saving for 2.5G & 5G */
+ 		sram_write(tp, 0x8173, 0x8620);
+ 		sram_write(tp, 0x8175, 0x8671);
  
- 	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION, BYPASS_MAC_RESET);
+-		sram_write_w0w1(tp, 0x817c, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x8187, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x8192, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x819d, 0, BIT(13));
+-		sram_write_w0w1(tp, 0x81a8, BIT(13), 0);
+-		sram_write_w0w1(tp, 0x81b3, BIT(13), 0);
+-		sram_write_w0w1(tp, 0x81be, 0, BIT(13));
++		sram_set_bits(tp, 0x817c, BIT(13));
++		sram_set_bits(tp, 0x8187, BIT(13));
++		sram_set_bits(tp, 0x8192, BIT(13));
++		sram_set_bits(tp, 0x819d, BIT(13));
++		sram_clr_bits(tp, 0x81a8, BIT(13));
++		sram_clr_bits(tp, 0x81b3, BIT(13));
++		sram_set_bits(tp, 0x81be, BIT(13));
  
--	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_15)
--		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_U2P3_CTRL, RX_DETECT8);
-+	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_U2P3_CTRL, RX_DETECT8);
+ 		sram_write_w0w1(tp, 0x817d, 0xff00, 0xa600);
+ 		sram_write_w0w1(tp, 0x8188, 0xff00, 0xa600);
+@@ -8351,10 +8451,10 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x84b2, 0xff00, 0x6000);
+ 		/* Training AAGC PAR (with uc2 patch) */
+ 		sram2_write(tp, 0x8ffc, 0x6008);
+-		sram2_write(tp, 0x8ffe, 0xf450);
++		sram2_write(tp, 0x8ffe, 0xf4ff);
+ 		/* DAC BGK */
+-		sram2_write_w0w1(tp, 0x8015, 0, BIT(9));
+-		sram2_write_w0w1(tp, 0x8016, 0, BIT(11));
++		sram2_set_bits(tp, 0x8015, BIT(9));
++		sram2_set_bits(tp, 0x8016, BIT(11));
+ 		sram2_write_w0w1(tp, 0x8fe6, 0xff00, 0x0800);
+ 		sram2_write(tp, 0x8fe4, 0x2114);
+ 		/* 10G PBO table */
+@@ -8363,14 +8463,14 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write_w0w1(tp, 0x864b, 0xff00, 0xdc00);
+ 		/* 2.5G ado power window size */
+ 		sram2_write_w0w1(tp, 0x8154, 0xc000, 0x4000);
+-		sram2_write_w0w1(tp, 0x8158, 0xc000, 0);
++		sram2_clr_bits(tp, 0x8158, 0xc000);
+ 		/* 10G lock far */
+ 		sram2_write(tp, 0x826c, 0xffff);
+ 		sram2_write(tp, 0x826e, 0xffff);
+ 		/* XG INRX parameter */
+ 		sram2_write_w0w1(tp, 0x8872, 0xff00, 0x0e00);
+-		sram_write_w0w1(tp, 0x8012, 0, BIT(11));
+-		sram_write_w0w1(tp, 0x8012, 0, BIT(14));
++		sram_set_bits(tp, 0x8012, BIT(11));
++		sram_set_bits(tp, 0x8012, BIT(14));
+ 		ocp_reg_set_bits(tp, 0xb576, BIT(0));
+ 		sram_write_w0w1(tp, 0x834a, 0xff00, 0x0700);
+ 		sram2_write_w0w1(tp, 0x8217, 0x3f00, 0x2a00);
+@@ -8381,7 +8481,7 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		/* improve UBE */
+ 		ocp_reg_set_bits(tp, 0xbf0c, 0x7 << 11);
+ 		/* close Sparse NEC, improve connect 5EUU cable performance */
+-		sram2_write_w0w1(tp, 0x88de, 0xff00, 0);
++		sram2_clr_bits(tp, 0x88de, 0xff00);
+ 		/* 5G slave compatibility issue */
+ 		sram2_write(tp, 0x80b4, 0x5195);
  
- 	r8153b_u1u2en(tp, false);
+@@ -8440,8 +8540,15 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 		sram2_write(tp, 0x8ff8, 0xaa5a);
  
- 	switch (tp->version) {
- 	case RTL_VER_13:
- 	case RTL_VER_15:
--	case RTL_VER_16:
--	case RTL_VER_17:
- 		r8156b_wait_loading_flash(tp);
- 		break;
+ 		sram2_write_w0w1(tp, 0x88d5, 0xff00, 0x0200);
+-		break;
+ 
++		/* spdchg_pga1_lpf_cap */
++		sram_write_w0w1(tp, 0x84bb, 0xff00, 0x0a00);
++		sram_write_w0w1(tp, 0x84c0, 0xff00, 0x1600);
++
++		/* ENET PLL jitter improvement */
++		ocp_reg_w0w1(tp, 0xbf8a, 0xfc00, 0x2000);
++		ocp_reg_set_bits(tp, 0xbf88, BIT(2));
++		break;
  	default:
  		break;
  	}
+@@ -8451,9 +8558,9 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
  
--	for (i = 0; i < 500; i++) {
--		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
--		    AUTOLOAD_DONE)
--			break;
-+	if (wait_autoload_done(tp))
-+		return;
+ 	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL4, EEE_SPDWN_EN);
  
--		msleep(20);
--		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--			return;
-+	data = r8153_phy_status(tp, 0);
-+	if (data == PHY_STAT_EXT_INIT) {
-+		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
-+		ocp_reg_clr_bits(tp, 0xa466, BIT(0));
- 	}
- 
--	if (tp->version == RTL_VER_17 && r8159_wait_backup_restore(tp)) {
--		rtl_set_inaccessible(tp);
--		dev_err(&tp->intf->dev, "init failed, backup-restore timed out\n");
-+	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
-+
-+	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
-+
-+	r8153_u2p3en(tp, false);
-+
-+	/* MSC timer = 0xfff * 8ms = 32760 ms */
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_MSC_TIMER, 0x0fff);
-+
-+	/* U1/U2/L1 idle timer. 500 us */
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
-+
-+	r8153b_power_cut_en(tp, false);
-+	r8156_ups_en(tp, false);
-+	r8153_queue_wake(tp, false);
-+	rtl_runtime_suspend_enable(tp, false);
-+
-+	if (tp->udev->speed >= USB_SPEED_SUPER)
-+		r8153b_u1u2en(tp, true);
-+
-+	usb_enable_lpm(tp->udev);
-+
-+	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
-+
-+	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
-+
-+	/* enable fc timer and set timer to 600 ms. */
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
-+		       CTRL_TIMER_EN | (600 / 8));
-+
-+	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_FW_CTRL);
-+	if (!(ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL) & DACK_DET_EN))
-+		ocp_data |= FLOW_CTRL_PATCH_2;
-+	ocp_data &= ~AUTO_SPEEDUP;
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_FW_CTRL, ocp_data);
-+
-+	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
-+
-+	r8156_mac_clk_spd(tp, true);
-+
-+	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3,
-+			  PLA_MCU_SPDWN_EN);
-+
-+	if (rtl8152_get_speed(tp) & LINK_STATUS)
-+		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS,
-+				  CUR_LINK_OK | POLL_LINK_CHG);
-+	else
-+		ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS,
-+			      CUR_LINK_OK, POLL_LINK_CHG);
-+
-+	set_bit(GREEN_ETHERNET, &tp->flags);
-+
-+	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-+			  RX_AGG_DISABLE | RX_ZERO_EN);
-+
-+	r8156_mdio_force_mode(tp);
-+	rtl_tally_reset(tp);
-+
-+	tp->coalesce = 15000;	/* 15 us */
-+}
-+
-+static void r8157_init(struct r8152 *tp)
-+{
-+	u16 data;
-+
-+	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+		return;
-+
-+	/* Enable SW reset */
-+	ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xcffe, BIT(3));
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(0));
-+
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP, EN_ALL_SPEED);
-+
-+	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION, BYPASS_MAC_RESET);
-+
-+	r8153b_u1u2en(tp, false);
-+
-+	r8156b_wait_loading_flash(tp);
-+
-+	if (wait_autoload_done(tp))
- 		return;
--	}
- 
- 	data = r8153_phy_status(tp, 0);
- 	if (data == PHY_STAT_EXT_INIT) {
- 		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
--		if (tp->version >= RTL_VER_12)
--			ocp_reg_clr_bits(tp, 0xa466, BIT(0));
-+		ocp_reg_clr_bits(tp, 0xa466, BIT(0));
- 	}
- 
--	data = r8152_mdio_read(tp, MII_BMCR);
--	if (data & BMCR_PDOWN) {
--		data &= ~BMCR_PDOWN;
--		r8152_mdio_write(tp, MII_BMCR, data);
--	}
-+	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
- 
- 	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
- 
--	if (tp->version >= RTL_VER_16)
--		r8157_u2p3en(tp, false);
--	else
--		r8153_u2p3en(tp, false);
-+	r8157_u2p3en(tp, false);
- 
- 	/* MSC timer = 0xfff * 8ms = 32760 ms */
- 	ocp_write_word(tp, MCU_TYPE_USB, USB_MSC_TIMER, 0x0fff);
-@@ -8421,11 +8511,7 @@ static void r8156_init(struct r8152 *tp)
- 	/* U1/U2/L1 idle timer. 500 us */
- 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
- 
--	if (tp->version >= RTL_VER_16)
--		r8157_power_cut_en(tp, false);
--	else
--		r8153b_power_cut_en(tp, false);
+-	ocp_reg_w0w1(tp, OCP_DOWN_SPEED, EN_EEE_100 | EN_EEE_1000, EN_10M_CLKDIV);
 -
-+	r8157_power_cut_en(tp, false);
- 	r8156_ups_en(tp, false);
- 	r8153_queue_wake(tp, false);
- 	rtl_runtime_suspend_enable(tp, false);
-@@ -8435,58 +8521,124 @@ static void r8156_init(struct r8152 *tp)
+-	tp->ups_info._10m_ckdiv = true;
++	ocp_reg_clr_bits(tp, OCP_DOWN_SPEED,
++			 EN_EEE_100 | EN_EEE_1000 | EN_10M_CLKDIV);
++	tp->ups_info._10m_ckdiv = false;
+ 	tp->ups_info.eee_plloff_100 = false;
+ 	tp->ups_info.eee_plloff_giga = false;
  
- 	usb_enable_lpm(tp->udev);
+@@ -8465,11 +8572,10 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 	rtl_green_en(tp, test_bit(GREEN_ETHERNET, &tp->flags));
  
--	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_15) {
--		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
-+	r8156_mac_clk_spd(tp, true);
-+
-+	if (rtl8152_get_speed(tp) & LINK_STATUS)
-+		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS,
-+				  CUR_LINK_OK | POLL_LINK_CHG);
-+	else
-+		ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS,
-+			      CUR_LINK_OK, POLL_LINK_CHG);
-+
-+	set_bit(GREEN_ETHERNET, &tp->flags);
+ 	ocp_reg_clr_bits(tp, 0xa428, BIT(9));
+-	ocp_reg_clr_bits(tp, 0xa5ea, BIT(0) | BIT(1));
++	ocp_reg_clr_bits(tp, 0xa5ea, BIT(0) | BIT(1) | BIT(2));
+ 	tp->ups_info.lite_mode = 0;
  
--		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
-+	/* RX aggregation / 16 bytes RX descriptor */
-+	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-+			  RX_AGG_DISABLE | RX_DESC_16B);
+-	if (tp->eee_en)
+-		rtl_eee_enable(tp, true);
++	rtl_eee_enable(tp, tp->eee_en);
  
--		/* enable fc timer and set timer to 600 ms. */
--		ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER, CTRL_TIMER_EN | (600 / 8));
-+	/* Disable Rx Zero Len */
-+	rtl_bmu_clr_bits(tp, 0x2300, BIT(3));
- 
--		ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_FW_CTRL);
--		if (!(ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL) & DACK_DET_EN))
--			ocp_data |= FLOW_CTRL_PATCH_2;
--		ocp_data &= ~AUTO_SPEEDUP;
--		ocp_write_word(tp, MCU_TYPE_USB, USB_FW_CTRL, ocp_data);
-+	/* TX descriptor Signature */
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd4ae, BIT(1));
- 
--		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
-+	r8156_mdio_force_mode(tp);
-+	rtl_tally_reset(tp);
-+
-+	tp->coalesce = 15000;	/* 15 us */
-+}
-+
-+static int r8159_wait_backup_restore(struct r8152 *tp)
-+{
-+	u32 ocp_data;
-+
-+	ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0);
-+	if (!(ocp_data & PCUT_STATUS))
-+		return 0;
-+
-+	return poll_timeout_us(ocp_data = ocp_read_word(tp, MCU_TYPE_USB, USB_GPHY_CTRL),
-+			       ocp_data & BACKUP_RESTRORE, 200, 20000, false);
-+}
-+
-+static void r8159_init(struct r8152 *tp)
-+{
-+	u16 data;
-+
-+	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+		return;
-+
-+	/* Enable SW reset */
-+	ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xcffe, BIT(3));
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(0));
-+
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP, EN_ALL_SPEED);
-+
-+	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION, BYPASS_MAC_RESET);
-+
-+	r8153b_u1u2en(tp, false);
-+
-+	r8156b_wait_loading_flash(tp);
-+
-+	if (wait_autoload_done(tp))
-+		return;
-+
-+	if (r8159_wait_backup_restore(tp)) {
-+		rtl_set_inaccessible(tp);
-+		dev_err(&tp->intf->dev,
-+			"init failed, backup-restore timed out\n");
-+		return;
- 	}
- 
--	r8156_mac_clk_spd(tp, true);
-+	data = r8153_phy_status(tp, 0);
-+	if (data == PHY_STAT_EXT_INIT) {
-+		ocp_reg_clr_bits(tp, 0xa468, BIT(3) | BIT(1));
-+		ocp_reg_clr_bits(tp, 0xa466, BIT(0));
-+	}
- 
--	if (tp->version < RTL_VER_16)
--		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_MAC_PWR_CTRL3, PLA_MCU_SPDWN_EN);
-+	r8152_mdio_test_and_clr_bit(tp, MII_BMCR, BMCR_PDOWN);
-+
-+	data = r8153_phy_status(tp, PHY_STAT_LAN_ON);
-+
-+	r8157_u2p3en(tp, false);
-+
-+	/* MSC timer = 0xfff * 8ms = 32760 ms */
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_MSC_TIMER, 0x0fff);
-+
-+	/* U1/U2/L1 idle timer. 500 us */
-+	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
-+
-+	r8157_power_cut_en(tp, false);
-+	r8156_ups_en(tp, false);
-+	r8153_queue_wake(tp, false);
-+	rtl_runtime_suspend_enable(tp, false);
-+
-+	if (tp->udev->speed >= USB_SPEED_SUPER)
-+		r8153b_u1u2en(tp, true);
-+
-+	usb_enable_lpm(tp->udev);
-+
-+	r8156_mac_clk_spd(tp, true);
- 
--	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS);
- 	if (rtl8152_get_speed(tp) & LINK_STATUS)
--		ocp_data |= CUR_LINK_OK;
-+		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS,
-+				  CUR_LINK_OK | POLL_LINK_CHG);
- 	else
--		ocp_data &= ~CUR_LINK_OK;
--	ocp_data |= POLL_LINK_CHG;
--	ocp_write_word(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS, ocp_data);
-+		ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_EXTRA_STATUS,
-+			      CUR_LINK_OK, POLL_LINK_CHG);
- 
- 	set_bit(GREEN_ETHERNET, &tp->flags);
- 
- 	/* RX aggregation / 16 bytes RX descriptor
- 	 * BIT(11) is specific to RTL8159, with unknown meaning
- 	 */
--	if (tp->version == RTL_VER_17)
--		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
--				  RX_AGG_DISABLE | RX_DESC_16B | BIT(11));
--	else if (tp->version == RTL_VER_16)
--		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_DESC_16B);
--	else
--		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL, RX_AGG_DISABLE | RX_ZERO_EN);
-+	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
-+			  RX_AGG_DISABLE | RX_DESC_16B | BIT(11));
- 
--	if (tp->version < RTL_VER_12)
--		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_BMU_CONFIG, ACT_ODMA);
-+	/* Disable Rx Zero Len */
-+	rtl_bmu_clr_bits(tp, 0x2300, BIT(3));
- 
--	if (tp->version >= RTL_VER_16) {
--		/* Disable Rx Zero Len */
--		rtl_bmu_clr_bits(tp, 0x2300, BIT(3));
--		/* TX descriptor Signature */
--		ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd4ae, BIT(1));
--	}
-+	/* TX descriptor Signature */
-+	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd4ae, BIT(1));
- 
- 	r8156_mdio_force_mode(tp);
- 	rtl_tally_reset(tp);
-@@ -9812,7 +9964,7 @@ static int rtl_ops_init(struct r8152 *tp)
- 		tp->eee_en		= true;
- 		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
- 		tp->eee_adv2		= MDIO_EEE_2_5GT;
--		ops->init		= r8156_init;
-+		ops->init		= r8156b_init;
- 		ops->enable		= rtl8156_enable;
- 		ops->disable		= rtl8153_disable;
- 		ops->up			= rtl8156_up;
-@@ -9851,7 +10003,7 @@ static int rtl_ops_init(struct r8152 *tp)
- 		tp->eee_en		= true;
- 		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
- 		tp->eee_adv2		= MDIO_EEE_2_5GT | MDIO_EEE_5GT;
--		ops->init		= r8156_init;
-+		ops->init		= r8157_init;
- 		ops->enable		= rtl8156_enable;
- 		ops->disable		= rtl8153_disable;
- 		ops->up			= rtl8156_up;
-@@ -9873,7 +10025,7 @@ static int rtl_ops_init(struct r8152 *tp)
- 		tp->eee_en		= true;
- 		tp->eee_adv		= MDIO_EEE_100TX | MDIO_EEE_1000T | MDIO_EEE_10GT;
- 		tp->eee_adv2		= MDIO_EEE_2_5GT | MDIO_EEE_5GT;
--		ops->init		= r8156_init;
-+		ops->init		= r8159_init;
- 		ops->enable		= rtl8156_enable;
- 		ops->disable		= rtl8153_disable;
- 		ops->up			= rtl8156_up;
+ 	r8153_aldps_en(tp, true);
+ 	r8152b_enable_fc(tp);
+@@ -10262,7 +10368,7 @@ static int rtl_ops_init(struct r8152 *tp)
+ 		ops->eee_get		= r8153_get_eee;
+ 		ops->eee_set		= r8152_set_eee;
+ 		ops->in_nway		= rtl8153_in_nway;
+-		ops->hw_phy_cfg		= r8157_hw_phy_cfg;
++		ops->hw_phy_cfg		= r8159_hw_phy_cfg;
+ 		ops->autosuspend_en	= rtl8157_runtime_enable;
+ 		ops->change_mtu		= rtl8156_change_mtu;
+ 		tp->rx_buf_sz		= 48 * 1024;
 -- 
 2.34.1
 
