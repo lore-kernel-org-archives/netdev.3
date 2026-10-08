@@ -1,73 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140003BF68D;
-	Thu,  8 Oct 2026 06:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791440144; cv=none; b=WOzzBKYAuGhGoyis/lDD53nsnrRnuXn3/01AG9ZDFd9kp6IvjE6qVNaeKaCh4u+jw3C07IW7cdNNpj9xmdNR19NxL3hCIlf+8MJqbScKD15P9ab+ry9m8YRGPDxnD+uPjkVeSY0dWDyMnFT0a9JRFjzYEQJ6p/SxVV4+uRCk+EI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791440144; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WwTEezonSz5dsjLPScuHdkIBnpvK3NjyX0G3fzTU0f43QXtHsYiyIJB2apynC8dqiKLhWbfFNQHSOWAZZsiaR/+tAPmF7doYdNujjpMVlSvR/8Qyxb0D6Dfx7HHj0NGiM79JgR3FQDzbxiJoVwhymEqqX23O/t4TVjiGm8GVSpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4u3FAzQ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5C43C062A
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 06:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791440815; cv=pass; b=BhdY28ALaaz61jmSJ5EBH+JlaerndCris6dTB8SIT6t7zipTC2WAW9mntVs9sdoWnHpAHttYft4EyqcTb6KOGYrgdw6vtuN5B6x9Tq5QbbWviqJ53mT1Ij9gQ2gAPGKx6+ZmG8DBeff5eXmwJk0rjePGzKJs44njuj2TWtzJNTU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791440815; c=relaxed/simple;
+	bh=8vVAdJqYOL+ADapkFtSl2CCafn56786jZvzqU7pet3w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d3Whl79MniU0iAp6Uil176uiwuW2FGjbVqZrUvJlekuY+r9v5iWENHWiKzsB6V/H5cunVJLdvAipRQ2I2YCmeKTYgp/Dw4MEtUuZOG6DQoRcNo6yxb3l1wzN1W4v7QgtYb3hhuLMDeCDOE1kw5WtGNMr49gkTK8IEijtTFq0gpI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YCsH55qG; arc=pass smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4u3FAzQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979151F000FF;
-	Thu,  8 Oct 2026 06:15:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791440143;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f4u3FAzQwto4KlU3Ea825SSGHimwCMACpMKGn0jYktSxKcGMh8WkW8LIJfokO2Kbq
-	 0Jxgnjoo6VTEATQljDOXIAGpinttMU4MoYUIkCe2223IEEGJOb3flU4lsLWDLI9v+D
-	 LMX4UpBOLd9CzBFJYFEee2qFsFXj8mp/TeMwqpj4S/I/PZFPZx6DhqBZi5VnJYnCQW
-	 osJ06vlIhfcSmcWHKvQ0kFrsVR7wdGvww2cQ4vnVNOofUezgMbi5G1rvpMMpaGkAFo
-	 bT91EJjkyrb7TD8QW+LfCrO+eG/Z1LwOR+L1TcVRtbMlGGminxKoMI+cf1aZ3n4Ws7
-	 qPl2ScmL4sAYg==
-From: netdev-bot+sinfo@kernel.org
-To: hexlabsecurity@proton.me
-Cc: Sidraya Jayagond <sidraya@linux.ibm.com>,
- "D. Wythe" <alibuda@linux.alibaba.com>, Eric Dumazet <edumazet@kernel.org>,
- Mahanta Jambigi <mjambigi@linux.ibm.com>, Dust Li <dust.li@linux.alibaba.com>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, Stefan Raspl <raspl@linux.ibm.com>,
- Tony Lu <tonylu@linux.alibaba.com>, Hidayath Khan <hidayath@linux.ibm.com>,
- Ursula Braun <ubraun@linux.ibm.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>,
- linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
- Wen Gu <guwen@linux.alibaba.com>, Wenjia Zhang <wenjia@linux.ibm.com>
-Subject: Re: [PATCH net v6 0/3] net/smc: bound wire-controlled CDC cursors
- against the local buffers
-Date: Thu, 08 Oct 2026 06:15:42 +0000
-Message-ID: <179144014211.2527009.14229815515603894076@kernel.org>
-In-Reply-To: <20261008-b4-disp-f7cd3d96-v6-0-fba616c0920c@proton.me>
-References: <20261008-b4-disp-f7cd3d96-v6-0-fba616c0920c@proton.me>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YCsH55qG"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30b6dad2382so5993711eec.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 23:26:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791440813; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mtV0avJDERPeg3QYbz2+eBpsLgMvZHFNVGuWnj+8tC8Rm/iRzt07khWlHxgpoMTXxZ
+         gBNqJ6yF9DSHQ1A/FttMg3mJ8f0ppO4Q0jZbJYwInOce3e028IhlRXvqDTbWEyrIvesg
+         0Ibwbjt8L/Zfk8cUkX2toYo7RAd1K8Jz53YWhMOe4i52DMeJi1r6FlOW2MlUZzRXMbdQ
+         6sVtOKOnXs/7xrwsOBebz0IqBsjpsogTyZfw/dGHWB/grXufucpXzZ98czv90pwVPc0s
+         guXcg50DXXVZ60T4HF07CVCiEb/HU8IcEv7+kaHeVAN+3T9eXq2yU2Wiz07S07FT9QsW
+         YUqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8vVAdJqYOL+ADapkFtSl2CCafn56786jZvzqU7pet3w=;
+        fh=J8LDRph6KCLQO9zEEJuxHlX68aO+TjBjV13bHkEjZcU=;
+        b=e8PnNLUUqq5H11OHHKuXz2uk/vo+bZ/cyhMcnCTnXx4hMxRm6bsPSRDWfKEtAIY/oZ
+         uLLiR5ASve8PJyn0ZVpJIgf5LxsuBvbz1F8+95QzoUZr86sgSmnYNNjl1fNeUUiEK96q
+         U4z+39L1nntCneVQn0YA/cvw/Sc8NlskAzHj6k/7BlPquN7V6WxCa73XhzuwuEQQlwkw
+         8hdww2DXEIcupyZQpgg4Ba5cF5je6VaJvg1fkddTqOex8huSm4gF7CDQcCRgQ1jnL4Bw
+         68DlJLa80VJ43O+651c3Wa6OKvbi8mnocRO7pJq33OwxHekWsiIrRZjUAU1HPLduiIRT
+         Wx6A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791440813; x=1792045613; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8vVAdJqYOL+ADapkFtSl2CCafn56786jZvzqU7pet3w=;
+        b=YCsH55qG+7e6u3aqcScSLsz6pbqmJnUckEVNfedK6TgfU8Z9f7KUJ0NIQTa8Kpztzb
+         nDedMeOSpp6HTXQLIsa/l+IgllCY4xIYv8La1s+bS1tbBnJ3F6NsiWE7DCACX6pnL0jA
+         4fu1e/+9gsLRlmK3k+f+KjxvsHgtU37M5o/Yw1XlNoLfaUXMMhGEogOb8Ee2l3rpSIAg
+         avzXKSnXLd7yLnKfXFmVLQDX1c7SCBdb246RkqgCZ013IMUtMLkBbRNvUTTCE673nn/8
+         c3UIgeAA7qbmgybdsH267DETJ6vT05H1CFODipWU62BdJHwEbMI9DsVZfuhe4ysHXfsF
+         +0Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791440813; x=1792045613;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8vVAdJqYOL+ADapkFtSl2CCafn56786jZvzqU7pet3w=;
+        b=SGCMQ9crALlsfaCfX2jm/KtDq1UgqI8d08WXfwjnId34c8teF6rNom81aqlxdtxW38
+         FvmpsmdxrpX/wlXgbbJjedZXNM7FVoo0lUZw8ge8HkMjwBZW2MLllIIUCkGFm/mGrvbl
+         fkCYXuWPo8xuc9CQ/9t8Fs3UuasCd8U1MYgLcKYaIZu0t4WV23WuxjZ7UnYAradjIIOP
+         WKM+6yW1XworI/LpihGGRFtwEvCeW4ubcDAMmcg1yFf89x1FQf6pZxLsRxen5brOkUCk
+         /1O393HVp9qU4XyKLr4VYS+BN5cP55yO+aIQ6Rwce1toMAPPSiNcm214Haz8n6wDBTRp
+         ktvA==
+X-Gm-Message-State: AFuF++npxvXBjSB8aCaus72d8VXqykE49HjgpnSxQufOoboIFgqMjhiV
+	v7FU7ktj6/gEmU3t8roxwAIeEcr8Nmkeyua5m/nYSV9fhK/rKxcgavkU6c2eSK1nYpi6wlHKKat
+	qG9AP+dKPrtRxavcMvnQfAEPUaJg6Z8K5KUihZHIt
+X-Gm-Gg: AYBFou16ABNvymGqIfbey4uIeoN2C4xufFRh4HZFwIaAOOpp09r3gT3qiVqP5Zza78d
+	gg+DwJp5lbLhDYYbTuHv2+MhL5rjaNcYm5/cQqUt0kwSqSvaqh3uUPsfHrzgPNTCQohzogGmygF
+	keHve1Z2W8FwJREcstAvI2f7FYX9BuYthlKtgiJETbwVO6RUTU6mBLGeM6VD31FCuwqXza//PEx
+	9qRkhTvC86T6cWuOXnNhCpemYVFIy3gFDp068jpCzWiMsQ/YwtTAaMoiyvPwLULj2xkwQugOYPs
+	+fN1J+vtdf8PCmbiN7SepAjxd3mFf3qDTWVhzcixksGSwp1aVOaqX9+aZ6+2sPUyGudriC22Mjo
+	fOTqxWR6Zk1w9Thpuy5gvjNW5Eoima52UISJFKRak9ZdQrRtnyDePBP/048lg45c7jUQSDgAB9s
+	YNAIC9A6WpISC5FPgGGrCp19+O
+X-Received: by 2002:a05:701b:241a:b0:14b:2ef:9821 with SMTP id
+ a92af1059eb24-161fdbee28amr5081076c88.3.1791440812346; Wed, 07 Oct 2026
+ 23:26:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261008055233.3413445-1-sahaj123.sc@gmail.com>
+In-Reply-To: <20261008055233.3413445-1-sahaj123.sc@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 7 Oct 2026 23:26:39 -0700
+X-Gm-Features: AclHuK_6KN2ZkAkZI5-CoJRDyPSkt1Y9b6vXV5rGVVGfwb6qixN0dbXfsSvTFvw
+Message-ID: <CAAVpQUAFcwCefyELhccLvKutz3ZhNYv8fyh7ezyQRoVDZzWTRA@mail.gmail.com>
+Subject: Re: [RFC net-next] selftests: af_unix: test zero-length MSG_PEEK with
+ OOB data
+To: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Wed, Oct 7, 2026 at 10:51=E2=80=AFPM Sahaj Chaudhari <sahaj123.sc@gmail.=
+com> wrote:
+>
+> A zero-length MSG_PEEK on an AF_UNIX stream socket can busy-loop when
+> an OOB skb is queued. Add a regression test that sends MSG_OOB and
+> checks that recv(..., 0, MSG_PEEK) returns promptly in a child process.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+This is covered in msg_oob.c.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+---
+pw-bot: rejected
