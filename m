@@ -1,246 +1,157 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF562435515
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A425149E5C7;
+	Thu,  8 Oct 2026 12:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791464153; cv=none; b=L/GqkIOpG2JsjDtZHfj8+S02auOlzndXU92Wjeh+fLJ+ee4+5jqbUDHexwGRprPfJ3BoTJpv+nggW3BubEPKxFNf1mZ6Obp3mau/qdKNrwn1kNHoYQcahQzYl6JYpn1koj7TIExT+blzfwiOms5olC3z5/TBJJg/jMN3kwPT/CE=
+	t=1791464341; cv=none; b=R5sCOUfnVBg+B0JS5gLVjQSo5gEVSafphPWhAs944EpV6OBkpbz+9PenHHqPZhlp7UfMOexrT0I8Rxs7KSQ3DOdW6OYS6od9NB21/vn0yy8Ii8YCENlIRSccwMPVBE6S8aR+XX4t/Q1Rg7DIaM23ftmAiXQ/mvNrR771EyZLuoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791464153; c=relaxed/simple;
-	bh=hcMe2LEaGKIqGNVLs9Ml3fZ/uvrjzyPZHHynwgsJCEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V7RTjxgMr3iQCHizOgbT4+E2ePyfUjdeNQqyIX03tO//LWojerZngXKf5p/LdYMmgyy5biEOMeBPZX6ZxXu2GILtazDeVaTGnGECHZUqgRxKaXDMHKiqK4ThkGdkF1urazaTiDIjotQdxU+Y02sRiTz81jtcJzhaLLNZ+DwTCh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=duglzlqV; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LIKnxodr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791464341; c=relaxed/simple;
+	bh=DhEd5i5pKXd3AEBuOFthq56R7qyDiuJgPQI3ItLa7OM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DtFH9FpfMirFpG728D6QxI67Rw3lpNqqyxWP5DpvemKbsR+yHADazzmsB/47qImEAs8ZnPpT6NrDnx9mo9SE0ArVYiJApH8XAwiSBQeE7r48TdSL/AmZUJhaUHdW7xe+GD5s5zGyDVn7hc6adRTuFaSV7l/Wfb+ymIqfomCDEso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=LiH/tPoO; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="duglzlqV";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LIKnxodr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791464150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pHDa4z9jnDXGGb+hEZleBywrVCv4SURdHVsUl7weYzs=;
-	b=duglzlqVS+r4Hqg4+wVLNm89KIQ9mvGWKdjTf/r0tWpy7b9eLhaP0IUuhr8HjzlhVHFc/D
-	3MFQnh41QyfwVVqst/hqbuppU3F3mghPXGnCOCEWsvNkcHRyfZRUtst+9jifWhFDMHyfoR
-	reIRG406jLX1XnJn7ME54HOzeh9x7ss=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-434-bt_oE6SGOYifk_EMOw7_0w-1; Thu, 08 Oct 2026 08:55:49 -0400
-X-MC-Unique: bt_oE6SGOYifk_EMOw7_0w-1
-X-Mimecast-MFC-AGG-ID: bt_oE6SGOYifk_EMOw7_0w_1791464148
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49fcc575709so52510175e9.3
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:55:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791464148; x=1792068948; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pHDa4z9jnDXGGb+hEZleBywrVCv4SURdHVsUl7weYzs=;
-        b=LIKnxodr/CWkMz1CD+ALEe491w//nAbbbwUtReQ/ISs9FnQgWA1bO5jAsvwbTnHpYV
-         M2OUda2LDGGRXciJhGYb70drbK9JnAa4B7FmIIbzAIH+KGg0vr8VbF9MwetG1Jot5uoH
-         1jB7plwoJ9xYZq6PyemJXGNzNP7Lm+M14k/9nE50bOfIYXqdNleJrfYQuf5oKZrWiDRY
-         e9lyEAQoildubV0S1JmEpZQTn1JqfliYs/mG8t2rzl188Xed+3j7c1x9/KkFUj0W9U3j
-         qQoSXS7IhXYBgMyYCO1NNnMZPeZXjycI7fe3UgcqMUy0FZTpEKpVmvOQw/Bp9V5JH0vE
-         f+CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791464148; x=1792068948;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=pHDa4z9jnDXGGb+hEZleBywrVCv4SURdHVsUl7weYzs=;
-        b=h3FDK3E6d8CLXSxCOeWj+HbXOjDNP83jjInpclkqE/x4N2imV5m92mnSsqjS5kGMjD
-         sZeYcPkdDdSC2IunINIKD2Nb6wlWlnl3ZcDXn7TTnD70odlQ5KC992kF5r7Cbh8VbqLs
-         evjJeQNYlgIX3CtqCDBhjzI5fLsFgmW5zx5fP+mDN/FY/yNMNQIfmpF+FUTE8vJXyyD1
-         K4CvBYIJV0AfDW/9jodoE56DBpDbiWRejXkmlXhuNERBcvgcH348nwfAeMRJsPpFL2bC
-         BOZBOqUcvL+gD5poWjXHfrxZIb8QEtRIJgNI8MgKZ5CJn/IAgvdSXbzV5/MGhImbbswr
-         nTZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBziHcWBYse8X+Mb+Ja98U9BKUk22vYqNPc4Ka2bunUtA5EiqzzRMzgaIVSNUcxg1nrpcNHyLUA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lUwbDzHWpx/UXpqut6IKz35wkkp0zWFYd/7+9XMSe5FA59b6Gg
-	mq8jWaqXY/joZMj5KsRQP2hy8RcGR630N230gqNsGCmBvCJe28pL6RwozGCBhdJRRLAUvaT7JLJ
-	nOXLez0pxohgQzD63MzQuWPZg2EEjG3kV1ugcQ7NV6upqncUoCO6w4UOYtQ==
-X-Gm-Gg: AYBFou2cyBNjT2lr445LrgUO8ZPLTJI6EstwinCYyAXkzF0Qm0g5kodjKvO481UNNEW
-	+xxEIlGWfur8xNSb1Oe4n5gmYN1uwhpFs8wJgbVZUSokGatu1NSUdRURiTIu+o9BVHVIvJ0N05g
-	uTRwLWFqJGmIWP983R2R6hghJAMfBvrN02SYChP/PzGZoMg6OF1bCHhA5SPLdGYIKWdXcVm5xQt
-	o7u7sBa8weW/m3F4wc8XO3dtILVd7kIlKa3ZQqH9P/p7y2Kw0KNDVjLw3MFFzQCPIVtX9ZzCZUV
-	bzAgETm+oKtz8MDuvlJwyfAQlrOz9EkTdBbt/+pNXB+hpZjFsOgkCOtZg5WCk3/+DYGndSrQyQI
-	9hO9qWiW+KEBmlbgB73QIVZd384C136T3
-X-Received: by 2002:a05:600c:e548:10b0:4a1:813f:2a65 with SMTP id 5b1f17b1804b1-4a1813f2d75mr65665225e9.15.1791464147974;
-        Thu, 08 Oct 2026 05:55:47 -0700 (PDT)
-X-Received: by 2002:a05:600c:e548:10b0:4a1:813f:2a65 with SMTP id 5b1f17b1804b1-4a1813f2d75mr65664965e9.15.1791464147562;
-        Thu, 08 Oct 2026 05:55:47 -0700 (PDT)
-Received: from mheib-thinkpadp16vgen1.rmtil.csb ([216.128.14.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1802cdf24sm93045815e9.2.2026.10.08.05.55.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 05:55:47 -0700 (PDT)
-Date: Thu, 8 Oct 2026 15:55:19 +0300
-From: Mohammad Heib <mheib@redhat.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: anthony.l.nguyen@intel.com, davem@davemloft.net, kuba@kernel.org, 
-	pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch, 
-	netdev@vger.kernel.org, przemyslaw.kitszel@intel.com, jiri@resnulli.us, horms@kernel.org, 
-	corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, 
-	linux-doc@vger.kernel.org, sx.rinitha@intel.com
-Subject: Re: [PATCH net-next 1/3] i40e: move ATR sample rate from ring to PF
- level
-Message-ID: <aseRoSoLr-obT5Ms@mheib-thinkpadp16vgen1.rmtil.csb>
-References: <20260917204541.3072415-2-anthony.l.nguyen@intel.com>
- <179002634029.2160803.4618287131417011270@kernel.org>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="LiH/tPoO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Mr
+	cCKlAt0s4Z5C37o82vZjoMrryZh2UceEpNbjZksCE=; b=LiH/tPoO5CDory7wIH
+	OY5k7QYbyo3/LrWXisAIPGx7y6V77Gl3y5wDTFY8NYk6aERtO3aZrcPheJ5tFWvd
+	pjFUYnDzz1iaO2h5bNGIfykj+t+1m1QTNHpYp7Wovk1ihQ9bump0b4haKSe6JuLi
+	Wemt2YCuGvljS8ZxnX/01A73Y=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PykvCgD3v8NWk8dqh6CpBA--.7046S5;
+	Thu, 08 Oct 2026 20:58:03 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH iwl-net v3 3/3] ice: free the VF MSI-X vectors when VF start fails
+Date: Thu,  8 Oct 2026 20:57:54 +0800
+Message-Id: <20261008125754.3520773-4-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261008125754.3520773-1-xiaolinkui@126.com>
+References: <20261008125754.3520773-1-xiaolinkui@126.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179002634029.2160803.4618287131417011270@kernel.org>
+X-CM-TRANSID:PykvCgD3v8NWk8dqh6CpBA--.7046S5
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCF43Xw17GF47WrW5AFy7ZFb_yoWrXw4Upr
+	Z5Zr9xKr4kJF17W395Ww1UZas3CayftFWru340kw1Skws8GryaqF1UKryavFyxGa97Aaya
+	vw4Dur1ruw1DJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UH5lnUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBuHXmrHk1s3YwAA3n
 
-On Mon, Sep 21, 2026 at 09:32:20PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 1 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [High] Concern (discarded on baseline verification): removing the per-
->   ring atr_sample_rate decoupled the software ATR gate from…
-> - [Medium] Undisclosed user-visible behaviour change: "i40e: move ATR
->   sample rate from ring to PF level" is written as a pure storage…
-> 
-> --
-> 
-> i40e: move ATR sample rate from ring to PF level
-> 
-> This moves atr_sample_rate out of struct i40e_ring and into struct i40e_pf,
-> initializing it once in i40e_sw_init() instead of in i40e_configure_tx_ring().
-> i40e_atr() now reads the PF-level value, and ring->atr_count grows from u8 to
-> u32.
-> 
-> > diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> > index abbc71e815ae3..0a4272e1ab070 100644
-> > --- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-> > +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> > @@ -3458,12 +3458,7 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
-> >  		ring->xsk_pool = i40e_xsk_pool(ring);
-> >  
-> >  	/* some ATR related tx ring init */
-> > -	if (test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags)) {
-> > -		ring->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
-> > -		ring->atr_count = 0;
-> > -	} else {
-> > -		ring->atr_sample_rate = 0;
-> > -	}
-> > +	ring->atr_count = 0;
-> 
-> [Severity: Medium]
-> The commit message describes this as a storage relocation: "Since the sample
-> rate is a global policy that applies uniformly across all rings, it makes more
-> sense to store it at the PF level."  Does dropping this conditional also change
-> when the writable "flow-director-atr" private flag takes effect?
-> 
-> Before this patch, the per-ring rate was latched from I40E_FLAG_FD_ATR_ENA at
-> the time the Tx ring was configured, and i40e_atr() bailed out on
-> !tx_ring->atr_sample_rate.  i40e_set_priv_flags() does not add
-> I40E_FLAG_FD_ATR_ENA to reset_needed and only handles the disable direction:
-> 
-> 	/* Flush current ATR settings if ATR was disabled */
-> 	if (test_bit(I40E_FLAG_FD_ATR_ENA, changed_flags) &&
-> 	    !test_bit(I40E_FLAG_FD_ATR_ENA, new_flags)) {
-> 		set_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
-> 		set_bit(__I40E_FD_FLUSH_REQUESTED, pf->state);
-> 	}
-> 
-> So on a live interface whose rings were configured while ATR was off,
-> "ethtool --set-priv-flags ethX flow-director-atr on" did not resume sampling
-> until an ifdown/ifup or a PF reset.  With the PF-level rate now always
-> non-zero, the flag alone re-enables descriptor generation immediately.
-> 
-> Could the commit message mention this user-visible semantic change, and should
-> it carry a Fixes tag if the old latching behaviour was considered a bug?
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-Yes, this is a real behavior change. The v5 commit message now documents
-it explicitly.
-> 
-> [ ... ]
-> 
-> > @@ -12740,6 +12735,8 @@ static int i40e_sw_init(struct i40e_pf *pf)
-> >  		}
-> >  	}
-> >  
-> > +	pf->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
-> > +
-> >  	if ((pf->hw.func_caps.fd_filters_guaranteed > 0) ||
-> >  	    (pf->hw.func_caps.fd_filters_best_effort > 0)) {
-> >  		set_bit(I40E_FLAG_FD_ATR_ENA, pf->flags);
-> 
-> [Severity: High]
-> This assignment is unconditional and happens before the Flow Director
-> capability detection below it.  Can that decouple the software ATR gate from
-> the Flow Director enable bit programmed into the Tx queue context?
-> 
-> i40e_configure_tx_ring() still snapshots the flags into the HMC context:
-> 
-> 	if (test_bit(I40E_FLAG_FD_SB_ENA, vsi->back->flags) ||
-> 	    test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags))
-> 		tx_ctx.fd_ena = 1;
-> 
-> The matching software snapshot (ring->atr_sample_rate) is what this patch
-> removes, so after toggling "flow-director-atr" on without a reconfiguration,
-> i40e_atr() would pass the new gate:
-> 
-> 	sample_rate = READ_ONCE(pf->atr_sample_rate);
-> 	if (!sample_rate)
-> 		return;
-> 
-> and go on to write an I40E_TX_DESC_DTYPE_FILTER_PROG descriptor and advance
-> tx_ring->next_to_use on a queue whose context was programmed with fd_ena = 0.
-> Would that produce an MDD event or bogus FD programming status on that queue?
-> 
-> For completeness, the later patch in this series, "i40e: trigger PF reset when
-> re-enabling ATR via ethtool", adds a reset on the enable transition in
-> i40e_set_priv_flags(), which re-programs the queue contexts and addresses this
-> for the series as a whole.  It does leave a window between
-> bitmap_copy(pf->flags, new_flags) and i40e_do_reset(), and it means this
-> intermediate commit alone is not bisect-clean in that respect.  Would it make
-> sense to fold the reset change into this patch, or to order it first?
+ice_init_vf_vsi_res() reserves vf->num_msix vectors out of
+pf->virt_irq_tracker with ice_virt_get_irqs() as its very first step,
+but neither of the two error paths below it gives them back. A NULL
+from ice_vf_vsi_setup() returns -ENOMEM straight away, and the
+release_vsi label only releases the VSI.
 
-Addressed in v5 by folding the PF reset patch (was 3/3) into this
-commit. The reset on ATR re-enable now lands in the same commit that
-removes the per-ring gate, so the tree is bisect-clean at every commit.
+ice_start_vfs() leaks the same vectors. Its teardown loop undoes the
+queue mappings and the VF VSI of the VFs it already started, and the
+eswitch attach failure path releases the VSI of the VF it is working
+on, but neither calls ice_virt_free_irqs(). The caller then runs
+ice_free_vf_entries(), which drops the last reference on every VF, so
+nothing further down the error path can release the reservation
+either.
 
-> 
-> [ ... ]
-> 
-> > diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-> > index 7f68adb5109b0..e045f9c71c944 100644
-> > --- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-> > +++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-> > @@ -2882,7 +2883,8 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
-> >  		return;
-> >  
-> >  	/* if sampling is disabled do nothing */
-> > -	if (!tx_ring->atr_sample_rate)
-> > +	sample_rate = READ_ONCE(pf->atr_sample_rate);
-> > +	if (!sample_rate)
-> >  		return;
-> >  
-> >  	/* Currently only IPv4/IPv6 with TCP is supported */
-> 
-> [ ... ]
-> 
-pw-bot: cr
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260917204541.3072415-1-anthony.l.nguyen%40intel.com
+The tracker bitmap is only freed in ice_deinit_virt_irq_tracker(), so
+the leaked vectors stay reserved for the whole lifetime of the driver
+instance. Every failed "echo N > sriov_numvfs" permanently shrinks the
+pool that ice_set_per_vf_res() divides up, and after enough retries
+ice_virt_get_irqs() fails with -ENOENT for good even though the
+hardware vectors are idle. ice_dis_vf_mappings() meanwhile re-points
+GLINT_VECT2FUNC of exactly those vectors back at the PF while the
+bitmap still books them to the VF.
+
+Release the vectors on all three paths, the way ice_free_vfs() does
+for a VF that is torn down normally.
+
+Found by code inspection of the VF setup and teardown error paths. It
+was not triggered and no stack trace or error message was observed.
+Compile-tested only, not run on hardware.
+
+Fixes: 4d38cb44bd32 ("ice: manage VFs MSI-X using resource tracking")
+Cc: stable@vger.kernel.org
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+Changes in v3:
+- Correct the Fixes: tag. The leak starts at 4d38cb44bd32, which replaced the
+  computed first vector index with a reservation from the bitmap and left the
+  error paths below it unchanged; a203163274a4 only renamed that helper and
+  moved the tracker, so it is not the commit that introduced the leak.
+- Include how the issue was found, that it has not been triggered, and that the
+  change is compile tested only, as netdev-bot asked for.
+- Free the IRQs before the VSI is released on the eswitch attach failure
+  path, as Tomasz asked for, and keep the teardown loop in that same order.
+  The teardown loop hunk now sits inside vf->cfg_lock instead of next to
+  the detach, so the Reviewed-by tags from Tomasz Lichwala and Aleksandr
+  Loktionov are not carried over.
+ drivers/net/ethernet/intel/ice/ice_sriov.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index 470aec8849b6..444d05a9bcb0 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -458,8 +458,10 @@ static int ice_init_vf_vsi_res(struct ice_vf *vf)
+ 		return -ENOMEM;
+ 
+ 	vsi = ice_vf_vsi_setup(vf);
+-	if (!vsi)
+-		return -ENOMEM;
++	if (!vsi) {
++		err = -ENOMEM;
++		goto free_irqs;
++	}
+ 
+ 	err = ice_vf_init_host_cfg(vf, vsi);
+ 	if (err)
+@@ -469,6 +471,8 @@ static int ice_init_vf_vsi_res(struct ice_vf *vf)
+ 
+ release_vsi:
+ 	ice_vf_vsi_release(vf);
++free_irqs:
++	ice_virt_free_irqs(pf, vf->first_vector_idx, vf->num_msix);
+ 	return err;
+ }
+ 
+@@ -501,6 +505,8 @@ static int ice_start_vfs(struct ice_pf *pf)
+ 			if (retval) {
+ 				dev_err(ice_pf_to_dev(pf), "Failed to attach VF %d to eswitch, error %d",
+ 					vf->vf_id, retval);
++				ice_virt_free_irqs(pf, vf->first_vector_idx,
++						   vf->num_msix);
+ 				ice_vf_vsi_release(vf);
+ 				goto teardown;
+ 			}
+@@ -537,6 +543,7 @@ static int ice_start_vfs(struct ice_pf *pf)
+ 		ice_eswitch_detach_vf(pf, vf);
+ 
+ 		mutex_lock(&vf->cfg_lock);
++		ice_virt_free_irqs(pf, vf->first_vector_idx, vf->num_msix);
+ 		ice_dis_vf_mappings(vf);
+ 		ice_vf_vsi_release(vf);
+ 		mutex_unlock(&vf->cfg_lock);
+-- 
+2.25.1
 
