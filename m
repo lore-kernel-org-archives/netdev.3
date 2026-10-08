@@ -1,201 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40D7495510;
-	Thu,  8 Oct 2026 12:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C8A4963BA
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791463288; cv=none; b=q1CYRCEAzNwcCX+pG/R7ERskTBCpauem1Uw5jI/9DIM6Hu0bZD6Dki4+RKFebYz/iYlTfogJOsvzNcBHyL/Pg29479R/MTQ1BYsOFUbTpg0d9fz7JMSyqwceHaKHJ3aboIvvewaziT2KN9aF6m6r8EwG+XUwKmFZyfK/R5w3yrc=
+	t=1791463481; cv=none; b=e1tg8czAPuu6b0eWv2EYyNe6rCgBJ5yzBhNFX0XjjGRXhmrSzh/G7D2qJz13l1UbsiR5+2bkRxBds2TBHaGWB7e5xd57n+k0EApRx40BIcMuWfGpHsUdQRjS37mpujwvSd32nZpLtRv2qw7DCH8Z4vKpKOQZUQj4b5CwBkw7FtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791463288; c=relaxed/simple;
-	bh=cvouQ6O6J76G08fzoqFWkC5wVChJfGk9TzWCMh6SRoE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JMS1Ocb8H9OlUVY0yNb64/Kb5gBMnFWp/LNRRUipF/uu6UqvvlT7o9uyoGcGLhtyisHdNkaSugPgJ8Zpuyx9j4skc0EB5VnBB8bde/W6dIDVETBmMs+sTFXfRibJ7oth5VJ9pHNJOPHcWdkiFaMTBRrMOtGUWVRckNxyavbaDug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=fw8v4Qyk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791463481; c=relaxed/simple;
+	bh=1wmo1JdXpHAEF33ghsK5ngwfDfCrfwSZJ8Lt5pDXSyU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BDMoRlZ9vyklHqgNBF8vUva91EwlG7EF7Lo7AqmUkvshpN+Vvwwob8CeABORAgoA4gJc4ZDptTcJo2X5F8Lsxsqdr07dDGgBBKy2eOvLH3chDuxtlJnmstw6G4K4ZypZiclfHFImx3iqe+/2QacXoR5YAO8OTGmVkpVPRzcQsYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y4Gd2NkD; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fw8v4Qyk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254351F000FF;
-	Thu,  8 Oct 2026 12:41:25 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=fw8v4Qyk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1791463283;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Ty+NSzztoWZlSPZSksR8rahvfmn17KCWrjnEiYBF2m4=;
-	b=fw8v4QykQDjG9xgzttrNQaHVThpeDmZpPX8GMHvm+33I7AY0JycRACvgjRAcpFHnjFyXgz
-	JGt8JPecE0gOT2fUo1u5mmTiwDf8KNvGT4sBwDBq5un62gS753d2bm1cAgtSoLaenYgw0C
-	bLpJ51IPpexQVVL1tIv1YXjxedWt2l4=
-Received: 
-	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 623b9651 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 8 Oct 2026 12:41:23 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	pavel@kernel.org,
-	willemdebruijn.kernel@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-pm@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y4Gd2NkD"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49ff680331aso56757965e9.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:44:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791463478; x=1792068278; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=umbLSqkVyKq6IzM8iFkLDvRc9MitdtRPDOB4w8coJ8A=;
+        b=Y4Gd2NkDvpVJOQVt7RmGJHtNHdEomMjbiWaY49XDBWX5hMpq3eeNxgIf6MflYhAo0o
+         vD6Gd1zV5KxRjm+KH9+aa5RRePrc0wvHXhGUKGtLc2zrxk8FZUur8EZW7T5rE8aFn81V
+         MmlSJUUfyVPzSgi+IvvRkiy0V0F5xvTRgt1P3UTLoM05WH+Tdq2VHPONODA57RrY/f10
+         J8qc8Zjmqu5aWqBFn09dz+5Rl7LPwR17leezcjpl3uFdgFcPKYF058nEQt2NJB2Q+sUc
+         B+HrT8dUea/WfKnSxQ1oRKho7O8KeoVohyV3pYFrUy4HSvH0M1VqEQSTmcrF/PLlB7JG
+         xYyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791463478; x=1792068278;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=umbLSqkVyKq6IzM8iFkLDvRc9MitdtRPDOB4w8coJ8A=;
+        b=vc4iGmiWS4OrBqdzjtzg9acGfetpFe+lAmlisIu5ZGnKO4O2hn+gQgqK3zeWe/1+T+
+         Bg/c/h9f0HoaKbv+rvrBnWlymLD9aL2j/qzaRtiRfM3Wc+xEc7ucmLzmq/sGO4JlK/lW
+         kU4+WPPIcK8Vg+b/gqecNGGDYgZWxaSi27MHn2Uph3gUcT27yqMnHlyuek416r+qPZ/g
+         86Ye/Og85Qa6RRl3P8hqBwLnkoN3hf4xE7eFZHJ/FBZ6G5pTb2229oLPFOvs7ms6asGu
+         r4Ntmwn6S7DBBVu6B4GlzKHzurWNLxjDpfUzKs6VBDhETtZ//8B2LM/WOD6clWuBB4i7
+         bjtA==
+X-Forwarded-Encrypted: i=1; AKwUvBysuJdJaTBOH1CDDQw2FnIdY3mHNBgr8Nfd3D21VQoUPETOxY4DH4tZo5IOftH4KfNO2LyQNK8=@vger.kernel.org
+X-Gm-Message-State: AFuF++kFFF6i//uDPmtp9j+hGAsi4JqzS7PFfS1wT2DqlrIK7pvd7i8z
+	VvYlGroUgUKWd0UT1kREmJpZW+9ZFcmobwtKsMb8kgfp4WMTbfYaLiQq
+X-Gm-Gg: AYBFou2X+AEeG3+gN0IIXjcl6+a51hI4HRpAJIzFR41SiWJFEVScN9maVxR5MRjp2+W
+	DXmaA8W9u81RnqFySoNXGhK4rpnPu65RzgAwxNznCKf0qKSCnwTjxTzjCSjAebV4+5m2vbBvP3D
+	2q9JxSczqqgKztYWRcJQ3+Lcg56oFlCpxSI6rkMRfFQfHZsGBi0c4h9fHXiAr2B9gm7316kjdep
+	m88KaA2LNYIJjiW8FnpDmAQbhGupzVWMuo7v53lDog2OKxXljBpZ0WGwoX6pSlNZAeOEQ3SqDkp
+	DcLpr/NGw/f3iqqvw65unfbFTxPZz0jzgYNlF/pCebzOpW+ROj9emknICpSREtWokGm8TmWLg/q
+	LZx/6p/GODGG0SkT34c6vo7SAuTsFXIldiTA7xAzHq2E1RpLCDrgP440D1VJKYatljLzDYPjapy
+	D05qOCI+br+jnJw7Gc4kjgiiKCclo+xVEIT3p0ZBjFyDbxNVIMeWU0P/5RmDl2HAZCaryRtc/yb
+	uj+7YDImveUnLSat4rhBZlOonOUuU7Sj+QifpQ3AfFYv60z80WiEj0=
+X-Received: by 2002:a05:600d:848a:b0:4a1:825a:56fd with SMTP id 5b1f17b1804b1-4a1825a5968mr52235585e9.32.1791463478037;
+        Thu, 08 Oct 2026 05:44:38 -0700 (PDT)
+Received: from andreayoga.wind3.hub ([31.189.41.237])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48c71d1ffd2sm10885399f8f.34.2026.10.08.05.44.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 05:44:37 -0700 (PDT)
+From: Andrea Parri <parri.andrea@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Andrea Parri <parri.andrea@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <jeremy.jean@oss.cyber.gouv.fr>
-Subject: [PATCH net] udp_tunnel: drop packets when hibernating
-Date: Thu,  8 Oct 2026 14:40:21 +0200
-Message-ID: <20261008124106.665014-1-Jason@zx2c4.com>
+Subject: [PATCH net-next] rtnetlink: comment the RCU and SRCU waits in unregister paths
+Date: Thu,  8 Oct 2026 14:44:22 +0200
+Message-ID: <20261008124423.11543-1-parri.andrea@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The kernel's various networking applications keep churning away after
-userspace is frozen during hibernation, even as a memory snapshot is
-being made. This can lead many network applications to an inconsistent
-state, replaying packets and cryptographic state changes. For example,
-on wireguard, there's the possibility of this sequence:
+rtnl_link_unregister(), rtnl_af_unregister() and rtnl_unregister_all()
+wait for readers before tearing down what those readers use, but most
+of these waits do not say which readers they are waiting for.
 
-1) hibernating begins
-2) handshake state cleared
-3) keypairs cleared
-4) new handshake round trip completes
-5) machine memory is snapshotted
-6) packet is sent using new keypair
-7) machine is restored to state (5)
-8) packet is sent using new keypair
+A missing wait is then easy to overlook: rtnl_link_unregister() lacked
+its synchronize_rcu() until commit 3b70edea393d ("rtnetlink: wait for
+RCU readers in rtnl_link_unregister()"). Add a comment to each wait
+that lacks one, naming the readers it waits for.
 
-The idea is to prevent (6) from happening, especially if (6) and (8)
-contain different data, but the same key and nonce. Presumably the same
-issue applies to other users of udp_tunnel too.
-
-Fix this by just dropping sending and receiving packets during the
-hibernation sequence.
-
-Cc: stable@vger.kernel.org
-Reported-by: Jérémy Jean <jeremy.jean@oss.cyber.gouv.fr>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Suggested-by: Eric Dumazet <edumazet@kernel.org>
+Link: https://lore.kernel.org/CAL4WiioFMQN4troVjQjCmE6Z9kwwb95SnoEupjD=PPSK6Q5f6w@mail.gmail.com
+Assisted-by: LLM
+Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
 ---
-I wrote this patch in response to the issue Jérémy raised, but I'm not
-actually super familiar with all of the hibernation mechanics. If
-somebody working on PM would think about this matter too, I'd be much
-obliged.
+ net/core/rtnetlink.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
- include/linux/freezer.h    | 1 +
- net/ipv4/udp.c             | 5 +++++
- net/ipv4/udp_tunnel_core.c | 5 +++++
- net/ipv6/ip6_udp_tunnel.c  | 5 +++++
- net/ipv6/udp.c             | 5 +++++
- 5 files changed, 21 insertions(+)
-
-diff --git a/include/linux/freezer.h b/include/linux/freezer.h
-index 0a8c6c4d1a82..21d708dc4092 100644
---- a/include/linux/freezer.h
-+++ b/include/linux/freezer.h
-@@ -76,6 +76,7 @@ static inline bool cgroup1_freezing(struct task_struct *task)
- #endif /* !CONFIG_CGROUP_FREEZER */
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 15bffafbf0a9c..80f8577816760 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -526,6 +526,9 @@ void rtnl_unregister_all(int protocol)
+ 	}
+ 	rtnl_unlock();
  
- #else /* !CONFIG_FREEZER */
-+#define pm_freezing (false)
- static inline bool frozen(struct task_struct *p) { return false; }
- static inline bool freezing(struct task_struct *p) { return false; }
- static inline void __thaw_task(struct task_struct *t) {}
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index b090bd1f59e8..5021932ad9f1 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -95,6 +95,7 @@
- #include <linux/netdevice.h>
- #include <linux/slab.h>
- #include <linux/sock_diag.h>
-+#include <linux/freezer.h>
- #include <net/tcp_states.h>
- #include <linux/skbuff.h>
- #include <linux/proc_fs.h>
-@@ -2425,6 +2426,10 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
- 		if (encap_rcv) {
- 			int ret;
++	/* Wait for rtnl_get_link() callers under RCU that may still
++	 * dereference tab.
++	 */
+ 	synchronize_net();
  
-+			/* Drop if we're hibernating */
-+			if (unlikely(pm_freezing))
-+				goto drop;
-+
- 			/* Verify checksum before giving to encap */
- 			if (udp_lib_checksum_complete(skb))
- 				goto csum_error;
-diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
-index a128fe85620d..e3666ed96af7 100644
---- a/net/ipv4/udp_tunnel_core.c
-+++ b/net/ipv4/udp_tunnel_core.c
-@@ -3,6 +3,7 @@
- #include <linux/errno.h>
- #include <linux/socket.h>
- #include <linux/kernel.h>
-+#include <linux/freezer.h>
- #include <net/dst_metadata.h>
- #include <net/flow.h>
- #include <net/udp.h>
-@@ -172,6 +173,10 @@ void udp_tunnel_xmit_skb(struct rtable *rt, struct sock *sk, struct sk_buff *skb
- {
- 	struct udphdr *uh;
+ 	kfree(tab);
+@@ -711,6 +714,7 @@ void rtnl_link_unregister(struct rtnl_link_ops *ops)
+ 	 * not yet taken ops->srcu.
+ 	 */
+ 	synchronize_rcu();
++	/* Wait for rtnl_link_ops_get() callers to call rtnl_link_ops_put(). */
+ 	synchronize_srcu(&ops->srcu);
+ 	cleanup_srcu_struct(&ops->srcu);
  
-+	/* Drop if we're hibernating */
-+	if (unlikely(pm_freezing))
-+		return;
-+
- 	__skb_push(skb, sizeof(*uh));
- 	skb_reset_transport_header(skb);
- 	uh = udp_hdr(skb);
-diff --git a/net/ipv6/ip6_udp_tunnel.c b/net/ipv6/ip6_udp_tunnel.c
-index 32525a051a6f..4a31e8cc8887 100644
---- a/net/ipv6/ip6_udp_tunnel.c
-+++ b/net/ipv6/ip6_udp_tunnel.c
-@@ -7,6 +7,7 @@
- #include <linux/types.h>
- #include <linux/kernel.h>
- #include <linux/in6.h>
-+#include <linux/freezer.h>
- #include <net/udp.h>
- #include <net/udp_tunnel.h>
- #include <net/net_namespace.h>
-@@ -86,6 +87,10 @@ void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
- 	struct udphdr *uh;
- 	struct ipv6hdr *ip6h;
+@@ -843,7 +847,11 @@ void rtnl_af_unregister(struct rtnl_af_ops *ops)
+ 	list_del_rcu(&ops->list);
+ 	spin_unlock(&rtnl_af_ops_lock);
  
-+	/* Drop if we're hibernating */
-+	if (unlikely(pm_freezing))
-+		return;
-+
- 	__skb_push(skb, sizeof(*uh));
- 	skb_reset_transport_header(skb);
- 	uh = udp_hdr(skb);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 93478d1ad576..db9c2050887d 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -34,6 +34,7 @@
- #include <linux/slab.h>
- #include <linux/uaccess.h>
- #include <linux/indirect_call_wrapper.h>
-+#include <linux/freezer.h>
- #include <trace/events/udp.h>
- 
- #include <net/addrconf.h>
-@@ -848,6 +849,10 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
- 		if (encap_rcv) {
- 			int ret;
- 
-+			/* Drop if we're hibernating */
-+			if (unlikely(pm_freezing))
-+				goto drop;
-+
- 			/* Verify checksum before giving to encap */
- 			if (udp_lib_checksum_complete(skb))
- 				goto csum_error;
++	/* Wait for RCU walkers of rtnl_af_ops, including rtnl_af_lookup()
++	 * readers that found ops but have not yet taken ops->srcu.
++	 */
+ 	synchronize_rcu();
++	/* Wait for rtnl_af_lookup() callers to call rtnl_af_put(). */
+ 	synchronize_srcu(&ops->srcu);
+ 	cleanup_srcu_struct(&ops->srcu);
+ }
 -- 
-2.56.0
+2.53.0
 
