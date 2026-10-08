@@ -1,178 +1,188 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9F338AC96
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 16:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EBF38AC99;
+	Thu,  8 Oct 2026 16:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791476000; cv=none; b=G9X0Tp3+QiRvn4MoBO9CKuAEC7nrFS5grDNpH4zttxJC9r3cP9XUs92jUIeXAWoTxhjw5AB1kbzIBtMOH+7UTV60R/DLnyNi8Q67aNGB1NWexB3Cg5OAeQK/oicVPYg5UfZ0V0yEkEg2lBcfQTBHbWaApu1qKGjZMNZtqeL2vtg=
+	t=1791476001; cv=none; b=EuJil/DEBMOxwKIB8q1boVD6it3nfO5wGObpPvuVR5Adg1QI9fdpdzQg/XRW6+p/dxx73lsB7z+r4L3U8YVZh3aD8sWp1PZV5WiD9RAvDc4e7QlXoMtKVRsJ4rF1U59RaLrBdsZiboOVeoc27C/oD5NI9KKvfTpONzxlc87LCMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791476000; c=relaxed/simple;
-	bh=IhNLbauZGI/2fBL2LuFC8mj6FtPAx5+odJC5SAlbv3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OIIgWtXZFAtO7HqVBBI63H3kpMCD2n7IfbGht8cT7Z9PeDBwE2C4qS/uhStz7DzodJbESZsUnSt/Np8eD270hFYT7oCOQd2D00J1oQB8dyn6+Ap5GvKgGbjjCdKtQ40XIZhamQrdpKXonFDOy/lERUPa8965+lKCrTm3UykjREY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h80aqEyc; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791476001; c=relaxed/simple;
+	bh=I+xC+WZE121bT0mroLJdu1L8ddUbslmzPDc4dujPHac=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Yf63hxSRR1EbLJ1Ge0NayoZPHJNiheNRI7iHKdzLLhfr58RQftA4CQ34JsN5vM1ilgm0cQg/ZLiqAsLHhYxCNrg2eT/UYzcEquHcjeJI2i+qp7GYR4EiFXX131kByl4sx6FDiiQlE4FIBnDd13jzyWGIl0SQ6YrYewzFJp2/ijs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3MQrl45; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h80aqEyc"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a171b677d2so23363955e9.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 09:13:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791475997; x=1792080797; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t2FZLNMG+7qodCzojxRqRtcJYLMEEmZppl93FJZkKgg=;
-        b=h80aqEycU+BdOhwGBLoUuDnlF1KbMry6ESQLDKmVaEJd7lAI2pMz7eIW2Ui1ibshhU
-         sCC+WBsZ46PZ3uE/NxaQswmHQfKS1bKCs9K4Q9QA9QY+WbDfUQhFh6nF+XmnQrldt44s
-         UEg7GjhbzNTSPI22xR79PpCgzp+w9OSwX1Fho7/XwpRWec2Mzf/8S4gJcM0ZetIFtdQM
-         0qZXc5E2GEd/k1MfTblb5n4PPZvJ3vPxaD6RdZCvfF2ZmRJH+nUMhUgQkC+hCCeMh8eG
-         CoWu1oxAEA+h1M9B3iSrKtAOUBOjN0yo2HoCDdnFDqvyh01ly/oydjKEChgGBVCa+myb
-         DoTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791475997; x=1792080797;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=t2FZLNMG+7qodCzojxRqRtcJYLMEEmZppl93FJZkKgg=;
-        b=y/04SHHvdoklpcDMhpB5BZP/6bH3z1K/BmmJTQ7FpK9xjDIUp8HnGshzEaZYzRMDsR
-         b7QiG6juMP6VjrPedqAlWeu3v5TiCf+EHAYDr3039MXE3+GWPItg2DKyQtd1ydaL0K+6
-         MwbGOTHrLgHlQoQ40RGNQ20LSfg5kJL0r0fhNnUhrpMpnj9M1Vvx/T0LceP+N/ft/i+Y
-         eP/MxCFJSiX6AtlCWqV8CpmbxufnGAMDK8Npzk5CRthsa315clHmXH4DVmQi2z5Lsind
-         k/KP4PFTX7wZC3W8BBse7qR8io568yOeywQj6hyMTb7syBO2WrvKMfCY4wfoJ1UN4LqO
-         YPqg==
-X-Forwarded-Encrypted: i=1; AKwUvBxfDiQGsDt24Qs1UDmbS+W0qTnNTr9zNWJYa6c6dNajJdlfmKa4KpfFNAQNEM861mo7iFjpQqM=@vger.kernel.org
-X-Gm-Message-State: AFuF++n1QsQRumGbBLlq3+owtgtq2QDqMP2fdqKZEvg/rf3cD2OFFXkA
-	PUjE5ggNPfePdMGsd93hPb02lIfgrkqsR+FoZSj/oBgpy6fBkbkDSLHF
-X-Gm-Gg: AYBFou2vxxgK2iB2S49NyWKquIzKVbnvrhiqA0A4zlKaW52hphPPfr2+JvrsgSk4pB1
-	ysVZqhvohFezBTSuo96g+A9kR74afcZSQ/b6Gm1ejx7zS1OdmK+AjRW1FJQZGQJWD5j21pXjnPQ
-	RxTWao8+OsYZI6IFz7fGIZsoZ7E0w1rxZZYRQLZwmWG7FplRm+tBxIlFKK0yhcxKWEdbQ75wAIy
-	3z3lK9prsadYZ6+9CvYIoOUJPibnPPy/5EXQcfFphAK23j0nsTkBzbyjQbhOEbuIsVMY0I0FNfQ
-	4qaSjO+jDbPeAJNGDf7tM1/eorNbgY40proUC0kT30awFEY68TcdoD3+7QWiN5tlEkp0yZVk0un
-	VjklvC9wyslGPqDmu3kXHxAUniOCD1hReP9aYLud3jvacgaP8dKa/tUYu6vSDTMI5oOazYkOEh6
-	NlotBg/RugB4N77K8KDzqoWcYXsLBAwi931pOXmwniODaJPx4C+E634qqrKtIwc2LzzyQFBGzv1
-	vZWSucx+jNe+wBzz3R97TE6fKpna90d8XvimA==
-X-Received: by 2002:a05:600c:4688:b0:4a0:8b1:f5c with SMTP id 5b1f17b1804b1-4a18042a422mr109945825e9.22.1791475996918;
-        Thu, 08 Oct 2026 09:13:16 -0700 (PDT)
-Received: from MacBookAir.home.tenber.ge ([2a00:6020:a725:dc00:95bf:d5d1:d7d8:747f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db63401desm448005f8f.0.2026.10.08.09.13.14
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 08 Oct 2026 09:13:15 -0700 (PDT)
-From: Jan-Gerd Tenberge <janten@gmail.com>
-To: bpf@vger.kernel.org
-Cc: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	ihor.solodrai@linux.dev,
-	john.fastabend@gmail.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jakub@cloudflare.com,
-	jiayuan.chen@linux.dev,
-	kuniyu@google.com,
-	willemb@google.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf 0/2] bpf: Fix iterator link update target validation
-Date: Thu,  8 Oct 2026 18:13:07 +0200
-Message-ID: <20261008161309.8179-1-janten@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3MQrl45"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89A21F0089E;
+	Thu,  8 Oct 2026 16:13:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791475999;
+	bh=bR3lSv4dtTfWpHF6ntHioN9j/2JEJW6KkCIUr1O2GkU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=m3MQrl45/OFi0u+vQPtD9nCP88Q+TCS8U/vZG4QTBVfNYOFDYTfyyCwTRIFxJhJkX
+	 XM1bPBBkjDdfaAmMt6Nx7sfw7IZgEmBRQzJyFvPOi7jrW9dPTfIkQzyK0WpATL9CJ4
+	 g2xdPJMhRBph1nRsPZywG7BUjDRCZ2+zNq7CUiTLfcrfhJ+oig7QHveFp5S1NF3nCO
+	 hvtadbFAgj97fJbb1dgeDZkX1juX5n8ZSwvG4drtuC2KAYRTdM738hTyWLR1p9gGpN
+	 1IeX2LXld5Hy1UdzwjIqG+GV5uyVqXDK9gw3UJuZHKPEIy99H4tGtSi3CbecbC7GXq
+	 LhkrNLUEqgKBg==
+Subject: Re: [PATCH net v8] net/smc: fix lgr/lnk lifetime vs diag reader race
+From: netdev-bot+sashiko@kernel.org
+To: mjambigi@linux.ibm.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
+ pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+Date: Thu, 08 Oct 2026 16:13:18 +0000
+Message-ID: <179147599850.434549.17282557208373125996@kernel.org>
+In-Reply-To: <20261005131241.1575131-1-mjambigi@linux.ibm.com>
+References: <20261005131241.1575131-1-mjambigi@linux.ibm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-BPF iterator link creation validates constraints that depend on both the
-program and the selected target. BPF_LINK_UPDATE only compares program
-type, expected attach type, and attach BTF ID, allowing those checks to be
-bypassed by attaching a compatible program first and replacing it later.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Runtime testing in disposable QEMU guests confirmed that the resulting
-out-of-bounds access can reach kernel-owned metadata of a separately
-allocated live map and cause a deterministic kernel panic. Corrupting a
-victim map's refcount caused it to be freed while a verified BPF program
-retained a reference. A same-size replacement reused the slab slot, and
-the live program read the replacement's marker through its stale map
-pointer. A separate test obtained a selected-address eight-byte kernel
-read by changing the victim to another valid in-kernel operations table.
-These tests did not demonstrate code execution or privilege escalation.
-The UAF/read tests and the identity-boundary tests were separate; no single
-combined exploit was demonstrated.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-In a split-UID test, a UID-1001 process with CAP_BPF and CAP_PERFMON, but
-neither CAP_SYS_ADMIN nor CAP_SYS_PTRACE, corrupted a UID-1000-owned map
-without possessing its FD. BPF_MAP_GET_FD_BY_ID and pidfd_getfd both
-returned EPERM. In another test, a child user namespace mapped to host UID
-1000 and given an administrator-delegated BPF token triggered a host kernel
-panic; tokenless tracing-program load returned EPERM. There is no
-demonstrated default-unprivileged trigger.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Patch 1 reruns both target-specific validation and the iterator
-sleepability check before replacing the link's program. Patch 2 covers
-rejected array and socket-storage value accesses, a rejected sleepable
-hash program, preservation of the old program after a failed update, and
-a valid update.
+- [Medium] The commit message says the conn/lgr/lnk blocks of
+  __smc_diag_dump() are guarded for SMC_INIT and SMC_CLOSED sockets.
+- [Low] In __smc_diag_dump() (net/smc/smc_diag.c:93-97) the new
+  `r->diag_state != SMC_INIT &&` check in the diag_mode selection sends…
 
-The flaw was introduced by commit d6c4503cc296 ("bpf: Implement bpf
-iterator for hash maps") and remains present in bpf.git at ff47652a4b66
-and bpf-next at e1d84a37cba9. A patched ff47652a4b66-based kernel rejected
-the invalid updates with -EACCES before the programs could execute.
+--
 
-Source reproducers, build-specific layout details, and exploitability logs
-are available privately to maintainers on request. They are intentionally
-not included in this public posting under the kernel's guidance for bugs
-found with AI assistance. The public regression tests do not execute an
-out-of-bounds access.
+net/smc: fix lgr/lnk lifetime vs diag reader race
 
-Testing performed:
+The patch closes races between the SMC diag dump and connection teardown.
+It skips the conn/lgr/lnk attribute blocks for SMC_INIT and SMC_CLOSED
+sockets, and pairs smp_load_acquire()/smp_store_release() on sk_state. It
+also unhashes the socket before smc_conn_free() or smcd_buf_detach() in
+several teardown paths, and copies the cached link->ibname.
 
-  - Reproduced the bypass, cross-object metadata corruption, kernel panic,
-    stale-reference reuse, and selected-address read on Debian Linux
-    7.2.9+deb14-amd64 under isolated QEMU.
-  - Built bpf_iter.o, map_iter.o, bpf_sk_storage.o, and sock_map.o with
-    W=1.
-  - Built the affected BPF selftest objects and skeletons with clang 19.
-  - Compiled the bpf_iter host selftest with -Wall -Werror.
-  - Passed git diff --check and checkpatch.pl --strict --no-signoff.
-  - Verified that the series applies to bpf-next e1d84a37cba9.
-  - Booted the patched ff47652a4b66-based kernel with vmlinux BTF under
-    QEMU and confirmed that invalid updates return -EACCES.
+> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+> index bf0beaa23bdb6..36a3b8f31f28d 100644
+> --- a/net/smc/smc_diag.c
+> +++ b/net/smc/smc_diag.c
+> @@ -87,10 +87,11 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>  
+>  	r = nlmsg_data(nlh);
+>  	smc_diag_msg_common_fill(r, sk);
+> -	r->diag_state = sk->sk_state;
+> +	r->diag_state = smp_load_acquire(&sk->sk_state);
+>  	if (smc->use_fallback)
+>  		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
+> -	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+> +	else if (r->diag_state != SMC_INIT &&
+> +		 smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+>  		r->diag_mode = SMC_DIAG_MODE_SMCD;
+>  	else
+>  		r->diag_mode = SMC_DIAG_MODE_SMCR;
 
-An LLM assisted with discovery, analysis, fix implementation, test
-development, and review.
+[Severity: Low]
+Is this change to diag_mode intended? With the new r->diag_state !=
+SMC_INIT check, every non-fallback SMC_INIT socket falls into the else
+branch and is reported as SMC_DIAG_MODE_SMCR.
 
-Given the memory-safety impact and the Fixes tag, please consider patch 1
-for applicable stable trees.
+Before this patch, an SMC_INIT socket with a registered SMC-D link group
+was reported as SMC_DIAG_MODE_SMCD.
 
-Jan-Gerd Tenberge (2):
-  bpf: Revalidate iterator programs on link update
-  selftests/bpf: Test iterator link target validation
+On the client side, this window runs from smc_conn_create() in
+smc_connect_ism() until the smp_store_release() to SMC_ACTIVE. On the
+server side it lasts until smc_listen_out_connected(), which includes
+waiting for the peer's CLC CONFIRM. During that time, sock_diag users see
+an SMC-D connection labelled as SMC-R. The "Mode of a connection" enum in
+include/uapi/linux/smc_diag.h has no "unknown" value for this case.
 
- include/linux/bpf.h                           |  3 +
- kernel/bpf/bpf_iter.c                         | 15 +++++
- kernel/bpf/map_iter.c                         | 58 +++++++++++--------
- net/core/bpf_sk_storage.c                     | 24 +++++---
- net/core/sock_map.c                           | 26 ++++++---
- .../selftests/bpf/prog_tests/bpf_iter.c       | 34 ++++++++++-
- .../bpf/progs/bpf_iter_bpf_array_map.c        | 17 ++++++
- 7 files changed, 136 insertions(+), 41 deletions(-)
+The commit message says:
 
+  "Guard the conn/lgr/lnk blocks in __smc_diag_dump() for SMC_INIT and
+   SMC_CLOSED sockets; smcss already suppresses these attributes for
+   closed/unconnected sockets so there is no observability regression."
 
-base-commit: ff47652a4b66c067c765a7ad464d930b5a9367cc
+It doesn't mention the diag_mode change, which only appears in the v6
+changelog below the --- line.
+
+Could the transport type be recorded in a field of struct smc_sock when
+the lgr is assigned? That would avoid both the lgr dereference and the
+wrong mode.
+
+[ ... ]
+
+> @@ -103,6 +104,9 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
+>  	if (nla_put(skb, SMC_DIAG_FALLBACK, sizeof(fallback), &fallback) < 0)
+>  		goto errout;
+>  
+> +	if (r->diag_state == SMC_INIT || r->diag_state == SMC_CLOSED)
+> +		goto out;
+> +
+
+[Severity: Medium]
+The commit message says the conn/lgr/lnk blocks are guarded for both
+SMC_INIT and SMC_CLOSED. The diag_mode selection above excludes only
+SMC_INIT, and it runs before this early exit.
+
+For an SMC_CLOSED socket, can __smc_diag_dump() still call
+smc_conn_lgr_valid() and then dereference smc->conn.lgr->is_smcd?
+
+In the server handshake error path, a CLOSED socket stays hashed after
+its conn has been freed:
+
+smc_listen_decline()
+  smc_conn_abort()
+    smc_conn_free()
+      smc_lgr_unregister_conn()
+        write_lock_bh(&lgr->conns_lock);
+        __smc_lgr_unregister_conn()
+          conn->alert_token_local = 0;
+        write_unlock_bh(&lgr->conns_lock);
+      smcr_link_put(conn->lnk);
+      smc_lgr_put(lgr);          <-- conn->lgr is left set
+  smc_listen_out_err()
+    newsmcsk->sk_state = SMC_CLOSED;
+
+The SMC_CLOSED store in smc_listen_out_err() is a plain store, not the
+smp_store_release() this patch adds for SMC_ACTIVE.
+
+Between the alert_token_local reset and the CLOSED store, the only
+operations are release-ordered ones: write_unlock_bh(),
+refcount_dec_and_test() via smcr_link_put()/smc_lgr_put(), and
+sock_put(). None of them orders the later CLOSED store.
+
+On a weakly ordered CPU such as arm64, could the reader's
+smp_load_acquire() see SMC_CLOSED while alert_token_local still reads as
+non-zero? The reader would then dereference an lgr that the connection no
+longer holds a reference to. If link-group freeing runs concurrently,
+that read is a use-after-free.
+
+This needs a non-local-first lgr with a negative reason code, so that
+smc_lgr_cleanup_early() is not called. The window is narrow.
+
+Would it help to exclude SMC_CLOSED from the diag_mode condition as well,
+or to move this early exit ahead of the diag_mode selection? Publishing
+SMC_CLOSED in smc_listen_out_err() with smp_store_release() would also
+close the gap.
+
+>  	if ((req->diag_ext & (1 << (SMC_DIAG_CONNINFO - 1))) &&
+>  	    smc->conn.alert_token_local) {
+>  		struct smc_connection *conn = &smc->conn;
+
+[ ... ]
+
 -- 
-2.54.0 (Apple Git-157)
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005131241.1575131-1-mjambigi%40linux.ibm.com
