@@ -1,59 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157092DD5F6;
-	Thu,  8 Oct 2026 23:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286DC3AD518;
+	Thu,  8 Oct 2026 23:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791503358; cv=none; b=Noy9tCBxKIM//ouDfcu3PvzRChUI8v93JJn5kTxvp9IApknfiEI2pvBE/dpWtYHO8+ZDE9Gsx47h28GcD4NavLNFWICC7tVzUCyGlLDZCe+ScldigvgvRVd0UdHb7VE7sJn4fJqOcfcW8yLCWNj+uCiaTLSPZSvXie8CImsbisA=
+	t=1791503407; cv=none; b=a0CCL15NIlMSveRmmUii5vY5AxWwNza4c/yvED1ykYLWXPvS7bHSTJAkApAFL8gAIfOsiZPN3+dKxG3nmxNHP3H5n+wTNpEOwlqKh4du6OaPGV4TOLiAqQutCsZ+jKbYkDOMkbwYGQX/cQJaNwHfqUfAy+LzAW637vack7N+Xm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791503358; c=relaxed/simple;
-	bh=kvd8Wdqg7MXOv7eKgOr1HM24rJGeO1gL3nSxcIOcaX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=th0VoF4lsVt41xfAehfCoFUQNRd3cT9FdEjnISlzsLCYjNAq3YonXiZdnL9fTqICN3u5XK39qQHKLUkbBJxqdYKa1/rrCEVRorsQ5JCDhKgxnVBJO/9yr6xIFroGY+0uFXH2yib4bDC/QQ3ngI/x8iR70J1K6a3zeBly7aoss+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPpxfuSC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791503407; c=relaxed/simple;
+	bh=CJxOqD3NE61s59E7mg9tMzBvtBspVcInzlShefe/6P4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=bRsc3QJiNu3bY4h8eVF3ZUnhcjrv8VfKiXSgU1xbeXbybDidiUyqXarADdwbFKcCQikLg7DdGNcIqKB+s+n21EysZ5MCEGmpo4EybL4XmUTOoEGMvWgl6pOuTtOz8VXIHMEpa+7nOOr6fIaiA7x64XwvCkMGoYaIDJqfxdAviZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X84G1Tz1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPpxfuSC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9359F1F000FF;
-	Thu,  8 Oct 2026 23:49:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X84G1Tz1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE6451F000FF;
+	Thu,  8 Oct 2026 23:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791503357;
-	bh=0Mga/Cp2RNkPq/r+Fvql3rpWViZY0lp0vp3ozmjghD8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=oPpxfuSCZI7QDZJn92O/gXRAyMwDyGzrzBQpUMXOdpr2meBNflTFNRXNlI3UXgFq6
-	 6LB1Ao1UYjypW+D6q2JH3GAevcO6r6L2+brDdTO+Jy9dZIzbeSzItPPrU8bnZEGTHa
-	 b5K+za2jsuSk33witaTFMg5JJsr70d07NH9C+khYsZTmUk2VZ9RGa1kNcglzwAf7vq
-	 oNQhLf6FqWyyF8Anjup11sYKewgv/U0Iq39uHIawbLjAHWsHt9ainFcJ1j0VJqYt4I
-	 tgN+f714hPQg0t5x1nhMOMQ9t05f7ZX5+UtV0rtl7J2gvTqKFeZEm1IdSyfwwR620k
-	 4SlDNh4aq4+yA==
-Date: Thu, 8 Oct 2026 16:49:17 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sinfo@kernel.org
-Cc: Chengfeng Ye <nicoyip.dev@gmail.com>, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v4] net: pin protocol module before inet socket
- allocation
-Message-ID: <20261008164917.384b8e96@kernel.org>
-In-Reply-To: <179096305349.1402591.6316561110428507255@kernel.org>
-References: <20261002173844.3537111-1-nicoyip.dev@gmail.com>
-	<179096305349.1402591.6316561110428507255@kernel.org>
+	s=k20260515; t=1791503405;
+	bh=w6nkmv/DDpaHl5YKwomMF3p1zN5UZG16ybANi5RR8Jg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=X84G1Tz1+NBASMVv7LWyF0pxG85zWONvjbkufRPTUwl78f2Fr2947zOcEhH6JiGSp
+	 1mwu32bEvNGsSZH1alEfPXoDFq73CVuaQ+jyUvxp8xBuDLC5Fmp/tksjuC1clhA7eL
+	 yeS+WYpVR1ZGc3Xz+nS3iPtqgXwG5rqvcXm2QfRxxmx3zC5CpTeLLOCxwBT6hj/W4/
+	 Ygf2h5jffs8j3jik+4WzXMYyCg6TQdsTDBH6fWx1vbaxybWJQYatwjbHLaENOlA1zM
+	 h52TT0RuAym1ajzGBxdsSZe5Ayur+hPlVzm70YyIYiMOSL3xU4qSLroVFohBASTWZD
+	 7yc5OkkCV2qMg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4574380AA60;
+	Thu,  8 Oct 2026 23:50:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] octeontx2: use arch_extension to enable LSE
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179150340428.483817.886115147971378041.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Oct 2026 23:50:04 +0000
+References: <20261005162137.71397-1-emanuele.rocca@arm.com>
+In-Reply-To: <20261005162137.71397-1-emanuele.rocca@arm.com>
+To: Emanuele Rocca <emanuele.rocca@arm.com>
+Cc: sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
+ sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ schalla@marvell.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Tamar.Christina@arm.com, Jeremy.Linton@arm.com
 
-On Fri, 02 Oct 2026 17:44:13 +0000 netdev-bot+sinfo@kernel.org wrote:
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon,  5 Oct 2026 18:21:37 +0200 you wrote:
+> Instead of using ".cpu generic+lse", use ".arch_extension lse" to
+> enable LSE.
 > 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+> The ".cpu generic+lse" directive replaces the assembler's current feature
+> set with generic+lse, dropping other previously enabled features. In
+> contrast, ".arch_extension lse" enables LSE while preserving the current
+> feature set.
+> 
+> [...]
 
-You have to answer the bot's question.
+Here is the summary with links:
+  - [net] octeontx2: use arch_extension to enable LSE
+    https://git.kernel.org/netdev/net-next/c/9142c2f8f84b
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
