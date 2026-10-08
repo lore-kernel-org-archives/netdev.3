@@ -1,47 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE803955C1
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 16:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC01377AB3
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 16:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791477196; cv=none; b=h7YZPWKQxcC/VFcBsMdL00nkNOcIT5fds53k1BLdHU3hPXV7Ya76RPW3yvViKH0FPo2zRo/HTWPlTn9wx98f4pXVZTcSuhc88zUHlZsHNPKTkkC4weHcWcrDdrjXQ/ysJTTuKY2iadthbsEGJ1nY3gsEQAauHGVNAkhqkK+ZUP4=
+	t=1791477347; cv=none; b=IgPbLnnL+vAU6l8iw7CLCj0gp6diWWQDOCTbjM6E3p0Wq4R3Gat+vaI2f+tVbNEufGYjksfsIDK34BK7dBUCzb1g0x3UD5DSHjULmAQsORMOsk9TW1b680ufmhcMw0HW9d03G7zBX//shrsaQJexQnLzwzbc6drbEX8IS4ZMKtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791477196; c=relaxed/simple;
-	bh=oaCxtLUg3wjxrPwrfeSs5c8FuaJCmKtkUYXFtzkyxbs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=O9kl80zQ8MTSP38OobMHrRhcmA3GeliHKPIcOybTpzTj8bT0lkYImAWpfyGW1BHLlnBgmJooJ3T1hsWUXUGbMJA+oPdN/k2loEOdAHdGOEDUXLAnI5l6eDJPw/3gU6yS5pIl0UGcWTnEwFfMTYgxZj6ix8jboB2RuNyAhlp11as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGjZek0t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791477347; c=relaxed/simple;
+	bh=pocQj149itFOpS0PEIRnutvZJVu/sC702LIBv/g4ATI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u4Fo5bZu16q7Od8BL3Ouvvw+eSIe7m1EmJliLxQWifAJcq89m13Ch2StYtxJ2ieHh+rqjEtUAaYDMKJ9n9EyUPPZ67yWnP2dC0YlAptD7P8HOxEwDDZwIRtODWzoJBp9wofJFCx4x8HKVsuUNY0+DNA/fG9tfqehBKLO2ph6VFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=eVpvHjbB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UeCXI7l1; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGjZek0t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D244E1F00898;
-	Thu,  8 Oct 2026 16:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791477194;
-	bh=de60pFOGAhxkzdDemtwHH1ACAwwxewvV6Fu37teT01s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=iGjZek0tVP1mlODrPeOE2sPk9T0leh1+b3p2ebOkEGxGUW5xGHrsoESrXCHCUo99c
-	 j57Y7x3xObGlT36ECqHv+xQUSJKJMWDPNgRcy58SqvoYhCH1QrgG7A7Kg2cXKJU3s/
-	 VTRNIHfL/s4hW5PwgcMaEbgi3mwRKdQ4isFjgKyF3TunJATddVT1IyxewNjjOOJsXy
-	 GdWEQmA7vkic+7L0CinHy3VqXcIHb7GB2HNQjfR59vy1pg4My+LPXpMD9m3k1Kd8pT
-	 mGzNBQHYbVCDsdQWvMAhnLzgrQY/z5aAO9xWY4m6CFUPN2NQZXNo+4gkVB16MlAwvE
-	 vQcshUhrY+0WA==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>, "David S . Miller"
- <davem@davemloft.net>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Andrew
- Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Gal Pressman
- <gal@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, Dragos Tatulea
- <dtatulea@nvidia.com>, Nimrod Oren <noren@nvidia.com>, Carolina Jubran
- <cjubran@nvidia.com>, Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net/mlx5e: advertise tcp-data-split support
-In-Reply-To: <20261006225925.568263-1-dimitri.daskalakis1@gmail.com>
-References: <20261006225925.568263-1-dimitri.daskalakis1@gmail.com>
-Date: Thu, 08 Oct 2026 18:33:10 +0200
-Message-ID: <87se2grw3d.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="eVpvHjbB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UeCXI7l1"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 61546140032F
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:35:42 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 08 Oct 2026 12:35:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1791477342; x=
+	1791563742; bh=W0oJMnCQ78JnYbIPPucOD7+9FD4ZiDpFqSPYnQzIwD4=; b=e
+	VpvHjbBMLiES3j0KdNW4YwkJmIagzqzA5UcP2M4fv1EBF2LRwOHcJMTYYh6NYjsY
+	MFciSi8CVUsT7VI7dc8ri+OVMPR8GNA7YsmspElmmyhWqFFl1t98WBzzEwGy6cFA
+	7JepgA8XivgQyfxxDJ31Xe1jd4sVhdZSq3595Pi6FhpUeUGOHKQgJFbmD+qe3QL3
+	43kLSmgY7hP9BkD2yMwNEHJPGs4Y/dC2FsBf6Bky+J+2XOwAw77Z/OzDadEm20Pv
+	JmGBZmlWYMDg0m4sM+ak1XwsykrrnqesWcYVYqHQcLFP+IEJfGq7xSZIg8ecuCtO
+	nccFrmz35poag5WXZcOog==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1791477342; x=1791563742; bh=W0oJMnCQ78JnYbIPPucOD7+9FD4ZiDpFqSP
+	YnQzIwD4=; b=UeCXI7l1z1VJk8bgs888PxsX+cn751V4o3CTr81yzqZ5YYqwvkJ
+	1yeN4WwDYFEHU5HMhpbuajaiUdE6yxbc8f38fZRpMKzTbh9+fOnAa4dYKjqcpXeO
+	dAMfKrqiCyItjqKqNw6ZOFwhGT+RKXZGbXGjlNnW4hjPeqkXM4DufI7QPcy5Nv8F
+	VNN6teGGzhpT/IseB148koazoB1Ler8tme0tnq/I89RBxJMVy33UGOqMB8VoQSm1
+	sPhxS81M5r1thjTxx47oLe15VT6Y3lO5nPx87WttM591YWCeozexAXFTFIXGxlJc
+	m/Uh0PgC9un6LWY7RpAAQFmQbLhJNKO7xfw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=queasysnail.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791477342; d=queasysnail.net;
+	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm3:rsa-sha256:cVFSa6akIb6JiUPWayHp3OBpTmKyvuRelZT9hj6Io8u1Lc/
+	EPYTjws/hw6j5ZKM0UV0MqYrBMcYFcW0+BRJjfDg1W/ZGtgYqD5VCXDaPgQyXysU
+	eHPtieTYup9Kgb95dNGj5TCW6NDWAHtPFkXGOuZmt3yAlwOPeTgsxutK33E/xIan
+	9QlSGTEiSyx+M+DmPvZlP5o70F8aMTg0/zE5GVyIw/3Wp8gsKM6loMlCUiwBB+JI
+	PKqKGA6f2AbXhh6hWqkcJ+TWQb38hPIGvFEAC2fvLfzkugUo0nC9Krmo3kP1IPqf
+	IM+AL1fZAJI8HfaM4WLddtYyC5WReQQ5RYn3KRA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:dXjq9keN5Lmrtr3qN/Na11kF1+qdczpxa1BvkjQrLSc=:pocQj149itFOpS0PEIRnutvZJVu/sC702LIBv/g4ATI=;
+X-ME-Sender: <xms:XsbHamkG7XgMRzeXYMduQQIc3LTg3FS_EsTrDTNROor2e4KvjS6iog>
+    <xme:XsbHaj2wDUAS2wuARA0Q_sAX0GnRZ3HIX2fSu3_xbNzNHH7V08DJ6dzuKTI8mt--T
+    -jjpsF6bxIrsm4azCT_vEQAzaBX3COjjWW57VCZ3O3-JhF95-yxGRc>
+X-ME-Received: <xmr:XsbHaiTOryS2Z4JoBmp_jWpkV6ss3tp5lFVwm_5U55Z3vPlRn8hqkU_ckRE>
+X-ME-Proxy-Cause: dmFkZTELHSrcoZn21nBBS6LvUB8gjq3AOaA3iNgo8TuL9dAcqNJOoFtUlCrGqTHIFKHs6i
+    5rJYxCZ/gHiJxvyL1gNseJf1r49UEoaxX0a98DZbmu4a/sW3RC9CEvyH9H0kPbfIDT77vY
+    RAwoBEZAAg+fKdFf7Ygt6q8IqNCbk2qqu8ZjyPfkj6Yg5IM0I9hFPGrj2Y/xywJTRFwo3Z
+    fR9ShAOTFOs7GZLTan6AVQYLpWjDLFUibQtnZKltMt+BgxrLwExudxP0wxcH/QPb0VcHYd
+    Yd9Q/Tnzm0BfRW6J15wrkUF7Ct6ZF+FLfuVlFt1NFNQJP0LgluQZLcUa71VmYs8uyUdXji
+    FzzIDSXw4JIFxc9bO8kl7aBEGUpVfjRmXZGfWY6QWl/RGPn9Kdqfc8fMYyGevq/yMwHe6H
+    NODARA1IJQHMGY4y9CEoHc4BDus3cSdJbiYHeXJAKXxRpGpG3XG7Xx8UDwXhBE8RrTjDuM
+    fblGrR6P6SF9PBwkpC9U+pG1Vtj2HPCeuBrod22F8BaQYIXLbalCuWp1I2JSKK/sm1EUr/
+    uo5LiWYNAqlxE+WGBojVAX+VEb9cDnW8UHw/N8ondd9E7o2lh45kQQL+AFTdnGm/oOfaY9
+    AUtgtk7FHPV6wTO08kfyCWsxZiiqw037XoHHJnnLoQuOM+mlRZQm3FjEF8RA
+X-ME-Proxy: <xmx:XsbHaltmGfuInnmFfV9LrV0gZor_iIUOLriPhGGISc_ntrYatZZCsA>
+    <xmx:XsbHanbUcOvZcvx0LmZp7_uloGC1OiUBLlg6Ic56QwmYkj5Ob6NyBA>
+    <xmx:XsbHaqtlTGxKa2XWvMne3XHfPpoof0WimnCvRWYNnKp46FqMjUfCmA>
+    <xmx:XsbHapGeF5-eX58NgDe-Li8fCI4r_4619I-3_rrx42XJKOX3qUHvUw>
+    <xmx:XsbHajy8ymzWvekibFbLhSiU9O6iFEMioingUaRIX79YlocTH-dAjL6n>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 8 Oct 2026 12:35:41 -0400 (EDT)
+Date: Thu, 8 Oct 2026 18:35:39 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Sung Byeongchan <tjdqudcks0424@naver.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH net] macsec: reject replays after non-XPN receive PN
+ exhaustion
+Message-ID: <asfGW5xAQ9_dCN71@krikkit>
+References: <20261008082550.349487-1-tjdqudcks0424@naver.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,136 +100,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <20261008082550.349487-1-tjdqudcks0424@naver.com>
 
-Dimitri Daskalakis <dimitri.daskalakis1@gmail.com> writes:
+2026-10-08, 17:25:50 +0900, Sung Byeongchan wrote:
+> When a non-XPN RXSA accepts PN U32_MAX, advancing the receive PN cannot
+> represent the next value. The replay checks subsequently accept the same
+> authenticated terminal frame again.
 
-> From: Dimitri Daskalakis <daskald@meta.com>
->
-> The ability to set tcp-data-split was introduced in
-> commit 46bcce5dfd33 ("net/mlx5e: Support ethtool tcp-data-split settings")
-> This commit dropped reporting from mlx5e_ethtool_get_ringparam()
-> without explaining why. commit d347b28c492e ("net/mlx5e: Add hds-thresh
-> query support via ethtool") added support for ETHTOOL_RING_USE_HDS_THRS,
-> and modified mlx5e_ethtool_get_ringparam() to report an hds_thresh of 0.
->
-> Between these two commits, the hds selftest helper _defer_reset_hds()
-> would skip the reset because neither hds-thresh or tcp-data-split was
-> present in the ring config. After the second commit this introduced
-> a KeyError in the hds.set_hds_enable/disable tests.
->
-> mlx5 couples tcp-data-split with rx-gro-hw. Users can currently disable
-> tcp-data-split then enable HW GRO. The kernel reports tcp-data-split
-> off, but the HW is presumably splitting.
->
-> Add back tcp-data-split reporting in mlx5e_ethtool_get_ringparam(),
-> and de-feature tcp-data-split disable. Users can either enable it
-> (if HW GRO is enabled), or leave it under driver control.
->
-> This is not a fix since the feature is still functional with
-> HW GRO enabled.
->
-> Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
-> ---
-> Changes in v2:
-> - Leave kernel_param->tcp_data_split as ETHTOOL_TCP_DATA_SPLIT_UNKNOWN if=
- the
->   device does not support HW GRO
-> - Prevent users from disabling tcp-data-split
-> - Link to v1: https://lore.kernel.org/all/20260923230521.1267511-1-dimitr=
-i.daskalakis1@gmail.com/
->
-> hds.py before:
->  # Interface: eth0, driver: mlx5_core
->  TAP version 13
->  1..13
->  ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
->  ok 2 hds.get_hds_thresh
->  # Exception while handling defer / cleanup (callback 1 of 1)!
->  ...
->  # Defer Exception| KeyError: 'tcp-data-split'
->  # Defer Exception|
->  not ok 3 hds.set_hds_disable
->  # Exception while handling defer / cleanup (callback 1 of 1)!
->  ...
->  # Defer Exception| KeyError: 'tcp-data-split'
->  # Defer Exception|
->  not ok 4 hds.set_hds_enable
->  ok 5 hds.set_hds_thresh_random # SKIP hds-thresh-max is too small
->  ok 6 hds.set_hds_thresh_zero
->  ok 7 hds.set_hds_thresh_max
->  ok 8 hds.set_hds_thresh_gt
->  ok 9 hds.set_xdp # SKIP tcp-data-split not supported by device
->  ok 10 hds.enabled_set_xdp # SKIP tcp-data-split not supported by device
->  ok 11 hds.ioctl # SKIP tcp-data-split not supported by device
->  ok 12 hds.ioctl_set_xdp # SKIP tcp-data-split not supported by device
->  ok 13 hds.ioctl_enabled_set_xdp # SKIP tcp-data-split not supported by d=
-evice
->
-> hds.py after:
->  # Interface: eth0, driver: mlx5_core
->  TAP version 13
->  1..13
->  ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
->  ok 2 hds.get_hds_thresh
->  ok 3 hds.set_hds_disable # SKIP disabling of HDS not supported by the de=
-vice
->  ok 4 hds.set_hds_enable # SKIP disabling of HDS not supported by the dev=
-ice
->  ok 5 hds.set_hds_thresh_random # SKIP hds-thresh-max is too small
->  ok 6 hds.set_hds_thresh_zero
->  ok 7 hds.set_hds_thresh_max
->  ok 8 hds.set_hds_thresh_gt
->  ok 9 hds.set_xdp # SKIP tcp-data-split not supported by device
->  ok 10 hds.enabled_set_xdp # SKIP tcp-data-split not supported by device
->  ok 11 hds.ioctl # SKIP tcp-data-split not supported by device
->  ok 12 hds.ioctl_set_xdp # SKIP tcp-data-split not supported by device
->  ok 13 hds.ioctl_enabled_set_xdp # SKIP tcp-data-split not supported by d=
-evice
->  # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:9 error:0
-> ---
->  .../net/ethernet/mellanox/mlx5/core/en_ethtool.c    | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drive=
-rs/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> index 261c466a4d36..f08a968acec4 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> @@ -378,6 +378,10 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *=
-priv,
->=20=20
->  	kernel_param->hds_thresh =3D 0;
->  	kernel_param->hds_thresh_max =3D 0;
-> +
-> +	if (priv->netdev->hw_features & NETIF_F_GRO_HW &&
-> +	    priv->channels.params.packet_merge.type =3D=3D MLX5E_PACKET_MERGE_S=
-HAMPO)
-> +		kernel_param->tcp_data_split =3D ETHTOOL_TCP_DATA_SPLIT_ENABLED;
->  }
->=20=20
->  static void mlx5e_get_ringparam(struct net_device *dev,
-> @@ -403,9 +407,14 @@ static bool mlx5e_ethtool_set_tcp_data_split(struct =
-mlx5e_priv *priv,
->  		return false;
->  	}
->=20=20
-> +	if (tcp_data_split =3D=3D ETHTOOL_TCP_DATA_SPLIT_DISABLED) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "TCP-data-split can not be disabled");
-> +		return false;
-> +	}
-> +
->  	/* Might need to disable HW-GRO if it was kept on due to hds. */
-> -	if (tcp_data_split =3D=3D ETHTOOL_TCP_DATA_SPLIT_DISABLED &&
-> -	    dev->cfg->hds_config =3D=3D ETHTOOL_TCP_DATA_SPLIT_ENABLED)
-> +	if (dev->cfg->hds_config !=3D tcp_data_split)
->  		netdev_update_features(priv->netdev);
+And in XPN? I don't see anything checking that .upper didn't wrap, so
+we'll accept replays of the first chunk of sequence numbers?
 
-Not directly related to your change, but is it correct to call
-netdev_update_features() here? What if later changes in set_ringparam()
-fail? Shouldn't the update be done when we know that set_ringparam() is
-successful? Seems like we can get into an inconsistent state?
+It also feels strange to have an "exhausted" bit that only ever gets
+set for !xpn.
 
+> Record receive-SA exhaustion after accepting the legitimate terminal frame
+> and reject subsequent frames until userspace explicitly resets the PN. Keep
+> XPN behavior unchanged. Preserve the exhaustion state if a hardware-offload
+> PN update fails and the old PN is restored.
+> 
+> The identical terminal-PN frame crossed the controlled port twice in all
+> three baseline runs. All three fixed runs rejected the replay. PN max-1,
+> fresh terminal-frame, and bad-ICV controls retained their expected
+> behavior.
 
-Bj=C3=B6rn
+We should also have selftests for all those limit cases (for 32b:
+exhaustion/wrap, for XPN: both upper32 increase and exhaustion).
+
+> diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+> index 78a19b1346321..906108e10b32d 100644
+> --- a/drivers/net/macsec.c
+> +++ b/drivers/net/macsec.c
+> @@ -750,8 +750,10 @@ static bool macsec_post_decrypt(struct sk_buff *skb, struct macsec_secy *secy, u
+>  	/* Now perform replay protection check again
+>  	 * (see IEEE 802.1AE-2006 figure 10-5)
+>  	 */
+> -	if (secy->replay_protect && pn < lowest_pn &&
+> -	    (!secy->xpn || pn_same_half(pn, lowest_pn))) {
+> +	if (secy->replay_protect &&
+> +	    (rx_sa->exhausted ||
+> +	     (pn < lowest_pn &&
+> +	      (!secy->xpn || pn_same_half(pn, lowest_pn))))) {
+
+The code you're modifying wasn't particularly nice, but this is
+completely unreadable. And there's another variant of this test
+written in a slightly different, but also completely unreadable, for
+the pre-check (well, pn_same_half doesn't take the same reference for
+some mysterious reason).
+
+-- 
+Sabrina
