@@ -1,69 +1,74 @@
-Received: from mail.planestimations.com (mail.planestimations.com [45.92.8.66])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E691F2B8D
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 01:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.92.8.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003E919A288;
+	Thu,  8 Oct 2026 01:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791422764; cv=none; b=Fs9uaSFxbVOq5qWT5JC4XKQBOTeFSDugctjnLQVa8UuOSy4/awL4Z5lOqzs/O1xiGQf6yrw+e1p5bCUoiTTU0PIopAjunooKcT5LtRs3eXUqRNFnn0gqJOIKzhJwrXk71iB4epp91QbI4MF4PhpYkafBk/2r0vGWMr1CUTTuycc=
+	t=1791423421; cv=none; b=QGD7w7/rveGeuNr78K5mCvaiqCpbEGGRnIKC6S93fbdmV7+h/+6hsUIC6T9q9QFu8n80xMUhKAQl/ZgtuvUdEc5tNAxqknTBlowxC628gp7UXaZ7re/GUa76+dLDtuDcvGGW9KOdIDsXOZXCfPD4oSrMrraxkk+pzIg4x+1c1L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791422764; c=relaxed/simple;
-	bh=8ddUMviyaTIE/b3Q7TESwbCHvmG/uyPLPPeK9owdoOI=;
-	h=References:In-Reply-To:Message-ID:From:To:Subject:Date:
-	 MIME-Version:Content-Type; b=VzTbv+SBlcXCpFKxnpH4vsR6Bi3AQReEONtf4Th5h2AKLCRAhwvbx7Taulpw1vP9mX54TACwEcb3liJSByBeEBG3e1AxbA3eUhQ8ka2KCmr1Cs6oXCQvXcsJELnn7xusJhRZVoqbvM5m9HD+vS/RbstV1J3c0t89SJjRexbfJTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=planestimations.com; spf=pass smtp.mailfrom=planestimations.com; dkim=pass (2048-bit key) header.d=planestimations.com header.i=@planestimations.com header.b=R+gNr+aO; arc=none smtp.client-ip=45.92.8.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=planestimations.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=planestimations.com
+	s=arc-20240116; t=1791423421; c=relaxed/simple;
+	bh=MwicRoOYV1zDQfwoWO+5FEWl54/aiijI+WJoGLBOTIg=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=qVRHzS96OYVwxmsvDPupH5sZsu1qHIrNTW0aBv2zW8q/6oryso6r7iroYFzSn4McGmmIHR/dCeQA0oDu62gPyvq9XqGtGo9ijNeb4S+9lsuN5meaeeSxkSL8Gk1QgqOMzBqnuS+9zYC0uMhURLDsUD/OP04bTShHfv8jKpkBUkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Rvs/2ugk; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=planestimations.com header.i=@planestimations.com header.b="R+gNr+aO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=planestimations.com;
-	s=202505; t=1791382385;
-	bh=8ddUMviyaTIE/b3Q7TESwbCHvmG/uyPLPPeK9owdoOI=;
-	h=References:In-Reply-To:From:To:Subject:List-Unsubscribe:Date:
-	 From;
-	b=R+gNr+aOjMhzdp6jql40iOK7Eha5NB47o9AuSIP9PyGBvcJ8Zn/dEptmnqr3V8d2N
-	 cMage6YnAn91RvHvB/r2CPfPgHqsUyT29el0v4CQ8cCZg4P0ts/M84hluDkzGmzCvo
-	 CW++0N4/Jo7TOAsezaEdKULqugzNvenGFGYkHAcg0Ob17LdbrG5iIg+FpHlxkBlhmH
-	 HmhKwXqrJbBFunKzoHMJJWrW/5Cf/veWEpiqaOBfVg6xdXS1h99JEfyBPgwNVx6I59
-	 1QEpDAY21MNpaiR2FlF5O6TNqxaFdcaSltRxk+ioSuabkHbksClq9jc+3cnHdi1dM9
-	 /yPdvIsyjN0Sg==
-Received: from [127.0.0.1] (ec2-34-228-56-192.compute-1.amazonaws.com [34.228.56.192])
-	by mail.planestimations.com (Postfix) with ESMTPSA id B70D5502443
-	for <netdev@vger.kernel.org>; Wed,  7 Oct 2026 16:13:04 +0200 (CEST)
-References: <31587773-4622-48b8-b41f-fdaeaff202b1@planestimations.com>
-In-Reply-To: <31587773-4622-48b8-b41f-fdaeaff202b1@planestimations.com>
-Message-ID: <d88599a2-3397-4dd4-af60-06a38ae52d64@planestimations.com>
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-From: Jane Wells <janew@planestimations.com>
-To: netdev@vger.kernel.org
-Subject: Re: Comprehensive Construction Trade Takeoff Support for Your Next
- Build
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 07 Oct 2026 14:13:03 +0000
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Rvs/2ugk"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1791423416; h=Message-ID:Subject:Date:From:To;
+	bh=MwicRoOYV1zDQfwoWO+5FEWl54/aiijI+WJoGLBOTIg=;
+	b=Rvs/2ugkNOZXOBA/ZipiX/DCQFbz20MeKhsRrM7JYYZL82a3YmbmcFzm2NBwpcHX922QwIg16DppVZ0sJA0Pv6TEXKG7WziVhHaq6pppBjExlpfdtDi/7qnbM5AfC92Vk1/YcnNcP3LxZbmle5pvM22REJ+drYfRv6w0bOE1CsE=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=10;SR=0;TI=SMTPD_---0XCIFUV3_1791423415;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0XCIFUV3_1791423415 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 08 Oct 2026 09:36:55 +0800
+Message-ID: <1791423335.8486545-2-xuanzhuo@linux.alibaba.com>
+Subject: Re: [RFC] virtio-net: AF_XDP zero-copy TX checksum offload
+Date: Thu, 8 Oct 2026 09:35:35 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Azadeh Aftahi <aftahi334@gmail.com>
+Cc: magnus.karlsson@intel.com,
+ maciej.fijalkowski@intel.com,
+ sdf@fomichev.me,
+ netdev@vger.kernel.org,
+ virtualization@lists.linux.dev,
+ bpf@vger.kernel.org,
+ mst@redhat.com,
+ jasowangio@gmail.com,
+ eperezma@redhat.com
+References: <9DB6FE89-98AB-47CF-9B57-5F47FBB6DAE8@gmail.com>
+In-Reply-To: <9DB6FE89-98AB-47CF-9B57-5F47FBB6DAE8@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 
-Hey ,
+On Mon, 5 Oct 2026 17:28:35 -0500, Azadeh Aftahi <aftahi334@gmail.com> wrote:
+> Hi all,
+>
+> I'm planning to work on single-buffer AF_XDP zero-copy TX checksum offload for virtio-net.
+>
+> Current net-next's virtnet_xsk_xmit_one() does not consume XSK TX checksum metadata and uses the shared zeroed virtio header.
+>
+> I found Xuan's 2021 proposal anticipating separate headers for checksum support, and the merged 2024 zero-copy TX series, but I couldn't find a checksum-specific follow-up implementation.
+>
+> The proposed scope is to map the existing XSK checksum metadata API to VIRTIO_NET_F_CSUM, using a DMA-safe per-packet virtio header whose lifetime extends until TX completion, with corresponding completion, reset, and unbind cleanup.
+>
+> I would keep the initial scope limited to single-buffer TX: no multi-buffer RX, timestamps, launch time, or GSO.
+>
+> I'd also add checksum and header-lifetime coverage using the existing XSK selftest framework with QEMU/TAP.
+>
+> Is anyone already working on this? If not, does this scope and per-packet-header approach sound reasonable for a follow-up patch?
 
-I wanted to share a quick example of our project breakdown.
+It seems no one has taken this work forward yet; I would welcome it if you were
+to do so.
 
-We recently completed a full CSI takeoff covering roofing, MEP, structural,=
- and finishes with clear cost breakdowns.
+Thanks.
 
-If you'd like, I can share a =
-similar sample tailored to your work scope.
 
-Do you want that?
-
-Regards,
-
-Jane Wells | Sales Representative
-Plan Estimating
-
-Click Here to =
-Unsubscribe
+>
+> Thanks,
+> Azadeh
