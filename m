@@ -1,110 +1,242 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8985647729B;
-	Thu,  8 Oct 2026 08:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273DB3E4117;
+	Thu,  8 Oct 2026 08:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791448354; cv=none; b=EcJv6Wl8G30csaNhdkH4rXX+s3PW+/zXVgUMOdq+GiV3bRhG1tAGpxsvq0cZQLJe2jJDuWtKMdXQd9vUCPJ11aA27RJwSkv6DU1Ytac4khC8/gkb1KnhYE6qwN4//UBw0QnNqJR0ZCc9AC73sCGk70FmBhpOtChscfrqx419tiY=
+	t=1791448409; cv=none; b=KDO05QuhWrhagPEEYKjdTQhB1d8sM0adQMNwo3CiIof6QpY4tGiBnnhRPiBHXlxkp+NZDjAHbajqCyiM5SclOXnav1sW5IyfbPJPKMUV/dtC/BQEqM4b4sB2VoMhX/7gVKMZ2NR7zm1Xnczfn8hiGorHSJtvTW5Um61m3ZU/Aus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791448354; c=relaxed/simple;
-	bh=yv8u3V2e4v07+0aEO6mjgnTL9YesGuzI+E2aUgXhcG4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dFLi5dMJuvvwul167oZAWYOXsMWGSjNAQjXxUBJSbPQJoEL6O7uDdUhsCq8c/cJpqsU14JV3jIOr2oS/CWb5ETB4tSdIXkxM9fWe+uepz8+2v1Ev9DybrnVLipqHbiPaBkjy2v9z97FM19JucQSu+okuMOmWGEKdbdMC+XGra3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bgLdc+Rd; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791448409; c=relaxed/simple;
+	bh=K+8ZbQLfCg0PV60dBTg4VgqRWIwicKQQgKOKwxC36pw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=gcCjaV/fIv0+Ipn0iMVtf1SskG3FQNxVE9EY6hBgyjvHDYbsL5SZRoKtyJYxwe/yN+na+pD/xsyz4VtBYMfZy9Efzg3V3oRAVLnKAu/8t7X0ooFKM0aef8IbGtXtKfUeLqJcOfZTaG7NZ5lVw66m6T+KbE484PvSIJnobYgqH20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=mPgLOUlY; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bgLdc+Rd"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B9E834E41181;
-	Thu,  8 Oct 2026 08:32:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8DFD260341;
-	Thu,  8 Oct 2026 08:32:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9B1210333853;
-	Thu,  8 Oct 2026 10:32:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791448349; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=gl41XFpDZAzGPhLc87UB5iDf8jYnryqIe5ze7K2TtvY=;
-	b=bgLdc+RdLIMpPCmcAMjt4JHeAr8+8qx7Um7aIiL/oThFWxQnN5GPPrD2PeDNaT9hzuarQN
-	hbPEWNDjsVMBWaPPzAuAFA9ov3vppBDMjmIey12+FWpjffAp6lvS3E3g0Tq/YlqUF2MeHQ
-	PEFd2k1zSXlO/EhoseFlKq/venzV/lLoKls75WccPshWTN95UA0lJDIZmZLbyW2oTkUeK0
-	PagJub7wYjjSnaV05Y3VHrXFT3jmwQBAfScKSUvayYolnVOAuXmaim5u1A8ZwSDqWcCwy6
-	o8HVUsSe+EbqVwz3NHQ6ylWyO2FYRKFcHpHjmYIWBQpPgKzWZrFm9IORVcJZJA==
-Message-ID: <c4d1c8e6-ed86-416b-94af-c3d8f1075253@bootlin.com>
-Date: Thu, 8 Oct 2026 10:32:27 +0200
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="mPgLOUlY"
+Received: from kali.mshome.net (unknown [4.213.232.17])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3FBB820B7167;
+	Thu,  8 Oct 2026 01:32:26 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3FBB820B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791448350;
+	bh=Pn9xSQav7Mt56V0G61/8zYZp9JX8VoM9Cp2v/Ee6wtE=;
+	h=From:To:Subject:Date:From;
+	b=mPgLOUlYD6U3WQheqPW6sGS2jag1ERBDY/iQRUUUUZ88obHOtmn2VlsUJK/+ngx/1
+	 muAtb6Fm+fqRZhZrN30KAs/dUXrM5MCuSB4ne7IRTZTCpdmCNotm9avHcCQiq/fZVd
+	 O9AVf3WRwDEz8W/hOfgm6VtX7xcP/pFaZTYHZWkc=
+From: Sahil Chandna <sahilchandna@linux.microsoft.com>
+To: haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	gargaditya@linux.microsoft.com,
+	mawasthi@linux.microsoft.com,
+	leitao@debian.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next] net: mana: Add support to process throttled EQEs
+Date: Thu,  8 Oct 2026 03:33:05 -0500
+Message-ID: <20261008083315.306076-1-sahilchandna@linux.microsoft.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 10/10] microchip: lan865x: move setting of netops to
- fix crash
-To: David Yang <mmyangfl@gmail.com>, netdev@vger.kernel.org
-Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Nicolai Buchwitz <nb@tipi-net.de>, Jacob Keller <jacob.e.keller@intel.com>,
- linux-kernel@vger.kernel.org
-References: <20261008022656.3592191-1-mmyangfl@gmail.com>
- <20261008022656.3592191-11-mmyangfl@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261008022656.3592191-11-mmyangfl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
+When an event queue nears full, the hardware coalesces the per-CQ
+GDMA_EQE_COMPLETION notifications into a single throttle EQE of type 4
+that carries no cq_id. The driver does not handle this event type, so
+it falls through to the default case and is dropped. Any CQ whose
+completion notification was replaced by the throttle EQE is then never
+scheduled again and its queue stalls.
+Add support to process the CQs which belong to a throttled EQE of type 4.
 
+Signed-off-by: Sahil Chandna <sahilchandna@linux.microsoft.com>
+---
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 43 ++++++++++++++++++-
+ .../ethernet/microsoft/mana/mana_ethtool.c    |  7 +++
+ include/net/mana/gdma.h                       | 12 +++++-
+ include/net/mana/mana.h                       |  1 +
+ 4 files changed, 61 insertions(+), 2 deletions(-)
 
-On 10/8/26 04:26, David Yang wrote:
-> lan865x_probe() assigns netdev_ops only after oa_tc6_init(), which
-> connects the internal MAC-PHY through phy_connect_direct().
-> phy_attach_direct() -> phy_link_topo_add_phy() reads dev->netdev_ops
-> through netdev_need_ops_lock() since the commit in question, so probing
-> crashes with a NULL pointer dereference when CONFIG_NET_SHAPER is
-> enabled.
-> 
-> Assign netdev_ops before the PHY attach, as was done for emac in commit
-> 7c9f391ec89c ("net: emac: move setting of netops to fix crash").
-> 
-> Fixes: ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() locking assertion")
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index ae0ed700b3b9..b8e5ad2c6d31 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -747,6 +747,18 @@ void mana_gd_free_service_wq(struct gdma_context *gc)
+ 	gc->service_wq = NULL;
+ }
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
++static void mana_gd_schedule_eq_cqs(struct gdma_queue *eq)
++{
++	struct gdma_queue *cq;
++	u8 i;
++
++	for (i = 0; i < GDMA_EQ_MAX_CHILD_CQ; i++) {
++		cq = rcu_dereference(eq->eq.child_cq[i]);
++		if (cq && cq->cq.callback)
++			cq->cq.callback(cq->cq.context, cq);
++	}
++}
++
+ static void mana_gd_process_eqe(struct gdma_queue *eq)
+ {
+ 	u32 head = eq->head % (eq->queue_size / GDMA_EQE_SIZE);
+@@ -777,6 +789,11 @@ static void mana_gd_process_eqe(struct gdma_queue *eq)
 
-Thanks,
+ 		break;
 
-Maxime
++	case GDMA_EQE_THROTTLE:
++		eq->eq.throttle_count++;
++		mana_gd_schedule_eq_cqs(eq);
++		break;
++
+ 	case GDMA_EQE_TEST_EVENT:
+ 		gc->test_event_eq_id = eq->id;
+ 		complete(&gc->eq_test_event);
+@@ -1063,17 +1080,41 @@ static void mana_gd_create_cq(const struct gdma_queue_spec *spec,
+ 			      struct gdma_queue *queue)
+ {
+ 	u32 log2_num_entries = ilog2(spec->queue_size / GDMA_CQE_SIZE);
++	struct gdma_queue *parent;
++	u8 i;
 
-> ---
->  drivers/net/ethernet/microchip/lan865x/lan865x.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-> index 26a2761332a5..633d00857774 100644
-> --- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-> +++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-> @@ -346,6 +346,8 @@ static int lan865x_probe(struct spi_device *spi)
->  	spi_set_drvdata(spi, priv);
->  	INIT_WORK(&priv->multicast_work, lan865x_multicast_work_handler);
->  
-> +	netdev->netdev_ops = &lan865x_netdev_ops;
-> +
->  	priv->tc6 = oa_tc6_init(spi, netdev, NULL);
->  	if (!priv->tc6) {
->  		ret = -ENODEV;
-> @@ -397,7 +399,6 @@ static int lan865x_probe(struct spi_device *spi)
->  
->  	netdev->if_port = IF_PORT_10BASET;
->  	netdev->irq = spi->irq;
-> -	netdev->netdev_ops = &lan865x_netdev_ops;
->  	netdev->ethtool_ops = &lan865x_ethtool_ops;
->  
->  	ret = register_netdev(netdev);
+ 	queue->head |= INITIALIZED_OWNER_BIT(log2_num_entries);
+-	queue->cq.parent = spec->cq.parent_eq;
++	parent = spec->cq.parent_eq;
++	queue->cq.parent = parent;
+ 	queue->cq.context = spec->cq.context;
+ 	queue->cq.callback = spec->cq.callback;
++
++	if (!parent)
++		return;
++
++	/* For throttled EQE store the child CQ */
++	for (i = 0; i < GDMA_EQ_MAX_CHILD_CQ; i++)
++		if (!rcu_access_pointer(parent->eq.child_cq[i])) {
++			rcu_assign_pointer(parent->eq.child_cq[i], queue);
++			return;
++		}
+ }
+
+ static void mana_gd_destroy_cq(struct gdma_context *gc,
+ 			       struct gdma_queue *queue)
+ {
++	struct gdma_queue *parent = queue->cq.parent;
+ 	u32 id = queue->id;
++	u8 i;
++
++	if (parent) {
++		for (i = 0; i < GDMA_EQ_MAX_CHILD_CQ; i++) {
++			if (rcu_access_pointer(parent->eq.child_cq[i]) == queue)
++				RCU_INIT_POINTER(parent->eq.child_cq[i], NULL);
++		}
++
++		synchronize_rcu();
++	}
+
+ 	if (id >= gc->max_num_cqs)
+ 		return;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+index ece7ff9cc409..1004c3334532 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+@@ -22,6 +22,8 @@ static const struct mana_stats_desc mana_eth_stats[] = {
+ 				       tx_linear_pkt_cnt)},
+ 	{"rx_cqe_unknown_type", offsetof(struct mana_ethtool_stats,
+ 					rx_cqe_unknown_type)},
++	{"eq_throttle_events", offsetof(struct mana_ethtool_stats,
++					eq_throttle_events)},
+ };
+
+ static const struct mana_stats_desc mana_hc_stats[] = {
+@@ -261,6 +263,11 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
+ 	 */
+ 	mana_query_phy_stats(apc);
+
++	apc->eth_stats.eq_throttle_events = 0;
++	for (q = 0; q < num_queues; q++)
++		apc->eth_stats.eq_throttle_events +=
++			apc->eqs[q].eq->eq.throttle_count;
++
+ 	for (q = 0; q < ARRAY_SIZE(mana_eth_stats); q++)
+ 		data[i++] = *(u64 *)(eth_stats + mana_eth_stats[q].offset);
+
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index c610fc1067e0..03fe9395604d 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -58,6 +58,7 @@ enum gdma_work_request_flags {
+
+ enum gdma_eqe_type {
+ 	GDMA_EQE_COMPLETION		= 3,
++	GDMA_EQE_THROTTLE		= 4,
+ 	GDMA_EQE_TEST_EVENT		= 64,
+ 	GDMA_EQE_HWC_INIT_EQ_ID_DB	= 129,
+ 	GDMA_EQE_HWC_INIT_DATA		= 130,
+@@ -286,6 +287,7 @@ struct gdma_dev {
+ #define GDMA_EQE_SIZE 16
+ #define GDMA_MAX_SQE_SIZE 512
+ #define GDMA_MAX_RQE_SIZE 256
++#define GDMA_EQ_MAX_CHILD_CQ  2
+
+ #define GDMA_COMP_DATA_SIZE 0x3C
+
+@@ -366,6 +368,10 @@ struct gdma_queue {
+ 			unsigned int irq;
+
+ 			u32 log2_throttle_limit;
++
++			u64 throttle_count;
++
++			struct gdma_queue __rcu *child_cq[GDMA_EQ_MAX_CHILD_CQ];
+ 		} eq;
+
+ 		struct {
+@@ -752,6 +758,9 @@ enum {
+ /* Driver supports non-contiguous queue buffers */
+ #define GDMA_DRV_CAP_FLAG_1_NON_CONTIGUOUS_BUFFERS BIT(30)
+
++/* Driver supports handling throttled EQEs */
++#define GDMA_DRV_CAP_FLAG_1_THROTTLED_EVENT_QUEUE BIT_ULL(32)
++
+ /* Capabilities in the PCI-only group below rely on dynamic MSI-X allocation
+  * and on the servicing and reset paths reached through
+  * mana_schedule_serv_work(). Transports that provide neither leave
+@@ -776,7 +785,8 @@ enum {
+ 	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY | \
+ 	 GDMA_DRV_CAP_FLAG_1_EQ_MSI_UNSHARE_MULTI_VPORT | \
+ 	 GDMA_DRV_CAP_FLAG_1_DYN_INTERRUPT_MODERATION | \
+-	 GDMA_DRV_CAP_FLAG_1_NON_CONTIGUOUS_BUFFERS)
++	 GDMA_DRV_CAP_FLAG_1_NON_CONTIGUOUS_BUFFERS | \
++	 GDMA_DRV_CAP_FLAG_1_THROTTLED_EVENT_QUEUE)
+
+ #define GDMA_DRV_CAP_FLAGS2 0
+
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 83b7eff4646e..46aa843737b8 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -439,6 +439,7 @@ struct mana_ethtool_stats {
+ 	u64 tx_cqe_unknown_type;
+ 	u64 tx_linear_pkt_cnt;
+ 	u64 rx_cqe_unknown_type;
++	u64 eq_throttle_events;
+ };
+
+ struct mana_ethtool_hc_stats {
+--
+2.53.0
 
