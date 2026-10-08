@@ -1,34 +1,52 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73244562AC;
-	Thu,  8 Oct 2026 11:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E87B3C8719;
+	Thu,  8 Oct 2026 11:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791459182; cv=none; b=e/C80okXNDk7Z6u4ijIsbVdp0sM+8UaCWXSwg+U3oOmTOqddXxxIy3sQtEnk5570FqwTPcvguuo/C2/x1YA1+1H1lTHKuYwkQDuqwzx48PuTV0udbtvLXFr2/10nzMW4qd7oxqRBMsIP1bPx3MaVowEDISxAj1V6tSfR3mQ2BnA=
+	t=1791459224; cv=none; b=fqqYbcfPzHBT31ilJ/0SaiM0qNW9sMzC1DM7cM3WaB5Gqn00sOFwAMWOWXB5Xad9Xe6FrxxaGyZ9BngcSJNDHh8ZLZglAzeEGIJNVOIcI4AH7iPYDU+4HKFDhUF6/XE7CePbYGAudI9sZjpEQsYT7L9zCdmDnlif2qQBDwGzxZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791459182; c=relaxed/simple;
-	bh=KUJp+kW5eAWQKOFTGG+3edEQLI6tkQPYxyAiQQqYNjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gQPH9N4HuOd2LkDyuE+hc/KJ4w8Tgmp5VTRGGiQINI+yvP1SIPpO0SmKiA2G2MFRMs/L/4MnjEEUuALR+wlRr8It/ngePymEGAneswUZk9wUhx07ZGRw90LF6c4zVjC0B0MFpdHEoMFyHNq47jRJoN/eoT50p1Ydqev6c9eRSbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 3E38F46482;
-	Thu, 08 Oct 2026 13:32:52 +0200 (CEST)
-Date: Thu, 8 Oct 2026 13:32:50 +0200
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrea Mayer <andrea.mayer@uniroma2.it>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] net: ipv6: seg6: report lwtunnel setup errors via
- extack
-Message-ID: <asd_O9_pH_TE2apO@luna.proxmox.com>
-References: <20261005140637.644840-1-g.goller@proxmox.com>
- <20261005141850.278fdefb@kernel.org>
+	s=arc-20240116; t=1791459224; c=relaxed/simple;
+	bh=ceUkDeWmmPei+btmcM9zEt7TCvFIZ6Dhd+ti4P8PXBU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ow3iKqH1fDnVs+8nprPlo7FfJWuTpTLzgbXHwBIES75cIXFHYS/p5PUl9u3zzVzOMFX/WlxLbkWDn6tDY/zF4Jb2oyTQE38rtOLf1aLd7XmAyMB+rFhNz9yBwhRZHNfOZkcr71di4FZyYkUvIfmQb/xCJy7NQ4F8s2HxixSqK+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjOVT4gk; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjOVT4gk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE491F000FF;
+	Thu,  8 Oct 2026 11:33:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791459222;
+	bh=ceUkDeWmmPei+btmcM9zEt7TCvFIZ6Dhd+ti4P8PXBU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=mjOVT4gkvYM0zsUFBgnn5cRXTx3RR2GtLJ5oArAU1SYGay+hDJtn2B7v6ANmBlIG3
+	 QmcLytEWTJ6Mm1YX0cSolJItAIS8GEuLEFSP99eDrkOry674u1nF9Z0ZlLtN9Qmtp+
+	 D9MEhKbP/dDys6UWTKyJq6b7gXuILLhKHvF4N8ia89TPNgYXUgYstkOvtDjOlWnsB7
+	 3gV0md5tYweGFmD/vsB9bqspxG9ae1k+6LNIgVN7zq/UGL9ZNz1/rKAflKwMA9rzhN
+	 aKYUxhPdnR4hg2YFkyxfb/mGvRcHUfwqYZimkFuRBg6pD2kI8FgsTi4f66fEdcPJ1e
+	 w4pTbbVJ+i46w==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+ <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, Jesper
+ Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
+ <ilias.apalodimas@linaro.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, John Fastabend
+ <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Luigi
+ Rizzo <lrizzo@google.com>, Pavel Begunkov <asml.silence@gmail.com>
+Subject: Re: [PATCH net-next v2 2/2] docs: netmem: document netmem and
+ memory provider design principles
+In-Reply-To: <20261008023030.1089616-3-almasrymina@google.com>
+References: <20261008023030.1089616-1-almasrymina@google.com>
+ <20261008023030.1089616-3-almasrymina@google.com>
+Date: Thu, 08 Oct 2026 13:33:40 +0200
+Message-ID: <87a4oo2zqj.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -36,34 +54,23 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261005141850.278fdefb@kernel.org>
-User-Agent: NeoMutt/20260504
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1791459171217
+Content-Transfer-Encoding: quoted-printable
 
-On 05.10.2026 14:18, Jakub Kicinski wrote:
-> On Mon,  5 Oct 2026 16:06:34 +0200 Gabriel Goller wrote:
-> > seg6_build_state() rejected invalid configurations with a generic -EINVAL,
-> > so "ip route add ... encap seg6 ..." always reported "Invalid argument".
-> > 
-> > Attach an extack message to each of them. The checks themselves and their
-> > return values are unchanged.
-> 
-> Why not use _MISS were appropriate?
-> 
-> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005140637.644840-1-g.goller@proxmox.com
+Mina Almasry <almasrymina@google.com> writes:
 
-Makes sense.
-This will make the output less user-friendly than before, but I think that's fine.
+> Add a Design Principles section to Documentation/networking/netmem.rst
+> covering the netmem_ref abstraction, the prohibition on direct
+> downcasting in callers, decoupling memory providers from net_iov,
+> decoupling net_iov from unreadability, delegating provider/type logic to
+> memory_provider_ops and netmem helpers, and the homogeneous skb fragment
+> memory type invariant.
+>
+> Cc: Luigi Rizzo <lrizzo@google.com>
+> Cc: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Pavel Begunkov <asml.silence@gmail.com>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
 
-E.g.:
+This helps (helped me at least!) -- thanks for the clarifications!
 
-	Missing required attribute type 1
-	RTNETLINK answers: Invalid argument
-
-> -- 
-> pw-bot: cr
-> 
-> 
-
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
