@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB38383985
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8BA3A257C;
+	Thu,  8 Oct 2026 02:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791425410; cv=none; b=hSKifI16puxb/dROv7wZyUAvFhp9lpBf8eLRnJZ0jHs47klevp9e17salf/mEyTFPwMM/s/i2BZXaeOtraEERGcH+Ea1MSdGykXbwZNAdIktgGJCIKtDqLLDmdQdAYejE3fuymDnIo4Ll0BQ/1CQWh6FkWxxSCqOl1xRm8t1jLo=
+	t=1791425411; cv=none; b=XdwLVHFj04c8LtEDpoSzUk0KWceVWxLGJiINk48jtn3pw0uWk2C9TR4XSMiF2fth/CgfSnxxQi2yx/1opU5M2s6QOUrvt7WFnzQC9KP5mfCApjCH28U0hJ16gM2ZuseXkGoXAbrGMc1cZ7eR5jIxPxH52RJ51XhLTbXUMAzjgik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791425410; c=relaxed/simple;
-	bh=xt+zIakBf1aibxAakPNj2DTEuExxBbGw6ijTVWJ+wXA=;
+	s=arc-20240116; t=1791425411; c=relaxed/simple;
+	bh=2TxOpoPq/dRNfFmeCSgrW35fWc2WmXDgSglGR4dQXzI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=MK340tQp/p2QEqbyY4YFbV58kqPU2BznE1V0Z8wHGp9EyyM7n+mQHS2r269WoPlTJ8//ECmSd43QKypMNaSRzfRD8BybVu29bjdAJAwn+halI4GxAHxXunks9AKpmqTOlQiuruLCPi+OsywcE44/0KH2G+lGXif8wfags4azQZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgJcpI7O; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Bj5KaL/WkABL3p6lDpXC+sx4Cg8DZNqpEJM1c5Xg70fN2eFKjvixHEwdddyAdoJLAAJ6wIt77GxFoaYwOSoqZgkWl+zeRqY0G4s+FdICYfnYak18dJvOEdTyOjEvwF63THc8H4fQemAuU6jzaQ9ZcNKC1Q1DDwDVLlwXbT6EjiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFpgn2NX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgJcpI7O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444AD1F000FF;
-	Thu,  8 Oct 2026 02:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFpgn2NX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF19A1F000FF;
+	Thu,  8 Oct 2026 02:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791425409;
-	bh=tt9UrD2QRR+BAxrZVtDIQWG+2bLsqZddWVIlY5YcMSA=;
+	s=k20260515; t=1791425410;
+	bh=q5B113EfHvbtY5J8cReeXBkcayx+9OSqiCMco+CVcrU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=OgJcpI7OS7ooPG++NaQwg3y5ocs3huwQc3lAdF49DBbsmKfT39PnvnAH5MG34JuNS
-	 JsNu+0+aaL5AQJSlPPW6d1bdnlke4bWHintou+m0mazbchE7dW7E+l88vqQ+GboLPn
-	 lYQuSIYimrFadLJqlCKbJh5JWCEQN90qctGSf5Y1otjEZEg9614GcPMeRSJnDb1K8x
-	 TSYGw7o0X0yQXlSTuAc/8IkR8Pm5SsU+CT5uMHyOdt1W+hMaM6NC3te1MBmRODS98z
-	 xpnNUMyJsqDDbwymFcn6nTy2p28mIWKnqbZutkFT0x7+hX8CGvzOLXD1t693tOmRQ8
-	 xBZHBdzyAEkWA==
+	b=mFpgn2NXEo+Ir9qUz+pQZnDii0vMWERceISkfPNb5bjEErXTKGDMNE+9GhSlCMjhz
+	 dyk1SZTvFJ8TuF+I7/gEKFdjaLb4ICgdPZfFj+l6abT+n0D7lUQBwpz+vwstdk0gk/
+	 lgmLRmFXhN+Oijy7DYId4K/Iy54HWcER9HisUcHGF8rW/HJvhfeKembyhKu40mp5eG
+	 lS/greoS4BiaXumrJd/+YRJZMnFq/stUiFuTyAxfkFXbkeJKjXUf9qwPdBMn+ILq6I
+	 +udb5FF9AT4t24B1ZAYC7G9R0+ptLwu3jHp8bf+zeErENwIvevauD+pD4Ueaygrmdv
+	 5uJG4aVi/LL4A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A17F3809A09;
-	Thu,  8 Oct 2026 02:10:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B43CD3809A09;
+	Thu,  8 Oct 2026 02:10:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates
- 2026-10-01 (igc, igb, e1000e)
+Subject: Re: [PATCH net-next v3 0/2] amt: mark relay data as a UDP tunnel
+ packet,
+ with a selftest
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179142540777.3771647.15868502335514803334.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 02:10:07 +0000
-References: <20261001222443.3500206-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20261001222443.3500206-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@kernel.org, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- florian.bezdeka@siemens.com, meng.ding@siemens.com, p@1g4.org,
- tkusters@aweta.nl, jiayuan.chen@linux.dev, pulehui@huawei.com
+ <179142540927.3771647.9405925708782465037.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Oct 2026 02:10:09 +0000
+References: <20261004161200.27196-1-omar@blockcast.net>
+In-Reply-To: <20261004161200.27196-1-omar@blockcast.net>
+To: Omar Ramadan <omar@blockcast.net>
+Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  1 Oct 2026 15:24:33 -0700 you wrote:
-> For igc:
-> Ding Meng fixes Rx hardware timestamp when NET_RX_BUSY_POLL is disabled
-> by populating the skb hardware timestamp from the NIC's Rx timestamp.
+On Sun,  4 Oct 2026 19:11:58 +0300 you wrote:
+> amt_send_multicast_data() never calls udp_tunnel_handle_offloads(),
+> unlike other UDP tunnels. With tx checksum offload on the amt device (off
+> by default), a UDP_SEGMENT burst through the relay is dropped before
+> patch 1 and delivered after it. Patch 2 adds the selftest.
 > 
-> Paul Moses limits timestamp-header stripping to the first buffer of
-> each packet, preventing continuation-buffer data from being truncated.
+> This follows Eric Dumazet's suggestion on my withdrawn [PATCH net] "amt:
+> do not offer software GSO on the amt device":
+> https://lore.kernel.org/all/20260928181554.85766-1-omar@blockcast.net/
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/6] igc: Fix RX HW timestamp reporting when NET_RX_BUSY_POLL is disabled
-    (no matching commit)
-  - [net,2/6] igc: only strip RX timestamp header from first buffer
-    (no matching commit)
-  - [net,3/6] igb: only strip Rx timestamp header on the first buffer of a frame
-    (no matching commit)
-  - [net,4/6] e1000e: fix IRQ leak when request_irq() fails in e1000_request_msix()
-    https://git.kernel.org/netdev/net-next/c/8c37b775c92e
-  - [net,5/6] e1000e: Fix out-of-bounds MMIO access by validating BAR0 size
-    https://git.kernel.org/netdev/net-next/c/e357e76b6ca5
-  - [net,6/6] e1000e: add system to disable K1 list
+  - [net-next,v3,1/2] amt: mark relay data as a UDP tunnel packet before sending it
+    https://git.kernel.org/netdev/net-next/c/47bb8dfbe1d2
+  - [net-next,v3,2/2] selftests: net: add an amt test for UDP_SEGMENT through the relay
     (no matching commit)
 
 You are awesome, thank you!
