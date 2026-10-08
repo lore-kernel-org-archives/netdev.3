@@ -1,137 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6D93A16BC;
-	Thu,  8 Oct 2026 16:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4063A9D8F;
+	Thu,  8 Oct 2026 16:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791476018; cv=none; b=Ngex0Uk4uoc0DEKFnA4s4N4D9BnOMRWGZhm1WiA0bpXaH6ybcQCk+LUHT43usS+YsnsDzSP56ZXaDAgz3avxyVThL+nxTXjOP6gAXl+jUqwoRRQnCzhxrGX0j0COrEneXql0/j0zOyY0fE8r0FeKwiqWhr4j0iS5rKskG1YFoSY=
+	t=1791476254; cv=none; b=E1If6pMPwpedsRykEX//nsAhJdFiALr6Dm5BOXI9yNlgAgbhT6Vj2sLu7nWmi5vuwtsSwZDQdYpf3BZICBtIr0ZRgUhQ3UhbrtNgoYctdYjnTIBQWuNsdZsH3E0DBFBCr8lxta7pKDD9ndDdy/Z/WMYkzXAb2/P9wBMc9CA/baE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791476018; c=relaxed/simple;
-	bh=kvNXIo4SaRlxomA7jdOnL/2uMN6SwvsWPMll1Wb0KKY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=crhsgNYRaa4Eqk0YXU0wnVECQKKBak/jnYv+8iB6MaOCJVUg4Oif30kRWg96HO4c2rpMkE+seWq6PV7xEZMTVN6A7BDIZl3JeZwzHlUmPpcyndHzHETU/Ih21eocWbVWfhiQZqpebvT/8cldXRMa3snQHGaJbZW5Uf+MAAfpVsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bcob3tth; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791476254; c=relaxed/simple;
+	bh=OwDMbg4HS2K3cbm7ThURQ2BsrxBel1QJaN7B1jSC5pw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L3UdW2pRvTuYxsVvvFHTlxqUeb8YM4JYPM6XVCv7mNyz4+BObTWIiqoeQSgcZsjL6dBrGSuDnEalTSE2AxfrrCxTDtkKdACIgE6A4PEuaoxgkEi59/bFxJjavcy646RsLdehFHeZKrrsKHsUjLPMcF50ATFsY8S1IJ/oBa3k16A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNm6UU+H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bcob3tth"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBFE1F0089B;
-	Thu,  8 Oct 2026 16:13:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNm6UU+H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C381F000FF;
+	Thu,  8 Oct 2026 16:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791476013;
-	bh=1qz2zs17muwa4xmBznSqvYurFQSuqOe1Jw2rB762q0c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bcob3tthhVWUWTwyTPHVtz89KadvCQD3vwvxL1YsEOpmDNDOzG8QaoW+JNgT59kjY
-	 Cz1ycVhgf7N2HwNx+r6YT8e3SenySxPsr8P/uCrOQ6up9J3gVdWmZySYEgcsxY8nNX
-	 qWa3NNcqPfuAu3bcoVKpXJdlpvg30dPDRiJSGEevGNgs7jqxvo+uMvmY8saCwVIxb4
-	 MeF0HfbP+qytN7fMp3uN90n78Y0vOkP07L4FcTuaZiOWjfXo9s6ahpH6ThnbWCemhv
-	 1UNobuJa7d/LANTlwBEpemsW0r02FbG/hcfAnvdxRNtBdX8VNMLIk8rUzPX4DAmLN1
-	 GO3ghtrNg9oHg==
-Subject:
- Re: [PATCH net v12 15/15] rxrpc: fix use-after-free in rxrpc_poke_conn()
-From: netdev-bot+sashiko@kernel.org
-To: dhowells@redhat.com
-Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@kernel.org
-Date: Thu, 08 Oct 2026 16:13:32 +0000
-Message-ID: <179147601260.434549.9609551545594958700@kernel.org>
-In-Reply-To: <20261006133011.531806-16-dhowells@redhat.com>
-References: <20261006133011.531806-16-dhowells@redhat.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791476253;
+	bh=exmGulorvnjMrpq9YAnuYsgaGXLHC/0fKR2L0PblnAs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gNm6UU+H0kfPKSnelpVGRph/XNud64HiX5Qi91CZjhhZoo8NEyz5SwKJFTf0pHUmJ
+	 RnzektZbAvCPd9ujPEe8Judz+1RGRyfiFdHNSX+/jbusHelmhkXLfe34YREUyi1aQr
+	 jlLBVitS7ZAHMepPBee8o/uCuLec/zz72tfDxAMIrJBFbsn4TqPZJq2JSTwgi/WTlg
+	 j9p2AeA+fr37a2wPLIk/RsMfCbKYehqn18ByB5iOGU+aBQDsB6MX1rJvZy8/g8swyp
+	 xfFXYqep5t3x//zBryt22oTu006Koc6rqiAps5HcQpGlzx7WCUee5DJIs/D6a1T0S8
+	 +Fr7szRiRsO9g==
+Date: Thu, 8 Oct 2026 09:17:32 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>, Jamal Hadi Salim
+ <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/2] net/sched: taprio: fix RCU stall from replayed
+ schedule entries
+Message-ID: <20261008091732.7794253a@kernel.org>
+In-Reply-To: <20261006113335.241564-1-krystianmkaniewski@gmail.com>
+References: <20261006113335.241564-1-krystianmkaniewski@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Tue,  6 Oct 2026 13:33:33 +0200 Krystian Kaniewski wrote:
+> syzbot reported an RCU stall with a software taprio schedule made of a
+> single 127 ns entry. When advance_sched() falls behind, it replays every
+> missed entry inside the timer interrupt and the backlog only grows.
+> Patch 2 makes it continue from the entry in progress instead.
+> 
+> Patch 2 then checks for an admin schedule handover once after catching
+> up. That requires the cycle_time_extension comparison to be monotonic,
+> so the sum now saturates instead of wrapping. As a result a large
+> extension can hand over to an admin schedule whose start time leaves no
+> room for the timestamps derived from it. Initializing such a schedule
+> already overflows today, and a carefully chosen extension can already
+> reach it. Patch 1 rejects these schedules at configuration time and
+> comes first, so the series never hands over to one.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+The coccicheck CI job flags a new warning introduced by this patch:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+  net/sched/sch_taprio.c:972:8-13: ERROR: invalid reference to the index
+  variable of the iterator on line 959
 
-- [Medium] The commit message describes the new guard wrongly.
+This points at the new taprio_entry_at() helper:
 
---
+    list_for_each_entry(entry, &sched->entries, list) {
+            entry_end = min_t(s64, elapsed + entry->interval,
+                               sched->cycle_time);
+            if (offset < entry_end ||
+                list_is_last(&entry->list, &sched->entries))
+                    break;
+            elapsed = entry_end;
+    }
+    ...
+    return entry;
 
-rxrpc: fix use-after-free in rxrpc_poke_conn()
+`entry` is read/returned after the loop. Even though every code path here
+actually breaks out of the loop on a real list element (the
+list_is_last() check guarantees this), Coccinelle's generic
+use-after-iterator check cannot verify that and treats any post-loop use
+of the loop variable as a potential bug, since on a normal (non-break)
+loop exit `entry` would point at the list head sentinel rather than a
+valid `struct sched_entry`.
 
-Before this patch, rxrpc_poke_conn() took a reference on the connection
-without checking whether the refcount had already reached zero. That
-could saturate the refcount and leave a freed connection linked on
-local->conn_attend_q. The patch replaces rxrpc_get_connection() with
-rxrpc_get_connection_maybe(), so the poke is dropped if no reference
-can be taken.
-
-> Guard rxrpc_poke_conn() with the same liveness/refcount check the sibling
-> rxrpc_queue_conn() uses before taking the poke reference, so a connection
-> past its last-active point is not poked/requeued after teardown began.
-
-[Severity: Medium]
-Is this description accurate? The patch and rxrpc_queue_conn() seem to
-check different things.
-
-rxrpc_queue_conn() in net/rxrpc/conn_object.c gates only on the active
-count and takes no reference:
-
-    if (atomic_read(&conn->active) >= 0 &&
-        rxrpc_queue_work(&conn->processor))
-            rxrpc_see_connection(conn, why);
-
-The patched rxrpc_poke_conn() calls rxrpc_get_connection_maybe(). That
-function only does an increment-if-nonzero on the refcount and never reads
-conn->active:
-
-    if (__refcount_inc_not_zero(&conn->ref, &r))
-
-The two predicates are not equivalent. rxrpc_service_connection_reaper()
-moves active from 0 to -1 on its own, before it drops its reference:
-
-    active = 0;
-    if (!atomic_try_cmpxchg(&conn->active, &active, -1))
-            continue;
-
-So a connection with active == -1 and ref > 0 can still be poked after this
-patch. Also, a client connection can reach ref == 0 without active ever
-being set to -1.
-
-The refcount check looks like the right fix for the use-after-free. Only
-the wording seems off.
-
-Could the commit message say instead that the poke reference is now taken
-with refcount_inc_not_zero(), and that the poke is dropped once the
-refcount has reached zero?
-
-As written, "the same liveness/refcount check the sibling
-rxrpc_queue_conn() uses" and "past its last-active point" suggest that an
-active-count gate was added. An active-count check alone would not close
-this use-after-free, and a stable backporter might copy that check instead.
-
-> diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-> index 0ece717db0f85..1be50e0c9cee5 100644
-> --- a/net/rxrpc/conn_object.c
-> +++ b/net/rxrpc/conn_object.c
-> @@ -34,7 +34,10 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, enum rxrpc_conn_trace why)
->  	spin_lock_irq(&local->lock);
->  	busy = !list_empty(&conn->attend_link);
->  	if (!busy) {
-> -		rxrpc_get_connection(conn, why);
-> +		if (!rxrpc_get_connection_maybe(conn, why)) {
-> +			spin_unlock_irq(&local->lock);
-> +			return;
-> +		}
->  		list_add_tail(&conn->attend_link, &local->conn_attend_q);
->  	}
->  	spin_unlock_irq(&local->lock);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006133011.531806-1-dhowells%40redhat.com
+Could you restructure the helper to avoid reading `entry` after the loop,
+e.g. by tracking the last matched entry in a separate local variable set
+inside the loop body before the break, or by adding an explicit
+"not found" fallback assignment after the loop? That should keep the
+logic identical while satisfying the checker.
