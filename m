@@ -1,145 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB53F430CCA
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 11:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87E73F9278;
+	Thu,  8 Oct 2026 11:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791458604; cv=none; b=iDdFHBuOV3oroPym+ScJSqE2AcdtfTKnt6u28hQ3hACy/LSHnOjKRK3bSu7MBbIxJC2c+mCaUn+0d7Vi6ifxwqikvgXEatoZVc9d7fLgiS6PIO5tGuXVgv+GG+kLC+uCsEzk0BJ1WLb2+p+9Y6Lzgn1oEbApYf/fmK106Lnj11g=
+	t=1791458710; cv=none; b=kMwEURF3RP7fbAh3D1laQY5p1muOgnz/ZiiWWmpn2BghrCsIgNrKMVKB63riNiUktYxQJIHlxP0lgccfBGYc4UC0U+Iu0d1pimZ6rMbYcIAWQ/8gTOfo0yGRtPYFTg2VCpXcPMOTpsDlRwsF2Cq/LhKitZLHYZd+V4gyKD2mVNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791458604; c=relaxed/simple;
-	bh=F0oOjT3HrxqylxCawx0wdKuMFBs3XCL4/G/XIcES1Rs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zurtu2VV0V5MI9Z35UbiSBt8nUR0BGoYRgqWp5vwfCXW/qwdjYBnVsEYGNJJ4omhB7Ny3v5aeErX4GpzgXCtfA8NL6zONWkTTUNrE/0BbDQTBG9KVU4iTTRfwidIux8M4YEhG+AaSTfE2JuMZqGvY7HlC9K9uYBEuOBdh878GIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBYw0z0U; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791458710; c=relaxed/simple;
+	bh=n1zXg+ubN5fMmYdyWRd04OhARz9l/0jBEVVvFXlnO4A=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HrAgy7+iCKEWYWdHtIlHlIgOmKkbFzLKoRNVv0uMzzwRkA/LIOpI1ruzazM3AH9d2FPTlLR1YH52SfjsOtBQ4Ei92B4NsRpBYkGUQx8p21x3DZxyTWB/4/DS+4PK4dUJ8q9LK1irzw7ZQ0uoiiJ2OHabYPag6xmF/eT7PmCCqfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ps1HK+Jh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBYw0z0U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0011F0089A
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 11:23:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ps1HK+Jh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61DC1F000FF;
+	Thu,  8 Oct 2026 11:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791458603;
-	bh=OCn78hP9ueLLGhxW6pW6RbrRspOn6L8aUvAyzG5R1q8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=SBYw0z0Up8qwR7mXJrBupwsvyFMM4+TUdsnDihUT+Lr0FrO7SGm6w+4Qa//QWrpBm
-	 rYLRSEObw4rb8EKCR4zfcSJEe8W4a7Oo/l5Jb8Aekbxzc2Bd+dEXKgQ3snoo24m6W/
-	 tQA4JXM0lFlTUDUVBhTy4M5pWGZ0GcNTaYjAZBbrGZ9pB58bueQgin9Rw8evVMSsTZ
-	 RAZyodv3/O0kHgxDGAyluqCGG0AwdALFQcEmx6GcFLhhlq+A7EQSf8OofrqXGPGgUm
-	 vt+m+z05MVP0mk8cmdfzCV6QwXufhtOPZcP2hHTiu2qGlMt3SZSRI3KZimQknC/9pi
-	 /NYcUHo1Lww9A==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-483c607ccb4so2758883fac.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 04:23:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxdV7YBd3YLyqA+BOq0I+ZtubP0Ood0+1pIJpzahvNs3VCBofkFcvGJlJT6gwo/iAoHb2Tss1c=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJAVJbrXTTp8Ock7cwVv2caFFoMNQ4xPoMdgcwHNul+M9V0G7Vv
-	+tKFadI8/7OCYfNnUzUFQEDHwM86Ey0HUaAtcxmXjpTPqXztWlgdpAFFJpc85X6SnPcJdSZISIL
-	XSWt4RUFEp2i8rwrw7Hsn2H+0GyDyGaw=
-X-Received: by 2002:a05:6870:a0a5:b0:475:e2e9:4f54 with SMTP id
- 586e51a60fabf-4a25961fcfdmr4553863fac.34.1791458602726; Thu, 08 Oct 2026
- 04:23:22 -0700 (PDT)
+	s=k20260515; t=1791458709;
+	bh=FLHQ3z0rCPAU/bcGQQoije/kQRz+r11dxAy44WD1rb8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Ps1HK+JhbffBvuxRoj/rHaqI5HPo1Pa7JQMfDh/5TfM3gyn4fEczTX2+fxdov+e8E
+	 5rXoJ8F6GhGxaF7zLWy10Xwzowbqf6H/MXLyhAnLOiJZDEYEnzFIVH/cBu+Gfb0N9i
+	 rIYUxiSYGg7NlL5nqtk7aD1QG+Qr1bRlQ3mCh5hkNtwzwfZtNzrPJVOgsDFFZMnTdz
+	 mh6Uf2cKjBtGNPDiyzd/ZJGQ72E2Yi2EPf+2MCnSW2mFG9aJHoNol7Q3yWWywz2D+B
+	 3TT96Rw7KclX2YhaBdZAFnOiZjCI/7vL9y7nAtLPwuuL/oITX1rTQZm7G8r6lcWave
+	 7TxPDFQgPl0Kw==
+Subject: Re: [PATCH net V2] net/mlx5: Lag, reset vport speed on MPESW teardown
+From: netdev-bot+sashiko@kernel.org
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ edwards@nvidia.com, gal@nvidia.com, kees@kernel.org, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, msanalla@nvidia.com,
+ mbloch@nvidia.com, moshe@nvidia.com, ohartoov@nvidia.com, saeedm@nvidia.com,
+ shayd@nvidia.com
+Date: Thu, 08 Oct 2026 11:25:08 +0000
+Message-ID: <179145870829.434549.18408966313287855938@kernel.org>
+In-Reply-To: <20261006112415.259157-1-tariqt@nvidia.com>
+References: <20261006112415.259157-1-tariqt@nvidia.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008100423.1256884-1-theodorlarionov@gmail.com>
-In-Reply-To: <20261008100423.1256884-1-theodorlarionov@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 8 Oct 2026 13:23:11 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqDffWyo7+gbffB2PYuKAbjboK7D=JJD+z=5J5MX=9Y3Q@mail.gmail.com>
-X-Gm-Features: AclHuK_YZkLCz2adbKpdT7afflmfkP7cSHP82EUw7c7epSmBMrFz5ew4Q5U9llE
-Message-ID: <CAL4WiiqDffWyo7+gbffB2PYuKAbjboK7D=JJD+z=5J5MX=9Y3Q@mail.gmail.com>
-Subject: Re: [PATCH net] net: use the full socket in sk_mc_loop()
-To: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>, Ido Schimmel <idosch@nvidia.com>
-Cc: kuniyu@google.com, pabeni@redhat.com, willemb@google.com, 
-	davem@davemloft.net, kuba@kernel.org, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le jeu. 8 oct. 2026 =C3=A0 12:04, Theodor Arsenij Larionov Trichkine
-<theodorlarionov@gmail.com> a =C3=A9crit :
->
-> tcp_make_synack() sets skb->sk of a SYN-ACK to the request socket.
-> If the SYN-ACK destination is multicast, ip_mc_output() calls
-> sk_mc_loop() on it, and inet_test_bit(MC_LOOP, sk) reads inet_flags,
-> which is past the end of the smaller request_sock object.
->
-> KASAN reports a slab-out-of-bounds (or slab-use-after-free) read in
-> sk_mc_loop() from tcp_v4_send_synack() when a SYN with a multicast
-> source address reaches a listener.
->
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-How does such a SYN reach a listener ?
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-ip_route_input_slow() rejects a multicast saddr as a martian source,
-so this can not come from the wire.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I guess this needs a local sender : raw socket with IP_HDRINCL, and
-the packet going through loopback, where the dst is kept
-(skb_dst_force() in loopback_xmit()), so that ip_rcv_finish_core()
-skips ip_route_input_noref().
+- [Medium] The fix says it removes stale cached and FW-configured vport
+  speeds after MPESW teardown, and it relies on…
 
-Also the SYNACK route only uses ip_mc_output() if RTCF_LOCAL is set
-and the output device is not loopback, so the SYN must target an
-address of a non loopback device, and the source must be a group
-joined on this device.
+--
 
-Please describe this in the changelog, and include the (trimmed)
-KASAN splat, and a repro if you have one.
+net/mlx5: Lag, reset vport speed on MPESW teardown
 
-(Was it a public syzbot report ?)
+This adds a call to mlx5_lag_reset_vports_speed() in
+mlx5_lag_disable_mpesw(). Regular LAG teardown in mlx5_do_bond() already
+makes this call, and the MPESW path now matches it. The goal is to stop
+cached and FW-configured vport speeds from going stale after MPESW
+teardown.
 
-> Map the socket to the full socket before reading its flags.
->
-> Fixes: ca6fb0651883 ("tcp: attach SYNACK messages to request sockets inst=
-ead of listener")
-> Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.=
-com>
-> ---
->  net/core/sock.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index e8551df8330f..1302c1e848b2 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -769,6 +769,7 @@ bool sk_mc_loop(const struct sock *sk)
->  {
->         if (dev_recursion_level())
->                 return false;
-> +       sk =3D sk_const_to_full_sk(sk);
->         if (!sk)
->                 return true;
->         /* IPV6_ADDRFORM can change sk->sk_family under us. */
->
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
+> index abf72026c7513..e0a57b7dd82ed 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/mpesw.c
+> @@ -157,6 +157,7 @@ void mlx5_lag_disable_mpesw(struct mlx5_lag *ldev)
+>  	if (ldev->mode != MLX5_LAG_MODE_MPESW)
+>  		return;
+>  
+> +	mlx5_lag_reset_vports_speed(ldev);
 
-This only addresses the out-of-bounds read, masking the root cause.
+[Severity: Medium]
+The commit message says this addresses "stale cached and FW-configured
+speeds after MPESW is torn down". Does mlx5_lag_reset_vports_speed()
+actually put the vports back into their pre-LAG unset state?
 
-We still answer a SYN with a multicast source. With this patch the
-SYNACK is looped back depending on the listener MC_LOOP setting,
-and syncookie SYNACK (skb->sk =3D=3D NULL) were already sent.
+The helper reads the current uplink oper speed and writes it as a non-zero
+value:
 
-tcp_v4_conn_request() only looks at the input route flags, ie the
-destination of the SYN. tcp_v4_connect() refuses RTCF_MULTICAST and
-RTCF_BROADCAST routes, I think we want the same check on the route
-used for the SYNACK.
+drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c:mlx5_lag_reset_vports_speed() {
+    ...
+		ret = mlx5_port_oper_linkspeed(mdev, &speed);
+    ...
+		speed = speed / MLX5_MAX_TX_SPEED_UNIT;
+		mlx5_lag_modify_device_vports_speed(mdev, speed);
+}
 
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_soc=
-k.c
-index 6a30f11384547e6adaeff13a005c7ce1d316a602..aa928015cd143234d3d0c72e2b6=
-07d8347f73269
-100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -779,6 +779,9 @@ struct dst_entry *inet_csk_route_req(const struct sock =
-*sk,
-                goto no_route;
-        if (opt && opt->opt.is_strictroute && rt->rt_uses_gateway)
-                goto route_err;
-+       /* Never send a SYNACK to a broadcast or multicast destination. */
-+       if (rt->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
-+               goto route_err;
-        rcu_read_unlock();
-        return &rt->dst;
+mlx5_lag_modify_device_vports_speed() then caches that value. It also
+programs the value into FW for every enabled non-uplink vport:
 
-pw-bot: cr
+		vport->agg_max_tx_speed = speed;
+    ...
+		ret = mlx5_modify_vport_max_tx_speed(mdev, op_mod,
+						     vport->vport, true, speed);
+
+Elsewhere, 0 looks like the "no override" value. mlx5_esw_vport_enable()
+only programs a speed when the cached value is non-zero:
+
+	if (vport->agg_max_tx_speed)
+		mlx5_esw_vport_set_max_tx_speed(esw, vport);
+
+mlx5_ib_query_port_speed_from_vport() falls back to the live port speed
+only when max_tx_speed is 0:
+
+	if (vport_state == VPORT_STATE_DOWN || max_tx_speed == 0)
+		/* Value 0 indicates field not supported, fallback */
+
+After teardown, nothing refreshes this snapshot.
+mlx5_mpesw_speed_update_work() only acts when ldev->mode is still
+MLX5_LAG_MODE_MPESW.
+
+Say the uplink later renegotiates to a different speed. Would the vports
+keep reporting the teardown-time speed, with FW still holding it as
+max_tx_speed? VFs created after the LAG is gone would also get the
+snapshot through mlx5_esw_vport_enable().
+
+There is also the failure path. If mlx5_port_oper_linkspeed() fails during
+the reset, the helper skips that device:
+
+		if (ret) {
+			mlx5_core_dbg(mdev, ...);
+			continue;
+		}
+
+That leaves the full MPESW aggregate in both agg_max_tx_speed and FW for
+that device. Isn't that the same stale state this commit is meant to
+remove?
+
+Should teardown clear the override back to 0 instead of writing a
+snapshot of the current oper speed?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006112415.259157-1-tariqt%40nvidia.com
