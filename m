@@ -1,176 +1,146 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9502131E844
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 22:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AB243E06C
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 22:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791498357; cv=none; b=lP1JSG0Juo8dilVSTYpzH9tqkPUAjc6XYVrh/Xix97VT4RtYuk2khYzHoiRZit5aAeC6sjB+lPykLl8vBrLy6oTtWBYrGR/8VAKGVeLg56MPgV6LOkl7IYzbfp0vFIuEqRzis35zU6uCkm2oPGkZGGbsbExoaPqU9ZWQFkZaIfc=
+	t=1791498630; cv=none; b=H/P3EIyvaSuFfaqwd5gp+KLJpCN3ywXkZBtlkJb2+cfOF0W6pXWq9WD/O1UtGy2UEHQIrGCPdhnQ46iHWim7NKyWo3F2iB0o7vX/HTDiTF+fuwX6hLicjr7lnbEENh6Ts/GS2d/B3g+OiKHPdI3NKMCH9ZSSX8HertRfMngUUFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791498357; c=relaxed/simple;
-	bh=v7jCTOP21fM8TbfufNOoo0v+XJZybctSDJDiHhW4LQ4=;
+	s=arc-20240116; t=1791498630; c=relaxed/simple;
+	bh=DmpUgBe6WbGh4qoSebBnxDOEpRHy5UIKV6WDZGaQ/u4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eEbXLmaGae41oDZBHgE1v4Fs8RO/7GQCCi7SPjIOZQ/WwrMyIRPOd7WhBeZHkXeliNRhYEIiYkdLOdl3Up8N6m5F1hHaP9BdSUSph/Q+AWhBVmMrBM1xuaD3u0NKTi7fAGw33Ex784M+kmy75Pl9X1jZ1bTjYcjDq21/5eJ1EeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xejc3279; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=gout72pUrCORNJn1euwv+xFSOt5UfuxuzCL+LCPU/djgzcz4QbqnfYHpoljupS/8TwGiHBDvSej/wD2QaaKKz2T15pmy6TlqbdtKoJOVwGxxM0fTpwwrozp3pu2qVzbQ/bL3oVPUosyk+7pDrFUI55dRJueUO9LdRETLmT5nRSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1l/dIx8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xejc3279"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562471F0089D
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 22:25:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1l/dIx8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3351F0089D
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 22:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791498355;
-	bh=573ZxgVmxHKNqjvqYAD1cEWj1kPoV8KHOVbPKb8u1X4=;
+	s=k20260515; t=1791498629;
+	bh=YM3S3zdUrJPi9sjI7tUoLRuIpMCsX8cp9vpn2bmDzf4=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Xejc3279MW1KrbTZc6c2+IazzNJx499ow8L1HwePTRzrXPGEUXJ+voEZtGc+46SO1
-	 jnkKBEaOVCqNqqEbiUGkeJu/dCYbR3bjmx7AxHwSZvPqj5z5WulGJs6Sk76q3hgtPU
-	 OvvJmIYOIJs8Ac95Wv6tC4KaBf8PPKiTm9M73qGtMwagLdMH6CUMisxd8djf5jgSlr
-	 SnetK1g4c0GnuVxtIzWbqjBid3nyyQLz/bAUsmDCN1CnpvMM7VKv+0mhkp5J/b7mny
-	 0du3Rs/Lh154HhLRPjXqe6CH5paLMm7vfJgK41f1JVu/7WdTxgMj++tI+iq1H75F0P
-	 ShtVyt3NfMBRw==
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-483c607ccb4so3137995fac.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 15:25:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwcFW4wJOuid4dhpI2uHVhDftBeXEmHKmDyVRDMRedYmmcJbiNpAlzB96fur7kcBrJVaIoRRSE=@vger.kernel.org
-X-Gm-Message-State: AFuF++n0P8rAunVpsT06ElWvX3oxkEfl/wkZqVhVGp9+aDALjJKnmBrb
-	WYp4/DuGaMpx4AhQ5oY5ZSd+SNccAqUsfB7KMe96kzF0mgXso5aYXzfmat61tdQOFSinMUQQ7dT
-	faSPbowwyZF9wfquLq0Q9B1NL2rLOENs=
-X-Received: by 2002:a05:6871:722:b0:48f:e0f6:bd5f with SMTP id
- 586e51a60fabf-4a2a8b0964amr171183fac.48.1791498354611; Thu, 08 Oct 2026
- 15:25:54 -0700 (PDT)
+	b=A1l/dIx8zFcIXWRF5v3DRHmgk7OSPEs9CJI/VMsawBTxqwnb4Foopj0DEcUne9dDl
+	 dW3Bi94IV3hNDeau9j/7Y92/sxBWzX3NE10jL9PsRPqZpHaJub4nZrS7HOe+S5nh/A
+	 KXtT8NgiQoNwRkF3TMt/cP5bsoqp6ZW8Q8wrRO1cIG24Cj0mp7Cz03omHywEAY7Du/
+	 XSWNKbul8Q9vnnhlX03B0hC0QzExETb7agMP5gkqfYTdZKegz1ttJ6FWUbV6JOJYvC
+	 2xWlbOqcYYwBoThZJxOJlbMMGnzhSDxGl1wRe0uuJ2/WI46XkVREByIrrNgu3uEjZL
+	 4yXK/HI/DzDig==
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6de2f213b7aso1539970eaf.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 15:30:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByR9qZl2w0+CANA6BokHk5KJTC7WIA7MtDdhzf8jMosxCWllGEhUAwaNCss+ouRqD0DHX4YGO0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lMcGEitJY/l3+PmySfwgaQclV43afni30DOV/qcoXEEv5pDCmZ
+	XHU81VbOupy8R2YoPGDeMZ5g+mEmjzrRLpWY+gX1xsH/xeFbeOClhSeONndpSYSmliij8H1QiLo
+	HBb7cziOhg0w0OmoF0JEui9KmtNqI9o0=
+X-Received: by 2002:a4a:e915:0:b0:6dd:696d:b21f with SMTP id
+ 006d021491bc7-6ef08e71c1emr165604eaf.2.1791498628179; Thu, 08 Oct 2026
+ 15:30:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008-fib-trie-nospec-v1-1-fa18726d485e@nvidia.com>
-In-Reply-To: <20261008-fib-trie-nospec-v1-1-fa18726d485e@nvidia.com>
+References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+ <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org> <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
+ <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com>
+ <4c98eff5-c8c7-43ee-b59a-adb833978816@kernel.org> <CAPa5EdDk+HuVP0H1+iqOcHDHZnfdika5WOQcgSaMtfRFWzqZ+Q@mail.gmail.com>
+ <CAL4WiipSpufpdo-AWoNEJta-puLQ5hMyPn2xcjwg4vg67PNoyA@mail.gmail.com> <CAPa5EdC5+JiLCHdCt4m-sqM1pUs=fG8T7zsmVcheHCG8FFF8Fg@mail.gmail.com>
+In-Reply-To: <CAPa5EdC5+JiLCHdCt4m-sqM1pUs=fG8T7zsmVcheHCG8FFF8Fg@mail.gmail.com>
 From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 9 Oct 2026 00:25:43 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqO2C0cVQBdDJWrGYCczB0JRMXJUjsUq7uYPjfNL34q7g@mail.gmail.com>
-X-Gm-Features: AclHuK-tNpsKPdnN-MtKQlMjm1BRfKtF2bY401bZ3gBya-JyqT9iMLlo75c3aT4
-Message-ID: <CAL4WiiqO2C0cVQBdDJWrGYCczB0JRMXJUjsUq7uYPjfNL34q7g@mail.gmail.com>
-Subject: Re: [PATCH net] ipv4: fib_trie: prevent speculative out-of-bounds
- child access
-To: datrujillo@nvidia.com
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Alexander Duyck <alexander.h.duyck@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Fri, 9 Oct 2026 00:30:15 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiirc10c4_NHznYYU9ODeEO0Fh8WJm72Kk8M6xZ5rXG489g@mail.gmail.com>
+X-Gm-Features: AclHuK83ylPpO1Omc3aUuPZqI6xRPqm0TMlzXP99sIQGhVnJEjvR3bpixOY5QaA
+Message-ID: <CAL4Wiirc10c4_NHznYYU9ODeEO0Fh8WJm72Kk8M6xZ5rXG489g@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
+ VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
+To: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com, 
+	Sasha Levin <sashal@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le ven. 9 oct. 2026 =C3=A0 00:10, Dani=C3=ABl Trujillo via B4 Relay
-<devnull+datrujillo.nvidia.com@kernel.org> a =C3=A9crit :
+Le jeu. 8 oct. 2026 =C3=A0 15:48, Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz> a=
+ =C3=A9crit :
 >
-> From: Dani=C3=ABl Trujillo <datrujillo@nvidia.com>
+> On Thu, 8 Oct 2026 at 14:48, Eric Dumazet <edumazet@kernel.org> wrote:
+> > This is the current patch under review :
+> > https://lore.kernel.org/netdev/20261008123812.554729-1-edumazet@kernel.=
+org/T/#u
+> >
+> > Thanks.
 >
-> fib_table_lookup() checks the child index against the bounds before
-> passing it to get_child_rcu().
+> Oh, I missed that, as GitHub "protected my privacy" and I ended up in
+> CC with its noreply address (which really leads to /dev/null). I've
+> applied that patch to our tree and started the build, I'll ask in the
+> issue tracker for testing once the build finishes and reply in the
+> patch thread if I get any feedback.
 >
-> The index is derived from the lookup key, which in turn is derived from
-> flp->daddr. A userspace process can therefore influence the index by
-> triggering lookups for chosen destination IPv4 addresses.
->
-> If this bounds check is mispredicted as in-bounds, an out-of-bounds index
-> can be transiently passed to get_child_rcu(). The value loaded beyond the
-> child array is then treated as a node pointer. The next loop iteration
-> dereferences that transient pointer through get_cindex(), causing a
-> page-table walk whose cache footprint can leak (parts of) the pointer.
+> I've disabled the "privacy protection" on GitHub so I hope next time
+> it shouldn't happen - but just in case you'll be updating the patch,
+> please use my real address I use here.
 
-Has this been demonstrated, or is it the output of a static tool ?
+Sure!
 
-key, pos and bits all live in the first 8 bytes of struct key_vector,
-so the bound can not be made slow relative to the index by evicting
-a cache line. The conditional branch should resolve a couple of cycles
-after the out-of-bounds load is issued, before a dependent dereference
-can start.
+It seems a V3 will be needed, I will send it for review tomorrow after
+the 24 hour delay
 
-For a patch targeting net and stable, in the IPv4 lookup fast path,
-we would like the changelog to say what was actually observed.
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index c949c6a829456c2f75d6c514b35a85ff64c493d8..684820c772289f1b73aa01255cc=
+9ae5fadae95a9
+100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -110,6 +110,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct
+sk_buff *skb,
+        unsigned int len;
+        int ret;
 
->
-> Sanitize the index with array_index_nospec() before accessing the child
-> array.
->
-> Fixes: 9f9e636d4f89 ("fib_trie: Optimize fib_table_lookup to avoid wastin=
-g time on loops/variables")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dani=C3=ABl Trujillo <datrujillo@nvidia.com>
-> ---
->  net/ipv4/fib_trie.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-> index 248514dce0cd..bd8a368c5502 100644
-> --- a/net/ipv4/fib_trie.c
-> +++ b/net/ipv4/fib_trie.c
-> @@ -61,6 +61,7 @@
->  #include <linux/export.h>
->  #include <linux/vmalloc.h>
->  #include <linux/notifier.h>
-> +#include <linux/nospec.h>
->  #include <net/net_namespace.h>
->  #include <net/inet_dscp.h>
->  #include <net/ip.h>
-> @@ -1474,6 +1475,7 @@ int fib_table_lookup(struct fib_table *tb, const st=
-ruct flowi4 *flp,
->                         cindex =3D index;
->                 }
->
-> +               index =3D array_index_nospec(index, 1ul << n->bits);
->                 n =3D get_child_rcu(n, index);
->                 if (unlikely(!n))
->                         goto backtrace;
-
-
-This is not complete.
-
-cindex has been set from the unclamped index just above. If the
-(!n) branch is predicted taken under the same mispredicted bounds
-check, the backtrace path does :
-
-cindex &=3D cindex - 1;
-cptr =3D &pn->tnode[cindex];
-...
-n =3D rcu_dereference(*cptr);
-
-and the result is dereferenced at the top of step 2
-(prefix_mismatch(key, n), n->slen, n->pos).
-
-This is the same pattern you describe : one out-of-bounds load, then
-a dereference of the loaded value.
-
-The clamp needs to be done before cindex is recorded, and can stay
-after the IS_LEAF() test so that leaf hits do not pay for it :
-
-@@ -1465,7 +1466,9 @@ int fib_table_lookup(struct fib_table *tb, const
-struct flowi4 *flp,
-  /* we have found a leaf. Prefixes have already been compared */
-  if (IS_LEAF(n))
-  goto found;
-
-+ index =3D array_index_nospec(index, 1ul << n->bits);
++       len =3D skb->len;
 +
-  /* only record pn and cindex if we are going to be chopping
-  * bits later.  Otherwise we are just wasting cycles.
-  */
+        /* Handle non-VLAN frames if they are sent to us, for example by DH=
+CP.
+         *
+         * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
+@@ -121,10 +123,34 @@ static netdev_tx_t
+vlan_dev_hard_start_xmit(struct sk_buff *skb,
+                vlan_tci =3D vlan->vlan_id;
+                vlan_tci |=3D vlan_dev_get_egress_qos_mask(dev, skb->priori=
+ty);
+                __vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
++       } else if (skb->len >=3D VLAN_ETH_HLEN + sizeof(__be16) &&
++                  !skb_shared(skb) &&
++                  vlan_hw_offload_capable(READ_ONCE(vlan->real_dev->featur=
+es),
++                                          vlan->vlan_proto)) {
++               u16 vlan_tci;
++
++               /* The frame carries its outer tag in-band, either inserted
++                * by vlan_dev_hard_header() or provided by the sender.
++                * Let the real device insert it: some NICs can not offload
++                * checksum or TSO for frames carrying an in-band tag.
++                * Not all ndo_start_xmit() callers set the mac header.
++                * vlan_set_encap_proto() may read two bytes after the vlan
++                * header, so shorter frames are sent unchanged, as are
++                * shared skbs (e.g. from pktgen).
++                * On allocation failure, drop the frame rather than handin=
+g
++                * it to the real device with an in-band tag.
++                */
++               skb_reset_mac_header(skb);
++               if (unlikely(!pskb_may_pull(skb, VLAN_ETH_HLEN +
+sizeof(__be16)) ||
++                            __skb_vlan_pop(skb, &vlan_tci))) {
++                       kfree_skb(skb);
++                       this_cpu_inc(vlan->vlan_pcpu_stats->tx_dropped);
++                       return NETDEV_TX_OK;
++               }
++               __vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
+        }
 
-Also, fib_find_node() has the exact same construct (same bounds check,
-then get_child_rcu(n, index) on the next iteration), and is called
-with a user provided key from fib_table_insert() and fib_table_delete().
-RTM_NEWROUTE / RTM_DELROUTE only need CAP_NET_ADMIN in the netns owner
-user namespace. This runs under RTNL, there is no performance concern
-there.
-
-Please also take a look at leaf_walk_rcu() (cindex >> pn->bits), and
-say in the changelog why it is or is not affected.
-
->
-> ---
-> base-commit: 37f12441f557468a56c1e27790413aa78c82afa2
-> change-id: 20261008-fib-trie-nospec-5c76028c8e7c
->
-> Best regards,
-> --
-> Dani=C3=ABl Trujillo <datrujillo@nvidia.com>
->
->
+        skb->dev =3D vlan->real_dev;
+-       len =3D skb->len;
+        if (unlikely(netpoll_tx_running(dev)))
+                return vlan_netpoll_send_skb(vlan, skb);
