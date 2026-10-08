@@ -1,16 +1,16 @@
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603524AA40D;
-	Thu,  8 Oct 2026 14:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7DA4AF172;
+	Thu,  8 Oct 2026 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791470005; cv=none; b=TIL6tWuo+Bk7lJEpMgoWCP+tIKMEXm+Ww/ivCjc8Q+IZJFemv6lQxppnz2veGQc1dj1RF68WZfJhmjJj6ZcbsY3kUW0yurlHWaCTRWzyELLZm5LtBjqvDQ0JlabkJH2XweRt8OdDQcQnTFibgMYjuJtjRlGtSFrjkgPJDAX4dJk=
+	t=1791470006; cv=none; b=eWYvR2P2W6986tBZAcx7quy8AJEakTmUAaUy/dzeP9gU4Uw+Va384y0f+rUO7FPX2gxhCkHIYAB1Ct1j8yihZMPHmn/0ZItK9t5tZvgbNPKSCgllW+qNECx5AfeksYajSMM8bHMC7e/yBScQYkAK5clMAZTdrpL16DLCxTDdZwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791470005; c=relaxed/simple;
-	bh=E1PIpqhpBVbyzV9CCFcUf/yj3lXYYvWWFlOJ9Mf6DHc=;
+	s=arc-20240116; t=1791470006; c=relaxed/simple;
+	bh=UYmAa6XAUKIpOlmNlfk6caZtH4+HfNeMzfbU/EVQaYA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BeC7mg1iFoAA94KZgF5ggdGshpujEg+pnUdVqI04Nozr5uXfunVz6jcsmOAP+muvnU3SMt8fWQraXl7UwCoGJPIpMXzJuzZBvisPtTKShvlCf/fXWfJ4Kj6NMLrYhhrc9zz9yM1ViHj8WHws5/4KgTnQiCwgQ9LNfV3wLQNYwoM=
+	 MIME-Version; b=aEPxDJjM/VaPX6uyFLF8UJsI/u2f7Mwwo3+ZYtJtEH4JzRNXilG08sPmBqd/behqqLuoFxqY4YItI81vHRUn4UxXgilFUgMjesDrQame+Sp9T5NJlN7OsFQzYqsGmM+KiXc69VZyINbaiIjS5myJ5oQ+XpyyfFyfgnjfnXzY78U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phrozen.org; spf=pass smtp.mailfrom=phrozen.org; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=phrozen.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phrozen.org
@@ -18,21 +18,22 @@ Received: from [2a04:4540:1400:26fc:ddc6:af15:b0f7:2808] (helo=bertha10..)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <john@phrozen.org>)
-	id 1xEpBD-000l4X-18;
-	Thu, 08 Oct 2026 16:33:07 +0200
+	id 1xEpBC-000l4X-2m;
+	Thu, 08 Oct 2026 16:33:06 +0200
 From: John Crispin <john@phrozen.org>
 To: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
+Cc: Donald Hunter <donald.hunter@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	Christian Marangi <ansuelsmth@gmail.com>
-Subject: [RFC net-next 08/12] net: pon: add netlink support
-Date: Thu,  8 Oct 2026 16:32:45 +0200
-Message-Id: <20261008143249.3439762-9-john@phrozen.org>
+Subject: [RFC net-next 06/12] net: pon: add the GEM network devices
+Date: Thu,  8 Oct 2026 16:32:43 +0200
+Message-Id: <20261008143249.3439762-7-john@phrozen.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261008143249.3439762-1-john@phrozen.org>
 References: <20261008143249.3439762-1-john@phrozen.org>
@@ -44,2070 +45,628 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The handlers of the pon family, whose spec came first: the identity and
-the link, the T-CONTs, the GEM ports and the upstream classifier rules
-and the OMCI channel. pon-nl-gen.c and pon-nl-gen.h are generated from
-pon.yaml with ynl-gen.
+A service that wants a network device of its own gets one per GEM port,
+created with the rtnetlink link kind "gem" on top of the PON data
+interface. The one attribute of the link kind is the GEM port id
+(IFLA_GEM_ID in uapi/linux/if_link.h, listed in rt-link.yaml for ynl).
+It must lie in the assignable range of ITU-T G.9807.1 Table C.6.6.
 
-Every handler that names a device takes the instance lock in its
-pre_doit. A write handler sends no message of its own. The netlink ACK
-carries its result. Object notifications share the reply format of the
-matching get. An object dump takes an optional device id and is marked
-interrupted when a list changed under it, also when the part that
-follows the change is empty.
+The device is registered outside the instance lock and attached to its
+GEM port under it. The receive path finds it under RCU. It transmits
+through the gem_xmit callback of the driver and takes the MTU range of
+the data interface. A frame that the callback refuses is counted as
+dropped, as the data interface counts it.
 
-A T-CONT and its alloc-id are one to one, as ITU-T G.988 clause 9.2.2
-defines. A rebind moves the GEM ports of the T-CONT and restores them
-when the driver refuses one. A GEM port that exists with other
-attributes is refused. An upstream or bidirectional GEM port needs a
-T-CONT. A downstream one takes none. No key material crosses the
-family: a GEM port selects its key ring as clause 9.2.3 defines it. The
-broadcast ring is refused.
+As a VLAN device does, the device names the data interface as its link
+and transmits without a lock of its own (lltx). A module alias loads
+the core for the link kind.
 
-The set_identity callback gets the registration id padded with 0x00 to
-the 36 octets of ITU-T G.9807.1 Table C.11.25, so every driver pads the
-same way. An empty registration id is refused. The core keeps the serial
-number only. The serial number and the mode do not change while the
-link is enabled, because the OLT addresses the ONU by its serial number.
-The zero serial number, which addresses every ONU, is refused.
-
-A mode the device does not list in its capabilities is refused with an
-extack message and one line at error level through pon_dev_log_level()
-that names the mode, for example "mode gpon not supported by the
-device". The log work prints it, so no print runs under the instance
-lock. A refused request is no failure of the system, so it raises no
-WARN.
+The gem_xmit callback belongs to the MAC driver, because only the MAC
+driver knows the transmit channel and the queue of a GEM port. It fills
+the descriptor information and hands the frame to the conduit.
 
 Assisted-by: LLM
 Signed-off-by: John Crispin <john@phrozen.org>
 ---
- net/pon/pon-nl-gen.c |  286 ++++++++
- net/pon/pon-nl-gen.h |   45 ++
- net/pon/pon_nl.c     | 1671 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 2002 insertions(+)
- create mode 100644 net/pon/pon-nl-gen.c
- create mode 100644 net/pon/pon-nl-gen.h
- create mode 100644 net/pon/pon_nl.c
+ Documentation/netlink/specs/rt-link.yaml |  14 +
+ include/uapi/linux/if_link.h             |  10 +
+ net/pon/pon_gem.c                        | 537 +++++++++++++++++++++++
+ 3 files changed, 561 insertions(+)
+ create mode 100644 net/pon/pon_gem.c
 
-diff --git a/net/pon/pon-nl-gen.c b/net/pon/pon-nl-gen.c
-new file mode 100644
-index 000000000000..e9898952c9fa
---- /dev/null
-+++ b/net/pon/pon-nl-gen.c
-@@ -0,0 +1,286 @@
-+// SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause)
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/pon.yaml */
-+/* YNL-GEN kernel source */
-+/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-+
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include "pon-nl-gen.h"
-+
-+#include <uapi/linux/pon.h>
-+
-+/* Integer value ranges */
-+static const struct netlink_range_validation pon_a_tcont_index_range = {
-+	.max	= 65534ULL,
-+};
-+
-+static const struct netlink_range_validation pon_a_gem_id_range = {
-+	.min	= 1021ULL,
-+	.max	= 65534ULL,
-+};
-+
-+static const struct netlink_range_validation pon_a_gem_tcont_index_range = {
-+	.max	= 65534ULL,
-+};
-+
-+static const struct netlink_range_validation pon_a_gem_map_gem_id_range = {
-+	.min	= 1021ULL,
-+	.max	= 65534ULL,
-+};
-+
-+/* PON_CMD_DEV_GET - do */
-+static const struct nla_policy pon_dev_get_nl_policy[PON_A_DEV_ID + 1] = {
-+	[PON_A_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+};
-+
-+/* PON_CMD_DEV_SET - do */
-+static const struct nla_policy pon_dev_set_nl_policy[PON_A_DEV_ENABLE + 1] = {
-+	[PON_A_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_DEV_MODE] = NLA_POLICY_MAX(NLA_U32, 2),
-+	[PON_A_DEV_SERIAL] = NLA_POLICY_EXACT_LEN(8),
-+	[PON_A_DEV_REGISTRATION_ID] = NLA_POLICY_MAX_LEN(36),
-+	[PON_A_DEV_ENABLE] = NLA_POLICY_MAX(NLA_U8, 1),
-+};
-+
-+/* PON_CMD_TCONT_GET - do */
-+static const struct nla_policy pon_tcont_get_do_nl_policy[PON_A_TCONT_INDEX + 1] = {
-+	[PON_A_TCONT_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_TCONT_INDEX] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_tcont_index_range),
-+};
-+
-+/* PON_CMD_TCONT_GET - dump */
-+static const struct nla_policy pon_tcont_get_dump_nl_policy[PON_A_TCONT_DEV_ID + 1] = {
-+	[PON_A_TCONT_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+};
-+
-+/* PON_CMD_TCONT_SET - do */
-+static const struct nla_policy pon_tcont_set_nl_policy[PON_A_TCONT_ALLOC_ID + 1] = {
-+	[PON_A_TCONT_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_TCONT_INDEX] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_tcont_index_range),
-+	[PON_A_TCONT_ALLOC_ID] = NLA_POLICY_MAX(NLA_U32, 16383),
-+};
-+
-+/* PON_CMD_TCONT_DEL - do */
-+static const struct nla_policy pon_tcont_del_nl_policy[PON_A_TCONT_INDEX + 1] = {
-+	[PON_A_TCONT_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_TCONT_INDEX] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_tcont_index_range),
-+};
-+
-+/* PON_CMD_GEM_GET - do */
-+static const struct nla_policy pon_gem_get_do_nl_policy[PON_A_GEM_ID + 1] = {
-+	[PON_A_GEM_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_GEM_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_gem_id_range),
-+};
-+
-+/* PON_CMD_GEM_GET - dump */
-+static const struct nla_policy pon_gem_get_dump_nl_policy[PON_A_GEM_DEV_ID + 1] = {
-+	[PON_A_GEM_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+};
-+
-+/* PON_CMD_GEM_NEW - do */
-+static const struct nla_policy pon_gem_new_nl_policy[PON_A_GEM_KEY_RING + 1] = {
-+	[PON_A_GEM_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_GEM_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_gem_id_range),
-+	[PON_A_GEM_DIR] = NLA_POLICY_RANGE(NLA_U32, 1, 3),
-+	[PON_A_GEM_TCONT_INDEX] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_gem_tcont_index_range),
-+	[PON_A_GEM_KEY_RING] = NLA_POLICY_MAX(NLA_U32, 3),
-+};
-+
-+/* PON_CMD_GEM_DEL - do */
-+static const struct nla_policy pon_gem_del_nl_policy[PON_A_GEM_ID + 1] = {
-+	[PON_A_GEM_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_GEM_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_gem_id_range),
-+};
-+
-+/* PON_CMD_GEM_MAP_GET - dump */
-+static const struct nla_policy pon_gem_map_get_nl_policy[PON_A_GEM_MAP_DEV_ID + 1] = {
-+	[PON_A_GEM_MAP_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+};
-+
-+/* PON_CMD_GEM_MAP_NEW - do */
-+static const struct nla_policy pon_gem_map_new_nl_policy[PON_A_GEM_MAP_DSCP + 1] = {
-+	[PON_A_GEM_MAP_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_GEM_MAP_GEM_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_gem_map_gem_id_range),
-+	[PON_A_GEM_MAP_TAG] = NLA_POLICY_MAX(NLA_U32, 1),
-+	[PON_A_GEM_MAP_VID] = NLA_POLICY_MAX(NLA_U32, 4094),
-+	[PON_A_GEM_MAP_PBIT] = NLA_POLICY_MAX(NLA_U32, 7),
-+	[PON_A_GEM_MAP_DSCP] = NLA_POLICY_MAX(NLA_U32, 63),
-+};
-+
-+/* PON_CMD_GEM_MAP_DEL - do */
-+static const struct nla_policy pon_gem_map_del_nl_policy[PON_A_GEM_MAP_DSCP + 1] = {
-+	[PON_A_GEM_MAP_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_GEM_MAP_GEM_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_a_gem_map_gem_id_range),
-+	[PON_A_GEM_MAP_TAG] = NLA_POLICY_MAX(NLA_U32, 1),
-+	[PON_A_GEM_MAP_VID] = NLA_POLICY_MAX(NLA_U32, 4094),
-+	[PON_A_GEM_MAP_PBIT] = NLA_POLICY_MAX(NLA_U32, 7),
-+	[PON_A_GEM_MAP_DSCP] = NLA_POLICY_MAX(NLA_U32, 63),
-+};
-+
-+/* PON_CMD_OMCI_REGISTER - do */
-+static const struct nla_policy pon_omci_register_nl_policy[PON_A_OMCI_DEV_ID + 1] = {
-+	[PON_A_OMCI_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+};
-+
-+/* PON_CMD_OMCI_TX - do */
-+static const struct nla_policy pon_omci_tx_nl_policy[PON_A_OMCI_PDU + 1] = {
-+	[PON_A_OMCI_DEV_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+	[PON_A_OMCI_PDU] = NLA_POLICY_MAX_LEN(1976),
-+};
-+
-+/* Ops table for pon */
-+static const struct genl_split_ops pon_nl_ops[] = {
-+	{
-+		.cmd		= PON_CMD_DEV_GET,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_dev_get_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_dev_get_nl_policy,
-+		.maxattr	= PON_A_DEV_ID,
-+		.flags		= GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd	= PON_CMD_DEV_GET,
-+		.dumpit	= pon_nl_dev_get_dumpit,
-+		.flags	= GENL_CMD_CAP_DUMP,
-+	},
-+	{
-+		.cmd		= PON_CMD_DEV_SET,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_dev_set_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_dev_set_nl_policy,
-+		.maxattr	= PON_A_DEV_ENABLE,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_TCONT_GET,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_tcont_get_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_tcont_get_do_nl_policy,
-+		.maxattr	= PON_A_TCONT_INDEX,
-+		.flags		= GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_TCONT_GET,
-+		.dumpit		= pon_nl_tcont_get_dumpit,
-+		.policy		= pon_tcont_get_dump_nl_policy,
-+		.maxattr	= PON_A_TCONT_DEV_ID,
-+		.flags		= GENL_CMD_CAP_DUMP,
-+	},
-+	{
-+		.cmd		= PON_CMD_TCONT_SET,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_tcont_set_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_tcont_set_nl_policy,
-+		.maxattr	= PON_A_TCONT_ALLOC_ID,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_TCONT_DEL,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_tcont_del_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_tcont_del_nl_policy,
-+		.maxattr	= PON_A_TCONT_INDEX,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_GEM_GET,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_gem_get_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_gem_get_do_nl_policy,
-+		.maxattr	= PON_A_GEM_ID,
-+		.flags		= GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_GEM_GET,
-+		.dumpit		= pon_nl_gem_get_dumpit,
-+		.policy		= pon_gem_get_dump_nl_policy,
-+		.maxattr	= PON_A_GEM_DEV_ID,
-+		.flags		= GENL_CMD_CAP_DUMP,
-+	},
-+	{
-+		.cmd		= PON_CMD_GEM_NEW,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_gem_new_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_gem_new_nl_policy,
-+		.maxattr	= PON_A_GEM_KEY_RING,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_GEM_DEL,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_gem_del_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_gem_del_nl_policy,
-+		.maxattr	= PON_A_GEM_ID,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_GEM_MAP_GET,
-+		.dumpit		= pon_nl_gem_map_get_dumpit,
-+		.policy		= pon_gem_map_get_nl_policy,
-+		.maxattr	= PON_A_GEM_MAP_DEV_ID,
-+		.flags		= GENL_CMD_CAP_DUMP,
-+	},
-+	{
-+		.cmd		= PON_CMD_GEM_MAP_NEW,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_gem_map_new_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_gem_map_new_nl_policy,
-+		.maxattr	= PON_A_GEM_MAP_DSCP,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_GEM_MAP_DEL,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_gem_map_del_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_gem_map_del_nl_policy,
-+		.maxattr	= PON_A_GEM_MAP_DSCP,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_OMCI_REGISTER,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_omci_register_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_omci_register_nl_policy,
-+		.maxattr	= PON_A_OMCI_DEV_ID,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+	{
-+		.cmd		= PON_CMD_OMCI_TX,
-+		.pre_doit	= pon_device_get_locked,
-+		.doit		= pon_nl_omci_tx_doit,
-+		.post_doit	= pon_device_unlock,
-+		.policy		= pon_omci_tx_nl_policy,
-+		.maxattr	= PON_A_OMCI_PDU,
-+		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
-+	},
-+};
-+
-+static const struct genl_multicast_group pon_nl_mcgrps[] = {
-+	[PON_NLGRP_MGMT] = { "mgmt", },
-+	[PON_NLGRP_STATE] = { "state", },
-+};
-+
-+struct genl_family pon_nl_family __ro_after_init = {
-+	.name		= PON_FAMILY_NAME,
-+	.version	= PON_FAMILY_VERSION,
-+	.netnsok	= true,
-+	.parallel_ops	= true,
-+	.module		= THIS_MODULE,
-+	.split_ops	= pon_nl_ops,
-+	.n_split_ops	= ARRAY_SIZE(pon_nl_ops),
-+	.mcgrps		= pon_nl_mcgrps,
-+	.n_mcgrps	= ARRAY_SIZE(pon_nl_mcgrps),
-+};
-diff --git a/net/pon/pon-nl-gen.h b/net/pon/pon-nl-gen.h
-new file mode 100644
-index 000000000000..24d773ee2651
---- /dev/null
-+++ b/net/pon/pon-nl-gen.h
-@@ -0,0 +1,45 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/pon.yaml */
-+/* YNL-GEN kernel header */
-+/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-+
-+#ifndef _LINUX_PON_GEN_H
-+#define _LINUX_PON_GEN_H
-+
-+#include <net/netlink.h>
-+#include <net/genetlink.h>
-+
-+#include <uapi/linux/pon.h>
-+
-+int pon_device_get_locked(const struct genl_split_ops *ops,
-+			  struct sk_buff *skb, struct genl_info *info);
-+void
-+pon_device_unlock(const struct genl_split_ops *ops, struct sk_buff *skb,
-+		  struct genl_info *info);
-+
-+int pon_nl_dev_get_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_dev_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+int pon_nl_dev_set_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_tcont_get_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_tcont_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+int pon_nl_tcont_set_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_tcont_del_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_gem_get_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_gem_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+int pon_nl_gem_new_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_gem_del_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_gem_map_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+int pon_nl_gem_map_new_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_gem_map_del_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_omci_register_doit(struct sk_buff *skb, struct genl_info *info);
-+int pon_nl_omci_tx_doit(struct sk_buff *skb, struct genl_info *info);
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index 81b58633911d..ee2cb7d12c28 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -2368,6 +2368,17 @@ attribute-sets:
+         name: mode
+         type: u8
+         enum: ovpn-mode
++  -
++    name: linkinfo-gem-attrs
++    name-prefix: ifla-gem-
++    attributes:
++      -
++        name: id
++        doc: GEM port ID of the PON device the GEM network device rides.
++        type: u32
++        checks:
++          min: 1021
++          max: 65534
+ 
+ sub-messages:
+   -
+@@ -2427,6 +2438,9 @@ sub-messages:
+       -
+         value: ovpn
+         attribute-set: linkinfo-ovpn-attrs
++      -
++        value: gem
++        attribute-set: linkinfo-gem-attrs
+   -
+     name: linkinfo-member-data-msg
+     formats:
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 245b36204525..6d4d149cf4ab 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -2075,4 +2075,14 @@ enum {
+ 
+ #define IFLA_OVPN_MAX	(__IFLA_OVPN_MAX - 1)
+ 
++/* GEM section */
 +
 +enum {
-+	PON_NLGRP_MGMT,
-+	PON_NLGRP_STATE,
++	IFLA_GEM_UNSPEC,
++	IFLA_GEM_ID,
++	__IFLA_GEM_MAX,
 +};
 +
-+extern struct genl_family pon_nl_family;
++#define IFLA_GEM_MAX	(__IFLA_GEM_MAX - 1)
 +
-+#endif /* _LINUX_PON_GEN_H */
-diff --git a/net/pon/pon_nl.c b/net/pon/pon_nl.c
+ #endif /* _UAPI_LINUX_IF_LINK_H */
+diff --git a/net/pon/pon_gem.c b/net/pon/pon_gem.c
 new file mode 100644
-index 000000000000..4ca55c992063
+index 000000000000..ddb5b4f0a373
 --- /dev/null
-+++ b/net/pon/pon_nl.c
-@@ -0,0 +1,1671 @@
++++ b/net/pon/pon_gem.c
+@@ -0,0 +1,537 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/* Copyright (C) 2026 John Crispin <john@phrozen.org> */
 +
-+#include <linux/atomic.h>
-+#include <linux/limits.h>
-+#include <linux/skbuff.h>
-+#include <linux/slab.h>
-+#include <linux/xarray.h>
-+#include <net/genetlink.h>
++#include <linux/etherdevice.h>
++#include <linux/if_link.h>
++#include <linux/module.h>
++#include <linux/netdevice.h>
++#include <net/rtnetlink.h>
 +#include <net/pon.h>
-+#include <net/sock.h>
 +
-+#include "pon-nl-gen.h"
 +#include "pon.h"
 +
-+static const char *const pon_nl_mode_names[] = {
-+	[PON_MODE_GPON]		= "gpon",
-+	[PON_MODE_XG_PON]	= "xg-pon",
-+	[PON_MODE_XGS_PON]	= "xgs-pon",
++struct pon_gem_priv {
++	struct pon_dev *pdev;
++	/* Fixed for the life of the interface: a GEM port that carries one
++	 * cannot be removed, so the transmit path reads it without the lock.
++	 */
++	u16 gem_id;
 +};
 +
-+/* The object dumps walk every device the caller's namespace can see, or the
-+ * one device the request names and within a device one list. A dump that
-+ * fills its skb stops at the object it could not fit and resumes there:
-+ * args[0] is the device, args[1] the objects of it already sent. The count
-+ * is only good for the list it was taken from, so every object that joins or
-+ * leaves a list moves the generation and a dump that resumes on another
-+ * generation is marked as interrupted. The generation is read under the lock
-+ * that the walk holds, so no change falls between the two.
++/* A policy carries its bounds in an s16, so anything above 32767 needs the
++ * full range form. NLA_POLICY_MAX() would store a negative maximum and warn
++ * on every message.
 + */
-+typedef int (*pon_nl_obj_fill_t)(struct pon_dev *pdev, struct list_head *pos,
-+				 struct sk_buff *rsp,
-+				 const struct genl_info *info);
++static const struct netlink_range_validation pon_gem_id_range = {
++	.min = PON_GEM_PORT_ID_ASSIGNABLE_MIN,
++	.max = PON_GEM_PORT_ID_ASSIGNABLE_MAX,
++};
 +
-+typedef int (*pon_nl_dev_fill_t)(struct pon_dev *pdev, struct sk_buff *rsp,
-+				 const struct genl_info *info);
-+
-+static atomic_t pon_nl_obj_gen = ATOMIC_INIT(1);
-+
-+/* Netlink helpers */
++static const struct nla_policy pon_gem_link_policy[IFLA_GEM_MAX + 1] = {
++	[IFLA_GEM_ID] = NLA_POLICY_FULL_RANGE(NLA_U32, &pon_gem_id_range),
++};
 +
 +/**
-+ * pon_nl_dev_reply() - answer a request with one message about the device
-+ * @info: the request info, user_ptr[0] holds the device
-+ * @fill: puts the message into the reply
++ * pon_gem_xmit() - send one frame on the GEM port of a GEM interface
++ * @skb:	the frame
++ * @dev:	the GEM network device
 + *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -ENOMEM, the error of @fill, or the error of genlmsg_reply().
++ * Implements ndo_start_xmit. The driver's gem_xmit callback stamps the GEM
++ * port into the descriptor. Without that callback, or once the driver has
++ * unregistered, the frame is dropped and counted. A frame the callback
++ * refuses is counted as dropped too: the link is down, the GEM port has no
++ * channel or the ring is full, which the data interface counts the same way.
++ *
++ * Return: NETDEV_TX_OK, always.
 + */
-+static int pon_nl_dev_reply(struct genl_info *info, pon_nl_dev_fill_t fill)
++static netdev_tx_t pon_gem_xmit(struct sk_buff *skb, struct net_device *dev)
 +{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct sk_buff *rsp;
++	struct pon_gem_priv *priv = netdev_priv(dev);
++	struct pon_dev *pdev = priv->pdev;
++	const struct pon_dev_ops *ops;
++	unsigned int len = skb->len;
 +	int err;
 +
-+	rsp = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!rsp)
-+		return -ENOMEM;
++	/* A driver that cannot stamp a GEM port into its descriptor gives the
++	 * interface a name, a place in the link hierarchy and counters and
++	 * nothing else. A driver that has unregistered has no ops at all.
++	 */
++	rcu_read_lock();
++	ops = READ_ONCE(pdev->ops);
++	if (!ops || !ops->gem_xmit) {
++		rcu_read_unlock();
++		DEV_STATS_INC(dev, tx_dropped);
++		kfree_skb(skb);
++		return NETDEV_TX_OK;
++	}
++	err = ops->gem_xmit(pdev, priv->gem_id, skb);
++	rcu_read_unlock();
 +
-+	err = fill(pdev, rsp, info);
 +	if (err) {
-+		nlmsg_free(rsp);
-+		return err;
++		DEV_STATS_INC(dev, tx_dropped);
++		return NETDEV_TX_OK;
 +	}
 +
-+	return genlmsg_reply(rsp, info);
++	dev_sw_netstats_tx_add(dev, 1, len);
++	return NETDEV_TX_OK;
 +}
 +
 +/**
-+ * pon_nl_obj_reply() - answer a request with one message about an object
-+ * @info: the request info, user_ptr[0] holds the device
-+ * @pos: the list entry of the object
-+ * @fill: puts the message into the reply
++ * pon_gem_get_iflink() - the link of a GEM interface
++ * @dev:	the GEM network device
 + *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -ENOMEM, the error of @fill, or the error of genlmsg_reply().
++ * Implements ndo_get_iflink. A GEM interface is created on the PON data
++ * interface, so a dump names that one as its link.
++ *
++ * Return: the ifindex of the data interface, or 0 before the interface is
++ * attached.
 + */
-+static int pon_nl_obj_reply(struct genl_info *info, struct list_head *pos,
-+			    pon_nl_obj_fill_t fill)
++static int pon_gem_get_iflink(const struct net_device *dev)
 +{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct sk_buff *rsp;
-+	int err;
++	const struct pon_gem_priv *priv = netdev_priv(dev);
 +
-+	rsp = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!rsp)
-+		return -ENOMEM;
-+
-+	err = fill(pdev, pos, rsp, info);
-+	if (err) {
-+		nlmsg_free(rsp);
-+		return err;
-+	}
-+
-+	return genlmsg_reply(rsp, info);
-+}
-+
-+/**
-+ * pon_nl_notify_obj() - send an object notification to the mgmt group
-+ * @pdev: the PON device
-+ * @pos: the list entry of the object
-+ * @cmd: the notification command
-+ * @fill: puts the object into the notification
-+ *
-+ * Object notifications share the GET reply format, so a listener parses one
-+ * message shape whether it asked for the object or was told about it. Does
-+ * nothing when the group has no listener in the device's namespace.
-+ *
-+ * Context: Called with @pdev->lock held. May sleep.
-+ */
-+static void pon_nl_notify_obj(struct pon_dev *pdev, struct list_head *pos,
-+			      u32 cmd, pon_nl_obj_fill_t fill)
-+{
-+	struct net *net = dev_net(pdev->main_netdev);
-+	struct genl_info info;
-+	struct sk_buff *ntf;
-+
-+	lockdep_assert_held(&pdev->lock);
-+
-+	if (!genl_has_listeners(&pon_nl_family, net, PON_NLGRP_MGMT))
-+		return;
-+
-+	ntf = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!ntf)
-+		return;
-+
-+	genl_info_init_ntf(&info, &pon_nl_family, cmd);
-+	genl_info_net_set(&info, net);
-+	if (fill(pdev, pos, ntf, &info)) {
-+		nlmsg_free(ntf);
-+		return;
-+	}
-+
-+	genlmsg_multicast_netns(&pon_nl_family, net, ntf, 0, PON_NLGRP_MGMT,
-+				GFP_KERNEL);
-+}
-+
-+/* Device lookup and locking */
-+
-+/**
-+ * pon_device_get_and_lock() - look up a PON device and take its lock
-+ * @net: the network namespace of the request
-+ * @dev_id: the device id attribute
-+ *
-+ * Takes pon_devs_lock for the lookup and holds it until @pdev->lock is
-+ * taken, so the device cannot go away in between. A device in another
-+ * namespace is not found.
-+ *
-+ * Return: the device with its lock held, or ERR_PTR(-ENODEV).
-+ */
-+static struct pon_dev *
-+pon_device_get_and_lock(struct net *net, struct nlattr *dev_id)
-+{
-+	struct pon_dev *pdev;
-+
-+	mutex_lock(&pon_devs_lock);
-+	pdev = xa_load(&pon_devs, nla_get_u32(dev_id));
-+	if (!pdev) {
-+		mutex_unlock(&pon_devs_lock);
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	mutex_lock(&pdev->lock);
-+	mutex_unlock(&pon_devs_lock);
-+
-+	if (dev_net(pdev->main_netdev) != net) {
-+		mutex_unlock(&pdev->lock);
-+		return ERR_PTR(-ENODEV);
-+	}
-+
-+	return pdev;
-+}
-+
-+/**
-+ * pon_device_get_locked() - genl pre_doit that looks up and locks the device
-+ * @ops: the operation of the request
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] receives the device
-+ *
-+ * Every attribute set carries the device id as attribute 1, so one pre_doit
-+ * serves all commands that name a device.
-+ *
-+ * Context: Runs as the genl pre_doit. On success the device lock stays held
-+ * until pon_device_unlock().
-+ * Return: 0, -EINVAL without a device id, or -ENODEV.
-+ */
-+int pon_device_get_locked(const struct genl_split_ops *ops,
-+			  struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct nlattr *id = info->attrs[PON_A_DEV_ID];
-+
-+	/* Every attribute set carries the device id as attribute 1. */
-+	BUILD_BUG_ON((int)PON_A_DEV_ID != (int)PON_A_TCONT_DEV_ID ||
-+		     (int)PON_A_DEV_ID != (int)PON_A_GEM_DEV_ID ||
-+		     (int)PON_A_DEV_ID != (int)PON_A_GEM_MAP_DEV_ID ||
-+		     (int)PON_A_DEV_ID != (int)PON_A_OMCI_DEV_ID);
-+
-+	if (!id) {
-+		NL_SET_ERR_MSG(info->extack, "device id is missing");
-+		return -EINVAL;
-+	}
-+
-+	info->user_ptr[0] = pon_device_get_and_lock(genl_info_net(info), id);
-+	if (IS_ERR(info->user_ptr[0])) {
-+		NL_SET_ERR_MSG_ATTR(info->extack, id, "no such device");
-+		return PTR_ERR(info->user_ptr[0]);
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * pon_device_unlock() - genl post_doit that drops the device lock
-+ * @ops: the operation of the request
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Context: Runs as the genl post_doit, with the lock that
-+ * pon_device_get_locked() took.
-+ */
-+void
-+pon_device_unlock(const struct genl_split_ops *ops, struct sk_buff *skb,
-+		  struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+
-+	mutex_unlock(&pdev->lock);
-+}
-+
-+/* Device */
-+
-+/**
-+ * pon_nl_dev_fill() - put one device message into an skb
-+ * @pdev: the PON device
-+ * @rsp: the skb to fill
-+ * @info: the request, or the notification info
-+ *
-+ * Context: Called with @pdev->lock held.
-+ * Return: 0, or -EMSGSIZE when the message does not fit.
-+ */
-+static int
-+pon_nl_dev_fill(struct pon_dev *pdev, struct sk_buff *rsp,
-+		const struct genl_info *info)
-+{
-+	void *hdr;
-+
-+	hdr = genlmsg_iput(rsp, info);
-+	if (!hdr)
-+		return -EMSGSIZE;
-+
-+	if (nla_put_u32(rsp, PON_A_DEV_ID, pdev->id) ||
-+	    nla_put_u32(rsp, PON_A_DEV_IFINDEX, pdev->main_netdev->ifindex) ||
-+	    nla_put_u32(rsp, PON_A_DEV_MODE, pdev->mode) ||
-+	    nla_put_u32(rsp, PON_A_DEV_MODES_CAP, pdev->caps->modes) ||
-+	    nla_put_u32(rsp, PON_A_DEV_PLOAM_STATE, READ_ONCE(pdev->ploam)) ||
-+	    nla_put_u32(rsp, PON_A_DEV_MAX_TCONTS, pdev->caps->max_tconts) ||
-+	    nla_put_u32(rsp, PON_A_DEV_MAX_GEMS, pdev->caps->max_gems))
-+		goto err_cancel_msg;
-+
-+	if (pdev->identity.serial_set &&
-+	    nla_put(rsp, PON_A_DEV_SERIAL, PON_SERIAL_LEN,
-+		    pdev->identity.serial))
-+		goto err_cancel_msg;
-+
-+	if (nla_put_u8(rsp, PON_A_DEV_ENABLE, pdev->enabled))
-+		goto err_cancel_msg;
-+
-+	genlmsg_end(rsp, hdr);
-+	return 0;
-+
-+err_cancel_msg:
-+	genlmsg_cancel(rsp, hdr);
-+	return -EMSGSIZE;
-+}
-+
-+/**
-+ * pon_nl_notify_dev() - send a device notification to the mgmt group
-+ * @pdev: the PON device
-+ * @cmd: the notification command, PON_CMD_DEV_ADD_NTF,
-+ *       PON_CMD_DEV_CHANGE_NTF or PON_CMD_DEV_DEL_NTF
-+ *
-+ * Does nothing when the group has no listener in the device's namespace.
-+ *
-+ * Context: Called with @pdev->lock held. May sleep.
-+ */
-+void pon_nl_notify_dev(struct pon_dev *pdev, u32 cmd)
-+{
-+	struct net *net = dev_net(pdev->main_netdev);
-+	struct genl_info info;
-+	struct sk_buff *ntf;
-+
-+	lockdep_assert_held(&pdev->lock);
-+
-+	if (!genl_has_listeners(&pon_nl_family, net, PON_NLGRP_MGMT))
-+		return;
-+
-+	ntf = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!ntf)
-+		return;
-+
-+	genl_info_init_ntf(&info, &pon_nl_family, cmd);
-+	genl_info_net_set(&info, net);
-+	if (pon_nl_dev_fill(pdev, ntf, &info)) {
-+		nlmsg_free(ntf);
-+		return;
-+	}
-+
-+	genlmsg_multicast_netns(&pon_nl_family, net, ntf, 0, PON_NLGRP_MGMT,
-+				GFP_KERNEL);
-+}
-+
-+/**
-+ * pon_nl_dev_get_doit() - handle PON_CMD_DEV_GET for one device
-+ * @req: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, or a negative errno.
-+ */
-+int pon_nl_dev_get_doit(struct sk_buff *req, struct genl_info *info)
-+{
-+	return pon_nl_dev_reply(info, pon_nl_dev_fill);
-+}
-+
-+/**
-+ * pon_nl_dev_get_dumpit() - handle the PON_CMD_DEV_GET dump
-+ * @rsp: the skb to fill
-+ * @cb: the dump state, args[0] is the next device id
-+ *
-+ * Dumps every device in the namespace of the requesting socket.
-+ *
-+ * Context: Takes pon_devs_lock and each device lock in turn.
-+ * Return: 0, or -EMSGSIZE when the skb is full and the dump resumes.
-+ */
-+int pon_nl_dev_get_dumpit(struct sk_buff *rsp, struct netlink_callback *cb)
-+{
-+	struct pon_dev *pdev;
-+	int err = 0;
-+
-+	mutex_lock(&pon_devs_lock);
-+	xa_for_each_start(&pon_devs, cb->args[0], pdev, cb->args[0]) {
-+		mutex_lock(&pdev->lock);
-+		if (dev_net(pdev->main_netdev) == sock_net(rsp->sk))
-+			err = pon_nl_dev_fill(pdev, rsp, genl_info_dump(cb));
-+		mutex_unlock(&pdev->lock);
-+		if (err)
-+			break;
-+	}
-+	mutex_unlock(&pon_devs_lock);
-+
-+	return err;
-+}
-+
-+/**
-+ * pon_nl_identity_commit() - copy accepted identity settings into the device
-+ * @pdev: the PON device
-+ * @id: the settings the driver took
-+ *
-+ * The driver took the settings. The core keeps the mode and the serial
-+ * number, which dev-get reports. The registration id stays with the driver.
-+ *
-+ * Context: Called with @pdev->lock held.
-+ */
-+static void pon_nl_identity_commit(struct pon_dev *pdev,
-+				   const struct pon_identity *id)
-+{
-+	if (id->mode_set)
-+		pdev->mode = id->mode;
-+	if (id->serial_set) {
-+		memcpy(pdev->identity.serial, id->serial, PON_SERIAL_LEN);
-+		pdev->identity.serial_set = true;
-+	}
-+}
-+
-+/**
-+ * pon_nl_serial_same() - compare a requested serial number with the stored one
-+ * @pdev: the PON device
-+ * @id: the settings of the request, with a serial number
-+ *
-+ * Context: Called with @pdev->lock held.
-+ * Return: true when the device holds a serial number equal to that of @id.
-+ */
-+static bool pon_nl_serial_same(const struct pon_dev *pdev,
-+			       const struct pon_identity *id)
-+{
-+	return pdev->identity.serial_set &&
-+	       !memcmp(pdev->identity.serial, id->serial, PON_SERIAL_LEN);
-+}
-+
-+/**
-+ * pon_nl_dev_set() - apply a PON_CMD_DEV_SET request
-+ * @info: the request info, user_ptr[0] holds the device
-+ * @id: zeroed space for the identity settings, which the caller clears
-+ *	after the call because it holds credentials
-+ *
-+ * Passes the identity settings to the set_identity op, then the enable
-+ * setting to the enable op. A registration id shorter than PON_REG_ID_LEN
-+ * reaches the op padded with 0x00 bytes, as the note of ITU-T G.9807.1 Table
-+ * C.11.25 recommends. An empty one is refused. A mode the device does not
-+ * list in its capabilities is refused with an error line through
-+ * pon_dev_log_level(). While the link is enabled, a mode or a serial number
-+ * other than the one the device holds is refused: the OLT addresses the ONU
-+ * by its serial number (G.9807.1 clause C.11.2.6.1). The serial number of
-+ * eight 0x00 bytes is refused, since G.9807.1 Table C.11.23A uses it to
-+ * address every ONU. A PON_CMD_DEV_CHANGE_NTF follows once the
-+ * identity changed, even when the enable op then fails.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, or a negative errno.
-+ */
-+static int pon_nl_dev_set(struct genl_info *info, struct pon_identity *id)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	bool identity = false;
-+	int err;
-+
-+	if (info->attrs[PON_A_DEV_MODE]) {
-+		id->mode = nla_get_u32(info->attrs[PON_A_DEV_MODE]);
-+		id->mode_set = true;
-+		if (!(pdev->caps->modes & BIT(id->mode))) {
-+			NL_SET_ERR_MSG(info->extack,
-+				       "mode not supported by the device");
-+			pon_dev_log_level(pdev, KERN_ERR,
-+					  "mode %s not supported by the device",
-+					  pon_nl_mode_names[id->mode]);
-+			return -EINVAL;
-+		}
-+		if (pdev->enabled && id->mode != pdev->mode) {
-+			NL_SET_ERR_MSG_ATTR(info->extack,
-+					    info->attrs[PON_A_DEV_MODE],
-+					    "the mode cannot change while the link is enabled");
-+			return -EBUSY;
-+		}
-+	}
-+	if (info->attrs[PON_A_DEV_SERIAL]) {
-+		nla_memcpy(id->serial, info->attrs[PON_A_DEV_SERIAL],
-+			   PON_SERIAL_LEN);
-+		id->serial_set = true;
-+		if (!memchr_inv(id->serial, 0, PON_SERIAL_LEN)) {
-+			NL_SET_ERR_MSG_ATTR(info->extack,
-+					    info->attrs[PON_A_DEV_SERIAL],
-+					    "the all-zero serial number addresses every ONU");
-+			return -EINVAL;
-+		}
-+		if (pdev->enabled && !pon_nl_serial_same(pdev, id)) {
-+			NL_SET_ERR_MSG_ATTR(info->extack,
-+					    info->attrs[PON_A_DEV_SERIAL],
-+					    "the serial number cannot change while the link is enabled");
-+			return -EBUSY;
-+		}
-+	}
-+	if (info->attrs[PON_A_DEV_REGISTRATION_ID]) {
-+		struct nlattr *reg_id = info->attrs[PON_A_DEV_REGISTRATION_ID];
-+
-+		if (!nla_len(reg_id)) {
-+			NL_SET_ERR_MSG_ATTR(info->extack, reg_id,
-+					    "the registration id is empty");
-+			return -EINVAL;
-+		}
-+		nla_memcpy(id->reg_id, reg_id, PON_REG_ID_LEN);
-+		id->reg_id_len = PON_REG_ID_LEN;
-+	}
-+
-+	identity = id->mode_set || id->serial_set || id->reg_id_len;
-+
-+	if (!identity && !info->attrs[PON_A_DEV_ENABLE]) {
-+		NL_SET_ERR_MSG(info->extack, "no settings present");
-+		return -EINVAL;
-+	}
-+
-+	if (identity && !pdev->ops->set_identity)
-+		return -EOPNOTSUPP;
-+	if (info->attrs[PON_A_DEV_ENABLE] && !pdev->ops->enable)
-+		return -EOPNOTSUPP;
-+
-+	if (identity) {
-+		err = pdev->ops->set_identity(pdev, id, info->extack);
-+		if (err)
-+			return err;
-+		pon_nl_identity_commit(pdev, id);
-+	}
-+
-+	if (info->attrs[PON_A_DEV_ENABLE]) {
-+		bool on = nla_get_u8(info->attrs[PON_A_DEV_ENABLE]);
-+
-+		err = pdev->ops->enable(pdev, on, info->extack);
-+		if (err) {
-+			if (identity)
-+				pon_nl_notify_dev(pdev, PON_CMD_DEV_CHANGE_NTF);
-+			return err;
-+		}
-+		pdev->enabled = on;
-+	}
-+
-+	pon_nl_notify_dev(pdev, PON_CMD_DEV_CHANGE_NTF);
-+
-+	return 0;
-+}
-+
-+/**
-+ * pon_nl_dev_set_doit() - handle PON_CMD_DEV_SET
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Applies the request through pon_nl_dev_set() and clears the copy of the
-+ * identity settings on every exit, since it holds the registration id.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, or a negative errno.
-+ */
-+int pon_nl_dev_set_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_identity id = {};
-+	int err;
-+
-+	err = pon_nl_dev_set(info, &id);
-+	memzero_explicit(&id, sizeof(id));
-+
-+	return err;
-+}
-+
-+/* State notifications. The instance lock is held and they may sleep. */
-+
-+/**
-+ * pon_nl_notify_ploam() - send the activation state notification
-+ * @pdev: the PON device
-+ *
-+ * Sends PON_CMD_PLOAM_NTF with the ONU activation state of ITU-T G.9807.1
-+ * Table C.12.1 to the state group. pon_dev_state_report() owns the state
-+ * and calls this once it has validated and published it, so this only
-+ * formats the message.
-+ *
-+ * Context: Called with @pdev->lock held. May sleep.
-+ */
-+void pon_nl_notify_ploam(struct pon_dev *pdev)
-+{
-+	struct net *net = dev_net(pdev->main_netdev);
-+	struct sk_buff *ntf;
-+	void *hdr;
-+
-+	lockdep_assert_held(&pdev->lock);
-+
-+	if (!genl_has_listeners(&pon_nl_family, net, PON_NLGRP_STATE))
-+		return;
-+
-+	ntf = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!ntf)
-+		return;
-+
-+	hdr = genlmsg_put(ntf, 0, 0, &pon_nl_family, 0, PON_CMD_PLOAM_NTF);
-+	if (!hdr)
-+		goto err_free;
-+
-+	if (nla_put_u32(ntf, PON_A_DEV_ID, pdev->id) ||
-+	    nla_put_u32(ntf, PON_A_DEV_PLOAM_STATE, pdev->ploam))
-+		goto err_free;
-+
-+	genlmsg_end(ntf, hdr);
-+	genlmsg_multicast_netns(&pon_nl_family, net, ntf, 0, PON_NLGRP_STATE,
-+				GFP_KERNEL);
-+	return;
-+
-+err_free:
-+	nlmsg_free(ntf);
-+}
-+
-+/**
-+ * pon_nl_obj_gen_inc() - move the object generation
-+ *
-+ * Called whenever an object joins or leaves a list, so that an object dump
-+ * that resumes on a new generation is marked as interrupted. The value
-+ * wraps from INT_MAX to 1 and so never becomes 0.
-+ */
-+void pon_nl_obj_gen_inc(void)
-+{
-+	int old = atomic_read(&pon_nl_obj_gen);
-+	int new;
-+
-+	do {
-+		new = old == INT_MAX ? 1 : old + 1;
-+	} while (!atomic_try_cmpxchg(&pon_nl_obj_gen, &old, new));
-+}
-+
-+/**
-+ * pon_nl_obj_dev_dump() - dump one object list of one device
-+ * @pdev: the PON device
-+ * @rsp: the skb to fill
-+ * @cb: the dump state, args[1] counts the objects sent
-+ * @head: the object list
-+ * @skip: the number of objects sent before this call
-+ * @fill: puts one object into @rsp
-+ *
-+ * Context: Called with @pdev->lock held.
-+ * Return: 0 once the list is done, or the error of @fill.
-+ */
-+static int pon_nl_obj_dev_dump(struct pon_dev *pdev, struct sk_buff *rsp,
-+			       struct netlink_callback *cb,
-+			       struct list_head *head, unsigned long skip,
-+			       pon_nl_obj_fill_t fill)
-+{
-+	struct list_head *pos;
-+	int err;
-+
-+	lockdep_assert_held(&pdev->lock);
-+
-+	cb->seq = atomic_read(&pon_nl_obj_gen);
-+
-+	list_for_each(pos, head) {
-+		if (skip) {
-+			skip--;
-+			continue;
-+		}
-+		err = fill(pdev, pos, rsp, genl_info_dump(cb));
-+		if (err)
-+			return err;
-+		cb->args[1]++;
-+	}
-+
-+	cb->args[1] = 0;
-+	return 0;
-+}
-+
-+/**
-+ * pon_nl_obj_dumpit() - dump one object list of each visible device
-+ * @rsp: the skb to fill
-+ * @cb: the dump state, args[0] is the device, args[1] the objects sent
-+ * @list_offset: the offset of the list head in struct pon_dev
-+ * @fill: puts one object into @rsp
-+ *
-+ * Walks every device in the namespace of the requesting socket, or only
-+ * the device the request names. A part that put no message leaves the
-+ * consistency check to the NLMSG_DONE that follows, which then carries
-+ * NLM_F_DUMP_INTR when the generation moved since the previous part.
-+ *
-+ * Context: Takes pon_devs_lock and each device lock in turn.
-+ * Return: 0, the error of @fill, or -ENODEV when the named device is not
-+ * found.
-+ */
-+static int pon_nl_obj_dumpit(struct sk_buff *rsp, struct netlink_callback *cb,
-+			     size_t list_offset, pon_nl_obj_fill_t fill)
-+{
-+	const struct genl_info *info = genl_info_dump(cb);
-+	unsigned long resumed = cb->args[0];
-+	unsigned long last = ULONG_MAX;
-+	struct pon_dev *pdev;
-+	bool found = false;
-+	int err = 0;
-+
-+	if (info->attrs[PON_A_DEV_ID]) {
-+		last = nla_get_u32(info->attrs[PON_A_DEV_ID]);
-+		cb->args[0] = last;
-+	}
-+
-+	mutex_lock(&pon_devs_lock);
-+	cb->seq = atomic_read(&pon_nl_obj_gen);
-+	xa_for_each_range(&pon_devs, cb->args[0], pdev, cb->args[0], last) {
-+		struct list_head *head = (void *)pdev + list_offset;
-+		unsigned long skip = pdev->id == resumed ? cb->args[1] : 0;
-+
-+		mutex_lock(&pdev->lock);
-+		if (dev_net(pdev->main_netdev) == sock_net(rsp->sk)) {
-+			found = true;
-+			err = pon_nl_obj_dev_dump(pdev, rsp, cb, head, skip,
-+						  fill);
-+		}
-+		mutex_unlock(&pdev->lock);
-+		if (err)
-+			break;
-+	}
-+	mutex_unlock(&pon_devs_lock);
-+
-+	if (!found && last != ULONG_MAX) {
-+		NL_SET_ERR_MSG(cb->extack, "no such device");
-+		return -ENODEV;
-+	}
-+
-+	if (rsp->len)
-+		nl_dump_check_consistent(cb, nlmsg_hdr(rsp));
-+
-+	return err;
-+}
-+
-+/* T-CONT */
-+
-+/**
-+ * pon_gem_on_tcont() - check whether a GEM port is bound to a T-CONT
-+ * @gem: the GEM port
-+ * @index: the T-CONT index
-+ *
-+ * Return: true when @gem names the T-CONT @index.
-+ */
-+static bool pon_gem_on_tcont(const struct pon_gem *gem, u16 index)
-+{
-+	return gem->cfg.tcont_valid && gem->cfg.tcont_index == index;
-+}
-+
-+/**
-+ * pon_tcont_in_use() - check whether a GEM port names a T-CONT
-+ * @pdev: the PON device
-+ * @index: the T-CONT index
-+ *
-+ * Return: true while a GEM port object holds @index as its T-CONT.
-+ */
-+bool pon_tcont_in_use(struct pon_dev *pdev, u16 index)
-+{
-+	struct pon_gem *gem;
-+
-+	lockdep_assert_held(&pdev->lock);
-+	list_for_each_entry(gem, &pdev->gems, list)
-+		if (pon_gem_on_tcont(gem, index))
-+			return true;
-+	return false;
-+}
-+
-+/**
-+ * pon_tcont_alloc_taken() - check whether another T-CONT holds an alloc-id
-+ * @pdev: the PON device
-+ * @index: the T-CONT that asks for @alloc_id
-+ * @alloc_id: the alloc-id
-+ *
-+ * ITU-T G.988 clause 9.2.2 relates alloc-ids and T-CONTs one to one and
-+ * leaves several T-CONTs on one alloc-id undefined.
-+ *
-+ * Return: true while a T-CONT other than @index holds @alloc_id.
-+ */
-+bool pon_tcont_alloc_taken(struct pon_dev *pdev, u16 index, u16 alloc_id)
-+{
-+	struct pon_tcont *tcont;
-+
-+	lockdep_assert_held(&pdev->lock);
-+	list_for_each_entry(tcont, &pdev->tconts, list)
-+		if (tcont->cfg.index != index &&
-+		    tcont->cfg.alloc_id == alloc_id)
-+			return true;
-+	return false;
-+}
-+
-+/**
-+ * pon_tcont_gems_rebind() - move the GEM ports of a T-CONT to another alloc-id
-+ * @pdev: the PON device
-+ * @index: the T-CONT index
-+ * @old_alloc_id: the alloc-id the GEM ports are bound to
-+ * @new_alloc_id: the alloc-id to bind them to
-+ * @extack: netlink extended ack
-+ *
-+ * Programs each GEM port of the T-CONT again through the gem_add op. If the
-+ * driver refuses one, the refused GEM port and the ones already moved are
-+ * programmed again with @old_alloc_id, so that the core and the driver agree.
-+ *
-+ * Return: 0, or the error of the refused GEM port.
-+ */
-+int pon_tcont_gems_rebind(struct pon_dev *pdev, u16 index, u16 old_alloc_id,
-+			  u16 new_alloc_id, struct netlink_ext_ack *extack)
-+{
-+	struct pon_gem *gem;
-+	int err;
-+
-+	lockdep_assert_held(&pdev->lock);
-+
-+	list_for_each_entry(gem, &pdev->gems, list) {
-+		if (!pon_gem_on_tcont(gem, index) ||
-+		    gem->cfg.alloc_id == new_alloc_id)
-+			continue;
-+
-+		gem->cfg.alloc_id = new_alloc_id;
-+		err = pdev->ops->gem_add(pdev, &gem->cfg, extack);
-+		if (err)
-+			goto err_restore;
-+	}
-+
-+	return 0;
-+
-+err_restore:
-+	NL_SET_ERR_MSG_WEAK(extack,
-+			    "a GEM port of the T-CONT cannot move to the alloc-id");
-+
-+	list_for_each_entry_from_reverse(gem, &pdev->gems, list) {
-+		if (!pon_gem_on_tcont(gem, index) ||
-+		    gem->cfg.alloc_id != new_alloc_id)
-+			continue;
-+
-+		gem->cfg.alloc_id = old_alloc_id;
-+		if (pdev->ops->gem_add(pdev, &gem->cfg, NULL))
-+			netdev_warn(pdev->main_netdev,
-+				    "restoring GEM %u to alloc-id %u failed\n",
-+				    gem->cfg.id, old_alloc_id);
-+	}
-+
-+	return err;
-+}
-+
-+/**
-+ * pon_nl_tcont_set_doit() - handle PON_CMD_TCONT_SET
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Creates the T-CONT, or binds an existing one to another alloc-id and
-+ * moves its GEM ports with it. The alloc-id must lie in the ranges of
-+ * ITU-T G.9807.1 Table C.6.5 and must not be a serial number grant. Alloc-ids
-+ * and T-CONTs relate one to one, as ITU-T G.988 clause 9.2.2 defines.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, or a negative errno.
-+ */
-+int pon_nl_tcont_set_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct pon_tcont_cfg cfg = {};
-+	struct pon_tcont *tcont;
-+	bool changed = false;
-+	bool is_new;
-+	int err;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_TCONT_INDEX) ||
-+	    GENL_REQ_ATTR_CHECK(info, PON_A_TCONT_ALLOC_ID))
-+		return -EINVAL;
-+
-+	cfg.index = nla_get_u32(info->attrs[PON_A_TCONT_INDEX]);
-+	cfg.alloc_id = nla_get_u32(info->attrs[PON_A_TCONT_ALLOC_ID]);
-+
-+	if (cfg.index >= pdev->caps->max_tconts) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    info->attrs[PON_A_TCONT_INDEX],
-+				    "T-CONT index out of range");
-+		return -ERANGE;
-+	}
-+	if (cfg.alloc_id >= PON_PLOAM_ALLOC_ID_SN_GRANT_MIN &&
-+	    cfg.alloc_id <= PON_PLOAM_ALLOC_ID_SN_GRANT_2G5) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    info->attrs[PON_A_TCONT_ALLOC_ID],
-+				    "the alloc-id is a serial number grant");
-+		return -EINVAL;
-+	}
-+	if (pon_tcont_alloc_taken(pdev, cfg.index, cfg.alloc_id)) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    info->attrs[PON_A_TCONT_ALLOC_ID],
-+				    "another T-CONT holds the alloc-id");
-+		return -EEXIST;
-+	}
-+
-+	tcont = pon_tcont_find(pdev, cfg.index);
-+	is_new = !tcont;
-+	if (is_new) {
-+		tcont = kzalloc_obj(*tcont, GFP_KERNEL);
-+		if (!tcont)
-+			return -ENOMEM;
-+	} else {
-+		changed = tcont->cfg.alloc_id != cfg.alloc_id;
-+	}
-+
-+	err = pdev->ops->tcont_set(pdev, &cfg, info->extack);
-+	if (err)
-+		goto err_free_tcont;
-+
-+	if (changed) {
-+		err = pon_tcont_gems_rebind(pdev, cfg.index,
-+					    tcont->cfg.alloc_id, cfg.alloc_id,
-+					    info->extack);
-+		if (err)
-+			goto err_restore_tcont;
-+	}
-+
-+	tcont->cfg = cfg;
-+	if (is_new) {
-+		list_add_tail(&tcont->list, &pdev->tconts);
-+		pon_nl_obj_gen_inc();
-+	}
-+
-+	pon_dev_carrier_update(pdev);
-+
-+	if (is_new)
-+		pon_nl_notify_tcont(pdev, tcont, PON_CMD_TCONT_ADD_NTF);
-+	else if (changed)
-+		pon_nl_notify_tcont(pdev, tcont, PON_CMD_TCONT_CHANGE_NTF);
-+
-+	return 0;
-+
-+err_restore_tcont:
-+	if (pdev->ops->tcont_set(pdev, &tcont->cfg, NULL))
-+		netdev_warn(pdev->main_netdev,
-+			    "restoring T-CONT %u to alloc-id %u failed\n",
-+			    tcont->cfg.index, tcont->cfg.alloc_id);
-+err_free_tcont:
-+	if (is_new)
-+		kfree(tcont);
-+	return err;
-+}
-+
-+/**
-+ * pon_nl_tcont_fill() - put one T-CONT message into an skb
-+ * @pdev: the PON device
-+ * @tcont: the T-CONT
-+ * @rsp: the skb to fill
-+ * @info: the request, or the notification info
-+ *
-+ * Context: Called with @pdev->lock held.
-+ * Return: 0, or -EMSGSIZE when the message does not fit.
-+ */
-+static int
-+pon_nl_tcont_fill(struct pon_dev *pdev, struct pon_tcont *tcont,
-+		  struct sk_buff *rsp, const struct genl_info *info)
-+{
-+	struct pon_tcont_cfg *cfg = &tcont->cfg;
-+	void *hdr;
-+
-+	hdr = genlmsg_iput(rsp, info);
-+	if (!hdr)
-+		return -EMSGSIZE;
-+
-+	if (nla_put_u32(rsp, PON_A_TCONT_DEV_ID, pdev->id) ||
-+	    nla_put_u32(rsp, PON_A_TCONT_INDEX, cfg->index) ||
-+	    nla_put_u32(rsp, PON_A_TCONT_ALLOC_ID, cfg->alloc_id))
-+		goto err_cancel_msg;
-+
-+	genlmsg_end(rsp, hdr);
-+	return 0;
-+
-+err_cancel_msg:
-+	genlmsg_cancel(rsp, hdr);
-+	return -EMSGSIZE;
-+}
-+
-+/**
-+ * pon_nl_tcont_fill_pos() - pon_nl_obj_fill_t for the T-CONT list
-+ * @pdev: the PON device
-+ * @pos: the list entry of the T-CONT
-+ * @rsp: the skb to fill
-+ * @info: the dump info
-+ *
-+ * Return: the result of pon_nl_tcont_fill().
-+ */
-+static int pon_nl_tcont_fill_pos(struct pon_dev *pdev, struct list_head *pos,
-+				 struct sk_buff *rsp,
-+				 const struct genl_info *info)
-+{
-+	return pon_nl_tcont_fill(pdev, list_entry(pos, struct pon_tcont, list),
-+				 rsp, info);
-+}
-+
-+/**
-+ * pon_nl_notify_tcont() - send a T-CONT notification to the mgmt group
-+ * @pdev: the PON device
-+ * @tcont: the T-CONT
-+ * @cmd: the notification command, PON_CMD_TCONT_ADD_NTF,
-+ *       PON_CMD_TCONT_CHANGE_NTF or PON_CMD_TCONT_DEL_NTF
-+ *
-+ * Context: Called with @pdev->lock held. May sleep.
-+ */
-+void pon_nl_notify_tcont(struct pon_dev *pdev, struct pon_tcont *tcont, u32 cmd)
-+{
-+	pon_nl_notify_obj(pdev, &tcont->list, cmd, pon_nl_tcont_fill_pos);
-+}
-+
-+/**
-+ * pon_nl_tcont_get_doit() - handle PON_CMD_TCONT_GET for one T-CONT
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -ENOENT when the T-CONT does not exist, or a negative errno.
-+ */
-+int pon_nl_tcont_get_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct pon_tcont *tcont;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_TCONT_INDEX))
-+		return -EINVAL;
-+
-+	tcont = pon_tcont_find(pdev,
-+			       nla_get_u32(info->attrs[PON_A_TCONT_INDEX]));
-+	if (!tcont) {
-+		NL_SET_ERR_MSG(info->extack, "no such T-CONT");
-+		return -ENOENT;
-+	}
-+
-+	return pon_nl_obj_reply(info, &tcont->list, pon_nl_tcont_fill_pos);
-+}
-+
-+/**
-+ * pon_nl_tcont_get_dumpit() - handle the PON_CMD_TCONT_GET dump
-+ * @rsp: the skb to fill
-+ * @cb: the dump state
-+ *
-+ * Return: the result of pon_nl_obj_dumpit().
-+ */
-+int pon_nl_tcont_get_dumpit(struct sk_buff *rsp, struct netlink_callback *cb)
-+{
-+	return pon_nl_obj_dumpit(rsp, cb, offsetof(struct pon_dev, tconts),
-+				 pon_nl_tcont_fill_pos);
-+}
-+
-+/**
-+ * pon_nl_tcont_del_doit() - handle PON_CMD_TCONT_DEL
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Refuses while a GEM port names the T-CONT.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -ENOENT when the T-CONT does not exist, -EBUSY while a GEM port
-+ * names it, or another negative errno.
-+ */
-+int pon_nl_tcont_del_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct pon_tcont *tcont;
-+	u16 index;
-+	int err;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_TCONT_INDEX))
-+		return -EINVAL;
-+
-+	index = nla_get_u32(info->attrs[PON_A_TCONT_INDEX]);
-+	tcont = pon_tcont_find(pdev, index);
-+	if (!tcont) {
-+		NL_SET_ERR_MSG(info->extack, "no such T-CONT");
-+		return -ENOENT;
-+	}
-+	if (pon_tcont_in_use(pdev, index)) {
-+		NL_SET_ERR_MSG(info->extack, "a GEM port names the T-CONT");
-+		return -EBUSY;
-+	}
-+
-+	err = pdev->ops->tcont_clear(pdev, &tcont->cfg, info->extack);
-+	if (err)
-+		return err;
-+
-+	pon_nl_notify_tcont(pdev, tcont, PON_CMD_TCONT_DEL_NTF);
-+
-+	list_del(&tcont->list);
-+	kfree(tcont);
-+	pon_nl_obj_gen_inc();
-+
-+	pon_dev_carrier_update(pdev);
-+
-+	return 0;
-+}
-+
-+/* GEM ports */
-+
-+/**
-+ * pon_gems_full() - check whether the device holds all the GEM ports it can
-+ * @pdev: the PON device
-+ *
-+ * Return: true when the GEM port objects number the device's max_gems.
-+ */
-+bool pon_gems_full(struct pon_dev *pdev)
-+{
-+	struct pon_gem *gem;
-+	unsigned int n = 0;
-+
-+	lockdep_assert_held(&pdev->lock);
-+	list_for_each_entry(gem, &pdev->gems, list)
-+		n++;
-+	return n >= pdev->caps->max_gems;
-+}
-+
-+/**
-+ * pon_gem_cfg_same() - compare two GEM port configurations
-+ * @existing: the configuration of the GEM port the instance holds
-+ * @requested: the configuration a request names
-+ *
-+ * Return: true when every member that a request sets is equal.
-+ */
-+static bool pon_gem_cfg_same(const struct pon_gem_cfg *existing,
-+			     const struct pon_gem_cfg *requested)
-+{
-+	return existing->id == requested->id &&
-+	       existing->dir == requested->dir &&
-+	       existing->tcont_valid == requested->tcont_valid &&
-+	       existing->tcont_index == requested->tcont_index &&
-+	       existing->alloc_id == requested->alloc_id &&
-+	       existing->key_ring == requested->key_ring;
-+}
-+
-+/**
-+ * pon_nl_gem_new_doit() - handle PON_CMD_GEM_NEW
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Creates the GEM port of the GEM port network CTP of ITU-T G.988 clause
-+ * 9.2.3. The policy holds the GEM port ID to the assignable range of ITU-T
-+ * G.9807.1 Table C.6.6. The broadcast key ring of clause 9.2.3 is refused.
-+ * A GEM port with an upstream half names its T-CONT and takes the alloc-id of
-+ * it. A downstream GEM port names none. A request for a GEM port that exists
-+ * with the same attributes succeeds and changes nothing.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, or a negative errno.
-+ */
-+int pon_nl_gem_new_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct pon_gem_cfg cfg = {};
-+	struct pon_gem *gem;
-+	int err;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_GEM_ID) ||
-+	    GENL_REQ_ATTR_CHECK(info, PON_A_GEM_DIR))
-+		return -EINVAL;
-+
-+	cfg.id = nla_get_u32(info->attrs[PON_A_GEM_ID]);
-+	cfg.dir = nla_get_u32(info->attrs[PON_A_GEM_DIR]);
-+	if (cfg.dir == PON_GEM_DIR_DOWNSTREAM) {
-+		if (info->attrs[PON_A_GEM_TCONT_INDEX]) {
-+			NL_SET_ERR_MSG_ATTR(info->extack,
-+					    info->attrs[PON_A_GEM_TCONT_INDEX],
-+					    "a downstream GEM port rides no T-CONT");
-+			return -EINVAL;
-+		}
-+	} else if (GENL_REQ_ATTR_CHECK(info, PON_A_GEM_TCONT_INDEX)) {
-+		NL_SET_ERR_MSG(info->extack,
-+			       "an upstream GEM port needs a T-CONT");
-+		return -EINVAL;
-+	}
-+	if (info->attrs[PON_A_GEM_TCONT_INDEX]) {
-+		cfg.tcont_index =
-+			nla_get_u32(info->attrs[PON_A_GEM_TCONT_INDEX]);
-+		cfg.tcont_valid = true;
-+	}
-+	if (info->attrs[PON_A_GEM_KEY_RING])
-+		cfg.key_ring = nla_get_u32(info->attrs[PON_A_GEM_KEY_RING]);
-+	if (cfg.key_ring == PON_GEM_KEY_RING_BROADCAST) {
-+		NL_SET_ERR_MSG_ATTR(info->extack,
-+				    info->attrs[PON_A_GEM_KEY_RING],
-+				    "broadcast keys are not supported");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (cfg.tcont_valid) {
-+		struct pon_tcont *tcont;
-+
-+		tcont = pon_tcont_find(pdev, cfg.tcont_index);
-+		if (!tcont) {
-+			NL_SET_ERR_MSG_ATTR(info->extack,
-+					    info->attrs[PON_A_GEM_TCONT_INDEX],
-+					    "no such T-CONT");
-+			return -ENOENT;
-+		}
-+		cfg.alloc_id = tcont->cfg.alloc_id;
-+	}
-+
-+	gem = pon_gem_find(pdev, cfg.id);
-+	if (gem) {
-+		if (!pon_gem_cfg_same(&gem->cfg, &cfg)) {
-+			NL_SET_ERR_MSG(info->extack,
-+				       "the GEM port exists with other attributes");
-+			return -EEXIST;
-+		}
-+
++	if (!priv->pdev)
 +		return 0;
-+	}
 +
-+	if (pon_gems_full(pdev)) {
-+		NL_SET_ERR_MSG(info->extack,
-+			       "the device holds no more GEM ports");
-+		return -ENOSPC;
-+	}
-+
-+	gem = kzalloc_obj(*gem, GFP_KERNEL);
-+	if (!gem)
-+		return -ENOMEM;
-+
-+	err = pdev->ops->gem_add(pdev, &cfg, info->extack);
-+	if (err)
-+		goto err_free_gem;
-+
-+	gem->cfg = cfg;
-+	list_add_tail(&gem->list, &pdev->gems);
-+	pon_nl_obj_gen_inc();
-+	pon_dev_carrier_update(pdev);
-+	pon_nl_notify_gem(pdev, gem, PON_CMD_GEM_ADD_NTF);
-+
-+	return 0;
-+
-+err_free_gem:
-+	kfree(gem);
-+	return err;
++	return READ_ONCE(priv->pdev->main_netdev->ifindex);
 +}
 +
 +/**
-+ * pon_nl_gem_del_doit() - handle PON_CMD_GEM_DEL
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
++ * pon_gem_change_mtu() - change the MTU of a GEM interface
++ * @dev:	the GEM network device
++ * @mtu:	the new MTU
 + *
-+ * Refuses while a GEM network device is attached to the GEM port.
++ * Implements ndo_change_mtu. The conduit carries the frames of every PON
++ * network device, so it must take the new MTU first.
 + *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -ENOENT when the GEM port does not exist, -EBUSY while a GEM
-+ * network device is attached, or another negative errno.
++ * Context: Called with rtnl held.
++ * Return: 0, or what pon_conduit_mtu_set() answered.
 + */
-+int pon_nl_gem_del_doit(struct sk_buff *skb, struct genl_info *info)
++static int pon_gem_change_mtu(struct net_device *dev, int mtu)
 +{
-+	struct pon_dev *pdev = info->user_ptr[0];
++	struct pon_gem_priv *priv = netdev_priv(dev);
++	int err;
++
++	if (priv->pdev) {
++		err = pon_conduit_mtu_set(priv->pdev, dev, mtu);
++		if (err)
++			return err;
++	}
++
++	WRITE_ONCE(dev->mtu, mtu);
++
++	return 0;
++}
++
++static const struct net_device_ops pon_gem_netdev_ops = {
++	.ndo_start_xmit		= pon_gem_xmit,
++	.ndo_change_mtu		= pon_gem_change_mtu,
++	.ndo_set_mac_address	= eth_mac_addr,
++	.ndo_validate_addr	= eth_validate_addr,
++	.ndo_get_iflink		= pon_gem_get_iflink,
++};
++
++/**
++ * pon_gem_netdev_id() - the GEM port a GEM network device names
++ * @dev:	a network device
++ * @gem_id:	filled in with the GEM port id on success
++ *
++ * The GEM port id is fixed for the life of the interface, so a caller that
++ * only wants to know which GEM port a device names needs no lock.
++ *
++ * Return: 0, or -ENODEV when @dev is not a GEM network device.
++ */
++int pon_gem_netdev_id(const struct net_device *dev, u16 *gem_id)
++{
++	const struct pon_gem_priv *priv;
++
++	if (dev->netdev_ops != &pon_gem_netdev_ops)
++		return -ENODEV;
++
++	priv = netdev_priv(dev);
++	*gem_id = priv->gem_id;
++
++	return 0;
++}
++
++/**
++ * pon_gem_dev_destructor() - release what a GEM interface holds
++ * @dev:	the GEM network device
++ *
++ * The priv_destructor of a GEM network device. Drops the reference on the
++ * instance that pon_gem_newlink() took, if the interface was attached.
++ */
++static void pon_gem_dev_destructor(struct net_device *dev)
++{
++	struct pon_gem_priv *priv = netdev_priv(dev);
++
++	if (priv->pdev)
++		pon_dev_put(priv->pdev);
++}
++
++/**
++ * pon_gem_dev_setup() - initialize a new GEM network device
++ * @dev:	the GEM network device
++ *
++ * Implements the setup op of the "gem" rtnl_link_ops.
++ */
++static void pon_gem_dev_setup(struct net_device *dev)
++{
++	ether_setup(dev);
++	dev->netdev_ops = &pon_gem_netdev_ops;
++	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
++	dev->needs_free_netdev = true;
++	dev->priv_destructor = pon_gem_dev_destructor;
++	dev->priv_flags |= IFF_NO_QUEUE;
++	dev->lltx = true;
++	dev->netns_immutable = true;
++	dev->max_mtu = ETH_MAX_MTU;
++}
++
++/**
++ * pon_gem_link_target() - the GEM object a new GEM interface is created for
++ * @pdev:	PON device structure
++ * @dev:	the new GEM network device
++ * @lower:	the lower device the request named
++ * @gem_id:	the GEM port id the request named
++ * @extack:	netlink extended ack for the reason of a refusal
++ *
++ * Context: Called with @pdev->lock held.
++ * Return: the GEM object, or ERR_PTR() of -ENODEV when @pdev is not
++ * registered, -EINVAL when @lower is not the data interface or lives in
++ * another network namespace than @dev, -ENOENT when no GEM object has
++ * @gem_id, or -EBUSY when the GEM port has a network device already.
++ */
++static struct pon_gem *pon_gem_link_target(struct pon_dev *pdev,
++					   const struct net_device *dev,
++					   const struct net_device *lower,
++					   u16 gem_id,
++					   struct netlink_ext_ack *extack)
++{
++	struct pon_gem *gem;
++
++	lockdep_assert_held(&pdev->lock);
++
++	if (!pon_dev_is_registered(pdev))
++		return ERR_PTR(-ENODEV);
++
++	/* The conduit carries the same pointer and is not a PON interface. */
++	if (lower != pdev->main_netdev) {
++		NL_SET_ERR_MSG(extack,
++			       "lower device is not the PON data interface");
++		return ERR_PTR(-EINVAL);
++	}
++	if (!net_eq(dev_net(dev), dev_net(lower))) {
++		NL_SET_ERR_MSG(extack,
++			       "a GEM device lives in its PON device's namespace");
++		return ERR_PTR(-EINVAL);
++	}
++
++	gem = pon_gem_find(pdev, gem_id);
++	if (!gem) {
++		NL_SET_ERR_MSG(extack, "no GEM object with this id");
++		return ERR_PTR(-ENOENT);
++	}
++	if (gem->gem_netdev) {
++		NL_SET_ERR_MSG(extack,
++			       "the GEM port already has a network device");
++		return ERR_PTR(-EBUSY);
++	}
++
++	return gem;
++}
++
++/**
++ * pon_gem_link_attach() - attach a registered GEM interface to its GEM port
++ * @pdev:	PON device structure
++ * @dev:	the GEM network device, registered
++ * @lower:	the lower device the request named
++ * @gem_id:	the GEM port id the request named
++ * @extack:	netlink extended ack for the reason of a refusal
++ *
++ * Checks the target again, because the instance lock was dropped while
++ * @dev was registered. Then it links @dev and the GEM object and lets the
++ * receive path find @dev.
++ *
++ * Context: Called with rtnl and @pdev->lock held.
++ * Return: 0, or a negative errno from pon_gem_link_target() or the xarray.
++ */
++static int pon_gem_link_attach(struct pon_dev *pdev, struct net_device *dev,
++			       const struct net_device *lower, u16 gem_id,
++			       struct netlink_ext_ack *extack)
++{
++	struct pon_gem_priv *priv = netdev_priv(dev);
++	struct pon_gem *gem;
++	int err;
++
++	lockdep_assert_held(&pdev->lock);
++
++	gem = pon_gem_link_target(pdev, dev, lower, gem_id, extack);
++	if (IS_ERR(gem))
++		return PTR_ERR(gem);
++
++	err = xa_err(xa_store(&pdev->gem_netdevs, gem_id, dev, GFP_KERNEL));
++	if (err)
++		return err;
++
++	priv->pdev = pdev;
++	gem->gem_netdev = dev;
++	rcu_assign_pointer(dev->pon_dev, pdev);
++	pon_dev_carrier_update(pdev);
++
++	return 0;
++}
++
++/**
++ * pon_gem_newlink() - create a GEM interface
++ * @dev:	the new GEM network device
++ * @params:	the attributes of the request
++ * @extack:	netlink extended ack for the reason of a refusal
++ *
++ * Implements the newlink op of the "gem" rtnl_link_ops. The request names
++ * the PON data interface as its link and a GEM port id, which the policy
++ * limits to the assignable XGEM Port-IDs of ITU-T G.9807.1 Table C.6.6.
++ * The interface takes its MTU range from the data interface. On success
++ * it holds a reference on the instance until pon_gem_dev_destructor().
++ *
++ * Context: Called with rtnl held.
++ * Return: 0, -EINVAL for a missing link, a missing GEM port id or an MTU
++ * out of range, -ENODEV when the link does not exist, -EOPNOTSUPP when the
++ * link is not a PON device, or a negative errno.
++ */
++static int pon_gem_newlink(struct net_device *dev,
++			   struct rtnl_newlink_params *params,
++			   struct netlink_ext_ack *extack)
++{
++	struct nlattr **data = params->data;
++	struct nlattr **tb = params->tb;
++	struct pon_gem_priv *priv;
++	struct net_device *lower;
++	struct pon_dev *pdev;
 +	struct pon_gem *gem;
 +	u16 gem_id;
 +	int err;
 +
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_GEM_ID))
++	if (!tb[IFLA_LINK]) {
++		NL_SET_ERR_MSG(extack, "a lower PON device is required");
 +		return -EINVAL;
-+
-+	gem_id = nla_get_u32(info->attrs[PON_A_GEM_ID]);
-+	gem = pon_gem_find(pdev, gem_id);
-+	if (!gem) {
-+		NL_SET_ERR_MSG(info->extack, "no such GEM port");
-+		return -ENOENT;
 +	}
-+	if (gem->gem_netdev) {
-+		NL_SET_ERR_MSG(info->extack,
-+			       "a GEM network device is attached");
-+		return -EBUSY;
++	if (!data || !data[IFLA_GEM_ID]) {
++		NL_SET_ERR_MSG(extack, "the GEM port id is required");
++		return -EINVAL;
++	}
++	gem_id = nla_get_u32(data[IFLA_GEM_ID]);
++
++	lower = __dev_get_by_index(rtnl_newlink_link_net(params),
++				   nla_get_u32(tb[IFLA_LINK]));
++	if (!lower)
++		return -ENODEV;
++
++	rcu_read_lock();
++	pdev = rcu_dereference(lower->pon_dev);
++	if (pdev && !pon_dev_tryget(pdev))
++		pdev = NULL;
++	rcu_read_unlock();
++
++	if (!pdev) {
++		NL_SET_ERR_MSG(extack, "lower device is not a PON device");
++		return -EOPNOTSUPP;
 +	}
 +
-+	err = pdev->ops->gem_del(pdev, gem_id, info->extack);
++	mutex_lock(&pdev->lock);
++	gem = pon_gem_link_target(pdev, dev, lower, gem_id, extack);
++	mutex_unlock(&pdev->lock);
++	if (IS_ERR(gem)) {
++		err = PTR_ERR(gem);
++		goto err_put;
++	}
++
++	if (!tb[IFLA_MTU]) {
++		dev->mtu = lower->mtu;
++	} else if (dev->mtu < lower->min_mtu || dev->mtu > lower->max_mtu) {
++		NL_SET_ERR_MSG(extack,
++			       "the MTU is outside the range of the PON data interface");
++		err = -EINVAL;
++		goto err_put;
++	}
++	dev->min_mtu = lower->min_mtu;
++	dev->max_mtu = lower->max_mtu;
++
++	err = pon_conduit_mtu_set(pdev, dev, dev->mtu);
++	if (err) {
++		NL_SET_ERR_MSG(extack, "the conduit refused the MTU");
++		goto err_put;
++	}
++
++	if (!tb[IFLA_ADDRESS])
++		eth_hw_addr_inherit(dev, lower);
++
++	SET_NETDEV_DEV(dev, pdev->parent);
++	priv = netdev_priv(dev);
++	priv->gem_id = gem_id;
++
++	err = register_netdevice(dev);
 +	if (err)
-+		return err;
++		goto err_put;
 +
-+	pon_nl_notify_gem(pdev, gem, PON_CMD_GEM_DEL_NTF);
-+
-+	list_del(&gem->list);
-+	kfree(gem);
-+	pon_nl_obj_gen_inc();
-+
-+	pon_dev_carrier_update(pdev);
++	mutex_lock(&pdev->lock);
++	err = pon_gem_link_attach(pdev, dev, lower, gem_id, extack);
++	mutex_unlock(&pdev->lock);
++	if (err) {
++		unregister_netdevice(dev);
++		goto err_put;
++	}
 +
 +	return 0;
++
++err_put:
++	pon_dev_put(pdev);
++	return err;
 +}
 +
 +/**
-+ * pon_nl_gem_fill() - put one GEM port message into an skb
-+ * @pdev: the PON device
-+ * @gem: the GEM port
-+ * @rsp: the skb to fill
-+ * @info: the request, or the notification info
++ * pon_gem_link_detach() - detach a GEM interface from its GEM port
++ * @pdev:	PON device structure
++ * @dev:	the GEM network device
 + *
-+ * Context: Called with @pdev->lock held.
-+ * Return: 0, or -EMSGSIZE when the message does not fit.
-+ */
-+static int
-+pon_nl_gem_fill(struct pon_dev *pdev, struct pon_gem *gem,
-+		struct sk_buff *rsp, const struct genl_info *info)
-+{
-+	struct pon_gem_cfg *cfg = &gem->cfg;
-+	void *hdr;
-+
-+	hdr = genlmsg_iput(rsp, info);
-+	if (!hdr)
-+		return -EMSGSIZE;
-+
-+	if (nla_put_u32(rsp, PON_A_GEM_DEV_ID, pdev->id) ||
-+	    nla_put_u32(rsp, PON_A_GEM_ID, cfg->id) ||
-+	    nla_put_u32(rsp, PON_A_GEM_DIR, cfg->dir) ||
-+	    nla_put_u32(rsp, PON_A_GEM_KEY_RING, cfg->key_ring))
-+		goto err_cancel_msg;
-+
-+	if (cfg->tcont_valid &&
-+	    nla_put_u32(rsp, PON_A_GEM_TCONT_INDEX, cfg->tcont_index))
-+		goto err_cancel_msg;
-+
-+	genlmsg_end(rsp, hdr);
-+	return 0;
-+
-+err_cancel_msg:
-+	genlmsg_cancel(rsp, hdr);
-+	return -EMSGSIZE;
-+}
-+
-+/**
-+ * pon_nl_gem_fill_pos() - pon_nl_obj_fill_t for the GEM port list
-+ * @pdev: the PON device
-+ * @pos: the list entry of the GEM port
-+ * @rsp: the skb to fill
-+ * @info: the dump info
++ * Unlinks @dev and the GEM object and stops the receive path from finding
++ * @dev. Does nothing for an interface that is detached already.
 + *
-+ * Return: the result of pon_nl_gem_fill().
++ * Context: Called with rtnl and @pdev->lock held.
 + */
-+static int pon_nl_gem_fill_pos(struct pon_dev *pdev, struct list_head *pos,
-+			       struct sk_buff *rsp,
-+			       const struct genl_info *info)
++static void pon_gem_link_detach(struct pon_dev *pdev, struct net_device *dev)
 +{
-+	return pon_nl_gem_fill(pdev, list_entry(pos, struct pon_gem, list), rsp,
-+			       info);
-+}
-+
-+/**
-+ * pon_nl_notify_gem() - send a GEM port notification to the mgmt group
-+ * @pdev: the PON device
-+ * @gem: the GEM port
-+ * @cmd: the notification command, PON_CMD_GEM_ADD_NTF or
-+ *       PON_CMD_GEM_DEL_NTF
-+ *
-+ * Context: Called with @pdev->lock held. May sleep.
-+ */
-+void pon_nl_notify_gem(struct pon_dev *pdev, struct pon_gem *gem, u32 cmd)
-+{
-+	pon_nl_notify_obj(pdev, &gem->list, cmd, pon_nl_gem_fill_pos);
-+}
-+
-+/**
-+ * pon_nl_gem_get_doit() - handle PON_CMD_GEM_GET for one GEM port
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -ENOENT when the GEM port does not exist, or a negative errno.
-+ */
-+int pon_nl_gem_get_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
++	struct pon_gem_priv *priv = netdev_priv(dev);
 +	struct pon_gem *gem;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_GEM_ID))
-+		return -EINVAL;
-+
-+	gem = pon_gem_find(pdev, nla_get_u32(info->attrs[PON_A_GEM_ID]));
-+	if (!gem) {
-+		NL_SET_ERR_MSG(info->extack, "no such GEM port");
-+		return -ENOENT;
-+	}
-+
-+	return pon_nl_obj_reply(info, &gem->list, pon_nl_gem_fill_pos);
-+}
-+
-+/**
-+ * pon_nl_gem_get_dumpit() - handle the PON_CMD_GEM_GET dump
-+ * @rsp: the skb to fill
-+ * @cb: the dump state
-+ *
-+ * Return: the result of pon_nl_obj_dumpit().
-+ */
-+int pon_nl_gem_get_dumpit(struct sk_buff *rsp, struct netlink_callback *cb)
-+{
-+	return pon_nl_obj_dumpit(rsp, cb, offsetof(struct pon_dev, gems),
-+				 pon_nl_gem_fill_pos);
-+}
-+
-+/* GEM upstream classifier */
-+
-+/**
-+ * pon_nl_gem_map_parse() - read a classifier rule from a request
-+ * @info: the request info
-+ * @cfg: receives the rule, members without an attribute stay unset
-+ */
-+static void pon_nl_gem_map_parse(struct genl_info *info,
-+				 struct pon_gem_map_cfg *cfg)
-+{
-+	cfg->gem_id = nla_get_u32(info->attrs[PON_A_GEM_MAP_GEM_ID]);
-+	if (info->attrs[PON_A_GEM_MAP_TAG]) {
-+		cfg->tag_valid = true;
-+		cfg->tagged = nla_get_u32(info->attrs[PON_A_GEM_MAP_TAG]) ==
-+			      PON_GEM_MAP_TAG_TAGGED;
-+	}
-+	if (info->attrs[PON_A_GEM_MAP_VID]) {
-+		cfg->vid_valid = true;
-+		cfg->vid = nla_get_u32(info->attrs[PON_A_GEM_MAP_VID]);
-+	}
-+	if (info->attrs[PON_A_GEM_MAP_PBIT]) {
-+		cfg->pbit_valid = true;
-+		cfg->pbit = nla_get_u32(info->attrs[PON_A_GEM_MAP_PBIT]);
-+	}
-+	if (info->attrs[PON_A_GEM_MAP_DSCP]) {
-+		cfg->dscp_valid = true;
-+		cfg->dscp = nla_get_u32(info->attrs[PON_A_GEM_MAP_DSCP]);
-+	}
-+}
-+
-+/**
-+ * pon_nl_gem_map_new_doit() - handle PON_CMD_GEM_MAP_NEW
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Programs an upstream classifier rule through the gem_map_set op. The rule
-+ * joins the list only once the driver has taken it. A rule that exists is
-+ * programmed again and sends no notification.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -EOPNOTSUPP without a classifier in the driver, or a negative
-+ * errno.
-+ */
-+int pon_nl_gem_map_new_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct pon_gem_map_cfg cfg = {};
-+	struct pon_gem_map *map;
-+	bool is_new;
-+	int err;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_GEM_MAP_GEM_ID))
-+		return -EINVAL;
-+
-+	if (!pdev->ops->gem_map_set) {
-+		NL_SET_ERR_MSG(info->extack,
-+			       "the driver carries no GEM classifier");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	pon_nl_gem_map_parse(info, &cfg);
-+
-+	map = pon_gem_map_find(pdev, &cfg);
-+	is_new = !map;
-+	if (is_new) {
-+		map = kzalloc_obj(*map, GFP_KERNEL);
-+		if (!map)
-+			return -ENOMEM;
-+	}
-+
-+	err = pdev->ops->gem_map_set(pdev, &cfg, info->extack);
-+	if (err)
-+		goto err_free_map;
-+
-+	map->cfg = cfg;
-+	if (is_new) {
-+		list_add_tail(&map->list, &pdev->gem_maps);
-+		pon_nl_obj_gen_inc();
-+		pon_nl_notify_gem_map(pdev, map, PON_CMD_GEM_MAP_ADD_NTF);
-+	}
-+
-+	return 0;
-+
-+err_free_map:
-+	if (is_new)
-+		kfree(map);
-+	return err;
-+}
-+
-+/**
-+ * pon_nl_gem_map_del_doit() - handle PON_CMD_GEM_MAP_DEL
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -EOPNOTSUPP without a classifier in the driver, -ENOENT when
-+ * the rule does not exist, or another negative errno.
-+ */
-+int pon_nl_gem_map_del_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct pon_gem_map_cfg cfg = {};
-+	struct pon_gem_map *map;
-+	int err;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_GEM_MAP_GEM_ID))
-+		return -EINVAL;
-+
-+	if (!pdev->ops->gem_map_del) {
-+		NL_SET_ERR_MSG(info->extack,
-+			       "the driver carries no GEM classifier");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	pon_nl_gem_map_parse(info, &cfg);
-+
-+	map = pon_gem_map_find(pdev, &cfg);
-+	if (!map) {
-+		NL_SET_ERR_MSG(info->extack, "no such classifier rule");
-+		return -ENOENT;
-+	}
-+
-+	err = pdev->ops->gem_map_del(pdev, &cfg, info->extack);
-+	if (err)
-+		return err;
-+
-+	pon_nl_notify_gem_map(pdev, map, PON_CMD_GEM_MAP_DEL_NTF);
-+	list_del(&map->list);
-+	kfree(map);
-+	pon_nl_obj_gen_inc();
-+
-+	return 0;
-+}
-+
-+/**
-+ * pon_nl_omci_register_doit() - handle PON_CMD_OMCI_REGISTER
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Makes the requesting socket the owner of the OMCI channel of the device.
-+ * The received OMCI PDUs go to the owner as PON_CMD_OMCI_NTF. A second
-+ * request from the owner succeeds.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, or -EBUSY while another socket owns the channel.
-+ */
-+int pon_nl_omci_register_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	int err;
-+
-+	err = pon_omci_register(pdev, info->snd_portid);
-+	if (err)
-+		NL_SET_ERR_MSG(info->extack,
-+			       "another socket owns the OMCI channel");
-+
-+	return err;
-+}
-+
-+/**
-+ * pon_nl_omci_tx_doit() - handle PON_CMD_OMCI_TX
-+ * @skb: the request
-+ * @info: the request info, user_ptr[0] holds the device
-+ *
-+ * Sends one OMCI PDU without its MIC. Only the owner of the OMCI channel
-+ * sends. The PDU holds at least the 10 byte header of the extended message
-+ * format of ITU-T G.988 Table 11.2-2. The policy limits it to the 1980 byte
-+ * PDU of G.988 clause 11.2.5 less the 4 byte MIC. pon_omci_xmit() refuses a
-+ * PDU whose length does not match its format and sets the extended ack text
-+ * for that refusal only.
-+ *
-+ * Context: Called with the device lock held by pon_device_get_locked().
-+ * Return: 0, -EPERM when the socket does not own the channel, -EINVAL for
-+ * a PDU that is too short or does not match its format, or the error of
-+ * pon_omci_xmit().
-+ */
-+int pon_nl_omci_tx_doit(struct sk_buff *skb, struct genl_info *info)
-+{
-+	struct pon_dev *pdev = info->user_ptr[0];
-+	struct nlattr *pdu;
-+
-+	if (GENL_REQ_ATTR_CHECK(info, PON_A_OMCI_PDU))
-+		return -EINVAL;
-+
-+	if (READ_ONCE(pdev->omci_portid) != info->snd_portid) {
-+		NL_SET_ERR_MSG(info->extack,
-+			       "the socket does not own the OMCI channel");
-+		return -EPERM;
-+	}
-+
-+	pdu = info->attrs[PON_A_OMCI_PDU];
-+
-+	return pon_omci_xmit(pdev, nla_data(pdu), nla_len(pdu), info->extack);
-+}
-+
-+/**
-+ * pon_nl_omci_ntf() - pass a received OMCI PDU to the channel owner
-+ * @pdev: the PON device
-+ * @skb: the verified PDU
-+ *
-+ * Sends PON_CMD_OMCI_NTF as a unicast to the socket that owns the OMCI
-+ * channel. The caller keeps @skb.
-+ *
-+ * Context: Called with @pdev->lock held. May sleep.
-+ * Return: 0, -ENOTCONN without an owner, -ENOMEM, -EMSGSIZE, or the error
-+ * of genlmsg_unicast().
-+ */
-+int pon_nl_omci_ntf(struct pon_dev *pdev, const struct sk_buff *skb)
-+{
-+	u32 portid = READ_ONCE(pdev->omci_portid);
-+	struct sk_buff *ntf;
-+	struct nlattr *pdu;
-+	void *hdr;
 +
 +	lockdep_assert_held(&pdev->lock);
 +
-+	if (!portid)
-+		return -ENOTCONN;
++	if (xa_load(&pdev->gem_netdevs, priv->gem_id) != dev)
++		return;
 +
-+	ntf = genlmsg_new(nla_total_size(sizeof(u32)) +
-+			  nla_total_size(skb->len), GFP_KERNEL);
-+	if (!ntf)
-+		return -ENOMEM;
-+
-+	hdr = genlmsg_put(ntf, 0, 0, &pon_nl_family, 0, PON_CMD_OMCI_NTF);
-+	if (!hdr)
-+		goto err_free;
-+
-+	if (nla_put_u32(ntf, PON_A_OMCI_DEV_ID, pdev->id))
-+		goto err_free;
-+
-+	pdu = nla_reserve(ntf, PON_A_OMCI_PDU, skb->len);
-+	if (!pdu || skb_copy_bits(skb, 0, nla_data(pdu), skb->len))
-+		goto err_free;
-+
-+	genlmsg_end(ntf, hdr);
-+
-+	return genlmsg_unicast(dev_net(pdev->main_netdev), ntf, portid);
-+
-+err_free:
-+	nlmsg_free(ntf);
-+	return -EMSGSIZE;
++	rcu_assign_pointer(dev->pon_dev, NULL);
++	xa_erase(&pdev->gem_netdevs, priv->gem_id);
++	gem = pon_gem_find(pdev, priv->gem_id);
++	if (gem && gem->gem_netdev == dev)
++		gem->gem_netdev = NULL;
 +}
 +
-+/* Upstream classifier rules */
++/**
++ * pon_gem_dellink() - delete a GEM interface
++ * @dev:	the GEM network device
++ * @head:	the list to queue @dev on for unregistration
++ *
++ * Implements the dellink op of the "gem" rtnl_link_ops. Detaches @dev from
++ * its GEM port (if it is still attached) and queues it for unregistration.
++ *
++ * Context: Called with rtnl held.
++ */
++static void pon_gem_dellink(struct net_device *dev, struct list_head *head)
++{
++	struct pon_gem_priv *priv = netdev_priv(dev);
++	struct pon_dev *pdev = priv->pdev;
++
++	if (pdev) {
++		mutex_lock(&pdev->lock);
++		pon_gem_link_detach(pdev, dev);
++		mutex_unlock(&pdev->lock);
++	}
++
++	unregister_netdevice_queue(dev, head);
++}
 +
 +/**
-+ * pon_nl_gem_map_fill() - put one classifier rule message into an skb
-+ * @pdev: the PON device
-+ * @map: the rule
-+ * @rsp: the skb to fill
-+ * @info: the request, or the notification info
++ * pon_gem_get_size() - the size of the link info of a GEM interface
++ * @dev:	the GEM network device
 + *
-+ * Context: Called with @pdev->lock held.
-+ * Return: 0, or -EMSGSIZE when the message does not fit.
++ * Implements the get_size op of the "gem" rtnl_link_ops.
++ *
++ * Return: the room pon_gem_fill_info() needs.
 + */
-+static int pon_nl_gem_map_fill(struct pon_dev *pdev, struct pon_gem_map *map,
-+			       struct sk_buff *rsp,
-+			       const struct genl_info *info)
++static size_t pon_gem_get_size(const struct net_device *dev)
 +{
-+	struct pon_gem_map_cfg *cfg = &map->cfg;
-+	void *hdr;
++	return nla_total_size(sizeof(u32));
++}
 +
-+	hdr = genlmsg_iput(rsp, info);
-+	if (!hdr)
++/**
++ * pon_gem_fill_info() - put the link info of a GEM interface
++ * @skb:	the netlink message
++ * @dev:	the GEM network device
++ *
++ * Implements the fill_info op of the "gem" rtnl_link_ops. Puts the GEM
++ * port id as IFLA_GEM_ID.
++ *
++ * Return: 0, or -EMSGSIZE when @skb has no room.
++ */
++static int pon_gem_fill_info(struct sk_buff *skb, const struct net_device *dev)
++{
++	const struct pon_gem_priv *priv = netdev_priv(dev);
++
++	if (nla_put_u32(skb, IFLA_GEM_ID, priv->gem_id))
 +		return -EMSGSIZE;
 +
-+	if (nla_put_u32(rsp, PON_A_GEM_MAP_DEV_ID, pdev->id) ||
-+	    nla_put_u32(rsp, PON_A_GEM_MAP_GEM_ID, cfg->gem_id))
-+		goto err_cancel_msg;
-+
-+	if (cfg->tag_valid &&
-+	    nla_put_u32(rsp, PON_A_GEM_MAP_TAG, cfg->tagged))
-+		goto err_cancel_msg;
-+	if (cfg->vid_valid && nla_put_u32(rsp, PON_A_GEM_MAP_VID, cfg->vid))
-+		goto err_cancel_msg;
-+	if (cfg->pbit_valid && nla_put_u32(rsp, PON_A_GEM_MAP_PBIT, cfg->pbit))
-+		goto err_cancel_msg;
-+	if (cfg->dscp_valid && nla_put_u32(rsp, PON_A_GEM_MAP_DSCP, cfg->dscp))
-+		goto err_cancel_msg;
-+
-+	genlmsg_end(rsp, hdr);
 +	return 0;
++}
 +
-+err_cancel_msg:
-+	genlmsg_cancel(rsp, hdr);
-+	return -EMSGSIZE;
++static struct rtnl_link_ops pon_gem_link_ops = {
++	.kind		= PON_GEM_KIND,
++	.priv_size	= sizeof(struct pon_gem_priv),
++	.setup		= pon_gem_dev_setup,
++	.maxtype	= IFLA_GEM_MAX,
++	.policy		= pon_gem_link_policy,
++	.newlink	= pon_gem_newlink,
++	.dellink	= pon_gem_dellink,
++	.get_size	= pon_gem_get_size,
++	.fill_info	= pon_gem_fill_info,
++};
++MODULE_ALIAS_RTNL_LINK(PON_GEM_KIND);
++
++/**
++ * pon_gem_netdevs_unregister() - drop every GEM network device of a device
++ * @pdev:	PON device structure
++ *
++ * Called on the unregister path without rtnl or the instance lock held. It
++ * takes rtnl and then the instance lock, detaches every GEM network device
++ * and unregisters them all before it drops rtnl. pon_gem_dellink() runs
++ * under rtnl too, so each device is detached and unregistered exactly once,
++ * by whichever of the two takes rtnl first.
++ */
++void pon_gem_netdevs_unregister(struct pon_dev *pdev)
++{
++	struct net_device *ndev;
++	struct pon_gem *gem;
++	LIST_HEAD(list_kill);
++
++	rtnl_lock();
++	mutex_lock(&pdev->lock);
++	list_for_each_entry(gem, &pdev->gems, list) {
++		ndev = gem->gem_netdev;
++		if (!ndev)
++			continue;
++
++		pon_gem_link_detach(pdev, ndev);
++		unregister_netdevice_queue(ndev, &list_kill);
++	}
++	mutex_unlock(&pdev->lock);
++
++	unregister_netdevice_many(&list_kill);
++	rtnl_unlock();
 +}
 +
 +/**
-+ * pon_nl_gem_map_fill_pos() - pon_nl_obj_fill_t for the classifier rules
-+ * @pdev: the PON device
-+ * @pos: the list entry of the rule
-+ * @rsp: the skb to fill
-+ * @info: the dump info
++ * pon_gem_link_register() - register the "gem" link type
 + *
-+ * Return: the result of pon_nl_gem_map_fill().
++ * Return: 0, or the negative errno of rtnl_link_register().
 + */
-+static int pon_nl_gem_map_fill_pos(struct pon_dev *pdev,
-+				   struct list_head *pos, struct sk_buff *rsp,
-+				   const struct genl_info *info)
++int pon_gem_link_register(void)
 +{
-+	return pon_nl_gem_map_fill(pdev,
-+				   list_entry(pos, struct pon_gem_map, list),
-+				   rsp, info);
++	return rtnl_link_register(&pon_gem_link_ops);
 +}
 +
 +/**
-+ * pon_nl_notify_gem_map() - send a classifier rule notification
-+ * @pdev: the PON device
-+ * @map: the rule
-+ * @cmd: the notification command, PON_CMD_GEM_MAP_ADD_NTF or
-+ *       PON_CMD_GEM_MAP_DEL_NTF
-+ *
-+ * Context: Called with @pdev->lock held. May sleep.
++ * pon_gem_link_unregister() - unregister the "gem" link type
 + */
-+void pon_nl_notify_gem_map(struct pon_dev *pdev, struct pon_gem_map *map,
-+			   u32 cmd)
++void pon_gem_link_unregister(void)
 +{
-+	pon_nl_notify_obj(pdev, &map->list, cmd, pon_nl_gem_map_fill_pos);
-+}
-+
-+/**
-+ * pon_nl_gem_map_get_dumpit() - handle the PON_CMD_GEM_MAP_GET dump
-+ * @rsp: the skb to fill
-+ * @cb: the dump state
-+ *
-+ * Return: the result of pon_nl_obj_dumpit().
-+ */
-+int pon_nl_gem_map_get_dumpit(struct sk_buff *rsp, struct netlink_callback *cb)
-+{
-+	return pon_nl_obj_dumpit(rsp, cb, offsetof(struct pon_dev, gem_maps),
-+				 pon_nl_gem_map_fill_pos);
++	rtnl_link_unregister(&pon_gem_link_ops);
 +}
 -- 
 2.34.1
