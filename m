@@ -1,86 +1,56 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6DD3CB91E
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 06:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDD3347C6;
+	Thu,  8 Oct 2026 07:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791442480; cv=none; b=OJbPXQvAEgXKXBuauS+RpPnXjPRi29mu6FAedFuOcMBtgxZHh+pXLz4FKqQTwGS16sEKegQ2QIgVfxj3f0wyKCD93UVRjFoMhwOP4sdTcikyi7hLjnn59MOOLwn9NlJWRxnhxFznGI9FDfFAkr+fY6vHrpDAaExl5GScBj2dswI=
+	t=1791442993; cv=none; b=A1qZ9Em/IL1HJwzWZmZAt/gx7UUWb7l0kOto+gNs+tBQNoZBifj3cd6D+GLg11BZf2gG204GHtA5LFVFK/TEqMYywZVrzkiKVexqzhG3Lq0+1tIV3RZ5a6c4UTKlpo98C7XbnDQvGIl01nbmrzSKc+gnD8WLyYArDgTQB+FwZBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791442480; c=relaxed/simple;
-	bh=pqMCEK88vcgVmkFo1r9Mb2cL2aOFQp+yO4EJ1G40IU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjgnCtqwv1VLWcTRN1USO9zdwtA6TZcE0nI8S6NDyNAASa3CBixVBp+dz6Q62gbE7wwSm9ZTVTHC1epsxYo8sRmrJU9yzfKRVbrCnusP5ZrC7TegLKBU83zXNWw8bUce2aJ3cPJjueESOOhkvp5d8jKFFNN0MRZdktCv5CqPEo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AQZJYvaJ; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791442993; c=relaxed/simple;
+	bh=Cdyw1hTiLU37GgEJ3SHHwIUbg2hy2ux1Fk03H9yysqc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZrL5TQkGR4EoNEbncuNMBq6gX1AVapEyoFBV5EnKbf1dK8nwtOZ+SxKYYm1+is2fJxnHH6sn5LaeLPDzbG7p5jWSSWwaj+z6sl4qavGQkXaRI/TlCATMq3sQhs9jb4leKwUDfD0OD3WdLWcc9Nz3dHnktgjDRPkFpIviZ9vtv5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=M6YOd5jD; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AQZJYvaJ"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8917c712f32so1042120b3a.2
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 23:54:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791442479; x=1792047279; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SblAIcLrH38wu2bsZL9MNN4O5Hg8mJIn4mR+P2dFYYo=;
-        b=AQZJYvaJH3RQtiWwJ4RM37bovwi9Yvai2PyDoiONZr8qRnwltaUJ1UyetLfFyvmkHp
-         3C/sfPq/cmexjkNXQQg/h651JdMQDUjUmhybKm7ywAnfLdpIVFJsmD7wz6vqdcQnEduw
-         e/3Z34f+GenmwfBnfOFhXLBrKGV+mGk2au37gAYd3omyeNSGE9nvvF2Ao81WLWe90NJk
-         BUiUfWmNOTuYzmxD3FgBAyfQNZWhZYnsaxHvEssB4QU0XsaMRc1PrHCi5Df0HnX86GIA
-         A0aWa3FjpgfdsGHvZTgHefXjhZ+ymLMdYet4kmddQEetLCH2Bri1YNptfMBRSa5fkgVm
-         I/iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791442479; x=1792047279;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SblAIcLrH38wu2bsZL9MNN4O5Hg8mJIn4mR+P2dFYYo=;
-        b=Lz45/iaae+i+jCn7AFSTjnNnPw/IFv5WzysyocagzpFr/Y2FpS1MFaYes7Rv0K+ai7
-         QfHCT6TEaafxP0JZhv/+IVNQaRwtT7PPe4HcUrJr7qhaEOhHIKC/QrI4gDE47Mm8XK43
-         ZtqjGvlTq/LBfjZmlCB8xfBoN3p0VPdMzAS195ejlEOriZUQPg4z4J5W1bDLHTwJlp0I
-         QlxDASzmQMTP6s6t/Q/NZF0l5Hmw9spvVnM5A0s8Uc9htpW+j4lZtq1P6m9kP0cg2A4D
-         IFcBkjWsfRhi4CTLBWWAtWNr3CgpOpWEMWoIfAUXgpDx3/BlyU8JVEYEWjOQIS2JA/hu
-         pB/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBy/CNURUn8QG3vQ+haH8TG0qb4/re5xmSv1ossWlDWQcaZxJQz4ctkcilLogYYahCP4CggxAIM=@vger.kernel.org
-X-Gm-Message-State: AFuF++nT9HqbdNkYUBPcv8DcBx6pbH2wa+MCamlqjNWGTUPRzy4iIHLT
-	oheJR64ZI19cQrpHmi88y3W+QHTh7Ug25by2vVPCsWBqULj1kehvzpB2
-X-Gm-Gg: AYBFou0Lwuqjsw/uepzslbkPJFO/HO/Wx56t0y2K+tKfyaZt3E5qBzrUMwR/8V+nTrZ
-	2wiCcp4UpleXtu9nqA4hysUDIQAZgOH2LjaNFui/YxXGZD3vuJW17fHXL+Kl9xyVACZXe84zlz+
-	r4AfWtTLX4Ni1jh6h7yrHZ0rdj5/ItQLZ17xuWWZpDRqJuWUHm5Kh2BsXc3GSD3pWf2z2o3pdmK
-	sDLAMmKwRbHvogA4cPDvFux4c71j7OlKRm/QCH6PmT4JCHc6cTpq9zscrYULqySWskca0uc61T7
-	KY4cwqKlAoB6cbeOK1AABuiJtIrSG0OXDIxNns41LdJyXFVhHbmLALbZh/nrHnjI3YyvmKnmzV1
-	DbroneRUcFFyB2wDymZiPuUwEho8GF0Z1I1iP31ICoe2uuVCp01TpcP6pTdFZDWDDvCeH/doPjJ
-	cC6mxfP90yukkyf+Z/C40DqGJsxh6WtLnvqsAfrtMr9gALUxbZtp30U8BvpIgDI3jorKnn3w+V+
-	d9UR8eAT8L/LsMfqBWgWXHay+JhQoRYhl/N89cQlvG//luEKPo52mqel/VPgO2I1zJJ/0Fi7Og7
-	Kek=
-X-Received: by 2002:a05:6a00:1da7:b0:88d:4241:9fa0 with SMTP id d2e1a72fcca58-891b54c6216mr3889423b3a.32.1791442478885;
-        Wed, 07 Oct 2026 23:54:38 -0700 (PDT)
-Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-892bac8e8f3sm1176182b3a.15.2026.10.07.23.54.33
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 07 Oct 2026 23:54:38 -0700 (PDT)
-From: Tian Xun Ng <luckilystar08@gmail.com>
-To: Emil Tantilov <emil.s.tantilov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	aleksander.lobakin@intel.com,
-	aleksandr.loktionov@intel.com,
-	decot@google.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	Tian Xun Ng <tianxun.ng@bytedance.com>
-Subject: Re: [PATCH iwl-net v2] idpf: keep the mailbox up while tearing down vports on shutdown
-Date: Thu,  8 Oct 2026 14:54:26 +0800
-Message-ID: <20261008065426.86267-1-luckilystar08@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <a9d7c483-b34c-4b5c-8951-c9f1bb1c1f81@intel.com>
-References: <20261007055741.30629-1-luckilystar08@gmail.com> <a9d7c483-b34c-4b5c-8951-c9f1bb1c1f81@intel.com>
+	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="M6YOd5jD"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6986vRPT1281951, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
+	s=dkim; t=1791442647;
+	bh=LZ6cNLA2XSFAhEEMraHLx/4pOo60AzCLnS3bC055tIo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=M6YOd5jDo71AV5bNcanNkEX7XMwkF31nZdEENJLICN++qJhh0azUVSoI7R+Om6fro
+	 fv6ywwL55RM1MDU2gE0q8M4wpEzOpLUA7g2W7E037Y58JHVvsph0oKUDTF5vGlzgBk
+	 QJ32ksmZeyRael8nZlvbEWjvM6iuznj65C2kwZb5xL5QYl5bpC00jKSiXpc4GWVuDX
+	 W1rOZnPn0O7ep50+GrcIrXmocBmkwnaUocghfLI2/hGfbZpG6OFJI48Gk6R7U8ISaI
+	 WjW7qLitQCUVzRKqbxUeKxYff30JNpqSq+PuHfi/aGpnjV5Q4B0JU3G9HB/WAC/wtj
+	 8Ix+7AahmkUlQ==
+Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 6986vRPT1281951
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 8 Oct 2026 14:57:27 +0800
+Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
+ RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 8 Oct 2026 14:57:26 +0800
+Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
+ (172.29.17.101) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Thu, 8 Oct 2026 14:57:26 +0800
+From: javen <javen_xu@realsil.com.cn>
+To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux@armlinux.org.uk>, Javen Xu <javen_xu@realsil.com.cn>
+Subject: [PATCH net-next v16 7/7] r8169: add get_channel support for ethtool
+Date: Thu, 8 Oct 2026 14:57:22 +0800
+Message-ID: <20261008065722.1026-8-javen_xu@realsil.com.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
+In-Reply-To: <20261008065722.1026-1-javen_xu@realsil.com.cn>
+References: <20261008065722.1026-1-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,52 +58,80 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On 10/7/2026 10:07 AM, Tantilov, Emil S wrote:
-> I did a rough draft, keeping your logic and I think we
-> should be able to avoid the new flags by introducing a global variable
-> adapter->vc_xn_timeout_ms and set it based on the flow we're in
+From: Javen Xu <javen_xu@realsil.com.cn>
 
-Thanks, that works well. v3 is ready along those lines: no new flags,
-adapter->vc_xn_timeout_ms set to the default at probe and to 500 ms in
-idpf_shutdown() right before IDPF_REMOVE_IN_PROG, and idpf_send_mb_msg()
-caps each transaction with it and sets it to 0 after the first
-shortened transaction times out, so the rest fail at once.
+Add get_channel support for ethtool.
 
-Backported to our 6.17 kernel (two arm64 servers, two PFs each, IOMMU
-translating): no faults in 30 warm reboots. The slowest teardown
-message is still DEALLOC_VECTORS at ~300 ms, sent after DESTROY_VPORT;
-the queue-related ones took at most 158 ms. With the driver made to
-skip sending the teardown messages, the first one timed out at ~500 ms,
-the rest failed immediately, and every reboot faulted again.
+In multi-vector mode, it reports the active RX channel count and a
+single TX channel. Additionly, it reports one other channel to account
+for the dedicated link-change interrupt vector.
 
-Before I post it, two things it exposes that I would like your view on:
+In single-vector mode, where RX, TX, link-change events share the same
+interrupt, it reports a single combined channel.
 
-1. Setting IDPF_REMOVE_IN_PROG on shutdown also moves
-   libie_ctlq_xn_shutdown() after idpf_ptp_release() and
-   idpf_deinit_task(), as on remove. mbx_task keeps running in that
-   window, so an async PTP Tx timestamp reply can reach
-   idpf_ptp_get_tx_tstamp_async_handler() after
-   idpf_ptp_release_vport_tstamp() has freed tx_tstamp_caps. Remove has
-   the same window today; shutdown would now have it too. An unmatched
-   VIRTCHNL2_OP_EVENT (link change) has a similar window against the
-   vport being freed, which exists on shutdown already.
+Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+---
+Changes in v11:
+ - new file, no change
 
-   One way to close it without new flags: once IDPF_REMOVE_IN_PROG is
-   set, cancel_delayed_work_sync() and requeue mbx_task, and have the
-   PTP callback and idpf_recv_event_msg() return early when the bit is
-   set; matched replies are still consumed, so the teardown is not
-   affected. I can send that as a prerequisite patch, but I cannot
-   exercise the PTP part here (PTP init returns -EOPNOTSUPP on our
-   parts). Would you prefer that, or to handle it separately?
+Changes in v12:
+ - no changes
 
-2. A transaction that is already waiting when shutdown starts keeps its
-   own timeout. For example a GET_STATS from stats_task, which is only
-   cancelled in idpf_deinit_task(), can still hold shutdown for up to
-   60 s with a dead control plane, where the early xn shutdown used to
-   wake it. Fixing that would need a way in libie to expire waiting
-   transactions, so I would note it in the commit message rather than
-   claim a hard bound. Does that sound right?
+Changes in v13:
+ - no changes
 
-Thanks,
-Tian Xun
+Changes in v14:
+ - no changes
+
+Changes in v15:
+ - no changes
+
+Changes in v16:
+ - modify commit message
+ - add other msix count in get_channel function
+---
+ drivers/net/ethernet/realtek/r8169_main.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index de0c860328ba..88354e7570f0 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -6741,6 +6741,24 @@ static void r8169_init_napi(struct rtl8169_private *tp)
+ 	}
+ }
+ 
++static void rtl8169_get_channels(struct net_device *dev,
++				 struct ethtool_channels *ch)
++{
++	struct rtl8169_private *tp = netdev_priv(dev);
++
++	if (tp->irq_nvecs > 1) {
++		ch->max_rx = tp->hw_supp_num_rx_queues;
++		ch->max_tx = 1;
++		ch->max_other = 1;
++		ch->rx_count = tp->num_rx_rings;
++		ch->tx_count = 1;
++		ch->other_count = 1;
++	} else {
++		ch->max_combined = 1;
++		ch->combined_count = 1;
++	}
++}
++
+ static const struct ethtool_ops rtl8169_ethtool_ops = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_USECS |
+ 				     ETHTOOL_COALESCE_MAX_FRAMES,
+@@ -6759,6 +6777,7 @@ static const struct ethtool_ops rtl8169_ethtool_ops = {
+ 	.nway_reset		= rtl8169_nway_reset,
+ 	.get_eee		= rtl8169_get_eee,
+ 	.set_eee		= rtl8169_set_eee,
++	.get_channels		= rtl8169_get_channels,
+ 	.get_link_ksettings	= rtl8169_get_link_ksettings,
+ 	.set_link_ksettings	= rtl8169_set_link_ksettings,
+ 	.get_ringparam		= rtl8169_get_ringparam,
+-- 
+2.43.0
+
