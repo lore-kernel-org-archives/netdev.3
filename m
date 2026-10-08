@@ -1,171 +1,274 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A3C493D34;
-	Thu,  8 Oct 2026 10:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39435493D3B
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 10:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791454065; cv=none; b=Sob7FrDD1FqdYKUwHO7QBUENZNuQyEyRj/aIS3AY01EfLLvUu35kniQ0+yuvjvEipPUju/s5cBhSU/OGxycmZfbMeRAV65xjfSJ+yaoZWUdeCHEravLZ0NsNlTIb5vvqRj75E21PJHMO6RP8Bptjt3wby6vQEnzxYntiXRwM8Jk=
+	t=1791454070; cv=none; b=iiuBYj4GqW7TtJU8DAGR+B5oJQWz3HIngIJ7aA0F3CwBp1P0qsdDaC4ApjJUa7mVdziWj/5SZppuq5rdQZwX0MnoIo2CFxlOeGVQxzJhDUoqAe48XIGbhMIAS9EkMmVMTZDbN87/18tZiPoFIOIQk2Jtftl983g1rI3l24n5q2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791454065; c=relaxed/simple;
-	bh=lVb0xFpEK5cwo9x36G6hNGkZihB9xVejXEIxp97SWWk=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=E2A78BWoBryFQsmO/0+vLR7V53n+DweUSjcGp/06ZXxLsHERkWesY/B08G2WQlo0ZcYSJSP5w5kjMjlLOEs52+Nqxyndmp5tUD2hn6cO65K5bYntNSG8S0ndQxMTmXC6n/0kxdNfdLSwPMtzIF99VcuEjwJwiW/SJTAFwSDePjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=gsaZmgoB; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1791454070; c=relaxed/simple;
+	bh=MUEpsqyFKq/PAd82RUXhfIvzYkyAwJ2Ax1KM5Vv/TOs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k+yqAG0//Z/0kS6BcpT/UHCT/D+dIDSSYdTx44+lFabM+Ivig4W1R8xFvkRbUe3DoqUrepXyqpDfhJDqs2j/4jGYMweNRlsJAMgkh7OifgtCijHs5IwOgp6c3ji6NnA0+s85CAcueTia73K6k63pGuiWvIYbz5N3isbV/9JYkkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=IBXzdGyN; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="gsaZmgoB"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B17F3A0E2B;
-	Thu,  8 Oct 2026 12:07:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791454057; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=rYSUkZYYwWzW10vZqDKGMwsY7bAPWob7o3MElX2TeDk=;
-	b=gsaZmgoBZlTiGWUa1s0EfwbHkmMfQDMASiEd2aIjyNKx2qhedbdrSlKEv5MS/IczQqw7JG
-	MShLun0zh9Yoa2Vsop2h9OGVU8YE9mbv3U9TVbJPGOCAJNrYGEFRn480JnFinZw4NKoxWG
-	/Vq/7mi48AilZ0p8JwpUdDJroPuMkNOxuz20HcX59UBskhymworp9VE1TstYabcPgumaB9
-	0TjUZlPS4krmOrUoI1Xl91H4fsmCmJieM7F0CgX/M4qxI+fMBeYApis0Utwelinescn+kB
-	TIlDSbjX0bjc0CSbJ0RYGPCmEJS6TBMfN1bFtWjnkmy+h1+2yt76ithXJzZHSw==
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="IBXzdGyN"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-14129667240so2961213c88.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 03:07:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1791454060; x=1792058860; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lS1H6hdb3wkDWUYdMnwf/6nr5ACFjMTtIILyc9J0Hi0=;
+        b=IBXzdGyNsIIehbCA4H9+Fau48aB7pCidZBNzt9EY4zc9lykjE7UXfOAOIOQC8xdLRM
+         Fa24lb3/PLN5Hm5K3RcgEiIXSMkZpSyyTSCkSALNCOJ+/K82GYTTXFVcuXN6HfijTbER
+         A2wq9LWlfpOI9JDUtkQv6lqDilJNC0SjObx+ef2ssa3fgqb4OZyiku833xNY1VvOijjO
+         Pp/c/yofaGmO/qonXxqZN0FHbt1wg/TNWR21n+Y2lsC8H6sAu0qGJ7zY1JvQk5lqVks8
+         5xYWW5x7xqcXa9GHg88CZ9EvBwlibN+xMEKo+vkph934VPOCOdcSpK5EMD0bcFRzrsL7
+         1KBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791454060; x=1792058860;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lS1H6hdb3wkDWUYdMnwf/6nr5ACFjMTtIILyc9J0Hi0=;
+        b=Mer11ux59YY+F5Wp7dExbSDD4zlrZ/g75k0uS/BWwuk1jmtCOWuaiZI9Vrpwj5+ljk
+         n2LTQA8elBxpzErW4DqUBzXS/0NBsdHRoUZzsraS7cPP7aB1ava5bLS1b6UDcIIeNOXi
+         QZiQceJXtNPHFGPUE/2UxlzAZMBd+IR+8YjRb0v7lrkzFZR/qLCs4Mp4K+KDDbgRZpVe
+         fiUH63mG8ihVKGGH1tgqvssRg5YHR1XcHLuGKiQGJVAFxGyecNgF8qak/oi+LwywmFEn
+         8DD+lEu7UzUV14yHbA7jZrYjrZhHEnpVBW9TY/edUWBthuHsb6o3iUbyr/cC3m+UCZVN
+         rnrA==
+X-Gm-Message-State: AFuF++lkVnU6AT/prFpanKJo9+B71oYaJGu8ao7rtsOIp3DtIGDw930N
+	seje0JR0WivpCDVTvU7rinixjMxzQvJaQDMnXQsG8/HT0nQlsBndwZJ77yY7SL9p61h//6NIsZ7
+	/5rsU3O+/rszzGMgQ0D5Pwe6FkCR0omfXUamHckIut0W0Oy3yMy0PKSsOLaNLWG0ZB98+A0mp
+X-Gm-Gg: AYBFou2z2LT4pfrkfbqxCzwyYsZP7Wg0XOB75eSj3ipD7PB8K2y1pkSsFQlkDL1o3x2
+	ecEX8aw17gb4hjzluQGY3/VIlvYB+LYtd9ENzhnCAdUVC5brqL9ZFCMqra82xIeSUeqtQfaoitU
+	rxAxh2/KHSG2WRfG085Al77gx2NEZiH8pnSYWdAGITrl/8JVl1PWo9Ge6Mj4vs4eQaEjIx8n7Zq
+	Q3Q0aGN8uH/IDk7hnDLin5G+vZ/dCPh9fGslFtDQk4HXeDyKaxqpxOam05iEq3EbVeCXQA2TMtt
+	dt2qT0l4XD2lF96f8fGl3BIdTi+pONOVhJZ7QxPwr3rLeZtQz5q1zqehQRN4Ym4JPZbT+7afc5Y
+	wTht8CnjVVKTw7IsnF/Myimm4EeETYcZS8LoowXpgbaEbnlTZEt1rZGWkfJBItset+IzPDDO0v8
+	xeRPYTVsPbXeUiQacBirxvKDwx2tIlP/FV/srTdZNgHw5Lmc0RHZ7/EuK96l+sR9zrQiXY3w196
+	MhnwAS/9ss=
+X-Received: by 2002:a05:7022:43a8:b0:15d:f053:18b6 with SMTP id a92af1059eb24-162043c736dmr7946220c88.9.1791454059583;
+        Thu, 08 Oct 2026 03:07:39 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-161684ba3fdsm14200933c88.12.2026.10.08.03.07.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 03:07:39 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	dev@openvswitch.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alice Mikityanska <alice@isovalent.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Wang Zhan <wang.zhan@smartx.com>
+Subject: [PATCH net-next v5 6/6] net: net_test: add tests for TCP re-segmentation
+Date: Thu,  8 Oct 2026 18:06:51 +0800
+Message-ID: <20261008100651.2534957-7-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261008100651.2534957-1-wang.zhan@smartx.com>
+References: <20261008100651.2534957-1-wang.zhan@smartx.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 08 Oct 2026 12:07:36 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
- pierremarinleclercq88@gmail.com, f.fainelli@gmail.com
-Subject: Re: [PATCH net-next v3 5/8] net: bcmgenet: derive the receive buffer
- length from the MTU
-In-Reply-To: <179145241305.434549.6513642342117691943@kernel.org>
-References: <20261007-nb-genet-mtu-nn-v2-v3-5-74a796c019ce@tipi-net.de>
- <179145241305.434549.6513642342117691943@kernel.org>
-Message-ID: <adbf20dcce3c19e4731a0ad0bace8fd1@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 8.10.2026 11:40, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let 
-> patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your 
-> reply
-> (one such reply per series is enough).
-> 
-> - [Medium] In bcmgenet_set_mtu_regs()
->   (drivers/net/ethernet/broadcom/genet/bcmgenet.c), UMAC_MAX_FRAME_LEN…
-> 
-> --
-> 
-> net: bcmgenet: derive the receive buffer length from the MTU
-> 
-> This commit computes the RBUF packet ready threshold from the MTU and
-> derives the receive buffer length from it, replacing the fixed 2048 
-> byte
-> RX_BUF_LENGTH. UMAC_MAX_FRAME_LEN and the TDMA flow period are now also
-> derived from the MTU, and the TBUF threshold is programmed at its 
-> maximum.
-> 
->> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c 
->> b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
->> index 83ffc4a2a2a72..4a4b0c46f8986 100644
->> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
->> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> 
-> [ ... ]
-> 
->> @@ -2630,6 +2648,44 @@ static void bcmgenet_link_intr_enable(struct 
->> bcmgenet_priv *priv)
-> 
-> [ ... ]
-> 
->> +/* Program the MTU dependent registers. Call with the MAC disabled. 
->> */
->> +static void bcmgenet_set_mtu_regs(struct bcmgenet_priv *priv, 
->> unsigned int mtu)
->> +{
->> +	u32 thld = bcmgenet_pkt_rdy_thld(mtu);
->> +
->> +	bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN(mtu), 
->> UMAC_MAX_FRAME_LEN);
-> 
-> [Severity: Medium]
-> 
-> Will this drop standard size frames once the MTU is lowered?
-> 
-> Before this patch, UMAC_MAX_FRAME_LEN was always 1536. Now it is
-> ENET_MAX_FRAME_LEN(mtu), which is mtu + 36, and nothing keeps it from
-> going lower.
-> 
-> The commit message says:
-> 
->   The MTU is still fixed at ETH_DATA_LEN
-> 
-> Only the upper bound is fixed, though. bcmgenet does not override
-> min_mtu, so ether_setup() still allows any MTU from 68 up to 1500:
-> 
-> net/ethernet/eth.c:ether_setup() {
->     ...
-> 	dev->min_mtu		= ETH_MIN_MTU;
-> 	dev->max_mtu		= ETH_DATA_LEN;
->     ...
-> }
-> 
-> This commit has no ndo_change_mtu, so __netif_set_mtu() only updates
-> dev->mtu. The next open or full resume then writes the smaller value:
-> 
-> init_umac()
->   bcmgenet_set_mtu_regs(priv, priv->dev->mtu)
->     bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN(mtu), 
-> UMAC_MAX_FRAME_LEN)
-> 
-> Take an MTU below about 1482, for example 1400 for a tunnel overlay, or
-> 1280. Full size 1514/1518 byte frames from LAN peers would then be over
-> the MAC limit. They would get DMA_RX_LG and be dropped in
-> bcmgenet_desc_rx():
-> 
-> 	if (dma_flag & DMA_RX_LG)
-> 		u64_stats_inc(&stats->length_errors);
-> 	...
-> 	page_pool_put_full_page(ring->page_pool, rx_page,
-> 				true);
-> 
-> Before this patch, the MAC accepted these frames whatever the MTU was.
-> Full size UDP, broadcast, multicast or forwarded traffic that used to 
-> be
-> received would now be lost.
-> 
-> This still happens at the end of the series. The later commit "net:
-> bcmgenet: allow the MTU to be changed" adds bcmgenet_change_mtu(), 
-> which
-> applies the smaller limit straight away on a running interface.
-> 
-> That later commit does fix two related cases here. One is the stale,
-> too-small limit left after raising the MTU on a running interface. The
-> other is the WoL fast resume mismatch between TDMA_FLOW_PERIOD and
-> UMAC_MAX_FRAME_LEN.
-> 
-> Would it work to program max(mtu, ETH_DATA_LEN) into 
-> UMAC_MAX_FRAME_LEN,
-> and to update the commit message to match?
+The GSO engine can now be asked to group several MSS segments into one
+output skb, which is what re-segmentation needs.  Add KUnit coverage for
+the max_segs parameter.
 
-Sure. Will do in v4
+The parameterized GSO test gains a max_segs input and four cases: a limit
+of two MSS applied to a 3003 byte and to a 5003 byte payload, a tail which
+holds one MSS and is therefore not a GSO skb, and a max_segs of one MSS
+which must leave the output unchanged.  It drives skb_segment() directly,
+because the synthetic protocol it uses has no gso_segment callback.
+
+Assisted-by: LLM
+Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
 
 ---
-pw-bot: cr
+v5:
+- new case: last output not a GSO skb
+- free extra outputs instead of leaking them
+- drop the TCP path tests, coverage in a later series
+v4: https://lore.kernel.org/20260930111526.2183107-6-wang.zhan@smartx.com/
+v3: https://lore.kernel.org/20260928044102.1004310-6-wang.zhan@smartx.com/
+v2: https://lore.kernel.org/20260918084651.3022878-5-wang.zhan@smartx.com/
+v1: https://lore.kernel.org/20260917063854.2011613-5-wang.zhan@smartx.com/
+---
+ net/core/net_test.c | 87 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+
+diff --git a/net/core/net_test.c b/net/core/net_test.c
+index 9c3a590865d269..bc2ef7612e7dfe 100644
+--- a/net/core/net_test.c
++++ b/net/core/net_test.c
+@@ -5,6 +5,7 @@
+ /* GSO */
+ 
+ #include <linux/skbuff.h>
++#include <net/gso.h>
+ 
+ static const char hdr[] = "abcdefgh";
+ #define GSO_TEST_SIZE 1000
+@@ -34,6 +35,10 @@ enum gso_test_nr {
+ 	GSO_TEST_FRAG_LIST_PURE,
+ 	GSO_TEST_FRAG_LIST_NON_UNIFORM,
+ 	GSO_TEST_GSO_BY_FRAGS,
++	GSO_TEST_RESEGMENT,
++	GSO_TEST_RESEGMENT_MULTI,
++	GSO_TEST_RESEGMENT_TAIL,
++	GSO_TEST_RESEGMENT_ONE_MSS,
+ };
+ 
+ struct gso_test_case {
+@@ -46,10 +51,12 @@ struct gso_test_case {
+ 	const unsigned int *frags;
+ 	unsigned int nr_frag_skbs;
+ 	const unsigned int *frag_skbs;
++	unsigned int max_segs;
+ 
+ 	/* output as expected */
+ 	unsigned int nr_segs;
+ 	const unsigned int *segs;
++	const unsigned int *gso_segs;
+ };
+ 
+ static struct gso_test_case cases[] = {
+@@ -135,6 +142,68 @@ static struct gso_test_case cases[] = {
+ 		.nr_segs = 4,
+ 		.segs = (const unsigned int[]) { 100, 200, 300, 400 },
+ 	},
++	{
++		.id = GSO_TEST_RESEGMENT,
++		.name = "resegment",
++		.linear_len = GSO_TEST_SIZE,
++		.nr_frags = 3,
++		.frags = (const unsigned int[]) {
++			GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
++		},
++		.max_segs = 2,
++		.nr_segs = 2,
++		.segs = (const unsigned int[]) {
++			2 * GSO_TEST_SIZE, GSO_TEST_SIZE + 3,
++		},
++		.gso_segs = (const unsigned int[]) { 2, 2 },
++	},
++	{
++		.id = GSO_TEST_RESEGMENT_MULTI,
++		.name = "resegment_multi",
++		.linear_len = 2 * GSO_TEST_SIZE,
++		.nr_frags = 4,
++		.frags = (const unsigned int[]) {
++			GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
++		},
++		.max_segs = 2,
++		.nr_segs = 3,
++		.segs = (const unsigned int[]) {
++			2 * GSO_TEST_SIZE, 2 * GSO_TEST_SIZE, GSO_TEST_SIZE + 3,
++		},
++		.gso_segs = (const unsigned int[]) { 2, 2, 2 },
++	},
++	{
++		/* The last output is not a GSO skb. */
++		.id = GSO_TEST_RESEGMENT_TAIL,
++		.name = "resegment_tail",
++		.linear_len = GSO_TEST_SIZE,
++		.nr_frags = 2,
++		.frags = (const unsigned int[]) {
++			GSO_TEST_SIZE, 400,
++		},
++		.max_segs = 2,
++		.nr_segs = 2,
++		.segs = (const unsigned int[]) {
++			2 * GSO_TEST_SIZE, 400,
++		},
++		.gso_segs = (const unsigned int[]) { 2, 0 },
++	},
++	{
++		/* max_segs of 1 is the same as no limit. */
++		.id = GSO_TEST_RESEGMENT_ONE_MSS,
++		.name = "resegment_one_mss",
++		.linear_len = GSO_TEST_SIZE,
++		.nr_frags = 3,
++		.frags = (const unsigned int[]) {
++			GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
++		},
++		.max_segs = 1,
++		.nr_segs = 4,
++		.segs = (const unsigned int[]) {
++			GSO_TEST_SIZE, GSO_TEST_SIZE, GSO_TEST_SIZE, 3,
++		},
++		.gso_segs = (const unsigned int[]) { 0, 0, 0, 0 },
++	},
+ };
+ 
+ static void gso_test_case_to_desc(struct gso_test_case *t, char *desc)
+@@ -226,6 +295,7 @@ static void gso_test_func(struct kunit *test)
+ 	if (tcase->id == GSO_TEST_FRAG_LIST_NON_UNIFORM)
+ 		features &= ~NETIF_F_SG;
+ 
++	SKB_GSO_CB(skb)->max_segs = tcase->max_segs;
+ 	segs = skb_segment(skb, features);
+ 	if (IS_ERR(segs)) {
+ 		KUNIT_FAIL(test, "segs error %pe", segs);
+@@ -239,6 +309,9 @@ static void gso_test_func(struct kunit *test)
+ 	for (cur = segs, i = 0; cur; cur = next, i++) {
+ 		next = cur->next;
+ 
++		if (i >= tcase->nr_segs)
++			goto consume;
++
+ 		KUNIT_ASSERT_EQ(test, cur->len, sizeof(hdr) + tcase->segs[i]);
+ 
+ 		/* segs have skb->data pointing to the mac header */
+@@ -247,11 +320,25 @@ static void gso_test_func(struct kunit *test)
+ 
+ 		/* header was copied to all segs */
+ 		KUNIT_ASSERT_EQ(test, memcmp(skb_mac_header(cur), hdr, sizeof(hdr)), 0);
++		if (tcase->gso_segs) {
++			unsigned int gso_segs = tcase->gso_segs[i];
++
++			KUNIT_EXPECT_EQ(test, skb_shinfo(cur)->gso_segs,
++					gso_segs);
++			if (!gso_segs) {
++				KUNIT_EXPECT_FALSE(test, skb_is_gso(cur));
++			} else {
++				KUNIT_EXPECT_TRUE(test, skb_is_gso(cur));
++				KUNIT_EXPECT_EQ(test, skb_shinfo(cur)->gso_size,
++						GSO_TEST_SIZE);
++			}
++		}
+ 
+ 		/* last seg can be found through segs->prev pointer */
+ 		if (!next)
+ 			KUNIT_ASSERT_PTR_EQ(test, cur, last);
+ 
++consume:
+ 		consume_skb(cur);
+ 	}
+ 
+-- 
+2.47.3
+
