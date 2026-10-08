@@ -1,117 +1,143 @@
-Received: from mail-106119.protonmail.ch (mail-106119.protonmail.ch [79.135.106.119])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163AF4756AC
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 09:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5020347D477
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 09:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791453054; cv=none; b=XzgEil2/tY+H9Z7W3OiaREHjUiZxZNrM//IthfQcXnfq378VI2H/4ZwQINiuuLV0Hs1Dcqihk0pB0JjBBmft+SEj+JIroQ818xnIs06jUMs99OhozcCSo71SRC47vIs3UXI8Lcx1sbrj7+QkqngABXxRkw0WXbeUQc8Gyzyi1b0=
+	t=1791453197; cv=none; b=HEVawQa7vsmi3i2nZE+4Dezy3KeVswqCb8IX6Ap96Hyuo/uFGJEvKggUKg0xqdiJVYKxUpFuEW9DvU+ijpWNnwgH7bvzigX8oEnZIKPsUKrEPPxwZ+Gml04W6tpVjQ9GOgRM/zfcldbJGRsJvjzKQtTGs20eZyf949oClWzbsHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791453054; c=relaxed/simple;
-	bh=RkqGAR14G1OtyAFgFM5jnSLYgzOduqU58jb5n3uYyS0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EgOd+FK+qN3KbfWNOUM8ORbOExjDAUmRtBbmn3YUoY2ZREV4srn5rUFKoD0iDWAQWGJYTpVyBiyqcMYRJe1ZWGhnMCk5eQOD7SVg7gFtSKP1oJ4dH6mB9VFow392QMRYYPyy0yvMpGd/9b6nNAbtUQAVfT7LrCW6kkPtxtRTsCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=LAuRBOEo; arc=none smtp.client-ip=79.135.106.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1791453197; c=relaxed/simple;
+	bh=wUjYNkz1DPayKi6xom1xAiMmjrkORcjqSBD+DP9E8q0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a8C0jyfLUzjURSwRSdIhD1shNOnq96stOhzlQTbP7dq+n2asT4AoIOhaTNLqC1+R5bEYvyFa8vWKS2psTgh0qwaDiLp79j7nQKFyskWs7xpdSqQEBq5FlEmrVVkpQbhOKPf2SN8xL78s0JMHkb216qYj3P5PaFd+RrjvRbphidg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C3kyBGjn; arc=none smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="LAuRBOEo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1791453046; x=1791712246;
-	bh=B12ERDkm0RUyoC16X3Dd24W8xlHWTs5vNfBL0yUlN0M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=LAuRBOEo/M/qa8vnKr5OLlGmYsvZPs5ztkjqzDVF/tLdZw6wag6zk/aNhdSXEj+iy
-	 ddM8tSmZXUZTW4Yx0X3ar9EyQxF2C+2GwOo1rNYJAHCkh3AG8At+kjJQEzk3ka5S4N
-	 Ow9egVRCltqnrjdCRtu2VSDPU7lcbHcQHax8qkd+JKVokr49aoLRIkVbdgt1DRekRA
-	 N4fnldgJG5RsPg+FHs6SjC56reIq/MnoyeFwWPHe+LyYZLvdwPI7WIxaNtA/spIXLv
-	 GVOtbYmi3q+CRgRpHmzFZ2KP6CZaXDvp9DlVwCY5ML1IT8FZHmqTvJBr8N7kcLUzBm
-	 UKrRLN5BzsXqw==
-Date: Thu, 08 Oct 2026 09:50:41 +0000
-To: Hidayath Khan <hidayath@linux.ibm.com>
-From: Bryam Vargas <hexlabsecurity@proton.me>
-Cc: Simon Horman <horms@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>, "D . Wythe" <alibuda@linux.alibaba.com>, Dust Li <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>, Wen Gu <guwen@linux.alibaba.com>, Tony Lu <tonylu@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>, Ibrahim Hashimov <security@auditcode.ai>, netdev@vger.kernel.org, linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net/smc: abort the connection when the peer overruns the RMB
-Message-ID: <20261008095036.269598-1-hexlabsecurity@proton.me>
-In-Reply-To: <dbb06d1d-17cc-4316-8efc-8e27c9bbef2e@linux.ibm.com>
-References: <20260808081242.409253-1-hexlabsecurity@proton.me> <dbb06d1d-17cc-4316-8efc-8e27c9bbef2e@linux.ibm.com>
-Feedback-ID: 199661219:user:proton
-X-Pm-Message-ID: 3d8033bd71657ca3228f572195a0396d242ae5a2
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C3kyBGjn"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-351775aa1c0so956234eec.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 02:53:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791453194; x=1792057994; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9YmqIKYdaFgNycQM+T7TwOEsRpUEkjHzmaTjKIGKx+A=;
+        b=C3kyBGjnXzC9pWH5rqjTbgtG31Ap/N90idKbaUgkxF4ebWRBhzBL862z62Xl+bHols
+         e+69EbIN7kMB4WIWVHhnX3ZZkD7L7blwk5OcE4IcD2ilQm2Zy3bsuBDW4mmg1ZbankVz
+         DEfAOlTcFFp6l9BQH+KiB+g0gcUGJiH6FYd21V/4rJE0o+PTU+vso9Xp2yBAmB8pScBY
+         gnWVhSM9r91yEVQmeOxngMGOuwheH/S+f9Kjk4nUyeXi6LXi8/oumIaLbx11UZC+/OEZ
+         dy4w5MhaOm45NnN8oeImjlqGONED+lFps9yfGNW073qFLXK0ByFk7ww7hsXspfWxkfTr
+         zZgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791453194; x=1792057994;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9YmqIKYdaFgNycQM+T7TwOEsRpUEkjHzmaTjKIGKx+A=;
+        b=O5hpoExhSTRUyfoUyPNnuOr1Jekg9T8pjgGLiFnbVWiCTaPOBJvqKtm8ytPdElQEUb
+         i4pyXsUUFQ/RLsGGWbAkMXYe6uIfbRvqvGrysDJSPvx7cUOolS43eTKLzYCvSAmGvhPV
+         f4X7jmTENBRtPUlXLGiGAz92Xg/vZGw0UlSij9M36wG9bzAczfq0lKm0oDN7iFVuj9BP
+         rTXuNwrV5A5flP/U9Msp5Q5Lsak/gLwUnf/4af1gWs5GEN+cSbq+5NtKU6UX9lyhtMbH
+         rkQ69DfrG+OrjGqOFzQby+qA+2aiT4VcpTChssjE82OtEKPd59hEPz4EPrWr8jiKe4u8
+         IXZA==
+X-Gm-Message-State: AFuF++nBOJER86c0e6MMmkPhQdd7CFIBG98eQiWfzXK8kXzRVtpmTQeb
+	Sw0pODjnYIOLw8lFz4KkHBo/Ghh16NkDhlwXxtyI5Xpc5EWn8gAzlfPETo0dFknphLn8hw==
+X-Gm-Gg: AYBFou2ie2FU7G+jj5hXfJJjQ7duqyYKcLPlr39TQP9j4yyLEA2xEBSFZKdVSPHacGP
+	m2A9ashTZq2D160EY202r/pxpZCRmA11N62t/Wxdm/8cGeqA1Q8dAfmwhl5VjDxSTON8aHAdcks
+	XhHbIJTv7c+PVUKDWDsA7VLBQk9rkq3fWvuoaoBqrARFvnscJt7ekYe73HUQsXAuIaieDirhP1w
+	OnWjMCkOo1kwbR6K9ZvgYR6qYjMC0gVncVZYco98wa6uOuUvbRO6q9kr0i/mmGVh6XSfdEqfl0D
+	IYX1H4hyed2G8mGeiIUAj3ZsAcq/CvcR5fBIkWyezcPPPe9/6EGzhXQUWevpi0P4QUfCYom0yYM
+	EhuLSKm7YUsC+mbL1+gqaWU7jMU2cz2QM56Yt6w+q7x3nA8Vpwv9o2cc7isDl9rFGtnGhPoIO1U
+	L5woBqBGUmYW9D+oFJkOT5Ecxuq4RhaxKP+sWnhkCY6PIMsqCcRDLSULicHvUt+lY4R8Fyg7YuZ
+	KsysGfS
+X-Received: by 2002:a05:7300:d194:b0:33b:a766:ea6a with SMTP id 5a478bee46e88-3515dee3e47mr5439589eec.32.1791453194219;
+        Thu, 08 Oct 2026 02:53:14 -0700 (PDT)
+Received: from ramesh.. ([124.123.89.203])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3515afab2c5sm14137064eec.21.2026.10.08.02.53.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 02:53:13 -0700 (PDT)
+From: T S Rameshkumar <rameshsv06@gmail.com>
+X-Google-Original-From: T S Rameshkumar <rameshkumar.t@phytecembedded.in>
+To: Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>
+Cc: netdev@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Petar Sakic <petar.sakic@ink.fish>,
+	T S Rameshkumar <rameshkumar.t@phytecembedded.in>
+Subject: [PATCH] mptcp: push queued data on passive TFO subflows becoming established
+Date: Thu,  8 Oct 2026 15:22:31 +0530
+Message-Id: <20261008095231.103186-1-rameshkumar.t@phytecembedded.in>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hidayath,
+With TCP Fast Open on an MPTCP listener, if the server application
+writes data while the passive subflow is still in SYN_RECV (after
+consuming the client's SYN data but before the MP_CAPABLE third ACK
+arrives), __mptcp_subflow_active() refuses transmission and the data
+is queued into the msk write queue.
 
-Sorry this sat for two months -- a major earthquake here, then
-wrapping up my postgrad program.
+When the MPC third ACK arrives, check_fully_established() marks the
+subflow established, but because the third ACK carries no DSS data,
+the queued bytes remain stranded until the peer sends more data.
 
-> Yes, please send the logs.
+Fix this by:
+1. Invoking __mptcp_check_push() in check_fully_established() when
+   subflow->is_mptfo is set.
+2. Setting MPTCP_PUSH_PENDING and scheduling the MPTCP worker in
+   subflow_state_change() so that once the underlying subflow transitions
+   to TCP_ESTABLISHED, pending queued bytes are immediately flushed.
 
-Log below, from today's re-run on v7.3-rc6. One note on the label
-first: it isn't stable across runs. My Aug 8 mail said
-slab-out-of-bounds, which is what the Jul 23 run printed; the Jul 11
-run said slab-use-after-free and today's says use-after-free, all on
-the same 327520-byte read (5 * len). The second chunk is read from ring
-offset 0, so its first 65504 bytes are still inside the RMB and the
-remaining 262016 run past it, and KASAN names it after whatever sits
-past the RMB. If the commit message names the bug type, take it from
-the log you paste.
+Reported-by: Petar Sakic <petar.sakic@ink.fish>
+Closes: https://lore.kernel.org/netdev/CAFPPu1gU2Y-D+d4i3F0MoNkYK+e1U+=X3qf6QycjfKBw+8snPg@mail.gmail.com/
+Fixes: e00b63056fb4 ("fastopen: only mark MPTFO subflows with SYN data")
+Signed-off-by: T S Rameshkumar <rameshkumar.t@phytecembedded.in>
+---
+ net/mptcp/options.c | 7 +++++++
+ net/mptcp/subflow.c | 5 +++++
+ 2 files changed, 12 insertions(+)
 
-Repro: two AF_SMC sockets over SMC-D loopback, v7.3-rc6 with KASAN,
-rmb_desc->len 65504. The sender puts its producer cursor on the wire
-as wrap++ with count 0, six times. Each CDC passes every per-cursor
-bound and smc_curs_diff() returns len for each, so bytes_to_rcv
-reaches 393024 (6 * len). recv() returns 393024 and the second chunk
-is a 327520-byte read:
-
-  BUG: KASAN: use-after-free in _copy_to_iter+0x183/0x1390
-  Read of size 327520 at addr ffff88814a0f0020 by task smc_forge_test/1695
-  Call Trace:
-   _copy_to_iter+0x183/0x1390
-   smc_rx_recvmsg+0xbe0/0x27a0 [smc]
-   smc_recvmsg+0x1c9/0x3a0 [smc]
-   sock_recvmsg+0x14b/0x190
-   __sys_recvfrom+0x190/0x2a0
-   __x64_sys_recvfrom+0xdb/0x1b0
-   do_syscall_64+0xdd/0x4a0
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  The buggy address belongs to the physical page:
-  head: order:4 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-  Memory state around the buggy address:
-   ffff88814a0fff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >ffff88814a100000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Trimmed: KASAN's own frames, the "?" frames, registers and the page
-dump; full log on request. With our v6 cursor series applied (2/3
-bounds the receive length) the same run returns 65504 and KASAN stays
-quiet, and an unforged transfer is clean. I haven't run it against
-your patch. FWIW the forging is a test knob on the sender; on the rx
-side the test module only adds a read-only readback of bytes_to_rcv,
-which the test polls instead of sleeping, and a clamp toggle that
-stays off in this run.
-
-Ibrahim Hashimov raised the same accumulator gap on his "validate peer
-CDC cursor" thread in July and accepted the Suggested-by I offered him
-for the follow-up I had planned then. Your patch covers that
-follow-up, so I'm passing it on; your call:
-
-https://lore.kernel.org/all/20260724072117.73038-1-security@auditcode.ai/
-
-Of the two changes of mine you planned to rebase on, "net/smc:
-unregister the connection before draining the rx tasklet" is in
-mainline (36cdf5d48ca1), and "net/smc: order the CDC receive path
-against buffer publication" is not merged; its last posting is v4:
-
-https://lore.kernel.org/all/20260728-b4-disp-52ee4e7d-v4-1-0dda94b0f397@pro=
-ton.me/
-
-Thanks,
-Bryam
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index ce0de02f5..d5238fa11 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1042,6 +1042,13 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
+ 
+ 	mptcp_data_lock((struct sock *)msk);
+ 	__mptcp_subflow_fully_established(msk, subflow, mp_opt);
++	/* Passive TFO: the application may have written data while the
++	 * subflow was still in SYN_RECV; __mptcp_subflow_active() refused
++	 * it then and nothing else spools the msk write queue when the
++	 * MPC third ack (no DSS) arrives. Push it now.
++	 */
++	if (subflow->is_mptfo)
++		__mptcp_check_push((struct sock *)msk, ssk);
+ 	mptcp_data_unlock((struct sock *)msk);
+ 
+ check_notify:
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index f0a6725d2..f499073a6 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1894,6 +1894,11 @@ static void subflow_state_change(struct sock *sk)
+ 	if (subflow->resetting)
+ 		return;
+ 
++	if (subflow->is_mptfo) {
++		set_bit(MPTCP_PUSH_PENDING, &mptcp_sk(parent)->cb_flags);
++		mptcp_schedule_work(parent);
++	}
++
+ 	/* as recvmsg() does not acquire the subflow socket for ssk selection
+ 	 * a fin packet carrying a DSS can be unnoticed if we don't trigger
+ 	 * the data available machinery here.
+-- 
+2.34.1
 
