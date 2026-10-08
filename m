@@ -1,76 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from oss.cyber.gouv.fr (oss.cyber.gouv.fr [51.159.188.251])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D873838D402;
-	Thu,  8 Oct 2026 16:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F434396D1A;
+	Thu,  8 Oct 2026 16:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.159.188.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791476640; cv=none; b=rnCsy33AdzDEsJ4JwJajn4G2i8+n1gkdZ+jgGN+3LuCirQ72fFB/SnRoU1Mfq3NSGB56NC+xjtKEJISNVzuDW7QPU81KnKVunnKXyC5HeUjFhWJWg1R58GA8b2kt8pgKRGPCHhljxsHNeaEAz0+NrHDsaCBCnqN0n9ZZ2NRjyrU=
+	t=1791476805; cv=none; b=o+skhJl3V4Gx7yfGxXle0iXAqLEgb1gqWC/rQJVJS49HPjW//dpx4VBsWnlKj3s8Ed//UG3ltJkc6tMNDEp1wn2EDWV5OHeC85LoSS4cY6jZ8POYrON7PuBdffkBC0GD2O48qmqB5nuucI/A2pOyF2bPXCW/fzVwgH95YwFPnU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791476640; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IMR9tlJ9feze5vaoU6lE3pUaSr7bb2eZKe5ZhAs1teo1b8Sc0Ic2hDp+rZLhUrHjEEwdIOLyCaFFouMoqv3PK9ovGUcSAGVPJN2RQ51vfU5HN5QJS6qj8HcirEW2FU0QF5dWBFqDvPn//czMKwtUwWPqNMMm09imh+s/dMTWusg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XT/Ya97w; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791476805; c=relaxed/simple;
+	bh=yf7aL/4lvkJZpEmzxHngwDFA5owXaDyrVr/z8qpn7kA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=HgYmFiHd7fpwpkG2m0uvUV8Rx/ajVnuiQf8heuS+gTkhbmQlBNvrb5yIoTUohtMRPtlxXQKt4C0OljozWNCODbtVbXEXZJFXTfPok7cqw/WW00uFcwU7jUs/mmSzo0+eJkUYFh8ZBq8TP3Lh0OQp1702CtX7z9gH3vgedUzpkNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr; spf=pass smtp.mailfrom=oss.cyber.gouv.fr; dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b=cjOt5jQG; arc=none smtp.client-ip=51.159.188.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.cyber.gouv.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.cyber.gouv.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XT/Ya97w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCF01F000FF;
-	Thu,  8 Oct 2026 16:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791476639;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XT/Ya97wt/ULznEJCAlPkwAU9bOesozVXQr2zbEMh7I4uyUMwJvvGsWV7XzTFjbAL
-	 atYl9dTTBZJZqX9CVr25PAHDri7vS7VhFLW95VE/9u6VWnddWwnGXG3u1Dx0H1DGHJ
-	 cCtqOW4/XmhyCeHiYKMjxkHxky3GWs8Ta8s9yipIIVSDrsocTweue/jOxrDLh5vybs
-	 Gfthxlcij7Jn+nWDn1Lsf1gHSp0qkGNXvdUVx5rrVOcs4TaTp/0rfBjNGE5WGLNm5R
-	 Jn9L5KEjlxsBBnIuYSe6RJZdRlaR+O25tUAif3yqRaaa63ppNa6kgjcYS7eSFp2nLP
-	 Havn2KKqCRmSg==
-From: netdev-bot+sinfo@kernel.org
-To: Haotian Zhang <vulab@iscas.ac.cn>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: 
- Re: [PATCH] net: winbond-840: release IRQ on alloc_ringdesc() error path
-Date: Thu, 08 Oct 2026 16:23:58 +0000
-Message-ID: <179147663850.2527009.3579752858238787977@kernel.org>
-In-Reply-To: <20261008162109.2678143-1-vulab@iscas.ac.cn>
-References: <20261008162109.2678143-1-vulab@iscas.ac.cn>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=oss.cyber.gouv.fr header.i=@oss.cyber.gouv.fr header.b="cjOt5jQG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=oss.cyber.gouv.fr; s=default; h=Content-Transfer-Encoding:Content-Type:
+	Message-ID:References:In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:
+	Reply-To:Sender:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=iavQoIHlWsREU4nJw55w+0cA3N6o8b1GBh7368gJd9g=; b=cjOt5jQGxPhq1u6ZSqfF+JsMnL
+	yzqwmNsDKjrgv5uEn/jvIMGJViHvQvO5JfuwwtnQWKGhc4oftpuqeX7Nsziz21F2xHVwjLY+mbUbv
+	RXktCpf/B6ZcE71mneZNjPKAreYBpSOL6e/9/42bre4Wund1/8kRx4PuuTSKoZTL/VOqT6MGAEZSA
+	mxZI8JihNnxvLL+vV3SZ2pFSOLypP13CIxXCCOuKlrDIY4vFfRUbUPiR+Bps79B7WxXe8BHyr8nNG
+	lCitaKP839fZPltVFWHDPxCByJE0xXEtwRl3E7Rl9JsWYYuTOzZDT68tOWnRVlTYLVfryXqlSawp1
+	ZYYPhvBA==;
+Received: from [::1] (port=54688 helo=pf-012.whm.fr-par.scw.cloud)
+	by pf-012.whm.fr-par.scw.cloud with esmtpa (Exim 4.100.1)
+	(envelope-from <jeremy.jean@oss.cyber.gouv.fr>)
+	id 1xEqx7-0000000E5so-0Hv1;
+	Thu, 08 Oct 2026 18:26:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Thu, 08 Oct 2026 18:26:40 +0200
+From: =?UTF-8?Q?J=C3=A9r=C3=A9my_Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: netdev-bot+sinfo@kernel.org, rafael@kernel.org, lenb@kernel.org,
+ pavel@kernel.org, willemdebruijn.kernel@gmail.com, kuba@kernel.org,
+ pabeni@redhat.com, linux-pm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] udp_tunnel: drop packets when hibernating
+In-Reply-To: <CAHmME9rypRmL0tA-20vJumRBckpbzEaBXdE+xhMqi5M5OKPFhg@mail.gmail.com>
+References: <20261008124106.665014-1-Jason@zx2c4.com>
+ <179146356621.2527009.11001901701574636880@kernel.org>
+ <CAHmME9rypRmL0tA-20vJumRBckpbzEaBXdE+xhMqi5M5OKPFhg@mail.gmail.com>
+User-Agent: Roundcube Webmail/1.6.19
+Message-ID: <e443f48537e6ac61a8863e1a678736f9@oss.cyber.gouv.fr>
+X-Sender: jeremy.jean@oss.cyber.gouv.fr
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - pf-012.whm.fr-par.scw.cloud
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - oss.cyber.gouv.fr
+X-Get-Message-Sender-Via: pf-012.whm.fr-par.scw.cloud: authenticated_id: jeremy.jean@oss.cyber.gouv.fr
+X-Authenticated-Sender: pf-012.whm.fr-par.scw.cloud: jeremy.jean@oss.cyber.gouv.fr
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi!
+On 2026-10-08 14:47, Jason A. Donenfeld wrote:
+> On Thu, Oct 8, 2026 at 2:46 PM <netdev-bot+sinfo@kernel.org> wrote:
+>> This is an automated message. This series looks like a fix, but its
+>> commit messages seem to be missing some information:
+>> 
+>>  - Whether the issue was actually triggered, or is only theoretical
+>>    (e.g. found by code inspection). If it was triggered please include
+>>    the symptoms, like the stack trace or error messages.
+> 
+> Yea, I really have no idea. That's for Jérémy to elucidate.
+> 
+> Jason
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Yes, the bug was actually triggered.
+It was found by code inspection with help from a LLM.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Jérémy
