@@ -1,140 +1,288 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DA645D1B1
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 21:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73BA37204C;
+	Thu,  8 Oct 2026 21:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791493434; cv=none; b=liXIuJekpfuWNsr9UAuDDQD570btFqtm33ac8R8EeGE29aqQ+OunQZd/W05zVx6AKCwmO+JyZKOjcmyiH4LRJXanN4B+qgRWLtMFOkaEHX6xDXtcglEVW2g1H8CX6cpcFJk3qpsOHOwtSVN52X2a766BtHbYxUIixogumTXKtP0=
+	t=1791493512; cv=none; b=QSiXxl3EilSeMABi7HYkZRg8rPZs9aiGBJitCTbMCFYAlTV81T1tVgMCPeDLiuXTHXPh9XkfJjfMngmlCMzd3kPRoKUajz2CoYNvCN0HQitL1nOI0UYWC07x0jfbOABpobMe3goLjLpIo7s6C6aUApsk+VNMik5tRkCNvcdQ98A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791493434; c=relaxed/simple;
-	bh=G4GQSS/z86H6HrzRjtGCGkhfNcr1ZqkSUEOCEKTi8N4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M43tAsi/05E0IE9gRhPb3VN5NPxu6ifqoRpsQEaQqLyT54l1VrFYPE+T0mHRkuf72DzGeOF6oYswckk2w3JAQsKET8IOMBjW76YAHDC/I2dxvJYn+YSWnpFc6Fgn+ToL/lHvxgknMfSNJcRteccugEoh1F82eHPejaTolCB0MtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=eTjSebB5; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	s=arc-20240116; t=1791493512; c=relaxed/simple;
+	bh=TuVojh4DaVLaPMV5QsmM9zrzY3BDBck5IQ24RL5aS7o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dYJLZ1DR/BcGlk+NVPXL6YwuaqxFU8WcCPlVU33/K6LM1+gmNbDvSqak2LYd/8G68m6JGjX4gAziwmErcuu1E8PcKmcnqCIHu+GneEKmgs9FqdigrHvOLIuqcohusSLU/3s0Q+jrbzNK+3HU9Thit0oRKWaiGHi8U8ys0Bvjh8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y1aWOY6R; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="eTjSebB5"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-917d595138fso34773946d6.3
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 14:03:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1791493424; x=1792098224; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D0uSM/A3oRPIUcCVkMNaXKAYlboH4f+zE5JovH6Ln9w=;
-        b=eTjSebB5sOc8aErg8cT/L7MyU56/ql9J7O3y8pCm1Kxh5LmxJiwRLpXUH+z14e8g8e
-         Z9UHllMXXQ6iH2NX1W5c3e3zSfdcEUIWNaCGgxbLL1phM5cjpcGPGxcj8qRxjRKsFDcH
-         Dx3Ns3otH8zlAnfexu/pb3vu5oXZo7ir+HNHrQKqEvIMlN8s8xp7w4LRIQ5VZtg/eZsp
-         yESTj6lwB6FyO1L7ktK5JCcF0pXkJmC2c2J6U+Tp6O/rE61gO4FdJ3/louoq6lgpqE1s
-         fjfEgRBxJiLcTpVGSYW6OtmB8Jm5+GiK8jnHS0ghpb7xcWQTGeMiPkTcpHrNmUbJy3F7
-         kS8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791493424; x=1792098224;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=D0uSM/A3oRPIUcCVkMNaXKAYlboH4f+zE5JovH6Ln9w=;
-        b=2l83wRAtm9lzji1OICOvmDNnif/smQcpr3D451rIGmC6Iksc9XT+6JQKI/oWVTbxlF
-         sYgytsdFJqrPwIacuifLcnUa+u8u10bVHmbATicKs7d6Q8ExHtcqNL9n9puvYs1CrYLD
-         ZfJpcC2Yvi0ot7amgFBB7zoV/3mlsGBC4Fl6/55XKOvBCMzg1YQfxo9K+sOaQZwpmkPZ
-         +gsgUCho81Gqef/rpcoc+sROa4yqcyepOi1MB+ordVmLq9TBzRTBDPyvwZorHgPjHV1i
-         /YUPPdgwFkOxdtZ4RqwbksefRfzRijPCGZUFW/RYxr/MxLVbdD5O2PqqZ4xmP3qTd82F
-         5mCg==
-X-Forwarded-Encrypted: i=1; AKwUvByWigm6/BRztZOveC3dXVWw50yqd3SNLhrO4ovZiqCJj4llVOVM7Jmcsh4L4ssP0PU+JmR2IhI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJgVX6grmR4pl7Oxb7I0rN1TpIEb8kAMTj5t4D3pyb44but1iyW
-	MFNMk56/kU1++VwH0yjIUMYy1oWozPSFyxW/ED43q3iFV1O+CgtLEV4DlXzNCnYV8LI=
-X-Gm-Gg: AYBFou3lGC17pNELZVvosZGS30tyYBF/I4ApvyRuK4Y8+d0SbI19OOmid7cPkYHL+yy
-	sONM0gfn6Z1dXRX+JzlfmRmSwU1PMEGfVtWCQ47/K0RPd++pdbVKLHeoIs2VsaxNxGEPsxvEuF1
-	VAmx8741OdEGz9xZ9sEl1kwWREErTRPaxCQB/1NsxQTFRlaFlb5P5Fn4jmozxerSjcNIl9xOVEY
-	wA/iqGsULjvZWrSSwSmd/yNPGxnJMFJgzRBdAC4sxnfxP0u9y/sKzEamRlcN1azzuEL14B3Unte
-	B3ihLesyKNIDgzMtLAP46O3Deg35AgfV7QjzwoZO8NWoEeRoRsnmnswpA6G3PP2k5qkcMFpf0Jf
-	JSILkTK++eGjAvhkS8dY+BYAwWOx6aautyN5qydrpDChyBZjnsN76KcXBIXysep3tqnr6FbjRAz
-	tmmQPtjByyMmNEgNKu/iuhVsyoj0IrxPeakyF9D0LsUDVWDEhphxuSuCht/6d+eKF3VeRKh636a
-	xzl3FvDrXEAfiU=
-X-Received: by 2002:a05:6214:ca3:b0:919:952d:7ff9 with SMTP id 6a1803df08f44-919978f7ebamr126853616d6.57.1791493423774;
-        Thu, 08 Oct 2026 14:03:43 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.247])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b550d394bsm79796d6.41.2026.10.08.14.03.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 14:03:43 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Thu, 08 Oct 2026 21:02:57 +0000
-Subject: [PATCH net-next v2 10/10] net: skbuff: don't reset truesize in
- skb_condense() if the pull fails
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y1aWOY6R"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791493511; x=1823029511;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=TuVojh4DaVLaPMV5QsmM9zrzY3BDBck5IQ24RL5aS7o=;
+  b=Y1aWOY6R+nJ5i4y5+7jHn2FcXk/QxbJQE8uC8CuTN/0T18ggEYb77/iI
+   lZPoeKqo3sg2Uw/VcQKT4ArTvpNXqB/g9GF5jcZVOzuI0RwyBKTh4Ek7R
+   wkX1FUgnuGsiw6KKVdF57ZrUGMpQcKqzZU+Nsy3C2QgSaVQD/iEX5JzxD
+   yV9YsYOdHszuiKy7286E/bP3lFZ//5ju5T2ecC2S35fyqNcJ74fFcuxlS
+   cU4Oj+JsB6wuGJPEwvxVVeoOwYnfCWq7UGlOeKAm6u9G7pGj0B+E+TK+3
+   +TfvNj8QYeIZZJhwxqToc0vf6k2QZQsQYU/Iq9LkJFyActiLU7rybxass
+   w==;
+X-CSE-ConnectionGUID: 8jvHxQmaTaijLjE9Sxwo4w==
+X-CSE-MsgGUID: TIjbQvGVQuiM5C5zOgGxhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="283675"
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="283675"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 14:05:11 -0700
+X-CSE-ConnectionGUID: VuIRcOEPQSO67HuKVoja5A==
+X-CSE-MsgGUID: ROwWPS3qSzyPrupSZmyNug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="1954753"
+Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.109.51]) ([10.125.109.51])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2026 14:05:09 -0700
+Message-ID: <3f40d953-2e91-4492-b100-c851fdb143b5@intel.com>
+Date: Thu, 8 Oct 2026 14:05:08 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-b4-pskb-pull-tail-drivers-v2-10-8f2bd9bee138@toxicpanda.com>
-References: <20261008-b4-pskb-pull-tail-drivers-v2-0-8f2bd9bee138@toxicpanda.com>
-In-Reply-To: <20261008-b4-pskb-pull-tail-drivers-v2-0-8f2bd9bee138@toxicpanda.com>
-To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Eric Dumazet <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Juergen Gross <jgross@suse.com>, 
- Stefano Stabellini <sstabellini@kernel.org>, 
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Manish Chopra <manishc@marvell.com>, Rahul Verma <rahulv@marvell.com>, 
- GR-Linux-NIC-Dev@marvell.com, Shahed Shaikh <shshaikh@marvell.com>, 
- Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
- xen-devel@lists.xenproject.org, intel-wired-lan@lists.osuosl.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1791493385; l=1285;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=G4GQSS/z86H6HrzRjtGCGkhfNcr1ZqkSUEOCEKTi8N4=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QD7QXznJXVwY4tvhlA2g/ntlgNB9z4EYJ24pFBre8ehTYCPfcNpsZClmKSf0INhwTvOUpctCjRC
- vzNH0Zo1blA8=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] cxl/region: Add region reference in memdev attach
+To: "Lucero Palau, Alejandro" <alejandro.lucero-palau@amd.com>,
+ alucerop@amd.com, linux-cxl@vger.kernel.org, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, ecree.xilinx@gmail.com, icheng@nvidia.com,
+ rafael@kernel.org
+References: <20261001132023.17032-1-alucerop@amd.com>
+ <20261001132023.17032-3-alucerop@amd.com>
+ <6bc33514-8bfb-44d6-8fde-28f45dff5eb9@intel.com>
+ <8ebaae42-a0c6-4e9c-be1b-ca68a4769ed7@amd.com>
+ <bd412198-8a25-436c-b6d6-6b6730e8c28e@intel.com>
+ <9114ec71-060f-48ae-a6e5-0b46a881c259@amd.com>
+ <40fc791c-c03c-42f0-88be-7a97938ebe1c@intel.com>
+ <ba7731fe-f916-4e51-977b-95a0197bf52d@amd.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Content-Language: en-US
+In-Reply-To: <ba7731fe-f916-4e51-977b-95a0197bf52d@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-skb_condense() pulls all of the frag data into the head and then sets
-truesize to cover just the head, but it ignores the return value of
-__pskb_pull_tail().  If the pull failed, the frags would still be
-attached and truesize would undercount them.
 
-It can't fail today.  The caller has checked that the head has room,
-that the skb isn't cloned and that the frags are readable, and pulling
-all of data_len eats every frag_list skb whole, so nothing is
-allocated.  Check the result anyway and leave the skb alone on
-failure, so this stays correct if any of that changes.  Use
-__skb_linearize(), which is what this pull is.
 
-Assisted-by: LLM
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- net/core/skbuff.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On 10/8/26 11:07 AM, Lucero Palau, Alejandro wrote:
+> 
+> On 08/10/2026 17:18, Dave Jiang wrote:
+>>
+>> On 10/8/26 6:50 AM, Lucero Palau, Alejandro wrote:
+>>> On 02/10/2026 16:52, Dave Jiang wrote:
+>>>> On 10/1/26 9:41 PM, Lucero Palau, Alejandro wrote:
+>>>>> On 01/10/2026 22:38, Dave Jiang wrote:
+>>>>>> On 10/1/26 6:20 AM, alucerop@amd.com wrote:
+>>>>>>> From: Alejandro Lucero <alucerop@amd.com>
+>>>>>>>
+>>>>>>> Use a new field in cxl_attach_region struct for easily link it with the
+>>>>>>> region the memdev is attached to.
+>>>>>>>
+>>>>>>> This facilitates device links creation where such a region is the supplier
+>>>>>>> with non-PF0 physical functions wanting to use the CXL region being the
+>>>>>>> consumers.
+>>>>>>>
+>>>>>>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>>>>>>> ---
+>>>>>>>     drivers/cxl/core/region.c | 1 +
+>>>>>>>     drivers/cxl/cxlmem.h      | 2 ++
+>>>>>>>     2 files changed, 3 insertions(+)
+>>>>>>>
+>>>>>>> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+>>>>>>> index 27e63e6dab7c..78ca7ebc3e55 100644
+>>>>>>> --- a/drivers/cxl/core/region.c
+>>>>>>> +++ b/drivers/cxl/core/region.c
+>>>>>>> @@ -4132,6 +4132,7 @@ int cxl_memdev_attach_region(struct cxl_memdev *cxlmd)
+>>>>>>>         if (rc)
+>>>>>>>             return rc;
+>>>>>>>     +    attach->cxlr = cxlr;
+>>>>>>>         attach->hpa_range = (struct range) {
+>>>>>>>             .start = cxlr->params.res->start,
+>>>>>>>             .end = cxlr->params.res->end,
+>>>>>>> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+>>>>>>> index c401e3a1af06..c598561b8e5f 100644
+>>>>>>> --- a/drivers/cxl/cxlmem.h
+>>>>>>> +++ b/drivers/cxl/cxlmem.h
+>>>>>>> @@ -104,6 +104,7 @@ struct cxl_memdev_attach {
+>>>>>>>     /**
+>>>>>>>      * struct cxl_attach_region - coordinate mapping a region at memdev registration
+>>>>>>>      * @attach: common core attachment descriptor
+>>>>>>> + * @cxlr: cxl region the memdev is attached to.
+>>>>>>>      * @hpa_range: physical address range of the region
+>>>>>>>      *
+>>>>>>>      * For the common simple case of a CXL device with private (non-general purpose
+>>>>>>> @@ -112,6 +113,7 @@ struct cxl_memdev_attach {
+>>>>>>>      */
+>>>>>>>     struct cxl_attach_region {
+>>>>>>>         struct cxl_memdev_attach attach;
+>>>>>>> +    struct cxl_region *cxlr;
+>>>>>>>         struct range hpa_range;
+>>>>>>>     };
+>>>>>>>     
+>>>>>> attach->cxlr is never cleared when the region goes away. Unbinding the endpoint port runs endpoint_unregister_region(), which unregisters the region and drops its reference. PF0 stays bound until the detach work runs.
+>>>>>>
+>>>>>> A non-PF0 probe in that window still finds the memdev and calls device_link_add() on the freed region.
+>>>>> I do not think so. This version, see next patch, relies on locking the supplier, PF0, before getting the memdev and potentially using the attach region. Only on PF0 release can such a memdev and region disappear, so I think this is enough.
+>>>>>
+>>> Hi Dave,
+>>>
+>>>
+>>>> The memdev, yes. It's devm on PF0. The region, no. Unbinding the endpoint port, or cxl_mem from the memdev, runs endpoint_unregister_region() under the endpoint's lock, not PF0's. PF0's release is only queued (schedule_detach() -> detach_memdev()). Until that work runs, PF0 is bound, the memdev is found, hpa_range is valid, and attach->cxlr points at a freed region. Root teardown (kill_regions()) and delete_region also unregister the region without touching PF0.
+>>>
+>>> You are partially right. The problem is not that async detach_memdev() but the fact the region can be removed without the PF0 being aware ...
+>>>
+>>>
+>>> I was relying on the memdev being unregister first then the related device released later on, with the important part being the memdev being unregister making it unavailable to the other PFs because it can not be found in the cxl bus. I'm pretty sure about that scenario but I was not counting on sysfs unbinds for the endpoint device ...
+>>>
+>>>
+>>> I need to think further about this because I think it is wrong to remove the region in this case without PF0 or the memdev owner and original region consumer still unaware of it. One thing I tried to discuss with Dan was why we have the unbinding options for cxl_mem and cxl_port drivers. What is the point? I know this is standard linux device model, but the unbinding could do nothing if we decide so. Couldn't we? Otherwise, If there is a good reason for having this functionality where the unwinding can happen through different starting points, we should document it.
+>>>
+>>>
+>>> What I'm going to try is to link the region removal to Type2 driver removal as well, not necessarily with device links but through devm_action_or_reset links as we are already doing for other cases. And I think to document the different objects/devices involved and its lifetime depending on the current unwinding supported would be good to have, so I will work on that as well.
+>>>
+>>>
+>> So there are multiple paths a region can go away without PF0 knowing and sysfs is only one of the triggers.
+>> 1. endpoint port teardown -> endpoint_unregister_region()
+>> 2. root decoder teardown -> kill_regions()
+>> 3. userspace delete region
+>> 4. some other places calling unregister_region().
+>>
+>> Using suppress_bind_attrs only hides the sysfs files. There's also device hot-remove and module unload in addition to root decoder action and user action. So doing that is definitely the wrong way to go.
+>>
+>> The path of PF0 going first is fine. The memdev goes with it. The bug path is region going first. Something needs to deal with the stale attach->cxlr. You need a region-side teardown clearing attach->cxlr under the cxl_rwsem.region before unregistering. And readers need to check under the same lock. The endpoint_detach_attach_region() proposal does close that hole.
+> 
+> 
+> I tried to discuss this with Dan unsuccessfully, so I hope I can make my point clear: having so many ways of cxl objects/devices being destroyed is, IMO, wrong. Moreover, some user actions on things created by a Type2 driver should not be so easy accessed, and definitely, having a region unregistered and released with its main consumer and owner completely unaware, should not be happening.
+> 
+> 
+> Dan and I addressed some concerns with "these options" but it is worse after realising now port and region can also suffer from unbinding actions. We contemplated memdev unbinding and that is supported, and acpi module removal as well (all the unwinding is hopefully right for sfc driver removal), but the fact is, current Type2 support is unsound. It is likely good enough with current usage expectations but something to improve/fix.
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index f798118df112..556d37981f0f 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -7158,7 +7158,8 @@ void skb_condense(struct sk_buff *skb)
- 			return;
- 
- 		/* Nice, we can free page frag(s) right now */
--		__pskb_pull_tail(skb, skb->data_len);
-+		if (__skb_linearize(skb))
-+			return;
- 	}
- 	/* At this point, skb->truesize might be over estimated,
- 	 * because skb had a fragment, and fragments do not tell
+Removing the acpi module will also cause the issue I pointed out. So that isn't safe either. The only path that's good right now is sfc driver removal or the device going away.
 
--- 
-2.55.0
+> 
+> 
+> All this user space potential actions were implemented mainly for testing (I guess you know this). I did ask Dan about it, and I was expecting use cases where HDM decoders and regions are dynamically created, which makes a lot of sense to me, but the fact is all is relying on firmware/BIOS configuration. Richard is working on adding this functionality for Type2 and pmems, and Jonathan considers it theoretically useful as well, but the way is going to be handled requires, IMO, further thinking and maybe a change before someone starts using it (does anyone know about users now?).
+> 
+> 
+> As a summary, if we allow user space actions (at least for Type2) they need to be consistent and somehow protected.
+> 
+> 
+> Finally, you did not answer my question: what is the point user space removing and endpoint port handled by a Type2 driver? What about the cxl region? Maybe I am missing a necessity I can not see here, so please, help me to understand this if that is the case.
+
+Shouldn't does not mean does not exist. Sure I can agree with you that under normal operations, certain things a sane user should avoid doing for type2. But it is possible currently and those issues can be triggered. However you feel about the current CXL architecture, here we are with where it is. You can either consider the smaller changes I suggested to keep the attach->cxlr sane (or with some other means) and make what you need working now with raised the issue addressed, and come back with hashing out the larger grievances later, or keep beating this horse.... "It's silly for users to do that and therefore the issue can be ignored" is not a good enough reason for me look the other way and merge the code.
+
+> 
+> 
+> Thanks,
+> 
+> Alejandro.
+> 
+> 
+>>
+>> DJ
+>>
+>>> Thank you,
+>>>
+>>> Alejandro
+>>>
+>>>
+>>>> I attached an LLM generated test kernel module you can use to reproduce the KASAN complaint. Commit log provides instructions.
+>>>> BUG: KASAN: slab-use-after-free in device_link_add+0x521/0xa80
+>>>>    cxl_get_range_and_link+0xa9/0x120 [cxl_core]
+>>>>
+>>>> DJ
+>>>>
+>>>>> I added comments in the exported function, cxl_get_range_and_link() which does the locking before calling the internal function __cxl_get_range_and_link() which looks for the memdev and the attach region. In fact, it should not be possible to obtain the PF0 memdev reference and the attach region not there yet, but the code is still checking that possibility as a sanity check.
+>>>>>
+>>>>>
+>>>>> Thank you,
+>>>>>
+>>>>> Alejandro.
+>>>>>
+>>>>>
+>>>>>> How about something like this?
+>>>>>>
+>>>>>> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+>>>>>> index 27e63e6dab7c..38ca73f12b84 100644
+>>>>>> --- a/drivers/cxl/core/region.c
+>>>>>> +++ b/drivers/cxl/core/region.c
+>>>>>> @@ -4076,6 +4076,23 @@ static int first_mapped_decoder(struct device *dev, const void *data)
+>>>>>>         return 0;
+>>>>>>     }
+>>>>>>     +/*
+>>>>>> + * Invalidate @attach before the region goes away so that
+>>>>>> + * cxl_get_range_and_link() can not pick up a stale region.
+>>>>>> + */
+>>>>>> +static void endpoint_detach_attach_region(void *_attach)
+>>>>>> +{
+>>>>>> +    struct cxl_attach_region *attach = _attach;
+>>>>>> +    struct cxl_region *cxlr;
+>>>>>> +
+>>>>>> +    scoped_guard(rwsem_write, &cxl_rwsem.region) {
+>>>>>> +        cxlr = attach->cxlr;
+>>>>>> +        WRITE_ONCE(attach->cxlr, NULL);
+>>>>>> +        attach->hpa_range = DEFINE_RANGE(0, -1);
+>>>>>> +    }
+>>>>>> +    endpoint_unregister_region(cxlr);
+>>>>>> +}
+>>>>>> +
+>>>>>>     /*
+>>>>>>      * Runs in cxl_mem_probe context after successful endpoint probe, assumes the
+>>>>>>      * simple case of single mapped decoder per memdev.
+>>>>>> @@ -4127,15 +4144,23 @@ int cxl_memdev_attach_region(struct cxl_memdev *cxlmd)
+>>>>>>           /* Only teardown regions that pass validation, ignore the rest */
+>>>>>>         get_device(&cxlr->dev);
+>>>>>> -    rc = devm_add_action_or_reset(&endpoint->dev,
+>>>>>> -                      endpoint_unregister_region, cxlr);
+>>>>>> -    if (rc)
+>>>>>> +    /*
+>>>>>> +     * Not devm_add_action_or_reset(): the reset path would take
+>>>>>> +     * cxl_rwsem.region for write while it is held for read here. The
+>>>>>> +     * endpoint lock keeps the action from running before @attach is set.
+>>>>>> +     */
+>>>>>> +    rc = devm_add_action(&endpoint->dev, endpoint_detach_attach_region,
+>>>>>> +                 attach);
+>>>>>> +    if (rc) {
+>>>>>> +        put_device(&cxlr->dev);
+>>>>>>             return rc;
+>>>>>> +    }
+>>>>>>           attach->hpa_range = (struct range) {
+>>>>>>             .start = cxlr->params.res->start,
+>>>>>>             .end = cxlr->params.res->end,
+>>>>>>         };
+>>>>>> +    WRITE_ONCE(attach->cxlr, cxlr);
+>>>>>>         return 0;
+>>>>>>     }
+>>>>>>     EXPORT_SYMBOL_FOR_MODULES(cxl_memdev_attach_region, "cxl_mem");
+>>>>>> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+>>>>>> index c401e3a1af06..7cd3a69cd5f5 100644
+>>>>>> --- a/drivers/cxl/cxlmem.h
+>>>>>> +++ b/drivers/cxl/cxlmem.h
+>>>>>> @@ -104,6 +104,8 @@ struct cxl_memdev_attach {
+>>>>>>     /**
+>>>>>>      * struct cxl_attach_region - coordinate mapping a region at memdev registration
+>>>>>>      * @attach: common core attachment descriptor
+>>>>>> + * @cxlr: cxl region the memdev is attached to, cleared under cxl_rwsem.region
+>>>>>> + *    before the region is unregistered
+>>>>>>      * @hpa_range: physical address range of the region
+>>>>>>      *
+>>>>>>      * For the common simple case of a CXL device with private (non-general purpose
+>>>>>> @@ -112,6 +114,7 @@ struct cxl_memdev_attach {
+>>>>>>      */
+>>>>>>     struct cxl_attach_region {
+>>>>>>         struct cxl_memdev_attach attach;
+>>>>>> +    struct cxl_region *cxlr;
+>>>>>>         struct range hpa_range;
+>>>>>>     };
+>>>>>>     
 
