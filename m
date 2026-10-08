@@ -1,35 +1,73 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53E129ACFD;
-	Thu,  8 Oct 2026 01:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F7B224B1E
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 01:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791421214; cv=none; b=dY/2/S5oiq5d4zgqVb+IWA9d40gDAmAMCORfiaPny58EG7vLHHLNirftFg1We8ljxKVeOASLIt7RbTIexMJFS2pvVGlfvSqV+CJVNbd8vDyB1PKRMoU7oO+Do75YVBGQ7m9Hoq3fEWCskvcQHSC+alYIpaDPRVs7EFaiHdljjH4=
+	t=1791422048; cv=none; b=iky30Z5q4OzdL1kcIUGdGavS6YnArdCZaB2tPpjKQ8+oXSULnZEitydmVi5JGrzqP89PID9DqhEMdU/43qmsPifgaY68KRNO46o/I2o+X2TuomeUDx3ywp5tnCp37J2CAzA7jMaVVzGFr2bOJTfNLkydgogjPkluLb/MF6Rixek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791421214; c=relaxed/simple;
-	bh=cCfV1PSBVPMYA3xc4cpl2tT8mUpVgqnKPv/3ZSdTdvQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YoFvktyyFRT7d4fiyGepTIhDqGIkRtAHOOM+NSXLFOC5JDAebINU23vxFsbRNjBc7JfZ1T8q53njOVujJqg9ENNsd0tIhFYulRUhm/WNNetwrCT0Rh0dljHvlfU6gXKZAqwcPNZKVj7PEyJ2FV3yPniTPHx9W08NZO0xA0MAmrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHqouBWE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791422048; c=relaxed/simple;
+	bh=bextlbdLEL1x7OK1WA/qkO4fVbrMdsVFqmmkNDgwT10=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EBcrdBT4QJmAQ7+71ih/Tc76I/eLOOZQasjVXVG1kZpK+UEfq2s58NoALzQRrGT11mKnBSzMvqgLy5D9c7BpEuhn5ec8sL3L52QzmuLtfwW1enTPewPLTvrungVMn4s6dgAbLxaj4SYiGkfwonDE8b1KS1U78J9STNnWo3Vq8Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=YnJbNBJn; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHqouBWE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438761F00893;
-	Thu,  8 Oct 2026 01:00:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791421213;
-	bh=s9Z7/F9D6SKTGoPtNrGIDlkQpqQzDG54NuvKCSy2IRA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jHqouBWE7HRatr8dEi+lj4y//396uNjDo9mA29RdVHpXFrFdiP12V6En6g5/TBgGS
-	 PlKsP0rp+1ZwOEoY3W0IK8sGCyez+r1L0+Eo4XgP3YfyivrROOSMid3hrnRs/JUAkq
-	 hC5NNpg1pfyojQ4LfOND4ih6e28TSsMZiQ5bRmjUlRmkNzfHIJiMau1o3X+bZXr3Ji
-	 yYJSOUYtbgbEXykMtWjUspsecdm1mOFKX1k5cjs/fjkxU7QAF8dLQu02lhVpgigdbp
-	 GxEaXt++tNfN26+oAcwIX9DpKSjwlFmrYRiPAKrgeLkAcGnD7LMThBBpzZx8u49PhO
-	 BAbjJguPtbHqA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A58D3809A08;
-	Thu,  8 Oct 2026 01:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="YnJbNBJn"
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-823545ce223so4030743a34.2
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 18:14:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openai.com; s=google; t=1791422045; x=1792026845; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K7dN6q1DVq+JBc4NWV9L91mIrstCqQxMk6a5w1N4MMM=;
+        b=YnJbNBJnymd8pDJP+zkyB1YSMU1DYLba+9QgtaIP8kEBqY0FJNHjPA3/g8bHVoUtzv
+         0f/mrHZjLVcE4+3+aV1+6OUdNeL9FZpEV4VZdmrtA+8S6CKMuQptdkka3BmvuNQ2P0jZ
+         NiDaXXsPwoMp2iHA97FZEIjoPOOhs4yX6Qm64=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791422045; x=1792026845;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K7dN6q1DVq+JBc4NWV9L91mIrstCqQxMk6a5w1N4MMM=;
+        b=NzyCNyqi54pflSjx38ljW4zimaxOKmsZLRObekLzRyy5U6EiWQX2AGB/fSJYhvWB9i
+         pOk+ypC/u4wT5tvYO90XM3WF65LwZ6+hQ9uZ4KRqXGHLZJe8A2ksHMVWUFDcZNzknujC
+         yKNXlcJgFH+es5h2PXCm0ZK8pKgxnfQZqorZrgNoG5QpNNZLxde+e0bVkfjxzjhbVm/7
+         f6zAATBBx2JWh+cDqRKJ2ZbAz27416epe/2BUlvnYb5WYGtksFEc+Wejh2/nzeCwo79G
+         HzflZxJayIKDGL9C5GPP73K3j2BNIfSeh/31wLsnyCSb2F5uAPaGkvoOEj3W/BJVEmgN
+         Gm4g==
+X-Gm-Message-State: AFuF++lfRmWXiHv3LxEcXGdUKQUwjQP13NoWl62Z628/0M3ST6bHoWbU
+	yCk8oCsnrJjlCY3BrN5OiXhArwdk9qOOErgknYe+L40crCy+/Wnv9ej5QLb4TKY+WpvXJ/POPUk
+	F6D18WME=
+X-Gm-Gg: AYBFou02uq8/oqeM5RKrbN/EaIlsM+iPr1Rwq30lfIlzXdgXNKl4JT68LJqMyo9FMtQ
+	A7eGBuSu56UbMgPEVAAWU9ua0wU9qlWaX+7Xg/gLypR6JBS9rUQjLeyEPnICdUvj/xkZJr32IuU
+	BdSQQd6QGfYzVjMET+L3PnBedcQvfHqTSOWjd0G/2tEVo6s6tIMJGk3YtDC37LeW1n8v//F3A7R
+	hd4yPbQwgObleCSP0KOxdEqqzGRIhbOosszZJB83Foyvc5Sv8pD1H0t1p9+Mm3vWlae5gnj+922
+	T1RVN9db1ftKWDhZacwCUXnHdMi3GV2JZd+I0DghuZSHnq2V6IXWD1wjGq31vU6RkyrC9aiZ7oD
+	ph/aUObBsoLDAWNfZ99KyvwDaCwKgklFhj2/pezemTx251qte8HxHJt5td507tbmuiU+BjNaKrY
+	TswmckRigsbloLhGGAB6GJ7CKDAl4I+tm+JHVICSlW1DyvjUGi2a/7SHzbVh05MmaW9HBW0Rob7
+	s7Wi4XPvQFHud8RBTos4CH8VozJcddr6rmtOKTFC025wjfE6s32bSp7J5kr/QpA5P0ytJwpVZjv
+	syClTD1sSg==
+X-Received: by 2002:a05:6830:82be:b0:81b:8032:716d with SMTP id 46e09a7af769-82acf9ac9c4mr5132412a34.20.1791422045501;
+        Wed, 07 Oct 2026 18:14:05 -0700 (PDT)
+Received: from com-75606.corp.openai.org ([199.47.143.7])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-82adbdf42f1sm5179099a34.8.2026.10.07.18.14.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 07 Oct 2026 18:14:05 -0700 (PDT)
+From: Kyle Zeng <kylebot@openai.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	outbounddisclosures@openai.com,
+	Kyle Zeng <kylebot@openai.com>
+Subject: [PATCH net v2] netlink: avoid hashing the network namespace pointer
+Date: Wed,  7 Oct 2026 18:14:00 -0700
+Message-ID: <20261008011359.63727-2-kylebot@openai.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +75,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] dt-bindings: net: Convert HiSilicon hns-dsaf
- to
- DT schema
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179142121202.3755089.14103764017703102353.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 01:00:12 +0000
-References: <20261005202808.1982164-2-robh@kernel.org>
-In-Reply-To: <20261005202808.1982164-2-robh@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
- shenjian15@huawei.com, shaojijie@huawei.com, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+The netlink rhashtable key includes a raw struct net pointer and a
+user-controlled port ID. Both /proc/net/netlink and socket diagnostics
+expose the table's bucket order. By binding and rebinding chosen
+NETLINK_USERSOCK port IDs, an unprivileged reader can distinguish equal
+buckets and recover the low bits of the Jenkins hash. Its 32-bit seed
+and the limited set of kernel-image slides can then be searched offline
+to recover the address of init_net.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Use the namespace's unique, non-address net_cookie in the comparison
+key instead. It is assigned before the per-net initializers run and
+remains unchanged for the namespace's lifetime. The lookup key and
+object hash are still built by netlink_compare_arg_init(), keeping
+lookup, insertion, removal and rehashing consistent while preserving
+namespace separation. Neither public table walker needs to change.
 
-On Mon,  5 Oct 2026 15:28:08 -0500 you wrote:
-> Convert the HiSilicon hns-dsaf binding to DT schema format.
-> 
-> Drop 'phy-handle' at top level as there are no users. Add undocumented
-> 'media-type' property.
-> 
-> Support for 4 'reg' regions is dropped as that has long been deprecated
-> and there are no known users of it.
-> 
-> [...]
+Reading the socket's namespace cookie in netlink_compare() is safe
+under RCU, including during namespace teardown. netlink_release()
+removes the socket from the hash table and defers its final put with
+call_rcu(). cleanup_net() runs the per-net exit methods and waits for
+outstanding RCU callbacks with rcu_barrier() before freeing namespace
+storage.
 
-Here is the summary with links:
-  - [net-next,v3] dt-bindings: net: Convert HiSilicon hns-dsaf to DT schema
-    https://git.kernel.org/netdev/net-next/c/3917a13917e6
+Unlike ns.ns_id, net_cookie is also available and initialized during
+setup_net() in older stable kernels, making the change straightforward
+to backport to v5.15 and later.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Fixes: c428ecd1a21f ("netlink: Move namespace into hash key")
+Assisted-by: LLM
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+---
 
+Changes in v2:
+- Use net_cookie for compatibility with older stable kernels.
+- Name the key field net_cookie to avoid confusion with netns IDs.
+- Explain the RCU lifetime of the socket and network namespace.
 
+ net/netlink/af_netlink.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 9fdf964224ab..39db078c925c 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -464,7 +464,7 @@ netlink_unlock_table(void)
+ 
+ struct netlink_compare_arg
+ {
+-	possible_net_t pnet;
++	u64 net_cookie;
+ 	u32 portid;
+ };
+ 
+@@ -479,14 +479,14 @@ static inline int netlink_compare(struct rhashtable_compare_arg *arg,
+ 	const struct netlink_sock *nlk = ptr;
+ 
+ 	return nlk->portid != x->portid ||
+-	       !net_eq(sock_net(&nlk->sk), read_pnet(&x->pnet));
++	       sock_net(&nlk->sk)->net_cookie != x->net_cookie;
+ }
+ 
+ static void netlink_compare_arg_init(struct netlink_compare_arg *arg,
+ 				     struct net *net, u32 portid)
+ {
+ 	memset(arg, 0, sizeof(*arg));
+-	write_pnet(&arg->pnet, net);
++	arg->net_cookie = net->net_cookie;
+ 	arg->portid = portid;
+ }
+ 
+
+base-commit: 602042bf29f6efde39cfb5fdd9289bf4854bc0c5
