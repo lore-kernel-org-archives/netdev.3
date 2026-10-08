@@ -1,94 +1,83 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D2422A4F1
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:28:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AD239B4A5
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791426522; cv=none; b=MetprWrhcWp0fBExnoGX9r68K/lneCDdns14qNLqPrApd8avEhMzRVBrqmVIHdyywhJfjbPKqpSGFphlDix/xgQyqVtEb7lMtHqN8buXImHIR0vfoqBmLnnzccK42noycTZXz8MT/ylneNoaWj4FvjvvwRn/g+FROT0RqE6yhU8=
+	t=1791426527; cv=none; b=CwC0TnyEOK5bNRg9hYBLXFNi1cKFwXq0ip4sjRU2+QJ3yybt1chDY6IWk9aXzy99JQ9VG9rLyn8Ox1yetwRTA55HJ1GU6xOPoBMDtvzO6a2Y6IO5HiDYMAaBv6Jtq16k8LHsykK3IHUNZ07fTxV71I9odpw4JDyWRUwd+iJE++A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791426522; c=relaxed/simple;
-	bh=pJCcvTykfNBX4OcOIfs+L/ELsHjM37PhVPLQgZLGoKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QWg9BDTy8gx1dNZDY4Zg3wr3ElbLunU4LEXt0Ccb7z5OoJo86tjgfn5hddUouZHH5lLl6yxZg4ZppHchSX0WPjSJEq9vP90xO/hTPtCNqzn0PSAeldwgDxzbc79cxqtyhX3GzYHG3tgsmyaNZPzzdK++LF0SmeZPhmp2dVclzxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g8bUAgYv; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1791426527; c=relaxed/simple;
+	bh=+qqYMONCE9zfOaSUDVMRLMJoba1FPx7keJ8McEB6vg8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HLNvdT7sWgPQU3nFgMsSXlD8qvbeis8Qr+TEbuvfHPz0ODfZahMqVB43ZX8C37fZu2eHPdWd/LKSL5KFIzqZYKdPAvsSVt1DQfdDTkLY+xWwviuuk8FLu2USnVw/2MkjXIlooeIXZ+LLriFgDA0v3eDwgE3dLzrUWS2mUYL6i2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bf4LQfwi; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g8bUAgYv"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2dfa54c8ccfso1488035ad.0
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 19:28:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bf4LQfwi"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2e4c080a472so22394445ad.3
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 19:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791426521; x=1792031321; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MwahjYlmNg5Sb7TImh0bCwCphihNsrlCradydgL/hSk=;
-        b=g8bUAgYvUY1cSrIHQrLmGj+aXyvUoFGrUvIxL3wjuZUcVPMm3KveIridAPoFndt5j+
-         e9MZm6s0KPBSoA3TMFYwaO1kHW7fKmV+BNOFq3mf3pUDN10xFjyn0rbRQ5u9YnP5uZWn
-         k5aayMHWYgtP1ipgTAS0uYIWi03aEmP9yTs7KAs3kAHynoFFsbSGBLY0MKVtlA5Pp0Ll
-         yZGyzQ9lQ7+Sqq1mIpYu8rxO9q30qXeiazn95KtSPnzQSxhXHicDCdXaKKWN1yVzxKjP
-         zI4SVmdtXg0LFrJTdTBpseYiRcTYNqU8SO+fJIoVLaREL5BTigklrzzWFqgx5q8/hAFw
-         u6iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791426521; x=1792031321;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1791426525; x=1792031325; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=MwahjYlmNg5Sb7TImh0bCwCphihNsrlCradydgL/hSk=;
-        b=fvc0qFTX8z5PehKUwRMd9BPEK4EwevmOyYAnUBz9FZTE0fCZRMNqrdxs+Jo1zs49Pi
-         aJVMK29bs7b7zd47ll4MkaR2kkPngn/w/IO7JGzcJpZuatB9mjuj6pjI7E+MWOZd+KhA
-         YKQDFicgzn7WbY3ADOv+I/QtC4kK71UaZOABeZFQSGEAuoyuTA3PQKtUPYglG0Ws+22j
-         rv+Y/gPieZBGKE640K7yo/hiZtqq/0aPtGfKCj4ATZIkyg3AQ8NBH5iK5P18LjSAXA+V
-         02Z8oFi/b53uP54oHGdI+WN6pCjzYgcouwJUJdWTCU0F/35W06Smsw13KJhOoBiv4+0E
-         vPvQ==
-X-Gm-Message-State: AFq9FYL+umx4BYfEitfSz6fgVHtPIJHotUi6/EXm6jIoxJ01NSIaa+qB
-	6e6rSZz7gbtoYeO53/wpWBPF0uIaYlBhknU+ji04UKgMVrSjKbOAfAlSVKH7G+gKz58=
-X-Gm-Gg: AYBFou1YRPUqAGKARi4ha21WS7KVXfu347Q92fV7Sz0+rK4dls/LkSMQMvXk3tBITOQ
-	A9mhDjbw5K3VD5bbB0hMhNPZrckHtY9mEoiOTP7s4wgkt/xyddwOMQFSTDK9jJvsQPJVwK23RRD
-	OlesPE+ca01xeBXxoYHJw/0WuvojoRRZa75suZzgWpQqvIt7xc5PAdlnirm87iIqPTm7Aowg1pc
-	CdzwUxNpGoYXjWVm3TXMN6xLPm/+91vtme8rEJKDCZFuECwo6SW/4oSq8k38fkOxyXb5qlUU3yI
-	cDODB5CnzCyisch842MWWb/9YQBE1Eb5SMgrcKxiKlBxHj76pNWPd60agCV3ocOmF4/vCLcm4Zt
-	NPBBM/lGerMyT0NlhMAvKJhsc3kbnC25J8RLPMxMnQSw4KJs59ldEsW+A7CpGrZBRV3pm4zF52X
-	lxWqzY+T84wmiq2N+xVAknPiy6y5DV7Ud5SSCCS+YAuv4Ab9FhEL83MW+lSfIjxPbFXModIbIHB
-	TUMpNXErDW2eQKhARfQ7pEM1A==
-X-Received: by 2002:a17:902:eb8d:b0:2df:375f:b7ee with SMTP id d9443c01a7336-2e7ffde9b3dmr5405065ad.18.1791426520826;
-        Wed, 07 Oct 2026 19:28:40 -0700 (PDT)
+        bh=fG18jr14L6KnLKy695S6jSOcJe/N8x7hOQ//xht6kkk=;
+        b=bf4LQfwidkS1+pTLIX5gKW+zRTPfvbcyL3bj5gZhxOQkqRF0/NFTWN15xf2SqT4m3G
+         ZHzjM1p9nbbV0gXk2E05dQyVsDHoJFZJy+JDMCs+FsZjD6o8k1PRV5w2IcmAtRBHd8jy
+         K26ll00fDUFS0bQwKSegVcZKlZrTSZTNIi0wiyWHfkkXYti27S5Mo0yLqEywDupfI/qw
+         RWdeB22NIUmZBlJTgLkebavJASu1Dz1nLSQP2cIONBG9Y77VoTGgmKRdpxPXkJnIjYSF
+         Fgf26y8xYdBF8XF6cuc0d92LrlJrGk3HFGcptSXYfqe/K+jP4/g1O+/v+SJWpDDXBtw1
+         Wu1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791426525; x=1792031325;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fG18jr14L6KnLKy695S6jSOcJe/N8x7hOQ//xht6kkk=;
+        b=VJ0rqg2C6456++OwVwbc2Gtfu4xCs+ck6HIUt47sTkVUqmMLWIB6KnubQqVOYgopkb
+         XohzeFaBwfqIyiI/B76g/VYsHv3tqdyqtEhg8WuniDoZ6x+VOb+hyJ0Kr5fiYLJzcC+A
+         Z+pEX4hvPfE6WhKGLhymaTWX3dAB2JOLnAsWXSrfO8kFN2cd+hA8TWn6BeqjDkedfmtg
+         IDl3i7EDpUc5jsesOV8qDw2beoi8dQ4XeO+A33JSiz62YK9unKdoWhNNQJ6MIOhHLv7D
+         JtNF9gmY5eKJ6U9EnEGlE7D5yyRd/n59PxnP3qpx1HnuCXXw1GBZyul/n19ED7v7CNqx
+         svyA==
+X-Gm-Message-State: AFq9FYL/kaOHmxqeIWM7gZABKl1j2FlDH9YLpGmK6b6OdKeYDWIhOzei
+	+y7QCkg2qyN5jn5Cm9vbFP4au5sks0V02NN4F6rNJSKnVoxZuhlbx74No8eTghiU
+X-Gm-Gg: AYBFou1d59Tc3yWTjkRmReRydZZnl1WUukgiT6e0t9sMseJueJIc4TgyCQhg9y7vVQB
+	pQJrkDOC87yp78lg2MP0EdI4fmxlXEGvU6TX2oihQDEEnTudgjyvkDIo2zc2L+KAEoRMQQLRZfD
+	hO4R2puHcpNllMDZJcncEFYNyEE3LA+JiI/5zqVF0ELlwluB/OM6WwLlD4MVOiICYz6tpRJ5poh
+	vk4Ml5zjY6+l9Dgf3QSz8tJKkKoq7hFg1THTOXNU3uJltHC0/R9XkkpWOQud/XEs8bUkkpDzVPM
+	9FTjVQ4uqaj9fpHN43+fhN22r2z8IEZsnvoUyaHnIqy7R5LBbyJXPUTBGcVibNRC4XSlJkUYXuM
+	dBql+NQBY46Vev+TD30FII88025wwZxlPaAbc6uCfzx3XWzZTUcvB1s215yMWHiOkgnJwkeLsGr
+	zgLB9iQJ3/+AqlbHONAMGpnezR8ck+PEfsN7R5iVEHoHjR72xcx8n9/tV3XOlcMpHZHhZeAkpKa
+	vNzwE/Tdp8par2UEMS2OJoTQx8=
+X-Received: by 2002:a17:903:2b0b:b0:2dd:ad73:c93e with SMTP id d9443c01a7336-2e6003c0633mr35463525ad.31.1791426524768;
+        Wed, 07 Oct 2026 19:28:44 -0700 (PDT)
 Received: from d.home.yangfl.dn42 ([2a09:bac5:661c:1246::1d2:d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e60482cab0sm18045865ad.50.2026.10.07.19.28.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e60482cab0sm18045865ad.50.2026.10.07.19.28.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 19:28:40 -0700 (PDT)
+        Wed, 07 Oct 2026 19:28:44 -0700 (PDT)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	=?UTF-8?q?Andreas=20F=C3=A4rber?= <afaerber@suse.de>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Ciprian Regus <ciprian.regus@analog.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Parvathi Pudi <parvathi@couthit.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Mohan Reddy Putluru <pmohan@couthit.com>,
-	Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
 	Nicolai Buchwitz <nb@tipi-net.de>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-actions@lists.infradead.org,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 00/10] net: Move setting of netops to fix crash
-Date: Thu,  8 Oct 2026 10:26:42 +0800
-Message-ID: <20261008022656.3592191-1-mmyangfl@gmail.com>
+Subject: [PATCH net 01/10] net: hisilicon: hisi_femac: Move setting of netops to fix crash
+Date: Thu,  8 Oct 2026 10:26:43 +0800
+Message-ID: <20261008022656.3592191-2-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261008022656.3592191-1-mmyangfl@gmail.com>
+References: <20261008022656.3592191-1-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,62 +86,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev()
-locking assertion") put a netdev_need_ops_lock() check on the
-phy_attach_direct() path, in phy_link_topo_add_phy(). With
-CONFIG_NET_SHAPER enabled netdev_need_ops_lock() reads
-dev->netdev_ops->net_shaper_ops, so any driver that connects a PHY
-before assigning ndev->netdev_ops now dies with a NULL pointer
-dereference at probe time. The breakage showed up in v7.3-rc1.
+hisi_femac_drv_probe() connects the PHY before dev->netdev_ops is
+assigned. phy_attach_direct() -> phy_link_topo_add_phy() reads
+dev->netdev_ops through netdev_need_ops_lock() since the commit in
+question, so probing crashes with a NULL pointer dereference when
+CONFIG_NET_SHAPER is enabled.
 
-ibm/emac was hit first and fixed by commit 7c9f391ec89c ("net: emac:
-move setting of netops to fix crash"). These ten patches apply the
-same one-line move to the remaining in-tree drivers whose probe path
-attaches a PHY before filling in netdev_ops:
+  phy_link_topo_add_phy from phy_attach_direct+0xec/0x37c
+  of_phy_get_and_connect from hisi_femac_drv_probe+0x1f4/0x558
+  Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
 
-  1. hisilicon/hisi_femac   (crash reproduced on hardware)
-  2. hisilicon/hip04
-  3. actions/owl-emac
-  4. adi/adin1140
-  5. marvell/mv643xx_eth
-  6. amd/au1000_eth
-  7. ethoc
-  8. aeroflex/greth
-  9. ti/icssm-prueth
- 10. microchip/lan865x      (attach happens inside oa_tc6_init())
+Assign netdev_ops before the PHY attach, as was done for emac in commit
+7c9f391ec89c ("net: emac: move setting of netops to fix crash").
 
-Only patch 1 was reproduced and verified on hardware; patches 2-10
-were found by source inspection and are neither build nor boot
-tested.
+Fixes: ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() locking assertion")
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+ drivers/net/ethernet/hisilicon/hisi_femac.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Note that ti/netcp_ethss and cavium/thunder_bgx attach a PHY to
-netdevs that never get a netdev_ops at all (dummy netdevs), so they
-cannot be fixed by reordering and are not addressed here.
-
-David Yang (10):
-  net: hisilicon: hisi_femac: Move setting of netops to fix crash
-  net: hisilicon: hip04_eth: Move setting of netops to fix crash
-  net: ethernet: actions: Move setting of netops to fix crash
-  net: ethernet: adi: Move setting of netops to fix crash
-  net: mv643xx: move setting of netops to fix crash
-  net: au1000: move setting of netops to fix crash
-  net: ethoc: move setting of netops to fix crash
-  net: ethernet: aeroflex: move setting of netops to fix crash
-  net: ti: icssm-prueth: Move setting of netops to fix crash
-  microchip: lan865x: move setting of netops to fix crash
-
- drivers/net/ethernet/actions/owl-emac.c          | 3 ++-
- drivers/net/ethernet/adi/adin1140.c              | 3 ++-
- drivers/net/ethernet/aeroflex/greth.c            | 3 ++-
- drivers/net/ethernet/amd/au1000_eth.c            | 3 ++-
- drivers/net/ethernet/ethoc.c                     | 3 ++-
- drivers/net/ethernet/hisilicon/hip04_eth.c       | 3 ++-
- drivers/net/ethernet/hisilicon/hisi_femac.c      | 3 ++-
- drivers/net/ethernet/marvell/mv643xx_eth.c       | 4 ++--
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 3 ++-
- drivers/net/ethernet/ti/icssm/icssm_prueth.c     | 3 ++-
- 10 files changed, 20 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/net/ethernet/hisilicon/hisi_femac.c b/drivers/net/ethernet/hisilicon/hisi_femac.c
+index d244a40df430..016605e86f0b 100644
+--- a/drivers/net/ethernet/hisilicon/hisi_femac.c
++++ b/drivers/net/ethernet/hisilicon/hisi_femac.c
+@@ -830,6 +830,8 @@ static int hisi_femac_drv_probe(struct platform_device *pdev)
+ 		hisi_femac_phy_reset(priv);
+ 	}
+ 
++	ndev->netdev_ops = &hisi_femac_netdev_ops;
++
+ 	phy = of_phy_get_and_connect(ndev, node, hisi_femac_adjust_link);
+ 	if (!phy) {
+ 		dev_err(dev, "connect to PHY failed!\n");
+@@ -850,7 +852,6 @@ static int hisi_femac_drv_probe(struct platform_device *pdev)
+ 
+ 	ndev->watchdog_timeo = 6 * HZ;
+ 	ndev->priv_flags |= IFF_UNICAST_FLT;
+-	ndev->netdev_ops = &hisi_femac_netdev_ops;
+ 	ndev->ethtool_ops = &hisi_femac_ethtools_ops;
+ 	netif_napi_add_weight(ndev, &priv->napi, hisi_femac_poll,
+ 			      FEMAC_POLL_WEIGHT);
 -- 
 2.53.0
 
