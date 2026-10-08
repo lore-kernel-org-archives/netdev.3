@@ -1,88 +1,164 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDA64908DF
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799F4497B81
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791463710; cv=none; b=iitSC34h5oAHFW65efl4+4UBAVrarzX+eMbYWS2VezBQblENYBiqcgv+4YilfIbgT41ygSR4hCVusXJfWQZSnRvQSyD06bTLSuu8h7zs2WPWteD1kDzz2wN3KP6Z5WUjQ6n6RVdMv2Fck0drD2ExusULfr/WnG3ZjL1hZSL6Fq8=
+	t=1791463789; cv=none; b=fvb5oiGBD/+5aXSeiVI0IJsRfNoCz+1/AY7PUjOknUEs+nAyXzRVNQXzA/NdhbkTw1Hszf1xe2eUMGiKXJlERx9hS0fGo51/qVobe+RSCHsM1mV+paVoju01qEYBilieS+OjK1aNx/Sjj20zrrfo0HVO53DkyrcnIgf3giU/hnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791463710; c=relaxed/simple;
-	bh=0qVZtYkdvaSfqGduovy6JP1HIfFfoNJIptyO8s7H45w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hYrBGsq+/Fe0WZoK+HkdSrBRtSGNixKPMwkddoi406V/k+fTzocIWeRDZwboiUyhVQk05EQseG4HFV93Cur1DcX9vtG5R+T3kkH/lNa6KO4aaxhA63hAzzUlDsXFVeDopv0+srceqdYVBysas02oU0adhjm9ckDlVidoLmdVmYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpV1eMLI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791463789; c=relaxed/simple;
+	bh=B8O4UyYWgKHjCyiEvWQaDVeXppuTnbg4pu4xhsW+PqI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=afRFbSr56qxSdzDZDAHjVIsSEuzN5zwkIeGVUaSgjPsYse1memxyIFkwKzRKs0x8jYp1ttSS2T4oRDK2fbFFKJck24Wu5gggX45ihZL52prFgKb+pBNhDL9+a/D1n7KIldvAMEvs6hJnWRt933FqJlX82oKixkT8G9VT3b7SSGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=QU2PqQAX; arc=none smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpV1eMLI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD1E1F00893
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791463708;
-	bh=0qVZtYkdvaSfqGduovy6JP1HIfFfoNJIptyO8s7H45w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LpV1eMLI0QnNGCXbQX9y50FCd+ZCJOzTO0NQioPZ/+pso267rsXVJF3x3LGehnYW/
-	 K7kdTwX/eTK24wodE81ZTLSeiZcv82V+BYt56Wl5g1OlZr+cTTCQU2/lO24CPBat2i
-	 YYPjV28cEbIq+mpkGjxOJ6AelcV1pZMspAxNEJm8SxcequbLBqa+qhyX+vS/TGO67B
-	 XkBNLCRVFxuo4RlxqXFH9bqtEcWoiOIUzTnyNb9yKBD8aaM3STk9/21F0ZoFtfvbO2
-	 MEccLa8o9NKsqS872XPuGLpIrFsBx2sIWrExRNxEBLGhP/5shAB6TTQV3+4xpissYK
-	 qVD28ouH0cp4A==
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-46556b9e02cso464911fac.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:48:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy/30Jzt8MzZIAT3/Cg7BIoUlFJO3xclJeY8y+YfeqU/26NdcixFsZw8/986CNH4GMWq75KQlk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXx1xEu7EXzOCjmr2B4wkAjg7jPI0wRFAoAb/ywdRZv3Ukn0Lb
-	yJM/okfqkCqU9D3pRFfV5TI4mSbazSv7CTTXSWT8qOZM1mHXgALjgRAqL4Flt8os+cYdfocBhJm
-	P8kdrDd7bykvVSPJ0QW2ag0JjYEPn1Jc=
-X-Received: by 2002:a05:6870:e997:b0:48f:a8b6:19d3 with SMTP id
- 586e51a60fabf-4a28045b5bemr1459726fac.2.1791463708287; Thu, 08 Oct 2026
- 05:48:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="QU2PqQAX"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15354aa70e8so1572025c88.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:49:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=octane.security; s=google; t=1791463787; x=1792068587; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Aw49x50i74crGqe52PxPoi4v9QJFpR0yZ1MGPQQ+JH8=;
+        b=QU2PqQAXbY0/Xx88zUSVelSV7Hcx4Ugt71ZgsD+PMsQkp3+EgDS1kUlbJ1M7441+W/
+         ewXvtSK15+rVc1OHtXG+kNoqYAAfPKkLZNQ60c7HDqAiD58dewNM5/0TxaxdKT3oVtnm
+         EEFUxmEO8CHMUVwRP7gMoEINkYVMXCLe+4wV4SCE4SwCHLX4SmS5Cg0lcmy3SWAK0vuS
+         1+a/xPMnq1sNJ7Zj9it1e7ZiO9NUkq17/99Ifk0UQ56II6xpueZ3V0OY2pRTxNnsACZ1
+         Z2j/K9IYT65Uh8WfHr5QMB51J4bFfGbWryCyFTmZQhcQwosV20DAGXhRNCRdJYdW39Sp
+         i69w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791463787; x=1792068587;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Aw49x50i74crGqe52PxPoi4v9QJFpR0yZ1MGPQQ+JH8=;
+        b=Ry5Bk4gQpZj9tTJm1dldBW8LzZaN7OrVlWkn1SYybWLhDcOFL4kZPFXcrSpw1lCluw
+         lWx7LQs+eY4c70y85U1SvryhsNlDnKmOUUcmiCiYvfqeku/r+3n7CAUQfMb2zinzfIkp
+         YYhx7JDaWyhIvwrTTNJClAiNx25SmG3wQo1QWkGMDByg3jtOsBaPcfQ97LQNK5zkCVRz
+         1JR3vY5hBq5RrfPQ5N3Mzy1a34fZ/jVbhEhB52PsN4ZfAuHSSWk0oi7nmXBOxZH/VLkl
+         vQCghOGX/Uj1yu8ysbIWDM+dv+WD7+qKdC4yn6wEVk7du9Zw5Y2YWnQEVjlcMjfhP73z
+         rl5Q==
+X-Gm-Message-State: AFuF++lVSAbuWM0BBfeM1bd8b5Ae8FBQVwqkAL/d+jU+DbxATzh4twDn
+	DclfSwm1j2vE3Vo/IPTTtnkH8ucptlIhgSaro0qDDdYCSrmD0aXwFBoA1jSl1KbPQpVI1nEcyB8
+	eysLo
+X-Gm-Gg: AYBFou3oBDWvn8rYlXrDLn4cjQAMuWHhugpVdwh0TMBxgzp/Oscd/KRZ8OdGdGvOeuS
+	wsvfPJmngJWmctXYU69bYyH4UrUeWvuy1TmQRZhspGjg4UzB7HothwTACNGxDSEyx/3tHxSzZXj
+	97/EO8h6Gry4zTwARAUH0dxxG9Jsz4PB2/Mj7shJL9J24+VYVCM2qINUX2lWTWwf542kG9vj9N1
+	4DbA7ZeYzK528kHVDjoHpUc2u3L+NnnXbOJcifYAnhABzE09s5aaSVu8kp7ZtpqxTpN/AWeL/NY
+	0gFuaLZ/1kuPMxh1RCReB+dsXPjzvmgmTiTQiTKxmr9mgFBkL3ky6WG88RhdyUO41OXfNOT8Avc
+	L0V5KHIXGWouydNaBuYymMgkPnyPQaRDBXv5vLBzdLYvICaynj0iUqr9XOqCB2ks7uAiGgLqupe
+	MbTSEckg3UCAyHqT79RZpJoHAIRiD5Tk/xsDCdKBOlt4KvyjhLQRMqanvAgolQENS6nPhXQuzjK
+	iJPhuPFDuOxNvmVFpDsYXdLMkOOvUc1pdr7vTtWmedk3E1N5ZJJ/JDHP9A6NsJfoD+nZA7uib78
+	7JAOOAhfUpk6Ow==
+X-Received: by 2002:a05:701b:2419:b0:168:3243:c911 with SMTP id a92af1059eb24-1683243ccb8mr540174c88.37.1791463787193;
+        Thu, 08 Oct 2026 05:49:47 -0700 (PDT)
+Received: from localhost.localdomain ([103.207.175.177])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1630180f6a5sm11100896c88.22.2026.10.08.05.49.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 08 Oct 2026 05:49:46 -0700 (PDT)
+From: Shubham Antil <shubham@octane.security>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Cc: Allison Henderson <achender@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Giovanni Vignone <gio@octane.security>,
+	sungbyeongchan <tjdqudcks0424@naver.com>
+Subject: [PATCH net v3] net/rds: ib: zero the unwritten tail of a short receive fragment
+Date: Thu,  8 Oct 2026 18:19:40 +0530
+Message-ID: <20261008124940.13371-1-shubham@octane.security>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
- <a6193df2-98f3-409f-b73f-5b91835a0107@kernel.org> <CAL4WiirwF6bZwocErCthJ+TUu7wipRfSibRBoKWjjkA2nVSrqQ@mail.gmail.com>
- <CAL4WiiqSmW093PDngLrUNiNA5GVKeM3+tAO7KMDJeyjYZ7GRzg@mail.gmail.com>
- <4c98eff5-c8c7-43ee-b59a-adb833978816@kernel.org> <CAPa5EdDk+HuVP0H1+iqOcHDHZnfdika5WOQcgSaMtfRFWzqZ+Q@mail.gmail.com>
-In-Reply-To: <CAPa5EdDk+HuVP0H1+iqOcHDHZnfdika5WOQcgSaMtfRFWzqZ+Q@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 8 Oct 2026 14:48:16 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipSpufpdo-AWoNEJta-puLQ5hMyPn2xcjwg4vg67PNoyA@mail.gmail.com>
-X-Gm-Features: AclHuK_D8yngICniNIB7imCy2NJMcxGSlGHrPp5HcoKJPk8-kK9ST_uLJsCbP9s
-Message-ID: <CAL4WiipSpufpdo-AWoNEJta-puLQ5hMyPn2xcjwg4vg67PNoyA@mail.gmail.com>
-Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
- VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
-To: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, nic_swsd@realtek.com, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 8 oct. 2026 =C3=A0 13:35, Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz> a=
- =C3=A9crit :
->
-> Hi Eric,
->
-> On Wed, 7 Oct 2026 at 00:00, Eric Dumazet <edumazet@kernel.org> wrote:
-> > Note to testers:
-> >
-> > My LLM agreed with the change in vlan_dev_hard_header() (above), but sa=
-id
-> > that no change was needed in vlan_dev_hard_start_xmit() (below)
-> >
->
-> I'll need the patch applied to 6.18.y for testing, as I can't test it
-> personally and I want to provide testers with the same kernel/system
-> version as before just with minimal changes. So do I understand
-> correctly that the patch below is what you want to get tested, no
-> changes in vlan_dev_hard_start_xmit()?
->
+rds_ib_process_recv() accepts an RDS/IB fragment once the receive
+completion reports at least an RDS header, and then trusts the
+header-declared message length h_len: rds_ib_inc_copy_to_user() later
+copies up to h_len bytes from the fragment pages to userspace on
+recvmsg().
 
-This is the current patch under review :
-https://lore.kernel.org/netdev/20261008123812.554729-1-edumazet@kernel.org/=
-T/#u
+When a fragment carries fewer payload bytes than h_len accounts for, the
+bytes between the end of the received payload and h_len are read from the
+unwritten tail of the fragment page.  That page comes from the per-CPU
+receive cache and is not zeroed, so recvmsg() returns stale page contents
+to userspace.
 
-Thanks.
+Zero the unwritten tail of a short fragment page on receipt, so the copy
+can only ever return received payload or zeros.  Fragments that fill the
+page are unaffected.
+
+Confirmed under KMSAN: without this change recvmsg() returns stale
+frag-page bytes and KMSAN flags an uninitialised copy in
+rds_ib_inc_copy_to_user(); with it the same over-read returns zeros and
+KMSAN is clean.
+
+Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
+Reported-by: sungbyeongchan <tjdqudcks0424@naver.com>
+Closes: https://lore.kernel.org/netdev/20261006205204.1322102-1-tjdqudcks0424@naver.com/
+Reported-by: Shubham Antil <shubham@octane.security>
+Reported-by: Giovanni Vignone <gio@octane.security>
+Reported-by: Robert van Eijk <robert@octane.security>
+Reported-by: Paolo Gentry <paolo@octane.security>
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Shubham Antil <shubham@octane.security>
+---
+v3:
+ - Zero the unwritten fragment tail instead of dropping the connection.
+   A zero-copy send with a small iovec segment can legitimately produce a
+   non-final fragment shorter than RDS_FRAG_SIZE, so the v2 length check
+   could force a reconnect on well-formed traffic; zeroing the tail avoids
+   that while still keeping uninitialised bytes out of recvmsg().
+   (Raised by the Sashiko review.)
+ - Drop Reviewed-by, since the approach changed.
+v2:
+ - Add Reported-by (sungbyeongchan, first to report, and the Octane
+   Security reporters).
+ net/rds/ib_recv.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
+index bd6cb3ffa..9695c7f24 100644
+--- a/net/rds/ib_recv.c
++++ b/net/rds/ib_recv.c
+@@ -35,6 +35,7 @@
+ #include <linux/slab.h>
+ #include <linux/pci.h>
+ #include <linux/dma-mapping.h>
++#include <linux/highmem.h>
+ #include <rdma/rdma_cm.h>
+ 
+ #include "rds_single_path.h"
+@@ -949,6 +950,19 @@ static void rds_ib_process_recv(struct rds_connection *conn,
+ 		}
+ 	}
+ 
++	/* The device wrote only data_len bytes into this recycled fragment
++	 * page.  Zero the unwritten tail so a later rds_ib_inc_copy_to_user(),
++	 * which copies up to the peer-declared h_len, cannot hand stale page
++	 * contents to userspace.
++	 */
++	if (data_len < RDS_FRAG_SIZE) {
++		void *frag = kmap_local_page(sg_page(&recv->r_frag->f_sg));
++
++		memset(frag + recv->r_frag->f_sg.offset + data_len, 0,
++		       RDS_FRAG_SIZE - data_len);
++		kunmap_local(frag);
++	}
++
+ 	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
+ 	recv->r_frag = NULL;
+ 
+-- 
+2.43.0
+
