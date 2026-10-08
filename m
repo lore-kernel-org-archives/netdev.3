@@ -1,290 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C5648CD50;
-	Thu,  8 Oct 2026 09:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FB34749F3
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 09:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791452418; cv=none; b=bnVKROrEJstVOp/q0h6/ihi7LmzHt6+gVRitLbbOrGq16UbI5OJ+auA6Nb8VVaaa6y/Aj5LeSYVywCrUHey4p9l8aQCzIy9bTZdkReI2Vfv3m8do2glq6UeTFi5JpsRS+d4yZ5L9a6dajlQfGBfcvCJ9ghSnIVjjmH88F4A0P/Q=
+	t=1791452921; cv=none; b=ZZ+CbDyOEPX/IrbjYorwcp7XtheqdcELwx5Q0C0z3B3SgK10xptyEisN0UTdsTac94JkmbKervtLaCrpK7SMMCLqAeafYulSIBwQ2Tob1MbVRmWh9AWc6/jLhfh+ENcYEXoqm6RE5/8J8Ar75b4iiuL6ooYVRGTOU2HHhqp1Sgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791452418; c=relaxed/simple;
-	bh=ifHSObE8O9BYkkBoN4HrHeV1JF6y2jVafybfihz3ZJ4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VHr7VyXA6E4LbLznpmZpl969JJ15nAEVwhmHfzlx3AUW6gmzxU9aNZs+YxmO/CznkLHG0sa1bftKKOT1M4ZT0HZX8cOXH80ASRnS9Iw8UT22eRPSVrU3OGciTNecNxKSSGGeFmA3tjUkmPrGaLL7kIOOI9Jl8Y1bI0egtDuGEps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKSPB68z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791452921; c=relaxed/simple;
+	bh=YRGYay7QoG29PFapg7AmLs4zCXRLS0ZSDJ4BjJStC8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z+zimmOunbffqdThiWCmim3uozyOLur8Y2irYYIyHpFgY/EHJcVk1wIxu+txurfCEtK9Tr7jqYtMFdeZBne77Jkya3TAEZRSawiklyhEMMRB6VFF51Kq0A2PZhZArQRmsWV9yCH27OPbVVbEAL6pktom3ckgsq3Kh6xVFxEWJ9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h1BBfBNs; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKSPB68z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5341F000FF;
-	Thu,  8 Oct 2026 09:40:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791452416;
-	bh=QECDrhyO2SRT7dWC4GJ9AXoE3hWRnyFkFCJDPpfrh+g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FKSPB68zclMN7RYAV+hPKr/bl9XazhnkHafJCjnGhVNcJma6Z/ZH934v217X3p1OB
-	 BDRmaR8S6HlbzsN6nevJpyrdTSjvrSoLz4TwJG7VrjVq83vC0EfyIc7G1OQxy6kYTK
-	 c5t9rk64lmwNfcTswBwxYyCT5opgE99uxLyVD0nDGmmFnjFzVGV5FmT+vyW10AaDsd
-	 o6EBe5obpvDT8zuR0yo/W582qyGTAUt13qi+lXmAXOATc6+bPLRVwg0JaSKzSaAeHk
-	 m2WoG5tayf9wqqgzURGo1UMxfk5LsU/aQhg2p2DeWvPVIK8VXW/J8q4szcqUT3T1Iv
-	 CwmGLhtWjuN6g==
-Subject:
- Re: [PATCH net-next v3 7/8] net: bcmgenet: allow the MTU to be changed
-From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
- pierremarinleclercq88@gmail.com, f.fainelli@gmail.com
-Date: Thu, 08 Oct 2026 09:40:15 +0000
-Message-ID: <179145241567.434549.11505841771363424901@kernel.org>
-In-Reply-To: <20261007-nb-genet-mtu-nn-v2-v3-7-74a796c019ce@tipi-net.de>
-References: <20261007-nb-genet-mtu-nn-v2-v3-7-74a796c019ce@tipi-net.de>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h1BBfBNs"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-141395927feso4464505c88.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 02:48:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791452919; x=1792057719; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7xX55VUfzLKlrT3hfK4oyi6LOjpzbgNl+xyMCeoTYMs=;
+        b=h1BBfBNsS6+cQQXj6uc4K3Hoa4/m/+bnhiJt/SBzgCRFlCQacrWUXg0R7NKndc/6xG
+         e6sMHqUBZhVW/UypsCs7ELHyGJGpFNJdpGZLNChlorbkZ6zpuVj8u2urTOta+3xJVhFr
+         y5VF4siJeZn217lhMoajUz2BbEWeTRqYNi/TOTYqWT0WWcQ4ExsCb1w/Dh5/LY7WUDF1
+         L4Kc0cI1gUc7RY7nopZpynK+s+inHkvGKPPBs7DZsryr7OeJY1tA6e1LKIXdqmLkPeHc
+         YfKxHezmSVAU0klqRRazcK437b3E0bCxD86ufsis3CTjRTyKjmleT+hotkFw71fn0P3j
+         qJ9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791452919; x=1792057719;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7xX55VUfzLKlrT3hfK4oyi6LOjpzbgNl+xyMCeoTYMs=;
+        b=GzPo3Lk+h94UZY7sSv8p9yrw9OgBhyEI1iADGLTgnsqf9PnS3fZnE91UgIMrguVFEJ
+         Xq3HgAQ2npkM5+fy/vbK9wjP/NhAy2I1+7cXO4Diw8igOnah7IZ1yzbrngG24Tie6VsF
+         kMmvqbROeBNj2NhjqacPfZwMIyRZIDhzCqfyswnL31hf9Z9oRG3y0Pij8d9HcugVIg1I
+         JCmXo2r0ZrkZYAMSTCOOUbhIyHcbl4IibsiG3enxtrY0nqNVEoBUYuiaclr0IPwnNYxZ
+         s3pJxJNN23ni1hZTDGhi4/+PA5friLLv5fxzD/fY+K5BQJvlDd1UGvQounowE0kLQeLk
+         IsDA==
+X-Gm-Message-State: AFuF++nwuax5n4E6fxTjXSWaZDB9UBGpomFhLhK3KqH4kiD1Pamn2RVj
+	95gZ6VYers2jBRVxuR9fsWo8Kp0mjhrLitIzsW4Rp3ebvlbkHCeHID3RVK7NsbOF
+X-Gm-Gg: AYBFou26VoqFFjDVw3KENCVD6dR0gbTVGuxy09NeGdyyCLnRwezbHqo7INtteYMSfVc
+	AI51kXZ+hgC9HLgV1ZCMYkBZdcu8T2zTSP7EjEnLDj9iy4rZ7k3wmlVszCk9A9/tKgqdZFFVjdh
+	IS+f8E8Jd+4Y3Xk3stzRNmlaByHY54xgTkxJic3MKHCL/DjTA+fmgtk57aSSsc+Q5ALtzQwtRY9
+	N6/8GIXzMJDZSS4/C9XSssXRdr+RuKleT2kAW1YvY+52Zg0jFP53DqO4a48fa1hxwepPk+oBKiL
+	bO38cM/YPkvQ8USjs2DZrj6xfvx2A9AHzhFSYfLV9g5Q6oPiC3HYQbPEKM8fWF4UDCIb5mQR2kr
+	0eSK6a+TVuHev9YzrgfWmdXmoVoATI6nNcdDDOnDB/Wkf1mpk3fCGn7xzhjLEne90TJhHvtsQaF
+	KGjc2jVnpuGhHUOT1i3dAeOn6bvVE2+353aU9bX5+UE1dEnU8QSHw8z+uegvl2yq70iJXD4a1Hw
+	5+euyJnOJGSNzxSLScqT37+ZwIic9bBymbeaMf9BSKjmRzb7Q==
+X-Received: by 2002:a05:7022:3d10:b0:143:297c:82e0 with SMTP id a92af1059eb24-16206c267aamr7410634c88.32.1791452918834;
+        Thu, 08 Oct 2026 02:48:38 -0700 (PDT)
+Received: from nbai25050026.. ([2403:8600:2090:6f:26c1:d3cd:9bcc:c4d3])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1616a49546fsm13107565c88.18.2026.10.08.02.48.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 02:48:38 -0700 (PDT)
+From: SAYANTAN NANDY <sayantann11@gmail.com>
+To: netdev@vger.kernel.org
+Cc: lorenzo@kernel.org,
+	andrew+netdev@lunn.ch,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	bread.hsu@airoha.com,
+	sayantan.nandy@airoha.com,
+	SAYANTAN NANDY <sayantann11@gmail.com>
+Subject: [PATCH net] net: airoha: keep PPE offload when NPU refuses flow stats
+Date: Thu,  8 Oct 2026 15:18:28 +0530
+Message-ID: <20261008094828.15458-1-sayantann11@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+From: Chad Monroe <chad@monroe.io>
 
-Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 2
+With flow stats enabled, PPE offload setup requests flow statistics
+from the NPU. If the running NPU firmware does not support flow
+counters, the request fails and the current setup path aborts PPE
+offload.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Treat flow statistics as an optional capability so that a failure to
+set up the counters does not prevent normal PPE offload. Record
+whether flow statistics are available and continue PPE initialization
+when the NPU refuses the flow-statistics request.
 
-- [Medium] bcmgenet_change_mtu() leaves the PHY state machine running,
-  but it needs the MAC disabled while it reprograms the MAC.
-- [Low] At this commit, ENET_MAX_MTU (bcmgenet.c:90) and
-  bcmgenet_pkt_rdy_thld() (bcmgenet.c:2688) size one RX descriptor for 2…
-- [Low] bcmgenet_change_mtu() leaves the PHY state machine running, but
-  bcmgenet_netif_stop() -> bcmgenet_intr_disable() (line 3596) writes…
+Also treat a zero NPU statistics address returned by the firmware as a
+refusal. A zero address does not provide a usable counter region and
+must not be passed to the address mapping path.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the new
-  priv->datapath_up flag does not cover it.
-- [Medium] This problem wasn't introduced by this patch, but
-  bcmgenet_netif_stop() ignores the -ETIMEDOUT result of…
+When flow statistics are unavailable, PPE continues to operate
+without NPU flow counters while retaining normal offload functionality.
 
---
+This combines the original SmartRG/Airoha fixes for:
+- keeping PPE offload active when the NPU refuses flow statistics
+- treating a zero NPU statistics address as a flow-statistics refusal
 
-net: bcmgenet: allow the MTU to be changed
+Based on the original SmartRG/Airoha work by Chad Monroe:
+5ce96ab ("SDG-9458: keep PPE offload when NPU refuses flow stats")
+0ad8528 ("SDG-9458: airoha: treat a zero NPU stats address as a refusal")
+Fixes: b81e0f2b58be ("net: airoha: Add FLOW_CLS_STATS callback support")
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Signed-off-by: SAYANTAN NANDY <sayantann11@gmail.com>
+---
+ drivers/net/ethernet/airoha/airoha_eth.h  |  1 +
+ drivers/net/ethernet/airoha/airoha_npu.c  |  8 ++++++++
+ drivers/net/ethernet/airoha/airoha_ppe.c  | 20 +++++++++++++-------
+ drivers/net/ethernet/airoha/airoha_regs.h |  2 ++
+ 4 files changed, 24 insertions(+), 7 deletions(-)
 
-On GENET v2 and later, this commit sets dev->max_mtu from the RX packet
-ready threshold. It also adds an ndo_change_mtu handler that tears down and
-rebuilds the DMA rings in place while the PHY keeps running. A new
-datapath_up flag lets bcmgenet_close() skip the teardown when a failed MTU
-change has already taken the datapath down.
-
-Link: https://github.com/raspberrypi/linux/issues/5561
-
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 17c8318c20388..6d21ac2d78d51 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -84,6 +84,12 @@
->  				      ENET_THLD_MAX * ENET_THLD_UNIT, \
->  				      ENET_THLD_PAGE_LEN)
->  
-> +/* Largest MTU that fits one descriptor, with room for a VLAN tag so a VLAN
-> + * interface can use the parent MTU.
-> + */
-> +#define ENET_MAX_MTU		(ENET_THLD_MAX_LEN - GENET_RBUF_ALIGN - \
-> +				 ETH_HLEN - VLAN_HLEN)
-
-[Severity: Low]
-At this commit, ENET_MAX_MTU and bcmgenet_pkt_rdy_thld() both size one RX
-descriptor as GENET_RBUF_ALIGN + mtu + ETH_HLEN + VLAN_HLEN. Meanwhile,
-bcmgenet_set_mtu_regs() programs the MAC limit with the larger
-ENET_FRAME_OVERHEAD:
-
-    bcmgenet_umac_writel(priv, ENET_MAX_FRAME_LEN(mtu), UMAC_MAX_FRAME_LEN);
-
-If the MAC accepts a frame that is bigger than one descriptor, for example
-QinQ at the parent MTU, that frame spans two descriptors. Would it then be
-dropped in bcmgenet_desc_rx()?
-
-    if (unlikely(!(dma_flag & DMA_EOP) || !(dma_flag & DMA_SOP))) {
-        netif_err(priv, rx_status, dev,
-                  "dropping fragmented packet!\n");
-
-The forwarded FCS case doesn't look reachable here. reset_umac() in open
-clears CMD_CRC_FWD, and bcmgenet_set_features() then reads crc_fwd_en back as
-0. So only frames longer than the MTU plus one VLAN tag seem to be affected.
-
-The later patch in this series, "net: bcmgenet: reassemble jumbo frames from
-status block fragments", removes ENET_MAX_MTU and replaces the drop with
-bcmgenet_add_frag() reassembly. That means this only applies to the
-intermediate state at this commit.
-
-> +
->  /* Tx/Rx DMA register offset, skip 256 descriptors */
->  #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
->  #define DMA_DESC_SIZE		(WORDS_PER_BD(priv) * sizeof(u32))
-
-[ ... ]
-
-> @@ -3605,7 +3612,11 @@ static int bcmgenet_close(struct net_device *dev)
->  
->  	netif_dbg(priv, ifdown, dev, "bcmgenet_close\n");
->  
-> -	bcmgenet_netif_stop(dev, false);
-> +	/* A failed MTU change can have torn the datapath down already */
-> +	if (priv->datapath_up) {
-> +		bcmgenet_netif_stop(dev, false);
-> +		priv->datapath_up = false;
-> +	}
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does datapath_up cover the
-suspend/resume path?
-
-Only bcmgenet_open() and bcmgenet_change_mtu() update the flag. The non-WoL
-branch of bcmgenet_suspend() calls bcmgenet_netif_stop(dev, true). That
-disables the NAPIs and frees rx_cbs/tx_cbs in bcmgenet_fini_dma() without
-NULLing the pointers, and it leaves datapath_up set.
-
-If bcmgenet_resume() then fails in bcmgenet_init_dma():
-
-    ret = bcmgenet_init_dma(priv, false);
-    if (ret) {
-        netdev_err(dev, "failed to initialize DMA\n");
-        goto out_clk_disable;
-    }
-
-then the interface is still running, but it has no rings and datapath_up is
-still 1. A later bcmgenet_close() from ifdown, unregister or shutdown would
-call bcmgenet_netif_stop() a second time.
-
-The NAPIs are already disabled at that point. Can napi_disable() in
-bcmgenet_disable_tx_napi() then spin forever with RTNL held? If it did
-return, bcmgenet_fini_dma() would kfree() rx_cbs and tx_cbs a second time.
-
-A failed bcmgenet_init_dma() on resume looks realistic. The earlier patch in
-this series, "net: bcmgenet: pad transmit frames out of the packet ready
-window", describes TX DMA refusing to halt so that every later
-bcmgenet_init_dma() fails. The RX buffers also come from
-page_pool_dev_alloc(), which doesn't sleep.
-
-bcmgenet_change_mtu() adds another way to hit this, because it calls
-bcmgenet_netif_stop() without checking datapath_up.
-
-Would clearing datapath_up in the suspend teardown, and setting it again only
-after a successful resume, close this gap?
-
->  
->  	/* Really kill the PHY state machine and disconnect from it */
->  	phy_disconnect(dev->phydev);
-> @@ -3853,6 +3864,71 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
->  	return 0;
->  }
->  
-> +static int bcmgenet_change_mtu(struct net_device *dev, int new_mtu)
-> +{
-
-[ ... ]
-
-> +	/* The watchdog trips on an idle queue once the rings are gone */
-> +	netif_device_detach(dev);
-> +
-> +	/* Only the buffers and the MTU registers change, leave the PHY up */
-> +	bcmgenet_netif_stop(dev, false);
-
-[Severity: Medium]
-This is a pre-existing issue, but bcmgenet_netif_stop() ignores the
--ETIMEDOUT result of bcmgenet_dma_teardown():
-
-    bcmgenet_dma_teardown(priv);
-
-    /* Disable MAC transmit. TX DMA disabled must be done before this */
-    umac_enable_set(priv, CMD_TX_EN, false);
-
-If RDMA or TDMA doesn't halt in time, bcmgenet_fini_dma() still returns the
-RX pages to the page pool and destroys the pools. Hardware descriptors may
-still point at those pages. Could the device then DMA into freed pages, or
-read freed skbs on TX?
-
-MAC RX is disabled before the teardown, so this needs a real halt timeout to
-trigger. This new caller lets an admin run the teardown repeatedly with ip
-link set mtu.
-
-> +	priv->datapath_up = false;
-> +
-> +	WRITE_ONCE(dev->mtu, new_mtu);
-> +	priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
-> +	bcmgenet_set_mtu_regs(priv, new_mtu);
-> +
-> +	ret = bcmgenet_init_dma(priv, true);
-
-[Severity: Medium]
-Is the MAC actually disabled at this point if the interface was opened
-without a link?
-
-After an open with no link, reset_umac() leaves CMD_SW_RESET set.
-umac_enable_set() returns early while that bit is set:
-
-    if (reg & CMD_SW_RESET) {
-        spin_unlock_bh(&priv->reg_lock);
-        return;
-    }
-
-So the CMD_RX_EN/CMD_TX_EN disable in bcmgenet_netif_stop() does nothing.
-The PHY state machine keeps running and doesn't take RTNL. If the first
-link-up arrives during the teardown and rebuild,
-bcmgenet_mii_setup()->bcmgenet_mac_config() does:
-
-    if (reg & CMD_SW_RESET) {
-        reg &= ~CMD_SW_RESET;
-        bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-        udelay(2);
-        reg |= CMD_TX_EN | CMD_RX_EN;
-    }
-
-bcmgenet_set_mtu_regs() is documented as "Call with the MAC disabled".
-Wouldn't it, along with the RBUF flush in bcmgenet_init_dma(), then run while
-the MAC is receiving?
-
-Nothing seems to serialize the adjust_link callback against this window.
-reg_lock only covers single read-modify-write sequences.
-
-> +	if (ret) {
-
-[ ... ]
-
-> +	bcmgenet_hfb_restore(priv);
-> +	bcmgenet_netif_start(dev, false);
-> +
-> +	/* bcmgenet_netif_start() only restores the link interrupt */
-> +	if (bcmgenet_has_mdio_intr(priv))
-> +		bcmgenet_intrl2_0_writel(priv, UMAC_IRQ_MDIO_EVENT,
-> +					 INTRL2_CPU_MASK_CLEAR);
-
-[Severity: Low]
-The PHY keeps running during the MTU change, but
-bcmgenet_netif_stop()->bcmgenet_intr_disable() also masks
-UMAC_IRQ_MDIO_EVENT. It is only unmasked here, after the whole teardown and
-rebuild.
-
-bcmgenet_mii_wait() depends on that interrupt to wake priv->wq:
-
-    wait_event_timeout(priv->wq,
-                       !(bcmgenet_umac_readl(priv, UMAC_MDIO_CMD)
-                       & MDIO_START_BUSY),
-                       HZ / 100);
-
-Would every phylib MDIO access in this window wait the full 10 ms timeout
-while holding phydev->lock? bcmgenet_mii_wait() always returns 0, so the
-effect looks like added latency rather than a failure.
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 8277c1c87bb3..bd5a94fce843 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -617,6 +617,7 @@ struct airoha_ppe {
+ 
+ 	void *foe;
+ 	dma_addr_t foe_dma;
++	bool flow_stats;
+ 
+ 	struct rhashtable l2_flows;
+ 
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+index 4d3195eb00f7..b32a01dbe06b 100644
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -450,6 +450,14 @@ static int airoha_npu_ppe_stats_setup(struct airoha_npu *npu,
+ 	if (err)
+ 		goto out;
+ 
++	/* The firmware reports success with a zero address when its SRAM
++	 * pool has no room left for the counters.
++	 */
++	if (!ppe_data->stats_info.npu_stats_addr) {
++		err = -ENOSPC;
++		goto out;
++	}
++
+ 	npu->stats = devm_ioremap(npu->dev,
+ 				  ppe_data->stats_info.npu_stats_addr,
+ 				  size);
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index 92611802801e..fbc200614de3 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -37,10 +37,7 @@ static const struct rhashtable_params airoha_l2_flow_table_params = {
+ 
+ static int airoha_ppe_get_num_stats_entries(struct airoha_ppe *ppe)
+ {
+-	if (!IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS))
+-		return -EOPNOTSUPP;
+-
+-	if (airoha_is_7583(ppe->eth))
++	if (!ppe->flow_stats)
+ 		return -EOPNOTSUPP;
+ 
+ 	return PPE_STATS_NUM_ENTRIES;
+@@ -144,6 +141,10 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
+ 	sram_ppe_num_data_entries =
+ 		PPE_RAM_NUM_ENTRIES_SHIFT(sram_ppe_num_data_entries);
+ 
++	if (ppe->flow_stats)
++		airoha_fe_rmw(eth, PSE_FC_CFG, PSE_PORT6_SHARE_DIS,
++			      FIELD_PREP(PSE_PORT6_SHARE_DIS, 0));
++
+ 	for (i = 0; i < eth->soc->num_ppe; i++) {
+ 		airoha_fe_wr(eth, REG_PPE_TB_BASE(i),
+ 			     ppe->foe_dma + sram_tb_size);
+@@ -1456,10 +1457,13 @@ static int airoha_ppe_offload_setup(struct airoha_eth *eth)
+ 	if (ppe_num_stats_entries > 0) {
+ 		err = npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
+ 					      ppe_num_stats_entries);
+-		if (err)
+-			goto error_npu_put;
++		if (err) {
++			dev_warn(eth->dev,
++				 "NPU firmware refused flow stats setup (%d), offload runs without flow counters\n",
++				 err);
++			ppe->flow_stats = false;
++		}
+ 	}
+-
+ 	airoha_ppe_hw_init(ppe);
+ 	airoha_ppe_foe_flow_stats_reset(ppe, npu);
+ 
+@@ -1608,6 +1612,8 @@ int airoha_ppe_init(struct airoha_eth *eth)
+ 	ppe->dev.priv = ppe;
+ 	ppe->eth = eth;
+ 	eth->ppe = ppe;
++	ppe->flow_stats = IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS) &&
++			  !airoha_is_7583(eth);
+ 
+ 	ppe_num_entries = airoha_ppe_get_total_num_entries(ppe);
+ 	foe_size = ppe_num_entries * sizeof(struct airoha_foe_entry);
+diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
+index 442b48c9b991..aee06c058586 100644
+--- a/drivers/net/ethernet/airoha/airoha_regs.h
++++ b/drivers/net/ethernet/airoha/airoha_regs.h
+@@ -72,6 +72,8 @@
+ #define PSE_CFG_OQ_RSV_MASK		GENMASK(13, 0)
+ 
+ #define PSE_FQ_CFG			0x008c
++#define PSE_FC_CFG			0x0098
++#define PSE_PORT6_SHARE_DIS		BIT(22)
+ #define PSE_FQ_LIMIT_MASK		GENMASK(14, 0)
+ 
+ #define REG_FE_PSE_BUF_SET		0x0090
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007-nb-genet-mtu-nn-v2-v3-0-74a796c019ce%40tipi-net.de
+2.43.0
+
