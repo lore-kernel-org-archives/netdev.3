@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11BE372071;
-	Thu,  8 Oct 2026 03:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4DD37FF53;
+	Thu,  8 Oct 2026 03:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791430279; cv=none; b=E/fEET7F8zleytgY05D6SIteFdV7yyESj7nsDorZ4WpYKgnpksloVkU3eXQE6AHmeDLsRarrvYa9uD4LY0tIPzEm9ZGdlFame+25gsp8TJAQDm19ddjsok6h+PJGzHfGUEpsRiwmzrh6BKV5ZuAesmBLfMr28vtb1S/q2W1twko=
+	t=1791430282; cv=none; b=jZhLjal5X8w72wm5pWX1mTaVTKVwHcuxexXndawb9jhfrK5mfWwEKkKpw/I9W8ILBgvdfm5cfbTU8bSd40pnyR4qbxHVdl553gMtxyLJ4Eg8PefQ6QcKoQwSD5jb1QsrJtFlDwceevorUTob9zXqMHURVuCHcaXiT+WRVqnUolU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791430279; c=relaxed/simple;
-	bh=jGnf4YTTbgp3pyVWYzvtTpjTWilXRuuOmq4er15KPj4=;
+	s=arc-20240116; t=1791430282; c=relaxed/simple;
+	bh=Rsk8qalhAFrI7bNXjDuRHfYdKBM4cNyRHBGNeCntXgU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ltUUO7OmJ3Gvox+Mv5guvE6/hcoaX2JJ5CDDvduSVKQr2CLAzaigGHUpj5EXdlKAS1xJGzX/9tFNKuSRGO1RHS2Obk50vF2B8iB810hisyJI1R5GzYs6gQz5W0jXa4rrbfEBZeqwbZVGmK01V8C/7m6+fjFCcpTpGDq7PgqUHHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNCCewUn; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=gge6VBwg/0Q/ylsYr2ugsWkz4PWU9f9pz5BuKJ2pKQfsZjcmGzaEDEdjXuFargoLrYmMF4LucFmy80/k5sOHQprf1P3ESNPg0Xd9lQVjPXQ6kwFw+3AtYWA6crGGNQxRr/lYCQT31h0E8FS5xhYofSqfDJrVh+02Pm9vbGnCFOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuTyKB8P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNCCewUn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604BF1F00893;
-	Thu,  8 Oct 2026 03:31:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuTyKB8P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AA01F000FF;
+	Thu,  8 Oct 2026 03:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791430278;
-	bh=4PImF/bcS4wg1Tz3UGd/A5bh6Tl7WV37bYZRssHDge0=;
+	s=k20260515; t=1791430280;
+	bh=doKya4TAuwuHLjF27X1lAAmDyISiCJjGAuVsJzbKKn8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dNCCewUnYkD6yVPU35QbYs1ZhKJZtHu/g6xm9yOkpbF/+5gpSHNEO0gaClqOIjFlH
-	 +I+cQ8tVvw4Q1TYJXSyNRkdnmlZ0aAB4UFZZIaLEzS6uI3il+egKrKwr5+FeJ9s4rk
-	 Gv+AyELZvu9Cr58VU6ngInh/i778blWf6ZFSmR0u5Gv6Y2HQC0qAPfHCvUY/ghfXvl
-	 LKVeDN/cvC+yEwueD9cOZr2FWHt8WIzut10SQ9JPwZ2k8tqFvK5ecVXCveERJpKerE
-	 9XBdspsKZvIZCvNylx1c2yT60oN5evOJkdxkOToODhYIrd6cQoIcwHF8UEIhhzTYh8
-	 UTe36DoyZezuQ==
-Subject: Re: [PATCH net-next 3/4] dt-bindings: net: qcom,ipq9574-ppe: Add
- IPQ5332 support
+	b=SuTyKB8PKCpuXQRpNNMteStsvgdrrTq2oVSPKL1hgKIngWsnJNqMsCeOMPeokbN3J
+	 +zzkePmdsXkyx29wm5SIejSGty1eVdM8tJXkuJwxrwbi+ki0Sir7RWcrD33lQJNjpG
+	 DbuZXEhScB1+Crbc+ehCF6MXNxJqPwTzc55mFDWNR6ca8ChFRG8ycFsH7yE1J6tWfX
+	 Yo3eKm9IYYhAZ+n7MqeGhZk8oH32Ou7W3btRNvGo6SUZ/dSeLawd1ApR4KZY09Yi/O
+	 LoZ8BxVw1v6vIHiLyPfJtxgN4NrgFt3QlDivG8m8mJrBGScsdyaHuo1+kiuk8omp0e
+	 LtI8yrqJImX4Q==
+Subject:
+ Re: [PATCH net-next 4/4] net: ethernet: qualcomm: ppe: Add IPQ5332 support
 From: netdev-bot+sashiko@kernel.org
 To: mail@tk154.de
 Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, andrew+netdev@lunn.ch,
@@ -37,10 +37,10 @@ Cc: netdev@vger.kernel.org, jie.luo@oss.qualcomm.com, andrew+netdev@lunn.ch,
  quic_leiwei@quicinc.com, quic_suruchia@quicinc.com, quic_pavir@quicinc.com,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Date: Thu, 08 Oct 2026 03:31:16 +0000
-Message-ID: <179143027694.434549.10144875217597591854@kernel.org>
-In-Reply-To: <20261005152915.101780-4-mail@tk154.de>
-References: <20261005152915.101780-4-mail@tk154.de>
+Date: Thu, 08 Oct 2026 03:31:18 +0000
+Message-ID: <179143027873.434549.15034517641240789690@kernel.org>
+In-Reply-To: <20261005152915.101780-5-mail@tk154.de>
+References: <20261005152915.101780-5-mail@tk154.de>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -57,97 +57,138 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The IPQ5332 port limits (`"^ethernet-port@[3-6]$": false` and
-  `reg: maximum: 2`) apply only under the `ethernet-ports` container…
+- [Low] On IPQ5332, the comment in ppe_clock_init_and_reset() (ppe.c
+  lines 187-190) is no longer true.
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the patch
+  depends on it.
 
 --
 
-dt-bindings: net: qcom,ipq9574-ppe: Add IPQ5332 support
+net: ethernet: qualcomm: ppe: Add IPQ5332 support
 
-This adds the qcom,ipq5332-ppe compatible to the IPQ9574 PPE binding. It
-adds an optional GCC sleep clock and a second EDMA reset, and lowers the
-minimum interconnect and EDMA interrupt counts. New per-SoC if/then blocks
-constrain those counts, and limit IPQ5332 to ethernet-port@1 and
-ethernet-port@2.
+This patch adds qcom,ipq5332-ppe match data to the PPE driver: a 200 MHz
+PPE clock, four interconnect paths and three ports. It also adds IPQ5332
+specific BM/QM limits, thresholds and scheduler arbitration tables, and
+reuses the IPQ9574 scheduler resource table for ports 0-2.
 
-Link: https://lore.kernel.org/r/20240829082830.56959-7-quic_varada@quicinc.com
-Link: https://lore.kernel.org/r/20240110112059.2498-3-quic_luoj@quicinc.com
-
-> diff --git a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> index 1a78e2c82b90c..29dd34210ac89 100644
-> --- a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> +++ b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
+> diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe.c b/drivers/net/ethernet/qualcomm/ppe/ppe.c
+> index 0ef72c20364be..69e970db4a78b 100644
+> --- a/drivers/net/ethernet/qualcomm/ppe/ppe.c
+> +++ b/drivers/net/ethernet/qualcomm/ppe/ppe.c
 
 [ ... ]
 
-> @@ -238,6 +255,65 @@ required:
+> @@ -65,6 +89,14 @@ static const struct icc_bulk_data ipq9574_icc_data[] = {
+>  	},
+>  };
 >  
->  allOf:
->    - $ref: ethernet-switch.yaml
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: qcom,ipq5332-ppe
-> +    then:
-
-[ ... ]
-
-> +        ethernet-ports:
-> +          patternProperties:
-> +            "^ethernet-port@[1-2]$":
-> +              properties:
-> +                reg:
-> +                  maximum: 2
-> +            "^ethernet-port@[3-6]$": false
+> +static const struct ppe_plat_data ipq5332_ppe_data = {
+> +	.soc_cfg = &ipq5332_soc_config,
+> +	.icc_data = ipq5332_icc_data,
+> +	.ppe_clk_rate = 200000000,
 
 [Severity: Low]
-Is the IPQ5332 port limit enforced when the node uses "ports" as the
-container name instead of "ethernet-ports"?
+This isn't a bug, but now that IPQ5332 goes through
+ppe_clock_init_and_reset(), is the comment there still accurate?
 
-The new constraints only apply under ethernet-ports. The binding also
-pulls in ethernet-switch.yaml through allOf, and that schema accepts
-either container name:
-
-Documentation/devicetree/bindings/net/ethernet-switch.yaml:
-    patternProperties:
-      '^(ethernet-)?ports$':
-        ...
-        patternProperties:
-          '^(ethernet-)?port@[0-9a-f]+$':
-            type: object
+drivers/net/ethernet/qualcomm/ppe/ppe.c:ppe_clock_init_and_reset() {
     ...
-    oneOf:
-      - required:
-          - ports
-      - required:
-          - ethernet-ports
+	/* The PPE clocks have a common parent clock. Setting the clock
+	 * rate of "ppe" ensures the clock rate of all PPE clocks is
+	 * configured to the same rate.
+	 */
+	clk = devm_clk_get(dev, "ppe");
+    ...
+}
 
-The referenced schema evaluates "ports", so the top-level
-unevaluatedProperties: false in qcom,ipq9574-ppe.yaml does not reject it.
-The PPE binding also does not list ethernet-ports in its required list.
+In this series, the qcom,ipq9574-ppe.yaml binding requires a fifth clock
+for qcom,ipq5332-ppe. It is described as "PPE sleep clock from GCC" and
+does not share the NSSCC parent of the other PPE clocks.
 
-So an IPQ5332 node like this would seem to pass dt_binding_check:
+devm_clk_bulk_get_all_enabled() enables that clock at its own rate. Only
+"ppe" gets clk_set_rate().
 
-    ports {
-        #address-cells = <1>;
-        #size-cells = <0>;
-        ethernet-port@3 {
-            reg = <3>;
-        };
-    };
+Could the comment be updated so it no longer claims that all PPE clocks
+end up at the same rate?
 
-That would not match the commit message, which says IPQ5332 takes "only
-ethernet-port@1 and ethernet-port@2".
-
-The same gap already lets nodes skip the shared per-port clocks and resets
-requirements for IPQ9574. The earlier patch in this series that tightened
-the port node constraints also covered only ethernet-ports.
-
-Would it make sense to forbid ports (for example ports: false), require
-ethernet-ports, or apply the constraints to both spellings?
+> +	.num_icc = ARRAY_SIZE(ipq5332_icc_data),
+> +	.num_ports = 3,
+> +};
 
 [ ... ]
+
+> diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
+> index 65ac6c0841d5a..91e6ee9524a60 100644
+> --- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
+> +++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
+
+[ ... ]
+
+> @@ -264,6 +298,30 @@ static const struct ppe_qm_queue_config ipq9574_ppe_qm_queue_config[] = {
+>  	},
+>  };
+>  
+> +/* IPQ5332 unicast and multicast queue thresholds. */
+> +static const struct ppe_qm_queue_config ipq5332_ppe_qm_queue_config[] = {
+
+[ ... ]
+
+> +	{
+> +		/* QM settings for multicast queues 256 to 299. */
+> +		.queue_start	= 256,
+> +		.queue_end	= 299,
+> +		.prealloc_buf	= 0,
+> +		.ceil		= 50,
+> +		.weight		= 0,
+> +		.resume_offset	= 18,
+> +		.dynamic	= false,
+> +	},
+> +};
+
+[Severity: Medium]
+This is a pre-existing issue, but do these multicast thresholds ever reach
+the hardware? ppe_config_qm() indexes the multicast admission control
+table with the global queue ID:
+
+drivers/net/ethernet/qualcomm/ppe/ppe_config.c:ppe_config_qm() {
+    ...
+	} else {
+		reg = PPE_AC_MULTICAST_QUEUE_CFG_TBL_ADDR +
+		      PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC * queue_id;
+    ...
+}
+
+The multicast config table is a separate table with 44 entries:
+
+#define PPE_AC_MULTICAST_QUEUE_CFG_TBL_ADDR	0x84a000
+#define PPE_AC_MULTICAST_QUEUE_CFG_TBL_ENTRIES	44
+#define PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC	0x10
+
+With that indexing, queue 256 maps to 0x84b000 and queue 299 maps to
+0x84b2b0. Both addresses are past the end of the table at 0x84a2c0 and
+before PPE_AC_GRP_CFG_TBL_ADDR (0x84c000).
+
+The debugfs code for the matching multicast counter table subtracts the
+unicast entry count first:
+
+drivers/net/ethernet/qualcomm/ppe/ppe_debugfs.c:ppe_queue_counter_get() {
+    ...
+			int mq_offset = i - PPE_AC_UNICAST_QUEUE_CFG_TBL_ENTRIES;
+    ...
+}
+
+If that is the intended indexing, neither these IPQ5332 values (ceil 50,
+resume_offset 18) nor the IPQ9574 ones are ever written. The real
+multicast entries keep their reset values, and the read-modify-write
+cycles hit undocumented QM addresses instead.
+
+This looks like it goes back to commit 806268dc7efd ("net: ethernet:
+qualcomm: Initialize PPE queue management for IPQ9574").
+
+Should ppe_config_qm() use queue_id - PPE_AC_UNICAST_QUEUE_CFG_TBL_ENTRIES
+as the multicast table index?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005152915.101780-1-mail%40tk154.de
