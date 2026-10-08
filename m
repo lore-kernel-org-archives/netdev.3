@@ -1,192 +1,230 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691D3AD524;
-	Thu,  8 Oct 2026 16:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3D239B48D
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 16:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791476017; cv=none; b=Gq+Fbk5driZZcrRWDxbgaZnhH3Nkcceh+IWDX/ng8eRkfqEODVaJEbM5yi9jC2H7l0QWja3Ou3k3YpxrPGUs+E1ULMgx0uCwI9bOKQcHITOPKSoAuYdzZYoVt5Xc8/Isrl0XNmYdXJYaGPeyhMDSM8Sl6+LdV2vOO5B+jmKjOwc=
+	t=1791476017; cv=none; b=DLhhE5SgDFV+vW9kHL00ZBImkOQSluAG/MTmCGMsM4wHnYZ0GgU9LZgjY2qoTWav7CmLpx5j/MKunH8MBUIX9O36icTETZfnP3JIsa+tYad3bJ+CpUamqz4lfMjAKwXdp/Vi1d2MdK77OPypYBfc9hvnB2JHWBgcv0hX0jvELkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791476017; c=relaxed/simple;
-	bh=u859W4su+QcLuFKbfr1flJpm9tWwZs2jVCDjMClNRWE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lLV5J9cB143hyaAy8SXNHNGgcvDHtYjxd0y2+YQ1sUiMk4ymWVpyqNfreDlvlQNYyuF1wr3vn8JA2qcjixEFKn57BF6iWv7anmCFdjzNbUT/WABhgFoG65SIHpZjpKp8xJiFyxj20dz4NmiErgsoyi12mxsL8l4UXyv6+H8II/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MEBnfmgq; arc=none smtp.client-ip=100.103.45.18
+	bh=ctjqrT0ClDhJ4kwgUJDSm0RQ29Lw8YZNFjREtaOVINs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XpztkzuA7/TgKaKmLcd1HBJo0C4yHK6Tuy6RhosfMhgK2lUoMIbJt4iVYD2QcRW2MEV34syr5l7WxK6aMgQu2S8PukiIISD0B6bOLZ4vWYje4wmXqBnK1XiOwXflMVTueegumsQuc8FBT9PoOzas4Mr0m7Wqeuz/aDVErh0BdOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bkXuoTl4; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MEBnfmgq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4FC1F0089A;
-	Thu,  8 Oct 2026 16:13:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791476012;
-	bh=UPhf6SEUUNz8uyNHVl3Ju/fey1kkhAAA2gvcBBSzhmM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MEBnfmgqFGyZ46WJ17WemSZAQPo+ecR4XoVoDDODsBuEk5SjZ2i4DO6nEsEb9Cc9m
-	 EUZwtl6QHCaWdAiwyTYx406QT08dJ6QEt4E0oHFCif5H3ru8gtdN2tjrmrBF5lPjtl
-	 ZUDQeoqAPTgk5tu2HC4QElK2KeCzNSkZ1UgIQk2xxOcRjbpMSIq22gy92aSsHgvzFd
-	 2Z1UGMrErebKzz7Tef/8/8mwSjZllqxzLtAITkazYOW2OOOvCY/LxabyC7wGUwgF6C
-	 5thaQlooYQBJ+//e97ospz+YQ9nI9WL6BTFfWzJpJjBbJTpLCrjpZlJoAX8ExSOTSc
-	 sePcq135/fhNg==
-Subject: Re: [PATCH net v12 14/15] rxrpc: Fix RxGK key parser to check enctype
- is supported
-From: netdev-bot+sashiko@kernel.org
-To: dhowells@redhat.com
-Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@kernel.org
-Date: Thu, 08 Oct 2026 16:13:31 +0000
-Message-ID: <179147601139.434549.14218294714340800213@kernel.org>
-In-Reply-To: <20261006133011.531806-15-dhowells@redhat.com>
-References: <20261006133011.531806-15-dhowells@redhat.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bkXuoTl4"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-487049569b6so2286866f8f.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 09:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791476011; x=1792080811; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KnRbsO40pgOKFThX66ioZGni0tsr5d/QoIBkjkvb+Kg=;
+        b=bkXuoTl4eWiSXjN2RrMA6Ib+g470o74VfdAjkePD6r5kBQO7kLhHy3biGpxsZ+X7JT
+         8SuKLeUF/IIaS31Em75cRDNMQ7CrYEuFp3/sbMZYjuDiC/kkvoD7iPZZMRInqlUDB7/2
+         Ow0wN+2qj63VMY+88d6jFl078TDdA/Svc2CWs0xRNczLwhiszHOxcnKb/lNvlG2dCiHL
+         VrzVnQoROGvGabw1QgbROCdob5Qu8Kqa7oN69Wm3KSleTtH/07AuBWXr8NTBKMSXfjXT
+         dIdwJq6mGY3Ypj9hAVan+9ydVZiiLeVq4N1Lep/lXd9Ujsc9Ydr6B4TJNpY3M8GsGovx
+         m9Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791476011; x=1792080811;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KnRbsO40pgOKFThX66ioZGni0tsr5d/QoIBkjkvb+Kg=;
+        b=eIjG19ChQrW6Ui3cwu5dXAEMDwk9uMPbOzDtq0Iq2BaoIzh6GCMXx+EmGAioucBT52
+         sHC6osZCJ03Rjfp5SMzINNaAsQHJAlULpU/PKI7o6gbEmT1lRvvyCeThLhGscfCK41GF
+         LzEo2GpvqFt4MuHaqXr9OK8N3NwvUQZOqOkZUQ3x0e5qZUgt3Vax8DgtyRIPIjM5g99N
+         UkiXeQQjFC92qcDl7+slU9lQxX+B2bf388uvorMr9u7w7wOMwlci0aPCCKKTvjZ8DP06
+         DVVJjQSS5XJm/udk+e89YJY7CgOcXzeqz4f+SDFvZmsnPxYVpmcqAbOd7JxZuNPzq1MI
+         RXAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzUe9s8qC7RjdCQZy/VcoXqM7cGhTLnnEQIFoVuCJYcdvUQ0ulW/RpjOawx6rMIS8elMvYEgQA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ1RAqzEMsgEMkJcx4IpniWAz40oJQo/N37FiwX1mxYtpavyinK
+	o8OTUW4fJQIkD0vCvVxzw2oH03um+PBV5GEG/sDEyFGwKtPJwjoBpX2A
+X-Gm-Gg: AYBFou1OWIOI0Dt+iYdliP1flKugQp4KDPXVcjJbFnmbSxfpFdCrz0qgtNbl6a34L//
+	CnbC7ghZmTGcgvw55yEtGWHBFKvGVPdpCXrNusR5QBzMzyyMqEiI9c95EtLSViRUuWBOzK5cWOy
+	OLYWo9Ks7gGdaVk9ejIMrndfxBkRYlF/sLecqU/7sEeZuBWr5s20zQnoLuQfsbxG3a1fEZLOcWY
+	jjgfUQEHVa/h022s4Hhpcy7u8Mx9IX6K39wA27jwVNY4xEDXMPQOtDaUF90XFi9AUAOl+jPDbps
+	tXRPGJAIpcAp5aLnYnjPl/ENMCJ/gMyfHOw0ewLUqKsPlwX4TdqGyFATjg/XzgzwymC+PUcNh0Z
+	BkRSr8VFdWAwdIKfRxZtRGy9N6yHYMSztTQ3QA8QpxxQ/NRAtUIirE4BKicletoXCSS04fElQ0g
+	LzueIKqz+LGQo0qP07GgJLYoTLZtLDLkzYg1zj7nxs78DaZdcPZ5fMTydo3hwlAryn8BY+duoqy
+	xoahPXvgxh+FeErcE4WrJyFg0a3KN8pifshjw==
+X-Received: by 2002:a5d:64c8:0:b0:48a:f52d:ca47 with SMTP id ffacd0b85a97d-48c72785207mr12533471f8f.22.1791476011230;
+        Thu, 08 Oct 2026 09:13:31 -0700 (PDT)
+Received: from MacBookAir.home.tenber.ge ([2a00:6020:a725:dc00:95bf:d5d1:d7d8:747f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db63401desm448005f8f.0.2026.10.08.09.13.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 08 Oct 2026 09:13:29 -0700 (PDT)
+From: Jan-Gerd Tenberge <janten@gmail.com>
+To: bpf@vger.kernel.org
+Cc: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	john.fastabend@gmail.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jakub@cloudflare.com,
+	jiayuan.chen@linux.dev,
+	kuniyu@google.com,
+	willemb@google.com,
+	shuah@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf 2/2] selftests/bpf: Test iterator link target validation
+Date: Thu,  8 Oct 2026 18:13:09 +0200
+Message-ID: <20261008161309.8179-3-janten@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261008161309.8179-1-janten@gmail.com>
+References: <20261008161309.8179-1-janten@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Exercise target-dependent iterator checks during BPF_LINK_UPDATE.
+Verify that updates to a program with an oversized array or socket-storage
+value access are rejected, as is an update to a sleepable program on a
+non-reschedulable hash iterator.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Run each original program after the rejected update to ensure that it
+remains attached. Also verify that a compatible array iterator update
+succeeds.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Assisted-by: LLM
+Signed-off-by: Jan-Gerd Tenberge <janten@gmail.com>
+---
+ .../selftests/bpf/prog_tests/bpf_iter.c       | 34 +++++++++++++++++--
+ .../bpf/progs/bpf_iter_bpf_array_map.c        | 17 ++++++++++
+ 2 files changed, 49 insertions(+), 2 deletions(-)
 
-- [Medium] The patch moves the RxGK quota charge in
-  rxrpc_preparse_xdr_yfs_rxgk() (net/rxrpc/key.c) to the success path,…
-- [Medium] The patch adds a new -EKEYREJECTED return to
-  rxrpc_preparse_xdr_yfs_rxgk() when `raw_keylen != enc->key_len`.
-
---
-
-rxrpc: Fix RxGK key parser to check enctype is supported
-
-The RxGK XDR key parser now looks up the enctype with
-crypto_krb5_find_enctype(). It also rejects keys whose length does not
-match that enctype. The RxGK key handling is put under CONFIG_RXGK, and
-both parsers now charge a token to the quota only once the token is
-attached.
-
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-1-dhowells%40redhat.com
-
-> diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
-> index cbd26da449510..904da3fe7e478 100644
-> --- a/net/rxrpc/key.c
-> +++ b/net/rxrpc/key.c
-
-[ ... ]
-
-> @@ -229,6 +226,17 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
->  	token->rxgk->key.data	= token->rxgk->_key;
->  	token->rxgk->ticket.len = raw_tktlen;
->  
-> +	/* Check the enctype is supported. */
-> +	enc = crypto_krb5_find_enctype(token->rxgk->enctype);
-> +	if (!enc) {
-> +		ret = -ENOPKG;
-> +		goto reject_token;
-> +	}
-> +	if (raw_keylen != enc->key_len) {
-> +		ret = -EKEYREJECTED;
-> +		goto reject_token;
-> +	}
-
-[Severity: Medium]
-How does this new -EKEYREJECTED return interact with the server-side
-ticket path?
-
-rxgk_yfs_decode_ticket() in net/rxrpc/rxgk_app.c builds an XDR payload
-from the decrypted ticket. It copies the ticket's enctype and key length
-as-is, then calls key_instantiate_and_link(), which reaches this code:
-
-rxgk_extract_token()
-  rxgk_yfs_decode_ticket()
-    key_instantiate_and_link()
-      rxrpc_preparse()
-        rxrpc_preparse_xdr()
-          rxrpc_preparse_xdr_yfs_rxgk()
-
-rxrpc_preparse_xdr() passes -EKEYREJECTED back up. The cant_get_token
-switch in rxgk_extract_token() only handles three error codes:
-
-net/rxrpc/rxgk_app.c:rxgk_extract_token() {
-    ...
-cant_get_token:
-	switch (ret) {
-	case -ENOMEM:
-		goto temporary_error;
-	case -EINVAL:
-		return rxrpc_abort_conn(conn, skb, RXGK_NOTAUTH, -EKEYREJECTED,
-					rxgk_abort_resp_tok_internal_error);
-	case -ENOPKG:
-		return rxrpc_abort_conn(conn, skb, KRB5_PROG_KEYTYPE_NOSUPP,
-					-EKEYREJECTED, rxgk_abort_resp_tok_nopkg);
-	}
-
-temporary_error:
-	/* Ignore the response packet if we got a temporary error such as
-	 * ENOMEM.  We just want to send the challenge again.  ...
-}
-
-So -EKEYREJECTED falls through to temporary_error. rxgk_verify_response()
-then does goto out without an abort, and rxrpc_do_process_connection()
-ignores the return value of rxrpc_process_event().
-
-Before this patch, a ticket whose K0 length did not match its enctype
-still got through key creation. It failed later instead:
-
-- in rxgk_generate_transport_key() or rxgk_set_up_ciphers(), aborted with
-  RXGK_NOTAUTH
-- or in authenticator decryption, aborted with RXGK_SEALEDINCON
-
-With this patch, is the RESPONSE silently dropped, so the connection keeps
-re-challenging until it times out instead of being aborted? The gap in
-the switch was already there, but this patch adds a new way to reach it.
-
-Should rxgk_extract_token() handle -EKEYREJECTED explicitly?
-
-[ ... ]
-
-> @@ -257,6 +265,8 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
->  	_debug("TICK: %*phN",
->  	       min_t(u32, token->rxgk->ticket.len, 32), token->rxgk->ticket.data);
->  
-> +	prep->quotalen += sizeof(*token) + datalen + tktlen + keylen;
-
-[Severity: Medium]
-Is sizeof(*token->rxgk) meant to be left out here? The removed code
-charged it:
-
-	plen = sizeof(*token) + sizeof(*token->rxgk) + tktlen + keylen;
-	prep->quotalen += datalen + plen;
-
-The struct rxgk_key header is still allocated by
-kzalloc_flex(struct rxgk_key, _key, raw_keylen), and it lives as long as
-the key. That means each RxGK token is now under-charged by
-sizeof(struct rxgk_key), which is 72 bytes on 64-bit.
-
-In this same patch, the RxKAD parser still counts sizeof(*token->kad) in
-plen. The commit message only says a token should be charged when it is
-used. It does not mention charging less.
-
-The datalen term does not make up the difference, because
-rxrpc_preparse_xdr() only calls the per-token parsers once the remaining
-datalen has reached 0. generic_key_instantiate() then passes
-prep->quotalen directly to key_payload_reserve().
-
-A key can hold up to AFSTOKEN_MAX tokens. Could an unprivileged user use
-this to pin more memory in rxrpc keys than their key quota allows?
-
->  	/* count the number of tokens attached */
->  	prep->payload.data[1] = (void *)((unsigned long)prep->payload.data[1] + 1);
->
-
+diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+index c69080ca14f5..3ae5203d3fac 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+@@ -897,14 +897,22 @@ static void test_bpf_hash_map(void)
+ 	/* Sleepable program is prohibited for hash map iterator */
+ 	linfo.map.map_fd = map_fd;
+ 	link = bpf_program__attach_iter(skel->progs.sleepable_dummy_dump, &opts);
+-	if (!ASSERT_ERR_PTR(link, "attach_sleepable_prog_to_iter"))
++	err = libbpf_get_error(link);
++	if (!ASSERT_EQ(err, -EINVAL, "attach_sleepable_prog_to_iter")) {
++		if (!err)
++			bpf_link__destroy(link);
+ 		goto out;
++	}
+ 
+ 	linfo.map.map_fd = map_fd;
+ 	link = bpf_program__attach_iter(skel->progs.dump_bpf_hash_map, &opts);
+ 	if (!ASSERT_OK_PTR(link, "attach_iter"))
+ 		goto out;
+ 
++	err = bpf_link__update_program(link, skel->progs.sleepable_dummy_dump);
++	if (!ASSERT_EQ(err, -EINVAL, "update_sleepable_prog"))
++		goto free_link;
++
+ 	iter_fd = bpf_iter_create(bpf_link__fd(link));
+ 	if (!ASSERT_GE(iter_fd, 0, "create_iter"))
+ 		goto free_link;
+@@ -1023,7 +1031,7 @@ static void test_bpf_array_map(void)
+ 	int err, i, map_fd, hash_fd, iter_fd;
+ 	struct bpf_iter_bpf_array_map *skel;
+ 	union bpf_iter_link_info linfo;
+-	struct bpf_link *link;
++	struct bpf_link *link, *bad_link;
+ 	char buf[64] = {};
+ 	int len, start;
+ 
+@@ -1049,10 +1057,24 @@ static void test_bpf_array_map(void)
+ 	linfo.map.map_fd = map_fd;
+ 	opts.link_info = &linfo;
+ 	opts.link_info_len = sizeof(linfo);
++	bad_link = bpf_program__attach_iter(skel->progs.oob_write_bpf_array_map,
++					    &opts);
++	err = libbpf_get_error(bad_link);
++	if (!ASSERT_EQ(err, -EACCES, "attach_oob_write_iter")) {
++		if (!err)
++			bpf_link__destroy(bad_link);
++		goto out;
++	}
++
+ 	link = bpf_program__attach_iter(skel->progs.dump_bpf_array_map, &opts);
+ 	if (!ASSERT_OK_PTR(link, "attach_iter"))
+ 		goto out;
+ 
++	err = bpf_link__update_program(link, skel->progs.oob_write_bpf_array_map);
++	if (!ASSERT_EQ(err, -EACCES, "update_oob_write_iter"))
++		goto free_link;
++
++	/* The rejected update must leave dump_bpf_array_map attached. */
+ 	iter_fd = bpf_iter_create(bpf_link__fd(link));
+ 	if (!ASSERT_GE(iter_fd, 0, "create_iter"))
+ 		goto free_link;
+@@ -1092,6 +1114,9 @@ static void test_bpf_array_map(void)
+ 			goto close_iter;
+ 	}
+ 
++	err = bpf_link__update_program(link, skel->progs.noop_bpf_array_map);
++	ASSERT_OK(err, "update_valid_iter");
++
+ close_iter:
+ 	close(iter_fd);
+ free_link:
+@@ -1363,6 +1388,11 @@ static void test_bpf_sk_storage_map(void)
+ 	if (!ASSERT_OK_PTR(link, "attach_iter"))
+ 		goto out;
+ 
++	err = bpf_link__update_program(link,
++				       skel->progs.oob_write_bpf_sk_storage_map);
++	if (!ASSERT_EQ(err, -EACCES, "update_oob_write_iter"))
++		goto free_link;
++
+ 	iter_fd = bpf_iter_create(bpf_link__fd(link));
+ 	if (!ASSERT_GE(iter_fd, 0, "create_iter"))
+ 		goto free_link;
+diff --git a/tools/testing/selftests/bpf/progs/bpf_iter_bpf_array_map.c b/tools/testing/selftests/bpf/progs/bpf_iter_bpf_array_map.c
+index 19710cc0f250..beb1b714f120 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_iter_bpf_array_map.c
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_bpf_array_map.c
+@@ -51,3 +51,20 @@ int dump_bpf_array_map(struct bpf_iter__bpf_map_elem *ctx)
+ 	*val = *key;
+ 	return 0;
+ }
++
++SEC("iter/bpf_map_elem")
++int noop_bpf_array_map(struct bpf_iter__bpf_map_elem *ctx)
++{
++	return 0;
++}
++
++SEC("iter/bpf_map_elem")
++int oob_write_bpf_array_map(struct bpf_iter__bpf_map_elem *ctx)
++{
++	__u64 *val = ctx->value;
++
++	if (val)
++		val[1] = 0;
++
++	return 0;
++}
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006133011.531806-1-dhowells%40redhat.com
+2.54.0 (Apple Git-157)
+
