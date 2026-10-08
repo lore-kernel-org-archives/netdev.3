@@ -1,72 +1,66 @@
-Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED4D371053;
-	Wed,  7 Oct 2026 23:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791417304; cv=pass; b=RKZhGahPkvIIH+802SEWlW+G8t9Gduiw3bDbUmMqgKXHkO4I5TE4aKk3F5WDrYgEyLF4Ednq1AjPob5PCu/fFyESIKbr3OXIt9Ov/6gn+sWCj5RJL7GABDxKx5guJrTD7Qd+26b5tR6IpSB3L/l7YJZQB9RsZwc/1/A//QmIcQM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791417304; c=relaxed/simple;
-	bh=E6RcB5CiT08ttxDbgubS06G4yIp+Whv55XN3uzJFr+g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Uf6WoK2YEtOX2J5TExEcIvaY4hycPtUdf7dn7FHpl/rYoiqPaHTMX5p1AMRybTxwNQxSlEBMvPgkqixOrL6VBNyAxXiwrmui/jhajW5fjvFzHJIg0EAbmOg3wnPpUmhcpC2kXNqZEtJeYbmOunc5WnlDX84V5q/X+AXskGUqohY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv; spf=pass smtp.mailfrom=iav.lv; dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b=RePklWXq; arc=pass smtp.client-ip=136.143.169.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iav.lv
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iav.lv
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609E22253B0;
+	Thu,  8 Oct 2026 00:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791417631; cv=none; b=dR8lxlH9fSivz/tvFisGY6KvPe1j0jMN3RpvylGLFnRo9+hAvbQHnFhXC3n/hmzcUTlmJc1W6XKHOgVmryRoN2L+paLj8cxD/h+lQ+Bg5ZfHgX7eS7hbsR6USRv8OWC7znPmlXE8w7peRW5V/7APIQHHbxTgNbg2FzbGYbXopU4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791417631; c=relaxed/simple;
+	bh=YRwerDxd3kQSJgTe5HjOwiGE5oyvlx6BcwgSNjGbF3c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=foCWLKJfT5OSWYA1OSNyl6X8njyCj15R0ahjxdF6Ng58ySxkMGBmZ1kyofy7hXGUhOOGnVNrUNKnC7H0VPrsLD+krncT7UVkDk/onrDT5PIz5E5nC6KKTtAsSGuLd9/cDnTmL5xZi0n2kNdImbr3Dyf4yvSwcGk5EZSxCsfISZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B58zzxLw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iav.lv header.i=iav@iav.lv header.b="RePklWXq"
-ARC-Seal: i=1; a=rsa-sha256; t=1791417284; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=jsY5r7vFEL21347tqU3QcjIn3q7SW8VSH2oNbdXUGinMGFQgCEHL5JnhhAyucFhFRRRc+4IRY9PGi3NXbzfxyi3lZywPgdi5vsH8KJYEkMUWJfWvyY7L90EVDcQpiIgo+NPYqDKeAE4rmAdhODPM+YHegupg30It8UDk4b+Gk6w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1791417284; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=E6RcB5CiT08ttxDbgubS06G4yIp+Whv55XN3uzJFr+g=; 
-	b=KDpsh4NUmvM00fl5wbLIPATyPjsVYBakBezFgmH47GZx48iOc3huacYn7oj4F0pqX34LzzvX7JEtAPNZGrm3T6QIp+C3KhIYq/FrSaMX/1xRBxnxRjrfm+40fZLB9sKI/txC7TGNgnS3kC6dBBbMfAOOp4RMK6FJYvEjx29zFEw=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=iav.lv;
-	spf=pass  smtp.mailfrom=iav@iav.lv;
-	dmarc=pass header.from=<iav@iav.lv>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791417283;
-	s=zoho; d=iav.lv; i=iav@iav.lv;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:In-Reply-To:Date:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=E6RcB5CiT08ttxDbgubS06G4yIp+Whv55XN3uzJFr+g=;
-	b=RePklWXq5Msqwzez6R4WgZ2y9UFEnyWApFcg1+ilSgdYSjfNVictAeJFb6LtcKDL
-	BjUKQZnWGtuk+ATpGv8dBxONMZLiv+iLeyX0vwseLSCErPplmgVVSNecOv5S21leQdd
-	vtdRpNU2EAUYYvru5iXy/9peSQRP7F3wujRjiQ58=
-Received: by smtp.zoho.eu with SMTPS id 179141728018592.3187470738884;
-	Thu, 8 Oct 2026 01:54:40 +0200 (CEST)
-From: Igor Velkov <iav@iav.lv>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Michael Stapelberg <michael@stapelberg.de>, linux-kernel@vger.kernel.org,
- Igor Velkov <iav@iav.lv>
-Subject: Re: [PATCH net v4] net: phy: marvell: keep WOL_EIE across interrupt
- reconfiguration
-In-Reply-To: <20261007182112.821061-1-rosenp@gmail.com>
-References: <20261007182112.821061-1-rosenp@gmail.com>
-Date: Thu, 08 Oct 2026 02:54:25 +0300
-Message-ID: <179141726511.545895.12266951911761895501@iav.lv>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B58zzxLw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5F51F000FF;
+	Thu,  8 Oct 2026 00:00:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791417630;
+	bh=XcuH3LG1dKuUFLwzOh6jw6CMGpNhpT6Di+aA26s77nc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=B58zzxLwrcvpS26HRCUNgu2N09L7f/YnuSSCQ0QXkAtNBS+K9V6lrjj5lvGQIAicA
+	 LRAP7+0x5EYs+DcbtTO8HQRx1tGhpE/nbnBT4K4UPGqaA1u+UCDzQJCa+FB8UWYKaC
+	 uF+tJIqLLaYEe3ELk4mUK3uhvDt5cdRFuXXF8cmE+hbbGOyvcnrp3mnaKji/9qQliM
+	 X+o6HZ6UfSz9fZQWDl/il1utihaqACh/rInvRtqOW9NS9kQ8pcKBQWdasjjK51VI90
+	 xiMMATml5GZCAjkVxEuaNAMuFsxDXda80J5+vQ+ybwjhVnoRLH4+u1IObgJ9OA9YUQ
+	 ZXJ7bLVrMg97w==
+Date: Wed, 7 Oct 2026 17:00:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Irlanki Sandeep <irlanki.s@samsung.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, edumazet@google.com,
+ davem@davemloft.net, pabeni@redhat.com, ncardwell@google.com,
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, corbet@lwn.net,
+ linux-kernel@vger.kernel.org, lorenzo@google.com, maze@google.com,
+ sporeba@google.com, motomuman@google.com, madhan.raj@samsung.com,
+ srihari.k@samsung.com, g.pokhra@samsung.com, r.kumawat@samsung.com,
+ raj.kumars@samsung.com, ts413.lee@samsung.com, ramyashree.s@samsung.com,
+ daeil2.hwang@samsung.com
+Subject: Re: [PATCH net-next v6] tcp: add BPF kfuncs to set per-socket ECN
+ mode and AccECN option
+Message-ID: <20261007170028.318acb6b@kernel.org>
+In-Reply-To: <20261001132759.1076145-1-irlanki.s@samsung.com>
+References: <CGME20261001132701epcas5p2da9b0fa7ca3bcef1ff84a62f255bc573@epcas5p2.samsung.com>
+	<20261001132759.1076145-1-irlanki.s@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Tested-by: Igor Velkov <iav@iav.lv>
+On Thu,  1 Oct 2026 18:57:59 +0530 Irlanki Sandeep wrote:
+> Suggested-by: Jakub Kicinski <kuba@kernel.org>
 
-Helios4 (Armada 388, 88E1512), 7.2.9. With this patch WOL_EIE stays set
-over 3 link down/up cycles, "wol d" clears it, and a magic packet on a
-running board is a handled interrupt. Without it, WOL_EIE is lost on the
-first down/up, survives "wol d", and the magic packet is an unhandled
-interrupt.
+This needs an ACK from TCP maintainers. If you respin please make sure
+to drop this tag, this tag is for cases where someone suggested sending
+the patch as a whole. Not for changes requested during normal course of
+review.
 
---
-Igor Velkov
+There was a false positive from sparse regarding the use of kfunc,
+I kicked off the AI review manually, please check the results here
+in an hour or so:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001132759.1076145-1-irlanki.s@samsung.com
