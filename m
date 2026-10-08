@@ -1,524 +1,331 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010013.outbound.protection.outlook.com [40.93.198.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f5.google.com (mail-ej2-f5.google.com [74.125.228.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566BC3BBFBE;
-	Thu,  8 Oct 2026 17:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7585F3B2FE9
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 17:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.133
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791480111; cv=fail; b=t6lFt1o77rlzrXJWvfOPLqvkumaI0uL9CGvgmKFyactTpGQ+Ry+8ZDViH1aVVKIhrGRfdeAkaKuEcda5pwtiEkaaifp4HA5+8XQgSUEgp804gOWUCRpuTOy3YaLLsvUpuZqNmNXtVyB7kerWQcG+8tIcRXUpDWqgeJmQC2UIApw=
+	t=1791480178; cv=pass; b=p+I+EmBqOxY5WhHQvsJX7bBsAtJtH6pgDjSjj6Hcnay3Wmc/zkGwXsWf/LODlTUstyIL6xNXaQAVIpWB0ed6wJodAyYeRWm6IbNqiEkyndBimxZYnXSzeupSLC/dPBOcUbw9XR+cFWmn5qXuFTLn4JJzJloFqHkVOXJf7gQS9KI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791480111; c=relaxed/simple;
-	bh=8yj3uLowQyjaRH5yQana98RjymjjGrXhYPMtSuGr254=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OcEwY+EDnzdVnARFX6KGmKfMMSHcczmkDJ1/RvVKW+bpTSNRyG92kL0l3qksAO353TaPCecPs/FM8/e2LAItK1kjjmDCITvmXJ7iGUtJGeMqbxZdFnHg4+H6ahV8DhsI2mA5J23NYb+awG5qz0/RcqbEPexg5Q0yw1nzzGyg5+8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Pd6U8kq5; arc=fail smtp.client-ip=40.93.198.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1791480178; c=relaxed/simple;
+	bh=pWzqCCeV0T2q/xcDvCLhRhXLxRVs1uZuFMfnyPfHVOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YQuEjS3TPDg3PPMINBQvw/SJuLHiX8b4gDAexRkIL+wEFP9oqvnlF7P4qLojXBhHbjlik7zblXzzHRO9Hc6ZsVYOU6aZfJcD+SOflKrE0ZqFxzYdRDKq2z8/qtTWYbjycFCfvA1QWGgxyCCwxbEDFBJKwdBHl/60a4ZYqzkzvv0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A2WVov53; arc=pass smtp.client-ip=74.125.228.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Pd6U8kq5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x5iW6Ul80u5FphgYZIK2PCFe5j6y8YFv8MQinP82b3h1IqOoYKoFTM7Rq5OP2TUbdJgPEOpKybjjti41Yp7rUCdZpcEd20RiCCJJrlIdotYJCQyfoQ4Ba8HLZSjyG9Aw1NXoRK4RzwuKBOEeiFwRUl3rICOYIcws5W/kxdzuO65RikPd59hju1rClOjCIfMgyrU9VV+yyDb6n5RQxijNffCFmAXY8HFnwyMllKRN4tsYlMgXmCMeQwvqZFjzCtACbhgndeVxirGfgkXEMYTpgyrY+PWIwtriEg5x17amfXO4a4OwUkYCgBCgE7R+Rakqfphc9P0fhL6fpaVLAngXhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/KIXVnrsETFGJmIOsCj9MigL3Q7tniQDU8xAozlJbFk=;
- b=HSb/muae9kpkTEQO/qqUG+B3phoNZ/SGsU3WN6KoRnxj+ulbkp/wfWXjMHo14gsuec91MSW6g8ZP65oTa5NLZNJiviwdFTma3QUxxi+788Ie3hlsxf3ZIO1xnTTyOfzsinyZR5lP2P3TxwgKGuRf3Jm/ZO2jPYFgCW4BgS9/utHO9u3Svu/+nbxbIQ8RvmYsPt6TvNU9rvugoPvVZF0avHN7jiECIG6rV+AYDOnyElsZEW5S8R5Jwn2YNcTkJny47NFz3hPGrIo0Q0g1eh2lNuwfQYmJirN9/tPC9dsB7DOyowKy/WZb+mUd6k20LPQf8khvo2+6gkb3c3CuJi4G+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/KIXVnrsETFGJmIOsCj9MigL3Q7tniQDU8xAozlJbFk=;
- b=Pd6U8kq5qfYzn8MROYPrw0yoNaqHQa3WD+oG21d7moR9X9v1StzUE0YX9BzY+VV8cVEG6vxo/n+q6utOIggr4WddrmXRkXEh9+pqCRagRSVl+TrrSDbbSRGztswkgDtcQd/z8Ie6UsjxL1Ax5GkGQ+WIqzj1DLKWLQfWDq8Ija4Y0CrqM6pLOCiHy9Rs5yHPqP6ErElo83MObZYQHsZ0qdXFZfJkK3noIJCXdi0Q3bppr6E3TewWzp2Cd2EUgXFVJhACwl9RYFejAQiZR4CCMLPr/D2aYiuqmNlsmB5C3o4H9obDghYEfm4YsB1X4Zle7g7RHyqCts0jxPn2z/y4Dg==
-Received: from DM6PR02CA0136.namprd02.prod.outlook.com (2603:10b6:5:1b4::38)
- by CY1PR12MB9583.namprd12.prod.outlook.com (2603:10b6:930:fe::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Thu, 8 Oct
- 2026 17:21:41 +0000
-Received: from CY5PEPF00000E76.namprd02.prod.outlook.com
- (2603:10b6:5:1b4:cafe::a) by DM6PR02CA0136.outlook.office365.com
- (2603:10b6:5:1b4::38) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Thu, 8
- Oct 2026 17:21:41 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.233) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CY5PEPF00000E76.mail.protection.outlook.com (10.167.247.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Thu, 8 Oct 2026 17:21:40 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 8 Oct
- 2026 10:21:15 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 8 Oct 2026 10:21:14 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 8 Oct 2026 10:21:10 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Carolina Jubran <cjubran@nvidia.com>, Gal Pressman <gal@nvidia.com>, "open
- list" <linux-kernel@vger.kernel.org>, Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>, "Mark
- Bloch" <mbloch@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Dragos
- Tatulea <dtatulea@nvidia.com>, Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next V2 5/5] net/mlx5: nodnic: Add health monitoring
-Date: Thu, 8 Oct 2026 20:18:20 +0300
-Message-ID: <20261008171821.660739-6-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20261008171821.660739-1-tariqt@nvidia.com>
-References: <20261008171821.660739-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A2WVov53"
+Received: by mail-ej2-f5.google.com with SMTP id a640c23a62f3a-c2e22754212so299219966b.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 10:22:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791480175; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pDlE+CGEMMWSY8TVJgDcISOrgOp8yq1dJlSVCN50zpduDCQgdkoJXk7OSJhNe+pLkr
+         28zMOwVLU3DiaGeHu4X6PudEdzPgOrNBzk8nWh0zifPFPV2wXye9flff4V+B+QCi7hN8
+         mOHVw7EjTFnaUVk/CnkgN5DyzQvWZZohSg0rjaabStEdLKhBS0j7V4Gf3Vsn39s22BXJ
+         l+pbwkfodjbOOTiS7KMSjErRYrwJKt4QXGWzO/6ZtEWWR8QWJ4+VO8wZpzCzKCgtRVCV
+         2W+uhDi+rswuuGB6RiHpBY+FMGnXq0mVccuH8D0h/WNVSi0Nj6sjPKoJoDMLpV1sLn4w
+         l/Bg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=p0EBynkMV9re2bWQbZpZelU+r1oieiYYosFapqOHGVk=;
+        fh=kyusRd3mxReBY1Xedh/LtuvJJbB1A/dn6WWfoF5VlhY=;
+        b=IeE2jZFqZFdELE7hP4UxMUehAT7cuuj5WS2gwpK6wCYsG5VBRfoDEu0PGu7cipxp16
+         zQoTNW87x+lykiAAc3yG1A8q593hrjmZJ7I0beZpwewO0tx/ZF1PQ5wrHMP3+3pwm7Og
+         gIlaRLEcqDoiObsxhiysVuguoH5Vkq1xFl8/u7S43k8qjqPpYpkDWnYj6sJZMoKguQX+
+         sDxg2ZO6Y9VgubhD5OIfLpD/RUNRjkICHkWDCxknQ3nPxTnXS6WNQU3lVG8d5cJoSoeX
+         GRwT8AlYlBG3JkhP1CKdbNpWJ/i3T3iMezeMyw9mV1MBxktiL24xD1HAJgbAet+Gd+GM
+         Y8iQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791480175; x=1792084975; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=p0EBynkMV9re2bWQbZpZelU+r1oieiYYosFapqOHGVk=;
+        b=A2WVov537IqpBIt1M7lEciGE1qlgSm4s2+aMiYLU7Je7dqzRDu8JToGSxhPSBLxSqJ
+         nk5U85EoNZNj0t1bpGSAUbVq9DTk5vNkuBGptMeh1SfWdaq0hSjYJUKyfBnV4KzPv1ue
+         BiBS3kkkpPRKdqU7fVWJtQC6/zTMeolGeISS4zLUTUE4BNqCXCeGuJhmZb71xGEBkEbt
+         Derte0TRy9/4lXfo+T0lfxmqCUfiIUh7qCE+CLxN3HGvLzr49AgNXs8c0oZBU8E4ybfJ
+         DAdZcwq8ouHQuU7y3SfbsAmPWwg/hDzEU4TFYpgxS8Dtl8PYuzcLRrQLHDywmoYZN/MI
+         9kQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791480175; x=1792084975;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=p0EBynkMV9re2bWQbZpZelU+r1oieiYYosFapqOHGVk=;
+        b=bRS5UQ8s0B1DsKIwwtde1MXE7QEMXBcfL1vd7id+BiuJw68htJuMPgjBQY8elCgGYU
+         q1p9skvlmTjhbz4px+glk4LeUfjH+JnuVdP7deHnuYRs6QMh33FhbDP+rrfpmZlcRFc3
+         TXvtsyHtElsZf3dtXZ0SH11ZbBoOd1e/gJfR16eQcaCqifjzg52gXaEv6SKQ82wxdkG+
+         pn9sUUbp8Jk8cX/j44uZoG/FbHUnb2XDhNjjKAoMCWbKNMfy0ixAdoMgdvKX0Ettvw3G
+         YkRHeGLSNtufoRg1evnNJ91hfeLNTkaXJrO7peInPC/2jgYrziQlb8jJEmkvYNew5TIW
+         eyIg==
+X-Forwarded-Encrypted: i=1; AKwUvByZFzJt42Vqx9gPoFpAhahLyhs34uMQW+VD7joIwLIHhV8+/+0u5K9dghygR/bUl0KwlEm11i4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lpzX3GefbOpILYP7yCnuqWqcqgchhORWeZWVXDleez4XIer/oa
+	NHUHdB7a86phNmcd4HnSwO3Pa4Fi4mao2AHEBw2AcQ/y5VBk2oAgMbg4XqU9TYuyAvNRmiWBOku
+	XU5Yxv4aqMGH7oOTzjiH5o+t6Cdu3T3msGRVeAsrilg==
+X-Gm-Gg: AYBFou3Z8t48JHxX4hLVtmLgcfKl3LFIfVMcJoSJTSaYL92+Pz7/mSeP6jCTrJvC+5o
+	YwlYgYeDqrXOd5VjNCrTZWGpAFB6d0YpHK6Cz/lfPFI/MX60KE1F/K270YqqAt+wVArQ+vASCFx
+	fMAWsjWmqdDAPm7xJ5AB9lguFlUQ3NLyJ3kFHTJZN7LODFpLjnEjlj5yqsDVyfQEPEY0+flthpa
+	lLOyIV6RGP8abJ3u9UbwlT9f72kVKlP1jd6KcHXE/A5AMhuvkOWBCncnh6gq4YmzxTYL45uRiK7
+	HxkndvQpzapGmiWAjKTFbOGcSvohbpLARLJ3cUsHMEKRJjdomoUd7YUoxg==
+X-Received: by 2002:a17:907:6eab:b0:c2a:fcb7:62f2 with SMTP id
+ a640c23a62f3a-c317bdee527mr644738666b.19.1791480174426; Thu, 08 Oct 2026
+ 10:22:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PEPF00000E76:EE_|CY1PR12MB9583:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53259123-946c-4054-d154-08df25609dcd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|376014|82310400026|1800799024|56012099006|11063799006|10067099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	7BHff2Ch6ClHh7fmMWGkTq6v9fpjr+xp3hUdtVoUUD8cez6lBsPZQGyWxNtiTljDQpBRabrri/XqWMlRkFBOEBxnYV83IDu7QYFcVbMAXT6DNzDD9JeICQwNy59Bq6qgbkHPQUr5NQOJJzT+VcOOqxD0UzNbscE+forBvZFpVvLzgfYwvcEkiyLhjkOpP3MZzuDjaY9MCZxjjsNuMdFG+wJFkv1dLHv2xB7PuPCpZTaEHEpFdaNDlftNxGTw3mUAp4h1ZJZPrCaUQZEGUa3QTOO9cNkJ8oQ99LTQjtlRQ12mgU0NBNe3IPwiV9GxBpgIs944jH5ojI0N4RJHzRdX79MZqiKVBUrPHH7zDnYC1XO/B46reDIwhkBUCJOPa0ltEd34bSUhSoTogCngBvHo+muUHXaozDTkixUuuE9DdTcavQLH8JHYdpfFKtMM4+I1j54eqsxGsfA4iDuRTT01CxYECFAQgalWR9DfsXEcEem6Ef1cyOzk8JOiyGqIuvCPjF6jOtIYLjNpbiGVEURWDWZBfHqv4KalhDE9IvTXl5rqEbWx3pFTtjCP77BNdkASGgLRRXFprOmlroK5LGH0JqrkcQfA2JKgaLcBGo31Ea8JCY9OPKat2v3F4GeEf323gpcmQS3+wpVt/L9m9iMhTjbqVf45YIrFdLeN1kfQaBwpV3yiKiQWTDKywZbY5V0IMHJYoA8D4buY3nMHQZS+7w==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(376014)(82310400026)(1800799024)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	d7MLwLWAooZFwIwCQzhcqnM+9drRkB88cDnvf1We9H6Xi1qys7/g2zEmJ9BGsaF+VBsxH0TGLzEgKy9zi55ydUdOmw9oRRkEikLjzbTTtby6d8fFRJpZe1He0Lga0zosCMvk7r8fcrWzwniVnT4m76SuvsbGH8YIZlsfF2aJaOTlcd8KkbzbeuVYPjN5NXCjRkxmFNtI4E4Cd2gDqIzPUe7CbhGImLC9/eKmCRnqX+mTNk7gfGm22hYSeuMyQy05R/B87jetx7usFNBTei/7iEaLzrTiC6u2tiKe7HRBXik1f0rfuorJ9KQ+9Mn8LnD07E7ogH/FVUeuc5PdpLmcysqKDOM+yKeqk44xCiRqj0/klLnwa/Lqcj2AuMFHj7HaNcfdJoGdG1OHF7uFyJPieCyKlkpl9a0uI9pRYSYfmogKqNsMZmy+tWMqTj/LKXiF
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Oct 2026 17:21:40.3159
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53259123-946c-4054-d154-08df25609dcd
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY5PEPF00000E76.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9583
+References: <20261005223011.1124347-6-coiaprant@gmail.com> <179147717619.434549.6837184634225737346@kernel.org>
+In-Reply-To: <179147717619.434549.6837184634225737346@kernel.org>
+From: Coia Prant <coiaprant@gmail.com>
+Date: Fri, 9 Oct 2026 01:22:41 +0800
+X-Gm-Features: AclHuK_-hedDg8zCqAPrYyf_XLOD6FRv2_L3UganQGVdJ3Cn6nu0L2YERFkLqUA
+Message-ID: <CALj3r0hnXMqLihuZ5fe65Z=g_jz5FHVf_GMhRGpTfSWYW7JoYA@mail.gmail.com>
+Subject: Re: [PATCH net-next v10 5/6] net: stmmac: dwmac-rk: add SGMII support
+ for RK3568
+To: netdev-bot+sashiko@kernel.org
+Cc: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, heiko@sntech.de, maxime.chevallier@bootlin.com, 
+	hkallweit1@gmail.com, linux@armlinux.org.uk, david.wu@rock-chips.com, 
+	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+<netdev-bot+sashiko@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=889=E6=97=A5=
+=E5=91=A8=E4=BA=94 00:32=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 3 (2) =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] SGMII cannot work at all, and the XPCS leaks on every probe.
+> - [Medium] With phy-mode=3D"sgmii", rk_gmac_probe() clears
+>   plat_dat->set_clk_tx_rate and sets default_an_inband=3Dtrue, but that=
+=E2=80=A6
+> - [Medium] The commit message's account of in-band vs out-of-band SGMII
+>   is wrong in three ways.
+> - [Medium] xpcs_rk_create(), which the new rk_pcs_init() calls, assumes
+>   that 'supplier->links.status =3D=3D DL_DEV_DRIVER_BOUND' right after=E2=
+=80=A6
+>
+> Pre-existing issues:
+> - [Medium] This problem wasn't introduced by this patch, but
+>   rk_gmac_exit() assumes driver data already exists.
+> - [Medium] This problem wasn't introduced by this patch, but
+>   rk_gmac_resume() ignores the return value of rk_gmac_powerup() and=E2=
+=80=A6
+>
+> --
+>
+> net: stmmac: dwmac-rk: add SGMII support for RK3568
+>
+> This patch adds RK3568 SGMII support to dwmac-rk. It adds a set_to_sgmii(=
+)
+> GRF callback, plus pcs_init/pcs_exit/select_pcs callbacks that create the
+> XPCS with xpcs_rk_create(). For SGMII it also enables clocks earlier in
+> rk_gmac_powerup(), sets default_an_inband and clears set_clk_tx_rate.
+>
+> Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TR=
+M%20Part1%20V1.1-20210301.pdf (Page 386)
+>
+> > On RK3568, the MAC clock is fixed at 125 MHz and cannot be dynamically
+> > changed by the stmmac core's set_clk_tx_rate callback.  In-band mode
+> > works because the PCS handles rate adaptation internally.  Out-of-band
+> > mode does not work because the MAC would need to change the clock rate
+> > to 125/12.5/1.25 MHz for 1000/100/10 Mbps respectively, and the clock
+> > is fixed.
+>
+> [Severity: Medium]
+> Are these rates correct? The clk_tx_i kernel-doc in include/linux/stmmac.=
+h
+> says "SGMII 125MHz SerDes clock divided by 1, 5, or 50". Also,
+> rgmii_clock(), which rk_set_clk_mac_speed() uses, returns
+> 125/25/2.5 MHz.
+>
+> The reason given for in-band working and out-of-band failing also doesn't
+> seem to match the code:
+>
+> - rk_gmac_probe() sets set_clk_tx_rate to NULL for every SGMII
+>   configuration, so the MAC clock is handled the same way in both modes.
+> - The XPCS is told the speed in both modes: through MAC_AUTO_SW in
+>   xpcs_config_aneg_c37_sgmii() for in-band, and through a BMCR write in
+>   xpcs_link_up_sgmii_1000basex() for out-of-band.
+>
+> > Enable default_an_inband for SGMII and disable the generic stmmac
+> > set_clk_tx_rate callback.
+>
+> The callback that gets cleared is rk_set_clk_tx_rate(). That is the
+> Rockchip-specific one, which ends up in rk_set_clk_mac_speed() on rk3568,
+> not a generic stmmac callback.
+>
+> Could the commit message be updated on these points?
 
-Monitor firmware health by periodically polling the health buffer from
-the initialization segment.
+Ack, I'll fix the commit message: the rates are 125/25/2.5 MHz, and the
+reason out-of-band does not work is that the driver disables
+set_clk_tx_rate, so the MAC clock stays at 125 MHz. It's a driver
+choice, not a hardware limitation.
 
-Detect fatal device conditions, firmware health counter stalls, and
-syndrome changes. Report health errors together with their severity
-and mark the device as unhealthy on fatal conditions.
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/n=
+et/ethernet/stmicro/stmmac/dwmac-rk.c
+> > index 72bdbcb5e863a..3b50ad3c600b9 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+>
+> [ ... ]
+>
+> > @@ -1211,6 +1239,43 @@ static void rk_phy_powerdown(struct rk_priv_data=
+ *bsp_priv)
+> >               dev_err(bsp_priv->dev, "fail to disable phy-supply\n");
+> >  }
+> >
+> > +static int rk_pcs_init(struct stmmac_priv *priv)
+> > +{
+> > +     struct device_node *np =3D priv->device->of_node;
+> > +     struct device_node *pcs_node;
+> > +     struct dw_xpcs *xpcs;
+> > +
+> > +     pcs_node =3D of_parse_phandle(np, "pcs-handle", 0);
+> > +     if (!pcs_node)
+> > +             return -ENODEV;
+> > +
+> > +     xpcs =3D xpcs_rk_create(priv->device, pcs_node);
+>
+> [Severity: Medium]
+> Can xpcs_rk_create() race with the XPCS driver binding? It does this:
+>
+> drivers/net/pcs/pcs-xpcs-rk.c:xpcs_rk_create() {
+>     ...
+>         link =3D device_link_add(dev, &pdev->dev, DL_FLAG_AUTOREMOVE_CONS=
+UMER);
+>     ...
+>         if (READ_ONCE(link->supplier->links.status) !=3D DL_DEV_DRIVER_BO=
+UND) {
+>     ...
+> }
+>
+> fw_devlink does not parse "pcs-handle", so nothing orders the supplier
+> ahead of this probe. Suppose the XPCS device has no driver when
+> device_link_add() runs:
+>
+> - The link starts in DL_STATE_DORMANT.
+> - If the XPCS driver binds before the READ_ONCE() check,
+>   device_links_driver_bound() moves the link to DL_STATE_AVAILABLE, not
+>   DL_STATE_CONSUMER_PROBE.
+> - The DL_DEV_DRIVER_BOUND check still passes.
+>
+> device_links_unbind_consumers() only waits for links in
+> DL_STATE_CONSUMER_PROBE. Could a concurrent unbind of the XPCS driver the=
+n
+> free the devm-managed pxpcs and mii_bus while xpcs_create_mdiodev() is
+> still using them?
+>
+> Also, if the stmmac probe then succeeds, wouldn't
+> device_links_driver_bound() for the consumer hit
+> WARN_ON(link->status !=3D DL_STATE_CONSUMER_PROBE)?
+>
+> > +     of_node_put(pcs_node);
+> > +     if (IS_ERR(xpcs))
+> > +             return PTR_ERR(xpcs);
+> > +
+> > +     priv->hw->xpcs =3D xpcs;
+>
+> [Severity: High]
+> Does this XPCS pointer survive after the callback returns? On the pcs_ini=
+t
+> branch, stmmac_pcs_setup() never sets its local xpcs, and then writes it
+> back unconditionally:
+>
+> drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c:stmmac_pcs_setup() {
+>         struct dw_xpcs *xpcs =3D NULL;
+>         ...
+>         if (priv->plat->pcs_init) {
+>                 ret =3D priv->plat->pcs_init(priv);
+>         } else if (fwnode_property_present(devnode, "pcs-handle")) {
+>         ...
+>         priv->hw->xpcs =3D xpcs;
+>
+>         return 0;
+> }
+>
+> So once rk_pcs_init() returns, priv->hw->xpcs is NULL again.
+>
+> In stmmac_phylink_setup(), priv->hw->xpcs and priv->hw->phylink_pcs are
+> then both NULL, so the XPCS supported_interfaces are never merged.
+> rk_get_interfaces() has already set the RGMII and RMII bits for rk3568,
+> so PHY_INTERFACE_MODE_SGMII never ends up in supported_interfaces.
+>
+> With default_an_inband set, phylink_parse_mode() takes the in-band path
+> and phylink_validate() fails. Doesn't that make phylink_create(), and so
+> the whole probe, fail with -EINVAL on every phy-mode =3D "sgmii" board?
+>
+> Even if probe got past that, rk_select_pcs() would return NULL. Also,
+> rk_pcs_exit() and stmmac_pcs_clean() both return early when
+> priv->hw->xpcs is NULL, so xpcs_destroy() never runs. Is the dw_xpcs,
+> together with its mdio_device reference and clocks, leaked on every probe
+> attempt?
+>
+> The other pcs_init users (socfpga, rzn1, renesas) avoid this by storing
+> their PCS in priv->hw->phylink_pcs.
+>
+> Because of this, the commit message statement that SGMII "comes from the
+> XPCS's own supported_interfaces, merged by stmmac_phylink_setup()" does
+> not currently hold.
 
-Start and stop health polling as part of the device probe and remove
-flows.
+Fixed by the stmmac XPCS lifetime patch in the same series, which
+rewrites stmmac_pcs_setup() and no longer overwrites priv->hw->xpcs with
+a local variable. Sashiko is looking at the pre-patch baseline.
 
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../ethernet/mellanox/mlx5/nodnic/Makefile    |   2 +-
- .../net/ethernet/mellanox/mlx5/nodnic/en.h    |  12 +
- .../ethernet/mellanox/mlx5/nodnic/health.c    | 315 ++++++++++++++++++
- .../net/ethernet/mellanox/mlx5/nodnic/main.c  |   2 +
- 4 files changed, 330 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/nodnic/health.c
+> [Severity: Medium]
+> default_an_inband only picks the default. Does anything stop phylink from
+> running this link out-of-band?
+>
+> - A fixed-link node gives MLO_AN_FIXED.
+> - If the PHY reports only LINK_INBAND_DISABLE: xpcs_inband_caps() returns
+>   LINK_INBAND_DISABLE | LINK_INBAND_ENABLE for SGMII, so
+>   phylink_pcs_neg_mode() selects PHYLINK_PCS_NEG_OUTBAND.
+>
+> rk_select_pcs() returns the XPCS whatever the neg_mode is. With
+> set_clk_tx_rate cleared, the MAC clock stays at 125 MHz.
+>
+> According to the commit message, 10/100 Mbps would then have working TX
+> and failing RX. The link would still be reported up, and nothing would be
+> logged.
+>
+> Could the driver reject this or warn about it, for example by checking th=
+e
+> neg_mode or limiting the MAC capabilities? Right now it is only documente=
+d
+> in the commit message.
+>
+> > +             plat_dat->pcs_init =3D rk_pcs_init;
+> > +             plat_dat->pcs_exit =3D rk_pcs_exit;
+> > +             plat_dat->select_pcs =3D rk_select_pcs;
+> > +     }
+> > +
+> >       plat_dat->bsp_priv =3D rk_gmac_setup(pdev, plat_dat, data);
+> >       if (IS_ERR(plat_dat->bsp_priv))
+> >               return PTR_ERR(plat_dat->bsp_priv);
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/Makefile b/drivers/net/ethernet/mellanox/mlx5/nodnic/Makefile
-index 25865d7244d8..1d09edeaf3af 100644
---- a/drivers/net/ethernet/mellanox/mlx5/nodnic/Makefile
-+++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/Makefile
-@@ -5,4 +5,4 @@
- 
- obj-$(CONFIG_MLX5_NODNIC) += mlx5_nodnic.o
- 
--mlx5_nodnic-y := main.o en.o en_cfg.o tx.o rx.o nodnic_pci_vsc.o
-+mlx5_nodnic-y := main.o en.o en_cfg.o tx.o rx.o nodnic_pci_vsc.o health.o
-\ No newline at end of file
-diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h b/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h
-index d811bfe242ac..90e9f273d454 100644
---- a/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/en.h
-@@ -113,6 +113,16 @@ struct mlx5_nodnic_working_buffer {
- 	u32 alloc_size;
- };
- 
-+struct mlx5_nodnic_health {
-+	struct health_buffer __iomem   *health;
-+	__be32 __iomem		       *health_counter;
-+	struct timer_list		timer;
-+	u32				prev_counter;
-+	int				miss_counter;
-+	u8				synd;
-+	u32				fatal_error;
-+};
-+
- struct mlx5_nodnic_priv {
- 	struct mlx5_nodnic_core_dev *core_dev;
- 	struct net_device *netdev;
-@@ -128,6 +138,8 @@ struct mlx5_nodnic_priv {
- 	struct mlx5_nodnic_dbr	dbr; /* one shared dbr for TX and RX */
- 	struct mlx5_nodnic_cq	cq;
- 	struct mlx5_nodnic_ring	working_buffer;
-+
-+	struct mlx5_nodnic_health health;
- };
- 
- void mlx5_nodnic_build_netdev(struct net_device *netdev);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/health.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/health.c
-new file mode 100644
-index 000000000000..a981a5195c7e
---- /dev/null
-+++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/health.c
-@@ -0,0 +1,315 @@
-+// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
-+// Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-+
-+#include <linux/kernel.h>
-+#include <linux/random.h>
-+#include <linux/timer.h>
-+#include <linux/types.h>
-+
-+#include "en.h"
-+#include "nodnic_ifc.h"
-+#include "nodnic.h"
-+
-+#define MLX5_NODNIC_HEALTH_POLL_INTERVAL_MS 2000
-+#define MLX5_NODNIC_MAX_MISSES	3
-+
-+enum nodnic_rfr_severity_bit_offsets {
-+	NODNIC_CRR_BIT_OFFSET = 0x6,
-+	NODNIC_RFR_BIT_OFFSET = 0x7,
-+};
-+
-+enum {
-+	MLX5_NODNIC_SEVERITY_MASK	= 0x7,
-+	MLX5_NODNIC_SEVERITY_VALID_MASK	= 0x8,
-+};
-+
-+enum  {
-+	MLX5_NODNIC_SENSOR_NO_ERR,
-+	MLX5_NODNIC_SENSOR_PCI_COMM_ERR,
-+	MLX5_NODNIC_SENSOR_PCI_ERR,
-+	MLX5_NODNIC_SENSOR_NIC_DISABLED,
-+	MLX5_NODNIC_SENSOR_NIC_SW_RESET,
-+	MLX5_NODNIC_SENSOR_FW_SYND_RFR,
-+};
-+
-+static unsigned long get_next_poll_jiffies(void)
-+{
-+	return jiffies + msecs_to_jiffies(MLX5_NODNIC_HEALTH_POLL_INTERVAL_MS) +
-+	       get_random_u32_below(HZ);
-+}
-+
-+static bool sensor_pci_not_working(struct mlx5_nodnic_health *health)
-+{
-+	struct health_buffer __iomem *h = health->health;
-+
-+	return (ioread32be(&h->fw_ver) == 0xffffffff);
-+}
-+
-+static u8 mlx5_nodnic_get_nic_state(struct mlx5_nodnic_core_dev *dev)
-+{
-+	return (ioread32be(&dev->iseg->cmdq_addr_l_sz) >> 8) & 7;
-+}
-+
-+static int mlx5_nodnic_health_get_rfr(u8 rfr_severity)
-+{
-+	return rfr_severity >> NODNIC_RFR_BIT_OFFSET;
-+}
-+
-+static bool sensor_fw_synd_rfr(struct mlx5_nodnic_core_dev *dev)
-+{
-+	struct mlx5_nodnic_health *health = &dev->priv->health;
-+	struct health_buffer __iomem *h = health->health;
-+	u8 synd = ioread8(&h->synd);
-+	u8 rfr;
-+
-+	rfr = mlx5_nodnic_health_get_rfr(ioread8(&h->rfr_severity));
-+
-+	if (rfr && synd)
-+		mlx5_nodnic_core_dbg(dev, "FW requests reset, synd: %d\n",
-+				     synd);
-+
-+	return rfr && synd;
-+}
-+
-+static
-+u32 mlx5_nodnic_health_check_fatal_sensors(struct mlx5_nodnic_core_dev *dev)
-+{
-+	u32 nic_state;
-+
-+	if (pci_channel_offline(dev->pdev))
-+		return MLX5_NODNIC_SENSOR_PCI_ERR;
-+	if (sensor_pci_not_working(&dev->priv->health))
-+		return MLX5_NODNIC_SENSOR_PCI_COMM_ERR;
-+
-+	nic_state = mlx5_nodnic_get_nic_state(dev);
-+	if (nic_state == MLX5_NODNIC_ISEG_NIC_INTERFACE_DISABLED)
-+		return MLX5_NODNIC_SENSOR_NIC_DISABLED;
-+	if (nic_state == MLX5_NODNIC_ISEG_NIC_INTERFACE_SW_RESET)
-+		return MLX5_NODNIC_SENSOR_NIC_SW_RESET;
-+
-+	if (sensor_fw_synd_rfr(dev))
-+		return MLX5_NODNIC_SENSOR_FW_SYND_RFR;
-+
-+	return MLX5_NODNIC_SENSOR_NO_ERR;
-+}
-+
-+static const char *mlx5_nodnic_fatal_error_str(u32 err)
-+{
-+	switch (err) {
-+	case MLX5_NODNIC_SENSOR_PCI_COMM_ERR: return "PCI communication error";
-+	case MLX5_NODNIC_SENSOR_PCI_ERR:      return "PCI error";
-+	case MLX5_NODNIC_SENSOR_NIC_DISABLED: return "NIC disabled";
-+	case MLX5_NODNIC_SENSOR_NIC_SW_RESET: return "NIC SW reset";
-+	case MLX5_NODNIC_SENSOR_FW_SYND_RFR:  return "FW synd RFR";
-+	default:                       return "unknown";
-+	}
-+}
-+
-+static int mlx5_nodnic_health_get_crr(u8 rfr_severity)
-+{
-+	return (rfr_severity >> NODNIC_CRR_BIT_OFFSET) & 0x01;
-+}
-+
-+static int mlx5_nodnic_health_get_severity(u8 rfr_severity)
-+{
-+	return rfr_severity & MLX5_NODNIC_SEVERITY_VALID_MASK ?
-+	       rfr_severity & MLX5_NODNIC_SEVERITY_MASK : LOGLEVEL_ERR;
-+}
-+
-+/* Syndrome values from health buffer (same as mlx5_ifc.h) */
-+static const char *mlx5_nodnic_hsynd_str(u8 synd)
-+{
-+	switch (synd) {
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_FW_INTERNAL_ERR:
-+		return "firmware internal error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_DEAD_IRISC:
-+		return "irisc not responding";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_HW_FATAL_ERR:
-+		return "unrecoverable hardware error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_FW_CRC_ERR:
-+		return "firmware CRC error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_ICM_FETCH_PCI_ERR:
-+		return "ICM fetch PCI error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_ICM_PAGE_ERR:
-+		return "HW fatal error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_ASYNCHRONOUS_EQ_BUF_OVERRUN:
-+		return "async EQ buffer overrun";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_EQ_IN_ERR:
-+		return "EQ error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_EQ_INV:
-+		return "Invalid EQ referenced";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_FFSER_ERR:
-+		return "FFSER error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_HIGH_TEMP_ERR:
-+		return "High temperature";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_ICM_PCI_POISONED_ERR:
-+		return "ICM fetch PCI data poisoned error";
-+	case MLX5_NODNIC_ISEG_HEALTH_SYNDROME_TRUST_LOCKDOWN_ERR:
-+		return "Trust lockdown error";
-+	default:
-+		return "unrecognized error";
-+	}
-+}
-+
-+static const char *mlx5_nodnic_loglevel_str(int level)
-+{
-+	switch (level) {
-+	case LOGLEVEL_EMERG:
-+		return "EMERGENCY";
-+	case LOGLEVEL_ALERT:
-+		return "ALERT";
-+	case LOGLEVEL_CRIT:
-+		return "CRITICAL";
-+	case LOGLEVEL_ERR:
-+		return "ERROR";
-+	case LOGLEVEL_WARNING:
-+		return "WARNING";
-+	case LOGLEVEL_NOTICE:
-+		return "NOTICE";
-+	case LOGLEVEL_INFO:
-+		return "INFO";
-+	case LOGLEVEL_DEBUG:
-+		return "DEBUG";
-+	}
-+	return "Unknown log level";
-+}
-+
-+static const char *mlx5_nodnic_severity_to_kern(int severity)
-+{
-+	if (severity <= LOGLEVEL_ERR)
-+		return KERN_ERR;
-+
-+	if (severity <= LOGLEVEL_WARNING)
-+		return KERN_WARNING;
-+
-+	return KERN_INFO;
-+}
-+
-+static void mlx5_nodnic_print_health_info(struct mlx5_nodnic_core_dev *dev)
-+{
-+	struct mlx5_nodnic_health *health = &dev->priv->health;
-+	struct health_buffer __iomem *h = health->health;
-+	struct device *device = dev->device;
-+	u8 synd = ioread8(&h->synd);
-+	const char *kern_severity;
-+	u8 rfr_severity;
-+	int severity;
-+	int i;
-+
-+	if (!synd)
-+		return;
-+
-+	if (sensor_pci_not_working(&dev->priv->health)) {
-+		mlx5_nodnic_core_err(dev, "PCI slot is unavailable\n");
-+		return;
-+	}
-+
-+	rfr_severity = ioread8(&h->rfr_severity);
-+	severity = mlx5_nodnic_health_get_severity(rfr_severity);
-+	kern_severity = mlx5_nodnic_severity_to_kern(severity);
-+
-+	dev_printk(kern_severity, device,
-+		   "Health issue observed, %s, severity(%d) %s:\n",
-+		   mlx5_nodnic_hsynd_str(synd), severity,
-+		   mlx5_nodnic_loglevel_str(severity));
-+
-+	for (i = 0; i < ARRAY_SIZE(h->assert_var); i++)
-+		dev_printk(kern_severity, device, "assert_var[%d] 0x%08x\n", i,
-+			   ioread32be(h->assert_var + i));
-+
-+	dev_printk(kern_severity, device, "assert_exit_ptr 0x%08x\n",
-+		   ioread32be(&h->assert_exit_ptr));
-+	dev_printk(kern_severity, device, "assert_callra 0x%08x\n",
-+		   ioread32be(&h->assert_callra));
-+	dev_printk(kern_severity, device, "raw fw_ver 0x%08x\n",
-+		   ioread32be(&h->fw_ver));
-+	dev_printk(kern_severity, device, "time %u\n", ioread32be(&h->time));
-+	dev_printk(kern_severity, device, "hw_id 0x%08x\n",
-+		   ioread32be(&h->hw_id));
-+	dev_printk(kern_severity, device, "rfr %d\n",
-+		   mlx5_nodnic_health_get_rfr(rfr_severity));
-+	dev_printk(kern_severity, device, "crr %d\n",
-+		   mlx5_nodnic_health_get_crr(rfr_severity));
-+	dev_printk(kern_severity, device, "severity %d (%s)\n", severity,
-+		   mlx5_nodnic_loglevel_str(severity));
-+	dev_printk(kern_severity, device, "irisc_index %d\n",
-+		   ioread8(&h->irisc_index));
-+	dev_printk(kern_severity, device, "synd 0x%x: %s\n", synd,
-+		   mlx5_nodnic_hsynd_str(synd));
-+	dev_printk(kern_severity, device, "ext_synd 0x%04x\n",
-+		   ioread16be(&h->ext_synd));
-+
-+	if (mlx5_nodnic_health_get_crr(rfr_severity))
-+		mlx5_nodnic_core_warn(dev, "Cold reset is required\n");
-+}
-+
-+static void mlx5_nodnic_poll_health(struct timer_list *t)
-+{
-+	struct mlx5_nodnic_priv *priv = timer_container_of(priv, t,
-+							   health.timer);
-+	struct mlx5_nodnic_core_dev *dev = priv->core_dev;
-+	struct mlx5_nodnic_health *health = &priv->health;
-+	struct health_buffer __iomem *h = health->health;
-+	u32 fatal_error, count;
-+	u8 prev_synd;
-+
-+	if (dev->state == NODNIC_DEVICE_STATE_INTERNAL_ERROR)
-+		return;
-+
-+	fatal_error = mlx5_nodnic_health_check_fatal_sensors(dev);
-+
-+	if (fatal_error && !health->fatal_error) {
-+		mlx5_nodnic_core_err(dev, "fatal error detected: %s (%u)\n",
-+				     mlx5_nodnic_fatal_error_str(fatal_error),
-+				     fatal_error);
-+		priv->health.fatal_error = fatal_error;
-+		dev->state = NODNIC_DEVICE_STATE_INTERNAL_ERROR;
-+		mlx5_nodnic_print_health_info(dev);
-+		return;
-+	}
-+
-+	count = ioread32be(health->health_counter);
-+	if (count == health->prev_counter)
-+		++health->miss_counter;
-+	else
-+		health->miss_counter = 0;
-+
-+	health->prev_counter = count;
-+	if (health->miss_counter == MLX5_NODNIC_MAX_MISSES) {
-+		mlx5_nodnic_core_err(dev,
-+				     "device's health compromised - reached miss count\n");
-+		health->synd = ioread8(&h->synd);
-+		mlx5_nodnic_print_health_info(dev);
-+	}
-+
-+	prev_synd = health->synd;
-+	health->synd = ioread8(&h->synd);
-+	if (health->synd && health->synd != prev_synd)
-+		mlx5_nodnic_print_health_info(dev);
-+
-+	mod_timer(&health->timer, get_next_poll_jiffies());
-+}
-+
-+void mlx5_nodnic_start_health_poll(struct mlx5_nodnic_core_dev *dev)
-+{
-+	struct mlx5_nodnic_health *health = &dev->priv->health;
-+
-+	timer_setup(&health->timer, mlx5_nodnic_poll_health, 0);
-+	health->fatal_error = MLX5_NODNIC_SENSOR_NO_ERR;
-+	health->miss_counter = 0;
-+	health->prev_counter = 0;
-+	health->synd = 0;
-+	health->health = &dev->iseg->health;
-+	health->health_counter = &dev->iseg->health_counter;
-+
-+	health->timer.expires = jiffies +
-+			msecs_to_jiffies(MLX5_NODNIC_HEALTH_POLL_INTERVAL_MS);
-+	add_timer(&health->timer);
-+}
-+
-+void mlx5_nodnic_stop_health_poll(struct mlx5_nodnic_core_dev *dev)
-+{
-+	struct mlx5_nodnic_health *health = &dev->priv->health;
-+
-+	timer_delete_sync(&health->timer);
-+}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/main.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/main.c
-index a533232bf6ef..7194f7438527 100644
---- a/drivers/net/ethernet/mellanox/mlx5/nodnic/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/main.c
-@@ -804,6 +804,7 @@ static int mlx5_nodnic_probe_one(struct pci_dev *pdev,
- 	dev->netdev_registered = true;
- 
- 	dev->state = NODNIC_DEVICE_STATE_UP;
-+	mlx5_nodnic_start_health_poll(dev);
- 
- 	pci_save_state(pdev);
- 
-@@ -829,6 +830,7 @@ static void mlx5_nodnic_remove_one(struct pci_dev *pdev)
- 	if (!dev)
- 		return;
- 
-+	mlx5_nodnic_stop_health_poll(dev);
- 	mlx5_nodnic_event_irq_cleanup(dev);
- 	mlx5_nodnic_cleanup_netdev(dev);
- 	mlx5_nodnic_dev_cleanup(dev);
--- 
-2.44.0
-
+There is no platform hook to reject a neg_mode at the MAC level today;
+pcs_init/select_pcs only give us a phylink_pcs. Limiting this would
+need a stmmac/phylink core change, out of scope for this series. I've
+documented the limitation in the commit message.
