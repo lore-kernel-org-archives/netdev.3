@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CDE4C33F9
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 18:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F494DB54D;
+	Thu,  8 Oct 2026 18:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791483010; cv=none; b=iqPpjTszKsbIpzO0zOnas6eXUpk0xvNt9i0ySSaLapWYeCQ/0onR/NHuNctsH8UXG0Nby3AhdLd1ksYqSXnBdrESrNeNvoSUm+VEek+aW4g3uo7Trrg7Zt9cFWZTCkwXzSV/vteTq1O1knH6h5GSGPPHyIDcLebv6A3kasmfvBs=
+	t=1791483015; cv=none; b=fJTBjxHkKe0UEzU3P/TwMblpz75MS3nWyZYiuHO3A3Z0Xzk8pVqol1CFpb6FYh+gnwD3rSEgl9yoSdOecJ2AnjQXxS4WvfnHH+sjTTf8uJSMNsXnUVXNshiYE6tzT40DI5OhsgbSHoHyjCioudVmIOwzV5eiPc3xNTwUh67Tg8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791483010; c=relaxed/simple;
-	bh=jW7HRAijltp6OERdbScHMstcDWu0f3Gj5njfwSqndzg=;
+	s=arc-20240116; t=1791483015; c=relaxed/simple;
+	bh=2eEaRLflR4kTUCZ8NWrt+PwSMh6FCKwxkbm8NMVhagU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qHFYhlezUtkdJ9x3wNkliH58OR8bokodr8/J0lMf1OG+fA2yHGx4lGj8uZtEGOzmg0NsExgLQfACP5JyFIZvXwJTdEnCO1X1UjFDbWMYNFOPTBn6Jzgp3ysozr4qaVXbjzz6NYNm4n0sGjmsLZ6F483SwCwIOr6KruUM+hzUgJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGDJ544/; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=pMvI2tCAMgl5Vds/jSpVqbTOwcGhFkh4JV/A3qZE/SgwmorWqBeBCSfoAMz0G8UmNhFgc2Ak8Va8HmK5kCEPVkpS/IXe20IywOPb0VOtO9AUuYNtE9hqkh+N+QU3jeO5V4Yc88dcwBomlfUAJdcoA9kvx4kL3p23wkYQJc4S1Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5uvDOkb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGDJ544/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E881F000FF;
-	Thu,  8 Oct 2026 18:10:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5uvDOkb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A721F000FF;
+	Thu,  8 Oct 2026 18:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791483009;
-	bh=yOhDZzItmoKCk+zPaCjLio5dL1kBbn63cXFOf7KK5DE=;
+	s=k20260515; t=1791483011;
+	bh=dtY6jlAqN/mp81DKno/GI0hU8OxTsfLLT4dhr5tttNw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=TGDJ544/Elg1AT17eB4/dNLZ2epKtgmSHNYQ076jHEY8pf3m36N8LTt0rHcFs0Rl+
-	 4KHh1IyFyqlZGEOR0koqGasOu57vhNl/eIV4jpN9Dj6YP4tRSPSHAxgkTA6zXWatjP
-	 pGFtb4AldjNaSNqIr7zBJR4AWZQyrUwvb0fZ/kDzE70NY39BO/0DiaB4imfRATUB/4
-	 LYzFnUjMC3LW32XImNpf1l+oKOgyyn9QJVwmH45fjwxz0vbIzOFhVLph5m2Y7F9Yse
-	 lfgYYuTsMueBjqTVWzauhuGw/DQqXozxwfUEBevmuViSNHHJOBcQ+yV78dUb5FvtUR
-	 EJ6eBP3wx9o0w==
+	b=n5uvDOkbWXmyjOnLxdGtMJqjlHLN3GvRJu2LUS0/gwbmxHi9P0FpwMU487xgHo0YW
+	 koZgSNpCquAjIYmOQiJpW2bMHwXnxcDh3L0LEMAFvkW6mO+bHG8ogdEq/2fFP/pwWX
+	 HmskM9FM6RKWSk37WtXsmJZouZlo6P/xNzc//fKDZxnZJPIx6KB+ngCeKmQBAdfp/4
+	 M26IkfCSevGDM1WiH4esHN5S51o9GQUUc0hLSYplXkY3d0Fa2ENvINznfuVXhIkz37
+	 XvkXG8zeJWCW2Iga705mYKxSuMKHPIh1az/Xf78Bh+Hvv4aOKeDeopMsCG0/nVlFmD
+	 Nuju2j2mwlFFA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 771FD380CEC8;
-	Thu,  8 Oct 2026 18:10:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F13F1380CEC8;
+	Thu,  8 Oct 2026 18:10:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] bng_en: pad short frames before sampling nr_frags
+Subject: Re: [PATCH net] selftests: net: big_tcp_tunnels: Fix the IPv6 route
+ change
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179148300801.376744.3401019989790817903.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 18:10:08 +0000
-References: <20261007075649.468033-1-edumazet@kernel.org>
-In-Reply-To: <20261007075649.468033-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, vikas.gupta@broadcom.com, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com
+ <179148300952.376744.11669203356310247111.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Oct 2026 18:10:09 +0000
+References: <20261007014731.1277055-1-yanhaishuang@cmss.chinamobile.com>
+In-Reply-To: <20261007014731.1277055-1-yanhaishuang@cmss.chinamobile.com>
+To: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
+Cc: netdev@vger.kernel.org, alice.kernel@fastmail.im, matttbe@kernel.org,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  7 Oct 2026 09:56:49 +0200 you wrote:
-> bnge_start_xmit() samples skb_shinfo(skb)->nr_frags into last_frag,
-> and stores it in tx_buf->nr_frags, before calling eth_skb_pad().
+On Wed,  7 Oct 2026 09:47:31 +0800 you wrote:
+> On slow machines, do_test() raises initcwnd on the route into the tunnel
+> with "ip route change". For IPv6 traffic this fails with:
 > 
-> If a nonlinear skb is shorter than ETH_ZLEN, __skb_pad() calls
-> skb_linearize(), which pulls the frags into the linear part,
-> releases the frag pages and sets nr_frags to zero.
+>   RTNETLINK answers: No such file or directory
+> 
+> The IPv6 prefix route of the tunnel address has metric 256, while
+> "ip -6 route change" without a metric looks for a route with the default
+> metric 1024, so nothing is changed. The test still passes, but without
+> the larger initcwnd it is meant to use.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] bng_en: pad short frames before sampling nr_frags
-    https://git.kernel.org/netdev/net-next/c/056d046bf530
+  - [net] selftests: net: big_tcp_tunnels: Fix the IPv6 route change
+    https://git.kernel.org/netdev/net-next/c/4077df74d716
 
 You are awesome, thank you!
 -- 
