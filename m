@@ -1,217 +1,219 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A080B30F927
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9271B49890E;
+	Thu,  8 Oct 2026 13:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791464909; cv=none; b=HR5/pWKPCvEVTCzjbLvMu1GBYFIZtwcerqhETdh96QENV3wreYn8FHMvEarrho6Hsxyd7oNVDQcrwkQFNMgkQk35ouP8rKodrUPepS6NY11ZrLTAYcvyi9WjFlm52sHZ+iE1PiwrU1cqv/VJwkJ64LmsjBFUrEBYRfMWnRo/Yfg=
+	t=1791465019; cv=none; b=GZxq4OiDLzWcRZ1R/Ih8eX9Yf7Wp4O752SkFPpBOkof6oQd2rrCqARPv6KIxZckP5+0umNAnQUi53/ZbfltjQwypzXJcu2rBhWXbKAXW30X3OMTDXRmN/sudhCOhQBmFLGGo2lUIEpuDI0yWW7lWx6CUnWFM+0NDkzPAw0rfJm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791464909; c=relaxed/simple;
-	bh=FvTTw3c8YnEObnepAFxBPxaSe4Jxqfg7EaIeRDExcu4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nnfFAOSEVffaNM6pbXKSJnr9Tlgs+sWeobP9hNtBQTSAMI1cW8jJNXrvvW3P1DiArUs71LN/P1yPe4wEBTdTBM05yMLI6HcVOzoJgF+AWq1Mr1o3bgL9ukPnmizW/mhVf27j4qcNIkr/3yG5JfTLMLEbh+A1UPS2Fd9i0nOa/yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfKa433W; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791465019; c=relaxed/simple;
+	bh=/yelBe+Gw3EYSuPvZbBcAnet/gkuHxFavOHOKByvcnA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sNu2uirjdidbi0uO2B6KAKJ1rmMOYGCQ4vuywurPCrmTOFflCXLtOwFLSFPE0akAN5cYFL+aVRjgGDGUJpBTdpYYgNHsu5moDe4PqPO7NyoAigvcnq6/79nWTEo1/rS/Zi3KvUF7OkG/e15G6Y5g+GjeO1jrLoerUSVT7CuB1YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=QxNspo7i; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfKa433W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4831F00893;
-	Thu,  8 Oct 2026 13:08:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791464908;
-	bh=MRiRljMudPyKGe4bzGUVNpykzDW7hQs9REq+MjQnx8E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gfKa433W/aEjEwmWPzt03/F3LXP91a+QU1qHW3us5VWVsQg8h36HUKK9NiH5iXUdn
-	 KH01uHGydKIAnswFAz6cYU+z8awfpoDLYfOLa+5R413enOWdPtxxsgMbV8b2NlawEk
-	 eRMu1GYiDSHRRgm4sk90G5pQ2dJisdukAAZlW1v7C5XaG5y96J5WDsYSVR3NMbdR65
-	 HLItHlGRQVWHtUc483wPdtm2eA+fazkRwnq2XlVHqcCs+GRoSwTQ3zZY5IqRjzblkf
-	 xrGphyEd5W5OWUGksaKzYLBjNc1Q3/RLadYjkoMKNKSy9EMNxAsj24EHwa0uxLXn3F
-	 iNZiW1Uuy324A==
-Subject: Re: [PATCH net-next 2/2] netlink: specs: add ovs datapath and vport
- set operations
-From: netdev-bot+sashiko@kernel.org
-To: houminxi@gmail.com
-Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org
-Date: Thu, 08 Oct 2026 13:08:27 +0000
-Message-ID: <179146490766.434549.3687648802927081770@kernel.org>
-In-Reply-To: <20261006130533.1620706-3-houminxi@gmail.com>
-References: <20261006130533.1620706-3-houminxi@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="QxNspo7i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=siovdpcdC1SrJwsnnM3h6lQURmWeA+zUKOaxw7qqDDs=;
+	b=QxNspo7ii5SwM2c0zCuTbguzqoOZpebpi8IZCFy5gNUOzYoHfg509P5MERdKkC
+	6dHYqd5s6W0dYfqwyGizp+g357Kv9uHyiDJiLKoMQH+C3b3mBTVngRAyA5tSya42
+	15XpPojvDia+Fms2pGqe8VNiILNdJoPi4BkeKeLrk/Csk=
+Message-ID: <b402a837-2223-4d72-978a-b2108df78334@126.com>
+Date: Thu, 8 Oct 2026 21:08:57 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net v2 1/2] ice: detach the VF representor when
+ ice_start_vfs() fails
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev-bot+sinfo@kernel.org, pabeni@redhat.com,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Linkui Xiao <xiaolinkui@kylinos.cn>,
+ stable@vger.kernel.org
+References: <20260928065306.1514795-1-xiaolinkui@126.com>
+ <179057875290.31693.7249107578001642813@kernel.org>
+ <d3f4ae98-3340-414b-9bd0-9f4588810821@126.com>
+ <547ed917-77fc-4670-974c-4d4fd6fbf3e7@intel.com>
+ <0c464819-16ee-4bae-b15c-3337516ef3c9@intel.com>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <0c464819-16ee-4bae-b15c-3337516ef3c9@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_6XplcdqT3fmAg--.45387S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GF1xWF18ZF48KFWDXryfXrb_yoW3ZFyDpa
+	yFq3Z5Kr4DXw1I9w42vw40q3409a1rKF1UWr1UKrWFkwn8Grn5XrWfK3yj9a4UC393Cw1Y
+	vr4qqw1kZFyDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U4c_fUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlQssA2rHletTMQAA3A
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 2026/10/7 19:11, Przemek Kitszel wrote:
+> On 9/29/26 8:11 PM, Tony Nguyen wrote:
+>>
+>>
+>> On 9/28/2026 12:14 AM, Linkui Xiao wrote:
+>>> Hi,
+>>>
+>>> Thanks for the review. Please find the missing information below.
+>>>
+>>> - How the issue was discovered:
+>>>    Found during manual code inspection of the ice VF setup/teardown 
+>>> error paths. It was not reported by syzbot, a static analysis tool, 
+>>> or an LLM scan, and was not hit in production.
+>>>
+>>> - Whether the issue was actually triggered:
+>>>    Not actually triggered. It is a theoretical error-path cleanup 
+>>> issue found by inspection; no stack trace or error message was observed.
+>>>
+>>> - Hardware tested:
+>>>    Not tested on real hardware. The change was only compile-tested; 
+>>> no affected Intel NIC/firmware test was performed.
+>>>
+>>> The same applies to patch 2/2: it was also found by the same manual 
+>>> code inspection, was not triggered at runtime, and was only compile- 
+>>> tested, not tested on real hardware.
+>>>
+>>> If a v3 is needed for other review reasons, I will include this 
+>>> information in the commit messages.
+>>>
+>>> Thanks,
+>>> Linkui Xiao
+>>>
+>>> On 2026/9/28 14:59, netdev-bot+sinfo@kernel.org wrote:
+>>>> Hi!
+>>>>
+>>>> This is an automated message. This series looks like a fix, but its
+>>>> commit messages seem to be missing some information:
+>>>>
+>>>>   - How the issue was discovered, e.g. hit in production, hit during
+>>>>     development, syzbot report, manual code inspection, LLM or static
+>>>>     analysis tool scan.
+>>>>
+>>>>   - Whether the issue was actually triggered, or is only theoretical
+>>>>     (e.g. found by code inspection). If it was triggered please include
+>>>>     the symptoms, like the stack trace or error messages.
+>>>>
+>>>>   - What hardware the change was tested on. For driver fixes please
+>>>>     mention the device (and if relevant firmware version) used for
+>>>>     testing, or say that the change was not tested on real hardware.
+>>>>
+>>>> Please do not repost the series just to address the above. Instead,
+>>>> reply to this email with the missing information, so that reviewers
+>>>> can take it into account. If the series needs another revision for
+>>>> other reasons, please include the information in the commit messages
+>>>> then.
+>>
+>> Hi Jakub,
+>>
+>> For patches that go through iwl-net, how did you want this handled? It 
+>> says to not repost just to address the above, but since this will get 
+>> submitted later, did you want the commit updated to make the latter 
+>> check happy, did you want me to copy/paste the response to the commit, 
+>> or something else?
+> 
+> In general, I would say it's up to you Tony.
+> Perhaps we could decide based on the amount of additional changes.
+> 
+> For this particular patch sashiko already posted complains:
+> https://sashiko.dev/#/patchset/20260928065306.1514795-1-xiaolinkui%40126.com?part=1
+> 
+> I've encountered the same problem (although during my OOT encounters),
+> and the solution is to detach/attach VF representors outside of
+> vf->cfg_lock. More rationale by AI follows:
+> 
+> ice_reset_all_vfs() and ice_free_vfs() call ice_eswitch_detach() and
+> ice_eswitch_attach() with vf->cfg_lock held. Both take the devlink
+> instance lock and then register or unregister the representor netdev,
+> which takes RTNL. ndo_set_vf_mac(), ndo_set_vf_vlan() and the
+> representor's ethtool reset take vf->cfg_lock under RTNL, so the order
+> is inverted. The ice_check_vf_ready_for_cfg() check in those callers
+> runs before vf->cfg_lock is taken, so it doesn't keep them away from a
+> reset that is already in progress.
+> 
+> Detach before taking vf->cfg_lock and attach after releasing it.
+> Representors are added and removed only under pf->vfs.table_lock, and
+> ice_start_vfs() already attaches without vf->cfg_lock. Both functions
+> set ICE_VF_DIS first, so a concurrent ice_reset_vf() bails out before it
+> reaches ice_eswitch_update_repr().
+Thanks.  That is the AB-BA Sashiko flagged, and v3 does exactly that.  The
+series is three patches now, reposted as a new thread whose cover is
 
-- [Medium] The new vport `set` op in
-  Documentation/netlink/specs/ovs_vport.yaml lists only name, type,…
-- [Low] The new vport `set` op lists `options` as a request attribute,
-  but ovs_vport_cmd_set() returns -EOPNOTSUPP whenever…
-- [Low] The new datapath `set` doc says only that a missing user-features
-  attribute is treated as zero and clears the features.
+   [PATCH iwl-net v3 0/3] ice: fix VF representor lock ordering and teardown
+   error paths
 
---
+with the per-patch changes under "Changes in v3:" in each patch:
 
-netlink: specs: add ovs datapath and vport set operations
+  1/3 ice: attach and detach VF representors outside of vf->cfg_lock   (new)
+  2/3 ice: detach the VF representor when ice_start_vfs() fails   (was 1/2)
+  3/3 ice: free the VF MSI-X vectors when VF start fails   (was 2/2)
 
-This adds the set operation, which the kernel already registers, to the
-ovs_datapath and ovs_vport YNL specs. It also marks new, del and set in
-both specs with the uns-admin-perm flag.
+1/3 is new and is the "same problem" you describe.  ice_free_vfs() and
+ice_reset_all_vfs() are where the inversion was introduced: fff292b47ac1
+turned the single ice_eswitch_release() that ice_free_vfs() made before its
+loop into a per-VF detach under cfg_lock, and c9663f79cd82 did the same to
+the ice_eswitch_rebuild() call in ice_reset_all_vfs().  1/3 moves the detach
+ahead of cfg_lock in both loops, and in ice_reset_all_vfs() the attach back
+after the unlock.  It also takes cfg_lock once before the detach, so that a
+reset which is already inside the lock is waited out instead of being left
+with a window: ICE_VF_DIS, raised before both loops, keeps later resets out,
+but not one that got in ahead of it, and that one can reach
+ice_eswitch_update_repr() while ice_repr_destroy() is freeing the
+representor it looks up, which is free_netdev() + kfree() with no RCU grace
+period.  2/3 is the original ice_start_vfs() fix with the same reordering,
+plus the disabled marking described below.  3/3 is the MSI-X leak, the same
+three calls, with its Fixes: tag corrected.  Tony, if you would rather keep
+the -net series at two patches, say so and I will drop 1/3.
 
-> diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
-> index f7b3671991e6c..9c33d6a2f05db 100644
-> --- a/Documentation/netlink/specs/ovs_datapath.yaml
-> +++ b/Documentation/netlink/specs/ovs_datapath.yaml
+The edge that had to go is cfg_lock -> RTNL.  ice_eswitch_detach_vf() takes
+devl_lock() and then RTNL through ice_repr_rem_vf() -> unregister_netdev(),
+while __ice_set_vf_mac(), ice_set_vf_port_vlan() and the representor's
+ethtool reset take cfg_lock with RTNL already held.  The representor itself
+does not need cfg_lock there: it is created and destroyed under
+pf->vfs.table_lock, and ice_free_vfs(), ice_reset_all_vfs() and
+ice_start_vfs() all run with that lock held.
 
-[ ... ]
+On the ice_start_vfs() path I kept cfg_lock around the rest of the teardown,
+because the ICE_VF_DIS half of the rationale does not hold there.
+ice_free_vfs() and ice_reset_all_vfs() raise ICE_VF_DIS before they 
+touch any
+VF, the SR-IOV enable path never does (the clear_bit() in ice_ena_vfs() has
+no matching set), and the VFs unwound by that loop already reached
+ICE_VF_STATE_INIT, so "ip link set dev <pf> vf N ..." still passes
+ice_check_vf_ready_for_cfg() and can run ice_reset_vf() against the VSI that
+ice_vf_vsi_release() is tearing down.
 
-> @@ -149,10 +150,27 @@ operations:
->        doc: Delete existing OVS data path
->        value: 2
->        attribute-set: datapath
-> +      flags: [uns-admin-perm]
->        do:
->          request:
->            attributes:
->              - name
-> +    -
-> +      name: set
-> +      doc: |
-> +        Modify an existing OVS data path. The kernel treats a missing
-> +        user-features attribute as zero and clears the previously set
-> +        features.
-> +      value: 4
-> +      attribute-set: datapath
-> +      flags: [uns-admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - name
-> +            - user-features
-> +            - masks-cache-size
-> +            - per-cpu-pids
+That is why 2/3 marks the VF disabled under cfg_lock before the detach.  As
+you said, ice_check_vf_ready_for_cfg() runs before the lock is taken, so it
+does not keep a reset that is already in progress away; the check that does
+keep one out is the ice_is_vf_disabled() test ice_reset_vf() makes after
+taking cfg_lock.  Taking cfg_lock once before the detach waits that one out
+while its representor is still attached, and the bit keeps later ones from
+reaching ice_eswitch_update_repr().  Without it a reset already past its own
+check could xa_load() the representor while ice_repr_destroy() frees it, and
+that is free_netdev() + kfree(), with no RCU grace period in between.
 
-[Severity: Low]
-Should the doc also say how per-cpu-pids depends on user-features?
+v3 also carries the origin and testing information netdev-bot asked for, in
+the commit messages, since the series is being reposted anyway.  2/3 changed
+code, and in 3/3 the call in the teardown loop moved inside cfg_lock, so I
+did not carry over the Reviewed-by tags from Tomasz Lichwala and Aleksandr
+Loktionov.  Tomasz's nit on the eswitch attach failure path is in: the IRQs
+are freed before the VSI is released there, and the teardown loop keeps that
+order too.  The release_vsi label of ice_init_vf_vsi_res() still 
+releases the
+VSI first, because the !vsi path has to skip that call.
 
-In ovs_dp_change() the new features are assigned unconditionally. The
-pids are applied only when that same request turns on per-cpu dispatch:
+The v3 series was posted here:
+https://lore.kernel.org/netdev/20261008125754.3520773-2-xiaolinkui@126.com/
 
-net/openvswitch/datapath.c:ovs_dp_change() {
-    ...
-	dp->user_features = user_features;
-
-	if (dp->user_features & OVS_DP_F_DISPATCH_UPCALL_PER_CPU &&
-	    a[OVS_DP_ATTR_PER_CPU_PIDS]) {
-		/* Upcall Netlink Port IDs have been updated */
-		err = ovs_dp_set_upcall_portids(dp,
-						a[OVS_DP_ATTR_PER_CPU_PIDS]);
-    ...
-}
-
-Take a set request with name and per-cpu-pids where user-features is
-missing or lacks OVS_DP_F_DISPATCH_UPCALL_PER_CPU, for example because
-per-cpu dispatch was already on. The kernel clears or changes the
-features, ignores the pids without an error, and returns success.
-
-The spec lists per-cpu-pids as if it could be set on its own. The doc
-covers only the user-features half of this coupling.
-
-> diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
-> index fa975f8821b6c..63a0a41a11997 100644
-> --- a/Documentation/netlink/specs/ovs_vport.yaml
-> +++ b/Documentation/netlink/specs/ovs_vport.yaml
-
-[ ... ]
-
-> @@ -165,6 +167,19 @@ operations:
->              - netnsid
->              - upcall-stats
->        dump: *vport-get-op
-> +    -
-> +      name: set
-> +      doc: Modify an existing OVS vport
-> +      value: 4
-> +      attribute-set: vport
-> +      flags: [uns-admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - name
-
-[Severity: Medium]
-Should port-no be in this request list as well?
-
-ovs_vport_cmd_set() finds the vport with lookup_vport(). That function
-accepts either the name or the port number plus the datapath ifindex
-from the header:
-
-net/openvswitch/datapath.c:lookup_vport() {
-    ...
-	} else if (a[OVS_VPORT_ATTR_PORT_NO]) {
-		u32 port_no = nla_get_u32(a[OVS_VPORT_ATTR_PORT_NO]);
-    ...
-		dp = get_dp(net, ovs_header->dp_ifindex);
-    ...
-}
-
-The UAPI comment for enum ovs_vport_attr in
-include/uapi/linux/openvswitch.h also says that for requests other than
-new, "dp_idx from the &struct ovs_header plus %OVS_VPORT_ATTR_PORT_NO
-determine the vport". The del op in this same spec already lists
-port-no.
-
-YNL code generation builds the request struct from this list. Without
-port-no, a generated client can only modify a vport by name, not by
-datapath ifindex plus port number. Does that only partly fix the
-problem the commit message describes, that "a YNL client could not
-modify an existing datapath or vport"?
-
-> +            - type
-> +            - options
-
-[Severity: Low]
-Is it useful to list options here? ovs_vport_cmd_set() rejects it every
-time:
-
-net/openvswitch/datapath.c:ovs_vport_cmd_set() {
-    ...
-	if (a[OVS_VPORT_ATTR_OPTIONS]) {
-		/* There are no vport types that support legacy options. */
-		err = -EOPNOTSUPP;
-		goto exit_unlock_free;
-	}
-    ...
-}
-
-The vport_policy entry is also marked "/* Unused. */".
-
-The commit message says the kernel "rejects options", but the op doc
-only says "Modify an existing OVS vport". Generated clients therefore
-get a setter for an attribute that always fails with -EOPNOTSUPP.
-
-Could options be dropped from the set request? Or could the doc say
-that it is always rejected, and that a type different from the
-vport's current type gets -EINVAL?
-
-> +            - upcall-pid
->
->  mcast-groups:
->    list:
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006130533.1620706-1-houminxi%40gmail.com
