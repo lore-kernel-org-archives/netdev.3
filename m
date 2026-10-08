@@ -1,290 +1,140 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854A83C0A0B;
-	Thu,  8 Oct 2026 03:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53108373C1A
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 03:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791431499; cv=none; b=ZjuTT2Qc/b5FpThdYV3lP7/c70ijDzioVVDLAKcInb9YxxG1gPaQO0kEnyw6A1eCsw8OygEIzlKnaweNwDiMngIUCBC+XOLKs+bcQ5EAR+gjcPP+DwAanJ62MGDUQLpBZYeP0M2KesJsvWy4scSNpbEbQUdrhd/VDdPQIJmkl8w=
+	t=1791431827; cv=none; b=m5ibTP0mQgcQYOfGGo/mvg7eRu2gt/+cQgkouKKITee7WPvZpXDBeyhG1CfgQDPAst5WlchfcsPBdgr76DlSSFDyrtvDyDlHXvbZCwIvTn0G6sQE+gH7Srgk0vxJp5qU50kGZ66BZvVXCU7erau5JRKujUPBXL75WwslSkejzqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791431499; c=relaxed/simple;
-	bh=oPc6ENYy9EGIFNBkcJaQA+vbfpBKlQREOnaqEnKTJas=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CSq0fxF8n+cVea3uVJJca9BB+cV5CLc5DXvHXKGLPqf8dJVY3z2owfd/Gq8FXIeUKKXZRjAexZQtfSPyxjokKhBhsviF2ZDL4zNtGR21AmTT9tUZPEuAb7eAVWneaoRYGF03r/GvRSojAh/QtaV9zJmvF6Uv2h+enNkeh76XwrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=ae+RmqVV; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Y3J3f1NL; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1791431827; c=relaxed/simple;
+	bh=Zy3DQ2bg09l45QUdJegt9V4PSCAJQxSliXQ/WCsW8y8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h4x4GZt/OawvPt9trRq7fsGc4YoRxa1e4ASwWL6nkAeiZB8Nk4tqBvlUbjDxLxrbqd2LE7TYsNBcjo4Y51tpmHdnNWvV0TBxbBD3KstonAOwEsqwETY6sPXLq3ATQNh9aTXMOlFZG9H0V9H8r415DpcLmhjsXzfPY6RzXngoolg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZUwxbU44; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="ae+RmqVV";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Y3J3f1NL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791431494;
-	bh=oPc6ENYy9EGIFNBkcJaQA+vbfpBKlQREOnaqEnKTJas=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ae+RmqVVKh865BNmlDcXlY49THCISIpMO17Wo5CUyDUs4sQGvFoIkgNB++PbObYaf
-	 8OiKKe2xLy9AgBXYFzsshKa0Fai+kRq1t8Dq9kh62dvRODs9mdytdwTS5rKfqruIId
-	 6LrVIxg6sgoWBOsLPt2Id5XoYRrhE3ZOTGeByfzSpolQCxfm9OsA1sDy9BKa/bbOFr
-	 LEdci4x4XmNet60Djysyx2aBM/a/9LHJZl2+8XTcPuY+kqg7g3lQ0VucHdp4KwNnVL
-	 x0TMZZLWJOccPhe2IowbD6pbWQ3kyIkqpD8nXB/GJfFqZlMNxvqmDz8Kd3F68bxd/y
-	 8N81uSYL5Mxfw==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id EC2C747274; Thu,  8 Oct 2026 03:51:34 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791431481;
-	bh=oPc6ENYy9EGIFNBkcJaQA+vbfpBKlQREOnaqEnKTJas=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Y3J3f1NLruWIG4UgASgVLYa9Fq5sb08o4YEIsvTmcJ7vKbfQV3GpcZnQDBBYAfEbz
-	 PiQq+zvK+72jaBYVL+nInRSFfMUvC8fLM8pYjnF4gdrzTSmz69d6MX4lHGAukalWqw
-	 3DZIYXLS/JiA2tspqgXtWU56kgpjugTYNgcO0GpMD2OZK+phFgzBXWQlCZp4wlKpro
-	 VMfTHUIVl91Rfw3A//hg2HpxbBilOYM4g4IR00xS2Kna/2Cvk8hyhYMavgXh8QuIC9
-	 ONrBCydR+nb138A3AED/j3Lbut2PBsKEC0oXVXiJOtFFdttnzOF3NsEl/PhaNjs90w
-	 1u3QQrtkBsZbw==
-Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 195C647112;
-	Thu,  8 Oct 2026 03:51:21 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Thu, 08 Oct 2026 05:51:19 +0200
-Subject: [PATCH net-next v18 13/13] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZUwxbU44"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-872024e2b4eso1281473b3a.0
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 20:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791431825; x=1792036625; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aVcS6UviFiqfW7v+A1P6aceXNanxZ3sihwct+0rMisI=;
+        b=ZUwxbU44CPGwHL8KYYZwa/oNIcH69QzyiYVNlDe1r3bS5NssH3KBVnpZJ/r2axplma
+         D+jt4G3k277kfOpxx99rlH7fz+ADnEUSSG7PE7LxLEfT0FxZ0HGhKorZzfNvLJw+poXJ
+         //gM4Y1gaiLpr6lfer3352m1qhIe7KuYh7ppMyaN7N4o+7iuvCSli5WAv1J1P6vqmJTH
+         KvvBSrTAqbB9Ku/SbW6ew1nR47bZmGXe9ZPkEJuBeX0Y3Vo3m+Tu3eXAxksKhVH4ahMX
+         STgNQzxIOx2L6OgCohsrh62Ohr86sn7MQjbfv/XfgH/lj52C8xTajj5pS9QOMDTaL0yi
+         +enQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791431825; x=1792036625;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aVcS6UviFiqfW7v+A1P6aceXNanxZ3sihwct+0rMisI=;
+        b=FVlUuoqBr/84EsJjCaMtoWlK0JWTmrmprNMwLyYga2ozOJuy8s5BOUwiVyv8bodcv1
+         4exw2fE7iZylWe1chX/y9GZNK88PcRbBwb3IJLCnHiHCbSdNR4DjQj4I0tLK18YGl4aO
+         SeQOqamzuOICiz4fI+Id83jFAyiU24+uTfGd+szrkaeUgE5AujWGLUPPjW31gn6An9qw
+         7Juh2qoUvGZpi7d3ISOGR2mfWCQWbvk3y/EmnrxMx//hFtriOpQEFRYJBQA4RZy/caAB
+         vzY4EfEoeJ2/4dTwYgNI2z7kH1ivViLasK4abr615GU6+5ME0YKytXwK8Vyu3+cbrz71
+         cLxw==
+X-Forwarded-Encrypted: i=1; AKwUvBzQaUr/uJUUMLaT2rXIaihcMIBU1IWomJLSCRCBkjzqJrhdms57IFlJoYxkyryZs5h97JvOrrM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKMX2KkwqJDeC5m40SH6mzPV7JFTlMZkQ6BYUR5yFnENpDg4bjv
+	o6p6wiabaXG2WJ1/vWtB2+7PvRlDTo0u9c/Mrc71rSeIggl6i5AUZdFP
+X-Gm-Gg: AYBFou1LbLvbgNpgXPP2cO4KbeLh/jFEvKOWYijRy1uEEsVG4YO5NDzRzVhm9SD62G3
+	+eKGjnfHq3vqghew+yRHcpfGuabvIm8whBMYeLrRqm1RyXt4nEnsdsQvgcHoyqZ4q1KugQxodE9
+	mbrzXjr45x1zTuiGlgzh6fclB+LNe7Edb+t9serXEj0Qp5JmvMPOseqh7C685NbIkH/qB0pJ5W1
+	nJeqQ5xtjaYroFlWLrhSgCEGbaeD94OyD0SEuSeJnIbBqitHBh8pZEXc1uBCRcdnOYZZw6w/x+d
+	BGljbE29hdWwmRuy+xJSy87N7EehB9An+jX4HuN4baXYYQaJrFHN7kHLp1yNUrzyVPj9/ECOK7o
+	+4o+DR/E+fhpxv+cjSQudAXv09hm/Vw+Q1IB31MHTOpL/nObXR65NbuXy8xA5yeXAwScAG/dCff
+	f6M9HshJOQkXS7XG94AnM2K83Okfj6BmmSIRvb2PYUuSyVGg7oxl0O/+CtXDfEDskxUoe5Eyztd
+	ZOKmw==
+X-Received: by 2002:a05:6a00:a1f:b0:882:359f:ef42 with SMTP id d2e1a72fcca58-891b57c4d09mr2887938b3a.49.1791431824604;
+        Wed, 07 Oct 2026 20:57:04 -0700 (PDT)
+Received: from dungbv.. ([116.98.134.138])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-892bac8e058sm1021934b3a.13.2026.10.07.20.57.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Oct 2026 20:57:03 -0700 (PDT)
+From: Bui Viet Dung <dungvn2345@gmail.com>
+To: Stephen Hemminger <stephen@networkplumber.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Bui Viet Dung <dungvn2345@gmail.com>
+Subject: [PATCH] net/sched: sch_netem: prevent packet length underflow with negative overhead
+Date: Thu,  8 Oct 2026 10:56:56 +0700
+Message-ID: <20261008035656.330667-1-dungvn2345@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261008-ax88179a-v18-13-6fa1d4c40422@birger-koblitz.de>
-References: <20261008-ax88179a-v18-0-6fa1d4c40422@birger-koblitz.de>
-In-Reply-To: <20261008-ax88179a-v18-0-6fa1d4c40422@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Eric Dumazet <edumazet@kernel.org>, Eric Dumazet <edumazet@kernel.org>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
- Jianhui Xu <neuromoments@gmail.com>, 
- Birger Koblitz <mail@birger-koblitz.de>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-The AX88772D, AX88179A and AX88279 are 100MBit, 1GBit and respectively
-2.5 GBit PHYs that are found in ASIX USB-Ethernet controllers of the
-same name.
+packet_time_ns() calculates transmission time for netem rate shaping.
+It adds q->packet_overhead (signed 32-bit int) to len (unsigned
+64-bit int).
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+When userspace configures a negative packet overhead (via
+TCA_NETEM_RATE packet_overhead attribute) and an enqueued packet's
+length is smaller than the absolute overhead, (s64)len +
+q->packet_overhead is negative. Because len is u64, the addition wraps
+into an astronomical value (~2^64 - 1). When multiplied by NSEC_PER_SEC
+and divided by q->rate, the calculated delay spans hours or days,
+causing enqueued packets to be frozen in the qdisc indefinitely and
+stalling transmission.
+
+A similar underflow can occur in cell length calculation when
+(q->cell_size + q->cell_overhead) is non-positive.
+
+Clamp the effective packet length to 0 if the overhead adjustment
+would underflow, and return 0 delay if effective cell length is
+non-positive, matching the behavior in sch_cake and sch_tbf.
+
+Fixes: 7bc0f28c7a0c ("netem: rate extension")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bui Viet Dung <dungvn2345@gmail.com>
 ---
- drivers/net/phy/ax88796b.c | 165 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 165 insertions(+)
+ net/sched/sch_netem.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
-index f20ddf64914993f7097070d1f56c1103ec1e40e8..99abb0af3296dc05b86f38d211e1bf96b5dc468a 100644
---- a/drivers/net/phy/ax88796b.c
-+++ b/drivers/net/phy/ax88796b.c
-@@ -13,6 +13,19 @@
- #define PHY_ID_ASIX_AX88772A		0x003b1861
- #define PHY_ID_ASIX_AX88772C		0x003b1881
- #define PHY_ID_ASIX_AX88796B		0x003b1841
-+#define PHY_ID_ASIX_AX88772D		0x003b772d
-+#define PHY_ID_ASIX_AX88179A		0x003b179a
-+#define PHY_ID_ASIX_AX88279		0x003b2790
-+
-+#define AX_ADVERTISE_2500		0x1000
-+
-+/* MII Vendor registers */
-+#define AX_CTRL_STATUS			0x1d
-+#define AX_CTRL_STATUS_SPEED_MASK	0x0c
-+#define   AX_CTRL_STATUS_SPEED_10	0x0
-+#define   AX_CTRL_STATUS_SPEED_100	0x4
-+#define   AX_CTRL_STATUS_SPEED_1000	0x8
-+#define   AX_CTRL_STATUS_SPEED_2500	0xc
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 8a1b89a289d..a3dcd33bec4 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -366,14 +366,20 @@ static s64 tabledist(s64 mu, s32 sigma,
  
- MODULE_DESCRIPTION("Asix PHY driver");
- MODULE_AUTHOR("Michael Schmitz <schmitzmic@gmail.com>");
-@@ -83,6 +96,107 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int asix_ax88279_read_status(struct phy_device *phydev)
-+{
-+	int ret, val;
-+
-+	ret = genphy_read_status(phydev);
-+	if (ret)
-+		return ret;
-+
-+	if (!phydev->link)
+ static u64 packet_time_ns(u64 len, const struct netem_sched_data *q)
+ {
++	if ((s64)len + q->packet_overhead <= 0)
 +		return 0;
 +
-+	/* Read actual speed from vendor register */
-+	val = phy_read(phydev, AX_CTRL_STATUS);
-+	if (val < 0)
-+		return val;
-+
-+	switch (val & AX_CTRL_STATUS_SPEED_MASK) {
-+	case AX_CTRL_STATUS_SPEED_2500:
-+		phydev->speed = SPEED_2500;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_1000:
-+		phydev->speed = SPEED_1000;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_100:
-+		phydev->speed = SPEED_100;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_10:
-+		phydev->speed = SPEED_10;
-+	}
-+
-+	/* MDIO_AN_10GBT_STAT_LP2_5G is broken, but we can deduce that
-+	 * the link-partner advertised 2500M if remotely AN succceded
-+	 * for link speed > 1000M and we locally have a link speed of
-+	 * 2500M
-+	 */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->lp_advertising);
-+	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
-+	if (val >= 0 && val & MDIO_AN_10GBT_STAT_REMOK) {
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-+				 phydev->lp_advertising,
-+				 phydev->speed == SPEED_2500);
-+	}
-+	/* Only supports full duplex */
-+	phydev->duplex = DUPLEX_FULL;
-+
-+	/* PHY switches interface between 2.5GBit and slower modes */
-+	if (phydev->speed == SPEED_2500)
-+		phydev->interface = PHY_INTERFACE_MODE_2500BASEX;
-+	else
-+		phydev->interface = PHY_INTERFACE_MODE_SGMII;
-+
-+	return 0;
-+}
-+
-+static int asix_ax88279_config_aneg(struct phy_device *phydev)
-+{
-+	bool adv_2500;
-+	int ret;
-+
-+	if (phydev->autoneg == AUTONEG_DISABLE) {
-+		phydev_warn(phydev, "Disabling autoneg is not supported\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	adv_2500 = linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->advertising);
-+	ret = phy_modify(phydev, MII_ADVERTISE, AX_ADVERTISE_2500,
-+			 adv_2500 ? AX_ADVERTISE_2500 : 0);
-+	if (ret < 0)
-+		return ret;
-+
-+	return genphy_config_aneg(phydev);
-+}
-+
-+static int asix_ax88279_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	linkmode_set_bit_array(phy_basic_ports_array, ARRAY_SIZE(phy_basic_ports_array),
-+			       phydev->supported);
-+
-+	ret = genphy_c45_pma_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88279 does not support reported 100baseT-half duplex mode */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, phydev->supported);
-+
-+	return 0;
-+}
-+
-+static int asix_ax88279_config_init(struct phy_device *phydev)
-+{
-+	__set_bit(PHY_INTERFACE_MODE_2500BASEX, phydev->possible_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_SGMII, phydev->possible_interfaces);
-+
-+	return 0;
-+}
-+
- static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
- {
- 	/* Reset PHY, otherwise MII_LPA will provide outdated information.
-@@ -94,6 +208,25 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
+ 	len += q->packet_overhead;
+ 
+ 	if (q->cell_size) {
+ 		u32 cells = reciprocal_divide(len, q->cell_size_reciprocal);
++		s32 cell_len = (s32)q->cell_size + q->cell_overhead;
+ 
+ 		if (len > cells * q->cell_size)	/* extra cell needed for remainder */
+ 			cells++;
+-		len = cells * (q->cell_size + q->cell_overhead);
++		if (cell_len <= 0)
++			return 0;
++		len = (u64)cells * cell_len;
  	}
- }
  
-+static int asix_ax88772D_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	ret = genphy_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88772D does not support (possibly) reported 1000baseT modes */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, phydev->supported);
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT, phydev->supported);
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT, phydev->supported);
-+
-+	return 0;
-+}
-+
- static struct phy_driver asix_driver[] = {
- {
- 	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A),
-@@ -111,6 +244,35 @@ static struct phy_driver asix_driver[] = {
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
- 	.soft_reset	= asix_soft_reset,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D),
-+	.name		= "Asix Electronics AX88772D",
-+	.flags		= PHY_IS_INTERNAL,
-+	.get_features	= asix_ax88772D_get_features,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A),
-+	.name		= "Asix Electronics AX88179A",
-+	.flags		= PHY_IS_INTERNAL,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279),
-+	.name		= "Asix Electronics AX88279",
-+	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
-+	.get_features	= asix_ax88279_get_features,
-+	.read_status	= asix_ax88279_read_status,
-+	.config_aneg	= asix_ax88279_config_aneg,
-+	.config_init	= asix_ax88279_config_init,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
- }, {
- 	PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B),
- 	.name		= "Asix Electronics AX88796B",
-@@ -124,6 +286,9 @@ static const struct mdio_device_id __maybe_unused asix_tbl[] = {
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
- 	{ PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279) },
- 	{ }
- };
- 
-
+ 	return div64_u64(len * NSEC_PER_SEC, q->rate);
 -- 
-2.47.3
+2.43.0
 
