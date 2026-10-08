@@ -1,37 +1,37 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
+Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ED743F0B9;
-	Thu,  8 Oct 2026 21:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E3A422556;
+	Thu,  8 Oct 2026 21:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791493656; cv=none; b=hGsHMgemopE5OgfepLVYw+uW+gkIn8YR4XbynO+VFFMXXOMQ2Mtx9mdMuQc3GRTJ4iUeTK6h9EUvxZLZ9bhHPeAWKa1TAHQHPVdjH/n+bowxHh+PRAWLnhTajj5Eqo+NrO4rN2eo1xxzxGH2tjDbeXbuAz9ccHOCv0IJ736faJI=
+	t=1791493657; cv=none; b=rVW8DEGkfmenJJZxP4tk/MTCq6xPwrgW1BzVoRNc/v/qQfUzzBGEFO+pvlEQe3BGM0zVt9kfQR4PUX7sZk9EthhsQYQ3U2Pd6jtFsSGwUhpAcBiTzp//XYHtd8EceJpZozzNeNDHJp51d0Wqb+rpxO91+/jGVYfCDzKYX5C2TbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791493656; c=relaxed/simple;
-	bh=fhAXelu1j3bEqB/lYssgDg3EMsYtReun5p/aki3goJE=;
+	s=arc-20240116; t=1791493657; c=relaxed/simple;
+	bh=pdNnexq1DEmKr7rzYWEWvTWgr2htZF9TGK3HwiiWQRM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=noA4i8sfn1JxHlKr8GJa28kbeECrcZmf6/bZPairX5qQ6G2C450qf9xmM+pt9UYOiZmw2XTdq+Pz+dYqFgS0FDN2GaDqDopAK5fw5q2sjnGt9pdnH2YNgpdVvpnbPzugTjRJ43tX1a6A+Q78fHeB0PNO9elWduyJS4w+Irbj42k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BWLWweoP; arc=none smtp.client-ip=192.19.144.205
+	 MIME-Version; b=pS5uPm83hSYWsQ4+3yOpxMC5A25v0V38BdJoIJr1EMy6W+cyD9EBWTf+VZixBylzfO3gMO7pWYZFUj8V5twPAF0hN9pJwJsi/B7si+6aV16FvXEYfdHBASANKkNETOyFrlrfwQpTPhUNQEYtPLWcgxFr8j74cqn26cR5l62ZBGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZSr/+Tk1; arc=none smtp.client-ip=192.19.166.231
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BWLWweoP"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZSr/+Tk1"
 Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id C013AC0000FA;
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 3AACFC0000F1;
 	Thu,  8 Oct 2026 14:07:27 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com C013AC0000FA
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 3AACFC0000F1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
 	s=dkimrelay; t=1791493647;
-	bh=fhAXelu1j3bEqB/lYssgDg3EMsYtReun5p/aki3goJE=;
+	bh=pdNnexq1DEmKr7rzYWEWvTWgr2htZF9TGK3HwiiWQRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWLWweoPq0CqK3V9orCcKhkmv3THiivmCp3m08ymVOdUaYFh6O8hegqXFAskZryiA
-	 J5WdgXxMyYWzHYzpxW26wfviTPILP2ydqyRa9bthLVjZKYcNdt6mbhR3I8CYF9okRn
-	 DuZ5ViqM5HXj1b3IfczlwlMzGFRNjiY9BM7nJJt8=
+	b=ZSr/+Tk1fKurmsUAC9LNrXWKm0ZymbFthwlqIomDo5bQt2teQ19flYtPJ9J9dQxr/
+	 6nLqzDLdaox5py6dpXsK59jFWSbSbweA70jANZtGh3ugPHka8BDcorjjAXv/tMgNKy
+	 kdhbSeMJpLofFT96AbljOnDdDGIpsWaRJgxr80Z4=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 67D59A88;
+	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 11D3AA8A;
 	Thu,  8 Oct 2026 14:07:27 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Simon Horman <horms@kernel.org>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 4/6] net: bcmasp: fix OF node reference leak for phy_dn
-Date: Thu,  8 Oct 2026 14:06:19 -0700
-Message-Id: <20261008210621.1374785-5-florian.fainelli@broadcom.com>
+Subject: [PATCH net v2 2/6] net: bcmasp: unmap previous DMA mappings on TX map failure
+Date: Thu,  8 Oct 2026 14:06:17 -0700
+Message-Id: <20261008210621.1374785-3-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261008210621.1374785-1-florian.fainelli@broadcom.com>
 References: <20261008210621.1374785-1-florian.fainelli@broadcom.com>
@@ -62,53 +62,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In bcmasp_interface_create(), intf->phy_dn is obtained via
-of_parse_phandle() or assigned ndev_dn. of_parse_phandle() returns a
-node reference with its refcount incremented, but of_node_put() was
-never called on intf->phy_dn in bcmasp_interface_destroy() or the
-error unwind path in bcmasp_interface_create().
+When mapping an skb with fragments for transmission in bcmasp_xmit(),
+if mapping fails on fragment i > 0, the error handler calls
+bcmasp_clean_txcb() for previous iterations j < i. However,
+bcmasp_clean_txcb() only zeroes the control block fields without
+unmapping the DMA buffers, leaking the DMA mappings allocated for the
+head and earlier fragments.
 
-Acquire a reference on ndev_dn for the fixed-link case as well so that
-intf->phy_dn consistently holds a reference, and release it with
-of_node_put() on teardown and error.
+Call dma_unmap_single() before calling bcmasp_clean_txcb() in the error
+cleanup loop.
 
 Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
 Assisted-by: LLM
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index d679c796c8c2..693e8cdfe960 100644
+index f2176ef3a127..9ad5a982542f 100644
 --- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
 +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -1298,7 +1298,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
- 				 ndev_dn->name);
- 			goto err_free_netdev;
- 		}
--		intf->phy_dn = ndev_dn;
-+		intf->phy_dn = of_node_get(ndev_dn);
- 	}
- 
- 	/* Map resource */
-@@ -1338,6 +1338,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
- err_deregister_fixed_link:
- 	if (of_phy_is_fixed_link(ndev_dn))
- 		of_phy_deregister_fixed_link(ndev_dn);
-+	of_node_put(intf->phy_dn);
- err_free_netdev:
- 	free_netdev(ndev);
- err:
-@@ -1350,6 +1351,7 @@ void bcmasp_interface_destroy(struct bcmasp_intf *intf)
- 		unregister_netdev(intf->ndev);
- 	if (of_phy_is_fixed_link(intf->ndev_dn))
- 		of_phy_deregister_fixed_link(intf->ndev_dn);
-+	of_node_put(intf->phy_dn);
- 	free_netdev(intf->ndev);
- }
- 
+@@ -285,6 +285,11 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			intf->mib.tx_dma_failed++;
+ 			spb_index = intf->tx_spb_index;
+ 			for (j = 0; j < i; j++) {
++				txcb = &intf->tx_cbs[spb_index];
++				dma_unmap_single(kdev,
++						 dma_unmap_addr(txcb, dma_addr),
++						 dma_unmap_len(txcb, dma_len),
++						 DMA_TO_DEVICE);
+ 				bcmasp_clean_txcb(intf, spb_index);
+ 				spb_index = incr_ring(spb_index,
+ 						      DESC_RING_COUNT);
 -- 
 2.34.1
 
