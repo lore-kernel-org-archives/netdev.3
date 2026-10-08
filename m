@@ -1,166 +1,232 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E024A0933
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92CA3E49FD
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 13:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791464883; cv=none; b=pBEVnZhdIrJ8g6qsixw1t/x90pCV26w89XCXxWvBuZygGyzm6DBgxfY8rkri/iDZTEmMkqDRq7bk/mfHYEsRYwo7VbqFaX3Z8ykCe35CkRbbB+C3hRIeFn76sZ8e0RppYCn/59Ple7fT5Q7RCQ7z3SARpbUzZWNyrMPhd7qzFlo=
+	t=1791464908; cv=none; b=tQJkC4G/69vGnJlQL70/a83ccOBqrocSqOm0ojExPUJaQoME6qVEuo8GQshOrZwjiOyivNmgmoSyz737QtnE8xmrwhnCshmSbp32ME7dfIo1QqCxjKqYVGZCDYiai8tWOkIsvVl8CRbnmFhR2cyso8lXVyzcHxjU7qHKqypW8KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791464883; c=relaxed/simple;
-	bh=56WtSLmyXgOWqkE8uHq9stmyvAJgS6HKIATqylz3mXo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dDItiKoZUUelPp1ItfN7ioPOWYFeZ64VLD+j3MCN9y8l9OvkpojITv+9I3iXvmlA4osKkbQQ0Ey90r5Sf6HS0Bgo2e6WdCpawcMUtsP5QdXpfDgKCDOvXCzQh69ow8cdYrKmegM3I34umMpPPkgT0UQaFCuByrfRC9qp7cZZlco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeGT9Uc8; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791464908; c=relaxed/simple;
+	bh=rrCdbGy2HWi77U6J+dFLIXwWOT9FIhvwTJIBF6aMefU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T7xVSUHqIDKNDRP1A5b8fHczQXYmFUduNKCUeZcDUV3cCPuqZqvSyotuD0eLr6yif9N6PsJYXuTiJRaWlUTP4G3xPv9TVV0vASlpVJQZsLACoPHzlyBlC0bbDfpuoZK+f3HWmB4P86a5sotRAOphx0wyc/CcCMgFtl+qkp7cg68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZT7nG5K0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeGT9Uc8"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-873a4edb243so3698804b3a.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 06:08:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791464881; x=1792069681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vl7sRwfmLB48VwhLwaxygRLXnDOF27+xyMS2vapngz4=;
-        b=IeGT9Uc8Pd0rDueuIkAoJzZ3cMIlW2YNGgwreiPZbYIDUCp0mSqUVnBj/1aIVe+LYJ
-         2FusEa27WvR3V/S/omD9qiJCSESQel0z4JNQ2sGcF+sxT+PWylNeQuwThKEsuk1cUGRC
-         BGeWXi8tgvhZQGf2T56kbgbdq2aaZvckZX1Muhp5KDOKYIaMWf+9qm8l1b3Ujeqaaupt
-         sbV6JPekmqPfSkQYDLI67bF+3rp01q0KAO/ojgyX2BkFhw8a7WtDwTOydPdP1LxhnvSD
-         jSZ0jnF3lSQEc0piWo4rYECuz7BELvVuSvQYDxDmJTQecs0/MUM3GrEKnmmH6ATaZOi4
-         RSfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791464881; x=1792069681;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vl7sRwfmLB48VwhLwaxygRLXnDOF27+xyMS2vapngz4=;
-        b=NYtUBGFwfKN2mbRelyWMCfNCk5gaWeEuyo4wbhLhY6D9apIphrBRO7aNU4bGoBSfpx
-         Pqf3Wur98Qhs1xVtzN1+X/YcfBfdOcKZsihjEjeQRMXCbuyO1CpzZXJN/PffOPmgCPOC
-         hWuukZn3SnU3rllne2h2QsUnP+3B/iMsWohV/y1WK6hqc+ZIf8faaHY5A39KXhQ743EW
-         ohBX8M03PoJ8Jqtj8eQoH6tcLjNxMwHJMoNrbMs15y+6vyMciXKXXeVy8nQRdOWp2h/w
-         AjNHPqEl5z10GGAKa6RXbPaQ/AXSwTRNtjB2AJPByBclBxzBs6ifuqfPKlv1ZqlOtaDb
-         wCmA==
-X-Forwarded-Encrypted: i=1; AKwUvBz1yy6ONmMhFl91/EXe7/Emi1Kmnmv5UGtMoCpLCbpVMhaBIxznrq6NeOsAiPSc/LfOGUI/AfU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nwKKpwxcNgs2hgrgNwXH7kSbOLujkmRbLwSvFe7vt5ttNbRmbB
-	aJ06VNoCCQGsV8/usbnfZkA88joKgc32kdB0MnK18lesPeyNlFAXftjn
-X-Gm-Gg: AYBFou3+gqca1Y2wBsEJUjDTp8Kzba4+nzpNj+x6elH7lbOcVrP96rI/29nfRc/izuN
-	R2VAr8UVjqF262MVjJnai0fpRBcO5/VcgNsMGwww7HbDVVIjUDtJmgIlm6kKPRmb0hEndKORodt
-	FiBBqKyrPgjc/z+nftWY3aMx2NRSEdRubsbsKkIu24kG1S3TrfYVz0lk5Mt4dCQAa56WLp2sPE4
-	reIb+luVWFg2e+jr0K1igOQLQf1wyGMjywoNztcyoQU+ZukuJCDuL1YqbEX7nVBzbe3n5HiUM7M
-	nSSoNPx4frTlXnGYQHheBw+FtQD/7Sy68gc8atPUJWlFYkcoLHrRhw3PfaQsqhVg+1tsiH4bL7M
-	JZKT8gbjIQW6Mx9jhvycuMlYOH9d3mckhh3hqZkGsWsUJ7vjbicHsNCQVzs2avpUggYl9UK6tWA
-	1zKUtlLD8MWa5T8QrrkW8bKkI0Qv1vPujyyF6aA37q22vMaLrJroZujgAaIcfEhVimc8H2WGetB
-	FTo
-X-Received: by 2002:a05:6a21:7111:b0:3d3:ae50:97ce with SMTP id adf61e73a8af0-3e1340420bfmr4724948637.27.1791464881362;
-        Thu, 08 Oct 2026 06:08:01 -0700 (PDT)
-Received: from dungbv.. ([58.186.69.27])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd1640b6e67sm2201621a12.1.2026.10.08.06.07.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 06:08:00 -0700 (PDT)
-From: Bui Viet Dung <dungvn2345@gmail.com>
-To: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Bui Viet Dung <dungvn2345@gmail.com>
-Subject: [PATCH] wwan: wwan_hwsim: Pin module for debugfs file operations
-Date: Thu,  8 Oct 2026 20:07:53 +0700
-Message-ID: <20261008130753.313875-1-dungvn2345@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZT7nG5K0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9681F000FF;
+	Thu,  8 Oct 2026 13:08:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791464907;
+	bh=xH17uW5oA5P29CQTXJgT98vWYbSkAQUrujAA7n+afLU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ZT7nG5K0DN1O6ukBrDjACM5FqWkMrAj4cuv1Ojhz2CMdvRwTbnitKSV0p7qQVPY0Q
+	 Pl8IEg1FNHSqIgTX52KUCv/xApDvZkQULI+Ne0gCFF0HAevIy6eIPAzCKRJGpWXtje
+	 c2XwPHQk602dE/Xhru82WxT1UEI4sMZYjPWp9G2Fm7/Cw3Bp00ZV0DBL6z+pepho4/
+	 yUCZEtZ7PE5bO2CdwJIJo3CEbITa27Ocns8aFnvTkROcfiCwSC2PIqWlJZXM2sB5FM
+	 3rwRUSoj2b+bqZrvNMraMn4qfKzZ9xWJ1UH5XHy64nQCljBg7EDsEDXpkiYdERvres
+	 qSvKxTIYEmH+Q==
+Subject:
+ Re: [PATCH net-next 1/2] netlink: specs: add ovs_flow del and set operations
+From: netdev-bot+sashiko@kernel.org
+To: houminxi@gmail.com
+Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org
+Date: Thu, 08 Oct 2026 13:08:26 +0000
+Message-ID: <179146490651.434549.2629505929025835263@kernel.org>
+In-Reply-To: <20261006130533.1620706-2-houminxi@gmail.com>
+References: <20261006130533.1620706-2-houminxi@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-An open debugfs file retains its file_operations pointer in the
-debugfs proxy state. However, wwan_hwsim_debugfs_portdestroy_fops,
-wwan_hwsim_debugfs_portcreate_fops, wwan_hwsim_debugfs_devdestroy_fops,
-and wwan_hwsim_debugfs_devcreate_fops in wwan_hwsim.c have no
-.owner set to THIS_MODULE.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-As a result, full_proxy_open_regular() calls fops_get() which succeeds
-without taking a reference to the wwan_hwsim module. When a userspace
-process opens any of these debugfs files, a subsequent module unload
-(rmmod wwan_hwsim) can succeed while the file descriptor remains open.
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
-When the userspace process subsequently closes the descriptor,
-full_proxy_release() accesses the already unmapped file_operations
-structure, triggering a kernel oops in full_proxy_release():
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-  BUG: unable to handle page fault for address: fffffbfff84f90ef
-  Oops: 0000 [#2] SMP KASAN NOPTI
-  RIP: 0010:full_proxy_release+0x8e/0x140
-  Call Trace:
-   <TASK>
-   __fput+0x357/0xaa0
-   fput_close_sync+0xe6/0x1a0
-   file_close_fd_locked+0x17e/0x2f0
-   do_close+0x33/0x70
-   __x64_sys_close+0x44/0x80
-   do_syscall_64+0xc3/0x590
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+- [Medium] The new `set` op in Documentation/netlink/specs/ovs_flow.yaml
+  lists `probe` as a request attribute.
+- [Low] The new `del` op in Documentation/netlink/specs/ovs_flow.yaml
+  lists only key, ufid and ufid-flags.
+- [Low] The new `del` and `set` ops in ovs_flow.yaml declare only
+  `do.request`: no `reply`, and no op with `notify: del`/`notify: set`.
+- [Low] The `set` op doc says: "The kernel rejects the request with
+  -EINVAL when it carries neither a key nor a ufid." Together with the…
 
-The issue was discovered via manual code audit of wwan_hwsim.c and
-reproduced on a Linux 7.3-rc6 test VM with CONFIG_WWAN_HWSIM=m.
+--
 
-Set .owner = THIS_MODULE on all four debugfs file_operations structures
-in wwan_hwsim.c so that debugfs pins the module until close has
-completed.
+netlink: specs: add ovs_flow del and set operations
 
-Fixes: 9ee23f48f670 ("wwan_hwsim: add debugfs management interface")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bui Viet Dung <dungvn2345@gmail.com>
----
- drivers/net/wwan/wwan_hwsim.c | 4 ++++
- 1 file changed, 4 insertions(+)
+This patch adds del and set operations to the ovs_flow YNL spec. It also
+marks new, del and set with uns-admin-perm. It lists the request
+attributes each command reads.
 
-diff --git a/drivers/net/wwan/wwan_hwsim.c b/drivers/net/wwan/wwan_hwsim.c
-index c3c2d2a68767..34eea3edc824 100644
---- a/drivers/net/wwan/wwan_hwsim.c
-+++ b/drivers/net/wwan/wwan_hwsim.c
-@@ -500,6 +500,7 @@ static ssize_t wwan_hwsim_debugfs_portdestroy_write(struct file *file,
- }
- 
- static const struct file_operations wwan_hwsim_debugfs_portdestroy_fops = {
-+	.owner = THIS_MODULE,
- 	.write = wwan_hwsim_debugfs_portdestroy_write,
- 	.open = simple_open,
- 	.llseek = noop_llseek,
-@@ -524,6 +525,7 @@ static ssize_t wwan_hwsim_debugfs_portcreate_write(struct file *file,
- }
- 
- static const struct file_operations wwan_hwsim_debugfs_portcreate_fops = {
-+	.owner = THIS_MODULE,
- 	.write = wwan_hwsim_debugfs_portcreate_write,
- 	.open = simple_open,
- 	.llseek = noop_llseek,
-@@ -545,6 +547,7 @@ static ssize_t wwan_hwsim_debugfs_devdestroy_write(struct file *file,
- }
- 
- static const struct file_operations wwan_hwsim_debugfs_devdestroy_fops = {
-+	.owner = THIS_MODULE,
- 	.write = wwan_hwsim_debugfs_devdestroy_write,
- 	.open = simple_open,
- 	.llseek = noop_llseek,
-@@ -568,6 +571,7 @@ static ssize_t wwan_hwsim_debugfs_devcreate_write(struct file *file,
- }
- 
- static const struct file_operations wwan_hwsim_debugfs_devcreate_fops = {
-+	.owner = THIS_MODULE,
- 	.write = wwan_hwsim_debugfs_devcreate_write,
- 	.open = simple_open,
- 	.llseek = noop_llseek,
+> diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
+> index 951837b72e1d2..87984bf1fac4b 100644
+> --- a/Documentation/netlink/specs/ovs_flow.yaml
+> +++ b/Documentation/netlink/specs/ovs_flow.yaml
+
+[ ... ]
+
+> @@ -995,6 +996,36 @@ operations:
+>              - ufid
+>              - mask
+>              - actions
+> +    -
+> +      name: del
+> +      doc: Delete one flow, or every flow in the data path
+> +      value: 2
+> +      attribute-set: flow-attrs
+> +      flags: [uns-admin-perm]
+> +      do:
+> +        request:
+> +          attributes:
+> +            - key
+> +            - ufid
+> +            - ufid-flags
+
+[Severity: Low]
+Should probe be listed here too? ovs_flow_cmd_del() reads it:
+
+net/openvswitch/datapath.c:ovs_flow_cmd_del() {
+	...
+	bool log = !a[OVS_FLOW_ATTR_PROBE];
+	bool ufid_present;
+
+	ufid_present = ovs_nla_get_ufid(&ufid, a[OVS_FLOW_ATTR_UFID], log);
+	...
+}
+
+log is then passed to ovs_nla_get_ufid() and ovs_nla_get_match().
+
+The commit message says "Name the attributes each command reads", and the
+set op in this patch does list probe.
+
+C YNL only generates setters for request attributes that are listed. As a
+result, a C client cannot mark a delete as a feature probe to suppress
+the kernel's error logging.
+
+[Severity: Low]
+Neither del nor set describes a reply or a notification. Does the kernel
+send messages for these commands that the spec doesn't cover?
+
+ovs_flow_cmd_del() uses ovs_flow_cmd_fill_info() to build an
+OVS_FLOW_CMD_DEL message. It carries the deleted flow's key, ufid, mask,
+stats, actions, used and tcp-flags.
+
+ovs_flow_cmd_set() builds an OVS_FLOW_CMD_SET message with
+ovs_flow_cmd_build_info(). Both handlers send through ovs_notify(), gated
+by ovs_must_notify():
+
+net/openvswitch/datapath.c:ovs_must_notify() {
+	return info->nlhdr->nlmsg_flags & NLM_F_ECHO ||
+	       genl_has_listeners(family, genl_info_net(info), group);
+}
+
+A client may set NLM_F_ECHO to get the final stats of a deleted flow, or
+subscribe to the ovs_flow mcast group. In both cases the spec gives it
+nothing to decode these messages with.
+
+The existing new op and the ovs_datapath and ovs_vport specs have the
+same gap, so this follows existing practice in the OVS specs. Still, the
+new ops describe less than the kernel sends. Could a reply or notify
+description be added for del and set?
+
+> +    -
+> +      name: set
+> +      doc: |
+> +        Modify an existing flow. The kernel rejects the request with
+> +        -EINVAL when it carries neither a key nor a ufid.
+
+[Severity: Low]
+Is this doc complete? The request list below includes both ufid and
+actions, so the doc reads as though a ufid alone is enough for any set.
+
+After the key/ufid check, ovs_flow_cmd_set() calls
+ovs_nla_init_match_and_action(). That function rejects actions without a
+key, even when a ufid is present:
+
+net/openvswitch/datapath.c:ovs_nla_init_match_and_action() {
+	...
+	if (a[OVS_FLOW_ATTR_ACTIONS]) {
+		if (!a[OVS_FLOW_ATTR_KEY]) {
+			OVS_NLERR(log,
+				  "Flow key attribute not present in set flow.");
+			error = -EINVAL;
+			goto error;
+		}
+	...
+}
+
+A set that carries only a ufid works for stats or clear updates. One that
+replaces actions always gets -EINVAL. Could the doc say that a key is
+required when actions are supplied?
+
+> +      value: 4
+> +      attribute-set: flow-attrs
+> +      flags: [uns-admin-perm]
+> +      do:
+> +        request:
+> +          attributes:
+> +            - key
+> +            - ufid
+> +            - mask
+> +            - actions
+> +            - ufid-flags
+> +            - clear
+> +            - probe
+
+[Severity: Medium]
+Should probe be declared as type: flag in flow-attrs? The attribute set
+currently has:
+
+        name: probe
+        type: binary
+
+The kernel policy treats it as a flag:
+
+net/openvswitch/datapath.c:flow_policy[] = {
+	...
+	[OVS_FLOW_ATTR_CLEAR] = { .type = NLA_FLAG },
+	[OVS_FLOW_ATTR_PROBE] = { .type = NLA_FLAG },
+	...
+}
+
+validate_nla() in lib/nlattr.c rejects an NLA_FLAG attribute that carries
+any payload:
+
+	case NLA_FLAG:
+		if (attrlen > 0)
+			goto out_err;
+
+Before this patch no op listed probe in a request, so the mismatch was not
+visible. Now that set lists it, C YNL codegen will emit a pointer plus
+length binary setter for probe. Any non-empty payload makes the whole
+OVS_FLOW_CMD_SET fail policy validation with -EINVAL.
+
+In Python YNL, passing "probe": true goes to the binary branch of
+_add_attr() in tools/net/ynl/pyynl/lib/ynl.py. That branch raises
+YnlException('Unknown type for binary attribute ...'), while the flag
+branch would accept the value.
+
+Could probe be changed to type: flag, the same as clear?
+
+>  
+>  mcast-groups:
+>    list:
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006130533.1620706-1-houminxi%40gmail.com
