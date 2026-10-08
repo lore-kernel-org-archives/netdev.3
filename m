@@ -1,152 +1,124 @@
-Received: from cmccmta8.chinamobile.com (cmccmta8.chinamobile.com [111.22.67.151])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5524B3B9927;
-	Thu,  8 Oct 2026 05:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791438176; cv=none; b=Iuigxkb7bLVSUYXEQVbwxpnmG9RXD1QzS4fK0PVsjrmF48hIMIWR8fz+MsEzI7rJGMXAsulGlqPJsZKkUzFE4sdKyDr4uvU7CnBXmAq5ZegRmfSZpEdVuVQHSwsLfoytcNK1qzNIi3oZr4ux764LcICeKrFL6eAirGYmVvKob1A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791438176; c=relaxed/simple;
-	bh=ygZeOiN67Rzk+FnquSronkA+wHQJCrOrkL8Gahj1UQ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c4d9Oor29Ou9UtNrnXTo5d0XYYZgKk3QqclmPUtn51avSZizLSS2y6IrScvU1kc0XPIImACwQlJ4xrRCx/uaYAwy8vBE7jSCX21MJJwZ0WM9DwNhBPCX699OU2KNs/Upb28sn1cMiweMWL4wS3RzrXPj6R90/NNZsJu8oCEBj8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=hLWiwyjd; arc=none smtp.client-ip=111.22.67.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8101DDFE
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 05:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791438296; cv=pass; b=m6l7rCCyp6CWa6ZdAEy6jLqGjvgVLwj2zP+giN1RNRVfDCVF06+OhTmsBohG3zP0udflQpIB7rkvDGA/Nd0Gv8rxWQvWGHYRBJX5R3lQzmYbGfBDRec3Qq5BDmqiyFBzWDDjpx8Y4jGNIQlvtdrjTHTQpR6IiChq6ahEVIuDAsY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791438296; c=relaxed/simple;
+	bh=53QEL5FlHYldrY+O+EBlAwOD3koq3J0/3a83a07SPFE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WcDxAEeFjGFW1QeL1Bx+otpLA+bEu4O4a+xTmKpsThKWJ8JLm9YWQuA/wAbXTjKTBpWhhI5XtPEAQOjzNrW/cga9hDrKvyz7kmopnwQWHAy+Q+O/Ci6MV2JcQqLMbuDAVtRHvmonRSNIGdkCn3dq6scrIcnPdvF5v7jZB1D/ZjA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=FnBbSRKY; arc=pass smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="hLWiwyjd"
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="FnBbSRKY"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3a9787a156eso20023641fa.3
+        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 22:44:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791438293; cv=none;
+        d=google.com; s=arc-20260327;
+        b=D5JqW33mTpzKS2nIo9S6q3LfeTvFoFMdYNgf1yIfCyrVKvB9BkP8I3hfxkKepI/qMX
+         g5gsh28vs4/boOikoMUqJ1aYEBcgqwI3Ksrt0VbWZh0GRubDtMHJI6mNWuxdZPQRYjLA
+         OQ8jmywhbEVrvRuQ+kgaPJaJWxFQOFGpjiVnkbMAbYif2QQGUiG+hjeHGLATV5dxQgP3
+         yIRKbY0ranWRwiXXVYGvWIbHxOTb+qBUw+gZLPlOA01z5EGmt+WirCe5hYQHBmnvMGUD
+         Pyikc9ztdFRTncGGRr4TD4xMJXUCwJkqzCzjLzhEc6CxG5HpV9jL7Vc2Yr1jkMBR095C
+         Ddpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k/YdTCknd/y9LBwZZ4Idqr3OAkwQji4unNR9hm/IJ5Q=;
+        fh=Q0scokCh5za0crGJIUjaCTy3V1OA7Td3ZeKuAINdtCQ=;
+        b=B9IrDPoncuLqZKUR6oiSBmXzErh5v0UzpNwfZ4oZq9bmcZ03LqTZUwlQQWwDPxV2Bf
+         OQQW6sNwVYs4WOVYTZKcMM+o8K8WySuN5aWWjorraCb5Juj4gZo2YX95ofpV9oYEXJLf
+         JEQN8WDyfxfL4I1OEgKDqbI31h4ekTIYs7ztdqGGZ6lpaTYTd83Ta0stX/Rsz6MaS6+P
+         CQ3s7lBs3y0tYRMxz8hmlhhNd6Arjt4mBrbrJuXAjGfFq6ni0oL0E2fmJMW77hjlt68A
+         mFO2MiL9Vjq+NJUObDDxtBUYD1hXuFo/ng8xOCclIrpHq8T+grsbTJHqnFh6T0HQtBZ2
+         y93g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=cmss.chinamobile.com; s=default; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=hLWiwyjdjz2A3l2lUmL+95cC6Q+rIBZnqySrLLGV/TzpXXdJAbOaAFAKRDLM3bJcTUbHGKyXy/y6B
-	 cMeo3oAUYWCLU8zx3zD0PqZjZu/swpjy2jsQb3fi8OmtX03pFev+JHevtZmdKHrHgjRHZg+xGIId90
-	 CLuJ6QIW4aRzokBk=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee26ac72d4e7cb-eda89;
-	Thu, 08 Oct 2026 13:42:42 +0800 (CST)
-X-RM-TRANSID:2ee26ac72d4e7cb-eda89
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.99])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16ac72d4794b-e52a2;
-	Thu, 08 Oct 2026 13:42:42 +0800 (CST)
-X-RM-TRANSID:2ee16ac72d4794b-e52a2
-From: lvjunyu <lvjunyu@cmss.chinamobile.com>
-To: pablo@netfilter.org
-Cc: fw@strlen.de,
-	phil@nwl.cc,
-	netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	lvjunyu <lvjunyu@cmss.chinamobile.com>
-Subject: [PATCH v3] netfilter: nf_nat: Fix stale outer UDP checksum on VXLAN encapsulated packets
-Date: Thu,  8 Oct 2026 13:42:28 +0800
-Message-ID: <20261008054228.752274-1-lvjunyu@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.43.0
+        d=nebusec.ai; s=google; t=1791438293; x=1792043093; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k/YdTCknd/y9LBwZZ4Idqr3OAkwQji4unNR9hm/IJ5Q=;
+        b=FnBbSRKY1A0+CSt/IVKZTsl17iZYp0+zOrBeQq+aouKUi6ZPfnDOxBygrYq1x88weL
+         +vXgsgPCGBJbfD49D2Y1lIR37Q5GvToovIkR//AdwSwOvpiedmH/hEqXojVQinGPunZL
+         dkp9V8o0Q4ktn3KHCqvi9pfUpm4mA4Er85pUO0jQr5KdeF+BOIgERnNfIDeFO3F6HeLH
+         /cMYf0We+yJmhCkHhpnO+R+vVkp0xEj719xZuLX4ob6mESYm+fqxR8kYj9uxuQs/pLB5
+         ByvDlAV4bgfskFhafOh65xI4tAHci9m/THnOzudVr04wlKnmwWrrcj/skdAvVo2NRIK8
+         pzqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791438293; x=1792043093;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k/YdTCknd/y9LBwZZ4Idqr3OAkwQji4unNR9hm/IJ5Q=;
+        b=uvvgDR44vV8K8fYkZo7AgXaFXy40pacivvw8wjWjvMrZpAHPI4NjQxC/vsf41cI5L+
+         xFfaypIMFO+2Gd8pRYil14aTorEfvBxPkzsPspRL/2caAZZdtw1wUmSFpawH4mWf6HF7
+         ku7MxuZu8K2NIyLyonua1hYm99etORQj5KRFCIr8WscDTdsVujg9OH51n4qgGOqq6n4e
+         9hZx1iY5acEDYBPdS00RptEm2+i0+6Cr/UZqoXnjIYTyi8baHlY/pBIZ680sgp8ffzOU
+         xpYTybKjWkXYuGLYpSbtL/6Zbl24ZiLo19zfOXpM6yI/08uJ+Txw1tSKvWH6im8rPtOt
+         xGCw==
+X-Forwarded-Encrypted: i=1; AKwUvByy0HG49jkU1haP4i3eQInc/Zv1zS7zOncaXXliMAtXJf/XKyYNNcjMbcFAgsYQWUkyq/DVom0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLkp08Pz9wuISHXl2VeNVur2SIlFBahKZVD/YNGIyqaI56xuCmT
+	XAZ6dV/w+mtzSsfT00WuEZybhwsy7RrVrY9Mx6beTbnx9QGsWamqH4T1RHlO5D8TBcXnpxRu4hj
+	31j7+yr6Y4N/a3c8ayiNgLMJlL+Gd6Qs9H/2R/cfP7a6YfzsgXczwI52oCM93zgsl
+X-Gm-Gg: AYBFou38oWuZDZKZNKHkF1/bQYPLncSyx3Qxan/k+T0gzlrUj3AsqsOpi27FlFggAJH
+	2C2WRMKkJSkkhbvNouJJCZqih6GwP7oj/bI2iwhxAkgDVm6AuKjC8TvKUuYBLIrxCBSjIZjRThm
+	XY4jQMu/+P7lvXVVWHbIUQkAByC8T3/Nk9UlzfgMOCQoGgoSjpmdPj1HdExsuc5pXveLxs+P5IH
+	nGc0Cb8BArnXIoSynN2qTKq/CApHwGNHvYRwdv6CqHZDyDafqZ2i3v9HebuKonPtdsurbhnvmh3
+	lVuGWb9KuJBGu/oTq0JAi+NziZunWWW9qpJnuK0JyRCnGiHdCVf84reSWS6HLLtGAuJYu5wAtIt
+	YX7P5u+zqUOrTWAd0sTh6pQ==
+X-Received: by 2002:a05:651c:1505:b0:3a3:2a41:c0c4 with SMTP id
+ 38308e7fff4ca-3a9a2ce1f6amr9868101fa.14.1791438292745; Wed, 07 Oct 2026
+ 22:44:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1791428529.git.zihanx@nebusec.ai> <179143775146.2527009.3109321224299351978@kernel.org>
+In-Reply-To: <179143775146.2527009.3109321224299351978@kernel.org>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Thu, 8 Oct 2026 13:44:40 +0800
+X-Gm-Features: AclHuK9PM6rrZWC-lYdaDOm9j9ga74MK6LO5rfiyj0JVErtEtMeHscoJk0C5gsY
+Message-ID: <CAANe3eQvA+A6wubAbL1nnQ_ZTiqgfjRgGXkCDzgLTq4ygs0r5g@mail.gmail.com>
+Subject: Re: [PATCH net v8 0/1] rxrpc: fix encap_rcv skb accounting exhaustion
+To: netdev-bot+sinfo@kernel.org
+Cc: linux-afs@lists.infradead.org, netdev@vger.kernel.org, dhowells@redhat.com, 
+	marc.dionne@auristor.com, davem@davemloft.net, edumazet@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, vega@nebusec.ai, root@tr0jan.top
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When MASQUERADE --random-fully rewrites the outer UDP source port and
-address of a VXLAN-encapsulated packet whose inner header has
-CHECKSUM_PARTIAL, the outer UDP checksum is not updated correctly.
+On Thu, Oct 8, 2026 at 1:35=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-udp_set_csum() takes the LCO (Local Checksum Offload) branch for
-encapsulated CHECKSUM_PARTIAL non-GSO packets, writing a complete
-(folded and complemented) checksum into uh->check while leaving
-csum_start pointing at the inner transport header.  In this state:
+Hi,
 
-  - inet_proto_csum_replace2() is a no-op (pseudohdr=false,
-    CHECKSUM_PARTIAL)
-  - nf_csum_update() -> inet_proto_csum_replace4(pseudohdr=true)
-    takes the pseudo-header branch which treats uh->check as an
-    uncomplemented seed, applying the address delta with the wrong
-    sign
-
-Fix this by using the offload target (csum_start + csum_offset) to
-distinguish the LCO state from the seed/offload state, and temporarily
-flipping ip_summed to CHECKSUM_NONE so both the address and port updates
-use csum_replace*() (the complete-checksum path).
-
-Test results (10 connections, single netns vxlan + veth environment):
-  Before fix: ~1080ms avg first-connection latency, 10 SYN retransmits,
-              UdpInCsumErrors incremented per connection
-  After fix:  ~29ms avg first-connection latency, 0 SYN retransmits,
-              UdpInCsumErrors unchanged
-
-Fixes: faec18dbb0405 ("netfilter: nat: remove l4proto->manip_pkt")
-Cc: stable@vger.kernel.org
-Signed-off-by: lvjunyu <lvjunyu@cmss.chinamobile.com>
-
----
-
-Changes in v3:
-- Reword comment to distinguish port delta (no-op) from address
-  delta (wrong sign) as suggested by Sashiko AI review
-
-Changes in v2:
-- Fix both address and port delta (v1 only fixed port delta)
-- Use offload-target test instead of skb->encapsulation as the LCO
-  discriminator (addresses Sashiko AI review feedback)
-- Update comment to describe both CHECKSUM_PARTIAL states
-
-v2: https://lore.kernel.org/netdev/20260921130312.686493-1-lvjunyu@cmss.chinamobile.com/
----
- net/netfilter/nf_nat_proto.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
-
-diff --git a/net/netfilter/nf_nat_proto.c b/net/netfilter/nf_nat_proto.c
-index 64b9bac228e..6779e9f2812 100644
---- a/net/netfilter/nf_nat_proto.c
-+++ b/net/netfilter/nf_nat_proto.c
-@@ -54,9 +54,39 @@ __udp_manip_pkt(struct sk_buff *skb,
- 		portptr = &hdr->dest;
- 	}
- 	if (do_csum) {
-+		/* When udp_set_csum() takes the LCO branch (encapsulated
-+		 * CHECKSUM_PARTIAL, non-GSO), uh->check holds a complete
-+		 * (folded and complemented) checksum while csum_start
-+		 * points at the inner transport header, not at this outer
-+		 * udphdr.  In that state:
-+		 *   - nf_csum_update() -> inet_proto_csum_replace4(pseudohdr=true)
-+		 *     takes the pseudo-header branch and applies the address
-+		 *     delta with the wrong sign (to an uncomplemented seed).
-+		 *   - inet_proto_csum_replace2(pseudohdr=false) is a no-op:
-+		 *     neither branch is taken for CHECKSUM_PARTIAL when
-+		 *     pseudohdr is false.
-+		 * Temporarily flip ip_summed so both use the csum_replace*()
-+		 * path that correctly updates the complete checksum.
-+		 *
-+		 * The seed/offload branch of udp_set_csum() sets csum_start
-+		 * to the outer UDP header, so the offload-target test
-+		 * below distinguishes the two states.
-+		 */
-+		bool lco = skb->ip_summed == CHECKSUM_PARTIAL &&
-+			   !skb_is_gso(skb) &&
-+			   (skb->head + skb->csum_start + skb->csum_offset) !=
-+			   (unsigned char *)&hdr->check;
-+
-+		if (lco)
-+			skb->ip_summed = CHECKSUM_NONE;
-+
- 		nf_csum_update(skb, iphdroff, &hdr->check, tuple, maniptype);
- 		inet_proto_csum_replace2(&hdr->check, skb, *portptr, newport,
- 					 false);
-+
-+		if (lco)
-+			skb->ip_summed = CHECKSUM_PARTIAL;
-+
- 		if (!hdr->check)
- 			hdr->check = CSUM_MANGLED_0;
- 	}
---
-2.43.0
-
-
-
+This v8 is a rebase and resubmission of the same patch. The detailed
+information requested here, including how the issue was identified, is
+already included in the v6 cover letter.
