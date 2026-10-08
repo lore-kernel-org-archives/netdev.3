@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BE43AD518;
-	Thu,  8 Oct 2026 18:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7053AE6E6;
+	Thu,  8 Oct 2026 18:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791482413; cv=none; b=ddK8Cx0DUDcyoAkuka9aVl45TfXkXBkJ8YtnF019UIy/f0FXRr5bDIio7YFtQCukqI5RSdtMpJwTKLSU8YafiDaZd9MhufP3G2lN2u/c1pbeVUBixYoBLeSIz2arLZ86hmzSrlbf4JnlP8mfjuEeZxrnByaUCunmzBpSjyIYXfY=
+	t=1791482415; cv=none; b=qH+/ZZRK6MvcRJX52M6YYaEXv2sao0qFAO0x76fLBpMHa+OXY3V+ldPJxYi9UU4C17dpV9PZ4JfsV1L8Rm3YqT8UrKCQ+7lgAlkielYRlgJ3y29D4LkIB+tz14uiE/uFTXrJiMh7je1O6+FwBEYDoNkqTlCHu1OWjBbWNyzN8t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791482413; c=relaxed/simple;
-	bh=mszzKbfftFTPYWIWOzogC9s+6PaezE7t/0Hv9bG+A1w=;
+	s=arc-20240116; t=1791482415; c=relaxed/simple;
+	bh=2CjK0K2b986h6JRaq/CyXMkZyrPEGgtobGFzaN11A38=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WzHNcu8huH3KF2Rw4bYYfOE+dX+Vn0q/3vOmz5SmKvfYXeKzt1p1WSYdzEo2cpFSMLqx5HQpgVXbDfKsM+J2HE0JXE0s0diMqeJ80gPCghdqiXKbuz4dUwnj1Xt0KC8tZbF07AAEkS2/zQzu8R1U7ahvJTYRXRprzB79e22bz8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sxs7GYZD; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=rfyjObtsASwtocE08k4qwNWMCCCfyBDnDzo/Yw3oZLIbfkjSn2EVUdIiIyuE6BFVGcYM6YwJQQQPKIX+YdVlm/lS7/OnI4a4fR73gbVb53+Hj9mCS8aJ4fpBkg97BtED1Ms0w0hV6sY3D3suh2DHEQK/5xhsoP8xQVSD0vRR8wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OsNajnK2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sxs7GYZD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480361F000FF;
-	Thu,  8 Oct 2026 18:00:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OsNajnK2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8E11F000FF;
+	Thu,  8 Oct 2026 18:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791482412;
-	bh=FxsImzC1fNiyTcBHseW/ALc81n5x8S6JkZcq/SrzDUo=;
+	s=k20260515; t=1791482413;
+	bh=nU1749sScYR3U2UNU/EtGIVwIs0uZeZqOSt1JX3BzNI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Sxs7GYZDszDqYuD4Tfx0ZZpAM1ZZLNBulUqehn+Jg8IEwggSZyeAbvUq6jC6aV419
-	 Q51NlzWMxZE6cwo6uixreWst4L+1b6dciPsWxFlnOC21Xh8YWOxSX+lw9mhaRAzEyf
-	 bGyP3OVTs+sWnP2rmBbwLgrLUU+2xobBdz4mUPIkInvV0VxoecFNOtKfkzmtM8kV5s
-	 gGz6wcgxjwDX9fH3oWuMWWbQsuXqtkSn8Jxg+ETxGyGbgkCBCJN4PSi+xfLKAt/dHP
-	 kFpuFnii4LE6JJXgU29OsmBtoIB09akjogwdVJ4sZFCXAS2+3c0emumnoqvW1STC14
-	 aIM4Fi3SFU6Mg==
+	b=OsNajnK2WzSYdh33X1cP9pQT/YNF0GCFpdzckEQCqf0VMAZLjAhJXVwmfq6zxX2z5
+	 foFpmo/SkRnQDIeF29e5lOZ513PoYFD1mvTy3Zwho5nIzpqcEJuUhtcTgj7S9h9zDO
+	 DXF6P2szDyI5kPwxhH1eUWNeuyRHW1iO80vQw15HZdIKPnAn/KvZHQDs8wPFXJN9zw
+	 EtFeYUA2ZHOxdYybrAFoiGkpQrVjaZY0S3wLsy6obDSLN25XaNF2EuIo3YNOQYmutU
+	 oRmtunma738gBCB1DU0DT4t6V124xzQylBhRXBwLzOihJnn80/g+uUddLNpYD4PT71
+	 AvWdLPZSLoQzQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3AB380CEC8;
-	Thu,  8 Oct 2026 18:00:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B447B380CEC8;
+	Thu,  8 Oct 2026 18:00:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: ethernet: i825xx: Fix dma_alloc_coherent() size
+Subject: Re: [PATCH net-next 0/4] vxlan: generalize and refine drop reasons
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179148241076.372666.700478995670344457.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 18:00:10 +0000
-References: <20261006143247.54724-2-fourier.thomas@gmail.com>
-In-Reply-To: <20261006143247.54724-2-fourier.thomas@gmail.com>
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: stable@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, jeff@garzik.org,
- tsbogend@alpha.franken.de, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <179148241226.372666.5348049606508908025.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Oct 2026 18:00:12 +0000
+References: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
+In-Reply-To: <20261005201417.906344-1-littlesmilingcloud@gmail.com>
+To: Anton Danilov <littlesmilingcloud@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
+ idosch@nvidia.com, andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  6 Oct 2026 16:32:40 +0200 you wrote:
-> In sni_82596_probe(), the lp->dma buffer is allocated with
-> dma_alloc_coherent() and with size sizeof(struct i596_dma), and possibly
-> freed in the error path with the same size. However, in
-> sni_82596_driver_remove(), the same buffer is freed but with size
-> sizeof(struct i596_private). This error may leave the freed buffers
-> mapped, leaking a resource and allowing the device to access freed
-> memory.
+On Mon,  5 Oct 2026 23:14:13 +0300 you wrote:
+> This series makes two vxlan drop reasons generic, so that other tunnels
+> can report the same conditions with them, and makes the reasons vxlan
+> reports for two other failures more precise.
+> 
+> Patch 1 renames VXLAN_INVALID_HDR and VXLAN_VNI_NOT_FOUND to
+> TUNNEL_INVALID_HDR and TUNNEL_NOT_FOUND. Their values stay the same;
+> the names vxlan drops are reported with change.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: ethernet: i825xx: Fix dma_alloc_coherent() size
-    https://git.kernel.org/netdev/net-next/c/c16411fff03b
+  - [net-next,1/4] vxlan: rename the drop reasons for use by other tunnels
+    https://git.kernel.org/netdev/net-next/c/7629d6db839f
+  - [net-next,2/4] ip_tunnel: make __iptunnel_pull_header() return a drop reason
+    https://git.kernel.org/netdev/net-next/c/6c0509aa8900
+  - [net-next,3/4] vxlan: report the drop reason of __iptunnel_pull_header()
+    https://git.kernel.org/netdev/net-next/c/0518c33e1d7e
+  - [net-next,4/4] vxlan: report a circular route as SKB_DROP_REASON_RECURSION_LIMIT
+    https://git.kernel.org/netdev/net-next/c/d476bb7c0efd
 
 You are awesome, thank you!
 -- 
