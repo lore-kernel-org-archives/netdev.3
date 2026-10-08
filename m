@@ -1,40 +1,50 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D15E4302F8;
-	Thu,  8 Oct 2026 12:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9265A29B766;
+	Thu,  8 Oct 2026 12:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791461460; cv=none; b=o3XoiI63aG7E56ES+/Qja6Obv8FsqAT2zdIsHhXccIxUBBoHPzaGjF97xY/1k8XYQwf/X/gEBnjtePvFVsnt7A3PPa2jE7nyTSIuioFwpzyHXgrvV63Mj6V72kAXNNpuV/I+6Wt4SI7Dy0u6BfGrMCO6IxFtJ6sF03HO/Y2RLU4=
+	t=1791461867; cv=none; b=HZ/WUhYol0SXMHN+Q0hrykteYZqmvrxBn8ptwZwub2IkzqJ8DjnKcKpXX93x9j5gOshp/qcXGu/Wx44S7mL0V1+/9t2HYnbFjq6cG4DhK5YLOGzwOuK7HDLZmS4swZcUZaxbtJDtp0i+jMrkDMhYW3UWThgvEIwXduCKtnfpaYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791461460; c=relaxed/simple;
-	bh=ividU/n0BOAaXU6hV6Trcxb11QVQMGzTTzP/Cplfuys=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hAkPc/NirHQAbSBWbUhqMdeJ8OdOp2jckIAIhSan3gJo72sb60qAyfg9+EImMFWoKMukdDVg3zHnwqe7ypXn42+qCQmFW2utxUEtfQgd4xDpg/cJSt1/ElB8oj1h4mEZ9nYT5x/SDzXL0kOwRKtoRNLYKqf3qJ2++6CHIfviyoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=vCpXiLZT; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1791461867; c=relaxed/simple;
+	bh=79n3TeG5j1UaX+/AdwzOmfmxhX0AYmK8L5GixoO3mkk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GQ32NvBrPHfmMPCvcyel+akCX1W/5Tf3K2/w2PfSJ/Dk7T2FPPWd9PwtkBEQiJwcYpue+X+5XiTO9ZTgjZOKhlNhBF1V/EHs1gDO4R1lwrWgQaG4pHQQTsDyfiVQiaFflmGeP0zuaDpYuFlQPViheOIvTHFqzHZx1aOFXQP2iGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=w22IQ2ls; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Dypgcyqi; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="vCpXiLZT"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=I19BJzOlrTy3rbIT0DbZIyhSdbAvJz2UH8bWTicEpME=;
-	b=vCpXiLZT8xamRpJDaL2SNiNrsqQj4WNMGZnDX+KfBzHt/y3W1laRffiIIFYcZDIQZX2ByKx+P
-	Z6Y+HBwhu3opo8ObKKkoIAlCQbgqaiAFsOrOdjWUqRBVm9rsecFweIt7SBrTR7+5KVViaWZK4BZ
-	SGbZghZUcgFQgJdDTS0JPq8=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4j0pRk0dC3zRhXL;
-	Thu,  8 Oct 2026 19:58:42 +0800 (CST)
-Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
-	by mail.maildlp.com (Postfix) with ESMTPS id 04AA6202E6;
-	Thu,  8 Oct 2026 20:10:53 +0800 (CST)
-Received: from [10.67.121.233] (10.67.121.233) by
- kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 8 Oct 2026 20:10:51 +0800
-Message-ID: <66755d59-c6e5-4815-ae67-faf8ec0f6198@huawei.com>
-Date: Thu, 8 Oct 2026 20:10:51 +0800
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="w22IQ2ls";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Dypgcyqi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1791461857;
+	bh=79n3TeG5j1UaX+/AdwzOmfmxhX0AYmK8L5GixoO3mkk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=w22IQ2lsmqV/biPF4yc+R7xauEioyxmGtjNVsrepEhDwX0zTjq5hNUefPlJBf49cw
+	 SrCFs9wsfRpsZ6naQbkSJwMleJjIcKoP9plQ+9S+lz8Hz0ktqIfrQA2P4v3At8t+Xk
+	 XoVeUw0TEpk/RIA/3776ov7rQBVbVpmI/VWqTt9ZmFAT/7xIoeYZgi5MSlYekGcuTR
+	 dWilCaM9fC0djqApSWuM7SoauR5Nzpzzt+tJ2k1lZdmsedz2dggrpHl1Vx/I213SOd
+	 +TXFjkGWlF4GUrIJiReYUzYtjCTkxs/o1iPLgHXDf9aVgA/9ZbjypLyEcmt0NSD1S6
+	 vxxmxBU62DnDg==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id C83374728A; Thu,  8 Oct 2026 12:17:37 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1791461856;
+	bh=79n3TeG5j1UaX+/AdwzOmfmxhX0AYmK8L5GixoO3mkk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Dypgcyqi6UHesM2Of79Iw7jHOhsEwqO+kqOapKJd0X5PI99KUlF5bsmUX1Gu3QRJs
+	 pfId/gnLu8eoPwHwgr7wAk2oXCmN49qFrghEpsPTECpeqMHgvAF/3FELfzw76vL0qE
+	 Jakn+3aPQlxnXLeUd/n0yCpmcZcKl3jxoq3ti395nNCHPsNG5Bo19VcbrkYNBlXCOY
+	 wmUhoLVs2bDK969WGd4RIVj6QGMqYnHyAc+dDsQ0efWD/ksIP9l9YQBY2XsMUDXxMl
+	 ClwicoSb1xrkv/SOehlkKrRXzkjHoO174/3IAuSrTtMrbEen2X76O+fwJvJoFSG7C+
+	 OdDfT3JNHmD9Q==
+Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 87E1E47182;
+	Thu,  8 Oct 2026 12:17:36 +0000 (UTC)
+Message-ID: <633a0f2b-67b3-4896-8464-6a4d0c05498f@birger-koblitz.de>
+Date: Thu, 8 Oct 2026 14:17:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,93 +52,60 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	=?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, Manivannan Sadhasivam
-	<mani@kernel.org>, Ciprian Regus <ciprian.regus@analog.com>, Andreas Larsson
-	<andreas@gaisler.com>, Jian Shen <shenjian15@huawei.com>, Sebastian
- Hesselbarth <sebastian.hesselbarth@gmail.com>, Parthiban Veerasooran
-	<parthiban.veerasooran@microchip.com>, MD Danish Anwar <danishanwar@ti.com>,
-	Parvathi Pudi <parvathi@couthit.com>, Roger Quadros <rogerq@kernel.org>,
-	Mohan Reddy Putluru <pmohan@couthit.com>, Runyu Xiao <runyu.xiao@seu.edu.cn>,
-	Simon Horman <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, Nicolai Buchwitz <nb@tipi-net.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-actions@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net 00/10] net: Move setting of netops to fix crash
-To: David Yang <mmyangfl@gmail.com>, <netdev@vger.kernel.org>
-References: <20261008022656.3592191-1-mmyangfl@gmail.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20261008022656.3592191-1-mmyangfl@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Subject: Re: [PATCH net-next v6 01/10] r8152: split r8156_init per chip and
+ factor out wait_autoload_done
+To: Chih Kai Hsu <hsu.chih.kai@realtek.com>, davem@davemloft.net,
+ kuba@kernel.org
+Cc: netdev@vger.kernel.org, nic_swsd@realtek.com,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
+References: <20261008081556.47901-1-nic_swsd@realtek.com>
+ <20261008081556.47901-2-nic_swsd@realtek.com>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <20261008081556.47901-2-nic_swsd@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemo500018.china.huawei.com (7.202.195.199)
 
+Hi Chih Kai,
 
-on 2026/10/8 10:26, David Yang wrote:
-> Commit ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev()
-> locking assertion") put a netdev_need_ops_lock() check on the
-> phy_attach_direct() path, in phy_link_topo_add_phy(). With
-> CONFIG_NET_SHAPER enabled netdev_need_ops_lock() reads
-> dev->netdev_ops->net_shaper_ops, so any driver that connects a PHY
-> before assigning ndev->netdev_ops now dies with a NULL pointer
-> dereference at probe time. The breakage showed up in v7.3-rc1.
->
-> ibm/emac was hit first and fixed by commit 7c9f391ec89c ("net: emac:
-> move setting of netops to fix crash"). These ten patches apply the
-> same one-line move to the remaining in-tree drivers whose probe path
-> attaches a PHY before filling in netdev_ops:
->
->    1. hisilicon/hisi_femac   (crash reproduced on hardware)
->    2. hisilicon/hip04
->    3. actions/owl-emac
->    4. adi/adin1140
->    5. marvell/mv643xx_eth
->    6. amd/au1000_eth
->    7. ethoc
->    8. aeroflex/greth
->    9. ti/icssm-prueth
->   10. microchip/lan865x      (attach happens inside oa_tc6_init())
->
-> Only patch 1 was reproduced and verified on hardware; patches 2-10
-> were found by source inspection and are neither build nor boot
-> tested.
->
-> Note that ti/netcp_ethss and cavium/thunder_bgx attach a PHY to
-> netdevs that never get a netdev_ops at all (dummy netdevs), so they
-> cannot be fixed by reordering and are not addressed here.
->
-> David Yang (10):
->    net: hisilicon: hisi_femac: Move setting of netops to fix crash
->    net: hisilicon: hip04_eth: Move setting of netops to fix crash
->    net: ethernet: actions: Move setting of netops to fix crash
->    net: ethernet: adi: Move setting of netops to fix crash
->    net: mv643xx: move setting of netops to fix crash
->    net: au1000: move setting of netops to fix crash
->    net: ethoc: move setting of netops to fix crash
->    net: ethernet: aeroflex: move setting of netops to fix crash
->    net: ti: icssm-prueth: Move setting of netops to fix crash
->    microchip: lan865x: move setting of netops to fix crash
+On 08/10/2026 10:15 am, Chih Kai Hsu wrote:
+> RTL8156, RTL8156B, RTL8157 and RTL8159 shared a single r8156_init(),
+> gated by a dense set of tp->version range checks. That made the init
+> sequence hard to follow.
+> 
+> Split r8156_init() into one function per chip family:
+> - r8156_init  (VER_10/11)
+> - r8156b_init (VER_12/13/15)
+> - r8157_init  (VER_16)
+> - r8159_init  (VER_17)
+I have a hard time to understand why you want to separate out one init 
+function into 4 different ones, for each chip one. Especially, if, as 
+you say no functional changes are intended, which might justify the 
+re-factoring in this manner. By multiplying the functions, it will 
+become more difficult to maintain the code: if an issue is found in the 
+init-sequence, it may now be necessary to fix it 4-times and future 
+developments touching the init-sequence will also need to be replicated 
+multiple times. In total, there would afterwards be 8(!) different init
+sequences including the other ones for the RTL8152 and different 
+versions of the RTL8153. The same pattern repeats with _up(), _down() 
+and other configuration functions.
 
-Why isn't the subject of the last patch "net: microchip: lan865x..."
-But overall, it's okay.
+Would it not make more sense to try to further combine the init 
+sequences or try to disentangle the code by establishing common library 
+routines put into a _lib.c file and possibly different .c files for the 
+different generations of the chips? For example, it appears that the 
+rtl8157/9 belong to one generation of chips, based on the rtl8156 
+design. On the other hand, rtl8152/3 appear to be a different generation 
+with various family members. That would allow to build a basis for 
+future development like to rely on using phylink to handle the PHYs 
+integrated in the chips, which all appear to be already supported by the 
+Realtek-PHY driver.
 
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-
-
->
->   drivers/net/ethernet/actions/owl-emac.c          | 3 ++-
->   drivers/net/ethernet/adi/adin1140.c              | 3 ++-
->   drivers/net/ethernet/aeroflex/greth.c            | 3 ++-
->   drivers/net/ethernet/amd/au1000_eth.c            | 3 ++-
->   drivers/net/ethernet/ethoc.c                     | 3 ++-
->   drivers/net/ethernet/hisilicon/hip04_eth.c       | 3 ++-
->   drivers/net/ethernet/hisilicon/hisi_femac.c      | 3 ++-
->   drivers/net/ethernet/marvell/mv643xx_eth.c       | 4 ++--
->   drivers/net/ethernet/microchip/lan865x/lan865x.c | 3 ++-
->   drivers/net/ethernet/ti/icssm/icssm_prueth.c     | 3 ++-
->   10 files changed, 20 insertions(+), 11 deletions(-)
->
+[...]
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Best,
+   Birger
