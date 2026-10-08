@@ -1,90 +1,194 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AD83B38B9;
-	Thu,  8 Oct 2026 17:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A29737A822;
+	Thu,  8 Oct 2026 17:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791482183; cv=none; b=JuSXYkjEG1yunPJQAgH/Mmh/jqTrcXBjeujypJHTYNGmde9VDa6J5Z5hHK9tD3NbhqRj18AaYw7hBJV6RN98w9BIwXUtx0DHJ1EYLliWj8Bs0dwzp5BwQFf8EyTLVUTj5Ut7rGGmpkahwEMtWrE4/I3M7Tey8sU6aie8/HBSVPs=
+	t=1791482360; cv=none; b=sFIruaYdKFlx1eW0tWijwBcv8UBxwt/gISSRuNDl+jDC6Lv+GZ9RzOfUmizZQfcJS5nlAUrkdBLXHDtDdOcH004zYxw3JTVcdFl+cRe5nRNpQmIlNwxh2sySWHrKTqoauJxHS74p+/2g8iStlOtHl57SNgtirV12phr9bqV0gyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791482183; c=relaxed/simple;
-	bh=edzsBnnHxbYxOo3OoR0PdT/k6aGpP3sirb68mDkhhgg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MEFFQ5MCpJUF7UtGnQ+dP4HrozJjBZN+7VK6fuxqN2BgJmhqULQ2S2bWzV8nnaI+Abd5RAv+2hr+HcYp1a96sEVTm9VEGfB1Sa7HL/lgoafHcaA5rpkXZfaZi1rkIxm9xLQ3hRqeZ3z5U/o+aTVGS+m2wEXl8H3sbIqHrasyiXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fc87d0ffb700.home.arpa (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowACnsD452cdqBN4PCg--.12700S2;
-	Fri, 09 Oct 2026 01:56:09 +0800 (CST)
-From: Haotian Zhang <vulab@iscas.ac.cn>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Daney <david.daney@cavium.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] net: mdio: mdio-mux: fix device_node reference leak on success
-Date: Fri,  9 Oct 2026 01:56:12 +0800
-Message-Id: <20261008175612.2748920-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1791482360; c=relaxed/simple;
+	bh=ksGkcX71DS4hl2C96zI+4LAlDKthdjb2KX+nNNVteFg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MA6julD4tyP03lMiHTt5xE94y3b3XVwuHhpaFwy/7UY8+Ha5yo0fk8Q6zm3natG0bOfWJpAvVi58L4ubMm/M8Zh13vGk030D/n1Lc+IzjFLYzyj8s4XUxdMFEN++Wk1ZibvmYa8G0bEDNTWg3vnwNEMX5ApcgNVXJOU9ds/Ny18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fLZ0+X3j; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fLZ0+X3j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457B31F000FF;
+	Thu,  8 Oct 2026 17:59:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791482358;
+	bh=KBmde3ssC+n/C8xKUlqoQFdj9GQEgUYbcU1m4C/LKQI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fLZ0+X3jUr6OXFX+ReS17JWqyLZtHdULQde1XtdRCCCab/UBuKLOULW7SEd3FUauu
+	 mL3XEHpDqKmxWvm8k4Vm1vjrPBFbySDSXnDNw+MEp4TUpRuyfkARvftQRzOsS7u0T3
+	 S4PoUJXgr0eswY6Z0F5tYm5sLeKctXy64PbC4+PvgO3MZISFgWOse/wIulOr/uhndh
+	 plr4HT5LnvR6P2N2TVjMfc48I25zuI9DWsUzBmYyw0W8Rke93LnYNq98cTbs4sKeTC
+	 Z58fZwD+/9arQW9OXapn6yn2RgcGQWZFl9/cJDNk2BbhAlz5t79m5yyqzlzzkn13lj
+	 zQSKMoDYrbLPw==
+Subject: Re: [PATCH net] net: skbuff: don't leave stale bytes in
+ skb_copy_and_csum_bits()
+From: netdev-bot+sashiko@kernel.org
+To: josef@toxicpanda.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com, kaiyuanz@google.com,
+ almasrymina@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Thu, 08 Oct 2026 17:59:17 +0000
+Message-ID: <179148235783.434549.14322374227477832817@kernel.org>
+In-Reply-To:
+ <20261007-b4-skb-copy-csum-stale-bytes-v1-1-adbbde033fb3@toxicpanda.com>
+References:
+ <20261007-b4-skb-copy-csum-stale-bytes-v1-1-adbbde033fb3@toxicpanda.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACnsD452cdqBN4PCg--.12700S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GrWfXFy3XF15WF18CF17KFg_yoWkGrg_Gr
-	n7Wr97Cw18GFsFyw47Cr4Sv393KFnruFWxWFsI9a98J393AF1UCr1DuwnxJ348CrWak3W5
-	Cr1DJF4UX342gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVAYjsxI4VWkKwAYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I
-	6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM2
-	8CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0
-	cI8IcVCY1x0267AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I
-	8E87Iv6xkF7I0E14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kI
-	c2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x07b52NNUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAAOA2rHpfV2UAAAsa
 
-mdio_mux_init() obtains a reference to the parent bus device_node with
-of_parse_phandle() when no mux_bus is passed in. All error paths release
-it through err_parent_bus, but the success path at the end of the
-function returns without calling of_node_put(). of_mdio_find_bus() only
-takes a reference to the embedded struct device, so the device_node
-reference is leaked for every multiplexer that probes successfully.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Release parent_bus_node before returning from the success path.
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-Fixes: 0ca2997d1452 ("netdev/of/phy: Add MDIO bus multiplexer support.")
-Assisted-by: DeepSeek-V4.1-Flash
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
----
- drivers/net/mdio/mdio-mux.c | 1 +
- 1 file changed, 1 insertion(+)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/drivers/net/mdio/mdio-mux.c b/drivers/net/mdio/mdio-mux.c
-index fe0e46bd7964..fe752120e27b 100644
---- a/drivers/net/mdio/mdio-mux.c
-+++ b/drivers/net/mdio/mdio-mux.c
-@@ -240,6 +240,7 @@ int mdio_mux_init(struct device *dev,
- 	}
- 	if (pb->children) {
- 		*mux_handle = pb;
-+		of_node_put(parent_bus_node);
- 		return 0;
- 	}
- 
+- [High] With this patch, skb_copy_and_csum_bits()
+  (net/core/skbuff.c:3636-3641) zero-fills the destination and returns 0…
+- [Low] The commit message misstates where the bug actually matters.
+
+--
+
+net: skbuff: don't leave stale bytes in skb_copy_and_csum_bits()
+
+When skb_copy_and_csum_bits() reaches unreadable frags, this patch zeroes
+the rest of the destination buffer before it returns 0. The goal is to
+stop stale memory from being sent on the wire. A negative len is left
+alone so it doesn't turn into a huge memset().
+
+> When skb_copy_and_csum_bits() reaches unreadable frags it returns 0
+> after copying only the linear part, and the rest of the caller's buffer
+> is left as it was.  The callers copy into a buffer that is about to go
+> out on the wire: an ICMP error quoting the offending packet, or a
+> driver's TX bounce buffer in skb_copy_and_csum_dev().  Neither buffer
+> is zeroed beforehand, so whatever was in memory there gets sent.
+
+[Severity: Low]
+Can the skb_copy_and_csum_dev() example actually see an unreadable skb?
+Its callers are 8139too, via-rhine, ep93xx, ec_bhf, ksz884x and sc92031.
+All of them leave dev->netmem_tx at NETMEM_TX_NONE, and
+validate_xmit_unreadable_skb() frees unreadable skbs for those devices
+before ndo_start_xmit runs:
+
+net/core/dev.c:validate_xmit_unreadable_skb() {
+    ...
+	if (dev->netmem_tx == NETMEM_TX_NONE)
+		goto out_free;
+    ...
+}
+
+The same seems to hold for sunvnet's vnet_skb_shape().
+
+Also, not every caller sends the buffer. xdr_skb_read_bits() in
+net/sunrpc/socklib.c copies into an RPC receive buffer.
+
+Some reachable paths aren't mentioned: the !sg && !csum branch of
+skb_segment(), and the fraggap copies in __ip_append_data() and
+__ip6_append_data(). The ICMP quoting path through icmp_glue_bits() and
+icmpv6_getfrag() is mentioned, but no concrete trigger is given.
+
+The change is in the shared helper, so the code covers all of these. This
+is tagged for stable, though. Could the commit message list the paths that
+can actually be reached?
+
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 4aea06d5167d1..41beaf625421a 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -3633,8 +3633,12 @@ __wsum skb_copy_and_csum_bits(const struct sk_buff *skb, int offset,
+>  		pos	= copy;
+>  	}
+>  
+> -	if (!skb_frags_readable(skb))
+> +	if (!skb_frags_readable(skb)) {
+> +		/* Don't hand the caller a buffer with stale bytes in it. */
+> +		if (len > 0)
+> +			memset(to, 0, len);
+>  		return 0;
+> +	}
+
+[Severity: High]
+If offset is at or past skb_headlen(skb), the header copy is skipped and
+csum stays 0. After this change the whole destination is zeros, and 0 is
+the correct partial checksum for an all-zero buffer.
+
+Can this lead to silent payload corruption when software GSO runs on a
+devmem TX skb? skb_segment() uses the return value directly in its
+!sg && !csum branch:
+
+net/core/skbuff.c:skb_segment() {
+    ...
+		if (!sg) {
+			if (!csum) {
+				if (!nskb->remcsum_offload)
+					nskb->ip_summed = CHECKSUM_NONE;
+				SKB_GSO_CB(nskb)->csum =
+					skb_copy_and_csum_bits(head_skb, offset,
+							       skb_put(nskb,
+								       len),
+							       len);
+				...
+			} else {
+				if (skb_copy_bits(head_skb, offset, skb_put(nskb, len), len))
+					goto err;
+			}
+    ...
+}
+
+tcp_gso_segment() then sets th->check via gso_make_checksum(skb,
+~th->check). That folds the TCP header and pseudo-header with
+partial = 0, so the zero-filled payload gets a valid checksum. Devmem
+payload lives entirely in net_iov frags, which means every segment's
+offset is past headlen.
+
+The path looks reachable, with CAP_NET_ADMIN needed to turn off TX
+offloads:
+
+- sk_setup_caps() ORs NETIF_F_SG | NETIF_F_HW_CSUM into sk_route_caps.
+  As a result, tcp_sendmsg_locked() still accepts a dmabuf_id after
+  something like "ethtool -K <dev> tx off".
+
+- validate_xmit_unreadable_skb() passes the skb for a NETMEM_TX_DMA
+  device with a matching binding, or for any NETMEM_TX_NO_DMA device
+  such as netkit.
+
+- skb_gso_segment() -> tcp_gso_segment() -> skb_segment() then runs with
+  sg and csum both false.
+
+Before this patch the payload was stale bytes with a payload checksum of
+0, so the receiver almost always dropped the segment. With the patch, the
+peer would accept the zeros as stream data.
+
+The commit message says:
+
+  The checksum usually won't match the data any more, so the receiver
+  will usually drop the packet
+
+On this path the checksum always matches. The csum branch next to it in
+skb_segment() fails on the same input, because skb_copy_bits() returns
+-EFAULT and the code does goto err.
+
+Should the !csum branch in skb_segment() fail the same way? Another option
+is for skb_copy_and_csum_bits() to return a checksum that can't match the
+zero-filled data.
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007-b4-skb-copy-csum-stale-bytes-v1-1-adbbde033fb3%40toxicpanda.com
