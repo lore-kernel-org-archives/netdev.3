@@ -1,70 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99DE1799F;
-	Thu,  8 Oct 2026 01:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC91A76BB;
+	Thu,  8 Oct 2026 01:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791422348; cv=none; b=dmAqfND0iXyD686D6TtluFIedJl5J5fdV4UZbx6o/EEwlUuu9AmKgA6ctUeFXl4cwFBIsOyEHgvn5uC43YyCeZIAbB5H1PNL49bVJF2PA0MTMVl78U+wWQ/L4TSRXUgsruqRFPqMLimPL8B6NLf9UITE4uKAkFJ6YG9FZ2ngg7I=
+	t=1791422552; cv=none; b=YHKXsFcFWPiavSwpzcDbyGi3v77ippAER0VlWbKrD568DyuNH0lNPqrUHheQvzffBIpFzt2DjSWZZPZcnzZ1BqCgWMKZwIergwnN9E0tpbH7iXlc3A0CGQOfnlCI82GvUKN3RLbABeveZTqd6wHDJdyAt6MQn1IzpaMi07yMQ98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791422348; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CYG3c2UjbE95l4TBPX6vkcO4SIczObGx6W0wr7tXhuDpQ6GMsH0oWLKhItmbXadMR305dbnf2BnyjovBvhH9knGH/KRlTQPvJzLzpa9/1A6OrKfal+cXfR4PrDszUWF+djl0Axr1YCctmnCMK7MC07iPrsvMsZqU4SDP65hjLhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfYkLoWH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791422552; c=relaxed/simple;
+	bh=Z4rYWcsgHrby/PHy224w/OfQG861Ta1yeGlMldVGXsQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TF3HdgvGw4MvNEwcY7rye9NFEZRjCVnvb1EjRjCft0tuEs7a03IbwGufsxpz1X/2I+cdMirrL5icEyIx8ArS5b9e11m56RhIdWpTk2S125LqB/Ij0LKp1upvXBAmSK+NZ5DzUhz+8lLQPwhSVZSskxFl56V3XKyHesctZ1XvLJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GjEvN/MT; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfYkLoWH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EDC1F000FF;
-	Thu,  8 Oct 2026 01:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791422347;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PfYkLoWHbh7IYdUSrkp82CBSFp5WqF0TxaLAxKfU9XDZJHnVYNJbwYxAMXge9D/i0
-	 m7MjgaqwJ/nIOEynINKU9TLpV/MJwnIXWnRg8fhiooU3y6Wo/tq7og7WwBYrVH6/8O
-	 KGAo5EZGNs6D/+YwwUWXqyonm9/K198qdkqCPzap8dWU6Me+BjklsScBoI3/YNnm14
-	 pFEyyt2a/gndPY1/kTBqQHsQapl7d0xQMWCYHjh229oHZNZyoozkm6KVUPYOmv8ECD
-	 s9f0kwnz7p5YjSxLsPJBhWV6lEfHQm5mKK01TMJu3Y7picah3G+Bz5egIwd9Q/dwHh
-	 NhzO/hucct7rw==
-From: netdev-bot+sinfo@kernel.org
-To: Kyle Zeng <kylebot@openai.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- outbounddisclosures@openai.com
-Subject: 
- Re: [PATCH net v2] netlink: avoid hashing the network namespace pointer
-Date: Thu, 08 Oct 2026 01:19:06 +0000
-Message-ID: <179142234633.2527009.9314976849845433713@kernel.org>
-In-Reply-To: <20261008011359.63727-2-kylebot@openai.com>
-References: <20261008011359.63727-2-kylebot@openai.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GjEvN/MT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=lj9GNbQKxCNlcoY/Wjpq3ci3xOdaubfTFoBdZ3Vpwoo=; b=GjEvN/MT1d9masEoDrFLRE5lRL
+	v3hlQ9Oe3iUF1NzpSchU21P3JKWDZI2udV4082w5RdHrlqcC/hiZKHLgdhXkcWrHH+vuAwXykGGjk
+	XqUOWE5bwG/bxUZl+w7MziHlPJpHSj1ug/7OGLoKTDvO32380uSWc7HBADyjWEEdQGno=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xEcps-009XZf-0n; Thu, 08 Oct 2026 03:22:16 +0200
+Date: Thu, 8 Oct 2026 03:22:16 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Cc: linusw@kernel.org, alsi@bang-olufsen.dk, olteanv@gmail.com,
+	kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, linux@armlinux.org.uk, luizluca@gmail.com,
+	maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 4/8] net: dsa: realtek: rtl8365mb: set RGMII
+ mode for family D
+Message-ID: <eec36c89-b6fd-405d-a951-aec0677b149d@lunn.ch>
+References: <84fc7483-b22d-45ea-a3b8-3285dc357265@yahoo.com>
+ <dd78e00b-c161-4915-a917-3b5694139621@yahoo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd78e00b-c161-4915-a917-3b5694139621@yahoo.com>
 
-Hi!
+> +#define RTL8365MB_D_REG_EXT_TXC_DLY				0x13f9
+> +#define   RTL8365MB_D_EXT1_RGMII_TX_DLY_MASK			GENMASK(5, 3)
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+The current code looks at tx-internal-delay-ps and
+rx-internal-delay-ps and programs some other registers. It is not
+clear to me that the code you are adding here is correct when combined
+with the current code. Please could you look at the delay
+configuration.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+    Andrew
