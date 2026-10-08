@@ -1,76 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25D03845A7
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD76B3845A7
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791424811; cv=none; b=W3NDVH8CiW6nyfWVcjbupWnerlficbcyspVxIVxqMwOPKsoSIgRCqEotapaXOR3juTmwZUDsywcDAsa20RBe0fRbZcGZ4FPL1M2wYvgZWTjCXwcO9HfOokVz+Xd7ExGDCCuZuI11lyg7G586NPh5FClKUPosPhCS14ucwXRN+ak=
+	t=1791424932; cv=none; b=qXsmGkTSNTTOCOhGg6+jeuHCQde7e2zcNbgMSExRc1e99DIUoHErZI9ap0UdPWPnmkVP0baDAD4NwRU2vu5/HpNjdIpWiKTjjrtBhfzaDwLHyFAejDzFmCPQCtmLbAYgsshDVNQwW/9ejOay4l7PX5gvhhnOjSU4JbJmvMnWVKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791424811; c=relaxed/simple;
-	bh=RszinOXxN5EvYBqaHou37vxwI9m6DIiYtae+QfnyZjI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=h1+mM9dlYJjemimrCelk2bsZvCDh655frAZRh7Clwt8w5jd4jRvOGHtBwzYiIoFxBVU1/yY/AnMmXWk0v5MYG5d17XzD0JWa5S5Uk0y/p6fkn0bJD0JebQx8TZuQAvRzorA1l9hgc7GDbeivCWE3IcJq8pJjyDi3fMpCEfOGkLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJPel+SJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791424932; c=relaxed/simple;
+	bh=o4tV/jHa98x9IH+4/YaR0GZiHLs86O4NUae0kGloM+E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QDlyOB60NC63mnTZ5a6nT1G1qvk5dhOxAsXHMRoERGFSQ7Q/b14Nw9uCfrueOIUPcdxaLXLkOhTMTfdZbyw8U0tnDvp03iyLWYD2G27SwDegmjtCkOcE3StgYTGieKxHYbMqUYcKQBNo2J5UaWs355G3R7CVKy8QtqrxUGmz71M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUzf0r5S; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJPel+SJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4506A1F000FF;
-	Thu,  8 Oct 2026 02:00:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUzf0r5S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7801F00893;
+	Thu,  8 Oct 2026 02:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791424810;
-	bh=42cO8tpMC4PEsFhzmXoN8QPC9IMFYcI5qAc0lVGmpFE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JJPel+SJRmfUyDrFtBLquKXtyK1QBuwMWfsOq16rYKb+AAOZo2kzB3cP9oJ0sMd57
-	 wGYep2Wz45x1CMXygJMn/eue3+gVEE2mRNKO75ZczO3d8jR+32PL/RHl/kLtWkfc0+
-	 CeUfiGeqh/ue30/UMw6356CoDNQI6QH+0Xzj+MFocEVzcrKJh5kvlP7vHUYM1MNR3J
-	 6uJjWlIuJufZaFU/MiVE2tKcCvLZ152HBMgBSoqoQdCHABpjjkZb9jV+ilJmOsvqNs
-	 dG2CDK7YQtQj/IyNsRK4i/AZS0CpVJFun7gtIvDI9QAjyfByoBGlHUF25zRxD9PJ1G
-	 dmvy9jbt4t5bA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A1873809A09;
-	Thu,  8 Oct 2026 02:00:10 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1791424931;
+	bh=LZrezZvifiNRn2BObm2c9lk4LR+ddAtvFosDxUywPtc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=MUzf0r5S4paFUl12LttiAemYuZIMvYvTYGfTUzmwtt2i+bWh3gnJ6KQRU6DQsEFtk
+	 JLfaeSZB3Gihv8IsdUjnMFia8a3Ryael22Krv33sH3Lsms888CumnIhzbsHkVPEMQR
+	 l53oLdQoUEFMS1IprQqSXnJscXjD3DXaHlII5x0/lqSEZPM58RGm9U96lutadi/Kr0
+	 X6nw338aWRI0vt51PP4peNqkBlyWz5TrJNv5gudpE5aZsyiQeobb5hiwkiIXJHBOeT
+	 LQdzvK63VtlsLFGJWdcZLGHDHsi8GuRDB89/Hb9HUYjfopJyiOtOqRdgHmVy8e/UXU
+	 RQdgFu4HiAIUQ==
+Date: Wed, 7 Oct 2026 19:02:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@kernel.org,
+ andrew+netdev@lunn.ch, netdev@vger.kernel.org, florian.bezdeka@siemens.com,
+ meng.ding@siemens.com, p@1g4.org, tkusters@aweta.nl,
+ jiayuan.chen@linux.dev, pulehui@huawei.com
+Subject: Re: [PATCH net 0/6][pull request] Intel Wired LAN Driver Updates
+ 2026-10-01 (igc, igb, e1000e)
+Message-ID: <20261007190210.388650bf@kernel.org>
+In-Reply-To: <20261001222443.3500206-1-anthony.l.nguyen@intel.com>
+References: <20261001222443.3500206-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] flow_dissector: avoid u16 truncation of hlen in
- bpf_flow_dissect()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179142480877.3768853.7937189397834700341.git-patchwork-notify@kernel.org>
-Date: Thu, 08 Oct 2026 02:00:08 +0000
-References: <20261007045616.445596-1-edumazet@kernel.org>
-In-Reply-To: <20261007045616.445596-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- willemb@google.com, horms@kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed,  7 Oct 2026 06:56:15 +0200 you wrote:
-> bpf_flow_dissect() sanitizes the offsets returned by the BPF program
-> with clamp_t(u16, ..., hlen).
+On Thu,  1 Oct 2026 15:24:33 -0700 Tony Nguyen wrote:
+> For igc:
+> Ding Meng fixes Rx hardware timestamp when NET_RX_BUSY_POLL is disabled
+> by populating the skb hardware timestamp from the NIC's Rx timestamp.
 > 
-> If hlen is bigger than 65535, the upper bound is truncated before
-> the comparison. For instance, with hlen == 65536, both nhoff and
-> thoff are forced to zero, even if the program returned sane values.
+> Paul Moses limits timestamp-header stripping to the first buffer of
+> each packet, preventing continuation-buffer data from being truncated.
 > 
-> [...]
+> For igb:
+> Tjerk Kusters does the same limiting of timestamp-header stripping for
+> the igb driver.
 
-Here is the summary with links:
-  - [net] flow_dissector: avoid u16 truncation of hlen in bpf_flow_dissect()
-    https://git.kernel.org/netdev/net/c/f202578efc73
+these 3 need to be reworked
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> For e1000e:
+> Jiayuan Chen prevents MSI-X IRQ leaks in IRQ error path.
+> 
+> Pu Lehui prevents out-of-bounds MMIO access by rejecting devices whose
+> BAR0 is smaller than 64 KB.
 
+applied to net-next
 
+> Tony adds Lenovo ThinkPad P14s to disable list for K1 to avoid reported
+> issues with K1 re-enablement.
+
+applied to net
