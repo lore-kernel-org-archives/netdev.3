@@ -1,40 +1,40 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F3B451991
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 08:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8985647729B;
+	Thu,  8 Oct 2026 08:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791448339; cv=none; b=S/Y85t+FaTaNMBlF2npqhRjvOoTXTmRf8x3T38WNzx+RBazd5hW+kTPSIWpz7uGAiN0nIVxFlWQrh+fZYgSk6/rTKHLEtR2ErCb03l0/Q4ulPzm9QBk6WCeKvVGMk6ivJ1KGdLkt8czR4k/1EgILb9wChcczYoN/HL2W0Njdztg=
+	t=1791448354; cv=none; b=EcJv6Wl8G30csaNhdkH4rXX+s3PW+/zXVgUMOdq+GiV3bRhG1tAGpxsvq0cZQLJe2jJDuWtKMdXQd9vUCPJ11aA27RJwSkv6DU1Ytac4khC8/gkb1KnhYE6qwN4//UBw0QnNqJR0ZCc9AC73sCGk70FmBhpOtChscfrqx419tiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791448339; c=relaxed/simple;
-	bh=mKPxpFXIIF8Czy3FxcgFWg1HjY+yIVit76orNJybYUg=;
+	s=arc-20240116; t=1791448354; c=relaxed/simple;
+	bh=yv8u3V2e4v07+0aEO6mjgnTL9YesGuzI+E2aUgXhcG4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TZ+w6TKfrk7kzYC6JVZUsEq209opdLjvtmMhT123pAXVhlInJ2CiwHMrTvjSemQDhUb/QeCBB7yoXvNsDxEBiSf+yxDzWcpf3ST/mxtR/m9K7AGZ0wqF/7bgQ33FucuVI9i/hZ9C5SZuW6iC7VyAg0qwFuH4Q4QT8OSd/AoUSe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yyHoI/ox; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:Content-Type; b=dFLi5dMJuvvwul167oZAWYOXsMWGSjNAQjXxUBJSbPQJoEL6O7uDdUhsCq8c/cJpqsU14JV3jIOr2oS/CWb5ETB4tSdIXkxM9fWe+uepz8+2v1Ev9DybrnVLipqHbiPaBkjy2v9z97FM19JucQSu+okuMOmWGEKdbdMC+XGra3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bgLdc+Rd; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yyHoI/ox"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bgLdc+Rd"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B2F391A1185;
-	Thu,  8 Oct 2026 08:32:14 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B9E834E41181;
+	Thu,  8 Oct 2026 08:32:30 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8189360341;
-	Thu,  8 Oct 2026 08:32:14 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A1E6E10333850;
-	Thu,  8 Oct 2026 10:32:06 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8DFD260341;
+	Thu,  8 Oct 2026 08:32:30 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9B1210333853;
+	Thu,  8 Oct 2026 10:32:27 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791448333; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1791448349; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=DKhOUStc32yyJJh2yPmsAjtT0L8xYwJmDHCV2AfoKVk=;
-	b=yyHoI/oxSfdhJNEDv3/CTjikWXWJLcVViQRDKXaycfcuAlZd406+P127DWOfiugd/D3kPT
-	es+l7ZPrDzzrxVzEGCjdfBHqn7srcDW5pvXitk5X0S/rgaiyKfa/KIOglKufZH+/7Jcr/1
-	iVlNRIJpJJSsJfTI9eA979l45dSzZr5V3SYh7GgA44kO6BrtmjUaBJaLQ+CW6/DU1jaS8l
-	4midyiJUTxJjAnIt/t7/7RoKpo8VHigd7tpdij5H1ztJ9DZHdjDjqdsI5py7gbVE8Tf4eF
-	2MUU0LmXwD+78xuwBWZ2abmo8JXhrmrhTcsfEXOgsygxxCmHje1udtX2G7+HxA==
-Message-ID: <85184f37-32d8-42ce-90db-46cde769ecf5@bootlin.com>
-Date: Thu, 8 Oct 2026 10:32:05 +0200
+	bh=gl41XFpDZAzGPhLc87UB5iDf8jYnryqIe5ze7K2TtvY=;
+	b=bgLdc+RdLIMpPCmcAMjt4JHeAr8+8qx7Um7aIiL/oThFWxQnN5GPPrD2PeDNaT9hzuarQN
+	hbPEWNDjsVMBWaPPzAuAFA9ov3vppBDMjmIey12+FWpjffAp6lvS3E3g0Tq/YlqUF2MeHQ
+	PEFd2k1zSXlO/EhoseFlKq/venzV/lLoKls75WccPshWTN95UA0lJDIZmZLbyW2oTkUeK0
+	PagJub7wYjjSnaV05Y3VHrXFT3jmwQBAfScKSUvayYolnVOAuXmaim5u1A8ZwSDqWcCwy6
+	o8HVUsSe+EbqVwz3NHQ6ylWyO2FYRKFcHpHjmYIWBQpPgKzWZrFm9IORVcJZJA==
+Message-ID: <c4d1c8e6-ed86-416b-94af-c3d8f1075253@bootlin.com>
+Date: Thu, 8 Oct 2026 10:32:27 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,22 +42,20 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 09/10] net: ti: icssm-prueth: Move setting of netops
- to fix crash
+Subject: Re: [PATCH net 10/10] microchip: lan865x: move setting of netops to
+ fix crash
 To: David Yang <mmyangfl@gmail.com>, netdev@vger.kernel.org
-Cc: MD Danish Anwar <danishanwar@ti.com>, Parvathi Pudi
- <parvathi@couthit.com>, Roger Quadros <rogerq@kernel.org>,
- Mohan Reddy Putluru <pmohan@couthit.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Jacob Keller <jacob.e.keller@intel.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Nicolai Buchwitz <nb@tipi-net.de>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>, Jacob Keller <jacob.e.keller@intel.com>,
+ linux-kernel@vger.kernel.org
 References: <20261008022656.3592191-1-mmyangfl@gmail.com>
- <20261008022656.3592191-10-mmyangfl@gmail.com>
+ <20261008022656.3592191-11-mmyangfl@gmail.com>
 Content-Language: en-US
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261008022656.3592191-10-mmyangfl@gmail.com>
+In-Reply-To: <20261008022656.3592191-11-mmyangfl@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
@@ -65,11 +63,12 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 
 On 10/8/26 04:26, David Yang wrote:
-> icssm_prueth_netdev_init() calls of_phy_get_and_connect() before
-> ndev->netdev_ops is assigned. phy_attach_direct() ->
-> phy_link_topo_add_phy() reads dev->netdev_ops through
-> netdev_need_ops_lock() since the commit in question, so probing crashes
-> with a NULL pointer dereference when CONFIG_NET_SHAPER is enabled.
+> lan865x_probe() assigns netdev_ops only after oa_tc6_init(), which
+> connects the internal MAC-PHY through phy_connect_direct().
+> phy_attach_direct() -> phy_link_topo_add_phy() reads dev->netdev_ops
+> through netdev_need_ops_lock() since the commit in question, so probing
+> crashes with a NULL pointer dereference when CONFIG_NET_SHAPER is
+> enabled.
 > 
 > Assign netdev_ops before the PHY attach, as was done for emac in commit
 > 7c9f391ec89c ("net: emac: move setting of netops to fix crash").
@@ -84,28 +83,28 @@ Thanks,
 Maxime
 
 > ---
->  drivers/net/ethernet/ti/icssm/icssm_prueth.c | 3 ++-
+>  drivers/net/ethernet/microchip/lan865x/lan865x.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/ethernet/ti/icssm/icssm_prueth.c b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-> index b7e94244355a..b42c98e861e0 100644
-> --- a/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-> +++ b/drivers/net/ethernet/ti/icssm/icssm_prueth.c
-> @@ -1563,6 +1563,8 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
->  	}
->  	ether_addr_copy(emac->mac_addr, ndev->dev_addr);
+> diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+> index 26a2761332a5..633d00857774 100644
+> --- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
+> +++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+> @@ -346,6 +346,8 @@ static int lan865x_probe(struct spi_device *spi)
+>  	spi_set_drvdata(spi, priv);
+>  	INIT_WORK(&priv->multicast_work, lan865x_multicast_work_handler);
 >  
-> +	ndev->netdev_ops = &emac_netdev_ops;
+> +	netdev->netdev_ops = &lan865x_netdev_ops;
 > +
->  	/* connect PHY */
->  	emac->phydev = of_phy_get_and_connect(ndev, eth_node,
->  					      icssm_emac_adjust_link);
-> @@ -1590,7 +1592,6 @@ static int icssm_prueth_netdev_init(struct prueth *prueth,
->  	}
+>  	priv->tc6 = oa_tc6_init(spi, netdev, NULL);
+>  	if (!priv->tc6) {
+>  		ret = -ENODEV;
+> @@ -397,7 +399,6 @@ static int lan865x_probe(struct spi_device *spi)
 >  
->  	ndev->dev.of_node = eth_node;
-> -	ndev->netdev_ops = &emac_netdev_ops;
+>  	netdev->if_port = IF_PORT_10BASET;
+>  	netdev->irq = spi->irq;
+> -	netdev->netdev_ops = &lan865x_netdev_ops;
+>  	netdev->ethtool_ops = &lan865x_ethtool_ops;
 >  
->  	netif_napi_add(ndev, &emac->napi, icssm_emac_napi_poll);
->  
+>  	ret = register_netdev(netdev);
 
