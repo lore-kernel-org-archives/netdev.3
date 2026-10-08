@@ -1,85 +1,201 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D049BD80
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40D7495510;
+	Thu,  8 Oct 2026 12:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791463279; cv=none; b=tOkTV34WtC0MCZsdDHeh7144cB8c203dkmiOJn+tEcx+82LJGlC9tQ9YKPDcWcaapr8cifUlUfQcLc/hs3syygMGcrS7Q8U6yU0XT2A6hudfaO2aC+TaK9WT5rhbN7fxQicC8s5IwaCY6b8yfqJJvfAI1q9MytEEg3PP0q3Qmb0=
+	t=1791463288; cv=none; b=q1CYRCEAzNwcCX+pG/R7ERskTBCpauem1Uw5jI/9DIM6Hu0bZD6Dki4+RKFebYz/iYlTfogJOsvzNcBHyL/Pg29479R/MTQ1BYsOFUbTpg0d9fz7JMSyqwceHaKHJ3aboIvvewaziT2KN9aF6m6r8EwG+XUwKmFZyfK/R5w3yrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791463279; c=relaxed/simple;
-	bh=qJEBQGC9eCj5KtCLTDsudR/tROhYukVxbLHo2N8daD4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dWco3URtt+Xw6IF8kj6Wfh5qjYHzqN0bgXvP+A7hn9sG2wg70diaJkpdwXxClVnz69X24pnyazWZuvnSd2AL04UflYp+LV4lRzhdL/bGQwZII+KHE3iUY5/+m7u44q7nYWCj8TjQ5S2U3acx3RslIcU/pj3TzV/AD5azsd7v0ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WiUJIL4p; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791463288; c=relaxed/simple;
+	bh=cvouQ6O6J76G08fzoqFWkC5wVChJfGk9TzWCMh6SRoE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JMS1Ocb8H9OlUVY0yNb64/Kb5gBMnFWp/LNRRUipF/uu6UqvvlT7o9uyoGcGLhtyisHdNkaSugPgJ8Zpuyx9j4skc0EB5VnBB8bde/W6dIDVETBmMs+sTFXfRibJ7oth5VJ9pHNJOPHcWdkiFaMTBRrMOtGUWVRckNxyavbaDug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=fw8v4Qyk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WiUJIL4p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283D61F0089F
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 12:41:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791463278;
-	bh=qJEBQGC9eCj5KtCLTDsudR/tROhYukVxbLHo2N8daD4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=WiUJIL4pYbppRkg63ymBFGg3AkB9NUISE0GBOGJja4hGsPWgbKXDuF8eLf4xQ+Kax
-	 tNQVKcTILCZ1u3+O09zy6tDGxiKBdChYw6sWmR6xJnIjmb28bw97fX+BfAuvxsvokm
-	 wVsc/+TAjvLiz61jNnrvM1CWTlPZ1npl7lUXH7Eup02iImFh0wm+rYUgNLBkKmwIqG
-	 sAMucqdIMeC/kM3fiqKoCd6guRLbjDk5YRvzppbEXkx0KFC171cngWyKEnGy94kqaZ
-	 CY87w9jPt/9Qifo1EsJ1v+9hQGqQlEetlY8ZGBYTKxDkPua7wpL2uZt8uxmueA2oDj
-	 ubRTlB9kx95bA==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-455ca262ccbso2045340fac.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 05:41:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzXr7/RQT54akT2WSAq1vigVxUs/mmLp0tt4dOlqLv/uHA7cE2fpHfrB7m5CVv1fClVWwXiGyw=@vger.kernel.org
-X-Gm-Message-State: AFuF++k5T0KvzmIfHHRnaAWTg55qwO7l6hUG9pjbh//3wvv+2SOuoR2j
-	8pOoU5Y3U2imZK0FfOhAE+jT1emzMui8W5KV+THtxqJDyjIFP5SCqPf0Nl9IxcdixjggEwEbjR+
-	3fXvIQoaJvaJanGkOwMUgYk5brAQxQvM=
-X-Received: by 2002:a05:6870:160d:b0:49d:f5ef:5d3c with SMTP id
- 586e51a60fabf-4a25968a45emr4362055fac.55.1791463277409; Thu, 08 Oct 2026
- 05:41:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fw8v4Qyk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254351F000FF;
+	Thu,  8 Oct 2026 12:41:25 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key, unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=fw8v4Qyk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1791463283;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Ty+NSzztoWZlSPZSksR8rahvfmn17KCWrjnEiYBF2m4=;
+	b=fw8v4QykQDjG9xgzttrNQaHVThpeDmZpPX8GMHvm+33I7AY0JycRACvgjRAcpFHnjFyXgz
+	JGt8JPecE0gOT2fUo1u5mmTiwDf8KNvGT4sBwDBq5un62gS753d2bm1cAgtSoLaenYgw0C
+	bLpJ51IPpexQVVL1tIv1YXjxedWt2l4=
+Received: 
+	by mail.zx2c4.com (OpenSMTPD) with ESMTPSA id 623b9651 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Thu, 8 Oct 2026 12:41:23 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	pavel@kernel.org,
+	willemdebruijn.kernel@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-pm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+	stable@vger.kernel.org,
+	=?UTF-8?q?J=C3=A9r=C3=A9my=20Jean?= <jeremy.jean@oss.cyber.gouv.fr>
+Subject: [PATCH net] udp_tunnel: drop packets when hibernating
+Date: Thu,  8 Oct 2026 14:40:21 +0200
+Message-ID: <20261008124106.665014-1-Jason@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008100423.1256884-1-theodorlarionov@gmail.com>
- <CAL4WiiqDffWyo7+gbffB2PYuKAbjboK7D=JJD+z=5J5MX=9Y3Q@mail.gmail.com> <CAEZyMPCUQvQ43P5sGTC_moe5boDirjcBS0E+-eTQ9dBBW8w_Qw@mail.gmail.com>
-In-Reply-To: <CAEZyMPCUQvQ43P5sGTC_moe5boDirjcBS0E+-eTQ9dBBW8w_Qw@mail.gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Thu, 8 Oct 2026 14:41:06 +0200
-X-Gmail-Original-Message-ID: <CAL4WiiqbKPQvO+vRvKMbKpEM-MsyVcu6YenwEoDRCGMUMM1hJw@mail.gmail.com>
-X-Gm-Features: AclHuK9cSs47oI4uRMMfI4Rfa8I4OFoaAiNGanp6V6VnBtMS7b6zF_PYhJWXLpE
-Message-ID: <CAL4WiiqbKPQvO+vRvKMbKpEM-MsyVcu6YenwEoDRCGMUMM1hJw@mail.gmail.com>
-Subject: Re: [PATCH net] net: use the full socket in sk_mc_loop()
-To: Theodor Arsenij Larionov-Trichkine <theodorlarionov@gmail.com>
-Cc: Ido Schimmel <idosch@nvidia.com>, kuniyu@google.com, pabeni@redhat.com, 
-	willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Le jeu. 8 oct. 2026 =C3=A0 13:54, Theodor Arsenij Larionov-Trichkine
-<theodorlarionov@gmail.com> a =C3=A9crit :
->
-> > (Was it a public syzbot report ?)
->
-> No, this one is from a syzkaller-based fuzzer extended to target nftables=
-.
-> The fuzzer reached it through an nft "dup" rule in prerouting, which
-> re-injects the SYN over loopback with its dst already attached, so the
-> martian check never sees the multicast source.
->
-> A raw IP_HDRINCL socket sending a SYN from 224.0.0.1 to an address on
-> a dummy device also reaches it, without nft. That is the repro in v2.
->
-> v2 with your inet_csk_route_req() check, the changelog, the trimmed
-> splat and the repro is here:
-> https://lore.kernel.org/netdev/20261008114942.1376889-1-theodorlarionov@g=
-mail.com/
->
-> Thanks for the review,
-> Theodor
+The kernel's various networking applications keep churning away after
+userspace is frozen during hibernation, even as a memory snapshot is
+being made. This can lead many network applications to an inconsistent
+state, replaying packets and cryptographic state changes. For example,
+on wireguard, there's the possibility of this sequence:
 
-OK, but given the current flood of patches, we ask for a ~24 hours
-delay between each version.
+1) hibernating begins
+2) handshake state cleared
+3) keypairs cleared
+4) new handshake round trip completes
+5) machine memory is snapshotted
+6) packet is sent using new keypair
+7) machine is restored to state (5)
+8) packet is sent using new keypair
 
-Note that the Fixes: tag could have been refined a bit, no big deal.
+The idea is to prevent (6) from happening, especially if (6) and (8)
+contain different data, but the same key and nonce. Presumably the same
+issue applies to other users of udp_tunnel too.
+
+Fix this by just dropping sending and receiving packets during the
+hibernation sequence.
+
+Cc: stable@vger.kernel.org
+Reported-by: Jérémy Jean <jeremy.jean@oss.cyber.gouv.fr>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+I wrote this patch in response to the issue Jérémy raised, but I'm not
+actually super familiar with all of the hibernation mechanics. If
+somebody working on PM would think about this matter too, I'd be much
+obliged.
+
+ include/linux/freezer.h    | 1 +
+ net/ipv4/udp.c             | 5 +++++
+ net/ipv4/udp_tunnel_core.c | 5 +++++
+ net/ipv6/ip6_udp_tunnel.c  | 5 +++++
+ net/ipv6/udp.c             | 5 +++++
+ 5 files changed, 21 insertions(+)
+
+diff --git a/include/linux/freezer.h b/include/linux/freezer.h
+index 0a8c6c4d1a82..21d708dc4092 100644
+--- a/include/linux/freezer.h
++++ b/include/linux/freezer.h
+@@ -76,6 +76,7 @@ static inline bool cgroup1_freezing(struct task_struct *task)
+ #endif /* !CONFIG_CGROUP_FREEZER */
+ 
+ #else /* !CONFIG_FREEZER */
++#define pm_freezing (false)
+ static inline bool frozen(struct task_struct *p) { return false; }
+ static inline bool freezing(struct task_struct *p) { return false; }
+ static inline void __thaw_task(struct task_struct *t) {}
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index b090bd1f59e8..5021932ad9f1 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -95,6 +95,7 @@
+ #include <linux/netdevice.h>
+ #include <linux/slab.h>
+ #include <linux/sock_diag.h>
++#include <linux/freezer.h>
+ #include <net/tcp_states.h>
+ #include <linux/skbuff.h>
+ #include <linux/proc_fs.h>
+@@ -2425,6 +2426,10 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 		if (encap_rcv) {
+ 			int ret;
+ 
++			/* Drop if we're hibernating */
++			if (unlikely(pm_freezing))
++				goto drop;
++
+ 			/* Verify checksum before giving to encap */
+ 			if (udp_lib_checksum_complete(skb))
+ 				goto csum_error;
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index a128fe85620d..e3666ed96af7 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -3,6 +3,7 @@
+ #include <linux/errno.h>
+ #include <linux/socket.h>
+ #include <linux/kernel.h>
++#include <linux/freezer.h>
+ #include <net/dst_metadata.h>
+ #include <net/flow.h>
+ #include <net/udp.h>
+@@ -172,6 +173,10 @@ void udp_tunnel_xmit_skb(struct rtable *rt, struct sock *sk, struct sk_buff *skb
+ {
+ 	struct udphdr *uh;
+ 
++	/* Drop if we're hibernating */
++	if (unlikely(pm_freezing))
++		return;
++
+ 	__skb_push(skb, sizeof(*uh));
+ 	skb_reset_transport_header(skb);
+ 	uh = udp_hdr(skb);
+diff --git a/net/ipv6/ip6_udp_tunnel.c b/net/ipv6/ip6_udp_tunnel.c
+index 32525a051a6f..4a31e8cc8887 100644
+--- a/net/ipv6/ip6_udp_tunnel.c
++++ b/net/ipv6/ip6_udp_tunnel.c
+@@ -7,6 +7,7 @@
+ #include <linux/types.h>
+ #include <linux/kernel.h>
+ #include <linux/in6.h>
++#include <linux/freezer.h>
+ #include <net/udp.h>
+ #include <net/udp_tunnel.h>
+ #include <net/net_namespace.h>
+@@ -86,6 +87,10 @@ void udp_tunnel6_xmit_skb(struct dst_entry *dst, struct sock *sk,
+ 	struct udphdr *uh;
+ 	struct ipv6hdr *ip6h;
+ 
++	/* Drop if we're hibernating */
++	if (unlikely(pm_freezing))
++		return;
++
+ 	__skb_push(skb, sizeof(*uh));
+ 	skb_reset_transport_header(skb);
+ 	uh = udp_hdr(skb);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 93478d1ad576..db9c2050887d 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -34,6 +34,7 @@
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+ #include <linux/indirect_call_wrapper.h>
++#include <linux/freezer.h>
+ #include <trace/events/udp.h>
+ 
+ #include <net/addrconf.h>
+@@ -848,6 +849,10 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 		if (encap_rcv) {
+ 			int ret;
+ 
++			/* Drop if we're hibernating */
++			if (unlikely(pm_freezing))
++				goto drop;
++
+ 			/* Verify checksum before giving to encap */
+ 			if (udp_lib_checksum_complete(skb))
+ 				goto csum_error;
+-- 
+2.56.0
+
