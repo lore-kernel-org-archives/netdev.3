@@ -1,82 +1,35 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768543A3E97
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 02:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8084F3A5452;
+	Thu,  8 Oct 2026 02:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791426565; cv=none; b=lMpQwGXPiC5ZJNsng2Yv+c1ZsKowjsRtEkf2nMoJ7gfwiG78P2vPe5/a4YHRd3Cpox+Zb+BqQD+2IjZVIJPZ9GqeyUeEXjcze+dt18KQ2OcXA+FIwZMWKIdaBRac+FRv4QTUcIudDQCEtET3K6a8Mz5iIVP+wGm8KaRlhICrRi0=
+	t=1791426611; cv=none; b=FqlUM7cTOoldGfmQT34oEN1TDG4ACrlK44C9mGVe+1Q0HP36h2V/dWwOtt2Ai4OjqKOfmRpix4VgDF13bpaczTUuwzwQe+61j6AS8zyPVA3fHgp13MJ49tN9C02HoNlbViDVKjCD5Yi90oES5sIboJXynjAX5FIdXkuj9zsBf14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791426565; c=relaxed/simple;
-	bh=8g5sVw7LgI28H1lF/6IkIvLtR3BzqkWWOa/ZXwuoDos=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBL2P6b1wZovkN5J0VUTTjdBvTKdrCJjufsp4y3S8ZHoqqjBM4KCukQaC05Xt60b+OO/gj/eZCjN8vK5KUQEuOgdOYZde1xXGRePp/uiAamm5Q9XfFGNpLsW0yzrUP+hWL6tsFgF8gjd89RwzoLr0wvWtGiamW4rCuXyU5ePbSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZqIXa+t; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791426611; c=relaxed/simple;
+	bh=I27rRhn58fI39cqw79T1wFeJaXzTECV2dnSjLIcGZIc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hGYILX9WQ9ypvUj2YyZ5IqTbS8roIDzWAQ5FVuTfjE7MeoY1nj0h3+FLqDaGRg2Yni32g3C0OuqgGQBysTUS8eoKisaIxmaC2iEfs9X1fIBKsycYDxZ/7/SfPZv4bsH4BoyrEAMqlzDe1Z7pXU1MPvIArKnPaNv8tl5lf9Wj4vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z/wQv5Uf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZqIXa+t"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2e81738d24eso308505ad.1
-        for <netdev@vger.kernel.org>; Wed, 07 Oct 2026 19:29:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791426564; x=1792031364; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ix0mpplBwU1S+BIW8OSYHid9teBN6VPfjdXj8f3U0XI=;
-        b=QZqIXa+tqg05b4O/exwhqqu816h2ZCXRW0nxbqTxDYJAkIjjJllZ1Nsgj4ghjN/vS4
-         wGtLhpgB4iTM0nbSSRYwPhPz9fUvkvU9/ftF73M6ZlKBo5VOwy3gYgOxlcr1dV+9FrdP
-         1TfHUQ6D6axiyMEMTak7MlCUPAt8/ZV1S5/ZcHU6neNcK6eXaFll/E7mOQAHr0tqucow
-         jVls1lMG1m/nFBITiVSucwdgvC48WrkZljOnjGvCIk02UKBgBvUPfI0EVoq6ocDA7xRl
-         YUb0qdCnBiA9fdENhFLkxyXumLz9QlCsEZjufxqm9FbaGI74vWlQp8PDFDkja1NK/1L0
-         CM6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791426564; x=1792031364;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ix0mpplBwU1S+BIW8OSYHid9teBN6VPfjdXj8f3U0XI=;
-        b=Zkfu1XRFWRpfzBsZw4aOtZP7DEH1Pz92Pu8dES1vvsahrZJzK0JFZPFmebNr2BaTwC
-         NSvw7xfmguzCkR/fTOFQfreQjS5Umlyp0KU6B+kyKnKZDORLJ4i6eRZgFb/AJvZ69ueb
-         kQesUFeZ7IXN2tquyJ/3HZUzIiQPXA7Cg68lyVuLr55Ju2000QF9n0kpOgJgBlvWrjv3
-         Uh3Zq8fmzcb3JKvEHii6dYvfyQ0W+DcYAu/CvO3+5R99EswUsheR9sNgeQMTmMnzHhMG
-         S3p+sPZn9LCcO+k5jnebW9N8M0f8eKVYr5Sg6S3SwLB30T3HjxQnmEn44vQ9KAVOcsGZ
-         tuEQ==
-X-Gm-Message-State: AFq9FYKfmZJ/EVVkpdtf+cEvMqhBZqAdJAjaJYctIIzNF5xgyWSZ8u7h
-	+E4pSREKChpETlfAL5NPJrM8EdXINZT7669/zREm/YXkLDRSfw/i711BdxNWvIZJ
-X-Gm-Gg: AYBFou2yPYyQAVZS4y0x4mMf7bBsG5yZP8jkVc/kFulKsambzyT9mKRt9fff6Spz2Ca
-	oIS915M6X7bfWjH+HI6F4bLrrA4ypJI9UQlkGMkeiF5U6wZBtKl4puEo4IQM53AYdAfeoMtdMC2
-	A2r50irMhTlwxDDoBQA0x5Da/KPcfdPHpQdbGmdU2tbp1trHoJA1xUiuBEsShWzEZpp3kyWJEI8
-	Y394NN1p/K7MdFDrhcZm0IiSaQveZvQjvzom+up44HfVmr1SZcis+51Gq7s6U0RbdnPc+APg+1f
-	s2EOgjNF9gbd3EC8bumNUofIcapk86oefYSCItaP0JjZmN9bEU/X/Q6MxsbncwX89Gyx6+sbmpy
-	Aja7MHWuERU8+VtVQqBp3LKqmMkZaUXQcrYkoMdFpwZTdZ49FjyqWFPuLNWsHfVk1YCQPpaF8g1
-	cGy8EEJSmXD34H9rDiw8897DapUcqRDippyU5dFgfZXT13vHDL2CgYPFmQG4g4hxjCS9+xsggSy
-	zr7y100j/aIeAS9w74IC+NamA==
-X-Received: by 2002:a17:903:2984:b0:2e7:4a2f:68e6 with SMTP id d9443c01a7336-2e74a2f695cmr13802655ad.39.1791426563684;
-        Wed, 07 Oct 2026 19:29:23 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:661c:1246::1d2:d1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e60482cab0sm18045865ad.50.2026.10.07.19.29.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Oct 2026 19:29:23 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 10/10] microchip: lan865x: move setting of netops to fix crash
-Date: Thu,  8 Oct 2026 10:26:52 +0800
-Message-ID: <20261008022656.3592191-11-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261008022656.3592191-1-mmyangfl@gmail.com>
-References: <20261008022656.3592191-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z/wQv5Uf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3FC1F000FF;
+	Thu,  8 Oct 2026 02:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791426608;
+	bh=9k4ZBxh+JBZUg2t0YivBqanLOHiRzWKja7+psTdWYPU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Z/wQv5Ufg4mYaKZShUpC82KKERMtj3z2cfgdba/MV/vepqZFFCmWVxBSCaV+rZNu3
+	 Sl9RIgftwTRWXcoqYstPHL10srJNLrCzN7a2JlS5p0Q8x83sYZDsPuTZflc3pwJisO
+	 T9bRY1GC9R6Yi4i0FCSESfgptP+VRVAnHFDBLIhIYR8m59wyHGnQQnKZOSw/U7FyO+
+	 L/MYZ4js5IDj0djvxZSXKo+SgHh/mBesOZtQyMe06DQyEufwyWletSZhzCL3mN9AU8
+	 JeqwJtlS6akkzlyhtDmAiztwXOGqjkB63cR9+X/rQnzFbW+osu0sve0Gzx7IGIHuRO
+	 CVmminJVCPqIg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B46C53809A09;
+	Thu,  8 Oct 2026 02:30:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,44 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] cipso: adjust cached option offsets when removing
+ CIPSO
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179142660756.3776717.7354784609355599036.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Oct 2026 02:30:07 +0000
+References: <20261006035108.3101440-1-4ncienth@gmail.com>
+In-Reply-To: <20261006035108.3101440-1-4ncienth@gmail.com>
+To: Daehyeon Ko <4ncienth@gmail.com>
+Cc: paul@paul-moore.com, omosnacek@gmail.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-lan865x_probe() assigns netdev_ops only after oa_tc6_init(), which
-connects the internal MAC-PHY through phy_connect_direct().
-phy_attach_direct() -> phy_link_topo_add_phy() reads dev->netdev_ops
-through netdev_need_ops_lock() since the commit in question, so probing
-crashes with a NULL pointer dereference when CONFIG_NET_SHAPER is
-enabled.
+Hello:
 
-Assign netdev_ops before the PHY attach, as was done for emac in commit
-7c9f391ec89c ("net: emac: move setting of netops to fix crash").
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Fixes: ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() locking assertion")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/ethernet/microchip/lan865x/lan865x.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On Tue,  6 Oct 2026 12:51:08 +0900 you wrote:
+> cipso_v4_skbuff_delattr() removes the CIPSO bytes but does not adjust
+> cached offsets for options that follow them.
+> 
+> For example, with a valid 10-byte CIPSO option followed by a seven-byte
+> RR option, parsing records rr at offset 30.  Removing CIPSO moves RR to
+> offset 20, while the cached offset remains 30.  Consumers such as
+> ip_forward_options() and __ip_options_echo() then access the wrong bytes;
+> the latter may interpret packet data as the option length and copy it into
+> fixed-size option storage.
+> 
+> [...]
 
-diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-index 26a2761332a5..633d00857774 100644
---- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
-+++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
-@@ -346,6 +346,8 @@ static int lan865x_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, priv);
- 	INIT_WORK(&priv->multicast_work, lan865x_multicast_work_handler);
- 
-+	netdev->netdev_ops = &lan865x_netdev_ops;
-+
- 	priv->tc6 = oa_tc6_init(spi, netdev, NULL);
- 	if (!priv->tc6) {
- 		ret = -ENODEV;
-@@ -397,7 +399,6 @@ static int lan865x_probe(struct spi_device *spi)
- 
- 	netdev->if_port = IF_PORT_10BASET;
- 	netdev->irq = spi->irq;
--	netdev->netdev_ops = &lan865x_netdev_ops;
- 	netdev->ethtool_ops = &lan865x_ethtool_ops;
- 
- 	ret = register_netdev(netdev);
+Here is the summary with links:
+  - [net,v2] cipso: adjust cached option offsets when removing CIPSO
+    https://git.kernel.org/netdev/net/c/6d25ffca055a
+
+You are awesome, thank you!
 -- 
-2.53.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
