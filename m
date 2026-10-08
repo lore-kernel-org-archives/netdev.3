@@ -1,207 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF3D34CCE
-	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0533CB2F8
+	for <netdev@vger.kernel.org>; Thu,  8 Oct 2026 19:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791487934; cv=none; b=P1xNXFdKuIF/RMfC49PT+eoK06jA1jT+XiRatVSFTBOfw4EPZGC8UtN5XjoRWgH6DLnKFfvvfzmrm+Awe7QiHxL1UPO2Hoa2VCmmIr6PKk+SaBpIlV3Gf4UiuFA2O5xIMUQaAzKRLzvdAoVKwgfOfNjQKriBk7aLAH28cCC+J9s=
+	t=1791488117; cv=none; b=JAXwvh6eGKhJoDVp5+6HzHYll1SQ6+8x9vym2wXKSAebdvalWGG7Xi1x2oDpEh0VbEyMQQhEDKc06npr9uxxF9pIYE7cEMlpWcSkjwHcjTcp6A+ELtSbe5XjZngrH4OghL3gKqZnYnKVnaALto5sBFD8sLrDouLQaIM8IFvCkgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791487934; c=relaxed/simple;
-	bh=vyLTdAHIOB1B4NfqcHghy+3y7/0cyViBQpiXm4m0Fe0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Bg8V2DrLrCGyLqVHaXEfLe2VMExhAaBns9hidx82OVo7cS04WQlnmBsvEp5LW2ZPTv8OIMhrMA3CIcJF91HyDJjJD1P5d679KIw9HAbUl5bZ9rV2PhHhDylB7Jzad80XjIRhw4WFZhejMbCnZSj1oSmMzTOJ22xcmueW4wJlxlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbSLrXB5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791488117; c=relaxed/simple;
+	bh=fpC1Eme3VEz18Iit7OxfXGD+XO5w8Dx1LlQClNa1prs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QekG9+z3cSLcbrRzcnMZP64Ph2vCOnNdxdv2y9HhwddDytBt5pXEYhIQtdV054e39hYyZ86PQY+uXeu3XRkOU/vhttvcbAzP/SuxiWuxLnKuGwCI4Kx0RWyzIed0hJeyPLE5Us5x7pKbUlD1xq/3HxXnlXcB5qoOIvOPipoLf0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hh6mZ6Ye; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbSLrXB5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351781F000FF;
-	Thu,  8 Oct 2026 19:32:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791487932;
-	bh=hTscVRVmU6th6PkcJY8KfYQNcOHiBHKwkZizpRKHKu8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KbSLrXB5pdsM2pLd2eBVLJjHw6r44j/ryzkbJg++ikfnQFqbwNT0rNaAbvXnEl45O
-	 0HkgVBqKPXOvp+9KpjO0HR96yMvViIDC4Ecko003jfdlmLtyyuLmw9zl914a80x8Qy
-	 nEioCfcrUZJDRAZ7tq4vco22tTbdH8OKCjZuXL53lY9B9kJ46YDHt5a8PHMBr4XFnw
-	 GClFuOGAh+Tw4woTxHDxhheH95PtEaMlrETRU1OGGfZLh+AsQNrXob6/8Zn3q4JqjH
-	 QwmDuxHfd09zbQmaHTQeeU5GEWtup7MI8YEYFnb9HNWlhexEvD6O+PpuyuHPCsyeNJ
-	 wpZ3QOa4EGlrA==
-Subject:
- Re: [PATCH net] vlan: do not insert the vlan header in vlan_dev_hard_header()
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, sairon@users.noreply.github.com,
- hitchin999@users.noreply.github.com, stefan@agner.ch, hkallweit1@gmail.com
-Date: Thu, 08 Oct 2026 19:32:11 +0000
-Message-ID: <179148793175.434549.15605670907509784817@kernel.org>
-In-Reply-To: <20261007073027.459868-1-edumazet@kernel.org>
-References: <20261007073027.459868-1-edumazet@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hh6mZ6Ye"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c31a34de844so40348666b.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 12:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791488114; x=1792092914; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fpC1Eme3VEz18Iit7OxfXGD+XO5w8Dx1LlQClNa1prs=;
+        b=Hh6mZ6YeeckXZTR898XQjBmLEGbeXw18sCPz7rrAH0DuUv+vdP8pbPif/pDiYRKL7R
+         nUPe5AtsHFadO2iY1o8pqu5SCzUVNgD4X+et6qr7dTpucw+MSJrrVQ4L50I5CWwtLInN
+         hS/6ObJCLQaAXVo2sMtLURdBW6mjJ3cENnPLWDoB7niy7pUeyTxHM/BWFQu3vgpEtbR5
+         sczdqKEJliAQWLjKI3px7mufo3ABznZ6gcRmvhOW7Eqz5aKQ5slIv5w0vOSc6XReXirn
+         9GhND3HcpCqYNB68PMFrc5oG9/9dswu/4byiZtoVS/oXVtGtIk+5V3t08abYwQP1n5TV
+         k1ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791488114; x=1792092914;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=fpC1Eme3VEz18Iit7OxfXGD+XO5w8Dx1LlQClNa1prs=;
+        b=h220n/Cr6Z/ByImvFEPbSTf2Ja2d2KvDIaxMmWYNtPJ1q0UgGyUySlphnXM7iJAV7F
+         Sph6u4mYuTpjXIJD1NhkcGnbx+aDEX30TJbZHDaB9jqeBx+mTMCWosvOCh4sIQuxIUDa
+         CC828xGufedJkNPXpQn1O7furO29V30c0am6efxxuZr7cN5ej9L3EoaIsXJhV/V3jIfl
+         Lqs3jNS77jHdf/3pIH2/I0tpXV4tdQKQo3YL9hIa3SCEMHQfQVwNajfGTck1oq8d6tKq
+         14mIAbEiMHW0f/L3PnEOH8YVbN81B/KbrB95VifixD/BCq2UZPjQErI7Yklb2QUJEWpV
+         QUyg==
+X-Gm-Message-State: AFuF++mqApUndadsJJSnmrND+dFjNRQAZ7EpKe2JZpKspwrAuFZnD0ca
+	KWQEB5OFfHuxx0qWPxJPz+MIf03ts5EzYHF9jkQp1onkHQYouh2hVpkE
+X-Gm-Gg: AYBFou1B+JqeEkgSdMHXsZkO4Ly3Bvdu2UEh47RtL4Tzgn/xn0Z7nIsDeyIoTQPhsOJ
+	S/TrsAd49qVKCsYJJjOYFNuxIlMR7DJ4CpEcgX7u3CiAoTDMxl3vZs2aBQ4iCW39h7EkZcSnMAP
+	Kfdt3GgMCCCZ0Ri0eQ73xSph4ieuFmavfWs5x64J96fS6r7mg46mMXY7/qBlLLY9yIUYVtHhZu8
+	rLhSTNsTS+ncujX3ZTU8S/CeaKOVBDzSKL1Lw4maBGrXUQMbUdxR8HcBq0ZHJpQGiwGTHMQy2Uo
+	1lJqZWPmA2WhRDG6Y1Q5IfogMvRq09kdh1eJv6s5V+03yVCV+0/ZzwbaDX2oxD5/Dg1jxE+1N6b
+	puUkGLZArSgwkGpfgyzn86i+7s9gzU5Nw+eeOqcWZnVKgOLBZtmzxWzRXziewTssw6hiN1Kp0oo
+	xlsae16G4wLF0556yPTByvLZdTxZjZRLnjqd+1k8G7wSVnsMw5/f2aP6cDSJRIMRwJl9o3WeQbY
+	T8ZW7yxXaIfIzyvOZ6cAUpK74OU9zn+YrIL+DAE/2ON6WhXPCE2QCKLn+PiaLlrnjWrp5Hy1DeN
+	39QFJwqi1nfaXXd4kF/JFnI=
+X-Received: by 2002:a17:906:7316:b0:c2a:fd39:f231 with SMTP id a640c23a62f3a-c317c094878mr682956966b.26.1791488113806;
+        Thu, 08 Oct 2026 12:35:13 -0700 (PDT)
+Received: from localhost.localdomain (94-255-221-162.cust.bredband2.com. [94.255.221.162])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a4758795sm10017366b.5.2026.10.08.12.35.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 12:35:13 -0700 (PDT)
+From: Yongzhao Chen <yongzhao.derek@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] net: phy: qca83xx: read resolved QCA8337 link status
+Date: Thu,  8 Oct 2026 21:35:00 +0200
+Message-ID: <20261008193501.14850-1-yongzhao.derek@gmail.com>
+X-Mailer: git-send-email 2.45.2.windows.1
+In-Reply-To: <179147542415.434549.1369676326541511457@kernel.org>
+References: <20261006160316.1356-1-yongzhao.derek@gmail.com> <179147542415.434549.1369676326541511457@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu, 08 Oct 2026 16:03:44 +0000 netdev-bot+sashiko@kernel.org wrote:
+> Suppose BMSR shows link up and autoneg complete before
+> AT803X_SS_SPEED_DUPLEX_RESOLVED is set in AT803X_SPECIFIC_STATUS. What ends
+> up in phydev->speed and phydev->duplex in that case?
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Both points are valid. Thanks.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+In that case v3 reports the link up with SPEED_UNKNOWN, and the early
+return in genphy_read_status() keeps it that way until the link
+drops. The reserved speed value ends up the same way. I don't know
+whether QCA8337 can report link up before the resolved bit is set,
+but the driver should not depend on that.
 
-- [High] Stacked VLANs of the same protocol lose their outer tag when
-  reorder_hdr=off.
-- [Low] On non-offload real devices, the patch removes the transmit-side
-  meaning of reorder_hdr=off.
+v4 follows marvell_read_status_page_an(): if speed or duplex is still
+unknown after at803x_read_specific_status(), it reports the link as
+down. This driver has no interrupt support, so phylib polls the PHY
+and reads the status again on the next poll. The qca808x approach does
+not fit here. The value it falls back to is the advertisement-derived
+speed this patch replaces, so after a downshift it would keep
+1000 Mbit/s.
 
---
+> Should mdix also be reset to ETH_TP_MDI_INVALID when the resolved status is
+> not read?
 
-vlan: do not insert the vlan header in vlan_dev_hard_header()
+Yes. v4 sets mdix to ETH_TP_MDI_INVALID on every poll except during
+a steady autonegotiated link and reads it again only at link-up. That
+covers both a link drop and autonegotiation being disabled.
 
-This removes the in-band 802.1Q push that vlan_dev_hard_header() did for
-reorder_hdr=off. Tagging is left to vlan_dev_hard_start_xmit(), which sets
-the hwaccel tag, and to validate_xmit_vlan(), which inserts the tag in
-software when the device can't. The goal is to fix NETDEV WATCHDOG stalls
-on r8169 that started after commit 447cbe95ebb9.
+at803x_read_status(), used by the other AT803x PHYs, clears speed and
+duplex the same way before it calls the helper. I have not changed it
+in this patch.
 
-Closes: https://github.com/home-assistant/operating-system/issues/5019
-Closes: https://lore.kernel.org/netdev/CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com/
+The model test now covers both cases, and v3 fails them. v4 has not
+been tested on hardware. I will send it separately.
 
-> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-> index c949c6a829456..c3db1ac23e6a8 100644
-> --- a/net/8021q/vlan_dev.c
-> +++ b/net/8021q/vlan_dev.c
+Thanks,
+Yongzhao Chen
 
-[ ... ]
-
-> @@ -49,47 +53,14 @@ static int vlan_dev_hard_header(struct sk_buff *skb, struct net_device *dev,
->  				unsigned int len)
->  {
->  	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
-> -	struct vlan_hdr *vhdr;
-> -	unsigned int vhdrlen = 0;
-> -	u16 vlan_tci = 0;
-> -	int rc;
-> -
-> -	if (!(vlan->flags & VLAN_FLAG_REORDER_HDR)) {
-> -		unsigned int hlen = READ_ONCE(dev->hard_header_len) +
-> -				    READ_ONCE(dev->needed_headroom);
-> -
-> -		if (skb_cow_head(skb, hlen) < 0)
-> -			return -ENOMEM;
-> -		vhdr = skb_push(skb, VLAN_HLEN);
-
-[Severity: High]
-With this push gone, can stacked VLANs of the same protocol drop their
-outer tag when reorder_hdr=off? Take eth0.200.100 on top of eth0.200, both
-802.1Q with reorder_hdr=off. The same applies to 802.1ad over 802.1ad.
-
-Here is the transmit path after this patch:
-
-eth0.200.100: vlan_dev_hard_header()
-  dev_hard_header() -> eth_header() writes the payload ethertype (0x0800)
-
-eth0.200.100: vlan_dev_hard_start_xmit()
-  0x0800 != vlan_proto, so __vlan_hwaccel_put_tag(skb, 0x8100, 100)
-  dev_queue_xmit() on eth0.200
-
-eth0.200: __dev_queue_xmit()->validate_xmit_skb()->validate_xmit_vlan()
-  __vlan_hwaccel_push_inside() puts tag 100 in-band
-
-VLAN devices never advertise NETIF_F_HW_VLAN_CTAG_TX or STAG_TX.
-vlan_dev_init() leaves them out of hw_features, and vlan_dev_fix_features()
-only intersects. So the core always inserts the tag in software here.
-
-Then in vlan_dev_hard_start_xmit() for eth0.200:
-
-	if (vlan->flags & VLAN_FLAG_REORDER_HDR ||
-	    veth->h_vlan_proto != vlan->vlan_proto) {
-
-REORDER_HDR is clear and h_vlan_proto is now 0x8100, so eth0.200 treats
-the upper device's tag as its own. It never adds tag 200, and eth0 sends a
-frame tagged only with VLAN 100.
-
-Before this patch, both hard_header calls pushed their tags, so the wire
-carried 8100/200 8100/100.
-
-The commit message says:
-
-  "Frames sent on the wire are unchanged for real devices without
-  HW VLAN TX offload."
-
-Isn't the lower VLAN device itself a real device without HW VLAN TX
-offload in this setup? The result also doesn't depend on what eth0
-supports.
-
-Could this also bring back the r8169 stall for stacked setups? Before,
-eth0 received a double-tagged frame, and vlan_features_check() masks
-csum/TSO for multi-tagged frames. Now eth0 gets a frame with a single
-in-band tag, so csum/TSO stay enabled through vlan_features.
-
-A smaller variant seems to exist with AF_PACKET SOCK_DGRAM and protocol ==
-vlan_proto on a single reorder_hdr=off VLAN. Before, the device's own tag
-was pushed in front of the frame. Now the same h_vlan_proto test skips it.
-
-The new comment above vlan_dev_hard_header() says that
-vlan_dev_hard_start_xmit() sets the hwaccel tag. That only happens when the
-outer ethertype differs from vlan_proto. The h_vlan_proto test was the
-counterpart of the in-band insertion removed here. Does the lower VLAN need
-some way to still tag frames whose in-band header came from an upper VLAN's
-hwaccel push?
-
-> -
-> -		vlan_tci = vlan->vlan_id;
-> -		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
-> -		vhdr->h_vlan_TCI = htons(vlan_tci);
-> -
-
-[ ... ]
-
-> -		skb->protocol = vlan->vlan_proto;
-
-[Severity: Low]
-This isn't about the wire format, but removing this also changes what
-observers on the VLAN device itself see when reorder_hdr=off. ip-link(8)
-says that with reorder_hdr off, the VLAN header is inserted immediately.
-
-Before, the tagged frame with skb->protocol = vlan_proto was visible on the
-VLAN device to egress tc/clsact, netfilter egress, an attached qdisc and
-packet taps (for example tcpdump -i eth0.100).
-
-Now the tag only exists as hwaccel metadata, set later inside
-vlan_dev_hard_start_xmit(). Those observers see an untagged frame with
-skb->protocol set to the payload protocol. A filter such as "protocol
-802.1q" on the VLAN device would stop matching.
-
-Should the commit message mention this user-visible change? It currently
-only covers frames on the wire.
-
-> -		type = ntohs(vlan->vlan_proto);
-> -		vhdrlen = VLAN_HLEN;
-> -	}
-> +	struct net_device *real_dev = vlan->real_dev;
->  
->  	/* Before delegating work to the lower layer, enter our MAC-address */
->  	if (saddr == NULL)
->  		saddr = dev->dev_addr;
->  
->  	/* Now make the underlying real hard header */
-> -	dev = vlan->real_dev;
-> -	rc = dev_hard_header(skb, dev, type, daddr, saddr, len + vhdrlen);
-> -	if (rc > 0)
-> -		rc += vhdrlen;
-> -	return rc;
-> +	return dev_hard_header(skb, real_dev, type, daddr, saddr, len);
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007073027.459868-1-edumazet%40kernel.org
+pw-bot: cr
