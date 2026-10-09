@@ -1,248 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f4.google.com (mail-oo2-f4.google.com [74.125.231.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15695472F8C
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013601E7C2E
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791531887; cv=none; b=cCe6rfEat6UE/CdETxNVV2NxGdn8UA7Sb8MLj4J/H3RflY4o5cOz3e/vyqyhw4xxZqCR4maPRPxQoWGSShHa0aMxD3sDIntss4xr2npnjR7nLVQmyrIawBeKtWYMV6AvKwBQ8S7nOTqPQS3JH0AooLHV7UcALex+HVpn8WrlDnA=
+	t=1791531937; cv=none; b=AAj4E/QdgHn8a/CFD5y0yX1VDfauPLrmsM3su2UJF7S2e37DOesUEWWJ3+4Xexa/wOeGRya6LHkjhiUtwpICAKKLA3YWTLrM3bsYWeAlqyQx7ZBxQVOdYGAw1NHqp1J6gpbocGEV41lMWuIGySZJfs3ZPzD4pFL6Um/W8jBGvks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791531887; c=relaxed/simple;
-	bh=2kHPMd3GoQb0XEVh+otV2yFvvOBNUJ1tqvMy8Z4qFgY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aV4Uu/CZv84qZGzChj8MufwBdmMD2+QhYsrnT2QTUg2A0hhQWPtJsj/QRGS3Ea4GWdLalsZ+vYug74xCBQlwRGW5Q1EwrbyBED7QVBdwf034Dt4M+StVYOPXgpkjAxadWUuz+Sk6XwojQyvwePCvFDNLDWh8FcCMckn+NvbKzYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IcW0L1sz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791531937; c=relaxed/simple;
+	bh=ZwfTSJk9JG0mkL6vUHY4wYZ/zxFnLxRfeSs6ksDOhpo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A49AFZjoHYpOWN/u6/JA0xCPhPC1exYuc+JlcqkMDOIAfeftCQp6q4c/j2NEA2+OLtfMF/4hf+5ICQvWAlO+DSkpM+L+bSlmedu9tFlvDu6MyJeezxzAizcJdHuPOaR7CSDeOes7OzuuM7ZFm0IYjGdlwfMQzo7uggsf5UH8djQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S95puc0R; arc=none smtp.client-ip=74.125.231.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IcW0L1sz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2711F1F00893;
-	Fri,  9 Oct 2026 07:44:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791531885;
-	bh=NpZ7XaceTucaY86C62zOlPu+VQmlzvfFU9YRREd4CxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IcW0L1szOmI+K95UFpUOxmCcHjnJ/pBfcccJqrW7jxT91VyW1LYAoh/NpoDt22f+g
-	 n+jWOzIjD+F8l65MyLNfs0AxpindYSVONDRDZNjD/e9aI7Mi+l+MmfyJKPgSEcegjK
-	 2tO/g1zVojMkYR7tAsQHApQS9YfwqNImgRyNOa3rgtqS4IJJuD+fV2jzCITHXCzij0
-	 D+rN4JoP/hNwjzoH4+yfqy9MA/mHhYddOSeJRCw/SYa4I2Q3fxsQPyhBOV4l105JMC
-	 MrkHUTOE72EeYz1S2zQLcihgZQfJxzlkuv4hLq98W2DFuEBnnCmWa/3CK+/ab/MBw7
-	 g8VREvLkZ57PA==
-Date: Fri, 9 Oct 2026 09:44:43 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: SAYANTAN NANDY <sayantann11@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, bread.hsu@airoha.com,
-	sayantan.nandy@airoha.com
-Subject: Re: [PATCH net v2] net: airoha: keep PPE offload when NPU refuses
- flow stats
-Message-ID: <asiba_Sw-i2ht_S9@lore-desk>
-References: <20261008094828.15458-1-sayantann11@gmail.com>
- <20261009050322.39060-1-sayantann11@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S95puc0R"
+Received: by mail-oo2-f4.google.com with SMTP id 006d021491bc7-6df960a7c6eso2562863eaf.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 00:45:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791531935; x=1792136735; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eLXuH3kNk2vtVW5LR5Zl+GGZ0SinlHLiZHSL9eCZFA0=;
+        b=S95puc0RLtS/vPtRVlKMYhIuNfW7fz6IXJGZYdNEoVXpNvL1b4UA1Jzy3SVRLOK+zE
+         En60cMn55v7/hLPqrZR1OSMgcyKd0nyDkmgwXLZ3jT256GRx7R0KngzB9oTl8JG8czTL
+         F7F0kekTy47AIPmPFk7EXsBa5Zk9ctd7re0fvFw+23UvCGy7gdyAqLpl8r5T1I9pd95p
+         zmN0YSUPGpUAaIjl3xxsyMQY7ETsvQaELoSSEbKlmiIGRos0s50cQsUykbtJmEPjRq0g
+         z2l2s+4NAq+8cTLMxN1QD2kAKHlWVzRuPkprNj26MFFd6XRSAxi6PFX5a86fiAPVJpSl
+         Hr/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791531935; x=1792136735;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eLXuH3kNk2vtVW5LR5Zl+GGZ0SinlHLiZHSL9eCZFA0=;
+        b=B0bgoLoyaKqnKHIqpGgPji4C00R+8P+E0yNBgPFjucwKwLd23a8Ne/qD8QuQujJzOm
+         Ti+h0znHoyRQWNWKUQvzBInLj9fKfIZ2o93Q50PW7kWMewFsm41hGOvhfwPXfqRtorAQ
+         NLh7eE3VXHgqM6CpafEso9ioKIVYw0xDgHhf5TjV9kl9WRwEnfMBp5/SppS7n3QuG4SS
+         2BAnqr8CrIW1ZA1Q8q7oe71YuPPCF6+CAHuNOxO6URS83q0Rs7dMOEQY9wBjMk4rfGVd
+         XAxaehgvZRAfE98JCN3iEtghfTwy0tHlzY78uRYecT7Z45B72qg2BH08XohszCKHyWkR
+         e4Uw==
+X-Gm-Message-State: AFuF++l86jytAwzj9S6f/1rxNiz9eDbV7Fvs5CSEXqn52//bDR8afccZ
+	pnKpkjValK5QvlwBlTqORWrDI6fqXgZAWTeN2SzEuBrOMGFsj3aYz1Cg
+X-Gm-Gg: AYBFou02V9sIBgkMBkQWJxiAtbmWZvi77jUm4+B3T1s+NsojZ5tbUAl7z7ed5oGMlxT
+	CSuyn5IgGpVxEb+eyNEpWC8QtovgpK95YPUD3OAWAv/lNp+us7bfPH7AALwREkkSr22NPIkenT/
+	9p9UuK3uWUNaEg1n/jHj8uOEFIY8CQzMhFwat5BFx2Si3J261uoBnI7PFyF7z30UdlX06EnREi7
+	D277seDRiRYojI1Gk5FIVWuqVQyCKnMlwFi9D+g8zMsF37HRt/yTyH+3TAGjNmge+C8GawWThi/
+	LR8wkRmfjdIsh8lmHcLDoW8we5hCu1f7TVbo/IJ6Gi0x32WKO8+zQnDHJeDnbgW0h7sflD1BG6e
+	fn8R2c1gLVpNgMFMan9f0neJwNLrcxA/VllTDVXHaso1j9qdESSkirLPOQRNCM9Sxvi/stS1xnk
+	1M+ok+ogwllUTbAt4v7TIozAphZmQBkFlgR6E2POWRt9l1lpkwTyOlD2xxzVPGs4QQFqYAlUEvV
+	i3+Wscd5L1HMgpAChDDBt7eruhKSuTFhlUh
+X-Received: by 2002:a05:6820:f004:b0:6c8:d1cc:38a9 with SMTP id 006d021491bc7-6ef08c7a67bmr886377eaf.8.1791531934819;
+        Fri, 09 Oct 2026 00:45:34 -0700 (PDT)
+Received: from localhost.localdomain ([14.22.11.164])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6ef01dba775sm1138539eaf.9.2026.10.09.00.45.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 00:45:33 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ipconfig: fix use-after-free of device list after ic_close_devs()
+Date: Fri,  9 Oct 2026 15:45:20 +0800
+Message-ID: <20261009074523.2747168-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="NOajDJ9cSUpeZ4E4"
-Content-Disposition: inline
-In-Reply-To: <20261009050322.39060-1-sayantann11@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
---NOajDJ9cSUpeZ4E4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+ic_close_devs() kfree()s every ic_device node but leaves the static
+ic_first_dev and ic_dev pointers dangling behind.  When a DHCP reply
+consists of an OFFER that is never followed by an ACK (a misbehaving
+or lossy DHCP server, or a network that drops the ACK), the boot-time
+autoconfiguration loop becomes vulnerable:
 
-> From: Chad Monroe <chad@monroe.io>
->=20
-> With flow stats enabled, PPE offload setup requests flow statistics
-> from the NPU. If the running NPU firmware does not support flow
-> counters, the request fails and the current setup path aborts PPE
-> offload.
->=20
-> Treat flow statistics as an optional capability so that a failure to
-> set up the counters does not prevent normal PPE offload. Record
-> whether flow statistics are available and continue PPE initialization
-> when the NPU refuses the flow-statistics request.
->=20
-> Also treat a zero NPU statistics address returned by the firmware as a
-> refusal. The host-side DMA buffer (foe_stats_dma) is allocated by
-> dmam_alloc_coherent() in airoha_ppe_init() from system memory. The NPU
-> statistics address (npu_stats_addr) is a separate allocation from the
-> NPU firmware's internal SRAM pool. When that pool is exhausted, the
-> firmware replies with success and npu_stats_addr =3D 0. A zero address
-> does not provide a usable counter region and must not be passed to
-> devm_ioremap().
->=20
-> When flow stats are available, clear PSE_PORT6_SHARE_DIS so that PSE
-> port 6 (CDM3 path to the NPU) participates in shared-buffer flow
-> control, which the counter traffic path needs.
->=20
-> When flow statistics are unavailable, PPE continues to operate without
-> NPU flow counters while retaining normal offload functionality.
->=20
-> This combines the original SmartRG/Airoha fixes for:
-> - keeping PPE offload active when the NPU refuses flow statistics
-> - treating a zero NPU statistics address as a flow-statistics refusal
->=20
-> Based on the original SmartRG/Airoha work by Chad Monroe:
-> 5ce96ab ("SDG-9458: keep PPE offload when NPU refuses flow stats")
-> 0ad8528 ("SDG-9458: airoha: treat a zero NPU stats address as a refusal")
-> Fixes: b81e0f2b58be ("net: airoha: Add FLOW_CLS_STATS callback support")
-> Tested-on: AN7581 with MT7992
-> Signed-off-by: Chad Monroe <chad@monroe.io>
-> Signed-off-by: SAYANTAN NANDY <sayantann11@gmail.com>
-> ---
->=20
-> Changes since v1:
-> - Rename flow_stats to flow_stats_cap (Lorenzo).
-> - Explain that npu_stats_addr is an NPU firmware SRAM allocation,
->   distinct from the host-side foe_stats_dma buffer (Lorenzo).
-> - Explain why PSE_PORT6_SHARE_DIS is cleared for counter traffic
->   (Lorenzo).
-> - Use airoha_fe_clear() and shorten the warning message (Lorenzo).
-> - Add hardware testing information requested by netdev-bot.
->=20
->  drivers/net/ethernet/airoha/airoha_eth.h  |  1 +
->  drivers/net/ethernet/airoha/airoha_npu.c  |  8 ++++++++
->  drivers/net/ethernet/airoha/airoha_ppe.c  | 17 +++++++++++------
->  drivers/net/ethernet/airoha/airoha_regs.h |  2 ++
->  4 files changed, 22 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
-net/airoha/airoha_eth.h
-> index 8277c1c87bb3..da4a3ba69e3c 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> @@ -617,6 +617,7 @@ struct airoha_ppe {
-> =20
->  	void *foe;
->  	dma_addr_t foe_dma;
-> +	bool flow_stats_cap;
-> =20
->  	struct rhashtable l2_flows;
-> =20
-> diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ether=
-net/airoha/airoha_npu.c
-> index 4d3195eb00f7..b32a01dbe06b 100644
-> --- a/drivers/net/ethernet/airoha/airoha_npu.c
-> +++ b/drivers/net/ethernet/airoha/airoha_npu.c
-> @@ -450,6 +450,14 @@ static int airoha_npu_ppe_stats_setup(struct airoha_=
-npu *npu,
->  	if (err)
->  		goto out;
-> =20
-> +	/* The firmware reports success with a zero address when its SRAM
-> +	 * pool has no room left for the counters.
-> +	 */
-> +	if (!ppe_data->stats_info.npu_stats_addr) {
-> +		err =3D -ENOSPC;
-> +		goto out;
-> +	}
-> +
->  	npu->stats =3D devm_ioremap(npu->dev,
->  				  ppe_data->stats_info.npu_stats_addr,
->  				  size);
-> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
-net/airoha/airoha_ppe.c
-> index 92611802801e..0957f331478a 100644
-> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> @@ -37,10 +37,7 @@ static const struct rhashtable_params airoha_l2_flow_t=
-able_params =3D {
-> =20
->  static int airoha_ppe_get_num_stats_entries(struct airoha_ppe *ppe)
->  {
-> -	if (!IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS))
-> -		return -EOPNOTSUPP;
-> -
-> -	if (airoha_is_7583(ppe->eth))
-> +	if (!ppe->flow_stats_cap)
->  		return -EOPNOTSUPP;
+  1. ic_bootp_recv() accepts the OFFER and records ic_dev = <list
+     node> ("We have a winner!" state);
+  2. the retransmit round times out in ic_dynamic(), so
+     ic_close_devs() frees the whole list — node included;
+  3. the dynamic retry path (try_try_again) runs ic_open_devs() and
+     ic_dynamic() again; on failure it falls through ic_close_devs()
+     once more, where the entry point evaluates
 
-Looking again at the code flow_stats_cap is only used here. Why do we need =
-it
-in the first place? I guess you it is enough to just not return an error in
-airoha_ppe_offload_setup() and log the error instead (as you did).
+         struct net_device *selected_dev = ic_dev ? ic_dev->dev : NULL;
 
-> =20
->  	return PPE_STATS_NUM_ENTRIES;
-> @@ -144,6 +141,9 @@ static void airoha_ppe_hw_init(struct airoha_ppe *ppe)
->  	sram_ppe_num_data_entries =3D
->  		PPE_RAM_NUM_ENTRIES_SHIFT(sram_ppe_num_data_entries);
-> =20
-> +	if (ppe->flow_stats_cap)
-> +		airoha_fe_clear(eth, PSE_FC_CFG, PSE_PORT6_SHARE_DIS);
+     — an 8-byte use-after-free read against the freed ic_device.
 
-can you please explain what this configuration is doing? This register is n=
-ot
-documented.
+KASAN confirms (boot-time bootload, no userspace yet):
 
-> +
->  	for (i =3D 0; i < eth->soc->num_ppe; i++) {
->  		airoha_fe_wr(eth, REG_PPE_TB_BASE(i),
->  			     ppe->foe_dma + sram_tb_size);
-> @@ -1456,8 +1456,11 @@ static int airoha_ppe_offload_setup(struct airoha_=
-eth *eth)
->  	if (ppe_num_stats_entries > 0) {
->  		err =3D npu->ops.ppe_init_stats(npu, ppe->foe_stats_dma,
->  					      ppe_num_stats_entries);
-> -		if (err)
-> -			goto error_npu_put;
-> +		if (err) {
-> +			dev_warn(eth->dev, "NPU refused flow stats (%d)\n",
-> +				 err);
-> +			ppe->flow_stats_cap =3D false;
+  BUG: KASAN: slab-use-after-free in ic_close_devs+0x214/0x220
+  Read of size 8 by task swapper/0/1
+   Call Trace:
+    ic_close_devs+0x214/0x220
+    ip_auto_config+0x172b/0x34e0
+    do_one_initcall+0x9f/0x370
+    kernel_init_freeable+0x432/0x760
+    kernel_init+0x24/0x1f0
+  Allocated by task 1:
+    __kmalloc_cache_noprof+0x1b5/0x430 <- ip_auto_config+0x587/0x34e0
+    (ic_open_devs' kmalloc_obj of the ic_device list node)
+  Freed by task 1:
+    kfree+0x166/0x450 <- ic_close_devs+0xcb/0x220
+    (ic_close_devs freeing the same node at round end)
 
-please see above.
+NULL both pointers after the free loop so subsequent retry rounds
+take the clean empty-list path instead of acting on freed entries.
 
-> +		}
->  	}
-> =20
->  	airoha_ppe_hw_init(ppe);
-> @@ -1608,6 +1611,8 @@ int airoha_ppe_init(struct airoha_eth *eth)
->  	ppe->dev.priv =3D ppe;
->  	ppe->eth =3D eth;
->  	eth->ppe =3D ppe;
-> +	ppe->flow_stats_cap =3D IS_ENABLED(CONFIG_NET_AIROHA_FLOW_STATS) &&
-> +			  !airoha_is_7583(eth);
+This vulnerability was discovered by Tencent CodeBuddy Security.
 
-please see above.
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
+ net/ipv4/ipconfig.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Regards,
-Lorenzo
+diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
+index 1b8585404a41..ac4851e59c3b 100644
+--- a/net/ipv4/ipconfig.c
++++ b/net/ipv4/ipconfig.c
+@@ -346,6 +346,13 @@ static void __init ic_close_devs(void)
+ 		kfree(d);
+ 	}
+ 	rtnl_unlock();
++
++	/* The whole ic_device list was just kfree()'d above; clear the
++	 * static pointers so retry rounds (e.g. dynamic retry after an
++	 * OFFER without ACK) don't dereference them (use-after-free).
++	 */
++	ic_first_dev = NULL;
++	ic_dev = NULL;
+ }
 
-> =20
->  	ppe_num_entries =3D airoha_ppe_get_total_num_entries(ppe);
->  	foe_size =3D ppe_num_entries * sizeof(struct airoha_foe_entry);
-> diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethe=
-rnet/airoha/airoha_regs.h
-> index 442b48c9b991..aee06c058586 100644
-> --- a/drivers/net/ethernet/airoha/airoha_regs.h
-> +++ b/drivers/net/ethernet/airoha/airoha_regs.h
-> @@ -72,6 +72,8 @@
->  #define PSE_CFG_OQ_RSV_MASK		GENMASK(13, 0)
-> =20
->  #define PSE_FQ_CFG			0x008c
-> +#define PSE_FC_CFG			0x0098
-> +#define PSE_PORT6_SHARE_DIS		BIT(22)
->  #define PSE_FQ_LIMIT_MASK		GENMASK(14, 0)
-> =20
->  #define REG_FE_PSE_BUF_SET		0x0090
-> --=20
-> 2.43.0
->=20
+ /*
+--
+2.43.7
 
---NOajDJ9cSUpeZ4E4
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCasibawAKCRA6cBh0uS2t
-rK8sAQCcVwqGDaZNFDjbktsKV7mzp98FVx4rbcZGJlo+MhlRDwD/XXQapB/RcFIs
-7ItldqyvtIw7uHMNN4sLeGtM0R01uw4=
-=UgeO
------END PGP SIGNATURE-----
-
---NOajDJ9cSUpeZ4E4--
