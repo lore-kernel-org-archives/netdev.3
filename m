@@ -1,63 +1,63 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2264F3EC4
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7724F55D8
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791569164; cv=none; b=nUvh9/cG0xAsCjUeuPE7KVfPIE/Fwzi7PQxmKBJMXi4Cxic2phznXFWBL1UiBCsaEnVJsvi4uQt1nerMSI8VWZ4shR8vjWf2JiQrcQNejuBs+3mMMzMNwxTND/E7mFC7wMuEhkcdqOeIcnJNrCfIZ7EGoi57E3r8puSIgOGdxQo=
+	t=1791569167; cv=none; b=aYWLR+XMAn3DSkjGPw9rHrYiBhtI3OXavUxiupHthyfAZnPCqA6vzcrNRIKlONCfi6FJICQxwy2ABju+s9EtPD6g+QObLo8MghZX+Z4YoPUY2qLD2tOC6yo0kEIHVNfget6SgWdKZqM8DJfDsj0bvNxGbqbiEK2iHeTPCCpC1i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791569164; c=relaxed/simple;
-	bh=Lc316qFGUW8/HqzEomGqw4fI97ObQskjDRWcXxlWakg=;
+	s=arc-20240116; t=1791569167; c=relaxed/simple;
+	bh=/2Cv2xVv+v510R5T2qQe+0Ygj8mKsSPlin7yXitKkhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWRUe3PRpI7rLrfscKXwe0R334MAOeyc+cP3vVQtCbeHjPXng/oiWrAwQWzdC785vVanPz3GfzDJvrdM9CB6LCUAQBvi6DZsrONhoxmgrwyKG13Ex8k8ZuOLVQOAdfeYlVEhzLOkb3KurdfbMzLRdHG/lnjlLRWSg3EiW8NiN2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=H1Pw1dhV; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=bYFtVRre1rc36D/kNhVQqAOWdngTFuj1/atPHyIWWx7lO1+DFWYos/5Ql6w4f0zlGuj+J+/YGcWeyxqLFndEzHev6Sm5623xbZnoyqFGthqmunc+Kmiy8K8aLLkvit3p70SirzUxfMc38U6mtQWpnvXwlhJ8mntAbUoYmWsv15w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=HAuJP/3T; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="H1Pw1dhV"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a168355946so1718925e9.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:06:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="HAuJP/3T"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a018792ab3so1132225e9.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:06:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1791569160; x=1792173960; darn=vger.kernel.org;
+        d=lex.la; s=google; t=1791569163; x=1792173963; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+uN4SzsXGoz881YVEUDcFr/xufMBW/3mKMr+K+qX04E=;
-        b=H1Pw1dhVUsTWN8sVf6CrdwtMf7vO1vypYVzRkh0sM5QnA7Sw6HkigNCmvOJLgqYvIT
-         e1iMu+S7D7krP3XP3P9xwThQrFMBQn/WCry1gB8A9n6UqryheAhGpAoEQidGHpIOHYzZ
-         qccTu4L2mMsdX2kj/9YHem7MXk5Hh29pg7V0gk6QpTvrDLCYU+GqqnhNMR8q0bh9Vysh
-         oP/kJVOh3b/lu3lsmyuBVXYZ+hB2Yc7+ZKArMOeOJV8A4DKnFSKuQPBGDtsCMNJi79pO
-         NoLRGk+fYRrMputt2Jem43Q2yH2vDl6z4V4X57OWizqZ1+HvU6R3YDiVBLG9kpsUopid
-         HGvg==
+        bh=PSXV2iOxwWqIUa1UIYTqzGUU/lK+07HjT1zCcdAooF8=;
+        b=HAuJP/3TXWVFTGPOLjUVHHNoqoBqUaYRPMlL300bU/aIV+Y9kqPXJhWe2hFjpE5upn
+         y4LrgV4j19ulAhFhRl2miwUJjQgQ9XWynpV8DAYodlT6i0bVWlN4Alq2751/2bL955eD
+         qB7k5NelLuIx7reGvMOCokCQAxFbdP4B9bpRbsdy33mwNTtojAgk0gFN306lSbhW9cNr
+         MAnlcYrzL+tWpVdRmpTV9FW6Aa/t/K6NMHCKagQC2Y4l1h12ibxoQk01rFwqS8xa8R71
+         RHbLeY5UGAuyNqaX9thQmK6FYDXz3sy1uOoKTBrdSW/GHnP0aYykBbXeK88J3FBHAmQf
+         KJmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791569160; x=1792173960;
+        d=1e100.net; s=20260707; t=1791569163; x=1792173963;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+uN4SzsXGoz881YVEUDcFr/xufMBW/3mKMr+K+qX04E=;
-        b=pwZHVLBu7xh9EWrRpxAa3s+67cF/tARMpOK26LHvcjtTqjFDUT2w/KDBx/1ttCcnZ7
-         ZcbpQ94a3IHpLE/krX3oGcQAjzH5osRRN4fO9sXrcpjlRs74QD/VdbJcLgL/5JT8EmSx
-         DnlBVxP06ZKm/zUFAvp0VgbYJdJoPWsvs5wDM1+TMl8cZrybqIZQkrO6s/fkCt+YycJn
-         SCif8e4j0VPoN1T/6/I+8FgMUvbYpiJesXc15Bb/5nwUEnoK/h/QTKKBmgFIfHSgvWcU
-         FWLnoXxlL6DiFEbuK+O2rsm0c9T6R/ohViCz7HgwS9Wsm9Fr8IcOOR6Rh+sUUv36nTe+
-         bQfg==
-X-Forwarded-Encrypted: i=1; AKwUvBxvy56WP8EnJEHnJKq31wDTcnm9qmTB3VlFWlfKQM/jb7pQc3r/Sso8nopXPTvEGtLb45kMVC4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kH90DLgCDtCGC5/EqC3qxcUVN5S7RjPi1t0xvTTOTxcsXkyagu
-	KwssEH8b7KfDPhBF0jmwjbQBDrTlpmTGowrrZ3sN2TGIpak29roiCGLlhPEQB2gjT5w=
-X-Gm-Gg: AYBFou3RJ66FkMMaQw0k0RcYOFkVjBBcYyKfAeBFmXbbty2nW2DpTd8bWrSVemNPdsy
-	3AqmvNOkXOQ8Ya/OWNgICpodx402w4ZXplJjiQw7f041+Cag//p79CASBKHxnYEfJmjlqh4/PWW
-	SkvcUorXANcVR58d+sX2qNTJbQkAi4VN9WbP+ftbnJs6sNG2/4nV6BTdeRNkA7EcPkT8QIyJJqT
-	9ya1f0mhtqRgb6DGn/3mojiGuvuVJFU+d1Oym6P0kMXldnRFnvWiBWVMD0R+co0MPcZGVVwzV/O
-	2X4u9EkmFGnb9IpiHyXJYx0YWfCtBE+2p3HGxAfsRbzVPRyZJdKxCv09vb+ROb1T3lW12RazP2i
-	Cf4495K5qBDH9dQkkEooSJPoWlWOKhE+GVPcXOjF0rWl+7V1lNDVIsxGFuXvY1Quw0SLXRSxieq
-	Bf6u1hmNUHYy0w1oMSds77tdLkPzbqaV+3xkDslq4U3VoDyyPtaA==
-X-Received: by 2002:a05:600c:6297:b0:4a0:62d:4424 with SMTP id 5b1f17b1804b1-4a18e4a1756mr50175605e9.8.1791569160480;
-        Fri, 09 Oct 2026 11:06:00 -0700 (PDT)
+        bh=PSXV2iOxwWqIUa1UIYTqzGUU/lK+07HjT1zCcdAooF8=;
+        b=tSStyUWjFp9uw8WOKLSrCclz377dzNUJvn6SX/edHnlsdlSlEX9VUp9YNXD3iPzwQX
+         IHz0EZa2sFrq4luyTgp0XnlTGcCeI+kCwJDkze8rC8DnnozG1wsMLTcKkU0KmSNGNHiq
+         +eB6Np4+FWpjO4+gp4xmoPOBxoWOGCP0cxY2b9gWvDgzbdhL2V/EeRtCZ24qvqbGuWib
+         a5RmJkgOsqJgucKd7zUbWlZ+jKA1mFIJV8qpR6FZp0NISEPBzm62yNqRMYznexr8h1Iq
+         qimSwL8IhxqSH9k1Bi5ovp0ySuALNFCCgZGkk5dhdBAzkn69dpQJbY9UBT1OY4E78Uhq
+         Yg+Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzj0fz3DPNtS6CBxWzB6CzDMplX+m5ER5NKsxJFFeQDCZVZbS7lPPgMLU44dCMZlOXIY9XUqbw=@vger.kernel.org
+X-Gm-Message-State: AFuF++ldI5uLlNI+xd+Deb5aaQt8Yi/s5zKupinQMtanUL6uCflVztyk
+	njYD2BNj86hxoG73X7kyJbNn0M0Wy7qmZgOx+lJp/tBe0szVSa3vE9E9qIZQvLOVY4c=
+X-Gm-Gg: AYBFou2jkmwsms3TQbeLtn1ybTEsjqeOjLPE+lSKF6IbFHiqt+J9Fdt1Gz0RzeLr2TI
+	1hlC44+/4rm8hFQlguZ7Cw0An+gaYq8sGcjFxwE5VCXJBM50RiGVl6/ryZeHG7tQ9OiyEMsnopg
+	IFMtivJFkmzrOjnNUbF0bmqXyla9PeEJcv5iCq/IHZEz5oBUeEd4UjJ9OnMjrKWU/w4shjBds3k
+	PnJDNZLRl+nY3EjKdhpDHsQmtuw+R0s59PWnm2+iPr39kihfvpYkNVMqY1qx7aUoeIk/R9ET5as
+	NhqzViN4Cnt6fW7+WZkFWzibluPLFAyWYel+YrgzGZwcLI3hNMZYb9Wtofg/pOPWunKz/Twdh1G
+	cxkInxLXPDQTWVHguEEDl+/0g5sQEKPRgU4zl2ZwUydWEvTdGS931y3xPPIoHVGSC4yXFzbk1Zp
+	D8aVIXLtrDrA9+dhyatcw5SBh746fKhNQmdgNT4NUEGdGJK5aXEg==
+X-Received: by 2002:a05:600c:4f14:b0:4a0:89:6727 with SMTP id 5b1f17b1804b1-4a18e4adc5cmr52679585e9.16.1791569163383;
+        Fri, 09 Oct 2026 11:06:03 -0700 (PDT)
 Received: from remote-01 ([84.17.55.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf21276sm118184915e9.8.2026.10.09.11.05.59
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf21276sm118184915e9.8.2026.10.09.11.06.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 11:06:00 -0700 (PDT)
+        Fri, 09 Oct 2026 11:06:02 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
@@ -72,9 +72,9 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Woojung Huh <woojung.huh@microchip.com>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: [PATCH net-next v5 2/4] net: phy: put the driver module the attach took
-Date: Fri,  9 Oct 2026 21:05:48 +0300
-Message-ID: <20261009180551.1234107-3-f@lex.la>
+Subject: [PATCH net-next v5 3/4] net: phy: serialise attach and detach with PHY driver bind and unbind
+Date: Fri,  9 Oct 2026 21:05:49 +0300
+Message-ID: <20261009180551.1234107-4-f@lex.la>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261009180551.1234107-1-f@lex.la>
 References: <20261009180551.1234107-1-f@lex.la>
@@ -86,108 +86,302 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-phy_attach_direct() pins the PHY driver module through d->driver, and
-phy_detach() releases it by reading d->driver again. Unbinding the PHY
-driver while the PHY is attached clears that pointer, so a detach that
-runs while the driver is still unbound skips the put and the module can
-no longer be unloaded; if a different driver binds in between, the put
-lands on a module that was never pinned. The NULL test added by
-commit c2b727df7caa ("net: phy: Avoid NPD upon phy_detach() when driver
-is unbound") avoids the oops but skips the put.
+phy_attach_direct() reads phydev->drv and d->driver with nothing held
+against the driver core, then calls into the driver through
+phy_init_hw() and phy_resume(). An unbind that runs during an attach
+can remove the driver under it, and an attach that runs while a driver
+is still probing can call config_init before the driver's probe has
+finished.
 
-Found by reading phy_detach() while chasing a PHY driver unbind race on
-a Keenetic KN-1012 (MT7981, air_en8811h built as a module). The leak
-itself was not observed there: unbinding air_en8811h under the attached
-lan4 DSA port and then unbinding the switch faults earlier on that
-board, in phy_free_interrupt() or under phy_stop(), before
-phy_detach() gets to the put.
+Found on a Keenetic KN-1012 (MT7981) while testing how a port copes
+with its PHY driver coming and going, on an OpenWrt 6.18 kernel.
+Unbinding the wan PHY driver through sysfs while "ip link set wan up"
+ran oopsed on the first attempt, with nothing added to widen the
+window, inside the driver's own calibration code:
 
-Remember which module was pinned and release that one.
+  Unable to handle kernel access to user memory outside uaccess
+  routines at virtual address 0000000000000098
+  Comm: ip
+  Call trace:
+   tx_amp_fill_result.isra.0+0x90/0x3a0 (P)
+   mt798x_phy_calibration+0x164/0x520
+   mt798x_phy_config_init+0x470/0x6f8
+   phy_init_hw+0x64/0xa0
+   phy_attach_direct+0x184/0x380
+   phylink_fwnode_phy_connect+0x198/0x27c
+   phylink_of_phy_connect+0x18/0x20
+   mtk_open+0x38/0xb70
+   __dev_open+0xf8/0x1e0
 
-Fixes: cafe8df8b9bc ("net: phy: Fix lack of reference count on PHY driver")
+phy_remove() had cleared phydev->drv while config_init was running,
+and the driver read phydev->drv->phy_id. No NULL test in phylib reaches
+that dereference.
+
+The device lock cannot be taken here: attach may run under rtnl, while
+phy_probe() and phy_remove() take rtnl under the device lock, through
+the SFP bus of a PHY with a cage and through the netdev LED trigger.
+Add a per-PHY mutex and a flag saying that a driver has finished
+probing and is not being removed. The driver-core callbacks take the
+mutex only to flip the flag; attach and detach hold it while they call
+into the driver. An attach that finds a driver bound but the flag clear
+refuses with -EAGAIN; a MAC or switch that attaches from its own probe
+then fails that probe rather than call into a half-probed driver. The
+"already attached" test moves under the mutex too, so two attaches of
+one PHY cannot both pass it. Detach clears phy_link_change and takes
+the recorded module in one section under it, so an attach that passes
+the test right after cannot lose its module reference to that detach.
+
+phy_remove() clears the flag before any teardown, so the rest of it can
+run without the mutex: an attach that loses the race is refused, and
+one that wins holds the mutex until it is done with the driver. The
+unbind then goes on to remove the driver from the PHY that attach just
+attached; what the consumer does with it after that is not changed
+here. The generic driver fallback is not covered either: attach binds
+it without the device lock, so a real driver binding through the
+driver core at the same moment can still collide with it.
+
+Fixes: 00db8189d984 ("This patch adds a PHY Abstraction Layer to the Linux Kernel, enabling ethernet drivers to remain as ignorant as is reasonable of the connected PHY's design and operation details.")
 Assisted-by: LLM
 Signed-off-by: Aleksei Sviridkin <f@lex.la>
 ---
 Changes in v5:
-- The driver module is read once, so the module pinned and the module
-  recorded cannot differ.
-- Rebased on net-next: the failed generic bind unwind keeps the
-  interrupt restore it got there.
-- On its own, this patch can still leak a reference when one consumer
-  attaches while another detaches the same PHY. Patch 3 closes that.
+- The "already attached" test from patch 1 runs under bind_lock and
+  leaves through error_unlock.
+- The message names the generic-driver exception and the -EAGAIN a
+  consumer probing at that moment gets.
+- The bind_lock kernel-doc names phy_probe() and phy_remove().
+- Detach clears phy_link_change and takes the recorded module in one
+  section under bind_lock, and puts the module it took there.
 
- drivers/net/phy/phy_device.c | 12 ++++++++----
- include/linux/phy.h          |  2 ++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/phy/phy_device.c | 72 +++++++++++++++++++++++++++++++-----
+ include/linux/phy.h          |  6 +++
+ 2 files changed, 68 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 6bc9cdb7fa69..68691c487eee 100644
+index 68691c487eee..0ffaa456a308 100644
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
-@@ -1728,8 +1728,8 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
- 	phydev->phy_link_change = NULL;
+@@ -711,6 +711,7 @@ struct phy_device *phy_device_create(struct mii_bus *bus, int addr, u32 phy_id,
+ 	dev->max_n_ports = 1;
+ 
+ 	mutex_init(&dev->lock);
++	mutex_init(&dev->bind_lock);
+ 	INIT_DELAYED_WORK(&dev->state_queue, phy_state_machine);
+ 
+ 	/* Request the appropriate module unconditionally; don't
+@@ -1668,6 +1669,8 @@ static void phy_sfp_release(struct phy_device *phydev)
+ 	}
+ }
+ 
++static int __phy_probe(struct device *dev);
++
+ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
+ {
+ 	return phydrv->config_intr && phydrv->handle_interrupt;
+@@ -1685,6 +1688,7 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
+ {
+ 	struct net_device *dev = phydev->attached_dev;
+ 	struct module *ndev_owner = NULL;
++	struct module *drv_owner;
+ 	struct mii_bus *bus;
+ 
+ 	if (phydev->devlink) {
+@@ -1702,7 +1706,10 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
+ 		sysfs_remove_file(&phydev->mdio.dev.kobj,
+ 				  &dev_attr_phy_standalone.attr);
+ 
+-	phy_suspend(phydev);
++	mutex_lock(&phydev->bind_lock);
++	if (phydev->bound)
++		phy_suspend(phydev);
++	mutex_unlock(&phydev->bind_lock);
+ 
+ 	if (notify_bus && phydev->mdio.bus->notify_phy_detach)
+ 		phydev->mdio.bus->notify_phy_detach(phydev);
+@@ -1725,11 +1732,18 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
+ 		phy_link_topo_del_phy(dev, phydev);
+ 	}
+ 
+-	phydev->phy_link_change = NULL;
  	phydev->phylink = NULL;
  
--	if (phydev->mdio.dev.driver)
--		module_put(phydev->mdio.dev.driver->owner);
-+	module_put(phydev->drv_owner);
-+	phydev->drv_owner = NULL;
+-	module_put(phydev->drv_owner);
++	/* A new attach may pass its "already attached" test as soon as
++	 * phy_link_change is clear, so take the owner in the same section.
++	 */
++	mutex_lock(&phydev->bind_lock);
++	phydev->phy_link_change = NULL;
++	drv_owner = phydev->drv_owner;
+ 	phydev->drv_owner = NULL;
++	mutex_unlock(&phydev->bind_lock);
++
++	module_put(drv_owner);
  
  	/* If the device had no specific driver before (i.e. - it
  	 * was using the generic driver), we unbind the device
-@@ -1794,6 +1794,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 	struct mii_bus *bus = phydev->mdio.bus;
- 	struct device *d = &phydev->mdio.dev;
- 	struct module *ndev_owner = NULL;
-+	struct module *drv_owner;
- 	int irq = phydev->irq;
- 	int err;
+@@ -1782,11 +1796,15 @@ EXPORT_SYMBOL(phy_detach);
+  *
+  * Description: Called by drivers to attach to a particular PHY
+  *     device. The phy_device is found, and properly hooked up
+- *     to the phy_driver.  If no driver is attached, then a
++ *     to the phy_driver.  If no driver is bound, then a
+  *     generic driver is used.  The phy_device is given a ptr to
+  *     the attaching device, and given a callback for link status
+  *     change.  The phy_device is returned to the attaching driver.
+  *     This function takes a reference on the phy device.
++ *
++ * Return: 0 on success, -EAGAIN if a driver is being bound to or
++ * unbound from the PHY, -EBUSY if the PHY is already attached, or
++ * another negative error code.
+  */
+ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 		      u32 flags, phy_interface_t interface)
+@@ -1812,11 +1830,13 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
  
-@@ -1830,11 +1831,13 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 		phydev->is_genphy_driven = 1;
+ 	get_device(d);
+ 
++	mutex_lock(&phydev->bind_lock);
++
+ 	/* Set by every attach, with or without a netdev */
+ 	if (phydev->phy_link_change) {
+ 		phydev_err(phydev, "PHY already attached\n");
+ 		err = -EBUSY;
+-		goto error_put_device;
++		goto error_unlock;
  	}
  
--	if (!try_module_get(d->driver->owner)) {
-+	drv_owner = d->driver->owner;
-+	if (!try_module_get(drv_owner)) {
+ 	/* Assume that if there is no driver, that it doesn't
+@@ -1829,23 +1849,29 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 			d->driver = &genphy_driver.mdiodrv.driver;
+ 
+ 		phydev->is_genphy_driven = 1;
++	} else if (!phydev->bound) {
++		phydev_err(phydev, "driver is binding or unbinding\n");
++		err = -EAGAIN;
++		goto error_unlock;
+ 	}
+ 
+ 	drv_owner = d->driver->owner;
+ 	if (!try_module_get(drv_owner)) {
  		phydev_err(phydev, "failed to get the device driver module\n");
  		err = -EIO;
- 		goto error_put_device;
+-		goto error_put_device;
++		goto error_unlock;
  	}
-+	phydev->drv_owner = drv_owner;
+ 	phydev->drv_owner = drv_owner;
  
  	if (phydev->is_genphy_driven) {
- 		err = d->driver->probe(d);
-@@ -1942,7 +1945,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+-		err = d->driver->probe(d);
++		err = __phy_probe(d);
+ 		if (err >= 0)
+ 			err = device_bind_driver(d);
+ 
+ 		if (err)
+ 			goto error_module_put;
++
++		phydev->bound = true;
+ 	}
+ 
+ 	phydev->phy_link_change = phy_link_change;
+@@ -1928,6 +1954,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+ 
+ 	phy_resume(phydev);
+ 
++	mutex_unlock(&phydev->bind_lock);
++
+ 	/**
+ 	 * If the external phy used by current mac interface is managed by
+ 	 * another mac interface, so we should create a device link between
+@@ -1940,6 +1968,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
  	return err;
  
- error_module_put:
--	module_put(d->driver->owner);
-+	module_put(phydev->drv_owner);
-+	phydev->drv_owner = NULL;
+ error:
++	mutex_unlock(&phydev->bind_lock);
+ 	/* phy_detach_internal() does all of the cleanup below */
+ 	phy_detach_internal(phydev, false);
+ 	return err;
+@@ -1950,7 +1979,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
  	phydev->irq = irq;
  	phydev->is_genphy_driven = 0;
  	d->driver = NULL;
+-error_put_device:
++error_unlock:
++	mutex_unlock(&phydev->bind_lock);
+ 	put_device(d);
+ 	if (ndev_owner != bus->owner)
+ 		module_put(bus->owner);
+@@ -3654,12 +3684,14 @@ struct fwnode_handle *fwnode_get_phy_node(const struct fwnode_handle *fwnode)
+ EXPORT_SYMBOL_GPL(fwnode_get_phy_node);
+ 
+ /**
+- * phy_probe - probe and init a PHY device
++ * __phy_probe - probe and init a PHY device
+  * @dev: device to probe and init
+  *
+  * Take care of setting up the phy_device structure, set the state to READY.
++ *
++ * Return: 0 on success or a negative error code.
+  */
+-static int phy_probe(struct device *dev)
++static int __phy_probe(struct device *dev)
+ {
+ 	struct phy_device *phydev = to_phy_device(dev);
+ 	struct device_driver *drv = phydev->mdio.dev.driver;
+@@ -3807,10 +3839,30 @@ static int phy_probe(struct device *dev)
+ 	return err;
+ }
+ 
++static int phy_probe(struct device *dev)
++{
++	struct phy_device *phydev = to_phy_device(dev);
++	int err;
++
++	err = __phy_probe(dev);
++	if (err)
++		return err;
++
++	mutex_lock(&phydev->bind_lock);
++	phydev->bound = true;
++	mutex_unlock(&phydev->bind_lock);
++
++	return 0;
++}
++
+ static int phy_remove(struct device *dev)
+ {
+ 	struct phy_device *phydev = to_phy_device(dev);
+ 
++	mutex_lock(&phydev->bind_lock);
++	phydev->bound = false;
++	mutex_unlock(&phydev->bind_lock);
++
+ 	cancel_delayed_work_sync(&phydev->state_queue);
+ 
+ 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
 diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 7c5098a0dd6c..a5a419bc400e 100644
+index a5a419bc400e..db7c8696743c 100644
 --- a/include/linux/phy.h
 +++ b/include/linux/phy.h
-@@ -578,6 +578,7 @@ struct phy_oatc14_sqi_capability {
-  *
-  * @mdio: MDIO bus this PHY is on
-  * @drv: Pointer to the driver for this PHY instance
-+ * @drv_owner: Driver module phy_attach_direct() took a reference on
-  * @devlink: Create a link between phy dev and mac dev, if the external phy
-  *           used by current mac interface is managed by another mac interface.
-  * @phyindex: Unique id across the phy's parent tree of phys to address the PHY
-@@ -689,6 +690,7 @@ struct phy_device {
- 	/* Information about the PHY type */
- 	/* And management functions */
- 	const struct phy_driver *drv;
-+	struct module *drv_owner;
+@@ -671,6 +671,8 @@ struct phy_oatc14_sqi_capability {
+  * @n_ports: Number of ports currently attached to the PHY
+  * @max_n_ports: Max number of ports this PHY can expose
+  * @lock:  Mutex for serialization access to PHY
++ * @bind_lock: Serialises attach and detach with phy_probe() and phy_remove()
++ * @bound: A driver has finished probing and is not being removed
+  * @state_queue: Work queue for state machine
+  * @link_down_events: Number of times link was lost
+  * @shared: Pointer to private data shared by phys in one package
+@@ -802,6 +804,10 @@ struct phy_device {
  
- 	struct device_link *devlink;
+ 	struct mutex lock;
  
++	/* Protects bound */
++	struct mutex bind_lock;
++	bool bound;
++
+ 	/* This may be modified under the rtnl lock */
+ 	bool sfp_bus_attached;
+ 	struct sfp_bus *sfp_bus;
 -- 
 2.53.0
 
