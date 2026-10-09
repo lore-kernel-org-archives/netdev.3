@@ -1,208 +1,130 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E623D0BE5
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791563269; cv=none; b=Wu4PwoRUMItzR02GZspcE41k1WrC0GKmqTPCpOu1KmSrwEk+xwOI1J+b//KMzKWBwr74zlHJKAfCRdWq7/O4RYTbQhmbJAactVdo/m6xvQKBLZLPUJclBMkvbEVhI2ROImTNHiOH4tu5I6jfbsA6juvJ8poLhZ5r651H/Tb80NM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791563269; c=relaxed/simple;
-	bh=GKuZVRqWtm+ag+MQ5GK5bzcEuGQJpFghJjgwjd6B32o=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=q8nQa5YLTrb3/s9x9rs7+uVSw/Wu1rHd9+EhSLnsO/lGtmfEXp5QbuaIs8fXWxWkb4cY+9slOBhTk68kq4k/mRvzs3SHk/GCc5HLxR7UPeY1FU06f9WbiG05qq5nRzhuDmrvfxAnpT3XM3DCD46kyRhMlnFRmwPvn+BTWayyf8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AMuw2FPb; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28A6343D8A
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791563318; cv=pass; b=BbQ+4+TtrHl40XQyvcL0twphXWKj4UYAB6AlDl07ym/gzdK7y2GOmh+XbhEGkVAZZS6dC82IyKUY55OKHEIBGdKTJYwnvh+tPoN4Ob8bjftQG2nsfxknzD0IXFP9eQFqPlufvCZlYaU+wJVe/8xXs+XB9M1sKWu5DTl4UhHG5/E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791563318; c=relaxed/simple;
+	bh=aEEZOJq1YQBCl+EBhhXBbW8ir1k7qWPCFd9LKrrdcJc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fUIuMV3bvRr77AuxnGUXhOTK8SpLB5+DluoVRAISghG7ARvx+VLv+Vkp1OOsZvK11IdxyBEjO4owqGHjin1PwYdlODcCo8fnMZaENFoSOHGA1LMNlm6bfAXW+np57jsb2WXlmuceDE5oBympJHMoUDOQadPMIBFeffChViFAVX4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o+35tXEh; arc=pass smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AMuw2FPb"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e49fbf92aaso28256435ad.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:27:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o+35tXEh"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-150ef97e790so6258c88.1
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:28:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791563317; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L7BvJjKTRoQDVw/VMGMk2V+iactgCO409NUUdjYLnoPhlsSfaK+bt0PyoLr6ZPYVXw
+         4YjKXtonB9hwp99ht/SJofsRewS7EYNPI0j7XvwmyFNJK0H38/Ww5D4w4PT1AXtoGsCg
+         PhKFeJ2Yw9FvvH56figD+uspkN83Itvk1whF7CDaM8qGz+eDTIwc4OD8YKa5H78ff15G
+         AJK2fcFT04AgC1taBKG7Z3b2gEnX7NVUKFnvESt1BXamTo7dWXfqKt233JFRLEf74v+3
+         Uv27uncM/mDAvEPWw5GYsjmmXZzeMAgY6Y7jEfMD8P1qcD9maIykGoREcO88h0X3Opcs
+         2nOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gEeyzzUSwXoU/QlTHcalzbT11R3NUJQd27RQiZ05uEw=;
+        fh=NT8ETwoEV/uQFjtHemcerQAoQv2RJAyDrA9hu9NcNtE=;
+        b=nVdD3JuMhDe/h9rtXj9yOZ2nvtk/BOJoHKxmDMIcr0EfewJx+Usd0cIDlOeR0LzdA5
+         E9bT1VXzbV5d4s3J54ufa/bZRLaPIaesEJEAom2gDiSIqbQq+E9VoNbN0Ex1j31CPKWs
+         VvIvMmFdw+pf/336bJciFiVTnYf2kvgdTEWYShmYc1QJ4+JAs8BxTpyLHTZnqkGnLk0R
+         c4O0+ITWP+ab4EC64uSo+Bg3VBWQJOh/1QidpRpAzmeTr/GsHkS7xhsbvQowtksrTr6s
+         40VhhqXmW939gXtW7vVZ+FUhsU1Kdr0Q9ru6vmfEYH4S1x8LdGVUQSYWX0jNKTT7iBL1
+         XMgw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791563268; x=1792168068; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZpE/NYqZeHO4dzGVhgtndlOxsshgd/TUZ6Pu7sEuBk4=;
-        b=AMuw2FPb7GdjwGkCSMQTUXqcw9lP/hdEiGODO1kHoQBEeNA1yOzNQXNv4pjAMzkTY8
-         WNiM5kk9PaKyHOsrLXQrak8M9Uww05gGz5vrRWX09wWZ29GklRtAUSsE0CpY+KJIRusG
-         pLkYyR0FQdk8uE7HNnV2lATSMDJA6I+u4Sau9FdmsKJbFrxSkmXzaCOvf8PqyxhiicG1
-         qnif13dtxudMfb+0YIj6HVoW1g6g+i33JxsniToEnXshiZY+W1rBk7Gk9HIco440Phyn
-         kkHarkneULl7a+8iJm2XJSLzxQ3VlMlrMS7HJcuEEC/ozL87dEy1ZLv24gs4DJB4qr7Q
-         pYgQ==
+        d=google.com; s=20251104; t=1791563317; x=1792168117; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gEeyzzUSwXoU/QlTHcalzbT11R3NUJQd27RQiZ05uEw=;
+        b=o+35tXEhoUP055stHe450elM8Pde7XjT9r6mpXr9QUNVD5DEHxovL/+mbE9yLffc7u
+         AelCVfSrubGoxQlCuqas9iv0BdB7BiXlqTICakIwKQTEOp+LpHLYTVhJPUfPURrslp8h
+         Y9VCy3LBTHSB1LavwadSPIutBsxXhMd0X/7XzE/4FVSxCfGwwmHU57mq8xGKAobKpGmf
+         p4lu+rQq9rVx9H8lzoJndqGjBHiYgs7QEdTEvPApfMfw7JvbuCLtUFhvYI+CG6UOxe9x
+         4sBR+o2tFi8kFuvD5Vk1lWwm/XADmEEGxbpNG/6sCB4jF2yOtp6Gc5finCtz1csUig9s
+         FGfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791563268; x=1792168068;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1791563317; x=1792168117;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZpE/NYqZeHO4dzGVhgtndlOxsshgd/TUZ6Pu7sEuBk4=;
-        b=uVRKWwWByHlKF09xOZpkWeTJVnCPxuy2LNX7VwlaaPcp4Jm/ChDZNoZ7LxwTeYISJN
-         ZuItN0EaQ7+ONUTu31m3QOH2v/u4W0i/jDCp59Xb8bqASvKgt9OCwUh+ifTCXv9xBP4x
-         0LwhyNFVHitgCEouCyV0q+9ELr137oFSaF5iHndZMYCNsFvtiYAkmb56Jf7XRGbacnVX
-         dMyLI7vFKxu83PHkL0y1NXWauUCc9YJ7DcJTKv1KcXOy/9rBHeO6Lg0M4ytzdyaY5TOl
-         glWyaX0q/brqKMj2wzI+mULrVz4SnuoGyWXYVX2M699guGk49pKPF6cdai+qvjsjsY3I
-         RY/A==
-X-Gm-Message-State: AFq9FYL7HkG0gpMWGNBGwsPoJkEEZleNWF1TSMTISYZA6K6Z7Hsnp1mO
-	lVjFLa0TzHbN5QyUTBN7FC6A1tdeXJGEJOILhc3c2pI4pJ5SOXsMxE7a
-X-Gm-Gg: AYBFou2ZdTEWI2XIuT/fZVohc18NYofmanOtMJqP7djnsLDwuW8SaEtVh62wq0iI+jE
-	f+Gs8BigzsOO7RJrZw0WT5tCaJ8vjQTv/WaI/EczC9EoZGM7/8aBrOV2T9tE+cMSS8I3mcIzZAD
-	38+pdXsq0AbJPnOn86Y9EYUqGNCEmxjHCGUoutaDGXRTMR4m13xmavnD1x7qDzfvP9OzK6skUxS
-	3PyI5Mkd3P3Nq8++ORhWxTKJbemecO66F/AYwpB+Kth86WqvRTcnwM1/Iflp1M+Lm2he0d2Vco8
-	sPF8u/4RSR7a56FGE2q4G9/Uf66lTOwHjFtRGrHy6fqpSKrCu0wucpXeXqyE6vlBMA3pqEXFIMb
-	4dIBZ1QoBL9McRTZcXqJeqTxfLtiuIQWWgteXs/kklkH9d95Yrgit1jlpVmK4oLRzIhYH35vMni
-	yEURW7rFenP4+WcpmjOb4QvxBt3A7xtKFB/dvKvlbgZcv3ivs42OwtZ6IUrlXWJvP64ZHfFPlRe
-	psedH/IZa7VUf8Ih/62EJN2fcXT6zr8dHmN
-X-Received: by 2002:a17:902:f544:b0:2d9:520c:38e7 with SMTP id d9443c01a7336-2e8427f11aamr22508725ad.1.1791563267626;
-        Fri, 09 Oct 2026 09:27:47 -0700 (PDT)
-Received: from smtpclient.apple (v133-18-180-162.vir.kagoya.net. [133.18.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422e4eb2sm13099855ad.74.2026.10.09.09.27.44
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Oct 2026 09:27:46 -0700 (PDT)
-From: Echoo Wall <echoowall@gmail.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+        bh=gEeyzzUSwXoU/QlTHcalzbT11R3NUJQd27RQiZ05uEw=;
+        b=cxF2ntKZYYmSyfNj0Gm66c5l3M3jlDzOCgwGY0hGq7r+jUvirAiQh70yyOi+uN6n8L
+         PtsQ/xknWebYmAGznQ+vPDjE/YP+WTug2DAOCG71baUDTVMJbMun7WHUWe1jPfLRx2Wy
+         O3SOEYEkn8k6csTErpcsDnrmBUBKPlMi4FGCUf3A8/9MQ5WBGaXUJqp+lzp5aWOj1j7M
+         T6Onu8c89229tslQcGDrzMmJkt7qaShuwVo8TYA73YwMoi/s/IPgwv58Ys+b4Ha1PSTK
+         z7dauqCqiyK1w5q8o0yABMYQ6FewI0R25+qmayRZ+Vmg22VNBVN22UGbHKnzneD72Nc6
+         G4XQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzMpia7szSUDOt6OkAVAMF4Hlpqt2VcrcHALN8kT60mXSsPt+UEKqcNgg6X2INcqTbgisXMUfo=@vger.kernel.org
+X-Gm-Message-State: AFuF++m1vHL0gVHf3kiYiV0LfZy56Gaxt/AnKcPiZH33Y+rdsxxXykXi
+	WmVwQ47ix4hOB9z1iTauaKMbXklBKlTZKMqo7su3s9F/1bqekr0/DGEFL5AeYMOjKx9SK+F4Wxz
+	Rg+QznjbevgVOToDMZLApHoP/w1KMjUn/bdNa2qF8
+X-Gm-Gg: AYBFou2HSsVVptTzvcIrOlIwhPz+HtFmKtTC/3oUlp+Vv58w1vr86oNTw0wSQ42+iIH
+	gMGXNXZ3K3Rgdilt18ybSEHiDVwFdqwtjqdm5uX9G4e2qrT+nwNZviXbYZPP2ud+ty27tu9+npS
+	G9Bqi/eFoW1t2AdasKDXiIcNq8ATiP36qMcjLuATTfTFeRg3mGeuR6auV5VvIsIht6hWyLzM3EB
+	5u7J3wfi8VKkvdeLQXuBKbMxLNWwS+YuULHkfuzAdVrrmj5+pJUPMuwqafhWml7Ep7Jbu622FR+
+	kmXBIzdFpgB9CxCiOk3ULQaj6HNVnYgKlNHM7iFEZoRT0p0V1n0BjjoUhPDboKmmXA==
+X-Received: by 2002:a05:7022:1506:b0:12b:ff98:1ed9 with SMTP id
+ a92af1059eb24-16a4d57c474mr309609c88.12.1791563255822; Fri, 09 Oct 2026
+ 09:27:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.12\))
-Subject: [REGRESSION] 6.12.111: "net: advertise TCP MSS from the configured
- MTU, not the learned PMTU" breaks TCP through relays when the peer's network
- drops ICMP
-Message-Id: <4F0FAEB6-A13B-47F3-BFF1-C706686C6F64@gmail.com>
-Date: Sat, 10 Oct 2026 00:27:29 +0800
-Cc: netdev@vger.kernel.org,
- regressions@lists.linux.dev,
- stable@vger.kernel.org
-To: Jiayuan Chen <jiayuan.chen@linux.dev>,
- Eric Dumazet <edumazet@google.com>
-X-Mailer: Apple Mail (2.3901.100.1.1.12)
+MIME-Version: 1.0
+References: <20261006-b4-skbuff-bug-on-v1-0-1b4434c5357c@toxicpanda.com> <20261006-b4-skbuff-bug-on-v1-5-1b4434c5357c@toxicpanda.com>
+In-Reply-To: <20261006-b4-skbuff-bug-on-v1-5-1b4434c5357c@toxicpanda.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 9 Oct 2026 09:27:14 -0700
+X-Gm-Features: AclHuK81ahTE51wC2Bp7FXQn_Jc8YWHqO5IFJUkY7wkhMiw-xblsjCBwxgAMBh4
+Message-ID: <CAHS8izPj0JCi=-tjNBTYH3=-ak_VLCeKeWxTrwAt7vs8LDgn5Q@mail.gmail.com>
+Subject: Re: [PATCH net-next 5/9] net: skbuff: don't BUG() on leftover length
+ in skb_checksum() and friends
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Oct 6, 2026 at 10:10=E2=80=AFAM Josef Bacik <josef@toxicpanda.com> =
+wrote:
+>
+> skb_checksum(), skb_crc32c() and __skb_to_sgvec() walk the head, frags
+> and frag_list and BUG() if they run out of skb before they run out of
+> @len.  By then nothing has been read past the end of the skb.  The walk
+> stopped at the end of the data, and the check only tells us the caller
+> asked for a range the skb doesn't have.  commit 06a0afcfe2f5 ("xfrm: do
+> pskb_pull properly in __xfrm_transport_prep") fixed one such caller that
+> crashed in __skb_to_sgvec().
+>
+> Warn once and return what each function already returns when it can't
+> do the work:
+>
+>  - __skb_to_sgvec() returns -EINVAL.  Every skb_to_sgvec() caller has
+>    checked for a negative return since it learned to return -EMSGSIZE.
+>  - skb_checksum() and skb_crc32c() return 0, as they already do for
+>    unreadable frags.  The resulting checksum is wrong, so the packet
+>    fails verification on receive or goes out with a bad checksum on
+>    transmit, rather than taking the machine down.
+>
+> Assisted-by: LLM
+> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 
-After a routine stable update from 6.12.107 to 6.12.111 (Debian =
-trixie-security,
-6.12.111-1), TCP connections to our servers started timing out for a =
-subset of
-clients. Booting back to 6.12.107 / 6.12.101 fixed it immediately. I =
-believe the
-cause is:
 
-  2640e64195948a601430d230c9864f5426574cde
-  net: advertise TCP MSS from the configured MTU, not the learned PMTU
-  (in stable 6.12.111 and 6.18.51)
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
-#regzbot introduced: 2640e64195948a601430d230c9864f5426574cde
-
-Topology
---------
-
-  client ---(internet)---> relay (Linux, nftables DNAT + masquerade) =
----> server
-                                                               ^
-                                                 path MTU 1456 on this =
-hop
-
-- Servers have a 1500-byte interface MTU, but the path between the relay =
-and the
-  server has a PMTU of 1456 (encapsulation upstream). The server learns =
-this
-  correctly: `ip route get <relay>` shows `cache mtu 1456`.
-- Clients reach the server only through the relay (port-based DNAT, SNAT =
-to the
-  relay address).
-- Some client networks (typical corporate firewalls) drop ICMP
-  "fragmentation needed".
-
-Behaviour
----------
-
-Before (<=3D 6.12.110): the server's SYN-ACK advertised MSS 1416, =
-derived from the
-learned PMTU. Clients never sent segments that were too large. =
-Everything worked,
-including from networks that filter ICMP.
-
-After (6.12.111): the SYN-ACK advertises MSS 1460 from the configured =
-MTU. The
-client sends 1500-byte packets. They are dropped at the 1456 hop, and =
-the ICMP
-error never reaches the client because its network filters it. The =
-handshake
-completes, then the connection stalls: a classic PMTU black hole.
-
-Direct connections to the same servers, without the relay hop, keep =
-working, and
-so do servers still on <=3D 6.12.110 behind the same relays. That made =
-the problem
-very hard to attribute: it only appears from certain client networks, =
-only on
-relayed paths, and only after a kernel update that nothing points to.
-
-What I verified
----------------
-
-- Reproducible per host by switching only the kernel. Rebooting without =
-changing
-  the kernel does not help. Same sysctls on both kernels (309 TCP =
-parameters
-  compared), same userspace.
-- On 6.12.107 the server has `cache mtu 1456` towards the relay, so the
-  SYN-ACK MSS is derived from it (1416). With this commit the advertised
-  MSS comes from the 1500-byte device MTU (1460) instead. That matches =
-the
-  symptom exactly, but I have not yet captured a 6.12.111 SYN-ACK on the
-  affected path.
-- As a workaround we now clamp MSS on the relay
-  (`tcp flags syn tcp option maxseg size > 1416 tcp option maxseg size =
-set 1416`
-  in the forward chain). I have not yet re-tested 6.12.111 behind it.
-
-Why I think this matters
-------------------------
-
-The commit message argues that on symmetric paths nothing is lost =
-because "the
-peer usually already knows the real path MTU". That assumption does not =
-hold when:
-
-  1. the peer sits behind a firewall that drops ICMP =
-fragmentation-needed, which
-     is common in enterprise networks; and/or
-  2. the narrow hop is only on the server side (relay, tunnel or overlay =
-egress),
-     so the peer has no way to learn it other than via ICMP.
-
-In both cases the receiver-side PMTU knowledge was the only thing that =
-kept the
-connection working. The old behaviour was effectively a built-in =
-safeguard for
-these black holes, and it has been in place for a very long time.
-
-This is now shipping as a security update in LTS/stable kernels and
-distributions. It silently breaks previously working deployments, and =
-only for
-some users, so most operators will not connect the symptom to the =
-kernel. The
-6.6 / 6.1 / 5.15 backports appear to be still pending, so there may =
-still be
-time to reconsider before it spreads further.
-
-Possible ways forward (just suggestions):
-
-  - revert from stable and keep it in mainline until there is a safer =
-variant;
-  - make it opt-in (sysctl or per-route flag) for the asymmetric / DSR =
-case it
-    targets;
-  - or only ignore the learned PMTU when there is evidence of asymmetry, =
-instead
-    of unconditionally.
-
-I am happy to test patches on the affected setup.
-
-Thanks.
-Esko Mobius
-
+--=20
+Thanks,
+Mina
