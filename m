@@ -1,270 +1,233 @@
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE809511E6F
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCF55111AD;
+	Fri,  9 Oct 2026 18:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791570811; cv=none; b=uA0BKCdQZdr0mBI85K42Wvuaj09aOzBtbXYW7frQUKIjwoAzLfPUc/+W1uSCFcUql9IB4knHTnoRu6I2X4qIKvt/zYjlPSa9hkd2QMEmgjlYGkaeyTKO/8sAdXfwvDDg1cZVlg/ZGpFBwtXHtWf5+6qVr8Vy+FPmN2flTvSm+g8=
+	t=1791570819; cv=none; b=acLaRNDjDpNB+5sOJXNsgQNNgHoGQqzxRfG+0srRwBIpGVJ0r/jjU689+zokUKQ9hsScH096IRJHvmEkRW2BO8x7sVlHBFv6QDWE4lZeTdRqm9TASKpBWbB8eESyMd5gTNIhN3IDeZWnGs8s1DUwFnMjHM613cCM4CTGdKuVvZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791570811; c=relaxed/simple;
-	bh=A7e6V4W83wbbrRJU3ku5g92ijpByIN02Z/89Ibq6ma8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=T9VWQgIwW7Msm1SgAfEmQn5fbZnW7GN+l6AiXHRDAgwnFB3T31pZGK9ZnIEBZdYt1P5+x99gxTS0j466u1uqIRP/xxsq11GypfAmMIbL9BBDO2+KVCCpmw43e/MRVvxoY3Pd/WhOmEfsd0TH/fBylQxMP3nIRcqPJ1ACZpqoLes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=J8vhjlkS; arc=none smtp.client-ip=209.85.216.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1791570819; c=relaxed/simple;
+	bh=bgcSYNEKXWby9UBkp8I1qpqIRK/O1vtneuGuGBVDKQI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ugoP7KlqPwujbnAcotcLSv+nA4Fyq/wdV6Zzn2LDIPrqVIwsgUGxVCdxW2tjVCkBb6Mhc/PDKziQfkb3FOVMf7JP2qZlDZmRQaO6MhI9jxsLu9AhMDBsAB+KhkYqEJdbYezvhZJmvnB8dTbml9TxiVuSB9rUo3KzmcGvyQnS5nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KLoiAR1y; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="J8vhjlkS"
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ab4178ee33so648226a91.3
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:33:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791570805; x=1792175605;
-        h=content-type:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=AedNmKJh3uirFHUvU8tzwQpXVhmcLVMPDd9DqEdyvoM=;
-        b=Z/UDxNjsxlfolJoDWGRgLXYShq/i73Hmr2hOBZ1jm7hjYohTanznI3FUM1/FQ9BbJR
-         fbO6Ld3wCdG7RHY07uq/qrkCSd7QHjvLAywFA84IO9iH6U3kinqsNkF+zZ3wcCyOYKV9
-         jDR9VHMtmVhyNsmyr/5eaKKhiDvjDGcJ0RlzVpCLWsY+H6q7Xvu6JxFcEP7vjiCbq9qI
-         kB5xEoRVYD4P5Nxf4rdijNKqEb1sDjvkeMDkplFnkNKCGErf2vVASv8uUq/EPR0iV39W
-         T3HZaec1pr7xYIOqPI2QY656nVyjzPGD8i4fcPmpl3jzb9a5bEHKjMa3hBgWQJGSIgHc
-         zsNA==
-X-Forwarded-Encrypted: i=1; AKwUvByRTZHAMe4/6logKU/53QkHvTsu3cvHI14XcWGrsU/EFJtKc8F4iTJz9yFd4SuiiIbN5sSdvgM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL2+h9Ir6ynI3GNl5QOcZOqC3skmht7K5tOWxDZ6XhO6UMNpdtV
-	f4LUI8Wb6KD6yzV71n7zc1A3bNKTQvnURjhfTif2V+ynr+T6JTN3M/09xZA1HUUJmOWlddws5E9
-	4oIPABm1QjB8Gez+b0y3ayyBfDJvF+H3fW18bwH3MOiyvwxIA9FVkf2deXTeTDvWrTqd/4qTDU5
-	SDNwaZY1Ibu2tZzpfOIpwyVtr8zBpn5Ghp0DfRQw/armkvFbOUfsFqC2wCjz5QcBLWu7p5HpXyi
-	TCSFzKRLpg=
-X-Gm-Gg: AYBFou1uUvwkqubFxaspjVIqFodGOXuyALpMZnNYSW0kJJ6z7I1ps/XuBxfp/5UPVTi
-	kqC/adr/bFU4CpJev5sRgrOYKRL5tsVx9d/UNiMpLOmalwcH/103JTIBBchN1OJ0z3XxzOYyTs/
-	rSgrOSTRDA0t3PaBaQCqxbrkL8Z4jtG+3BZCLgMwx8Yiw6HdjQZmGLNuCjFq/4Nb+gftz6ApnxW
-	0J2JuoXNTZvfSm5V3IxR4aeL8LxcxGbURWHg/4bb1CN+3mpxB/tX4P7Fto94URserTnVLF/HF8O
-	z/VcKZi4shjwxL8LCyfNInAllNZo0e+S2De7E8ayxhPldRqyUE+o9rTPNuuLGbENSvjGspcw4Jd
-	NSSkMHqDEOxrK373kaI7t2f1kgGQkQrZ4sU57EDY0lg0rzlqRTDLLtdwm1FlAo0jrAGA6KB1VCF
-	8d709zje0pk2Uanx5fJhOX6ktSsMmVT1RJiwY=
-X-Received: by 2002:a17:90b:3912:b0:3a4:dbda:9934 with SMTP id 98e67ed59e1d1-3ab3aca2634mr2011459a91.63.1791570804908;
-        Fri, 09 Oct 2026 11:33:24 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-24.dlp.protect.broadcom.com. [144.49.247.24])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ab37a4d1dasm1520253a91.6.2026.10.09.11.33.24
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 09 Oct 2026 11:33:24 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c2e71425f87so12051966b.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:33:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791570803; x=1792175603; darn=vger.kernel.org;
-        h=content-type:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AedNmKJh3uirFHUvU8tzwQpXVhmcLVMPDd9DqEdyvoM=;
-        b=J8vhjlkSK7syy/BVPSWY5dCn3bLDHot/5dVrv3enL7ughd+Slg1ZUi1wqsIQ61lYNm
-         JtXY49WivXrJ4q4SXPFdm6poftEjQH/mfvHLZlA0QcGukzVvWbiHfxNgv+XnrixUh2aj
-         Jv3x4uqzq/2CkhY/aJjKDrHVEQIzk0quOvLFQ=
-X-Forwarded-Encrypted: i=1; AKwUvBwBB7/nIEvBEhk6GtypWJDnxQPgqRu21iYut6hPDgr0oRlxKMwtV1JyyAK0KRi9m4AvO1xmGQo=@vger.kernel.org
-X-Received: by 2002:a17:907:c23:b0:c2e:4e08:19b5 with SMTP id a640c23a62f3a-c31a9d08813mr281699566b.8.1791570802502;
-        Fri, 09 Oct 2026 11:33:22 -0700 (PDT)
-X-Received: by 2002:a17:907:c23:b0:c2e:4e08:19b5 with SMTP id
- a640c23a62f3a-c31a9d08813mr281691166b.8.1791570800296; Fri, 09 Oct 2026
- 11:33:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KLoiAR1y"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 699Ha2l93128463;
+	Fri, 9 Oct 2026 18:33:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ChKJeJxDq4YS458jTya3SdzWhwFomBP9jCGhHd5j/
+	9E=; b=KLoiAR1yoOMCxIeSm2iQW+L83pUpg9aHhydfOfvny477unTWuzMSoSBJ4
+	SNtm1v9pOLntitmjH1jt+ogCoQWPg+N6YTl4Yr7Ix2+u6812IY6s3b4p7/fFrBHB
+	WC1Fr9TFASOilYAcCImTuOJXvGn+vhj3Ly9iV/Pk+SLa7NixlU9wUuQthy3kuU1k
+	MUOg0WwuTv0GXFXO4cGnBD4BCojhULmqwOD1PwyjSX9sBGzovo6LEFs+50WA790N
+	vXGZ7CYOE8mvsx3MZRcrB5h3YMsYSY1clVCZPgO7jGybfNbgpqNGX+HVvW3d48xa
+	aKQrwFOmsbAtDoXo6KZorduUjV7CA==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h74tcg99q-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 18:33:10 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 699H8I3k1206706;
+	Fri, 9 Oct 2026 18:33:09 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h6hsnm8de-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 18:33:09 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 699IX7FJ21496550
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Oct 2026 18:33:07 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E8385805C;
+	Fri,  9 Oct 2026 18:33:07 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CE2A358051;
+	Fri,  9 Oct 2026 18:33:04 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.110.242])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  9 Oct 2026 18:33:04 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        chleroy@kernel.org, ritesh.list@gmail.com, sshegde@linux.ibm.com,
+        nnac123@linux.ibm.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        horms@kernel.org, davemarq@linux.ibm.com, bjking1@linux.ibm.com
+Subject: [PATCH net-next v3 0/8] ibmveth: fix hangs, use-after-frees and netpoll races
+Date: Fri,  9 Oct 2026 11:32:50 -0700
+Message-Id: <20261009183258.18624-1-mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008191114.3736826-1-joe@dama.to> <20261008191114.3736826-3-joe@dama.to>
- <CACKFLikWkH6QaOG=EO_zu8cqCFRxGqtA2-+R-btp0TwUbJjVBg@mail.gmail.com> <asklVFvUJx8P/k1d@devvm20253.cco0.facebook.com>
-In-Reply-To: <asklVFvUJx8P/k1d@devvm20253.cco0.facebook.com>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Fri, 9 Oct 2026 11:33:07 -0700
-X-Gm-Features: AclHuK9FtRnLD_nfOhaQMng8h30I5kdneNNuwRzA5OSlVD4L05fTNXRGnLjZC94
-Message-ID: <CACKFLiksRwZm+Zy74G_u59yEpY5BK+xRv=r6f9Wpo6WgT_TwDQ@mail.gmail.com>
-Subject: Re: [PATCH net 2/2] bnxt_en: Pad short SW USO segments to BNXT_MIN_PKT_SIZE
-To: Joe Damato <joe@dama.to>, Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, edumazet@google.com, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000052cb57065d6c959f"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDA3MiBTYWx0ZWRfX1HIp8B5HWztw
+ f7Ru7Q7HMmkaLCwwGbWi89eyikjpwLisGrXV+cTTSOlp2ai1ioHXQiKqcFsf6PdjFQK5gq6v38u
+ aiYdjKPPFidHEYBepL/zHH01aH+uBoubzgaQqMhVS1Hnutnn6bxZM9mTowlYrg7QY1jw3h0S+aU
+ LbqcjUC2wzOnOex5cFxo6abGINlBNOf6DkWsldhtlhqHQg//KclzC5TMzV8MEIbCUZVYaSHRZkV
+ gJfX+T1OEXbdIS/BeqKuMNgN1oLVEKXRfYp/ctmDZHKbtPRa7kMddwtcCAwf4w4dKS+er/YUy5c
+ LssuogqpccN2FtWGrn9Dth5eMCvyMS0f5o4jVb2Lctknii89CVICbJV4LTKCBoZSPF/VpUKfHlm
+ 3sPyuiL/UxhLy+reYncIPfq4A+z/U/R2t7ZOxyz8w+fAnQ26+A1b2OlRUavco/HMICkdVCj681E
+ UzStGblDyXjuJZPCOPg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDA3MiBTYWx0ZWRfX+tHK4YNrzWYR
+ Os9UAHIil6TsGlDhN4b4km7cRkvsxARNyVEjltDJMDydQSUPilg1RpA33jV4LXjTgbJ+gug+TBm
+ xqVZUvVSs02xEBRAFKaLTAkT16gHWxY=
+X-Proofpoint-GUID: U-hyIDaSsw9xRkly0VexmlXDDZz057La
+X-Proofpoint-ORIG-GUID: MKj_hNCp3txWYL3jS70cJ02sXmWsRgT3
+X-Authority-Analysis: v=2.4 cv=Yu+a1IYX c=1 sm=1 tr=0 ts=6ac93367 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=rYr2VNrAWewxvVPv618A:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-09_05,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
+ bulkscore=0 phishscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610090072
 
---00000000000052cb57065d6c959f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Fri, Oct 9, 2026 at 10:33=E2=80=AFAM Joe Damato <joe@dama.to> wrote:
->
-> On Thu, Oct 08, 2026 at 10:26:06PM -0700, Michael Chan wrote:
-> > On Thu, Oct 8, 2026 at 12:11=E2=80=AFPM Joe Damato <joe@dama.to> wrote:
-> >
-> > > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/=
-net/ethernet/broadcom/bnxt/bnxt_gso.c
-> > > index ef04c9d08066..f87e02ef3033 100644
-> > > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-> > > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-> > > @@ -82,11 +82,14 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct =
-bnxt_tx_ring_info *txr,
-> > >         if (unlikely(num_segs <=3D 1))
-> > >                 goto drop;
-> > >
-> > > +       if (unlikely(bnxt_sw_gso_pad_len(hdr_len, mss)))
-> > > +               goto drop;
-> > > +
-> >
-> > This looks redundant since you already have the same check in
-> > bnxt_features_check().
->
-> It's redundant for skbs that go through validate_xmit_skb(), but generic =
-XDP
-> doesn't AFAIU. Not sure how else to handle this case, but open to suggest=
-ions.
->
+Eight fixes for serious bugs in the ibmveth driver: two hang the
+system, four are use-after-frees, one corrupts memory, and one makes
+ethtool -L report success when it failed.
 
-Did you mean generic XDP turning around incoming packets with XDP_TX
-actions and transmitting them through the software stack?  This path
-cannot generate USO packets, right?
+  1. Netpoll races with RX replenish (memory corruption, NULL
+     dereference): remove ndo_poll_controller, as was done for
+     ibmvnic, skip RX replenish in netpoll's budget-0 poll, and
+     enable NAPI only once the RX resources exist.
+     Fixes: 6b4223748895, bea3348eef27
 
-> If you agree and are OK with dropping these, then I could add a comment
-> clarifying this in the v2. LMK what you think.
->
-> > >         /* Upper bound on the number of descriptors needed.
-> > >          *
-> > >          * Each segment uses 1 long BD + 1 ext BD + payload BDs, whic=
-h is
-> > >          * at most num_segs + nr_frags (each frag boundary crossing a=
-dds at
-> > > -        * most 1 extra BD).
-> > > +        * most 1 extra BD). The last segment may need 1 pad BD.
-> > >          */
-> > >         bds_needed =3D 3 * num_segs + skb_shinfo(skb)->nr_frags + 1;
-> >
-> > I don't quite understand why we don't need to add 1 more for possible
-> > padding here.
->
-> Re-reading the code, I think the +1 was never needed in the first place.
-> Payload BDs come from at most 1 + nr_frags DMA regions. Going from one re=
-gion
-> to the next adds at most one BD on top of one BD per segment. There are
-> nr_frags boundaries at most, so I think the math is:
->
->   2*num_segs + num_segs + nr_frags
->
-> which simplifies to 3*num_segs + nr_frags.
->
-> I would appreciate a double check on the math :) but I think the +1 from =
-the
-> original code was actually unnecessary and so for this change we can use =
-it
-> for the pad BD.
+  2. Hang after a failed internal reopen: the next close() waits in
+     napi_disable() forever with RTNL held, and only a reboot
+     recovers. Skip close() when open() did not succeed.
+     Fixes: 860f242eb534
 
-I think the math is right.  If you have n nr_frags, you can only cross
-it at most n times.  So the +1 was not necessary until we now deal
-with the padding. Thanks.
+  3. Use-after-free in remove(): a reset queued from NAPI could run
+     on the freed adapter. Disable the reset work first.
+     Fixes: 2c91e2319ed9
 
---00000000000052cb57065d6c959f
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+  4. Fixes the RX poll when the correlator is bad. Poll spun on that
+     slot until RCU stalled, and an inactive pool dereferenced NULL.
+     Skipping the slot and then leaving poll could also queue the
+     napi twice. A frame that does not fit its buffer was copied
+     past the end. Move past the bad slot and stay in poll, and
+     drop a frame that does not fit.
+     Fixes: 2c91e2319ed9, 860f242eb534
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBf0CNo
-H9STtc9ZBYWhgtiRofx7SFc/0dpfP85ZfcaG4DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjEwMDkxODMzMjNaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAGMZRHb0KPymy+6pMusAVytd5upD5d3ZKeL3RdnIKD
-hW8xQB/Jk/2siutiAnjNsqlG+JjPYQ85Yj1iHMgaYTAyO11rG4LfyWj1bTAPvT5v3GobbcswkHbX
-/to5ajgSDWLhu1FCf+wf1ai8BCBOQF3yKE7hE5gbDzPYo30/lx9ux87Dek7lbR/sTVTBnIoh5eqZ
-+IYTbTsbzkKXml3A1neYfocfnsE7qAYk8PNZF4U8BDS+E40xxPteH1mF48VW+UfStUUASpAcpxX0
-/shVyomOUCR/3P8m2KSmNYBsUA7WG+XDfpl9c7iLVSGQbhZNqzOvI/wpVPY4BoYd/uzKFa/M
---00000000000052cb57065d6c959f--
+  5. Use-after-free after a failed probe: the pool kobjects stay in
+     sysfs after the adapter is freed. Put them, as remove() does,
+     and give them a release() that probe and remove() wait for, so
+     CONFIG_DEBUG_KOBJECT_RELEASE cannot free them early either.
+     Fixes: 860f242eb534
+
+  6. ethtool -L returns 0 when it cannot allocate the new TX queues.
+     Return the allocation error.
+     Fixes: 10c2aba89cc0
+
+  7. Use-after-free of TX buffers: close() frees them without
+     waiting for a running transmit. It is called directly for MTU,
+     offload and buffer pool changes, and through dev_close(), which
+     does not wait either with a noqueue qdisc. Use
+     netif_tx_disable().
+     Fixes: d6832ca48d8a
+
+  8. Use-after-free of the RX queue: napi_disable() returns before
+     the poll has finished, and the rest of the poll re-enables the
+     interrupt and reads the RX queue that close() then frees. Wait
+     with synchronize_net().
+     Fixes: bea3348eef27
+
+All were found by AI-assisted review of the ibmveth multi-queue
+RX series [1]. Landing them first also shrinks that series, which
+then only extends this handling per queue.
+
+Testing: the new and extended KUnit cases in patch 4 fail on the
+unfixed driver and pass on qemu pseries (ppc64le). On a POWER10
+LPAR: netconsole under printk and ping floods, MTU and buffer pool
+changes under traffic, a forced open() failure followed by down and
+up, unbind/bind under traffic, a forced register_netdev() failure in
+probe, ethtool -L with a forced TX buffer allocation failure, and
+rapid link down/up and MTU cycles under a ping flood for patch 8.
+The forced failures used test-only module parameters that are not
+part of this series.
+
+The triggers are rare and there are no field reports, so the series
+targets net-next. It is based on net-next d8674294aefe ("Merge
+git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net"), which
+includes the two open() error-path fixes (af0524bf4ce1,
+84bec0bf0352). Patch 2 explains how it relates to them. It also
+applies cleanly to net. All carry Fixes: tags; I am happy to
+repost against net, or add Cc: stable, if you prefer.
+
+Changes in v3:
+
+From the Sashiko review of v2:
+- Patch 4: on a bad RX slot, stay in the poll loop and return
+  budget - 1 after napi_schedule() has queued the napi. Breaking
+  out was queuing it twice.
+- Patch 4: drop a frame that does not fit its buffer, instead of
+  copying past the end.
+- Patch 4: also drop a frame shorter than an Ethernet header, and
+  take the pool for the buffer bound from the correlator that was
+  validated, read once.
+- Patch 2: commit message: the two open() fixes are now in net-next.
+
+v2: https://lore.kernel.org/netdev/cover.1791178212.git.mmc@linux.ibm.com/
+
+Changes in v2:
+
+From the Sashiko review of v1:
+- Patch 5: give the pool kobjects a release() and wait for it before
+  free_netdev() in probe and remove(), which closes the
+  CONFIG_DEBUG_KOBJECT_RELEASE window.
+- New patch 8: wait for the poll to return before close() frees the
+  RX queue (raised on patch 1 as a pre-existing bug).
+
+Other small changes:
+- Patch 1: also skip RX replenish in netpoll's budget-0 poll.
+- Patch 4: count rx_dropped when recycling an invalid buffer fails.
+- Commit messages: say how each bug was found and tested, with small
+  clarifications in patches 2 and 7.
+
+Rebased on current net-next.
+
+v1: https://lore.kernel.org/netdev/cover.1790991039.git.mmc@linux.ibm.com/
+
+[1] https://lore.kernel.org/netdev/cover.1790319558.git.mmc@linux.ibm.com/
+
+Thanks,
+Mingming
+
+Mingming Cao (8):
+  ibmveth: fix netpoll races with RX replenish
+  ibmveth: do not close twice after a failed reopen
+  ibmveth: disable the reset work before unregister in remove
+  ibmveth: step past bad RX correlators instead of spinning or oopsing
+  ibmveth: release the pool kobjects when probe fails
+  ibmveth: return the error when set_channels cannot add TX queues
+  ibmveth: wait for in-flight transmits in ibmveth_close()
+  ibmveth: wait for the RX poll to return before freeing the RX queue
+
+ drivers/net/ethernet/ibm/ibmveth.c | 364 +++++++++++++++++++++++------
+ drivers/net/ethernet/ibm/ibmveth.h |   5 +
+ 2 files changed, 296 insertions(+), 73 deletions(-)
+
+
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+-- 
+2.50.1 (Apple Git-155)
+
