@@ -1,241 +1,270 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010004.outbound.protection.outlook.com [52.101.193.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A1D51120C;
-	Fri,  9 Oct 2026 18:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791570793; cv=fail; b=OhMsGw7HAIE1zgM8JiiRXEaA3xf5iHeKrjY31IzMRVZylrtdYVaBfrXGiDxWrgxpdWz+q3xH6CXZFtNLCHA41VOYL3X3YOOnq8Piat3/NtswgSfBZ1kgazcP6BQbmWcW6UVFprlA1bUmXHo2dKza/dIqgWxJ2Eh3OmTnnsS7xcE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791570793; c=relaxed/simple;
-	bh=p5TIG1brKjFVIu0tdxYkPjGS2ntQvCv7+6NA8x91g+Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rCig+Fq0hum1EJmrHHnaD2aJ5SXy9CMKpUO2QhvnEEkpLigHjlRQajhladNE4Z6OlAb6B/Uf1XROiQIRtOxuJWyr5jrTxTW8RkcZ+MkLKcBLm1BiZlNx1+T6ysZ0LIokizmbNtQyD1YOpFZUf3Xq8GZ5HcWZqvAVnrjZLSkn0wY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=duzC05NK; arc=fail smtp.client-ip=52.101.193.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE809511E6F
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791570811; cv=none; b=uA0BKCdQZdr0mBI85K42Wvuaj09aOzBtbXYW7frQUKIjwoAzLfPUc/+W1uSCFcUql9IB4knHTnoRu6I2X4qIKvt/zYjlPSa9hkd2QMEmgjlYGkaeyTKO/8sAdXfwvDDg1cZVlg/ZGpFBwtXHtWf5+6qVr8Vy+FPmN2flTvSm+g8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791570811; c=relaxed/simple;
+	bh=A7e6V4W83wbbrRJU3ku5g92ijpByIN02Z/89Ibq6ma8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=T9VWQgIwW7Msm1SgAfEmQn5fbZnW7GN+l6AiXHRDAgwnFB3T31pZGK9ZnIEBZdYt1P5+x99gxTS0j466u1uqIRP/xxsq11GypfAmMIbL9BBDO2+KVCCpmw43e/MRVvxoY3Pd/WhOmEfsd0TH/fBylQxMP3nIRcqPJ1ACZpqoLes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=J8vhjlkS; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="duzC05NK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KMeDtv6DJ7tQyGbgYIakOdcmQqWm/OetvdbHp83SRc0RVCFr9iucGgNHRVHDn5oTbWF38LPm3tj8SdF9EQCtQ91VKsjCyeoNsQRIYfWpwtBBC1zcK8XnfNlNi2KY/NIc96DRpaSFMH9dOYVj8VUxHggnloQMWTIi7XkC0nd+j5cBdqvfqD+TptuUl8KZbrh7iW6KtPyCXiBMlXX663rDzaii457a/GHKvLwSV0MG1sDPe4MhnUTRqP8iunfD3lULmQ59fvviHQ6L85wTvC+eAupaPAN/60XPV38iAt/RekyPxOeCwEE1k/5IV/iqGCV27+15B2ugSaiyH7a681b+YA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jseAmJWv5dSRGVSTuEHmoBpNf9VA0eP+LTv4oG7xhGE=;
- b=LTw1/VL/OhlwcXF8cc7pN2bsT3NU4E++NjGce7k8pc0LKifOFDk69bI+ou4iRQ42awyA/knHkb+ylTGTApt/pFYmfEuwdefK2rTFp4QEtnLzK2UAlBN/OWDQubsFm0baOq+PgUQmDTvMIwEvULC4zJSr73MFo70sdGxlpk1BHiFzPI2dFB9SEx/NtuafvvHUqsPXoucj9NiFnbUuLydEvRDpmCJbUdn8jrW8evPSIUFERDMCpqcxHGCIUTToapnWjlJWrzL5m7GWA2PNMTqlYEQeRXhPTmZy2za5h/VLRSembjUWQmVC/LunEzndjw4i76uCUdBYa8vZaLs0clEk4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jseAmJWv5dSRGVSTuEHmoBpNf9VA0eP+LTv4oG7xhGE=;
- b=duzC05NKYL/BfJmhSXMvhw0OmTdf1a345hRCOFw05LXGHJAi0+J+BhcmDpctnOoPQ4T5iwr7OBMFtgniwr8r89sINMi17dM7muHZvZjmfVOUPsX4aYTKH7DCbLOmSSTHS5Yvpyx98Hx6gM1E96oxMLT3MHj89L31F0kQo8bow0A=
-Received: from BN0PR08CA0029.namprd08.prod.outlook.com (2603:10b6:408:142::15)
- by CY5PR12MB6576.namprd12.prod.outlook.com (2603:10b6:930:40::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Fri, 9 Oct
- 2026 18:33:05 +0000
-Received: from BL6PEPF0002256F.namprd02.prod.outlook.com
- (2603:10b6:408:142:cafe::97) by BN0PR08CA0029.outlook.office365.com
- (2603:10b6:408:142::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Fri, 9
- Oct 2026 18:33:05 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0002256F.mail.protection.outlook.com (10.167.249.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Fri, 9 Oct 2026 18:33:05 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 9 Oct
- 2026 13:32:58 -0500
-Received: from xcbalexaust42x.xilinx.com (10.180.168.240) by
- satlexmb08.amd.com (10.181.42.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Fri, 9 Oct 2026 13:32:56 -0500
-From: Alex Austin <alex.austin@amd.com>
-To: <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <bhutchings@solarflare.com>,
-	<davem@davemloft.net>, <ecree.xilinx@gmail.com>, <edumazet@kernel.org>,
-	<kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-net-drivers@amd.com>, <pabeni@redhat.com>, <richardcochran@gmail.com>,
-	<smhodgson@solarflare.com>, <alucero@amd.com>,
-	<pieter.jansen-van-vuuren@amd.com>, Alex Austin <alex.austin@amd.com>,
-	Alejandro Lucero <alucerop@amd.com>
-Subject: [PATCH net 2/2] sfc: ptp: avoid racing PPS timestamp updates
-Date: Fri, 9 Oct 2026 19:32:40 +0100
-Message-ID: <20261009183240.1898762-3-alex.austin@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261009183240.1898762-1-alex.austin@amd.com>
-References: <20261009183240.1898762-1-alex.austin@amd.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="J8vhjlkS"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ab4178ee33so648226a91.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:33:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791570805; x=1792175605;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=AedNmKJh3uirFHUvU8tzwQpXVhmcLVMPDd9DqEdyvoM=;
+        b=Z/UDxNjsxlfolJoDWGRgLXYShq/i73Hmr2hOBZ1jm7hjYohTanznI3FUM1/FQ9BbJR
+         fbO6Ld3wCdG7RHY07uq/qrkCSd7QHjvLAywFA84IO9iH6U3kinqsNkF+zZ3wcCyOYKV9
+         jDR9VHMtmVhyNsmyr/5eaKKhiDvjDGcJ0RlzVpCLWsY+H6q7Xvu6JxFcEP7vjiCbq9qI
+         kB5xEoRVYD4P5Nxf4rdijNKqEb1sDjvkeMDkplFnkNKCGErf2vVASv8uUq/EPR0iV39W
+         T3HZaec1pr7xYIOqPI2QY656nVyjzPGD8i4fcPmpl3jzb9a5bEHKjMa3hBgWQJGSIgHc
+         zsNA==
+X-Forwarded-Encrypted: i=1; AKwUvByRTZHAMe4/6logKU/53QkHvTsu3cvHI14XcWGrsU/EFJtKc8F4iTJz9yFd4SuiiIbN5sSdvgM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL2+h9Ir6ynI3GNl5QOcZOqC3skmht7K5tOWxDZ6XhO6UMNpdtV
+	f4LUI8Wb6KD6yzV71n7zc1A3bNKTQvnURjhfTif2V+ynr+T6JTN3M/09xZA1HUUJmOWlddws5E9
+	4oIPABm1QjB8Gez+b0y3ayyBfDJvF+H3fW18bwH3MOiyvwxIA9FVkf2deXTeTDvWrTqd/4qTDU5
+	SDNwaZY1Ibu2tZzpfOIpwyVtr8zBpn5Ghp0DfRQw/armkvFbOUfsFqC2wCjz5QcBLWu7p5HpXyi
+	TCSFzKRLpg=
+X-Gm-Gg: AYBFou1uUvwkqubFxaspjVIqFodGOXuyALpMZnNYSW0kJJ6z7I1ps/XuBxfp/5UPVTi
+	kqC/adr/bFU4CpJev5sRgrOYKRL5tsVx9d/UNiMpLOmalwcH/103JTIBBchN1OJ0z3XxzOYyTs/
+	rSgrOSTRDA0t3PaBaQCqxbrkL8Z4jtG+3BZCLgMwx8Yiw6HdjQZmGLNuCjFq/4Nb+gftz6ApnxW
+	0J2JuoXNTZvfSm5V3IxR4aeL8LxcxGbURWHg/4bb1CN+3mpxB/tX4P7Fto94URserTnVLF/HF8O
+	z/VcKZi4shjwxL8LCyfNInAllNZo0e+S2De7E8ayxhPldRqyUE+o9rTPNuuLGbENSvjGspcw4Jd
+	NSSkMHqDEOxrK373kaI7t2f1kgGQkQrZ4sU57EDY0lg0rzlqRTDLLtdwm1FlAo0jrAGA6KB1VCF
+	8d709zje0pk2Uanx5fJhOX6ktSsMmVT1RJiwY=
+X-Received: by 2002:a17:90b:3912:b0:3a4:dbda:9934 with SMTP id 98e67ed59e1d1-3ab3aca2634mr2011459a91.63.1791570804908;
+        Fri, 09 Oct 2026 11:33:24 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-24.dlp.protect.broadcom.com. [144.49.247.24])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ab37a4d1dasm1520253a91.6.2026.10.09.11.33.24
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 09 Oct 2026 11:33:24 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c2e71425f87so12051966b.2
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:33:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1791570803; x=1792175603; darn=vger.kernel.org;
+        h=content-type:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AedNmKJh3uirFHUvU8tzwQpXVhmcLVMPDd9DqEdyvoM=;
+        b=J8vhjlkSK7syy/BVPSWY5dCn3bLDHot/5dVrv3enL7ughd+Slg1ZUi1wqsIQ61lYNm
+         JtXY49WivXrJ4q4SXPFdm6poftEjQH/mfvHLZlA0QcGukzVvWbiHfxNgv+XnrixUh2aj
+         Jv3x4uqzq/2CkhY/aJjKDrHVEQIzk0quOvLFQ=
+X-Forwarded-Encrypted: i=1; AKwUvBwBB7/nIEvBEhk6GtypWJDnxQPgqRu21iYut6hPDgr0oRlxKMwtV1JyyAK0KRi9m4AvO1xmGQo=@vger.kernel.org
+X-Received: by 2002:a17:907:c23:b0:c2e:4e08:19b5 with SMTP id a640c23a62f3a-c31a9d08813mr281699566b.8.1791570802502;
+        Fri, 09 Oct 2026 11:33:22 -0700 (PDT)
+X-Received: by 2002:a17:907:c23:b0:c2e:4e08:19b5 with SMTP id
+ a640c23a62f3a-c31a9d08813mr281691166b.8.1791570800296; Fri, 09 Oct 2026
+ 11:33:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0002256F:EE_|CY5PR12MB6576:EE_
-X-MS-Office365-Filtering-Correlation-Id: e578fbc4-c6fd-4049-0016-08df2633c252
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|23010399003|1800799024|82310400026|11063799006|10067099003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	SndnZb8ntQGww5j7PT1iIa6zyUAlYq56Dj4lY5zAEMA8fwhWUEBieqdUqQisAIGLFYL770iaa2oM15nB2hx64vLkyqZS+EP0vxWOleXDPUkvnkvz3GEZQI4KaeHxS3aWVgSqGkf96SP+DyEz66f9FvszdTZSPUtIepVxZxqM1nLBStfPpHVCu3eqQJgxL9T1aOlroNqdT0XZO9rvHtVtzTBCKCP9psu/xKBO6QKIwnZ8Ceb+ZP5N7qay0Bci7TRQsLD/+b+Motlz1B9YNYTSWSY7CLHTHqsaJmtycRKZIUZLvBXhUSqUM1Er2aSL6MsqzI8MHuDZ7Mt4BQ13OOIvFOKCrhpw6l4F72MYkuNBP4KMf1wuk6rz7s1UaoXn/1sYaTSkZ59/F18FtQU6FfR7r9+nDCM5MGFm1hADAR6fypaEQ+uxYzRo9JxkJ4ayF6rsbGtOtY4pAdh4W1d2jS0X3MSdAbvFGKtkmm+QNovogVVZbdGl0jx63AfLcjnYEA9+VmPFxHEocM5hnaXMaimB+v5ynh8kQ6FGfTVkYeo+XlDK5/o8XkoUg5Wpqqtg1vI7BHdreSSKBAXmKRTbwQKFWTBohoDFkceTIqaD0VOw3ElGeFwqJdFssMa9fXhQA/gm4qzkR6dIW5ORPowNUif7ulhkQwyvt046RGzyHqVvi2klwWwAqCemiRx4AOBcWMOn8CiQHHLhpPOEO/sOmyaAfA==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(23010399003)(1800799024)(82310400026)(11063799006)(10067099003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	rYhZPiydEtCyVvSyElvmo8M6g3CGhYksavo5nx0LSPgGF0EUowIpPTfsh3MGExQ1eu+nfZ8zVnmA256Fe+1cCrQzjUnIa2M+yAojwn/LsRSFNWdau7Rl3DR2nkbcZO7VRQUBFBSc1xip06AguUl1yf+ygr6Y2fMe+iY0pxIIT47zqdgjpOAy+CHqJakNF4mPMmLEXm4v3p/6tdsmmYRX8N+PaSFOynIkR30o+Wwra1yPwBHVbqlGdyk/5HFh+EBTlwNatWyIt63XUK4YX2OnwkgCiZYpJdqHRAxtdJ91jeHF/jszqTS1Wv52X9HCVfyaNbzLi/6nd75PwsHg3h9GwX3KHDDysj/Thextu/ZnwwY28DtktKCMH+4KMsAbOYUnD52mopy4/Y5u9HgIkFdPdY7fmOqfVelas/DlHaC8LZ1n0zsua5TTBsDY7mGAN55J
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 18:33:05.4793
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e578fbc4-c6fd-4049-0016-08df2633c252
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0002256F.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6576
+References: <20261008191114.3736826-1-joe@dama.to> <20261008191114.3736826-3-joe@dama.to>
+ <CACKFLikWkH6QaOG=EO_zu8cqCFRxGqtA2-+R-btp0TwUbJjVBg@mail.gmail.com> <asklVFvUJx8P/k1d@devvm20253.cco0.facebook.com>
+In-Reply-To: <asklVFvUJx8P/k1d@devvm20253.cco0.facebook.com>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Fri, 9 Oct 2026 11:33:07 -0700
+X-Gm-Features: AclHuK9FtRnLD_nfOhaQMng8h30I5kdneNNuwRzA5OSlVD4L05fTNXRGnLjZC94
+Message-ID: <CACKFLiksRwZm+Zy74G_u59yEpY5BK+xRv=r6f9Wpo6WgT_TwDQ@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] bnxt_en: Pad short SW USO segments to BNXT_MIN_PKT_SIZE
+To: Joe Damato <joe@dama.to>, Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, edumazet@google.com, 
+	horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000052cb57065d6c959f"
 
-efx_ptp_pps_worker() can race with SIOCHWTSTAMP via
-efx_ptp_change_mode(). After the worker completes synchronization, the
-ioctl can start another synchronization and update host_time_pps while
-the worker copies it into the PPS event. This can report a partially
-updated timestamp. Serializing synchronization transactions alone does
-not protect this copy, which happens after phc_lock is released.
+--00000000000052cb57065d6c959f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 7c236c43b838 ("sfc: Add support for IEEE-1588 PTP")
-Signed-off-by: Alex Austin <alex.austin@amd.com>
-Reviewed-by: Alejandro Lucero <alucerop@amd.com>
-Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
----
- drivers/net/ethernet/sfc/ptp.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+On Fri, Oct 9, 2026 at 10:33=E2=80=AFAM Joe Damato <joe@dama.to> wrote:
+>
+> On Thu, Oct 08, 2026 at 10:26:06PM -0700, Michael Chan wrote:
+> > On Thu, Oct 8, 2026 at 12:11=E2=80=AFPM Joe Damato <joe@dama.to> wrote:
+> >
+> > > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/=
+net/ethernet/broadcom/bnxt/bnxt_gso.c
+> > > index ef04c9d08066..f87e02ef3033 100644
+> > > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+> > > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+> > > @@ -82,11 +82,14 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct =
+bnxt_tx_ring_info *txr,
+> > >         if (unlikely(num_segs <=3D 1))
+> > >                 goto drop;
+> > >
+> > > +       if (unlikely(bnxt_sw_gso_pad_len(hdr_len, mss)))
+> > > +               goto drop;
+> > > +
+> >
+> > This looks redundant since you already have the same check in
+> > bnxt_features_check().
+>
+> It's redundant for skbs that go through validate_xmit_skb(), but generic =
+XDP
+> doesn't AFAIU. Not sure how else to handle this case, but open to suggest=
+ions.
+>
 
-diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
-index ac9951f..103df1f 100644
---- a/drivers/net/ethernet/sfc/ptp.c
-+++ b/drivers/net/ethernet/sfc/ptp.c
-@@ -205,6 +205,14 @@ struct efx_ptp_timeset {
- 	u32 window;	/* Derived: end - start, allowing for wrap */
- };
- 
-+/**
-+ * struct efx_ptp_sync_result - Result of host and MC synchronisation
-+ * @host_time_pps: Host time at the NIC top of second
-+ */
-+struct efx_ptp_sync_result {
-+	struct pps_event_time host_time_pps;
-+};
-+
- /**
-  * struct efx_ptp_rxfilter - Filter for PTP packets
-  * @list: Node of the list where the filter is added
-@@ -268,7 +276,6 @@ struct efx_ptp_rxfilter {
-  * @evt_frag_idx: Current fragment number
-  * @evt_code: Last event code
-  * @start: Address at which MC indicates ready for synchronisation
-- * @host_time_pps: Host time at last PPS
-  * @adjfreq_ppb_shift: Shift required to convert scaled parts-per-billion
-  * frequency adjustment into a fixed point fractional nanosecond format.
-  * @current_adjfreq: Current ppb adjustment.
-@@ -329,7 +336,6 @@ struct efx_ptp_data {
- 	int evt_frag_idx;
- 	int evt_code;
- 	struct efx_buffer start;
--	struct pps_event_time host_time_pps;
- 	unsigned int adjfreq_ppb_shift;
- 	s64 current_adjfreq;
- 	struct ptp_clock *phc_clock;
-@@ -911,7 +917,8 @@ static void efx_ptp_read_timeset(MCDI_DECLARE_STRUCT_PTR(data),
- static int
- efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
- 		      size_t response_length,
--		      const struct pps_event_time *last_time)
-+		      const struct pps_event_time *last_time,
-+		      struct efx_ptp_sync_result *result)
- {
- 	unsigned number_readings =
- 		MCDI_VAR_ARRAY_LEN(response_length,
-@@ -989,6 +996,10 @@ efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
- 			   "PTP bad synchronisation seconds\n");
- 		return -EAGAIN;
- 	}
-+
-+	if (!result)
-+		return 0;
-+
- 	delta.tv_sec = (last_sec - start_sec) & 1;
- 	delta.tv_nsec =
- 		last_time->ts_real.tv_nsec -
-@@ -1005,14 +1016,15 @@ efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
- 	delta.tv_nsec += ktime_to_timespec64(mc_time).tv_nsec;
- 
- 	/* Set PPS timestamp to match NIC top of second */
--	ptp->host_time_pps = *last_time;
--	pps_sub_ts(&ptp->host_time_pps, delta);
-+	result->host_time_pps = *last_time;
-+	pps_sub_ts(&result->host_time_pps, delta);
- 
- 	return 0;
- }
- 
- /* Synchronize times between the host and the MC */
--static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
-+static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings,
-+			       struct efx_ptp_sync_result *result)
- {
- 	struct efx_ptp_data *ptp = efx->ptp_data;
- 	MCDI_DECLARE_BUF(synch_buf, MC_CMD_PTP_OUT_SYNCHRONIZE_LENMAX);
-@@ -1061,7 +1073,7 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
- 				 &response_length);
- 	if (rc == 0) {
- 		rc = efx_ptp_process_times(efx, synch_buf, response_length,
--					   &last_time);
-+					   &last_time, result);
- 		if (rc == 0)
- 			++ptp->good_syncs;
- 		else
-@@ -1494,14 +1506,15 @@ static void efx_ptp_pps_worker(struct work_struct *work)
- {
- 	struct efx_ptp_data *ptp =
- 		container_of(work, struct efx_ptp_data, pps_work);
-+	struct efx_ptp_sync_result result = {};
- 	struct efx_nic *efx = ptp->efx;
- 	struct ptp_clock_event ptp_evt;
- 
--	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS))
-+	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS, &result))
- 		return;
- 
- 	ptp_evt.type = PTP_CLOCK_PPSUSR;
--	ptp_evt.pps_times = ptp->host_time_pps;
-+	ptp_evt.pps_times = result.host_time_pps;
- 	ptp_clock_event(ptp->phc_clock, &ptp_evt);
- }
- 
-@@ -1837,7 +1850,8 @@ int efx_ptp_change_mode(struct efx_nic *efx, bool enable_wanted,
- 				rc = efx_ptp_start(efx);
- 			if (rc == 0) {
- 				rc = efx_ptp_synchronize(efx,
--							 PTP_SYNC_ATTEMPTS * 2);
-+							 PTP_SYNC_ATTEMPTS * 2,
-+							 NULL);
- 				if (rc != 0)
- 					efx_ptp_stop(efx);
- 			}
--- 
-2.34.1
+Did you mean generic XDP turning around incoming packets with XDP_TX
+actions and transmitting them through the software stack?  This path
+cannot generate USO packets, right?
 
+> If you agree and are OK with dropping these, then I could add a comment
+> clarifying this in the v2. LMK what you think.
+>
+> > >         /* Upper bound on the number of descriptors needed.
+> > >          *
+> > >          * Each segment uses 1 long BD + 1 ext BD + payload BDs, whic=
+h is
+> > >          * at most num_segs + nr_frags (each frag boundary crossing a=
+dds at
+> > > -        * most 1 extra BD).
+> > > +        * most 1 extra BD). The last segment may need 1 pad BD.
+> > >          */
+> > >         bds_needed =3D 3 * num_segs + skb_shinfo(skb)->nr_frags + 1;
+> >
+> > I don't quite understand why we don't need to add 1 more for possible
+> > padding here.
+>
+> Re-reading the code, I think the +1 was never needed in the first place.
+> Payload BDs come from at most 1 + nr_frags DMA regions. Going from one re=
+gion
+> to the next adds at most one BD on top of one BD per segment. There are
+> nr_frags boundaries at most, so I think the math is:
+>
+>   2*num_segs + num_segs + nr_frags
+>
+> which simplifies to 3*num_segs + nr_frags.
+>
+> I would appreciate a double check on the math :) but I think the +1 from =
+the
+> original code was actually unnecessary and so for this change we can use =
+it
+> for the pad BD.
+
+I think the math is right.  If you have n nr_frags, you can only cross
+it at most n times.  So the +1 was not necessary until we now deal
+with the padding. Thanks.
+
+--00000000000052cb57065d6c959f
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBf0CNo
+H9STtc9ZBYWhgtiRofx7SFc/0dpfP85ZfcaG4DAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjEwMDkxODMzMjNaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAGMZRHb0KPymy+6pMusAVytd5upD5d3ZKeL3RdnIKD
+hW8xQB/Jk/2siutiAnjNsqlG+JjPYQ85Yj1iHMgaYTAyO11rG4LfyWj1bTAPvT5v3GobbcswkHbX
+/to5ajgSDWLhu1FCf+wf1ai8BCBOQF3yKE7hE5gbDzPYo30/lx9ux87Dek7lbR/sTVTBnIoh5eqZ
++IYTbTsbzkKXml3A1neYfocfnsE7qAYk8PNZF4U8BDS+E40xxPteH1mF48VW+UfStUUASpAcpxX0
+/shVyomOUCR/3P8m2KSmNYBsUA7WG+XDfpl9c7iLVSGQbhZNqzOvI/wpVPY4BoYd/uzKFa/M
+--00000000000052cb57065d6c959f--
