@@ -1,65 +1,65 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380914EC66D
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3220E4ED1B7
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791562289; cv=none; b=p2G4YSFoOV7nas3qEnFXKdSBNkaYeog2rDdeR5GMXrT4AC1ERr80memuHowIgle2oZPVKPZ6Q4pFPjD78VLx7iHY9Il7Yd+5w7nAJAsKFWSfoC6BFDi4XZeOEL1m4GNfDS5+RAfh9S1K30jRJ0YIm126mGyzmMarCChYAVflvgM=
+	t=1791562291; cv=none; b=Xd5HzBg9oxuI08SsOHokdqsf+uqnrqtlNBM3Uj8JndxT36qyVwRK55hQTQf0FYzeugBDzTsvORowwOYWZh32lyvrF+G+rVNDfot4XO+eKIMesxJdKZcPJtGDmYeht7ERVWui7ok5ZQr4lHvRHWBhdZTCU1swhiJnX3RDHmicIGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791562289; c=relaxed/simple;
-	bh=MVsXZuoiXp2XXStNi5GOq+gCp4+6jTB851Kpop8DdDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjaJFEYzIkZ30GfDM4vVdd6J8C+1blo28qzkWIA2KQFyXOGiqUXWmJ8I4/hgiM/LUn+D/9r0NHtnTZ6unoYr7Dt8QrQHNOtXnMWNzJqlPhw3HKiX6QexM++/onOEntDx25VYbneT2a+bM0NC6zbxzz/rtN6caCgIQcCewNyOdd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sPheuGr9; arc=none smtp.client-ip=209.85.128.54
+	s=arc-20240116; t=1791562291; c=relaxed/simple;
+	bh=MfmS97tEUb10gYE/u3qgJEuKsvGjsyPjvMwC//JlJ+M=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GwuC6Ykj0P/us2Szj4m5p4ZSRJQjdB4Tlp0BomwmOGQJl5+kd+mQ1i5hgXoZHdPaejYlS+tDyk3fzXHLf4vJImuubQ8HL9G846Ac2tlXwCF7Mafej/RPddvgAnR4iAdXT7q0Y7w/5xnw8Gh5VoYUkxpOfQUbSgzcR0jQ3AcupQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i4N+vy7G; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sPheuGr9"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a1698ea378so42935e9.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:11:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i4N+vy7G"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-487048857f6so3884134f8f.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791562285; x=1792167085; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791562287; x=1792167087; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lZx5wg1ErozEok9d3MibAXierPMpJi4B3Ch88R20ArI=;
-        b=sPheuGr9nXRkX2aZRGQuF1LIayut+Sym8mxCw4BF2rK8PBpke7z6OJIxPk+jUUug31
-         mlnxxt2+CPj3VNo0RX6zaAFRHK33EhMycXhQEep+N8gSxoZhK5Z99BBwbEoGIQ3ogQAp
-         3mGIBz6br4eOK76BO7CW4ILpbRhMFoydwxN0s1FQRtUF8WNB0Y1gdEpZ7i4xcuHqXJjG
-         kh21lFfGJvHZo9u612C6cTUZ+r11MWUOKPnIYpE6NGsl3z60NTT0LYYoaln48wKOOOGl
-         WXEC0Nyb6AaLZiyjozbcS4AHFfTOd/vCZXaLWFLC88MDeVYwbanxpXdBFhW0FHDqWho2
-         eIFQ==
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Whz6EeGgKypqRBi5YrO/rCW1xhvllxiK3E64CG3XL+M=;
+        b=i4N+vy7GLyIryAI8Y9pfE42eVz9YkNkc0dpE0wUdtZ8RgstiMbySlO5DMeLy+7vOGq
+         sS7IapvgZ7yZfyfrb930TKByVW4Vq+19YN57r2JRMx25WuvdJaxVJy5QHUQhVoWs8UgK
+         Flw0uMlOsiiOesiFPzZyrdMPZcp5MFHI9j1Mt0tGNJtQDRYrOsg5DkKU2JlrzMgy51nJ
+         Dc4/sSLNCFfw17Tx1KLYYJ4x2UWzEZpOFz2dwahSYMjRjaK/R/ckQSn1DGV943RxDCvc
+         nU3cV7eTv9RNF1Uj7k2tQlzyzvcGUUUH4Xp3kBld7L4/3T72vRAhtlfjQxkIn/CSpz+H
+         k15A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791562285; x=1792167085;
+        d=1e100.net; s=20260707; t=1791562287; x=1792167087;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lZx5wg1ErozEok9d3MibAXierPMpJi4B3Ch88R20ArI=;
-        b=TXf1Of0uWwoigu8n1tzjuzPg5I7m1gafy412cIxbaRZI72V4k1yNPybAMPbb2vCQMi
-         3Wi1wsedDiWZOxVVGijiYPmXWUUTwPisv7HlSN996TyQYijIG60XMgev6CLDsU0skALy
-         VKeUnW7hEH2/KjatcgnKLBKsrIXwq9bkYfN9qCXPjtonCM2e1X30szy1/448gY1haXSV
-         tZg8FqD3JrH/buqfS65PGndAOK75MLY6TGO6gcHJojMRFaxqx8eiPji/1a/+1/ICbZod
-         qB40jpT5VLcKTbhWMJP8FtXPnFa/PkRet73Wb0ZQq74M5tPU3TOouU6W91zV2tijvbv+
-         dT8w==
-X-Forwarded-Encrypted: i=1; AKwUvBz1nrC1lI0IudCJhrb+xIPxrgWk84wzQf3v+CLyZIEyIgf9GE421fklSqwSoo3vyLIVruP832c=@vger.kernel.org
-X-Gm-Message-State: AFuF++kKvbjtzO5ZAycPLE9TFGphkfSCpA6dvQ0dCkbpOUnoSwDb7C4f
-	WsJCf/dyEnpBTSSMOKvUUhgFNREg/y46BubUDGJA/I9iOdLHZ3DJMcOS
-X-Gm-Gg: AYBFou0SSCd1QzLsDnbq3bKoS0N6UZmZYhc0xRp8mzUf+pJnz8R6zEy8iUpoyq0zsx0
-	SjkMkxkRWLrqqvMWxKh8aBqzcyd5BJBMdISrOFnCDr0klsGbqWmSKa51tvZAn/D53DS5d9Ggrw2
-	riSznOvPA2aK+GMmkNjQLQs2x4UBgVaZX8fUUbEPo78ssILpe8+D4T6JKTfYIhepavLTVDMXrO4
-	lTWgVKdpp0BVRJEAE77oCzTif12eu38Z9eOTuvOPIpcyWI9KNulRaHfRsjN8juLYK/3d+cn4wcz
-	XzUpnXiIK/P6I/fdB7IY9IAgl3JxQfS7IA723LtdJZs9tdKW8cyUYGhGHeBWIgDwAHfBatF5BlK
-	woNh4Hz2L8bmCD7W3xryhAgK9x/kaBswgS9SL6j0ibCyrZEj9Ep3oFWfFiwJoKf5SWy2CxkHOyX
-	+FHNw7lqgT9RPR560wTLVlp/e7S1eyUgW7rT9Cj7on3RKd4hXrCMN5h5vW3KX0rMR6m/VASoFq0
-	V8h9mykE2Xn9ND1LTEk4uD/swM8M01TK9PfdjeuZIQ33PJwCbLrSuhDwvuAvsGPa5sDow6/348i
-	fmJmoUopfmkSYKT+rw==
-X-Received: by 2002:a05:600c:6388:b0:4a1:6f78:8419 with SMTP id 5b1f17b1804b1-4a18e3ee8f9mr48332405e9.0.1791562285176;
-        Fri, 09 Oct 2026 09:11:25 -0700 (PDT)
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Whz6EeGgKypqRBi5YrO/rCW1xhvllxiK3E64CG3XL+M=;
+        b=SWfj2D4Xulg3ctEgtBHIx8PVZZK1eIA7v/kpsLj3ALep6vhYFxZMHNkNB2EzsXRMjN
+         99C6dwSe1s2doGTQMLiRrYheD2gyacuboO8yI3+t2OZf0ZI5X6pXZUSNFN1ZeZ1YbVAx
+         7W6OY3fWVgi2UZvYI4OzuilEBAAN+5DXwCBwKGvNe1KZIkAUtpEI9Aiq8WCPLdX5CFdA
+         NEivzzZA18hos4p4Hn5kNNXsC1f9bA/l86xeQe/a5OIYnk0evp4xzAimQPNnPz2VmI81
+         uELnubFrycntUd9P+dqXG3blZFENr665kjSrWQS2qCvzKwkosb0/cfRJZSZnYzyHP2cr
+         qT2w==
+X-Forwarded-Encrypted: i=1; AKwUvBwUQGnQ3WXAK6sUW171oRC0Yz1KUB5krmRC9CmAhAdCV21dBrtMTwu+IR6qdFOHZUUL0Qal/zI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYINYeXm+QpYK/YmuvtFhF3ZOCz6iJeYgjl7oVzZd+xhQck94kO8
+	MSRTkh/bxZx5z9AoRrspGGSWtSILSQxAUVJ1B/Erq755J7du2aITvBjB
+X-Gm-Gg: AYBFou0LtcYgBog3j4crTdNvaJ3okJtcVJubWs7N/I56RpxLXEs7mIAWQjNwC5oJaia
+	Uu3Onf+7P2dpzczYW3OIvvBU0m/ezhCj0cn3yVH1LUMUSSvZlESuWc8Vw9x3QW8fgP2EcUcnXIj
+	zLpOc8d558JHVsxLEW8RJtpd4lPi7L0wTBwni3W5GyjKNZjyNIhHSoabKhB0hgj0NGxsr3TGDR3
+	YIvtUmLqgl3Xuebt6OEUcxN7bgN/K0sIcuz4qipDfZBrzLeWoPv1Zy65jWg35OiSaKJWLu8LaTd
+	JSoIiKc5/2OTHCkPFXajc/jAyX01xmD8Oh4zz9j3MKLaAeLZCYddfhAl0+lsPDoX4MSTa6oX/Cf
+	ypGLw1TK4tmDGkGt4V6tq+nWTGlIeb//nWARPJa2vTV5XZCguyxYtU7SpCnR2qNbasXe3kfQMY3
+	hgWCkWjj0cSkyu5O6Z3vFF8HAB8kxhF1qVuXHVw95ObShx7KImKogOUm+msmD92s/8F6bTqQ3w4
+	HrZ6zkvHhZC6h4ggvxW80YmnUhAxChC5gdKFg+x2lNnQObpGgqOltH48pW3ZywK7yX1woqCnNSj
+	y9H0uaQjDgtYCUc8/FmXOWOE6Cb9
+X-Received: by 2002:a05:6000:46da:b0:48b:1276:72e7 with SMTP id ffacd0b85a97d-48dba9db139mr3567737f8f.13.1791562287342;
+        Fri, 09 Oct 2026 09:11:27 -0700 (PDT)
 Received: from Ansuel-XPS24.localdomain (host-213-45-9-252.retail.telecomitalia.it. [213.45.9.252])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48db94e2f08sm4744701f8f.15.2026.10.09.09.11.23
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48db94e2f08sm4744701f8f.15.2026.10.09.09.11.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 09:11:24 -0700 (PDT)
+        Fri, 09 Oct 2026 09:11:26 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Christian Marangi <ansuelsmth@gmail.com>,
 	Lee Jones <lee@kernel.org>,
@@ -86,10 +86,9 @@ To: Christian Marangi <ansuelsmth@gmail.com>,
 	mfd@lists.linux.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v25 07/10] MAINTAINERS: add myself as maintainer for Airoha AN8855 Switch
-Date: Fri,  9 Oct 2026 18:10:52 +0200
-Message-ID: <20261009161102.38961-8-ansuelsmth@gmail.com>
+Subject: [PATCH net-next v25 08/10] net: dsa: move mediatek DSA driver in dedicated directory
+Date: Fri,  9 Oct 2026 18:10:53 +0200
+Message-ID: <20261009161102.38961-9-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261009161102.38961-1-ansuelsmth@gmail.com>
 References: <20261009161102.38961-1-ansuelsmth@gmail.com>
@@ -101,42 +100,210 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add myself as maintainer for AN8855 DSA driver and all the related
-subdriver (mfd, mdio, phy, nvmem)
+To tidy things up and better organize DSA drivers, move the Mediatek
+related driver to the dedicated Vendor directory.
+
+MAINTAINERS file is updated accordingly to reference the new location.
 
 Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- MAINTAINERS | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ MAINTAINERS                                  |  6 +--
+ drivers/net/dsa/Kconfig                      | 45 +-------------------
+ drivers/net/dsa/Makefile                     |  5 +--
+ drivers/net/dsa/mediatek/Kconfig             | 45 ++++++++++++++++++++
+ drivers/net/dsa/mediatek/Makefile            |  5 +++
+ drivers/net/dsa/{ => mediatek}/mt7530-mdio.c |  0
+ drivers/net/dsa/{ => mediatek}/mt7530-mmio.c |  0
+ drivers/net/dsa/{ => mediatek}/mt7530.c      |  0
+ drivers/net/dsa/{ => mediatek}/mt7530.h      |  0
+ drivers/net/dsa/{ => mediatek}/mt7628.c      |  0
+ 10 files changed, 55 insertions(+), 51 deletions(-)
+ create mode 100644 drivers/net/dsa/mediatek/Kconfig
+ create mode 100644 drivers/net/dsa/mediatek/Makefile
+ rename drivers/net/dsa/{ => mediatek}/mt7530-mdio.c (100%)
+ rename drivers/net/dsa/{ => mediatek}/mt7530-mmio.c (100%)
+ rename drivers/net/dsa/{ => mediatek}/mt7530.c (100%)
+ rename drivers/net/dsa/{ => mediatek}/mt7530.h (100%)
+ rename drivers/net/dsa/{ => mediatek}/mt7628.c (100%)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 509b35b5a0e7..53dcff93f896 100644
+index 53dcff93f896..e16c14ea38a1 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -759,6 +759,22 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/net/airoha,en7581-eth.yaml
- F:	drivers/net/ethernet/airoha/
+@@ -16841,9 +16841,9 @@ M:	Chester A. Unal <chester.a.unal@arinc9.com>
+ M:	Daniel Golle <daniel@makrotopia.org>
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+-F:	drivers/net/dsa/mt7530-mdio.c
+-F:	drivers/net/dsa/mt7530-mmio.c
+-F:	drivers/net/dsa/mt7530.*
++F:	drivers/net/dsa/mediatek/mt7530-mdio.c
++F:	drivers/net/dsa/mediatek/mt7530-mmio.c
++F:	drivers/net/dsa/mediatek/mt7530.*
+ F:	net/dsa/tag_mtk.c
  
-+AIROHA AN8855 DSA DRIVER
-+M:	Christian Marangi <ansuelsmth@gmail.com>
-+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-+L:	linux-mediatek@lists.infradead.org (moderated for non-subscribers)
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/mfd/airoha,an8855.yaml
-+F:	Documentation/devicetree/bindings/net/airoha,an8855-phy.yaml
-+F:	Documentation/devicetree/bindings/net/dsa/airoha,an8855-switch.yaml
-+F:	Documentation/devicetree/bindings/nvmem/airoha,an8855-efuse.yaml
-+F:	drivers/mfd/airoha-an8855.c
-+F:	drivers/net/dsa/mediatek/an8855.c
-+F:	drivers/net/dsa/mediatek/an8855.h
-+F:	drivers/net/phy/air_an8855.c
-+F:	drivers/nvmem/an8855-efuse.c
+ MEDIATEK T7XX 5G WWAN MODEM DRIVER
+diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
+index fe8cd5338fda..ffc26eb3e899 100644
+--- a/drivers/net/dsa/Kconfig
++++ b/drivers/net/dsa/Kconfig
+@@ -28,50 +28,7 @@ source "drivers/net/dsa/hirschmann/Kconfig"
+ 
+ source "drivers/net/dsa/lantiq/Kconfig"
+ 
+-config NET_DSA_MT7530
+-	tristate "MediaTek MT7530 and MT7531 Ethernet switch support"
+-	select NET_DSA_TAG_MTK
+-	select REGMAP_IRQ
+-	imply NET_DSA_MT7530_MDIO
+-	imply NET_DSA_MT7530_MMIO
+-	help
+-	  This enables support for the MediaTek MT7530 and MT7531 Ethernet
+-	  switch chips. Multi-chip module MT7530 in MT7621AT, MT7621DAT,
+-	  MT7621ST and MT7623AI SoCs, and built-in switch in MT7988 SoC are
+-	  supported as well.
+-
+-config NET_DSA_MT7530_MDIO
+-	tristate "MediaTek MT7530 MDIO interface driver"
+-	depends on NET_DSA_MT7530
+-	select MEDIATEK_GE_PHY
+-	select PCS_MTK_LYNXI
+-	help
+-	  This enables support for the MediaTek MT7530 and MT7531 switch
+-	  chips which are connected via MDIO, as well as multi-chip
+-	  module MT7530 which can be found in the MT7621AT, MT7621DAT,
+-	  MT7621ST and MT7623AI SoCs.
+-
+-config NET_DSA_MT7530_MMIO
+-	tristate "MediaTek MT7530 MMIO interface driver"
+-	depends on NET_DSA_MT7530
+-	depends on HAS_IOMEM
+-	imply MEDIATEK_GE_SOC_PHY
+-	help
+-	  This enables support for the built-in Ethernet switch found
+-	  in the MediaTek MT7988 SoC.
+-	  The switch is a similar design as MT7531, but the switch registers
+-	  are directly mapped into the SoCs register space rather than being
+-	  accessible via MDIO.
+-
+-config NET_DSA_MT7628
+-	tristate "MediaTek MT7628 Embedded Ethernet switch support"
+-	depends on HAS_IOMEM && (SOC_MT7620 || COMPILE_TEST)
+-	select NET_DSA_TAG_MT7628
+-	select MEDIATEK_FE_SOC_PHY
+-	select REGMAP_MMIO
+-	help
+-	  This enables support for the built-in Ethernet switch found
+-	  in the MT7628 SoC.
++source "drivers/net/dsa/mediatek/Kconfig"
+ 
+ config NET_DSA_MV88E6060
+ 	tristate "Marvell 88E6060 ethernet switch chip support"
+diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
+index 7e637d56b35c..ee4784a9839b 100644
+--- a/drivers/net/dsa/Makefile
++++ b/drivers/net/dsa/Makefile
+@@ -2,10 +2,6 @@
+ obj-$(CONFIG_NET_DSA_BCM_SF2)	+= bcm-sf2.o
+ bcm-sf2-objs			:= bcm_sf2.o bcm_sf2_cfp.o
+ obj-$(CONFIG_NET_DSA_LOOP)	+= dsa_loop.o
+-obj-$(CONFIG_NET_DSA_MT7530)	+= mt7530.o
+-obj-$(CONFIG_NET_DSA_MT7530_MDIO) += mt7530-mdio.o
+-obj-$(CONFIG_NET_DSA_MT7530_MMIO) += mt7530-mmio.o
+-obj-$(CONFIG_NET_DSA_MT7628) += mt7628.o
+ obj-$(CONFIG_NET_DSA_MV88E6060) += mv88e6060.o
+ obj-$(CONFIG_NET_DSA_RZN1_A5PSW) += rzn1_a5psw.o
+ obj-$(CONFIG_NET_DSA_SMSC_LAN9303) += lan9303-core.o
+@@ -17,6 +13,7 @@ obj-$(CONFIG_NET_DSA_VITESSE_VSC73XX_SPI) += vitesse-vsc73xx-spi.o
+ obj-y				+= b53/
+ obj-y				+= hirschmann/
+ obj-y				+= lantiq/
++obj-y				+= mediatek/
+ obj-y				+= microchip/
+ obj-y				+= motorcomm/
+ obj-y				+= mv88e6xxx/
+diff --git a/drivers/net/dsa/mediatek/Kconfig b/drivers/net/dsa/mediatek/Kconfig
+new file mode 100644
+index 000000000000..ef62481662fd
+--- /dev/null
++++ b/drivers/net/dsa/mediatek/Kconfig
+@@ -0,0 +1,45 @@
++# SPDX-License-Identifier: GPL-2.0-only
++config NET_DSA_MT7530
++	tristate "MediaTek MT7530 and MT7531 Ethernet switch support"
++	select NET_DSA_TAG_MTK
++	select REGMAP_IRQ
++	imply NET_DSA_MT7530_MDIO
++	imply NET_DSA_MT7530_MMIO
++	help
++	  This enables support for the MediaTek MT7530 and MT7531 Ethernet
++	  switch chips. Multi-chip module MT7530 in MT7621AT, MT7621DAT,
++	  MT7621ST and MT7623AI SoCs, and built-in switch in MT7988 SoC are
++	  supported as well.
 +
- AIROHA PCIE PHY DRIVER
- M:	Lorenzo Bianconi <lorenzo@kernel.org>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
++config NET_DSA_MT7530_MDIO
++	tristate "MediaTek MT7530 MDIO interface driver"
++	depends on NET_DSA_MT7530
++	select MEDIATEK_GE_PHY
++	select PCS_MTK_LYNXI
++	help
++	  This enables support for the MediaTek MT7530 and MT7531 switch
++	  chips which are connected via MDIO, as well as multi-chip
++	  module MT7530 which can be found in the MT7621AT, MT7621DAT,
++	  MT7621ST and MT7623AI SoCs.
++
++config NET_DSA_MT7530_MMIO
++	tristate "MediaTek MT7530 MMIO interface driver"
++	depends on NET_DSA_MT7530
++	depends on HAS_IOMEM
++	imply MEDIATEK_GE_SOC_PHY
++	help
++	  This enables support for the built-in Ethernet switch found
++	  in the MediaTek MT7988 SoC.
++	  The switch is a similar design as MT7531, but the switch registers
++	  are directly mapped into the SoCs register space rather than being
++	  accessible via MDIO.
++
++config NET_DSA_MT7628
++	tristate "MediaTek MT7628 Embedded Ethernet switch support"
++	depends on HAS_IOMEM && (SOC_MT7620 || COMPILE_TEST)
++	select NET_DSA_TAG_MT7628
++	select MEDIATEK_FE_SOC_PHY
++	select REGMAP_MMIO
++	help
++	  This enables support for the built-in Ethernet switch found
++	  in the MT7628 SoC.
+diff --git a/drivers/net/dsa/mediatek/Makefile b/drivers/net/dsa/mediatek/Makefile
+new file mode 100644
+index 000000000000..0ed6e11f292e
+--- /dev/null
++++ b/drivers/net/dsa/mediatek/Makefile
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_NET_DSA_MT7530)	+= mt7530.o
++obj-$(CONFIG_NET_DSA_MT7530_MDIO) += mt7530-mdio.o
++obj-$(CONFIG_NET_DSA_MT7530_MMIO) += mt7530-mmio.o
++obj-$(CONFIG_NET_DSA_MT7628) += mt7628.o
+diff --git a/drivers/net/dsa/mt7530-mdio.c b/drivers/net/dsa/mediatek/mt7530-mdio.c
+similarity index 100%
+rename from drivers/net/dsa/mt7530-mdio.c
+rename to drivers/net/dsa/mediatek/mt7530-mdio.c
+diff --git a/drivers/net/dsa/mt7530-mmio.c b/drivers/net/dsa/mediatek/mt7530-mmio.c
+similarity index 100%
+rename from drivers/net/dsa/mt7530-mmio.c
+rename to drivers/net/dsa/mediatek/mt7530-mmio.c
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mediatek/mt7530.c
+similarity index 100%
+rename from drivers/net/dsa/mt7530.c
+rename to drivers/net/dsa/mediatek/mt7530.c
+diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mediatek/mt7530.h
+similarity index 100%
+rename from drivers/net/dsa/mt7530.h
+rename to drivers/net/dsa/mediatek/mt7530.h
+diff --git a/drivers/net/dsa/mt7628.c b/drivers/net/dsa/mediatek/mt7628.c
+similarity index 100%
+rename from drivers/net/dsa/mt7628.c
+rename to drivers/net/dsa/mediatek/mt7628.c
 -- 
 2.55.0
 
