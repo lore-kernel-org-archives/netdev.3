@@ -1,191 +1,319 @@
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859151A6813;
-	Fri,  9 Oct 2026 00:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE0E3090CD
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 00:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791506664; cv=none; b=SbfG5tV/ik1iBipj/meXlaPnFCx2kRiWeMa0AHREc5CVaDdfMNa1I7umwe3Kb2LxR3oi69u7WRU2yRel6xY+mkebY3cwNlwjVlNZlSDqmgzcBWwb+EjEvrbyMtnSGRxhPnr9sEjC5Tk9YFF7UjZF5viyhmVEVgLnqJxJ/hIdGtI=
+	t=1791507355; cv=none; b=s0vbjn9lXlMRu0PJaI+alKo7vCYjjamBXPqZxQR5d5RnBaioMc8rzJL3apGIkC+g/LyYEH5YxMSvbB7CTP2RNGtZavWpFLTBg9192GZk384zpt7WRYHuRMh+f6dFd1lixzRuwtuiB5d68vqS8d2kV9H3hRVwV6uAwxJh6fJ/HT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791506664; c=relaxed/simple;
-	bh=ruHQ1v6y7YbeNJQ3BAD2JyXsdoS/WE1mBq/WkG5ZABE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=NXiXFPrzETpDBYHtPZEcByGAWiCxq9briix9XLq1+aahMZTZIPdStJkIK0Ebp+k3KPeJlS60rKYBQ4igpIor+zCinAUsKXgeMg6HTx1THQu9qL20XX+MrgDR59pCy7XJaL+OWlfZqcEh6E3N+KbM5paO//LCGiRaRaZJL2jQWxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=lmqSzsIl; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=rolgY+DV; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1791507355; c=relaxed/simple;
+	bh=JXPVqttvvX6plFtTAXjvqOhVSR9/yO7AFcR4A3BClpI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rTzcc21L2aJJ93cuUXWTCTATEvs8SRKchC6Yx604OkIOf+saHOA6wGIcm5+k/TLKtCcBQWBb9lAZaqo9mqFYnMWA1FFnQiDJDhlLzMX57AQBdun1BweSIw7wVl+pXCUa3u7N1Rts1vAlOfC+lYs2PQum0I6rLH4evQ6+mxa04+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XWD5Fr7H; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="lmqSzsIl";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="rolgY+DV"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 6990hj3L028193;
-	Fri, 9 Oct 2026 02:43:50 +0200
-Received: from lubuntu-18.04 (host-95-234-228-71.retail.telecomitalia.it [95.234.228.71])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id A5E931209E1;
-	Fri,  9 Oct 2026 02:43:41 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1791506621; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q6+fKhnwx/9PKbNPNVfapk1JYVlsb79bFcTKLskWK1U=;
-	b=lmqSzsIlbOqCWRSBVPMzCRPQPsjriro3LDH063mmnKqykoJMdpJrlgBbQZbwaQVN+PbSoi
-	GR6fwT4KyJuY1ADg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1791506621; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q6+fKhnwx/9PKbNPNVfapk1JYVlsb79bFcTKLskWK1U=;
-	b=rolgY+DVAa7rHJ9DpskhfmqYuKS6oBEov2LtfU/XDOB8+K2oI3yWmz6OF51u1GjXdeaBPO
-	u9bbJIe8lYA8DbDIKIfvW/R9TQJZHdl4WXV95f/rXemwt2XQjPMXZ4fS2g2VltN3NaVCBF
-	ugSoOUqYjFru6Uo2uN9oie1oFysYD6ofGBBDWeA0p8fgrQbB1nciQ8Jx4P4ZosETbba3JL
-	aZh0qgduhrSZbDFTusjmtb19chA5PxoZnEgjw24PrxdZTtYiABMTqzPWcsWTQ677WjHPO/
-	l1EZFeQKIHWGFj/Tvs5viMNelwauu+f6pAIs3xSndhlHM4+boYL+UtAN3XdG+g==
-Date: Fri, 9 Oct 2026 02:43:41 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stefano.salsano@uniroma2.it, Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net-next 1/2] seg6: skip the route refcount in
- seg6_lookup_any_nexthop()
-Message-Id: <20261009024341.687e7226cd6abca80e779fda@uniroma2.it>
-In-Reply-To: <20261005-seg6-lookup-noref-v1-1-092e84774e80@gmail.com>
-References: <20261005-seg6-lookup-noref-v1-0-092e84774e80@gmail.com>
-	<20261005-seg6-lookup-noref-v1-1-092e84774e80@gmail.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWD5Fr7H"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e812e2b31bso7899725ad.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 17:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791507351; x=1792112151; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=04vfIiU20tq2if36IO5LbwjL3l6PLEbsF088tIv0Xr8=;
+        b=XWD5Fr7HkF4qZ6eRJhjuxAPoe1MREQgay2fB9W2vxOE8dl07E6OaUxeCVVC78tISE/
+         PVjQ9iUiiwk+zfpZK2Odg2C9Hutj0SDiCA9y4eSgMc3tIsJRa3ns6/L0EeD2lxC+hWdl
+         f5B3h4d51nBEecYNAw3xgUQk/IynGcP9lIgKuLktlBMxWcF/nfHGZUMgxeCO6Mgn9t30
+         SUp3m1sEeAD6YHvb4UzkJ+lde041iz4UiYS0ilRzjFF/cf1oEeMegzGIQHddwMIkcQo6
+         NCj5ewfOAGrStY+Mawaxm/LIpsr/mEh1RWghYu8bVI3MEd/QbzXom+kRDWEfdev0B3tF
+         9RGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791507351; x=1792112151;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=04vfIiU20tq2if36IO5LbwjL3l6PLEbsF088tIv0Xr8=;
+        b=q6fkCfcKYluFztJuila/Czg9mBf1PN0pRVw9t1A6rZwf2YbMawnvOt3TRWtba0QUv3
+         Babpb4AhX28MtDaTzrJS98KbE0L9FxFcSKlNj7RncNKI/5b7Uo8XKVB7iM/BTvSn3RNH
+         mTYv609NqZtilDxIEOsxnvNDWnm2KG79GWARQpobV/UFOxiW5dbDkxq1kXp1kOxPCK6q
+         JRc8OF302WsddEHlZiJx2w8w5y7WikhUK8WjrI0vOPWRozKTV1iKFX0EXaQDrlxoHE1Z
+         s+O1RQJ96gMTmTl3nL6WsXPQz3BmjvOmHUlsA9O8XasFeUEABUd13quzeyDxjBtKFGr1
+         uxYg==
+X-Gm-Message-State: AFq9FYKPOnfFzgmCZLZDAn4iQK4KeJzM18RRpRcqBngsGsH2ANoTuYBq
+	5DYsQNzhC/ydNazGpqjideq59WVTiBuHpjmPBiGUqNfsw0jmudAVGP2j0cBOyySm3R0=
+X-Gm-Gg: AYBFou0kV/6tr1cdp3JCGI4ZNfY9V6DeYpcR3qJj7tacorVgif3PIvz1zn0QbEv5ayz
+	D+cSHIgw1jpQN0/J64xq1h8eC1R9Y9X/g8fQOLcjJyA8IvI3Hfc942q//gFcMWXCA6GBrc58dQp
+	9syFOaax8kK9akMXbtqeVrDnqPJafSISZCx9gxjqXJSF/O1UP0Zj5QrS4hgYYLjULxZaPM94ZTU
+	8AhJ43KT2/Y9sW2AVCWNmuWnQEmV/hdNyU5HR/pKbBj6GzeEkghP4xUNsjrNDAKWHeaN4s4w+TO
+	O2L1Qipxqexq5/mE0BEgUAMJXKMWhUeBku/2Fmzx6Daamrt1gJ5V0EuBQet/EWJzCQlDD5LHhgE
+	JjeEJ4iS6Bz9XYjs1ZT580Gnf/DnabGYroTj/aPSU3LdzAywga50iIIzCo++8noy4so8NMufr11
+	dW4/k3qezDUM2H5JTpxSFMFRNVdyZlKl8CjN4zbJIWcGRHlXIaww56K7y2N2xoKfGpPUEioItq5
+	D8q3lEtVkWDibsIRfZ01U2bs6nHeehlFq4e
+X-Received: by 2002:a17:902:f70f:b0:2df:35f1:8771 with SMTP id d9443c01a7336-2e842dfe4d2mr2440645ad.54.1791507350458;
+        Thu, 08 Oct 2026 17:55:50 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661c:1246::1d2:d1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e84219e8c9sm1374625ad.23.2026.10.08.17.55.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 17:55:49 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: dsa: motorcomm: Add BR_FLOOD and BR_MCAST_FLOOD support
+Date: Fri,  9 Oct 2026 08:55:38 +0800
+Message-ID: <20261009005542.72860-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 05 Oct 2026 14:31:53 +0900
-Yuya Kusakabe <yuya.kusakabe@gmail.com> wrote:
+Let the hardware flood the unknown unicast / multicast if all other
+ports in the bridge have BR_FLOOD / BR_MCAST_FLOOD enabled.
 
-> ip6_route_input() attaches the input route to the skb without taking a
-> reference, relying on the RCU read-side section of the receive path.
-> seg6_lookup_any_nexthop() is called from that same section, either
-> directly from the seg6local input handler or from a netfilter okfn,
-> but still takes and drops a route reference for every packet.
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+---
+ drivers/net/dsa/motorcomm/chip.c | 142 +++++++++++++++++++++++++------
+ drivers/net/dsa/motorcomm/chip.h |   4 +
+ 2 files changed, 122 insertions(+), 24 deletions(-)
 
-Hi Yuya,
+diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+index 91cc5647f2b6..980d066a4bea 100644
+--- a/drivers/net/dsa/motorcomm/chip.c
++++ b/drivers/net/dsa/motorcomm/chip.c
+@@ -2616,6 +2616,7 @@ yt921x_dsa_port_vlan_add(struct dsa_switch *ds, int port,
+ 
+ static int yt921x_userport_standalone(struct yt921x_priv *priv, int port)
+ {
++	struct yt921x_port *pp = &priv->ports[port];
+ 	u32 mask;
+ 	u32 ctrl;
+ 	int res;
+@@ -2643,6 +2644,17 @@ static int yt921x_userport_standalone(struct yt921x_priv *priv, int port)
+ 	if (res)
+ 		return res;
+ 
++	mask = BIT(port);
++	res = yt921x_reg_clear_bits(priv, YT921X_FILTER_UNK_UCAST, mask);
++	if (res)
++		return res;
++	res = yt921x_reg_clear_bits(priv, YT921X_FILTER_UNK_MCAST, mask);
++	if (res)
++		return res;
++
++	pp->flood = true;
++	pp->mcast_flood = true;
++
+ 	return 0;
+ }
+ 
+@@ -2721,6 +2733,61 @@ static int yt921x_bridge(struct yt921x_priv *priv, u16 ports_mask)
+ 	return 0;
+ }
+ 
++static int
++yt921x_bridge_flood_set_type(struct yt921x_priv *priv, u16 ports_mask, int type)
++{
++	unsigned long targets_mask;
++	u16 flood_ports_xor;
++	u32 filter_ctrl;
++	u16 flood_mask;
++	u32 addr;
++	int port;
++	int res;
++
++	ports_mask &= ~priv->cpu_ports_mask;
++
++	flood_mask = 0;
++	targets_mask = ports_mask;
++	for_each_set_bit(port, &targets_mask, YT921X_PORT_NUM) {
++		struct yt921x_port *pp = &priv->ports[port];
++
++		if (!type ? pp->flood : pp->mcast_flood)
++			flood_mask |= BIT(port);
++	}
++
++	flood_ports_xor = flood_mask ^ ports_mask;
++	filter_ctrl = 0;
++	targets_mask = ports_mask;
++	for_each_set_bit(port, &targets_mask, YT921X_PORT_NUM) {
++		if (!(flood_ports_xor & ~BIT(port)))
++			continue;
++
++		filter_ctrl |= BIT(port);
++	}
++
++	addr = !type ? YT921X_FILTER_UNK_UCAST : YT921X_FILTER_UNK_MCAST;
++	res = yt921x_reg_update_bits(priv, addr, ports_mask, filter_ctrl);
++	if (res)
++		return res;
++
++	/* ACT_UNK is TRAP for every user port; see yt921x_chip_setup_dsa() */
++
++	return 0;
++}
++
++static int yt921x_bridge_flood_set(struct yt921x_priv *priv, u16 ports_mask)
++{
++	int res;
++
++	for (int type = 0; type < 2; type++) {
++		res = yt921x_bridge_flood_set_type(priv, ports_mask, type);
++		if (res)
++			return res;
++	}
++
++	return 0;
++}
++
+ static int yt921x_bridge_leave(struct yt921x_priv *priv, int port)
+ {
+ 	int res;
+@@ -2733,6 +2800,12 @@ static int yt921x_bridge_leave(struct yt921x_priv *priv, int port)
+ 	if (res)
+ 		return res;
+ 
++	/* By the time port_bridge_leave() is called, the port is already
++	 * unbridged, thus we cannot recompute flood flags for the affected
++	 * bridge. This leaves some sub-optimality, but the flood will still
++	 * be handled (by the CPU).
++	 */
++
+ 	return 0;
+ }
+ 
+@@ -2749,6 +2822,10 @@ yt921x_bridge_join(struct yt921x_priv *priv, int port, u16 ports_mask)
+ 	if (res)
+ 		return res;
+ 
++	res = yt921x_bridge_flood_set(priv, ports_mask);
++	if (res)
++		return res;
++
+ 	return 0;
+ }
+ 
+@@ -2757,7 +2834,12 @@ yt921x_bridge_flags(struct yt921x_priv *priv, int port,
+ 		    struct switchdev_brport_flags flags)
+ {
+ 	struct yt921x_port *pp = &priv->ports[port];
+-	bool do_flush;
++	struct dsa_switch *ds = &priv->ds;
++	struct net_device *bdev;
++	bool change_isolated;
++	struct dsa_port *dp;
++	bool change_flood;
++	u32 ports_mask;
+ 	u32 mask;
+ 	int res;
+ 
+@@ -2771,36 +2853,48 @@ yt921x_bridge_flags(struct yt921x_priv *priv, int port,
+ 			return res;
+ 	}
+ 
+-	/* BR_FLOOD, BR_MCAST_FLOOD: see the comment where ACT_UNK_ACTn_TRAP
+-	 * is set
+-	 */
+-
+ 	/* BR_BCAST_FLOOD: we can filter bcast, but cannot trap them */
+ 
+-	do_flush = false;
++	change_isolated = false;
+ 	if (flags.mask & BR_HAIRPIN_MODE) {
+ 		pp->hairpin = flags.val & BR_HAIRPIN_MODE;
+-		do_flush = true;
++		change_isolated = true;
+ 	}
+ 	if (flags.mask & BR_ISOLATED) {
+ 		pp->isolated = flags.val & BR_ISOLATED;
+-		do_flush = true;
++		change_isolated = true;
+ 	}
+-	if (do_flush) {
+-		struct dsa_switch *ds = &priv->ds;
+-		struct dsa_port *dp = dsa_to_port(ds, port);
+-		struct net_device *bdev;
+ 
+-		bdev = dsa_port_bridge_dev_get(dp);
+-		if (bdev) {
+-			u32 ports_mask;
++	change_flood = false;
++	if (flags.mask & BR_FLOOD) {
++		pp->flood = flags.val & BR_FLOOD;
++		change_flood = true;
++	}
++	if (flags.mask & BR_MCAST_FLOOD) {
++		pp->mcast_flood = flags.val & BR_MCAST_FLOOD;
++		change_flood = true;
++	}
+ 
+-			ports_mask = dsa_bridge_ports(ds, bdev);
+-			ports_mask |= priv->cpu_ports_mask;
+-			res = yt921x_bridge(priv, ports_mask);
+-			if (res)
+-				return res;
+-		}
++	if (!change_isolated && !change_flood)
++		return 0;
++
++	bdev = dsa_port_bridge_dev_get(dp);
++	if (!bdev)
++		return 0;
++
++	dp = dsa_to_port(ds, port);
++	ports_mask = dsa_bridge_ports(ds, bdev);
++	ports_mask |= priv->cpu_ports_mask;
++
++	if (change_isolated) {
++		res = yt921x_bridge(priv, ports_mask);
++		if (res)
++			return res;
++	}
++	if (change_flood) {
++		res = yt921x_bridge_flood_set(priv, ports_mask);
++		if (res)
++			return res;
+ 	}
+ 
+ 	return 0;
+@@ -3757,9 +3851,9 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
+ 	 * the "bridged" ports, thus we need to trap and handle those packets by
+ 	 * software.
+ 	 *
+-	 * If there is no more than one bridge, we might be able to drop them
+-	 * directly given some conditions are met, but we trap them in all cases
+-	 * for now.
++	 * In some cases, we may offload the flood action to the hardware. This
++	 * is done by fixing UNK_ACT to TRAP, and toggling the FILTER_UNK on the
++	 * appropriate ports.
+ 	 */
+ 	ctrl = 0;
+ 	for (int i = 0; i < YT921X_PORT_NUM; i++)
+diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
+index 25ff77054de3..85b658492f0c 100644
+--- a/drivers/net/dsa/motorcomm/chip.h
++++ b/drivers/net/dsa/motorcomm/chip.h
+@@ -801,6 +801,10 @@ struct yt921x_port {
+ 	bool hairpin:1;
+ 	/* BR_ISOLATED */
+ 	bool isolated:1;
++	/* BR_FLOOD */
++	bool flood:1;
++	/* BR_MCAST_FLOOD */
++	bool mcast_flood:1;
+ 
+ #if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
+ 	unsigned char led_duty;
+-- 
+2.53.0
 
-Thanks for the patch and the throughput numbers. The Sashiko review asked
-whether this also holds for the BPF callers in filter.c. Under
-BPF_PROG_TEST_RUN the call does not come from the receive path: LWT_IN
-programs reach seg6_lookup_nexthop() through bpf_push_seg6_encap(),
-bpf_test_run() runs them many times on the same skb, and the RCU section
-can end between runs. With the patch, on 32-bit ARM
-(CONFIG_PREEMPT_VOLUNTARY, KASAN):
-
-  BUG: KASAN: slab-use-after-free in __seg6_do_srh_encap+0x3c/0x52c
-  Read of size 4 at addr c46b8100 by task bpftool/119
-  CPU: 0 UID: 0 PID: 119 Comm: bpftool [snip] 7.3.0-rc5 #1 VOLUNTARY
-  Tainted: [O]=OOT_MODULE
-  Hardware name: Generic DT based system
-  Call trace:
-    [snip]
-    __seg6_do_srh_encap from seg6_do_srh_encap+0x1c/0x24
-    seg6_do_srh_encap from bpf_push_seg6_encap+0x184/0x194
-    bpf_push_seg6_encap from bpf_lwt_in_push_encap+0x48/0x5c
-    bpf_lwt_in_push_encap from ___bpf_prog_run+0x1aa0/0x4334
-    ___bpf_prog_run from __bpf_prog_run32+0xd4/0x114
-    __bpf_prog_run32 from bpf_test_run+0x2bc/0x57c
-    bpf_test_run from bpf_prog_test_run_skb+0x948/0x1100
-    bpf_prog_test_run_skb from __sys_bpf+0x10a8/0x2eac
-    __sys_bpf from sys_bpf+0x50/0x64
-    sys_bpf from ret_fast_syscall+0x0/0x54
-    [snip]
-  Allocated by task 119:
-    [snip]
-    dst_alloc+0x50/0xac
-    ip6_dst_alloc+0x24/0x7c
-    ip6_pol_route+0x468/0x780
-    ip6_pol_route_input+0x48/0x50
-    fib6_rule_action+0x16c/0x2e8
-    fib_rules_lookup+0x2b8/0x3ec
-    fib6_rule_lookup+0x228/0x308
-    seg6_lookup_any_nexthop+0x3e8/0x4d0
-    seg6_lookup_nexthop+0x1c/0x24
-    bpf_lwt_in_push_encap+0x48/0x5c
-    ___bpf_prog_run+0x1aa0/0x4334
-    __bpf_prog_run32+0xd4/0x114
-    bpf_test_run+0x2bc/0x57c
-    bpf_prog_test_run_skb+0x948/0x1100
-    __sys_bpf+0x10a8/0x2eac
-    sys_bpf+0x50/0x64
-    ret_fast_syscall+0x0/0x54
-  Freed by task 123:
-    [snip]
-    kmem_cache_free+0xd8/0x3cc
-    rcu_core+0x434/0x1154
-    handle_softirqs+0x1d4/0x660
-    __irq_exit_rcu+0xe8/0x198
-    irq_exit+0x10/0x18
-    call_with_stack+0x18/0x20
-    __irq_svc+0x98/0xb0
-    finish_task_switch+0x158/0x4f4
-    __schedule+0x6c8/0x1710
-    schedule+0x38/0x124
-    schedule_hrtimeout_range_clock+0x170/0x1e0
-    usleep_range_state+0xf4/0x178
-    trigger_fn+0x1dc/0x238 [seg6_noref_trigger]
-    kthread+0x1c4/0x200
-    ret_from_fork+0x14/0x28
-  Last potentially related work creation:
-    [snip]
-    __call_rcu_common.constprop.0+0x4c/0x608
-    ip6_pol_route+0x348/0x780
-    ip6_pol_route_output+0x48/0x50
-    fib6_rule_action+0x16c/0x2e8
-    fib_rules_lookup+0x2b8/0x3ec
-    fib6_rule_lookup+0x228/0x308
-    ip6_route_output_flags+0x100/0x220
-    trigger_fn+0x20c/0x238 [seg6_noref_trigger]
-    kthread+0x1c4/0x200
-    ret_from_fork+0x14/0x28
-  The buggy address belongs to the object at c46b8100
-   which belongs to the cache ip6_dst_cache of size 156
-  The buggy address is located 0 bytes inside of
-   freed 156-byte region [c46b8100, c46b819c)
-  [snip]
-
-The module in the trace is a small test helper. In a loop it calls
-rt_genid_bump_ipv6(), as "ip -6 rule add" or a nexthop replace does, and
-then does an output lookup on a route that shares the nexthop. I used the
-module to make the window easier to hit.
-
-Before the patch seg6_lookup_nexthop() used skb_dst_set(), so the skb held
-a reference on its dst between runs.
-
-> Look the route up with RT6_LOOKUP_F_DST_NOREF, as ip6_route_input()
-> does, for the input and table lookups.
-> [snip]
-
-This also changes the contract of seg6_lookup_nexthop(). It does not
-always take a reference now, and when it does not, the dst on the skb is
-valid only inside the RCU section of the caller. seg6_lookup_nexthop() is
-shared: it is declared in include/net/seg6.h and seg6_local.h, filter.c
-uses it too, and neither the call sites nor the declarations say that the
-lifetime changed.
-
-One possibility would be to split it into two functions, conceptually
-similar to ip6_route_output_flags() and ip6_route_output_flags_noref(): a
-noref primitive for the callers in the seg6local input path, and a
-refcounted wrapper around the primitive, which bpf_push_seg6_encap() would
-call. The split would put the contract in the name and fix the
-use-after-free above.
-
-Ciao,
-Andrea
