@@ -1,260 +1,207 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3244F4033
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:09:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DB84F85B3
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791569350; cv=none; b=jtQp0D6ikoNnp9VVO4FJ9ehDToU2xHdG0a7HOlqcYXQ0Li0lC+j4VbkOSIbZVC+godeWa2EYSEr8yVssWUBeBz+NG+qrwsBW5AngZBJOEZxBABy9Xb3BeQb3jesRcBeuA+vG8nm22z5uY5FSCaA4iOzftFen9CCXVYm066a3VmQ=
+	t=1791569672; cv=none; b=m2iysno1eGxPJiNMfvZCsP4nOTDUIgurZxDVq74ieaFFcsfUg76IV1+lC+hqGwj7FocUo+9b/7EPlEeJMtZCBCd4e3fZyT7q5MzEcfjWj5ddVHvl2b0x2z8sTZD9LcZj8zecA2ozHoajITQwoSwnGlF3JPprVjBijt/JTfitHws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791569350; c=relaxed/simple;
-	bh=7Uosb9Zcj0EuJ9/AeETYiueCovxfBDks8QS+romqhkY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VvNvCBLe5fUJ10SX8yPCbqyLefYOHXnGv+d/F3P97MMLdr/TGciubePRbWdmfQnodJ7bXwhWwv0x7UGbFCN/2aupBjnIPTS2N7vaSmmGGDDus8TdnMsqSQdkfhRwhZPY5Q+P9h4H9vABo2jO9LFJRRyp+GzUK4EnpNQ3Rpuj4dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=fwF7O3hu; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1791569672; c=relaxed/simple;
+	bh=hmhp5aCfAowc1RH1ZLE5xg09F/tgIyMjcgJPa/87Xxg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=C+hChNgOA/im6N1s/8B90yV/02lxtowwQ9095lo7BnSYKeIjajZmL2hgntkUyr6drlaVooI3Y1c9mm0GvIc8n3VwP7DLGNyz/f0qXBFlh4BUHJqDyUTzIN3d1whT0ANO9cKWyuvoqu1GvEhLt5FRBrneYno3okcqNX9CaCP78XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RXilsdNz; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="fwF7O3hu"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-91054f537ccso1208076d6.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:09:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RXilsdNz"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-917a20e9efeso1259566d6.2
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:14:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791569348; x=1792174148; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x4zLqaLOwYeBrjRP7ipUvDwTZueZzw1YjG5Ql3Qu6KI=;
-        b=fwF7O3huaCxWbwvIqOsX/PrIdB2xm6CkHqyB13etDYWWFL367Gorim2enn1H/Pxwth
-         g4pw9tLFbyPjdnHTwh+2q1GYoXGiw0qCBFDRV9aUJiwr4yT4Ud2n0M7+buBCamft+Kt/
-         iKsRsJwnzDcsVVInpjkJoSlkCNuv8rIQDQUHs=
+        d=gmail.com; s=20251104; t=1791569669; x=1792174469; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BmUaHEAjDqs57lG3N//XR/fYj5yl74K4ovqeCbA5msc=;
+        b=RXilsdNzfJ72M8bImGfAbIxRYb5qr3aYOwHWmPo9m6vGwG8yWMfimC92Cz6Zy9Z+Dp
+         v6kSmDuftmyOAtvZdtVyL+Odbyg9np5MyEoZ88H/VUJOkuiDmCi5yobSB4FgHO7JmOc7
+         aAk9uWOSY3eVB+0L+DqJyU/EXWXgnpbrhGg83fldr2DII0c6ot/uF9FJjic5H3kbDCrI
+         3nKp53CEULM7K9qsmeWQc/aRuhGL1y2kwuaJiq0JpMJv0C2purZTqB3Sx6ZO0IY4NUNl
+         YG+90gs+T4kCrVKA3KFi798rl2yfjwNb9X3imKAwJRDLj2a22cl9oo05351kL9gbE858
+         N1aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791569348; x=1792174148;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x4zLqaLOwYeBrjRP7ipUvDwTZueZzw1YjG5Ql3Qu6KI=;
-        b=t49c5qRhZJjFZZ5djyHtWw1Sqd9E7LgkJzJ1ZPZ373de6rvFQLjEAS0PCn6Zr7kZK8
-         6djzmR8T3NHZVlJoKF7nrij/LKS7mAQAOAV++0MqA+BO+ZJL4Dm1rfgYzScJV1+D0d9A
-         lievQ2XnQrQ47qnm+oychTFtJ4gyLt32mHpmJ9ckrL9XSnML5u3aVWzh930Gkg8jFTzL
-         Llwy48g2En1Yua1Ze6iuj4C0k9DtwQA8/mcfyPvcWsUhFc9aKLO+qjgAHrQApwDa3evw
-         wQoXEhER2nwZOS1gpXV6ULlXRD69mGDdo6kbmhYirFTnCHn5oZXPNPD48OIRZ8eh6OO/
-         bvKg==
-X-Gm-Message-State: AFq9FYKDuUYPreyv1gSPfueWfY7UVXmlhK5zBXuwzlUlyboyNMOjKm5O
-	B/O6FCkjJLanrgDBpkIa7SangXUrgv64watSf2PJeqk+mPiXoN45dRJ52pEpNC6071/CwwDGmGn
-	enD4=
-X-Gm-Gg: AYBFou0r9nFALeNuVhHxZF9fiwniirYrB3gQnK6y88c3RaFPq9ZV8W7dueWvpU0wGOF
-	i1l0MQ5M1q1tChuqca/+GreSogbZjkWAZcZTBMn6/4SKnDiLTySDoMf1QddY0tfkOouwj0ooMWG
-	5naKY6JHJ4DogBKgEjO6h6grn6kanqWEoh/84bTdI6mR+VzYNhuixldZyiox4PHuOU1rtecUgUw
-	Ur0oH19ioKEKEWpbJo5OoUmB/gnDcTs/dtuN6P4bGX9KbHGZbQ+fsdhYmObT5tWjUYjOlLvtuZ7
-	MNrxTaAJxw9gpGLI8YOnANnavqTSuxRkk1eNxIH0yl6WXuwQ7kexvIxYTCNLqeD7FT5kpdaOtNK
-	KXxe1+T0DXUw0XY/CeC+5CgHMBHv2N1b8WApNBhQ3JcxXr0Z9evoq4jKW1ChV8yJcapd32vVBoI
-	ts7XLo5C1ml/sCDhdIIB4vHHDr6Sn3CMiZk6CO3W5Q8Zs42oRP52/5w869MPD41UYKYOsIrryS5
-	2CS3ouaVRzTplDP8JxnPuA0vtag1cCoDuxvsCdBknC6
-X-Received: by 2002:a05:6214:43c2:b0:91b:5d3b:4ac7 with SMTP id 6a1803df08f44-91b5d3b4d8dmr33796596d6.48.1791569347775;
-        Fri, 09 Oct 2026 11:09:07 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b5511fdecsm24476976d6.48.2026.10.09.11.09.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 11:09:06 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sashiko <sashiko-bot@kernel.org>,
-	bpf@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net/sched: clamp skb->queue_mapping before indexing the tx queue
-Date: Fri,  9 Oct 2026 14:09:03 -0400
-Message-Id: <QDISC-MD1X.v2.20261009135842@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20260707; t=1791569669; x=1792174469;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BmUaHEAjDqs57lG3N//XR/fYj5yl74K4ovqeCbA5msc=;
+        b=hFAQ0bMwpmyxvMoCEuzHCUzbkmC8yZF0fqnKjSD+5U88xxPbGfTbkE0T01TK3PDasq
+         ZjOve1eS1eSf/TejPl+PbNqSGifDbpwDb9gylExtKNaMzgphouUO/RAF2U27rgzQBUST
+         Fe78w8cbUEHjJpTtDC3X1XH7paYm8zUbPlqSaDxa28j9rKWMSj7h2F62Bm8OqcmGLiSm
+         gy1jQD4Y5k830xCWuyCLw+gh9yLM424/X8Ugy4/76lrI6qsovWMBlBZYRk510KzjI3M1
+         XKri+kim1Ah7fuNjAp4Q/Jc86Wu3Hnf4uz4aqEqj21Z4IejxykmJhjdEqUJb+csT+5Lm
+         6oww==
+X-Forwarded-Encrypted: i=1; AKwUvBxyeuUJQzrtdrSAMEKTr5Z8q1O79gx7DIXqkGv++McusGG/VnV2H6hFiGcMKS2dzoZPNlIgHo0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ2Nfhbid5VZZJTa4wBEPDdUAzHC5ul/IWz848+XDjpWha94W7w
+	HnxFMfFOHKW+hvn3HiaZCkSK8zIe4HjPJtxyavtgazEcRpiROE8RFmIRTGGViU6I
+X-Gm-Gg: AYBFou0P1Ic+odL/b9xyOJQ12M8sO7yKoMWzZ219FnmOMxqA4MDRZC0Yq5K9+BRsz6h
+	SPbwL+hVQmEEazNgSyPGz6rN4q76dfT2v7HfxudSu0MFvXn4d4G9+vmOMtBdXolbWNfrAXibnXR
+	LJu3wsprNVZyDJbvwH752K6+ZCnOh6Aw0JXNXOwd+FJKOJxQnLn4vbX6QecyvA7Rcse5oGPAySn
+	rM4DN5tWaJ8bO/YA+YMKhtLPVw7ickdjr8F5Y1ncFcKoEP+Qoa+uIYioe77oFQ3b+Ih7QqyDI0e
+	/MGCZATNdGgPGQtPYDptpbzxJWQas+txQXk7L1Z5DxHBk2zLKs2dAQX9X3KH6hVrX4QC5XCqKWI
+	2k+QpqepodzTrMfLKL51uqIvrMy6rjhXD9+mHQZJrPULVqGM5Fs6KtTenM/MhmiaiDrGpoIj58H
+	o05ilED2I/MLKvwkSdmEHSJG0gYrjXFM1LV0aZ3gGnb99GL5mj1cpCD+75ikmOjoItpO77Th6Tf
+	Jg=
+X-Received: by 2002:a05:620a:19a2:b0:934:ab73:ac53 with SMTP id af79cd13be357-93ebcc1186emr416023685a.0.1791569668976;
+        Fri, 09 Oct 2026 11:14:28 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93eb986c0cfsm248923385a.19.2026.10.09.11.14.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Oct 2026 11:14:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 Oct 2026 14:14:27 -0400
+Message-Id: <DM0IFYXERNG1.2ZNS2EYUGGPOF@gmail.com>
+Cc: <kernel-team@meta.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S
+ . Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "Dimitri Daskalakis" <daskald@meta.com>, "Mohsin Bashir"
+ <mohsin.bashr@gmail.com>, "Bobby Eshleman" <bobbyeshleman@meta.com>,
+ <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] eth: fbnic: validate the Rx completion buffer index
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Yehyeong Lee" <yhlee@isslab.korea.ac.kr>, "Alexander Duyck"
+ <alexanderduyck@fb.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ <netdev@vger.kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20261009175358.1598001-1-yhlee@isslab.korea.ac.kr>
+In-Reply-To: <20261009175358.1598001-1-yhlee@isslab.korea.ac.kr>
 
-This issue was caught by Sashiko (nipa). A producer-side path cap is
-already merged (ea4d4b5dddb5); this patch adds the matching consumer-side
-cap.
+On Fri Oct 9, 2026 at 1:53 PM EDT, Yehyeong Lee wrote:
+> The buffer ID in an address/length Rx completion descriptor is a 16 bit
+> field, FBNIC_RCD_AL_BUFF_PAGE_MASK being DESC_GENMASK(15, 0) once the
+> fragment bits are removed, so the device can name any index from 0 to
+> 65535.  fbnic_pkt_prepare() and fbnic_add_rx_frag() feed that value
+> straight into fbnic_page_pool_get_head() and fbnic_page_pool_get_data(),
+> which use it to subscript qt->sub0.rx_buf[] and qt->sub1.rx_buf[].
+>
+> Those arrays only cover the buffers the driver posted.  They are
+> allocated with size_mask + 1 entries, and size_mask comes from
+> hpq_size / FBNIC_BD_FRAG_COUNT, so at the default FBNIC_HPQ_SIZE_DEFAULT
+> of 256 each array holds 256 entries of 16 bytes, that is 4096 bytes.  A
+> buffer ID of 65535 reaches 1048560 bytes past the start of the
+> allocation.
+>
+> The fill side already masks every index it computes against
+> bdq->size_mask, and so does all of the ring head and tail arithmetic.
+> The completion side does not.  A descriptor naming a buffer that was
+> never posted makes fbnic_page_pool_get_head() decrement pagecnt_bias
+> through a pointer outside the array and hand the out-of-bounds
+> netmem_ref back as a struct page; page_pool_get_dma_addr() and
+> page_address() then dereference it and the skb is built on whatever it
+> points at.
+>
+> Injecting an out-of-range header completion reports under KASAN:
 
-The issue:
-The tx queue is picked and capped in netdev_core_pick_tx(), before the
-__dev_xmit_skb() qdisc enqueue path. A tc BPF program running inside
-egress qdisc (not clsact) can then change __sk_buff->queue_mapping;
-that store is never re-checked. bpf_convert_ctx_access() bounds it only
-by NO_QUEUE_MAPPING, not by the device's queue count.
+How exactly are you injecting the completion? Just overwriting the id
+field in the Rx completion with an arbitrary value from the driver?
 
-On dequeue, qdisc_restart() calls netdev_get_tx_queue(), which
-indexes dev->_tx[] with that value. netdev_get_tx_queue() guards it with
-just a DEBUG_NET_WARN_ON_ONCE, so sch_direct_xmit() takes the out-of-bounds
-txq->_xmit_lock and writes txq->xmit_lock_owner past the end of the
-allocation on non-lltx devices such as ifb. Drivers that index their rings
-from skb_get_queue_mapping() (ex: ifb) go out of range the same way.
+The buffer id is chosen by SW when the BD is submitted to the device,
+and the device just echoes it back like a cookie when that buffer is
+used.
 
-The Fix:
-Cap the mapping at the consumer and write the capped value back, so both
-the qdisc's _tx[] lookup and any later driver read stay in range. The cap
-folds into the dequeue path instead of a separate walk over the returned
-list: dequeue_skb() caps the head, and each bulk helper caps the element it
-appends. netdev_cap_txqueue() already logs a ratelimited notice and selects
-queue 0. The single-packet case pays one extra compare against
-real_num_tx_queues.
+>
+>   BUG: KASAN: slab-out-of-bounds in fbnic_page_pool_get_head
+>   Read of size 8 at addr ffff88800c719008
+>   The buggy address is located 8 bytes to the right of
+>    allocated 4096-byte region [ffff88800c718000, ffff88800c719000)
+>
+> Check the ID against size_mask before it is used and drop the packet if
+> it is out of range.  Masking it instead would keep the access in bounds
+> but would silently attribute the completion to an unrelated buffer that
+> the driver does own, which is worse than a drop.  Set add_frag_failed so
+> the frame takes the existing error path.
+>
+> Rejecting the header completion leaves pkt->buff uninitialized, and the
+> payload completions that follow are handled before the metadata
+> descriptor that looks at add_frag_failed, so fbnic_add_rx_frag() has to
+> bail out as well or xdp_buff_add_frag() writes through a shared info
+> pointer derived from a NULL data_hard_start.  Key that on
+> data_hard_start, the way fbnic_put_pkt_buff() already does, so the
+> buffer accounting on the normal path is untouched.
+>
+> Fixes: a29b8eb6e533 ("eth: fbnic: Add basic Rx handling")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+> ---
+>  drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 27 ++++++++++++++++++--
+>  1 file changed, 25 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/e=
+thernet/meta/fbnic/fbnic_txrx.c
+> index 10caacffee0f0..d85daab06c99c 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+> @@ -985,14 +985,24 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vec=
+tor *nv, u64 rcd,
+>  {
+>  	unsigned int hdr_pg_idx =3D FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd)=
+;
+>  	unsigned int hdr_pg_off =3D FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
+> -	struct page *page =3D fbnic_page_pool_get_head(qt, hdr_pg_idx);
+>  	unsigned int len =3D FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
+>  	unsigned int frame_sz, hdr_pg_start, hdr_pg_end, headroom;
+>  	unsigned char *hdr_start;
+> +	struct page *page;
+> =20
+>  	/* data_hard_start should always be NULL when this is called */
+>  	WARN_ON_ONCE(pkt->buff.data_hard_start);
+> =20
+> +	/* A buffer ID the device never got from us cannot name a buffer we
+> +	 * own, so drop the packet instead of running off the end of rx_buf[].
+> +	 */
+> +	if (unlikely(hdr_pg_idx > qt->sub0.size_mask)) {
+> +		pkt->add_frag_failed =3D true;
+> +		return;
+> +	}
+> +
+> +	page =3D fbnic_page_pool_get_head(qt, hdr_pg_idx);
+> +
+>  	/* Short-cut the end calculation if we know page is fully consumed */
+>  	hdr_pg_end =3D FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
+>  		     FBNIC_BD_FRAG_SIZE : fbnic_hdr_pg_end(hdr_pg_off, len);
+> @@ -1026,10 +1036,23 @@ static void fbnic_add_rx_frag(struct fbnic_napi_v=
+ector *nv, u64 rcd,
+>  	unsigned int pg_idx =3D FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
+>  	unsigned int pg_off =3D FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
+>  	unsigned int len =3D FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
+> -	netmem_ref netmem =3D fbnic_page_pool_get_data(qt, pg_idx);
+>  	unsigned int truesize;
+> +	netmem_ref netmem;
+>  	bool added;
+> =20
+> +	/* The header completion was rejected, so buff was never initialized
+> +	 * and add_frag_failed is already set.  There is nothing to add to.
+> +	 */
+> +	if (unlikely(!pkt->buff.data_hard_start))
+> +		return;
+> +
+> +	if (unlikely(pg_idx > qt->sub1.size_mask)) {
+> +		pkt->add_frag_failed =3D true;
+> +		return;
+> +	}
+> +
+> +	netmem =3D fbnic_page_pool_get_data(qt, pg_idx);
+> +
+>  	truesize =3D FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
+>  		   FBNIC_BD_FRAG_SIZE - pg_off : ALIGN(len, 128);
+> =20
 
-A bulk-dequeued list is transmitted under the single tx queue lock of the
-head skb, so every element must belong to that same queue. The fast bulk
-helper (TCQ_F_ONETXQUEUE, taken on BQL devices by the per-queue children
-of mq, mqprio, taprio and htb, and by any qdisc on a single-queue device
-such as the prio root in the reproducer) must therefore compare each
-capped follower against the head and requeue a mismatch, exactly as the
-slow helper already does; appending a follower that caps to a different
-queue would send it under the wrong _xmit_lock.
-
-Conditions to recreate the bug:
-Load a SCHED_CLS or SCHED_ACT program that stores __sk_buff->queue_mapping
-(a tc BPF action is enough), attach it to a transmit qdisc (for example a
-matchall filter on a prio root), and send a packet. With a 1-queue device a
-store of 1 indexes one past dev->_tx[]. Under KASAN with panic_on_warn=1
-the unfixed kernel faults with "BUG: KASAN: slab-out-of-bounds in
-sch_direct_xmit". Loading the program needs CAP_BPF/CAP_SYS_ADMIN, so the
-trigger is root.
-
-Fixes: 74e31ca850c1 ("bpf: add skb->queue_mapping write access from tc clsact")
-Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/netdev/179033713973.2160803.4914570693994398206@kernel.org/
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-9R8V.v2.20260924072708%40mojatatu.com
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v1.20261005193231%40mojatatu.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v1 -> v2:
-- try_bulk_dequeue_skb(): the fast bulk helper (TCQ_F_ONETXQUEUE) capped
-  each follower but appended it without comparing it against the head, so
-  a mismatched follower was still sent under the head's txq lock. Compare
-  the capped follower with the head and requeue a mismatch to skb_bad_txq,
-  matching try_bulk_dequeue_skb_slow(). Reported by Sashiko (nipa).
----
- net/sched/sch_generic.c | 53 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 48 insertions(+), 5 deletions(-)
-
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 6f6a6f0d5eb0..b65bec7e2643 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -96,9 +96,33 @@ static void qdisc_maybe_clear_missed(struct Qdisc *q,
- 
- #define SKB_XOFF_MAGIC ((struct sk_buff *)1UL)
- 
-+/* A tc BPF program on a transmit qdisc can change __sk_buff->queue_mapping
-+ * after the tx queue was picked. Re-cap it against the device and write it
-+ * back, so a driver that re-reads skb_get_queue_mapping() stays in range.
-+ */
-+static u16 qdisc_cap_skb_tx_queue(struct net_device *dev, struct sk_buff *skb)
-+{
-+	u16 queue = skb_get_queue_mapping(skb);
-+	u16 capped;
-+
-+	capped = netdev_cap_txqueue(dev, queue);
-+	if (unlikely(capped != queue))
-+		skb_set_queue_mapping(skb, capped);
-+
-+	return capped;
-+}
-+
-+static struct netdev_queue *skb_cap_tx_queue(struct net_device *dev,
-+					     struct sk_buff *skb)
-+{
-+	return netdev_get_tx_queue(dev, qdisc_cap_skb_tx_queue(dev, skb));
-+}
-+
- static inline struct sk_buff *__skb_dequeue_bad_txq(struct Qdisc *q)
- {
--	const struct netdev_queue *txq = q->dev_queue;
-+	const struct netdev_queue *txq;
- 	spinlock_t *lock = NULL;
- 	struct sk_buff *skb;
- 
-@@ -110,7 +134,8 @@ static inline struct sk_buff *__skb_dequeue_bad_txq(struct Qdisc *q)
- 	skb = skb_peek(&q->skb_bad_txq);
- 	if (skb) {
- 		/* check the reason of requeuing without tx lock first */
--		txq = skb_get_tx_queue(txq->dev, skb);
-+		/* re-cap: real_num_tx_queues may have shrunk */
-+		txq = skb_cap_tx_queue(qdisc_dev(q), skb);
- 		if (!netif_xmit_frozen_or_stopped(txq)) {
- 			skb = __skb_dequeue(&q->skb_bad_txq);
- 			if (qdisc_is_percpu_stats(q)) {
-@@ -208,6 +233,7 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
- 				 int *packets, int budget)
- {
- 	int bytelimit = qdisc_avail_bulklimit(txq) - skb->len;
-+	struct net_device *dev = qdisc_dev(q);
- 	int cnt = 0;
- 
- 	while (bytelimit > 0) {
-@@ -216,6 +242,17 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
- 		if (!nskb)
- 			break;
- 
-+		/* Re-cap a mapping changed after pick; requeue a
-+		 * follower that no longer matches the head, which owns
-+		 * the _xmit_lock for the whole list.
-+		 */
-+		if (unlikely(qdisc_cap_skb_tx_queue(dev, nskb) !=
-+			     skb_get_queue_mapping(skb))) {
-+			qdisc_enqueue_skb_bad_txq(q, nskb);
-+			break;
-+		}
- 		bytelimit -= nskb->len; /* covers GSO len */
- 		skb->next = nskb;
- 		skb = nskb;
-@@ -233,7 +270,7 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
- 				      struct sk_buff *skb,
- 				      int *packets)
- {
--	int mapping = skb_get_queue_mapping(skb);
-+	struct net_device *dev = qdisc_dev(q);
- 	struct sk_buff *nskb;
- 	int cnt = 0;
- 
-@@ -241,7 +278,11 @@ static void try_bulk_dequeue_skb_slow(struct Qdisc *q,
- 		nskb = q->dequeue(q);
- 		if (!nskb)
- 			break;
--		if (unlikely(skb_get_queue_mapping(nskb) != mapping)) {
-+		/* A tc BPF store may have changed the mapping after
-+		 * pick; cap it and keep the list on one tx queue.
-+		 */
-+		if (unlikely(qdisc_cap_skb_tx_queue(dev, nskb) !=
-+			     skb_get_queue_mapping(skb))) {
- 			qdisc_enqueue_skb_bad_txq(q, nskb);
- 			break;
- 		}
-@@ -286,7 +327,7 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 		if (xfrm_offload(skb))
- 			*validate = true;
- 		/* check the reason of requeuing without tx lock first */
--		txq = skb_get_tx_queue(txq->dev, skb);
-+		txq = skb_cap_tx_queue(qdisc_dev(q), skb);
- 		if (!netif_xmit_frozen_or_stopped(txq)) {
- 			skb = __skb_dequeue(&q->gso_skb);
- 			if (qdisc_is_percpu_stats(q)) {
-@@ -322,6 +363,8 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 	skb = q->dequeue(q);
- 	if (skb) {
- bulk:
-+		/* cap the head; the bulk helpers cap every appended element */
-+		qdisc_cap_skb_tx_queue(qdisc_dev(q), skb);
- 		if (qdisc_may_bulk(q))
- 			try_bulk_dequeue_skb(q, skb, txq, packets, budget);
- 		else
--- 
-2.43.0
