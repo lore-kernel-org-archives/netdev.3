@@ -1,207 +1,439 @@
-Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020072.outbound.protection.outlook.com [52.101.229.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic308-10.consmr.mail.ne1.yahoo.com (sonic308-10.consmr.mail.ne1.yahoo.com [66.163.187.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DC23A9014;
-	Fri,  9 Oct 2026 05:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791522651; cv=fail; b=FWo95rx3Tqprw0MVakqDW4TehVYXRQQT8lIpJgnugOgSRk0BAl3ZGvY5ovjoKwX5Mfm2Zg6XXUj+jm5Of3UzzeeagQcinqSFORXrUJkb3y+iRATRYcyNZZnJPZvZQudJs2LmEjILfljsH01nmSZ3VhkUOldCMjtg2HsMyMwPRII=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791522651; c=relaxed/simple;
-	bh=I/3vB9hG4N0/tDJrNnhSOFkuX2L4u6EFEc66CUJdKoo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qasF2uG6/PDApT1HziSFiSUF2y1MjjsRgB+rfF3fIw7NwbcQJXQg6gn7T9W3Wydc9nPup3yMFTVyjn78wp1D4WSh788v5BGxCjo5RdgNfSrL3HLBJw9hJNOU3k8g8DJPu8n597y8jVSvYoRaTxSIDTUS5fDsgR7T2tMbS7K2mTg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=EPRpQ4xs; arc=fail smtp.client-ip=52.101.229.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620893B52FF
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 05:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.187.33
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791522659; cv=none; b=gbhGWI8GuZR8ZQrh3cDFmVCYkza3hLWf4//kE+2+JMeSKhF+mvhwdK5dW1k0eFxty7I7L3A9f20TnlZYBqIKKzhhoOtOnuRcpJQfOKcacALPyRTcvB6C+HT5PP2QngtAzK2JtedwepePGRB735f5VN7oxgy9oqZAKj3DBJkRfIo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791522659; c=relaxed/simple;
+	bh=liQ1yxbkNFQsNC1fJVWxY0YVKzkyEwh/kMzNMtOTfqE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=t1DN6vuiMjSmTHqfwYxaja2kDzcR59LDgqesE8wr5UHoguxSVe8ykcHXRJaDlv0geKV49xU/7YMl6AeEg1dSnDfL5dKxfclizx5nmlpql1omCIU0MFbHfFlj8vFDg1JfEV/el5BLvcWKssf4bl1bmJcJp4ZQq5CJXnUtUR4cwnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=mwXuleJj; arc=none smtp.client-ip=66.163.187.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="EPRpQ4xs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KkUfU8yFlA+UKRPyIxAA9djtOSrk0x1pkRI3gVtA6BwrjRQdpGiriALOtRkvRScbuwGnUEAwzGHpt1RUr2BM5lIBAU1UW7M4uxN7OcsUnC6xHwmHnzo/ItUVWXuz7uxgVV5z5tYVaUT3HS+fFuDKv0EgSjqGpJF2u1+iJJGJFycWS8vb4gaywE4x1UVMJCg3FIaaz0FMLmx71+UHME5CmWvzYy1vwEHQY9P3SqwgBcU4PQNYcHw5t0LVHXNE5v8hZzN2EzPU4pX0N1x54zU298m5L4NpXJ3nyQd5GUzqvqu7BMkz8cO2RsdsX7igRwNKC7oHIW5tHhZHluhVPAz9Nw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0KAeD4nSxpxsIIXzgu5FcSInM1QBAhyB2jkDMjz2aWk=;
- b=SxCX1pS3FW+peSMw0zP2c8SvJ2z2LNBt0Wz49hqOiFFUP8kLSaqwq3w6plRbh7a9mY2A50QCMP8VNiWdPwqPb9+5NtIrBai4ARaat954icbc9d6nriCf6thH0UH4zO8xyDoXPimTkD2gI0KYHXIqL2K6mYfCkuBlFFZsMbEYomu6hlk0Pu79GzYrNyolPDI3jCBL+J43ddp1PORWUPPW41AQGKyx7WwFh6U7xAhXx2787fxJfWACvZqjvLdKZwu8QOl+HDKnVzY2uiy0HREY3dlnZ75r7uMMc6BTIq2qevqGkS5ru+RyeDIPLLF+0ZYv8zST/IWjv2BUQZ0dtfpeog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0KAeD4nSxpxsIIXzgu5FcSInM1QBAhyB2jkDMjz2aWk=;
- b=EPRpQ4xs1KZCiLQ5cMLpb38RNy9oLSB+mk6lMIsz4srf6M1tj/GBnFZ8Z1MzAEXN7dNLfXEGML85+rDJp+naVxSFnE/8EUMWtffYwgBVWJjr+RrqwpPT0/bGPBOHrEsaoMj3vq7WE17PH9AqIlLH32czmlsYf+tc9TFZ4vuK1+o=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
- by OS7P286MB6603.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:42c::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Fri, 9 Oct
- 2026 05:10:45 +0000
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0496.015; Fri, 9 Oct 2026
- 05:10:45 +0000
-Date: Fri, 9 Oct 2026 14:10:44 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
-	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: ntb@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 00/10] net: ntb_netdev: Preserve checksum
- offload across NTB
-Message-ID: <uqnpraei5manox6ceeytwt6asphqipjc3cpt4f2hf25kxnwqal@6wyk4bbpaboe>
-References: <20260914084838.2158249-1-den@valinux.co.jp>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260914084838.2158249-1-den@valinux.co.jp>
-X-ClientProxiedBy: TY4P301CA0029.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:2be::12) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:325::11)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="mwXuleJj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791522657; bh=56Nx5p5RuPwWuVbJECBEiyNrkSuVNCSISaaE05CLNg4=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=mwXuleJjv3CSMFgiqXG96YsdD213X3/Gxr0pHs7vrIgYRAzCAnbjQWTPGn5dstyNM7tl8pjcd/UJJ7Fu+vrAamNp36vLr2p92MLPhjdoI4un1VIPRuAnZyipIvmoQgWrwLNwuItPIshQJ15lcTnfVz9csP90QSx+uqf5B0vWKktOOyLhrMByyEBUHGUyJdy59ooHaeMrRQyuGHs5oXBECtoMZ8bYh0aIO+voNEx8xSaR2YLBGk8+IXkULDrLOwI7RgkwY06bH9LcS8bHUDjJQb2nIImreZGTPhPDIGj+GBLzNPzJP4UexuJN9xzEckH1RpBVJuviTF/yEGZm2l8/gg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791522657; bh=BlwiOLFhVFyNDUKvR8NDbKitjeMPtBgH+SbQdcCtNrd=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=PwhRcxAejx+AcnsT4s3hdWuNXSTtZrjmPF4zAha3nQkDClBRIK2Mhi32Jh5WuMW7NDgHFAw2aXZCqExvaHEbBchx0AyTqwQlg56gldy2/yGHt9rj6TODL99F9E4wBxCv78IxBXkPS78vW0Sz4zh2asXZNWIPJ8cF6i5/lBFUDXFrOJjs0Ns+V7InVyjtsz7KbwaijSvWAUYMrGB0HpGBWJFkPss+KRMrixhuc7Xx7ixmjKj5Mi7tH3BNqoy2YZrguy+alVjCFpTRrqakfaNQGyenSWUVIG0Jm47KRSsgYwiP5rSB6+MVM/YmXuQXlMuuVBJ2sfKFv2O5GFmcJLQNsg==
+X-YMail-OSG: HDAH9HMVM1m7huEA4VOJvyflucKwuLkoTH2f55mEuQ0vHOfBmxStC3QiBt9foCv
+ MptAK707wEwl2FWpyuxJqNQpvwe3qw1dMSmOKNL.WBuMxxpoyU01Wfz.3sjvH2bgYWb.Rd2vCBcP
+ Z2Si.wxjrQV_nllSmJJQXJz3..eOakAXSfbXYWTuyuG1olPT795mRPhQjXQEI64gqV_iY.YwnJEA
+ 2GsyDXG8znR9fFuGLXk1is6J6hyFuQVZvJi2M9H6slJp1whK7feZtYSgMP8X6xXShDKjk._0qEXV
+ y2oFvsKk8DPoX0hHsuzZwf_VVqhB._.rN5P70i.u6NYjwrNaNryZYlthg435AsaQtdkRSKBFP.XA
+ K.E37z5dwo69lg7VkekS98cMVMqp4CyV4UhddbBk0erWdGLbiqS5MvTLrU78QDtT1U8fp3cJmzew
+ lgzhlmdBaJ11nwN1mgm6_bEFxB_uVK63EkRXoSggyyVs2oB5ZVJfqxBb3s4ApaWB9JiJ.xynz38N
+ P98LvxTTSDnm7jEBzEDUrFfSz4nSAZJ1GxUVot8U59yHQlVbW3zU3YeBopG43tjlaCoP8124o0zq
+ 75HDFc69PreF1ANUkbYHsYCUAQ44ADF7KPbcZZKpLlx7XZDgqcrn8wLMwb2rLJcBN2YOmyOmmVqb
+ RYwlN8uSp1vKehTIN9Nb416WK.Dm96lEcK5HkCdyaLPNBwS9UQmezqCGE52CqY.tdAkKMe6EjezW
+ 7fekGb3p9bhOALnWqPqytJ62gsvG1Z60d0M2Aix9q8jUdX0vocasb9lEr7uwpBcrMWOINgMOpClE
+ N2vWrwLofb.tRFcfiW_r6_NpBDv4M1bGhsJOHlszL3MAoMlG7Tn6WwOeTQzdOIEQJ9KwzOpE1Ouz
+ RcO.DB6IYafRJVgwjlk5CwHnRJXEsDnmNIg3XbDP8wJbVOepxxIrS5BcE4iJtqbNMrU6t_jZPjUv
+ AzzRlehR9Py.qAvi.oghbAvugkpoeGzACp8PYlYNmfrBFm9_LlezsyNhZ8yTIUFoOIQaXIX28hIs
+ YrmkdgOh7OWI2QuIhIDu5Q5gtOYy49OiM4sm4G5QnuYIXvxMwGJ.mE46LF6dNuyJRQjJq.fOiv0z
+ Eqw8UUS.Rd5bzBcLIrCKg6Mc0FMrklAMQYHrQ1KPY4TzTgUE7_M8ZW7s0x_IPHsuIcBPh62Tt55L
+ bs6e8N5n_KBygY7Kwc75PQ19wHtHJ81Rw8p3x6YUgoItjPDFNDrvlH.D4QrkJ3JuvKjID_hE.n2a
+ UCUk2YHZ2jDHsOd78u9uxEJOWCB5ODTeDDZ.wjpa1jRmJMdKpkNuXdFGX5OnQteRcspQ1Kz0ZtcJ
+ 6gC0me7tS1AZ9hE.PZ.LcBRwBjdQPM27FqYkZcKvrfyVOI.lVuP8uL.c3PXq5DfTY5rkuSTAJjks
+ .W5ywcA9ytZOkxolGXBBNHkAxHAkUWzij5pQnldJrFjQAimSWnWZQIlKgKk.IXMV2Mg7PiT0_F74
+ r9I30rc04su_djacLQ_JLxmkLQ6M3BFUENKl.ndQs0ponREucOj4K6D_cYVbHzvZUWLnYa_fqkSf
+ GUHqiBuQXj6Nd5drMsmaZlssvS_WZtzZEvTAiGwmiZGPetufBYeizc80ok38FIl28hZoWbXA4hwg
+ D7lcUJjUpmwpu.u5FM6Q9AYarAQtWATOlZOb0EJmfjQkmXnpWAwlnoXU6I2Nf6YPUYROpFADvy0j
+ wEzkJlitW0LM.o9a7AWIoDV1oz4TzdhGf.YOEn_BhTs0HyY61hYEwursFRrVmgiE33YVfUeni.jB
+ N7D4905MkBXTvJojtRsyNrkeWLlQwsqn40wzzGcnOkmcNIEcfkE89Dc8UxiatFevezSmXYNRmr_U
+ 7XKMomx55RWOnGawd9USHd0ccxaX5noJz0mFVTLziKcC2wwQMaIUA_uPXCAcxpvfAFsTiFWQ0Bdx
+ _YjX2BSL7iyNhkJzXCBqcP0ckwbiA3aKwPFjHIeQhJ3w8s1txVW3hAORA1JTECH2D7GICPZCGBeB
+ 8vtHx2_ZgzdU0MbP3JZvEvCx_p2bpVC1DVTH1EdZ_pmr2pgNshM3OWnIE1vd1_cfJSWDdZtCWUil
+ Oy_mXgwJ58akmcHrOrG94QygbZcT87ZsfXy6kaP3KSIw.sjTvyV89VfhcJk_ZIR6xTwlbJg5O6MK
+ MuO5ARXG.YI6PAJWrQBthYl36iAy8di1BXuZo0a3J._8FnNYMNrlfo3zkLjoYiNxvfyslKftZLQF
+ C.D4nsjyRjz1GhJmceukpjoyZKwkvm5uT_ThdM56t8bcWGqIGGm46V7KE08FEoyTRHuobuDudxpW
+ ok6G7p8ynD_IonPzaHv6IXF1G0QzesDjf2dEovKo-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: 3e4a362a-0e37-470c-ae8d-db1d32371c9a
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Fri, 9 Oct 2026 05:10:57 +0000
+Received: by hermes--production-ir2-5dd9bf4598-ztwl7 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID bdf7bea4b2dfe1c386d043e78a785697;
+          Fri, 09 Oct 2026 05:00:40 +0000 (UTC)
+Message-ID: <a45bbcfe-9436-4800-bf23-553d1d566716@yahoo.com>
+Date: Fri, 9 Oct 2026 07:00:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|OS7P286MB6603:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e0c62f9-f161-4fe0-1fbe-08df25c3ac85
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|1800799024|23010399003|376014|10070799003|6133799003|22082099003|18002099003|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	p0M2cqpr4TVw/mlJCDnwre+oRTc2siYaAd0vMoL3N/k8VqbeXxfrj9EqaUcrtdPdxMCqNmJj+5TGdOIpv3J6gWomjQqicb3BRFTDvWKK1y4EGcW2vU1rWAWNUAjcURdDEF5UTFsuCpX3RZYkn2SHWuOb8GATdS4GrF9JmXBX7Q/0I/prCDeGeoM7TYw0xJ1dsmdO+1IXYQWHVo52Yn0/hmDiWIMOD7OV4xeihsrH4qkisiM5eeTNM6syCvW+xsr1Es7q46oC6ofdXamTjLms3CttaRh4fUesHOOvTBkCnUo4vefY+Bc0t5ZP4UZLAXGrpYS4NMqsbS1O76cmBDcLomsJE96kL50Cz9I5jKY9Q5dnq0U7gQ46RVqojKUgsa0XApXpMr8UlrNdHBNIU59V8yMGGtjIy486YZkr+AGDkOsrNlgDe7xKjQJkhDuua+1rJM3b+qV54mgNA3vJhI3qww79tONT+f50Lqif+kK+A6LHVuBbJVoZOi6i8uMbthacMO+cGYFL1EdrQQIpWYXWp3pE414ukO4erFTC2kYbgOjiZue6uoY+0WtxOXYZDH6t84A+2hRAwvAT4Z8KyUUySCee28MHXrjddsaoJQxscrNeNjNBoAF9hjnE0uXsUz0g
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(23010399003)(376014)(10070799003)(6133799003)(22082099003)(18002099003)(10067099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EsOPQzDzqhYfhu8iwgl7Zp+WMRJE93aOGVX1pReYb+AN/74odSa7nJwoPwuV?=
- =?us-ascii?Q?xTmlCgmYQUwP0LSfC3AQY4m+Ptht0maEaxiSGjx6vwe4iJiuMHSGKIu7Jj/W?=
- =?us-ascii?Q?V/L9elVBaSi7CnIwMc+4zCKNru5T61I7be5fVh22KJHH0F/kEalYcJlnpACg?=
- =?us-ascii?Q?b7ckQZ9X3WSH99trJyoYbY+7BOd0XjZ4c0QTzE2p1mw8/Qh8OkQ3QprauEcV?=
- =?us-ascii?Q?G5vPwktEMoXdwRSQiqHB6NFw4EGFlOdEMfSBZ2s6z8//hUhqwoahzkFdJQH8?=
- =?us-ascii?Q?6OP5ZGAGhOE6u6jyiOn6lIZbBgfhnKARTKecYb6GKDe8P9N7JwC5Qd3c2U8x?=
- =?us-ascii?Q?bFc0UWw/ky06cjQQqAs1m/ZoDEg+5L61gT1mO4bI4zrvNxIto+ElsL4jwOg/?=
- =?us-ascii?Q?AlomkBNAUJ+7SgE7XL2424HWQXM5S94sOSaDWyv6UVUGG2gAlNMz+Cn79spx?=
- =?us-ascii?Q?HaUEpsJHzoAvemohoBa5O9UjlqEzafi+nmRaaAD4cs9LrrYrLOo/Ez2/clWx?=
- =?us-ascii?Q?qTj2grmaCG2Rjdn3XMTUGDaIhSg+/jdvXMFCz/+FlI8+nWkuJTJbsZSDqwqi?=
- =?us-ascii?Q?LvzfstHUM3uPzeqNRu6EsH89flLKz3yat8mLe6ABsOoPrR8cIzce0x4ULNZW?=
- =?us-ascii?Q?uTiXpvfbBKBup8iTrxt1azkbd6GVQAIUGcPXszKlSeG/iOeoX6doZuVItIzZ?=
- =?us-ascii?Q?P46TYo1qnIrEISGtkLt57zOKdK0xWev3ffQ9m8sAMmG4cjCbuvtdbwLSC66T?=
- =?us-ascii?Q?jmscXK2kk642vwS0Jnnzg6SuF5W4lMU4Pw+MiMyqpj8JTzvV4Tf4pQW9erto?=
- =?us-ascii?Q?7IIzWVLvjvLeNdAHIvQlT2hMhFcp0Yn677Zi83EZh86AmiImUKO3RwUqD5rh?=
- =?us-ascii?Q?/Q8SCcjpco2SRGVs/33fReTL9lYroxU56mkGFC4xSAdGzZtMHymxx0n55evI?=
- =?us-ascii?Q?0zkx8K2vpVM3rjpdjDjsivAsPTQ1MbkYdir5hVJgm80rj+j0Lfan1e0I3Y6d?=
- =?us-ascii?Q?Zb769rYpHMxSGBB6aw+VSC4aJMR27m5w1UvH9LtIjNg0gj719s1q4C7MhYDB?=
- =?us-ascii?Q?bHQPu2Nx7NtIj0RwdfWiQrmXbQkxQigX5OcnDRJvqHNN19kXsOprzdrVjbX8?=
- =?us-ascii?Q?T+n/DvM9wVr77VNKgdw99W7Qbi4axQr6OAcrQTUrEVKVLIbdcOrkF83Co3FR?=
- =?us-ascii?Q?I4w54kwasLjZXQkyI6KFO1SNUXKq0/pyL23EPkt2PhMvUCst9w23vfAZuIfc?=
- =?us-ascii?Q?5SqDt+dReFAteNu4M/5inINL04iJvPVI3vbI9koEnSa30MZ2tuKR/t8ZuCWb?=
- =?us-ascii?Q?i2jlkw6XMaM5nFPlryjoNUh7du00+tHmfOIQy+8jCM7U/4BKa6D5r515UPCs?=
- =?us-ascii?Q?Zzwgs7vRFZTudIW7J/E4AQnIqUfGFqll1LuiPfSGcnjsLQ5ZaUozMlzzXvcA?=
- =?us-ascii?Q?4omp0fGe9MaAaqjVjEyUn3xZT8FfgvMGGbLEIl8dIUV9jZVmosDt+/DI178w?=
- =?us-ascii?Q?/JxtT3nL0Vale8fOmHkjXmMeSElcFnTM9yMmDoU9RmifGj7l2W6U5uavjmKX?=
- =?us-ascii?Q?yVKHXxm+EoNmNLTIelNYLVQJuu6CVh8xX6pnFyQUHYA1yfBsKiRTEezKj9QQ?=
- =?us-ascii?Q?N8aI4K971PEkZjXk2fVznqdqSvnRCBt3QviAj6rJ67qAYGhBVxSYZYWNUvNu?=
- =?us-ascii?Q?1b9dVoEYdDbQeF/7L7t+AxOyjWVMBFr+afo0CY8yKEl98SiqrQYqNJS7soZi?=
- =?us-ascii?Q?kRwBY2mvQaospbSGch2c7+YhFgTLJyv1d1ZwZOKcviH9WoYko5fT?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e0c62f9-f161-4fe0-1fbe-08df25c3ac85
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2026 05:10:45.4330
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HlAYvpzrhCNXQFzCWxaH1SooktE5K6zi0FjprFDD1qB8VhGbq6vO3XsU/IoU9pCamOEtyhsrFO08h18jiUBOWQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS7P286MB6603
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH net-next v2 7/8] net: dsa: realtek: rtl8365mb: add family D
+ SDS13 PCS support
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+To: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch,
+ olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk,
+ luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <28382f3f-03c1-4606-9b11-86f118abeafe@yahoo.com>
+Content-Language: pl
+In-Reply-To: <28382f3f-03c1-4606-9b11-86f118abeafe@yahoo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26668 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Mon, Sep 14, 2026 at 05:48:28PM +0900, Koichiro Den wrote:
-> Hi,
-> 
-> ntb_netdev may be used on embedded systems, where CPU resources are
-> often limited. L4 checksum calculation can therefore become a bottleneck
-> even when traffic stays within a trusted PCIe fabric.
-> 
-> This series carries CHECKSUM_PARTIAL across NTB in an ntb_netdev header.
-> A per-payload metadata bit in ntb_transport marks its presence. Receive
-> support is exchanged at QP link-up through scratchpads. Peers without
-> capability exchange continue to use software checksumming. The feature
-> remains disabled by default and must be enabled explicitly on trusted
-> links. RX checksum offload settings stay unchanged while the interface
-> is up.
+Extend the existing RTL8367S SGMII/HSGMII PCS implementation in this
+driver for family D switches, whose CPU SerDes is reached through the
+indexed SDS13 window and whose SDS_MISC fields differ from family C.
 
-Thanks to Joe (and Sashiko) for reviewing v4.
+The register sequence and tuning tables are derived from the GPL-licensed
+Realtek RTL8367D port API distributed in the Mercusys MR80X GPL release.
+Keep the existing family C path unchanged and select the new behavior from
+the driver's chip-family metadata, making the implementation reusable by
+other family D boards.
 
-It's been a few weeks (almost one month) since v4, so just just a quick update:
-I plan to send v5 once the NTB transport fixes below reach net-next.
+Co-developed-by: Fabiano Tassotti <fabianotassotti@gmail.com>
+Signed-off-by: Fabiano Tassotti <fabianotassotti@gmail.com>
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+---
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 181 ++++++++++++++++++-----
+ 1 file changed, 145 insertions(+), 36 deletions(-)
 
-  [PATCH v3 00/15] NTB: ntb_transport: Miscellaneous fixes
-  https://lore.kernel.org/r/20260928152550.3354675-1-den@valinux.co.jp/
+diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+index 3819a48..4cad90f 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb_main.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+@@ -286,6 +286,7 @@
+ #define   RTL8365MB_SDS_INDACS_CMD_BUSY_MASK	BIT(8)
+ #define   RTL8365MB_SDS_INDACS_CMD_RUN_MASK	BIT(7)
+ #define   RTL8365MB_SDS_INDACS_CMD_WR_MASK	BIT(6)
++#define   RTL8365MB_SDS_INDACS_CMD_INDEX_MASK	GENMASK(5, 0)
+ #define RTL8365MB_SDS_INDACS_ADR_REG		0x6601
+ #define RTL8365MB_SDS_INDACS_DATA_REG		0x6602
+ 
+@@ -334,7 +335,22 @@
+ #define   RTL8365MB_SDS_OPTION_ARM_KEY		0x0249
+ #define RTL8365MB_SDS_OPTION_REG		0x13C1
+ 
++/* Family D uses the SDS13 indirect window for its MAC6 SerDes. */
++#define RTL8365MB_D_SDS_EXT0_INDEX			13
++#define RTL8365MB_D_FIBER_CFG2_REG			0x13E8
++#define   RTL8365MB_D_FIBER_CFG2_RX_DISABLE_MASK	GENMASK(7, 6)
++#define   RTL8365MB_D_FIBER_CFG2_RX_DISABLE_SDS0	BIT(6)
++#define RTL8365MB_D_SDS_MISC_PA33PC_EN			BIT(11)
++#define RTL8365MB_D_SDS_MISC_PA12PC_EN			BIT(10)
++#define RTL8365MB_D_SDS_MISC_MAC6_SEL_SDS0		BIT(9)
+ #define RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK		GENMASK(4, 0)
++#define RTL8365MB_D_SDS_MISC_MODE_SGMII			0x02
++#define RTL8365MB_D_SDS_MISC_MODE_HSGMII		0x12
++#define RTL8365MB_D_SDS_MISC_CFG_MASK			\
++	(RTL8365MB_D_SDS_MISC_PA33PC_EN |		\
++	 RTL8365MB_D_SDS_MISC_PA12PC_EN |		\
++	 RTL8365MB_D_SDS_MISC_MAC6_SEL_SDS0 |		\
++	 RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK)
+ /* Shared "disable" encoding for both SDS_MISC's and SDS1_MISC0's
+  * 5-bit mode fields.
+  */
+@@ -714,6 +730,21 @@ static const struct rtl8365mb_jam_tbl_entry rtl8365mb_sds_jam_hsgmii[] = {
+ 	{ 0x0424, 0xD810 }, { 0x0001, 0x0F80 }, { 0x002E, 0x83F2 },
+ };
+ 
++/* Family D tuning tables from the Realtek vendor port API. */
++static const struct rtl8365mb_jam_tbl_entry rtl8365mb_d_sds_jam_sgmii[] = {
++	{ 0x0427, 0x4E0C }, { 0x0428, 0xAA00 }, { 0x0425, 0x5189 },
++	{ 0x0424, 0x8414 }, { 0x0423, 0x1020 }, { 0x0410, 0x0002 },
++	{ 0x0484, 0x011B }, { 0x0421, 0x8E13 }, { 0x0422, 0x1140 },
++	{ 0x0004, 0x074F },
++};
++
++static const struct rtl8365mb_jam_tbl_entry rtl8365mb_d_sds_jam_hsgmii[] = {
++	{ 0x0427, 0x4E0C }, { 0x0428, 0xAA00 }, { 0x0425, 0x5189 },
++	{ 0x0424, 0x8414 }, { 0x0423, 0x1020 }, { 0x0410, 0x0002 },
++	{ 0x0504, 0x051B }, { 0x0421, 0x8E13 }, { 0x0422, 0x1140 },
++	{ 0x0004, 0x074F },
++};
++
+ enum rtl8365mb_phy_interface_mode {
+ 	RTL8365MB_PHY_INTERFACE_MODE_INVAL = 0,
+ 	RTL8365MB_PHY_INTERFACE_MODE_INTERNAL = BIT(0),
+@@ -1327,7 +1358,8 @@ static int rtl8365mb_ext_config_rgmii(struct realtek_priv *priv, int port,
+ 	return 0;
+ }
+ 
+-static int rtl8365mb_sds_write(struct realtek_priv *priv, u16 addr, u16 data)
++static int rtl8365mb_sds_write(struct realtek_priv *priv, u8 index,
++			       u16 addr, u16 data)
+ {
+ 	int ret;
+ 
+@@ -1345,10 +1377,13 @@ static int rtl8365mb_sds_write(struct realtek_priv *priv, u16 addr, u16 data)
+ 	 */
+ 	return regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
+ 			    RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
+-			    RTL8365MB_SDS_INDACS_CMD_WR_MASK);
++			    RTL8365MB_SDS_INDACS_CMD_WR_MASK |
++			    FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
++				       index));
+ }
+ 
+-static int rtl8365mb_sds_read(struct realtek_priv *priv, u16 addr, u16 *data)
++static int rtl8365mb_sds_read(struct realtek_priv *priv, u8 index,
++			      u16 addr, u16 *data)
+ {
+ 	u32 val;
+ 	int ret;
+@@ -1358,7 +1393,9 @@ static int rtl8365mb_sds_read(struct realtek_priv *priv, u16 addr, u16 *data)
+ 		return ret;
+ 
+ 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
+-			   RTL8365MB_SDS_INDACS_CMD_RUN_MASK);
++			   RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
++			   FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
++				      index));
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1398,6 +1435,14 @@ static int rtl8365mb_sds_probe_option(struct realtek_priv *priv)
+ 	int ret;
+ 	int i;
+ 
++	/* Family D has a fixed SDS13 programming model and does not use the
++	 * family C option register to select its tuning table.
++	 */
++	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D) {
++		mb->sds_supported = true;
++		return 0;
++	}
++
+ 	/* Nothing to probe if no external interface is wired to the SerDes */
+ 	for (i = 0; i < RTL8365MB_MAX_NUM_EXTINTS; i++) {
+ 		extint = &mb->chip_info->extints[i];
+@@ -1476,28 +1521,47 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 				const unsigned long *advertising,
+ 				bool permit_pause_to_mac)
+ {
+-	const struct rtl8365mb_jam_tbl_entry *sds_jam;
+ 	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
++	const struct rtl8365mb_jam_tbl_entry *sds_jam;
+ 	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
+-	struct realtek_priv *priv;
++	struct realtek_priv *priv = mb->priv;
+ 	size_t sds_jam_size;
+-	u32 mode;
++	u32 misc_mask;
++	u32 misc_val;
++	u32 sds_mode;
++	u8 sds_index;
++	bool is_d;
+ 	u16 val;
+ 	int ret;
+ 	int i;
+ 
+-	priv = mb->priv;
++	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
+ 
++	/* Select the appropriate tuning table and SDS mode */
+ 	if (interface == PHY_INTERFACE_MODE_2500BASEX) {
+-		sds_jam = rtl8365mb_sds_jam_hsgmii;
+-		sds_jam_size = ARRAY_SIZE(rtl8365mb_sds_jam_hsgmii);
+-		mode = RTL8365MB_EXT_PORT_MODE_HSGMII;
++		if (is_d) {
++			sds_jam = rtl8365mb_d_sds_jam_hsgmii;
++			sds_jam_size = ARRAY_SIZE(rtl8365mb_d_sds_jam_hsgmii);
++			sds_mode = RTL8365MB_D_SDS_MISC_MODE_HSGMII;
++		} else {
++			sds_jam = rtl8365mb_sds_jam_hsgmii;
++			sds_jam_size = ARRAY_SIZE(rtl8365mb_sds_jam_hsgmii);
++			sds_mode = RTL8365MB_EXT_PORT_MODE_HSGMII;
++		}
+ 	} else {
+-		sds_jam = rtl8365mb_sds_jam_sgmii;
+-		sds_jam_size = ARRAY_SIZE(rtl8365mb_sds_jam_sgmii);
+-		mode = RTL8365MB_EXT_PORT_MODE_SGMII;
++		if (is_d) {
++			sds_jam = rtl8365mb_d_sds_jam_sgmii;
++			sds_jam_size = ARRAY_SIZE(rtl8365mb_d_sds_jam_sgmii);
++			sds_mode = RTL8365MB_D_SDS_MISC_MODE_SGMII;
++		} else {
++			sds_jam = rtl8365mb_sds_jam_sgmii;
++			sds_jam_size = ARRAY_SIZE(rtl8365mb_sds_jam_sgmii);
++			sds_mode = RTL8365MB_EXT_PORT_MODE_SGMII;
++		}
+ 	}
+ 
++	sds_index = is_d ? RTL8365MB_D_SDS_EXT0_INDEX : 0;
++
+ 	/* Hold the embedded DW8051 microcontroller in reset and keep it
+ 	 * disabled. The vendor driver loads firmware into it to manage the
+ 	 * SerDes link, but the firmware only duplicates work that phylink
+@@ -1526,34 +1590,53 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 
+ 	/* Tune the SerDes with vendor-prescribed parameters */
+ 	for (i = 0; i < sds_jam_size; i++) {
+-		ret = rtl8365mb_sds_write(priv, sds_jam[i].reg,
+-					  sds_jam[i].val);
++		ret = rtl8365mb_sds_write(priv, sds_index,
++					  sds_jam[i].reg, sds_jam[i].val);
++		if (ret)
++			return ret;
++	}
++
++	/* Family-specific post-tuning configuration */
++	if (is_d) {
++		ret = regmap_update_bits(priv->map, RTL8365MB_D_FIBER_CFG2_REG,
++					 RTL8365MB_D_FIBER_CFG2_RX_DISABLE_MASK,
++					 RTL8365MB_D_FIBER_CFG2_RX_DISABLE_SDS0);
+ 		if (ret)
+ 			return ret;
++
++		misc_mask = RTL8365MB_D_SDS_MISC_CFG_MASK;
++		misc_val  = RTL8365MB_D_SDS_MISC_PA33PC_EN |
++			    RTL8365MB_D_SDS_MISC_PA12PC_EN |
++			    RTL8365MB_D_SDS_MISC_MAC6_SEL_SDS0 | sds_mode;
++	} else {
++		/* Mux the SerDes to MAC8 in the requested mode */
++		misc_mask = RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK |
++			    RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK;
++		misc_val  = (sds_mode == RTL8365MB_EXT_PORT_MODE_SGMII) ?
++			    RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK :
++			    RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK;
+ 	}
+ 
+-	/* Mux the SerDes to MAC8 in the requested mode */
+ 	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
+-				 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK |
+-					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK,
+-				 mode == RTL8365MB_EXT_PORT_MODE_SGMII ?
+-					 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK :
+-					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK);
++				 misc_mask, misc_val);
+ 	if (ret)
+ 		return ret;
+ 
+-	val = mode << RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(id);
+-	ret = regmap_update_bits(priv->map,
+-				 RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(id),
+-				 RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(id),
+-				 val);
+-	if (ret)
+-		return ret;
++	if (!is_d) {
++		val = sds_mode << RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(id);
++		ret = regmap_update_bits(priv->map,
++					 RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(id),
++					 RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(id),
++					 val);
++		if (ret)
++			return ret;
++	}
+ 
+ 	/* Take the SerDes out of reset. The vendor driver does this only
+ 	 * after the SerDes mux and the interface mode are configured.
+ 	 */
+-	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_RESET,
++	ret = rtl8365mb_sds_write(priv, sds_index,
++				  RTL8365MB_SDS_REG_RESET,
+ 				  RTL8365MB_SDS_RESET_DEASSERT);
+ 	if (ret)
+ 		return ret;
+@@ -1563,12 +1646,14 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 	 * This flushes the FIFOs and ensures a clean state for the link,
+ 	 * preventing silent drops and CRC errors.
+ 	 */
+-	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_BMCR,
++	ret = rtl8365mb_sds_write(priv, sds_index,
++				  RTL8365MB_SDS_REG_BMCR,
+ 				  RTL8365MB_SDS_BMCR_DPRST_PHASE1);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_BMCR,
++	ret = rtl8365mb_sds_write(priv, sds_index,
++				  RTL8365MB_SDS_REG_BMCR,
+ 				  RTL8365MB_SDS_BMCR_DPRST_PHASE2);
+ 	if (ret)
+ 		return ret;
+@@ -1576,14 +1661,16 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+ 	/* Keep SGMII in-band autonegotiation disabled: the link parameters are
+ 	 * forced from rtl8365mb_pcs_link_up() instead.
+ 	 */
+-	ret = rtl8365mb_sds_read(priv, RTL8365MB_SDS_REG_NWAY, &val);
++	ret = rtl8365mb_sds_read(priv, sds_index,
++				 RTL8365MB_SDS_REG_NWAY, &val);
+ 	if (ret)
+ 		return ret;
+ 
+ 	val &= ~RTL8365MB_SDS_NWAY_EN_MASK;
+ 	val |= RTL8365MB_SDS_NWAY_RESTART_MASK;
+ 
+-	return rtl8365mb_sds_write(priv, RTL8365MB_SDS_REG_NWAY, val);
++	return rtl8365mb_sds_write(priv, sds_index,
++				   RTL8365MB_SDS_REG_NWAY, val);
+ }
+ 
+ static bool rtl8365mb_interface_is_serdes(phy_interface_t interface)
+@@ -1608,10 +1695,14 @@ static void rtl8365mb_pcs_get_state(struct phylink_pcs *pcs,
+ {
+ 	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
+ 	struct realtek_priv *priv = mb->priv;
++	u8 sds_index = 0;
+ 	u16 status;
++	bool is_d;
+ 	u32 val;
+ 	int ret;
+ 
++	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
++
+ 	/* In-band autonegotiation is not implemented, so the link parameters are
+ 	 * forced from rtl8365mb_pcs_link_up(). The real link state must still be
+ 	 * read from the SerDes itself: the embedded DW8051 microcontroller that
+@@ -1619,7 +1710,11 @@ static void rtl8365mb_pcs_get_state(struct phylink_pcs *pcs,
+ 	 * rtl8365mb_pcs_config()), so the link status register can be read
+ 	 * directly through the SDS_INDACS window without racing the auto-poll.
+ 	 */
+-	ret = rtl8365mb_sds_read(priv, RTL8365MB_SDS_REG_LINK_STATUS, &status);
++	if (is_d)
++		sds_index = RTL8365MB_D_SDS_EXT0_INDEX;
++
++	ret = rtl8365mb_sds_read(priv, sds_index,
++				 RTL8365MB_SDS_REG_LINK_STATUS, &status);
+ 	if (ret) {
+ 		state->link = false;
+ 		return;
+@@ -1630,6 +1725,13 @@ static void rtl8365mb_pcs_get_state(struct phylink_pcs *pcs,
+ 	if (!state->link)
+ 		return;
+ 
++	if (is_d) {
++		state->duplex = DUPLEX_FULL;
++		state->speed = state->interface == PHY_INTERFACE_MODE_2500BASEX ?
++				SPEED_2500 : SPEED_1000;
++		return;
++	}
++
+ 	/* The speed and duplex are forced; read them back from the values
+ 	 * programmed into the SerDes MISC register.
+ 	 */
+@@ -1671,6 +1773,12 @@ static void rtl8365mb_pcs_link_up(struct phylink_pcs *pcs,
+ 	u32 r_speed;
+ 	int ret;
+ 
++	/* Family D forces the external MAC ability from mac_link_up(); its
++	 * SDS_MISC fields do not share the family C link-force layout.
++	 */
++	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D)
++		return;
++
+ 	/* The speed field has no value for 2.5 Gbps: the rate is determined by
+ 	 * the HSGMII SerDes configuration, and the vendor driver programs the
+ 	 * 1 Gbps value here.
+@@ -1997,7 +2105,8 @@ static void rtl8365mb_phylink_mac_link_up(struct phylink_config *config,
+ 		 * rtl8365mb_pcs_link_up() because pcs_link_up() carries no
+ 		 * pause information.
+ 		 */
+-		if (rtl8365mb_interface_is_serdes(interface)) {
++		if (rtl8365mb_interface_is_serdes(interface) &&
++		    rtl8365mb_get_family(priv) != RTL8365MB_FAMILY_D) {
+ 			u32 val = 0;
+ 
+ 			if (tx_pause)
+-- 
+2.53.0
 
-Best regards,
-Koichiro Den
-
-> 
-> Best regards,
-> Koichiro
-> ---
-> Changes in v4:
->   - Move offload metadata into an ntb_netdev header (Jakub)
->   - Add an RX entry completion ordering fix (Sashiko)
->   - Learn checksum support from link events, not RX callbacks, and keep
->     it per QP (Sashiko)
->     https://lore.kernel.org/r/xsaocp32a6siggahziu4jqbwgmdasmp6v64pd5aujfkoxhiqws@n5luestlntzc/
->   - Advertise receive support only with RXCSUM enabled. Drop
->     partial-checksum frames when it is disabled (Sashiko)
->   - Keep local QP link requests separate from peer readiness
->   - Reject short RX frames before parsing them
->   - Factor out RX packet and byte accounting
->   - Add a transport API to exchange client capabilities at QP link-up
->   - Keep NETIF_F_RXCSUM unchanged while the interface is up
-> 
-> Changes in v3:
->   - Rebase after the related ntb_netdev fixes landed in net-next
->   - Avoid counting RX checksum failures as both errors and drops (Jakub)
->   - Reject csum_start below ETH_HLEN on RX and fall back to software on
->     TX (Jakub)
->   - Use READ_ONCE() for hdr->ver and hdr->len (Sashiko)
-> 
-> Changes in v2:
->   - Reset peer checksum capability on every link event (Sashiko)
->   - Add prerequisite fixes for RX ordering and shared field endianness
->     (Sashiko)
-> 
-> v3: https://lore.kernel.org/r/20260904052134.2970111-1-den@valinux.co.jp/
-> v2: https://lore.kernel.org/r/20260817064916.13278-1-den@valinux.co.jp/
-> v1: https://lore.kernel.org/r/20260814032913.3558500-1-den@valinux.co.jp/
-> 
-> 
-> Koichiro Den (10):
->   NTB: ntb_transport: Order RX descriptor reads after completion
->   NTB: ntb_transport: Use little-endian shared fields
->   NTB: ntb_transport: Order RX entry completion
->   NTB: ntb_transport: Keep local QP link requests separate
->   NTB: ntb_transport: Exchange client capabilities at link-up
->   NTB: ntb_transport: Add per-payload client metadata
->   net: ntb_netdev: Reject short RX frames
->   net: ntb_netdev: Factor out RX statistics update
->   net: ntb_netdev: Introduce an optional packet header, ntb_netdev_hdr
->   net: ntb_netdev: Preserve CHECKSUM_PARTIAL across NTB
-> 
->  drivers/net/ntb_netdev.c      | 191 ++++++++++++++++++++++++++++------
->  drivers/ntb/ntb_transport.c   | 177 +++++++++++++++++++++++--------
->  include/linux/ntb_transport.h |  12 ++-
->  3 files changed, 303 insertions(+), 77 deletions(-)
-> 
-> 
-> base-commit: 879e280b8486d4612ad1aa050d6fada2dd80cf1c
-> prerequisite-patch-id: 0000000000000000000000000000000000000000
-> -- 
-> 2.51.0
-> 
