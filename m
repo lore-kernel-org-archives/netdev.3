@@ -1,211 +1,201 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1FC3DDB00
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF87367F25
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791537623; cv=pass; b=KzdnWjvUG+z+/e6OcO7pgwzM5fxbKUFslZYf2sKTmDJHvpdngIMvdWZHVnn/jlLRjgIem29+DH2dBSyeLfBpi6OvB8Ct7FqHgykmmQDcECQHcdCK5qrFtbT6VuAuCrrMwfiBI++ldSTPzWhkBSZiv1j/aQTIoUu5L6UKjluN3gI=
+	t=1791537837; cv=pass; b=oQE6OWGK/35wP/KJPdAjD4jy8Grf91FjX2Uf29AO6s3/FfLl5jpYpgTxMjICWj/+IKmG9wAMEtwEhmvFyag6L8hRgTFKbhbitekh6X//QUpY/mkTGGlTZSqSgrtE04KFkcRCCfCUE6iILbJD8LnSXGJyhRDVLj9/vy2ZXCqgbLQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791537623; c=relaxed/simple;
-	bh=8T+bagEFNAv/OZqLOip7XkPhqwlIGOPZXUhaa6oDbGU=;
+	s=arc-20240116; t=1791537837; c=relaxed/simple;
+	bh=TzFkSQ/kgUwmZzyD56X0aCUuJJGsRgH0XuOHO1C+5yg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZVhnicGTLJEyjYJFjO8+I1qOXSST0Cmpiw4Fg49B69UkyrPq6fVSgyf1zoV+DxhF+6LE2D8XkmYFMMh8mELRvyPnj2pC/pPatZg70v1Dp4zafEBCIpDORfv9jrQB9dD186BSID0qqZqut0AwpHpQFNQyh+wkTZfzxrxzilbyshI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=t68XhJ7p; arc=pass smtp.client-ip=209.85.210.179
+	 To:Cc:Content-Type; b=OESgHpL0ZrcRpOOvLybp0JSGiDMUQJVkFFYkDnQkFqG153SGHfV07T0PfCrWv3buzyMBs5OGxwlg4IG/6ulWbbvjexWXMgHsMFASvC/wEqivtRKtxIiR6tfQ7FPvIE1J2IPyUO05PS4KsBcJO840fScooiBXPFboryxPlDzMgyo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=WGhU/JMs; arc=pass smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="t68XhJ7p"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-881269371acso786421b3a.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 02:20:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791537620; cv=none;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="WGhU/JMs"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-873a4edb243so4513343b3a.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 02:23:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791537835; cv=none;
         d=google.com; s=arc-20260327;
-        b=fS95JRFymJLbpGjIbrraM65+zSO1SRUDpWm8UjFsjy87ZzW9gZSE94sru5Sjy1M+pV
-         wlopROSKTIBGZotPZ1Gg4bSoMtTx31LtSitTvdHSxmjm3H/S1uskwe7slEnSDjtg10Tl
-         Bkevs4JpWvq2XKFzIvLMpfhDdZT7nQPuQ4yvhPj7bH8iDizvvpz/Ph1MntRSRI5czctF
-         +bUBZNj+pwtLgr5N3A0nLuZnH+grQ2fRtb88DVxppXIORseA6WaqCpAFlLhjV9UQIXad
-         U/IIMDFmM21arP2v4T/akbkA2cVI6n/nGREmI3pml3SZzQEPXKXjyt6IRl1XGu1FHuk2
-         XMlQ==
+        b=fQliujziGaqXlGcuRQgGatPCptUVNn8E9xusEjGh5ND5Y6dS8WFf+jwg82XcEEwwJX
+         XXPYuqHEVujT/+jY3Vgp4+zuLqZRG2cp25YvyBt+csLL0R/qs6kbZwDMRBojH21R0jjh
+         1pUw+fXDzO5ldrzwCpFWaB7l9JLQcwd8xW2v8P0OUXmroEWOyjzRnn/BO7goJRld7sIz
+         URcr9k6r/+xjbxBwbapdL88g2FkdtcSa0kUsvvsbt7f3mMCydeZlHS74OgrR+og5Ddc4
+         qwRx0QfNhcQxqWBdpZdSR2G7Sv4wgMvrd5hHXGYAxOGIAc3wVLk1N7VPKEhqI44mksk+
+         T/Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=8T+bagEFNAv/OZqLOip7XkPhqwlIGOPZXUhaa6oDbGU=;
-        fh=/KNHanBKvb0UpdGuR+44c0O9Rlfl/GH50TXZciVvwTQ=;
-        b=eZzcxr9++svmW3gnuZG6Bfieh3BrY7JTvwmQMxVqWJWdmBQoW17oEHO655CcUmJCX5
-         /pZCQ4/PO+GpOUTMKYBCHAlVhNMQdMWBEIaiyL5OVCELSCnA/lku/y5Bc4MO1PsZcDxC
-         k/RrEQ7qTu1QfjO995wWqEvDJ4LmladBh8BKRA8IBnPhIBP5bUHf+ptd1j0DVvn67ZNl
-         5xwW6tEPWQKEQZzZobsa5z5LKrVhAComp7DeRx3TR0KXLWl/NbZ/dnhcVe2jkHMUxaQ3
-         zR2qCq9rwX0aiGTU3TkCFtVg5weSdgWLkZWQakK7TnZTXBU9djWf7IbzAuZfbRb3ffr1
-         Ty9A==;
+        bh=yHSRiRzJzQVt7SKLI9ycJ6RsLP0z8yh1HZvirE9N1T8=;
+        fh=B/yY33zljz0XGkAzXrVcgDhrGhThntojw7L9l9i4ECE=;
+        b=jeoY/OQrZEbgKoy2On5zOAWdjqXf4abkMJel4m76ypWM9WtfEsJBKN9+kbA37KTjWo
+         2CLEvDINLoqIAY1+dEXFfQsbc5zq0gyFlm5riwYcFvm5J6yBvH79I7JwE1eQoVNE3QKD
+         gUuuNT2AbOfIwfYz88tuejdGUOGUfJg2yUCa1qadsKG+kfIUVOkC5V3Injj87OpA7jZV
+         rCDTOwNb5eEMOlnkCm42wzZXDEPTmB6LDzmEVne58pF+Ve8s8hSW8DNINPQmmvYDNP+G
+         /5Ms+TIi523dHNuf0a5IKT0j5MnrZYDaKVXPd9W12EhuWtqODlwUU7V82i6zCbiH1N3n
+         R68Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791537620; x=1792142420; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1791537835; x=1792142635; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=8T+bagEFNAv/OZqLOip7XkPhqwlIGOPZXUhaa6oDbGU=;
-        b=t68XhJ7pAPCuLCAKIjXDBPA0IyjBdTwjN4xmQAfvYn/H4QSvvuF0WUGRSTFsVkWMvi
-         h7yatPDOy8v51Lby0I0Z93qOam5vvzeGKAsWPlD6A+YrXcYlmzHD/QmIgETui1uu5dZu
-         IIhXVCM5xLNZjS1JeOoBBO+ys+XubKGz3VXlo=
+        bh=yHSRiRzJzQVt7SKLI9ycJ6RsLP0z8yh1HZvirE9N1T8=;
+        b=WGhU/JMsudLaY4d3HC8G+cgQq7tdsc0qamZZGngnqOUvBfHYTnhdM6QbxN5TBmmiOL
+         Begxv1XgKS2jbYg35MRfS6Bh1v3fgAJSxb9kI/feV+eXvBxlTMEGJJBhM25MfHANeJ1l
+         6Y+/3noeSrT2Lahxa/inRoYj+pndijJjsss90=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791537620; x=1792142420;
+        d=1e100.net; s=20260707; t=1791537835; x=1792142635;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8T+bagEFNAv/OZqLOip7XkPhqwlIGOPZXUhaa6oDbGU=;
-        b=gKWsbfLEREZhrzQW6XC2qOUr1/W64Ng3y5YYrWaSSc4Hm5+a6ejxP+QmnCXzxvN5e/
-         gItPC1SHZ8QVSA6ujU23SvNbJ7nwfBJZhrd28TWeFA2N96eh5yqFGGTSRYm/SbERQhNN
-         t5/0JV4E2kKGmq7JIND0E7yi9zmuUOvhibKLVDslJuCX2P+6dOYztVdup0ZEboavs8bS
-         xLSGIYsg6CZQg3IuXYEzHr3VcxRtd9ez1nOP3TMRie1kD5kX7aIsxbC+7m+4foMEm7NH
-         2OAOwFoHgv8iBQq0hljQVMT6dP7zTSgMEDj0FSrO8qna2xgG/33VQsAmfrgjsZhZiiEQ
-         HRog==
-X-Gm-Message-State: AFq9FYJILvDL9gxzY6+GyLZBW4Brb6bFexVOKEoW7t/bhiYT5pePwRr7
-	oZSWjDYXECTFgaFErxFL5AQfjjUriazDzxhnIxCYmQx2BBhWRPrFr4gUq3ZrLp9kvjqruXTYW8m
-	7rnN9UiKmDbX8S2nV4Tfb2upcvc50c0YWu6aGusRl
-X-Gm-Gg: AYBFou1wAgA0W6M71pvxhzEPAu9XwCWWOifL0aok0rO3xe46rpZQeT34FACJAcYWMDo
-	6l98D3PVJ8ovCZjVPwhngPDqAXvQk887EU1GrbKcwLl1kXwPnGmIc0j/36CQ1YXqVCcCZcnajWW
-	qZdzlCyAubbl8JiNPSIgUTqR/OXlRENkT5JXLDRpvBU8GIPQko/A29pFryAgwhRxLVsHyWtR2Lt
-	PxSSZWfxuYVXO8BbdIi4jUeqPE18HcrHsnMNN/Py7ewMNX4B3QBwt+0jRQvq+b6aEebH54BacW4
-	HMy38n46TaUD1BUqSK5HFnRScmSglo/q+l8Im0Hsxlo6hSNeAnpGY+R5ZUVEkrmsbssRSIaC6zE
-	pstet5n1Zn0a2bvxNXiDLaUewg6MZgRk7uliZ6bAR9iex
-X-Received: by 2002:a05:6a00:4c1b:b0:878:3705:5724 with SMTP id
- d2e1a72fcca58-896a4db0354mr1243619b3a.48.1791537620497; Fri, 09 Oct 2026
- 02:20:20 -0700 (PDT)
+        bh=yHSRiRzJzQVt7SKLI9ycJ6RsLP0z8yh1HZvirE9N1T8=;
+        b=JxvBiQgTUBtKhBDed8Ui/TLJ/o8LA2m60Gtr1+qo1aB0fZ+9T/91OIp/1cNAIrkCGv
+         yikUowYrqSBbUuU9qKXvVwYUBNmppDVIRbjdez60ODFK7OaC1343M7GzHs77TLRSVhk1
+         v6xX6tLMMu8W1Qh/vEEqmMiZB/GGT+dnbbzBP1VqAMdcRJnMWSKpOW9V4sG00h04Ip23
+         cU+M3Bi2WyK2L0KO76WObyzo16byzcA8+8GAMinH9LgN/D7cDUC9xxMcXqbjxksktoBf
+         lsC20nNhMnzdRI65PYGkEqeO8D16ckv8PLGmbJOarfGVlgY/mtOmRDuGiVcP/Mv9Lk0J
+         BRyg==
+X-Forwarded-Encrypted: i=1; AKwUvByaZPJVGAWLbggK3dZV3IEImxn7NK9M60yKXIZwPkPnE6uAcGQYb2s7AhTgYgppaLHCXjNDpR4=@vger.kernel.org
+X-Gm-Message-State: AFuF++n9iAnAprqBQy3ongTylkdez90a0fAyTGHV2rdl2dfoXLLWYAlv
+	YV5nL/YOWl+R1mb9PA0NQdDerNA/qZsGqXvCmTMgGrDHIJrGYSTtDtA/IBKHxOufNVbANyQWzbB
+	eSbUJtYNTaaie3XLtPlmCQCDzRvxFIS0ecfqLozZc
+X-Gm-Gg: AYBFou1tno1uBDX6pS94PFumZnFlOpe9UJKLp1yPH888y5XjQkp+mINE6980XdSe9yE
+	tJ7Zt2diQxdXOoBaOGaauRu8/9/AupMzeCb0/Ikf9TSzMR7O2BouzeloaeyDgueJQIYs0FNCOv5
+	kLypdhncFXLtJ55QN4sDLyrttAPQ/OJtyFKO8upDVCHcgeVNDY7AwABooF6pQf1b20RZjrnjSdd
+	Lq4dS6h1tcc7PG9MCqTu5mdH9DSyr+Y6V1odg9FgO6sT8NyPJQKY6RJYhzsbMAPG9VWZWPi30jm
+	E69i4PjSjaGUyv45KeJUHZ0i6bXgha6KOJprPrqVQPYRmTJoKFOYuoVY8KE5qABr/edRTRJzf4X
+	sFJzuweY25d/20AwVBvAK6Mw6Y3RoJhTRgQ==
+X-Received: by 2002:a05:6a21:38e:b0:3dd:a197:edfb with SMTP id
+ adf61e73a8af0-3e16bf8d2fcmr1092667637.74.1791537835583; Fri, 09 Oct 2026
+ 02:23:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-BA27.v5.20261007171509@mojatatu.com> <87a4oottcj.fsf@toke.dk>
- <CAM0EoMmYEr4DLrjuM5hdPR5Lf1c=mU6WNpYydbzkGnWjqFxMrw@mail.gmail.com> <87pkxks68f.fsf@toke.dk>
-In-Reply-To: <87pkxks68f.fsf@toke.dk>
+References: <20261009051703.3615846-1-acassen@corp.free.fr>
+In-Reply-To: <20261009051703.3615846-1-acassen@corp.free.fr>
 From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 9 Oct 2026 05:20:09 -0400
-X-Gm-Features: AclHuK9eYAfueee64evY9nqUNmiUsIv2Id4AfGG6z3lIOXpFCxFMLLRHDU4cOvQ
-Message-ID: <CAM0EoM=QsM4EvWyPyAh5QzqDAo5g4kJF7v+=-00BJgi9OovFZQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v5] net/sched: cap the accounted backlog before
- it can wrap
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Victor Nogueira <victor@mojatatu.com>, moeller0@gmx.de, cake@lists.bufferbloat.net, 
-	Sashiko <sashiko-bot@kernel.org>
+Date: Fri, 9 Oct 2026 05:23:44 -0400
+X-Gm-Features: AclHuK_O7gmHUpeTUDp9YmOwmYfBg5HgPcy_BbuoeH3KkmfpJk8V_axtVvK_MaU
+Message-ID: <CAM0EoM=NH6_Nc7WeUpaqO8hJQef0XWtxDoCfcF00z-bPUE6CRg@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: act_api: take tcfa_lock for hardware stats updates
+To: Alexandre Cassen <acassen@corp.free.fr>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Vlad Buslov <vladbu@nvidia.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 8, 2026 at 8:54=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen <to=
-ke@toke.dk> wrote:
+Hi Alexandre,
+
+On Fri, Oct 9, 2026 at 1:17=E2=80=AFAM Alexandre Cassen <acassen@corp.free.=
+fr> wrote:
 >
-> Jamal Hadi Salim <jhs@mojatatu.com> writes:
+> Actions without per CPU stats update their counters under tcfa_lock in
+> the software path but tcf_action_update_stats() adds hardware stats to
+> the same counters without it. An offloaded action that also runs in
+> software can then lose counter updates. On 32-bit the race can also
+> leave the u64_stats seqcount odd and make its readers spin forever.
 >
-> > On Thu, Oct 8, 2026 at 6:29=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen=
- <toke@toke.dk> wrote:
-> >>
-> >> > This is a follow-up to an issue found by Sashiko (nipa) during revie=
-w of
-> >> > commit d9ebd8f9aa8b ("net/sched: fq_codel: clamp default quantum and
-> >> > mtu"), part of the quantum/mtu overflow series merged as a687f2ae995=
-f.
-> >> > Clamping the per-flow quantum and the CoDel mtu does not bound the
-> >> > accounted backlog, so the per-flow backlog wrap the review flagged
-> >> > remained.
-> >>
-> >> This, and the rest of the commit message is obtuse LLM vomit, and clos=
-e
-> >> to unreadable. Please rewrite the commit message without the verbosity=
-,
-> >> so it's actually something a human reader can comprehend. For the cake
-> >> bits in particular:
-> >>
-> >
-> > Ok, but there is a dilemma: The verbosity is an attempt to appease the
-> > sashikos. The other day it complained that i didnt have a space after
-> > a semi colon.
+> Callers disable preemption around this update for the per CPU stats.
+> PREEMPT_RT forbids taking a spinlock_t with preemption disabled. Pin
+> the CPU in the per CPU path instead.
 >
-> You know you can push back on Sashiko comments, right? :)
+> Tested for regressions on ConnectX-7 with firmware 28.48.1000.
 >
 
-You can never if it listens to what you say ;-> See attached
-screenshot on a small exchange where i pushed back. I did fix the
-double space on the next one of course ;->
-
-
-
-The human behind it is trying to teach it some bad habits ;->
-
-> > The more stuff i add the less it slows me back. It picks on the
-> > accuracy of the commit text _and changelogs_ and prescribes what i
-> > said or should have said. I can understand a future AI review would
-> > benefit from that; there are probably a few humans that read the
-> > commit logs after the patch has gone in.
-> > So:
-> > I have been more targetting the AI more than humans in these comments.
->
-> Writing to appease the bots at the expense of human readers is
-> absolutely a mistake, IMO. Last time I checked, we are still a community
-> of humans developing the kernel together, regardless of the fashionable
-> assistance technology du jour. Having a comprehensive and understandable
-> commit log is one of the kernel's greatest assets, and often one of the
-> only things that makes complicated code understandable. We should not be
-> sacrificing that in an attempt to make the work guess robot guess other
-> words :/
-
-I dont know ;-> Let's discuss in a year.
-
-[..]
-
-> > In plain english, it says three things (applies to :
-> > 1) Splitting a GSO skb can account for more bytes than the original
-> > packet, so we sum the whole segment list and test the total against
-> > the ceiling before any segment is linked.
-> > 2) If it is over, we drop the entire list, and because no flow state
-> > (tags, hash indices, counters) has been resolved yet, the reject
-> > leaves nothing behind.
-> > 3) The fraglist sentence only picks which reference to drop for the
-> > case skb_segment_list() returns the original skb, so the same skb is
-> > not freed twice.
-> >
-> > This text also applies to the codel piece. Does re-writting as above
-> > sound better?
->
-> Yes, much better!
->
-
-
-[..]
-
-> > We have literally have about 100 followups to review from complaints
-> > of "re-exsting issues" by sashikos and other ai officianados (there
-> > are at least another 10 on cake) and the hard part is sifting through
-> > and picking what is important enough to submit. And then deal with the
-> > fallback from the sashikos turning transforming into bike-shedders.
-> > I am trying to avoid sending many patches. But i could split this into:
-> >
-> > - 0001 (prep, no behavior change): extract cake_tcf_classify() and the
-> > fq_codel_classify() rewrite.
-> > - 0002 (prep, no behavior change): skb_list_walk_safe(segs, seg) rename=
-.
-> > - 0003 (fix): the enqueue ceiling guard across fq_codel / codel / pie
-> > / fq_pie / dualpi2 / pfifo / RED / cake, plus the
-> > qdisc_pkt_len_segs_init() producer clamp. pfifo stays here - RED reads
-> > a grafted child's backlog, so it is the same overflow, not a separate
-> > bug.
-> > - 0004 (cake restructure): the cake_hash_keys() / cake_hash_resolve()
-> > split and the split-GSO relocation.
-> >
-> > Would that work?
->
-> Yeah, this seems roughly along the lines of what I was imagining :)
->
-
-I will wait for sashiko to run - it does find good issues and will
-resend with this and the one above in mind.
+See the comments from Eric and the bot.
+You must now an explanation for how you found the bug. In your case i
+would probably cite it as an observed production issue (even if you
+are experimenting before production)
+You have to wait at least 24 hours before sending V2. When you do you
+can add my reviewed by for the series as well.
 
 cheers,
 jamal
 
-> -Toke
+> Fixes: 5e174d5e73df ("net: sched: modify stats helper functions to suppor=
+t regular stats")
+> Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
+> ---
+>  include/net/pkt_cls.h | 2 --
+>  net/sched/act_api.c   | 6 ++++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/include/net/pkt_cls.h b/include/net/pkt_cls.h
+> index 5f5cb36439fe..9382405b2bab 100644
+> --- a/include/net/pkt_cls.h
+> +++ b/include/net/pkt_cls.h
+> @@ -316,10 +316,8 @@ tcf_exts_hw_stats_update(const struct tcf_exts *exts=
+,
+>                                 continue;
+>                 }
+>
+> -               preempt_disable();
+>                 tcf_action_stats_update(a, stats->bytes, stats->pkts, sta=
+ts->drops,
+>                                         stats->lastused, true);
+> -               preempt_enable();
+>
+>                 a->used_hw_stats =3D stats->used_hw_stats;
+>                 a->used_hw_stats_valid =3D stats->used_hw_stats_valid;
+> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> index 6e48b4bc2d75..f634c23d6a65 100644
+> --- a/net/sched/act_api.c
+> +++ b/net/sched/act_api.c
+> @@ -307,13 +307,11 @@ int tcf_action_update_hw_stats(struct tc_action *ac=
+tion)
+>
+>         err =3D tcf_action_offload_cmd(&fl_act, NULL, NULL, NULL);
+>         if (!err) {
+> -               preempt_disable();
+>                 tcf_action_stats_update(action, fl_act.stats.bytes,
+>                                         fl_act.stats.pkts,
+>                                         fl_act.stats.drops,
+>                                         fl_act.stats.lastused,
+>                                         true);
+> -               preempt_enable();
+>                 action->used_hw_stats =3D fl_act.stats.used_hw_stats;
+>                 action->used_hw_stats_valid =3D true;
+>         } else {
+> @@ -1597,6 +1595,7 @@ void tcf_action_update_stats(struct tc_action *a, u=
+64 bytes, u64 packets,
+>                              u64 drops, bool hw)
+>  {
+>         if (a->cpu_bstats) {
+> +               preempt_disable();
+>                 _bstats_update(this_cpu_ptr(a->cpu_bstats), bytes, packet=
+s);
+>
+>                 this_cpu_add(a->cpu_qstats->drops, drops);
+> @@ -1604,13 +1603,16 @@ void tcf_action_update_stats(struct tc_action *a,=
+ u64 bytes, u64 packets,
+>                 if (hw)
+>                         _bstats_update(this_cpu_ptr(a->cpu_bstats_hw),
+>                                        bytes, packets);
+> +               preempt_enable();
+>                 return;
+>         }
+>
+> +       spin_lock_bh(&a->tcfa_lock);
+>         _bstats_update(&a->tcfa_bstats, bytes, packets);
+>         atomic_add(drops, &a->tcfa_drops);
+>         if (hw)
+>                 _bstats_update(&a->tcfa_bstats_hw, bytes, packets);
+> +       spin_unlock_bh(&a->tcfa_lock);
+>  }
+>  EXPORT_SYMBOL(tcf_action_update_stats);
+>
+> --
+> 2.43.0
+>
