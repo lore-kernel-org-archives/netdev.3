@@ -1,87 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D879F3905E0;
-	Fri,  9 Oct 2026 15:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD8C4DEC15;
+	Fri,  9 Oct 2026 15:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791559154; cv=none; b=ZImCe+b67OmeV8sCjGUW3aaL3k2Gz6O589cJBA+Ss7yvN6OlLEmSoZWi+VG97Q26R5JCcIKmgpouoxCKwv5oNetObklTp0SDrzzgazGX+SQRqzWaT34UBs6tr0jaFVWVWzwhfPmG4xko0zpXl/oYGXHomUDVQeUyr87D9Vplc14=
+	t=1791559229; cv=none; b=etao94Wj6VoJPcszPVDYVYEiE6IEn5XO7YcSkx3ssjhRK0WPf5iIE1XP18a55XqUvu43RpEGzc1E48SA+T5FKsCxXeuf3/Ar2q5is1LAq2C9+iWB9bx00OrVrUNU5pQf5a5r84Fqre5qq7i3bkNxetYAf6M9LPJZHASVmfk7Zfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791559154; c=relaxed/simple;
-	bh=bPR5Tqwi4Y4erVYP/3BIN0RRkQjgxUFnu09DGUygdvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=khO4HAwQK8uIYJGAVyANKx0NSZy5mUOfCvh7xsuhaikeUn0qvLtm17uP/aqIosJwKzcBKHwPa+C6/riMpl19v+io1WWptg4oww/cuoBmEe3XuDIAzvbGkI5Beu1q0RX9566aOv8dLn2JwemCTz1aM2fI2ZJhvUJQn3rNovbhGuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKhhpHI6; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKhhpHI6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32F71F000FF;
-	Fri,  9 Oct 2026 15:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791559153;
-	bh=jZKQBS895WjgLPHYyn9gLII3Mh3ShLe3Tp6Or1il/2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gKhhpHI6zRqA9uKz3Ah2TEHVaj41J6RpNCKNJB7BwQKDW1N72JWeeK8pqVY6vqPhl
-	 XwuOXpVCtcW0AvmM3DJKvG8oSlW136BMtQoKGWl4W+a4lTre1tw5IP922hjN84IqC4
-	 ZZgxKsDBXjMjtTDveSFLcLQc8oDMGw6lhNrmkyXm6A6vzb029XvJ655AwAl+LS6FAO
-	 cH2c8i67NibnQQ0AeJy75X0UgloGIaEaR/X4LfHntWsCOnfJx4TqXCkUswC0uI6Pxv
-	 nuzzrwRCOnwOkFnjibpTllQV1vQTFdFTqSDqRkI4vzY7qAosSlM6oUZyPIouzHPU1p
-	 26+QaqRJ5FAEg==
-Date: Fri, 9 Oct 2026 16:19:06 +0100
-From: Simon Horman <horms@kernel.org>
-To: Wei Hu <weh@linux.microsoft.com>
-Cc: Long Li <longli@kernel.org>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	s=arc-20240116; t=1791559229; c=relaxed/simple;
+	bh=fTcOwCXJBoEKdjXvf8bN4MoiJ4xOloa7nuvRAx/pEik=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E3R8j7jiorEv4MdHZK18/hZ7N8i1BPFn3Vb1OV1cQgQz7dqzMdJmyfu52ePn2SAvw/vCtD9FtWr6KSSzpVac/Rr1KHMI0Br4rJ7LbQ5CfIFJUizx8JWURwdrrMIxBT3FWxicfqL5OqiGykCVTAolX8CQa5GFwNfWZemRMIL7hrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 77D68430FB;
+	Fri, 09 Oct 2026 17:20:20 +0200 (CEST)
+From: Gabriel Goller <g.goller@proxmox.com>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>,
 	"David S. Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Kees Cook <kees+treewide@kernel.org>, Kees Cook <kees@kernel.org>,
-	Manish Awasthi <mawasthi@linux.microsoft.com>,
-	Wei Hu <weh@microsoft.com>
-Subject: Re: [PATCH net-next v6 0/4] net: mana: concurrent HWC requests and
- dynamic queue depth
-Message-ID: <20261009151906.GF83879@horms.kernel.org>
-References: <cover.1790665894.git.weh@linux.microsoft.com>
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5] net: ipv6: seg6: report lwtunnel setup errors via extack
+Date: Fri,  9 Oct 2026 17:20:13 +0200
+Message-ID: <20261009152015.462383-1-g.goller@proxmox.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1790665894.git.weh@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1791559219587
 
-On Wed, Oct 07, 2026 at 12:53:26PM +0000, Wei Hu wrote:
+seg6_build_state() rejected invalid configurations with a generic -EINVAL,
+so "ip route add ... encap seg6 ..." sometimes reported "Invalid argument".
 
-...
+Add extack messages to the checks that lacked one, and use
+NL_REQ_ATTR_CHECK() for the missing SRH attribute so that userspace can
+tell which attribute is missing. The checks themselves and their return
+values are unchanged.
 
-> Long Li (4):
->   net: mana: prepare HWC ownership for safe reinitialization
->   net: mana: give each HWC message slot its own completion state
->   net: mana: support concurrent HWC requests
->   net: mana: add dynamic HWC queue depth with reinit path
+Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
+---
 
-Hi Wei,
+v5 (https://lore.kernel.org/all/20261005140637.644840-1-g.goller@proxmox.com/):
+ * use NL_REQ_ATTR_CHECK() for the missing SRH attribute (Jakub)
+ * reword the inline mode message to "inline mode requires the IPv6
+   address family", since it also applies to IPv4 nexthop objects
+   (Andrea)
+ * consistently call the header "IPv6 Segment Routing Header" (RFC 8754)
+   in all messages (Andrea)
+ * include the offending mode value in the invalid mode message
+ * reword the commit message to match
 
-Unfortunately this patch-set did not apply cleanly to net-next,
-and thus our CI did not run.
+v4 (https://lore.kernel.org/all/20260923120228.172643-1-g.goller@proxmox.com/):
+ * use NL_SET_ERR_MSG when the SRH attr is missing
+ * use NL_SET_ERR_MSG_ATTR when we have an invalid attr
 
-Please rebase and repost.
+v3 (https://lore.kernel.org/all/20260922090851.38978-1-g.goller@proxmox.com/):
+ * format fix
+ * use NL_SET_ERR_MSG_ATTR
 
-...
+v2 (https://lore.kernel.org/all/20260918153544.1178884-1-g.goller@proxmox.com/):
+ * dropped tests
 
+ net/ipv6/seg6_iptunnel.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
+
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index 69a6ef5c5317..0d39a38a5dd2 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -762,8 +762,11 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	struct seg6_lwt *slwt;
+ 	int err;
+ 
+-	if (family != AF_INET && family != AF_INET6)
++	if (family != AF_INET && family != AF_INET6) {
++		NL_SET_ERR_MSG(extack,
++			       "unsupported address family for SRv6 encapsulation");
+ 		return -EINVAL;
++	}
+ 
+ 	err = nla_parse_nested_deprecated(tb, SEG6_IPTUNNEL_MAX, nla,
+ 					  seg6_iptunnel_policy, extack);
+@@ -771,7 +774,7 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	if (err < 0)
+ 		return err;
+ 
+-	if (!tb[SEG6_IPTUNNEL_SRH])
++	if (NL_REQ_ATTR_CHECK(extack, nla, tb, SEG6_IPTUNNEL_SRH))
+ 		return -EINVAL;
+ 
+ 	tuninfo = nla_data(tb[SEG6_IPTUNNEL_SRH]);
+@@ -782,13 +785,19 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	 */
+ 	min_size = sizeof(*tuninfo) + sizeof(struct ipv6_sr_hdr) +
+ 		   sizeof(struct in6_addr);
+-	if (tuninfo_len < min_size)
++	if (tuninfo_len < min_size) {
++		NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
++				    "truncated IPv6 Segment Routing Header attribute");
+ 		return -EINVAL;
++	}
+ 
+ 	switch (tuninfo->mode) {
+ 	case SEG6_IPTUN_MODE_INLINE:
+-		if (family != AF_INET6)
++		if (family != AF_INET6) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
++					    "inline mode requires the IPv6 address family");
+ 			return -EINVAL;
++		}
+ 
+ 		if (tb[SEG6_IPTUNNEL_SRC]) {
+ 			NL_SET_ERR_MSG(extack, "incompatible mode for tunsrc");
+@@ -804,12 +813,19 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
+ 	case SEG6_IPTUN_MODE_L2ENCAP_RED:
+ 		break;
+ 	default:
++		NL_SET_ERR_MSG_ATTR_FMT(extack, tb[SEG6_IPTUNNEL_SRH],
++					"invalid SRv6 encapsulation mode %d",
++					tuninfo->mode);
+ 		return -EINVAL;
+ 	}
+ 
+ 	/* verify that SRH is consistent */
+-	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo), false))
++	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo),
++			       false)) {
++		NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
++				    "invalid IPv6 Segment Routing Header");
+ 		return -EINVAL;
++	}
+ 
+ 	newts = lwtunnel_state_alloc(tuninfo_len + sizeof(*slwt));
+ 	if (!newts)
 -- 
-pw-bot: changes-requested
+2.47.3
+
+
