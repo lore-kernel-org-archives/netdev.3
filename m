@@ -1,120 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967374D2EC6;
-	Fri,  9 Oct 2026 11:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5754E4C3A;
+	Fri,  9 Oct 2026 12:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791547142; cv=none; b=R0AGBcjtXeR09QLR7KdkZIh8SHnR3f/M5sKNZ2CKaz+QYfD/WlZQSkoWZrnMgE9bVhh/ICg4Z7UyEPXJainJZjnr5rnLyGVC1D0vvzUPVKBUzxqPpiAsNRooTtuuMDaTWjsRL5d551pgGMd6RrDI2E9zg7SV0cR5u5yvfcSIbvU=
+	t=1791547328; cv=none; b=uRUhu8LBkPdAa35R8mXHhaXW9BiQgjqXMaIaIz2Rjd58+ymQJLUZB7z/Q7DH7BwhfxK1U2FGYzFgxHvrZnOVdG0rBNkgxN2eYIVxhCRqfOrnyvFJjVQizYqJwsbrkZisjsnCEcdWouCRJhGTj2vTjYo/6YwZ0RFx7/QaHvZQuLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791547142; c=relaxed/simple;
-	bh=v/3a0Lh8ZrHURH8d4p13eZl66IprV2UOGdSkmI/lYyQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ldBHNlZaVomyqIS5kOr+x3viVm9w8S+ooUIK/vC4EfLKwkOE59TmgLLC+biwC3SSL1NKxEq/ZVylBR6KSpMFYsT3UF8P1FMJY4s4dvgb+PEH/Zi6QermhZXzUPryHzTLUzXUTE0njIsadDqRMaxwFRSSvECthmSCG8rChgP+15A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSxZ0M77; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791547328; c=relaxed/simple;
+	bh=6FtDSrgaYV7Ds/Zpv/sUmavtdmBH9gBDnWD2EBM7p4Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fKRzlpLRFWWRsAZbBToV5E25eTz/EcSc0poBougQrNPQ6Q2iSlp81Rn/nUwzAOvrSJv1z/+/YQVXKAWpUKqzmLVfqrEQl3WWzfdriVcp7rvneOQy3+yHlURS23hvDC5vWBlG1SzJ6X/fLikUMCcAjN6uBHAyZxOfROwZKh4mhIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVCj0Khw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSxZ0M77"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E947E1F000FF;
-	Fri,  9 Oct 2026 11:58:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVCj0Khw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFE81F000FF;
+	Fri,  9 Oct 2026 12:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791547130;
-	bh=30ssU5210HbC7M47rvuGzutQ0pbZYYtm6BCtAsC5o+Q=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GSxZ0M77V20rQv8FlI7Pe8kSXhM69uiUEQoFca6t4eOJkmfu6SjPXilkhcEBM6eQ3
-	 nWESW/VuJEw5HkK3Z9+OsRtnXj9AzMJDeJCLRCbHKDgFOffOuPLDeIpKqDSYT8KknH
-	 mm3xJCA7JO3Ae+QOckzXFy2zLorunoewXIMXzuK84Qtoh7mhF943FvvdRy3Qet4oKv
-	 PPWTdPxCjM+i+NYUbi/9WOVLrtDyPiq8k2dVB2zedfKq6wUDwEqVgjPKCvrX2vsHO2
-	 P84KQn4ujO17K5+tknd7ZenjYusu/8xUYEZa5iw3GxyZyZtZjLbEYBJt/q2JD/HFzs
-	 HndlaOeDLciUQ==
-Subject: Re: [PATCH net-next v10 1/6] netlink: specs: rt-addr: fix the type of
- target-netnsid
-From: netdev-bot+sashiko@kernel.org
-To: sigefriedhyy@gmail.com
-Cc: ajay.kathat@microchip.com, aleksandr.loktionov@intel.com,
- andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev, davem@davemloft.net,
- dsahern@kernel.org, donald.hunter@gmail.com, edumazet@google.com,
- idosch@nvidia.com, jacob.e.keller@intel.com, kuba@kernel.org,
- johannes@sipsolutions.net, kees@kernel.org, kory.maincent@bootlin.com,
- kuniyu@google.com, nicolas.dichtel@6wind.com, nickgarlis@gmail.com,
- pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org, horms@kernel.org,
- sdf.kernel@gmail.com, vadim.fedorenko@linux.dev, willemb@google.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date: Fri, 09 Oct 2026 11:58:48 +0000
-Message-ID: <179154712848.434549.1887332518398499959@kernel.org>
-In-Reply-To: <20261007115821.11332-2-sigefriedhyy@gmail.com>
-References: <20261007115821.11332-2-sigefriedhyy@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791547324;
+	bh=27Qg1735PHB2T//K3jELbiSjWjSG0HONYGKp7KFkKws=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=VVCj0KhwADjBnN6aDcwom6Pn3NloGWC1xCdoP6R7RQX/2P3s8lAgDCXW15ePoT8nl
+	 BhJkEHi3/Mu9SnYUqgSr5z1W6dXyo+dWDNGsCboVr7vf4nKMQyYSYXlbU1UInBz9oB
+	 IuVn0vkGj4Ad3LJqxBwe+UaiUjP6xkcUUvg07DGjlKADa8I1S24n0FPdgbQX4To+LF
+	 uX6qXnQv/ernYpArUhinbXl/h+CkDyagXb5mCUdNf/K5yZ7aCT/v9Z5DP4zaOuw9Cq
+	 ckBwJRNlbH9rAAILX4GYt7IjFvz2MP/Sx49VDZy+kqa79JOpHAMDzAlrYeiAxWzXxg
+	 vR8tbXsHuClFA==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
+ stfomichev@gmail.com, pabeni@redhat.com, tushar.vyavahare@intel.com,
+ kerneljasonxing@gmail.com
+Subject: Re: [PATCH v2 net-next 00/14] selftests: net: migrate AF_XDP test
+ suite over to net
+In-Reply-To: <20261008143013.55b0f462@kernel.org>
+References: <20261008114909.734364-1-maciej.fijalkowski@intel.com>
+ <20261008143013.55b0f462@kernel.org>
+Date: Fri, 09 Oct 2026 14:02:01 +0200
+Message-ID: <87cxtjqdza.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Low priority / nit picks for your consideration:
-
-- [Low] Commit "netlink: specs: rt-addr: fix the type of target-netnsid"
-  fixes a real defect in Documentation/netlink/specs/rt-addr.yaml but…
-
---
-
-netlink: specs: rt-addr: fix the type of target-netnsid
-
-This patch changes the type of the target-netnsid attribute in
-rt-addr.yaml from binary to s32. The kernel parses IFA_TARGET_NETNSID
-as NLA_S32, and rt-link.yaml already declares its own target-netnsid
-as s32.
-
-> The kernel parses IFA_TARGET_NETNSID as NLA_S32 and rt-link.yaml
-> declares its target-netnsid as s32, but rt-addr.yaml has it as binary.
+> On Thu,  8 Oct 2026 13:48:55 +0200 Maciej Fijalkowski wrote:
+>> Heads-up for ice: to reserve a queue, xsk.py updates only the RSS
+>> indirection table over ethtool netlink. On ice this also turns on
+>> symmetric Toeplitz hashing, and restoring the table afterwards fails.
+>> The fix, "ice: keep the RSS hash function on indirection-only updates",
+>> goes to iwl-net separately [0]. Without it, the first case that takes a
+>> queue out of RSS fails in its cleanup, and the table stays modified.
 >
-> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
-> Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Good news it that it applied, bad news is that the non-HW test_xsk.sh
+> crashes the host:
+>
+> https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/857863/166=
+-test-xsk-sh/stderr
 
-[Severity: Low]
-Should this have a Fixes: tag?
+That's also good! A bug has been surfaced by the test! XD
 
-The binary type on target-netnsid goes back to the commit that first
-added the spec. A later rename to target-netnsid kept the type as it
-was. On the kernel side, IFA_TARGET_NETNSID has always been s32. It
-is NLA_S32 in ifa_ipv4_policy in net/ipv4/devinet.c and in the IPv6
-policy in net/ipv6/addrconf.c, and it is written with nla_put_s32()
-and read with nla_get_s32().
+AFAIU this is a know veth issue [1] (right, Maciej?).
 
-Python YNL is affected on any tree without this fix. When an integer
-is passed for target-netnsid, YnlFamily._add_attr() in
-tools/net/ynl/pyynl/lib/ynl.py takes the binary branch and raises:
+Disable until a fix a landed?
 
-    raise YnlException(f'Unknown type for binary attribute, value: {value}')
 
-Replies that carry the attribute are also decoded as raw bytes, not
-as a signed int.
+Bj=C3=B6rn
 
-Would something like this be appropriate?
 
-Fixes: dfb0f7d9d979 ("doc/netlink: Add spec for rt addr messages")
-
-> diff --git a/Documentation/netlink/specs/rt-addr.yaml b/Documentation/netlink/specs/rt-addr.yaml
-> index 0ecbd24c890c..17ead2203451 100644
-> --- a/Documentation/netlink/specs/rt-addr.yaml
-> +++ b/Documentation/netlink/specs/rt-addr.yaml
-> @@ -119,7 +119,7 @@ attribute-sets:
->          type: u32
->        -
->          name: target-netnsid
-> -        type: binary
-> +        type: s32
->        -
->          name: proto
->          type: u8
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007115821.11332-1-sigefriedhyy%40gmail.com
+[1] https://lore.kernel.org/netdev/20260509084858.773921-1-maciej.fijalkows=
+ki@intel.com/
