@@ -1,426 +1,134 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83AA463B77
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 19:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9387F480DF0
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 19:27:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791573992; cv=none; b=C7VrzZP+hGMg2N88xdj+Df6eoKCuheVMKoaUOUG0PwbhWVZKLqTGSRxVGoxkgCjBvJVjcoOvPbTEjYZ+w7i8+UGxenWIeJAzcINGYUE6FxUi9vaIGozgZEtw4qvnl7f3giKVO6L6yGUDlaUsy6EINnVtxYX4H8fMdxSW0eTE2Pk=
+	t=1791574061; cv=none; b=om/nKEMyZEBhRJKuS1HBd6eZayeyRuDOrGHP5JIm14Rid31Ykd20UXikXFjaCF2tixKOK0wsQupd4iCKBP+BeudNvHtMwnTXui11VW90NpZhYpHE0AAl4BV/tzInFB9e8TXbjdoYXec5mADQIChfOdjbkAqR/3n6iwm6e85VhMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791573992; c=relaxed/simple;
-	bh=rBSGwr6HcsuRy3eEMAhjhPufDgsnBCB6ytxvpUS6L88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cP1RhJRcwR2xrOcfW2n1djQVYIG87+s7RHTd8vPglDDJFUq2v4QqPc7ErQEu11sbbi67WOEnPf5HWJu6mmd++DSgyV4Wegu/Ia2i+Tkc4b2n3zVhLx1yktzhp1JLaa2CDBwhXWBFF+ExxIgBxvxQBaCmYe11qCKsK86GNnFVti4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LScwC/MQ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LScwC/MQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791573981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oOMLi4BUDx4cp1BmtFdplYfbuWaF59pkwc4+ZJr2pUU=;
-	b=LScwC/MQ9StL8Ci56fF72P6ol/9oGvaZWIleImxmlF/GEB8RRs/gtqQw66TupSj1NZYnoK
-	gfwzhyTNjMcLTQwo9zlnIfkE4MA0tG4UWuw9Ikw/jI6HZeFVdWNosyFD1h+Hu0tUWNeT9U
-	OVETrOqXIybiRE5ThW0SDrhry80XLc0=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-gayeLp-cN-aQQXQwm-2F4Q-1; Fri,
- 9 Oct 2026 19:26:18 +0000
-X-MC-Unique: gayeLp-cN-aQQXQwm-2F4Q-1
-X-Mimecast-MFC-AGG-ID: gayeLp-cN-aQQXQwm-2F4Q_1791573976
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 233F51935321;
-	Fri,  9 Oct 2026 19:26:16 +0000 (UTC)
-Received: from ivecera-thinkpadp16vgen1.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5B91C18005B5;
-	Fri,  9 Oct 2026 19:26:13 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Min Li <min.li@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 5/5] dpll: zl3073x: notify sibling pin when shared output config changes
-Date: Fri,  9 Oct 2026 21:25:56 +0200
-Message-ID: <20261009192556.272263-6-ivecera@redhat.com>
-In-Reply-To: <20261009192556.272263-1-ivecera@redhat.com>
-References: <20261009192556.272263-1-ivecera@redhat.com>
+	s=arc-20240116; t=1791574061; c=relaxed/simple;
+	bh=L8gg4Kq6W+Ym35JCXkVX26+OXcaYYuFc4zMgWgsCAEc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=L/4ew6GnnOPsJgcsAqtEM7poXH5B1qYyRJf5CpSrJQsj20OWGGhEUA0PPyXDrVpDdUMit0lIhxvqsCI3lHTzIw4vtZG8G4/blDbznvLb1i3PyTARDEYzxCM8NpxSbfRt7bBQ7CJ3s41/o6SQqiIj1GO7C6Upi8zc35Bo3ujAQdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b2d1eb484aso230989b6e.2
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 12:27:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791574055; x=1792178855;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AEDJMcpb2PLOS4ggAtHpAOc7GocOBl+0xfRC3Z6ZkJI=;
+        b=mnNJ1azTvChCPLGxwKdlHxFt9BWXTZhQ0k7qpaUtMHHx6dLLtoFGMoOj7B7T/Bp+Al
+         2/V85JnBt72OCxn2KhIiw1bwI4G9KkF1qhCucXGjESn/jGrTUNZeVT+F+tfs4v1iZGYR
+         7BAMdHqSXT9DvjQ2K2tFs8PKFhxVLVlQ/mUSVIjBLYQ4yL+uJ+pkeHivis4pYPXBakey
+         GLVWibIrs6ikaUO138R4ua40F6nmMfp5BX82XG1S6uf6vg9J4I+q1j81RU+4nqrU3F2F
+         PZFuUe1UNP55YDAzCeut3KpJHdY8SZm6XyuK3OrePy2YO7tifpX94k27/brlOL7zh967
+         mAVw==
+X-Forwarded-Encrypted: i=1; AKwUvBx6d0YvwmNCsvRIt6u/kuTdJzW+JkLNFFlPSHqlSDt41m1LNlvZ8fYfFXqdCcgIsZj3fIuVxWk=@vger.kernel.org
+X-Gm-Message-State: AFuF++naXYyygNOQpxsQKWKzk75RAOtHfbd6TZBGO6nRYyp2B3CLYSIS
+	DT21QNFnjx1p1ezKiiPTgddh2KDf7s8qIpozwi39Ja9qzCH3CRPbykOqJe3NWy+1txgPyQzj1sJ
+	itbbB8lHcuav66WXDIzv9ASnpjln6sE0Yp+Raj1bE5WNKf1QE5ERclGjp27Y=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Received: by 2002:a05:6808:19a9:b0:4b9:e65b:8c33 with SMTP id
+ 5614622812f47-50c54177b94mr2989175b6e.33.1791574055178; Fri, 09 Oct 2026
+ 12:27:35 -0700 (PDT)
+Date: Fri, 09 Oct 2026 12:27:35 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6ac94027.70ed5d86.2ac85.0078.GAE@google.com>
+Subject: [syzbot] [sctp?] kernel panic: corrupted stack end in sctp_setsockopt
+From: syzbot <syzbot+107afda010b4507a5c80@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-sctp@vger.kernel.org, 
+	lucien.xin@gmail.com, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The P-pin and N-pin of an output share the divisor, clock type, eSync
-and phase compensation registers (outside N-divided mode). Changing
-them through one pin changes the other pin too, but only the requested
-pin gets a change notification.
+Hello,
 
-Add zl3073x_dpll_output_pin_sibling_get() and notify the sibling from
-frequency_set(), esync_set() and phase_adjust_set(). The notification
-re-enters the pin get callbacks, so it has to be sent after
-zldpll->lock is released and the callbacks switch from guard(mutex)
-to explicit unlocking.
+syzbot found the following issue on:
 
-To always find a registered sibling, add a pin to zldpll->pins before
-dpll_pin_register() and remove it only after dpll_pin_unregister(),
-both under zldpll->lock. A pin that is on the list but not registered
-gets no netlink notification, as dpll_pin_event_send() skips such
-pins, and the only in-tree DPLL notifier ignores DPLL_PIN_CHANGED.
+HEAD commit:    71c3e5409eef Merge remote-tracking branch 'will/for-next/p..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=11a360a5580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=42bd821301b42742
+dashboard link: https://syzkaller.appspot.com/bug?extid=107afda010b4507a5c80
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: arm64
 
-Fixes: 634ca2cb06d2 ("dpll: zl3073x: Add support to get/set esync on pins")
-Fixes: ce26d7ca50a5 ("dpll: zl3073x: Add support to get/set frequency on pins")
-Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
-Reviewed-by: Petr Oros <poros@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/7596ece97a32/disk-71c3e540.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4d2c36351098/vmlinux-71c3e540.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/396ce0b85b3c/Image-71c3e540.gz.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+107afda010b4507a5c80@syzkaller.appspotmail.com
+
+Kernel panic - not syncing: corrupted stack end detected inside scheduler
+CPU: 0 UID: 0 PID: 10678 Comm: syz.6.1395 Tainted: G   M         L      syzkaller #0 PREEMPT 
+Tainted: [M]=MACHINE_CHECK, [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/23/2026
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
+ __dump_stack+0x30/0x40 lib/dump_stack.c:94
+ dump_stack_lvl+0x30/0x12c lib/dump_stack.c:120
+ dump_stack+0x1c/0x28 lib/dump_stack.c:129
+ vpanic+0x594/0xaf8 kernel/panic.c:651
+ vpanic+0x0/0xaf8 kernel/panic.c:788
+ schedule_debug kernel/sched/core.c:6103 [inline]
+ __schedule+0x18a0/0x2b00 kernel/sched/core.c:7133
+ __schedule_loop kernel/sched/core.c:7361 [inline]
+ schedule+0x13c/0x20c kernel/sched/core.c:7376
+ __lock_sock+0x124/0x260 net/core/sock.c:3245
+ lock_sock_nested+0xd4/0x110 net/core/sock.c:3858
+ lock_sock include/net/sock.h:1713 [inline]
+ sctp_setsockopt+0x1d4/0xe70 net/sctp/socket.c:4609
+ sock_common_setsockopt+0xb0/0xcc net/core/sock.c:4050
+ do_sock_setsockopt+0x1f0/0x330 net/socket.c:2397
+ __sys_setsockopt+0x104/0x170 net/socket.c:2422
+ __do_sys_setsockopt net/socket.c:2428 [inline]
+ __se_sys_setsockopt net/socket.c:2425 [inline]
+ __arm64_sys_setsockopt+0xc8/0xe4 net/socket.c:2425
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
+ do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
+ el0_svc+0x60/0x1d8 arch/arm64/kernel/entry-common.c:796
+ el0t_64_sync_handler+0x44/0x104 arch/arm64/kernel/entry-common.c:815
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:606
+Kernel Offset: disabled
+CPU features: 0x0,50000000,00f00020,9c080a02,a84ff6a7
+Memory Limit: none
+Rebooting in 86400 seconds..
+
+
 ---
- drivers/dpll/zl3073x/dpll.c | 155 +++++++++++++++++++++++++++++++-----
- 1 file changed, 135 insertions(+), 20 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index 6d9a6d21d30b..1d61fe5fe586 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -123,6 +123,8 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
- {
- 	struct zl3073x_dpll_pin *pin;
- 
-+	lockdep_assert_held(&zldpll->lock);
-+
- 	list_for_each_entry(pin, &zldpll->pins, list) {
- 		if (zl3073x_dpll_is_input_pin(pin) &&
- 		    zl3073x_input_pin_ref_get(pin->id) == ref_id)
-@@ -132,11 +134,42 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
- 	return NULL;
- }
- 
-+/**
-+ * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
-+ * @pin: output pin whose sibling is sought
-+ *
-+ * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
-+ * single HW output. Looks up the other pin of the pair in the pin list
-+ * of this DPLL. A pin is on the list from just before its registration
-+ * until just after its unregistration, so a registered sibling is always
-+ * found, but the returned pin may also be one that is not (yet or any
-+ * longer) registered.
-+ *
-+ * Return: pointer to sibling pin, or NULL if it is not on the pin list
-+ */
-+static struct zl3073x_dpll_pin *
-+zl3073x_dpll_output_pin_sibling_get(struct zl3073x_dpll_pin *pin)
-+{
-+	struct zl3073x_dpll_pin *sibling;
-+
-+	lockdep_assert_held(&pin->dpll->lock);
-+
-+	list_for_each_entry(sibling, &pin->dpll->pins, list) {
-+		if (!zl3073x_dpll_is_input_pin(sibling) &&
-+		    sibling->id == (pin->id ^ 1))
-+			return sibling;
-+	}
-+
-+	return NULL;
-+}
-+
- static struct zl3073x_dpll_pin *
- zl3073x_dpll_nco_pin_get(struct zl3073x_dpll *zldpll)
- {
- 	struct zl3073x_dpll_pin *pin;
- 
-+	lockdep_assert_held(&zldpll->lock);
-+
- 	list_for_each_entry(pin, &zldpll->pins, list) {
- 		if (zl3073x_dpll_is_nco_pin(pin))
- 			return pin;
-@@ -909,12 +942,14 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll_pin *sibling = NULL;
- 	const struct zl3073x_synth *synth;
- 	struct zl3073x_out out;
- 	u32 synth_freq;
- 	u8 out_id;
-+	int rc;
- 
--	guard(mutex)(&zldpll->lock);
-+	mutex_lock(&zldpll->lock);
- 
- 	out_id = zl3073x_output_pin_out_get(pin->id);
- 	out = *zl3073x_out_state_get(zldev, out_id);
-@@ -923,12 +958,14 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
- 	 * for N-division is also used for the esync divider so both cannot
- 	 * be used.
- 	 */
--	if (zl3073x_out_is_ndiv(&out))
--		return -EOPNOTSUPP;
-+	if (zl3073x_out_is_ndiv(&out)) {
-+		rc = -EOPNOTSUPP;
-+		goto unlock;
-+	}
- 
- 	if (!freq) {
- 		zl3073x_out_esync_disable(&out);
--		return zl3073x_out_state_set(zldev, out_id, &out);
-+		goto commit;
- 	}
- 
- 	/* Get attached synth frequency */
-@@ -937,9 +974,24 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
- 
- 	/* Enable 1PPS eSync for this pin frequency */
- 	zl3073x_out_esync_enable(&out, synth_freq / out.div);
--
-+commit:
- 	/* Commit output configuration */
--	return zl3073x_out_state_set(zldev, out_id, &out);
-+	rc = zl3073x_out_state_set(zldev, out_id, &out);
-+	if (rc)
-+		goto unlock;
-+
-+	/* The clock type, esync period and esync width are all shared by
-+	 * both pins of the output pair, so the sibling pin's esync
-+	 * configuration changes too and userspace has to be notified.
-+	 */
-+	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-+unlock:
-+	mutex_unlock(&zldpll->lock);
-+
-+	if (!rc && sibling)
-+		__dpll_pin_change_ntf(sibling->dpll_pin);
-+
-+	return rc;
- }
- 
- static int
-@@ -969,13 +1021,15 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll_pin *sibling = NULL;
- 	const struct zl3073x_synth *synth;
- 	u32 new_div, synth_freq;
- 	struct zl3073x_out out;
- 	u64 n_period, rem;
- 	u8 out_id;
-+	int rc;
- 
--	guard(mutex)(&zldpll->lock);
-+	mutex_lock(&zldpll->lock);
- 
- 	out_id = zl3073x_output_pin_out_get(pin->id);
- 	out = *zl3073x_out_state_get(zldev, out_id);
-@@ -988,7 +1042,8 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 	/* Check signal format */
- 	if (!zl3073x_out_is_ndiv(&out)) {
- 		/* For non N-divided signal formats the frequency is computed
--		 * as division of synth frequency and output divisor.
-+		 * as division of synth frequency and output divisor, which
-+		 * is shared by both pins of the output pair.
- 		 */
- 		out.div = new_div;
- 
-@@ -1013,7 +1068,16 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 		}
- 
- 		/* Commit output configuration */
--		return zl3073x_out_state_set(zldev, out_id, &out);
-+		rc = zl3073x_out_state_set(zldev, out_id, &out);
-+		if (rc)
-+			goto unlock;
-+
-+		/* The other pin's frequency changed too - it has to be
-+		 * notified about the change.
-+		 */
-+		sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-+
-+		goto unlock;
- 	}
- 
- 	if (zl3073x_dpll_is_p_pin(pin)) {
-@@ -1039,19 +1103,22 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 		NL_SET_ERR_MSG_FMT(extack,
- 				   "OUT%uN freq must be at most half of OUT%uP freq",
- 				   out_id, out_id);
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 	if (n_period > U32_MAX) {
- 		NL_SET_ERR_MSG_FMT(extack,
- 				   "OUT%uN freq is too low for OUT%uP freq",
- 				   out_id, out_id);
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 	if (rem != 0) {
- 		NL_SET_ERR_MSG_FMT(extack,
- 				   "OUT%uN freq must divide OUT%uP freq",
- 				   out_id, out_id);
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 	out.esync_n_period = n_period;
- 
-@@ -1059,7 +1126,14 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 	out.esync_n_width = out.esync_n_period;
- 
- 	/* Commit output configuration */
--	return zl3073x_out_state_set(zldev, out_id, &out);
-+	rc = zl3073x_out_state_set(zldev, out_id, &out);
-+unlock:
-+	mutex_unlock(&zldpll->lock);
-+
-+	if (!rc && sibling)
-+		__dpll_pin_change_ntf(sibling->dpll_pin);
-+
-+	return rc;
- }
- 
- static int
-@@ -1098,10 +1172,12 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll_pin *sibling = NULL;
- 	struct zl3073x_out out;
- 	u8 out_id;
-+	int rc;
- 
--	guard(mutex)(&zldpll->lock);
-+	mutex_lock(&zldpll->lock);
- 
- 	out_id = zl3073x_output_pin_out_get(pin->id);
- 	out = *zl3073x_out_state_get(zldev, out_id);
-@@ -1110,7 +1186,21 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
- 	out.phase_comp = phase_adjust / pin->phase_gran;
- 
- 	/* Update output configuration from mailbox */
--	return zl3073x_out_state_set(zldev, out_id, &out);
-+	rc = zl3073x_out_state_set(zldev, out_id, &out);
-+	if (rc)
-+		goto unlock;
-+
-+	/* The phase compensation register is shared by both pins of the
-+	 * output pair, so the sibling pin's phase adjustment changes too.
-+	 */
-+	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-+unlock:
-+	mutex_unlock(&zldpll->lock);
-+
-+	if (!rc && sibling)
-+		__dpll_pin_change_ntf(sibling->dpll_pin);
-+
-+	return rc;
- }
- 
- static int
-@@ -1734,6 +1824,13 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
- 	else
- 		ops = &zl3073x_dpll_output_pin_ops;
- 
-+	/* Add the pin to the list before registering it with the DPLL core so
-+	 * that it is findable as a sibling as soon as the core publishes it.
-+	 */
-+	mutex_lock(&zldpll->lock);
-+	list_add(&pin->list, &zldpll->pins);
-+	mutex_unlock(&zldpll->lock);
-+
- 	/* Register the pin */
- 	rc = dpll_pin_register(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
- 	if (rc)
-@@ -1745,6 +1842,9 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
- 	return 0;
- 
- err_register:
-+	mutex_lock(&zldpll->lock);
-+	list_del(&pin->list);
-+	mutex_unlock(&zldpll->lock);
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- err_pin_get:
- 	pin->dpll_pin = NULL;
-@@ -1779,6 +1879,13 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
- 	/* Unregister the pin */
- 	dpll_pin_unregister(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
- 
-+	/* Remove the pin from the list only after it has been unregistered so
-+	 * that a still-registered pin is always findable as a sibling.
-+	 */
-+	mutex_lock(&zldpll->lock);
-+	list_del(&pin->list);
-+	mutex_unlock(&zldpll->lock);
-+
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- 	pin->dpll_pin = NULL;
- 
-@@ -1798,9 +1905,11 @@ zl3073x_dpll_pins_unregister(struct zl3073x_dpll *zldpll)
- {
- 	struct zl3073x_dpll_pin *pin, *next;
- 
-+	/* Unregister each pin before removing it from the list so that a
-+	 * still-registered pin is always findable as a sibling.
-+	 */
- 	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
- 		zl3073x_dpll_pin_unregister(pin);
--		list_del(&pin->list);
- 		zl3073x_dpll_pin_free(pin);
- 	}
- }
-@@ -1913,16 +2022,24 @@ zl3073x_dpll_nco_pin_register(struct zl3073x_dpll *zldpll)
- 		goto err_pin_get;
- 	}
- 
-+	/* Add the pin to the list before registering it with the DPLL core so
-+	 * that the list reflects the DPLL registration state.
-+	 */
-+	mutex_lock(&zldpll->lock);
-+	list_add(&pin->list, &zldpll->pins);
-+	mutex_unlock(&zldpll->lock);
-+
- 	rc = dpll_pin_register(zldpll->dpll_dev, pin->dpll_pin,
- 			       &zl3073x_dpll_nco_pin_ops, pin);
- 	if (rc)
- 		goto err_register;
- 
--	list_add(&pin->list, &zldpll->pins);
--
- 	return 0;
- 
- err_register:
-+	mutex_lock(&zldpll->lock);
-+	list_del(&pin->list);
-+	mutex_unlock(&zldpll->lock);
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- err_pin_get:
- 	pin->dpll_pin = NULL;
-@@ -1974,8 +2091,6 @@ zl3073x_dpll_pins_register(struct zl3073x_dpll *zldpll)
- 			zl3073x_dpll_pin_free(pin);
- 			goto error;
- 		}
--
--		list_add(&pin->list, &zldpll->pins);
- 	}
- 
- 	/* Register NCO virtual input pin */
--- 
-2.56.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
