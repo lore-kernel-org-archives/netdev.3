@@ -1,237 +1,311 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93B8248896
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FD4379C23
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 19:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791571906; cv=none; b=JxoxHMOYb/zarDkx6cne8uokN8/ImNDrei5HiNMePfbPPQa7rQ7ORBARIhjrVgMauoaPReKXGEhpmhp0naFd+p9ngbSWCyXAA1WiBx5N8MAy9a+jZKwFLeTIXr5gjX4n0Bjiqi+rGRBihu/Z58k4CR4V75+Zs9eByOQRn6pX9yE=
+	t=1791572898; cv=none; b=mqp3TGLZxfrNG/qBXhNwIhWIv5sZ7PuYwQNja9izISt0tbVS7DlFWWdnHdtipbBwKDFGZYj1KIvK1x7weua7zAVgoQjAF3KinsC6xDaveAhbwrGA6bDONXHHrUbdxg+1wlUcpRuLcttstx6mpYRnJI88/HVRLAwEDHQ826GCR5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791571906; c=relaxed/simple;
-	bh=bDjFbIr8Y6dod909EUu5GKAp+s9Z70jMQPcuGu2Dwak=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XvOt+n8WDReYtYgfoqMxtWdS+OLuqoSydz63li0qTuAhaBbHHUXim57qIpLBXOmRBOPb7UF3p5lQlCjTxrK5DVnxfxLrjVZnEa0zBL1kVjZMS3iZ9Mc74BsYBL2UBvZbnISAAUTbPlOmC33c7/HWQhSocsGnjy6H6g0GOfymme0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YzaJjzvj; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791572898; c=relaxed/simple;
+	bh=29l7mIlH8mD2mk0VgsK/GDVYNjGPxrf3zUAFHPhbNMw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mt2jGyipR73tEhJWDpT0sqqYj74hzv1DcEMgo64ilEKCIqayvZ/r4pD2qQLQQf2MymSyzPQnk8/gbyuTqyKtQckOvSbNvggeQW6smZT4zG+3SZLBnSErGvpZk7s3adMB39P4RbI1IvAy/Adw0hlzZySFg0lNylB07x9hl7IwOBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=JoVRbQwe; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YzaJjzvj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791571903;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=boSMJ8W5SZY4egD4A43ydHSAalOMwEiCjd69J7IHCDE=;
-	b=YzaJjzvjx5DE8M/a6zZVbuJl07BqTqbyWPzhrwACdH7HnFZ6zsoSEbay2od7cb4PKF00Ps
-	mSi31t4XoX4VLeMmlZOoMa3Z9nQw32e55P6Jef0gOFBoJk17lmoTso7g7iQf5iZV42hi+K
-	WJJBmR8kCNLI35yYEznkzMHbsLz/0SI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-kJxJgLhpP82K_x74CaHMVg-1; Fri,
- 9 Oct 2026 18:51:40 +0000
-X-MC-Unique: kJxJgLhpP82K_x74CaHMVg-1
-X-Mimecast-MFC-AGG-ID: kJxJgLhpP82K_x74CaHMVg_1791571899
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C4031844BC1;
-	Fri,  9 Oct 2026 18:51:38 +0000 (UTC)
-Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C6131800586;
-	Fri,  9 Oct 2026 18:51:35 +0000 (UTC)
-Message-ID: <eefa9f84-62cd-45aa-be00-9105108a2692@redhat.com>
-Date: Fri, 9 Oct 2026 20:51:34 +0200
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="JoVRbQwe"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a018792ab3so1595375e9.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 12:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lex.la; s=google; t=1791572894; x=1792177694; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0j3RX/pMln9A8EWuE7QSt/x5BnN8ermhYdoWSvQV0Lk=;
+        b=JoVRbQweVb6l3T/uJA9hSCgSRP2pDCtiU0V4MYHAqJIO2GXzDKet3EDB8IsyA8PWTX
+         mt6SqEo65DtuAKBEgfND6hNlyXpWzkfW687cPXFfxiT7Yppg2f7rehE0mKd1Cr+wE6uM
+         hVHC03XMsqHXEGZlUuOphXUSrjo5wPjUYXW5jDBriyGWybU8fbI+17SvPbQPa+VvdmjT
+         Vrt6f9LvKQBIv/r9eMsAFC/rdr+eee1b+9LMEBU18ck1pEti/IGSYKNn8simqijaYEel
+         /y4FQrgjw12Aj3RhJQKruwFYAYyHk7eNXd4QNuAFdxpYly8Xn/BC5bcsHTlwZ7D3vomy
+         GecA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791572894; x=1792177694;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0j3RX/pMln9A8EWuE7QSt/x5BnN8ermhYdoWSvQV0Lk=;
+        b=cBoPduyF1QYGsY4LDwGq4Eru7yuK1Lgfc51BSFiwCUgtKmqwTSgCdhAkEFQjwJMbQ0
+         /pxkicxy/dkmbr6gi/TkmFxcl14xm0cnnaLQj2HAZowTCJfPUpBguogFP/8EVHYNVUHv
+         jpQWDfrz647WN19P8AzTi8HDDz7zzLZQ1fRd/tsd0uZG3OKT1d8wnpJPcVJR/55+aQML
+         Qy7e7VvtWeZYP4tzuYb13Ae6Z4uuGmmKX6yHoNZcUgyjMggoLgsdk47/2wGZy2WXCcvs
+         +oJfIwUd+PN3eyJX6ynijhqiEnZlNFLljPZsKB3rt9hcnHAcnTz/gQCi9F1nIwYLKoMH
+         d7Jg==
+X-Forwarded-Encrypted: i=1; AKwUvBzvd+AxklhR2jGifWD8EQtJYOkJjbsCzjsSGDQEfHN/E/Lpw+DAfH2yjEHODoOaxvU0abDnlv4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kGarmrfsGdyXm/sOfKk9fyTIIXzsJV7phMg4XlN3rgCaGrcWHs
+	gx+XoCxn410MMYM3D/jaXrK2FQO9bSfe049kPzDv79MCAgxfX1id1gPU4DxCPFmfeVE=
+X-Gm-Gg: AYBFou2ppFuGgX5c0jl0/nCg7J0TXYARtSaZvX1X5MFW3nSOOjJn9IxayDP8zZeJs7T
+	T2EyNXSsemORfAGH16mgGD6YhSdA/KUm3oO9AZ50lg9douyVHytRuhhsvvvN+rshfaohqKrl8Y+
+	YF69uk2ILrsktkl/nScrgr1oWOaG8S+D4RotfnO/+o821IWJQdFn+UupKrt8yG7m7ygCeHSxSCX
+	6i9a0pUtfowjKjuYhNK/MjYm3T11Vg+o0sQmJ5P54ZL/Q7LRddgtfWcK2iLGP49m9QclP555Ztn
+	OPrQ6396jcjVjTW3Pubf88ryq5n52Yunr9Y3M2+7bxnZgMK7ozPrS1g1wyynVvmwLxc8/Dkzce8
+	jT5g2GgOU+XDX/u8IuPa+n8atluQUxpUig+TLLonj5e+egbxRJtTRZWYRBgzelDbYv+jEuf6EIG
+	zJ3N9DNoCb+SQPrpsJI+h3cYM4TpGwPPVygdpcPhmVlUv95fW+XbWCo6KI4YSV
+X-Received: by 2002:a05:600c:c176:b0:4a0:c2a:485e with SMTP id 5b1f17b1804b1-4a18e4dce0cmr56489485e9.33.1791572894071;
+        Fri, 09 Oct 2026 12:08:14 -0700 (PDT)
+Received: from remote-01 ([84.17.55.225])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18eb4485dsm121263375e9.2.2026.10.09.12.08.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 12:08:13 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: stable@vger.kernel.org
+Cc: Daniel Golle <daniel@makrotopia.org>,
+	netdev@vger.kernel.org
+Subject: [PATCH 6.18.y] net: dsa: mt7530: fix .get_stats64 sleeping in atomic context
+Date: Fri,  9 Oct 2026 22:08:08 +0300
+Message-ID: <20261009190808.1385789-1-f@lex.la>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 4/4] dpll: zl3073x: notify sibling pin when shared
- output config changes
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, min.li@microchip.com, vadim.fedorenko@linux.dev,
- arkadiusz.kubalewski@intel.com, jiri@resnulli.us, kuba@kernel.org,
- Prathosh.Satish@microchip.com, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-References: <20261006153116.347497-5-ivecera@redhat.com>
- <179147350520.434549.16772916744710272674@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <179147350520.434549.16772916744710272674@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On 10/8/26 17:31, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] The commit message describes the old teardown incorrectly.
-> - [Low] The documentation for zl3073x_dpll_output_pin_sibling_get() does
->    not match its code, and the commit message's safety claim is only…
-> 
-> --
-> 
-> dpll: zl3073x: notify sibling pin when shared output config changes
-> 
-> The P and N pins of a zl3073x output share the divisor, clock type,
-> esync and phase compensation registers. This patch adds a sibling
-> lookup helper and sends a change notification to the sibling pin from
-> frequency_set(), esync_set() and phase_adjust_set(). It also changes
-> the order of list_add()/list_del() on zldpll->pins relative to DPLL
-> pin registration, and does both under zldpll->lock.
-> 
->> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
->> index 65107b4cc4f82..9c678acc3e777 100644
->> --- a/drivers/dpll/zl3073x/dpll.c
->> +++ b/drivers/dpll/zl3073x/dpll.c
-> 
-> [ ... ]
-> 
->> @@ -132,11 +134,39 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
->>   	return NULL;
->>   }
->>   
->> +/**
->> + * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
->> + * @pin: output pin whose sibling is sought
->> + *
->> + * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
->> + * single HW output. Looks up the other pin of the pair, if it is
->> + * registered as a dpll_pin on this DPLL.
->> + *
->> + * Return: pointer to sibling pin, or NULL if it is not registered
->> + */
->> +static struct zl3073x_dpll_pin *
->> +zl3073x_dpll_output_pin_sibling_get(struct zl3073x_dpll_pin *pin)
->> +{
->> +	struct zl3073x_dpll_pin *sibling;
->> +
->> +	lockdep_assert_held(&pin->dpll->lock);
->> +
->> +	list_for_each_entry(sibling, &pin->dpll->pins, list) {
->> +		if (!zl3073x_dpll_is_input_pin(sibling) &&
->> +		    sibling->id == (pin->id ^ 1))
->> +			return sibling;
->> +	}
->> +
->> +	return NULL;
->> +}
-> 
-> [Severity: Low]
-> Does this kernel-doc match what the helper does? It says NULL is
-> returned when the sibling is not registered. The loop only checks list
-> membership, direction and id.
-> 
-> This patch makes zl3073x_dpll_pin_register() and
-> zl3073x_dpll_nco_pin_register() add the pin to zldpll->pins before
-> dpll_pin_register(). It also makes zl3073x_dpll_pin_unregister()
-> remove the pin only after dpll_pin_unregister(). During those windows
-> the helper can return a pin that is not registered.
-> 
-> esync_set(), frequency_set() and phase_adjust_set() then pass that pin
-> directly to __dpll_pin_change_ntf(), whose kernel-doc says:
-> 
->   * @pin: registered pin pointer
-> 
-> The window looks reachable. zl3073x_dpll_register() registers the DPLL
-> device before its pins, so a PIN_SET on the P pin can run while the N
-> pin's dpll_pin_register() waits on dpll_lock. On teardown, the N pin is
-> unregistered while the P pin is still available.
-> 
-> The commit message also says:
-> 
->    A pin that is transiently on the list while
->    not registered is harmless: __dpll_pin_change_ntf() is a no-op for a
->    pin that is not available
-> 
-> Is that accurate? Only dpll_pin_event_send() checks
-> dpll_pin_available(). dpll_pin_notify() runs first and calls the
-> in-kernel notifier chain without any check:
-> 
-> __dpll_pin_change_ntf()
->      dpll_pin_notify(pin, pin->clock_id, DPLL_PIN_CHANGED);
->          call_dpll_notifiers(action, &info);
->      return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
-> 
-> So an in-kernel DPLL_PIN_CHANGED event can be sent for a pin that is
-> not registered. Nothing in the tree seems to be affected today: the
-> only in-tree notifier, ice_dpll_pin_notify(), ignores actions other
-> than CREATED and DELETED.
-> 
-> Should the kernel-doc and the commit message be corrected? The other
-> option is to check that the sibling is actually registered before it
-> is notified.
+From: Daniel Golle <daniel@makrotopia.org>
 
-Will correct.
-> [ ... ]
-> 
->> @@ -1784,6 +1874,13 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
->>   	/* Unregister the pin */
->>   	dpll_pin_unregister(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
->>   
->> +	/* Remove the pin from the list only after it has been unregistered so
->> +	 * that a still-registered pin is always findable as a sibling.
->> +	 */
->> +	mutex_lock(&zldpll->lock);
->> +	list_del(&pin->list);
->> +	mutex_unlock(&zldpll->lock);
->> +
->>   	dpll_pin_put(pin->dpll_pin, &pin->tracker);
->>   	pin->dpll_pin = NULL;
->>   
->> @@ -1803,9 +1900,11 @@ zl3073x_dpll_pins_unregister(struct zl3073x_dpll *zldpll)
->>   {
->>   	struct zl3073x_dpll_pin *pin, *next;
->>   
->> +	/* Unregister each pin before removing it from the list so that a
->> +	 * still-registered pin is always findable as a sibling.
->> +	 */
->>   	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
->>   		zl3073x_dpll_pin_unregister(pin);
->> -		list_del(&pin->list);
->>   		zl3073x_dpll_pin_free(pin);
->>   	}
->>   }
-> 
-> [Severity: Low]
-> The commit message says:
-> 
->    and teardown detached the whole list before unregistering any
->    pin, so a sibling that is registered - and thus reachable by a PIN_SET
->    on the other pin - could be missing from the list and never notified.
-> 
-> Does this describe the old teardown correctly? Before this patch,
-> zl3073x_dpll_pins_unregister() already unregistered each pin before
-> removing it from the list:
-> 
-> 	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
-> 		zl3073x_dpll_pin_unregister(pin);
-> 		list_del(&pin->list);
-> 		zl3073x_dpll_pin_free(pin);
-> 	}
-> 
-> drivers/dpll/zl3073x/ has no list_splice() or similar call on this
-> list. A pin that was still registered therefore stayed on zldpll->pins
-> during teardown.
-> 
-> The list and the registration state only got out of step at
-> registration time, because dpll_pin_register() ran before list_add().
-> On the teardown side, this hunk mainly moves list_del() under
-> zldpll->lock, which the new lockdep-asserted lookup needs.
-> 
-> Could the commit message describe what the teardown change actually
-> does?
-Yes, will rewrite it in v4.
+commit 07d99587396024932e02474c3a5bede71d108454 upstream.
 
-Thanks,
-Ivan
+The .get_stats64 callback runs in atomic context, but on
+MDIO-connected switches every register read acquires the MDIO bus
+mutex, which can sleep:
+[   12.645973] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:609
+[   12.654442] in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 759, name: grep
+[   12.663377] preempt_count: 0, expected: 0
+[   12.667410] RCU nest depth: 1, expected: 0
+[   12.671511] INFO: lockdep is turned off.
+[   12.675441] CPU: 0 UID: 0 PID: 759 Comm: grep Tainted: G S      W           7.0.0+ #0 PREEMPT
+[   12.675453] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+[   12.675456] Hardware name: Bananapi BPI-R64 (DT)
+[   12.675459] Call trace:
+[   12.675462]  show_stack+0x14/0x1c (C)
+[   12.675477]  dump_stack_lvl+0x68/0x8c
+[   12.675487]  dump_stack+0x14/0x1c
+[   12.675495]  __might_resched+0x14c/0x220
+[   12.675504]  __might_sleep+0x44/0x80
+[   12.675511]  __mutex_lock+0x50/0xb10
+[   12.675523]  mutex_lock_nested+0x20/0x30
+[   12.675532]  mt7530_get_stats64+0x40/0x2ac
+[   12.675542]  dsa_user_get_stats64+0x2c/0x40
+[   12.675553]  dev_get_stats+0x44/0x1e0
+[   12.675564]  dev_seq_printf_stats+0x24/0xe0
+[   12.675575]  dev_seq_show+0x14/0x3c
+[   12.675583]  seq_read_iter+0x37c/0x480
+[   12.675595]  seq_read+0xd0/0xec
+[   12.675605]  proc_reg_read+0x94/0xe4
+[   12.675615]  vfs_read+0x98/0x29c
+[   12.675625]  ksys_read+0x54/0xdc
+[   12.675633]  __arm64_sys_read+0x18/0x20
+[   12.675642]  invoke_syscall.constprop.0+0x54/0xec
+[   12.675653]  do_el0_svc+0x3c/0xb4
+[   12.675662]  el0_svc+0x38/0x200
+[   12.675670]  el0t_64_sync_handler+0x98/0xdc
+[   12.675679]  el0t_64_sync+0x158/0x15c
+
+For MDIO-connected switches, poll MIB counters asynchronously using a
+delayed workqueue every second and let .get_stats64 return the cached
+values under a spinlock. A mod_delayed_work() call on each read
+triggers an immediate refresh so counters stay responsive when queried
+more frequently.
+
+MMIO-connected switches (MT7988, EN7581, AN7583) are not affected
+because their regmap does not sleep, so they continue to read MIB
+counters directly in .get_stats64.
+
+Fixes: 88c810f35ed5 ("net: dsa: mt7530: implement .get_stats64")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Acked-by: Chester A. Unal <chester.a.unal@arinc9.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/6940b913da2c29156f0feff74b678d3c526ee84c.1777719253.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Aleksei: context adjusted, 6.18 still exports mt7530_switch_ops ]
+Signed-off-by: Aleksei Sviridkin <f@lex.la>
+---
+Context adjusted: 6.18 still exports mt7530_switch_ops. The +/- lines
+are the same as upstream. Tested on an MT7981 board with an MT7531 on
+MDIO: without it a /proc/net/dev read loop under
+CONFIG_DEBUG_ATOMIC_SLEEP=y locked up a CPU within a minute, with it
+the loop ran 41 minutes clean.
+
+ drivers/net/dsa/mt7530.c | 75 ++++++++++++++++++++++++++++++++++++++--
+ drivers/net/dsa/mt7530.h |  8 +++++
+ 2 files changed, 80 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 4001779a9159..bd0a37ead0de 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -25,6 +25,9 @@
+ 
+ #include "mt7530.h"
+ 
++#define MT7530_STATS_POLL_INTERVAL	(1 * HZ)
++#define MT7530_STATS_RATE_LIMIT		(HZ / 10)
++
+ static struct mt753x_pcs *pcs_to_mt753x_pcs(struct phylink_pcs *pcs)
+ {
+ 	return container_of(pcs, struct mt753x_pcs, pcs);
+@@ -888,10 +891,9 @@ static void mt7530_get_rmon_stats(struct dsa_switch *ds, int port,
+ 	*ranges = mt7530_rmon_ranges;
+ }
+ 
+-static void mt7530_get_stats64(struct dsa_switch *ds, int port,
+-			       struct rtnl_link_stats64 *storage)
++static void mt7530_read_port_stats64(struct mt7530_priv *priv, int port,
++				     struct rtnl_link_stats64 *storage)
+ {
+-	struct mt7530_priv *priv = ds->priv;
+ 	uint64_t data;
+ 
+ 	/* MIB counter doesn't provide a FramesTransmittedOK but instead
+@@ -933,6 +935,54 @@ static void mt7530_get_stats64(struct dsa_switch *ds, int port,
+ 			       &storage->rx_crc_errors);
+ }
+ 
++static void mt7530_stats_refresh(struct mt7530_priv *priv)
++{
++	struct rtnl_link_stats64 stats = {};
++	struct dsa_port *dp;
++	int port;
++
++	dsa_switch_for_each_user_port(dp, priv->ds) {
++		port = dp->index;
++
++		mt7530_read_port_stats64(priv, port, &stats);
++
++		spin_lock_bh(&priv->stats_lock);
++		priv->ports[port].stats = stats;
++		priv->stats_last = jiffies;
++		spin_unlock_bh(&priv->stats_lock);
++	}
++}
++
++static void mt7530_stats_poll(struct work_struct *work)
++{
++	struct mt7530_priv *priv = container_of(work, struct mt7530_priv,
++						stats_work.work);
++
++	mt7530_stats_refresh(priv);
++	schedule_delayed_work(&priv->stats_work,
++			      MT7530_STATS_POLL_INTERVAL);
++}
++
++static void mt7530_get_stats64(struct dsa_switch *ds, int port,
++			       struct rtnl_link_stats64 *storage)
++{
++	struct mt7530_priv *priv = ds->priv;
++	bool refresh;
++
++	if (priv->bus) {
++		spin_lock_bh(&priv->stats_lock);
++		*storage = priv->ports[port].stats;
++		refresh = time_after(jiffies, priv->stats_last +
++					      MT7530_STATS_RATE_LIMIT);
++		spin_unlock_bh(&priv->stats_lock);
++		if (refresh)
++			mod_delayed_work(system_percpu_wq,
++					 &priv->stats_work, 0);
++	} else {
++		mt7530_read_port_stats64(priv, port, storage);
++	}
++}
++
+ static void mt7530_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
+ 				      struct ethtool_eth_ctrl_stats *ctrl_stats)
+ {
+@@ -3169,9 +3219,24 @@ mt753x_setup(struct dsa_switch *ds)
+ 	if (ret && priv->irq_domain)
+ 		mt7530_free_mdio_irq(priv);
+ 
++	if (!ret && priv->bus) {
++		mt7530_stats_refresh(priv);
++		schedule_delayed_work(&priv->stats_work,
++				      MT7530_STATS_POLL_INTERVAL);
++	}
++
+ 	return ret;
+ }
+ 
++static void
++mt753x_teardown(struct dsa_switch *ds)
++{
++	struct mt7530_priv *priv = ds->priv;
++
++	if (priv->bus)
++		cancel_delayed_work_sync(&priv->stats_work);
++}
++
+ static int mt753x_set_mac_eee(struct dsa_switch *ds, int port,
+ 			      struct ethtool_keee *e)
+ {
+@@ -3290,6 +3355,7 @@ static int mt7988_setup(struct dsa_switch *ds)
+ const struct dsa_switch_ops mt7530_switch_ops = {
+ 	.get_tag_protocol	= mtk_get_tag_protocol,
+ 	.setup			= mt753x_setup,
++	.teardown		= mt753x_teardown,
+ 	.preferred_default_local_cpu_port = mt753x_preferred_default_local_cpu_port,
+ 	.get_strings		= mt7530_get_strings,
+ 	.get_ethtool_stats	= mt7530_get_ethtool_stats,
+@@ -3437,6 +3503,9 @@ mt7530_probe_common(struct mt7530_priv *priv)
+ 	priv->ds->ops = &mt7530_switch_ops;
+ 	priv->ds->phylink_mac_ops = &mt753x_phylink_mac_ops;
+ 	mutex_init(&priv->reg_mutex);
++	spin_lock_init(&priv->stats_lock);
++	INIT_DELAYED_WORK(&priv->stats_work, mt7530_stats_poll);
++
+ 	dev_set_drvdata(dev, priv);
+ 
+ 	return 0;
+diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
+index 69be713bab80..ca665f87f1f6 100644
+--- a/drivers/net/dsa/mt7530.h
++++ b/drivers/net/dsa/mt7530.h
+@@ -797,6 +797,7 @@ struct mt7530_fdb {
+  * @pvid:	The VLAN specified is to be considered a PVID at ingress.  Any
+  *		untagged frames will be assigned to the related VLAN.
+  * @sgmii_pcs:	Pointer to PCS instance for SerDes ports
++ * @stats:	Cached port statistics for MDIO-connected switches
+  */
+ struct mt7530_port {
+ 	bool enable;
+@@ -804,6 +805,7 @@ struct mt7530_port {
+ 	u32 pm;
+ 	u16 pvid;
+ 	struct phylink_pcs *sgmii_pcs;
++	struct rtnl_link_stats64 stats;
+ };
+ 
+ /* Port 5 mode definitions of the MT7530 switch */
+@@ -876,6 +878,9 @@ struct mt753x_info {
+  * @create_sgmii:	Pointer to function creating SGMII PCS instance(s)
+  * @active_cpu_ports:	Holding the active CPU ports
+  * @mdiodev:		The pointer to the MDIO device structure
++ * @stats_lock:		Protects cached per-port stats from concurrent access
++ * @stats_work:		Delayed work for polling MIB counters on MDIO switches
++ * @stats_last:		Jiffies timestamp of last MIB counter poll
+  */
+ struct mt7530_priv {
+ 	struct device		*dev;
+@@ -901,6 +906,9 @@ struct mt7530_priv {
+ 	int (*create_sgmii)(struct mt7530_priv *priv);
+ 	u8 active_cpu_ports;
+ 	struct mdio_device *mdiodev;
++	spinlock_t stats_lock; /* protects cached stats counters */
++	struct delayed_work stats_work;
++	unsigned long stats_last;
+ };
+ 
+ struct mt7530_hw_vlan_entry {
+-- 
+2.53.0
 
